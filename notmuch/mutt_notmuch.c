@@ -905,7 +905,7 @@ static void append_message(struct Mailbox *m, notmuch_query_t *q,
   mutt_debug(2, "nm: appending message, i=%d, id=%s, path=%s\n", m->msg_count,
              notmuch_message_get_message_id(msg), path);
 
-  if (m->msg_count >= m->hdrmax)
+  if (m->msg_count >= m->email_max)
   {
     mutt_debug(2, "nm: allocate mx memory\n");
     mx_alloc_memory(m);
@@ -2126,7 +2126,7 @@ static int nm_mbox_open(struct Mailbox *m, struct Context *ctx)
   if (!m->emails)
   {
     /* Allocate some memory to get started */
-    m->hdrmax = m->msg_count;
+    m->email_max = m->msg_count;
     m->msg_count = 0;
     m->vcount = 0;
     m->size = 0;

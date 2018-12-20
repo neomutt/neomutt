@@ -2159,7 +2159,7 @@ static int imap_mbox_open(struct Mailbox *m, struct Context *ctx)
     m->readonly = true;
   }
 
-  m->hdrmax = count;
+  m->email_max = count;
   m->emails = mutt_mem_calloc(count, sizeof(struct Email *));
   m->v2r = mutt_mem_calloc(count, sizeof(int));
   m->msg_count = 0;

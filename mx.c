@@ -1206,24 +1206,24 @@ void mx_alloc_memory(struct Mailbox *m)
 {
   size_t s = MAX(sizeof(struct Email *), sizeof(int));
 
-  if ((m->hdrmax + 25) * s < m->hdrmax * s)
+  if ((m->email_max + 25) * s < m->email_max * s)
   {
     mutt_error(_("Out of memory"));
     mutt_exit(1);
   }
 
-  m->hdrmax += 25;
+  m->email_max += 25;
   if (m->emails)
   {
-    mutt_mem_realloc(&m->emails, sizeof(struct Email *) * m->hdrmax);
-    mutt_mem_realloc(&m->v2r, sizeof(int) * m->hdrmax);
+    mutt_mem_realloc(&m->emails, sizeof(struct Email *) * m->email_max);
+    mutt_mem_realloc(&m->v2r, sizeof(int) * m->email_max);
   }
   else
   {
-    m->emails = mutt_mem_calloc(m->hdrmax, sizeof(struct Email *));
-    m->v2r = mutt_mem_calloc(m->hdrmax, sizeof(int));
+    m->emails = mutt_mem_calloc(m->email_max, sizeof(struct Email *));
+    m->v2r = mutt_mem_calloc(m->email_max, sizeof(int));
   }
-  for (int i = m->msg_count; i < m->hdrmax; i++)
+  for (int i = m->msg_count; i < m->email_max; i++)
   {
     m->emails[i] = NULL;
     m->v2r[i] = -1;

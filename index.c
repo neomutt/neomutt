@@ -656,7 +656,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
  */
 void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
-  if (!Context || !menu || (line < 0) || (line >= Context->mailbox->hdrmax))
+  if (!Context || !menu || (line < 0) || (line >= Context->mailbox->email_max))
     return;
 
   struct Email *e = Context->mailbox->emails[Context->mailbox->v2r[line]];

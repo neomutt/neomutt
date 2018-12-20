@@ -288,7 +288,7 @@ static int fetch_uidl(char *line, void *data)
   {
     mutt_debug(1, "new header %d %s\n", index, line);
 
-    if (i >= m->hdrmax)
+    if (i >= m->email_max)
       mx_alloc_memory(m);
 
     m->msg_count++;
@@ -397,7 +397,7 @@ static int pop_fetch_headers(struct Context *ctx)
   if (!m->emails)
   {
     /* Allocate some memory to get started */
-    m->hdrmax = m->msg_count;
+    m->email_max = m->msg_count;
     m->msg_count = 0;
     m->msg_unread = 0;
     m->vcount = 0;

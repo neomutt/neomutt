@@ -868,7 +868,7 @@ static int read_headers_qresync_eval_cache(struct ImapAccountData *adata, char *
       mdata->max_msn = MAX(mdata->max_msn, msn);
       mdata->msn_index[msn - 1] = e;
 
-      if (m->msg_count >= m->hdrmax)
+      if (m->msg_count >= m->email_max)
         mx_alloc_memory(m);
 
       struct ImapEmailData *edata = imap_edata_new();
@@ -1191,7 +1191,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
       fetch_msn_end = mdata->max_msn;
       msn_begin = mdata->max_msn + 1;
       msn_end = mdata->new_mail_count;
-      while (msn_end > m->hdrmax)
+      while (msn_end > m->email_max)
         mx_alloc_memory(m);
       alloc_msn_index(adata, msn_end);
       mdata->reopen &= ~IMAP_NEWMAIL_PENDING;
@@ -1248,7 +1248,7 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
     return -1;
 
   /* make sure context has room to hold the mailbox */
-  while (msn_end > m->hdrmax)
+  while (msn_end > m->email_max)
     mx_alloc_memory(m);
   alloc_msn_index(adata, msn_end);
   imap_alloc_uid_hash(adata, msn_end);

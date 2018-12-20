@@ -1138,7 +1138,7 @@ static int parse_overview_line(char *line, void *data)
   rewind(fp);
 
   /* allocate memory for headers */
-  if (m->msg_count >= m->hdrmax)
+  if (m->msg_count >= m->email_max)
     mx_alloc_memory(m);
 
   /* parse header */
@@ -1263,7 +1263,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
   if (!m->emails)
   {
     /* Allocate some memory to get started */
-    m->hdrmax = m->msg_count;
+    m->email_max = m->msg_count;
     m->msg_count = 0;
     m->vcount = 0;
     mx_alloc_memory(m);
@@ -1333,7 +1333,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
       continue;
 
     /* allocate memory for headers */
-    if (m->msg_count >= m->hdrmax)
+    if (m->msg_count >= m->email_max)
       mx_alloc_memory(m);
 
 #ifdef USE_HCACHE
@@ -1653,7 +1653,7 @@ static int check_mailbox(struct Context *ctx)
       if (hdata)
       {
         mutt_debug(2, "#2 mutt_hcache_fetch %s\n", buf);
-        if (m->msg_count >= m->hdrmax)
+        if (m->msg_count >= m->email_max)
           mx_alloc_memory(m);
 
         e = mutt_hcache_restore(hdata);
@@ -2253,7 +2253,7 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
   }
 
   /* parse header */
-  if (m->msg_count == m->hdrmax)
+  if (m->msg_count == m->email_max)
     mx_alloc_memory(m);
   m->emails[m->msg_count] = mutt_email_new();
   struct Email *e = m->emails[m->msg_count];

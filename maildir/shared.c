@@ -430,7 +430,7 @@ static int maildir_add_to_context(struct Mailbox *m, struct Maildir *md)
   if (!m->emails)
   {
     /* Allocate some memory to get started */
-    m->hdrmax = m->msg_count;
+    m->email_max = m->msg_count;
     m->msg_count = 0;
     m->vcount = 0;
     mx_alloc_memory(m);
@@ -446,7 +446,7 @@ static int maildir_add_to_context(struct Mailbox *m, struct Maildir *md)
                  md->email->flagged ? "f" : "", md->email->deleted ? "D" : "",
                  md->email->replied ? "r" : "", md->email->old ? "O" : "",
                  md->email->read ? "R" : "");
-      if (m->msg_count == m->hdrmax)
+      if (m->msg_count == m->email_max)
         mx_alloc_memory(m);
 
       m->emails[m->msg_count] = md->email;

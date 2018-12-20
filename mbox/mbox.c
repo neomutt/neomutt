@@ -234,7 +234,7 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
       if (!m->quiet)
         mutt_progress_update(&progress, count, (int) (loc / (m->size / 100 + 1)));
 
-      if (m->msg_count == m->hdrmax)
+      if (m->msg_count == m->email_max)
         mx_alloc_memory(m);
       e = mutt_email_new();
       m->emails[m->msg_count] = e;
@@ -385,7 +385,7 @@ static int mbox_parse_mailbox(struct Mailbox *m)
   if (!m->emails)
   {
     /* Allocate some memory to get started */
-    m->hdrmax = m->msg_count;
+    m->email_max = m->msg_count;
     m->msg_count = 0;
     m->msg_unread = 0;
     m->vcount = 0;
@@ -419,7 +419,7 @@ static int mbox_parse_mailbox(struct Mailbox *m)
                              (int) (ftello(adata->fp) / (m->size / 100 + 1)));
       }
 
-      if (m->msg_count == m->hdrmax)
+      if (m->msg_count == m->email_max)
         mx_alloc_memory(m);
 
       m->emails[m->msg_count] = mutt_email_new();
@@ -613,7 +613,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
     m->emails = NULL;
   }
 
-  m->hdrmax = 0; /* force allocation of new headers */
+  m->email_max = 0; /* force allocation of new headers */
   m->msg_count = 0;
   m->vcount = 0;
   ctx->vsize = 0;
