@@ -793,7 +793,7 @@ void imap_expunge_mailbox(struct Mailbox *m)
 
   old_sort = Sort;
   Sort = SORT_ORDER;
-  mutt_sort_headers(adata->ctx, false);
+  mutt_sort_headers(mdata->ctx, false);
 
   for (int i = 0; i < m->msg_count; i++)
   {
@@ -853,9 +853,9 @@ void imap_expunge_mailbox(struct Mailbox *m)
 
   /* We may be called on to expunge at any time. We can't rely on the caller
    * to always know to rethread */
-  mx_update_tables(adata->ctx, false);
+  mx_update_tables(mdata->ctx, false);
   Sort = old_sort;
-  mutt_sort_headers(adata->ctx, true);
+  mutt_sort_headers(mdata->ctx, true);
 }
 
 /**
@@ -1980,11 +1980,11 @@ static int imap_mbox_open(struct Mailbox *m, struct Context *ctx)
   struct ImapMboxData *mdata = imap_mdata_get(m);
 
   // NOTE(sileht): looks like we have two not obvious loop here
-  // ctx->mailbox->account->adata->ctx
+  // ctx->mailbox->account->mdata->ctx
   // mailbox->account->adata->mailbox
   // this is used only by imap_mbox_close() to detect if the
   // adata/mailbox is a normal or append one, looks a bit dirty
-  adata->ctx = ctx;
+  mdata->ctx = ctx;
   adata->mailbox = m;
 
   /* clear mailbox status */
@@ -2251,20 +2251,21 @@ static int imap_mbox_close(struct Context *ctx)
   struct Mailbox *m = ctx->mailbox;
 
   struct ImapAccountData *adata = imap_adata_get(m);
+  struct ImapMboxData *mdata = imap_mdata_get(m);
 
   /* Check to see if the mailbox is actually open */
-  if (!adata)
+  if (!adata || !mdata)
     return 0;
 
   /* imap_mbox_open_append() borrows the struct ImapAccountData temporarily,
-   * just for the connection, but does not set adata->ctx to the
+   * just for the connection, but does not set mdata->ctx to the
    * open-append ctx.
    *
    * So when these are equal, it means we are actually closing the
    * mailbox and should clean up adata.  Otherwise, we don't want to
    * touch adata - it's still being used.
    */
-  if (ctx == adata->ctx)
+  if (ctx == mdata->ctx)
   {
     if (adata->status != IMAP_FATAL && adata->state >= IMAP_SELECTED)
     {
@@ -2279,7 +2280,7 @@ static int imap_mbox_close(struct Context *ctx)
     }
 
     adata->mailbox = NULL;
-    adata->ctx = NULL;
+    mdata->ctx = NULL;
 
     imap_mdata_cache_reset(m->mdata);
   }

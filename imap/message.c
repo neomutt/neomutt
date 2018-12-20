@@ -1817,7 +1817,7 @@ char *imap_set_flags(struct Mailbox *m, struct Email *e, char *s, int *server_ch
   m->readonly = false;
 
   /* This is redundant with the following two checks. Removing:
-   * mutt_set_flag (adata->ctx, e, MUTT_NEW, !(edata->read || edata->old));
+   * mutt_set_flag (m, e, MUTT_NEW, !(edata->read || edata->old));
    */
   set_changed_flag(m, e, local_changes, server_changes, MUTT_OLD, old_edata.old,
                    edata->old, e->old);
