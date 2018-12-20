@@ -169,12 +169,12 @@ static const char *NoVisible = N_("No visible messages");
     break;                                                                     \
   }
 
-#define CURHDR Context->mailbox->emails[Context->mailbox->v2r[menu->current]]
-#define UNREAD(h) mutt_thread_contains_unread(Context, h)
-#define FLAGGED(h) mutt_thread_contains_flagged(Context, h)
+#define CUR_EMAIL Context->mailbox->emails[Context->mailbox->v2r[menu->current]]
+#define UNREAD(email) mutt_thread_contains_unread(Context, email)
+#define FLAGGED(email) mutt_thread_contains_flagged(Context, email)
 
-#define CAN_COLLAPSE(header)                                                   \
-  ((CollapseUnread || !UNREAD(header)) && (CollapseFlagged || !FLAGGED(header)))
+#define CAN_COLLAPSE(email)                                                    \
+  ((CollapseUnread || !UNREAD(email)) && (CollapseFlagged || !FLAGGED(email)))
 
 /**
  * collapse_all - Collapse/uncollapse all threads
@@ -198,12 +198,12 @@ static void collapse_all(struct Menu *menu, int toggle)
 
   /* Figure out what the current message would be after folding / unfolding,
    * so that we can restore the cursor in a sane way afterwards. */
-  if (CURHDR->collapsed && toggle)
-    final = mutt_uncollapse_thread(Context, CURHDR);
-  else if (CAN_COLLAPSE(CURHDR))
-    final = mutt_collapse_thread(Context, CURHDR);
+  if (CUR_EMAIL->collapsed && toggle)
+    final = mutt_uncollapse_thread(Context, CUR_EMAIL);
+  else if (CAN_COLLAPSE(CUR_EMAIL))
+    final = mutt_collapse_thread(Context, CUR_EMAIL);
   else
-    final = CURHDR->virtual;
+    final = CUR_EMAIL->virtual;
 
   base = Context->mailbox->emails[Context->mailbox->v2r[final]];
 
@@ -351,7 +351,7 @@ static int mx_toggle_write(struct Mailbox *m)
  */
 static void resort_index(struct Menu *menu)
 {
-  struct Email *current = CURHDR;
+  struct Email *current = CUR_EMAIL;
 
   menu->current = -1;
   mutt_sort_headers(Context, false);
@@ -1046,7 +1046,7 @@ int mutt_index_menu(void)
 
       index_hint = (Context->mailbox->vcount && menu->current >= 0 &&
                     menu->current < Context->mailbox->vcount) ?
-                       CURHDR->index :
+                       CUR_EMAIL->index :
                        0;
 
       check = mx_mbox_check(Context, &index_hint);
@@ -1323,12 +1323,12 @@ int mutt_index_menu(void)
           }
           else
           {
-            if (STAILQ_EMPTY(&CURHDR->env->references))
+            if (STAILQ_EMPTY(&CUR_EMAIL->env->references))
             {
               mutt_error(_("Article has no parent reference"));
               break;
             }
-            mutt_str_strfcpy(buf, STAILQ_FIRST(&CURHDR->env->references)->data,
+            mutt_str_strfcpy(buf, STAILQ_FIRST(&CUR_EMAIL->env->references)->data,
                              sizeof(buf));
           }
           if (!Context->mailbox->id_hash)
@@ -1379,10 +1379,10 @@ int mutt_index_menu(void)
         if (Context->mailbox->magic == MUTT_NNTP)
         {
           int oldmsgcount = Context->mailbox->msg_count;
-          int oldindex = CURHDR->index;
+          int oldindex = CUR_EMAIL->index;
           int rc2 = 0;
 
-          if (!CURHDR->env->message_id)
+          if (!CUR_EMAIL->env->message_id)
           {
             mutt_error(_("No Message-Id. Unable to perform operation."));
             break;
@@ -1391,13 +1391,13 @@ int mutt_index_menu(void)
           mutt_message(_("Fetching message headers..."));
           if (!Context->mailbox->id_hash)
             Context->mailbox->id_hash = mutt_make_id_hash(Context->mailbox);
-          mutt_str_strfcpy(buf, CURHDR->env->message_id, sizeof(buf));
+          mutt_str_strfcpy(buf, CUR_EMAIL->env->message_id, sizeof(buf));
 
           /* trying to find msgid of the root message */
           if (op == OP_RECONSTRUCT_THREAD)
           {
             struct ListNode *ref = NULL;
-            STAILQ_FOREACH(ref, &CURHDR->env->references, entries)
+            STAILQ_FOREACH(ref, &CUR_EMAIL->env->references, entries)
             {
               if (!mutt_hash_find(Context->mailbox->id_hash, ref->data))
               {
@@ -1419,7 +1419,7 @@ int mutt_index_menu(void)
           /* at least one message has been loaded */
           if (Context->mailbox->msg_count > oldmsgcount)
           {
-            struct Email *oldcur = CURHDR;
+            struct Email *oldcur = CUR_EMAIL;
             struct Email *e = NULL;
             bool quiet = Context->mailbox->quiet;
 
@@ -1590,7 +1590,7 @@ int mutt_index_menu(void)
         CHECK_IN_MAILBOX;
         menu->oldcurrent = (Context->mailbox->vcount && menu->current >= 0 &&
                             menu->current < Context->mailbox->vcount) ?
-                               CURHDR->index :
+                               CUR_EMAIL->index :
                                -1;
         if (op == OP_TOGGLE_READ)
         {
@@ -1612,7 +1612,7 @@ int mutt_index_menu(void)
           mutt_pattern_func(MUTT_LIMIT, NULL);
         }
 
-        if (((op == OP_LIMIT_CURRENT_THREAD) && mutt_limit_current_thread(CURHDR)) ||
+        if (((op == OP_LIMIT_CURRENT_THREAD) && mutt_limit_current_thread(CUR_EMAIL)) ||
             (op == OP_TOGGLE_READ) ||
             ((op == OP_MAIN_LIMIT) &&
              (mutt_pattern_func(MUTT_LIMIT,
@@ -1725,11 +1725,11 @@ int mutt_index_menu(void)
         }
         else
         {
-          mutt_set_flag(Context->mailbox, CURHDR, MUTT_TAG, !CURHDR->tagged);
+          mutt_set_flag(Context->mailbox, CUR_EMAIL, MUTT_TAG, !CUR_EMAIL->tagged);
 
-          Context->last_tag = CURHDR->tagged ?
-                                  CURHDR :
-                                  ((Context->last_tag == CURHDR && !CURHDR->tagged) ?
+          Context->last_tag = CUR_EMAIL->tagged ?
+                                  CUR_EMAIL :
+                                  ((Context->last_tag == CUR_EMAIL && !CUR_EMAIL->tagged) ?
                                        NULL :
                                        Context->last_tag);
 
@@ -1783,7 +1783,7 @@ int mutt_index_menu(void)
         CHECK_ATTACH;
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        ci_send_message(SEND_TO_SENDER, NULL, NULL, Context, tag ? NULL : CURHDR);
+        ci_send_message(SEND_TO_SENDER, NULL, NULL, Context, tag ? NULL : CUR_EMAIL);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -1836,7 +1836,7 @@ int mutt_index_menu(void)
             /* threads may be reordered, so figure out what header the cursor
              * should be on. #3092 */
             int newidx = menu->current;
-            if (CURHDR->deleted)
+            if (CUR_EMAIL->deleted)
               newidx = ci_next_undeleted(menu->current);
             if (newidx < 0)
               newidx = ci_previous_undeleted(menu->current);
@@ -1902,7 +1902,7 @@ int mutt_index_menu(void)
         }
         else
         {
-          CURHDR->quasi_deleted = true;
+          CUR_EMAIL->quasi_deleted = true;
           Context->mailbox->changed = true;
         }
         break;
@@ -1912,16 +1912,16 @@ int mutt_index_menu(void)
       {
         if (!Context || (Context->mailbox->magic != MUTT_NOTMUCH))
         {
-          if (!CURHDR || !CURHDR->env || !CURHDR->env->message_id)
+          if (!CUR_EMAIL || !CUR_EMAIL->env || !CUR_EMAIL->env->message_id)
           {
             mutt_message(_("No virtual folder and no Message-Id, aborting"));
             break;
           } // no virtual folder, but we have message-id, reconstruct thread on-the-fly
           strncpy(buf, "id:", sizeof(buf));
           int msg_id_offset = 0;
-          if ((CURHDR->env->message_id)[0] == '<')
+          if ((CUR_EMAIL->env->message_id)[0] == '<')
             msg_id_offset = 1;
-          mutt_str_strcat(buf, sizeof(buf), (CURHDR->env->message_id) + msg_id_offset);
+          mutt_str_strcat(buf, sizeof(buf), (CUR_EMAIL->env->message_id) + msg_id_offset);
           if (buf[strlen(buf) - 1] == '>')
             buf[strlen(buf) - 1] = '\0';
           if (!nm_uri_from_query(Context->mailbox, buf, sizeof(buf)))
@@ -1935,14 +1935,14 @@ int mutt_index_menu(void)
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
         int oc = Context->mailbox->msg_count;
-        if (nm_read_entire_thread(Context, CURHDR) < 0)
+        if (nm_read_entire_thread(Context, CUR_EMAIL) < 0)
         {
           mutt_message(_("Failed to read thread, aborting"));
           break;
         }
         if (oc < Context->mailbox->msg_count)
         {
-          struct Email *oldcur = CURHDR;
+          struct Email *oldcur = CUR_EMAIL;
 
           if ((Sort & SORT_MASK) == SORT_THREADS)
             mutt_sort_headers(Context, false);
@@ -1951,7 +1951,7 @@ int mutt_index_menu(void)
 
           if (oldcur->collapsed || Context->collapsed)
           {
-            menu->current = mutt_uncollapse_thread(Context, CURHDR);
+            menu->current = mutt_uncollapse_thread(Context, CUR_EMAIL);
             mutt_set_virtual(Context);
           }
         }
@@ -1977,7 +1977,7 @@ int mutt_index_menu(void)
         CHECK_READONLY;
         char *tags = NULL;
         if (!tag)
-          tags = driver_tags_get_with_hidden(&CURHDR->tags);
+          tags = driver_tags_get_with_hidden(&CUR_EMAIL->tags);
         rc = mx_tags_edit(Context->mailbox, tags, buf, sizeof(buf));
         FREE(&tags);
         if (rc < 0)
@@ -2033,7 +2033,7 @@ int mutt_index_menu(void)
         }
         else
         {
-          if (mx_tags_commit(Context->mailbox, CURHDR, buf))
+          if (mx_tags_commit(Context->mailbox, CUR_EMAIL, buf))
           {
             mutt_message(_("Failed to modify tags, aborting"));
             break;
@@ -2043,9 +2043,9 @@ int mutt_index_menu(void)
             bool still_queried = false;
 #ifdef USE_NOTMUCH
             if (Context->mailbox->magic == MUTT_NOTMUCH)
-              still_queried = nm_message_is_still_queried(Context->mailbox, CURHDR);
+              still_queried = nm_message_is_still_queried(Context->mailbox, CUR_EMAIL);
 #endif
-            CURHDR->quasi_deleted = !still_queried;
+            CUR_EMAIL->quasi_deleted = !still_queried;
             Context->mailbox->changed = true;
           }
           if (menu->menu == MENU_PAGER)
@@ -2268,17 +2268,17 @@ int mutt_index_menu(void)
 
         OptNeedResort = false;
 
-        if ((Sort & SORT_MASK) == SORT_THREADS && CURHDR->collapsed)
+        if ((Sort & SORT_MASK) == SORT_THREADS && CUR_EMAIL->collapsed)
         {
-          mutt_uncollapse_thread(Context, CURHDR);
+          mutt_uncollapse_thread(Context, CUR_EMAIL);
           mutt_set_virtual(Context);
           if (UncollapseJump)
-            menu->current = mutt_thread_next_unread(Context, CURHDR);
+            menu->current = mutt_thread_next_unread(Context, CUR_EMAIL);
         }
 
-        if (PgpAutoDecode && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        if (PgpAutoDecode && (tag || !(CUR_EMAIL->security & PGP_TRADITIONAL_CHECKED)))
         {
-          mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
+          mutt_check_traditional_pgp(tag ? NULL : CUR_EMAIL, &menu->redraw);
         }
         int hint =
             Context->mailbox->emails[Context->mailbox->v2r[menu->current]]->index;
@@ -2288,7 +2288,7 @@ int mutt_index_menu(void)
          * set CurrentMenu incorrectly when we return back to the index menu. */
         menu->menu = MENU_MAIN;
 
-        op = mutt_display_message(CURHDR);
+        op = mutt_display_message(CUR_EMAIL);
         if (op < 0)
         {
           OptNeedResort = false;
@@ -2335,13 +2335,13 @@ int mutt_index_menu(void)
 
         if ((Sort & SORT_MASK) != SORT_THREADS)
           mutt_error(_("Threading is not enabled"));
-        else if (!STAILQ_EMPTY(&CURHDR->env->in_reply_to) ||
-                 !STAILQ_EMPTY(&CURHDR->env->references))
+        else if (!STAILQ_EMPTY(&CUR_EMAIL->env->in_reply_to) ||
+                 !STAILQ_EMPTY(&CUR_EMAIL->env->references))
         {
           {
-            struct Email *oldcur = CURHDR;
+            struct Email *oldcur = CUR_EMAIL;
 
-            mutt_break_thread(CURHDR);
+            mutt_break_thread(CUR_EMAIL);
             mutt_sort_headers(Context, true);
             menu->current = oldcur->virtual;
           }
@@ -2375,15 +2375,15 @@ int mutt_index_menu(void)
 
         if ((Sort & SORT_MASK) != SORT_THREADS)
           mutt_error(_("Threading is not enabled"));
-        else if (!CURHDR->env->message_id)
+        else if (!CUR_EMAIL->env->message_id)
           mutt_error(_("No Message-ID: header available to link thread"));
         else if (!tag && (!Context->last_tag || !Context->last_tag->tagged))
           mutt_error(_("First, please tag a message to be linked here"));
         else
         {
-          struct Email *oldcur = CURHDR;
+          struct Email *oldcur = CUR_EMAIL;
 
-          if (mutt_link_threads(CURHDR, tag ? NULL : Context->last_tag, Context))
+          if (mutt_link_threads(CUR_EMAIL, tag ? NULL : Context->last_tag, Context))
           {
             mutt_sort_headers(Context, true);
             menu->current = oldcur->virtual;
@@ -2410,7 +2410,7 @@ int mutt_index_menu(void)
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
         CHECK_ATTACH;
-        mutt_edit_content_type(CURHDR, CURHDR->content, NULL);
+        mutt_edit_content_type(CUR_EMAIL, CUR_EMAIL->content, NULL);
         /* if we were in the pager, redisplay the message */
         if (menu->menu == MENU_PAGER)
         {
@@ -2523,7 +2523,7 @@ int mutt_index_menu(void)
       case OP_DECODE_SAVE:
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        if ((mutt_save_message(tag ? NULL : CURHDR,
+        if ((mutt_save_message(tag ? NULL : CUR_EMAIL,
                                (op == OP_DECRYPT_SAVE) || (op == OP_SAVE) || (op == OP_DECODE_SAVE),
                                (op == OP_DECODE_SAVE) || (op == OP_DECODE_COPY),
                                (op == OP_DECRYPT_SAVE) || (op == OP_DECRYPT_COPY)) == 0) &&
@@ -2686,7 +2686,7 @@ int mutt_index_menu(void)
         }
         else
         {
-          mutt_set_flag(Context->mailbox, CURHDR, MUTT_FLAG, !CURHDR->flagged);
+          mutt_set_flag(Context->mailbox, CUR_EMAIL, MUTT_FLAG, !CUR_EMAIL->flagged);
           if (Resolve)
           {
             menu->current = ci_next_undeleted(menu->current);
@@ -2728,10 +2728,10 @@ int mutt_index_menu(void)
         }
         else
         {
-          if (CURHDR->read || CURHDR->old)
-            mutt_set_flag(Context->mailbox, CURHDR, MUTT_NEW, 1);
+          if (CUR_EMAIL->read || CUR_EMAIL->old)
+            mutt_set_flag(Context->mailbox, CUR_EMAIL, MUTT_NEW, 1);
           else
-            mutt_set_flag(Context->mailbox, CURHDR, MUTT_READ, 1);
+            mutt_set_flag(Context->mailbox, CUR_EMAIL, MUTT_READ, 1);
 
           if (Resolve)
           {
@@ -2767,19 +2767,19 @@ int mutt_index_menu(void)
         switch (op)
         {
           case OP_MAIN_NEXT_THREAD:
-            menu->current = mutt_next_thread(CURHDR);
+            menu->current = mutt_next_thread(CUR_EMAIL);
             break;
 
           case OP_MAIN_NEXT_SUBTHREAD:
-            menu->current = mutt_next_subthread(CURHDR);
+            menu->current = mutt_next_subthread(CUR_EMAIL);
             break;
 
           case OP_MAIN_PREV_THREAD:
-            menu->current = mutt_previous_thread(CURHDR);
+            menu->current = mutt_previous_thread(CUR_EMAIL);
             break;
 
           case OP_MAIN_PREV_SUBTHREAD:
-            menu->current = mutt_previous_subthread(CURHDR);
+            menu->current = mutt_previous_subthread(CUR_EMAIL);
             break;
         }
 
@@ -2806,7 +2806,7 @@ int mutt_index_menu(void)
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 
-        menu->current = mutt_parent_message(Context, CURHDR, op == OP_MAIN_ROOT_MESSAGE);
+        menu->current = mutt_parent_message(Context, CUR_EMAIL, op == OP_MAIN_ROOT_MESSAGE);
         if (menu->current < 0)
         {
           menu->current = menu->oldcurrent;
@@ -2828,7 +2828,7 @@ int mutt_index_menu(void)
         CHECK_READONLY;
         /* CHECK_ACL(MUTT_ACL_WRITE); */
 
-        if (mutt_change_flag(tag ? NULL : CURHDR, (op == OP_MAIN_SET_FLAG)) == 0)
+        if (mutt_change_flag(tag ? NULL : CUR_EMAIL, (op == OP_MAIN_SET_FLAG)) == 0)
         {
           menu->redraw |= REDRAW_STATUS;
           if (tag)
@@ -2859,16 +2859,16 @@ int mutt_index_menu(void)
           break;
         }
 
-        if (CURHDR->collapsed)
+        if (CUR_EMAIL->collapsed)
         {
-          menu->current = mutt_uncollapse_thread(Context, CURHDR);
+          menu->current = mutt_uncollapse_thread(Context, CUR_EMAIL);
           mutt_set_virtual(Context);
           if (UncollapseJump)
-            menu->current = mutt_thread_next_unread(Context, CURHDR);
+            menu->current = mutt_thread_next_unread(Context, CUR_EMAIL);
         }
-        else if (CAN_COLLAPSE(CURHDR))
+        else if (CAN_COLLAPSE(CUR_EMAIL))
         {
-          menu->current = mutt_collapse_thread(Context, CURHDR);
+          menu->current = mutt_collapse_thread(Context, CUR_EMAIL);
           mutt_set_virtual(Context);
         }
         else
@@ -2902,12 +2902,12 @@ int mutt_index_menu(void)
         CHECK_ATTACH;
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        ci_bounce_message(tag ? NULL : CURHDR);
+        ci_bounce_message(tag ? NULL : CUR_EMAIL);
         break;
 
       case OP_CREATE_ALIAS:
 
-        mutt_alias_create(Context && Context->mailbox->vcount ? CURHDR->env : NULL, NULL);
+        mutt_alias_create(Context && Context->mailbox->vcount ? CUR_EMAIL->env : NULL, NULL);
         menu->redraw |= REDRAW_CURRENT;
         break;
 
@@ -2935,10 +2935,10 @@ int mutt_index_menu(void)
         }
         else
         {
-          mutt_set_flag(Context->mailbox, CURHDR, MUTT_DELETE, 1);
-          mutt_set_flag(Context->mailbox, CURHDR, MUTT_PURGE, (op == OP_PURGE_MESSAGE));
+          mutt_set_flag(Context->mailbox, CUR_EMAIL, MUTT_DELETE, 1);
+          mutt_set_flag(Context->mailbox, CUR_EMAIL, MUTT_PURGE, (op == OP_PURGE_MESSAGE));
           if (DeleteUntag)
-            mutt_set_flag(Context->mailbox, CURHDR, MUTT_TAG, 0);
+            mutt_set_flag(Context->mailbox, CUR_EMAIL, MUTT_TAG, 0);
           if (Resolve)
           {
             menu->current = ci_next_undeleted(menu->current);
@@ -2977,18 +2977,18 @@ int mutt_index_menu(void)
 
         {
           int subthread = (op == OP_DELETE_SUBTHREAD);
-          rc = mutt_thread_set_flag(CURHDR, MUTT_DELETE, 1, subthread);
+          rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_DELETE, 1, subthread);
           if (rc == -1)
             break;
           if (op == OP_PURGE_THREAD)
           {
-            rc = mutt_thread_set_flag(CURHDR, MUTT_PURGE, 1, subthread);
+            rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_PURGE, 1, subthread);
             if (rc == -1)
               break;
           }
 
           if (DeleteUntag)
-            mutt_thread_set_flag(CURHDR, MUTT_TAG, 0, subthread);
+            mutt_thread_set_flag(CUR_EMAIL, MUTT_TAG, 0, subthread);
           if (Resolve)
           {
             menu->current = ci_next_undeleted(menu->current);
@@ -3017,7 +3017,7 @@ int mutt_index_menu(void)
 
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        mutt_display_address(CURHDR->env);
+        mutt_display_address(CUR_EMAIL->env);
         break;
 
       case OP_ENTER_COMMAND:
@@ -3049,14 +3049,14 @@ int mutt_index_menu(void)
         else
           edit = false;
 
-        if (PgpAutoDecode && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        if (PgpAutoDecode && (tag || !(CUR_EMAIL->security & PGP_TRADITIONAL_CHECKED)))
         {
-          mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
+          mutt_check_traditional_pgp(tag ? NULL : CUR_EMAIL, &menu->redraw);
         }
         if (edit)
-          mutt_edit_message(Context, tag ? NULL : CURHDR);
+          mutt_edit_message(Context, tag ? NULL : CUR_EMAIL);
         else
-          mutt_view_message(Context, tag ? NULL : CURHDR);
+          mutt_view_message(Context, tag ? NULL : CUR_EMAIL);
         menu->redraw = REDRAW_FULL;
 
         break;
@@ -3066,11 +3066,11 @@ int mutt_index_menu(void)
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
         CHECK_ATTACH;
-        if (PgpAutoDecode && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        if (PgpAutoDecode && (tag || !(CUR_EMAIL->security & PGP_TRADITIONAL_CHECKED)))
         {
-          mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
+          mutt_check_traditional_pgp(tag ? NULL : CUR_EMAIL, &menu->redraw);
         }
-        ci_send_message(SEND_FORWARD, NULL, NULL, Context, tag ? NULL : CURHDR);
+        ci_send_message(SEND_FORWARD, NULL, NULL, Context, tag ? NULL : CUR_EMAIL);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -3083,12 +3083,12 @@ int mutt_index_menu(void)
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
         CHECK_ATTACH;
-        if (PgpAutoDecode && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        if (PgpAutoDecode && (tag || !(CUR_EMAIL->security & PGP_TRADITIONAL_CHECKED)))
         {
-          mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
+          mutt_check_traditional_pgp(tag ? NULL : CUR_EMAIL, &menu->redraw);
         }
         ci_send_message(SEND_REPLY | SEND_GROUP_REPLY, NULL, NULL, Context,
-                        tag ? NULL : CURHDR);
+                        tag ? NULL : CUR_EMAIL);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -3097,7 +3097,7 @@ int mutt_index_menu(void)
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
         CHECK_READONLY;
-        rc = mutt_label_message(tag ? NULL : CURHDR);
+        rc = mutt_label_message(tag ? NULL : CUR_EMAIL);
         if (rc > 0)
         {
           Context->mailbox->changed = true;
@@ -3120,12 +3120,12 @@ int mutt_index_menu(void)
         CHECK_ATTACH;
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        if (PgpAutoDecode && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        if (PgpAutoDecode && (tag || !(CUR_EMAIL->security & PGP_TRADITIONAL_CHECKED)))
         {
-          mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
+          mutt_check_traditional_pgp(tag ? NULL : CUR_EMAIL, &menu->redraw);
         }
         ci_send_message(SEND_REPLY | SEND_LIST_REPLY, NULL, NULL, Context,
-                        tag ? NULL : CURHDR);
+                        tag ? NULL : CUR_EMAIL);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -3149,7 +3149,7 @@ int mutt_index_menu(void)
           break;
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        crypt_extract_keys_from_messages(tag ? NULL : CURHDR);
+        crypt_extract_keys_from_messages(tag ? NULL : CUR_EMAIL);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -3158,8 +3158,8 @@ int mutt_index_menu(void)
           break;
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        if (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED))
-          mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
+        if (tag || !(CUR_EMAIL->security & PGP_TRADITIONAL_CHECKED))
+          mutt_check_traditional_pgp(tag ? NULL : CUR_EMAIL, &menu->redraw);
 
         if (menu->menu == MENU_PAGER)
         {
@@ -3172,7 +3172,7 @@ int mutt_index_menu(void)
 
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        mutt_pipe_message(tag ? NULL : CURHDR);
+        mutt_pipe_message(tag ? NULL : CUR_EMAIL);
 
 #ifdef USE_IMAP
         /* in an IMAP folder index with imap_peek=no, piping could change
@@ -3190,7 +3190,7 @@ int mutt_index_menu(void)
 
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        mutt_print_message(tag ? NULL : CURHDR);
+        mutt_print_message(tag ? NULL : CUR_EMAIL);
 
 #ifdef USE_IMAP
         /* in an IMAP folder index with imap_peek=no, printing could change
@@ -3217,14 +3217,14 @@ int mutt_index_menu(void)
          */
         CHECK_ACL(MUTT_ACL_SEEN, _("Cannot mark messages as read"));
 
-        rc = mutt_thread_set_flag(CURHDR, MUTT_READ, 1, op == OP_MAIN_READ_THREAD ? 0 : 1);
+        rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_READ, 1, op == OP_MAIN_READ_THREAD ? 0 : 1);
 
         if (rc != -1)
         {
           if (Resolve)
           {
-            menu->current = (op == OP_MAIN_READ_THREAD ? mutt_next_thread(CURHDR) :
-                                                         mutt_next_subthread(CURHDR));
+            menu->current = (op == OP_MAIN_READ_THREAD ? mutt_next_thread(CUR_EMAIL) :
+                                                         mutt_next_subthread(CUR_EMAIL));
             if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
@@ -3243,7 +3243,7 @@ int mutt_index_menu(void)
 
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        if (CURHDR->env->message_id)
+        if (CUR_EMAIL->env->message_id)
         {
           char buf2[128];
 
@@ -3256,7 +3256,7 @@ int mutt_index_menu(void)
           {
             char str[STRING], macro[STRING];
             snprintf(str, sizeof(str), "%s%s", MarkMacroPrefix, buf2);
-            snprintf(macro, sizeof(macro), "<search>~i \"%s\"\n", CURHDR->env->message_id);
+            snprintf(macro, sizeof(macro), "<search>~i \"%s\"\n", CUR_EMAIL->env->message_id);
             /* L10N: "message hotkey" is the key bindings menu description of a
                macro created by <mark-message>. */
             km_bind(str, MENU_MAIN, OP_MACRO, macro, _("message hotkey"));
@@ -3299,7 +3299,7 @@ int mutt_index_menu(void)
           }
         }
         else
-          mutt_resend_message(NULL, Context, CURHDR);
+          mutt_resend_message(NULL, Context, CUR_EMAIL);
 
         menu->redraw = REDRAW_FULL;
         break;
@@ -3313,8 +3313,8 @@ int mutt_index_menu(void)
 
       case OP_POST:
         CHECK_ATTACH;
-        if (op != OP_FOLLOWUP || !CURHDR->env->followup_to ||
-            (mutt_str_strcasecmp(CURHDR->env->followup_to, "poster") != 0) ||
+        if (op != OP_FOLLOWUP || !CUR_EMAIL->env->followup_to ||
+            (mutt_str_strcasecmp(CUR_EMAIL->env->followup_to, "poster") != 0) ||
             query_quadoption(FollowupToPoster,
                              _("Reply by mail as poster prefers?")) != MUTT_YES)
         {
@@ -3329,7 +3329,7 @@ int mutt_index_menu(void)
           {
             CHECK_MSGCOUNT;
             ci_send_message((op == OP_FOLLOWUP ? SEND_REPLY : SEND_FORWARD) | SEND_NEWS,
-                            NULL, NULL, Context, tag ? NULL : CURHDR);
+                            NULL, NULL, Context, tag ? NULL : CUR_EMAIL);
           }
           menu->redraw = REDRAW_FULL;
           break;
@@ -3341,11 +3341,11 @@ int mutt_index_menu(void)
         CHECK_ATTACH;
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        if (PgpAutoDecode && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        if (PgpAutoDecode && (tag || !(CUR_EMAIL->security & PGP_TRADITIONAL_CHECKED)))
         {
-          mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
+          mutt_check_traditional_pgp(tag ? NULL : CUR_EMAIL, &menu->redraw);
         }
-        ci_send_message(SEND_REPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
+        ci_send_message(SEND_REPLY, NULL, NULL, Context, tag ? NULL : CUR_EMAIL);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -3359,7 +3359,7 @@ int mutt_index_menu(void)
 
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        rc = mutt_thread_set_flag(CURHDR, MUTT_TAG, !CURHDR->tagged,
+        rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_TAG, !CUR_EMAIL->tagged,
                                   op == OP_TAG_THREAD ? 0 : 1);
 
         if (rc != -1)
@@ -3367,9 +3367,9 @@ int mutt_index_menu(void)
           if (Resolve)
           {
             if (op == OP_TAG_THREAD)
-              menu->current = mutt_next_thread(CURHDR);
+              menu->current = mutt_next_thread(CUR_EMAIL);
             else
-              menu->current = mutt_next_subthread(CURHDR);
+              menu->current = mutt_next_subthread(CUR_EMAIL);
 
             if (menu->current == -1)
               menu->current = menu->oldcurrent;
@@ -3394,8 +3394,8 @@ int mutt_index_menu(void)
         }
         else
         {
-          mutt_set_flag(Context->mailbox, CURHDR, MUTT_DELETE, 0);
-          mutt_set_flag(Context->mailbox, CURHDR, MUTT_PURGE, 0);
+          mutt_set_flag(Context->mailbox, CUR_EMAIL, MUTT_DELETE, 0);
+          mutt_set_flag(Context->mailbox, CUR_EMAIL, MUTT_PURGE, 0);
           if (Resolve && menu->current < Context->mailbox->vcount - 1)
           {
             menu->current++;
@@ -3420,10 +3420,10 @@ int mutt_index_menu(void)
          */
         CHECK_ACL(MUTT_ACL_DELETE, _("Cannot undelete messages"));
 
-        rc = mutt_thread_set_flag(CURHDR, MUTT_DELETE, 0, op == OP_UNDELETE_THREAD ? 0 : 1);
+        rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_DELETE, 0, op == OP_UNDELETE_THREAD ? 0 : 1);
         if (rc != -1)
         {
-          rc = mutt_thread_set_flag(CURHDR, MUTT_PURGE, 0,
+          rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_PURGE, 0,
                                     op == OP_UNDELETE_THREAD ? 0 : 1);
         }
         if (rc != -1)
@@ -3431,9 +3431,9 @@ int mutt_index_menu(void)
           if (Resolve)
           {
             if (op == OP_UNDELETE_THREAD)
-              menu->current = mutt_next_thread(CURHDR);
+              menu->current = mutt_next_thread(CUR_EMAIL);
             else
-              menu->current = mutt_next_subthread(CURHDR);
+              menu->current = mutt_next_subthread(CUR_EMAIL);
 
             if (menu->current == -1)
               menu->current = menu->oldcurrent;
@@ -3453,8 +3453,8 @@ int mutt_index_menu(void)
       case OP_VIEW_ATTACHMENTS:
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        mutt_view_attachments(CURHDR);
-        if (Context && CURHDR->attach_del)
+        mutt_view_attachments(CUR_EMAIL);
+        if (Context && CUR_EMAIL->attach_del)
           Context->mailbox->changed = true;
         menu->redraw = REDRAW_FULL;
         break;

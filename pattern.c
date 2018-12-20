@@ -90,8 +90,8 @@ bool ThoroughSearch; ///< Config: Decode headers and messages before searching t
 
 #define KILO 1024
 #define MEGA 1048576
-#define HMSG(h) (((h)->msgno) + 1)
-#define CTX_MSGNO(c) (HMSG((c)->mailbox->emails[(c)->mailbox->v2r[(c)->menu->current]]))
+#define EMSG(e) (((e)->msgno) + 1)
+#define CTX_MSGNO(c) (EMSG((c)->mailbox->emails[(c)->mailbox->v2r[(c)->menu->current]]))
 
 #define MUTT_MAXRANGE -1
 
@@ -1966,7 +1966,7 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
     case MUTT_DELETED:
       return pat->not^e->deleted;
     case MUTT_MESSAGE:
-      return pat->not^((HMSG(e) >= pat->min) && (HMSG(e) <= pat->max));
+      return pat->not^((EMSG(e) >= pat->min) && (EMSG(e) <= pat->max));
     case MUTT_DATE:
       return pat->not^(e->date_sent >= pat->min && e->date_sent <= pat->max);
     case MUTT_DATE_RECEIVED:
