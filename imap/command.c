@@ -165,7 +165,7 @@ static void cmd_handle_fatal(struct ImapAccountData *adata)
 
   if (adata->state >= IMAP_SELECTED && (mdata->reopen & IMAP_REOPEN_ALLOW))
   {
-    mx_fastclose_mailbox(adata->ctx);
+    mx_fastclose_mailbox(mdata->ctx);
     mutt_socket_close(adata->conn);
     mutt_error(_("Mailbox %s@%s closed"), adata->conn->account.user,
                adata->conn->account.host);

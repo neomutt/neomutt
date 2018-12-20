@@ -214,7 +214,6 @@ struct ImapAccountData
   struct Buffer *cmdbuf;
 
   char delim;
-  struct Context *ctx;
   struct Mailbox *mailbox;     /* Current selected mailbox */
 };
 
@@ -249,6 +248,8 @@ struct ImapMboxData
   size_t msn_index_size;       /**< allocation size */
   unsigned int max_msn;        /**< the largest MSN fetched so far */
   struct BodyCache *bcache;
+
+  struct Context *ctx;
 
 #ifdef USE_HCACHE
   header_cache_t *hcache;
