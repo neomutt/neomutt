@@ -2243,12 +2243,10 @@ static int imap_mbox_check(struct Context *ctx, int *index_hint)
 /**
  * imap_mbox_close - Implements MxOps::mbox_close()
  */
-static int imap_mbox_close(struct Context *ctx)
+static int imap_mbox_close(struct Mailbox *m)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);

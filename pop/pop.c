@@ -1027,12 +1027,10 @@ static int pop_mbox_sync(struct Context *ctx, int *index_hint)
 /**
  * pop_mbox_close - Implements MxOps::mbox_close()
  */
-static int pop_mbox_close(struct Context *ctx)
+static int pop_mbox_close(struct Mailbox *m)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct PopAccountData *adata = pop_get_adata(m);
   if (!adata)

@@ -693,12 +693,11 @@ sync_cleanup:
  * If the mailbox has been changed then re-compress the tmp file.
  * Then delete the tmp file.
  */
-static int comp_mbox_close(struct Context *ctx)
+static int comp_mbox_close(struct Mailbox *m)
 {
-  if (!ctx || !ctx->mailbox || !ctx->mailbox->compress_info)
+  if (!m || !m->compress_info)
     return -1;
 
-  struct Mailbox *m = ctx->mailbox;
   struct CompressInfo *ci = m->compress_info;
 
   const struct MxOps *ops = ci->child_ops;
@@ -708,7 +707,7 @@ static int comp_mbox_close(struct Context *ctx)
     return -1;
   }
 
-  ops->mbox_close(ctx);
+  ops->mbox_close(m);
 
   /* sync has already been called, so we only need to delete some files */
   if (!m->append)

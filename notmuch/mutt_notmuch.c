@@ -2393,7 +2393,7 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
  *
  * Nothing to do.
  */
-static int nm_mbox_close(struct Context *ctx)
+static int nm_mbox_close(struct Mailbox *m)
 {
   return 0;
 }

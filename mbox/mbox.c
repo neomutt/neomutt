@@ -1511,12 +1511,10 @@ bail: /* Come here in case of disaster */
 /**
  * mbox_mbox_close - Implements MxOps::mbox_close()
  */
-static int mbox_mbox_close(struct Context *ctx)
+static int mbox_mbox_close(struct Mailbox *m)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct MboxAccountData *adata = mbox_adata_get(m);
   if (!adata)

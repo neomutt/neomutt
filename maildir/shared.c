@@ -1841,7 +1841,7 @@ err:
  * mh_mbox_close - Implements MxOps::mbox_close()
  * @retval 0 Always
  */
-int mh_mbox_close(struct Context *ctx)
+int mh_mbox_close(struct Mailbox *m)
 {
   return 0;
 }

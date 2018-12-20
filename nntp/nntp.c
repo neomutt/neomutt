@@ -2671,12 +2671,10 @@ static int nntp_mbox_sync(struct Context *ctx, int *index_hint)
  * nntp_mbox_close - Implements MxOps::mbox_close()
  * @retval 0 Always
  */
-static int nntp_mbox_close(struct Context *ctx)
+static int nntp_mbox_close(struct Mailbox *m)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct NntpMboxData *mdata = m->mdata, *tmp_mdata = NULL;
   if (!mdata)

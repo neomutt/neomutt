@@ -408,7 +408,7 @@ void mx_fastclose_mailbox(struct Context *ctx)
     mutt_mailbox_setnotified(m);
 
   if (m->mx_ops)
-    m->mx_ops->mbox_close(ctx);
+    m->mx_ops->mbox_close(m);
 
   mutt_hash_destroy(&m->subj_hash);
   mutt_hash_destroy(&m->id_hash);

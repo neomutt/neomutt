@@ -161,11 +161,11 @@ struct MxOps
   int (*mbox_sync)       (struct Context *ctx, int *index_hint);
   /**
    * mbox_close - Close a mailbox
-   * @param ctx Mailbox to close
+   * @param m Mailbox to close
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*mbox_close)      (struct Context *ctx);
+  int (*mbox_close)      (struct Mailbox *m);
   /**
    * msg_open - Open an email message in mailbox
    * @param m     Mailbox
