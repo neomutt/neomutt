@@ -1652,9 +1652,10 @@ static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, int
   if (!Postponed)
     return -1;
 
-  /* postpone the message until later. */
   if (msg->content->next)
     msg->content = mutt_make_multipart(msg->content);
+
+  mutt_encode_descriptions(msg->content, true);
 
   if ((WithCrypto != 0) && PostponeEncrypt && (msg->security & ENCRYPT))
   {
@@ -1678,12 +1679,15 @@ static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, int
           msg->security |= SIGN;
         FREE(&pgpkeylist);
         msg->content = mutt_remove_multipart(msg->content);
+        decode_descriptions(msg->content);
         return -1;
       }
 
       if (is_signed)
         msg->security |= SIGN;
       FREE(&pgpkeylist);
+
+      mutt_encode_descriptions(msg->content, false);
     }
   }
 
@@ -1693,7 +1697,6 @@ static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, int
   msg->read = false;
   msg->old = false;
 
-  mutt_encode_descriptions(msg->content, true);
   mutt_prepare_envelope(msg->env, false);
   mutt_env_to_intl(msg->env, NULL, NULL); /* Handle bad IDNAs the next time. */
 
