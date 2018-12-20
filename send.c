@@ -1804,7 +1804,10 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
     {
       flags = mutt_get_postponed(ctx, msg, &cur, fcc, sizeof(fcc));
       if (flags < 0)
+      {
+        flags = SEND_POSTPONED;
         goto cleanup;
+      }
 #ifdef USE_NNTP
       /* If postponed message is a news article, it have
        * a "Newsgroups:" header line, then set appropriate flag.
