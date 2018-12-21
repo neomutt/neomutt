@@ -143,15 +143,6 @@ enum ImapCaps
 };
 
 /**
- * struct ImapCache - IMAP-specific message cache
- */
-struct ImapCache
-{
-  unsigned int uid;
-  char *path;
-};
-
-/**
  * struct ImapList - Items in an IMAP browser
  */
 struct ImapList
@@ -242,7 +233,6 @@ struct ImapMboxData
   unsigned int unseen;
 
   // Cached data used only when the mailbox is opened
-  struct ImapCache cache[IMAP_CACHE_LEN];
   struct Hash *uid_hash;
   struct Email **msn_index;   /**< look up headers by (MSN-1) */
   size_t msn_index_size;       /**< allocation size */

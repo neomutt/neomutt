@@ -206,16 +206,6 @@ void imap_mdata_cache_reset(struct ImapMboxData *mdata)
   FREE(&mdata->msn_index);
   mdata->msn_index_size = 0;
   mdata->max_msn = 0;
-
-  for (int i = 0; i < IMAP_CACHE_LEN; i++)
-  {
-    if (mdata->cache[i].path)
-    {
-      unlink(mdata->cache[i].path);
-      FREE(&mdata->cache[i].path);
-    }
-  }
-
   mutt_bcache_close(&mdata->bcache);
 }
 

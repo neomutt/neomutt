@@ -784,7 +784,6 @@ void imap_expunge_mailbox(struct Mailbox *m)
     return;
 
   struct Email *e = NULL;
-  int cacheno;
   short old_sort;
 
 #ifdef USE_HCACHE
@@ -810,15 +809,6 @@ void imap_expunge_mailbox(struct Mailbox *m)
 #ifdef USE_HCACHE
       imap_hcache_del(mdata, imap_edata_get(e)->uid);
 #endif
-
-      /* free cached body from disk, if necessary */
-      cacheno = imap_edata_get(e)->uid % IMAP_CACHE_LEN;
-      if (mdata->cache[cacheno].uid == imap_edata_get(e)->uid &&
-          mdata->cache[cacheno].path)
-      {
-        unlink(mdata->cache[cacheno].path);
-        FREE(&mdata->cache[cacheno].path);
-      }
 
       mutt_hash_int_delete(mdata->uid_hash, imap_edata_get(e)->uid, e);
 
