@@ -273,6 +273,12 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
     /* int rc = */ mx_path_canon2(m, Folder);
   }
 
+  if ((m->magic == MUTT_UNKNOWN) && (flags & MUTT_NEWFOLDER))
+  {
+    m->magic = MboxType;
+    m->mx_ops = mx_get_ops(m->magic);
+  }
+
   if (!m->account)
   {
     struct Account *a = mx_ac_find(m);
