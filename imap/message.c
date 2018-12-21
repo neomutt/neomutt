@@ -1850,13 +1850,10 @@ int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 
   struct Envelope *newenv = NULL;
   char buf[LONG_STRING];
-  char path[PATH_MAX];
   char *pc = NULL;
   unsigned int bytes;
   struct Progress progressbar;
   unsigned int uid;
-  int cacheno;
-  struct ImapCache *cache = NULL;
   bool retried = false;
   bool read;
   int rc;
@@ -1867,7 +1864,6 @@ int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   int output_progress;
 
   struct ImapAccountData *adata = imap_adata_get(m);
-  struct ImapMboxData *mdata = imap_mdata_get(m);
 
   if (!adata || adata->mailbox != m)
     return -1;
@@ -1883,23 +1879,6 @@ int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
       goto parsemsg;
   }
 
-  /* we still do some caching even if imap_cachedir is unset */
-  /* see if we already have the message in our cache */
-  cacheno = imap_edata_get(e)->uid % IMAP_CACHE_LEN;
-  cache = &mdata->cache[cacheno];
-
-  if (cache->path)
-  {
-    /* don't treat cache errors as fatal, just fall back. */
-    if (cache->uid == imap_edata_get(e)->uid && (msg->fp = fopen(cache->path, "r")))
-      return 0;
-    else
-    {
-      unlink(cache->path);
-      FREE(&cache->path);
-    }
-  }
-
   /* This function is called in a few places after endwin()
    * e.g. mutt_pipe_message(). */
   output_progress = !isendwin();
@@ -1908,17 +1887,7 @@ int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 
   msg->fp = msg_cache_put(m, e);
   if (!msg->fp)
-  {
-    cache->uid = imap_edata_get(e)->uid;
-    mutt_mktemp(path, sizeof(path));
-    cache->path = mutt_str_strdup(path);
-    msg->fp = mutt_file_fopen(path, "w+");
-    if (!msg->fp)
-    {
-      FREE(&cache->path);
-      return -1;
-    }
-  }
+    return -1;
 
   /* mark this header as currently inactive so the command handler won't
    * also try to update it. HACK until all this code can be moved into the
@@ -2005,10 +1974,7 @@ int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 
   fflush(msg->fp);
   if (ferror(msg->fp))
-  {
-    mutt_perror(cache->path);
     goto bail;
-  }
 
   if (rc != IMAP_CMD_OK)
     goto bail;
@@ -2067,12 +2033,6 @@ parsemsg:
 bail:
   mutt_file_fclose(&msg->fp);
   imap_cache_del(m, e);
-  if (cache->path)
-  {
-    unlink(cache->path);
-    FREE(&cache->path);
-  }
-
   return -1;
 }
 
