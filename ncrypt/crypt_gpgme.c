@@ -2212,7 +2212,12 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
   first_part->warnsig = false;
 
   if (mutt_is_valid_multipart_pgp_encrypted(b))
+  {
     b = b->parts->next;
+    /* Some clients improperly encode the octetstream part. */
+    if (b->encoding != ENC_7BIT)
+      need_decode = true;
+  }
   else if (mutt_is_malformed_multipart_pgp_encrypted(b))
   {
     b = b->parts->next->next;
@@ -3153,7 +3158,6 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
 
   /* clear out any mime headers before the handler, so they can't be spoofed. */
   mutt_env_free(&a->mime_headers);
-
   a->warnsig = false;
   FILE *fpout = mutt_file_mkstemp();
   if (!fpout)

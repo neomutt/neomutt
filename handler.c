@@ -1414,7 +1414,12 @@ static int valid_pgp_encrypted_handler(struct Body *b, struct State *s)
   mutt_env_free(&b->mime_headers);
   mutt_env_free(&octetstream->mime_headers);
 
-  int rc = crypt_pgp_encrypted_handler(octetstream, s);
+  int rc;
+  /* Some clients improperly encode the octetstream part. */
+  if (octetstream->encoding != ENC_7BIT)
+    rc = run_decode_and_handler(octetstream, s, crypt_pgp_encrypted_handler, 0);
+  else
+    rc = crypt_pgp_encrypted_handler(octetstream, s);
   b->goodsig |= octetstream->goodsig;
 
   /* Relocate protected headers onto the multipart/encrypted part */

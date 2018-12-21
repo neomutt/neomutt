@@ -1131,7 +1131,12 @@ int pgp_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
   int rc = 0;
 
   if (mutt_is_valid_multipart_pgp_encrypted(b))
+  {
     b = b->parts->next;
+    /* Some clients improperly encode the octetstream part. */
+    if (b->encoding != ENC_7BIT)
+      need_decode = true;
+  }
   else if (mutt_is_malformed_multipart_pgp_encrypted(b))
   {
     b = b->parts->next->next;
