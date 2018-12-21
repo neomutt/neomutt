@@ -2449,7 +2449,10 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
       goto cleanup;
     }
   }
-  else if (!OptNoCurses && !(flags & SEND_MAILX))
+
+  save_fcc(msg, fcc, sizeof(fcc), clear_content, pgpkeylist, flags, &finalpath);
+
+  if (!OptNoCurses && !(flags & SEND_MAILX))
   {
     mutt_message(i != 0 ? _("Sending in background") :
                           (flags & SEND_NEWS) ? _("Article posted") : /* USE_NNTP */
@@ -2459,8 +2462,6 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
       nm_record_message(ctx->mailbox, finalpath, cur);
 #endif
   }
-
-  save_fcc(msg, fcc, sizeof(fcc), clear_content, pgpkeylist, flags, &finalpath);
 
   if ((WithCrypto != 0) && (msg->security & ENCRYPT))
     FREE(&pgpkeylist);
