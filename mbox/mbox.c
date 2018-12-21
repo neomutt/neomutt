@@ -1632,11 +1632,14 @@ static int mbox_msg_padding_size(struct Mailbox *m)
  */
 enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
 {
-  if (!path)
+  if (!path || !st)
     return MUTT_UNKNOWN;
 
-  if (!st || !S_ISREG(st->st_mode))
+  if (S_ISDIR(st->st_mode))
+  {
+    mutt_error("%s is not a mailbox", path);
     return MUTT_UNKNOWN;
+  }
 
   if (st->st_size == 0)
     return MUTT_MBOX;
