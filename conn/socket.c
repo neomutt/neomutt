@@ -106,6 +106,9 @@ int mutt_socket_open(struct Connection *conn)
  */
 int mutt_socket_close(struct Connection *conn)
 {
+  if (!conn)
+    return 0;
+
   int rc = -1;
 
   if (conn->fd < 0)

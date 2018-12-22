@@ -410,6 +410,9 @@ struct Rfc1524MailcapEntry *rfc1524_new_entry(void)
  */
 void rfc1524_free_entry(struct Rfc1524MailcapEntry **entry)
 {
+  if (!entry || !*entry)
+    return;
+
   struct Rfc1524MailcapEntry *p = *entry;
 
   FREE(&p->command);

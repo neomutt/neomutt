@@ -133,22 +133,18 @@ static int mutt_bcache_move(struct BodyCache *bcache, const char *id, const char
  */
 struct BodyCache *mutt_bcache_open(struct ConnAccount *account, const char *mailbox)
 {
-  struct BodyCache *bcache = NULL;
-
   if (!account)
-    goto bail;
+    return NULL;
 
-  bcache = mutt_mem_calloc(1, sizeof(struct BodyCache));
+  struct BodyCache *bcache = mutt_mem_calloc(1, sizeof(struct BodyCache));
   if (bcache_path(account, mailbox, bcache->path, sizeof(bcache->path)) < 0)
-    goto bail;
-  bcache->pathlen = mutt_str_strlen(bcache->path);
-
-  return bcache;
-
-bail:
-  if (bcache)
+  {
     FREE(&bcache);
-  return NULL;
+    return NULL;
+  }
+
+  bcache->pathlen = mutt_str_strlen(bcache->path);
+  return bcache;
 }
 
 /**

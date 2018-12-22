@@ -238,8 +238,7 @@ static int edit_or_view_one_message(bool edit, struct Mailbox *m, struct Email *
   mx_mbox_close(&tmpctx, NULL);
 
 bail:
-  if (fp)
-    mutt_file_fclose(&fp);
+  mutt_file_fclose(&fp);
 
   if (rc >= 0)
     unlink(tmp);

@@ -144,7 +144,7 @@ static int iptostring(const struct sockaddr *addr, socklen_t addrlen, char *out,
                         NI_WITHSCOPEID |
 #endif
                         NI_NUMERICSERV);
-  if (ret)
+  if (ret != 0)
     return getnameinfo_err(ret);
 
   if (outlen < strlen(hbuf) + strlen(pbuf) + 2)

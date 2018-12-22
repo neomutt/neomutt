@@ -412,8 +412,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
       int cont = 0;
       size_t buflen = 2 * LONG_STRING, off = 0, b = 0;
 
-      if (adata->overview_fmt)
-        FREE(&adata->overview_fmt);
+      FREE(&adata->overview_fmt);
       adata->overview_fmt = mutt_mem_malloc(buflen);
 
       while (true)

@@ -161,12 +161,10 @@ struct PgpUid *pgp_copy_uids(struct PgpUid *up, struct PgpKeyInfo *parent)
  */
 static void free_key(struct PgpKeyInfo **kpp)
 {
-  struct PgpKeyInfo *kp = NULL;
-
   if (!kpp || !*kpp)
     return;
 
-  kp = *kpp;
+  struct PgpKeyInfo *kp = *kpp;
 
   pgp_free_uid(&kp->address);
   FREE(&kp->keyid);
@@ -237,9 +235,8 @@ void pgp_free_key(struct PgpKeyInfo **kpp)
       r = q->next;
       free_key(&q);
     }
-    if (p->parent)
-      free_key(&p->parent);
 
+    free_key(&p->parent);
     free_key(&p);
   }
 

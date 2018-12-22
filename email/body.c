@@ -55,6 +55,9 @@ struct Body *mutt_body_new(void)
  */
 void mutt_body_free(struct Body **p)
 {
+  if (!p)
+    return;
+
   struct Body *a = *p, *b = NULL;
 
   while (a)
@@ -87,9 +90,7 @@ void mutt_body_free(struct Body **p)
       mutt_email_free(&b->email);
     }
 
-    if (b->parts)
-      mutt_body_free(&b->parts);
-
+    mutt_body_free(&b->parts);
     FREE(&b);
   }
 

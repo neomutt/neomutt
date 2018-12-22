@@ -64,7 +64,7 @@ void account_remove_mailbox(struct Account *a, struct Mailbox *m)
   if (STAILQ_EMPTY(&a->mailboxes))
   {
     TAILQ_REMOVE(&AllAccounts, a, entries);
-    if (a->adata)
+    if (a->free_adata)
       a->free_adata(&a->adata);
     FREE(&a);
   }

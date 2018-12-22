@@ -1336,6 +1336,9 @@ static /* const */ char *find_matching_paren(/* const */ char *s)
  */
 void mutt_pattern_free(struct Pattern **pat)
 {
+  if (!pat || !*pat)
+    return;
+
   struct Pattern *tmp = NULL;
 
   while (*pat)
@@ -1355,8 +1358,7 @@ void mutt_pattern_free(struct Pattern **pat)
       FREE(&tmp->p.regex);
     }
 
-    if (tmp->child)
-      mutt_pattern_free(&tmp->child);
+    mutt_pattern_free(&tmp->child);
     FREE(&tmp);
   }
 }
@@ -2430,8 +2432,7 @@ int mutt_pattern_func(int op, char *prompt)
   {
     /* drop previous limit pattern */
     FREE(&Context->pattern);
-    if (Context->limit_pattern)
-      mutt_pattern_free(&Context->limit_pattern);
+    mutt_pattern_free(&Context->limit_pattern);
 
     if (Context->mailbox->msg_count && !Context->mailbox->vcount)
       mutt_error(_("No messages matched criteria"));

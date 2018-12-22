@@ -2578,8 +2578,7 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
     else if (pid == -1)
     {
       unlink(msg);
-      if (tempfile)
-        FREE(tempfile);
+      FREE(tempfile);
       _exit(S_ERR);
     }
 

@@ -148,11 +148,10 @@ static int put_file_in_place(const char *path, const char *safe_file, const char
  */
 int mutt_file_fclose(FILE **f)
 {
-  int r = 0;
+  if (!f || !*f)
+    return 0;
 
-  if (*f)
-    r = fclose(*f);
-
+  int r = fclose(*f);
   *f = NULL;
   return r;
 }

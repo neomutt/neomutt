@@ -815,8 +815,7 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
     rc = 0;
   } while (false);
 
-  if (conn)
-    mutt_socket_close(conn);
+  mutt_socket_close(conn);
 
   if (rc == SMTP_ERR_READ)
     mutt_error(_("SMTP session failed: read error"));

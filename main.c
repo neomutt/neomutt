@@ -1022,8 +1022,7 @@ int main(int argc, char *argv[], char *envp[])
       else
         bodyfile = tempfile;
 
-      if (fin)
-        mutt_file_fclose(&fin);
+      mutt_file_fclose(&fin);
     }
 
     FREE(&bodytext);
@@ -1214,8 +1213,7 @@ int main(int argc, char *argv[], char *envp[])
       mutt_sb_set_open_mailbox();
 #endif
       mutt_index_menu();
-      if (Context)
-        mutt_context_free(&Context);
+      mutt_context_free(&Context);
     }
 #ifdef USE_IMAP
     imap_logout_all();

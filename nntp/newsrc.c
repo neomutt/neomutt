@@ -434,8 +434,8 @@ static int update_file(char *filename, char *buf)
     rc = 0;
     break;
   }
-  if (fp)
-    mutt_file_fclose(&fp);
+  mutt_file_fclose(&fp);
+
   if (*tmpfile)
     unlink(tmpfile);
   return rc;

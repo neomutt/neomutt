@@ -96,10 +96,8 @@ int mutt_get_tmp_attachment(struct Body *a)
   else
     mutt_perror(fpin ? tempfile : a->filename);
 
-  if (fpin)
-    mutt_file_fclose(&fpin);
-  if (fpout)
-    mutt_file_fclose(&fpout);
+  mutt_file_fclose(&fpin);
+  mutt_file_fclose(&fpout);
 
   return a->unlink ? 0 : -1;
 }
