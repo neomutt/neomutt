@@ -117,14 +117,6 @@ void nntp_acache_free(struct NntpMboxData *mdata)
 }
 
 /**
- * nntp_hash_destructor_t - Free our hash table data - Implements ::hash_destructor_t
- */
-void nntp_hash_destructor_t(int type, void *obj, intptr_t data)
-{
-  nntp_mdata_free(&obj);
-}
-
-/**
  * nntp_newsrc_close - Unlock and close .newsrc file
  * @param adata NNTP server
  */
@@ -1168,7 +1160,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
 
   if (rc < 0)
   {
-    mutt_hash_destroy(&adata->groups_hash);
+    mutt_hash_free(&adata->groups_hash);
     FREE(&adata->groups_list);
     FREE(&adata->newsrc_file);
     FREE(&adata->authenticators);

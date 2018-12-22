@@ -416,9 +416,9 @@ void mx_fastclose_mailbox(struct Context *ctx)
   if (m->mx_ops)
     m->mx_ops->mbox_close(m);
 
-  mutt_hash_destroy(&m->subj_hash);
-  mutt_hash_destroy(&m->id_hash);
-  mutt_hash_destroy(&m->label_hash);
+  mutt_hash_free(&m->subj_hash);
+  mutt_hash_free(&m->id_hash);
+  mutt_hash_free(&m->label_hash);
   if (m->emails)
   {
     mutt_clear_threads(ctx);
@@ -1254,13 +1254,13 @@ void mx_update_context(struct Context *ctx)
 
   if (m->subj_hash)
   {
-    mutt_hash_destroy(&m->subj_hash);
+    mutt_hash_free(&m->subj_hash);
   }
   m->subj_hash = NULL;
 
   if (m->id_hash)
   {
-    mutt_hash_destroy(&m->id_hash);
+    mutt_hash_free(&m->id_hash);
   }
   m->id_hash = NULL;
 

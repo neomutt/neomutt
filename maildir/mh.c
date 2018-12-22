@@ -701,7 +701,7 @@ int mh_mbox_check(struct Context *ctx, int *index_hint)
 
   /* destroy the file name hash */
 
-  mutt_hash_destroy(&fnames);
+  mutt_hash_free(&fnames);
 
   /* If we didn't just get new mail, update the tables. */
   if (occult)

@@ -594,9 +594,9 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
   old_msgcount = 0;
 
   /* simulate a close */
-  mutt_hash_destroy(&m->id_hash);
-  mutt_hash_destroy(&m->subj_hash);
-  mutt_hash_destroy(&m->label_hash);
+  mutt_hash_free(&m->id_hash);
+  mutt_hash_free(&m->subj_hash);
+  mutt_hash_free(&m->label_hash);
   mutt_clear_threads(ctx);
   FREE(&m->v2r);
   if (m->readonly)

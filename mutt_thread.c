@@ -614,7 +614,7 @@ void mutt_clear_threads(struct Context *ctx)
   ctx->tree = NULL;
 
   if (ctx->thread_hash)
-    mutt_hash_destroy(&ctx->thread_hash);
+    mutt_hash_free(&ctx->thread_hash);
 }
 
 /**

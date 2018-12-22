@@ -58,7 +58,7 @@ void mutt_grouplist_init(void)
  */
 void mutt_grouplist_free(void)
 {
-  mutt_hash_destroy(&Groups);
+  mutt_hash_free(&Groups);
 }
 
 /**

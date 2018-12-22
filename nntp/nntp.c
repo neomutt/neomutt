@@ -134,6 +134,14 @@ static void nntp_adata_free(void **ptr)
 }
 
 /**
+ * nntp_hashelem_free - Free our hash table data - Implements ::hashelem_free_t
+ */
+void nntp_hashelem_free(int type, void *obj, intptr_t data)
+{
+  nntp_mdata_free(&obj);
+}
+
+/**
  * nntp_adata_new - Allocate and initialise a new NntpAccountData structure
  * @retval ptr New NntpAccountData
  */
@@ -142,7 +150,7 @@ struct NntpAccountData *nntp_adata_new(struct Connection *conn)
   struct NntpAccountData *adata = mutt_mem_calloc(1, sizeof(struct NntpAccountData));
   adata->conn = conn;
   adata->groups_hash = mutt_hash_new(1009, 0);
-  mutt_hash_set_destructor(adata->groups_hash, nntp_hash_destructor_t, 0);
+  mutt_hash_set_destructor(adata->groups_hash, nntp_hashelem_free, 0);
   adata->groups_max = 16;
   adata->groups_list =
       mutt_mem_malloc(adata->groups_max * sizeof(struct NntpMboxData *));

@@ -202,7 +202,7 @@ struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *n
  */
 void imap_mdata_cache_reset(struct ImapMboxData *mdata)
 {
-  mutt_hash_destroy(&mdata->uid_hash);
+  mutt_hash_free(&mdata->uid_hash);
   FREE(&mdata->msn_index);
   mdata->msn_index_size = 0;
   mdata->max_msn = 0;

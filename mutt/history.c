@@ -299,7 +299,7 @@ cleanup:
   }
   if (HistoryRemoveDups)
     for (hclass = 0; hclass < HC_MAX; hclass++)
-      mutt_hash_destroy(&dup_hashes[hclass]);
+      mutt_hash_free(&dup_hashes[hclass]);
 }
 
 /**

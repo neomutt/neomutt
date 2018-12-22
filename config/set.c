@@ -45,7 +45,7 @@ struct ConfigSetType RegisteredTypes[18] = {
 };
 
 /**
- * destroy - Callback function for the Hash Table - Implements ::hash_destructor_t
+ * destroy - Callback function for the Hash Table - Implements ::hashelem_free_t
  * @param type Object type, e.g. #DT_STRING
  * @param obj  Object to destroy
  * @param data ConfigSet associated with the object
@@ -179,7 +179,7 @@ void cs_free(struct ConfigSet **cs)
   if (!cs || !*cs)
     return; /* LCOV_EXCL_LINE */
 
-  mutt_hash_destroy(&(*cs)->hash);
+  mutt_hash_free(&(*cs)->hash);
   FREE(cs);
 }
 

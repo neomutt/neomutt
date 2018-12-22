@@ -48,26 +48,26 @@ struct HashElem
 };
 
 /**
- * typedef hash_destructor_t - Prototype for Hash Destructor callback function
+ * typedef hashelem_free_t - Prototype for Hash Destructor callback function
  * @param type Hash Type
  * @param obj  Object to free
  * @param data Data associated with the Hash
  */
-typedef void (*hash_destructor_t)(int type, void *obj, intptr_t data);
+typedef void (*hashelem_free_t)(int type, void *obj, intptr_t data);
 
 /**
  * struct Hash - A Hash Table
  */
 struct Hash
 {
-  size_t nelem;
-  bool strdup_keys : 1; /**< if set, the key->strkey is strdup'ed */
-  bool allow_dups  : 1; /**< if set, duplicate keys are allowed */
-  struct HashElem **table;
-  size_t (*gen_hash)(union HashKey, size_t);
-  int (*cmp_key)(union HashKey, union HashKey);
-  hash_destructor_t destroy;
-  intptr_t dest_data;
+  size_t nelem;            ///< Number of elements in the Hash table
+  bool strdup_keys : 1;    ///< if set, the key->strkey is strdup'ed
+  bool allow_dups  : 1;    ///< if set, duplicate keys are allowed
+  struct HashElem **table; ///< Array of Hash keys
+  size_t (*gen_hash)(union HashKey, size_t);    ///< Function to generate hash id from the key
+  int (*cmp_key)(union HashKey, union HashKey); ///< Function to compare two Hash keys
+  hashelem_free_t elem_free; ///< Function to free a Hash element
+  intptr_t hash_data;        ///< Data to pass to the elem_free() function
 };
 
 /* flags for mutt_hash_new() */
@@ -75,18 +75,18 @@ struct Hash
 #define MUTT_HASH_STRDUP_KEYS (1 << 1) /**< make a copy of the keys */
 #define MUTT_HASH_ALLOW_DUPS  (1 << 2) /**< allow duplicate keys to be inserted */
 
-struct Hash *    mutt_hash_new(size_t nelem, int flags);
 void             mutt_hash_delete(struct Hash *table, const char *strkey, const void *data);
-void             mutt_hash_destroy(struct Hash **ptr);
-void *           mutt_hash_find(const struct Hash *table, const char *strkey);
 struct HashElem *mutt_hash_find_bucket(const struct Hash *table, const char *strkey);
+void *           mutt_hash_find(const struct Hash *table, const char *strkey);
 struct HashElem *mutt_hash_find_elem(const struct Hash *table, const char *strkey);
+void             mutt_hash_free(struct Hash **ptr);
 struct HashElem *mutt_hash_insert(struct Hash *table, const char *strkey, void *data);
-struct Hash *    mutt_hash_int_new(size_t nelem, int flags);
 void             mutt_hash_int_delete(struct Hash *table, unsigned int intkey, const void *data);
 void *           mutt_hash_int_find(const struct Hash *table, unsigned int intkey);
 struct HashElem *mutt_hash_int_insert(struct Hash *table, unsigned int intkey, void *data);
-void             mutt_hash_set_destructor(struct Hash *table, hash_destructor_t fn, intptr_t fn_data);
+struct Hash *    mutt_hash_int_new(size_t nelem, int flags);
+struct Hash *    mutt_hash_new(size_t nelem, int flags);
+void             mutt_hash_set_destructor(struct Hash *table, hashelem_free_t fn, intptr_t fn_data);
 struct HashElem *mutt_hash_typed_insert(struct Hash *table, const char *strkey, int type, void *data);
 
 /**

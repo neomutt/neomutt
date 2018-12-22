@@ -2787,9 +2787,9 @@ void mutt_free_opts(void)
   mutt_regexlist_free(&UnSubscribedLists);
 
   mutt_grouplist_free();
-  mutt_hash_destroy(&ReverseAliases);
-  mutt_hash_destroy(&TagFormats);
-  mutt_hash_destroy(&TagTransforms);
+  mutt_hash_free(&ReverseAliases);
+  mutt_hash_free(&TagFormats);
+  mutt_hash_free(&TagTransforms);
 
   /* Lists of strings */
   mutt_list_free(&AlternativeOrderList);
