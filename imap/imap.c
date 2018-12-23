@@ -1960,12 +1960,6 @@ static int imap_mbox_open(struct Mailbox *m, struct Context *ctx)
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
 
-  // NOTE(sileht): looks like we have two not obvious loop here
-  // ctx->mailbox->account->mdata->ctx
-  // mailbox->account->adata->mailbox
-  // this is used only by imap_mbox_close() to detect if the
-  // adata/mailbox is a normal or append one, looks a bit dirty
-  mdata->ctx = ctx;
   adata->mailbox = m;
 
   /* clear mailbox status */
@@ -2237,8 +2231,7 @@ static int imap_mbox_close(struct Mailbox *m)
     return 0;
 
   /* imap_mbox_open_append() borrows the struct ImapAccountData temporarily,
-   * just for the connection, but does not set mdata->ctx to the
-   * open-append ctx.
+   * just for the connection.
    *
    * So when these are equal, it means we are actually closing the
    * mailbox and should clean up adata.  Otherwise, we don't want to
@@ -2259,8 +2252,6 @@ static int imap_mbox_close(struct Mailbox *m)
     }
 
     adata->mailbox = NULL;
-    mdata->ctx = NULL;
-
     imap_mdata_cache_reset(m->mdata);
   }
 
