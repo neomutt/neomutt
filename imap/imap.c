@@ -784,15 +784,10 @@ void imap_expunge_mailbox(struct Mailbox *m)
     return;
 
   struct Email *e = NULL;
-  short old_sort;
 
 #ifdef USE_HCACHE
   mdata->hcache = imap_hcache_open(adata, mdata);
 #endif
-
-  old_sort = Sort;
-  Sort = SORT_ORDER;
-  mutt_sort_headers(mdata->ctx, false);
 
   for (int i = 0; i < m->msg_count; i++)
   {
@@ -841,11 +836,7 @@ void imap_expunge_mailbox(struct Mailbox *m)
   imap_hcache_close(mdata);
 #endif
 
-  /* We may be called on to expunge at any time. We can't rely on the caller
-   * to always know to rethread */
-  mx_update_tables(mdata->ctx, false);
-  Sort = old_sort;
-  mutt_sort_headers(mdata->ctx, true);
+  mutt_mailbox_changed(m, MBN_RESORT);
 }
 
 /**
