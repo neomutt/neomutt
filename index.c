@@ -2331,7 +2331,7 @@ int mutt_index_menu(void)
         {
           if (Context)
           {
-            mx_fastclose_mailbox(Context);
+            mx_fastclose_mailbox(Context->mailbox);
             mutt_context_free(&Context);
           }
           done = true;

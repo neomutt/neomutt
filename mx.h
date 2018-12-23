@@ -288,7 +288,7 @@ int             mx_ac_remove (struct Mailbox *m);
 int                 mx_access           (const char *path, int flags);
 void                mx_alloc_memory     (struct Mailbox *m);
 int                 mx_check_empty      (const char *path);
-void                mx_fastclose_mailbox(struct Context *ctx);
+void                mx_fastclose_mailbox(struct Mailbox *m);
 const struct MxOps *mx_get_ops          (enum MailboxType magic);
 bool                mx_tags_is_supported(struct Mailbox *m);
 void                mx_update_context   (struct Context *ctx);

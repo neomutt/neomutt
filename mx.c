@@ -355,7 +355,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
   {
     if (mx_open_mailbox_append(ctx->mailbox, flags) != 0)
     {
-      mx_fastclose_mailbox(ctx);
+      mx_fastclose_mailbox(m);
       mutt_context_free(&ctx);
       return NULL;
     }
@@ -378,7 +378,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
     else if (m->magic == MUTT_UNKNOWN || !m->mx_ops)
       mutt_error(_("%s is not a mailbox"), path);
 
-    mx_fastclose_mailbox(ctx);
+    mx_fastclose_mailbox(m);
     mutt_context_free(&ctx);
     return NULL;
   }
@@ -417,7 +417,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
   }
   else
   {
-    mx_fastclose_mailbox(ctx);
+    mx_fastclose_mailbox(m);
     mutt_context_free(&ctx);
   }
 
@@ -427,14 +427,12 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
 
 /**
  * mx_fastclose_mailbox - free up memory associated with the mailbox context
- * @param ctx Mailbox
+ * @param m Mailbox
  */
-void mx_fastclose_mailbox(struct Context *ctx)
+void mx_fastclose_mailbox(struct Mailbox *m)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return;
-
-  struct Mailbox *m = ctx->mailbox;
 
   m->opened--;
   if (m->opened != 0)
@@ -611,7 +609,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
 
   if (m->readonly || m->dontwrite || m->append)
   {
-    mx_fastclose_mailbox(ctx);
+    mx_fastclose_mailbox(m);
     FREE(pctx);
     return 0;
   }
@@ -765,7 +763,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
       mutt_message(_("Mailbox is unchanged"));
     if (m->magic == MUTT_MBOX || m->magic == MUTT_MMDF)
       mbox_reset_atime(m, NULL);
-    mx_fastclose_mailbox(ctx);
+    mx_fastclose_mailbox(m);
     FREE(pctx);
     return 0;
   }
@@ -840,7 +838,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
   }
 #endif
 
-  mx_fastclose_mailbox(ctx);
+  mx_fastclose_mailbox(m);
   FREE(pctx);
 
   return 0;
@@ -1049,7 +1047,7 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
         !mutt_is_spool(m->path) && !SaveEmpty)
     {
       unlink(m->path);
-      mx_fastclose_mailbox(ctx);
+      mx_fastclose_mailbox(m);
       return 0;
     }
 

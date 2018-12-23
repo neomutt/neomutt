@@ -1124,7 +1124,7 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
   /* fatal error */
 
   mbox_unlock_mailbox(m);
-  mx_fastclose_mailbox(ctx);
+  mx_fastclose_mailbox(m);
   mutt_sig_unblock();
   mutt_error(_("Mailbox was corrupted"));
   return -1;
@@ -1175,7 +1175,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   adata->fp = freopen(m->path, "r+", adata->fp);
   if (!adata->fp)
   {
-    mx_fastclose_mailbox(ctx);
+    mx_fastclose_mailbox(m);
     mutt_error(_("Fatal error!  Could not reopen mailbox!"));
     return -1;
   }
@@ -1353,7 +1353,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   if (!fp)
   {
     mutt_sig_unblock();
-    mx_fastclose_mailbox(ctx);
+    mx_fastclose_mailbox(m);
     mutt_debug(1, "unable to reopen temp copy of mailbox!\n");
     mutt_perror(tempfile);
     FREE(&new_offset);
@@ -1417,7 +1417,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
              NONULL(Username), NONULL(ShortHostname), (unsigned int) getpid());
     rename(tempfile, savefile);
     mutt_sig_unblock();
-    mx_fastclose_mailbox(ctx);
+    mx_fastclose_mailbox(m);
     mutt_pretty_mailbox(savefile, sizeof(savefile));
     mutt_error(_("Write failed!  Saved partial mailbox to %s"), savefile);
     FREE(&new_offset);
@@ -1434,7 +1434,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   {
     unlink(tempfile);
     mutt_sig_unblock();
-    mx_fastclose_mailbox(ctx);
+    mx_fastclose_mailbox(m);
     mutt_error(_("Fatal error!  Could not reopen mailbox!"));
     FREE(&new_offset);
     FREE(&old_offset);
@@ -1494,7 +1494,7 @@ bail: /* Come here in case of disaster */
   if (!adata->fp)
   {
     mutt_error(_("Could not reopen mailbox"));
-    mx_fastclose_mailbox(ctx);
+    mx_fastclose_mailbox(m);
     return -1;
   }
 

@@ -1507,7 +1507,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
           mx_mbox_close(&Context, NULL);
         else
         {
-          mx_fastclose_mailbox(Context);
+          mx_fastclose_mailbox(Context->mailbox);
           mutt_context_free(&Context);
         }
 
