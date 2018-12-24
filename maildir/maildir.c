@@ -516,7 +516,7 @@ int maildir_mbox_check(struct Context *ctx, int *index_hint)
 
   /* If we didn't just get new mail, update the tables. */
   if (occult)
-    maildir_update_tables(ctx, index_hint);
+    mutt_mailbox_changed(m, MBN_RESORT);
 
   /* do any delayed parsing we need to do. */
   maildir_delayed_parsing(m, &md, NULL);
@@ -524,7 +524,7 @@ int maildir_mbox_check(struct Context *ctx, int *index_hint)
   /* Incorporate new messages */
   num_new = maildir_move_to_context(m, &md);
   if (num_new > 0)
-    mx_update_context(ctx);
+    mutt_mailbox_changed(m, MBN_INVALID);
 
   mutt_buffer_pool_release(&buf);
 

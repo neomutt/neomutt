@@ -2277,7 +2277,7 @@ static int nm_mbox_check(struct Context *ctx, int *index_hint)
   }
 
   if (m->msg_count > mdata->oldmsgcount)
-    mx_update_context(ctx);
+    mutt_mailbox_changed(m, MBN_INVALID);
 done:
   if (q)
     notmuch_query_destroy(q);

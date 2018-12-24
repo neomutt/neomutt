@@ -917,7 +917,7 @@ static int pop_mbox_check(struct Context *ctx, int *index_hint)
   int ret = pop_fetch_headers(m);
   pop_clear_cache(adata);
   if (m->msg_count > old_msg_count)
-    mx_update_context(ctx);
+    mutt_mailbox_changed(m, MBN_INVALID);
 
   if (ret < 0)
     return -1;

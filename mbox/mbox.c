@@ -549,17 +549,15 @@ static int mbox_parse_mailbox(struct Mailbox *m)
 
 /**
  * reopen_mailbox - Close and reopen a mailbox
- * @param ctx        Mailbox
+ * @param m          Mailbox
  * @param index_hint Current email
  * @retval >0 Success, e.g. #MUTT_REOPENED, #MUTT_NEW_MAIL
  * @retval -1 Error
  */
-static int reopen_mailbox(struct Context *ctx, int *index_hint)
+static int reopen_mailbox(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct MboxAccountData *adata = mbox_adata_get(m);
   if (!adata)
@@ -586,7 +584,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
 
     old_sort = Sort;
     Sort = SORT_ORDER;
-    mutt_sort_headers(ctx, true);
+    mutt_mailbox_changed(m, MBN_RESORT);
     Sort = old_sort;
   }
 
@@ -594,10 +592,10 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
   old_msgcount = 0;
 
   /* simulate a close */
+  mutt_mailbox_changed(m, MBN_CLOSED);
   mutt_hash_free(&m->id_hash);
   mutt_hash_free(&m->subj_hash);
   mutt_hash_free(&m->label_hash);
-  mutt_clear_threads(ctx);
   FREE(&m->v2r);
   if (m->readonly)
   {
@@ -616,7 +614,6 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
   m->email_max = 0; /* force allocation of new headers */
   m->msg_count = 0;
   m->vcount = 0;
-  ctx->vsize = 0;
   m->msg_tagged = 0;
   m->msg_deleted = 0;
   m->msg_new = 0;
@@ -1018,7 +1015,7 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
   {
     if (mbox_mbox_open(m) < 0)
       return -1;
-    mx_update_context(ctx);
+    mutt_mailbox_changed(m, MBN_INVALID);
   }
 
   struct stat st;
@@ -1081,7 +1078,7 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
             mmdf_parse_mailbox(m);
 
           if (m->msg_count > old_msg_count)
-            mx_update_context(ctx);
+            mutt_mailbox_changed(m, MBN_INVALID);
 
           /* Only unlock the folder if it was locked inside of this routine.
            * It may have been locked elsewhere, like in
@@ -1109,9 +1106,9 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
 
   if (modified)
   {
-    if (reopen_mailbox(ctx, index_hint) != -1)
+    if (reopen_mailbox(m, index_hint) != -1)
     {
-      mx_update_context(ctx);
+      mutt_mailbox_changed(m, MBN_INVALID);
       if (unlock)
       {
         mbox_unlock_mailbox(m);

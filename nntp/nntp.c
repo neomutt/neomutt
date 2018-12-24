@@ -1522,7 +1522,7 @@ static int nntp_group_poll(struct NntpMboxData *mdata, bool update_stat)
 
 /**
  * check_mailbox - Check current newsgroup for new articles
- * @param ctx Mailbox
+ * @param m Mailbox
  * @retval #MUTT_REOPENED Articles have been renumbered or removed from server
  * @retval #MUTT_NEW_MAIL New articles found
  * @retval  0             No change
@@ -1530,12 +1530,10 @@ static int nntp_group_poll(struct NntpMboxData *mdata, bool update_stat)
  *
  * Leave newsrc locked
  */
-static int check_mailbox(struct Context *ctx)
+static int check_mailbox(struct Mailbox *m)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct NntpMboxData *mdata = m->mdata;
   struct NntpAccountData *adata = mdata->adata;
@@ -1698,9 +1696,7 @@ static int check_mailbox(struct Context *ctx)
 
   /* some headers were removed, context must be updated */
   if (ret == MUTT_REOPENED)
-  {
-    mx_update_context(ctx);
-  }
+    mutt_mailbox_changed(m, MBN_INVALID);
 
   /* fetch headers of new articles */
   if (mdata->last_message > mdata->last_loaded)
@@ -1721,7 +1717,7 @@ static int check_mailbox(struct Context *ctx)
     if (rc == 0)
     {
       if (m->msg_count > old_msg_count)
-        mx_update_context(ctx);
+        mutt_mailbox_changed(m, MBN_INVALID);
       mdata->last_loaded = mdata->last_message;
     }
     if (ret == 0 && m->msg_count > oldmsgcount)
@@ -2597,7 +2593,7 @@ static int nntp_mbox_check(struct Context *ctx, int *index_hint)
 
   struct Mailbox *m = ctx->mailbox;
 
-  int ret = check_mailbox(ctx);
+  int ret = check_mailbox(m);
   if (ret == 0)
   {
     struct NntpMboxData *mdata = m->mdata;
@@ -2627,7 +2623,7 @@ static int nntp_mbox_sync(struct Context *ctx, int *index_hint)
 
   /* check for new articles */
   mdata->adata->check_time = 0;
-  rc = check_mailbox(ctx);
+  rc = check_mailbox(m);
   if (rc)
     return rc;
 
