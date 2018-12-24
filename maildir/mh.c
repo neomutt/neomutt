@@ -541,7 +541,7 @@ int mh_sync_message(struct Mailbox *m, int msgno)
 /**
  * mh_mbox_open - Implements MxOps::mbox_open()
  */
-static int mh_mbox_open(struct Mailbox *m, struct Context *ctx)
+static int mh_mbox_open(struct Mailbox *m)
 {
   return mh_read_dir(m, NULL);
 }

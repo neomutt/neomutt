@@ -1947,7 +1947,7 @@ int imap_login(struct ImapAccountData *adata)
 /**
  * imap_mbox_open - Implements MxOps::mbox_open()
  */
-static int imap_mbox_open(struct Mailbox *m, struct Context *ctx)
+static int imap_mbox_open(struct Mailbox *m)
 {
   if (!m || !m->account || !m->mdata)
     return -1;

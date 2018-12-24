@@ -395,7 +395,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
   if (!m->quiet)
     mutt_message(_("Reading %s..."), m->path);
 
-  int rc = m->mx_ops->mbox_open(ctx->mailbox, ctx);
+  int rc = m->mx_ops->mbox_open(ctx->mailbox);
   m->opened++;
   if (rc == 0)
     mx_update_context(ctx);

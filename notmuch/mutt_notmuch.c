@@ -2110,7 +2110,7 @@ int nm_ac_add(struct Account *a, struct Mailbox *m)
 /**
  * nm_mbox_open - Implements MxOps::mbox_open()
  */
-static int nm_mbox_open(struct Mailbox *m, struct Context *ctx)
+static int nm_mbox_open(struct Mailbox *m)
 {
   if (init_mailbox(m) != 0)
     return -1;

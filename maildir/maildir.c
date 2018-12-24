@@ -292,7 +292,7 @@ cleanup:
 /**
  * maildir_mbox_open - Implements MxOps::mbox_open()
  */
-static int maildir_mbox_open(struct Mailbox *m, struct Context *ctx)
+static int maildir_mbox_open(struct Mailbox *m)
 {
   return maildir_read_dir(m);
 }
