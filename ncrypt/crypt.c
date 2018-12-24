@@ -1083,6 +1083,17 @@ static void crypt_fetch_signatures(struct Body ***signatures, struct Body *a, in
   }
 }
 
+bool mutt_should_hide_protected_subject(struct Email *e)
+{
+  if (CryptProtectedHeadersWrite && (e->security & ENCRYPT) && !(e->security & INLINE) &&
+      CryptProtectedHeadersSubject && *CryptProtectedHeadersSubject)
+  {
+    return true;
+  }
+
+  return false;
+}
+
 /**
  * mutt_protected_headers_handler - Process a protected header - Implements ::handler_t
  */

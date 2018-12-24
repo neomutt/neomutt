@@ -1273,10 +1273,12 @@ static int send_message(struct Email *msg)
 #endif
 #ifdef MIXMASTER
   mutt_rfc822_write_header(tempfp, msg->env, msg->content,
-                           MUTT_WRITE_HEADER_NORMAL, !STAILQ_EMPTY(&msg->chain));
+                           MUTT_WRITE_HEADER_NORMAL, !STAILQ_EMPTY(&msg->chain),
+                           mutt_should_hide_protected_subject(msg));
 #endif
 #ifndef MIXMASTER
-  mutt_rfc822_write_header(tempfp, msg->env, msg->content, MUTT_WRITE_HEADER_NORMAL, false);
+  mutt_rfc822_write_header(tempfp, msg->env, msg->content, MUTT_WRITE_HEADER_NORMAL,
+                           false, mutt_should_hide_protected_subject(msg));
 #endif
 #ifdef USE_SMTP
   if (old_write_bcc)
@@ -1517,7 +1519,11 @@ static int save_fcc(struct Email *msg, char *fcc, size_t fcc_len, struct Body *c
   struct Body *save_parts = NULL;
 
   if ((WithCrypto != 0) && (msg->security & (ENCRYPT | SIGN)) && FccClear)
+  {
     msg->content = clear_content;
+    msg->security &= ~(ENCRYPT | SIGN);
+    mutt_env_free(&msg->content->mime_headers);
+  }
 
   /* check to see if the user wants copies of all attachments */
   if (msg->content->type == TYPE_MULTIPART)
@@ -1715,6 +1721,7 @@ static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, int
       mutt_body_free(&msg->content);
       msg->content = clear_content;
     }
+    mutt_env_free(&msg->content->mime_headers); /* protected headers */
     msg->content = mutt_remove_multipart(msg->content);
     decode_descriptions(msg->content);
     mutt_unprepare_envelope(msg->env);
@@ -2438,6 +2445,7 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
         msg->content = mutt_remove_multipart(msg->content);
       }
 
+      mutt_env_free(&msg->content->mime_headers); /* protected headers */
       msg->content = mutt_remove_multipart(msg->content);
       decode_descriptions(msg->content);
       mutt_unprepare_envelope(msg->env);
@@ -2464,7 +2472,7 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
 #endif
   }
 
-  if ((WithCrypto != 0) && (msg->security & ENCRYPT))
+  if (WithCrypto)
     FREE(&pgpkeylist);
 
   if ((WithCrypto != 0) && free_clear_content)

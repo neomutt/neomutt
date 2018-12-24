@@ -463,6 +463,9 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
   if (a->encoding != ENC_7BIT)
     fprintf(f, "Content-Transfer-Encoding: %s\n", ENCODING(a->encoding));
 
+  if (CryptProtectedHeadersWrite && a->mime_headers)
+    mutt_rfc822_write_header(f, a->mime_headers, NULL, MUTT_WRITE_HEADER_MIME, false, false);
+
   /* Do NOT add the terminator here!!! */
   return ferror(f) ? -1 : 0;
 }
@@ -2204,9 +2207,13 @@ out:
  * privacy true => will omit any headers which may identify the user.
  *               Output generated is suitable for being sent through
  *               anonymous remailer chains.
+ *
+ * hide_protected_subject: replaces the Subject header with
+ * $crypt_protected_headers_subject in NORMAL or POSTPONE mode.
  */
-int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach,
-                             enum MuttWriteHeaderMode mode, bool privacy)
+int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
+                             struct Body *attach, enum MuttWriteHeaderMode mode,
+                             bool privacy, bool hide_protected_subject)
 {
   char buf[LONG_STRING];
   char *p = NULL, *q = NULL;
@@ -2287,7 +2294,13 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
 #endif
 
   if (env->subject)
-    mutt_write_one_header(fp, "Subject", env->subject, NULL, 0, 0);
+  {
+    if (hide_protected_subject &&
+        (mode == MUTT_WRITE_HEADER_NORMAL || mode == MUTT_WRITE_HEADER_POSTPONE))
+      mutt_write_one_header(fp, "Subject", CryptProtectedHeadersSubject, NULL, 0, 0);
+    else
+      mutt_write_one_header(fp, "Subject", env->subject, NULL, 0, 0);
+  }
   else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
     fputs("Subject:\n", fp);
 
@@ -3201,9 +3214,9 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   /* post == 1 => postpone message.
    * post == 0 => Normal mode.
    */
-  mutt_rfc822_write_header(msg->fp, e->env, e->content,
-                           post ? MUTT_WRITE_HEADER_POSTPONE : MUTT_WRITE_HEADER_NORMAL,
-                           false);
+  mutt_rfc822_write_header(
+      msg->fp, e->env, e->content, post ? MUTT_WRITE_HEADER_POSTPONE : MUTT_WRITE_HEADER_NORMAL,
+      false, CryptProtectedHeadersRead && mutt_should_hide_protected_subject(e));
 
   /* (postponement) if this was a reply of some sort, <msgid> contains the
    * Message-ID: of message replied to.  Save it using a special X-Mutt-

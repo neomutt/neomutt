@@ -192,6 +192,7 @@ int          mutt_is_multipart_signed(struct Body *b);
 int          mutt_is_valid_multipart_pgp_encrypted(struct Body *b);
 int          mutt_protect(struct Email *msg, char *keylist);
 int          mutt_protected_headers_handler(struct Body *m, struct State *s);
+bool         mutt_should_hide_protected_subject(struct Email *e);
 int          mutt_signed_handler(struct Body *a, struct State *s);
 
 /* cryptglue.c */
