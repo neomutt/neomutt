@@ -53,6 +53,17 @@ extern bool  UseEnvelopeFrom;
 extern bool  UserAgent;
 extern short WrapHeaders;
 
+/**
+ * enum MuttWriteHeaderMode - Modes for mutt_rfc822_write_header()
+ */
+enum MuttWriteHeaderMode
+{
+  MUTT_WRITE_HEADER_NORMAL,   ///< A normal Email, write full header + MIME headers
+  MUTT_WRITE_HEADER_POSTPONE, ///< A postponed Email, just the envelope info
+  MUTT_WRITE_HEADER_EDITHDRS, ///< "light" mode (used for edit_hdrs)
+  MUTT_WRITE_HEADER_MIME,     ///< Write protected headers
+};
+
 char *          mutt_body_get_charset(struct Body *b, char *buf, size_t buflen);
 int             mutt_bounce_message(FILE *fp, struct Email *e, struct Address *to);
 const char *    mutt_fqdn(bool may_hide_host);
@@ -67,7 +78,7 @@ void            mutt_message_to_7bit(struct Body *a, FILE *fp);
 void            mutt_prepare_envelope(struct Envelope *env, bool final);
 struct Address *mutt_addrlist_dedupe(struct Address *addr);
 struct Body *   mutt_remove_multipart(struct Body *b);
-int             mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach, int mode, bool privacy);
+int             mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach, enum MuttWriteHeaderMode mode, bool privacy);
 void            mutt_stamp_attachment(struct Body *a);
 void            mutt_unprepare_envelope(struct Envelope *env);
 void            mutt_update_encoding(struct Body *a);

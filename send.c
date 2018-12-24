@@ -1272,10 +1272,11 @@ static int send_message(struct Email *msg)
     WriteBcc = false;
 #endif
 #ifdef MIXMASTER
-  mutt_rfc822_write_header(tempfp, msg->env, msg->content, 0, !STAILQ_EMPTY(&msg->chain));
+  mutt_rfc822_write_header(tempfp, msg->env, msg->content,
+                           MUTT_WRITE_HEADER_NORMAL, !STAILQ_EMPTY(&msg->chain));
 #endif
 #ifndef MIXMASTER
-  mutt_rfc822_write_header(tempfp, msg->env, msg->content, 0, false);
+  mutt_rfc822_write_header(tempfp, msg->env, msg->content, MUTT_WRITE_HEADER_NORMAL, false);
 #endif
 #ifdef USE_SMTP
   if (old_write_bcc)
