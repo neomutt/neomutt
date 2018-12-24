@@ -732,7 +732,7 @@ void mutt_enter_command(void)
 {
   struct Buffer err, token;
   char buffer[LONG_STRING];
-  int r;
+  enum CommandResult r;
 
   buffer[0] = '\0';
   if (mutt_get_field(":", buffer, sizeof(buffer), MUTT_COMMAND) != 0 || !buffer[0])
@@ -749,7 +749,7 @@ void mutt_enter_command(void)
     /* since errbuf could potentially contain printf() sequences in it,
        we must call mutt_error() in this fashion so that vsprintf()
        doesn't expect more arguments that we passed */
-    if (r == 0)
+    if (r == MUTT_CMD_SUCCESS)
       mutt_message("%s", err.data);
     else
       mutt_error("%s", err.data);

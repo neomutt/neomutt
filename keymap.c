@@ -40,6 +40,7 @@
 #include "curs_lib.h"
 #include "functions.h"
 #include "globals.h"
+#include "mutt_commands.h"
 #include "mutt_curses.h"
 #include "mutt_logging.h"
 #include "mutt_window.h"
@@ -278,16 +279,15 @@ static size_t parsekeys(const char *str, keycode_t *d, size_t max)
  * @param macro Macro string
  * @param desc Description of macro (OPTIONAL)
  * @param err   Buffer for error message
- * @retval  0 Success
- * @retval -2 Error
+ * @retval enum e.g. #MUTT_CMD_SUCCESS
  *
  * Insert a key sequence into the specified map.
  * The map is sorted by ASCII value (lowest to highest)
  */
-static int km_bind_err(const char *s, int menu, int op, char *macro, char *desc,
-                       struct Buffer *err)
+static enum CommandResult km_bind_err(const char *s, int menu, int op,
+                                      char *macro, char *desc, struct Buffer *err)
 {
-  int retval = 0;
+  enum CommandResult retval = MUTT_CMD_SUCCESS;
   struct Keymap *last = NULL, *next = NULL;
   keycode_t buf[MAX_SEQ];
   size_t pos = 0, lastpos = 0;
@@ -335,7 +335,7 @@ static int km_bind_err(const char *s, int menu, int op, char *macro, char *desc,
                   "https://neomutt.org/guide/configuration.html#bind-warnings"),
                 old_binding, new_binding, mutt_map_get_name(menu, Menus), new_binding);
           }
-          retval = -2;
+          retval = MUTT_CMD_WARNING;
         }
         len = tmp->eq;
         next = tmp->next;
@@ -387,10 +387,9 @@ static int km_bind_err(const char *s, int menu, int op, char *macro, char *desc,
  * @param op    Operation, e.g. OP_DELETE
  * @param macro Macro string
  * @param desc Description of macro (OPTIONAL)
- * @retval  0 Success
- * @retval -2 Error
+ * @retval enum e.g. #MUTT_CMD_SUCCESS
  */
-int km_bind(char *s, int menu, int op, char *macro, char *desc)
+enum CommandResult km_bind(char *s, int menu, int op, char *macro, char *desc)
 {
   return km_bind_err(s, menu, op, macro, desc, NULL);
 }
@@ -401,10 +400,9 @@ int km_bind(char *s, int menu, int op, char *macro, char *desc)
  * @param menu Menu id, e.g. #MENU_PAGER
  * @param op   Operation, e.g. OP_DELETE
  * @param err  Buffer for error message
- * @retval  0 Success
- * @retval -2 Error
+ * @retval enum e.g. #MUTT_CMD_SUCCESS
  */
-static int km_bindkey_err(const char *s, int menu, int op, struct Buffer *err)
+static enum CommandResult km_bindkey_err(const char *s, int menu, int op, struct Buffer *err)
 {
   return km_bind_err(s, menu, op, NULL, NULL, err);
 }
@@ -414,10 +412,9 @@ static int km_bindkey_err(const char *s, int menu, int op, struct Buffer *err)
  * @param s    Key string
  * @param menu Menu id, e.g. #MENU_PAGER
  * @param op   Operation, e.g. OP_DELETE
- * @retval  0 Success
- * @retval -2 Error
+ * @retval enum e.g. #MUTT_CMD_SUCCESS
  */
-static int km_bindkey(const char *s, int menu, int op)
+static enum CommandResult km_bindkey(const char *s, int menu, int op)
 {
   return km_bindkey_err(s, menu, op, NULL);
 }
@@ -1090,20 +1087,18 @@ void km_error_key(int menu)
 /**
  * mutt_parse_push - Parse the 'push' command - Implements ::command_t
  */
-int mutt_parse_push(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                    struct Buffer *err)
+enum CommandResult mutt_parse_push(struct Buffer *buf, struct Buffer *s,
+                                   unsigned long data, struct Buffer *err)
 {
-  int r = 0;
-
   mutt_extract_token(buf, s, MUTT_TOKEN_CONDENSE);
   if (MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too many arguments"), "push");
-    r = -1;
+    return MUTT_CMD_ERROR;
   }
-  else
-    generic_tokenize_push_string(buf->data, mutt_push_macro_event);
-  return r;
+
+  generic_tokenize_push_string(buf->data, mutt_push_macro_event);
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
@@ -1179,12 +1174,10 @@ error:
  * @param func     Function name
  * @param bindings Key bindings table
  * @param err      Buffer for error message
- * @retval  0 Success
- * @retval -1 Unknown function
- * @retval -2 Error
+ * @retval enum e.g. #MUTT_CMD_SUCCESS
  */
-static int try_bind(char *key, int menu, char *func,
-                    const struct Binding *bindings, struct Buffer *err)
+static enum CommandResult try_bind(char *key, int menu, char *func,
+                                   const struct Binding *bindings, struct Buffer *err)
 {
   for (int i = 0; bindings[i].name; i++)
   {
@@ -1198,7 +1191,7 @@ static int try_bind(char *key, int menu, char *func,
     mutt_buffer_printf(err, _("Function '%s' not available for menu '%s'"),
                        func, mutt_map_get_name(menu, Menus));
   }
-  return -1; /* Couldn't find an existing function with this name */
+  return MUTT_CMD_ERROR; /* Couldn't find an existing function with this name */
 }
 
 /**
@@ -1251,22 +1244,23 @@ const struct Binding *km_get_table(int menu)
  *
  * bind menu-name `<key_sequence>` function-name
  */
-int mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                    struct Buffer *err)
+enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
+                                   unsigned long data, struct Buffer *err)
 {
   const struct Binding *bindings = NULL;
-  int menu[sizeof(Menus) / sizeof(struct Mapping) - 1], r = 0, nummenus;
+  int menu[sizeof(Menus) / sizeof(struct Mapping) - 1], nummenus;
+  enum CommandResult r = MUTT_CMD_SUCCESS;
 
   char *key = parse_keymap(menu, s, mutt_array_size(menu), &nummenus, err, true);
   if (!key)
-    return -1;
+    return MUTT_CMD_ERROR;
 
   /* function to execute */
   mutt_extract_token(buf, s, 0);
   if (MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too many arguments"), "bind");
-    r = -1;
+    r = MUTT_CMD_ERROR;
   }
   else if (mutt_str_strcasecmp("noop", buf->data) == 0)
   {
@@ -1308,15 +1302,16 @@ int mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigned long data,
  *
  * macro `<menu>` `<key>` `<macro>` `<description>`
  */
-int mutt_parse_macro(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                     struct Buffer *err)
+enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
+                                    unsigned long data, struct Buffer *err)
 {
-  int menu[sizeof(Menus) / sizeof(struct Mapping) - 1], r = -1, nummenus;
+  int menu[sizeof(Menus) / sizeof(struct Mapping) - 1], nummenus;
+  enum CommandResult r = MUTT_CMD_ERROR;
   char *seq = NULL;
 
   char *key = parse_keymap(menu, s, mutt_array_size(menu), &nummenus, err, false);
   if (!key)
-    return -1;
+    return MUTT_CMD_ERROR;
 
   mutt_extract_token(buf, s, MUTT_TOKEN_CONDENSE);
   /* make sure the macro sequence is not an empty string */
@@ -1360,8 +1355,8 @@ int mutt_parse_macro(struct Buffer *buf, struct Buffer *s, unsigned long data,
 /**
  * mutt_parse_exec - Parse the 'exec' command - Implements ::command_t
  */
-int mutt_parse_exec(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                    struct Buffer *err)
+enum CommandResult mutt_parse_exec(struct Buffer *buf, struct Buffer *s,
+                                   unsigned long data, struct Buffer *err)
 {
   int ops[128];
   int nops = 0;
@@ -1371,7 +1366,7 @@ int mutt_parse_exec(struct Buffer *buf, struct Buffer *s, unsigned long data,
   if (!MoreArgs(s))
   {
     mutt_buffer_strcpy(err, _("exec: no arguments"));
-    return -1;
+    return MUTT_CMD_ERROR;
   }
 
   do
@@ -1391,7 +1386,7 @@ int mutt_parse_exec(struct Buffer *buf, struct Buffer *s, unsigned long data,
     {
       mutt_flushinp();
       mutt_error(_("%s: no such function"), function);
-      return -1;
+      return MUTT_CMD_ERROR;
     }
     nops++;
   } while (MoreArgs(s) && nops < mutt_array_size(ops));
@@ -1399,7 +1394,7 @@ int mutt_parse_exec(struct Buffer *buf, struct Buffer *s, unsigned long data,
   while (nops)
     mutt_push_macro_event(0, ops[--nops]);
 
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**

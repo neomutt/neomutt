@@ -38,6 +38,7 @@
 #include "globals.h"
 #include "keymap.h"
 #include "mailbox.h"
+#include "mutt_commands.h"
 #include "mutt_menu.h"
 #include "options.h"
 #include "pattern.h"
@@ -94,8 +95,8 @@ void mutt_check_rescore(struct Mailbox *m)
 /**
  * mutt_parse_score - Parse the 'score' command - Implements ::command_t
  */
-int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                     struct Buffer *err)
+enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
+                                    unsigned long data, struct Buffer *err)
 {
   struct Score *ptr = NULL, *last = NULL;
   char *pattern = NULL, *pc = NULL;
@@ -105,7 +106,7 @@ int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
   if (!MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), "score");
-    return -1;
+    return MUTT_CMD_ERROR;
   }
   pattern = buf->data;
   mutt_buffer_init(buf);
@@ -114,7 +115,7 @@ int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
   {
     FREE(&pattern);
     mutt_buffer_printf(err, _("%s: too many arguments"), "score");
-    return -1;
+    return MUTT_CMD_ERROR;
   }
 
   /* look for an existing entry and update the value, else add it to the end
@@ -128,7 +129,7 @@ int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
     if (!pat)
     {
       FREE(&pattern);
-      return -1;
+      return MUTT_CMD_ERROR;
     }
     ptr = mutt_mem_calloc(1, sizeof(struct Score));
     if (last)
@@ -156,10 +157,10 @@ int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
   {
     FREE(&pattern);
     mutt_buffer_strcpy(err, _("Error: score: invalid number"));
-    return -1;
+    return MUTT_CMD_ERROR;
   }
   OptNeedRescore = true;
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
@@ -200,8 +201,8 @@ void mutt_score_message(struct Mailbox *m, struct Email *e, bool upd_mbox)
 /**
  * mutt_parse_unscore - Parse the 'unscore' command - Implements ::command_t
  */
-int mutt_parse_unscore(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                       struct Buffer *err)
+enum CommandResult mutt_parse_unscore(struct Buffer *buf, struct Buffer *s,
+                                      unsigned long data, struct Buffer *err)
 {
   struct Score *tmp = NULL, *last = NULL;
 
@@ -238,5 +239,5 @@ int mutt_parse_unscore(struct Buffer *buf, struct Buffer *s, unsigned long data,
     }
   }
   OptNeedRescore = true;
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }

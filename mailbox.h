@@ -29,6 +29,7 @@
 #include <sys/types.h>
 #include <time.h>
 #include "mutt/mutt.h"
+#include "mutt_commands.h"
 #include "where.h"
 
 struct Buffer;
@@ -165,7 +166,7 @@ void mutt_mailbox(char *s, size_t slen);
 bool mutt_mailbox_list(void);
 int mutt_mailbox_check(int force);
 bool mutt_mailbox_notify(void);
-int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
-int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
+enum CommandResult mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
+enum CommandResult mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
 
 #endif /* MUTT_MAILBOX_H */

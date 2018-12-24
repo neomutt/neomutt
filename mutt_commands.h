@@ -26,16 +26,25 @@
 struct Buffer;
 
 /**
+ * enum CommandResult - Error codes for command_t parse functions
+ */
+enum CommandResult
+{
+  MUTT_CMD_ERROR   = -1, ///< Error: Can't help the user
+  MUTT_CMD_WARNING = -2, ///< Warning: Help given to the user
+  MUTT_CMD_SUCCESS =  0, ///< Success: Command worked
+  MUTT_CMD_FINISH  =  1  ///< Finish: Stop processing this file
+};
+
+/**
  * typedef command_t - Prototype for a function to parse a command
  * @param buf  Temporary Buffer space
  * @param s    Buffer containing string to be parsed
  * @param data Flags associated with the command
  * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
- * @retval -2 Warning
+ * @retval enum e.g. #MUTT_CMD_SUCCESS
  */
-typedef int (*command_t)(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+typedef enum CommandResult (*command_t)(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 
 /**
  * struct Command - A user-callable command
