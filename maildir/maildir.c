@@ -360,12 +360,10 @@ static int maildir_mbox_open_append(struct Mailbox *m, int flags)
  * already knew about.  We don't treat either subdirectory differently, as mail
  * could be copied directly into the cur directory from another agent.
  */
-int maildir_mbox_check(struct Context *ctx, int *index_hint)
+int maildir_mbox_check(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct stat st_new;         /* status of the "new" subdirectory */
   struct stat st_cur;         /* status of the "cur" subdirectory */
@@ -472,7 +470,7 @@ int maildir_mbox_check(struct Context *ctx, int *index_hint)
        * the flags we just detected.
        */
       if (!m->emails[i]->changed)
-        if (maildir_update_flags(ctx->mailbox, m->emails[i], p->email))
+        if (maildir_update_flags(m, m->emails[i], p->email))
           flags_changed = true;
 
       if (m->emails[i]->deleted == m->emails[i]->trash)

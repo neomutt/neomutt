@@ -136,12 +136,12 @@ struct MxOps
   int (*mbox_open_append)(struct Mailbox *m, int flags);
   /**
    * mbox_check - Check for new mail
-   * @param ctx Mailbox
+   * @param m          Mailbox
    * @param index_hint Remember our place in the index
    * @retval >0 Success, e.g. #MUTT_REOPENED
    * @retval -1 Error
    */
-  int (*mbox_check)      (struct Context *ctx, int *index_hint);
+  int (*mbox_check)      (struct Mailbox *m, int *index_hint);
   /**
    * mbox_check_stats - Check the mailbox statistics
    * @param m     Mailbox to check
@@ -260,7 +260,7 @@ struct MxOps
 };
 
 /* Wrappers for the Mailbox API, see MxOps */
-int             mx_mbox_check      (struct Context *ctx, int *index_hint);
+int             mx_mbox_check      (struct Mailbox *m, int *index_hint);
 int             mx_mbox_check_stats(struct Mailbox *m, int flags);
 int             mx_mbox_close      (struct Context **pctx, int *index_hint);
 struct Context *mx_mbox_open       (struct Mailbox *m, const char *path, int flags);

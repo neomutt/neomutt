@@ -1772,9 +1772,9 @@ int mh_mbox_sync(struct Context *ctx, int *index_hint)
   struct Progress progress;
 
   if (m->magic == MUTT_MH)
-    i = mh_mbox_check(ctx, index_hint);
+    i = mh_mbox_check(m, index_hint);
   else
-    i = maildir_mbox_check(ctx, index_hint);
+    i = maildir_mbox_check(m, index_hint);
 
   if (i != 0)
     return i;

@@ -890,12 +890,10 @@ static int pop_mbox_open(struct Mailbox *m)
 /**
  * pop_mbox_check - Implements MxOps::mbox_check()
  */
-static int pop_mbox_check(struct Context *ctx, int *index_hint)
+static int pop_mbox_check(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct PopAccountData *adata = pop_get_adata(m);
 

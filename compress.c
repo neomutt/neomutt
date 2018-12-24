@@ -590,7 +590,7 @@ cmoa_fail1:
 
 /**
  * comp_mbox_check - Implements MxOps::mbox_check()
- * @param ctx        Mailbox
+ * @param m          Mailbox
  * @param index_hint Currently selected mailbox
  * @retval 0              Mailbox OK
  * @retval #MUTT_REOPENED The mailbox was closed and reopened
@@ -603,12 +603,11 @@ cmoa_fail1:
  *
  * The return codes are picked to match mx_mbox_check().
  */
-static int comp_mbox_check(struct Context *ctx, int *index_hint)
+static int comp_mbox_check(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox || !ctx->mailbox->compress_info)
+  if (!m || !m->compress_info)
     return -1;
 
-  struct Mailbox *m = ctx->mailbox;
   struct CompressInfo *ci = m->compress_info;
 
   const struct MxOps *ops = ci->child_ops;
@@ -631,7 +630,7 @@ static int comp_mbox_check(struct Context *ctx, int *index_hint)
   if (rc == 0)
     return -1;
 
-  return ops->mbox_check(ctx, index_hint);
+  return ops->mbox_check(m, index_hint);
 }
 
 /**
@@ -664,7 +663,7 @@ static int comp_mbox_sync(struct Context *ctx, int *index_hint)
     return -1;
   }
 
-  int rc = comp_mbox_check(ctx, index_hint);
+  int rc = comp_mbox_check(m, index_hint);
   if (rc != 0)
     goto sync_cleanup;
 

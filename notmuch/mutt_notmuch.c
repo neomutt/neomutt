@@ -2166,7 +2166,7 @@ static int nm_mbox_open(struct Mailbox *m)
 
 /**
  * nm_mbox_check - Implements MxOps::mbox_check()
- * @param ctx         Mailbox
+ * @param m           Mailbox
  * @param index_hint  Remember our place in the index
  * @retval -1 Error
  * @retval  0 Success
@@ -2174,12 +2174,10 @@ static int nm_mbox_open(struct Mailbox *m)
  * @retval #MUTT_REOPENED Mailbox closed and reopened
  * @retval #MUTT_FLAGS    Flags have changed
  */
-static int nm_mbox_check(struct Context *ctx, int *index_hint)
+static int nm_mbox_check(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct NmMboxData *mdata = nm_mdata_get(m);
   time_t mtime = 0;
@@ -2258,7 +2256,7 @@ static int nm_mbox_check(struct Context *ctx, int *index_hint)
        */
       struct Email tmp = { 0 };
       maildir_parse_flags(&tmp, new);
-      maildir_update_flags(ctx->mailbox, e, &tmp);
+      maildir_update_flags(m, e, &tmp);
     }
 
     if (update_email_tags(e, msg) == 0)

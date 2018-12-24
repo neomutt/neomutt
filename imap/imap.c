@@ -2194,17 +2194,15 @@ static int imap_mbox_open_append(struct Mailbox *m, int flags)
 
 /**
  * imap_mbox_check - Implements MxOps::mbox_check()
- * @param ctx        Mailbox
+ * @param m          Mailbox
  * @param index_hint Remember our place in the index
  * @retval >0 Success, e.g. #MUTT_REOPENED
  * @retval -1 Failure
  */
-static int imap_mbox_check(struct Context *ctx, int *index_hint)
+static int imap_mbox_check(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   imap_allow_reopen(m);
   int rc = imap_check_mailbox(m, false);

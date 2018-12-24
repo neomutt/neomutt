@@ -2579,19 +2579,17 @@ static int nntp_mbox_open(struct Mailbox *m)
 
 /**
  * nntp_mbox_check - Implements MxOps::mbox_check()
- * @param ctx        Mailbox
+ * @param m          Mailbox
  * @param index_hint Current message (UNUSED)
  * @retval #MUTT_REOPENED Articles have been renumbered or removed from server
  * @retval #MUTT_NEW_MAIL New articles found
  * @retval  0             No change
  * @retval -1             Lost connection
  */
-static int nntp_mbox_check(struct Context *ctx, int *index_hint)
+static int nntp_mbox_check(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   int ret = check_mailbox(m);
   if (ret == 0)

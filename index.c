@@ -1061,7 +1061,7 @@ int mutt_index_menu(void)
                        CUR_EMAIL->index :
                        0;
 
-      check = mx_mbox_check(Context, &index_hint);
+      check = mx_mbox_check(Context->mailbox, &index_hint);
       if (check < 0)
       {
         if (!Context->mailbox || Context->mailbox->path[0] == '\0')

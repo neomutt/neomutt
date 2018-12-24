@@ -1137,23 +1137,20 @@ struct Message *mx_msg_open_new(struct Mailbox *m, struct Email *e, int flags)
 
 /**
  * mx_mbox_check - Check for new mail - Wrapper for MxOps::mbox_check()
- * @param ctx        Mailbox
+ * @param m          Mailbox
  * @param index_hint Current email
  * @retval >0 Success, e.g. #MUTT_NEW_MAIL
  * @retval  0 Success, no change
  * @retval -1 Failure
  */
-int mx_mbox_check(struct Context *ctx, int *index_hint)
+int mx_mbox_check(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox || !ctx->mailbox->mx_ops)
+  if (!m || !m->mx_ops)
     return -1;
 
-  struct Mailbox *m = ctx->mailbox;
-  int rc = m->mx_ops->mbox_check(ctx, index_hint);
+  int rc = m->mx_ops->mbox_check(m, index_hint);
   if (rc == MUTT_NEW_MAIL || rc == MUTT_REOPENED)
-  {
-    mx_update_context(ctx);
-  }
+    mutt_mailbox_changed(m, MBN_INVALID);
 
   return rc;
 }

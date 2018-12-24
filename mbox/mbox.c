@@ -992,7 +992,7 @@ static int mbox_mbox_open_append(struct Mailbox *m, int flags)
 
 /**
  * mbox_mbox_check - Implements MxOps::mbox_check()
- * @param[in]  ctx        Mailbox
+ * @param[in]  m          Mailbox
  * @param[out] index_hint Keep track of current index selection
  * @retval #MUTT_REOPENED  Mailbox has been reopened
  * @retval #MUTT_NEW_MAIL  New mail has arrived
@@ -1000,12 +1000,10 @@ static int mbox_mbox_open_append(struct Mailbox *m, int flags)
  * @retval 0               No change
  * @retval -1              Error
  */
-static int mbox_mbox_check(struct Context *ctx, int *index_hint)
+static int mbox_mbox_check(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct MboxAccountData *adata = mbox_adata_get(m);
   if (!adata)
@@ -1187,7 +1185,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   }
 
   /* Check to make sure that the file hasn't changed on disk */
-  i = mbox_mbox_check(ctx, index_hint);
+  i = mbox_mbox_check(m, index_hint);
   if ((i == MUTT_NEW_MAIL) || (i == MUTT_REOPENED))
   {
     /* new mail arrived, or mailbox reopened */
