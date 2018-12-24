@@ -444,7 +444,8 @@ lua_State *Lua = NULL;
 /**
  * mutt_lua_parse - Parse the 'lua' command - Implements ::command_t
  */
-int mutt_lua_parse(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+enum CommandResult mutt_lua_parse(struct Buffer *buf, struct Buffer *s,
+                                  unsigned long data, struct Buffer *err)
 {
   lua_init(&Lua);
   mutt_debug(2, " * mutt_lua_parse(%s)\n", buf->data);
@@ -455,17 +456,17 @@ int mutt_lua_parse(struct Buffer *buf, struct Buffer *s, unsigned long data, str
     mutt_buffer_printf(err, "%s: %s", s->dptr, lua_tostring(Lua, -1));
     /* pop error message from the stack */
     lua_pop(Lua, 1);
-    return -1;
+    return MUTT_CMD_ERROR;
   }
   mutt_debug(2, " * %s -> success\n", s->dptr);
-  return 2;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
  * mutt_lua_source_file - Parse the 'lua-source' command - Implements ::command_t
  */
-int mutt_lua_source_file(struct Buffer *buf, struct Buffer *s,
-                         unsigned long data, struct Buffer *err)
+enum CommandResult mutt_lua_source_file(struct Buffer *buf, struct Buffer *s,
+                                        unsigned long data, struct Buffer *err)
 {
   mutt_debug(2, " * mutt_lua_source()\n");
 
@@ -476,12 +477,12 @@ int mutt_lua_source_file(struct Buffer *buf, struct Buffer *s,
   if (mutt_extract_token(buf, s, 0) != 0)
   {
     mutt_buffer_printf(err, _("source: error at %s"), s->dptr);
-    return -1;
+    return MUTT_CMD_ERROR;
   }
   if (MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too many arguments"), "source");
-    return -1;
+    return MUTT_CMD_ERROR;
   }
   mutt_str_strfcpy(path, buf->data, sizeof(path));
   mutt_expand_path(path, sizeof(path));
@@ -490,7 +491,7 @@ int mutt_lua_source_file(struct Buffer *buf, struct Buffer *s,
   {
     mutt_error(_("Couldn't source lua source: %s"), lua_tostring(Lua, -1));
     lua_pop(Lua, 1);
-    return -1;
+    return MUTT_CMD_ERROR;
   }
-  return 2;
+  return MUTT_CMD_SUCCESS;
 }

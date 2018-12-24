@@ -4681,45 +4681,45 @@ struct ConfigDef MuttVars[] = {
 };
 
 /* functions used to parse commands in a rc file */
-static int parse_alias           (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_alternates      (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_attachments     (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_echo            (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_finish          (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_group           (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_ifdef           (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_ignore          (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_lists           (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_my_hdr          (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_alias           (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_alternates      (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_attachments     (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_echo            (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_finish          (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_group           (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_ifdef           (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_ignore          (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_lists           (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_my_hdr          (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 #ifdef USE_SIDEBAR
-static int parse_path_list       (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_path_unlist     (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_path_list       (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_path_unlist     (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 #endif
-static int parse_replace_list    (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_set             (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_setenv          (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_source          (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_spam_list       (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_stailq          (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_subjectrx_list  (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_subscribe       (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_replace_list    (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_set             (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_setenv          (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_source          (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_spam_list       (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_stailq          (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_subjectrx_list  (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_subscribe       (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 #ifdef USE_IMAP
-static int parse_subscribe_to    (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_subscribe_to    (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 #endif
-static int parse_tag_formats     (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_tag_transforms  (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_unalias         (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_unalternates    (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_unattachments   (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_unignore        (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_unlists         (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_unmy_hdr        (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_unreplace_list  (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_unstailq        (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-static int parse_unsubscribe     (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_tag_formats     (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_tag_transforms  (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_unalias         (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_unalternates    (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_unattachments   (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_unignore        (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_unlists         (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_unmy_hdr        (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_unreplace_list  (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_unstailq        (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_unsubscribe     (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 #ifdef USE_IMAP
-static int parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 #endif
 
 const struct Command Commands[] = {

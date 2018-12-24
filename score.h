@@ -24,6 +24,7 @@
 #define MUTT_SCORE_H
 
 #include <stdbool.h>
+#include "mutt_commands.h"
 
 struct Buffer;
 struct Email;
@@ -35,8 +36,8 @@ extern short ScoreThresholdFlag;
 extern short ScoreThresholdRead;
 
 void mutt_check_rescore(struct Mailbox *m);
-int  mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-int  mutt_parse_unscore(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+enum CommandResult mutt_parse_unscore(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 void mutt_score_message(struct Mailbox *m, struct Email *e, bool upd_ctx);
 
 #endif /* MUTT_SCORE_H */

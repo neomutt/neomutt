@@ -288,7 +288,7 @@ static int execute_commands(struct ListHead *p)
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, p, entries)
   {
-    if (mutt_parse_rc_line(np->data, &token, &err) == -1)
+    if (mutt_parse_rc_line(np->data, &token, &err) == MUTT_CMD_ERROR)
     {
       mutt_error(_("Error in command line: %s"), err.data);
       FREE(&token.data);
@@ -459,11 +459,10 @@ static bool get_hostname(void)
  * @param s    Buffer containing the attachments command
  * @param head List of AttachMatch to add to
  * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * @retval enum e.g. #MUTT_CMD_SUCCESS
  */
-static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
-                             struct ListHead *head, struct Buffer *err)
+static enum CommandResult parse_attach_list(struct Buffer *buf, struct Buffer *s,
+                                            struct ListHead *head, struct Buffer *err)
 {
   struct AttachMatch *a = NULL;
   char *p = NULL;
@@ -517,7 +516,7 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
       regerror(ret, &a->minor_regex, err->data, err->dsize);
       FREE(&a->major);
       FREE(&a);
-      return -1;
+      return MUTT_CMD_ERROR;
     }
 
     mutt_debug(5, "added %s/%s [%d]\n", a->major, a->minor, a->major_int);
@@ -526,7 +525,7 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
   } while (MoreArgs(s));
 
   attachments_clean();
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
@@ -572,8 +571,8 @@ bail:
 /**
  * parse_replace_list - Parse a string replacement rule - Implements ::command_t
  */
-static int parse_replace_list(struct Buffer *buf, struct Buffer *s,
-                              unsigned long data, struct Buffer *err)
+static enum CommandResult parse_replace_list(struct Buffer *buf, struct Buffer *s,
+                                             unsigned long data, struct Buffer *err)
 {
   struct ReplaceList *list = (struct ReplaceList *) data;
   struct Buffer templ = { 0 };
@@ -582,7 +581,7 @@ static int parse_replace_list(struct Buffer *buf, struct Buffer *s,
   if (!MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), "subjectrx");
-    return -1;
+    return MUTT_CMD_ERROR;
   }
   mutt_extract_token(buf, s, 0);
 
@@ -590,18 +589,18 @@ static int parse_replace_list(struct Buffer *buf, struct Buffer *s,
   if (!MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), "subjectrx");
-    return -1;
+    return MUTT_CMD_ERROR;
   }
   mutt_extract_token(&templ, s, 0);
 
   if (mutt_replacelist_add(list, buf->data, templ.data, err) != 0)
   {
     FREE(&templ.data);
-    return -1;
+    return MUTT_CMD_ERROR;
   }
   FREE(&templ.data);
 
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
@@ -610,10 +609,10 @@ static int parse_replace_list(struct Buffer *buf, struct Buffer *s,
  * @param s    Buffer containing the unattachments command
  * @param head List of AttachMatch to remove from
  * @param err  Buffer for error messages
- * @retval 0 Always
+ * @retval MUTT_CMD_SUCCESS Always
  */
-static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
-                               struct ListHead *head, struct Buffer *err)
+static enum CommandResult parse_unattach_list(struct Buffer *buf, struct Buffer *s,
+                                              struct ListHead *head, struct Buffer *err)
 {
   struct AttachMatch *a = NULL;
   char *tmp = NULL;
@@ -664,14 +663,14 @@ static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
 
   FREE(&tmp);
   attachments_clean();
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
  * parse_unreplace_list - Remove a string replacement rule - Implements ::command_t
  */
-static int parse_unreplace_list(struct Buffer *buf, struct Buffer *s,
-                                unsigned long data, struct Buffer *err)
+static enum CommandResult parse_unreplace_list(struct Buffer *buf, struct Buffer *s,
+                                               unsigned long data, struct Buffer *err)
 {
   struct ReplaceList *list = (struct ReplaceList *) data;
 
@@ -679,7 +678,7 @@ static int parse_unreplace_list(struct Buffer *buf, struct Buffer *s,
   if (!MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), "unsubjectrx");
-    return -1;
+    return MUTT_CMD_ERROR;
   }
 
   mutt_extract_token(buf, s, 0);
@@ -688,11 +687,11 @@ static int parse_unreplace_list(struct Buffer *buf, struct Buffer *s,
   if (mutt_str_strcmp(buf->data, "*") == 0)
   {
     mutt_replacelist_free(list);
-    return 0;
+    return MUTT_CMD_SUCCESS;
   }
 
   mutt_replacelist_remove(list, buf->data);
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
@@ -751,7 +750,8 @@ static void remove_from_stailq(struct ListHead *head, const char *str)
 static int source_rc(const char *rcfile_path, struct Buffer *err)
 {
   FILE *f = NULL;
-  int line = 0, rc = 0, line_rc, warnings = 0;
+  int line = 0, rc = 0, warnings = 0;
+  enum CommandResult line_rc;
   struct Buffer token;
   char *linebuf = NULL;
   char *currentline = NULL;
@@ -821,7 +821,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
       currentline = linebuf;
     mutt_buffer_reset(err);
     line_rc = mutt_parse_rc_line(currentline, &token, err);
-    if (line_rc == -1)
+    if (line_rc == MUTT_CMD_ERROR)
     {
       mutt_error(_("Error in %s, line %d: %s"), rcfile, line, err->data);
       if (--rc < -MAXERRS)
@@ -831,13 +831,13 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
         break;
       }
     }
-    else if (line_rc == -2)
+    else if (line_rc == MUTT_CMD_WARNING)
     {
       /* Warning */
-      mutt_error(_("Warning in %s, line %d: %s"), rcfile, line, err->data);
+      mutt_warning(_("Warning in %s, line %d: %s"), rcfile, line, err->data);
       warnings++;
     }
-    else if (line_rc == 1)
+    else if (line_rc == MUTT_CMD_FINISH)
     {
       break; /* Found "finish" command */
     }
@@ -887,8 +887,8 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
 /**
  * parse_alias - Parse the 'alias' command - Implements ::command_t
  */
-static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                       struct Buffer *err)
+static enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
+                                      unsigned long data, struct Buffer *err)
 {
   struct Alias *tmp = NULL;
   char *estr = NULL;
@@ -897,13 +897,13 @@ static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
   if (!MoreArgs(s))
   {
     mutt_buffer_strcpy(err, _("alias: no address"));
-    return -1;
+    return MUTT_CMD_ERROR;
   }
 
   mutt_extract_token(buf, s, 0);
 
   if (parse_grouplist(&gc, buf, s, data, err) == -1)
-    return -1;
+    return MUTT_CMD_ERROR;
 
   /* check to see if an alias with this name already exists */
   TAILQ_FOREACH(tmp, &Aliases, entries)
@@ -958,18 +958,18 @@ static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
     }
   }
   mutt_grouplist_destroy(&gc);
-  return 0;
+  return MUTT_CMD_SUCCESS;
 
 bail:
   mutt_grouplist_destroy(&gc);
-  return -1;
+  return MUTT_CMD_ERROR;
 }
 
 /**
  * parse_alternates - Parse the 'alternates' command - Implements ::command_t
  */
-static int parse_alternates(struct Buffer *buf, struct Buffer *s,
-                            unsigned long data, struct Buffer *err)
+static enum CommandResult parse_alternates(struct Buffer *buf, struct Buffer *s,
+                                           unsigned long data, struct Buffer *err)
 {
   struct GroupList gc = STAILQ_HEAD_INITIALIZER(gc);
 
@@ -992,18 +992,18 @@ static int parse_alternates(struct Buffer *buf, struct Buffer *s,
   } while (MoreArgs(s));
 
   mutt_grouplist_destroy(&gc);
-  return 0;
+  return MUTT_CMD_SUCCESS;
 
 bail:
   mutt_grouplist_destroy(&gc);
-  return -1;
+  return MUTT_CMD_ERROR;
 }
 
 /**
  * parse_attachments - Parse the 'attachments' command - Implements ::command_t
  */
-static int parse_attachments(struct Buffer *buf, struct Buffer *s,
-                             unsigned long data, struct Buffer *err)
+static enum CommandResult parse_attachments(struct Buffer *buf, struct Buffer *s,
+                                            unsigned long data, struct Buffer *err)
 {
   char op, *category = NULL;
   struct ListHead *head = NULL;
@@ -1012,7 +1012,7 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s,
   if (!buf->data || *buf->data == '\0')
   {
     mutt_buffer_strcpy(err, _("attachments: no disposition"));
-    return -1;
+    return MUTT_CMD_ERROR;
   }
 
   category = buf->data;
@@ -1028,7 +1028,7 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s,
     print_attach_list(&InlineAllow, '+', "I");
     print_attach_list(&InlineExclude, '-', "I");
     mutt_any_key_to_continue(NULL);
-    return 0;
+    return MUTT_CMD_SUCCESS;
   }
 
   if (op != '+' && op != '-')
@@ -1053,7 +1053,7 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s,
   else
   {
     mutt_buffer_strcpy(err, _("attachments: invalid disposition"));
-    return -1;
+    return MUTT_CMD_ERROR;
   }
 
   return parse_attach_list(buf, s, head, err);
@@ -1062,13 +1062,13 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s,
 /**
  * parse_echo - Parse the 'echo' command - Implements ::command_t
  */
-static int parse_echo(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                      struct Buffer *err)
+static enum CommandResult parse_echo(struct Buffer *buf, struct Buffer *s,
+                                     unsigned long data, struct Buffer *err)
 {
   if (!MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), "echo");
-    return -1;
+    return MUTT_CMD_ERROR;
   }
   mutt_extract_token(buf, s, 0);
   OptForceRefresh = true;
@@ -1076,33 +1076,33 @@ static int parse_echo(struct Buffer *buf, struct Buffer *s, unsigned long data,
   OptForceRefresh = false;
   mutt_sleep(0);
 
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
  * parse_finish - Parse the 'finish' command - Implements ::command_t
- * @retval  1 Stop processing the current file
- * @retval -1 Failed
+ * @retval  MUTT_CMD_FINISH Stop processing the current file
+ * @retval  MUTT_CMD_ERROR Failed
  *
  * If the 'finish' command is found, we should stop reading the current file.
  */
-static int parse_finish(struct Buffer *buf, struct Buffer *s,
-                        unsigned long data, struct Buffer *err)
+static enum CommandResult parse_finish(struct Buffer *buf, struct Buffer *s,
+                                       unsigned long data, struct Buffer *err)
 {
   if (MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too many arguments"), "finish");
-    return -1;
+    return MUTT_CMD_ERROR;
   }
 
-  return 1;
+  return MUTT_CMD_FINISH;
 }
 
 /**
  * parse_group - Parse the 'group' and 'ungroup' commands - Implements ::command_t
  */
-static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                       struct Buffer *err)
+static enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
+                                      unsigned long data, struct Buffer *err)
 {
   struct GroupList gc = STAILQ_HEAD_INITIALIZER(gc);
   enum GroupState state = GS_NONE;
@@ -1170,11 +1170,11 @@ static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
 out:
   mutt_grouplist_destroy(&gc);
-  return 0;
+  return MUTT_CMD_SUCCESS;
 
 bail:
   mutt_grouplist_destroy(&gc);
-  return -1;
+  return MUTT_CMD_ERROR;
 }
 
 /**
@@ -1190,8 +1190,8 @@ bail:
  * e.g.
  *      ifndef imap finish
  */
-static int parse_ifdef(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                       struct Buffer *err)
+static enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
+                                      unsigned long data, struct Buffer *err)
 {
   struct Buffer token = { 0 };
 
@@ -1249,31 +1249,31 @@ static int parse_ifdef(struct Buffer *buf, struct Buffer *s, unsigned long data,
   if (!MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), (data ? "ifndef" : "ifdef"));
-    return -1;
+    return MUTT_CMD_ERROR;
   }
   mutt_extract_token(buf, s, MUTT_TOKEN_SPACE);
 
   /* ifdef KNOWN_SYMBOL or ifndef UNKNOWN_SYMBOL */
   if ((res && (data == 0)) || (!res && (data == 1)))
   {
-    int rc = mutt_parse_rc_line(buf->data, &token, err);
-    if (rc == -1)
+    enum CommandResult rc = mutt_parse_rc_line(buf->data, &token, err);
+    if (rc == MUTT_CMD_ERROR)
     {
       mutt_error(_("Error: %s"), err->data);
       FREE(&token.data);
-      return -1;
+      return MUTT_CMD_ERROR;
     }
     FREE(&token.data);
     return rc;
   }
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
  * parse_ignore - Parse the 'ignore' command - Implements ::command_t
  */
-static int parse_ignore(struct Buffer *buf, struct Buffer *s,
-                        unsigned long data, struct Buffer *err)
+static enum CommandResult parse_ignore(struct Buffer *buf, struct Buffer *s,
+                                       unsigned long data, struct Buffer *err)
 {
   do
   {
@@ -1282,14 +1282,14 @@ static int parse_ignore(struct Buffer *buf, struct Buffer *s,
     add_to_stailq(&Ignore, buf->data);
   } while (MoreArgs(s));
 
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
  * parse_lists - Parse the 'lists' command - Implements ::command_t
  */
-static int parse_lists(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                       struct Buffer *err)
+static enum CommandResult parse_lists(struct Buffer *buf, struct Buffer *s,
+                                      unsigned long data, struct Buffer *err)
 {
   struct GroupList gc = STAILQ_HEAD_INITIALIZER(gc);
 
@@ -1310,18 +1310,18 @@ static int parse_lists(struct Buffer *buf, struct Buffer *s, unsigned long data,
   } while (MoreArgs(s));
 
   mutt_grouplist_destroy(&gc);
-  return 0;
+  return MUTT_CMD_SUCCESS;
 
 bail:
   mutt_grouplist_destroy(&gc);
-  return -1;
+  return MUTT_CMD_ERROR;
 }
 
 /**
  * parse_my_hdr - Parse the 'my_hdr' command - Implements ::command_t
  */
-static int parse_my_hdr(struct Buffer *buf, struct Buffer *s,
-                        unsigned long data, struct Buffer *err)
+static enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
+                                       unsigned long data, struct Buffer *err)
 {
   struct ListNode *n = NULL;
   size_t keylen;
@@ -1331,7 +1331,7 @@ static int parse_my_hdr(struct Buffer *buf, struct Buffer *s,
   if (!p || (*p != ':'))
   {
     mutt_buffer_strcpy(err, _("invalid header field"));
-    return -1;
+    return MUTT_CMD_ERROR;
   }
   keylen = p - buf->data + 1;
 
@@ -1358,15 +1358,15 @@ static int parse_my_hdr(struct Buffer *buf, struct Buffer *s,
   n->data = buf->data;
   mutt_buffer_init(buf);
 
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 #ifdef USE_SIDEBAR
 /**
  * parse_path_list - Parse the 'sidebar_whitelist' command - Implements ::command_t
  */
-static int parse_path_list(struct Buffer *buf, struct Buffer *s,
-                           unsigned long data, struct Buffer *err)
+static enum CommandResult parse_path_list(struct Buffer *buf, struct Buffer *s,
+                                          unsigned long data, struct Buffer *err)
 {
   char path[PATH_MAX];
 
@@ -1378,7 +1378,7 @@ static int parse_path_list(struct Buffer *buf, struct Buffer *s,
     add_to_stailq((struct ListHead *) data, path);
   } while (MoreArgs(s));
 
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 #endif
 
@@ -1386,8 +1386,8 @@ static int parse_path_list(struct Buffer *buf, struct Buffer *s,
 /**
  * parse_path_unlist - Parse the 'unsidebar_whitelist' command - Implements ::command_t
  */
-static int parse_path_unlist(struct Buffer *buf, struct Buffer *s,
-                             unsigned long data, struct Buffer *err)
+static enum CommandResult parse_path_unlist(struct Buffer *buf, struct Buffer *s,
+                                            unsigned long data, struct Buffer *err)
 {
   char path[PATH_MAX];
 
@@ -1405,7 +1405,7 @@ static int parse_path_unlist(struct Buffer *buf, struct Buffer *s,
     remove_from_stailq((struct ListHead *) data, path);
   } while (MoreArgs(s));
 
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 #endif
 
@@ -1414,8 +1414,8 @@ static int parse_path_unlist(struct Buffer *buf, struct Buffer *s,
  *
  * This is used by 'reset', 'set', 'toggle' and 'unset'.
  */
-static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                     struct Buffer *err)
+static enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
+                                    unsigned long data, struct Buffer *err)
 {
   /* The order must match `enum MuttSetCommand` */
   static const char *set_commands[] = { "set", "toggle", "unset", "reset" };
@@ -1459,7 +1459,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
     {
       mutt_buffer_printf(err, "ERR22 cannot use 'inv', 'no', '&' or '?' with the '%s' command",
                          set_commands[data]);
-      return -1;
+      return MUTT_CMD_ERROR;
     }
 
     /* get the variable name */
@@ -1479,7 +1479,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
         {
           struct HashElem **list = get_elem_list(Config);
           if (!list)
-            return -1;
+            return MUTT_CMD_ERROR;
 
           for (size_t i = 0; list[i]; i++)
             cs_he_reset(Config, list[i], NULL);
@@ -1490,7 +1490,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
         else
         {
           mutt_buffer_printf(err, "ERR01 unknown variable: %s", buf->data);
-          return -1;
+          return MUTT_CMD_ERROR;
         }
       }
 
@@ -1503,14 +1503,14 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
       {
         mutt_buffer_printf(
             err, "ERR02 cannot use a prefix when querying a variable");
-        return -1;
+        return MUTT_CMD_ERROR;
       }
 
       if (reset || unset || inv)
       {
         mutt_buffer_printf(err, "ERR03 cannot query a variable with the '%s' command",
                            set_commands[data]);
-        return -1;
+        return MUTT_CMD_ERROR;
       }
 
       query = true;
@@ -1522,14 +1522,14 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
       {
         mutt_buffer_printf(err,
                            "ERR04 cannot use prefix when setting a variable");
-        return -1;
+        return MUTT_CMD_ERROR;
       }
 
       if (reset || unset || inv)
       {
         mutt_buffer_printf(err, "ERR05 cannot set a variable with the '%s' command",
                            set_commands[data]);
-        return -1;
+        return MUTT_CMD_ERROR;
       }
 
       equals = true;
@@ -1548,7 +1548,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
         mutt_buffer_printf(err, "ERR07 command '%s' can only be used with bool/quad variables",
                            set_commands[data]);
       }
-      return -1;
+      return MUTT_CMD_ERROR;
     }
 
     if (reset)
@@ -1558,7 +1558,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
       {
         rc = cs_he_reset(Config, he, err);
         if (CSR_RESULT(rc) != CSR_SUCCESS)
-          return -1;
+          return MUTT_CMD_ERROR;
       }
       else
       {
@@ -1581,7 +1581,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
           if (CSR_RESULT(rc) != CSR_SUCCESS)
           {
             mutt_buffer_addstr(err, buf->data);
-            return -1;
+            return MUTT_CMD_ERROR;
           }
           pretty_var(buf->data, err);
         }
@@ -1597,7 +1597,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
           else
           {
             mutt_buffer_printf(err, _("%s: unknown variable"), buf->data);
-            return -1;
+            return MUTT_CMD_ERROR;
           }
         }
         break;
@@ -1657,7 +1657,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
           rc = cs_he_string_set(Config, he, buf->data, err);
           if (CSR_RESULT(rc) != CSR_SUCCESS)
-            return -1;
+            return MUTT_CMD_ERROR;
         }
         continue;
       }
@@ -1668,7 +1668,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
           // mutt_buffer_printf(err, "ACT23 set variable %s to 'yes'", buf->data);
           rc = cs_he_native_set(Config, he, true, err);
           if (CSR_RESULT(rc) != CSR_SUCCESS)
-            return -1;
+            return MUTT_CMD_ERROR;
           continue;
         }
         else
@@ -1683,7 +1683,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
             if (CSR_RESULT(rc) != CSR_SUCCESS)
             {
               mutt_buffer_addstr(err, buf->data);
-              return -1;
+              return MUTT_CMD_ERROR;
             }
             pretty_var(buf->data, err);
           }
@@ -1699,7 +1699,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
             else
             {
               mutt_buffer_printf(err, _("%s: unknown variable"), buf->data);
-              return -1;
+              return MUTT_CMD_ERROR;
             }
           }
           break;
@@ -1726,7 +1726,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
         // mutt_buffer_printf(err, "ACT26 UNSET bool/quad variable %s", buf->data);
         rc = cs_he_native_set(Config, he, false, err);
         if (CSR_RESULT(rc) != CSR_SUCCESS)
-          return -1;
+          return MUTT_CMD_ERROR;
       }
       continue;
     }
@@ -1734,18 +1734,18 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
     {
       rc = cs_he_string_set(Config, he, NULL, err);
       if (CSR_RESULT(rc) != CSR_SUCCESS)
-        return -1;
+        return MUTT_CMD_ERROR;
     }
   }
 
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
  * parse_setenv - Parse the 'setenv' and 'unsetenv' commands - Implements ::command_t
  */
-static int parse_setenv(struct Buffer *buf, struct Buffer *s,
-                        unsigned long data, struct Buffer *err)
+static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
+                                       unsigned long data, struct Buffer *err)
 {
   char **envp = mutt_envlist_getlist();
 
@@ -1755,7 +1755,7 @@ static int parse_setenv(struct Buffer *buf, struct Buffer *s,
   if (!MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), "setenv");
-    return -1;
+    return MUTT_CMD_ERROR;
   }
 
   if (*s->dptr == '?')
@@ -1788,18 +1788,18 @@ static int parse_setenv(struct Buffer *buf, struct Buffer *s,
     if (found)
     {
       mutt_any_key_to_continue(NULL);
-      return 0;
+      return MUTT_CMD_SUCCESS;
     }
 
     mutt_buffer_printf(err, _("%s is unset"), buf->data);
-    return -1;
+    return MUTT_CMD_ERROR;
   }
 
   if (unset)
   {
     if (mutt_envlist_unset(buf->data))
-      return 0;
-    return -1;
+      return MUTT_CMD_SUCCESS;
+    return MUTT_CMD_ERROR;
   }
 
   /* set variable */
@@ -1813,7 +1813,7 @@ static int parse_setenv(struct Buffer *buf, struct Buffer *s,
   if (!MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), "setenv");
-    return -1;
+    return MUTT_CMD_ERROR;
   }
 
   char *name = mutt_str_strdup(buf->data);
@@ -1821,14 +1821,14 @@ static int parse_setenv(struct Buffer *buf, struct Buffer *s,
   mutt_envlist_set(name, buf->data, true);
   FREE(&name);
 
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
  * parse_source - Parse the 'source' command - Implements ::command_t
  */
-static int parse_source(struct Buffer *buf, struct Buffer *s,
-                        unsigned long data, struct Buffer *err)
+static enum CommandResult parse_source(struct Buffer *buf, struct Buffer *s,
+                                       unsigned long data, struct Buffer *err)
 {
   char path[PATH_MAX];
 
@@ -1837,7 +1837,7 @@ static int parse_source(struct Buffer *buf, struct Buffer *s,
     if (mutt_extract_token(buf, s, 0) != 0)
     {
       mutt_buffer_printf(err, _("source: error at %s"), s->dptr);
-      return -1;
+      return MUTT_CMD_ERROR;
     }
     mutt_str_strfcpy(path, buf->data, sizeof(path));
     mutt_expand_path(path, sizeof(path));
@@ -1845,19 +1845,19 @@ static int parse_source(struct Buffer *buf, struct Buffer *s,
     if (source_rc(path, err) < 0)
     {
       mutt_buffer_printf(err, _("source: file %s could not be sourced"), path);
-      return -1;
+      return MUTT_CMD_ERROR;
     }
 
   } while (MoreArgs(s));
 
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
  * parse_spam_list - Parse the 'spam' and 'nospam' commands - Implements ::command_t
  */
-static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
-                           unsigned long data, struct Buffer *err)
+static enum CommandResult parse_spam_list(struct Buffer *buf, struct Buffer *s,
+                                          unsigned long data, struct Buffer *err)
 {
   struct Buffer templ;
 
@@ -1870,7 +1870,7 @@ static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
       mutt_buffer_strcpy(err, _("spam: no matching pattern"));
     else
       mutt_buffer_strcpy(err, _("nospam: no matching pattern"));
-    return -1;
+    return MUTT_CMD_ERROR;
   }
 
   /* Extract the first token, a regex */
@@ -1888,7 +1888,7 @@ static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
       if (mutt_replacelist_add(&SpamList, buf->data, templ.data, err) != 0)
       {
         FREE(&templ.data);
-        return -1;
+        return MUTT_CMD_ERROR;
       }
       FREE(&templ.data);
     }
@@ -1898,7 +1898,7 @@ static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
       mutt_regexlist_remove(&NoSpamList, buf->data);
     }
 
-    return 0;
+    return MUTT_CMD_SUCCESS;
   }
   /* MUTT_NOSPAM is for nospam commands. */
   else if (data == MUTT_NOSPAM)
@@ -1910,23 +1910,23 @@ static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
     {
       mutt_replacelist_free(&SpamList);
       mutt_regexlist_free(&NoSpamList);
-      return 0;
+      return MUTT_CMD_SUCCESS;
     }
 
     /* If it's on the spam list, just remove it. */
     if (mutt_replacelist_remove(&SpamList, buf->data) != 0)
-      return 0;
+      return MUTT_CMD_SUCCESS;
 
     /* Otherwise, add it to the nospam list. */
     if (mutt_regexlist_add(&NoSpamList, buf->data, REG_ICASE, err) != 0)
-      return -1;
+      return MUTT_CMD_ERROR;
 
-    return 0;
+    return MUTT_CMD_SUCCESS;
   }
 
   /* This should not happen. */
   mutt_buffer_strcpy(err, "This is no good at all.");
-  return -1;
+  return MUTT_CMD_ERROR;
 }
 
 /**
@@ -1934,8 +1934,8 @@ static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
  *
  * This is used by 'alternative_order', 'auto_view' and several others.
  */
-static int parse_stailq(struct Buffer *buf, struct Buffer *s,
-                        unsigned long data, struct Buffer *err)
+static enum CommandResult parse_stailq(struct Buffer *buf, struct Buffer *s,
+                                       unsigned long data, struct Buffer *err)
 {
   do
   {
@@ -1943,19 +1943,19 @@ static int parse_stailq(struct Buffer *buf, struct Buffer *s,
     add_to_stailq((struct ListHead *) data, buf->data);
   } while (MoreArgs(s));
 
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
  * parse_subjectrx_list - Parse the 'subjectrx' command - Implements ::command_t
  */
-static int parse_subjectrx_list(struct Buffer *buf, struct Buffer *s,
-                                unsigned long data, struct Buffer *err)
+static enum CommandResult parse_subjectrx_list(struct Buffer *buf, struct Buffer *s,
+                                               unsigned long data, struct Buffer *err)
 {
-  int rc;
+  enum CommandResult rc;
 
   rc = parse_replace_list(buf, s, data, err);
-  if (rc == 0)
+  if (rc == MUTT_CMD_SUCCESS)
     clear_subject_mods();
   return rc;
 }
@@ -1963,8 +1963,8 @@ static int parse_subjectrx_list(struct Buffer *buf, struct Buffer *s,
 /**
  * parse_subscribe - Parse the 'subscribe' command - Implements ::command_t
  */
-static int parse_subscribe(struct Buffer *buf, struct Buffer *s,
-                           unsigned long data, struct Buffer *err)
+static enum CommandResult parse_subscribe(struct Buffer *buf, struct Buffer *s,
+                                          unsigned long data, struct Buffer *err)
 {
   struct GroupList gc = STAILQ_HEAD_INITIALIZER(gc);
 
@@ -1987,11 +1987,11 @@ static int parse_subscribe(struct Buffer *buf, struct Buffer *s,
   } while (MoreArgs(s));
 
   mutt_grouplist_destroy(&gc);
-  return 0;
+  return MUTT_CMD_SUCCESS;
 
 bail:
   mutt_grouplist_destroy(&gc);
-  return -1;
+  return MUTT_CMD_ERROR;
 }
 
 #ifdef USE_IMAP
@@ -2002,11 +2002,11 @@ bail:
  * Patterns are not supported.
  * Use it as follows: subscribe-to =folder
  */
-static int parse_subscribe_to(struct Buffer *buf, struct Buffer *s,
-                              unsigned long data, struct Buffer *err)
+static enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *s,
+                                             unsigned long data, struct Buffer *err)
 {
   if (!buf || !s || !err)
-    return -1;
+    return MUTT_CMD_ERROR;
 
   mutt_buffer_reset(err);
 
@@ -2017,7 +2017,7 @@ static int parse_subscribe_to(struct Buffer *buf, struct Buffer *s,
     if (MoreArgs(s))
     {
       mutt_buffer_printf(err, _("%s: too many arguments"), "subscribe-to");
-      return -1;
+      return MUTT_CMD_ERROR;
     }
 
     if (buf->data && *buf->data)
@@ -2026,34 +2026,34 @@ static int parse_subscribe_to(struct Buffer *buf, struct Buffer *s,
       if (imap_subscribe(mutt_expand_path(buf->data, buf->dsize), true) != 0)
       {
         mutt_buffer_printf(err, _("Could not subscribe to %s"), buf->data);
-        return -1;
+        return MUTT_CMD_ERROR;
       }
       else
       {
         mutt_message(_("Subscribed to %s"), buf->data);
-        return 0;
+        return MUTT_CMD_SUCCESS;
       }
     }
     else
     {
       mutt_debug(5, "Corrupted buffer");
-      return -1;
+      return MUTT_CMD_ERROR;
     }
   }
 
   mutt_buffer_addstr(err, _("No folder specified"));
-  return -1;
+  return MUTT_CMD_ERROR;
 }
 #endif
 
 /**
  * parse_tag_formats - Parse the 'tag-formats' command - Implements ::command_t
  */
-static int parse_tag_formats(struct Buffer *buf, struct Buffer *s,
-                             unsigned long data, struct Buffer *err)
+static enum CommandResult parse_tag_formats(struct Buffer *buf, struct Buffer *s,
+                                            unsigned long data, struct Buffer *err)
 {
   if (!buf || !s)
-    return -1;
+    return MUTT_CMD_ERROR;
 
   char *tmp = NULL;
 
@@ -2082,17 +2082,17 @@ static int parse_tag_formats(struct Buffer *buf, struct Buffer *s,
 
     mutt_hash_insert(TagFormats, format, tag);
   }
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
  * parse_tag_transforms - Parse the 'tag-transforms' command - Implements ::command_t
  */
-static int parse_tag_transforms(struct Buffer *buf, struct Buffer *s,
-                                unsigned long data, struct Buffer *err)
+static enum CommandResult parse_tag_transforms(struct Buffer *buf, struct Buffer *s,
+                                               unsigned long data, struct Buffer *err)
 {
   if (!buf || !s)
-    return -1;
+    return MUTT_CMD_ERROR;
 
   char *tmp = NULL;
 
@@ -2121,14 +2121,14 @@ static int parse_tag_transforms(struct Buffer *buf, struct Buffer *s,
 
     mutt_hash_insert(TagTransforms, tag, transform);
   }
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
  * parse_unalias - Parse the 'unalias' command - Implements ::command_t
  */
-static int parse_unalias(struct Buffer *buf, struct Buffer *s,
-                         unsigned long data, struct Buffer *err)
+static enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s,
+                                        unsigned long data, struct Buffer *err)
 {
   struct Alias *a = NULL;
 
@@ -2171,14 +2171,14 @@ static int parse_unalias(struct Buffer *buf, struct Buffer *s,
       }
     }
   } while (MoreArgs(s));
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
  * parse_unalternates - Parse the 'unalternates' command - Implements ::command_t
  */
-static int parse_unalternates(struct Buffer *buf, struct Buffer *s,
-                              unsigned long data, struct Buffer *err)
+static enum CommandResult parse_unalternates(struct Buffer *buf, struct Buffer *s,
+                                             unsigned long data, struct Buffer *err)
 {
   alternates_clean();
   do
@@ -2189,19 +2189,19 @@ static int parse_unalternates(struct Buffer *buf, struct Buffer *s,
     if ((mutt_str_strcmp(buf->data, "*") != 0) &&
         mutt_regexlist_add(&UnAlternates, buf->data, REG_ICASE, err) != 0)
     {
-      return -1;
+      return MUTT_CMD_ERROR;
     }
 
   } while (MoreArgs(s));
 
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
  * parse_unattachments - Parse the 'unattachments' command - Implements ::command_t
  */
-static int parse_unattachments(struct Buffer *buf, struct Buffer *s,
-                               unsigned long data, struct Buffer *err)
+static enum CommandResult parse_unattachments(struct Buffer *buf, struct Buffer *s,
+                                              unsigned long data, struct Buffer *err)
 {
   char op, *p = NULL;
   struct ListHead *head = NULL;
@@ -2210,7 +2210,7 @@ static int parse_unattachments(struct Buffer *buf, struct Buffer *s,
   if (!buf->data || *buf->data == '\0')
   {
     mutt_buffer_strcpy(err, _("unattachments: no disposition"));
-    return -1;
+    return MUTT_CMD_ERROR;
   }
 
   p = buf->data;
@@ -2237,7 +2237,7 @@ static int parse_unattachments(struct Buffer *buf, struct Buffer *s,
   else
   {
     mutt_buffer_strcpy(err, _("unattachments: invalid disposition"));
-    return -1;
+    return MUTT_CMD_ERROR;
   }
 
   return parse_unattach_list(buf, s, head, err);
@@ -2246,8 +2246,8 @@ static int parse_unattachments(struct Buffer *buf, struct Buffer *s,
 /**
  * parse_unignore - Parse the 'unignore' command - Implements ::command_t
  */
-static int parse_unignore(struct Buffer *buf, struct Buffer *s,
-                          unsigned long data, struct Buffer *err)
+static enum CommandResult parse_unignore(struct Buffer *buf, struct Buffer *s,
+                                         unsigned long data, struct Buffer *err)
 {
   do
   {
@@ -2260,14 +2260,14 @@ static int parse_unignore(struct Buffer *buf, struct Buffer *s,
     remove_from_stailq(&Ignore, buf->data);
   } while (MoreArgs(s));
 
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
  * parse_unlists - Parse the 'unlists' command - Implements ::command_t
  */
-static int parse_unlists(struct Buffer *buf, struct Buffer *s,
-                         unsigned long data, struct Buffer *err)
+static enum CommandResult parse_unlists(struct Buffer *buf, struct Buffer *s,
+                                        unsigned long data, struct Buffer *err)
 {
   mutt_hash_free(&AutoSubscribeCache);
   do
@@ -2279,18 +2279,18 @@ static int parse_unlists(struct Buffer *buf, struct Buffer *s,
     if ((mutt_str_strcmp(buf->data, "*") != 0) &&
         mutt_regexlist_add(&UnMailLists, buf->data, REG_ICASE, err) != 0)
     {
-      return -1;
+      return MUTT_CMD_ERROR;
     }
   } while (MoreArgs(s));
 
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
  * parse_unmy_hdr - Parse the 'unmy_hdr' command - Implements ::command_t
  */
-static int parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
-                          unsigned long data, struct Buffer *err)
+static enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
+                                         unsigned long data, struct Buffer *err)
 {
   struct ListNode *np, *tmp;
   size_t l;
@@ -2318,7 +2318,7 @@ static int parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
       }
     }
   } while (MoreArgs(s));
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
@@ -2326,8 +2326,8 @@ static int parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
  *
  * This is used by 'unalternative_order', 'unauto_view' and several others.
  */
-static int parse_unstailq(struct Buffer *buf, struct Buffer *s,
-                          unsigned long data, struct Buffer *err)
+static enum CommandResult parse_unstailq(struct Buffer *buf, struct Buffer *s,
+                                         unsigned long data, struct Buffer *err)
 {
   do
   {
@@ -2341,19 +2341,19 @@ static int parse_unstailq(struct Buffer *buf, struct Buffer *s,
     remove_from_stailq((struct ListHead *) data, buf->data);
   } while (MoreArgs(s));
 
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
  * parse_unsubjectrx_list - Parse the 'unsubjectrx' command - Implements ::command_t
  */
-static int parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s,
-                                  unsigned long data, struct Buffer *err)
+static enum CommandResult parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s,
+                                                 unsigned long data, struct Buffer *err)
 {
-  int rc;
+  enum CommandResult rc;
 
   rc = parse_unreplace_list(buf, s, data, err);
-  if (rc == 0)
+  if (rc == MUTT_CMD_SUCCESS)
     clear_subject_mods();
   return rc;
 }
@@ -2361,8 +2361,8 @@ static int parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s,
 /**
  * parse_unsubscribe - Parse the 'unsubscribe' command - Implements ::command_t
  */
-static int parse_unsubscribe(struct Buffer *buf, struct Buffer *s,
-                             unsigned long data, struct Buffer *err)
+static enum CommandResult parse_unsubscribe(struct Buffer *buf, struct Buffer *s,
+                                            unsigned long data, struct Buffer *err)
 {
   mutt_hash_free(&AutoSubscribeCache);
   do
@@ -2373,11 +2373,11 @@ static int parse_unsubscribe(struct Buffer *buf, struct Buffer *s,
     if ((mutt_str_strcmp(buf->data, "*") != 0) &&
         mutt_regexlist_add(&UnSubscribedLists, buf->data, REG_ICASE, err) != 0)
     {
-      return -1;
+      return MUTT_CMD_ERROR;
     }
   } while (MoreArgs(s));
 
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 #ifdef USE_IMAP
@@ -2388,11 +2388,11 @@ static int parse_unsubscribe(struct Buffer *buf, struct Buffer *s,
  * Patterns are not supported.
  * Use it as follows: unsubscribe-from =folder
  */
-static int parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s,
-                                  unsigned long data, struct Buffer *err)
+static enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s,
+                                                 unsigned long data, struct Buffer *err)
 {
   if (!buf || !s || !err)
-    return -1;
+    return MUTT_CMD_ERROR;
 
   if (MoreArgs(s))
   {
@@ -2401,7 +2401,7 @@ static int parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s,
     if (MoreArgs(s))
     {
       mutt_buffer_printf(err, _("%s: too many arguments"), "unsubscribe-from");
-      return -1;
+      return MUTT_CMD_ERROR;
     }
 
     if (buf->data && *buf->data)
@@ -2410,23 +2410,23 @@ static int parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s,
       if (imap_subscribe(mutt_expand_path(buf->data, buf->dsize), false) != 0)
       {
         mutt_buffer_printf(err, _("Could not unsubscribe from %s"), buf->data);
-        return -1;
+        return MUTT_CMD_ERROR;
       }
       else
       {
         mutt_message(_("Unsubscribed from %s"), buf->data);
-        return 0;
+        return MUTT_CMD_SUCCESS;
       }
     }
     else
     {
       mutt_debug(5, "Corrupted buffer");
-      return -1;
+      return MUTT_CMD_ERROR;
     }
   }
 
   mutt_buffer_addstr(err, _("No folder specified"));
-  return -1;
+  return MUTT_CMD_ERROR;
 }
 #endif
 
@@ -2490,7 +2490,7 @@ int mutt_dump_variables(bool hide_sensitive)
       continue;
     }
     snprintf(command, sizeof(command), "set ?%s\n", MuttVars[i].name);
-    if (mutt_parse_rc_line(command, &token, &err) == -1)
+    if (mutt_parse_rc_line(command, &token, &err) == MUTT_CMD_ERROR)
     {
       mutt_message("%s", err.data);
       FREE(&token.data);
@@ -2844,7 +2844,7 @@ int mutt_get_hook_type(const char *name)
   for (const struct Command *c = Commands; c->name; c++)
     if (c->func == mutt_parse_hook && (mutt_str_strcasecmp(c->name, name) == 0))
       return c->data;
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
@@ -3106,17 +3106,18 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
  * @param line  config line to read
  * @param token scratch buffer to be used by parser
  * @param err   where to write error messages
- * @retval  0 Success
- * @retval -1 Failure
+ * @retval enum e.g. #MUTT_CMD_SUCCESS
  *
  * Caller should free token->data when finished.  the reason for this variable
  * is to avoid having to allocate and deallocate a lot of memory if we are
  * parsing many lines.  the caller can pass in the memory to use, which avoids
  * having to create new space for every call to this function.
  */
-int mutt_parse_rc_line(/* const */ char *line, struct Buffer *token, struct Buffer *err)
+enum CommandResult mutt_parse_rc_line(/* const */ char *line,
+                                      struct Buffer *token, struct Buffer *err)
 {
-  int i, r = 0;
+  int i;
+  enum CommandResult r = MUTT_CMD_SUCCESS;
   struct Buffer expn;
 
   if (!line || !*line)
@@ -3145,7 +3146,7 @@ int mutt_parse_rc_line(/* const */ char *line, struct Buffer *token, struct Buff
       if (mutt_str_strcmp(token->data, Commands[i].name) == 0)
       {
         r = Commands[i].func(token, &expn, Commands[i].data, err);
-        if (r != 0)
+        if (r != MUTT_CMD_SUCCESS)
         {              /* -1 Error, +1 Finish */
           goto finish; /* Propagate return code */
         }
@@ -3155,7 +3156,7 @@ int mutt_parse_rc_line(/* const */ char *line, struct Buffer *token, struct Buff
     if (!Commands[i].name)
     {
       mutt_buffer_printf(err, _("%s: unknown command"), NONULL(token->data));
-      r = -1;
+      r = MUTT_CMD_ERROR;
       break; /* Ignore the rest of the line */
     }
   }
