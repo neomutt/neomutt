@@ -2445,6 +2445,7 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
         msg->content = mutt_remove_multipart(msg->content);
       }
 
+      FREE(&pgpkeylist);
       mutt_env_free(&msg->content->mime_headers); /* protected headers */
       msg->content = mutt_remove_multipart(msg->content);
       decode_descriptions(msg->content);
