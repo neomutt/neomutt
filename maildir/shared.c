@@ -1481,7 +1481,7 @@ int mh_sync_mailbox_message(struct Mailbox *m, int msgno)
       }
     }
   }
-  else if (e->changed || e->attach_del || e->xlabel_changed ||
+  else if (e->changed || e->attach_del ||
            (m->magic == MUTT_MAILDIR && (MaildirTrash || e->trash) && (e->deleted != e->trash)))
   {
     if (m->magic == MUTT_MAILDIR)

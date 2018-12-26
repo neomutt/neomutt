@@ -126,8 +126,11 @@ void mutt_env_merge(struct Envelope *base, struct Envelope **extra)
   MOVE_ELEM(message_id);
   MOVE_ELEM(supersedes);
   MOVE_ELEM(date);
-  MOVE_ELEM(x_label);
   MOVE_ELEM(x_original_to);
+  if (!(base->changed & MUTT_ENV_CHANGED_XLABEL))
+  {
+    MOVE_ELEM(x_label);
+  }
   if (!(base->changed & MUTT_ENV_CHANGED_REFS))
   {
     MOVE_STAILQ(references);

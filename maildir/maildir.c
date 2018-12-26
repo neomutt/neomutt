@@ -223,7 +223,7 @@ int maildir_sync_message(struct Mailbox *m, int msgno)
   int rc = 0;
 
   /* TODO: why the h->env check? */
-  if (e->attach_del || e->xlabel_changed || (e->env && e->env->changed))
+  if (e->attach_del || (e->env && e->env->changed))
   {
     /* when doing attachment deletion/rethreading, fall back to the MH case. */
     if (mh_rewrite_message(m, msgno) != 0)

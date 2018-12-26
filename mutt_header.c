@@ -113,7 +113,7 @@ static bool label_message(struct Mailbox *m, struct Email *e, char *new)
     label_ref_inc(m, e->env->x_label);
 
   e->changed = true;
-  e->xlabel_changed = true;
+  e->env->changed |= MUTT_ENV_CHANGED_XLABEL;
   return true;
 }
 
