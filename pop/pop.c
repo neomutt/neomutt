@@ -931,12 +931,10 @@ static int pop_mbox_check(struct Mailbox *m, int *index_hint)
  *
  * Update POP mailbox, delete messages from server
  */
-static int pop_mbox_sync(struct Context *ctx, int *index_hint)
+static int pop_mbox_sync(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   int i, j, ret = 0;
   char buf[LONG_STRING];

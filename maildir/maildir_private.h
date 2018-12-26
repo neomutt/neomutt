@@ -80,7 +80,7 @@ int             maildir_path_parent(char *buf, size_t buflen);
 int             maildir_path_pretty(char *buf, size_t buflen, const char *folder);
 int             mh_mbox_check      (struct Mailbox *m, int *index_hint);
 int             mh_mbox_close      (struct Mailbox *m);
-int             mh_mbox_sync       (struct Context *ctx, int *index_hint);
+int             mh_mbox_sync       (struct Mailbox *m, int *index_hint);
 int             mh_msg_close       (struct Mailbox *m, struct Message *msg);
 
 /* Maildir/MH shared functions */

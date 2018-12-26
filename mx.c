@@ -481,7 +481,7 @@ static int sync_mailbox(struct Context *ctx, int *index_hint)
     mutt_message(_("Writing %s..."), m->path);
   }
 
-  int rc = m->mx_ops->mbox_sync(ctx, index_hint);
+  int rc = m->mx_ops->mbox_sync(m, index_hint);
   if ((rc != 0) && !m->quiet)
   {
     /* L10N: Displayed if a mailbox sync fails */

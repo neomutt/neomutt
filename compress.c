@@ -639,12 +639,11 @@ static int comp_mbox_check(struct Mailbox *m, int *index_hint)
  * Changes in NeoMutt only affect the tmp file.
  * Calling comp_mbox_sync() will commit them to the compressed file.
  */
-static int comp_mbox_sync(struct Context *ctx, int *index_hint)
+static int comp_mbox_sync(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox || !ctx->mailbox->compress_info)
+  if (!m || !m->compress_info)
     return -1;
 
-  struct Mailbox *m = ctx->mailbox;
   struct CompressInfo *ci = m->compress_info;
 
   if (!ci->close)
@@ -667,7 +666,7 @@ static int comp_mbox_sync(struct Context *ctx, int *index_hint)
   if (rc != 0)
     goto sync_cleanup;
 
-  rc = ops->mbox_sync(ctx, index_hint);
+  rc = ops->mbox_sync(m, index_hint);
   if (rc != 0)
     goto sync_cleanup;
 

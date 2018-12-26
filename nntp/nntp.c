@@ -2606,12 +2606,10 @@ static int nntp_mbox_check(struct Mailbox *m, int *index_hint)
  *
  * @note May also return values from check_mailbox()
  */
-static int nntp_mbox_sync(struct Context *ctx, int *index_hint)
+static int nntp_mbox_sync(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct NntpMboxData *mdata = m->mdata;
   int rc;
@@ -2662,7 +2660,7 @@ static int nntp_mbox_sync(struct Context *ctx, int *index_hint)
 #endif
 
   /* save .newsrc entries */
-  nntp_newsrc_gen_entries(ctx->mailbox);
+  nntp_newsrc_gen_entries(m);
   nntp_newsrc_update(mdata->adata);
   nntp_newsrc_close(mdata->adata);
   return 0;

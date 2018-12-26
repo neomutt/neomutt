@@ -1128,12 +1128,10 @@ static int mbox_mbox_check(struct Mailbox *m, int *index_hint)
 /**
  * mbox_mbox_sync - Implements MxOps::mbox_sync()
  */
-static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
+static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct MboxAccountData *adata = mbox_adata_get(m);
   if (!adata)
@@ -1288,7 +1286,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
        */
       new_offset[i - first].hdr = ftello(fp) + offset;
 
-      if (mutt_copy_message_ctx(fp, ctx->mailbox, m->emails[i], MUTT_CM_UPDATE,
+      if (mutt_copy_message_ctx(fp, m, m->emails[i], MUTT_CM_UPDATE,
                                 CH_FROM | CH_UPDATE | CH_UPDATE_LEN) != 0)
       {
         mutt_perror(tempfile);

@@ -1757,12 +1757,10 @@ int maildir_path_parent(char *buf, size_t buflen)
 /**
  * mh_mbox_sync - Implements MxOps::mbox_sync()
  */
-int mh_mbox_sync(struct Context *ctx, int *index_hint)
+int mh_mbox_sync(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   int i, j;
 #ifdef USE_HCACHE

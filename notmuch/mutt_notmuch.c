@@ -2296,12 +2296,10 @@ done:
 /**
  * nm_mbox_sync - Implements MxOps::mbox_sync()
  */
-static int nm_mbox_sync(struct Context *ctx, int *index_hint)
+static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct NmMboxData *mdata = nm_mdata_get(m);
   if (!mdata)

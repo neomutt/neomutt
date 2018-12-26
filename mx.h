@@ -152,12 +152,12 @@ struct MxOps
   int (*mbox_check_stats)(struct Mailbox *m, int flags);
   /**
    * mbox_sync - Save changes to the mailbox
-   * @param ctx        Mailbox to sync
+   * @param m          Mailbox to sync
    * @param index_hint Remember our place in the index
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*mbox_sync)       (struct Context *ctx, int *index_hint);
+  int (*mbox_sync)       (struct Mailbox *m, int *index_hint);
   /**
    * mbox_close - Close a mailbox
    * @param m Mailbox to close
