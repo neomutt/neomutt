@@ -409,8 +409,8 @@ int mutt_copy_header(FILE *in, struct Email *e, FILE *out, int flags, const char
 
   if (e->env)
   {
-    flags |= (e->env->irt_changed ? CH_UPDATE_IRT : 0) |
-             (e->env->refs_changed ? CH_UPDATE_REFS : 0);
+    flags |= ((e->env->changed & MUTT_ENV_CHANGED_IRT) ? CH_UPDATE_IRT : 0) |
+             ((e->env->changed & MUTT_ENV_CHANGED_REFS) ? CH_UPDATE_REFS : 0);
   }
 
   if (mutt_copy_hdr(in, out, e->offset, e->content->offset, flags, prefix) == -1)

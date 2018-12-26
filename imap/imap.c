@@ -1696,14 +1696,16 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
       /* if the message has been rethreaded or attachments have been deleted
        * we delete the message and reupload it.
        * This works better if we're expunging, of course. */
-      if ((e->env && (e->env->refs_changed || e->env->irt_changed)) ||
-          e->attach_del || e->xlabel_changed)
+      if ((e->env && e->env->changed) || e->attach_del || e->xlabel_changed)
       {
         /* L10N: The plural is choosen by the last %d, i.e. the total number */
         mutt_message(ngettext("Saving changed message... [%d/%d]",
                               "Saving changed messages... [%d/%d]", m->msg_count),
                      i + 1, m->msg_count);
         mutt_save_message_ctx(e, true, false, false, m);
+        /* TODO: why the check for h->env?  Is this possible? */
+        if (e->env)
+          e->env->changed = 0;
         e->xlabel_changed = false;
       }
     }
