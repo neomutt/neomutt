@@ -2662,7 +2662,7 @@ static int nntp_mbox_sync(struct Context *ctx, int *index_hint)
 #endif
 
   /* save .newsrc entries */
-  nntp_newsrc_gen_entries(ctx);
+  nntp_newsrc_gen_entries(ctx->mailbox);
   nntp_newsrc_update(mdata->adata);
   nntp_newsrc_close(mdata->adata);
   return 0;

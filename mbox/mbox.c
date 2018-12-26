@@ -1159,7 +1159,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   {
     save_sort = Sort;
     Sort = SORT_ORDER;
-    mutt_sort_headers(ctx, false);
+    mutt_mailbox_changed(m, MBN_RESORT);
     Sort = save_sort;
     need_sort = 1;
   }
@@ -1497,7 +1497,7 @@ bail: /* Come here in case of disaster */
   {
     /* if the mailbox was reopened, the thread tree will be invalid so make
      * sure to start threading from scratch.  */
-    mutt_sort_headers(ctx, (need_sort == MUTT_REOPENED));
+    mutt_mailbox_changed(m, MBN_RESORT);
   }
 
   return rc;

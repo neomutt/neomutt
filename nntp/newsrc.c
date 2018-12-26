@@ -294,14 +294,12 @@ int nntp_newsrc_parse(struct NntpAccountData *adata)
 
 /**
  * nntp_newsrc_gen_entries - Generate array of .newsrc entries
- * @param ctx Mailbox
+ * @param m Mailbox
  */
-void nntp_newsrc_gen_entries(struct Context *ctx)
+void nntp_newsrc_gen_entries(struct Mailbox *m)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct NntpMboxData *mdata = m->mdata;
   anum_t last = 0, first = 1;
@@ -313,7 +311,7 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
   {
     save_sort = Sort;
     Sort = SORT_ORDER;
-    mutt_sort_headers(ctx, false);
+    mutt_mailbox_changed(m, MBN_RESORT);
   }
 
   entries = mdata->newsrc_len;
@@ -378,7 +376,7 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
   if (save_sort != Sort)
   {
     Sort = save_sort;
-    mutt_sort_headers(ctx, false);
+    mutt_mailbox_changed(m, MBN_RESORT);
   }
 }
 

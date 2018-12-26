@@ -59,7 +59,7 @@ struct NntpEmailData *nntp_edata_get(struct Email *e);
 void nntp_group_unread_stat(struct NntpMboxData *mdata);
 void nntp_hash_destructor_t(int type, void *obj, intptr_t data);
 void nntp_mdata_free(void **ptr);
-void nntp_newsrc_gen_entries(struct Context *ctx);
+void nntp_newsrc_gen_entries(struct Mailbox *m);
 int  nntp_open_connection(struct NntpAccountData *adata);
 void nntp_article_status(struct Mailbox *m, struct Email *e, char *group, anum_t anum);
 
