@@ -842,7 +842,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** Example:
   ** .ts
-  ** set dsn_return=emails
+  ** set dsn_return=hdrs
   ** .te
   ** .pp
   ** \fBNote:\fP when using $$sendmail for delivery, you should not enable
@@ -1235,7 +1235,7 @@ struct ConfigDef MuttVars[] = {
   ** .de
   */
 #endif
-  { "emails",             DT_BOOL, R_NONE, &Hdrs, true },
+  { "hdrs",             DT_BOOL, R_NONE, &Hdrs, true },
   /*
   ** .pp
   ** When \fIunset\fP, the header fields normally added by the "$my_hdr"
