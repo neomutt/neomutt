@@ -2391,7 +2391,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             /* After the mailbox has been updated,
              * rd.index->current might be invalid */
             rd.index->current =
-                MIN(rd.index->current, (Context->mailbox->msg_count - 1));
+                MIN(rd.index->current, MAX(Context->mailbox->msg_count - 1, 0));
             index_hint = Context->mailbox
                              ->emails[Context->mailbox->v2r[rd.index->current]]
                              ->index;
