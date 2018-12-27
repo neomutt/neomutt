@@ -805,7 +805,7 @@ bye:
  */
 void mutt_enter_state_free(struct EnterState **esp)
 {
-  if (!esp)
+  if (!esp || !*esp)
     return;
 
   FREE(&(*esp)->wbuf);

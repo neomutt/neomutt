@@ -1249,20 +1249,8 @@ void mx_update_context(struct Context *ctx)
 
   struct Mailbox *m = ctx->mailbox;
 
-  if (!m)
-    return;
-
-  if (m->subj_hash)
-  {
-    mutt_hash_free(&m->subj_hash);
-  }
-  m->subj_hash = NULL;
-
-  if (m->id_hash)
-  {
-    mutt_hash_free(&m->id_hash);
-  }
-  m->id_hash = NULL;
+  mutt_hash_free(&m->subj_hash);
+  mutt_hash_free(&m->id_hash);
 
   /* reset counters */
   m->msg_unread = 0;
@@ -1767,8 +1755,7 @@ int mx_ac_remove(struct Mailbox *m)
 void mx_cleanup_context(struct Context *ctx)
 {
   FREE(&ctx->pattern);
-  if (ctx->limit_pattern)
-    mutt_pattern_free(&ctx->limit_pattern);
+  mutt_pattern_free(&ctx->limit_pattern);
   memset(ctx, 0, sizeof(struct Context));
 }
 

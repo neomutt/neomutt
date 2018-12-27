@@ -457,13 +457,12 @@ void mutt_hash_int_delete(struct Hash *table, unsigned int intkey, const void *d
  */
 void mutt_hash_free(struct Hash **ptr)
 {
-  struct Hash *pptr = NULL;
-  struct HashElem *elem = NULL, *tmp = NULL;
-
   if (!ptr || !*ptr)
     return;
 
-  pptr = *ptr;
+  struct Hash *pptr = *ptr;
+  struct HashElem *elem = NULL, *tmp = NULL;
+
   for (size_t i = 0; i < pptr->nelem; i++)
   {
     for (elem = pptr->table[i]; elem;)

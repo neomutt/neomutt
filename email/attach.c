@@ -118,12 +118,11 @@ void mutt_actx_free_entries(struct AttachCtx *actx)
  */
 void mutt_actx_free(struct AttachCtx **pactx)
 {
-  struct AttachCtx *actx = NULL;
-
   if (!pactx || !*pactx)
     return;
 
-  actx = *pactx;
+  struct AttachCtx *actx = *pactx;
+
   mutt_actx_free_entries(actx);
   FREE(&actx->idx);
   FREE(&actx->v2r);

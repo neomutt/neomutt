@@ -52,7 +52,7 @@ struct Envelope *mutt_env_new(void)
  */
 void mutt_env_free(struct Envelope **p)
 {
-  if (!*p)
+  if (!p || !*p)
     return;
   mutt_addr_free(&(*p)->return_path);
   mutt_addr_free(&(*p)->from);
