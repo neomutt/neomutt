@@ -679,6 +679,30 @@ struct ConfigDef MuttVars[] = {
   ** the dummy Subject header, so be sure to open such a message first.
   ** (Crypto only)
   */
+  { "crypt_protected_headers_save", DT_BOOL, R_NONE, &CryptProtectedHeadersSave, false },
+  /*
+  ** .pp
+  ** When $$crypt_protected_headers_read is set, and a message with a
+  ** protected Subject is opened, Mutt will save the updated Subject
+  ** into the header cache by default.  This allows searching/limiting
+  ** based on the protected Subject header if the mailbox is
+  ** re-opened, without having to re-open the message each time.
+  ** However, for mbox/mh mailbox types, or if header caching is not
+  ** set up, you would need to re-open the message each time the
+  ** mailbox was reopened before you could see or search/limit on the
+  ** protected subject again.
+  ** .pp
+  ** When this variable is set, Mutt additionally saves the protected
+  ** Subject back \fBin the clear-text message headers\fP.  This
+  ** provides better usability, but with the tradeoff of reduced
+  ** security.  The protected Subject header, which may have
+  ** previously been encrypted, is now stored in clear-text in the
+  ** message headers.  Copying the message elsewhere, via Mutt or
+  ** external tools, could expose this previously encrypted data.
+  ** Please make sure you understand the consequences of this before
+  ** you enable this variable.
+  ** (Crypto only)
+  */
   { "crypt_protected_headers_write", DT_BOOL, R_NONE, &CryptProtectedHeadersWrite, false },
   /*
   ** .pp

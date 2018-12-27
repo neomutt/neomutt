@@ -140,6 +140,8 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
           continue;
         if (flags & CH_UPDATE_LABEL && mutt_str_startswith(buf, "X-Label:", CASE_IGNORE))
           continue;
+        if ((flags & CH_UPDATE_SUBJECT) && mutt_str_startswith(buf, "Subject:", CASE_IGNORE))
+          continue;
 
         ignore = false;
       }
@@ -266,6 +268,10 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
       if ((flags & CH_UPDATE_REFS) && mutt_str_startswith(buf, "References:", CASE_IGNORE))
         continue;
       if ((flags & CH_UPDATE_IRT) && mutt_str_startswith(buf, "In-Reply-To:", CASE_IGNORE))
+        continue;
+      if ((flags & CH_UPDATE_LABEL) && mutt_str_startswith(buf, "X-Label:", CASE_IGNORE))
+        continue;
+      if ((flags & CH_UPDATE_SUBJECT) && mutt_str_startswith(buf, "Subject:", CASE_IGNORE))
         continue;
 
       /* Find x -- the array entry where this header is to be saved */
@@ -412,7 +418,8 @@ int mutt_copy_header(FILE *in, struct Email *e, FILE *out, int flags, const char
   {
     flags |= ((e->env->changed & MUTT_ENV_CHANGED_IRT) ? CH_UPDATE_IRT : 0) |
              ((e->env->changed & MUTT_ENV_CHANGED_REFS) ? CH_UPDATE_REFS : 0) |
-             ((e->env->changed & MUTT_ENV_CHANGED_XLABEL) ? CH_UPDATE_LABEL : 0);
+             ((e->env->changed & MUTT_ENV_CHANGED_XLABEL) ? CH_UPDATE_LABEL : 0) |
+             ((e->env->changed & MUTT_ENV_CHANGED_SUBJECT) ? CH_UPDATE_SUBJECT : 0);
   }
 
   if (mutt_copy_hdr(in, out, e->offset, e->content->offset, flags, prefix) == -1)
@@ -521,6 +528,23 @@ int mutt_copy_header(FILE *in, struct Email *e, FILE *out, int flags, const char
     {
       return -1;
     }
+    if (!(flags & CH_DECODE))
+      FREE(&temp_hdr);
+  }
+
+  if ((flags & CH_UPDATE_SUBJECT) && e->env->subject)
+  {
+    temp_hdr = e->env->subject;
+    /* env->subject is directly referenced in Context->subj_hash, so we
+     * have to be careful not to encode (and thus free) that memory. */
+    if (!(flags & CH_DECODE))
+    {
+      temp_hdr = mutt_str_strdup(temp_hdr);
+      rfc2047_encode(&temp_hdr, NULL, sizeof("Subject:"), SendCharset);
+    }
+    if (mutt_write_one_header(out, "Subject", temp_hdr, flags & CH_PREFIX ? prefix : 0,
+                              mutt_window_wrap_cols(MuttIndexWindow, Wrap), flags) == -1)
+      return -1;
     if (!(flags & CH_DECODE))
       FREE(&temp_hdr);
   }

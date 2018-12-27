@@ -64,7 +64,8 @@ struct Mailbox;
 #define CH_UPDATE_REFS    (1 << 17) /**< update References: */
 #define CH_DISPLAY        (1 << 18) /**< display result to user */
 #define CH_UPDATE_LABEL   (1 << 19) /**< update X-Label: from hdr->env->x_label? */
-#define CH_VIRTUAL        (1 << 20) /**< write virtual header lines too */
+#define CH_UPDATE_SUBJECT (1 << 20) /**< update Subject: protected header update */
+#define CH_VIRTUAL        (1 << 21) /**< write virtual header lines too */
 
 int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
                   int flags, const char *prefix);

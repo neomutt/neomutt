@@ -155,6 +155,14 @@ static void update_protected_headers(struct Email *cur)
       mutt_hash_insert(Context->mailbox->subj_hash, cur->env->real_subj, cur);
 
     mx_save_hcache(Context->mailbox, cur);
+
+    /* Also persist back to the message headers if this is set */
+    if (CryptProtectedHeadersSave)
+    {
+      cur->env->changed |= MUTT_ENV_CHANGED_SUBJECT;
+      cur->changed = 1;
+      Context->mailbox->changed = 1;
+    }
   }
 }
 
