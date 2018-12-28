@@ -504,6 +504,7 @@ int mutt_copy_header(FILE *in, struct Email *e, FILE *out, int flags, const char
 
   if ((flags & CH_UPDATE_LABEL) && e->env->x_label)
   {
+    e->xlabel_changed = 0;
     if (!(flags & CH_DECODE))
       rfc2047_encode(&e->env->x_label, NULL, sizeof("X-Label:"), SendCharset);
     if (mutt_write_one_header(out, "X-Label", e->env->x_label, flags & CH_PREFIX ? prefix : 0,
