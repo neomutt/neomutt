@@ -1067,9 +1067,13 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete, bool
   }
 #endif
 
-  savectx = mx_mbox_open(NULL, buf, MUTT_APPEND);
+  struct Mailbox *m_save = mx_path_resolve(buf);
+  savectx = mx_mbox_open(m_save, NULL, MUTT_APPEND);
   if (!savectx)
+  {
+    mailbox_free(&m_save);
     return -1;
+  }
 
 #ifdef USE_COMPRESSED
   /* If we're saving to a compressed mailbox, the stats won't be updated

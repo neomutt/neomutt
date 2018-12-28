@@ -644,7 +644,13 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
     ? MUTT_READONLY
     : 0;
 
-  Context = mx_mbox_open(m, buf, flags);
+  bool free_m = false;
+  if (!m)
+  {
+    m = mx_path_resolve(buf);
+    free_m = true;
+  }
+  Context = mx_mbox_open(m, NULL, flags);
   if (Context)
   {
     menu->current = ci_first_message();
@@ -653,7 +659,11 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
 #endif
   }
   else
+  {
     menu->current = 0;
+    if (free_m)
+      mailbox_free(&m);
+  }
 
   if (((Sort & SORT_MASK) == SORT_THREADS) && CollapseAll)
     collapse_all(menu, 0);

@@ -525,7 +525,8 @@ static int trash_append(struct Mailbox *m)
   }
 #endif
 
-  struct Context *ctx_trash = mx_mbox_open(NULL, Trash, MUTT_APPEND);
+  struct Mailbox *m_trash = mx_path_resolve(Trash);
+  struct Context *ctx_trash = mx_mbox_open(m_trash, NULL, MUTT_APPEND);
   if (ctx_trash)
   {
     /* continue from initial scan above */
@@ -546,6 +547,7 @@ static int trash_append(struct Mailbox *m)
   else
   {
     mutt_error(_("Can't open trash folder"));
+    mailbox_free(&m_trash);
     return -1;
   }
 
@@ -700,29 +702,33 @@ int mx_mbox_close(struct Context **pctx)
     else /* use regular append-copy mode */
 #endif
     {
-      struct Context *f = mx_mbox_open(NULL, mbox, MUTT_APPEND);
-      if (!f)
+      struct Mailbox *m_read = mx_path_resolve(mbox);
+      struct Context *ctx_read = mx_mbox_open(m_read, NULL, MUTT_APPEND);
+      if (!ctx_read)
+      {
+        mailbox_free(&m_read);
         return -1;
+      }
 
       for (i = 0; i < m->msg_count; i++)
       {
         if (m->emails[i]->read && !m->emails[i]->deleted &&
             !(m->emails[i]->flagged && KeepFlagged))
         {
-          if (mutt_append_message(f->mailbox, ctx->mailbox, m->emails[i], 0, CH_UPDATE_LEN) == 0)
+          if (mutt_append_message(ctx_read->mailbox, ctx->mailbox, m->emails[i], 0, CH_UPDATE_LEN) == 0)
           {
             mutt_set_flag(m, m->emails[i], MUTT_DELETE, 1);
             mutt_set_flag(m, m->emails[i], MUTT_PURGE, 1);
           }
           else
           {
-            mx_mbox_close(&f);
+            mx_mbox_close(&ctx_read);
             return -1;
           }
         }
       }
 
-      mx_mbox_close(&f);
+      mx_mbox_close(&ctx_read);
     }
   }
   else if (!m->changed && m->msg_deleted == 0)
@@ -1524,6 +1530,26 @@ struct Mailbox *mx_mbox_find2(const char *path)
   }
 
   return NULL;
+}
+
+/**
+ * mx_path_resolve - XXX
+ */
+struct Mailbox *mx_path_resolve(const char *path)
+{
+  if (!path)
+    return NULL;
+
+  struct Mailbox *m = mx_mbox_find2(path);
+  if (m)
+    return m;
+
+  m = mailbox_new();
+  m->flags = MB_HIDDEN;
+  mutt_str_strfcpy(m->path, path, sizeof(m->path));
+  mx_path_canon2(m, Folder);
+
+  return m;
 }
 
 /**

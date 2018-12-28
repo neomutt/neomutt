@@ -3159,24 +3159,26 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
 #ifdef RECORD_FOLDER_HOOK
   mutt_folder_hook(path, NULL);
 #endif
-  struct Context *f = mx_mbox_open(NULL, path, MUTT_APPEND | MUTT_QUIET);
-  if (!f)
+  struct Mailbox *m_fcc = mx_path_resolve(path);
+  struct Context *ctx_fcc = mx_mbox_open(m_fcc, NULL, MUTT_APPEND | MUTT_QUIET);
+  if (!ctx_fcc)
   {
     mutt_debug(1, "unable to open mailbox %s in append-mode, aborting.\n", path);
+    mailbox_free(&m_fcc);
     goto done;
   }
 
   /* We need to add a Content-Length field to avoid problems where a line in
    * the message body begins with "From "
    */
-  if ((f->mailbox->magic == MUTT_MMDF) || (f->mailbox->magic == MUTT_MBOX))
+  if ((ctx_fcc->mailbox->magic == MUTT_MMDF) || (ctx_fcc->mailbox->magic == MUTT_MBOX))
   {
     mutt_mktemp(tempfile, sizeof(tempfile));
     tempfp = mutt_file_fopen(tempfile, "w+");
     if (!tempfp)
     {
       mutt_perror(tempfile);
-      mx_mbox_close(&f);
+      mx_mbox_close(&ctx_fcc);
       goto done;
     }
     /* remember new mail status before appending message */
@@ -3188,11 +3190,11 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   onm_flags = MUTT_ADD_FROM;
   if (post)
     onm_flags |= MUTT_SET_DRAFT;
-  msg = mx_msg_open_new(f->mailbox, e, onm_flags);
+  msg = mx_msg_open_new(ctx_fcc->mailbox, e, onm_flags);
   if (!msg)
   {
     mutt_file_fclose(&tempfp);
-    mx_mbox_close(&f);
+    mx_mbox_close(&ctx_fcc);
     goto done;
   }
 
@@ -3218,7 +3220,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   if (post && fcc)
     fprintf(msg->fp, "X-Mutt-Fcc: %s\n", fcc);
 
-  if ((f->mailbox->magic == MUTT_MMDF) || (f->mailbox->magic == MUTT_MBOX))
+  if ((ctx_fcc->mailbox->magic == MUTT_MMDF) || (ctx_fcc->mailbox->magic == MUTT_MBOX))
     fprintf(msg->fp, "Status: RO\n");
 
   /* mutt_rfc822_write_header() only writes out a Date: header with
@@ -3310,9 +3312,9 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
       mutt_debug(1, "%s: write failed.\n", tempfile);
       mutt_file_fclose(&tempfp);
       unlink(tempfile);
-      mx_msg_commit(f->mailbox, msg); /* XXX really? */
-      mx_msg_close(f->mailbox, &msg);
-      mx_mbox_close(&f);
+      mx_msg_commit(ctx_fcc->mailbox, msg); /* XXX really? */
+      mx_msg_close(ctx_fcc->mailbox, &msg);
+      mx_mbox_close(&ctx_fcc);
       goto done;
     }
 
@@ -3338,12 +3340,12 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     rc = mutt_write_mime_body(e->content, msg->fp);
   }
 
-  if (mx_msg_commit(f->mailbox, msg) != 0)
+  if (mx_msg_commit(ctx_fcc->mailbox, msg) != 0)
     rc = -1;
   else if (finalpath)
     *finalpath = mutt_str_strdup(msg->committed_path);
-  mx_msg_close(f->mailbox, &msg);
-  mx_mbox_close(&f);
+  mx_msg_close(ctx_fcc->mailbox, &msg);
+  mx_mbox_close(&ctx_fcc);
 
   if (!post && need_mailbox_cleanup)
     mutt_mailbox_cleanup(path, &st);

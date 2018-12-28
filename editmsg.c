@@ -68,12 +68,14 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
 
   enum MailboxType omagic = MboxType;
   MboxType = MUTT_MBOX;
-  struct Context *tmpctx = mx_mbox_open(NULL, fname, MUTT_NEWFOLDER);
+  struct Mailbox *m_fname = mx_path_resolve(fname);
+  struct Context *tmpctx = mx_mbox_open(m_fname, NULL, MUTT_NEWFOLDER);
   MboxType = omagic;
 
   if (!tmpctx)
   {
     mutt_error(_("could not create temporary folder: %s"), strerror(errno));
+    mailbox_free(&m_fname);
     return -1;
   }
 

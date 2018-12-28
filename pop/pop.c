@@ -655,9 +655,13 @@ void pop_fetch_mail(void)
     goto finish;
   }
 
-  struct Context *ctx = mx_mbox_open(NULL, Spoolfile, MUTT_APPEND);
+  struct Mailbox *m_spool = mx_path_resolve(Spoolfile);
+  struct Context *ctx = mx_mbox_open(m_spool, NULL, MUTT_APPEND);
   if (!ctx)
+  {
+    mailbox_free(&m_spool);
     goto finish;
+  }
 
   delanswer = query_quadoption(PopDelete, _("Delete messages from server?"));
 

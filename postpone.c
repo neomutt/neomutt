@@ -170,9 +170,13 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
     if (optnews)
       OptNews = false;
 #endif
-    struct Context *ctx = mx_mbox_open(NULL, Postponed, MUTT_NOSORT | MUTT_QUIET);
+    struct Mailbox *m_post = mx_path_resolve(Postponed);
+    struct Context *ctx = mx_mbox_open(m_post, NULL, MUTT_NOSORT | MUTT_QUIET);
     if (!ctx)
+    {
+      mailbox_free(&m_post);
       PostCount = 0;
+    }
     else
       PostCount = ctx->mailbox->msg_count;
     mx_fastclose_mailbox(ctx->mailbox);
@@ -295,16 +299,17 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   if (!Postponed)
     return -1;
 
-  struct Mailbox *m = mx_mbox_find2(Postponed);
+  struct Mailbox *m = mx_path_resolve(Postponed);
   if (ctx->mailbox == m)
     PostContext = ctx;
   else
-    PostContext = mx_mbox_open(m, Postponed, MUTT_NOSORT);
+    PostContext = mx_mbox_open(m, NULL, MUTT_NOSORT);
 
   if (!PostContext)
   {
     PostCount = 0;
     mutt_error(_("No postponed messages"));
+    mailbox_free(&m);
     return -1;
   }
 

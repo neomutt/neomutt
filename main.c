@@ -1208,8 +1208,12 @@ int main(int argc, char *argv[], char *envp[])
     mutt_startup_shutdown_hook(MUTT_STARTUP_HOOK);
 
     repeat_error = true;
-    Context = mx_mbox_open(NULL, folder,
-                           ((flags & MUTT_RO) || ReadOnly) ? MUTT_READONLY : 0);
+    struct Mailbox *m = mx_path_resolve(folder);
+    Context = mx_mbox_open(m, NULL, ((flags & MUTT_RO) || ReadOnly) ? MUTT_READONLY : 0);
+    if (!Context)
+    {
+      mailbox_free(&m);
+    }
     if (Context || !explicit_folder)
     {
 #ifdef USE_SIDEBAR
