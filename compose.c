@@ -1508,7 +1508,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         else
         {
           mx_fastclose_mailbox(Context->mailbox);
-          mutt_context_free(&Context);
+          ctx_free(&Context);
         }
 
         /* go back to the folder we started from */

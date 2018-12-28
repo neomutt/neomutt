@@ -290,8 +290,5 @@ int                 mx_check_empty      (const char *path);
 void                mx_fastclose_mailbox(struct Mailbox *m);
 const struct MxOps *mx_get_ops          (enum MailboxType magic);
 bool                mx_tags_is_supported(struct Mailbox *m);
-void                mx_update_context   (struct Context *ctx);
-void                mx_update_tables    (struct Context *ctx, bool committing);
-void                mx_cleanup_context  (struct Context *ctx);
 
 #endif /* MUTT_MX_H */

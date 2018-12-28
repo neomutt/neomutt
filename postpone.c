@@ -176,7 +176,7 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
     else
       PostCount = ctx->mailbox->msg_count;
     mx_fastclose_mailbox(ctx->mailbox);
-    mutt_context_free(&ctx);
+    ctx_free(&ctx);
 #ifdef USE_NNTP
     if (optnews)
       OptNews = true;

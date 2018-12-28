@@ -1632,7 +1632,7 @@ int nm_read_entire_thread(struct Context *ctx, struct Email *e)
   rc = 0;
 
   if (m->msg_count > mdata->oldmsgcount)
-    mx_update_context(ctx);
+    ctx_update(ctx);
 done:
   if (q)
     notmuch_query_destroy(q);

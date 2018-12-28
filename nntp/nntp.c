@@ -2286,7 +2286,7 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
   e->changed = true;
   e->received = e->date_sent;
   e->index = m->msg_count++;
-  mx_update_context(ctx);
+  ctx_update(ctx);
   return 0;
 }
 
@@ -2356,7 +2356,7 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
       break;
   }
   if (m->msg_count > old_msg_count)
-    mx_update_context(ctx);
+    ctx_update(ctx);
 
 #ifdef USE_HCACHE
   mutt_hcache_close(hc);
@@ -2808,7 +2808,7 @@ static int nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   nntp_edata_get(e)->parsed = true;
   mutt_parse_mime_message(m, e);
 
-  /* these would normally be updated in mx_update_context(), but the
+  /* these would normally be updated in ctx_update(), but the
    * full headers aren't parsed with overview, so the information wasn't
    * available then */
   if (WithCrypto)

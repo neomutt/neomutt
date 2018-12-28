@@ -2361,7 +2361,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         if (!Context->mailbox || Context->mailbox->path[0] == '\0')
         {
           /* fatal error occurred */
-          mutt_context_free(&Context);
+          ctx_free(&Context);
           pager_menu->redraw = REDRAW_FULL;
           break;
         }

@@ -976,7 +976,7 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
     imap_expunge_mailbox(m);
 
     /* undo expunge count updates.
-     * mx_update_context() will do this at the end of the header fetch. */
+     * ctx_update() will do this at the end of the header fetch. */
     m->vcount = 0;
     m->msg_tagged = 0;
     m->msg_deleted = 0;

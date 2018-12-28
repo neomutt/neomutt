@@ -1234,7 +1234,7 @@ void maildir_update_tables(struct Context *ctx, int *index_hint)
       m->emails[i]->index = j++;
   }
 
-  mx_update_tables(ctx, false);
+  ctx_update_tables(ctx, false);
   mutt_clear_threads(ctx);
 }
 

@@ -33,7 +33,6 @@
 #include "where.h"
 
 struct Buffer;
-struct Context;
 struct Account;
 struct stat;
 
@@ -160,7 +159,6 @@ extern struct MailboxList AllMailboxes; ///< List of all Mailboxes
 
 struct Mailbox *mailbox_new(void);
 void            mailbox_free(struct Mailbox **m);
-void            mutt_context_free(struct Context **ctx);
 
 struct Mailbox *mutt_find_mailbox(const char *path);
 struct Mailbox *mutt_find_mailbox_desc(const char *desc);

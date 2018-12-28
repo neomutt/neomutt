@@ -114,12 +114,6 @@ void mailbox_free(struct Mailbox **m)
 
   mutt_mailbox_changed(*m, MBN_CLOSED);
 
-  if (Context && Context->mailbox && Context->mailbox == *m)
-  {
-    mx_cleanup_context(Context);
-    FREE(&Context);
-  }
-
   FREE(&(*m)->desc);
   if ((*m)->mdata && (*m)->free_mdata)
     (*m)->free_mdata(&(*m)->mdata);
@@ -754,19 +748,6 @@ void mutt_mailbox(char *s, size_t slen)
 
   /* no folders with new mail */
   *s = '\0';
-}
-
-/**
- * mutt_context_free - Free a Context
- * @param ctx Context to free
- */
-void mutt_context_free(struct Context **ctx)
-{
-  if (!ctx || !*ctx)
-    return;
-
-  mailbox_free(&(*ctx)->mailbox);
-  FREE(ctx);
 }
 
 /**

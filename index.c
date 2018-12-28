@@ -587,7 +587,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
 
   /* keepalive failure in mutt_enter_fname may kill connection. #3028 */
   if (Context && (Context->mailbox->path[0] == '\0'))
-    mutt_context_free(&Context);
+    ctx_free(&Context);
 
   if (Context)
   {
@@ -1067,7 +1067,7 @@ int mutt_index_menu(void)
         if (!Context->mailbox || Context->mailbox->path[0] == '\0')
         {
           /* fatal error occurred */
-          mutt_context_free(&Context);
+          ctx_free(&Context);
           menu->redraw = REDRAW_FULL;
         }
 
@@ -1886,7 +1886,7 @@ int mutt_index_menu(void)
 
         /* check for a fatal error, or all messages deleted */
         if (Context->mailbox->path[0] == '\0')
-          mutt_context_free(&Context);
+          ctx_free(&Context);
 
         /* if we were in the pager, redisplay the message */
         if (menu->menu == MENU_PAGER)
@@ -2332,7 +2332,7 @@ int mutt_index_menu(void)
           if (Context)
           {
             mx_fastclose_mailbox(Context->mailbox);
-            mutt_context_free(&Context);
+            ctx_free(&Context);
           }
           done = true;
         }

@@ -1197,7 +1197,7 @@ void nntp_article_status(struct Mailbox *m, struct Email *e, char *group, anum_t
   {
     if ((anum >= mdata->newsrc_ent[i].first) && (anum <= mdata->newsrc_ent[i].last))
     {
-      /* can't use mutt_set_flag() because mx_update_context()
+      /* can't use mutt_set_flag() because ctx_update()
          didn't get called yet */
       e->read = true;
       return;

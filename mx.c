@@ -237,35 +237,6 @@ static int mx_open_mailbox_append(struct Mailbox *m, int flags)
 }
 
 /**
- * mx_mailbox_changed - Act on a Mailbox change notification
- * @param m      Mailbox
- * @param action Event occurring
- * @param ndata  Private notification data
- */
-void mx_mailbox_changed(struct Mailbox *m, enum MailboxNotification action)
-{
-  if (!m || !m->ndata)
-    return;
-
-  struct Context *ctx = m->ndata;
-
-  switch (action)
-  {
-    case MBN_CLOSED:
-      mutt_clear_threads(ctx);
-      mx_cleanup_context(ctx);
-      break;
-    case MBN_INVALID:
-      mx_update_context(ctx);
-      break;
-    case MBN_RESORT:
-      mx_update_tables(ctx, false);
-      mutt_sort_headers(ctx, true);
-      break;
-  }
-}
-
-/**
  * mx_mbox_open - Open a mailbox and parse it
  * @param m     Mailbox to open
  * @param path  Path to the mailbox
@@ -302,7 +273,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
     /* int rc = */ mx_path_canon2(m, Folder);
   }
 
-  m->notify = mx_mailbox_changed;
+  m->notify = ctx_mailbox_changed;
   m->ndata = ctx;
 
   if ((m->magic == MUTT_UNKNOWN) && (flags & MUTT_NEWFOLDER))
@@ -356,7 +327,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
     if (mx_open_mailbox_append(ctx->mailbox, flags) != 0)
     {
       mx_fastclose_mailbox(m);
-      mutt_context_free(&ctx);
+      ctx_free(&ctx);
       return NULL;
     }
     return ctx;
@@ -379,7 +350,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
       mutt_error(_("%s is not a mailbox"), path);
 
     mx_fastclose_mailbox(m);
-    mutt_context_free(&ctx);
+    ctx_free(&ctx);
     return NULL;
   }
 
@@ -398,7 +369,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
   int rc = m->mx_ops->mbox_open(ctx->mailbox);
   m->opened++;
   if (rc == 0)
-    mx_update_context(ctx);
+    ctx_update(ctx);
 
   if ((rc == 0) || (rc == -2))
   {
@@ -418,7 +389,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
   else
   {
     mx_fastclose_mailbox(m);
-    mutt_context_free(&ctx);
+    ctx_free(&ctx);
   }
 
   OptForceRefresh = false;
@@ -845,100 +816,6 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
 }
 
 /**
- * mx_update_tables - Update a Context structure's internal tables
- * @param ctx        Mailbox
- * @param committing Commit the changes?
- */
-void mx_update_tables(struct Context *ctx, bool committing)
-{
-  if (!ctx || !ctx->mailbox)
-    return;
-
-  struct Mailbox *m = ctx->mailbox;
-
-  int i, j, padding;
-
-  /* update memory to reflect the new state of the mailbox */
-  m->vcount = 0;
-  ctx->vsize = 0;
-  m->msg_tagged = 0;
-  m->msg_deleted = 0;
-  m->msg_new = 0;
-  m->msg_unread = 0;
-  m->changed = false;
-  m->msg_flagged = 0;
-  padding = mx_msg_padding_size(m);
-  for (i = 0, j = 0; i < m->msg_count; i++)
-  {
-    if (!m->emails[i]->quasi_deleted &&
-        ((committing && (!m->emails[i]->deleted || (m->magic == MUTT_MAILDIR && MaildirTrash))) ||
-         (!committing && m->emails[i]->active)))
-    {
-      if (i != j)
-      {
-        m->emails[j] = m->emails[i];
-        m->emails[i] = NULL;
-      }
-      m->emails[j]->msgno = j;
-      if (m->emails[j]->virtual != -1)
-      {
-        m->v2r[m->vcount] = j;
-        m->emails[j]->virtual = m->vcount++;
-        struct Body *b = m->emails[j]->content;
-        ctx->vsize += b->length + b->offset - b->hdr_offset + padding;
-      }
-
-      if (committing)
-        m->emails[j]->changed = false;
-      else if (m->emails[j]->changed)
-        m->changed = true;
-
-      if (!committing || (m->magic == MUTT_MAILDIR && MaildirTrash))
-      {
-        if (m->emails[j]->deleted)
-          m->msg_deleted++;
-      }
-
-      if (m->emails[j]->tagged)
-        m->msg_tagged++;
-      if (m->emails[j]->flagged)
-        m->msg_flagged++;
-      if (!m->emails[j]->read)
-      {
-        m->msg_unread++;
-        if (!m->emails[j]->old)
-          m->msg_new++;
-      }
-
-      j++;
-    }
-    else
-    {
-      if (m->magic == MUTT_MH || m->magic == MUTT_MAILDIR)
-      {
-        m->size -= (m->emails[i]->content->length + m->emails[i]->content->offset -
-                    m->emails[i]->content->hdr_offset);
-      }
-      /* remove message from the hash tables */
-      if (m->subj_hash && m->emails[i]->env->real_subj)
-        mutt_hash_delete(m->subj_hash, m->emails[i]->env->real_subj, m->emails[i]);
-      if (m->id_hash && m->emails[i]->env->message_id)
-        mutt_hash_delete(m->id_hash, m->emails[i]->env->message_id, m->emails[i]);
-      mutt_label_hash_remove(m, m->emails[i]);
-      /* The path mx_mbox_check() -> imap_check_mailbox() ->
-       *          imap_expunge_mailbox() -> mx_update_tables()
-       * can occur before a call to mx_mbox_sync(), resulting in
-       * last_tag being stale if it's not reset here.
-       */
-      if (ctx->last_tag == m->emails[i])
-        ctx->last_tag = NULL;
-      mutt_email_free(&m->emails[i]);
-    }
-  }
-  m->msg_count = j;
-}
-
-/**
  * mx_mbox_sync - Save changes to mailbox
  * @param[in]  ctx        Context
  * @param[out] index_hint Currently selected mailbox
@@ -1010,7 +887,7 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
   }
 
   /* really only for IMAP - imap_sync_mailbox results in a call to
-   * mx_update_tables, so m->msg_deleted is 0 when it comes back */
+   * ctx_update_tables, so m->msg_deleted is 0 when it comes back */
   msgcount = m->msg_count;
   deleted = m->msg_deleted;
 
@@ -1063,7 +940,7 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
       /* IMAP does this automatically after handling EXPUNGE */
       if (m->magic != MUTT_IMAP)
       {
-        mx_update_tables(ctx, true);
+        ctx_update_tables(ctx, true);
         mutt_sort_headers(ctx, true); /* rethread from scratch */
       }
     }
@@ -1262,96 +1139,6 @@ void mx_alloc_memory(struct Mailbox *m)
     m->emails[i] = NULL;
     m->v2r[i] = -1;
   }
-}
-
-/**
- * mx_update_context - Update the Context's message counts
- * @param ctx          Mailbox
- *
- * this routine is called to update the counts in the context structure
- */
-void mx_update_context(struct Context *ctx)
-{
-  if (!ctx || !ctx->mailbox)
-    return;
-
-  struct Mailbox *m = ctx->mailbox;
-
-  mutt_hash_free(&m->subj_hash);
-  mutt_hash_free(&m->id_hash);
-
-  /* reset counters */
-  m->msg_unread = 0;
-  m->msg_flagged = 0;
-  m->msg_new = 0;
-  m->msg_deleted = 0;
-  m->msg_tagged = 0;
-  m->vcount = 0;
-  m->changed = false;
-
-  mutt_clear_threads(ctx);
-
-  struct Email *e = NULL;
-  for (int msgno = 0; msgno < m->msg_count; msgno++)
-  {
-    e = m->emails[msgno];
-
-    if (WithCrypto)
-    {
-      /* NOTE: this _must_ be done before the check for mailcap! */
-      e->security = crypt_query(e->content);
-    }
-
-    if (!ctx->pattern)
-    {
-      m->v2r[m->vcount] = msgno;
-      e->virtual = m->vcount++;
-    }
-    else
-      e->virtual = -1;
-    e->msgno = msgno;
-
-    if (e->env->supersedes)
-    {
-      struct Email *e2 = NULL;
-
-      if (!m->id_hash)
-        m->id_hash = mutt_make_id_hash(m);
-
-      e2 = mutt_hash_find(m->id_hash, e->env->supersedes);
-      if (e2)
-      {
-        e2->superseded = true;
-        if (Score)
-          mutt_score_message(ctx->mailbox, e2, true);
-      }
-    }
-
-    /* add this message to the hash tables */
-    if (m->id_hash && e->env->message_id)
-      mutt_hash_insert(m->id_hash, e->env->message_id, e);
-    if (m->subj_hash && e->env->real_subj)
-      mutt_hash_insert(m->subj_hash, e->env->real_subj, e);
-    mutt_label_hash_add(m, e);
-
-    if (Score)
-      mutt_score_message(ctx->mailbox, e, false);
-
-    if (e->changed)
-      m->changed = true;
-    if (e->flagged)
-      m->msg_flagged++;
-    if (e->deleted)
-      m->msg_deleted++;
-    if (!e->read)
-    {
-      m->msg_unread++;
-      if (!e->old)
-        m->msg_new++;
-    }
-  }
-
-  mutt_sort_headers(ctx, true); /* rethread from scratch */
 }
 
 /**
@@ -1774,17 +1561,6 @@ int mx_ac_remove(struct Mailbox *m)
 
   account_remove_mailbox(m->account, m);
   return 0;
-}
-
-/**
- * mx_cleanup_context - Release memory and initialize a Context object
- * @param ctx Context to cleanup
- */
-void mx_cleanup_context(struct Context *ctx)
-{
-  FREE(&ctx->pattern);
-  mutt_pattern_free(&ctx->limit_pattern);
-  memset(ctx, 0, sizeof(struct Context));
 }
 
 /**

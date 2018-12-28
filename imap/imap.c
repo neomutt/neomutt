@@ -820,7 +820,7 @@ void imap_expunge_mailbox(struct Mailbox *m)
        * flag becomes set (e.g. a flag update to a modified header),
        * this function will be called by imap_cmd_finish().
        *
-       * The mx_update_tables() will free and remove these "inactive" headers,
+       * The ctx_update_tables() will free and remove these "inactive" headers,
        * despite that an EXPUNGE was not received for them.
        * This would result in memory leaks and segfaults due to dangling
        * pointers in the msn_index and uid_hash.
