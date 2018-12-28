@@ -502,12 +502,17 @@ int mutt_copy_header(FILE *in, struct Email *e, FILE *out, int flags, const char
   }
   FREE(&tags);
 
-  if (flags & CH_UPDATE_LABEL)
+  if ((flags & CH_UPDATE_LABEL) && e->env->x_label)
   {
-    e->xlabel_changed = false;
-    if (e->env->x_label)
-      if (fprintf(out, "X-Label: %s\n", e->env->x_label) != 10 + strlen(e->env->x_label))
-        return -1;
+    if (!(flags & CH_DECODE))
+      rfc2047_encode(&e->env->x_label, NULL, sizeof("X-Label:"), SendCharset);
+    if (mutt_write_one_header(out, "X-Label", e->env->x_label, flags & CH_PREFIX ? prefix : 0,
+                              mutt_window_wrap_cols(MuttIndexWindow, Wrap), flags) == -1)
+    {
+      return -1;
+    }
+    if (!(flags & CH_DECODE))
+      rfc2047_decode(&e->env->x_label);
   }
 
   if ((flags & CH_NONEWLINE) == 0)
