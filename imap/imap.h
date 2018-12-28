@@ -55,7 +55,6 @@
 #include "mx.h"
 
 struct BrowserState;
-struct Context;
 struct Email;
 struct Pattern;
 
@@ -79,7 +78,7 @@ extern short ImapPipelineDepth;
 int imap_access(const char *path);
 int imap_check_mailbox(struct Mailbox *m, bool force);
 int imap_delete_mailbox(struct Mailbox *m, char *path);
-int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close);
+int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close);
 int imap_path_status(const char *path, bool queue);
 int imap_mailbox_status(struct Mailbox *m, bool queue);
 int imap_search(struct Mailbox *m, const struct Pattern *pat);

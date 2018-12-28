@@ -434,17 +434,15 @@ void mx_fastclose_mailbox(struct Mailbox *m)
 
 /**
  * sync_mailbox - save changes to disk
- * @param ctx        Mailbox
+ * @param m          Mailbox
  * @param index_hint Current email
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int sync_mailbox(struct Context *ctx, int *index_hint)
+static int sync_mailbox(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox || !ctx->mailbox->mx_ops || !ctx->mailbox->mx_ops->mbox_sync)
+  if (!m || !m->mx_ops || !m->mx_ops->mbox_sync)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   if (!m->quiet)
   {
@@ -749,7 +747,7 @@ int mx_mbox_close(struct Context **pctx)
   /* allow IMAP to preserve the deleted flag across sessions */
   if (m->magic == MUTT_IMAP)
   {
-    int check = imap_sync_mailbox(ctx, (purge != MUTT_NO), true);
+    int check = imap_sync_mailbox(ctx->mailbox, (purge != MUTT_NO), true);
     if (check != 0)
       return check;
   }
@@ -768,7 +766,7 @@ int mx_mbox_close(struct Context **pctx)
 
     if (m->changed || (m->msg_deleted != 0))
     {
-      int check = sync_mailbox(ctx, NULL);
+      int check = sync_mailbox(ctx->mailbox, NULL);
       if (check != 0)
         return check;
     }
@@ -898,10 +896,10 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
 
 #ifdef USE_IMAP
   if (m->magic == MUTT_IMAP)
-    rc = imap_sync_mailbox(ctx, purge, false);
+    rc = imap_sync_mailbox(ctx->mailbox, purge, false);
   else
 #endif
-    rc = sync_mailbox(ctx, index_hint);
+    rc = sync_mailbox(ctx->mailbox, index_hint);
   if (rc == 0)
   {
 #ifdef USE_IMAP

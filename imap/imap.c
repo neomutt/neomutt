@@ -591,7 +591,7 @@ int imap_create_mailbox(struct ImapAccountData *adata, char *mailbox)
  * @retval <0 Failure
  *
  * TODO: ACL checks. Right now we assume if it exists we can mess with it.
- * TODO: This method should take a Context as parameter to be able to reuse the
+ * TODO: This method should take a Mailbox as parameter to be able to reuse the
  * existing connection.
  */
 int imap_access(const char *path)
@@ -1614,23 +1614,21 @@ out:
 
 /**
  * imap_sync_mailbox - Sync all the changes to the server
- * @param ctx     Mailbox
+ * @param m       Mailbox
  * @param expunge if true do expunge
  * @param close   if true we move imap state to CLOSE
  * @retval  0 Success
  * @retval -1 Error
  */
-int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
+int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
 
   struct Email *e = NULL;
   struct Email **emails = NULL;
   int oldsort;
   int rc;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
@@ -1705,7 +1703,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
         mutt_message(ngettext("Saving changed message... [%d/%d]",
                               "Saving changed messages... [%d/%d]", m->msg_count),
                      i + 1, m->msg_count);
-        mutt_save_message_ctx(e, true, false, false, ctx->mailbox);
+        mutt_save_message_ctx(e, true, false, false, m);
         e->xlabel_changed = false;
       }
     }
