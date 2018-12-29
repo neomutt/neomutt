@@ -1659,7 +1659,7 @@ static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, int
 
   if (!(Postponed && *Postponed))
   {
-    mutt_error(_("Can not postpone.  $postponed is unset"));
+    mutt_error(_("Cannot postpone.  $postponed is unset"));
     return -1;
   }
 
