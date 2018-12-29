@@ -472,6 +472,7 @@ int mutt_parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
                            unsigned long data, struct Buffer *err)
 {
   char tmp[PATH_MAX];
+  bool tmp_valid = false;
   bool clear_all = false;
 
   while (!clear_all && MoreArgs(s))
@@ -481,11 +482,13 @@ int mutt_parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
     if (mutt_str_strcmp(buf->data, "*") == 0)
     {
       clear_all = true;
+      tmp_valid = false;
     }
     else
     {
       mutt_str_strfcpy(tmp, buf->data, sizeof(tmp));
       mutt_expand_path(tmp, sizeof(tmp));
+      tmp_valid = true;
     }
 
     struct MailboxNode *np = NULL;
@@ -497,8 +500,14 @@ int mutt_parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
       bool norm = ((np->m->magic != MUTT_NOTMUCH) && !(data & MUTT_VIRTUAL));
       bool clear_this = clear_all && (virt || norm);
 
-      if (clear_this || (mutt_str_strcasecmp(tmp, np->m->path) == 0) ||
-          (mutt_str_strcasecmp(tmp, np->m->desc) == 0))
+      /* Compare against path or desc? Ensure 'tmp' is valid */
+      if (!clear_this && tmp_valid)
+      {
+        clear_this = (mutt_str_strcasecmp(tmp, np->m->path) == 0) ||
+                     (mutt_str_strcasecmp(tmp, np->m->desc) == 0);
+      }
+
+      if (clear_this)
       {
 #ifdef USE_SIDEBAR
         mutt_sb_notify_mailbox(np->m, false);
