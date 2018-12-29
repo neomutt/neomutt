@@ -499,7 +499,7 @@ static int parse_color_name(const char *s, int *col, int *attr, bool is_fg, stru
     {
       if ((COLORS >= 16) && is_light)
       {
-        if (*col < 8)
+        if ((*col >= 0) && (*col <= 7))
         {
           /* Advance the color 0-7 by 8 to get the light version */
           *col += 8;
@@ -514,7 +514,7 @@ static int parse_color_name(const char *s, int *col, int *attr, bool is_fg, stru
     {
       if (COLORS >= 16)
       {
-        if (*col < 8)
+        if ((*col >= 0) && (*col <= 7))
         {
           /* Advance the color 0-7 by 8 to get the light version */
           *col += 8;
