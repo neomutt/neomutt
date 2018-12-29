@@ -4739,11 +4739,15 @@ folder-hook work "set sort=threads"
         </listitem>
       </itemizedlist>
       <para>
-        <emphasis>foreground</emphasis> can optionally be prefixed with the
-        keyword <literal>bright</literal> to make the foreground color
-        boldfaced (e.g., <literal>brightred</literal>).
+        The color name can optionally be prefixed with the keyword
+        <literal>bright</literal> or <literal>light</literal> to make the color
+        boldfaced or light (e.g., <literal>brightred</literal>).
         <literal>alert</literal> to make a blinking/alert color (e.g.,
-        <literal>alertred</literal>).
+        <literal>alertred</literal>).  The precise behavior depends on the
+        terminal and its configuration. In particular, the boldfaced/light
+        difference and such background colors may be available only for
+        terminals configured with at least 16&nbsp;colors, as specified by the
+        <literal>$TERM</literal> environment variable.
       </para>
       <para>
         If your terminal supports it, the special keyword
