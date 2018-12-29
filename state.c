@@ -47,6 +47,16 @@ void state_mark_attach(struct State *s)
 }
 
 /**
+ * state_mark_attach - Write a unique marker around protected headers
+ * @param s State to write to
+ */
+void state_mark_protected_header(struct State *s)
+{
+  if ((s->flags & MUTT_DISPLAY) && (mutt_str_strcmp(Pager, "builtin") == 0))
+    state_puts(ProtectedHeaderMarker, s);
+}
+
+/**
  * state_attach_puts - Write a string to the state
  * @param t Text to write
  * @param s State to write to

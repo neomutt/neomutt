@@ -52,6 +52,7 @@ struct State
 #define state_putc(x, y) fputc(x, (y)->fpout)
 
 void state_mark_attach(struct State *s);
+void state_mark_protected_header (struct State *s);
 void state_attach_puts(const char *t, struct State *s);
 void state_prefix_putc(char c, struct State *s);
 int state_printf(struct State *s, const char *fmt, ...);

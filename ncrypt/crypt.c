@@ -1103,6 +1103,7 @@ int mutt_protected_headers_handler(struct Body *a, struct State *s)
   {
     if (a->mime_headers->subject)
     {
+      state_mark_protected_header(s);
       mutt_write_one_header(s->fpout, "Subject", a->mime_headers->subject,
                             s->prefix, mutt_window_wrap_cols(MuttIndexWindow, Wrap),
                             (s->flags & MUTT_DISPLAY) ? CH_DISPLAY : 0);
