@@ -12597,7 +12597,7 @@ startup-hook 'echo `action.sh ARGS`'
         <para>
           The single quotes prevent the
           backticks from being expanded. The <literal>echo</literal> command
-          prevents and empty command error.
+          prevents an empty command error.
         </para>
 
         <sect3 id="timeout-hook-intro">
