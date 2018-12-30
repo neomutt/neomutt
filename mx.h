@@ -262,7 +262,7 @@ struct MxOps
 /* Wrappers for the Mailbox API, see MxOps */
 int             mx_mbox_check      (struct Mailbox *m, int *index_hint);
 int             mx_mbox_check_stats(struct Mailbox *m, int flags);
-int             mx_mbox_close      (struct Context **pctx, int *index_hint);
+int             mx_mbox_close      (struct Context **pctx);
 struct Context *mx_mbox_open       (struct Mailbox *m, const char *path, int flags);
 int             mx_mbox_sync       (struct Context *ctx, int *index_hint);
 int             mx_msg_close       (struct Mailbox *m, struct Message **msg);

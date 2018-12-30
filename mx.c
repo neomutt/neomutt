@@ -537,13 +537,13 @@ static int trash_append(struct Mailbox *m)
       {
         if (mutt_append_message(ctx_trash->mailbox, m, m->emails[i], 0, 0) == -1)
         {
-          mx_mbox_close(&ctx_trash, NULL);
+          mx_mbox_close(&ctx_trash);
           return -1;
         }
       }
     }
 
-    mx_mbox_close(&ctx_trash, NULL);
+    mx_mbox_close(&ctx_trash);
   }
   else
   {
@@ -557,13 +557,12 @@ static int trash_append(struct Mailbox *m)
 /**
  * mx_mbox_close - Save changes and close mailbox
  * @param pctx       Mailbox
- * @param index_hint Current email
  * @retval  0 Success
  * @retval -1 Failure
  *
  * @note Context will be freed after it's closed
  */
-int mx_mbox_close(struct Context **pctx, int *index_hint)
+int mx_mbox_close(struct Context **pctx)
 {
   if (!pctx || !*pctx)
     return 0;
@@ -719,13 +718,13 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
           }
           else
           {
-            mx_mbox_close(&f, NULL);
+            mx_mbox_close(&f);
             return -1;
           }
         }
       }
 
-      mx_mbox_close(&f, NULL);
+      mx_mbox_close(&f);
     }
   }
   else if (!m->changed && m->msg_deleted == 0)
@@ -769,7 +768,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
 
     if (m->changed || (m->msg_deleted != 0))
     {
-      int check = sync_mailbox(ctx, index_hint);
+      int check = sync_mailbox(ctx, NULL);
       if (check != 0)
         return check;
     }

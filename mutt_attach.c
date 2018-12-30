@@ -819,7 +819,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
       msg = mx_msg_open_new(ctx->mailbox, en, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
       if (!msg)
       {
-        mx_mbox_close(&ctx, NULL);
+        mx_mbox_close(&ctx);
         return -1;
       }
       if ((ctx->mailbox->magic == MUTT_MBOX) || (ctx->mailbox->magic == MUTT_MMDF))
@@ -836,7 +836,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
       }
 
       mx_msg_close(ctx->mailbox, &msg);
-      mx_mbox_close(&ctx, NULL);
+      mx_mbox_close(&ctx);
       return r;
     }
     else
