@@ -615,13 +615,13 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
     read_msgs = 0;
 #endif
 
-  if (read_msgs && Move != MUTT_NO)
+  if ((read_msgs != 0) && (Move != MUTT_NO))
   {
-    int is_spool;
+    bool is_spool;
     char *p = mutt_find_hook(MUTT_MBOX_HOOK, m->path);
     if (p)
     {
-      is_spool = 1;
+      is_spool = true;
       mutt_str_strfcpy(mbox, p, sizeof(mbox));
     }
     else
@@ -630,7 +630,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
       is_spool = mutt_is_spool(m->path) && !mutt_is_spool(mbox);
     }
 
-    if (is_spool && *mbox)
+    if (is_spool && (mbox[0] != '\0'))
     {
       mutt_expand_path(mbox, sizeof(mbox));
       snprintf(buf, sizeof(buf),
@@ -755,7 +755,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
   else
 #endif
   {
-    if (!purge)
+    if (purge == MUTT_NO)
     {
       for (i = 0; i < m->msg_count; i++)
       {
@@ -765,7 +765,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
       m->msg_deleted = 0;
     }
 
-    if (m->changed || m->msg_deleted)
+    if (m->changed || (m->msg_deleted != 0))
     {
       int check = sync_mailbox(ctx, index_hint);
       if (check != 0)
@@ -791,7 +791,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
   }
 
 #ifdef USE_SIDEBAR
-  if (purge && m->msg_deleted)
+  if ((purge == MUTT_YES) && (m->msg_deleted != 0))
   {
     for (i = 0; i < m->msg_count; i++)
     {
