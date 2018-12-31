@@ -309,3 +309,85 @@ bool message_is_tagged(struct Context *ctx, int index)
 {
   return message_is_visible(ctx, index) && ctx->mailbox->emails[index]->tagged;
 }
+
+/**
+ * el_free - Drop a private list of Emails
+ * @param el EmailList to empty
+ *
+ * The Emails are not freed.
+ */
+void el_free(struct EmailList *el)
+{
+  if (!el)
+    return;
+
+  struct EmailNode *en = NULL, *tmp = NULL;
+  STAILQ_FOREACH_SAFE(en, el, entries, tmp)
+  {
+    STAILQ_REMOVE(el, en, EmailNode, entries);
+    FREE(&en);
+  }
+  STAILQ_INIT(el);
+}
+
+/**
+ * el_add_tagged - Get a list of the tagged Emails
+ * @param el         Empty EmailList to populate
+ * @param ctx        Current Mailbox
+ * @param e          Current Email
+ * @param use_tagged Use tagged Emails
+ * @retval num Number of selected emails
+ * @retval -1  Error
+ */
+int el_add_tagged(struct EmailList *el, struct Context *ctx, struct Email *e, bool use_tagged)
+{
+  int count = 0;
+
+  if (use_tagged)
+  {
+    if (!ctx || !ctx->mailbox || !ctx->mailbox->emails)
+      return -1;
+
+    for (size_t i = 0; i < ctx->mailbox->msg_count; i++)
+    {
+      if (!message_is_tagged(ctx, i))
+        continue;
+
+      struct EmailNode *en = mutt_mem_calloc(1, sizeof(*en));
+      en->email = ctx->mailbox->emails[i];
+      STAILQ_INSERT_TAIL(el, en, entries);
+      count++;
+    }
+  }
+  else
+  {
+    if (!e)
+      return -1;
+
+    struct EmailNode *en = mutt_mem_calloc(1, sizeof(*en));
+    en->email = e;
+    STAILQ_INSERT_TAIL(el, en, entries);
+    count = 1;
+  }
+
+  return count;
+}
+
+/**
+ * el_add_email - Get a list of the selected Emails
+ * @param e  Current Email
+ * @param el EmailList to add to
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+int el_add_email(struct EmailList *el, struct Email *e)
+{
+  if (!el || !e)
+    return -1;
+
+  struct EmailNode *en = mutt_mem_calloc(1, sizeof(*en));
+  en->email = e;
+  STAILQ_INSERT_TAIL(el, en, entries);
+
+  return 0;
+}
