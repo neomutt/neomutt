@@ -1530,7 +1530,7 @@ fail:
 
 /**
  * imap_copy_messages - Server COPY messages to another folder
- * @param ctx    Mailbox
+ * @param m      Mailbox
  * @param e      Email
  * @param dest   Destination folder
  * @param delete Delete the original?
@@ -1538,9 +1538,9 @@ fail:
  * @retval  0 Success
  * @retval  1 Non-fatal error - try fetch/append
  */
-int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool delete)
+int imap_copy_messages(struct Mailbox *m, struct Email *e, char *dest, bool delete)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m || !dest)
     return -1;
 
   struct Buffer cmd, sync_cmd;
@@ -1552,8 +1552,6 @@ int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool de
   struct ConnAccount conn_account;
   int err_continue = MUTT_NO;
   int triedcreate = 0;
-
-  struct Mailbox *m = ctx->mailbox;
 
   if (e && e->attach_del)
   {
@@ -1595,7 +1593,7 @@ int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool de
        * remainder. */
       for (int i = 0; i < m->msg_count; i++)
       {
-        if (!message_is_tagged(ctx, i))
+        if (!m->emails[i]->tagged)
           continue;
 
         if (m->emails[i]->attach_del)
@@ -1693,7 +1691,7 @@ int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool de
     {
       for (int i = 0; i < m->msg_count; i++)
       {
-        if (!message_is_tagged(ctx, i))
+        if (!m->emails[i]->tagged)
           continue;
 
         mutt_set_flag(m, m->emails[i], MUTT_DELETE, 1);

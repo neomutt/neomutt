@@ -991,7 +991,7 @@ int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
   if ((Context->mailbox->magic == MUTT_IMAP) && !(decode || decrypt) &&
       (imap_path_probe(buf, NULL) == MUTT_IMAP))
   {
-    switch (imap_copy_messages(Context, e, buf, delete))
+    switch (imap_copy_messages(Context->mailbox, e, buf, delete))
     {
       /* success */
       case 0:
