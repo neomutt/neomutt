@@ -2179,7 +2179,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       size_t l2 = sizeof(buffer);
       hfi.email = (IsEmail(rd->extra)) ? rd->extra->email : rd->extra->bdy->email;
       mutt_make_string_info(buffer, l1 < l2 ? l1 : l2, rd->pager_status_window->cols,
-                            NONULL(PagerFormat), &hfi, MUTT_FORMAT_MAKEPRINT);
+                            NONULL(PagerFormat), &hfi, 0);
       mutt_draw_statusline(rd->pager_status_window->cols, buffer, l2);
     }
     else
