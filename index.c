@@ -569,8 +569,20 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
   enum MailboxType magic = mx_path_probe(buf, NULL);
   if ((magic == MUTT_MAILBOX_ERROR) || (magic == MUTT_UNKNOWN))
   {
-    mutt_error(_("%s is not a mailbox"), buf);
-    return -1;
+    // Try and see if the buffer matches a description before we bail. We'll receive a
+    // non-null pointer if there is a corresponding mailbox.
+    m = mutt_find_mailbox_desc(buf);
+    if (m)
+    {
+      magic = m->magic;
+      mutt_str_strfcpy(buf, m->path, buflen);
+    }
+    else
+    {
+      // Bail.
+      mutt_error(_("%s is not a mailbox"), buf);
+      return -1;
+    }
   }
 
   /* keepalive failure in mutt_enter_fname may kill connection. #3028 */
@@ -965,7 +977,7 @@ static void index_custom_redraw(struct Menu *menu)
  */
 int mutt_index_menu(void)
 {
-  char buf[LONG_STRING], helpstr[LONG_STRING];
+  char buf[PATH_MAX], helpstr[LONG_STRING];
   int flags;
   int op = OP_NULL;
   bool done = false; /* controls when to exit the "event" loop */

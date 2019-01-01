@@ -290,6 +290,27 @@ struct Mailbox *mutt_find_mailbox(const char *path)
 }
 
 /**
+ * mutt_find_mailbox_desc - Find the mailbox with a given description
+ * @param desc Description to match
+ * @retval ptr Matching Mailbox
+ * @retval NULL No matching mailbox found
+ */
+struct Mailbox *mutt_find_mailbox_desc(const char *desc)
+{
+  if (!desc)
+    return NULL;
+
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &AllMailboxes, entries)
+  {
+    if (np->m->desc && mutt_str_strcmp(np->m->desc, desc) == 0)
+      return np->m;
+  }
+
+  return NULL;
+}
+
+/**
  * mutt_update_mailbox - Get the mailbox's current size
  * @param m Mailbox to check
  */
