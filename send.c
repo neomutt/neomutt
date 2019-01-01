@@ -2471,6 +2471,7 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
     if (NmRecord)
       nm_record_message(ctx->mailbox, finalpath, cur);
 #endif
+    mutt_sleep(0);
   }
 
   if (WithCrypto)
