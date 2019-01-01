@@ -99,10 +99,15 @@ void imap_adata_free(void **ptr)
 struct ImapAccountData *imap_adata_new(void)
 {
   struct ImapAccountData *adata = mutt_mem_calloc(1, sizeof(struct ImapAccountData));
+  static unsigned char new_seqid = 'a';
 
+  adata->seqid = new_seqid;
   adata->cmdbuf = mutt_buffer_new();
   adata->cmdslots = ImapPipelineDepth + 2;
   adata->cmds = mutt_mem_calloc(adata->cmdslots, sizeof(*adata->cmds));
+
+  if (++new_seqid > 'z')
+    new_seqid = 'a';
 
   return adata;
 }
