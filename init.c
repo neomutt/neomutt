@@ -581,7 +581,7 @@ static enum CommandResult parse_replace_list(struct Buffer *buf, struct Buffer *
   if (!MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), "subjectrx");
-    return MUTT_CMD_ERROR;
+    return MUTT_CMD_WARNING;
   }
   mutt_extract_token(buf, s, 0);
 
@@ -589,7 +589,7 @@ static enum CommandResult parse_replace_list(struct Buffer *buf, struct Buffer *
   if (!MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), "subjectrx");
-    return MUTT_CMD_ERROR;
+    return MUTT_CMD_WARNING;
   }
   mutt_extract_token(&templ, s, 0);
 
@@ -678,7 +678,7 @@ static enum CommandResult parse_unreplace_list(struct Buffer *buf, struct Buffer
   if (!MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), "unsubjectrx");
-    return MUTT_CMD_ERROR;
+    return MUTT_CMD_WARNING;
   }
 
   mutt_extract_token(buf, s, 0);
@@ -897,7 +897,7 @@ static enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   if (!MoreArgs(s))
   {
     mutt_buffer_strcpy(err, _("alias: no address"));
-    return MUTT_CMD_ERROR;
+    return MUTT_CMD_WARNING;
   }
 
   mutt_extract_token(buf, s, 0);
@@ -1012,7 +1012,7 @@ static enum CommandResult parse_attachments(struct Buffer *buf, struct Buffer *s
   if (!buf->data || *buf->data == '\0')
   {
     mutt_buffer_strcpy(err, _("attachments: no disposition"));
-    return MUTT_CMD_ERROR;
+    return MUTT_CMD_WARNING;
   }
 
   category = buf->data;
@@ -1068,7 +1068,7 @@ static enum CommandResult parse_echo(struct Buffer *buf, struct Buffer *s,
   if (!MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), "echo");
-    return MUTT_CMD_ERROR;
+    return MUTT_CMD_WARNING;
   }
   mutt_extract_token(buf, s, 0);
   OptForceRefresh = true;
@@ -1082,7 +1082,7 @@ static enum CommandResult parse_echo(struct Buffer *buf, struct Buffer *s,
 /**
  * parse_finish - Parse the 'finish' command - Implements ::command_t
  * @retval  MUTT_CMD_FINISH Stop processing the current file
- * @retval  MUTT_CMD_ERROR Failed
+ * @retval  MUTT_CMD_WARNING Failed
  *
  * If the 'finish' command is found, we should stop reading the current file.
  */
@@ -1092,7 +1092,7 @@ static enum CommandResult parse_finish(struct Buffer *buf, struct Buffer *s,
   if (MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too many arguments"), "finish");
-    return MUTT_CMD_ERROR;
+    return MUTT_CMD_WARNING;
   }
 
   return MUTT_CMD_FINISH;
@@ -1132,7 +1132,7 @@ static enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
         case GS_NONE:
           mutt_buffer_printf(err, _("%sgroup: missing -rx or -addr"),
                              (data == MUTT_UNGROUP) ? "un" : "");
-          goto bail;
+          goto warn;
 
         case GS_RX:
           if (data == MUTT_GROUP &&
@@ -1175,6 +1175,10 @@ out:
 bail:
   mutt_grouplist_destroy(&gc);
   return MUTT_CMD_ERROR;
+
+warn:
+  mutt_grouplist_destroy(&gc);
+  return MUTT_CMD_WARNING;
 }
 
 /**
@@ -1249,7 +1253,7 @@ static enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
   if (!MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), (data ? "ifndef" : "ifdef"));
-    return MUTT_CMD_ERROR;
+    return MUTT_CMD_WARNING;
   }
   mutt_extract_token(buf, s, MUTT_TOKEN_SPACE);
 
@@ -1331,7 +1335,7 @@ static enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
   if (!p || (*p != ':'))
   {
     mutt_buffer_strcpy(err, _("invalid header field"));
-    return MUTT_CMD_ERROR;
+    return MUTT_CMD_WARNING;
   }
   keylen = p - buf->data + 1;
 
@@ -1459,7 +1463,7 @@ static enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
     {
       mutt_buffer_printf(err, "ERR22 cannot use 'inv', 'no', '&' or '?' with the '%s' command",
                          set_commands[data]);
-      return MUTT_CMD_ERROR;
+      return MUTT_CMD_WARNING;
     }
 
     /* get the variable name */
@@ -1503,14 +1507,14 @@ static enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       {
         mutt_buffer_printf(
             err, "ERR02 cannot use a prefix when querying a variable");
-        return MUTT_CMD_ERROR;
+        return MUTT_CMD_WARNING;
       }
 
       if (reset || unset || inv)
       {
         mutt_buffer_printf(err, "ERR03 cannot query a variable with the '%s' command",
                            set_commands[data]);
-        return MUTT_CMD_ERROR;
+        return MUTT_CMD_WARNING;
       }
 
       query = true;
@@ -1522,14 +1526,14 @@ static enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       {
         mutt_buffer_printf(err,
                            "ERR04 cannot use prefix when setting a variable");
-        return MUTT_CMD_ERROR;
+        return MUTT_CMD_WARNING;
       }
 
       if (reset || unset || inv)
       {
         mutt_buffer_printf(err, "ERR05 cannot set a variable with the '%s' command",
                            set_commands[data]);
-        return MUTT_CMD_ERROR;
+        return MUTT_CMD_WARNING;
       }
 
       equals = true;
@@ -1548,7 +1552,7 @@ static enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
         mutt_buffer_printf(err, "ERR07 command '%s' can only be used with bool/quad variables",
                            set_commands[data]);
       }
-      return MUTT_CMD_ERROR;
+      return MUTT_CMD_WARNING;
     }
 
     if (reset)
@@ -1755,7 +1759,7 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
   if (!MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), "setenv");
-    return MUTT_CMD_ERROR;
+    return MUTT_CMD_WARNING;
   }
 
   if (*s->dptr == '?')
@@ -1792,7 +1796,7 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
     }
 
     mutt_buffer_printf(err, _("%s is unset"), buf->data);
-    return MUTT_CMD_ERROR;
+    return MUTT_CMD_WARNING;
   }
 
   if (unset)
@@ -1813,7 +1817,7 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
   if (!MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), "setenv");
-    return MUTT_CMD_ERROR;
+    return MUTT_CMD_WARNING;
   }
 
   char *name = mutt_str_strdup(buf->data);
@@ -2017,7 +2021,7 @@ static enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *
     if (MoreArgs(s))
     {
       mutt_buffer_printf(err, _("%s: too many arguments"), "subscribe-to");
-      return MUTT_CMD_ERROR;
+      return MUTT_CMD_WARNING;
     }
 
     if (buf->data && *buf->data)
@@ -2042,7 +2046,7 @@ static enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *
   }
 
   mutt_buffer_addstr(err, _("No folder specified"));
-  return MUTT_CMD_ERROR;
+  return MUTT_CMD_WARNING;
 }
 #endif
 
@@ -2210,7 +2214,7 @@ static enum CommandResult parse_unattachments(struct Buffer *buf, struct Buffer 
   if (!buf->data || *buf->data == '\0')
   {
     mutt_buffer_strcpy(err, _("unattachments: no disposition"));
-    return MUTT_CMD_ERROR;
+    return MUTT_CMD_WARNING;
   }
 
   p = buf->data;
@@ -2401,7 +2405,7 @@ static enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buff
     if (MoreArgs(s))
     {
       mutt_buffer_printf(err, _("%s: too many arguments"), "unsubscribe-from");
-      return MUTT_CMD_ERROR;
+      return MUTT_CMD_WARNING;
     }
 
     if (buf->data && *buf->data)
@@ -2426,7 +2430,7 @@ static enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buff
   }
 
   mutt_buffer_addstr(err, _("No folder specified"));
-  return MUTT_CMD_ERROR;
+  return MUTT_CMD_WARNING;
 }
 #endif
 

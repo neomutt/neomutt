@@ -84,7 +84,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
   struct Hook *ptr = NULL;
   struct Buffer command, pattern;
   int rc;
-  bool not = false;
+  bool not = false, warning = false;
   regex_t *rx = NULL;
   struct Pattern *pat = NULL;
   char path[PATH_MAX];
@@ -106,7 +106,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     if (!MoreArgs(s))
     {
       mutt_buffer_printf(err, _("%s: too few arguments"), buf->data);
-      goto error;
+      goto warn;
     }
   }
 
@@ -119,13 +119,13 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
   if (!command.data)
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), buf->data);
-    goto error;
+    goto warn;
   }
 
   if (MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too many arguments"), buf->data);
-    goto error;
+    goto warn;
   }
 
   if (data & (MUTT_FOLDER_HOOK | MUTT_MBOX_HOOK))
@@ -275,11 +275,13 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
   TAILQ_INSERT_TAIL(&Hooks, ptr, entries);
   return MUTT_CMD_SUCCESS;
 
+warn:
+  warning = true;
 error:
   if (~data & MUTT_GLOBAL_HOOK) /* NOT a global hook */
     FREE(&pattern.data);
   FREE(&command.data);
-  return MUTT_CMD_ERROR;
+  return (warning ? MUTT_CMD_WARNING : MUTT_CMD_ERROR);
 }
 
 /**
@@ -334,7 +336,7 @@ enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s,
       if (current_hook_type)
       {
         mutt_buffer_printf(err, "%s", _("unhook: Can't do unhook * from within a hook"));
-        return MUTT_CMD_ERROR;
+        return MUTT_CMD_WARNING;
       }
       mutt_delete_hooks(0);
       mutt_ch_lookup_remove();
@@ -357,7 +359,7 @@ enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s,
       {
         mutt_buffer_printf(err, _("unhook: Can't delete a %s from within a %s"),
                            buf->data, buf->data);
-        return MUTT_CMD_ERROR;
+        return MUTT_CMD_WARNING;
       }
       mutt_delete_hooks(type);
     }
