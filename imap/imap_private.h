@@ -185,7 +185,8 @@ struct ImapAccountData
    * it's just no fun to get the same information twice */
   char *capstr;
   unsigned char capabilities[(IMAP_CAP_MAX + 7) / 8];
-  unsigned int seqno; ///< tag sequence number, e.g. 'a0001'
+  unsigned char seqid; /* tag sequence prefix */
+  unsigned int seqno; ///< tag sequence number, e.g. '{seqid}0001'
   time_t lastread; /**< last time we read a command for the server */
   char *buf;
   size_t blen;

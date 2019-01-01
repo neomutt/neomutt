@@ -109,7 +109,7 @@ static struct ImapCommand *cmd_new(struct ImapAccountData *adata)
   cmd = adata->cmds + adata->nextcmd;
   adata->nextcmd = (adata->nextcmd + 1) % adata->cmdslots;
 
-  snprintf(cmd->seq, sizeof(cmd->seq), "a%04u", adata->seqno++);
+  snprintf(cmd->seq, sizeof(cmd->seq), "%c%04u", adata->seqid, adata->seqno++);
   if (adata->seqno > 9999)
     adata->seqno = 0;
 
