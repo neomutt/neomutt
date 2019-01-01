@@ -607,13 +607,13 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
   {
     mutt_buffer_printf(err, _("%s: command valid only for index, body, header objects"),
                        parse_uncolor ? "uncolor" : "unmono");
-    return MUTT_CMD_ERROR;
+    return MUTT_CMD_WARNING;
   }
 
   if (!MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), parse_uncolor ? "uncolor" : "unmono");
-    return MUTT_CMD_ERROR;
+    return MUTT_CMD_WARNING;
   }
 
   if (
@@ -1005,7 +1005,7 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
     if (!MoreArgs(s))
     {
       mutt_buffer_printf(err, _("%s: too few arguments"), color ? "color" : "mono");
-      return MUTT_CMD_ERROR;
+      return MUTT_CMD_WARNING;
     }
 
     mutt_extract_token(buf, s, 0);
@@ -1014,7 +1014,7 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
   if (MoreArgs(s) && (object != MT_COLOR_STATUS))
   {
     mutt_buffer_printf(err, _("%s: too many arguments"), color ? "color" : "mono");
-    return MUTT_CMD_ERROR;
+    return MUTT_CMD_WARNING;
   }
 
   /* dry run? */
@@ -1070,7 +1070,7 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
     if (MoreArgs(s))
     {
       mutt_buffer_printf(err, _("%s: too many arguments"), color ? "color" : "mono");
-      return -1;
+      return MUTT_CMD_WARNING;
     }
 
     r = add_pattern(&ColorStatusList, buf->data, true, fg, bg, attr, err, false, match);

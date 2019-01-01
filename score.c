@@ -106,7 +106,7 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
   if (!MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), "score");
-    return MUTT_CMD_ERROR;
+    return MUTT_CMD_WARNING;
   }
   pattern = buf->data;
   mutt_buffer_init(buf);
@@ -115,7 +115,7 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
   {
     FREE(&pattern);
     mutt_buffer_printf(err, _("%s: too many arguments"), "score");
-    return MUTT_CMD_ERROR;
+    return MUTT_CMD_WARNING;
   }
 
   /* look for an existing entry and update the value, else add it to the end
