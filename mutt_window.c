@@ -32,7 +32,7 @@
 #include "mutt/mutt.h"
 #include "mutt_window.h"
 #include "globals.h"
-#include "menu.h"
+#include "mutt_menu.h"
 #include "options.h"
 
 struct MuttWindow *MuttHelpWindow = NULL;    /**< Help Window */

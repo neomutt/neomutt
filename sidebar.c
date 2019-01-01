@@ -42,7 +42,7 @@
 #include "format_flags.h"
 #include "globals.h"
 #include "mailbox.h"
-#include "menu.h"
+#include "mutt_menu.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"
 #include "muttlib.h"

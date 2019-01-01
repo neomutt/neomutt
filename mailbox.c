@@ -47,7 +47,7 @@
 #include "globals.h"
 #include "maildir/lib.h"
 #include "mbox/mbox.h"
-#include "menu.h"
+#include "mutt_menu.h"
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "mx.h"

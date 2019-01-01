@@ -33,7 +33,7 @@
 #include "curs_lib.h"
 #include "format_flags.h"
 #include "keymap.h"
-#include "menu.h"
+#include "mutt_menu.h"
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "opcodes.h"

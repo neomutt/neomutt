@@ -43,7 +43,7 @@
 #include "connaccount.h"
 #include "connection.h"
 #include "keymap.h"
-#include "menu.h"
+#include "mutt_menu.h"
 #include "mutt_account.h"
 #include "muttlib.h"
 #include "opcodes.h"

@@ -38,7 +38,7 @@
 #include "globals.h"
 #include "index.h"
 #include "mailbox.h"
-#include "menu.h"
+#include "mutt_menu.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"
 #include "mx.h"

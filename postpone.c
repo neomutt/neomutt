@@ -47,7 +47,7 @@
 #include "hdrline.h"
 #include "keymap.h"
 #include "mailbox.h"
-#include "menu.h"
+#include "mutt_menu.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "muttlib.h"

@@ -49,7 +49,7 @@
 #include "globals.h"
 #include "gnupgparse.h"
 #include "keymap.h"
-#include "menu.h"
+#include "mutt_menu.h"
 #include "mutt_logging.h"
 #include "mutt_window.h"
 #include "muttlib.h"

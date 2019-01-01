@@ -57,7 +57,7 @@
 #include "connection.h"
 #include "globals.h"
 #include "keymap.h"
-#include "menu.h"
+#include "mutt_menu.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
 #include "muttlib.h"

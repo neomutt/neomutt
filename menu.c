@@ -35,7 +35,7 @@
 #include "mutt/mutt.h"
 #include "email/lib.h"
 #include "mutt.h"
-#include "menu.h"
+#include "mutt_menu.h"
 #include "color.h"
 #include "commands.h"
 #include "context.h"

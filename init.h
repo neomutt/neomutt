@@ -52,7 +52,7 @@
 #include "mailbox.h"
 #include "maildir/lib.h"
 #include "main.h"
-#include "menu.h"
+#include "mutt_menu.h"
 #include "mutt_account.h"
 #include "mutt_commands.h"
 #include "mutt_history.h"
