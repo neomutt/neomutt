@@ -2517,7 +2517,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
                                   rd.line_info, rd.topline, rd.hide_quoted);
         }
         else
-          mutt_error(_("Top of message is shown"));
+          mutt_message(_("Top of message is shown"));
         break;
 
       case OP_NEXT_LINE:
@@ -2531,7 +2531,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           }
         }
         else
-          mutt_error(_("Bottom of message is shown"));
+          mutt_message(_("Bottom of message is shown"));
         break;
 
       case OP_PREV_LINE:

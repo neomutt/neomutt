@@ -2428,7 +2428,7 @@ int mutt_index_menu(void)
         if (menu->current >= Context->mailbox->vcount - 1)
         {
           if (menu->menu == MENU_MAIN)
-            mutt_error(_("You are on the last message"));
+            mutt_message(_("You are on the last message"));
           break;
         }
         menu->current = ci_next_undeleted(menu->current);
@@ -2454,7 +2454,7 @@ int mutt_index_menu(void)
         if (menu->current >= Context->mailbox->vcount - 1)
         {
           if (menu->menu == MENU_MAIN)
-            mutt_error(_("You are on the last message"));
+            mutt_message(_("You are on the last message"));
           break;
         }
         menu->current++;
@@ -2473,7 +2473,7 @@ int mutt_index_menu(void)
         CHECK_VISIBLE;
         if (menu->current < 1)
         {
-          mutt_error(_("You are on the first message"));
+          mutt_message(_("You are on the first message"));
           break;
         }
         menu->current = ci_previous_undeleted(menu->current);
@@ -2499,7 +2499,7 @@ int mutt_index_menu(void)
         if (menu->current < 1)
         {
           if (menu->menu == MENU_MAIN)
-            mutt_error(_("You are on the first message"));
+            mutt_message(_("You are on the first message"));
           break;
         }
         menu->current--;
