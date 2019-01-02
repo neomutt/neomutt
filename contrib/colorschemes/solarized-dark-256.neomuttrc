@@ -1,10 +1,5 @@
 # vim: filetype=muttrc
 
-#
-#
-# make sure that you are using neomutt linked against slang, not ncurses, or
-# suffer the consequences of weird color issues. use "neomutt -v" to check this.
-
 # custom body highlights -----------------------------------------------
 # highlight my name and other personally relevant strings
 #color body          color136        color234        "(ethan|schoonover)"
