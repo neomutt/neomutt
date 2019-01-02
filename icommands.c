@@ -69,15 +69,19 @@ const struct ICommand ICommandList[] = {
 /*
  * line     command to execute
  * err      where to write error messages
+ * @retval  0 Success
+ * @retval -1 Error (no message): command not found
+ * @retval -1 Error with message: command failed
+ * @retval -2 Warning with message: command failed
  */
 int neomutt_parse_icommand(/* const */ char *line, struct Buffer *err)
 {
-  int i, r = 0;
+  if (!line || !*line || !err)
+    return -1;
+
+  int i, rc = 0;
 
   struct Buffer expn, token;
-
-  if (!line || !*line)
-    return 0;
 
   mutt_buffer_init(&expn);
   mutt_buffer_init(&token);
@@ -85,7 +89,7 @@ int neomutt_parse_icommand(/* const */ char *line, struct Buffer *err)
   expn.data = expn.dptr = line;
   expn.dsize = mutt_str_strlen(line);
 
-  *err->data = 0;
+  mutt_buffer_reset(err);
 
   SKIPWS(expn.dptr);
   while (*expn.dptr)
@@ -94,28 +98,21 @@ int neomutt_parse_icommand(/* const */ char *line, struct Buffer *err)
     mutt_extract_token(&token, &expn, 0);
     for (i = 0; ICommandList[i].name; i++)
     {
-      if (!mutt_str_strcmp(token.data, ICommandList[i].name))
-      {
-        r = ICommandList[i].func(&token, &expn, ICommandList[i].data, err);
-        if (r != 0)
-        {              /* -1 Error, +1 Finish */
-          goto finish; /* Propagate return code */
-        }
-        break; /* Continue with next command */
-      }
-    }
+      if (mutt_str_strcmp(token.data, ICommandList[i].name) != 0)
+        continue;
 
-    /* command not found */
-    if (!ICommandList[i].name)
-    {
-      snprintf(err->data, err->dsize, ICOMMAND_NOT_FOUND, NONULL(token.data));
-      r = -1;
+      rc = ICommandList[i].func(&token, &expn, ICommandList[i].data, err);
+      if (rc != 0)
+        goto finish;
+
+      break; /* Continue with next command */
     }
   }
+
 finish:
   if (expn.destroy)
     FREE(&expn.data);
-  return r;
+  return rc;
 }
 
 
@@ -128,8 +125,7 @@ static int icmd_quit(struct Buffer *buf, struct Buffer *s, unsigned long data,
 {
   /* TODO: exit more gracefully */
   mutt_exit(0);
-  /* dummy pedantic gcc, needs an int return value :-) */
-  return 1;
+  return 0;
 }
 
 
@@ -137,8 +133,8 @@ static int icmd_help(struct Buffer *buf, struct Buffer *s, unsigned long data,
                      struct Buffer *err)
 {
   /* TODO: implement ':help' command as suggested by flatcap in #162 */
-  snprintf(err->data, err->dsize, _("Not implemented yet."));
-  return 1;
+  mutt_buffer_addstr(err, _("Not implemented yet."));
+  return -1;
 }
 
 
@@ -154,8 +150,8 @@ static int icmd_bind(struct Buffer *buf, struct Buffer *s, unsigned long data,
                      struct Buffer *err)
 {
   /* TODO: implement ':bind' and ':macro' command as suggested by flatcap in #162 */
-  snprintf(err->data, err->dsize, _("Not implemented yet."));
-  return 1;
+  mutt_buffer_addstr(err, _("Not implemented yet."));
+  return -1;
 }
 
 static int icmd_color(struct Buffer *buf, struct Buffer *s, unsigned long data,
@@ -163,8 +159,8 @@ static int icmd_color(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
 {
   /* TODO: implement ':color' command as suggested by flatcap in #162 */
-  snprintf(err->data, err->dsize, _("Not implemented yet."));
-  return 1;
+  mutt_buffer_addstr(err, _("Not implemented yet."));
+  return -1;
 }
 
 
@@ -172,8 +168,8 @@ static int icmd_messages(struct Buffer *buf, struct Buffer *s,
                          unsigned long data, struct Buffer *err)
 {
   /* TODO: implement ':messages' command as suggested by flatcap in #162 */
-  snprintf(err->data, err->dsize, _("Not implemented yet."));
-  return 1;
+  mutt_buffer_addstr(err, _("Not implemented yet."));
+  return -1;
 }
 
 
@@ -181,8 +177,8 @@ static int icmd_scripts(struct Buffer *buf, struct Buffer *s,
                         unsigned long data, struct Buffer *err)
 {
   /* TODO: implement ':scripts' command as suggested by flatcap in #162 */
-  snprintf(err->data, err->dsize, _("Not implemented yet."));
-  return 1;
+  mutt_buffer_addstr(err, _("Not implemented yet."));
+  return -1;
 }
 
 
@@ -190,8 +186,8 @@ static int icmd_vars(struct Buffer *buf, struct Buffer *s, unsigned long data,
                      struct Buffer *err)
 {
   /* TODO: implement ':vars' command as suggested by flatcap in #162 */
-  snprintf(err->data, err->dsize, _("Not implemented yet."));
-  return 1;
+  mutt_buffer_addstr(err, _("Not implemented yet."));
+  return -1;
 }
 
 static int icmd_version(struct Buffer *buf, struct Buffer *s,
@@ -204,7 +200,7 @@ static int icmd_version(struct Buffer *buf, struct Buffer *s,
   fpout = mutt_file_fopen(tempfile, "w");
   if (!fpout)
   {
-    mutt_error(_("Could not create temporary file"));
+    mutt_buffer_addstr(err, _("Could not create temporary file"));
     return -1;
   }
 
@@ -214,12 +210,11 @@ static int icmd_version(struct Buffer *buf, struct Buffer *s,
   struct Pager info = { 0 };
   if (mutt_pager("version", tempfile, 0, &info) == -1)
   {
-    mutt_error(_("Could not create temporary file"));
+    mutt_buffer_addstr(err, _("Could not create temporary file"));
     return -1;
   }
 
-  /*  mutt_enter_command(); */
-  return 1;
+  return 0;
 }
 
 static int icmd_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
@@ -232,7 +227,7 @@ static int icmd_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
   fpout = mutt_file_fopen(tempfile, "w");
   if (!fpout)
   {
-    mutt_error(_("Could not create temporary file"));
+    mutt_buffer_addstr(err, _("Could not create temporary file"));
     return -1;
   }
 
@@ -246,7 +241,7 @@ static int icmd_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
   }
   else
   {
-    return 0;
+    return -1;
   }
 
   fflush(fpout);
@@ -254,10 +249,9 @@ static int icmd_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
   struct Pager info = { 0 };
   if (mutt_pager("set", tempfile, 0, &info) == -1)
   {
-    mutt_error(_("Could not create temporary file"));
+    mutt_buffer_addstr(err, _("Could not create temporary file"));
     return -1;
   }
 
-  /*  mutt_enter_command(); */
-  return 1;
+  return 0;
 }

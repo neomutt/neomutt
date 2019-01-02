@@ -23,8 +23,6 @@
 #ifndef MUTT_ICOMMANDS_H
 #define MUTT_ICOMMANDS_H
 
-static const char *ICOMMAND_NOT_FOUND = "ICOMMAND_NOT_FOUND";
-
 #include <ctype.h>
 #include <stdio.h>
 #include "mutt.h"

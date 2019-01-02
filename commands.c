@@ -731,57 +731,42 @@ void mutt_shell_escape(void)
  */
 void mutt_enter_command(void)
 {
-  struct Buffer err, ierr, token;
-  char buffer[LONG_STRING];
-  enum CommandResult ir, r;
-
-  buffer[0] = '\0';
+  char buffer[LONG_STRING] = { 0 };
 
   /* if enter is pressed after : with no command, just return */
   if (mutt_get_field(":", buffer, sizeof(buffer), MUTT_COMMAND) != 0 || !buffer[0])
     return;
 
-  /* initialiize error buffers */
-  mutt_buffer_init(&err);
-  mutt_buffer_init(&ierr);
-
-  err.dsize = STRING;
-  err.data = mutt_mem_malloc(err.dsize);
-  err.dptr = err.data;
-  ierr.dsize = STRING;
-  ierr.data = mutt_mem_malloc(ierr.dsize);
-  ierr.dptr = ierr.data;
-
-  mutt_buffer_init(&token);
+  struct Buffer *err = mutt_buffer_alloc(STRING);
+  struct Buffer *token = mutt_buffer_alloc(STRING);
 
   /* check if buffer is a valid icommand, else fall back quietly to parse_rc_lines */
-  ir = neomutt_parse_icommand(buffer, &ierr);
-  if (!mutt_str_strcmp(ierr.data, ICOMMAND_NOT_FOUND))
+  int rc = neomutt_parse_icommand(buffer, err);
+  if (!mutt_buffer_is_empty(err))
   {
-    /* if ICommand was not found, try conventional parse_rc_line */
-    r = mutt_parse_rc_line(buffer, &token, &err);
-    if (err.data[0])
+    /* since errbuf could potentially contain printf() sequences in it,
+     * we must call mutt_error() in this fashion so that vsprintf()
+     * doesn't expect more arguments that we passed */
+    if (rc == -1)
+      mutt_error("%s", err->data);
+    else
+      mutt_warning("%s", err->data);
+  }
+  else if (rc != 0)
+  {
+    rc = mutt_parse_rc_line(buffer, token, err);
+    if (!mutt_buffer_is_empty(err))
     {
-      /* since errbuf could potentially contain printf() sequences in it,
-         we must call mutt_error() in this fashion so that vsprintf()
-         doesn't expect more arguments that we passed */
-
-      if (r == MUTT_CMD_SUCCESS) /* command succeeded with message */
-        mutt_message("%s", err.data);
+      if (rc == 0) /* command succeeded with message */
+        mutt_message("%s", err->data);
       else /* error executing command */
-        mutt_error("%s", err.data);
+        mutt_error("%s", err->data);
     }
   }
-  else if (ierr.data[0])
-  {
-    if (ir != 0) /* command succeeded with message */
-      mutt_message("%s", ierr.data);
-    else /* error executing command */
-      mutt_error("%s", ierr.data);
-  }
-  FREE(&token.data);
-  FREE(&ierr.data);
-  FREE(&err.data);
+  /* else successful command */
+
+  mutt_buffer_free(&token);
+  mutt_buffer_free(&err);
 }
 
 /**

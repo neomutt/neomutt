@@ -33,7 +33,7 @@
 
 void mutt_summary(void)
 {
-  char filename[_POSIX_PATH_MAX];
+  char filename[PATH_MAX];
   char banner[SHORT_STRING];
 
   mutt_mktemp(filename, sizeof(filename));
