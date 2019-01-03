@@ -52,11 +52,11 @@
 #include "hook.h"
 #include "keymap.h"
 #include "mailbox.h"
-#include "mutt_menu.h"
 #include "mutt_account.h"
 #include "mutt_curses.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
+#include "mutt_menu.h"
 #include "mutt_thread.h"
 #include "mutt_window.h"
 #include "muttlib.h"
@@ -3229,14 +3229,16 @@ int mutt_index_menu(void)
          */
         CHECK_ACL(MUTT_ACL_SEEN, _("Cannot mark messages as read"));
 
-        rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_READ, 1, op == OP_MAIN_READ_THREAD ? 0 : 1);
+        rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_READ, 1,
+                                  op == OP_MAIN_READ_THREAD ? 0 : 1);
 
         if (rc != -1)
         {
           if (Resolve)
           {
-            menu->current = (op == OP_MAIN_READ_THREAD ? mutt_next_thread(CUR_EMAIL) :
-                                                         mutt_next_subthread(CUR_EMAIL));
+            menu->current =
+                (op == OP_MAIN_READ_THREAD ? mutt_next_thread(CUR_EMAIL) :
+                                             mutt_next_subthread(CUR_EMAIL));
             if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
@@ -3432,7 +3434,8 @@ int mutt_index_menu(void)
          */
         CHECK_ACL(MUTT_ACL_DELETE, _("Cannot undelete messages"));
 
-        rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_DELETE, 0, op == OP_UNDELETE_THREAD ? 0 : 1);
+        rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_DELETE, 0,
+                                  op == OP_UNDELETE_THREAD ? 0 : 1);
         if (rc != -1)
         {
           rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_PURGE, 0,

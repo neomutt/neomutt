@@ -40,8 +40,8 @@
 #include "globals.h"
 #include "keymap.h"
 #include "mailbox.h"
-#include "mutt_menu.h"
 #include "mutt_curses.h"
+#include "mutt_menu.h"
 #include "options.h"
 #include "pattern.h"
 

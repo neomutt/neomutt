@@ -54,7 +54,7 @@
  * mutt_auto_subscribe - Check if user is subscribed to mailing list
  * @param mailto URI of mailing list subscribe
  */
-void mutt_auto_subscribe (const char *mailto)
+void mutt_auto_subscribe(const char *mailto)
 {
   struct Envelope *lpenv;
 
@@ -68,21 +68,20 @@ void mutt_auto_subscribe (const char *mailto)
 
   lpenv = mutt_env_new(); /* parsed envelope from the List-Post mailto: URL */
 
-  if ((url_parse_mailto (lpenv, NULL, mailto) != -1) &&
-      lpenv->to && lpenv->to->mailbox &&
+  if ((url_parse_mailto(lpenv, NULL, mailto) != -1) && lpenv->to && lpenv->to->mailbox &&
       !mutt_regexlist_match(&UnSubscribedLists, lpenv->to->mailbox) &&
       !mutt_regexlist_match(&UnMailLists, lpenv->to->mailbox) &&
       !mutt_regexlist_match(&UnSubscribedLists, lpenv->to->mailbox))
   {
     struct Buffer err;
     char errbuf[STRING];
-    memset (&err, 0, sizeof(err));
+    memset(&err, 0, sizeof(err));
     err.data = errbuf;
     err.dsize = sizeof(errbuf);
     /* mutt_regexlist_add() detects duplicates, so it is safe to
      * try to add here without any checks. */
-    mutt_regexlist_add (&MailLists, lpenv->to->mailbox, REG_ICASE, &err);
-    mutt_regexlist_add (&SubscribedLists, lpenv->to->mailbox, REG_ICASE, &err);
+    mutt_regexlist_add(&MailLists, lpenv->to->mailbox, REG_ICASE, &err);
+    mutt_regexlist_add(&SubscribedLists, lpenv->to->mailbox, REG_ICASE, &err);
   }
 
   mutt_env_free(&lpenv);

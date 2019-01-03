@@ -48,10 +48,10 @@
 #include "globals.h"
 #include "imap/imap.h"
 #include "mailbox.h"
-#include "mutt_menu.h"
 #include "message.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
+#include "mutt_menu.h"
 #include "mutt_socket.h"
 #include "mx.h"
 

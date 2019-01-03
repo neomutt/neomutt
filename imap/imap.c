@@ -1067,7 +1067,7 @@ out:
 
 /**
  * imap_sync_message_for_copy - Update server to reflect the flags of a single message
- * @param[in]  adata        Imap Mailbox
+ * @param[in]  m            Mailbox
  * @param[in]  e            Email
  * @param[in]  cmd          Buffer for the command string
  * @param[out] err_continue Did the user force a continue?
