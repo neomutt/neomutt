@@ -151,7 +151,7 @@ static void test_parse_set(void)
 
         snprintf(line, sizeof(line), tests[t], commands[c], vars[v]);
         printf("%-26s", line);
-        int rc = mutt_parse_rc_line(line, tmp, err);
+        enum CommandResult rc = mutt_parse_rc_line(line, tmp, err);
         printf("%2d %s\n", rc, err->data);
       }
       printf("\n");

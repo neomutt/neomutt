@@ -30,9 +30,9 @@ int  mutt_alloc_color(int fg, int bg);
 int  mutt_combine_color(int fg_attr, int bg_attr);
 void mutt_free_color(int fg, int bg);
 void mutt_free_colors(void);
-int  mutt_parse_color(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-int  mutt_parse_mono(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-int  mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-int  mutt_parse_unmono(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+enum CommandResult mutt_parse_color(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+enum CommandResult mutt_parse_mono(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+enum CommandResult mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+enum CommandResult mutt_parse_unmono(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 
 #endif /* MUTT_COLOR_H */

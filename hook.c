@@ -42,6 +42,7 @@
 #include "globals.h"
 #include "hdrline.h"
 #include "mutt_attach.h"
+#include "mutt_commands.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
@@ -77,13 +78,13 @@ static int current_hook_type = 0;
  *
  * This is used by 'account-hook', 'append-hook' and many more.
  */
-int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                    struct Buffer *err)
+enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
+                                   unsigned long data, struct Buffer *err)
 {
   struct Hook *ptr = NULL;
   struct Buffer command, pattern;
   int rc;
-  bool not = false;
+  bool not = false, warning = false;
   regex_t *rx = NULL;
   struct Pattern *pat = NULL;
   char path[PATH_MAX];
@@ -105,7 +106,7 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
     if (!MoreArgs(s))
     {
       mutt_buffer_printf(err, _("%s: too few arguments"), buf->data);
-      goto error;
+      goto warn;
     }
   }
 
@@ -118,13 +119,13 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
   if (!command.data)
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), buf->data);
-    goto error;
+    goto warn;
   }
 
   if (MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too many arguments"), buf->data);
-    goto error;
+    goto warn;
   }
 
   if (data & (MUTT_FOLDER_HOOK | MUTT_MBOX_HOOK))
@@ -158,7 +159,7 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
     if (mutt_comp_valid_command(command.data) == 0)
     {
       mutt_buffer_strcpy(err, _("badly formatted command string"));
-      return -1;
+      return MUTT_CMD_ERROR;
     }
   }
 #endif
@@ -197,7 +198,7 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
       if (mutt_str_strcmp(ptr->command, command.data) == 0)
       {
         FREE(&command.data);
-        return 0;
+        return MUTT_CMD_SUCCESS;
       }
     }
     else if (ptr->type == data &&
@@ -214,7 +215,7 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
         {
           FREE(&command.data);
           FREE(&pattern.data);
-          return 0;
+          return MUTT_CMD_SUCCESS;
         }
       }
       else
@@ -227,7 +228,7 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
         FREE(&ptr->command);
         ptr->command = command.data;
         FREE(&pattern.data);
-        return 0;
+        return MUTT_CMD_SUCCESS;
       }
     }
   }
@@ -240,7 +241,7 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
       goto error;
     FREE(&pattern.data);
     FREE(&command.data);
-    return 0;
+    return MUTT_CMD_SUCCESS;
   }
   else if (data & (MUTT_SEND_HOOK | MUTT_SEND2_HOOK | MUTT_SAVE_HOOK |
                    MUTT_FCC_HOOK | MUTT_MESSAGE_HOOK | MUTT_REPLY_HOOK))
@@ -272,13 +273,15 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
   ptr->regex.regex = rx;
   ptr->regex.not = not;
   TAILQ_INSERT_TAIL(&Hooks, ptr, entries);
-  return 0;
+  return MUTT_CMD_SUCCESS;
 
+warn:
+  warning = true;
 error:
   if (~data & MUTT_GLOBAL_HOOK) /* NOT a global hook */
     FREE(&pattern.data);
   FREE(&command.data);
-  return -1;
+  return (warning ? MUTT_CMD_WARNING : MUTT_CMD_ERROR);
 }
 
 /**
@@ -322,8 +325,8 @@ void mutt_delete_hooks(int type)
 /**
  * mutt_parse_unhook - Parse the 'unhook' command - Implements ::command_t
  */
-int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                      struct Buffer *err)
+enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s,
+                                     unsigned long data, struct Buffer *err)
 {
   while (MoreArgs(s))
   {
@@ -333,7 +336,7 @@ int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data,
       if (current_hook_type)
       {
         mutt_buffer_printf(err, "%s", _("unhook: Can't do unhook * from within a hook"));
-        return -1;
+        return MUTT_CMD_WARNING;
       }
       mutt_delete_hooks(0);
       mutt_ch_lookup_remove();
@@ -345,23 +348,23 @@ int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data,
       if (!type)
       {
         mutt_buffer_printf(err, _("unhook: unknown hook type: %s"), buf->data);
-        return -1;
+        return MUTT_CMD_ERROR;
       }
       if (type & (MUTT_CHARSET_HOOK | MUTT_ICONV_HOOK))
       {
         mutt_ch_lookup_remove();
-        return 0;
+        return MUTT_CMD_SUCCESS;
       }
       if (current_hook_type == type)
       {
         mutt_buffer_printf(err, _("unhook: Can't delete a %s from within a %s"),
                            buf->data, buf->data);
-        return -1;
+        return MUTT_CMD_WARNING;
       }
       mutt_delete_hooks(type);
     }
   }
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
@@ -388,7 +391,7 @@ void mutt_folder_hook(const char *path)
     {
       if ((regexec(tmp->regex.regex, path, 0, NULL, 0) == 0) ^ tmp->regex.not)
       {
-        if (mutt_parse_rc_line(tmp->command, &token, &err) == -1)
+        if (mutt_parse_rc_line(tmp->command, &token, &err) == MUTT_CMD_ERROR)
         {
           mutt_error("%s", err.data);
           FREE(&token.data);
@@ -456,7 +459,7 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, int type)
     {
       if ((mutt_pattern_exec(hook->pattern, 0, m, e, &cache) > 0) ^ hook->regex.not)
       {
-        if (mutt_parse_rc_line(hook->command, &token, &err) == -1)
+        if (mutt_parse_rc_line(hook->command, &token, &err) == MUTT_CMD_ERROR)
         {
           FREE(&token.data);
           mutt_error("%s", err.data);
@@ -638,7 +641,7 @@ void mutt_account_hook(const char *url)
     {
       inhook = true;
 
-      if (mutt_parse_rc_line(hook->command, &token, &err) == -1)
+      if (mutt_parse_rc_line(hook->command, &token, &err) == MUTT_CMD_ERROR)
       {
         FREE(&token.data);
         mutt_error("%s", err.data);
@@ -680,7 +683,7 @@ void mutt_timeout_hook(void)
     if (!(hook->command && (hook->type & MUTT_TIMEOUT_HOOK)))
       continue;
 
-    if (mutt_parse_rc_line(hook->command, &token, &err) == -1)
+    if (mutt_parse_rc_line(hook->command, &token, &err) == MUTT_CMD_ERROR)
     {
       mutt_error("%s", err.data);
       mutt_buffer_reset(&err);
@@ -718,7 +721,7 @@ void mutt_startup_shutdown_hook(int type)
     if (!(hook->command && (hook->type & type)))
       continue;
 
-    if (mutt_parse_rc_line(hook->command, &token, &err) == -1)
+    if (mutt_parse_rc_line(hook->command, &token, &err) == MUTT_CMD_ERROR)
     {
       mutt_error("%s", err.data);
       mutt_buffer_reset(&err);

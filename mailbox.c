@@ -47,6 +47,7 @@
 #include "globals.h"
 #include "maildir/lib.h"
 #include "mbox/mbox.h"
+#include "mutt_commands.h"
 #include "mutt_menu.h"
 #include "mutt_window.h"
 #include "muttlib.h"
@@ -332,8 +333,8 @@ void mutt_update_mailbox(struct Mailbox *m)
  *
  * This is also used by 'virtual-mailboxes'.
  */
-int mutt_parse_mailboxes(struct Buffer *buf, struct Buffer *s,
-                         unsigned long data, struct Buffer *err)
+enum CommandResult mutt_parse_mailboxes(struct Buffer *buf, struct Buffer *s,
+                                        unsigned long data, struct Buffer *err)
 {
   // char canon[PATH_MAX];
   // struct stat sb = { 0 };
@@ -481,7 +482,7 @@ int mutt_parse_mailboxes(struct Buffer *buf, struct Buffer *s,
     mutt_monitor_add(m);
 #endif
   }
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
@@ -489,8 +490,8 @@ int mutt_parse_mailboxes(struct Buffer *buf, struct Buffer *s,
  *
  * This is also used by 'unvirtual-mailboxes'
  */
-int mutt_parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
-                           unsigned long data, struct Buffer *err)
+enum CommandResult mutt_parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
+                                          unsigned long data, struct Buffer *err)
 {
   char tmp[PATH_MAX];
   bool tmp_valid = false;
@@ -551,7 +552,7 @@ int mutt_parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
       }
     }
   }
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**

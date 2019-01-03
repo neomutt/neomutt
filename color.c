@@ -40,6 +40,7 @@
 #include "globals.h"
 #include "keymap.h"
 #include "mailbox.h"
+#include "mutt_commands.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "options.h"
@@ -572,15 +573,14 @@ static void do_uncolor(struct Buffer *buf, struct Buffer *s,
  * @param data          Flags associated with the command
  * @param err           Buffer for error messages
  * @param parse_uncolor If true, 'uncolor', else 'unmono'
- * @retval  0 Success
- * @retval -1 Error
+ * @retval enum e.g. #MUTT_CMD_SUCCESS
  *
  * usage:
  * * uncolor index pattern [pattern...]
  * * unmono  index pattern [pattern...]
  */
-static int parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                         struct Buffer *err, bool parse_uncolor)
+static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
+                                        unsigned long data, struct Buffer *err, bool parse_uncolor)
 {
   int object = 0;
   bool do_cache = false;
@@ -591,14 +591,14 @@ static int parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long dat
   if (object == -1)
   {
     mutt_buffer_printf(err, _("%s: no such object"), buf->data);
-    return -1;
+    return MUTT_CMD_ERROR;
   }
 
   if (object > MT_COLOR_INDEX_SUBJECT)
   { /* uncolor index column */
     ColorDefs[object] = 0;
     mutt_menu_set_redraw_full(MENU_MAIN);
-    return 0;
+    return MUTT_CMD_SUCCESS;
   }
 
   if (!mutt_str_startswith(buf->data, "body", CASE_MATCH) &&
@@ -607,13 +607,13 @@ static int parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long dat
   {
     mutt_buffer_printf(err, _("%s: command valid only for index, body, header objects"),
                        parse_uncolor ? "uncolor" : "unmono");
-    return -1;
+    return MUTT_CMD_WARNING;
   }
 
   if (!MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), parse_uncolor ? "uncolor" : "unmono");
-    return -1;
+    return MUTT_CMD_WARNING;
   }
 
   if (
@@ -634,7 +634,7 @@ static int parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long dat
       mutt_extract_token(buf, s, 0);
     while (MoreArgs(s));
 
-    return 0;
+    return MUTT_CMD_SUCCESS;
   }
 
   if (object == MT_COLOR_BODY)
@@ -665,7 +665,7 @@ static int parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long dat
     for (int i = 0; Context && i < Context->mailbox->msg_count; i++)
       Context->mailbox->emails[i]->pair = 0;
   }
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 #ifdef HAVE_COLOR
@@ -673,8 +673,8 @@ static int parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long dat
 /**
  * mutt_parse_uncolor - Parse the 'uncolor' command - Implements ::command_t
  */
-int mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                       struct Buffer *err)
+enum CommandResult mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s,
+                                      unsigned long data, struct Buffer *err)
 {
   return parse_uncolor(buf, s, data, err, true);
 }
@@ -684,8 +684,8 @@ int mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long data,
 /**
  * mutt_parse_unmono - Parse the 'unmono' command - Implements ::command_t
  */
-int mutt_parse_unmono(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                      struct Buffer *err)
+enum CommandResult mutt_parse_unmono(struct Buffer *buf, struct Buffer *s,
+                                     unsigned long data, struct Buffer *err)
 {
   return parse_uncolor(buf, s, data, err, false);
 }
@@ -701,11 +701,11 @@ int mutt_parse_unmono(struct Buffer *buf, struct Buffer *s, unsigned long data,
  * @param err       Buffer for error messages
  * @param is_index  true of this is for the index
  * @param match     Number of regex subexpression to match (0 for entire pattern)
- * @retval  0 Success
- * @retval -1 Error
+ * @retval enum e.g. #MUTT_CMD_SUCCESS
  */
-static int add_pattern(struct ColorLineHead *top, const char *s, bool sensitive, int fg,
-                       int bg, int attr, struct Buffer *err, bool is_index, int match)
+static enum CommandResult add_pattern(struct ColorLineHead *top, const char *s,
+                                      bool sensitive, int fg, int bg, int attr,
+                                      struct Buffer *err, bool is_index, int match)
 {
   /* is_index used to store compiled pattern
    * only for `index' color object
@@ -757,7 +757,7 @@ static int add_pattern(struct ColorLineHead *top, const char *s, bool sensitive,
       if (!tmp->color_pattern)
       {
         free_color_line(tmp, true);
-        return -1;
+        return MUTT_CMD_ERROR;
       }
     }
     else
@@ -773,7 +773,7 @@ static int add_pattern(struct ColorLineHead *top, const char *s, bool sensitive,
       {
         regerror(r, &tmp->regex, err->data, err->dsize);
         free_color_line(tmp, true);
-        return -1;
+        return MUTT_CMD_ERROR;
       }
     }
     tmp->pattern = mutt_str_strdup(s);
@@ -797,7 +797,7 @@ static int add_pattern(struct ColorLineHead *top, const char *s, bool sensitive,
       Context->mailbox->emails[i]->pair = 0;
   }
 
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
@@ -977,23 +977,23 @@ static int fgbgattr_to_color(int fg, int bg, int attr)
  * @param callback Function to handle command - Implements ::parser_callback_t
  * @param dry_run  If true, test the command, but don't apply it
  * @param color    If true "color", else "mono"
- * @retval  0 Success
- * @retval -1 Error
+ * @retval enum e.g. #MUTT_CMD_SUCCESS
  *
  * usage: color OBJECT FG BG [ REGEX ]
  *        mono  OBJECT ATTR [ REGEX ]
  */
-static int parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
-                       parser_callback_t callback, bool dry_run, bool color)
+static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
+                                      struct Buffer *err, parser_callback_t callback,
+                                      bool dry_run, bool color)
 {
-  int object = 0, attr = 0, fg = 0, bg = 0, q_level = 0;
-  int r = 0, match = 0;
+  int object = 0, attr = 0, fg = 0, bg = 0, q_level = 0, match = 0;
+  enum CommandResult r = MUTT_CMD_SUCCESS;
 
   if (parse_object(buf, s, &object, &q_level, err) == -1)
-    return -1;
+    return MUTT_CMD_ERROR;
 
   if (callback(buf, s, &fg, &bg, &attr, err) == -1)
-    return -1;
+    return MUTT_CMD_ERROR;
 
   /* extract a regular expression if needed */
 
@@ -1005,7 +1005,7 @@ static int parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
     if (!MoreArgs(s))
     {
       mutt_buffer_printf(err, _("%s: too few arguments"), color ? "color" : "mono");
-      return -1;
+      return MUTT_CMD_WARNING;
     }
 
     mutt_extract_token(buf, s, 0);
@@ -1014,7 +1014,7 @@ static int parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
   if (MoreArgs(s) && (object != MT_COLOR_STATUS))
   {
     mutt_buffer_printf(err, _("%s: too many arguments"), color ? "color" : "mono");
-    return -1;
+    return MUTT_CMD_WARNING;
   }
 
   /* dry run? */
@@ -1022,7 +1022,7 @@ static int parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
   if (dry_run)
   {
     *s->dptr = '\0'; /* fake that we're done parsing */
-    return 0;
+    return MUTT_CMD_SUCCESS;
   }
 
 #ifdef HAVE_COLOR
@@ -1039,7 +1039,7 @@ static int parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
    */
   {
     mutt_buffer_strcpy(err, _("default colors not supported"));
-    return -1;
+    return MUTT_CMD_ERROR;
   }
 #endif /* HAVE_USE_DEFAULT_COLORS */
 #endif
@@ -1070,7 +1070,7 @@ static int parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
     if (MoreArgs(s))
     {
       mutt_buffer_printf(err, _("%s: too many arguments"), color ? "color" : "mono");
-      return -1;
+      return MUTT_CMD_WARNING;
     }
 
     r = add_pattern(&ColorStatusList, buf->data, true, fg, bg, attr, err, false, match);
@@ -1139,8 +1139,8 @@ static int parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
 /**
  * mutt_parse_color - Parse the 'color' command - Implements ::command_t
  */
-int mutt_parse_color(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                     struct Buffer *err)
+enum CommandResult mutt_parse_color(struct Buffer *buf, struct Buffer *s,
+                                    unsigned long data, struct Buffer *err)
 {
   bool dry_run = false;
 
@@ -1155,8 +1155,8 @@ int mutt_parse_color(struct Buffer *buf, struct Buffer *s, unsigned long data,
 /**
  * mutt_parse_mono - Parse the 'mono' command - Implements ::command_t
  */
-int mutt_parse_mono(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                    struct Buffer *err)
+enum CommandResult mutt_parse_mono(struct Buffer *buf, struct Buffer *s,
+                                   unsigned long data, struct Buffer *err)
 {
   bool dry_run = false;
 
