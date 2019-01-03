@@ -302,8 +302,14 @@ void nm_db_longrun_done(struct Mailbox *m)
 {
   struct NmAccountData *adata = nm_adata_get(m);
 
-  if (adata && (nm_db_release(m) == 0))
-    mutt_debug(2, "nm: long run deinitialized\n");
+  if (adata)
+  {
+    adata->longrun = false; /* to force nm_db_release() released DB */
+    if (nm_db_release(m) == 0)
+      mutt_debug(2, "nm: long run deinitialized\n");
+    else
+      adata->longrun = true;
+  }
 }
 
 /**
