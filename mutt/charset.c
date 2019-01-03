@@ -31,7 +31,6 @@
 #include <errno.h>
 #include <iconv.h>
 #include <langinfo.h>
-#include <libintl.h>
 #include <limits.h>
 #include <regex.h>
 #include <stdbool.h>
@@ -43,6 +42,9 @@
 #include "queue.h"
 #include "regex3.h"
 #include "string2.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 
 #ifndef EILSEQ
 #define EILSEQ EINVAL
