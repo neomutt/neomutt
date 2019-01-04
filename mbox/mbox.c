@@ -1636,10 +1636,7 @@ enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
     return MUTT_UNKNOWN;
 
   if (S_ISDIR(st->st_mode))
-  {
-    mutt_error("%s is not a mailbox", path);
     return MUTT_UNKNOWN;
-  }
 
   if (st->st_size == 0)
     return MUTT_MBOX;
