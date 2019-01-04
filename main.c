@@ -1202,7 +1202,7 @@ int main(int argc, char *argv[], char *envp[])
       }
     }
 
-    mutt_folder_hook(folder);
+    mutt_folder_hook(folder, NULL);
     mutt_startup_shutdown_hook(MUTT_STARTUP_HOOK);
 
     repeat_error = true;

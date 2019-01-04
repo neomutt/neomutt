@@ -3180,7 +3180,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     set_noconv_flags(e->content, true);
 
 #ifdef RECORD_FOLDER_HOOK
-  mutt_folder_hook(path);
+  mutt_folder_hook(path, NULL);
 #endif
   struct Context *f = mx_mbox_open(NULL, path, MUTT_APPEND | MUTT_QUIET);
   if (!f)
@@ -3377,7 +3377,7 @@ done:
   /* We ran a folder hook for the destination mailbox,
    * now we run it for the user's current mailbox */
   if (Context && Context->mailbox->path)
-    mutt_folder_hook(Context->mailbox->path);
+    mutt_folder_hook(Context->mailbox->path, Context->mailbox->desc);
 #endif
 
   return rc;
