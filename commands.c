@@ -49,6 +49,7 @@
 #include "globals.h"
 #include "hdrline.h"
 #include "hook.h"
+#include "icommands.h"
 #include "keymap.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
@@ -730,32 +731,42 @@ void mutt_shell_escape(void)
  */
 void mutt_enter_command(void)
 {
-  struct Buffer err, token;
-  char buffer[LONG_STRING];
-  enum CommandResult r;
+  char buffer[LONG_STRING] = { 0 };
 
-  buffer[0] = '\0';
+  /* if enter is pressed after : with no command, just return */
   if (mutt_get_field(":", buffer, sizeof(buffer), MUTT_COMMAND) != 0 || !buffer[0])
     return;
-  mutt_buffer_init(&err);
-  err.dsize = STRING;
-  err.data = mutt_mem_malloc(err.dsize);
-  err.dptr = err.data;
-  mutt_buffer_init(&token);
-  r = mutt_parse_rc_line(buffer, &token, &err);
-  FREE(&token.data);
-  if (err.data[0])
+
+  struct Buffer *err = mutt_buffer_alloc(STRING);
+  struct Buffer *token = mutt_buffer_alloc(STRING);
+
+  /* check if buffer is a valid icommand, else fall back quietly to parse_rc_lines */
+  enum CommandResult rc = mutt_parse_icommand(buffer, err);
+  if (!mutt_buffer_is_empty(err))
   {
     /* since errbuf could potentially contain printf() sequences in it,
-       we must call mutt_error() in this fashion so that vsprintf()
-       doesn't expect more arguments that we passed */
-    if (r == MUTT_CMD_SUCCESS)
-      mutt_message("%s", err.data);
+     * we must call mutt_error() in this fashion so that vsprintf()
+     * doesn't expect more arguments that we passed */
+    if (rc == MUTT_CMD_ERROR)
+      mutt_error("%s", err->data);
     else
-      mutt_error("%s", err.data);
+      mutt_warning("%s", err->data);
   }
+  else if (rc != MUTT_CMD_SUCCESS)
+  {
+    rc = mutt_parse_rc_line(buffer, token, err);
+    if (!mutt_buffer_is_empty(err))
+    {
+      if (rc == MUTT_CMD_SUCCESS) /* command succeeded with message */
+        mutt_message("%s", err->data);
+      else /* error executing command */
+        mutt_error("%s", err->data);
+    }
+  }
+  /* else successful command */
 
-  FREE(&err.data);
+  mutt_buffer_free(&token);
+  mutt_buffer_free(&err);
 }
 
 /**

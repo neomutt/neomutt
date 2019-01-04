@@ -3212,7 +3212,7 @@ int mutt_query_variables(struct ListHead *queries)
       mutt_buffer_strcpy(value, tmp->data);
     }
 
-    dump_config_neo(Config, he, value, NULL, 0);
+    dump_config_neo(Config, he, value, NULL, 0, stdout);
   }
 
   mutt_buffer_free(&value);

@@ -39,9 +39,9 @@ struct ConfigSet;
 #define CS_DUMP_SHOW_DISABLED  (1 << 6) /**< Show disabled config items, too */
 #define CS_DUMP_SHOW_SYNONYMS  (1 << 7) /**< Show synonyms and the config items their linked to */
 
-void              dump_config_mutt(struct ConfigSet *cs, struct HashElem *he, struct Buffer *value, struct Buffer *initial, int flags);
-void              dump_config_neo(struct ConfigSet *cs, struct HashElem *he, struct Buffer *value, struct Buffer *initial, int flags);
-bool              dump_config(struct ConfigSet *cs, int style, int flags);
+void              dump_config_mutt(struct ConfigSet *cs, struct HashElem *he, struct Buffer *value, struct Buffer *initial, int flags, FILE *fp);
+void              dump_config_neo(struct ConfigSet *cs, struct HashElem *he, struct Buffer *value, struct Buffer *initial, int flags, FILE *fp);
+bool              dump_config(struct ConfigSet *cs, int style, int flags, FILE *fp);
 int               elem_list_sort(const void *a, const void *b);
 size_t            escape_string(struct Buffer *buf, const char *src);
 struct HashElem **get_elem_list(struct ConfigSet *cs);

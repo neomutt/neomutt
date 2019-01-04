@@ -1235,6 +1235,8 @@ const struct Binding *km_get_table(int menu)
       return OpPost;
     case MENU_QUERY:
       return OpQuery;
+    case MENU_SUMMARY:
+      return OpSummary;
   }
   return NULL;
 }
