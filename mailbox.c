@@ -112,11 +112,7 @@ void mailbox_free(struct Mailbox **m)
   if (!m || !*m)
     return;
 
-  if (Context && Context->mailbox && Context->mailbox == *m)
-  {
-    mx_cleanup_context(Context);
-    FREE(&Context);
-  }
+  mutt_mailbox_changed(*m, MBN_CLOSED);
 
   FREE(&(*m)->desc);
   if ((*m)->mdata && (*m)->free_mdata)
@@ -755,14 +751,14 @@ void mutt_mailbox(char *s, size_t slen)
 }
 
 /**
- * mutt_context_free - Free a Context
- * @param ctx Context to free
+ * mutt_mailbox_changed - Notify listeners of a change to a Mailbox
+ * @param m      Mailbox
+ * @param action Change to Mailbox
  */
-void mutt_context_free(struct Context **ctx)
+void mutt_mailbox_changed(struct Mailbox *m, enum MailboxNotification action)
 {
-  if (!ctx || !*ctx)
+  if (!m || !m->notify)
     return;
 
-  mailbox_free(&(*ctx)->mailbox);
-  FREE(ctx);
+  m->notify(m, action);
 }

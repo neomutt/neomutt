@@ -591,7 +591,7 @@ int imap_create_mailbox(struct ImapAccountData *adata, char *mailbox)
  * @retval <0 Failure
  *
  * TODO: ACL checks. Right now we assume if it exists we can mess with it.
- * TODO: This method should take a Context as parameter to be able to reuse the
+ * TODO: This method should take a Mailbox as parameter to be able to reuse the
  * existing connection.
  */
 int imap_access(const char *path)
@@ -784,15 +784,10 @@ void imap_expunge_mailbox(struct Mailbox *m)
     return;
 
   struct Email *e = NULL;
-  short old_sort;
 
 #ifdef USE_HCACHE
   mdata->hcache = imap_hcache_open(adata, mdata);
 #endif
-
-  old_sort = Sort;
-  Sort = SORT_ORDER;
-  mutt_sort_headers(mdata->ctx, false);
 
   for (int i = 0; i < m->msg_count; i++)
   {
@@ -825,7 +820,7 @@ void imap_expunge_mailbox(struct Mailbox *m)
        * flag becomes set (e.g. a flag update to a modified header),
        * this function will be called by imap_cmd_finish().
        *
-       * The mx_update_tables() will free and remove these "inactive" headers,
+       * The ctx_update_tables() will free and remove these "inactive" headers,
        * despite that an EXPUNGE was not received for them.
        * This would result in memory leaks and segfaults due to dangling
        * pointers in the msn_index and uid_hash.
@@ -841,11 +836,7 @@ void imap_expunge_mailbox(struct Mailbox *m)
   imap_hcache_close(mdata);
 #endif
 
-  /* We may be called on to expunge at any time. We can't rely on the caller
-   * to always know to rethread */
-  mx_update_tables(mdata->ctx, false);
-  Sort = old_sort;
-  mutt_sort_headers(mdata->ctx, true);
+  mutt_mailbox_changed(m, MBN_RESORT);
 }
 
 /**
@@ -1623,23 +1614,21 @@ out:
 
 /**
  * imap_sync_mailbox - Sync all the changes to the server
- * @param ctx     Mailbox
+ * @param m       Mailbox
  * @param expunge if true do expunge
  * @param close   if true we move imap state to CLOSE
  * @retval  0 Success
  * @retval -1 Error
  */
-int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
+int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
 
   struct Email *e = NULL;
   struct Email **emails = NULL;
   int oldsort;
   int rc;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
@@ -1714,7 +1703,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
         mutt_message(ngettext("Saving changed message... [%d/%d]",
                               "Saving changed messages... [%d/%d]", m->msg_count),
                      i + 1, m->msg_count);
-        mutt_save_message_ctx(e, true, false, false, ctx->mailbox);
+        mutt_save_message_ctx(e, true, false, false, m);
         e->xlabel_changed = false;
       }
     }
@@ -1956,7 +1945,7 @@ int imap_login(struct ImapAccountData *adata)
 /**
  * imap_mbox_open - Implements MxOps::mbox_open()
  */
-static int imap_mbox_open(struct Mailbox *m, struct Context *ctx)
+static int imap_mbox_open(struct Mailbox *m)
 {
   if (!m || !m->account || !m->mdata)
     return -1;
@@ -1969,12 +1958,6 @@ static int imap_mbox_open(struct Mailbox *m, struct Context *ctx)
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
 
-  // NOTE(sileht): looks like we have two not obvious loop here
-  // ctx->mailbox->account->mdata->ctx
-  // mailbox->account->adata->mailbox
-  // this is used only by imap_mbox_close() to detect if the
-  // adata/mailbox is a normal or append one, looks a bit dirty
-  mdata->ctx = ctx;
   adata->mailbox = m;
 
   /* clear mailbox status */
@@ -2209,17 +2192,15 @@ static int imap_mbox_open_append(struct Mailbox *m, int flags)
 
 /**
  * imap_mbox_check - Implements MxOps::mbox_check()
- * @param ctx        Mailbox
+ * @param m          Mailbox
  * @param index_hint Remember our place in the index
  * @retval >0 Success, e.g. #MUTT_REOPENED
  * @retval -1 Failure
  */
-static int imap_mbox_check(struct Context *ctx, int *index_hint)
+static int imap_mbox_check(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   imap_allow_reopen(m);
   int rc = imap_check_mailbox(m, false);
@@ -2246,8 +2227,7 @@ static int imap_mbox_close(struct Mailbox *m)
     return 0;
 
   /* imap_mbox_open_append() borrows the struct ImapAccountData temporarily,
-   * just for the connection, but does not set mdata->ctx to the
-   * open-append ctx.
+   * just for the connection.
    *
    * So when these are equal, it means we are actually closing the
    * mailbox and should clean up adata.  Otherwise, we don't want to
@@ -2268,8 +2248,6 @@ static int imap_mbox_close(struct Mailbox *m)
     }
 
     adata->mailbox = NULL;
-    mdata->ctx = NULL;
-
     imap_mdata_cache_reset(m->mdata);
   }
 

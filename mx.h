@@ -120,13 +120,12 @@ struct MxOps
   int             (*ac_add)   (struct Account *a, struct Mailbox *m);
   /**
    * mbox_open - Open a mailbox
-   * @param m   Mailbox to open
-   * @param ctx Mailbox to open
+   * @param m Mailbox to open
    * @retval  0 Success
    * @retval -1 Error
    * @retval -2 Aborted
    */
-  int (*mbox_open)       (struct Mailbox *m, struct Context *ctx);
+  int (*mbox_open)       (struct Mailbox *m);
   /**
    * mbox_open_append - Open a mailbox for appending
    * @param m     Mailbox to open
@@ -137,12 +136,12 @@ struct MxOps
   int (*mbox_open_append)(struct Mailbox *m, int flags);
   /**
    * mbox_check - Check for new mail
-   * @param ctx Mailbox
+   * @param m          Mailbox
    * @param index_hint Remember our place in the index
    * @retval >0 Success, e.g. #MUTT_REOPENED
    * @retval -1 Error
    */
-  int (*mbox_check)      (struct Context *ctx, int *index_hint);
+  int (*mbox_check)      (struct Mailbox *m, int *index_hint);
   /**
    * mbox_check_stats - Check the mailbox statistics
    * @param m     Mailbox to check
@@ -153,12 +152,12 @@ struct MxOps
   int (*mbox_check_stats)(struct Mailbox *m, int flags);
   /**
    * mbox_sync - Save changes to the mailbox
-   * @param ctx        Mailbox to sync
+   * @param m          Mailbox to sync
    * @param index_hint Remember our place in the index
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*mbox_sync)       (struct Context *ctx, int *index_hint);
+  int (*mbox_sync)       (struct Mailbox *m, int *index_hint);
   /**
    * mbox_close - Close a mailbox
    * @param m Mailbox to close
@@ -261,9 +260,9 @@ struct MxOps
 };
 
 /* Wrappers for the Mailbox API, see MxOps */
-int             mx_mbox_check      (struct Context *ctx, int *index_hint);
+int             mx_mbox_check      (struct Mailbox *m, int *index_hint);
 int             mx_mbox_check_stats(struct Mailbox *m, int flags);
-int             mx_mbox_close      (struct Context **pctx, int *index_hint);
+int             mx_mbox_close      (struct Context **pctx);
 struct Context *mx_mbox_open       (struct Mailbox *m, const char *path, int flags);
 int             mx_mbox_sync       (struct Context *ctx, int *index_hint);
 int             mx_msg_close       (struct Mailbox *m, struct Message **msg);
@@ -288,11 +287,8 @@ int             mx_ac_remove (struct Mailbox *m);
 int                 mx_access           (const char *path, int flags);
 void                mx_alloc_memory     (struct Mailbox *m);
 int                 mx_check_empty      (const char *path);
-void                mx_fastclose_mailbox(struct Context *ctx);
+void                mx_fastclose_mailbox(struct Mailbox *m);
 const struct MxOps *mx_get_ops          (enum MailboxType magic);
 bool                mx_tags_is_supported(struct Mailbox *m);
-void                mx_update_context   (struct Context *ctx);
-void                mx_update_tables    (struct Context *ctx, bool committing);
-void                mx_cleanup_context  (struct Context *ctx);
 
 #endif /* MUTT_MX_H */

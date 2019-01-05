@@ -1632,7 +1632,7 @@ int nm_read_entire_thread(struct Context *ctx, struct Email *e)
   rc = 0;
 
   if (m->msg_count > mdata->oldmsgcount)
-    mx_update_context(ctx);
+    ctx_update(ctx);
 done:
   if (q)
     notmuch_query_destroy(q);
@@ -2110,7 +2110,7 @@ int nm_ac_add(struct Account *a, struct Mailbox *m)
 /**
  * nm_mbox_open - Implements MxOps::mbox_open()
  */
-static int nm_mbox_open(struct Mailbox *m, struct Context *ctx)
+static int nm_mbox_open(struct Mailbox *m)
 {
   if (init_mailbox(m) != 0)
     return -1;
@@ -2166,7 +2166,7 @@ static int nm_mbox_open(struct Mailbox *m, struct Context *ctx)
 
 /**
  * nm_mbox_check - Implements MxOps::mbox_check()
- * @param ctx         Mailbox
+ * @param m           Mailbox
  * @param index_hint  Remember our place in the index
  * @retval -1 Error
  * @retval  0 Success
@@ -2174,12 +2174,10 @@ static int nm_mbox_open(struct Mailbox *m, struct Context *ctx)
  * @retval #MUTT_REOPENED Mailbox closed and reopened
  * @retval #MUTT_FLAGS    Flags have changed
  */
-static int nm_mbox_check(struct Context *ctx, int *index_hint)
+static int nm_mbox_check(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct NmMboxData *mdata = nm_mdata_get(m);
   time_t mtime = 0;
@@ -2258,7 +2256,7 @@ static int nm_mbox_check(struct Context *ctx, int *index_hint)
        */
       struct Email tmp = { 0 };
       maildir_parse_flags(&tmp, new);
-      maildir_update_flags(ctx->mailbox, e, &tmp);
+      maildir_update_flags(m, e, &tmp);
     }
 
     if (update_email_tags(e, msg) == 0)
@@ -2277,7 +2275,7 @@ static int nm_mbox_check(struct Context *ctx, int *index_hint)
   }
 
   if (m->msg_count > mdata->oldmsgcount)
-    mx_update_context(ctx);
+    mutt_mailbox_changed(m, MBN_INVALID);
 done:
   if (q)
     notmuch_query_destroy(q);
@@ -2298,12 +2296,10 @@ done:
 /**
  * nm_mbox_sync - Implements MxOps::mbox_sync()
  */
-static int nm_mbox_sync(struct Context *ctx, int *index_hint)
+static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct NmMboxData *mdata = nm_mdata_get(m);
   if (!mdata)

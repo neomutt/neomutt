@@ -991,7 +991,7 @@ int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
   if ((Context->mailbox->magic == MUTT_IMAP) && !(decode || decrypt) &&
       (imap_path_probe(buf, NULL) == MUTT_IMAP))
   {
-    switch (imap_copy_messages(Context, e, buf, delete))
+    switch (imap_copy_messages(Context->mailbox, e, buf, delete))
     {
       /* success */
       case 0:
@@ -1026,7 +1026,7 @@ int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
     {
       if (mutt_save_message_ctx(e, delete, decode, decrypt, savectx->mailbox) != 0)
       {
-        mx_mbox_close(&savectx, NULL);
+        mx_mbox_close(&savectx);
         return -1;
       }
 #ifdef USE_COMPRESSED
@@ -1084,7 +1084,7 @@ int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
 #endif
       if (rc != 0)
       {
-        mx_mbox_close(&savectx, NULL);
+        mx_mbox_close(&savectx);
         return -1;
       }
     }
@@ -1092,7 +1092,7 @@ int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
     const bool need_mailbox_cleanup = ((savectx->mailbox->magic == MUTT_MBOX) ||
                                        (savectx->mailbox->magic == MUTT_MMDF));
 
-    mx_mbox_close(&savectx, NULL);
+    mx_mbox_close(&savectx);
 
     if (need_mailbox_cleanup)
       mutt_mailbox_cleanup(buf, &st);

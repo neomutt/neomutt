@@ -549,17 +549,15 @@ static int mbox_parse_mailbox(struct Mailbox *m)
 
 /**
  * reopen_mailbox - Close and reopen a mailbox
- * @param ctx        Mailbox
+ * @param m          Mailbox
  * @param index_hint Current email
  * @retval >0 Success, e.g. #MUTT_REOPENED, #MUTT_NEW_MAIL
  * @retval -1 Error
  */
-static int reopen_mailbox(struct Context *ctx, int *index_hint)
+static int reopen_mailbox(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct MboxAccountData *adata = mbox_adata_get(m);
   if (!adata)
@@ -586,7 +584,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
 
     old_sort = Sort;
     Sort = SORT_ORDER;
-    mutt_sort_headers(ctx, true);
+    mutt_mailbox_changed(m, MBN_RESORT);
     Sort = old_sort;
   }
 
@@ -594,10 +592,10 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
   old_msgcount = 0;
 
   /* simulate a close */
+  mutt_mailbox_changed(m, MBN_CLOSED);
   mutt_hash_free(&m->id_hash);
   mutt_hash_free(&m->subj_hash);
   mutt_hash_free(&m->label_hash);
-  mutt_clear_threads(ctx);
   FREE(&m->v2r);
   if (m->readonly)
   {
@@ -616,7 +614,6 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
   m->email_max = 0; /* force allocation of new headers */
   m->msg_count = 0;
   m->vcount = 0;
-  ctx->vsize = 0;
   m->msg_tagged = 0;
   m->msg_deleted = 0;
   m->msg_new = 0;
@@ -923,7 +920,7 @@ int mbox_ac_add(struct Account *a, struct Mailbox *m)
 /**
  * mbox_mbox_open - Implements MxOps::mbox_open()
  */
-static int mbox_mbox_open(struct Mailbox *m, struct Context *ctx)
+static int mbox_mbox_open(struct Mailbox *m)
 {
   if (init_mailbox(m) != 0)
     return -1;
@@ -995,7 +992,7 @@ static int mbox_mbox_open_append(struct Mailbox *m, int flags)
 
 /**
  * mbox_mbox_check - Implements MxOps::mbox_check()
- * @param[in]  ctx        Mailbox
+ * @param[in]  m          Mailbox
  * @param[out] index_hint Keep track of current index selection
  * @retval #MUTT_REOPENED  Mailbox has been reopened
  * @retval #MUTT_NEW_MAIL  New mail has arrived
@@ -1003,12 +1000,10 @@ static int mbox_mbox_open_append(struct Mailbox *m, int flags)
  * @retval 0               No change
  * @retval -1              Error
  */
-static int mbox_mbox_check(struct Context *ctx, int *index_hint)
+static int mbox_mbox_check(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct MboxAccountData *adata = mbox_adata_get(m);
   if (!adata)
@@ -1016,9 +1011,9 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
 
   if (!adata->fp)
   {
-    if (mbox_mbox_open(m, NULL) < 0)
+    if (mbox_mbox_open(m) < 0)
       return -1;
-    mx_update_context(ctx);
+    mutt_mailbox_changed(m, MBN_INVALID);
   }
 
   struct stat st;
@@ -1081,7 +1076,7 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
             mmdf_parse_mailbox(m);
 
           if (m->msg_count > old_msg_count)
-            mx_update_context(ctx);
+            mutt_mailbox_changed(m, MBN_INVALID);
 
           /* Only unlock the folder if it was locked inside of this routine.
            * It may have been locked elsewhere, like in
@@ -1109,9 +1104,9 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
 
   if (modified)
   {
-    if (reopen_mailbox(ctx, index_hint) != -1)
+    if (reopen_mailbox(m, index_hint) != -1)
     {
-      mx_update_context(ctx);
+      mutt_mailbox_changed(m, MBN_INVALID);
       if (unlock)
       {
         mbox_unlock_mailbox(m);
@@ -1124,7 +1119,7 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
   /* fatal error */
 
   mbox_unlock_mailbox(m);
-  mx_fastclose_mailbox(ctx);
+  mx_fastclose_mailbox(m);
   mutt_sig_unblock();
   mutt_error(_("Mailbox was corrupted"));
   return -1;
@@ -1133,12 +1128,10 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
 /**
  * mbox_mbox_sync - Implements MxOps::mbox_sync()
  */
-static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
+static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct MboxAccountData *adata = mbox_adata_get(m);
   if (!adata)
@@ -1164,7 +1157,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   {
     save_sort = Sort;
     Sort = SORT_ORDER;
-    mutt_sort_headers(ctx, false);
+    mutt_mailbox_changed(m, MBN_RESORT);
     Sort = save_sort;
     need_sort = 1;
   }
@@ -1175,7 +1168,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   adata->fp = freopen(m->path, "r+", adata->fp);
   if (!adata->fp)
   {
-    mx_fastclose_mailbox(ctx);
+    mx_fastclose_mailbox(m);
     mutt_error(_("Fatal error!  Could not reopen mailbox!"));
     return -1;
   }
@@ -1190,7 +1183,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   }
 
   /* Check to make sure that the file hasn't changed on disk */
-  i = mbox_mbox_check(ctx, index_hint);
+  i = mbox_mbox_check(m, index_hint);
   if ((i == MUTT_NEW_MAIL) || (i == MUTT_REOPENED))
   {
     /* new mail arrived, or mailbox reopened */
@@ -1293,7 +1286,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
        */
       new_offset[i - first].hdr = ftello(fp) + offset;
 
-      if (mutt_copy_message_ctx(fp, ctx->mailbox, m->emails[i], MUTT_CM_UPDATE,
+      if (mutt_copy_message_ctx(fp, m, m->emails[i], MUTT_CM_UPDATE,
                                 CH_FROM | CH_UPDATE | CH_UPDATE_LEN) != 0)
       {
         mutt_perror(tempfile);
@@ -1353,7 +1346,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   if (!fp)
   {
     mutt_sig_unblock();
-    mx_fastclose_mailbox(ctx);
+    mx_fastclose_mailbox(m);
     mutt_debug(1, "unable to reopen temp copy of mailbox!\n");
     mutt_perror(tempfile);
     FREE(&new_offset);
@@ -1417,7 +1410,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
              NONULL(Username), NONULL(ShortHostname), (unsigned int) getpid());
     rename(tempfile, savefile);
     mutt_sig_unblock();
-    mx_fastclose_mailbox(ctx);
+    mx_fastclose_mailbox(m);
     mutt_pretty_mailbox(savefile, sizeof(savefile));
     mutt_error(_("Write failed!  Saved partial mailbox to %s"), savefile);
     FREE(&new_offset);
@@ -1434,7 +1427,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   {
     unlink(tempfile);
     mutt_sig_unblock();
-    mx_fastclose_mailbox(ctx);
+    mx_fastclose_mailbox(m);
     mutt_error(_("Fatal error!  Could not reopen mailbox!"));
     FREE(&new_offset);
     FREE(&old_offset);
@@ -1494,7 +1487,7 @@ bail: /* Come here in case of disaster */
   if (!adata->fp)
   {
     mutt_error(_("Could not reopen mailbox"));
-    mx_fastclose_mailbox(ctx);
+    mx_fastclose_mailbox(m);
     return -1;
   }
 
@@ -1502,7 +1495,7 @@ bail: /* Come here in case of disaster */
   {
     /* if the mailbox was reopened, the thread tree will be invalid so make
      * sure to start threading from scratch.  */
-    mutt_sort_headers(ctx, (need_sort == MUTT_REOPENED));
+    mutt_mailbox_changed(m, MBN_RESORT);
   }
 
   return rc;
@@ -1815,7 +1808,7 @@ static int mbox_mbox_check_stats(struct Mailbox *m, int flags)
       m->msg_unread = ctx->mailbox->msg_unread;
       m->msg_flagged = ctx->mailbox->msg_flagged;
       m->stats_last_checked = ctx->mailbox->mtime;
-      mx_mbox_close(&ctx, NULL);
+      mx_mbox_close(&ctx);
     }
   }
 

@@ -1459,7 +1459,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
 
         if (!ctx->mailbox->msg_count)
         {
-          mx_mbox_close(&ctx, NULL);
+          mx_mbox_close(&ctx);
           mutt_error(_("No messages in that folder"));
           break;
         }
@@ -1504,11 +1504,11 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         menu->redraw |= REDRAW_FULL;
 
         if (close == OP_QUIT)
-          mx_mbox_close(&Context, NULL);
+          mx_mbox_close(&Context);
         else
         {
-          mx_fastclose_mailbox(Context);
-          mutt_context_free(&Context);
+          mx_fastclose_mailbox(Context->mailbox);
+          ctx_free(&Context);
         }
 
         /* go back to the folder we started from */

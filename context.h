@@ -27,8 +27,7 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <time.h>
-
-struct Mailbox;
+#include "mailbox.h"
 
 /**
  * struct Context - The "current" mailbox
@@ -49,5 +48,10 @@ struct Context
 
   struct Mailbox *mailbox;
 };
+
+void ctx_free(struct Context **ctx);
+void ctx_mailbox_changed(struct Mailbox *m, enum MailboxNotification action);
+void ctx_update(struct Context *ctx);
+void ctx_update_tables(struct Context *ctx, bool committing);
 
 #endif /* MUTT_CONTEXT_H */

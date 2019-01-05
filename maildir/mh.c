@@ -541,7 +541,7 @@ int mh_sync_message(struct Mailbox *m, int msgno)
 /**
  * mh_mbox_open - Implements MxOps::mbox_open()
  */
-static int mh_mbox_open(struct Mailbox *m, struct Context *ctx)
+static int mh_mbox_open(struct Mailbox *m)
 {
   return mh_read_dir(m, NULL);
 }
@@ -589,12 +589,10 @@ static int mh_mbox_open_append(struct Mailbox *m, int flags)
  *
  * Don't change this code unless you _really_ understand what happens.
  */
-int mh_mbox_check(struct Context *ctx, int *index_hint)
+int mh_mbox_check(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   char buf[PATH_MAX];
   struct stat st, st_cur;
@@ -690,7 +688,7 @@ int mh_mbox_check(struct Context *ctx, int *index_hint)
       m->emails[i]->active = true;
       /* found the right message */
       if (!m->emails[i]->changed)
-        if (maildir_update_flags(ctx->mailbox, m->emails[i], p->email))
+        if (maildir_update_flags(m, m->emails[i], p->email))
           flags_changed = true;
 
       mutt_email_free(&p->email);
@@ -705,12 +703,12 @@ int mh_mbox_check(struct Context *ctx, int *index_hint)
 
   /* If we didn't just get new mail, update the tables. */
   if (occult)
-    maildir_update_tables(ctx, index_hint);
+    mutt_mailbox_changed(m, MBN_RESORT);
 
   /* Incorporate new messages */
   num_new = maildir_move_to_context(m, &md);
   if (num_new > 0)
-    mx_update_context(ctx);
+    mutt_mailbox_changed(m, MBN_INVALID);
 
   if (occult)
     return MUTT_REOPENED;

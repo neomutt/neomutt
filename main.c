@@ -1214,7 +1214,7 @@ int main(int argc, char *argv[], char *envp[])
       mutt_sb_set_open_mailbox();
 #endif
       mutt_index_menu();
-      mutt_context_free(&Context);
+      ctx_free(&Context);
     }
 #ifdef USE_IMAP
     imap_logout_all();

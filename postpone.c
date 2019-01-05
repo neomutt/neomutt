@@ -175,8 +175,8 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
       PostCount = 0;
     else
       PostCount = ctx->mailbox->msg_count;
-    mx_fastclose_mailbox(ctx);
-    mutt_context_free(&ctx);
+    mx_fastclose_mailbox(ctx->mailbox);
+    ctx_free(&ctx);
 #ifdef USE_NNTP
     if (optnews)
       OptNews = true;
@@ -314,7 +314,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
     if (PostContext == ctx)
       PostContext = NULL;
     else
-      mx_mbox_close(&PostContext, NULL);
+      mx_mbox_close(&PostContext);
     mutt_error(_("No postponed messages"));
     return -1;
   }
@@ -329,7 +329,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
     if (PostContext == ctx)
       PostContext = NULL;
     else
-      mx_mbox_close(&PostContext, NULL);
+      mx_mbox_close(&PostContext);
     return -1;
   }
 
@@ -337,7 +337,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   {
     if (PostContext != ctx)
     {
-      mx_fastclose_mailbox(PostContext);
+      mx_fastclose_mailbox(PostContext->mailbox);
       FREE(&PostContext);
     }
     return -1;
@@ -356,7 +356,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   if (PostContext == ctx)
     PostContext = NULL;
   else
-    mx_mbox_close(&PostContext, NULL);
+    mx_mbox_close(&PostContext);
   Delete = opt_delete;
 
   struct ListNode *np, *tmp;

@@ -292,7 +292,7 @@ cleanup:
 /**
  * maildir_mbox_open - Implements MxOps::mbox_open()
  */
-static int maildir_mbox_open(struct Mailbox *m, struct Context *ctx)
+static int maildir_mbox_open(struct Mailbox *m)
 {
   return maildir_read_dir(m);
 }
@@ -360,12 +360,10 @@ static int maildir_mbox_open_append(struct Mailbox *m, int flags)
  * already knew about.  We don't treat either subdirectory differently, as mail
  * could be copied directly into the cur directory from another agent.
  */
-int maildir_mbox_check(struct Context *ctx, int *index_hint)
+int maildir_mbox_check(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct stat st_new;         /* status of the "new" subdirectory */
   struct stat st_cur;         /* status of the "cur" subdirectory */
@@ -472,7 +470,7 @@ int maildir_mbox_check(struct Context *ctx, int *index_hint)
        * the flags we just detected.
        */
       if (!m->emails[i]->changed)
-        if (maildir_update_flags(ctx->mailbox, m->emails[i], p->email))
+        if (maildir_update_flags(m, m->emails[i], p->email))
           flags_changed = true;
 
       if (m->emails[i]->deleted == m->emails[i]->trash)
@@ -516,7 +514,7 @@ int maildir_mbox_check(struct Context *ctx, int *index_hint)
 
   /* If we didn't just get new mail, update the tables. */
   if (occult)
-    maildir_update_tables(ctx, index_hint);
+    mutt_mailbox_changed(m, MBN_RESORT);
 
   /* do any delayed parsing we need to do. */
   maildir_delayed_parsing(m, &md, NULL);
@@ -524,7 +522,7 @@ int maildir_mbox_check(struct Context *ctx, int *index_hint)
   /* Incorporate new messages */
   num_new = maildir_move_to_context(m, &md);
   if (num_new > 0)
-    mx_update_context(ctx);
+    mutt_mailbox_changed(m, MBN_INVALID);
 
   mutt_buffer_pool_release(&buf);
 

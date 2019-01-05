@@ -587,7 +587,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
 
   /* keepalive failure in mutt_enter_fname may kill connection. #3028 */
   if (Context && (Context->mailbox->path[0] == '\0'))
-    mutt_context_free(&Context);
+    ctx_free(&Context);
 
   if (Context)
   {
@@ -603,7 +603,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
       new_last_folder = mutt_str_strdup(Context->mailbox->path);
     *oldcount = Context ? Context->mailbox->msg_count : 0;
 
-    int check = mx_mbox_close(&Context, index_hint);
+    int check = mx_mbox_close(&Context);
     if (check != 0)
     {
 #ifdef USE_INOTIFY
@@ -1061,13 +1061,13 @@ int mutt_index_menu(void)
                        CUR_EMAIL->index :
                        0;
 
-      check = mx_mbox_check(Context, &index_hint);
+      check = mx_mbox_check(Context->mailbox, &index_hint);
       if (check < 0)
       {
         if (!Context->mailbox || Context->mailbox->path[0] == '\0')
         {
           /* fatal error occurred */
-          mutt_context_free(&Context);
+          ctx_free(&Context);
           menu->redraw = REDRAW_FULL;
         }
 
@@ -1672,7 +1672,7 @@ int mutt_index_menu(void)
 
           mutt_startup_shutdown_hook(MUTT_SHUTDOWN_HOOK);
 
-          if (!Context || (check = mx_mbox_close(&Context, &index_hint)) == 0)
+          if (!Context || (check = mx_mbox_close(&Context)) == 0)
             done = true;
           else
           {
@@ -1812,7 +1812,7 @@ int mutt_index_menu(void)
       case OP_MAIN_IMAP_LOGOUT_ALL:
         if (Context && Context->mailbox->magic == MUTT_IMAP)
         {
-          int check = mx_mbox_close(&Context, &index_hint);
+          int check = mx_mbox_close(&Context);
           if (check != 0)
           {
             if ((check == MUTT_NEW_MAIL) || (check == MUTT_REOPENED))
@@ -1886,7 +1886,7 @@ int mutt_index_menu(void)
 
         /* check for a fatal error, or all messages deleted */
         if (Context->mailbox->path[0] == '\0')
-          mutt_context_free(&Context);
+          ctx_free(&Context);
 
         /* if we were in the pager, redisplay the message */
         if (menu->menu == MENU_PAGER)
@@ -2331,8 +2331,8 @@ int mutt_index_menu(void)
         {
           if (Context)
           {
-            mx_fastclose_mailbox(Context);
-            mutt_context_free(&Context);
+            mx_fastclose_mailbox(Context->mailbox);
+            ctx_free(&Context);
           }
           done = true;
         }

@@ -33,7 +33,6 @@
 #include "where.h"
 
 struct Buffer;
-struct Context;
 struct Account;
 struct stat;
 
@@ -49,6 +48,16 @@ extern bool  MaildirCheckCur;
 
 #define MB_NORMAL 0
 #define MB_HIDDEN 1
+
+/**
+ * enum MailboxNotification - Notifications about changes to a Mailbox
+ */
+enum MailboxNotification
+{
+  MBN_CLOSED = 1, ///< Mailbox was closed
+  MBN_INVALID,    ///< Email list was changed
+  MBN_RESORT,     ///< Email list needs resorting
+};
 
 /**
  * enum AclRights - ACL Rights
@@ -130,6 +139,9 @@ struct Mailbox
 
   void *mdata;                 /**< driver specific data */
   void (*free_mdata)(void **); /**< driver-specific data free function */
+
+  void (*notify)(struct Mailbox *m, enum MailboxNotification action); ///< Notification callback
+  void *ndata; ///< Notification callback private data
 };
 
 /**
@@ -147,7 +159,6 @@ extern struct MailboxList AllMailboxes; ///< List of all Mailboxes
 
 struct Mailbox *mailbox_new(void);
 void            mailbox_free(struct Mailbox **m);
-void            mutt_context_free(struct Context **ctx);
 
 struct Mailbox *mutt_find_mailbox(const char *path);
 struct Mailbox *mutt_find_mailbox_desc(const char *desc);
@@ -168,5 +179,6 @@ int mutt_mailbox_check(int force);
 bool mutt_mailbox_notify(void);
 enum CommandResult mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
 enum CommandResult mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
+void mutt_mailbox_changed(struct Mailbox *m, enum MailboxNotification action);
 
 #endif /* MUTT_MAILBOX_H */

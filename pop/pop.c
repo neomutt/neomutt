@@ -371,18 +371,16 @@ static header_cache_t *pop_hcache_open(struct PopAccountData *adata, const char 
 
 /**
  * pop_fetch_headers - Read headers
- * @param ctx Mailbox
+ * @param m Mailbox
  * @retval  0 Success
  * @retval -1 Connection lost
  * @retval -2 Invalid command or execution error
  * @retval -3 Error writing to tempfile
  */
-static int pop_fetch_headers(struct Context *ctx)
+static int pop_fetch_headers(struct Mailbox *m)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct PopAccountData *adata = pop_get_adata(m);
   struct Progress progress;
@@ -699,7 +697,7 @@ void pop_fetch_mail(void)
 
     if (ret == -1)
     {
-      mx_mbox_close(&ctx, NULL);
+      mx_mbox_close(&ctx);
       goto fail;
     }
     if (ret == -2)
@@ -720,7 +718,7 @@ void pop_fetch_mail(void)
                  msgbuf, i - last, msgs - last);
   }
 
-  mx_mbox_close(&ctx, NULL);
+  mx_mbox_close(&ctx);
 
   if (rset)
   {
@@ -813,7 +811,7 @@ int pop_ac_add(struct Account *a, struct Mailbox *m)
  *
  * Fetch only headers
  */
-static int pop_mbox_open(struct Mailbox *m, struct Context *ctx)
+static int pop_mbox_open(struct Mailbox *m)
 {
   if (!m || !m->account)
     return -1;
@@ -879,7 +877,7 @@ static int pop_mbox_open(struct Mailbox *m, struct Context *ctx)
 
     mutt_message(_("Fetching list of messages..."));
 
-    const int ret = pop_fetch_headers(ctx);
+    const int ret = pop_fetch_headers(m);
 
     if (ret >= 0)
       return 0;
@@ -892,12 +890,10 @@ static int pop_mbox_open(struct Mailbox *m, struct Context *ctx)
 /**
  * pop_mbox_check - Implements MxOps::mbox_check()
  */
-static int pop_mbox_check(struct Context *ctx, int *index_hint)
+static int pop_mbox_check(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct PopAccountData *adata = pop_get_adata(m);
 
@@ -916,10 +912,10 @@ static int pop_mbox_check(struct Context *ctx, int *index_hint)
   mutt_message(_("Checking for new messages..."));
 
   int old_msg_count = m->msg_count;
-  int ret = pop_fetch_headers(ctx);
+  int ret = pop_fetch_headers(m);
   pop_clear_cache(adata);
   if (m->msg_count > old_msg_count)
-    mx_update_context(ctx);
+    mutt_mailbox_changed(m, MBN_INVALID);
 
   if (ret < 0)
     return -1;
@@ -935,12 +931,10 @@ static int pop_mbox_check(struct Context *ctx, int *index_hint)
  *
  * Update POP mailbox, delete messages from server
  */
-static int pop_mbox_sync(struct Context *ctx, int *index_hint)
+static int pop_mbox_sync(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   int i, j, ret = 0;
   char buf[LONG_STRING];

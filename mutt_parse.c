@@ -44,34 +44,32 @@ struct Context;
 
 /**
  * mutt_parse_mime_message - Parse a MIME email
- * @param m   Mailbox
- * @param cur Email
+ * @param m Mailbox
+ * @param e Email
  */
-void mutt_parse_mime_message(struct Mailbox *m, struct Email *cur)
+void mutt_parse_mime_message(struct Mailbox *m, struct Email *e)
 {
-  struct Message *msg = NULL;
-
   do
   {
-    if (cur->content->type != TYPE_MESSAGE && cur->content->type != TYPE_MULTIPART)
+    if ((e->content->type != TYPE_MESSAGE) && (e->content->type != TYPE_MULTIPART))
       break; /* nothing to do */
 
-    if (cur->content->parts)
+    if (e->content->parts)
       break; /* The message was parsed earlier. */
 
-    msg = mx_msg_open(m, cur->msgno);
+    struct Message *msg = mx_msg_open(m, e->msgno);
     if (msg)
     {
-      mutt_parse_part(msg->fp, cur->content);
+      mutt_parse_part(msg->fp, e->content);
 
       if (WithCrypto)
-        cur->security = crypt_query(cur->content);
+        e->security = crypt_query(e->content);
 
       mx_msg_close(m, &msg);
     }
   } while (false);
 
-  cur->attach_valid = false;
+  e->attach_valid = false;
 }
 
 /**

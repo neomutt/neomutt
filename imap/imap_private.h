@@ -34,7 +34,6 @@
 #include "hcache/hcache.h"
 #endif
 
-struct Context;
 struct Email;
 struct ImapEmailData;
 struct Mailbox;
@@ -239,8 +238,6 @@ struct ImapMboxData
   size_t msn_index_size;       /**< allocation size */
   unsigned int max_msn;        /**< the largest MSN fetched so far */
   struct BodyCache *bcache;
-
-  struct Context *ctx;
 
 #ifdef USE_HCACHE
   header_cache_t *hcache;

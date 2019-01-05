@@ -1522,7 +1522,7 @@ static int nntp_group_poll(struct NntpMboxData *mdata, bool update_stat)
 
 /**
  * check_mailbox - Check current newsgroup for new articles
- * @param ctx Mailbox
+ * @param m Mailbox
  * @retval #MUTT_REOPENED Articles have been renumbered or removed from server
  * @retval #MUTT_NEW_MAIL New articles found
  * @retval  0             No change
@@ -1530,12 +1530,10 @@ static int nntp_group_poll(struct NntpMboxData *mdata, bool update_stat)
  *
  * Leave newsrc locked
  */
-static int check_mailbox(struct Context *ctx)
+static int check_mailbox(struct Mailbox *m)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct NntpMboxData *mdata = m->mdata;
   struct NntpAccountData *adata = mdata->adata;
@@ -1698,9 +1696,7 @@ static int check_mailbox(struct Context *ctx)
 
   /* some headers were removed, context must be updated */
   if (ret == MUTT_REOPENED)
-  {
-    mx_update_context(ctx);
-  }
+    mutt_mailbox_changed(m, MBN_INVALID);
 
   /* fetch headers of new articles */
   if (mdata->last_message > mdata->last_loaded)
@@ -1721,7 +1717,7 @@ static int check_mailbox(struct Context *ctx)
     if (rc == 0)
     {
       if (m->msg_count > old_msg_count)
-        mx_update_context(ctx);
+        mutt_mailbox_changed(m, MBN_INVALID);
       mdata->last_loaded = mdata->last_message;
     }
     if (ret == 0 && m->msg_count > oldmsgcount)
@@ -2290,7 +2286,7 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
   e->changed = true;
   e->received = e->date_sent;
   e->index = m->msg_count++;
-  mx_update_context(ctx);
+  ctx_update(ctx);
   return 0;
 }
 
@@ -2360,7 +2356,7 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
       break;
   }
   if (m->msg_count > old_msg_count)
-    mx_update_context(ctx);
+    ctx_update(ctx);
 
 #ifdef USE_HCACHE
   mutt_hcache_close(hc);
@@ -2427,7 +2423,7 @@ int nntp_ac_add(struct Account *a, struct Mailbox *m)
 /**
  * nntp_mbox_open - Implements MxOps::mbox_open()
  */
-static int nntp_mbox_open(struct Mailbox *m, struct Context *ctx)
+static int nntp_mbox_open(struct Mailbox *m)
 {
   if (!m || !m->account)
     return -1;
@@ -2583,21 +2579,19 @@ static int nntp_mbox_open(struct Mailbox *m, struct Context *ctx)
 
 /**
  * nntp_mbox_check - Implements MxOps::mbox_check()
- * @param ctx        Mailbox
+ * @param m          Mailbox
  * @param index_hint Current message (UNUSED)
  * @retval #MUTT_REOPENED Articles have been renumbered or removed from server
  * @retval #MUTT_NEW_MAIL New articles found
  * @retval  0             No change
  * @retval -1             Lost connection
  */
-static int nntp_mbox_check(struct Context *ctx, int *index_hint)
+static int nntp_mbox_check(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
 
-  struct Mailbox *m = ctx->mailbox;
-
-  int ret = check_mailbox(ctx);
+  int ret = check_mailbox(m);
   if (ret == 0)
   {
     struct NntpMboxData *mdata = m->mdata;
@@ -2612,12 +2606,10 @@ static int nntp_mbox_check(struct Context *ctx, int *index_hint)
  *
  * @note May also return values from check_mailbox()
  */
-static int nntp_mbox_sync(struct Context *ctx, int *index_hint)
+static int nntp_mbox_sync(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct NntpMboxData *mdata = m->mdata;
   int rc;
@@ -2627,7 +2619,7 @@ static int nntp_mbox_sync(struct Context *ctx, int *index_hint)
 
   /* check for new articles */
   mdata->adata->check_time = 0;
-  rc = check_mailbox(ctx);
+  rc = check_mailbox(m);
   if (rc)
     return rc;
 
@@ -2668,7 +2660,7 @@ static int nntp_mbox_sync(struct Context *ctx, int *index_hint)
 #endif
 
   /* save .newsrc entries */
-  nntp_newsrc_gen_entries(ctx);
+  nntp_newsrc_gen_entries(m);
   nntp_newsrc_update(mdata->adata);
   nntp_newsrc_close(mdata->adata);
   return 0;
@@ -2816,7 +2808,7 @@ static int nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   nntp_edata_get(e)->parsed = true;
   mutt_parse_mime_message(m, e);
 
-  /* these would normally be updated in mx_update_context(), but the
+  /* these would normally be updated in ctx_update(), but the
    * full headers aren't parsed with overview, so the information wasn't
    * available then */
   if (WithCrypto)
