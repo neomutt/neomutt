@@ -656,7 +656,7 @@ void pop_fetch_mail(void)
   }
 
   struct Mailbox *m_spool = mx_path_resolve(Spoolfile);
-  struct Context *ctx = mx_mbox_open(m_spool, NULL, MUTT_APPEND);
+  struct Context *ctx = mx_mbox_open(m_spool, MUTT_APPEND);
   if (!ctx)
   {
     mailbox_free(&m_spool);

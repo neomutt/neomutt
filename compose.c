@@ -1451,7 +1451,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         menu->redraw = REDRAW_FULL;
 
         struct Mailbox *m = mx_path_resolve(fname);
-        ctx = mx_mbox_open(m, NULL, MUTT_READONLY);
+        ctx = mx_mbox_open(m, MUTT_READONLY);
         if (!ctx)
         {
           mutt_error(_("Unable to open mailbox %s"), fname);

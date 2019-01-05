@@ -650,7 +650,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
     m = mx_path_resolve(buf);
     free_m = true;
   }
-  Context = mx_mbox_open(m, NULL, flags);
+  Context = mx_mbox_open(m, flags);
   if (Context)
   {
     menu->current = ci_first_message();

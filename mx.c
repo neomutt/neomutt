@@ -239,7 +239,6 @@ static int mx_open_mailbox_append(struct Mailbox *m, int flags)
 /**
  * mx_mbox_open - Open a mailbox and parse it
  * @param m     Mailbox to open
- * @param path  Path to the mailbox
  * @param flags See below
  * @retval ptr  Mailbox context
  * @retval NULL Error
@@ -251,27 +250,13 @@ static int mx_open_mailbox_append(struct Mailbox *m, int flags)
  * * #MUTT_QUIET    only print error messages
  * * #MUTT_PEEK     revert atime where applicable
  */
-struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
+struct Context *mx_mbox_open(struct Mailbox *m, int flags)
 {
-  if (!m && (!path || !path[0]))
+  if (!m)
     return NULL;
 
   struct Context *ctx = mutt_mem_calloc(1, sizeof(*ctx));
   ctx->mailbox = m;
-  if (!m)
-  {
-    m = mx_mbox_find2(path);
-    ctx->mailbox = m;
-  }
-
-  if (!m)
-  {
-    m = mailbox_new();
-    ctx->mailbox = m;
-    m->flags = MB_HIDDEN;
-    mutt_str_strfcpy(m->path, path, sizeof(m->path));
-    /* int rc = */ mx_path_canon2(m, Folder);
-  }
 
   m->notify = ctx_mailbox_changed;
   m->ndata = ctx;
@@ -335,7 +320,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
 
   if (!m->magic)
   {
-    m->magic = mx_path_probe(path, NULL);
+    m->magic = mx_path_probe(m->path, NULL);
     m->mx_ops = mx_get_ops(m->magic);
   }
 
@@ -345,9 +330,9 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
   if ((m->magic == MUTT_UNKNOWN) || (m->magic == MUTT_MAILBOX_ERROR) || !m->mx_ops)
   {
     if (m->magic == MUTT_MAILBOX_ERROR)
-      mutt_perror(path);
+      mutt_perror(m->path);
     else if (m->magic == MUTT_UNKNOWN || !m->mx_ops)
-      mutt_error(_("%s is not a mailbox"), path);
+      mutt_error(_("%s is not a mailbox"), m->path);
 
     mx_fastclose_mailbox(m);
     ctx_free(&ctx);
@@ -526,7 +511,7 @@ static int trash_append(struct Mailbox *m)
 #endif
 
   struct Mailbox *m_trash = mx_path_resolve(Trash);
-  struct Context *ctx_trash = mx_mbox_open(m_trash, NULL, MUTT_APPEND);
+  struct Context *ctx_trash = mx_mbox_open(m_trash, MUTT_APPEND);
   if (ctx_trash)
   {
     /* continue from initial scan above */
@@ -703,7 +688,7 @@ int mx_mbox_close(struct Context **pctx)
 #endif
     {
       struct Mailbox *m_read = mx_path_resolve(mbox);
-      struct Context *ctx_read = mx_mbox_open(m_read, NULL, MUTT_APPEND);
+      struct Context *ctx_read = mx_mbox_open(m_read, MUTT_APPEND);
       if (!ctx_read)
       {
         mailbox_free(&m_read);

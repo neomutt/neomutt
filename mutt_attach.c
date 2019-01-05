@@ -814,7 +814,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
       if (!fgets(buf, sizeof(buf), fp))
         return -1;
       struct Mailbox *m_att = mx_path_resolve(path);
-      struct Context *ctx = mx_mbox_open(m_att, NULL, MUTT_APPEND | MUTT_QUIET);
+      struct Context *ctx = mx_mbox_open(m_att, MUTT_APPEND | MUTT_QUIET);
       if (!ctx)
       {
         mailbox_free(&m_att);

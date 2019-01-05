@@ -68,8 +68,10 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
 
   enum MailboxType omagic = MboxType;
   MboxType = MUTT_MBOX;
+
   struct Mailbox *m_fname = mx_path_resolve(fname);
-  struct Context *tmpctx = mx_mbox_open(m_fname, NULL, MUTT_NEWFOLDER);
+  struct Context *tmpctx = mx_mbox_open(m_fname, MUTT_NEWFOLDER);
+
   MboxType = omagic;
 
   if (!tmpctx)
@@ -171,7 +173,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
     goto bail;
   }
 
-  tmpctx = mx_mbox_open(m, NULL, MUTT_APPEND);
+  tmpctx = mx_mbox_open(m, MUTT_APPEND);
   if (!tmpctx)
   {
     rc = -1;
