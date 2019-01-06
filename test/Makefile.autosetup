@@ -6,7 +6,7 @@ TEST_OBJS   = test/main.o \
 	      test/string.o \
 	      test/address.o \
 	      test/url.o \
-          test/file.o
+	      test/file.o
 
 CONFIG_OBJS	= test/config/main.o test/config/account.o \
 		  test/config/address.o test/config/bool.o \
@@ -17,16 +17,22 @@ CONFIG_OBJS	= test/config/main.o test/config/account.o \
 		  test/config/regex.o test/config/set.o test/config/sort.o \
 		  test/config/string.o test/config/synonym.o
 
+PATTERN_OBJS	= test/pattern/main.o \
+		  test/pattern/comp.o
+
 CFLAGS	+= -I$(SRCDIR)/test
 
 TEST_BINARY = test/neomutt-test$(EXEEXT)
 
 TEST_CONFIG = test/config-test$(EXEEXT)
 
+TEST_PATTERN = test/pattern-test$(EXEEXT)
+
 .PHONY: test
-test: $(TEST_BINARY) $(TEST_CONFIG)
+test: $(TEST_BINARY) $(TEST_CONFIG) $(TEST_PATTERN)
 	$(TEST_BINARY)
 	$(TEST_CONFIG)
+	$(TEST_PATTERN)
 
 $(TEST_BINARY): $(TEST_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(TEST_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
@@ -34,13 +40,18 @@ $(TEST_BINARY): $(TEST_OBJS) $(MUTTLIBS)
 $(TEST_CONFIG): $(PWD)/test/config $(CONFIG_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(CONFIG_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
+$(TEST_PATTERN): $(PATTERN_OBJS) $(NEOMUTTOBJS_NO_MAIN) $(MUTTLIBS)
+	$(CC) -o $@ $(PATTERN_OBJS) $(NEOMUTTOBJS_NO_MAIN) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
 $(PWD)/test/config:
 	$(MKDIR_P) $(PWD)/test/config
 
-all-test: $(TEST_BINARY) $(TEST_CONFIG)
+all-test: $(TEST_BINARY) $(TEST_CONFIG) $(TEST_PATTERN)
 
 clean-test:
-	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po) $(TEST_CONFIG) $(CONFIG_OBJS) $(CONFIG_OBJS:.o=.Po)
+	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po) \
+	      $(TEST_CONFIG) $(CONFIG_OBJS) $(CONFIG_OBJS:.o=.Po) \
+	      $(TEST_PATTERN) $(PATTERN_OBJS) $(PATTERN_OBJS:.o=.Po)
 
 install-test:
 uninstall-test:
@@ -50,5 +61,8 @@ TEST_DEPFILES = $(TEST_OBJS:.o=.Po)
 
 CONFIG_DEPFILES = $(CONFIG_OBJS:.o=.Po)
 -include $(CONFIG_DEPFILES)
+
+PATTERN_DEPFILES = $(PATTERN_OBJS:.o=.Po)
+-include $(PATTERN_DEPFILES)
 
 # vim: set ts=8 noexpandtab:

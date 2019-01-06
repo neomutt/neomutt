@@ -26,6 +26,7 @@
 #include <regex.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/list.h"
 
 struct Address;
 struct Buffer;

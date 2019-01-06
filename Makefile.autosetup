@@ -61,31 +61,33 @@ ALL_FILES!=	(cd $(SRCDIR) && git ls-files 2>/dev/null) || true
 ###############################################################################
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
-NEOMUTTOBJS=	account.o addrbook.o alias.o bcache.o browser.o color.o commands.o \
-		complete.o compose.o compress.o conststrings.o context.o copy.o \
-		curs_lib.o edit.o editmsg.o enriched.o enter.o \
-		filter.o flags.o git_ver.o handler.o hdrline.o help.o hook.o \
-		index.o init.o keymap.o mailbox.o main.o menu.o muttlib.o \
-		mutt_account.o mutt_attach.o mutt_body.o mutt_header.o \
-		mutt_history.o mutt_logging.o mutt_parse.o mutt_signal.o \
-		mutt_socket.o mutt_thread.o mutt_url.o mutt_window.o mx.o myvar.o \
-		pager.o pattern.o postpone.o progress.o query.o recvattach.o \
-		recvcmd.o resize.o rfc1524.o rfc3676.o safe_asprintf.o \
-		score.o send.o sendlib.o sidebar.o smtp.o sort.o state.o \
-		status.o system.o terminal.o version.o icommands.o
+NEOMUTTOBJS_NO_MAIN=	account.o addrbook.o alias.o bcache.o browser.o color.o commands.o \
+			complete.o compose.o compress.o conststrings.o context.o copy.o \
+			curs_lib.o edit.o editmsg.o enriched.o enter.o \
+			filter.o flags.o git_ver.o handler.o hdrline.o help.o hook.o \
+			index.o init.o keymap.o mailbox.o menu.o muttlib.o \
+			mutt_account.o mutt_attach.o mutt_body.o mutt_header.o \
+			mutt_history.o mutt_logging.o mutt_parse.o mutt_signal.o \
+			mutt_socket.o mutt_thread.o mutt_url.o mutt_window.o mx.o myvar.o \
+			pager.o pattern.o postpone.o progress.o query.o recvattach.o \
+			recvcmd.o resize.o rfc1524.o rfc3676.o safe_asprintf.o \
+			score.o send.o sendlib.o sidebar.o smtp.o sort.o state.o \
+			status.o system.o terminal.o version.o icommands.o
 
 @if !HAVE_WCSCASECMP
-NEOMUTTOBJS+=	wcscasecmp.o
+NEOMUTTOBJS_NO_MAIN+=	wcscasecmp.o
 @endif
 @if MIXMASTER
-NEOMUTTOBJS+=	remailer.o
+NEOMUTTOBJS_NO_MAIN+=	remailer.o
 @endif
 @if USE_LUA
-NEOMUTTOBJS+=	mutt_lua.o
+NEOMUTTOBJS_NO_MAIN+=	mutt_lua.o
 @endif
 @if USE_INOTIFY
-NEOMUTTOBJS+=	monitor.o
+NEOMUTTOBJS_NO_MAIN+=	monitor.o
 @endif
+
+NEOMUTTOBJS= $(NEOMUTTOBJS_NO_MAIN) main.o
 CLEANFILES+=	$(NEOMUTT) $(NEOMUTTOBJS)
 ALLOBJS+=	$(NEOMUTTOBJS)
 
