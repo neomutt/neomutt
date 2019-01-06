@@ -12,6 +12,7 @@ neomutt
 pgpewrap
 test/config-test
 test/neomutt-test
+test/pattern-test
 
 # Build products
 *.o
