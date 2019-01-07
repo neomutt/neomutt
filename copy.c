@@ -140,6 +140,8 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
           continue;
         if (flags & CH_UPDATE_LABEL && mutt_str_startswith(buf, "X-Label:", CASE_IGNORE))
           continue;
+        if ((flags & CH_UPDATE_SUBJECT) && mutt_str_startswith(buf, "Subject:", CASE_IGNORE))
+          continue;
 
         ignore = false;
       }
@@ -266,6 +268,10 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
       if ((flags & CH_UPDATE_REFS) && mutt_str_startswith(buf, "References:", CASE_IGNORE))
         continue;
       if ((flags & CH_UPDATE_IRT) && mutt_str_startswith(buf, "In-Reply-To:", CASE_IGNORE))
+        continue;
+      if ((flags & CH_UPDATE_LABEL) && mutt_str_startswith(buf, "X-Label:", CASE_IGNORE))
+        continue;
+      if ((flags & CH_UPDATE_SUBJECT) && mutt_str_startswith(buf, "Subject:", CASE_IGNORE))
         continue;
 
       /* Find x -- the array entry where this header is to be saved */
@@ -398,6 +404,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
  * * #CH_NOQFROM      ignore ">From " line
  * * #CH_UPDATE_IRT   update the In-Reply-To: header
  * * #CH_UPDATE_REFS  update the References: header
+ * * #CH_UPDATE_LABEL update the X-Label: header
  * * #CH_VIRTUAL      write virtual header lines too
  *
  * prefix
@@ -405,10 +412,14 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
  */
 int mutt_copy_header(FILE *in, struct Email *e, FILE *out, int flags, const char *prefix)
 {
+  char *temp_hdr = NULL;
+
   if (e->env)
   {
-    flags |= (e->env->irt_changed ? CH_UPDATE_IRT : 0) |
-             (e->env->refs_changed ? CH_UPDATE_REFS : 0);
+    flags |= ((e->env->changed & MUTT_ENV_CHANGED_IRT) ? CH_UPDATE_IRT : 0) |
+             ((e->env->changed & MUTT_ENV_CHANGED_REFS) ? CH_UPDATE_REFS : 0) |
+             ((e->env->changed & MUTT_ENV_CHANGED_XLABEL) ? CH_UPDATE_LABEL : 0) |
+             ((e->env->changed & MUTT_ENV_CHANGED_SUBJECT) ? CH_UPDATE_SUBJECT : 0);
   }
 
   if (mutt_copy_hdr(in, out, e->offset, e->content->offset, flags, prefix) == -1)
@@ -502,12 +513,40 @@ int mutt_copy_header(FILE *in, struct Email *e, FILE *out, int flags, const char
   }
   FREE(&tags);
 
-  if (flags & CH_UPDATE_LABEL)
+  if ((flags & CH_UPDATE_LABEL) && e->env->x_label)
   {
-    e->xlabel_changed = false;
-    if (e->env->x_label)
-      if (fprintf(out, "X-Label: %s\n", e->env->x_label) != 10 + strlen(e->env->x_label))
-        return -1;
+    temp_hdr = e->env->x_label;
+    /* env->x_label isn't currently stored with direct references elsewhere.
+     * Context->label_hash strdups the keys.  But to be safe, encode a copy */
+    if (!(flags & CH_DECODE))
+    {
+      temp_hdr = mutt_str_strdup(temp_hdr);
+      rfc2047_encode(&temp_hdr, NULL, sizeof("X-Label:"), SendCharset);
+    }
+    if (mutt_write_one_header(out, "X-Label", temp_hdr, flags & CH_PREFIX ? prefix : 0,
+                              mutt_window_wrap_cols(MuttIndexWindow, Wrap), flags) == -1)
+    {
+      return -1;
+    }
+    if (!(flags & CH_DECODE))
+      FREE(&temp_hdr);
+  }
+
+  if ((flags & CH_UPDATE_SUBJECT) && e->env->subject)
+  {
+    temp_hdr = e->env->subject;
+    /* env->subject is directly referenced in Context->subj_hash, so we
+     * have to be careful not to encode (and thus free) that memory. */
+    if (!(flags & CH_DECODE))
+    {
+      temp_hdr = mutt_str_strdup(temp_hdr);
+      rfc2047_encode(&temp_hdr, NULL, sizeof("Subject:"), SendCharset);
+    }
+    if (mutt_write_one_header(out, "Subject", temp_hdr, flags & CH_PREFIX ? prefix : 0,
+                              mutt_window_wrap_cols(MuttIndexWindow, Wrap), flags) == -1)
+      return -1;
+    if (!(flags & CH_DECODE))
+      FREE(&temp_hdr);
   }
 
   if ((flags & CH_NONEWLINE) == 0)
@@ -595,9 +634,6 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e, int flags, in
     else
       mutt_make_string_flags(prefix, sizeof(prefix), NONULL(IndentString), Context, e, 0);
   }
-
-  if (e->xlabel_changed)
-    chflags |= CH_UPDATE_LABEL;
 
   if ((flags & MUTT_CM_NOHEADER) == 0)
   {

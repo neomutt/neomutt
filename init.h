@@ -631,6 +631,19 @@ struct ConfigDef MuttVars[] = {
   ** $$crypt_replyencrypt,
   ** $$crypt_autosign, $$crypt_replysign and $$smime_is_default.
   */
+  { "crypt_chars",       DT_MBTABLE,    R_BOTH, &CryptChars, IP "SPsK " },
+  /*
+  ** .pp
+  ** Controls the characters used in cryptography flags.
+  ** .dl
+  ** .dt \fBCharacter\fP .dd \fBDefault\fP .dd \fBDescription\fP
+  ** .dt 1 .dd S .dd The mail is signed, and the signature is successfully verified.
+  ** .dt 2 .dd P .dd The mail is PGP encrypted.
+  ** .dt 3 .dd s .dd The mail is signed.
+  ** .dt 4 .dd K .dd The mail contains a PGP public key.
+  ** .dt 5 .dd <space> .dd The mail has no crypto info.
+  ** .de
+  */
   { "crypt_confirmhook",        DT_BOOL, R_NONE, &CryptConfirmhook, true },
   /*
   ** .pp
@@ -658,6 +671,73 @@ struct ConfigDef MuttVars[] = {
   ** If $$crypt_autoencrypt or $$crypt_replyencrypt enable encryption for
   ** a message, this option will be disabled for that message.  It can
   ** be manually re-enabled in the pgp or smime menus.
+  ** (Crypto only)
+  */
+  { "crypt_protected_headers_read", DT_BOOL, R_NONE, &CryptProtectedHeadersRead, true },
+  /*
+  ** .pp
+  ** When set, Mutt will display protected headers ("Memory Hole") in the pager,
+  ** and will update the index and header cache with revised headers.
+  **
+  ** Protected headers are stored inside the encrypted or signed part of an
+  ** an email, to prevent disclosure or tampering.
+  ** For more information see https://github.com/autocrypt/memoryhole.
+  ** Currently Mutt only supports the Subject header.
+  ** .pp
+  ** Encrypted messages using protected headers often substitute the exposed
+  ** Subject header with a dummy value (see $$crypt_protected_headers_subject).
+  ** Mutt will update its concept of the correct subject \fBafter\fP the
+  ** message is opened, i.e. via the \fC<display-message>\fP function.
+  ** If you reply to a message before opening it, Mutt will end up using
+  ** the dummy Subject header, so be sure to open such a message first.
+  ** (Crypto only)
+  */
+  { "crypt_protected_headers_save", DT_BOOL, R_NONE, &CryptProtectedHeadersSave, false },
+  /*
+  ** .pp
+  ** When $$crypt_protected_headers_read is set, and a message with a
+  ** protected Subject is opened, Mutt will save the updated Subject
+  ** into the header cache by default.  This allows searching/limiting
+  ** based on the protected Subject header if the mailbox is
+  ** re-opened, without having to re-open the message each time.
+  ** However, for mbox/mh mailbox types, or if header caching is not
+  ** set up, you would need to re-open the message each time the
+  ** mailbox was reopened before you could see or search/limit on the
+  ** protected subject again.
+  ** .pp
+  ** When this variable is set, Mutt additionally saves the protected
+  ** Subject back \fBin the clear-text message headers\fP.  This
+  ** provides better usability, but with the tradeoff of reduced
+  ** security.  The protected Subject header, which may have
+  ** previously been encrypted, is now stored in clear-text in the
+  ** message headers.  Copying the message elsewhere, via Mutt or
+  ** external tools, could expose this previously encrypted data.
+  ** Please make sure you understand the consequences of this before
+  ** you enable this variable.
+  ** (Crypto only)
+  */
+  { "crypt_protected_headers_subject", DT_STRING, R_NONE, &CryptProtectedHeadersSubject, IP "Encrypted subject" },
+  /*
+  ** .pp
+  ** When $$crypt_protected_headers_write is set, and the message is marked
+  ** for encryption, this will be substituted into the Subject field in the
+  ** message headers.
+  **
+  ** To prevent a subject from being substituted, unset this variable, or set it
+  ** to the empty string.
+  ** (Crypto only)
+  */
+  { "crypt_protected_headers_write", DT_BOOL, R_NONE, &CryptProtectedHeadersWrite, false },
+  /*
+  ** .pp
+  ** When set, Mutt will generate protected headers ("Memory Hole") for
+  ** signed and encrypted emails.
+  **
+  ** Protected headers are stored inside the encrypted or signed part of an
+  ** an email, to prevent disclosure or tampering.
+  ** For more information see https://github.com/autocrypt/memoryhole.
+  **
+  ** Currently Mutt only supports the Subject header.
   ** (Crypto only)
   */
   { "crypt_replyencrypt",       DT_BOOL, R_NONE, &CryptReplyencrypt, true },
@@ -1010,19 +1090,6 @@ struct ConfigDef MuttVars[] = {
   ** .dt 9 .dd n .dd The mail thread is New (Unread but not seen).
   ** .dt 10 .dd - .dd The mail is read - %S expando.
   ** .dt 11 .dd <space> .dd The mail is read - %Z expando.
-  ** .de
-  */
-  { "crypt_chars",       DT_MBTABLE,    R_BOTH, &CryptChars, IP "SPsK " },
-  /*
-  ** .pp
-  ** Controls the characters used in cryptography flags.
-  ** .dl
-  ** .dt \fBCharacter\fP .dd \fBDefault\fP .dd \fBDescription\fP
-  ** .dt 1 .dd S .dd The mail is signed, and the signature is successfully verified.
-  ** .dt 2 .dd P .dd The mail is PGP encrypted.
-  ** .dt 3 .dd s .dd The mail is signed.
-  ** .dt 4 .dd K .dd The mail contains a PGP public key.
-  ** .dt 5 .dd <space> .dd The mail has no crypto info.
   ** .de
   */
   { "flag_safe", DT_BOOL, R_NONE, &FlagSafe, false },
@@ -2205,6 +2272,13 @@ struct ConfigDef MuttVars[] = {
   ** The messages tagged with these tags are excluded and not loaded
   ** from notmuch DB to NeoMutt unless specified explicitly.
   */
+  { "nm_flagged_tag", DT_STRING, R_NONE, &NmFlaggedTag, IP "flagged" },
+  /*
+  ** .pp
+  ** This variable specifies notmuch tag which is used for flagged messages. The
+  ** variable is used to count flagged messages in DB and set the flagged flag when
+  ** modifying tags. All other NeoMutt commands use standard (e.g. maildir) flags.
+  */
   { "nm_open_timeout", DT_NUMBER|DT_NOT_NEGATIVE, R_NONE, &NmOpenTimeout, 5 },
   /*
   ** .pp
@@ -2248,26 +2322,19 @@ struct ConfigDef MuttVars[] = {
   ** This variable specifies the default tags applied to messages stored to the NeoMutt record.
   ** When set to 0 this variable disable the window feature.
   */
-  { "nm_unread_tag", DT_STRING, R_NONE, &NmUnreadTag, IP "unread" },
-  /*
-  ** .pp
-  ** This variable specifies notmuch tag which is used for unread messages. The
-  ** variable is used to count unread messages in DB and set the unread flag when
-  ** modifiying tags. All other NeoMutt commands use standard (e.g. maildir) flags.
-  */
-  { "nm_flagged_tag", DT_STRING, R_NONE, &NmFlaggedTag, IP "flagged" },
-  /*
-  ** .pp
-  ** This variable specifies notmuch tag which is used for flagged messages. The
-  ** variable is used to count flagged messages in DB and set the flagged flag when
-  ** modifying tags. All other NeoMutt commands use standard (e.g. maildir) flags.
-  */
   { "nm_replied_tag", DT_STRING, R_NONE, &NmRepliedTag, IP "replied" },
   /*
   ** .pp
   ** This variable specifies notmuch tag which is used for replied messages. The
   ** variable is used to set the replied flag when modifiying tags. All other NeoMutt
   ** commands use standard (e.g. maildir) flags.
+  */
+  { "nm_unread_tag", DT_STRING, R_NONE, &NmUnreadTag, IP "unread" },
+  /*
+  ** .pp
+  ** This variable specifies notmuch tag which is used for unread messages. The
+  ** variable is used to count unread messages in DB and set the unread flag when
+  ** modifiying tags. All other NeoMutt commands use standard (e.g. maildir) flags.
   */
 #endif
 #ifdef USE_NNTP

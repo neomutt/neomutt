@@ -1212,6 +1212,23 @@ static int pop_msg_close(struct Mailbox *m, struct Message *msg)
 }
 
 /**
+ * pop_msg_save_hcache - Save message to the header cache - Implements MxOps::msg_save_hcache()
+ */
+static int pop_msg_save_hcache(struct Mailbox *m, struct Email *e)
+{
+  int rc = 0;
+#ifdef USE_HCACHE
+  struct PopAccountData *adata = pop_get_adata(m);
+  struct PopEmailData *edata = e->edata;
+  header_cache_t *hc = pop_hcache_open(adata, m->path);
+  rc = mutt_hcache_store(hc, edata->uid, strlen(edata->uid), e, 0);
+  mutt_hcache_close(hc);
+#endif
+
+  return rc;
+}
+
+/**
  * pop_path_probe - Is this a POP mailbox? - Implements MxOps::path_probe()
  */
 enum MailboxType pop_path_probe(const char *path, const struct stat *st)
@@ -1276,6 +1293,7 @@ struct MxOps MxPopOps = {
   .msg_commit       = NULL,
   .msg_close        = pop_msg_close,
   .msg_padding_size = NULL,
+  .msg_save_hcache  = pop_msg_save_hcache,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
   .path_probe       = pop_path_probe,

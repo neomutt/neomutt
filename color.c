@@ -451,26 +451,32 @@ void mutt_free_color(int fg, int bg)
 static int parse_color_name(const char *s, int *col, int *attr, bool is_fg, struct Buffer *err)
 {
   char *eptr = NULL;
-  int is_alert = 0, is_bright = 0;
+  bool is_alert = false, is_bright = false, is_light = false;
+  int clen;
 
-  if (mutt_str_startswith(s, "bright", CASE_IGNORE))
+  if ((clen = mutt_str_startswith(s, "bright", CASE_IGNORE)))
   {
-    is_bright = 1;
-    s += 6;
+    is_bright = true;
+    s += clen;
   }
-  else if (mutt_str_startswith(s, "alert", CASE_IGNORE))
+  else if ((clen = mutt_str_startswith(s, "alert", CASE_IGNORE)))
   {
-    is_alert = 1;
-    is_bright = 1;
-    s += 5;
+    is_alert = true;
+    is_bright = true;
+    s += clen;
+  }
+  else if ((clen = mutt_str_startswith(s, "light", CASE_IGNORE)))
+  {
+    is_light = true;
+    s += clen;
   }
 
   /* allow aliases for xterm color resources */
-  if (mutt_str_startswith(s, "color", CASE_IGNORE))
+  if ((clen = mutt_str_startswith(s, "color", CASE_IGNORE)))
   {
-    s += 5;
+    s += clen;
     *col = strtol(s, &eptr, 10);
-    if (!*s || *eptr || *col < 0 || (*col >= COLORS && !OptNoCurses && has_colors()))
+    if (!*s || *eptr || (*col < 0) || ((*col >= COLORS) && !OptNoCurses && has_colors()))
     {
       mutt_buffer_printf(err, _("%s: color not supported by term"), s);
       return -1;
@@ -482,7 +488,7 @@ static int parse_color_name(const char *s, int *col, int *attr, bool is_fg, stru
     return -1;
   }
 
-  if (is_bright)
+  if (is_bright || is_light)
   {
     if (is_alert)
     {
@@ -491,17 +497,29 @@ static int parse_color_name(const char *s, int *col, int *attr, bool is_fg, stru
     }
     else if (is_fg)
     {
-      *attr |= A_BOLD;
-    }
-    else if (COLORS < 16)
-    {
-      /* A_BLINK turns the background color brite on some terms */
-      *attr |= A_BLINK;
+      if ((COLORS >= 16) && is_light)
+      {
+        if ((*col >= 0) && (*col <= 7))
+        {
+          /* Advance the color 0-7 by 8 to get the light version */
+          *col += 8;
+        }
+      }
+      else
+      {
+        *attr |= A_BOLD;
+      }
     }
     else
     {
-      /* Advance the color by 8 to get the bright version */
-      *col += 8;
+      if (COLORS >= 16)
+      {
+        if ((*col >= 0) && (*col <= 7))
+        {
+          /* Advance the color 0-7 by 8 to get the light version */
+          *col += 8;
+        }
+      }
     }
   }
 

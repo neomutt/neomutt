@@ -463,6 +463,9 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
   if (a->encoding != ENC_7BIT)
     fprintf(f, "Content-Transfer-Encoding: %s\n", ENCODING(a->encoding));
 
+  if (CryptProtectedHeadersWrite && a->mime_headers)
+    mutt_rfc822_write_header(f, a->mime_headers, NULL, MUTT_WRITE_HEADER_MIME, false, false);
+
   /* Do NOT add the terminator here!!! */
   return ferror(f) ? -1 : 0;
 }
@@ -2190,7 +2193,7 @@ out:
  * @param fp      File to write to
  * @param env     Envelope of email
  * @param attach  Attachment
- * @param mode    Mode, see notes below
+ * @param mode    Mode, see #MuttWriteHeaderMode
  * @param privacy If true, remove headers that might identify the user
  * @retval  0 Success
  * @retval -1 Failure
@@ -2201,22 +2204,22 @@ out:
  *
  * Likewise, all IDN processing should happen outside of this routine.
  *
- * mode == 1  => "light" mode (used for edit_headers)
- * mode == 0  => normal mode.  write full header + MIME headers
- * mode == -1 => write just the envelope info (used for postponing messages)
- *
  * privacy true => will omit any headers which may identify the user.
  *               Output generated is suitable for being sent through
  *               anonymous remailer chains.
+ *
+ * hide_protected_subject: replaces the Subject header with
+ * $crypt_protected_headers_subject in NORMAL or POSTPONE mode.
  */
 int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
-                             struct Body *attach, int mode, bool privacy)
+                             struct Body *attach, enum MuttWriteHeaderMode mode,
+                             bool privacy, bool hide_protected_subject)
 {
   char buf[LONG_STRING];
   char *p = NULL, *q = NULL;
   bool has_agent = false; /* user defined user-agent header field exists */
 
-  if (mode == 0 && !privacy)
+  if (mode == MUTT_WRITE_HEADER_NORMAL && !privacy)
     fputs(mutt_date_make_date(buf, sizeof(buf)), fp);
 
   /* UseFrom is not consulted here so that we can still write a From:
@@ -2241,7 +2244,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
     fputs("To: ", fp);
     mutt_write_address_list(env->to, fp, 4, 0);
   }
-  else if (mode > 0)
+  else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
 #ifdef USE_NNTP
     if (!OptNewsSend)
 #endif
@@ -2252,7 +2255,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
     fputs("Cc: ", fp);
     mutt_write_address_list(env->cc, fp, 4, 0);
   }
-  else if (mode > 0)
+  else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
 #ifdef USE_NNTP
     if (!OptNewsSend)
 #endif
@@ -2260,13 +2263,14 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
 
   if (env->bcc)
   {
-    if (mode != 0 || WriteBcc)
+    if (mode == MUTT_WRITE_HEADER_POSTPONE || mode == MUTT_WRITE_HEADER_EDITHDRS ||
+        (mode == MUTT_WRITE_HEADER_NORMAL && WriteBcc))
     {
       fputs("Bcc: ", fp);
       mutt_write_address_list(env->bcc, fp, 5, 0);
     }
   }
-  else if (mode > 0)
+  else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
 #ifdef USE_NNTP
     if (!OptNewsSend)
 #endif
@@ -2275,23 +2279,29 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
 #ifdef USE_NNTP
   if (env->newsgroups)
     fprintf(fp, "Newsgroups: %s\n", env->newsgroups);
-  else if (mode == 1 && OptNewsSend)
+  else if (mode == MUTT_WRITE_HEADER_EDITHDRS && OptNewsSend)
     fputs("Newsgroups:\n", fp);
 
   if (env->followup_to)
     fprintf(fp, "Followup-To: %s\n", env->followup_to);
-  else if (mode == 1 && OptNewsSend)
+  else if (mode == MUTT_WRITE_HEADER_EDITHDRS && OptNewsSend)
     fputs("Followup-To:\n", fp);
 
   if (env->x_comment_to)
     fprintf(fp, "X-Comment-To: %s\n", env->x_comment_to);
-  else if (mode == 1 && OptNewsSend && XCommentTo)
+  else if (mode == MUTT_WRITE_HEADER_EDITHDRS && OptNewsSend && XCommentTo)
     fputs("X-Comment-To:\n", fp);
 #endif
 
   if (env->subject)
-    mutt_write_one_header(fp, "Subject", env->subject, NULL, 0, 0);
-  else if (mode == 1)
+  {
+    if (hide_protected_subject &&
+        (mode == MUTT_WRITE_HEADER_NORMAL || mode == MUTT_WRITE_HEADER_POSTPONE))
+      mutt_write_one_header(fp, "Subject", CryptProtectedHeadersSubject, NULL, 0, 0);
+    else
+      mutt_write_one_header(fp, "Subject", env->subject, NULL, 0, 0);
+  }
+  else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
     fputs("Subject:\n", fp);
 
   /* save message id if the user has set it */
@@ -2303,7 +2313,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
     fputs("Reply-To: ", fp);
     mutt_write_address_list(env->reply_to, fp, 10, 0);
   }
-  else if (mode > 0)
+  else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
     fputs("Reply-To:\n", fp);
 
   if (env->mail_followup_to)
@@ -2315,7 +2325,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
       mutt_write_address_list(env->mail_followup_to, fp, 18, 0);
     }
 
-  if (mode <= 0)
+  if (mode == MUTT_WRITE_HEADER_NORMAL || mode == MUTT_WRITE_HEADER_POSTPONE)
   {
     if (!STAILQ_EMPTY(&env->references))
     {
@@ -2370,7 +2380,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
     }
   }
 
-  if (mode == 0 && !privacy && UserAgent && !has_agent)
+  if (mode == MUTT_WRITE_HEADER_NORMAL && !privacy && UserAgent && !has_agent)
   {
     /* Add a vanity header */
     fprintf(fp, "User-Agent: NeoMutt/%s%s\n", PACKAGE_VERSION, GitVer);
@@ -2907,20 +2917,7 @@ void mutt_prepare_envelope(struct Envelope *env, bool final)
   }
 
   /* Take care of 8-bit => 7-bit conversion. */
-  rfc2047_encode_addrlist(env->to, "To");
-  rfc2047_encode_addrlist(env->cc, "Cc");
-  rfc2047_encode_addrlist(env->bcc, "Bcc");
-  rfc2047_encode_addrlist(env->from, "From");
-  rfc2047_encode_addrlist(env->mail_followup_to, "Mail-Followup-To");
-  rfc2047_encode_addrlist(env->reply_to, "Reply-To");
-
-  if (env->subject)
-#ifdef USE_NNTP
-    if (!OptNewsSend || MimeSubject)
-#endif
-    {
-      rfc2047_encode(&env->subject, NULL, sizeof("Subject:"), SendCharset);
-    }
+  rfc2047_encode_envelope(env);
   encode_headers(&env->userhdrs);
 }
 
@@ -2942,12 +2939,7 @@ void mutt_unprepare_envelope(struct Envelope *env)
   mutt_addr_free(&env->mail_followup_to);
 
   /* back conversions */
-  rfc2047_decode_addrlist(env->to);
-  rfc2047_decode_addrlist(env->cc);
-  rfc2047_decode_addrlist(env->bcc);
-  rfc2047_decode_addrlist(env->from);
-  rfc2047_decode_addrlist(env->reply_to);
-  rfc2047_decode(&env->subject);
+  rfc2047_decode_envelope(env);
 }
 
 /**
@@ -3219,10 +3211,12 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     goto done;
   }
 
-  /* post == 1 => postpone message. Set mode = -1 in mutt_rfc822_write_header()
-   * post == 0 => Normal mode. Set mode = 0 in mutt_rfc822_write_header()
+  /* post == 1 => postpone message.
+   * post == 0 => Normal mode.
    */
-  mutt_rfc822_write_header(msg->fp, e->env, e->content, post ? -1 : 0, false);
+  mutt_rfc822_write_header(
+      msg->fp, e->env, e->content, post ? MUTT_WRITE_HEADER_POSTPONE : MUTT_WRITE_HEADER_NORMAL,
+      false, CryptProtectedHeadersRead && mutt_should_hide_protected_subject(e));
 
   /* (postponement) if this was a reply of some sort, <msgid> contains the
    * Message-ID: of message replied to.  Save it using a special X-Mutt-

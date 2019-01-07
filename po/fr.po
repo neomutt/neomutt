@@ -4252,7 +4252,7 @@ msgstr "Entrez la phrase de passe PGP :"
 
 #: ncrypt/pgp.c:603
 msgid "[-- Error: unable to create PGP subprocess --]\n"
-msgstr "[-- Erreur : impossible de créer le sous-processus PGP  --]\n"
+msgstr "[-- Erreur : impossible de créer le sous-processus PGP ! --]\n"
 
 #: ncrypt/pgp.c:652 ncrypt/pgp.c:929 ncrypt/pgp.c:1086
 msgid ""
@@ -6484,6 +6484,37 @@ msgstr "Faire suivre sous forme d'attachement?"
 #: send.c:1077
 msgid "Preparing forwarded message..."
 msgstr "Préparation du message à faire suivre..."
+
+# , c-format
+msgid "Fcc to an IMAP mailbox is not supported in batch mode"
+msgstr "Fcc vers une boîte aux lettres IMAP n'est pas supporté en mode batch"
+
+#. L10N:
+#. Called when saving to $record or Fcc failed after sending.
+#. (r)etry tries the same mailbox again.
+#. alternate (m)ailbox prompts for a different mailbox to try.
+#. (s)kip aborts saving.
+#.
+msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip? "
+msgstr "Fcc a échoué. (r)éessayer, autre (b)oîte aux lettres, ou (s)auter ? "
+
+#. L10N:
+#. These correspond to the "Fcc failed" multi-choice prompt
+#. (r)etry, alternate (m)ailbox, or (s)kip.
+#. Any similarity to famous leaders of the FSF is coincidental.
+#.
+msgid "rms"
+msgstr "rbs"
+
+#. L10N:
+#. This is the prompt to enter an "alternate (m)ailbox" when the
+#. initial Fcc fails.
+#.
+msgid "Fcc mailbox"
+msgstr "Boîte aux lettres Fcc"
+
+msgid "Cannot postpone.  $postponed is unset"
+msgstr "Impossible d'ajourner. $postponed est non renseigné"
 
 #: send.c:1561
 msgid "Recall postponed message?"

@@ -52,6 +52,7 @@
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_parse.h"
+#include "mutt_window.h"
 #include "muttlib.h"
 #include "ncrypt.h"
 #include "options.h"
@@ -264,13 +265,25 @@ int mutt_protect(struct Email *msg, char *keylist)
       mutt_addr_free(&from);
   }
 
+  if (CryptProtectedHeadersWrite)
+  {
+    struct Envelope *protected_headers = mutt_env_new();
+    mutt_str_replace(&protected_headers->subject, msg->env->subject);
+    /* Note: if other headers get added, such as to, cc, then a call to
+     * mutt_env_to_intl() will need to be added here too. */
+    mutt_prepare_envelope(protected_headers, 0);
+
+    mutt_env_free(&msg->content->mime_headers);
+    msg->content->mime_headers = protected_headers;
+  }
+
   if (msg->security & SIGN)
   {
     if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME))
     {
       tmp_pbody = crypt_smime_sign_message(msg->content);
       if (!tmp_pbody)
-        return -1;
+        goto bail;
       pbody = tmp_pbody;
       tmp_smime_pbody = tmp_pbody;
     }
@@ -280,7 +293,7 @@ int mutt_protect(struct Email *msg, char *keylist)
     {
       tmp_pbody = crypt_pgp_sign_message(msg->content);
       if (!tmp_pbody)
-        return -1;
+        goto bail;
 
       flags &= ~SIGN;
       pbody = tmp_pbody;
@@ -302,7 +315,7 @@ int mutt_protect(struct Email *msg, char *keylist)
       if (!tmp_pbody)
       {
         /* signed ? free it! */
-        return -1;
+        goto bail;
       }
       /* free tmp_body if messages was signed AND encrypted ... */
       if (tmp_smime_pbody != msg->content && tmp_smime_pbody != tmp_pbody)
@@ -330,7 +343,7 @@ int mutt_protect(struct Email *msg, char *keylist)
           mutt_body_free(&tmp_pgp_pbody->next);
         }
 
-        return -1;
+        goto bail;
       }
 
       /* destroy temporary signature envelope when doing retainable
@@ -346,9 +359,14 @@ int mutt_protect(struct Email *msg, char *keylist)
   }
 
   if (pbody)
+  {
     msg->content = pbody;
+    return 0;
+  }
 
-  return 0;
+bail:
+  mutt_env_free(&msg->content->mime_headers);
+  return -1;
 }
 
 /**
@@ -1065,6 +1083,40 @@ static void crypt_fetch_signatures(struct Body ***signatures, struct Body *a, in
   }
 }
 
+bool mutt_should_hide_protected_subject(struct Email *e)
+{
+  if (CryptProtectedHeadersWrite && (e->security & ENCRYPT) && !(e->security & INLINE) &&
+      CryptProtectedHeadersSubject && *CryptProtectedHeadersSubject)
+  {
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * mutt_protected_headers_handler - Process a protected header - Implements ::handler_t
+ */
+int mutt_protected_headers_handler(struct Body *a, struct State *s)
+{
+  if (CryptProtectedHeadersRead && a->mime_headers)
+  {
+    if (a->mime_headers->subject)
+    {
+      if ((s->flags & MUTT_DISPLAY) && Weed && mutt_matches_ignore("subject"))
+        return 0;
+
+      state_mark_protected_header(s);
+      mutt_write_one_header(s->fpout, "Subject", a->mime_headers->subject,
+                            s->prefix, mutt_window_wrap_cols(MuttIndexWindow, Wrap),
+                            (s->flags & MUTT_DISPLAY) ? CH_DISPLAY : 0);
+      state_puts("\n", s);
+    }
+  }
+
+  return 0;
+}
+
 /**
  * mutt_signed_handler - Verify a "multipart/signed" body - Implements ::handler_t
  */
@@ -1182,6 +1234,8 @@ int mutt_signed_handler(struct Body *a, struct State *s)
 
       /* Now display the signed body */
       state_attach_puts(_("[-- The following data is signed --]\n\n"), s);
+
+      mutt_protected_headers_handler(a, s);
 
       FREE(&signatures);
     }

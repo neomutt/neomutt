@@ -206,6 +206,14 @@ struct MxOps
    */
   int (*msg_padding_size)(struct Mailbox *m);
   /**
+   * msg_save_hcache - Save message to the header cache
+   * @param m Mailbox
+   * @param e Email
+   * @retval  0 Success
+   * @retval -1 Failure
+   */
+  int (*msg_save_hcache) (struct Mailbox *m, struct Email *e);
+  /**
    * tags_edit - Prompt and validate new messages tags
    * @param m      Mailbox
    * @param tags   Existing tags
@@ -270,6 +278,7 @@ int             mx_msg_commit      (struct Mailbox *m, struct Message *msg);
 struct Message *mx_msg_open_new    (struct Mailbox *m, struct Email *e, int flags);
 struct Message *mx_msg_open        (struct Mailbox *m, int msgno);
 int             mx_msg_padding_size(struct Mailbox *m);
+int             mx_save_hcache     (struct Mailbox *m, struct Email *e);
 int             mx_path_canon      (char *buf, size_t buflen, const char *folder, int *magic);
 int             mx_path_canon2     (struct Mailbox *m, const char *folder);
 int             mx_path_parent     (char *buf, size_t buflen);

@@ -57,7 +57,6 @@ struct Email
   bool active          : 1; /**< message is not to be removed */
   bool trash           : 1; /**< message is marked as trashed on disk.
                              * This flag is used by the maildir_trash option. */
-  bool xlabel_changed  : 1; /**< editable - used for syncing */
 
   /* timezone of the sender of this message */
   unsigned int zhours : 5;

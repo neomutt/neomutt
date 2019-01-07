@@ -2212,7 +2212,12 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
   first_part->warnsig = false;
 
   if (mutt_is_valid_multipart_pgp_encrypted(b))
+  {
     b = b->parts->next;
+    /* Some clients improperly encode the octetstream part. */
+    if (b->encoding != ENC_7BIT)
+      need_decode = true;
+  }
   else if (mutt_is_malformed_multipart_pgp_encrypted(b))
   {
     b = b->parts->next->next;
@@ -3082,13 +3087,32 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
                         "encrypted --]\n\n") :
                       _("[-- The following data is PGP/MIME encrypted --]\n\n"),
           s);
+      mutt_protected_headers_handler(tattach, s);
     }
+
+    /* Store any protected headers in the parent so they can be
+     * accessed for index updates after the handler recursion is done.
+     * This is done before the handler to prevent a nested encrypted
+     * handler from freeing the headers. */
+    mutt_env_free(&a->mime_headers);
+    a->mime_headers = tattach->mime_headers;
+    tattach->mime_headers = NULL;
 
     {
       FILE *savefp = s->fpin;
       s->fpin = fpout;
       rc = mutt_body_handler(tattach, s);
       s->fpin = savefp;
+    }
+
+    /* Embedded multipart signed protected headers override the
+     * encrypted headers.  We need to do this after the handler so
+     * they can be printed in the pager. */
+    if (mutt_is_multipart_signed(tattach) && tattach->parts && tattach->parts->mime_headers)
+    {
+      mutt_env_free(&a->mime_headers);
+      a->mime_headers = tattach->parts->mime_headers;
+      tattach->parts->mime_headers = NULL;
     }
 
     /* if a multipart/signed is the _only_ sub-part of a
@@ -3132,6 +3156,8 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
 
   mutt_debug(2, "Entering handler\n");
 
+  /* clear out any mime headers before the handler, so they can't be spoofed. */
+  mutt_env_free(&a->mime_headers);
   a->warnsig = false;
   FILE *fpout = mutt_file_mkstemp();
   if (!fpout)
@@ -3157,13 +3183,32 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
           is_signed ? _("[-- The following data is S/MIME signed --]\n\n") :
                       _("[-- The following data is S/MIME encrypted --]\n\n"),
           s);
+      mutt_protected_headers_handler(tattach, s);
     }
+
+    /* Store any protected headers in the parent so they can be
+     * accessed for index updates after the handler recursion is done.
+     * This is done before the handler to prevent a nested encrypted
+     * handler from freeing the headers. */
+    mutt_env_free(&a->mime_headers);
+    a->mime_headers = tattach->mime_headers;
+    tattach->mime_headers = NULL;
 
     {
       FILE *savefp = s->fpin;
       s->fpin = fpout;
       rc = mutt_body_handler(tattach, s);
       s->fpin = savefp;
+    }
+
+    /* Embedded multipart signed protected headers override the
+     * encrypted headers.  We need to do this after the handler so
+     * they can be printed in the pager. */
+    if (mutt_is_multipart_signed(tattach) && tattach->parts && tattach->parts->mime_headers)
+    {
+      mutt_env_free(&a->mime_headers);
+      a->mime_headers = tattach->parts->mime_headers;
+      tattach->parts->mime_headers = NULL;
     }
 
     /* if a multipart/signed is the _only_ sub-part of a multipart/encrypted,

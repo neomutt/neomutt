@@ -113,7 +113,7 @@ static bool label_message(struct Mailbox *m, struct Email *e, char *new)
     label_ref_inc(m, e->env->x_label);
 
   e->changed = true;
-  e->xlabel_changed = true;
+  e->env->changed |= MUTT_ENV_CHANGED_XLABEL;
   return true;
 }
 
@@ -203,7 +203,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
   }
 
   mutt_env_to_local(msg->env);
-  mutt_rfc822_write_header(ofp, msg->env, NULL, 1, false);
+  mutt_rfc822_write_header(ofp, msg->env, NULL, MUTT_WRITE_HEADER_EDITHDRS, false, false);
   fputc('\n', ofp); /* tie off the header. */
 
   /* now copy the body of the message. */

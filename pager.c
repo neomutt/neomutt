@@ -825,17 +825,35 @@ static int braille_line = -1;
 static int braille_col = -1;
 
 /**
+ * check_marker - Check that the unique marker is present
+ * @param p String to check
+ * @retval num Offset of marker
+ */
+static int check_marker(const char *q, const char *p)
+{
+  for (; *p == *q && *q && *p && *q != '\a' && *p != '\a'; p++, q++)
+    ;
+  return (int) (*p - *q);
+}
+
+/**
  * check_attachment_marker - Check that the unique marker is present
  * @param p String to check
  * @retval num Offset of marker
  */
-static int check_attachment_marker(char *p)
+static int check_attachment_marker(const char *p)
 {
-  char *q = AttachmentMarker;
+  return check_marker(AttachmentMarker, p);
+}
 
-  for (; *p == *q && *q && *p && *q != '\a' && *p != '\a'; p++, q++)
-    ;
-  return (int) (*p - *q);
+/**
+ * check_protected_header_marker - Check that the unique marker is present
+ * @param p String to check
+ * @retval num Offset of marker
+ */
+static int check_protected_header_marker(const char *p)
+{
+  return check_marker(ProtectedHeaderMarker, p);
 }
 
 /**
@@ -900,7 +918,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
   bool null_rx;
   int offset, i = 0;
 
-  if (n == 0 || ISHEADER(line_info[n - 1].type))
+  if (n == 0 || ISHEADER(line_info[n - 1].type) || (check_protected_header_marker(raw) == 0))
   {
     if (buf[0] == '\n') /* end of header */
     {
@@ -1310,7 +1328,9 @@ static int fill_buffer(FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *
         while (*p++ != 'm') /* skip ANSI sequence */
           ;
       }
-      else if (*p == '\033' && *(p + 1) == ']' && check_attachment_marker((char *) p) == 0)
+      else if (*p == '\033' && *(p + 1) == ']' &&
+               ((check_attachment_marker((char *) p) == 0) ||
+                (check_protected_header_marker((char *) p) == 0)))
       {
         mutt_debug(2, "Seen attachment marker.\n");
         while (*p++ != '\a') /* skip pseudo-ANSI sequence */
@@ -1365,7 +1385,8 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf, int f
       ch = grok_ansi(buf, ch + 2, pa) + 1;
 
     while (cnt - ch >= 2 && buf[ch] == '\033' && buf[ch + 1] == ']' &&
-           check_attachment_marker((char *) buf + ch) == 0)
+           ((check_attachment_marker((char *) buf + ch) == 0) ||
+            (check_protected_header_marker((char *) buf + ch) == 0)))
     {
       while (buf[ch++] != '\a')
         if (ch >= cnt)
@@ -2158,7 +2179,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       size_t l2 = sizeof(buffer);
       hfi.email = (IsEmail(rd->extra)) ? rd->extra->email : rd->extra->bdy->email;
       mutt_make_string_info(buffer, l1 < l2 ? l1 : l2, rd->pager_status_window->cols,
-                            NONULL(PagerFormat), &hfi, MUTT_FORMAT_MAKEPRINT);
+                            NONULL(PagerFormat), &hfi, 0);
       mutt_draw_statusline(rd->pager_status_window->cols, buffer, l2);
     }
     else

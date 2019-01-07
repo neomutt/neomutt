@@ -29,8 +29,8 @@ The principal authors of NeoMutt are:
 - Copyright (C) 1999-2002 Tommi Komulainen `<Tommi.Komulainen@iki.fi>`
 - Copyright (C) 2000-2004 Edmund Grimley Evans `<edmundo@rano.org>`
 - Copyright (C) 2006-2009 Rocco Rutte `<pdmef@gmx.net>`
-- Copyright (C) 2014-2018 Kevin J. McCarthy `<kevin@8t8.us>`
-- Copyright (C) 2015-2018 Richard Russon `<rich@flatcap.org>`
+- Copyright (C) 2014-2019 Kevin J. McCarthy `<kevin@8t8.us>`
+- Copyright (C) 2015-2019 Richard Russon `<rich@flatcap.org>`
 
 For a full list of contributors to NeoMutt, see the [README.md](README.md)
 

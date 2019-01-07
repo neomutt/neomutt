@@ -26,6 +26,11 @@
 #include <stdbool.h>
 #include "mutt/mutt.h"
 
+#define MUTT_ENV_CHANGED_IRT     (1<<0)  ///< In-Reply-To changed to link/break threads
+#define MUTT_ENV_CHANGED_REFS    (1<<1)  ///< References changed to break thread
+#define MUTT_ENV_CHANGED_XLABEL  (1<<2)  ///< X-Label edited
+#define MUTT_ENV_CHANGED_SUBJECT (1<<3)  ///< Protected header update
+
 /**
  * struct Envelope - The header of an email
  */
@@ -60,8 +65,8 @@ struct Envelope
   struct ListHead in_reply_to; /**< in-reply-to header content */
   struct ListHead userhdrs;    /**< user defined headers */
 
-  bool irt_changed : 1;  /**< In-Reply-To changed to link/break threads */
-  bool refs_changed : 1; /**< References changed to break thread */
+  unsigned char changed;       /* The MUTT_ENV_CHANGED_* flags specify which
+                                * fields are modified */
 };
 
 bool             mutt_env_cmp_strict(const struct Envelope *e1, const struct Envelope *e2);

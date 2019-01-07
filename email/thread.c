@@ -204,8 +204,8 @@ void clean_references(struct MuttThread *brk, struct MuttThread *cur)
         FREE(&np);
       }
 
-      e->env->refs_changed = true;
       e->changed = true;
+      e->env->changed |= MUTT_ENV_CHANGED_REFS;
     }
   }
 }
@@ -218,9 +218,8 @@ void mutt_break_thread(struct Email *e)
 {
   mutt_list_free(&e->env->in_reply_to);
   mutt_list_free(&e->env->references);
-  e->env->irt_changed = true;
-  e->env->refs_changed = true;
   e->changed = true;
+  e->env->changed |= (MUTT_ENV_CHANGED_IRT | MUTT_ENV_CHANGED_REFS);
 
   clean_references(e->thread, e->thread->child);
 }

@@ -844,6 +844,23 @@ static int comp_msg_padding_size(struct Mailbox *m)
 }
 
 /**
+ * comp_msg_save_hcache - Save message to the header cache - Implements MxOps::msg_save_hcache()
+ */
+static int comp_msg_save_hcache(struct Mailbox *m, struct Email *e)
+{
+  if (!m || !m->compress_info)
+    return 0;
+
+  struct CompressInfo *ci = m->compress_info;
+
+  const struct MxOps *ops = ci->child_ops;
+  if (!ops || !ops->msg_save_hcache)
+    return 0;
+
+  return ops->msg_save_hcache(m, e);
+}
+
+/**
  * comp_tags_edit - Implements MxOps::tags_edit()
  */
 static int comp_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t buflen)
@@ -965,6 +982,7 @@ struct MxOps MxCompOps = {
   .msg_commit       = comp_msg_commit,
   .msg_close        = comp_msg_close,
   .msg_padding_size = comp_msg_padding_size,
+  .msg_save_hcache  = comp_msg_save_hcache,
   .tags_edit        = comp_tags_edit,
   .tags_commit      = comp_tags_commit,
   .path_probe       = comp_path_probe,

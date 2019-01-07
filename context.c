@@ -199,7 +199,10 @@ void ctx_update_tables(struct Context *ctx, bool committing)
       }
 
       if (committing)
+      {
         m->emails[j]->changed = false;
+        m->emails[j]->env->changed = false;
+      }
       else if (m->emails[j]->changed)
         m->changed = true;
 

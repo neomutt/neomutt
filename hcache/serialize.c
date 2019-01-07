@@ -427,6 +427,7 @@ unsigned char *serial_dump_body(struct Body *c, unsigned char *d, int *off, bool
   nb.parts = NULL;
   nb.email = NULL;
   nb.aptr = NULL;
+  nb.mime_headers = NULL;
   nb.language = NULL;
 
   lazy_realloc(&d, *off + sizeof(struct Body));

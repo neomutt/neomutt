@@ -587,6 +587,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
   int rc = -1;
   struct State s = { 0 };
   int sec_type;
+  struct Envelope *protected_headers = NULL;
 
   if (!fp && !(msg = mx_msg_open(m, e->msgno)))
     return -1;
@@ -633,6 +634,12 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
     mutt_body_free(&newhdr->content);
     newhdr->content = b;
 
+    if (b->mime_headers)
+    {
+      protected_headers = b->mime_headers;
+      b->mime_headers = NULL;
+    }
+
     mutt_clear_error();
   }
 
@@ -655,6 +662,13 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
     /* destroy the signature */
     mutt_body_free(&newhdr->content->parts->next);
     newhdr->content = mutt_remove_multipart(newhdr->content);
+
+    if (newhdr->content->mime_headers)
+    {
+      mutt_env_free(&protected_headers);
+      protected_headers = newhdr->content->mime_headers;
+      newhdr->content->mime_headers = NULL;
+    }
   }
 
   /* We don't need no primary multipart.
@@ -729,8 +743,13 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
         goto bail;
       }
 
-      newhdr->security |= sec_type;
+      if ((b == newhdr->content) && !protected_headers)
+      {
+        protected_headers = b->mime_headers;
+        b->mime_headers = NULL;
+      }
 
+      newhdr->security |= sec_type;
       b->type = TYPE_TEXT;
       mutt_str_replace(&b->subtype, "plain");
       mutt_param_delete(&b->parameter, "x-action");
@@ -771,6 +790,13 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
     if (b->email)
       b->email->content = NULL; /* avoid dangling pointer */
   }
+
+  if (CryptProtectedHeadersRead && protected_headers && protected_headers->subject &&
+      (mutt_str_strcmp(newhdr->env->subject, protected_headers->subject) != 0))
+  {
+    mutt_str_replace(&newhdr->env->subject, protected_headers->subject);
+  }
+  mutt_env_free(&protected_headers);
 
   /* Fix encryption flags. */
 

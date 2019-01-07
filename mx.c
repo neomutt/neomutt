@@ -1570,3 +1570,20 @@ int mx_mbox_check_stats(struct Mailbox *m, int flags)
 
   return m->mx_ops->mbox_check_stats(m, flags);
 }
+
+/**
+ * mx_save_to_header_cache - Save message to the header cache - Wrapper for MxOps::msg_save_hcache()
+ * @param m Mailbox
+ * @param e Email
+ * @retval  0 Success
+ * @retval -1 Failure
+ *
+ * Write a single header out to the header cache.
+ */
+int mx_save_hcache(struct Mailbox *m, struct Email *e)
+{
+  if (!m->mx_ops || !m->mx_ops->msg_save_hcache)
+    return 0;
+
+  return m->mx_ops->msg_save_hcache(m, e);
+}

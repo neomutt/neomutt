@@ -528,11 +528,14 @@ int mh_sync_message(struct Mailbox *m, int msgno)
 
   struct Email *e = m->emails[msgno];
 
-  if (e->attach_del || e->xlabel_changed ||
-      (e->env && (e->env->refs_changed || e->env->irt_changed)))
+  /* TODO: why the e->env check? */
+  if (e->attach_del || (e->env && e->env->changed))
   {
     if (mh_rewrite_message(m, msgno) != 0)
       return -1;
+    /* TODO: why the env check? */
+    if (e->env)
+      e->env->changed = 0;
   }
 
   return 0;
@@ -815,6 +818,7 @@ struct MxOps MxMhOps = {
   .msg_commit       = mh_msg_commit,
   .msg_close        = mh_msg_close,
   .msg_padding_size = NULL,
+  .msg_save_hcache  = mh_msg_save_hcache,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
   .path_probe       = mh_path_probe,
