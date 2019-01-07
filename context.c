@@ -276,4 +276,3 @@ void ctx_mailbox_changed(struct Mailbox *m, enum MailboxNotification action)
       break;
   }
 }
-
