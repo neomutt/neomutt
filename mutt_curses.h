@@ -26,6 +26,7 @@
 
 #include <regex.h>
 #include "mutt/mutt.h"
+#include "pattern.h"
 
 #ifdef USE_SLANG_CURSES
 
@@ -180,8 +181,8 @@ struct ColorLine
   regex_t regex;
   int match; /**< which substringmap 0 for old behaviour */
   char *pattern;
-  struct Pattern *color_pattern; /**< compiled pattern to speed up index color
-                                      calculation */
+  struct PatternHead *color_pattern; /**< compiled pattern to speed up index color
+                                          calculation */
   uint32_t fg;
   uint32_t bg;
   int pair;

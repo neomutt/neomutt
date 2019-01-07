@@ -118,8 +118,8 @@ static int get_color(int index, unsigned char *s)
 
   STAILQ_FOREACH(np, color, entries)
   {
-    if (mutt_pattern_exec(np->color_pattern, MUTT_MATCH_FULL_ADDRESS,
-                          Context->mailbox, e, NULL))
+    if (mutt_pattern_exec(SLIST_FIRST(np->color_pattern),
+                          MUTT_MATCH_FULL_ADDRESS, Context->mailbox, e, NULL))
       return np->pair;
   }
 

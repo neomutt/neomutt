@@ -28,6 +28,7 @@
 #include <sys/types.h>
 #include <time.h>
 #include "mailbox.h"
+#include "pattern.h"
 
 struct EmailList;
 
@@ -38,7 +39,7 @@ struct Context
 {
   off_t vsize;
   char *pattern;                 /**< limit pattern string */
-  struct Pattern *limit_pattern; /**< compiled limit pattern */
+  struct PatternHead *limit_pattern; /**< compiled limit pattern */
   struct Email *last_tag;  /**< last tagged msg. used to link threads */
   struct MuttThread *tree;  /**< top of thread tree */
   struct Hash *thread_hash; /**< hash table for threading */

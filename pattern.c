@@ -185,8 +185,8 @@ static struct RangeRegex range_regexes[] = {
 };
 // clang-format on
 
-static struct Pattern *SearchPattern = NULL; /**< current search pattern */
-static char LastSearch[256] = { 0 };         /**< last pattern searched for */
+static struct PatternHead *SearchPattern = NULL; /**< current search pattern */
+static char LastSearch[256] = { 0 };      /**< last pattern searched for */
 static char LastSearchExpn[1024] = { 0 }; /**< expanded version of LastSearch */
 
 /**
@@ -1331,42 +1331,49 @@ static /* const */ char *find_matching_paren(/* const */ char *s)
  * mutt_pattern_free - Free a Pattern
  * @param[out] pat Pattern to free
  */
-void mutt_pattern_free(struct Pattern **pat)
+void mutt_pattern_free(struct PatternHead **pat)
 {
   if (!pat || !*pat)
     return;
 
-  struct Pattern *tmp = NULL;
+  struct Pattern *np = SLIST_FIRST(*pat), *next = NULL;
 
-  while (*pat)
+  while (np)
   {
-    tmp = *pat;
-    *pat = (*pat)->next;
+    next = SLIST_NEXT(np, entries);
 
-    if (tmp->ismulti)
-      mutt_list_free(&tmp->p.multi_cases);
-    else if (tmp->stringmatch)
-      FREE(&tmp->p.str);
-    else if (tmp->groupmatch)
-      tmp->p.group = NULL;
-    else if (tmp->p.regex)
+    if (np->ismulti)
+      mutt_list_free(&np->p.multi_cases);
+    else if (np->stringmatch)
+      FREE(&np->p.str);
+    else if (np->groupmatch)
+      np->p.group = NULL;
+    else if (np->p.regex)
     {
-      regfree(tmp->p.regex);
-      FREE(&tmp->p.regex);
+      regfree(np->p.regex);
+      FREE(&np->p.regex);
     }
 
-    mutt_pattern_free(&tmp->child);
-    FREE(&tmp);
+    mutt_pattern_free(&np->child);
+    FREE(&np);
+
+    np = next;
   }
+
+  FREE(pat);
 }
 
 /**
- * mutt_pattern_new - Create a new Pattern
- * @retval ptr New Pattern
+ * mutt_pattern_node_new - Create a new list containing a Pattern
+ * @retval ptr Newly created list containing a single node with a Pattern
  */
-struct Pattern *mutt_pattern_new(void)
+static struct PatternHead *mutt_pattern_node_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct Pattern));
+  struct PatternHead *h = mutt_mem_calloc(1, sizeof(struct PatternHead));
+  SLIST_INIT(h);
+  struct Pattern *p = mutt_mem_calloc(1, sizeof(struct Pattern));
+  SLIST_INSERT_HEAD(h, p, entries);
+  return h;
 }
 
 /**
@@ -1376,11 +1383,13 @@ struct Pattern *mutt_pattern_new(void)
  * @param err   Buffer for error messages
  * @retval ptr Newly allocated Pattern
  */
-struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer *err)
+struct PatternHead *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer *err)
 {
-  struct Pattern *curlist = NULL;
-  struct Pattern *tmp = NULL, *tmp2 = NULL;
-  struct Pattern *last = NULL;
+  /* curlist when assigned will always point to a list containing at least one node
+   * with a Pattern value.  */
+  struct PatternHead *curlist = NULL;
+  struct PatternHead *tmp = NULL, *tmp2 = NULL;
+  struct PatternHead *last = NULL;
   bool not = false;
   bool alladdr = false;
   bool or = false;
@@ -1421,12 +1430,16 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
             mutt_buffer_printf(err, _("error in pattern at: %s"), ps.dptr);
             return NULL;
           }
-          if (curlist->next)
+
+          struct Pattern *pat = SLIST_FIRST(curlist);
+
+          if (SLIST_NEXT(pat, entries))
           {
             /* A & B | C == (A & B) | C */
-            tmp = mutt_pattern_new();
-            tmp->op = MUTT_PAT_AND;
-            tmp->child = curlist;
+            tmp = mutt_pattern_node_new();
+            pat = SLIST_FIRST(tmp);
+            pat->op = MUTT_PAT_AND;
+            pat->child = curlist;
 
             curlist = tmp;
             last = curlist;
@@ -1443,11 +1456,12 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
       case '%':
       case '=':
       case '~':
+      {
+        struct Pattern *pat = NULL;
         if (!*(ps.dptr + 1))
         {
           mutt_buffer_printf(err, _("missing pattern: %s"), ps.dptr);
-          mutt_pattern_free(&curlist);
-          return NULL;
+          goto cleanup;
         }
         thread_op = 0;
         if (*(ps.dptr + 1) == '(')
@@ -1465,19 +1479,19 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
           if (*p != ')')
           {
             mutt_buffer_printf(err, _("mismatched brackets: %s"), ps.dptr);
-            mutt_pattern_free(&curlist);
-            return NULL;
+            goto cleanup;
           }
-          tmp = mutt_pattern_new();
-          tmp->op = thread_op;
+          tmp = mutt_pattern_node_new();
+          pat = SLIST_FIRST(tmp);
+          pat->op = thread_op;
           if (last)
-            last->next = tmp;
+            SLIST_NEXT(SLIST_FIRST(last), entries) = pat;
           else
             curlist = tmp;
           last = tmp;
-          tmp->not ^= not;
-          tmp->alladdr |= alladdr;
-          tmp->isalias |= isalias;
+          pat->not ^= not;
+          pat->alladdr |= alladdr;
+          pat->isalias |= isalias;
           not = false;
           alladdr = false;
           isalias = false;
@@ -1487,37 +1501,38 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
           if (!tmp2)
           {
             FREE(&buf);
-            mutt_pattern_free(&curlist);
-            return NULL;
+            goto cleanup;
           }
           FREE(&buf);
-          tmp->child = tmp2;
+          pat->child = tmp2;
           ps.dptr = p + 1; /* restore location */
           break;
         }
         if (implicit && or)
         {
           /* A | B & C == (A | B) & C */
-          tmp = mutt_pattern_new();
-          tmp->op = MUTT_PAT_OR;
-          tmp->child = curlist;
+          tmp = mutt_pattern_node_new();
+          pat = SLIST_FIRST(tmp);
+          pat->op = MUTT_PAT_OR;
+          pat->child = curlist;
           curlist = tmp;
           last = tmp;
           or = false;
         }
 
-        tmp = mutt_pattern_new();
-        tmp->not = not;
-        tmp->alladdr = alladdr;
-        tmp->isalias = isalias;
-        tmp->stringmatch = (*ps.dptr == '=');
-        tmp->groupmatch = (*ps.dptr == '%');
+        tmp = mutt_pattern_node_new();
+        pat = SLIST_FIRST(tmp);
+        pat->not = not;
+        pat->alladdr = alladdr;
+        pat->isalias = isalias;
+        pat->stringmatch = (*ps.dptr == '=');
+        pat->groupmatch = (*ps.dptr == '%');
         not = false;
         alladdr = false;
         isalias = false;
 
         if (last)
-          last->next = tmp;
+          SLIST_NEXT(SLIST_FIRST(last), entries) = pat;
         else
           curlist = tmp;
         last = tmp;
@@ -1527,16 +1542,14 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
         if (!entry)
         {
           mutt_buffer_printf(err, _("%c: invalid pattern modifier"), *ps.dptr);
-          mutt_pattern_free(&curlist);
-          return NULL;
+          goto cleanup;
         }
         if (entry->class && ((flags & entry->class) == 0))
         {
           mutt_buffer_printf(err, _("%c: not supported in this mode"), *ps.dptr);
-          mutt_pattern_free(&curlist);
-          return NULL;
+          goto cleanup;
         }
-        tmp->op = entry->op;
+        pat->op = entry->op;
 
         ps.dptr++; /* eat the operator and any optional whitespace */
         SKIPWS(ps.dptr);
@@ -1546,52 +1559,51 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
           if (!*ps.dptr)
           {
             mutt_buffer_printf(err, "%s", _("missing parameter"));
-            mutt_pattern_free(&curlist);
-            return NULL;
+            goto cleanup;
           }
-          if (!entry->eat_arg(tmp, &ps, err))
+          if (!entry->eat_arg(pat, &ps, err))
           {
-            mutt_pattern_free(&curlist);
-            return NULL;
+            goto cleanup;
           }
         }
         implicit = true;
         break;
+      }
+
       case '(':
+      {
         p = find_matching_paren(ps.dptr + 1);
         if (*p != ')')
         {
           mutt_buffer_printf(err, _("mismatched parenthesis: %s"), ps.dptr);
-          mutt_pattern_free(&curlist);
-          return NULL;
+          goto cleanup;
         }
         /* compile the sub-expression */
         buf = mutt_str_substr_dup(ps.dptr + 1, p);
         tmp = mutt_pattern_comp(buf, flags, err);
-        if (!tmp)
-        {
-          FREE(&buf);
-          mutt_pattern_free(&curlist);
-          return NULL;
-        }
         FREE(&buf);
+        if (!tmp)
+          goto cleanup;
+        struct Pattern *pat = SLIST_FIRST(tmp);
         if (last)
-          last->next = tmp;
+          SLIST_NEXT(SLIST_FIRST(last), entries) = pat;
         else
           curlist = tmp;
         last = tmp;
-        tmp->not ^= not;
-        tmp->alladdr |= alladdr;
-        tmp->isalias |= isalias;
+        pat = SLIST_FIRST(tmp);
+        pat->not ^= not;
+        pat->alladdr |= alladdr;
+        pat->isalias |= isalias;
         not = false;
         alladdr = false;
         isalias = false;
         ps.dptr = p + 1; /* restore location */
         break;
+      }
+
       default:
         mutt_buffer_printf(err, _("error in pattern at: %s"), ps.dptr);
-        mutt_pattern_free(&curlist);
-        return NULL;
+        goto cleanup;
     }
   }
   if (!curlist)
@@ -1599,14 +1611,20 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
     mutt_buffer_strcpy(err, _("empty pattern"));
     return NULL;
   }
-  if (curlist->next)
+  if (SLIST_NEXT(SLIST_FIRST(curlist), entries))
   {
-    tmp = mutt_pattern_new();
-    tmp->op = or ? MUTT_PAT_OR : MUTT_PAT_AND;
-    tmp->child = curlist;
+    tmp = mutt_pattern_node_new();
+    struct Pattern *pat = SLIST_FIRST(tmp);
+    pat->op = or ? MUTT_PAT_OR : MUTT_PAT_AND;
+    pat->child = curlist;
     curlist = tmp;
   }
+
   return curlist;
+
+cleanup:
+  mutt_pattern_free(&curlist);
+  return NULL;
 }
 
 /**
@@ -1618,12 +1636,16 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
  * @param cache Cached Patterns
  * @retval true If ALL of the Patterns evaluates to true
  */
-static bool perform_and(struct Pattern *pat, enum PatternExecFlag flags,
+static bool perform_and(struct PatternHead *pat, enum PatternExecFlag flags,
                         struct Mailbox *m, struct Email *e, struct PatternCache *cache)
 {
-  for (; pat; pat = pat->next)
-    if (mutt_pattern_exec(pat, flags, m, e, cache) <= 0)
+  struct Pattern *p = NULL;
+
+  SLIST_FOREACH(p, pat, entries)
+  {
+    if (mutt_pattern_exec(p, flags, m, e, cache) <= 0)
       return false;
+  }
   return true;
 }
 
@@ -1636,12 +1658,16 @@ static bool perform_and(struct Pattern *pat, enum PatternExecFlag flags,
  * @param cache Cached Patterns
  * @retval true If ONE (or more) of the Patterns evaluates to true
  */
-static int perform_or(struct Pattern *pat, enum PatternExecFlag flags,
+static int perform_or(struct PatternHead *pat, enum PatternExecFlag flags,
                       struct Mailbox *m, struct Email *e, struct PatternCache *cache)
 {
-  for (; pat; pat = pat->next)
-    if (mutt_pattern_exec(pat, flags, m, e, cache) > 0)
+  struct Pattern *p = NULL;
+
+  SLIST_FOREACH(p, pat, entries)
+  {
+    if (mutt_pattern_exec(p, flags, m, e, cache) > 0)
       return true;
+  }
   return false;
 }
 
@@ -1766,7 +1792,7 @@ static int match_user(int alladdr, struct Address *a1, struct Address *a2)
  * @retval 1  Success, match found
  * @retval 0  No match
  */
-static int match_threadcomplete(struct Pattern *pat, enum PatternExecFlag flags,
+static int match_threadcomplete(struct PatternHead *pat, enum PatternExecFlag flags,
                                 struct Mailbox *m, struct MuttThread *t,
                                 int left, int up, int right, int down)
 {
@@ -1777,7 +1803,7 @@ static int match_threadcomplete(struct Pattern *pat, enum PatternExecFlag flags,
     return 0;
   e = t->message;
   if (e)
-    if (mutt_pattern_exec(pat, flags, m, e, NULL))
+    if (mutt_pattern_exec(SLIST_FIRST(pat), flags, m, e, NULL))
       return 1;
 
   if (up && (a = match_threadcomplete(pat, flags, m, t->parent, 1, 1, 1, 0)))
@@ -1805,13 +1831,13 @@ static int match_threadcomplete(struct Pattern *pat, enum PatternExecFlag flags,
  * @retval  0 Pattern did not match
  * @retval -1 Error
  */
-static int match_threadparent(struct Pattern *pat, enum PatternExecFlag flags,
+static int match_threadparent(struct PatternHead *pat, enum PatternExecFlag flags,
                               struct Mailbox *m, struct MuttThread *t)
 {
   if (!t || !t->parent || !t->parent->message)
     return 0;
 
-  return mutt_pattern_exec(pat, flags, m, t->parent->message, NULL);
+  return mutt_pattern_exec(SLIST_FIRST(pat), flags, m, t->parent->message, NULL);
 }
 
 /**
@@ -1824,14 +1850,14 @@ static int match_threadparent(struct Pattern *pat, enum PatternExecFlag flags,
  * @retval  0 Pattern did not match
  * @retval -1 Error
  */
-static int match_threadchildren(struct Pattern *pat, enum PatternExecFlag flags,
+static int match_threadchildren(struct PatternHead *pat, enum PatternExecFlag flags,
                                 struct Mailbox *m, struct MuttThread *t)
 {
   if (!t || !t->child)
     return 0;
 
   for (t = t->child; t; t = t->next)
-    if (t->message && mutt_pattern_exec(pat, flags, m, t->message, NULL))
+    if (t->message && mutt_pattern_exec(SLIST_FIRST(pat), flags, m, t->message, NULL))
       return 1;
 
   return 0;
@@ -2327,7 +2353,7 @@ bool mutt_limit_current_thread(struct Email *e)
  */
 int mutt_pattern_func(int op, char *prompt)
 {
-  struct Pattern *pat = NULL;
+  struct PatternHead *pat = NULL;
   char buf[1024] = "", *simple = NULL;
   struct Buffer err;
   int rc = -1, padding;
@@ -2379,8 +2405,8 @@ int mutt_pattern_func(int op, char *prompt)
       Context->mailbox->emails[i]->limited = false;
       Context->mailbox->emails[i]->collapsed = false;
       Context->mailbox->emails[i]->num_hidden = 0;
-      if (mutt_pattern_exec(pat, MUTT_MATCH_FULL_ADDRESS, Context->mailbox,
-                            Context->mailbox->emails[i], NULL))
+      if (mutt_pattern_exec(SLIST_FIRST(pat), MUTT_MATCH_FULL_ADDRESS,
+                            Context->mailbox, Context->mailbox->emails[i], NULL))
       {
         Context->mailbox->emails[i]->virtual = Context->mailbox->vcount;
         Context->mailbox->emails[i]->limited = true;
@@ -2396,7 +2422,7 @@ int mutt_pattern_func(int op, char *prompt)
     for (int i = 0; i < Context->mailbox->vcount; i++)
     {
       mutt_progress_update(&progress, i, -1);
-      if (mutt_pattern_exec(pat, MUTT_MATCH_FULL_ADDRESS, Context->mailbox,
+      if (mutt_pattern_exec(SLIST_FIRST(pat), MUTT_MATCH_FULL_ADDRESS, Context->mailbox,
                             Context->mailbox->emails[Context->mailbox->v2r[i]], NULL))
       {
         switch (op)
@@ -2575,7 +2601,7 @@ int mutt_search_command(int cur, int op)
     {
       /* remember that we've already searched this message */
       e->searched = true;
-      e->matched = mutt_pattern_exec(SearchPattern, MUTT_MATCH_FULL_ADDRESS,
+      e->matched = mutt_pattern_exec(SLIST_FIRST(SearchPattern), MUTT_MATCH_FULL_ADDRESS,
                                      Context->mailbox, e, NULL);
       if (e->matched > 0)
       {

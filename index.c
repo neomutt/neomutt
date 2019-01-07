@@ -458,7 +458,8 @@ static void update_index_threaded(struct Context *ctx, int check, int oldcount)
       else
         e = ctx->mailbox->emails[i];
 
-      if (mutt_pattern_exec(ctx->limit_pattern, MUTT_MATCH_FULL_ADDRESS, ctx->mailbox, e, NULL))
+      if (mutt_pattern_exec(SLIST_FIRST(ctx->limit_pattern),
+                            MUTT_MATCH_FULL_ADDRESS, ctx->mailbox, e, NULL))
       {
         /* virtual will get properly set by mutt_set_virtual(), which
          * is called by mutt_sort_headers() just below. */
@@ -524,7 +525,7 @@ static void update_index_unthreaded(struct Context *ctx, int check, int oldcount
         ctx->vsize = 0;
       }
 
-      if (mutt_pattern_exec(ctx->limit_pattern, MUTT_MATCH_FULL_ADDRESS,
+      if (mutt_pattern_exec(SLIST_FIRST(ctx->limit_pattern), MUTT_MATCH_FULL_ADDRESS,
                             ctx->mailbox, ctx->mailbox->emails[i], NULL))
       {
         assert(ctx->mailbox->vcount < ctx->mailbox->msg_count);
@@ -3619,7 +3620,8 @@ void mutt_set_header_color(struct Mailbox *m, struct Email *e)
 
   STAILQ_FOREACH(color, &ColorIndexList, entries)
   {
-    if (mutt_pattern_exec(color->color_pattern, MUTT_MATCH_FULL_ADDRESS, m, e, &cache))
+    if (mutt_pattern_exec(SLIST_FIRST(color->color_pattern),
+                          MUTT_MATCH_FULL_ADDRESS, m, e, &cache))
     {
       e->pair = color->pair;
       return;

@@ -56,7 +56,7 @@ short C_ScoreThresholdRead; ///< Config: Messages with a lower score will be aut
 struct Score
 {
   char *str;
-  struct Pattern *pat;
+  struct PatternHead *pat;
   int val;
   bool exact; /**< if this rule matches, don't evaluate any more */
   struct Score *next;
@@ -100,7 +100,6 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
 {
   struct Score *ptr = NULL, *last = NULL;
   char *pattern = NULL, *pc = NULL;
-  struct Pattern *pat = NULL;
 
   mutt_extract_token(buf, s, 0);
   if (!MoreArgs(s))
@@ -125,7 +124,7 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
       break;
   if (!ptr)
   {
-    pat = mutt_pattern_comp(pattern, 0, err);
+    struct PatternHead *pat = mutt_pattern_comp(pattern, 0, err);
     if (!pat)
     {
       FREE(&pattern);
@@ -176,7 +175,7 @@ void mutt_score_message(struct Mailbox *m, struct Email *e, bool upd_mbox)
   e->score = 0; /* in case of re-scoring */
   for (tmp = ScoreList; tmp; tmp = tmp->next)
   {
-    if (mutt_pattern_exec(tmp->pat, MUTT_MATCH_FULL_ADDRESS, NULL, e, &cache) > 0)
+    if (mutt_pattern_exec(SLIST_FIRST(tmp->pat), MUTT_MATCH_FULL_ADDRESS, NULL, e, &cache) > 0)
     {
       if (tmp->exact || (tmp->val == 9999) || (tmp->val == -9999))
       {

@@ -63,10 +63,10 @@ bool C_SaveName; ///< Config: Save outgoing message to mailbox of recipient's na
  */
 struct Hook
 {
-  HookFlags type;          ///< Hook type
-  struct Regex regex;      ///< Regular expression
-  char *command;           ///< Filename, command or pattern to execute
-  struct Pattern *pattern; ///< Used for fcc,save,send-hook
+  HookFlags type;              ///< Hook type
+  struct Regex regex;          ///< Regular expression
+  char *command;               ///< Filename, command or pattern to execute
+  struct PatternHead *pattern; ///< Used for fcc,save,send-hook
   TAILQ_ENTRY(Hook) entries;
 };
 static TAILQ_HEAD(, Hook) Hooks = TAILQ_HEAD_INITIALIZER(Hooks);
@@ -86,7 +86,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
   int rc;
   bool not = false, warning = false;
   regex_t *rx = NULL;
-  struct Pattern *pat = NULL;
+  struct PatternHead *pat = NULL;
   char path[PATH_MAX];
 
   mutt_buffer_init(&pattern);
@@ -457,7 +457,8 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type)
 
     if (hook->type & type)
     {
-      if ((mutt_pattern_exec(hook->pattern, 0, m, e, &cache) > 0) ^ hook->regex.not)
+      if ((mutt_pattern_exec(SLIST_FIRST(hook->pattern), 0, m, e, &cache) > 0) ^
+          hook->regex.not)
       {
         if (mutt_parse_rc_line(hook->command, &token, &err) == MUTT_CMD_ERROR)
         {
@@ -505,7 +506,8 @@ static int addr_hook(char *path, size_t pathlen, HookFlags type,
     if (hook->type & type)
     {
       struct Mailbox *m = ctx ? ctx->mailbox : NULL;
-      if ((mutt_pattern_exec(hook->pattern, 0, m, e, &cache) > 0) ^ hook->regex.not)
+      if ((mutt_pattern_exec(SLIST_FIRST(hook->pattern), 0, m, e, &cache) > 0) ^
+          hook->regex.not)
       {
         mutt_make_string_flags(path, pathlen, hook->command, ctx, m, e, MUTT_FORMAT_PLAIN);
         return 0;
