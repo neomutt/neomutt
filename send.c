@@ -1958,10 +1958,12 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
       mutt_fix_reply_recipients(msg->env);
 
 #ifdef USE_NNTP
-    if ((flags & SEND_NEWS) && ctx && ctx->mailbox->magic == MUTT_NNTP &&
+    if ((flags & SEND_NEWS) && ctx && (ctx->mailbox->magic == MUTT_NNTP) &&
         !msg->env->newsgroups)
+    {
       msg->env->newsgroups =
           mutt_str_strdup(((struct NntpMboxData *) ctx->mailbox->mdata)->group);
+    }
 #endif
 
     if (!(flags & (SEND_MAILX | SEND_BATCH)) && !(Autoedit && EditHeaders) &&
@@ -1985,7 +1987,7 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
     if ((flags & SEND_REPLY) && cur)
     {
       /* change setting based upon message we are replying to */
-      mutt_message_hook(ctx->mailbox, cur, MUTT_REPLY_HOOK);
+      mutt_message_hook(ctx ? ctx->mailbox : NULL, cur, MUTT_REPLY_HOOK);
 
       /* set the replied flag for the message we are generating so that the
        * user can use ~Q in a send-hook to know when reply-hook's are also
@@ -2469,7 +2471,7 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
                               _("Mail sent"));
 #ifdef USE_NOTMUCH
     if (NmRecord)
-      nm_record_message(ctx->mailbox, finalpath, cur);
+      nm_record_message(ctx ? ctx->mailbox : NULL, finalpath, cur);
 #endif
     mutt_sleep(0);
   }
