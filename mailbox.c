@@ -533,7 +533,7 @@ enum CommandResult mutt_parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
 #ifdef USE_INOTIFY
         mutt_monitor_remove(np->m);
 #endif
-        if (Context->mailbox == np->m)
+        if (Context && (Context->mailbox == np->m))
         {
           np->m->flags |= MB_HIDDEN;
         }
