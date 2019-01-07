@@ -631,6 +631,19 @@ struct ConfigDef MuttVars[] = {
   ** $$crypt_replyencrypt,
   ** $$crypt_autosign, $$crypt_replysign and $$smime_is_default.
   */
+  { "crypt_chars",       DT_MBTABLE,    R_BOTH, &CryptChars, IP "SPsK " },
+  /*
+  ** .pp
+  ** Controls the characters used in cryptography flags.
+  ** .dl
+  ** .dt \fBCharacter\fP .dd \fBDefault\fP .dd \fBDescription\fP
+  ** .dt 1 .dd S .dd The mail is signed, and the signature is successfully verified.
+  ** .dt 2 .dd P .dd The mail is PGP encrypted.
+  ** .dt 3 .dd s .dd The mail is signed.
+  ** .dt 4 .dd K .dd The mail contains a PGP public key.
+  ** .dt 5 .dd <space> .dd The mail has no crypto info.
+  ** .de
+  */
   { "crypt_confirmhook",        DT_BOOL, R_NONE, &CryptConfirmhook, true },
   /*
   ** .pp
@@ -703,6 +716,17 @@ struct ConfigDef MuttVars[] = {
   ** you enable this variable.
   ** (Crypto only)
   */
+  { "crypt_protected_headers_subject", DT_STRING, R_NONE, &CryptProtectedHeadersSubject, IP "Encrypted subject" },
+  /*
+  ** .pp
+  ** When $$crypt_protected_headers_write is set, and the message is marked
+  ** for encryption, this will be substituted into the Subject field in the
+  ** message headers.
+  **
+  ** To prevent a subject from being substituted, unset this variable, or set it
+  ** to the empty string.
+  ** (Crypto only)
+  */
   { "crypt_protected_headers_write", DT_BOOL, R_NONE, &CryptProtectedHeadersWrite, false },
   /*
   ** .pp
@@ -714,17 +738,6 @@ struct ConfigDef MuttVars[] = {
   ** For more information see https://github.com/autocrypt/memoryhole.
   **
   ** Currently Mutt only supports the Subject header.
-  ** (Crypto only)
-  */
-  { "crypt_protected_headers_subject", DT_STRING, R_NONE, &CryptProtectedHeadersSubject, IP "Encrypted subject" },
-  /*
-  ** .pp
-  ** When $$crypt_protected_headers_write is set, and the message is marked
-  ** for encryption, this will be substituted into the Subject field in the
-  ** message headers.
-  **
-  ** To prevent a subject from being substituted, unset this variable, or set it
-  ** to the empty string.
   ** (Crypto only)
   */
   { "crypt_replyencrypt",       DT_BOOL, R_NONE, &CryptReplyencrypt, true },
@@ -1077,19 +1090,6 @@ struct ConfigDef MuttVars[] = {
   ** .dt 9 .dd n .dd The mail thread is New (Unread but not seen).
   ** .dt 10 .dd - .dd The mail is read - %S expando.
   ** .dt 11 .dd <space> .dd The mail is read - %Z expando.
-  ** .de
-  */
-  { "crypt_chars",       DT_MBTABLE,    R_BOTH, &CryptChars, IP "SPsK " },
-  /*
-  ** .pp
-  ** Controls the characters used in cryptography flags.
-  ** .dl
-  ** .dt \fBCharacter\fP .dd \fBDefault\fP .dd \fBDescription\fP
-  ** .dt 1 .dd S .dd The mail is signed, and the signature is successfully verified.
-  ** .dt 2 .dd P .dd The mail is PGP encrypted.
-  ** .dt 3 .dd s .dd The mail is signed.
-  ** .dt 4 .dd K .dd The mail contains a PGP public key.
-  ** .dt 5 .dd <space> .dd The mail has no crypto info.
   ** .de
   */
   { "flag_safe", DT_BOOL, R_NONE, &FlagSafe, false },
@@ -2272,6 +2272,13 @@ struct ConfigDef MuttVars[] = {
   ** The messages tagged with these tags are excluded and not loaded
   ** from notmuch DB to NeoMutt unless specified explicitly.
   */
+  { "nm_flagged_tag", DT_STRING, R_NONE, &NmFlaggedTag, IP "flagged" },
+  /*
+  ** .pp
+  ** This variable specifies notmuch tag which is used for flagged messages. The
+  ** variable is used to count flagged messages in DB and set the flagged flag when
+  ** modifying tags. All other NeoMutt commands use standard (e.g. maildir) flags.
+  */
   { "nm_open_timeout", DT_NUMBER|DT_NOT_NEGATIVE, R_NONE, &NmOpenTimeout, 5 },
   /*
   ** .pp
@@ -2315,26 +2322,19 @@ struct ConfigDef MuttVars[] = {
   ** This variable specifies the default tags applied to messages stored to the NeoMutt record.
   ** When set to 0 this variable disable the window feature.
   */
-  { "nm_unread_tag", DT_STRING, R_NONE, &NmUnreadTag, IP "unread" },
-  /*
-  ** .pp
-  ** This variable specifies notmuch tag which is used for unread messages. The
-  ** variable is used to count unread messages in DB and set the unread flag when
-  ** modifiying tags. All other NeoMutt commands use standard (e.g. maildir) flags.
-  */
-  { "nm_flagged_tag", DT_STRING, R_NONE, &NmFlaggedTag, IP "flagged" },
-  /*
-  ** .pp
-  ** This variable specifies notmuch tag which is used for flagged messages. The
-  ** variable is used to count flagged messages in DB and set the flagged flag when
-  ** modifying tags. All other NeoMutt commands use standard (e.g. maildir) flags.
-  */
   { "nm_replied_tag", DT_STRING, R_NONE, &NmRepliedTag, IP "replied" },
   /*
   ** .pp
   ** This variable specifies notmuch tag which is used for replied messages. The
   ** variable is used to set the replied flag when modifiying tags. All other NeoMutt
   ** commands use standard (e.g. maildir) flags.
+  */
+  { "nm_unread_tag", DT_STRING, R_NONE, &NmUnreadTag, IP "unread" },
+  /*
+  ** .pp
+  ** This variable specifies notmuch tag which is used for unread messages. The
+  ** variable is used to count unread messages in DB and set the unread flag when
+  ** modifiying tags. All other NeoMutt commands use standard (e.g. maildir) flags.
   */
 #endif
 #ifdef USE_NNTP
