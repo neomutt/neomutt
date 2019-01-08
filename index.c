@@ -2919,12 +2919,17 @@ int mutt_index_menu(void)
          */
 
       case OP_BOUNCE_MESSAGE:
-
+      {
         CHECK_ATTACH;
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        ci_bounce_message(tag ? NULL : CUR_EMAIL);
+
+        struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+        el_add_tagged(&el, Context, CUR_EMAIL, tag);
+        ci_bounce_message(Context->mailbox, &el);
+        el_free(&el);
         break;
+      }
 
       case OP_CREATE_ALIAS:
 

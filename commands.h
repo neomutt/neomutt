@@ -41,7 +41,7 @@ extern bool          PrintDecode;
 extern bool          PrintSplit;
 extern bool          PromptAfter;
 
-void ci_bounce_message(struct Email *e);
+void ci_bounce_message(struct Mailbox *m, struct EmailList *el);
 void mutt_check_stats(void);
 bool mutt_check_traditional_pgp(struct Email *e, int *redraw);
 void mutt_display_address(struct Envelope *env);

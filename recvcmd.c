@@ -156,12 +156,16 @@ static short count_tagged_children(struct AttachCtx *actx, short i)
 
 /**
  * mutt_attach_bounce - Bounce function, from the attachment menu
+ * @param m    Mailbox
  * @param fp   Handle of message
  * @param actx Attachment context
  * @param cur  Body of email
  */
-void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
+void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, struct Body *cur)
 {
+  if (!m || !fp || !actx)
+    return;
+
   char prompt[STRING];
   char buf[HUGE_STRING];
   char *err = NULL;

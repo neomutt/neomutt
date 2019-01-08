@@ -2930,13 +2930,21 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
          */
 
       case OP_BOUNCE_MESSAGE:
+      {
+        struct Mailbox *m = Context ? Context->mailbox : NULL;
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra))
         CHECK_ATTACH;
         if (IsMsgAttach(extra))
-          mutt_attach_bounce(extra->fp, extra->actx, extra->bdy);
+          mutt_attach_bounce(m, extra->fp, extra->actx, extra->bdy);
         else
-          ci_bounce_message(extra->email);
+        {
+          struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+          el_add_email(&el, extra->email);
+          ci_bounce_message(m, &el);
+          el_free(&el);
+        }
         break;
+      }
 
       case OP_RESEND:
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra))

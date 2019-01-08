@@ -363,48 +363,34 @@ int mutt_display_message(struct Email *cur)
 
 /**
  * ci_bounce_message - Bounce an email
- * @param e Email to bounce
+ * @param m  Mailbox
+ * @param el List of Emails to bounce
  */
-void ci_bounce_message(struct Email *e)
+void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
 {
+  if (!m || !el || STAILQ_EMPTY(el))
+    return;
+
   char prompt[SHORT_STRING];
   char scratch[SHORT_STRING];
   char buf[HUGE_STRING] = { 0 };
   struct Address *addr = NULL;
   char *err = NULL;
   int rc;
-  int msgcount; // for L10N with ngettext
+  int msg_count = 0;
 
-  /* RFC5322 mandates a From: header, so warn before bouncing
-   * messages without one */
-  if (e)
+  struct EmailNode *en = NULL;
+  STAILQ_FOREACH(en, el, entries)
   {
-    msgcount = 1;
-    if (!e->env->from)
-    {
+    /* RFC5322 mandates a From: header,
+     * so warn before bouncing messages without one */
+    if (!en->email->env->from)
       mutt_error(_("Warning: message contains no From: header"));
-    }
-  }
-  else if (Context)
-  {
-    msgcount = 0; // count the precise number of messages.
-    for (rc = 0; rc < Context->mailbox->msg_count; rc++)
-    {
-      if (message_is_tagged(Context, rc) && !Context->mailbox->emails[rc]->env->from)
-      {
-        msgcount++;
-        if (!Context->mailbox->emails[rc]->env->from)
-        {
-          mutt_error(_("Warning: message contains no From: header"));
-          break;
-        }
-      }
-    }
-  }
-  else
-    msgcount = 0;
 
-  if (e)
+    msg_count++;
+  }
+
+  if (msg_count == 1)
     mutt_str_strfcpy(prompt, _("Bounce message to: "), sizeof(prompt));
   else
     mutt_str_strfcpy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
@@ -435,7 +421,7 @@ void ci_bounce_message(struct Email *e)
 
 #define EXTRA_SPACE (15 + 7 + 2)
   snprintf(scratch, sizeof(scratch),
-           ngettext("Bounce message to %s", "Bounce messages to %s", msgcount), buf);
+           ngettext("Bounce message to %s", "Bounce messages to %s", msg_count), buf);
 
   if (mutt_strwidth(prompt) > MuttMessageWindow->cols - EXTRA_SPACE)
   {
@@ -450,17 +436,33 @@ void ci_bounce_message(struct Email *e)
   {
     mutt_addr_free(&addr);
     mutt_window_clearline(MuttMessageWindow, 0);
-    mutt_message(ngettext("Message not bounced", "Messages not bounced", msgcount));
+    mutt_message(ngettext("Message not bounced", "Messages not bounced", msg_count));
     return;
   }
 
   mutt_window_clearline(MuttMessageWindow, 0);
 
-  rc = mutt_bounce_message(NULL, e, addr);
+  struct Message *msg = NULL;
+  STAILQ_FOREACH(en, el, entries)
+  {
+    msg = mx_msg_open(m, en->email->msgno);
+    if (!msg)
+    {
+      rc = -1;
+      break;
+    }
+
+    rc = mutt_bounce_message(msg->fp, en->email, addr);
+    mx_msg_close(m, &msg);
+
+    if (rc < 0)
+      break;
+  }
+
   mutt_addr_free(&addr);
   /* If no error, or background, display message. */
   if ((rc == 0) || (rc == S_BKG))
-    mutt_message(ngettext("Message bounced", "Messages bounced", msgcount));
+    mutt_message(ngettext("Message bounced", "Messages bounced", msg_count));
 }
 
 /**
@@ -490,7 +492,7 @@ static void pipe_set_flags(bool decode, bool print, int *cmflags, int *chflags)
 
 /**
  * pipe_msg - Pipe a message
- * @param e      Email
+ * @param e      Email to pipe
  * @param fp     File to write to
  * @param decode If true, decode the message
  * @param print  If true, message is for printing

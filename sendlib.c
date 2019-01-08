@@ -2956,34 +2956,18 @@ void mutt_unprepare_envelope(struct Envelope *env)
 static int bounce_message(FILE *fp, struct Email *e, struct Address *to,
                           const char *resent_from, struct Address *env_from)
 {
-  int rc = 0;
-  FILE *f = NULL;
-  char tempfile[PATH_MAX];
-  struct Message *msg = NULL;
-
   if (!e)
-  {
-    /* Try to bounce each message out, aborting if we get any failures. */
-    for (int i = 0; i < Context->mailbox->msg_count; i++)
-      if (message_is_tagged(Context, i))
-        rc |= bounce_message(fp, Context->mailbox->emails[i], to, resent_from, env_from);
-    return rc;
-  }
-
-  /* If we failed to open a message, return with error */
-  if (!fp && !(msg = mx_msg_open(Context->mailbox, e->msgno)))
     return -1;
 
-  if (!fp)
-    fp = msg->fp;
+  int rc = 0;
+  char tempfile[PATH_MAX];
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  f = mutt_file_fopen(tempfile, "w");
+  FILE *f = mutt_file_fopen(tempfile, "w");
   if (f)
   {
     char date[SHORT_STRING];
     int ch_flags = CH_XMIT | CH_NONEWLINE | CH_NOQFROM;
-    char *msgid_str = NULL;
 
     if (!BounceDelivered)
       ch_flags |= CH_WEED_DELIVERED;
@@ -2991,14 +2975,14 @@ static int bounce_message(FILE *fp, struct Email *e, struct Address *to,
     fseeko(fp, e->offset, SEEK_SET);
     fprintf(f, "Resent-From: %s", resent_from);
     fprintf(f, "\nResent-%s", mutt_date_make_date(date, sizeof(date)));
-    msgid_str = gen_msgid();
+    char *msgid_str = gen_msgid();
     fprintf(f, "Resent-Message-ID: %s\n", msgid_str);
+    FREE(&msgid_str);
     fputs("Resent-To: ", f);
     mutt_write_address_list(to, f, 11, 0);
     mutt_copy_header(fp, e, f, ch_flags, NULL);
     fputc('\n', f);
     mutt_file_copy_bytes(fp, f, e->content->length);
-    FREE(&msgid_str);
     if (mutt_file_fclose(&f) != 0)
     {
       mutt_perror(tempfile);
@@ -3009,13 +2993,10 @@ static int bounce_message(FILE *fp, struct Email *e, struct Address *to,
     if (SmtpUrl)
       rc = mutt_smtp_send(env_from, to, NULL, NULL, tempfile, e->content->encoding == ENC_8BIT);
     else
-#endif /* USE_SMTP */
+#endif
       rc = mutt_invoke_sendmail(env_from, to, NULL, NULL, tempfile,
                                 e->content->encoding == ENC_8BIT);
   }
-
-  if (msg)
-    mx_msg_close(Context->mailbox, &msg);
 
   return rc;
 }
@@ -3030,6 +3011,9 @@ static int bounce_message(FILE *fp, struct Email *e, struct Address *to,
  */
 int mutt_bounce_message(FILE *fp, struct Email *e, struct Address *to)
 {
+  if (!fp || !e || !to)
+    return -1;
+
   const char *fqdn = mutt_fqdn(true);
   char resent_from[STRING];
   char *err = NULL;

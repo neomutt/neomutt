@@ -1526,7 +1526,7 @@ void mutt_view_attachments(struct Email *e)
 
       case OP_BOUNCE_MESSAGE:
         CHECK_ATTACH;
-        mutt_attach_bounce(CURATTACH->fp, actx,
+        mutt_attach_bounce(m, CURATTACH->fp, actx,
                            menu->tagprefix ? NULL : CURATTACH->content);
         menu->redraw = REDRAW_FULL;
         break;
