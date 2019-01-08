@@ -633,7 +633,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
    * mutt_push/pop_current_menu() functions.  If that changes, the menu
    * would need to be reset here, and the pager cleanup code after the
    * switch statement would need to be run. */
-  mutt_folder_hook(buf, m->desc);
+  mutt_folder_hook(buf, m ? m->desc : NULL);
 
   const int flags =
       (ReadOnly || (op == OP_MAIN_CHANGE_FOLDER_READONLY)) ? MUTT_READONLY : 0;
