@@ -1491,7 +1491,7 @@ static int save_fcc(struct Email *msg, char *fcc, size_t fcc_len, struct Body *c
   int rc = 0;
   struct Body *save_content = NULL;
 
-  mutt_expand_path(fcc, sizeof(fcc));
+  mutt_expand_path(fcc, fcc_len);
 
   /* Don't save a copy when we are in batch-mode, and the FCC
   * folder is on an IMAP server: This would involve possibly lots
