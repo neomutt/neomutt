@@ -979,6 +979,13 @@ bool imap_has_flag(struct ListHead *flag_list, const char *flag)
   return false;
 }
 
+static int compare_uid(const void *a, const void *b)
+{
+  struct Email **ea = (struct Email **) a;
+  struct Email **eb = (struct Email **) b;
+  return imap_edata_get(*ea)->uid - imap_edata_get(*eb)->uid;
+}
+
 /**
  * imap_exec_msgset - Prepare commands for all messages matching conditions
  * @param m       Selected Imap Mailbox
@@ -1020,7 +1027,7 @@ int imap_exec_msgset(struct Mailbox *m, const char *pre, const char *post,
     memcpy(m->emails, emails, m->msg_count * sizeof(struct Email *));
 
     Sort = SORT_ORDER;
-    qsort(m->emails, m->msg_count, sizeof(struct Email *), mutt_get_sort_func(SORT_ORDER));
+    qsort(m->emails, m->msg_count, sizeof(struct Email *), compare_uid);
   }
 
   pos = 0;
