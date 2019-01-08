@@ -273,8 +273,15 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
     /* int rc = */ mx_path_canon2(m, Folder);
   }
 
-  m->notify = ctx_mailbox_changed;
-  m->ndata = ctx;
+
+  /* mailbox can be opened twice by postpone/sendlib/trash code
+   * as workaround we set the context only the first time and for mailbox
+   * without APPEND flag */
+  if (!m->ndata && !(flags & MUTT_APPEND))
+  {
+    m->notify = ctx_mailbox_changed;
+    m->ndata = ctx;
+  }
 
   if ((m->magic == MUTT_UNKNOWN) && (flags & MUTT_NEWFOLDER))
   {
