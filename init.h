@@ -531,7 +531,7 @@ struct ConfigDef MuttVars[] = {
   ** When \fIunset\fP, NeoMutt will not collapse a thread if it contains any
   ** unread messages.
   */
-  { "compose_format",   DT_STRING|DT_NOT_EMPTY,  R_MENU, &ComposeFormat, IP "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-" },
+  { "compose_format",   DT_STRING,  R_MENU, &ComposeFormat, IP "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-" },
   /*
   ** .pp
   ** Controls the format of the status line displayed in the "compose"
@@ -2425,7 +2425,7 @@ struct ConfigDef MuttVars[] = {
   ** results. If positive, this many lines will be given before a match,
   ** if 0, the match will be top-aligned.
   */
-  { "pager_format",     DT_STRING|DT_NOT_EMPTY,  R_PAGER, &PagerFormat, IP "-%Z- %C/%m: %-20.20n   %s%*  -- (%P)" },
+  { "pager_format",     DT_STRING,  R_PAGER, &PagerFormat, IP "-%Z- %C/%m: %-20.20n   %s%*  -- (%P)" },
   /*
   ** .pp
   ** This variable controls the format of the one-line message "status"
@@ -4301,7 +4301,7 @@ struct ConfigDef MuttVars[] = {
   **                 forwarding, etc. are not permitted in this mode)
   ** .de
   */
-  { "status_format",    DT_STRING|DT_NOT_EMPTY,  R_BOTH, &StatusFormat, IP "-%r-NeoMutt: %D [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---" },
+  { "status_format",    DT_STRING,  R_BOTH, &StatusFormat, IP "-%r-NeoMutt: %D [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---" },
   /*
   ** .pp
   ** Controls the format of the status line displayed in the "index"
