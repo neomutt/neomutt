@@ -24,8 +24,12 @@
 #define MUTT_CONFIG_DUMP_H
 
 #include <stddef.h>
+#include <stdbool.h>
+#include <stdio.h>
 
+struct Buffer;
 struct ConfigSet;
+struct HashElem;
 
 #define CS_DUMP_STYLE_MUTT   0 /**< Display config in Mutt style */
 #define CS_DUMP_STYLE_NEO    1 /**< Display config in NeoMutt style */

@@ -49,8 +49,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include <sys/stat.h>
-#include <sys/types.h>
 #include <time.h>
 #include <unistd.h>
 #include "notmuch_private.h"
@@ -60,13 +58,11 @@
 #include "mutt.h"
 #include "mutt_notmuch.h"
 #include "account.h"
-#include "context.h"
 #include "curs_lib.h"
 #include "globals.h"
 #include "index.h"
 #include "mailbox.h"
 #include "maildir/lib.h"
-#include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "mx.h"
 #include "progress.h"

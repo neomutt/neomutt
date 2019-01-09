@@ -24,6 +24,7 @@
 #define _CONFIG_ACCOUNT_H
 
 #include <stdint.h>
+#include <stdio.h>
 
 struct Buffer;
 struct ConfigSet;

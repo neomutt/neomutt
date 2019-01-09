@@ -23,6 +23,8 @@
 #ifndef MUTT_LIB_SIGNAL_H
 #define MUTT_LIB_SIGNAL_H
 
+#include <stdbool.h>
+
 /**
  * typedef sig_handler_t - Handler for signals
  * @param sig Signal number, e.g. SIGINT

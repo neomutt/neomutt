@@ -23,6 +23,8 @@
 #ifndef MUTT_STATE_H
 #define MUTT_STATE_H
 
+#include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 
 /**
