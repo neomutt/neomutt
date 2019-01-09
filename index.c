@@ -1947,7 +1947,7 @@ int mutt_index_menu(void)
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
         int oc = Context->mailbox->msg_count;
-        if (nm_read_entire_thread(Context, CUR_EMAIL) < 0)
+        if (nm_read_entire_thread(Context->mailbox, CUR_EMAIL) < 0)
         {
           mutt_message(_("Failed to read thread, aborting"));
           break;

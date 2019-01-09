@@ -1584,17 +1584,15 @@ char *nm_email_get_folder(struct Email *e)
 
 /**
  * nm_read_entire_thread - Get the entire thread of an email
- * @param ctx Mailbox
+ * @param m Mailbox
  * @param e   Email
  * @retval  0 Success
  * @retval -1 Failure
  */
-int nm_read_entire_thread(struct Context *ctx, struct Email *e)
+int nm_read_entire_thread(struct Mailbox *m, struct Email *e)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct NmMboxData *mdata = nm_mdata_get(m);
   if (!mdata)
@@ -1632,7 +1630,7 @@ int nm_read_entire_thread(struct Context *ctx, struct Email *e)
   rc = 0;
 
   if (m->msg_count > mdata->oldmsgcount)
-    ctx_update(ctx);
+    mutt_mailbox_changed(m, MBN_INVALID);
 done:
   if (q)
     notmuch_query_destroy(q);

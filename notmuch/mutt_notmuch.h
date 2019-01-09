@@ -38,7 +38,6 @@
 #include <stdbool.h>
 #include "mx.h"
 
-struct Context;
 struct Email;
 struct NmMboxData;
 
@@ -68,7 +67,7 @@ void  nm_parse_type_from_query   (struct NmMboxData *mdata, char *buf);
 int   nm_path_probe              (const char *path, const struct stat *st);
 void  nm_query_window_backward   (void);
 void  nm_query_window_forward    (void);
-int   nm_read_entire_thread      (struct Context *ctx, struct Email *e);
+int   nm_read_entire_thread      (struct Mailbox *m, struct Email *e);
 int   nm_record_message          (struct Mailbox *m, char *path, struct Email *e);
 int   nm_update_filename         (struct Mailbox *m, const char *old, const char *new, struct Email *e);
 char *nm_uri_from_query          (struct Mailbox *m, char *buf, size_t buflen);
