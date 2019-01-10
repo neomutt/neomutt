@@ -3442,15 +3442,20 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         break;
 
       case OP_EXTRACT_KEYS:
+      {
         if (!WithCrypto)
         {
           ch = -1;
           break;
         }
         CHECK_MODE(IsEmail(extra));
-        crypt_extract_keys_from_messages(extra->email);
+        struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+        el_add_email(&el, extra->email);
+        crypt_extract_keys_from_messages(&el);
+        el_free(&el);
         pager_menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_WHAT_KEY:
         mutt_what_key();

@@ -56,6 +56,7 @@ struct Address;
 struct Body;
 struct Envelope;
 struct Email;
+struct EmailList;
 struct State;
 
 /* These Config Variables are only used in ncrypt/crypt.c */
@@ -178,7 +179,7 @@ extern char *SmimeVerifyOpaqueCommand;
 #define KEYFLAG_ABILITIES (KEYFLAG_CANSIGN | KEYFLAG_CANENCRYPT | KEYFLAG_PREFER_ENCRYPTION | KEYFLAG_PREFER_SIGNING)
 
 /* crypt.c */
-void         crypt_extract_keys_from_messages(struct Email *e);
+void         crypt_extract_keys_from_messages(struct EmailList *el);
 void         crypt_forget_passphrase(void);
 int          crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode);
 void         crypt_opportunistic_encrypt(struct Email *msg);

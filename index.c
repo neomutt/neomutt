@@ -3187,13 +3187,18 @@ int mutt_index_menu(void)
         break;
 
       case OP_EXTRACT_KEYS:
+      {
         if (!WithCrypto)
           break;
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        crypt_extract_keys_from_messages(tag ? NULL : CUR_EMAIL);
+        struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+        el_add_tagged(&el, Context, CUR_EMAIL, tag);
+        crypt_extract_keys_from_messages(&el);
+        el_free(&el);
         menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_CHECK_TRADITIONAL:
         if (!(WithCrypto & APPLICATION_PGP))

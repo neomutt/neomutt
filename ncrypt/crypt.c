@@ -819,11 +819,11 @@ void crypt_convert_to_7bit(struct Body *a)
 
 /**
  * crypt_extract_keys_from_messages - Extract keys from a message
- * @param e Email
+ * @param el List of Emails to process
  *
  * The extracted keys will be added to the user's keyring.
  */
-void crypt_extract_keys_from_messages(struct Email *e)
+void crypt_extract_keys_from_messages(struct EmailList *el)
 {
   char tempfname[PATH_MAX], *mbox = NULL;
   struct Address *tmp = NULL;
@@ -843,101 +843,56 @@ void crypt_extract_keys_from_messages(struct Email *e)
   if (WithCrypto & APPLICATION_PGP)
     OptDontHandlePgpKeys = true;
 
-  if (!e)
+  struct EmailNode *en = NULL;
+  STAILQ_FOREACH(en, el, entries)
   {
-    for (int i = 0; i < Context->mailbox->msg_count; i++)
-    {
-      if (!message_is_tagged(Context, i))
-        continue;
+    struct Email *e = en->email;
 
-      struct Email *ei = Context->mailbox->emails[i];
-
-      mutt_parse_mime_message(Context->mailbox, ei);
-      if (ei->security & ENCRYPT && !crypt_valid_passphrase(ei->security))
-      {
-        mutt_file_fclose(&fpout);
-        break;
-      }
-
-      if (((WithCrypto & APPLICATION_PGP) != 0) && (ei->security & APPLICATION_PGP))
-      {
-        mutt_copy_message_ctx(fpout, Context->mailbox, ei,
-                              MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
-        fflush(fpout);
-
-        mutt_endwin();
-        puts(_("Trying to extract PGP keys...\n"));
-        crypt_pgp_invoke_import(tempfname);
-      }
-
-      if (((WithCrypto & APPLICATION_SMIME) != 0) && (ei->security & APPLICATION_SMIME))
-      {
-        if (ei->security & ENCRYPT)
-        {
-          mutt_copy_message_ctx(fpout, Context->mailbox, ei,
-                                MUTT_CM_NOHEADER | MUTT_CM_DECODE_CRYPT | MUTT_CM_DECODE_SMIME,
-                                0);
-        }
-        else
-          mutt_copy_message_ctx(fpout, Context->mailbox, ei, 0, 0);
-        fflush(fpout);
-
-        if (ei->env->from)
-          tmp = mutt_expand_aliases(ei->env->from);
-        else if (ei->env->sender)
-          tmp = mutt_expand_aliases(ei->env->sender);
-        mbox = tmp ? tmp->mailbox : NULL;
-        if (mbox)
-        {
-          mutt_endwin();
-          puts(_("Trying to extract S/MIME certificates..."));
-          crypt_smime_invoke_import(tempfname, mbox);
-          tmp = NULL;
-        }
-      }
-
-      rewind(fpout);
-    }
-  }
-  else
-  {
     mutt_parse_mime_message(Context->mailbox, e);
-    if (!(e->security & ENCRYPT && !crypt_valid_passphrase(e->security)))
+    if (e->security & ENCRYPT && !crypt_valid_passphrase(e->security))
     {
-      if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & APPLICATION_PGP))
+      mutt_file_fclose(&fpout);
+      break;
+    }
+
+    if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & APPLICATION_PGP))
+    {
+      mutt_copy_message_ctx(fpout, Context->mailbox, e,
+                            MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
+      fflush(fpout);
+
+      mutt_endwin();
+      puts(_("Trying to extract PGP keys...\n"));
+      crypt_pgp_invoke_import(tempfname);
+    }
+
+    if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME))
+    {
+      if (e->security & ENCRYPT)
       {
         mutt_copy_message_ctx(fpout, Context->mailbox, e,
-                              MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
-        fflush(fpout);
-        mutt_endwin();
-        puts(_("Trying to extract PGP keys...\n"));
-        crypt_pgp_invoke_import(tempfname);
+                              MUTT_CM_NOHEADER | MUTT_CM_DECODE_CRYPT | MUTT_CM_DECODE_SMIME,
+                              0);
       }
+      else
+        mutt_copy_message_ctx(fpout, Context->mailbox, e, 0, 0);
+      fflush(fpout);
 
-      if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME))
+      if (e->env->from)
+        tmp = mutt_expand_aliases(e->env->from);
+      else if (e->env->sender)
+        tmp = mutt_expand_aliases(e->env->sender);
+      mbox = tmp ? tmp->mailbox : NULL;
+      if (mbox)
       {
-        if (e->security & ENCRYPT)
-        {
-          mutt_copy_message_ctx(fpout, Context->mailbox, e,
-                                MUTT_CM_NOHEADER | MUTT_CM_DECODE_CRYPT | MUTT_CM_DECODE_SMIME,
-                                0);
-        }
-        else
-          mutt_copy_message_ctx(fpout, Context->mailbox, e, 0, 0);
-
-        fflush(fpout);
-        if (e->env->from)
-          tmp = mutt_expand_aliases(e->env->from);
-        else if (e->env->sender)
-          tmp = mutt_expand_aliases(e->env->sender);
-        mbox = tmp ? tmp->mailbox : NULL;
-        if (mbox) /* else ? */
-        {
-          mutt_message(_("Trying to extract S/MIME certificates..."));
-          crypt_smime_invoke_import(tempfname, mbox);
-        }
+        mutt_endwin();
+        puts(_("Trying to extract S/MIME certificates..."));
+        crypt_smime_invoke_import(tempfname, mbox);
+        tmp = NULL;
       }
     }
+
+    rewind(fpout);
   }
 
   mutt_file_fclose(&fpout);
