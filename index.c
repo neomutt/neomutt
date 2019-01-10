@@ -3136,11 +3136,16 @@ int mutt_index_menu(void)
         break;
 
       case OP_EDIT_LABEL:
-
+      {
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
         CHECK_READONLY;
-        rc = mutt_label_message(tag ? NULL : CUR_EMAIL);
+
+        struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+        el_add_tagged(&el, Context, CUR_EMAIL, tag);
+        rc = mutt_label_message(Context->mailbox, &el);
+        el_free(&el);
+
         if (rc > 0)
         {
           Context->mailbox->changed = true;
@@ -3157,6 +3162,7 @@ int mutt_index_menu(void)
           mutt_message(_("No labels changed"));
         }
         break;
+      }
 
       case OP_LIST_REPLY:
 
