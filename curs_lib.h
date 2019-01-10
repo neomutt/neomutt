@@ -42,8 +42,6 @@ extern int MuttGetchTimeout; ///< Timeout in ms for mutt_getch()
 #define FMT_CENTER 0
 #define FMT_RIGHT  1
 
-bool         message_is_tagged(struct Context *ctx, int index);
-bool         message_is_visible(struct Context *ctx, int index);
 int          mutt_addwch(wchar_t wc);
 int          mutt_any_key_to_continue(const char *s);
 int          mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct Pager *info);

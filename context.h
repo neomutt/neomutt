@@ -54,4 +54,7 @@ void ctx_mailbox_changed(struct Mailbox *m, enum MailboxNotification action);
 void ctx_update(struct Context *ctx);
 void ctx_update_tables(struct Context *ctx, bool committing);
 
+bool message_is_tagged(struct Context *ctx, int index);
+bool message_is_visible(struct Context *ctx, int index);
+
 #endif /* MUTT_CONTEXT_H */
