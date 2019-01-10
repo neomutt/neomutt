@@ -255,7 +255,6 @@ void ctx_update_tables(struct Context *ctx, bool committing)
  * ctx_mailbox_changed - Act on a Mailbox change notification
  * @param m      Mailbox
  * @param action Event occurring
- * @param ndata  Private notification data
  */
 void ctx_mailbox_changed(struct Mailbox *m, enum MailboxNotification action)
 {

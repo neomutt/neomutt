@@ -2195,6 +2195,7 @@ out:
  * @param attach  Attachment
  * @param mode    Mode, see #MuttWriteHeaderMode
  * @param privacy If true, remove headers that might identify the user
+ * @param hide_protected_subject If true, replace subject header
  * @retval  0 Success
  * @retval -1 Failure
  *

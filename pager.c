@@ -826,6 +826,7 @@ static int braille_col = -1;
 
 /**
  * check_marker - Check that the unique marker is present
+ * @param q Marker string
  * @param p String to check
  * @retval num Offset of marker
  */
