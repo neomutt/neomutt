@@ -1323,26 +1323,20 @@ static bool check_traditional_pgp(struct Email *e, int *redraw)
 
 /**
  * mutt_check_traditional_pgp - Check if a message has inline PGP content
- * @param[in]  e      Header of message to check
+ * @param[in]  el     List of Emails to check
  * @param[out] redraw Set of #REDRAW_FULL if the screen may need redrawing
  * @retval true If message contains inline PGP content
  */
-bool mutt_check_traditional_pgp(struct Email *e, int *redraw)
+bool mutt_check_traditional_pgp(struct EmailList *el, int *redraw)
 {
   bool rc = false;
-  if (e && !(e->security & PGP_TRADITIONAL_CHECKED))
-    rc = check_traditional_pgp(e, redraw);
-  else
+  struct EmailNode *en = NULL;
+  STAILQ_FOREACH(en, el, entries)
   {
-    for (int i = 0; i < Context->mailbox->msg_count; i++)
-    {
-      if (message_is_tagged(Context, i) &&
-          !(Context->mailbox->emails[i]->security & PGP_TRADITIONAL_CHECKED))
-      {
-        rc = check_traditional_pgp(Context->mailbox->emails[i], redraw) || rc;
-      }
-    }
+    if (!(en->email->security & PGP_TRADITIONAL_CHECKED))
+      rc = check_traditional_pgp(en->email, redraw) || rc;
   }
+
   return rc;
 }
 
