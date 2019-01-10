@@ -34,6 +34,7 @@ struct Context;
 struct EnterState;
 struct Envelope;
 struct Email;
+struct EmailList;
 struct Mailbox;
 
 /**
@@ -54,7 +55,7 @@ enum EvMessage
   EVM_EDIT, ///< Edit the message
 };
 
-int mutt_ev_message(struct Context *ctx, struct Email *e, enum EvMessage action);
+int mutt_ev_message(struct Mailbox *m, struct EmailList *el, enum EvMessage action);
 
 int mutt_system(const char *cmd);
 

@@ -3051,7 +3051,7 @@ int mutt_index_menu(void)
       case OP_EDIT_OR_VIEW_RAW_MESSAGE:
       case OP_EDIT_RAW_MESSAGE:
       case OP_VIEW_RAW_MESSAGE:
-
+      {
         /* TODO split this into 3 cases? */
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
@@ -3074,10 +3074,14 @@ int mutt_index_menu(void)
         {
           mutt_check_traditional_pgp(tag ? NULL : CUR_EMAIL, &menu->redraw);
         }
-        mutt_ev_message(Context, tag ? NULL : CUR_EMAIL, edit ? EVM_EDIT : EVM_VIEW);
+        struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+        el_add_tagged(&el, Context, CUR_EMAIL, tag);
+        mutt_ev_message(Context->mailbox, &el, edit ? EVM_EDIT : EVM_VIEW);
+        el_free(&el);
         menu->redraw = REDRAW_FULL;
 
         break;
+      }
 
       case OP_FORWARD_MESSAGE:
 

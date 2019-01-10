@@ -244,24 +244,19 @@ bail:
 
 /**
  * mutt_ev_message - Edit or view a message
- * @param ctx    Mailbox Context
- * @param e      Email
+ * @param m      Mailbox
+ * @param el     List of Emails
  * @param action Action to perform, e.g. #EVM_EDIT
  * @retval 1  Message not modified
  * @retval 0  Message edited successfully
  * @retval -1 Error
  */
-int mutt_ev_message(struct Context *ctx, struct Email *e, enum EvMessage action)
+int mutt_ev_message(struct Mailbox *m, struct EmailList *el, enum EvMessage action)
 {
-  if (e)
-    return ev_message(action, ctx->mailbox, e);
-
-  for (int i = 0; i < ctx->mailbox->msg_count; i++)
+  struct EmailNode *en = NULL;
+  STAILQ_FOREACH(en, el, entries)
   {
-    if (!message_is_tagged(ctx, i))
-      continue;
-
-    if (ev_message(action, ctx->mailbox, ctx->mailbox->emails[i]) == -1)
+    if (ev_message(action, m, en->email) == -1)
       return -1;
   }
 
