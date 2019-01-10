@@ -492,12 +492,13 @@ static void pipe_set_flags(bool decode, bool print, int *cmflags, int *chflags)
 
 /**
  * pipe_msg - Pipe a message
+ * @param m      Mailbox
  * @param e      Email to pipe
  * @param fp     File to write to
  * @param decode If true, decode the message
  * @param print  If true, message is for printing
  */
-static void pipe_msg(struct Email *e, FILE *fp, bool decode, bool print)
+static void pipe_msg(struct Mailbox *m, struct Email *e, FILE *fp, bool decode, bool print)
 {
   int cmflags = 0;
   int chflags = CH_FROM;
@@ -512,26 +513,27 @@ static void pipe_msg(struct Email *e, FILE *fp, bool decode, bool print)
   }
 
   if (decode)
-    mutt_parse_mime_message(Context->mailbox, e);
+    mutt_parse_mime_message(m, e);
 
-  mutt_copy_message_ctx(fp, Context->mailbox, e, cmflags, chflags);
+  mutt_copy_message_ctx(fp, m, e, cmflags, chflags);
 }
 
 /**
  * pipe_message - Pipe message to a command
+ * @param m      Mailbox
  * @param e      Email
  * @param cmd    Command to pipe to
  * @param decode Should the message be decrypted
  * @param print  True if this is a print job
- * @param split  Should a separator be send between messages?
+ * @param split  Should a separator be sent between messages?
  * @param sep    Separator string
  * @retval  0 Success
  * @retval  1 Error
  *
  * The following code is shared between printing and piping.
  */
-static int pipe_message(struct Email *e, char *cmd, bool decode, bool print,
-                        bool split, const char *sep)
+static int pipe_message(struct Mailbox *m, struct Email *e, char *cmd,
+                        bool decode, bool print, bool split, const char *sep)
 {
   if (!Context)
     return 1;
@@ -542,11 +544,11 @@ static int pipe_message(struct Email *e, char *cmd, bool decode, bool print,
 
   if (e)
   {
-    mutt_message_hook(Context->mailbox, e, MUTT_MESSAGE_HOOK);
+    mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
     if ((WithCrypto != 0) && decode)
     {
-      mutt_parse_mime_message(Context->mailbox, e);
+      mutt_parse_mime_message(m, e);
       if (e->security & ENCRYPT && !crypt_valid_passphrase(e->security))
         return 1;
     }
@@ -560,7 +562,7 @@ static int pipe_message(struct Email *e, char *cmd, bool decode, bool print,
     }
 
     OptKeepQuiet = true;
-    pipe_msg(e, fpout, decode, print);
+    pipe_msg(m, e, fpout, decode, print);
     mutt_file_fclose(&fpout);
     rc = mutt_wait_filter(thepid);
     OptKeepQuiet = false;
@@ -570,15 +572,15 @@ static int pipe_message(struct Email *e, char *cmd, bool decode, bool print,
     /* handle tagged messages */
     if ((WithCrypto != 0) && decode)
     {
-      for (int i = 0; i < Context->mailbox->msg_count; i++)
+      for (int i = 0; i < m->msg_count; i++)
       {
         if (!message_is_tagged(Context, i))
           continue;
 
-        mutt_message_hook(Context->mailbox, Context->mailbox->emails[i], MUTT_MESSAGE_HOOK);
-        mutt_parse_mime_message(Context->mailbox, Context->mailbox->emails[i]);
-        if (Context->mailbox->emails[i]->security & ENCRYPT &&
-            !crypt_valid_passphrase(Context->mailbox->emails[i]->security))
+        mutt_message_hook(m, m->emails[i], MUTT_MESSAGE_HOOK);
+        mutt_parse_mime_message(m, m->emails[i]);
+        if (m->emails[i]->security & ENCRYPT &&
+            !crypt_valid_passphrase(m->emails[i]->security))
         {
           return 1;
         }
@@ -587,12 +589,12 @@ static int pipe_message(struct Email *e, char *cmd, bool decode, bool print,
 
     if (split)
     {
-      for (int i = 0; i < Context->mailbox->msg_count; i++)
+      for (int i = 0; i < m->msg_count; i++)
       {
         if (!message_is_tagged(Context, i))
           continue;
 
-        mutt_message_hook(Context->mailbox, Context->mailbox->emails[i], MUTT_MESSAGE_HOOK);
+        mutt_message_hook(m, m->emails[i], MUTT_MESSAGE_HOOK);
         mutt_endwin();
         thepid = mutt_create_filter(cmd, &fpout, NULL, NULL);
         if (thepid < 0)
@@ -601,7 +603,7 @@ static int pipe_message(struct Email *e, char *cmd, bool decode, bool print,
           return 1;
         }
         OptKeepQuiet = true;
-        pipe_msg(Context->mailbox->emails[i], fpout, decode, print);
+        pipe_msg(m, m->emails[i], fpout, decode, print);
         /* add the message separator */
         if (sep)
           fputs(sep, fpout);
@@ -621,13 +623,13 @@ static int pipe_message(struct Email *e, char *cmd, bool decode, bool print,
         return 1;
       }
       OptKeepQuiet = true;
-      for (int i = 0; i < Context->mailbox->msg_count; i++)
+      for (int i = 0; i < m->msg_count; i++)
       {
         if (!message_is_tagged(Context, i))
           continue;
 
-        mutt_message_hook(Context->mailbox, Context->mailbox->emails[i], MUTT_MESSAGE_HOOK);
-        pipe_msg(Context->mailbox->emails[i], fpout, decode, print);
+        mutt_message_hook(m, m->emails[i], MUTT_MESSAGE_HOOK);
+        pipe_msg(m, m->emails[i], fpout, decode, print);
         /* add the message separator */
         if (sep)
           fputs(sep, fpout);
@@ -646,9 +648,10 @@ static int pipe_message(struct Email *e, char *cmd, bool decode, bool print,
 
 /**
  * mutt_pipe_message - Pipe a message
+ * @param m Mailbox
  * @param e Email to pipe
  */
-void mutt_pipe_message(struct Email *e)
+void mutt_pipe_message(struct Mailbox *m, struct Email *e)
 {
   char buffer[LONG_STRING];
 
@@ -660,23 +663,23 @@ void mutt_pipe_message(struct Email *e)
   }
 
   mutt_expand_path(buffer, sizeof(buffer));
-  pipe_message(e, buffer, PipeDecode, false, PipeSplit, PipeSep);
+  pipe_message(m, e, buffer, PipeDecode, false, PipeSplit, PipeSep);
 }
 
 /**
  * mutt_print_message - Print a message
+ * @param m Mailbox
  * @param e Email to print
  */
-void mutt_print_message(struct Email *e)
+void mutt_print_message(struct Mailbox *m, struct Email *e)
 {
-  int i;
   int msgcount; // for L10N with ngettext
   if (e)
     msgcount = 1;
   else if (Context)
   {
     msgcount = 0; // count the precise number of messages.
-    for (i = 0; i < Context->mailbox->msg_count; i++)
+    for (int i = 0; i < m->msg_count; i++)
       if (message_is_tagged(Context, i))
         msgcount++;
   }
@@ -694,7 +697,7 @@ void mutt_print_message(struct Email *e)
     return;
   }
 
-  if (pipe_message(e, PrintCommand, PrintDecode, true, PrintSplit, "\f") == 0)
+  if (pipe_message(m, e, PrintCommand, PrintDecode, true, PrintSplit, "\f") == 0)
     mutt_message(ngettext("Message printed", "Messages printed", msgcount));
   else
   {

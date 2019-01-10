@@ -1004,7 +1004,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
  * @retval 0 Error
  *
  * Ok, the difference between send and receive:
- * recv: Body->filename is a suggested name, and Context|Header points
+ * recv: Body->filename is a suggested name, and Mailbox|Email points
  *       to the attachment in mailbox which is encoded
  * send: Body->filename points to the un-encoded file which contains the
  *       attachment
