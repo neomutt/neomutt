@@ -49,42 +49,26 @@
 #include "protos.h"
 
 /**
- * edit_or_view_one_message - Edit an email or view it in an external editor
- * @param edit true if the message should be editable. If false, changes
- *            to the message (in the editor) will be ignored.
- * @param m   Mailbox
- * @param cur Email
- * @retval 1  Message not modified
- * @retval 0  Message edited successfully
+ * ev_message - Edit an email or view it in an external editor
+ * @param action Action to perform, e.g. #EVM_EDIT
+ * @param m      Mailbox
+ * @param e      Email
+ * @retval  1 Message not modified
+ * @retval  0 Message edited successfully
  * @retval -1 Error
  */
-static int edit_or_view_one_message(bool edit, struct Mailbox *m, struct Email *cur)
+static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
 {
-  char tmp[PATH_MAX];
+  char fname[PATH_MAX];
   char buf[STRING];
-  enum MailboxType omagic;
-  int oerrno;
   int rc;
-
-  bool o_read;
-  bool o_old;
-
-  int of, cf;
-
-  struct Message *msg = NULL;
-
-  FILE *fp = NULL;
-
   struct stat sb;
-  time_t mtime = 0;
 
-  mutt_mktemp(tmp, sizeof(tmp));
+  mutt_mktemp(fname, sizeof(fname));
 
-  omagic = MboxType;
+  enum MailboxType omagic = MboxType;
   MboxType = MUTT_MBOX;
-
-  struct Context *tmpctx = mx_mbox_open(NULL, tmp, MUTT_NEWFOLDER);
-
+  struct Context *tmpctx = mx_mbox_open(NULL, fname, MUTT_NEWFOLDER);
   MboxType = omagic;
 
   if (!tmpctx)
@@ -95,8 +79,8 @@ static int edit_or_view_one_message(bool edit, struct Mailbox *m, struct Email *
 
   const int chflags =
       CH_NOLEN | ((m->magic == MUTT_MBOX || m->magic == MUTT_MMDF) ? 0 : CH_NOSTATUS);
-  rc = mutt_append_message(tmpctx->mailbox, m, cur, 0, chflags);
-  oerrno = errno;
+  rc = mutt_append_message(tmpctx->mailbox, m, e, 0, chflags);
+  int oerrno = errno;
 
   mx_mbox_close(&tmpctx);
 
@@ -106,10 +90,10 @@ static int edit_or_view_one_message(bool edit, struct Mailbox *m, struct Email *
     goto bail;
   }
 
-  rc = stat(tmp, &sb);
+  rc = stat(fname, &sb);
   if (rc == -1)
   {
-    mutt_error(_("Can't stat %s: %s"), tmp, strerror(errno));
+    mutt_error(_("Can't stat %s: %s"), fname, strerror(errno));
     goto bail;
   }
 
@@ -119,33 +103,33 @@ static int edit_or_view_one_message(bool edit, struct Mailbox *m, struct Email *
    * remove it, the message will grow by one line each time the user edits
    * the message.
    */
-  if (sb.st_size != 0 && truncate(tmp, sb.st_size - 1) == -1)
+  if ((sb.st_size != 0) && (truncate(fname, sb.st_size - 1) == -1))
   {
     mutt_error(_("could not truncate temporary mail folder: %s"), strerror(errno));
     goto bail;
   }
 
-  if (!edit)
+  if (action == EVM_VIEW)
   {
     /* remove write permissions */
-    rc = mutt_file_chmod_rm_stat(tmp, S_IWUSR | S_IWGRP | S_IWOTH, &sb);
+    rc = mutt_file_chmod_rm_stat(fname, S_IWUSR | S_IWGRP | S_IWOTH, &sb);
     if (rc == -1)
     {
-      mutt_debug(1, "Could not remove write permissions of %s: %s", tmp, strerror(errno));
+      mutt_debug(1, "Could not remove write permissions of %s: %s", fname, strerror(errno));
       /* Do not bail out here as we are checking afterwards if we should adopt
        * changes of the temporary file. */
     }
   }
 
   /* Do not reuse the stat sb here as it is outdated. */
-  mtime = mutt_file_decrease_mtime(tmp, NULL);
+  time_t mtime = mutt_file_decrease_mtime(fname, NULL);
 
-  mutt_edit_file(NONULL(Editor), tmp);
+  mutt_edit_file(NONULL(Editor), fname);
 
-  rc = stat(tmp, &sb);
+  rc = stat(fname, &sb);
   if (rc == -1)
   {
-    mutt_error(_("Can't stat %s: %s"), tmp, strerror(errno));
+    mutt_error(_("Can't stat %s: %s"), fname, strerror(errno));
     goto bail;
   }
 
@@ -156,28 +140,28 @@ static int edit_or_view_one_message(bool edit, struct Mailbox *m, struct Email *
     goto bail;
   }
 
-  if (edit && sb.st_mtime == mtime)
+  if ((action == EVM_EDIT) && (sb.st_mtime == mtime))
   {
     mutt_message(_("Message not modified"));
     rc = 1;
     goto bail;
   }
 
-  if (!edit && sb.st_mtime != mtime)
+  if ((action == EVM_VIEW) && (sb.st_mtime != mtime))
   {
     mutt_message(_("Message of read-only mailbox modified! Ignoring changes."));
     rc = 1;
     goto bail;
   }
 
-  if (!edit)
+  if (action == EVM_VIEW)
   {
     /* stop processing here and skip right to the end */
     rc = 1;
     goto bail;
   }
 
-  fp = fopen(tmp, "r");
+  FILE *fp = fopen(fname, "r");
   if (!fp)
   {
     rc = -1;
@@ -194,10 +178,10 @@ static int edit_or_view_one_message(bool edit, struct Mailbox *m, struct Email *
     goto bail;
   }
 
-  of = 0;
-  cf = (((tmpctx->mailbox->magic == MUTT_MBOX) || (tmpctx->mailbox->magic == MUTT_MMDF)) ?
-            0 :
-            CH_NOSTATUS);
+  int of = 0;
+  int cf = (((tmpctx->mailbox->magic == MUTT_MBOX) || (tmpctx->mailbox->magic == MUTT_MMDF)) ?
+                0 :
+                CH_NOSTATUS);
 
   if (fgets(buf, sizeof(buf), fp) && is_from(buf, NULL, 0, NULL))
   {
@@ -210,13 +194,13 @@ static int edit_or_view_one_message(bool edit, struct Mailbox *m, struct Email *
   /* XXX - we have to play games with the message flags to avoid
    * problematic behavior with maildir folders.  */
 
-  o_read = cur->read;
-  o_old = cur->old;
-  cur->read = false;
-  cur->old = false;
-  msg = mx_msg_open_new(tmpctx->mailbox, cur, of);
-  cur->read = o_read;
-  cur->old = o_old;
+  bool o_read = e->read;
+  bool o_old = e->old;
+  e->read = false;
+  e->old = false;
+  struct Message *msg = mx_msg_open_new(tmpctx->mailbox, e, of);
+  e->read = o_read;
+  e->old = o_old;
 
   if (!msg)
   {
@@ -241,71 +225,45 @@ bail:
   mutt_file_fclose(&fp);
 
   if (rc >= 0)
-    unlink(tmp);
+    unlink(fname);
 
   if (rc == 0)
   {
-    mutt_set_flag(Context->mailbox, cur, MUTT_DELETE, 1);
-    mutt_set_flag(Context->mailbox, cur, MUTT_PURGE, 1);
-    mutt_set_flag(Context->mailbox, cur, MUTT_READ, 1);
+    mutt_set_flag(m, e, MUTT_DELETE, 1);
+    mutt_set_flag(m, e, MUTT_PURGE, 1);
+    mutt_set_flag(m, e, MUTT_READ, 1);
 
     if (DeleteUntag)
-      mutt_set_flag(Context->mailbox, cur, MUTT_TAG, 0);
+      mutt_set_flag(m, e, MUTT_TAG, 0);
   }
   else if (rc == -1)
-    mutt_message(_("Error. Preserving temporary file: %s"), tmp);
+    mutt_message(_("Error. Preserving temporary file: %s"), fname);
 
   return rc;
 }
 
 /**
- * edit_or_view_message - Edit an email or view it in an external editor
- * @param edit true: Edit the email; false: view the email
- * @param ctx  Mailbox Context
- * @param e   Email
+ * mutt_ev_message - Edit or view a message
+ * @param ctx    Mailbox Context
+ * @param e      Email
+ * @param action Action to perform, e.g. #EVM_EDIT
  * @retval 1  Message not modified
  * @retval 0  Message edited successfully
  * @retval -1 Error
  */
-int edit_or_view_message(bool edit, struct Context *ctx, struct Email *e)
+int mutt_ev_message(struct Context *ctx, struct Email *e, enum EvMessage action)
 {
   if (e)
-    return edit_or_view_one_message(edit, ctx->mailbox, e);
+    return ev_message(action, ctx->mailbox, e);
 
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
     if (!message_is_tagged(ctx, i))
       continue;
 
-    if (edit_or_view_one_message(edit, ctx->mailbox, ctx->mailbox->emails[i]) == -1)
+    if (ev_message(action, ctx->mailbox, ctx->mailbox->emails[i]) == -1)
       return -1;
   }
 
   return 0;
-}
-
-/**
- * mutt_edit_message - Edit a message
- * @param ctx Mailbox Context
- * @param e Email
- * @retval 1  Message not modified
- * @retval 0  Message edited successfully
- * @retval -1 Error
- */
-int mutt_edit_message(struct Context *ctx, struct Email *e)
-{
-  return edit_or_view_message(true, ctx, e); /* true means edit */
-}
-
-/**
- * mutt_view_message - Edit a message
- * @param ctx Mailbox Context
- * @param e Email
- * @retval 1  Message not modified
- * @retval 0  Message edited successfully
- * @retval -1 Error
- */
-int mutt_view_message(struct Context *ctx, struct Email *e)
-{
-  return edit_or_view_message(false, ctx, e); /* false means only view */
 }

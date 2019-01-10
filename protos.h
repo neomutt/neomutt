@@ -45,6 +45,17 @@ enum XdgType
   XDG_CONFIG_DIRS, ///< XDG system dir: /etc/xdg
 };
 
+/**
+ * enum EvMessage - Edit or View a message
+ */
+enum EvMessage
+{
+  EVM_VIEW, ///< View the message
+  EVM_EDIT, ///< Edit the message
+};
+
+int mutt_ev_message(struct Context *ctx, struct Email *e, enum EvMessage action);
+
 int mutt_system(const char *cmd);
 
 int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize);
@@ -57,8 +68,6 @@ void mutt_tag_set_flag(int flag, int bf);
 int mutt_change_flag(struct Email *e, int bf);
 
 int mutt_complete(char *buf, size_t buflen);
-int mutt_edit_message(struct Context *ctx, struct Email *e);
-int mutt_view_message(struct Context *ctx, struct Email *e);
 int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr, struct Email *e, bool resend);
 int mutt_enter_string(char *buf, size_t buflen, int col, int flags);
 int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, bool multiple,

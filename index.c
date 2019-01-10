@@ -3074,10 +3074,7 @@ int mutt_index_menu(void)
         {
           mutt_check_traditional_pgp(tag ? NULL : CUR_EMAIL, &menu->redraw);
         }
-        if (edit)
-          mutt_edit_message(Context, tag ? NULL : CUR_EMAIL);
-        else
-          mutt_view_message(Context, tag ? NULL : CUR_EMAIL);
+        mutt_ev_message(Context, tag ? NULL : CUR_EMAIL, edit ? EVM_EDIT : EVM_VIEW);
         menu->redraw = REDRAW_FULL;
 
         break;
