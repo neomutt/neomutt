@@ -30,6 +30,7 @@ struct Address;
 struct Body;
 struct Context;
 struct Email;
+struct EmailList;
 struct Envelope;
 struct Mailbox;
 
@@ -95,7 +96,7 @@ extern bool          UseFrom;
 #define SEND_TO_SENDER      (1 << 12)
 #define SEND_NEWS           (1 << 13)
 
-int             ci_send_message(int flags, struct Email *msg, const char *tempfile, struct Context *ctx, struct Email *cur);
+int             ci_send_message(int flags, struct Email *msg, const char *tempfile, struct Context *ctx, struct EmailList *el);
 void            mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv);
 struct Address *mutt_default_from(void);
 void            mutt_encode_descriptions(struct Body *b, bool recurse);

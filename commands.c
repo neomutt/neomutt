@@ -255,6 +255,7 @@ int mutt_display_message(struct Email *cur)
   {
     struct HdrFormatInfo hfi;
     hfi.ctx = Context;
+    hfi.mailbox = Context->mailbox;
     hfi.pager_progress = ExtPagerProgress;
     hfi.email = cur;
     mutt_make_string_info(buf, sizeof(buf), MuttIndexWindow->cols,
