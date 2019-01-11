@@ -521,7 +521,7 @@ static void pipe_msg(struct Mailbox *m, struct Email *e, FILE *fp, bool decode, 
 /**
  * pipe_message - Pipe message to a command
  * @param m      Mailbox
- * @param e      Email
+ * @param el     List of Emails to pipe
  * @param cmd    Command to pipe to
  * @param decode Should the message be decrypted
  * @param print  True if this is a print job
@@ -532,24 +532,29 @@ static void pipe_msg(struct Mailbox *m, struct Email *e, FILE *fp, bool decode, 
  *
  * The following code is shared between printing and piping.
  */
-static int pipe_message(struct Mailbox *m, struct Email *e, char *cmd,
+static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
                         bool decode, bool print, bool split, const char *sep)
 {
-  if (!Context)
+  if (!m || !el)
+    return 1;
+
+  struct EmailNode *en = STAILQ_FIRST(el);
+  if (!en)
     return 1;
 
   int rc = 0;
   pid_t thepid;
   FILE *fpout = NULL;
 
-  if (e)
+  if (!STAILQ_NEXT(en, entries))
   {
-    mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
+    /* handle a single message */
+    mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
 
     if ((WithCrypto != 0) && decode)
     {
-      mutt_parse_mime_message(m, e);
-      if (e->security & ENCRYPT && !crypt_valid_passphrase(e->security))
+      mutt_parse_mime_message(m, en->email);
+      if ((en->email->security & ENCRYPT) && !crypt_valid_passphrase(en->email->security))
         return 1;
     }
     mutt_endwin();
@@ -562,7 +567,7 @@ static int pipe_message(struct Mailbox *m, struct Email *e, char *cmd,
     }
 
     OptKeepQuiet = true;
-    pipe_msg(m, e, fpout, decode, print);
+    pipe_msg(m, en->email, fpout, decode, print);
     mutt_file_fclose(&fpout);
     rc = mutt_wait_filter(thepid);
     OptKeepQuiet = false;
@@ -572,15 +577,12 @@ static int pipe_message(struct Mailbox *m, struct Email *e, char *cmd,
     /* handle tagged messages */
     if ((WithCrypto != 0) && decode)
     {
-      for (int i = 0; i < m->msg_count; i++)
+      STAILQ_FOREACH(en, el, entries)
       {
-        if (!message_is_tagged(Context, i))
-          continue;
-
-        mutt_message_hook(m, m->emails[i], MUTT_MESSAGE_HOOK);
-        mutt_parse_mime_message(m, m->emails[i]);
-        if (m->emails[i]->security & ENCRYPT &&
-            !crypt_valid_passphrase(m->emails[i]->security))
+        mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
+        mutt_parse_mime_message(m, en->email);
+        if ((en->email->security & ENCRYPT) &&
+            !crypt_valid_passphrase(en->email->security))
         {
           return 1;
         }
@@ -589,12 +591,9 @@ static int pipe_message(struct Mailbox *m, struct Email *e, char *cmd,
 
     if (split)
     {
-      for (int i = 0; i < m->msg_count; i++)
+      STAILQ_FOREACH(en, el, entries)
       {
-        if (!message_is_tagged(Context, i))
-          continue;
-
-        mutt_message_hook(m, m->emails[i], MUTT_MESSAGE_HOOK);
+        mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
         mutt_endwin();
         thepid = mutt_create_filter(cmd, &fpout, NULL, NULL);
         if (thepid < 0)
@@ -603,7 +602,7 @@ static int pipe_message(struct Mailbox *m, struct Email *e, char *cmd,
           return 1;
         }
         OptKeepQuiet = true;
-        pipe_msg(m, m->emails[i], fpout, decode, print);
+        pipe_msg(m, en->email, fpout, decode, print);
         /* add the message separator */
         if (sep)
           fputs(sep, fpout);
@@ -623,13 +622,10 @@ static int pipe_message(struct Mailbox *m, struct Email *e, char *cmd,
         return 1;
       }
       OptKeepQuiet = true;
-      for (int i = 0; i < m->msg_count; i++)
+      STAILQ_FOREACH(en, el, entries)
       {
-        if (!message_is_tagged(Context, i))
-          continue;
-
-        mutt_message_hook(m, m->emails[i], MUTT_MESSAGE_HOOK);
-        pipe_msg(m, m->emails[i], fpout, decode, print);
+        mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
+        pipe_msg(m, en->email, fpout, decode, print);
         /* add the message separator */
         if (sep)
           fputs(sep, fpout);
@@ -641,50 +637,42 @@ static int pipe_message(struct Mailbox *m, struct Email *e, char *cmd,
     }
   }
 
-  if (rc || WaitKey)
+  if ((rc != 0) || WaitKey)
     mutt_any_key_to_continue(NULL);
   return rc;
 }
 
 /**
  * mutt_pipe_message - Pipe a message
- * @param m Mailbox
- * @param e Email to pipe
+ * @param m  Mailbox
+ * @param el List of Emails to pipe
  */
-void mutt_pipe_message(struct Mailbox *m, struct Email *e)
+void mutt_pipe_message(struct Mailbox *m, struct EmailList *el)
 {
-  char buffer[LONG_STRING];
+  if (!m || !el)
+    return;
 
-  buffer[0] = '\0';
-  if (mutt_get_field(_("Pipe to command: "), buffer, sizeof(buffer), MUTT_CMD) != 0 ||
-      !buffer[0])
+  char buffer[LONG_STRING] = { 0 };
+
+  if ((mutt_get_field(_("Pipe to command: "), buffer, sizeof(buffer), MUTT_CMD) != 0) ||
+      (buffer[0] == '\0'))
   {
     return;
   }
 
   mutt_expand_path(buffer, sizeof(buffer));
-  pipe_message(m, e, buffer, PipeDecode, false, PipeSplit, PipeSep);
+  pipe_message(m, el, buffer, PipeDecode, false, PipeSplit, PipeSep);
 }
 
 /**
  * mutt_print_message - Print a message
- * @param m Mailbox
- * @param e Email to print
+ * @param m  Mailbox
+ * @param el List of Emails to print
  */
-void mutt_print_message(struct Mailbox *m, struct Email *e)
+void mutt_print_message(struct Mailbox *m, struct EmailList *el)
 {
-  int msgcount; // for L10N with ngettext
-  if (e)
-    msgcount = 1;
-  else if (Context)
-  {
-    msgcount = 0; // count the precise number of messages.
-    for (int i = 0; i < m->msg_count; i++)
-      if (message_is_tagged(Context, i))
-        msgcount++;
-  }
-  else
-    msgcount = 0;
+  if (!m || !el)
+    return;
 
   if (Print && (!PrintCommand || !*PrintCommand))
   {
@@ -692,17 +680,25 @@ void mutt_print_message(struct Mailbox *m, struct Email *e)
     return;
   }
 
-  if (query_quadoption(Print, e ? _("Print message?") : _("Print tagged messages?")) != MUTT_YES)
+  int msg_count = 0;
+  struct EmailNode *en = NULL;
+  STAILQ_FOREACH(en, el, entries)
+  {
+    msg_count++;
+  }
+
+  if (query_quadoption(Print, (msg_count == 1) ? _("Print message?") :
+                                                 _("Print tagged messages?")) != MUTT_YES)
   {
     return;
   }
 
-  if (pipe_message(m, e, PrintCommand, PrintDecode, true, PrintSplit, "\f") == 0)
-    mutt_message(ngettext("Message printed", "Messages printed", msgcount));
+  if (pipe_message(m, el, PrintCommand, PrintDecode, true, PrintSplit, "\f") == 0)
+    mutt_message(ngettext("Message printed", "Messages printed", msg_count));
   else
   {
     mutt_message(ngettext("Message could not be printed",
-                          "Messages could not be printed", msgcount));
+                          "Messages could not be printed", msg_count));
   }
 }
 
