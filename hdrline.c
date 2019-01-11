@@ -560,6 +560,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
   struct Email *e = hfi->email;
   struct Context *ctx = hfi->ctx;
+  struct Mailbox *m = hfi->m;
 
   if (!e || !e->env)
     return src;
@@ -627,13 +628,13 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       /* fallthrough */
 
     case 'b':
-      if (ctx)
+      if (m)
       {
-        p = strrchr(ctx->mailbox->path, '/');
+        p = strrchr(m->path, '/');
         if (p)
           mutt_str_strfcpy(buf, p + 1, buflen);
         else
-          mutt_str_strfcpy(buf, ctx->mailbox->path, buflen);
+          mutt_str_strfcpy(buf, m->path, buflen);
       }
       else
         mutt_str_strfcpy(buf, "(null)", buflen);
@@ -849,16 +850,16 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'e':
       snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-      snprintf(buf, buflen, fmt, mutt_messages_in_thread(ctx->mailbox, e, 1));
+      snprintf(buf, buflen, fmt, mutt_messages_in_thread(m, e, 1));
       break;
 
     case 'E':
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, mutt_messages_in_thread(ctx->mailbox, e, 0));
+        snprintf(buf, buflen, fmt, mutt_messages_in_thread(m, e, 0));
       }
-      else if (mutt_messages_in_thread(ctx->mailbox, e, 0) <= 1)
+      else if (mutt_messages_in_thread(m, e, 0) <= 1)
         optional = 0;
       break;
 
@@ -1019,10 +1020,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       break;
 
     case 'm':
-      if (ctx)
+      if (m)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, ctx->mailbox->msg_count);
+        snprintf(buf, buflen, fmt, m->msg_count);
       }
       else
         mutt_str_strfcpy(buf, "(null)", buflen);
@@ -1243,7 +1244,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'X':
     {
-      int count = mutt_count_body_parts(ctx->mailbox, e);
+      int count = mutt_count_body_parts(m, e);
 
       /* The recursion allows messages without depth to return 0. */
       if (optional)
@@ -1447,17 +1448,19 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
  * @param buf    Buffer for the result
  * @param buflen Buffer length
  * @param s      printf-line format string
- * @param ctx    Mailbox
+ * @param ctx    Mailbox Context
+ * @param m      Mailbox
  * @param e      Email
  * @param flags  Format flags
  */
-void mutt_make_string_flags(char *buf, size_t buflen, const char *s,
-                            struct Context *ctx, struct Email *e, enum FormatFlag flags)
+void mutt_make_string_flags(char *buf, size_t buflen, const char *s, struct Context *ctx,
+                            struct Mailbox *m, struct Email *e, enum FormatFlag flags)
 {
   struct HdrFormatInfo hfi;
 
   hfi.email = e;
   hfi.ctx = ctx;
+  hfi.m = m;
   hfi.pager_progress = 0;
 
   mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, s,

@@ -407,8 +407,8 @@ static void include_header(bool quote, FILE *ifp, struct Email *e, FILE *ofp, ch
       mutt_str_strfcpy(prefix2, prefix, sizeof(prefix2));
     else if (!TextFlowed)
     {
-      mutt_make_string_flags(prefix2, sizeof(prefix2), NONULL(IndentString),
-                             Context, e, 0);
+      mutt_make_string(prefix2, sizeof(prefix2), NONULL(IndentString), Context,
+                       Context->mailbox, e);
     }
     else
       mutt_str_strfcpy(prefix2, ">", sizeof(prefix2));
@@ -501,8 +501,8 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   {
     if (!TextFlowed)
     {
-      mutt_make_string_flags(prefix, sizeof(prefix), NONULL(IndentString),
-                             Context, parent_hdr, 0);
+      mutt_make_string(prefix, sizeof(prefix), NONULL(IndentString), Context,
+                       Context->mailbox, parent_hdr);
     }
     else
       mutt_str_strfcpy(prefix, ">", sizeof(prefix));
@@ -985,8 +985,8 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
 
     if (!TextFlowed)
     {
-      mutt_make_string_flags(prefix, sizeof(prefix), NONULL(IndentString),
-                             Context, parent_hdr, 0);
+      mutt_make_string(prefix, sizeof(prefix), NONULL(IndentString), Context,
+                       Context->mailbox, parent_hdr);
     }
     else
       mutt_str_strfcpy(prefix, ">", sizeof(prefix));

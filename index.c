@@ -732,7 +732,8 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
     }
   }
 
-  mutt_make_string_flags(buf, buflen, NONULL(IndexFormat), Context, e, flag);
+  mutt_make_string_flags(buf, buflen, NONULL(IndexFormat), Context,
+                         Context->mailbox, e, flag);
 }
 
 /**

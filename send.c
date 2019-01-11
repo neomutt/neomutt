@@ -459,7 +459,7 @@ void mutt_forward_intro(struct Context *ctx, struct Email *cur, FILE *fp)
 
   char buf[LONG_STRING];
   setlocale(LC_TIME, NONULL(AttributionLocale));
-  mutt_make_string(buf, sizeof(buf), ForwardAttributionIntro, ctx, cur);
+  mutt_make_string(buf, sizeof(buf), ForwardAttributionIntro, ctx, ctx->mailbox, cur);
   setlocale(LC_TIME, "");
   fputs(buf, fp);
   fputs("\n\n", fp);
@@ -478,7 +478,7 @@ void mutt_forward_trailer(struct Context *ctx, struct Email *cur, FILE *fp)
 
   char buf[LONG_STRING];
   setlocale(LC_TIME, NONULL(AttributionLocale));
-  mutt_make_string(buf, sizeof(buf), ForwardAttributionTrailer, ctx, cur);
+  mutt_make_string(buf, sizeof(buf), ForwardAttributionTrailer, ctx, ctx->mailbox, cur);
   setlocale(LC_TIME, "");
   fputc('\n', fp);
   fputs(buf, fp);
@@ -543,7 +543,7 @@ void mutt_make_attribution(struct Context *ctx, struct Email *cur, FILE *out)
 
   char buf[LONG_STRING];
   setlocale(LC_TIME, NONULL(AttributionLocale));
-  mutt_make_string(buf, sizeof(buf), Attribution, ctx, cur);
+  mutt_make_string(buf, sizeof(buf), Attribution, ctx, ctx->mailbox, cur);
   setlocale(LC_TIME, "");
   fputs(buf, out);
   fputc('\n', out);
@@ -561,7 +561,7 @@ void mutt_make_post_indent(struct Context *ctx, struct Email *cur, FILE *out)
     return;
 
   char buf[STRING];
-  mutt_make_string(buf, sizeof(buf), PostIndentString, ctx, cur);
+  mutt_make_string(buf, sizeof(buf), PostIndentString, ctx, ctx->mailbox, cur);
   fputs(buf, out);
   fputc('\n', out);
 }
@@ -813,7 +813,7 @@ void mutt_make_forward_subject(struct Envelope *env, struct Context *ctx, struct
   char buf[STRING];
 
   /* set the default subject for the message. */
-  mutt_make_string(buf, sizeof(buf), NONULL(ForwardFormat), ctx, cur);
+  mutt_make_string(buf, sizeof(buf), NONULL(ForwardFormat), ctx, ctx->mailbox, cur);
   mutt_str_replace(&env->subject, buf);
 }
 

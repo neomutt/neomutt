@@ -226,7 +226,7 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
       {
         setlocale(LC_TIME, NONULL(AttributionLocale));
         mutt_make_string(tmp, sizeof(tmp) - 1, Attribution, Context,
-                         Context->mailbox->emails[n]);
+                         Context->mailbox, Context->mailbox->emails[n]);
         setlocale(LC_TIME, "");
         strcat(tmp, "\n");
       }

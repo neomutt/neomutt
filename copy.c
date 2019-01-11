@@ -632,7 +632,8 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e, int flags, in
     if (TextFlowed)
       mutt_str_strfcpy(prefix, ">", sizeof(prefix));
     else
-      mutt_make_string_flags(prefix, sizeof(prefix), NONULL(IndentString), Context, e, 0);
+      mutt_make_string(prefix, sizeof(prefix), NONULL(IndentString), Context,
+                       Context->mailbox, e);
   }
 
   if ((flags & MUTT_CM_NOHEADER) == 0)
