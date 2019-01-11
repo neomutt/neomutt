@@ -3006,17 +3006,23 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
 
       case OP_MAIN_SET_FLAG:
       case OP_MAIN_CLEAR_FLAG:
+      {
         CHECK_MODE(IsEmail(extra));
         CHECK_READONLY;
 
-        if (mutt_change_flag(extra->email, (ch == OP_MAIN_SET_FLAG)) == 0)
+        struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+        el_add_email(&el, extra->email);
+
+        if (mutt_change_flag(Context->mailbox, &el, (ch == OP_MAIN_SET_FLAG)) == 0)
           pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         if (extra->email->deleted && Resolve)
         {
           ch = -1;
           rc = OP_MAIN_NEXT_UNDELETED;
         }
+        el_free(&el);
         break;
+      }
 
       case OP_DELETE_THREAD:
       case OP_DELETE_SUBTHREAD:

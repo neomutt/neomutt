@@ -2855,13 +2855,16 @@ int mutt_index_menu(void)
 
       case OP_MAIN_SET_FLAG:
       case OP_MAIN_CLEAR_FLAG:
-
+      {
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
         CHECK_READONLY;
         /* CHECK_ACL(MUTT_ACL_WRITE); */
 
-        if (mutt_change_flag(tag ? NULL : CUR_EMAIL, (op == OP_MAIN_SET_FLAG)) == 0)
+        struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+        el_add_tagged(&el, Context, CUR_EMAIL, tag);
+
+        if (mutt_change_flag(Context->mailbox, &el, (op == OP_MAIN_SET_FLAG)) == 0)
         {
           menu->redraw |= REDRAW_STATUS;
           if (tag)
@@ -2880,7 +2883,9 @@ int mutt_index_menu(void)
           else
             menu->redraw |= REDRAW_CURRENT;
         }
+        el_free(&el);
         break;
+      }
 
       case OP_MAIN_COLLAPSE_THREAD:
         CHECK_MSGCOUNT;
@@ -2956,27 +2961,28 @@ int mutt_index_menu(void)
 
       case OP_PURGE_MESSAGE:
       case OP_DELETE:
-
+      {
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
         CHECK_READONLY;
         /* L10N: CHECK_ACL */
         CHECK_ACL(MUTT_ACL_DELETE, _("Cannot delete message"));
 
+        struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+        el_add_tagged(&el, Context, CUR_EMAIL, tag);
+
+        mutt_emails_set_flag(Context->mailbox, &el, MUTT_DELETE, 1);
+        mutt_emails_set_flag(Context->mailbox, &el, MUTT_PURGE, (op == OP_PURGE_MESSAGE));
+        if (DeleteUntag)
+          mutt_emails_set_flag(Context->mailbox, &el, MUTT_TAG, 0);
+        el_free(&el);
+
         if (tag)
         {
-          mutt_tag_set_flag(MUTT_DELETE, 1);
-          mutt_tag_set_flag(MUTT_PURGE, (op == OP_PURGE_MESSAGE));
-          if (DeleteUntag)
-            mutt_tag_set_flag(MUTT_TAG, 0);
           menu->redraw |= REDRAW_INDEX;
         }
         else
         {
-          mutt_set_flag(Context->mailbox, CUR_EMAIL, MUTT_DELETE, 1);
-          mutt_set_flag(Context->mailbox, CUR_EMAIL, MUTT_PURGE, (op == OP_PURGE_MESSAGE));
-          if (DeleteUntag)
-            mutt_set_flag(Context->mailbox, CUR_EMAIL, MUTT_TAG, 0);
           if (Resolve)
           {
             menu->current = ci_next_undeleted(menu->current);
@@ -2998,6 +3004,7 @@ int mutt_index_menu(void)
         }
         menu->redraw |= REDRAW_STATUS;
         break;
+      }
 
       case OP_DELETE_THREAD:
       case OP_DELETE_SUBTHREAD:
@@ -3451,23 +3458,26 @@ int mutt_index_menu(void)
         break;
 
       case OP_UNDELETE:
-
+      {
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
         CHECK_READONLY;
         /* L10N: CHECK_ACL */
         CHECK_ACL(MUTT_ACL_DELETE, _("Cannot undelete message"));
 
+        struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+        el_add_tagged(&el, Context, CUR_EMAIL, tag);
+
+        mutt_emails_set_flag(Context->mailbox, &el, MUTT_DELETE, 0);
+        mutt_emails_set_flag(Context->mailbox, &el, MUTT_PURGE, 0);
+        el_free(&el);
+
         if (tag)
         {
-          mutt_tag_set_flag(MUTT_DELETE, 0);
-          mutt_tag_set_flag(MUTT_PURGE, 0);
           menu->redraw |= REDRAW_INDEX;
         }
         else
         {
-          mutt_set_flag(Context->mailbox, CUR_EMAIL, MUTT_DELETE, 0);
-          mutt_set_flag(Context->mailbox, CUR_EMAIL, MUTT_PURGE, 0);
           if (Resolve && menu->current < Context->mailbox->vcount - 1)
           {
             menu->current++;
@@ -3476,8 +3486,10 @@ int mutt_index_menu(void)
           else
             menu->redraw |= REDRAW_CURRENT;
         }
+
         menu->redraw |= REDRAW_STATUS;
         break;
+      }
 
       case OP_UNDELETE_THREAD:
       case OP_UNDELETE_SUBTHREAD:

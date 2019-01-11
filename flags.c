@@ -348,15 +348,22 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
 }
 
 /**
- * mutt_tag_set_flag - Set flag on tagged messages
+ * mutt_emails_set_flag - Set flag on messages
+ * @param m    Mailbox
+ * @param el   List of Emails to flag
  * @param flag Flag to set, e.g. #MUTT_DELETE
  * @param bf   true: set the flag; false: clear the flag
  */
-void mutt_tag_set_flag(int flag, int bf)
+void mutt_emails_set_flag(struct Mailbox *m, struct EmailList *el, int flag, int bf)
 {
-  for (int i = 0; i < Context->mailbox->msg_count; i++)
-    if (message_is_tagged(Context, i))
-      mutt_set_flag(Context->mailbox, Context->mailbox->emails[i], flag, bf);
+  if (!m || !el || STAILQ_EMPTY(el))
+    return;
+
+  struct EmailNode *en = NULL;
+  STAILQ_FOREACH(en, el, entries)
+  {
+    mutt_set_flag(m, en->email, flag, bf);
+  }
 }
 
 /**
@@ -419,13 +426,17 @@ done:
 
 /**
  * mutt_change_flag - Change the flag on a Message
- * @param e  Email
+ * @param m  Mailbox
+ * @param el List of Emails to change
  * @param bf true: set the flag; false: clear the flag
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_change_flag(struct Email *e, int bf)
+int mutt_change_flag(struct Mailbox *m, struct EmailList *el, int bf)
 {
+  if (!m || !el || STAILQ_EMPTY(el))
+    return -1;
+
   int i, flag;
   struct Event event;
 
@@ -452,12 +463,7 @@ int mutt_change_flag(struct Email *e, int bf)
     case 'd':
     case 'D':
       if (!bf)
-      {
-        if (e)
-          mutt_set_flag(Context->mailbox, e, MUTT_PURGE, bf);
-        else
-          mutt_tag_set_flag(MUTT_PURGE, bf);
-      }
+        mutt_emails_set_flag(m, el, MUTT_PURGE, bf);
       flag = MUTT_DELETE;
       break;
 
@@ -468,10 +474,7 @@ int mutt_change_flag(struct Email *e, int bf)
 
     case 'o':
     case 'O':
-      if (e)
-        mutt_set_flag(Context->mailbox, e, MUTT_READ, !bf);
-      else
-        mutt_tag_set_flag(MUTT_READ, !bf);
+      mutt_emails_set_flag(m, el, MUTT_READ, !bf);
       flag = MUTT_OLD;
       break;
 
@@ -493,10 +496,6 @@ int mutt_change_flag(struct Email *e, int bf)
       return -1;
   }
 
-  if (e)
-    mutt_set_flag(Context->mailbox, e, flag, bf);
-  else
-    mutt_tag_set_flag(flag, bf);
-
+  mutt_emails_set_flag(m, el, flag, bf);
   return 0;
 }
