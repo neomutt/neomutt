@@ -204,9 +204,8 @@ msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Mazání funguje pouze u IMAP schránek."
 
 #: browser.c:1692
-#, fuzzy
 msgid "Can't delete currently selected mailbox"
-msgstr "zobrazit jméno zvoleného souboru"
+msgstr "Nelze smazat zvolenou schránku"
 
 #: browser.c:1696
 #, c-format
@@ -1745,9 +1744,8 @@ msgid "Authenticating (OAUTHBEARER)..."
 msgstr "Ověřuji (OAUTHBEARER)…"
 
 #: imap/auth_oauth.c:95
-#, fuzzy
 msgid "OAUTHBEARER authentication failed."
-msgstr "SASL autentizace se nezdařila"
+msgstr "OAUTHBEARER ověření se nezdařilo."
 
 #: imap/auth_sasl.c:128 nntp/nntp.c:550 nntp/nntp.c:616 smtp.c:429
 #, c-format
@@ -2188,9 +2186,8 @@ msgid "Logged out of IMAP servers"
 msgstr "Odhlášeno z IMAP serverů"
 
 #: index.c:1911
-#, fuzzy
 msgid "No virtual folder and no Message-Id, aborting"
-msgstr "Virtuální složka není specifikována, zrušeno"
+msgstr "Virtuální složka ani Message-Id nejsou specifikovány, zrušeno"
 
 #: index.c:1923 index.c:2081 index.c:2102 index.c:2122
 msgid "Failed to create query, aborting"
@@ -3124,11 +3121,11 @@ msgstr "Není definován příkaz pro obnovení OAUTH"
 
 #: mutt_account.c:390
 msgid "Unable to run refresh command"
-msgstr ""
+msgstr "Nezdařilo se provést příkaz obnovení"
 
 #: mutt_account.c:400
 msgid "Command returned empty string"
-msgstr ""
+msgstr "Příkaz vrátil prázdný řetězec"
 
 #: mutt_attach.c:130 mutt_attach.c:264 mutt_attach.c:445 mutt_attach.c:1033
 msgid "Can't match nametemplate, continue?"
