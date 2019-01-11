@@ -486,7 +486,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
 
   struct Email *tmphdr = mutt_email_new();
   tmphdr->env = mutt_env_new();
-  mutt_make_forward_subject(tmphdr->env, Context, parent_hdr);
+  mutt_make_forward_subject(tmphdr->env, Context->mailbox, parent_hdr);
 
   mutt_mktemp(tmpbody, sizeof(tmpbody));
   FILE *tmpfp = mutt_file_fopen(tmpbody, "w");
@@ -497,7 +497,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
     return;
   }
 
-  mutt_forward_intro(Context, parent_hdr, tmpfp);
+  mutt_forward_intro(Context->mailbox, parent_hdr, tmpfp);
 
   /* prepare the prefix here since we'll need it later. */
 
@@ -594,7 +594,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
       goto bail;
   }
 
-  mutt_forward_trailer(Context, parent_hdr, tmpfp);
+  mutt_forward_trailer(Context->mailbox, parent_hdr, tmpfp);
 
   mutt_file_fclose(&tmpfp);
   tmpfp = NULL;
@@ -656,7 +656,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
 
   tmphdr = mutt_email_new();
   tmphdr->env = mutt_env_new();
-  mutt_make_forward_subject(tmphdr->env, Context, curhdr);
+  mutt_make_forward_subject(tmphdr->env, Context->mailbox, curhdr);
 
   tmpbody[0] = '\0';
 
@@ -693,9 +693,9 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
 
     if (cur)
     {
-      mutt_forward_intro(Context, cur->email, tmpfp);
+      mutt_forward_intro(Context->mailbox, cur->email, tmpfp);
       mutt_copy_message_fp(tmpfp, fp, cur->email, cmflags, chflags);
-      mutt_forward_trailer(Context, cur->email, tmpfp);
+      mutt_forward_trailer(Context->mailbox, cur->email, tmpfp);
     }
     else
     {
@@ -703,10 +703,10 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
       {
         if (actx->idx[i]->content->tagged)
         {
-          mutt_forward_intro(Context, actx->idx[i]->content->email, tmpfp);
+          mutt_forward_intro(Context->mailbox, actx->idx[i]->content->email, tmpfp);
           mutt_copy_message_fp(tmpfp, actx->idx[i]->fp,
                                actx->idx[i]->content->email, cmflags, chflags);
-          mutt_forward_trailer(Context, actx->idx[i]->content->email, tmpfp);
+          mutt_forward_trailer(Context->mailbox, actx->idx[i]->content->email, tmpfp);
         }
       }
     }
@@ -873,7 +873,7 @@ static void attach_include_reply(FILE *fp, FILE *tmpfp, struct Email *cur)
   int cmflags = MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV;
   int chflags = CH_DECODE;
 
-  mutt_make_attribution(Context, cur, tmpfp);
+  mutt_make_attribution(Context->mailbox, cur, tmpfp);
 
   if (!Header)
     cmflags |= MUTT_CM_NOHEADER;
@@ -884,7 +884,7 @@ static void attach_include_reply(FILE *fp, FILE *tmpfp, struct Email *cur)
   }
 
   mutt_copy_message_fp(tmpfp, fp, cur, cmflags, chflags);
-  mutt_make_post_indent(Context, cur, tmpfp);
+  mutt_make_post_indent(Context->mailbox, cur, tmpfp);
 }
 
 /**
@@ -982,7 +982,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
   }
   else
   {
-    mutt_make_attribution(Context, parent_hdr, tmpfp);
+    mutt_make_attribution(Context->mailbox, parent_hdr, tmpfp);
 
     memset(&st, 0, sizeof(struct State));
     st.fpout = tmpfp;
@@ -1028,7 +1028,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
       }
     }
 
-    mutt_make_post_indent(Context, parent_hdr, tmpfp);
+    mutt_make_post_indent(Context->mailbox, parent_hdr, tmpfp);
 
     if (mime_reply_any && !cur && !copy_problematic_attachments(&tmphdr->content, actx, false))
     {
