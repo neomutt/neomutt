@@ -52,7 +52,7 @@ void mutt_enter_command(void);
 void mutt_pipe_message(struct Email *e);
 void mutt_print_message(struct Email *e);
 int  mutt_save_message_ctx(struct Email *e, bool delete, bool decode, bool decrypt, struct Mailbox *m);
-int  mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt);
+int  mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete, bool decode, bool decrypt);
 int  mutt_select_sort(int reverse);
 void mutt_shell_escape(void);
 

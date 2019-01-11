@@ -1531,16 +1531,16 @@ fail:
 /**
  * imap_copy_messages - Server COPY messages to another folder
  * @param m      Mailbox
- * @param e      Email
+ * @param el     List of Emails to copy
  * @param dest   Destination folder
  * @param delete Delete the original?
  * @retval -1 Error
  * @retval  0 Success
  * @retval  1 Non-fatal error - try fetch/append
  */
-int imap_copy_messages(struct Mailbox *m, struct Email *e, char *dest, bool delete)
+int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool delete)
 {
-  if (!m || !dest)
+  if (!m || !el || !dest)
     return -1;
 
   struct Buffer cmd, sync_cmd;
@@ -1552,14 +1552,15 @@ int imap_copy_messages(struct Mailbox *m, struct Email *e, char *dest, bool dele
   struct ConnAccount conn_account;
   int err_continue = MUTT_NO;
   int triedcreate = 0;
+  struct EmailNode *en = STAILQ_FIRST(el);
+  bool single = !STAILQ_NEXT(en, entries);
+  struct ImapAccountData *adata = imap_adata_get(m);
 
-  if (e && e->attach_del)
+  if (single && en->email->attach_del)
   {
     mutt_debug(3, "#1 Message contains attachments to be deleted\n");
     return 1;
   }
-
-  struct ImapAccountData *adata = imap_adata_get(m);
 
   if (imap_parse_path(dest, &conn_account, buf, sizeof(buf)))
   {
@@ -1586,25 +1587,22 @@ int imap_copy_messages(struct Mailbox *m, struct Email *e, char *dest, bool dele
     mutt_buffer_init(&cmd);
 
     /* Null Header* means copy tagged messages */
-    if (!e)
+    if (!single)
     {
       /* if any messages have attachments to delete, fall through to FETCH
        * and APPEND. TODO: Copy what we can with COPY, fall through for the
        * remainder. */
-      for (int i = 0; i < m->msg_count; i++)
+      STAILQ_FOREACH(en, el, entries)
       {
-        if (!m->emails[i]->tagged)
-          continue;
-
-        if (m->emails[i]->attach_del)
+        if (en->email->attach_del)
         {
           mutt_debug(3, "#2 Message contains attachments to be deleted\n");
           return 1;
         }
 
-        if (m->emails[i]->active && m->emails[i]->changed)
+        if (en->email->active && en->email->changed)
         {
-          rc = imap_sync_message_for_copy(m, m->emails[i], &sync_cmd, &err_continue);
+          rc = imap_sync_message_for_copy(m, en->email, &sync_cmd, &err_continue);
           if (rc < 0)
           {
             mutt_debug(1, "#1 could not sync\n");
@@ -1633,12 +1631,12 @@ int imap_copy_messages(struct Mailbox *m, struct Email *e, char *dest, bool dele
     }
     else
     {
-      mutt_message(_("Copying message %d to %s..."), e->index + 1, mbox);
-      mutt_buffer_add_printf(&cmd, "UID COPY %u %s", imap_edata_get(e)->uid, mmbox);
+      mutt_message(_("Copying message %d to %s..."), en->email->index + 1, mbox);
+      mutt_buffer_add_printf(&cmd, "UID COPY %u %s", imap_edata_get(en->email)->uid, mmbox);
 
-      if (e->active && e->changed)
+      if (en->email->active && en->email->changed)
       {
-        rc = imap_sync_message_for_copy(m, e, &sync_cmd, &err_continue);
+        rc = imap_sync_message_for_copy(m, en->email, &sync_cmd, &err_continue);
         if (rc < 0)
         {
           mutt_debug(1, "#2 could not sync\n");
@@ -1687,25 +1685,12 @@ int imap_copy_messages(struct Mailbox *m, struct Email *e, char *dest, bool dele
   /* cleanup */
   if (delete)
   {
-    if (!e)
+    STAILQ_FOREACH(en, el, entries)
     {
-      for (int i = 0; i < m->msg_count; i++)
-      {
-        if (!m->emails[i]->tagged)
-          continue;
-
-        mutt_set_flag(m, m->emails[i], MUTT_DELETE, 1);
-        mutt_set_flag(m, m->emails[i], MUTT_PURGE, 1);
-        if (DeleteUntag)
-          mutt_set_flag(m, m->emails[i], MUTT_TAG, 0);
-      }
-    }
-    else
-    {
-      mutt_set_flag(m, e, MUTT_DELETE, 1);
-      mutt_set_flag(m, e, MUTT_PURGE, 1);
+      mutt_set_flag(m, en->email, MUTT_DELETE, 1);
+      mutt_set_flag(m, en->email, MUTT_PURGE, 1);
       if (DeleteUntag)
-        mutt_set_flag(m, e, MUTT_TAG, 0);
+        mutt_set_flag(m, en->email, MUTT_TAG, 0);
     }
   }
 

@@ -3271,16 +3271,19 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
       case OP_DECODE_SAVE:
       case OP_DECODE_COPY:
       case OP_DECRYPT_COPY:
+      {
         if (!(WithCrypto != 0) && ch == OP_DECRYPT_COPY)
         {
           ch = -1;
           break;
         }
         CHECK_MODE(IsEmail(extra));
-        if ((mutt_save_message(
-                 extra->email, (ch == OP_DECRYPT_SAVE) || (ch == OP_SAVE) || (ch == OP_DECODE_SAVE),
-                 (ch == OP_DECODE_SAVE) || (ch == OP_DECODE_COPY),
-                 (ch == OP_DECRYPT_SAVE) || (ch == OP_DECRYPT_COPY)) == 0) &&
+        struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+        el_add_email(&el, extra->email);
+        if ((mutt_save_message(Context->mailbox, &el,
+                               (ch == OP_DECRYPT_SAVE) || (ch == OP_SAVE) || (ch == OP_DECODE_SAVE),
+                               (ch == OP_DECODE_SAVE) || (ch == OP_DECODE_COPY),
+                               (ch == OP_DECRYPT_SAVE) || (ch == OP_DECRYPT_COPY)) == 0) &&
             ((ch == OP_SAVE) || (ch == OP_DECODE_SAVE) || (ch == OP_DECRYPT_SAVE)))
         {
           if (Resolve)
@@ -3291,7 +3294,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           else
             pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         }
+        el_free(&el);
         break;
+      }
 
       case OP_SHELL_ESCAPE:
         mutt_shell_escape();

@@ -963,75 +963,54 @@ int mutt_save_message_ctx(struct Email *e, bool delete, bool decode,
 
 /**
  * mutt_save_message - Save an email
- * @param e       Email
+ * @param m       Mailbox
+ * @param el      List of Emails to save
  * @param delete  If true, delete the original (save)
  * @param decode  If true, decode the message
  * @param decrypt If true, decrypt the message
  * @retval  0 Copy/save was successful
  * @retval -1 Error/abort
  */
-int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
+int mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete, bool decode, bool decrypt)
 {
+  if (!el || STAILQ_EMPTY(el))
+    return -1;
+
   bool need_passphrase = false;
   int app = 0;
   char buf[PATH_MAX];
   const char *prompt = NULL;
   struct Context *savectx = NULL;
   struct stat st;
+  struct EmailNode *en = STAILQ_FIRST(el);
+  bool single = !STAILQ_NEXT(en, entries);
 
   if (delete)
   {
     if (decode)
-      prompt = e ? _("Decode-save to mailbox") : _("Decode-save tagged to mailbox");
+      prompt = single ? _("Decode-save to mailbox") : _("Decode-save tagged to mailbox");
     else if (decrypt)
-      prompt = e ? _("Decrypt-save to mailbox") : _("Decrypt-save tagged to mailbox");
+      prompt = single ? _("Decrypt-save to mailbox") : _("Decrypt-save tagged to mailbox");
     else
-      prompt = e ? _("Save to mailbox") : _("Save tagged to mailbox");
+      prompt = single ? _("Save to mailbox") : _("Save tagged to mailbox");
   }
   else
   {
     if (decode)
-      prompt = e ? _("Decode-copy to mailbox") : _("Decode-copy tagged to mailbox");
+      prompt = single ? _("Decode-copy to mailbox") : _("Decode-copy tagged to mailbox");
     else if (decrypt)
-      prompt = e ? _("Decrypt-copy to mailbox") : _("Decrypt-copy tagged to mailbox");
+      prompt = single ? _("Decrypt-copy to mailbox") : _("Decrypt-copy tagged to mailbox");
     else
-      prompt = e ? _("Copy to mailbox") : _("Copy tagged to mailbox");
+      prompt = single ? _("Copy to mailbox") : _("Copy tagged to mailbox");
   }
 
-  if (e)
+  if (WithCrypto)
   {
-    if (WithCrypto)
-    {
-      need_passphrase = (e->security & ENCRYPT);
-      app = e->security;
-    }
-    mutt_message_hook(Context->mailbox, e, MUTT_MESSAGE_HOOK);
-    mutt_default_save(buf, sizeof(buf), e);
+    need_passphrase = (en->email->security & ENCRYPT);
+    app = en->email->security;
   }
-  else
-  {
-    /* look for the first tagged message */
-    for (int i = 0; i < Context->mailbox->msg_count; i++)
-    {
-      if (message_is_tagged(Context, i))
-      {
-        e = Context->mailbox->emails[i];
-        break;
-      }
-    }
-
-    if (e)
-    {
-      mutt_message_hook(Context->mailbox, e, MUTT_MESSAGE_HOOK);
-      mutt_default_save(buf, sizeof(buf), e);
-      if (WithCrypto)
-      {
-        need_passphrase = (e->security & ENCRYPT);
-        app = e->security;
-      }
-      e = NULL;
-    }
-  }
+  mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
+  mutt_default_save(buf, sizeof(buf), en->email);
 
   mutt_pretty_mailbox(buf, sizeof(buf));
   if (mutt_enter_fname(prompt, buf, sizeof(buf), 0) == -1)
@@ -1068,10 +1047,10 @@ int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
   mutt_message(_("Copying to %s..."), buf);
 
 #ifdef USE_IMAP
-  if ((Context->mailbox->magic == MUTT_IMAP) && !(decode || decrypt) &&
+  if ((m->magic == MUTT_IMAP) && !(decode || decrypt) &&
       (imap_path_probe(buf, NULL) == MUTT_IMAP))
   {
-    switch (imap_copy_messages(Context->mailbox, e, buf, delete))
+    switch (imap_copy_messages(m, el, buf, delete))
     {
       /* success */
       case 0:
@@ -1088,100 +1067,95 @@ int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
 #endif
 
   savectx = mx_mbox_open(NULL, buf, MUTT_APPEND);
-  if (savectx)
-  {
+  if (!savectx)
+    return -1;
+
 #ifdef USE_COMPRESSED
-    /* If we're saving to a compressed mailbox, the stats won't be updated
-     * until the next open.  Until then, improvise. */
-    struct Mailbox *cm = NULL;
-    if (savectx->mailbox->compress_info)
-    {
-      cm = mutt_find_mailbox(savectx->mailbox->realpath);
-    }
-    /* We probably haven't been opened yet */
-    if (cm && (cm->msg_count == 0))
-      cm = NULL;
+  /* If we're saving to a compressed mailbox, the stats won't be updated
+   * until the next open.  Until then, improvise. */
+  struct Mailbox *cm = NULL;
+  if (savectx->mailbox->compress_info)
+  {
+    cm = mutt_find_mailbox(savectx->mailbox->realpath);
+  }
+  /* We probably haven't been opened yet */
+  if (cm && (cm->msg_count == 0))
+    cm = NULL;
 #endif
-    if (e)
+  if (single)
+  {
+    if (mutt_save_message_ctx(en->email, delete, decode, decrypt, savectx->mailbox) != 0)
     {
-      if (mutt_save_message_ctx(e, delete, decode, decrypt, savectx->mailbox) != 0)
+      mx_mbox_close(&savectx);
+      return -1;
+    }
+#ifdef USE_COMPRESSED
+    if (cm)
+    {
+      cm->msg_count++;
+      if (!en->email->read)
       {
-        mx_mbox_close(&savectx);
-        return -1;
+        cm->msg_unread++;
+        if (!en->email->old)
+          cm->msg_new++;
       }
+      if (en->email->flagged)
+        cm->msg_flagged++;
+    }
+#endif
+  }
+  else
+  {
+    int rc = 0;
+
+#ifdef USE_NOTMUCH
+    if (m->magic == MUTT_NOTMUCH)
+      nm_db_longrun_init(m, true);
+#endif
+    STAILQ_FOREACH(en, el, entries)
+    {
+      mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
+      rc = mutt_save_message_ctx(en->email, delete, decode,
+                                 decrypt, savectx->mailbox);
+      if (rc != 0)
+        break;
 #ifdef USE_COMPRESSED
       if (cm)
       {
+        struct Email *e2 = en->email;
         cm->msg_count++;
-        if (!e->read)
+        if (!e2->read)
         {
           cm->msg_unread++;
-          if (!e->old)
+          if (!e2->old)
             cm->msg_new++;
         }
-        if (e->flagged)
+        if (e2->flagged)
           cm->msg_flagged++;
       }
 #endif
     }
-    else
+#ifdef USE_NOTMUCH
+    if (m->magic == MUTT_NOTMUCH)
+      nm_db_longrun_done(m);
+#endif
+    if (rc != 0)
     {
-      int rc = 0;
-
-#ifdef USE_NOTMUCH
-      if (Context->mailbox->magic == MUTT_NOTMUCH)
-        nm_db_longrun_init(Context->mailbox, true);
-#endif
-      for (int i = 0; i < Context->mailbox->msg_count; i++)
-      {
-        if (!message_is_tagged(Context, i))
-          continue;
-
-        mutt_message_hook(Context->mailbox, Context->mailbox->emails[i], MUTT_MESSAGE_HOOK);
-        rc = mutt_save_message_ctx(Context->mailbox->emails[i], delete, decode,
-                                   decrypt, savectx->mailbox);
-        if (rc != 0)
-          break;
-#ifdef USE_COMPRESSED
-        if (cm)
-        {
-          struct Email *e2 = Context->mailbox->emails[i];
-          cm->msg_count++;
-          if (!e2->read)
-          {
-            cm->msg_unread++;
-            if (!e2->old)
-              cm->msg_new++;
-          }
-          if (e2->flagged)
-            cm->msg_flagged++;
-        }
-#endif
-      }
-#ifdef USE_NOTMUCH
-      if (Context->mailbox->magic == MUTT_NOTMUCH)
-        nm_db_longrun_done(Context->mailbox);
-#endif
-      if (rc != 0)
-      {
-        mx_mbox_close(&savectx);
-        return -1;
-      }
+      mx_mbox_close(&savectx);
+      return -1;
     }
-
-    const bool need_mailbox_cleanup = ((savectx->mailbox->magic == MUTT_MBOX) ||
-                                       (savectx->mailbox->magic == MUTT_MMDF));
-
-    mx_mbox_close(&savectx);
-
-    if (need_mailbox_cleanup)
-      mutt_mailbox_cleanup(buf, &st);
-
-    mutt_clear_error();
-    return 0;
   }
 
-  return -1;
+  const bool need_mailbox_cleanup = ((savectx->mailbox->magic == MUTT_MBOX) ||
+                                     (savectx->mailbox->magic == MUTT_MMDF));
+
+  mx_mbox_close(&savectx);
+
+  if (need_mailbox_cleanup)
+    mutt_mailbox_cleanup(buf, &st);
+
+  mutt_clear_error();
+  return 0;
 }
 
 /**

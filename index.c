@@ -2549,9 +2549,12 @@ int mutt_index_menu(void)
       case OP_SAVE:
       case OP_DECODE_COPY:
       case OP_DECODE_SAVE:
+      {
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        if ((mutt_save_message(tag ? NULL : CUR_EMAIL,
+        struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+        el_add_tagged(&el, Context, CUR_EMAIL, tag);
+        if ((mutt_save_message(Context->mailbox, &el,
                                (op == OP_DECRYPT_SAVE) || (op == OP_SAVE) || (op == OP_DECODE_SAVE),
                                (op == OP_DECODE_SAVE) || (op == OP_DECODE_COPY),
                                (op == OP_DECRYPT_SAVE) || (op == OP_DECRYPT_COPY)) == 0) &&
@@ -2574,7 +2577,9 @@ int mutt_index_menu(void)
           else
             menu->redraw |= REDRAW_CURRENT;
         }
+        el_free(&el);
         break;
+      }
 
       case OP_MAIN_NEXT_NEW:
       case OP_MAIN_NEXT_UNREAD:
