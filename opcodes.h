@@ -271,6 +271,7 @@
   _fmt(OP_MAIN_CHANGE_VFOLDER,            N_("open a different virtual folder")) \
   _fmt(OP_MAIN_ENTIRE_THREAD,             N_("read entire thread of the current message")) \
   _fmt(OP_MAIN_VFOLDER_FROM_QUERY,        N_("generate virtual folder from query")) \
+  _fmt(OP_MAIN_VFOLDER_FROM_QUERY_READONLY, N_("generate a read-only virtual folder from query")) \
   _fmt(OP_MAIN_WINDOWED_VFOLDER_BACKWARD, N_("shifts virtual folder time window backwards")) \
   _fmt(OP_MAIN_WINDOWED_VFOLDER_FORWARD,  N_("shifts virtual folder time window forwards"))
 #else

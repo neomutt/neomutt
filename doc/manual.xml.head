@@ -14930,6 +14930,14 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
                 </entry>
               </row>
               <row>
+                <entry>index,pager</entry>
+                <entry><literal>&lt;vfolder-from-query-readonly&gt;</literal></entry>
+                <entry>
+                  The same as <literal>&lt;vfolder-from-query&gt;</literal>; however, the mailbox
+                  will be read-only.
+                </entry>
+              </row>
+              <row>
                 <entry>index</entry>
                 <entry><literal>&lt;vfolder-window-forward&gt;</literal></entry>
                 <entry>
