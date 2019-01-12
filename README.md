@@ -63,6 +63,12 @@ sorted through them, fixed them up and documented them.
 | Vi Keys                | Easy and clean Vi-keys for NeoMutt
 | Vim Syntax             | Vim Syntax File
 
+## How to Install NeoMutt?
+
+NeoMutt may be packaged for your distribution, and otherwise it can be built from
+source. Please refer to the instructions on the
+[distro page](https://neomutt.org/distro.html).
+
 ## Where is NeoMutt?
 
 - Source Code:     https://github.com/neomutt/neomutt
