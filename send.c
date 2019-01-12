@@ -859,17 +859,12 @@ void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv
 
 /**
  * make_reference_headers - Generate reference headers for an email
- * @param curenv Envelope of source email
- * @param env    Envelope for result
- * @param ctx    Mailbox
+ * @param el  List of source Emails
+ * @param env Envelope for result
  */
-static void make_reference_headers(struct EmailList *el,
-                                   struct Envelope *env, struct Context *ctx)
+static void make_reference_headers(struct EmailList *el, struct Envelope *env)
 {
-  if (!el || STAILQ_EMPTY(el))
-    return;
-
-  if (!env || !ctx || !ctx->mailbox)
+  if (!el || !env || STAILQ_EMPTY(el))
     return;
 
   struct EmailNode *en = STAILQ_FIRST(el);
@@ -877,10 +872,9 @@ static void make_reference_headers(struct EmailList *el,
 
   if (!single)
   {
-    for (int i = 0; i < ctx->mailbox->msg_count; i++)
+    STAILQ_FOREACH(en, el, entries)
     {
-      if (message_is_tagged(ctx, i))
-        mutt_add_to_reference_headers(env, ctx->mailbox->emails[i]->env);
+      mutt_add_to_reference_headers(env, en->email->env);
     }
   }
   else
@@ -889,7 +883,7 @@ static void make_reference_headers(struct EmailList *el,
   /* if there's more than entry in In-Reply-To (i.e. message has
      multiple parents), don't generate a References: header as it's
      discouraged by RFC2822, sect. 3.6.4 */
-  if (ctx->mailbox->msg_tagged > 0 && !STAILQ_EMPTY(&env->in_reply_to) &&
+  if (!single && !STAILQ_EMPTY(&env->in_reply_to) &&
       STAILQ_NEXT(STAILQ_FIRST(&env->in_reply_to), entries))
   {
     mutt_list_free(&env->references);
@@ -899,13 +893,13 @@ static void make_reference_headers(struct EmailList *el,
 /**
  * envelope_defaults - Fill in some defaults for a new email
  * @param env   Envelope for result
- * @param ctx   Mailbox
+ * @param m     Mailbox
  * @param el    List of Emails to use
  * @param flags Flags, e.g. #SEND_REPLY
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int envelope_defaults(struct Envelope *env, struct Context *ctx,
+static int envelope_defaults(struct Envelope *env, struct Mailbox *m,
                              struct EmailList *el, int flags)
 {
   if (!el || STAILQ_EMPTY(el))
@@ -952,14 +946,14 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx,
     if (flags & SEND_REPLY)
     {
       mutt_make_misc_reply_headers(env, curenv);
-      make_reference_headers(el, env, ctx);
+      make_reference_headers(el, env);
     }
   }
   else if (flags & SEND_FORWARD)
   {
-    mutt_make_forward_subject(env, ctx->mailbox, en->email);
+    mutt_make_forward_subject(env, m, en->email);
     if (ForwardReferences)
-      make_reference_headers(el, env, ctx);
+      make_reference_headers(el, env);
   }
 
   return 0;
@@ -967,16 +961,16 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx,
 
 /**
  * generate_body - Create a new email body
- * @param tempfp stream for outgoing message
- * @param msg    header for outgoing message
- * @param flags  compose mode
- * @param ctx    current mailbox
+ * @param tempfp Stream for outgoing message
+ * @param msg    Header for outgoing message
+ * @param flags  Compose mode
+ * @param m      Mailbox
  * @param el     List of Emails to use
  * @retval  0 Success
  * @retval -1 Error
  */
 static int generate_body(FILE *tempfp, struct Email *msg, int flags,
-                         struct Context *ctx, struct EmailList *el)
+                         struct Mailbox *m, struct EmailList *el)
 {
   int i;
   struct Body *tmp = NULL;
@@ -1001,7 +995,7 @@ static int generate_body(FILE *tempfp, struct Email *msg, int flags,
       {
         STAILQ_FOREACH(en, el, entries)
         {
-          if (include_reply(ctx->mailbox, en->email, tempfp) == -1)
+          if (include_reply(m, en->email, tempfp) == -1)
           {
             mutt_error(_("Could not include all requested messages"));
             return -1;
@@ -1010,7 +1004,7 @@ static int generate_body(FILE *tempfp, struct Email *msg, int flags,
         }
       }
       else
-        include_reply(ctx->mailbox, en->email, tempfp);
+        include_reply(m, en->email, tempfp);
     }
   }
   else if (flags & SEND_FORWARD)
@@ -1027,7 +1021,7 @@ static int generate_body(FILE *tempfp, struct Email *msg, int flags,
 
       if (single)
       {
-        tmp = mutt_make_message_attach(ctx->mailbox, en->email, false);
+        tmp = mutt_make_message_attach(m, en->email, false);
         if (last)
           last->next = tmp;
         else
@@ -1037,7 +1031,7 @@ static int generate_body(FILE *tempfp, struct Email *msg, int flags,
       {
         STAILQ_FOREACH(en, el, entries)
         {
-          tmp = mutt_make_message_attach(ctx->mailbox, en->email, false);
+          tmp = mutt_make_message_attach(m, en->email, false);
           if (last)
           {
             last->next = tmp;
@@ -1054,13 +1048,12 @@ static int generate_body(FILE *tempfp, struct Email *msg, int flags,
     else if (i != -1)
     {
       if (single)
-        include_forward(ctx->mailbox, en->email, tempfp);
+        include_forward(m, en->email, tempfp);
       else
       {
-        for (i = 0; i < ctx->mailbox->msg_count; i++)
+        STAILQ_FOREACH(en, el, entries)
         {
-          if (message_is_tagged(ctx, i))
-            include_forward(ctx->mailbox, ctx->mailbox->emails[i], tempfp);
+          include_forward(m, en->email, tempfp);
         }
       }
     }
@@ -1938,7 +1931,7 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
   if (!(flags & (SEND_POSTPONED | SEND_RESEND)) && !((flags & SEND_DRAFT_FILE) && ResumeDraftFiles))
   {
     if ((flags & (SEND_REPLY | SEND_FORWARD | SEND_TO_SENDER)) && ctx &&
-        envelope_defaults(msg->env, ctx, el, flags) == -1)
+        envelope_defaults(msg->env, ctx->mailbox, el, flags) == -1)
     {
       goto cleanup;
     }
@@ -2034,7 +2027,7 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
 
     /* include replies/forwarded messages, unless we are given a template */
     if (!tempfile && (ctx || !(flags & (SEND_REPLY | SEND_FORWARD))) &&
-        generate_body(tempfp, msg, flags, ctx, el) == -1)
+        generate_body(tempfp, msg, flags, ctx->mailbox, el) == -1)
     {
       goto cleanup;
     }
