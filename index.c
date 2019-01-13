@@ -663,7 +663,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
 #endif
 
   mutt_clear_error();
-  mutt_mailbox_check(MUTT_MAILBOX_CHECK_FORCE); /* force the mailbox check after we have changed the folder */
+  mutt_mailbox_check(Context ? Context->mailbox : NULL, MUTT_MAILBOX_CHECK_FORCE); /* force the mailbox check after we have changed the folder */
   menu->redraw = REDRAW_FULL;
   OptSearchInvalid = true;
 
@@ -1016,7 +1016,7 @@ int mutt_index_menu(void)
   if (!attach_msg)
   {
     /* force the mailbox check after we enter the folder */
-    mutt_mailbox_check(MUTT_MAILBOX_CHECK_FORCE);
+    mutt_mailbox_check(Context ? Context->mailbox : NULL, MUTT_MAILBOX_CHECK_FORCE);
   }
 #ifdef USE_INOTIFY
   mutt_monitor_add(NULL);
@@ -1131,12 +1131,12 @@ int mutt_index_menu(void)
     {
       /* check for new mail in the incoming folders */
       oldcount = newcount;
-      newcount = mutt_mailbox_check(0);
+      newcount = mutt_mailbox_check(Context ? Context->mailbox : NULL, 0);
       if (newcount != oldcount)
         menu->redraw |= REDRAW_STATUS;
       if (do_mailbox_notify)
       {
-        if (mutt_mailbox_notify())
+        if (mutt_mailbox_notify(Context ? Context->mailbox : NULL))
         {
           menu->redraw |= REDRAW_STATUS;
           if (BeepNew)
@@ -2195,7 +2195,7 @@ int mutt_index_menu(void)
         {
           mutt_str_strfcpy(buf, Context->mailbox->path, sizeof(buf));
           mutt_pretty_mailbox(buf, sizeof(buf));
-          mutt_mailbox(buf, sizeof(buf));
+          mutt_mailbox(Context ? Context->mailbox : NULL, buf, sizeof(buf));
           if (!buf[0])
           {
             mutt_error(_("No mailboxes have new mail"));
@@ -2240,7 +2240,7 @@ int mutt_index_menu(void)
           {
             /* By default, fill buf with the next mailbox that contains unread
              * mail */
-            mutt_mailbox(buf, sizeof(buf));
+            mutt_mailbox(Context ? Context->mailbox : NULL, buf, sizeof(buf));
           }
 
           if (mutt_enter_fname(cp, buf, sizeof(buf), 1) == -1)

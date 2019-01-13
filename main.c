@@ -1131,13 +1131,13 @@ int main(int argc, char *argv[], char *envp[])
       bool passive = ImapPassive;
       ImapPassive = false;
 #endif
-      if (mutt_mailbox_check(0) == 0)
+      if (mutt_mailbox_check(Context ? Context->mailbox : NULL, 0) == 0)
       {
         mutt_message(_("No mailbox with new mail"));
         goto main_curses; // TEST37: neomutt -Z (no new mail)
       }
       folder[0] = '\0';
-      mutt_mailbox(folder, sizeof(folder));
+      mutt_mailbox(Context ? Context->mailbox : NULL, folder, sizeof(folder));
 #ifdef USE_IMAP
       ImapPassive = passive;
 #endif

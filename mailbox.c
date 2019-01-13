@@ -122,22 +122,23 @@ void mailbox_free(struct Mailbox **m)
 
 /**
  * mailbox_check - Check a mailbox for new mail
- * @param m           Mailbox to check
- * @param ctx_sb      stat() info for the current mailbox (Context)
+ * @param m_cur       Current Mailbox
+ * @param m_check     Mailbox to check
+ * @param ctx_sb      stat() info for the current Mailbox
  * @param check_stats If true, also count the total, new and flagged messages
  */
-static void mailbox_check(struct Mailbox *m, struct stat *ctx_sb, bool check_stats)
+static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check, struct stat *ctx_sb, bool check_stats)
 {
   struct stat sb = { 0 };
 
 #ifdef USE_SIDEBAR
-  short orig_new = m->has_new;
-  int orig_count = m->msg_count;
-  int orig_unread = m->msg_unread;
-  int orig_flagged = m->msg_flagged;
+  short orig_new = m_check->has_new;
+  int orig_count = m_check->msg_count;
+  int orig_unread = m_check->msg_unread;
+  int orig_flagged = m_check->msg_flagged;
 #endif
 
-  enum MailboxType mb_magic = mx_path_probe(m->path, NULL);
+  enum MailboxType mb_magic = mx_path_probe(m_check->path, NULL);
 
   switch (mb_magic)
   {
@@ -146,33 +147,33 @@ static void mailbox_check(struct Mailbox *m, struct stat *ctx_sb, bool check_sta
     case MUTT_NOTMUCH:
     case MUTT_IMAP:
       if (mb_magic != MUTT_IMAP)
-        m->has_new = false;
-      m->magic = mb_magic;
+        m_check->has_new = false;
+      m_check->magic = mb_magic;
       break;
     default:
-      m->has_new = false;
+      m_check->has_new = false;
 
-      if (stat(m->path, &sb) != 0 || (S_ISREG(sb.st_mode) && sb.st_size == 0) ||
-          ((m->magic == MUTT_UNKNOWN) && (m->magic = mx_path_probe(m->path, NULL)) <= 0))
+      if (stat(m_check->path, &sb) != 0 || (S_ISREG(sb.st_mode) && sb.st_size == 0) ||
+          ((m_check->magic == MUTT_UNKNOWN) && (m_check->magic = mx_path_probe(m_check->path, NULL)) <= 0))
       {
         /* if the mailbox still doesn't exist, set the newly created flag to be
          * ready for when it does. */
-        m->newly_created = true;
-        m->magic = MUTT_UNKNOWN;
-        m->size = 0;
+        m_check->newly_created = true;
+        m_check->magic = MUTT_UNKNOWN;
+        m_check->size = 0;
         return;
       }
       break; // kept for consistency.
   }
 
   /* check to see if the folder is the currently selected folder before polling */
-  if (!Context || (Context->mailbox->path[0] == '\0') ||
-      ((m->magic == MUTT_IMAP || m->magic == MUTT_NNTP ||
-        m->magic == MUTT_NOTMUCH || m->magic == MUTT_POP) ?
-           (mutt_str_strcmp(m->path, Context->mailbox->path) != 0) :
+  if (!m_cur || (m_cur->path[0] == '\0') ||
+      ((m_check->magic == MUTT_IMAP || m_check->magic == MUTT_NNTP ||
+        m_check->magic == MUTT_NOTMUCH || m_check->magic == MUTT_POP) ?
+           (mutt_str_strcmp(m_check->path, m_cur->path) != 0) :
            (sb.st_dev != ctx_sb->st_dev || sb.st_ino != ctx_sb->st_ino)))
   {
-    switch (m->magic)
+    switch (m_check->magic)
     {
       case MUTT_IMAP:
       case MUTT_MBOX:
@@ -180,26 +181,26 @@ static void mailbox_check(struct Mailbox *m, struct stat *ctx_sb, bool check_sta
       case MUTT_MAILDIR:
       case MUTT_MH:
       case MUTT_NOTMUCH:
-        if (mx_mbox_check_stats(m, 0) == 0)
+        if (mx_mbox_check_stats(m_check, 0) == 0)
           MailboxCount++;
         break;
       default:; /* do nothing */
     }
   }
-  else if (CheckMboxSize && Context && (Context->mailbox->path[0] != '\0'))
-    m->size = (off_t) sb.st_size; /* update the size of current folder */
+  else if (CheckMboxSize && m_cur && (m_cur->path[0] != '\0'))
+    m_check->size = (off_t) sb.st_size; /* update the size of current folder */
 
 #ifdef USE_SIDEBAR
-  if ((orig_new != m->has_new) || (orig_count != m->msg_count) ||
-      (orig_unread != m->msg_unread) || (orig_flagged != m->msg_flagged))
+  if ((orig_new != m_check->has_new) || (orig_count != m_check->msg_count) ||
+      (orig_unread != m_check->msg_unread) || (orig_flagged != m_check->msg_flagged))
   {
     mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
   }
 #endif
 
-  if (!m->has_new)
-    m->notified = false;
-  else if (!m->notified)
+  if (!m_check->has_new)
+    m_check->notified = false;
+  else if (!m_check->notified)
     MailboxNotify++;
 }
 
@@ -553,6 +554,7 @@ enum CommandResult mutt_parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
 
 /**
  * mutt_mailbox_check - Check all AllMailboxes for new mail
+ * @param m_cur Current Mailbox
  * @param force Force flags, see below
  * @retval num Number of mailboxes with new mail
  *
@@ -562,7 +564,7 @@ enum CommandResult mutt_parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
  *
  * Check all AllMailboxes for new mail and total/new/flagged messages
  */
-int mutt_mailbox_check(int force)
+int mutt_mailbox_check(struct Mailbox *m_cur, int force)
 {
   struct stat contex_sb;
   time_t t;
@@ -596,12 +598,12 @@ int mutt_mailbox_check(int force)
   MailboxNotify = 0;
 
   /* check device ID and serial number instead of comparing paths */
-  if (!Context || !Context->mailbox || (Context->mailbox->magic == MUTT_IMAP) ||
-      (Context->mailbox->magic == MUTT_POP)
+  if (!m_cur || (m_cur->magic == MUTT_IMAP) ||
+      (m_cur->magic == MUTT_POP)
 #ifdef USE_NNTP
-      || (Context->mailbox->magic == MUTT_NNTP)
+      || (m_cur->magic == MUTT_NNTP)
 #endif
-      || stat(Context->mailbox->path, &contex_sb) != 0)
+      || stat(m_cur->path, &contex_sb) != 0)
   {
     contex_sb.st_dev = 0;
     contex_sb.st_ino = 0;
@@ -610,7 +612,7 @@ int mutt_mailbox_check(int force)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    mailbox_check(np->m, &contex_sb,
+    mailbox_check(m_cur, np->m, &contex_sb,
                   check_stats || (!np->m->first_check_stats_done && MailCheckStats));
     np->m->first_check_stats_done = true;
   }
@@ -699,11 +701,12 @@ void mutt_mailbox_setnotified(struct Mailbox *m)
 
 /**
  * mutt_mailbox_notify - Notify the user if there's new mail
+ * @param m_cur Current Mailbox
  * @retval true If there is new mail
  */
-bool mutt_mailbox_notify(void)
+bool mutt_mailbox_notify(struct Mailbox *m_cur)
 {
-  if (mutt_mailbox_check(0) && MailboxNotify)
+  if (mutt_mailbox_check(m_cur, 0) && MailboxNotify)
   {
     return mutt_mailbox_list();
   }
@@ -712,16 +715,17 @@ bool mutt_mailbox_notify(void)
 
 /**
  * mutt_mailbox - incoming folders completion routine
- * @param s    Buffer containing name of current mailbox
- * @param slen Buffer length
+ * @param m_cur Current Mailbox
+ * @param s     Buffer containing name of current mailbox
+ * @param slen  Buffer length
  *
  * Given a folder name, find the next incoming folder with new mail.
  */
-void mutt_mailbox(char *s, size_t slen)
+void mutt_mailbox(struct Mailbox *m_cur, char *s, size_t slen)
 {
   mutt_expand_path(s, slen);
 
-  if (mutt_mailbox_check(0))
+  if (mutt_mailbox_check(m_cur, 0))
   {
     int found = 0;
     for (int pass = 0; pass < 2; pass++)
@@ -743,7 +747,7 @@ void mutt_mailbox(char *s, size_t slen)
       }
     }
 
-    mutt_mailbox_check(MUTT_MAILBOX_CHECK_FORCE); /* mailbox was wrong - resync things */
+    mutt_mailbox_check(m_cur, MUTT_MAILBOX_CHECK_FORCE); /* mailbox was wrong - resync things */
   }
 
   /* no folders with new mail */

@@ -804,7 +804,7 @@ void mutt_shell_escape(void)
 
   if ((rc != 0) || WaitKey)
     mutt_any_key_to_continue(NULL);
-  mutt_mailbox_check(MUTT_MAILBOX_CHECK_FORCE);
+  mutt_mailbox_check(Context->mailbox, MUTT_MAILBOX_CHECK_FORCE);
 }
 
 /**
@@ -1319,5 +1319,5 @@ bool mutt_check_traditional_pgp(struct EmailList *el, int *redraw)
  */
 void mutt_check_stats(void)
 {
-  mutt_mailbox_check(MUTT_MAILBOX_CHECK_FORCE | MUTT_MAILBOX_CHECK_FORCE_STATS);
+  mutt_mailbox_check(Context->mailbox, MUTT_MAILBOX_CHECK_FORCE | MUTT_MAILBOX_CHECK_FORCE_STATS);
 }

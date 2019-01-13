@@ -518,9 +518,9 @@ static int trash_append(struct Mailbox *m)
   }
 
 #ifdef USE_IMAP
-  if (Context->mailbox->magic == MUTT_IMAP && (imap_path_probe(Trash, NULL) == MUTT_IMAP))
+  if (m->magic == MUTT_IMAP && (imap_path_probe(Trash, NULL) == MUTT_IMAP))
   {
-    if (imap_fast_trash(Context->mailbox, Trash) == 0)
+    if (imap_fast_trash(m, Trash) == 0)
       return 0;
   }
 #endif
@@ -815,7 +815,7 @@ int mx_mbox_close(struct Context **pctx)
 /**
  * mx_mbox_sync - Save changes to mailbox
  * @param[in]  ctx        Context
- * @param[out] index_hint Currently selected mailbox
+ * @param[out] index_hint Currently selected Email
  * @retval  0 Success
  * @retval -1 Error
  */
@@ -854,7 +854,7 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
     return 0;
   }
 
-  if (m->msg_deleted)
+  if (m->msg_deleted != 0)
   {
     char buf[SHORT_STRING];
 
@@ -879,8 +879,7 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
         m->msg_deleted = 0;
       }
     }
-    else if (ctx->last_tag && ctx->last_tag->deleted)
-      ctx->last_tag = NULL; /* reset last tagged msg now useless */
+    mutt_mailbox_changed(m, MBN_UNTAG);
   }
 
   /* really only for IMAP - imap_sync_mailbox results in a call to
@@ -890,16 +889,16 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
 
   if (purge && m->msg_deleted && (mutt_str_strcmp(m->path, Trash) != 0))
   {
-    if (trash_append(ctx->mailbox) != 0)
+    if (trash_append(m) != 0)
       return -1;
   }
 
 #ifdef USE_IMAP
   if (m->magic == MUTT_IMAP)
-    rc = imap_sync_mailbox(ctx->mailbox, purge, false);
+    rc = imap_sync_mailbox(m, purge, false);
   else
 #endif
-    rc = sync_mailbox(ctx->mailbox, index_hint);
+    rc = sync_mailbox(m, index_hint);
   if (rc == 0)
   {
 #ifdef USE_IMAP
