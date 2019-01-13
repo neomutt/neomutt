@@ -273,7 +273,7 @@ void ctx_mailbox_changed(struct Mailbox *m, enum MailboxNotification action)
       ctx_update(ctx);
       break;
     case MBN_UPDATE:
-      ctx_update_tables(ctx, false);
+      ctx_update_tables(ctx, true);
       break;
     case MBN_RESORT:
       mutt_sort_headers(ctx, true);

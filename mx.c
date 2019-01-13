@@ -814,17 +814,15 @@ int mx_mbox_close(struct Context **pctx)
 
 /**
  * mx_mbox_sync - Save changes to mailbox
- * @param[in]  ctx        Context
+ * @param[in]  m          Mailbox
  * @param[out] index_hint Currently selected Email
  * @retval  0 Success
  * @retval -1 Error
  */
-int mx_mbox_sync(struct Context *ctx, int *index_hint)
+int mx_mbox_sync(struct Mailbox *m, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   int rc;
   int purge = 1;
@@ -936,8 +934,8 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
       /* IMAP does this automatically after handling EXPUNGE */
       if (m->magic != MUTT_IMAP)
       {
-        ctx_update_tables(ctx, true);
-        mutt_sort_headers(ctx, true); /* rethread from scratch */
+        mutt_mailbox_changed(m, MBN_UPDATE);
+        mutt_mailbox_changed(m, MBN_RESORT);
       }
     }
   }
