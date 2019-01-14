@@ -2445,7 +2445,7 @@ static int imap_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
   }
 
   /* We are good sync them */
-  mutt_debug(1, "NEW TAGS: %d\n", buf);
+  mutt_debug(1, "NEW TAGS: %s\n", buf);
   driver_tags_replace(&e->tags, buf);
   FREE(&imap_edata_get(e)->flags_remote);
   imap_edata_get(e)->flags_remote = driver_tags_get_with_hidden(&e->tags);
