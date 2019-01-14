@@ -2153,6 +2153,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     char pager_progress_str[65]; /* Lots of space for translations */
 
     hfi.ctx = Context;
+    hfi.m = Context ? Context->mailbox : NULL;
     hfi.pager_progress = pager_progress_str;
 
     if (rd->last_pos < rd->sb.st_size - 1)
