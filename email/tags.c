@@ -198,9 +198,10 @@ bool driver_tags_replace(struct TagHead *head, char *tags)
   if (tags)
   {
     char *tag = NULL;
-    while ((tag = strsep(&tags, " ")))
+    char *split_tags = mutt_str_strdup(tags);
+    while ((tag = strsep(&split_tags, " ")))
       driver_tags_add(head, tag);
-    FREE(&tags);
+    FREE(&split_tags);
   }
   return true;
 }
