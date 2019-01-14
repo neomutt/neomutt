@@ -91,6 +91,7 @@ void        mutt_str_replace(char **p, const char *s);
 const char *mutt_str_rstrnstr(const char *haystack, size_t haystack_length, const char *needle);
 char *      mutt_str_skip_email_wsp(const char *s);
 char *      mutt_str_skip_whitespace(char *p);
+struct ListHead mutt_str_split(const char *src, char sep);
 int         mutt_str_strcasecmp(const char *a, const char *b);
 size_t      mutt_str_startswith(const char *str, const char *prefix, enum CaseSensitivity cs);
 const char *mutt_str_strcasestr(const char *haystack, const char *needle);

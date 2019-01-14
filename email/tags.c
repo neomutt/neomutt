@@ -197,11 +197,13 @@ bool driver_tags_replace(struct TagHead *head, char *tags)
 
   if (tags)
   {
-    char *tag = NULL;
-    char *split_tags = mutt_str_strdup(tags);
-    while ((tag = strsep(&split_tags, " ")))
-      driver_tags_add(head, tag);
-    FREE(&split_tags);
+    struct ListHead hsplit = mutt_str_split(tags, ' ');
+    struct ListNode *np = NULL;
+    STAILQ_FOREACH(np, &hsplit, entries)
+    {
+      driver_tags_add(head, np->data);
+    }
+    mutt_list_clear(&hsplit);
   }
   return true;
 }
