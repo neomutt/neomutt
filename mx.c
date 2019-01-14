@@ -276,7 +276,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
   m->notify = ctx_mailbox_changed;
   m->ndata = ctx;
 
-  if ((m->magic == MUTT_UNKNOWN) && (flags & MUTT_NEWFOLDER))
+  if ((m->magic == MUTT_UNKNOWN) && (flags & (MUTT_NEWFOLDER | MUTT_APPEND)))
   {
     m->magic = MboxType;
     m->mx_ops = mx_get_ops(m->magic);
