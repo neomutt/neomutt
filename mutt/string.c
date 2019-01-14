@@ -38,6 +38,7 @@
 #include "logging.h"
 #include "memory.h"
 #include "string2.h"
+#include "list.h"
 #ifdef HAVE_SYSEXITS_H
 #include <sysexits.h>
 #endif
@@ -1145,4 +1146,33 @@ const char *mutt_str_strcasestr(const char *haystack, const char *needle)
   }
 
   return NULL;
+}
+
+/**
+ * mutt_str_split - return list of the words of the strings
+ * @param src String to split
+ * @param sep Word separator
+ */
+struct ListHead mutt_str_split(const char *src, char sep)
+{
+  struct ListHead head = STAILQ_HEAD_INITIALIZER(head);
+
+  if (!src || !*src)
+    return head;
+
+  while (true)
+  {
+    const char *start = src;
+    while (*src && (*src != sep))
+      src++;
+
+    mutt_list_insert_tail(&head, mutt_str_substr_dup(start, src));
+
+    if (!*src)
+      break;
+
+    src++;
+  }
+
+  return head;
 }
