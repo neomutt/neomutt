@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2018-11-30 12:04+0000\n"
-"PO-Revision-Date: 2019-01-07 10:45-0700\n"
+"PO-Revision-Date: 2019-01-14 21:06-0700\n"
 "Last-Translator: Rubén Llorente\n"
 "Language-Team: none\n"
 "Language: es\n"
@@ -45,7 +45,7 @@ msgstr "Ayuda"
 
 #: addrbook.c:201
 msgid "You have no aliases"
-msgstr "¡No tiene nombres en la libreta!"
+msgstr "No hay alias en la libreta"
 
 #: addrbook.c:208
 msgid "Aliases"
@@ -58,11 +58,11 @@ msgstr "Nombre corto: "
 
 #: alias.c:400
 msgid "You already have an alias defined with that name"
-msgstr "¡Este nombre ya está definido en la libreta!"
+msgstr "Ya hay un alias definido con ese nombre en la libreta"
 
 #: alias.c:406
 msgid "Warning: This alias name may not work.  Fix it?"
-msgstr "Aviso: Este alias podría no funcionar adecuadamente. ¿Desea arreglarlo? "
+msgstr "Aviso: Este alias podría no funcionar adecuadamente. ¿Desea arreglarlo?"
 
 #: alias.c:430
 msgid "Address: "
@@ -99,28 +99,27 @@ msgid "Alias added"
 msgstr "Se agregó el alias"
 
 #: alias.c:520
-#, fuzzy
 msgid "Error seeking in alias file"
-msgstr "Error al tratar de mostrar el archivo"
+msgstr "Error al buscar en la libreta de alias"
 
 #: bcache.c:207
 #, c-format
 msgid "Path too long: %s%s%s"
-msgstr ""
+msgstr "La ruta «%s%s%s» es demasiada larga"
 
 #: bcache.c:215
-#, fuzzy, c-format
+#, c-format
 msgid "Message cache isn't a directory: %s"
-msgstr "%s no es un directorio"
+msgstr "El caché de mensajes %s no es un directorio"
 
 #: bcache.c:223
-#, fuzzy, c-format
+#, c-format
 msgid "Can't create %s %s"
-msgstr "No se pudo crear %s: %s."
+msgstr "No se pudo crear %s %s"
 
 #: browser.c:81
 msgid "Chdir"
-msgstr "Directorio"
+msgstr "Cambiar directorio"
 
 #: browser.c:82
 msgid "Goto"
@@ -136,11 +135,11 @@ msgstr "Lista"
 
 #: browser.c:92
 msgid "Subscribe"
-msgstr "Inscribirse a %s..."
+msgstr "Inscribirse a"
 
 #: browser.c:93
 msgid "Unsubscribe"
-msgstr "Anular inscripción a %s..."
+msgstr "Anular inscripción a"
 
 #: browser.c:94 index.c:895
 msgid "Catchup"
@@ -173,7 +172,7 @@ msgstr "Directorio [%s], patrón de archivos: %s"
 
 #: browser.c:1172
 msgid "Can't attach a directory"
-msgstr "¡No se puede adjuntar un directorio!"
+msgstr "No se puede adjuntar un directorio"
 
 #: browser.c:1442 browser.c:1863 browser.c:2003
 msgid "No files match the file mask"
@@ -214,7 +213,7 @@ msgstr "El buzón no se borró"
 
 #: browser.c:1749
 msgid "Chdir to: "
-msgstr "Cambiar directorio a:"
+msgstr "Cambiar directorio a: "
 
 #: browser.c:1799 browser.c:1857
 msgid "Error scanning directory"
@@ -253,19 +252,18 @@ msgid "Error trying to view file"
 msgstr "Error al tratar de ver el archivo"
 
 #: browser.c:2123
-#, fuzzy, c-format
+#, c-format
 msgid "Subscribe pattern: "
-msgstr "Suscribiendo a %s..."
+msgstr "Patrón de inscripción: "
 
 #: browser.c:2125
-#, fuzzy, c-format
+#, c-format
 msgid "Unsubscribe pattern: "
-msgstr "Desuscribiendo de %s..."
+msgstr "Patrón de anular inscripción: "
 
 #: browser.c:2144
-#, fuzzy
 msgid "No newsgroups match the mask"
-msgstr "Ningún archivo coincide con el patrón"
+msgstr "Ningún grupo de noticias coinciden con el patrón"
 
 #: color.c:468
 #, c-format
@@ -361,7 +359,7 @@ msgstr "Comando: "
 
 #: commands.c:299 commands.c:312 recvcmd.c:178 recvcmd.c:190
 msgid "Warning: message contains no From: header"
-msgstr "Aviso: El mensaje no contiene una cabecera From:"
+msgstr "Aviso: El mensaje no contiene ninguna cabecera From:"
 
 #: commands.c:322 recvcmd.c:199
 #, fuzzy
@@ -369,13 +367,12 @@ msgid "Bounce message to: "
 msgstr "Rebotar mensaje a: "
 
 #: commands.c:324 recvcmd.c:201
-#, fuzzy
 msgid "Bounce tagged messages to: "
-msgstr "Rebotar mensajes marcados a: "
+msgstr "Rebotar mensajes seleccionados a: "
 
 #: commands.c:333 recvcmd.c:210
 msgid "Error parsing address"
-msgstr "¡Dirección errónea"
+msgstr "¡Dirección errónea!"
 
 #: commands.c:352 recvcmd.c:230
 #, fuzzy, c-format
@@ -387,8 +384,8 @@ msgstr[1] "Rebotar mensajes a %s"
 #: commands.c:367 recvcmd.c:245
 msgid "Message not bounced"
 msgid_plural "Messages not bounced"
-msgstr[0] "El mensaje no rebotó"
-msgstr[1] "Los mensajes no rebotaron"
+msgstr[0] "El mensaje no se rebotó"
+msgstr[1] "Los mensajes no se rebotaron"
 
 #: commands.c:377 recvcmd.c:264
 #, fuzzy
@@ -426,10 +423,9 @@ msgstr[0] "Mensaje impreso"
 msgstr[1] "Mensajes impresos"
 
 #: commands.c:610
-#, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
-msgstr[0] "El mensaje no pudo ser imprimido"
+msgstr[0] "El mensaje no se pudo imprimir"
 msgstr[1] "Los mensajes no pudieron ser imprimidos"
 
 #. L10N: The highlighted letters must match the "Sort" options
@@ -455,39 +451,32 @@ msgid "Shell command: "
 msgstr "Comando de shell: "
 
 #: commands.c:885
-#, fuzzy
 msgid "Decode-save to mailbox"
-msgstr "%s en buzón"
+msgstr "Decodificar y guardar en el buzón"
 
 #: commands.c:885
-#, fuzzy
 msgid "Decode-save tagged to mailbox"
-msgstr " marcado%s en buzón"
+msgstr "Decodificar y guardar correos seleccionados en el buzón"
 
 #: commands.c:887
-#, fuzzy
 msgid "Decrypt-save to mailbox"
-msgstr "%s en buzón"
+msgstr "Descifrar y guardar al buzón"
 
 #: commands.c:887
-#, fuzzy
 msgid "Decrypt-save tagged to mailbox"
-msgstr " marcado%s en buzón"
+msgstr "Descifrar y guardar correos seleccionados al buzón"
 
 #: commands.c:889
-#, fuzzy
 msgid "Save to mailbox"
-msgstr "%s en buzón"
+msgstr "Guardar al buzón"
 
 #: commands.c:889
-#, fuzzy
 msgid "Save tagged to mailbox"
-msgstr " marcado%s en buzón"
+msgstr "Guardar correos seleccionados al buzón"
 
 #: commands.c:894
-#, fuzzy
 msgid "Decode-copy to mailbox"
-msgstr "%s en buzón"
+msgstr "Decodificar y copiar al buzón"
 
 #: commands.c:894
 #, fuzzy
@@ -505,14 +494,12 @@ msgid "Decrypt-copy tagged to mailbox"
 msgstr " marcado%s en buzón"
 
 #: commands.c:898
-#, fuzzy
 msgid "Copy to mailbox"
-msgstr "%s en buzón"
+msgstr "Copiar al buzón"
 
 #: commands.c:898
-#, fuzzy
 msgid "Copy tagged to mailbox"
-msgstr " marcado%s en buzón"
+msgstr "Copiar los correos seleccionados al buzón"
 
 #: commands.c:968
 #, c-format
@@ -530,18 +517,18 @@ msgid "Content-Type changed to %s"
 msgstr "Content-Type cambiado a %s"
 
 #: commands.c:1159
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; not converting"
-msgstr "El mapa de caracteres fue cambiado a %s; dejando sin convertir"
+msgstr "El mapa de caracteres se ha cambiado a %s; sin convertir"
 
 #: commands.c:1160
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; converting"
-msgstr "El mapa de caracteres fue cambiado a %s; convirtiendo"
+msgstr "El mapa de caracteres se ha cambiado a %s; convirtiendo"
 
 #: compose.c:86
 msgid "There are no attachments"
-msgstr "No hay archivos adjuntos"
+msgstr "No hay adjuntos"
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:134
@@ -556,7 +543,7 @@ msgstr "Para: "
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:138 send.c:352
 msgid "Cc: "
-msgstr ""
+msgstr "Cc: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:140 send.c:354
@@ -570,9 +557,8 @@ msgstr "Asunto: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:144
-#, fuzzy
 msgid "Reply-To: "
-msgstr "Responder"
+msgstr "Responder a:"
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:146 compose.c:1059
@@ -604,9 +590,8 @@ msgstr "Firmar como: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:165
-#, fuzzy
 msgid "Newsgroups: "
-msgstr "Abrir grupo de noticias"
+msgstr "Grupos de noticias:"
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:167
@@ -622,26 +607,26 @@ msgstr "editar el campo Reply-To"
 
 #: compose.c:174 compose.c:190
 msgid "Send"
-msgstr "Mandar"
+msgstr "Enviar"
 
 #: compose.c:175 compose.c:191 remailer.c:542
 msgid "Abort"
-msgstr "Abortar"
+msgstr "Cancelar"
 
 #. L10N: compose menu help line entry
 #: compose.c:177
 msgid "To"
-msgstr ""
+msgstr "Para"
 
 #. L10N: compose menu help line entry
 #: compose.c:179
 msgid "CC"
-msgstr ""
+msgstr "CC"
 
 #. L10N: compose menu help line entry
 #: compose.c:181 compose.c:193
 msgid "Subj"
-msgstr ""
+msgstr "Tema"
 
 #: compose.c:182 compose.c:194 compose.c:1348
 msgid "Attach file"
@@ -652,14 +637,12 @@ msgid "Descrip"
 msgstr "Descrip"
 
 #: compose.c:192
-#, fuzzy
 msgid "Newsgroups"
-msgstr "Abrir grupo de noticias"
+msgstr "Grupos de noticias"
 
 #: compose.c:275
-#, fuzzy
 msgid "Not supported"
-msgstr "Marcar no está soportado."
+msgstr "No disponible"
 
 #: compose.c:282
 msgid "Sign, Encrypt"
@@ -699,9 +682,8 @@ msgid "<default>"
 msgstr "<por defecto>"
 
 #: compose.c:344
-#, fuzzy
 msgid "Encrypt with: "
-msgstr "Cifrar"
+msgstr "Cifrar con: "
 
 #: compose.c:366
 msgid "<no chain defined>"
@@ -710,7 +692,7 @@ msgstr ""
 #: compose.c:411
 #, c-format
 msgid "%s [#%d] no longer exists"
-msgstr "¡%s [#%d] ya no existe"
+msgstr "¡%s [#%d] ya no existe!"
 
 #: compose.c:418
 #, c-format
@@ -719,11 +701,11 @@ msgstr "%s [#%d] modificado. ¿Rehacer codificación?"
 
 #: compose.c:505
 msgid "-- Attachments"
-msgstr "-- Archivos adjuntos"
+msgstr "-- Adjuntos"
 
 #: compose.c:558
 msgid "You may not delete the only attachment"
-msgstr "No puede borrar la única pieza"
+msgstr "No se puede borrar el único adjunto"
 
 #: compose.c:1089 edit.c:530 send.c:2155
 #, c-format
@@ -747,11 +729,11 @@ msgstr "Archivo adjunto filtrado"
 
 #: compose.c:1171
 msgid "Grouping alternatives requires at least 2 tagged messages"
-msgstr ""
+msgstr "Agrupar como alternativo requiere por lo menos 2 mensajes seleccionados"
 
 #: compose.c:1253
 msgid "Grouping multilingual requires at least 2 tagged messages"
-msgstr ""
+msgstr "Agrupar como multilingüe requiere por lo menos 2 mensajes seleccionados:"
 
 #: compose.c:1266
 msgid "Not all parts have Content-Language: set, continue?"
@@ -763,11 +745,10 @@ msgid "Not sending this message"
 msgstr "Error al enviar el mensaje"
 
 #: compose.c:1363
-#, fuzzy
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
-msgstr[0] "Adjuntando archivos seleccionados..."
-msgstr[1] "Adjuntando archivos seleccionados..."
+msgstr[0] "Adjuntando el archivo seleccionado..."
+msgstr[1] "Adjuntando los archivos seleccionados..."
 
 #: compose.c:1377
 #, c-format
@@ -794,15 +775,15 @@ msgstr "No hay mensajes en esa carpeta"
 
 #: compose.c:1469
 msgid "Tag the messages you want to attach"
-msgstr "Marque el mensaje que quiere adjuntar."
+msgstr "Marque los mensaje que quieres adjuntar."
 
 #: compose.c:1496
 msgid "Unable to attach"
-msgstr "¡Imposible adjuntar"
+msgstr "¡Imposible adjuntar!"
 
 #: compose.c:1537
 msgid "Recoding only affects text attachments"
-msgstr "Recodificado sólo afecta archivos adjuntos de tipo texto"
+msgstr "Recodificar sólo afecta adjuntos en formato de texto"
 
 #: compose.c:1542
 msgid "The current attachment won't be converted"
@@ -825,9 +806,8 @@ msgid "Save a copy of this message?"
 msgstr "¿Guardar una copia de este mensaje?"
 
 #: compose.c:1713
-#, fuzzy
 msgid "Send attachment with name: "
-msgstr "mostrar archivos adjuntos como texto"
+msgstr "Enviar adjuntos con nombre: "
 
 #: compose.c:1729
 msgid "Rename to: "
@@ -925,16 +905,16 @@ msgstr "La órden anterior a la conexión falló."
 
 #: compress.c:604
 msgid "Unsupported mailbox type for appending"
-msgstr "Este tipo de bandeja de email no soporta operaciones de concatenación"
+msgstr "Este tipo de buzón no puede adjuntar archivos"
 
 #: compress.c:692
 msgid "Can't sync a compressed file without a close-hook"
 msgstr "No se puede sincronizar un archivo comprimido sin un close-hook"
 
 #: compress.c:714
-#, fuzzy, c-format
+#, c-format
 msgid "Compressing %s"
-msgstr "Copiando a %s..."
+msgstr "Comprimiendo %s..."
 
 #: compress.c:774
 #, c-format
@@ -959,7 +939,7 @@ msgstr "Buscando %s..."
 #: conn/conn_raw.c:165 conn/conn_raw.c:223
 #, c-format
 msgid "Could not find the host \"%s\""
-msgstr "No se encontró la dirección del servidor %s"
+msgstr "No se encontró la dirección del servidor «%s»"
 
 #: conn/conn_raw.c:170 conn/conn_raw.c:229
 #, c-format
@@ -1026,9 +1006,8 @@ msgid "%s has insecure permissions"
 msgstr "¡%s tiene derechos inseguros"
 
 #: conn/ssl.c:370
-#, fuzzy
 msgid "SSL disabled due to the lack of entropy"
-msgstr "SSL fue desactivado por la falta de entropía"
+msgstr "SSL se desactivó debido a la falta de entropía"
 
 #: conn/ssl.c:387
 msgid "Unknown"
@@ -1049,7 +1028,7 @@ msgstr "Certificado del servidor todavía no es válido"
 
 #: conn/ssl.c:501
 msgid "Server certificate has expired"
-msgstr "Certificado del servidor ha expirado"
+msgstr "Certificado del servidor se ha vencido"
 
 #: conn/ssl.c:592
 msgid "Failed to find enough entropy on your system"
@@ -1091,17 +1070,16 @@ msgstr "   de %s"
 #: conn/ssl.c:912 conn/ssl_gnutls.c:602
 #, c-format
 msgid "     to %s"
-msgstr "     a %s"
+msgstr "     para %s"
 
 #: conn/ssl.c:918 conn/ssl_gnutls.c:606
-#, fuzzy, c-format
+#, c-format
 msgid "SHA1 Fingerprint: %s"
-msgstr "Huella: %s"
+msgstr "Huella SHA1: %s"
 
 #: conn/ssl.c:923 conn/ssl.c:925 conn/ssl_gnutls.c:611 conn/ssl_gnutls.c:613
-#, fuzzy
 msgid "SHA256 Fingerprint: "
-msgstr "Huella: %s"
+msgstr "Huella SHA256: %s"
 
 #: conn/ssl.c:928 conn/ssl_gnutls.c:647
 #, c-format
@@ -1116,21 +1094,19 @@ msgstr ""
 #.
 #: conn/ssl.c:951
 msgid "roas"
-msgstr ""
+msgstr "ruai"
 
 #: conn/ssl.c:955
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
-msgstr "(r)echazar, aceptar (u)na vez, (a)ceptar siempre"
+msgstr "(r)echazar, aceptar (u)na vez, (a)ceptar siempre, (i)gnorar"
 
 #: conn/ssl.c:957 conn/ssl_gnutls.c:654
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)echazar, aceptar (u)na vez, (a)ceptar siempre"
 
 #: conn/ssl.c:962
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
-msgstr "(r)echazar, aceptar (u)na vez"
+msgstr "(r)echazar, aceptar (u)na vez, (i)gnorar"
 
 #: conn/ssl.c:964 conn/ssl_gnutls.c:665
 msgid "(r)eject, accept (o)nce"
@@ -1142,16 +1118,16 @@ msgstr "Salir  "
 
 #: conn/ssl.c:998 conn/ssl_gnutls.c:724
 msgid "Warning: Couldn't save certificate"
-msgstr "Advertencia: no se pudo guardar el certificado"
+msgstr "Aviso: no se pudo guardar el certificado"
 
 #: conn/ssl.c:1002 conn/ssl_gnutls.c:728
 msgid "Certificate saved"
-msgstr "El certificado fue guardado"
+msgstr "El certificado se guardó"
 
 #: conn/ssl.c:1118
-#, fuzzy, c-format
+#, c-format
 msgid "Certificate host check failed: %s"
-msgstr "El certificado fue guardado"
+msgstr "Verificación del servidor falló: %s"
 
 #. L10N: This is a warning when trying to set the host name for
 #. * TLS Server Name Indication (SNI).  This allows the server to present
@@ -1173,9 +1149,8 @@ msgstr "CLOSE falló"
 #. function SSL_CTX_new().  In this case it returned NULL: an
 #. error condition.
 #: conn/ssl.c:1245
-#, fuzzy
 msgid "Unable to create SSL context"
-msgstr "[-- ¡Error: imposible crear subproceso OpenSSL! --]\n"
+msgstr "¡Error: imposible crear subproceso OpenSSL!"
 
 #: conn/ssl.c:1293
 msgid "Warning: error enabling ssl_verify_partial_chains"
@@ -1191,42 +1166,36 @@ msgid "Certificate verification error (%s)"
 msgstr "Error de verificación de certificado (%s)"
 
 #: conn/ssl_gnutls.c:148
-#, fuzzy
 msgid "Certificate is not X.509"
-msgstr "El certificado fue guardado"
+msgstr "El certificado no es X.509"
 
 #: conn/ssl_gnutls.c:339 conn/ssl_gnutls.c:472
-#, fuzzy
 msgid "Error initialising gnutls certificate data"
-msgstr "Error al inicializar la terminal."
+msgstr "Error al inicializar la certificación de gnutls"
 
 #: conn/ssl_gnutls.c:345 conn/ssl_gnutls.c:478
 msgid "Error processing certificate data"
 msgstr "Error al procesar los datos del certificado"
 
 #: conn/ssl_gnutls.c:619
-#, fuzzy
 msgid "WARNING: Server certificate is not yet valid"
-msgstr "Certificado del servidor todavía no es válido"
+msgstr "ADVERTENCIA: El certificado del servidor todavía no se ha comprobado"
 
 #: conn/ssl_gnutls.c:625
-#, fuzzy
 msgid "WARNING: Server certificate has expired"
-msgstr "Certificado del servidor ha expirado"
+msgstr "ADVERTENCIA: El certificado del servidor se ha vencido"
 
 #: conn/ssl_gnutls.c:631
-#, fuzzy
 msgid "WARNING: Server certificate has been revoked"
-msgstr "Certificado del servidor ha expirado"
+msgstr "ADVERTENCIA: El certificado del servidor se ha revocado"
 
 #: conn/ssl_gnutls.c:637
 msgid "WARNING: Server hostname does not match certificate"
 msgstr "AVISO: El nombre del servidor no coincide con el certificado"
 
 #: conn/ssl_gnutls.c:643
-#, fuzzy
 msgid "WARNING: Signer of server certificate is not a CA"
-msgstr "Certificado del servidor todavía no es válido"
+msgstr "ADVERTENCIA: La firma del servidor no es del tipo «CA»"
 
 #. L10N:
 #. * These three letters correspond to the choices in the string:
@@ -2666,9 +2635,9 @@ msgid "Option %s may not be set or reset from the pager"
 msgstr ""
 
 #: init.c:3786
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s may not be set when in attach-message mode"
-msgstr "Función no permitida en el modo de adjuntar mensaje."
+msgstr "No se puede usar la opción %s cuando estás en el modo de adjuntar mensajes"
 
 #: keymap.c:319 keymap.c:327
 #, c-format
@@ -2732,9 +2701,8 @@ msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr ""
 
 #: mailbox.c:627
-#, fuzzy
 msgid "New mail in "
-msgstr "Correo nuevo en %s."
+msgstr "Correo nuevo en"
 
 #: maildir/shared.c:840
 #, fuzzy, c-format
@@ -2747,9 +2715,8 @@ msgid "Reading %s..."
 msgstr "Leyendo %s..."
 
 #: maildir/shared.c:935 maildir/shared.c:1031
-#, fuzzy
 msgid "Could not flush message to disk"
-msgstr "No se pudo enviar el mensaje."
+msgstr "No se pudo escribir al disco"
 
 #: maildir/shared.c:1072
 msgid "md_commit_message(): unable to set time on file"
@@ -3032,14 +2999,14 @@ msgid "Closed log file: %s"
 msgstr "No se pudo abrir el archivo del mensaje: %s"
 
 #: mutt/logging.c:136
-#, fuzzy, c-format
+#, c-format
 msgid "Debugging at level %d to file '%s'"
-msgstr "Modo debug a nivel %d.\n"
+msgstr "Modo debug a nivel %d al archivo '%s'"
 
 #: mutt/logging.c:187
-#, fuzzy, c-format
+#, c-format
 msgid "Logging at level %d to file '%s'"
-msgstr "Modo debug a nivel %d.\n"
+msgstr "Modo debug a nivel %d al archivo '%s'"
 
 #: mutt/path.c:439
 #, fuzzy
@@ -3251,9 +3218,9 @@ msgid "Error: Couldn't load the lua interpreter"
 msgstr ""
 
 #: mutt_lua.c:485
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't source lua source: %s"
-msgstr "No se pudo bloquear %s\n"
+msgstr "No pudo encontrar fuente lua: %s"
 
 #: mutt_socket.c:66
 #, c-format
@@ -3289,11 +3256,10 @@ msgstr "¡Imposible adjuntar %s"
 #. So feel free to use a "generic plural" as plural translation if your language has one.
 #.
 #: mx.c:514
-#, fuzzy
 msgid "message not deleted"
 msgid_plural "messages not deleted"
-msgstr[0] "Marcando %d mensajes como suprimidos..."
-msgstr[1] "Marcando %d mensajes como suprimidos..."
+msgstr[0] "Sin borrar el mensaje"
+msgstr[1] "Sin borrar los mensajes"
 
 #: mx.c:552
 #, fuzzy
@@ -3600,9 +3566,8 @@ msgid "PKA verified signer's address is: "
 msgstr "La dirección del firmante con PKA verificada es: "
 
 #: ncrypt/crypt_gpgme.c:1407 ncrypt/crypt_gpgme.c:3701
-#, fuzzy
 msgid "Fingerprint: "
-msgstr "Huella .........: %s"
+msgstr "Huella: "
 
 #: ncrypt/crypt_gpgme.c:1472
 msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
@@ -3632,9 +3597,8 @@ msgid "no signature fingerprint available"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:1553 ncrypt/crypt_gpgme.c:1558
-#, fuzzy
 msgid "created: "
-msgstr "¿Crear %s?"
+msgstr "creado: "
 
 #: ncrypt/crypt_gpgme.c:1633
 #, c-format
@@ -3679,13 +3643,10 @@ msgid "*** End Notation ***\n"
 msgstr "*** Fin del Comentario ***\n"
 
 #: ncrypt/crypt_gpgme.c:1808 ncrypt/crypt_gpgme.c:1967 ncrypt/crypt_gpgme.c:2682
-#, fuzzy
 msgid ""
 "[-- End signature information --]\n"
 "\n"
-msgstr ""
-"\n"
-"[-- Fin de datos firmados --]\n"
+msgstr "[-- Fin de datos firmados --]\n"
 
 #: ncrypt/crypt_gpgme.c:1919
 #, fuzzy, c-format
