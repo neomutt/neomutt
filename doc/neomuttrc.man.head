@@ -232,10 +232,10 @@ configuration file.
 .
 .PP
 .nf
-\fBcolor\fP \fIobject\fP \fIforeground\fP \fIbackground\fP
-\fBcolor\fP { header | body } \fIforeground\fP \fIbackground\fP \fIregex\fP
-\fBcolor\fP index-object \fIforeground\fP \fIbackground\fP \fIpattern\fP
-\fBcolor\fP compose \fIcomposeobject\fP \fIforeground\fP \fIbackground\fP
+\fBcolor\fP \fIobject\fP [ \fIattribute\fP ... ] \fIforeground\fP \fIbackground\fP
+\fBcolor\fP { header | body } [ \fIattribute\fP ... ] \fIforeground\fP \fIbackground\fP \fIregex\fP
+\fBcolor\fP index-object [ \fIattribute\fP ... ] \fIforeground\fP \fIbackground\fP \fIpattern\fP
+\fBcolor\fP compose \fIcomposeobject\fP [ \fIattribute\fP ... ] \fIforeground\fP \fIbackground\fP
 \fBuncolor\fP { index-object | header | body } { \fB*\fP | \fIpattern\fP ... }
 .fi
 .IP
@@ -305,6 +305,10 @@ Valid colors include:
 .BR white ", "
 .BR color\fIN\fP "."
 .IP
+Valid attributes include:
+.BR none ", " bold ", " underline ", "
+.BR reverse ", and " standout .
+IP
 The \fBuncolor\fP command can be applied to the index, header and body objects
 only. It removes entries from the list. You must specify the same \fIpattern\fP
 specified in the \fBcolor\fP command for it to be removed. The pattern
@@ -565,9 +569,8 @@ a global \fIneomuttrc\fP.
 \fBunmono\fP { index-object | header | body } { \fB*\fP | \fIpattern\fP ... }
 .fi
 .IP
-For terminals which don't support color, you can still assign \fIattribute\fPs
-to objects (see \fBcolor\fP command above). Valid attributes include:
-.BR none ", " bold ", " underline ", " reverse ", and " standout "."
+For terminals which don't support color, you can still assign
+attributes to objects.
 .
 .PP
 .nf

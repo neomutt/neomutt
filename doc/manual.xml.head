@@ -4349,6 +4349,9 @@ folder-hook work "set sort=threads"
         <arg choice="plain">
           <replaceable class="parameter">object</replaceable>
         </arg>
+        <arg choice="opt" rep="repeat">
+          <replaceable class="parameter">attribute</replaceable>
+        </arg>
         <arg choice="plain">
           <replaceable class="parameter">foreground</replaceable>
         </arg>
@@ -4364,6 +4367,9 @@ folder-hook work "set sort=threads"
             <option>body</option>
           </arg>
         </group>
+        <arg choice="opt" rep="repeat">
+          <replaceable class="parameter">attribute</replaceable>
+        </arg>
         <arg choice="plain">
           <replaceable class="parameter">foreground</replaceable>
         </arg>
@@ -4376,6 +4382,9 @@ folder-hook work "set sort=threads"
         <command>color</command>
         <arg choice="plain">
           <option>index-object</option>
+        </arg>
+        <arg choice="opt" rep="repeat">
+          <replaceable class="parameter">attribute</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">foreground</replaceable>
@@ -4392,6 +4401,9 @@ folder-hook work "set sort=threads"
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">composeobject</replaceable>
+        </arg>
+        <arg choice="opt" rep="repeat">
+          <replaceable class="parameter">attribute</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">foreground</replaceable>
@@ -4682,6 +4694,26 @@ folder-hook work "set sort=threads"
         </listitem>
       </itemizedlist>
       <para>
+        <emphasis>attribute</emphasis> can be one of the following:
+      </para>
+      <itemizedlist>
+        <listitem>
+          <para>none</para>
+        </listitem>
+        <listitem>
+          <para>bold</para>
+        </listitem>
+        <listitem>
+          <para>underline</para>
+        </listitem>
+        <listitem>
+          <para>reverse</para>
+        </listitem>
+        <listitem>
+          <para>standout</para>
+        </listitem>
+      </itemizedlist>
+      <para>
         <emphasis>foreground</emphasis> and <emphasis>background</emphasis> can
         be one of the following:
       </para>
@@ -4852,36 +4884,9 @@ export COLORFGBG
         </group>
       </cmdsynopsis>
       <para>
-        For <emphasis>object</emphasis>, see the <command>color</command>
-        command. <emphasis>attribute</emphasis> can be one of the following:
+        For <emphasis>object</emphasis>, <emphasis>composeobject</emphasis>, and
+        <emphasis>attribute</emphasis>, see the <command>color</command> command.
       </para>
-      <itemizedlist>
-        <listitem>
-          <para>
-            none
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            bold
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            underline
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            reverse
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            standout
-          </para>
-        </listitem>
-      </itemizedlist>
     </sect1>
 
     <sect1 id="msg-hdr-display">
@@ -17645,6 +17650,9 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             <arg choice="plain">
               <replaceable class="parameter">object</replaceable>
             </arg>
+            <arg choice="opt" rep="repeat">
+              <replaceable class="parameter">attribute</replaceable>
+            </arg>
             <arg choice="plain">
               <replaceable class="parameter">foreground</replaceable>
             </arg>
@@ -17662,6 +17670,9 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 <option>body</option>
               </arg>
             </group>
+            <arg choice="opt" rep="repeat">
+              <replaceable class="parameter">attribute</replaceable>
+            </arg>
             <arg choice="plain">
               <replaceable class="parameter">foreground</replaceable>
             </arg>
@@ -17676,6 +17687,9 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             </command>
             <arg choice="plain">
               <option>index</option>
+            </arg>
+            <arg choice="opt" rep="repeat">
+              <replaceable class="parameter">attribute</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">foreground</replaceable>
