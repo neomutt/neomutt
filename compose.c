@@ -1459,7 +1459,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
           break;
         }
 
-        if (!ctx->mailbox->msg_count)
+        if (ctx->mailbox->msg_count == 0)
         {
           mx_mbox_close(&ctx);
           mutt_error(_("No messages in that folder"));

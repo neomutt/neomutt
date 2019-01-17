@@ -115,7 +115,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, Context ? Context->mailbox->msg_deleted : 0);
       }
-      else if (!Context || !Context->mailbox->msg_deleted)
+      else if (!Context || (Context->mailbox->msg_deleted == 0))
         optional = 0;
       break;
 
@@ -166,7 +166,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, Context ? Context->mailbox->msg_flagged : 0);
       }
-      else if (!Context || !Context->mailbox->msg_flagged)
+      else if (!Context || (Context->mailbox->msg_flagged == 0))
         optional = 0;
       break;
 
@@ -203,7 +203,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, Context ? Context->mailbox->msg_count : 0);
       }
-      else if (!Context || !Context->mailbox->msg_count)
+      else if (!Context || (Context->mailbox->msg_count == 0))
         optional = 0;
       break;
 
@@ -223,7 +223,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, Context ? Context->mailbox->msg_new : 0);
       }
-      else if (!Context || !Context->mailbox->msg_new)
+      else if (!Context || (Context->mailbox->msg_new == 0))
         optional = 0;
       break;
 
@@ -232,9 +232,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt,
-                 Context ? Context->mailbox->msg_unread - Context->mailbox->msg_new : 0);
+                 Context ? (Context->mailbox->msg_unread - Context->mailbox->msg_new) : 0);
       }
-      else if (!Context || !(Context->mailbox->msg_unread - Context->mailbox->msg_new))
+      else if (!Context || ((Context->mailbox->msg_unread - Context->mailbox->msg_new) == 0))
         optional = 0;
       break;
 
@@ -298,7 +298,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 
     case 'R':
     {
-      int read = Context ? Context->mailbox->msg_count - Context->mailbox->msg_unread : 0;
+      int read = Context ? (Context->mailbox->msg_count - Context->mailbox->msg_unread) : 0;
 
       if (!optional)
       {
@@ -326,7 +326,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, Context ? Context->mailbox->msg_tagged : 0);
       }
-      else if (!Context || !Context->mailbox || !Context->mailbox->msg_tagged)
+      else if (!Context || !Context->mailbox || (Context->mailbox->msg_tagged == 0))
         optional = 0;
       break;
 
@@ -336,7 +336,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, Context ? Context->mailbox->msg_unread : 0);
       }
-      else if (!Context || !Context->mailbox->msg_unread)
+      else if (!Context || (Context->mailbox->msg_unread == 0))
         optional = 0;
       break;
 

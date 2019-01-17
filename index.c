@@ -129,7 +129,7 @@ static const char *NoVisible = N_("No visible messages");
     mutt_error(_(No_mailbox_is_open));                                         \
     break;                                                                     \
   }                                                                            \
-  else if (!Context->mailbox->msg_count)                                       \
+  else if (Context->mailbox->msg_count == 0)                                   \
   {                                                                            \
     mutt_flushinp();                                                           \
     mutt_error(_(There_are_no_messages));                                      \
@@ -277,7 +277,7 @@ static int ci_previous_undeleted(int msgno)
  */
 static int ci_first_message(void)
 {
-  if (!Context || !Context->mailbox->msg_count)
+  if (!Context || (Context->mailbox->msg_count == 0))
     return 0;
 
   int old = -1;
@@ -635,14 +635,13 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
    * switch statement would need to be run. */
   mutt_folder_hook(buf, m ? m->desc : NULL);
 
-  const int flags =
-    (ReadOnly || (op == OP_MAIN_CHANGE_FOLDER_READONLY)
+  const int flags = (ReadOnly || (op == OP_MAIN_CHANGE_FOLDER_READONLY)
 #ifdef USE_NOTMUCH
-     || (op == OP_MAIN_VFOLDER_FROM_QUERY_READONLY)
+                     || (op == OP_MAIN_VFOLDER_FROM_QUERY_READONLY)
 #endif
-     )
-    ? MUTT_READONLY
-    : 0;
+                         ) ?
+                        MUTT_READONLY :
+                        0;
 
   bool free_m = false;
   if (!m)
@@ -1239,7 +1238,7 @@ int mutt_index_menu(void)
           continue;
         }
 
-        if (!Context->mailbox->msg_tagged)
+        if (Context->mailbox->msg_tagged == 0)
         {
           if (op == OP_TAG_PREFIX)
             mutt_error(_("No tagged messages"));
@@ -1255,7 +1254,7 @@ int mutt_index_menu(void)
         tag = true;
         continue;
       }
-      else if (AutoTag && Context && Context->mailbox && Context->mailbox->msg_tagged)
+      else if (AutoTag && Context && Context->mailbox && (Context->mailbox->msg_tagged != 0))
         tag = true;
 
       mutt_clear_error();
@@ -1665,7 +1664,7 @@ int mutt_index_menu(void)
           }
           else
             menu->current = 0;
-          if (Context->mailbox->msg_count && (Sort & SORT_MASK) == SORT_THREADS)
+          if ((Context->mailbox->msg_count != 0) && (Sort & SORT_MASK) == SORT_THREADS)
             mutt_draw_tree(Context);
           menu->redraw = REDRAW_FULL;
         }
@@ -1728,7 +1727,7 @@ int mutt_index_menu(void)
 
         if (mutt_select_sort((op == OP_SORT_REVERSE)) == 0)
         {
-          if (Context && Context->mailbox->msg_count)
+          if (Context && (Context->mailbox->msg_count != 0))
           {
             resort_index(menu);
             OptSearchInvalid = true;
@@ -1854,7 +1853,7 @@ int mutt_index_menu(void)
 
       case OP_MAIN_SYNC_FOLDER:
 
-        if (Context && !Context->mailbox->msg_count)
+        if (Context && (Context->mailbox->msg_count == 0))
           break;
 
         CHECK_MSGCOUNT;

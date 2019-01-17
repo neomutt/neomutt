@@ -196,7 +196,7 @@ static int make_msg_set(struct Mailbox *m, struct Buffer *buf, int flag,
 
   struct Email **emails = m->emails;
 
-  for (n = *pos; n < m->msg_count && buf->dptr - buf->data < IMAP_MAX_CMDLEN; n++)
+  for (n = *pos; (n < m->msg_count) && ((buf->dptr - buf->data) < IMAP_MAX_CMDLEN); n++)
   {
     bool match = false; /* whether current message matches flag condition */
     /* don't include pending expunged messages */
@@ -250,7 +250,7 @@ static int make_msg_set(struct Mailbox *m, struct Buffer *buf, int flag,
           mutt_buffer_add_printf(buf, ",%u", imap_edata_get(emails[n])->uid);
       }
       /* tie up if the last message also matches */
-      else if (n == m->msg_count - 1)
+      else if (n == (m->msg_count - 1))
         mutt_buffer_add_printf(buf, ":%u", imap_edata_get(emails[n])->uid);
     }
     /* End current set if message doesn't match or we've reached the end
@@ -2247,7 +2247,7 @@ static int imap_mbox_close(struct Mailbox *m)
     {
       /* mx_mbox_close won't sync if there are no deleted messages
        * and the mailbox is unchanged, so we may have to close here */
-      if (!m->msg_deleted)
+      if (m->msg_deleted == 0)
       {
         adata->closing = true;
         imap_exec(adata, "CLOSE", IMAP_CMD_QUEUE);

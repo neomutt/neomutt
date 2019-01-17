@@ -368,7 +368,7 @@ void mutt_sort_headers(struct Context *ctx, bool init)
   if (!ctx)
     return;
 
-  if (!ctx->mailbox->msg_count)
+  if (ctx->mailbox->msg_count == 0)
   {
     /* this function gets called by mutt_sync_mailbox(), which may have just
      * deleted all the messages.  the virtual message numbers are not updated

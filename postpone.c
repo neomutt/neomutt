@@ -312,7 +312,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
     return -1;
   }
 
-  if (!ctx_post->mailbox->msg_count)
+  if (ctx_post->mailbox->msg_count == 0)
   {
     PostCount = 0;
     if (ctx_post == ctx)
