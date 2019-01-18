@@ -670,7 +670,7 @@ static void update_idx(struct Menu *menu, struct AttachCtx *actx, struct AttachP
  */
 struct ComposeRedrawData
 {
-  struct Email *msg;
+  struct Email *email;
   char *fcc;
 };
 
@@ -691,7 +691,7 @@ static void compose_custom_redraw(struct Menu *menu)
   {
     menu_redraw_full(menu);
 
-    draw_envelope(rd->msg, rd->fcc);
+    draw_envelope(rd->email, rd->fcc);
     menu->offset = HDR_ATTACH;
     menu->pagelen = MuttIndexWindow->rows - HDR_ATTACH;
   }
@@ -910,7 +910,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
 
   init_header_padding();
 
-  rd.msg = msg;
+  rd.email = msg;
   rd.fcc = fcc;
 
   struct Menu *menu = mutt_menu_new(MENU_COMPOSE);
