@@ -391,22 +391,18 @@ void mutt_folder_hook(const char *path, const char *desc)
     if (!tmp->command)
       continue;
 
-    if (tmp->type & MUTT_FOLDER_HOOK)
-    {
-      if ((path &&
-           (regexec(tmp->regex.regex, path, 0, NULL, 0) == 0) ^ tmp->regex.not) ||
-          (desc &&
-           (regexec(tmp->regex.regex, desc, 0, NULL, 0) == 0) ^ tmp->regex.not))
-      {
-        if (mutt_parse_rc_line(tmp->command, &token, &err) == MUTT_CMD_ERROR)
-        {
-          mutt_error("%s", err.data);
-          FREE(&token.data);
-          current_hook_type = 0;
-          FREE(&err.data);
+    if (!(tmp->type & MUTT_FOLDER_HOOK))
+      continue;
 
-          return;
-        }
+    if ((path &&
+          (regexec(tmp->regex.regex, path, 0, NULL, 0) == 0) ^ tmp->regex.not) ||
+        (desc &&
+          (regexec(tmp->regex.regex, desc, 0, NULL, 0) == 0) ^ tmp->regex.not))
+    {
+      if (mutt_parse_rc_line(tmp->command, &token, &err) == MUTT_CMD_ERROR)
+      {
+        mutt_error("%s", err.data);
+        break;
       }
     }
   }
