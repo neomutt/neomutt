@@ -57,7 +57,7 @@ struct Pattern
   struct Pattern *child; /**< arguments to logical op */
   union {
     regex_t *regex;
-    struct Group *g;
+    struct Group *group;
     char *str;
     struct ListHead multi_cases;
   } p;

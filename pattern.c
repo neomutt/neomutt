@@ -223,7 +223,7 @@ static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   }
   else if (pat->groupmatch)
   {
-    pat->p.g = mutt_pattern_group(buf.data);
+    pat->p.group = mutt_pattern_group(buf.data);
     FREE(&buf.data);
   }
   else
@@ -1071,7 +1071,7 @@ static int patmatch(const struct Pattern *pat, const char *buf)
   else if (pat->stringmatch)
     return pat->ign_case ? !strcasestr(buf, pat->p.str) : !strstr(buf, pat->p.str);
   else if (pat->groupmatch)
-    return !mutt_group_match(pat->p.g, buf);
+    return !mutt_group_match(pat->p.group, buf);
   else
     return regexec(pat->p.regex, buf, 0, NULL, 0);
 }
@@ -1351,7 +1351,7 @@ void mutt_pattern_free(struct Pattern **pat)
     else if (tmp->stringmatch)
       FREE(&tmp->p.str);
     else if (tmp->groupmatch)
-      tmp->p.g = NULL;
+      tmp->p.group = NULL;
     else if (tmp->p.regex)
     {
       regfree(tmp->p.regex);
