@@ -835,7 +835,7 @@ struct FgetConv *mutt_ch_fgetconv_open(FILE *file, const char *from, const char 
   }
   else
     fc = mutt_mem_malloc(sizeof(struct FgetConvNot));
-  fc->file = file;
+  fc->fp = file;
   fc->cd = cd;
   return fc;
 }
@@ -866,7 +866,7 @@ int mutt_ch_fgetconv(struct FgetConv *fc)
   if (!fc)
     return EOF;
   if (fc->cd == (iconv_t) -1)
-    return fgetc(fc->file);
+    return fgetc(fc->fp);
   if (!fc->p)
     return EOF;
   if (fc->p < fc->ob)
@@ -896,7 +896,7 @@ int mutt_ch_fgetconv(struct FgetConv *fc)
   if (fc->ibl)
     memcpy(fc->bufi, fc->ib, fc->ibl);
   fc->ib = fc->bufi;
-  fc->ibl += fread(fc->ib + fc->ibl, 1, sizeof(fc->bufi) - fc->ibl, fc->file);
+  fc->ibl += fread(fc->ib + fc->ibl, 1, sizeof(fc->bufi) - fc->ibl, fc->fp);
 
   /* Try harder this time to convert some */
   if (fc->ibl)
