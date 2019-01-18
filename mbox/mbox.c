@@ -567,7 +567,6 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
   struct Email **old_hdrs = NULL;
   int old_msgcount;
   bool msg_mod = false;
-  bool index_hint_set;
   int i, j;
   int rc = -1;
 
@@ -659,8 +658,6 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
 
   /* now try to recover the old flags */
 
-  index_hint_set = (index_hint == NULL);
-
   if (!m->readonly)
   {
     for (i = 0; i < m->msg_count; i++)
@@ -699,7 +696,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
       if (found)
       {
         /* this is best done here */
-        if (!index_hint_set && *index_hint == j)
+        if (index_hint && *index_hint == j)
           *index_hint = i;
 
         if (old_hdrs[j]->changed)
