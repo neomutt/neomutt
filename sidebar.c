@@ -402,7 +402,7 @@ static void unsort_entries(void)
       break;
 
     int j = i;
-    while ((j < EntryCount) && (Entries[j]->mailbox != np->m))
+    while ((j < EntryCount) && (Entries[j]->mailbox != np->mailbox))
       j++;
     if (j < EntryCount)
     {
@@ -973,7 +973,7 @@ void mutt_sb_draw(void)
     struct MailboxNode *np = NULL;
     STAILQ_FOREACH(np, &AllMailboxes, entries)
     {
-      mutt_sb_notify_mailbox(np->m, true);
+      mutt_sb_notify_mailbox(np->mailbox, true);
     }
   }
 

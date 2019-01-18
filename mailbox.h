@@ -147,7 +147,7 @@ struct Mailbox
  */
 struct MailboxNode
 {
-  struct Mailbox *m;
+  struct Mailbox *mailbox;
   STAILQ_ENTRY(MailboxNode) entries;
 };
 

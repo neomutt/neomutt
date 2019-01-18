@@ -271,10 +271,10 @@ struct Mailbox *mutt_find_mailbox(const char *path)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if ((stat(np->m->path, &tmp_sb) == 0) && (sb.st_dev == tmp_sb.st_dev) &&
+    if ((stat(np->mailbox->path, &tmp_sb) == 0) && (sb.st_dev == tmp_sb.st_dev) &&
         (sb.st_ino == tmp_sb.st_ino))
     {
-      return np->m;
+      return np->mailbox;
     }
   }
 
@@ -295,8 +295,8 @@ struct Mailbox *mutt_find_mailbox_desc(const char *desc)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if (np->m->desc && mutt_str_strcmp(np->m->desc, desc) == 0)
-      return np->m;
+    if (np->mailbox->desc && mutt_str_strcmp(np->mailbox->desc, desc) == 0)
+      return np->mailbox;
   }
 
   return NULL;
@@ -379,9 +379,9 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    mailbox_check(m_cur, np->m, &contex_sb,
-                  check_stats || (!np->m->first_check_stats_done && MailCheckStats));
-    np->m->first_check_stats_done = true;
+    mailbox_check(m_cur, np->mailbox, &contex_sb,
+                  check_stats || (!np->mailbox->first_check_stats_done && MailCheckStats));
+    np->mailbox->first_check_stats_done = true;
   }
 
   return MailboxCount;
@@ -406,10 +406,10 @@ bool mutt_mailbox_list(void)
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
     /* Is there new mail in this mailbox? */
-    if (!np->m->has_new || (have_unnotified && np->m->notified))
+    if (!np->mailbox->has_new || (have_unnotified && np->mailbox->notified))
       continue;
 
-    mutt_str_strfcpy(path, np->m->path, sizeof(path));
+    mutt_str_strfcpy(path, np->mailbox->path, sizeof(path));
     mutt_pretty_mailbox(path, sizeof(path));
 
     if (!first && (MuttMessageWindow->cols >= 7) &&
@@ -422,10 +422,10 @@ bool mutt_mailbox_list(void)
       pos += strlen(strncat(mailboxlist + pos, ", ", sizeof(mailboxlist) - 1 - pos));
 
     /* Prepend an asterisk to mailboxes not already notified */
-    if (!np->m->notified)
+    if (!np->mailbox->notified)
     {
       /* pos += strlen (strncat(mailboxlist + pos, "*", sizeof(mailboxlist)-1-pos)); */
-      np->m->notified = true;
+      np->mailbox->notified = true;
       MailboxNotify--;
     }
     pos += strlen(strncat(mailboxlist + pos, path, sizeof(mailboxlist) - 1 - pos));
@@ -500,16 +500,16 @@ void mutt_mailbox(struct Mailbox *m_cur, char *s, size_t slen)
       struct MailboxNode *np = NULL;
       STAILQ_FOREACH(np, &AllMailboxes, entries)
       {
-        if (np->m->magic == MUTT_NOTMUCH) /* only match real mailboxes */
+        if (np->mailbox->magic == MUTT_NOTMUCH) /* only match real mailboxes */
           continue;
-        mutt_expand_path(np->m->path, sizeof(np->m->path));
-        if ((found || pass) && np->m->has_new)
+        mutt_expand_path(np->mailbox->path, sizeof(np->mailbox->path));
+        if ((found || pass) && np->mailbox->has_new)
         {
-          mutt_str_strfcpy(s, np->m->path, slen);
+          mutt_str_strfcpy(s, np->mailbox->path, slen);
           mutt_pretty_mailbox(s, slen);
           return;
         }
-        if (mutt_str_strcmp(s, np->m->path) == 0)
+        if (mutt_str_strcmp(s, np->mailbox->path) == 0)
           found = 1;
       }
     }

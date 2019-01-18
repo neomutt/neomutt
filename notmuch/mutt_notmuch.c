@@ -1951,9 +1951,9 @@ int nm_description_to_path(const char *desc, char *buf, size_t buflen)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if ((np->m->magic == MUTT_NOTMUCH) && np->m->desc && (strcmp(desc, np->m->desc) == 0))
+    if ((np->mailbox->magic == MUTT_NOTMUCH) && np->mailbox->desc && (strcmp(desc, np->mailbox->desc) == 0))
     {
-      mutt_str_strfcpy(buf, np->m->path, buflen);
+      mutt_str_strfcpy(buf, np->mailbox->path, buflen);
       buf[buflen - 1] = '\0';
       return 0;
     }

@@ -519,16 +519,16 @@ static int complete_hosts(char *buf, size_t buflen)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if (!mutt_str_startswith(np->m->path, buf, CASE_MATCH))
+    if (!mutt_str_startswith(np->mailbox->path, buf, CASE_MATCH))
       continue;
 
     if (rc)
     {
-      mutt_str_strfcpy(buf, np->m->path, buflen);
+      mutt_str_strfcpy(buf, np->mailbox->path, buflen);
       rc = 0;
     }
     else
-      longest_common_prefix(buf, np->m->path, matchlen, buflen);
+      longest_common_prefix(buf, np->mailbox->path, matchlen, buflen);
   }
 
 #if 0

@@ -901,7 +901,7 @@ struct Account *mbox_ac_find(struct Account *a, const char *path)
   if (!np)
     return NULL;
 
-  if (mutt_str_strcmp(np->m->path, path) != 0)
+  if (mutt_str_strcmp(np->mailbox->path, path) != 0)
     return NULL;
 
   return a;

@@ -1475,8 +1475,8 @@ struct Mailbox *mx_mbox_find(struct Account *a, const char *path)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &a->mailboxes, entries)
   {
-    if (mutt_str_strcmp(np->m->realpath, path) == 0)
-      return np->m;
+    if (mutt_str_strcmp(np->mailbox->realpath, path) == 0)
+      return np->mailbox;
   }
 
   return NULL;
@@ -1540,7 +1540,7 @@ int mx_ac_add(struct Account *a, struct Mailbox *m)
 
   m->account = a;
   struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
-  np->m = m;
+  np->mailbox = m;
   STAILQ_INSERT_TAIL(&a->mailboxes, np, entries);
   return 0;
 }
