@@ -114,6 +114,32 @@ static const char *Function_not_permitted_in_attach_message_mode =
     N_("Function not permitted in attach-message mode");
 static const char *NoVisible = N_("No visible messages");
 
+static const struct Mapping IndexHelp[] = {
+  { N_("Quit"), OP_QUIT },
+  { N_("Del"), OP_DELETE },
+  { N_("Undel"), OP_UNDELETE },
+  { N_("Save"), OP_SAVE },
+  { N_("Mail"), OP_MAIL },
+  { N_("Reply"), OP_REPLY },
+  { N_("Group"), OP_GROUP_REPLY },
+  { N_("Help"), OP_HELP },
+  { NULL, 0 },
+};
+
+#ifdef USE_NNTP
+struct Mapping IndexNewsHelp[] = {
+  { N_("Quit"), OP_QUIT },
+  { N_("Del"), OP_DELETE },
+  { N_("Undel"), OP_UNDELETE },
+  { N_("Save"), OP_SAVE },
+  { N_("Post"), OP_POST },
+  { N_("Followup"), OP_FOLLOWUP },
+  { N_("Catchup"), OP_CATCHUP },
+  { N_("Help"), OP_HELP },
+  { NULL, 0 },
+};
+#endif
+
 #define CHECK_IN_MAILBOX                                                       \
   if (!Context)                                                                \
   {                                                                            \
@@ -906,32 +932,6 @@ void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
 dsl_finish:
   FREE(&syntax);
 }
-
-static const struct Mapping IndexHelp[] = {
-  { N_("Quit"), OP_QUIT },
-  { N_("Del"), OP_DELETE },
-  { N_("Undel"), OP_UNDELETE },
-  { N_("Save"), OP_SAVE },
-  { N_("Mail"), OP_MAIL },
-  { N_("Reply"), OP_REPLY },
-  { N_("Group"), OP_GROUP_REPLY },
-  { N_("Help"), OP_HELP },
-  { NULL, 0 },
-};
-
-#ifdef USE_NNTP
-struct Mapping IndexNewsHelp[] = {
-  { N_("Quit"), OP_QUIT },
-  { N_("Del"), OP_DELETE },
-  { N_("Undel"), OP_UNDELETE },
-  { N_("Save"), OP_SAVE },
-  { N_("Post"), OP_POST },
-  { N_("Followup"), OP_FOLLOWUP },
-  { N_("Catchup"), OP_CATCHUP },
-  { N_("Help"), OP_HELP },
-  { NULL, 0 },
-};
-#endif
 
 /**
  * index_custom_redraw - Redraw the index - Implements Menu::menu_custom_redraw()
