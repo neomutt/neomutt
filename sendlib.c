@@ -240,64 +240,64 @@ struct B64Context
 
 /**
  * b64_init - Set up the base64 conversion
- * @param ctx Cursor for the base64 conversion
+ * @param bctx Cursor for the base64 conversion
  * @retval 0 Always
  */
-static int b64_init(struct B64Context *ctx)
+static int b64_init(struct B64Context *bctx)
 {
-  memset(ctx->buffer, '\0', sizeof(ctx->buffer));
-  ctx->size = 0;
-  ctx->linelen = 0;
+  memset(bctx->buffer, '\0', sizeof(bctx->buffer));
+  bctx->size = 0;
+  bctx->linelen = 0;
 
   return 0;
 }
 
 /**
  * b64_flush - Save the bytes to the file
- * @param ctx  Cursor for the base64 conversion
+ * @param bctx  Cursor for the base64 conversion
  * @param fout File to save the output
  */
-static void b64_flush(struct B64Context *ctx, FILE *fout)
+static void b64_flush(struct B64Context *bctx, FILE *fout)
 {
   /* for some reasons, mutt_b64_encode expects the
    * output buffer to be larger than 10B */
   char encoded[11];
   size_t ret;
 
-  if (!ctx->size)
+  if (!bctx->size)
     return;
 
-  if (ctx->linelen >= 72)
+  if (bctx->linelen >= 72)
   {
     fputc('\n', fout);
-    ctx->linelen = 0;
+    bctx->linelen = 0;
   }
 
-  /* ret should always be equal to 4 here, because ctx->size
+  /* ret should always be equal to 4 here, because bctx->size
    * is a value between 1 and 3 (included), but let's not hardcode it
    * and prefer the return value of the function */
-  ret = mutt_b64_encode(ctx->buffer, ctx->size, encoded, sizeof(encoded));
+  ret = mutt_b64_encode(bctx->buffer, bctx->size, encoded, sizeof(encoded));
   for (size_t i = 0; i < ret; i++)
   {
     fputc(encoded[i], fout);
-    ctx->linelen++;
+    bctx->linelen++;
   }
 
-  ctx->size = 0;
+  bctx->size = 0;
 }
 
 /**
  * b64_putc - Base64-encode one character
- * @param ctx  Cursor for the base64 conversion
+ * @param bctx  Cursor for the base64 conversion
  * @param c    Character to encode
  * @param fout File to save the output
  */
-static void b64_putc(struct B64Context *ctx, char c, FILE *fout)
+static void b64_putc(struct B64Context *bctx, char c, FILE *fout)
 {
-  if (ctx->size == 3)
-    b64_flush(ctx, fout);
+  if (bctx->size == 3)
+    b64_flush(bctx, fout);
 
-  ctx->buffer[ctx->size++] = c;
+  bctx->buffer[bctx->size++] = c;
 }
 
 /**
@@ -308,10 +308,10 @@ static void b64_putc(struct B64Context *ctx, char c, FILE *fout)
  */
 static void encode_base64(struct FgetConv *fc, FILE *fout, int istext)
 {
-  struct B64Context ctx;
+  struct B64Context bctx;
   int ch, ch1 = EOF;
 
-  b64_init(&ctx);
+  b64_init(&bctx);
 
   while ((ch = mutt_ch_fgetconv(fc)) != EOF)
   {
@@ -321,11 +321,11 @@ static void encode_base64(struct FgetConv *fc, FILE *fout, int istext)
       return;
     }
     if (istext && ch == '\n' && ch1 != '\r')
-      b64_putc(&ctx, '\r', fout);
-    b64_putc(&ctx, ch, fout);
+      b64_putc(&bctx, '\r', fout);
+    b64_putc(&bctx, ch, fout);
     ch1 = ch;
   }
-  b64_flush(&ctx, fout);
+  b64_flush(&bctx, fout);
   fputc('\n', fout);
 }
 
