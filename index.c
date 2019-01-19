@@ -1863,7 +1863,7 @@ int mutt_index_menu(void)
           int ovc = Context->mailbox->vcount;
           int oc = Context->mailbox->msg_count;
           int check;
-          struct Email *newhdr = NULL;
+          struct Email *e = NULL;
 
           /* don't attempt to move the cursor if there are no visible messages in the current limit */
           if (menu->current < Context->mailbox->vcount)
@@ -1876,17 +1876,17 @@ int mutt_index_menu(void)
             if (newidx < 0)
               newidx = ci_previous_undeleted(menu->current);
             if (newidx >= 0)
-              newhdr = Context->mailbox->emails[Context->mailbox->v2r[newidx]];
+              e = Context->mailbox->emails[Context->mailbox->v2r[newidx]];
           }
 
           check = mx_mbox_sync(Context->mailbox, &index_hint);
           if (check == 0)
           {
-            if (newhdr && Context->mailbox->vcount != ovc)
+            if (e && Context->mailbox->vcount != ovc)
             {
               for (j = 0; j < Context->mailbox->vcount; j++)
               {
-                if (Context->mailbox->emails[Context->mailbox->v2r[j]] == newhdr)
+                if (Context->mailbox->emails[Context->mailbox->v2r[j]] == e)
                 {
                   menu->current = j;
                   break;
@@ -3616,26 +3616,26 @@ int mutt_index_menu(void)
 
 /**
  * mutt_set_header_color - Select a colour for a message
- * @param m      Mailbox
- * @param curhdr Header of message
+ * @param m Mailbox
+ * @param e Current Email
  */
-void mutt_set_header_color(struct Mailbox *m, struct Email *curhdr)
+void mutt_set_header_color(struct Mailbox *m, struct Email *e)
 {
   struct ColorLine *color = NULL;
   struct PatternCache cache = { 0 };
 
-  if (!curhdr)
+  if (!e)
     return;
 
   STAILQ_FOREACH(color, &ColorIndexList, entries)
   {
-    if (mutt_pattern_exec(color->color_pattern, MUTT_MATCH_FULL_ADDRESS, m, curhdr, &cache))
+    if (mutt_pattern_exec(color->color_pattern, MUTT_MATCH_FULL_ADDRESS, m, e, &cache))
     {
-      curhdr->pair = color->pair;
+      e->pair = color->pair;
       return;
     }
   }
-  curhdr->pair = ColorDefs[MT_COLOR_NORMAL];
+  e->pair = ColorDefs[MT_COLOR_NORMAL];
 }
 
 /**
