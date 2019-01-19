@@ -235,6 +235,7 @@ configuration file.
 \fBcolor\fP \fIobject\fP [ \fIattribute\fP ... ] \fIforeground\fP \fIbackground\fP
 \fBcolor\fP { header | body } [ \fIattribute\fP ... ] \fIforeground\fP \fIbackground\fP \fIregex\fP
 \fBcolor\fP index-object [ \fIattribute\fP ... ] \fIforeground\fP \fIbackground\fP \fIpattern\fP
+\fBcolor\fP compose \fIcomposeobject\fP \fIforeground\fP \fIbackground\fP
 \fBcolor\fP compose \fIcomposeobject\fP [ \fIattribute\fP ... ] \fIforeground\fP \fIbackground\fP
 \fBuncolor\fP { index-object | header | body } { \fB*\fP | \fIpattern\fP ... }
 .fi
@@ -293,6 +294,10 @@ a message, \fBindex-object\fP can match \fIpattern\fP in the message index.
 Note that IMAP server-side searches (=b, =B, =h) are not supported for color
 index patterns.
 .IP
+Valid composeobjects include
+.BR header ", " security_encrypt ", " security_sign ", "
+.BR security_both ", " security_none .
+.IP
 Valid colors include:
 .BR default ", "
 .BR black ", "
@@ -328,6 +333,16 @@ meaning of \fIkeyid\fP is to be taken broadly: This can be a different email
 address, a numerical \fIkeyid\fP, or even just an arbitrary search string. You
 may use multiple \fBcrypt-hook\fPs with the same \fIregex\fP; multiple matching
 \fBcrypt-hook\fPs result in the use of multiple \fIkeyid\fPs for a recipient.
+.TP
+\fBindex-format-hook\fP \fIname\fP [\fB!\fP]\fIpattern\fP \fIformat-string\fP
+This command is used to inject format strings dynamically into
+$index_format based on pattern matching against the current message.
+.IP
+The $index_format expando \fI%@name@\fP specifies a placeholder for
+the injection. Index-format-hooks with the same \fIname\fP are matched
+using \fIpattern\fP against the current message. Matching is done in
+the order specified in the .neomuttrc, with the first match being
+used. The hook's \fIformat-string\fP is then substituted and evaluated.
 .
 .PP
 .nf
@@ -517,6 +532,11 @@ NeoMutt initializes the default list to contain only the \fBSubject\fP and
 \fBBody\fP \fIheader-field\fPs, which are the only requirement specified by the
 \fImailto:\fP specification in RFC2368, and the \fBCc\fP, \fBIn-Reply-To\fP,
 \fBReferences\fP headers to aid with replies to mailing lists.
+.TP
+\fBecho\fP \fImessage\fP
+Prints \fImessage\fP to the message window. After printing the
+message, echo will pause for the number of seconds specified by
+$sleep_time.
 .
 .PP
 .nf
@@ -1279,8 +1299,8 @@ identical plus and minus error margins.
 allbox center tab(|);
 lb c c c c
 lb l l l l .
-\0Date Unit|d|w|m|y
-\0Description|Days|Weeks|Months|Years
+\0Date Unit|S|M|H|d|w|m|y
+\0Description|Seconds|Minutes|Hours|Days|Weeks|Months|Years
 .TE
 \p
 .
