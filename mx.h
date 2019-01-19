@@ -66,10 +66,10 @@ extern char *        Trash;
  */
 enum MxCheckReturns
 {
-  MUTT_NEW_MAIL = 1, ///< new mail received in mailbox
-  MUTT_LOCKED,       ///< couldn't lock the mailbox
-  MUTT_REOPENED,     ///< mailbox was reopened
-  MUTT_FLAGS,        ///< nondestructive flags change (IMAP)
+  MUTT_NEW_MAIL = 1, ///< New mail received in Mailbox
+  MUTT_LOCKED,       ///< Couldn't lock the Mailbox
+  MUTT_REOPENED,     ///< Mailbox was reopened
+  MUTT_FLAGS,        ///< Nondestructive flags change (IMAP)
 };
 
 /**
@@ -94,7 +94,7 @@ struct Message
 /**
  * struct MxOps - The Mailbox API
  *
- * Each backend provides a set of functions through which the mailbox, messages,
+ * Each backend provides a set of functions through which the Mailbox, messages,
  * tags and paths are manipulated.
  */
 struct MxOps
@@ -127,7 +127,7 @@ struct MxOps
    */
   int (*mbox_open)       (struct Mailbox *m);
   /**
-   * mbox_open_append - Open a mailbox for appending
+   * mbox_open_append - Open a Mailbox for appending
    * @param m     Mailbox to open
    * @param flags e.g. #MUTT_READONLY
    * @retval  0 Success
@@ -143,7 +143,7 @@ struct MxOps
    */
   int (*mbox_check)      (struct Mailbox *m, int *index_hint);
   /**
-   * mbox_check_stats - Check the mailbox statistics
+   * mbox_check_stats - Check the Mailbox statistics
    * @param m     Mailbox to check
    * @param flags Function flags
    * @retval  0 Success
@@ -151,7 +151,7 @@ struct MxOps
    */
   int (*mbox_check_stats)(struct Mailbox *m, int flags);
   /**
-   * mbox_sync - Save changes to the mailbox
+   * mbox_sync - Save changes to the Mailbox
    * @param m          Mailbox to sync
    * @param index_hint Remember our place in the index
    * @retval  0 Success
@@ -159,14 +159,14 @@ struct MxOps
    */
   int (*mbox_sync)       (struct Mailbox *m, int *index_hint);
   /**
-   * mbox_close - Close a mailbox
+   * mbox_close - Close a Mailbox
    * @param m Mailbox to close
    * @retval  0 Success
    * @retval -1 Failure
    */
   int (*mbox_close)      (struct Mailbox *m);
   /**
-   * msg_open - Open an email message in mailbox
+   * msg_open - Open an email message in Mailbox
    * @param m     Mailbox
    * @param msg   Message to open
    * @param msgno Index of message to open
@@ -175,7 +175,7 @@ struct MxOps
    */
   int (*msg_open)        (struct Mailbox *m, struct Message *msg, int msgno);
   /**
-   * msg_open_new - Open a new message in a mailbox
+   * msg_open_new - Open a new message in a Mailbox
    * @param m   Mailbox
    * @param msg Message to open
    * @param e   Email
@@ -234,14 +234,14 @@ struct MxOps
    */
   int (*tags_commit)     (struct Mailbox *m, struct Email *e, char *buf);
   /**
-   * path_probe - Does this mailbox type recognise this path?
+   * path_probe - Does this Mailbox type recognise this path?
    * @param path Path to examine
    * @param st   stat buffer (for local filesystems)
    * @retval num Type, e.g. #MUTT_IMAP
    */
   enum MailboxType (*path_probe)(const char *path, const struct stat *st);
   /**
-   * path_canon - Canonicalise a mailbox path
+   * path_canon - Canonicalise a Mailbox path
    * @param buf    Path to modify
    * @param buflen Length of buffer
    * @retval  0 Success
@@ -249,7 +249,7 @@ struct MxOps
    */
   int (*path_canon)      (char *buf, size_t buflen);
   /**
-   * path_pretty - Abbreviate a mailbox path
+   * path_pretty - Abbreviate a Mailbox path
    * @param buf    Path to modify
    * @param buflen Length of buffer
    * @param folder Base path for '=' substitution
@@ -258,7 +258,7 @@ struct MxOps
    */
   int (*path_pretty)     (char *buf, size_t buflen, const char *folder);
   /**
-   * path_parent - Find the parent of a mailbox path
+   * path_parent - Find the parent of a Mailbox path
    * @param buf    Path to modify
    * @param buflen Length of buffer
    * @retval  0 Success
@@ -270,7 +270,7 @@ struct MxOps
 /* Wrappers for the Mailbox API, see MxOps */
 int             mx_mbox_check      (struct Mailbox *m, int *index_hint);
 int             mx_mbox_check_stats(struct Mailbox *m, int flags);
-int             mx_mbox_close      (struct Context **pctx);
+int             mx_mbox_close      (struct Context **ptr);
 struct Context *mx_mbox_open       (struct Mailbox *m, int flags);
 int             mx_mbox_sync       (struct Mailbox *m, int *index_hint);
 int             mx_msg_close       (struct Mailbox *m, struct Message **msg);

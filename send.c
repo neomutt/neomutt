@@ -2398,11 +2398,10 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
     }
 
     /* at this point, msg->content is one of the following three things:
-     * - multipart/signed.  In this case, clear_content is a child.
-     * - multipart/encrypted.  In this case, clear_content exists
-     *   independently
-     * - application/pgp.  In this case, clear_content exists independently.
-     * - something else.  In this case, it's the same as clear_content.
+     * - multipart/signed.     In this case, clear_content is a child
+     * - multipart/encrypted.  In this case, clear_content exists independently
+     * - application/pgp.      In this case, clear_content exists independently
+     * - something else.       In this case, it's the same as clear_content
      */
 
     /* This is ugly -- lack of "reporting back" from mutt_protect(). */

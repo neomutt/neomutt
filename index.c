@@ -569,8 +569,8 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
   enum MailboxType magic = mx_path_probe(buf, NULL);
   if ((magic == MUTT_MAILBOX_ERROR) || (magic == MUTT_UNKNOWN))
   {
-    // Try and see if the buffer matches a description before we bail. We'll receive a
-    // non-null pointer if there is a corresponding mailbox.
+    // Try to see if the buffer matches a description before we bail.
+    // We'll receive a non-null pointer if there is a corresponding mailbox.
     m = mutt_find_mailbox_desc(buf);
     if (m)
     {

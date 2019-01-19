@@ -283,14 +283,6 @@ struct Context *mx_mbox_open(struct Mailbox *m, int flags)
     }
   }
 
-#if 0
-  if (!realpath(m->path, m->realpath))
-  {
-    mutt_str_strfcpy(m->realpath, m->path,
-                     sizeof(m->realpath));
-  }
-#endif
-
   ctx->msgnotreadyet = -1;
   ctx->collapsed = false;
 
@@ -323,9 +315,6 @@ struct Context *mx_mbox_open(struct Mailbox *m, int flags)
     m->magic = mx_path_probe(m->path, NULL);
     m->mx_ops = mx_get_ops(m->magic);
   }
-
-  // if (m->path[0] == '\0')
-  //   mutt_str_strfcpy(m->path, path, sizeof(m->path));
 
   if ((m->magic == MUTT_UNKNOWN) || (m->magic == MUTT_MAILBOX_ERROR) || !m->mx_ops)
   {
@@ -382,7 +371,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, int flags)
 }
 
 /**
- * mx_fastclose_mailbox - free up memory associated with the mailbox context
+ * mx_fastclose_mailbox - free up memory associated with the Mailbox
  * @param m Mailbox
  */
 void mx_fastclose_mailbox(struct Mailbox *m)
@@ -541,18 +530,18 @@ static int trash_append(struct Mailbox *m)
 
 /**
  * mx_mbox_close - Save changes and close mailbox
- * @param pctx       Mailbox
+ * @param ptr Mailbox
  * @retval  0 Success
  * @retval -1 Failure
  *
  * @note Context will be freed after it's closed
  */
-int mx_mbox_close(struct Context **pctx)
+int mx_mbox_close(struct Context **ptr)
 {
-  if (!pctx || !*pctx)
+  if (!ptr || !*ptr)
     return 0;
 
-  struct Context *ctx = *pctx;
+  struct Context *ctx = *ptr;
   if (!ctx || !ctx->mailbox)
     return -1;
 
@@ -565,7 +554,7 @@ int mx_mbox_close(struct Context **pctx)
   if (m->readonly || m->dontwrite || m->append)
   {
     mx_fastclose_mailbox(m);
-    FREE(pctx);
+    FREE(ptr);
     return 0;
   }
 
@@ -723,7 +712,7 @@ int mx_mbox_close(struct Context **pctx)
     if (m->magic == MUTT_MBOX || m->magic == MUTT_MMDF)
       mbox_reset_atime(m, NULL);
     mx_fastclose_mailbox(m);
-    FREE(pctx);
+    FREE(ptr);
     return 0;
   }
 
@@ -798,7 +787,7 @@ int mx_mbox_close(struct Context **pctx)
 #endif
 
   mx_fastclose_mailbox(m);
-  FREE(pctx);
+  FREE(ptr);
 
   return 0;
 }
@@ -1392,7 +1381,6 @@ int mx_path_canon2(struct Mailbox *m, const char *folder)
   if (rc >= 0)
   {
     m->mx_ops = mx_get_ops(m->magic);
-    // temp?
     mutt_str_strfcpy(m->path, m->realpath, sizeof(m->path));
   }
 

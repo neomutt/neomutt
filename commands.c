@@ -1078,14 +1078,14 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete, bool
 #ifdef USE_COMPRESSED
   /* If we're saving to a compressed mailbox, the stats won't be updated
    * until the next open.  Until then, improvise. */
-  struct Mailbox *cm = NULL;
+  struct Mailbox *m_comp = NULL;
   if (savectx->mailbox->compress_info)
   {
-    cm = mutt_find_mailbox(savectx->mailbox->realpath);
+    m_comp = mutt_find_mailbox(savectx->mailbox->realpath);
   }
   /* We probably haven't been opened yet */
-  if (cm && (cm->msg_count == 0))
-    cm = NULL;
+  if (m_comp && (m_comp->msg_count == 0))
+    m_comp = NULL;
 #endif
   if (single)
   {
@@ -1095,17 +1095,17 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete, bool
       return -1;
     }
 #ifdef USE_COMPRESSED
-    if (cm)
+    if (m_comp)
     {
-      cm->msg_count++;
+      m_comp->msg_count++;
       if (!en->email->read)
       {
-        cm->msg_unread++;
+        m_comp->msg_unread++;
         if (!en->email->old)
-          cm->msg_new++;
+          m_comp->msg_new++;
       }
       if (en->email->flagged)
-        cm->msg_flagged++;
+        m_comp->msg_flagged++;
     }
 #endif
   }
@@ -1125,18 +1125,18 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete, bool
       if (rc != 0)
         break;
 #ifdef USE_COMPRESSED
-      if (cm)
+      if (m_comp)
       {
         struct Email *e2 = en->email;
-        cm->msg_count++;
+        m_comp->msg_count++;
         if (!e2->read)
         {
-          cm->msg_unread++;
+          m_comp->msg_unread++;
           if (!e2->old)
-            cm->msg_new++;
+            m_comp->msg_new++;
         }
         if (e2->flagged)
-          cm->msg_flagged++;
+          m_comp->msg_flagged++;
       }
 #endif
     }

@@ -160,7 +160,7 @@ STAILQ_HEAD(MailboxList, MailboxNode);
 extern struct MailboxList AllMailboxes; ///< List of all Mailboxes
 
 struct Mailbox *mailbox_new(void);
-void            mailbox_free(struct Mailbox **m);
+void            mailbox_free(struct Mailbox **ptr);
 
 struct Mailbox *mutt_find_mailbox(const char *path);
 struct Mailbox *mutt_find_mailbox_desc(const char *desc);
