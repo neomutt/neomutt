@@ -72,7 +72,6 @@ static const struct Mapping PostponeHelp[] = {
 };
 
 static short PostCount = 0;
-static struct Context *PostContext = NULL;
 static bool UpdateNumPostponed = false;
 
 /**
@@ -213,7 +212,7 @@ static void post_make_entry(char *buf, size_t buflen, struct Menu *menu, int lin
  * select_msg - Create a Menu to select a postponed message
  * @retval ptr Email Header
  */
-static struct Email *select_msg(void)
+static struct Email *select_msg(struct Context *ctx)
 {
   int r = -1;
   bool done = false;
@@ -221,9 +220,9 @@ static struct Email *select_msg(void)
 
   struct Menu *menu = mutt_menu_new(MENU_POST);
   menu->menu_make_entry = post_make_entry;
-  menu->max = PostContext->mailbox->msg_count;
+  menu->max = ctx->mailbox->msg_count;
   menu->title = _("Postponed Messages");
-  menu->data = PostContext;
+  menu->data = ctx;
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_POST, PostponeHelp);
   mutt_menu_push_current(menu);
 
@@ -241,9 +240,9 @@ static struct Email *select_msg(void)
       case OP_DELETE:
       case OP_UNDELETE:
         /* should deleted draft messages be saved in the trash folder? */
-        mutt_set_flag(PostContext->mailbox, PostContext->mailbox->emails[menu->current],
+        mutt_set_flag(ctx->mailbox, ctx->mailbox->emails[menu->current],
                       MUTT_DELETE, (i == OP_DELETE) ? 1 : 0);
-        PostCount = PostContext->mailbox->msg_count - PostContext->mailbox->msg_deleted;
+        PostCount = ctx->mailbox->msg_count - ctx->mailbox->msg_deleted;
         if (Resolve && menu->current < menu->max - 1)
         {
           menu->oldcurrent = menu->current;
@@ -274,7 +273,7 @@ static struct Email *select_msg(void)
   Sort = orig_sort;
   mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);
-  return r > -1 ? PostContext->mailbox->emails[r] : NULL;
+  return r > -1 ? ctx->mailbox->emails[r] : NULL;
 }
 
 /**
@@ -295,17 +294,18 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   int code = SEND_POSTPONED;
   const char *p = NULL;
   int opt_delete;
+  struct Context *ctx_post = NULL;
 
   if (!Postponed)
     return -1;
 
   struct Mailbox *m = mx_path_resolve(Postponed);
   if (ctx->mailbox == m)
-    PostContext = ctx;
+    ctx_post = ctx;
   else
-    PostContext = mx_mbox_open(m, MUTT_NOSORT);
+    ctx_post = mx_mbox_open(m, MUTT_NOSORT);
 
-  if (!PostContext)
+  if (!ctx_post)
   {
     PostCount = 0;
     mutt_error(_("No postponed messages"));
@@ -313,55 +313,55 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
     return -1;
   }
 
-  if (!PostContext->mailbox->msg_count)
+  if (!ctx_post->mailbox->msg_count)
   {
     PostCount = 0;
-    if (PostContext == ctx)
-      PostContext = NULL;
+    if (ctx_post == ctx)
+      ctx_post = NULL;
     else
-      mx_mbox_close(&PostContext);
+      mx_mbox_close(&ctx_post);
     mutt_error(_("No postponed messages"));
     return -1;
   }
 
-  if (PostContext->mailbox->msg_count == 1)
+  if (ctx_post->mailbox->msg_count == 1)
   {
     /* only one message, so just use that one. */
-    e = PostContext->mailbox->emails[0];
+    e = ctx_post->mailbox->emails[0];
   }
-  else if (!(e = select_msg()))
+  else if (!(e = select_msg(ctx_post)))
   {
-    if (PostContext == ctx)
-      PostContext = NULL;
+    if (ctx_post == ctx)
+      ctx_post = NULL;
     else
-      mx_mbox_close(&PostContext);
+      mx_mbox_close(&ctx_post);
     return -1;
   }
 
-  if (mutt_prepare_template(NULL, PostContext->mailbox, hdr, e, false) < 0)
+  if (mutt_prepare_template(NULL, ctx_post->mailbox, hdr, e, false) < 0)
   {
-    if (PostContext != ctx)
+    if (ctx_post != ctx)
     {
-      mx_fastclose_mailbox(PostContext->mailbox);
-      FREE(&PostContext);
+      mx_fastclose_mailbox(ctx_post->mailbox);
+      FREE(&ctx_post);
     }
     return -1;
   }
 
   /* finished with this message, so delete it. */
-  mutt_set_flag(PostContext->mailbox, e, MUTT_DELETE, 1);
-  mutt_set_flag(PostContext->mailbox, e, MUTT_PURGE, 1);
+  mutt_set_flag(ctx_post->mailbox, e, MUTT_DELETE, 1);
+  mutt_set_flag(ctx_post->mailbox, e, MUTT_PURGE, 1);
 
   /* update the count for the status display */
-  PostCount = PostContext->mailbox->msg_count - PostContext->mailbox->msg_deleted;
+  PostCount = ctx_post->mailbox->msg_count - ctx_post->mailbox->msg_deleted;
 
   /* avoid the "purge deleted messages" prompt */
   opt_delete = Delete;
   Delete = MUTT_YES;
-  if (PostContext == ctx)
-    PostContext = NULL;
+  if (ctx_post == ctx)
+    ctx_post = NULL;
   else
-    mx_mbox_close(&PostContext);
+    mx_mbox_close(&ctx_post);
   Delete = opt_delete;
 
   struct ListNode *np, *tmp;
