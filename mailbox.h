@@ -42,10 +42,6 @@ extern bool  MailCheckStats;
 extern short MailCheckStatsInterval;
 extern bool  MaildirCheckCur;
 
-/* parameter to mutt_parse_mailboxes */
-#define MUTT_NAMED   (1 << 0)
-#define MUTT_VIRTUAL (1 << 1)
-
 #define MB_NORMAL 0
 #define MB_HIDDEN 1
 
@@ -179,8 +175,6 @@ void mutt_mailbox(struct Mailbox *m_cur, char *s, size_t slen);
 bool mutt_mailbox_list(void);
 int mutt_mailbox_check(struct Mailbox *m_cur, int force);
 bool mutt_mailbox_notify(struct Mailbox *m_cur);
-enum CommandResult mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
-enum CommandResult mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
 void mutt_mailbox_changed(struct Mailbox *m, enum MailboxNotification action);
 
 #endif /* MUTT_MAILBOX_H */
