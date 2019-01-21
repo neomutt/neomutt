@@ -1151,12 +1151,13 @@ static int tls_socket_read(struct Connection *conn, char *buf, size_t count)
   do
   {
     rc = gnutls_record_recv(data->state, buf, count);
-    if ((rc < 0 && gnutls_error_is_fatal(rc) == 1) || rc == GNUTLS_E_INTERRUPTED)
-    {
-      mutt_error("tls_socket_read (%s)", gnutls_strerror(rc));
-      return -1;
-    }
-  } while (rc == GNUTLS_E_AGAIN);
+  } while ((rc == GNUTLS_E_AGAIN) || (rc == GNUTLS_E_INTERRUPTED));
+
+  if (rc < 0)
+  {
+    mutt_error("tls_socket_read (%s)", gnutls_strerror(rc));
+    return -1;
+  }
 
   return rc;
 }
@@ -1177,16 +1178,18 @@ static int tls_socket_write(struct Connection *conn, const char *buf, size_t cou
 
   do
   {
-    const int ret = gnutls_record_send(data->state, buf + sent, count - sent);
+    int ret;
+    do
+    {
+      ret = gnutls_record_send(data->state, buf + sent, count - sent);
+    } while ((ret == GNUTLS_E_AGAIN) || (ret == GNUTLS_E_INTERRUPTED));
+
     if (ret < 0)
     {
-      if (gnutls_error_is_fatal(ret) == 1 || ret == GNUTLS_E_INTERRUPTED)
-      {
-        mutt_error("tls_socket_write (%s)", gnutls_strerror(ret));
-        return -1;
-      }
-      return ret;
+      mutt_error("tls_socket_write (%s)", gnutls_strerror(ret));
+      return -1;
     }
+
     sent += ret;
   } while (sent < count);
 
