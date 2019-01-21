@@ -114,32 +114,29 @@ enum ImapState
 };
 
 /**
- * enum ImapCaps - Capabilities we are interested in
+ * ImapCaps - Capabilities we are interested in
  *
  * @note This must be kept in the same order as Capabilities.
  */
-enum ImapCaps
-{
-  IMAP_CAP_IMAP4 = 0,        ///< Server supports IMAP4
-  IMAP_CAP_IMAP4REV1,        ///< Server supports IMAP4rev1
-  IMAP_CAP_STATUS,           ///< Server supports STATUS command
-  IMAP_CAP_ACL,              ///< RFC2086: IMAP4 ACL extension
-  IMAP_CAP_NAMESPACE,        ///< RFC2342: IMAP4 Namespace
-  IMAP_CAP_ACRAM_MD5,        ///< RFC2195: CRAM-MD5 authentication
-  IMAP_CAP_AGSSAPI,          ///< RFC1731: GSSAPI authentication
-  IMAP_CAP_AUTH_ANON,        ///< AUTH=ANONYMOUS
-  IMAP_CAP_AUTH_OAUTHBEARER, ///< RFC7628: AUTH=OAUTHBEARER
-  IMAP_CAP_STARTTLS,         ///< RFC2595: STARTTLS
-  IMAP_CAP_LOGINDISABLED,    ///< RFC2595: LOGINDISABLED
-  IMAP_CAP_IDLE,             ///< RFC2177: IDLE
-  IMAP_CAP_SASL_IR,          ///< SASL initial response draft
-  IMAP_CAP_ENABLE,           ///< RFC5161
-  IMAP_CAP_CONDSTORE,        ///< RFC7162
-  IMAP_CAP_QRESYNC,          ///< RFC7162
-  IMAP_CAP_X_GM_EXT1,        ///< https://developers.google.com/gmail/imap/imap-extensions
-  IMAP_CAP_X_GM_ALT1 = IMAP_CAP_X_GM_EXT1, ///< Alternative capability string
-  IMAP_CAP_MAX,
-};
+#define IMAP_CAP_IMAP4            (1 <<  0) ///< Server supports IMAP4
+#define IMAP_CAP_IMAP4REV1        (1 <<  1) ///< Server supports IMAP4rev1
+#define IMAP_CAP_STATUS           (1 <<  2) ///< Server supports STATUS command
+#define IMAP_CAP_ACL              (1 <<  3) ///< RFC2086: IMAP4 ACL extension
+#define IMAP_CAP_NAMESPACE        (1 <<  4) ///< RFC2342: IMAP4 Namespace
+#define IMAP_CAP_ACRAM_MD5        (1 <<  5) ///< RFC2195: CRAM-MD5 authentication
+#define IMAP_CAP_AGSSAPI          (1 <<  6) ///< RFC1731: GSSAPI authentication
+#define IMAP_CAP_AUTH_ANON        (1 <<  7) ///< AUTH=ANONYMOUS
+#define IMAP_CAP_AUTH_OAUTHBEARER (1 <<  8) ///< RFC7628: AUTH=OAUTHBEARER
+#define IMAP_CAP_STARTTLS         (1 <<  9) ///< RFC2595: STARTTLS
+#define IMAP_CAP_LOGINDISABLED    (1 << 10) ///< RFC2595: LOGINDISABLED
+#define IMAP_CAP_IDLE             (1 << 11) ///< RFC2177: IDLE
+#define IMAP_CAP_SASL_IR          (1 << 12) ///< SASL initial response draft
+#define IMAP_CAP_ENABLE           (1 << 13) ///< RFC5161
+#define IMAP_CAP_CONDSTORE        (1 << 14) ///< RFC7162
+#define IMAP_CAP_QRESYNC          (1 << 15) ///< RFC7162
+#define IMAP_CAP_X_GM_EXT1        (1 << 16) ///< https://developers.google.com/gmail/imap/imap-extensions
+
+#define IMAP_CAP_ALL             ((1 << 17) - 1)
 
 /**
  * struct ImapList - Items in an IMAP browser
@@ -183,7 +180,7 @@ struct ImapAccountData
    * tracking all possible capabilities. bah. (1) I don't like because
    * it's just no fun to get the same information twice */
   char *capstr;
-  unsigned char capabilities[(IMAP_CAP_MAX + 7) / 8];
+  unsigned int capabilities;
   unsigned char seqid; /* tag sequence prefix */
   unsigned int seqno; ///< tag sequence number, e.g. '{seqid}0001'
   time_t lastread; /**< last time we read a command for the server */

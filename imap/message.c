@@ -1027,12 +1027,12 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
   if (!adata || adata->mailbox != m)
     return -1;
 
-  if (mutt_bit_isset(adata->capabilities, IMAP_CAP_IMAP4REV1))
+  if (adata->capabilities & IMAP_CAP_IMAP4REV1)
   {
     safe_asprintf(&hdrreq, "BODY.PEEK[HEADER.FIELDS (%s%s%s)]", want_headers,
                   ImapHeaders ? " " : "", NONULL(ImapHeaders));
   }
-  else if (mutt_bit_isset(adata->capabilities, IMAP_CAP_IMAP4))
+  else if (adata->capabilities & IMAP_CAP_IMAP4)
   {
     safe_asprintf(&hdrreq, "RFC822.HEADER.LINES (%s%s%s)", want_headers,
                   ImapHeaders ? " " : "", NONULL(ImapHeaders));
@@ -1272,12 +1272,11 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
 
     if (mdata->modseq)
     {
-      if (mutt_bit_isset(adata->capabilities, IMAP_CAP_CONDSTORE) && ImapCondStore)
+      if ((adata->capabilities & IMAP_CAP_CONDSTORE) && ImapCondStore)
         has_condstore = true;
 
-      /* If mutt_bit_isset(QRESYNC) and option(OPTIMAPQRESYNC) then Mutt
-       * sends ENABLE QRESYNC.  If we receive an ENABLED response back, then
-       * adata->qresync is set.
+      /* If IMAP_CAP_QRESYNC and ImapQResync then Mutt sends ENABLE QRESYNC.
+       * If we receive an ENABLED response back, then adata->qresync is set.
        */
       if (adata->qresync)
         has_qresync = true;
@@ -1878,7 +1877,7 @@ int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   e->active = false;
 
   snprintf(buf, sizeof(buf), "UID FETCH %u %s", imap_edata_get(e)->uid,
-           (mutt_bit_isset(adata->capabilities, IMAP_CAP_IMAP4REV1) ?
+           ((adata->capabilities & IMAP_CAP_IMAP4REV1) ?
                 (ImapPeek ? "BODY.PEEK[]" : "BODY[]") :
                 "RFC822"));
 

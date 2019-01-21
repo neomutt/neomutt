@@ -86,8 +86,8 @@ static int check_capabilities(struct ImapAccountData *adata)
     return -1;
   }
 
-  if (!(mutt_bit_isset(adata->capabilities, IMAP_CAP_IMAP4) ||
-        mutt_bit_isset(adata->capabilities, IMAP_CAP_IMAP4REV1)))
+  if (!((adata->capabilities & IMAP_CAP_IMAP4) ||
+        (adata->capabilities & IMAP_CAP_IMAP4REV1)))
   {
     mutt_error(
         _("This IMAP server is ancient. NeoMutt does not work with it."));
@@ -462,7 +462,7 @@ static int compile_search(struct Mailbox *m, const struct Pattern *pat, struct B
       case MUTT_SERVERSEARCH:
       {
         struct ImapAccountData *adata = imap_adata_get(m);
-        if (!mutt_bit_isset(adata->capabilities, IMAP_CAP_X_GM_EXT1))
+        if (!(adata->capabilities & IMAP_CAP_X_GM_EXT1))
         {
           mutt_error(_("Server-side custom search not supported: %s"), pat->p.str);
           return -1;
@@ -871,7 +871,7 @@ int imap_open_connection(struct ImapAccountData *adata)
 #ifdef USE_SSL
     /* Attempt STARTTLS if available and desired. */
     if (!adata->conn->ssf &&
-        (SslForceTls || mutt_bit_isset(adata->capabilities, IMAP_CAP_STARTTLS)))
+        (SslForceTls || (adata->capabilities & IMAP_CAP_STARTTLS)))
     {
       int rc;
 
@@ -1201,7 +1201,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
   int result = 0;
 
   /* try IDLE first, unless force is set */
-  if (!force && ImapIdle && mutt_bit_isset(adata->capabilities, IMAP_CAP_IDLE) &&
+  if (!force && ImapIdle && (adata->capabilities & IMAP_CAP_IDLE) &&
       (adata->state != IMAP_IDLE || time(NULL) >= adata->lastread + ImapKeepalive))
   {
     if (imap_cmd_idle(adata) < 0)
@@ -1220,7 +1220,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
     if (result < 0)
     {
       mutt_debug(1, "Poll failed, disabling IDLE\n");
-      mutt_bit_unset(adata->capabilities, IMAP_CAP_IDLE);
+      adata->capabilities &= ~IMAP_CAP_IDLE; // Clear the flag
     }
   }
 
@@ -1271,9 +1271,9 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
     return mdata->messages;
   }
 
-  if (mutt_bit_isset(adata->capabilities, IMAP_CAP_IMAP4REV1))
+  if (adata->capabilities & IMAP_CAP_IMAP4REV1)
     uid_validity_flag = "UIDVALIDITY";
-  else if (mutt_bit_isset(adata->capabilities, IMAP_CAP_STATUS))
+  else if (adata->capabilities & IMAP_CAP_STATUS)
     uid_validity_flag = "UID-VALIDITY";
   else
   {
@@ -1926,14 +1926,14 @@ int imap_login(struct ImapAccountData *adata)
     imap_exec(adata, "CAPABILITY", IMAP_CMD_QUEUE);
 
     /* enable RFC6855, if the server supports that */
-    if (mutt_bit_isset(adata->capabilities, IMAP_CAP_ENABLE))
+    if (adata->capabilities & IMAP_CAP_ENABLE)
       imap_exec(adata, "ENABLE UTF8=ACCEPT", IMAP_CMD_QUEUE);
 
     /* enable QRESYNC.  Advertising QRESYNC also means CONDSTORE
      * is supported (even if not advertised), so flip that bit. */
-    if (mutt_bit_isset(adata->capabilities, IMAP_CAP_QRESYNC))
+    if (adata->capabilities & IMAP_CAP_QRESYNC)
     {
-      mutt_bit_set(adata->capabilities, IMAP_CAP_CONDSTORE);
+      adata->capabilities |= IMAP_CAP_CONDSTORE;
       if (ImapQResync)
         imap_exec(adata, "ENABLE QRESYNC", IMAP_CMD_QUEUE);
     }
@@ -1978,7 +1978,7 @@ static int imap_mbox_open(struct Mailbox *m)
   mutt_message(_("Selecting %s..."), mdata->name);
 
   /* pipeline ACL test */
-  if (mutt_bit_isset(adata->capabilities, IMAP_CAP_ACL))
+  if (adata->capabilities & IMAP_CAP_ACL)
   {
     snprintf(buf, sizeof(buf), "MYRIGHTS %s", mdata->munge_name);
     imap_exec(adata, buf, IMAP_CMD_QUEUE);
@@ -2001,7 +2001,7 @@ static int imap_mbox_open(struct Mailbox *m)
     imap_exec(adata, "LSUB \"\" \"*\"", IMAP_CMD_QUEUE);
 
 #ifdef USE_HCACHE
-  if (mutt_bit_isset(adata->capabilities, IMAP_CAP_CONDSTORE) && ImapCondStore)
+  if ((adata->capabilities & IMAP_CAP_CONDSTORE) && ImapCondStore)
     condstore = " (CONDSTORE)";
   else
 #endif
@@ -2103,7 +2103,7 @@ static int imap_mbox_open(struct Mailbox *m)
 
   /* check for READ-ONLY notification */
   if (mutt_str_startswith(imap_get_qualifier(adata->buf), "[READ-ONLY]", CASE_IGNORE) &&
-      !mutt_bit_isset(adata->capabilities, IMAP_CAP_ACL))
+      !(adata->capabilities & IMAP_CAP_ACL))
   {
     mutt_debug(2, "Mailbox is read-only.\n");
     m->readonly = true;

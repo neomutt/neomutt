@@ -64,8 +64,6 @@ bool ImapServernoise; ///< Config: (imap) Display server warnings as error messa
  * Capabilities - Server capabilities strings that we understand
  *
  * @note This must be kept in the same order as ImapCaps.
- *
- * @note Gmail documents one string but use another, so we support both.
  */
 static const char *const Capabilities[] = {
   "IMAP4",       "IMAP4rev1",      "STATUS",
@@ -73,8 +71,7 @@ static const char *const Capabilities[] = {
   "AUTH=GSSAPI", "AUTH=ANONYMOUS", "AUTH=OAUTHBEARER",
   "STARTTLS",    "LOGINDISABLED",  "IDLE",
   "SASL-IR",     "ENABLE",         "CONDSTORE",
-  "QRESYNC",     "X-GM-EXT-1",     "X-GM-EXT1",
-  NULL,
+  "QRESYNC",     "X-GM-EXT-1",     NULL,
 };
 
 /**
@@ -533,16 +530,15 @@ static void cmd_parse_capability(struct ImapAccountData *adata, char *s)
     *bracket = '\0';
   FREE(&adata->capstr);
   adata->capstr = mutt_str_strdup(s);
-
-  memset(adata->capabilities, 0, sizeof(adata->capabilities));
+  adata->capabilities = 0;
 
   while (*s)
   {
-    for (int i = 0; i < IMAP_CAP_MAX; i++)
+    for (size_t i = 0; Capabilities[i]; i++)
     {
       if (mutt_str_word_casecmp(Capabilities[i], s) == 0)
       {
-        mutt_bit_set(adata->capabilities, i);
+        adata->capabilities |= (1 << i);
         mutt_debug(4, " Found capability \"%s\": %d\n", Capabilities[i], i);
         break;
       }

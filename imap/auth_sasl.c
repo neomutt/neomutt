@@ -82,7 +82,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
       return IMAP_AUTH_FAILURE;
     }
 
-    if (mutt_bit_isset(adata->capabilities, IMAP_CAP_AUTH_ANON) &&
+    if ((adata->capabilities & IMAP_CAP_AUTH_ANON) &&
         (!adata->conn->account.user[0] ||
          mutt_str_startswith(adata->conn->account.user, "anonymous", CASE_MATCH)))
     {
@@ -131,7 +131,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
   buf = mutt_mem_malloc(bufsize);
 
   snprintf(buf, bufsize, "AUTHENTICATE %s", mech);
-  if (mutt_bit_isset(adata->capabilities, IMAP_CAP_SASL_IR) && client_start)
+  if ((adata->capabilities & IMAP_CAP_SASL_IR) && client_start)
   {
     len = mutt_str_strlen(buf);
     buf[len++] = ' ';
