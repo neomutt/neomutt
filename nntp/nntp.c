@@ -2483,7 +2483,7 @@ static int nntp_mbox_open(struct Mailbox *m)
     return -1;
   }
 
-  mutt_bit_unset(m->rights, MUTT_ACL_INSERT);
+  m->rights &= ~MUTT_ACL_INSERT;  // Clear the flag
   if (!mdata->newsrc_ent && !mdata->subscribed && !SaveUnsubscribed)
     m->readonly = true;
 
@@ -2561,10 +2561,8 @@ static int nntp_mbox_open(struct Mailbox *m)
   nntp_hcache_update(mdata, hc);
 #endif
   if (!hc)
-  {
-    mutt_bit_unset(m->rights, MUTT_ACL_WRITE);
-    mutt_bit_unset(m->rights, MUTT_ACL_DELETE);
-  }
+    m->rights &= ~(MUTT_ACL_WRITE | MUTT_ACL_DELETE);  // Clear the flags
+
   nntp_newsrc_close(adata);
   rc = nntp_fetch_headers(m, hc, first, mdata->last_message, false);
 #ifdef USE_HCACHE

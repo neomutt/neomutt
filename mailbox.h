@@ -58,25 +58,21 @@ enum MailboxNotification
 };
 
 /**
- * enum AclRights - ACL Rights
- *
- * These show permission to...
+ * ACL Rights - These show permission to...
  */
-enum AclRights
-{
-  MUTT_ACL_ADMIN = 0, ///< administer the account (get/set permissions)
-  MUTT_ACL_CREATE,    ///< create a mailbox
-  MUTT_ACL_DELETE,    ///< delete a message
-  MUTT_ACL_DELMX,     ///< delete a mailbox
-  MUTT_ACL_EXPUNGE,   ///< expunge messages
-  MUTT_ACL_INSERT,    ///< add/copy into the mailbox (used when editing a message)
-  MUTT_ACL_LOOKUP,    ///< lookup mailbox (visible to 'list')
-  MUTT_ACL_POST,      ///< post (submit messages to the server)
-  MUTT_ACL_READ,      ///< read the mailbox
-  MUTT_ACL_SEEN,      ///< change the 'seen' status of a message
-  MUTT_ACL_WRITE,     ///< write to a message (for flagging, or linking threads)
-  MUTT_ACL_MAX,
-};
+#define MUTT_ACL_ADMIN   (1 <<  0)  ///< administer the account (get/set permissions)
+#define MUTT_ACL_CREATE  (1 <<  1)  ///< create a mailbox
+#define MUTT_ACL_DELETE  (1 <<  2)  ///< delete a message
+#define MUTT_ACL_DELMX   (1 <<  3)  ///< delete a mailbox
+#define MUTT_ACL_EXPUNGE (1 <<  4)  ///< expunge messages
+#define MUTT_ACL_INSERT  (1 <<  5)  ///< add/copy into the mailbox (used when editing a message)
+#define MUTT_ACL_LOOKUP  (1 <<  6)  ///< lookup mailbox (visible to 'list')
+#define MUTT_ACL_POST    (1 <<  7)  ///< post (submit messages to the server)
+#define MUTT_ACL_READ    (1 <<  8)  ///< read the mailbox
+#define MUTT_ACL_SEEN    (1 <<  9)  ///< change the 'seen' status of a message
+#define MUTT_ACL_WRITE   (1 << 10)  ///< write to a message (for flagging or linking threads)
+
+#define MUTT_ACL_ALL    ((1 << 11) - 1)
 
 /**
  * struct Mailbox - A mailbox
@@ -120,7 +116,7 @@ struct Mailbox
   bool quiet                  : 1; /**< inhibit status messages? */
   bool readonly               : 1; /**< don't allow changes to the mailbox */
 
-  unsigned char rights[(MUTT_ACL_MAX + 7) / 8]; /**< ACL bits */
+  unsigned int rights; /**< ACL bits */
 
 #ifdef USE_COMPRESSED
   void *compress_info; /**< compressed mbox module private data */

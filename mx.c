@@ -288,9 +288,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, int flags)
 
   m->msg_unread = 0;
   m->msg_flagged = 0;
-
-  for (int i = 0; i < MUTT_ACL_MAX; i++)
-    mutt_bit_set(m->rights, i);
+  m->rights = MUTT_ACL_ALL;
 
   if (flags & MUTT_QUIET)
     m->quiet = true;

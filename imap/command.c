@@ -691,54 +691,52 @@ static void cmd_parse_myrights(struct ImapAccountData *adata, const char *s)
   s = imap_next_word((char *) s);
 
   /* zero out current rights set */
-  memset(adata->mailbox->rights, 0, sizeof(adata->mailbox->rights));
+  adata->mailbox->rights = 0;
 
   while (*s && !isspace((unsigned char) *s))
   {
     switch (*s)
     {
       case 'a':
-        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_ADMIN);
+        adata->mailbox->rights |= MUTT_ACL_ADMIN;
         break;
       case 'e':
-        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_EXPUNGE);
+        adata->mailbox->rights |= MUTT_ACL_EXPUNGE;
         break;
       case 'i':
-        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_INSERT);
+        adata->mailbox->rights |= MUTT_ACL_INSERT;
         break;
       case 'k':
-        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_CREATE);
+        adata->mailbox->rights |= MUTT_ACL_CREATE;
         break;
       case 'l':
-        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_LOOKUP);
+        adata->mailbox->rights |= MUTT_ACL_LOOKUP;
         break;
       case 'p':
-        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_POST);
+        adata->mailbox->rights |= MUTT_ACL_POST;
         break;
       case 'r':
-        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_READ);
+        adata->mailbox->rights |= MUTT_ACL_READ;
         break;
       case 's':
-        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_SEEN);
+        adata->mailbox->rights |= MUTT_ACL_SEEN;
         break;
       case 't':
-        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_DELETE);
+        adata->mailbox->rights |= MUTT_ACL_DELETE;
         break;
       case 'w':
-        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_WRITE);
+        adata->mailbox->rights |= MUTT_ACL_WRITE;
         break;
       case 'x':
-        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_DELMX);
+        adata->mailbox->rights |= MUTT_ACL_DELMX;
         break;
 
       /* obsolete rights */
       case 'c':
-        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_CREATE);
-        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_DELMX);
+        adata->mailbox->rights |= MUTT_ACL_CREATE | MUTT_ACL_DELMX;
         break;
       case 'd':
-        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_DELETE);
-        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_EXPUNGE);
+        adata->mailbox->rights |= MUTT_ACL_DELETE | MUTT_ACL_EXPUNGE;
         break;
       default:
         mutt_debug(1, "Unknown right: %c\n", *s);
