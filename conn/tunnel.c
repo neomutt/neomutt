@@ -139,10 +139,15 @@ static int tunnel_socket_read(struct Connection *conn, char *buf, size_t count)
   struct TunnelSockData *tunnel = conn->sockdata;
   int rc;
 
-  rc = read(tunnel->readfd, buf, count);
-  if (rc == -1)
+  do
+  {
+    rc = read(tunnel->readfd, buf, count);
+  } while (rc < 0 && errno == EINTR);
+
+  if (rc < 0)
   {
     mutt_error(_("Tunnel error talking to %s: %s"), conn->account.host, strerror(errno));
+    return -1;
   }
 
   return rc;
@@ -155,14 +160,25 @@ static int tunnel_socket_write(struct Connection *conn, const char *buf, size_t 
 {
   struct TunnelSockData *tunnel = conn->sockdata;
   int rc;
+  size_t sent = 0;
 
-  rc = write(tunnel->writefd, buf, count);
-  if (rc == -1)
+  do
   {
-    mutt_error(_("Tunnel error talking to %s: %s"), conn->account.host, strerror(errno));
-  }
+    do
+    {
+      rc = write(tunnel->writefd, buf + sent, count - sent);
+    } while (rc < 0 && errno == EINTR);
 
-  return rc;
+    if (rc < 0)
+    {
+      mutt_error(_("Tunnel error talking to %s: %s"), conn->account.host, strerror(errno));
+      return -1;
+    }
+
+    sent += rc;
+  } while (sent < count);
+
+  return sent;
 }
 
 /**
