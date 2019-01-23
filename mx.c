@@ -1080,6 +1080,24 @@ int mx_msg_close(struct Mailbox *m, struct Message **msg)
 }
 
 /**
+ * mx_msg_flag_modified - Notify that a message's flag has been modified.
+ * @param m Mailbox
+ * @param e Email
+ * @param flag Flag
+ * @retval  0 Success
+ * @retval -1 Failure
+ *
+ * Write a single header out to the header cache.
+ */
+int mx_msg_flag_modified(struct Mailbox *m, struct Email *e, int flag)
+{
+  if (!m || !e || !m->mx_ops || !m->mx_ops->msg_flag_modified)
+    return 0;
+
+  return m->mx_ops->msg_flag_modified(m, e, flag);
+}
+
+/**
  * mx_alloc_memory - Create storage for the emails
  * @param m Mailbox
  */

@@ -2399,6 +2399,22 @@ static int nm_mbox_close(struct Mailbox *m)
 }
 
 /**
+ * nm_flag_modified - Implements MxOps::msg_flag_modified
+ *
+ * Only handles read/unread status so far.
+ */
+int nm_msg_flag_modified(struct Mailbox *m, struct Email *e, int flag) {
+  size_t buflen = sizeof(C_NmUnreadTag) + 1;
+  char buf[buflen];
+  if (e->read)
+    snprintf(buf, buflen, "-%s", C_NmUnreadTag);
+  else
+    snprintf(buf, buflen, "+%s", C_NmUnreadTag);
+
+  return mx_tags_commit(m, e, buf);
+}
+
+/**
  * nm_msg_open - Implements MxOps::msg_open()
  */
 static int nm_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
@@ -2555,6 +2571,7 @@ struct MxOps MxNotmuchOps = {
   .msg_open_new     = maildir_msg_open_new,
   .msg_commit       = nm_msg_commit,
   .msg_close        = nm_msg_close,
+  .msg_flag_modified = nm_msg_flag_modified,
   .msg_padding_size = NULL,
   .msg_save_hcache  = NULL,
   .tags_edit        = nm_tags_edit,

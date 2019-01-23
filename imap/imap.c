@@ -2533,6 +2533,7 @@ struct MxOps MxImapOps = {
   .msg_open_new     = imap_msg_open_new,
   .msg_commit       = imap_msg_commit,
   .msg_close        = imap_msg_close,
+  .msg_flag_modified = NULL,
   .msg_padding_size = NULL,
   .msg_save_hcache  = imap_msg_save_hcache,
   .tags_edit        = imap_tags_edit,

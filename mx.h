@@ -203,6 +203,15 @@ struct MxOps
    */
   int (*msg_close)       (struct Mailbox *m, struct Message *msg);
   /**
+   * msg_flag_modified - Notify that a flag has been modified
+   * @param m    Mailbox
+   * @param e    Email whose flags has been altered.
+   * @param flag Flag issued
+   * @retval  0 Success
+   * @retval -1 Failure
+   */
+  int (*msg_flag_modified) (struct Mailbox *m, struct Email *e, int flag);
+  /**
    * msg_padding_size - Bytes of padding between messages
    * @param m Mailbox
    * @retval num Bytes of padding
@@ -278,6 +287,7 @@ struct Context *mx_mbox_open       (struct Mailbox *m, OpenMailboxFlags flags);
 int             mx_mbox_sync       (struct Mailbox *m, int *index_hint);
 int             mx_msg_close       (struct Mailbox *m, struct Message **msg);
 int             mx_msg_commit      (struct Mailbox *m, struct Message *msg);
+int             mx_msg_flag_modified(struct Mailbox *m, struct Email *e, int flag);
 struct Message *mx_msg_open_new    (struct Mailbox *m, struct Email *e, MsgOpenFlags flags);
 struct Message *mx_msg_open        (struct Mailbox *m, int msgno);
 int             mx_msg_padding_size(struct Mailbox *m);

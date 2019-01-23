@@ -981,6 +981,7 @@ struct MxOps MxCompOps = {
   .msg_open_new     = comp_msg_open_new,
   .msg_commit       = comp_msg_commit,
   .msg_close        = comp_msg_close,
+  .msg_flag_modified = NULL,
   .msg_padding_size = comp_msg_padding_size,
   .msg_save_hcache  = comp_msg_save_hcache,
   .tags_edit        = comp_tags_edit,

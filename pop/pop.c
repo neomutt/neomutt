@@ -1294,6 +1294,7 @@ struct MxOps MxPopOps = {
   .msg_open_new     = NULL,
   .msg_commit       = NULL,
   .msg_close        = pop_msg_close,
+  .msg_flag_modified = NULL,
   .msg_padding_size = NULL,
   .msg_save_hcache  = pop_msg_save_hcache,
   .tags_edit        = NULL,

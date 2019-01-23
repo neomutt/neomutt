@@ -2777,18 +2777,30 @@ int mutt_index_menu(void)
               continue;
 
             if (Context->mailbox->emails[i]->read || Context->mailbox->emails[i]->old)
+            {
               mutt_set_flag(Context->mailbox, Context->mailbox->emails[i], MUTT_NEW, true);
+              mx_msg_flag_modified(Context->mailbox, Context->mailbox->emails[i], MUTT_NEW);
+            }
             else
+            {
               mutt_set_flag(Context->mailbox, Context->mailbox->emails[i], MUTT_READ, true);
+              mx_msg_flag_modified(Context->mailbox, Context->mailbox->emails[i], MUTT_READ);
+            }
           }
           menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         }
         else
         {
           if (CUR_EMAIL->read || CUR_EMAIL->old)
+          {
             mutt_set_flag(Context->mailbox, CUR_EMAIL, MUTT_NEW, true);
+            mx_msg_flag_modified(Context->mailbox, CUR_EMAIL, MUTT_NEW);
+          }
           else
+          {
             mutt_set_flag(Context->mailbox, CUR_EMAIL, MUTT_READ, true);
+            mx_msg_flag_modified(Context->mailbox, CUR_EMAIL, MUTT_READ);
+          }
 
           if (C_Resolve)
           {

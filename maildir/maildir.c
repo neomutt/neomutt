@@ -715,6 +715,7 @@ struct MxOps MxMaildirOps = {
   .msg_open_new     = maildir_msg_open_new,
   .msg_commit       = maildir_msg_commit,
   .msg_close        = mh_msg_close,
+  .msg_flag_modified = NULL,
   .msg_padding_size = NULL,
   .msg_save_hcache  = maildir_msg_save_hcache,
   .tags_edit        = NULL,

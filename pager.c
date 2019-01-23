@@ -3362,9 +3362,15 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         CHECK_ACL(MUTT_ACL_SEEN, _("Cannot toggle new"));
 
         if (extra->email->read || extra->email->old)
+        {
           mutt_set_flag(Context->mailbox, extra->email, MUTT_NEW, true);
+          mx_msg_flag_modified(Context->mailbox, extra->email, MUTT_NEW);
+        }
         else if (!first)
+        {
           mutt_set_flag(Context->mailbox, extra->email, MUTT_READ, true);
+          mx_msg_flag_modified(Context->mailbox, extra->email, MUTT_READ);
+        }
         first = false;
         Context->msgnotreadyet = -1;
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
