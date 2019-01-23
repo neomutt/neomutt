@@ -441,7 +441,7 @@ static int get_op(const struct Binding *bindings, const char *start, size_t len)
 }
 
 /**
- * get_func - Get the name of a function
+ * mutt_get_func - Get the name of a function
  * @param bindings Key bindings table
  * @param op       Operation, e.g. OP_DELETE
  * @retval ptr  Name of function
@@ -449,7 +449,7 @@ static int get_op(const struct Binding *bindings, const char *start, size_t len)
  *
  * @note This returns a static string.
  */
-static const char *get_func(const struct Binding *bindings, int op)
+const char *mutt_get_func(const struct Binding *bindings, int op)
 {
   for (int i = 0; bindings[i].name; i++)
   {
@@ -631,17 +631,17 @@ int km_dokey(int menu)
       const struct Binding *bindings = NULL;
 
       /* is this a valid op for this menu? */
-      if ((bindings = km_get_table(menu)) && (func = get_func(bindings, tmp.op)))
+      if ((bindings = km_get_table(menu)) && (func = mutt_get_func(bindings, tmp.op)))
         return tmp.op;
 
-      if (menu == MENU_EDITOR && get_func(OpEditor, tmp.op))
+      if (menu == MENU_EDITOR && mutt_get_func(OpEditor, tmp.op))
         return tmp.op;
 
       if (menu != MENU_EDITOR && menu != MENU_PAGER)
       {
         /* check generic menu */
         bindings = OpGeneric;
-        func = get_func(bindings, tmp.op);
+        func = mutt_get_func(bindings, tmp.op);
         if (func)
           return tmp.op;
       }
@@ -653,7 +653,7 @@ int km_dokey(int menu)
         bindings = km_get_table(Menus[i].value);
         if (bindings)
         {
-          func = get_func(bindings, tmp.op);
+          func = mutt_get_func(bindings, tmp.op);
           if (func)
           {
             mutt_unget_event('>', 0);

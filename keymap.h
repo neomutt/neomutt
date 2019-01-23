@@ -105,6 +105,7 @@ struct Binding
 };
 
 const struct Binding *km_get_table(int menu);
+const char *mutt_get_func(const struct Binding *bindings, int op);
 
 extern const struct Binding OpGeneric[];
 extern const struct Binding OpPost[];

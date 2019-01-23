@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 2016 Christopher John Czettel <chris@meicloud.at>
  * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Victor Fernandes <criw@pm.me>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -29,13 +30,16 @@
 #include "mutt.h"
 #include "icommands.h"
 #include "globals.h"
+#include "keymap.h"
 #include "muttlib.h"
+#include "opcodes.h"
 #include "pager.h"
 #include "version.h"
 
 // clang-format off
-static enum CommandResult icmd_set(struct      Buffer *, struct Buffer *, unsigned long, struct Buffer *);
-static enum CommandResult icmd_version(struct  Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static enum CommandResult icmd_bind   (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult icmd_set    (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult icmd_version(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 
 /**
  * ICommandList - All available informational commands
@@ -43,6 +47,8 @@ static enum CommandResult icmd_version(struct  Buffer *, struct Buffer *, unsign
  * @note These commands take precedence over conventional mutt rc-lines
  */
 const struct ICommand ICommandList[] = {
+  { "bind",     icmd_bind,     0 },
+  { "macro",    icmd_bind,     1 },
   { "set",      icmd_set,      0 },
   { "version",  icmd_version,  0 },
   { NULL,       NULL,          0 },
@@ -99,6 +105,196 @@ finish:
 }
 
 /**
+ * dump_bind - Dump a bind map to a buffer
+ * @param buf  Output buffer
+ * @param menu Map menu
+ * @param map  Bind keymap
+ */
+static void dump_bind(struct Buffer *buf, struct Mapping *menu, struct Keymap *map)
+{
+  char key_binding[MAX_SEQ];
+  const char *fn_name = NULL;
+
+  km_expand_key(key_binding, MAX_SEQ, map);
+  if (map->op == OP_NULL)
+  {
+    mutt_buffer_add_printf(buf, "bind %s %s noop\n", menu->name, key_binding);
+    return;
+  }
+
+  /* The pager and editor menus don't use the generic map,
+    * however for other menus try generic first. */
+  if ((menu->value != MENU_PAGER) && (menu->value != MENU_EDITOR) && (menu->value != MENU_GENERIC))
+  {
+    fn_name = mutt_get_func(OpGeneric, map->op);
+  }
+
+  /* if it's one of the menus above or generic doesn't find
+    * the function, try with its own menu. */
+  if (!fn_name)
+  {
+    const struct Binding *bindings = km_get_table(menu->value);
+    if (!bindings)
+      return;
+
+    fn_name = mutt_get_func(bindings, map->op);
+  }
+
+  mutt_buffer_add_printf(buf, "bind %s %s %s\n", menu->name, key_binding, fn_name);
+}
+
+/**
+ * dump_macro - Dump a macro map to a buffer
+ * @param buf  Output buffer
+ * @param menu Map menu
+ * @param map  Macro keymap
+ */
+static void dump_macro(struct Buffer *buf, struct Mapping *menu, struct Keymap *map)
+{
+  char key_binding[MAX_SEQ];
+  km_expand_key(key_binding, MAX_SEQ, map);
+
+  struct Buffer *tmp = mutt_buffer_new();
+  escape_string(tmp, map->macro);
+
+  if (map->desc)
+  {
+    mutt_buffer_add_printf(buf, "macro %s %s \"%s\" \"%s\"\n", menu->name,
+                           key_binding, tmp->data, map->desc);
+  }
+  else
+  {
+    mutt_buffer_add_printf(buf, "macro %s %s \"%s\"\n", menu->name, key_binding, tmp->data);
+  }
+
+  mutt_buffer_free(&tmp);
+}
+
+/**
+ * dump_menu - Dumps all the binds or macros maps of a menu into a buffer
+ * @param buf   Output buffer
+ * @param menu  Menu to dump
+ * @param bind  If true it's :bind, else :macro
+ * @retval bool true if menu is empty, false if not
+ */
+static bool dump_menu(struct Buffer *buf, struct Mapping *menu, bool bind)
+{
+  bool empty = true;
+  struct Keymap *map = NULL, *next = NULL;
+
+  for (map = Keymaps[menu->value]; map; map = next)
+  {
+    next = map->next;
+
+    if (bind && (map->op != OP_MACRO))
+    {
+      empty = false;
+      dump_bind(buf, menu, map);
+    }
+    else if (!bind && (map->op == OP_MACRO))
+    {
+      empty = false;
+      dump_macro(buf, menu, map);
+    }
+  }
+
+  return empty;
+}
+
+/**
+ * dump_all_menus - Dumps all the binds or macros inside every menu
+ * @param buf  Output buffer
+ * @param bind If true it's :bind, else :macro
+ */
+static void dump_all_menus(struct Buffer *buf, bool bind)
+{
+  bool empty;
+  for (int i = 0; i < MENU_MAX; i++)
+  {
+    const char *menu_name = mutt_map_get_name(i, Menus);
+    struct Mapping menu = { menu_name, i };
+
+    empty = dump_menu(buf, &menu, bind);
+
+    /* Add a new line for readability between menus. */
+    if (!empty && (i < (MENU_MAX - 1)))
+      mutt_buffer_addch(buf, '\n');
+  }
+}
+
+/**
+ * icmd_bind - Parse 'bind' and 'macro' commands - Implements ::icommand_t
+ */
+static enum CommandResult icmd_bind(struct Buffer *buf, struct Buffer *s,
+                                    unsigned long data, struct Buffer *err)
+{
+  FILE *fpout = NULL;
+  char tempfile[PATH_MAX];
+  bool dump_all = false, bind = (data == 0);
+
+  if (!MoreArgs(s))
+    dump_all = true;
+  else
+    mutt_extract_token(buf, s, 0);
+
+  if (MoreArgs(s))
+  {
+    /* More arguments potentially means the user is using the
+     * ::command_t :bind command thus we delegate the task. */
+    return MUTT_CMD_ERROR;
+  }
+
+  struct Buffer *filebuf = mutt_buffer_alloc(4096);
+  if (dump_all || (mutt_str_strcasecmp(buf->data, "all") == 0))
+  {
+    dump_all_menus(filebuf, bind);
+  }
+  else
+  {
+    const int menu_index = mutt_map_get_value(buf->data, Menus);
+    if (menu_index == -1)
+    {
+      mutt_buffer_printf(err, _("%s: no such menu"), buf->data);
+      mutt_buffer_free(&filebuf);
+      return MUTT_CMD_ERROR;
+    }
+
+    struct Mapping menu = { buf->data, menu_index };
+    dump_menu(filebuf, &menu, bind);
+  }
+
+  if (mutt_buffer_is_empty(filebuf))
+  {
+    mutt_buffer_printf(err, _("%s: no %s for this menu"),
+                       dump_all ? "all" : buf->data, bind ? "binds" : "macros");
+    mutt_buffer_free(&filebuf);
+    return MUTT_CMD_ERROR;
+  }
+
+  mutt_mktemp(tempfile, sizeof(tempfile));
+  fpout = mutt_file_fopen(tempfile, "w");
+  if (!fpout)
+  {
+    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
+    mutt_buffer_free(&filebuf);
+    return MUTT_CMD_ERROR;
+  }
+  fputs(filebuf->data, fpout);
+
+  mutt_file_fclose(&fpout);
+  mutt_buffer_free(&filebuf);
+
+  struct Pager info = { 0 };
+  if (mutt_pager((bind) ? "bind" : "macro", tempfile, 0, &info) == -1)
+  {
+    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
+    return MUTT_CMD_ERROR;
+  }
+
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
  * icmd_set - Parse 'set' command to display config - Implements ::icommand_t
  */
 static enum CommandResult icmd_set(struct Buffer *buf, struct Buffer *s,
@@ -128,7 +324,6 @@ static enum CommandResult icmd_set(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_ERROR;
   }
 
-  fflush(fpout);
   mutt_file_fclose(&fpout);
 
   struct Pager info = { 0 };
@@ -158,7 +353,6 @@ static enum CommandResult icmd_version(struct Buffer *buf, struct Buffer *s,
   }
 
   print_version(fpout);
-  fflush(fpout);
   mutt_file_fclose(&fpout);
 
   struct Pager info = { 0 };
