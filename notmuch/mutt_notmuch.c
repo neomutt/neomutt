@@ -2438,6 +2438,14 @@ static int nm_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   if (!msg->fp)
     return -1;
 
+  if (!e->read)
+  {
+    size_t buflen = sizeof(C_NmUnreadTag) + 1;
+    char buf[buflen];
+    snprintf(buf, buflen, "-%s", C_NmUnreadTag);
+    mx_tags_commit(m, e, buf);
+  }
+
   return 0;
 }
 
