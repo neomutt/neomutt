@@ -637,7 +637,7 @@ int mutt_is_application_smime(struct Body *m)
 
   /* no .p7c, .p10 support yet. */
 
-  size_t len = mutt_str_strlen(t) - 4;
+  int len = mutt_str_strlen(t) - 4;
   if (len > 0 && *(t + len) == '.')
   {
     len++;
