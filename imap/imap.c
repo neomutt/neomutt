@@ -836,6 +836,7 @@ void imap_expunge_mailbox(struct Mailbox *m)
   imap_hcache_close(mdata);
 #endif
 
+  mutt_mailbox_changed(m, MBN_UPDATE);
   mutt_mailbox_changed(m, MBN_RESORT);
 }
 

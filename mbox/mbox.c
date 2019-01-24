@@ -929,7 +929,7 @@ static int mbox_mbox_open(struct Mailbox *m)
   if (!adata)
     return -1;
 
-  adata->fp = fopen(m->path, "r");
+  adata->fp = fopen(m->path, "r+");
   if (!adata->fp)
   {
     mutt_perror(m->path);
@@ -1800,8 +1800,7 @@ static int mbox_mbox_check_stats(struct Mailbox *m, int flags)
 
   if (mutt_file_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->stats_last_checked) > 0)
   {
-    struct Context *ctx =
-        mx_mbox_open(m, NULL, MUTT_READONLY | MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK);
+    struct Context *ctx = mx_mbox_open(m, NULL, MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK);
     if (ctx)
     {
       m->msg_count = ctx->mailbox->msg_count;

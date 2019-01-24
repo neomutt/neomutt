@@ -57,6 +57,7 @@ enum MailboxNotification
   MBN_CLOSED = 1, ///< Mailbox was closed
   MBN_INVALID,    ///< Email list was changed
   MBN_RESORT,     ///< Email list needs resorting
+  MBN_UPDATE,     ///< Update internal tables
 };
 
 /**
