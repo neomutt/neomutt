@@ -1134,24 +1134,38 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *
   struct AttachPtr *new = NULL;
   struct Body *new_body = NULL;
   FILE *new_fp = NULL;
-  int need_secured, secured;
+  int type, need_secured, secured;
 
   for (; m; m = m->next)
   {
     need_secured = 0;
     secured = 0;
 
-    if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(m))
+    if (((WithCrypto & APPLICATION_SMIME) != 0) && (type = mutt_is_application_smime(m)))
     {
       need_secured = 1;
 
-      if (!crypt_valid_passphrase(APPLICATION_SMIME))
-        goto decrypt_failed;
+      if (type & ENCRYPT)
+      {
+        if (!crypt_valid_passphrase(APPLICATION_SMIME))
+          goto decrypt_failed;
 
-      if (e->env)
-        crypt_smime_getkeys(e->env);
+        if (e->env)
+          crypt_smime_getkeys(e->env);
+      }
 
       secured = !crypt_smime_decrypt_mime(fp, &new_fp, m, &new_body);
+      /* If the decrypt/verify-opaque doesn't generate mime output, an
+       * empty "TEXT" type will still be returned by
+       * mutt_read_mime_header().  Since recursing over that type
+       * isn't interesting and loses information about the original
+       * attachment, just abort and view normally. */
+      if (secured && new_body->type == TYPE_TEXT)
+      {
+        mutt_body_free(&new_body);
+        mutt_file_fclose(&new_fp);
+        goto decrypt_failed;
+      }
 
       /* S/MIME nesting */
       if ((mutt_is_application_smime(new_body) & SMIME_OPAQUE) == SMIME_OPAQUE)
@@ -1168,7 +1182,7 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *
         mutt_file_fclose(&outer_fp);
       }
 
-      if (secured)
+      if (secured && (type & ENCRYPT))
         e->security |= SMIME_ENCRYPT;
     }
 
