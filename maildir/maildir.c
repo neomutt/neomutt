@@ -43,6 +43,7 @@
 #include <time.h>
 #include <unistd.h>
 #include "maildir_private.h"
+#include "maildir/lib.h"
 #include "mutt/mutt.h"
 #include "config/lib.h"
 #include "email/lib.h"
@@ -581,7 +582,7 @@ static int maildir_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
  * @note This uses _almost_ the maildir file name format,
  * but with a {cur,new} prefix.
  */
-static int maildir_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e)
+int maildir_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e)
 {
   if (!m)
     return -1;
