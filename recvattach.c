@@ -1167,21 +1167,6 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *
         goto decrypt_failed;
       }
 
-      /* S/MIME nesting */
-      if ((mutt_is_application_smime(new_body) & SMIME_OPAQUE) == SMIME_OPAQUE)
-      {
-        struct Body *outer_new_body = new_body;
-        FILE *outer_fp = new_fp;
-
-        new_body = NULL;
-        new_fp = NULL;
-
-        secured = !crypt_smime_decrypt_mime(outer_fp, &new_fp, outer_new_body, &new_body);
-
-        mutt_body_free(&outer_new_body);
-        mutt_file_fclose(&outer_fp);
-      }
-
       if (secured && (type & ENCRYPT))
         e->security |= SMIME_ENCRYPT;
     }
