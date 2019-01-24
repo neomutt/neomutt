@@ -196,9 +196,8 @@ msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Kol kas ištrinti gali tik IMAP pašto dėžutes"
 
 #: browser.c:1692
-#, fuzzy
 msgid "Can't delete currently selected mailbox"
-msgstr "parodyti dabar pažymėtos bylos vardą"
+msgstr "Negaliu ištrinti dabar pažymėtos pašto dėžutės"
 
 #: browser.c:1696
 #, c-format
@@ -594,7 +593,7 @@ msgstr "Pasirašyti kaip: "
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:165
 msgid "Newsgroups: "
-msgstr "Naujienių grupės: "
+msgstr "Naujienų grupės: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:167
@@ -791,7 +790,7 @@ msgstr "Esamas priedas bus konvertuotas"
 
 #: compose.c:1616
 msgid "Empty Content-Language"
-msgstr "Tušia Content-Language antraštė"
+msgstr "Tuščia Content-Language antraštė"
 
 #: compose.c:1633
 msgid "Invalid encoding"
@@ -1420,7 +1419,7 @@ msgstr "Išvalyti vėliavėlę"
 #: handler.c:95
 #, c-format
 msgid "[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- Alternatyus tipas #%d: %s/%s%s%s, Koduotė: %s, Dydis: %s --]\n"
+msgstr "[-- Alternatyvus tipas #%d: %s/%s%s%s, Koduotė: %s, Dydis: %s --]\n"
 
 #: handler.c:101
 #, c-format
@@ -1734,9 +1733,8 @@ msgid "Authenticating (OAUTHBEARER)..."
 msgstr "Autentikuojuosi (OAUTHBEARER)..."
 
 #: imap/auth_oauth.c:95
-#, fuzzy
 msgid "OAUTHBEARER authentication failed."
-msgstr "SASL autentikacija nepavyko"
+msgstr "OAUTHBEARER autentikacija nepavyko."
 
 #: imap/auth_sasl.c:128 nntp/nntp.c:550 nntp/nntp.c:616 smtp.c:429
 #, c-format
@@ -2176,13 +2174,12 @@ msgid "Logged out of IMAP servers"
 msgstr "Atsijungiau nuo IMAP serverių"
 
 #: index.c:1911
-#, fuzzy
 msgid "No virtual folder and no Message-Id, aborting"
-msgstr "Nėra virtualaus aplanko, nutraukiu"
+msgstr "Nėra virtualaus aplanko nei Message-Id, nutraukiu"
 
 #: index.c:1923 index.c:2081 index.c:2102 index.c:2122
 msgid "Failed to create query, aborting"
-msgstr "Nepavyko sukurti užklausos, ašaukiu"
+msgstr "Nepavyko sukurti užklausos, atšaukiu"
 
 #: index.c:1934
 msgid "Failed to read thread, aborting"
@@ -2576,7 +2573,7 @@ msgstr "Negalima įjungti parametro %s laiško prisegimo režime"
 #: keymap.c:319 keymap.c:327
 #, c-format
 msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings"
-msgstr "Klavišo '%s' susiejimas paslėps '%s'  Prieš tai darykite 'bind %s %s noop'  vhttps://neomutt.org/guide/configuration.html#bind-warnings"
+msgstr "Klavišo '%s' susiejimas paslėps '%s'  Prieš tai darykite 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings"
 
 #: keymap.c:686
 msgid "Macros are currently disabled"
@@ -2751,7 +2748,7 @@ msgstr ""
 "  -A <aliasas>  Išvesti aliaso reikšmę ir išeiti\n"
 "  -a <priedas>  Prikabinti vieną ar daugiau bylų prie laiško (turi būti\n"
 "                paskutinis parametras).  Gavėjus nurodykite po '--'\n"
-"  -B            Veikti automatiniame režime (be ncurses sąsasjos)\n"
+"  -B            Veikti automatiniame režime (be ncurses sąsajos)\n"
 "  -b <adresas>  Nurodyti slaptos kopijos (Bcc) gavėją\n"
 "  -c <adresas>  Nurodyti kopijos (Cc) gavėją\n"
 "  -D            Spausdinti visus kintamuosius 'vardas=reikšmė' poromis\n"
@@ -3515,7 +3512,7 @@ msgstr "Įspėjimas: pasirašymo rakto galiojimas baigėsi "
 
 #: ncrypt/crypt_gpgme.c:1298
 msgid "Warning: At least one certification key has expired\n"
-msgstr "Įspėjimas: baigįsi bent vieno sertifikavimo rakto galiojimas\n"
+msgstr "Įspėjimas: baigėsi bent vieno sertifikavimo rakto galiojimas\n"
 
 #: ncrypt/crypt_gpgme.c:1315
 msgid "Warning: The signature expired at: "
@@ -4459,7 +4456,7 @@ msgstr "Nenurodytas nė vienas naujienų serveris"
 #: nntp/newsrc.c:1025
 #, c-format
 msgid "%s is an invalid news server specification"
-msgstr "%s yra bloga naujienų serverio speficikacija"
+msgstr "%s yra bloga naujienų serverio specifikacija"
 
 #: nntp/nntp.c:220 nntp/nntp.c:751 pop/pop.c:744 pop/pop_lib.c:399
 msgid "Server closed connection"
@@ -4636,7 +4633,7 @@ msgstr "žiūrėti bylą"
 
 #: opcodes.h:41
 msgid "mark all articles in newsgroup as read"
-msgstr "pažymėti visus strapsnius naujienų grupėje skaitytais"
+msgstr "pažymėti visus straipsnius naujienų grupėje skaitytais"
 
 #: opcodes.h:42
 msgid "change directories"
@@ -5602,7 +5599,7 @@ msgstr "Laukiu notmuch DB... (%d sek.)"
 #: notmuch/nm_db.c:120
 #, c-format
 msgid "Cannot open notmuch database: %s: %s"
-msgstr "Nepavyko atidaryti nottmuch duomenų bazės: %s: %s"
+msgstr "Nepavyko atidaryti notmuch duomenų bazės: %s: %s"
 
 #: notmuch/nm_db.c:121
 msgid "unknown reason"
@@ -6422,7 +6419,7 @@ msgid ""
 msgstr ""
 "    Ši programa yra laisva; tu gali ją platinti ir/arba keisti\n"
 "    pagal GNU General Public License sąlygas, kurias paskelbė\n"
-"    Free Software Foundation; arba 2 Licenzijos versiją, arba\n"
+"    Free Software Foundation; arba 2 Licencijos versiją, arba\n"
 "    (pagal tavo pasirinkimą) bet kurią vėlesnę versiją.\n"
 "\n"
 "    Ši programa yra platinama tikintis, kad ji bus naudinga,\n"
