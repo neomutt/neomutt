@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2018-11-30 12:04+0000\n"
-"PO-Revision-Date: 2018-11-13 10:23+0100\n"
+"PO-Revision-Date: 2019-01-25 17:47+0100\n"
 "Last-Translator: Marcin Rajner <marcin.rajner@pw.edu.pl>\n"
 "Language-Team: none\n"
 "Language: pl\n"
@@ -196,9 +196,8 @@ msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Usuwanie skrzynek jest obsługiwane tylko dla skrzynek IMAP"
 
 #: browser.c:1692
-#, fuzzy
 msgid "Can't delete currently selected mailbox"
-msgstr "wyświetl nazwy aktualnie wybranych plików"
+msgstr "Nie można skasować wybranych skrzynek pocztowych"
 
 #: browser.c:1696
 #, c-format
@@ -1735,9 +1734,8 @@ msgid "Authenticating (OAUTHBEARER)..."
 msgstr "Uwierzytelnianie (OAUTHBEARER)..."
 
 #: imap/auth_oauth.c:95
-#, fuzzy
 msgid "OAUTHBEARER authentication failed."
-msgstr "Uwierzytelnianie SASL nie powiodło się"
+msgstr "Uwierzytelnianie OAUTHBEARER nie powiodło się"
 
 #: imap/auth_sasl.c:128 nntp/nntp.c:550 nntp/nntp.c:616 smtp.c:429
 #, c-format
@@ -2177,9 +2175,8 @@ msgid "Logged out of IMAP servers"
 msgstr "Wylogowano z serwera IMAP"
 
 #: index.c:1911
-#, fuzzy
 msgid "No virtual folder and no Message-Id, aborting"
-msgstr "To nie jest folder wirtualny, zaniechano"
+msgstr "Brak folderu wirtualnego i Message-Id, zaniechano"
 
 #: index.c:1923 index.c:2081 index.c:2102 index.c:2122
 msgid "Failed to create query, aborting"
