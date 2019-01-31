@@ -534,6 +534,7 @@ const struct Binding OpBrowser[] = { /* map: browser */
   { "create-mailbox",        OP_CREATE_MAILBOX,              "C" },
   { "delete-mailbox",        OP_DELETE_MAILBOX,              "d" },
 #endif
+  { "descend-directory",     OP_DESCEND_DIRECTORY,           NULL },
   { "display-filename",      OP_BROWSER_TELL,                "@" },
   { "enter-mask",            OP_ENTER_MASK,                  "m" },
   { "goto-folder",           OP_BROWSER_GOTO_FOLDER,         "=" },

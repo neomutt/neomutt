@@ -91,6 +91,7 @@
   _fmt(OP_DELETE_MAILBOX,                 N_("delete the current mailbox (IMAP only)")) \
   _fmt(OP_DELETE_SUBTHREAD,               N_("delete all messages in subthread")) \
   _fmt(OP_DELETE_THREAD,                  N_("delete all messages in thread")) \
+  _fmt(OP_DESCEND_DIRECTORY,              N_("descend into a directory")) \
   _fmt(OP_DISPLAY_ADDRESS,                N_("display full address of sender")) \
   _fmt(OP_DISPLAY_HEADERS,                N_("display message and toggle header weeding")) \
   _fmt(OP_DISPLAY_MESSAGE,                N_("display a message")) \

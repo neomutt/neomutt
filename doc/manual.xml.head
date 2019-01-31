@@ -343,6 +343,13 @@ vim: ts=2 sw=2 sts=2 expandtab:
           file(s) to attach to a message, select multiple files to attach and
           many more.
         </para>
+        <para>
+          Some mail systems can nest mail folders inside other mail folders.
+          The normal open entry commands in mutt will open the mail folder and
+          you can't see the sub-folders.  If you instead use the
+          <literal>&lt;descend-directory&gt;</literal> function it will go into
+          the directory and not open it as a mail directory.
+        </para>
       </sect2>
 
       <sect2 id="intro-sidebar">
