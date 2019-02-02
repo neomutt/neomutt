@@ -1320,6 +1320,11 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           mutt_error(_("No files match the file mask"));
           break;
         }
+        else if (op == OP_DESCEND_DIRECTORY)
+        {
+          mutt_error(_("%s is not a directory"), state.entry[menu->current].name);
+          break;
+        }
 
         if (S_ISDIR(state.entry[menu->current].mode) ||
             (S_ISLNK(state.entry[menu->current].mode) &&
