@@ -1799,11 +1799,15 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
         if (resort)
         {
           sort |= reverse ? SORT_REVERSE : 0;
+          cs_str_native_set(Config, "sort_browser", sort, NULL);
           browser_sort(&state);
           browser_highlight_default(&state, menu);
           menu->redraw = REDRAW_FULL;
         }
-        cs_str_native_set(Config, "sort_browser", sort, NULL);
+        else
+        {
+          cs_str_native_set(Config, "sort_browser", sort, NULL);
+        }
         break;
       }
 
