@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2018-11-30 12:04+0000\n"
-"PO-Revision-Date: 2019-01-14 21:06-0700\n"
+"PO-Revision-Date: 2019-01-22 12:31-0700\n"
 "Last-Translator: Rubén Llorente\n"
 "Language-Team: none\n"
 "Language: es\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.2\n"
+"X-Generator: Poedit 2.2.1\n"
 
 #: addrbook.c:55 browser.c:80 browser.c:90 mutt_history.c:36 pager.c:1815 postpone.c:67 query.c:71 recvattach.c:87
 msgid "Exit"
@@ -230,14 +230,13 @@ msgstr "¿Ordenar al reverso por (f)echa, (t)amaño, d(e)scripción, (a)lfabéti
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
 #: browser.c:1883
-#, fuzzy
 msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
-msgstr "¿Ordenar por (f)echa, (t)amaño, (a)lfabéticamente o (s)in órden? "
+msgstr "¿Ordenar por (f)echa, (t)amaño, (d)escripción, (n)úmero, n(o)vedad, (a)lfabéticamente o (s)in órden? "
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
 #: browser.c:1886
 msgid "dazecwn"
-msgstr ""
+msgstr "fatdnos"
 
 #: browser.c:1992
 msgid "New file name: "
@@ -430,15 +429,13 @@ msgstr[1] "Los mensajes no pudieron ser imprimidos"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:627
-#, fuzzy
 msgid "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?: "
-msgstr "Órden-rev fech(a)/d(e)/(r)ece/a(s)nto/(p)ara/(h)ilo/(n)ada/ta(m)añ/punta(j): "
+msgstr "Ordenar al revés por fech(a)/d(e)/(r)ece/a(s)nto/(p)ara/(h)ilo/(n)ada/ta(m)añ/punta(j): "
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: commands.c:631
-#, fuzzy
 msgid "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?: "
-msgstr "Órden fech(a)/d(e)/(r)ecep/a(s)unto/(p)ara/(h)ilo/(n)ada/ta(m)año/punta(j)e: "
+msgstr "Ordenar por fech(a)/d(e)/(r)ecep/a(s)unto/(p)ara/(h)ilo/(n)ada/ta(m)año/punta(j)e: "
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: commands.c:635
@@ -661,9 +658,8 @@ msgid "None"
 msgstr "Ninguna"
 
 #: compose.c:307
-#, fuzzy
 msgid " (inline PGP)"
-msgstr "(continuar)"
+msgstr "(PGP en línea)"
 
 #: compose.c:309
 msgid " (PGP/MIME)"
@@ -713,9 +709,8 @@ msgid "Bad IDN in '%s': '%s'"
 msgstr "IDN inválido en '%s': '%s'"
 
 #: compose.c:1137
-#, fuzzy
 msgid "Attachment is already at top"
-msgstr "Archivo adjunto guardado"
+msgstr "El adjunto ya está al principio"
 
 #: compose.c:1142 compose.c:1158
 #, fuzzy
@@ -723,9 +718,8 @@ msgid "The fundamental part cannot be moved"
 msgstr "El archivo adjunto actual no será convertido"
 
 #: compose.c:1153
-#, fuzzy
 msgid "Attachment is already at bottom"
-msgstr "Archivo adjunto filtrado"
+msgstr "El adjunto ya está al fin"
 
 #: compose.c:1171
 msgid "Grouping alternatives requires at least 2 tagged messages"
@@ -740,9 +734,8 @@ msgid "Not all parts have Content-Language: set, continue?"
 msgstr ""
 
 #: compose.c:1268
-#, fuzzy
 msgid "Not sending this message"
-msgstr "Error al enviar el mensaje"
+msgstr "No se envía este mensaje"
 
 #: compose.c:1363
 msgid "Attaching selected file..."
@@ -816,9 +809,9 @@ msgstr "Renombrar a: "
 #. L10N:
 #. "stat" is a system call. Do "man 2 stat" for more information.
 #: compose.c:1736 editmsg.c:112 editmsg.c:148 sendlib.c:990
-#, fuzzy, c-format
+#, c-format
 msgid "Can't stat %s: %s"
-msgstr "No se pudo encontrar en disco: %s"
+msgstr "No se pudo hacer `stat` en %s:%s"
 
 #: compose.c:1762
 msgid "New file: "
@@ -899,9 +892,9 @@ msgid "Can't find mailbox ops for mailbox type %d"
 msgstr "No se encuentran operaciones para la bandeja de email de tipo %d"
 
 #: compress.c:593
-#, fuzzy, c-format
+#, c-format
 msgid "Compress command failed: %s"
-msgstr "La órden anterior a la conexión falló."
+msgstr "Comando de compresión falló: %s"
 
 #: compress.c:604
 msgid "Unsupported mailbox type for appending"
@@ -1035,9 +1028,8 @@ msgid "Failed to find enough entropy on your system"
 msgstr "No se pudo encontrar suficiente entropía en su sistema"
 
 #: conn/ssl.c:780
-#, fuzzy
 msgid "cannot get certificate subject"
-msgstr "Imposible recoger el certificado de la contraparte"
+msgstr "Imposible recoger el certificado del tema"
 
 #: conn/ssl.c:789 conn/ssl.c:797
 #, fuzzy
@@ -1141,9 +1133,9 @@ msgid "I/O error"
 msgstr "Error de Entrada/Salida"
 
 #: conn/ssl.c:1217
-#, fuzzy, c-format
+#, c-format
 msgid "SSL failed: %s"
-msgstr "CLOSE falló"
+msgstr "SSL falló: %s"
 
 #. L10N: an SSL context is a data structure returned by the OpenSSL
 #. function SSL_CTX_new().  In this case it returned NULL: an
@@ -1230,9 +1222,9 @@ msgid "Warning: Server certificate was signed using an insecure algorithm"
 msgstr "Aviso: el certificado del servidor ha sido firmado usando un algoritmo inseguro"
 
 #: conn/ssl_gnutls.c:1103
-#, fuzzy, c-format
+#, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
-msgstr "Conectando por SSL con %s (%s)"
+msgstr "Conectando por SSL/TLS con %s (%s/%s/%s)"
 
 #: conn/ssl_gnutls.c:1147 conn/ssl_gnutls.c:1174
 msgid "Error: no TLS socket open"
