@@ -133,7 +133,7 @@ size_t mutt_buffer_addstr_n(struct Buffer *buf, const char *s, size_t len)
 
 /**
  * mutt_buffer_free - Release a Buffer and its contents
- * @param p Buffer pointer to free and NULL
+ * @param[out] p Buffer pointer to free and NULL
  */
 void mutt_buffer_free(struct Buffer **p)
 {
@@ -391,7 +391,7 @@ struct Buffer *mutt_buffer_pool_get(void)
 
 /**
  * mutt_buffer_pool_release - Free a Buffer from the pool
- * @param pbuf Buffer to free
+ * @param[out] pbuf Buffer to free
  */
 void mutt_buffer_pool_release(struct Buffer **pbuf)
 {

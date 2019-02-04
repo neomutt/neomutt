@@ -70,7 +70,7 @@ char *ImapHeaders; ///< Config: (imap) Additional email headers to download when
 
 /**
  * imap_edata_free - free ImapHeader structure
- * @retval ptr Private Email data
+ * @param[out] ptr Private Email data
  */
 void imap_edata_free(void **ptr)
 {

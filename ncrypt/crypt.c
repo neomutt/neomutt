@@ -1208,10 +1208,10 @@ int mutt_signed_handler(struct Body *a, struct State *s)
 
 /**
  * crypt_get_fingerprint_or_id - Get the fingerprint or long key ID
- * @param p       String to examine
- * @param pphint  Start of string to be passed to pgp_add_string_to_hints() or crypt_add_string_to_hints()
- * @param ppl     Start of long key ID if detected, else NULL
- * @param pps     Start of short key ID if detected, else NULL
+ * @param[in]  p       String to examine
+ * @param[out] pphint  Start of string to be passed to pgp_add_string_to_hints() or crypt_add_string_to_hints()
+ * @param[out] ppl     Start of long key ID if detected, else NULL
+ * @param[out] pps     Start of short key ID if detected, else NULL
  * @retval ptr  Copy of fingerprint, if any, stripped of all spaces.  Must be FREE'd by caller
  * @retval NULL Otherwise
  *

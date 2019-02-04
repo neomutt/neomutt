@@ -52,7 +52,7 @@ struct Body *mutt_body_new(void)
 
 /**
  * mutt_body_free - Free a Body
- * @param p Body to free
+ * @param[out] p Body to free
  */
 void mutt_body_free(struct Body **p)
 {

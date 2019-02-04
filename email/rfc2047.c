@@ -414,14 +414,14 @@ static char *decode_word(const char *s, size_t len, enum ContentEncoding enc)
 
 /**
  * encode - RFC2047-encode a string
- * @param d        String to convert
- * @param dlen     Length of string
- * @param col      Starting column to convert
- * @param fromcode Original encoding
- * @param charsets List of allowable encodings (colon separated)
- * @param e        Encoded string
- * @param elen     Length of encoded string
- * @param specials Special characters to be encoded
+ * @param[in]  d        String to convert
+ * @param[in]  dlen     Length of string
+ * @param[in]  col      Starting column to convert
+ * @param[in]  fromcode Original encoding
+ * @param[in]  charsets List of allowable encodings (colon separated)
+ * @param[out] e        Encoded string
+ * @param[out] elen     Length of encoded string
+ * @param[in]  specials Special characters to be encoded
  * @retval 0 Success
  */
 static int encode(const char *d, size_t dlen, int col, const char *fromcode,

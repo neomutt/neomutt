@@ -228,8 +228,8 @@ static struct Address *find_mailing_lists(struct Address *t, struct Address *c)
 
 /**
  * edit_address - Edit an email address
- * @param a     Address to edit
- * @param field Prompt for user
+ * @param[out] a     Address to edit
+ * @param[in]  field Prompt for user
  * @retval  0 Success
  * @retval -1 Failure
  */
@@ -608,10 +608,10 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *out)
 
 /**
  * default_to - Generate default email addresses
- * @param to      'To' address
- * @param env     Envelope to populate
- * @param flags   Flags, e.g. #SEND_LIST_REPLY
- * @param hmfupto If true, add 'followup-to' address to 'to' address
+ * @param[out] to      'To' address
+ * @param[in]  env     Envelope to populate
+ * @param[in]  flags   Flags, e.g. #SEND_LIST_REPLY
+ * @param[in]  hmfupto If true, add 'followup-to' address to 'to' address
  * @retval  0 Success
  * @retval -1 Aborted
  */

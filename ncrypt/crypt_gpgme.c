@@ -553,7 +553,7 @@ static struct CryptKeyInfo *crypt_copy_key(struct CryptKeyInfo *key)
 
 /**
  * crypt_free_key - Release all the keys in a list
- * @param keylist List of keys
+ * @param[out] keylist List of keys
  */
 static void crypt_free_key(struct CryptKeyInfo **keylist)
 {

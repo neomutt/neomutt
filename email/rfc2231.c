@@ -138,8 +138,8 @@ static struct Rfc2231Parameter *new_parameter(void)
 
 /**
  * list_insert - Insert parameter into an ordered list
- * @param list List to insert into
- * @param par  Parameter to insert
+ * @param[out] list List to insert into
+ * @param[in]  par  Parameter to insert
  *
  * Primary sorting key: attribute
  * Secondary sorting key: index
@@ -165,7 +165,7 @@ static void list_insert(struct Rfc2231Parameter **list, struct Rfc2231Parameter 
 
 /**
  * free_parameter - Free an Rfc2231Parameter
- * @param p Rfc2231Parameter to free
+ * @param[out] p Rfc2231Parameter to free
  */
 static void free_parameter(struct Rfc2231Parameter **p)
 {
@@ -314,7 +314,7 @@ void rfc2231_decode_parameters(struct ParameterList *p)
 
 /**
  * rfc2231_encode_string - Encode a string to be suitable for an RFC2231 header
- * @param pd String to encode
+ * @param[out] pd String to encode
  * @retval 1 If string was encoded
  * @retval 0 If no
  *

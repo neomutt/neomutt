@@ -158,10 +158,10 @@ unsigned char *serial_dump_char(char *c, unsigned char *d, int *off, bool conver
 
 /**
  * serial_restore_char - Unpack a variable-length string from a binary blob
- * @param c       Store the unpacked string here
- * @param d       Binary blob to read from
- * @param off     Offset into the blob
- * @param convert If true, the strings will be converted to utf-8
+ * @param[out] c       Store the unpacked string here
+ * @param[in]  d       Binary blob to read from
+ * @param[out] off     Offset into the blob
+ * @param[in]  convert If true, the strings will be converted to utf-8
  */
 void serial_restore_char(char **c, const unsigned char *d, int *off, bool convert)
 {
@@ -223,10 +223,10 @@ unsigned char *serial_dump_address(struct Address *a, unsigned char *d, int *off
 
 /**
  * serial_restore_address - Unpack an Address from a binary blob
- * @param a       Store the unpacked Address here
- * @param d       Binary blob to read from
- * @param off     Offset into the blob
- * @param convert If true, the strings will be converted from utf-8
+ * @param[out] a       Store the unpacked Address here
+ * @param[in]  d       Binary blob to read from
+ * @param[out] off     Offset into the blob
+ * @param[in]  convert If true, the strings will be converted from utf-8
  */
 void serial_restore_address(struct Address **a, const unsigned char *d, int *off, bool convert)
 {
@@ -326,10 +326,10 @@ unsigned char *serial_dump_buffer(struct Buffer *b, unsigned char *d, int *off, 
 
 /**
  * serial_restore_buffer - Unpack a Buffer from a binary blob
- * @param b       Store the unpacked Buffer here
- * @param d       Binary blob to read from
- * @param off     Offset into the blob
- * @param convert If true, the strings will be converted from utf-8
+ * @param[out] b       Store the unpacked Buffer here
+ * @param[in]  d       Binary blob to read from
+ * @param[out] off     Offset into the blob
+ * @param[in]  convert If true, the strings will be converted from utf-8
  */
 void serial_restore_buffer(struct Buffer **b, const unsigned char *d, int *off, bool convert)
 {

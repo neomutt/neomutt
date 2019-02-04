@@ -66,7 +66,7 @@ const char *const AddressErrors[] = {
 
 /**
  * free_address - Free a single Address
- * @param a Address to free
+ * @param[out] a Address to free
  *
  * @note This doesn't alter the links if the Address is in a list.
  */
@@ -367,8 +367,8 @@ static const char *parse_addr_spec(const char *s, char *comment, size_t *comment
 
 /**
  * add_addrspec - Parse an email address and add an Address to a list
- * @param[in]  top        Top of Address list
- * @param[in]  last       End of Address list
+ * @param[out] top        Top of Address list
+ * @param[out] last       End of Address list
  * @param[in]  phrase     String to parse
  * @param[out] comment    Buffer for any comments
  * @param[out] commentlen Length of any comments
@@ -405,8 +405,8 @@ struct Address *mutt_addr_new(void)
 
 /**
  * mutt_addr_remove_from_list - Remove an Address from a list
- * @param a       Address list
- * @param mailbox Email address to match
+ * @param[out] a       Address list
+ * @param[in]  mailbox Email address to match
  * @retval  0 Success
  * @retval -1 Error, or email not found
  */
@@ -441,7 +441,7 @@ int mutt_addr_remove_from_list(struct Address **a, const char *mailbox)
 
 /**
  * mutt_addr_free - Free a list of Addresses
- * @param p Top of the list
+ * @param[out] p Top of the list
  */
 void mutt_addr_free(struct Address **p)
 {
@@ -753,9 +753,9 @@ struct Address *mutt_addr_copy_list(struct Address *addr, bool prune)
 
 /**
  * mutt_addr_append - Append one list of addresses onto another
- * @param a     Destination Address list
- * @param b     Source Address list
- * @param prune Skip groups if there are more addresses
+ * @param[out] a     Destination Address list
+ * @param[in]  b     Source Address list
+ * @param[in]  prune Skip groups if there are more addresses
  * @retval ptr Last Address in the combined list
  *
  * Append the Source onto the end of the Destination Address list.

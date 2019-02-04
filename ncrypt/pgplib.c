@@ -113,7 +113,7 @@ short pgp_get_abilities(unsigned char type)
 
 /**
  * pgp_free_uid - Free a PGP UID
- * @param upp PGP UID to free
+ * @param[out] upp PGP UID to free
  */
 static void pgp_free_uid(struct PgpUid **upp)
 {
@@ -157,7 +157,7 @@ struct PgpUid *pgp_copy_uids(struct PgpUid *up, struct PgpKeyInfo *parent)
 
 /**
  * free_key - Free a PGP Key info
- * @param kpp PGP Key info to free
+ * @param[out] kpp PGP Key info to free
  */
 static void free_key(struct PgpKeyInfo **kpp)
 {
@@ -174,8 +174,8 @@ static void free_key(struct PgpKeyInfo **kpp)
 
 /**
  * pgp_remove_key - Remove a PGP key from a list
- * @param klist List of PGP Keys
- * @param key   Key to remove
+ * @param[out] klist List of PGP Keys
+ * @param[in]  key   Key to remove
  * @retval ptr Updated list of PGP Keys
  */
 struct PgpKeyInfo *pgp_remove_key(struct PgpKeyInfo **klist, struct PgpKeyInfo *key)
@@ -208,7 +208,7 @@ struct PgpKeyInfo *pgp_remove_key(struct PgpKeyInfo **klist, struct PgpKeyInfo *
 
 /**
  * pgp_free_key - Free a PGP key info
- * @param kpp PGP key info to free
+ * @param[out] kpp PGP key info to free
  */
 void pgp_free_key(struct PgpKeyInfo **kpp)
 {

@@ -96,8 +96,8 @@ struct CfgAccount *ac_new(const struct ConfigSet *cs, const char *name,
 
 /**
  * ac_free - Free an CfgAccount object
- * @param cs Config items
- * @param ac CfgAccount to free
+ * @param[in]  cs Config items
+ * @param[out] ac CfgAccount to free
  */
 void ac_free(const struct ConfigSet *cs, struct CfgAccount **ac)
 {

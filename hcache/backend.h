@@ -61,8 +61,8 @@ struct HcacheOps
   void *(*fetch)(void *ctx, const char *key, size_t keylen);
   /**
    * free - backend-specific routine to free fetched data
-   * @param ctx The backend-specific context retrieved via open()
-   * @param data A pointer to the data got with fetch() or fetch_raw()
+   * @param[in]  ctx The backend-specific context retrieved via open()
+   * @param[out] data A pointer to the data got with fetch() or fetch_raw()
    */
   void (*free)(void *ctx, void **data);
   /**
@@ -87,7 +87,7 @@ struct HcacheOps
   int (*delete)(void *ctx, const char *key, size_t keylen);
   /**
    * close - backend-specific routine to close a context
-   * @param ctx The backend-specific context retrieved via open()
+   * @param[out] ctx The backend-specific context retrieved via open()
    *
    * Backend code is responsible for freeing any resources associated with the
    * @a ctx parameter. For this reason, backend code is passed a pointer-to-pointer

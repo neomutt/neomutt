@@ -725,9 +725,9 @@ static void compose_custom_redraw(struct Menu *menu)
 
 /**
  * compose_attach_swap - Swap two adjacent entries in the attachment list
- * @param msg   Body of email
- * @param idx   Array of Attachments
- * @param first Index of first attachment to swap
+ * @param[in]  msg   Body of email
+ * @param[out] idx   Array of Attachments
+ * @param[in]  first Index of first attachment to swap
  */
 static void compose_attach_swap(struct Body *msg, struct AttachPtr **idx, short first)
 {

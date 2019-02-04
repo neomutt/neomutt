@@ -189,17 +189,17 @@ static void mutt_pgp_command(char *buf, size_t buflen,
 
 /**
  * pgp_invoke - Run a PGP command
- * @param pgpin           stdin  for the command, or NULL (OPTIONAL)
- * @param pgpout          stdout for the command, or NULL (OPTIONAL)
- * @param pgperr          stderr for the command, or NULL (OPTIONAL)
- * @param pgpinfd         stdin  for the command, or -1 (OPTIONAL)
- * @param pgpoutfd        stdout for the command, or -1 (OPTIONAL)
- * @param pgperrfd        stderr for the command, or -1 (OPTIONAL)
- * @param need_passphrase Is a passphrase needed?
- * @param fname           Filename to pass to the command
- * @param sig_fname       Signature filename to pass to the command
- * @param ids             List of IDs/fingerprints, space separated
- * @param format          printf-like format string
+ * @param[out] pgpin           stdin  for the command, or NULL (OPTIONAL)
+ * @param[out] pgpout          stdout for the command, or NULL (OPTIONAL)
+ * @param[out] pgperr          stderr for the command, or NULL (OPTIONAL)
+ * @param[in]  pgpinfd         stdin  for the command, or -1 (OPTIONAL)
+ * @param[in]  pgpoutfd        stdout for the command, or -1 (OPTIONAL)
+ * @param[in]  pgperrfd        stderr for the command, or -1 (OPTIONAL)
+ * @param[in]  need_passphrase Is a passphrase needed?
+ * @param[in]  fname           Filename to pass to the command
+ * @param[in]  sig_fname       Signature filename to pass to the command
+ * @param[in]  ids             List of IDs/fingerprints, space separated
+ * @param[in]  format          printf-like format string
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
@@ -238,14 +238,14 @@ static pid_t pgp_invoke(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
 
 /**
  * pgp_invoke_decode - Use PGP to decode a message
- * @param pgpin           stdin  for the command, or NULL (OPTIONAL)
- * @param pgpout          stdout for the command, or NULL (OPTIONAL)
- * @param pgperr          stderr for the command, or NULL (OPTIONAL)
- * @param pgpinfd         stdin  for the command, or -1 (OPTIONAL)
- * @param pgpoutfd        stdout for the command, or -1 (OPTIONAL)
- * @param pgperrfd        stderr for the command, or -1 (OPTIONAL)
- * @param fname           Filename to pass to the command
- * @param need_passphrase Is a passphrase needed?
+ * @param[out] pgpin           stdin  for the command, or NULL (OPTIONAL)
+ * @param[out] pgpout          stdout for the command, or NULL (OPTIONAL)
+ * @param[out] pgperr          stderr for the command, or NULL (OPTIONAL)
+ * @param[in]  pgpinfd         stdin  for the command, or -1 (OPTIONAL)
+ * @param[in]  pgpoutfd        stdout for the command, or -1 (OPTIONAL)
+ * @param[in]  pgperrfd        stderr for the command, or -1 (OPTIONAL)
+ * @param[in]  fname           Filename to pass to the command
+ * @param[in]  need_passphrase Is a passphrase needed?
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
@@ -261,14 +261,14 @@ pid_t pgp_invoke_decode(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
 
 /**
  * pgp_invoke_verify - Use PGP to verify a message
- * @param pgpin     stdin  for the command, or NULL (OPTIONAL)
- * @param pgpout    stdout for the command, or NULL (OPTIONAL)
- * @param pgperr    stderr for the command, or NULL (OPTIONAL)
- * @param pgpinfd   stdin  for the command, or -1 (OPTIONAL)
- * @param pgpoutfd  stdout for the command, or -1 (OPTIONAL)
- * @param pgperrfd  stderr for the command, or -1 (OPTIONAL)
- * @param fname     Filename to pass to the command
- * @param sig_fname Signature filename to pass to the command
+ * @param[out] pgpin     stdin  for the command, or NULL (OPTIONAL)
+ * @param[out] pgpout    stdout for the command, or NULL (OPTIONAL)
+ * @param[out] pgperr    stderr for the command, or NULL (OPTIONAL)
+ * @param[in]  pgpinfd   stdin  for the command, or -1 (OPTIONAL)
+ * @param[in]  pgpoutfd  stdout for the command, or -1 (OPTIONAL)
+ * @param[in]  pgperrfd  stderr for the command, or -1 (OPTIONAL)
+ * @param[in]  fname     Filename to pass to the command
+ * @param[in]  sig_fname Signature filename to pass to the command
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
@@ -284,13 +284,13 @@ pid_t pgp_invoke_verify(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
 
 /**
  * pgp_invoke_decrypt - Use PGP to decrypt a file
- * @param pgpin    stdin  for the command, or NULL (OPTIONAL)
- * @param pgpout   stdout for the command, or NULL (OPTIONAL)
- * @param pgperr   stderr for the command, or NULL (OPTIONAL)
- * @param pgpinfd  stdin  for the command, or -1 (OPTIONAL)
- * @param pgpoutfd stdout for the command, or -1 (OPTIONAL)
- * @param pgperrfd stderr for the command, or -1 (OPTIONAL)
- * @param fname    Filename to pass to the command
+ * @param[out] pgpin    stdin  for the command, or NULL (OPTIONAL)
+ * @param[out] pgpout   stdout for the command, or NULL (OPTIONAL)
+ * @param[out] pgperr   stderr for the command, or NULL (OPTIONAL)
+ * @param[in]  pgpinfd  stdin  for the command, or -1 (OPTIONAL)
+ * @param[in]  pgpoutfd stdout for the command, or -1 (OPTIONAL)
+ * @param[in]  pgperrfd stderr for the command, or -1 (OPTIONAL)
+ * @param[in]  fname    Filename to pass to the command
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
@@ -306,13 +306,13 @@ pid_t pgp_invoke_decrypt(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd
 
 /**
  * pgp_invoke_sign - Use PGP to sign a file
- * @param pgpin    stdin  for the command, or NULL (OPTIONAL)
- * @param pgpout   stdout for the command, or NULL (OPTIONAL)
- * @param pgperr   stderr for the command, or NULL (OPTIONAL)
- * @param pgpinfd  stdin  for the command, or -1 (OPTIONAL)
- * @param pgpoutfd stdout for the command, or -1 (OPTIONAL)
- * @param pgperrfd stderr for the command, or -1 (OPTIONAL)
- * @param fname    Filename to pass to the command
+ * @param[out] pgpin    stdin  for the command, or NULL (OPTIONAL)
+ * @param[out] pgpout   stdout for the command, or NULL (OPTIONAL)
+ * @param[out] pgperr   stderr for the command, or NULL (OPTIONAL)
+ * @param[in]  pgpinfd  stdin  for the command, or -1 (OPTIONAL)
+ * @param[in]  pgpoutfd stdout for the command, or -1 (OPTIONAL)
+ * @param[in]  pgperrfd stderr for the command, or -1 (OPTIONAL)
+ * @param[in]  fname    Filename to pass to the command
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
@@ -328,15 +328,15 @@ pid_t pgp_invoke_sign(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
 
 /**
  * pgp_invoke_encrypt - Use PGP to encrypt a file
- * @param pgpin    stdin  for the command, or NULL (OPTIONAL)
- * @param pgpout   stdout for the command, or NULL (OPTIONAL)
- * @param pgperr   stderr for the command, or NULL (OPTIONAL)
- * @param pgpinfd  stdin  for the command, or -1 (OPTIONAL)
- * @param pgpoutfd stdout for the command, or -1 (OPTIONAL)
- * @param pgperrfd stderr for the command, or -1 (OPTIONAL)
- * @param fname    Filename to pass to the command
- * @param uids     List of IDs/fingerprints, space separated
- * @param sign     If true, also sign the file
+ * @param[out] pgpin    stdin  for the command, or NULL (OPTIONAL)
+ * @param[out] pgpout   stdout for the command, or NULL (OPTIONAL)
+ * @param[out] pgperr   stderr for the command, or NULL (OPTIONAL)
+ * @param[in]  pgpinfd  stdin  for the command, or -1 (OPTIONAL)
+ * @param[in]  pgpoutfd stdout for the command, or -1 (OPTIONAL)
+ * @param[in]  pgperrfd stderr for the command, or -1 (OPTIONAL)
+ * @param[in]  fname    Filename to pass to the command
+ * @param[in]  uids     List of IDs/fingerprints, space separated
+ * @param[in]  sign     If true, also sign the file
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
@@ -361,15 +361,15 @@ pid_t pgp_invoke_encrypt(FILE **pgpin, FILE **pgpout, FILE **pgperr,
 
 /**
  * pgp_invoke_traditional - Use PGP to create in inline-signed message
- * @param pgpin    stdin  for the command, or NULL (OPTIONAL)
- * @param pgpout   stdout for the command, or NULL (OPTIONAL)
- * @param pgperr   stderr for the command, or NULL (OPTIONAL)
- * @param pgpinfd  stdin  for the command, or -1 (OPTIONAL)
- * @param pgpoutfd stdout for the command, or -1 (OPTIONAL)
- * @param pgperrfd stderr for the command, or -1 (OPTIONAL)
- * @param fname    Filename to pass to the command
- * @param uids     List of IDs/fingerprints, space separated
- * @param flags    Flags, e.g. #SIGN, #ENCRYPT
+ * @param[out] pgpin    stdin  for the command, or NULL (OPTIONAL)
+ * @param[out] pgpout   stdout for the command, or NULL (OPTIONAL)
+ * @param[out] pgperr   stderr for the command, or NULL (OPTIONAL)
+ * @param[in]  pgpinfd  stdin  for the command, or -1 (OPTIONAL)
+ * @param[in]  pgpoutfd stdout for the command, or -1 (OPTIONAL)
+ * @param[in]  pgperrfd stderr for the command, or -1 (OPTIONAL)
+ * @param[in]  fname    Filename to pass to the command
+ * @param[in]  uids     List of IDs/fingerprints, space separated
+ * @param[in]  flags    Flags, e.g. #SIGN, #ENCRYPT
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
@@ -462,13 +462,13 @@ void pgp_class_invoke_getkeys(struct Address *addr)
 
 /**
  * pgp_invoke_export - Use PGP to export a key from the user's keyring
- * @param pgpin    stdin  for the command, or NULL (OPTIONAL)
- * @param pgpout   stdout for the command, or NULL (OPTIONAL)
- * @param pgperr   stderr for the command, or NULL (OPTIONAL)
- * @param pgpinfd  stdin  for the command, or -1 (OPTIONAL)
- * @param pgpoutfd stdout for the command, or -1 (OPTIONAL)
- * @param pgperrfd stderr for the command, or -1 (OPTIONAL)
- * @param uids     List of IDs/fingerprints, space separated
+ * @param[out] pgpin    stdin  for the command, or NULL (OPTIONAL)
+ * @param[out] pgpout   stdout for the command, or NULL (OPTIONAL)
+ * @param[out] pgperr   stderr for the command, or NULL (OPTIONAL)
+ * @param[in]  pgpinfd  stdin  for the command, or -1 (OPTIONAL)
+ * @param[in]  pgpoutfd stdout for the command, or -1 (OPTIONAL)
+ * @param[in]  pgperrfd stderr for the command, or -1 (OPTIONAL)
+ * @param[in]  uids     List of IDs/fingerprints, space separated
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
@@ -484,13 +484,13 @@ pid_t pgp_invoke_export(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
 
 /**
  * pgp_invoke_verify_key - Use PGP to verify a key
- * @param pgpin    stdin  for the command, or NULL (OPTIONAL)
- * @param pgpout   stdout for the command, or NULL (OPTIONAL)
- * @param pgperr   stderr for the command, or NULL (OPTIONAL)
- * @param pgpinfd  stdin  for the command, or -1 (OPTIONAL)
- * @param pgpoutfd stdout for the command, or -1 (OPTIONAL)
- * @param pgperrfd stderr for the command, or -1 (OPTIONAL)
- * @param uids     List of IDs/fingerprints, space separated
+ * @param[out] pgpin    stdin  for the command, or NULL (OPTIONAL)
+ * @param[out] pgpout   stdout for the command, or NULL (OPTIONAL)
+ * @param[out] pgperr   stderr for the command, or NULL (OPTIONAL)
+ * @param[in]  pgpinfd  stdin  for the command, or -1 (OPTIONAL)
+ * @param[in]  pgpoutfd stdout for the command, or -1 (OPTIONAL)
+ * @param[in]  pgperrfd stderr for the command, or -1 (OPTIONAL)
+ * @param[in]  uids     List of IDs/fingerprints, space separated
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
@@ -506,14 +506,14 @@ pid_t pgp_invoke_verify_key(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpi
 
 /**
  * pgp_invoke_list_keys - Find matching PGP Keys
- * @param pgpin  stdin  for the command, or NULL (OPTIONAL)
- * @param pgpout stdout for the command, or NULL (OPTIONAL)
- * @param pgperr stderr for the command, or NULL (OPTIONAL)
- * @param pgpinfd  stdin  for the command, or -1 (OPTIONAL)
- * @param pgpoutfd stdout for the command, or -1 (OPTIONAL)
- * @param pgperrfd stderr for the command, or -1 (OPTIONAL)
- * @param keyring  Keyring type, e.g. #PGP_SECRING
- * @param hints    Match keys to these strings
+ * @param[out] pgpin  stdin  for the command, or NULL (OPTIONAL)
+ * @param[out] pgpout stdout for the command, or NULL (OPTIONAL)
+ * @param[out] pgperr stderr for the command, or NULL (OPTIONAL)
+ * @param[in]  pgpinfd  stdin  for the command, or -1 (OPTIONAL)
+ * @param[in]  pgpoutfd stdout for the command, or -1 (OPTIONAL)
+ * @param[in]  pgperrfd stderr for the command, or -1 (OPTIONAL)
+ * @param[in]  keyring  Keyring type, e.g. #PGP_SECRING
+ * @param[in]  hints    Match keys to these strings
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *

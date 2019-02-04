@@ -1332,7 +1332,7 @@ static /* const */ char *find_matching_paren(/* const */ char *s)
 
 /**
  * mutt_pattern_free - Free a Pattern
- * @param pat Pattern to free
+ * @param[out] pat Pattern to free
  */
 void mutt_pattern_free(struct Pattern **pat)
 {

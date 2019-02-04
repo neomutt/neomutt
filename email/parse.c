@@ -324,8 +324,8 @@ int mutt_check_mime_type(const char *s)
 
 /**
  * mutt_extract_message_id - Find a message-id
- * @param s String to parse
- * @param saveptr Save result here
+ * @param[in]  s String to parse
+ * @param[out] saveptr Save result here
  * @retval ptr  First character after message-id
  * @retval NULL No more message ids
  *

@@ -487,7 +487,7 @@ static void shift_class_colors(struct QClass *quote_list,
 
 /**
  * cleanup_quote - Free a quote list
- * @param quote_list Quote list to free
+ * @param[out] quote_list Quote list to free
  */
 static void cleanup_quote(struct QClass **quote_list)
 {
@@ -507,7 +507,7 @@ static void cleanup_quote(struct QClass **quote_list)
 
 /**
  * classify_quote - Find a style for a string
- * @param[in]  quote_list   List of quote colours
+ * @param[out] quote_list   List of quote colours
  * @param[in]  qptr         String to classify
  * @param[in]  length       Length of string
  * @param[out] force_redraw Set to true if a screen redraw is needed
@@ -898,15 +898,15 @@ int mutt_is_quote_line(char *line, regmatch_t *pmatch)
 
 /**
  * resolve_types - Determine the style for a line of text
- * @param buf          Formatted text
- * @param raw          Raw text
- * @param line_info    Line info array
- * @param n            Line number (index into line_info)
- * @param last         Last line
- * @param quote_list   List of quote colours
- * @param q_level      Quote level
- * @param force_redraw Set to true if a screen redraw is needed
- * @param q_classify   If true, style the text
+ * @param[in]  buf          Formatted text
+ * @param[in]  raw          Raw text
+ * @param[in]  line_info    Line info array
+ * @param[in]  n            Line number (index into line_info)
+ * @param[in]  last         Last line
+ * @param[out] quote_list   List of quote colours
+ * @param[out] q_level      Quote level
+ * @param[out] force_redraw Set to true if a screen redraw is needed
+ * @param[in]  q_classify   If true, style the text
  */
 static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
                           int last, struct QClass **quote_list, int *q_level,
@@ -1347,7 +1347,7 @@ static int fill_buffer(FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *
 
 /**
  * format_line - Display a line of text in the pager
- * @param[in]  line_info    Line info
+ * @param[out] line_info    Line info
  * @param[in]  n            Line number (index into line_info)
  * @param[in]  buf          Text to display
  * @param[in]  flags        Flags, e.g. #MUTT_PAGER_NOWRAP
@@ -1535,18 +1535,18 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf, int f
 
 /**
  * display_line - Print a line on screen
- * @param f               File to read from
- * @param last_pos        Offset into file
- * @param line_info       Line attributes
- * @param n               Line number
- * @param last            Last line
- * @param max             Maximum number of lines
- * @param flags           See below
- * @param quote_list      Email quoting style
- * @param q_level         Level of quoting
- * @param force_redraw    Force a repaint
- * @param search_re       Regex to highlight
- * @param pager_window    Window to draw into
+ * @param[in]  f               File to read from
+ * @param[out] last_pos        Offset into file
+ * @param[out] line_info       Line attributes
+ * @param[in]  n               Line number
+ * @param[out] last            Last line
+ * @param[out] max             Maximum number of lines
+ * @param[in]  flags           See below
+ * @param[out] quote_list      Email quoting style
+ * @param[out] q_level         Level of quoting
+ * @param[out] force_redraw    Force a repaint
+ * @param[out] search_re       Regex to highlight
+ * @param[in]  pager_window    Window to draw into
  * @retval -1 EOF was reached
  * @retval 0  normal exit, line was not displayed
  * @retval >0 normal exit, line was displayed

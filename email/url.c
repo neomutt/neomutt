@@ -283,7 +283,7 @@ err:
 
 /**
  * url_free - Free the contents of a URL
- * @param u Url to empty
+ * @param[out] u Url to empty
  *
  * @note The Url itself is not freed
  */

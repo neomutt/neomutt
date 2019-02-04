@@ -2664,10 +2664,10 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
 
 /**
  * add_args - Add an Address to a dynamic array
- * @param args    Array to add to
- * @param argslen Number of entries in array
- * @param argsmax Allocated size of the array
- * @param addr    Address to add
+ * @param[out] args    Array to add to
+ * @param[out] argslen Number of entries in array
+ * @param[out] argsmax Allocated size of the array
+ * @param[in]  addr    Address to add
  * @retval ptr Updated array
  */
 static char **add_args(char **args, size_t *argslen, size_t *argsmax, struct Address *addr)
@@ -2687,10 +2687,10 @@ static char **add_args(char **args, size_t *argslen, size_t *argsmax, struct Add
 
 /**
  * add_option - Add a string to a dynamic array
- * @param args    Array to add to
- * @param argslen Number of entries in array
- * @param argsmax Allocated size of the array
- * @param s       string to add
+ * @param[out] args    Array to add to
+ * @param[out] argslen Number of entries in array
+ * @param[out] argsmax Allocated size of the array
+ * @param[in]  s       string to add
  * @retval ptr Updated array
  *
  * @note The array may be realloc()'d

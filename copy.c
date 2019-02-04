@@ -967,8 +967,8 @@ static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *dat
 
 /**
  * format_address_header - Write address headers to a buffer
- * @param h Array of header strings
- * @param a Email Address
+ * @param[out] h Array of header strings
+ * @param[in]  a Email Address
  *
  * This function is the equivalent of mutt_write_address_list(), but writes to
  * a buffer instead of writing to a stream.  mutt_write_address_list could be
@@ -1039,7 +1039,7 @@ static void format_address_header(char **h, struct Address *a)
 
 /**
  * address_header_decode - Parse an email's headers
- * @param h Array of header strings
+ * @param[out] h Array of header strings
  * @retval 0 Success
  * @retval 1 Failure
  */

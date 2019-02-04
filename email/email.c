@@ -36,7 +36,7 @@
 
 /**
  * mutt_email_free - Free an Email
- * @param e Email to free
+ * @param[out] e Email to free
  */
 void mutt_email_free(struct Email **e)
 {

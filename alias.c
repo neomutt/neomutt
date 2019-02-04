@@ -320,8 +320,8 @@ void mutt_expand_aliases_env(struct Envelope *env)
 
 /**
  * mutt_get_address - Get an Address from an Envelope
- * @param env  Envelope to examine
- * @param pfxp Prefix for the Address, e.g. "To:"
+ * @param[in]  env  Envelope to examine
+ * @param[out] pfxp Prefix for the Address, e.g. "To:"
  * @retval ptr Address in the Envelope
  */
 struct Address *mutt_get_address(struct Envelope *env, const char **pfxp)
@@ -733,7 +733,7 @@ bool mutt_addr_is_user(struct Address *addr)
 
 /**
  * mutt_alias_free - Free an Alias
- * @param p Alias to free
+ * @param[out] p Alias to free
  */
 void mutt_alias_free(struct Alias **p)
 {

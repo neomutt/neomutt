@@ -277,10 +277,10 @@ void mutt_mb_wcstombs(char *dest, size_t dlen, const wchar_t *src, size_t slen)
 
 /**
  * mutt_mb_mbstowcs - Convert a string from multibyte to wide characters
- * @param pwbuf    Buffer for the result
- * @param pwbuflen Length of the result buffer
- * @param i        Starting index into the result buffer
- * @param buf      String to convert
+ * @param[out] pwbuf    Buffer for the result
+ * @param[out] pwbuflen Length of the result buffer
+ * @param[in]  i        Starting index into the result buffer
+ * @param[in]  buf      String to convert
  * @retval num First character after the result
  */
 size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf)

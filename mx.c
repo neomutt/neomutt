@@ -528,7 +528,7 @@ static int trash_append(struct Mailbox *m)
 
 /**
  * mx_mbox_close - Save changes and close mailbox
- * @param ptr Mailbox
+ * @param[out] ptr Mailbox
  * @retval  0 Success
  * @retval -1 Failure
  *
@@ -1056,8 +1056,8 @@ int mx_msg_commit(struct Mailbox *m, struct Message *msg)
 
 /**
  * mx_msg_close - Close a message
- * @param m   Mailbox
- * @param msg Message to close
+ * @param[in]  m   Mailbox
+ * @param[out] msg Message to close
  * @retval  0 Success
  * @retval -1 Failure
  */

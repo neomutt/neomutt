@@ -98,7 +98,7 @@ struct Mailbox *mailbox_new(void)
 
 /**
  * mailbox_free - Free a Mailbox
- * @param ptr Mailbox to free
+ * @param[out] ptr Mailbox to free
  */
 void mailbox_free(struct Mailbox **ptr)
 {

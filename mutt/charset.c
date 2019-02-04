@@ -842,7 +842,7 @@ struct FgetConv *mutt_ch_fgetconv_open(FILE *file, const char *from, const char 
 
 /**
  * mutt_ch_fgetconv_close - Close an fgetconv handle
- * @param fc fgetconv handle
+ * @param[out] fc fgetconv handle
  */
 void mutt_ch_fgetconv_close(struct FgetConv **fc)
 {

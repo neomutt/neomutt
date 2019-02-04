@@ -406,7 +406,7 @@ struct Rfc1524MailcapEntry *rfc1524_new_entry(void)
 
 /**
  * rfc1524_free_entry - Deallocate an struct Rfc1524MailcapEntry
- * @param entry Rfc1524MailcapEntry to deallocate
+ * @param[out] entry Rfc1524MailcapEntry to deallocate
  */
 void rfc1524_free_entry(struct Rfc1524MailcapEntry **entry)
 {

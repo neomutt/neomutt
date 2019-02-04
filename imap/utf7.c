@@ -311,8 +311,8 @@ bail:
 
 /**
  * imap_utf_encode - Encode email from local charset to UTF-8
- * @param unicode true if Unicode is allowed
- * @param s       Email to convert
+ * @param[in]  unicode true if Unicode is allowed
+ * @param[out] s       Email to convert
  */
 void imap_utf_encode(bool unicode, char **s)
 {

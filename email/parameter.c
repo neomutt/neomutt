@@ -43,7 +43,7 @@ struct Parameter *mutt_param_new(void)
 
 /**
  * mutt_param_free_one - Free a Parameter
- * @param p Parameter to free
+ * @param[out] p Parameter to free
  */
 void mutt_param_free_one(struct Parameter **p)
 {

@@ -997,7 +997,7 @@ struct Menu *mutt_menu_new(int menu)
 
 /**
  * mutt_menu_destroy - Destroy a menu
- * @param p Menu to destroy
+ * @param[out] p Menu to destroy
  */
 void mutt_menu_destroy(struct Menu **p)
 {

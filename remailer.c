@@ -115,7 +115,7 @@ static int mix_get_caps(const char *capstr)
 
 /**
  * mix_add_entry - Add an entry to the Remailer list
- * @param[in]  type2_list Remailer list to add to
+ * @param[out] type2_list Remailer list to add to
  * @param[in]  entry      Remailer to add
  * @param[out] slots      Total number of slots
  * @param[out] used       Number of slots used
@@ -145,7 +145,7 @@ static struct Remailer *mix_new_remailer(void)
 
 /**
  * mix_free_remailer - Free a Remailer
- * @param r Remailer to free
+ * @param[out] r Remailer to free
  */
 static void mix_free_remailer(struct Remailer **r)
 {
@@ -247,7 +247,7 @@ static struct Remailer **mix_type2_list(size_t *l)
 
 /**
  * mix_free_type2_list - Free a Remailer List
- * @param ttlp Remailer List to free
+ * @param[out] ttlp Remailer List to free
  */
 static void mix_free_type2_list(struct Remailer ***ttlp)
 {
@@ -265,10 +265,10 @@ static void mix_free_type2_list(struct Remailer ***ttlp)
 
 /**
  * mix_screen_coordinates - Get the screen coordinates to place a chain
- * @param type2_list Remailer List
- * @param coordsp    On screen coordinates
- * @param chain      Chain
- * @param i          Index in chain
+ * @param[out] type2_list Remailer List
+ * @param[out] coordsp    On screen coordinates
+ * @param[in]  chain      Chain
+ * @param[in]  i          Index in chain
  */
 static void mix_screen_coordinates(struct Remailer **type2_list, struct Coord **coordsp,
                                    struct MixChain *chain, int i)
@@ -312,11 +312,11 @@ static void mix_screen_coordinates(struct Remailer **type2_list, struct Coord **
 
 /**
  * mix_redraw_ce - Redraw the Remailer chain
- * @param type2_list Remailer List
- * @param coords     Screen Coordinates
- * @param chain      Chain
- * @param i          Index in chain
- * @param selected   true, if this item is selected
+ * @param[out] type2_list Remailer List
+ * @param[in]  coords     Screen Coordinates
+ * @param[in]  chain      Chain
+ * @param[in]  i          Index in chain
+ * @param[in]  selected   true, if this item is selected
  */
 static void mix_redraw_ce(struct Remailer **type2_list, struct Coord *coords,
                           struct MixChain *chain, int i, bool selected)
@@ -342,10 +342,10 @@ static void mix_redraw_ce(struct Remailer **type2_list, struct Coord *coords,
 
 /**
  * mix_redraw_chain - Redraw the chain on screen
- * @param type2_list Remailer List
- * @param coords     Where to draw the list on screen
- * @param chain      Chain to display
- * @param cur        Chain index of current selection
+ * @param[out] type2_list Remailer List
+ * @param[in]  coords     Where to draw the list on screen
+ * @param[in]  chain      Chain to display
+ * @param[in]  cur        Chain index of current selection
  */
 static void mix_redraw_chain(struct Remailer **type2_list, struct Coord *coords,
                              struct MixChain *chain, int cur)
@@ -507,9 +507,9 @@ static void mix_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 
 /**
  * mix_chain_add - Add a host to the chain
- * @param chain      Chain to add to
- * @param s          Hostname
- * @param type2_list Remailer List
+ * @param[in]  chain      Chain to add to
+ * @param[in]  s          Hostname
+ * @param[out] type2_list Remailer List
  * @retval  0 Success
  * @retval -1 Error
  */

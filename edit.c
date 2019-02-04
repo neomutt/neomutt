@@ -160,9 +160,9 @@ static char **be_snarf_file(const char *path, char **buf, int *max, int *len, bo
 
 /**
  * be_barf_file - Write a buffer to a file
- * @param path   Path to write to
- * @param buf    Buffer to read from
- * @param buflen Length of buffer
+ * @param[in]  path   Path to write to
+ * @param[out] buf    Buffer to read from
+ * @param[in]  buflen Length of buffer
  * @retval  0 Success
  * @retval -1 Error
  */
@@ -185,8 +185,8 @@ static int be_barf_file(const char *path, char **buf, int buflen)
 
 /**
  * be_free_memory - Free an array of buffers
- * @param buf    Buffer to free
- * @param buflen Number of buffers to free
+ * @param[out] buf    Buffer to free
+ * @param[in]  buflen Number of buffers to free
  */
 static void be_free_memory(char **buf, int buflen)
 {

@@ -71,7 +71,7 @@ struct MUpdate
 
 /**
  * mbox_adata_free - Free data attached to the Mailbox
- * @param ptr Private mailbox data
+ * @param[out] ptr Private mailbox data
  */
 static void mbox_adata_free(void **ptr)
 {

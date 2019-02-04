@@ -267,7 +267,7 @@ struct Address *address_new(const char *addr)
 
 /**
  * address_free - Free an Address object
- * @param addr Address to free
+ * @param[out] addr Address to free
  */
 void address_free(struct Address **addr)
 {

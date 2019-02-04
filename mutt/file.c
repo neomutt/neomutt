@@ -142,7 +142,7 @@ static int put_file_in_place(const char *path, const char *safe_file, const char
 
 /**
  * mutt_file_fclose - Close a FILE handle (and NULL the pointer)
- * @param f FILE handle to close
+ * @param[out] f FILE handle to close
  * @retval 0   Success
  * @retval EOF Error, see errno
  */
@@ -158,7 +158,7 @@ int mutt_file_fclose(FILE **f)
 
 /**
  * mutt_file_fsync_close - Flush the data, before closing a file (and NULL the pointer)
- * @param f FILE handle to close
+ * @param[out] f FILE handle to close
  * @retval 0   Success
  * @retval EOF Error, see errno
  */
