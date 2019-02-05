@@ -614,7 +614,7 @@ sub openssl_dump_cert ($) {
   my $format = openssl_format($filename);
   my @args = ("x509", "-in", $filename, "-inform", $format);
   my $output = join("", openssl_exec(@args));
-  $? and die "openssl x509 certicate dump returned $?";
+  $? and die "openssl x509 certificate dump returned $?";
 
   return $output;
 }

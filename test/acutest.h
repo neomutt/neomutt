@@ -897,9 +897,9 @@ test_cmdline_read__(const TEST_CMDLINE_OPTION__* options, int argc, char** argv,
 
                     if(strncmp(badoptname, "--", 2) == 0) {
                         /* Strip any argument from the long option. */
-                        char* assignement = strchr(badoptname, '=');
-                        if(assignement != NULL) {
-                            size_t len = assignement - badoptname;
+                        char* assignment = strchr(badoptname, '=');
+                        if(assignment != NULL) {
+                            size_t len = assignment - badoptname;
                             if(len > TEST_CMDLINE_AUXBUF_SIZE__)
                                 len = TEST_CMDLINE_AUXBUF_SIZE__;
                             strncpy(auxbuf, badoptname, len);

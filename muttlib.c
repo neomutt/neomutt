@@ -766,7 +766,7 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
  * @param buflen Length of buffer
  * @param addr   Email address to use
  *
- * If the user hasn't set `$save_address` the name will be trucated to the '@'
+ * If the user hasn't set `$save_address` the name will be truncated to the '@'
  * character.
  */
 void mutt_save_path(char *buf, size_t buflen, struct Address *addr)

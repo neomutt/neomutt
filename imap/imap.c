@@ -1707,7 +1707,7 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
       /* TODO: why the e->env check? */
       if ((e->env && e->env->changed) || e->attach_del)
       {
-        /* L10N: The plural is choosen by the last %d, i.e. the total number */
+        /* L10N: The plural is chosen by the last %d, i.e. the total number */
         mutt_message(ngettext("Saving changed message... [%d/%d]",
                               "Saving changed messages... [%d/%d]", m->msg_count),
                      i + 1, m->msg_count);

@@ -40,7 +40,7 @@ static enum CommandResult icmd_version(struct  Buffer *, struct Buffer *, unsign
 /**
  * ICommandList - All available informational commands
  *
- * @note These commands take precendence over conventional mutt rc-lines
+ * @note These commands take precedence over conventional mutt rc-lines
  */
 const struct ICommand ICommandList[] = {
   { "set",      icmd_set,      0 },

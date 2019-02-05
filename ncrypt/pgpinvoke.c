@@ -52,7 +52,7 @@
 #endif
 
 /* These Config Variables are only used in ncrypt/pgpinvoke.c */
-char *PgpClearsignCommand; ///< Config: (pgp) External command to inline-sign a messsage
+char *PgpClearsignCommand; ///< Config: (pgp) External command to inline-sign a message
 char *PgpDecodeCommand; ///< Config: (pgp) External command to decode a PGP attachment
 char *PgpDecryptCommand; ///< Config: (pgp) External command to decrypt a PGP message
 char *PgpEncryptOnlyCommand; ///< Config: (pgp) External command to encrypt, but not sign a message

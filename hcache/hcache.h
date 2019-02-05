@@ -113,7 +113,7 @@ void mutt_hcache_close(header_cache_t *hc);
  * @param hc     Pointer to the header_cache_t structure got by mutt_hcache_open
  * @param key    Message identification string
  * @param keylen Length of the string pointed to by key
- * @retval ptr  Succees, data if found and valid
+ * @retval ptr  Success, data if found and valid
  * @retval NULL Otherwise
  *
  * @note This function performs a check on the validity of the data found by

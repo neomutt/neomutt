@@ -53,7 +53,7 @@ bool ReverseAlias; ///< Config: Display the alias in the index, rather than the 
 static sort_t *AuxSort = NULL;
 
 /**
- * perform_auxsort - Compare two emails using the auxilliary sort method
+ * perform_auxsort - Compare two emails using the auxiliary sort method
  * @param retval Result of normal sort method
  * @param a      First email
  * @param b      Second email

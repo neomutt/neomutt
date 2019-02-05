@@ -3117,7 +3117,7 @@ int mutt_write_multiple_fcc(const char *path, struct Email *e, const char *msgid
     if (!*tok)
       continue;
 
-    /* Only call mutt_expand_path iff tok has some data */
+    /* Only call mutt_expand_path if tok has some data */
     mutt_debug(1, "Fcc: additional mailbox token = '%s'\n", tok);
     mutt_str_strfcpy(fcc_expanded, tok, sizeof(fcc_expanded));
     mutt_expand_path(fcc_expanded, sizeof(fcc_expanded));

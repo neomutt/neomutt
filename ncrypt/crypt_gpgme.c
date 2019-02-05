@@ -240,7 +240,7 @@ static const char *parse_version_number(const char *s, int *number)
 }
 
 /* This function breaks up the complete string-representation of the
- * version number S, which is of the following struture: <major
+ * version number S, which is of the following structure: <major
  * number>.<minor number>.<micro number><patch level>.  The major,
  * minor and micro number components will be stored in *MAJOR, *MINOR
  * and *MICRO.  If MINOR or MICRO is NULL the version number is

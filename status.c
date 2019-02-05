@@ -47,7 +47,7 @@ struct MbTable *StatusChars; ///< Config: Indicator characters for the status ba
 /**
  * get_sort_str - Get the sort method as a string
  * @param buf    Buffer for the sort string
- * @param buflen Length of the bufer
+ * @param buflen Length of the buffer
  * @param method Sort method, e.g. #SORT_DATE
  * @retval ptr Buffer pointer
  */

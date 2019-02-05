@@ -568,7 +568,7 @@ static bool hostname_match(const char *hostname, const char *certname)
  * Even though only OpenSSL 0.9.5 and later will complain about the lack of
  * entropy, we try to our best and fill the pool with older versions also.
  * (That's the reason for the ugly ifdefs and macros, otherwise I could have
- * simply ifdef'd the whole ssl_init funcion)
+ * simply ifdef'd the whole ssl_init function)
  */
 static int ssl_init(void)
 {
@@ -634,7 +634,7 @@ static void ssl_get_client_cert(struct SslSockData *ssldata, struct Connection *
 }
 
 /**
- * ssl_socket_close_and_restore - Close an SSL Connection and restore Connnection callbacks - Implements Connection::conn_close()
+ * ssl_socket_close_and_restore - Close an SSL Connection and restore Connection callbacks - Implements Connection::conn_close()
  */
 static int ssl_socket_close_and_restore(struct Connection *conn)
 {

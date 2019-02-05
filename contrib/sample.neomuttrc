@@ -35,7 +35,7 @@ set edit_headers		# let me edit the message header when composing
 #set fast_reply			# skip initial prompts when replying
 #set fcc_attach			# keep attachments in copies of sent messages?
 #set force_name			# fcc by recipient, create if mailbox doesn't exist
-#set forward_decode		# weed and MIME decode forwaded messages
+#set forward_decode		# weed and MIME decode forwarded messages
 #set forward_format="[%a: %s]"	# subject to use when forwarding messages
 #set forward_quote		# quote the header and body of forward msgs
 #set index_format="%4C %Z %{%m/%d} [%2N] %-15.15F (%4c) %s"

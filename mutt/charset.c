@@ -947,7 +947,7 @@ char *mutt_ch_fgetconvs(char *buf, size_t buflen, struct FgetConv *fc)
  * mutt_ch_set_charset - Update the records for a new character set
  * @param charset New character set
  *
- * Check if this chararacter set is utf-8 and pick a suitable replacement
+ * Check if this character set is utf-8 and pick a suitable replacement
  * character for unprintable characters.
  *
  * @note This calls `bind_textdomain_codeset()` which will affect future

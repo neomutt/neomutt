@@ -1308,7 +1308,7 @@ set modsource(formatting.tcl) {
 
 # Module which provides common text formatting
 
-# This is designed for documenation which looks like:
+# This is designed for documentation which looks like:
 # code {...}
 # or
 # code {
@@ -1699,7 +1699,7 @@ set modsource(install.tcl) {
 # Module which can install autosetup
 
 # autosetup(installed)=1 means that autosetup is not running from source
-# autosetup(sysinstall)=1 means that autosetup is running from a sysinstall verion
+# autosetup(sysinstall)=1 means that autosetup is running from a sysinstall version
 # shared=1 means that we are trying to do a sysinstall. This is only possible from the development source.
 
 proc autosetup_install {dir {shared 0}} {

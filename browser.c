@@ -647,7 +647,7 @@ static void add_folder(struct Menu *menu, struct BrowserState *state,
 }
 
 /**
- * init_state - Initilise a browser state
+ * init_state - Initialise a browser state
  * @param state BrowserState to initialise
  * @param menu  Current menu
  */

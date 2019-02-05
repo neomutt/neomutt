@@ -119,7 +119,7 @@ bool mutt_is_subscribed_list(struct Address *addr)
 
 /**
  * check_for_mailing_list - Search list of addresses for a mailing list
- * @param addr    List of addreses to search
+ * @param addr    List of addresses to search
  * @param pfx     Prefix string
  * @param buf     Buffer to store results
  * @param buflen  Buffer length

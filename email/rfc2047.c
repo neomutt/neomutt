@@ -186,7 +186,7 @@ static char *parse_encoded_word(char *str, enum ContentEncoding *enc, char **cha
  * @retval  0 Success, string converted
  * @retval >0 Error, number of bytes that could be converted
  *
- * If the data could be conveted using encoder, then set *encoder and *wlen.
+ * If the data could be converted using encoder, then set *encoder and *wlen.
  * Otherwise return an upper bound on the maximum length of the data which
  * could be converted.
  *

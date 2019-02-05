@@ -192,7 +192,7 @@ static char LastSearchExpn[LONG_STRING] = { 0 }; /**< expanded version of LastSe
  * @param pat  Pattern to match
  * @param s   String to parse
  * @param err Buffer for error messages
- * @retval true If the pattern was read succesfully
+ * @retval true If the pattern was read successfully
  */
 static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 {
@@ -566,7 +566,7 @@ static void adjust_date_range(struct tm *min, struct tm *max)
  * @param pat Pattern to store the date in
  * @param s   String to parse
  * @param err Buffer for error messages
- * @retval true If the pattern was read succesfully
+ * @retval true If the pattern was read successfully
  */
 static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 {
@@ -725,7 +725,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
  * @param pat Pattern to store the range in
  * @param s   String to parse
  * @param err Buffer for error messages
- * @retval true If the pattern was read succesfully
+ * @retval true If the pattern was read successfully
  */
 static bool eat_range(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 {
@@ -849,7 +849,7 @@ static bool is_context_available(struct Buffer *s, regmatch_t pmatch[],
   };
 
   /* First decide if we're going to need the context at all.
-   * Relative patterns need it iff they contain a dot or a number.
+   * Relative patterns need it if they contain a dot or a number.
    * Absolute patterns only need it if they contain a dot. */
   char *context_loc = strpbrk(s->dptr + pmatch[0].rm_so, context_req_chars[kind]);
   if (!context_loc || (context_loc >= &s->dptr[pmatch[0].rm_eo]))
@@ -1014,7 +1014,7 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
  * @param pat Pattern to store the range in
  * @param s   String to parse
  * @param err Buffer for error messages
- * @retval true If the pattern was read succesfully
+ * @retval true If the pattern was read successfully
  */
 static bool eat_message_range(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 {

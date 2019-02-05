@@ -1361,7 +1361,7 @@ void maildir_parse_flags(struct Email *e, const char *path)
 /**
  * maildir_parse_stream - Parse a Maildir message
  * @param magic  Mailbox type, e.g. #MUTT_MAILDIR
- * @param f      Mesage file handle
+ * @param f      Message file handle
  * @param fname  Message filename
  * @param is_old true, if the email is old (read)
  * @param e      Email

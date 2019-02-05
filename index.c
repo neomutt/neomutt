@@ -296,7 +296,7 @@ static int ci_first_message(void)
     return old;
 
   /* If Sort is reverse and not threaded, the latest message is first.
-   * If Sort is threaded, the latest message is first iff exactly one
+   * If Sort is threaded, the latest message is first if exactly one
    * of Sort and SortAux are reverse.
    */
   if (((Sort & SORT_REVERSE) && (Sort & SORT_MASK) != SORT_THREADS) ||

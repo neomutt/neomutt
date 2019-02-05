@@ -427,7 +427,7 @@ static void decode_uuencoded(struct State *s, long len, bool istext, iconv_t cd)
  * Test if the `MM_NOASK` environment variable should allow autoviewing of the
  * attachment.
  *
- * @note If `MM_NOASK=1` then the function will automaticaly return true.
+ * @note If `MM_NOASK=1` then the function will automatically return true.
  */
 static bool is_mmnoask(const char *buf)
 {

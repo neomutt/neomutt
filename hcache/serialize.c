@@ -579,7 +579,7 @@ void serial_restore_envelope(struct Envelope *env, const unsigned char *d, int *
  * @param uidvalidity IMAP server identifier
  * @retval ptr Binary blob representing the Header
  *
- * This function transforms a e into a char so that it is useable by
+ * This function transforms a e into a char so that it is usable by
  * db_store.
  */
 void *mutt_hcache_dump(header_cache_t *hc, const struct Email *e, int *off, unsigned int uidvalidity)

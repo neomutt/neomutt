@@ -139,7 +139,7 @@ static struct Rfc2231Parameter *new_parameter(void)
 /**
  * list_insert - Insert parameter into an ordered list
  * @param list List to insert into
- * @param par  Paramter to insert
+ * @param par  Parameter to insert
  *
  * Primary sorting key: attribute
  * Secondary sorting key: index

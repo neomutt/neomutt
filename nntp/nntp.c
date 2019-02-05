@@ -837,7 +837,7 @@ static int nntp_query(struct NntpMboxData *mdata, char *line, size_t linelen)
  * @param mdata NNTP Mailbox data
  * @param query     Query to match
  * @param qlen      Length of query
- * @param msg       Progess message (OPTIONAL)
+ * @param msg       Progress message (OPTIONAL)
  * @param func      Callback function
  * @param data      Data for callback function
  * @retval  0 Success
