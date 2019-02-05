@@ -47,7 +47,7 @@ void state_mark_attach(struct State *s)
 }
 
 /**
- * state_mark_attach - Write a unique marker around protected headers
+ * state_mark_protected_header - Write a unique marker around protected headers
  * @param s State to write to
  */
 void state_mark_protected_header(struct State *s)

@@ -1568,7 +1568,7 @@ int mx_mbox_check_stats(struct Mailbox *m, int flags)
 }
 
 /**
- * mx_save_to_header_cache - Save message to the header cache - Wrapper for MxOps::msg_save_hcache()
+ * mx_save_hcache - Save message to the header cache - Wrapper for MxOps::msg_save_hcache()
  * @param m Mailbox
  * @param e Email
  * @retval  0 Success

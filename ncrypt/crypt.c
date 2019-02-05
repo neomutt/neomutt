@@ -1038,6 +1038,11 @@ static void crypt_fetch_signatures(struct Body ***signatures, struct Body *a, in
   }
 }
 
+/**
+ * mutt_should_hide_protected_subject - Should NeoMutt hide the protected subject?
+ * @param e Email to test
+ * @retval bool True if the subject should be protected
+ */
 bool mutt_should_hide_protected_subject(struct Email *e)
 {
   if (CryptProtectedHeadersWrite && (e->security & ENCRYPT) && !(e->security & INLINE) &&

@@ -145,8 +145,7 @@ static inline bool char_cmp_lower(char a, char b)
 typedef bool (*char_cmp)(char, char);
 
 /**
- * get_char_cmp - Retrieve the correct function to compare characters according
- * to a case sensitivity setting.
+ * get_char_cmp - Retrieve the correct function to compare characters according to a case sensitivity setting.
  * @param cs Case sensitivity setting
  * @retval A char_cmp function pointer
  */

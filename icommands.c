@@ -142,7 +142,7 @@ static enum CommandResult icmd_set(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * icmd_set - Parse 'version' command - Implements ::icommand_t
+ * icmd_version - Parse 'version' command - Implements ::icommand_t
  */
 static enum CommandResult icmd_version(struct Buffer *buf, struct Buffer *s,
                                        unsigned long data, struct Buffer *err)

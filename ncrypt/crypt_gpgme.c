@@ -205,25 +205,43 @@ static void print_utf8(FILE *fp, const char *buf, size_t len)
   FREE(&tstr);
 }
 
-/* Compare function for version strings.  The return value is
- * like strcmp().  LEVEL may be
- *   0 - reserved
- *   1 - format is "<major><patchlevel>".
- *   2 - format is "<major>.<minor><patchlevel>".
- *   3 - format is "<major>.<minor>.<micro><patchlevel>".
- * To ignore the patchlevel in the comparison add 10 to LEVEL.  To get
- * a reverse sorting order use a negative number.   */
 #if GPGRT_VERSION_NUMBER >= 0x012100 /* libgpg-error >= 1.33 */
+/**
+ * cmp_version_strings - Compare version strings
+ * @param a First version string
+ * @param b Second version string
+ * @param level Level to compare (see below)
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ *
+ * `level` may be
+ * - 0 reserved
+ * - 1 format is "<major><patchlevel>"
+ * - 2 format is "<major>.<minor><patchlevel>"
+ * - 3 format is "<major>.<minor>.<micro><patchlevel>"
+ *
+ * To ignore the patchlevel in the comparison add 10 to LEVEL.
+ * To get a reverse sorting order use a negative number.
+ */
 static int cmp_version_strings(const char *a, const char *b, int level)
 {
   return gpgrt_cmp_version(a, b, level);
 }
 #elif GPGME_VERSION_NUMBER >= 0x010900 /* gpgme >= 1.9.0 */
 
-/* This function parses the first portion of the version number S and
+/**
+ * parse_version_number - Parse a version string
+ * @param[in]  s String to parse
+ * @param[out] number
+ * @retval ptr  Remainder of the string
+ * @retval NULL Error
+ *
+ * This function parses the first portion of the version number S and
  * stores it at NUMBER.  On success, this function returns a pointer
  * into S starting with the first character, which is not part of the
- * initial number portion; on failure, NULL is returned.  */
+ * initial number portion; on failure, NULL is returned.
+ */
 static const char *parse_version_number(const char *s, int *number)
 {
   int val = 0;
@@ -239,15 +257,24 @@ static const char *parse_version_number(const char *s, int *number)
   return val < 0 ? NULL : s;
 }
 
-/* This function breaks up the complete string-representation of the
- * version number S, which is of the following structure: <major
- * number>.<minor number>.<micro number><patch level>.  The major,
- * minor and micro number components will be stored in *MAJOR, *MINOR
- * and *MICRO.  If MINOR or MICRO is NULL the version number is
- * assumed to have just 1 respective 2 parts.
+/**
+ * parse_version_string - Parse a version string
+ * @param s String to parse
+ * @param major Version MAJOR.x.x
+ * @param minor Version x.MINOR.x
+ * @param micro Version x.x.MICRO
+ * @retval str  Patch level
+ * @retval NULL If there are fewer parts
+ *
+ * Break up the complete string-representation of the version number S, which
+ * is of the following struture: <major number>.<minor number>.<micro
+ * number><patch level>.  The major, minor and micro number components will be
+ * stored in *MAJOR, *MINOR and *MICRO.  If MINOR or MICRO is NULL the version
+ * number is assumed to have just 1 or 2 parts respectively.
  *
  * On success, the last component, the patch level, will be returned;
- * in failure, NULL will be returned.  */
+ * in failure, NULL will be returned.
+ */
 static const char *parse_version_string(const char *s, int *major, int *minor, int *micro)
 {
   s = parse_version_number(s, major);
@@ -284,8 +311,15 @@ static const char *parse_version_string(const char *s, int *major, int *minor, i
   return s; /* patchlevel */
 }
 
-/* Substitute for the gpgrt based implementation.
- * See above for a description.   */
+/**
+ * cmp_version_strings - Compare two version strings
+ * @param a First version string
+ * @param b Second version string
+ * @param level Level to compare
+ *
+ * Substitute for the gpgrt based implementation.
+ * See above for a description.
+ */
 static int cmp_version_strings(const char *a, const char *b, int level)
 {
   int a_major, a_minor, a_micro;
@@ -724,7 +758,13 @@ static gpgme_data_t create_gpgme_data(void)
 }
 
 #if GPGME_VERSION_NUMBER >= 0x010900 /* gpgme >= 1.9.0 */
-/* Return true if the OpenPGP engine's version is at least VERSION. */
+/**
+ * have_gpg_version - Do we have a sufficent GPG version
+ * @param version Minimum version
+ * @retval bool ZZZ
+ *
+ * Return true if the OpenPGP engine's version is at least VERSION.
+ */
 static int have_gpg_version(const char *version)
 {
   static char *engine_version;
