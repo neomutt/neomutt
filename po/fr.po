@@ -5247,6 +5247,9 @@ msgstr "%s n'est pas un répertoire."
 msgid "reply to all recipients"
 msgstr "répondre à tous les destinataires"
 
+msgid "reply to all recipients preserving To/Cc"
+msgstr "répondre à tous les destinataires en préservant À/Cc (To/Cc)"
+
 #: opcodes.h:140
 msgid "scroll down 1/2 page"
 msgstr "descendre d'1/2 page"
