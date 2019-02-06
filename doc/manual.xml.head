@@ -2524,6 +2524,11 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
                 <entry>reply to all recipients</entry>
               </row>
               <row>
+                <entry></entry>
+                <entry><literal>&lt;group-chat-reply&gt;</literal></entry>
+                <entry>reply to all recipients preserving To/Cc</entry>
+              </row>
+              <row>
                 <entry>L</entry>
                 <entry><literal>&lt;list-reply&gt;</literal></entry>
                 <entry>reply to mailing list address</entry>
@@ -2587,9 +2592,20 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
             <term>Group reply</term>
             <listitem>
               <para>
-                Reply to the author as well to all recipients except you;
-                this consults
-                <link linkend="alternates"><command>alternates</command></link>.
+                Reply to the author; cc all other recipients; consults
+                <link linkend="alternates"><command>alternates</command></link>
+                and excludes you.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>Group Chat reply</term>
+            <listitem>
+              <para>
+                Reply to the author and other recipients in the To list;
+                cc other recipients in the Cc list; consults
+                <link linkend="alternates"><command>alternates</command></link>
+                and excludes you.
               </para>
             </listitem>
           </varlistentry>

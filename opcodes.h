@@ -137,6 +137,7 @@
   _fmt(OP_GET_MESSAGE,                    N_("get message with Message-Id")) \
   _fmt(OP_GET_PARENT,                     N_("get parent of the current message")) \
   _fmt(OP_GOTO_PARENT,                    N_("go to parent directory")) \
+  _fmt(OP_GROUP_CHAT_REPLY,               N_("reply to all recipients preserving To/Cc")) \
   _fmt(OP_GROUP_REPLY,                    N_("reply to all recipients")) \
   _fmt(OP_HALF_DOWN,                      N_("scroll down 1/2 page")) \
   _fmt(OP_HALF_UP,                        N_("scroll up 1/2 page")) \

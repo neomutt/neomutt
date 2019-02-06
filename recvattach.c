@@ -1565,11 +1565,13 @@ void mutt_view_attachments(struct Email *e)
       /* fallthrough */
       case OP_REPLY:
       case OP_GROUP_REPLY:
+      case OP_GROUP_CHAT_REPLY:
       case OP_LIST_REPLY:
 
         CHECK_ATTACH;
 
         flags = SEND_REPLY | (op == OP_GROUP_REPLY ? SEND_GROUP_REPLY : 0) |
+                (op == OP_GROUP_CHAT_REPLY ? SEND_GROUP_CHAT_REPLY : 0) |
                 (op == OP_LIST_REPLY ? SEND_LIST_REPLY : 0);
         mutt_attach_reply(CURATTACH->fp, e, actx,
                           menu->tagprefix ? NULL : CURATTACH->content, flags);
