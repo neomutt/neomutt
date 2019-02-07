@@ -5786,6 +5786,9 @@ msgstr "vérifier une clé publique PGP"
 msgid "view the key's user id"
 msgstr "afficher le numéro d'utilisateur de la clé"
 
+msgid "descend into a directory"
+msgstr "descendre dans un répertoire"
+
 #: opcodes.h:289
 msgid "move the highlight to next mailbox"
 msgstr "déplacer la marque vers la boîte aux lettres suivante"
