@@ -90,6 +90,37 @@ CLEANFILES+=	$(NEOMUTT) $(NEOMUTTOBJS)
 ALLOBJS+=	$(NEOMUTTOBJS)
 
 ###############################################################################
+# libneomutt
+LIBNEOMUTTOBJS=	account.o addrbook.o alias.o bcache.o browser.o color.o commands.o \
+		complete.o compose.o compress.o conststrings.o context.o copy.o \
+		curs_lib.o edit.o editmsg.o enriched.o enter.o \
+		filter.o flags.o git_ver.o handler.o hdrline.o help.o hook.o \
+		index.o init.o keymap.o mailbox.o main.o menu.o muttlib.o \
+		mutt_account.o mutt_attach.o mutt_body.o mutt_header.o \
+		mutt_history.o mutt_logging.o mutt_parse.o mutt_signal.o \
+		mutt_socket.o mutt_thread.o mutt_url.o mutt_window.o mx.o myvar.o \
+		pager.o pattern.o postpone.o progress.o query.o recvattach.o \
+		recvcmd.o resize.o rfc1524.o rfc3676.o safe_asprintf.o \
+		score.o send.o sendlib.o sidebar.o smtp.o sort.o state.o \
+		status.o system.o terminal.o version.o icommands.o
+
+@if !HAVE_WCSCASECMP
+LIBNEOMUTTOBJS+=	wcscasecmp.o
+@endif
+@if MIXMASTER
+LIBNEOMUTTOBJS+=	remailer.o
+@endif
+@if USE_LUA
+LIBNEOMUTTOBJS+=	mutt_lua.o
+@endif
+@if USE_INOTIFY
+LIBNEOMUTTOBJS+=	monitor.o
+@endif
+CLEANFILES+=	$(LIBNEOMUTT) $(LIBNEOMUTTOBJS)
+ALLOBJS+=	$(LIBNEOMUTTOBJS)
+
+
+###############################################################################
 # libpop
 LIBPOP=	libpop.a
 LIBPOPOBJS=	pop/pop_auth.o pop/pop.o pop/pop_lib.o
