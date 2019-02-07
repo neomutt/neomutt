@@ -164,8 +164,32 @@ static int iptostring(const struct sockaddr *addr, socklen_t addrlen, char *out,
  */
 static int mutt_sasl_cb_log(void *context, int priority, const char *message)
 {
-  mutt_debug(priority, "SASL: %s\n", message);
+  if (priority == SASL_LOG_NONE)
+    return SASL_OK;
 
+  int mutt_priority = 0;
+  switch (priority)
+  {
+    case SASL_LOG_TRACE:
+    case SASL_LOG_PASS:
+      mutt_priority = 5;
+      break;
+    case SASL_LOG_DEBUG:
+    case SASL_LOG_NOTE:
+      mutt_priority = 3;
+      break;
+    case SASL_LOG_FAIL:
+    case SASL_LOG_WARN:
+      mutt_priority = 2;
+      break;
+    case SASL_LOG_ERR:
+      mutt_priority = 1;
+      break;
+    default:
+      mutt_debug(1, "SASL unknown log priority: %s\n", message);
+      return SASL_OK;
+  }
+  mutt_debug(mutt_priority, "SASL: %s\n", message);
   return SASL_OK;
 }
 
