@@ -186,7 +186,7 @@ static char *parse_encoded_word(char *str, enum ContentEncoding *enc, char **cha
  * @retval  0 Success, string converted
  * @retval >0 Error, number of bytes that could be converted
  *
- * If the data could be conveted using encoder, then set *encoder and *wlen.
+ * If the data could be converted using encoder, then set *encoder and *wlen.
  * Otherwise return an upper bound on the maximum length of the data which
  * could be converted.
  *
@@ -414,14 +414,14 @@ static char *decode_word(const char *s, size_t len, enum ContentEncoding enc)
 
 /**
  * encode - RFC2047-encode a string
- * @param d        String to convert
- * @param dlen     Length of string
- * @param col      Starting column to convert
- * @param fromcode Original encoding
- * @param charsets List of allowable encodings (colon separated)
- * @param e        Encoded string
- * @param elen     Length of encoded string
- * @param specials Special characters to be encoded
+ * @param[in]  d        String to convert
+ * @param[in]  dlen     Length of string
+ * @param[in]  col      Starting column to convert
+ * @param[in]  fromcode Original encoding
+ * @param[in]  charsets List of allowable encodings (colon separated)
+ * @param[out] e        Encoded string
+ * @param[out] elen     Length of encoded string
+ * @param[in]  specials Special characters to be encoded
  * @retval 0 Success
  */
 static int encode(const char *d, size_t dlen, int col, const char *fromcode,

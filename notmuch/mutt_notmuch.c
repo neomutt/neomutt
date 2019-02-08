@@ -49,8 +49,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include <sys/stat.h>
-#include <sys/types.h>
 #include <time.h>
 #include <unistd.h>
 #include "notmuch_private.h"
@@ -60,13 +58,11 @@
 #include "mutt.h"
 #include "mutt_notmuch.h"
 #include "account.h"
-#include "context.h"
 #include "curs_lib.h"
 #include "globals.h"
 #include "index.h"
 #include "mailbox.h"
 #include "maildir/lib.h"
-#include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "mx.h"
 #include "progress.h"
@@ -106,7 +102,7 @@ static enum NmQueryType string_to_query_type(const char *str)
 
 /**
  * nm_adata_free - Release and clear storage in an NmAccountData structure
- * @param ptr Nm Account data
+ * @param[out] ptr Nm Account data
  */
 void nm_adata_free(void **ptr)
 {
@@ -154,7 +150,7 @@ struct NmAccountData *nm_adata_get(struct Mailbox *m)
 
 /**
  * nm_mdata_free - Free data attached to the Mailbox
- * @param ptr Notmuch data
+ * @param[out] ptr Notmuch data
  *
  * The NmMboxData struct stores global Notmuch data, such as the connection to
  * the database.  This function will close the database, free the resources and
@@ -218,7 +214,7 @@ struct NmMboxData *nm_mdata_get(struct Mailbox *m)
 
 /**
  * nm_edata_free - Free data attached to an Email
- * @param ptr Email data
+ * @param[out] ptr Email data
  *
  * Each email has an attached NmEmailData, which contains things like the tags
  * (labels).
@@ -1951,9 +1947,9 @@ int nm_description_to_path(const char *desc, char *buf, size_t buflen)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if ((np->m->magic == MUTT_NOTMUCH) && np->m->desc && (strcmp(desc, np->m->desc) == 0))
+    if ((np->mailbox->magic == MUTT_NOTMUCH) && np->mailbox->desc && (strcmp(desc, np->mailbox->desc) == 0))
     {
-      mutt_str_strfcpy(buf, np->m->path, buflen);
+      mutt_str_strfcpy(buf, np->mailbox->path, buflen);
       buf[buflen - 1] = '\0';
       return 0;
     }
@@ -2027,9 +2023,9 @@ done:
 
 /**
  * nm_get_all_tags - Fill a list with all notmuch tags
- * @param m         Mailbox
- * @param tag_list  List of tags
- * @param tag_count Number of tags
+ * @param[in]  m         Mailbox
+ * @param[out] tag_list  List of tags
+ * @param[out] tag_count Number of tags
  * @retval  0 Success
  * @retval -1 Failure
  *

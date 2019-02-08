@@ -48,7 +48,7 @@ struct Envelope *mutt_env_new(void)
 
 /**
  * mutt_env_free - Free an Envelope
- * @param p Envelope to free
+ * @param[out] p Envelope to free
  */
 void mutt_env_free(struct Envelope **p)
 {
@@ -90,8 +90,8 @@ void mutt_env_free(struct Envelope **p)
 
 /**
  * mutt_env_merge - Merge the headers of two Envelopes
- * @param base  Envelope destination for all the headers
- * @param extra Envelope to copy from
+ * @param[in]  base  Envelope destination for all the headers
+ * @param[out] extra Envelope to copy from
  *
  * Any fields that are missing from base will be copied from extra.
  * extra will be freed afterwards.
@@ -211,8 +211,8 @@ void mutt_env_to_local(struct Envelope *env)
   mutt_addrlist_to_local(env->mail_followup_to);
 }
 
-/* Note that `a' in the `env->a' expression is macro argument, not
- * "real" name of an `env' compound member.  Real name will be substituted
+/* Note that 'a' in the 'env->a' expression is macro argument, not
+ * "real" name of an 'env' compound member.  Real name will be substituted
  * by preprocessor at the macro-expansion time.
  * Note that #a escapes and double quotes the argument.
  */

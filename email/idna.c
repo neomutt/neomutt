@@ -49,7 +49,7 @@
 
 /* These Config Variables are only used in mutt/idna.c */
 #ifdef HAVE_LIBIDN
-bool IdnDecode; ///< Config: (idn) Decode internation domain names
+bool IdnDecode; ///< Config: (idn) Decode international domain names
 bool IdnEncode; ///< Config: (idn) Encode international domain names
 #endif
 
@@ -94,9 +94,9 @@ static bool check_idn(char *domain)
 
 /**
  * mutt_idna_to_ascii_lz - Convert a domain to Punycode
- * @param input  Domain
- * @param output Result
- * @param flags  Flags, e.g. IDNA_ALLOW_UNASSIGNED
+ * @param[in]  input  Domain
+ * @param[out] output Result
+ * @param[in]  flags  Flags, e.g. IDNA_ALLOW_UNASSIGNED
  * @retval 0 Success
  * @retval >0 Failure, error code
  *

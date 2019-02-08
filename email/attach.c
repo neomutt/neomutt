@@ -114,7 +114,7 @@ void mutt_actx_free_entries(struct AttachCtx *actx)
 
 /**
  * mutt_actx_free - Free an Attachment Context
- * @param pactx Attachment context
+ * @param[out] pactx Attachment context
  */
 void mutt_actx_free(struct AttachCtx **pactx)
 {

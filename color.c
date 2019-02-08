@@ -726,7 +726,7 @@ static enum CommandResult add_pattern(struct ColorLineHead *top, const char *s,
                                       struct Buffer *err, bool is_index, int match)
 {
   /* is_index used to store compiled pattern
-   * only for `index' color object
+   * only for 'index' color object
    * when called from mutt_parse_color() */
 
   struct ColorLine *tmp = NULL;

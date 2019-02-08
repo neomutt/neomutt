@@ -368,8 +368,8 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** When \fIset\fP, Mutt assumes the presence of a List-Post header
   ** means the recipient is subscribed to the list.  Unless the mailing list
-  ** is in the ``unsubscribe'' or ``unlist'' lists, it will be added
-  ** to the ``$subscribe'' list.  Parsing and checking these things slows
+  ** is in the "unsubscribe" or "unlist" lists, it will be added
+  ** to the "$subscribe" list.  Parsing and checking these things slows
   ** header reading down, so this option is disabled by default.
   */
   { "auto_tag",         DT_BOOL, R_NONE, &AutoTag, false },
@@ -3270,10 +3270,10 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** This variable provides a toggle. When active, the From: header will be
-  ** extracted from the current mail's `X-Original-To:' header. This setting
+  ** extracted from the current mail's 'X-Original-To:' header. This setting
   ** does not have precedence over "$reverse_realname".
   ** .pp
-  ** Assuming `fast_reply' is disabled, this option will prompt the user with a
+  ** Assuming 'fast_reply' is disabled, this option will prompt the user with a
   ** prefilled From: header.
   */
   { "resolve",          DT_BOOL, R_NONE, &Resolve, true },
@@ -3539,12 +3539,12 @@ struct ConfigDef MuttVars[] = {
   ** This contains the list of characters which you would like to treat
   ** as folder separators for displaying paths in the sidebar.
   ** .pp
-  ** Local mail is often arranged in directories: `dir1/dir2/mailbox'.
+  ** Local mail is often arranged in directories: 'dir1/dir2/mailbox'.
   ** .ts
   ** set sidebar_delim_chars='/'
   ** .te
   ** .pp
-  ** IMAP mailboxes are often named: `folder1.folder2.mailbox'.
+  ** IMAP mailboxes are often named: 'folder1.folder2.mailbox'.
   ** .ts
   ** set sidebar_delim_chars='.'
   ** .te

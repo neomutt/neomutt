@@ -808,7 +808,7 @@ bye:
 
 /**
  * mutt_enter_state_free - Free an EnterState
- * @param esp EnterState to free
+ * @param[out] esp EnterState to free
  */
 void mutt_enter_state_free(struct EnterState **esp)
 {

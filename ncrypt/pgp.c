@@ -334,7 +334,7 @@ static int pgp_check_pgp_decryption_okay_regex(FILE *fpin)
  * @retval  1 - no patterns were matched (if delegated to decryption_okay_regex)
  * @retval  0 - DECRYPTION_OKAY was seen, with no PLAINTEXT outside
  * @retval -1 - No decryption status codes were encountered
- * @retval -2 - PLAINTEXT was encountered outside of DECRYPTION delimeters
+ * @retval -2 - PLAINTEXT was encountered outside of DECRYPTION delimiters
  * @retval -3 - DECRYPTION_FAILED was encountered
  *
  * Checks GnuPGP status fd output for various status codes indicating

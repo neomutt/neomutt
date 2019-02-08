@@ -27,15 +27,21 @@
  */
 
 #include "config.h"
+#include <limits.h>
 #include <notmuch.h>
-#include <string.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <sys/stat.h>
+#include <time.h>
 #include "notmuch_private.h"
+#include "mutt/mutt.h"
+#include "config/lib.h"
 #include "email/lib.h"
-#include "account.h"
 #include "globals.h"
 #include "mutt_logging.h"
 #include "mutt_notmuch.h"
+
+struct Mailbox;
 
 /**
  * nm_db_get_filename - Get the filename of the Notmuch database

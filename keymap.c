@@ -1268,7 +1268,7 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
   {
     for (int i = 0; i < nummenus; ++i)
     {
-      km_bindkey(key, menu[i], OP_NULL); /* the `unbind' command */
+      km_bindkey(key, menu[i], OP_NULL); /* the 'unbind' command */
     }
   }
   else

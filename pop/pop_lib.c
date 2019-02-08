@@ -406,7 +406,7 @@ err_conn:
  */
 void pop_logout(struct Mailbox *m)
 {
-  struct PopAccountData *adata = pop_get_adata(m);
+  struct PopAccountData *adata = pop_adata_get(m);
 
   if (adata->status == POP_CONNECTED)
   {
@@ -593,7 +593,7 @@ static int check_uidl(char *line, void *data)
  */
 int pop_reconnect(struct Mailbox *m)
 {
-  struct PopAccountData *adata = pop_get_adata(m);
+  struct PopAccountData *adata = pop_adata_get(m);
 
   if (adata->status == POP_CONNECTED)
     return 0;
@@ -635,11 +635,11 @@ int pop_reconnect(struct Mailbox *m)
 }
 
 /**
- * pop_get_adata - Get the Account data for this mailbox
+ * pop_adata_get - Get the Account data for this mailbox
  * @param m Mailbox
  * @retval ptr PopAccountData
  */
-struct PopAccountData *pop_get_adata(struct Mailbox *m)
+struct PopAccountData *pop_adata_get(struct Mailbox *m)
 {
   if (!m || (m->magic != MUTT_POP))
     return NULL;

@@ -39,7 +39,7 @@
 
 /**
  * mutt_system - Run an external command
- * @param cmd Command and argments
+ * @param cmd Command and arguments
  * @retval -1  Error
  * @retval >=0 Success (command's return code)
  *

@@ -528,7 +528,7 @@ bool mutt_path_abbr_folder(char *buf, size_t buflen, const char *folder)
 }
 
 /**
- * mutt_escape_path - Escapes single quotes in a path for a command string
+ * mutt_path_escape - Escapes single quotes in a path for a command string
  * @param src the path to escape
  * @retval ptr The escaped string
  */

@@ -39,7 +39,9 @@
 #include "mx.h"
 
 struct Email;
+struct Mailbox;
 struct NmMboxData;
+struct stat;
 
 /* These Config Variables are only used in notmuch/mutt_notmuch.c */
 extern int   NmDbLimit;

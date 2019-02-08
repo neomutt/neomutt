@@ -60,7 +60,7 @@ enum ImapAuthRes imap_auth_plain(struct ImapAccountData *adata, const char *meth
   mutt_sasl_plain_msg(buf, sizeof(buf), auth_plain_cmd, adata->conn->account.user,
                       adata->conn->account.user, adata->conn->account.pass);
 
-  if (mutt_bit_isset(adata->capabilities, IMAP_CAP_SASL_IR))
+  if (adata->capabilities & IMAP_CAP_SASL_IR)
   {
     imap_cmd_start(adata, buf);
   }

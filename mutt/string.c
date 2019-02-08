@@ -145,8 +145,7 @@ static inline bool char_cmp_lower(char a, char b)
 typedef bool (*char_cmp)(char, char);
 
 /**
- * get_char_cmp - Retrieve the correct function to compare characters according
- * to a case sensitivity setting.
+ * get_char_cmp - Retrieve the correct function to compare characters according to a case sensitivity setting.
  * @param cs Case sensitivity setting
  * @retval A char_cmp function pointer
  */
@@ -449,8 +448,8 @@ char *mutt_str_strncat(char *d, size_t l, const char *s, size_t sl)
 
 /**
  * mutt_str_replace - Replace one string with another
- * @param p String to replace
- * @param s New string
+ * @param[out] p String to replace
+ * @param[in]  s New string
  *
  * This function free()s the original string, strdup()s the new string and
  * overwrites the pointer to the first string.
@@ -465,9 +464,9 @@ void mutt_str_replace(char **p, const char *s)
 
 /**
  * mutt_str_append_item - Add string to another separated by sep
- * @param str  String appended
- * @param item String to append
- * @param sep separator between string item
+ * @param[out] str  String appended
+ * @param[in]  item String to append
+ * @param[in]  sep separator between string item
  *
  * This function appends a string to another separate them by sep
  * if needed
@@ -489,7 +488,7 @@ void mutt_str_append_item(char **str, const char *item, int sep)
 
 /**
  * mutt_str_adjust - Shrink-to-fit a string
- * @param p String to alter
+ * @param[out] p String to alter
  *
  * Take a string which is allocated on the heap, find its length and reallocate
  * the memory to be exactly the right size.

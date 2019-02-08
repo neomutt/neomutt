@@ -40,13 +40,13 @@
 
 /**
  * mutt_create_filter_fd - Run a command on a pipe (optionally connect stdin/stdout)
- * @param cmd   Command line to invoke using `sh -c`
- * @param in    File stream pointing to stdin for the command process, can be NULL
- * @param out   File stream pointing to stdout for the command process, can be NULL
- * @param err   File stream pointing to stderr for the command process, can be NULL
- * @param fdin  If `in` is NULL and fdin is not -1 then fdin will be used as stdin for the command process
- * @param fdout If `out` is NULL and fdout is not -1 then fdout will be used as stdout for the command process
- * @param fderr If `error` is NULL and fderr is not -1 then fderr will be used as stderr for the command process
+ * @param[in]  cmd   Command line to invoke using `sh -c`
+ * @param[out] in    File stream pointing to stdin for the command process, can be NULL
+ * @param[out] out   File stream pointing to stdout for the command process, can be NULL
+ * @param[out] err   File stream pointing to stderr for the command process, can be NULL
+ * @param[in]  fdin  If `in` is NULL and fdin is not -1 then fdin will be used as stdin for the command process
+ * @param[in]  fdout If `out` is NULL and fdout is not -1 then fdout will be used as stdout for the command process
+ * @param[in]  fderr If `error` is NULL and fderr is not -1 then fderr will be used as stderr for the command process
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *

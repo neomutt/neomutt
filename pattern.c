@@ -192,7 +192,7 @@ static char LastSearchExpn[LONG_STRING] = { 0 }; /**< expanded version of LastSe
  * @param pat  Pattern to match
  * @param s   String to parse
  * @param err Buffer for error messages
- * @retval true If the pattern was read succesfully
+ * @retval true If the pattern was read successfully
  */
 static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 {
@@ -223,7 +223,7 @@ static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   }
   else if (pat->groupmatch)
   {
-    pat->p.g = mutt_pattern_group(buf.data);
+    pat->p.group = mutt_pattern_group(buf.data);
     FREE(&buf.data);
   }
   else
@@ -566,7 +566,7 @@ static void adjust_date_range(struct tm *min, struct tm *max)
  * @param pat Pattern to store the date in
  * @param s   String to parse
  * @param err Buffer for error messages
- * @retval true If the pattern was read succesfully
+ * @retval true If the pattern was read successfully
  */
 static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 {
@@ -590,7 +590,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   }
 
   memset(&min, 0, sizeof(min));
-  /* the `0' time is Jan 1, 1970 UTC, so in order to prevent a negative time
+  /* the '0' time is Jan 1, 1970 UTC, so in order to prevent a negative time
      when doing timezone conversion, we use Jan 2, 1970 UTC as the base
      here */
   min.tm_mday = 2;
@@ -725,7 +725,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
  * @param pat Pattern to store the range in
  * @param s   String to parse
  * @param err Buffer for error messages
- * @retval true If the pattern was read succesfully
+ * @retval true If the pattern was read successfully
  */
 static bool eat_range(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 {
@@ -849,7 +849,7 @@ static bool is_context_available(struct Buffer *s, regmatch_t pmatch[],
   };
 
   /* First decide if we're going to need the context at all.
-   * Relative patterns need it iff they contain a dot or a number.
+   * Relative patterns need it if they contain a dot or a number.
    * Absolute patterns only need it if they contain a dot. */
   char *context_loc = strpbrk(s->dptr + pmatch[0].rm_so, context_req_chars[kind]);
   if (!context_loc || (context_loc >= &s->dptr[pmatch[0].rm_eo]))
@@ -1014,7 +1014,7 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
  * @param pat Pattern to store the range in
  * @param s   String to parse
  * @param err Buffer for error messages
- * @retval true If the pattern was read succesfully
+ * @retval true If the pattern was read successfully
  */
 static bool eat_message_range(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 {
@@ -1071,7 +1071,7 @@ static int patmatch(const struct Pattern *pat, const char *buf)
   else if (pat->stringmatch)
     return pat->ign_case ? !strcasestr(buf, pat->p.str) : !strstr(buf, pat->p.str);
   else if (pat->groupmatch)
-    return !mutt_group_match(pat->p.g, buf);
+    return !mutt_group_match(pat->p.group, buf);
   else
     return regexec(pat->p.regex, buf, 0, NULL, 0);
 }
@@ -1332,7 +1332,7 @@ static /* const */ char *find_matching_paren(/* const */ char *s)
 
 /**
  * mutt_pattern_free - Free a Pattern
- * @param pat Pattern to free
+ * @param[out] pat Pattern to free
  */
 void mutt_pattern_free(struct Pattern **pat)
 {
@@ -1351,7 +1351,7 @@ void mutt_pattern_free(struct Pattern **pat)
     else if (tmp->stringmatch)
       FREE(&tmp->p.str);
     else if (tmp->groupmatch)
-      tmp->p.g = NULL;
+      tmp->p.group = NULL;
     else if (tmp->p.regex)
     {
       regfree(tmp->p.regex);

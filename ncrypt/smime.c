@@ -107,7 +107,7 @@ static char SmimeIntermediateToUse[PATH_MAX];
 
 /**
  * smime_free_key - Free a list of SMIME keys
- * @param keylist List of keys to free
+ * @param[out] keylist List of keys to free
  */
 static void smime_free_key(struct SmimeKey **keylist)
 {
@@ -359,20 +359,20 @@ static void smime_command(char *buf, size_t buflen,
 
 /**
  * smime_invoke - Run an SMIME command
- * @param smimein       stdin  for the command, or NULL (OPTIONAL)
- * @param smimeout      stdout for the command, or NULL (OPTIONAL)
- * @param smimeerr      stderr for the command, or NULL (OPTIONAL)
- * @param smimeinfd     stdin  for the command, or -1 (OPTIONAL)
- * @param smimeoutfd    stdout for the command, or -1 (OPTIONAL)
- * @param smimeerrfd    stderr for the command, or -1 (OPTIONAL)
- * @param fname         Filename to pass to the command
- * @param sig_fname     Signature filename to pass to the command
- * @param cryptalg      Encryption algorithm
- * @param digestalg     Hashing algorithm
- * @param key           SMIME key
- * @param certificates  Public certificates
- * @param intermediates Intermediate certificates
- * @param format        printf-like format string
+ * @param[out] smimein       stdin  for the command, or NULL (OPTIONAL)
+ * @param[out] smimeout      stdout for the command, or NULL (OPTIONAL)
+ * @param[out] smimeerr      stderr for the command, or NULL (OPTIONAL)
+ * @param[in]  smimeinfd     stdin  for the command, or -1 (OPTIONAL)
+ * @param[in]  smimeoutfd    stdout for the command, or -1 (OPTIONAL)
+ * @param[in]  smimeerrfd    stderr for the command, or -1 (OPTIONAL)
+ * @param[in]  fname         Filename to pass to the command
+ * @param[in]  sig_fname     Signature filename to pass to the command
+ * @param[in]  cryptalg      Encryption algorithm
+ * @param[in]  digestalg     Hashing algorithm
+ * @param[in]  key           SMIME key
+ * @param[in]  certificates  Public certificates
+ * @param[in]  intermediates Intermediate certificates
+ * @param[in]  format        printf-like format string
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
@@ -1491,14 +1491,14 @@ int smime_class_verify_sender(struct Email *e)
 
 /**
  * smime_invoke_encrypt - Use SMIME to encrypt a file
- * @param smimein    stdin  for the command, or NULL (OPTIONAL)
- * @param smimeout   stdout for the command, or NULL (OPTIONAL)
- * @param smimeerr   stderr for the command, or NULL (OPTIONAL)
- * @param smimeinfd  stdin  for the command, or -1 (OPTIONAL)
- * @param smimeoutfd stdout for the command, or -1 (OPTIONAL)
- * @param smimeerrfd stderr for the command, or -1 (OPTIONAL)
- * @param fname      Filename to pass to the command
- * @param uids       List of IDs/fingerprints, space separated
+ * @param[out] smimein    stdin  for the command, or NULL (OPTIONAL)
+ * @param[out] smimeout   stdout for the command, or NULL (OPTIONAL)
+ * @param[out] smimeerr   stderr for the command, or NULL (OPTIONAL)
+ * @param[in]  smimeinfd  stdin  for the command, or -1 (OPTIONAL)
+ * @param[in]  smimeoutfd stdout for the command, or -1 (OPTIONAL)
+ * @param[in]  smimeerrfd stderr for the command, or -1 (OPTIONAL)
+ * @param[in]  fname      Filename to pass to the command
+ * @param[in]  uids       List of IDs/fingerprints, space separated
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
@@ -1516,13 +1516,13 @@ static pid_t smime_invoke_encrypt(FILE **smimein, FILE **smimeout, FILE **smimee
 
 /**
  * smime_invoke_sign - Use SMIME to sign a file
- * @param smimein    stdin  for the command, or NULL (OPTIONAL)
- * @param smimeout   stdout for the command, or NULL (OPTIONAL)
- * @param smimeerr   stderr for the command, or NULL (OPTIONAL)
- * @param smimeinfd  stdin  for the command, or -1 (OPTIONAL)
- * @param smimeoutfd stdout for the command, or -1 (OPTIONAL)
- * @param smimeerrfd stderr for the command, or -1 (OPTIONAL)
- * @param fname      Filename to pass to the command
+ * @param[out] smimein    stdin  for the command, or NULL (OPTIONAL)
+ * @param[out] smimeout   stdout for the command, or NULL (OPTIONAL)
+ * @param[out] smimeerr   stderr for the command, or NULL (OPTIONAL)
+ * @param[in]  smimeinfd  stdin  for the command, or -1 (OPTIONAL)
+ * @param[in]  smimeoutfd stdout for the command, or -1 (OPTIONAL)
+ * @param[in]  smimeerrfd stderr for the command, or -1 (OPTIONAL)
+ * @param[in]  fname      Filename to pass to the command
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
@@ -1834,15 +1834,15 @@ struct Body *smime_class_sign_message(struct Body *a)
 
 /**
  * smime_invoke_verify - Use SMIME to verify a file
- * @param smimein    stdin  for the command, or NULL (OPTIONAL)
- * @param smimeout   stdout for the command, or NULL (OPTIONAL)
- * @param smimeerr   stderr for the command, or NULL (OPTIONAL)
- * @param smimeinfd  stdin  for the command, or -1 (OPTIONAL)
- * @param smimeoutfd stdout for the command, or -1 (OPTIONAL)
- * @param smimeerrfd stderr for the command, or -1 (OPTIONAL)
- * @param fname      Filename to pass to the command
- * @param sig_fname  Signature filename to pass to the command
- * @param opaque     If true, use `$smime_verify_opaque_command` else `$smime_verify_command`
+ * @param[out] smimein    stdin  for the command, or NULL (OPTIONAL)
+ * @param[out] smimeout   stdout for the command, or NULL (OPTIONAL)
+ * @param[out] smimeerr   stderr for the command, or NULL (OPTIONAL)
+ * @param[in]  smimeinfd  stdin  for the command, or -1 (OPTIONAL)
+ * @param[in]  smimeoutfd stdout for the command, or -1 (OPTIONAL)
+ * @param[in]  smimeerrfd stderr for the command, or -1 (OPTIONAL)
+ * @param[in]  fname      Filename to pass to the command
+ * @param[in]  sig_fname  Signature filename to pass to the command
+ * @param[in]  opaque     If true, use `$smime_verify_opaque_command` else `$smime_verify_command`
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
@@ -1860,13 +1860,13 @@ static pid_t smime_invoke_verify(FILE **smimein, FILE **smimeout, FILE **smimeer
 
 /**
  * smime_invoke_decrypt - Use SMIME to decrypt a file
- * @param smimein    stdin  for the command, or NULL (OPTIONAL)
- * @param smimeout   stdout for the command, or NULL (OPTIONAL)
- * @param smimeerr   stderr for the command, or NULL (OPTIONAL)
- * @param smimeinfd  stdin  for the command, or -1 (OPTIONAL)
- * @param smimeoutfd stdout for the command, or -1 (OPTIONAL)
- * @param smimeerrfd stderr for the command, or -1 (OPTIONAL)
- * @param fname      Filename to pass to the command
+ * @param[out] smimein    stdin  for the command, or NULL (OPTIONAL)
+ * @param[out] smimeout   stdout for the command, or NULL (OPTIONAL)
+ * @param[out] smimeerr   stderr for the command, or NULL (OPTIONAL)
+ * @param[in]  smimeinfd  stdin  for the command, or -1 (OPTIONAL)
+ * @param[in]  smimeoutfd stdout for the command, or -1 (OPTIONAL)
+ * @param[in]  smimeerrfd stderr for the command, or -1 (OPTIONAL)
+ * @param[in]  fname      Filename to pass to the command
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *

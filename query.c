@@ -105,7 +105,7 @@ static struct Address *result_to_addr(struct Query *r)
 
 /**
  * free_query - Free a Query
- * @param query Query to free
+ * @param[out] query Query to free
  */
 static void free_query(struct Query **query)
 {

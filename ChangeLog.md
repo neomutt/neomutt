@@ -101,7 +101,7 @@
   - Update Portuguese (BR) translation (100%)
   - Update Spanish translation (64%)
   - Update Turkish translation (75%)
-  - Merge simliar messages
+  - Merge similar messages
 * Docs
   - Clarify precedence of settings in config files
   - Fix subjectrx example in the manual
@@ -545,7 +545,7 @@
 * Docs
   - Remove feature muttrc files
   - Merge README.notmuch into manual
-  - Remove unneded scripts
+  - Remove unneeded scripts
   - Remove README.SECURITY
   - Remove BEWARE and devel-notes.txt
   - Update Makefiles

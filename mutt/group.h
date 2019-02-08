@@ -50,7 +50,7 @@ struct Group
  */
 struct GroupNode
 {
-  struct Group *g;
+  struct Group *group;
   STAILQ_ENTRY(GroupNode) entries;
 };
 

@@ -53,7 +53,7 @@ bool ReverseAlias; ///< Config: Display the alias in the index, rather than the 
 static sort_t *AuxSort = NULL;
 
 /**
- * perform_auxsort - Compare two emails using the auxilliary sort method
+ * perform_auxsort - Compare two emails using the auxiliary sort method
  * @param retval Result of normal sort method
  * @param a      First email
  * @param b      Second email
@@ -368,7 +368,7 @@ void mutt_sort_headers(struct Context *ctx, bool init)
   if (!ctx)
     return;
 
-  if (!ctx->mailbox->msg_count)
+  if (ctx->mailbox->msg_count == 0)
   {
     /* this function gets called by mutt_sync_mailbox(), which may have just
      * deleted all the messages.  the virtual message numbers are not updated

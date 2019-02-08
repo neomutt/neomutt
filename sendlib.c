@@ -240,64 +240,64 @@ struct B64Context
 
 /**
  * b64_init - Set up the base64 conversion
- * @param ctx Cursor for the base64 conversion
+ * @param bctx Cursor for the base64 conversion
  * @retval 0 Always
  */
-static int b64_init(struct B64Context *ctx)
+static int b64_init(struct B64Context *bctx)
 {
-  memset(ctx->buffer, '\0', sizeof(ctx->buffer));
-  ctx->size = 0;
-  ctx->linelen = 0;
+  memset(bctx->buffer, '\0', sizeof(bctx->buffer));
+  bctx->size = 0;
+  bctx->linelen = 0;
 
   return 0;
 }
 
 /**
  * b64_flush - Save the bytes to the file
- * @param ctx  Cursor for the base64 conversion
+ * @param bctx  Cursor for the base64 conversion
  * @param fout File to save the output
  */
-static void b64_flush(struct B64Context *ctx, FILE *fout)
+static void b64_flush(struct B64Context *bctx, FILE *fout)
 {
   /* for some reasons, mutt_b64_encode expects the
    * output buffer to be larger than 10B */
   char encoded[11];
   size_t ret;
 
-  if (!ctx->size)
+  if (!bctx->size)
     return;
 
-  if (ctx->linelen >= 72)
+  if (bctx->linelen >= 72)
   {
     fputc('\n', fout);
-    ctx->linelen = 0;
+    bctx->linelen = 0;
   }
 
-  /* ret should always be equal to 4 here, because ctx->size
+  /* ret should always be equal to 4 here, because bctx->size
    * is a value between 1 and 3 (included), but let's not hardcode it
    * and prefer the return value of the function */
-  ret = mutt_b64_encode(ctx->buffer, ctx->size, encoded, sizeof(encoded));
+  ret = mutt_b64_encode(bctx->buffer, bctx->size, encoded, sizeof(encoded));
   for (size_t i = 0; i < ret; i++)
   {
     fputc(encoded[i], fout);
-    ctx->linelen++;
+    bctx->linelen++;
   }
 
-  ctx->size = 0;
+  bctx->size = 0;
 }
 
 /**
  * b64_putc - Base64-encode one character
- * @param ctx  Cursor for the base64 conversion
+ * @param bctx  Cursor for the base64 conversion
  * @param c    Character to encode
  * @param fout File to save the output
  */
-static void b64_putc(struct B64Context *ctx, char c, FILE *fout)
+static void b64_putc(struct B64Context *bctx, char c, FILE *fout)
 {
-  if (ctx->size == 3)
-    b64_flush(ctx, fout);
+  if (bctx->size == 3)
+    b64_flush(bctx, fout);
 
-  ctx->buffer[ctx->size++] = c;
+  bctx->buffer[bctx->size++] = c;
 }
 
 /**
@@ -308,10 +308,10 @@ static void b64_putc(struct B64Context *ctx, char c, FILE *fout)
  */
 static void encode_base64(struct FgetConv *fc, FILE *fout, int istext)
 {
-  struct B64Context ctx;
+  struct B64Context bctx;
   int ch, ch1 = EOF;
 
-  b64_init(&ctx);
+  b64_init(&bctx);
 
   while ((ch = mutt_ch_fgetconv(fc)) != EOF)
   {
@@ -321,11 +321,11 @@ static void encode_base64(struct FgetConv *fc, FILE *fout, int istext)
       return;
     }
     if (istext && ch == '\n' && ch1 != '\r')
-      b64_putc(&ctx, '\r', fout);
-    b64_putc(&ctx, ch, fout);
+      b64_putc(&bctx, '\r', fout);
+    b64_putc(&bctx, ch, fout);
     ch1 = ch;
   }
-  b64_flush(&ctx, fout);
+  b64_flush(&bctx, fout);
   fputc('\n', fout);
 }
 
@@ -1062,10 +1062,10 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
  * @param path Path to attachment
  * @retval num MIME type, e.g. #TYPE_IMAGE
  *
- * Given a file at `path`, see if there is a registered MIME type.
+ * Given a file at 'path', see if there is a registered MIME type.
  * Returns the major MIME type, and copies the subtype to "d".  First look
  * in a system mime.types if we can find one, then look for ~/.mime.types.
- * The longest match is used so that we can match `ps.gz' when `gz' also
+ * The longest match is used so that we can match 'ps.gz' when 'gz' also
  * exists.
  */
 int mutt_lookup_mime_type(struct Body *att, const char *path)
@@ -1894,7 +1894,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
   {
     int fold = 0;
 
-    /* find the next word and place it in `buf'. it may start with
+    /* find the next word and place it in 'buf'. it may start with
      * whitespace we can fold before */
     const char *next = mutt_str_find_word(p);
     l = MIN(sizeof(buf) - 1, next - p);
@@ -2224,7 +2224,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
     fputs(mutt_date_make_date(buf, sizeof(buf)), fp);
 
   /* UseFrom is not consulted here so that we can still write a From:
-   * field if the user sets it with the `my_hdr' command
+   * field if the user sets it with the 'my_hdr' command
    */
   if (env->from && !privacy)
   {
@@ -2664,10 +2664,10 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
 
 /**
  * add_args - Add an Address to a dynamic array
- * @param args    Array to add to
- * @param argslen Number of entries in array
- * @param argsmax Allocated size of the array
- * @param addr    Address to add
+ * @param[out] args    Array to add to
+ * @param[out] argslen Number of entries in array
+ * @param[out] argsmax Allocated size of the array
+ * @param[in]  addr    Address to add
  * @retval ptr Updated array
  */
 static char **add_args(char **args, size_t *argslen, size_t *argsmax, struct Address *addr)
@@ -2687,10 +2687,10 @@ static char **add_args(char **args, size_t *argslen, size_t *argsmax, struct Add
 
 /**
  * add_option - Add a string to a dynamic array
- * @param args    Array to add to
- * @param argslen Number of entries in array
- * @param argsmax Allocated size of the array
- * @param s       string to add
+ * @param[out] args    Array to add to
+ * @param[out] argslen Number of entries in array
+ * @param[out] argsmax Allocated size of the array
+ * @param[in]  s       string to add
  * @retval ptr Updated array
  *
  * @note The array may be realloc()'d
@@ -3117,7 +3117,7 @@ int mutt_write_multiple_fcc(const char *path, struct Email *e, const char *msgid
     if (!*tok)
       continue;
 
-    /* Only call mutt_expand_path iff tok has some data */
+    /* Only call mutt_expand_path if tok has some data */
     mutt_debug(1, "Fcc: additional mailbox token = '%s'\n", tok);
     mutt_str_strfcpy(fcc_expanded, tok, sizeof(fcc_expanded));
     mutt_expand_path(fcc_expanded, sizeof(fcc_expanded));
@@ -3186,7 +3186,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     stat(path, &st);
   }
 
-  e->read = !post; /* make sure to put it in the `cur' directory (maildir) */
+  e->read = !post; /* make sure to put it in the 'cur' directory (maildir) */
   onm_flags = MUTT_ADD_FROM;
   if (post)
     onm_flags |= MUTT_SET_DRAFT;

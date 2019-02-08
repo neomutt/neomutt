@@ -40,7 +40,7 @@ extern wchar_t ReplacementChar;
  */
 struct FgetConv
 {
-  FILE *file;
+  FILE *fp;
   iconv_t cd;
   char bufi[512];
   char bufo[512];
@@ -56,7 +56,7 @@ struct FgetConv
  */
 struct FgetConvNot
 {
-  FILE *file;
+  FILE *fp;
   iconv_t cd;
 };
 

@@ -81,7 +81,7 @@ char *MhSeqUnseen;  ///< Config: MH sequence for unseen messages
 
 /**
  * maildir_mdata_free - Free data attached to the Mailbox
- * @param ptr Maildir data
+ * @param[out] ptr Maildir data
  */
 void maildir_mdata_free(void **ptr)
 {
@@ -263,7 +263,7 @@ static void mh_sequences_add_one(struct Mailbox *m, int n, bool unseen, bool fla
 
 /**
  * maildir_free_entry - Free a Maildir object
- * @param md Maildir to free
+ * @param[out] md Maildir to free
  */
 static void maildir_free_entry(struct Maildir **md)
 {
@@ -279,7 +279,7 @@ static void maildir_free_entry(struct Maildir **md)
 
 /**
  * maildir_free_maildir - Free a Maildir list
- * @param md Maildir list to free
+ * @param[out] md Maildir list to free
  */
 static void maildir_free_maildir(struct Maildir **md)
 {
@@ -327,11 +327,11 @@ static void maildir_update_mtime(struct Mailbox *m)
 
 /**
  * maildir_parse_dir - Read a Maildir mailbox
- * @param m        Mailbox
- * @param last     Last Maildir
- * @param subdir   Subdirectory, e.g. 'new'
- * @param count    Counter for the progress bar
- * @param progress Progress bar
+ * @param[in]  m        Mailbox
+ * @param[out] last     Last Maildir
+ * @param[in]  subdir   Subdirectory, e.g. 'new'
+ * @param[out] count    Counter for the progress bar
+ * @param[in]  progress Progress bar
  * @retval  0 Success
  * @retval -1 Error
  * @retval -2 Aborted
@@ -468,8 +468,8 @@ static int maildir_add_to_context(struct Mailbox *m, struct Maildir *md)
 
 /**
  * maildir_move_to_context - Copy the Maildir list to the Mailbox
- * @param m   Mailbox
- * @param md  Maildir list to copy, then free
+ * @param[in]  m   Mailbox
+ * @param[out] md  Maildir list to copy, then free
  * @retval num Number of new emails
  * @retval 0   Error
  */
@@ -659,8 +659,8 @@ static struct Maildir *maildir_sort(struct Maildir *list, size_t len,
 
 /**
  * mh_sort_natural - Sort a Maildir list into its natural order
- * @param m  Mailbox
- * @param md Maildir list to sort
+ * @param[in]  m  Mailbox
+ * @param[out] md Maildir list to sort
  *
  * Currently only defined for MH where files are numbered.
  */
@@ -699,9 +699,9 @@ static struct Maildir *skip_duplicates(struct Maildir *p, struct Maildir **last)
 
 /**
  * maildir_delayed_parsing - This function does the second parsing pass
- * @param m  Mailbox
- * @param md Maildir to parse
- * @param progress Progress bar
+ * @param[in]  m  Mailbox
+ * @param[out] md Maildir to parse
+ * @param[in]  progress Progress bar
  */
 void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Progress *progress)
 {
@@ -1240,10 +1240,10 @@ void maildir_update_tables(struct Context *ctx, int *index_hint)
 
 /**
  * md_open_find_message - Find a message in a maildir folder
- * @param folder    Base folder
- * @param unique    Unique part of filename
- * @param subfolder Subfolder to search, e.g. 'cur'
- * @param newname   File's new name
+ * @param[in]  folder    Base folder
+ * @param[in]  unique    Unique part of filename
+ * @param[in]  subfolder Subfolder to search, e.g. 'cur'
+ * @param[out] newname   File's new name
  * @retval ptr File handle
  *
  * These functions try to find a message in a maildir folder when it
@@ -1361,7 +1361,7 @@ void maildir_parse_flags(struct Email *e, const char *path)
 /**
  * maildir_parse_stream - Parse a Maildir message
  * @param magic  Mailbox type, e.g. #MUTT_MAILDIR
- * @param f      Mesage file handle
+ * @param f      Message file handle
  * @param fname  Message filename
  * @param is_old true, if the email is old (read)
  * @param e      Email
@@ -1570,9 +1570,9 @@ bool maildir_update_flags(struct Mailbox *m, struct Email *o, struct Email *n)
 
 /**
  * maildir_open_find_message - Find a new
- * @param folder  Maildir path
- * @param msg     Email path
- * @param newname New name, if it has moved
+ * @param[in]  folder  Maildir path
+ * @param[in]  msg     Email path
+ * @param[out] newname New name, if it has moved
  * @retval ptr File handle
  */
 FILE *maildir_open_find_message(const char *folder, const char *msg, char **newname)

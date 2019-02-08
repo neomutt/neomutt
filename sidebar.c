@@ -144,7 +144,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, c ? Context->mailbox->msg_deleted : 0);
       }
-      else if ((c && Context->mailbox->msg_deleted == 0) || !c)
+      else if ((c && (Context->mailbox->msg_deleted == 0)) || !c)
         optional = 0;
       break;
 
@@ -211,7 +211,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, c ? Context->mailbox->msg_tagged : 0);
       }
-      else if ((c && Context->mailbox->msg_tagged == 0) || !c)
+      else if ((c && (Context->mailbox->msg_tagged == 0)) || !c)
         optional = 0;
       break;
 
@@ -402,7 +402,7 @@ static void unsort_entries(void)
       break;
 
     int j = i;
-    while ((j < EntryCount) && (Entries[j]->mailbox != np->m))
+    while ((j < EntryCount) && (Entries[j]->mailbox != np->mailbox))
       j++;
     if (j < EntryCount)
     {
@@ -486,7 +486,7 @@ static int select_next_new(void)
     }
     if (entry == HilIndex)
       return false;
-  } while (!Entries[entry]->mailbox->has_new && !Entries[entry]->mailbox->msg_unread);
+  } while (!Entries[entry]->mailbox->has_new && (Entries[entry]->mailbox->msg_unread == 0));
 
   HilIndex = entry;
   return true;
@@ -541,7 +541,7 @@ static bool select_prev_new(void)
     }
     if (entry == HilIndex)
       return false;
-  } while (!Entries[entry]->mailbox->has_new && !Entries[entry]->mailbox->msg_unread);
+  } while (!Entries[entry]->mailbox->has_new && (Entries[entry]->mailbox->msg_unread == 0));
 
   HilIndex = entry;
   return true;
@@ -973,7 +973,7 @@ void mutt_sb_draw(void)
     struct MailboxNode *np = NULL;
     STAILQ_FOREACH(np, &AllMailboxes, entries)
     {
-      mutt_sb_notify_mailbox(np->m, true);
+      mutt_sb_notify_mailbox(np->mailbox, true);
     }
   }
 

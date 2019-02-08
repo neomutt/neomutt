@@ -213,7 +213,8 @@ static int check_alias_name(const char *s, char *dest, size_t destlen)
   wchar_t wc;
   mbstate_t mb;
   size_t l;
-  int rc = 0, dry = !dest || !destlen;
+  int rc = 0;
+  bool dry = !dest || !destlen;
 
   memset(&mb, 0, sizeof(mbstate_t));
 
@@ -222,7 +223,7 @@ static int check_alias_name(const char *s, char *dest, size_t destlen)
   for (; s && *s && (dry || destlen) && (l = mbrtowc(&wc, s, MB_CUR_MAX, &mb)) != 0;
        s += l, destlen -= l)
   {
-    int bad = l == (size_t)(-1) || l == (size_t)(-2); /* conversion error */
+    bool bad = (l == (size_t)(-1)) || (l == (size_t)(-2)); /* conversion error */
     bad = bad || (!dry && l > destlen); /* too few room for mb char */
     if (l == 1)
       bad = bad || (!strchr("-_+=.", *s) && !iswalnum(wc));
@@ -320,8 +321,8 @@ void mutt_expand_aliases_env(struct Envelope *env)
 
 /**
  * mutt_get_address - Get an Address from an Envelope
- * @param env  Envelope to examine
- * @param pfxp Prefix for the Address, e.g. "To:"
+ * @param[in]  env  Envelope to examine
+ * @param[out] pfxp Prefix for the Address, e.g. "To:"
  * @retval ptr Address in the Envelope
  */
 struct Address *mutt_get_address(struct Envelope *env, const char **pfxp)
@@ -733,7 +734,7 @@ bool mutt_addr_is_user(struct Address *addr)
 
 /**
  * mutt_alias_free - Free an Alias
- * @param p Alias to free
+ * @param[out] p Alias to free
  */
 void mutt_alias_free(struct Alias **p)
 {

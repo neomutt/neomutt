@@ -189,10 +189,10 @@ int crypt_pgp_valid_passphrase(void)
 /**
  * crypt_pgp_decrypt_mime - Wrapper for CryptModuleSpecs::decrypt_mime()
  */
-int crypt_pgp_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d)
+int crypt_pgp_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, decrypt_mime))
-    return CRYPT_MOD_CALL(PGP, decrypt_mime)(a, b, c, d);
+    return CRYPT_MOD_CALL(PGP, decrypt_mime)(fpin, fpout, b, cur);
 
   return -1;
 }

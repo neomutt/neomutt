@@ -288,9 +288,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, int flags)
 
   m->msg_unread = 0;
   m->msg_flagged = 0;
-
-  for (int i = 0; i < MUTT_ACL_MAX; i++)
-    mutt_bit_set(m->rights, i);
+  m->rights = MUTT_ACL_ALL;
 
   if (flags & MUTT_QUIET)
     m->quiet = true;
@@ -330,7 +328,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, int flags)
 
   mutt_make_label_hash(m);
 
-  /* if the user has a `push' command in their .neomuttrc, or in a folder-hook,
+  /* if the user has a 'push' command in their .neomuttrc, or in a folder-hook,
    * it will cause the progress messages not to be displayed because
    * mutt_refresh() will think we are in the middle of a macro.  so set a
    * flag to indicate that we should really refresh the screen.
@@ -449,7 +447,7 @@ static int trash_append(struct Mailbox *m)
   struct stat st, stc;
   int opt_confappend, rc;
 
-  if (!Trash || !m->msg_deleted || (m->magic == MUTT_MAILDIR && MaildirTrash))
+  if (!Trash || (m->msg_deleted == 0) || (m->magic == MUTT_MAILDIR && MaildirTrash))
   {
     return 0;
   }
@@ -530,7 +528,7 @@ static int trash_append(struct Mailbox *m)
 
 /**
  * mx_mbox_close - Save changes and close mailbox
- * @param ptr Mailbox
+ * @param[out] ptr Mailbox
  * @retval  0 Success
  * @retval -1 Failure
  *
@@ -559,7 +557,7 @@ int mx_mbox_close(struct Context **ptr)
   }
 
 #ifdef USE_NNTP
-  if (m->msg_unread && m->magic == MUTT_NNTP)
+  if ((m->msg_unread != 0) && (m->magic == MUTT_NNTP))
   {
     struct NntpMboxData *mdata = m->mdata;
 
@@ -622,7 +620,7 @@ int mx_mbox_close(struct Context **ptr)
   /* There is no point in asking whether or not to purge if we are
    * just marking messages as "trash".
    */
-  if (m->msg_deleted && !(m->magic == MUTT_MAILDIR && MaildirTrash))
+  if ((m->msg_deleted != 0) && !(m->magic == MUTT_MAILDIR && MaildirTrash))
   {
     snprintf(buf, sizeof(buf),
              ngettext("Purge %d deleted message?", "Purge %d deleted messages?", m->msg_deleted),
@@ -705,7 +703,7 @@ int mx_mbox_close(struct Context **ptr)
       mx_mbox_close(&ctx_read);
     }
   }
-  else if (!m->changed && m->msg_deleted == 0)
+  else if (!m->changed && (m->msg_deleted == 0))
   {
     if (!m->quiet)
       mutt_message(_("Mailbox is unchanged"));
@@ -717,7 +715,7 @@ int mx_mbox_close(struct Context **ptr)
   }
 
   /* copy mails to the trash before expunging */
-  if (purge && m->msg_deleted && (mutt_str_strcmp(m->path, Trash) != 0))
+  if (purge && (m->msg_deleted != 0) && (mutt_str_strcmp(m->path, Trash) != 0))
   {
     if (trash_append(ctx->mailbox) != 0)
       return -1;
@@ -763,7 +761,8 @@ int mx_mbox_close(struct Context **ptr)
       mutt_message(_("%d kept, %d deleted"), m->msg_count - m->msg_deleted, m->msg_deleted);
   }
 
-  if (m->msg_count == m->msg_deleted && (m->magic == MUTT_MMDF || m->magic == MUTT_MBOX) &&
+  if ((m->msg_count == m->msg_deleted) &&
+      ((m->magic == MUTT_MMDF) || (m->magic == MUTT_MBOX)) &&
       !mutt_is_spool(m->path) && !SaveEmpty)
   {
     mutt_file_unlink_empty(m->path);
@@ -825,7 +824,7 @@ int mx_mbox_sync(struct Mailbox *m, int *index_hint)
     return -1;
   }
 
-  if (!m->changed && !m->msg_deleted)
+  if (!m->changed && (m->msg_deleted == 0))
   {
     if (!m->quiet)
       mutt_message(_("Mailbox is unchanged"));
@@ -865,7 +864,7 @@ int mx_mbox_sync(struct Mailbox *m, int *index_hint)
   msgcount = m->msg_count;
   deleted = m->msg_deleted;
 
-  if (purge && m->msg_deleted && (mutt_str_strcmp(m->path, Trash) != 0))
+  if (purge && (m->msg_deleted != 0) && (mutt_str_strcmp(m->path, Trash) != 0))
   {
     if (trash_append(m) != 0)
       return -1;
@@ -894,7 +893,8 @@ int mx_mbox_sync(struct Mailbox *m, int *index_hint)
 
     mutt_sleep(0);
 
-    if (m->msg_count == m->msg_deleted && (m->magic == MUTT_MBOX || m->magic == MUTT_MMDF) &&
+    if ((m->msg_count == m->msg_deleted) &&
+        ((m->magic == MUTT_MBOX) || (m->magic == MUTT_MMDF)) &&
         !mutt_is_spool(m->path) && !SaveEmpty)
     {
       unlink(m->path);
@@ -1056,8 +1056,8 @@ int mx_msg_commit(struct Mailbox *m, struct Message *msg)
 
 /**
  * mx_msg_close - Close a message
- * @param m   Mailbox
- * @param msg Message to close
+ * @param[in]  m   Mailbox
+ * @param[out] msg Message to close
  * @retval  0 Success
  * @retval -1 Failure
  */
@@ -1473,8 +1473,8 @@ struct Mailbox *mx_mbox_find(struct Account *a, const char *path)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &a->mailboxes, entries)
   {
-    if (mutt_str_strcmp(np->m->realpath, path) == 0)
-      return np->m;
+    if (mutt_str_strcmp(np->mailbox->realpath, path) == 0)
+      return np->mailbox;
   }
 
   return NULL;
@@ -1538,7 +1538,7 @@ int mx_ac_add(struct Account *a, struct Mailbox *m)
 
   m->account = a;
   struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
-  np->m = m;
+  np->mailbox = m;
   STAILQ_INSERT_TAIL(&a->mailboxes, np, entries);
   return 0;
 }
@@ -1568,7 +1568,7 @@ int mx_mbox_check_stats(struct Mailbox *m, int flags)
 }
 
 /**
- * mx_save_to_header_cache - Save message to the header cache - Wrapper for MxOps::msg_save_hcache()
+ * mx_save_hcache - Save message to the header cache - Wrapper for MxOps::msg_save_hcache()
  * @param m Mailbox
  * @param e Email
  * @retval  0 Success

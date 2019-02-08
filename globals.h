@@ -67,7 +67,7 @@ WHERE struct ListHead MailToAllow INITVAL(STAILQ_HEAD_INITIALIZER(MailToAllow));
 WHERE struct ListHead MimeLookupList INITVAL(STAILQ_HEAD_INITIALIZER(MimeLookupList));             ///< List of mime types that that shouldn't use the mailcap entry
 WHERE struct ListHead Muttrc INITVAL(STAILQ_HEAD_INITIALIZER(Muttrc));                             ///< List of config files to read
 #ifdef USE_SIDEBAR
-WHERE struct ListHead SidebarWhitelist INITVAL(STAILQ_HEAD_INITIALIZER(SidebarWhitelist));         ///< List of mailboxes to alway display in the sidebar
+WHERE struct ListHead SidebarWhitelist INITVAL(STAILQ_HEAD_INITIALIZER(SidebarWhitelist));         ///< List of mailboxes to always display in the sidebar
 #endif
 WHERE struct ListHead TempAttachmentsList INITVAL(STAILQ_HEAD_INITIALIZER(TempAttachmentsList));   ///< List of temporary files for displaying attachments
 WHERE struct ListHead UserHeader INITVAL(STAILQ_HEAD_INITIALIZER(UserHeader));                     ///< List of custom headers to add to outgoing emails

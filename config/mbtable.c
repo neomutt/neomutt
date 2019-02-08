@@ -305,7 +305,7 @@ void mbtable_init(struct ConfigSet *cs)
 
 /**
  * mbtable_free - Free an MbTable object
- * @param table MbTable to free
+ * @param[out] table MbTable to free
  */
 void mbtable_free(struct MbTable **table)
 {

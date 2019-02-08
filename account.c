@@ -54,7 +54,7 @@ void account_remove_mailbox(struct Account *a, struct Mailbox *m)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &a->mailboxes, entries)
   {
-    if (np->m == m)
+    if (np->mailbox == m)
     {
       STAILQ_REMOVE(&a->mailboxes, np, MailboxNode, entries);
       break;

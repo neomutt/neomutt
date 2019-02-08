@@ -117,7 +117,7 @@ struct ChildCtx
 
 /**
  * nntp_adata_free - Free data attached to the Mailbox
- * @param ptr NNTP data
+ * @param[out] ptr NNTP data
  *
  * The NntpAccountData struct stores global NNTP data, such as the connection to
  * the database.  This function will close the database, free the resources and
@@ -173,7 +173,7 @@ struct NntpAccountData *nntp_adata_get(struct Mailbox *m)
 
 /**
  * nntp_mdata_free - Free NntpMboxData, used to destroy hash elements
- * @param ptr NNTP data
+ * @param[out] ptr NNTP data
  */
 void nntp_mdata_free(void **ptr)
 {
@@ -191,7 +191,7 @@ void nntp_mdata_free(void **ptr)
 
 /**
  * nntp_edata_free - Free data attached to an Email
- * @param data Email data
+ * @param[out] data Email data
  */
 static void nntp_edata_free(void **data)
 {
@@ -837,7 +837,7 @@ static int nntp_query(struct NntpMboxData *mdata, char *line, size_t linelen)
  * @param mdata NNTP Mailbox data
  * @param query     Query to match
  * @param qlen      Length of query
- * @param msg       Progess message (OPTIONAL)
+ * @param msg       Progress message (OPTIONAL)
  * @param func      Callback function
  * @param data      Data for callback function
  * @retval  0 Success
@@ -2483,7 +2483,7 @@ static int nntp_mbox_open(struct Mailbox *m)
     return -1;
   }
 
-  mutt_bit_unset(m->rights, MUTT_ACL_INSERT);
+  m->rights &= ~MUTT_ACL_INSERT;  // Clear the flag
   if (!mdata->newsrc_ent && !mdata->subscribed && !SaveUnsubscribed)
     m->readonly = true;
 
@@ -2561,10 +2561,8 @@ static int nntp_mbox_open(struct Mailbox *m)
   nntp_hcache_update(mdata, hc);
 #endif
   if (!hc)
-  {
-    mutt_bit_unset(m->rights, MUTT_ACL_WRITE);
-    mutt_bit_unset(m->rights, MUTT_ACL_DELETE);
-  }
+    m->rights &= ~(MUTT_ACL_WRITE | MUTT_ACL_DELETE);  // Clear the flags
+
   nntp_newsrc_close(adata);
   rc = nntp_fetch_headers(m, hc, first, mdata->last_message, false);
 #ifdef USE_HCACHE

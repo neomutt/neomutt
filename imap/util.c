@@ -68,7 +68,7 @@ short ImapPipelineDepth; ///< Config: (imap) Number of IMAP commands that may be
 
 /**
  * imap_adata_free - Release and clear storage in an ImapAccountData structure
- * @param ptr Imap Account data
+ * @param[out] ptr Imap Account data
  */
 void imap_adata_free(void **ptr)
 {
@@ -114,6 +114,8 @@ struct ImapAccountData *imap_adata_new(void)
 
 /**
  * imap_adata_get - Get the Account data for this mailbox
+ * @param m Mailbox
+ * @retval ptr Private data
  */
 struct ImapAccountData *imap_adata_get(struct Mailbox *m)
 {
@@ -124,6 +126,11 @@ struct ImapAccountData *imap_adata_get(struct Mailbox *m)
 
 /**
  * imap_adata_find - Find the Account data for this path
+ * @param path  Path to search for
+ * @param adata Imap Account data
+ * @param mdata Imap Mailbox data
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 int imap_adata_find(const char *path, struct ImapAccountData **adata,
                     struct ImapMboxData **mdata)
@@ -216,7 +223,7 @@ void imap_mdata_cache_reset(struct ImapMboxData *mdata)
 
 /**
  * imap_mdata_free - Release and clear storage in an ImapMboxData structure
- * @param ptr Imap Mailbox data
+ * @param[out] ptr Imap Mailbox data
  */
 void imap_mdata_free(void **ptr)
 {
@@ -1260,7 +1267,7 @@ int mutt_seqset_iterator_next(struct SeqsetIterator *iter, unsigned int *next)
 
 /**
  * mutt_seqset_iterator_free - Free a Sequence Set Iterator
- * @param p_iter Iterator to free
+ * @param[out] p_iter Iterator to free
  */
 void mutt_seqset_iterator_free(struct SeqsetIterator **p_iter)
 {

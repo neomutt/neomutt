@@ -21,7 +21,9 @@
  */
 
 #include <notmuch.h>
-#include "email/lib.h"
+#include <stdbool.h>
+#include <time.h>
+#include "config/lib.h"
 #include "progress.h"
 
 #ifndef MUTT_NOTMUCH_NOTMUCH_PRIVATE_H

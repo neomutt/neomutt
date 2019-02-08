@@ -71,7 +71,7 @@ struct MUpdate
 
 /**
  * mbox_adata_free - Free data attached to the Mailbox
- * @param ptr Private mailbox data
+ * @param[out] ptr Private mailbox data
  */
 static void mbox_adata_free(void **ptr)
 {
@@ -567,7 +567,6 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
   struct Email **old_hdrs = NULL;
   int old_msgcount;
   bool msg_mod = false;
-  bool index_hint_set;
   int i, j;
   int rc = -1;
 
@@ -659,8 +658,6 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
 
   /* now try to recover the old flags */
 
-  index_hint_set = (index_hint == NULL);
-
   if (!m->readonly)
   {
     for (i = 0; i < m->msg_count; i++)
@@ -699,7 +696,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
       if (found)
       {
         /* this is best done here */
-        if (!index_hint_set && *index_hint == j)
+        if (index_hint && *index_hint == j)
           *index_hint = i;
 
         if (old_hdrs[j]->changed)
@@ -768,12 +765,12 @@ static int fseek_last_message(FILE *f)
   fseek(f, 0, SEEK_END);
   pos = ftello(f);
 
-  /* Set `bytes_read' to the size of the last, probably partial, buffer;
-   * 0 < `bytes_read' <= `BUFSIZ'.  */
+  /* Set 'bytes_read' to the size of the last, probably partial, buffer;
+   * 0 < 'bytes_read' <= 'BUFSIZ'.  */
   bytes_read = pos % BUFSIZ;
   if (bytes_read == 0)
     bytes_read = BUFSIZ;
-  /* Make `pos' a multiple of `BUFSIZ' (0 if the file is short), so that all
+  /* Make 'pos' a multiple of 'BUFSIZ' (0 if the file is short), so that all
    * reads will be on block boundaries, which might increase efficiency.  */
   while ((pos -= bytes_read) >= 0)
   {
@@ -783,7 +780,7 @@ static int fseek_last_message(FILE *f)
     bytes_read = fread(buffer, sizeof(char), bytes_read, f);
     if (bytes_read == 0)
       return -1;
-    /* 'i' is Index into `buffer' for scanning.  */
+    /* 'i' is Index into 'buffer' for scanning.  */
     for (int i = bytes_read; i >= 0; i--)
     {
       if (mutt_str_startswith(buffer + i, "\n\nFrom ", CASE_MATCH))
@@ -901,7 +898,7 @@ struct Account *mbox_ac_find(struct Account *a, const char *path)
   if (!np)
     return NULL;
 
-  if (mutt_str_strcmp(np->m->path, path) != 0)
+  if (mutt_str_strcmp(np->mailbox->path, path) != 0)
     return NULL;
 
   return a;
@@ -1150,7 +1147,6 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
   FILE *fp = NULL;
   struct Progress progress;
   char msgbuf[PATH_MAX + 64];
-  struct Mailbox *tmp = NULL;
 
   /* sort message by their position in the mailbox on disk */
   if (Sort != SORT_ORDER)
@@ -1280,9 +1276,9 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
         }
       }
 
-      /* save the new offset for this message.  we add `offset' because the
+      /* save the new offset for this message.  we add 'offset' because the
        * temporary file only contains saved message which are located after
-       * `offset' in the real mailbox
+       * 'offset' in the real mailbox
        */
       new_offset[i - first].hdr = ftello(fp) + offset;
 
@@ -1452,7 +1448,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
 
   if (CheckMboxSize)
   {
-    tmp = mutt_find_mailbox(m->path);
+    struct Mailbox *tmp = mutt_find_mailbox(m->path);
     if (tmp && !tmp->has_new)
       mutt_update_mailbox(tmp);
   }

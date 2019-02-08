@@ -114,6 +114,32 @@ static const char *Function_not_permitted_in_attach_message_mode =
     N_("Function not permitted in attach-message mode");
 static const char *NoVisible = N_("No visible messages");
 
+static const struct Mapping IndexHelp[] = {
+  { N_("Quit"), OP_QUIT },
+  { N_("Del"), OP_DELETE },
+  { N_("Undel"), OP_UNDELETE },
+  { N_("Save"), OP_SAVE },
+  { N_("Mail"), OP_MAIL },
+  { N_("Reply"), OP_REPLY },
+  { N_("Group"), OP_GROUP_REPLY },
+  { N_("Help"), OP_HELP },
+  { NULL, 0 },
+};
+
+#ifdef USE_NNTP
+struct Mapping IndexNewsHelp[] = {
+  { N_("Quit"), OP_QUIT },
+  { N_("Del"), OP_DELETE },
+  { N_("Undel"), OP_UNDELETE },
+  { N_("Save"), OP_SAVE },
+  { N_("Post"), OP_POST },
+  { N_("Followup"), OP_FOLLOWUP },
+  { N_("Catchup"), OP_CATCHUP },
+  { N_("Help"), OP_HELP },
+  { NULL, 0 },
+};
+#endif
+
 #define CHECK_IN_MAILBOX                                                       \
   if (!Context)                                                                \
   {                                                                            \
@@ -129,7 +155,7 @@ static const char *NoVisible = N_("No visible messages");
     mutt_error(_(No_mailbox_is_open));                                         \
     break;                                                                     \
   }                                                                            \
-  else if (!Context->mailbox->msg_count)                                       \
+  else if (Context->mailbox->msg_count == 0)                                   \
   {                                                                            \
     mutt_flushinp();                                                           \
     mutt_error(_(There_are_no_messages));                                      \
@@ -153,7 +179,7 @@ static const char *NoVisible = N_("No visible messages");
   }
 
 #define CHECK_ACL(aclbit, action)                                              \
-  if (!mutt_bit_isset(Context->mailbox->rights, aclbit))                       \
+  if (!(Context->mailbox->rights & aclbit))                                    \
   {                                                                            \
     mutt_flushinp();                                                           \
     /* L10N: %s is one of the CHECK_ACL entries below. */                      \
@@ -277,7 +303,7 @@ static int ci_previous_undeleted(int msgno)
  */
 static int ci_first_message(void)
 {
-  if (!Context || !Context->mailbox->msg_count)
+  if (!Context || (Context->mailbox->msg_count == 0))
     return 0;
 
   int old = -1;
@@ -296,7 +322,7 @@ static int ci_first_message(void)
     return old;
 
   /* If Sort is reverse and not threaded, the latest message is first.
-   * If Sort is threaded, the latest message is first iff exactly one
+   * If Sort is threaded, the latest message is first if exactly one
    * of Sort and SortAux are reverse.
    */
   if (((Sort & SORT_REVERSE) && (Sort & SORT_MASK) != SORT_THREADS) ||
@@ -635,14 +661,13 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
    * switch statement would need to be run. */
   mutt_folder_hook(buf, m ? m->desc : NULL);
 
-  const int flags =
-    (ReadOnly || (op == OP_MAIN_CHANGE_FOLDER_READONLY)
+  const int flags = (ReadOnly || (op == OP_MAIN_CHANGE_FOLDER_READONLY)
 #ifdef USE_NOTMUCH
-     || (op == OP_MAIN_VFOLDER_FROM_QUERY_READONLY)
+                     || (op == OP_MAIN_VFOLDER_FROM_QUERY_READONLY)
 #endif
-     )
-    ? MUTT_READONLY
-    : 0;
+                         ) ?
+                        MUTT_READONLY :
+                        0;
 
   bool free_m = false;
   if (!m)
@@ -907,32 +932,6 @@ void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
 dsl_finish:
   FREE(&syntax);
 }
-
-static const struct Mapping IndexHelp[] = {
-  { N_("Quit"), OP_QUIT },
-  { N_("Del"), OP_DELETE },
-  { N_("Undel"), OP_UNDELETE },
-  { N_("Save"), OP_SAVE },
-  { N_("Mail"), OP_MAIL },
-  { N_("Reply"), OP_REPLY },
-  { N_("Group"), OP_GROUP_REPLY },
-  { N_("Help"), OP_HELP },
-  { NULL, 0 },
-};
-
-#ifdef USE_NNTP
-struct Mapping IndexNewsHelp[] = {
-  { N_("Quit"), OP_QUIT },
-  { N_("Del"), OP_DELETE },
-  { N_("Undel"), OP_UNDELETE },
-  { N_("Save"), OP_SAVE },
-  { N_("Post"), OP_POST },
-  { N_("Followup"), OP_FOLLOWUP },
-  { N_("Catchup"), OP_CATCHUP },
-  { N_("Help"), OP_HELP },
-  { NULL, 0 },
-};
-#endif
 
 /**
  * index_custom_redraw - Redraw the index - Implements Menu::menu_custom_redraw()
@@ -1239,7 +1238,7 @@ int mutt_index_menu(void)
           continue;
         }
 
-        if (!Context->mailbox->msg_tagged)
+        if (Context->mailbox->msg_tagged == 0)
         {
           if (op == OP_TAG_PREFIX)
             mutt_error(_("No tagged messages"));
@@ -1255,7 +1254,7 @@ int mutt_index_menu(void)
         tag = true;
         continue;
       }
-      else if (AutoTag && Context && Context->mailbox && Context->mailbox->msg_tagged)
+      else if (AutoTag && Context && Context->mailbox && (Context->mailbox->msg_tagged != 0))
         tag = true;
 
       mutt_clear_error();
@@ -1546,7 +1545,7 @@ int mutt_index_menu(void)
         break;
 
         /* --------------------------------------------------------------------
-         * `index' specific commands
+         * 'index' specific commands
          */
 
       case OP_MAIN_DELETE_PATTERN:
@@ -1665,7 +1664,7 @@ int mutt_index_menu(void)
           }
           else
             menu->current = 0;
-          if (Context->mailbox->msg_count && (Sort & SORT_MASK) == SORT_THREADS)
+          if ((Context->mailbox->msg_count != 0) && (Sort & SORT_MASK) == SORT_THREADS)
             mutt_draw_tree(Context);
           menu->redraw = REDRAW_FULL;
         }
@@ -1728,7 +1727,7 @@ int mutt_index_menu(void)
 
         if (mutt_select_sort((op == OP_SORT_REVERSE)) == 0)
         {
-          if (Context && Context->mailbox->msg_count)
+          if (Context && (Context->mailbox->msg_count != 0))
           {
             resort_index(menu);
             OptSearchInvalid = true;
@@ -1854,7 +1853,7 @@ int mutt_index_menu(void)
 
       case OP_MAIN_SYNC_FOLDER:
 
-        if (Context && !Context->mailbox->msg_count)
+        if (Context && (Context->mailbox->msg_count == 0))
           break;
 
         CHECK_MSGCOUNT;
@@ -3104,8 +3103,7 @@ int mutt_index_menu(void)
           edit = true;
         }
         else if (op == OP_EDIT_OR_VIEW_RAW_MESSAGE)
-          edit = !Context->mailbox->readonly &&
-                 mutt_bit_isset(Context->mailbox->rights, MUTT_ACL_INSERT);
+          edit = !Context->mailbox->readonly && (Context->mailbox->rights & MUTT_ACL_INSERT);
         else
           edit = false;
 

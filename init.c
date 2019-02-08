@@ -1380,7 +1380,7 @@ static enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
           old_m->flags = MB_NORMAL;
           mutt_sb_notify_mailbox(old_m, true);
           struct MailboxNode *mn = mutt_mem_calloc(1, sizeof(*mn));
-          mn->m = old_m;
+          mn->mailbox = old_m;
           STAILQ_INSERT_TAIL(&AllMailboxes, mn, entries);
         }
         mailbox_free(&m);
@@ -1396,7 +1396,7 @@ static enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
     }
 
     struct MailboxNode *mn = mutt_mem_calloc(1, sizeof(*mn));
-    mn->m = m;
+    mn->mailbox = m;
     STAILQ_INSERT_TAIL(&AllMailboxes, mn, entries);
 
 #ifdef USE_SIDEBAR
@@ -2411,33 +2411,33 @@ static enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s
     STAILQ_FOREACH_SAFE(np, &AllMailboxes, entries, nptmp)
     {
       /* Decide whether to delete all normal mailboxes or all virtual */
-      bool virt = ((np->m->magic == MUTT_NOTMUCH) && (data & MUTT_VIRTUAL));
-      bool norm = ((np->m->magic != MUTT_NOTMUCH) && !(data & MUTT_VIRTUAL));
+      bool virt = ((np->mailbox->magic == MUTT_NOTMUCH) && (data & MUTT_VIRTUAL));
+      bool norm = ((np->mailbox->magic != MUTT_NOTMUCH) && !(data & MUTT_VIRTUAL));
       bool clear_this = clear_all && (virt || norm);
 
       /* Compare against path or desc? Ensure 'tmp' is valid */
       if (!clear_this && tmp_valid)
       {
-        clear_this = (mutt_str_strcasecmp(tmp, np->m->path) == 0) ||
-                     (mutt_str_strcasecmp(tmp, np->m->desc) == 0);
+        clear_this = (mutt_str_strcasecmp(tmp, np->mailbox->path) == 0) ||
+                     (mutt_str_strcasecmp(tmp, np->mailbox->desc) == 0);
       }
 
       if (clear_this)
       {
 #ifdef USE_SIDEBAR
-        mutt_sb_notify_mailbox(np->m, false);
+        mutt_sb_notify_mailbox(np->mailbox, false);
 #endif
 #ifdef USE_INOTIFY
-        mutt_monitor_remove(np->m);
+        mutt_monitor_remove(np->mailbox);
 #endif
-        if (Context && (Context->mailbox == np->m))
+        if (Context && (Context->mailbox == np->mailbox))
         {
-          np->m->flags |= MB_HIDDEN;
+          np->mailbox->flags |= MB_HIDDEN;
         }
         else
         {
-          mx_ac_remove(np->m);
-          mailbox_free(&np->m);
+          mx_ac_remove(np->mailbox);
+          mailbox_free(&np->mailbox);
         }
         STAILQ_REMOVE(&AllMailboxes, np, MailboxNode, entries);
         FREE(&np);
@@ -3253,9 +3253,9 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
     struct MailboxNode *mp = NULL;
     STAILQ_FOREACH(mp, &AllMailboxes, entries)
     {
-      if (mp->m->magic == MUTT_NOTMUCH)
+      if (mp->mailbox->magic == MUTT_NOTMUCH)
       {
-        cs_str_string_set(Config, "spoolfile", mp->m->path, NULL);
+        cs_str_string_set(Config, "spoolfile", mp->mailbox->path, NULL);
         break;
       }
     }

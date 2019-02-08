@@ -102,7 +102,7 @@ struct Regex *mutt_regex_new(const char *str, int flags, struct Buffer *err)
 
 /**
  * mutt_regex_free - Free a Regex object
- * @param r Regex to free
+ * @param[out] r Regex to free
  */
 void mutt_regex_free(struct Regex **r)
 {

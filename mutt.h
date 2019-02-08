@@ -124,7 +124,7 @@ enum MuttMisc
   MUTT_TAG,        ///< Tagged messages
   MUTT_UNTAG,      ///< Messages to be un-tagged
   MUTT_LIMIT,      ///< Messages in limited view
-  MUTT_EXPIRED,    ///< Expired messsages
+  MUTT_EXPIRED,    ///< Expired messages
   MUTT_SUPERSEDED, ///< Superseded messages
   MUTT_TRASH,      ///< Trashed messages
 

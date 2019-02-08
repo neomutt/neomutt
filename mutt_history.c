@@ -83,10 +83,10 @@ static void history_make_entry(char *buf, size_t buflen, struct Menu *menu, int 
 
 /**
  * history_menu - Select an item from a history list
- * @param buf         Buffer in which to save string
- * @param buflen      Buffer length
- * @param matches     Items to choose from
- * @param match_count Number of items
+ * @param[in]  buf         Buffer in which to save string
+ * @param[in]  buflen      Buffer length
+ * @param[out] matches     Items to choose from
+ * @param[in]  match_count Number of items
  */
 static void history_menu(char *buf, size_t buflen, char **matches, int match_count)
 {

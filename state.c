@@ -47,7 +47,7 @@ void state_mark_attach(struct State *s)
 }
 
 /**
- * state_mark_attach - Write a unique marker around protected headers
+ * state_mark_protected_header - Write a unique marker around protected headers
  * @param s State to write to
  */
 void state_mark_protected_header(struct State *s)
@@ -159,7 +159,7 @@ int state_printf(struct State *s, const char *fmt, ...)
 /**
  * state_prefix_put - Write a prefixed fixed-string to the State
  * @param buf    String to write
- * @param buflen Lenth of string
+ * @param buflen Length of string
  * @param s    State to write to
  */
 void state_prefix_put(const char *buf, size_t buflen, struct State *s)

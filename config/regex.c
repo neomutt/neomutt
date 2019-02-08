@@ -311,7 +311,7 @@ struct Regex *regex_new(const char *str, int flags, struct Buffer *err)
 
 /**
  * regex_free - Free a Regex object
- * @param r Regex to free
+ * @param[out] r Regex to free
  */
 void regex_free(struct Regex **r)
 {

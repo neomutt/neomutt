@@ -25,6 +25,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdio.h>
 
 struct Buffer;
 struct ConfigSet;
@@ -187,7 +188,7 @@ struct ConfigSetType
  * struct ConfigSet - Container for lots of config items
  *
  * The config items are stored in a HashTable so that their names can be looked
- * up efficiently.  Each config item is repesented by a HashElem.  Once
+ * up efficiently.  Each config item is represented by a HashElem.  Once
  * created, this HashElem is static and may be used for the lifetime of the
  * ConfigSet.
  */

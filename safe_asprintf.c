@@ -38,9 +38,9 @@
 #ifdef HAVE_VASPRINTF
 /**
  * safe_asprintf - Format a string, allocating space as necessary
- * @param strp New string saved here
- * @param fmt  Format string
- * @param ...  Format arguments
+ * @param[out] strp New string saved here
+ * @param[in]  fmt  Format string
+ * @param[in]  ...  Format arguments
  * @retval num Characters written
  * @retval -1  Error
  */

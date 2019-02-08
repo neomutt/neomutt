@@ -409,7 +409,7 @@ static void luaopen_mutt(lua_State *l)
 
 /**
  * lua_init - Initialise a Lua State
- * @param l Lua State
+ * @param[out] l Lua State
  * @retval true If successful
  */
 static bool lua_init(lua_State **l)

@@ -443,7 +443,7 @@ int comp_ac_add(struct Account *a, struct Mailbox *m)
   m->account = a;
 
   struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
-  np->m = m;
+  np->mailbox = m;
   STAILQ_INSERT_TAIL(&a->mailboxes, np, entries);
   return 0;
 }

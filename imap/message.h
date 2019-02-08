@@ -54,7 +54,7 @@ struct ImapEmailData
  */
 struct ImapHeader
 {
-  struct ImapEmailData *data;
+  struct ImapEmailData *edata;
 
   time_t received;
   long content_length;

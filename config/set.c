@@ -172,7 +172,7 @@ void cs_init(struct ConfigSet *cs, size_t size)
 
 /**
  * cs_free - Free a Config Set
- * @param cs Config items
+ * @param[out] cs Config items
  */
 void cs_free(struct ConfigSet **cs)
 {

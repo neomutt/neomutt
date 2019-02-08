@@ -228,8 +228,8 @@ static struct Address *find_mailing_lists(struct Address *t, struct Address *c)
 
 /**
  * edit_address - Edit an email address
- * @param a     Address to edit
- * @param field Prompt for user
+ * @param[out] a     Address to edit
+ * @param[in]  field Prompt for user
  * @retval  0 Success
  * @retval -1 Failure
  */
@@ -608,10 +608,10 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *out)
 
 /**
  * default_to - Generate default email addresses
- * @param to      'To' address
- * @param env     Envelope to populate
- * @param flags   Flags, e.g. #SEND_LIST_REPLY
- * @param hmfupto If true, add 'followup-to' address to 'to' address
+ * @param[out] to      'To' address
+ * @param[in]  env     Envelope to populate
+ * @param[in]  flags   Flags, e.g. #SEND_LIST_REPLY
+ * @param[in]  hmfupto If true, add 'followup-to' address to 'to' address
  * @retval  0 Success
  * @retval -1 Aborted
  */
@@ -1890,7 +1890,7 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
   /* this is handled here so that the user can match ~f in send-hook */
   if (cur && ReverseName && !(flags & (SEND_POSTPONED | SEND_RESEND)))
   {
-    /* we shouldn't have to worry about freeing `msg->env->from' before
+    /* we shouldn't have to worry about freeing 'msg->env->from' before
      * setting it here since this code will only execute when doing some
      * sort of reply.  the pointer will only be set when using the -H command
      * line option.
@@ -1911,14 +1911,14 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
   }
   if (cur && ReplyWithXorig && !(flags & (SEND_POSTPONED | SEND_RESEND | SEND_FORWARD)))
   {
-    /* We shouldn't have to worry about freeing `msg->env->from' before
+    /* We shouldn't have to worry about freeing 'msg->env->from' before
      * setting it here since this code will only execute when doing some
      * sort of reply. The pointer will only be set when using the -H command
      * line option.
      *
-     * If there is already a from address recorded in `msg->env->from',
+     * If there is already a from address recorded in 'msg->env->from',
      * then it theoretically comes from ReverseName handling, and we don't use
-     * the `X-Orig-To header'.
+     * the 'X-Orig-To header'.
      */
     if (cur->env->x_original_to && !msg->env->from)
     {
@@ -1962,7 +1962,7 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
     }
 
     /* the from address must be set here regardless of whether or not
-     * $use_from is set so that the `~P' (from you) operator in send-hook
+     * $use_from is set so that the '~P' (from you) operator in send-hook
      * patterns will work.  if $use_from is unset, the from address is killed
      * after send-hooks are evaluated */
 
@@ -2475,7 +2475,8 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
   {
     if (cur && ctx)
       mutt_set_flag(ctx->mailbox, cur, MUTT_REPLIED, is_reply(cur, msg));
-    else if (!(flags & SEND_POSTPONED) && ctx && ctx->mailbox && ctx->mailbox->msg_tagged)
+    else if (!(flags & SEND_POSTPONED) && ctx && ctx->mailbox &&
+             (ctx->mailbox->msg_tagged != 0))
     {
       STAILQ_FOREACH(en, el, entries)
       {

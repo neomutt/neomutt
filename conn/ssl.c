@@ -110,7 +110,7 @@ static int ssl_socket_close(struct Connection *conn);
  */
 struct SslSockData
 {
-  SSL_CTX *ctx;
+  SSL_CTX *sctx;
   SSL *ssl;
   X509 *cert;
   unsigned char isopen;
@@ -568,7 +568,7 @@ static bool hostname_match(const char *hostname, const char *certname)
  * Even though only OpenSSL 0.9.5 and later will complain about the lack of
  * entropy, we try to our best and fill the pool with older versions also.
  * (That's the reason for the ugly ifdefs and macros, otherwise I could have
- * simply ifdef'd the whole ssl_init funcion)
+ * simply ifdef'd the whole ssl_init function)
  */
 static int ssl_init(void)
 {
@@ -623,10 +623,10 @@ static void ssl_get_client_cert(struct SslSockData *ssldata, struct Connection *
     return;
 
   mutt_debug(2, "Using client certificate %s\n", SslClientCert);
-  SSL_CTX_set_default_passwd_cb_userdata(ssldata->ctx, &conn->account);
-  SSL_CTX_set_default_passwd_cb(ssldata->ctx, ssl_passwd_cb);
-  SSL_CTX_use_certificate_file(ssldata->ctx, SslClientCert, SSL_FILETYPE_PEM);
-  SSL_CTX_use_PrivateKey_file(ssldata->ctx, SslClientCert, SSL_FILETYPE_PEM);
+  SSL_CTX_set_default_passwd_cb_userdata(ssldata->sctx, &conn->account);
+  SSL_CTX_set_default_passwd_cb(ssldata->sctx, ssl_passwd_cb);
+  SSL_CTX_use_certificate_file(ssldata->sctx, SslClientCert, SSL_FILETYPE_PEM);
+  SSL_CTX_use_PrivateKey_file(ssldata->sctx, SslClientCert, SSL_FILETYPE_PEM);
 
   /* if we are using a client cert, SASL may expect an external auth name */
   if (mutt_account_getuser(&conn->account) < 0)
@@ -634,7 +634,7 @@ static void ssl_get_client_cert(struct SslSockData *ssldata, struct Connection *
 }
 
 /**
- * ssl_socket_close_and_restore - Close an SSL Connection and restore Connnection callbacks - Implements Connection::conn_close()
+ * ssl_socket_close_and_restore - Close an SSL Connection and restore Connection callbacks - Implements Connection::conn_close()
  */
 static int ssl_socket_close_and_restore(struct Connection *conn)
 {
@@ -1246,8 +1246,8 @@ static int ssl_setup(struct Connection *conn)
   ssldata = mutt_mem_calloc(1, sizeof(struct SslSockData));
   conn->sockdata = ssldata;
 
-  ssldata->ctx = SSL_CTX_new(SSLv23_client_method());
-  if (!ssldata->ctx)
+  ssldata->sctx = SSL_CTX_new(SSLv23_client_method());
+  if (!ssldata->sctx)
   {
     /* L10N: an SSL context is a data structure returned by the OpenSSL
              function SSL_CTX_new().  In this case it returned NULL: an
@@ -1260,50 +1260,50 @@ static int ssl_setup(struct Connection *conn)
   /* disable SSL protocols as needed */
 #ifdef SSL_OP_NO_TLSv1_2
   if (!SslUseTlsv12)
-    SSL_CTX_set_options(ssldata->ctx, SSL_OP_NO_TLSv1_2);
+    SSL_CTX_set_options(ssldata->sctx, SSL_OP_NO_TLSv1_2);
 #endif
 
 #ifdef SSL_OP_NO_TLSv1_1
   if (!SslUseTlsv11)
-    SSL_CTX_set_options(ssldata->ctx, SSL_OP_NO_TLSv1_1);
+    SSL_CTX_set_options(ssldata->sctx, SSL_OP_NO_TLSv1_1);
 #endif
 
 #ifdef SSL_OP_NO_TLSv1
   if (!SslUseTlsv1)
-    SSL_CTX_set_options(ssldata->ctx, SSL_OP_NO_TLSv1);
+    SSL_CTX_set_options(ssldata->sctx, SSL_OP_NO_TLSv1);
 #endif
 
   if (!SslUseSslv3)
-    SSL_CTX_set_options(ssldata->ctx, SSL_OP_NO_SSLv3);
+    SSL_CTX_set_options(ssldata->sctx, SSL_OP_NO_SSLv3);
 
   if (!SslUseSslv2)
-    SSL_CTX_set_options(ssldata->ctx, SSL_OP_NO_SSLv2);
+    SSL_CTX_set_options(ssldata->sctx, SSL_OP_NO_SSLv2);
 
   if (SslUsesystemcerts)
   {
-    if (!SSL_CTX_set_default_verify_paths(ssldata->ctx))
+    if (!SSL_CTX_set_default_verify_paths(ssldata->sctx))
     {
       mutt_debug(1, "Error setting default verify paths\n");
       goto free_ctx;
     }
   }
 
-  if (CertificateFile && !ssl_load_certificates(ssldata->ctx))
+  if (CertificateFile && !ssl_load_certificates(ssldata->sctx))
     mutt_debug(1, "Error loading trusted certificates\n");
 
   ssl_get_client_cert(ssldata, conn);
 
   if (SslCiphers)
   {
-    SSL_CTX_set_cipher_list(ssldata->ctx, SslCiphers);
+    SSL_CTX_set_cipher_list(ssldata->sctx, SslCiphers);
   }
 
-  if (ssl_set_verify_partial(ssldata->ctx))
+  if (ssl_set_verify_partial(ssldata->sctx))
   {
     mutt_error(_("Warning: error enabling ssl_verify_partial_chains"));
   }
 
-  ssldata->ssl = SSL_new(ssldata->ctx);
+  ssldata->ssl = SSL_new(ssldata->sctx);
   SSL_set_fd(ssldata->ssl, conn->fd);
 
   if (ssl_negotiate(conn, ssldata))
@@ -1318,8 +1318,8 @@ free_ssl:
   SSL_free(ssldata->ssl);
   ssldata->ssl = 0;
 free_ctx:
-  SSL_CTX_free(ssldata->ctx);
-  ssldata->ctx = 0;
+  SSL_CTX_free(ssldata->sctx);
+  ssldata->sctx = 0;
 free_sasldata:
   FREE(&ssldata);
 
@@ -1399,7 +1399,7 @@ static int ssl_socket_close(struct Connection *conn)
     /* hold onto this for the life of neomutt, in case we want to reconnect.
      * The purist in me wants a mutt_exit hook. */
     SSL_free(data->ssl);
-    SSL_CTX_free(data->ctx);
+    SSL_CTX_free(data->sctx);
     FREE(&conn->sockdata);
   }
 

@@ -86,8 +86,8 @@ static int check_capabilities(struct ImapAccountData *adata)
     return -1;
   }
 
-  if (!(mutt_bit_isset(adata->capabilities, IMAP_CAP_IMAP4) ||
-        mutt_bit_isset(adata->capabilities, IMAP_CAP_IMAP4REV1)))
+  if (!((adata->capabilities & IMAP_CAP_IMAP4) ||
+        (adata->capabilities & IMAP_CAP_IMAP4REV1)))
   {
     mutt_error(
         _("This IMAP server is ancient. NeoMutt does not work with it."));
@@ -153,18 +153,18 @@ static char *get_flags(struct ListHead *hflags, char *s)
 }
 
 /**
- * set_flag - append str to flags if we currently have permission according to aclbit
- * @param[in]  m      Selected Imap Mailbox
- * @param[in]  aclbit Permissions, e.g. #MUTT_ACL_WRITE
- * @param[in]  flag   Does the email have the flag set?
- * @param[in]  str    Server flag name
- * @param[out] flags  Buffer for server command
- * @param[in]  flsize Length of buffer
+ * set_flag - append str to flags if we currently have permission according to aclflag
+ * @param[in]  m       Selected Imap Mailbox
+ * @param[in]  aclflag Permissions, e.g. #MUTT_ACL_WRITE
+ * @param[in]  flag    Does the email have the flag set?
+ * @param[in]  str     Server flag name
+ * @param[out] flags   Buffer for server command
+ * @param[in]  flsize  Length of buffer
  */
-static void set_flag(struct Mailbox *m, int aclbit, int flag, const char *str,
+static void set_flag(struct Mailbox *m, int aclflag, int flag, const char *str,
                      char *flags, size_t flsize)
 {
-  if (mutt_bit_isset(m->rights, aclbit))
+  if (m->rights & aclflag)
     if (flag && imap_has_flag(&imap_mdata_get(m)->flags, str))
       mutt_str_strcat(flags, flsize, str);
 }
@@ -196,7 +196,7 @@ static int make_msg_set(struct Mailbox *m, struct Buffer *buf, int flag,
 
   struct Email **emails = m->emails;
 
-  for (n = *pos; n < m->msg_count && buf->dptr - buf->data < IMAP_MAX_CMDLEN; n++)
+  for (n = *pos; (n < m->msg_count) && ((buf->dptr - buf->data) < IMAP_MAX_CMDLEN); n++)
   {
     bool match = false; /* whether current message matches flag condition */
     /* don't include pending expunged messages */
@@ -250,7 +250,7 @@ static int make_msg_set(struct Mailbox *m, struct Buffer *buf, int flag,
           mutt_buffer_add_printf(buf, ",%u", imap_edata_get(emails[n])->uid);
       }
       /* tie up if the last message also matches */
-      else if (n == m->msg_count - 1)
+      else if (n == (m->msg_count - 1))
         mutt_buffer_add_printf(buf, ":%u", imap_edata_get(emails[n])->uid);
     }
     /* End current set if message doesn't match or we've reached the end
@@ -310,7 +310,7 @@ static int sync_helper(struct Mailbox *m, int right, int flag, const char *name)
   if (!m)
     return -1;
 
-  if (!mutt_bit_isset(m->rights, right))
+  if ((m->rights & right) == 0)
     return 0;
 
   if (right == MUTT_ACL_WRITE && !imap_has_flag(&imap_mdata_get(m)->flags, name))
@@ -462,7 +462,7 @@ static int compile_search(struct Mailbox *m, const struct Pattern *pat, struct B
       case MUTT_SERVERSEARCH:
       {
         struct ImapAccountData *adata = imap_adata_get(m);
-        if (!mutt_bit_isset(adata->capabilities, IMAP_CAP_X_GM_EXT1))
+        if (!(adata->capabilities & IMAP_CAP_X_GM_EXT1))
         {
           mutt_error(_("Server-side custom search not supported: %s"), pat->p.str);
           return -1;
@@ -519,16 +519,16 @@ static int complete_hosts(char *buf, size_t buflen)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if (!mutt_str_startswith(np->m->path, buf, CASE_MATCH))
+    if (!mutt_str_startswith(np->mailbox->path, buf, CASE_MATCH))
       continue;
 
     if (rc)
     {
-      mutt_str_strfcpy(buf, np->m->path, buflen);
+      mutt_str_strfcpy(buf, np->mailbox->path, buflen);
       rc = 0;
     }
     else
-      longest_common_prefix(buf, np->m->path, matchlen, buflen);
+      longest_common_prefix(buf, np->mailbox->path, matchlen, buflen);
   }
 
 #if 0
@@ -871,7 +871,7 @@ int imap_open_connection(struct ImapAccountData *adata)
 #ifdef USE_SSL
     /* Attempt STARTTLS if available and desired. */
     if (!adata->conn->ssf &&
-        (SslForceTls || mutt_bit_isset(adata->capabilities, IMAP_CAP_STARTTLS)))
+        (SslForceTls || (adata->capabilities & IMAP_CAP_STARTTLS)))
     {
       int rc;
 
@@ -980,6 +980,14 @@ bool imap_has_flag(struct ListHead *flag_list, const char *flag)
   return false;
 }
 
+/**
+ * compare_uid - Compare two UIDs
+ * @param a First UID
+ * @param b Second UID
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int compare_uid(const void *a, const void *b)
 {
   struct Email **ea = (struct Email **) a;
@@ -1111,7 +1119,7 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
   set_flag(m, MUTT_ACL_DELETE, imap_edata_get(e)->deleted, "\\Deleted ", flags,
            sizeof(flags));
 
-  if (mutt_bit_isset(m->rights, MUTT_ACL_WRITE))
+  if (m->rights & MUTT_ACL_WRITE)
   {
     /* restore system flags */
     if (imap_edata_get(e)->flags_system)
@@ -1139,7 +1147,7 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
              flags, sizeof(flags));
 
     /* erase custom flags */
-    if (mutt_bit_isset(m->rights, MUTT_ACL_WRITE) && imap_edata_get(e)->flags_remote)
+    if ((m->rights & MUTT_ACL_WRITE) && imap_edata_get(e)->flags_remote)
       mutt_str_strcat(flags, sizeof(flags), imap_edata_get(e)->flags_remote);
 
     mutt_str_remove_trailing_ws(flags);
@@ -1201,7 +1209,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
   int result = 0;
 
   /* try IDLE first, unless force is set */
-  if (!force && ImapIdle && mutt_bit_isset(adata->capabilities, IMAP_CAP_IDLE) &&
+  if (!force && ImapIdle && (adata->capabilities & IMAP_CAP_IDLE) &&
       (adata->state != IMAP_IDLE || time(NULL) >= adata->lastread + ImapKeepalive))
   {
     if (imap_cmd_idle(adata) < 0)
@@ -1220,7 +1228,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
     if (result < 0)
     {
       mutt_debug(1, "Poll failed, disabling IDLE\n");
-      mutt_bit_unset(adata->capabilities, IMAP_CAP_IDLE);
+      adata->capabilities &= ~IMAP_CAP_IDLE; // Clear the flag
     }
   }
 
@@ -1271,9 +1279,9 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
     return mdata->messages;
   }
 
-  if (mutt_bit_isset(adata->capabilities, IMAP_CAP_IMAP4REV1))
+  if (adata->capabilities & IMAP_CAP_IMAP4REV1)
     uid_validity_flag = "UIDVALIDITY";
-  else if (mutt_bit_isset(adata->capabilities, IMAP_CAP_STATUS))
+  else if (adata->capabilities & IMAP_CAP_STATUS)
     uid_validity_flag = "UID-VALIDITY";
   else
   {
@@ -1656,7 +1664,7 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
     return rc;
 
   /* if we are expunging anyway, we can do deleted messages very quickly... */
-  if (expunge && mutt_bit_isset(m->rights, MUTT_ACL_DELETE))
+  if (expunge && (m->rights & MUTT_ACL_DELETE))
   {
     rc = imap_exec_msgset(m, "UID STORE", "+FLAGS.SILENT (\\Deleted)",
                           MUTT_DELETED, true, false);
@@ -1707,7 +1715,7 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
       /* TODO: why the e->env check? */
       if ((e->env && e->env->changed) || e->attach_del)
       {
-        /* L10N: The plural is choosen by the last %d, i.e. the total number */
+        /* L10N: The plural is chosen by the last %d, i.e. the total number */
         mutt_message(ngettext("Saving changed message... [%d/%d]",
                               "Saving changed messages... [%d/%d]", m->msg_count),
                      i + 1, m->msg_count);
@@ -1788,7 +1796,7 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   m->changed = false;
 
   /* We must send an EXPUNGE command if we're not closing. */
-  if (expunge && !close && mutt_bit_isset(m->rights, MUTT_ACL_DELETE))
+  if (expunge && !close && (m->rights & MUTT_ACL_DELETE))
   {
     mutt_message(_("Expunging messages from server..."));
     /* Set expunge bit so we don't get spurious reopened messages */
@@ -1926,14 +1934,14 @@ int imap_login(struct ImapAccountData *adata)
     imap_exec(adata, "CAPABILITY", IMAP_CMD_QUEUE);
 
     /* enable RFC6855, if the server supports that */
-    if (mutt_bit_isset(adata->capabilities, IMAP_CAP_ENABLE))
+    if (adata->capabilities & IMAP_CAP_ENABLE)
       imap_exec(adata, "ENABLE UTF8=ACCEPT", IMAP_CMD_QUEUE);
 
     /* enable QRESYNC.  Advertising QRESYNC also means CONDSTORE
      * is supported (even if not advertised), so flip that bit. */
-    if (mutt_bit_isset(adata->capabilities, IMAP_CAP_QRESYNC))
+    if (adata->capabilities & IMAP_CAP_QRESYNC)
     {
-      mutt_bit_set(adata->capabilities, IMAP_CAP_CONDSTORE);
+      adata->capabilities |= IMAP_CAP_CONDSTORE;
       if (ImapQResync)
         imap_exec(adata, "ENABLE QRESYNC", IMAP_CMD_QUEUE);
     }
@@ -1972,13 +1980,13 @@ static int imap_mbox_open(struct Mailbox *m)
 
   /* clear mailbox status */
   adata->status = 0;
-  memset(m->rights, 0, sizeof(m->rights));
+  m->rights = 0;
   mdata->new_mail_count = 0;
 
   mutt_message(_("Selecting %s..."), mdata->name);
 
   /* pipeline ACL test */
-  if (mutt_bit_isset(adata->capabilities, IMAP_CAP_ACL))
+  if (adata->capabilities & IMAP_CAP_ACL)
   {
     snprintf(buf, sizeof(buf), "MYRIGHTS %s", mdata->munge_name);
     imap_exec(adata, buf, IMAP_CMD_QUEUE);
@@ -1986,14 +1994,8 @@ static int imap_mbox_open(struct Mailbox *m)
   /* assume we have all rights if ACL is unavailable */
   else
   {
-    mutt_bit_set(m->rights, MUTT_ACL_LOOKUP);
-    mutt_bit_set(m->rights, MUTT_ACL_READ);
-    mutt_bit_set(m->rights, MUTT_ACL_SEEN);
-    mutt_bit_set(m->rights, MUTT_ACL_WRITE);
-    mutt_bit_set(m->rights, MUTT_ACL_INSERT);
-    mutt_bit_set(m->rights, MUTT_ACL_POST);
-    mutt_bit_set(m->rights, MUTT_ACL_CREATE);
-    mutt_bit_set(m->rights, MUTT_ACL_DELETE);
+    m->rights |= MUTT_ACL_LOOKUP | MUTT_ACL_READ | MUTT_ACL_SEEN | MUTT_ACL_WRITE |
+                 MUTT_ACL_INSERT | MUTT_ACL_POST | MUTT_ACL_CREATE | MUTT_ACL_DELETE;
   }
 
   /* pipeline the postponed count if possible */
@@ -2007,7 +2009,7 @@ static int imap_mbox_open(struct Mailbox *m)
     imap_exec(adata, "LSUB \"\" \"*\"", IMAP_CMD_QUEUE);
 
 #ifdef USE_HCACHE
-  if (mutt_bit_isset(adata->capabilities, IMAP_CAP_CONDSTORE) && ImapCondStore)
+  if ((adata->capabilities & IMAP_CAP_CONDSTORE) && ImapCondStore)
     condstore = " (CONDSTORE)";
   else
 #endif
@@ -2109,7 +2111,7 @@ static int imap_mbox_open(struct Mailbox *m)
 
   /* check for READ-ONLY notification */
   if (mutt_str_startswith(imap_get_qualifier(adata->buf), "[READ-ONLY]", CASE_IGNORE) &&
-      !mutt_bit_isset(adata->capabilities, IMAP_CAP_ACL))
+      !(adata->capabilities & IMAP_CAP_ACL))
   {
     mutt_debug(2, "Mailbox is read-only.\n");
     m->readonly = true;
@@ -2135,9 +2137,8 @@ static int imap_mbox_open(struct Mailbox *m)
     }
   }
 
-  if (!(mutt_bit_isset(m->rights, MUTT_ACL_DELETE) ||
-        mutt_bit_isset(m->rights, MUTT_ACL_SEEN) || mutt_bit_isset(m->rights, MUTT_ACL_WRITE) ||
-        mutt_bit_isset(m->rights, MUTT_ACL_INSERT)))
+  if (!((m->rights & MUTT_ACL_DELETE) || (m->rights & MUTT_ACL_SEEN) ||
+        (m->rights & MUTT_ACL_WRITE) || (m->rights & MUTT_ACL_INSERT)))
   {
     m->readonly = true;
   }
@@ -2247,7 +2248,7 @@ static int imap_mbox_close(struct Mailbox *m)
     {
       /* mx_mbox_close won't sync if there are no deleted messages
        * and the mailbox is unchanged, so we may have to close here */
-      if (!m->msg_deleted)
+      if (m->msg_deleted == 0)
       {
         adata->closing = true;
         imap_exec(adata, "CLOSE", IMAP_CMD_QUEUE);
@@ -2385,7 +2386,7 @@ static int imap_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
   if (*buf == '\0')
     buf = NULL;
 
-  if (!mutt_bit_isset(adata->mailbox->rights, MUTT_ACL_WRITE))
+  if (!(adata->mailbox->rights & MUTT_ACL_WRITE))
     return 0;
 
   snprintf(uid, sizeof(uid), "%u", imap_edata_get(e)->uid);
