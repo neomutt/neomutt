@@ -3002,7 +3002,10 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** Controls whether or not messages are saved in the $$postponed
-  ** mailbox when you elect not to send immediately.
+  ** mailbox when you elect not to send immediately. If set to
+  ** \fIask-yes\fP or \fIask-no\fP, you will be prompted with "Save
+  ** (postpone) draft message?" when quitting from the "compose"
+  ** screen.
   ** .pp
   ** Also see the $$recall variable.
   */
