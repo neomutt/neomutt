@@ -328,7 +328,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, int flags)
 
   mutt_make_label_hash(m);
 
-  /* if the user has a `push' command in their .neomuttrc, or in a folder-hook,
+  /* if the user has a 'push' command in their .neomuttrc, or in a folder-hook,
    * it will cause the progress messages not to be displayed because
    * mutt_refresh() will think we are in the middle of a macro.  so set a
    * flag to indicate that we should really refresh the screen.

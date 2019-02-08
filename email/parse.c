@@ -180,7 +180,7 @@ static void parse_parameters(struct ParameterList *param, const char *s)
       {
         new->value = mutt_str_strdup(buffer);
 
-        mutt_debug(2, "parse_parameter: '%s' = `%s'\n",
+        mutt_debug(2, "parse_parameter: '%s' = '%s'\n",
                    new->attribute ? new->attribute : "", new->value ? new->value : "");
 
         /* Add this parameter to the list */
@@ -767,7 +767,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
 #endif
 
     case 'o':
-      /* field `Organization:' saves only for pager! */
+      /* field 'Organization:' saves only for pager! */
       if (mutt_str_strcasecmp(line + 1, "rganization") == 0)
       {
         if (!env->organization && (mutt_str_strcasecmp(p, "unknown") != 0))

@@ -765,12 +765,12 @@ static int fseek_last_message(FILE *f)
   fseek(f, 0, SEEK_END);
   pos = ftello(f);
 
-  /* Set `bytes_read' to the size of the last, probably partial, buffer;
-   * 0 < `bytes_read' <= `BUFSIZ'.  */
+  /* Set 'bytes_read' to the size of the last, probably partial, buffer;
+   * 0 < 'bytes_read' <= 'BUFSIZ'.  */
   bytes_read = pos % BUFSIZ;
   if (bytes_read == 0)
     bytes_read = BUFSIZ;
-  /* Make `pos' a multiple of `BUFSIZ' (0 if the file is short), so that all
+  /* Make 'pos' a multiple of 'BUFSIZ' (0 if the file is short), so that all
    * reads will be on block boundaries, which might increase efficiency.  */
   while ((pos -= bytes_read) >= 0)
   {
@@ -780,7 +780,7 @@ static int fseek_last_message(FILE *f)
     bytes_read = fread(buffer, sizeof(char), bytes_read, f);
     if (bytes_read == 0)
       return -1;
-    /* 'i' is Index into `buffer' for scanning.  */
+    /* 'i' is Index into 'buffer' for scanning.  */
     for (int i = bytes_read; i >= 0; i--)
     {
       if (mutt_str_startswith(buffer + i, "\n\nFrom ", CASE_MATCH))
@@ -1277,9 +1277,9 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
         }
       }
 
-      /* save the new offset for this message.  we add `offset' because the
+      /* save the new offset for this message.  we add 'offset' because the
        * temporary file only contains saved message which are located after
-       * `offset' in the real mailbox
+       * 'offset' in the real mailbox
        */
       new_offset[i - first].hdr = ftello(fp) + offset;
 

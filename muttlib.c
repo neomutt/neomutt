@@ -1042,7 +1042,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
           break; /* bad format */
         src++;
 
-        /* eat the `if' part of the string */
+        /* eat the 'if' part of the string */
         cp = if_str;
         count = 0;
         lrbalance = 1;
@@ -1079,7 +1079,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         }
         *cp = 0;
 
-        /* eat the `else' part of the string (optional) */
+        /* eat the 'else' part of the string (optional) */
         if (*src == '&')
           src++; /* skip the & */
         cp = else_str;
@@ -1120,7 +1120,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         if (!*src)
           break; /* bad format */
 
-        src++; /* move past the trailing `>' (formerly '?') */
+        src++; /* move past the trailing '>' (formerly '?') */
       }
 
       /* handle generic cases first */
@@ -1508,7 +1508,7 @@ void mutt_encode_path(char *buf, size_t buflen, const char *src)
 {
   char *p = mutt_str_strdup(src);
   int rc = mutt_ch_convert_string(&p, Charset, "us-ascii", 0);
-  /* `src' may be NULL, such as when called from the pop3 driver. */
+  /* 'src' may be NULL, such as when called from the pop3 driver. */
   size_t len = mutt_str_strfcpy(buf, (rc == 0) ? p : src, buflen);
 
   /* convert the path to POSIX "Portable Filename Character Set" */

@@ -1890,7 +1890,7 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
   /* this is handled here so that the user can match ~f in send-hook */
   if (cur && ReverseName && !(flags & (SEND_POSTPONED | SEND_RESEND)))
   {
-    /* we shouldn't have to worry about freeing `msg->env->from' before
+    /* we shouldn't have to worry about freeing 'msg->env->from' before
      * setting it here since this code will only execute when doing some
      * sort of reply.  the pointer will only be set when using the -H command
      * line option.
@@ -1911,14 +1911,14 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
   }
   if (cur && ReplyWithXorig && !(flags & (SEND_POSTPONED | SEND_RESEND | SEND_FORWARD)))
   {
-    /* We shouldn't have to worry about freeing `msg->env->from' before
+    /* We shouldn't have to worry about freeing 'msg->env->from' before
      * setting it here since this code will only execute when doing some
      * sort of reply. The pointer will only be set when using the -H command
      * line option.
      *
-     * If there is already a from address recorded in `msg->env->from',
+     * If there is already a from address recorded in 'msg->env->from',
      * then it theoretically comes from ReverseName handling, and we don't use
-     * the `X-Orig-To header'.
+     * the 'X-Orig-To header'.
      */
     if (cur->env->x_original_to && !msg->env->from)
     {
@@ -1962,7 +1962,7 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
     }
 
     /* the from address must be set here regardless of whether or not
-     * $use_from is set so that the `~P' (from you) operator in send-hook
+     * $use_from is set so that the '~P' (from you) operator in send-hook
      * patterns will work.  if $use_from is unset, the from address is killed
      * after send-hooks are evaluated */
 

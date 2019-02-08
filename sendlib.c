@@ -1062,10 +1062,10 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
  * @param path Path to attachment
  * @retval num MIME type, e.g. #TYPE_IMAGE
  *
- * Given a file at `path`, see if there is a registered MIME type.
+ * Given a file at 'path', see if there is a registered MIME type.
  * Returns the major MIME type, and copies the subtype to "d".  First look
  * in a system mime.types if we can find one, then look for ~/.mime.types.
- * The longest match is used so that we can match `ps.gz' when `gz' also
+ * The longest match is used so that we can match 'ps.gz' when 'gz' also
  * exists.
  */
 int mutt_lookup_mime_type(struct Body *att, const char *path)
@@ -1894,7 +1894,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
   {
     int fold = 0;
 
-    /* find the next word and place it in `buf'. it may start with
+    /* find the next word and place it in 'buf'. it may start with
      * whitespace we can fold before */
     const char *next = mutt_str_find_word(p);
     l = MIN(sizeof(buf) - 1, next - p);
@@ -2224,7 +2224,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
     fputs(mutt_date_make_date(buf, sizeof(buf)), fp);
 
   /* UseFrom is not consulted here so that we can still write a From:
-   * field if the user sets it with the `my_hdr' command
+   * field if the user sets it with the 'my_hdr' command
    */
   if (env->from && !privacy)
   {
@@ -3186,7 +3186,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     stat(path, &st);
   }
 
-  e->read = !post; /* make sure to put it in the `cur' directory (maildir) */
+  e->read = !post; /* make sure to put it in the 'cur' directory (maildir) */
   onm_flags = MUTT_ADD_FROM;
   if (post)
     onm_flags |= MUTT_SET_DRAFT;

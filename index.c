@@ -1545,7 +1545,7 @@ int mutt_index_menu(void)
         break;
 
         /* --------------------------------------------------------------------
-         * `index' specific commands
+         * 'index' specific commands
          */
 
       case OP_MAIN_DELETE_PATTERN:

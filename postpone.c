@@ -280,7 +280,7 @@ static struct Email *select_msg(struct Context *ctx)
  * mutt_get_postponed - Recall a postponed message
  * @param[in]  ctx     Context info, used when recalling a message to which we reply
  * @param[in]  hdr     envelope/attachment info for recalled message
- * @param[out] cur     if message was a reply, `cur' is set to the message which `hdr' is in reply to
+ * @param[out] cur     if message was a reply, 'cur' is set to the message which 'hdr' is in reply to
  * @param[in]  fcc     fcc for the recalled message
  * @param[in]  fcclen  max length of fcc
  * @retval -1         Error/no messages

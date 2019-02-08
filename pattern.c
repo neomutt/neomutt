@@ -590,7 +590,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   }
 
   memset(&min, 0, sizeof(min));
-  /* the `0' time is Jan 1, 1970 UTC, so in order to prevent a negative time
+  /* the '0' time is Jan 1, 1970 UTC, so in order to prevent a negative time
      when doing timezone conversion, we use Jan 2, 1970 UTC as the base
      here */
   min.tm_mday = 2;

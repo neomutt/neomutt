@@ -1053,7 +1053,7 @@ static gpgme_key_t *create_recipient_set(const char *keylist, gpgme_protocol_t p
         rset[rset_n++] = key;
       else
       {
-        mutt_error(_("error adding recipient `%s': %s\n"), buf, gpgme_strerror(err));
+        mutt_error(_("error adding recipient '%s': %s\n"), buf, gpgme_strerror(err));
         rset[rset_n] = NULL;
         free_recipient_set(&rset);
         gpgme_release(context);

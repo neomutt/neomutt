@@ -36,7 +36,7 @@ WHERE bool OptIgnoreMacroEvents;  /**< (pseudo) don't process macro/push/exec ev
 WHERE bool OptKeepQuiet;           /**< (pseudo) shut up the message and refresh functions while we are executing an external program.  */
 WHERE bool OptMenuCaller;          /**< (pseudo) tell menu to give caller a take */
 WHERE bool OptMsgErr;              /**< (pseudo) used by mutt_error/mutt_message */
-WHERE bool OptNeedRescore;         /**< (pseudo) set when the `score' command is used */
+WHERE bool OptNeedRescore;         /**< (pseudo) set when the 'score' command is used */
 WHERE bool OptNeedResort;          /**< (pseudo) used to force a re-sort */
 #ifdef USE_NNTP
 WHERE bool OptNews;                 /**< (pseudo) used to change reader mode */
