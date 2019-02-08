@@ -1296,8 +1296,8 @@ char *mutt_file_read_keyword(const char *file, char *buf, size_t buflen)
 /**
  * mutt_file_check_empty - Is the mailbox empty
  * @param path Path to mailbox
- * @retval  1 Mailbox is not empty
- * @retval  0 Mailbox is empty
+ * @retval  1 Mailbox is empty
+ * @retval  0 Mailbox is not empty
  * @retval -1 Error
  */
 int mutt_file_check_empty(const char *path)
