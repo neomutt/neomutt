@@ -1083,7 +1083,7 @@ int imap_cmd_step(struct ImapAccountData *adata)
     /* back up over '\0' */
     if (len)
       len--;
-    c = mutt_socket_readln(adata->buf + len, adata->blen - len, adata->conn);
+    c = mutt_socket_readln_d(adata->buf + len, adata->blen - len, adata->conn, MUTT_SOCK_LOG_FULL);
     if (c <= 0)
     {
       mutt_debug(1, "Error reading server response.\n");

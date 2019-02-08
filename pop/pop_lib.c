@@ -447,26 +447,23 @@ void pop_logout(struct Mailbox *m)
 */
 int pop_query_d(struct PopAccountData *adata, char *buf, size_t buflen, char *msg)
 {
-  int dbg = MUTT_SOCK_LOG_CMD;
-
   if (adata->status != POP_CONNECTED)
     return -1;
 
   /* print msg instead of real command */
   if (msg)
   {
-    dbg = MUTT_SOCK_LOG_FULL;
     mutt_debug(MUTT_SOCK_LOG_CMD, "> %s", msg);
   }
 
-  mutt_socket_send_d(adata->conn, buf, dbg);
+  mutt_socket_send_d(adata->conn, buf, MUTT_SOCK_LOG_FULL);
 
   char *c = strpbrk(buf, " \r\n");
   if (c)
     *c = '\0';
   snprintf(adata->err_msg, sizeof(adata->err_msg), "%s: ", buf);
 
-  if (mutt_socket_readln(buf, buflen, adata->conn) < 0)
+  if (mutt_socket_readln_d(buf, buflen, adata->conn, MUTT_SOCK_LOG_FULL) < 0)
   {
     adata->status = POP_DISCONNECTED;
     return -1;
@@ -509,7 +506,7 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
 
   while (true)
   {
-    const int chunk = mutt_socket_readln_d(buf, sizeof(buf), adata->conn, MUTT_SOCK_LOG_HDR);
+    const int chunk = mutt_socket_readln_d(buf, sizeof(buf), adata->conn, MUTT_SOCK_LOG_FULL);
     if (chunk < 0)
     {
       adata->status = POP_DISCONNECTED;

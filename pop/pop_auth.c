@@ -113,7 +113,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
   {
     mutt_str_strfcpy(buf + olen, "\r\n", bufsize - olen);
     mutt_socket_send(adata->conn, buf);
-    if (mutt_socket_readln(inbuf, sizeof(inbuf), adata->conn) < 0)
+    if (mutt_socket_readln_d(inbuf, sizeof(inbuf), adata->conn, MUTT_SOCK_LOG_FULL) < 0)
     {
       sasl_dispose(&saslconn);
       adata->status = POP_DISCONNECTED;

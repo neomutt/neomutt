@@ -453,7 +453,7 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
   {
     if (mutt_socket_send(conn, buf) < 0)
       goto fail;
-    rc = mutt_socket_readln(buf, bufsize, conn);
+    rc = mutt_socket_readln_d(buf, bufsize, conn, MUTT_SOCK_LOG_FULL);
     if (rc < 0)
       goto fail;
     if (!valid_smtp_code(buf, rc, &rc))
