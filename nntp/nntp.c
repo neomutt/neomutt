@@ -476,6 +476,36 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
 }
 
 /**
+ * nntp_log_binbuf - log a buffer possibly containing NUL bytes
+ * @param buf source buffer
+ * @param len how many bytes from buf
+ * @param pfx logging prefix (protocol etc.)
+ * @param dbg which loglevel does message belong
+ */
+static void nntp_log_binbuf(const char *buf, size_t len, const char *pfx, int dbg)
+{
+  size_t left = len;
+  char tmp[LONG_STRING];
+  char *p = tmp;
+
+  if (DebugLevel < dbg)
+    return;
+
+  memcpy(tmp, buf, len);
+  tmp[len] = '\0';
+  while (left > 0)
+  {
+    void* vp = memchr(p, '\0', left);
+    if (!vp)
+      break;
+    p = vp;
+    *p++ = '.';
+    left -= (p - tmp);
+  }
+  mutt_debug(dbg, "%s> %s\n", pfx, tmp);
+}
+
+/**
  * nntp_auth - Get login, password and authenticate
  * @param adata NNTP server
  * @retval  0 Success
@@ -630,19 +660,7 @@ static int nntp_auth(struct NntpAccountData *adata)
           /* send out client response */
           if (client_len)
           {
-            if (DebugLevel >= MUTT_SOCK_LOG_FULL)
-            {
-              char tmp[LONG_STRING];
-              memcpy(tmp, client_out, client_len);
-              for (p = tmp; p < tmp + client_len; p++)
-              {
-                if (*p == '\0')
-                  *p = '.';
-              }
-              *p = '\0';
-              mutt_debug(1, "SASL> %s\n", tmp);
-            }
-
+            nntp_log_binbuf(client_out, client_len, "SASL", MUTT_SOCK_LOG_FULL);
             if (*buf)
               mutt_str_strcat(buf, sizeof(buf), " ");
             len = strlen(buf);
@@ -692,18 +710,8 @@ static int nntp_auth(struct NntpAccountData *adata)
             mutt_debug(1, "error base64-decoding server response.\n");
             break;
           }
-          else if (DebugLevel >= MUTT_SOCK_LOG_FULL)
-          {
-            char tmp[LONG_STRING];
-            memcpy(tmp, buf, len);
-            for (p = tmp; p < tmp + len; p++)
-            {
-              if (*p == '\0')
-                *p = '.';
-            }
-            *p = '\0';
-            mutt_debug(1, "SASL< %s\n", tmp);
-          }
+          else 
+            nntp_log_binbuf(buf, len, "SASL", MUTT_SOCK_LOG_FULL);
 
           while (true)
           {
