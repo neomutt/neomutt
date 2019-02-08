@@ -1858,7 +1858,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
 
       case OP_EXIT:
       {
-        int ans = query_quadoption(Postpone, _("Postpone this message?"));
+        int ans = query_quadoption(Postpone, _("Save (postpone) draft message?"));
         if (ans == MUTT_NO)
         {
           for (int i = 0; i < actx->idxlen; i++)
