@@ -241,17 +241,17 @@ static void print_flowed_line(char *line, struct State *s, int ql,
   width = quote_width(s, ql);
   last = line[mutt_str_strlen(line) - 1];
 
-  mutt_debug(4, "f=f: line [%s], width = %ld, spaces = %lu\n", line,
+  mutt_debug(5, "f=f: line [%s], width = %ld, spaces = %lu\n", line,
              (long) width, fst->spaces);
 
   for (words = 0; (p = strsep(&line, " "));)
   {
-    mutt_debug(4, "f=f: word [%s], width: %lu, remaining = [%s]\n", p, fst->width, line);
+    mutt_debug(5, "f=f: word [%s], width: %lu, remaining = [%s]\n", p, fst->width, line);
 
     /* remember number of spaces */
     if (!*p)
     {
-      mutt_debug(4, "f=f: additional space\n");
+      mutt_debug(3, "f=f: additional space\n");
       fst->spaces++;
       continue;
     }
@@ -268,7 +268,7 @@ static void print_flowed_line(char *line, struct State *s, int ql,
     if (!(!fst->spaces && fst->delsp && last != ' ') && w < width &&
         w + fst->width + fst->spaces > width)
     {
-      mutt_debug(4, "f=f: break line at %lu, %lu spaces left\n", fst->width, fst->spaces);
+      mutt_debug(3, "f=f: break line at %lu, %lu spaces left\n", fst->width, fst->spaces);
       /* only honor trailing spaces for format=flowed replies */
       if (TextFlowed)
         for (; fst->spaces; fst->spaces--)
@@ -331,7 +331,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
     fst.delsp = 1;
   }
 
-  mutt_debug(4, "f=f: DelSp: %s\n", delsp ? "yes" : "no");
+  mutt_debug(3, "f=f: DelSp: %s\n", delsp ? "yes" : "no");
 
   while ((buf = mutt_file_read_line(buf, &sz, s->fpin, NULL, 0)))
   {
@@ -435,7 +435,7 @@ void rfc3676_space_stuff(struct Email *e)
         c = buf[len - 1];
         buf[len - 1] = '\0';
       }
-      mutt_debug(4, "f=f: line %d needs space-stuffing: '%s'\n", lc, buf);
+      mutt_debug(5, "f=f: line %d needs space-stuffing: '%s'\n", lc, buf);
       if (len > 0)
         buf[len - 1] = c;
     }

@@ -584,7 +584,7 @@ int nntp_add_group(char *line, void *data)
   if (sscanf(line, "%1023s " ANUM " " ANUM " %c %8191[^\n]", group, &last,
              &first, &mod, desc) < 4)
   {
-    mutt_debug(4, "Cannot parse server line: %s\n", line);
+    mutt_debug(2, "Cannot parse server line: %s\n", line);
     return 0;
   }
 

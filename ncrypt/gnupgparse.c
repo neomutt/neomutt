@@ -398,7 +398,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
   return k;
 
 bail:
-  mutt_debug(5, "invalid number: '%s'\n", p);
+  mutt_debug(1, "invalid number: '%s'\n", p);
   return NULL;
 }
 

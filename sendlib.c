@@ -1884,7 +1884,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
   int first = 1, col = 0, l = 0;
   const bool display = (flags & CH_DISPLAY);
 
-  mutt_debug(4, "pfx=[%s], tag=[%s], flags=%d value=[%s]\n", pfx, tag, flags, NONULL(value));
+  mutt_debug(5, "pfx=[%s], tag=[%s], flags=%d value=[%s]\n", pfx, tag, flags, NONULL(value));
 
   if (tag && *tag && fprintf(fp, "%s%s: ", NONULL(pfx), tag) < 0)
     return -1;
@@ -2027,7 +2027,7 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
   if (!(flags & CH_DISPLAY) && (pfxw + max <= wraplen || is_from))
   {
     valbuf = mutt_str_substr_dup(start, end);
-    mutt_debug(4, "buf[%s%s] short enough, max width = %d <= %d\n", NONULL(pfx),
+    mutt_debug(5, "buf[%s%s] short enough, max width = %d <= %d\n", NONULL(pfx),
                valbuf, max, wraplen);
     if (pfx && *pfx)
     {
@@ -2079,7 +2079,7 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
 
       valbuf = mutt_str_substr_dup(t, end);
     }
-    mutt_debug(4, "buf[%s%s] too long, max width = %d > %d\n", NONULL(pfx),
+    mutt_debug(2, "buf[%s%s] too long, max width = %d > %d\n", NONULL(pfx),
                NONULL(valbuf), max, wraplen);
     if (fold_one_header(fp, tagbuf, valbuf, pfx, wraplen, flags) < 0)
     {
@@ -2135,7 +2135,7 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
     /* if header is short enough, simply print it */
     if (!display && mutt_strwidth(tag) + 2 + pfxw + mutt_strwidth(v) <= wraplen)
     {
-      mutt_debug(4, "buf[%s%s: %s] is short enough\n", NONULL(pfx), tag, v);
+      mutt_debug(5, "buf[%s%s: %s] is short enough\n", NONULL(pfx), tag, v);
       if (fprintf(fp, "%s%s: %s\n", NONULL(pfx), tag, v) <= 0)
         goto out;
       rc = 0;

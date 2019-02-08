@@ -409,7 +409,7 @@ int mutt_monitor_poll(void)
               while (ptr < (buf + len))
               {
                 event = (const struct inotify_event *) ptr;
-                mutt_debug(5, "+ detail: descriptor=%d mask=0x%x\n", event->wd,
+                mutt_debug(3, "+ detail: descriptor=%d mask=0x%x\n", event->wd,
                            event->mask);
                 if (event->mask & IN_IGNORED)
                   monitor_handle_ignore(event->wd);

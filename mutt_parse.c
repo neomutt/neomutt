@@ -93,17 +93,17 @@ static bool count_body_parts_check(struct ListHead *checklist, struct Body *b, b
   STAILQ_FOREACH(np, checklist, entries)
   {
     a = (struct AttachMatch *) np->data;
-    mutt_debug(5, "%s %d/%s ?? %s/%s [%d]... ", dflt ? "[OK]   " : "[EXCL] ", b->type,
+    mutt_debug(3, "%s %d/%s ?? %s/%s [%d]... ", dflt ? "[OK]   " : "[EXCL] ", b->type,
                b->subtype ? b->subtype : "*", a->major, a->minor, a->major_int);
     if ((a->major_int == TYPE_ANY || a->major_int == b->type) &&
         (!b->subtype || !regexec(&a->minor_regex, b->subtype, 0, NULL, 0)))
     {
-      mutt_debug(5, "yes\n");
+      mutt_debug(3, "yes\n");
       return true;
     }
     else
     {
-      mutt_debug(5, "no\n");
+      mutt_debug(3, "no\n");
     }
   }
 
@@ -194,18 +194,18 @@ static int count_body_parts(struct Body *body, int flags)
       count++;
     bp->attach_qualifies = shallcount ? true : false;
 
-    mutt_debug(5, "%p shallcount = %d\n", (void *) bp, shallcount);
+    mutt_debug(3, "%p shallcount = %d\n", (void *) bp, shallcount);
 
     if (shallrecurse)
     {
-      mutt_debug(5, "%p pre count = %d\n", (void *) bp, count);
+      mutt_debug(3, "%p pre count = %d\n", (void *) bp, count);
       bp->attach_count = count_body_parts(bp->parts, flags & ~MUTT_PARTS_TOPLEVEL);
       count += bp->attach_count;
-      mutt_debug(5, "%p post count = %d\n", (void *) bp, count);
+      mutt_debug(3, "%p post count = %d\n", (void *) bp, count);
     }
   }
 
-  mutt_debug(5, "return %d\n", count < 0 ? 0 : count);
+  mutt_debug(3, "return %d\n", count < 0 ? 0 : count);
   return (count < 0) ? 0 : count;
 }
 
