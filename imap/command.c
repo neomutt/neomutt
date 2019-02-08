@@ -539,7 +539,7 @@ static void cmd_parse_capability(struct ImapAccountData *adata, char *s)
       if (mutt_str_word_casecmp(Capabilities[i], s) == 0)
       {
         adata->capabilities |= (1 << i);
-        mutt_debug(4, " Found capability \"%s\": %d\n", Capabilities[i], i);
+        mutt_debug(3, " Found capability \"%s\": %d\n", Capabilities[i], i);
         break;
       }
     }

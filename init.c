@@ -521,7 +521,7 @@ static enum CommandResult parse_attach_list(struct Buffer *buf, struct Buffer *s
       return MUTT_CMD_ERROR;
     }
 
-    mutt_debug(5, "added %s/%s [%d]\n", a->major, a->minor, a->major_int);
+    mutt_debug(3, "added %s/%s [%d]\n", a->major, a->minor, a->major_int);
 
     mutt_list_insert_tail(head, (char *) a);
   } while (MoreArgs(s));
@@ -648,11 +648,11 @@ static enum CommandResult parse_unattach_list(struct Buffer *buf, struct Buffer 
     STAILQ_FOREACH_SAFE(np, head, entries, tmp2)
     {
       a = (struct AttachMatch *) np->data;
-      mutt_debug(5, "check %s/%s [%d] : %s/%s [%d]\n", a->major, a->minor,
+      mutt_debug(3, "check %s/%s [%d] : %s/%s [%d]\n", a->major, a->minor,
                  a->major_int, tmp, minor, major);
       if (a->major_int == major && (mutt_str_strcasecmp(minor, a->minor) == 0))
       {
-        mutt_debug(5, "removed %s/%s [%d]\n", a->major, a->minor, a->major_int);
+        mutt_debug(3, "removed %s/%s [%d]\n", a->major, a->minor, a->major_int);
         regfree(&a->minor_regex);
         FREE(&a->major);
         STAILQ_REMOVE(head, np, ListNode, entries);
@@ -934,7 +934,7 @@ static enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   }
 
   mutt_extract_token(buf, s, MUTT_TOKEN_QUOTE | MUTT_TOKEN_SPACE | MUTT_TOKEN_SEMICOLON);
-  mutt_debug(3, "Second token is '%s'.\n", buf->data);
+  mutt_debug(5, "Second token is '%s'.\n", buf->data);
 
   tmp->addr = mutt_addr_parse_list2(tmp->addr, buf->data);
 
@@ -954,9 +954,9 @@ static enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
     for (struct Address *a = tmp->addr; a && a->mailbox; a = a->next)
     {
       if (!a->group)
-        mutt_debug(3, "  %s\n", a->mailbox);
+        mutt_debug(5, "  %s\n", a->mailbox);
       else
-        mutt_debug(3, "  Group %s\n", a->mailbox);
+        mutt_debug(5, "  Group %s\n", a->mailbox);
     }
   }
   mutt_grouplist_destroy(&gc);
@@ -2128,7 +2128,7 @@ static enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *
     }
     else
     {
-      mutt_debug(5, "Corrupted buffer");
+      mutt_debug(1, "Corrupted buffer");
       return MUTT_CMD_ERROR;
     }
   }
@@ -2582,7 +2582,7 @@ static enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buff
     }
     else
     {
-      mutt_debug(5, "Corrupted buffer");
+      mutt_debug(1, "Corrupted buffer");
       return MUTT_CMD_ERROR;
     }
   }

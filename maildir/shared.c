@@ -668,7 +668,7 @@ static void mh_sort_natural(struct Mailbox *m, struct Maildir **md)
 {
   if (!m || !md || !*md || (m->magic != MUTT_MH) || (Sort != SORT_ORDER))
     return;
-  mutt_debug(4, "maildir: sorting %s into natural order\n", m->path);
+  mutt_debug(3, "maildir: sorting %s into natural order\n", m->path);
   *md = maildir_sort(*md, (size_t) -1, md_cmp_path);
 }
 
@@ -733,7 +733,7 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
 
     if (!sort)
     {
-      mutt_debug(4, "maildir: need to sort %s by inode\n", m->path);
+      mutt_debug(3, "maildir: need to sort %s by inode\n", m->path);
       p = maildir_sort(p, (size_t) -1, md_cmp_inode);
       if (!last)
         *md = p;
