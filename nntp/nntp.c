@@ -432,7 +432,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
         }
 
         const int chunk =
-            mutt_socket_readln(adata->overview_fmt + off, buflen - off, conn);
+            mutt_socket_readln_d(adata->overview_fmt + off, buflen - off, conn, MUTT_SOCK_LOG_HDR);
         if (chunk < 0)
         {
           FREE(&adata->overview_fmt);
@@ -588,7 +588,7 @@ static int nntp_auth(struct NntpAccountData *adata)
         mutt_message(_("Authenticating (%s)..."), method);
         snprintf(buf, sizeof(buf), "AUTHINFO USER %s\r\n", conn->account.user);
         if (mutt_socket_send(conn, buf) < 0 ||
-            mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+            mutt_socket_readln_d(buf, sizeof(buf), conn, MUTT_SOCK_LOG_FULL) < 0)
         {
           break;
         }
@@ -600,11 +600,10 @@ static int nntp_auth(struct NntpAccountData *adata)
         /* username accepted, sending password */
         if (mutt_str_startswith(buf, "381", CASE_MATCH))
         {
-          if (DebugLevel < MUTT_SOCK_LOG_FULL)
-            mutt_debug(MUTT_SOCK_LOG_CMD, "%d> AUTHINFO PASS *\n", conn->fd);
+          mutt_debug(MUTT_SOCK_LOG_FULL, "%d> AUTHINFO PASS *\n", conn->fd);
           snprintf(buf, sizeof(buf), "AUTHINFO PASS %s\r\n", conn->account.pass);
           if (mutt_socket_send_d(conn, buf, MUTT_SOCK_LOG_FULL) < 0 ||
-              mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+              mutt_socket_readln_d(buf, sizeof(buf), conn, MUTT_SOCK_LOG_FULL) < 0)
           {
             break;
           }
@@ -673,16 +672,13 @@ static int nntp_auth(struct NntpAccountData *adata)
           }
 
           mutt_str_strcat(buf, sizeof(buf), "\r\n");
-          if (DebugLevel < MUTT_SOCK_LOG_FULL)
+          if (strchr(buf, ' '))
           {
-            if (strchr(buf, ' '))
-            {
-              mutt_debug(MUTT_SOCK_LOG_CMD, "%d> AUTHINFO SASL %s%s\n",
-                         conn->fd, method, client_len ? " sasl_data" : "");
-            }
-            else
-              mutt_debug(MUTT_SOCK_LOG_CMD, "%d> sasl_data\n", conn->fd);
+            mutt_debug(MUTT_SOCK_LOG_CMD, "%d> AUTHINFO SASL %s%s\n",
+                       conn->fd, method, client_len ? " sasl_data" : "");
           }
+          else
+            mutt_debug(MUTT_SOCK_LOG_CMD, "%d> sasl_data\n", conn->fd);
           client_len = 0;
           if (mutt_socket_send_d(conn, buf, MUTT_SOCK_LOG_FULL) < 0 ||
               mutt_socket_readln_d(inbuf, sizeof(inbuf), conn, MUTT_SOCK_LOG_FULL) < 0)
@@ -692,15 +688,11 @@ static int nntp_auth(struct NntpAccountData *adata)
           if (!mutt_str_startswith(inbuf, "283 ", CASE_MATCH) &&
               !mutt_str_startswith(inbuf, "383 ", CASE_MATCH))
           {
-            if (DebugLevel < MUTT_SOCK_LOG_FULL)
-              mutt_debug(MUTT_SOCK_LOG_CMD, "%d< %s\n", conn->fd, inbuf);
+            mutt_debug(MUTT_SOCK_LOG_FULL, "%d< %s\n", conn->fd, inbuf);
             break;
           }
-          if (DebugLevel < MUTT_SOCK_LOG_FULL)
-          {
-            inbuf[3] = '\0';
-            mutt_debug(MUTT_SOCK_LOG_CMD, "%d< %s sasl_data\n", conn->fd, inbuf);
-          }
+          inbuf[3] = '\0';
+          mutt_debug(MUTT_SOCK_LOG_FULL, "%d< %s sasl_data\n", conn->fd, inbuf);
 
           if (strcmp("=", inbuf + 4) == 0)
             len = 0;
@@ -888,7 +880,7 @@ static int nntp_fetch_lines(struct NntpMboxData *mdata, char *query, size_t qlen
     while (true)
     {
       char *p = NULL;
-      int chunk = mutt_socket_readln_d(buf, sizeof(buf), mdata->adata->conn, MUTT_SOCK_LOG_HDR);
+      int chunk = mutt_socket_readln_d(buf, sizeof(buf), mdata->adata->conn, MUTT_SOCK_LOG_FULL);
       if (chunk < 0)
       {
         mdata->adata->status = NNTP_NONE;
@@ -2024,7 +2016,7 @@ int nntp_post(struct Mailbox *m, const char *msg)
       buf[len] = '\0';
     }
     if (mutt_socket_send_d(mdata->adata->conn, buf[1] == '.' ? buf : buf + 1,
-                           MUTT_SOCK_LOG_HDR) < 0)
+                           MUTT_SOCK_LOG_FULL) < 0)
     {
       mutt_file_fclose(&fp);
       return nntp_connect_error(mdata->adata);
@@ -2033,8 +2025,8 @@ int nntp_post(struct Mailbox *m, const char *msg)
   mutt_file_fclose(&fp);
 
   if ((buf[strlen(buf) - 1] != '\n' &&
-       mutt_socket_send_d(mdata->adata->conn, "\r\n", MUTT_SOCK_LOG_HDR) < 0) ||
-      mutt_socket_send_d(mdata->adata->conn, ".\r\n", MUTT_SOCK_LOG_HDR) < 0 ||
+       mutt_socket_send_d(mdata->adata->conn, "\r\n", MUTT_SOCK_LOG_FULL) < 0) ||
+      mutt_socket_send_d(mdata->adata->conn, ".\r\n", MUTT_SOCK_LOG_FULL) < 0 ||
       mutt_socket_readln(buf, sizeof(buf), mdata->adata->conn) < 0)
   {
     return nntp_connect_error(mdata->adata);
