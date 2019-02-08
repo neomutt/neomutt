@@ -29,7 +29,7 @@ struct Connection;
 /* logging levels */
 #define MUTT_SOCK_LOG_CMD  2
 #define MUTT_SOCK_LOG_HDR  3
-#define MUTT_SOCK_LOG_FULL 4
+#define MUTT_SOCK_LOG_FULL 5
 
 struct Connection *mutt_conn_find(const struct Connection *start, const struct ConnAccount *account);
 struct Connection *mutt_conn_new(const struct ConnAccount *account);
