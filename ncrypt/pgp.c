@@ -698,7 +698,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
         int ch;
         char *expected_charset = gpgcharset && *gpgcharset ? gpgcharset : "utf-8";
 
-        mutt_debug(4, "pgp: recoding inline from [%s] to [%s]\n", expected_charset, Charset);
+        mutt_debug(3, "pgp: recoding inline from [%s] to [%s]\n", expected_charset, Charset);
 
         rewind(pgpout);
         state_set_prefix(s);

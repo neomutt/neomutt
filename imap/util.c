@@ -540,7 +540,7 @@ int imap_hcache_store_uid_seqset(struct ImapMboxData *mdata)
     b->data[0] = '\0';
 
   int rc = mutt_hcache_store_raw(mdata->hcache, "/UIDSEQSET", 10, b->data, seqset_size + 1);
-  mutt_debug(5, "Stored /UIDSEQSET %s\n", b->data);
+  mutt_debug(3, "Stored /UIDSEQSET %s\n", b->data);
   mutt_buffer_free(&b);
   return rc;
 }
@@ -573,7 +573,7 @@ char *imap_hcache_get_uid_seqset(struct ImapMboxData *mdata)
   char *hc_seqset = mutt_hcache_fetch_raw(mdata->hcache, "/UIDSEQSET", 10);
   char *seqset = mutt_str_strdup(hc_seqset);
   mutt_hcache_free(mdata->hcache, (void **) &hc_seqset);
-  mutt_debug(5, "Retrieved /UIDSEQSET %s\n", NONULL(seqset));
+  mutt_debug(3, "Retrieved /UIDSEQSET %s\n", NONULL(seqset));
 
   return seqset;
 }

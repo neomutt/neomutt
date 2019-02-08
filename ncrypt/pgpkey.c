@@ -1027,7 +1027,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities,
 
     if (abilities && !(k->flags & abilities))
     {
-      mutt_debug(5, "  insufficient abilities: Has %x, want %x\n", k->flags, abilities);
+      mutt_debug(3, "  insufficient abilities: Has %x, want %x\n", k->flags, abilities);
       continue;
     }
 
