@@ -1147,7 +1147,6 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
   FILE *fp = NULL;
   struct Progress progress;
   char msgbuf[PATH_MAX + 64];
-  struct Mailbox *tmp = NULL;
 
   /* sort message by their position in the mailbox on disk */
   if (Sort != SORT_ORDER)
@@ -1449,7 +1448,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
 
   if (CheckMboxSize)
   {
-    tmp = mutt_find_mailbox(m->path);
+    struct Mailbox *tmp = mutt_find_mailbox(m->path);
     if (tmp && !tmp->has_new)
       mutt_update_mailbox(tmp);
   }
