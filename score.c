@@ -167,7 +167,7 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
  * mutt_score_message - Apply scoring to an email
  * @param m        Mailbox
  * @param e        Email
- * @param upd_mbox If true, update the Context too
+ * @param upd_mbox If true, update the Mailbox too
  */
 void mutt_score_message(struct Mailbox *m, struct Email *e, bool upd_mbox)
 {

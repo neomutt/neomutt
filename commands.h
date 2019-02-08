@@ -28,6 +28,7 @@
 
 struct Body;
 struct Email;
+struct EmailList;
 struct Envelope;
 struct Mailbox;
 
@@ -41,9 +42,9 @@ extern bool          PrintDecode;
 extern bool          PrintSplit;
 extern bool          PromptAfter;
 
-void ci_bounce_message(struct Email *e);
+void ci_bounce_message(struct Mailbox *m, struct EmailList *el);
 void mutt_check_stats(void);
-bool mutt_check_traditional_pgp(struct Email *e, int *redraw);
+bool mutt_check_traditional_pgp(struct EmailList *el, int *redraw);
 void mutt_display_address(struct Envelope *env);
 int  mutt_display_message(struct Email *cur);
 int  mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp);
@@ -51,7 +52,7 @@ void mutt_enter_command(void);
 void mutt_pipe_message(struct Email *e);
 void mutt_print_message(struct Email *e);
 int  mutt_save_message_ctx(struct Email *e, bool delete, bool decode, bool decrypt, struct Mailbox *m);
-int  mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt);
+int  mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete, bool decode, bool decrypt);
 int  mutt_select_sort(int reverse);
 void mutt_shell_escape(void);
 

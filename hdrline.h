@@ -43,7 +43,7 @@ extern struct MbTable *ToChars;
 struct HdrFormatInfo
 {
   struct Context *ctx;
-  struct Mailbox *m;
+  struct Mailbox *mailbox;
   struct Email *email;
   const char *pager_progress;
 };

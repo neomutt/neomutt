@@ -119,23 +119,24 @@ static bool label_message(struct Mailbox *m, struct Email *e, char *new)
 
 /**
  * mutt_label_message - Let the user label a message
- * @param e Email (OPTIONAL)
+ * @param m  Mailbox
+ * @param el List of Emails to label
  * @retval num Number of messages changed
- *
- * If e isn't given, then tagged messages will be labelled.
  */
-int mutt_label_message(struct Email *e)
+int mutt_label_message(struct Mailbox *m, struct EmailList *el)
 {
-  char buf[LONG_STRING], *new = NULL;
-  int changed;
-
-  if (!Context || !Context->mailbox->label_hash)
+  if (!m || !el)
     return 0;
 
-  *buf = '\0';
-  if (e && e->env->x_label)
+  char buf[LONG_STRING] = { 0 };
+  char *new = NULL;
+
+  struct EmailNode *en = STAILQ_FIRST(el);
+  if (!STAILQ_NEXT(en, entries))
   {
-    mutt_str_strfcpy(buf, e->env->x_label, sizeof(buf));
+    // If there's only one email, use its label as a template
+    if (en->email->env->x_label)
+      mutt_str_strfcpy(buf, en->email->env->x_label, sizeof(buf));
   }
 
   if (mutt_get_field("Label: ", buf, sizeof(buf), MUTT_LABEL /* | MUTT_CLEAR */) != 0)
@@ -146,29 +147,13 @@ int mutt_label_message(struct Email *e)
   if (*new == '\0')
     new = NULL;
 
-  changed = 0;
-  if (e)
+  int changed = 0;
+  STAILQ_FOREACH(en, el, entries)
   {
-    if (label_message(Context->mailbox, e, new))
+    if (label_message(m, en->email, new))
     {
       changed++;
-      mutt_set_header_color(Context->mailbox, e);
-    }
-  }
-  else
-  {
-    for (int i = 0; i < Context->mailbox->msg_count; ++i)
-    {
-      if (!message_is_tagged(Context, i))
-        continue;
-
-      struct Email *e2 = Context->mailbox->emails[i];
-      if (label_message(Context->mailbox, e2, new))
-      {
-        changed++;
-        mutt_set_flag(Context->mailbox, e2, MUTT_TAG, 0);
-        /* mutt_set_flag re-evals the header color */
-      }
+      mutt_set_header_color(m, en->email);
     }
   }
 

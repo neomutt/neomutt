@@ -63,7 +63,7 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *cur, int flag);
 #define mutt_thread_contains_flagged(x, y) mutt_traverse_thread(x, y, MUTT_THREAD_FLAGGED)
 #define mutt_thread_next_unread(x, y)      mutt_traverse_thread(x, y, MUTT_THREAD_NEXT_UNREAD)
 
-bool mutt_link_threads(struct Email *cur, struct Email *last, struct Context *ctx);
+bool mutt_link_threads(struct Email *parent, struct EmailList *children, struct Mailbox *m);
 int mutt_messages_in_thread(struct Mailbox *m, struct Email *e, int flag);
 void mutt_draw_tree(struct Context *ctx);
 

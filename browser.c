@@ -728,7 +728,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       return -1;
     }
 
-    mutt_mailbox_check(0);
+    mutt_mailbox_check(Context->mailbox, 0);
 
     dp = opendir(d);
     if (!dp)
@@ -819,7 +819,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
 
     if (STAILQ_EMPTY(&AllMailboxes))
       return -1;
-    mutt_mailbox_check(0);
+    mutt_mailbox_check(Context ? Context->mailbox : NULL, 0);
 
     struct MailboxNode *np = NULL;
     STAILQ_FOREACH(np, &AllMailboxes, entries)
@@ -984,7 +984,7 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
     if (mailbox)
     {
       menu->is_mailbox_list = true;
-      snprintf(title, titlelen, _("Mailboxes [%d]"), mutt_mailbox_check(0));
+      snprintf(title, titlelen, _("Mailboxes [%d]"), mutt_mailbox_check(Context ? Context->mailbox : NULL, 0));
     }
     else
     {

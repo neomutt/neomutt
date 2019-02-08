@@ -355,7 +355,7 @@ static int mbox_parse_mailbox(struct Mailbox *m)
 
   struct stat sb;
   char buf[HUGE_STRING], return_path[STRING];
-  struct Email *curhdr = NULL;
+  struct Email *e_cur = NULL;
   time_t t;
   int count = 0, lines = 0;
   LOFF_T loc;
@@ -423,18 +423,18 @@ static int mbox_parse_mailbox(struct Mailbox *m)
         mx_alloc_memory(m);
 
       m->emails[m->msg_count] = mutt_email_new();
-      curhdr = m->emails[m->msg_count];
-      curhdr->received = t - mutt_date_local_tz(t);
-      curhdr->offset = loc;
-      curhdr->index = m->msg_count;
+      e_cur = m->emails[m->msg_count];
+      e_cur->received = t - mutt_date_local_tz(t);
+      e_cur->offset = loc;
+      e_cur->index = m->msg_count;
 
-      curhdr->env = mutt_rfc822_read_header(adata->fp, curhdr, false, false);
+      e_cur->env = mutt_rfc822_read_header(adata->fp, e_cur, false, false);
 
       /* if we know how long this message is, either just skip over the body,
        * or if we don't know how many lines there are, count them now (this will
        * save time by not having to search for the next message marker).
        */
-      if (curhdr->content->length > 0)
+      if (e_cur->content->length > 0)
       {
         LOFF_T tmploc;
 
@@ -443,8 +443,8 @@ static int mbox_parse_mailbox(struct Mailbox *m)
         /* The test below avoids a potential integer overflow if the
          * content-length is huge (thus necessarily invalid).
          */
-        tmploc = (curhdr->content->length < m->size) ?
-                     (loc + curhdr->content->length + 1) :
+        tmploc = (e_cur->content->length < m->size) ?
+                     (loc + e_cur->content->length + 1) :
                      -1;
 
         if ((tmploc > 0) && (tmploc < m->size))
@@ -457,14 +457,14 @@ static int mbox_parse_mailbox(struct Mailbox *m)
               !mutt_str_startswith(buf, "From ", CASE_MATCH))
           {
             mutt_debug(1, "bad content-length in message %d (cl=" OFF_T_FMT ")\n",
-                       curhdr->index, curhdr->content->length);
+                       e_cur->index, e_cur->content->length);
             mutt_debug(1, "\tLINE: %s", buf);
             /* nope, return the previous position */
             if ((loc < 0) || (fseeko(adata->fp, loc, SEEK_SET) != 0))
             {
               mutt_debug(1, "#1 fseek() failed\n");
             }
-            curhdr->content->length = -1;
+            e_cur->content->length = -1;
           }
         }
         else if (tmploc != m->size)
@@ -472,17 +472,17 @@ static int mbox_parse_mailbox(struct Mailbox *m)
           /* content-length would put us past the end of the file, so it
            * must be wrong
            */
-          curhdr->content->length = -1;
+          e_cur->content->length = -1;
         }
 
-        if (curhdr->content->length != -1)
+        if (e_cur->content->length != -1)
         {
           /* good content-length.  check to see if we know how many lines
            * are in this message.
            */
-          if (curhdr->lines == 0)
+          if (e_cur->lines == 0)
           {
-            int cl = curhdr->content->length;
+            int cl = e_cur->content->length;
 
             /* count the number of lines in this message */
             if ((loc < 0) || (fseeko(adata->fp, loc, SEEK_SET) != 0))
@@ -490,7 +490,7 @@ static int mbox_parse_mailbox(struct Mailbox *m)
             while (cl-- > 0)
             {
               if (fgetc(adata->fp) == '\n')
-                curhdr->lines++;
+                e_cur->lines++;
             }
           }
 
@@ -502,14 +502,14 @@ static int mbox_parse_mailbox(struct Mailbox *m)
 
       m->msg_count++;
 
-      if (!curhdr->env->return_path && return_path[0])
+      if (!e_cur->env->return_path && return_path[0])
       {
-        curhdr->env->return_path =
-            mutt_addr_parse_list(curhdr->env->return_path, return_path);
+        e_cur->env->return_path =
+            mutt_addr_parse_list(e_cur->env->return_path, return_path);
       }
 
-      if (!curhdr->env->from)
-        curhdr->env->from = mutt_addr_copy_list(curhdr->env->return_path, false);
+      if (!e_cur->env->from)
+        e_cur->env->from = mutt_addr_copy_list(e_cur->env->return_path, false);
 
       lines = 0;
     }
@@ -1800,7 +1800,7 @@ static int mbox_mbox_check_stats(struct Mailbox *m, int flags)
 
   if (mutt_file_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->stats_last_checked) > 0)
   {
-    struct Context *ctx = mx_mbox_open(m, NULL, MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK);
+    struct Context *ctx = mx_mbox_open(m, MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK);
     if (ctx)
     {
       m->msg_count = ctx->mailbox->msg_count;

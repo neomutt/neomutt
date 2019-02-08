@@ -102,6 +102,10 @@ enum MuttSetCommand
   MUTT_SET_RESET, ///< default is to reset all vars to default
 };
 
+/* parameter to parse_mailboxes */
+#define MUTT_NAMED   (1 << 0)
+#define MUTT_VIRTUAL (1 << 1)
+
 #define UL (unsigned long)
 #define IP (intptr_t)
 #endif /* _MAKEDOC */
@@ -4757,6 +4761,7 @@ static enum CommandResult parse_group           (struct Buffer *buf, struct Buff
 static enum CommandResult parse_ifdef           (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 static enum CommandResult parse_ignore          (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 static enum CommandResult parse_lists           (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_mailboxes       (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 static enum CommandResult parse_my_hdr          (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 #ifdef USE_SIDEBAR
 static enum CommandResult parse_path_list       (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
@@ -4780,6 +4785,7 @@ static enum CommandResult parse_unalternates    (struct Buffer *buf, struct Buff
 static enum CommandResult parse_unattachments   (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 static enum CommandResult parse_unignore        (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 static enum CommandResult parse_unlists         (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static enum CommandResult parse_unmailboxes     (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 static enum CommandResult parse_unmy_hdr        (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 static enum CommandResult parse_unreplace_list  (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 static enum CommandResult parse_unstailq        (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
@@ -4828,14 +4834,14 @@ const struct Command Commands[] = {
   { "lua-source",          mutt_lua_source_file,   0 },
 #endif
   { "macro",               mutt_parse_macro,       0 },
-  { "mailboxes",           mutt_parse_mailboxes,   0 },
+  { "mailboxes",           parse_mailboxes,        0 },
   { "mailto_allow",        parse_stailq,           UL &MailToAllow },
   { "mbox-hook",           mutt_parse_hook,        MUTT_MBOX_HOOK },
   { "message-hook",        mutt_parse_hook,        MUTT_MESSAGE_HOOK },
   { "mime_lookup",         parse_stailq,           UL &MimeLookupList },
   { "mono",                mutt_parse_mono,        0 },
   { "my_hdr",              parse_my_hdr,           0 },
-  { "named-mailboxes",     mutt_parse_mailboxes,   MUTT_NAMED },
+  { "named-mailboxes",     parse_mailboxes,        MUTT_NAMED },
   { "nospam",              parse_spam_list,        MUTT_NOSPAM },
 #ifdef USE_COMPRESSED
   { "open-hook",           mutt_parse_hook,        MUTT_OPEN_HOOK },
@@ -4879,7 +4885,7 @@ const struct Command Commands[] = {
   { "unhook",              mutt_parse_unhook,      0 },
   { "unignore",            parse_unignore,         0 },
   { "unlists",             parse_unlists,          0 },
-  { "unmailboxes",         mutt_parse_unmailboxes, 0 },
+  { "unmailboxes",         parse_unmailboxes,      0 },
   { "unmailto_allow",      parse_unstailq,         UL &MailToAllow },
   { "unmime_lookup",       parse_unstailq,         UL &MimeLookupList },
   { "unmono",              mutt_parse_unmono,      0 },
@@ -4896,8 +4902,8 @@ const struct Command Commands[] = {
   { "unsubscribe-from",    parse_unsubscribe_from, 0 },
 #endif
 #ifdef USE_NOTMUCH
-  { "unvirtual-mailboxes", mutt_parse_unmailboxes, MUTT_VIRTUAL },
-  { "virtual-mailboxes",   mutt_parse_mailboxes,   MUTT_VIRTUAL | MUTT_NAMED },
+  { "unvirtual-mailboxes", parse_unmailboxes,      MUTT_VIRTUAL },
+  { "virtual-mailboxes",   parse_mailboxes,        MUTT_VIRTUAL | MUTT_NAMED },
 #endif
   { NULL,                  NULL,                   0 },
 };

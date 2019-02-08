@@ -813,9 +813,13 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
         return -1;
       if (!fgets(buf, sizeof(buf), fp))
         return -1;
-      struct Context *ctx = mx_mbox_open(NULL, path, MUTT_APPEND | MUTT_QUIET);
+      struct Mailbox *m_att = mx_path_resolve(path);
+      struct Context *ctx = mx_mbox_open(m_att, MUTT_APPEND | MUTT_QUIET);
       if (!ctx)
+      {
+        mailbox_free(&m_att);
         return -1;
+      }
       msg = mx_msg_open_new(ctx->mailbox, en, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
       if (!msg)
       {
@@ -1004,7 +1008,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
  * @retval 0 Error
  *
  * Ok, the difference between send and receive:
- * recv: Body->filename is a suggested name, and Context|Header points
+ * recv: Body->filename is a suggested name, and Mailbox|Email points
  *       to the attachment in mailbox which is encoded
  * send: Body->filename points to the un-encoded file which contains the
  *       attachment

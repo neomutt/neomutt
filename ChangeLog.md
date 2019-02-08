@@ -484,7 +484,7 @@
   - More sophisticated check for BDB version + support for DB6 (non default)
 * Tidy
   - drop VirtIncoming
-  - split mutt_parse_mailboxes into mutt_parse_unmailboxes
+  - split parse_mailboxes into parse_unmailboxes
   - tidy some mailbox code
   - tidy the version strings
 * Upstream

@@ -448,18 +448,18 @@ static void process_user_header(struct Envelope *env)
 
 /**
  * mutt_forward_intro - Add the "start of forwarded message" text
- * @param ctx Mailbox
- * @param cur Email
+ * @param m   Mailbox
+ * @param e Email
  * @param fp  File to write to
  */
-void mutt_forward_intro(struct Context *ctx, struct Email *cur, FILE *fp)
+void mutt_forward_intro(struct Mailbox *m, struct Email *e, FILE *fp)
 {
   if (!ForwardAttributionIntro || !fp)
     return;
 
   char buf[LONG_STRING];
   setlocale(LC_TIME, NONULL(AttributionLocale));
-  mutt_make_string(buf, sizeof(buf), ForwardAttributionIntro, ctx, ctx->mailbox, cur);
+  mutt_make_string(buf, sizeof(buf), ForwardAttributionIntro, NULL, m, e);
   setlocale(LC_TIME, "");
   fputs(buf, fp);
   fputs("\n\n", fp);
@@ -467,18 +467,18 @@ void mutt_forward_intro(struct Context *ctx, struct Email *cur, FILE *fp)
 
 /**
  * mutt_forward_trailer - Add a "end of forwarded message" text
- * @param ctx Mailbox
- * @param cur Email
+ * @param m   Mailbox
+ * @param e Email
  * @param fp  File to write to
  */
-void mutt_forward_trailer(struct Context *ctx, struct Email *cur, FILE *fp)
+void mutt_forward_trailer(struct Mailbox *m, struct Email *e, FILE *fp)
 {
   if (!ForwardAttributionTrailer || !fp)
     return;
 
   char buf[LONG_STRING];
   setlocale(LC_TIME, NONULL(AttributionLocale));
-  mutt_make_string(buf, sizeof(buf), ForwardAttributionTrailer, ctx, ctx->mailbox, cur);
+  mutt_make_string(buf, sizeof(buf), ForwardAttributionTrailer, NULL, m, e);
   setlocale(LC_TIME, "");
   fputc('\n', fp);
   fputs(buf, fp);
@@ -487,27 +487,27 @@ void mutt_forward_trailer(struct Context *ctx, struct Email *cur, FILE *fp)
 
 /**
  * include_forward - Write out a forwarded message
- * @param ctx Mailbox
- * @param cur Email
+ * @param m   Mailbox
+ * @param e   Email
  * @param out File to write to
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int include_forward(struct Context *ctx, struct Email *cur, FILE *out)
+static int include_forward(struct Mailbox *m, struct Email *e, FILE *out)
 {
   int chflags = CH_DECODE, cmflags = 0;
 
-  mutt_parse_mime_message(ctx->mailbox, cur);
-  mutt_message_hook(ctx->mailbox, cur, MUTT_MESSAGE_HOOK);
+  mutt_parse_mime_message(m, e);
+  mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
-  if ((WithCrypto != 0) && (cur->security & ENCRYPT) && ForwardDecode)
+  if ((WithCrypto != 0) && (e->security & ENCRYPT) && ForwardDecode)
   {
     /* make sure we have the user's passphrase before proceeding... */
-    if (!crypt_valid_passphrase(cur->security))
+    if (!crypt_valid_passphrase(e->security))
       return -1;
   }
 
-  mutt_forward_intro(ctx, cur, out);
+  mutt_forward_intro(m, e, out);
 
   if (ForwardDecode)
   {
@@ -525,25 +525,25 @@ static int include_forward(struct Context *ctx, struct Email *cur, FILE *out)
    * rather than send action */
   chflags |= CH_DISPLAY;
 
-  mutt_copy_message_ctx(out, ctx->mailbox, cur, cmflags, chflags);
-  mutt_forward_trailer(ctx, cur, out);
+  mutt_copy_message_ctx(out, m, e, cmflags, chflags);
+  mutt_forward_trailer(m, e, out);
   return 0;
 }
 
 /**
  * mutt_make_attribution - Add "on DATE, PERSON wrote" header
- * @param ctx Mailbox
- * @param cur Email
+ * @param m   Mailbox
+ * @param e   Email
  * @param out File to write to
  */
-void mutt_make_attribution(struct Context *ctx, struct Email *cur, FILE *out)
+void mutt_make_attribution(struct Mailbox *m, struct Email *e, FILE *out)
 {
   if (!Attribution || !out)
     return;
 
   char buf[LONG_STRING];
   setlocale(LC_TIME, NONULL(AttributionLocale));
-  mutt_make_string(buf, sizeof(buf), Attribution, ctx, ctx->mailbox, cur);
+  mutt_make_string(buf, sizeof(buf), Attribution, NULL, m, e);
   setlocale(LC_TIME, "");
   fputs(buf, out);
   fputc('\n', out);
@@ -551,45 +551,45 @@ void mutt_make_attribution(struct Context *ctx, struct Email *cur, FILE *out)
 
 /**
  * mutt_make_post_indent - Add suffix to replied email text
- * @param ctx Mailbox
- * @param cur Email
+ * @param m   Mailbox
+ * @param e   Email
  * @param out File to write to
  */
-void mutt_make_post_indent(struct Context *ctx, struct Email *cur, FILE *out)
+void mutt_make_post_indent(struct Mailbox *m, struct Email *e, FILE *out)
 {
   if (!PostIndentString || !out)
     return;
 
   char buf[STRING];
-  mutt_make_string(buf, sizeof(buf), PostIndentString, ctx, ctx->mailbox, cur);
+  mutt_make_string(buf, sizeof(buf), PostIndentString, NULL, m, e);
   fputs(buf, out);
   fputc('\n', out);
 }
 
 /**
  * include_reply - Generate the reply text for an email
- * @param ctx Mailbox
- * @param cur Email
+ * @param m   Mailbox
+ * @param e   Email
  * @param out File to write to
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int include_reply(struct Context *ctx, struct Email *cur, FILE *out)
+static int include_reply(struct Mailbox *m, struct Email *e, FILE *out)
 {
   int cmflags = MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV | MUTT_CM_REPLYING;
   int chflags = CH_DECODE;
 
-  if ((WithCrypto != 0) && (cur->security & ENCRYPT))
+  if ((WithCrypto != 0) && (e->security & ENCRYPT))
   {
     /* make sure we have the user's passphrase before proceeding... */
-    if (!crypt_valid_passphrase(cur->security))
+    if (!crypt_valid_passphrase(e->security))
       return -1;
   }
 
-  mutt_parse_mime_message(ctx->mailbox, cur);
-  mutt_message_hook(ctx->mailbox, cur, MUTT_MESSAGE_HOOK);
+  mutt_parse_mime_message(m, e);
+  mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
-  mutt_make_attribution(ctx, cur, out);
+  mutt_make_attribution(m, e, out);
 
   if (!Header)
     cmflags |= MUTT_CM_NOHEADER;
@@ -599,9 +599,9 @@ static int include_reply(struct Context *ctx, struct Email *cur, FILE *out)
     cmflags |= MUTT_CM_WEED;
   }
 
-  mutt_copy_message_ctx(out, ctx->mailbox, cur, cmflags, chflags);
+  mutt_copy_message_ctx(out, m, e, cmflags, chflags);
 
-  mutt_make_post_indent(ctx, cur, out);
+  mutt_make_post_indent(m, e, out);
 
   return 0;
 }
@@ -802,10 +802,10 @@ void mutt_fix_reply_recipients(struct Envelope *env)
 /**
  * mutt_make_forward_subject - Create a subject for a forwarded email
  * @param env Envelope for result
- * @param ctx Mailbox
+ * @param m   Mailbox
  * @param cur Email
  */
-void mutt_make_forward_subject(struct Envelope *env, struct Context *ctx, struct Email *cur)
+void mutt_make_forward_subject(struct Envelope *env, struct Mailbox *m, struct Email *cur)
 {
   if (!env)
     return;
@@ -813,7 +813,7 @@ void mutt_make_forward_subject(struct Envelope *env, struct Context *ctx, struct
   char buf[STRING];
 
   /* set the default subject for the message. */
-  mutt_make_string(buf, sizeof(buf), NONULL(ForwardFormat), ctx, ctx->mailbox, cur);
+  mutt_make_string(buf, sizeof(buf), NONULL(ForwardFormat), NULL, m, cur);
   mutt_str_replace(&env->subject, buf);
 }
 
@@ -859,31 +859,31 @@ void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv
 
 /**
  * make_reference_headers - Generate reference headers for an email
- * @param curenv Envelope of source email
- * @param env    Envelope for result
- * @param ctx    Mailbox
+ * @param el  List of source Emails
+ * @param env Envelope for result
  */
-static void make_reference_headers(struct Envelope *curenv,
-                                   struct Envelope *env, struct Context *ctx)
+static void make_reference_headers(struct EmailList *el, struct Envelope *env)
 {
-  if (!env || !ctx || !ctx->mailbox)
+  if (!el || !env || STAILQ_EMPTY(el))
     return;
 
-  if (!curenv)
+  struct EmailNode *en = STAILQ_FIRST(el);
+  bool single = !STAILQ_NEXT(en, entries);
+
+  if (!single)
   {
-    for (int i = 0; i < ctx->mailbox->msg_count; i++)
+    STAILQ_FOREACH(en, el, entries)
     {
-      if (message_is_tagged(ctx, i))
-        mutt_add_to_reference_headers(env, ctx->mailbox->emails[i]->env);
+      mutt_add_to_reference_headers(env, en->email->env);
     }
   }
   else
-    mutt_add_to_reference_headers(env, curenv);
+    mutt_add_to_reference_headers(env, en->email->env);
 
   /* if there's more than entry in In-Reply-To (i.e. message has
      multiple parents), don't generate a References: header as it's
      discouraged by RFC2822, sect. 3.6.4 */
-  if (ctx->mailbox->msg_tagged > 0 && !STAILQ_EMPTY(&env->in_reply_to) &&
+  if (!single && !STAILQ_EMPTY(&env->in_reply_to) &&
       STAILQ_NEXT(STAILQ_FIRST(&env->in_reply_to), entries))
   {
     mutt_list_free(&env->references);
@@ -893,43 +893,22 @@ static void make_reference_headers(struct Envelope *curenv,
 /**
  * envelope_defaults - Fill in some defaults for a new email
  * @param env   Envelope for result
- * @param ctx   Mailbox
- * @param cur   Email
+ * @param m     Mailbox
+ * @param el    List of Emails to use
  * @param flags Flags, e.g. #SEND_REPLY
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int envelope_defaults(struct Envelope *env, struct Context *ctx,
-                             struct Email *cur, int flags)
+static int envelope_defaults(struct Envelope *env, struct Mailbox *m,
+                             struct EmailList *el, int flags)
 {
-  struct Envelope *curenv = NULL;
-  bool tag = false;
+  if (!el || STAILQ_EMPTY(el))
+    return -1;
 
-  if (!cur)
-  {
-    tag = true;
-    for (int i = 0; i < ctx->mailbox->msg_count; i++)
-    {
-      if (!message_is_tagged(ctx, i))
-        continue;
+  struct EmailNode *en = STAILQ_FIRST(el);
+  bool single = !STAILQ_NEXT(en, entries);
 
-      cur = ctx->mailbox->emails[i];
-      curenv = cur->env;
-      break;
-    }
-
-    if (!cur)
-    {
-      /* This could happen if the user tagged some messages and then did
-       * a limit such that none of the tagged message are visible.
-       */
-      mutt_error(_("No tagged messages are visible"));
-      return -1;
-    }
-  }
-  else
-    curenv = cur->env;
-
+  struct Envelope *curenv = en->email->env;
   if (!curenv)
     return -1;
 
@@ -947,14 +926,11 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx,
     }
     else
 #endif
-        if (tag)
+        if (!single)
     {
-      for (int i = 0; i < ctx->mailbox->msg_count; i++)
+      STAILQ_FOREACH(en, el, entries)
       {
-        if (!message_is_tagged(ctx, i))
-          continue;
-
-        if (mutt_fetch_recips(env, ctx->mailbox->emails[i]->env, flags) == -1)
+        if (mutt_fetch_recips(env, en->email->env, flags) == -1)
           return -1;
       }
     }
@@ -970,14 +946,14 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx,
     if (flags & SEND_REPLY)
     {
       mutt_make_misc_reply_headers(env, curenv);
-      make_reference_headers(tag ? NULL : curenv, env, ctx);
+      make_reference_headers(el, env);
     }
   }
   else if (flags & SEND_FORWARD)
   {
-    mutt_make_forward_subject(env, ctx, cur);
+    mutt_make_forward_subject(env, m, en->email);
     if (ForwardReferences)
-      make_reference_headers(tag ? NULL : curenv, env, ctx);
+      make_reference_headers(el, env);
   }
 
   return 0;
@@ -985,19 +961,26 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx,
 
 /**
  * generate_body - Create a new email body
- * @param tempfp stream for outgoing message
- * @param msg    header for outgoing message
- * @param flags  compose mode
- * @param ctx    current mailbox
- * @param cur    current message
+ * @param tempfp Stream for outgoing message
+ * @param msg    Header for outgoing message
+ * @param flags  Compose mode
+ * @param m      Mailbox
+ * @param el     List of Emails to use
  * @retval  0 Success
  * @retval -1 Error
  */
 static int generate_body(FILE *tempfp, struct Email *msg, int flags,
-                         struct Context *ctx, struct Email *cur)
+                         struct Mailbox *m, struct EmailList *el)
 {
   int i;
   struct Body *tmp = NULL;
+  struct EmailNode *en = NULL;
+  bool single = true;
+
+  if (el)
+    en = STAILQ_FIRST(el);
+  if (en)
+    single = !STAILQ_NEXT(en, entries);
 
   if (flags & SEND_REPLY)
   {
@@ -1008,14 +991,11 @@ static int generate_body(FILE *tempfp, struct Email *msg, int flags,
     if (i == MUTT_YES)
     {
       mutt_message(_("Including quoted message..."));
-      if (!cur)
+      if (!single)
       {
-        for (i = 0; i < ctx->mailbox->msg_count; i++)
+        STAILQ_FOREACH(en, el, entries)
         {
-          if (!message_is_tagged(ctx, i))
-            continue;
-
-          if (include_reply(ctx, ctx->mailbox->emails[i], tempfp) == -1)
+          if (include_reply(m, en->email, tempfp) == -1)
           {
             mutt_error(_("Could not include all requested messages"));
             return -1;
@@ -1024,7 +1004,7 @@ static int generate_body(FILE *tempfp, struct Email *msg, int flags,
         }
       }
       else
-        include_reply(ctx, cur, tempfp);
+        include_reply(m, en->email, tempfp);
     }
   }
   else if (flags & SEND_FORWARD)
@@ -1039,9 +1019,9 @@ static int generate_body(FILE *tempfp, struct Email *msg, int flags,
       while (last && last->next)
         last = last->next;
 
-      if (cur)
+      if (single)
       {
-        tmp = mutt_make_message_attach(ctx->mailbox, cur, false);
+        tmp = mutt_make_message_attach(m, en->email, false);
         if (last)
           last->next = tmp;
         else
@@ -1049,12 +1029,9 @@ static int generate_body(FILE *tempfp, struct Email *msg, int flags,
       }
       else
       {
-        for (i = 0; i < ctx->mailbox->msg_count; i++)
+        STAILQ_FOREACH(en, el, entries)
         {
-          if (!message_is_tagged(ctx, i))
-            continue;
-
-          tmp = mutt_make_message_attach(ctx->mailbox, ctx->mailbox->emails[i], false);
+          tmp = mutt_make_message_attach(m, en->email, false);
           if (last)
           {
             last->next = tmp;
@@ -1070,14 +1047,13 @@ static int generate_body(FILE *tempfp, struct Email *msg, int flags,
     }
     else if (i != -1)
     {
-      if (cur)
-        include_forward(ctx, cur, tempfp);
+      if (single)
+        include_forward(m, en->email, tempfp);
       else
       {
-        for (i = 0; i < ctx->mailbox->msg_count; i++)
+        STAILQ_FOREACH(en, el, entries)
         {
-          if (message_is_tagged(ctx, i))
-            include_forward(ctx, ctx->mailbox->emails[i], tempfp);
+          include_forward(m, en->email, tempfp);
         }
       }
     }
@@ -1415,7 +1391,12 @@ int mutt_resend_message(FILE *fp, struct Context *ctx, struct Email *cur)
     }
   }
 
-  return ci_send_message(SEND_RESEND, msg, NULL, ctx, cur);
+  struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+  el_add_email(&el, cur);
+  int rc = ci_send_message(SEND_RESEND, msg, NULL, ctx, &el);
+  el_free(&el);
+
+  return rc;
 }
 
 /**
@@ -1742,13 +1723,13 @@ static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, int
  * @param msg      template to use for new message
  * @param tempfile file specified by -i or -H
  * @param ctx      current mailbox
- * @param cur      current message
+ * @param el       List of Emails to send
  * @retval  0 Message was successfully sent
  * @retval -1 Message was aborted or an error occurred
  * @retval  1 Message was postponed
  */
 int ci_send_message(int flags, struct Email *msg, const char *tempfile,
-                    struct Context *ctx, struct Email *cur)
+                    struct Context *ctx, struct EmailList *el)
 {
   char buf[LONG_STRING];
   char fcc[PATH_MAX] = ""; /* where to copy this message */
@@ -1767,6 +1748,13 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
   char *err = NULL;
   char *ctype = NULL;
   char *finalpath = NULL;
+  struct EmailNode *en = NULL;
+  struct Email *cur = NULL;
+
+  if (el)
+    en = STAILQ_FIRST(el);
+  if (en)
+    cur = STAILQ_NEXT(en, entries) ? en->email : NULL;
 
   int rc = -1;
 
@@ -1943,7 +1931,7 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
   if (!(flags & (SEND_POSTPONED | SEND_RESEND)) && !((flags & SEND_DRAFT_FILE) && ResumeDraftFiles))
   {
     if ((flags & (SEND_REPLY | SEND_FORWARD | SEND_TO_SENDER)) && ctx &&
-        envelope_defaults(msg->env, ctx, cur, flags) == -1)
+        envelope_defaults(msg->env, ctx->mailbox, el, flags) == -1)
     {
       goto cleanup;
     }
@@ -2039,7 +2027,7 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
 
     /* include replies/forwarded messages, unless we are given a template */
     if (!tempfile && (ctx || !(flags & (SEND_REPLY | SEND_FORWARD))) &&
-        generate_body(tempfp, msg, flags, ctx, cur) == -1)
+        generate_body(tempfp, msg, flags, ctx->mailbox, el) == -1)
     {
       goto cleanup;
     }
@@ -2410,11 +2398,10 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
     }
 
     /* at this point, msg->content is one of the following three things:
-     * - multipart/signed.  In this case, clear_content is a child.
-     * - multipart/encrypted.  In this case, clear_content exists
-     *   independently
-     * - application/pgp.  In this case, clear_content exists independently.
-     * - something else.  In this case, it's the same as clear_content.
+     * - multipart/signed.     In this case, clear_content is a child
+     * - multipart/encrypted.  In this case, clear_content exists independently
+     * - application/pgp.      In this case, clear_content exists independently
+     * - something else.       In this case, it's the same as clear_content
      */
 
     /* This is ugly -- lack of "reporting back" from mutt_protect(). */
@@ -2490,13 +2477,9 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
       mutt_set_flag(ctx->mailbox, cur, MUTT_REPLIED, is_reply(cur, msg));
     else if (!(flags & SEND_POSTPONED) && ctx && ctx->mailbox && ctx->mailbox->msg_tagged)
     {
-      for (i = 0; i < ctx->mailbox->msg_count; i++)
+      STAILQ_FOREACH(en, el, entries)
       {
-        if (message_is_tagged(ctx, i))
-        {
-          mutt_set_flag(ctx->mailbox, ctx->mailbox->emails[i], MUTT_REPLIED,
-                        is_reply(ctx->mailbox->emails[i], msg));
-        }
+        mutt_set_flag(ctx->mailbox, en->email, MUTT_REPLIED, is_reply(en->email, msg));
       }
     }
   }

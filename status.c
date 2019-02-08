@@ -103,9 +103,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, mutt_mailbox_check(0));
+        snprintf(buf, buflen, fmt, mutt_mailbox_check(Context ? Context->mailbox : NULL, 0));
       }
-      else if (mutt_mailbox_check(0) == 0)
+      else if (mutt_mailbox_check(Context ? Context->mailbox : NULL, 0) == 0)
         optional = 0;
       break;
 
@@ -121,11 +121,11 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 
     case 'D':
     {
-      struct Mailbox *mbox = Context ? Context->mailbox : NULL;
+      struct Mailbox *m = Context ? Context->mailbox : NULL;
       // If there's a description, use it. Otherwise, fall-through
-      if (mbox && mbox->desc)
+      if (m && m->desc)
       {
-        mutt_str_strfcpy(tmp, mbox->desc, sizeof(tmp));
+        mutt_str_strfcpy(tmp, m->desc, sizeof(tmp));
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
         snprintf(buf, buflen, fmt, tmp);
         break;

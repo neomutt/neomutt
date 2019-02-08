@@ -2956,34 +2956,18 @@ void mutt_unprepare_envelope(struct Envelope *env)
 static int bounce_message(FILE *fp, struct Email *e, struct Address *to,
                           const char *resent_from, struct Address *env_from)
 {
-  int rc = 0;
-  FILE *f = NULL;
-  char tempfile[PATH_MAX];
-  struct Message *msg = NULL;
-
   if (!e)
-  {
-    /* Try to bounce each message out, aborting if we get any failures. */
-    for (int i = 0; i < Context->mailbox->msg_count; i++)
-      if (message_is_tagged(Context, i))
-        rc |= bounce_message(fp, Context->mailbox->emails[i], to, resent_from, env_from);
-    return rc;
-  }
-
-  /* If we failed to open a message, return with error */
-  if (!fp && !(msg = mx_msg_open(Context->mailbox, e->msgno)))
     return -1;
 
-  if (!fp)
-    fp = msg->fp;
+  int rc = 0;
+  char tempfile[PATH_MAX];
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  f = mutt_file_fopen(tempfile, "w");
+  FILE *f = mutt_file_fopen(tempfile, "w");
   if (f)
   {
     char date[SHORT_STRING];
     int ch_flags = CH_XMIT | CH_NONEWLINE | CH_NOQFROM;
-    char *msgid_str = NULL;
 
     if (!BounceDelivered)
       ch_flags |= CH_WEED_DELIVERED;
@@ -2991,14 +2975,14 @@ static int bounce_message(FILE *fp, struct Email *e, struct Address *to,
     fseeko(fp, e->offset, SEEK_SET);
     fprintf(f, "Resent-From: %s", resent_from);
     fprintf(f, "\nResent-%s", mutt_date_make_date(date, sizeof(date)));
-    msgid_str = gen_msgid();
+    char *msgid_str = gen_msgid();
     fprintf(f, "Resent-Message-ID: %s\n", msgid_str);
+    FREE(&msgid_str);
     fputs("Resent-To: ", f);
     mutt_write_address_list(to, f, 11, 0);
     mutt_copy_header(fp, e, f, ch_flags, NULL);
     fputc('\n', f);
     mutt_file_copy_bytes(fp, f, e->content->length);
-    FREE(&msgid_str);
     if (mutt_file_fclose(&f) != 0)
     {
       mutt_perror(tempfile);
@@ -3009,13 +2993,10 @@ static int bounce_message(FILE *fp, struct Email *e, struct Address *to,
     if (SmtpUrl)
       rc = mutt_smtp_send(env_from, to, NULL, NULL, tempfile, e->content->encoding == ENC_8BIT);
     else
-#endif /* USE_SMTP */
+#endif
       rc = mutt_invoke_sendmail(env_from, to, NULL, NULL, tempfile,
                                 e->content->encoding == ENC_8BIT);
   }
-
-  if (msg)
-    mx_msg_close(Context->mailbox, &msg);
 
   return rc;
 }
@@ -3030,6 +3011,9 @@ static int bounce_message(FILE *fp, struct Email *e, struct Address *to,
  */
 int mutt_bounce_message(FILE *fp, struct Email *e, struct Address *to)
 {
+  if (!fp || !e || !to)
+    return -1;
+
   const char *fqdn = mutt_fqdn(true);
   char resent_from[STRING];
   char *err = NULL;
@@ -3175,24 +3159,26 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
 #ifdef RECORD_FOLDER_HOOK
   mutt_folder_hook(path, NULL);
 #endif
-  struct Context *f = mx_mbox_open(NULL, path, MUTT_APPEND | MUTT_QUIET);
-  if (!f)
+  struct Mailbox *m_fcc = mx_path_resolve(path);
+  struct Context *ctx_fcc = mx_mbox_open(m_fcc, MUTT_APPEND | MUTT_QUIET);
+  if (!ctx_fcc)
   {
     mutt_debug(1, "unable to open mailbox %s in append-mode, aborting.\n", path);
+    mailbox_free(&m_fcc);
     goto done;
   }
 
   /* We need to add a Content-Length field to avoid problems where a line in
    * the message body begins with "From "
    */
-  if ((f->mailbox->magic == MUTT_MMDF) || (f->mailbox->magic == MUTT_MBOX))
+  if ((ctx_fcc->mailbox->magic == MUTT_MMDF) || (ctx_fcc->mailbox->magic == MUTT_MBOX))
   {
     mutt_mktemp(tempfile, sizeof(tempfile));
     tempfp = mutt_file_fopen(tempfile, "w+");
     if (!tempfp)
     {
       mutt_perror(tempfile);
-      mx_mbox_close(&f);
+      mx_mbox_close(&ctx_fcc);
       goto done;
     }
     /* remember new mail status before appending message */
@@ -3204,11 +3190,11 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   onm_flags = MUTT_ADD_FROM;
   if (post)
     onm_flags |= MUTT_SET_DRAFT;
-  msg = mx_msg_open_new(f->mailbox, e, onm_flags);
+  msg = mx_msg_open_new(ctx_fcc->mailbox, e, onm_flags);
   if (!msg)
   {
     mutt_file_fclose(&tempfp);
-    mx_mbox_close(&f);
+    mx_mbox_close(&ctx_fcc);
     goto done;
   }
 
@@ -3234,7 +3220,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   if (post && fcc)
     fprintf(msg->fp, "X-Mutt-Fcc: %s\n", fcc);
 
-  if ((f->mailbox->magic == MUTT_MMDF) || (f->mailbox->magic == MUTT_MBOX))
+  if ((ctx_fcc->mailbox->magic == MUTT_MMDF) || (ctx_fcc->mailbox->magic == MUTT_MBOX))
     fprintf(msg->fp, "Status: RO\n");
 
   /* mutt_rfc822_write_header() only writes out a Date: header with
@@ -3326,9 +3312,9 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
       mutt_debug(1, "%s: write failed.\n", tempfile);
       mutt_file_fclose(&tempfp);
       unlink(tempfile);
-      mx_msg_commit(f->mailbox, msg); /* XXX really? */
-      mx_msg_close(f->mailbox, &msg);
-      mx_mbox_close(&f);
+      mx_msg_commit(ctx_fcc->mailbox, msg); /* XXX really? */
+      mx_msg_close(ctx_fcc->mailbox, &msg);
+      mx_mbox_close(&ctx_fcc);
       goto done;
     }
 
@@ -3354,12 +3340,12 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     rc = mutt_write_mime_body(e->content, msg->fp);
   }
 
-  if (mx_msg_commit(f->mailbox, msg) != 0)
+  if (mx_msg_commit(ctx_fcc->mailbox, msg) != 0)
     rc = -1;
   else if (finalpath)
     *finalpath = mutt_str_strdup(msg->committed_path);
-  mx_msg_close(f->mailbox, &msg);
-  mx_mbox_close(&f);
+  mx_msg_close(ctx_fcc->mailbox, &msg);
+  mx_mbox_close(&ctx_fcc);
 
   if (!post && need_mailbox_cleanup)
     mutt_mailbox_cleanup(path, &st);

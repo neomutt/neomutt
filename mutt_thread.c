@@ -1451,8 +1451,8 @@ struct Hash *mutt_make_id_hash(struct Mailbox *m)
 
 /**
  * link_threads - Forcibly link messages together
- * @param parent Header of parent message
- * @param child  Header of child message
+ * @param parent Parent Email
+ * @param child  Child Email
  * @param m      Mailbox
  * @retval true On success
  */
@@ -1472,30 +1472,23 @@ static bool link_threads(struct Email *parent, struct Email *child, struct Mailb
 
 /**
  * mutt_link_threads - Forcibly link threads together
- * @param cur  Header of current message
- * @param last Header of thread to link (OPTIONAL)
- * @param ctx  Mailbox
+ * @param parent   Parent Email
+ * @param children List of children Emails
+ * @param m        Mailbox
  * @retval true On success
- *
- * if last is omitted, all the tagged threads will be used.
  */
-bool mutt_link_threads(struct Email *cur, struct Email *last, struct Context *ctx)
+bool mutt_link_threads(struct Email *parent, struct EmailList *children, struct Mailbox *m)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!parent || !children || !m)
     return false;
-
-  struct Mailbox *m = ctx->mailbox;
 
   bool changed = false;
 
-  if (!last)
+  struct EmailNode *en = NULL;
+  STAILQ_FOREACH(en, children, entries)
   {
-    for (int i = 0; i < m->msg_count; i++)
-      if (message_is_tagged(ctx, i))
-        changed |= link_threads(cur, m->emails[i], ctx->mailbox);
+    changed |= link_threads(parent, en->email, m);
   }
-  else
-    changed = link_threads(cur, last, ctx->mailbox);
 
   return changed;
 }

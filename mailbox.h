@@ -42,10 +42,6 @@ extern bool  MailCheckStats;
 extern short MailCheckStatsInterval;
 extern bool  MaildirCheckCur;
 
-/* parameter to mutt_parse_mailboxes */
-#define MUTT_NAMED   (1 << 0)
-#define MUTT_VIRTUAL (1 << 1)
-
 #define MB_NORMAL 0
 #define MB_HIDDEN 1
 
@@ -58,6 +54,7 @@ enum MailboxNotification
   MBN_INVALID,    ///< Email list was changed
   MBN_RESORT,     ///< Email list needs resorting
   MBN_UPDATE,     ///< Update internal tables
+  MBN_UNTAG,      ///< Clear the 'last-tagged' pointer
 };
 
 /**
@@ -159,7 +156,7 @@ STAILQ_HEAD(MailboxList, MailboxNode);
 extern struct MailboxList AllMailboxes; ///< List of all Mailboxes
 
 struct Mailbox *mailbox_new(void);
-void            mailbox_free(struct Mailbox **m);
+void            mailbox_free(struct Mailbox **ptr);
 
 struct Mailbox *mutt_find_mailbox(const char *path);
 struct Mailbox *mutt_find_mailbox_desc(const char *desc);
@@ -174,12 +171,10 @@ void mutt_mailbox_setnotified(struct Mailbox *m);
 #define MUTT_MAILBOX_CHECK_FORCE       (1 << 0)
 #define MUTT_MAILBOX_CHECK_FORCE_STATS (1 << 1)
 
-void mutt_mailbox(char *s, size_t slen);
+void mutt_mailbox(struct Mailbox *m_cur, char *s, size_t slen);
 bool mutt_mailbox_list(void);
-int mutt_mailbox_check(int force);
-bool mutt_mailbox_notify(void);
-enum CommandResult mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
-enum CommandResult mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
+int mutt_mailbox_check(struct Mailbox *m_cur, int force);
+bool mutt_mailbox_notify(struct Mailbox *m_cur);
 void mutt_mailbox_changed(struct Mailbox *m, enum MailboxNotification action);
 
 #endif /* MUTT_MAILBOX_H */

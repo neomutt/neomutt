@@ -2153,7 +2153,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     char pager_progress_str[65]; /* Lots of space for translations */
 
     hfi.ctx = Context;
-    hfi.m = Context ? Context->mailbox : NULL;
+    hfi.mailbox = Context ? Context->mailbox : NULL;
     hfi.pager_progress = pager_progress_str;
 
     if (rd->last_pos < rd->sb.st_size - 1)
@@ -2444,7 +2444,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         }
       }
 
-      if (mutt_mailbox_notify() || do_new_mail)
+      if (mutt_mailbox_notify(Context ? Context->mailbox : NULL) || do_new_mail)
       {
         if (BeepNew)
           beep();
@@ -2930,13 +2930,21 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
          */
 
       case OP_BOUNCE_MESSAGE:
+      {
+        struct Mailbox *m = Context ? Context->mailbox : NULL;
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra))
         CHECK_ATTACH;
         if (IsMsgAttach(extra))
-          mutt_attach_bounce(extra->fp, extra->actx, extra->bdy);
+          mutt_attach_bounce(m, extra->fp, extra->actx, extra->bdy);
         else
-          ci_bounce_message(extra->email);
+        {
+          struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+          el_add_email(&el, extra->email);
+          ci_bounce_message(m, &el);
+          el_free(&el);
+        }
         break;
+      }
 
       case OP_RESEND:
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra))
@@ -2954,7 +2962,12 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         if (IsMsgAttach(extra))
           mutt_attach_mail_sender(extra->fp, extra->email, extra->actx, extra->bdy);
         else
-          ci_send_message(SEND_TO_SENDER, NULL, NULL, extra->ctx, extra->email);
+        {
+          struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+          el_add_email(&el, extra->email);
+          ci_send_message(SEND_TO_SENDER, NULL, NULL, extra->ctx, &el);
+          el_free(&el);
+        }
         pager_menu->redraw = REDRAW_FULL;
         break;
 
@@ -2998,17 +3011,23 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
 
       case OP_MAIN_SET_FLAG:
       case OP_MAIN_CLEAR_FLAG:
+      {
         CHECK_MODE(IsEmail(extra));
         CHECK_READONLY;
 
-        if (mutt_change_flag(extra->email, (ch == OP_MAIN_SET_FLAG)) == 0)
+        struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+        el_add_email(&el, extra->email);
+
+        if (mutt_change_flag(Context->mailbox, &el, (ch == OP_MAIN_SET_FLAG)) == 0)
           pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         if (extra->email->deleted && Resolve)
         {
           ch = -1;
           rc = OP_MAIN_NEXT_UNDELETED;
         }
+        el_free(&el);
         break;
+      }
 
       case OP_DELETE_THREAD:
       case OP_DELETE_SUBTHREAD:
@@ -3149,8 +3168,12 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         if (IsMsgAttach(extra))
           mutt_attach_forward(extra->fp, extra->email, extra->actx, extra->bdy, SEND_NEWS);
         else
-          ci_send_message(SEND_NEWS | SEND_FORWARD, NULL, NULL, extra->ctx,
-                          extra->email);
+        {
+          struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+          el_add_email(&el, extra->email);
+          ci_send_message(SEND_NEWS | SEND_FORWARD, NULL, NULL, extra->ctx, &el);
+          el_free(&el);
+        }
         pager_menu->redraw = REDRAW_FULL;
         break;
 
@@ -3178,8 +3201,12 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
                               SEND_NEWS | SEND_REPLY);
           }
           else
-            ci_send_message(SEND_NEWS | SEND_REPLY, NULL, NULL, extra->ctx,
-                            extra->email);
+          {
+            struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+            el_add_email(&el, extra->email);
+            ci_send_message(SEND_NEWS | SEND_REPLY, NULL, NULL, extra->ctx, &el);
+            el_free(&el);
+          }
           pager_menu->redraw = REDRAW_FULL;
           break;
         }
@@ -3191,16 +3218,26 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         if (IsMsgAttach(extra))
           mutt_attach_reply(extra->fp, extra->email, extra->actx, extra->bdy, SEND_REPLY);
         else
-          ci_send_message(SEND_REPLY, NULL, NULL, extra->ctx, extra->email);
+        {
+          struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+          el_add_email(&el, extra->email);
+          ci_send_message(SEND_REPLY, NULL, NULL, extra->ctx, &el);
+          el_free(&el);
+        }
         pager_menu->redraw = REDRAW_FULL;
         break;
 
       case OP_RECALL_MESSAGE:
+      {
         CHECK_MODE(IsEmail(extra) && !IsAttach(extra));
         CHECK_ATTACH;
-        ci_send_message(SEND_POSTPONED, NULL, NULL, extra->ctx, extra->email);
+        struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+        el_add_email(&el, extra->email);
+        ci_send_message(SEND_POSTPONED, NULL, NULL, extra->ctx, &el);
+        el_free(&el);
         pager_menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_GROUP_REPLY:
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
@@ -3212,8 +3249,10 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         }
         else
         {
-          ci_send_message(SEND_REPLY | SEND_GROUP_REPLY, NULL, NULL, extra->ctx,
-                          extra->email);
+          struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+          el_add_email(&el, extra->email);
+          ci_send_message(SEND_REPLY | SEND_GROUP_REPLY, NULL, NULL, extra->ctx, &el);
+          el_free(&el);
         }
         pager_menu->redraw = REDRAW_FULL;
         break;
@@ -3228,8 +3267,10 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         }
         else
         {
-          ci_send_message(SEND_REPLY | SEND_LIST_REPLY, NULL, NULL, extra->ctx,
-                          extra->email);
+          struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+          el_add_email(&el, extra->email);
+          ci_send_message(SEND_REPLY | SEND_LIST_REPLY, NULL, NULL, extra->ctx, &el);
+          el_free(&el);
         }
         pager_menu->redraw = REDRAW_FULL;
         break;
@@ -3240,7 +3281,12 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         if (IsMsgAttach(extra))
           mutt_attach_forward(extra->fp, extra->email, extra->actx, extra->bdy, 0);
         else
-          ci_send_message(SEND_FORWARD, NULL, NULL, extra->ctx, extra->email);
+        {
+          struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+          el_add_email(&el, extra->email);
+          ci_send_message(SEND_FORWARD, NULL, NULL, extra->ctx, &el);
+          el_free(&el);
+        }
         pager_menu->redraw = REDRAW_FULL;
         break;
 
@@ -3263,16 +3309,19 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
       case OP_DECODE_SAVE:
       case OP_DECODE_COPY:
       case OP_DECRYPT_COPY:
+      {
         if (!(WithCrypto != 0) && ch == OP_DECRYPT_COPY)
         {
           ch = -1;
           break;
         }
         CHECK_MODE(IsEmail(extra));
-        if ((mutt_save_message(
-                 extra->email, (ch == OP_DECRYPT_SAVE) || (ch == OP_SAVE) || (ch == OP_DECODE_SAVE),
-                 (ch == OP_DECODE_SAVE) || (ch == OP_DECODE_COPY),
-                 (ch == OP_DECRYPT_SAVE) || (ch == OP_DECRYPT_COPY)) == 0) &&
+        struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+        el_add_email(&el, extra->email);
+        if ((mutt_save_message(Context->mailbox, &el,
+                               (ch == OP_DECRYPT_SAVE) || (ch == OP_SAVE) || (ch == OP_DECODE_SAVE),
+                               (ch == OP_DECODE_SAVE) || (ch == OP_DECODE_COPY),
+                               (ch == OP_DECRYPT_SAVE) || (ch == OP_DECRYPT_COPY)) == 0) &&
             ((ch == OP_SAVE) || (ch == OP_DECODE_SAVE) || (ch == OP_DECRYPT_SAVE)))
         {
           if (Resolve)
@@ -3283,7 +3332,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           else
             pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         }
+        el_free(&el);
         break;
+      }
 
       case OP_SHELL_ESCAPE:
         mutt_shell_escape();
@@ -3403,6 +3454,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         break;
 
       case OP_MAIL_KEY:
+      {
         if (!(WithCrypto & APPLICATION_PGP))
         {
           ch = -1;
@@ -3410,13 +3462,23 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         }
         CHECK_MODE(IsEmail(extra));
         CHECK_ATTACH;
-        ci_send_message(SEND_KEY, NULL, NULL, extra->ctx, extra->email);
+        struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+        el_add_email(&el, extra->email);
+        ci_send_message(SEND_KEY, NULL, NULL, extra->ctx, &el);
+        el_free(&el);
         pager_menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_EDIT_LABEL:
+      {
         CHECK_MODE(IsEmail(extra));
-        rc = mutt_label_message(extra->email);
+
+        struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+        el_add_email(&el, extra->email);
+        rc = mutt_label_message(Context->mailbox, &el);
+        el_free(&el);
+
         if (rc > 0)
         {
           Context->mailbox->changed = true;
@@ -3428,21 +3490,27 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           mutt_message(_("No labels changed"));
         }
         break;
+      }
 
       case OP_FORGET_PASSPHRASE:
         crypt_forget_passphrase();
         break;
 
       case OP_EXTRACT_KEYS:
+      {
         if (!WithCrypto)
         {
           ch = -1;
           break;
         }
         CHECK_MODE(IsEmail(extra));
-        crypt_extract_keys_from_messages(extra->email);
+        struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+        el_add_email(&el, extra->email);
+        crypt_extract_keys_from_messages(&el);
+        el_free(&el);
         pager_menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_WHAT_KEY:
         mutt_what_key();

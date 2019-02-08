@@ -113,6 +113,17 @@ struct Email
   void (*free_edata)(void **); /**< driver-specific data free function */
 };
 
+/**
+ * struct EmailNode - List of Emails
+ */
+struct EmailNode
+{
+  struct Email *email;
+  STAILQ_ENTRY(EmailNode) entries;
+};
+
+STAILQ_HEAD(EmailList, EmailNode);
+
 bool          mutt_email_cmp_strict(const struct Email *e1, const struct Email *e2);
 void          mutt_email_free(struct Email **e);
 struct Email *mutt_email_new(void);

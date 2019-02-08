@@ -45,11 +45,13 @@
 #include "email/lib.h"
 #include "mutt.h"
 #include "init.h"
+#include "account.h"
 #include "alias.h"
 #include "context.h"
 #include "filter.h"
 #include "hcache/hcache.h"
 #include "keymap.h"
+#include "monitor.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mutt_window.h"
@@ -1322,6 +1324,92 @@ bail:
 }
 
 /**
+ * parse_mailboxes - Parse the 'mailboxes' command - Implements ::command_t
+ *
+ * This is also used by 'virtual-mailboxes'.
+ */
+static enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
+                                          unsigned long data, struct Buffer *err)
+{
+  while (MoreArgs(s))
+  {
+    struct Mailbox *m = mailbox_new();
+
+    if (data & MUTT_NAMED)
+    {
+      mutt_extract_token(buf, s, 0);
+      if (buf->data && *buf->data)
+      {
+        m->desc = mutt_str_strdup(buf->data);
+      }
+      else
+      {
+        mailbox_free(&m);
+        continue;
+      }
+    }
+
+    mutt_extract_token(buf, s, 0);
+    if (mutt_buffer_is_empty(buf))
+    {
+      /* Skip empty tokens. */
+      mailbox_free(&m);
+      continue;
+    }
+
+    mutt_str_strfcpy(m->path, buf->data, sizeof(m->path));
+    /* int rc = */ mx_path_canon2(m, Folder);
+
+    bool new_account = false;
+    struct Account *a = mx_ac_find(m);
+    if (!a)
+    {
+      a = account_new();
+      a->magic = m->magic;
+      TAILQ_INSERT_TAIL(&AllAccounts, a, entries);
+      new_account = true;
+    }
+
+    if (!new_account)
+    {
+      struct Mailbox *old_m = mx_mbox_find(a, m->realpath);
+      if (old_m)
+      {
+        if (old_m->flags == MB_HIDDEN)
+        {
+          old_m->flags = MB_NORMAL;
+          mutt_sb_notify_mailbox(old_m, true);
+          struct MailboxNode *mn = mutt_mem_calloc(1, sizeof(*mn));
+          mn->m = old_m;
+          STAILQ_INSERT_TAIL(&AllMailboxes, mn, entries);
+        }
+        mailbox_free(&m);
+        continue;
+      }
+    }
+
+    if (mx_ac_add(a, m) < 0)
+    {
+      //error
+      mailbox_free(&m);
+      continue;
+    }
+
+    struct MailboxNode *mn = mutt_mem_calloc(1, sizeof(*mn));
+    mn->m = m;
+    STAILQ_INSERT_TAIL(&AllMailboxes, mn, entries);
+
+#ifdef USE_SIDEBAR
+    mutt_sb_notify_mailbox(m, true);
+#endif
+#ifdef USE_INOTIFY
+    mutt_monitor_add(m);
+#endif
+  }
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
  * parse_my_hdr - Parse the 'my_hdr' command - Implements ::command_t
  */
 static enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
@@ -2287,6 +2375,76 @@ static enum CommandResult parse_unlists(struct Buffer *buf, struct Buffer *s,
     }
   } while (MoreArgs(s));
 
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * parse_unmailboxes - Parse the 'unmailboxes' command - Implements ::command_t
+ *
+ * This is also used by 'unvirtual-mailboxes'
+ */
+static enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
+                                            unsigned long data, struct Buffer *err)
+{
+  char tmp[PATH_MAX];
+  bool tmp_valid = false;
+  bool clear_all = false;
+
+  while (!clear_all && MoreArgs(s))
+  {
+    mutt_extract_token(buf, s, 0);
+
+    if (mutt_str_strcmp(buf->data, "*") == 0)
+    {
+      clear_all = true;
+      tmp_valid = false;
+    }
+    else
+    {
+      mutt_str_strfcpy(tmp, buf->data, sizeof(tmp));
+      mutt_expand_path(tmp, sizeof(tmp));
+      tmp_valid = true;
+    }
+
+    struct MailboxNode *np = NULL;
+    struct MailboxNode *nptmp = NULL;
+    STAILQ_FOREACH_SAFE(np, &AllMailboxes, entries, nptmp)
+    {
+      /* Decide whether to delete all normal mailboxes or all virtual */
+      bool virt = ((np->m->magic == MUTT_NOTMUCH) && (data & MUTT_VIRTUAL));
+      bool norm = ((np->m->magic != MUTT_NOTMUCH) && !(data & MUTT_VIRTUAL));
+      bool clear_this = clear_all && (virt || norm);
+
+      /* Compare against path or desc? Ensure 'tmp' is valid */
+      if (!clear_this && tmp_valid)
+      {
+        clear_this = (mutt_str_strcasecmp(tmp, np->m->path) == 0) ||
+                     (mutt_str_strcasecmp(tmp, np->m->desc) == 0);
+      }
+
+      if (clear_this)
+      {
+#ifdef USE_SIDEBAR
+        mutt_sb_notify_mailbox(np->m, false);
+#endif
+#ifdef USE_INOTIFY
+        mutt_monitor_remove(np->m);
+#endif
+        if (Context && (Context->mailbox == np->m))
+        {
+          np->m->flags |= MB_HIDDEN;
+        }
+        else
+        {
+          mx_ac_remove(np->m);
+          mailbox_free(&np->m);
+        }
+        STAILQ_REMOVE(&AllMailboxes, np, MailboxNode, entries);
+        FREE(&np);
+        continue;
+      }
+    }
+  }
   return MUTT_CMD_SUCCESS;
 }
 

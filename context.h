@@ -29,6 +29,8 @@
 #include <time.h>
 #include "mailbox.h"
 
+struct EmailList;
+
 /**
  * struct Context - The "current" mailbox
  */
@@ -56,5 +58,9 @@ void ctx_update_tables(struct Context *ctx, bool committing);
 
 bool message_is_tagged(struct Context *ctx, int index);
 bool message_is_visible(struct Context *ctx, int index);
+
+int  el_add_email(struct EmailList *el, struct Email *e);
+int  el_add_tagged(struct EmailList *el, struct Context *ctx, struct Email *e, bool use_tagged);
+void el_free(struct EmailList *el);
 
 #endif /* MUTT_CONTEXT_H */
