@@ -261,7 +261,7 @@ static int pop_read_header(struct PopAccountData *adata, struct Email *e)
 static int fetch_uidl(char *line, void *data)
 {
   struct Mailbox *m = data;
-  struct PopAccountData *adata = pop_get_adata(m);
+  struct PopAccountData *adata = pop_adata_get(m);
   char *endp = NULL;
 
   errno = 0;
@@ -315,7 +315,7 @@ static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
   if (!m)
     return -1;
 
-  struct PopAccountData *adata = pop_get_adata(m);
+  struct PopAccountData *adata = pop_adata_get(m);
   if (!adata)
     return -1;
 
@@ -382,7 +382,7 @@ static int pop_fetch_headers(struct Mailbox *m)
   if (!m)
     return -1;
 
-  struct PopAccountData *adata = pop_get_adata(m);
+  struct PopAccountData *adata = pop_adata_get(m);
   struct Progress progress;
 
 #ifdef USE_HCACHE
@@ -897,7 +897,7 @@ static int pop_mbox_check(struct Mailbox *m, int *index_hint)
   if (!m)
     return -1;
 
-  struct PopAccountData *adata = pop_get_adata(m);
+  struct PopAccountData *adata = pop_adata_get(m);
 
   if ((adata->check_time + PopCheckinterval) > time(NULL))
     return 0;
@@ -940,7 +940,7 @@ static int pop_mbox_sync(struct Mailbox *m, int *index_hint)
 
   int i, j, ret = 0;
   char buf[LONG_STRING];
-  struct PopAccountData *adata = pop_get_adata(m);
+  struct PopAccountData *adata = pop_adata_get(m);
   struct Progress progress;
 #ifdef USE_HCACHE
   header_cache_t *hc = NULL;
@@ -1028,7 +1028,7 @@ static int pop_mbox_close(struct Mailbox *m)
   if (!m)
     return -1;
 
-  struct PopAccountData *adata = pop_get_adata(m);
+  struct PopAccountData *adata = pop_adata_get(m);
   if (!adata)
     return 0;
 
@@ -1061,7 +1061,7 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   char buf[LONG_STRING];
   char path[PATH_MAX];
   struct Progress progressbar;
-  struct PopAccountData *adata = pop_get_adata(m);
+  struct PopAccountData *adata = pop_adata_get(m);
   struct Email *e = m->emails[msgno];
   struct PopEmailData *edata = e->edata;
   bool bcache = true;
@@ -1220,7 +1220,7 @@ static int pop_msg_save_hcache(struct Mailbox *m, struct Email *e)
 {
   int rc = 0;
 #ifdef USE_HCACHE
-  struct PopAccountData *adata = pop_get_adata(m);
+  struct PopAccountData *adata = pop_adata_get(m);
   struct PopEmailData *edata = e->edata;
   header_cache_t *hc = pop_hcache_open(adata, m->path);
   rc = mutt_hcache_store(hc, edata->uid, strlen(edata->uid), e, 0);

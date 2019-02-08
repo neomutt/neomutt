@@ -134,6 +134,6 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query, struct Progr
                    int (*func)(char *, void *), void *data);
 int pop_reconnect(struct Mailbox *m);
 void pop_logout(struct Mailbox *m);
-struct PopAccountData *pop_get_adata(struct Mailbox *m);
+struct PopAccountData *pop_adata_get(struct Mailbox *m);
 
 #endif /* MUTT_POP_POP_PRIVATE_H */
