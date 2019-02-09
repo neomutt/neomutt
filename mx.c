@@ -942,7 +942,7 @@ struct Message *mx_msg_open_new(struct Mailbox *m, struct Email *e, int flags)
 
   if (!m->mx_ops || !m->mx_ops->msg_open_new)
   {
-    mutt_debug(1, "function unimplemented for mailbox type %d.\n", m->magic);
+    mutt_debug(LL_DEBUG1, "function unimplemented for mailbox type %d.\n", m->magic);
     return NULL;
   }
 
@@ -1024,7 +1024,7 @@ struct Message *mx_msg_open(struct Mailbox *m, int msgno)
 
   if (!m->mx_ops || !m->mx_ops->msg_open)
   {
-    mutt_debug(1, "function not implemented for mailbox type %d.\n", m->magic);
+    mutt_debug(LL_DEBUG1, "function not implemented for mailbox type %d.\n", m->magic);
     return NULL;
   }
 
@@ -1049,7 +1049,7 @@ int mx_msg_commit(struct Mailbox *m, struct Message *msg)
 
   if (!(msg->write && m->append))
   {
-    mutt_debug(1, "msg->write = %d, m->append = %d\n", msg->write, m->append);
+    mutt_debug(LL_DEBUG1, "msg->write = %d, m->append = %d\n", msg->write, m->append);
     return -1;
   }
 
@@ -1075,7 +1075,7 @@ int mx_msg_close(struct Mailbox *m, struct Message **msg)
 
   if ((*msg)->path)
   {
-    mutt_debug(1, "unlinking %s\n", (*msg)->path);
+    mutt_debug(LL_DEBUG1, "unlinking %s\n", (*msg)->path);
     unlink((*msg)->path);
     FREE(&(*msg)->path);
   }
@@ -1254,7 +1254,8 @@ enum MailboxType mx_path_probe(const char *path, struct stat *st)
 
   if (stat(path, st) != 0)
   {
-    mutt_debug(1, "unable to stat %s: %s (errno %d).\n", path, strerror(errno), errno);
+    mutt_debug(LL_DEBUG1, "unable to stat %s: %s (errno %d).\n", path,
+               strerror(errno), errno);
     return MUTT_UNKNOWN;
   }
 

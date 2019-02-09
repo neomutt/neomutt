@@ -237,7 +237,7 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
       /* ignore comments */
       if (*buf == '#')
         continue;
-      mutt_debug(2, "mailcap entry: %s\n", buf);
+      mutt_debug(LL_DEBUG2, "mailcap entry: %s\n", buf);
 
       /* check type */
       ch = get_field(buf);
@@ -266,7 +266,7 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
       {
         field = ch;
         ch = get_field(ch);
-        mutt_debug(2, "field: %s\n", field);
+        mutt_debug(LL_DEBUG2, "field: %s\n", field);
         size_t plen;
 
         if (mutt_str_strcasecmp(field, "needsterminal") == 0)
@@ -333,7 +333,7 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
             mutt_mem_realloc(&test_command, len);
             if (rfc1524_expand_command(a, a->filename, type, test_command, len) == 1)
             {
-              mutt_debug(1, "Command is expecting to be piped\n");
+              mutt_debug(LL_DEBUG1, "Command is expecting to be piped\n");
             }
             if (mutt_system(test_command) != 0)
             {
@@ -476,7 +476,7 @@ int rfc1524_mailcap_lookup(struct Body *a, char *type,
     path[x] = '\0';
     mutt_expand_path(path, sizeof(path));
 
-    mutt_debug(2, "Checking mailcap file: %s\n", path);
+    mutt_debug(LL_DEBUG2, "Checking mailcap file: %s\n", path);
     found = rfc1524_mailcap_parse(a, path, type, entry, opt);
   }
 

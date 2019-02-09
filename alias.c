@@ -77,7 +77,7 @@ static struct Address *expand_aliases_r(struct Address *a, struct ListHead *expn
         {
           if (mutt_str_strcmp(a->mailbox, np->data) == 0) /* alias already found */
           {
-            mutt_debug(1, "loop in alias found for '%s'\n", a->mailbox);
+            mutt_debug(LL_DEBUG1, "loop in alias found for '%s'\n", a->mailbox);
             i = true;
             break;
           }

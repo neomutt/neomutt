@@ -1827,7 +1827,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           /* When in mailboxes mode, disables this feature */
           if (Folder)
           {
-            mutt_debug(3, "= hit! Folder: %s, LastDir: %s\n", Folder, LastDir);
+            mutt_debug(LL_DEBUG3, "= hit! Folder: %s, LastDir: %s\n", Folder, LastDir);
             if (GotoSwapper[0] == '\0')
             {
               if (mutt_str_strcmp(LastDir, Folder) != 0)

@@ -780,7 +780,7 @@ static int have_gpg_version(const char *version)
       engineinfo = engineinfo->next;
     if (!engineinfo)
     {
-      mutt_debug(1, "Error finding GPGME PGP engine\n");
+      mutt_debug(LL_DEBUG1, "Error finding GPGME PGP engine\n");
       engine_version = mutt_str_strdup("0.0.0");
     }
     else
@@ -2049,7 +2049,7 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
   gpgme_release(ctx);
 
   state_attach_puts(_("[-- End signature information --]\n\n"), s);
-  mutt_debug(1, "returning %d.\n", badsig);
+  mutt_debug(LL_DEBUG1, "returning %d.\n", badsig);
 
   return badsig ? 1 : anywarn ? 2 : 0;
 }
@@ -2478,7 +2478,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
     snprintf(tmpdir, sizeof(tmpdir), "%s/neomutt-gpgme-XXXXXX", Tmpdir);
     if (!mkdtemp(tmpdir))
     {
-      mutt_debug(1, "Error creating temporary GPGME home\n");
+      mutt_debug(LL_DEBUG1, "Error creating temporary GPGME home\n");
       goto err_ctx;
     }
 
@@ -2487,7 +2487,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
       engineinfo = engineinfo->next;
     if (!engineinfo)
     {
-      mutt_debug(1, "Error finding GPGME PGP engine\n");
+      mutt_debug(LL_DEBUG1, "Error finding GPGME PGP engine\n");
       goto err_tmpdir;
     }
 
@@ -2495,7 +2495,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
                                     engineinfo->file_name, tmpdir);
     if (err != GPG_ERR_NO_ERROR)
     {
-      mutt_debug(1, "Error setting GPGME context home\n");
+      mutt_debug(LL_DEBUG1, "Error setting GPGME context home\n");
       goto err_tmpdir;
     }
   }
@@ -2549,7 +2549,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
   }
   if (gpg_err_code(err) != GPG_ERR_EOF)
   {
-    mutt_debug(1, "Error listing keys\n");
+    mutt_debug(LL_DEBUG1, "Error listing keys\n");
     goto err_fp;
   }
 
@@ -2873,7 +2873,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
 
   char body_charset[STRING]; /* Only used for clearsigned messages. */
 
-  mutt_debug(2, "Entering handler\n");
+  mutt_debug(LL_DEBUG2, "Entering handler\n");
 
   /* For clearsigned messages we won't be able to get a character set
      but we know that this may only be text thus we assume Latin-1
@@ -3084,7 +3084,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
                       s);
     return 1;
   }
-  mutt_debug(2, "Leaving handler\n");
+  mutt_debug(LL_DEBUG2, "Leaving handler\n");
 
   return err;
 }
@@ -3100,7 +3100,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
   int is_signed;
   int rc = 0;
 
-  mutt_debug(2, "Entering handler\n");
+  mutt_debug(LL_DEBUG2, "Entering handler\n");
 
   FILE *fpout = mutt_file_mkstemp();
   if (!fpout)
@@ -3181,7 +3181,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
   }
 
   mutt_file_fclose(&fpout);
-  mutt_debug(2, "Leaving handler\n");
+  mutt_debug(LL_DEBUG2, "Leaving handler\n");
 
   return rc;
 }
@@ -3194,7 +3194,7 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
   int is_signed = 0;
   int rc = 0;
 
-  mutt_debug(2, "Entering handler\n");
+  mutt_debug(LL_DEBUG2, "Entering handler\n");
 
   /* clear out any mime headers before the handler, so they can't be spoofed. */
   mutt_env_free(&a->mime_headers);
@@ -3278,7 +3278,7 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
   }
 
   mutt_file_fclose(&fpout);
-  mutt_debug(2, "Leaving handler\n");
+  mutt_debug(LL_DEBUG2, "Leaving handler\n");
 
   return rc;
 }
@@ -4875,7 +4875,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
 
     if (abilities && !(k->flags & abilities))
     {
-      mutt_debug(2, "  insufficient abilities: Has %x, want %x\n", k->flags, abilities);
+      mutt_debug(LL_DEBUG2, "  insufficient abilities: Has %x, want %x\n", k->flags, abilities);
       continue;
     }
 
@@ -5635,7 +5635,7 @@ int smime_gpgme_verify_sender(struct Email *e)
  */
 void pgp_gpgme_set_sender(const char *sender)
 {
-  mutt_debug(2, "setting to: %s\n", sender);
+  mutt_debug(LL_DEBUG2, "setting to: %s\n", sender);
   FREE(&current_sender);
   current_sender = mutt_str_strdup(sender);
 }

@@ -79,7 +79,7 @@ static int socket_connect(int fd, struct sockaddr *sa)
 #endif
   else
   {
-    mutt_debug(1, "Unknown address family!\n");
+    mutt_debug(LL_DEBUG1, "Unknown address family!\n");
     return -1;
   }
 
@@ -99,7 +99,7 @@ static int socket_connect(int fd, struct sockaddr *sa)
   if (connect(fd, sa, sa_size) < 0)
   {
     save_errno = errno;
-    mutt_debug(2, "Connection failed. errno: %d...\n", errno);
+    mutt_debug(LL_DEBUG2, "Connection failed. errno: %d...\n", errno);
     SigInt = 0; /* reset in case we caught SIGINTR while in connect() */
   }
 

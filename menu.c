@@ -1051,7 +1051,7 @@ void mutt_menu_pop_current(struct Menu *menu)
 
   if (!MenuStackCount || (MenuStack[MenuStackCount - 1] != menu))
   {
-    mutt_debug(1, "called with inactive menu\n");
+    mutt_debug(LL_DEBUG1, "called with inactive menu\n");
     return;
   }
 

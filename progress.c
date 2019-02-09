@@ -144,7 +144,7 @@ void mutt_progress_init(struct Progress *progress, const char *msg,
     return;
   }
   if (gettimeofday(&tv, NULL) < 0)
-    mutt_debug(1, "gettimeofday failed: %d\n", errno);
+    mutt_debug(LL_DEBUG1, "gettimeofday failed: %d\n", errno);
   /* if timestamp is 0 no time-based suppression is done */
   if (TimeInc != 0)
   {

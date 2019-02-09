@@ -518,7 +518,7 @@ void mutt_perror_debug(const char *s)
 {
   char *p = strerror(errno);
 
-  mutt_debug(1, "%s: %s (errno = %d)\n", s, p ? p : "unknown error", errno);
+  mutt_debug(LL_DEBUG1, "%s: %s (errno = %d)\n", s, p ? p : "unknown error", errno);
   mutt_error("%s: %s (errno = %d)", s, p ? p : _("unknown error"), errno);
 }
 

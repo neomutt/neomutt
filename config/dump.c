@@ -134,7 +134,7 @@ struct HashElem **get_elem_list(struct ConfigSet *cs)
     list[index++] = he;
     if (index == 1022)
     {
-      mutt_debug(1, "Too many config items to sort\n");
+      mutt_debug(LL_DEBUG1, "Too many config items to sort\n");
       break;
     }
   }

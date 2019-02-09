@@ -206,14 +206,14 @@ static int pop_read_header(struct PopAccountData *adata, struct Email *e)
       {
         adata->cmd_top = 1;
 
-        mutt_debug(1, "set TOP capability\n");
+        mutt_debug(LL_DEBUG1, "set TOP capability\n");
       }
 
       if (rc == -2)
       {
         adata->cmd_top = 0;
 
-        mutt_debug(1, "unset TOP capability\n");
+        mutt_debug(LL_DEBUG1, "unset TOP capability\n");
         snprintf(adata->err_msg, sizeof(adata->err_msg), "%s",
                  _("Command TOP is not supported by server"));
       }
@@ -286,7 +286,7 @@ static int fetch_uidl(char *line, void *data)
 
   if (i == m->msg_count)
   {
-    mutt_debug(1, "new header %d %s\n", index, line);
+    mutt_debug(LL_DEBUG1, "new header %d %s\n", index, line);
 
     if (i >= m->email_max)
       mx_alloc_memory(m);
@@ -416,14 +416,14 @@ static int pop_fetch_headers(struct Mailbox *m)
     {
       adata->cmd_uidl = 1;
 
-      mutt_debug(1, "set UIDL capability\n");
+      mutt_debug(LL_DEBUG1, "set UIDL capability\n");
     }
 
     if (ret == -2 && adata->cmd_uidl == 2)
     {
       adata->cmd_uidl = 0;
 
-      mutt_debug(1, "unset UIDL capability\n");
+      mutt_debug(LL_DEBUG1, "unset UIDL capability\n");
       snprintf(adata->err_msg, sizeof(adata->err_msg), "%s",
                _("Command UIDL is not supported by server"));
     }
@@ -564,7 +564,7 @@ static void pop_clear_cache(struct PopAccountData *adata)
   if (!adata->clear_cache)
     return;
 
-  mutt_debug(1, "delete cached messages\n");
+  mutt_debug(LL_DEBUG1, "delete cached messages\n");
 
   for (int i = 0; i < POP_CACHE_LEN; i++)
   {

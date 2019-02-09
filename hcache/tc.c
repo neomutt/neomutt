@@ -52,7 +52,7 @@ static void *hcache_tokyocabinet_open(const char *path)
   else
   {
     int ecode = tcbdbecode(db);
-    mutt_debug(2, "tcbdbopen failed for %s: %s (ecode %d)\n", path,
+    mutt_debug(LL_DEBUG2, "tcbdbopen failed for %s: %s (ecode %d)\n", path,
                tcbdberrmsg(ecode), ecode);
     tcbdbdel(db);
     return NULL;
@@ -128,7 +128,7 @@ static void hcache_tokyocabinet_close(void **ctx)
   if (!tcbdbclose(db))
   {
     int ecode = tcbdbecode(db);
-    mutt_debug(2, "tcbdbclose failed: %s (ecode %d)\n", tcbdberrmsg(ecode), ecode);
+    mutt_debug(LL_DEBUG2, "tcbdbclose failed: %s (ecode %d)\n", tcbdberrmsg(ecode), ecode);
   }
   tcbdbdel(db);
 }

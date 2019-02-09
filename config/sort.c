@@ -185,7 +185,7 @@ static int sort_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
       id = mutt_map_get_value(value, SortSidebarMethods);
       break;
     default:
-      mutt_debug(1, "Invalid sort type: %u\n", cdef->type & DT_SUBTYPE_MASK);
+      mutt_debug(LL_DEBUG1, "Invalid sort type: %u\n", cdef->type & DT_SUBTYPE_MASK);
       return CSR_ERR_CODE;
       break;
   }
@@ -267,14 +267,14 @@ static int sort_string_get(const struct ConfigSet *cs, void *var,
       str = mutt_map_get_name(sort, SortSidebarMethods);
       break;
     default:
-      mutt_debug(1, "Invalid sort type: %u\n", cdef->type & DT_SUBTYPE_MASK);
+      mutt_debug(LL_DEBUG1, "Invalid sort type: %u\n", cdef->type & DT_SUBTYPE_MASK);
       return CSR_ERR_CODE;
       break;
   }
 
   if (!str)
   {
-    mutt_debug(1, "Variable has an invalid value: %d/%d\n",
+    mutt_debug(LL_DEBUG1, "Variable has an invalid value: %d/%d\n",
                cdef->type & DT_SUBTYPE_MASK, sort);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
@@ -315,7 +315,7 @@ static int sort_native_set(const struct ConfigSet *cs, void *var,
       str = mutt_map_get_name((value & SORT_MASK), SortSidebarMethods);
       break;
     default:
-      mutt_debug(1, "Invalid sort type: %u\n", cdef->type & DT_SUBTYPE_MASK);
+      mutt_debug(LL_DEBUG1, "Invalid sort type: %u\n", cdef->type & DT_SUBTYPE_MASK);
       return CSR_ERR_CODE;
       break;
   }

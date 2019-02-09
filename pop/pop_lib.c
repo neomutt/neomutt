@@ -427,7 +427,7 @@ void pop_logout(struct Mailbox *m)
     }
 
     if (ret < 0)
-      mutt_debug(1, "Error closing POP connection\n");
+      mutt_debug(LL_DEBUG1, "Error closing POP connection\n");
 
     mutt_clear_error();
   }

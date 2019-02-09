@@ -237,7 +237,7 @@ int imap_browse(char *path, struct BrowserState *state)
   if (n)
   {
     int rc;
-    mutt_debug(3, "mbox: %s\n", mbox);
+    mutt_debug(LL_DEBUG3, "mbox: %s\n", mbox);
 
     /* if our target exists and has inferiors, enter it if we
      * aren't already going to */
@@ -287,7 +287,7 @@ int imap_browse(char *path, struct BrowserState *state)
 
       if (showparents)
       {
-        mutt_debug(3, "adding parent %s\n", mbox);
+        mutt_debug(LL_DEBUG3, "adding parent %s\n", mbox);
         add_folder(list.delim, mbox, true, false, state, true);
       }
 
@@ -326,10 +326,10 @@ int imap_browse(char *path, struct BrowserState *state)
     state->folder = mutt_str_strdup(buf);
   }
 
-  mutt_debug(3, "Quoting mailbox scan: %s -> ", mbox);
+  mutt_debug(LL_DEBUG3, "Quoting mailbox scan: %s -> ", mbox);
   snprintf(buf, sizeof(buf), "%s%%", mbox);
   imap_munge_mbox_name(adata->unicode, munged_mbox, sizeof(munged_mbox), buf);
-  mutt_debug(3, "%s\n", munged_mbox);
+  mutt_debug(LL_DEBUG3, "%s\n", munged_mbox);
   snprintf(buf, sizeof(buf), "%s \"\" %s", list_cmd, munged_mbox);
   if (browse_add_list_result(adata, buf, state, false))
     goto fail;
@@ -370,7 +370,7 @@ int imap_mailbox_create(const char *path)
 
   if (imap_adata_find(path, &adata, &mdata) < 0)
   {
-    mutt_debug(1, "Couldn't find open connection to %s\n", path);
+    mutt_debug(LL_DEBUG1, "Couldn't find open connection to %s\n", path);
     goto err;
   }
 
@@ -422,7 +422,7 @@ int imap_mailbox_rename(const char *path)
 
   if (imap_adata_find(path, &adata, &mdata) < 0)
   {
-    mutt_debug(1, "Couldn't find open connection to %s\n", path);
+    mutt_debug(LL_DEBUG1, "Couldn't find open connection to %s\n", path);
     return -1;
   }
 
