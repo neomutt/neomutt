@@ -150,7 +150,7 @@ static struct Query *run_query(char *s, int quiet)
   thepid = mutt_create_filter(cmd, NULL, &fp, NULL);
   if (thepid < 0)
   {
-    mutt_debug(1, "unable to fork command: %s\n", cmd);
+    mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", cmd);
     return 0;
   }
   if (!quiet)
@@ -190,7 +190,7 @@ static struct Query *run_query(char *s, int quiet)
   mutt_file_fclose(&fp);
   if (mutt_wait_filter(thepid))
   {
-    mutt_debug(1, "Error: %s\n", msg);
+    mutt_debug(LL_DEBUG1, "Error: %s\n", msg);
     if (!quiet)
       mutt_error("%s", msg);
   }

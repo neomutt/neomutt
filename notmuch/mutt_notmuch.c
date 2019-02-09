@@ -161,7 +161,7 @@ void nm_mdata_free(void **ptr)
   if (!ptr || !*ptr)
     return;
 
-  mutt_debug(1, "nm: freeing context data %p\n", ptr);
+  mutt_debug(LL_DEBUG1, "nm: freeing context data %p\n", ptr);
 
   struct NmMboxData *mdata = *ptr;
 
@@ -184,7 +184,7 @@ struct NmMboxData *nm_mdata_new(const char *uri)
     return NULL;
 
   struct NmMboxData *mdata = mutt_mem_calloc(1, sizeof(struct NmMboxData));
-  mutt_debug(1, "nm: initialize mailbox mdata %p\n", (void *) mdata);
+  mutt_debug(LL_DEBUG1, "nm: initialize mailbox mdata %p\n", (void *) mdata);
 
   mdata->db_limit = NmDbLimit;
   mdata->query_type = string_to_query_type(NmQueryType);
@@ -225,7 +225,7 @@ void nm_edata_free(void **ptr)
     return;
 
   struct NmEmailData *edata = *ptr;
-  mutt_debug(2, "nm: freeing email %p\n", (void *) edata);
+  mutt_debug(LL_DEBUG2, "nm: freeing email %p\n", (void *) edata);
   FREE(&edata->folder);
   FREE(&edata->oldpath);
   FREE(&edata->virtual_id);
@@ -360,7 +360,7 @@ static bool query_window_check_timebase(const char *timebase)
  */
 static void query_window_reset(void)
 {
-  mutt_debug(2, "entering\n");
+  mutt_debug(LL_DEBUG2, "entering\n");
   cs_str_native_set(Config, "nm_query_window_current_position", 0, NULL);
 }
 
@@ -404,7 +404,7 @@ static void query_window_reset(void)
  */
 static bool windowed_query_from_query(const char *query, char *buf, size_t buflen)
 {
-  mutt_debug(2, "nm: %s\n", query);
+  mutt_debug(LL_DEBUG2, "nm: %s\n", query);
 
   int beg = NmQueryWindowDuration * (NmQueryWindowCurrentPosition + 1);
   int end = NmQueryWindowDuration * NmQueryWindowCurrentPosition;
@@ -424,7 +424,7 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufle
   {
     mutt_message(_("Invalid nm_query_window_timebase value (valid values are: "
                    "hour, day, week, month or year)"));
-    mutt_debug(2, "Invalid nm_query_window_timebase value\n");
+    mutt_debug(LL_DEBUG2, "Invalid nm_query_window_timebase value\n");
     return false;
   }
 
@@ -441,7 +441,7 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufle
              end, NmQueryWindowTimebase, NmQueryWindowCurrentSearch);
   }
 
-  mutt_debug(2, "nm: %s -> %s\n", query, buf);
+  mutt_debug(LL_DEBUG2, "nm: %s -> %s\n", query, buf);
 
   return true;
 }
@@ -464,7 +464,7 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufle
  */
 static char *get_query_string(struct NmMboxData *mdata, bool window)
 {
-  mutt_debug(2, "nm: %s\n", window ? "true" : "false");
+  mutt_debug(LL_DEBUG2, "nm: %s\n", window ? "true" : "false");
 
   if (!mdata)
     return NULL;
@@ -509,10 +509,10 @@ static char *get_query_string(struct NmMboxData *mdata, bool window)
       mdata->db_query = mutt_str_strdup(buf);
     }
 
-    mutt_debug(2, "nm: query (windowed) '%s'\n", mdata->db_query);
+    mutt_debug(LL_DEBUG2, "nm: query (windowed) '%s'\n", mdata->db_query);
   }
   else
-    mutt_debug(2, "nm: query '%s'\n", mdata->db_query);
+    mutt_debug(LL_DEBUG2, "nm: query '%s'\n", mdata->db_query);
 
   return mdata->db_query;
 }
@@ -556,7 +556,7 @@ static void apply_exclude_tags(notmuch_query_t *query)
       break;
     *end = '\0';
 
-    mutt_debug(2, "nm: query exclude tag '%s'\n", tag);
+    mutt_debug(LL_DEBUG2, "nm: query exclude tag '%s'\n", tag);
     notmuch_query_add_tag_exclude(query, tag);
     end = NULL;
     tag = NULL;
@@ -590,7 +590,7 @@ static notmuch_query_t *get_query(struct Mailbox *m, bool writable)
 
   apply_exclude_tags(q);
   notmuch_query_set_sort(q, NOTMUCH_SORT_NEWEST_FIRST);
-  mutt_debug(2, "nm: query successfully initialized (%s)\n", str);
+  mutt_debug(LL_DEBUG2, "nm: query successfully initialized (%s)\n", str);
   return q;
 err:
   nm_db_release(m);
@@ -610,7 +610,7 @@ static int update_email_tags(struct Email *e, notmuch_message_t *msg)
   char *new_tags = NULL;
   char *old_tags = NULL;
 
-  mutt_debug(2, "nm: tags update requested (%s)\n", edata->virtual_id);
+  mutt_debug(LL_DEBUG2, "nm: tags update requested (%s)\n", edata->virtual_id);
 
   for (notmuch_tags_t *tags = notmuch_message_get_tags(msg);
        tags && notmuch_tags_valid(tags); notmuch_tags_move_to_next(tags))
@@ -628,7 +628,7 @@ static int update_email_tags(struct Email *e, notmuch_message_t *msg)
   {
     FREE(&old_tags);
     FREE(&new_tags);
-    mutt_debug(2, "nm: tags unchanged\n");
+    mutt_debug(LL_DEBUG2, "nm: tags unchanged\n");
     return 1;
   }
 
@@ -637,11 +637,11 @@ static int update_email_tags(struct Email *e, notmuch_message_t *msg)
   FREE(&new_tags);
 
   new_tags = driver_tags_get_transformed(&e->tags);
-  mutt_debug(2, "nm: new tags: '%s'\n", new_tags);
+  mutt_debug(LL_DEBUG2, "nm: new tags: '%s'\n", new_tags);
   FREE(&new_tags);
 
   new_tags = driver_tags_get(&e->tags);
-  mutt_debug(2, "nm: new tag transforms: '%s'\n", new_tags);
+  mutt_debug(LL_DEBUG2, "nm: new tag transforms: '%s'\n", new_tags);
   FREE(&new_tags);
 
   return 0;
@@ -658,7 +658,7 @@ static int update_message_path(struct Email *e, const char *path)
 {
   struct NmEmailData *edata = e->edata;
 
-  mutt_debug(2, "nm: path update requested path=%s, (%s)\n", path, edata->virtual_id);
+  mutt_debug(LL_DEBUG2, "nm: path update requested path=%s, (%s)\n", path, edata->virtual_id);
 
   char *p = strrchr(path, '/');
   if (p && ((p - path) > 3) &&
@@ -678,7 +678,7 @@ static int update_message_path(struct Email *e, const char *path)
 
     edata->folder = mutt_str_substr_dup(path, p);
 
-    mutt_debug(2, "nm: folder='%s', file='%s'\n", edata->folder, e->path);
+    mutt_debug(LL_DEBUG2, "nm: folder='%s', file='%s'\n", edata->folder, e->path);
     return 0;
   }
 
@@ -753,7 +753,7 @@ static int init_email(struct Email *e, const char *path, notmuch_message_t *msg)
   const char *id = notmuch_message_get_message_id(msg);
   edata->virtual_id = mutt_str_strdup(id);
 
-  mutt_debug(2, "nm: [e=%p, edata=%p] (%s)\n", (void *) e, (void *) e->edata, id);
+  mutt_debug(LL_DEBUG2, "nm: [e=%p, edata=%p] (%s)\n", (void *) e, (void *) e->edata, id);
 
   if (!e->env->message_id)
     e->env->message_id = nm2mutt_message_id(id);
@@ -849,18 +849,18 @@ static struct Email *get_mutt_email(struct Mailbox *m, notmuch_message_t *msg)
   if (!id)
     return NULL;
 
-  mutt_debug(2, "nm: neomutt email, id='%s'\n", id);
+  mutt_debug(LL_DEBUG2, "nm: neomutt email, id='%s'\n", id);
 
   if (!m->id_hash)
   {
-    mutt_debug(2, "nm: init hash\n");
+    mutt_debug(LL_DEBUG2, "nm: init hash\n");
     m->id_hash = mutt_make_id_hash(m);
     if (!m->id_hash)
       return NULL;
   }
 
   char *mid = nm2mutt_message_id(id);
-  mutt_debug(2, "nm: neomutt id='%s'\n", mid);
+  mutt_debug(LL_DEBUG2, "nm: neomutt id='%s'\n", mid);
 
   struct Email *e = mutt_hash_find(m->id_hash, mid);
   FREE(&mid);
@@ -889,7 +889,7 @@ static void append_message(struct Mailbox *m, notmuch_query_t *q,
   {
     mdata->ignmsgcount++;
     progress_update(m, q);
-    mutt_debug(2, "nm: ignore id=%s, already in the m\n",
+    mutt_debug(LL_DEBUG2, "nm: ignore id=%s, already in the m\n",
                notmuch_message_get_message_id(msg));
     return;
   }
@@ -898,12 +898,12 @@ static void append_message(struct Mailbox *m, notmuch_query_t *q,
   if (!path)
     return;
 
-  mutt_debug(2, "nm: appending message, i=%d, id=%s, path=%s\n", m->msg_count,
+  mutt_debug(LL_DEBUG2, "nm: appending message, i=%d, id=%s, path=%s\n", m->msg_count,
              notmuch_message_get_message_id(msg), path);
 
   if (m->msg_count >= m->email_max)
   {
-    mutt_debug(2, "nm: allocate mx memory\n");
+    mutt_debug(LL_DEBUG2, "nm: allocate mx memory\n");
     mx_alloc_memory(m);
   }
   if (access(path, F_OK) == 0)
@@ -921,7 +921,7 @@ static void append_message(struct Mailbox *m, notmuch_query_t *q,
         e = maildir_parse_stream(MUTT_MAILDIR, f, newpath, false, NULL);
         fclose(f);
 
-        mutt_debug(1, "nm: not up-to-date: %s -> %s\n", path, newpath);
+        mutt_debug(LL_DEBUG1, "nm: not up-to-date: %s -> %s\n", path, newpath);
       }
     }
     FREE(&folder);
@@ -929,13 +929,13 @@ static void append_message(struct Mailbox *m, notmuch_query_t *q,
 
   if (!e)
   {
-    mutt_debug(1, "nm: failed to parse message: %s\n", path);
+    mutt_debug(LL_DEBUG1, "nm: failed to parse message: %s\n", path);
     goto done;
   }
   if (init_email(e, newpath ? newpath : path, msg) != 0)
   {
     mutt_email_free(&e);
-    mutt_debug(1, "nm: failed to append email!\n");
+    mutt_debug(LL_DEBUG1, "nm: failed to append email!\n");
     goto done;
   }
 
@@ -952,7 +952,7 @@ static void append_message(struct Mailbox *m, notmuch_query_t *q,
 
     if (edata)
     {
-      mutt_debug(1, "nm: remember obsolete path: %s\n", path);
+      mutt_debug(LL_DEBUG1, "nm: remember obsolete path: %s\n", path);
       edata->oldpath = mutt_str_strdup(path);
     }
   }
@@ -1149,7 +1149,7 @@ static notmuch_message_t *get_nm_message(notmuch_database_t *db, struct Email *e
   notmuch_message_t *msg = NULL;
   char *id = email_get_id(e);
 
-  mutt_debug(2, "nm: find message (%s)\n", id);
+  mutt_debug(LL_DEBUG2, "nm: find message (%s)\n", id);
 
   if (id && db)
     notmuch_database_find_message(db, id, &msg);
@@ -1215,12 +1215,12 @@ static int update_tags(notmuch_message_t *msg, const char *tags)
 
     if (*tag == '-')
     {
-      mutt_debug(1, "nm: remove tag: '%s'\n", tag + 1);
+      mutt_debug(LL_DEBUG1, "nm: remove tag: '%s'\n", tag + 1);
       notmuch_message_remove_tag(msg, tag + 1);
     }
     else if (*tag == '!')
     {
-      mutt_debug(1, "nm: toggle tag: '%s'\n", tag + 1);
+      mutt_debug(LL_DEBUG1, "nm: toggle tag: '%s'\n", tag + 1);
       if (nm_message_has_tag(msg, tag + 1))
       {
         notmuch_message_remove_tag(msg, tag + 1);
@@ -1232,7 +1232,7 @@ static int update_tags(notmuch_message_t *msg, const char *tags)
     }
     else
     {
-      mutt_debug(1, "nm: add tag: '%s'\n", (*tag == '+') ? tag + 1 : tag);
+      mutt_debug(LL_DEBUG1, "nm: add tag: '%s'\n", (*tag == '+') ? tag + 1 : tag);
       notmuch_message_add_tag(msg, (*tag == '+') ? tag + 1 : tag);
     }
     end = NULL;
@@ -1357,7 +1357,7 @@ static int rename_maildir_filename(const char *old, char *buf, size_t buflen, st
 
   if (rename(old, buf) != 0)
   {
-    mutt_debug(1, "nm: rename(2) failed %s -> %s\n", old, buf);
+    mutt_debug(LL_DEBUG1, "nm: rename(2) failed %s -> %s\n", old, buf);
     return -1;
   }
 
@@ -1377,7 +1377,7 @@ static int remove_filename(struct Mailbox *m, const char *path)
   if (!mdata)
     return -1;
 
-  mutt_debug(2, "nm: remove filename '%s'\n", path);
+  mutt_debug(LL_DEBUG2, "nm: remove filename '%s'\n", path);
 
   notmuch_database_t *db = nm_db_get(m, true);
   if (!db)
@@ -1400,24 +1400,24 @@ static int remove_filename(struct Mailbox *m, const char *path)
   switch (st)
   {
     case NOTMUCH_STATUS_SUCCESS:
-      mutt_debug(2, "nm: remove success, call unlink\n");
+      mutt_debug(LL_DEBUG2, "nm: remove success, call unlink\n");
       unlink(path);
       break;
     case NOTMUCH_STATUS_DUPLICATE_MESSAGE_ID:
-      mutt_debug(2, "nm: remove success (duplicate), call unlink\n");
+      mutt_debug(LL_DEBUG2, "nm: remove success (duplicate), call unlink\n");
       unlink(path);
       for (ls = notmuch_message_get_filenames(msg);
            ls && notmuch_filenames_valid(ls); notmuch_filenames_move_to_next(ls))
       {
         path = notmuch_filenames_get(ls);
 
-        mutt_debug(2, "nm: remove duplicate: '%s'\n", path);
+        mutt_debug(LL_DEBUG2, "nm: remove duplicate: '%s'\n", path);
         unlink(path);
         notmuch_database_remove_message(db, path);
       }
       break;
     default:
-      mutt_debug(1, "nm: failed to remove '%s' [st=%d]\n", path, (int) st);
+      mutt_debug(LL_DEBUG1, "nm: failed to remove '%s' [st=%d]\n", path, (int) st);
       break;
   }
 
@@ -1452,12 +1452,12 @@ static int rename_filename(struct Mailbox *m, const char *old, const char *new,
   notmuch_filenames_t *ls = NULL;
   notmuch_message_t *msg = NULL;
 
-  mutt_debug(1, "nm: rename filename, %s -> %s\n", old, new);
+  mutt_debug(LL_DEBUG1, "nm: rename filename, %s -> %s\n", old, new);
   int trans = nm_db_trans_begin(m);
   if (trans < 0)
     return -1;
 
-  mutt_debug(2, "nm: rename: add '%s'\n", new);
+  mutt_debug(LL_DEBUG2, "nm: rename: add '%s'\n", new);
 #ifdef HAVE_NOTMUCH_DATABASE_INDEX_FILE
   st = notmuch_database_index_file(db, new, NULL, &msg);
 #else
@@ -1466,18 +1466,18 @@ static int rename_filename(struct Mailbox *m, const char *old, const char *new,
 
   if ((st != NOTMUCH_STATUS_SUCCESS) && (st != NOTMUCH_STATUS_DUPLICATE_MESSAGE_ID))
   {
-    mutt_debug(1, "nm: failed to add '%s' [st=%d]\n", new, (int) st);
+    mutt_debug(LL_DEBUG1, "nm: failed to add '%s' [st=%d]\n", new, (int) st);
     goto done;
   }
 
-  mutt_debug(2, "nm: rename: rem '%s'\n", old);
+  mutt_debug(LL_DEBUG2, "nm: rename: rem '%s'\n", old);
   st = notmuch_database_remove_message(db, old);
   switch (st)
   {
     case NOTMUCH_STATUS_SUCCESS:
       break;
     case NOTMUCH_STATUS_DUPLICATE_MESSAGE_ID:
-      mutt_debug(2, "nm: rename: syncing duplicate filename\n");
+      mutt_debug(LL_DEBUG2, "nm: rename: syncing duplicate filename\n");
       notmuch_message_destroy(msg);
       msg = NULL;
       notmuch_database_find_message_by_filename(db, new, &msg);
@@ -1491,11 +1491,11 @@ static int rename_filename(struct Mailbox *m, const char *old, const char *new,
         if (strcmp(new, path) == 0)
           continue;
 
-        mutt_debug(2, "nm: rename: syncing duplicate: %s\n", path);
+        mutt_debug(LL_DEBUG2, "nm: rename: syncing duplicate: %s\n", path);
 
         if (rename_maildir_filename(path, newpath, sizeof(newpath), e) == 0)
         {
-          mutt_debug(2, "nm: rename dup %s -> %s\n", path, newpath);
+          mutt_debug(LL_DEBUG2, "nm: rename dup %s -> %s\n", path, newpath);
           notmuch_database_remove_message(db, path);
 #ifdef HAVE_NOTMUCH_DATABASE_INDEX_FILE
           notmuch_database_index_file(db, newpath, NULL, NULL);
@@ -1510,7 +1510,7 @@ static int rename_filename(struct Mailbox *m, const char *old, const char *new,
       st = NOTMUCH_STATUS_SUCCESS;
       break;
     default:
-      mutt_debug(1, "nm: failed to remove '%s' [st=%d]\n", old, (int) st);
+      mutt_debug(LL_DEBUG1, "nm: failed to remove '%s' [st=%d]\n", old, (int) st);
       break;
   }
 
@@ -1559,7 +1559,7 @@ static unsigned int count_query(notmuch_database_t *db, const char *qstr, int li
   res = notmuch_query_count_messages(q);
 #endif
   notmuch_query_destroy(q);
-  mutt_debug(1, "nm: count '%s', result=%d\n", qstr, res);
+  mutt_debug(LL_DEBUG1, "nm: count '%s', result=%d\n", qstr, res);
 
   if (limit > 0 && res > limit)
     res = limit;
@@ -1602,7 +1602,7 @@ int nm_read_entire_thread(struct Mailbox *m, struct Email *e)
   if (!(db = nm_db_get(m, false)) || !(msg = get_nm_message(db, e)))
     goto done;
 
-  mutt_debug(1, "nm: reading entire-thread messages...[current count=%d]\n", m->msg_count);
+  mutt_debug(LL_DEBUG1, "nm: reading entire-thread messages...[current count=%d]\n", m->msg_count);
 
   progress_reset(m);
   const char *id = notmuch_message_get_thread_id(msg);
@@ -1637,7 +1637,7 @@ done:
     mutt_message(_("No more messages in the thread"));
 
   mdata->oldmsgcount = 0;
-  mutt_debug(1, "nm: reading entire-thread messages... done [rc=%d, count=%d]\n",
+  mutt_debug(LL_DEBUG1, "nm: reading entire-thread messages... done [rc=%d, count=%d]\n",
              rc, m->msg_count);
   return rc;
 }
@@ -1682,7 +1682,7 @@ void nm_parse_type_from_query(struct NmMboxData *mdata, char *buf)
  */
 char *nm_uri_from_query(struct Mailbox *m, char *buf, size_t buflen)
 {
-  mutt_debug(2, "(%s)\n", buf);
+  mutt_debug(LL_DEBUG2, "(%s)\n", buf);
   struct NmMboxData *mdata = nm_mdata_get(m);
   char uri[PATH_MAX + LONG_STRING + 32]; /* path to DB + query + URI "decoration" */
   int added;
@@ -1728,7 +1728,7 @@ char *nm_uri_from_query(struct Mailbox *m, char *buf, size_t buflen)
   if (using_default_data)
     nm_mdata_free((void **) &mdata);
 
-  mutt_debug(1, "nm: uri from query '%s'\n", buf);
+  mutt_debug(LL_DEBUG1, "nm: uri from query '%s'\n", buf);
   return buf;
 }
 
@@ -1746,7 +1746,7 @@ void nm_query_window_forward(void)
   if (NmQueryWindowCurrentPosition != 0)
     NmQueryWindowCurrentPosition--;
 
-  mutt_debug(2, "(%d)\n", NmQueryWindowCurrentPosition);
+  mutt_debug(LL_DEBUG2, "(%d)\n", NmQueryWindowCurrentPosition);
 }
 
 /**
@@ -1760,7 +1760,7 @@ void nm_query_window_forward(void)
 void nm_query_window_backward(void)
 {
   NmQueryWindowCurrentPosition++;
-  mutt_debug(2, "(%d)\n", NmQueryWindowCurrentPosition);
+  mutt_debug(LL_DEBUG2, "(%d)\n", NmQueryWindowCurrentPosition);
 }
 
 /**
@@ -1783,7 +1783,7 @@ bool nm_message_is_still_queried(struct Mailbox *m, struct Email *e)
   if (safe_asprintf(&new_str, "id:%s and (%s)", email_get_id(e), orig_str) < 0)
     return false;
 
-  mutt_debug(2, "nm: checking if message is still queried: %s\n", new_str);
+  mutt_debug(LL_DEBUG2, "nm: checking if message is still queried: %s\n", new_str);
 
   notmuch_query_t *q = notmuch_query_create(db, new_str);
 
@@ -1815,7 +1815,7 @@ bool nm_message_is_still_queried(struct Mailbox *m, struct Email *e)
 
   notmuch_query_destroy(q);
 
-  mutt_debug(2, "nm: checking if message is still queried: %s = %s\n", new_str,
+  mutt_debug(LL_DEBUG2, "nm: checking if message is still queried: %s = %s\n", new_str,
              result ? "true" : "false");
 
   return result;
@@ -1862,7 +1862,7 @@ static int nm_mbox_check_stats(struct Mailbox *m, int flags)
   notmuch_database_t *db = NULL;
   int rc = -1;
   int limit = NmDbLimit;
-  mutt_debug(1, "nm: count\n");
+  mutt_debug(LL_DEBUG1, "nm: count\n");
 
   url = url_parse(m->path);
   if (!url)
@@ -1923,11 +1923,11 @@ done:
   if (db)
   {
     nm_db_free(db);
-    mutt_debug(1, "nm: count close DB\n");
+    mutt_debug(LL_DEBUG1, "nm: count close DB\n");
   }
   url_free(&url);
 
-  mutt_debug(1, "nm: count done [rc=%d]\n", rc);
+  mutt_debug(LL_DEBUG1, "nm: count done [rc=%d]\n", rc);
   return rc;
 }
 
@@ -1980,7 +1980,7 @@ int nm_record_message(struct Mailbox *m, char *path, struct Email *e)
   if (!db)
     return -1;
 
-  mutt_debug(1, "nm: record message: %s\n", path);
+  mutt_debug(LL_DEBUG1, "nm: record message: %s\n", path);
   int trans = nm_db_trans_begin(m);
   if (trans < 0)
     goto done;
@@ -1993,7 +1993,7 @@ int nm_record_message(struct Mailbox *m, char *path, struct Email *e)
 
   if ((st != NOTMUCH_STATUS_SUCCESS) && (st != NOTMUCH_STATUS_DUPLICATE_MESSAGE_ID))
   {
-    mutt_debug(1, "nm: failed to add '%s' [st=%d]\n", path, (int) st);
+    mutt_debug(LL_DEBUG1, "nm: failed to add '%s' [st=%d]\n", path, (int) st);
     goto done;
   }
 
@@ -2046,7 +2046,7 @@ int nm_get_all_tags(struct Mailbox *m, char **tag_list, int *tag_count)
     goto done;
 
   *tag_count = 0;
-  mutt_debug(1, "nm: get all tags\n");
+  mutt_debug(LL_DEBUG1, "nm: get all tags\n");
 
   while (notmuch_tags_valid(tags))
   {
@@ -2068,7 +2068,7 @@ done:
 
   nm_db_release(m);
 
-  mutt_debug(1, "nm: get all tags done [rc=%d tag_count=%u]\n", rc, *tag_count);
+  mutt_debug(LL_DEBUG1, "nm: get all tags done [rc=%d tag_count=%u]\n", rc, *tag_count);
   return rc;
 }
 
@@ -2113,7 +2113,7 @@ static int nm_mbox_open(struct Mailbox *m)
   if (!mdata)
     return -1;
 
-  mutt_debug(1, "nm: reading messages...[current count=%d]\n", m->msg_count);
+  mutt_debug(LL_DEBUG1, "nm: reading messages...[current count=%d]\n", m->msg_count);
 
   progress_reset(m);
 
@@ -2154,7 +2154,7 @@ static int nm_mbox_open(struct Mailbox *m)
 
   mdata->oldmsgcount = 0;
 
-  mutt_debug(1, "nm: reading messages... done [rc=%d, count=%d]\n", rc, m->msg_count);
+  mutt_debug(LL_DEBUG1, "nm: reading messages... done [rc=%d, count=%d]\n", rc, m->msg_count);
   return rc;
 }
 
@@ -2183,17 +2183,17 @@ static int nm_mbox_check(struct Mailbox *m, int *index_hint)
 
   if (m->mtime.tv_sec >= mtime)
   {
-    mutt_debug(2, "nm: check unnecessary (db=%lu mailbox=%lu)\n", mtime, m->mtime);
+    mutt_debug(LL_DEBUG2, "nm: check unnecessary (db=%lu mailbox=%lu)\n", mtime, m->mtime);
     return 0;
   }
 
-  mutt_debug(1, "nm: checking (db=%lu mailbox=%lu)\n", mtime, m->mtime);
+  mutt_debug(LL_DEBUG1, "nm: checking (db=%lu mailbox=%lu)\n", mtime, m->mtime);
 
   notmuch_query_t *q = get_query(m, false);
   if (!q)
     goto done;
 
-  mutt_debug(1, "nm: start checking (count=%d)\n", m->msg_count);
+  mutt_debug(LL_DEBUG1, "nm: start checking (count=%d)\n", m->msg_count);
   mdata->oldmsgcount = m->msg_count;
   mdata->noprogress = true;
 
@@ -2279,7 +2279,7 @@ done:
   m->mtime.tv_sec = time(NULL);
   m->mtime.tv_nsec = 0;
 
-  mutt_debug(1, "nm: ... check done [count=%d, new_flags=%d, occult=%d]\n",
+  mutt_debug(LL_DEBUG1, "nm: ... check done [count=%d, new_flags=%d, occult=%d]\n",
              m->msg_count, new_flags, occult);
 
   return occult ? MUTT_REOPENED :
@@ -2305,7 +2305,7 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
   bool changed = false;
   char msgbuf[PATH_MAX + 64];
 
-  mutt_debug(1, "nm: sync start ...\n");
+  mutt_debug(LL_DEBUG1, "nm: sync start ...\n");
 
   if (!m->quiet)
   {
@@ -2330,7 +2330,7 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
     {
       mutt_str_strfcpy(old, edata->oldpath, sizeof(old));
       old[sizeof(old) - 1] = '\0';
-      mutt_debug(2, "nm: fixing obsolete path '%s'\n", old);
+      mutt_debug(LL_DEBUG2, "nm: fixing obsolete path '%s'\n", old);
     }
     else
       email_get_fullpath(e, old, sizeof(old));
@@ -2374,7 +2374,7 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
   }
 
   FREE(&uri);
-  mutt_debug(1, "nm: .... sync done [rc=%d]\n", rc);
+  mutt_debug(LL_DEBUG1, "nm: .... sync done [rc=%d]\n", rc);
   return rc;
 }
 
@@ -2466,7 +2466,7 @@ static int nm_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
   if (!(db = nm_db_get(m, true)) || !(msg = get_nm_message(db, e)))
     goto done;
 
-  mutt_debug(1, "nm: tags modify: '%s'\n", buf);
+  mutt_debug(LL_DEBUG1, "nm: tags modify: '%s'\n", buf);
 
   update_tags(msg, buf);
   update_email_flags(m, e, buf);
@@ -2482,7 +2482,7 @@ done:
     m->mtime.tv_sec = time(NULL);
     m->mtime.tv_nsec = 0;
   }
-  mutt_debug(1, "nm: tags modify done [rc=%d]\n", rc);
+  mutt_debug(LL_DEBUG1, "nm: tags modify done [rc=%d]\n", rc);
   return rc;
 }
 

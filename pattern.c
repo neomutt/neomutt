@@ -304,7 +304,7 @@ static bool eat_query(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   else
   {
     char *escaped_folder = mutt_path_escape(Context->mailbox->path);
-    mutt_debug(2, "escaped folder path: %s\n", escaped_folder);
+    mutt_debug(LL_DEBUG2, "escaped folder path: %s\n", escaped_folder);
     mutt_buffer_addch(&cmd_buf, '\'');
     mutt_buffer_addstr(&cmd_buf, escaped_folder);
     mutt_buffer_addch(&cmd_buf, '\'');
@@ -823,7 +823,7 @@ static int report_regerror(int regerr, regex_t *preg, struct Buffer *err)
   size_t ds = err->dsize;
 
   if (regerror(regerr, preg, err->data, ds) > ds)
-    mutt_debug(2, "warning: buffer too small for regerror\n");
+    mutt_debug(LL_DEBUG2, "warning: buffer too small for regerror\n");
   /* The return value is fixed, exists only to shorten code at callsite */
   return RANGE_E_SYNTAX;
 }
@@ -987,7 +987,7 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
   /* Snarf the contents of the two sides of the range. */
   pat->min = scan_range_slot(s, pmatch, pspec->lgrp, RANGE_S_LEFT, kind);
   pat->max = scan_range_slot(s, pmatch, pspec->rgrp, RANGE_S_RIGHT, kind);
-  mutt_debug(1, "pat->min=%d pat->max=%d\n", pat->min, pat->max);
+  mutt_debug(LL_DEBUG1, "pat->min=%d pat->max=%d\n", pat->min, pat->max);
 
   /* Special case for a bare 0. */
   if ((kind == RANGE_K_BARE) && (pat->min == 0) && (pat->max == 0))

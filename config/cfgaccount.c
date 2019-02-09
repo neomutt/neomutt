@@ -72,7 +72,7 @@ struct CfgAccount *ac_new(const struct ConfigSet *cs, const char *name,
     struct HashElem *parent = cs_get_elem(cs, ac->var_names[i]);
     if (!parent)
     {
-      mutt_debug(1, "%s doesn't exist\n", ac->var_names[i]);
+      mutt_debug(LL_DEBUG1, "%s doesn't exist\n", ac->var_names[i]);
       success = false;
       break;
     }
@@ -81,7 +81,7 @@ struct CfgAccount *ac_new(const struct ConfigSet *cs, const char *name,
     ac->vars[i] = cs_inherit_variable(cs, parent, acname);
     if (!ac->vars[i])
     {
-      mutt_debug(1, "failed to create %s\n", acname);
+      mutt_debug(LL_DEBUG1, "failed to create %s\n", acname);
       success = false;
       break;
     }
@@ -116,7 +116,7 @@ void ac_free(const struct ConfigSet *cs, struct CfgAccount **ac)
     mutt_buffer_reset(&err);
     int result = cs_str_reset(cs, child, &err);
     if (CSR_RESULT(result) != CSR_SUCCESS)
-      mutt_debug(1, "reset failed for %s: %s\n", child, err.data);
+      mutt_debug(LL_DEBUG1, "reset failed for %s: %s\n", child, err.data);
     mutt_hash_delete(cs->hash, child, NULL);
   }
 

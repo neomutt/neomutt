@@ -128,7 +128,7 @@ mode_t mh_umask(struct Mailbox *m)
   struct stat st;
   if (stat(m->path, &st))
   {
-    mutt_debug(1, "stat failed on %s\n", m->path);
+    mutt_debug(LL_DEBUG1, "stat failed on %s\n", m->path);
     return 077;
   }
 
@@ -370,7 +370,7 @@ int maildir_parse_dir(struct Mailbox *m, struct Maildir ***last,
     }
 
     /* FOO - really ignore the return value? */
-    mutt_debug(2, "queueing %s\n", de->d_name);
+    mutt_debug(LL_DEBUG2, "queueing %s\n", de->d_name);
 
     e = mutt_email_new();
     e->old = is_old;
@@ -438,11 +438,11 @@ static int maildir_add_to_context(struct Mailbox *m, struct Maildir *md)
 
   while (md)
   {
-    mutt_debug(2, "Considering %s\n", NONULL(md->canon_fname));
+    mutt_debug(LL_DEBUG2, "Considering %s\n", NONULL(md->canon_fname));
 
     if (md->email)
     {
-      mutt_debug(2, "Adding header structure. Flags: %s%s%s%s%s\n",
+      mutt_debug(LL_DEBUG2, "Adding header structure. Flags: %s%s%s%s%s\n",
                  md->email->flagged ? "f" : "", md->email->deleted ? "D" : "",
                  md->email->replied ? "r" : "", md->email->old ? "O" : "",
                  md->email->read ? "R" : "");
@@ -668,7 +668,7 @@ static void mh_sort_natural(struct Mailbox *m, struct Maildir **md)
 {
   if (!m || !md || !*md || (m->magic != MUTT_MH) || (Sort != SORT_ORDER))
     return;
-  mutt_debug(3, "maildir: sorting %s into natural order\n", m->path);
+  mutt_debug(LL_DEBUG3, "maildir: sorting %s into natural order\n", m->path);
   *md = maildir_sort(*md, (size_t) -1, md_cmp_path);
 }
 
@@ -733,7 +733,7 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
 
     if (!sort)
     {
-      mutt_debug(3, "maildir: need to sort %s by inode\n", m->path);
+      mutt_debug(LL_DEBUG3, "maildir: need to sort %s by inode\n", m->path);
       p = maildir_sort(p, (size_t) -1, md_cmp_inode);
       if (!last)
         *md = p;
@@ -906,7 +906,7 @@ int maildir_mh_open_message(struct Mailbox *m, struct Message *msg, int msgno, b
   if (!msg->fp)
   {
     mutt_perror(path);
-    mutt_debug(1, "fopen: %s: %s (errno %d).\n", path, strerror(errno), errno);
+    mutt_debug(LL_DEBUG1, "fopen: %s: %s (errno %d).\n", path, strerror(errno), errno);
     return -1;
   }
 
@@ -1052,7 +1052,7 @@ int md_commit_message(struct Mailbox *m, struct Message *msg, struct Email *e)
                        mutt_rand64(), NONULL(ShortHostname), suffix);
     mutt_buffer_printf(full, "%s/%s", m->path, mutt_b2s(path));
 
-    mutt_debug(2, "renaming %s to %s.\n", msg->path, mutt_b2s(full));
+    mutt_debug(LL_DEBUG2, "renaming %s to %s.\n", msg->path, mutt_b2s(full));
 
     if (mutt_file_safe_rename(msg->path, mutt_b2s(full)) == 0)
     {

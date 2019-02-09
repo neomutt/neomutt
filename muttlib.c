@@ -556,10 +556,10 @@ void mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix,
   mutt_buffer_printf(buf, "%s/%s-%s-%d-%d-%ld%ld%s%s", NONULL(Tmpdir), NONULL(prefix),
                      NONULL(Hostname), (int) getuid(), (int) getpid(), random(),
                      random(), suffix ? "." : "", NONULL(suffix));
-  mutt_debug(3, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, mutt_b2s(buf));
+  mutt_debug(LL_DEBUG3, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, mutt_b2s(buf));
   if (unlink(mutt_b2s(buf)) && errno != ENOENT)
   {
-    mutt_debug(1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src, line,
+    mutt_debug(LL_DEBUG1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src, line,
                mutt_b2s(buf), strerror(errno), errno);
   }
 }
@@ -583,15 +583,15 @@ void mutt_mktemp_full(char *buf, size_t buflen, const char *prefix,
                       (int) getpid(), mutt_rand64(), suffix ? "." : "", NONULL(suffix));
   if (n >= buflen)
   {
-    mutt_debug(1,
+    mutt_debug(LL_DEBUG1,
                "%s:%d: ERROR: insufficient buffer space to hold temporary "
                "filename! buflen=%zu but need %zu\n",
                src, line, buflen, n);
   }
-  mutt_debug(3, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, buf);
+  mutt_debug(LL_DEBUG3, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, buf);
   if (unlink(buf) && errno != ENOENT)
   {
-    mutt_debug(1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src, line,
+    mutt_debug(LL_DEBUG1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src, line,
                buf, strerror(errno), errno);
   }
 }
@@ -852,7 +852,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
       char srccopy[LONG_STRING];
       int i = 0;
 
-      mutt_debug(3, "fmtpipe = %s\n", src);
+      mutt_debug(LL_DEBUG3, "fmtpipe = %s\n", src);
 
       strncpy(srccopy, src, n);
       srccopy[n - 1] = '\0';
@@ -867,11 +867,11 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
       do
       {
         /* Extract the command name and copy to command line */
-        mutt_debug(3, "fmtpipe +++: %s\n", srcbuf->dptr);
+        mutt_debug(LL_DEBUG3, "fmtpipe +++: %s\n", srcbuf->dptr);
         if (word->data)
           *word->data = '\0';
         mutt_extract_token(word, srcbuf, 0);
-        mutt_debug(3, "fmtpipe %2d: %s\n", i++, word->data);
+        mutt_debug(LL_DEBUG3, "fmtpipe %2d: %s\n", i++, word->data);
         mutt_buffer_addch(command, '\'');
         mutt_expando_format(tmp, sizeof(tmp), 0, cols, word->data, callback,
                             data, flags | MUTT_FORMAT_NOFILTER);
@@ -892,7 +892,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         mutt_buffer_addch(command, ' ');
       } while (MoreArgs(srcbuf));
 
-      mutt_debug(3, "fmtpipe > %s\n", command->data);
+      mutt_debug(LL_DEBUG3, "fmtpipe > %s\n", command->data);
 
       col -= wlen; /* reset to passed in value */
       wptr = buf;  /* reset write ptr */
@@ -905,7 +905,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         mutt_file_fclose(&filter);
         rc = mutt_wait_filter(pid);
         if (rc != 0)
-          mutt_debug(1, "format pipe command exited code %d\n", rc);
+          mutt_debug(LL_DEBUG1, "format pipe command exited code %d\n", rc);
         if (n > 0)
         {
           buf[n] = 0;
@@ -941,7 +941,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         else
         {
           /* read error */
-          mutt_debug(1, "error reading from fmtpipe: %s (errno=%d)\n",
+          mutt_debug(LL_DEBUG1, "error reading from fmtpipe: %s (errno=%d)\n",
                      strerror(errno), errno);
           *wptr = 0;
         }

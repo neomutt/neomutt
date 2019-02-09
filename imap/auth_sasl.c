@@ -60,7 +60,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
 
   if (mutt_sasl_client_new(adata->conn, &saslconn) < 0)
   {
-    mutt_debug(1, "Error allocating SASL connection.\n");
+    mutt_debug(LL_DEBUG1, "Error allocating SASL connection.\n");
     return IMAP_AUTH_FAILURE;
   }
 
@@ -112,7 +112,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
   if (rc != SASL_OK && rc != SASL_CONTINUE)
   {
     if (method)
-      mutt_debug(2, "%s unavailable\n", method);
+      mutt_debug(LL_DEBUG2, "%s unavailable\n", method);
     else
     {
       mutt_debug(
@@ -137,7 +137,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
     buf[len++] = ' ';
     if (sasl_encode64(pc, olen, buf + len, bufsize - len, &olen) != SASL_OK)
     {
-      mutt_debug(1, "#1 error base64-encoding client response.\n");
+      mutt_debug(LL_DEBUG1, "#1 error base64-encoding client response.\n");
       goto bail;
     }
     client_start = false;
@@ -176,7 +176,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
          * include space for the trailing null */
         if (sasl_decode64(adata->buf + 2, len, buf, bufsize - 1, &len) != SASL_OK)
         {
-          mutt_debug(1, "error base64-decoding server response.\n");
+          mutt_debug(LL_DEBUG1, "error base64-decoding server response.\n");
           goto bail;
         }
       }
@@ -207,7 +207,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
       }
       if (sasl_encode64(pc, olen, buf, bufsize, &olen) != SASL_OK)
       {
-        mutt_debug(1, "#2 error base64-encoding client response.\n");
+        mutt_debug(LL_DEBUG1, "#2 error base64-encoding client response.\n");
         goto bail;
       }
     }
@@ -222,7 +222,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
     if (rc < 0)
     {
       mutt_socket_send(adata->conn, "*\r\n");
-      mutt_debug(1, "sasl_client_step error %d\n", rc);
+      mutt_debug(LL_DEBUG1, "sasl_client_step error %d\n", rc);
     }
 
     olen = 0;
@@ -251,7 +251,7 @@ bail:
 
   if (method)
   {
-    mutt_debug(2, "%s failed\n", method);
+    mutt_debug(LL_DEBUG2, "%s failed\n", method);
     return IMAP_AUTH_UNAVAIL;
   }
 

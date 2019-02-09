@@ -560,7 +560,7 @@ static int nntp_auth(struct NntpAccountData *adata)
       p++;
     }
 
-    mutt_debug(1, "available methods: %s\n", adata->authenticators);
+    mutt_debug(LL_DEBUG1, "available methods: %s\n", adata->authenticators);
     a = authenticators;
     while (true)
     {
@@ -591,7 +591,7 @@ static int nntp_auth(struct NntpAccountData *adata)
         if (*m != '\0' && *m != ' ')
           continue;
       }
-      mutt_debug(1, "trying method %s\n", method);
+      mutt_debug(LL_DEBUG1, "trying method %s\n", method);
 
       /* AUTHINFO USER authentication */
       if (strcmp(method, "USER") == 0)
@@ -642,7 +642,7 @@ static int nntp_auth(struct NntpAccountData *adata)
 
         if (mutt_sasl_client_new(conn, &saslconn) < 0)
         {
-          mutt_debug(1, "error allocating SASL connection.\n");
+          mutt_debug(LL_DEBUG1, "error allocating SASL connection.\n");
           continue;
         }
 
@@ -657,7 +657,7 @@ static int nntp_auth(struct NntpAccountData *adata)
         if (rc != SASL_OK && rc != SASL_CONTINUE)
         {
           sasl_dispose(&saslconn);
-          mutt_debug(1, "error starting SASL authentication exchange.\n");
+          mutt_debug(LL_DEBUG1, "error starting SASL authentication exchange.\n");
           continue;
         }
 
@@ -677,7 +677,7 @@ static int nntp_auth(struct NntpAccountData *adata)
             if (sasl_encode64(client_out, client_len, buf + len,
                               sizeof(buf) - len, &len) != SASL_OK)
             {
-              mutt_debug(1, "error base64-encoding client response.\n");
+              mutt_debug(LL_DEBUG1, "error base64-encoding client response.\n");
               break;
             }
           }
@@ -710,7 +710,7 @@ static int nntp_auth(struct NntpAccountData *adata)
           else if (sasl_decode64(inbuf + 4, strlen(inbuf + 4), buf,
                                  sizeof(buf) - 1, &len) != SASL_OK)
           {
-            mutt_debug(1, "error base64-decoding server response.\n");
+            mutt_debug(LL_DEBUG1, "error base64-decoding server response.\n");
             break;
           }
           else 
@@ -960,7 +960,7 @@ static int fetch_description(char *line, void *data)
   if (mdata && (mutt_str_strcmp(desc, mdata->desc) != 0))
   {
     mutt_str_replace(&mdata->desc, desc);
-    mutt_debug(2, "group: %s, desc: %s\n", line, desc);
+    mutt_debug(LL_DEBUG2, "group: %s, desc: %s\n", line, desc);
   }
   return 0;
 }
@@ -1109,7 +1109,7 @@ static int parse_overview_line(char *line, void *data)
     *field++ = '\0';
   if (sscanf(line, ANUM, &anum) != 1)
     return 0;
-  mutt_debug(2, "" ANUM "\n", anum);
+  mutt_debug(LL_DEBUG2, "" ANUM "\n", anum);
 
   /* out of bounds */
   if (anum < fc->first || anum > fc->last)
@@ -1177,7 +1177,7 @@ static int parse_overview_line(char *line, void *data)
     void *hdata = mutt_hcache_fetch(fc->hc, buf, strlen(buf));
     if (hdata)
     {
-      mutt_debug(2, "mutt_hcache_fetch %s\n", buf);
+      mutt_debug(LL_DEBUG2, "mutt_hcache_fetch %s\n", buf);
       mutt_email_free(&e);
       e = mutt_hcache_restore(hdata);
       m->emails[m->msg_count] = e;
@@ -1191,7 +1191,7 @@ static int parse_overview_line(char *line, void *data)
       {
         if (mdata->bcache)
         {
-          mutt_debug(2, "mutt_bcache_del %s\n", buf);
+          mutt_debug(LL_DEBUG2, "mutt_bcache_del %s\n", buf);
           mutt_bcache_del(mdata->bcache, buf);
         }
         save = false;
@@ -1201,7 +1201,7 @@ static int parse_overview_line(char *line, void *data)
     /* not cached yet, store header */
     else
     {
-      mutt_debug(2, "mutt_hcache_store %s\n", buf);
+      mutt_debug(LL_DEBUG2, "mutt_hcache_store %s\n", buf);
       mutt_hcache_store(fc->hc, buf, strlen(buf), e, 0);
     }
   }
@@ -1311,14 +1311,14 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
         snprintf(buf, sizeof(buf), "%u", current);
         if (mdata->bcache)
         {
-          mutt_debug(2, "#1 mutt_bcache_del %s\n", buf);
+          mutt_debug(LL_DEBUG2, "#1 mutt_bcache_del %s\n", buf);
           mutt_bcache_del(mdata->bcache, buf);
         }
 
 #ifdef USE_HCACHE
         if (fc.hc)
         {
-          mutt_debug(2, "mutt_hcache_delete %s\n", buf);
+          mutt_debug(LL_DEBUG2, "mutt_hcache_delete %s\n", buf);
           mutt_hcache_delete(fc.hc, buf, strlen(buf));
         }
 #endif
@@ -1359,7 +1359,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
     hdata = mutt_hcache_fetch(fc.hc, buf, strlen(buf));
     if (hdata)
     {
-      mutt_debug(2, "mutt_hcache_fetch %s\n", buf);
+      mutt_debug(LL_DEBUG2, "mutt_hcache_fetch %s\n", buf);
       e = mutt_hcache_restore(hdata);
       m->emails[m->msg_count] = e;
       mutt_hcache_free(fc.hc, &hdata);
@@ -1371,7 +1371,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
         mutt_email_free(&e);
         if (mdata->bcache)
         {
-          mutt_debug(2, "#2 mutt_bcache_del %s\n", buf);
+          mutt_debug(LL_DEBUG2, "#2 mutt_bcache_del %s\n", buf);
           mutt_bcache_del(mdata->bcache, buf);
         }
         continue;
@@ -1427,7 +1427,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
         if (mdata->bcache)
         {
           snprintf(buf, sizeof(buf), "%u", current);
-          mutt_debug(2, "#3 mutt_bcache_del %s\n", buf);
+          mutt_debug(LL_DEBUG2, "#3 mutt_bcache_del %s\n", buf);
           mutt_bcache_del(mdata->bcache, buf);
         }
         rc = 0;
@@ -1624,7 +1624,7 @@ static int check_mailbox(struct Mailbox *m)
         {
           bool deleted;
 
-          mutt_debug(2, "#1 mutt_hcache_fetch %s\n", buf);
+          mutt_debug(LL_DEBUG2, "#1 mutt_hcache_fetch %s\n", buf);
           e = mutt_hcache_restore(hdata);
           mutt_hcache_free(hc, &hdata);
           e->edata = NULL;
@@ -1668,7 +1668,7 @@ static int check_mailbox(struct Mailbox *m)
       hdata = mutt_hcache_fetch(hc, buf, strlen(buf));
       if (hdata)
       {
-        mutt_debug(2, "#2 mutt_hcache_fetch %s\n", buf);
+        mutt_debug(LL_DEBUG2, "#2 mutt_hcache_fetch %s\n", buf);
         if (m->msg_count >= m->email_max)
           mx_alloc_memory(m);
 
@@ -1681,7 +1681,7 @@ static int check_mailbox(struct Mailbox *m)
           mutt_email_free(&e);
           if (mdata->bcache)
           {
-            mutt_debug(2, "mutt_bcache_del %s\n", buf);
+            mutt_debug(LL_DEBUG2, "mutt_bcache_del %s\n", buf);
             mutt_bcache_del(mdata->bcache, buf);
           }
           continue;
@@ -1774,7 +1774,7 @@ static int nntp_date(struct NntpAccountData *adata, time_t *now)
       *now = timegm(&tm);
       if (*now >= 0)
       {
-        mutt_debug(1, "server time is %lu\n", *now);
+        mutt_debug(LL_DEBUG1, "server time is %lu\n", *now);
         return 0;
       }
     }
@@ -2645,7 +2645,7 @@ static int nntp_mbox_sync(struct Mailbox *m, int *index_hint)
     snprintf(buf, sizeof(buf), "%d", nntp_edata_get(e)->article_num);
     if (mdata->bcache && e->deleted)
     {
-      mutt_debug(2, "mutt_bcache_del %s\n", buf);
+      mutt_debug(LL_DEBUG2, "mutt_bcache_del %s\n", buf);
       mutt_bcache_del(mdata->bcache, buf);
     }
 
@@ -2654,7 +2654,7 @@ static int nntp_mbox_sync(struct Mailbox *m, int *index_hint)
     {
       if (e->deleted && !e->read)
         mdata->unread--;
-      mutt_debug(2, "mutt_hcache_store %s\n", buf);
+      mutt_debug(LL_DEBUG2, "mutt_hcache_store %s\n", buf);
       mutt_hcache_store(hc, buf, strlen(buf), e, 0);
     }
 #endif

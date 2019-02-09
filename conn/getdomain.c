@@ -77,7 +77,7 @@ int getdnsdomainname(char *buf, size_t buflen)
       h = reqs[0]->ar_result;
     else if (status == EAI_INPROGRESS)
     {
-      mutt_debug(1, "timeout\n");
+      mutt_debug(LL_DEBUG1, "timeout\n");
       /* request is not finish, cancel it to free it safely */
       if (gai_cancel(reqs[0]) == EAI_NOTCANCELED)
       {
@@ -86,15 +86,15 @@ int getdnsdomainname(char *buf, size_t buflen)
       }
     }
     else
-      mutt_debug(1, "fail: (%d) %s\n", status, gai_strerror(status));
+      mutt_debug(LL_DEBUG1, "fail: (%d) %s\n", status, gai_strerror(status));
   }
   FREE(&reqs[0]);
 
 #else /* !HAVE_GETADDRINFO_A */
 
-  mutt_debug(3, "before getaddrinfo\n");
+  mutt_debug(LL_DEBUG3, "before getaddrinfo\n");
   getaddrinfo(node, NULL, &hints, &h);
-  mutt_debug(3, "after getaddrinfo\n");
+  mutt_debug(LL_DEBUG3, "after getaddrinfo\n");
 
 #endif
 
@@ -103,7 +103,7 @@ int getdnsdomainname(char *buf, size_t buflen)
   {
     mutt_str_strfcpy(buf, ++p, buflen);
     rc = 0;
-    mutt_debug(1, "Hostname: %s\n", buf);
+    mutt_debug(LL_DEBUG1, "Hostname: %s\n", buf);
     freeaddrinfo(h);
   }
 

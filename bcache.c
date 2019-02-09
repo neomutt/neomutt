@@ -79,7 +79,7 @@ static int bcache_path(struct ConnAccount *account, const char *mailbox, char *d
   url.path = NULL;
   if (url_tostring(&url, host, sizeof(host), U_PATH) < 0)
   {
-    mutt_debug(1, "URL to string failed\n");
+    mutt_debug(LL_DEBUG1, "URL to string failed\n");
     return -1;
   }
 
@@ -89,12 +89,12 @@ static int bcache_path(struct ConnAccount *account, const char *mailbox, char *d
 
   mutt_encode_path(dst, dstlen, dst);
 
-  mutt_debug(3, "rc: %d, path: '%s'\n", len, dst);
+  mutt_debug(LL_DEBUG3, "rc: %d, path: '%s'\n", len, dst);
 
   if (len < 0 || (size_t) len >= dstlen - 1)
     return -1;
 
-  mutt_debug(3, "directory: '%s'\n", dst);
+  mutt_debug(LL_DEBUG3, "directory: '%s'\n", dst);
 
   return 0;
 }
@@ -116,7 +116,7 @@ static int mutt_bcache_move(struct BodyCache *bcache, const char *id, const char
   snprintf(path, sizeof(path), "%s%s", bcache->path, id);
   snprintf(newpath, sizeof(newpath), "%s%s", bcache->path, newid);
 
-  mutt_debug(3, "bcache: mv: '%s' '%s'\n", path, newpath);
+  mutt_debug(LL_DEBUG3, "bcache: mv: '%s' '%s'\n", path, newpath);
 
   return rename(path, newpath);
 }
@@ -181,7 +181,7 @@ FILE *mutt_bcache_get(struct BodyCache *bcache, const char *id)
 
   fp = mutt_file_fopen(path, "r");
 
-  mutt_debug(3, "bcache: get: '%s': %s\n", path, fp ? "yes" : "no");
+  mutt_debug(LL_DEBUG3, "bcache: get: '%s': %s\n", path, fp ? "yes" : "no");
 
   return fp;
 }
@@ -227,7 +227,7 @@ FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id)
     }
   }
 
-  mutt_debug(3, "bcache: put: '%s'\n", path);
+  mutt_debug(LL_DEBUG3, "bcache: put: '%s'\n", path);
 
   return mutt_file_fopen(path, "w+");
 }
@@ -266,7 +266,7 @@ int mutt_bcache_del(struct BodyCache *bcache, const char *id)
   mutt_str_strncat(path, sizeof(path), bcache->path, bcache->pathlen);
   mutt_str_strncat(path, sizeof(path), id, mutt_str_strlen(id));
 
-  mutt_debug(3, "bcache: del: '%s'\n", path);
+  mutt_debug(LL_DEBUG3, "bcache: del: '%s'\n", path);
 
   return unlink(path);
 }
@@ -296,7 +296,7 @@ int mutt_bcache_exists(struct BodyCache *bcache, const char *id)
   else
     rc = S_ISREG(st.st_mode) && st.st_size != 0 ? 0 : -1;
 
-  mutt_debug(3, "bcache: exists: '%s': %s\n", path, rc == 0 ? "yes" : "no");
+  mutt_debug(LL_DEBUG3, "bcache: exists: '%s': %s\n", path, rc == 0 ? "yes" : "no");
 
   return rc;
 }
@@ -331,7 +331,7 @@ int mutt_bcache_list(struct BodyCache *bcache, bcache_list_t *want_id, void *dat
 
   rc = 0;
 
-  mutt_debug(3, "bcache: list: dir: '%s'\n", bcache->path);
+  mutt_debug(LL_DEBUG3, "bcache: list: dir: '%s'\n", bcache->path);
 
   while ((de = readdir(d)))
   {
@@ -341,7 +341,7 @@ int mutt_bcache_list(struct BodyCache *bcache, bcache_list_t *want_id, void *dat
       continue;
     }
 
-    mutt_debug(3, "bcache: list: dir: '%s', id :'%s'\n", bcache->path, de->d_name);
+    mutt_debug(LL_DEBUG3, "bcache: list: dir: '%s', id :'%s'\n", bcache->path, de->d_name);
 
     if (want_id && want_id(de->d_name, bcache, data) != 0)
       goto out;
@@ -355,6 +355,6 @@ out:
     if (closedir(d) < 0)
       rc = -1;
   }
-  mutt_debug(3, "bcache: list: did %d entries\n", rc);
+  mutt_debug(LL_DEBUG3, "bcache: list: did %d entries\n", rc);
   return rc;
 }

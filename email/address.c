@@ -1299,7 +1299,7 @@ struct Address *mutt_addrlist_dedupe(struct Address *addr)
 
     if (dup)
     {
-      mutt_debug(2, "Removing %s\n", addr->mailbox);
+      mutt_debug(LL_DEBUG2, "Removing %s\n", addr->mailbox);
 
       *last = addr->next;
 

@@ -106,7 +106,7 @@ bool mutt_path_tidy_dotdot(char *buf)
 
   char *dd = buf;
 
-  mutt_debug(3, "Collapse path: %s\n", buf);
+  mutt_debug(LL_DEBUG3, "Collapse path: %s\n", buf);
   while ((dd = strstr(dd, "/..")))
   {
     if (dd[3] == '/') /* paths follow dots */
@@ -147,7 +147,7 @@ bool mutt_path_tidy_dotdot(char *buf)
     dd = buf; /* restart at the beginning */
   }
 
-  mutt_debug(3, "Collapsed to:  %s\n", buf);
+  mutt_debug(LL_DEBUG3, "Collapsed to:  %s\n", buf);
   return true;
 }
 
@@ -232,7 +232,7 @@ bool mutt_path_canon(char *buf, size_t buflen, const char *homedir)
     {
       if (!homedir)
       {
-        mutt_debug(3, "no homedir\n");
+        mutt_debug(LL_DEBUG3, "no homedir\n");
         return false;
       }
 
@@ -251,7 +251,7 @@ bool mutt_path_canon(char *buf, size_t buflen, const char *homedir)
       struct passwd *pw = getpwnam(user);
       if (!pw || !pw->pw_dir)
       {
-        mutt_debug(1, "no such user: %s\n", user);
+        mutt_debug(LL_DEBUG1, "no such user: %s\n", user);
         return false;
       }
 
@@ -261,7 +261,7 @@ bool mutt_path_canon(char *buf, size_t buflen, const char *homedir)
     size_t dirlen = mutt_str_strlen(dir);
     if ((len + dirlen) >= buflen)
     {
-      mutt_debug(3, "result too big for the buffer %d >= %d\n", len + dirlen, buflen);
+      mutt_debug(LL_DEBUG3, "result too big for the buffer %d >= %d\n", len + dirlen, buflen);
       return false;
     }
 
@@ -272,7 +272,7 @@ bool mutt_path_canon(char *buf, size_t buflen, const char *homedir)
   {
     if (!getcwd(result, sizeof(result)))
     {
-      mutt_debug(1, "getcwd failed: %s (%d)\n", strerror(errno), errno);
+      mutt_debug(LL_DEBUG1, "getcwd failed: %s (%d)\n", strerror(errno), errno);
       return false;
     }
 
@@ -280,7 +280,7 @@ bool mutt_path_canon(char *buf, size_t buflen, const char *homedir)
     size_t dirlen = mutt_str_strlen(buf);
     if ((cwdlen + dirlen + 1) >= buflen)
     {
-      mutt_debug(3, "result too big for the buffer %d >= %d\n", cwdlen + dirlen + 1, buflen);
+      mutt_debug(LL_DEBUG3, "result too big for the buffer %d >= %d\n", cwdlen + dirlen + 1, buflen);
       return false;
     }
 
