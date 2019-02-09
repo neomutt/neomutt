@@ -1881,7 +1881,7 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
 
     if (!tempfp)
     {
-      mutt_debug(1, "can't create tempfile %s (errno=%d)\n", msg->content->filename, errno);
+      mutt_debug(LL_DEBUG1, "can't create tempfile %s (errno=%d)\n", msg->content->filename, errno);
       mutt_perror(msg->content->filename);
       goto cleanup;
     }

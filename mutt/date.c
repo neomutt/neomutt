@@ -506,7 +506,7 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
           sec = 0;
         else
         {
-          mutt_debug(1, "could not process time format: %s\n", t);
+          mutt_debug(LL_DEBUG1, "could not process time format: %s\n", t);
           return -1;
         }
         if ((hour < 0) || (hour > 23) || (min < 0) || (min > 59) || (sec < 0) || (sec > 60))
@@ -571,7 +571,7 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
 
   if (count < 4) /* don't check for missing timezone */
   {
-    mutt_debug(1, "error parsing date format, using received time\n");
+    mutt_debug(LL_DEBUG1, "error parsing date format, using received time\n");
     return -1;
   }
 

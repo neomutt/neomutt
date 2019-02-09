@@ -53,7 +53,7 @@
  */
 static int handle_panic(lua_State *l)
 {
-  mutt_debug(1, "lua runtime panic: %s\n", lua_tostring(l, -1));
+  mutt_debug(LL_DEBUG1, "lua runtime panic: %s\n", lua_tostring(l, -1));
   mutt_error("Lua runtime panic: %s\n", lua_tostring(l, -1));
   lua_pop(l, 1);
   return -1;
@@ -66,7 +66,7 @@ static int handle_panic(lua_State *l)
  */
 static int handle_error(lua_State *l)
 {
-  mutt_debug(1, "lua runtime error: %s\n", lua_tostring(l, -1));
+  mutt_debug(LL_DEBUG1, "lua runtime error: %s\n", lua_tostring(l, -1));
   mutt_error("Lua runtime error: %s\n", lua_tostring(l, -1));
   lua_pop(l, 1);
   return -1;
@@ -80,7 +80,7 @@ static int handle_error(lua_State *l)
  */
 static int lua_mutt_call(lua_State *l)
 {
-  mutt_debug(2, " * lua_mutt_call()\n");
+  mutt_debug(LL_DEBUG2, " * lua_mutt_call()\n");
   struct Buffer token, expn, err;
   char buffer[LONG_STRING] = "";
   const struct Command *command = NULL;
@@ -145,7 +145,7 @@ static int lua_mutt_call(lua_State *l)
 static int lua_mutt_set(lua_State *l)
 {
   const char *param = lua_tostring(l, -2);
-  mutt_debug(2, " * lua_mutt_set(%s)\n", param);
+  mutt_debug(LL_DEBUG2, " * lua_mutt_set(%s)\n", param);
 
   if (mutt_str_startswith(param, "my_", CASE_MATCH))
   {
@@ -219,7 +219,7 @@ static int lua_mutt_set(lua_State *l)
 static int lua_mutt_get(lua_State *l)
 {
   const char *param = lua_tostring(l, -1);
-  mutt_debug(2, " * lua_mutt_get(%s)\n", param);
+  mutt_debug(LL_DEBUG2, " * lua_mutt_get(%s)\n", param);
 
   if (mutt_str_startswith(param, "my_", CASE_MATCH))
   {
@@ -237,7 +237,7 @@ static int lua_mutt_get(lua_State *l)
   struct HashElem *he = cs_get_elem(Config, param);
   if (!he)
   {
-    mutt_debug(2, " * error\n");
+    mutt_debug(LL_DEBUG2, " * error\n");
     luaL_error(l, "NeoMutt parameter not found %s", param);
     return -1;
   }
@@ -293,7 +293,7 @@ static int lua_mutt_get(lua_State *l)
  */
 static int lua_mutt_enter(lua_State *l)
 {
-  mutt_debug(2, " * lua_mutt_enter()\n");
+  mutt_debug(LL_DEBUG2, " * lua_mutt_enter()\n");
   struct Buffer token, err;
   char *buffer = mutt_str_strdup(lua_tostring(l, -1));
   int rc = 0;
@@ -330,7 +330,7 @@ static int lua_mutt_enter(lua_State *l)
  */
 static int lua_mutt_message(lua_State *l)
 {
-  mutt_debug(2, " * lua_mutt_message()\n");
+  mutt_debug(LL_DEBUG2, " * lua_mutt_message()\n");
   const char *msg = lua_tostring(l, -1);
   if (msg)
     mutt_message(msg);
@@ -344,7 +344,7 @@ static int lua_mutt_message(lua_State *l)
  */
 static int lua_mutt_error(lua_State *l)
 {
-  mutt_debug(2, " * lua_mutt_error()\n");
+  mutt_debug(LL_DEBUG2, " * lua_mutt_error()\n");
   const char *msg = lua_tostring(l, -1);
   if (msg)
     mutt_error(msg);
@@ -384,7 +384,7 @@ static const luaL_Reg luaMuttDecl[] = {
  */
 static int luaopen_mutt_decl(lua_State *l)
 {
-  mutt_debug(2, " * luaopen_mutt()\n");
+  mutt_debug(LL_DEBUG2, " * luaopen_mutt()\n");
   luaL_newlib(l, luaMuttDecl);
   int lib_idx = lua_gettop(l);
   /*                  table_idx, key        value,               value's type */
@@ -419,7 +419,7 @@ static bool lua_init(lua_State **l)
   if (*l)
     return true;
 
-  mutt_debug(2, " * lua_init()\n");
+  mutt_debug(LL_DEBUG2, " * lua_init()\n");
   *l = luaL_newstate();
 
   if (!*l)
@@ -448,17 +448,17 @@ enum CommandResult mutt_lua_parse(struct Buffer *buf, struct Buffer *s,
                                   unsigned long data, struct Buffer *err)
 {
   lua_init(&Lua);
-  mutt_debug(2, " * mutt_lua_parse(%s)\n", buf->data);
+  mutt_debug(LL_DEBUG2, " * mutt_lua_parse(%s)\n", buf->data);
 
   if (luaL_dostring(Lua, s->dptr))
   {
-    mutt_debug(2, " * %s -> failure\n", s->dptr);
+    mutt_debug(LL_DEBUG2, " * %s -> failure\n", s->dptr);
     mutt_buffer_printf(err, "%s: %s", s->dptr, lua_tostring(Lua, -1));
     /* pop error message from the stack */
     lua_pop(Lua, 1);
     return MUTT_CMD_ERROR;
   }
-  mutt_debug(2, " * %s -> success\n", s->dptr);
+  mutt_debug(LL_DEBUG2, " * %s -> success\n", s->dptr);
   return MUTT_CMD_SUCCESS;
 }
 
@@ -468,7 +468,7 @@ enum CommandResult mutt_lua_parse(struct Buffer *buf, struct Buffer *s,
 enum CommandResult mutt_lua_source_file(struct Buffer *buf, struct Buffer *s,
                                         unsigned long data, struct Buffer *err)
 {
-  mutt_debug(2, " * mutt_lua_source()\n");
+  mutt_debug(LL_DEBUG2, " * mutt_lua_source()\n");
 
   lua_init(&Lua);
 

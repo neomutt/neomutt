@@ -1224,7 +1224,7 @@ int mutt_index_menu(void)
 
       op = km_dokey(MENU_MAIN);
 
-      mutt_debug(3, "[%d]: Got op %d\n", __LINE__, op);
+      mutt_debug(LL_DEBUG3, "[%d]: Got op %d\n", __LINE__, op);
 
       /* either user abort or timeout */
       if (op < 0)
@@ -2132,7 +2132,7 @@ int mutt_index_menu(void)
       case OP_MAIN_WINDOWED_VFOLDER_BACKWARD:
         if (!prereq(Context, menu, CHECK_IN_MAILBOX))
           break;
-        mutt_debug(2, "OP_MAIN_WINDOWED_VFOLDER_BACKWARD\n");
+        mutt_debug(LL_DEBUG2, "OP_MAIN_WINDOWED_VFOLDER_BACKWARD\n");
         if (NmQueryWindowDuration <= 0)
         {
           mutt_message(_("Windowed queries disabled"));
@@ -2170,7 +2170,7 @@ int mutt_index_menu(void)
           mutt_message(_("Failed to create query, aborting"));
         else
         {
-          mutt_debug(2, "nm: + windowed query (%s)\n", buf);
+          mutt_debug(LL_DEBUG2, "nm: + windowed query (%s)\n", buf);
           main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint);
         }
         break;
@@ -3349,7 +3349,7 @@ int mutt_index_menu(void)
                by whatever they typed at the prompt.) */
             snprintf(buf2, sizeof(buf2), _("Message bound to %s"), str);
             mutt_message(buf2);
-            mutt_debug(1, "Mark: %s => %s\n", str, macro);
+            mutt_debug(LL_DEBUG1, "Mark: %s => %s\n", str, macro);
           }
         }
         else

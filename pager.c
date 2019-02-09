@@ -1333,7 +1333,7 @@ static int fill_buffer(FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *
                ((check_attachment_marker((char *) p) == 0) ||
                 (check_protected_header_marker((char *) p) == 0)))
       {
-        mutt_debug(2, "Seen attachment marker.\n");
+        mutt_debug(LL_DEBUG2, "Seen attachment marker.\n");
         while (*p++ != '\a') /* skip pseudo-ANSI sequence */
           ;
       }
@@ -1403,7 +1403,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf, int f
     {
       if (k == (size_t)(-1))
         memset(&mbstate, 0, sizeof(mbstate));
-      mutt_debug(1, "mbrtowc returned %lu; errno = %d.\n", k, errno);
+      mutt_debug(LL_DEBUG1, "mbrtowc returned %lu; errno = %d.\n", k, errno);
       if (col + 4 > wrap_cols)
         break;
       col += 4;
@@ -1420,12 +1420,12 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf, int f
       /* zero width space, zero width no-break space */
       if (wc == 0x200B || wc == 0xFEFF)
       {
-        mutt_debug(3, "skip zero-width character U+%04X\n", (unsigned short) wc);
+        mutt_debug(LL_DEBUG3, "skip zero-width character U+%04X\n", (unsigned short) wc);
         continue;
       }
       if (mutt_mb_is_display_corrupting_utf8(wc))
       {
-        mutt_debug(3, "filtered U+%04X\n", (unsigned short) wc);
+        mutt_debug(LL_DEBUG3, "filtered U+%04X\n", (unsigned short) wc);
         continue;
       }
     }

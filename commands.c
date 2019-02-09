@@ -800,7 +800,7 @@ void mutt_shell_escape(void)
   fflush(stdout);
   int rc = mutt_system(buf);
   if (rc == -1)
-    mutt_debug(1, "Error running \"%s\"!", buf);
+    mutt_debug(LL_DEBUG1, "Error running \"%s\"!", buf);
 
   if ((rc != 0) || WaitKey)
     mutt_any_key_to_continue(NULL);

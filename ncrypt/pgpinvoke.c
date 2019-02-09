@@ -184,7 +184,7 @@ static void mutt_pgp_command(char *buf, size_t buflen,
 {
   mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(fmt),
                       fmt_pgp_command, (unsigned long) cctx, 0);
-  mutt_debug(2, "%s\n", buf);
+  mutt_debug(LL_DEBUG2, "%s\n", buf);
 }
 
 /**
@@ -411,7 +411,7 @@ void pgp_class_invoke_import(const char *fname)
 
   mutt_pgp_command(cmd, sizeof(cmd), &cctx, PgpImportCommand);
   if (mutt_system(cmd) != 0)
-    mutt_debug(1, "Error running \"%s\"!", cmd);
+    mutt_debug(LL_DEBUG1, "Error running \"%s\"!", cmd);
 }
 
 /**
@@ -451,7 +451,7 @@ void pgp_class_invoke_getkeys(struct Address *addr)
     mutt_message(_("Fetching PGP key..."));
 
   if (mutt_system(cmd) != 0)
-    mutt_debug(1, "Error running \"%s\"!", cmd);
+    mutt_debug(LL_DEBUG1, "Error running \"%s\"!", cmd);
 
   if (!isendwin())
     mutt_clear_error();

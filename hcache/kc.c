@@ -61,7 +61,7 @@ static void *hcache_kyotocabinet_open(const char *path)
   else
   {
     int ecode = kcdbecode(db);
-    mutt_debug(2, "kcdbopen failed for %s: %s (ecode %d)\n", kcdbpath, kcdbemsg(db), ecode);
+    mutt_debug(LL_DEBUG2, "kcdbopen failed for %s: %s (ecode %d)\n", kcdbpath, kcdbemsg(db), ecode);
     kcdbdel(db);
     return NULL;
   }
@@ -137,7 +137,7 @@ static void hcache_kyotocabinet_close(void **ctx)
   if (!kcdbclose(db))
   {
     int ecode = kcdbecode(db);
-    mutt_debug(2, "kcdbclose failed: %s (ecode %d)\n", kcdbemsg(db), ecode);
+    mutt_debug(LL_DEBUG2, "kcdbclose failed: %s (ecode %d)\n", kcdbemsg(db), ecode);
   }
   kcdbdel(db);
 }

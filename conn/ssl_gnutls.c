@@ -810,7 +810,7 @@ static int tls_check_certificate(struct Connection *conn)
     {
       rc = gnutls_certificate_set_x509_trust_mem(data->xcred, &cert_list[i], GNUTLS_X509_FMT_DER);
       if (rc != 1)
-        mutt_debug(1, "error trusting certificate %d: %d\n", i, rc);
+        mutt_debug(LL_DEBUG1, "error trusting certificate %d: %d\n", i, rc);
 
       certstat = tls_verify_peers(state);
       /* If the cert chain now verifies, and the peer's cert was otherwise
@@ -844,12 +844,12 @@ static void tls_get_client_cert(struct Connection *conn)
 
   if (gnutls_x509_crt_init(&clientcrt) < 0)
   {
-    mutt_debug(1, "Failed to init gnutls crt\n");
+    mutt_debug(LL_DEBUG1, "Failed to init gnutls crt\n");
     return;
   }
   if (gnutls_x509_crt_import(clientcrt, crtdata, GNUTLS_X509_FMT_DER) < 0)
   {
-    mutt_debug(1, "Failed to import gnutls client crt\n");
+    mutt_debug(LL_DEBUG1, "Failed to import gnutls client crt\n");
     goto err_crt;
   }
   /* get length of DN */
@@ -858,13 +858,13 @@ static void tls_get_client_cert(struct Connection *conn)
   dn = mutt_mem_calloc(1, dnlen);
 
   gnutls_x509_crt_get_dn(clientcrt, dn, &dnlen);
-  mutt_debug(2, "client certificate DN: %s\n", dn);
+  mutt_debug(LL_DEBUG2, "client certificate DN: %s\n", dn);
 
   /* extract CN to use as external user name */
   cn = strstr(dn, "CN=");
   if (!cn)
   {
-    mutt_debug(1, "no CN found in DN\n");
+    mutt_debug(LL_DEBUG1, "no CN found in DN\n");
     goto err_dn;
   }
 
@@ -874,7 +874,7 @@ static void tls_get_client_cert(struct Connection *conn)
 
   /* if we are using a client cert, SASL may expect an external auth name */
   if (mutt_account_getuser(&conn->account) < 0)
-    mutt_debug(1, "Couldn't get user info\n");
+    mutt_debug(LL_DEBUG1, "Couldn't get user info\n");
 
 err_dn:
   FREE(&dn);
@@ -1028,7 +1028,7 @@ static int tls_negotiate(struct Connection *conn)
 
   if (SslClientCert)
   {
-    mutt_debug(2, "Using client certificate %s\n", SslClientCert);
+    mutt_debug(LL_DEBUG2, "Using client certificate %s\n", SslClientCert);
     gnutls_certificate_set_x509_key_file(data->xcred, SslClientCert,
                                          SslClientCert, GNUTLS_X509_FMT_PEM);
   }
