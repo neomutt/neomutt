@@ -278,7 +278,7 @@ bool cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], 
   {
     if (!reg_one_var(cs, &vars[i], &err))
     {
-      mutt_debug(1, "%s\n", err.data);
+      mutt_debug(LL_DEBUG1, "%s\n", err.data);
       rc = false;
     }
   }
@@ -334,7 +334,7 @@ void cs_add_listener(struct ConfigSet *cs, cs_listener fn)
   {
     if (cs->listeners[i] == fn)
     {
-      mutt_debug(1, "Listener was already registered\n");
+      mutt_debug(LL_DEBUG1, "Listener was already registered\n");
       return;
     }
   }
@@ -367,7 +367,7 @@ void cs_remove_listener(struct ConfigSet *cs, cs_listener fn)
       return;
     }
   }
-  mutt_debug(1, "Listener wasn't registered\n");
+  mutt_debug(LL_DEBUG1, "Listener wasn't registered\n");
 }
 
 /**
@@ -482,7 +482,7 @@ int cs_he_initial_set(const struct ConfigSet *cs, struct HashElem *he,
   {
     struct Inheritance *i = he->data;
     cdef = i->parent->data;
-    mutt_debug(1, "Variable '%s' is inherited type.\n", cdef->name);
+    mutt_debug(LL_DEBUG1, "Variable '%s' is inherited type.\n", cdef->name);
     return CSR_ERR_CODE;
   }
 
@@ -490,7 +490,7 @@ int cs_he_initial_set(const struct ConfigSet *cs, struct HashElem *he,
   cst = cs_get_type_def(cs, he->type);
   if (!cst)
   {
-    mutt_debug(1, "Variable '%s' has an invalid type %d\n", cdef->name, he->type);
+    mutt_debug(LL_DEBUG1, "Variable '%s' has an invalid type %d\n", cdef->name, he->type);
     return CSR_ERR_CODE;
   }
 
@@ -559,7 +559,7 @@ int cs_he_initial_get(const struct ConfigSet *cs, struct HashElem *he, struct Bu
 
   if (!cst)
   {
-    mutt_debug(1, "Variable '%s' has an invalid type %d\n", cdef->name, DTYPE(he->type));
+    mutt_debug(LL_DEBUG1, "Variable '%s' has an invalid type %d\n", cdef->name, DTYPE(he->type));
     return CSR_ERR_CODE;
   }
 
@@ -625,7 +625,7 @@ int cs_he_string_set(const struct ConfigSet *cs, struct HashElem *he,
 
   if (!cst)
   {
-    mutt_debug(1, "Variable '%s' has an invalid type %d\n", cdef->name, he->type);
+    mutt_debug(LL_DEBUG1, "Variable '%s' has an invalid type %d\n", cdef->name, he->type);
     return CSR_ERR_CODE;
   }
 
@@ -710,7 +710,7 @@ int cs_he_string_get(const struct ConfigSet *cs, struct HashElem *he, struct Buf
 
   if (!cst)
   {
-    mutt_debug(1, "Variable '%s' has an invalid type %d\n", cdef->name, DTYPE(he->type));
+    mutt_debug(LL_DEBUG1, "Variable '%s' has an invalid type %d\n", cdef->name, DTYPE(he->type));
     return CSR_ERR_CODE;
   }
 
@@ -773,7 +773,7 @@ int cs_he_native_set(const struct ConfigSet *cs, struct HashElem *he,
 
   if (!cst)
   {
-    mutt_debug(1, "Variable '%s' has an invalid type %d\n", cdef->name, he->type);
+    mutt_debug(LL_DEBUG1, "Variable '%s' has an invalid type %d\n", cdef->name, he->type);
     return CSR_ERR_CODE;
   }
 
@@ -830,7 +830,7 @@ int cs_str_native_set(const struct ConfigSet *cs, const char *name,
 
   if (!cst)
   {
-    mutt_debug(1, "Variable '%s' has an invalid type %d\n", cdef->name, he->type);
+    mutt_debug(LL_DEBUG1, "Variable '%s' has an invalid type %d\n", cdef->name, he->type);
     return CSR_ERR_CODE;
   }
 

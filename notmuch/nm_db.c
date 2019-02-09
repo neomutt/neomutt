@@ -68,7 +68,7 @@ const char *nm_db_get_filename(struct Mailbox *m)
   if (nm_path_probe(db_filename, NULL) == MUTT_NOTMUCH)
     db_filename += NmUriProtocolLen;
 
-  mutt_debug(2, "nm: db filename '%s'\n", db_filename);
+  mutt_debug(LL_DEBUG2, "nm: db filename '%s'\n", db_filename);
   return db_filename;
 }
 
@@ -88,7 +88,7 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
   char *msg = NULL;
 #endif
 
-  mutt_debug(1, "nm: db open '%s' %s (timeout %d)\n", filename,
+  mutt_debug(LL_DEBUG1, "nm: db open '%s' %s (timeout %d)\n", filename,
              writable ? "[WRITE]" : "[READ]", NmOpenTimeout);
 
   const notmuch_database_mode_t mode =
@@ -177,7 +177,7 @@ int nm_db_release(struct Mailbox *m)
   if (!adata || !adata->db || nm_db_is_longrun(m))
     return -1;
 
-  mutt_debug(1, "nm: db close\n");
+  mutt_debug(LL_DEBUG1, "nm: db close\n");
   nm_db_free(adata->db);
   adata->db = NULL;
   adata->longrun = false;
@@ -213,7 +213,7 @@ int nm_db_trans_begin(struct Mailbox *m)
   if (adata->trans)
     return 0;
 
-  mutt_debug(2, "nm: db trans start\n");
+  mutt_debug(LL_DEBUG2, "nm: db trans start\n");
   if (notmuch_database_begin_atomic(adata->db))
     return -1;
   adata->trans = true;
@@ -235,7 +235,7 @@ int nm_db_trans_end(struct Mailbox *m)
   if (!adata->trans)
     return 0;
 
-  mutt_debug(2, "nm: db trans end\n");
+  mutt_debug(LL_DEBUG2, "nm: db trans end\n");
   adata->trans = false;
   if (notmuch_database_end_atomic(adata->db))
     return -1;
@@ -260,7 +260,7 @@ int nm_db_get_mtime(struct Mailbox *m, time_t *mtime)
 
   char path[PATH_MAX];
   snprintf(path, sizeof(path), "%s/.notmuch/xapian", nm_db_get_filename(m));
-  mutt_debug(2, "nm: checking '%s' mtime\n", path);
+  mutt_debug(LL_DEBUG2, "nm: checking '%s' mtime\n", path);
 
   struct stat st;
   if (stat(path, &st))
@@ -297,7 +297,7 @@ void nm_db_longrun_init(struct Mailbox *m, bool writable)
     return;
 
   adata->longrun = true;
-  mutt_debug(2, "nm: long run initialized\n");
+  mutt_debug(LL_DEBUG2, "nm: long run initialized\n");
 }
 
 /**
@@ -312,7 +312,7 @@ void nm_db_longrun_done(struct Mailbox *m)
   {
     adata->longrun = false; /* to force nm_db_release() released DB */
     if (nm_db_release(m) == 0)
-      mutt_debug(2, "nm: long run deinitialized\n");
+      mutt_debug(LL_DEBUG2, "nm: long run deinitialized\n");
     else
       adata->longrun = true;
   }
@@ -328,6 +328,6 @@ void nm_db_debug_check(struct Mailbox *m)
   if (!adata || !adata->db)
     return;
 
-  mutt_debug(1, "nm: ERROR: db is open, closing\n");
+  mutt_debug(LL_DEBUG1, "nm: ERROR: db is open, closing\n");
   nm_db_release(m);
 }

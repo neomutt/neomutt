@@ -99,14 +99,14 @@ static void parse_parameters(struct ParameterList *param, const char *s)
   const char *p = NULL;
   size_t i;
 
-  mutt_debug(2, "'%s'\n", s);
+  mutt_debug(LL_DEBUG2, "'%s'\n", s);
 
   while (*s)
   {
     p = strpbrk(s, "=;");
     if (!p)
     {
-      mutt_debug(1, "malformed parameter: %s\n", s);
+      mutt_debug(LL_DEBUG1, "malformed parameter: %s\n", s);
       goto bail;
     }
 
@@ -123,7 +123,7 @@ static void parse_parameters(struct ParameterList *param, const char *s)
        */
       if (i == 0)
       {
-        mutt_debug(1, "missing attribute: %s\n", s);
+        mutt_debug(LL_DEBUG1, "missing attribute: %s\n", s);
         new = NULL;
       }
       else
@@ -180,7 +180,7 @@ static void parse_parameters(struct ParameterList *param, const char *s)
       {
         new->value = mutt_str_strdup(buffer);
 
-        mutt_debug(2, "parse_parameter: '%s' = '%s'\n",
+        mutt_debug(LL_DEBUG2, "parse_parameter: '%s' = '%s'\n",
                    new->attribute ? new->attribute : "", new->value ? new->value : "");
 
         /* Add this parameter to the list */
@@ -189,7 +189,7 @@ static void parse_parameters(struct ParameterList *param, const char *s)
     }
     else
     {
-      mutt_debug(1, "parameter with no value: %s\n", s);
+      mutt_debug(LL_DEBUG1, "parameter with no value: %s\n", s);
       s = p;
     }
 
@@ -271,7 +271,7 @@ static void parse_content_language(const char *s, struct Body *ct)
   if (!s || !ct)
     return;
 
-  mutt_debug(2, "RFC8255 >> Content-Language set to %s\n", s);
+  mutt_debug(LL_DEBUG2, "RFC8255 >> Content-Language set to %s\n", s);
   ct->language = mutt_str_strdup(s);
 }
 
@@ -1137,14 +1137,14 @@ struct Envelope *mutt_rfc822_read_header(FILE *f, struct Email *e, bool user_hdr
 
     if (e->received < 0)
     {
-      mutt_debug(1, "resetting invalid received time to 0\n");
+      mutt_debug(LL_DEBUG1, "resetting invalid received time to 0\n");
       e->received = 0;
     }
 
     /* check for missing or invalid date */
     if (e->date_sent <= 0)
     {
-      mutt_debug(1, "no date found, using received time from msg separator\n");
+      mutt_debug(LL_DEBUG1, "no date found, using received time from msg separator\n");
       e->date_sent = e->received;
     }
   }
@@ -1182,13 +1182,13 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
       c = mutt_str_skip_email_wsp(c + 1);
       if (!*c)
       {
-        mutt_debug(1, "skipping empty header field: %s\n", line);
+        mutt_debug(LL_DEBUG1, "skipping empty header field: %s\n", line);
         continue;
       }
     }
     else
     {
-      mutt_debug(1, "bogus MIME header: %s\n", line);
+      mutt_debug(LL_DEBUG1, "bogus MIME header: %s\n", line);
       break;
     }
 

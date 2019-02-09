@@ -271,7 +271,7 @@ int mutt_account_getlogin(struct ConnAccount *account)
     }
     else
     {
-      mutt_debug(1, "Couldn't get user info\n");
+      mutt_debug(LL_DEBUG1, "Couldn't get user info\n");
       return -1;
     }
   }

@@ -67,7 +67,7 @@ enum ImapAuthRes imap_auth_login(struct ImapAccountData *adata, const char *meth
    * of 5 or higher */
 
   if (DebugLevel < IMAP_LOG_PASS)
-    mutt_debug(2, "Sending LOGIN command for %s...\n", adata->conn->account.user);
+    mutt_debug(LL_DEBUG2, "Sending LOGIN command for %s...\n", adata->conn->account.user);
 
   snprintf(buf, sizeof(buf), "LOGIN %s %s", q_user, q_pass);
   if (imap_exec(adata, buf, IMAP_CMD_PASS) != IMAP_EXEC_SUCCESS)

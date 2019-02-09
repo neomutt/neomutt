@@ -354,7 +354,7 @@ static void smime_command(char *buf, size_t buflen,
 {
   mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(fmt),
                       fmt_smime_command, (unsigned long) cctx, 0);
-  mutt_debug(2, "%s\n", buf);
+  mutt_debug(LL_DEBUG2, "%s\n", buf);
 }
 
 /**

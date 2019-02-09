@@ -80,7 +80,7 @@ static void error_pause(void)
 
   if (gettimeofday(&now, NULL) < 0)
   {
-    mutt_debug(1, "gettimeofday failed: %d\n", errno);
+    mutt_debug(LL_DEBUG1, "gettimeofday failed: %d\n", errno);
     return;
   }
 
@@ -213,7 +213,7 @@ int log_disp_curses(time_t stamp, const char *file, int line,
   {
     OptMsgErr = true;
     if (gettimeofday(&LastError, NULL) < 0)
-      mutt_debug(1, "gettimeofday failed: %d\n", errno);
+      mutt_debug(LL_DEBUG1, "gettimeofday failed: %d\n", errno);
   }
   else
   {

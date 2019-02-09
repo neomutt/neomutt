@@ -579,7 +579,7 @@ char *mutt_str_substr_dup(const char *begin, const char *end)
 
   if (!begin)
   {
-    mutt_debug(1, "%s: ERROR: 'begin' is NULL\n", __func__);
+    mutt_debug(LL_DEBUG1, "%s: ERROR: 'begin' is NULL\n", __func__);
     return NULL;
   }
 

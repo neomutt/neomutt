@@ -240,7 +240,7 @@ int maildir_sync_message(struct Mailbox *m, int msgno)
     char *p = strrchr(e->path, '/');
     if (!p)
     {
-      mutt_debug(1, "%s: unable to find subdir!\n", e->path);
+      mutt_debug(LL_DEBUG1, "%s: unable to find subdir!\n", e->path);
       return -1;
     }
     p++;
@@ -615,7 +615,7 @@ int maildir_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e
     snprintf(path, sizeof(path), "%s/tmp/%s.%lld.R%" PRIu64 ".%s%s", m->path, subdir,
              (long long) time(NULL), mutt_rand64(), NONULL(ShortHostname), suffix);
 
-    mutt_debug(2, "Trying %s.\n", path);
+    mutt_debug(LL_DEBUG2, "Trying %s.\n", path);
 
     fd = open(path, O_WRONLY | O_EXCL | O_CREAT, 0666);
     if (fd == -1)
@@ -629,7 +629,7 @@ int maildir_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e
     }
     else
     {
-      mutt_debug(2, "Success.\n");
+      mutt_debug(LL_DEBUG2, "Success.\n");
       msg->path = mutt_str_strdup(path);
       break;
     }

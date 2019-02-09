@@ -165,12 +165,12 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
     struct ListNode *np = NULL;
     STAILQ_FOREACH(np, &HeaderOrderList, entries)
     {
-      mutt_debug(3, "Reorder list: %s\n", np->data);
+      mutt_debug(LL_DEBUG3, "Reorder list: %s\n", np->data);
       hdr_count++;
     }
   }
 
-  mutt_debug(1, "WEED is %s\n", (flags & CH_WEED) ? "Set" : "Not");
+  mutt_debug(LL_DEBUG1, "WEED is %s\n", (flags & CH_WEED) ? "Set" : "Not");
 
   headers = mutt_mem_calloc(hdr_count, sizeof(char *));
 
@@ -284,7 +284,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
           ++x;
           if (mutt_str_startswith(buf, np->data, CASE_IGNORE))
           {
-            mutt_debug(2, "Reorder: %s matches %s", np->data, buf);
+            mutt_debug(LL_DEBUG2, "Reorder: %s matches %s", np->data, buf);
             break;
           }
         }
@@ -295,7 +295,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
 
     if (!ignore)
     {
-      mutt_debug(2, "Reorder: x = %d; hdr_count = %d\n", x, hdr_count);
+      mutt_debug(LL_DEBUG2, "Reorder: x = %d; hdr_count = %d\n", x, hdr_count);
       if (!this_one)
       {
         this_one = mutt_str_strdup(buf);
@@ -837,7 +837,7 @@ int mutt_copy_message_ctx(FILE *fpout, struct Mailbox *src, struct Email *e,
   int r = mutt_copy_message_fp(fpout, msg->fp, e, flags, chflags);
   if ((r == 0) && (ferror(fpout) || feof(fpout)))
   {
-    mutt_debug(1, "failed to detect EOF!\n");
+    mutt_debug(LL_DEBUG1, "failed to detect EOF!\n");
     r = -1;
   }
   mx_msg_close(src, &msg);
