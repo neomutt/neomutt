@@ -23,11 +23,16 @@
 
 #include <stdio.h>
 
+struct Buffer;
+
 extern const int Index64[];
 
 #define base64val(c) Index64[(unsigned int) (c)]
 
 int    mutt_b64_decode(const char *in, char *out, size_t olen);
 size_t mutt_b64_encode(const char *in, size_t inlen, char *out, size_t outlen);
+
+int    mutt_b64_buffer_decode(struct Buffer *buf, const char *in);
+size_t mutt_b64_buffer_encode(struct Buffer *buf, const char *in, size_t len);
 
 #endif /* MUTT_LIB_BASE64_H */
