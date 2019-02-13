@@ -202,8 +202,14 @@ enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method
       goto bail;
     }
 
-    request_buf.length = mutt_b64_buffer_decode(buf2, adata->buf + 2);
+    if (mutt_b64_buffer_decode(buf2, adata->buf + 2) < 0)
+    {
+      mutt_debug(1, "Invalid base64 server response.\n");
+      gss_release_name(&min_stat, &target_name);
+      goto err_abort_cmd;
+    }
     request_buf.value = buf2->data;
+    request_buf.length = mutt_buffer_len(buf2);
     sec_token = &request_buf;
 
     /* Write client data */
@@ -237,8 +243,13 @@ enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method
     mutt_debug(1, "#2 Error receiving server response.\n");
     goto bail;
   }
-  request_buf.length = mutt_b64_buffer_decode(buf2, adata->buf + 2);
+  if (mutt_b64_buffer_decode(buf2, adata->buf + 2) < 0)
+  {
+    mutt_debug(1, "Invalid base64 server response.\n");
+    goto err_abort_cmd;
+  }
   request_buf.value = buf2->data;
+  request_buf.length = mutt_buffer_len(buf2);
 
   maj_stat = gss_unwrap(&min_stat, context, &request_buf, &send_token, &cflags, &quality);
   if (maj_stat != GSS_S_COMPLETE)
