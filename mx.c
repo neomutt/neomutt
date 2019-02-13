@@ -286,6 +286,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, int flags)
   ctx->msgnotreadyet = -1;
   ctx->collapsed = false;
 
+  m->size = 0;
   m->msg_unread = 0;
   m->msg_flagged = 0;
   m->rights = MUTT_ACL_ALL;
