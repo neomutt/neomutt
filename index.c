@@ -1018,8 +1018,6 @@ int mutt_index_menu(void)
   bool tag = false; /* has the tag-prefix command been pressed? */
   int newcount = -1;
   int oldcount = -1;
-  int rc = -1;
-  char *cp = NULL; /* temporary variable. */
   int index_hint;  /* used to restore cursor position */
   bool do_mailbox_notify = true;
   int close = 0; /* did we OP_QUIT or OP_EXIT out of this menu? */
@@ -1397,18 +1395,16 @@ int mutt_index_menu(void)
           }
           else
           {
-            int rc2;
-
             mutt_message(_("Fetching %s from server..."), buf);
-            rc2 = nntp_check_msgid(Context, buf);
-            if (rc2 == 0)
+            int rc = nntp_check_msgid(Context, buf);
+            if (rc == 0)
             {
               e = Context->mailbox->emails[Context->mailbox->msg_count - 1];
               mutt_sort_headers(Context, false);
               menu->current = e->virtual;
               menu->redraw = REDRAW_FULL;
             }
-            else if (rc2 > 0)
+            else if (rc > 0)
               mutt_error(_("Article %s not found on the server"), buf);
           }
         }
@@ -1425,7 +1421,7 @@ int mutt_index_menu(void)
         {
           int oldmsgcount = Context->mailbox->msg_count;
           int oldindex = CUR_EMAIL->index;
-          int rc2 = 0;
+          int rc = 0;
 
           if (!CUR_EMAIL->env->message_id)
           {
@@ -1446,8 +1442,8 @@ int mutt_index_menu(void)
             {
               if (!mutt_hash_find(Context->mailbox->id_hash, ref->data))
               {
-                rc2 = nntp_check_msgid(Context, ref->data);
-                if (rc2 < 0)
+                rc = nntp_check_msgid(Context, ref->data);
+                if (rc < 0)
                   break;
               }
 
@@ -1458,8 +1454,8 @@ int mutt_index_menu(void)
           }
 
           /* fetching all child messages */
-          if (rc2 >= 0)
-            rc2 = nntp_check_children(Context, buf);
+          if (rc >= 0)
+            rc = nntp_check_children(Context, buf);
 
           /* at least one message has been loaded */
           if (Context->mailbox->msg_count > oldmsgcount)
@@ -1468,7 +1464,7 @@ int mutt_index_menu(void)
             struct Email *e = NULL;
             bool quiet = Context->mailbox->quiet;
 
-            if (rc2 < 0)
+            if (rc < 0)
               Context->mailbox->quiet = true;
             mutt_sort_headers(Context, (op == OP_RECONSTRUCT_THREAD));
             Context->mailbox->quiet = quiet;
@@ -1491,11 +1487,11 @@ int mutt_index_menu(void)
             /* try to restore old position */
             else
             {
-              for (int k = 0; k < Context->mailbox->msg_count; k++)
+              for (int i = 0; i < Context->mailbox->msg_count; i++)
               {
-                if (Context->mailbox->emails[k]->index == oldindex)
+                if (Context->mailbox->emails[i]->index == oldindex)
                 {
-                  menu->current = Context->mailbox->emails[k]->virtual;
+                  menu->current = Context->mailbox->emails[i]->virtual;
                   /* as an added courtesy, recenter the menu
                    * with the current entry at the middle of the screen */
                   menu_check_recenter(menu);
@@ -1505,7 +1501,7 @@ int mutt_index_menu(void)
             }
             menu->redraw = REDRAW_FULL;
           }
-          else if (rc2 >= 0)
+          else if (rc >= 0)
           {
             mutt_error(_("No deleted messages found in the thread"));
             /* Similar to OP_MAIN_ENTIRE_THREAD, keep displaying the old message, but
@@ -1867,7 +1863,6 @@ int mutt_index_menu(void)
         {
           int ovc = Context->mailbox->vcount;
           int oc = Context->mailbox->msg_count;
-          int check;
           struct Email *e = NULL;
 
           /* don't attempt to move the cursor if there are no visible messages in the current limit */
@@ -1884,7 +1879,7 @@ int mutt_index_menu(void)
               e = Context->mailbox->emails[Context->mailbox->v2r[newidx]];
           }
 
-          check = mx_mbox_sync(Context->mailbox, &index_hint);
+          int check = mx_mbox_sync(Context->mailbox, &index_hint);
           if (check == 0)
           {
             if (e && Context->mailbox->vcount != ovc)
@@ -2017,7 +2012,7 @@ int mutt_index_menu(void)
         char *tags = NULL;
         if (!tag)
           tags = driver_tags_get_with_hidden(&CUR_EMAIL->tags);
-        rc = mx_tags_edit(Context->mailbox, tags, buf, sizeof(buf));
+        int rc = mx_tags_edit(Context->mailbox, tags, buf, sizeof(buf));
         FREE(&tags);
         if (rc < 0)
           break;
@@ -2186,8 +2181,11 @@ int mutt_index_menu(void)
 #ifdef USE_NNTP
       case OP_MAIN_CHANGE_GROUP:
       case OP_MAIN_CHANGE_GROUP_READONLY:
+#endif
       {
         struct Mailbox *m = NULL;
+        char *cp = NULL;
+#ifdef USE_NNTP
         OptNews = false;
 #endif
         if (attach_msg || ReadOnly ||
@@ -3014,6 +3012,7 @@ int mutt_index_menu(void)
       case OP_DELETE_THREAD:
       case OP_DELETE_SUBTHREAD:
       case OP_PURGE_THREAD:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
           break;
         /* L10N: CHECK_ACL */
@@ -3024,29 +3023,28 @@ int mutt_index_menu(void)
         if (!check_acl(Context, MUTT_ACL_DELETE, _("Cannot delete messages")))
           break;
 
+        int subthread = (op == OP_DELETE_SUBTHREAD);
+        int rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_DELETE, 1, subthread);
+        if (rc == -1)
+          break;
+        if (op == OP_PURGE_THREAD)
         {
-          int subthread = (op == OP_DELETE_SUBTHREAD);
-          rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_DELETE, 1, subthread);
+          rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_PURGE, 1, subthread);
           if (rc == -1)
             break;
-          if (op == OP_PURGE_THREAD)
-          {
-            rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_PURGE, 1, subthread);
-            if (rc == -1)
-              break;
-          }
-
-          if (DeleteUntag)
-            mutt_thread_set_flag(CUR_EMAIL, MUTT_TAG, 0, subthread);
-          if (Resolve)
-          {
-            menu->current = ci_next_undeleted(menu->current);
-            if (menu->current == -1)
-              menu->current = menu->oldcurrent;
-          }
-          menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
         }
+
+        if (DeleteUntag)
+          mutt_thread_set_flag(CUR_EMAIL, MUTT_TAG, 0, subthread);
+        if (Resolve)
+        {
+          menu->current = ci_next_undeleted(menu->current);
+          if (menu->current == -1)
+            menu->current = menu->oldcurrent;
+        }
+        menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
         break;
+      }
 
 #ifdef USE_NNTP
       case OP_CATCHUP:
@@ -3154,16 +3152,16 @@ int mutt_index_menu(void)
 
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_tagged(&el, Context, CUR_EMAIL, tag);
-        rc = mutt_label_message(Context->mailbox, &el);
+        int num_changed = mutt_label_message(Context->mailbox, &el);
         el_free(&el);
 
-        if (rc > 0)
+        if (num_changed > 0)
         {
           Context->mailbox->changed = true;
           menu->redraw = REDRAW_FULL;
           /* L10N: This is displayed when the x-label on one or more
            * messages is edited. */
-          mutt_message(ngettext("%d label changed", "%d labels changed", rc), rc);
+          mutt_message(ngettext("%d label changed", "%d labels changed", num_changed), num_changed);
         }
         else
         {
@@ -3279,6 +3277,7 @@ int mutt_index_menu(void)
 
       case OP_MAIN_READ_THREAD:
       case OP_MAIN_READ_SUBTHREAD:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
           break;
         /* L10N: CHECK_ACL */
@@ -3289,9 +3288,8 @@ int mutt_index_menu(void)
         if (!check_acl(Context, MUTT_ACL_SEEN, _("Cannot mark messages as read")))
           break;
 
-        rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_READ, 1,
-                                  op == OP_MAIN_READ_THREAD ? 0 : 1);
-
+        int rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_READ, 1,
+                                      op == OP_MAIN_READ_THREAD ? 0 : 1);
         if (rc != -1)
         {
           if (Resolve)
@@ -3312,6 +3310,7 @@ int mutt_index_menu(void)
           menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
         }
         break;
+      }
 
       case OP_MARK_MSG:
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
@@ -3434,11 +3433,11 @@ int mutt_index_menu(void)
 
       case OP_TAG_THREAD:
       case OP_TAG_SUBTHREAD:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
-        rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_TAG, !CUR_EMAIL->tagged,
-                                  op == OP_TAG_THREAD ? 0 : 1);
-
+        int rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_TAG, !CUR_EMAIL->tagged,
+                                      op == OP_TAG_THREAD ? 0 : 1);
         if (rc != -1)
         {
           if (Resolve)
@@ -3454,6 +3453,7 @@ int mutt_index_menu(void)
           menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
         }
         break;
+      }
 
       case OP_UNDELETE:
       {
@@ -3491,6 +3491,7 @@ int mutt_index_menu(void)
 
       case OP_UNDELETE_THREAD:
       case OP_UNDELETE_SUBTHREAD:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
           break;
         /* L10N: CHECK_ACL */
@@ -3501,8 +3502,8 @@ int mutt_index_menu(void)
         if (!check_acl(Context, MUTT_ACL_DELETE, _("Cannot undelete messages")))
           break;
 
-        rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_DELETE, 0,
-                                  op == OP_UNDELETE_THREAD ? 0 : 1);
+        int rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_DELETE, 0,
+                                      op == OP_UNDELETE_THREAD ? 0 : 1);
         if (rc != -1)
         {
           rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_PURGE, 0,
@@ -3523,6 +3524,7 @@ int mutt_index_menu(void)
           menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
         }
         break;
+      }
 
       case OP_VERSION:
         mutt_message(mutt_make_version());
