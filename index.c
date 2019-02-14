@@ -1015,7 +1015,6 @@ int mutt_index_menu(void)
   int flags;
   int op = OP_NULL;
   bool done = false; /* controls when to exit the "event" loop */
-  int i = 0, j;
   bool tag = false; /* has the tag-prefix command been pressed? */
   int newcount = -1;
   int oldcount = -1;
@@ -1117,7 +1116,7 @@ int mutt_index_menu(void)
         }
         else if (check == MUTT_NEW_MAIL)
         {
-          for (i = oldcount; i < Context->mailbox->msg_count; i++)
+          for (size_t i = oldcount; i < Context->mailbox->msg_count; i++)
           {
             if (!Context->mailbox->emails[i]->read)
             {
@@ -1522,6 +1521,8 @@ int mutt_index_menu(void)
 #endif
 
       case OP_JUMP:
+      {
+        int msg_num = 0;
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
         if (isdigit(LastKey))
@@ -1532,15 +1533,15 @@ int mutt_index_menu(void)
         {
           mutt_error(_("Nothing to do"));
         }
-        else if (mutt_str_atoi(buf, &i) < 0)
+        else if (mutt_str_atoi(buf, &msg_num) < 0)
           mutt_error(_("Argument must be a message number"));
-        else if ((i < 1) || (i > Context->mailbox->msg_count))
+        else if ((msg_num < 1) || (msg_num > Context->mailbox->msg_count))
           mutt_error(_("Invalid message number"));
-        else if (!message_is_visible(Context, i - 1))
+        else if (!message_is_visible(Context, msg_num - 1))
           mutt_error(_("That message is not visible"));
         else
         {
-          struct Email *e = Context->mailbox->emails[i - 1];
+          struct Email *e = Context->mailbox->emails[msg_num - 1];
 
           if (mutt_messages_in_thread(Context->mailbox, e, 1) > 1)
           {
@@ -1559,6 +1560,7 @@ int mutt_index_menu(void)
           menu->redraw = REDRAW_FULL;
 
         break;
+      }
 
         /* --------------------------------------------------------------------
          * 'index' specific commands
@@ -1665,7 +1667,7 @@ int mutt_index_menu(void)
           {
             /* try to find what used to be the current message */
             menu->current = -1;
-            for (i = 0; i < Context->mailbox->vcount; i++)
+            for (size_t i = 0; i < Context->mailbox->vcount; i++)
             {
               if (Context->mailbox->emails[Context->mailbox->v2r[i]]->index == menu->oldcurrent)
               {
@@ -1756,9 +1758,9 @@ int mutt_index_menu(void)
           break;
         if (tag && !AutoTag)
         {
-          for (j = 0; j < Context->mailbox->msg_count; j++)
-            if (message_is_visible(Context, j))
-              mutt_set_flag(Context->mailbox, Context->mailbox->emails[j], MUTT_TAG, 0);
+          for (size_t i = 0; i < Context->mailbox->msg_count; i++)
+            if (message_is_visible(Context, i))
+              mutt_set_flag(Context->mailbox, Context->mailbox->emails[i], MUTT_TAG, 0);
           menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         }
         else
@@ -1887,11 +1889,11 @@ int mutt_index_menu(void)
           {
             if (e && Context->mailbox->vcount != ovc)
             {
-              for (j = 0; j < Context->mailbox->vcount; j++)
+              for (size_t i = 0; i < Context->mailbox->vcount; i++)
               {
-                if (Context->mailbox->emails[Context->mailbox->v2r[j]] == e)
+                if (Context->mailbox->emails[Context->mailbox->v2r[i]] == e)
                 {
-                  menu->current = j;
+                  menu->current = i;
                   break;
                 }
               }
@@ -1929,11 +1931,11 @@ int mutt_index_menu(void)
           break;
         if (tag)
         {
-          for (j = 0; j < Context->mailbox->msg_count; j++)
+          for (size_t i = 0; i < Context->mailbox->msg_count; i++)
           {
-            if (message_is_tagged(Context, j))
+            if (message_is_tagged(Context, i))
             {
-              Context->mailbox->emails[j]->quasi_deleted = true;
+              Context->mailbox->emails[i]->quasi_deleted = true;
               Context->mailbox->changed = true;
             }
           }
@@ -2028,7 +2030,6 @@ int mutt_index_menu(void)
         if (tag)
         {
           struct Progress progress;
-          int px;
 
           if (!Context->mailbox->quiet)
           {
@@ -2042,23 +2043,23 @@ int mutt_index_menu(void)
           if (Context->mailbox->magic == MUTT_NOTMUCH)
             nm_db_longrun_init(Context->mailbox, true);
 #endif
-          for (px = 0, j = 0; j < Context->mailbox->msg_count; j++)
+          for (int px = 0, i = 0; i < Context->mailbox->msg_count; i++)
           {
-            if (!message_is_tagged(Context, j))
+            if (!message_is_tagged(Context, i))
               continue;
 
             if (!Context->mailbox->quiet)
               mutt_progress_update(&progress, ++px, -1);
-            mx_tags_commit(Context->mailbox, Context->mailbox->emails[j], buf);
+            mx_tags_commit(Context->mailbox, Context->mailbox->emails[i], buf);
             if (op == OP_MAIN_MODIFY_TAGS_THEN_HIDE)
             {
               bool still_queried = false;
 #ifdef USE_NOTMUCH
               if (Context->mailbox->magic == MUTT_NOTMUCH)
                 still_queried = nm_message_is_still_queried(
-                    Context->mailbox, Context->mailbox->emails[j]);
+                    Context->mailbox, Context->mailbox->emails[i]);
 #endif
-              Context->mailbox->emails[j]->quasi_deleted = !still_queried;
+              Context->mailbox->emails[i]->quasi_deleted = !still_queried;
               Context->mailbox->changed = true;
             }
           }
@@ -2605,41 +2606,41 @@ int mutt_index_menu(void)
         int first_new = -1;
 
         const int saved_current = menu->current;
-        i = menu->current;
+        int cur = menu->current;
         menu->current = -1;
-        for (j = 0; j != Context->mailbox->vcount; j++)
+        for (size_t i = 0; i != Context->mailbox->vcount; i++)
         {
           if (op == OP_MAIN_NEXT_NEW || op == OP_MAIN_NEXT_UNREAD || op == OP_MAIN_NEXT_NEW_THEN_UNREAD)
           {
-            i++;
-            if (i > Context->mailbox->vcount - 1)
+            cur++;
+            if (cur > Context->mailbox->vcount - 1)
             {
-              i = 0;
+              cur = 0;
             }
           }
           else
           {
-            i--;
-            if (i < 0)
+            cur--;
+            if (cur < 0)
             {
-              i = Context->mailbox->vcount - 1;
+              cur = Context->mailbox->vcount - 1;
             }
           }
 
-          struct Email *e = Context->mailbox->emails[Context->mailbox->v2r[i]];
+          struct Email *e = Context->mailbox->emails[Context->mailbox->v2r[cur]];
           if (e->collapsed && (Sort & SORT_MASK) == SORT_THREADS)
           {
             if (UNREAD(e) && first_unread == -1)
-              first_unread = i;
+              first_unread = cur;
             if (UNREAD(e) == 1 && first_new == -1)
-              first_new = i;
+              first_new = cur;
           }
           else if ((!e->deleted && !e->read))
           {
             if (first_unread == -1)
-              first_unread = i;
+              first_unread = cur;
             if ((!e->old) && first_new == -1)
-              first_new = i;
+              first_new = cur;
           }
 
           if ((op == OP_MAIN_NEXT_UNREAD || op == OP_MAIN_PREV_UNREAD) && first_unread != -1)
@@ -2714,12 +2715,12 @@ int mutt_index_menu(void)
 
         if (tag)
         {
-          for (j = 0; j < Context->mailbox->msg_count; j++)
+          for (size_t i = 0; i < Context->mailbox->msg_count; i++)
           {
-            if (message_is_tagged(Context, j))
+            if (message_is_tagged(Context, i))
             {
-              mutt_set_flag(Context->mailbox, Context->mailbox->emails[j],
-                            MUTT_FLAG, !Context->mailbox->emails[j]->flagged);
+              mutt_set_flag(Context->mailbox, Context->mailbox->emails[i],
+                            MUTT_FLAG, !Context->mailbox->emails[i]->flagged);
             }
           }
 
@@ -2754,15 +2755,15 @@ int mutt_index_menu(void)
 
         if (tag)
         {
-          for (j = 0; j < Context->mailbox->msg_count; j++)
+          for (size_t i = 0; i < Context->mailbox->msg_count; i++)
           {
-            if (!message_is_tagged(Context, j))
+            if (!message_is_tagged(Context, i))
               continue;
 
-            if (Context->mailbox->emails[j]->read || Context->mailbox->emails[j]->old)
-              mutt_set_flag(Context->mailbox, Context->mailbox->emails[j], MUTT_NEW, 1);
+            if (Context->mailbox->emails[i]->read || Context->mailbox->emails[i]->old)
+              mutt_set_flag(Context->mailbox, Context->mailbox->emails[i], MUTT_NEW, 1);
             else
-              mutt_set_flag(Context->mailbox, Context->mailbox->emails[j], MUTT_READ, 1);
+              mutt_set_flag(Context->mailbox, Context->mailbox->emails[i], MUTT_READ, 1);
           }
           menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         }
@@ -3362,10 +3363,10 @@ int mutt_index_menu(void)
 
         if (tag)
         {
-          for (j = 0; j < Context->mailbox->msg_count; j++)
+          for (size_t i = 0; i < Context->mailbox->msg_count; i++)
           {
-            if (message_is_tagged(Context, j))
-              mutt_resend_message(NULL, Context, Context->mailbox->emails[j]);
+            if (message_is_tagged(Context, i))
+              mutt_resend_message(NULL, Context, Context->mailbox->emails[i]);
           }
         }
         else
