@@ -58,7 +58,7 @@ struct Score
   char *str;
   struct Pattern *pat;
   int val;
-  int exact; /**< if this rule matches, don't evaluate any more */
+  bool exact; /**< if this rule matches, don't evaluate any more */
   struct Score *next;
 };
 
@@ -150,7 +150,7 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
   pc = buf->data;
   if (*pc == '=')
   {
-    ptr->exact = 1;
+    ptr->exact = true;
     pc++;
   }
   if (mutt_str_atoi(pc, &ptr->val) < 0)
