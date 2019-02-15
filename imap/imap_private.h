@@ -288,7 +288,7 @@ int imap_cmd_idle(struct ImapAccountData *adata);
 void imap_edata_free(void **ptr);
 struct ImapEmailData *imap_edata_get(struct Email *e);
 int imap_read_headers(struct Mailbox *m, unsigned int msn_begin, unsigned int msn_end, bool initial_download);
-char *imap_set_flags(struct Mailbox *m, struct Email *e, char *s, int *server_changes);
+char *imap_set_flags(struct Mailbox *m, struct Email *e, char *s, bool *server_changes);
 int imap_cache_del(struct Mailbox *m, struct Email *e);
 int imap_cache_clean(struct Mailbox *m);
 int imap_append_message(struct Mailbox *m, struct Message *msg);

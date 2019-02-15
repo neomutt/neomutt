@@ -388,7 +388,7 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
   struct Email *e = NULL;
   char *flags = NULL;
   int uid_checked = 0;
-  int server_changes = 0;
+  bool server_changes = false;
 
   struct ImapMboxData *mdata = imap_mdata_get(adata->mailbox);
 
