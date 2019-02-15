@@ -227,7 +227,7 @@ int bool_he_toggle(struct ConfigSet *cs, struct HashElem *he, struct Buffer *err
   char value = *var;
   if ((value < 0) || (value > 1))
   {
-    mutt_buffer_printf(err, "Invalid boolean value: %ld", value);
+    mutt_buffer_printf(err, "Invalid boolean value: %d", value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 

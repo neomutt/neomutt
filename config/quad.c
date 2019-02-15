@@ -240,7 +240,7 @@ int quad_he_toggle(struct ConfigSet *cs, struct HashElem *he, struct Buffer *err
   char value = *var;
   if ((value < 0) || (value >= (mutt_array_size(QuadValues) - 1)))
   {
-    mutt_buffer_printf(err, "Invalid quad value: %ld", value);
+    mutt_buffer_printf(err, "Invalid quad value: %d", value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
