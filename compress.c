@@ -708,19 +708,7 @@ static int comp_mbox_close(struct Mailbox *m)
   ops->mbox_close(m);
 
   /* sync has already been called, so we only need to delete some files */
-  if (!m->append)
-  {
-    /* If the file was removed, remove the compressed folder too */
-    if ((access(m->path, F_OK) != 0) && !SaveEmpty)
-    {
-      remove(m->realpath);
-    }
-    else
-    {
-      remove(m->path);
-    }
-  }
-  else
+  if (m->append)
   {
     const char *append = NULL;
     const char *msg = NULL;
@@ -747,6 +735,18 @@ static int comp_mbox_close(struct Mailbox *m)
       remove(m->path);
 
     unlock_realpath(m);
+  }
+  else
+  {
+    /* If the file was removed, remove the compressed folder too */
+    if ((access(m->path, F_OK) != 0) && !SaveEmpty)
+    {
+      remove(m->realpath);
+    }
+    else
+    {
+      remove(m->path);
+    }
   }
 
   free_compress_info(m);
