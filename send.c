@@ -1403,13 +1403,13 @@ int mutt_resend_message(FILE *fp, struct Context *ctx, struct Email *cur)
  * is_reply - Is one email a reply to another?
  * @param reply Email to test
  * @param orig  Original email
- * @retval 1 It is a reply
- * @retval 0 It is not a reply
+ * @retval true  It is a reply
+ * @retval false It is not a reply
  */
-static int is_reply(struct Email *reply, struct Email *orig)
+static bool is_reply(struct Email *reply, struct Email *orig)
 {
   if (!reply || !reply->env || !orig || !orig->env)
-    return 0;
+    return false;
   return mutt_list_find(&orig->env->references, reply->env->message_id) ||
          mutt_list_find(&orig->env->in_reply_to, reply->env->message_id);
 }
