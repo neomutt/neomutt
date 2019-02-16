@@ -2241,17 +2241,13 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
   char helpstr[SHORT_STRING * 2];
   char tmphelp[SHORT_STRING * 2];
   int ch = 0, rc = -1;
-  int err, first = 1;
-  int r = -1, searchctx = 0;
+  int first = 1;
+  int searchctx = 0;
   bool wrapped = false;
 
   struct Menu *pager_menu = NULL;
   int old_PagerIndexLines; /* some people want to resize it
                             * while inside the pager... */
-  int index_hint = 0;      /* used to restore cursor position */
-  int oldcount = -1;
-  int check;
-
 #ifdef USE_NNTP
   char *followup_to = NULL;
 #endif
@@ -2376,9 +2372,10 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
 
     if (Context && Context->mailbox && !OptAttachMsg)
     {
-      oldcount = Context->mailbox->msg_count;
+      int index_hint = 0;      /* used to restore cursor position */
+      int oldcount = Context->mailbox->msg_count;
       /* check for new mail */
-      check = mx_mbox_check(Context->mailbox, &index_hint);
+      int check = mx_mbox_check(Context->mailbox, &index_hint);
       if (check < 0)
       {
         if (!Context->mailbox || Context->mailbox->path[0] == '\0')
@@ -2724,7 +2721,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         }
 
         int rflags = mutt_mb_is_lower(searchbuf) ? REG_ICASE : 0;
-        err = REGCOMP(&rd.search_re, searchbuf, REG_NEWLINE | rflags);
+        int err = REGCOMP(&rd.search_re, searchbuf, REG_NEWLINE | rflags);
         if (err != 0)
         {
           regerror(err, &rd.search_re, buffer, sizeof(buffer));
@@ -3038,6 +3035,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
       case OP_DELETE_THREAD:
       case OP_DELETE_SUBTHREAD:
       case OP_PURGE_THREAD:
+      {
         CHECK_MODE(IsEmail(extra));
         CHECK_READONLY;
         /* L10N: CHECK_ACL */
@@ -3047,32 +3045,32 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
          */
         CHECK_ACL(MUTT_ACL_DELETE, _("Cannot delete messages"));
 
+        int subthread = (ch == OP_DELETE_SUBTHREAD);
+        int r = mutt_thread_set_flag(extra->email, MUTT_DELETE, 1, subthread);
+        if (r == -1)
+          break;
+        if (ch == OP_PURGE_THREAD)
         {
-          int subthread = (ch == OP_DELETE_SUBTHREAD);
-          r = mutt_thread_set_flag(extra->email, MUTT_DELETE, 1, subthread);
+          r = mutt_thread_set_flag(extra->email, MUTT_PURGE, 1, subthread);
           if (r == -1)
             break;
-          if (ch == OP_PURGE_THREAD)
-          {
-            r = mutt_thread_set_flag(extra->email, MUTT_PURGE, 1, subthread);
-            if (r == -1)
-              break;
-          }
-
-          if (DeleteUntag)
-            mutt_thread_set_flag(extra->email, MUTT_TAG, 0, subthread);
-          if (Resolve)
-          {
-            rc = OP_MAIN_NEXT_UNDELETED;
-            ch = -1;
-          }
-
-          if (!Resolve && PagerIndexLines)
-            pager_menu->redraw = REDRAW_FULL;
-          else
-            pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         }
+
+        if (DeleteUntag)
+          mutt_thread_set_flag(extra->email, MUTT_TAG, 0, subthread);
+        if (Resolve)
+        {
+          rc = OP_MAIN_NEXT_UNDELETED;
+          ch = -1;
+        }
+
+        if (!Resolve && PagerIndexLines)
+          pager_menu->redraw = REDRAW_FULL;
+        else
+          pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
+
         break;
+      }
 
       case OP_DISPLAY_ADDRESS:
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
@@ -3406,6 +3404,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
 
       case OP_UNDELETE_THREAD:
       case OP_UNDELETE_SUBTHREAD:
+      {
         CHECK_MODE(IsEmail(extra));
         CHECK_READONLY;
         /* L10N: CHECK_ACL */
@@ -3415,7 +3414,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
          */
         CHECK_ACL(MUTT_ACL_DELETE, _("Cannot undelete messages"));
 
-        r = mutt_thread_set_flag(extra->email, MUTT_DELETE, 0,
+        int r = mutt_thread_set_flag(extra->email, MUTT_DELETE, 0,
                                  ch == OP_UNDELETE_THREAD ? 0 : 1);
         if (r != -1)
         {
@@ -3436,6 +3435,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         }
         break;
+      }
 
       case OP_VERSION:
         mutt_message(mutt_make_version());
