@@ -1173,7 +1173,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
               col += pw;
             }
           }
-          else if (soft && pad < 0)
+          else if (soft)
           {
             int offset = ((flags & MUTT_FORMAT_ARROWCURSOR) && ArrowCursor) ? 3 : 0;
             int avail_cols = (cols > offset) ? (cols - offset) : 0;

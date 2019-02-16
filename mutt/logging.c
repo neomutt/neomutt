@@ -494,8 +494,7 @@ int log_disp_terminal(time_t stamp, const char *file, int line,
   if (colour > 0)
     ret += fprintf(fp, "\033[0m");
 
-  if (level < 1)
-    ret += fprintf(fp, "\n");
+  ret += fprintf(fp, "\n");
 
   return ret;
 }
