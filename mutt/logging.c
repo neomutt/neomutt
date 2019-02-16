@@ -83,7 +83,9 @@ static const char *timestamp(time_t stamp)
 
   if (stamp != last)
   {
-    strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", localtime(&stamp));
+    struct tm tm = { 0 };
+    localtime_r(&stamp, &tm);
+    strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &tm);
     last = stamp;
   }
 
@@ -375,9 +377,11 @@ int log_queue_save(FILE *fp)
   char buf[32];
   int count = 0;
   struct LogLine *ll = NULL;
+  struct tm tm = { 0 };
   STAILQ_FOREACH(ll, &LogQueue, entries)
   {
-    strftime(buf, sizeof(buf), "%H:%M:%S", localtime(&ll->time));
+    localtime_r(&ll->time, &tm);
+    strftime(buf, sizeof(buf), "%H:%M:%S", &tm);
     fprintf(fp, "[%s]<%c> %s", buf, LevelAbbr[ll->level + 3], ll->message);
     if (ll->level <= 0)
       fputs("\n", fp);

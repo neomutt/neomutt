@@ -402,7 +402,8 @@ static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
 {
   char *p = NULL;
   time_t now = time(NULL);
-  struct tm *tm = localtime(&now);
+  struct tm tm = { 0 };
+  localtime_r(&now, &tm);
 
   t->tm_mday = strtol(s, &p, 10);
   if ((t->tm_mday < 1) || (t->tm_mday > 31))
@@ -413,8 +414,8 @@ static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
   if (*p != '/')
   {
     /* fill in today's month and year */
-    t->tm_mon = tm->tm_mon;
-    t->tm_year = tm->tm_year;
+    t->tm_mon = tm.tm_mon;
+    t->tm_year = tm.tm_year;
     return p;
   }
   p++;
@@ -426,7 +427,7 @@ static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
   }
   if (*p != '/')
   {
-    t->tm_year = tm->tm_year;
+    t->tm_year = tm.tm_year;
     return p;
   }
   p++;
@@ -618,17 +619,17 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
        >3d      more than three days ago
        =3d      exactly three days ago */
     time_t now = time(NULL);
-    struct tm *tm = localtime(&now);
+    struct tm *tm = NULL;
     bool exact = false;
 
     if (buf.data[0] == '<')
     {
-      memcpy(&min, tm, sizeof(min));
+      localtime_r(&now, &min);
       tm = &min;
     }
     else
     {
-      memcpy(&max, tm, sizeof(max));
+      localtime_r(&now, &max);
       tm = &max;
 
       if (buf.data[0] == '=')
@@ -690,9 +691,8 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
       if (!have_min)
       { /* save base minimum and set current date, e.g. for "-3d+1d" */
         time_t now = time(NULL);
-        struct tm *tm = localtime(&now);
         memcpy(&base_min, &min, sizeof(base_min));
-        memcpy(&min, tm, sizeof(min));
+        localtime_r(&now, &min);
         min.tm_hour = 0;
         min.tm_sec = 0;
         min.tm_min = 0;

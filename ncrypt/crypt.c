@@ -88,7 +88,9 @@ void crypt_current_time(struct State *s, const char *app_name)
   if (C_CryptTimestamp)
   {
     t = time(NULL);
-    strftime(p, sizeof(p), _(" (current time: %c)"), localtime(&t));
+    struct tm tm = { 0 };
+    localtime_r(&t, &tm);
+    strftime(p, sizeof(p), _(" (current time: %c)"), &tm);
   }
   else
     *p = '\0';

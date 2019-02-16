@@ -2131,7 +2131,6 @@ int nntp_check_new_groups(struct Mailbox *m, struct NntpAccountData *adata)
 {
   struct NntpMboxData tmp_mdata;
   time_t now;
-  struct tm *tm = NULL;
   char buf[1024];
   char *msg = _("Checking for new newsgroups...");
   unsigned int i;
@@ -2178,10 +2177,10 @@ int nntp_check_new_groups(struct Mailbox *m, struct NntpAccountData *adata)
   else
     tmp_mdata.group = NULL;
   i = adata->groups_num;
-  tm = gmtime(&adata->newgroups_time);
+  struct tm tm = { 0 };
+  gmtime_r(&adata->newgroups_time, &tm);
   snprintf(buf, sizeof(buf), "NEWGROUPS %02d%02d%02d %02d%02d%02d GMT\r\n",
-           tm->tm_year % 100, tm->tm_mon + 1, tm->tm_mday, tm->tm_hour,
-           tm->tm_min, tm->tm_sec);
+           tm.tm_year % 100, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
   rc = nntp_fetch_lines(&tmp_mdata, buf, sizeof(buf), msg, nntp_add_group, adata);
   if (rc)
   {
