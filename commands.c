@@ -349,7 +349,7 @@ int mutt_display_message(struct Email *cur)
     if (!OptNoCurses)
       keypad(stdscr, true);
     if (r != -1)
-      mutt_set_flag(Context->mailbox, cur, MUTT_READ, 1);
+      mutt_set_flag(Context->mailbox, cur, MUTT_READ, true);
     if (r != -1 && PromptAfter)
     {
       mutt_unget_event(mutt_any_key_to_continue(_("Command: ")), 0);
@@ -953,10 +953,10 @@ int mutt_save_message_ctx(struct Email *e, bool delete, bool decode,
 
   if (delete)
   {
-    mutt_set_flag(Context->mailbox, e, MUTT_DELETE, 1);
-    mutt_set_flag(Context->mailbox, e, MUTT_PURGE, 1);
+    mutt_set_flag(Context->mailbox, e, MUTT_DELETE, true);
+    mutt_set_flag(Context->mailbox, e, MUTT_PURGE, true);
     if (DeleteUntag)
-      mutt_set_flag(Context->mailbox, e, MUTT_TAG, 0);
+      mutt_set_flag(Context->mailbox, e, MUTT_TAG, false);
   }
 
   return 0;

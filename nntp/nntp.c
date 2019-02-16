@@ -1624,7 +1624,7 @@ static int check_mailbox(struct Mailbox *m)
           /* header marked as deleted, removing from context */
           if (deleted)
           {
-            mutt_set_flag(m, m->emails[i], MUTT_TAG, 0);
+            mutt_set_flag(m, m->emails[i], MUTT_TAG, false);
             mutt_email_free(&m->emails[i]);
             continue;
           }

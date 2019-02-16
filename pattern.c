@@ -2408,7 +2408,7 @@ int mutt_pattern_func(int op, char *prompt)
           case MUTT_UNDELETE:
             mutt_set_flag(Context->mailbox,
                           Context->mailbox->emails[Context->mailbox->v2r[i]],
-                          MUTT_PURGE, 0);
+                          MUTT_PURGE, false);
           /* fallthrough */
           case MUTT_DELETE:
             mutt_set_flag(Context->mailbox,

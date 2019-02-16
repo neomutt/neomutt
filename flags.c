@@ -354,7 +354,7 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
  * @param flag Flag to set, e.g. #MUTT_DELETE
  * @param bf   true: set the flag; false: clear the flag
  */
-void mutt_emails_set_flag(struct Mailbox *m, struct EmailList *el, int flag, int bf)
+void mutt_emails_set_flag(struct Mailbox *m, struct EmailList *el, int flag, bool bf)
 {
   if (!m || !el || STAILQ_EMPTY(el))
     return;
@@ -375,7 +375,7 @@ void mutt_emails_set_flag(struct Mailbox *m, struct EmailList *el, int flag, int
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_thread_set_flag(struct Email *e, int flag, int bf, int subthread)
+int mutt_thread_set_flag(struct Email *e, int flag, bool bf, bool subthread)
 {
   struct MuttThread *start = NULL, *cur = e->thread;
 

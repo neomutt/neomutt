@@ -233,12 +233,12 @@ bail:
 
   if (rc == 0)
   {
-    mutt_set_flag(m, e, MUTT_DELETE, 1);
-    mutt_set_flag(m, e, MUTT_PURGE, 1);
-    mutt_set_flag(m, e, MUTT_READ, 1);
+    mutt_set_flag(m, e, MUTT_DELETE, true);
+    mutt_set_flag(m, e, MUTT_PURGE, true);
+    mutt_set_flag(m, e, MUTT_READ, true);
 
     if (DeleteUntag)
-      mutt_set_flag(m, e, MUTT_TAG, 0);
+      mutt_set_flag(m, e, MUTT_TAG, false);
   }
   else if (rc == -1)
     mutt_message(_("Error. Preserving temporary file: %s"), fname);

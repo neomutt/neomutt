@@ -1463,7 +1463,7 @@ static bool link_threads(struct Email *parent, struct Email *child, struct Mailb
 
   mutt_break_thread(child);
   mutt_list_insert_head(&child->env->in_reply_to, mutt_str_strdup(parent->env->message_id));
-  mutt_set_flag(m, child, MUTT_TAG, 0);
+  mutt_set_flag(m, child, MUTT_TAG, false);
 
   child->changed = true;
   child->env->changed |= MUTT_ENV_CHANGED_IRT;

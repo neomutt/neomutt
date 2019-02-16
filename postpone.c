@@ -241,7 +241,7 @@ static struct Email *select_msg(struct Context *ctx)
       case OP_UNDELETE:
         /* should deleted draft messages be saved in the trash folder? */
         mutt_set_flag(ctx->mailbox, ctx->mailbox->emails[menu->current],
-                      MUTT_DELETE, (i == OP_DELETE) ? 1 : 0);
+                      MUTT_DELETE, (i == OP_DELETE));
         PostCount = ctx->mailbox->msg_count - ctx->mailbox->msg_deleted;
         if (Resolve && menu->current < menu->max - 1)
         {
@@ -348,8 +348,8 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   }
 
   /* finished with this message, so delete it. */
-  mutt_set_flag(ctx_post->mailbox, e, MUTT_DELETE, 1);
-  mutt_set_flag(ctx_post->mailbox, e, MUTT_PURGE, 1);
+  mutt_set_flag(ctx_post->mailbox, e, MUTT_DELETE, true);
+  mutt_set_flag(ctx_post->mailbox, e, MUTT_PURGE, true);
 
   /* update the count for the status display */
   PostCount = ctx_post->mailbox->msg_count - ctx_post->mailbox->msg_deleted;

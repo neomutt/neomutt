@@ -1297,7 +1297,7 @@ struct NntpMboxData *mutt_newsgroup_catchup(struct Mailbox *m,
   if (m && (m->mdata == mdata))
   {
     for (unsigned int i = 0; i < m->msg_count; i++)
-      mutt_set_flag(m, m->emails[i], MUTT_READ, 1);
+      mutt_set_flag(m, m->emails[i], MUTT_READ, true);
   }
   return mdata;
 }
@@ -1333,7 +1333,7 @@ struct NntpMboxData *mutt_newsgroup_uncatchup(struct Mailbox *m,
   {
     mdata->unread = m->msg_count;
     for (unsigned int i = 0; i < m->msg_count; i++)
-      mutt_set_flag(m, m->emails[i], MUTT_READ, 0);
+      mutt_set_flag(m, m->emails[i], MUTT_READ, false);
   }
   else
   {

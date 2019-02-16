@@ -664,7 +664,7 @@ static void imap_fetch_msn_seqset(struct Buffer *b, struct ImapAccountData *adat
  */
 static void set_changed_flag(struct Mailbox *m, struct Email *e,
                              int local_changes, bool *server_changes, int flag_name,
-                             int old_hd_flag, int new_hd_flag, int h_flag)
+                             bool old_hd_flag, bool new_hd_flag, bool h_flag)
 {
   /* If there are local_changes, we only want to note if the server
    * flags have changed, so we can set a reopen flag in
@@ -1686,10 +1686,10 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool
   {
     STAILQ_FOREACH(en, el, entries)
     {
-      mutt_set_flag(m, en->email, MUTT_DELETE, 1);
-      mutt_set_flag(m, en->email, MUTT_PURGE, 1);
+      mutt_set_flag(m, en->email, MUTT_DELETE, true);
+      mutt_set_flag(m, en->email, MUTT_PURGE, true);
       if (DeleteUntag)
-        mutt_set_flag(m, en->email, MUTT_TAG, 0);
+        mutt_set_flag(m, en->email, MUTT_TAG, false);
     }
   }
 

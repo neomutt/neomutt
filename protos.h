@@ -63,9 +63,9 @@ int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize);
 void mutt_help(int menu);
 void mutt_make_help(char *d, size_t dlen, const char *txt, int menu, int op);
 void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf, bool upd_mbox);
-#define mutt_set_flag(a, b, c, d) mutt_set_flag_update(a, b, c, d, true)
+#define mutt_set_flag(m, e, flag, bf) mutt_set_flag_update(m, e, flag, bf, true)
 void mutt_signal_init(void);
-void mutt_emails_set_flag(struct Mailbox *m, struct EmailList *el, int flag, int bf);
+void mutt_emails_set_flag(struct Mailbox *m, struct EmailList *el, int flag, bool bf);
 int mutt_change_flag(struct Mailbox *m, struct EmailList *el, int bf);
 
 int mutt_complete(char *buf, size_t buflen);
@@ -76,7 +76,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, bool mu
 int mutt_get_postponed(struct Context *ctx, struct Email *e, struct Email **cur, char *fcc, size_t fcclen);
 int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app);
 int mutt_num_postponed(struct Mailbox *m, bool force);
-int mutt_thread_set_flag(struct Email *e, int flag, int bf, int subthread);
+int mutt_thread_set_flag(struct Email *e, int flag, bool bf, bool subthread);
 void mutt_update_num_postponed(void);
 int url_parse_mailto(struct Envelope *e, char **body, const char *src);
 int mutt_is_quote_line(char *buf, regmatch_t *pmatch);

@@ -1284,21 +1284,21 @@ static int update_email_flags(struct Mailbox *m, struct Email *e, const char *ta
     {
       tag = tag + 1;
       if (strcmp(tag, NmUnreadTag) == 0)
-        mutt_set_flag(m, e, MUTT_READ, 1);
+        mutt_set_flag(m, e, MUTT_READ, true);
       else if (strcmp(tag, NmRepliedTag) == 0)
-        mutt_set_flag(m, e, MUTT_REPLIED, 0);
+        mutt_set_flag(m, e, MUTT_REPLIED, false);
       else if (strcmp(tag, NmFlaggedTag) == 0)
-        mutt_set_flag(m, e, MUTT_FLAG, 0);
+        mutt_set_flag(m, e, MUTT_FLAG, false);
     }
     else
     {
       tag = (*tag == '+') ? tag + 1 : tag;
       if (strcmp(tag, NmUnreadTag) == 0)
-        mutt_set_flag(m, e, MUTT_READ, 0);
+        mutt_set_flag(m, e, MUTT_READ, false);
       else if (strcmp(tag, NmRepliedTag) == 0)
-        mutt_set_flag(m, e, MUTT_REPLIED, 1);
+        mutt_set_flag(m, e, MUTT_REPLIED, true);
       else if (strcmp(tag, NmFlaggedTag) == 0)
-        mutt_set_flag(m, e, MUTT_FLAG, 1);
+        mutt_set_flag(m, e, MUTT_FLAG, true);
     }
     end = NULL;
     tag = NULL;

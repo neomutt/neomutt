@@ -636,7 +636,7 @@ int mx_mbox_close(struct Context **ptr)
     for (i = 0; i < m->msg_count; i++)
     {
       if (!m->emails[i]->deleted && !m->emails[i]->old && !m->emails[i]->read)
-        mutt_set_flag(m, m->emails[i], MUTT_OLD, 1);
+        mutt_set_flag(m, m->emails[i], MUTT_OLD, true);
     }
   }
 
@@ -690,8 +690,8 @@ int mx_mbox_close(struct Context **ptr)
         {
           if (mutt_append_message(ctx_read->mailbox, ctx->mailbox, m->emails[i], 0, CH_UPDATE_LEN) == 0)
           {
-            mutt_set_flag(m, m->emails[i], MUTT_DELETE, 1);
-            mutt_set_flag(m, m->emails[i], MUTT_PURGE, 1);
+            mutt_set_flag(m, m->emails[i], MUTT_DELETE, true);
+            mutt_set_flag(m, m->emails[i], MUTT_PURGE, true);
           }
           else
           {

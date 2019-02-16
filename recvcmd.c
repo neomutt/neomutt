@@ -1050,7 +1050,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
   el_add_email(&el, e_parent ? e_parent : (cur ? cur->email : NULL));
   if (ci_send_message(flags, e_tmp, tmpbody, NULL, &el) == 0)
   {
-    mutt_set_flag(Context->mailbox, e, MUTT_REPLIED, 1);
+    mutt_set_flag(Context->mailbox, e, MUTT_REPLIED, true);
   }
   el_free(&el);
 }

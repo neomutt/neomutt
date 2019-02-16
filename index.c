@@ -1761,7 +1761,7 @@ int mutt_index_menu(void)
         {
           for (size_t i = 0; i < Context->mailbox->msg_count; i++)
             if (message_is_visible(Context, i))
-              mutt_set_flag(Context->mailbox, Context->mailbox->emails[i], MUTT_TAG, 0);
+              mutt_set_flag(Context->mailbox, Context->mailbox->emails[i], MUTT_TAG, false);
           menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         }
         else
@@ -2770,18 +2770,18 @@ int mutt_index_menu(void)
               continue;
 
             if (Context->mailbox->emails[i]->read || Context->mailbox->emails[i]->old)
-              mutt_set_flag(Context->mailbox, Context->mailbox->emails[i], MUTT_NEW, 1);
+              mutt_set_flag(Context->mailbox, Context->mailbox->emails[i], MUTT_NEW, true);
             else
-              mutt_set_flag(Context->mailbox, Context->mailbox->emails[i], MUTT_READ, 1);
+              mutt_set_flag(Context->mailbox, Context->mailbox->emails[i], MUTT_READ, true);
           }
           menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         }
         else
         {
           if (CUR_EMAIL->read || CUR_EMAIL->old)
-            mutt_set_flag(Context->mailbox, CUR_EMAIL, MUTT_NEW, 1);
+            mutt_set_flag(Context->mailbox, CUR_EMAIL, MUTT_NEW, true);
           else
-            mutt_set_flag(Context->mailbox, CUR_EMAIL, MUTT_READ, 1);
+            mutt_set_flag(Context->mailbox, CUR_EMAIL, MUTT_READ, true);
 
           if (Resolve)
           {
@@ -3035,18 +3035,18 @@ int mutt_index_menu(void)
           break;
 
         int subthread = (op == OP_DELETE_SUBTHREAD);
-        int rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_DELETE, 1, subthread);
+        int rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_DELETE, true, subthread);
         if (rc == -1)
           break;
         if (op == OP_PURGE_THREAD)
         {
-          rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_PURGE, 1, subthread);
+          rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_PURGE, true, subthread);
           if (rc == -1)
             break;
         }
 
         if (DeleteUntag)
-          mutt_thread_set_flag(CUR_EMAIL, MUTT_TAG, 0, subthread);
+          mutt_thread_set_flag(CUR_EMAIL, MUTT_TAG, false, subthread);
         if (Resolve)
         {
           menu->current = ci_next_undeleted(menu->current);
@@ -3294,14 +3294,13 @@ int mutt_index_menu(void)
           break;
         /* L10N: CHECK_ACL */
         /* L10N: Due to the implementation details we do not know whether we
-            mark zero, 1, 12, ... messages as read. So in English we use
-            "messages". Your language might have other means to express this.
-          */
+           mark zero, 1, 12, ... messages as read. So in English we use
+           "messages". Your language might have other means to express this.
+         */
         if (!check_acl(Context, MUTT_ACL_SEEN, _("Cannot mark messages as read")))
           break;
 
-        int rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_READ, 1,
-                                      (op == OP_MAIN_READ_THREAD) ? 0 : 1);
+        int rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_READ, true, (op != OP_MAIN_READ_THREAD));
         if (rc != -1)
         {
           if (Resolve)
@@ -3448,8 +3447,8 @@ int mutt_index_menu(void)
       {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
-        int rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_TAG, !CUR_EMAIL->tagged,
-                                      (op == OP_TAG_THREAD) ? 0 : 1);
+
+        int rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_TAG, !CUR_EMAIL->tagged, (op != OP_TAG_THREAD));
         if (rc != -1)
         {
           if (Resolve)
@@ -3514,12 +3513,10 @@ int mutt_index_menu(void)
         if (!check_acl(Context, MUTT_ACL_DELETE, _("Cannot undelete messages")))
           break;
 
-        int rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_DELETE, 0,
-                                      (op == OP_UNDELETE_THREAD) ? 0 : 1);
+        int rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_DELETE, false, (op != OP_UNDELETE_THREAD));
         if (rc != -1)
         {
-          rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_PURGE, 0,
-                                    (op == OP_UNDELETE_THREAD) ? 0 : 1);
+          rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_PURGE, false, (op != OP_UNDELETE_THREAD));
         }
         if (rc != -1)
         {

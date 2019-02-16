@@ -2284,7 +2284,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
   if (Context && IsEmail(extra) && !extra->email->read)
   {
     Context->msgnotreadyet = extra->email->msgno;
-    mutt_set_flag(Context->mailbox, extra->email, MUTT_READ, 1);
+    mutt_set_flag(Context->mailbox, extra->email, MUTT_READ, true);
   }
 
   rd.max_line = LINES; /* number of lines on screen, from curses */
@@ -3007,10 +3007,10 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         /* L10N: CHECK_ACL */
         CHECK_ACL(MUTT_ACL_DELETE, _("Cannot delete message"));
 
-        mutt_set_flag(Context->mailbox, extra->email, MUTT_DELETE, 1);
+        mutt_set_flag(Context->mailbox, extra->email, MUTT_DELETE, true);
         mutt_set_flag(Context->mailbox, extra->email, MUTT_PURGE, (ch == OP_PURGE_MESSAGE));
         if (DeleteUntag)
-          mutt_set_flag(Context->mailbox, extra->email, MUTT_TAG, 0);
+          mutt_set_flag(Context->mailbox, extra->email, MUTT_TAG, false);
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         if (Resolve)
         {
@@ -3058,7 +3058,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           break;
         if (ch == OP_PURGE_THREAD)
         {
-          r = mutt_thread_set_flag(extra->email, MUTT_PURGE, 1, subthread);
+          r = mutt_thread_set_flag(extra->email, MUTT_PURGE, true, subthread);
           if (r == -1)
             break;
         }
@@ -3380,9 +3380,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_ACL(MUTT_ACL_SEEN, _("Cannot toggle new"));
 
         if (extra->email->read || extra->email->old)
-          mutt_set_flag(Context->mailbox, extra->email, MUTT_NEW, 1);
+          mutt_set_flag(Context->mailbox, extra->email, MUTT_NEW, true);
         else if (!first)
-          mutt_set_flag(Context->mailbox, extra->email, MUTT_READ, 1);
+          mutt_set_flag(Context->mailbox, extra->email, MUTT_READ, true);
         first = false;
         Context->msgnotreadyet = -1;
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
@@ -3399,8 +3399,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         /* L10N: CHECK_ACL */
         CHECK_ACL(MUTT_ACL_DELETE, _("Cannot undelete message"));
 
-        mutt_set_flag(Context->mailbox, extra->email, MUTT_DELETE, 0);
-        mutt_set_flag(Context->mailbox, extra->email, MUTT_PURGE, 0);
+        mutt_set_flag(Context->mailbox, extra->email, MUTT_DELETE, false);
+        mutt_set_flag(Context->mailbox, extra->email, MUTT_PURGE, false);
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         if (Resolve)
         {
@@ -3421,12 +3421,12 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
          */
         CHECK_ACL(MUTT_ACL_DELETE, _("Cannot undelete messages"));
 
-        int r = mutt_thread_set_flag(extra->email, MUTT_DELETE, 0,
-                                     (ch == OP_UNDELETE_THREAD) ? 0 : 1);
+        int r = mutt_thread_set_flag(extra->email, MUTT_DELETE, false,
+                                     (ch != OP_UNDELETE_THREAD));
         if (r != -1)
         {
-          r = mutt_thread_set_flag(extra->email, MUTT_PURGE, 0,
-                                   (ch == OP_UNDELETE_THREAD) ? 0 : 1);
+          r = mutt_thread_set_flag(extra->email, MUTT_PURGE, false,
+                                   (ch != OP_UNDELETE_THREAD));
         }
         if (r != -1)
         {
