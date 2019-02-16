@@ -652,7 +652,7 @@ static void imap_fetch_msn_seqset(struct Buffer *b, struct ImapAccountData *adat
  * @param[in]  m              Mailbox
  * @param[in]  e              Email
  * @param[in]  local_changes  Has the local mailbox been changed?
- * @param[out] server_changes Set to 1 if the flag has changed
+ * @param[out] server_changes Set to true if the flag has changed
  * @param[in]  flag_name      Flag to check, e.g. #MUTT_FLAG
  * @param[in]  old_hd_flag    Old header flags
  * @param[in]  new_hd_flag    New header flags
@@ -663,7 +663,7 @@ static void imap_fetch_msn_seqset(struct Buffer *b, struct ImapAccountData *adat
  * made.
  */
 static void set_changed_flag(struct Mailbox *m, struct Email *e,
-                             int local_changes, int *server_changes, int flag_name,
+                             int local_changes, bool *server_changes, int flag_name,
                              int old_hd_flag, int new_hd_flag, int h_flag)
 {
   /* If there are local_changes, we only want to note if the server
@@ -678,7 +678,7 @@ static void set_changed_flag(struct Mailbox *m, struct Email *e,
     return;
 
   if (server_changes)
-    *server_changes = 1;
+    *server_changes = true;
 
   /* Local changes have priority */
   if (!local_changes)
@@ -1749,7 +1749,7 @@ int imap_cache_clean(struct Mailbox *m)
  * @param[in]  m              Imap Selected Mailbox
  * @param[in]  e              Email
  * @param[in]  s              Command string
- * @param[out] server_changes Flags have changed
+ * @param[out] server_changes Set to true if the flags have changed
  * @retval ptr  The end of flags string
  * @retval NULL Failure
  *
@@ -1762,7 +1762,7 @@ int imap_cache_clean(struct Mailbox *m)
  * case of e->changed, if a change to a flag _would_ have been
  * made.
  */
-char *imap_set_flags(struct Mailbox *m, struct Email *e, char *s, int *server_changes)
+char *imap_set_flags(struct Mailbox *m, struct Email *e, char *s, bool *server_changes)
 {
   struct ImapAccountData *adata = imap_adata_get(m);
   if (!adata || adata->mailbox != m)

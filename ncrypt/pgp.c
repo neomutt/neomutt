@@ -375,8 +375,7 @@ static int pgp_check_decryption_okay(FILE *fpin)
       if (!inside_decrypt)
       {
         mutt_debug(2, "\tPLAINTEXT encountered outside of DECRYPTION.\n");
-        if (rv > -2)
-          rv = -2;
+        rv = -2;
         break;
       }
     }
@@ -391,8 +390,7 @@ static int pgp_check_decryption_okay(FILE *fpin)
       /* Don't break out because we still have to check for
        * PLAINTEXT outside of the decryption boundaries. */
       mutt_debug(2, "\tDECRYPTION_OKAY encountered.\n");
-      if (rv > -2)
-        rv = 0;
+      rv = 0;
     }
   }
   FREE(&line);

@@ -616,7 +616,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
        =3d      exactly three days ago */
     time_t now = time(NULL);
     struct tm *tm = localtime(&now);
-    int exact = 0;
+    bool exact = false;
 
     if (buf.data[0] == '<')
     {
@@ -629,7 +629,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
       tm = &max;
 
       if (buf.data[0] == '=')
-        exact++;
+        exact = true;
     }
 
     /* Reset the HMS unless we are relative matching using one of those

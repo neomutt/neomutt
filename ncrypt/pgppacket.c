@@ -129,7 +129,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
         material = b;
         partial = false;
       }
-      else if (192 <= b && b <= 223)
+      else if (b <= 223)
       {
         material = (b - 192) * 256;
         if (fread(&b, 1, 1, fp) < 1)

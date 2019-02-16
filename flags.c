@@ -51,7 +51,7 @@
  * @param e        Email
  * @param flag     Flag to set, e.g. #MUTT_DELETE
  * @param bf       true: set the flag; false: clear the flag
- * @param upd_mbox true: update the Context
+ * @param upd_mbox true: update the Mailbox
  */
 void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf, bool upd_mbox)
 {

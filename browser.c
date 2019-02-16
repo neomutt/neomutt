@@ -378,7 +378,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
     case 'D':
       if (folder->ff->local)
       {
-        int do_locales = true;
+        bool do_locales = true;
 
         if (op == 'D')
         {
