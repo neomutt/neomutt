@@ -261,7 +261,7 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
 
     {
       char buf2[SHORT_STRING];
-      int do_locales;
+      bool do_locales = true;
       struct tm *tm = NULL;
       size_t len;
 
@@ -270,11 +270,9 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
       const char *cp = src;
       if (*cp == '!')
       {
-        do_locales = 0;
+        do_locales = false;
         cp++;
       }
-      else
-        do_locales = 1;
 
       len = buflen - 1;
       while (len > 0 && *cp != ']')
