@@ -2241,23 +2241,20 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
   char helpstr[SHORT_STRING * 2];
   char tmphelp[SHORT_STRING * 2];
   int ch = 0, rc = -1;
-  int first = 1;
+  bool first = true;
   int searchctx = 0;
   bool wrapped = false;
 
   struct Menu *pager_menu = NULL;
-  int old_PagerIndexLines; /* some people want to resize it
-                            * while inside the pager... */
+  int old_PagerIndexLines; /* some people want to resize it while inside the pager */
 #ifdef USE_NNTP
   char *followup_to = NULL;
 #endif
 
-  struct PagerRedrawData rd;
-
   if (!(flags & MUTT_SHOWCOLOR))
     flags |= MUTT_SHOWFLAT;
 
-  memset(&rd, 0, sizeof(rd));
+  struct PagerRedrawData rd = { 0 };
   rd.banner = banner;
   rd.flags = flags;
   rd.extra = extra;
@@ -2349,10 +2346,10 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
 
     mutt_refresh();
 
-    if (IsEmail(extra) && OldHdr == extra->email && TopLine != rd.topline &&
-        rd.line_info[rd.curline].offset < rd.sb.st_size - 1)
+    if (IsEmail(extra) && (OldHdr == extra->email) && (TopLine != rd.topline) &&
+        (rd.line_info[rd.curline].offset < (rd.sb.st_size - 1)))
     {
-      if (TopLine - rd.topline > rd.lines)
+      if ((TopLine - rd.topline) > rd.lines)
         rd.topline += rd.lines;
       else
         rd.topline = TopLine;
@@ -2372,13 +2369,13 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
 
     if (Context && Context->mailbox && !OptAttachMsg)
     {
-      int index_hint = 0;      /* used to restore cursor position */
+      int index_hint = 0; /* used to restore cursor position */
       int oldcount = Context->mailbox->msg_count;
       /* check for new mail */
       int check = mx_mbox_check(Context->mailbox, &index_hint);
       if (check < 0)
       {
-        if (!Context->mailbox || Context->mailbox->path[0] == '\0')
+        if (!Context->mailbox || (Context->mailbox->path[0] == '\0'))
         {
           /* fatal error occurred */
           ctx_free(&Context);
@@ -2513,7 +2510,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         break;
 
       case OP_NEXT_PAGE:
-        if (rd.line_info[rd.curline].offset < rd.sb.st_size - 1)
+        if (rd.line_info[rd.curline].offset < (rd.sb.st_size - 1))
         {
           rd.topline = up_n_lines(PagerContext, rd.line_info, rd.curline, rd.hide_quoted);
         }
@@ -2541,13 +2538,16 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         break;
 
       case OP_NEXT_LINE:
-        if (rd.line_info[rd.curline].offset < rd.sb.st_size - 1)
+        if (rd.line_info[rd.curline].offset < (rd.sb.st_size - 1))
         {
           rd.topline++;
           if (rd.hide_quoted)
           {
-            while (rd.line_info[rd.topline].type == MT_COLOR_QUOTED && rd.topline < rd.last_line)
+            while ((rd.line_info[rd.topline].type == MT_COLOR_QUOTED) &&
+                   (rd.topline < rd.last_line))
+            {
               rd.topline++;
+            }
           }
         }
         else
@@ -2579,7 +2579,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         break;
 
       case OP_HALF_DOWN:
-        if (rd.line_info[rd.curline].offset < rd.sb.st_size - 1)
+        if (rd.line_info[rd.curline].offset < (rd.sb.st_size - 1))
         {
           rd.topline = up_n_lines(rd.pager_window->rows / 2, rd.line_info,
                                   rd.curline, rd.hide_quoted);
@@ -2603,7 +2603,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         {
           wrapped = false;
 
-          if (SearchContext > 0 && SearchContext < rd.pager_window->rows)
+          if (SearchContext < rd.pager_window->rows)
             searchctx = SearchContext;
           else
             searchctx = 0;
@@ -2675,7 +2675,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
       case OP_SEARCH:
       case OP_SEARCH_REVERSE:
         mutt_str_strfcpy(buffer, searchbuf, sizeof(buffer));
-        if (mutt_get_field((ch == OP_SEARCH || ch == OP_SEARCH_NEXT) ?
+        if (mutt_get_field(((ch == OP_SEARCH) || (ch == OP_SEARCH_NEXT)) ?
                                _("Search for: ") :
                                _("Reverse search for: "),
                            buffer, sizeof(buffer), MUTT_CLEAR) != 0)
@@ -2741,7 +2741,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           rd.search_compiled = true;
           /* update the search pointers */
           int line_num = 0;
-          while (display_line(rd.fp, &rd.last_pos, &rd.line_info, line_num, &rd.last_line, &rd.max_line,
+          while (display_line(rd.fp, &rd.last_pos, &rd.line_info, line_num,
+                              &rd.last_line, &rd.max_line,
                               MUTT_SEARCH | (flags & MUTT_PAGER_NSKIP) | (flags & MUTT_PAGER_NOWRAP),
                               &rd.quote_list, &rd.q_level, &rd.force_redraw,
                               &rd.search_re, rd.pager_window) == 0)
@@ -2755,8 +2756,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             int i;
             for (i = rd.topline; i < rd.last_line; i++)
             {
-              if ((!rd.hide_quoted || rd.line_info[i].type != MT_COLOR_QUOTED) &&
-                  !rd.line_info[i].continuation && rd.line_info[i].search_cnt > 0)
+              if ((!rd.hide_quoted || (rd.line_info[i].type != MT_COLOR_QUOTED)) &&
+                  !rd.line_info[i].continuation && (rd.line_info[i].search_cnt > 0))
               {
                 break;
               }
@@ -2771,8 +2772,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             int i;
             for (i = rd.topline; i >= 0; i--)
             {
-              if ((!rd.hide_quoted || rd.line_info[i].type != MT_COLOR_QUOTED) &&
-                  !rd.line_info[i].continuation && rd.line_info[i].search_cnt > 0)
+              if ((!rd.hide_quoted || (rd.line_info[i].type != MT_COLOR_QUOTED)) &&
+                  !rd.line_info[i].continuation && (rd.line_info[i].search_cnt > 0))
               {
                 break;
               }
@@ -2791,7 +2792,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           {
             rd.search_flag = MUTT_SEARCH;
             /* give some context for search results */
-            if (SearchContext > 0 && SearchContext < rd.pager_window->rows)
+            if (SearchContext < rd.pager_window->rows)
               searchctx = SearchContext;
             else
               searchctx = 0;
@@ -2838,7 +2839,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         if (rd.has_types)
         {
           rd.hide_quoted ^= MUTT_HIDE;
-          if (rd.hide_quoted && rd.line_info[rd.topline].type == MT_COLOR_QUOTED)
+          if (rd.hide_quoted && (rd.line_info[rd.topline].type == MT_COLOR_QUOTED))
             rd.topline = up_n_lines(1, rd.line_info, rd.topline, rd.hide_quoted);
           else
             pager_menu->redraw = REDRAW_BODY;
@@ -2875,7 +2876,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
                              &rd.quote_list, &rd.q_level, &rd.force_redraw,
                              &rd.search_re, rd.pager_window)))) &&
                  rd.line_info[new_topline + SkipQuotedOffset].type != MT_COLOR_QUOTED)
+          {
             new_topline++;
+          }
 
           if (dretval < 0)
           {
@@ -2890,7 +2893,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
                              &rd.quote_list, &rd.q_level, &rd.force_redraw,
                              &rd.search_re, rd.pager_window)))) &&
                  rd.line_info[new_topline + SkipQuotedOffset].type == MT_COLOR_QUOTED)
+          {
             new_topline++;
+          }
 
           if (dretval < 0)
           {
@@ -2902,7 +2907,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         break;
 
       case OP_PAGER_BOTTOM: /* move to the end of the file */
-        if (rd.line_info[rd.curline].offset < rd.sb.st_size - 1)
+        if (rd.line_info[rd.curline].offset < (rd.sb.st_size - 1))
         {
           int line_num = rd.curline;
           /* make sure the types are defined to the end of file */
@@ -2910,7 +2915,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
                               &rd.max_line, rd.has_types | (flags & MUTT_PAGER_NOWRAP),
                               &rd.quote_list, &rd.q_level, &rd.force_redraw,
                               &rd.search_re, rd.pager_window) == 0)
+          {
             line_num++;
+          }
           rd.topline = up_n_lines(rd.pager_window->rows, rd.line_info,
                                   rd.last_line, rd.hide_quoted);
         }
@@ -3194,7 +3201,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             query_quadoption(FollowupToPoster,
                              _("Reply by mail as poster prefers?")) != MUTT_YES)
         {
-          if (extra->ctx && extra->ctx->mailbox->magic == MUTT_NNTP &&
+          if (extra->ctx && (extra->ctx->mailbox->magic == MUTT_NNTP) &&
               !((struct NntpMboxData *) extra->ctx->mailbox->mdata)->allowed && query_quadoption(PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
           {
             break;
@@ -3314,7 +3321,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
       case OP_DECODE_COPY:
       case OP_DECRYPT_COPY:
       {
-        if (!(WithCrypto != 0) && ch == OP_DECRYPT_COPY)
+        if (!(WithCrypto != 0) && (ch == OP_DECRYPT_COPY))
         {
           ch = -1;
           break;
@@ -3376,7 +3383,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           mutt_set_flag(Context->mailbox, extra->email, MUTT_NEW, 1);
         else if (!first)
           mutt_set_flag(Context->mailbox, extra->email, MUTT_READ, 1);
-        first = 0;
+        first = false;
         Context->msgnotreadyet = -1;
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         if (Resolve)
@@ -3415,11 +3422,11 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_ACL(MUTT_ACL_DELETE, _("Cannot undelete messages"));
 
         int r = mutt_thread_set_flag(extra->email, MUTT_DELETE, 0,
-                                 ch == OP_UNDELETE_THREAD ? 0 : 1);
+                                     (ch == OP_UNDELETE_THREAD) ? 0 : 1);
         if (r != -1)
         {
           r = mutt_thread_set_flag(extra->email, MUTT_PURGE, 0,
-                                   ch == OP_UNDELETE_THREAD ? 0 : 1);
+                                   (ch == OP_UNDELETE_THREAD) ? 0 : 1);
         }
         if (r != -1)
         {
@@ -3590,5 +3597,5 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
   FREE(&rd.pager_status_window);
   FREE(&rd.pager_window);
 
-  return rc != -1 ? rc : 0;
+  return (rc != -1) ? rc : 0;
 }
