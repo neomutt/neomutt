@@ -932,6 +932,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         edit_address_list(HDR_FROM, &msg->env->from);
         mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
+
       case OP_COMPOSE_EDIT_TO:
 #ifdef USE_NNTP
         if (news)
@@ -945,6 +946,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         }
         mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
+
       case OP_COMPOSE_EDIT_BCC:
 #ifdef USE_NNTP
         if (news)
@@ -958,6 +960,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         }
         mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
+
       case OP_COMPOSE_EDIT_CC:
 #ifdef USE_NNTP
         if (news)
@@ -989,6 +992,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
             clrtoeol();
         }
         break;
+
       case OP_COMPOSE_EDIT_FOLLOWUP_TO:
         if (!news)
           break;
@@ -1006,6 +1010,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
             clrtoeol();
         }
         break;
+
       case OP_COMPOSE_EDIT_X_COMMENT_TO:
         if (!(news && XCommentTo))
           break;
@@ -1024,6 +1029,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         }
         break;
 #endif
+
       case OP_COMPOSE_EDIT_SUBJECT:
         if (msg->env->subject)
           mutt_str_strfcpy(buf, msg->env->subject, sizeof(buf));
@@ -1040,10 +1046,12 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         }
         mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
+
       case OP_COMPOSE_EDIT_REPLY_TO:
         edit_address_list(HDR_REPLYTO, &msg->env->reply_to);
         mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
+
       case OP_COMPOSE_EDIT_FCC:
         mutt_str_strfcpy(buf, fcc, sizeof(buf));
         if (mutt_get_field(_("Fcc: "), buf, sizeof(buf), MUTT_FILE | MUTT_CLEAR) == 0)
@@ -1056,6 +1064,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         }
         mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
+
       case OP_COMPOSE_EDIT_MESSAGE:
         if (Editor && (mutt_str_strcmp("builtin", Editor) != 0) && !EditHeaders)
         {
@@ -1066,6 +1075,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
           break;
         }
       /* fallthrough */
+
       case OP_COMPOSE_EDIT_HEADERS:
         if ((mutt_str_strcmp("builtin", Editor) != 0) &&
             (op == OP_COMPOSE_EDIT_HEADERS || (op == OP_COMPOSE_EDIT_MESSAGE && EditHeaders)))
@@ -1135,12 +1145,12 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
           break;
         }
         compose_attach_swap(msg->content, actx->idx, menu->current - 1);
-        menu->redraw = 1;
+        menu->redraw = REDRAW_INDEX;
         menu->current--;
         break;
 
       case OP_COMPOSE_MOVE_DOWN:
-        if (menu->current == actx->idxlen - 1)
+        if (menu->current == (actx->idxlen - 1))
         {
           mutt_error(_("Attachment is already at bottom"));
           break;
@@ -1151,7 +1161,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
           break;
         }
         compose_attach_swap(msg->content, actx->idx, menu->current);
-        menu->redraw = 1;
+        menu->redraw = REDRAW_INDEX;
         menu->current++;
         break;
 
@@ -1342,9 +1352,9 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         char **files = NULL;
         buf[0] = '\0';
 
-        if (mutt_enter_fname_full(prompt, buf, sizeof(buf), false, true,
-                                  &files, &numfiles, MUTT_SEL_MULTI) == -1 ||
-            *buf == '\0')
+        if ((mutt_enter_fname_full(prompt, buf, sizeof(buf), false, true,
+                                   &files, &numfiles, MUTT_SEL_MULTI) == -1) ||
+            (*buf == '\0'))
         {
           break;
         }
@@ -1411,7 +1421,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
             mutt_pretty_mailbox(buf, sizeof(buf));
           }
 
-        if (mutt_enter_fname(prompt, buf, sizeof(buf), 1) == -1 || (buf[0] == '\0'))
+        if ((mutt_enter_fname(prompt, buf, sizeof(buf), 1) == -1) || (buf[0] == '\0'))
           break;
 
 #ifdef USE_NNTP
@@ -1614,7 +1624,8 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
       case OP_COMPOSE_EDIT_ENCODING:
         CHECK_COUNT;
         mutt_str_strfcpy(buf, ENCODING(CURATTACH->content->encoding), sizeof(buf));
-        if (mutt_get_field("Content-Transfer-Encoding: ", buf, sizeof(buf), 0) == 0 && (buf[0] != '\0'))
+        if (mutt_get_field("Content-Transfer-Encoding: ", buf, sizeof(buf), 0) == 0 &&
+            (buf[0] != '\0'))
         {
           int enc = mutt_check_encoding(buf);
           if ((enc != ENC_OTHER) && (enc != ENC_UUENCODED))
@@ -1630,11 +1641,9 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         break;
 
       case OP_COMPOSE_SEND_MESSAGE:
-
         /* Note: We don't invoke send2-hook here, since we want to leave
          * users an opportunity to change settings from the ":" prompt.
          */
-
         if (check_attachments(actx) != 0)
         {
           menu->redraw = REDRAW_FULL;
@@ -1717,7 +1726,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         CHECK_COUNT;
         mutt_str_strfcpy(buf, CURATTACH->content->filename, sizeof(buf));
         mutt_pretty_mailbox(buf, sizeof(buf));
-        if (mutt_get_field(_("Rename to: "), buf, sizeof(buf), MUTT_FILE) == 0 &&
+        if ((mutt_get_field(_("Rename to: "), buf, sizeof(buf), MUTT_FILE) == 0) &&
             (buf[0] != '\0'))
         {
           struct stat st;
@@ -1840,7 +1849,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
       case OP_FILTER:
         CHECK_COUNT;
         mutt_pipe_attachment_list(actx, NULL, menu->tagprefix,
-                                  CURATTACH->content, op == OP_FILTER);
+                                  CURATTACH->content, (op == OP_FILTER));
         if (op == OP_FILTER) /* cte might have changed */
           menu->redraw = menu->tagprefix ? REDRAW_FULL : REDRAW_CURRENT;
         menu->redraw |= REDRAW_STATUS;
@@ -1876,7 +1885,6 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         /* fallthrough */
 
       case OP_COMPOSE_POSTPONE_MESSAGE:
-
         if (check_attachments(actx) != 0)
         {
           menu->redraw = REDRAW_FULL;
@@ -1900,7 +1908,6 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         break;
 
       case OP_COMPOSE_WRITE_MESSAGE:
-
         buf[0] = '\0';
         if (Context)
         {
@@ -1909,7 +1916,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         }
         if (actx->idxlen)
           msg->content = actx->idx[0]->content;
-        if (mutt_enter_fname(_("Write message to mailbox"), buf, sizeof(buf), 1) != -1 &&
+        if ((mutt_enter_fname(_("Write message to mailbox"), buf, sizeof(buf), 1) != -1) &&
             (buf[0] != '\0'))
         {
           mutt_message(_("Writing message to %s ..."), buf);
@@ -1991,7 +1998,6 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
 
 #ifdef MIXMASTER
       case OP_COMPOSE_MIX:
-
         mix_make_chain(&msg->chain);
         mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
