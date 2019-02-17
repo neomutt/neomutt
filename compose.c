@@ -1679,8 +1679,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         CHECK_COUNT;
         if (menu->tagprefix)
         {
-          struct Body *top = NULL;
-          for (top = msg->content; top; top = top->next)
+          for (struct Body *top = msg->content; top; top = top->next)
           {
             if (top->tagged)
               mutt_get_tmp_attachment(top);
@@ -1695,16 +1694,14 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
 
       case OP_COMPOSE_RENAME_ATTACHMENT:
       {
-        char *src = NULL;
-        int ret;
-
         CHECK_COUNT;
+        char *src = NULL;
         if (CURATTACH->content->d_filename)
           src = CURATTACH->content->d_filename;
         else
           src = CURATTACH->content->filename;
         mutt_str_strfcpy(buf, mutt_path_basename(NONULL(src)), sizeof(buf));
-        ret = mutt_get_field(_("Send attachment with name: "), buf, sizeof(buf), MUTT_FILE);
+        int ret = mutt_get_field(_("Send attachment with name: "), buf, sizeof(buf), MUTT_FILE);
         if (ret == 0)
         {
           /* As opposed to RENAME_FILE, we don't check buf[0] because it's
@@ -1747,11 +1744,6 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
 
       case OP_COMPOSE_NEW_MIME:
       {
-        char type[STRING];
-        char *p = NULL;
-        int itype;
-        FILE *fp = NULL;
-
         mutt_window_clearline(MuttMessageWindow, 0);
         buf[0] = '\0';
         if (mutt_get_field(_("New file: "), buf, sizeof(buf), MUTT_FILE) != 0 ||
@@ -1762,18 +1754,18 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         mutt_expand_path(buf, sizeof(buf));
 
         /* Call to lookup_mime_type () ?  maybe later */
-        type[0] = 0;
+        char type[STRING] = { 0 };
         if (mutt_get_field("Content-Type: ", type, sizeof(type), 0) != 0 || !type[0])
           continue;
 
-        p = strchr(type, '/');
+        char *p = strchr(type, '/');
         if (!p)
         {
           mutt_error(_("Content-Type is of the form base/sub"));
           continue;
         }
         *p++ = 0;
-        itype = mutt_check_mime_type(type);
+        int itype = mutt_check_mime_type(type);
         if (itype == TYPE_OTHER)
         {
           mutt_error(_("Unknown Content-Type %s"), type);
@@ -1781,7 +1773,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         }
         struct AttachPtr *new = mutt_mem_calloc(1, sizeof(struct AttachPtr));
         /* Touch the file */
-        fp = mutt_file_fopen(buf, "w");
+        FILE *fp = mutt_file_fopen(buf, "w");
         if (!fp)
         {
           mutt_error(_("Can't create file %s"), buf);
