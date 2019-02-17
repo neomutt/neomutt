@@ -1306,9 +1306,10 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
 
   init_menu(&state, menu, title, sizeof(title), mailbox);
 
+  int op;
   while (true)
   {
-    switch (i = mutt_menu_loop(menu))
+    switch (op = mutt_menu_loop(menu))
     {
       case OP_GENERIC_SELECT_ENTRY:
 
@@ -1619,13 +1620,13 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           }
         }
 
-        if (i == OP_CHANGE_DIRECTORY)
+        if (op == OP_CHANGE_DIRECTORY)
         {
           int ret = mutt_get_field(_("Chdir to: "), buf, sizeof(buf), MUTT_FILE);
           if (ret != 0)
             break;
         }
-        else if (i == OP_GOTO_PARENT)
+        else if (op == OP_GOTO_PARENT)
           mutt_get_parent_path(buf, buf, sizeof(buf));
 
         if (buf[0] != '\0')
@@ -1747,7 +1748,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
       {
         bool resort = true;
         int sort = -1;
-        int reverse = (i == OP_SORT_REVERSE);
+        int reverse = (op == OP_SORT_REVERSE);
 
         switch (mutt_multi_choice(
             (reverse) ?
@@ -1811,10 +1812,10 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
       case OP_TOGGLE_MAILBOXES:
       case OP_BROWSER_GOTO_FOLDER:
       case OP_CHECK_NEW:
-        if (i == OP_TOGGLE_MAILBOXES)
+        if (op == OP_TOGGLE_MAILBOXES)
           mailbox = !mailbox;
 
-        if (i == OP_BROWSER_GOTO_FOLDER)
+        if (op == OP_BROWSER_GOTO_FOLDER)
         {
           /* When in mailboxes mode, disables this feature */
           if (Folder)
@@ -1928,7 +1929,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           if (rc < 0)
             break;
 
-          if (i == OP_CATCHUP)
+          if (op == OP_CATCHUP)
             mdata = mutt_newsgroup_catchup(Context->mailbox, CurrentNewsSrv, ff->name);
           else
             mdata = mutt_newsgroup_uncatchup(Context->mailbox, CurrentNewsSrv, ff->name);
@@ -1992,13 +1993,13 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           char *s = buf;
           int j = menu->current;
 
-          if (i == OP_SUBSCRIBE_PATTERN || i == OP_UNSUBSCRIBE_PATTERN)
+          if (op == OP_SUBSCRIBE_PATTERN || op == OP_UNSUBSCRIBE_PATTERN)
           {
             char tmp[STRING];
             int err;
 
             buf[0] = '\0';
-            if (i == OP_SUBSCRIBE_PATTERN)
+            if (op == OP_SUBSCRIBE_PATTERN)
               snprintf(tmp, sizeof(tmp), _("Subscribe pattern: "));
             else
               snprintf(tmp, sizeof(tmp), _("Unsubscribe pattern: "));
@@ -2032,15 +2033,15 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           {
             struct FolderFile *ff = &state.entry[j];
 
-            if (i == OP_BROWSER_SUBSCRIBE || i == OP_BROWSER_UNSUBSCRIBE ||
+            if (op == OP_BROWSER_SUBSCRIBE || op == OP_BROWSER_UNSUBSCRIBE ||
                 regexec(&rx, ff->name, 0, NULL, 0) == 0)
             {
-              if (i == OP_BROWSER_SUBSCRIBE || i == OP_SUBSCRIBE_PATTERN)
+              if (op == OP_BROWSER_SUBSCRIBE || op == OP_SUBSCRIBE_PATTERN)
                 mutt_newsgroup_subscribe(adata, ff->name);
               else
                 mutt_newsgroup_unsubscribe(adata, ff->name);
             }
-            if (i == OP_BROWSER_SUBSCRIBE || i == OP_BROWSER_UNSUBSCRIBE)
+            if (op == OP_BROWSER_SUBSCRIBE || op == OP_BROWSER_UNSUBSCRIBE)
             {
               if (menu->current + 1 < menu->max)
                 menu->current++;
@@ -2048,7 +2049,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
               break;
             }
           }
-          if (i == OP_SUBSCRIBE_PATTERN)
+          if (op == OP_SUBSCRIBE_PATTERN)
           {
             for (unsigned int k = 0; adata && (k < adata->groups_num); k++)
             {
@@ -2069,7 +2070,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           nntp_newsrc_update(adata);
           nntp_clear_cache(adata);
           nntp_newsrc_close(adata);
-          if (i != OP_BROWSER_SUBSCRIBE && i != OP_BROWSER_UNSUBSCRIBE)
+          if (op != OP_BROWSER_SUBSCRIBE && op != OP_BROWSER_UNSUBSCRIBE)
             regfree(&rx);
         }
 #ifdef USE_IMAP
@@ -2081,7 +2082,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           char tmp[STRING];
           mutt_str_strfcpy(tmp, state.entry[menu->current].name, sizeof(tmp));
           mutt_expand_path(tmp, sizeof(tmp));
-          imap_subscribe(tmp, i == OP_BROWSER_SUBSCRIBE);
+          imap_subscribe(tmp, op == OP_BROWSER_SUBSCRIBE);
         }
 #endif /* USE_IMAP */
     }
