@@ -523,7 +523,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, bool mu
             {
               mutt_select_file(buf, buflen,
                                (flags & MUTT_EFILE) ? MUTT_SEL_FOLDER : 0, NULL, NULL);
-              if (*buf)
+              if (buf[0] != '\0')
                 replace_part(state, i, buf);
               rc = 1;
               goto bye;
@@ -637,7 +637,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, bool mu
                                ((flags & MUTT_EFILE) ? MUTT_SEL_FOLDER : 0) |
                                    (multiple ? MUTT_SEL_MULTI : 0),
                                files, numfiles);
-              if (*buf)
+              if (buf[0] != '\0')
               {
                 mutt_pretty_mailbox(buf, buflen);
                 if (!pass)
