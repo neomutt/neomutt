@@ -1093,7 +1093,8 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
   struct BrowserState state = { 0 };
   struct Menu *menu = NULL;
   struct stat st;
-  int i, kill_prefix = 0;
+  int i;
+  bool kill_prefix = false;
   bool multiple = (flags & MUTT_SEL_MULTI);
   bool folder = (flags & MUTT_SEL_FOLDER);
   bool mailbox = (flags & MUTT_SEL_MAILBOX);
@@ -1176,7 +1177,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
         mutt_str_strfcpy(prefix, file, sizeof(prefix));
       else
         mutt_str_strfcpy(prefix, file + i + 1, sizeof(prefix));
-      kill_prefix = 1;
+      kill_prefix = true;
 #ifdef USE_IMAP
     }
 #endif
@@ -1191,18 +1192,14 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
        * on which sort method we chose to use. This variable is defined
        * only to help readability of the code.
        */
-      short browser_track;
+      bool browser_track = false;
 
       switch (SortBrowser & SORT_MASK)
       {
         case SORT_DESC:
         case SORT_SUBJECT:
         case SORT_ORDER:
-          browser_track = 1;
-          break;
-
-        default:
-          browser_track = 0;
+          browser_track = true;
           break;
       }
 
@@ -1411,7 +1408,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
             if (kill_prefix)
             {
               prefix[0] = '\0';
-              kill_prefix = 0;
+              kill_prefix = false;
             }
             mailbox = false;
 #ifdef USE_IMAP
@@ -1735,7 +1732,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           mutt_error(_("Error scanning directory"));
           goto bail;
         }
-        kill_prefix = 0;
+        kill_prefix = false;
         if (state.entrylen == 0)
         {
           mutt_error(_("No files match the file mask"));
@@ -1843,7 +1840,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
         }
         destroy_state(&state);
         prefix[0] = '\0';
-        kill_prefix = 0;
+        kill_prefix = false;
 
         if (mailbox)
         {
