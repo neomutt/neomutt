@@ -1092,8 +1092,6 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
   char title[STRING];
   struct BrowserState state = { 0 };
   struct Menu *menu = NULL;
-  struct stat st;
-  int i;
   bool kill_prefix = false;
   bool multiple = (flags & MUTT_SEL_MULTI);
   bool folder = (flags & MUTT_SEL_FOLDER);
@@ -1117,9 +1115,9 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
 
       /* default state for news reader mode is browse subscribed newsgroups */
       mailbox = false;
-      for (unsigned int j = 0; j < adata->groups_num; j++)
+      for (size_t i = 0; i < adata->groups_num; i++)
       {
-        struct NntpMboxData *mdata = adata->groups_list[j];
+        struct NntpMboxData *mdata = adata->groups_list[i];
         if (mdata && mdata->subscribed)
         {
           mailbox = true;
@@ -1147,6 +1145,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
     else
     {
 #endif
+      int i;
       for (i = mutt_str_strlen(file) - 1; i > 0 && file[i] != '/'; i--)
         ;
       if (i > 0)
@@ -1266,8 +1265,8 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
     else
 #endif
     {
-      i = mutt_str_strlen(LastDir);
-      while (i && LastDir[--i] == '/')
+      size_t i = mutt_str_strlen(LastDir);
+      while ((i > 0) && (LastDir[--i] == '/'))
         LastDir[i] = '\0';
       if (LastDir[0] == '\0')
         getcwd(LastDir, sizeof(LastDir));
@@ -1381,11 +1380,9 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
 #ifdef USE_IMAP
             else if (state.imap_browse)
             {
-              int n;
-
               mutt_str_strfcpy(LastDir, state.entry[menu->current].name, sizeof(LastDir));
               /* tack on delimiter here */
-              n = strlen(LastDir) + 1;
+              int n = strlen(LastDir) + 1;
 
               /* special case "" needs no delimiter */
               struct Url *url = url_parse(state.entry[menu->current].name);
@@ -1470,15 +1467,15 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           {
             *numfiles = menu->tagged;
             tfiles = mutt_mem_calloc(*numfiles, sizeof(char *));
-            for (int j = 0, k = 0; j < state.entrylen; j++)
+            for (int i = 0, j = 0; i < state.entrylen; i++)
             {
-              struct FolderFile ff = state.entry[j];
+              struct FolderFile ff = state.entry[i];
               if (ff.tagged)
               {
                 char full[PATH_MAX];
                 mutt_path_concat(full, LastDir, ff.name, sizeof(full));
                 mutt_expand_path(full, sizeof(full));
-                tfiles[k++] = mutt_str_strdup(full);
+                tfiles[j++] = mutt_str_strdup(full);
               }
             }
             *files = tfiles;
@@ -1663,6 +1660,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
             if (mutt_path_realpath(buf) == 0)
               break;
 
+            struct stat st;
             if (stat(buf, &st) == 0)
             {
               if (S_ISDIR(st.st_mode))
@@ -1955,9 +1953,9 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           if (nntp_newsrc_parse(adata) < 0)
             break;
 
-          for (unsigned int j = 0; j < adata->groups_num; j++)
+          for (size_t i = 0; i < adata->groups_num; i++)
           {
-            struct NntpMboxData *mdata = adata->groups_list[j];
+            struct NntpMboxData *mdata = adata->groups_list[i];
             if (mdata)
               mdata->deleted = true;
           }
@@ -1991,12 +1989,11 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           regex_t rx;
           memset(&rx, 0, sizeof(rx));
           char *s = buf;
-          int j = menu->current;
+          int i = menu->current;
 
           if (op == OP_SUBSCRIBE_PATTERN || op == OP_UNSUBSCRIBE_PATTERN)
           {
             char tmp[STRING];
-            int err;
 
             buf[0] = '\0';
             if (op == OP_SUBSCRIBE_PATTERN)
@@ -2008,7 +2005,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
               break;
             }
 
-            err = REGCOMP(&rx, s, REG_NOSUB);
+            int err = REGCOMP(&rx, s, REG_NOSUB);
             if (err != 0)
             {
               regerror(err, &rx, buf, sizeof(buf));
@@ -2017,7 +2014,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
               break;
             }
             menu->redraw = REDRAW_FULL;
-            j = 0;
+            i = 0;
           }
           else if (state.entrylen == 0)
           {
@@ -2029,9 +2026,9 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           if (rc < 0)
             break;
 
-          for (; j < state.entrylen; j++)
+          for (; i < state.entrylen; i++)
           {
-            struct FolderFile *ff = &state.entry[j];
+            struct FolderFile *ff = &state.entry[i];
 
             if (op == OP_BROWSER_SUBSCRIBE || op == OP_BROWSER_UNSUBSCRIBE ||
                 regexec(&rx, ff->name, 0, NULL, 0) == 0)
@@ -2051,9 +2048,9 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           }
           if (op == OP_SUBSCRIBE_PATTERN)
           {
-            for (unsigned int k = 0; adata && (k < adata->groups_num); k++)
+            for (size_t j = 0; adata && (j < adata->groups_num); j++)
             {
-              struct NntpMboxData *mdata = adata->groups_list[k];
+              struct NntpMboxData *mdata = adata->groups_list[j];
               if (mdata && mdata->group && !mdata->subscribed)
               {
                 if (regexec(&rx, mdata->group, 0, NULL, 0) == 0)
