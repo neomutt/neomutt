@@ -229,11 +229,11 @@ static void calc_header_width_padding(int idx, const char *header, bool calc_max
  */
 static void init_header_padding(void)
 {
-  static short done = 0;
+  static bool done = false;
 
   if (done)
     return;
-  done = 1;
+  done = true;
 
   for (int i = 0; i <= HDR_XCOMMENTTO; i++)
     calc_header_width_padding(i, _(Prompts[i]), true);
@@ -891,14 +891,11 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
   char fname[PATH_MAX];
   int op_close = OP_NULL;
   int rc = -1;
-  int loop = 1;
-  int fcc_set = 0; /* has the user edited the Fcc: field ? */
+  bool loop = true;
+  bool fcc_set = false; /* has the user edited the Fcc: field ? */
   struct ComposeRedrawData rd;
 #ifdef USE_NNTP
-  int news = 0; /* is it a news article ? */
-
-  if (OptNewsSend)
-    news++;
+  bool news = OptNewsSend; /* is it a news article ? */
 #endif
 
   init_header_padding();
@@ -1059,7 +1056,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
           mutt_pretty_mailbox(fcc, fcclen);
           mutt_window_move(MuttIndexWindow, HDR_FCC, HDR_XOFFSET);
           mutt_paddstr(W, fcc);
-          fcc_set = 1;
+          fcc_set = true;
         }
         mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
@@ -1356,7 +1353,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
           break;
         }
 
-        int error = 0;
+        bool error = false;
         if (numfiles > 1)
         {
           mutt_message(ngettext("Attaching selected file...",
@@ -1372,7 +1369,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
             update_idx(menu, actx, new);
           else
           {
-            error = 1;
+            error = true;
             mutt_error(_("Unable to attach %s"), att);
             FREE(&new);
           }
@@ -1520,7 +1517,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
       case OP_DELETE:
         CHECK_COUNT;
         if (CURATTACH->unowned)
-          CURATTACH->content->unlink = 0;
+          CURATTACH->content->unlink = false;
         if (delete_attachment(actx, menu->current) == -1)
           break;
         mutt_update_compose_menu(actx, menu, false);
@@ -1662,7 +1659,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
             *fcc = 0;
         }
 
-        loop = 0;
+        loop = false;
         rc = 0;
         break;
 
@@ -1882,7 +1879,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
             }
           }
           rc = -1;
-          loop = 0;
+          loop = false;
           break;
         }
         else if (ans == MUTT_ABORT)
@@ -1898,7 +1895,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
           break;
         }
 
-        loop = 0;
+        loop = false;
         rc = 1;
         break;
 
