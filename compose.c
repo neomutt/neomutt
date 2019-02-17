@@ -974,57 +974,54 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         break;
 #ifdef USE_NNTP
       case OP_COMPOSE_EDIT_NEWSGROUPS:
-        if (news)
+        if (!news)
+          break;
+        if (msg->env->newsgroups)
+          mutt_str_strfcpy(buf, msg->env->newsgroups, sizeof(buf));
+        else
+          buf[0] = 0;
+        if (mutt_get_field("Newsgroups: ", buf, sizeof(buf), 0) == 0)
         {
+          mutt_str_replace(&msg->env->newsgroups, buf);
+          mutt_window_move(MuttIndexWindow, HDR_TO, HDR_XOFFSET);
           if (msg->env->newsgroups)
-            mutt_str_strfcpy(buf, msg->env->newsgroups, sizeof(buf));
+            mutt_paddstr(W, msg->env->newsgroups);
           else
-            buf[0] = 0;
-          if (mutt_get_field("Newsgroups: ", buf, sizeof(buf), 0) == 0)
-          {
-            mutt_str_replace(&msg->env->newsgroups, buf);
-            mutt_window_move(MuttIndexWindow, HDR_TO, HDR_XOFFSET);
-            if (msg->env->newsgroups)
-              mutt_paddstr(W, msg->env->newsgroups);
-            else
-              clrtoeol();
-          }
+            clrtoeol();
         }
         break;
       case OP_COMPOSE_EDIT_FOLLOWUP_TO:
-        if (news)
+        if (!news)
+          break;
+        if (msg->env->followup_to)
+          mutt_str_strfcpy(buf, msg->env->followup_to, sizeof(buf));
+        else
+          buf[0] = 0;
+        if (mutt_get_field("Followup-To: ", buf, sizeof(buf), 0) == 0)
         {
+          mutt_str_replace(&msg->env->followup_to, buf);
+          mutt_window_move(MuttIndexWindow, HDR_CC, HDR_XOFFSET);
           if (msg->env->followup_to)
-            mutt_str_strfcpy(buf, msg->env->followup_to, sizeof(buf));
+            mutt_paddstr(W, msg->env->followup_to);
           else
-            buf[0] = 0;
-          if (mutt_get_field("Followup-To: ", buf, sizeof(buf), 0) == 0)
-          {
-            mutt_str_replace(&msg->env->followup_to, buf);
-            mutt_window_move(MuttIndexWindow, HDR_CC, HDR_XOFFSET);
-            if (msg->env->followup_to)
-              mutt_paddstr(W, msg->env->followup_to);
-            else
-              clrtoeol();
-          }
+            clrtoeol();
         }
         break;
       case OP_COMPOSE_EDIT_X_COMMENT_TO:
-        if (news && XCommentTo)
+        if (!(news && XCommentTo))
+          break;
+        if (msg->env->x_comment_to)
+          mutt_str_strfcpy(buf, msg->env->x_comment_to, sizeof(buf));
+        else
+          buf[0] = 0;
+        if (mutt_get_field("X-Comment-To: ", buf, sizeof(buf), 0) == 0)
         {
+          mutt_str_replace(&msg->env->x_comment_to, buf);
+          mutt_window_move(MuttIndexWindow, HDR_BCC, HDR_XOFFSET);
           if (msg->env->x_comment_to)
-            mutt_str_strfcpy(buf, msg->env->x_comment_to, sizeof(buf));
+            mutt_paddstr(W, msg->env->x_comment_to);
           else
-            buf[0] = 0;
-          if (mutt_get_field("X-Comment-To: ", buf, sizeof(buf), 0) == 0)
-          {
-            mutt_str_replace(&msg->env->x_comment_to, buf);
-            mutt_window_move(MuttIndexWindow, HDR_BCC, HDR_XOFFSET);
-            if (msg->env->x_comment_to)
-              mutt_paddstr(W, msg->env->x_comment_to);
-            else
-              clrtoeol();
-          }
+            clrtoeol();
         }
         break;
 #endif
@@ -1237,9 +1234,9 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         struct AttachPtr *gptr = mutt_mem_calloc(1, sizeof(struct AttachPtr));
         gptr->content = group;
         update_idx(menu, actx, gptr);
-      }
         menu->redraw = REDRAW_INDEX;
         break;
+      }
 
       case OP_COMPOSE_GROUP_LINGUAL:
       {
@@ -1335,9 +1332,9 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         struct AttachPtr *gptr = mutt_mem_calloc(1, sizeof(struct AttachPtr));
         gptr->content = group;
         update_idx(menu, actx, gptr);
-      }
         menu->redraw = REDRAW_INDEX;
         break;
+      }
 
       case OP_COMPOSE_ATTACH_FILE:
       {
@@ -1381,9 +1378,9 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
           mutt_clear_error();
 
         menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
-      }
         mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
+      }
 
       case OP_COMPOSE_ATTACH_MESSAGE:
 #ifdef USE_NNTP
@@ -1813,9 +1810,9 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
           mutt_update_encoding(CURATTACH->content);
           menu->redraw = REDRAW_FULL;
         }
-      }
         mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
+      }
 
       case OP_COMPOSE_EDIT_MIME:
         CHECK_COUNT;
