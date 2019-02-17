@@ -179,8 +179,8 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, bool mu
 {
   int width = MuttMessageWindow->cols - col - 1;
   int redraw;
-  int pass = (flags & MUTT_PASS);
-  int first = 1;
+  bool pass = (flags & MUTT_PASS);
+  bool first = true;
   int ch, w, r;
   size_t i;
   wchar_t *tempbuf = NULL;
@@ -196,7 +196,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, bool mu
   {
     /* Coming back after return 1 */
     redraw = MUTT_REDRAW_LINE;
-    first = 0;
+    first = false;
   }
   else
   {
@@ -265,7 +265,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, bool mu
 
     if (ch != OP_NULL)
     {
-      first = 0;
+      first = false;
       if (ch != OP_EDITOR_COMPLETE && ch != OP_EDITOR_COMPLETE_QUERY)
         state->tabs = 0;
       redraw = MUTT_REDRAW_LINE;
@@ -495,7 +495,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, bool mu
         case OP_EDITOR_MAILBOX_CYCLE:
           if (flags & MUTT_EFILE)
           {
-            first = 1; /* clear input if user types a real key later */
+            first = true; /* clear input if user types a real key later */
             mutt_mb_wcstombs(buf, buflen, state->wbuf, state->curpos);
             mutt_mailbox(Context ? Context->mailbox : NULL, buf, buflen);
             state->curpos = state->lastchar =
@@ -752,7 +752,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, bool mu
 
       if (first && (flags & MUTT_CLEAR))
       {
-        first = 0;
+        first = false;
         if (IsWPrint(wc)) /* why? */
         {
           state->curpos = 0;
