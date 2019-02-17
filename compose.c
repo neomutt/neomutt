@@ -441,7 +441,7 @@ static void draw_envelope_addr(int line, struct Address *addr)
 {
   char buf[LONG_STRING];
 
-  buf[0] = 0;
+  buf[0] = '\0';
   mutt_addr_write(buf, sizeof(buf), addr, true);
   SETCOLOR(MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw(MuttIndexWindow, line, 0, "%*s", HeaderPadding[line],
@@ -539,7 +539,7 @@ static void edit_address_list(int line, struct Address **addr)
   }
 
   /* redraw the expanded list so the user can see the result */
-  buf[0] = 0;
+  buf[0] = '\0';
   mutt_addr_write(buf, sizeof(buf), *addr, true);
   mutt_window_move(MuttIndexWindow, line, HDR_XOFFSET);
   mutt_paddstr(W, buf);
@@ -817,7 +817,7 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
   struct Menu *menu = (struct Menu *) data;
 
-  *buf = 0;
+  *buf = '\0';
   switch (op)
   {
     case 'a': /* total number of attachments */
@@ -841,7 +841,7 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
       break;
 
     case 0:
-      *buf = 0;
+      *buf = '\0';
       return src;
 
     default:
@@ -978,7 +978,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         if (msg->env->newsgroups)
           mutt_str_strfcpy(buf, msg->env->newsgroups, sizeof(buf));
         else
-          buf[0] = 0;
+          buf[0] = '\0';
         if (mutt_get_field("Newsgroups: ", buf, sizeof(buf), 0) == 0)
         {
           mutt_str_replace(&msg->env->newsgroups, buf);
@@ -995,7 +995,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         if (msg->env->followup_to)
           mutt_str_strfcpy(buf, msg->env->followup_to, sizeof(buf));
         else
-          buf[0] = 0;
+          buf[0] = '\0';
         if (mutt_get_field("Followup-To: ", buf, sizeof(buf), 0) == 0)
         {
           mutt_str_replace(&msg->env->followup_to, buf);
@@ -1012,7 +1012,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         if (msg->env->x_comment_to)
           mutt_str_strfcpy(buf, msg->env->x_comment_to, sizeof(buf));
         else
-          buf[0] = 0;
+          buf[0] = '\0';
         if (mutt_get_field("X-Comment-To: ", buf, sizeof(buf), 0) == 0)
         {
           mutt_str_replace(&msg->env->x_comment_to, buf);
@@ -1028,7 +1028,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         if (msg->env->subject)
           mutt_str_strfcpy(buf, msg->env->subject, sizeof(buf));
         else
-          buf[0] = 0;
+          buf[0] = '\0';
         if (mutt_get_field(_("Subject: "), buf, sizeof(buf), 0) == 0)
         {
           mutt_str_replace(&msg->env->subject, buf);
@@ -1340,7 +1340,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         char *prompt = _("Attach file");
         int numfiles = 0;
         char **files = NULL;
-        buf[0] = 0;
+        buf[0] = '\0';
 
         if (mutt_enter_fname_full(prompt, buf, sizeof(buf), false, true,
                                   &files, &numfiles, MUTT_SEL_MULTI) == -1 ||
@@ -1387,7 +1387,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
 #endif
       {
         char *prompt = _("Open mailbox to attach message from");
-        buf[0] = 0;
+        buf[0] = '\0';
 
 #ifdef USE_NNTP
         OptNews = false;
@@ -1411,7 +1411,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
             mutt_pretty_mailbox(buf, sizeof(buf));
           }
 
-        if (mutt_enter_fname(prompt, buf, sizeof(buf), 1) == -1 || !buf[0])
+        if (mutt_enter_fname(prompt, buf, sizeof(buf), 1) == -1 || (buf[0] == '\0'))
           break;
 
 #ifdef USE_NNTP
@@ -1597,7 +1597,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
 
       case OP_COMPOSE_EDIT_LANGUAGE:
         CHECK_COUNT;
-        buf[0] = 0; /* clear buffer first */
+        buf[0] = '\0'; /* clear buffer first */
         if (CURATTACH->content->language)
           mutt_str_strfcpy(buf, CURATTACH->content->language, sizeof(buf));
         if (mutt_get_field("Content-Language: ", buf, sizeof(buf), 0) == 0)
@@ -1614,7 +1614,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
       case OP_COMPOSE_EDIT_ENCODING:
         CHECK_COUNT;
         mutt_str_strfcpy(buf, ENCODING(CURATTACH->content->encoding), sizeof(buf));
-        if (mutt_get_field("Content-Transfer-Encoding: ", buf, sizeof(buf), 0) == 0 && buf[0])
+        if (mutt_get_field("Content-Transfer-Encoding: ", buf, sizeof(buf), 0) == 0 && (buf[0] != '\0'))
         {
           int enc = mutt_check_encoding(buf);
           if ((enc != ENC_OTHER) && (enc != ENC_UUENCODED))
@@ -1652,7 +1652,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
           if (ans == MUTT_ABORT)
             break;
           else if (ans == MUTT_NO)
-            *fcc = 0;
+            *fcc = '\0';
         }
 
         loop = false;
@@ -1721,7 +1721,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         mutt_str_strfcpy(buf, CURATTACH->content->filename, sizeof(buf));
         mutt_pretty_mailbox(buf, sizeof(buf));
         if (mutt_get_field(_("Rename to: "), buf, sizeof(buf), MUTT_FILE) == 0 &&
-            buf[0])
+            (buf[0] != '\0'))
         {
           struct stat st;
           if (stat(CURATTACH->content->filename, &st) == -1)
@@ -1753,9 +1753,9 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         FILE *fp = NULL;
 
         mutt_window_clearline(MuttMessageWindow, 0);
-        buf[0] = 0;
+        buf[0] = '\0';
         if (mutt_get_field(_("New file: "), buf, sizeof(buf), MUTT_FILE) != 0 ||
-            !buf[0])
+            (buf[0] == '\0'))
         {
           continue;
         }
@@ -1918,7 +1918,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         if (actx->idxlen)
           msg->content = actx->idx[0]->content;
         if (mutt_enter_fname(_("Write message to mailbox"), buf, sizeof(buf), 1) != -1 &&
-            buf[0])
+            (buf[0] != '\0'))
         {
           mutt_message(_("Writing message to %s ..."), buf);
           mutt_expand_path(buf, sizeof(buf));
