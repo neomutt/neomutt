@@ -1108,7 +1108,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
 #ifdef USE_NNTP
   if (OptNews)
   {
-    if (*file)
+    if (file[0] != '\0')
       mutt_str_strfcpy(prefix, file, sizeof(prefix));
     else
     {
@@ -1129,7 +1129,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
   }
   else
 #endif
-      if (*file)
+      if (file[0] != '\0')
   {
     mutt_expand_path(file, filelen);
 #ifdef USE_IMAP
@@ -1223,7 +1223,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
        */
       if (CurrentFolder)
       {
-        if (!LastDir[0])
+        if (LastDir[0] == '\0')
         {
           /* If browsing in "local"-mode, than we chose to define LastDir to
            * MailDir
@@ -1272,12 +1272,12 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
       i = mutt_str_strlen(LastDir);
       while (i && LastDir[--i] == '/')
         LastDir[i] = '\0';
-      if (!LastDir[0])
+      if (LastDir[0] == '\0')
         getcwd(LastDir, sizeof(LastDir));
     }
   }
 
-  *file = 0;
+  file[0] = '\0';
 
   if (mailbox)
   {
@@ -1365,11 +1365,11 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
                 char *p = strrchr(LastDir + 1, '/');
 
                 if (p)
-                  *p = 0;
+                  *p = '\0';
                 else
                 {
                   if (LastDir[0] == '/')
-                    LastDir[1] = 0;
+                    LastDir[1] = '\0';
                   else
                     strcat(LastDir, "/..");
                 }
@@ -1410,7 +1410,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
             destroy_state(&state);
             if (kill_prefix)
             {
-              prefix[0] = 0;
+              prefix[0] = '\0';
               kill_prefix = 0;
             }
             mailbox = false;
@@ -1485,7 +1485,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
             }
             *files = tfiles;
           }
-          else if (file[0]) /* no tagged entries. return selected entry */
+          else if (file[0] != '\0') /* no tagged entries. return selected entry */
           {
             *numfiles = 1;
             tfiles = mutt_mem_calloc(*numfiles, sizeof(char *));
@@ -1631,7 +1631,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
         else if (i == OP_GOTO_PARENT)
           mutt_get_parent_path(buf, buf, sizeof(buf));
 
-        if (buf[0])
+        if (buf[0] != '\0')
         {
           mailbox = false;
           mutt_expand_path(buf, sizeof(buf));
@@ -1700,7 +1700,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
 
         mailbox = false;
         /* assume that the user wants to see everything */
-        if (!buf[0])
+        if (buf[0] == '\0')
           mutt_str_strfcpy(buf, ".", sizeof(buf));
 
         struct Buffer errmsg = { 0 };
@@ -1823,7 +1823,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           if (Folder)
           {
             mutt_debug(5, "= hit! Folder: %s, LastDir: %s\n", Folder, LastDir);
-            if (!GotoSwapper[0])
+            if (GotoSwapper[0] == '\0')
             {
               if (mutt_str_strcmp(LastDir, Folder) != 0)
               {
@@ -1842,7 +1842,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           }
         }
         destroy_state(&state);
-        prefix[0] = 0;
+        prefix[0] = '\0';
         kill_prefix = 0;
 
         if (mailbox)
@@ -2000,12 +2000,12 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
             char tmp[STRING];
             int err;
 
-            buf[0] = 0;
+            buf[0] = '\0';
             if (i == OP_SUBSCRIBE_PATTERN)
               snprintf(tmp, sizeof(tmp), _("Subscribe pattern: "));
             else
               snprintf(tmp, sizeof(tmp), _("Unsubscribe pattern: "));
-            if (mutt_get_field(tmp, buf, sizeof(buf), 0) != 0 || !buf[0])
+            if (mutt_get_field(tmp, buf, sizeof(buf), 0) != 0 || (buf[0] == '\0'))
             {
               break;
             }
