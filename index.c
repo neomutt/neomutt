@@ -3448,7 +3448,8 @@ int mutt_index_menu(void)
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
 
-        int rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_TAG, !CUR_EMAIL->tagged, (op != OP_TAG_THREAD));
+        int rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_TAG, !CUR_EMAIL->tagged,
+                                      (op != OP_TAG_THREAD));
         if (rc != -1)
         {
           if (Resolve)
@@ -3513,7 +3514,8 @@ int mutt_index_menu(void)
         if (!check_acl(Context, MUTT_ACL_DELETE, _("Cannot undelete messages")))
           break;
 
-        int rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_DELETE, false, (op != OP_UNDELETE_THREAD));
+        int rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_DELETE, false,
+                                      (op != OP_UNDELETE_THREAD));
         if (rc != -1)
         {
           rc = mutt_thread_set_flag(CUR_EMAIL, MUTT_PURGE, false, (op != OP_UNDELETE_THREAD));

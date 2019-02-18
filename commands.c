@@ -582,8 +582,7 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
       {
         mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
         mutt_parse_mime_message(m, en->email);
-        if ((en->email->security & ENCRYPT) &&
-            !crypt_valid_passphrase(en->email->security))
+        if ((en->email->security & ENCRYPT) && !crypt_valid_passphrase(en->email->security))
         {
           return 1;
         }
@@ -972,7 +971,8 @@ int mutt_save_message_ctx(struct Email *e, bool delete, bool decode,
  * @retval  0 Copy/save was successful
  * @retval -1 Error/abort
  */
-int mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete, bool decode, bool decrypt)
+int mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete,
+                      bool decode, bool decrypt)
 {
   if (!el || STAILQ_EMPTY(el))
     return -1;
@@ -1120,8 +1120,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete, bool
     STAILQ_FOREACH(en, el, entries)
     {
       mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
-      rc = mutt_save_message_ctx(en->email, delete, decode,
-                                 decrypt, savectx->mailbox);
+      rc = mutt_save_message_ctx(en->email, delete, decode, decrypt, savectx->mailbox);
       if (rc != 0)
         break;
 #ifdef USE_COMPRESSED

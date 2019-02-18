@@ -1074,7 +1074,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
           mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
           break;
         }
-      /* fallthrough */
+        /* fallthrough */
 
       case OP_COMPOSE_EDIT_HEADERS:
         if ((mutt_str_strcmp("builtin", Editor) != 0) &&

@@ -504,8 +504,7 @@ static int mbox_parse_mailbox(struct Mailbox *m)
 
       if (!e_cur->env->return_path && return_path[0])
       {
-        e_cur->env->return_path =
-            mutt_addr_parse_list(e_cur->env->return_path, return_path);
+        e_cur->env->return_path = mutt_addr_parse_list(e_cur->env->return_path, return_path);
       }
 
       if (!e_cur->env->from)
