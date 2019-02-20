@@ -5247,6 +5247,9 @@ msgstr "%s n'est pas un répertoire."
 msgid "reply to all recipients"
 msgstr "répondre à tous les destinataires"
 
+msgid "reply to all recipients preserving To/Cc"
+msgstr "répondre à tous les destinataires en préservant À/Cc (To/Cc)"
+
 #: opcodes.h:140
 msgid "scroll down 1/2 page"
 msgstr "descendre d'1/2 page"
@@ -5785,6 +5788,9 @@ msgstr "vérifier une clé publique PGP"
 #: opcodes.h:286
 msgid "view the key's user id"
 msgstr "afficher le numéro d'utilisateur de la clé"
+
+msgid "descend into a directory"
+msgstr "descendre dans un répertoire"
 
 #: opcodes.h:289
 msgid "move the highlight to next mailbox"

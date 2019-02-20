@@ -91,6 +91,7 @@
   _fmt(OP_DELETE_MAILBOX,                 N_("delete the current mailbox (IMAP only)")) \
   _fmt(OP_DELETE_SUBTHREAD,               N_("delete all messages in subthread")) \
   _fmt(OP_DELETE_THREAD,                  N_("delete all messages in thread")) \
+  _fmt(OP_DESCEND_DIRECTORY,              N_("descend into a directory")) \
   _fmt(OP_DISPLAY_ADDRESS,                N_("display full address of sender")) \
   _fmt(OP_DISPLAY_HEADERS,                N_("display message and toggle header weeding")) \
   _fmt(OP_DISPLAY_MESSAGE,                N_("display a message")) \
@@ -136,6 +137,7 @@
   _fmt(OP_GET_MESSAGE,                    N_("get message with Message-Id")) \
   _fmt(OP_GET_PARENT,                     N_("get parent of the current message")) \
   _fmt(OP_GOTO_PARENT,                    N_("go to parent directory")) \
+  _fmt(OP_GROUP_CHAT_REPLY,               N_("reply to all recipients preserving To/Cc")) \
   _fmt(OP_GROUP_REPLY,                    N_("reply to all recipients")) \
   _fmt(OP_HALF_DOWN,                      N_("scroll down 1/2 page")) \
   _fmt(OP_HALF_UP,                        N_("scroll up 1/2 page")) \

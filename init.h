@@ -2840,12 +2840,24 @@ struct ConfigDef MuttVars[] = {
   ** not used.
   ** (PGP only)
   */
-  { "pgp_use_gpg_agent", DT_BOOL, R_NONE, &PgpUseGpgAgent, false },
+  { "pgp_use_gpg_agent", DT_BOOL, R_NONE, &PgpUseGpgAgent, true },
   /*
   ** .pp
-  ** If \fIset\fP, NeoMutt will use a possibly-running \fCgpg-agent(1)\fP process.
-  ** Note that as of version 2.1, GnuPG no longer exports GPG_AGENT_INFO, so
-  ** NeoMutt no longer verifies if the agent is running.
+  ** If \fIset\fP, NeoMutt expects a \fCgpg-agent(1)\fP process will handle
+  ** private key passphrase prompts.  If \fIunset\fP, NeoMutt will prompt
+  ** for the passphrase and pass it via stdin to the pgp command.
+  ** .pp
+  ** Note that as of version 2.1, GnuPG automatically spawns an agent
+  ** and requires the agent be used for passphrase management.  Since
+  ** that version is increasingly prevalent, this variable now
+  ** defaults \fIset\fP.
+  ** .pp
+  ** NeoMutt works with a GUI or curses pinentry program.  A TTY pinentry
+  ** should not be used.
+  ** .pp
+  ** If you are using an older version of GnuPG without an agent running,
+  ** or another encryption program without an agent, you will need to
+  ** \fIunset\fP this variable.
   ** (PGP only)
   */
   { "pgp_verify_command", DT_COMMAND, R_NONE, &PgpVerifyCommand, 0 },

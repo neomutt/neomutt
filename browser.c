@@ -1312,11 +1312,17 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
   {
     switch (op = mutt_menu_loop(menu))
     {
+      case OP_DESCEND_DIRECTORY:
       case OP_GENERIC_SELECT_ENTRY:
 
         if (state.entrylen == 0)
         {
           mutt_error(_("No files match the file mask"));
+          break;
+        }
+        else if (op == OP_DESCEND_DIRECTORY)
+        {
+          mutt_error(_("%s is not a directory"), state.entry[menu->current].name);
           break;
         }
 
@@ -1346,7 +1352,8 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           }
 
           enum MailboxType magic = mx_path_probe(buf, NULL);
-          if ((magic == MUTT_MAILBOX_ERROR) || (magic == MUTT_UNKNOWN)
+          if ((op == OP_DESCEND_DIRECTORY) || (magic == MUTT_MAILBOX_ERROR) ||
+              (magic == MUTT_UNKNOWN)
 #ifdef USE_IMAP
               || state.entry[menu->current].inferiors
 #endif

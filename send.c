@@ -701,7 +701,7 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
   struct Address *tmp = NULL;
   int hmfupto = -1;
 
-  if ((flags & (SEND_LIST_REPLY | SEND_GROUP_REPLY)) && in->mail_followup_to)
+  if ((flags & (SEND_LIST_REPLY | SEND_GROUP_REPLY | SEND_GROUP_CHAT_REPLY)) && in->mail_followup_to)
   {
     char prompt[STRING];
     snprintf(prompt, sizeof(prompt), _("Follow-up to %s%s?"),
@@ -730,13 +730,18 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
   }
   else
   {
-    if (default_to(&out->to, in, flags & SEND_GROUP_REPLY, hmfupto) == MUTT_ABORT)
+    if (default_to(&out->to, in, flags & (SEND_GROUP_REPLY | SEND_GROUP_CHAT_REPLY),
+                   hmfupto) == -1)
       return -1; /* abort */
 
-    if ((flags & SEND_GROUP_REPLY) && (!in->mail_followup_to || hmfupto != MUTT_YES))
+    if ((flags & (SEND_GROUP_REPLY | SEND_GROUP_CHAT_REPLY)) &&
+        (!in->mail_followup_to || hmfupto != MUTT_YES))
     {
       /* if(!mutt_addr_is_user(in->to)) */
-      mutt_addr_append(&out->cc, in->to, true);
+      if (flags & SEND_GROUP_REPLY)
+        mutt_addr_append(&out->cc, in->to, true);
+      else
+        mutt_addr_append(&out->to, in->to, true);
       mutt_addr_append(&out->cc, in->cc, true);
     }
   }

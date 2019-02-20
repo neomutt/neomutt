@@ -71,7 +71,11 @@
 #define DEVRANDOM "/dev/urandom"
 #endif
 
-#if OPENSSL_VERSION_NUMBER < 0x10100000L
+/* LibreSSL defines OPENSSL_VERSION_NUMBER but sets it to 0x20000000L.
+ * So technically we don't need the defined(OPENSSL_VERSION_NUMBER) check.
+ */
+#if (defined(OPENSSL_VERSION_NUMBER) && OPENSSL_VERSION_NUMBER < 0x10100000L) || \
+    (defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER < 0x2070000fL)
 #define X509_get0_notBefore X509_get_notBefore
 #define X509_get0_notAfter X509_get_notAfter
 #define X509_getm_notBefore X509_get_notBefore
@@ -602,7 +606,10 @@ static int ssl_init(void)
     }
   }
 
-#if OPENSSL_VERSION_NUMBER < 0x10100000L
+/* OpenSSL performs automatic initialization as of 1.1.
+ * However LibreSSL does not (as of 2.8.3). */
+#if (defined(OPENSSL_VERSION_NUMBER) && OPENSSL_VERSION_NUMBER < 0x10100000L) || \
+    (defined(LIBRESSL_VERSION_NUMBER))
   /* I don't think you can do this just before reading the error. The call
    * itself might clobber the last SSL error. */
   SSL_load_error_strings();
