@@ -125,7 +125,7 @@ void nntp_newsrc_close(struct NntpAccountData *adata)
   if (!adata->newsrc_fp)
     return;
 
-  mutt_debug(1, "Unlocking %s\n", adata->newsrc_file);
+  mutt_debug(LL_DEBUG1, "Unlocking %s\n", adata->newsrc_file);
   mutt_file_unlock(fileno(adata->newsrc_fp));
   mutt_file_fclose(&adata->newsrc_fp);
 }
@@ -187,7 +187,7 @@ int nntp_newsrc_parse(struct NntpAccountData *adata)
   }
 
   /* lock it */
-  mutt_debug(1, "Locking %s\n", adata->newsrc_file);
+  mutt_debug(LL_DEBUG1, "Locking %s\n", adata->newsrc_file);
   if (mutt_file_lock(fileno(adata->newsrc_fp), false, true))
   {
     mutt_file_fclose(&adata->newsrc_fp);
@@ -207,7 +207,7 @@ int nntp_newsrc_parse(struct NntpAccountData *adata)
   adata->size = sb.st_size;
   adata->mtime = sb.st_mtime;
   adata->newsrc_modified = true;
-  mutt_debug(1, "Parsing %s\n", adata->newsrc_file);
+  mutt_debug(LL_DEBUG1, "Parsing %s\n", adata->newsrc_file);
 
   /* .newsrc has been externally modified or hasn't been loaded yet */
   for (unsigned int i = 0; i < adata->groups_num; i++)
@@ -286,7 +286,7 @@ int nntp_newsrc_parse(struct NntpAccountData *adata)
     mdata->newsrc_len = j;
     mutt_mem_realloc(&mdata->newsrc_ent, j * sizeof(struct NewsrcEntry));
     nntp_group_unread_stat(mdata);
-    mutt_debug(2, "%s\n", mdata->group);
+    mutt_debug(LL_DEBUG2, "%s\n", mdata->group);
   }
   FREE(&line);
   return 1;
@@ -491,7 +491,7 @@ int nntp_newsrc_update(struct NntpAccountData *adata)
   buf[off] = '\0';
 
   /* newrc being fully rewritten */
-  mutt_debug(1, "Updating %s\n", adata->newsrc_file);
+  mutt_debug(LL_DEBUG1, "Updating %s\n", adata->newsrc_file);
   if (adata->newsrc_file && update_file(adata->newsrc_file, buf) == 0)
   {
     struct stat sb;
@@ -584,7 +584,7 @@ int nntp_add_group(char *line, void *data)
   if (sscanf(line, "%1023s " ANUM " " ANUM " %c %8191[^\n]", group, &last,
              &first, &mod, desc) < 4)
   {
-    mutt_debug(4, "Cannot parse server line: %s\n", line);
+    mutt_debug(LL_DEBUG2, "Cannot parse server line: %s\n", line);
     return 0;
   }
 
@@ -616,7 +616,7 @@ static int active_get_cache(struct NntpAccountData *adata)
   time_t t;
 
   cache_expand(file, sizeof(file), &adata->conn->account, ".active");
-  mutt_debug(1, "Parsing %s\n", file);
+  mutt_debug(LL_DEBUG1, "Parsing %s\n", file);
   FILE *fp = mutt_file_fopen(file, "r");
   if (!fp)
     return -1;
@@ -677,7 +677,7 @@ int nntp_active_save_cache(struct NntpAccountData *adata)
   }
 
   cache_expand(file, sizeof(file), &adata->conn->account, ".active");
-  mutt_debug(1, "Updating %s\n", file);
+  mutt_debug(LL_DEBUG1, "Updating %s\n", file);
   rc = update_file(file, buf);
   FREE(&buf);
   return rc;
@@ -745,7 +745,7 @@ void nntp_hcache_update(struct NntpMboxData *mdata, header_cache_t *hc)
   hdata = mutt_hcache_fetch_raw(hc, "index", 5);
   if (hdata)
   {
-    mutt_debug(2, "mutt_hcache_fetch index: %s\n", (char *) hdata);
+    mutt_debug(LL_DEBUG2, "mutt_hcache_fetch index: %s\n", (char *) hdata);
     if (sscanf(hdata, ANUM " " ANUM, &first, &last) == 2)
     {
       old = true;
@@ -758,7 +758,7 @@ void nntp_hcache_update(struct NntpMboxData *mdata, header_cache_t *hc)
           continue;
 
         snprintf(buf, sizeof(buf), "%u", current);
-        mutt_debug(2, "mutt_hcache_delete %s\n", buf);
+        mutt_debug(LL_DEBUG2, "mutt_hcache_delete %s\n", buf);
         mutt_hcache_delete(hc, buf, strlen(buf));
       }
     }
@@ -769,7 +769,7 @@ void nntp_hcache_update(struct NntpMboxData *mdata, header_cache_t *hc)
   if (!old || mdata->first_message != first || mdata->last_message != last)
   {
     snprintf(buf, sizeof(buf), "%u %u", mdata->first_message, mdata->last_message);
-    mutt_debug(2, "mutt_hcache_store index: %s\n", buf);
+    mutt_debug(LL_DEBUG2, "mutt_hcache_store index: %s\n", buf);
     mutt_hcache_store_raw(hc, "index", 5, buf, strlen(buf) + 1);
   }
 }
@@ -789,7 +789,7 @@ static int nntp_bcache_delete(const char *id, struct BodyCache *bcache, void *da
       anum < mdata->first_message || anum > mdata->last_message)
   {
     if (mdata)
-      mutt_debug(2, "mutt_bcache_del %s\n", id);
+      mutt_debug(LL_DEBUG2, "mutt_bcache_del %s\n", id);
     mutt_bcache_del(bcache, id);
   }
   return 0;
@@ -819,7 +819,7 @@ void nntp_delete_group_cache(struct NntpMboxData *mdata)
   cache_expand(file, sizeof(file), &mdata->adata->conn->account, file);
   unlink(file);
   mdata->last_cached = 0;
-  mutt_debug(2, "%s\n", file);
+  mutt_debug(LL_DEBUG2, "%s\n", file);
 #endif
 
   if (!mdata->bcache)
@@ -828,7 +828,7 @@ void nntp_delete_group_cache(struct NntpMboxData *mdata)
   }
   if (mdata->bcache)
   {
-    mutt_debug(2, "%s/*\n", mdata->group);
+    mutt_debug(LL_DEBUG2, "%s/*\n", mdata->group);
     mutt_bcache_list(mdata->bcache, nntp_bcache_delete, NULL);
     mutt_bcache_close(&mdata->bcache);
   }
@@ -898,7 +898,7 @@ void nntp_clear_cache(struct NntpAccountData *adata)
       if (S_ISDIR(sb.st_mode))
       {
         rmdir(file);
-        mutt_debug(2, "%s\n", file);
+        mutt_debug(LL_DEBUG2, "%s\n", file);
       }
     }
     closedir(dp);
@@ -1141,7 +1141,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
             if (last >= mdata->first_message && last <= mdata->last_message)
             {
               mdata->last_cached = last;
-              mutt_debug(2, "%s last_cached=%u\n", mdata->group, last);
+              mutt_debug(LL_DEBUG2, "%s last_cached=%u\n", mdata->group, last);
             }
           }
           mutt_hcache_free(hc, &hdata);

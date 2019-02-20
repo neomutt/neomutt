@@ -69,7 +69,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
 
   if (mutt_sasl_client_new(adata->conn, &saslconn) < 0)
   {
-    mutt_debug(1, "Error allocating SASL connection.\n");
+    mutt_debug(LL_DEBUG1, "Error allocating SASL connection.\n");
     return POP_A_FAILURE;
   }
 
@@ -113,7 +113,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
   {
     mutt_str_strfcpy(buf + olen, "\r\n", bufsize - olen);
     mutt_socket_send(adata->conn, buf);
-    if (mutt_socket_readln(inbuf, sizeof(inbuf), adata->conn) < 0)
+    if (mutt_socket_readln_d(inbuf, sizeof(inbuf), adata->conn, MUTT_SOCK_LOG_FULL) < 0)
     {
       sasl_dispose(&saslconn);
       adata->status = POP_DISCONNECTED;
@@ -132,7 +132,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
     if (mutt_str_startswith(inbuf, "+ ", CASE_MATCH) &&
         sasl_decode64(inbuf + 2, strlen(inbuf + 2), buf, bufsize - 1, &len) != SASL_OK)
     {
-      mutt_debug(1, "error base64-decoding server response.\n");
+      mutt_debug(LL_DEBUG1, "error base64-decoding server response.\n");
       goto bail;
     }
 
@@ -168,7 +168,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
       }
       if (sasl_encode64(pc, olen, buf, bufsize, &olen) != SASL_OK)
       {
-        mutt_debug(1, "error base64-encoding client response.\n");
+        mutt_debug(LL_DEBUG1, "error base64-encoding client response.\n");
         goto bail;
       }
     }
@@ -299,14 +299,14 @@ static enum PopAuthRes pop_auth_user(struct PopAccountData *adata, const char *m
     {
       adata->cmd_user = 1;
 
-      mutt_debug(1, "set USER capability\n");
+      mutt_debug(LL_DEBUG1, "set USER capability\n");
     }
 
     if (ret == -2)
     {
       adata->cmd_user = 0;
 
-      mutt_debug(1, "unset USER capability\n");
+      mutt_debug(LL_DEBUG1, "unset USER capability\n");
       snprintf(adata->err_msg, sizeof(adata->err_msg), "%s",
                _("Command USER is not supported by server"));
     }
@@ -429,7 +429,7 @@ int pop_authenticate(struct PopAccountData *adata)
       comma = strchr(method, ':');
       if (comma)
         *comma++ = '\0';
-      mutt_debug(2, "Trying method %s\n", method);
+      mutt_debug(LL_DEBUG2, "Trying method %s\n", method);
       authenticator = pop_authenticators;
 
       while (authenticator->authenticate)
@@ -472,7 +472,7 @@ int pop_authenticate(struct PopAccountData *adata)
   else
   {
     /* Fall back to default: any authenticator */
-    mutt_debug(2, "Using any available method.\n");
+    mutt_debug(LL_DEBUG2, "Using any available method.\n");
     authenticator = pop_authenticators;
 
     while (authenticator->authenticate)

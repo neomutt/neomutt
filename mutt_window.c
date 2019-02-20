@@ -224,7 +224,7 @@ void mutt_window_reflow(void)
   if (OptNoCurses)
     return;
 
-  mutt_debug(2, "entering\n");
+  mutt_debug(LL_DEBUG2, "entering\n");
 
   MuttStatusWindow->rows = 1;
   MuttStatusWindow->cols = COLS;

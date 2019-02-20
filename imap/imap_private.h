@@ -46,7 +46,7 @@ struct Progress;
 
 /* logging levels */
 #define IMAP_LOG_CMD  2
-#define IMAP_LOG_LTRL 4
+#define IMAP_LOG_LTRL 3
 #define IMAP_LOG_PASS 5
 
 /* IMAP command responses. Used in ImapCommand.state too */

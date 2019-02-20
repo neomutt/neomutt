@@ -456,7 +456,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
     }
     else
     {
-      mutt_debug(1, "ERROR: invalid content-disposition %d\n", a->disposition);
+      mutt_debug(LL_DEBUG1, "ERROR: invalid content-disposition %d\n", a->disposition);
     }
   }
 
@@ -499,7 +499,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
     const char *p = mutt_param_get(&a->parameter, "boundary");
     if (!p)
     {
-      mutt_debug(1, "no boundary parameter found\n");
+      mutt_debug(LL_DEBUG1, "no boundary parameter found\n");
       mutt_error(_("No boundary parameter found [report this error]"));
       return -1;
     }
@@ -530,7 +530,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
   fpin = fopen(a->filename, "r");
   if (!fpin)
   {
-    mutt_debug(1, "%s no longer exists\n", a->filename);
+    mutt_debug(LL_DEBUG1, "%s no longer exists\n", a->filename);
     mutt_error(_("%s no longer exists"), a->filename);
     return -1;
   }
@@ -1009,7 +1009,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
   fp = fopen(fname, "r");
   if (!fp)
   {
-    mutt_debug(1, "%s: %s (errno %d).\n", fname, strerror(errno), errno);
+    mutt_debug(LL_DEBUG1, "%s: %s (errno %d).\n", fname, strerror(errno), errno);
     return NULL;
   }
 
@@ -1107,7 +1107,7 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
         snprintf(buf, sizeof(buf), "%s/.mime.types", NONULL(HomeDir));
         break;
       default:
-        mutt_debug(1, "Internal error, count = %d.\n", count);
+        mutt_debug(LL_DEBUG1, "Internal error, count = %d.\n", count);
         goto bye; /* shouldn't happen */
     }
 
@@ -1884,7 +1884,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
   int first = 1, col = 0, l = 0;
   const bool display = (flags & CH_DISPLAY);
 
-  mutt_debug(4, "pfx=[%s], tag=[%s], flags=%d value=[%s]\n", pfx, tag, flags, NONULL(value));
+  mutt_debug(5, "pfx=[%s], tag=[%s], flags=%d value=[%s]\n", pfx, tag, flags, NONULL(value));
 
   if (tag && *tag && fprintf(fp, "%s%s: ", NONULL(pfx), tag) < 0)
     return -1;
@@ -2027,7 +2027,7 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
   if (!(flags & CH_DISPLAY) && (pfxw + max <= wraplen || is_from))
   {
     valbuf = mutt_str_substr_dup(start, end);
-    mutt_debug(4, "buf[%s%s] short enough, max width = %d <= %d\n", NONULL(pfx),
+    mutt_debug(5, "buf[%s%s] short enough, max width = %d <= %d\n", NONULL(pfx),
                valbuf, max, wraplen);
     if (pfx && *pfx)
     {
@@ -2041,7 +2041,7 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
     t = strchr(valbuf, ':');
     if (!t)
     {
-      mutt_debug(1, "#1 warning: header not in 'key: value' format!\n");
+      mutt_debug(LL_DEBUG1, "#1 warning: header not in 'key: value' format!\n");
       FREE(&valbuf);
       return 0;
     }
@@ -2057,7 +2057,7 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
     t = strchr(start, ':');
     if (!t || t > end)
     {
-      mutt_debug(1, "#2 warning: header not in 'key: value' format!\n");
+      mutt_debug(LL_DEBUG1, "#2 warning: header not in 'key: value' format!\n");
       return 0;
     }
     if (is_from)
@@ -2079,8 +2079,8 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
 
       valbuf = mutt_str_substr_dup(t, end);
     }
-    mutt_debug(4, "buf[%s%s] too long, max width = %d > %d\n", NONULL(pfx),
-               NONULL(valbuf), max, wraplen);
+    mutt_debug(LL_DEBUG2, "buf[%s%s] too long, max width = %d > %d\n",
+               NONULL(pfx), NONULL(valbuf), max, wraplen);
     if (fold_one_header(fp, tagbuf, valbuf, pfx, wraplen, flags) < 0)
     {
       FREE(&valbuf);
@@ -2135,7 +2135,7 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
     /* if header is short enough, simply print it */
     if (!display && mutt_strwidth(tag) + 2 + pfxw + mutt_strwidth(v) <= wraplen)
     {
-      mutt_debug(4, "buf[%s%s: %s] is short enough\n", NONULL(pfx), tag, v);
+      mutt_debug(5, "buf[%s%s: %s] is short enough\n", NONULL(pfx), tag, v);
       if (fprintf(fp, "%s%s: %s\n", NONULL(pfx), tag, v) <= 0)
         goto out;
       rc = 0;
@@ -3106,7 +3106,7 @@ int mutt_write_multiple_fcc(const char *path, struct Email *e, const char *msgid
   if (!tok)
     return -1;
 
-  mutt_debug(1, "Fcc: initial mailbox = '%s'\n", tok);
+  mutt_debug(LL_DEBUG1, "Fcc: initial mailbox = '%s'\n", tok);
   /* mutt_expand_path already called above for the first token */
   int status = mutt_write_fcc(tok, e, msgid, post, fcc, finalpath);
   if (status != 0)
@@ -3118,10 +3118,10 @@ int mutt_write_multiple_fcc(const char *path, struct Email *e, const char *msgid
       continue;
 
     /* Only call mutt_expand_path if tok has some data */
-    mutt_debug(1, "Fcc: additional mailbox token = '%s'\n", tok);
+    mutt_debug(LL_DEBUG1, "Fcc: additional mailbox token = '%s'\n", tok);
     mutt_str_strfcpy(fcc_expanded, tok, sizeof(fcc_expanded));
     mutt_expand_path(fcc_expanded, sizeof(fcc_expanded));
-    mutt_debug(1, "     Additional mailbox expanded = '%s'\n", fcc_expanded);
+    mutt_debug(LL_DEBUG1, "     Additional mailbox expanded = '%s'\n", fcc_expanded);
     status = mutt_write_fcc(fcc_expanded, e, msgid, post, fcc, finalpath);
     if (status != 0)
       return status;
@@ -3163,7 +3163,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   struct Context *ctx_fcc = mx_mbox_open(m_fcc, MUTT_APPEND | MUTT_QUIET);
   if (!ctx_fcc)
   {
-    mutt_debug(1, "unable to open mailbox %s in append-mode, aborting.\n", path);
+    mutt_debug(LL_DEBUG1, "unable to open mailbox %s in append-mode, aborting.\n", path);
     mailbox_free(&m_fcc);
     goto done;
   }
@@ -3309,7 +3309,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     fflush(tempfp);
     if (ferror(tempfp))
     {
-      mutt_debug(1, "%s: write failed.\n", tempfile);
+      mutt_debug(LL_DEBUG1, "%s: write failed.\n", tempfile);
       mutt_file_fclose(&tempfp);
       unlink(tempfile);
       mx_msg_commit(ctx_fcc->mailbox, msg); /* XXX really? */

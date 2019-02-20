@@ -119,7 +119,8 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
     rc = mutt_file_chmod_rm_stat(fname, S_IWUSR | S_IWGRP | S_IWOTH, &sb);
     if (rc == -1)
     {
-      mutt_debug(1, "Could not remove write permissions of %s: %s", fname, strerror(errno));
+      mutt_debug(LL_DEBUG1, "Could not remove write permissions of %s: %s",
+                 fname, strerror(errno));
       /* Do not bail out here as we are checking afterwards if we should adopt
        * changes of the temporary file. */
     }

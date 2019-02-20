@@ -127,19 +127,19 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapAccountData *adata, const char *m
 
   if (rc != IMAP_CMD_RESPOND)
   {
-    mutt_debug(1, "Invalid response from server: %s\n", ibuf);
+    mutt_debug(LL_DEBUG1, "Invalid response from server: %s\n", ibuf);
     goto bail;
   }
 
   len = mutt_b64_decode(adata->buf + 2, obuf, sizeof(obuf));
   if (len == -1)
   {
-    mutt_debug(1, "Error decoding base64 response.\n");
+    mutt_debug(LL_DEBUG1, "Error decoding base64 response.\n");
     goto bail;
   }
 
   obuf[len] = '\0';
-  mutt_debug(2, "CRAM challenge: %s\n", obuf);
+  mutt_debug(LL_DEBUG2, "CRAM challenge: %s\n", obuf);
 
   /* The client makes note of the data and then responds with a string
    * consisting of the user name, a space, and a 'digest'. The latter is
@@ -156,7 +156,7 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapAccountData *adata, const char *m
   /* dubious optimisation I saw elsewhere: make the whole string in one call */
   int off = snprintf(obuf, sizeof(obuf), "%s ", adata->conn->account.user);
   mutt_md5_toascii(hmac_response, obuf + off);
-  mutt_debug(2, "CRAM response: %s\n", obuf);
+  mutt_debug(LL_DEBUG2, "CRAM response: %s\n", obuf);
 
   /* ibuf must be long enough to store the base64 encoding of obuf,
    * plus the additional debris */
@@ -170,7 +170,7 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapAccountData *adata, const char *m
 
   if (rc != IMAP_CMD_OK)
   {
-    mutt_debug(1, "Error receiving server response.\n");
+    mutt_debug(LL_DEBUG1, "Error receiving server response.\n");
     goto bail;
   }
 

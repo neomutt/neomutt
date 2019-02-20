@@ -156,7 +156,7 @@ int imap_adata_find(const char *path, struct ImapAccountData **adata,
       return 0;
     }
   }
-  mutt_debug(3, "no ImapAccountData found\n");
+  mutt_debug(LL_DEBUG3, "no ImapAccountData found\n");
   return -1;
 }
 
@@ -195,7 +195,7 @@ struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *n
       mdata->uid_validity = *(unsigned int *) uidvalidity;
       mdata->uid_next = uidnext ? *(unsigned int *) uidnext : 0;
       mdata->modseq = modseq ? *modseq : 0;
-      mutt_debug(3, "hcache uidvalidity %u, uidnext %u, modseq %llu\n",
+      mutt_debug(LL_DEBUG3, "hcache uidvalidity %u, uidnext %u, modseq %llu\n",
                  mdata->uid_validity, mdata->uid_next, mdata->modseq);
     }
     mutt_hcache_free(hc, &uidvalidity);
@@ -476,7 +476,7 @@ struct Email *imap_hcache_get(struct ImapMboxData *mdata, unsigned int uid)
     if (*(unsigned int *) uv == mdata->uid_validity)
       e = mutt_hcache_restore(uv);
     else
-      mutt_debug(3, "hcache uidvalidity mismatch: %u\n", *(unsigned int *) uv);
+      mutt_debug(LL_DEBUG3, "hcache uidvalidity mismatch: %u\n", *(unsigned int *) uv);
     mutt_hcache_free(mdata->hcache, &uv);
   }
 
@@ -540,7 +540,7 @@ int imap_hcache_store_uid_seqset(struct ImapMboxData *mdata)
     b->data[0] = '\0';
 
   int rc = mutt_hcache_store_raw(mdata->hcache, "/UIDSEQSET", 10, b->data, seqset_size + 1);
-  mutt_debug(5, "Stored /UIDSEQSET %s\n", b->data);
+  mutt_debug(LL_DEBUG3, "Stored /UIDSEQSET %s\n", b->data);
   mutt_buffer_free(&b);
   return rc;
 }
@@ -573,7 +573,7 @@ char *imap_hcache_get_uid_seqset(struct ImapMboxData *mdata)
   char *hc_seqset = mutt_hcache_fetch_raw(mdata->hcache, "/UIDSEQSET", 10);
   char *seqset = mutt_str_strdup(hc_seqset);
   mutt_hcache_free(mdata->hcache, (void **) &hc_seqset);
-  mutt_debug(5, "Retrieved /UIDSEQSET %s\n", NONULL(seqset));
+  mutt_debug(LL_DEBUG3, "Retrieved /UIDSEQSET %s\n", NONULL(seqset));
 
   return seqset;
 }
@@ -604,7 +604,7 @@ int imap_parse_path(const char *path, struct ConnAccount *account, char *mailbox
       ImapPort = ntohs(service->s_port);
     else
       ImapPort = IMAP_PORT;
-    mutt_debug(3, "Using default IMAP port %d\n", ImapPort);
+    mutt_debug(LL_DEBUG3, "Using default IMAP port %d\n", ImapPort);
   }
   if (!ImapsPort)
   {
@@ -613,7 +613,7 @@ int imap_parse_path(const char *path, struct ConnAccount *account, char *mailbox
       ImapsPort = ntohs(service->s_port);
     else
       ImapsPort = IMAP_SSL_PORT;
-    mutt_debug(3, "Using default IMAPS port %d\n", ImapsPort);
+    mutt_debug(LL_DEBUG3, "Using default IMAPS port %d\n", ImapsPort);
   }
 
   /* Defaults */

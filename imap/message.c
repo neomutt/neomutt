@@ -227,14 +227,14 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
   size_t plen = mutt_str_startswith(s, "FLAGS", CASE_IGNORE);
   if (plen == 0)
   {
-    mutt_debug(1, "not a FLAGS response: %s\n", s);
+    mutt_debug(LL_DEBUG1, "not a FLAGS response: %s\n", s);
     return NULL;
   }
   s += plen;
   SKIPWS(s);
   if (*s != '(')
   {
-    mutt_debug(1, "bogus FLAGS response: %s\n", s);
+    mutt_debug(LL_DEBUG1, "bogus FLAGS response: %s\n", s);
     return NULL;
   }
   s++;
@@ -309,7 +309,7 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
     s++;
   else
   {
-    mutt_debug(1, "Unterminated FLAGS response: %s\n", s);
+    mutt_debug(LL_DEBUG1, "Unterminated FLAGS response: %s\n", s);
     return NULL;
   }
 
@@ -358,7 +358,7 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
       SKIPWS(s);
       if (*s != '\"')
       {
-        mutt_debug(1, "bogus INTERNALDATE entry: %s\n", s);
+        mutt_debug(LL_DEBUG1, "bogus INTERNALDATE entry: %s\n", s);
         return -1;
       }
       s++;
@@ -394,7 +394,7 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
       SKIPWS(s);
       if (*s != '(')
       {
-        mutt_debug(1, "bogus MODSEQ response: %s\n", s);
+        mutt_debug(LL_DEBUG1, "bogus MODSEQ response: %s\n", s);
         return -1;
       }
       s++;
@@ -404,7 +404,7 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
         s++;
       else
       {
-        mutt_debug(1, "Unterminated MODSEQ response: %s\n", s);
+        mutt_debug(LL_DEBUG1, "Unterminated MODSEQ response: %s\n", s);
         return -1;
       }
     }
@@ -750,21 +750,21 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
 
       if (!h.edata->uid)
       {
-        mutt_debug(2, "skipping hcache FETCH response for message number %d missing a UID\n",
+        mutt_debug(LL_DEBUG2, "skipping hcache FETCH response for message number %d missing a UID\n",
                    h.edata->msn);
         continue;
       }
 
       if ((h.edata->msn < 1) || (h.edata->msn > msn_end))
       {
-        mutt_debug(1, "skipping hcache FETCH response for unknown message number %d\n",
+        mutt_debug(LL_DEBUG1, "skipping hcache FETCH response for unknown message number %d\n",
                    h.edata->msn);
         continue;
       }
 
       if (mdata->msn_index[h.edata->msn - 1])
       {
-        mutt_debug(2, "skipping hcache FETCH for duplicate message %d\n",
+        mutt_debug(LL_DEBUG2, "skipping hcache FETCH for duplicate message %d\n",
                    h.edata->msn);
         continue;
       }
@@ -847,7 +847,7 @@ static int read_headers_qresync_eval_cache(struct ImapAccountData *adata, char *
   int rc;
   unsigned int uid = 0;
 
-  mutt_debug(2, "Reading uid seqset from header cache\n");
+  mutt_debug(LL_DEBUG2, "Reading uid seqset from header cache\n");
   struct Mailbox *m = adata->mailbox;
   struct ImapMboxData *mdata = adata->mailbox->mdata;
   unsigned int msn = 1;
@@ -958,7 +958,8 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
 
     if ((header_msn < 1) || (header_msn > msn_end) || !mdata->msn_index[header_msn - 1])
     {
-      mutt_debug(1, "skipping CONDSTORE flag update for unknown message number %u\n", header_msn);
+      mutt_debug(LL_DEBUG1, "skipping CONDSTORE flag update for unknown message number %u\n",
+                 header_msn);
       continue;
     }
 
@@ -1105,7 +1106,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
 
         if (!ftello(fp))
         {
-          mutt_debug(2, "ignoring fetch response with no body\n");
+          mutt_debug(LL_DEBUG2, "ignoring fetch response with no body\n");
           continue;
         }
 
@@ -1114,7 +1115,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
 
         if ((h.edata->msn < 1) || (h.edata->msn > fetch_msn_end))
         {
-          mutt_debug(1, "skipping FETCH response for unknown message number %d\n",
+          mutt_debug(LL_DEBUG1, "skipping FETCH response for unknown message number %d\n",
                      h.edata->msn);
           continue;
         }
@@ -1122,7 +1123,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
         /* May receive FLAGS updates in a separate untagged response (#2935) */
         if (mdata->msn_index[h.edata->msn - 1])
         {
-          mutt_debug(2, "skipping FETCH response for duplicate message %d\n",
+          mutt_debug(LL_DEBUG2, "skipping FETCH response for duplicate message %d\n",
                      h.edata->msn);
           continue;
         }
@@ -1351,7 +1352,7 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
                         sizeof(mdata->uid_validity));
   if (maxuid && mdata->uid_next < maxuid + 1)
   {
-    mutt_debug(2, "Overriding UIDNEXT: %u -> %u\n", mdata->uid_next, maxuid + 1);
+    mutt_debug(LL_DEBUG2, "Overriding UIDNEXT: %u -> %u\n", mdata->uid_next, maxuid + 1);
     mdata->uid_next = maxuid + 1;
   }
   if (mdata->uid_next > 1)
@@ -1477,7 +1478,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
 
   if (rc != IMAP_CMD_RESPOND)
   {
-    mutt_debug(1, "#1 command failed: %s\n", adata->buf);
+    mutt_debug(LL_DEBUG1, "#1 command failed: %s\n", adata->buf);
 
     char *pc = adata->buf + SEQLEN;
     SKIPWS(pc);
@@ -1514,7 +1515,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
 
   if (!imap_code(adata->buf))
   {
-    mutt_debug(1, "#2 command failed: %s\n", adata->buf);
+    mutt_debug(LL_DEBUG1, "#2 command failed: %s\n", adata->buf);
     char *pc = adata->buf + SEQLEN;
     SKIPWS(pc);
     pc = imap_next_word(pc);
@@ -1558,20 +1559,20 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool
 
   if (single && en->email->attach_del)
   {
-    mutt_debug(3, "#1 Message contains attachments to be deleted\n");
+    mutt_debug(LL_DEBUG3, "#1 Message contains attachments to be deleted\n");
     return 1;
   }
 
   if (imap_parse_path(dest, &conn_account, buf, sizeof(buf)))
   {
-    mutt_debug(1, "bad destination %s\n", dest);
+    mutt_debug(LL_DEBUG1, "bad destination %s\n", dest);
     return -1;
   }
 
   /* check that the save-to folder is in the same account */
   if (!mutt_account_match(&adata->conn->account, &conn_account))
   {
-    mutt_debug(3, "%s not same server as %s\n", dest, m->path);
+    mutt_debug(LL_DEBUG3, "%s not same server as %s\n", dest, m->path);
     return 1;
   }
 
@@ -1596,7 +1597,8 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool
       {
         if (en->email->attach_del)
         {
-          mutt_debug(3, "#2 Message contains attachments to be deleted\n");
+          mutt_debug(LL_DEBUG3,
+                     "#2 Message contains attachments to be deleted\n");
           return 1;
         }
 
@@ -1605,7 +1607,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool
           rc = imap_sync_message_for_copy(m, en->email, &sync_cmd, &err_continue);
           if (rc < 0)
           {
-            mutt_debug(1, "#1 could not sync\n");
+            mutt_debug(LL_DEBUG1, "#1 could not sync\n");
             goto out;
           }
         }
@@ -1614,13 +1616,13 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool
       rc = imap_exec_msgset(m, "UID COPY", mmbox, MUTT_TAG, false, false);
       if (!rc)
       {
-        mutt_debug(1, "No messages tagged\n");
+        mutt_debug(LL_DEBUG1, "No messages tagged\n");
         rc = -1;
         goto out;
       }
       else if (rc < 0)
       {
-        mutt_debug(1, "#1 could not queue copy\n");
+        mutt_debug(LL_DEBUG1, "#1 could not queue copy\n");
         goto out;
       }
       else
@@ -1639,14 +1641,14 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool
         rc = imap_sync_message_for_copy(m, en->email, &sync_cmd, &err_continue);
         if (rc < 0)
         {
-          mutt_debug(1, "#2 could not sync\n");
+          mutt_debug(LL_DEBUG1, "#2 could not sync\n");
           goto out;
         }
       }
       rc = imap_exec(adata, cmd.data, IMAP_CMD_QUEUE);
       if (rc != IMAP_EXEC_SUCCESS)
       {
-        mutt_debug(1, "#2 could not queue copy\n");
+        mutt_debug(LL_DEBUG1, "#2 could not queue copy\n");
         goto out;
       }
     }
@@ -1657,13 +1659,13 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool
     {
       if (triedcreate)
       {
-        mutt_debug(1, "Already tried to create mailbox %s\n", mbox);
+        mutt_debug(LL_DEBUG1, "Already tried to create mailbox %s\n", mbox);
         break;
       }
       /* bail out if command failed for reasons other than nonexistent target */
       if (!mutt_str_startswith(imap_get_qualifier(adata->buf), "[TRYCREATE]", CASE_IGNORE))
         break;
-      mutt_debug(3, "server suggests TRYCREATE\n");
+      mutt_debug(LL_DEBUG3, "server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), mbox);
       if (Confirmcreate && mutt_yesorno(prompt, 1) != MUTT_YES)
       {
@@ -1781,7 +1783,7 @@ char *imap_set_flags(struct Mailbox *m, struct Email *e, char *s, bool *server_c
 
   memcpy(&old_edata, edata, sizeof(old_edata));
 
-  mutt_debug(2, "parsing FLAGS\n");
+  mutt_debug(LL_DEBUG2, "parsing FLAGS\n");
   s = msg_parse_flags(&newh, s);
   if (!s)
     return NULL;

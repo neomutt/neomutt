@@ -521,7 +521,7 @@ static enum CommandResult parse_attach_list(struct Buffer *buf, struct Buffer *s
       return MUTT_CMD_ERROR;
     }
 
-    mutt_debug(5, "added %s/%s [%d]\n", a->major, a->minor, a->major_int);
+    mutt_debug(LL_DEBUG3, "added %s/%s [%d]\n", a->major, a->minor, a->major_int);
 
     mutt_list_insert_tail(head, (char *) a);
   } while (MoreArgs(s));
@@ -648,11 +648,11 @@ static enum CommandResult parse_unattach_list(struct Buffer *buf, struct Buffer 
     STAILQ_FOREACH_SAFE(np, head, entries, tmp2)
     {
       a = (struct AttachMatch *) np->data;
-      mutt_debug(5, "check %s/%s [%d] : %s/%s [%d]\n", a->major, a->minor,
-                 a->major_int, tmp, minor, major);
+      mutt_debug(LL_DEBUG3, "check %s/%s [%d] : %s/%s [%d]\n", a->major,
+                 a->minor, a->major_int, tmp, minor, major);
       if (a->major_int == major && (mutt_str_strcasecmp(minor, a->minor) == 0))
       {
-        mutt_debug(5, "removed %s/%s [%d]\n", a->major, a->minor, a->major_int);
+        mutt_debug(LL_DEBUG3, "removed %s/%s [%d]\n", a->major, a->minor, a->major_int);
         regfree(&a->minor_regex);
         FREE(&a->major);
         STAILQ_REMOVE(head, np, ListNode, entries);
@@ -799,7 +799,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
     }
   }
 
-  mutt_debug(2, "Reading configuration file '%s'.\n", rcfile);
+  mutt_debug(LL_DEBUG2, "Reading configuration file '%s'.\n", rcfile);
 
   f = mutt_open_read(rcfile, &pid);
   if (!f)
@@ -934,7 +934,7 @@ static enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   }
 
   mutt_extract_token(buf, s, MUTT_TOKEN_QUOTE | MUTT_TOKEN_SPACE | MUTT_TOKEN_SEMICOLON);
-  mutt_debug(3, "Second token is '%s'.\n", buf->data);
+  mutt_debug(5, "Second token is '%s'.\n", buf->data);
 
   tmp->addr = mutt_addr_parse_list2(tmp->addr, buf->data);
 
@@ -954,9 +954,9 @@ static enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
     for (struct Address *a = tmp->addr; a && a->mailbox; a = a->next)
     {
       if (!a->group)
-        mutt_debug(3, "  %s\n", a->mailbox);
+        mutt_debug(5, "  %s\n", a->mailbox);
       else
-        mutt_debug(3, "  Group %s\n", a->mailbox);
+        mutt_debug(5, "  Group %s\n", a->mailbox);
     }
   }
   mutt_grouplist_destroy(&gc);
@@ -2128,7 +2128,7 @@ static enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *
     }
     else
     {
-      mutt_debug(5, "Corrupted buffer");
+      mutt_debug(LL_DEBUG1, "Corrupted buffer");
       return MUTT_CMD_ERROR;
     }
   }
@@ -2166,7 +2166,7 @@ static enum CommandResult parse_tag_formats(struct Buffer *buf, struct Buffer *s
     tmp = mutt_hash_find(TagFormats, format);
     if (tmp)
     {
-      mutt_debug(3, "tag format '%s' already registered as '%s'\n", format, tmp);
+      mutt_debug(LL_DEBUG3, "tag format '%s' already registered as '%s'\n", format, tmp);
       FREE(&tag);
       FREE(&format);
       continue;
@@ -2205,7 +2205,7 @@ static enum CommandResult parse_tag_transforms(struct Buffer *buf, struct Buffer
     tmp = mutt_hash_find(TagTransforms, tag);
     if (tmp)
     {
-      mutt_debug(3, "tag transform '%s' already registered as '%s'\n", tag, tmp);
+      mutt_debug(LL_DEBUG3, "tag transform '%s' already registered as '%s'\n", tag, tmp);
       FREE(&tag);
       FREE(&transform);
       continue;
@@ -2582,7 +2582,7 @@ static enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buff
     }
     else
     {
-      mutt_debug(5, "Corrupted buffer");
+      mutt_debug(LL_DEBUG1, "Corrupted buffer");
       return MUTT_CMD_ERROR;
     }
   }
@@ -2789,7 +2789,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
       } while (pc && *pc != '`');
       if (!pc)
       {
-        mutt_debug(1, "mismatched backticks\n");
+        mutt_debug(LL_DEBUG1, "mismatched backticks\n");
         return -1;
       }
       struct Buffer cmd;
@@ -2810,7 +2810,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
       pid = mutt_create_filter(cmd.data, NULL, &fp, NULL);
       if (pid < 0)
       {
-        mutt_debug(1, "unable to fork command: %s\n", cmd);
+        mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", cmd);
         FREE(&cmd.data);
         return -1;
       }

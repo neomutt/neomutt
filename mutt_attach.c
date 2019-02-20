@@ -128,7 +128,7 @@ int mutt_compose_attachment(struct Body *a)
         mutt_str_strfcpy(command, entry->composecommand, sizeof(command));
       if (rfc1524_expand_filename(entry->nametemplate, a->filename, newfile, sizeof(newfile)))
       {
-        mutt_debug(1, "oldfile: %s\t newfile: %s\n", a->filename, newfile);
+        mutt_debug(LL_DEBUG1, "oldfile: %s\t newfile: %s\n", a->filename, newfile);
         if (mutt_file_symlink(a->filename, newfile) == -1)
         {
           if (mutt_yesorno(_("Can't match nametemplate, continue?"), MUTT_YES) != MUTT_YES)
@@ -262,7 +262,7 @@ int mutt_edit_attachment(struct Body *a)
       mutt_str_strfcpy(command, entry->editcommand, sizeof(command));
       if (rfc1524_expand_filename(entry->nametemplate, a->filename, newfile, sizeof(newfile)))
       {
-        mutt_debug(1, "oldfile: %s\t newfile: %s\n", a->filename, newfile);
+        mutt_debug(LL_DEBUG1, "oldfile: %s\t newfile: %s\n", a->filename, newfile);
         if (mutt_file_symlink(a->filename, newfile) == -1)
         {
           if (mutt_yesorno(_("Can't match nametemplate, continue?"), MUTT_YES) != MUTT_YES)
@@ -349,7 +349,7 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
                                    "multipart" :
                                    n == TYPE_TEXT ? "text" : n == TYPE_VIDEO ? "video" : "other",
                  tmp.subtype);
-        mutt_debug(1, "\"%s\" -> %s\n", b->filename, type);
+        mutt_debug(LL_DEBUG1, "\"%s\" -> %s\n", b->filename, type);
       }
       if (tmp.subtype)
         FREE(&tmp.subtype);
@@ -548,7 +548,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
       /* interactive command */
       int rv = mutt_system(command);
       if (rv == -1)
-        mutt_debug(1, "Error running \"%s\"!", command);
+        mutt_debug(LL_DEBUG1, "Error running \"%s\"!", command);
 
       if ((rv != 0) || (entry->needsterminal && WaitKey))
         mutt_any_key_to_continue(NULL);
@@ -573,8 +573,8 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
         decode_state.fpout = mutt_file_fopen(pagerfile, "w");
         if (!decode_state.fpout)
         {
-          mutt_debug(1, "mutt_file_fopen(%s) errno=%d %s\n", pagerfile, errno,
-                     strerror(errno));
+          mutt_debug(LL_DEBUG1, "mutt_file_fopen(%s) errno=%d %s\n", pagerfile,
+                     errno, strerror(errno));
           mutt_perror(pagerfile);
           goto return_error;
         }
@@ -582,7 +582,8 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
         decode_state.flags = MUTT_CHARCONV;
         mutt_decode_attachment(a, &decode_state);
         if (fclose(decode_state.fpout) == EOF)
-          mutt_debug(1, "fclose(%s) errno=%d %s\n", pagerfile, errno, strerror(errno));
+          mutt_debug(LL_DEBUG1, "fclose(%s) errno=%d %s\n", pagerfile, errno,
+                     strerror(errno));
       }
       else
       {
@@ -1028,7 +1029,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     char command[HUGE_STRING];
     int piped = false;
 
-    mutt_debug(2, "Using mailcap...\n");
+    mutt_debug(LL_DEBUG2, "Using mailcap...\n");
 
     struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
     rfc1524_mailcap_lookup(a, type, entry, MUTT_PRINT);
@@ -1088,7 +1089,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     {
       int rc = mutt_system(command);
       if (rc == -1)
-        mutt_debug(1, "Error running \"%s\"!", command);
+        mutt_debug(LL_DEBUG1, "Error running \"%s\"!", command);
 
       if ((rc != 0) || WaitKey)
         mutt_any_key_to_continue(NULL);
@@ -1120,7 +1121,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     mutt_mktemp(newfile, sizeof(newfile));
     if (mutt_decode_save_attachment(fp, a, newfile, MUTT_PRINTING, 0) == 0)
     {
-      mutt_debug(2, "successfully decoded %s type attachment to %s\n", type, newfile);
+      mutt_debug(LL_DEBUG2, "successfully decoded %s type attachment to %s\n", type, newfile);
 
       ifp = fopen(newfile, "r");
       if (!ifp)
@@ -1129,7 +1130,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
         goto bail0;
       }
 
-      mutt_debug(2, "successfully opened %s read-only\n", newfile);
+      mutt_debug(LL_DEBUG2, "successfully opened %s read-only\n", newfile);
 
       mutt_endwin();
       thepid = mutt_create_filter(NONULL(PrintCommand), &fpout, NULL, NULL);
@@ -1139,7 +1140,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
         goto bail0;
       }
 
-      mutt_debug(2, "Filter created.\n");
+      mutt_debug(LL_DEBUG2, "Filter created.\n");
 
       mutt_file_copy_stream(ifp, fpout);
 
