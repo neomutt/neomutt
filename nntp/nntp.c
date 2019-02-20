@@ -519,47 +519,6 @@ static void nntp_log_binbuf(const char *buf, size_t len, const char *pfx, int db
 #endif
 
 /**
- * nntp_memchr - look for a char in a binary buf, conveniently
- * @param haystack [in/out] input: start here, output: store address of hit
- * @param sentinel points just beyond (1 byte after) search area
- * @needle the character to search for
- * @retval true found and updated haystack
- * @retval false not found
- */
-static bool nntp_memchr(char **haystack, char *sentinel, int needle)
-{
-  char *start = *haystack;
-  size_t max_offset = sentinel - start;
-  void *vp = memchr(start, max_offset, needle);
-  if (!vp)
-    return false;
-  *haystack = vp;
-  return true;
-}
-
-/**
- * nntp_log_binbuf - log a buffer possibly containing NUL bytes
- * @param buf source buffer
- * @param len how many bytes from buf
- * @param pfx logging prefix (protocol etc.)
- * @param dbg which loglevel does message belong
- */
-static void nntp_log_binbuf(const char *buf, size_t len, const char *pfx, int dbg)
-{
-  char tmp[LONG_STRING];
-  char *p = tmp;
-  char *sentinel = tmp + len;
-
-  if (DebugLevel < dbg)
-    return;
-  memcpy(tmp, buf, len);
-  tmp[len] = '\0';
-  while (nntp_memchr(&p, sentinel, '\0')) 
-    *p = '.';
-  mutt_debug(dbg, "%s> %s\n", pfx, tmp);
-}
-
-/**
  * nntp_auth - Get login, password and authenticate
  * @param adata NNTP server
  * @retval  0 Success
