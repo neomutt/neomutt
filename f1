@@ -1,0 +1,126 @@
+Encapsulate gmtime() and localtime()
+
+There are over 20 places where NeoMutt uses these time functions.
+It makes sense to wrap these calls in a function and simplify the callers.
+  
+Some typical patterns are:
+  
+- `time()` -\> `time_t` \-> `localtime()` -> `struct tm`
+  The current time is split into (year, month, day, etc)
+
+- `time_t` -\> `localtime()` -\> `struct tm` -\> `strftime()`
+  An existing timestamp is formatted into a string
+
+- `time_t` -\> `gmtime()` -\> `struct tm`
+  An existing timestamp is split into (year, month, day, etc)
+
+The second part of this task is to convert to using the thread-safe versions of these two functions:
+- `gmtime()` -\> `gmtime_r()`
+- `localtime()` -\> `localtime_r()`
+
+--------------------------------------------------------------------------------
+
+pattern.c:403:19: 
+	time() -> now -> localtime -> tm
+
+pattern.c:618:21: 
+pattern.c:690:25: 
+	time() -> now -> localtime -> tm min,max
+
+nntp/nntp.c:2181:8: 
+	time() -> now
+	nntp string -> now
+
+	time_t -> string
+
+hdrline.c:676:16: 
+hdrline.c:817:16: 
+hdrline.c:819:16: 
+hdrline.c:823:16: 
+	time() -> now -> localtime -> tm
+	time_t -> localtime -> tm
+
+hdrline.c:833:16: 
+	time_t -> gmtime -> tm
+
+browser.c:401:45: 
+	time_t -> localtime -> (tm) -> strftime
+
+sendlib.c:2475:19: 
+	time() -> now -> localtime -> tm
+
+ncrypt/pgpkey.c:301:12: 
+	time_t -> localtime -> (tm) -> strftime
+
+ncrypt/crypt.c:91:54: 
+	time() -> now -> localtime -> (tm) -> strftime
+
+ncrypt/crypt_gpgme.c:1259:48: 
+	time_t -> localtime -> (tm) -> strftime
+
+ncrypt/crypt_gpgme.c:2533:48: 
+	time_t -> localtime -> (tm) -> strftime
+
+ncrypt/crypt_gpgme.c:3484:14: 
+	time_t -> localtime -> (tm) -> strftime
+
+ncrypt/crypt_gpgme.c:4124:10: 
+	time_t -> localtime -> (tm) -> strftime
+
+ncrypt/crypt_gpgme.c:4134:10: 
+	time_t -> localtime -> (tm) -> strftime
+
+ncrypt/crypt_gpgme.c:4272:14: 
+	time_t -> localtime -> (tm) -> strftime
+
+ncrypt/crypt_gpgme.c:4282:14: 
+	time_t -> localtime -> (tm) -> strftime
+
+mutt/date.c:133:19: 
+	time_t -> localtime -> tm
+
+mutt/date.c:221:9: 
+	time_t -> gmtime -> tm -> compute_tz()
+
+mutt/date.c:383:18: 
+	time() -> now -> localtime -> tm -> mutt_date_local_tz()
+
+mutt/date.c:604:19: 
+	time_t -> localtime -> tm
+
+mutt/date.c:627:19: 
+	time_t -> gmtime -> tm
+
+mutt/logging.c:86:53: 
+	time_t -> localtime -> (tm) -> strftime
+
+mutt/logging.c:380:44: 
+	time_t -> localtime -> (tm) -> strftime
+
+
+nntp string -> now
+time() -> now
+time() -> now -> localtime -> (tm) -> strftime
+time() -> now -> localtime -> tm
+time() -> now -> localtime -> tm
+time() -> now -> localtime -> tm
+time() -> now -> localtime -> tm -> mutt_date_local_tz()
+time() -> now -> localtime -> tm min,max
+time_t -> gmtime -> tm
+time_t -> gmtime -> tm
+time_t -> gmtime -> tm -> compute_tz()
+time_t -> localtime -> (tm) -> strftime
+time_t -> localtime -> (tm) -> strftime
+time_t -> localtime -> (tm) -> strftime
+time_t -> localtime -> (tm) -> strftime
+time_t -> localtime -> (tm) -> strftime
+time_t -> localtime -> (tm) -> strftime
+time_t -> localtime -> (tm) -> strftime
+time_t -> localtime -> (tm) -> strftime
+time_t -> localtime -> (tm) -> strftime
+time_t -> localtime -> (tm) -> strftime
+time_t -> localtime -> (tm) -> strftime
+time_t -> localtime -> tm
+time_t -> localtime -> tm
+time_t -> localtime -> tm
+time_t -> string
