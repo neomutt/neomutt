@@ -1834,13 +1834,7 @@ struct ConfigDef MuttVars[] = {
   ** rightward text.
   ** .pp
   ** Note that these expandos are supported in
-  ** "$save-hook", "$fcc-hook", "$fcc-save-hook", and
-  ** "$index-format-hook".
-  ** .pp
-  ** They are also supported in the configuration variables $$attribution,
-  ** $$forward_attribution_intro, $$forward_attribution_trailer,
-  ** $$forward_format, $$indent_string, $$message_format, $$pager_format,
-  ** and $$post_indent_string.
+  ** ``$save-hook'', ``$fcc-hook'' and ``$fcc-save-hook'', too.
   */
 #ifdef USE_NNTP
   { "inews", DT_COMMAND, R_NONE, &Inews, 0 },
@@ -2997,8 +2991,6 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** Similar to the $$attribution variable, NeoMutt will append this
   ** string after the inclusion of a message which is being replied to.
-  ** For a full listing of defined \fCprintf(3)\fP-like sequences see
-  ** the section on $$index_format.
   */
 #ifdef USE_NNTP
   { "post_moderated",   DT_QUAD, R_NONE, &PostModerated, MUTT_ASKYES },

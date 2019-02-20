@@ -480,7 +480,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
  * nntp_memchr - look for a char in a binary buf, conveniently
  * @param haystack [in/out] input: start here, output: store address of hit
  * @param sentinel points just beyond (1 byte after) search area
- * @needle the character to search for
+ * @param needle the character to search for
  * @retval true found and updated haystack
  * @retval false not found
  */
