@@ -49,8 +49,8 @@
 #include "send.h"
 
 /* These Config Variables are only used in query.c */
-char *QueryCommand; ///< Config: External command to query and external address book
-char *QueryFormat; ///< Config: printf-like format string for the query menu (address book)
+char *C_QueryCommand; ///< Config: External command to query and external address book
+char *C_QueryFormat; ///< Config: printf-like format string for the query menu (address book)
 
 /**
  * struct Query - An entry from an external address-book
@@ -145,7 +145,7 @@ static struct Query *run_query(char *s, int quiet)
   char *p = NULL;
   pid_t thepid;
 
-  mutt_file_expand_fmt_quote(cmd, sizeof(cmd), QueryCommand, s);
+  mutt_file_expand_fmt_quote(cmd, sizeof(cmd), C_QueryCommand, s);
 
   thepid = mutt_create_filter(cmd, NULL, &fp, NULL);
   if (thepid < 0)
@@ -300,7 +300,7 @@ static void query_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
   struct Entry *entry = &((struct Entry *) menu->data)[line];
 
   entry->data->num = line;
-  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(QueryFormat),
+  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(C_QueryFormat),
                       query_format_str, (unsigned long) entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
@@ -566,7 +566,7 @@ int mutt_query_complete(char *buf, size_t buflen)
   struct Query *results = NULL;
   struct Address *tmpa = NULL;
 
-  if (!QueryCommand)
+  if (!C_QueryCommand)
   {
     mutt_error(_("Query command not defined"));
     return 0;
@@ -600,7 +600,7 @@ int mutt_query_complete(char *buf, size_t buflen)
  */
 void mutt_query_menu(char *buf, size_t buflen)
 {
-  if (!QueryCommand)
+  if (!C_QueryCommand)
   {
     mutt_error(_("Query command not defined"));
     return;

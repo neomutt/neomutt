@@ -70,7 +70,7 @@
 #endif
 
 /* These Config Variables are only used in imap/imap.c */
-bool ImapIdle; ///< Config: (imap) Use the IMAP IDLE extension to check for new mail
+bool C_ImapIdle; ///< Config: (imap) Use the IMAP IDLE extension to check for new mail
 
 /**
  * check_capabilities - Make sure we can log in to this server
@@ -667,7 +667,7 @@ static void imap_logout(struct ImapAccountData *adata)
 
   adata->status = IMAP_BYE;
   imap_cmd_start(adata, "LOGOUT");
-  if (ImapPollTimeout <= 0 || mutt_socket_poll(adata->conn, ImapPollTimeout) != 0)
+  if (C_ImapPollTimeout <= 0 || mutt_socket_poll(adata->conn, C_ImapPollTimeout) != 0)
   {
     while (imap_cmd_step(adata) == IMAP_CMD_CONTINUE)
       ;
@@ -724,7 +724,7 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
   bool r = false;
   struct Buffer *buf = NULL;
 
-  if (DebugLevel >= IMAP_LOG_LTRL)
+  if (C_DebugLevel >= IMAP_LOG_LTRL)
     buf = mutt_buffer_alloc(bytes + 10);
 
   mutt_debug(LL_DEBUG2, "reading %ld bytes\n", bytes);
@@ -755,11 +755,11 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
 
     if (pbar && !(pos % 1024))
       mutt_progress_update(pbar, pos, -1);
-    if (DebugLevel >= IMAP_LOG_LTRL)
+    if (C_DebugLevel >= IMAP_LOG_LTRL)
       mutt_buffer_addch(buf, c);
   }
 
-  if (DebugLevel >= IMAP_LOG_LTRL)
+  if (C_DebugLevel >= IMAP_LOG_LTRL)
   {
     mutt_debug(IMAP_LOG_LTRL, "\n%s", buf->data);
     mutt_buffer_free(&buf);
@@ -869,13 +869,13 @@ int imap_open_connection(struct ImapAccountData *adata)
     }
 #ifdef USE_SSL
     /* Attempt STARTTLS if available and desired. */
-    if (!adata->conn->ssf && (SslForceTls || (adata->capabilities & IMAP_CAP_STARTTLS)))
+    if (!adata->conn->ssf && (C_SslForceTls || (adata->capabilities & IMAP_CAP_STARTTLS)))
     {
       int rc;
 
-      if (SslForceTls)
+      if (C_SslForceTls)
         rc = MUTT_YES;
-      else if ((rc = query_quadoption(SslStarttls,
+      else if ((rc = query_quadoption(C_SslStarttls,
                                       _("Secure connection with TLS?"))) == MUTT_ABORT)
       {
         goto err_close_conn;
@@ -902,7 +902,7 @@ int imap_open_connection(struct ImapAccountData *adata)
       }
     }
 
-    if (SslForceTls && !adata->conn->ssf)
+    if (C_SslForceTls && !adata->conn->ssf)
     {
       mutt_error(_("Encrypted connection unavailable"));
       goto err_close_conn;
@@ -1026,14 +1026,14 @@ int imap_exec_msgset(struct Mailbox *m, const char *pre, const char *post,
   /* We make a copy of the headers just in case resorting doesn't give
    exactly the original order (duplicate messages?), because other parts of
    the ctx are tied to the header order. This may be overkill. */
-  oldsort = Sort;
-  if (Sort != SORT_ORDER)
+  oldsort = C_Sort;
+  if (C_Sort != SORT_ORDER)
   {
     emails = m->emails;
     m->emails = mutt_mem_malloc(m->msg_count * sizeof(struct Email *));
     memcpy(m->emails, emails, m->msg_count * sizeof(struct Email *));
 
-    Sort = SORT_ORDER;
+    C_Sort = SORT_ORDER;
     qsort(m->emails, m->msg_count, sizeof(struct Email *), compare_uid);
   }
 
@@ -1060,9 +1060,9 @@ int imap_exec_msgset(struct Mailbox *m, const char *pre, const char *post,
 
 out:
   mutt_buffer_free(&cmd);
-  if (oldsort != Sort)
+  if (oldsort != C_Sort)
   {
-    Sort = oldsort;
+    C_Sort = oldsort;
     FREE(&m->emails);
     m->emails = emails;
   }
@@ -1207,8 +1207,8 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
   int result = 0;
 
   /* try IDLE first, unless force is set */
-  if (!force && ImapIdle && (adata->capabilities & IMAP_CAP_IDLE) &&
-      (adata->state != IMAP_IDLE || time(NULL) >= adata->lastread + ImapKeepalive))
+  if (!force && C_ImapIdle && (adata->capabilities & IMAP_CAP_IDLE) &&
+      (adata->state != IMAP_IDLE || time(NULL) >= adata->lastread + C_ImapKeepalive))
   {
     if (imap_cmd_idle(adata) < 0)
       return -1;
@@ -1230,7 +1230,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
     }
   }
 
-  if ((force || (adata->state != IMAP_IDLE && time(NULL) >= adata->lastread + Timeout)) &&
+  if ((force || (adata->state != IMAP_IDLE && time(NULL) >= adata->lastread + C_Timeout)) &&
       imap_exec(adata, "NOOP", IMAP_CMD_POLL) != IMAP_EXEC_SUCCESS)
   {
     return -1;
@@ -1404,7 +1404,7 @@ int imap_subscribe(char *path, bool subscribe)
   if (imap_adata_find(path, &adata, &mdata) < 0)
     return -1;
 
-  if (ImapCheckSubscribed)
+  if (C_ImapCheckSubscribed)
   {
     mutt_buffer_init(&token);
     mutt_buffer_init(&err);
@@ -1469,7 +1469,7 @@ int imap_complete(char *buf, size_t buflen, char *path)
 
   /* fire off command */
   snprintf(tmp, sizeof(tmp), "%s \"\" \"%s%%\"",
-           ImapListSubscribed ? "LSUB" : "LIST", mdata->real_name);
+           C_ImapListSubscribed ? "LSUB" : "LIST", mdata->real_name);
 
   imap_cmd_start(adata, tmp);
 
@@ -1600,7 +1600,7 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
         break;
       mutt_debug(LL_DEBUG3, "server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), dest_mdata->name);
-      if (Confirmcreate && mutt_yesorno(prompt, 1) != MUTT_YES)
+      if (C_Confirmcreate && mutt_yesorno(prompt, 1) != MUTT_YES)
       {
         mutt_clear_error();
         goto out;
@@ -1730,14 +1730,14 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
 #endif
 
   /* presort here to avoid doing 10 resorts in imap_exec_msgset */
-  oldsort = Sort;
-  if (Sort != SORT_ORDER)
+  oldsort = C_Sort;
+  if (C_Sort != SORT_ORDER)
   {
     emails = m->emails;
     m->emails = mutt_mem_malloc(m->msg_count * sizeof(struct Email *));
     memcpy(m->emails, emails, m->msg_count * sizeof(struct Email *));
 
-    Sort = SORT_ORDER;
+    C_Sort = SORT_ORDER;
     qsort(m->emails, m->msg_count, sizeof(struct Email *), mutt_get_sort_func(SORT_ORDER));
   }
 
@@ -1751,9 +1751,9 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   if (rc >= 0)
     rc |= sync_helper(m, MUTT_ACL_WRITE, MUTT_REPLIED, "\\Answered");
 
-  if (oldsort != Sort)
+  if (oldsort != C_Sort)
   {
-    Sort = oldsort;
+    C_Sort = oldsort;
     FREE(&m->emails);
     m->emails = emails;
   }
@@ -1815,7 +1815,7 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
     adata->state = IMAP_AUTHENTICATED;
   }
 
-  if (MessageCacheClean)
+  if (C_MessageCacheClean)
     imap_cache_clean(m);
 
   return 0;
@@ -1941,7 +1941,7 @@ int imap_login(struct ImapAccountData *adata)
     if (adata->capabilities & IMAP_CAP_QRESYNC)
     {
       adata->capabilities |= IMAP_CAP_CONDSTORE;
-      if (ImapQResync)
+      if (C_ImapQResync)
         imap_exec(adata, "ENABLE QRESYNC", IMAP_CMD_QUEUE);
     }
 
@@ -1998,17 +1998,17 @@ static int imap_mbox_open(struct Mailbox *m)
   }
 
   /* pipeline the postponed count if possible */
-  struct Mailbox *m_postponed = mx_mbox_find2(Postponed);
+  struct Mailbox *m_postponed = mx_mbox_find2(C_Postponed);
   struct ImapAccountData *postponed_adata = imap_adata_get(m_postponed);
   if (postponed_adata &&
       mutt_account_match(&postponed_adata->conn_account, &adata->conn_account))
     imap_mailbox_status(m_postponed, true);
 
-  if (ImapCheckSubscribed)
+  if (C_ImapCheckSubscribed)
     imap_exec(adata, "LSUB \"\" \"*\"", IMAP_CMD_QUEUE);
 
 #ifdef USE_HCACHE
-  if ((adata->capabilities & IMAP_CAP_CONDSTORE) && ImapCondStore)
+  if ((adata->capabilities & IMAP_CAP_CONDSTORE) && C_ImapCondStore)
     condstore = " (CONDSTORE)";
   else
 #endif
@@ -2117,7 +2117,7 @@ static int imap_mbox_open(struct Mailbox *m)
   }
 
   /* dump the mailbox flags we've found */
-  if (DebugLevel > 2)
+  if (C_DebugLevel > 2)
   {
     if (STAILQ_EMPTY(&mdata->flags))
       mutt_debug(LL_DEBUG3, "No folder flags found\n");
@@ -2189,7 +2189,7 @@ static int imap_mbox_open_append(struct Mailbox *m, int flags)
 
   char buf[PATH_MAX + 64];
   snprintf(buf, sizeof(buf), _("Create %s?"), mdata->name);
-  if (Confirmcreate && mutt_yesorno(buf, 1) != MUTT_YES)
+  if (C_Confirmcreate && mutt_yesorno(buf, 1) != MUTT_YES)
     return -1;
 
   if (imap_create_mailbox(adata, mdata->name) < 0)

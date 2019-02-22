@@ -48,7 +48,7 @@ struct Mailbox;
  * @param m Mailbox
  * @retval ptr Filename
  *
- * @note The return value is a pointer into the NmDefaultUri global variable.
+ * @note The return value is a pointer into the #C_NmDefaultUri global variable.
  *       If that variable changes, the result will be invalid.
  *       It must not be freed.
  */
@@ -58,12 +58,12 @@ const char *nm_db_get_filename(struct Mailbox *m)
   if (!mdata)
     return NULL;
 
-  char *db_filename = mdata->db_url->path ? mdata->db_url->path : NmDefaultUri;
-  if (!db_filename && !Folder)
+  char *db_filename = mdata->db_url->path ? mdata->db_url->path : C_NmDefaultUri;
+  if (!db_filename && !C_Folder)
     return NULL;
 
   if (!db_filename)
-    db_filename = Folder;
+    db_filename = C_Folder;
 
   if (nm_path_probe(db_filename, NULL) == MUTT_NOTMUCH)
     db_filename += NmUriProtocolLen;
@@ -89,7 +89,7 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
 #endif
 
   mutt_debug(LL_DEBUG1, "nm: db open '%s' %s (timeout %d)\n", filename,
-             writable ? "[WRITE]" : "[READ]", NmOpenTimeout);
+             writable ? "[WRITE]" : "[READ]", C_NmOpenTimeout);
 
   const notmuch_database_mode_t mode =
       writable ? NOTMUCH_DATABASE_MODE_READ_WRITE : NOTMUCH_DATABASE_MODE_READ_ONLY;
@@ -107,7 +107,7 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
 #else
     db = notmuch_database_open(filename, mode);
 #endif
-    if ((st == NOTMUCH_STATUS_FILE_ERROR) || db || !NmOpenTimeout || ((ct / 2) > NmOpenTimeout))
+    if ((st == NOTMUCH_STATUS_FILE_ERROR) || db || !C_NmOpenTimeout || ((ct / 2) > C_NmOpenTimeout))
       break;
 
     if (verbose && ct && ((ct % 2) == 0))

@@ -46,10 +46,10 @@
 #include "sort.h"
 
 /* These Config Variables are only used in addrbook.c */
-char *AliasFormat; ///< Config: printf-like format string for the alias menu
-short SortAlias;   ///< Config: Sort method for the alias menu
+char *C_AliasFormat; ///< Config: printf-like format string for the alias menu
+short C_SortAlias;   ///< Config: Sort method for the alias menu
 
-#define RSORT(x) ((SortAlias & SORT_REVERSE) ? -x : x)
+#define RSORT(x) ((C_SortAlias & SORT_REVERSE) ? -x : x)
 
 static const struct Mapping AliasHelp[] = {
   { N_("Exit"), OP_EXIT },      { N_("Del"), OP_DELETE },
@@ -109,7 +109,8 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
  */
 static void alias_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
-  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(AliasFormat), alias_format_str,
+  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols,
+                      NONULL(C_AliasFormat), alias_format_str,
                       (unsigned long) ((struct Alias **) menu->data)[line],
                       MUTT_FORMAT_ARROWCURSOR);
 }
@@ -235,10 +236,10 @@ new_aliases:
     i++;
   }
 
-  if ((SortAlias & SORT_MASK) != SORT_ORDER)
+  if ((C_SortAlias & SORT_MASK) != SORT_ORDER)
   {
     qsort(AliasTable, menu->max, sizeof(struct Alias *),
-          (SortAlias & SORT_MASK) == SORT_ADDRESS ? alias_sort_address : alias_sort_alias);
+          (C_SortAlias & SORT_MASK) == SORT_ADDRESS ? alias_sort_address : alias_sort_alias);
   }
 
   for (i = 0; i < menu->max; i++)
@@ -270,7 +271,7 @@ new_aliases:
         {
           AliasTable[menu->current]->del = (op == OP_DELETE);
           menu->redraw |= REDRAW_CURRENT;
-          if (Resolve && menu->current < menu->max - 1)
+          if (C_Resolve && menu->current < menu->max - 1)
           {
             menu->current++;
             menu->redraw |= REDRAW_INDEX;

@@ -66,7 +66,7 @@
 struct BodyCache;
 
 /* These Config Variables are only used in imap/message.c */
-char *ImapHeaders; ///< Config: (imap) Additional email headers to download when getting index
+char *C_ImapHeaders; ///< Config: (imap) Additional email headers to download when getting index
 
 /**
  * imap_edata_free - free ImapHeader structure
@@ -278,7 +278,7 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
     else if ((plen = mutt_str_startswith(s, "old", CASE_IGNORE)))
     {
       s += plen;
-      edata->old = MarkOld ? true : false;
+      edata->old = C_MarkOld ? true : false;
     }
     else
     {
@@ -716,7 +716,8 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
 
   /* L10N:
      Comparing the cached data with the IMAP server's data */
-  mutt_progress_init(&progress, _("Evaluating cache..."), MUTT_PROGRESS_MSG, ReadInc, msn_end);
+  mutt_progress_init(&progress, _("Evaluating cache..."), MUTT_PROGRESS_MSG,
+                     C_ReadInc, msn_end);
 
   /* If we are using CONDSTORE's "FETCH CHANGEDSINCE", then we keep
    * the flags in the header cache, and update them further below.
@@ -926,7 +927,7 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
 
   /* L10N: Fetching IMAP flag changes, using the CONDSTORE extension */
   mutt_progress_init(&progress, _("Fetching flag updates..."),
-                     MUTT_PROGRESS_MSG, ReadInc, msn_end);
+                     MUTT_PROGRESS_MSG, C_ReadInc, msn_end);
 
   snprintf(buf, sizeof(buf), "UID FETCH 1:%u (FLAGS) (CHANGEDSINCE %llu%s)",
            uid_next - 1, hc_modseq, eval_qresync ? " VANISHED" : "");
@@ -1032,12 +1033,12 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
   if (adata->capabilities & IMAP_CAP_IMAP4REV1)
   {
     safe_asprintf(&hdrreq, "BODY.PEEK[HEADER.FIELDS (%s%s%s)]", want_headers,
-                  ImapHeaders ? " " : "", NONULL(ImapHeaders));
+                  C_ImapHeaders ? " " : "", NONULL(C_ImapHeaders));
   }
   else if (adata->capabilities & IMAP_CAP_IMAP4)
   {
     safe_asprintf(&hdrreq, "RFC822.HEADER.LINES (%s%s%s)", want_headers,
-                  ImapHeaders ? " " : "", NONULL(ImapHeaders));
+                  C_ImapHeaders ? " " : "", NONULL(C_ImapHeaders));
   }
   else
   { /* Unable to fetch headers for lower versions */
@@ -1057,7 +1058,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
   unlink(tempfile);
 
   mutt_progress_init(&progress, _("Fetching message headers..."),
-                     MUTT_PROGRESS_MSG, ReadInc, msn_end);
+                     MUTT_PROGRESS_MSG, C_ReadInc, msn_end);
 
   while ((msn_begin <= msn_end) && (fetch_msn_end < msn_end))
   {
@@ -1274,7 +1275,7 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
 
     if (mdata->modseq)
     {
-      if ((adata->capabilities & IMAP_CAP_CONDSTORE) && ImapCondStore)
+      if ((adata->capabilities & IMAP_CAP_CONDSTORE) && C_ImapCondStore)
         has_condstore = true;
 
       /* If IMAP_CAP_QRESYNC and ImapQResync then Mutt sends ENABLE QRESYNC.
@@ -1451,7 +1452,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   rewind(fp);
 
   mutt_progress_init(&progressbar, _("Uploading message..."),
-                     MUTT_PROGRESS_SIZE, NetInc, len);
+                     MUTT_PROGRESS_SIZE, C_NetInc, len);
 
   mutt_date_make_imap(internaldate, sizeof(internaldate), msg->received);
 
@@ -1667,7 +1668,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool
         break;
       mutt_debug(LL_DEBUG3, "server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), mbox);
-      if (Confirmcreate && mutt_yesorno(prompt, 1) != MUTT_YES)
+      if (C_Confirmcreate && mutt_yesorno(prompt, 1) != MUTT_YES)
       {
         mutt_clear_error();
         goto out;
@@ -1691,7 +1692,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool
     {
       mutt_set_flag(m, en->email, MUTT_DELETE, true);
       mutt_set_flag(m, en->email, MUTT_PURGE, true);
-      if (DeleteUntag)
+      if (C_DeleteUntag)
         mutt_set_flag(m, en->email, MUTT_TAG, false);
     }
   }
@@ -1881,7 +1882,7 @@ int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 
   snprintf(buf, sizeof(buf), "UID FETCH %u %s", imap_edata_get(e)->uid,
            ((adata->capabilities & IMAP_CAP_IMAP4REV1) ?
-                (ImapPeek ? "BODY.PEEK[]" : "BODY[]") :
+                (C_ImapPeek ? "BODY.PEEK[]" : "BODY[]") :
                 "RFC822"));
 
   imap_cmd_start(adata, buf);
@@ -1925,7 +1926,7 @@ int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
           if (output_progress)
           {
             mutt_progress_init(&progressbar, _("Fetching message..."),
-                               MUTT_PROGRESS_SIZE, NetInc, bytes);
+                               MUTT_PROGRESS_SIZE, C_NetInc, bytes);
           }
           if (imap_read_literal(msg->fp, adata, bytes,
                                 output_progress ? &progressbar : NULL) < 0)

@@ -34,7 +34,7 @@
 #include "tags.h"
 
 /* These Config Variables are only used in email/tags.c */
-char *HiddenTags; ///< Config: Tags that shouldn't be displayed on screen
+char *C_HiddenTags; ///< Config: Tags that shouldn't be displayed on screen
 
 struct Hash *TagTransforms; /**< Lookup table of alternative tag names */
 
@@ -89,12 +89,12 @@ static void driver_tags_add(struct TagHead *head, char *new_tag)
     np->transformed = mutt_str_strdup(new_tag_transformed);
 
   /* filter out hidden tags */
-  if (HiddenTags)
+  if (C_HiddenTags)
   {
-    char *p = strstr(HiddenTags, new_tag);
+    char *p = strstr(C_HiddenTags, new_tag);
     size_t xsz = p ? mutt_str_strlen(new_tag) : 0;
 
-    if (p && ((p == HiddenTags) || (*(p - 1) == ',') || (*(p - 1) == ' ')) &&
+    if (p && ((p == C_HiddenTags) || (*(p - 1) == ',') || (*(p - 1) == ' ')) &&
         ((*(p + xsz) == '\0') || (*(p + xsz) == ',') || (*(p + xsz) == ' ')))
     {
       np->hidden = true;

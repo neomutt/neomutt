@@ -70,8 +70,8 @@ const char *group_index_format_str(char *buf, size_t buflen, size_t col, int col
       if (folder->ff->nd->desc)
       {
         char *desc = mutt_str_strdup(folder->ff->nd->desc);
-        if (NewsgroupsCharset && *NewsgroupsCharset)
-          mutt_ch_convert_string(&desc, NewsgroupsCharset, Charset, MUTT_ICONV_HOOK_FROM);
+        if (C_NewsgroupsCharset && *C_NewsgroupsCharset)
+          mutt_ch_convert_string(&desc, C_NewsgroupsCharset, C_Charset, MUTT_ICONV_HOOK_FROM);
         mutt_mb_filter_unprintable(&desc);
 
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
@@ -113,7 +113,7 @@ const char *group_index_format_str(char *buf, size_t buflen, size_t col, int col
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, Context->mailbox->msg_new);
       }
-      else if (MarkOld && folder->ff->nd->last_cached >= folder->ff->nd->first_message &&
+      else if (C_MarkOld && folder->ff->nd->last_cached >= folder->ff->nd->first_message &&
                folder->ff->nd->last_cached <= folder->ff->nd->last_message)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);

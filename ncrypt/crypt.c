@@ -61,14 +61,14 @@
 #include "state.h"
 
 /* These Config Variables are only used in ncrypt/crypt.c */
-bool CryptTimestamp; ///< Config: Add a timestamp to PGP or SMIME output to prevent spoofing
-unsigned char PgpEncryptSelf;
-unsigned char PgpMimeAuto; ///< Config: Prompt the user to use MIME if inline PGP fails
-bool PgpRetainableSigs; ///< Config: Create nested multipart/signed or encrypted messages
-bool PgpSelfEncrypt; ///< Config: Encrypted messages will also be encrypted to PgpDefaultKey too
-bool PgpStrictEnc; ///< Config: Encode PGP signed messages with quoted-printable (don't unset)
-unsigned char SmimeEncryptSelf;
-bool SmimeSelfEncrypt; ///< Config: Encrypted messages will also be encrypt to SmimeDefaultKey too
+bool C_CryptTimestamp; ///< Config: Add a timestamp to PGP or SMIME output to prevent spoofing
+unsigned char C_PgpEncryptSelf;
+unsigned char C_PgpMimeAuto; ///< Config: Prompt the user to use MIME if inline PGP fails
+bool C_PgpRetainableSigs; ///< Config: Create nested multipart/signed or encrypted messages
+bool C_PgpSelfEncrypt; ///< Config: Encrypted messages will also be encrypted to C_PgpDefaultKey too
+bool C_PgpStrictEnc; ///< Config: Encode PGP signed messages with quoted-printable (don't unset)
+unsigned char C_SmimeEncryptSelf;
+bool C_SmimeSelfEncrypt; ///< Config: Encrypted messages will also be encrypt to C_SmimeDefaultKey too
 
 /**
  * crypt_current_time - Print the current time
@@ -85,7 +85,7 @@ void crypt_current_time(struct State *s, const char *app_name)
   if (!WithCrypto)
     return;
 
-  if (CryptTimestamp)
+  if (C_CryptTimestamp)
   {
     t = time(NULL);
     strftime(p, sizeof(p), _(" (current time: %c)"), localtime(&t));
@@ -187,7 +187,7 @@ int mutt_protect(struct Email *msg, char *keylist)
     if ((msg->content->type != TYPE_TEXT) ||
         (mutt_str_strcasecmp(msg->content->subtype, "plain") != 0))
     {
-      if (query_quadoption(PgpMimeAuto,
+      if (query_quadoption(C_PgpMimeAuto,
                            _("Inline PGP can't be used with attachments.  "
                              "Revert to PGP/MIME?")) != MUTT_YES)
       {
@@ -198,7 +198,7 @@ int mutt_protect(struct Email *msg, char *keylist)
     }
     else if (mutt_str_strcasecmp("flowed", mutt_param_get(&msg->content->parameter, "format")) == 0)
     {
-      if ((query_quadoption(PgpMimeAuto,
+      if ((query_quadoption(C_PgpMimeAuto,
                             _("Inline PGP can't be used with format=flowed.  "
                               "Revert to PGP/MIME?"))) != MUTT_YES)
       {
@@ -224,7 +224,7 @@ int mutt_protect(struct Email *msg, char *keylist)
 
       /* otherwise inline won't work...ask for revert */
       if (query_quadoption(
-              PgpMimeAuto,
+              C_PgpMimeAuto,
               _("Message can't be sent inline.  Revert to using PGP/MIME?")) != MUTT_YES)
       {
         mutt_error(_("Mail not sent"));
@@ -243,7 +243,7 @@ int mutt_protect(struct Email *msg, char *keylist)
   if (WithCrypto & APPLICATION_PGP)
     tmp_pgp_pbody = msg->content;
 
-  if (CryptUsePka && (msg->security & SEC_SIGN))
+  if (C_CryptUsePka && (msg->security & SEC_SIGN))
   {
     /* Set sender (necessary for e.g. PKA).  */
     const char *mailbox = NULL;
@@ -253,8 +253,8 @@ int mutt_protect(struct Email *msg, char *keylist)
       from = mutt_default_from();
 
     mailbox = from->mailbox;
-    if (!mailbox && EnvelopeFromAddress)
-      mailbox = EnvelopeFromAddress->mailbox;
+    if (!mailbox && C_EnvelopeFromAddress)
+      mailbox = C_EnvelopeFromAddress->mailbox;
 
     if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME))
       crypt_smime_set_sender(mailbox);
@@ -265,7 +265,7 @@ int mutt_protect(struct Email *msg, char *keylist)
       mutt_addr_free(&from);
   }
 
-  if (CryptProtectedHeadersWrite)
+  if (C_CryptProtectedHeadersWrite)
   {
     struct Envelope *protected_headers = mutt_env_new();
     mutt_str_replace(&protected_headers->subject, msg->env->subject);
@@ -289,7 +289,7 @@ int mutt_protect(struct Email *msg, char *keylist)
     }
 
     if (((WithCrypto & APPLICATION_PGP) != 0) && (msg->security & APPLICATION_PGP) &&
-        (!(flags & SEC_ENCRYPT) || PgpRetainableSigs))
+        (!(flags & SEC_ENCRYPT) || C_PgpRetainableSigs))
     {
       tmp_pbody = crypt_pgp_sign_message(msg->content);
       if (!tmp_pbody)
@@ -795,7 +795,7 @@ void crypt_convert_to_7bit(struct Body *a)
         a->encoding = ENC_7BIT;
         crypt_convert_to_7bit(a->parts);
       }
-      else if (((WithCrypto & APPLICATION_PGP) != 0) && PgpStrictEnc)
+      else if (((WithCrypto & APPLICATION_PGP) != 0) && C_PgpStrictEnc)
         crypt_convert_to_7bit(a->parts);
     }
     else if (a->type == TYPE_MESSAGE &&
@@ -809,7 +809,7 @@ void crypt_convert_to_7bit(struct Body *a)
     else if (a->encoding == ENC_BINARY)
       a->encoding = ENC_BASE64;
     else if (a->content && a->encoding != ENC_BASE64 &&
-             (a->content->from || (a->content->space && PgpStrictEnc)))
+             (a->content->from || (a->content->space && C_PgpStrictEnc)))
     {
       a->encoding = ENC_QUOTED_PRINTABLE;
     }
@@ -956,8 +956,8 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
         return -1;
       }
       OptPgpCheckTrust = false;
-      if (PgpSelfEncrypt || (PgpEncryptSelf == MUTT_YES))
-        self_encrypt = PgpDefaultKey;
+      if (C_PgpSelfEncrypt || (C_PgpEncryptSelf == MUTT_YES))
+        self_encrypt = C_PgpDefaultKey;
     }
     if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME))
     {
@@ -967,8 +967,8 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
         mutt_addr_free(&addrlist);
         return -1;
       }
-      if (SmimeSelfEncrypt || (SmimeEncryptSelf == MUTT_YES))
-        self_encrypt = SmimeDefaultKey;
+      if (C_SmimeSelfEncrypt || (C_SmimeEncryptSelf == MUTT_YES))
+        self_encrypt = C_SmimeDefaultKey;
     }
   }
 
@@ -998,7 +998,7 @@ void crypt_opportunistic_encrypt(struct Email *msg)
   if (!WithCrypto)
     return;
 
-  if (!(CryptOpportunisticEncrypt && (msg->security & SEC_OPPENCRYPT)))
+  if (!(C_CryptOpportunisticEncrypt && (msg->security & SEC_OPPENCRYPT)))
     return;
 
   crypt_get_keys(msg, &pgpkeylist, 1);
@@ -1045,8 +1045,8 @@ static void crypt_fetch_signatures(struct Body ***signatures, struct Body *a, in
  */
 bool mutt_should_hide_protected_subject(struct Email *e)
 {
-  if (CryptProtectedHeadersWrite && (e->security & SEC_ENCRYPT) &&
-      !(e->security & SEC_INLINE) && CryptProtectedHeadersSubject && *CryptProtectedHeadersSubject)
+  if (C_CryptProtectedHeadersWrite && (e->security & SEC_ENCRYPT) &&
+      !(e->security & SEC_INLINE) && C_CryptProtectedHeadersSubject && *C_CryptProtectedHeadersSubject)
   {
     return true;
   }
@@ -1059,16 +1059,16 @@ bool mutt_should_hide_protected_subject(struct Email *e)
  */
 int mutt_protected_headers_handler(struct Body *a, struct State *s)
 {
-  if (CryptProtectedHeadersRead && a->mime_headers)
+  if (C_CryptProtectedHeadersRead && a->mime_headers)
   {
     if (a->mime_headers->subject)
     {
-      if ((s->flags & MUTT_DISPLAY) && Weed && mutt_matches_ignore("subject"))
+      if ((s->flags & MUTT_DISPLAY) && C_Weed && mutt_matches_ignore("subject"))
         return 0;
 
       state_mark_protected_header(s);
       mutt_write_one_header(s->fp_out, "Subject", a->mime_headers->subject,
-                            s->prefix, mutt_window_wrap_cols(MuttIndexWindow, Wrap),
+                            s->prefix, mutt_window_wrap_cols(MuttIndexWindow, C_Wrap),
                             (s->flags & MUTT_DISPLAY) ? CH_DISPLAY : 0);
       state_puts("\n", s);
     }
@@ -1235,7 +1235,7 @@ const char *crypt_get_fingerprint_or_id(char *p, const char **pphint,
   size_t hexdigits;
 
   /* User input may be partial name, fingerprint or short or long key ID,
-   * independent of PgpLongIds.
+   * independent of C_PgpLongIds.
    * Fingerprint without spaces is 40 hex digits (SHA-1) or 32 hex digits (MD5).
    * Strip leading "0x" for key ID detection and prepare pl and ps to indicate
    * if an ID was found and to simplify logic in the key loop's inner

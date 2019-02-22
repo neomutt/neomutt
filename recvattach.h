@@ -32,11 +32,11 @@ struct AttachCtx;
 struct Email;
 
 /* These Config Variables are only used in recvattach.c */
-extern char *AttachSaveDir;
-extern char *AttachSep;
-extern bool  AttachSplit;
-extern bool  DigestCollapse;
-extern char *MessageFormat;
+extern char *C_AttachSaveDir;
+extern char *C_AttachSep;
+extern bool  C_AttachSplit;
+extern bool  C_DigestCollapse;
+extern char *C_MessageFormat;
 
 void mutt_attach_init(struct AttachCtx *actx);
 void mutt_update_tree(struct AttachCtx *actx);

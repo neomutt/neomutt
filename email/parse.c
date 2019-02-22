@@ -140,7 +140,7 @@ static void parse_parameters(struct ParameterList *param, const char *s)
         s++;
         for (i = 0; *s && (i < (sizeof(buffer) - 1)); i++, s++)
         {
-          if (AssumedCharset && *AssumedCharset)
+          if (C_AssumedCharset && *C_AssumedCharset)
           {
             /* As iso-2022-* has a character of '"' with non-ascii state,
              * ignore it. */
@@ -513,7 +513,7 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
     if (!pc)
     {
       mutt_param_set(&ct->parameter, "charset",
-                     (AssumedCharset && *AssumedCharset) ?
+                     (C_AssumedCharset && *C_AssumedCharset) ?
                          (const char *) mutt_ch_get_default_charset() :
                          "us-ascii");
     }
@@ -708,7 +708,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
             {
               FREE(&env->list_post);
               env->list_post = mutt_str_substr_dup(beg, end);
-              if (AutoSubscribe)
+              if (C_AutoSubscribe)
                 mutt_auto_subscribe(env->list_post);
 
               break;
@@ -825,7 +825,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
             switch (*p)
             {
               case 'O':
-                e->old = MarkOld ? true : false;
+                e->old = C_MarkOld ? true : false;
                 break;
               case 'R':
                 e->read = true;
@@ -918,7 +918,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
     /* restore the original line */
     line[strlen(line)] = ':';
 
-    if (!(weed && Weed && mutt_matches_ignore(line)))
+    if (!(weed && C_Weed && mutt_matches_ignore(line)))
     {
       struct ListNode *np = mutt_list_insert_tail(&env->userhdrs, mutt_str_strdup(line));
       if (do_2047)
@@ -1072,10 +1072,10 @@ struct Envelope *mutt_rfc822_read_header(FILE *f, struct Email *e, bool user_hdr
         /* if spam tag already exists, figure out how to amend it */
         if (env->spam && *buf)
         {
-          /* If SpamSeparator defined, append with separator */
-          if (SpamSeparator)
+          /* If C_SpamSeparator defined, append with separator */
+          if (C_SpamSeparator)
           {
-            mutt_buffer_addstr(env->spam, SpamSeparator);
+            mutt_buffer_addstr(env->spam, C_SpamSeparator);
             mutt_buffer_addstr(env->spam, buf);
           }
 
@@ -1126,8 +1126,8 @@ struct Envelope *mutt_rfc822_read_header(FILE *f, struct Email *e, bool user_hdr
     {
       regmatch_t pmatch[1];
 
-      if (ReplyRegex && ReplyRegex->regex &&
-          (regexec(ReplyRegex->regex, env->subject, 1, pmatch, 0) == 0))
+      if (C_ReplyRegex && C_ReplyRegex->regex &&
+          (regexec(C_ReplyRegex->regex, env->subject, 1, pmatch, 0) == 0))
       {
         env->real_subj = env->subject + pmatch[0].rm_eo;
       }

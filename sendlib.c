@@ -73,23 +73,23 @@
 #endif
 
 /* These Config Variables are only used in sendlib.c */
-bool Allow8bit; ///< Config: Allow 8-bit messages, don't use quoted-printable or base64
-char *AttachCharset; ///< Config: When attaching files, use one of these character sets
-bool BounceDelivered; ///< Config: Add 'Delivered-To' to bounced messages
-bool EncodeFrom; ///< Config: Encode 'From ' as 'quote-printable' at the beginning of lines
-bool ForwardDecrypt; ///< Config: Decrypt the message when forwarding it
-bool HiddenHost; ///< Config: Don't use the hostname, just the domain, when generating the message id
-char *Inews;     ///< Config: (nntp) External command to post news articles
-bool MimeForwardDecode; ///< Config: Decode the forwarded message before attaching it
-bool MimeSubject;       ///< Config: (nntp) Encode the article subject in base64
-char *MimeTypeQueryCommand; ///< Config: External command to determine the MIME type of an attachment
-bool MimeTypeQueryFirst; ///< Config: Run the MimeTypeQueryCommand before the mime.types lookup
-char *Sendmail;       ///< Config: External command to send email
-short SendmailWait;   ///< Config: Time to wait for sendmail to finish
-bool Use8bitmime;     ///< Config: Use 8-bit messages and ESMTP to send messages
-bool UseEnvelopeFrom; ///< Config: Set the envelope sender of the message
-bool UserAgent;       ///< Config: Add a 'User-Agent' head to outgoing mail
-short WrapHeaders;    ///< Config: Width to wrap headers in outgoing messages
+bool C_Allow8bit; ///< Config: Allow 8-bit messages, don't use quoted-printable or base64
+char *C_AttachCharset; ///< Config: When attaching files, use one of these character sets
+bool C_BounceDelivered; ///< Config: Add 'Delivered-To' to bounced messages
+bool C_EncodeFrom; ///< Config: Encode 'From ' as 'quote-printable' at the beginning of lines
+bool C_ForwardDecrypt; ///< Config: Decrypt the message when forwarding it
+bool C_HiddenHost; ///< Config: Don't use the hostname, just the domain, when generating the message id
+char *C_Inews;     ///< Config: (nntp) External command to post news articles
+bool C_MimeForwardDecode; ///< Config: Decode the forwarded message before attaching it
+bool C_MimeSubject; ///< Config: (nntp) Encode the article subject in base64
+char *C_MimeTypeQueryCommand; ///< Config: External command to determine the MIME type of an attachment
+bool C_MimeTypeQueryFirst; ///< Config: Run the #C_MimeTypeQueryCommand before the mime.types lookup
+char *C_Sendmail;     ///< Config: External command to send email
+short C_SendmailWait; ///< Config: Time to wait for sendmail to finish
+bool C_Use8bitmime;   ///< Config: Use 8-bit messages and ESMTP to send messages
+bool C_UseEnvelopeFrom; ///< Config: Set the envelope sender of the message
+bool C_UserAgent;       ///< Config: Add a 'User-Agent' head to outgoing mail
+short C_WrapHeaders;    ///< Config: Width to wrap headers in outgoing messages
 
 /**
  * encode_quoted - Encode text as quoted printable
@@ -463,7 +463,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
   if (a->encoding != ENC_7BIT)
     fprintf(f, "Content-Transfer-Encoding: %s\n", ENCODING(a->encoding));
 
-  if (CryptProtectedHeadersWrite && a->mime_headers)
+  if (C_CryptProtectedHeadersWrite && a->mime_headers)
     mutt_rfc822_write_header(f, a->mime_headers, NULL, MUTT_WRITE_HEADER_MIME, false, false);
 
   /* Do NOT add the terminator here!!! */
@@ -1019,10 +1019,10 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
   {
     char *chs = mutt_param_get(&b->parameter, "charset");
     char *fchs = b->use_disp ?
-                     ((AttachCharset && *AttachCharset) ? AttachCharset : Charset) :
-                     Charset;
-    if (Charset && (chs || SendCharset) &&
-        convert_file_from_to(fp, fchs, chs ? chs : SendCharset, &fromcode,
+                     ((C_AttachCharset && *C_AttachCharset) ? C_AttachCharset : C_Charset) :
+                     C_Charset;
+    if (C_Charset && (chs || C_SendCharset) &&
+        convert_file_from_to(fp, fchs, chs ? chs : C_SendCharset, &fromcode,
                              &tocode, info) != (size_t)(-1))
     {
       if (!chs)
@@ -1049,8 +1049,9 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
   if (b && b->type == TYPE_TEXT && (!b->noconv && !b->force_charset))
   {
     mutt_param_set(&b->parameter, "charset",
-                   (!info->hibin ? "us-ascii" :
-                                   Charset && !mutt_ch_is_us_ascii(Charset) ? Charset : "unknown-8bit"));
+                   (!info->hibin ?
+                        "us-ascii" :
+                        C_Charset && !mutt_ch_is_us_ascii(C_Charset) ? C_Charset : "unknown-8bit"));
   }
 
   return info;
@@ -1342,13 +1343,13 @@ static void set_encoding(struct Body *b, struct Content *info)
     char send_charset[SHORT_STRING];
     char *chsname = mutt_body_get_charset(b, send_charset, sizeof(send_charset));
     if ((info->lobin && !mutt_str_startswith(chsname, "iso-2022", CASE_IGNORE)) ||
-        info->linemax > 990 || (info->from && EncodeFrom))
+        info->linemax > 990 || (info->from && C_EncodeFrom))
     {
       b->encoding = ENC_QUOTED_PRINTABLE;
     }
     else if (info->hibin)
     {
-      b->encoding = Allow8bit ? ENC_8BIT : ENC_QUOTED_PRINTABLE;
+      b->encoding = C_Allow8bit ? ENC_8BIT : ENC_QUOTED_PRINTABLE;
     }
     else
     {
@@ -1359,7 +1360,7 @@ static void set_encoding(struct Body *b, struct Content *info)
   {
     if (info->lobin || info->hibin)
     {
-      if (Allow8bit && !info->lobin)
+      if (C_Allow8bit && !info->lobin)
         b->encoding = ENC_8BIT;
       else
         mutt_message_to_7bit(b, NULL);
@@ -1469,7 +1470,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool a
 
   if (WithCrypto)
   {
-    if ((MimeForwardDecode || ForwardDecrypt) && (e->security & SEC_ENCRYPT))
+    if ((C_MimeForwardDecode || C_ForwardDecrypt) && (e->security & SEC_ENCRYPT))
     {
       if (!crypt_valid_passphrase(e->security))
         return NULL;
@@ -1495,8 +1496,8 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool a
   chflags = CH_XMIT;
   cmflags = 0;
 
-  /* If we are attaching a message, ignore MimeForwardDecode */
-  if (!attach_msg && MimeForwardDecode)
+  /* If we are attaching a message, ignore C_MimeForwardDecode */
+  if (!attach_msg && C_MimeForwardDecode)
   {
     chflags |= CH_MIME | CH_TXTPLAIN;
     cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
@@ -1505,7 +1506,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool a
     if (WithCrypto & APPLICATION_SMIME)
       pgp &= ~SMIME_ENCRYPT;
   }
-  else if ((WithCrypto != 0) && ForwardDecrypt && (e->security & SEC_ENCRYPT))
+  else if ((WithCrypto != 0) && C_ForwardDecrypt && (e->security & SEC_ENCRYPT))
   {
     if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_multipart_encrypted(e->content))
     {
@@ -1563,7 +1564,7 @@ static void run_mime_type_query(struct Body *att)
   int dummy = 0;
   pid_t thepid;
 
-  mutt_file_expand_fmt_quote(cmd, sizeof(cmd), MimeTypeQueryCommand, att->filename);
+  mutt_file_expand_fmt_quote(cmd, sizeof(cmd), C_MimeTypeQueryCommand, att->filename);
 
   thepid = mutt_create_filter(cmd, NULL, &fp, &fperr);
   if (thepid < 0)
@@ -1596,7 +1597,7 @@ struct Body *mutt_make_file_attach(const char *path)
   struct Body *att = mutt_body_new();
   att->filename = mutt_str_strdup(path);
 
-  if (MimeTypeQueryCommand && *MimeTypeQueryCommand && MimeTypeQueryFirst)
+  if (C_MimeTypeQueryCommand && *C_MimeTypeQueryCommand && C_MimeTypeQueryFirst)
     run_mime_type_query(att);
 
   /* Attempt to determine the appropriate content-type based on the filename
@@ -1605,7 +1606,7 @@ struct Body *mutt_make_file_attach(const char *path)
   if (!att->subtype)
     mutt_lookup_mime_type(att, path);
 
-  if (!att->subtype && MimeTypeQueryCommand && *MimeTypeQueryCommand && !MimeTypeQueryFirst)
+  if (!att->subtype && C_MimeTypeQueryCommand && *C_MimeTypeQueryCommand && !C_MimeTypeQueryFirst)
   {
     run_mime_type_query(att);
   }
@@ -2116,16 +2117,16 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
   char *v = mutt_str_strdup(value);
   bool display = (chflags & CH_DISPLAY);
 
-  if (!display || Weed)
+  if (!display || C_Weed)
     v = unfold_header(v);
 
   /* when not displaying, use sane wrap value */
   if (!display)
   {
-    if (WrapHeaders < 78 || WrapHeaders > 998)
+    if (C_WrapHeaders < 78 || C_WrapHeaders > 998)
       wraplen = 78;
     else
-      wraplen = WrapHeaders;
+      wraplen = C_WrapHeaders;
   }
   else if (wraplen <= 0 || wraplen > MuttIndexWindow->cols)
     wraplen = MuttIndexWindow->cols;
@@ -2265,7 +2266,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
   if (env->bcc)
   {
     if (mode == MUTT_WRITE_HEADER_POSTPONE || mode == MUTT_WRITE_HEADER_EDITHDRS ||
-        (mode == MUTT_WRITE_HEADER_NORMAL && WriteBcc))
+        (mode == MUTT_WRITE_HEADER_NORMAL && C_WriteBcc))
     {
       fputs("Bcc: ", fp);
       mutt_write_address_list(env->bcc, fp, 5, 0);
@@ -2290,7 +2291,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
 
   if (env->x_comment_to)
     fprintf(fp, "X-Comment-To: %s\n", env->x_comment_to);
-  else if (mode == MUTT_WRITE_HEADER_EDITHDRS && OptNewsSend && XCommentTo)
+  else if (mode == MUTT_WRITE_HEADER_EDITHDRS && OptNewsSend && C_XCommentTo)
     fputs("X-Comment-To:\n", fp);
 #endif
 
@@ -2298,7 +2299,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
   {
     if (hide_protected_subject &&
         (mode == MUTT_WRITE_HEADER_NORMAL || mode == MUTT_WRITE_HEADER_POSTPONE))
-      mutt_write_one_header(fp, "Subject", CryptProtectedHeadersSubject, NULL, 0, 0);
+      mutt_write_one_header(fp, "Subject", C_CryptProtectedHeadersSubject, NULL, 0, 0);
     else
       mutt_write_one_header(fp, "Subject", env->subject, NULL, 0, 0);
   }
@@ -2381,7 +2382,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
     }
   }
 
-  if (mode == MUTT_WRITE_HEADER_NORMAL && !privacy && UserAgent && !has_agent)
+  if (mode == MUTT_WRITE_HEADER_NORMAL && !privacy && C_UserAgent && !has_agent)
   {
     /* Add a vanity header */
     fprintf(fp, "User-Agent: NeoMutt/%s%s\n", PACKAGE_VERSION, GitVer);
@@ -2416,7 +2417,7 @@ static void encode_headers(struct ListHead *h)
     if (!tmp)
       continue;
 
-    rfc2047_encode(&tmp, NULL, i + 2, SendCharset);
+    rfc2047_encode(&tmp, NULL, i + 2, C_SendCharset);
     mutt_mem_realloc(&np->data, i + 2 + mutt_str_strlen(tmp) + 1);
 
     sprintf(np->data + i + 2, "%s", tmp);
@@ -2435,14 +2436,14 @@ static void encode_headers(struct ListHead *h)
  */
 const char *mutt_fqdn(bool may_hide_host)
 {
-  if (!Hostname || (Hostname[0] == '@'))
+  if (!C_Hostname || (C_Hostname[0] == '@'))
     return NULL;
 
-  char *p = Hostname;
+  char *p = C_Hostname;
 
-  if (may_hide_host && HiddenHost)
+  if (may_hide_host && C_HiddenHost)
   {
-    p = strchr(Hostname, '.');
+    p = strchr(C_Hostname, '.');
     if (p)
       p++;
 
@@ -2451,7 +2452,7 @@ const char *mutt_fqdn(bool may_hide_host)
       */
 
     if (!p || !strchr(p, '.'))
-      p = Hostname;
+      p = C_Hostname;
   }
 
   return p;
@@ -2515,7 +2516,7 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
   sigaddset(&set, SIGTSTP);
   sigprocmask(SIG_BLOCK, &set, NULL);
 
-  if (SendmailWait >= 0 && tempfile)
+  if (C_SendmailWait >= 0 && tempfile)
   {
     char tmp[PATH_MAX];
 
@@ -2564,7 +2565,7 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
       }
       unlink(msg);
 
-      if (SendmailWait >= 0 && tempfile && *tempfile)
+      if (C_SendmailWait >= 0 && tempfile && *tempfile)
       {
         /* *tempfile will be opened as stdout */
         if (open(*tempfile, O_WRONLY | O_APPEND | O_CREAT | O_EXCL, 0600) < 0)
@@ -2593,11 +2594,11 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
       _exit(S_ERR);
     }
 
-    /* SendmailWait > 0: interrupt waitpid() after SendmailWait seconds
-     * SendmailWait = 0: wait forever
-     * SendmailWait < 0: don't wait
+    /* C_SendmailWait > 0: interrupt waitpid() after C_SendmailWait seconds
+     * C_SendmailWait = 0: wait forever
+     * C_SendmailWait < 0: don't wait
      */
-    if (SendmailWait > 0)
+    if (C_SendmailWait > 0)
     {
       SigAlrm = 0;
       act.sa_handler = alarm_handler;
@@ -2609,15 +2610,15 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
 #endif
       sigemptyset(&act.sa_mask);
       sigaction(SIGALRM, &act, &oldalrm);
-      alarm(SendmailWait);
+      alarm(C_SendmailWait);
     }
-    else if (SendmailWait < 0)
+    else if (C_SendmailWait < 0)
       _exit(0xff & EX_OK);
 
     if (waitpid(pid, &st, 0) > 0)
     {
       st = WIFEXITED(st) ? WEXITSTATUS(st) : S_ERR;
-      if (SendmailWait && st == (0xff & EX_OK) && tempfile && *tempfile)
+      if (C_SendmailWait && st == (0xff & EX_OK) && tempfile && *tempfile)
       {
         unlink(*tempfile); /* no longer needed */
         FREE(tempfile);
@@ -2625,15 +2626,15 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
     }
     else
     {
-      st = (SendmailWait > 0 && errno == EINTR && SigAlrm) ? S_BKG : S_ERR;
-      if (SendmailWait > 0 && tempfile && *tempfile)
+      st = (C_SendmailWait > 0 && errno == EINTR && SigAlrm) ? S_BKG : S_ERR;
+      if (C_SendmailWait > 0 && tempfile && *tempfile)
       {
         unlink(*tempfile);
         FREE(tempfile);
       }
     }
 
-    if (SendmailWait > 0)
+    if (C_SendmailWait > 0)
     {
       /* reset alarm; not really needed, but... */
       alarm(0);
@@ -2729,7 +2730,7 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
     char cmd[LONG_STRING];
 
     mutt_expando_format(cmd, sizeof(cmd), 0, MuttIndexWindow->cols,
-                        NONULL(Inews), nntp_format_str, 0, 0);
+                        NONULL(C_Inews), nntp_format_str, 0, 0);
     if (!*cmd)
     {
       i = nntp_post(Context->mailbox, msg);
@@ -2741,7 +2742,7 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
   }
   else
 #endif
-    s = mutt_str_strdup(Sendmail);
+    s = mutt_str_strdup(C_Sendmail);
 
   /* ensure that $sendmail is set to avoid a crash. http://dev.mutt.org/trac/ticket/3548 */
   if (!s)
@@ -2782,7 +2783,7 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
   {
 #endif
     size_t extra_argslen = 0;
-    /* If Sendmail contained a "--", we save the recipients to append to
+    /* If C_Sendmail contained a "--", we save the recipients to append to
    * args after other possible options added below. */
     if (ps)
     {
@@ -2798,15 +2799,15 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
       }
     }
 
-    if (eightbit && Use8bitmime)
+    if (eightbit && C_Use8bitmime)
       args = add_option(args, &argslen, &argsmax, "-B8BITMIME");
 
-    if (UseEnvelopeFrom)
+    if (C_UseEnvelopeFrom)
     {
-      if (EnvelopeFromAddress)
+      if (C_EnvelopeFromAddress)
       {
         args = add_option(args, &argslen, &argsmax, "-f");
-        args = add_args(args, &argslen, &argsmax, EnvelopeFromAddress);
+        args = add_args(args, &argslen, &argsmax, C_EnvelopeFromAddress);
       }
       else if (from && !from->next)
       {
@@ -2815,15 +2816,15 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
       }
     }
 
-    if (DsnNotify)
+    if (C_DsnNotify)
     {
       args = add_option(args, &argslen, &argsmax, "-N");
-      args = add_option(args, &argslen, &argsmax, DsnNotify);
+      args = add_option(args, &argslen, &argsmax, C_DsnNotify);
     }
-    if (DsnReturn)
+    if (C_DsnReturn)
     {
       args = add_option(args, &argslen, &argsmax, "-R");
-      args = add_option(args, &argslen, &argsmax, DsnReturn);
+      args = add_option(args, &argslen, &argsmax, C_DsnReturn);
     }
     args = add_option(args, &argslen, &argsmax, "--");
     for (i = 0; i < extra_argslen; i++)
@@ -2969,7 +2970,7 @@ static int bounce_message(FILE *fp, struct Email *e, struct Address *to,
     char date[SHORT_STRING];
     int chflags = CH_XMIT | CH_NONEWLINE | CH_NOQFROM;
 
-    if (!BounceDelivered)
+    if (!C_BounceDelivered)
       chflags |= CH_WEED_DELIVERED;
 
     fseeko(fp, e->offset, SEEK_SET);
@@ -2990,7 +2991,7 @@ static int bounce_message(FILE *fp, struct Email *e, struct Address *to,
       return -1;
     }
 #ifdef USE_SMTP
-    if (SmtpUrl)
+    if (C_SmtpUrl)
       rc = mutt_smtp_send(env_from, to, NULL, NULL, tempfile, e->content->encoding == ENC_8BIT);
     else
 #endif
@@ -3028,7 +3029,7 @@ int mutt_bounce_message(FILE *fp, struct Email *e, struct Address *to)
    * upon message criteria.
    */
   if (!from->personal)
-    from->personal = mutt_str_strdup(Realname);
+    from->personal = mutt_str_strdup(C_Realname);
 
   if (fqdn)
     mutt_addr_qualify(from, fqdn);
@@ -3203,7 +3204,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
    */
   mutt_rfc822_write_header(
       msg->fp, e->env, e->content, post ? MUTT_WRITE_HEADER_POSTPONE : MUTT_WRITE_HEADER_NORMAL,
-      false, CryptProtectedHeadersRead && mutt_should_hide_protected_subject(e));
+      false, C_CryptProtectedHeadersRead && mutt_should_hide_protected_subject(e));
 
   /* (postponement) if this was a reply of some sort, <msgid> contains the
    * Message-ID: of message replied to.  Save it using a special X-Mutt-
@@ -3239,8 +3240,8 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     if (e->security & SEC_SIGN)
     {
       fputc('S', msg->fp);
-      if (PgpSignAs && *PgpSignAs)
-        fprintf(msg->fp, "<%s>", PgpSignAs);
+      if (C_PgpSignAs && *C_PgpSignAs)
+        fprintf(msg->fp, "<%s>", C_PgpSignAs);
     }
     if (e->security & SEC_INLINE)
       fputc('I', msg->fp);
@@ -3254,16 +3255,16 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     if (e->security & SEC_ENCRYPT)
     {
       fputc('E', msg->fp);
-      if (SmimeEncryptWith && *SmimeEncryptWith)
-        fprintf(msg->fp, "C<%s>", SmimeEncryptWith);
+      if (C_SmimeEncryptWith && *C_SmimeEncryptWith)
+        fprintf(msg->fp, "C<%s>", C_SmimeEncryptWith);
     }
     if (e->security & SEC_OPPENCRYPT)
       fputc('O', msg->fp);
     if (e->security & SEC_SIGN)
     {
       fputc('S', msg->fp);
-      if (SmimeSignAs && *SmimeSignAs)
-        fprintf(msg->fp, "<%s>", SmimeSignAs);
+      if (C_SmimeSignAs && *C_SmimeSignAs)
+        fprintf(msg->fp, "<%s>", C_SmimeSignAs);
     }
     if (e->security & SEC_INLINE)
       fputc('I', msg->fp);

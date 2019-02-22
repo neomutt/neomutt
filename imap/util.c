@@ -63,8 +63,8 @@
 #endif
 
 /* These Config Variables are only used in imap/util.c */
-char *ImapDelimChars; ///< Config: (imap) Characters that denote separators in IMAP folders
-short ImapPipelineDepth; ///< Config: (imap) Number of IMAP commands that may be queued up
+char *C_ImapDelimChars; ///< Config: (imap) Characters that denote separators in IMAP folders
+short C_ImapPipelineDepth; ///< Config: (imap) Number of IMAP commands that may be queued up
 
 /**
  * imap_adata_free - Release and clear storage in an ImapAccountData structure
@@ -103,7 +103,7 @@ struct ImapAccountData *imap_adata_new(void)
 
   adata->seqid = new_seqid;
   adata->cmdbuf = mutt_buffer_new();
-  adata->cmdslots = ImapPipelineDepth + 2;
+  adata->cmdslots = C_ImapPipelineDepth + 2;
   adata->cmds = mutt_mem_calloc(adata->cmdslots, sizeof(*adata->cmds));
 
   if (++new_seqid > 'z')
@@ -437,7 +437,7 @@ header_cache_t *imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxD
   url.path = mbox;
   url_tostring(&url, cachepath, sizeof(cachepath), U_PATH);
 
-  return mutt_hcache_open(HeaderCache, cachepath, imap_hcache_namer);
+  return mutt_hcache_open(C_HeaderCache, cachepath, imap_hcache_namer);
 }
 
 /**
@@ -721,9 +721,9 @@ void imap_pretty_mailbox(char *path, const char *folder)
   {
     if (hlen == 0)
       home_match = true;
-    else if (ImapDelimChars)
+    else if (C_ImapDelimChars)
     {
-      for (delim = ImapDelimChars; *delim != '\0'; delim++)
+      for (delim = C_ImapDelimChars; *delim != '\0'; delim++)
         if (target_mailbox[hlen] == *delim)
           home_match = true;
     }
@@ -793,13 +793,14 @@ char *imap_fix_path(char server_delim, const char *mailbox, char *path, size_t p
 
   while (mailbox && *mailbox && i < plen - 1)
   {
-    if ((ImapDelimChars && strchr(ImapDelimChars, *mailbox)) || (delim && *mailbox == delim))
+    if ((C_ImapDelimChars && strchr(C_ImapDelimChars, *mailbox)) ||
+        (delim && *mailbox == delim))
     {
       /* use connection delimiter if known. Otherwise use user delimiter */
       if (server_delim == '\0')
         delim = *mailbox;
 
-      while (*mailbox && ((ImapDelimChars && strchr(ImapDelimChars, *mailbox)) ||
+      while (*mailbox && ((C_ImapDelimChars && strchr(C_ImapDelimChars, *mailbox)) ||
                           (delim && *mailbox == delim)))
       {
         mailbox++;
@@ -1072,7 +1073,7 @@ void imap_keepalive(void)
     if (!adata || !adata->mailbox)
       continue;
 
-    if ((adata->state >= IMAP_AUTHENTICATED) && (now >= (adata->lastread + ImapKeepalive)))
+    if ((adata->state >= IMAP_AUTHENTICATED) && (now >= (adata->lastread + C_ImapKeepalive)))
       imap_check_mailbox(adata->mailbox, true);
   }
 }
@@ -1089,9 +1090,9 @@ int imap_wait_keepalive(pid_t pid)
   sigset_t oldmask;
   int rc;
 
-  bool imap_passive = ImapPassive;
+  bool imap_passive = C_ImapPassive;
 
-  ImapPassive = true;
+  C_ImapPassive = true;
   OptKeepQuiet = true;
 
   sigprocmask(SIG_SETMASK, NULL, &oldmask);
@@ -1106,12 +1107,12 @@ int imap_wait_keepalive(pid_t pid)
 
   sigaction(SIGALRM, &act, &oldalrm);
 
-  alarm(ImapKeepalive);
+  alarm(C_ImapKeepalive);
   while (waitpid(pid, &rc, 0) < 0 && errno == EINTR)
   {
     alarm(0); /* cancel a possibly pending alarm */
     imap_keepalive();
-    alarm(ImapKeepalive);
+    alarm(C_ImapKeepalive);
   }
 
   alarm(0); /* cancel a possibly pending alarm */
@@ -1121,7 +1122,7 @@ int imap_wait_keepalive(pid_t pid)
 
   OptKeepQuiet = false;
   if (!imap_passive)
-    ImapPassive = false;
+    C_ImapPassive = false;
 
   return rc;
 }
@@ -1171,8 +1172,8 @@ bool imap_account_match(const struct ConnAccount *a1, const struct ConnAccount *
 
   const char *user = NONULL(Username);
 
-  if ((a1->type == MUTT_ACCT_TYPE_IMAP) && ImapUser)
-    user = ImapUser;
+  if ((a1->type == MUTT_ACCT_TYPE_IMAP) && C_ImapUser)
+    user = C_ImapUser;
 
   if (a1->flags & MUTT_ACCT_USER)
     return strcmp(a1->user, user) == 0;

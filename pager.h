@@ -27,16 +27,16 @@
 #include <stdio.h>
 
 /* These Config Variables are only used in pager.c */
-extern bool          AllowAnsi;
-extern bool          HeaderColorPartial;
-extern short         PagerContext;
-extern short         PagerIndexLines;
-extern bool          PagerStop;
-extern short         SearchContext;
-extern short         SkipQuotedOffset;
-extern bool          SmartWrap;
-extern struct Regex *Smileys;
-extern bool          Tilde;
+extern bool          C_AllowAnsi;
+extern bool          C_HeaderColorPartial;
+extern short         C_PagerContext;
+extern short         C_PagerIndexLines;
+extern bool          C_PagerStop;
+extern short         C_SearchContext;
+extern short         C_SkipQuotedOffset;
+extern bool          C_SmartWrap;
+extern struct Regex *C_Smileys;
+extern bool          C_Tilde;
 
 /* dynamic internal flags */
 #define MUTT_SHOWFLAT         (1 << 0)    ///< Show characters (used for displaying help)

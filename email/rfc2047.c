@@ -349,7 +349,7 @@ static void finalize_chunk(struct Buffer *res, struct Buffer *buf, char *charset
 {
   char end = charset[charsetlen];
   charset[charsetlen] = '\0';
-  mutt_ch_convert_string(&buf->data, charset, Charset, MUTT_ICONV_HOOK_FROM);
+  mutt_ch_convert_string(&buf->data, charset, C_Charset, MUTT_ICONV_HOOK_FROM);
   charset[charsetlen] = end;
   mutt_mb_filter_unprintable(&buf->data);
   mutt_buffer_addstr(res, buf->data);
@@ -625,7 +625,7 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
  */
 void rfc2047_encode(char **pd, const char *specials, int col, const char *charsets)
 {
-  if (!Charset || !*pd)
+  if (!C_Charset || !*pd)
     return;
 
   if (!charsets || !*charsets)
@@ -633,7 +633,7 @@ void rfc2047_encode(char **pd, const char *specials, int col, const char *charse
 
   char *e = NULL;
   size_t elen = 0;
-  encode(*pd, strlen(*pd), col, Charset, charsets, &e, &elen, specials);
+  encode(*pd, strlen(*pd), col, C_Charset, charsets, &e, &elen, specials);
 
   FREE(pd);
   *pd = e;
@@ -692,7 +692,7 @@ void rfc2047_decode(char **pd)
 
       /* Add non-encoded part */
       {
-        if (AssumedCharset && *AssumedCharset)
+        if (C_AssumedCharset && *C_AssumedCharset)
         {
           char *conv = mutt_str_substr_dup(s, s + holelen);
           mutt_ch_convert_nonmime_string(&conv);
@@ -755,9 +755,9 @@ void rfc2047_encode_addrlist(struct Address *addr, const char *tag)
   while (ptr)
   {
     if (ptr->personal)
-      rfc2047_encode(&ptr->personal, AddressSpecials, col, SendCharset);
+      rfc2047_encode(&ptr->personal, AddressSpecials, col, C_SendCharset);
     else if (ptr->group && ptr->mailbox)
-      rfc2047_encode(&ptr->mailbox, AddressSpecials, col, SendCharset);
+      rfc2047_encode(&ptr->mailbox, AddressSpecials, col, C_SendCharset);
     ptr = ptr->next;
   }
 }
@@ -770,7 +770,7 @@ void rfc2047_decode_addrlist(struct Address *a)
 {
   while (a)
   {
-    if (a->personal && ((strstr(a->personal, "=?")) || (AssumedCharset && *AssumedCharset)))
+    if (a->personal && ((strstr(a->personal, "=?")) || (C_AssumedCharset && *C_AssumedCharset)))
     {
       rfc2047_decode(&a->personal);
     }
@@ -811,6 +811,6 @@ void rfc2047_encode_envelope(struct Envelope *env)
   rfc2047_encode_addrlist(env->reply_to, "Reply-To");
   rfc2047_encode_addrlist(env->mail_followup_to, "Mail-Followup-To");
   rfc2047_encode_addrlist(env->sender, "Sender");
-  rfc2047_encode(&env->x_label, NULL, sizeof("X-Label:"), SendCharset);
-  rfc2047_encode(&env->subject, NULL, sizeof("Subject:"), SendCharset);
+  rfc2047_encode(&env->x_label, NULL, sizeof("X-Label:"), C_SendCharset);
+  rfc2047_encode(&env->subject, NULL, sizeof("Subject:"), C_SendCharset);
 }

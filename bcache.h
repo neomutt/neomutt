@@ -30,7 +30,7 @@ struct ConnAccount;
 struct BodyCache;
 
 /* These Config Variables are only used in bcache.c */
-extern char *MessageCachedir;
+extern char *C_MessageCachedir;
 
 /**
  * typedef bcache_list_t - Prototype for mutt_bcache_list() callback

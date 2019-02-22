@@ -81,50 +81,50 @@
 #endif
 
 /* These Config Variables are only used in send.c */
-unsigned char AbortNoattach; ///< Config: Abort sending the email if attachments are missing
-struct Regex *AbortNoattachRegex; ///< Config: Regex to match text indicating attachments are expected
-unsigned char AbortNosubject; ///< Config: Abort creating the email if subject is missing
-unsigned char AbortUnmodified; ///< Config: Abort the sending if the message hasn't been edited
-bool AskFollowUp; ///< Config: (nntp) Ask the user for follow-up groups before editing
-bool AskXCommentTo; ///< Config: (nntp) Ask the user for the 'X-Comment-To' field before editing
-char *ContentType; ///< Config: Default "Content-Type" for newly composed messages
-bool CryptAutoencrypt;  ///< Config: Automatically PGP encrypt all outgoing mail
-bool CryptAutopgp;      ///< Config: Allow automatic PGP functions
-bool CryptAutosign;     ///< Config: Automatically PGP sign all outgoing mail
-bool CryptAutosmime;    ///< Config: Allow automatic SMIME functions
-bool CryptReplyencrypt; ///< Config: Encrypt replies to encrypted messages
-bool CryptReplysign;    ///< Config: Sign replies to signed messages
-bool CryptReplysignencrypted; ///< Config: Sign replies to encrypted messages
-char *EmptySubject; ///< Config: Subject to use when replying to an email with none
-bool FastReply; ///< Config: Don't prompt for the recipients and subject when replying/forwarding
-unsigned char FccAttach; ///< Config: Save send message with all their attachments
-bool FccClear; ///< Config: Save sent messages unencrypted and unsigned
-bool FollowupTo; ///< Config: Add the 'Mail-Followup-To' header is generated when sending mail
-char *ForwardAttributionIntro; ///< Config: Prefix message for forwarded messages
-char *ForwardAttributionTrailer; ///< Config: Suffix message for forwarded messages
-unsigned char ForwardEdit; ///< Config: Automatically start the editor when forwarding a message
-char *ForwardFormat; ///< Config: printf-like format string to control the subject when forwarding a message
-bool ForwardReferences; ///< Config: Set the 'In-Reply-To' and 'References' headers when forwarding a message
-bool Hdrs;              ///< Config: Add custom headers to outgoing mail
-unsigned char HonorFollowupTo; ///< Config: Honour the 'Mail-Followup-To' header when group replying
-bool IgnoreListReplyTo; ///< Config: Ignore the 'Reply-To' header when using `<reply>` on a mailing list
-unsigned char Include; ///< Config: Include a copy of the email that's being replied to
-bool Metoo; ///< Config: Remove the user's address from the list of recipients
-bool NmRecord; ///< Config: (notmuch) If the 'record' mailbox (sent mail) should be indexed
-bool PgpReplyinline; ///< Config: Reply using old-style inline PGP messages (not recommended)
-char *PostIndentString; ///< Config: Suffix message to add after reply text
-bool PostponeEncrypt;   ///< Config: Self-encrypt postponed messages
-char *PostponeEncryptAs; ///< Config: Fallback encryption key for postponed messages
-unsigned char Recall; ///< Config: Recall postponed mesaages when asked to compose a message
-bool ReplySelf; ///< Config: Really reply to yourself, when replying to your own email
-unsigned char ReplyTo; ///< Config: Address to use as a 'Reply-To' header
-bool ReplyWithXorig; ///< Config: Create 'From' header from 'X-Original-To' header
-bool ReverseName; ///< Config: Set the 'From' from the address the email was sent to
-bool ReverseRealname; ///< Config: Set the 'From' from the full 'To' address the email was sent to
-bool SigDashes;  ///< Config: Insert '-- ' before the signature
-char *Signature; ///< Config: File containing a signature to append to all mail
-bool SigOnTop;   ///< Config: Insert the signature before the quoted text
-bool UseFrom;    ///< Config: Set the 'From' header for outgoing mail
+unsigned char C_AbortNoattach; ///< Config: Abort sending the email if attachments are missing
+struct Regex *C_AbortNoattachRegex; ///< Config: Regex to match text indicating attachments are expected
+unsigned char C_AbortNosubject; ///< Config: Abort creating the email if subject is missing
+unsigned char C_AbortUnmodified; ///< Config: Abort the sending if the message hasn't been edited
+bool C_AskFollowUp; ///< Config: (nntp) Ask the user for follow-up groups before editing
+bool C_AskXCommentTo; ///< Config: (nntp) Ask the user for the 'X-Comment-To' field before editing
+char *C_ContentType; ///< Config: Default "Content-Type" for newly composed messages
+bool C_CryptAutoencrypt; ///< Config: Automatically PGP encrypt all outgoing mail
+bool C_CryptAutopgp;     ///< Config: Allow automatic PGP functions
+bool C_CryptAutosign;    ///< Config: Automatically PGP sign all outgoing mail
+bool C_CryptAutosmime;   ///< Config: Allow automatic SMIME functions
+bool C_CryptReplyencrypt; ///< Config: Encrypt replies to encrypted messages
+bool C_CryptReplysign;    ///< Config: Sign replies to signed messages
+bool C_CryptReplysignencrypted; ///< Config: Sign replies to encrypted messages
+char *C_EmptySubject; ///< Config: Subject to use when replying to an email with none
+bool C_FastReply; ///< Config: Don't prompt for the recipients and subject when replying/forwarding
+unsigned char C_FccAttach; ///< Config: Save send message with all their attachments
+bool C_FccClear; ///< Config: Save sent messages unencrypted and unsigned
+bool C_FollowupTo; ///< Config: Add the 'Mail-Followup-To' header is generated when sending mail
+char *C_ForwardAttributionIntro; ///< Config: Prefix message for forwarded messages
+char *C_ForwardAttributionTrailer; ///< Config: Suffix message for forwarded messages
+unsigned char C_ForwardEdit; ///< Config: Automatically start the editor when forwarding a message
+char *C_ForwardFormat; ///< Config: printf-like format string to control the subject when forwarding a message
+bool C_ForwardReferences; ///< Config: Set the 'In-Reply-To' and 'References' headers when forwarding a message
+bool C_Hdrs;              ///< Config: Add custom headers to outgoing mail
+unsigned char C_HonorFollowupTo; ///< Config: Honour the 'Mail-Followup-To' header when group replying
+bool C_IgnoreListReplyTo; ///< Config: Ignore the 'Reply-To' header when using `<reply>` on a mailing list
+unsigned char C_Include; ///< Config: Include a copy of the email that's being replied to
+bool C_Metoo; ///< Config: Remove the user's address from the list of recipients
+bool C_NmRecord; ///< Config: (notmuch) If the 'record' mailbox (sent mail) should be indexed
+bool C_PgpReplyinline; ///< Config: Reply using old-style inline PGP messages (not recommended)
+char *C_PostIndentString; ///< Config: Suffix message to add after reply text
+bool C_PostponeEncrypt;   ///< Config: Self-encrypt postponed messages
+char *C_PostponeEncryptAs; ///< Config: Fallback encryption key for postponed messages
+unsigned char C_Recall; ///< Config: Recall postponed mesaages when asked to compose a message
+bool C_ReplySelf; ///< Config: Really reply to yourself, when replying to your own email
+unsigned char C_ReplyTo; ///< Config: Address to use as a 'Reply-To' header
+bool C_ReplyWithXorig; ///< Config: Create 'From' header from 'X-Original-To' header
+bool C_ReverseName; ///< Config: Set the 'From' from the address the email was sent to
+bool C_ReverseRealname; ///< Config: Set the 'From' from the full 'To' address the email was sent to
+bool C_SigDashes;  ///< Config: Insert '-- ' before the signature
+char *C_Signature; ///< Config: File containing a signature to append to all mail
+bool C_SigOnTop;   ///< Config: Insert the signature before the quoted text
+bool C_UseFrom;    ///< Config: Set the 'From' header for outgoing mail
 
 /**
  * append_signature - Append a signature to an email
@@ -135,9 +135,9 @@ static void append_signature(FILE *f)
   FILE *tmpfp = NULL;
   pid_t thepid;
 
-  if (Signature && (tmpfp = mutt_open_read(Signature, &thepid)))
+  if (C_Signature && (tmpfp = mutt_open_read(C_Signature, &thepid)))
   {
-    if (SigDashes)
+    if (C_SigDashes)
       fputs("\n-- \n", f);
     mutt_file_copy_stream(tmpfp, f);
     mutt_file_fclose(&tmpfp);
@@ -285,7 +285,7 @@ static int edit_envelope(struct Envelope *en, int flags)
       mutt_str_strfcpy(buf, en->followup_to, sizeof(buf));
     else
       buf[0] = 0;
-    if (AskFollowUp && mutt_get_field("Followup-To: ", buf, sizeof(buf), 0) != 0)
+    if (C_AskFollowUp && mutt_get_field("Followup-To: ", buf, sizeof(buf), 0) != 0)
     {
       return -1;
     }
@@ -296,7 +296,7 @@ static int edit_envelope(struct Envelope *en, int flags)
       mutt_str_strfcpy(buf, en->x_comment_to, sizeof(buf));
     else
       buf[0] = 0;
-    if (XCommentTo && AskXCommentTo &&
+    if (C_XCommentTo && C_AskXCommentTo &&
         mutt_get_field("X-Comment-To: ", buf, sizeof(buf), 0) != 0)
     {
       return -1;
@@ -309,11 +309,11 @@ static int edit_envelope(struct Envelope *en, int flags)
   {
     if (edit_address(&en->to, _("To: ")) == -1 || !en->to)
       return -1;
-    if (Askcc && edit_address(&en->cc, _("Cc: ")) == -1)
+    if (C_Askcc && edit_address(&en->cc, _("Cc: ")) == -1)
       return -1;
-    if (Askbcc && edit_address(&en->bcc, _("Bcc: ")) == -1)
+    if (C_Askbcc && edit_address(&en->bcc, _("Bcc: ")) == -1)
       return -1;
-    if (ReplyWithXorig && (flags & (SEND_REPLY | SEND_LIST_REPLY | SEND_GROUP_REPLY)) &&
+    if (C_ReplyWithXorig && (flags & (SEND_REPLY | SEND_LIST_REPLY | SEND_GROUP_REPLY)) &&
         (edit_address(&en->from, "From: ") == -1))
     {
       return -1;
@@ -322,7 +322,7 @@ static int edit_envelope(struct Envelope *en, int flags)
 
   if (en->subject)
   {
-    if (FastReply)
+    if (C_FastReply)
       return 0;
     else
       mutt_str_strfcpy(buf, en->subject, sizeof(buf));
@@ -345,7 +345,7 @@ static int edit_envelope(struct Envelope *en, int flags)
   }
 
   if (mutt_get_field(_("Subject: "), buf, sizeof(buf), 0) != 0 ||
-      (!buf[0] && query_quadoption(AbortNosubject, _("No subject, abort?")) != MUTT_NO))
+      (!buf[0] && query_quadoption(C_AbortNosubject, _("No subject, abort?")) != MUTT_NO))
   {
     mutt_message(_("No subject, aborting"));
     return -1;
@@ -454,12 +454,12 @@ static void process_user_header(struct Envelope *env)
  */
 void mutt_forward_intro(struct Mailbox *m, struct Email *e, FILE *fp)
 {
-  if (!ForwardAttributionIntro || !fp)
+  if (!C_ForwardAttributionIntro || !fp)
     return;
 
   char buf[LONG_STRING];
-  setlocale(LC_TIME, NONULL(AttributionLocale));
-  mutt_make_string(buf, sizeof(buf), ForwardAttributionIntro, NULL, m, e);
+  setlocale(LC_TIME, NONULL(C_AttributionLocale));
+  mutt_make_string(buf, sizeof(buf), C_ForwardAttributionIntro, NULL, m, e);
   setlocale(LC_TIME, "");
   fputs(buf, fp);
   fputs("\n\n", fp);
@@ -473,12 +473,12 @@ void mutt_forward_intro(struct Mailbox *m, struct Email *e, FILE *fp)
  */
 void mutt_forward_trailer(struct Mailbox *m, struct Email *e, FILE *fp)
 {
-  if (!ForwardAttributionTrailer || !fp)
+  if (!C_ForwardAttributionTrailer || !fp)
     return;
 
   char buf[LONG_STRING];
-  setlocale(LC_TIME, NONULL(AttributionLocale));
-  mutt_make_string(buf, sizeof(buf), ForwardAttributionTrailer, NULL, m, e);
+  setlocale(LC_TIME, NONULL(C_AttributionLocale));
+  mutt_make_string(buf, sizeof(buf), C_ForwardAttributionTrailer, NULL, m, e);
   setlocale(LC_TIME, "");
   fputc('\n', fp);
   fputs(buf, fp);
@@ -500,7 +500,7 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *out)
   mutt_parse_mime_message(m, e);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
-  if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT) && ForwardDecode)
+  if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT) && C_ForwardDecode)
   {
     /* make sure we have the user's passphrase before proceeding... */
     if (!crypt_valid_passphrase(e->security))
@@ -509,16 +509,16 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *out)
 
   mutt_forward_intro(m, e, out);
 
-  if (ForwardDecode)
+  if (C_ForwardDecode)
   {
     cmflags |= MUTT_CM_DECODE | MUTT_CM_CHARCONV;
-    if (Weed)
+    if (C_Weed)
     {
       chflags |= CH_WEED | CH_REORDER;
       cmflags |= MUTT_CM_WEED;
     }
   }
-  if (ForwardQuote)
+  if (C_ForwardQuote)
     cmflags |= MUTT_CM_PREFIX;
 
   /* wrapping headers for forwarding is considered a display
@@ -538,12 +538,12 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *out)
  */
 void mutt_make_attribution(struct Mailbox *m, struct Email *e, FILE *out)
 {
-  if (!Attribution || !out)
+  if (!C_Attribution || !out)
     return;
 
   char buf[LONG_STRING];
-  setlocale(LC_TIME, NONULL(AttributionLocale));
-  mutt_make_string(buf, sizeof(buf), Attribution, NULL, m, e);
+  setlocale(LC_TIME, NONULL(C_AttributionLocale));
+  mutt_make_string(buf, sizeof(buf), C_Attribution, NULL, m, e);
   setlocale(LC_TIME, "");
   fputs(buf, out);
   fputc('\n', out);
@@ -557,11 +557,11 @@ void mutt_make_attribution(struct Mailbox *m, struct Email *e, FILE *out)
  */
 void mutt_make_post_indent(struct Mailbox *m, struct Email *e, FILE *out)
 {
-  if (!PostIndentString || !out)
+  if (!C_PostIndentString || !out)
     return;
 
   char buf[STRING];
-  mutt_make_string(buf, sizeof(buf), PostIndentString, NULL, m, e);
+  mutt_make_string(buf, sizeof(buf), C_PostIndentString, NULL, m, e);
   fputs(buf, out);
   fputc('\n', out);
 }
@@ -591,9 +591,9 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *out)
 
   mutt_make_attribution(m, e, out);
 
-  if (!Header)
+  if (!C_Header)
     cmflags |= MUTT_CM_NOHEADER;
-  if (Weed)
+  if (C_Weed)
   {
     chflags |= CH_WEED | CH_REORDER;
     cmflags |= MUTT_CM_WEED;
@@ -631,7 +631,7 @@ static int default_to(struct Address **to, struct Envelope *env, int flags, int 
   if (flags & SEND_LIST_REPLY)
     return 0;
 
-  if (!ReplySelf && mutt_addr_is_user(env->from))
+  if (!C_ReplySelf && mutt_addr_is_user(env->from))
   {
     /* mail is from the user, assume replying to recipients */
     mutt_addr_append(to, env->to, true);
@@ -640,7 +640,7 @@ static int default_to(struct Address **to, struct Envelope *env, int flags, int 
   {
     if ((mutt_addr_cmp(env->from, env->reply_to) && !env->reply_to->next &&
          !env->reply_to->personal) ||
-        (IgnoreListReplyTo && mutt_is_mail_list(env->reply_to) &&
+        (C_IgnoreListReplyTo && mutt_is_mail_list(env->reply_to) &&
          (mutt_addr_search(env->reply_to, env->to) ||
           mutt_addr_search(env->reply_to, env->cc))))
     {
@@ -653,7 +653,7 @@ static int default_to(struct Address **to, struct Envelope *env, int flags, int 
       mutt_addr_append(to, env->from, false);
     }
     else if (!(mutt_addr_cmp(env->from, env->reply_to) && !env->reply_to->next) &&
-             ReplyTo != MUTT_YES)
+             C_ReplyTo != MUTT_YES)
     {
       /* There are quite a few mailing lists which set the Reply-To:
        * header field to the list address, which makes it quite impossible
@@ -665,7 +665,7 @@ static int default_to(struct Address **to, struct Envelope *env, int flags, int 
          If she says no, neomutt will reply to the from header's address instead. */
       snprintf(prompt, sizeof(prompt), _("Reply to %s%s?"),
                env->reply_to->mailbox, env->reply_to->next ? ",..." : "");
-      switch (query_quadoption(ReplyTo, prompt))
+      switch (query_quadoption(C_ReplyTo, prompt))
       {
         case MUTT_YES:
           mutt_addr_append(to, env->reply_to, false);
@@ -707,7 +707,7 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
     snprintf(prompt, sizeof(prompt), _("Follow-up to %s%s?"),
              in->mail_followup_to->mailbox, in->mail_followup_to->next ? ",..." : "");
 
-    hmfupto = query_quadoption(HonorFollowupTo, prompt);
+    hmfupto = query_quadoption(C_HonorFollowupTo, prompt);
     if (hmfupto == MUTT_ABORT)
       return -1;
   }
@@ -783,13 +783,13 @@ static void add_message_id(struct ListHead *head, struct Envelope *env)
  */
 void mutt_fix_reply_recipients(struct Envelope *env)
 {
-  if (!Metoo)
+  if (!C_Metoo)
   {
     /* the order is important here.  do the CC: first so that if the
      * the user is the only recipient, it ends up on the TO: field
      */
     env->cc = remove_user(env->cc, (env->to == NULL));
-    env->to = remove_user(env->to, (env->cc == NULL) || ReplySelf);
+    env->to = remove_user(env->to, (env->cc == NULL) || C_ReplySelf);
   }
 
   /* the CC field can get cluttered, especially with lists */
@@ -818,7 +818,7 @@ void mutt_make_forward_subject(struct Envelope *env, struct Mailbox *m, struct E
   char buf[STRING];
 
   /* set the default subject for the message. */
-  mutt_make_string(buf, sizeof(buf), NONULL(ForwardFormat), NULL, m, cur);
+  mutt_make_string(buf, sizeof(buf), NONULL(C_ForwardFormat), NULL, m, cur);
   mutt_str_replace(&env->subject, buf);
 }
 
@@ -842,7 +842,7 @@ void mutt_make_misc_reply_headers(struct Envelope *env, struct Envelope *curenv)
     sprintf(env->subject, "Re: %s", curenv->real_subj);
   }
   else if (!env->subject)
-    env->subject = mutt_str_strdup(EmptySubject);
+    env->subject = mutt_str_strdup(C_EmptySubject);
 }
 
 /**
@@ -857,7 +857,7 @@ void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv
   add_message_id(&env->in_reply_to, curenv);
 
 #ifdef USE_NNTP
-  if (OptNewsSend && XCommentTo && curenv->from)
+  if (OptNewsSend && C_XCommentTo && curenv->from)
     env->x_comment_to = mutt_str_strdup(mutt_get_name(curenv->from));
 #endif
 }
@@ -957,7 +957,7 @@ static int envelope_defaults(struct Envelope *env, struct Mailbox *m,
   else if (flags & SEND_FORWARD)
   {
     mutt_make_forward_subject(env, m, en->email);
-    if (ForwardReferences)
+    if (C_ForwardReferences)
       make_reference_headers(el, env);
   }
 
@@ -989,7 +989,7 @@ static int generate_body(FILE *tempfp, struct Email *msg, int flags,
 
   if (flags & SEND_REPLY)
   {
-    i = query_quadoption(Include, _("Include message in reply?"));
+    i = query_quadoption(C_Include, _("Include message in reply?"));
     if (i == MUTT_ABORT)
       return -1;
 
@@ -1014,7 +1014,7 @@ static int generate_body(FILE *tempfp, struct Email *msg, int flags,
   }
   else if (flags & SEND_FORWARD)
   {
-    i = query_quadoption(MimeForward, _("Forward as attachment?"));
+    i = query_quadoption(C_MimeForward, _("Forward as attachment?"));
     if (i == MUTT_YES)
     {
       struct Body *last = msg->content;
@@ -1097,7 +1097,7 @@ void mutt_set_followup_to(struct Envelope *env)
    * it hasn't already been set
    */
 
-  if (!FollowupTo)
+  if (!C_FollowupTo)
     return;
 #ifdef USE_NNTP
   if (OptNewsSend)
@@ -1188,7 +1188,7 @@ static struct Address *set_reverse_name(struct Envelope *env)
     /* when $reverse_realname is not set, clear the personal name so that it
      * may be set via a reply- or send-hook.
      */
-    if (!ReverseRealname)
+    if (!C_ReverseRealname)
       FREE(&tmp->personal);
   }
   return tmp;
@@ -1206,12 +1206,12 @@ struct Address *mutt_default_from(void)
    *       Is this the right thing to do?
    */
 
-  if (From)
-    addr = mutt_addr_copy(From);
+  if (C_From)
+    addr = mutt_addr_copy(C_From);
   else
   {
     addr = mutt_addr_new();
-    if (UseDomain)
+    if (C_UseDomain)
     {
       const char *fqdn = mutt_fqdn(true);
       addr->mailbox =
@@ -1248,9 +1248,9 @@ static int send_message(struct Email *msg)
     return -1;
 
 #ifdef USE_SMTP
-  old_write_bcc = WriteBcc;
-  if (SmtpUrl)
-    WriteBcc = false;
+  old_write_bcc = C_WriteBcc;
+  if (C_SmtpUrl)
+    C_WriteBcc = false;
 #endif
 #ifdef MIXMASTER
   mutt_rfc822_write_header(tempfp, msg->env, msg->content,
@@ -1263,7 +1263,7 @@ static int send_message(struct Email *msg)
 #endif
 #ifdef USE_SMTP
   if (old_write_bcc)
-    WriteBcc = true;
+    C_WriteBcc = true;
 #endif
 
   fputc('\n', tempfp); /* tie off the header. */
@@ -1291,7 +1291,7 @@ static int send_message(struct Email *msg)
 #ifdef USE_NNTP
   if (!OptNewsSend)
 #endif
-    if (SmtpUrl)
+    if (C_SmtpUrl)
     {
       return mutt_smtp_send(msg->env->from, msg->env->to, msg->env->cc, msg->env->bcc,
                             tempfile, (msg->content->encoding == ENC_8BIT));
@@ -1314,7 +1314,7 @@ void mutt_encode_descriptions(struct Body *b, bool recurse)
   {
     if (t->description)
     {
-      rfc2047_encode(&t->description, NULL, sizeof("Content-Description:"), SendCharset);
+      rfc2047_encode(&t->description, NULL, sizeof("Content-Description:"), C_SendCharset);
     }
     if (recurse && t->parts)
       mutt_encode_descriptions(t->parts, recurse);
@@ -1381,7 +1381,7 @@ int mutt_resend_message(FILE *fp, struct Context *ctx, struct Email *cur)
      * so fix that here */
     if (!(msg->security & (APPLICATION_SMIME | APPLICATION_PGP)))
     {
-      if (((WithCrypto & APPLICATION_SMIME) != 0) && SmimeIsDefault)
+      if (((WithCrypto & APPLICATION_SMIME) != 0) && C_SmimeIsDefault)
         msg->security |= APPLICATION_SMIME;
       else if (WithCrypto & APPLICATION_PGP)
         msg->security |= APPLICATION_PGP;
@@ -1389,7 +1389,7 @@ int mutt_resend_message(FILE *fp, struct Context *ctx, struct Email *cur)
         msg->security |= APPLICATION_SMIME;
     }
 
-    if (CryptOpportunisticEncrypt)
+    if (C_CryptOpportunisticEncrypt)
     {
       msg->security |= SEC_OPPENCRYPT;
       crypt_opportunistic_encrypt(msg);
@@ -1431,9 +1431,9 @@ static bool is_reply(struct Email *reply, struct Email *orig)
  */
 static bool search_attach_keyword(char *filename)
 {
-  /* Search for the regex in AbortNoattachRegex within a file */
-  if (!AbortNoattachRegex || !AbortNoattachRegex->regex || !QuoteRegex ||
-      !QuoteRegex->regex)
+  /* Search for the regex in C_AbortNoattachRegex within a file */
+  if (!C_AbortNoattachRegex || !C_AbortNoattachRegex->regex || !C_QuoteRegex ||
+      !C_QuoteRegex->regex)
   {
     return false;
   }
@@ -1448,7 +1448,7 @@ static bool search_attach_keyword(char *filename)
   {
     fgets(inputline, LONG_STRING, attf);
     if (!mutt_is_quote_line(inputline, NULL) &&
-        regexec(AbortNoattachRegex->regex, inputline, 0, NULL, 0) == 0)
+        regexec(C_AbortNoattachRegex->regex, inputline, 0, NULL, 0) == 0)
     {
       found = true;
       break;
@@ -1504,7 +1504,7 @@ static int save_fcc(struct Email *msg, char *fcc, size_t fcc_len, struct Body *c
   struct Body *save_sig = NULL;
   struct Body *save_parts = NULL;
 
-  if ((WithCrypto != 0) && (msg->security & (SEC_ENCRYPT | SEC_SIGN)) && FccClear)
+  if ((WithCrypto != 0) && (msg->security & (SEC_ENCRYPT | SEC_SIGN)) && C_FccClear)
   {
     msg->content = clear_content;
     msg->security &= ~(SEC_ENCRYPT | SEC_SIGN);
@@ -1519,7 +1519,7 @@ static int save_fcc(struct Email *msg, char *fcc, size_t fcc_len, struct Body *c
          (mutt_str_strcmp(msg->content->subtype, "signed") == 0)))
     {
       if ((clear_content->type == TYPE_MULTIPART) &&
-          query_quadoption(FccAttach, _("Save attachments in Fcc?")) == MUTT_NO)
+          query_quadoption(C_FccAttach, _("Save attachments in Fcc?")) == MUTT_NO)
       {
         if (!(msg->security & SEC_ENCRYPT) && (msg->security & SEC_SIGN))
         {
@@ -1545,7 +1545,7 @@ static int save_fcc(struct Email *msg, char *fcc, size_t fcc_len, struct Body *c
     }
     else
     {
-      if (query_quadoption(FccAttach, _("Save attachments in Fcc?")) == MUTT_NO)
+      if (query_quadoption(C_FccAttach, _("Save attachments in Fcc?")) == MUTT_NO)
         msg->content = msg->content->parts;
     }
   }
@@ -1643,7 +1643,7 @@ static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, int
   int is_signed;
   struct Body *clear_content = NULL;
 
-  if (!(Postponed && *Postponed))
+  if (!(C_Postponed && *C_Postponed))
   {
     mutt_error(_("Cannot postpone.  $postponed is unset"));
     return -1;
@@ -1654,14 +1654,14 @@ static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, int
 
   mutt_encode_descriptions(msg->content, true);
 
-  if ((WithCrypto != 0) && PostponeEncrypt && (msg->security & SEC_ENCRYPT))
+  if ((WithCrypto != 0) && C_PostponeEncrypt && (msg->security & SEC_ENCRYPT))
   {
     if (((WithCrypto & APPLICATION_PGP) != 0) && (msg->security & APPLICATION_PGP))
-      encrypt_as = PgpDefaultKey;
+      encrypt_as = C_PgpDefaultKey;
     else if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME))
-      encrypt_as = SmimeDefaultKey;
+      encrypt_as = C_SmimeDefaultKey;
     if (!(encrypt_as && *encrypt_as))
-      encrypt_as = PostponeEncryptAs;
+      encrypt_as = C_PostponeEncryptAs;
 
     if (encrypt_as && *encrypt_as)
     {
@@ -1698,7 +1698,7 @@ static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, int
   mutt_prepare_envelope(msg->env, false);
   mutt_env_to_intl(msg->env, NULL, NULL); /* Handle bad IDNAs the next time. */
 
-  if (mutt_write_fcc(NONULL(Postponed), msg,
+  if (mutt_write_fcc(NONULL(C_Postponed), msg,
                      (cur && (flags & SEND_REPLY)) ? cur->env->message_id : NULL,
                      true, fcc, NULL) < 0)
   {
@@ -1770,13 +1770,13 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
     OptNewsSend = false;
 #endif
 
-  if (!flags && !msg && Recall != MUTT_NO &&
+  if (!flags && !msg && C_Recall != MUTT_NO &&
       mutt_num_postponed(ctx ? ctx->mailbox : NULL, true))
   {
     /* If the user is composing a new message, check to see if there
      * are any postponed messages first.
      */
-    i = query_quadoption(Recall, _("Recall postponed message?"));
+    i = query_quadoption(C_Recall, _("Recall postponed message?"));
     if (i == MUTT_ABORT)
       return rc;
 
@@ -1787,9 +1787,9 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
   if (flags & SEND_POSTPONED)
   {
     if (WithCrypto & APPLICATION_PGP)
-      pgp_signas = mutt_str_strdup(PgpSignAs);
+      pgp_signas = mutt_str_strdup(C_PgpSignAs);
     if (WithCrypto & APPLICATION_SMIME)
-      smime_signas = mutt_str_strdup(SmimeSignAs);
+      smime_signas = mutt_str_strdup(C_SmimeSignAs);
   }
 
   /* Delay expansion of aliases until absolutely necessary--shouldn't
@@ -1860,7 +1860,7 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
       pbody->next = msg->content; /* don't kill command-line attachments */
       msg->content = pbody;
 
-      ctype = mutt_str_strdup(ContentType);
+      ctype = mutt_str_strdup(C_ContentType);
       if (!ctype)
         ctype = mutt_str_strdup("text/plain");
       mutt_parse_content_type(ctype, msg->content);
@@ -1894,7 +1894,7 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
   }
 
   /* this is handled here so that the user can match ~f in send-hook */
-  if (cur && ReverseName && !(flags & (SEND_POSTPONED | SEND_RESEND)))
+  if (cur && C_ReverseName && !(flags & (SEND_POSTPONED | SEND_RESEND)))
   {
     /* we shouldn't have to worry about freeing 'msg->env->from' before
      * setting it here since this code will only execute when doing some
@@ -1915,7 +1915,7 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
     }
     msg->env->from = set_reverse_name(cur->env);
   }
-  if (cur && ReplyWithXorig && !(flags & (SEND_POSTPONED | SEND_RESEND | SEND_FORWARD)))
+  if (cur && C_ReplyWithXorig && !(flags & (SEND_POSTPONED | SEND_RESEND | SEND_FORWARD)))
   {
     /* We shouldn't have to worry about freeing 'msg->env->from' before
      * setting it here since this code will only execute when doing some
@@ -1923,7 +1923,7 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
      * line option.
      *
      * If there is already a from address recorded in 'msg->env->from',
-     * then it theoretically comes from ReverseName handling, and we don't use
+     * then it theoretically comes from C_ReverseName handling, and we don't use
      * the 'X-Orig-To header'.
      */
     if (cur->env->x_original_to && !msg->env->from)
@@ -1934,7 +1934,8 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
     }
   }
 
-  if (!(flags & (SEND_POSTPONED | SEND_RESEND)) && !((flags & SEND_DRAFT_FILE) && ResumeDraftFiles))
+  if (!(flags & (SEND_POSTPONED | SEND_RESEND)) &&
+      !((flags & SEND_DRAFT_FILE) && C_ResumeDraftFiles))
   {
     if ((flags & (SEND_REPLY | SEND_FORWARD | SEND_TO_SENDER)) && ctx &&
         envelope_defaults(msg->env, ctx->mailbox, el, flags) == -1)
@@ -1942,7 +1943,7 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
       goto cleanup;
     }
 
-    if (Hdrs)
+    if (C_Hdrs)
       process_user_recips(msg->env);
 
     /* Expand aliases and remove duplicates/crossrefs */
@@ -1960,8 +1961,8 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
     }
 #endif
 
-    if (!(flags & (SEND_MAILX | SEND_BATCH)) && !(Autoedit && EditHeaders) &&
-        !((flags & SEND_REPLY) && FastReply))
+    if (!(flags & (SEND_MAILX | SEND_BATCH)) &&
+        !(C_Autoedit && C_EditHeaders) && !((flags & SEND_REPLY) && C_FastReply))
     {
       if (edit_envelope(msg->env, flags) == -1)
         goto cleanup;
@@ -2003,7 +2004,7 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
 
     if (!(flags & SEND_KEY))
     {
-      if (TextFlowed && msg->content->type == TYPE_TEXT &&
+      if (C_TextFlowed && msg->content->type == TYPE_TEXT &&
           (mutt_str_strcasecmp(msg->content->subtype, "plain") == 0))
       {
         mutt_param_set(&msg->content->parameter, "format", "flowed");
@@ -2014,19 +2015,19 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
     if (killfrom)
     {
       mutt_addr_free(&msg->env->from);
-      if (UseFrom && !(flags & (SEND_POSTPONED | SEND_RESEND)))
+      if (C_UseFrom && !(flags & (SEND_POSTPONED | SEND_RESEND)))
         msg->env->from = mutt_default_from();
       killfrom = false;
     }
 
-    if (Hdrs)
+    if (C_Hdrs)
       process_user_header(msg->env);
 
     if (flags & SEND_BATCH)
       mutt_file_copy_stream(stdin, tempfp);
 
-    if (SigOnTop && !(flags & (SEND_MAILX | SEND_KEY | SEND_BATCH)) && Editor &&
-        (mutt_str_strcmp(Editor, "builtin") != 0))
+    if (C_SigOnTop && !(flags & (SEND_MAILX | SEND_KEY | SEND_BATCH)) &&
+        C_Editor && (mutt_str_strcmp(C_Editor, "builtin") != 0))
     {
       append_signature(tempfp);
     }
@@ -2038,8 +2039,8 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
       goto cleanup;
     }
 
-    if (!SigOnTop && !(flags & (SEND_MAILX | SEND_KEY | SEND_BATCH)) &&
-        Editor && (mutt_str_strcmp(Editor, "builtin") != 0))
+    if (!C_SigOnTop && !(flags & (SEND_MAILX | SEND_KEY | SEND_BATCH)) &&
+        C_Editor && (mutt_str_strcmp(C_Editor, "builtin") != 0))
     {
       append_signature(tempfp);
     }
@@ -2054,7 +2055,7 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
   /* wait until now to set the real name portion of our return address so
      that $realname can be set in a send-hook */
   if (msg->env->from && !msg->env->from->personal && !(flags & (SEND_RESEND | SEND_POSTPONED)))
-    msg->env->from->personal = mutt_str_strdup(Realname);
+    msg->env->from->personal = mutt_str_strdup(C_Realname);
 
   if (!(((WithCrypto & APPLICATION_PGP) != 0) && (flags & SEND_KEY)))
     mutt_file_fclose(&tempfp);
@@ -2081,8 +2082,8 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
      *    recipients.
      */
     if (!(flags & SEND_KEY) &&
-        ((flags & SEND_FORWARD) == 0 || (EditHeaders && Autoedit) ||
-         query_quadoption(ForwardEdit, _("Edit forwarded message?")) == MUTT_YES))
+        ((flags & SEND_FORWARD) == 0 || (C_EditHeaders && C_Autoedit) ||
+         query_quadoption(C_ForwardEdit, _("Edit forwarded message?")) == MUTT_YES))
     {
       /* If the this isn't a text message, look for a mailcap edit command */
       if (mutt_needs_mailcap(msg->content))
@@ -2090,17 +2091,17 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
         if (!mutt_edit_attachment(msg->content))
           goto cleanup;
       }
-      else if (!Editor || (mutt_str_strcmp("builtin", Editor) == 0))
+      else if (!C_Editor || (mutt_str_strcmp("builtin", C_Editor) == 0))
         mutt_builtin_editor(msg->content->filename, msg, cur);
-      else if (EditHeaders)
+      else if (C_EditHeaders)
       {
         mutt_env_to_local(msg->env);
-        mutt_edit_headers(Editor, msg->content->filename, msg, fcc, sizeof(fcc));
+        mutt_edit_headers(C_Editor, msg->content->filename, msg, fcc, sizeof(fcc));
         mutt_env_to_intl(msg->env, NULL, NULL);
       }
       else
       {
-        mutt_edit_file(Editor, msg->content->filename);
+        mutt_edit_file(C_Editor, msg->content->filename);
         if (stat(msg->content->filename, &st) == 0)
         {
           if (mtime != st.st_mtime)
@@ -2115,7 +2116,7 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
        * performed.  If it has already been performed, the format=flowed
        * parameter will be present.
        */
-      if (TextFlowed && msg->content->type == TYPE_TEXT &&
+      if (C_TextFlowed && msg->content->type == TYPE_TEXT &&
           (mutt_str_strcasecmp("plain", msg->content->subtype) == 0))
       {
         char *p = mutt_param_get(&msg->content->parameter, "format");
@@ -2132,7 +2133,8 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
       {
         /* if the file was not modified, bail out now */
         if (mtime == st.st_mtime && !msg->content->next &&
-            query_quadoption(AbortUnmodified, _("Abort unmodified message?")) == MUTT_YES)
+            query_quadoption(C_AbortUnmodified,
+                             _("Abort unmodified message?")) == MUTT_YES)
         {
           mutt_message(_("Aborted unmodified message"));
           goto cleanup;
@@ -2157,26 +2159,26 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
   if ((WithCrypto != 0) && (msg->security == 0) &&
       !(flags & (SEND_BATCH | SEND_MAILX | SEND_POSTPONED | SEND_RESEND)))
   {
-    if (CryptAutosign)
+    if (C_CryptAutosign)
       msg->security |= SEC_SIGN;
-    if (CryptAutoencrypt)
+    if (C_CryptAutoencrypt)
       msg->security |= SEC_ENCRYPT;
-    if (CryptReplyencrypt && cur && (cur->security & SEC_ENCRYPT))
+    if (C_CryptReplyencrypt && cur && (cur->security & SEC_ENCRYPT))
       msg->security |= SEC_ENCRYPT;
-    if (CryptReplysign && cur && (cur->security & SEC_SIGN))
+    if (C_CryptReplysign && cur && (cur->security & SEC_SIGN))
       msg->security |= SEC_SIGN;
-    if (CryptReplysignencrypted && cur && (cur->security & SEC_ENCRYPT))
+    if (C_CryptReplysignencrypted && cur && (cur->security & SEC_ENCRYPT))
       msg->security |= SEC_SIGN;
     if (((WithCrypto & APPLICATION_PGP) != 0) &&
-        ((msg->security & (SEC_ENCRYPT | SEC_SIGN)) || CryptOpportunisticEncrypt))
+        ((msg->security & (SEC_ENCRYPT | SEC_SIGN)) || C_CryptOpportunisticEncrypt))
     {
-      if (PgpAutoinline)
+      if (C_PgpAutoinline)
         msg->security |= SEC_INLINE;
-      if (PgpReplyinline && cur && (cur->security & SEC_INLINE))
+      if (C_PgpReplyinline && cur && (cur->security & SEC_INLINE))
         msg->security |= SEC_INLINE;
     }
 
-    if (msg->security || CryptOpportunisticEncrypt)
+    if (msg->security || C_CryptOpportunisticEncrypt)
     {
       /* When replying / forwarding, use the original message's
        * crypto system.  According to the documentation,
@@ -2188,12 +2190,12 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
        */
       if (cur)
       {
-        if (((WithCrypto & APPLICATION_PGP) != 0) && CryptAutopgp &&
+        if (((WithCrypto & APPLICATION_PGP) != 0) && C_CryptAutopgp &&
             (cur->security & APPLICATION_PGP))
         {
           msg->security |= APPLICATION_PGP;
         }
-        else if (((WithCrypto & APPLICATION_SMIME) != 0) && CryptAutosmime &&
+        else if (((WithCrypto & APPLICATION_SMIME) != 0) && C_CryptAutosmime &&
                  (cur->security & APPLICATION_SMIME))
         {
           msg->security |= APPLICATION_SMIME;
@@ -2205,15 +2207,15 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
        */
       if (!(msg->security & (APPLICATION_SMIME | APPLICATION_PGP)))
       {
-        if (((WithCrypto & APPLICATION_SMIME) != 0) && CryptAutosmime && SmimeIsDefault)
+        if (((WithCrypto & APPLICATION_SMIME) != 0) && C_CryptAutosmime && C_SmimeIsDefault)
         {
           msg->security |= APPLICATION_SMIME;
         }
-        else if (((WithCrypto & APPLICATION_PGP) != 0) && CryptAutopgp)
+        else if (((WithCrypto & APPLICATION_PGP) != 0) && C_CryptAutopgp)
         {
           msg->security |= APPLICATION_PGP;
         }
-        else if (((WithCrypto & APPLICATION_SMIME) != 0) && CryptAutosmime)
+        else if (((WithCrypto & APPLICATION_SMIME) != 0) && C_CryptAutosmime)
         {
           msg->security |= APPLICATION_SMIME;
         }
@@ -2221,10 +2223,10 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
     }
 
     /* opportunistic encrypt relies on SMIME or PGP already being selected */
-    if (CryptOpportunisticEncrypt)
+    if (C_CryptOpportunisticEncrypt)
     {
-      /* If something has already enabled encryption, e.g. CryptAutoencrypt
-       * or CryptReplyencrypt, then don't enable opportunistic encrypt for
+      /* If something has already enabled encryption, e.g. C_CryptAutoencrypt
+       * or C_CryptReplyencrypt, then don't enable opportunistic encrypt for
        * the message.
        */
       if (!(msg->security & SEC_ENCRYPT))
@@ -2253,7 +2255,8 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
   /* specify a default fcc.  if we are in batchmode, only save a copy of
    * the message if the value of $copy is yes or ask-yes */
 
-  if (!fcc[0] && !(flags & (SEND_POSTPONED_FCC)) && (!(flags & SEND_BATCH) || (Copy & 0x1)))
+  if (!fcc[0] && !(flags & (SEND_POSTPONED_FCC)) &&
+      (!(flags & SEND_BATCH) || (C_Copy & 0x1)))
   {
     /* set the default FCC */
     if (!msg->env->from)
@@ -2329,10 +2332,11 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
   }
 
   if (!msg->env->subject && !(flags & SEND_BATCH) &&
-      (i = query_quadoption(AbortNosubject, _("No subject, abort sending?"))) != MUTT_NO)
+      (i = query_quadoption(C_AbortNosubject,
+                            _("No subject, abort sending?"))) != MUTT_NO)
   {
     /* if the abort is automatic, print an error message */
-    if (AbortNosubject == MUTT_YES)
+    if (C_AbortNosubject == MUTT_YES)
       mutt_error(_("No subject specified"));
     goto main_loop;
   }
@@ -2350,14 +2354,14 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
   }
 #endif
 
-  if (!(flags & SEND_BATCH) && (AbortNoattach != MUTT_NO) &&
+  if (!(flags & SEND_BATCH) && (C_AbortNoattach != MUTT_NO) &&
       !msg->content->next && (msg->content->type == TYPE_TEXT) &&
       (mutt_str_strcasecmp(msg->content->subtype, "plain") == 0) &&
       search_attach_keyword(msg->content->filename) &&
-      query_quadoption(AbortNoattach, _("No attachments, cancel sending?")) != MUTT_NO)
+      query_quadoption(C_AbortNoattach, _("No attachments, cancel sending?")) != MUTT_NO)
   {
     /* if the abort is automatic, print an error message */
-    if (AbortNoattach == MUTT_YES)
+    if (C_AbortNoattach == MUTT_YES)
     {
       mutt_error(_("Message contains text matching "
                    "\"$abort_noattach_regex\". Not sending."));
@@ -2463,7 +2467,7 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
                           (flags & SEND_NEWS) ? _("Article posted") : /* USE_NNTP */
                               _("Mail sent"));
 #ifdef USE_NOTMUCH
-    if (NmRecord)
+    if (C_NmRecord)
       nm_record_message(ctx ? ctx->mailbox : NULL, finalpath, cur);
 #endif
     mutt_sleep(0);
@@ -2499,13 +2503,13 @@ cleanup:
   {
     if (WithCrypto & APPLICATION_PGP)
     {
-      FREE(&PgpSignAs);
-      PgpSignAs = pgp_signas;
+      FREE(&C_PgpSignAs);
+      C_PgpSignAs = pgp_signas;
     }
     if (WithCrypto & APPLICATION_SMIME)
     {
-      FREE(&SmimeSignAs);
-      SmimeSignAs = smime_signas;
+      FREE(&C_SmimeSignAs);
+      C_SmimeSignAs = smime_signas;
     }
   }
 

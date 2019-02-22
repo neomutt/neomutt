@@ -79,9 +79,9 @@ int mutt_complete(char *buf, size_t buflen)
   if (*buf == '=' || *buf == '+' || *buf == '!')
   {
     if (*buf == '!')
-      p = NONULL(Spoolfile);
+      p = NONULL(C_Spoolfile);
     else
-      p = NONULL(Folder);
+      p = NONULL(C_Folder);
 
     mutt_path_concat(imap_path, p, buf + 1, sizeof(imap_path));
   }
@@ -97,9 +97,9 @@ int mutt_complete(char *buf, size_t buflen)
     dirpart[0] = *buf;
     dirpart[1] = '\0';
     if (*buf == '!')
-      mutt_str_strfcpy(exp_dirpart, Spoolfile, sizeof(exp_dirpart));
+      mutt_str_strfcpy(exp_dirpart, C_Spoolfile, sizeof(exp_dirpart));
     else
-      mutt_str_strfcpy(exp_dirpart, Folder, sizeof(exp_dirpart));
+      mutt_str_strfcpy(exp_dirpart, C_Folder, sizeof(exp_dirpart));
     p = strrchr(buf, '/');
     if (p)
     {

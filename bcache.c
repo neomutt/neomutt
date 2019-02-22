@@ -42,7 +42,7 @@
 #include "muttlib.h"
 
 /* These Config Variables are only used in bcache.c */
-char *MessageCachedir; ///< Config: (imap/pop) Directory for the message cache
+char *C_MessageCachedir; ///< Config: (imap/pop) Directory for the message cache
 
 /**
  * struct BodyCache - Local cache of email bodies
@@ -68,7 +68,7 @@ static int bcache_path(struct ConnAccount *account, const char *mailbox, char *d
   struct Url url = { U_UNKNOWN };
   int len;
 
-  if (!account || !MessageCachedir || !*MessageCachedir || !dst || (dstlen == 0))
+  if (!account || !C_MessageCachedir || !*C_MessageCachedir || !dst || (dstlen == 0))
     return -1;
 
   /* make up a Url we can turn into a string */
@@ -84,7 +84,7 @@ static int bcache_path(struct ConnAccount *account, const char *mailbox, char *d
   }
 
   size_t mailboxlen = mutt_str_strlen(mailbox);
-  len = snprintf(dst, dstlen, "%s/%s%s%s", MessageCachedir, host, NONULL(mailbox),
+  len = snprintf(dst, dstlen, "%s/%s%s%s", C_MessageCachedir, host, NONULL(mailbox),
                  (mailboxlen != 0 && mailbox[mailboxlen - 1] == '/') ? "" : "/");
 
   mutt_encode_path(dst, dstlen, dst);

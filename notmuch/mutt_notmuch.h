@@ -44,17 +44,17 @@ struct NmMboxData;
 struct stat;
 
 /* These Config Variables are only used in notmuch/mutt_notmuch.c */
-extern int   NmDbLimit;
-extern char *NmDefaultUri;
-extern char *NmExcludeTags;
-extern int   NmOpenTimeout;
-extern char *NmQueryType;
-extern int   NmQueryWindowCurrentPosition;
-extern char *NmQueryWindowTimebase;
-extern char *NmRecordTags;
-extern char *NmUnreadTag;
-extern char *NmFlaggedTag;
-extern char *NmRepliedTag;
+extern int   C_NmDbLimit;
+extern char *C_NmDefaultUri;
+extern char *C_NmExcludeTags;
+extern int   C_NmOpenTimeout;
+extern char *C_NmQueryType;
+extern int   C_NmQueryWindowCurrentPosition;
+extern char *C_NmQueryWindowTimebase;
+extern char *C_NmRecordTags;
+extern char *C_NmUnreadTag;
+extern char *C_NmFlaggedTag;
+extern char *C_NmRepliedTag;
 
 extern struct MxOps MxNotmuchOps;
 

@@ -37,10 +37,10 @@ struct Account;
 struct stat;
 
 /* These Config Variables are only used in mailbox.c */
-extern short MailCheck;
-extern bool  MailCheckStats;
-extern short MailCheckStatsInterval;
-extern bool  MaildirCheckCur;
+extern short C_MailCheck;
+extern bool  C_MailCheckStats;
+extern short C_MailCheckStatsInterval;
+extern bool  C_MaildirCheckCur;
 
 #define MB_NORMAL 0
 #define MB_HIDDEN 1

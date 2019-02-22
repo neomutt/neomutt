@@ -28,8 +28,8 @@
 struct AliasList;
 
 /* These Config Variables are only used in addrbook.c */
-extern char *AliasFormat;
-extern short SortAlias;
+extern char *C_AliasFormat;
+extern short C_SortAlias;
 
 void mutt_alias_menu(char *buf, size_t buflen, struct AliasList *aliases);
 

@@ -73,10 +73,10 @@
 #endif
 
 /* These Config Variables are only used in mailbox.c */
-short MailCheck; ///< Config: Number of seconds before NeoMutt checks for new mail
-bool MailCheckStats;          ///< Config: Periodically check for new mail
-short MailCheckStatsInterval; ///< Config: How often to check for new mail
-bool MaildirCheckCur; ///< Config: Check both 'new' and 'cur' directories for new mail
+short C_MailCheck; ///< Config: Number of seconds before NeoMutt checks for new mail
+bool C_MailCheckStats;          ///< Config: Periodically check for new mail
+short C_MailCheckStatsInterval; ///< Config: How often to check for new mail
+bool C_MaildirCheckCur; ///< Config: Check both 'new' and 'cur' directories for new mail
 
 static time_t MailboxTime = 0; /**< last time we started checking for mail */
 static time_t MailboxStatsTime = 0; /**< last time we check performed mail_check_stats */
@@ -183,7 +183,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
       default:; /* do nothing */
     }
   }
-  else if (CheckMboxSize && m_cur && (m_cur->path[0] != '\0'))
+  else if (C_CheckMboxSize && m_cur && (m_cur->path[0] != '\0'))
     m_check->size = (off_t) sb.st_size; /* update the size of current folder */
 
 #ifdef USE_SIDEBAR
@@ -216,7 +216,7 @@ void mutt_mailbox_cleanup(const char *path, struct stat *st)
   struct utimbuf ut;
 #endif
 
-  if (CheckMboxSize)
+  if (C_CheckMboxSize)
   {
     struct Mailbox *m = mutt_find_mailbox(path);
     if (m && !m->has_new)
@@ -352,11 +352,11 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
     return 0;
 
   t = time(NULL);
-  if (!force && (t - MailboxTime < MailCheck))
+  if (!force && (t - MailboxTime < C_MailCheck))
     return MailboxCount;
 
   if ((force & MUTT_MAILBOX_CHECK_FORCE_STATS) ||
-      (MailCheckStats && ((t - MailboxStatsTime) >= MailCheckStatsInterval)))
+      (C_MailCheckStats && ((t - MailboxStatsTime) >= C_MailCheckStatsInterval)))
   {
     check_stats = true;
     MailboxStatsTime = t;
@@ -381,7 +381,7 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
     mailbox_check(m_cur, np->mailbox, &contex_sb,
-                  check_stats || (!np->mailbox->first_check_stats_done && MailCheckStats));
+                  check_stats || (!np->mailbox->first_check_stats_done && C_MailCheckStats));
     np->mailbox->first_check_stats_done = true;
   }
 

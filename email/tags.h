@@ -27,7 +27,7 @@
 #include "mutt/mutt.h"
 
 /* These Config Variables are only used in email/tags.c */
-extern char *HiddenTags;
+extern char *C_HiddenTags;
 
 extern struct Hash *TagTransforms;
 

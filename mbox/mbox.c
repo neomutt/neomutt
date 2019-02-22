@@ -213,7 +213,7 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
   {
     char msgbuf[STRING];
     snprintf(msgbuf, sizeof(msgbuf), _("Reading %s..."), m->path);
-    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, ReadInc, 0);
+    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, C_ReadInc, 0);
   }
 
   while (true)
@@ -379,7 +379,7 @@ static int mbox_parse_mailbox(struct Mailbox *m)
   {
     char msgbuf[STRING];
     snprintf(msgbuf, sizeof(msgbuf), _("Reading %s..."), m->path);
-    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, ReadInc, 0);
+    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, C_ReadInc, 0);
   }
 
   if (!m->emails)
@@ -576,14 +576,14 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
     mutt_message(_("Reopening mailbox..."));
 
   /* our heuristics require the old mailbox to be unsorted */
-  if (Sort != SORT_ORDER)
+  if (C_Sort != SORT_ORDER)
   {
     short old_sort;
 
-    old_sort = Sort;
-    Sort = SORT_ORDER;
+    old_sort = C_Sort;
+    C_Sort = SORT_ORDER;
     mutt_mailbox_changed(m, MBN_RESORT);
-    Sort = old_sort;
+    C_Sort = old_sort;
   }
 
   old_hdrs = NULL;
@@ -877,7 +877,7 @@ void mbox_reset_atime(struct Mailbox *m, struct stat *st)
   /* When $mbox_check_recent is set, existing new mail is ignored, so do not
    * reset the atime to mtime-1 to signal new mail.
    */
-  if (!MailCheckRecent && utimebuf.actime >= utimebuf.modtime && mbox_has_new(m))
+  if (!C_MailCheckRecent && utimebuf.actime >= utimebuf.modtime && mbox_has_new(m))
   {
     utimebuf.actime = utimebuf.modtime - 1;
   }
@@ -1148,12 +1148,12 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
   char msgbuf[PATH_MAX + 64];
 
   /* sort message by their position in the mailbox on disk */
-  if (Sort != SORT_ORDER)
+  if (C_Sort != SORT_ORDER)
   {
-    save_sort = Sort;
-    Sort = SORT_ORDER;
+    save_sort = C_Sort;
+    C_Sort = SORT_ORDER;
     mutt_mailbox_changed(m, MBN_RESORT);
-    Sort = save_sort;
+    C_Sort = save_sort;
     need_sort = 1;
   }
 
@@ -1244,7 +1244,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
   if (!m->quiet)
   {
     snprintf(msgbuf, sizeof(msgbuf), _("Writing %s..."), m->path);
-    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc, m->msg_count);
+    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, C_WriteInc, m->msg_count);
   }
 
   for (i = first, j = 0; i < m->msg_count; i++)
@@ -1401,7 +1401,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
 
     char savefile[PATH_MAX];
 
-    snprintf(savefile, sizeof(savefile), "%s/neomutt.%s-%s-%u", NONULL(Tmpdir),
+    snprintf(savefile, sizeof(savefile), "%s/neomutt.%s-%s-%u", NONULL(C_Tmpdir),
              NONULL(Username), NONULL(ShortHostname), (unsigned int) getpid());
     rename(tempfile, savefile);
     mutt_sig_unblock();
@@ -1445,7 +1445,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
   unlink(tempfile); /* remove partial copy of the mailbox */
   mutt_sig_unblock();
 
-  if (CheckMboxSize)
+  if (C_CheckMboxSize)
   {
     struct Mailbox *tmp = mutt_find_mailbox(m->path);
     if (tmp && !tmp->has_new)
@@ -1657,7 +1657,7 @@ enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
   }
   mutt_file_fclose(&fp);
 
-  if (!CheckMboxSize)
+  if (!C_CheckMboxSize)
   {
     /* need to restore the times here, the file was not really accessed,
      * only the type was accessed.  This is important, because detection
@@ -1765,7 +1765,7 @@ static int mbox_mbox_check_stats(struct Mailbox *m, int flags)
 
   bool new_or_changed;
 
-  if (CheckMboxSize)
+  if (C_CheckMboxSize)
     new_or_changed = (sb.st_size > m->size);
   else
   {
@@ -1778,13 +1778,13 @@ static int mbox_mbox_check_stats(struct Mailbox *m, int flags)
 
   if (new_or_changed)
   {
-    if (!MailCheckRecent ||
+    if (!C_MailCheckRecent ||
         (mutt_file_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->last_visited) > 0))
     {
       m->has_new = true;
     }
   }
-  else if (CheckMboxSize)
+  else if (C_CheckMboxSize)
   {
     /* some other program has deleted mail from the folder */
     m->size = (off_t) sb.st_size;

@@ -131,7 +131,7 @@ static void history_menu(char *buf, size_t buflen, char **matches, int match_cou
  */
 void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass)
 {
-  char **matches = mutt_mem_calloc(History, sizeof(char *));
+  char **matches = mutt_mem_calloc(C_History, sizeof(char *));
   int match_count = mutt_hist_search(buf, hclass, matches);
   if (match_count)
   {

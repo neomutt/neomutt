@@ -316,11 +316,11 @@ bail:
  */
 void imap_utf_encode(bool unicode, char **s)
 {
-  if (!Charset || !s)
+  if (!C_Charset || !s)
     return;
 
   char *t = mutt_str_strdup(*s);
-  if (t && (mutt_ch_convert_string(&t, Charset, "utf-8", 0) == 0))
+  if (t && (mutt_ch_convert_string(&t, C_Charset, "utf-8", 0) == 0))
   {
     FREE(s);
     if (unicode)
@@ -338,7 +338,7 @@ void imap_utf_encode(bool unicode, char **s)
  */
 void imap_utf_decode(bool unicode, char **s)
 {
-  if (!Charset)
+  if (!C_Charset)
     return;
 
   char *t = NULL;
@@ -348,7 +348,7 @@ void imap_utf_decode(bool unicode, char **s)
   else
     t = utf7_to_utf8(*s, strlen(*s), 0, 0);
 
-  if (t && mutt_ch_convert_string(&t, "utf-8", Charset, 0) == 0)
+  if (t && mutt_ch_convert_string(&t, "utf-8", C_Charset, 0) == 0)
   {
     FREE(s);
     *s = t;

@@ -40,16 +40,16 @@
 #include "pop/pop.h"
 
 /* These Config Variables are only used in mutt_account.c */
-char *ImapLogin; ///< Config: (imap) Login name for the IMAP server (defaults to ImapUser)
-char *ImapOauthRefreshCmd; ///< Config: (imap) External command to generate OAUTH refresh token
-char *ImapPass; ///< Config: (imap) Password for the IMAP server
-char *NntpPass; ///< Config: (nntp) Password for the news server
-char *NntpUser; ///< Config: (nntp) Username for the news server
-char *PopOauthRefreshCmd; ///< Config: (pop) External command to generate OAUTH refresh token
-char *PopPass; ///< Config: (pop) Password of the POP server
-char *PopUser; ///< Config: (pop) Username of the POP server
-char *SmtpOauthRefreshCmd; ///< Config: (smtp) External command to generate OAUTH refresh token
-char *SmtpPass; ///< Config: (smtp) Password for the SMTP server
+char *C_ImapLogin; ///< Config: (imap) Login name for the IMAP server (defaults to #C_ImapUser)
+char *C_ImapOauthRefreshCmd; ///< Config: (imap) External command to generate OAUTH refresh token
+char *C_ImapPass; ///< Config: (imap) Password for the IMAP server
+char *C_NntpPass; ///< Config: (nntp) Password for the news server
+char *C_NntpUser; ///< Config: (nntp) Username for the news server
+char *C_PopOauthRefreshCmd; ///< Config: (pop) External command to generate OAUTH refresh token
+char *C_PopPass; ///< Config: (pop) Password of the POP server
+char *C_PopUser; ///< Config: (pop) Username of the POP server
+char *C_SmtpOauthRefreshCmd; ///< Config: (smtp) External command to generate OAUTH refresh token
+char *C_SmtpPass; ///< Config: (smtp) Password for the SMTP server
 
 /**
  * mutt_account_match - Compare account info (host/port/user)
@@ -76,18 +76,18 @@ bool mutt_account_match(const struct ConnAccount *a1, const struct ConnAccount *
   const char *user = NONULL(Username);
 
 #ifdef USE_IMAP
-  if ((a1->type == MUTT_ACCT_TYPE_IMAP) && ImapUser)
-    user = ImapUser;
+  if ((a1->type == MUTT_ACCT_TYPE_IMAP) && C_ImapUser)
+    user = C_ImapUser;
 #endif
 
 #ifdef USE_POP
-  if ((a1->type == MUTT_ACCT_TYPE_POP) && PopUser)
-    user = PopUser;
+  if ((a1->type == MUTT_ACCT_TYPE_POP) && C_PopUser)
+    user = C_PopUser;
 #endif
 
 #ifdef USE_NNTP
-  if ((a1->type == MUTT_ACCT_TYPE_NNTP) && NntpUser)
-    user = NntpUser;
+  if ((a1->type == MUTT_ACCT_TYPE_NNTP) && C_NntpUser)
+    user = C_NntpUser;
 #endif
 
   if (a1->flags & MUTT_ACCT_USER)
@@ -212,16 +212,16 @@ int mutt_account_getuser(struct ConnAccount *account)
   if (account->flags & MUTT_ACCT_USER)
     return 0;
 #ifdef USE_IMAP
-  else if ((account->type == MUTT_ACCT_TYPE_IMAP) && ImapUser)
-    mutt_str_strfcpy(account->user, ImapUser, sizeof(account->user));
+  else if ((account->type == MUTT_ACCT_TYPE_IMAP) && C_ImapUser)
+    mutt_str_strfcpy(account->user, C_ImapUser, sizeof(account->user));
 #endif
 #ifdef USE_POP
-  else if ((account->type == MUTT_ACCT_TYPE_POP) && PopUser)
-    mutt_str_strfcpy(account->user, PopUser, sizeof(account->user));
+  else if ((account->type == MUTT_ACCT_TYPE_POP) && C_PopUser)
+    mutt_str_strfcpy(account->user, C_PopUser, sizeof(account->user));
 #endif
 #ifdef USE_NNTP
-  else if ((account->type == MUTT_ACCT_TYPE_NNTP) && NntpUser)
-    mutt_str_strfcpy(account->user, NntpUser, sizeof(account->user));
+  else if ((account->type == MUTT_ACCT_TYPE_NNTP) && C_NntpUser)
+    mutt_str_strfcpy(account->user, C_NntpUser, sizeof(account->user));
 #endif
   else if (OptNoCurses)
     return -1;
@@ -254,9 +254,9 @@ int mutt_account_getlogin(struct ConnAccount *account)
 #ifdef USE_IMAP
   else if (account->type == MUTT_ACCT_TYPE_IMAP)
   {
-    if (ImapLogin)
+    if (C_ImapLogin)
     {
-      mutt_str_strfcpy(account->login, ImapLogin, sizeof(account->login));
+      mutt_str_strfcpy(account->login, C_ImapLogin, sizeof(account->login));
       account->flags |= MUTT_ACCT_LOGIN;
     }
   }
@@ -292,20 +292,20 @@ int mutt_account_getpass(struct ConnAccount *account)
   if (account->flags & MUTT_ACCT_PASS)
     return 0;
 #ifdef USE_IMAP
-  else if ((account->type == MUTT_ACCT_TYPE_IMAP) && ImapPass)
-    mutt_str_strfcpy(account->pass, ImapPass, sizeof(account->pass));
+  else if ((account->type == MUTT_ACCT_TYPE_IMAP) && C_ImapPass)
+    mutt_str_strfcpy(account->pass, C_ImapPass, sizeof(account->pass));
 #endif
 #ifdef USE_POP
-  else if ((account->type == MUTT_ACCT_TYPE_POP) && PopPass)
-    mutt_str_strfcpy(account->pass, PopPass, sizeof(account->pass));
+  else if ((account->type == MUTT_ACCT_TYPE_POP) && C_PopPass)
+    mutt_str_strfcpy(account->pass, C_PopPass, sizeof(account->pass));
 #endif
 #ifdef USE_SMTP
-  else if ((account->type == MUTT_ACCT_TYPE_SMTP) && SmtpPass)
-    mutt_str_strfcpy(account->pass, SmtpPass, sizeof(account->pass));
+  else if ((account->type == MUTT_ACCT_TYPE_SMTP) && C_SmtpPass)
+    mutt_str_strfcpy(account->pass, C_SmtpPass, sizeof(account->pass));
 #endif
 #ifdef USE_NNTP
-  else if ((account->type == MUTT_ACCT_TYPE_NNTP) && NntpPass)
-    mutt_str_strfcpy(account->pass, NntpPass, sizeof(account->pass));
+  else if ((account->type == MUTT_ACCT_TYPE_NNTP) && C_NntpPass)
+    mutt_str_strfcpy(account->pass, C_NntpPass, sizeof(account->pass));
 #endif
   else if (OptNoCurses)
     return -1;
@@ -361,16 +361,16 @@ char *mutt_account_getoauthbearer(struct ConnAccount *account)
     return NULL;
 
 #ifdef USE_IMAP
-  if ((account->type == MUTT_ACCT_TYPE_IMAP) && ImapOauthRefreshCmd)
-    cmd = ImapOauthRefreshCmd;
+  if ((account->type == MUTT_ACCT_TYPE_IMAP) && C_ImapOauthRefreshCmd)
+    cmd = C_ImapOauthRefreshCmd;
 #endif
 #ifdef USE_POP
-  else if ((account->type == MUTT_ACCT_TYPE_POP) && PopOauthRefreshCmd)
-    cmd = PopOauthRefreshCmd;
+  else if ((account->type == MUTT_ACCT_TYPE_POP) && C_PopOauthRefreshCmd)
+    cmd = C_PopOauthRefreshCmd;
 #endif
 #ifdef USE_SMTP
-  else if ((account->type == MUTT_ACCT_TYPE_SMTP) && SmtpOauthRefreshCmd)
-    cmd = SmtpOauthRefreshCmd;
+  else if ((account->type == MUTT_ACCT_TYPE_SMTP) && C_SmtpOauthRefreshCmd)
+    cmd = C_SmtpOauthRefreshCmd;
 #endif
 
   if (!cmd)

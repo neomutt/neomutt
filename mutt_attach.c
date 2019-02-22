@@ -294,7 +294,7 @@ int mutt_edit_attachment(struct Body *a)
   else if (a->type == TYPE_TEXT)
   {
     /* On text, default to editor */
-    mutt_edit_file(NONULL(Editor), a->filename);
+    mutt_edit_file(NONULL(C_Editor), a->filename);
   }
   else
   {
@@ -535,7 +535,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
         }
       }
 
-      if ((mutt_wait_filter(thepid) || (entry->needsterminal && WaitKey)) && !use_pager)
+      if ((mutt_wait_filter(thepid) || (entry->needsterminal && C_WaitKey)) && !use_pager)
         mutt_any_key_to_continue(NULL);
 
       if (tempfd != -1)
@@ -550,7 +550,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
       if (rv == -1)
         mutt_debug(LL_DEBUG1, "Error running \"%s\"!", command);
 
-      if ((rv != 0) || (entry->needsterminal && WaitKey))
+      if ((rv != 0) || (entry->needsterminal && C_WaitKey))
         mutt_any_key_to_continue(NULL);
     }
   }
@@ -756,7 +756,7 @@ bail:
   if (mutt_wait_filter(thepid) != 0)
     rc = 0;
 
-  if (rc == 0 || WaitKey)
+  if (rc == 0 || C_WaitKey)
     mutt_any_key_to_continue(NULL);
   return rc;
 }
@@ -1082,7 +1082,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       mutt_file_copy_stream(ifp, fpout);
       mutt_file_fclose(&fpout);
       mutt_file_fclose(&ifp);
-      if (mutt_wait_filter(thepid) || WaitKey)
+      if (mutt_wait_filter(thepid) || C_WaitKey)
         mutt_any_key_to_continue(NULL);
     }
     else
@@ -1091,7 +1091,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       if (rc == -1)
         mutt_debug(LL_DEBUG1, "Error running \"%s\"!", command);
 
-      if ((rc != 0) || WaitKey)
+      if ((rc != 0) || C_WaitKey)
         mutt_any_key_to_continue(NULL);
     }
 
@@ -1107,7 +1107,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
   if ((mutt_str_strcasecmp("text/plain", type) == 0) ||
       (mutt_str_strcasecmp("application/postscript", type) == 0))
   {
-    return mutt_pipe_attachment(fp, a, NONULL(PrintCommand), NULL);
+    return mutt_pipe_attachment(fp, a, NONULL(C_PrintCommand), NULL);
   }
   else if (mutt_can_decode(a))
   {
@@ -1133,7 +1133,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       mutt_debug(LL_DEBUG2, "successfully opened %s read-only\n", newfile);
 
       mutt_endwin();
-      thepid = mutt_create_filter(NONULL(PrintCommand), &fpout, NULL, NULL);
+      thepid = mutt_create_filter(NONULL(C_PrintCommand), &fpout, NULL, NULL);
       if (thepid < 0)
       {
         mutt_perror(_("Can't create filter"));
@@ -1147,7 +1147,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       mutt_file_fclose(&fpout);
       mutt_file_fclose(&ifp);
 
-      if (mutt_wait_filter(thepid) != 0 || WaitKey)
+      if (mutt_wait_filter(thepid) != 0 || C_WaitKey)
         mutt_any_key_to_continue(NULL);
       rc = 1;
     }

@@ -52,16 +52,16 @@ struct Mailbox;
 struct stat;
 
 /* These Config Variables are only used in nntp/nntp.c */
-extern char *NntpAuthenticators;
-extern short NntpContext;
-extern bool  NntpListgroup;
-extern bool  NntpLoadDescription;
-extern short NntpPoll;
-extern bool  ShowNewNews;
+extern char *C_NntpAuthenticators;
+extern short C_NntpContext;
+extern bool  C_NntpListgroup;
+extern bool  C_NntpLoadDescription;
+extern short C_NntpPoll;
+extern bool  C_ShowNewNews;
 
 /* These Config Variables are only used in nntp/newsrc.c */
-extern char *NewsCacheDir;
-extern char *Newsrc;
+extern char *C_NewsCacheDir;
+extern char *C_Newsrc;
 
 extern struct NntpAccountData *CurrentNewsSrv; ///< Current NNTP news server
 extern struct MxOps MxNntpOps;

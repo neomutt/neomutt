@@ -61,12 +61,12 @@
 #endif
 
 /* These Config Variables are only used in handler.c */
-bool HonorDisposition; ///< Config: Don't display MIME parts inline if they have a disposition of 'attachment'
-bool ImplicitAutoview; ///< Config: Display MIME attachments inline if a 'copiousoutput' mailcap entry exists
-bool IncludeOnlyfirst; ///< Config: Only include the first attachment when replying
-char *PreferredLanguages; ///< Config: Preferred languages for multilingual MIME
-bool ReflowText; ///< Config: Reformat paragraphs of 'format=flowed' text
-char *ShowMultipartAlternative; ///< Config: How to display 'multipart/alternative' MIME parts
+bool C_HonorDisposition; ///< Config: Don't display MIME parts inline if they have a disposition of 'attachment'
+bool C_ImplicitAutoview; ///< Config: Display MIME attachments inline if a 'copiousoutput' mailcap entry exists
+bool C_IncludeOnlyfirst; ///< Config: Only include the first attachment when replying
+char *C_PreferredLanguages; ///< Config: Preferred languages for multilingual MIME
+bool C_ReflowText; ///< Config: Reformat paragraphs of 'format=flowed' text
+char *C_ShowMultipartAlternative; ///< Config: How to display 'multipart/alternative' MIME parts
 
 #define BUFI_SIZE 1000
 #define BUFO_SIZE 2000
@@ -486,7 +486,7 @@ static bool is_autoview(struct Body *b)
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(b), b->subtype);
 
-  if (ImplicitAutoview)
+  if (C_ImplicitAutoview)
   {
     /* $implicit_autoview is essentially the same as "auto_view *" */
     is_av = true;
@@ -671,7 +671,7 @@ static int text_plain_handler(struct Body *b, struct State *s)
 
   while ((buf = mutt_file_read_line(buf, &sz, s->fp_in, NULL, 0)))
   {
-    if ((mutt_str_strcmp(buf, "-- ") != 0) && TextFlowed)
+    if ((mutt_str_strcmp(buf, "-- ") != 0) && C_TextFlowed)
     {
       l = mutt_str_strlen(buf);
       while (l > 0 && buf[l - 1] == ' ')
@@ -716,7 +716,7 @@ static int message_handler(struct Body *a, struct State *s)
   {
     mutt_copy_hdr(s->fp_in, s->fp_out, off_start, b->parts->offset,
                   (((s->flags & MUTT_WEED) ||
-                    ((s->flags & (MUTT_DISPLAY | MUTT_PRINTING)) && Weed)) ?
+                    ((s->flags & (MUTT_DISPLAY | MUTT_PRINTING)) && C_Weed)) ?
                        (CH_WEED | CH_REORDER) :
                        0) |
                       (s->prefix ? CH_PREFIX : 0) | CH_DECODE | CH_FROM |
@@ -864,7 +864,7 @@ static int external_body_handler(struct Body *b, struct State *s)
       }
 
       mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset,
-                    (Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE, NULL);
+                    (C_Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE, NULL);
     }
   }
   else if (expiration && expire < time(NULL))
@@ -880,7 +880,7 @@ static int external_body_handler(struct Body *b, struct State *s)
       state_attach_puts(strbuf, s);
 
       mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset,
-                    (Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_DISPLAY, NULL);
+                    (C_Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_DISPLAY, NULL);
     }
   }
   else
@@ -898,7 +898,7 @@ static int external_body_handler(struct Body *b, struct State *s)
       state_attach_puts(strbuf, s);
 
       mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset,
-                    (Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_DISPLAY, NULL);
+                    (C_Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_DISPLAY, NULL);
     }
   }
 
@@ -1037,19 +1037,19 @@ static int alternative_handler(struct Body *a, struct State *s)
 
   if (choice)
   {
-    if (s->flags & MUTT_DISPLAY && !Weed)
+    if (s->flags & MUTT_DISPLAY && !C_Weed)
     {
       fseeko(s->fp_in, choice->hdr_offset, SEEK_SET);
       mutt_file_copy_bytes(s->fp_in, s->fp_out, choice->offset - choice->hdr_offset);
     }
 
-    if (mutt_str_strcmp("info", ShowMultipartAlternative) == 0)
+    if (mutt_str_strcmp("info", C_ShowMultipartAlternative) == 0)
     {
       print_part_line(s, choice, 0);
     }
     mutt_body_handler(choice, s);
 
-    if (mutt_str_strcmp("info", ShowMultipartAlternative) == 0)
+    if (mutt_str_strcmp("info", C_ShowMultipartAlternative) == 0)
     {
       if (a->parts)
         b = a->parts;
@@ -1125,11 +1125,11 @@ static int multilingual_handler(struct Body *a, struct State *s)
     b = a;
 
   char *preferred_languages = NULL;
-  if (PreferredLanguages)
+  if (C_PreferredLanguages)
   {
     mutt_debug(LL_DEBUG2, "RFC8255 >> preferred_languages set in config to '%s'\n",
-               PreferredLanguages);
-    preferred_languages = mutt_str_strdup(PreferredLanguages);
+               C_PreferredLanguages);
+    preferred_languages = mutt_str_strdup(C_PreferredLanguages);
     lang = strtok(preferred_languages, ",");
   }
 
@@ -1225,7 +1225,7 @@ static int multipart_handler(struct Body *a, struct State *s)
       else
         state_printf(s, _("[-- Attachment #%d --]\n"), count);
       print_part_line(s, p, 0);
-      if (!Weed)
+      if (!C_Weed)
       {
         fseeko(s->fp_in, p->hdr_offset, SEEK_SET);
         mutt_file_copy_bytes(s->fp_in, s->fp_out, p->offset - p->hdr_offset);
@@ -1244,7 +1244,7 @@ static int multipart_handler(struct Body *a, struct State *s)
                  TYPE(p), NONULL(p->subtype));
     }
 
-    if ((s->flags & MUTT_REPLYING) && IncludeOnlyfirst && (s->flags & MUTT_FIRSTDONE))
+    if ((s->flags & MUTT_REPLYING) && C_IncludeOnlyfirst && (s->flags & MUTT_FIRSTDONE))
     {
       break;
     }
@@ -1558,7 +1558,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
        */
       if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(b))
         handler = crypt_pgp_application_handler;
-      else if (ReflowText &&
+      else if (C_ReflowText &&
                (mutt_str_strcasecmp("flowed",
                                     mutt_param_get(&b->parameter, "format")) == 0))
       {
@@ -1585,12 +1585,12 @@ int mutt_body_handler(struct Body *b, struct State *s)
   }
   else if (b->type == TYPE_MULTIPART)
   {
-    if ((mutt_str_strcmp("inline", ShowMultipartAlternative) != 0) &&
+    if ((mutt_str_strcmp("inline", C_ShowMultipartAlternative) != 0) &&
         (mutt_str_strcasecmp("alternative", b->subtype) == 0))
     {
       handler = alternative_handler;
     }
-    else if ((mutt_str_strcmp("inline", ShowMultipartAlternative) != 0) &&
+    else if ((mutt_str_strcmp("inline", C_ShowMultipartAlternative) != 0) &&
              (mutt_str_strcasecmp("multilingual", b->subtype) == 0))
     {
       handler = multilingual_handler;
@@ -1636,7 +1636,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
 
   /* only respect disposition == attachment if we're not
      displaying from the attachment menu (i.e. pager) */
-  if ((!HonorDisposition || ((b->disposition != DISP_ATTACH) || OptViewAttach)) &&
+  if ((!C_HonorDisposition || ((b->disposition != DISP_ATTACH) || OptViewAttach)) &&
       (plaintext || handler))
   {
     rc = run_decode_and_handler(b, s, handler, plaintext);
@@ -1644,7 +1644,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
   /* print hint to use attachment menu for disposition == attachment
      if we're not already being called from there */
   else if ((s->flags & MUTT_DISPLAY) || ((b->disposition == DISP_ATTACH) && !OptViewAttach &&
-                                         HonorDisposition && (plaintext || handler)))
+                                         C_HonorDisposition && (plaintext || handler)))
   {
     const char *str = NULL;
     char keystroke[SHORT_STRING];
@@ -1655,7 +1655,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
       if (km_expand_key(keystroke, sizeof(keystroke),
                         km_find_func(MENU_PAGER, OP_VIEW_ATTACHMENTS)))
       {
-        if (HonorDisposition && b->disposition == DISP_ATTACH)
+        if (C_HonorDisposition && b->disposition == DISP_ATTACH)
         {
           /* L10N: Caution: Arguments %1$s and %2$s are also defined but should
              not be used in this translation!
@@ -1676,7 +1676,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
       }
       else
       {
-        if (HonorDisposition && (b->disposition == DISP_ATTACH))
+        if (C_HonorDisposition && (b->disposition == DISP_ATTACH))
         {
           str = _("[-- This is an attachment (need 'view-attachments' bound to "
                   "key) --]\n");
@@ -1691,7 +1691,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
     }
     else
     {
-      if (HonorDisposition && (b->disposition == DISP_ATTACH))
+      if (C_HonorDisposition && (b->disposition == DISP_ATTACH))
         str = _("[-- This is an attachment --]\n");
       else
       {
@@ -1767,13 +1767,13 @@ void mutt_decode_attachment(struct Body *b, struct State *s)
   if (istext && s->flags & MUTT_CHARCONV)
   {
     char *charset = mutt_param_get(&b->parameter, "charset");
-    if (!charset && AssumedCharset && *AssumedCharset)
+    if (!charset && C_AssumedCharset && *C_AssumedCharset)
       charset = mutt_ch_get_default_charset();
-    if (charset && Charset)
-      cd = mutt_ch_iconv_open(Charset, charset, MUTT_ICONV_HOOK_FROM);
+    if (charset && C_Charset)
+      cd = mutt_ch_iconv_open(C_Charset, charset, MUTT_ICONV_HOOK_FROM);
   }
   else if (istext && b->charset)
-    cd = mutt_ch_iconv_open(Charset, b->charset, MUTT_ICONV_HOOK_FROM);
+    cd = mutt_ch_iconv_open(C_Charset, b->charset, MUTT_ICONV_HOOK_FROM);
 
   fseeko(s->fp_in, b->offset, SEEK_SET);
   switch (b->encoding)

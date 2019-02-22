@@ -90,7 +90,8 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
   /* apply filemask filter. This should really be done at menu setup rather
    * than at scan, since it's so expensive to scan. But that's big changes
    * to browser.c */
-  if (Mask && Mask->regex && !((regexec(Mask->regex, relpath, 0, NULL, 0) == 0) ^ Mask->not))
+  if (C_Mask && C_Mask->regex &&
+      !((regexec(C_Mask->regex, relpath, 0, NULL, 0) == 0) ^ C_Mask->not))
     return;
 
   imap_qualify_path(tmp, sizeof(tmp), &conn_account, folder);
@@ -200,9 +201,9 @@ int imap_browse(char *path, struct BrowserState *state)
     return -1;
   }
 
-  save_lsub = ImapCheckSubscribed;
-  ImapCheckSubscribed = false;
-  mutt_str_strfcpy(list_cmd, ImapListSubscribed ? "LSUB" : "LIST", sizeof(list_cmd));
+  save_lsub = C_ImapCheckSubscribed;
+  C_ImapCheckSubscribed = false;
+  mutt_str_strfcpy(list_cmd, C_ImapListSubscribed ? "LSUB" : "LIST", sizeof(list_cmd));
 
   // Pick first mailbox connected to the same server
   struct MailboxNode *np = NULL;
@@ -343,13 +344,13 @@ int imap_browse(char *path, struct BrowserState *state)
   mutt_clear_error();
 
   if (save_lsub)
-    ImapCheckSubscribed = true;
+    C_ImapCheckSubscribed = true;
 
   return 0;
 
 fail:
   if (save_lsub)
-    ImapCheckSubscribed = true;
+    C_ImapCheckSubscribed = true;
   return -1;
 }
 

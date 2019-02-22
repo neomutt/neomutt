@@ -95,19 +95,19 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
     force = true;
   }
 
-  if (mutt_str_strcmp(Postponed, OldPostponed) != 0)
+  if (mutt_str_strcmp(C_Postponed, OldPostponed) != 0)
   {
     FREE(&OldPostponed);
-    OldPostponed = mutt_str_strdup(Postponed);
+    OldPostponed = mutt_str_strdup(C_Postponed);
     LastModify = 0;
     force = true;
   }
 
-  if (!Postponed)
+  if (!C_Postponed)
     return 0;
 
-  // We currently are in the Postponed mailbox so just pick the current status
-  if (m && mutt_str_strcmp(Postponed, m->realpath) == 0)
+  // We currently are in the C_Postponed mailbox so just pick the current status
+  if (m && mutt_str_strcmp(C_Postponed, m->realpath) == 0)
   {
     PostCount = m->msg_count - m->msg_deleted;
     return PostCount;
@@ -115,13 +115,13 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
 
 #ifdef USE_IMAP
   /* LastModify is useless for IMAP */
-  if (imap_path_probe(Postponed, NULL) == MUTT_IMAP)
+  if (imap_path_probe(C_Postponed, NULL) == MUTT_IMAP)
   {
     if (force)
     {
       short newpc;
 
-      newpc = imap_path_status(Postponed, false);
+      newpc = imap_path_status(C_Postponed, false);
       if (newpc >= 0)
       {
         PostCount = newpc;
@@ -134,7 +134,7 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
   }
 #endif
 
-  if (stat(Postponed, &st) == -1)
+  if (stat(C_Postponed, &st) == -1)
   {
     PostCount = 0;
     LastModify = 0;
@@ -147,7 +147,7 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
 
     char buf[PATH_MAX];
 
-    snprintf(buf, sizeof(buf), "%s/new", Postponed);
+    snprintf(buf, sizeof(buf), "%s/new", C_Postponed);
     if (access(buf, F_OK) == 0 && stat(buf, &st) == -1)
     {
       PostCount = 0;
@@ -163,13 +163,13 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
 #endif
     LastModify = st.st_mtime;
 
-    if (access(Postponed, R_OK | F_OK) != 0)
+    if (access(C_Postponed, R_OK | F_OK) != 0)
       return PostCount = 0;
 #ifdef USE_NNTP
     if (optnews)
       OptNews = false;
 #endif
-    struct Mailbox *m_post = mx_path_resolve(Postponed);
+    struct Mailbox *m_post = mx_path_resolve(C_Postponed);
     struct Context *ctx = mx_mbox_open(m_post, MUTT_NOSORT | MUTT_QUIET);
     if (!ctx)
     {
@@ -204,7 +204,7 @@ static void post_make_entry(char *buf, size_t buflen, struct Menu *menu, int lin
 {
   struct Context *ctx = menu->data;
 
-  mutt_make_string_flags(buf, buflen, NONULL(IndexFormat), ctx, ctx->mailbox,
+  mutt_make_string_flags(buf, buflen, NONULL(C_IndexFormat), ctx, ctx->mailbox,
                          ctx->mailbox->emails[line], MUTT_FORMAT_ARROWCURSOR);
 }
 
@@ -227,10 +227,10 @@ static struct Email *select_msg(struct Context *ctx)
   mutt_menu_push_current(menu);
 
   /* The postponed mailbox is setup to have sorting disabled, but the global
-   * Sort variable may indicate something different.   Sorting has to be
+   * C_Sort variable may indicate something different.   Sorting has to be
    * disabled while the postpone menu is being displayed. */
-  const short orig_sort = Sort;
-  Sort = SORT_ORDER;
+  const short orig_sort = C_Sort;
+  C_Sort = SORT_ORDER;
 
   while (!done)
   {
@@ -243,7 +243,7 @@ static struct Email *select_msg(struct Context *ctx)
         mutt_set_flag(ctx->mailbox, ctx->mailbox->emails[menu->current],
                       MUTT_DELETE, (i == OP_DELETE));
         PostCount = ctx->mailbox->msg_count - ctx->mailbox->msg_deleted;
-        if (Resolve && menu->current < menu->max - 1)
+        if (C_Resolve && menu->current < menu->max - 1)
         {
           menu->oldcurrent = menu->current;
           menu->current++;
@@ -270,7 +270,7 @@ static struct Email *select_msg(struct Context *ctx)
     }
   }
 
-  Sort = orig_sort;
+  C_Sort = orig_sort;
   mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);
   return (r > -1) ? ctx->mailbox->emails[r] : NULL;
@@ -290,7 +290,7 @@ static struct Email *select_msg(struct Context *ctx)
 int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
                        struct Email **cur, char *fcc, size_t fcclen)
 {
-  if (!Postponed)
+  if (!C_Postponed)
     return -1;
 
   struct Email *e = NULL;
@@ -298,7 +298,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   const char *p = NULL;
   struct Context *ctx_post = NULL;
 
-  struct Mailbox *m = mx_path_resolve(Postponed);
+  struct Mailbox *m = mx_path_resolve(C_Postponed);
   if (ctx->mailbox == m)
     ctx_post = ctx;
   else
@@ -355,13 +355,13 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   PostCount = ctx_post->mailbox->msg_count - ctx_post->mailbox->msg_deleted;
 
   /* avoid the "purge deleted messages" prompt */
-  int opt_delete = Delete;
-  Delete = MUTT_YES;
+  int opt_delete = C_Delete;
+  C_Delete = MUTT_YES;
   if (ctx_post == ctx)
     ctx_post = NULL;
   else
     mx_mbox_close(&ctx_post);
-  Delete = opt_delete;
+  C_Delete = opt_delete;
 
   struct ListNode *np, *tmp;
   STAILQ_FOREACH_SAFE(np, &hdr->env->userhdrs, entries, tmp)
@@ -436,7 +436,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
     FREE(&np);
   }
 
-  if (CryptOpportunisticEncrypt)
+  if (C_CryptOpportunisticEncrypt)
     crypt_opportunistic_encrypt(hdr);
 
   return rc;
@@ -550,20 +550,20 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
 
   /* the cryptalg field must not be empty */
   if (((WithCrypto & APPLICATION_SMIME) != 0) && *smime_cryptalg)
-    mutt_str_replace(&SmimeEncryptWith, smime_cryptalg);
+    mutt_str_replace(&C_SmimeEncryptWith, smime_cryptalg);
 
   /* Set {Smime,Pgp}SignAs, if desired. */
 
   if (((WithCrypto & APPLICATION_PGP) != 0) && (crypt_app == APPLICATION_PGP) &&
       (flags & SEC_SIGN) && (set_empty_signas || *sign_as))
   {
-    mutt_str_replace(&PgpSignAs, sign_as);
+    mutt_str_replace(&C_PgpSignAs, sign_as);
   }
 
   if (((WithCrypto & APPLICATION_SMIME) != 0) && (crypt_app == APPLICATION_SMIME) &&
       (flags & SEC_SIGN) && (set_empty_signas || *sign_as))
   {
-    mutt_str_replace(&SmimeSignAs, sign_as);
+    mutt_str_replace(&C_SmimeSignAs, sign_as);
   }
 
   return flags;
@@ -795,7 +795,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
       b->email->content = NULL; /* avoid dangling pointer */
   }
 
-  if (CryptProtectedHeadersRead && protected_headers && protected_headers->subject &&
+  if (C_CryptProtectedHeadersRead && protected_headers && protected_headers->subject &&
       (mutt_str_strcmp(newhdr->env->subject, protected_headers->subject) != 0))
   {
     mutt_str_replace(&newhdr->env->subject, protected_headers->subject);
@@ -814,7 +814,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
   /* Theoretically, both could be set. Take the one the user wants to set by default. */
   if ((newhdr->security & APPLICATION_PGP) && (newhdr->security & APPLICATION_SMIME))
   {
-    if (SmimeIsDefault)
+    if (C_SmimeIsDefault)
       newhdr->security &= ~APPLICATION_PGP;
     else
       newhdr->security &= ~APPLICATION_SMIME;

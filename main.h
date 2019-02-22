@@ -26,7 +26,7 @@
 #include <stdbool.h>
 
 /* These Config Variables are only used in main.c */
-extern bool ResumeEditedDraftFiles;
+extern bool C_ResumeEditedDraftFiles;
 
 void mutt_exit(int code);
 

@@ -28,10 +28,10 @@
 #include "config/lib.h"
 
 /* These Config Variables are only used in mutt/history.c */
-extern short History;
-extern char *HistoryFile;
-extern bool  HistoryRemoveDups;
-extern short SaveHistory;
+extern short C_History;
+extern char *C_HistoryFile;
+extern bool  C_HistoryRemoveDups;
+extern short C_SaveHistory;
 
 /**
  * enum HistoryClass - Type to differentiate different histories

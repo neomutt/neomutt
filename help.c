@@ -306,7 +306,7 @@ static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, co
 
   if (ismacro > 0)
   {
-    if (mutt_str_strcmp(Pager, "builtin") == 0)
+    if (mutt_str_strcmp(C_Pager, "builtin") == 0)
       fputs("_\010", f);
     fputs("M ", f);
     col += 2;
@@ -346,7 +346,7 @@ static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, co
 
       if (*t3)
       {
-        if (mutt_str_strcmp(Pager, "builtin") != 0)
+        if (mutt_str_strcmp(C_Pager, "builtin") != 0)
         {
           fputc('\n', f);
           n = 0;
@@ -354,7 +354,7 @@ static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, co
         else
         {
           n += col - MuttIndexWindow->cols;
-          if (Markers)
+          if (C_Markers)
             n++;
         }
         col = pad(f, n, col_b);

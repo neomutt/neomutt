@@ -46,9 +46,9 @@
 #include "sort.h"
 
 /* These Config Variables are only used in score.c */
-short ScoreThresholdDelete; ///< Config: Messages with a lower score will be automatically deleted
-short ScoreThresholdFlag; ///< Config: Messages with a greater score will be automatically flagged
-short ScoreThresholdRead; ///< Config: Messages with a lower score will be automatically marked read
+short C_ScoreThresholdDelete; ///< Config: Messages with a lower score will be automatically deleted
+short C_ScoreThresholdFlag; ///< Config: Messages with a greater score will be automatically flagged
+short C_ScoreThresholdRead; ///< Config: Messages with a lower score will be automatically marked read
 
 /**
  * struct Score - Scoring rule for email
@@ -70,12 +70,12 @@ static struct Score *ScoreList = NULL;
  */
 void mutt_check_rescore(struct Mailbox *m)
 {
-  if (OptNeedRescore && Score)
+  if (OptNeedRescore && C_Score)
   {
-    if ((Sort & SORT_MASK) == SORT_SCORE || (SortAux & SORT_MASK) == SORT_SCORE)
+    if ((C_Sort & SORT_MASK) == SORT_SCORE || (C_SortAux & SORT_MASK) == SORT_SCORE)
     {
       OptNeedResort = true;
-      if ((Sort & SORT_MASK) == SORT_THREADS)
+      if ((C_Sort & SORT_MASK) == SORT_THREADS)
         OptSortSubthreads = true;
     }
 
@@ -190,11 +190,11 @@ void mutt_score_message(struct Mailbox *m, struct Email *e, bool upd_mbox)
   if (e->score < 0)
     e->score = 0;
 
-  if (e->score <= ScoreThresholdDelete)
+  if (e->score <= C_ScoreThresholdDelete)
     mutt_set_flag_update(m, e, MUTT_DELETE, true, upd_mbox);
-  if (e->score <= ScoreThresholdRead)
+  if (e->score <= C_ScoreThresholdRead)
     mutt_set_flag_update(m, e, MUTT_READ, true, upd_mbox);
-  if (e->score >= ScoreThresholdFlag)
+  if (e->score >= C_ScoreThresholdFlag)
     mutt_set_flag_update(m, e, MUTT_FLAG, true, upd_mbox);
 }
 

@@ -47,7 +47,7 @@
 #include "message.h"
 #include "string2.h"
 
-char *Tmpdir; ///< Config: Directory for temporary files
+char *C_Tmpdir; ///< Config: Directory for temporary files
 
 /* these characters must be escaped in regular expressions */
 static const char rx_special_chars[] = "^.[$()|*+?{\\";
@@ -852,7 +852,7 @@ FILE *mutt_file_mkstemp_full(const char *file, int line, const char *func)
 {
   char name[PATH_MAX];
 
-  int n = snprintf(name, sizeof(name), "%s/neomutt-XXXXXX", NONULL(Tmpdir));
+  int n = snprintf(name, sizeof(name), "%s/neomutt-XXXXXX", NONULL(C_Tmpdir));
   if (n < 0)
     return NULL;
 

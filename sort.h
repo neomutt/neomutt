@@ -33,9 +33,9 @@ struct Address;
 struct Context;
 
 /* These Config Variables are only used in sort.c */
-extern bool ReverseAlias;
+extern bool C_ReverseAlias;
 
-#define SORTCODE(x) ((OptAuxSort ? SortAux : Sort) & SORT_REVERSE) ? -(x) : x
+#define SORTCODE(x) ((OptAuxSort ? C_SortAux : C_Sort) & SORT_REVERSE) ? -(x) : x
 
 /**
  * typedef sort_t - Prototype for a function to compare two emails
@@ -55,10 +55,10 @@ int perform_auxsort(int retval, const void *a, const void *b);
 const char *mutt_get_name(struct Address *a);
 
 /* These variables are backing for config items */
-WHERE short Sort;    ///< Config: Sort method for the index
-WHERE short SortAux; ///< Config: Secondary sort method for the index
+WHERE short C_Sort;    ///< Config: Sort method for the index
+WHERE short C_SortAux; ///< Config: Secondary sort method for the index
 
 /* FIXME: This one does not belong to here */
-WHERE short PgpSortKeys; ///< Config: Sort order for PGP keys
+WHERE short C_PgpSortKeys; ///< Config: Sort order for PGP keys
 
 #endif /* MUTT_SORT_H */

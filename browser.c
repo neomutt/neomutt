@@ -74,13 +74,13 @@
 #endif
 
 /* These Config Variables are only used in browser.c */
-bool BrowserAbbreviateMailboxes; ///< Config: Abbreviate mailboxes using '~' and '=' in the browser
-char *FolderFormat; ///< Config: printf-like format string for the browser's display of folders
-char *GroupIndexFormat; ///< Config: (nntp) printf-like format string for the browser's display of newsgroups
-char *NewsgroupsCharset; ///< Config: (nntp) Character set of newsgroups' descriptions
-bool ShowOnlyUnread; ///< Config: (nntp) Only show subscribed newsgroups with unread articles
-short SortBrowser;   ///< Config: Sort method for the browser
-char *VfolderFormat; ///< Config: (notmuch) printf-like format string for the browser's display of virtual folders
+bool C_BrowserAbbreviateMailboxes; ///< Config: Abbreviate mailboxes using '~' and '=' in the browser
+char *C_FolderFormat; ///< Config: printf-like format string for the browser's display of folders
+char *C_GroupIndexFormat; ///< Config: (nntp) printf-like format string for the browser's display of newsgroups
+char *C_NewsgroupsCharset; ///< Config: (nntp) Character set of newsgroups' descriptions
+bool C_ShowOnlyUnread; ///< Config: (nntp) Only show subscribed newsgroups with unread articles
+short C_SortBrowser;   ///< Config: Sort method for the browser
+char *C_VfolderFormat; ///< Config: (notmuch) printf-like format string for the browser's display of virtual folders
 
 static const struct Mapping FolderHelp[] = {
   { N_("Exit"), OP_EXIT },
@@ -143,7 +143,7 @@ static int browser_compare_subject(const void *a, const void *b)
   int r = mutt_inbox_cmp(pa->name, pb->name);
   if (r == 0)
     r = mutt_str_strcoll(pa->name, pb->name);
-  return (SortBrowser & SORT_REVERSE) ? -r : r;
+  return (C_SortBrowser & SORT_REVERSE) ? -r : r;
 }
 
 /**
@@ -161,7 +161,7 @@ static int browser_compare_desc(const void *a, const void *b)
 
   int r = mutt_str_strcoll(pa->desc, pb->desc);
 
-  return (SortBrowser & SORT_REVERSE) ? -r : r;
+  return (C_SortBrowser & SORT_REVERSE) ? -r : r;
 }
 
 /**
@@ -179,7 +179,7 @@ static int browser_compare_date(const void *a, const void *b)
 
   int r = pa->mtime - pb->mtime;
 
-  return (SortBrowser & SORT_REVERSE) ? -r : r;
+  return (C_SortBrowser & SORT_REVERSE) ? -r : r;
 }
 
 /**
@@ -197,7 +197,7 @@ static int browser_compare_size(const void *a, const void *b)
 
   int r = pa->size - pb->size;
 
-  return (SortBrowser & SORT_REVERSE) ? -r : r;
+  return (C_SortBrowser & SORT_REVERSE) ? -r : r;
 }
 
 /**
@@ -221,7 +221,7 @@ static int browser_compare_count(const void *a, const void *b)
   else
     r = 1;
 
-  return (SortBrowser & SORT_REVERSE) ? -r : r;
+  return (C_SortBrowser & SORT_REVERSE) ? -r : r;
 }
 
 /**
@@ -245,7 +245,7 @@ static int browser_compare_count_new(const void *a, const void *b)
   else
     r = 1;
 
-  return (SortBrowser & SORT_REVERSE) ? -r : r;
+  return (C_SortBrowser & SORT_REVERSE) ? -r : r;
 }
 
 /**
@@ -270,7 +270,7 @@ static int browser_compare(const void *a, const void *b)
   if ((mutt_str_strcoll(pb->desc, "../") == 0) || (mutt_str_strcoll(pb->desc, "..") == 0))
     return 1;
 
-  switch (SortBrowser & SORT_MASK)
+  switch (C_SortBrowser & SORT_MASK)
   {
     case SORT_COUNT:
       return browser_compare_count(a, b);
@@ -297,7 +297,7 @@ static int browser_compare(const void *a, const void *b)
  */
 static void browser_sort(struct BrowserState *state)
 {
-  switch (SortBrowser & SORT_MASK)
+  switch (C_SortBrowser & SORT_MASK)
   {
     /* Also called "I don't care"-sort-method. */
     case SORT_ORDER:
@@ -382,7 +382,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
 
         if (op == 'D')
         {
-          t_fmt = NONULL(DateFormat);
+          t_fmt = NONULL(C_DateFormat);
           if (*t_fmt == '!')
           {
             t_fmt++;
@@ -689,8 +689,8 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
         continue;
       if (prefix && *prefix && !mutt_str_startswith(mdata->group, prefix, CASE_MATCH))
         continue;
-      if (Mask && Mask->regex &&
-          !((regexec(Mask->regex, mdata->group, 0, NULL, 0) == 0) ^ Mask->not))
+      if (C_Mask && C_Mask->regex &&
+          !((regexec(C_Mask->regex, mdata->group, 0, NULL, 0) == 0) ^ C_Mask->not))
       {
         continue;
       }
@@ -748,8 +748,8 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       {
         continue;
       }
-      if (Mask && Mask->regex &&
-          !((regexec(Mask->regex, de->d_name, 0, NULL, 0) == 0) ^ Mask->not))
+      if (C_Mask && C_Mask->regex &&
+          !((regexec(C_Mask->regex, de->d_name, 0, NULL, 0) == 0) ^ C_Mask->not))
       {
         continue;
       }
@@ -806,7 +806,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
     for (unsigned int i = 0; i < adata->groups_num; i++)
     {
       struct NntpMboxData *mdata = adata->groups_list[i];
-      if (mdata && (mdata->new || (mdata->subscribed && (mdata->unread || !ShowOnlyUnread))))
+      if (mdata && (mdata->new || (mdata->subscribed && (mdata->unread || !C_ShowOnlyUnread))))
       {
         add_folder(menu, state, mdata->group, NULL, NULL, NULL, mdata);
       }
@@ -832,7 +832,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
 
       char buffer[PATH_MAX];
       mutt_str_strfcpy(buffer, np->mailbox->path, sizeof(buffer));
-      if (BrowserAbbreviateMailboxes)
+      if (C_BrowserAbbreviateMailboxes)
         mutt_pretty_mailbox(buffer, sizeof(buffer));
 
       switch (np->mailbox->magic)
@@ -907,14 +907,14 @@ static void folder_make_entry(char *buf, size_t buflen, struct Menu *menu, int l
   if (OptNews)
   {
     mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols,
-                        NONULL(GroupIndexFormat), group_index_format_str,
+                        NONULL(C_GroupIndexFormat), group_index_format_str,
                         (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
   }
   else
 #endif
   {
     mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols,
-                        NONULL(FolderFormat), folder_format_str,
+                        NONULL(C_FolderFormat), folder_format_str,
                         (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
   }
 }
@@ -995,7 +995,7 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
       mutt_str_strfcpy(path, LastDir, sizeof(path));
       mutt_pretty_mailbox(path, sizeof(path));
       snprintf(title, titlelen, _("Directory [%s], File mask: %s"), path,
-               NONULL(Mask ? Mask->pattern : NULL));
+               NONULL(C_Mask ? C_Mask->pattern : NULL));
     }
   }
 
@@ -1100,7 +1100,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
   bool mailbox = (flags & MUTT_SEL_MAILBOX);
 
   /* Keeps in memory the directory we were in when hitting '='
-   * to go directly to $folder (Folder)
+   * to go directly to $folder (#C_Folder)
    */
   char GotoSwapper[PATH_MAX] = "";
 
@@ -1195,7 +1195,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
        */
       bool browser_track = false;
 
-      switch (SortBrowser & SORT_MASK)
+      switch (C_SortBrowser & SORT_MASK)
       {
         case SORT_DESC:
         case SORT_SUBJECT:
@@ -1233,10 +1233,10 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
             case MUTT_MBOX:
             case MUTT_MH:
             case MUTT_MMDF:
-              if (Folder)
-                mutt_str_strfcpy(LastDir, Folder, sizeof(LastDir));
-              else if (Spoolfile)
-                mutt_browser_select_dir(Spoolfile);
+              if (C_Folder)
+                mutt_str_strfcpy(LastDir, C_Folder, sizeof(LastDir));
+              else if (C_Spoolfile)
+                mutt_browser_select_dir(C_Spoolfile);
               break;
             default:
               mutt_browser_select_dir(CurrentFolder);
@@ -1699,7 +1699,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
 
       case OP_ENTER_MASK:
       {
-        mutt_str_strfcpy(buf, Mask ? Mask->pattern : NULL, sizeof(buf));
+        mutt_str_strfcpy(buf, C_Mask ? C_Mask->pattern : NULL, sizeof(buf));
         if (mutt_get_field(_("File Mask: "), buf, sizeof(buf), 0) != 0)
           break;
 
@@ -1825,17 +1825,17 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
         if (op == OP_BROWSER_GOTO_FOLDER)
         {
           /* When in mailboxes mode, disables this feature */
-          if (Folder)
+          if (C_Folder)
           {
-            mutt_debug(LL_DEBUG3, "= hit! Folder: %s, LastDir: %s\n", Folder, LastDir);
+            mutt_debug(LL_DEBUG3, "= hit! Folder: %s, LastDir: %s\n", C_Folder, LastDir);
             if (GotoSwapper[0] == '\0')
             {
-              if (mutt_str_strcmp(LastDir, Folder) != 0)
+              if (mutt_str_strcmp(LastDir, C_Folder) != 0)
               {
-                /* Stores into GotoSwapper LastDir, and swaps to Folder */
+                /* Stores into GotoSwapper LastDir, and swaps to C_Folder */
                 mutt_str_strfcpy(GotoSwapper, LastDir, sizeof(GotoSwapper));
                 mutt_str_strfcpy(OldLastDir, LastDir, sizeof(OldLastDir));
-                mutt_str_strfcpy(LastDir, Folder, sizeof(LastDir));
+                mutt_str_strfcpy(LastDir, C_Folder, sizeof(LastDir));
               }
             }
             else

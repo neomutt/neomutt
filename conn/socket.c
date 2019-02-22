@@ -60,11 +60,11 @@
  */
 static int socket_preconnect(void)
 {
-  if (!Preconnect)
+  if (!C_Preconnect)
     return 0;
 
-  mutt_debug(LL_DEBUG2, "Executing preconnect: %s\n", Preconnect);
-  const int rc = mutt_system(Preconnect);
+  mutt_debug(LL_DEBUG2, "Executing preconnect: %s\n", C_Preconnect);
+  const int rc = mutt_system(C_Preconnect);
   mutt_debug(LL_DEBUG2, "Preconnect result: %d\n", rc);
   if (rc != 0)
   {

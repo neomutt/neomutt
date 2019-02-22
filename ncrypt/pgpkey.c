@@ -334,7 +334,7 @@ static void pgp_make_entry(char *buf, size_t buflen, struct Menu *menu, int line
   entry.uid = KeyTable[line];
   entry.num = line + 1;
 
-  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(PgpEntryFormat),
+  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(C_PgpEntryFormat),
                       pgp_entry_fmt, (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
@@ -373,8 +373,8 @@ static int compare_key_address(const void *a, const void *b)
  */
 static int pgp_compare_address(const void *a, const void *b)
 {
-  return (PgpSortKeys & SORT_REVERSE) ? !compare_key_address(a, b) :
-                                        compare_key_address(a, b);
+  return (C_PgpSortKeys & SORT_REVERSE) ? !compare_key_address(a, b) :
+                                          compare_key_address(a, b);
 }
 
 /**
@@ -409,7 +409,7 @@ static int compare_keyid(const void *a, const void *b)
  */
 static int pgp_compare_keyid(const void *a, const void *b)
 {
-  return (PgpSortKeys & SORT_REVERSE) ? !compare_keyid(a, b) : compare_keyid(a, b);
+  return (C_PgpSortKeys & SORT_REVERSE) ? !compare_keyid(a, b) : compare_keyid(a, b);
 }
 
 /**
@@ -442,7 +442,8 @@ static int compare_key_date(const void *a, const void *b)
  */
 static int pgp_compare_date(const void *a, const void *b)
 {
-  return (PgpSortKeys & SORT_REVERSE) ? !compare_key_date(a, b) : compare_key_date(a, b);
+  return (C_PgpSortKeys & SORT_REVERSE) ? !compare_key_date(a, b) :
+                                          compare_key_date(a, b);
 }
 
 /**
@@ -493,8 +494,8 @@ static int compare_key_trust(const void *a, const void *b)
  */
 static int pgp_compare_trust(const void *a, const void *b)
 {
-  return (PgpSortKeys & SORT_REVERSE) ? !compare_key_trust(a, b) :
-                                        compare_key_trust(a, b);
+  return (C_PgpSortKeys & SORT_REVERSE) ? !compare_key_trust(a, b) :
+                                          compare_key_trust(a, b);
 }
 
 /**
@@ -609,7 +610,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
 
   for (i = 0, kp = keys; kp; kp = kp->next)
   {
-    if (!PgpShowUnusable && (kp->flags & KEYFLAG_CANTUSE))
+    if (!C_PgpShowUnusable && (kp->flags & KEYFLAG_CANTUSE))
     {
       unusable = true;
       continue;
@@ -617,7 +618,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
 
     for (a = kp->address; a; a = a->next)
     {
-      if (!PgpShowUnusable && (a->flags & KEYFLAG_CANTUSE))
+      if (!C_PgpShowUnusable && (a->flags & KEYFLAG_CANTUSE))
       {
         unusable = true;
         continue;
@@ -639,7 +640,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
     return NULL;
   }
 
-  switch (PgpSortKeys & SORT_MASK)
+  switch (C_PgpSortKeys & SORT_MASK)
   {
     case SORT_ADDRESS:
       f = pgp_compare_address;

@@ -34,9 +34,9 @@ struct ListHead;
 struct Mailbox;
 
 /* These Config Variables are only used in hook.c */
-extern char *DefaultHook;
-extern bool  ForceName;
-extern bool  SaveName;
+extern char *C_DefaultHook;
+extern bool  C_ForceName;
+extern bool  C_SaveName;
 
 /* types for mutt_parse_hook() */
 #define MUTT_FOLDER_HOOK   (1 << 0)  ///< folder-hook: when entering a mailbox

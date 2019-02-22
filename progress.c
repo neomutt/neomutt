@@ -40,7 +40,7 @@
 #include "options.h"
 
 /* These Config Variables are only used in progress.c */
-short TimeInc; ///< Config: Frequency of progress bar updates (milliseconds)
+short C_TimeInc; ///< Config: Frequency of progress bar updates (milliseconds)
 
 /**
  * message_bar - Draw a colourful progress bar
@@ -146,7 +146,7 @@ void mutt_progress_init(struct Progress *progress, const char *msg,
   if (gettimeofday(&tv, NULL) < 0)
     mutt_debug(LL_DEBUG1, "gettimeofday failed: %d\n", errno);
   /* if timestamp is 0 no time-based suppression is done */
-  if (TimeInc != 0)
+  if (C_TimeInc != 0)
   {
     progress->timestamp =
         ((unsigned int) tv.tv_sec * 1000) + (unsigned int) (tv.tv_usec / 1000);
@@ -193,7 +193,7 @@ void mutt_progress_update(struct Progress *progress, long pos, int percent)
   if (update && progress->timestamp && (gettimeofday(&tv, NULL) == 0))
   {
     now = ((unsigned int) tv.tv_sec * 1000) + (unsigned int) (tv.tv_usec / 1000);
-    if (now && ((now - progress->timestamp) < TimeInc))
+    if (now && ((now - progress->timestamp) < C_TimeInc))
       update = false;
   }
 

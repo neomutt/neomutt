@@ -79,7 +79,7 @@
 #define BEEP()                                                                 \
   do                                                                           \
   {                                                                            \
-    if (Beep)                                                                  \
+    if (C_Beep)                                                                \
       beep();                                                                  \
   } while (false)
 

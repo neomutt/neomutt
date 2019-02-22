@@ -30,8 +30,8 @@
 
 struct Buffer;
 
-extern char *AssumedCharset;
-extern char *Charset;
+extern char *C_AssumedCharset;
+extern char *C_Charset;
 extern bool CharsetIsUtf8;
 extern wchar_t ReplacementChar;
 

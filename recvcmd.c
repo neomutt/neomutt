@@ -56,7 +56,7 @@
 #endif
 
 /* These Config Variables are only used in recvcmd.c */
-unsigned char MimeForwardRest; ///< Config: Forward all attachments, even if they can't be decoded
+unsigned char C_MimeForwardRest; ///< Config: Forward all attachments, even if they can't be decoded
 
 /**
  * check_msg - Are we working with an RFC822 message
@@ -248,7 +248,7 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
   else
     mutt_str_strcat(prompt, sizeof(prompt), "?");
 
-  if (query_quadoption(Bounce, prompt) != MUTT_YES)
+  if (query_quadoption(C_Bounce, prompt) != MUTT_YES)
   {
     mutt_addr_free(&addr);
     mutt_window_clearline(MuttMessageWindow, 0);
@@ -402,17 +402,17 @@ static void include_header(bool quote, FILE *ifp, struct Email *e, FILE *ofp, ch
   int chflags = CH_DECODE;
   char prefix2[SHORT_STRING];
 
-  if (Weed)
+  if (C_Weed)
     chflags |= CH_WEED | CH_REORDER;
 
   if (quote)
   {
     if (prefix)
       mutt_str_strfcpy(prefix2, prefix, sizeof(prefix2));
-    else if (!TextFlowed)
+    else if (!C_TextFlowed)
     {
-      mutt_make_string(prefix2, sizeof(prefix2), NONULL(IndentString), Context,
-                       Context->mailbox, e);
+      mutt_make_string(prefix2, sizeof(prefix2), NONULL(C_IndentString),
+                       Context, Context->mailbox, e);
     }
     else
       mutt_str_strfcpy(prefix2, ">", sizeof(prefix2));
@@ -501,18 +501,18 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
 
   /* prepare the prefix here since we'll need it later. */
 
-  if (ForwardQuote)
+  if (C_ForwardQuote)
   {
-    if (!TextFlowed)
+    if (!C_TextFlowed)
     {
-      mutt_make_string(prefix, sizeof(prefix), NONULL(IndentString), Context,
+      mutt_make_string(prefix, sizeof(prefix), NONULL(C_IndentString), Context,
                        Context->mailbox, e_parent);
     }
     else
       mutt_str_strfcpy(prefix, ">", sizeof(prefix));
   }
 
-  include_header(ForwardQuote, parent_fp, e_parent, tmpfp, prefix);
+  include_header(C_ForwardQuote, parent_fp, e_parent, tmpfp, prefix);
 
   /* Now, we have prepared the first part of the message body: The
    * original message's header.
@@ -521,7 +521,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
    * or attach them.
    */
   if ((!cur || mutt_can_decode(cur)) &&
-      (rc = query_quadoption(MimeForward, _("Forward as attachments?"))) == MUTT_YES)
+      (rc = query_quadoption(C_MimeForward, _("Forward as attachments?"))) == MUTT_YES)
   {
     mime_fwd_all = true;
   }
@@ -536,7 +536,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   if (!mime_fwd_all && !cur && (nattach > 1) && !check_can_decode(actx, cur))
   {
     rc = query_quadoption(
-        MimeForwardRest,
+        C_MimeForwardRest,
         _("Can't decode all tagged attachments.  MIME-forward the others?"));
     if (rc == MUTT_ABORT)
       goto bail;
@@ -547,10 +547,10 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   /* initialize a state structure */
 
   struct State st = { 0 };
-  if (ForwardQuote)
+  if (C_ForwardQuote)
     st.prefix = prefix;
   st.flags = MUTT_CHARCONV;
-  if (Weed)
+  if (C_Weed)
     st.flags |= MUTT_WEED;
   st.fp_out = tmpfp;
 
@@ -663,7 +663,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
 
   tmpbody[0] = '\0';
 
-  rc = query_quadoption(MimeForward, _("Forward MIME encapsulated?"));
+  rc = query_quadoption(C_MimeForward, _("Forward MIME encapsulated?"));
   if (rc == MUTT_NO)
   {
     /* no MIME encapsulation */
@@ -678,16 +678,16 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
     }
 
     int cmflags = 0;
-    if (ForwardQuote)
+    if (C_ForwardQuote)
     {
       chflags |= CH_PREFIX;
       cmflags |= MUTT_CM_PREFIX;
     }
 
-    if (ForwardDecode)
+    if (C_ForwardDecode)
     {
       cmflags |= MUTT_CM_DECODE | MUTT_CM_CHARCONV;
-      if (Weed)
+      if (C_Weed)
       {
         chflags |= CH_WEED | CH_REORDER;
         cmflags |= MUTT_CM_WEED;
@@ -881,9 +881,9 @@ static void attach_include_reply(FILE *fp, FILE *tmpfp, struct Email *cur)
 
   mutt_make_attribution(Context->mailbox, cur, tmpfp);
 
-  if (!Header)
+  if (!C_Header)
     cmflags |= MUTT_CM_NOHEADER;
-  if (Weed)
+  if (C_Weed)
   {
     chflags |= CH_WEED;
     cmflags |= MUTT_CM_WEED;
@@ -943,7 +943,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
 
   if (nattach > 1 && !check_can_decode(actx, cur))
   {
-    const int rc = query_quadoption(MimeForwardRest,
+    const int rc = query_quadoption(C_MimeForwardRest,
                                     _("Can't decode all tagged attachments.  "
                                       "MIME-encapsulate the others?"));
     if (rc == MUTT_ABORT)
@@ -993,9 +993,9 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
     memset(&st, 0, sizeof(struct State));
     st.fp_out = tmpfp;
 
-    if (!TextFlowed)
+    if (!C_TextFlowed)
     {
-      mutt_make_string(prefix, sizeof(prefix), NONULL(IndentString), Context,
+      mutt_make_string(prefix, sizeof(prefix), NONULL(C_IndentString), Context,
                        Context->mailbox, e_parent);
     }
     else
@@ -1004,10 +1004,10 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
     st.prefix = prefix;
     st.flags = MUTT_CHARCONV;
 
-    if (Weed)
+    if (C_Weed)
       st.flags |= MUTT_WEED;
 
-    if (Header)
+    if (C_Header)
       include_header(true, parent_fp, e_parent, tmpfp, prefix);
 
     if (cur)

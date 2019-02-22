@@ -122,7 +122,7 @@ void ctx_update(struct Context *ctx)
       if (e2)
       {
         e2->superseded = true;
-        if (Score)
+        if (C_Score)
           mutt_score_message(ctx->mailbox, e2, true);
       }
     }
@@ -134,7 +134,7 @@ void ctx_update(struct Context *ctx)
       mutt_hash_insert(m->subj_hash, e->env->real_subj, e);
     mutt_label_hash_add(m, e);
 
-    if (Score)
+    if (C_Score)
       mutt_score_message(ctx->mailbox, e, false);
 
     if (e->changed)
@@ -181,7 +181,7 @@ void ctx_update_tables(struct Context *ctx, bool committing)
   for (i = 0, j = 0; i < m->msg_count; i++)
   {
     if (!m->emails[i]->quasi_deleted &&
-        ((committing && (!m->emails[i]->deleted || (m->magic == MUTT_MAILDIR && MaildirTrash))) ||
+        ((committing && (!m->emails[i]->deleted || (m->magic == MUTT_MAILDIR && C_MaildirTrash))) ||
          (!committing && m->emails[i]->active)))
     {
       if (i != j)
@@ -206,7 +206,7 @@ void ctx_update_tables(struct Context *ctx, bool committing)
       else if (m->emails[j]->changed)
         m->changed = true;
 
-      if (!committing || (m->magic == MUTT_MAILDIR && MaildirTrash))
+      if (!committing || (m->magic == MUTT_MAILDIR && C_MaildirTrash))
       {
         if (m->emails[j]->deleted)
           m->msg_deleted++;

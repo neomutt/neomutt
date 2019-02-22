@@ -47,7 +47,7 @@
 #include "protos.h"
 
 /* These Config Variables are only used in rfc1524.c */
-bool MailcapSanitize; ///< Config: Restrict the possible characters in mailcap expandos
+bool C_MailcapSanitize; ///< Config: Restrict the possible characters in mailcap expandos
 
 /**
  * rfc1524_expand_command - Expand expandos in a command
@@ -79,7 +79,7 @@ int rfc1524_expand_command(struct Body *a, const char *filename,
 
   mutt_str_strfcpy(type2, type, sizeof(type2));
 
-  if (MailcapSanitize)
+  if (C_MailcapSanitize)
     mutt_file_sanitize_filename(type2, false);
 
   while (x < clen - 1 && command[x] && y < sizeof(buf) - 1)
@@ -106,7 +106,7 @@ int rfc1524_expand_command(struct Body *a, const char *filename,
 
         pvalue2 = mutt_param_get(&a->parameter, param);
         mutt_str_strfcpy(pvalue, pvalue2, sizeof(pvalue));
-        if (MailcapSanitize)
+        if (C_MailcapSanitize)
           mutt_file_sanitize_filename(pvalue, false);
 
         y += mutt_file_quote_filename(pvalue, buf + y, sizeof(buf) - y);
@@ -443,7 +443,7 @@ int rfc1524_mailcap_lookup(struct Body *a, char *type,
 {
   char path[PATH_MAX];
   int found = false;
-  char *curr = MailcapPath;
+  char *curr = C_MailcapPath;
 
   /* rfc1524 specifies that a path of mailcap files should be searched.
    * joy.  They say

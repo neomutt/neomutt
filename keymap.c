@@ -578,18 +578,18 @@ int km_dokey(int menu)
 
   while (true)
   {
-    int i = Timeout > 0 ? Timeout : 60;
+    int i = C_Timeout > 0 ? C_Timeout : 60;
 #ifdef USE_IMAP
-    /* keepalive may need to run more frequently than Timeout allows */
-    if (ImapKeepalive)
+    /* keepalive may need to run more frequently than C_Timeout allows */
+    if (C_ImapKeepalive)
     {
-      if (ImapKeepalive >= i)
+      if (C_ImapKeepalive >= i)
         imap_keepalive();
       else
       {
-        while (ImapKeepalive && ImapKeepalive < i)
+        while (C_ImapKeepalive && C_ImapKeepalive < i)
         {
-          mutt_getch_timeout(ImapKeepalive * 1000);
+          mutt_getch_timeout(C_ImapKeepalive * 1000);
           tmp = mutt_getch();
           mutt_getch_timeout(-1);
           /* If a timeout was not received, or the window was resized, exit the
@@ -602,7 +602,7 @@ int km_dokey(int menu)
           if (tmp.ch != -2 || SigWinch)
 #endif
             goto gotkey;
-          i -= ImapKeepalive;
+          i -= C_ImapKeepalive;
           imap_keepalive();
         }
       }

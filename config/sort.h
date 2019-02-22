@@ -64,7 +64,7 @@ extern const struct Mapping SortSidebarMethods[];
 #define SORT_LABEL    19 /**< Sort by the emails label */
 #define SORT_DESC     20 /**< Sort by the folder's description */
 
-/* Sort and sort_aux are shorts, and are a composite of a constant sort
+/* C_Sort and C_SortAux are shorts, and are a composite of a constant sort
  * operation number and a set of compounded bitflags.
  *
  * Everything below SORT_MASK is a constant. There's room for SORT_MASK

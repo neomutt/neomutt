@@ -28,7 +28,7 @@
 struct Menu;
 
 /* These Config Variables are only used in status.c */
-extern struct MbTable *StatusChars;
+extern struct MbTable *C_StatusChars;
 
 void menu_status_line(char *buf, size_t buflen, struct Menu *menu, const char *p);
 

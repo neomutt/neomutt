@@ -187,9 +187,9 @@ void mh_update_sequences(struct Mailbox *m)
 
   struct MhSequences mhs = { 0 };
 
-  snprintf(seq_unseen, sizeof(seq_unseen), "%s:", NONULL(MhSeqUnseen));
-  snprintf(seq_replied, sizeof(seq_replied), "%s:", NONULL(MhSeqReplied));
-  snprintf(seq_flagged, sizeof(seq_flagged), "%s:", NONULL(MhSeqFlagged));
+  snprintf(seq_unseen, sizeof(seq_unseen), "%s:", NONULL(C_MhSeqUnseen));
+  snprintf(seq_replied, sizeof(seq_replied), "%s:", NONULL(C_MhSeqReplied));
+  snprintf(seq_flagged, sizeof(seq_flagged), "%s:", NONULL(C_MhSeqFlagged));
 
   if (mh_mkstemp(m, &nfp, &tmpfname) != 0)
   {
@@ -249,11 +249,11 @@ void mh_update_sequences(struct Mailbox *m)
 
   /* write out the new sequences */
   if (unseen)
-    mhs_write_one_sequence(nfp, &mhs, MH_SEQ_UNSEEN, NONULL(MhSeqUnseen));
+    mhs_write_one_sequence(nfp, &mhs, MH_SEQ_UNSEEN, NONULL(C_MhSeqUnseen));
   if (flagged)
-    mhs_write_one_sequence(nfp, &mhs, MH_SEQ_FLAGGED, NONULL(MhSeqFlagged));
+    mhs_write_one_sequence(nfp, &mhs, MH_SEQ_FLAGGED, NONULL(C_MhSeqFlagged));
   if (replied)
-    mhs_write_one_sequence(nfp, &mhs, MH_SEQ_REPLIED, NONULL(MhSeqReplied));
+    mhs_write_one_sequence(nfp, &mhs, MH_SEQ_REPLIED, NONULL(C_MhSeqReplied));
 
   mhs_free_sequences(&mhs);
 
@@ -325,11 +325,11 @@ int mh_read_sequences(struct MhSequences *mhs, const char *path)
     if (!t)
       continue;
 
-    if (mutt_str_strcmp(t, MhSeqUnseen) == 0)
+    if (mutt_str_strcmp(t, C_MhSeqUnseen) == 0)
       f = MH_SEQ_UNSEEN;
-    else if (mutt_str_strcmp(t, MhSeqFlagged) == 0)
+    else if (mutt_str_strcmp(t, C_MhSeqFlagged) == 0)
       f = MH_SEQ_FLAGGED;
-    else if (mutt_str_strcmp(t, MhSeqReplied) == 0)
+    else if (mutt_str_strcmp(t, C_MhSeqReplied) == 0)
       f = MH_SEQ_REPLIED;
     else /* unknown sequence */
       continue;
@@ -429,7 +429,7 @@ static int mh_mbox_check_stats(struct Mailbox *m, int flags)
 
   /* when $mail_check_recent is set and the .mh_sequences file hasn't changed
    * since the last m visit, there is no "new mail" */
-  if (MailCheckRecent && mh_sequences_changed(m) <= 0)
+  if (C_MailCheckRecent && mh_sequences_changed(m) <= 0)
   {
     rc = false;
     check_new = false;
@@ -456,7 +456,7 @@ static int mh_mbox_check_stats(struct Mailbox *m, int flags)
       {
         /* if the first unseen message we encounter was in the m during the
            last visit, don't notify about it */
-        if (!MailCheckRecent || mh_already_notified(m, i) == 0)
+        if (!C_MailCheckRecent || mh_already_notified(m, i) == 0)
         {
           m->has_new = true;
           rc = true;
@@ -608,7 +608,7 @@ int mh_mbox_check(struct Mailbox *m, int *index_hint)
   struct Hash *fnames = NULL;
   struct MaildirMboxData *mdata = maildir_mdata_get(m);
 
-  if (!CheckNew)
+  if (!C_CheckNew)
     return 0;
 
   mutt_str_strfcpy(buf, m->path, sizeof(buf));

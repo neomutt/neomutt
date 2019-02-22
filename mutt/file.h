@@ -30,7 +30,7 @@
 #include <time.h>
 
 struct stat;
-extern char *Tmpdir;
+extern char *C_Tmpdir;
 
 /* Flags for mutt_file_read_line() */
 #define MUTT_CONT (1 << 0) /**< \-continuation */

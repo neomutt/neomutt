@@ -47,7 +47,7 @@
 #endif
 
 /* These Config Variables are only used in sort.c */
-bool ReverseAlias; ///< Config: Display the alias in the index, rather than the message's sender
+bool C_ReverseAlias; ///< Config: Display the alias in the index, rather than the message's sender
 
 /* function to use as discriminator when normal sort method is equal */
 static sort_t *AuxSort = NULL;
@@ -156,7 +156,7 @@ const char *mutt_get_name(struct Address *a)
 
   if (a)
   {
-    if (ReverseAlias && (ali = mutt_alias_reverse_lookup(a)) && ali->personal)
+    if (C_ReverseAlias && (ali = mutt_alias_reverse_lookup(a)) && ali->personal)
       return ali->personal;
     else if (a->personal)
       return a->personal;
@@ -383,7 +383,7 @@ void mutt_sort_headers(struct Context *ctx, bool init)
   if (!ctx->mailbox->quiet)
     mutt_message(_("Sorting mailbox..."));
 
-  if (OptNeedRescore && Score)
+  if (OptNeedRescore && C_Score)
   {
     for (int i = 0; i < ctx->mailbox->msg_count; i++)
       mutt_score_message(ctx->mailbox, ctx->mailbox->emails[i], true);
@@ -399,23 +399,24 @@ void mutt_sort_headers(struct Context *ctx, bool init)
   if (init && ctx->tree)
     mutt_clear_threads(ctx);
 
-  if ((Sort & SORT_MASK) == SORT_THREADS)
+  if ((C_Sort & SORT_MASK) == SORT_THREADS)
   {
     AuxSort = NULL;
     /* if $sort_aux changed after the mailbox is sorted, then all the
        subthreads need to be resorted */
     if (OptSortSubthreads)
     {
-      int i = Sort;
-      Sort = SortAux;
+      int i = C_Sort;
+      C_Sort = C_SortAux;
       if (ctx->tree)
         ctx->tree = mutt_sort_subthreads(ctx->tree, true);
-      Sort = i;
+      C_Sort = i;
       OptSortSubthreads = false;
     }
     mutt_sort_threads(ctx, init);
   }
-  else if (!(sortfunc = mutt_get_sort_func(Sort)) || !(AuxSort = mutt_get_sort_func(SortAux)))
+  else if (!(sortfunc = mutt_get_sort_func(C_Sort)) ||
+           !(AuxSort = mutt_get_sort_func(C_SortAux)))
   {
     mutt_error(_("Could not find sorting function [report this bug]"));
     return;
@@ -439,7 +440,7 @@ void mutt_sort_headers(struct Context *ctx, bool init)
   }
 
   /* re-collapse threads marked as collapsed */
-  if ((Sort & SORT_MASK) == SORT_THREADS)
+  if ((C_Sort & SORT_MASK) == SORT_THREADS)
   {
     top = ctx->tree;
     while ((thread = top))

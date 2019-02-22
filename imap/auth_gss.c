@@ -139,7 +139,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method
     retval = IMAP_AUTH_UNAVAIL;
     goto cleanup;
   }
-  else if (DebugLevel >= 2)
+  else if (C_DebugLevel >= 2)
   {
     gss_display_name(&min_stat, target_name, &request_buf, &mech_name);
     mutt_debug(LL_DEBUG2, "Using service name [%s]\n", (char *) request_buf.value);

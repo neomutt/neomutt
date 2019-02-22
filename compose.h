@@ -28,9 +28,9 @@
 struct Email;
 
 /* These Config Variables are only used in compose.c */
-extern char *        ComposeFormat;
-extern char *        Ispell;
-extern unsigned char Postpone;
+extern char *        C_ComposeFormat;
+extern char *        C_Ispell;
+extern unsigned char C_Postpone;
 
 /* flags for mutt_compose_menu() */
 #define MUTT_COMPOSE_NOFREEHEADER (1 << 0)

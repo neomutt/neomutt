@@ -27,7 +27,7 @@
 #include "mutt/mutt.h"
 
 /* These Config Variables are only used in progress.c */
-extern short TimeInc;
+extern short C_TimeInc;
 
 #define MUTT_PROGRESS_SIZE (1 << 0) /**< traffic-based progress */
 #define MUTT_PROGRESS_MSG  (1 << 1) /**< message-based progress */

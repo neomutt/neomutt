@@ -44,8 +44,8 @@
 #endif
 
 /* These Config Variables are only used in pop/pop_auth.c */
-char *PopAuthenticators; ///< Config: (pop) List of allowed authentication methods
-bool PopAuthTryAll; ///< Config: (pop) Try all available authentication methods
+char *C_PopAuthenticators; ///< Config: (pop) List of allowed authentication methods
+bool C_PopAuthTryAll; ///< Config: (pop) Try all available authentication methods
 
 #ifdef USE_SASL
 /**
@@ -317,7 +317,7 @@ static enum PopAuthRes pop_auth_user(struct PopAccountData *adata, const char *m
     snprintf(buf, sizeof(buf), "PASS %s\r\n", adata->conn->account.pass);
     ret = pop_query_d(adata, buf, sizeof(buf),
                       /* don't print the password unless we're at the ungodly debugging level */
-                      DebugLevel < MUTT_SOCK_LOG_FULL ? "PASS *\r\n" : NULL);
+                      C_DebugLevel < MUTT_SOCK_LOG_FULL ? "PASS *\r\n" : NULL);
   }
 
   switch (ret)
@@ -352,13 +352,13 @@ static enum PopAuthRes pop_auth_oauth(struct PopAccountData *adata, const char *
   snprintf(auth_cmd, auth_cmd_len, "AUTH OAUTHBEARER %s\r\n", oauthbearer);
   FREE(&oauthbearer);
 
-  int ret =
-      pop_query_d(adata, auth_cmd, strlen(auth_cmd),
+  int ret = pop_query_d(adata, auth_cmd, strlen(auth_cmd),
 #ifdef DEBUG
-                  /* don't print the bearer token unless we're at the ungodly debugging level */
-                  (DebugLevel < MUTT_SOCK_LOG_FULL) ? "AUTH OAUTHBEARER *\r\n" :
+                        /* don't print the bearer token unless we're at the ungodly debugging level */
+                        (C_DebugLevel < MUTT_SOCK_LOG_FULL) ?
+                            "AUTH OAUTHBEARER *\r\n" :
 #endif
-                                                      NULL);
+                            NULL);
   FREE(&auth_cmd);
 
   switch (ret)
@@ -418,10 +418,10 @@ int pop_authenticate(struct PopAccountData *adata)
     return -3;
   }
 
-  if (PopAuthenticators && *PopAuthenticators)
+  if (C_PopAuthenticators && *C_PopAuthenticators)
   {
     /* Try user-specified list of authentication methods */
-    methods = mutt_str_strdup(PopAuthenticators);
+    methods = mutt_str_strdup(C_PopAuthenticators);
     method = methods;
 
     while (method)
@@ -455,7 +455,7 @@ int pop_authenticate(struct PopAccountData *adata)
           if (ret != POP_A_UNAVAIL)
             attempts++;
           if ((ret == POP_A_SUCCESS) || (ret == POP_A_SOCKET) ||
-              ((ret == POP_A_FAILURE) && !PopAuthTryAll))
+              ((ret == POP_A_FAILURE) && !C_PopAuthTryAll))
           {
             comma = NULL;
             break;
@@ -495,7 +495,7 @@ int pop_authenticate(struct PopAccountData *adata)
       if (ret != POP_A_UNAVAIL)
         attempts++;
       if ((ret == POP_A_SUCCESS) || (ret == POP_A_SOCKET) ||
-          ((ret == POP_A_FAILURE) && !PopAuthTryAll))
+          ((ret == POP_A_FAILURE) && !C_PopAuthTryAll))
       {
         break;
       }

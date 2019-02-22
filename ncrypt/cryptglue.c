@@ -50,7 +50,7 @@ struct Email;
 struct State;
 
 /* These Config Variables are only used in ncrypt/cryptglue.c */
-bool CryptUseGpgme; ///< Config: Use GPGME crypto backend
+bool C_CryptUseGpgme; ///< Config: Use GPGME crypto backend
 
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
 extern struct CryptModuleSpecs CryptModPgpClassic;
@@ -87,7 +87,7 @@ void crypt_init(void)
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
   if (
 #ifdef CRYPT_BACKEND_GPGME
-      (!CryptUseGpgme)
+      (!C_CryptUseGpgme)
 #else
       1
 #endif
@@ -98,7 +98,7 @@ void crypt_init(void)
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
   if (
 #ifdef CRYPT_BACKEND_GPGME
-      (!CryptUseGpgme)
+      (!C_CryptUseGpgme)
 #else
       1
 #endif
@@ -106,7 +106,7 @@ void crypt_init(void)
     crypto_module_register(&CryptModSmimeClassic);
 #endif
 
-  if (CryptUseGpgme)
+  if (C_CryptUseGpgme)
   {
 #ifdef CRYPT_BACKEND_GPGME
     crypto_module_register(&CryptModPgpGpgme);

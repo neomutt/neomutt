@@ -60,59 +60,59 @@ struct EmailList;
 struct State;
 
 /* These Config Variables are only used in ncrypt/crypt.c */
-extern bool          CryptTimestamp;
-extern unsigned char PgpEncryptSelf; ///< Deprecated, see PgpSelfEncrypt
-extern unsigned char PgpMimeAuto;
-extern bool          PgpRetainableSigs;
-extern bool          PgpSelfEncrypt;
-extern bool          PgpStrictEnc;
-extern unsigned char SmimeEncryptSelf; ///< Deprecated, see SmimeSelfEncrypt
-extern bool          SmimeSelfEncrypt;
+extern bool          C_CryptTimestamp;
+extern unsigned char C_PgpEncryptSelf; ///< Deprecated, see #C_PgpSelfEncrypt
+extern unsigned char C_PgpMimeAuto;
+extern bool          C_PgpRetainableSigs;
+extern bool          C_PgpSelfEncrypt;
+extern bool          C_PgpStrictEnc;
+extern unsigned char C_SmimeEncryptSelf; ///< Deprecated, see #C_SmimeSelfEncrypt
+extern bool          C_SmimeSelfEncrypt;
 
 /* These Config Variables are only used in ncrypt/cryptglue.c */
-extern bool CryptUseGpgme;
+extern bool C_CryptUseGpgme;
 
 /* These Config Variables are only used in ncrypt/pgp.c */
-extern bool          PgpCheckExit;
-extern bool          PgpCheckGpgDecryptStatusFd;
-extern struct Regex *PgpDecryptionOkay;
-extern struct Regex *PgpGoodSign;
-extern long          PgpTimeout;
-extern bool          PgpUseGpgAgent;
+extern bool          C_PgpCheckExit;
+extern bool          C_PgpCheckGpgDecryptStatusFd;
+extern struct Regex *C_PgpDecryptionOkay;
+extern struct Regex *C_PgpGoodSign;
+extern long          C_PgpTimeout;
+extern bool          C_PgpUseGpgAgent;
 
 /* These Config Variables are only used in ncrypt/pgpinvoke.c */
-extern char *PgpClearsignCommand;
-extern char *PgpDecodeCommand;
-extern char *PgpDecryptCommand;
-extern char *PgpEncryptOnlyCommand;
-extern char *PgpEncryptSignCommand;
-extern char *PgpExportCommand;
-extern char *PgpGetkeysCommand;
-extern char *PgpImportCommand;
-extern char *PgpListPubringCommand;
-extern char *PgpListSecringCommand;
-extern char *PgpSignCommand;
-extern char *PgpVerifyCommand;
-extern char *PgpVerifyKeyCommand;
+extern char *C_PgpClearsignCommand;
+extern char *C_PgpDecodeCommand;
+extern char *C_PgpDecryptCommand;
+extern char *C_PgpEncryptOnlyCommand;
+extern char *C_PgpEncryptSignCommand;
+extern char *C_PgpExportCommand;
+extern char *C_PgpGetkeysCommand;
+extern char *C_PgpImportCommand;
+extern char *C_PgpListPubringCommand;
+extern char *C_PgpListSecringCommand;
+extern char *C_PgpSignCommand;
+extern char *C_PgpVerifyCommand;
+extern char *C_PgpVerifyKeyCommand;
 
 /* These Config Variables are only used in ncrypt/smime.c */
-extern bool  SmimeAskCertLabel;
-extern char *SmimeCaLocation;
-extern char *SmimeCertificates;
-extern char *SmimeDecryptCommand;
-extern bool  SmimeDecryptUseDefaultKey;
-extern char *SmimeEncryptCommand;
-extern char *SmimeGetCertCommand;
-extern char *SmimeGetCertEmailCommand;
-extern char *SmimeGetSignerCertCommand;
-extern char *SmimeImportCertCommand;
-extern char *SmimeKeys;
-extern char *SmimePk7outCommand;
-extern char *SmimeSignCommand;
-extern char *SmimeSignDigestAlg;
-extern long  SmimeTimeout;
-extern char *SmimeVerifyCommand;
-extern char *SmimeVerifyOpaqueCommand;
+extern bool  C_SmimeAskCertLabel;
+extern char *C_SmimeCaLocation;
+extern char *C_SmimeCertificates;
+extern char *C_SmimeDecryptCommand;
+extern bool  C_SmimeDecryptUseDefaultKey;
+extern char *C_SmimeEncryptCommand;
+extern char *C_SmimeGetCertCommand;
+extern char *C_SmimeGetCertEmailCommand;
+extern char *C_SmimeGetSignerCertCommand;
+extern char *C_SmimeImportCertCommand;
+extern char *C_SmimeKeys;
+extern char *C_SmimePk7outCommand;
+extern char *C_SmimeSignCommand;
+extern char *C_SmimeSignDigestAlg;
+extern long  C_SmimeTimeout;
+extern char *C_SmimeVerifyCommand;
+extern char *C_SmimeVerifyOpaqueCommand;
 
 #define SEC_ENCRYPT             (1 << 0)  ///< Email is encrypted
 #define SEC_SIGN                (1 << 1)  ///< Email is signed

@@ -54,7 +54,7 @@
 #endif
 
 /* These Config Variables are only used in smtp.c */
-char *SmtpAuthenticators; ///< Config: (smtp) List of allowed authentication methods
+char *C_SmtpAuthenticators; ///< Config: (smtp) List of allowed authentication methods
 
 #define smtp_success(x) ((x) / 100 == 2)
 #define SMTP_READY 334
@@ -178,8 +178,8 @@ static int smtp_rcpt_to(struct Connection *conn, const struct Address *a)
       a = a->next;
       continue;
     }
-    if ((Capabilities & SMTP_CAP_DSN) && DsnNotify)
-      snprintf(buf, sizeof(buf), "RCPT TO:<%s> NOTIFY=%s\r\n", a->mailbox, DsnNotify);
+    if ((Capabilities & SMTP_CAP_DSN) && C_DsnNotify)
+      snprintf(buf, sizeof(buf), "RCPT TO:<%s> NOTIFY=%s\r\n", a->mailbox, C_DsnNotify);
     else
       snprintf(buf, sizeof(buf), "RCPT TO:<%s>\r\n", a->mailbox);
     if (mutt_socket_send(conn, buf) == -1)
@@ -217,7 +217,7 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
   stat(msgfile, &st);
   unlink(msgfile);
   mutt_progress_init(&progress, _("Sending message..."), MUTT_PROGRESS_SIZE,
-                     NetInc, st.st_size);
+                     C_NetInc, st.st_size);
 
   snprintf(buf, sizeof(buf), "DATA\r\n");
   if (mutt_socket_send(conn, buf) == -1)
@@ -319,12 +319,12 @@ static int smtp_fill_account(struct ConnAccount *account)
   account->port = 0;
   account->type = MUTT_ACCT_TYPE_SMTP;
 
-  struct Url *url = url_parse(SmtpUrl);
+  struct Url *url = url_parse(C_SmtpUrl);
   if (!url || (url->scheme != U_SMTP && url->scheme != U_SMTPS) || !url->host ||
       mutt_account_fromurl(account, url) < 0)
   {
     url_free(&url);
-    mutt_error(_("Invalid SMTP URL: %s"), SmtpUrl);
+    mutt_error(_("Invalid SMTP URL: %s"), C_SmtpUrl);
     return -1;
   }
 
@@ -375,7 +375,7 @@ static int smtp_helo(struct Connection *conn, bool esmtp)
     if (conn->account.flags & MUTT_ACCT_USER)
       esmtp = true;
 #ifdef USE_SSL
-    if (SslForceTls || SslStarttls != MUTT_NO)
+    if (C_SslForceTls || C_SslStarttls != MUTT_NO)
       esmtp = true;
 #endif
   }
@@ -586,9 +586,9 @@ static int smtp_auth(struct Connection *conn)
 {
   int r = SMTP_AUTH_UNAVAIL;
 
-  if (SmtpAuthenticators && *SmtpAuthenticators)
+  if (C_SmtpAuthenticators && *C_SmtpAuthenticators)
   {
-    char *methods = mutt_str_strdup(SmtpAuthenticators);
+    char *methods = mutt_str_strdup(C_SmtpAuthenticators);
     char *method = NULL;
     char *delim = NULL;
 
@@ -681,10 +681,10 @@ static int smtp_open(struct Connection *conn, bool esmtp)
 #ifdef USE_SSL
   if (conn->ssf)
     rc = MUTT_NO;
-  else if (SslForceTls)
+  else if (C_SslForceTls)
     rc = MUTT_YES;
   else if ((Capabilities & SMTP_CAP_STARTTLS) &&
-           (rc = query_quadoption(SslStarttls,
+           (rc = query_quadoption(C_SslStarttls,
                                   _("Secure connection with TLS?"))) == MUTT_ABORT)
   {
     return rc;
@@ -748,8 +748,8 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
 
   /* it might be better to synthesize an envelope from from user and host
    * but this condition is most likely arrived at accidentally */
-  if (EnvelopeFromAddress)
-    envfrom = EnvelopeFromAddress->mailbox;
+  if (C_EnvelopeFromAddress)
+    envfrom = C_EnvelopeFromAddress->mailbox;
   else if (from)
     envfrom = from->mailbox;
   else
@@ -780,8 +780,8 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
       mutt_str_strncat(buf, sizeof(buf), " BODY=8BITMIME", 15);
       len += 14;
     }
-    if (DsnReturn && (Capabilities & SMTP_CAP_DSN))
-      len += snprintf(buf + len, sizeof(buf) - len, " RET=%s", DsnReturn);
+    if (C_DsnReturn && (Capabilities & SMTP_CAP_DSN))
+      len += snprintf(buf + len, sizeof(buf) - len, " RET=%s", C_DsnReturn);
     if ((Capabilities & SMTP_CAP_SMTPUTF8) &&
         (address_uses_unicode(envfrom) || addresses_use_unicode(to) ||
          addresses_use_unicode(cc) || addresses_use_unicode(bcc)))

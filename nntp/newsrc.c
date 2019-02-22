@@ -62,8 +62,8 @@
 #endif
 
 /* These Config Variables are only used in nntp/newsrc.c */
-char *NewsCacheDir; ///< Config: (nntp) Directory for cached news articles
-char *Newsrc; ///< Config: (nntp) File containing list of subscribed newsgroups
+char *C_NewsCacheDir; ///< Config: (nntp) Directory for cached news articles
+char *C_Newsrc; ///< Config: (nntp) File containing list of subscribed newsgroups
 
 struct BodyCache;
 
@@ -307,10 +307,10 @@ void nntp_newsrc_gen_entries(struct Mailbox *m)
   int save_sort = SORT_ORDER;
   unsigned int entries;
 
-  if (Sort != SORT_ORDER)
+  if (C_Sort != SORT_ORDER)
   {
-    save_sort = Sort;
-    Sort = SORT_ORDER;
+    save_sort = C_Sort;
+    C_Sort = SORT_ORDER;
     mutt_mailbox_changed(m, MBN_RESORT);
   }
 
@@ -373,9 +373,9 @@ void nntp_newsrc_gen_entries(struct Mailbox *m)
   }
   mutt_mem_realloc(&mdata->newsrc_ent, mdata->newsrc_len * sizeof(struct NewsrcEntry));
 
-  if (save_sort != Sort)
+  if (save_sort != C_Sort)
   {
-    Sort = save_sort;
+    C_Sort = save_sort;
     mutt_mailbox_changed(m, MBN_RESORT);
   }
 }
@@ -536,7 +536,7 @@ static void cache_expand(char *dst, size_t dstlen, struct ConnAccount *acct, con
   else
     mutt_str_strfcpy(file, src ? src : "", sizeof(file));
 
-  snprintf(dst, dstlen, "%s/%s", NewsCacheDir, file);
+  snprintf(dst, dstlen, "%s/%s", C_NewsCacheDir, file);
 
   /* remove trailing slash */
   c = dst + strlen(dst) - 1;
@@ -715,7 +715,7 @@ header_cache_t *nntp_hcache_open(struct NntpMboxData *mdata)
   char file[PATH_MAX];
 
   if (!mdata->adata || !mdata->adata->cacheable || !mdata->adata->conn ||
-      !mdata->group || !(mdata->newsrc_ent || mdata->subscribed || SaveUnsubscribed))
+      !mdata->group || !(mdata->newsrc_ent || mdata->subscribed || C_SaveUnsubscribed))
   {
     return NULL;
   }
@@ -723,7 +723,7 @@ header_cache_t *nntp_hcache_open(struct NntpMboxData *mdata)
   mutt_account_tourl(&mdata->adata->conn->account, &url);
   url.path = mdata->group;
   url_tostring(&url, file, sizeof(file), U_PATH);
-  return mutt_hcache_open(NewsCacheDir, file, nntp_hcache_namer);
+  return mutt_hcache_open(C_NewsCacheDir, file, nntp_hcache_namer);
 }
 
 /**
@@ -891,7 +891,7 @@ void nntp_clear_cache(struct NntpAccountData *adata)
         mdata->group = group;
         mdata->bcache = NULL;
       }
-      else if (mdata->newsrc_ent || mdata->subscribed || SaveUnsubscribed)
+      else if (mdata->newsrc_ent || mdata->subscribed || C_SaveUnsubscribed)
         continue;
 
       nntp_delete_group_cache(mdata);
@@ -1065,7 +1065,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
 
   /* try to create cache directory and enable caching */
   adata->cacheable = false;
-  if (rc >= 0 && NewsCacheDir && *NewsCacheDir)
+  if (rc >= 0 && C_NewsCacheDir && *C_NewsCacheDir)
   {
     cache_expand(file, sizeof(file), &conn->account, NULL);
     if (mutt_file_mkdir(file, S_IRWXU) < 0)
@@ -1079,7 +1079,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
   if (rc >= 0)
   {
     mutt_expando_format(file, sizeof(file), 0, MuttIndexWindow->cols,
-                        NONULL(Newsrc), nntp_format_str, (unsigned long) adata, 0);
+                        NONULL(C_Newsrc), nntp_format_str, (unsigned long) adata, 0);
     mutt_expand_path(file, sizeof(file));
     adata->newsrc_file = mutt_str_strdup(file);
     rc = nntp_newsrc_parse(adata);
@@ -1209,7 +1209,7 @@ void nntp_article_status(struct Mailbox *m, struct Email *e, char *group, anum_t
     return;
 
   /* article isn't read but cached, it's old */
-  if (MarkOld)
+  if (C_MarkOld)
     e->old = true;
 }
 
@@ -1258,7 +1258,7 @@ struct NntpMboxData *mutt_newsgroup_unsubscribe(struct NntpAccountData *adata, c
     return NULL;
 
   mdata->subscribed = false;
-  if (!SaveUnsubscribed)
+  if (!C_SaveUnsubscribed)
   {
     mdata->newsrc_len = 0;
     FREE(&mdata->newsrc_ent);

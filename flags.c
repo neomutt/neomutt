@@ -76,7 +76,7 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
 
       if (bf)
       {
-        if (!e->deleted && !m->readonly && (!e->flagged || !FlagSafe))
+        if (!e->deleted && !m->readonly && (!e->flagged || !C_FlagSafe))
         {
           e->deleted = true;
           update = true;
@@ -379,7 +379,7 @@ int mutt_thread_set_flag(struct Email *e, int flag, bool bf, bool subthread)
 {
   struct MuttThread *start = NULL, *cur = e->thread;
 
-  if ((Sort & SORT_MASK) != SORT_THREADS)
+  if ((C_Sort & SORT_MASK) != SORT_THREADS)
   {
     mutt_error(_("Threading is not enabled"));
     return -1;

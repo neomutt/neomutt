@@ -30,9 +30,9 @@
 #include "keymap.h"
 
 /* These Config Variables are only used in menu.c */
-extern short MenuContext;
-extern bool  MenuMoveOff;
-extern bool  MenuScroll;
+extern short C_MenuContext;
+extern bool  C_MenuMoveOff;
+extern bool  C_MenuScroll;
 
 struct ConfigSet;
 struct HashElem;

@@ -80,7 +80,7 @@ static void maildir_check_dir(struct Mailbox *m, const char *dir_name,
   /* when $mail_check_recent is set, if the new/ directory hasn't been modified since
    * the user last exited the m, then we know there is no recent mail.
    */
-  if (check_new && MailCheckRecent)
+  if (check_new && C_MailCheckRecent)
   {
     if (stat(mutt_b2s(path), &sb) == 0 &&
         mutt_file_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->last_visited) < 0)
@@ -120,7 +120,7 @@ static void maildir_check_dir(struct Mailbox *m, const char *dir_name,
         m->msg_unread++;
       if (check_new)
       {
-        if (MailCheckRecent)
+        if (C_MailCheckRecent)
         {
           mutt_buffer_printf(msgpath, "%s/%s", mutt_b2s(path), de->d_name);
           /* ensure this message was received since leaving this m */
@@ -384,7 +384,7 @@ int maildir_mbox_check(struct Mailbox *m, int *index_hint)
   struct MaildirMboxData *mdata = maildir_mdata_get(m);
 
   /* XXX seems like this check belongs in mx_mbox_check() rather than here.  */
-  if (!CheckNew)
+  if (!C_CheckNew)
     return 0;
 
   struct Buffer *buf = mutt_buffer_pool_get();
@@ -557,7 +557,7 @@ static int maildir_mbox_check_stats(struct Mailbox *m, int flags)
 
   maildir_check_dir(m, "new", check_new, check_stats);
 
-  check_new = !m->has_new && MaildirCheckCur;
+  check_new = !m->has_new && C_MaildirCheckCur;
   if (check_new || check_stats)
     maildir_check_dir(m, "cur", check_new, check_stats);
 
@@ -666,7 +666,7 @@ static int maildir_msg_save_hcache(struct Mailbox *m, struct Email *e)
 {
   int rc = 0;
 #ifdef USE_HCACHE
-  header_cache_t *hc = mutt_hcache_open(HeaderCache, m->path, NULL);
+  header_cache_t *hc = mutt_hcache_open(C_HeaderCache, m->path, NULL);
   char *key = e->path + 3;
   int keylen = maildir_hcache_keylen(key);
   rc = mutt_hcache_store(hc, key, keylen, e, 0);

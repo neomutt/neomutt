@@ -68,10 +68,10 @@
 struct BodyCache;
 
 /* These Config Variables are only used in pop/pop.c */
-short PopCheckinterval; ///< Config: (pop) Interval between checks for new mail
-unsigned char PopDelete; ///< Config: (pop) After downloading POP messages, delete them on the server
-char *PopHost; ///< Config: (pop) Url of the POP server
-bool PopLast;  ///< Config: (pop) Use the 'LAST' command to fetch new mail
+short C_PopCheckinterval; ///< Config: (pop) Interval between checks for new mail
+unsigned char C_PopDelete; ///< Config: (pop) After downloading POP messages, delete them on the server
+char *C_PopHost; ///< Config: (pop) Url of the POP server
+bool C_PopLast;  ///< Config: (pop) Use the 'LAST' command to fetch new mail
 
 #ifdef USE_HCACHE
 #define HC_FNAME "neomutt" /* filename for hcache as POP lacks paths */
@@ -357,7 +357,7 @@ static int pop_hcache_namer(const char *path, char *dest, size_t destlen)
 static header_cache_t *pop_hcache_open(struct PopAccountData *adata, const char *path)
 {
   if (!adata || !adata->conn)
-    return mutt_hcache_open(HeaderCache, path, NULL);
+    return mutt_hcache_open(C_HeaderCache, path, NULL);
 
   struct Url url;
   char p[LONG_STRING];
@@ -365,7 +365,7 @@ static header_cache_t *pop_hcache_open(struct PopAccountData *adata, const char 
   mutt_account_tourl(&adata->conn->account, &url);
   url.path = HC_FNAME;
   url_tostring(&url, p, sizeof(p), U_PATH);
-  return mutt_hcache_open(HeaderCache, p, pop_hcache_namer);
+  return mutt_hcache_open(C_HeaderCache, p, pop_hcache_namer);
 }
 #endif
 
@@ -432,7 +432,7 @@ static int pop_fetch_headers(struct Mailbox *m)
   if (!m->quiet)
   {
     mutt_progress_init(&progress, _("Fetching message headers..."),
-                       MUTT_PROGRESS_MSG, ReadInc, new_count - old_count);
+                       MUTT_PROGRESS_MSG, C_ReadInc, new_count - old_count);
   }
 
   if (ret == 0)
@@ -520,7 +520,7 @@ static int pop_fetch_headers(struct Mailbox *m)
       {
         if (bcached)
           m->emails[i]->read = true;
-        else if (MarkOld)
+        else if (C_MarkOld)
           m->emails[i]->old = true;
       }
       else
@@ -548,7 +548,7 @@ static int pop_fetch_headers(struct Mailbox *m)
    * clean up cache, i.e. wipe messages deleted outside
    * the availability of our cache
    */
-  if (MessageCacheClean)
+  if (C_MessageCacheClean)
     mutt_bcache_list(adata->bcache, msg_cache_check, m);
 
   mutt_clear_error();
@@ -581,7 +581,7 @@ static void pop_clear_cache(struct PopAccountData *adata)
  */
 void pop_fetch_mail(void)
 {
-  if (!PopHost)
+  if (!C_PopHost)
   {
     mutt_error(_("POP host is not defined"));
     return;
@@ -592,20 +592,20 @@ void pop_fetch_mail(void)
   int delanswer, last = 0, msgs, bytes, rset = 0, ret;
   struct ConnAccount acct;
 
-  char *p = mutt_mem_calloc(strlen(PopHost) + 7, sizeof(char));
+  char *p = mutt_mem_calloc(strlen(C_PopHost) + 7, sizeof(char));
   char *url = p;
-  if (url_check_scheme(PopHost) == U_UNKNOWN)
+  if (url_check_scheme(C_PopHost) == U_UNKNOWN)
   {
     strcpy(url, "pop://");
     p = strchr(url, '\0');
   }
-  strcpy(p, PopHost);
+  strcpy(p, C_PopHost);
 
   ret = pop_parse_path(url, &acct);
   FREE(&url);
   if (ret)
   {
-    mutt_error(_("%s is an invalid POP path"), PopHost);
+    mutt_error(_("%s is an invalid POP path"), C_PopHost);
     return;
   }
 
@@ -639,7 +639,7 @@ void pop_fetch_mail(void)
   sscanf(buffer, "+OK %d %d", &msgs, &bytes);
 
   /* only get unread messages */
-  if (msgs > 0 && PopLast)
+  if (msgs > 0 && C_PopLast)
   {
     mutt_str_strfcpy(buffer, "LAST\r\n", sizeof(buffer));
     ret = pop_query(adata, buffer, sizeof(buffer));
@@ -655,7 +655,7 @@ void pop_fetch_mail(void)
     goto finish;
   }
 
-  struct Mailbox *m_spool = mx_path_resolve(Spoolfile);
+  struct Mailbox *m_spool = mx_path_resolve(C_Spoolfile);
   struct Context *ctx = mx_mbox_open(m_spool, MUTT_APPEND);
   if (!ctx)
   {
@@ -663,7 +663,7 @@ void pop_fetch_mail(void)
     goto finish;
   }
 
-  delanswer = query_quadoption(PopDelete, _("Delete messages from server?"));
+  delanswer = query_quadoption(C_PopDelete, _("Delete messages from server?"));
 
   snprintf(msgbuf, sizeof(msgbuf),
            ngettext("Reading new messages (%d byte)...",
@@ -899,7 +899,7 @@ static int pop_mbox_check(struct Mailbox *m, int *index_hint)
 
   struct PopAccountData *adata = pop_adata_get(m);
 
-  if ((adata->check_time + PopCheckinterval) > time(NULL))
+  if ((adata->check_time + C_PopCheckinterval) > time(NULL))
     return 0;
 
   pop_logout(m);
@@ -961,7 +961,7 @@ static int pop_mbox_sync(struct Mailbox *m, int *index_hint)
       return -1;
 
     mutt_progress_init(&progress, _("Marking messages deleted..."),
-                       MUTT_PROGRESS_MSG, WriteInc, num_deleted);
+                       MUTT_PROGRESS_MSG, C_WriteInc, num_deleted);
 
 #ifdef USE_HCACHE
     hc = pop_hcache_open(adata, m->path);
@@ -1110,7 +1110,7 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
     }
 
     mutt_progress_init(&progressbar, _("Fetching message..."), MUTT_PROGRESS_SIZE,
-                       NetInc, e->content->length + e->content->offset - 1);
+                       C_NetInc, e->content->length + e->content->offset - 1);
 
     /* see if we can put in body cache; use our cache as fallback */
     msg->fp = mutt_bcache_put(adata->bcache, cache_id(edata->uid));

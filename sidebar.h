@@ -31,16 +31,16 @@ struct Mailbox;
 struct Context;
 
 /* These Config Variables are only used in sidebar.c */
-extern short SidebarComponentDepth;
-extern char *SidebarDelimChars;
-extern char *SidebarDividerChar;
-extern bool  SidebarFolderIndent;
-extern char *SidebarFormat;
-extern char *SidebarIndentString;
-extern bool  SidebarNewMailOnly;
-extern bool  SidebarNextNewWrap;
-extern bool  SidebarShortPath;
-extern short SidebarSortMethod;
+extern short C_SidebarComponentDepth;
+extern char *C_SidebarDelimChars;
+extern char *C_SidebarDividerChar;
+extern bool  C_SidebarFolderIndent;
+extern char *C_SidebarFormat;
+extern char *C_SidebarIndentString;
+extern bool  C_SidebarNewMailOnly;
+extern bool  C_SidebarNextNewWrap;
+extern bool  C_SidebarShortPath;
+extern short C_SidebarSortMethod;
 
 void mutt_sb_change_mailbox(int op);
 void mutt_sb_draw(void);

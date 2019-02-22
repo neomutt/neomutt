@@ -31,11 +31,11 @@
 #include "mutt/mutt.h"
 
 /* Config items */
-bool MarkOld = false; ///< Config: Mark new emails as old when leaving the mailbox
-struct Regex *ReplyRegex = NULL; ///< Config: Regex to match message reply subjects like "re: "
-char *SendCharset = NULL; ///< Config: Character sets for outgoing mail ///< Config: List of character sets for outgoing messages
-char *SpamSeparator = NULL; ///< Config: Separator for multiple spam headers ///< Config: Separator for spam headers
-bool Weed = false; ///< Config: Filter headers when displaying/forwarding/printing/replying
+bool C_MarkOld = false; ///< Config: Mark new emails as old when leaving the mailbox
+struct Regex *C_ReplyRegex = NULL; ///< Config: Regex to match message reply subjects like "re: "
+char *C_SendCharset = NULL; ///< Config: Character sets for outgoing mail ///< Config: List of character sets for outgoing messages
+char *C_SpamSeparator = NULL; ///< Config: Separator for multiple spam headers ///< Config: Separator for spam headers
+bool C_Weed = false; ///< Config: Filter headers when displaying/forwarding/printing/replying
 
 /* Global variables */
 struct RegexList NoSpamList = STAILQ_HEAD_INITIALIZER(NoSpamList);

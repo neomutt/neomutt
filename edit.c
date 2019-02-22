@@ -51,7 +51,7 @@
 #include "protos.h"
 
 /* These Config Variables are only used in edit.c */
-char *Escape; ///< Config: Escape character to use for functions in the built-in editor
+char *C_Escape; ///< Config: Escape character to use for functions in the built-in editor
 
 /* SLcurses_waddnstr() can't take a "const char *", so this is only
  * declared "static" (sigh)
@@ -86,7 +86,7 @@ static char *EditorHelp2 =
  * @param[out] buflen Bytes of buffer used
  * @param[in]  offset Start reading at this file offset
  * @param[in]  bytes  Read this many bytes
- * @param[in]  prefix If true, prefix the lines with the IndentString
+ * @param[in]  prefix If true, prefix the lines with the #C_IndentString
  * @retval ptr Pointer to allocated buffer
  */
 static char **be_snarf_data(FILE *f, char **buf, int *bufmax, int *buflen,
@@ -99,7 +99,7 @@ static char **be_snarf_data(FILE *f, char **buf, int *bufmax, int *buflen,
   tmp[sizeof(tmp) - 1] = '\0';
   if (prefix)
   {
-    mutt_str_strfcpy(tmp, IndentString, sizeof(tmp));
+    mutt_str_strfcpy(tmp, C_IndentString, sizeof(tmp));
     tmplen = mutt_str_strlen(tmp);
     p = tmp + tmplen;
     tmplen = sizeof(tmp) - tmplen;
@@ -222,10 +222,10 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
       n--;
 
       /* add the attribution */
-      if (Attribution)
+      if (C_Attribution)
       {
-        setlocale(LC_TIME, NONULL(AttributionLocale));
-        mutt_make_string(tmp, sizeof(tmp) - 1, Attribution, Context,
+        setlocale(LC_TIME, NONULL(C_AttributionLocale));
+        mutt_make_string(tmp, sizeof(tmp) - 1, C_Attribution, Context,
                          Context->mailbox, Context->mailbox->emails[n]);
         setlocale(LC_TIME, "");
         strcat(tmp, "\n");
@@ -345,7 +345,7 @@ static void be_edit_header(struct Envelope *e, bool force)
     addch('\n');
   }
 
-  if ((!e->cc && Askcc) || force)
+  if ((!e->cc && C_Askcc) || force)
   {
     addstr("Cc: ");
     tmp[0] = '\0';
@@ -366,7 +366,7 @@ static void be_edit_header(struct Envelope *e, bool force)
     addch('\n');
   }
 
-  if (Askbcc || force)
+  if (C_Askbcc || force)
   {
     addstr("Bcc: ");
     tmp[0] = '\0';
@@ -423,7 +423,7 @@ int mutt_builtin_editor(const char *path, struct Email *msg, struct Email *cur)
     }
     addch('\n');
 
-    if (Escape && tmp[0] == Escape[0] && tmp[1] != Escape[0])
+    if (C_Escape && tmp[0] == C_Escape[0] && tmp[1] != C_Escape[0])
     {
       /* remove trailing whitespace from the line */
       p = tmp + mutt_str_strlen(tmp) - 1;
@@ -527,17 +527,17 @@ int mutt_builtin_editor(const char *path, struct Email *msg, struct Email *cur)
             bufmax = 0;
             buflen = 0;
 
-            if (EditHeaders)
+            if (C_EditHeaders)
             {
               mutt_env_to_local(msg->env);
-              mutt_edit_headers(NONULL(Visual), path, msg, NULL, 0);
+              mutt_edit_headers(NONULL(C_Visual), path, msg, NULL, 0);
               if (mutt_env_to_intl(msg->env, &tag, &err))
                 printw(_("Bad IDN in '%s': '%s'"), tag, err);
               /* tag is a statically allocated string and should not be freed */
               FREE(&err);
             }
             else
-              mutt_edit_file(NONULL(Visual), path);
+              mutt_edit_file(NONULL(C_Visual), path);
 
             buf = be_snarf_file(path, buf, &bufmax, &buflen, false);
 

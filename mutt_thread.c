@@ -45,16 +45,16 @@
 #include "sort.h"
 
 /* These Config Variables are only used in mutt_thread.c */
-bool DuplicateThreads; ///< Config: Highlight messages with duplicated message IDs
-bool HideLimited; ///< Config: Don't indicate hidden messages, in the thread tree
-bool HideMissing; ///< Config: Don't indicate missing messages, in the thread tree
-bool HideThreadSubject; ///< Config: Hide subjects that are similar to that of the parent message
-bool HideTopLimited; ///< Config: Don't indicate hidden top message, in the thread tree
-bool HideTopMissing; ///< Config: Don't indicate missing top message, in the thread tree
-bool NarrowTree; ///< Config: Draw a narrower thread tree in the index
-bool SortRe;     ///< Config: Sort method for the sidebar
-bool StrictThreads; ///< Config: Thread messages using 'In-Reply-To' and 'References' headers
-bool ThreadReceived; ///< Config: Sort threaded messages by their received date
+bool C_DuplicateThreads; ///< Config: Highlight messages with duplicated message IDs
+bool C_HideLimited; ///< Config: Don't indicate hidden messages, in the thread tree
+bool C_HideMissing; ///< Config: Don't indicate missing messages, in the thread tree
+bool C_HideThreadSubject; ///< Config: Hide subjects that are similar to that of the parent message
+bool C_HideTopLimited; ///< Config: Don't indicate hidden top message, in the thread tree
+bool C_HideTopMissing; ///< Config: Don't indicate missing top message, in the thread tree
+bool C_NarrowTree; ///< Config: Draw a narrower thread tree in the index
+bool C_SortRe;     ///< Config: Sort method for the sidebar
+bool C_StrictThreads; ///< Config: Thread messages using 'In-Reply-To' and 'References' headers
+bool C_ThreadReceived; ///< Config: Sort threaded messages by their received date
 
 /**
  * is_visible - Is the message visible?
@@ -78,7 +78,7 @@ static bool need_display_subject(struct Context *ctx, struct Email *e)
   struct MuttThread *tmp = NULL, *tree = e->thread;
 
   /* if the user disabled subject hiding, display it */
-  if (!HideThreadSubject)
+  if (!C_HideThreadSubject)
     return true;
 
   /* if our subject is different from our parent's, display it */
@@ -129,7 +129,7 @@ static void linearize_tree(struct Context *ctx)
   struct Mailbox *m = ctx->mailbox;
 
   struct MuttThread *tree = ctx->tree;
-  struct Email **array = m->emails + ((Sort & SORT_REVERSE) ? m->msg_count - 1 : 0);
+  struct Email **array = m->emails + ((C_Sort & SORT_REVERSE) ? m->msg_count - 1 : 0);
 
   while (tree)
   {
@@ -137,7 +137,7 @@ static void linearize_tree(struct Context *ctx)
       tree = tree->child;
 
     *array = tree->message;
-    array += (Sort & SORT_REVERSE) ? -1 : 1;
+    array += (C_Sort & SORT_REVERSE) ? -1 : 1;
 
     if (tree->child)
       tree = tree->child;
@@ -172,8 +172,8 @@ static void linearize_tree(struct Context *ctx)
 static void calculate_visibility(struct Context *ctx, int *max_depth)
 {
   struct MuttThread *tmp = NULL, *tree = ctx->tree;
-  int hide_top_missing = HideTopMissing && !HideMissing;
-  int hide_top_limited = HideTopLimited && !HideLimited;
+  int hide_top_missing = C_HideTopMissing && !C_HideMissing;
+  int hide_top_limited = C_HideTopLimited && !C_HideLimited;
   int depth = 0;
 
   /* we walk each level backwards to make it easier to compute next_subtree_visible */
@@ -210,13 +210,13 @@ static void calculate_visibility(struct Context *ctx, int *max_depth)
       else
       {
         tree->visible = false;
-        tree->deep = !HideLimited;
+        tree->deep = !C_HideLimited;
       }
     }
     else
     {
       tree->visible = false;
-      tree->deep = !HideMissing;
+      tree->deep = !C_HideMissing;
     }
     tree->next_subtree_visible =
         tree->next && (tree->next->next_subtree_visible || tree->next->subtree_visible);
@@ -286,9 +286,9 @@ static void calculate_visibility(struct Context *ctx, int *max_depth)
 void mutt_draw_tree(struct Context *ctx)
 {
   char *pfx = NULL, *mypfx = NULL, *arrow = NULL, *myarrow = NULL, *new_tree = NULL;
-  char corner = (Sort & SORT_REVERSE) ? MUTT_TREE_ULCORNER : MUTT_TREE_LLCORNER;
-  char vtee = (Sort & SORT_REVERSE) ? MUTT_TREE_BTEE : MUTT_TREE_TTEE;
-  int depth = 0, start_depth = 0, max_depth = 0, width = NarrowTree ? 1 : 2;
+  char corner = (C_Sort & SORT_REVERSE) ? MUTT_TREE_ULCORNER : MUTT_TREE_LLCORNER;
+  char vtee = (C_Sort & SORT_REVERSE) ? MUTT_TREE_BTEE : MUTT_TREE_TTEE;
+  int depth = 0, start_depth = 0, max_depth = 0, width = C_NarrowTree ? 1 : 2;
   struct MuttThread *nextdisp = NULL, *pseudo = NULL, *parent = NULL, *tree = ctx->tree;
 
   /* Do the visibility calculations and free the old thread chars.
@@ -304,9 +304,9 @@ void mutt_draw_tree(struct Context *ctx)
       myarrow = arrow + (depth - start_depth - (start_depth ? 0 : 1)) * width;
       if (depth && start_depth == depth)
         myarrow[0] = nextdisp ? MUTT_TREE_LTEE : corner;
-      else if (parent->message && !HideLimited)
+      else if (parent->message && !C_HideLimited)
         myarrow[0] = MUTT_TREE_HIDDEN;
-      else if (!parent->message && !HideMissing)
+      else if (!parent->message && !C_HideMissing)
         myarrow[0] = MUTT_TREE_MISSING;
       else
         myarrow[0] = vtee;
@@ -420,13 +420,13 @@ static void make_subject_list(struct ListHead *subjects, struct MuttThread *cur,
 
     if (dateptr)
     {
-      thisdate = ThreadReceived ? cur->message->received : cur->message->date_sent;
+      thisdate = C_ThreadReceived ? cur->message->received : cur->message->date_sent;
       if (!*dateptr || thisdate < *dateptr)
         *dateptr = thisdate;
     }
 
     env = cur->message->env;
-    if (env->real_subj && ((env->real_subj != env->subject) || (!SortRe)))
+    if (env->real_subj && ((env->real_subj != env->subject) || (!C_SortRe)))
     {
       struct ListNode *np = NULL;
       STAILQ_FOREACH(np, subjects, entries)
@@ -482,9 +482,10 @@ static struct MuttThread *find_subject(struct Mailbox *m, struct MuttThread *cur
           !tmp->fake_thread &&             /* don't match pseudo threads */
           tmp->message->subject_changed && /* only match interesting replies */
           !is_descendant(tmp, cur) &&      /* don't match in the same thread */
-          (date >= (ThreadReceived ? tmp->message->received : tmp->message->date_sent)) &&
-          (!last || (ThreadReceived ? (last->message->received < tmp->message->received) :
-                                      (last->message->date_sent < tmp->message->date_sent))) &&
+          (date >= (C_ThreadReceived ? tmp->message->received : tmp->message->date_sent)) &&
+          (!last || (C_ThreadReceived ?
+                         (last->message->received < tmp->message->received) :
+                         (last->message->date_sent < tmp->message->date_sent))) &&
           tmp->message->env->real_subj &&
           (mutt_str_strcmp(np->data, tmp->message->env->real_subj) == 0))
       {
@@ -638,7 +639,7 @@ static int compare_threads(const void *a, const void *b)
    */
   else
   {
-    sort_func = mutt_get_sort_func(Sort);
+    sort_func = mutt_get_sort_func(C_Sort);
     return sort_func ? 1 : 0;
   }
 }
@@ -660,7 +661,7 @@ struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, bool init)
    * resorting, so we sort backwards and then put them back
    * in reverse order so they're forwards
    */
-  Sort ^= SORT_REVERSE;
+  C_Sort ^= SORT_REVERSE;
   if (compare_threads(NULL, NULL) == 0)
     return thread;
 
@@ -738,7 +739,7 @@ struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, bool init)
         if (!thread->sort_key || thread->sort_children)
         {
           /* make sort_key the first or last sibling, as appropriate */
-          sort_key = (!(Sort & SORT_LAST) ^ !(Sort & SORT_REVERSE)) ? thread->child : tmp;
+          sort_key = (!(C_Sort & SORT_LAST) ^ !(C_Sort & SORT_REVERSE)) ? thread->child : tmp;
 
           /* we just sorted its children */
           thread->sort_children = false;
@@ -746,10 +747,10 @@ struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, bool init)
           oldsort_key = thread->sort_key;
           thread->sort_key = thread->message;
 
-          if (Sort & SORT_LAST)
+          if (C_Sort & SORT_LAST)
           {
             if (!thread->sort_key ||
-                ((((Sort & SORT_REVERSE) ? 1 : -1) *
+                ((((C_Sort & SORT_REVERSE) ? 1 : -1) *
                   compare_threads((void *) &thread, (void *) &sort_key)) > 0))
             {
               thread->sort_key = sort_key->sort_key;
@@ -770,7 +771,7 @@ struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, bool init)
       }
       else
       {
-        Sort ^= SORT_REVERSE;
+        C_Sort ^= SORT_REVERSE;
         FREE(&array);
         return top;
       }
@@ -840,12 +841,10 @@ void mutt_sort_threads(struct Context *ctx, bool init)
   memset(&top, 0, sizeof(top));
   struct ListNode *ref = NULL;
 
-  /* set Sort to the secondary method to support the set sort_aux=reverse-*
-   * settings.  The sorting functions just look at the value of
-   * SORT_REVERSE
-   */
-  oldsort = Sort;
-  Sort = SortAux;
+  /* Set C_Sort to the secondary method to support the set sort_aux=reverse-*
+   * settings.  The sorting functions just look at the value of SORT_REVERSE */
+  oldsort = C_Sort;
+  C_Sort = C_SortAux;
 
   if (!ctx->thread_hash)
     init = true;
@@ -877,7 +876,7 @@ void mutt_sort_threads(struct Context *ctx, bool init)
 
     if (!cur->thread)
     {
-      if ((!init || DuplicateThreads) && cur->env->message_id)
+      if ((!init || C_DuplicateThreads) && cur->env->message_id)
         thread = mutt_hash_find(ctx->thread_hash, cur->env->message_id);
       else
         thread = NULL;
@@ -921,7 +920,7 @@ void mutt_sort_threads(struct Context *ctx, bool init)
       }
       else
       {
-        new = (DuplicateThreads ? thread : NULL);
+        new = (C_DuplicateThreads ? thread : NULL);
 
         thread = mutt_mem_calloc(1, sizeof(struct MuttThread));
         thread->message = cur;
@@ -1048,7 +1047,7 @@ void mutt_sort_threads(struct Context *ctx, bool init)
 
   check_subjects(ctx->mailbox, init);
 
-  if (!StrictThreads)
+  if (!C_StrictThreads)
     pseudo_threads(ctx);
 
   if (ctx->tree)
@@ -1056,7 +1055,7 @@ void mutt_sort_threads(struct Context *ctx, bool init)
     ctx->tree = mutt_sort_subthreads(ctx->tree, init);
 
     /* restore the oldsort order. */
-    Sort = oldsort;
+    C_Sort = oldsort;
 
     /* Put the list into an array. */
     linearize_tree(ctx);
@@ -1078,7 +1077,7 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
   struct MuttThread *cur = NULL;
   struct Email *tmp = NULL;
 
-  if ((Sort & SORT_MASK) != SORT_THREADS)
+  if ((C_Sort & SORT_MASK) != SORT_THREADS)
   {
     mutt_error(_("Threading is not enabled"));
     return e->virtual;
@@ -1093,7 +1092,7 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
   }
   else
   {
-    if (forwards ^ ((Sort & SORT_REVERSE) != 0))
+    if (forwards ^ ((C_Sort & SORT_REVERSE) != 0))
     {
       while (!cur->next && cur->parent)
         cur = cur->parent;
@@ -1105,7 +1104,7 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
     }
   }
 
-  if (forwards ^ ((Sort & SORT_REVERSE) != 0))
+  if (forwards ^ ((C_Sort & SORT_REVERSE) != 0))
   {
     do
     {
@@ -1142,7 +1141,7 @@ int mutt_parent_message(struct Context *ctx, struct Email *e, bool find_root)
   struct MuttThread *thread = NULL;
   struct Email *parent = NULL;
 
-  if ((Sort & SORT_MASK) != SORT_THREADS)
+  if ((C_Sort & SORT_MASK) != SORT_THREADS)
   {
     mutt_error(_("Threading is not enabled"));
     return e->virtual;
@@ -1222,13 +1221,13 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *cur, int flag)
 {
   struct MuttThread *thread = NULL, *top = NULL;
   struct Email *roothdr = NULL;
-  int final, reverse = (Sort & SORT_REVERSE), minmsgno;
+  int final, reverse = (C_Sort & SORT_REVERSE), minmsgno;
   int num_hidden = 0, new = 0, old = 0;
   bool flagged = false;
   int min_unread_msgno = INT_MAX, min_unread = cur->virtual;
 #define CHECK_LIMIT (!ctx->pattern || cur->limited)
 
-  if ((Sort & SORT_MASK) != SORT_THREADS && !(flag & MUTT_THREAD_GET_HIDDEN))
+  if ((C_Sort & SORT_MASK) != SORT_THREADS && !(flag & MUTT_THREAD_GET_HIDDEN))
   {
     mutt_error(_("Threading is not enabled"));
     return cur->virtual;
@@ -1401,7 +1400,7 @@ int mutt_messages_in_thread(struct Mailbox *m, struct Email *e, int flag)
   struct MuttThread *threads[2];
   int rc;
 
-  if ((Sort & SORT_MASK) != SORT_THREADS || !e->thread)
+  if ((C_Sort & SORT_MASK) != SORT_THREADS || !e->thread)
     return 1;
 
   threads[0] = e->thread;
@@ -1416,7 +1415,7 @@ int mutt_messages_in_thread(struct Mailbox *m, struct Email *e, int flag)
       threads[i] = threads[i]->child;
   }
 
-  if (Sort & SORT_REVERSE)
+  if (C_Sort & SORT_REVERSE)
     rc = threads[0]->message->msgno - (threads[1] ? threads[1]->message->msgno : -1);
   else
   {

@@ -391,9 +391,9 @@ static bool get_hostname(void)
   char *str = NULL;
   struct utsname utsname;
 
-  if (Hostname)
+  if (C_Hostname)
   {
-    str = Hostname;
+    str = C_Hostname;
   }
   else
   {
@@ -416,24 +416,24 @@ static bool get_hostname(void)
   else
     ShortHostname = mutt_str_strdup(str);
 
-  if (!Hostname)
+  if (!C_Hostname)
   {
     /* now get FQDN.  Use configured domain first, DNS next, then uname */
 #ifdef DOMAIN
-    /* we have a compile-time domain name, use that for Hostname */
-    Hostname =
+    /* we have a compile-time domain name, use that for C_Hostname */
+    C_Hostname =
         mutt_mem_malloc(mutt_str_strlen(DOMAIN) + mutt_str_strlen(ShortHostname) + 2);
-    sprintf((char *) Hostname, "%s.%s", NONULL(ShortHostname), DOMAIN);
+    sprintf((char *) C_Hostname, "%s.%s", NONULL(ShortHostname), DOMAIN);
 #else
-    Hostname = getmailname();
-    if (!Hostname)
+    C_Hostname = getmailname();
+    if (!C_Hostname)
     {
       char buffer[LONG_STRING];
       if (getdnsdomainname(buffer, sizeof(buffer)) == 0)
       {
-        Hostname = mutt_mem_malloc(mutt_str_strlen(buffer) +
-                                   mutt_str_strlen(ShortHostname) + 2);
-        sprintf((char *) Hostname, "%s.%s", NONULL(ShortHostname), buffer);
+        C_Hostname = mutt_mem_malloc(mutt_str_strlen(buffer) +
+                                     mutt_str_strlen(ShortHostname) + 2);
+        sprintf((char *) C_Hostname, "%s.%s", NONULL(ShortHostname), buffer);
       }
       else
       {
@@ -444,13 +444,13 @@ static bool get_hostname(void)
          * It could be wrong, but we've done the best we can, at this point the
          * onus is on the user to provide the correct hostname if the nodename
          * won't work in their network.  */
-        Hostname = mutt_str_strdup(utsname.nodename);
+        C_Hostname = mutt_str_strdup(utsname.nodename);
       }
     }
 #endif
   }
-  if (Hostname)
-    cs_str_initial_set(Config, "hostname", Hostname, NULL);
+  if (C_Hostname)
+    cs_str_initial_set(Config, "hostname", C_Hostname, NULL);
 
   return true;
 }
@@ -811,13 +811,13 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
   mutt_buffer_init(&token);
   while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, MUTT_CONT)))
   {
-    const int conv = ConfigCharset && (*ConfigCharset) && Charset;
+    const int conv = C_ConfigCharset && (*C_ConfigCharset) && C_Charset;
     if (conv)
     {
       currentline = mutt_str_strdup(linebuf);
       if (!currentline)
         continue;
-      mutt_ch_convert_string(&currentline, ConfigCharset, Charset, 0);
+      mutt_ch_convert_string(&currentline, C_ConfigCharset, C_Charset, 0);
     }
     else
       currentline = linebuf;
@@ -948,7 +948,7 @@ static enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   mutt_grouplist_add_addrlist(&gc, tmp->addr);
   mutt_alias_add_reverse(tmp);
 
-  if (DebugLevel > 2)
+  if (C_DebugLevel > 2)
   {
     /* A group is terminated with an empty address, so check a->mailbox */
     for (struct Address *a = tmp->addr; a && a->mailbox; a = a->next)
@@ -1358,7 +1358,7 @@ static enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
     }
 
     mutt_str_strfcpy(m->path, buf->data, sizeof(m->path));
-    /* int rc = */ mx_path_canon2(m, Folder);
+    /* int rc = */ mx_path_canon2(m, C_Folder);
 
     bool new_account = false;
     struct Account *a = mx_ac_find(m);
@@ -3103,8 +3103,8 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
     cs_str_string_set(Config, "visual", env_ed, NULL);
   }
 
-  Charset = mutt_ch_get_langinfo_charset();
-  mutt_ch_set_charset(Charset);
+  C_Charset = mutt_ch_get_langinfo_charset();
+  mutt_ch_set_charset(C_Charset);
 
   Matches = mutt_mem_calloc(MatchesListsize, sizeof(char *));
 
@@ -3113,7 +3113,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
 #ifdef HAVE_GETSID
   /* Unset suspend by default if we're the session leader */
   if (getsid(0) == getpid())
-    Suspend = false;
+    C_Suspend = false;
 #endif
 
   /* RFC2368, "4. Unsafe headers"
@@ -3223,16 +3223,16 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   if (!get_hostname())
     return 1;
 
-  if (!Realname)
+  if (!C_Realname)
   {
     struct passwd *pw = getpwuid(getuid());
     if (pw)
     {
       char buf[STRING];
-      Realname = mutt_str_strdup(mutt_gecos_name(buf, sizeof(buf), pw));
+      C_Realname = mutt_str_strdup(mutt_gecos_name(buf, sizeof(buf), pw));
     }
   }
-  cs_str_initial_set(Config, "realname", Realname, NULL);
+  cs_str_initial_set(Config, "realname", C_Realname, NULL);
 
   if (need_pause && !OptNoCurses)
   {
@@ -3241,13 +3241,13 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
       return 1; // TEST14: neomutt -e broken (press 'q')
   }
 
-  mutt_file_mkdir(Tmpdir, S_IRWXU);
+  mutt_file_mkdir(C_Tmpdir, S_IRWXU);
 
   mutt_hist_init();
   mutt_hist_read_file();
 
 #ifdef USE_NOTMUCH
-  if (VirtualSpoolfile)
+  if (C_VirtualSpoolfile)
   {
     /* Find the first virtual folder and open it */
     struct MailboxNode *mp = NULL;

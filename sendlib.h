@@ -35,23 +35,23 @@ struct Mailbox;
 struct ParameterList;
 
 /* These Config Variables are only used in sendlib.c */
-extern bool  Allow8bit;
-extern char *AttachCharset;
-extern bool  BounceDelivered;
-extern bool  EncodeFrom;
-extern bool  ForwardDecrypt;
-extern bool  HiddenHost;
-extern char *Inews;
-extern bool  MimeForwardDecode;
-extern bool  MimeSubject; /**< encode subject line with RFC2047 */
-extern char *MimeTypeQueryCommand;
-extern bool  MimeTypeQueryFirst;
-extern char *Sendmail;
-extern short SendmailWait;
-extern bool  Use8bitmime;
-extern bool  UseEnvelopeFrom;
-extern bool  UserAgent;
-extern short WrapHeaders;
+extern bool  C_Allow8bit;
+extern char *C_AttachCharset;
+extern bool  C_BounceDelivered;
+extern bool  C_EncodeFrom;
+extern bool  C_ForwardDecrypt;
+extern bool  C_HiddenHost;
+extern char *C_Inews;
+extern bool  C_MimeForwardDecode;
+extern bool  C_MimeSubject; /**< encode subject line with RFC2047 */
+extern char *C_MimeTypeQueryCommand;
+extern bool  C_MimeTypeQueryFirst;
+extern char *C_Sendmail;
+extern short C_SendmailWait;
+extern bool  C_Use8bitmime;
+extern bool  C_UseEnvelopeFrom;
+extern bool  C_UserAgent;
+extern short C_WrapHeaders;
 
 /**
  * enum MuttWriteHeaderMode - Modes for mutt_rfc822_write_header()

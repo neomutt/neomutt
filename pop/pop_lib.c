@@ -52,7 +52,7 @@
 #include "progress.h"
 
 /* These Config Variables are only used in pop/pop_lib.c */
-unsigned char PopReconnect; ///< Config: (pop) Reconnect to the server is the connection is lost
+unsigned char C_PopReconnect; ///< Config: (pop) Reconnect to the server is the connection is lost
 
 /**
  * pop_parse_path - Parse a POP mailbox name
@@ -316,13 +316,13 @@ int pop_open_connection(struct PopAccountData *adata)
 
 #ifdef USE_SSL
   /* Attempt STLS if available and desired. */
-  if (!adata->conn->ssf && (adata->cmd_stls || SslForceTls))
+  if (!adata->conn->ssf && (adata->cmd_stls || C_SslForceTls))
   {
-    if (SslForceTls)
+    if (C_SslForceTls)
       adata->use_stls = 2;
     if (adata->use_stls == 0)
     {
-      rc = query_quadoption(SslStarttls, _("Secure connection with TLS?"));
+      rc = query_quadoption(C_SslStarttls, _("Secure connection with TLS?"));
       if (rc == MUTT_ABORT)
         return -2;
       adata->use_stls = 1;
@@ -356,7 +356,7 @@ int pop_open_connection(struct PopAccountData *adata)
     }
   }
 
-  if (SslForceTls && !adata->conn->ssf)
+  if (C_SslForceTls && !adata->conn->ssf)
   {
     mutt_error(_("Encrypted connection unavailable"));
     return -2;
@@ -605,7 +605,7 @@ int pop_reconnect(struct Mailbox *m)
     {
       struct Progress progressbar;
       mutt_progress_init(&progressbar, _("Verifying message indexes..."),
-                         MUTT_PROGRESS_SIZE, NetInc, 0);
+                         MUTT_PROGRESS_SIZE, C_NetInc, 0);
 
       for (int i = 0; i < m->msg_count; i++)
         m->emails[i]->refno = -1;
@@ -624,7 +624,7 @@ int pop_reconnect(struct Mailbox *m)
     if (ret < -1)
       return -1;
 
-    if (query_quadoption(PopReconnect,
+    if (query_quadoption(C_PopReconnect,
                          _("Connection lost. Reconnect to POP server?")) != MUTT_YES)
     {
       return -1;

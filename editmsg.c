@@ -66,13 +66,13 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
 
   mutt_mktemp(fname, sizeof(fname));
 
-  enum MailboxType omagic = MboxType;
-  MboxType = MUTT_MBOX;
+  enum MailboxType omagic = C_MboxType;
+  C_MboxType = MUTT_MBOX;
 
   struct Mailbox *m_fname = mx_path_resolve(fname);
   struct Context *tmpctx = mx_mbox_open(m_fname, MUTT_NEWFOLDER);
 
-  MboxType = omagic;
+  C_MboxType = omagic;
 
   if (!tmpctx)
   {
@@ -129,7 +129,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   /* Do not reuse the stat sb here as it is outdated. */
   time_t mtime = mutt_file_decrease_mtime(fname, NULL);
 
-  mutt_edit_file(NONULL(Editor), fname);
+  mutt_edit_file(NONULL(C_Editor), fname);
 
   rc = stat(fname, &sb);
   if (rc == -1)
@@ -238,7 +238,7 @@ bail:
     mutt_set_flag(m, e, MUTT_PURGE, true);
     mutt_set_flag(m, e, MUTT_READ, true);
 
-    if (DeleteUntag)
+    if (C_DeleteUntag)
       mutt_set_flag(m, e, MUTT_TAG, false);
   }
   else if (rc == -1)

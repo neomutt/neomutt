@@ -55,7 +55,7 @@
 #include "hcache/hcversion.h"
 
 /* These Config Variables are only used in hcache/hcache.c */
-char *HeaderCacheBackend; ///< Config: (hcache) Header cache backend to use
+char *C_HeaderCacheBackend; ///< Config: (hcache) Header cache backend to use
 
 static unsigned int hcachever = 0x0;
 
@@ -68,7 +68,7 @@ HCACHE_BACKEND(qdbm)
 HCACHE_BACKEND(tokyocabinet)
 #undef HCACHE_BACKEND
 
-#define hcache_get_ops() hcache_get_backend_ops(HeaderCacheBackend)
+#define hcache_get_ops() hcache_get_backend_ops(C_HeaderCacheBackend)
 
 /**
  * hcache_ops - Backend implementations

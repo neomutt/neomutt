@@ -29,8 +29,8 @@ struct ListHead;
 struct Email;
 
 /* These Config Variables are only used in remailer.c */
-extern char *MixEntryFormat;
-extern char *Mixmaster;
+extern char *C_MixEntryFormat;
+extern char *C_Mixmaster;
 
 /* Mixmaster's maximum chain length.  Don't change this. */
 

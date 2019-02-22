@@ -56,7 +56,7 @@
 #include "mx.h"
 
 /* These Config Variables are only used in imap/command.c */
-bool ImapServernoise; ///< Config: (imap) Display server warnings as error messages
+bool C_ImapServernoise; ///< Config: (imap) Display server warnings as error messages
 
 #define IMAP_CMD_BUFSIZE 512
 
@@ -643,7 +643,7 @@ static void cmd_parse_lsub(struct ImapAccountData *adata, char *s)
     return;
   }
 
-  if (!ImapCheckSubscribed)
+  if (!C_ImapCheckSubscribed)
     return;
 
   adata->cmdresult = &list;
@@ -661,7 +661,7 @@ static void cmd_parse_lsub(struct ImapAccountData *adata, char *s)
   imap_quote_string(errstr, sizeof(errstr), list.name, true);
   url.path = errstr + 1;
   url.path[strlen(url.path) - 1] = '\0';
-  if (mutt_str_strcmp(url.user, ImapUser) == 0)
+  if (mutt_str_strcmp(url.user, C_ImapUser) == 0)
     url.user = NULL;
   url_tostring(&url, buf + 11, sizeof(buf) - 11, 0);
   mutt_str_strcat(buf, sizeof(buf), "\"");
@@ -867,7 +867,7 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
   mutt_debug(LL_DEBUG3, "Found %s in mailbox list (OV: %u ON: %u U: %d)\n",
              mailbox, olduv, oldun, mdata->unseen);
 
-  if (MailCheckRecent)
+  if (C_MailCheckRecent)
   {
     if (olduv && olduv == mdata->uid_validity)
     {
@@ -1018,7 +1018,7 @@ static int cmd_handle_untagged(struct ImapAccountData *adata)
 
     return -1;
   }
-  else if (ImapServernoise && mutt_str_startswith(s, "NO", CASE_IGNORE))
+  else if (C_ImapServernoise && mutt_str_startswith(s, "NO", CASE_IGNORE))
   {
     mutt_debug(LL_DEBUG2, "Handling untagged NO\n");
 
@@ -1236,8 +1236,8 @@ int imap_exec(struct ImapAccountData *adata, const char *cmdstr, int flags)
   if (flags & IMAP_CMD_QUEUE)
     return IMAP_EXEC_SUCCESS;
 
-  if ((flags & IMAP_CMD_POLL) && (ImapPollTimeout > 0) &&
-      (mutt_socket_poll(adata->conn, ImapPollTimeout)) == 0)
+  if ((flags & IMAP_CMD_POLL) && (C_ImapPollTimeout > 0) &&
+      (mutt_socket_poll(adata->conn, C_ImapPollTimeout)) == 0)
   {
     mutt_error(_("Connection to %s timed out"), adata->conn->account.host);
     cmd_handle_fatal(adata);
@@ -1344,7 +1344,7 @@ int imap_cmd_idle(struct ImapAccountData *adata)
     return -1;
   }
 
-  if ((ImapPollTimeout > 0) && (mutt_socket_poll(adata->conn, ImapPollTimeout)) == 0)
+  if ((C_ImapPollTimeout > 0) && (mutt_socket_poll(adata->conn, C_ImapPollTimeout)) == 0)
   {
     mutt_error(_("Connection to %s timed out"), adata->conn->account.host);
     cmd_handle_fatal(adata);

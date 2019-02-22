@@ -53,8 +53,8 @@
 #endif
 
 /* These Config Variables are only used in remailer.c */
-char *MixEntryFormat; ///< Config: (mixmaster) printf-like format string for the mixmaster chain
-char *Mixmaster; ///< Config: (mixmaster) External command to route a mixmaster message
+char *C_MixEntryFormat; ///< Config: (mixmaster) printf-like format string for the mixmaster chain
+char *C_Mixmaster; ///< Config: (mixmaster) External command to route a mixmaster message
 
 #define MIX_CAP_COMPRESS (1 << 0)
 #define MIX_CAP_MIDDLEMAN (1 << 1)
@@ -181,7 +181,7 @@ static struct Remailer **mix_type2_list(size_t *l)
   if (devnull == -1)
     return NULL;
 
-  snprintf(cmd, sizeof(cmd), "%s -T", Mixmaster);
+  snprintf(cmd, sizeof(cmd), "%s -T", C_Mixmaster);
 
   mm_pid = mutt_create_filter_fd(cmd, NULL, &fp, NULL, devnull, -1, devnull);
   if (mm_pid == -1)
@@ -501,7 +501,7 @@ static void mix_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct Remailer **type2_list = menu->data;
   mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols,
-                      NONULL(MixEntryFormat), mix_format_str,
+                      NONULL(C_MixEntryFormat), mix_format_str,
                       (unsigned long) type2_list[num], MUTT_FORMAT_ARROWCURSOR);
 }
 
@@ -830,7 +830,7 @@ int mix_send_message(struct ListHead *chain, const char *tempfile)
   int i = 0;
 
   struct Buffer *cmd = mutt_buffer_pool_get();
-  mutt_buffer_printf(cmd, "cat %s | %s -m ", tempfile, Mixmaster);
+  mutt_buffer_printf(cmd, "cat %s | %s -m ", tempfile, C_Mixmaster);
 
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, chain, entries)

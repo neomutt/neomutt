@@ -55,13 +55,13 @@
 #include "sort.h"
 
 /* These Config Variables are only used in hdrline.c */
-struct MbTable *CryptChars; ///< Config: User-configurable crypto flags: signed, encrypted etc.
-struct MbTable *FlagChars; ///< Config: User-configurable index flags: tagged, new, etc
-struct MbTable *FromChars; ///< Config: User-configurable index flags: to address, cc address, etc
-struct MbTable *ToChars; ///< Config: Indicator characters for the 'To' field in the index
+struct MbTable *C_CryptChars; ///< Config: User-configurable crypto flags: signed, encrypted etc.
+struct MbTable *C_FlagChars; ///< Config: User-configurable index flags: tagged, new, etc
+struct MbTable *C_FromChars; ///< Config: User-configurable index flags: to address, cc address, etc
+struct MbTable *C_ToChars; ///< Config: Indicator characters for the 'To' field in the index
 
 /**
- * enum FlagChars - Index into the FlagChars variable ($flag_chars)
+ * enum FlagChars - Index into the #C_FlagChars variable ($flag_chars)
  */
 enum FlagChars
 {
@@ -79,7 +79,7 @@ enum FlagChars
 };
 
 /**
- * enum CryptChars - Index into the CryptChars variable ($crypt_chars)
+ * enum CryptChars - Index into the #C_CryptChars variable ($crypt_chars)
  */
 enum CryptChars
 {
@@ -276,10 +276,10 @@ static const char *make_from_prefix(enum FieldType disp)
     [DISP_FROM] = "",  [DISP_PLAIN] = "",
   };
 
-  if (!FromChars || !FromChars->chars || (FromChars->len == 0))
+  if (!C_FromChars || !C_FromChars->chars || (C_FromChars->len == 0))
     return long_prefixes[disp];
 
-  const char *pchar = get_nth_wchar(FromChars, disp);
+  const char *pchar = get_nth_wchar(C_FromChars, disp);
   if (mutt_str_strlen(pchar) == 0)
     return "";
 
@@ -553,7 +553,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
   const char *wch = NULL;
   int i;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
-  int threads = ((Sort & SORT_MASK) == SORT_THREADS);
+  int threads = ((C_Sort & SORT_MASK) == SORT_THREADS);
   int is_index = (flags & MUTT_FORMAT_INDEX);
   size_t colorlen;
 
@@ -762,7 +762,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
         p = buf;
 
-        cp = (op == 'd' || op == 'D') ? (NONULL(DateFormat)) : src;
+        cp = (op == 'd' || op == 'D') ? (NONULL(C_DateFormat)) : src;
         bool do_locales;
         if (*cp == '!')
         {
@@ -1077,7 +1077,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       if (!optional)
       {
         make_from_addr(e->env, tmp, sizeof(tmp), true);
-        if (!SaveAddress && (p = strpbrk(tmp, "%@")))
+        if (!C_SaveAddress && (p = strpbrk(tmp, "%@")))
           *p = 0;
         mutt_format_s(buf, buflen, prec, tmp);
       }
@@ -1147,21 +1147,21 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'S':
       if (e->deleted)
-        wch = get_nth_wchar(FlagChars, FLAG_CHAR_DELETED);
+        wch = get_nth_wchar(C_FlagChars, FLAG_CHAR_DELETED);
       else if (e->attach_del)
-        wch = get_nth_wchar(FlagChars, FLAG_CHAR_DELETED_ATTACH);
+        wch = get_nth_wchar(C_FlagChars, FLAG_CHAR_DELETED_ATTACH);
       else if (e->tagged)
-        wch = get_nth_wchar(FlagChars, FLAG_CHAR_TAGGED);
+        wch = get_nth_wchar(C_FlagChars, FLAG_CHAR_TAGGED);
       else if (e->flagged)
-        wch = get_nth_wchar(FlagChars, FLAG_CHAR_IMPORTANT);
+        wch = get_nth_wchar(C_FlagChars, FLAG_CHAR_IMPORTANT);
       else if (e->replied)
-        wch = get_nth_wchar(FlagChars, FLAG_CHAR_REPLIED);
+        wch = get_nth_wchar(C_FlagChars, FLAG_CHAR_REPLIED);
       else if (e->read && (ctx && ctx->msgnotreadyet != e->msgno))
-        wch = get_nth_wchar(FlagChars, FLAG_CHAR_SEMPTY);
+        wch = get_nth_wchar(C_FlagChars, FLAG_CHAR_SEMPTY);
       else if (e->old)
-        wch = get_nth_wchar(FlagChars, FLAG_CHAR_OLD);
+        wch = get_nth_wchar(C_FlagChars, FLAG_CHAR_OLD);
       else
-        wch = get_nth_wchar(FlagChars, FLAG_CHAR_NEW);
+        wch = get_nth_wchar(C_FlagChars, FLAG_CHAR_NEW);
 
       snprintf(tmp, sizeof(tmp), "%s", wch);
       colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_FLAGS);
@@ -1185,8 +1185,8 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     case 'T':
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt,
-               (ToChars && ((i = user_is_recipient(e))) < ToChars->len) ?
-                   ToChars->chars[i] :
+               (C_ToChars && ((i = user_is_recipient(e))) < C_ToChars->len) ?
+                   C_ToChars->chars[i] :
                    " ");
       break;
 
@@ -1301,26 +1301,26 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       {
         const char *ch = NULL;
         if (e->deleted)
-          ch = get_nth_wchar(FlagChars, FLAG_CHAR_DELETED);
+          ch = get_nth_wchar(C_FlagChars, FLAG_CHAR_DELETED);
         else if (e->attach_del)
-          ch = get_nth_wchar(FlagChars, FLAG_CHAR_DELETED_ATTACH);
+          ch = get_nth_wchar(C_FlagChars, FLAG_CHAR_DELETED_ATTACH);
         else if (threads && thread_is_new(ctx, e))
-          ch = get_nth_wchar(FlagChars, FLAG_CHAR_NEW_THREAD);
+          ch = get_nth_wchar(C_FlagChars, FLAG_CHAR_NEW_THREAD);
         else if (threads && thread_is_old(ctx, e))
-          ch = get_nth_wchar(FlagChars, FLAG_CHAR_OLD_THREAD);
+          ch = get_nth_wchar(C_FlagChars, FLAG_CHAR_OLD_THREAD);
         else if (e->read && (ctx && (ctx->msgnotreadyet != e->msgno)))
         {
           if (e->replied)
-            ch = get_nth_wchar(FlagChars, FLAG_CHAR_REPLIED);
+            ch = get_nth_wchar(C_FlagChars, FLAG_CHAR_REPLIED);
           else
-            ch = get_nth_wchar(FlagChars, FLAG_CHAR_ZEMPTY);
+            ch = get_nth_wchar(C_FlagChars, FLAG_CHAR_ZEMPTY);
         }
         else
         {
           if (e->old)
-            ch = get_nth_wchar(FlagChars, FLAG_CHAR_OLD);
+            ch = get_nth_wchar(C_FlagChars, FLAG_CHAR_OLD);
           else
-            ch = get_nth_wchar(FlagChars, FLAG_CHAR_NEW);
+            ch = get_nth_wchar(C_FlagChars, FLAG_CHAR_NEW);
         }
 
         snprintf(tmp, sizeof(tmp), "%s", ch);
@@ -1330,17 +1330,17 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       {
         const char *ch = NULL;
         if ((WithCrypto != 0) && (e->security & SEC_GOODSIGN))
-          ch = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_GOOD_SIGN);
+          ch = get_nth_wchar(C_CryptChars, FLAG_CHAR_CRYPT_GOOD_SIGN);
         else if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT))
-          ch = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_ENCRYPTED);
+          ch = get_nth_wchar(C_CryptChars, FLAG_CHAR_CRYPT_ENCRYPTED);
         else if ((WithCrypto != 0) && (e->security & SEC_SIGN))
-          ch = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_SIGNED);
+          ch = get_nth_wchar(C_CryptChars, FLAG_CHAR_CRYPT_SIGNED);
         else if (((WithCrypto & APPLICATION_PGP) != 0) && ((e->security & PGP_KEY) == PGP_KEY))
         {
-          ch = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_CONTAINS_KEY);
+          ch = get_nth_wchar(C_CryptChars, FLAG_CHAR_CRYPT_CONTAINS_KEY);
         }
         else
-          ch = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_NO_CRYPTO);
+          ch = get_nth_wchar(C_CryptChars, FLAG_CHAR_CRYPT_NO_CRYPTO);
 
         snprintf(tmp, sizeof(tmp), "%s", ch);
         src++;
@@ -1349,11 +1349,11 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       {
         const char *ch = NULL;
         if (e->tagged)
-          ch = get_nth_wchar(FlagChars, FLAG_CHAR_TAGGED);
+          ch = get_nth_wchar(C_FlagChars, FLAG_CHAR_TAGGED);
         else if (e->flagged)
-          ch = get_nth_wchar(FlagChars, FLAG_CHAR_IMPORTANT);
+          ch = get_nth_wchar(C_FlagChars, FLAG_CHAR_IMPORTANT);
         else
-          ch = get_nth_wchar(ToChars, user_is_recipient(e));
+          ch = get_nth_wchar(C_ToChars, user_is_recipient(e));
 
         snprintf(tmp, sizeof(tmp), "%s", ch);
         src++;
@@ -1371,49 +1371,49 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       /* New/Old for threads; replied; New/Old for messages */
       const char *first = NULL;
       if (threads && thread_is_new(ctx, e))
-        first = get_nth_wchar(FlagChars, FLAG_CHAR_NEW_THREAD);
+        first = get_nth_wchar(C_FlagChars, FLAG_CHAR_NEW_THREAD);
       else if (threads && thread_is_old(ctx, e))
-        first = get_nth_wchar(FlagChars, FLAG_CHAR_OLD_THREAD);
+        first = get_nth_wchar(C_FlagChars, FLAG_CHAR_OLD_THREAD);
       else if (e->read && (ctx && (ctx->msgnotreadyet != e->msgno)))
       {
         if (e->replied)
-          first = get_nth_wchar(FlagChars, FLAG_CHAR_REPLIED);
+          first = get_nth_wchar(C_FlagChars, FLAG_CHAR_REPLIED);
         else
-          first = get_nth_wchar(FlagChars, FLAG_CHAR_ZEMPTY);
+          first = get_nth_wchar(C_FlagChars, FLAG_CHAR_ZEMPTY);
       }
       else
       {
         if (e->old)
-          first = get_nth_wchar(FlagChars, FLAG_CHAR_OLD);
+          first = get_nth_wchar(C_FlagChars, FLAG_CHAR_OLD);
         else
-          first = get_nth_wchar(FlagChars, FLAG_CHAR_NEW);
+          first = get_nth_wchar(C_FlagChars, FLAG_CHAR_NEW);
       }
 
       /* Marked for deletion; deleted attachments; crypto */
       const char *second = NULL;
       if (e->deleted)
-        second = get_nth_wchar(FlagChars, FLAG_CHAR_DELETED);
+        second = get_nth_wchar(C_FlagChars, FLAG_CHAR_DELETED);
       else if (e->attach_del)
-        second = get_nth_wchar(FlagChars, FLAG_CHAR_DELETED_ATTACH);
+        second = get_nth_wchar(C_FlagChars, FLAG_CHAR_DELETED_ATTACH);
       else if ((WithCrypto != 0) && (e->security & SEC_GOODSIGN))
-        second = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_GOOD_SIGN);
+        second = get_nth_wchar(C_CryptChars, FLAG_CHAR_CRYPT_GOOD_SIGN);
       else if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT))
-        second = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_ENCRYPTED);
+        second = get_nth_wchar(C_CryptChars, FLAG_CHAR_CRYPT_ENCRYPTED);
       else if ((WithCrypto != 0) && (e->security & SEC_SIGN))
-        second = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_SIGNED);
+        second = get_nth_wchar(C_CryptChars, FLAG_CHAR_CRYPT_SIGNED);
       else if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & PGP_KEY))
-        second = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_CONTAINS_KEY);
+        second = get_nth_wchar(C_CryptChars, FLAG_CHAR_CRYPT_CONTAINS_KEY);
       else
-        second = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_NO_CRYPTO);
+        second = get_nth_wchar(C_CryptChars, FLAG_CHAR_CRYPT_NO_CRYPTO);
 
       /* Tagged, flagged and recipient flag */
       const char *third = NULL;
       if (e->tagged)
-        third = get_nth_wchar(FlagChars, FLAG_CHAR_TAGGED);
+        third = get_nth_wchar(C_FlagChars, FLAG_CHAR_TAGGED);
       else if (e->flagged)
-        third = get_nth_wchar(FlagChars, FLAG_CHAR_IMPORTANT);
+        third = get_nth_wchar(C_FlagChars, FLAG_CHAR_IMPORTANT);
       else
-        third = get_nth_wchar(ToChars, user_is_recipient(e));
+        third = get_nth_wchar(C_ToChars, user_is_recipient(e));
 
       snprintf(tmp, sizeof(tmp), "%s%s%s", first, second, third);
     }

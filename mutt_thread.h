@@ -31,16 +31,16 @@ struct Mailbox;
 struct MuttThread;
 
 /* These Config Variables are only used in mutt_thread.c */
-extern bool DuplicateThreads;
-extern bool HideLimited;
-extern bool HideMissing;
-extern bool HideThreadSubject;
-extern bool HideTopLimited;
-extern bool HideTopMissing;
-extern bool NarrowTree;
-extern bool SortRe;
-extern bool StrictThreads;
-extern bool ThreadReceived;
+extern bool C_DuplicateThreads;
+extern bool C_HideLimited;
+extern bool C_HideMissing;
+extern bool C_HideThreadSubject;
+extern bool C_HideTopLimited;
+extern bool C_HideTopMissing;
+extern bool C_NarrowTree;
+extern bool C_SortRe;
+extern bool C_StrictThreads;
+extern bool C_ThreadReceived;
 
 #define MUTT_THREAD_COLLAPSE    (1 << 0) ///< Collapse an email thread
 #define MUTT_THREAD_UNCOLLAPSE  (1 << 1) ///< Uncollapse an email thread

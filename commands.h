@@ -33,14 +33,14 @@ struct Envelope;
 struct Mailbox;
 
 /* These Config Variables are only used in commands.c */
-extern unsigned char CryptVerifySig; /* verify PGP signatures */
-extern char *        DisplayFilter;
-extern bool          PipeDecode;
-extern char *        PipeSep;
-extern bool          PipeSplit;
-extern bool          PrintDecode;
-extern bool          PrintSplit;
-extern bool          PromptAfter;
+extern unsigned char C_CryptVerifySig; /* verify PGP signatures */
+extern char *        C_DisplayFilter;
+extern bool          C_PipeDecode;
+extern char *        C_PipeSep;
+extern bool          C_PipeSplit;
+extern bool          C_PrintDecode;
+extern bool          C_PrintSplit;
+extern bool          C_PromptAfter;
 
 void ci_bounce_message(struct Mailbox *m, struct EmailList *el);
 void mutt_check_stats(void);

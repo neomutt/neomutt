@@ -70,12 +70,12 @@
 #endif
 
 /* These Config Variables are only used in nntp/nntp.c */
-char *NntpAuthenticators; ///< Config: (nntp) Allowed authentication methods
-short NntpContext; ///< Config: (nntp) Maximum number of articles to list (0 for all articles)
-bool NntpListgroup; ///< Config: (nntp) Check all articles when opening a newsgroup
-bool NntpLoadDescription; ///< Config: (nntp) Load descriptions for newsgroups when adding to the list
-short NntpPoll; ///< Config: (nntp) Interval between checks for new posts
-bool ShowNewNews; ///< Config: (nntp) Check for new newsgroups when entering the browser
+char *C_NntpAuthenticators; ///< Config: (nntp) Allowed authentication methods
+short C_NntpContext; ///< Config: (nntp) Maximum number of articles to list (0 for all articles)
+bool C_NntpListgroup; ///< Config: (nntp) Check all articles when opening a newsgroup
+bool C_NntpLoadDescription; ///< Config: (nntp) Load descriptions for newsgroups when adding to the list
+short C_NntpPoll; ///< Config: (nntp) Interval between checks for new posts
+bool C_ShowNewNews; ///< Config: (nntp) Check for new newsgroups when entering the browser
 
 struct NntpAccountData *CurrentNewsSrv;
 
@@ -508,7 +508,7 @@ static void nntp_log_binbuf(const char *buf, size_t len, const char *pfx, int db
   char *p = tmp;
   char *sentinel = tmp + len;
 
-  if (DebugLevel < dbg)
+  if (C_DebugLevel < dbg)
     return;
   memcpy(tmp, buf, len);
   tmp[len] = '\0';
@@ -542,8 +542,8 @@ static int nntp_auth(struct NntpAccountData *adata)
     }
 
     /* get list of authenticators */
-    if (NntpAuthenticators && *NntpAuthenticators)
-      mutt_str_strfcpy(authenticators, NntpAuthenticators, sizeof(authenticators));
+    if (C_NntpAuthenticators && *C_NntpAuthenticators)
+      mutt_str_strfcpy(authenticators, C_NntpAuthenticators, sizeof(authenticators));
     else if (adata->hasCAPABILITIES)
     {
       mutt_str_strfcpy(authenticators, adata->authenticators, sizeof(authenticators));
@@ -877,7 +877,7 @@ static int nntp_fetch_lines(struct NntpMboxData *mdata, char *query, size_t qlen
     struct Progress progress;
 
     if (msg)
-      mutt_progress_init(&progress, msg, MUTT_PROGRESS_MSG, ReadInc, 0);
+      mutt_progress_init(&progress, msg, MUTT_PROGRESS_MSG, C_ReadInc, 0);
 
     mutt_str_strfcpy(buf, query, sizeof(buf));
     if (nntp_query(mdata, buf, sizeof(buf)) < 0)
@@ -1291,7 +1291,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
   }
 
   /* fetch list of articles */
-  if (NntpListgroup && mdata->adata->hasLISTGROUP && !mdata->deleted)
+  if (C_NntpListgroup && mdata->adata->hasLISTGROUP && !mdata->deleted)
   {
     if (!m->quiet)
       mutt_message(_("Fetching list of articles..."));
@@ -1338,7 +1338,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
   if (!m->quiet)
   {
     mutt_progress_init(&fc.progress, _("Fetching message headers..."),
-                       MUTT_PROGRESS_MSG, ReadInc, last - first + 1);
+                       MUTT_PROGRESS_MSG, C_ReadInc, last - first + 1);
   }
   for (current = first; current <= last && rc == 0; current++)
   {
@@ -1394,7 +1394,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
     /* fallback to fetch overview */
     else if (mdata->adata->hasOVER || mdata->adata->hasXOVER)
     {
-      if (NntpListgroup && mdata->adata->hasLISTGROUP)
+      if (C_NntpListgroup && mdata->adata->hasLISTGROUP)
         break;
       else
         continue;
@@ -1466,7 +1466,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
     first_over = current + 1;
   }
 
-  if (!NntpListgroup || !mdata->adata->hasLISTGROUP)
+  if (!C_NntpListgroup || !mdata->adata->hasLISTGROUP)
     current = first_over;
 
   /* fetch overview information */
@@ -1555,7 +1555,7 @@ static int check_mailbox(struct Mailbox *m)
   int rc, ret = 0;
   void *hc = NULL;
 
-  if (adata->check_time + NntpPoll > now)
+  if (adata->check_time + C_NntpPoll > now)
     return 0;
 
   mutt_message(_("Checking for new messages..."));
@@ -1583,8 +1583,8 @@ static int check_mailbox(struct Mailbox *m)
     if (mdata->last_message < mdata->last_loaded)
     {
       mdata->last_loaded = mdata->first_message - 1;
-      if (NntpContext && mdata->last_message - mdata->last_loaded > NntpContext)
-        mdata->last_loaded = mdata->last_message - NntpContext;
+      if (C_NntpContext && mdata->last_message - mdata->last_loaded > C_NntpContext)
+        mdata->last_loaded = mdata->last_message - C_NntpContext;
     }
     ret = MUTT_REOPENED;
   }
@@ -1599,8 +1599,8 @@ static int check_mailbox(struct Mailbox *m)
     struct Email *e = NULL;
     anum_t first = mdata->first_message;
 
-    if (NntpContext && mdata->last_message - first + 1 > NntpContext)
-      first = mdata->last_message - NntpContext + 1;
+    if (C_NntpContext && mdata->last_message - first + 1 > C_NntpContext)
+      first = mdata->last_message - C_NntpContext + 1;
     messages = mutt_mem_calloc(mdata->last_loaded - first + 1, sizeof(unsigned char));
     hc = nntp_hcache_open(mdata);
     nntp_hcache_update(mdata, hc);
@@ -1887,13 +1887,13 @@ int nntp_open_connection(struct NntpAccountData *adata)
 
 #ifdef USE_SSL
   /* Attempt STARTTLS if available and desired. */
-  if (adata->use_tls != 1 && (adata->hasSTARTTLS || SslForceTls))
+  if (adata->use_tls != 1 && (adata->hasSTARTTLS || C_SslForceTls))
   {
     if (adata->use_tls == 0)
     {
       adata->use_tls =
-          SslForceTls || query_quadoption(SslStarttls,
-                                          _("Secure connection with TLS?")) == MUTT_YES ?
+          C_SslForceTls || query_quadoption(C_SslStarttls,
+                                            _("Secure connection with TLS?")) == MUTT_YES ?
               2 :
               1;
     }
@@ -1988,7 +1988,7 @@ int nntp_post(struct Mailbox *m, const char *msg)
     mdata = m->mdata;
   else
   {
-    CurrentNewsSrv = nntp_select_server(m, NewsServer, false);
+    CurrentNewsSrv = nntp_select_server(m, C_NewsServer, false);
     if (!CurrentNewsSrv)
       return -1;
 
@@ -2109,7 +2109,7 @@ int nntp_active_fetch(struct NntpAccountData *adata, bool new)
     }
   }
 
-  if (NntpLoadDescription)
+  if (C_NntpLoadDescription)
     rc = get_description(&tmp_mdata, "*", _("Loading descriptions..."));
 
   nntp_active_save_cache(adata);
@@ -2141,7 +2141,7 @@ int nntp_check_new_groups(struct Mailbox *m, struct NntpAccountData *adata)
     return -1;
 
   /* check subscribed newsgroups for new articles */
-  if (ShowNewNews)
+  if (C_ShowNewNews)
   {
     mutt_message(_("Checking for new messages..."));
     for (i = 0; i < adata->groups_num; i++)
@@ -2206,13 +2206,13 @@ int nntp_check_new_groups(struct Mailbox *m, struct NntpAccountData *adata)
     }
 
     /* loading descriptions */
-    if (NntpLoadDescription)
+    if (C_NntpLoadDescription)
     {
       unsigned int count = 0;
       struct Progress progress;
 
       mutt_progress_init(&progress, _("Loading descriptions..."),
-                         MUTT_PROGRESS_MSG, ReadInc, adata->groups_num - i);
+                         MUTT_PROGRESS_MSG, C_ReadInc, adata->groups_num - i);
       for (i = groups_num; i < adata->groups_num; i++)
       {
         struct NntpMboxData *mdata = adata->groups_list[i];
@@ -2498,7 +2498,7 @@ static int nntp_mbox_open(struct Mailbox *m)
   }
 
   m->rights &= ~MUTT_ACL_INSERT; // Clear the flag
-  if (!mdata->newsrc_ent && !mdata->subscribed && !SaveUnsubscribed)
+  if (!mdata->newsrc_ent && !mdata->subscribed && !C_SaveUnsubscribed)
     m->readonly = true;
 
   /* select newsgroup */
@@ -2520,7 +2520,7 @@ static int nntp_mbox_open(struct Mailbox *m)
       mdata->deleted = true;
       nntp_active_save_cache(adata);
     }
-    if (mdata->newsrc_ent && !mdata->subscribed && !SaveUnsubscribed)
+    if (mdata->newsrc_ent && !mdata->subscribed && !C_SaveUnsubscribed)
     {
       FREE(&mdata->newsrc_ent);
       mdata->newsrc_len = 0;
@@ -2543,7 +2543,7 @@ static int nntp_mbox_open(struct Mailbox *m)
     mdata->deleted = false;
 
     /* get description if empty */
-    if (NntpLoadDescription && !mdata->desc)
+    if (C_NntpLoadDescription && !mdata->desc)
     {
       if (get_description(mdata, NULL, NULL) < 0)
       {
@@ -2558,13 +2558,13 @@ static int nntp_mbox_open(struct Mailbox *m)
   time(&adata->check_time);
   m->mdata = mdata;
   m->free_mdata = nntp_mdata_free;
-  if (!mdata->bcache && (mdata->newsrc_ent || mdata->subscribed || SaveUnsubscribed))
+  if (!mdata->bcache && (mdata->newsrc_ent || mdata->subscribed || C_SaveUnsubscribed))
     mdata->bcache = mutt_bcache_open(&adata->conn->account, mdata->group);
 
   /* strip off extra articles if adding context is greater than $nntp_context */
   first = mdata->first_message;
-  if (NntpContext && mdata->last_message - first + 1 > NntpContext)
-    first = mdata->last_message - NntpContext + 1;
+  if (C_NntpContext && mdata->last_message - first + 1 > C_NntpContext)
+    first = mdata->last_message - C_NntpContext + 1;
   mdata->last_loaded = first ? first - 1 : 0;
   count = mdata->first_message;
   mdata->first_message = first;

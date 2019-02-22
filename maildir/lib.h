@@ -47,12 +47,12 @@ struct Mailbox;
 struct Email;
 
 /* These Config Variables are only used in maildir/mh.c */
-extern bool  CheckNew;
-extern bool  MaildirHeaderCacheVerify;
-extern bool  MhPurge;
-extern char *MhSeqFlagged;
-extern char *MhSeqReplied;
-extern char *MhSeqUnseen;
+extern bool  C_CheckNew;
+extern bool  C_MaildirHeaderCacheVerify;
+extern bool  C_MhPurge;
+extern char *C_MhSeqFlagged;
+extern char *C_MhSeqReplied;
+extern char *C_MhSeqUnseen;
 
 extern struct MxOps MxMaildirOps;
 extern struct MxOps MxMhOps;

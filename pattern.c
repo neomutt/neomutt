@@ -68,7 +68,7 @@
 #endif
 
 /* These Config Variables are only used in pattern.c */
-bool ThoroughSearch; ///< Config: Decode headers and messages before searching them
+bool C_ThoroughSearch; ///< Config: Decode headers and messages before searching them
 
 // clang-format off
 /* The regexes in a modern format */
@@ -273,7 +273,7 @@ static bool eat_query(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   struct Buffer tok_buf;
   FILE *fp = NULL;
 
-  if (!ExternalSearchCommand)
+  if (!C_ExternalSearchCommand)
   {
     mutt_buffer_printf(err, "%s", _("No search command defined"));
     return false;
@@ -295,7 +295,7 @@ static bool eat_query(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   }
 
   mutt_buffer_init(&cmd_buf);
-  mutt_buffer_addstr(&cmd_buf, ExternalSearchCommand);
+  mutt_buffer_addstr(&cmd_buf, C_ExternalSearchCommand);
   mutt_buffer_addch(&cmd_buf, ' ');
   if (!Context || !Context->mailbox)
   {
@@ -1103,7 +1103,7 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
   struct stat st;
 #endif
 
-  if (ThoroughSearch)
+  if (C_ThoroughSearch)
   {
     /* decode the header / body */
     struct State s = { 0 };
@@ -1223,7 +1223,7 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
 
   mx_msg_close(m, &msg);
 
-  if (ThoroughSearch)
+  if (C_ThoroughSearch)
   {
     mutt_file_fclose(&fp);
 #ifdef USE_FMEMOPEN
@@ -2347,7 +2347,7 @@ int mutt_pattern_func(int op, char *prompt)
   mutt_message(_("Compiling search pattern..."));
 
   simple = mutt_str_strdup(buf);
-  mutt_check_simple(buf, sizeof(buf), NONULL(SimpleSearch));
+  mutt_check_simple(buf, sizeof(buf), NONULL(C_SimpleSearch));
 
   mutt_buffer_init(&err);
   err.dsize = STRING;
@@ -2365,7 +2365,7 @@ int mutt_pattern_func(int op, char *prompt)
 #endif
 
   mutt_progress_init(&progress, _("Executing command on matching messages..."),
-                     MUTT_PROGRESS_MSG, ReadInc,
+                     MUTT_PROGRESS_MSG, C_ReadInc,
                      (op == MUTT_LIMIT) ? Context->mailbox->msg_count :
                                           Context->mailbox->vcount);
 
@@ -2493,7 +2493,7 @@ int mutt_search_command(int cur, int op)
        $simple_search has changed while we were searching */
     char temp[LONG_STRING];
     mutt_str_strfcpy(temp, buf, sizeof(temp));
-    mutt_check_simple(temp, sizeof(temp), NONULL(SimpleSearch));
+    mutt_check_simple(temp, sizeof(temp), NONULL(C_SimpleSearch));
 
     if (!SearchPattern || (mutt_str_strcmp(temp, LastSearchExpn) != 0))
     {
@@ -2534,7 +2534,7 @@ int mutt_search_command(int cur, int op)
   if (op == OP_SEARCH_OPPOSITE)
     incr = -incr;
 
-  mutt_progress_init(&progress, _("Searching..."), MUTT_PROGRESS_MSG, ReadInc,
+  mutt_progress_init(&progress, _("Searching..."), MUTT_PROGRESS_MSG, C_ReadInc,
                      Context->mailbox->vcount);
 
   for (int i = cur + incr, j = 0; j != Context->mailbox->vcount; j++)
@@ -2544,7 +2544,7 @@ int mutt_search_command(int cur, int op)
     if (i > Context->mailbox->vcount - 1)
     {
       i = 0;
-      if (WrapSearch)
+      if (C_WrapSearch)
         msg = _("Search wrapped to top");
       else
       {
@@ -2555,7 +2555,7 @@ int mutt_search_command(int cur, int op)
     else if (i < 0)
     {
       i = Context->mailbox->vcount - 1;
-      if (WrapSearch)
+      if (C_WrapSearch)
         msg = _("Search wrapped to bottom");
       else
       {

@@ -32,10 +32,10 @@ struct Context;
 struct Email;
 
 /* These Config Variables are only used in hdrline.c */
-extern struct MbTable *CryptChars;
-extern struct MbTable *FlagChars;
-extern struct MbTable *FromChars;
-extern struct MbTable *ToChars;
+extern struct MbTable *C_CryptChars;
+extern struct MbTable *C_FlagChars;
+extern struct MbTable *C_FromChars;
+extern struct MbTable *C_ToChars;
 
 /**
  * struct HdrFormatInfo - Data passed to index_format_str()

@@ -70,12 +70,12 @@
 #endif
 
 /* These Config Variables are only used in maildir/mh.c */
-bool CheckNew; ///< Config: (maildir,mh) Check for new mail while the mailbox is open
-bool MaildirHeaderCacheVerify; ///< Config: (hcache) Check for maildir changes when opening mailbox
-bool MhPurge;       ///< Config: Really delete files in MH mailboxes
-char *MhSeqFlagged; ///< Config: MH sequence for flagged message
-char *MhSeqReplied; ///< Config: MH sequence to tag replied messages
-char *MhSeqUnseen;  ///< Config: MH sequence for unseen messages
+bool C_CheckNew; ///< Config: (maildir,mh) Check for new mail while the mailbox is open
+bool C_MaildirHeaderCacheVerify; ///< Config: (hcache) Check for maildir changes when opening mailbox
+bool C_MhPurge;       ///< Config: Really delete files in MH mailboxes
+char *C_MhSeqFlagged; ///< Config: MH sequence for flagged message
+char *C_MhSeqReplied; ///< Config: MH sequence to tag replied messages
+char *C_MhSeqUnseen;  ///< Config: MH sequence for unseen messages
 
 #define INS_SORT_THRESHOLD 6
 
@@ -213,9 +213,9 @@ static void mh_sequences_add_one(struct Mailbox *m, int n, bool unseen, bool fla
   if (mh_mkstemp(m, &nfp, &tmpfname) == -1)
     return;
 
-  snprintf(seq_unseen, sizeof(seq_unseen), "%s:", NONULL(MhSeqUnseen));
-  snprintf(seq_replied, sizeof(seq_replied), "%s:", NONULL(MhSeqReplied));
-  snprintf(seq_flagged, sizeof(seq_flagged), "%s:", NONULL(MhSeqFlagged));
+  snprintf(seq_unseen, sizeof(seq_unseen), "%s:", NONULL(C_MhSeqUnseen));
+  snprintf(seq_replied, sizeof(seq_replied), "%s:", NONULL(C_MhSeqReplied));
+  snprintf(seq_flagged, sizeof(seq_flagged), "%s:", NONULL(C_MhSeqFlagged));
 
   snprintf(sequences, sizeof(sequences), "%s/.mh_sequences", m->path);
   ofp = fopen(sequences, "r");
@@ -246,11 +246,11 @@ static void mh_sequences_add_one(struct Mailbox *m, int n, bool unseen, bool fla
   FREE(&buf);
 
   if (!unseen_done && unseen)
-    fprintf(nfp, "%s: %d\n", NONULL(MhSeqUnseen), n);
+    fprintf(nfp, "%s: %d\n", NONULL(C_MhSeqUnseen), n);
   if (!flagged_done && flagged)
-    fprintf(nfp, "%s: %d\n", NONULL(MhSeqFlagged), n);
+    fprintf(nfp, "%s: %d\n", NONULL(C_MhSeqFlagged), n);
   if (!replied_done && replied)
-    fprintf(nfp, "%s: %d\n", NONULL(MhSeqReplied), n);
+    fprintf(nfp, "%s: %d\n", NONULL(C_MhSeqReplied), n);
 
   mutt_file_fclose(&nfp);
 
@@ -349,7 +349,7 @@ int maildir_parse_dir(struct Mailbox *m, struct Maildir ***last,
   if (subdir)
   {
     mutt_buffer_printf(buf, "%s/%s", m->path, subdir);
-    is_old = MarkOld ? (mutt_str_strcmp("cur", subdir) == 0) : false;
+    is_old = C_MarkOld ? (mutt_str_strcmp("cur", subdir) == 0) : false;
   }
   else
     mutt_buffer_strcpy(buf, m->path);
@@ -666,7 +666,7 @@ static struct Maildir *maildir_sort(struct Maildir *list, size_t len,
  */
 static void mh_sort_natural(struct Mailbox *m, struct Maildir **md)
 {
-  if (!m || !md || !*md || (m->magic != MUTT_MH) || (Sort != SORT_ORDER))
+  if (!m || !md || !*md || (m->magic != MUTT_MH) || (C_Sort != SORT_ORDER))
     return;
   mutt_debug(LL_DEBUG3, "maildir: sorting %s into natural order\n", m->path);
   *md = maildir_sort(*md, (size_t) -1, md_cmp_path);
@@ -717,7 +717,7 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
 #endif
 
 #ifdef USE_HCACHE
-  header_cache_t *hc = mutt_hcache_open(HeaderCache, m->path, NULL);
+  header_cache_t *hc = mutt_hcache_open(C_HeaderCache, m->path, NULL);
 #endif
 
   for (p = *md, count = 0; p; p = p->next, count++)
@@ -747,7 +747,7 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
     snprintf(fn, sizeof(fn), "%s/%s", m->path, p->email->path);
 
 #ifdef USE_HCACHE
-    if (MaildirHeaderCacheVerify)
+    if (C_MaildirHeaderCacheVerify)
     {
       ret = stat(fn, &lastchanged);
     }
@@ -838,7 +838,7 @@ int mh_read_dir(struct Mailbox *m, const char *subdir)
   if (!m->quiet)
   {
     snprintf(msgbuf, sizeof(msgbuf), _("Scanning %s..."), m->path);
-    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, ReadInc, 0);
+    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, C_ReadInc, 0);
   }
 
   struct MaildirMboxData *mdata = maildir_mdata_get(m);
@@ -860,7 +860,7 @@ int mh_read_dir(struct Mailbox *m, const char *subdir)
   if (!m->quiet)
   {
     snprintf(msgbuf, sizeof(msgbuf), _("Reading %s..."), m->path);
-    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, ReadInc, count);
+    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, C_ReadInc, count);
   }
   maildir_delayed_parsing(m, &md, &progress);
 
@@ -1216,12 +1216,12 @@ void maildir_update_tables(struct Context *ctx, int *index_hint)
 
   struct Mailbox *m = ctx->mailbox;
 
-  if (Sort != SORT_ORDER)
+  if (C_Sort != SORT_ORDER)
   {
-    const short old_sort = Sort;
-    Sort = SORT_ORDER;
+    const short old_sort = C_Sort;
+    C_Sort = SORT_ORDER;
     mutt_sort_headers(ctx, true);
-    Sort = old_sort;
+    C_Sort = old_sort;
   }
 
   const int old_count = m->msg_count;
@@ -1337,7 +1337,7 @@ void maildir_parse_flags(struct Email *e, const char *path)
           break;
 
         case 'T': /* trashed */
-          if (!e->flagged || !FlagSafe)
+          if (!e->flagged || !C_FlagSafe)
           {
             e->trash = true;
             e->deleted = true;
@@ -1443,11 +1443,11 @@ int mh_sync_mailbox_message(struct Mailbox *m, int msgno)
 
   struct Email *e = m->emails[msgno];
 
-  if (e->deleted && (m->magic != MUTT_MAILDIR || !MaildirTrash))
+  if (e->deleted && (m->magic != MUTT_MAILDIR || !C_MaildirTrash))
   {
     char path[PATH_MAX];
     snprintf(path, sizeof(path), "%s/%s", m->path, e->path);
-    if (m->magic == MUTT_MAILDIR || (MhPurge && m->magic == MUTT_MH))
+    if (m->magic == MUTT_MAILDIR || (C_MhPurge && m->magic == MUTT_MH))
     {
 #ifdef USE_HCACHE
       if (hc)
@@ -1482,7 +1482,8 @@ int mh_sync_mailbox_message(struct Mailbox *m, int msgno)
     }
   }
   else if (e->changed || e->attach_del ||
-           (m->magic == MUTT_MAILDIR && (MaildirTrash || e->trash) && (e->deleted != e->trash)))
+           (m->magic == MUTT_MAILDIR && (C_MaildirTrash || e->trash) &&
+            (e->deleted != e->trash)))
   {
     if (m->magic == MUTT_MAILDIR)
     {
@@ -1779,13 +1780,13 @@ int mh_mbox_sync(struct Mailbox *m, int *index_hint)
 
 #ifdef USE_HCACHE
   if (m->magic == MUTT_MAILDIR || m->magic == MUTT_MH)
-    hc = mutt_hcache_open(HeaderCache, m->path, NULL);
+    hc = mutt_hcache_open(C_HeaderCache, m->path, NULL);
 #endif
 
   if (!m->quiet)
   {
     snprintf(msgbuf, sizeof(msgbuf), _("Writing %s..."), m->path);
-    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc, m->msg_count);
+    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, C_WriteInc, m->msg_count);
   }
 
   for (i = 0; i < m->msg_count; i++)
@@ -1820,7 +1821,7 @@ int mh_mbox_sync(struct Mailbox *m, int *index_hint)
   {
     for (i = 0, j = 0; i < m->msg_count; i++)
     {
-      if (!m->emails[i]->deleted || (m->magic == MUTT_MAILDIR && MaildirTrash))
+      if (!m->emails[i]->deleted || (m->magic == MUTT_MAILDIR && C_MaildirTrash))
         m->emails[i]->index = j++;
     }
   }
@@ -1861,7 +1862,7 @@ int mh_msg_save_hcache(struct Mailbox *m, struct Email *e)
 {
   int rc = 0;
 #ifdef USE_HCACHE
-  header_cache_t *hc = mutt_hcache_open(HeaderCache, m->path, NULL);
+  header_cache_t *hc = mutt_hcache_open(C_HeaderCache, m->path, NULL);
   rc = mutt_hcache_store(hc, e->path, strlen(e->path), e, 0);
   mutt_hcache_close(hc);
 #endif

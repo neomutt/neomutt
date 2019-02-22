@@ -31,9 +31,9 @@ struct Email;
 struct Mailbox;
 
 /* These Config Variables are only used in score.c */
-extern short ScoreThresholdDelete;
-extern short ScoreThresholdFlag;
-extern short ScoreThresholdRead;
+extern short C_ScoreThresholdDelete;
+extern short C_ScoreThresholdFlag;
+extern short C_ScoreThresholdRead;
 
 void mutt_check_rescore(struct Mailbox *m);
 enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);

@@ -34,7 +34,7 @@
 #include "auth.h"
 
 /* These Config Variables are only used in imap/auth.c */
-char *ImapAuthenticators; ///< Config: (imap) List of allowed IMAP authentication methods
+char *C_ImapAuthenticators; ///< Config: (imap) List of allowed IMAP authentication methods
 
 /**
  * imap_authenticators - Accepted authentication methods
@@ -68,12 +68,12 @@ int imap_authenticate(struct ImapAccountData *adata)
 {
   int r = IMAP_AUTH_FAILURE;
 
-  if (ImapAuthenticators && *ImapAuthenticators)
+  if (C_ImapAuthenticators && *C_ImapAuthenticators)
   {
     mutt_debug(LL_DEBUG2, "Trying user-defined imap_authenticators.\n");
 
     /* Try user-specified list of authentication methods */
-    char *methods = mutt_str_strdup(ImapAuthenticators);
+    char *methods = mutt_str_strdup(C_ImapAuthenticators);
     char *delim = NULL;
 
     for (const char *method = methods; method; method = delim)

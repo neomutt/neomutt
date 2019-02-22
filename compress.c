@@ -557,7 +557,7 @@ static int comp_mbox_open_append(struct Mailbox *m, int flags)
     m->magic = mx_path_probe(m->path, NULL);
   }
   else
-    m->magic = MboxType;
+    m->magic = C_MboxType;
 
   /* We can only deal with mbox and mmdf mailboxes */
   if ((m->magic != MUTT_MBOX) && (m->magic != MUTT_MMDF))
@@ -739,7 +739,7 @@ static int comp_mbox_close(struct Mailbox *m)
   else
   {
     /* If the file was removed, remove the compressed folder too */
-    if ((access(m->path, F_OK) != 0) && !SaveEmpty)
+    if ((access(m->path, F_OK) != 0) && !C_SaveEmpty)
     {
       remove(m->realpath);
     }

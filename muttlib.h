@@ -37,7 +37,7 @@ struct passwd;
 struct stat;
 
 /* These Config Variables are only used in muttlib.c */
-extern struct Regex *GecosMask;
+extern struct Regex *C_GecosMask;
 
 #define MUTT_RANDTAG_LEN 16
 

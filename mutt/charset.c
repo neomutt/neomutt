@@ -50,8 +50,8 @@
 #define EILSEQ EINVAL
 #endif
 
-char *AssumedCharset; ///< Config: If a message is missing a character set, assume this character set
-char *Charset; ///< Config: Default character set for displaying text on screen
+char *C_AssumedCharset; ///< Config: If a message is missing a character set, assume this character set
+char *C_Charset; ///< Config: Default character set for displaying text on screen
 
 /**
  * ReplacementChar - When a Unicode character can't be displayed, use this instead
@@ -264,14 +264,14 @@ static const char *lookup_charset(enum LookupType type, const char *cs)
  * @retval 0  Success
  * @retval -1 Error
  *
- * Work through #AssumedCharset looking for a character set conversion that
+ * Work through #C_AssumedCharset looking for a character set conversion that
  * works.  Failing that, try mutt_ch_get_default_charset().
  */
 int mutt_ch_convert_nonmime_string(char **ps)
 {
   const char *c1 = NULL;
 
-  for (const char *c = AssumedCharset; c; c = c1 ? c1 + 1 : 0)
+  for (const char *c = C_AssumedCharset; c; c = c1 ? c1 + 1 : 0)
   {
     char *u = *ps;
     char *s = NULL;
@@ -289,7 +289,7 @@ int mutt_ch_convert_nonmime_string(char **ps)
     fromcode = mutt_mem_malloc(n + 1);
     mutt_str_strfcpy(fromcode, c, n + 1);
     s = mutt_str_substr_dup(u, u + ulen);
-    int m = mutt_ch_convert_string(&s, fromcode, Charset, 0);
+    int m = mutt_ch_convert_string(&s, fromcode, C_Charset, 0);
     FREE(&fromcode);
     FREE(&s);
     if (m == 0)
@@ -298,7 +298,7 @@ int mutt_ch_convert_nonmime_string(char **ps)
     }
   }
   mutt_ch_convert_string(ps, (const char *) mutt_ch_get_default_charset(),
-                         Charset, MUTT_ICONV_HOOK_FROM);
+                         C_Charset, MUTT_ICONV_HOOK_FROM);
   return -1;
 }
 
@@ -401,7 +401,7 @@ bool mutt_ch_chscmp(const char *cs1, const char *cs2)
 char *mutt_ch_get_default_charset(void)
 {
   static char fcharset[SHORT_STRING];
-  const char *c = AssumedCharset;
+  const char *c = C_AssumedCharset;
   const char *c1 = NULL;
 
   if (c && *c)

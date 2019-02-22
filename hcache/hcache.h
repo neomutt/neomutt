@@ -89,7 +89,7 @@ union Validate {
 };
 
 /* These Config Variables are only used in hcache/hcache.c */
-extern char *HeaderCacheBackend;
+extern char *C_HeaderCacheBackend;
 
 /**
  * mutt_hcache_open - open the connection to the header cache

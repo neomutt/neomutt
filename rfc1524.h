@@ -29,7 +29,7 @@
 struct Body;
 
 /* These Config Variables are only used in rfc1524.c */
-extern bool MailcapSanitize;
+extern bool C_MailcapSanitize;
 
 /**
  * struct Rfc1524MailcapEntry - A mailcap entry

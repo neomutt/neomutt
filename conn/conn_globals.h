@@ -26,36 +26,36 @@
 #include <stdbool.h>
 
 /* These variables are backing for config items */
-extern short ConnectTimeout;
+extern short C_ConnectTimeout;
 
 #ifdef USE_SSL
-extern const char *CertificateFile;
-extern const char *EntropyFile;
-extern const char *SslCiphers;
-extern const char *SslClientCert;
+extern const char *C_CertificateFile;
+extern const char *C_EntropyFile;
+extern const char *C_SslCiphers;
+extern const char *C_SslClientCert;
 #ifdef USE_SSL_GNUTLS
-extern const char *SslCaCertificatesFile;
-extern short SslMinDhPrimeBits;
+extern const char *C_SslCaCertificatesFile;
+extern short C_SslMinDhPrimeBits;
 #endif
 #endif
 
 #ifdef USE_SOCKET
-extern const char *Preconnect;
-extern const char *Tunnel;
+extern const char *C_Preconnect;
+extern const char *C_Tunnel;
 #endif
 
 /* These Config Variables are only used in conn/conn_raw.c */
 #ifdef HAVE_GETADDRINFO
-extern bool UseIpv6;
+extern bool C_UseIpv6;
 #endif
 
 #ifdef USE_SSL
-extern bool SslUseSslv3;
-extern bool SslUseTlsv1;
-extern bool SslUseTlsv11;
-extern bool SslUseTlsv12;
-extern bool SslVerifyDates;
-extern bool SslVerifyHost;
+extern bool C_SslUseSslv3;
+extern bool C_SslUseTlsv1;
+extern bool C_SslUseTlsv11;
+extern bool C_SslUseTlsv12;
+extern bool C_SslVerifyDates;
+extern bool C_SslVerifyHost;
 #endif
 
 #endif /* MUTT_CONN_CONN_GLOBALS_H */

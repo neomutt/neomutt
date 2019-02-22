@@ -199,7 +199,7 @@ static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hos
   regmatch_t pmatch[3];
 
   /* try checking against names stored in stored certs file */
-  FILE *fp = fopen(CertificateFile, "r");
+  FILE *fp = fopen(C_CertificateFile, "r");
   if (fp)
   {
     if (REGCOMP(&preg, "^#H ([a-zA-Z0-9_\\.-]+) ([0-9A-F]{4}( [0-9A-F]{4}){7})[ \t]*$",
@@ -241,7 +241,7 @@ static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hos
 }
 
 /**
- * tls_compare_certificates - Compare certificates against CertificateFile
+ * tls_compare_certificates - Compare certificates against #C_CertificateFile
  * @param peercert Certificate
  * @retval 1 Certificate matches file
  * @retval 0 Error, or no match
@@ -255,7 +255,7 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
   unsigned char *b64_data_data = NULL;
   struct stat filestat;
 
-  if (stat(CertificateFile, &filestat) == -1)
+  if (stat(C_CertificateFile, &filestat) == -1)
     return 0;
 
   b64_data.size = filestat.st_size + 1;
@@ -263,7 +263,7 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
   b64_data_data[b64_data.size - 1] = '\0';
   b64_data.data = b64_data_data;
 
-  fd1 = fopen(CertificateFile, "r");
+  fd1 = fopen(C_CertificateFile, "r");
   if (!fd1)
   {
     return 0;
@@ -351,7 +351,7 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
    * gnutls_certificate_set_verify_flags() with a flag disabling
    * GnuTLS checking of the dates.  So certstat shouldn't have the
    * GNUTLS_CERT_EXPIRED and GNUTLS_CERT_NOT_ACTIVATED bits set. */
-  if (SslVerifyDates != MUTT_NO)
+  if (C_SslVerifyDates != MUTT_NO)
   {
     if (gnutls_x509_crt_get_expiration_time(cert) < time(NULL))
       *certerr |= CERTERR_EXPIRED;
@@ -359,7 +359,7 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
       *certerr |= CERTERR_NOTYETVALID;
   }
 
-  if (chainidx == 0 && SslVerifyHost != MUTT_NO &&
+  if (chainidx == 0 && C_SslVerifyHost != MUTT_NO &&
       !gnutls_x509_crt_check_hostname(cert, hostname) &&
       !tls_check_stored_hostname(certdata, hostname))
   {
@@ -648,7 +648,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   menu->title = title;
   /* certificates with bad dates, or that are revoked, must be
    accepted manually each and every time */
-  if (CertificateFile && !savedcert &&
+  if (C_CertificateFile && !savedcert &&
       !(certerr & (CERTERR_EXPIRED | CERTERR_NOTYETVALID | CERTERR_REVOKED)))
   {
     menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always");
@@ -692,7 +692,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
         break;
       case OP_MAX + 3: /* accept always */
         done = 0;
-        fp = mutt_file_fopen(CertificateFile, "a");
+        fp = mutt_file_fopen(C_CertificateFile, "a");
         if (fp)
         {
           /* save hostname if necessary */
@@ -894,31 +894,31 @@ static int tls_set_priority(struct TlsSockData *data)
   size_t nproto = 4;
   size_t priority_size;
 
-  priority_size = SHORT_STRING + mutt_str_strlen(SslCiphers);
+  priority_size = SHORT_STRING + mutt_str_strlen(C_SslCiphers);
   char *priority = mutt_mem_malloc(priority_size);
 
   priority[0] = 0;
-  if (SslCiphers)
-    mutt_str_strcat(priority, priority_size, SslCiphers);
+  if (C_SslCiphers)
+    mutt_str_strcat(priority, priority_size, C_SslCiphers);
   else
     mutt_str_strcat(priority, priority_size, "NORMAL");
 
-  if (!SslUseTlsv12)
+  if (!C_SslUseTlsv12)
   {
     nproto--;
     mutt_str_strcat(priority, priority_size, ":-VERS-TLS1.2");
   }
-  if (!SslUseTlsv11)
+  if (!C_SslUseTlsv11)
   {
     nproto--;
     mutt_str_strcat(priority, priority_size, ":-VERS-TLS1.1");
   }
-  if (!SslUseTlsv1)
+  if (!C_SslUseTlsv1)
   {
     nproto--;
     mutt_str_strcat(priority, priority_size, ":-VERS-TLS1.0");
   }
-  if (!SslUseSslv3)
+  if (!C_SslUseSslv3)
   {
     nproto--;
     mutt_str_strcat(priority, priority_size, ":-VERS-SSL3.0");
@@ -960,13 +960,13 @@ static int tls_set_priority(struct TlsSockData *data)
 {
   size_t nproto = 0; /* number of tls/ssl protocols */
 
-  if (SslUseTlsv12)
+  if (C_SslUseTlsv12)
     protocol_priority[nproto++] = GNUTLS_TLS1_2;
-  if (SslUseTlsv11)
+  if (C_SslUseTlsv11)
     protocol_priority[nproto++] = GNUTLS_TLS1_1;
-  if (SslUseTlsv1)
+  if (C_SslUseTlsv1)
     protocol_priority[nproto++] = GNUTLS_TLS1;
-  if (SslUseSslv3)
+  if (C_SslUseSslv3)
     protocol_priority[nproto++] = GNUTLS_SSL3;
   protocol_priority[nproto] = 0;
 
@@ -976,7 +976,7 @@ static int tls_set_priority(struct TlsSockData *data)
     return -1;
   }
 
-  if (SslCiphers)
+  if (C_SslCiphers)
   {
     mutt_error(
         _("Explicit ciphersuite selection via $ssl_ciphers not supported"));
@@ -1017,20 +1017,20 @@ static int tls_negotiate(struct Connection *conn)
     return -1;
   }
 
-  gnutls_certificate_set_x509_trust_file(data->xcred, CertificateFile, GNUTLS_X509_FMT_PEM);
+  gnutls_certificate_set_x509_trust_file(data->xcred, C_CertificateFile, GNUTLS_X509_FMT_PEM);
   /* ignore errors, maybe file doesn't exist yet */
 
-  if (SslCaCertificatesFile)
+  if (C_SslCaCertificatesFile)
   {
-    gnutls_certificate_set_x509_trust_file(data->xcred, SslCaCertificatesFile,
+    gnutls_certificate_set_x509_trust_file(data->xcred, C_SslCaCertificatesFile,
                                            GNUTLS_X509_FMT_PEM);
   }
 
-  if (SslClientCert)
+  if (C_SslClientCert)
   {
-    mutt_debug(LL_DEBUG2, "Using client certificate %s\n", SslClientCert);
-    gnutls_certificate_set_x509_key_file(data->xcred, SslClientCert,
-                                         SslClientCert, GNUTLS_X509_FMT_PEM);
+    mutt_debug(LL_DEBUG2, "Using client certificate %s\n", C_SslClientCert);
+    gnutls_certificate_set_x509_key_file(data->xcred, C_SslClientCert,
+                                         C_SslClientCert, GNUTLS_X509_FMT_PEM);
   }
 
 #ifdef HAVE_DECL_GNUTLS_VERIFY_DISABLE_TIME_CHECKS
@@ -1060,9 +1060,9 @@ static int tls_negotiate(struct Connection *conn)
     goto fail;
   }
 
-  if (SslMinDhPrimeBits > 0)
+  if (C_SslMinDhPrimeBits > 0)
   {
-    gnutls_dh_set_prime_bits(data->state, SslMinDhPrimeBits);
+    gnutls_dh_set_prime_bits(data->state, C_SslMinDhPrimeBits);
   }
 
   /* gnutls_set_cred (data->state, GNUTLS_ANON, NULL); */

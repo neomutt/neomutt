@@ -42,7 +42,7 @@
 #include "sort.h"
 
 /* These Config Variables are only used in status.c */
-struct MbTable *StatusChars; ///< Config: Indicator characters for the status bar
+struct MbTable *C_StatusChars; ///< Config: Indicator characters for the status bar
 
 /**
  * get_sort_str - Get the sort method as a string
@@ -288,12 +288,12 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
                      0);
       }
 
-      if (!StatusChars || !StatusChars->len)
+      if (!C_StatusChars || !C_StatusChars->len)
         buf[0] = 0;
-      else if (i >= StatusChars->len)
-        snprintf(buf, buflen, "%s", StatusChars->chars[0]);
+      else if (i >= C_StatusChars->len)
+        snprintf(buf, buflen, "%s", C_StatusChars->chars[0]);
       else
-        snprintf(buf, buflen, "%s", StatusChars->chars[i]);
+        snprintf(buf, buflen, "%s", C_StatusChars->chars[i]);
       break;
     }
 
@@ -313,12 +313,12 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 
     case 's':
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, get_sort_str(tmp, sizeof(tmp), Sort));
+      snprintf(buf, buflen, fmt, get_sort_str(tmp, sizeof(tmp), C_Sort));
       break;
 
     case 'S':
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, get_sort_str(tmp, sizeof(tmp), SortAux));
+      snprintf(buf, buflen, fmt, get_sort_str(tmp, sizeof(tmp), C_SortAux));
       break;
 
     case 't':

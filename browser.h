@@ -28,13 +28,13 @@
 #include <time.h>
 
 /* These Config Variables are only used in browser.c */
-extern bool  BrowserAbbreviateMailboxes;
-extern char *FolderFormat;
-extern char *GroupIndexFormat;
-extern char *NewsgroupsCharset;
-extern bool  ShowOnlyUnread;
-extern short SortBrowser;
-extern char *VfolderFormat;
+extern bool  C_BrowserAbbreviateMailboxes;
+extern char *C_FolderFormat;
+extern char *C_GroupIndexFormat;
+extern char *C_NewsgroupsCharset;
+extern bool  C_ShowOnlyUnread;
+extern short C_SortBrowser;
+extern char *C_VfolderFormat;
 
 /* flags to mutt_select_file() */
 #define MUTT_SEL_MAILBOX (1 << 0)

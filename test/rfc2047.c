@@ -68,7 +68,7 @@ void test_rfc2047(void)
     return;
   }
 
-  Charset = "utf-8";
+  C_Charset = "utf-8";
 
   for (size_t i = 0; i < mutt_array_size(test_data); ++i)
   {

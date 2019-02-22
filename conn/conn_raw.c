@@ -54,7 +54,7 @@
 
 /* These Config Variables are only used in conn/conn_raw.c */
 #ifdef HAVE_GETADDRINFO
-bool UseIpv6; ///< Config: Lookup IPv6 addresses when making connections
+bool C_UseIpv6; ///< Config: Lookup IPv6 addresses when making connections
 #endif
 
 /**
@@ -83,8 +83,8 @@ static int socket_connect(int fd, struct sockaddr *sa)
     return -1;
   }
 
-  if (ConnectTimeout > 0)
-    alarm(ConnectTimeout);
+  if (C_ConnectTimeout > 0)
+    alarm(C_ConnectTimeout);
 
   mutt_sig_allow_interrupt(1);
 
@@ -103,7 +103,7 @@ static int socket_connect(int fd, struct sockaddr *sa)
     SigInt = 0; /* reset in case we caught SIGINTR while in connect() */
   }
 
-  if (ConnectTimeout > 0)
+  if (C_ConnectTimeout > 0)
     alarm(0);
   mutt_sig_allow_interrupt(0);
   sigprocmask(SIG_UNBLOCK, &set, NULL);
@@ -132,7 +132,7 @@ int raw_socket_open(struct Connection *conn)
   /* we accept v4 or v6 STREAM sockets */
   memset(&hints, 0, sizeof(hints));
 
-  if (UseIpv6)
+  if (C_UseIpv6)
     hints.ai_family = AF_UNSPEC;
   else
     hints.ai_family = AF_INET;

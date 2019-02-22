@@ -39,11 +39,11 @@ struct Mailbox;
 struct stat;
 
 /* These Config Variables are only used in mx.c */
-extern unsigned char CatchupNewsgroup;
-extern bool          KeepFlagged;
-extern short         MboxType;
-extern unsigned char Move;
-extern char *        Trash;
+extern unsigned char C_CatchupNewsgroup;
+extern bool          C_KeepFlagged;
+extern short         C_MboxType;
+extern unsigned char C_Move;
+extern char *        C_Trash;
 
 /* flags for mutt_open_mailbox() */
 #define MUTT_NOSORT        (1 << 0) ///< Do not sort the mailbox after opening it

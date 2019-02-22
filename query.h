@@ -26,8 +26,8 @@
 #include <stdio.h>
 
 /* These Config Variables are only used in query.c */
-extern char *QueryCommand;
-extern char *QueryFormat;
+extern char *C_QueryCommand;
+extern char *C_QueryFormat;
 
 int  mutt_query_complete(char *buf, size_t buflen);
 void mutt_query_menu(char *buf, size_t buflen);

@@ -52,19 +52,19 @@
 #endif
 
 /* These Config Variables are only used in ncrypt/pgpinvoke.c */
-char *PgpClearsignCommand; ///< Config: (pgp) External command to inline-sign a message
-char *PgpDecodeCommand; ///< Config: (pgp) External command to decode a PGP attachment
-char *PgpDecryptCommand; ///< Config: (pgp) External command to decrypt a PGP message
-char *PgpEncryptOnlyCommand; ///< Config: (pgp) External command to encrypt, but not sign a message
-char *PgpEncryptSignCommand; ///< Config: (pgp) External command to encrypt and sign a message
-char *PgpExportCommand; ///< Config: (pgp) External command to export a public key from the user's keyring
-char *PgpGetkeysCommand; ///< Config: (pgp) External command to download a key for an email address
-char *PgpImportCommand; ///< Config: (pgp) External command to import a key into the user's keyring
-char *PgpListPubringCommand; ///< Config: (pgp) External command to list the public keys in a user's keyring
-char *PgpListSecringCommand; ///< Config: (pgp) External command to list the private keys in a user's keyring
-char *PgpSignCommand; ///< Config: (pgp) External command to create a detached PGP signature
-char *PgpVerifyCommand; ///< Config: (pgp) External command to verify PGP signatures
-char *PgpVerifyKeyCommand; ///< Config: (pgp) External command to verify key information
+char *C_PgpClearsignCommand; ///< Config: (pgp) External command to inline-sign a message
+char *C_PgpDecodeCommand; ///< Config: (pgp) External command to decode a PGP attachment
+char *C_PgpDecryptCommand; ///< Config: (pgp) External command to decrypt a PGP message
+char *C_PgpEncryptOnlyCommand; ///< Config: (pgp) External command to encrypt, but not sign a message
+char *C_PgpEncryptSignCommand; ///< Config: (pgp) External command to encrypt and sign a message
+char *C_PgpExportCommand; ///< Config: (pgp) External command to export a public key from the user's keyring
+char *C_PgpGetkeysCommand; ///< Config: (pgp) External command to download a key for an email address
+char *C_PgpImportCommand; ///< Config: (pgp) External command to import a key into the user's keyring
+char *C_PgpListPubringCommand; ///< Config: (pgp) External command to list the public keys in a user's keyring
+char *C_PgpListSecringCommand; ///< Config: (pgp) External command to list the private keys in a user's keyring
+char *C_PgpSignCommand; ///< Config: (pgp) External command to create a detached PGP signature
+char *C_PgpVerifyCommand; ///< Config: (pgp) External command to verify PGP signatures
+char *C_PgpVerifyKeyCommand; ///< Config: (pgp) External command to verify key information
 
 /**
  * struct PgpCommandContext - Data for a PGP command
@@ -219,10 +219,10 @@ static pid_t pgp_invoke(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
   cctx.need_passphrase = need_passphrase;
   cctx.fname = fname;
   cctx.sig_fname = sig_fname;
-  if (PgpSignAs && *PgpSignAs)
-    cctx.signas = PgpSignAs;
+  if (C_PgpSignAs && *C_PgpSignAs)
+    cctx.signas = C_PgpSignAs;
   else
-    cctx.signas = PgpDefaultKey;
+    cctx.signas = C_PgpDefaultKey;
   cctx.ids = ids;
 
   mutt_pgp_command(cmd, sizeof(cmd), &cctx, format);
@@ -256,7 +256,7 @@ pid_t pgp_invoke_decode(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
                         int pgpoutfd, int pgperrfd, const char *fname, bool need_passphrase)
 {
   return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
-                    need_passphrase, fname, NULL, NULL, PgpDecodeCommand);
+                    need_passphrase, fname, NULL, NULL, C_PgpDecodeCommand);
 }
 
 /**
@@ -279,7 +279,7 @@ pid_t pgp_invoke_verify(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
                         int pgpoutfd, int pgperrfd, const char *fname, const char *sig_fname)
 {
   return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, false,
-                    fname, sig_fname, NULL, PgpVerifyCommand);
+                    fname, sig_fname, NULL, C_PgpVerifyCommand);
 }
 
 /**
@@ -301,7 +301,7 @@ pid_t pgp_invoke_decrypt(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd
                          int pgpoutfd, int pgperrfd, const char *fname)
 {
   return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, true,
-                    fname, NULL, NULL, PgpDecryptCommand);
+                    fname, NULL, NULL, C_PgpDecryptCommand);
 }
 
 /**
@@ -323,7 +323,7 @@ pid_t pgp_invoke_sign(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
                       int pgpoutfd, int pgperrfd, const char *fname)
 {
   return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, true,
-                    fname, NULL, NULL, PgpSignCommand);
+                    fname, NULL, NULL, C_PgpSignCommand);
 }
 
 /**
@@ -350,12 +350,12 @@ pid_t pgp_invoke_encrypt(FILE **pgpin, FILE **pgpout, FILE **pgperr,
   if (sign)
   {
     return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, true,
-                      fname, NULL, uids, PgpEncryptSignCommand);
+                      fname, NULL, uids, C_PgpEncryptSignCommand);
   }
   else
   {
     return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, false,
-                      fname, NULL, uids, PgpEncryptOnlyCommand);
+                      fname, NULL, uids, C_PgpEncryptOnlyCommand);
   }
 }
 
@@ -384,12 +384,12 @@ pid_t pgp_invoke_traditional(FILE **pgpin, FILE **pgpout, FILE **pgperr,
   {
     return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
                       (flags & SEC_SIGN), fname, NULL, uids,
-                      (flags & SEC_SIGN) ? PgpEncryptSignCommand : PgpEncryptOnlyCommand);
+                      (flags & SEC_SIGN) ? C_PgpEncryptSignCommand : C_PgpEncryptOnlyCommand);
   }
   else
   {
     return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, true,
-                      fname, NULL, NULL, PgpClearsignCommand);
+                      fname, NULL, NULL, C_PgpClearsignCommand);
   }
 }
 
@@ -404,12 +404,12 @@ void pgp_class_invoke_import(const char *fname)
 
   mutt_file_quote_filename(fname, tmp_fname, sizeof(tmp_fname));
   cctx.fname = tmp_fname;
-  if (PgpSignAs && *PgpSignAs)
-    cctx.signas = PgpSignAs;
+  if (C_PgpSignAs && *C_PgpSignAs)
+    cctx.signas = C_PgpSignAs;
   else
-    cctx.signas = PgpDefaultKey;
+    cctx.signas = C_PgpDefaultKey;
 
-  mutt_pgp_command(cmd, sizeof(cmd), &cctx, PgpImportCommand);
+  mutt_pgp_command(cmd, sizeof(cmd), &cctx, C_PgpImportCommand);
   if (mutt_system(cmd) != 0)
     mutt_debug(LL_DEBUG1, "Error running \"%s\"!", cmd);
 }
@@ -428,7 +428,7 @@ void pgp_class_invoke_getkeys(struct Address *addr)
 
   struct PgpCommandContext cctx = { 0 };
 
-  if (!PgpGetkeysCommand)
+  if (!C_PgpGetkeysCommand)
     return;
 
   personal = addr->personal;
@@ -443,7 +443,7 @@ void pgp_class_invoke_getkeys(struct Address *addr)
 
   cctx.ids = buf;
 
-  mutt_pgp_command(cmd, sizeof(cmd), &cctx, PgpGetkeysCommand);
+  mutt_pgp_command(cmd, sizeof(cmd), &cctx, C_PgpGetkeysCommand);
 
   devnull = open("/dev/null", O_RDWR);
 
@@ -479,7 +479,7 @@ pid_t pgp_invoke_export(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
                         int pgpoutfd, int pgperrfd, const char *uids)
 {
   return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, false,
-                    NULL, NULL, uids, PgpExportCommand);
+                    NULL, NULL, uids, C_PgpExportCommand);
 }
 
 /**
@@ -501,7 +501,7 @@ pid_t pgp_invoke_verify_key(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpi
                             int pgpoutfd, int pgperrfd, const char *uids)
 {
   return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, false,
-                    NULL, NULL, uids, PgpVerifyKeyCommand);
+                    NULL, NULL, uids, C_PgpVerifyKeyCommand);
 }
 
 /**
@@ -539,7 +539,7 @@ pid_t pgp_invoke_list_keys(FILE **pgpin, FILE **pgpout, FILE **pgperr,
 
   pid_t rc = pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, 0,
                         NULL, NULL, mutt_b2s(uids),
-                        keyring == PGP_SECRING ? PgpListSecringCommand : PgpListPubringCommand);
+                        keyring == PGP_SECRING ? C_PgpListSecringCommand : C_PgpListPubringCommand);
 
   mutt_buffer_pool_release(&uids);
   return rc;

@@ -65,7 +65,7 @@
 #endif
 
 /* These Config Variables are only used in muttlib.c */
-struct Regex *GecosMask; ///< Config: Regex for parsing GECOS field of /etc/passwd
+struct Regex *C_GecosMask; ///< Config: Regex for parsing GECOS field of /etc/passwd
 
 static const char *xdg_env_vars[] = {
   [XDG_CONFIG_HOME] = "XDG_CONFIG_HOME",
@@ -92,7 +92,7 @@ void mutt_buffer_adv_mktemp(struct Buffer *buf)
     struct Buffer *prefix = mutt_buffer_pool_get();
     mutt_buffer_strcpy(prefix, buf->data);
     mutt_file_sanitize_filename(prefix->data, 1);
-    mutt_buffer_printf(buf, "%s/%s", NONULL(Tmpdir), mutt_b2s(prefix));
+    mutt_buffer_printf(buf, "%s/%s", NONULL(C_Tmpdir), mutt_b2s(prefix));
 
     struct stat sb;
     if (lstat(mutt_b2s(buf), &sb) == -1 && errno == ENOENT)
@@ -131,7 +131,7 @@ void mutt_adv_mktemp(char *buf, size_t buflen)
     char prefix[PATH_MAX];
     mutt_str_strfcpy(prefix, buf, sizeof(prefix));
     mutt_file_sanitize_filename(prefix, true);
-    snprintf(buf, buflen, "%s/%s", NONULL(Tmpdir), prefix);
+    snprintf(buf, buflen, "%s/%s", NONULL(C_Tmpdir), prefix);
     struct stat sb;
     if (lstat(buf, &sb) == -1 && errno == ENOENT)
       return;
@@ -226,20 +226,20 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
       case '=':
       case '+':
       {
-        enum MailboxType mb_type = mx_path_probe(Folder, NULL);
+        enum MailboxType mb_type = mx_path_probe(C_Folder, NULL);
 
         /* if folder = {host} or imap[s]://host/: don't append slash */
-        if ((mb_type == MUTT_IMAP) &&
-            (Folder[strlen(Folder) - 1] == '}' || Folder[strlen(Folder) - 1] == '/'))
+        if ((mb_type == MUTT_IMAP) && (C_Folder[strlen(C_Folder) - 1] == '}' ||
+                                       C_Folder[strlen(C_Folder) - 1] == '/'))
         {
-          mutt_str_strfcpy(p, Folder, sizeof(p));
+          mutt_str_strfcpy(p, C_Folder, sizeof(p));
         }
         else if (mb_type == MUTT_NOTMUCH)
-          mutt_str_strfcpy(p, Folder, sizeof(p));
-        else if (Folder && *Folder && Folder[strlen(Folder) - 1] == '/')
-          mutt_str_strfcpy(p, Folder, sizeof(p));
+          mutt_str_strfcpy(p, C_Folder, sizeof(p));
+        else if (C_Folder && *C_Folder && C_Folder[strlen(C_Folder) - 1] == '/')
+          mutt_str_strfcpy(p, C_Folder, sizeof(p));
         else
-          snprintf(p, sizeof(p), "%s/", NONULL(Folder));
+          snprintf(p, sizeof(p), "%s/", NONULL(C_Folder));
 
         tail = buf + 1;
       }
@@ -271,14 +271,14 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
 
       case '>':
       {
-        mutt_str_strfcpy(p, Mbox, sizeof(p));
+        mutt_str_strfcpy(p, C_Mbox, sizeof(p));
         tail = buf + 1;
       }
       break;
 
       case '<':
       {
-        mutt_str_strfcpy(p, Record, sizeof(p));
+        mutt_str_strfcpy(p, C_Record, sizeof(p));
         tail = buf + 1;
       }
       break;
@@ -292,7 +292,7 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
         }
         else
         {
-          mutt_str_strfcpy(p, Spoolfile, sizeof(p));
+          mutt_str_strfcpy(p, C_Spoolfile, sizeof(p));
           tail = buf + 1;
         }
       }
@@ -348,7 +348,7 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
  * @retval ptr Result buffer on success
  *
  * Extract the real name from /etc/passwd's GECOS field.  When set, honor the
- * regular expression in GecosMask, otherwise assume that the GECOS field is a
+ * regular expression in #C_GecosMask, otherwise assume that the GECOS field is a
  * comma-separated list.
  * Replace "&" by a capitalized version of the user's login name.
  */
@@ -363,9 +363,9 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
 
   memset(dest, 0, destlen);
 
-  if (GecosMask && GecosMask->regex)
+  if (C_GecosMask && C_GecosMask->regex)
   {
-    if (regexec(GecosMask->regex, pw->pw_gecos, 1, pat_match, 0) == 0)
+    if (regexec(C_GecosMask->regex, pw->pw_gecos, 1, pat_match, 0) == 0)
     {
       mutt_str_strfcpy(dest, pw->pw_gecos + pat_match[0].rm_so,
                        MIN(pat_match[0].rm_eo - pat_match[0].rm_so + 1, destlen));
@@ -553,9 +553,9 @@ uint64_t mutt_rand64(void)
 void mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix,
                              const char *suffix, const char *src, int line)
 {
-  mutt_buffer_printf(buf, "%s/%s-%s-%d-%d-%ld%ld%s%s", NONULL(Tmpdir), NONULL(prefix),
-                     NONULL(Hostname), (int) getuid(), (int) getpid(), random(),
-                     random(), suffix ? "." : "", NONULL(suffix));
+  mutt_buffer_printf(buf, "%s/%s-%s-%d-%d-%ld%ld%s%s", NONULL(C_Tmpdir), NONULL(prefix),
+                     NONULL(C_Hostname), (int) getuid(), (int) getpid(),
+                     random(), random(), suffix ? "." : "", NONULL(suffix));
   mutt_debug(LL_DEBUG3, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, mutt_b2s(buf));
   if (unlink(mutt_b2s(buf)) && errno != ENOENT)
   {
@@ -578,9 +578,10 @@ void mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix,
 void mutt_mktemp_full(char *buf, size_t buflen, const char *prefix,
                       const char *suffix, const char *src, int line)
 {
-  size_t n = snprintf(buf, buflen, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(Tmpdir),
-                      NONULL(prefix), NONULL(ShortHostname), (int) getuid(),
-                      (int) getpid(), mutt_rand64(), suffix ? "." : "", NONULL(suffix));
+  size_t n =
+      snprintf(buf, buflen, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(C_Tmpdir),
+               NONULL(prefix), NONULL(ShortHostname), (int) getuid(),
+               (int) getpid(), mutt_rand64(), suffix ? "." : "", NONULL(suffix));
   if (n >= buflen)
   {
     mutt_debug(LL_DEBUG1,
@@ -614,7 +615,7 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
 
   if (scheme == U_IMAP || scheme == U_IMAPS)
   {
-    imap_pretty_mailbox(buf, Folder);
+    imap_pretty_mailbox(buf, C_Folder);
     return;
   }
 
@@ -658,7 +659,7 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
   else if (strstr(p, "..") && (scheme == U_UNKNOWN || scheme == U_FILE) && realpath(p, tmp))
     mutt_str_strfcpy(p, tmp, buflen - (p - buf));
 
-  if ((len = mutt_str_startswith(buf, Folder, CASE_MATCH)) && buf[len] == '/')
+  if ((len = mutt_str_startswith(buf, C_Folder, CASE_MATCH)) && buf[len] == '/')
   {
     *buf++ = '=';
     memmove(buf, buf + len, mutt_str_strlen(buf + len) + 1);
@@ -774,7 +775,7 @@ void mutt_save_path(char *buf, size_t buflen, struct Address *addr)
   if (addr && addr->mailbox)
   {
     mutt_str_strfcpy(buf, addr->mailbox, buflen);
-    if (!SaveAddress)
+    if (!C_SaveAddress)
     {
       char *p = strpbrk(buf, "%@");
       if (p)
@@ -828,7 +829,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
 
   prefix[0] = '\0';
   buflen--; /* save room for the terminal \0 */
-  wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && ArrowCursor) ? 3 : 0;
+  wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && C_ArrowCursor) ? 3 : 0;
   col += wlen;
 
   if ((flags & MUTT_FORMAT_NOFILTER) == 0)
@@ -1175,7 +1176,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
           }
           else if (soft)
           {
-            int offset = ((flags & MUTT_FORMAT_ARROWCURSOR) && ArrowCursor) ? 3 : 0;
+            int offset = ((flags & MUTT_FORMAT_ARROWCURSOR) && C_ArrowCursor) ? 3 : 0;
             int avail_cols = (cols > offset) ? (cols - offset) : 0;
             /* \0-terminate buf for length computation in mutt_wstr_trunc() */
             *wptr = 0;
@@ -1398,7 +1399,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
 
   if ((magic != MUTT_MAILBOX_ERROR) && (magic != MUTT_UNKNOWN) && !mx_access(s, W_OK))
   {
-    if (Confirmappend)
+    if (C_Confirmappend)
     {
       snprintf(tmp, sizeof(tmp), _("Append messages to %s?"), s);
       rc = mutt_yesorno(tmp, MUTT_YES);
@@ -1433,7 +1434,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
     /* pathname does not exist */
     if (errno == ENOENT)
     {
-      if (Confirmcreate)
+      if (C_Confirmcreate)
       {
         snprintf(tmp, sizeof(tmp), _("Create %s?"), s);
         rc = mutt_yesorno(tmp, MUTT_YES);
@@ -1443,7 +1444,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
           ret = -1;
       }
 
-      /* user confirmed with MUTT_YES or set Confirmcreate */
+      /* user confirmed with MUTT_YES or set C_Confirmcreate */
       if (ret == 0)
       {
         /* create dir recursively */
@@ -1473,12 +1474,12 @@ int mutt_save_confirm(const char *s, struct stat *st)
  * mutt_sleep - Sleep for a while
  * @param s Number of seconds to sleep
  *
- * If the user config `SleepTime` is larger, sleep that long instead.
+ * If the user config '$sleep_time' is larger, sleep that long instead.
  */
 void mutt_sleep(short s)
 {
-  if (SleepTime > s)
-    sleep(SleepTime);
+  if (C_SleepTime > s)
+    sleep(C_SleepTime);
   else if (s)
     sleep(s);
 }
@@ -1507,7 +1508,7 @@ const char *mutt_make_version(void)
 void mutt_encode_path(char *buf, size_t buflen, const char *src)
 {
   char *p = mutt_str_strdup(src);
-  int rc = mutt_ch_convert_string(&p, Charset, "us-ascii", 0);
+  int rc = mutt_ch_convert_string(&p, C_Charset, "us-ascii", 0);
   /* 'src' may be NULL, such as when called from the pop3 driver. */
   size_t len = mutt_str_strfcpy(buf, (rc == 0) ? p : src, buflen);
 
@@ -1577,7 +1578,7 @@ void mutt_get_parent_path(char *path, char *buf, size_t buflen)
   if (mb_magic == MUTT_IMAP)
     imap_get_parent_path(path, buf, buflen);
   else if (mb_magic == MUTT_NOTMUCH)
-    mutt_str_strfcpy(buf, Folder, buflen);
+    mutt_str_strfcpy(buf, C_Folder, buflen);
   else
   {
     mutt_str_strfcpy(buf, path, buflen);

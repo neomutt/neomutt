@@ -132,7 +132,7 @@ static struct Address *expand_aliases_r(struct Address *a, struct ListHead *expn
     last->next = NULL;
   }
 
-  if (UseDomain && (fqdn = mutt_fqdn(true)))
+  if (C_UseDomain && (fqdn = mutt_fqdn(true)))
   {
     /* now qualify all local addresses */
     mutt_addr_qualify(head, fqdn);
@@ -186,13 +186,13 @@ static void write_safe_address(FILE *fp, char *s)
  */
 static void recode_buf(char *buf, size_t buflen)
 {
-  if (!ConfigCharset || !*ConfigCharset || !Charset)
+  if (!C_ConfigCharset || !*C_ConfigCharset || !C_Charset)
     return;
 
   char *s = mutt_str_strdup(buf);
   if (!s)
     return;
-  if (mutt_ch_convert_string(&s, Charset, ConfigCharset, 0) == 0)
+  if (mutt_ch_convert_string(&s, C_Charset, C_ConfigCharset, 0) == 0)
     mutt_str_strfcpy(buf, s, buflen);
   FREE(&s);
 }
@@ -476,7 +476,7 @@ retry_name:
 
   TAILQ_INSERT_TAIL(&Aliases, new, entries);
 
-  mutt_str_strfcpy(buf, AliasFile, sizeof(buf));
+  mutt_str_strfcpy(buf, C_AliasFile, sizeof(buf));
   if (mutt_get_field(_("Save to file: "), buf, sizeof(buf), MUTT_FILE) != 0)
     return;
   mutt_expand_path(buf, sizeof(buf));
@@ -713,9 +713,9 @@ bool mutt_addr_is_user(struct Address *addr)
     return true;
   }
 
-  if (From && (mutt_str_strcasecmp(From->mailbox, addr->mailbox) == 0))
+  if (C_From && (mutt_str_strcasecmp(C_From->mailbox, addr->mailbox) == 0))
   {
-    mutt_debug(5, "#5 yes, %s = %s\n", addr->mailbox, From->mailbox);
+    mutt_debug(5, "#5 yes, %s = %s\n", addr->mailbox, C_From->mailbox);
     return true;
   }
 

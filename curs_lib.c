@@ -70,7 +70,7 @@
 #endif
 
 /* These Config Variables are only used in curs_lib.c */
-bool MetaKey; ///< Config: Interpret 'ALT-x' as 'ESC-x'
+bool C_MetaKey; ///< Config: Interpret 'ALT-x' as 'ESC-x'
 
 /* not possible to unget more than one char under some curses libs, and it
  * is impossible to unget function keys in SLang, so roll our own input
@@ -220,7 +220,7 @@ struct Event mutt_getch(void)
     return timeout;
   }
 
-  if ((ch & 0x80) && MetaKey)
+  if ((ch & 0x80) && C_MetaKey)
   {
     /* send ALT-x as ESC-x */
     ch &= ~0x80;
@@ -467,7 +467,7 @@ void mutt_query_exit(void)
 {
   mutt_flushinp();
   curs_set(1);
-  if (Timeout)
+  if (C_Timeout)
     mutt_getch_timeout(-1); /* restore blocking operation */
   if (mutt_yesorno(_("Exit NeoMutt?"), MUTT_YES) == MUTT_YES)
   {
@@ -571,14 +571,14 @@ int mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct
 {
   int rc;
 
-  if (!Pager || (mutt_str_strcmp(Pager, "builtin") == 0))
+  if (!C_Pager || (mutt_str_strcmp(C_Pager, "builtin") == 0))
     rc = mutt_pager(banner, tempfile, do_color, info);
   else
   {
     char cmd[STRING];
 
     mutt_endwin();
-    mutt_file_expand_fmt_quote(cmd, sizeof(cmd), Pager, tempfile);
+    mutt_file_expand_fmt_quote(cmd, sizeof(cmd), C_Pager, tempfile);
     if (mutt_system(cmd) == -1)
     {
       mutt_error(_("Error running \"%s\""), cmd);

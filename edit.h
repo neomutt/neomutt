@@ -26,7 +26,7 @@
 struct Email;
 
 /* These Config Variables are only used in edit.c */
-extern char *Escape;
+extern char *C_Escape;
 
 int mutt_builtin_editor(const char *path, struct Email *msg, struct Email *cur);
 

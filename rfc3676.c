@@ -44,8 +44,8 @@
 #include "state.h"
 
 /* These Config Variables are only used in rfc3676.c */
-bool ReflowSpaceQuotes; ///< Config: Insert spaces into reply quotes for 'format=flowed' messages
-short ReflowWrap; ///< Config: Maximum paragraph width for reformatting 'format=flowed' text
+bool C_ReflowSpaceQuotes; ///< Config: Insert spaces into reply quotes for 'format=flowed' messages
+short C_ReflowWrap; ///< Config: Maximum paragraph width for reformatting 'format=flowed' text
 
 #define FLOWED_MAX 72
 
@@ -90,13 +90,13 @@ static int get_quote_level(const char *line)
  */
 static int space_quotes(struct State *s)
 {
-  /* Allow quote spacing in the pager even for TextFlowed,
+  /* Allow quote spacing in the pager even for C_TextFlowed,
    * but obviously not when replying.
    */
-  if (TextFlowed && (s->flags & MUTT_REPLYING))
+  if (C_TextFlowed && (s->flags & MUTT_REPLYING))
     return 0;
 
-  return ReflowSpaceQuotes;
+  return C_ReflowSpaceQuotes;
 }
 
 /**
@@ -122,7 +122,7 @@ static bool add_quote_suffix(struct State *s, int ql)
     return false;
 
   /* The prefix will add its own space */
-  if (!TextFlowed && !ql && s->prefix)
+  if (!C_TextFlowed && !ql && s->prefix)
     return false;
 
   return true;
@@ -144,7 +144,7 @@ static size_t print_indent(int ql, struct State *s, int add_suffix)
     /* use given prefix only for format=fixed replies to format=flowed,
      * for format=flowed replies to format=flowed, use '>' indentation
      */
-    if (TextFlowed)
+    if (C_TextFlowed)
       ql++;
     else
     {
@@ -193,8 +193,8 @@ static void flush_par(struct State *s, struct FlowedState *fst)
  */
 static int quote_width(struct State *s, int ql)
 {
-  int width = mutt_window_wrap_cols(MuttIndexWindow, ReflowWrap);
-  if (TextFlowed && (s->flags & MUTT_REPLYING))
+  int width = mutt_window_wrap_cols(MuttIndexWindow, C_ReflowWrap);
+  if (C_TextFlowed && (s->flags & MUTT_REPLYING))
   {
     /* When replying, force a wrap at FLOWED_MAX to comply with RFC3676
      * guidelines */
@@ -271,7 +271,7 @@ static void print_flowed_line(char *line, struct State *s, int ql,
       mutt_debug(LL_DEBUG3, "f=f: break line at %lu, %lu spaces left\n",
                  fst->width, fst->spaces);
       /* only honor trailing spaces for format=flowed replies */
-      if (TextFlowed)
+      if (C_TextFlowed)
         for (; fst->spaces; fst->spaces--)
           state_putc(' ', s);
       state_putc('\n', s);

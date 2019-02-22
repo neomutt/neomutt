@@ -228,14 +228,14 @@ void mutt_window_reflow(void)
 
   MuttStatusWindow->rows = 1;
   MuttStatusWindow->cols = COLS;
-  MuttStatusWindow->row_offset = StatusOnTop ? 0 : LINES - 2;
+  MuttStatusWindow->row_offset = C_StatusOnTop ? 0 : LINES - 2;
   MuttStatusWindow->col_offset = 0;
 
   memcpy(MuttHelpWindow, MuttStatusWindow, sizeof(struct MuttWindow));
-  if (!Help)
+  if (!C_Help)
     MuttHelpWindow->rows = 0;
   else
-    MuttHelpWindow->row_offset = StatusOnTop ? LINES - 2 : 0;
+    MuttHelpWindow->row_offset = C_StatusOnTop ? LINES - 2 : 0;
 
   memcpy(MuttMessageWindow, MuttStatusWindow, sizeof(struct MuttWindow));
   MuttMessageWindow->row_offset = LINES - 1;
@@ -244,22 +244,22 @@ void mutt_window_reflow(void)
   MuttIndexWindow->rows = MAX(
       LINES - MuttStatusWindow->rows - MuttHelpWindow->rows - MuttMessageWindow->rows, 0);
   MuttIndexWindow->row_offset =
-      StatusOnTop ? MuttStatusWindow->rows : MuttHelpWindow->rows;
+      C_StatusOnTop ? MuttStatusWindow->rows : MuttHelpWindow->rows;
 
 #ifdef USE_SIDEBAR
-  if (SidebarVisible)
+  if (C_SidebarVisible)
   {
     memcpy(MuttSidebarWindow, MuttIndexWindow, sizeof(struct MuttWindow));
-    MuttSidebarWindow->cols = SidebarWidth;
-    MuttIndexWindow->cols -= SidebarWidth;
+    MuttSidebarWindow->cols = C_SidebarWidth;
+    MuttIndexWindow->cols -= C_SidebarWidth;
 
-    if (SidebarOnRight)
+    if (C_SidebarOnRight)
     {
-      MuttSidebarWindow->col_offset = COLS - SidebarWidth;
+      MuttSidebarWindow->col_offset = COLS - C_SidebarWidth;
     }
     else
     {
-      MuttIndexWindow->col_offset += SidebarWidth;
+      MuttIndexWindow->col_offset += C_SidebarWidth;
     }
   }
 #endif
@@ -280,16 +280,16 @@ void mutt_window_reflow_message_rows(int mw_rows)
   MuttMessageWindow->rows = mw_rows;
   MuttMessageWindow->row_offset = LINES - mw_rows;
 
-  MuttStatusWindow->row_offset = StatusOnTop ? 0 : LINES - mw_rows - 1;
+  MuttStatusWindow->row_offset = C_StatusOnTop ? 0 : LINES - mw_rows - 1;
 
-  if (Help)
-    MuttHelpWindow->row_offset = StatusOnTop ? LINES - mw_rows - 1 : 0;
+  if (C_Help)
+    MuttHelpWindow->row_offset = C_StatusOnTop ? LINES - mw_rows - 1 : 0;
 
   MuttIndexWindow->rows = MAX(
       LINES - MuttStatusWindow->rows - MuttHelpWindow->rows - MuttMessageWindow->rows, 0);
 
 #ifdef USE_SIDEBAR
-  if (SidebarVisible)
+  if (C_SidebarVisible)
     MuttSidebarWindow->rows = MuttIndexWindow->rows;
 #endif
 

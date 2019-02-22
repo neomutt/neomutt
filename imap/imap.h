@@ -60,20 +60,20 @@ struct EmailList;
 struct Pattern;
 
 /* These Config Variables are only used in imap/auth.c */
-extern char *ImapAuthenticators;
+extern char *C_ImapAuthenticators;
 
 /* These Config Variables are only used in imap/imap.c */
-extern bool ImapIdle;
+extern bool C_ImapIdle;
 
 /* These Config Variables are only used in imap/message.c */
-extern char *ImapHeaders;
+extern char *C_ImapHeaders;
 
 /* These Config Variables are only used in imap/command.c */
-extern bool ImapServernoise;
+extern bool C_ImapServernoise;
 
 /* These Config Variables are only used in imap/util.c */
-extern char *ImapDelimChars;
-extern short ImapPipelineDepth;
+extern char *C_ImapDelimChars;
+extern short C_ImapPipelineDepth;
 
 /* imap.c */
 int imap_access(const char *path);

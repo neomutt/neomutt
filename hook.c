@@ -54,9 +54,9 @@
 struct Context;
 
 /* These Config Variables are only used in hook.c */
-char *DefaultHook; ///< Config: Pattern to use for hooks that only have a simple regex
-bool ForceName; ///< Config: Save outgoing mail in a folder of their name
-bool SaveName; ///< Config: Save outgoing message to mailbox of recipient's name if it exists
+char *C_DefaultHook; ///< Config: Pattern to use for hooks that only have a simple regex
+bool C_ForceName; ///< Config: Save outgoing mail in a folder of their name
+bool C_SaveName; ///< Config: Save outgoing message to mailbox of recipient's name if it exists
 
 /**
  * struct Hook - A list of user hooks
@@ -163,7 +163,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     }
   }
 #endif
-  else if (DefaultHook && (~data & MUTT_GLOBAL_HOOK) &&
+  else if (C_DefaultHook && (~data & MUTT_GLOBAL_HOOK) &&
            !(data & (MUTT_CHARSET_HOOK | MUTT_ICONV_HOOK | MUTT_ACCOUNT_HOOK)) &&
            (!WithCrypto || !(data & MUTT_CRYPT_HOOK)))
   {
@@ -174,7 +174,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
      * patterns. If given a simple regex, we expand $default_hook.
      */
     mutt_str_strfcpy(tmp, pattern.data, sizeof(tmp));
-    mutt_check_simple(tmp, sizeof(tmp), DefaultHook);
+    mutt_check_simple(tmp, sizeof(tmp), C_DefaultHook);
     FREE(&pattern.data);
     mutt_buffer_init(&pattern);
     pattern.data = mutt_str_strdup(tmp);
@@ -563,17 +563,17 @@ void mutt_select_fcc(char *path, size_t pathlen, struct Email *e)
   if (addr_hook(path, pathlen, MUTT_FCC_HOOK, NULL, e) != 0)
   {
     struct Envelope *env = e->env;
-    if ((SaveName || ForceName) && (env->to || env->cc || env->bcc))
+    if ((C_SaveName || C_ForceName) && (env->to || env->cc || env->bcc))
     {
       struct Address *addr = env->to ? env->to : (env->cc ? env->cc : env->bcc);
       char buf[PATH_MAX];
       mutt_safe_path(buf, sizeof(buf), addr);
-      mutt_path_concat(path, NONULL(Folder), buf, pathlen);
-      if (!ForceName && mx_access(path, W_OK) != 0)
-        mutt_str_strfcpy(path, Record, pathlen);
+      mutt_path_concat(path, NONULL(C_Folder), buf, pathlen);
+      if (!C_ForceName && mx_access(path, W_OK) != 0)
+        mutt_str_strfcpy(path, C_Record, pathlen);
     }
     else
-      mutt_str_strfcpy(path, Record, pathlen);
+      mutt_str_strfcpy(path, C_Record, pathlen);
   }
   mutt_pretty_mailbox(path, pathlen);
 }

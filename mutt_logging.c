@@ -45,8 +45,8 @@
 
 struct timeval LastError = { 0 };
 
-short DebugLevel = 0;     ///< Config: Logging level for debug logs
-char *DebugFile = NULL;   ///< Config: File to save debug logs
+short C_DebugLevel = 0;   ///< Config: Logging level for debug logs
+char *C_DebugFile = NULL; ///< Config: File to save debug logs
 char *CurrentFile = NULL; /**< The previous log file name */
 const int NumOfLogs = 5;  /**< How many log files to rotate */
 
@@ -84,7 +84,7 @@ static void error_pause(void)
     return;
   }
 
-  unsigned long sleep = SleepTime * S_TO_NS;
+  unsigned long sleep = C_SleepTime * S_TO_NS;
   long micro = micro_elapsed(&LastError, &now);
   if ((micro * US_TO_NS) >= sleep)
     return;
@@ -155,7 +155,7 @@ void mutt_clear_error(void)
 int log_disp_curses(time_t stamp, const char *file, int line,
                     const char *function, int level, ...)
 {
-  if (level > DebugLevel)
+  if (level > C_DebugLevel)
     return 0;
 
   char buf[LONG_STRING];
@@ -254,15 +254,15 @@ void mutt_log_stop(void)
  */
 int mutt_log_set_file(const char *file, bool verbose)
 {
-  if (mutt_str_strcmp(CurrentFile, DebugFile) != 0)
+  if (mutt_str_strcmp(CurrentFile, C_DebugFile) != 0)
   {
-    const char *name = rotate_logs(DebugFile, NumOfLogs);
+    const char *name = rotate_logs(C_DebugFile, NumOfLogs);
     if (!name)
       return -1;
 
     log_file_set_filename(name, false);
     FREE(&name);
-    mutt_str_replace(&CurrentFile, DebugFile);
+    mutt_str_replace(&CurrentFile, C_DebugFile);
   }
 
   cs_str_string_set(Config, "debug_file", file, NULL);
@@ -280,7 +280,7 @@ int mutt_log_set_file(const char *file, bool verbose)
 int mutt_log_set_level(int level, bool verbose)
 {
   if (!CurrentFile)
-    mutt_log_set_file(DebugFile, false);
+    mutt_log_set_file(C_DebugFile, false);
 
   if (log_file_set_level(level, verbose) != 0)
     return -1;
@@ -298,16 +298,16 @@ int mutt_log_set_level(int level, bool verbose)
  */
 int mutt_log_start(void)
 {
-  if (DebugLevel < 1)
+  if (C_DebugLevel < 1)
     return 0;
 
   if (log_file_running())
     return 0;
 
-  mutt_log_set_file(DebugFile, false);
+  mutt_log_set_file(C_DebugFile, false);
 
   /* This will trigger the file creation */
-  if (log_file_set_level(DebugLevel, true) < 0)
+  if (log_file_set_level(C_DebugLevel, true) < 0)
     return -1;
 
   return 0;
@@ -341,9 +341,9 @@ bool mutt_log_listener(const struct ConfigSet *cs, struct HashElem *he,
                        const char *name, enum ConfigEvent ev)
 {
   if (mutt_str_strcmp(name, "debug_file") == 0)
-    mutt_log_set_file(DebugFile, true);
+    mutt_log_set_file(C_DebugFile, true);
   else if (mutt_str_strcmp(name, "debug_level") == 0)
-    mutt_log_set_level(DebugLevel, true);
+    mutt_log_set_level(C_DebugLevel, true);
 
   return true;
 }

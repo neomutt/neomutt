@@ -348,7 +348,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
       if (chflags & (CH_DECODE | CH_PREFIX))
       {
         if (mutt_write_one_header(out, 0, headers[x], (chflags & CH_PREFIX) ? prefix : 0,
-                                  mutt_window_wrap_cols(MuttIndexWindow, Wrap), chflags) == -1)
+                                  mutt_window_wrap_cols(MuttIndexWindow, C_Wrap), chflags) == -1)
         {
           error = true;
           break;
@@ -408,7 +408,7 @@ int mutt_copy_header(FILE *in, struct Email *e, FILE *out, int chflags, const ch
     fputs("MIME-Version: 1.0\n", out);
     fputs("Content-Transfer-Encoding: 8bit\n", out);
     fputs("Content-Type: text/plain; charset=", out);
-    mutt_ch_canonical_charset(chsbuf, sizeof(chsbuf), Charset ? Charset : "us-ascii");
+    mutt_ch_canonical_charset(chsbuf, sizeof(chsbuf), C_Charset ? C_Charset : "us-ascii");
     mutt_addr_cat(buffer, sizeof(buffer), chsbuf, MimeSpecials);
     fputs(buffer, out);
     fputc('\n', out);
@@ -468,7 +468,7 @@ int mutt_copy_header(FILE *in, struct Email *e, FILE *out, int chflags, const ch
   {
     /* Add some fake headers based on notmuch data */
     char *folder = nm_email_get_folder(e);
-    if (folder && !(Weed && mutt_matches_ignore("folder")))
+    if (folder && !(C_Weed && mutt_matches_ignore("folder")))
     {
       char buf[LONG_STRING];
       mutt_str_strfcpy(buf, folder, sizeof(buf));
@@ -481,7 +481,7 @@ int mutt_copy_header(FILE *in, struct Email *e, FILE *out, int chflags, const ch
   }
 #endif
   char *tags = driver_tags_get(&e->tags);
-  if (tags && !(Weed && mutt_matches_ignore("tags")))
+  if (tags && !(C_Weed && mutt_matches_ignore("tags")))
   {
     fputs("Tags: ", out);
     fputs(tags, out);
@@ -497,10 +497,10 @@ int mutt_copy_header(FILE *in, struct Email *e, FILE *out, int chflags, const ch
     if (!(chflags & CH_DECODE))
     {
       temp_hdr = mutt_str_strdup(temp_hdr);
-      rfc2047_encode(&temp_hdr, NULL, sizeof("X-Label:"), SendCharset);
+      rfc2047_encode(&temp_hdr, NULL, sizeof("X-Label:"), C_SendCharset);
     }
     if (mutt_write_one_header(out, "X-Label", temp_hdr, chflags & CH_PREFIX ? prefix : 0,
-                              mutt_window_wrap_cols(MuttIndexWindow, Wrap), chflags) == -1)
+                              mutt_window_wrap_cols(MuttIndexWindow, C_Wrap), chflags) == -1)
     {
       return -1;
     }
@@ -516,10 +516,10 @@ int mutt_copy_header(FILE *in, struct Email *e, FILE *out, int chflags, const ch
     if (!(chflags & CH_DECODE))
     {
       temp_hdr = mutt_str_strdup(temp_hdr);
-      rfc2047_encode(&temp_hdr, NULL, sizeof("Subject:"), SendCharset);
+      rfc2047_encode(&temp_hdr, NULL, sizeof("Subject:"), C_SendCharset);
     }
     if (mutt_write_one_header(out, "Subject", temp_hdr, chflags & CH_PREFIX ? prefix : 0,
-                              mutt_window_wrap_cols(MuttIndexWindow, Wrap), chflags) == -1)
+                              mutt_window_wrap_cols(MuttIndexWindow, C_Wrap), chflags) == -1)
       return -1;
     if (!(chflags & CH_DECODE))
       FREE(&temp_hdr);
@@ -596,10 +596,10 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e, int cmflags, 
 
   if (cmflags & MUTT_CM_PREFIX)
   {
-    if (TextFlowed)
+    if (C_TextFlowed)
       mutt_str_strfcpy(prefix, ">", sizeof(prefix));
     else
-      mutt_make_string(prefix, sizeof(prefix), NONULL(IndentString), Context,
+      mutt_make_string(prefix, sizeof(prefix), NONULL(C_IndentString), Context,
                        Context->mailbox, e);
   }
 

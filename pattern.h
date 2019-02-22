@@ -33,7 +33,7 @@ struct Email;
 struct Mailbox;
 
 /* These Config Variables are only used in pattern.c */
-extern bool ThoroughSearch;
+extern bool C_ThoroughSearch;
 
 /* flag to mutt_pattern_comp() */
 #define MUTT_FULL_MSG (1 << 0) /* enable body and header matching */

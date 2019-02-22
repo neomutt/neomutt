@@ -32,14 +32,14 @@ struct Mailbox;
 struct Menu;
 
 /* These Config Variables are only used in index.c */
-extern bool  ChangeFolderNext;
-extern bool  CollapseAll;
-extern bool  CollapseFlagged;
-extern bool  CollapseUnread;
-extern char *MarkMacroPrefix;
-extern bool  PgpAutoDecode;
-extern bool  UncollapseJump;
-extern bool  UncollapseNew;
+extern bool  C_ChangeFolderNext;
+extern bool  C_CollapseAll;
+extern bool  C_CollapseFlagged;
+extern bool  C_CollapseUnread;
+extern char *C_MarkMacroPrefix;
+extern bool  C_PgpAutoDecode;
+extern bool  C_UncollapseJump;
+extern bool  C_UncollapseNew;
 
 int  index_color(int line);
 void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line);

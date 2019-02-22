@@ -46,7 +46,7 @@
 #include "rfc2047.h"
 
 /* These Config Variables are only used in rfc2231.c */
-bool Rfc2047Parameters; ///< Config: Decode RFC2047-encoded MIME parameters
+bool C_Rfc2047Parameters; ///< Config: Decode RFC2047-encoded MIME parameters
 
 /**
  * struct Rfc2231Parameter - MIME section parameter
@@ -220,7 +220,7 @@ static void join_continuations(struct ParameterList *p, struct Rfc2231Parameter 
     } while (par && (strcmp(par->attribute, attribute) == 0));
 
     if (encoded)
-      mutt_ch_convert_string(&value, charset, Charset, MUTT_ICONV_HOOK_FROM);
+      mutt_ch_convert_string(&value, charset, C_Charset, MUTT_ICONV_HOOK_FROM);
 
     struct Parameter *np = mutt_param_new();
     np->attribute = mutt_str_strdup(attribute);
@@ -261,9 +261,9 @@ void rfc2231_decode_parameters(struct ParameterList *p)
        * Internet Gateways.  So we actually decode it.
        */
 
-      if (Rfc2047Parameters && np->value && strstr(np->value, "=?"))
+      if (C_Rfc2047Parameters && np->value && strstr(np->value, "=?"))
         rfc2047_decode(&np->value);
-      else if (AssumedCharset && *AssumedCharset)
+      else if (C_AssumedCharset && *C_AssumedCharset)
         mutt_ch_convert_nonmime_string(&np->value);
     }
     else if (*(s + 1) == '\0')
@@ -272,7 +272,7 @@ void rfc2231_decode_parameters(struct ParameterList *p)
 
       s = get_charset(np->value, charset, sizeof(charset));
       decode_one(np->value, s);
-      mutt_ch_convert_string(&np->value, charset, Charset, MUTT_ICONV_HOOK_FROM);
+      mutt_ch_convert_string(&np->value, charset, C_Charset, MUTT_ICONV_HOOK_FROM);
       mutt_mb_filter_unprintable(&np->value);
       dirty = true;
     }
@@ -338,10 +338,10 @@ int rfc2231_encode_string(char **pd)
   if (!*s)
     return 0;
 
-  if (!Charset || !SendCharset ||
-      !(charset = mutt_ch_choose(Charset, SendCharset, *pd, strlen(*pd), &d, &dlen)))
+  if (!C_Charset || !C_SendCharset ||
+      !(charset = mutt_ch_choose(C_Charset, C_SendCharset, *pd, strlen(*pd), &d, &dlen)))
   {
-    charset = mutt_str_strdup(Charset ? Charset : "unknown-8bit");
+    charset = mutt_str_strdup(C_Charset ? C_Charset : "unknown-8bit");
     FREE(&d);
     d = *pd;
     dlen = strlen(d);

@@ -87,7 +87,7 @@
 #endif
 
 /* These Config Variables are only used in main.c */
-bool ResumeEditedDraftFiles; ///< Config: Resume editing previously saved draft files
+bool C_ResumeEditedDraftFiles; ///< Config: Resume editing previously saved draft files
 
 #define MUTT_IGNORE (1 << 0)  /* -z */
 #define MUTT_MAILBOX (1 << 1) /* -Z */
@@ -706,20 +706,20 @@ int main(int argc, char *argv[], char *envp[])
   /* "$news_server" precedence: command line, config file, environment, system file */
   if (cli_nntp)
     cs_str_string_set(Config, "news_server", cli_nntp, NULL);
-  if (!NewsServer)
+  if (!C_NewsServer)
   {
     const char *env_nntp = mutt_str_getenv("NNTPSERVER");
     cs_str_string_set(Config, "news_server", env_nntp, NULL);
   }
-  if (!NewsServer)
+  if (!C_NewsServer)
   {
     char buffer[1024];
     char *server =
         mutt_file_read_keyword(SYSCONFDIR "/nntpserver", buffer, sizeof(buffer));
     cs_str_string_set(Config, "news_server", server, NULL);
   }
-  if (NewsServer)
-    cs_str_initial_set(Config, "news_server", NewsServer, NULL);
+  if (C_NewsServer)
+    cs_str_initial_set(Config, "news_server", C_NewsServer, NULL);
 #endif
 
   /* Initialize crypto backends.  */
@@ -787,13 +787,13 @@ int main(int argc, char *argv[], char *envp[])
     log_queue_set_max_size(100);
   }
 
-  /* Create the Folder directory if it doesn't exist. */
-  if (!OptNoCurses && Folder)
+  /* Create the C_Folder directory if it doesn't exist. */
+  if (!OptNoCurses && C_Folder)
   {
     struct stat sb;
     char fpath[PATH_MAX];
 
-    mutt_str_strfcpy(fpath, Folder, sizeof(fpath));
+    mutt_str_strfcpy(fpath, C_Folder, sizeof(fpath));
     mutt_expand_path(fpath, sizeof(fpath));
     bool skip = false;
 #ifdef USE_IMAP
@@ -806,11 +806,11 @@ int main(int argc, char *argv[], char *envp[])
     if (!skip && (stat(fpath, &sb) == -1) && (errno == ENOENT))
     {
       char msg2[STRING];
-      snprintf(msg2, sizeof(msg2), _("%s does not exist. Create it?"), Folder);
+      snprintf(msg2, sizeof(msg2), _("%s does not exist. Create it?"), C_Folder);
       if (mutt_yesorno(msg2, MUTT_YES) == MUTT_YES)
       {
         if ((mkdir(fpath, 0700) == -1) && (errno != EEXIST))
-          mutt_error(_("Can't create %s: %s"), Folder, strerror(errno)); // TEST21: neomutt -n -F /dev/null (and ~/Mail doesn't exist)
+          mutt_error(_("Can't create %s: %s"), C_Folder, strerror(errno)); // TEST21: neomutt -n -F /dev/null (and ~/Mail doesn't exist)
       }
     }
   }
@@ -869,7 +869,7 @@ int main(int argc, char *argv[], char *envp[])
         msg->env->to = mutt_addr_parse_list(msg->env->to, argv[i]);
     }
 
-    if (!draft_file && Autoedit && !msg->env->to && !msg->env->cc)
+    if (!draft_file && C_Autoedit && !msg->env->to && !msg->env->cc)
     {
       mutt_error(_("No recipients specified"));
       goto main_curses; // TEST26: neomutt -s test (with autoedit=yes)
@@ -989,13 +989,13 @@ int main(int argc, char *argv[], char *envp[])
           goto main_curses;
         }
 
-        /* Scan for neomutt header to set ResumeDraftFiles */
+        /* Scan for neomutt header to set C_ResumeDraftFiles */
         struct ListNode *np, *tmp;
         STAILQ_FOREACH_SAFE(np, &msg->env->userhdrs, entries, tmp)
         {
           if (mutt_str_startswith(np->data, "X-Mutt-Resume-Draft:", CASE_IGNORE))
           {
-            if (ResumeEditedDraftFiles)
+            if (C_ResumeEditedDraftFiles)
               cs_str_native_set(Config, "resume_draft_files", true, NULL);
 
             STAILQ_REMOVE(&msg->env->userhdrs, np, ListNode, entries);
@@ -1096,8 +1096,8 @@ int main(int argc, char *argv[], char *envp[])
 
         mutt_rfc822_write_header(
             fout, msg->env, msg->content, MUTT_WRITE_HEADER_POSTPONE, false,
-            CryptProtectedHeadersRead && mutt_should_hide_protected_subject(msg));
-        if (ResumeEditedDraftFiles)
+            C_CryptProtectedHeadersRead && mutt_should_hide_protected_subject(msg));
+        if (C_ResumeEditedDraftFiles)
           fprintf(fout, "X-Mutt-Resume-Draft: 1\n");
         fputc('\n', fout);
         if ((mutt_write_mime_body(msg->content, fout) == -1))
@@ -1128,8 +1128,8 @@ int main(int argc, char *argv[], char *envp[])
     if (flags & MUTT_MAILBOX)
     {
 #ifdef USE_IMAP
-      bool passive = ImapPassive;
-      ImapPassive = false;
+      bool passive = C_ImapPassive;
+      C_ImapPassive = false;
 #endif
       if (mutt_mailbox_check(Context ? Context->mailbox : NULL, 0) == 0)
       {
@@ -1139,7 +1139,7 @@ int main(int argc, char *argv[], char *envp[])
       folder[0] = '\0';
       mutt_mailbox(Context ? Context->mailbox : NULL, folder, sizeof(folder));
 #ifdef USE_IMAP
-      ImapPassive = passive;
+      C_ImapPassive = passive;
 #endif
     }
     else if (flags & MUTT_SELECT)
@@ -1148,7 +1148,7 @@ int main(int argc, char *argv[], char *envp[])
       if (flags & MUTT_NEWS)
       {
         OptNews = true;
-        CurrentNewsSrv = nntp_select_server(Context->mailbox, NewsServer, false);
+        CurrentNewsSrv = nntp_select_server(Context->mailbox, C_NewsServer, false);
         if (!CurrentNewsSrv)
           goto main_curses; // TEST38: neomutt -G (unset news_server)
       }
@@ -1170,10 +1170,10 @@ int main(int argc, char *argv[], char *envp[])
 
     if (!folder[0])
     {
-      if (Spoolfile)
-        mutt_str_strfcpy(folder, Spoolfile, sizeof(folder));
-      else if (Folder)
-        mutt_str_strfcpy(folder, Folder, sizeof(folder));
+      if (C_Spoolfile)
+        mutt_str_strfcpy(folder, C_Spoolfile, sizeof(folder));
+      else if (C_Folder)
+        mutt_str_strfcpy(folder, C_Folder, sizeof(folder));
       /* else no folder */
     }
 
@@ -1209,7 +1209,7 @@ int main(int argc, char *argv[], char *envp[])
 
     repeat_error = true;
     struct Mailbox *m = mx_path_resolve(folder);
-    Context = mx_mbox_open(m, ((flags & MUTT_RO) || ReadOnly) ? MUTT_READONLY : 0);
+    Context = mx_mbox_open(m, ((flags & MUTT_RO) || C_ReadOnly) ? MUTT_READONLY : 0);
     if (!Context)
     {
       mailbox_free(&m);
