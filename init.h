@@ -1834,13 +1834,7 @@ struct ConfigDef MuttVars[] = {
   ** rightward text.
   ** .pp
   ** Note that these expandos are supported in
-  ** "$save-hook", "$fcc-hook", "$fcc-save-hook", and
-  ** "$index-format-hook".
-  ** .pp
-  ** They are also supported in the configuration variables $$attribution,
-  ** $$forward_attribution_intro, $$forward_attribution_trailer,
-  ** $$forward_format, $$indent_string, $$message_format, $$pager_format,
-  ** and $$post_indent_string.
+  ** ``$save-hook'', ``$fcc-hook'' and ``$fcc-save-hook'', too.
   */
 #ifdef USE_NNTP
   { "inews", DT_COMMAND, R_NONE, &Inews, 0 },
@@ -2840,12 +2834,24 @@ struct ConfigDef MuttVars[] = {
   ** not used.
   ** (PGP only)
   */
-  { "pgp_use_gpg_agent", DT_BOOL, R_NONE, &PgpUseGpgAgent, false },
+  { "pgp_use_gpg_agent", DT_BOOL, R_NONE, &PgpUseGpgAgent, true },
   /*
   ** .pp
-  ** If \fIset\fP, NeoMutt will use a possibly-running \fCgpg-agent(1)\fP process.
-  ** Note that as of version 2.1, GnuPG no longer exports GPG_AGENT_INFO, so
-  ** NeoMutt no longer verifies if the agent is running.
+  ** If \fIset\fP, NeoMutt expects a \fCgpg-agent(1)\fP process will handle
+  ** private key passphrase prompts.  If \fIunset\fP, NeoMutt will prompt
+  ** for the passphrase and pass it via stdin to the pgp command.
+  ** .pp
+  ** Note that as of version 2.1, GnuPG automatically spawns an agent
+  ** and requires the agent be used for passphrase management.  Since
+  ** that version is increasingly prevalent, this variable now
+  ** defaults \fIset\fP.
+  ** .pp
+  ** NeoMutt works with a GUI or curses pinentry program.  A TTY pinentry
+  ** should not be used.
+  ** .pp
+  ** If you are using an older version of GnuPG without an agent running,
+  ** or another encryption program without an agent, you will need to
+  ** \fIunset\fP this variable.
   ** (PGP only)
   */
   { "pgp_verify_command", DT_COMMAND, R_NONE, &PgpVerifyCommand, 0 },
@@ -2985,8 +2991,6 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** Similar to the $$attribution variable, NeoMutt will append this
   ** string after the inclusion of a message which is being replied to.
-  ** For a full listing of defined \fCprintf(3)\fP-like sequences see
-  ** the section on $$index_format.
   */
 #ifdef USE_NNTP
   { "post_moderated",   DT_QUAD, R_NONE, &PostModerated, MUTT_ASKYES },

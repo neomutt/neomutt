@@ -3224,19 +3224,29 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
 #endif
       /* fallthrough */
       case OP_REPLY:
+      case OP_GROUP_REPLY:
+      case OP_GROUP_CHAT_REPLY:
+      case OP_LIST_REPLY:
+      {
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;
+
+        int replyflags = SEND_REPLY | (ch == OP_GROUP_REPLY ? SEND_GROUP_REPLY : 0) |
+                         (ch == OP_GROUP_CHAT_REPLY ? SEND_GROUP_CHAT_REPLY : 0) |
+                         (ch == OP_LIST_REPLY ? SEND_LIST_REPLY : 0);
+
         if (IsMsgAttach(extra))
-          mutt_attach_reply(extra->fp, extra->email, extra->actx, extra->body, SEND_REPLY);
+          mutt_attach_reply(extra->fp, extra->email, extra->actx, extra->body, replyflags);
         else
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           el_add_email(&el, extra->email);
-          ci_send_message(SEND_REPLY, NULL, NULL, extra->ctx, &el);
+          ci_send_message(replyflags, NULL, NULL, extra->ctx, &el);
           el_free(&el);
         }
         pager_menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_RECALL_MESSAGE:
       {
@@ -3249,42 +3259,6 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         pager_menu->redraw = REDRAW_FULL;
         break;
       }
-
-      case OP_GROUP_REPLY:
-        CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
-        CHECK_ATTACH;
-        if (IsMsgAttach(extra))
-        {
-          mutt_attach_reply(extra->fp, extra->email, extra->actx, extra->body,
-                            SEND_REPLY | SEND_GROUP_REPLY);
-        }
-        else
-        {
-          struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-          el_add_email(&el, extra->email);
-          ci_send_message(SEND_REPLY | SEND_GROUP_REPLY, NULL, NULL, extra->ctx, &el);
-          el_free(&el);
-        }
-        pager_menu->redraw = REDRAW_FULL;
-        break;
-
-      case OP_LIST_REPLY:
-        CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
-        CHECK_ATTACH;
-        if (IsMsgAttach(extra))
-        {
-          mutt_attach_reply(extra->fp, extra->email, extra->actx, extra->body,
-                            SEND_REPLY | SEND_LIST_REPLY);
-        }
-        else
-        {
-          struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-          el_add_email(&el, extra->email);
-          ci_send_message(SEND_REPLY | SEND_LIST_REPLY, NULL, NULL, extra->ctx, &el);
-          el_free(&el);
-        }
-        pager_menu->redraw = REDRAW_FULL;
-        break;
 
       case OP_FORWARD_MESSAGE:
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));

@@ -688,7 +688,8 @@ int mx_mbox_close(struct Context **ptr)
         if (m->emails[i]->read && !m->emails[i]->deleted &&
             !(m->emails[i]->flagged && KeepFlagged))
         {
-          if (mutt_append_message(ctx_read->mailbox, ctx->mailbox, m->emails[i], 0, CH_UPDATE_LEN) == 0)
+          if (mutt_append_message(ctx_read->mailbox, ctx->mailbox, m->emails[i],
+                                  0, CH_UPDATE_LEN) == 0)
           {
             mutt_set_flag(m, m->emails[i], MUTT_DELETE, true);
             mutt_set_flag(m, m->emails[i], MUTT_PURGE, true);
@@ -1253,7 +1254,8 @@ enum MailboxType mx_path_probe(const char *path, struct stat *st)
 
   if (stat(path, st) != 0)
   {
-    mutt_debug(LL_DEBUG1, "unable to stat %s: %s (errno %d).\n", path, strerror(errno), errno);
+    mutt_debug(LL_DEBUG1, "unable to stat %s: %s (errno %d).\n", path,
+               strerror(errno), errno);
     return MUTT_UNKNOWN;
   }
 

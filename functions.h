@@ -156,6 +156,7 @@ const struct Binding OpMain[] = { /* map: index */
   { "get-message",               OP_GET_MESSAGE,                    NULL },
   { "get-parent",                OP_GET_PARENT,                     NULL },
 #endif
+  { "group-chat-reply",          OP_GROUP_CHAT_REPLY,               NULL },
   { "group-reply",               OP_GROUP_REPLY,                    "g" },
 #ifdef USE_IMAP
   { "imap-fetch-mail",           OP_MAIN_IMAP_FETCH,                NULL },
@@ -300,6 +301,7 @@ const struct Binding OpPager[] = { /* map: pager */
 #ifdef USE_NNTP
   { "forward-to-group",          OP_FORWARD_TO_GROUP,             NULL },
 #endif
+  { "group-chat-reply",          OP_GROUP_CHAT_REPLY,             NULL },
   { "group-reply",               OP_GROUP_REPLY,                  "g" },
   { "half-down",                 OP_HALF_DOWN,                    NULL },
   { "half-up",                   OP_HALF_UP,                      NULL },
@@ -421,6 +423,7 @@ const struct Binding OpAttach[] = { /* map: attachment */
 #ifdef USE_NNTP
   { "forward-to-group",      OP_FORWARD_TO_GROUP,            NULL },
 #endif
+  { "group-chat-reply",      OP_GROUP_CHAT_REPLY,            NULL },
   { "group-reply",           OP_GROUP_REPLY,                 "g" },
   { "list-reply",            OP_LIST_REPLY,                  "L" },
   { "pipe-entry",            OP_PIPE,                        "|" },
@@ -534,6 +537,7 @@ const struct Binding OpBrowser[] = { /* map: browser */
   { "create-mailbox",        OP_CREATE_MAILBOX,              "C" },
   { "delete-mailbox",        OP_DELETE_MAILBOX,              "d" },
 #endif
+  { "descend-directory",     OP_DESCEND_DIRECTORY,           NULL },
   { "display-filename",      OP_BROWSER_TELL,                "@" },
   { "enter-mask",            OP_ENTER_MASK,                  "m" },
   { "goto-folder",           OP_BROWSER_GOTO_FOLDER,         "=" },

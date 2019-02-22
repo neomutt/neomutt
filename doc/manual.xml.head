@@ -343,6 +343,13 @@ vim: ts=2 sw=2 sts=2 expandtab:
           file(s) to attach to a message, select multiple files to attach and
           many more.
         </para>
+        <para>
+          Some mail systems can nest mail folders inside other mail folders.
+          The normal open entry commands in mutt will open the mail folder and
+          you can't see the sub-folders.  If you instead use the
+          <literal>&lt;descend-directory&gt;</literal> function it will go into
+          the directory and not open it as a mail directory.
+        </para>
       </sect2>
 
       <sect2 id="intro-sidebar">
@@ -2517,6 +2524,11 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
                 <entry>reply to all recipients</entry>
               </row>
               <row>
+                <entry></entry>
+                <entry><literal>&lt;group-chat-reply&gt;</literal></entry>
+                <entry>reply to all recipients preserving To/Cc</entry>
+              </row>
+              <row>
                 <entry>L</entry>
                 <entry><literal>&lt;list-reply&gt;</literal></entry>
                 <entry>reply to mailing list address</entry>
@@ -2580,9 +2592,20 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
             <term>Group reply</term>
             <listitem>
               <para>
-                Reply to the author as well to all recipients except you;
-                this consults
-                <link linkend="alternates"><command>alternates</command></link>.
+                Reply to the author; cc all other recipients; consults
+                <link linkend="alternates"><command>alternates</command></link>
+                and excludes you.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>Group Chat reply</term>
+            <listitem>
+              <para>
+                Reply to the author and other recipients in the To list;
+                cc other recipients in the Cc list; consults
+                <link linkend="alternates"><command>alternates</command></link>
+                and excludes you.
               </para>
             </listitem>
           </varlistentry>
@@ -4349,6 +4372,9 @@ folder-hook work "set sort=threads"
         <arg choice="plain">
           <replaceable class="parameter">object</replaceable>
         </arg>
+        <arg choice="opt" rep="repeat">
+          <replaceable class="parameter">attribute</replaceable>
+        </arg>
         <arg choice="plain">
           <replaceable class="parameter">foreground</replaceable>
         </arg>
@@ -4364,6 +4390,9 @@ folder-hook work "set sort=threads"
             <option>body</option>
           </arg>
         </group>
+        <arg choice="opt" rep="repeat">
+          <replaceable class="parameter">attribute</replaceable>
+        </arg>
         <arg choice="plain">
           <replaceable class="parameter">foreground</replaceable>
         </arg>
@@ -4376,6 +4405,9 @@ folder-hook work "set sort=threads"
         <command>color</command>
         <arg choice="plain">
           <option>index-object</option>
+        </arg>
+        <arg choice="opt" rep="repeat">
+          <replaceable class="parameter">attribute</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">foreground</replaceable>
@@ -4392,6 +4424,9 @@ folder-hook work "set sort=threads"
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">composeobject</replaceable>
+        </arg>
+        <arg choice="opt" rep="repeat">
+          <replaceable class="parameter">attribute</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">foreground</replaceable>
@@ -4682,6 +4717,26 @@ folder-hook work "set sort=threads"
         </listitem>
       </itemizedlist>
       <para>
+        <emphasis>attribute</emphasis> can be one of the following:
+      </para>
+      <itemizedlist>
+        <listitem>
+          <para>none</para>
+        </listitem>
+        <listitem>
+          <para>bold</para>
+        </listitem>
+        <listitem>
+          <para>underline</para>
+        </listitem>
+        <listitem>
+          <para>reverse</para>
+        </listitem>
+        <listitem>
+          <para>standout</para>
+        </listitem>
+      </itemizedlist>
+      <para>
         <emphasis>foreground</emphasis> and <emphasis>background</emphasis> can
         be one of the following:
       </para>
@@ -4852,36 +4907,9 @@ export COLORFGBG
         </group>
       </cmdsynopsis>
       <para>
-        For <emphasis>object</emphasis>, see the <command>color</command>
-        command. <emphasis>attribute</emphasis> can be one of the following:
+        For <emphasis>object</emphasis>, <emphasis>composeobject</emphasis>, and
+        <emphasis>attribute</emphasis>, see the <command>color</command> command.
       </para>
-      <itemizedlist>
-        <listitem>
-          <para>
-            none
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            bold
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            underline
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            reverse
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            standout
-          </para>
-        </listitem>
-      </itemizedlist>
     </sect1>
 
     <sect1 id="msg-hdr-display">
@@ -8645,7 +8673,7 @@ roessler@does-not-exist.org        Thomas Roessler mutt pgp
         <link linkend="lists"><command>lists</command></link> and
         <link linkend="lists"><command>subscribe</command></link> commands in
         your <literal>.neomuttrc</literal>. Alternatively or additionally, you
-        can set <link linkend="auto-subscribe">$auto_subscribe</link> to 
+        can set <link linkend="auto-subscribe">$auto_subscribe</link> to
         automatically subscribe addresses found in a <literal>List-Post</literal>
         header.
       </para>
@@ -17645,6 +17673,9 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             <arg choice="plain">
               <replaceable class="parameter">object</replaceable>
             </arg>
+            <arg choice="opt" rep="repeat">
+              <replaceable class="parameter">attribute</replaceable>
+            </arg>
             <arg choice="plain">
               <replaceable class="parameter">foreground</replaceable>
             </arg>
@@ -17662,6 +17693,9 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 <option>body</option>
               </arg>
             </group>
+            <arg choice="opt" rep="repeat">
+              <replaceable class="parameter">attribute</replaceable>
+            </arg>
             <arg choice="plain">
               <replaceable class="parameter">foreground</replaceable>
             </arg>
@@ -17676,6 +17710,9 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             </command>
             <arg choice="plain">
               <option>index</option>
+            </arg>
+            <arg choice="opt" rep="repeat">
+              <replaceable class="parameter">attribute</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">foreground</replaceable>

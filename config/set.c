@@ -559,7 +559,8 @@ int cs_he_initial_get(const struct ConfigSet *cs, struct HashElem *he, struct Bu
 
   if (!cst)
   {
-    mutt_debug(LL_DEBUG1, "Variable '%s' has an invalid type %d\n", cdef->name, DTYPE(he->type));
+    mutt_debug(LL_DEBUG1, "Variable '%s' has an invalid type %d\n", cdef->name,
+               DTYPE(he->type));
     return CSR_ERR_CODE;
   }
 
@@ -710,7 +711,8 @@ int cs_he_string_get(const struct ConfigSet *cs, struct HashElem *he, struct Buf
 
   if (!cst)
   {
-    mutt_debug(LL_DEBUG1, "Variable '%s' has an invalid type %d\n", cdef->name, DTYPE(he->type));
+    mutt_debug(LL_DEBUG1, "Variable '%s' has an invalid type %d\n", cdef->name,
+               DTYPE(he->type));
     return CSR_ERR_CODE;
   }
 

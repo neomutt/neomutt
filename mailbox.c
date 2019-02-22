@@ -121,7 +121,8 @@ void mailbox_free(struct Mailbox **ptr)
  * @param ctx_sb      stat() info for the current Mailbox
  * @param check_stats If true, also count the total, new and flagged messages
  */
-static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check, struct stat *ctx_sb, bool check_stats)
+static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
+                          struct stat *ctx_sb, bool check_stats)
 {
   struct stat sb = { 0 };
 
@@ -148,7 +149,8 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check, struct
       m_check->has_new = false;
 
       if (stat(m_check->path, &sb) != 0 || (S_ISREG(sb.st_mode) && sb.st_size == 0) ||
-          ((m_check->magic == MUTT_UNKNOWN) && (m_check->magic = mx_path_probe(m_check->path, NULL)) <= 0))
+          ((m_check->magic == MUTT_UNKNOWN) &&
+           (m_check->magic = mx_path_probe(m_check->path, NULL)) <= 0))
       {
         /* if the mailbox still doesn't exist, set the newly created flag to be
          * ready for when it does. */
@@ -271,8 +273,8 @@ struct Mailbox *mutt_find_mailbox(const char *path)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if ((stat(np->mailbox->path, &tmp_sb) == 0) && (sb.st_dev == tmp_sb.st_dev) &&
-        (sb.st_ino == tmp_sb.st_ino))
+    if ((stat(np->mailbox->path, &tmp_sb) == 0) &&
+        (sb.st_dev == tmp_sb.st_dev) && (sb.st_ino == tmp_sb.st_ino))
     {
       return np->mailbox;
     }
@@ -365,8 +367,7 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
   MailboxNotify = 0;
 
   /* check device ID and serial number instead of comparing paths */
-  if (!m_cur || (m_cur->magic == MUTT_IMAP) ||
-      (m_cur->magic == MUTT_POP)
+  if (!m_cur || (m_cur->magic == MUTT_IMAP) || (m_cur->magic == MUTT_POP)
 #ifdef USE_NNTP
       || (m_cur->magic == MUTT_NNTP)
 #endif

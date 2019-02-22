@@ -648,8 +648,8 @@ static enum CommandResult parse_unattach_list(struct Buffer *buf, struct Buffer 
     STAILQ_FOREACH_SAFE(np, head, entries, tmp2)
     {
       a = (struct AttachMatch *) np->data;
-      mutt_debug(LL_DEBUG3, "check %s/%s [%d] : %s/%s [%d]\n", a->major, a->minor,
-                 a->major_int, tmp, minor, major);
+      mutt_debug(LL_DEBUG3, "check %s/%s [%d] : %s/%s [%d]\n", a->major,
+                 a->minor, a->major_int, tmp, minor, major);
       if (a->major_int == major && (mutt_str_strcasecmp(minor, a->minor) == 0))
       {
         mutt_debug(LL_DEBUG3, "removed %s/%s [%d]\n", a->major, a->minor, a->major_int);

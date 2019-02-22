@@ -81,8 +81,8 @@ static int mdb_get_r_txn(struct HcacheLmdbCtx *ctx)
     ctx->txn_mode = TXN_READ;
   else
   {
-    mutt_debug(LL_DEBUG2, "%s: %s\n", ctx->txn ? "mdb_txn_renew" : "mdb_txn_begin",
-               mdb_strerror(rc));
+    mutt_debug(LL_DEBUG2, "%s: %s\n",
+               ctx->txn ? "mdb_txn_renew" : "mdb_txn_begin", mdb_strerror(rc));
   }
 
   return rc;

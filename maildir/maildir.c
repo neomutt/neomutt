@@ -43,7 +43,6 @@
 #include <time.h>
 #include <unistd.h>
 #include "maildir_private.h"
-#include "maildir/lib.h"
 #include "mutt/mutt.h"
 #include "config/lib.h"
 #include "email/lib.h"
@@ -52,6 +51,7 @@
 #include "globals.h"
 #include "lib.h"
 #include "mailbox.h"
+#include "maildir/lib.h"
 #include "monitor.h"
 #include "muttlib.h"
 #include "mx.h"

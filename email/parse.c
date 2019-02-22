@@ -1144,7 +1144,8 @@ struct Envelope *mutt_rfc822_read_header(FILE *f, struct Email *e, bool user_hdr
     /* check for missing or invalid date */
     if (e->date_sent <= 0)
     {
-      mutt_debug(LL_DEBUG1, "no date found, using received time from msg separator\n");
+      mutt_debug(LL_DEBUG1,
+                 "no date found, using received time from msg separator\n");
       e->date_sent = e->received;
     }
   }

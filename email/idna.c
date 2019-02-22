@@ -170,7 +170,8 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, int flags)
 
     if (mutt_str_strcasecmp(user, reversed_user) != 0)
     {
-      mutt_debug(LL_DEBUG1, "#1 Not reversible. orig = '%s', reversed = '%s'.\n", user, reversed_user);
+      mutt_debug(LL_DEBUG1, "#1 Not reversible. orig = '%s', reversed = '%s'.\n",
+                 user, reversed_user);
       goto cleanup;
     }
 
@@ -202,7 +203,8 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, int flags)
 
     if (mutt_str_strcasecmp(domain, reversed_domain) != 0)
     {
-      mutt_debug(LL_DEBUG1, "#2 Not reversible. orig = '%s', reversed = '%s'.\n", domain, reversed_domain);
+      mutt_debug(LL_DEBUG1, "#2 Not reversible. orig = '%s', reversed = '%s'.\n",
+                 domain, reversed_domain);
       goto cleanup;
     }
   }

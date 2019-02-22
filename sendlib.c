@@ -2079,8 +2079,8 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
 
       valbuf = mutt_str_substr_dup(t, end);
     }
-    mutt_debug(LL_DEBUG2, "buf[%s%s] too long, max width = %d > %d\n", NONULL(pfx),
-               NONULL(valbuf), max, wraplen);
+    mutt_debug(LL_DEBUG2, "buf[%s%s] too long, max width = %d > %d\n",
+               NONULL(pfx), NONULL(valbuf), max, wraplen);
     if (fold_one_header(fp, tagbuf, valbuf, pfx, wraplen, flags) < 0)
     {
       FREE(&valbuf);

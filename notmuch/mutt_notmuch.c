@@ -898,8 +898,8 @@ static void append_message(struct Mailbox *m, notmuch_query_t *q,
   if (!path)
     return;
 
-  mutt_debug(LL_DEBUG2, "nm: appending message, i=%d, id=%s, path=%s\n", m->msg_count,
-             notmuch_message_get_message_id(msg), path);
+  mutt_debug(LL_DEBUG2, "nm: appending message, i=%d, id=%s, path=%s\n",
+             m->msg_count, notmuch_message_get_message_id(msg), path);
 
   if (m->msg_count >= m->email_max)
   {
@@ -1602,7 +1602,8 @@ int nm_read_entire_thread(struct Mailbox *m, struct Email *e)
   if (!(db = nm_db_get(m, false)) || !(msg = get_nm_message(db, e)))
     goto done;
 
-  mutt_debug(LL_DEBUG1, "nm: reading entire-thread messages...[current count=%d]\n", m->msg_count);
+  mutt_debug(LL_DEBUG1, "nm: reading entire-thread messages...[current count=%d]\n",
+             m->msg_count);
 
   progress_reset(m);
   const char *id = notmuch_message_get_thread_id(msg);
@@ -1815,8 +1816,8 @@ bool nm_message_is_still_queried(struct Mailbox *m, struct Email *e)
 
   notmuch_query_destroy(q);
 
-  mutt_debug(LL_DEBUG2, "nm: checking if message is still queried: %s = %s\n", new_str,
-             result ? "true" : "false");
+  mutt_debug(LL_DEBUG2, "nm: checking if message is still queried: %s = %s\n",
+             new_str, result ? "true" : "false");
 
   return result;
 }
@@ -1947,7 +1948,8 @@ int nm_description_to_path(const char *desc, char *buf, size_t buflen)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if ((np->mailbox->magic == MUTT_NOTMUCH) && np->mailbox->desc && (strcmp(desc, np->mailbox->desc) == 0))
+    if ((np->mailbox->magic == MUTT_NOTMUCH) && np->mailbox->desc &&
+        (strcmp(desc, np->mailbox->desc) == 0))
     {
       mutt_str_strfcpy(buf, np->mailbox->path, buflen);
       buf[buflen - 1] = '\0';

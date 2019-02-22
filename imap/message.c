@@ -662,8 +662,8 @@ static void imap_fetch_msn_seqset(struct Buffer *b, struct ImapAccountData *adat
  * case of local_changes, if a change to a flag _would_ have been
  * made.
  */
-static void set_changed_flag(struct Mailbox *m, struct Email *e,
-                             int local_changes, bool *server_changes, int flag_name,
+static void set_changed_flag(struct Mailbox *m, struct Email *e, int local_changes,
+                             bool *server_changes, int flag_name,
                              bool old_hd_flag, bool new_hd_flag, bool h_flag)
 {
   /* If there are local_changes, we only want to note if the server
@@ -764,7 +764,8 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
 
       if (mdata->msn_index[h.edata->msn - 1])
       {
-        mutt_debug(LL_DEBUG2, "skipping hcache FETCH for duplicate message %d\n", h.edata->msn);
+        mutt_debug(LL_DEBUG2, "skipping hcache FETCH for duplicate message %d\n",
+                   h.edata->msn);
         continue;
       }
 
@@ -957,7 +958,8 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
 
     if ((header_msn < 1) || (header_msn > msn_end) || !mdata->msn_index[header_msn - 1])
     {
-      mutt_debug(LL_DEBUG1, "skipping CONDSTORE flag update for unknown message number %u\n", header_msn);
+      mutt_debug(LL_DEBUG1, "skipping CONDSTORE flag update for unknown message number %u\n",
+                 header_msn);
       continue;
     }
 
@@ -1595,7 +1597,8 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool
       {
         if (en->email->attach_del)
         {
-          mutt_debug(LL_DEBUG3, "#2 Message contains attachments to be deleted\n");
+          mutt_debug(LL_DEBUG3,
+                     "#2 Message contains attachments to be deleted\n");
           return 1;
         }
 

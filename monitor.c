@@ -251,7 +251,8 @@ static int monitor_handle_ignore(int desc)
       }
       else
       {
-        mutt_debug(LL_DEBUG3, "inotify_add_watch descriptor=%d for '%s'\n", desc, iter->mh_backup_path);
+        mutt_debug(LL_DEBUG3, "inotify_add_watch descriptor=%d for '%s'\n",
+                   desc, iter->mh_backup_path);
         iter->st_dev = sb.st_dev;
         iter->st_ino = sb.st_ino;
         iter->desc = new_desc;
@@ -409,8 +410,8 @@ int mutt_monitor_poll(void)
               while (ptr < (buf + len))
               {
                 event = (const struct inotify_event *) ptr;
-                mutt_debug(LL_DEBUG3, "+ detail: descriptor=%d mask=0x%x\n", event->wd,
-                           event->mask);
+                mutt_debug(LL_DEBUG3, "+ detail: descriptor=%d mask=0x%x\n",
+                           event->wd, event->mask);
                 if (event->mask & IN_IGNORED)
                   monitor_handle_ignore(event->wd);
                 else if (event->wd == MonitorContextDescriptor)
@@ -453,8 +454,8 @@ int mutt_monitor_add(struct Mailbox *m)
   if (((INotifyFd == -1) && (monitor_init() == -1)) ||
       (desc = inotify_add_watch(INotifyFd, info.path, mask)) == -1)
   {
-    mutt_debug(LL_DEBUG2, "inotify_add_watch failed for '%s', errno=%d %s\n", info.path,
-               errno, strerror(errno));
+    mutt_debug(LL_DEBUG2, "inotify_add_watch failed for '%s', errno=%d %s\n",
+               info.path, errno, strerror(errno));
     return -1;
   }
 

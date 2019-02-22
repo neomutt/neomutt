@@ -431,8 +431,8 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
           mutt_mem_realloc(&adata->overview_fmt, buflen);
         }
 
-        const int chunk =
-            mutt_socket_readln_d(adata->overview_fmt + off, buflen - off, conn, MUTT_SOCK_LOG_HDR);
+        const int chunk = mutt_socket_readln_d(adata->overview_fmt + off,
+                                               buflen - off, conn, MUTT_SOCK_LOG_HDR);
         if (chunk < 0)
         {
           FREE(&adata->overview_fmt);
@@ -480,7 +480,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
  * nntp_memchr - look for a char in a binary buf, conveniently
  * @param haystack [in/out] input: start here, output: store address of hit
  * @param sentinel points just beyond (1 byte after) search area
- * @needle the character to search for
+ * @param needle the character to search for
  * @retval true found and updated haystack
  * @retval false not found
  */
@@ -659,7 +659,8 @@ static int nntp_auth(struct NntpAccountData *adata)
         if (rc != SASL_OK && rc != SASL_CONTINUE)
         {
           sasl_dispose(&saslconn);
-          mutt_debug(LL_DEBUG1, "error starting SASL authentication exchange.\n");
+          mutt_debug(LL_DEBUG1,
+                     "error starting SASL authentication exchange.\n");
           continue;
         }
 
@@ -687,8 +688,8 @@ static int nntp_auth(struct NntpAccountData *adata)
           mutt_str_strcat(buf, sizeof(buf), "\r\n");
           if (strchr(buf, ' '))
           {
-            mutt_debug(MUTT_SOCK_LOG_CMD, "%d> AUTHINFO SASL %s%s\n",
-                       conn->fd, method, client_len ? " sasl_data" : "");
+            mutt_debug(MUTT_SOCK_LOG_CMD, "%d> AUTHINFO SASL %s%s\n", conn->fd,
+                       method, client_len ? " sasl_data" : "");
           }
           else
             mutt_debug(MUTT_SOCK_LOG_CMD, "%d> sasl_data\n", conn->fd);
@@ -715,7 +716,7 @@ static int nntp_auth(struct NntpAccountData *adata)
             mutt_debug(LL_DEBUG1, "error base64-decoding server response.\n");
             break;
           }
-          else 
+          else
             nntp_log_binbuf(buf, len, "SASL", MUTT_SOCK_LOG_FULL);
 
           while (true)
@@ -2496,7 +2497,7 @@ static int nntp_mbox_open(struct Mailbox *m)
     return -1;
   }
 
-  m->rights &= ~MUTT_ACL_INSERT;  // Clear the flag
+  m->rights &= ~MUTT_ACL_INSERT; // Clear the flag
   if (!mdata->newsrc_ent && !mdata->subscribed && !SaveUnsubscribed)
     m->readonly = true;
 
@@ -2574,7 +2575,7 @@ static int nntp_mbox_open(struct Mailbox *m)
   nntp_hcache_update(mdata, hc);
 #endif
   if (!hc)
-    m->rights &= ~(MUTT_ACL_WRITE | MUTT_ACL_DELETE);  // Clear the flags
+    m->rights &= ~(MUTT_ACL_WRITE | MUTT_ACL_DELETE); // Clear the flags
 
   nntp_newsrc_close(adata);
   rc = nntp_fetch_headers(m, hc, first, mdata->last_message, false);

@@ -573,8 +573,8 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
         decode_state.fpout = mutt_file_fopen(pagerfile, "w");
         if (!decode_state.fpout)
         {
-          mutt_debug(LL_DEBUG1, "mutt_file_fopen(%s) errno=%d %s\n", pagerfile, errno,
-                     strerror(errno));
+          mutt_debug(LL_DEBUG1, "mutt_file_fopen(%s) errno=%d %s\n", pagerfile,
+                     errno, strerror(errno));
           mutt_perror(pagerfile);
           goto return_error;
         }
@@ -582,7 +582,8 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
         decode_state.flags = MUTT_CHARCONV;
         mutt_decode_attachment(a, &decode_state);
         if (fclose(decode_state.fpout) == EOF)
-          mutt_debug(LL_DEBUG1, "fclose(%s) errno=%d %s\n", pagerfile, errno, strerror(errno));
+          mutt_debug(LL_DEBUG1, "fclose(%s) errno=%d %s\n", pagerfile, errno,
+                     strerror(errno));
       }
       else
       {

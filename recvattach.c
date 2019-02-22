@@ -332,7 +332,8 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
           ch = dispchar[aptr->content->disposition];
         else
         {
-          mutt_debug(LL_DEBUG1, "ERROR: invalid content-disposition %d\n", aptr->content->disposition);
+          mutt_debug(LL_DEBUG1, "ERROR: invalid content-disposition %d\n",
+                     aptr->content->disposition);
           ch = '!';
         }
         snprintf(buf, buflen, "%c", ch);
@@ -1120,55 +1121,56 @@ int mutt_attach_display_loop(struct Menu *menu, int op, struct Email *e,
 /**
  * mutt_generate_recvattach_list - Create a list of attachments
  * @param actx        Attachment context
- * @param e         Email
- * @param m           Body of email
+ * @param e           Email
+ * @param parts       Body of email
  * @param fp          File to read from
  * @param parent_type Type, e.g. #TYPE_MULTIPART
  * @param level       Attachment depth
  * @param decrypted   True if attachment has been decrypted
  */
 static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *e,
-                                          struct Body *m, FILE *fp, int parent_type,
-                                          int level, bool decrypted)
+                                          struct Body *parts, FILE *fp,
+                                          int parent_type, int level, bool decrypted)
 {
   struct AttachPtr *new = NULL;
+  struct Body *m = NULL;
   struct Body *new_body = NULL;
   FILE *new_fp = NULL;
-  int need_secured, secured;
+  int type, need_secured, secured;
 
-  for (; m; m = m->next)
+  for (m = parts; m; m = m->next)
   {
     need_secured = 0;
     secured = 0;
 
-    if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(m))
+    if (((WithCrypto & APPLICATION_SMIME) != 0) && (type = mutt_is_application_smime(m)))
     {
       need_secured = 1;
 
-      if (!crypt_valid_passphrase(APPLICATION_SMIME))
-        goto decrypt_failed;
-
-      if (e->env)
-        crypt_smime_getkeys(e->env);
-
-      secured = !crypt_smime_decrypt_mime(fp, &new_fp, m, &new_body);
-
-      /* S/MIME nesting */
-      if ((mutt_is_application_smime(new_body) & SMIME_OPAQUE) == SMIME_OPAQUE)
+      if (type & ENCRYPT)
       {
-        struct Body *outer_new_body = new_body;
-        FILE *outer_fp = new_fp;
+        if (!crypt_valid_passphrase(APPLICATION_SMIME))
+          goto decrypt_failed;
 
-        new_body = NULL;
-        new_fp = NULL;
-
-        secured = !crypt_smime_decrypt_mime(outer_fp, &new_fp, outer_new_body, &new_body);
-
-        mutt_body_free(&outer_new_body);
-        mutt_file_fclose(&outer_fp);
+        if (e->env)
+          crypt_smime_getkeys(e->env);
       }
 
-      if (secured)
+      secured = !crypt_smime_decrypt_mime(fp, &new_fp, m, &new_body);
+      /* If the decrypt/verify-opaque doesn't generate mime output, an empty
+       * text/plain type will still be returned by mutt_read_mime_header().
+       * We can't distinguish an actual part from a failure, so only use a
+       * text/plain that results from a single top-level part. */
+      if (secured && (new_body->type == TYPE_TEXT) &&
+          (mutt_str_strcasecmp("plain", new_body->subtype) == 0) &&
+          ((parts != m) || m->next))
+      {
+        mutt_body_free(&new_body);
+        mutt_file_fclose(&new_fp);
+        goto decrypt_failed;
+      }
+
+      if (secured && (type & ENCRYPT))
         e->security |= SMIME_ENCRYPT;
     }
 
@@ -1564,11 +1566,13 @@ void mutt_view_attachments(struct Email *e)
       /* fallthrough */
       case OP_REPLY:
       case OP_GROUP_REPLY:
+      case OP_GROUP_CHAT_REPLY:
       case OP_LIST_REPLY:
 
         CHECK_ATTACH;
 
         flags = SEND_REPLY | (op == OP_GROUP_REPLY ? SEND_GROUP_REPLY : 0) |
+                (op == OP_GROUP_CHAT_REPLY ? SEND_GROUP_CHAT_REPLY : 0) |
                 (op == OP_LIST_REPLY ? SEND_LIST_REPLY : 0);
         mutt_attach_reply(CURATTACH->fp, e, actx,
                           menu->tagprefix ? NULL : CURATTACH->content, flags);

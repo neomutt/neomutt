@@ -374,7 +374,8 @@ static int pgp_check_decryption_okay(FILE *fpin)
     {
       if (!inside_decrypt)
       {
-        mutt_debug(LL_DEBUG2, "\tPLAINTEXT encountered outside of DECRYPTION.\n");
+        mutt_debug(LL_DEBUG2,
+                   "\tPLAINTEXT encountered outside of DECRYPTION.\n");
         rv = -2;
         break;
       }
@@ -698,7 +699,8 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
         int ch;
         char *expected_charset = gpgcharset && *gpgcharset ? gpgcharset : "utf-8";
 
-        mutt_debug(LL_DEBUG3, "pgp: recoding inline from [%s] to [%s]\n", expected_charset, Charset);
+        mutt_debug(LL_DEBUG3, "pgp: recoding inline from [%s] to [%s]\n",
+                   expected_charset, Charset);
 
         rewind(pgpout);
         state_set_prefix(s);

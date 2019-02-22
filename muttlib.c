@@ -559,8 +559,8 @@ void mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix,
   mutt_debug(LL_DEBUG3, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, mutt_b2s(buf));
   if (unlink(mutt_b2s(buf)) && errno != ENOENT)
   {
-    mutt_debug(LL_DEBUG1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src, line,
-               mutt_b2s(buf), strerror(errno), errno);
+    mutt_debug(LL_DEBUG1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src,
+               line, mutt_b2s(buf), strerror(errno), errno);
   }
 }
 
@@ -591,8 +591,8 @@ void mutt_mktemp_full(char *buf, size_t buflen, const char *prefix,
   mutt_debug(LL_DEBUG3, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, buf);
   if (unlink(buf) && errno != ENOENT)
   {
-    mutt_debug(LL_DEBUG1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src, line,
-               buf, strerror(errno), errno);
+    mutt_debug(LL_DEBUG1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src,
+               line, buf, strerror(errno), errno);
   }
 }
 

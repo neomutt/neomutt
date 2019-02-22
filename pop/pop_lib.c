@@ -506,7 +506,8 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
 
   while (true)
   {
-    const int chunk = mutt_socket_readln_d(buf, sizeof(buf), adata->conn, MUTT_SOCK_LOG_FULL);
+    const int chunk =
+        mutt_socket_readln_d(buf, sizeof(buf), adata->conn, MUTT_SOCK_LOG_FULL);
     if (chunk < 0)
     {
       adata->status = POP_DISCONNECTED;

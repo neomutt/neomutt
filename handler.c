@@ -1100,7 +1100,8 @@ static int multilingual_handler(struct Body *a, struct State *s)
   struct Body *zxx_part = NULL;
   char *lang = NULL;
 
-  mutt_debug(LL_DEBUG2, "RFC8255 >> entering in handler multilingual handler\n");
+  mutt_debug(LL_DEBUG2,
+             "RFC8255 >> entering in handler multilingual handler\n");
   if ((a->encoding == ENC_BASE64) || (a->encoding == ENC_QUOTED_PRINTABLE) ||
       (a->encoding == ENC_UUENCODED))
   {
@@ -1126,7 +1127,8 @@ static int multilingual_handler(struct Body *a, struct State *s)
   char *preferred_languages = NULL;
   if (PreferredLanguages)
   {
-    mutt_debug(LL_DEBUG2, "RFC8255 >> preferred_languages set in config to '%s'\n", PreferredLanguages);
+    mutt_debug(LL_DEBUG2, "RFC8255 >> preferred_languages set in config to '%s'\n",
+               PreferredLanguages);
     preferred_languages = mutt_str_strdup(PreferredLanguages);
     lang = strtok(preferred_languages, ",");
   }
@@ -1238,8 +1240,8 @@ static int multipart_handler(struct Body *a, struct State *s)
     if (rc != 0)
     {
       mutt_error(_("One or more parts of this message could not be displayed"));
-      mutt_debug(LL_DEBUG1, "Failed on attachment #%d, type %s/%s.\n", count, TYPE(p),
-                 NONULL(p->subtype));
+      mutt_debug(LL_DEBUG1, "Failed on attachment #%d, type %s/%s.\n", count,
+                 TYPE(p), NONULL(p->subtype));
     }
 
     if ((s->flags & MUTT_REPLYING) && IncludeOnlyfirst && (s->flags & MUTT_FIRSTDONE))
@@ -1382,7 +1384,8 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
     rc = handler(b, s);
     if (rc != 0)
     {
-      mutt_debug(LL_DEBUG1, "Failed on attachment of type %s/%s.\n", TYPE(b), NONULL(b->subtype));
+      mutt_debug(LL_DEBUG1, "Failed on attachment of type %s/%s.\n", TYPE(b),
+                 NONULL(b->subtype));
     }
 
     if (decode)
@@ -1613,7 +1616,8 @@ int mutt_body_handler(struct Body *b, struct State *s)
 
     if ((b->encoding != ENC_7BIT) && (b->encoding != ENC_8BIT) && (b->encoding != ENC_BINARY))
     {
-      mutt_debug(LL_DEBUG1, "Bad encoding type %d for multipart entity, assuming 7 bit\n", b->encoding);
+      mutt_debug(LL_DEBUG1, "Bad encoding type %d for multipart entity, assuming 7 bit\n",
+                 b->encoding);
       b->encoding = ENC_7BIT;
     }
   }
@@ -1702,7 +1706,8 @@ int mutt_body_handler(struct Body *b, struct State *s)
   s->flags = oflags | (s->flags & MUTT_FIRSTDONE);
   if (rc != 0)
   {
-    mutt_debug(LL_DEBUG1, "Bailing on attachment of type %s/%s.\n", TYPE(b), NONULL(b->subtype));
+    mutt_debug(LL_DEBUG1, "Bailing on attachment of type %s/%s.\n", TYPE(b),
+               NONULL(b->subtype));
   }
 
   return rc;

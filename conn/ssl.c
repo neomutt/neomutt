@@ -71,7 +71,11 @@
 #define DEVRANDOM "/dev/urandom"
 #endif
 
-#if OPENSSL_VERSION_NUMBER < 0x10100000L
+/* LibreSSL defines OPENSSL_VERSION_NUMBER but sets it to 0x20000000L.
+ * So technically we don't need the defined(OPENSSL_VERSION_NUMBER) check.
+ */
+#if (defined(OPENSSL_VERSION_NUMBER) && OPENSSL_VERSION_NUMBER < 0x10100000L) || \
+    (defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER < 0x2070000fL)
 #define X509_get0_notBefore X509_get_notBefore
 #define X509_get0_notAfter X509_get_notAfter
 #define X509_getm_notBefore X509_get_notBefore
@@ -360,8 +364,8 @@ static int ssl_passwd_cb(char *buf, int buflen, int rwflag, void *userdata)
   if (mutt_account_getuser(account) < 0)
     return 0;
 
-  mutt_debug(LL_DEBUG2, "getting password for %s@%s:%u\n", account->user, account->host,
-             account->port);
+  mutt_debug(LL_DEBUG2, "getting password for %s@%s:%u\n", account->user,
+             account->host, account->port);
 
   if (mutt_account_getpass(account) < 0)
     return 0;
@@ -602,7 +606,10 @@ static int ssl_init(void)
     }
   }
 
-#if OPENSSL_VERSION_NUMBER < 0x10100000L
+/* OpenSSL performs automatic initialization as of 1.1.
+ * However LibreSSL does not (as of 2.8.3). */
+#if (defined(OPENSSL_VERSION_NUMBER) && OPENSSL_VERSION_NUMBER < 0x10100000L) || \
+    (defined(LIBRESSL_VERSION_NUMBER))
   /* I don't think you can do this just before reading the error. The call
    * itself might clobber the last SSL error. */
   SSL_load_error_strings();
@@ -1057,7 +1064,8 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
   ssl = X509_STORE_CTX_get_ex_data(ctx, SSL_get_ex_data_X509_STORE_CTX_idx());
   if (!ssl)
   {
-    mutt_debug(LL_DEBUG1, "failed to retrieve SSL structure from X509_STORE_CTX\n");
+    mutt_debug(LL_DEBUG1,
+               "failed to retrieve SSL structure from X509_STORE_CTX\n");
     return false;
   }
   host = SSL_get_ex_data(ssl, HostExDataIndex);
@@ -1173,7 +1181,8 @@ static int ssl_negotiate(struct Connection *conn, struct SslSockData *ssldata)
   HostExDataIndex = SSL_get_ex_new_index(0, "host", NULL, NULL, NULL);
   if (HostExDataIndex == -1)
   {
-    mutt_debug(LL_DEBUG1, "#1 failed to get index for application specific data\n");
+    mutt_debug(LL_DEBUG1,
+               "#1 failed to get index for application specific data\n");
     return -1;
   }
 
@@ -1186,7 +1195,8 @@ static int ssl_negotiate(struct Connection *conn, struct SslSockData *ssldata)
   SkipModeExDataIndex = SSL_get_ex_new_index(0, "skip", NULL, NULL, NULL);
   if (SkipModeExDataIndex == -1)
   {
-    mutt_debug(LL_DEBUG1, "#3 failed to get index for application specific data\n");
+    mutt_debug(LL_DEBUG1,
+               "#3 failed to get index for application specific data\n");
     return -1;
   }
 

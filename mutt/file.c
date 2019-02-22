@@ -373,7 +373,8 @@ int mutt_file_safe_rename(const char *src, const char *target)
      * With other file systems, rename should just fail when
      * the files reside on different file systems, so it's safe
      * to try it here. */
-    mutt_debug(LL_DEBUG1, "link (%s, %s) failed: %s (%d)\n", src, target, strerror(errno), errno);
+    mutt_debug(LL_DEBUG1, "link (%s, %s) failed: %s (%d)\n", src, target,
+               strerror(errno), errno);
 
     /* FUSE may return ENOSYS. VFAT may return EPERM. FreeBSD's
      * msdosfs may return EOPNOTSUPP.  ENOTSUP can also appear. */

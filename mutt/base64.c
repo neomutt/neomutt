@@ -33,6 +33,8 @@
 
 #include "config.h"
 #include "base64.h"
+#include "buffer.h"
+#include "string2.h"
 
 #define BAD -1
 
@@ -170,4 +172,38 @@ int mutt_b64_decode(const char *in, char *out, size_t olen)
   } while (*in && digit4 != '=');
 
   return len;
+}
+
+/**
+ * mutt_b64_buffer_encode - Convert raw bytes to null-terminated base64 string
+ * @param buf    Buffer for the result
+ * @param in     Input buffer for the raw bytes
+ * @param len    Length of the input buffer
+ * @retval num Length of the string written to the output buffer
+ */
+size_t mutt_b64_buffer_encode(struct Buffer *buf, const char *in, size_t len)
+{
+  mutt_buffer_increase_size(buf, ((len * 2) > LONG_STRING) ? (len * 2) : LONG_STRING);
+  size_t num = mutt_b64_encode(in, len, buf->data, buf->dsize);
+  mutt_buffer_fix_dptr(buf);
+  return num;
+}
+
+/**
+ * mutt_b64_buffer_decode - Convert null-terminated base64 string to raw bytes
+ * @param buf  Buffer for the result
+ * @param in   Input  buffer for the null-terminated base64-encoded string
+ * @retval num Success, bytes written
+ * @retval -1  Error
+ */
+int mutt_b64_buffer_decode(struct Buffer *buf, const char *in)
+{
+  mutt_buffer_increase_size(buf, mutt_str_strlen(in));
+  int olen = mutt_b64_decode(in, buf->data, buf->dsize);
+  if (olen > 0)
+    buf->dptr = buf->data + olen;
+  else
+    buf->dptr = buf->data;
+
+  return olen;
 }

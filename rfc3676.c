@@ -268,7 +268,8 @@ static void print_flowed_line(char *line, struct State *s, int ql,
     if (!(!fst->spaces && fst->delsp && last != ' ') && w < width &&
         w + fst->width + fst->spaces > width)
     {
-      mutt_debug(LL_DEBUG3, "f=f: break line at %lu, %lu spaces left\n", fst->width, fst->spaces);
+      mutt_debug(LL_DEBUG3, "f=f: break line at %lu, %lu spaces left\n",
+                 fst->width, fst->spaces);
       /* only honor trailing spaces for format=flowed replies */
       if (TextFlowed)
         for (; fst->spaces; fst->spaces--)

@@ -86,8 +86,7 @@ static int check_capabilities(struct ImapAccountData *adata)
     return -1;
   }
 
-  if (!((adata->capabilities & IMAP_CAP_IMAP4) ||
-        (adata->capabilities & IMAP_CAP_IMAP4REV1)))
+  if (!((adata->capabilities & IMAP_CAP_IMAP4) || (adata->capabilities & IMAP_CAP_IMAP4REV1)))
   {
     mutt_error(
         _("This IMAP server is ancient. NeoMutt does not work with it."));
@@ -870,8 +869,7 @@ int imap_open_connection(struct ImapAccountData *adata)
     }
 #ifdef USE_SSL
     /* Attempt STARTTLS if available and desired. */
-    if (!adata->conn->ssf &&
-        (SslForceTls || (adata->capabilities & IMAP_CAP_STARTTLS)))
+    if (!adata->conn->ssf && (SslForceTls || (adata->capabilities & IMAP_CAP_STARTTLS)))
     {
       int rc;
 
@@ -1923,7 +1921,8 @@ int imap_login(struct ImapAccountData *adata)
       adata->state = IMAP_AUTHENTICATED;
       FREE(&adata->capstr);
       if (adata->conn->ssf)
-        mutt_debug(LL_DEBUG2, "Communication encrypted at %d bits\n", adata->conn->ssf);
+        mutt_debug(LL_DEBUG2, "Communication encrypted at %d bits\n",
+                   adata->conn->ssf);
     }
     else
       mutt_account_unsetpass(&adata->conn->account);

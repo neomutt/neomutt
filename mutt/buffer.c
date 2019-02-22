@@ -416,3 +416,16 @@ void mutt_buffer_pool_release(struct Buffer **pbuf)
 
   *pbuf = NULL;
 }
+
+/**
+ * mutt_buffer_len - Calculate the length of a Buffer
+ * @param buf Buffer
+ * @retval num Size of buffer
+ */
+size_t mutt_buffer_len(const struct Buffer *buf)
+{
+  if (!buf)
+    return 0;
+
+  return buf->dptr - buf->data;
+}

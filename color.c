@@ -903,16 +903,35 @@ typedef int (*parser_callback_t)(struct Buffer *buf, struct Buffer *s, int *fg,
 static int parse_color_pair(struct Buffer *buf, struct Buffer *s, int *fg,
                             int *bg, int *attr, struct Buffer *err)
 {
-  if (!MoreArgs(s))
+  while (true)
   {
-    mutt_buffer_printf(err, _("%s: too few arguments"), "color");
-    return -1;
+    if (!MoreArgs(s))
+    {
+      mutt_buffer_printf(err, _("%s: too few arguments"), "color");
+      return -1;
+    }
+
+    mutt_extract_token(buf, s, 0);
+
+    if (mutt_str_strcasecmp("bold", buf->data) == 0)
+      *attr |= A_BOLD;
+    else if (mutt_str_strcasecmp("underline", buf->data) == 0)
+      *attr |= A_UNDERLINE;
+    else if (mutt_str_strcasecmp("none", buf->data) == 0)
+      *attr = A_NORMAL;
+    else if (mutt_str_strcasecmp("reverse", buf->data) == 0)
+      *attr |= A_REVERSE;
+    else if (mutt_str_strcasecmp("standout", buf->data) == 0)
+      *attr |= A_STANDOUT;
+    else if (mutt_str_strcasecmp("normal", buf->data) == 0)
+      *attr = A_NORMAL; /* needs use = instead of |= to clear other bits */
+    else
+    {
+      if (parse_color_name(buf->data, fg, attr, true, err) != 0)
+        return -1;
+      break;
+    }
   }
-
-  mutt_extract_token(buf, s, 0);
-
-  if (parse_color_name(buf->data, fg, attr, true, err) != 0)
-    return -1;
 
   if (!MoreArgs(s))
   {

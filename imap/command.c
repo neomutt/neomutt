@@ -864,8 +864,8 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
 
   mutt_debug(LL_DEBUG3, "Running default STATUS handler\n");
 
-  mutt_debug(LL_DEBUG3, "Found %s in mailbox list (OV: %u ON: %u U: %d)\n", mailbox,
-             olduv, oldun, mdata->unseen);
+  mutt_debug(LL_DEBUG3, "Found %s in mailbox list (OV: %u ON: %u U: %d)\n",
+             mailbox, olduv, oldun, mdata->unseen);
 
   if (MailCheckRecent)
   {
@@ -1316,8 +1316,8 @@ void imap_cmd_finish(struct ImapAccountData *adata)
       if (!(mdata->reopen & IMAP_EXPUNGE_PENDING))
         mdata->check_status = IMAP_NEWMAIL_PENDING;
 
-      mutt_debug(LL_DEBUG2, "Fetching new mails from %d to %d\n", mdata->max_msn + 1,
-                 mdata->new_mail_count);
+      mutt_debug(LL_DEBUG2, "Fetching new mails from %d to %d\n",
+                 mdata->max_msn + 1, mdata->new_mail_count);
       imap_read_headers(adata->mailbox, mdata->max_msn + 1, mdata->new_mail_count, false);
     }
 
