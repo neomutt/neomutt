@@ -33,6 +33,7 @@ struct State;
 /* These Config Variables are only used in handler.c */
 extern bool  C_HonorDisposition;
 extern bool  C_ImplicitAutoview;
+extern bool  C_IncludeEncrypted;
 extern bool  C_IncludeOnlyfirst;
 extern char *C_PreferredLanguages;
 extern bool  C_ReflowText;
