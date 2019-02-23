@@ -413,7 +413,7 @@ struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct ListHead *hin
 {
   FILE *fp = NULL;
   pid_t thepid;
-  char buf[LONG_STRING];
+  char buf[1024];
   struct PgpKeyInfo *db = NULL, **kend = NULL, *k = NULL, *kk = NULL, *mainkey = NULL;
   int is_sub;
   int devnull;

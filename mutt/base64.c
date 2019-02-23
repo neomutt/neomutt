@@ -34,6 +34,7 @@
 #include "config.h"
 #include "base64.h"
 #include "buffer.h"
+#include "memory.h"
 #include "string2.h"
 
 #define BAD -1
@@ -183,7 +184,7 @@ int mutt_b64_decode(const char *in, char *out, size_t olen)
  */
 size_t mutt_b64_buffer_encode(struct Buffer *buf, const char *in, size_t len)
 {
-  mutt_buffer_increase_size(buf, ((len * 2) > LONG_STRING) ? (len * 2) : LONG_STRING);
+  mutt_buffer_increase_size(buf, MAX((len * 2), 1024));
   size_t num = mutt_b64_encode(in, len, buf->data, buf->dsize);
   mutt_buffer_fix_dptr(buf);
   return num;

@@ -294,7 +294,7 @@ static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, co
   if (split)
   {
     col = 0;
-    col_b = LONG_STRING;
+    col_b = 1024;
     fputc('\n', f);
   }
   else
@@ -327,7 +327,7 @@ static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, co
 
   if (split)
   {
-    print_macro(f, LONG_STRING, &t3);
+    print_macro(f, 1024, &t3);
     fputc('\n', f);
   }
   else

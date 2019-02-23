@@ -432,7 +432,7 @@ static void decode_uuencoded(struct State *s, long len, bool istext, iconv_t cd)
 static bool is_mmnoask(const char *buf)
 {
   char *p = NULL;
-  char tmp[LONG_STRING], *q = NULL;
+  char tmp[1024], *q = NULL;
 
   const char *val = mutt_str_getenv("MM_NOASK");
   if (!val)
@@ -527,7 +527,7 @@ static bool is_autoview(struct Body *b)
 static int autoview_handler(struct Body *a, struct State *s)
 {
   struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
-  char buffer[LONG_STRING];
+  char buffer[1024];
   char type[256];
   char command[HUGE_STRING];
   char tempfile[PATH_MAX] = "";
@@ -745,7 +745,7 @@ static int message_handler(struct Body *a, struct State *s)
 static int external_body_handler(struct Body *b, struct State *s)
 {
   const char *str = NULL;
-  char strbuf[LONG_STRING];
+  char strbuf[1024];
 
   const char *access_type = mutt_param_get(&b->parameter, "access-type");
   if (!access_type)

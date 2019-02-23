@@ -75,7 +75,7 @@ int rfc1524_expand_command(struct Body *a, const char *filename,
   int x = 0, y = 0;
   int needspipe = true;
   char buf[HUGE_STRING];
-  char type2[LONG_STRING];
+  char type2[1024];
 
   mutt_str_strfcpy(type2, type, sizeof(type2));
 

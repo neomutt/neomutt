@@ -135,7 +135,7 @@ static char **be_snarf_data(FILE *f, char **buf, int *bufmax, int *buflen,
  */
 static char **be_snarf_file(const char *path, char **buf, int *max, int *len, bool verbose)
 {
-  char tmp[LONG_STRING];
+  char tmp[1024];
   struct stat sb;
 
   FILE *f = fopen(path, "r");
@@ -210,7 +210,7 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
 {
   int n;
   // int offset, bytes;
-  char tmp[LONG_STRING];
+  char tmp[1024];
 
   if (!msg || !buf || !bufmax || !buflen)
     return buf;
@@ -400,7 +400,7 @@ int mutt_builtin_editor(const char *path, struct Email *msg, struct Email *cur)
 {
   char **buf = NULL;
   int bufmax = 0, buflen = 0;
-  char tmp[LONG_STRING];
+  char tmp[1024];
   bool abort = false;
   bool done = false;
   char *p = NULL;

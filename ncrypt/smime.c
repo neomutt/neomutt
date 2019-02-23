@@ -225,7 +225,7 @@ static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         char path[PATH_MAX];
-        char buf1[LONG_STRING], buf2[LONG_STRING];
+        char buf1[1024], buf2[1024];
         struct stat sb;
 
         mutt_str_strfcpy(path, C_SmimeCaLocation, sizeof(path));
@@ -532,8 +532,8 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
   int table_index = 0;
   struct SmimeKey *key = NULL;
   struct SmimeKey *selected_key = NULL;
-  char helpstr[LONG_STRING];
-  char buf[LONG_STRING];
+  char helpstr[1024];
+  char buf[1024];
   char title[256];
   struct Menu *menu = NULL;
   const char *s = "";
@@ -717,7 +717,7 @@ static struct SmimeKey *smime_parse_key(char *buf)
 static struct SmimeKey *smime_get_candidates(char *search, bool public)
 {
   char index_file[PATH_MAX];
-  char buf[LONG_STRING];
+  char buf[1024];
   struct SmimeKey *key = NULL, *results = NULL;
   struct SmimeKey **results_end = &results;
 
@@ -1057,7 +1057,7 @@ char *smime_class_find_keys(struct Address *addrlist, bool oppenc_mode)
     key = smime_get_key_by_addr(q->mailbox, KEYFLAG_CANENCRYPT, true, !oppenc_mode);
     if (!key && !oppenc_mode)
     {
-      char buf[LONG_STRING];
+      char buf[1024];
       snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), q->mailbox);
       key = smime_ask_for_key(buf, KEYFLAG_CANENCRYPT, true);
     }
@@ -1544,7 +1544,7 @@ static pid_t smime_invoke_sign(FILE **smimein, FILE **smimeout, FILE **smimeerr,
  */
 struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
 {
-  char buf[LONG_STRING], certfile[PATH_MAX];
+  char buf[1024], certfile[PATH_MAX];
   char tempfile[PATH_MAX];
   char smimeinfile[PATH_MAX];
   char *cert_end = NULL;
@@ -1699,7 +1699,7 @@ static char *openssl_md_to_smime_micalg(char *md)
  */
 struct Body *smime_class_sign_message(struct Body *a)
 {
-  char buffer[LONG_STRING];
+  char buffer[1024];
   char signedfile[PATH_MAX], filetosign[PATH_MAX];
   FILE *smimein = NULL, *smimeout = NULL, *smimeerr = NULL, *sfp = NULL;
   int err = 0;

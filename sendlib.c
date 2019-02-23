@@ -1462,7 +1462,7 @@ void mutt_update_encoding(struct Body *a)
  */
 struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool attach_msg)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
   struct Body *body = NULL;
   FILE *fp = NULL;
   int cmflags, chflags;
@@ -1743,7 +1743,7 @@ struct Body *mutt_remove_multipart(struct Body *b)
 void mutt_write_address_list(struct Address *addr, FILE *fp, int linelen, bool display)
 {
   struct Address *tmp = NULL;
-  char buf[LONG_STRING];
+  char buf[1024];
   int count = 0;
 
   while (addr)
@@ -2217,7 +2217,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
                              struct Body *attach, enum MuttWriteHeaderMode mode,
                              bool privacy, bool hide_protected_subject)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
   char *p = NULL, *q = NULL;
   bool has_agent = false; /* user defined user-agent header field exists */
 
@@ -2727,7 +2727,7 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
 #ifdef USE_NNTP
   if (OptNewsSend)
   {
-    char cmd[LONG_STRING];
+    char cmd[1024];
 
     mutt_expando_format(cmd, sizeof(cmd), 0, MuttIndexWindow->cols,
                         NONULL(C_Inews), nntp_format_str, 0, 0);
@@ -2905,7 +2905,7 @@ void mutt_prepare_envelope(struct Envelope *env, bool final)
       env->to->group = 1;
       env->to->next = mutt_addr_new();
 
-      char buf[LONG_STRING];
+      char buf[1024];
       buf[0] = 0;
       mutt_addr_cat(buf, sizeof(buf), "undisclosed-recipients", AddressSpecials);
 
@@ -3291,7 +3291,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
 
   if (tempfp)
   {
-    char sasha[LONG_STRING];
+    char sasha[1024];
     int lines = 0;
 
     mutt_write_mime_body(e->content, tempfp);

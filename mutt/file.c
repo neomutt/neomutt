@@ -263,7 +263,7 @@ int mutt_file_copy_bytes(FILE *in, FILE *out, size_t size)
 int mutt_file_copy_stream(FILE *fin, FILE *fout)
 {
   size_t l;
-  char buf[LONG_STRING];
+  char buf[1024];
 
   while ((l = fread(buf, 1, sizeof(buf), fin)) > 0)
   {

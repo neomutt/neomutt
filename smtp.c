@@ -364,7 +364,7 @@ static int smtp_fill_account(struct ConnAccount *account)
  */
 static int smtp_helo(struct Connection *conn, bool esmtp)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
   const char *fqdn = NULL;
 
   Capabilities = 0;
@@ -433,7 +433,7 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
   if (!OptNoCurses)
     mutt_message(_("Authenticating (%s)..."), mech);
 
-  bufsize = ((len * 2) > LONG_STRING) ? (len * 2) : LONG_STRING;
+  bufsize = MAX((len * 2), 1024);
   buf = mutt_mem_malloc(bufsize);
 
   snprintf(buf, bufsize, "AUTH %s", mech);
@@ -543,7 +543,7 @@ static int smtp_auth_oauth(struct Connection *conn)
  */
 static int smtp_auth_plain(struct Connection *conn)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
 
   /* Get username and password. Bail out of any cannot be retrieved. */
   if ((mutt_account_getuser(&conn->account) < 0) ||

@@ -1872,7 +1872,7 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *s)
       ; /* No state information so no way to print anything. */
     else if (err)
     {
-      char buf[LONG_STRING];
+      char buf[1024];
       snprintf(buf, sizeof(buf), _("Error getting key information for KeyID %s: %s\n"),
                fpr, gpgme_strerror(err));
       state_puts(buf, s);
@@ -4323,7 +4323,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
  */
 static void verify_key(struct CryptKeyInfo *key)
 {
-  char cmd[LONG_STRING], tempfile[PATH_MAX];
+  char cmd[1024], tempfile[PATH_MAX];
   const char *s = NULL;
   gpgme_ctx_t listctx = NULL;
   gpgme_error_t err;
@@ -4629,7 +4629,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
   int keymax;
   int i;
   bool done = false;
-  char helpstr[LONG_STRING], buf[LONG_STRING];
+  char helpstr[1024], buf[1024];
   struct CryptKeyInfo *k = NULL;
   int (*f)(const void *, const void *);
   enum MenuType menu_to_use = MENU_GENERIC;
@@ -4766,7 +4766,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
                                  !crypt_id_is_strong(key_table[menu->current])))
         {
           const char *warn_s = NULL;
-          char buf2[LONG_STRING];
+          char buf2[1024];
 
           if (key_table[menu->current]->flags & KEYFLAG_CANTUSE)
           {
@@ -5117,7 +5117,7 @@ static char *find_keys(struct Address *addrlist, unsigned int app, bool oppenc_m
   struct Address *p = NULL, *q = NULL;
   struct CryptKeyInfo *k_info = NULL;
   const char *fqdn = mutt_fqdn(true);
-  char buf[LONG_STRING];
+  char buf[1024];
   int forced_valid;
   int r;
   bool key_selected;
@@ -5253,7 +5253,7 @@ struct Body *pgp_gpgme_make_key_attachment(void)
   gpgme_data_t keydata = NULL;
   gpgme_error_t err;
   struct Body *att = NULL;
-  char buf[LONG_STRING];
+  char buf[1024];
   struct stat sb;
 
   OptPgpCheckTrust = false;

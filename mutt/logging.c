@@ -396,12 +396,12 @@ int log_queue_save(FILE *fp)
  *
  * @sa log_queue_set_max_size(), log_queue_flush(), log_queue_empty()
  *
- * @warning Log lines are limited to #LONG_STRING bytes.
+ * @warning Log lines are limited to 1024 bytes.
  */
 int log_disp_queue(time_t stamp, const char *file, int line,
                    const char *function, int level, ...)
 {
-  char buf[LONG_STRING] = "";
+  char buf[1024] = "";
   int err = errno;
 
   va_list ap;
@@ -445,7 +445,7 @@ int log_disp_terminal(time_t stamp, const char *file, int line,
   if ((level < LL_PERROR) || (level > LL_MESSAGE))
     return 0;
 
-  char buf[LONG_STRING];
+  char buf[1024];
 
   va_list ap;
   va_start(ap, level);

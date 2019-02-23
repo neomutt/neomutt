@@ -564,7 +564,7 @@ void mix_make_chain(struct ListHead *chainhead)
   struct Coord *coords = NULL;
 
   struct Menu *menu = NULL;
-  char helpstr[LONG_STRING];
+  char helpstr[1024];
   bool loop = true;
 
   char *t = NULL;

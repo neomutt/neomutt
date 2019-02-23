@@ -1090,7 +1090,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
 {
   char buf[PATH_MAX];
   char prefix[PATH_MAX] = "";
-  char helpstr[LONG_STRING];
+  char helpstr[1024];
   char title[256];
   struct BrowserState state = { 0 };
   struct Menu *menu = NULL;

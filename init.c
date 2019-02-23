@@ -81,9 +81,9 @@ static struct ListHead MuttrcStack = STAILQ_HEAD_INITIALIZER(MuttrcStack);
 #define NUMVARS mutt_array_size(MuttVars)
 #define NUMCOMMANDS mutt_array_size(Commands)
 
-/* initial string that starts completion. No telling how much crap
- * the user has typed so far. Allocate LONG_STRING just to be sure! */
-static char UserTyped[LONG_STRING] = { 0 };
+/* Initial string that starts completion. No telling how much the user has
+ * typed so far. Allocate 1024 just to be sure! */
+static char UserTyped[1024] = { 0 };
 
 static int NumMatched = 0;          /* Number of matches for completion */
 static char Completed[256] = { 0 }; /* completed string (command or variable) */
@@ -428,7 +428,7 @@ static bool get_hostname(void)
     C_Hostname = getmailname();
     if (!C_Hostname)
     {
-      char buffer[LONG_STRING];
+      char buffer[1024];
       if (getdnsdomainname(buffer, sizeof(buffer)) == 0)
       {
         C_Hostname = mutt_mem_malloc(mutt_str_strlen(buffer) +
@@ -3018,7 +3018,7 @@ int mutt_get_hook_type(const char *name)
  */
 int mutt_init(bool skip_sys_rc, struct ListHead *commands)
 {
-  char buffer[LONG_STRING];
+  char buffer[1024];
   int need_pause = 0;
   struct Buffer err;
 

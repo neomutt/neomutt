@@ -137,7 +137,7 @@ int imap_adata_find(const char *path, struct ImapAccountData **adata,
 {
   struct ConnAccount conn_account;
   struct ImapAccountData *tmp_adata;
-  char tmp[LONG_STRING];
+  char tmp[1024];
 
   if (imap_parse_path(path, &conn_account, tmp, sizeof(tmp)) < 0)
     return -1;
@@ -166,7 +166,7 @@ int imap_adata_find(const char *path, struct ImapAccountData **adata,
  */
 struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *name)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
   struct ImapMboxData *mdata = mutt_mem_calloc(1, sizeof(struct ImapMboxData));
 
   mdata->real_name = mutt_str_strdup(name);
@@ -307,7 +307,7 @@ void imap_get_parent_path(const char *path, char *buf, size_t buflen)
 {
   struct ImapAccountData *adata = NULL;
   struct ImapMboxData *mdata = NULL;
-  char mbox[LONG_STRING];
+  char mbox[1024];
 
   if (imap_adata_find(path, &adata, &mdata) < 0)
   {
@@ -700,8 +700,8 @@ void imap_pretty_mailbox(char *path, const char *folder)
   int tlen;
   int hlen = 0;
   bool home_match = false;
-  char target_mailbox[LONG_STRING];
-  char home_mailbox[LONG_STRING];
+  char target_mailbox[1024];
+  char home_mailbox[1024];
 
   if (imap_parse_path(path, &target_conn_account, target_mailbox, sizeof(target_mailbox)) < 0)
     return;

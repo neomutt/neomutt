@@ -313,7 +313,7 @@ int mutt_ch_convert_nonmime_string(char **ps)
  */
 void mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name)
 {
-  char in[LONG_STRING], scratch[LONG_STRING];
+  char in[1024], scratch[1024];
 
   mutt_str_strfcpy(in, name, sizeof(in));
   char *ext = strchr(in, '/');
@@ -422,7 +422,7 @@ char *mutt_ch_get_default_charset(void)
  */
 char *mutt_ch_get_langinfo_charset(void)
 {
-  char buf[LONG_STRING] = "";
+  char buf[1024] = "";
 
   mutt_ch_canonical_charset(buf, sizeof(buf), nl_langinfo(CODESET));
 
@@ -1046,7 +1046,7 @@ char *mutt_ch_choose(const char *fromcode, const char *charsets, const char *u,
     if (dlen)
       *dlen = elen;
 
-    char canonical_buf[LONG_STRING];
+    char canonical_buf[1024];
     mutt_ch_canonical_charset(canonical_buf, sizeof(canonical_buf), tocode);
     mutt_str_replace(&tocode, canonical_buf);
   }

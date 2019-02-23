@@ -75,7 +75,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
   bool from = false;
   bool this_is_from = false;
   bool ignore = false;
-  char buf[LONG_STRING]; /* should be long enough to get most fields in one pass */
+  char buf[1024]; /* should be long enough to get most fields in one pass */
   char *nl = NULL;
   char **headers = NULL;
   int hdr_count;
@@ -470,7 +470,7 @@ int mutt_copy_header(FILE *in, struct Email *e, FILE *out, int chflags, const ch
     char *folder = nm_email_get_folder(e);
     if (folder && !(C_Weed && mutt_matches_ignore("folder")))
     {
-      char buf[LONG_STRING];
+      char buf[1024];
       mutt_str_strfcpy(buf, folder, sizeof(buf));
       mutt_pretty_mailbox(buf, sizeof(buf));
 

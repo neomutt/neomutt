@@ -889,7 +889,7 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   };
   X509_NAME *x509_subject = NULL;
   X509_NAME *x509_issuer = NULL;
-  char helpstr[LONG_STRING];
+  char helpstr[1024];
   char buf[256];
   char title[256];
   struct Menu *menu = mutt_menu_new(MENU_GENERIC);

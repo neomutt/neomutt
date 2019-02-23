@@ -45,7 +45,7 @@
 enum ImapAuthRes imap_auth_login(struct ImapAccountData *adata, const char *method)
 {
   char q_user[256], q_pass[256];
-  char buf[LONG_STRING];
+  char buf[1024];
 
   if ((adata->capabilities & IMAP_CAP_LOGINDISABLED))
   {

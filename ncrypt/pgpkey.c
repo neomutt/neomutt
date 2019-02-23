@@ -596,8 +596,8 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
   struct Menu *menu = NULL;
   int i;
   bool done = false;
-  char helpstr[LONG_STRING], buf[LONG_STRING], tmpbuf[256];
-  char cmd[LONG_STRING], tempfile[PATH_MAX];
+  char helpstr[1024], buf[1024], tmpbuf[256];
+  char cmd[1024], tempfile[PATH_MAX];
   FILE *fp = NULL, *devnull = NULL;
   pid_t thepid;
   struct PgpKeyInfo *kp = NULL;
@@ -755,7 +755,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
                                  !pgp_id_is_strong(KeyTable[menu->current])))
         {
           const char *str = "";
-          char buf2[LONG_STRING];
+          char buf2[1024];
 
           if (KeyTable[menu->current]->flags & KEYFLAG_CANTUSE)
           {
@@ -872,7 +872,7 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, short abilities, en
 struct Body *pgp_class_make_key_attachment(void)
 {
   struct Body *att = NULL;
-  char buf[LONG_STRING];
+  char buf[1024];
   char tempf[PATH_MAX], tmp[256];
   FILE *tempfp = NULL;
   FILE *devnull = NULL;

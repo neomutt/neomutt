@@ -983,7 +983,7 @@ static void index_custom_redraw(struct Menu *menu)
 
   if (menu->redraw & REDRAW_STATUS)
   {
-    char buf[LONG_STRING];
+    char buf[1024];
     menu_status_line(buf, sizeof(buf), menu, NONULL(C_StatusFormat));
     mutt_window_move(MuttStatusWindow, 0, 0);
     SETCOLOR(MT_COLOR_STATUS);
@@ -1011,7 +1011,7 @@ static void index_custom_redraw(struct Menu *menu)
  */
 int mutt_index_menu(void)
 {
-  char buf[PATH_MAX], helpstr[LONG_STRING];
+  char buf[PATH_MAX], helpstr[1024];
   int flags;
   int op = OP_NULL;
   bool done = false; /* controls when to exit the "event" loop */
@@ -1125,7 +1125,7 @@ int mutt_index_menu(void)
                 beep();
               if (C_NewMailCommand)
               {
-                char cmd[LONG_STRING];
+                char cmd[1024];
                 menu_status_line(cmd, sizeof(cmd), menu, NONULL(C_NewMailCommand));
                 if (mutt_system(cmd) != 0)
                   mutt_error(_("Error running \"%s\""), cmd);
@@ -1168,7 +1168,7 @@ int mutt_index_menu(void)
             beep();
           if (C_NewMailCommand)
           {
-            char cmd[LONG_STRING];
+            char cmd[1024];
             menu_status_line(cmd, sizeof(cmd), menu, NONULL(C_NewMailCommand));
             if (mutt_system(cmd) != 0)
               mutt_error(_("Error running \"%s\""), cmd);
@@ -1641,7 +1641,7 @@ int mutt_index_menu(void)
                                -1;
         if (op == OP_TOGGLE_READ)
         {
-          char buf2[LONG_STRING];
+          char buf2[1024];
 
           if (!Context->pattern || (strncmp(Context->pattern, "!~R!~D~s", 8) != 0))
           {

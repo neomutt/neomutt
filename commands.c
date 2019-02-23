@@ -174,7 +174,7 @@ static void update_protected_headers(struct Email *cur)
  */
 int mutt_display_message(struct Email *cur)
 {
-  char tempfile[PATH_MAX], buf[LONG_STRING];
+  char tempfile[PATH_MAX], buf[1024];
   int rc = 0;
   bool builtin = false;
   int cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
@@ -654,7 +654,7 @@ void mutt_pipe_message(struct Mailbox *m, struct EmailList *el)
   if (!m || !el)
     return;
 
-  char buffer[LONG_STRING] = { 0 };
+  char buffer[1024] = { 0 };
 
   if ((mutt_get_field(_("Pipe to command: "), buffer, sizeof(buffer), MUTT_CMD) != 0) ||
       (buffer[0] == '\0'))
@@ -786,7 +786,7 @@ int mutt_select_sort(int reverse)
  */
 void mutt_shell_escape(void)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
 
   buf[0] = '\0';
   if (mutt_get_field(_("Shell command: "), buf, sizeof(buf), MUTT_CMD) != 0)
@@ -814,7 +814,7 @@ void mutt_shell_escape(void)
  */
 void mutt_enter_command(void)
 {
-  char buffer[LONG_STRING] = { 0 };
+  char buffer[1024] = { 0 };
 
   /* if enter is pressed after : with no command, just return */
   if (mutt_get_field(":", buffer, sizeof(buffer), MUTT_COMMAND) != 0 || !buffer[0])
@@ -1177,8 +1177,8 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete,
  */
 int mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
 {
-  char buf[LONG_STRING];
-  char obuf[LONG_STRING];
+  char buf[1024];
+  char obuf[1024];
   char tmp[256];
   char charset[256];
 

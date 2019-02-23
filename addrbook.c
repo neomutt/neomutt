@@ -193,7 +193,7 @@ void mutt_alias_menu(char *buf, size_t buflen, struct AliasList *aliases)
   int t = -1;
   int i;
   bool done = false;
-  char helpstr[LONG_STRING];
+  char helpstr[1024];
 
   int omax;
 

@@ -304,7 +304,7 @@ static int sync_helper(struct Mailbox *m, int right, int flag, const char *name)
 {
   int count = 0;
   int rc;
-  char buf[LONG_STRING];
+  char buf[1024];
 
   if (!m)
     return -1;
@@ -534,7 +534,7 @@ static int complete_hosts(char *buf, size_t buflen)
   TAILQ_FOREACH(conn, mutt_socket_head(), entries)
   {
     struct Url url;
-    char urlstr[LONG_STRING];
+    char urlstr[1024];
 
     if (conn->account.type != MUTT_ACCT_TYPE_IMAP)
       continue;
@@ -569,7 +569,7 @@ static int complete_hosts(char *buf, size_t buflen)
  */
 int imap_create_mailbox(struct ImapAccountData *adata, char *mailbox)
 {
-  char buf[LONG_STRING * 2], mbox[LONG_STRING];
+  char buf[2048], mbox[1024];
 
   imap_munge_mbox_name(adata->unicode, mbox, sizeof(mbox), mailbox);
   snprintf(buf, sizeof(buf), "CREATE %s", mbox);
@@ -611,8 +611,8 @@ int imap_access(const char *path)
  */
 int imap_rename_mailbox(struct ImapAccountData *adata, char *oldname, const char *newname)
 {
-  char oldmbox[LONG_STRING];
-  char newmbox[LONG_STRING];
+  char oldmbox[1024];
+  char newmbox[1024];
   int rc = 0;
 
   imap_munge_mbox_name(adata->unicode, oldmbox, sizeof(oldmbox), oldname);
@@ -847,7 +847,7 @@ void imap_expunge_mailbox(struct Mailbox *m)
  */
 int imap_open_connection(struct ImapAccountData *adata)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
 
   if (mutt_socket_open(adata->conn) < 0)
     return -1;
@@ -1092,7 +1092,7 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
   if (!adata || adata->mailbox != m)
     return -1;
 
-  char flags[LONG_STRING];
+  char flags[1024];
   char *tags = NULL;
   char uid[11];
 
@@ -1262,7 +1262,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
 static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata, bool queue)
 {
   char *uid_validity_flag;
-  char command[LONG_STRING * 2];
+  char command[2048];
 
   if (!adata || !mdata)
     return -1;
@@ -1395,8 +1395,8 @@ int imap_subscribe(char *path, bool subscribe)
 {
   struct ImapAccountData *adata = NULL;
   struct ImapMboxData *mdata = NULL;
-  char buf[LONG_STRING * 2];
-  char mbox[LONG_STRING];
+  char buf[2048];
+  char mbox[1024];
   char errstr[256];
   struct Buffer err, token;
   size_t len = 0;
@@ -1453,9 +1453,9 @@ int imap_complete(char *buf, size_t buflen, char *path)
 {
   struct ImapAccountData *adata = NULL;
   struct ImapMboxData *mdata = NULL;
-  char tmp[LONG_STRING * 2];
+  char tmp[2048];
   struct ImapList listresp;
-  char completion[LONG_STRING];
+  char completion[1024];
   int clen;
   size_t matchlen = 0;
   int completions = 0;
@@ -1529,7 +1529,7 @@ int imap_complete(char *buf, size_t buflen, char *path)
  */
 int imap_fast_trash(struct Mailbox *m, char *dest)
 {
-  char prompt[LONG_STRING];
+  char prompt[1024];
   int rc = -1;
   bool triedcreate = false;
   struct Buffer *sync_cmd = NULL;
@@ -1886,7 +1886,7 @@ int imap_ac_add(struct Account *a, struct Mailbox *m)
     struct ImapMboxData *mdata = imap_mdata_new(adata, url->path);
 
     /* fixup path and realpath, mainly to replace / by /INBOX */
-    char buf[LONG_STRING];
+    char buf[1024];
     imap_qualify_path(buf, sizeof(buf), &adata->conn_account, mdata->name);
     mutt_str_strfcpy(m->path, buf, sizeof(m->path));
     mutt_str_strfcpy(m->realpath, m->path, sizeof(m->realpath));

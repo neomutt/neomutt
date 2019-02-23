@@ -349,7 +349,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
     menu->menu_search = query_search;
     menu->menu_tag = query_tag;
     menu->title = title;
-    char helpstr[LONG_STRING];
+    char helpstr[1024];
     menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_QUERY, QueryHelp);
     mutt_menu_push_current(menu);
 

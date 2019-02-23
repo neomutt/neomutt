@@ -817,7 +817,7 @@ void mutt_safe_path(char *buf, size_t buflen, struct Address *a)
 void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const char *src,
                          format_t *callback, unsigned long data, int flags)
 {
-  char prefix[128], tmp[LONG_STRING], *cp = NULL, *wptr = buf, ch;
+  char prefix[128], tmp[1024], *cp = NULL, *wptr = buf, ch;
   char if_str[128], else_str[128];
   size_t wlen, count, len, wid;
   FILE *filter = NULL;
@@ -850,7 +850,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
     /* n-off is the number of backslashes. */
     if (off > 0 && ((n - off) % 2) == 0)
     {
-      char srccopy[LONG_STRING];
+      char srccopy[1024];
       int i = 0;
 
       mutt_debug(LL_DEBUG3, "fmtpipe = %s\n", src);

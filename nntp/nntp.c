@@ -241,8 +241,8 @@ static int nntp_capabilities(struct NntpAccountData *adata)
 {
   struct Connection *conn = adata->conn;
   bool mode_reader = false;
-  char buf[LONG_STRING];
-  char authinfo[LONG_STRING] = "";
+  char buf[1024];
+  char authinfo[1024] = "";
 
   adata->hasCAPABILITIES = false;
   adata->hasSTARTTLS = false;
@@ -343,7 +343,7 @@ static int nntp_capabilities(struct NntpAccountData *adata)
 static int nntp_attempt_features(struct NntpAccountData *adata)
 {
   struct Connection *conn = adata->conn;
-  char buf[LONG_STRING];
+  char buf[1024];
 
   /* no CAPABILITIES, trying DATE, LISTGROUP, LIST NEWSGROUPS */
   if (!adata->hasCAPABILITIES)
@@ -418,14 +418,14 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
     else
     {
       int cont = 0;
-      size_t buflen = 2 * LONG_STRING, off = 0, b = 0;
+      size_t buflen = 2048, off = 0, b = 0;
 
       FREE(&adata->overview_fmt);
       adata->overview_fmt = mutt_mem_malloc(buflen);
 
       while (true)
       {
-        if (buflen - off < LONG_STRING)
+        if (buflen - off < 1024)
         {
           buflen *= 2;
           mutt_mem_realloc(&adata->overview_fmt, buflen);
@@ -504,7 +504,7 @@ static bool nntp_memchr(char **haystack, char *sentinel, int needle)
  */
 static void nntp_log_binbuf(const char *buf, size_t len, const char *pfx, int dbg)
 {
-  char tmp[LONG_STRING];
+  char tmp[1024];
   char *p = tmp;
   char *sentinel = tmp + len;
 
@@ -527,8 +527,8 @@ static void nntp_log_binbuf(const char *buf, size_t len, const char *pfx, int db
 static int nntp_auth(struct NntpAccountData *adata)
 {
   struct Connection *conn = adata->conn;
-  char buf[LONG_STRING];
-  char authenticators[LONG_STRING] = "USER";
+  char buf[1024];
+  char authenticators[1024] = "USER";
   char *method = NULL, *a = NULL, *p = NULL;
   unsigned char flags = conn->account.flags;
 
@@ -637,7 +637,7 @@ static int nntp_auth(struct NntpAccountData *adata)
         sasl_conn_t *saslconn = NULL;
         sasl_interact_t *interaction = NULL;
         int rc;
-        char inbuf[LONG_STRING] = "";
+        char inbuf[1024] = "";
         const char *mech = NULL;
         const char *client_out = NULL;
         unsigned int client_len, len;
@@ -788,7 +788,7 @@ static int nntp_auth(struct NntpAccountData *adata)
 static int nntp_query(struct NntpMboxData *mdata, char *line, size_t linelen)
 {
   struct NntpAccountData *adata = mdata->adata;
-  char buf[LONG_STRING] = { 0 };
+  char buf[1024] = { 0 };
 
   if (adata->status == NNTP_BYE)
     return -1;
@@ -870,7 +870,7 @@ static int nntp_fetch_lines(struct NntpMboxData *mdata, char *query, size_t qlen
 
   while (!done)
   {
-    char buf[LONG_STRING];
+    char buf[1024];
     char *line = NULL;
     unsigned int lines = 0;
     size_t off = 0;
@@ -1498,7 +1498,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
  */
 static int nntp_group_poll(struct NntpMboxData *mdata, bool update_stat)
 {
-  char buf[LONG_STRING] = "";
+  char buf[1024] = "";
   anum_t count, first, last;
 
   /* use GROUP command to poll newsgroup */
@@ -1759,7 +1759,7 @@ static int nntp_date(struct NntpAccountData *adata, time_t *now)
   if (adata->hasDATE)
   {
     struct NntpMboxData mdata;
-    char buf[LONG_STRING];
+    char buf[1024];
     struct tm tm;
     memset(&tm, 0, sizeof(tm));
 
@@ -1982,7 +1982,7 @@ int nntp_post(struct Mailbox *m, const char *msg)
 {
   struct NntpMboxData *mdata = NULL;
   struct NntpMboxData tmp_mdata = { 0 };
-  char buf[LONG_STRING];
+  char buf[1024];
 
   if (m && (m->magic == MUTT_NNTP))
     mdata = m->mdata;
@@ -2064,7 +2064,7 @@ int nntp_active_fetch(struct NntpAccountData *adata, bool new)
 {
   struct NntpMboxData tmp_mdata;
   char msg[256];
-  char buf[LONG_STRING];
+  char buf[1024];
   unsigned int i;
   int rc;
 
@@ -2132,7 +2132,7 @@ int nntp_check_new_groups(struct Mailbox *m, struct NntpAccountData *adata)
   struct NntpMboxData tmp_mdata;
   time_t now;
   struct tm *tm = NULL;
-  char buf[LONG_STRING];
+  char buf[1024];
   char *msg = _("Checking for new newsgroups...");
   unsigned int i;
   int rc, update_active = false;
@@ -2247,7 +2247,7 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
   struct Mailbox *m = ctx->mailbox;
 
   struct NntpMboxData *mdata = m->mdata;
-  char buf[LONG_STRING];
+  char buf[1024];
 
   FILE *fp = mutt_file_mkstemp();
   if (!fp)
@@ -2443,7 +2443,7 @@ static int nntp_mbox_open(struct Mailbox *m)
     return -1;
 
   char buf[HUGE_STRING];
-  char server[LONG_STRING];
+  char server[1024];
   char *group = NULL;
   int rc;
   void *hc = NULL;

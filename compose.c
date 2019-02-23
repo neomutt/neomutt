@@ -439,7 +439,7 @@ static int check_attachments(struct AttachCtx *actx)
  */
 static void draw_envelope_addr(int line, struct Address *addr)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
 
   buf[0] = '\0';
   mutt_addr_write(buf, sizeof(buf), addr, true);
@@ -698,7 +698,7 @@ static void compose_custom_redraw(struct Menu *menu)
 
   if (menu->redraw & REDRAW_STATUS)
   {
-    char buf[LONG_STRING];
+    char buf[1024];
     compose_status_line(buf, sizeof(buf), 0, MuttStatusWindow->cols, menu,
                         NONULL(C_ComposeFormat));
     mutt_window_move(MuttStatusWindow, 0, 0);
@@ -886,7 +886,7 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
  */
 int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email *cur, int flags)
 {
-  char helpstr[LONG_STRING]; // This isn't copied by the help bar
+  char helpstr[1024]; // This isn't copied by the help bar
   char buf[PATH_MAX];
   int op_close = OP_NULL;
   int rc = -1;

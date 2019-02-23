@@ -457,7 +457,7 @@ void mutt_forward_intro(struct Mailbox *m, struct Email *e, FILE *fp)
   if (!C_ForwardAttributionIntro || !fp)
     return;
 
-  char buf[LONG_STRING];
+  char buf[1024];
   setlocale(LC_TIME, NONULL(C_AttributionLocale));
   mutt_make_string(buf, sizeof(buf), C_ForwardAttributionIntro, NULL, m, e);
   setlocale(LC_TIME, "");
@@ -476,7 +476,7 @@ void mutt_forward_trailer(struct Mailbox *m, struct Email *e, FILE *fp)
   if (!C_ForwardAttributionTrailer || !fp)
     return;
 
-  char buf[LONG_STRING];
+  char buf[1024];
   setlocale(LC_TIME, NONULL(C_AttributionLocale));
   mutt_make_string(buf, sizeof(buf), C_ForwardAttributionTrailer, NULL, m, e);
   setlocale(LC_TIME, "");
@@ -541,7 +541,7 @@ void mutt_make_attribution(struct Mailbox *m, struct Email *e, FILE *out)
   if (!C_Attribution || !out)
     return;
 
-  char buf[LONG_STRING];
+  char buf[1024];
   setlocale(LC_TIME, NONULL(C_AttributionLocale));
   mutt_make_string(buf, sizeof(buf), C_Attribution, NULL, m, e);
   setlocale(LC_TIME, "");
@@ -1442,11 +1442,11 @@ static bool search_attach_keyword(char *filename)
   if (!attf)
     return false;
 
-  char *inputline = mutt_mem_malloc(LONG_STRING);
+  char *inputline = mutt_mem_malloc(1024);
   bool found = false;
   while (!feof(attf))
   {
-    fgets(inputline, LONG_STRING, attf);
+    fgets(inputline, 1024, attf);
     if (!mutt_is_quote_line(inputline, NULL) &&
         regexec(C_AbortNoattachRegex->regex, inputline, 0, NULL, 0) == 0)
     {
@@ -1736,7 +1736,7 @@ static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, int
 int ci_send_message(int flags, struct Email *msg, const char *tempfile,
                     struct Context *ctx, struct EmailList *el)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
   char fcc[PATH_MAX] = ""; /* where to copy this message */
   FILE *tempfp = NULL;
   struct Body *pbody = NULL;

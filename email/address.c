@@ -296,7 +296,7 @@ static const char *parse_address(const char *s, char *token, size_t *tokenlen,
 static const char *parse_route_addr(const char *s, char *comment, size_t *commentlen,
                                     size_t commentmax, struct Address *addr)
 {
-  char token[LONG_STRING];
+  char token[1024];
   size_t tokenlen = 0;
 
   s = mutt_str_skip_email_wsp(s);
@@ -352,7 +352,7 @@ static const char *parse_route_addr(const char *s, char *comment, size_t *commen
 static const char *parse_addr_spec(const char *s, char *comment, size_t *commentlen,
                                    size_t commentmax, struct Address *addr)
 {
-  char token[LONG_STRING];
+  char token[1024];
   size_t tokenlen = 0;
 
   s = parse_address(s, token, &tokenlen, sizeof(token) - 1, comment, commentlen,
@@ -466,7 +466,7 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
 {
   int ws_pending;
   const char *ps = NULL;
-  char comment[LONG_STRING], phrase[LONG_STRING];
+  char comment[1024], phrase[1024];
   size_t phraselen = 0, commentlen = 0;
   struct Address *cur = NULL;
 

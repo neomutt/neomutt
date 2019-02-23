@@ -189,7 +189,7 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
     return -1;
 
   char buf[HUGE_STRING];
-  char return_path[LONG_STRING];
+  char return_path[1024];
   int count = 0;
   int lines;
   time_t t;
@@ -1054,7 +1054,7 @@ static int mbox_mbox_check(struct Mailbox *m, int *index_hint)
        * see the message separator at *exactly* what used to be the end of the
        * folder.
        */
-      char buffer[LONG_STRING];
+      char buffer[1024];
       if (fseeko(adata->fp, m->size, SEEK_SET) != 0)
         mutt_debug(LL_DEBUG1, "#1 fseek() failed\n");
       if (fgets(buffer, sizeof(buffer), adata->fp))

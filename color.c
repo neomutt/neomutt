@@ -768,7 +768,7 @@ static enum CommandResult add_pattern(struct ColorLineHead *top, const char *s,
     tmp = new_color_line();
     if (is_index)
     {
-      char buf[LONG_STRING];
+      char buf[1024];
       mutt_str_strfcpy(buf, s, sizeof(buf));
       mutt_check_simple(buf, sizeof(buf), NONULL(C_SimpleSearch));
       tmp->color_pattern = mutt_pattern_comp(buf, MUTT_FULL_MSG, err);

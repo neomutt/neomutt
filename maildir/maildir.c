@@ -194,7 +194,7 @@ void maildir_gen_flags(char *dest, size_t destlen, struct Email *e)
 
   if (e && (e->flagged || e->replied || e->read || e->deleted || e->old || e->maildir_flags))
   {
-    char tmp[LONG_STRING];
+    char tmp[1024];
     snprintf(tmp, sizeof(tmp), "%s%s%s%s%s", e->flagged ? "F" : "", e->replied ? "R" : "",
              e->read ? "S" : "", e->deleted ? "T" : "", NONULL(e->maildir_flags));
     if (e->maildir_flags)

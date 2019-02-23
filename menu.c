@@ -415,7 +415,7 @@ void menu_redraw_sidebar(struct Menu *menu)
  */
 void menu_redraw_index(struct Menu *menu)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
   bool do_color;
   int attr;
 
@@ -465,7 +465,7 @@ void menu_redraw_index(struct Menu *menu)
  */
 void menu_redraw_motion(struct Menu *menu)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
 
   if (menu->dialog)
   {
@@ -523,7 +523,7 @@ void menu_redraw_motion(struct Menu *menu)
  */
 void menu_redraw_current(struct Menu *menu)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
   int attr = menu->menu_color(menu->current);
 
   mutt_window_move(menu->indexwin, menu->current + menu->offset - menu->top, 0);
@@ -952,7 +952,7 @@ static int default_color(int line)
  */
 static int generic_search(struct Menu *menu, regex_t *rx, int line)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
 
   menu_make_entry(buf, sizeof(buf), menu, line);
   return regexec(rx, buf, 0, NULL, 0);

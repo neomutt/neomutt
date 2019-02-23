@@ -185,7 +185,7 @@ static struct RangeRegex range_regexes[] = {
 
 static struct Pattern *SearchPattern = NULL; /**< current search pattern */
 static char LastSearch[256] = { 0 };      /**< last pattern searched for */
-static char LastSearchExpn[LONG_STRING] = { 0 }; /**< expanded version of LastSearch */
+static char LastSearchExpn[1024] = { 0 }; /**< expanded version of LastSearch */
 
 /**
  * eat_regex - Parse a regex
@@ -2254,7 +2254,7 @@ void mutt_check_simple(char *s, size_t len, const char *simple)
       mutt_str_strfcpy(s, "~U", len);
     else
     {
-      char tmp[LONG_STRING];
+      char tmp[1024];
       quote_simple(s, tmp, sizeof(tmp));
       mutt_file_expand_fmt(s, len, simple, tmp);
     }
@@ -2334,7 +2334,7 @@ bool mutt_limit_current_thread(struct Email *e)
 int mutt_pattern_func(int op, char *prompt)
 {
   struct Pattern *pat = NULL;
-  char buf[LONG_STRING] = "", *simple = NULL;
+  char buf[1024] = "", *simple = NULL;
   struct Buffer err;
   int rc = -1, padding;
   struct Progress progress;
@@ -2491,7 +2491,7 @@ int mutt_search_command(int cur, int op)
 
     /* compare the *expanded* version of the search pattern in case
        $simple_search has changed while we were searching */
-    char temp[LONG_STRING];
+    char temp[1024];
     mutt_str_strfcpy(temp, buf, sizeof(temp));
     mutt_check_simple(temp, sizeof(temp), NONULL(C_SimpleSearch));
 

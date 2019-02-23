@@ -249,7 +249,7 @@ struct NmEmailData *nm_edata_new(void)
 struct NmMboxData *nm_get_default_data(void)
 {
   // path to DB + query + URI "decoration"
-  char uri[PATH_MAX + LONG_STRING + 32];
+  char uri[PATH_MAX + 1024 + 32];
 
   // Try to use C_NmDefaultUri or C_Folder.
   // If neither are set, it is impossible to create a Notmuch URI.
@@ -496,7 +496,7 @@ static char *get_query_string(struct NmMboxData *mdata, bool window)
 
   if (window)
   {
-    char buf[LONG_STRING];
+    char buf[1024];
     mutt_str_replace(&C_NmQueryWindowCurrentSearch, mdata->db_query);
 
     /* if a date part is defined, do not apply windows (to avoid the risk of
@@ -1686,7 +1686,7 @@ char *nm_uri_from_query(struct Mailbox *m, char *buf, size_t buflen)
 {
   mutt_debug(LL_DEBUG2, "(%s)\n", buf);
   struct NmMboxData *mdata = nm_mdata_get(m);
-  char uri[PATH_MAX + LONG_STRING + 32]; /* path to DB + query + URI "decoration" */
+  char uri[PATH_MAX + 1024 + 32]; /* path to DB + query + URI "decoration" */
   int added;
   bool using_default_data = false;
 

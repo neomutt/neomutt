@@ -420,7 +420,7 @@ void pgp_class_invoke_import(const char *fname)
 void pgp_class_invoke_getkeys(struct Address *addr)
 {
   char buf[PATH_MAX];
-  char tmp[LONG_STRING];
+  char tmp[1024];
   char cmd[HUGE_STRING];
   int devnull;
 

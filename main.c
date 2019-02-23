@@ -921,7 +921,7 @@ int main(int argc, char *argv[], char *envp[])
        */
       if (!edit_infile)
       {
-        char buf[LONG_STRING];
+        char buf[1024];
         mutt_mktemp(buf, sizeof(buf));
         tempfile = mutt_str_strdup(buf);
 

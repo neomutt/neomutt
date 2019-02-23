@@ -82,7 +82,7 @@ static int lua_mutt_call(lua_State *l)
 {
   mutt_debug(LL_DEBUG2, " * lua_mutt_call()\n");
   struct Buffer token, expn, err;
-  char buffer[LONG_STRING] = "";
+  char buffer[1024] = "";
   const struct Command *command = NULL;
   int rc = 0;
 
@@ -359,7 +359,7 @@ static int lua_mutt_error(lua_State *l)
 static void lua_expose_command(void *p, const struct Command *cmd)
 {
   lua_State *l = (lua_State *) p;
-  char buf[LONG_STRING];
+  char buf[1024];
   snprintf(buf, sizeof(buf), "mutt.command.%s = function (...); mutt.call('%s', ...); end",
            cmd->name, cmd->name);
   (void) luaL_dostring(l, buf);

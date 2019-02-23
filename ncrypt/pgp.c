@@ -74,7 +74,7 @@ struct Regex *C_PgpGoodSign; ///< Config: Text indicating a good signature
 long C_PgpTimeout;           ///< Config: Time in seconds to cache a passphrase
 bool C_PgpUseGpgAgent;       ///< Config: Use a PGP agent for caching passwords
 
-char PgpPass[LONG_STRING];
+char PgpPass[1024];
 time_t PgpExptime = 0; /* when does the cached passphrase expire? */
 
 /**
@@ -999,7 +999,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   if (!a || !s || !fpout || !p)
     return NULL;
 
-  char buf[LONG_STRING];
+  char buf[1024];
   FILE *pgpin = NULL, *pgpout = NULL, *pgptmp = NULL;
   struct stat info;
   struct Body *tattach = NULL;
@@ -1293,7 +1293,7 @@ int pgp_class_encrypted_handler(struct Body *a, struct State *s)
 struct Body *pgp_class_sign_message(struct Body *a)
 {
   struct Body *t = NULL;
-  char buffer[LONG_STRING];
+  char buffer[1024];
   char sigfile[PATH_MAX], signedfile[PATH_MAX];
   FILE *pgpin = NULL, *pgpout = NULL, *pgperr = NULL, *sfp = NULL;
   bool err = false;
@@ -1426,7 +1426,7 @@ char *pgp_class_find_keys(struct Address *addrlist, bool oppenc_mode)
   struct Address *addr = NULL;
   struct Address *p = NULL, *q = NULL;
   struct PgpKeyInfo *k_info = NULL;
-  char buf[LONG_STRING];
+  char buf[1024];
   int r;
   bool key_selected;
 
@@ -1540,7 +1540,7 @@ char *pgp_class_find_keys(struct Address *addrlist, bool oppenc_mode)
  */
 struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
   char tempfile[PATH_MAX];
   char pgpinfile[PATH_MAX];
   FILE *pgpin = NULL, *fptmp = NULL;
@@ -1849,7 +1849,7 @@ int pgp_class_send_menu(struct Email *msg)
   const char *prompt = NULL;
   const char *letters = NULL;
   const char *choices = NULL;
-  char promptbuf[LONG_STRING];
+  char promptbuf[1024];
   int choice;
 
   if (!(WithCrypto & APPLICATION_PGP))

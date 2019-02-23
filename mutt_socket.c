@@ -86,7 +86,7 @@ struct Connection *mutt_conn_find(const struct Connection *start,
                                   const struct ConnAccount *account)
 {
   struct Url url;
-  char hook[LONG_STRING];
+  char hook[1024];
 
   /* account isn't actually modified, since url isn't either */
   mutt_account_tourl((struct ConnAccount *) account, &url);

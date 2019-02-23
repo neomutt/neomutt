@@ -1921,7 +1921,7 @@ struct PagerRedrawData
 static void pager_custom_redraw(struct Menu *pager_menu)
 {
   struct PagerRedrawData *rd = pager_menu->redraw_data;
-  char buffer[LONG_STRING];
+  char buffer[1024];
 
   if (!rd)
     return;
@@ -2229,7 +2229,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
 int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *extra)
 {
   static char searchbuf[256] = "";
-  char buffer[LONG_STRING];
+  char buffer[1024];
   char helpstr[256];
   char tmphelp[256];
   int ch = 0, rc = -1;
@@ -2436,7 +2436,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           beep();
         if (C_NewMailCommand)
         {
-          char cmd[LONG_STRING];
+          char cmd[1024];
           menu_status_line(cmd, sizeof(cmd), rd.index, NONULL(C_NewMailCommand));
           if (mutt_system(cmd) != 0)
             mutt_error(_("Error running \"%s\""), cmd);

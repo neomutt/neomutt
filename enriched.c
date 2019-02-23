@@ -289,7 +289,7 @@ static void enriched_putwc(wchar_t c, struct EnrichedState *stte)
   /* see if more space is needed (plus extra for possible rich characters) */
   if (stte->buf_len < (stte->buf_used + 3))
   {
-    stte->buf_len += LONG_STRING;
+    stte->buf_len += 1024;
     mutt_mem_realloc(&stte->buffer, (stte->buf_len + 1) * sizeof(wchar_t));
   }
 
@@ -352,7 +352,7 @@ static void enriched_puts(const char *s, struct EnrichedState *stte)
 
   if (stte->buf_len < (stte->buf_used + mutt_str_strlen(s)))
   {
-    stte->buf_len += LONG_STRING;
+    stte->buf_len += 1024;
     mutt_mem_realloc(&stte->buffer, (stte->buf_len + 1) * sizeof(wchar_t));
   }
   c = s;
@@ -474,7 +474,7 @@ int text_enriched_handler(struct Body *a, struct State *s)
   struct EnrichedState stte = { 0 };
   wchar_t wc = 0;
   int tag_len = 0;
-  wchar_t tag[LONG_STRING + 1];
+  wchar_t tag[1024 + 1];
 
   stte.s = s;
   stte.wrap_margin =
@@ -551,7 +551,7 @@ int text_enriched_handler(struct Body *a, struct State *s)
           enriched_set_flags(tag, &stte);
           state = TEXT;
         }
-        else if (tag_len < LONG_STRING) /* ignore overly long tags */
+        else if (tag_len < 1024) /* ignore overly long tags */
           tag[tag_len++] = wc;
         else
           state = BOGUS_TAG;

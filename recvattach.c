@@ -1317,7 +1317,7 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
  */
 void mutt_view_attachments(struct Email *e)
 {
-  char helpstr[LONG_STRING];
+  char helpstr[1024];
   struct Body *cur = NULL;
   int flags = 0;
   int op = OP_NULL;
