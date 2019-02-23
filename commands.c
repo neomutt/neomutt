@@ -372,8 +372,8 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   if (!m || !el || STAILQ_EMPTY(el))
     return;
 
-  char prompt[SHORT_STRING];
-  char scratch[SHORT_STRING];
+  char prompt[128];
+  char scratch[128];
   char buf[HUGE_STRING] = { 0 };
   struct Address *addr = NULL;
   char *err = NULL;
@@ -859,7 +859,7 @@ void mutt_enter_command(void)
 void mutt_display_address(struct Envelope *env)
 {
   const char *pfx = NULL;
-  char buf[SHORT_STRING];
+  char buf[128];
 
   struct Address *addr = mutt_get_address(env, &pfx);
   if (!addr)

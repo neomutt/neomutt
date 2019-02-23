@@ -457,7 +457,7 @@ int rfc1524_mailcap_lookup(struct Body *a, char *type,
     return 0;
   }
 
-  mutt_check_lookup_list(a, type, SHORT_STRING);
+  mutt_check_lookup_list(a, type, 128);
 
   while (!found && *curr)
   {

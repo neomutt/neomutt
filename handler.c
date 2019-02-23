@@ -370,7 +370,7 @@ static unsigned char decode_byte(char ch)
  */
 static void decode_uuencoded(struct State *s, long len, bool istext, iconv_t cd)
 {
-  char tmps[SHORT_STRING];
+  char tmps[128];
   char *pt = NULL;
   char bufi[BUFI_SIZE];
   size_t k = 0;
@@ -481,7 +481,7 @@ static bool is_mmnoask(const char *buf)
  */
 static bool is_autoview(struct Body *b)
 {
-  char type[SHORT_STRING];
+  char type[128];
   bool is_av = false;
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(b), b->subtype);
@@ -1647,7 +1647,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
                                          C_HonorDisposition && (plaintext || handler)))
   {
     const char *str = NULL;
-    char keystroke[SHORT_STRING];
+    char keystroke[128];
     keystroke[0] = '\0';
 
     if (!OptViewAttach)

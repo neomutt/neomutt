@@ -400,7 +400,7 @@ bool mutt_ch_chscmp(const char *cs1, const char *cs2)
  */
 char *mutt_ch_get_default_charset(void)
 {
-  static char fcharset[SHORT_STRING];
+  static char fcharset[128];
   const char *c = C_AssumedCharset;
   const char *c1 = NULL;
 
@@ -530,8 +530,8 @@ const char *mutt_ch_charset_lookup(const char *chs)
  */
 iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, int flags)
 {
-  char tocode1[SHORT_STRING];
-  char fromcode1[SHORT_STRING];
+  char tocode1[128];
+  char fromcode1[128];
   const char *tocode2 = NULL, *fromcode2 = NULL;
   const char *tmp = NULL;
 

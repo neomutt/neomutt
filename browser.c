@@ -360,7 +360,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
                                      const char *if_str, const char *else_str,
                                      unsigned long data, int flags)
 {
-  char fn[SHORT_STRING], fmt[SHORT_STRING], permission[11];
+  char fn[128], fmt[128], permission[11];
   char *t_fmt = NULL;
   struct Folder *folder = (struct Folder *) data;
   struct passwd *pw = NULL;
@@ -397,7 +397,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
 
         if (!do_locales)
           setlocale(LC_TIME, "C");
-        char date[SHORT_STRING];
+        char date[128];
         strftime(date, sizeof(date), t_fmt, localtime(&folder->ff->mtime));
         if (!do_locales)
           setlocale(LC_TIME, "");
@@ -703,7 +703,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
     struct stat s;
     DIR *dp = NULL;
     struct dirent *de = NULL;
-    char buffer[PATH_MAX + SHORT_STRING];
+    char buffer[PATH_MAX + 128];
 
     while (stat(d, &s) == -1)
     {
@@ -1563,7 +1563,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           mutt_error(_("Delete is only supported for IMAP mailboxes"));
         else
         {
-          char msg[SHORT_STRING];
+          char msg[128];
           int nentry = menu->current;
 
           // TODO(sileht): It could be better to select INBOX instead. But I

@@ -400,7 +400,7 @@ static struct AttachPtr *find_parent(struct AttachCtx *actx, struct Body *cur, s
 static void include_header(bool quote, FILE *ifp, struct Email *e, FILE *ofp, char *prefix)
 {
   int chflags = CH_DECODE;
-  char prefix2[SHORT_STRING];
+  char prefix2[128];
 
   if (C_Weed)
     chflags |= CH_WEED | CH_REORDER;
@@ -916,7 +916,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
   char tmpbody[PATH_MAX];
   FILE *tmpfp = NULL;
 
-  char prefix[SHORT_STRING];
+  char prefix[128];
 
 #ifdef USE_NNTP
   if (flags & SEND_NEWS)

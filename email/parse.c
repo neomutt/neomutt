@@ -496,7 +496,7 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
       ct->subtype = mutt_str_strdup("rfc822");
     else if (ct->type == TYPE_OTHER)
     {
-      char buffer[SHORT_STRING];
+      char buffer[128];
 
       ct->type = TYPE_APPLICATION;
       snprintf(buffer, sizeof(buffer), "x-%s", s);

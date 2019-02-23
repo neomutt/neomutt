@@ -630,7 +630,7 @@ static void menu_jump(struct Menu *menu)
   if (menu->max)
   {
     mutt_unget_event(LastKey, 0);
-    char buf[SHORT_STRING];
+    char buf[128];
     buf[0] = '\0';
     if (mutt_get_field(_("Jump to: "), buf, sizeof(buf), 0) == 0 && buf[0])
     {
@@ -1145,7 +1145,7 @@ static int menu_search(struct Menu *menu, int op)
   int r = 0, wrap = 0;
   int search_dir;
   regex_t re;
-  char buf[SHORT_STRING];
+  char buf[128];
   char *search_buf =
       menu->menu >= 0 && menu->menu < MENU_MAX ? SearchBuffers[menu->menu] : NULL;
 

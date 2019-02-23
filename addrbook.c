@@ -73,7 +73,7 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
                                     const char *if_str, const char *else_str,
                                     unsigned long data, int flags)
 {
-  char fmt[SHORT_STRING], addr[SHORT_STRING];
+  char fmt[128], addr[128];
   struct Alias *alias = (struct Alias *) data;
 
   switch (op)

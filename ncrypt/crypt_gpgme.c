@@ -2019,7 +2019,7 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
 
         if (non_pka_notations)
         {
-          char buf[SHORT_STRING];
+          char buf[128];
           snprintf(buf, sizeof(buf),
                    _("*** Begin Notation (signature by: %s) ***\n"), sig->fpr);
           state_puts(buf, s);
@@ -3311,7 +3311,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
                                     const char *if_str, const char *else_str,
                                     unsigned long data, int flags)
 {
-  char fmt[SHORT_STRING];
+  char fmt[128];
   int kflags = 0;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
   const char *s = NULL;
@@ -3437,7 +3437,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
 
     case '[':
     {
-      char buf2[SHORT_STRING];
+      char buf2[128];
       bool do_locales = true;
       struct tm *tm = NULL;
       size_t len;
@@ -4070,7 +4070,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
   const char *s = NULL, *s2 = NULL;
   time_t tt = 0;
   struct tm *tm = NULL;
-  char shortbuf[SHORT_STRING];
+  char shortbuf[128];
   unsigned long aval = 0;
   const char *delim = NULL;
   int is_pgp = 0;
@@ -5041,7 +5041,7 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, short ab
                                               unsigned int app, int *forced_valid)
 {
   struct CryptKeyInfo *key = NULL;
-  char resp[SHORT_STRING];
+  char resp[128];
   struct CryptCache *l = NULL;
   int dummy;
 
@@ -5463,7 +5463,7 @@ static int gpgme_send_menu(struct Email *msg, int is_smime)
                               is_smime ? APPLICATION_SMIME : APPLICATION_PGP, NULL);
         if (p)
         {
-          char input_signas[SHORT_STRING];
+          char input_signas[128];
           snprintf(input_signas, sizeof(input_signas), "0x%s", crypt_fpr_or_lkeyid(p));
           mutt_str_replace(is_smime ? &C_SmimeDefaultKey : &C_PgpSignAs, input_signas);
           crypt_free_key(&p);

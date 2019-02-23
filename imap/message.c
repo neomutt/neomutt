@@ -326,7 +326,7 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
  */
 static int msg_parse_fetch(struct ImapHeader *h, char *s)
 {
-  char tmp[SHORT_STRING];
+  char tmp[128];
   char *ptmp = NULL;
   size_t plen = 0;
 
@@ -1419,7 +1419,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   FILE *fp = NULL;
   char buf[LONG_STRING * 2];
   char internaldate[IMAP_DATELEN];
-  char imap_flags[SHORT_STRING];
+  char imap_flags[128];
   size_t len;
   struct Progress progressbar;
   size_t sent;

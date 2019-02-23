@@ -549,7 +549,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
                                     unsigned long data, int flags)
 {
   struct HdrFormatInfo *hfi = (struct HdrFormatInfo *) data;
-  char fmt[SHORT_STRING], tmp[LONG_STRING], *p, *tags = NULL;
+  char fmt[128], tmp[LONG_STRING], *p, *tags = NULL;
   const char *wch = NULL;
   int i;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);

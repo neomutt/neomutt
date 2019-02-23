@@ -503,7 +503,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
       mutt_error(_("No boundary parameter found [report this error]"));
       return -1;
     }
-    char boundary[SHORT_STRING];
+    char boundary[128];
     mutt_str_strfcpy(boundary, p, sizeof(boundary));
 
     for (struct Body *t = a->parts; t; t = t->next)
@@ -537,7 +537,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
 
   if (a->type == TYPE_TEXT && (!a->noconv))
   {
-    char send_charset[SHORT_STRING];
+    char send_charset[128];
     fc = mutt_ch_fgetconv_open(
         fpin, a->charset, mutt_body_get_charset(a, send_charset, sizeof(send_charset)), 0);
   }
@@ -1340,7 +1340,7 @@ static void set_encoding(struct Body *b, struct Content *info)
 {
   if (b->type == TYPE_TEXT)
   {
-    char send_charset[SHORT_STRING];
+    char send_charset[128];
     char *chsname = mutt_body_get_charset(b, send_charset, sizeof(send_charset));
     if ((info->lobin && !mutt_str_startswith(chsname, "iso-2022", CASE_IGNORE)) ||
         info->linemax > 990 || (info->from && C_EncodeFrom))
@@ -2466,7 +2466,7 @@ const char *mutt_fqdn(bool may_hide_host)
  */
 static char *gen_msgid(void)
 {
-  char buf[SHORT_STRING];
+  char buf[128];
   time_t now;
   unsigned char rndid[MUTT_RANDTAG_LEN + 1];
 
@@ -2967,7 +2967,7 @@ static int bounce_message(FILE *fp, struct Email *e, struct Address *to,
   FILE *f = mutt_file_fopen(tempfile, "w");
   if (f)
   {
-    char date[SHORT_STRING];
+    char date[128];
     int chflags = CH_XMIT | CH_NONEWLINE | CH_NOQFROM;
 
     if (!C_BounceDelivered)
@@ -3151,7 +3151,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   int rc = -1;
   bool need_mailbox_cleanup = false;
   struct stat st;
-  char buf[SHORT_STRING];
+  char buf[128];
   int onm_flags;
 
   if (post)

@@ -174,11 +174,11 @@ static int compare_to(const void *a, const void *b)
 {
   struct Email **ppa = (struct Email **) a;
   struct Email **ppb = (struct Email **) b;
-  char fa[SHORT_STRING];
+  char fa[128];
 
-  mutt_str_strfcpy(fa, mutt_get_name((*ppa)->env->to), SHORT_STRING);
+  mutt_str_strfcpy(fa, mutt_get_name((*ppa)->env->to), sizeof(fa));
   const char *fb = mutt_get_name((*ppb)->env->to);
-  int result = mutt_str_strncasecmp(fa, fb, SHORT_STRING);
+  int result = mutt_str_strncasecmp(fa, fb, sizeof(fa));
   result = perform_auxsort(result, a, b);
   return SORTCODE(result);
 }
@@ -190,11 +190,11 @@ static int compare_from(const void *a, const void *b)
 {
   struct Email **ppa = (struct Email **) a;
   struct Email **ppb = (struct Email **) b;
-  char fa[SHORT_STRING];
+  char fa[128];
 
-  mutt_str_strfcpy(fa, mutt_get_name((*ppa)->env->from), SHORT_STRING);
+  mutt_str_strfcpy(fa, mutt_get_name((*ppa)->env->from), sizeof(fa));
   const char *fb = mutt_get_name((*ppb)->env->from);
-  int result = mutt_str_strncasecmp(fa, fb, SHORT_STRING);
+  int result = mutt_str_strncasecmp(fa, fb, sizeof(fa));
   result = perform_auxsort(result, a, b);
   return SORTCODE(result);
 }

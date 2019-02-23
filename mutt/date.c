@@ -451,8 +451,8 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
   int zminutes = 0;
   bool zoccident = false;
   const char *ptz = NULL;
-  char tzstr[SHORT_STRING];
-  char scratch[SHORT_STRING];
+  char tzstr[128];
+  char scratch[128];
 
   /* Don't modify our argument. Fixed-size buffer is ok here since
    * the date format imposes a natural limit.

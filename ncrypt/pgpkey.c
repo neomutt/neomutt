@@ -176,7 +176,7 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
                                  const char *if_str, const char *else_str,
                                  unsigned long data, int flags)
 {
-  char fmt[SHORT_STRING];
+  char fmt[128];
   int kflags = 0;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
@@ -260,7 +260,7 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
     case '[':
 
     {
-      char buf2[SHORT_STRING];
+      char buf2[128];
       bool do_locales = true;
       struct tm *tm = NULL;
       size_t len;
@@ -819,7 +819,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
 struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, short abilities, enum PgpRing keyring)
 {
   struct PgpKeyInfo *key = NULL;
-  char resp[SHORT_STRING];
+  char resp[128];
   struct PgpCache *l = NULL;
 
   mutt_clear_error();

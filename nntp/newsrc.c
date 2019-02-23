@@ -924,7 +924,7 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
   struct NntpAccountData *adata = (struct NntpAccountData *) data;
   struct ConnAccount *acct = &adata->conn->account;
   struct Url url;
-  char fn[SHORT_STRING], fmt[SHORT_STRING], *p = NULL;
+  char fn[128], fmt[128], *p = NULL;
 
   switch (op)
   {

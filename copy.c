@@ -403,8 +403,8 @@ int mutt_copy_header(FILE *in, struct Email *e, FILE *out, int chflags, const ch
 
   if (chflags & CH_TXTPLAIN)
   {
-    char chsbuf[SHORT_STRING];
-    char buffer[SHORT_STRING];
+    char chsbuf[128];
+    char buffer[128];
     fputs("MIME-Version: 1.0\n", out);
     fputs("Content-Transfer-Encoding: 8bit\n", out);
     fputs("Content-Type: text/plain; charset=", out);
@@ -590,7 +590,7 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
 int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e, int cmflags, int chflags)
 {
   struct Body *body = e->content;
-  char prefix[SHORT_STRING];
+  char prefix[128];
   LOFF_T new_offset = -1;
   int rc = 0;
 
@@ -612,7 +612,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e, int cmflags, 
     {
       int new_lines;
       LOFF_T new_length = body->length;
-      char date[SHORT_STRING];
+      char date[128];
 
       mutt_date_make_date(date, sizeof(date));
       int dlen = mutt_str_strlen(date);

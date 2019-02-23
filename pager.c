@@ -2230,8 +2230,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
 {
   static char searchbuf[STRING] = "";
   char buffer[LONG_STRING];
-  char helpstr[SHORT_STRING * 2];
-  char tmphelp[SHORT_STRING * 2];
+  char helpstr[256];
+  char tmphelp[256];
   int ch = 0, rc = -1;
   bool first = true;
   int searchctx = 0;

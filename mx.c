@@ -829,7 +829,7 @@ int mx_mbox_sync(struct Mailbox *m, int *index_hint)
 
   if (m->msg_deleted != 0)
   {
-    char buf[SHORT_STRING];
+    char buf[128];
 
     snprintf(buf, sizeof(buf),
              ngettext("Purge %d deleted message?", "Purge %d deleted messages?", m->msg_deleted),

@@ -214,7 +214,7 @@ static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int c
                                      const char *if_str, const char *else_str,
                                      unsigned long data, int flags)
 {
-  char fmt[SHORT_STRING];
+  char fmt[128];
   struct SmimeCommandContext *cctx = (struct SmimeCommandContext *) data;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
@@ -912,7 +912,7 @@ static struct SmimeKey *smime_get_key_by_str(char *str, short abilities, bool pu
 static struct SmimeKey *smime_ask_for_key(char *prompt, short abilities, bool public)
 {
   struct SmimeKey *key = NULL;
-  char resp[SHORT_STRING];
+  char resp[128];
 
   if (!prompt)
     prompt = _("Enter keyID: ");

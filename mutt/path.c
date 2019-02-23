@@ -241,7 +241,7 @@ bool mutt_path_canon(char *buf, size_t buflen, const char *homedir)
     }
     else
     {
-      char user[SHORT_STRING];
+      char user[128];
       dir = strchr(buf + 1, '/');
       if (dir)
         mutt_str_strfcpy(user, buf + 1, MIN(dir - buf, (unsigned) sizeof(user)));

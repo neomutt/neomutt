@@ -89,7 +89,7 @@ bool C_PopLast;  ///< Config: (pop) Use the 'LAST' command to fetch new mail
  */
 static const char *cache_id(const char *id)
 {
-  static char clean[SHORT_STRING];
+  static char clean[128];
   mutt_str_strfcpy(clean, id, sizeof(clean));
   mutt_file_sanitize_filename(clean, true);
   return clean;
@@ -588,7 +588,7 @@ void pop_fetch_mail(void)
   }
 
   char buffer[LONG_STRING];
-  char msgbuf[SHORT_STRING];
+  char msgbuf[128];
   int delanswer, last = 0, msgs, bytes, rset = 0, ret;
   struct ConnAccount acct;
 

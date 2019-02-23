@@ -948,10 +948,10 @@ const char *mutt_str_rstrnstr(const char *haystack, size_t haystack_length, cons
  */
 int mutt_str_word_casecmp(const char *a, const char *b)
 {
-  char tmp[SHORT_STRING] = "";
+  char tmp[128] = "";
 
   int i;
-  for (i = 0; i < (SHORT_STRING - 2); i++, b++)
+  for (i = 0; i < (sizeof(tmp) - 2); i++, b++)
   {
     if (!*b || ISSPACE(*b))
     {

@@ -321,7 +321,7 @@ int mutt_alloc_color(int fg, int bg)
 #ifdef USE_SLANG_CURSES
   if (fg == COLOR_DEFAULT || bg == COLOR_DEFAULT)
   {
-    char fgc[SHORT_STRING], bgc[SHORT_STRING];
+    char fgc[128], bgc[128];
     SLtt_set_color(i, NULL, get_color_name(fgc, sizeof(fgc), fg),
                    get_color_name(bgc, sizeof(bgc), bg));
   }

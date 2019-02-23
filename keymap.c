@@ -223,7 +223,7 @@ static size_t parsekeys(const char *str, keycode_t *d, size_t max)
 {
   int n;
   size_t len = max;
-  char buf[SHORT_STRING];
+  char buf[128];
   char c;
   char *t = NULL;
 
@@ -1033,7 +1033,7 @@ void km_init(void)
  */
 void km_error_key(int menu)
 {
-  char buf[SHORT_STRING];
+  char buf[128];
   int p, op;
 
   struct Keymap *key = km_find_func(menu, OP_HELP);

@@ -169,7 +169,7 @@ void mutt_progress_init(struct Progress *progress, const char *msg,
  */
 void mutt_progress_update(struct Progress *progress, long pos, int percent)
 {
-  char posstr[SHORT_STRING];
+  char posstr[128];
   bool update = false;
   struct timeval tv = { 0, 0 };
   unsigned int now = 0;

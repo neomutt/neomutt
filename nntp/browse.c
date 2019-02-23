@@ -56,7 +56,7 @@ const char *group_index_format_str(char *buf, size_t buflen, size_t col, int col
                                    const char *if_str, const char *else_str,
                                    unsigned long data, int flags)
 {
-  char fn[SHORT_STRING], fmt[SHORT_STRING];
+  char fn[128], fmt[128];
   struct Folder *folder = (struct Folder *) data;
 
   switch (op)

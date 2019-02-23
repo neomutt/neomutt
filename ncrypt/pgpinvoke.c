@@ -96,7 +96,7 @@ static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int col
                                    const char *if_str, const char *else_str,
                                    unsigned long data, int flags)
 {
-  char fmt[SHORT_STRING];
+  char fmt[128];
   struct PgpCommandContext *cctx = (struct PgpCommandContext *) data;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
@@ -398,7 +398,7 @@ pid_t pgp_invoke_traditional(FILE **pgpin, FILE **pgpout, FILE **pgperr,
  */
 void pgp_class_invoke_import(const char *fname)
 {
-  char tmp_fname[PATH_MAX + SHORT_STRING];
+  char tmp_fname[PATH_MAX + 128];
   char cmd[HUGE_STRING];
   struct PgpCommandContext cctx = { 0 };
 

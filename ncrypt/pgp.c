@@ -1974,7 +1974,7 @@ int pgp_class_send_menu(struct Email *msg)
         p = pgp_ask_for_key(_("Sign as: "), NULL, 0, PGP_SECRING);
         if (p)
         {
-          char input_signas[SHORT_STRING];
+          char input_signas[128];
           snprintf(input_signas, sizeof(input_signas), "0x%s", pgp_fpr_or_lkeyid(p));
           mutt_str_replace(&C_PgpSignAs, input_signas);
           pgp_free_key(&p);

@@ -251,7 +251,7 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
 {
   struct Entry *entry = (struct Entry *) data;
   struct Query *query = entry->data;
-  char fmt[SHORT_STRING];
+  char fmt[128];
   char tmp[STRING] = "";
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 

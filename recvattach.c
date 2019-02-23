@@ -209,8 +209,8 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
                               const char *src, const char *prec, const char *if_str,
                               const char *else_str, unsigned long data, int flags)
 {
-  char fmt[SHORT_STRING];
-  char charset[SHORT_STRING];
+  char fmt[128];
+  char charset[128];
   struct AttachPtr *aptr = (struct AttachPtr *) data;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
   size_t l;
@@ -256,7 +256,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
         if (mutt_is_message_type(aptr->content->type, aptr->content->subtype) &&
             C_MessageFormat && aptr->content->email)
         {
-          char s[SHORT_STRING];
+          char s[128];
           mutt_make_string_flags(s, sizeof(s), C_MessageFormat, NULL, NULL,
                                  aptr->content->email,
                                  MUTT_FORMAT_FORCESUBJ | MUTT_FORMAT_ARROWCURSOR);
@@ -376,7 +376,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
 
       if (!optional)
       {
-        char tmp[SHORT_STRING];
+        char tmp[128];
         mutt_str_pretty_size(tmp, sizeof(tmp), l);
         mutt_format_s(buf, buflen, prec, tmp);
       }
@@ -787,7 +787,7 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
                                struct Body *top, bool filter)
 {
   struct State state = { 0 };
-  char buf[SHORT_STRING];
+  char buf[128];
 
   if (fp)
     filter = false; /* sanity check: we can't filter in the recv case yet */
@@ -935,7 +935,7 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
  */
 void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, struct Body *top)
 {
-  char prompt[SHORT_STRING];
+  char prompt[128];
   struct State state = { 0 };
   int tagmsgcount = 0;
 

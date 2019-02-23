@@ -402,7 +402,7 @@ static int check_attachments(struct AttachCtx *actx)
 {
   int r;
   struct stat st;
-  char pretty[PATH_MAX], msg[PATH_MAX + SHORT_STRING];
+  char pretty[PATH_MAX], msg[PATH_MAX + 128];
 
   for (int i = 0; i < actx->idxlen; i++)
   {
@@ -813,7 +813,7 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
                                       const char *if_str, const char *else_str,
                                       unsigned long data, int flags)
 {
-  char fmt[SHORT_STRING], tmp[SHORT_STRING];
+  char fmt[128], tmp[128];
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
   struct Menu *menu = (struct Menu *) data;
 
