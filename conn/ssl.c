@@ -140,7 +140,7 @@ static int ssl_load_certificates(SSL_CTX *ctx)
   X509 *cert = NULL;
   X509_STORE *store = NULL;
   int rc = 1;
-  char buf[STRING];
+  char buf[256];
 
   mutt_debug(LL_DEBUG2, "loading trusted certificates\n");
   store = SSL_CTX_get_cert_store(ctx);
@@ -890,8 +890,8 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   X509_NAME *x509_subject = NULL;
   X509_NAME *x509_issuer = NULL;
   char helpstr[LONG_STRING];
-  char buf[STRING];
-  char title[STRING];
+  char buf[256];
+  char title[256];
   struct Menu *menu = mutt_menu_new(MENU_GENERIC);
   int done, row;
   FILE *fp = NULL;
@@ -1053,7 +1053,7 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
  */
 static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
 {
-  char buf[STRING];
+  char buf[256];
   const char *host = NULL;
   size_t len;
   int pos;

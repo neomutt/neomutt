@@ -279,7 +279,7 @@ static void enriched_putwc(wchar_t c, struct EnrichedState *stte)
     if (stte->tag_level[RICH_COLOR])
     {
       if (stte->param_used + 1 >= stte->param_len)
-        mutt_mem_realloc(&stte->param, (stte->param_len += STRING) * sizeof(wchar_t));
+        mutt_mem_realloc(&stte->param, (stte->param_len += 256) * sizeof(wchar_t));
 
       stte->param[stte->param_used++] = c;
     }
@@ -483,9 +483,9 @@ int text_enriched_handler(struct Body *a, struct State *s)
            ((MuttIndexWindow->cols - 4) < 72) ? (MuttIndexWindow->cols - 4) : 72);
   stte.line_max = stte.wrap_margin * 4;
   stte.line = mutt_mem_calloc(1, (stte.line_max + 1) * sizeof(wchar_t));
-  stte.param = mutt_mem_calloc(1, (STRING) * sizeof(wchar_t));
+  stte.param = mutt_mem_calloc(1, 256 * sizeof(wchar_t));
 
-  stte.param_len = STRING;
+  stte.param_len = 256;
   stte.param_used = 0;
 
   if (s->prefix)

@@ -819,7 +819,7 @@ static void progress_update(struct Mailbox *m, notmuch_query_t *q)
 
   if (!mdata->progress_ready && q)
   {
-    static char msg[STRING];
+    static char msg[256];
     snprintf(msg, sizeof(msg), _("Reading messages..."));
 
     // The total mail count is in oldmsgcount, so use that instead of recounting.

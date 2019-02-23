@@ -575,7 +575,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct
     rc = mutt_pager(banner, tempfile, do_color, info);
   else
   {
-    char cmd[STRING];
+    char cmd[256];
 
     mutt_endwin();
     mutt_file_expand_fmt_quote(cmd, sizeof(cmd), C_Pager, tempfile);

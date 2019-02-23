@@ -980,7 +980,7 @@ static int fetch_description(char *line, void *data)
  */
 static int get_description(struct NntpMboxData *mdata, const char *wildmat, const char *msg)
 {
-  char buf[STRING];
+  char buf[256];
   const char *cmd = NULL;
 
   /* get newsgroup description, if possible */
@@ -1820,7 +1820,7 @@ static int fetch_children(char *line, void *data)
 int nntp_open_connection(struct NntpAccountData *adata)
 {
   struct Connection *conn = adata->conn;
-  char buf[STRING];
+  char buf[256];
   int cap;
   bool posting = false, auth = true;
 
@@ -2063,7 +2063,7 @@ int nntp_post(struct Mailbox *m, const char *msg)
 int nntp_active_fetch(struct NntpAccountData *adata, bool new)
 {
   struct NntpMboxData tmp_mdata;
-  char msg[STRING];
+  char msg[256];
   char buf[LONG_STRING];
   unsigned int i;
   int rc;
@@ -2320,7 +2320,7 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
 
   struct NntpMboxData *mdata = m->mdata;
   struct ChildCtx cc;
-  char buf[STRING];
+  char buf[256];
   int rc;
   bool quiet;
   void *hc = NULL;

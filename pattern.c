@@ -184,7 +184,7 @@ static struct RangeRegex range_regexes[] = {
 // clang-format on
 
 static struct Pattern *SearchPattern = NULL; /**< current search pattern */
-static char LastSearch[STRING] = { 0 };      /**< last pattern searched for */
+static char LastSearch[256] = { 0 };      /**< last pattern searched for */
 static char LastSearchExpn[LONG_STRING] = { 0 }; /**< expanded version of LastSearch */
 
 /**
@@ -197,7 +197,7 @@ static char LastSearchExpn[LONG_STRING] = { 0 }; /**< expanded version of LastSe
 static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 {
   struct Buffer buf;
-  char errmsg[STRING];
+  char errmsg[256];
   int r;
 
   mutt_buffer_init(&buf);
@@ -1197,7 +1197,7 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
     }
   }
 
-  size_t blen = STRING;
+  size_t blen = 256;
   char *buf = mutt_mem_malloc(blen);
 
   /* search the file "fp" */
@@ -1850,7 +1850,7 @@ static int match_threadchildren(struct Pattern *pat, enum PatternExecFlag flags,
  */
 static int match_content_type(const struct Pattern *pat, struct Body *b)
 {
-  char buffer[STRING];
+  char buffer[256];
   if (!b)
     return 0;
 
@@ -2350,7 +2350,7 @@ int mutt_pattern_func(int op, char *prompt)
   mutt_check_simple(buf, sizeof(buf), NONULL(C_SimpleSearch));
 
   mutt_buffer_init(&err);
-  err.dsize = STRING;
+  err.dsize = 256;
   err.data = mutt_mem_malloc(err.dsize);
   pat = mutt_pattern_comp(buf, MUTT_FULL_MSG, &err);
   if (!pat)
@@ -2473,7 +2473,7 @@ int mutt_search_command(int cur, int op)
 
   if (!*LastSearch || (op != OP_SEARCH_NEXT && op != OP_SEARCH_OPPOSITE))
   {
-    char buf[STRING];
+    char buf[256];
     mutt_str_strfcpy(buf, *LastSearch ? LastSearch : "", sizeof(buf));
     if (mutt_get_field((op == OP_SEARCH || op == OP_SEARCH_NEXT) ?
                            _("Search for: ") :
@@ -2503,7 +2503,7 @@ int mutt_search_command(int cur, int op)
       mutt_str_strfcpy(LastSearch, buf, sizeof(LastSearch));
       mutt_message(_("Compiling search pattern..."));
       mutt_pattern_free(&SearchPattern);
-      err.dsize = STRING;
+      err.dsize = 256;
       err.data = mutt_mem_malloc(err.dsize);
       SearchPattern = mutt_pattern_comp(temp, MUTT_FULL_MSG, &err);
       if (!SearchPattern)

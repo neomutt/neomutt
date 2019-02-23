@@ -1091,7 +1091,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
   char buf[PATH_MAX];
   char prefix[PATH_MAX] = "";
   char helpstr[LONG_STRING];
-  char title[STRING];
+  char title[256];
   struct BrowserState state = { 0 };
   struct Menu *menu = NULL;
   bool kill_prefix = false;
@@ -2001,7 +2001,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
 
           if ((op == OP_SUBSCRIBE_PATTERN) || (op == OP_UNSUBSCRIBE_PATTERN))
           {
-            char tmp[STRING];
+            char tmp[256];
 
             buf[0] = '\0';
             if (op == OP_SUBSCRIBE_PATTERN)
@@ -2084,7 +2084,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
 #endif /* USE_NNTP */
 #ifdef USE_IMAP
         {
-          char tmp[STRING];
+          char tmp[256];
           mutt_str_strfcpy(tmp, state.entry[menu->current].name, sizeof(tmp));
           mutt_expand_path(tmp, sizeof(tmp));
           imap_subscribe(tmp, (op == OP_BROWSER_SUBSCRIBE));

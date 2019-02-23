@@ -66,7 +66,7 @@
  */
 int mutt_get_tmp_attachment(struct Body *a)
 {
-  char type[STRING];
+  char type[256];
   char tempfile[PATH_MAX];
   FILE *fpin = NULL, *fpout = NULL;
   struct stat st;
@@ -110,7 +110,7 @@ int mutt_get_tmp_attachment(struct Body *a)
  */
 int mutt_compose_attachment(struct Body *a)
 {
-  char type[STRING];
+  char type[256];
   char command[HUGE_STRING];
   char newfile[PATH_MAX] = "";
   struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
@@ -247,7 +247,7 @@ bailout:
  */
 int mutt_edit_attachment(struct Body *a)
 {
-  char type[STRING];
+  char type[256];
   char command[HUGE_STRING];
   char newfile[PATH_MAX] = "";
   struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
@@ -386,9 +386,9 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
   bool use_mailcap = false;
   bool use_pipe = false;
   bool use_pager = true;
-  char type[STRING];
+  char type[256];
   char command[HUGE_STRING];
-  char descrip[STRING];
+  char descrip[256];
   char *fname = NULL;
   struct Rfc1524MailcapEntry *entry = NULL;
   int rc = -1;
@@ -1017,7 +1017,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
 int mutt_print_attachment(FILE *fp, struct Body *a)
 {
   char newfile[PATH_MAX] = "";
-  char type[STRING];
+  char type[256];
   pid_t thepid;
   FILE *ifp = NULL, *fpout = NULL;
   bool unlink_newfile = false;

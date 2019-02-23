@@ -383,7 +383,7 @@ void mutt_folder_hook(const char *path, const char *desc)
   current_hook_type = MUTT_FOLDER_HOOK;
 
   mutt_buffer_init(&err);
-  err.dsize = STRING;
+  err.dsize = 256;
   err.data = mutt_mem_malloc(err.dsize);
   mutt_buffer_init(&token);
   TAILQ_FOREACH(tmp, &Hooks, entries)
@@ -448,7 +448,7 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, int type)
   current_hook_type = type;
 
   mutt_buffer_init(&err);
-  err.dsize = STRING;
+  err.dsize = 256;
   err.data = mutt_mem_malloc(err.dsize);
   mutt_buffer_init(&token);
   TAILQ_FOREACH(hook, &Hooks, entries)
@@ -630,7 +630,7 @@ void mutt_account_hook(const char *url)
     return;
 
   mutt_buffer_init(&err);
-  err.dsize = STRING;
+  err.dsize = 256;
   err.data = mutt_mem_malloc(err.dsize);
   mutt_buffer_init(&token);
 
@@ -673,7 +673,7 @@ void mutt_timeout_hook(void)
   struct Hook *hook = NULL;
   struct Buffer token;
   struct Buffer err;
-  char buf[STRING];
+  char buf[256];
 
   mutt_buffer_init(&err);
   err.data = buf;
@@ -712,7 +712,7 @@ void mutt_startup_shutdown_hook(int type)
   struct Hook *hook = NULL;
   struct Buffer token = { 0 };
   struct Buffer err = { 0 };
-  char buf[STRING];
+  char buf[256];
 
   err.data = buf;
   err.dsize = sizeof(buf);

@@ -51,7 +51,7 @@ short C_TimeInc; ///< Config: Frequency of progress bar updates (milliseconds)
 static void message_bar(int percent, const char *fmt, ...)
 {
   va_list ap;
-  char buf[STRING], buf2[STRING];
+  char buf[256], buf2[256];
   int w = percent * COLS / 100;
   size_t l;
 

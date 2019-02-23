@@ -374,7 +374,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
 
       fputc(';', f);
 
-      char buf[STRING];
+      char buf[256];
       buf[0] = 0;
       tmp = mutt_str_strdup(np->value);
       const int encode = rfc2231_encode_string(&tmp);
@@ -442,7 +442,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
           else
             t = fn;
 
-          char buf[STRING];
+          char buf[256];
           buf[0] = 0;
           tmp = mutt_str_strdup(t);
           const int encode = rfc2231_encode_string(&tmp);
@@ -1027,7 +1027,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
     {
       if (!chs)
       {
-        char chsbuf[STRING];
+        char chsbuf[256];
         mutt_ch_canonical_charset(chsbuf, sizeof(chsbuf), tocode);
         mutt_param_set(&b->parameter, "charset", chsbuf);
       }
@@ -1074,7 +1074,7 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
   FILE *f = NULL;
   char *p = NULL, *q = NULL, *ct = NULL;
   char buf[PATH_MAX];
-  char subtype[STRING], xtype[STRING];
+  char subtype[256], xtype[256];
   int szf, sze, cur_sze;
   int type;
   bool found_mimetypes = false;
@@ -1432,7 +1432,7 @@ char *mutt_body_get_charset(struct Body *b, char *buf, size_t buflen)
 void mutt_update_encoding(struct Body *a)
 {
   struct Content *info = NULL;
-  char chsbuf[STRING];
+  char chsbuf[256];
 
   /* override noconv when it's us-ascii */
   if (mutt_ch_is_us_ascii(mutt_body_get_charset(a, chsbuf, sizeof(chsbuf))))
@@ -3016,7 +3016,7 @@ int mutt_bounce_message(FILE *fp, struct Email *e, struct Address *to)
     return -1;
 
   const char *fqdn = mutt_fqdn(true);
-  char resent_from[STRING];
+  char resent_from[256];
   char *err = NULL;
 
   resent_from[0] = '\0';

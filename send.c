@@ -560,7 +560,7 @@ void mutt_make_post_indent(struct Mailbox *m, struct Email *e, FILE *out)
   if (!C_PostIndentString || !out)
     return;
 
-  char buf[STRING];
+  char buf[256];
   mutt_make_string(buf, sizeof(buf), C_PostIndentString, NULL, m, e);
   fputs(buf, out);
   fputc('\n', out);
@@ -617,7 +617,7 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *out)
  */
 static int default_to(struct Address **to, struct Envelope *env, int flags, int hmfupto)
 {
-  char prompt[STRING];
+  char prompt[256];
 
   if (flags && env->mail_followup_to && hmfupto == MUTT_YES)
   {
@@ -703,7 +703,7 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
 
   if ((flags & (SEND_LIST_REPLY | SEND_GROUP_REPLY | SEND_GROUP_CHAT_REPLY)) && in->mail_followup_to)
   {
-    char prompt[STRING];
+    char prompt[256];
     snprintf(prompt, sizeof(prompt), _("Follow-up to %s%s?"),
              in->mail_followup_to->mailbox, in->mail_followup_to->next ? ",..." : "");
 
@@ -815,7 +815,7 @@ void mutt_make_forward_subject(struct Envelope *env, struct Mailbox *m, struct E
   if (!env)
     return;
 
-  char buf[STRING];
+  char buf[256];
 
   /* set the default subject for the message. */
   mutt_make_string(buf, sizeof(buf), NONULL(C_ForwardFormat), NULL, m, cur);

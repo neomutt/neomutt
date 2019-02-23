@@ -76,7 +76,7 @@ int safe_asprintf(char **strp, const char *fmt, ...)
  */
 int safe_asprintf(char **strp, const char *fmt, ...)
 {
-  int rlen = STRING;
+  int rlen = 256;
 
   *strp = mutt_mem_malloc(rlen);
   while (true)

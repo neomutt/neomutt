@@ -132,8 +132,8 @@ static void test_parse_set(void)
     "%s inv%s=42", "%s inv%s?", "%s &%s",     "%s &%s=42", "%s &%s?",
   };
 
-  struct Buffer *tmp = mutt_buffer_alloc(STRING);
-  struct Buffer *err = mutt_buffer_alloc(STRING);
+  struct Buffer *tmp = mutt_buffer_alloc(256);
+  struct Buffer *err = mutt_buffer_alloc(256);
   char line[64];
 
   for (size_t v = 0; v < mutt_array_size(vars); v++)
@@ -175,7 +175,7 @@ static void reset_tilde(struct ConfigSet *cs)
     "record",     "signature",
   };
 
-  struct Buffer *value = mutt_buffer_alloc(STRING);
+  struct Buffer *value = mutt_buffer_alloc(256);
   for (size_t i = 0; i < mutt_array_size(names); i++)
   {
     struct HashElem *he = cs_get_elem(cs, names[i]);
@@ -805,7 +805,7 @@ int main(int argc, char *argv[], char *envp[])
 #endif
     if (!skip && (stat(fpath, &sb) == -1) && (errno == ENOENT))
     {
-      char msg2[STRING];
+      char msg2[256];
       snprintf(msg2, sizeof(msg2), _("%s does not exist. Create it?"), C_Folder);
       if (mutt_yesorno(msg2, MUTT_YES) == MUTT_YES)
       {

@@ -823,7 +823,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
   FILE *filter = NULL;
   char *recycler = NULL;
 
-  char src2[STRING];
+  char src2[256];
   mutt_str_strfcpy(src2, src, mutt_str_strlen(src) + 1);
   src = src2;
 
@@ -1492,7 +1492,7 @@ void mutt_sleep(short s)
  */
 const char *mutt_make_version(void)
 {
-  static char vstring[STRING];
+  static char vstring[256];
   snprintf(vstring, sizeof(vstring), "NeoMutt %s%s", PACKAGE_VERSION, GitVer);
   return vstring;
 }

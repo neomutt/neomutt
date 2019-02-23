@@ -826,7 +826,7 @@ int mix_check_message(struct Email *msg)
  */
 int mix_send_message(struct ListHead *chain, const char *tempfile)
 {
-  char cd_quoted[STRING];
+  char cd_quoted[256];
   int i = 0;
 
   struct Buffer *cmd = mutt_buffer_pool_get();

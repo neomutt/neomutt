@@ -74,7 +74,7 @@ void mutt_auto_subscribe(const char *mailto)
       !mutt_regexlist_match(&UnSubscribedLists, lpenv->to->mailbox))
   {
     struct Buffer err;
-    char errbuf[STRING];
+    char errbuf[256];
     memset(&err, 0, sizeof(err));
     err.data = errbuf;
     err.dsize = sizeof(errbuf);
@@ -987,10 +987,10 @@ char *mutt_rfc822_read_line(FILE *f, char *line, size_t *linelen)
 
     buf++;
     offset = buf - line;
-    if (*linelen < (offset + STRING))
+    if (*linelen < (offset + 256))
     {
       /* grow the buffer */
-      *linelen += STRING;
+      *linelen += 256;
       mutt_mem_realloc(&line, *linelen);
       buf = line + offset;
     }

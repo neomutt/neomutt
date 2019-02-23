@@ -211,7 +211,7 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
 
   if (!m->quiet)
   {
-    char msgbuf[STRING];
+    char msgbuf[256];
     snprintf(msgbuf, sizeof(msgbuf), _("Reading %s..."), m->path);
     mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, C_ReadInc, 0);
   }
@@ -354,7 +354,7 @@ static int mbox_parse_mailbox(struct Mailbox *m)
     return -1;
 
   struct stat sb;
-  char buf[HUGE_STRING], return_path[STRING];
+  char buf[HUGE_STRING], return_path[256];
   struct Email *e_cur = NULL;
   time_t t;
   int count = 0, lines = 0;
@@ -377,7 +377,7 @@ static int mbox_parse_mailbox(struct Mailbox *m)
 
   if (!m->quiet)
   {
-    char msgbuf[STRING];
+    char msgbuf[256];
     snprintf(msgbuf, sizeof(msgbuf), _("Reading %s..."), m->path);
     mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, C_ReadInc, 0);
   }
@@ -1647,7 +1647,7 @@ enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
   }
 
   enum MailboxType magic = MUTT_UNKNOWN;
-  char tmp[STRING];
+  char tmp[256];
   if (fgets(tmp, sizeof(tmp), fp))
   {
     if (mutt_str_startswith(tmp, "From ", CASE_MATCH))

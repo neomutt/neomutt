@@ -483,7 +483,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
   bool have_any_sigs = false;
 
   char *gpgcharset = NULL;
-  char body_charset[STRING];
+  char body_charset[256];
   mutt_body_get_charset(m, body_charset, sizeof(body_charset));
 
   rc = 0;
@@ -1674,7 +1674,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
   char pgpoutfile[PATH_MAX];
   char pgpinfile[PATH_MAX];
 
-  char body_charset[STRING];
+  char body_charset[256];
   char *from_charset = NULL;
   const char *send_charset = NULL;
 
@@ -1683,7 +1683,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
   bool empty = false;
   bool err;
 
-  char buf[STRING];
+  char buf[256];
 
   pid_t thepid;
 

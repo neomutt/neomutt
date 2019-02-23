@@ -381,7 +381,7 @@ bool mutt_ch_chscmp(const char *cs1, const char *cs2)
   if (!cs1 || !cs2)
     return false;
 
-  char buffer[STRING];
+  char buffer[256];
 
   mutt_ch_canonical_charset(buffer, sizeof(buffer), cs1);
 
@@ -955,7 +955,7 @@ char *mutt_ch_fgetconvs(char *buf, size_t buflen, struct FgetConv *fc)
  */
 void mutt_ch_set_charset(const char *charset)
 {
-  char buffer[STRING];
+  char buffer[256];
 
   mutt_ch_canonical_charset(buffer, sizeof(buffer), charset);
 

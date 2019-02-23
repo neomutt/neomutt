@@ -820,8 +820,8 @@ void mutt_enter_command(void)
   if (mutt_get_field(":", buffer, sizeof(buffer), MUTT_COMMAND) != 0 || !buffer[0])
     return;
 
-  struct Buffer *err = mutt_buffer_alloc(STRING);
-  struct Buffer *token = mutt_buffer_alloc(STRING);
+  struct Buffer *err = mutt_buffer_alloc(256);
+  struct Buffer *token = mutt_buffer_alloc(256);
 
   /* check if buffer is a valid icommand, else fall back quietly to parse_rc_lines */
   enum CommandResult rc = mutt_parse_icommand(buffer, err);
@@ -1179,8 +1179,8 @@ int mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
 {
   char buf[LONG_STRING];
   char obuf[LONG_STRING];
-  char tmp[STRING];
-  char charset[STRING];
+  char tmp[256];
+  char charset[256];
 
   short charset_changed = 0;
   short type_changed = 0;

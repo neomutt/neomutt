@@ -98,7 +98,7 @@ struct SmimeCommandContext
   const char *intermediates; /**< %i */
 };
 
-char SmimePass[STRING];
+char SmimePass[256];
 time_t SmimeExptime = 0; /* when does the cached passphrase expire? */
 
 static char SmimeKeyToUse[PATH_MAX] = { 0 };
@@ -948,7 +948,7 @@ static void getkeys(char *mailbox)
 
   if (!key)
   {
-    char buf[STRING];
+    char buf[256];
     snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), mailbox);
     key = smime_ask_for_key(buf, KEYFLAG_CANENCRYPT, false);
   }
@@ -1094,7 +1094,7 @@ char *smime_class_find_keys(struct Address *addrlist, bool oppenc_mode)
 static int smime_handle_cert_email(char *certificate, char *mailbox, bool copy,
                                    char ***buffer, int *num)
 {
-  char email[STRING];
+  char email[256];
   int rc = -1, count = 0;
   pid_t thepid;
   size_t len = 0;
@@ -1357,7 +1357,7 @@ static char *smime_extract_signer_certificate(char *infile)
  */
 void smime_class_invoke_import(char *infile, char *mailbox)
 {
-  char *certfile = NULL, buf[STRING];
+  char *certfile = NULL, buf[256];
   FILE *smimein = NULL;
 
   FILE *fperr = mutt_file_mkstemp();

@@ -181,9 +181,9 @@ void mh_update_sequences(struct Mailbox *m)
   int flagged = 0;
   int replied = 0;
 
-  char seq_unseen[STRING];
-  char seq_replied[STRING];
-  char seq_flagged[STRING];
+  char seq_unseen[256];
+  char seq_replied[256];
+  char seq_flagged[256];
 
   struct MhSequences mhs = { 0 };
 

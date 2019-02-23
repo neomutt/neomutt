@@ -166,7 +166,7 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
   if (!m || !fp || !actx)
     return;
 
-  char prompt[STRING];
+  char prompt[256];
   char buf[HUGE_STRING];
   char *err = NULL;
   struct Address *addr = NULL;
@@ -465,7 +465,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   struct Email *e_parent = NULL;
   FILE *parent_fp = NULL;
   char tmpbody[PATH_MAX];
-  char prefix[STRING];
+  char prefix[256];
   int rc = 0;
 
   /* First, find the parent message.

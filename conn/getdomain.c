@@ -46,7 +46,7 @@ int getdnsdomainname(char *buf, size_t buflen)
   int rc = -1;
 
 #if defined(HAVE_GETADDRINFO) || defined(HAVE_GETADDRINFO_A)
-  char node[STRING];
+  char node[256];
   if (gethostname(node, sizeof(node)) != 0)
     return rc;
 

@@ -1763,7 +1763,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         mutt_expand_path(buf, sizeof(buf));
 
         /* Call to lookup_mime_type () ?  maybe later */
-        char type[STRING] = { 0 };
+        char type[256] = { 0 };
         if (mutt_get_field("Content-Type: ", type, sizeof(type), 0) != 0 || !type[0])
           continue;
 

@@ -825,7 +825,7 @@ int mutt_copy_message_ctx(FILE *fpout, struct Mailbox *src, struct Email *e,
 static int append_message(struct Mailbox *dest, FILE *fpin, struct Mailbox *src,
                           struct Email *e, int cmflags, int chflags)
 {
-  char buf[STRING];
+  char buf[256];
   struct Message *msg = NULL;
   int r;
 
@@ -946,8 +946,8 @@ static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *dat
 static void format_address_header(char **h, struct Address *a)
 {
   char buf[HUGE_STRING];
-  char cbuf[STRING];
-  char c2buf[STRING];
+  char cbuf[256];
+  char c2buf[256];
   char *p = NULL;
   size_t linelen, buflen, plen;
 

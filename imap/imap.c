@@ -421,7 +421,7 @@ static int compile_search(struct Mailbox *m, const struct Pattern *pat, struct B
   }
   else
   {
-    char term[STRING];
+    char term[256];
     char *delim = NULL;
 
     switch (pat->op)
@@ -1397,7 +1397,7 @@ int imap_subscribe(char *path, bool subscribe)
   struct ImapMboxData *mdata = NULL;
   char buf[LONG_STRING * 2];
   char mbox[LONG_STRING];
-  char errstr[STRING];
+  char errstr[256];
   struct Buffer err, token;
   size_t len = 0;
 

@@ -1254,7 +1254,7 @@ static int get_micalg(gpgme_ctx_t ctx, int use_smime, char *buf, size_t buflen)
  */
 static void print_time(time_t t, struct State *s)
 {
-  char p[STRING];
+  char p[256];
 
   strftime(p, sizeof(p), nl_langinfo(D_T_FMT), localtime(&t));
   state_puts(p, s);
@@ -2460,7 +2460,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
   gpgme_subkey_t subkey;
   const char *shortid = NULL;
   size_t len;
-  char date[STRING];
+  char date[256];
   int more;
   int rc = -1;
   time_t tt;
@@ -2871,7 +2871,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
   bool maybe_goodsig = true;
   bool have_any_sigs = false;
 
-  char body_charset[STRING]; /* Only used for clearsigned messages. */
+  char body_charset[256]; /* Only used for clearsigned messages. */
 
   mutt_debug(LL_DEBUG2, "Entering handler\n");
 

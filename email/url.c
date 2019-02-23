@@ -132,7 +132,7 @@ int url_pct_decode(char *s)
  */
 enum UrlScheme url_check_scheme(const char *s)
 {
-  char sbuf[STRING];
+  char sbuf[256];
   char *t = NULL;
   int i;
 
@@ -365,7 +365,7 @@ int url_tostring(struct Url *u, char *buf, size_t buflen, int flags)
 
     if (u->user && (u->user[0] || !(flags & U_PATH)))
     {
-      char str[STRING];
+      char str[256];
       url_pct_encode(str, sizeof(str), u->user);
       snprintf(buf, buflen, "%s@", str);
       l = strlen(buf);

@@ -92,7 +92,7 @@ static void history_menu(char *buf, size_t buflen, char **matches, int match_cou
 {
   int done = 0;
   char helpstr[LONG_STRING];
-  char title[STRING];
+  char title[256];
 
   snprintf(title, sizeof(title), _("History '%s'"), buf);
 

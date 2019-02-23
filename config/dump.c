@@ -242,9 +242,9 @@ bool dump_config(struct ConfigSet *cs, enum CsDumpStyle style, int flags, FILE *
 
   bool result = true;
 
-  struct Buffer *value = mutt_buffer_alloc(STRING);
-  struct Buffer *initial = mutt_buffer_alloc(STRING);
-  struct Buffer *tmp = mutt_buffer_alloc(STRING);
+  struct Buffer *value = mutt_buffer_alloc(256);
+  struct Buffer *initial = mutt_buffer_alloc(256);
+  struct Buffer *tmp = mutt_buffer_alloc(256);
 
   for (size_t i = 0; list[i]; i++)
   {

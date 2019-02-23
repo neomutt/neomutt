@@ -85,8 +85,8 @@ static struct ListHead MuttrcStack = STAILQ_HEAD_INITIALIZER(MuttrcStack);
  * the user has typed so far. Allocate LONG_STRING just to be sure! */
 static char UserTyped[LONG_STRING] = { 0 };
 
-static int NumMatched = 0;             /* Number of matches for completion */
-static char Completed[STRING] = { 0 }; /* completed string (command or variable) */
+static int NumMatched = 0;          /* Number of matches for completion */
+static char Completed[256] = { 0 }; /* completed string (command or variable) */
 static const char **Matches;
 /* this is a lie until mutt_init runs: */
 static int MatchesListsize = MAX(NUMVARS, NUMCOMMANDS) + 10;
@@ -284,7 +284,7 @@ static int execute_commands(struct ListHead *p)
   struct Buffer err, token;
 
   mutt_buffer_init(&err);
-  err.dsize = STRING;
+  err.dsize = 256;
   err.data = mutt_mem_malloc(err.dsize);
   mutt_buffer_init(&token);
   struct ListNode *np = NULL;
@@ -336,7 +336,7 @@ static char *find_cfg(const char *home, const char *xdg_cfg_home)
 
     for (int j = 0; names[j]; j++)
     {
-      char buffer[STRING];
+      char buffer[256];
 
       snprintf(buffer, sizeof(buffer), "%s/%s%s", locations[i][0],
                locations[i][1], names[j]);
@@ -2631,14 +2631,14 @@ void mutt_commands_apply(void *data, void (*application)(void *, const struct Co
  */
 int mutt_dump_variables(bool hide_sensitive)
 {
-  char command[STRING];
+  char command[256];
 
   struct Buffer err, token;
 
   mutt_buffer_init(&err);
   mutt_buffer_init(&token);
 
-  err.dsize = STRING;
+  err.dsize = 256;
   err.data = mutt_mem_malloc(err.dsize);
 
   for (int i = 0; MuttVars[i].name; i++)
@@ -3023,7 +3023,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   struct Buffer err;
 
   mutt_buffer_init(&err);
-  err.dsize = STRING;
+  err.dsize = 256;
   err.data = mutt_mem_malloc(err.dsize);
   err.dptr = err.data;
 
@@ -3228,7 +3228,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
     struct passwd *pw = getpwuid(getuid());
     if (pw)
     {
-      char buf[STRING];
+      char buf[256];
       C_Realname = mutt_str_strdup(mutt_gecos_name(buf, sizeof(buf), pw));
     }
   }
@@ -3339,8 +3339,8 @@ finish:
  */
 int mutt_query_variables(struct ListHead *queries)
 {
-  struct Buffer *value = mutt_buffer_alloc(STRING);
-  struct Buffer *tmp = mutt_buffer_alloc(STRING);
+  struct Buffer *value = mutt_buffer_alloc(256);
+  struct Buffer *tmp = mutt_buffer_alloc(256);
   int rc = 0;
 
   struct ListNode *np = NULL;
@@ -3780,7 +3780,7 @@ int mutt_var_value_complete(char *buf, size_t buflen, int pos)
   if (mutt_str_startswith(buf, "set", CASE_MATCH))
   {
     const char *myvarval = NULL;
-    char var[STRING];
+    char var[256];
     mutt_str_strfcpy(var, pt, sizeof(var));
     /* ignore the trailing '=' when comparing */
     int vlen = mutt_str_strlen(var);
@@ -3795,7 +3795,7 @@ int mutt_var_value_complete(char *buf, size_t buflen, int pos)
       myvarval = myvar_get(var);
       if (myvarval)
       {
-        struct Buffer *pretty = mutt_buffer_alloc(STRING);
+        struct Buffer *pretty = mutt_buffer_alloc(256);
         pretty_var(myvarval, pretty);
         snprintf(pt, buflen - (pt - buf), "%s=%s", var, pretty->data);
         mutt_buffer_free(&pretty);
@@ -3805,8 +3805,8 @@ int mutt_var_value_complete(char *buf, size_t buflen, int pos)
     }
     else
     {
-      struct Buffer *value = mutt_buffer_alloc(STRING);
-      struct Buffer *pretty = mutt_buffer_alloc(STRING);
+      struct Buffer *value = mutt_buffer_alloc(256);
+      struct Buffer *pretty = mutt_buffer_alloc(256);
       int rc = cs_he_string_get(Config, he, value);
       if (CSR_RESULT(rc) == CSR_SUCCESS)
       {

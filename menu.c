@@ -387,7 +387,7 @@ void menu_redraw_full(struct Menu *menu)
  */
 void menu_redraw_status(struct Menu *menu)
 {
-  char buf[STRING];
+  char buf[256];
 
   snprintf(buf, sizeof(buf), MUTT_MODEFMT, menu->title);
   SETCOLOR(MT_COLOR_STATUS);

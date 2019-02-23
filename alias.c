@@ -110,7 +110,7 @@ static struct Address *expand_aliases_r(struct Address *a, struct ListHead *expn
 
         if (pw)
         {
-          char namebuf[STRING];
+          char namebuf[256];
 
           mutt_gecos_name(namebuf, sizeof(namebuf), pw);
           mutt_str_replace(&a->personal, namebuf);

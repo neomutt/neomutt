@@ -142,7 +142,7 @@ static void mutt_update_v2r(struct AttachCtx *actx)
  */
 void mutt_update_tree(struct AttachCtx *actx)
 {
-  char buf[STRING];
+  char buf[256];
   char *s = NULL;
 
   mutt_update_v2r(actx);
@@ -680,7 +680,7 @@ static void query_pipe_attachment(char *command, FILE *fp, struct Body *body, bo
 
   if (filter)
   {
-    char warning[PATH_MAX + STRING];
+    char warning[PATH_MAX + 256];
     snprintf(warning, sizeof(warning),
              _("WARNING!  You are about to overwrite %s, continue?"), body->filename);
     if (mutt_yesorno(warning, MUTT_NO) != MUTT_YES)
@@ -827,7 +827,7 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
  */
 static bool can_print(struct AttachCtx *actx, struct Body *top, bool tag)
 {
-  char type[STRING];
+  char type[256];
 
   for (int i = 0; !tag || (i < actx->idxlen); i++)
   {
@@ -870,7 +870,7 @@ static bool can_print(struct AttachCtx *actx, struct Body *top, bool tag)
 static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
                                   struct Body *top, struct State *state)
 {
-  char type[STRING];
+  char type[256];
 
   for (int i = 0; !tag || (i < actx->idxlen); i++)
   {

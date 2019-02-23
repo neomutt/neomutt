@@ -80,7 +80,7 @@ bool C_SmimeSelfEncrypt; ///< Config: Encrypted messages will also be encrypt to
 void crypt_current_time(struct State *s, const char *app_name)
 {
   time_t t;
-  char p[STRING], tmp[STRING];
+  char p[256], tmp[256];
 
   if (!WithCrypto)
     return;

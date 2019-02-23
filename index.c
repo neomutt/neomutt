@@ -1623,7 +1623,7 @@ int mutt_index_menu(void)
           mutt_message(_("No limit pattern is in effect"));
         else
         {
-          char buf2[STRING];
+          char buf2[256];
           /* L10N: ask for a limit to apply */
           snprintf(buf2, sizeof(buf2), _("Limit: %s"), Context->pattern);
           mutt_message("%s", buf2);
@@ -2035,7 +2035,7 @@ int mutt_index_menu(void)
 
           if (!Context->mailbox->quiet)
           {
-            char msgbuf[STRING];
+            char msgbuf[256];
             snprintf(msgbuf, sizeof(msgbuf), _("Update tags..."));
             mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, 1,
                                Context->mailbox->msg_tagged);
@@ -3346,7 +3346,7 @@ int mutt_index_menu(void)
           if (!mutt_get_field(_("Enter macro stroke: "), buf2, sizeof(buf2), MUTT_CLEAR) &&
               buf2[0])
           {
-            char str[STRING], macro[STRING];
+            char str[256], macro[256];
             snprintf(str, sizeof(str), "%s%s", C_MarkMacroPrefix, buf2);
             snprintf(macro, sizeof(macro), "<search>~i \"%s\"\n", CUR_EMAIL->env->message_id);
             /* L10N: "message hotkey" is the key bindings menu description of a

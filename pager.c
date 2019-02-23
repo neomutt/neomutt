@@ -2178,7 +2178,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     }
     else
     {
-      char bn[STRING];
+      char bn[256];
       snprintf(bn, sizeof(bn), "%s (%s)", rd->banner, pager_progress_str);
       mutt_draw_statusline(rd->pager_status_window->cols, bn, sizeof(bn));
     }
@@ -2228,7 +2228,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
  */
 int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *extra)
 {
-  static char searchbuf[STRING] = "";
+  static char searchbuf[256] = "";
   char buffer[LONG_STRING];
   char helpstr[256];
   char tmphelp[256];

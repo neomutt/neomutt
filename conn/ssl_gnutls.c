@@ -460,7 +460,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   char datestr[30];
   struct Menu *menu = NULL;
   char helpstr[LONG_STRING];
-  char title[STRING];
+  char title[256];
   FILE *fp = NULL;
   gnutls_datum_t pemdata;
   int row, done, ret;

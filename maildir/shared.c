@@ -202,9 +202,9 @@ static void mh_sequences_add_one(struct Mailbox *m, int n, bool unseen, bool fla
   char *tmpfname = NULL;
   char sequences[PATH_MAX];
 
-  char seq_unseen[STRING];
-  char seq_replied[STRING];
-  char seq_flagged[STRING];
+  char seq_unseen[256];
+  char seq_replied[256];
+  char seq_flagged[256];
 
   char *buf = NULL;
   int line = 0;
@@ -832,7 +832,7 @@ int mh_read_dir(struct Mailbox *m, const char *subdir)
   struct Maildir *md = NULL;
   struct MhSequences mhs = { 0 };
   struct Maildir **last = NULL;
-  char msgbuf[STRING];
+  char msgbuf[256];
   struct Progress progress;
 
   if (!m->quiet)

@@ -395,7 +395,7 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
 bool mutt_mailbox_list(void)
 {
   char path[PATH_MAX];
-  char mailboxlist[2 * STRING];
+  char mailboxlist[512];
   size_t pos = 0;
   int first = 1;
 
