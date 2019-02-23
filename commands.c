@@ -339,7 +339,7 @@ int mutt_display_message(struct Email *cur)
   {
     int r;
 
-    char cmd[HUGE_STRING];
+    char cmd[STR_COMMAND];
     mutt_endwin();
     snprintf(cmd, sizeof(cmd), "%s %s", NONULL(C_Pager), tempfile);
     r = mutt_system(cmd);
@@ -374,7 +374,7 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
 
   char prompt[128];
   char scratch[128];
-  char buf[HUGE_STRING] = { 0 };
+  char buf[8192] = { 0 };
   struct Address *addr = NULL;
   char *err = NULL;
   int rc;

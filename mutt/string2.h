@@ -31,7 +31,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define HUGE_STRING  8192
+#define STR_COMMAND 8192  ///< Enough space for a long command line
 
 #define NONULL(x) (x ? x : "")
 #define ISSPACE(c) isspace((unsigned char) c)

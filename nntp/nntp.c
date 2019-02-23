@@ -1257,7 +1257,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
   struct NntpMboxData *mdata = m->mdata;
   struct FetchCtx fc;
   struct Email *e = NULL;
-  char buf[HUGE_STRING];
+  char buf[8192];
   int rc = 0;
   anum_t current;
   anum_t first_over = first;
@@ -2442,7 +2442,7 @@ static int nntp_mbox_open(struct Mailbox *m)
   if (!m || !m->account)
     return -1;
 
-  char buf[HUGE_STRING];
+  char buf[8192];
   char server[1024];
   char *group = NULL;
   int rc;

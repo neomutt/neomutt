@@ -167,8 +167,8 @@ static struct Remailer **mix_type2_list(size_t *l)
   pid_t mm_pid;
   int devnull;
 
-  char cmd[HUGE_STRING];
-  char line[HUGE_STRING];
+  char cmd[STR_COMMAND];
+  char line[8192];
   char *t = NULL;
 
   struct Remailer **type2_list = NULL, *p = NULL;

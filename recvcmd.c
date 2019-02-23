@@ -167,7 +167,7 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
     return;
 
   char prompt[256];
-  char buf[HUGE_STRING];
+  char buf[8192];
   char *err = NULL;
   struct Address *addr = NULL;
   int ret = 0;

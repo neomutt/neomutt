@@ -599,7 +599,7 @@ int mutt_alias_complete(char *buf, size_t buflen)
 {
   struct Alias *a = NULL, *tmp = NULL;
   struct AliasList a_list = TAILQ_HEAD_INITIALIZER(a_list);
-  char bestname[HUGE_STRING] = { 0 };
+  char bestname[8192] = { 0 };
 
   if (buf[0] != 0) /* avoid empty string as strstr argument */
   {

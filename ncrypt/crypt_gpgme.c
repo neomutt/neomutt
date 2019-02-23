@@ -2606,7 +2606,7 @@ static int line_compare(const char *a, size_t n, const char *b)
 static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 {
   char tempfile[PATH_MAX];
-  char buf[HUGE_STRING];
+  char buf[8192];
   FILE *tfp = NULL;
 
   bool sgn = false;
@@ -2800,7 +2800,7 @@ leave:
  */
 static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
 {
-  char buf[HUGE_STRING];
+  char buf[8192];
   bool complete, armor_header;
   FILE *fp = NULL;
 
@@ -2862,7 +2862,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
   bool clearsign = false;
   long bytes;
   LOFF_T last_pos;
-  char buf[HUGE_STRING];
+  char buf[8192];
   FILE *pgpout = NULL;
 
   gpgme_error_t err = 0;

@@ -235,7 +235,7 @@ static struct Address *find_mailing_lists(struct Address *t, struct Address *c)
  */
 static int edit_address(struct Address **a, const char *field)
 {
-  char buf[HUGE_STRING];
+  char buf[8192];
   char *err = NULL;
   int idna_ok = 0;
 
@@ -267,7 +267,7 @@ static int edit_address(struct Address **a, const char *field)
  */
 static int edit_envelope(struct Envelope *en, int flags)
 {
-  char buf[HUGE_STRING];
+  char buf[8192];
 
 #ifdef USE_NNTP
   if (OptNewsSend)

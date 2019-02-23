@@ -188,7 +188,7 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
   if (!adata)
     return -1;
 
-  char buf[HUGE_STRING];
+  char buf[8192];
   char return_path[1024];
   int count = 0;
   int lines;
@@ -354,7 +354,7 @@ static int mbox_parse_mailbox(struct Mailbox *m)
     return -1;
 
   struct stat sb;
-  char buf[HUGE_STRING], return_path[256];
+  char buf[8192], return_path[256];
   struct Email *e_cur = NULL;
   time_t t;
   int count = 0, lines = 0;

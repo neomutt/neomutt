@@ -211,7 +211,7 @@ static pid_t pgp_invoke(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
                         const char *sig_fname, const char *ids, const char *format)
 {
   struct PgpCommandContext cctx = { 0 };
-  char cmd[HUGE_STRING];
+  char cmd[STR_COMMAND];
 
   if (!format || !*format)
     return (pid_t) -1;
@@ -399,7 +399,7 @@ pid_t pgp_invoke_traditional(FILE **pgpin, FILE **pgpout, FILE **pgperr,
 void pgp_class_invoke_import(const char *fname)
 {
   char tmp_fname[PATH_MAX + 128];
-  char cmd[HUGE_STRING];
+  char cmd[STR_COMMAND];
   struct PgpCommandContext cctx = { 0 };
 
   mutt_file_quote_filename(fname, tmp_fname, sizeof(tmp_fname));
@@ -421,7 +421,7 @@ void pgp_class_invoke_getkeys(struct Address *addr)
 {
   char buf[PATH_MAX];
   char tmp[1024];
-  char cmd[HUGE_STRING];
+  char cmd[STR_COMMAND];
   int devnull;
 
   char *personal = NULL;
@@ -524,7 +524,7 @@ pid_t pgp_invoke_list_keys(FILE **pgpin, FILE **pgpout, FILE **pgperr,
                            int pgpinfd, int pgpoutfd, int pgperrfd,
                            enum PgpRing keyring, struct ListHead *hints)
 {
-  char quoted[HUGE_STRING];
+  char quoted[STR_COMMAND];
 
   struct Buffer *uids = mutt_buffer_pool_get();
 

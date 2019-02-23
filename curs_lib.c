@@ -307,7 +307,7 @@ int mutt_get_field_unbuffered(const char *msg, char *buf, size_t buflen, int fla
  */
 void mutt_edit_file(const char *editor, const char *file)
 {
-  char cmd[HUGE_STRING];
+  char cmd[STR_COMMAND];
 
   mutt_endwin();
   mutt_file_expand_fmt_quote(cmd, sizeof(cmd), editor, file);

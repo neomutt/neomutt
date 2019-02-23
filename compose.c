@@ -519,7 +519,7 @@ static void draw_envelope(struct Email *msg, char *fcc)
  */
 static void edit_address_list(int line, struct Address **addr)
 {
-  char buf[HUGE_STRING] = ""; /* needs to be large for alias expansion */
+  char buf[8192] = ""; /* needs to be large for alias expansion */
   char *err = NULL;
 
   mutt_addrlist_to_local(*addr);

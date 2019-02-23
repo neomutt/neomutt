@@ -1558,7 +1558,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool a
 static void run_mime_type_query(struct Body *att)
 {
   FILE *fp, *fperr;
-  char cmd[HUGE_STRING];
+  char cmd[STR_COMMAND];
   char *buf = NULL;
   size_t buflen;
   int dummy = 0;
@@ -1881,7 +1881,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
                            const char *pfx, int wraplen, int chflags)
 {
   const char *p = value;
-  char buf[HUGE_STRING] = "";
+  char buf[8192] = "";
   int first = 1, col = 0, l = 0;
   const bool display = (chflags & CH_DISPLAY);
 

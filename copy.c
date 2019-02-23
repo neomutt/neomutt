@@ -945,7 +945,7 @@ static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *dat
  */
 static void format_address_header(char **h, struct Address *a)
 {
-  char buf[HUGE_STRING];
+  char buf[8192];
   char cbuf[256];
   char c2buf[256];
   char *p = NULL;

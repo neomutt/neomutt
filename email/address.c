@@ -633,7 +633,7 @@ struct Address *mutt_addr_parse_list2(struct Address *p, const char *s)
   const char *q = strpbrk(s, "\"<>():;,\\");
   if (!q)
   {
-    char tmp[HUGE_STRING];
+    char tmp[8192];
 
     mutt_str_strfcpy(tmp, s, sizeof(tmp));
     char *r = tmp;

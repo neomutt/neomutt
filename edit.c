@@ -92,7 +92,7 @@ static char *EditorHelp2 =
 static char **be_snarf_data(FILE *f, char **buf, int *bufmax, int *buflen,
                             LOFF_T offset, int bytes, int prefix)
 {
-  char tmp[HUGE_STRING];
+  char tmp[8192];
   char *p = tmp;
   int tmplen = sizeof(tmp);
 
@@ -266,7 +266,7 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
  */
 static void be_print_header(struct Envelope *env)
 {
-  char tmp[HUGE_STRING];
+  char tmp[8192];
 
   if (env->to)
   {
@@ -308,7 +308,7 @@ static void be_print_header(struct Envelope *env)
  */
 static void be_edit_header(struct Envelope *e, bool force)
 {
-  char tmp[HUGE_STRING];
+  char tmp[8192];
 
   mutt_window_move(MuttMessageWindow, 0, 0);
 

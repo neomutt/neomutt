@@ -111,7 +111,7 @@ int mutt_get_tmp_attachment(struct Body *a)
 int mutt_compose_attachment(struct Body *a)
 {
   char type[256];
-  char command[HUGE_STRING];
+  char command[STR_COMMAND];
   char newfile[PATH_MAX] = "";
   struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
   bool unlink_newfile = false;
@@ -248,7 +248,7 @@ bailout:
 int mutt_edit_attachment(struct Body *a)
 {
   char type[256];
-  char command[HUGE_STRING];
+  char command[STR_COMMAND];
   char newfile[PATH_MAX] = "";
   struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
   bool unlink_newfile = false;
@@ -387,7 +387,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
   bool use_pipe = false;
   bool use_pager = true;
   char type[256];
-  char command[HUGE_STRING];
+  char command[STR_COMMAND];
   char descrip[256];
   char *fname = NULL;
   struct Rfc1524MailcapEntry *entry = NULL;
@@ -801,7 +801,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
     {
       /* message type attachments are written to mail folders. */
 
-      char buf[HUGE_STRING];
+      char buf[8192];
       struct Message *msg = NULL;
       int chflags = 0;
       int r = -1;
@@ -1026,7 +1026,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
 
   if (rfc1524_mailcap_lookup(a, type, NULL, MUTT_PRINT))
   {
-    char command[HUGE_STRING];
+    char command[STR_COMMAND];
     int piped = false;
 
     mutt_debug(LL_DEBUG2, "Using mailcap...\n");

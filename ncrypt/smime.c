@@ -386,7 +386,7 @@ static pid_t smime_invoke(FILE **smimein, FILE **smimeout, FILE **smimeerr,
                           const char *intermediates, const char *format)
 {
   struct SmimeCommandContext cctx = { 0 };
-  char cmd[HUGE_STRING];
+  char cmd[STR_COMMAND];
 
   if (!format || !*format)
     return (pid_t) -1;
@@ -2140,7 +2140,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
       return NULL;
     }
   }
-  char buf[HUGE_STRING];
+  char buf[8192];
   while (fgets(buf, sizeof(buf) - 1, smimeout))
   {
     const size_t len = mutt_str_strlen(buf);

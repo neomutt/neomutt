@@ -67,7 +67,7 @@ static const char *pgp_hash_to_micalg(short id)
  */
 static void pgp_dearmor(FILE *in, FILE *out)
 {
-  char line[HUGE_STRING];
+  char line[8192];
   LOFF_T start;
   LOFF_T end;
   char *r = NULL;

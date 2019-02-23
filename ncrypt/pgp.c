@@ -414,7 +414,7 @@ static int pgp_check_decryption_okay(FILE *fpin)
  */
 static void pgp_copy_clearsigned(FILE *fpin, struct State *s, char *charset)
 {
-  char buf[HUGE_STRING];
+  char buf[8192];
   bool complete, armor_header;
 
   rewind(fpin);
@@ -473,7 +473,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
   int c = 1;
   long bytes;
   LOFF_T last_pos, offset;
-  char buf[HUGE_STRING];
+  char buf[8192];
   char tmpfname[PATH_MAX];
   FILE *pgpout = NULL, *pgpin = NULL, *pgperr = NULL;
   FILE *tmpfp = NULL;
@@ -789,7 +789,7 @@ out:
 static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 {
   char tempfile[PATH_MAX];
-  char buf[HUGE_STRING];
+  char buf[8192];
   FILE *tfp = NULL;
 
   bool sgn = false;

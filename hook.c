@@ -167,7 +167,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
            !(data & (MUTT_CHARSET_HOOK | MUTT_ICONV_HOOK | MUTT_ACCOUNT_HOOK)) &&
            (!WithCrypto || !(data & MUTT_CRYPT_HOOK)))
   {
-    char tmp[HUGE_STRING];
+    char tmp[8192];
 
     /* At this stage remain only message-hooks, reply-hooks, send-hooks,
      * send2-hooks, save-hooks, and fcc-hooks: All those allowing full

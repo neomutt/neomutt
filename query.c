@@ -137,7 +137,7 @@ static struct Query *run_query(char *s, int quiet)
   FILE *fp = NULL;
   struct Query *first = NULL;
   struct Query *cur = NULL;
-  char cmd[HUGE_STRING];
+  char cmd[STR_COMMAND];
   char *buf = NULL;
   size_t buflen;
   int dummy = 0;

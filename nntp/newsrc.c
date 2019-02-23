@@ -573,7 +573,7 @@ int nntp_add_group(char *line, void *data)
   struct NntpAccountData *adata = data;
   struct NntpMboxData *mdata = NULL;
   char group[1024] = "";
-  char desc[HUGE_STRING] = "";
+  char desc[8192] = "";
   char mod;
   anum_t first, last;
 
@@ -611,7 +611,7 @@ int nntp_add_group(char *line, void *data)
  */
 static int active_get_cache(struct NntpAccountData *adata)
 {
-  char buf[HUGE_STRING];
+  char buf[8192];
   char file[PATH_MAX];
   time_t t;
 

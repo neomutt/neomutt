@@ -532,7 +532,7 @@ int imap_hcache_store_uid_seqset(struct ImapMboxData *mdata)
 
   struct Buffer *b = mutt_buffer_new();
   /* The seqset is likely large.  Preallocate to reduce reallocs */
-  mutt_buffer_increase_size(b, HUGE_STRING);
+  mutt_buffer_increase_size(b, 8192);
   imap_msn_index_to_uid_seqset(b, mdata);
 
   size_t seqset_size = b->dptr - b->data;
