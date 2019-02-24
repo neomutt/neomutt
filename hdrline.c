@@ -666,15 +666,15 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       {
         const char *cp = NULL;
         struct tm *tm = NULL;
-        time_t T;
+        time_t now;
         int j = 0;
 
         if (optional && ((op == '[') || (op == '(')))
         {
           char *is = NULL;
-          T = time(NULL);
-          tm = localtime(&T);
-          T -= (op == '(') ? e->received : e->date_sent;
+          now = time(NULL);
+          tm = localtime(&now);
+          now -= (op == '(') ? e->received : e->date_sent;
 
           is = (char *) prec;
           int invert = 0;
@@ -756,7 +756,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           if (j < 0)
             j *= -1;
 
-          if (((T > j) || (T < (-1 * j))) ^ invert)
+          if (((now > j) || (now < (-1 * j))) ^ invert)
             optional = 0;
           break;
         }
@@ -819,18 +819,18 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           tm = localtime(&e->received);
         else if (op == '<')
         {
-          T = time(NULL);
-          tm = localtime(&T);
+          now = time(NULL);
+          tm = localtime(&now);
         }
         else
         {
           /* restore sender's time zone */
-          T = e->date_sent;
+          now = e->date_sent;
           if (e->zoccident)
-            T -= (e->zhours * 3600 + e->zminutes * 60);
+            now -= (e->zhours * 3600 + e->zminutes * 60);
           else
-            T += (e->zhours * 3600 + e->zminutes * 60);
-          tm = gmtime(&T);
+            now += (e->zhours * 3600 + e->zminutes * 60);
+          tm = gmtime(&now);
         }
 
         if (!do_locales)
