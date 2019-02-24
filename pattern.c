@@ -273,7 +273,7 @@ static bool eat_query(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   struct Buffer tok_buf;
   FILE *fp = NULL;
 
-  if (!SearchCommand)
+  if (!ExternalSearchCommand)
   {
     mutt_buffer_printf(err, "%s", _("No search command defined"));
     return false;
@@ -295,7 +295,7 @@ static bool eat_query(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   }
 
   mutt_buffer_init(&cmd_buf);
-  mutt_buffer_addstr(&cmd_buf, SearchCommand);
+  mutt_buffer_addstr(&cmd_buf, ExternalSearchCommand);
   mutt_buffer_addch(&cmd_buf, ' ');
   if (!Context || !Context->mailbox)
   {

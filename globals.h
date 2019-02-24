@@ -110,6 +110,7 @@ WHERE char *DateFormat;                    ///< Config: strftime format string f
 WHERE char *DsnNotify;                     ///< Config: Request notification for message delivery or delay
 WHERE char *DsnReturn;                     ///< Config: What to send as a notification of message delivery or delay
 WHERE char *Editor;                        ///< Config: External command to use as an email editor
+WHERE char *ExternalSearchCommand;         ///< Config: External search command
 WHERE char *Hostname;                      ///< Config: Fully-qualified domain name of this machine
 WHERE char *IndexFormat;                   ///< Config: printf-like format string for the index menu (emails)
 
@@ -141,7 +142,6 @@ WHERE char *IndentString;                  ///< Config: String used to indent 'r
 WHERE char *PrintCommand;                  ///< Config: External command to print a message
 WHERE char *NewMailCommand;                ///< Config: External command to run when new mail arrives
 WHERE char *Realname;                      ///< Config: Real name of the user
-WHERE char *SearchCommand;                 ///< Config: External search command
 WHERE char *Shell;                         ///< Config: External command to run subshells in
 WHERE char *SimpleSearch;                  ///< Config: Pattern to search for when search doesn't contain ~'s
 #ifdef USE_SMTP

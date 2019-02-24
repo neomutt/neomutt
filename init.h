@@ -1020,7 +1020,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** Escape character to use for functions in the built-in editor.
   */
-  { "external_search_command",   DT_COMMAND, R_NONE, &SearchCommand, 0 },
+  { "external_search_command",   DT_COMMAND, R_NONE, &ExternalSearchCommand, 0 },
   /*
    ** .pp
    ** If set, contains the name of the external program used by "~I" patterns.
