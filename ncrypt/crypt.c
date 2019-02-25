@@ -749,12 +749,12 @@ int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile)
     return -1;
   }
 
-  fseeko(s->fpin, a->hdr_offset, SEEK_SET);
+  fseeko(s->fp_in, a->hdr_offset, SEEK_SET);
   bytes = a->length + a->offset - a->hdr_offset;
   hadcr = false;
   while (bytes > 0)
   {
-    const int c = fgetc(s->fpin);
+    const int c = fgetc(s->fp_in);
     if (c == EOF)
       break;
 
@@ -1067,7 +1067,7 @@ int mutt_protected_headers_handler(struct Body *a, struct State *s)
         return 0;
 
       state_mark_protected_header(s);
-      mutt_write_one_header(s->fpout, "Subject", a->mime_headers->subject,
+      mutt_write_one_header(s->fp_out, "Subject", a->mime_headers->subject,
                             s->prefix, mutt_window_wrap_cols(MuttIndexWindow, Wrap),
                             (s->flags & MUTT_DISPLAY) ? CH_DISPLAY : 0);
       state_puts("\n", s);

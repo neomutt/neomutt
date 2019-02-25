@@ -687,8 +687,8 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e, int flags, in
   {
     /* now make a text/plain version of the message */
     struct State s = { 0 };
-    s.fpin = fpin;
-    s.fpout = fpout;
+    s.fp_in = fpin;
+    s.fp_out = fpout;
     if (flags & MUTT_CM_PREFIX)
       s.prefix = prefix;
     if (flags & MUTT_CM_DISPLAY)

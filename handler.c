@@ -168,7 +168,7 @@ static void decode_xbit(struct State *s, long len, bool istext, iconv_t cd)
 {
   if (!istext)
   {
-    mutt_file_copy_bytes(s->fpin, s->fpout, len);
+    mutt_file_copy_bytes(s->fp_in, s->fp_out, len);
     return;
   }
 
@@ -177,18 +177,18 @@ static void decode_xbit(struct State *s, long len, bool istext, iconv_t cd)
   int c;
   char bufi[BUFI_SIZE];
   size_t l = 0;
-  while ((c = fgetc(s->fpin)) != EOF && len--)
+  while ((c = fgetc(s->fp_in)) != EOF && len--)
   {
     if ((c == '\r') && len)
     {
-      const int ch = fgetc(s->fpin);
+      const int ch = fgetc(s->fp_in);
       if (ch == '\n')
       {
         c = ch;
         len--;
       }
       else
-        ungetc(ch, s->fpin);
+        ungetc(ch, s->fp_in);
     }
 
     bufi[l++] = c;
@@ -320,7 +320,7 @@ static void decode_quoted(struct State *s, long len, bool istext, iconv_t cd)
      * lines are at most 76 characters, but we should be liberal about what
      * we accept.
      */
-    if (!fgets(line, MIN((ssize_t) sizeof(line), len + 1), s->fpin))
+    if (!fgets(line, MIN((ssize_t) sizeof(line), len + 1), s->fp_in))
       break;
 
     size_t linelen = strlen(line);
@@ -380,7 +380,7 @@ static void decode_uuencoded(struct State *s, long len, bool istext, iconv_t cd)
 
   while (len > 0)
   {
-    if (!fgets(tmps, sizeof(tmps), s->fpin))
+    if (!fgets(tmps, sizeof(tmps), s->fp_in))
       return;
     len -= mutt_str_strlen(tmps);
     if (mutt_str_startswith(tmps, "begin ", CASE_MATCH))
@@ -388,7 +388,7 @@ static void decode_uuencoded(struct State *s, long len, bool istext, iconv_t cd)
   }
   while (len > 0)
   {
-    if (!fgets(tmps, sizeof(tmps), s->fpin))
+    if (!fgets(tmps, sizeof(tmps), s->fp_in))
       return;
     len -= mutt_str_strlen(tmps);
     if (mutt_str_startswith(tmps, "end", CASE_MATCH))
@@ -569,7 +569,7 @@ static int autoview_handler(struct Body *a, struct State *s)
       return -1;
     }
 
-    mutt_file_copy_bytes(s->fpin, fpin, a->length);
+    mutt_file_copy_bytes(s->fp_in, fpin, a->length);
 
     if (!piped)
     {
@@ -623,7 +623,7 @@ static int autoview_handler(struct Body *a, struct State *s)
     }
     else
     {
-      mutt_file_copy_stream(fpout, s->fpout);
+      mutt_file_copy_stream(fpout, s->fp_out);
       /* Check for stderr messages */
       if (fgets(buffer, sizeof(buffer), fperr))
       {
@@ -634,7 +634,7 @@ static int autoview_handler(struct Body *a, struct State *s)
         }
 
         state_puts(buffer, s);
-        mutt_file_copy_stream(fperr, s->fpout);
+        mutt_file_copy_stream(fperr, s->fp_out);
       }
     }
 
@@ -669,7 +669,7 @@ static int text_plain_handler(struct Body *b, struct State *s)
   char *buf = NULL;
   size_t l = 0, sz = 0;
 
-  while ((buf = mutt_file_read_line(buf, &sz, s->fpin, NULL, 0)))
+  while ((buf = mutt_file_read_line(buf, &sz, s->fp_in, NULL, 0)))
   {
     if ((mutt_str_strcmp(buf, "-- ") != 0) && TextFlowed)
     {
@@ -697,24 +697,24 @@ static int message_handler(struct Body *a, struct State *s)
   LOFF_T off_start;
   int rc = 0;
 
-  off_start = ftello(s->fpin);
+  off_start = ftello(s->fp_in);
   if (off_start < 0)
     return -1;
 
   if ((a->encoding == ENC_BASE64) || (a->encoding == ENC_QUOTED_PRINTABLE) ||
       (a->encoding == ENC_UUENCODED))
   {
-    fstat(fileno(s->fpin), &st);
+    fstat(fileno(s->fp_in), &st);
     b = mutt_body_new();
     b->length = (LOFF_T) st.st_size;
-    b->parts = mutt_rfc822_parse_message(s->fpin, b);
+    b->parts = mutt_rfc822_parse_message(s->fp_in, b);
   }
   else
     b = a;
 
   if (b->parts)
   {
-    mutt_copy_hdr(s->fpin, s->fpout, off_start, b->parts->offset,
+    mutt_copy_hdr(s->fp_in, s->fp_out, off_start, b->parts->offset,
                   (((s->flags & MUTT_WEED) ||
                     ((s->flags & (MUTT_DISPLAY | MUTT_PRINTING)) && Weed)) ?
                        (CH_WEED | CH_REORDER) :
@@ -863,7 +863,7 @@ static int external_body_handler(struct Body *b, struct State *s)
         state_printf(s, _("[-- name: %s --]\n"), b->parts->filename);
       }
 
-      mutt_copy_hdr(s->fpin, s->fpout, ftello(s->fpin), b->parts->offset,
+      mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset,
                     (Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE, NULL);
     }
   }
@@ -879,7 +879,7 @@ static int external_body_handler(struct Body *b, struct State *s)
                TYPE(b->parts), b->parts->subtype);
       state_attach_puts(strbuf, s);
 
-      mutt_copy_hdr(s->fpin, s->fpout, ftello(s->fpin), b->parts->offset,
+      mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset,
                     (Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_DISPLAY, NULL);
     }
   }
@@ -897,7 +897,7 @@ static int external_body_handler(struct Body *b, struct State *s)
                TYPE(b->parts), b->parts->subtype, access_type);
       state_attach_puts(strbuf, s);
 
-      mutt_copy_hdr(s->fpin, s->fpout, ftello(s->fpin), b->parts->offset,
+      mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset,
                     (Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_DISPLAY, NULL);
     }
   }
@@ -920,11 +920,11 @@ static int alternative_handler(struct Body *a, struct State *s)
   {
     struct stat st;
     mustfree = true;
-    fstat(fileno(s->fpin), &st);
+    fstat(fileno(s->fp_in), &st);
     b = mutt_body_new();
     b->length = (long) st.st_size;
     b->parts = mutt_parse_multipart(
-        s->fpin, mutt_param_get(&a->parameter, "boundary"), (long) st.st_size,
+        s->fp_in, mutt_param_get(&a->parameter, "boundary"), (long) st.st_size,
         (mutt_str_strcasecmp("digest", a->subtype) == 0));
   }
   else
@@ -1039,8 +1039,8 @@ static int alternative_handler(struct Body *a, struct State *s)
   {
     if (s->flags & MUTT_DISPLAY && !Weed)
     {
-      fseeko(s->fpin, choice->hdr_offset, SEEK_SET);
-      mutt_file_copy_bytes(s->fpin, s->fpout, choice->offset - choice->hdr_offset);
+      fseeko(s->fp_in, choice->hdr_offset, SEEK_SET);
+      mutt_file_copy_bytes(s->fp_in, s->fp_out, choice->offset - choice->hdr_offset);
     }
 
     if (mutt_str_strcmp("info", ShowMultipartAlternative) == 0)
@@ -1107,11 +1107,11 @@ static int multilingual_handler(struct Body *a, struct State *s)
   {
     struct stat st;
     mustfree = true;
-    fstat(fileno(s->fpin), &st);
+    fstat(fileno(s->fp_in), &st);
     b = mutt_body_new();
     b->length = (long) st.st_size;
     b->parts = mutt_parse_multipart(
-        s->fpin, mutt_param_get(&a->parameter, "boundary"), (long) st.st_size,
+        s->fp_in, mutt_param_get(&a->parameter, "boundary"), (long) st.st_size,
         (mutt_str_strcasecmp("digest", a->subtype) == 0));
   }
   else
@@ -1200,11 +1200,11 @@ static int multipart_handler(struct Body *a, struct State *s)
   if ((a->encoding == ENC_BASE64) || (a->encoding == ENC_QUOTED_PRINTABLE) ||
       (a->encoding == ENC_UUENCODED))
   {
-    fstat(fileno(s->fpin), &st);
+    fstat(fileno(s->fp_in), &st);
     b = mutt_body_new();
     b->length = (long) st.st_size;
     b->parts = mutt_parse_multipart(
-        s->fpin, mutt_param_get(&a->parameter, "boundary"), (long) st.st_size,
+        s->fp_in, mutt_param_get(&a->parameter, "boundary"), (long) st.st_size,
         (mutt_str_strcasecmp("digest", a->subtype) == 0));
   }
   else
@@ -1227,8 +1227,8 @@ static int multipart_handler(struct Body *a, struct State *s)
       print_part_line(s, p, 0);
       if (!Weed)
       {
-        fseeko(s->fpin, p->hdr_offset, SEEK_SET);
-        mutt_file_copy_bytes(s->fpin, s->fpout, p->offset - p->hdr_offset);
+        fseeko(s->fp_in, p->hdr_offset, SEEK_SET);
+        mutt_file_copy_bytes(s->fp_in, s->fp_out, p->offset - p->hdr_offset);
       }
       else
         state_putc('\n', s);
@@ -1281,7 +1281,7 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
   int decode = 0;
   int rc = 0;
 
-  fseeko(s->fpin, b->offset, SEEK_SET);
+  fseeko(s->fp_in, b->offset, SEEK_SET);
 
 #ifdef USE_FMEMOPEN
   char *temp = NULL;
@@ -1300,10 +1300,10 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
     if (!plaintext)
     {
       /* decode to a tempfile, saving the original destination */
-      fp = s->fpout;
+      fp = s->fp_out;
 #ifdef USE_FMEMOPEN
-      s->fpout = open_memstream(&temp, &tempsize);
-      if (!s->fpout)
+      s->fp_out = open_memstream(&temp, &tempsize);
+      if (!s->fp_out)
       {
         mutt_error(_("Unable to open 'memory stream'"));
         mutt_debug(LL_DEBUG1, "Can't open 'memory stream'.\n");
@@ -1311,8 +1311,8 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
       }
 #else
       mutt_mktemp(tempfile, sizeof(tempfile));
-      s->fpout = mutt_file_fopen(tempfile, "w");
-      if (!s->fpout)
+      s->fp_out = mutt_file_fopen(tempfile, "w");
+      if (!s->fp_out)
       {
         mutt_error(_("Unable to open temporary file"));
         mutt_debug(LL_DEBUG1, "Can't open %s.\n", tempfile);
@@ -1340,35 +1340,35 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
 
     if (decode)
     {
-      b->length = ftello(s->fpout);
+      b->length = ftello(s->fp_out);
       b->offset = 0;
 #ifdef USE_FMEMOPEN
-      /* When running under torify, mutt_file_fclose(&s->fpout) does not seem to
+      /* When running under torify, mutt_file_fclose(&s->fp_out) does not seem to
        * update tempsize. On the other hand, fflush does.  See
        * https://github.com/neomutt/neomutt/issues/440 */
-      fflush(s->fpout);
+      fflush(s->fp_out);
 #endif
-      mutt_file_fclose(&s->fpout);
+      mutt_file_fclose(&s->fp_out);
 
       /* restore final destination and substitute the tempfile for input */
-      s->fpout = fp;
-      fp = s->fpin;
+      s->fp_out = fp;
+      fp = s->fp_in;
 #ifdef USE_FMEMOPEN
       if (tempsize)
       {
-        s->fpin = fmemopen(temp, tempsize, "r");
+        s->fp_in = fmemopen(temp, tempsize, "r");
       }
       else
       { /* fmemopen cannot handle zero-length buffers */
-        s->fpin = mutt_file_fopen("/dev/null", "r");
+        s->fp_in = mutt_file_fopen("/dev/null", "r");
       }
-      if (!s->fpin)
+      if (!s->fp_in)
       {
         mutt_perror(_("failed to re-open 'memory stream'"));
         return -1;
       }
 #else
-      s->fpin = fopen(tempfile, "r");
+      s->fp_in = fopen(tempfile, "r");
       unlink(tempfile);
 #endif
       /* restore the prefix */
@@ -1394,11 +1394,11 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
       b->offset = tmpoffset;
 
       /* restore the original source stream */
-      mutt_file_fclose(&s->fpin);
+      mutt_file_fclose(&s->fp_in);
 #ifdef USE_FMEMOPEN
       FREE(&temp);
 #endif
-      s->fpin = fp;
+      s->fp_in = fp;
     }
   }
   s->flags |= MUTT_FIRSTDONE;
@@ -1483,7 +1483,7 @@ void mutt_decode_base64(struct State *s, size_t len, bool istext, iconv_t cd)
   {
     for (i = 0; (i < 4) && (len > 0); len--)
     {
-      ch = fgetc(s->fpin);
+      ch = fgetc(s->fp_in);
       if (ch == EOF)
         break;
       if ((ch >= 0) && (ch < 128) && (base64val(ch) != -1 || ch == '='))
@@ -1775,7 +1775,7 @@ void mutt_decode_attachment(struct Body *b, struct State *s)
   else if (istext && b->charset)
     cd = mutt_ch_iconv_open(Charset, b->charset, MUTT_ICONV_HOOK_FROM);
 
-  fseeko(s->fpin, b->offset, SEEK_SET);
+  fseeko(s->fp_in, b->offset, SEEK_SET);
   switch (b->encoding)
   {
     case ENC_QUOTED_PRINTABLE:

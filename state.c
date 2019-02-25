@@ -40,7 +40,7 @@
  */
 void state_mark_attach(struct State *s)
 {
-  if (!s || !s->fpout)
+  if (!s || !s->fp_out)
     return;
   if ((s->flags & MUTT_DISPLAY) && (mutt_str_strcmp(Pager, "builtin") == 0))
     state_puts(AttachmentMarker, s);
@@ -63,7 +63,7 @@ void state_mark_protected_header(struct State *s)
  */
 void state_attach_puts(const char *t, struct State *s)
 {
-  if (!t || !s || !s->fpout)
+  if (!t || !s || !s->fp_out)
     return;
 
   if (*t != '\n')
@@ -92,7 +92,7 @@ static int state_putwc(wchar_t wc, struct State *s)
   rc = wcrtomb(mb, wc, NULL);
   if (rc < 0)
     return rc;
-  if (fputs(mb, s->fpout) == EOF)
+  if (fputs(mb, s->fp_out) == EOF)
     return -1;
   return 0;
 }
@@ -150,7 +150,7 @@ int state_printf(struct State *s, const char *fmt, ...)
   va_list ap;
 
   va_start(ap, fmt);
-  rc = vfprintf(s->fpout, fmt, ap);
+  rc = vfprintf(s->fp_out, fmt, ap);
   va_end(ap);
 
   return rc;
@@ -170,5 +170,5 @@ void state_prefix_put(const char *buf, size_t buflen, struct State *s)
       state_prefix_putc(*buf++, s);
   }
   else
-    fwrite(buf, buflen, 1, s->fpout);
+    fwrite(buf, buflen, 1, s->fp_out);
 }

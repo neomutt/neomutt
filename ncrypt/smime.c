@@ -1899,9 +1899,9 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
   snprintf(signedfile, sizeof(signedfile), "%s.sig", tempfile);
 
   /* decode to a tempfile, saving the original destination */
-  FILE *fp = s->fpout;
-  s->fpout = mutt_file_fopen(signedfile, "w");
-  if (!s->fpout)
+  FILE *fp = s->fp_out;
+  s->fp_out = mutt_file_fopen(signedfile, "w");
+  if (!s->fp_out)
   {
     mutt_perror(signedfile);
     return -1;
@@ -1920,14 +1920,14 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
 
   mutt_decode_attachment(sigbdy, s);
 
-  sigbdy->length = ftello(s->fpout);
+  sigbdy->length = ftello(s->fp_out);
   sigbdy->offset = 0;
-  mutt_file_fclose(&s->fpout);
+  mutt_file_fclose(&s->fp_out);
 
   /* restore final destination and substitute the tempfile for input */
-  s->fpout = fp;
-  fp = s->fpin;
-  s->fpin = fopen(signedfile, "r");
+  s->fp_out = fp;
+  fp = s->fp_in;
+  s->fp_in = fopen(signedfile, "r");
 
   /* restore the prefix */
   s->prefix = save_prefix;
@@ -1972,7 +1972,7 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
 
   fflush(smimeerr);
   rewind(smimeerr);
-  mutt_file_copy_stream(smimeerr, s->fpout);
+  mutt_file_copy_stream(smimeerr, s->fp_out);
   mutt_file_fclose(&smimeerr);
 
   state_attach_puts(_("[-- End of OpenSSL output --]\n\n"), s);
@@ -1983,8 +1983,8 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
   sigbdy->offset = tmpoffset;
 
   /* restore the original source stream */
-  mutt_file_fclose(&s->fpin);
-  s->fpin = fp;
+  mutt_file_fclose(&s->fp_in);
+  s->fp_in = fp;
 
   return badsig;
 }
@@ -2035,9 +2035,9 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     return NULL;
   }
 
-  fseeko(s->fpin, m->offset, SEEK_SET);
+  fseeko(s->fp_in, m->offset, SEEK_SET);
 
-  mutt_file_copy_bytes(s->fpin, tmpfp, m->length);
+  mutt_file_copy_bytes(s->fp_in, tmpfp, m->length);
 
   fflush(tmpfp);
   mutt_file_fclose(&tmpfp);
@@ -2097,7 +2097,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
       ungetc(c, smimeerr);
 
       crypt_current_time(s, "OpenSSL");
-      mutt_file_copy_stream(smimeerr, s->fpout);
+      mutt_file_copy_stream(smimeerr, s->fp_out);
       state_attach_puts(_("[-- End of OpenSSL output --]\n\n"), s);
     }
 
@@ -2171,13 +2171,13 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     m->mime_headers = p->mime_headers;
     p->mime_headers = NULL;
 
-    if (s->fpout)
+    if (s->fp_out)
     {
       rewind(fpout);
-      tmpfp_buffer = s->fpin;
-      s->fpin = fpout;
+      tmpfp_buffer = s->fp_in;
+      s->fp_in = fpout;
       mutt_body_handler(p, s);
-      s->fpin = tmpfp_buffer;
+      s->fp_in = tmpfp_buffer;
     }
 
     /* Embedded multipart signed protected headers override the
@@ -2247,8 +2247,8 @@ int smime_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   if (b->parts)
     return -1;
 
-  s.fpin = fpin;
-  fseeko(s.fpin, b->offset, SEEK_SET);
+  s.fp_in = fpin;
+  fseeko(s.fp_in, b->offset, SEEK_SET);
 
   FILE *tmpfp = mutt_file_mkstemp();
   if (!tmpfp)
@@ -2257,14 +2257,14 @@ int smime_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
     return -1;
   }
 
-  s.fpout = tmpfp;
+  s.fp_out = tmpfp;
   mutt_decode_attachment(b, &s);
   fflush(tmpfp);
-  b->length = ftello(s.fpout);
+  b->length = ftello(s.fp_out);
   b->offset = 0;
   rewind(tmpfp);
-  s.fpin = tmpfp;
-  s.fpout = 0;
+  s.fp_in = tmpfp;
+  s.fp_out = 0;
 
   *fpout = mutt_file_mkstemp();
   if (!*fpout)

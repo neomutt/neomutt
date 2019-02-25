@@ -334,7 +334,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
 
   mutt_debug(LL_DEBUG3, "f=f: DelSp: %s\n", delsp ? "yes" : "no");
 
-  while ((buf = mutt_file_read_line(buf, &sz, s->fpin, NULL, 0)))
+  while ((buf = mutt_file_read_line(buf, &sz, s->fp_in, NULL, 0)))
   {
     const size_t buf_len = mutt_str_strlen(buf);
     const unsigned int newql = get_quote_level(buf);

@@ -261,7 +261,7 @@ static void enriched_flush(struct EnrichedState *stte, bool wrap)
   }
   if (wrap)
     enriched_wrap(stte);
-  fflush(stte->s->fpout);
+  fflush(stte->s->fp_out);
 }
 
 /**
@@ -498,7 +498,7 @@ int text_enriched_handler(struct Body *a, struct State *s)
   {
     if (state != ST_EOF)
     {
-      if (!bytes || (wc = fgetwc(s->fpin)) == WEOF)
+      if (!bytes || (wc = fgetwc(s->fp_in)) == WEOF)
         state = ST_EOF;
       else
         bytes--;
@@ -567,7 +567,7 @@ int text_enriched_handler(struct Body *a, struct State *s)
           enriched_flush(&stte, true);
         else
         {
-          ungetwc(wc, s->fpin);
+          ungetwc(wc, s->fp_in);
           bytes++;
           state = TEXT;
         }

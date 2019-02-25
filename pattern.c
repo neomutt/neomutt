@@ -1107,7 +1107,7 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
   {
     /* decode the header / body */
     struct State s = { 0 };
-    s.fpin = msg->fp;
+    s.fp_in = msg->fp;
     s.flags = MUTT_CHARCONV;
 #ifdef USE_FMEMOPEN
     s.fpout = open_memstream(&temp, &tempsize);
@@ -1117,8 +1117,8 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
       return false;
     }
 #else
-    s.fpout = mutt_file_mkstemp();
-    if (!s.fpout)
+    s.fp_out = mutt_file_mkstemp();
+    if (!s.fp_out)
     {
       mutt_perror(_("Can't create temporary file"));
       return false;
@@ -1126,7 +1126,7 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
 #endif
 
     if (pat->op != MUTT_BODY)
-      mutt_copy_header(msg->fp, e, s.fpout, CH_FROM | CH_DECODE, NULL);
+      mutt_copy_header(msg->fp, e, s.fp_out, CH_FROM | CH_DECODE, NULL);
 
     if (pat->op != MUTT_HEADER)
     {
@@ -1136,9 +1136,9 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
           !crypt_valid_passphrase(e->security))
       {
         mx_msg_close(m, &msg);
-        if (s.fpout)
+        if (s.fp_out)
         {
-          mutt_file_fclose(&s.fpout);
+          mutt_file_fclose(&s.fp_out);
 #ifdef USE_FMEMOPEN
           FREE(&temp);
 #endif
@@ -1173,7 +1173,7 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
       }
     }
 #else
-    fp = s.fpout;
+    fp = s.fp_out;
     fflush(fp);
     fseek(fp, 0, SEEK_SET);
     fstat(fileno(fp), &st);

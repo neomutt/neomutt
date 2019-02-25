@@ -719,12 +719,12 @@ static void query_pipe_attachment(char *command, FILE *fp, struct Body *body, bo
  */
 static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
 {
-  if (!state || !state->fpout)
+  if (!state || !state->fp_out)
     return;
 
   if (fp)
   {
-    state->fpin = fp;
+    state->fp_in = fp;
     mutt_decode_attachment(b, state);
     if (AttachSep)
       state_puts(AttachSep, state);
@@ -737,7 +737,7 @@ static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
       mutt_perror("fopen");
       return;
     }
-    mutt_file_copy_stream(ifp, state->fpout);
+    mutt_file_copy_stream(ifp, state->fp_out);
     mutt_file_fclose(&ifp);
     if (AttachSep)
       state_puts(AttachSep, state);
@@ -809,9 +809,9 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
   if (!filter && !AttachSplit)
   {
     mutt_endwin();
-    pid_t thepid = mutt_create_filter(buf, &state.fpout, NULL, NULL);
+    pid_t thepid = mutt_create_filter(buf, &state.fp_out, NULL, NULL);
     pipe_attachment_list(buf, actx, fp, tag, top, filter, &state);
-    mutt_file_fclose(&state.fpout);
+    mutt_file_fclose(&state.fp_out);
     if (mutt_wait_filter(thepid) != 0 || WaitKey)
       mutt_any_key_to_continue(NULL);
   }
@@ -900,7 +900,7 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
           mutt_mktemp(newfile, sizeof(newfile));
           if (mutt_decode_save_attachment(fp, top, newfile, MUTT_PRINTING, 0) == 0)
           {
-            if (!state->fpout)
+            if (!state->fp_out)
             {
               mutt_error(
                   "BUG in print_attachment_list().  Please report this. ");
@@ -910,7 +910,7 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
             ifp = fopen(newfile, "r");
             if (ifp)
             {
-              mutt_file_copy_stream(ifp, state->fpout);
+              mutt_file_copy_stream(ifp, state->fp_out);
               mutt_file_fclose(&ifp);
               if (AttachSep)
                 state_puts(AttachSep, state);
@@ -960,9 +960,9 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, stru
     if (!can_print(actx, top, tag))
       return;
     mutt_endwin();
-    pid_t thepid = mutt_create_filter(NONULL(PrintCommand), &state.fpout, NULL, NULL);
+    pid_t thepid = mutt_create_filter(NONULL(PrintCommand), &state.fp_out, NULL, NULL);
     print_attachment_list(actx, fp, tag, top, &state);
-    mutt_file_fclose(&state.fpout);
+    mutt_file_fclose(&state.fp_out);
     if (mutt_wait_filter(thepid) != 0 || WaitKey)
       mutt_any_key_to_continue(NULL);
   }

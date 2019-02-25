@@ -1868,7 +1868,7 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *s)
       /* pubkey not present */
     }
 
-    if (!s || !s->fpout || !(s->flags & MUTT_DISPLAY))
+    if (!s || !s->fp_out || !(s->flags & MUTT_DISPLAY))
       ; /* No state information so no way to print anything. */
     else if (err)
     {
@@ -1938,7 +1938,7 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
   gpgme_ctx_t ctx;
   gpgme_data_t signature, message;
 
-  signature = file_to_data_object(s->fpin, sigbdy->offset, sigbdy->length);
+  signature = file_to_data_object(s->fp_in, sigbdy->offset, sigbdy->length);
   if (!signature)
     return -1;
 
@@ -2107,7 +2107,7 @@ restart:
   if (a->length < 0)
     return NULL;
   /* Make a data object from the body, create context etc. */
-  ciphertext = file_to_data_object(s->fpin, a->offset, a->length);
+  ciphertext = file_to_data_object(s->fp_in, a->offset, a->length);
   if (!ciphertext)
     return NULL;
   plaintext = create_gpgme_data();
@@ -2266,7 +2266,7 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
   else
     return -1;
 
-  s.fpin = fpin;
+  s.fp_in = fpin;
 
   if (need_decode)
   {
@@ -2281,8 +2281,8 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
       return -1;
     }
 
-    fseeko(s.fpin, b->offset, SEEK_SET);
-    s.fpout = decoded_fp;
+    fseeko(s.fp_in, b->offset, SEEK_SET);
+    s.fp_out = decoded_fp;
 
     mutt_decode_attachment(b, &s);
 
@@ -2290,8 +2290,8 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
     b->length = ftello(decoded_fp);
     b->offset = 0;
     rewind(decoded_fp);
-    s.fpin = decoded_fp;
-    s.fpout = 0;
+    s.fp_in = decoded_fp;
+    s.fp_out = 0;
   }
 
   *fpout = mutt_file_mkstemp();
@@ -2345,8 +2345,8 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   saved_b_type = b->type;
   saved_b_offset = b->offset;
   saved_b_length = b->length;
-  s.fpin = fpin;
-  fseeko(s.fpin, b->offset, SEEK_SET);
+  s.fp_in = fpin;
+  fseeko(s.fp_in, b->offset, SEEK_SET);
   FILE *tmpfp = mutt_file_mkstemp();
   if (!tmpfp)
   {
@@ -2354,16 +2354,16 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
     return -1;
   }
 
-  s.fpout = tmpfp;
+  s.fp_out = tmpfp;
   mutt_decode_attachment(b, &s);
   fflush(tmpfp);
-  b->length = ftello(s.fpout);
+  b->length = ftello(s.fp_out);
   b->offset = 0;
   rewind(tmpfp);
 
   memset(&s, 0, sizeof(s));
-  s.fpin = tmpfp;
-  s.fpout = 0;
+  s.fp_in = tmpfp;
+  s.fp_out = 0;
   *fpout = mutt_file_mkstemp();
   if (!*fpout)
   {
@@ -2397,8 +2397,8 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
     saved_b_offset = bb->offset;
     saved_b_length = bb->length;
     memset(&s, 0, sizeof(s));
-    s.fpin = *fpout;
-    fseeko(s.fpin, bb->offset, SEEK_SET);
+    s.fp_in = *fpout;
+    fseeko(s.fp_in, bb->offset, SEEK_SET);
     FILE *tmpfp2 = mutt_file_mkstemp();
     if (!tmpfp2)
     {
@@ -2406,17 +2406,17 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
       return -1;
     }
 
-    s.fpout = tmpfp2;
+    s.fp_out = tmpfp2;
     mutt_decode_attachment(bb, &s);
     fflush(tmpfp2);
-    bb->length = ftello(s.fpout);
+    bb->length = ftello(s.fp_out);
     bb->offset = 0;
     rewind(tmpfp2);
     mutt_file_fclose(fpout);
 
     memset(&s, 0, sizeof(s));
-    s.fpin = tmpfp2;
-    s.fpout = 0;
+    s.fp_in = tmpfp2;
+    s.fp_out = 0;
     *fpout = mutt_file_mkstemp();
     if (!*fpout)
     {
@@ -2881,15 +2881,15 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
   if (!mutt_body_get_charset(m, body_charset, sizeof(body_charset)))
     mutt_str_strfcpy(body_charset, "iso-8859-1", sizeof(body_charset));
 
-  fseeko(s->fpin, m->offset, SEEK_SET);
+  fseeko(s->fp_in, m->offset, SEEK_SET);
   last_pos = m->offset;
 
   for (bytes = m->length; bytes > 0;)
   {
-    if (!fgets(buf, sizeof(buf), s->fpin))
+    if (!fgets(buf, sizeof(buf), s->fp_in))
       break;
 
-    LOFF_T offset = ftello(s->fpin);
+    LOFF_T offset = ftello(s->fp_in);
     bytes -= (offset - last_pos); /* don't rely on mutt_str_strlen(buf) */
     last_pos = offset;
 
@@ -2922,7 +2922,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
       have_any_sigs = (have_any_sigs || (clearsign && (s->flags & MUTT_VERIFY)));
 
       /* Copy PGP material to an data container */
-      armored_data = file_to_data_object(s->fpin, m->offset, m->length);
+      armored_data = file_to_data_object(s->fp_in, m->offset, m->length);
       /* Invoke PGP if needed */
       if (pgp_keyblock)
       {
@@ -3139,10 +3139,10 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
     tattach->mime_headers = NULL;
 
     {
-      FILE *savefp = s->fpin;
-      s->fpin = fpout;
+      FILE *savefp = s->fp_in;
+      s->fp_in = fpout;
       rc = mutt_body_handler(tattach, s);
-      s->fpin = savefp;
+      s->fp_in = savefp;
     }
 
     /* Embedded multipart signed protected headers override the
@@ -3235,10 +3235,10 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
     tattach->mime_headers = NULL;
 
     {
-      FILE *savefp = s->fpin;
-      s->fpin = fpout;
+      FILE *savefp = s->fp_in;
+      s->fp_in = fpout;
       rc = mutt_body_handler(tattach, s);
-      s->fpin = savefp;
+      s->fp_in = savefp;
     }
 
     /* Embedded multipart signed protected headers override the

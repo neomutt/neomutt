@@ -42,16 +42,16 @@
  */
 struct State
 {
-  FILE *fpin;   ///< File to read from
-  FILE *fpout;  ///< File to write to
-  char *prefix; ///< String to add to the beginning of each output line
+  FILE      *fp_in;  ///< File to read from
+  FILE      *fp_out; ///< File to write to
+  char      *prefix; ///< String to add to the beginning of each output line
   int flags;    ///< Flags, e.g. #MUTT_DISPLAY
 };
 
 #define state_set_prefix(s) ((s)->flags |= MUTT_PENDINGPREFIX)
 #define state_reset_prefix(s) ((s)->flags &= ~MUTT_PENDINGPREFIX)
-#define state_puts(x, y) fputs(x, (y)->fpout)
-#define state_putc(x, y) fputc(x, (y)->fpout)
+#define state_puts(x, y) fputs(x, (y)->fp_out)
+#define state_putc(x, y) fputc(x, (y)->fp_out)
 
 void state_mark_attach(struct State *s);
 void state_mark_protected_header (struct State *s);

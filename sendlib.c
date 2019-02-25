@@ -1219,15 +1219,15 @@ static void transform_to_7bit(struct Body *a, FILE *fpin)
       a->force_charset = true;
 
       mutt_mktemp(buf, sizeof(buf));
-      s.fpout = mutt_file_fopen(buf, "w");
-      if (!s.fpout)
+      s.fp_out = mutt_file_fopen(buf, "w");
+      if (!s.fp_out)
       {
         mutt_perror("fopen");
         return;
       }
-      s.fpin = fpin;
+      s.fp_in = fpin;
       mutt_decode_attachment(a, &s);
-      mutt_file_fclose(&s.fpout);
+      mutt_file_fclose(&s.fp_out);
       FREE(&a->d_filename);
       a->d_filename = a->filename;
       a->filename = mutt_str_strdup(buf);

@@ -685,7 +685,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
   if (newhdr->content->type == TYPE_MULTIPART)
     newhdr->content = mutt_remove_multipart(newhdr->content);
 
-  s.fpin = bfp;
+  s.fp_in = bfp;
 
   /* create temporary files for all attachments */
   for (b = newhdr->content; b; b = b->next)
@@ -727,8 +727,8 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
     }
 
     mutt_adv_mktemp(file, sizeof(file));
-    s.fpout = mutt_file_fopen(file, "w");
-    if (!s.fpout)
+    s.fp_out = mutt_file_fopen(file, "w");
+    if (!s.fp_out)
       goto bail;
 
     if (((WithCrypto & APPLICATION_PGP) != 0) &&
@@ -782,7 +782,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
     else
       mutt_decode_attachment(b, &s);
 
-    if (mutt_file_fclose(&s.fpout) != 0)
+    if (mutt_file_fclose(&s.fp_out) != 0)
       goto bail;
 
     mutt_str_replace(&b->filename, file);

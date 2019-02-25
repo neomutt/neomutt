@@ -487,15 +487,15 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
 
   rc = 0;
 
-  fseeko(s->fpin, m->offset, SEEK_SET);
+  fseeko(s->fp_in, m->offset, SEEK_SET);
   last_pos = m->offset;
 
   for (bytes = m->length; bytes > 0;)
   {
-    if (!fgets(buf, sizeof(buf), s->fpin))
+    if (!fgets(buf, sizeof(buf), s->fp_in))
       break;
 
-    offset = ftello(s->fpin);
+    offset = ftello(s->fp_in);
     bytes -= (offset - last_pos); /* don't rely on mutt_str_strlen(buf) */
     last_pos = offset;
 
@@ -540,9 +540,9 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
       }
 
       fputs(buf, tmpfp);
-      while (bytes > 0 && fgets(buf, sizeof(buf) - 1, s->fpin))
+      while (bytes > 0 && fgets(buf, sizeof(buf) - 1, s->fp_in))
       {
-        offset = ftello(s->fpin);
+        offset = ftello(s->fp_in);
         bytes -= (offset - last_pos); /* don't rely on mutt_str_strlen(buf) */
         last_pos = offset;
 
@@ -636,7 +636,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
           {
             rewind(pgperr);
             crypt_current_time(s, "PGP");
-            rc = pgp_copy_checksig(pgperr, s->fpout);
+            rc = pgp_copy_checksig(pgperr, s->fp_out);
 
             if (rc == 0)
               have_any_sigs = true;
@@ -890,8 +890,8 @@ int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
     return -1;
   }
 
-  fseeko(s->fpin, sigbdy->offset, SEEK_SET);
-  mutt_file_copy_bytes(s->fpin, fp, sigbdy->length);
+  fseeko(s->fp_in, sigbdy->offset, SEEK_SET);
+  mutt_file_copy_bytes(s->fp_in, fp, sigbdy->length);
   mutt_file_fclose(&fp);
 
   FILE *pgperr = mutt_file_mkstemp();
@@ -907,14 +907,14 @@ int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
   thepid = pgp_invoke_verify(NULL, &pgpout, NULL, -1, -1, fileno(pgperr), tempfile, sigfile);
   if (thepid != -1)
   {
-    if (pgp_copy_checksig(pgpout, s->fpout) >= 0)
+    if (pgp_copy_checksig(pgpout, s->fp_out) >= 0)
       badsig = 0;
 
     mutt_file_fclose(&pgpout);
     fflush(pgperr);
     rewind(pgperr);
 
-    if (pgp_copy_checksig(pgperr, s->fpout) >= 0)
+    if (pgp_copy_checksig(pgperr, s->fp_out) >= 0)
       badsig = 0;
 
     const int rv = mutt_wait_filter(thepid);
@@ -953,8 +953,8 @@ static void pgp_extract_keys_from_attachment(FILE *fp, struct Body *top)
     return;
   }
 
-  s.fpin = fp;
-  s.fpout = tempfp;
+  s.fp_in = fp;
+  s.fp_out = tempfp;
 
   mutt_body_handler(top, &s);
 
@@ -1026,8 +1026,8 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
    * the temporary file.
    */
 
-  fseeko(s->fpin, a->offset, SEEK_SET);
-  mutt_file_copy_bytes(s->fpin, pgptmp, a->length);
+  fseeko(s->fp_in, a->offset, SEEK_SET);
+  mutt_file_copy_bytes(s->fp_in, pgptmp, a->length);
   mutt_file_fclose(&pgptmp);
 
   thepid = pgp_invoke_decrypt(&pgpin, &pgpout, NULL, -1, -1, fileno(pgperr), pgptmpfile);
@@ -1079,7 +1079,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   if (s->flags & MUTT_DISPLAY)
   {
     rewind(pgperr);
-    if (pgp_copy_checksig(pgperr, s->fpout) == 0 && !rv)
+    if (pgp_copy_checksig(pgperr, s->fp_out) == 0 && !rv)
       p->goodsig = true;
     else
       p->goodsig = false;
@@ -1145,7 +1145,7 @@ int pgp_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
   else
     return -1;
 
-  s.fpin = fpin;
+  s.fp_in = fpin;
 
   if (need_decode)
   {
@@ -1160,8 +1160,8 @@ int pgp_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
       return -1;
     }
 
-    fseeko(s.fpin, b->offset, SEEK_SET);
-    s.fpout = decoded_fp;
+    fseeko(s.fp_in, b->offset, SEEK_SET);
+    s.fp_out = decoded_fp;
 
     mutt_decode_attachment(b, &s);
 
@@ -1169,8 +1169,8 @@ int pgp_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
     b->length = ftello(decoded_fp);
     b->offset = 0;
     rewind(decoded_fp);
-    s.fpin = decoded_fp;
-    s.fpout = 0;
+    s.fp_in = decoded_fp;
+    s.fp_out = 0;
   }
 
   *fpout = mutt_file_mkstemp();
@@ -1237,10 +1237,10 @@ int pgp_class_encrypted_handler(struct Body *a, struct State *s)
     a->mime_headers = tattach->mime_headers;
     tattach->mime_headers = NULL;
 
-    fpin = s->fpin;
-    s->fpin = fpout;
+    fpin = s->fp_in;
+    s->fp_in = fpout;
     rc = mutt_body_handler(tattach, s);
-    s->fpin = fpin;
+    s->fp_in = fpin;
 
     /* Embedded multipart signed protected headers override the
      * encrypted headers.  We need to do this after the handler so
