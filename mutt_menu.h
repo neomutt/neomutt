@@ -27,6 +27,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "config/lib.h"
+#include "keymap.h"
 
 /* These Config Variables are only used in menu.c */
 extern short MenuContext;
@@ -154,7 +155,7 @@ void         mutt_menu_current_redraw(void);
 void         mutt_menu_destroy(struct Menu **p);
 void         mutt_menu_init(void);
 int          mutt_menu_loop(struct Menu *menu);
-struct Menu *mutt_menu_new(int menu);
+struct Menu *mutt_menu_new(enum MenuType type);
 void         mutt_menu_pop_current(struct Menu *menu);
 void         mutt_menu_push_current(struct Menu *menu);
 void         mutt_menu_set_current_redraw_full(void);

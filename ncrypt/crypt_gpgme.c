@@ -4631,7 +4631,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
   char helpstr[LONG_STRING], buf[LONG_STRING];
   struct CryptKeyInfo *k = NULL;
   int (*f)(const void *, const void *);
-  int menu_to_use = 0;
+  enum MenuType menu_to_use = MENU_GENERIC;
   bool unusable = false;
 
   *forced_valid = 0;
