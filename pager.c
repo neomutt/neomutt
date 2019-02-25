@@ -1541,7 +1541,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf, int f
  * @param[in]  n               Line number
  * @param[out] last            Last line
  * @param[out] max             Maximum number of lines
- * @param[in]  flags           See below
+ * @param[in]  flags           Flags, e.g. #MUTT_SHOWFLAT
  * @param[out] quote_list      Email quoting style
  * @param[out] q_level         Level of quoting
  * @param[out] force_redraw    Force a repaint
@@ -1550,15 +1550,6 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf, int f
  * @retval -1 EOF was reached
  * @retval 0  normal exit, line was not displayed
  * @retval >0 normal exit, line was displayed
- *
- * flags:
- * * #MUTT_SHOWFLAT, show characters (used for displaying help)
- * * #MUTT_SHOWCOLOR, show characters in color otherwise don't show characters
- * * #MUTT_HIDE, don't show quoted text
- * * #MUTT_SEARCH, resolve search patterns
- * * #MUTT_TYPES, compute line's type
- * * #MUTT_PAGER_NSKIP, keeps leading whitespace
- * * #MUTT_PAGER_MARKER, eventually show markers
  */
 static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info, int n,
                         int *last, int *max, int flags, struct QClass **quote_list,

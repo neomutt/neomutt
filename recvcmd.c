@@ -627,9 +627,9 @@ bail:
  * This is different from the previous function since we want to mimic the
  * index menu's behavior.
  *
- * Code reuse from ci_send_message is not possible here - ci_send_message
- * relies on a context structure to find messages, while, on the attachment
- * menu, messages are referenced through the attachment index.
+ * Code reuse from ci_send_message() is not possible here - it relies on a
+ * context structure to find messages, while, on the attachment menu, messages
+ * are referenced through the attachment index.
  */
 static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *cur, int flags)
 {

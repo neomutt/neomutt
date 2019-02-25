@@ -969,7 +969,7 @@ void mutt_menu_init(void)
 
 /**
  * mutt_menu_new - Create a new Menu
- * @param menu Menu type, e.g. MENU_PAGER
+ * @param menu Menu type, e.g. #MENU_PAGER
  * @retval ptr New Menu
  */
 struct Menu *mutt_menu_new(int menu)

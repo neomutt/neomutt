@@ -65,26 +65,26 @@ void mutt_what_key(void);
  */
 enum MenuTypes
 {
-  MENU_ALIAS,   ///< Select an email address by its alias
-  MENU_ATTACH,  ///< Select an attachment
-  MENU_COMPOSE, ///< Compose an email
-  MENU_EDITOR,  ///< Text entry area
-  MENU_FOLDER,  ///< General file/mailbox browser
-  MENU_GENERIC, ///< Generic selection list
-  MENU_MAIN,    ///< Index panel (list of emails)
-  MENU_PAGER,   ///< Pager pager (email viewer)
-  MENU_POST,    ///< Select a postponed email
-  MENU_QUERY,   ///< Select from results of external query
-  MENU_PGP,     ///< PGP encryption menu
-  MENU_SMIME,   ///< SMIME encryption menu
+  MENU_ALIAS,            ///< Select an email address by its alias
+  MENU_ATTACH,           ///< Select an attachment
+  MENU_COMPOSE,          ///< Compose an email
+  MENU_EDITOR,           ///< Text entry area
+  MENU_FOLDER,           ///< General file/mailbox browser
+  MENU_GENERIC,          ///< Generic selection list
+  MENU_MAIN,             ///< Index panel (list of emails)
+  MENU_PAGER,            ///< Pager pager (email viewer)
+  MENU_POST,             ///< Select a postponed email
+  MENU_QUERY,            ///< Select from results of external query
+  MENU_PGP,              ///< PGP encryption menu
+  MENU_SMIME,            ///< SMIME encryption menu
 #ifdef CRYPT_BACKEND_GPGME
   MENU_KEY_SELECT_PGP,   ///< Select a PGP key
   MENU_KEY_SELECT_SMIME, ///< Select a SMIME key
 #endif
 #ifdef MIXMASTER
-  MENU_MIX, ///< Create/edit a Mixmaster chain
+  MENU_MIX,              ///< Create/edit a Mixmaster chain
 #endif
-  MENU_SUMMARY,
+  MENU_SUMMARY,          ///< Summary pages
   MENU_MAX,
 };
 

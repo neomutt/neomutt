@@ -56,29 +56,29 @@ struct Mapping;
 #endif
 
 /* flags for mutt_enter_string_full() */
-#define MUTT_ALIAS    (1 << 0)  /**< do alias "completion" by calling up the alias-menu */
-#define MUTT_FILE     (1 << 1)  /**< do file completion */
-#define MUTT_EFILE    (1 << 2)  /**< do file completion, plus incoming folders */
-#define MUTT_CMD      (1 << 3)  /**< do completion on previous word */
-#define MUTT_PASS     (1 << 4)  /**< password mode (no echo) */
-#define MUTT_CLEAR    (1 << 5)  /**< clear input if printable character is pressed */
-#define MUTT_COMMAND  (1 << 6)  /**< do command completion */
-#define MUTT_PATTERN  (1 << 7)  /**< pattern mode - only used for history classes */
-#define MUTT_LABEL    (1 << 8)  /**< do label completion */
-#define MUTT_NM_QUERY (1 << 9)  /**< Notmuch query mode. */
-#define MUTT_NM_TAG   (1 << 10) /**< Notmuch tag +/- mode. */
+#define MUTT_ALIAS         (1 << 0)  ///< Do alias "completion" by calling up the alias-menu
+#define MUTT_FILE          (1 << 1)  ///< Do file completion
+#define MUTT_EFILE         (1 << 2)  ///< Do file completion, plus incoming folders
+#define MUTT_CMD           (1 << 3)  ///< Do completion on previous word
+#define MUTT_PASS          (1 << 4)  ///< Password mode (no echo)
+#define MUTT_CLEAR         (1 << 5)  ///< Clear input if printable character is pressed
+#define MUTT_COMMAND       (1 << 6)  ///< Do command completion
+#define MUTT_PATTERN       (1 << 7)  ///< Pattern mode - only used for history classes
+#define MUTT_LABEL         (1 << 8)  ///< Do label completion
+#define MUTT_NM_QUERY      (1 << 9)  ///< Notmuch query mode.
+#define MUTT_NM_TAG        (1 << 10) ///< Notmuch tag +/- mode.
 
 /* flags for mutt_extract_token() */
-#define MUTT_TOKEN_EQUAL         (1<<0)  /**< treat '=' as a special */
-#define MUTT_TOKEN_CONDENSE      (1<<1)  /**< ^(char) to control chars (macros) */
-#define MUTT_TOKEN_SPACE         (1<<2)  /**< don't treat whitespace as a term */
-#define MUTT_TOKEN_QUOTE         (1<<3)  /**< don't interpret quotes */
-#define MUTT_TOKEN_PATTERN       (1<<4)  /**< !)|~ are terms (for patterns) */
-#define MUTT_TOKEN_COMMENT       (1<<5)  /**< don't reap comments */
-#define MUTT_TOKEN_SEMICOLON     (1<<6)  /**< don't treat ; as special */
-#define MUTT_TOKEN_BACKTICK_VARS (1<<7)  /**< expand variables within backticks */
-#define MUTT_TOKEN_NOSHELL       (1<<8)  /**< don't expand environment variables */
-#define MUTT_TOKEN_QUESTION      (1<<9)  /**< treat '?' as a special */
+#define MUTT_TOKEN_EQUAL         (1 << 0)  ///< Treat '=' as a special
+#define MUTT_TOKEN_CONDENSE      (1 << 1)  ///< ^(char) to control chars (macros)
+#define MUTT_TOKEN_SPACE         (1 << 2)  ///< Don't treat whitespace as a term
+#define MUTT_TOKEN_QUOTE         (1 << 3)  ///< Don't interpret quotes
+#define MUTT_TOKEN_PATTERN       (1 << 4)  ///< !)|~ are terms (for patterns)
+#define MUTT_TOKEN_COMMENT       (1 << 5)  ///< Don't reap comments
+#define MUTT_TOKEN_SEMICOLON     (1 << 6)  ///< Don't treat ; as special
+#define MUTT_TOKEN_BACKTICK_VARS (1 << 7)  ///< Expand variables within backticks
+#define MUTT_TOKEN_NOSHELL       (1 << 8)  ///< Don't expand environment variables
+#define MUTT_TOKEN_QUESTION      (1 << 9)  ///< Treat '?' as a special
 
 /* tree characters for linearize_tree and print_enriched_string */
 #define MUTT_TREE_LLCORNER 1

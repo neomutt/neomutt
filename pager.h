@@ -39,21 +39,21 @@ extern struct Regex *Smileys;
 extern bool          Tilde;
 
 /* dynamic internal flags */
-#define MUTT_SHOWFLAT  (1 << 0)
-#define MUTT_SHOWCOLOR (1 << 1)
-#define MUTT_HIDE      (1 << 2)
-#define MUTT_SEARCH    (1 << 3)
-#define MUTT_TYPES     (1 << 4)
-#define MUTT_SHOW      (MUTT_SHOWCOLOR | MUTT_SHOWFLAT)
+#define MUTT_SHOWFLAT         (1 << 0)    ///< Show characters (used for displaying help)
+#define MUTT_SHOWCOLOR        (1 << 1)    ///< Show characters in color otherwise don't show characters
+#define MUTT_HIDE             (1 << 2)    ///< Don't show quoted text
+#define MUTT_SEARCH           (1 << 3)    ///< Resolve search patterns
+#define MUTT_TYPES            (1 << 4)    ///< Compute line's type
+#define MUTT_SHOW             (MUTT_SHOWCOLOR | MUTT_SHOWFLAT)
 
 /* exported flags for mutt_(do_)?pager */
-#define MUTT_PAGER_NSKIP      (1 << 5)    /**< preserve whitespace with smartwrap */
-#define MUTT_PAGER_MARKER     (1 << 6)    /**< use markers if option is set */
-#define MUTT_PAGER_RETWINCH   (1 << 7)    /**< need reformatting on SIGWINCH */
+#define MUTT_PAGER_NSKIP      (1 << 5)    ///< Preserve whitespace with smartwrap
+#define MUTT_PAGER_MARKER     (1 << 6)    ///< Use markers if option is set
+#define MUTT_PAGER_RETWINCH   (1 << 7)    ///< Need reformatting on SIGWINCH
+#define MUTT_PAGER_ATTACHMENT (1 << 8)    ///< Attachments may exist
+#define MUTT_PAGER_NOWRAP     (1 << 9)    ///< Format for term width, ignore $wrap
+#define MUTT_PAGER_LOGS       (1 << 10)   ///< Logview mode
 #define MUTT_PAGER_MESSAGE    (MUTT_SHOWCOLOR | MUTT_PAGER_MARKER)
-#define MUTT_PAGER_ATTACHMENT (1 << 8)
-#define MUTT_PAGER_NOWRAP     (1 << 9)    /**< format for term width, ignore $wrap */
-#define MUTT_PAGER_LOGS       (1 << 10)   /**< Logview mode */
 
 #define MUTT_DISPLAYFLAGS (MUTT_SHOW | MUTT_PAGER_NSKIP | MUTT_PAGER_MARKER | MUTT_PAGER_LOGS)
 

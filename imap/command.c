@@ -1215,17 +1215,12 @@ const char *imap_cmd_trailer(struct ImapAccountData *adata)
  * imap_exec - Execute a command and wait for the response from the server
  * @param adata Imap Account data
  * @param cmdstr Command to execute
- * @param flags  Flags (see below)
+ * @param flags  Flags, e.g. #IMAP_CMD_PASS
  * @retval #IMAP_EXEC_SUCCESS Command successful or queued
  * @retval #IMAP_EXEC_ERROR   Command returned an error
  * @retval #IMAP_EXEC_FATAL   Imap connection failure
  *
  * Also, handle untagged responses.
- *
- * Flags:
- * * #IMAP_CMD_PASS: Command contains a password. Suppress logging.
- * * #IMAP_CMD_QUEUE: Only queue command, do not execute.
- * * #IMAP_CMD_POLL: Poll the socket for a response before running imap_cmd_step().
  */
 int imap_exec(struct ImapAccountData *adata, const char *cmdstr, int flags)
 {

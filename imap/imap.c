@@ -773,7 +773,7 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
  *
  * Purge IMAP portion of expunged messages from the context. Must not be done
  * while something has a handle on any headers (eg inside pager or editor).
- * That is, check IMAP_REOPEN_ALLOW.
+ * That is, check #IMAP_REOPEN_ALLOW.
  */
 void imap_expunge_mailbox(struct Mailbox *m)
 {

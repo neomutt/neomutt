@@ -81,21 +81,21 @@ extern bool          SigOnTop;
 extern bool          UseFrom;
 
 /* flags to ci_send_message() */
-#define SEND_REPLY            (1 << 0)
-#define SEND_GROUP_REPLY      (1 << 1)
-#define SEND_LIST_REPLY       (1 << 2)
-#define SEND_FORWARD          (1 << 3)
-#define SEND_POSTPONED        (1 << 4)
-#define SEND_BATCH            (1 << 5)
-#define SEND_MAILX            (1 << 6)
-#define SEND_KEY              (1 << 7)
-#define SEND_RESEND           (1 << 8)
-#define SEND_POSTPONED_FCC    (1 << 9)  /**< used by mutt_get_postponed() to signal that the x-mutt-fcc header field was present */
-#define SEND_NO_FREE_HEADER   (1 << 10) /**< Used by the -E flag */
-#define SEND_DRAFT_FILE       (1 << 11) /**< Used by the -H flag */
-#define SEND_TO_SENDER        (1 << 12)
-#define SEND_GROUP_CHAT_REPLY (1 << 13)
-#define SEND_NEWS             (1 << 14)
+#define SEND_REPLY            (1 << 0)  ///< Reply to sender
+#define SEND_GROUP_REPLY      (1 << 1)  ///< Reply to all
+#define SEND_LIST_REPLY       (1 << 2)  ///< Reply to mailing list
+#define SEND_FORWARD          (1 << 3)  ///< Forward email
+#define SEND_POSTPONED        (1 << 4)  ///< Recall a postponed email
+#define SEND_BATCH            (1 << 5)  ///< Send email in batch mode (without user interaction)
+#define SEND_MAILX            (1 << 6)  ///< Send email in Mailx compatibility mode
+#define SEND_KEY              (1 << 7)  ///< Mail a PGP public key
+#define SEND_RESEND           (1 << 8)  ///< Reply using the current email as a template
+#define SEND_POSTPONED_FCC    (1 << 9)  ///< Used by mutt_get_postponed() to signal that the x-mutt-fcc header field was present
+#define SEND_NO_FREE_HEADER   (1 << 10) ///< Used by the -E flag
+#define SEND_DRAFT_FILE       (1 << 11) ///< Used by the -H flag
+#define SEND_TO_SENDER        (1 << 12) ///< Compose new email to sender
+#define SEND_GROUP_CHAT_REPLY (1 << 13) ///< Reply to all recipients preserving To/Cc
+#define SEND_NEWS             (1 << 14) ///< Reply to a news article
 
 int             ci_send_message(int flags, struct Email *msg, const char *tempfile, struct Context *ctx, struct EmailList *el);
 void            mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv);

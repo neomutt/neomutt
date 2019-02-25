@@ -42,36 +42,35 @@ extern bool SortRe;
 extern bool StrictThreads;
 extern bool ThreadReceived;
 
-#define MUTT_THREAD_COLLAPSE    (1 << 0)
-#define MUTT_THREAD_UNCOLLAPSE  (1 << 1)
-#define MUTT_THREAD_GET_HIDDEN  (1 << 2)
-#define MUTT_THREAD_UNREAD      (1 << 3)
-#define MUTT_THREAD_NEXT_UNREAD (1 << 4)
-#define MUTT_THREAD_FLAGGED     (1 << 5)
-
-int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads);
-#define mutt_next_thread(x)        mutt_aside_thread(x, true,  false)
-#define mutt_previous_thread(x)    mutt_aside_thread(x, false, false)
-#define mutt_next_subthread(x)     mutt_aside_thread(x, true,  true)
-#define mutt_previous_subthread(x) mutt_aside_thread(x, false, true)
+#define MUTT_THREAD_COLLAPSE    (1 << 0) ///< Collapse an email thread
+#define MUTT_THREAD_UNCOLLAPSE  (1 << 1) ///< Uncollapse an email thread
+#define MUTT_THREAD_GET_HIDDEN  (1 << 2) ///< Count non-visible emails in a thread
+#define MUTT_THREAD_UNREAD      (1 << 3) ///< Count unread emails in a thread
+#define MUTT_THREAD_NEXT_UNREAD (1 << 4) ///< Find the next unread email
+#define MUTT_THREAD_FLAGGED     (1 << 5) ///< Count flagged emails in a thread
 
 int mutt_traverse_thread(struct Context *ctx, struct Email *cur, int flag);
-#define mutt_collapse_thread(x, y)         mutt_traverse_thread(x, y, MUTT_THREAD_COLLAPSE)
-#define mutt_uncollapse_thread(x, y)       mutt_traverse_thread(x, y, MUTT_THREAD_UNCOLLAPSE)
-#define mutt_get_hidden(x, y)              mutt_traverse_thread(x, y, MUTT_THREAD_GET_HIDDEN)
-#define mutt_thread_contains_unread(x, y)  mutt_traverse_thread(x, y, MUTT_THREAD_UNREAD)
-#define mutt_thread_contains_flagged(x, y) mutt_traverse_thread(x, y, MUTT_THREAD_FLAGGED)
-#define mutt_thread_next_unread(x, y)      mutt_traverse_thread(x, y, MUTT_THREAD_NEXT_UNREAD)
+#define mutt_collapse_thread(ctx, cur)         mutt_traverse_thread(ctx, cur, MUTT_THREAD_COLLAPSE)
+#define mutt_uncollapse_thread(ctx, cur)       mutt_traverse_thread(ctx, cur, MUTT_THREAD_UNCOLLAPSE)
+#define mutt_get_hidden(ctx, cur)              mutt_traverse_thread(ctx, cur, MUTT_THREAD_GET_HIDDEN)
+#define mutt_thread_contains_unread(ctx, cur)  mutt_traverse_thread(ctx, cur, MUTT_THREAD_UNREAD)
+#define mutt_thread_contains_flagged(ctx, cur) mutt_traverse_thread(ctx, cur, MUTT_THREAD_FLAGGED)
+#define mutt_thread_next_unread(ctx, cur)      mutt_traverse_thread(ctx, cur, MUTT_THREAD_NEXT_UNREAD)
 
-bool mutt_link_threads(struct Email *parent, struct EmailList *children, struct Mailbox *m);
-int mutt_messages_in_thread(struct Mailbox *m, struct Email *e, int flag);
-void mutt_draw_tree(struct Context *ctx);
+int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads);
+#define mutt_next_thread(e)        mutt_aside_thread(e, true,  false)
+#define mutt_previous_thread(e)    mutt_aside_thread(e, false, false)
+#define mutt_next_subthread(e)     mutt_aside_thread(e, true,  true)
+#define mutt_previous_subthread(e) mutt_aside_thread(e, false, true)
 
-void mutt_clear_threads(struct Context *ctx);
-struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, bool init);
-void mutt_sort_threads(struct Context *ctx, bool init);
-int mutt_parent_message(struct Context *ctx, struct Email *e, bool find_root);
-void mutt_set_virtual(struct Context *ctx);
-struct Hash *mutt_make_id_hash(struct Mailbox *m);
+void               mutt_clear_threads     (struct Context *ctx);
+void               mutt_draw_tree         (struct Context *ctx);
+bool               mutt_link_threads      (struct Email *parent, struct EmailList *children, struct Mailbox *m);
+struct Hash *      mutt_make_id_hash      (struct Mailbox *m);
+int                mutt_messages_in_thread(struct Mailbox *m, struct Email *e, int flag);
+int                mutt_parent_message    (struct Context *ctx, struct Email *e, bool find_root);
+void               mutt_set_virtual       (struct Context *ctx);
+struct MuttThread *mutt_sort_subthreads   (struct MuttThread *thread, bool init);
+void               mutt_sort_threads      (struct Context *ctx, bool init);
 
 #endif /* MUTT_MUTT_THREAD_H */
