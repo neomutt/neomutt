@@ -814,7 +814,7 @@ void mutt_safe_path(char *buf, size_t buflen, struct Address *a)
  * @param[in]  flags    Callback flags
  */
 void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const char *src,
-                         format_t *callback, unsigned long data, enum FormatFlag flags)
+                         format_t *callback, unsigned long data, int flags)
 {
   char prefix[SHORT_STRING], tmp[LONG_STRING], *cp = NULL, *wptr = buf, ch;
   char if_str[SHORT_STRING], else_str[SHORT_STRING];

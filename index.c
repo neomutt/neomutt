@@ -734,7 +734,7 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
   if (!e)
     return;
 
-  enum FormatFlag flag = MUTT_FORMAT_ARROWCURSOR | MUTT_FORMAT_INDEX;
+  int flag = MUTT_FORMAT_ARROWCURSOR | MUTT_FORMAT_INDEX;
   struct MuttThread *tmp = NULL;
 
   if ((Sort & SORT_MASK) == SORT_THREADS && e->tree)

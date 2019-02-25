@@ -196,7 +196,7 @@ static bool first_mailing_list(char *buf, size_t buflen, struct Address *a)
  *
  * The colors are stored as "magic" strings embedded in the text.
  */
-static size_t add_index_color(char *buf, size_t buflen, enum FormatFlag flags, char color)
+static size_t add_index_color(char *buf, size_t buflen, int flags, char color)
 {
   /* only add color markers if we are operating on main index entries. */
   if (!(flags & MUTT_FORMAT_INDEX))
@@ -301,8 +301,7 @@ static const char *make_from_prefix(enum FieldType disp)
  * The field can optionally be prefixed by a character from $from_chars.
  * If $from_chars is not set, the prefix will be, "To", "Cc", etc
  */
-static void make_from(struct Envelope *env, char *buf, size_t buflen,
-                      bool do_lists, enum FormatFlag flags)
+static void make_from(struct Envelope *env, char *buf, size_t buflen, bool do_lists, int flags)
 {
   if (!env || !buf)
     return;
@@ -547,7 +546,7 @@ static bool thread_is_old(struct Context *ctx, struct Email *e)
 static const char *index_format_str(char *buf, size_t buflen, size_t col, int cols,
                                     char op, const char *src, const char *prec,
                                     const char *if_str, const char *else_str,
-                                    unsigned long data, enum FormatFlag flags)
+                                    unsigned long data, int flags)
 {
   struct HdrFormatInfo *hfi = (struct HdrFormatInfo *) data;
   char fmt[SHORT_STRING], tmp[LONG_STRING], *p, *tags = NULL;
@@ -1454,7 +1453,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
  * @param flags  Format flags
  */
 void mutt_make_string_flags(char *buf, size_t buflen, const char *s, struct Context *ctx,
-                            struct Mailbox *m, struct Email *e, enum FormatFlag flags)
+                            struct Mailbox *m, struct Email *e, int flags)
 {
   struct HdrFormatInfo hfi;
 
@@ -1477,7 +1476,7 @@ void mutt_make_string_flags(char *buf, size_t buflen, const char *s, struct Cont
  * @param flags  Format flags
  */
 void mutt_make_string_info(char *buf, size_t buflen, int cols, const char *s,
-                           struct HdrFormatInfo *hfi, enum FormatFlag flags)
+                           struct HdrFormatInfo *hfi, int flags)
 {
   mutt_expando_format(buf, buflen, 0, cols, s, index_format_str, (unsigned long) hfi, flags);
 }

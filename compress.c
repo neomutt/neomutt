@@ -262,7 +262,7 @@ static void free_compress_info(struct Mailbox *m)
 static const char *compress_format_str(char *buf, size_t buflen, size_t col, int cols,
                                        char op, const char *src, const char *prec,
                                        const char *if_str, const char *else_str,
-                                       unsigned long data, enum FormatFlag flags)
+                                       unsigned long data, int flags)
 {
   if (!buf || (data == 0))
     return src;

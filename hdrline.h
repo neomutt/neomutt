@@ -52,9 +52,9 @@ bool mutt_is_mail_list(struct Address *addr);
 bool mutt_is_subscribed_list(struct Address *addr);
 void mutt_make_string_flags(char *buf, size_t buflen, const char *s,
                             struct Context *ctx, struct Mailbox *m,
-                            struct Email *e, enum FormatFlag flags);
+                            struct Email *e, int flags);
 void mutt_make_string_info(char *buf, size_t buflen, int cols, const char *s,
-                           struct HdrFormatInfo *hfi, enum FormatFlag flags);
+                           struct HdrFormatInfo *hfi, int flags);
 
 #define mutt_make_string(BUF, BUFLEN, S, CTX, M, E)                            \
   mutt_make_string_flags(BUF, BUFLEN, S, CTX, M, E, 0)

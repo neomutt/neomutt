@@ -247,7 +247,7 @@ static int query_search(struct Menu *menu, regex_t *rx, int line)
 static const char *query_format_str(char *buf, size_t buflen, size_t col, int cols,
                                     char op, const char *src, const char *prec,
                                     const char *if_str, const char *else_str,
-                                    unsigned long data, enum FormatFlag flags)
+                                    unsigned long data, int flags)
 {
   struct Entry *entry = (struct Entry *) data;
   struct Query *query = entry->data;

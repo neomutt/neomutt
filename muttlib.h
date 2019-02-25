@@ -46,7 +46,7 @@ void        mutt_buffer_adv_mktemp (struct Buffer *buf);
 void        mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix, const char *suffix, const char *src, int line);
 int         mutt_check_overwrite(const char *attname, const char *path, char *fname, size_t flen, int *append, char **directory);
 void        mutt_encode_path(char *dest, size_t dlen, const char *src);
-void        mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const char *src, format_t *callback, unsigned long data, enum FormatFlag flags);
+void        mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const char *src, format_t *callback, unsigned long data, int flags);
 char *      mutt_expand_path(char *s, size_t slen);
 char *      mutt_expand_path_regex(char *s, size_t slen, bool regex);
 char *      mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw);
