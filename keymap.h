@@ -61,9 +61,9 @@ void km_error_key(int menu);
 void mutt_what_key(void);
 
 /**
- * enum MenuTypes - Types of GUI selections
+ * enum MenuType - Types of GUI selections
  */
-enum MenuTypes
+enum MenuType
 {
   MENU_ALIAS,            ///< Select an email address by its alias
   MENU_ATTACH,           ///< Select an attachment
