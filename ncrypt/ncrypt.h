@@ -114,30 +114,30 @@ extern long  SmimeTimeout;
 extern char *SmimeVerifyCommand;
 extern char *SmimeVerifyOpaqueCommand;
 
-#define ENCRYPT                 (1 << 0)  ///< Email is encrypted
-#define SIGN                    (1 << 1)  ///< Email is signed
-#define GOODSIGN                (1 << 2)  ///< Email has a valid signature
-#define BADSIGN                 (1 << 3)  ///< Email has a bad signature
-#define PARTSIGN                (1 << 4)  ///< Not all parts of the email is signed
-#define SIGNOPAQUE              (1 << 5)  ///< Email has an opaque signature (encrypted)
-#define KEYBLOCK                (1 << 6)  ///< Email has a key attached
-#define INLINE                  (1 << 7)  ///< Email has an inline signature
-#define OPPENCRYPT              (1 << 8)  ///< Opportunistic encrypt mode
+#define SEC_ENCRYPT             (1 << 0)  ///< Email is encrypted
+#define SEC_SIGN                (1 << 1)  ///< Email is signed
+#define SEC_GOODSIGN            (1 << 2)  ///< Email has a valid signature
+#define SEC_BADSIGN             (1 << 3)  ///< Email has a bad signature
+#define SEC_PARTSIGN            (1 << 4)  ///< Not all parts of the email is signed
+#define SEC_SIGNOPAQUE          (1 << 5)  ///< Email has an opaque signature (encrypted)
+#define SEC_KEYBLOCK            (1 << 6)  ///< Email has a key attached
+#define SEC_INLINE              (1 << 7)  ///< Email has an inline signature
+#define SEC_OPPENCRYPT          (1 << 8)  ///< Opportunistic encrypt mode
 #define APPLICATION_PGP         (1 << 9)  ///< Use PGP to encrypt/sign
 #define APPLICATION_SMIME       (1 << 10) ///< Use SMIME to encrypt/sign
 #define PGP_TRADITIONAL_CHECKED (1 << 11) ///< Email has a traditional (inline) signature
 
-#define PGP_ENCRYPT  (APPLICATION_PGP | ENCRYPT)
-#define PGP_SIGN     (APPLICATION_PGP | SIGN)
-#define PGP_GOODSIGN (APPLICATION_PGP | GOODSIGN)
-#define PGP_KEY      (APPLICATION_PGP | KEYBLOCK)
-#define PGP_INLINE   (APPLICATION_PGP | INLINE)
+#define PGP_ENCRYPT  (APPLICATION_PGP | SEC_ENCRYPT)
+#define PGP_SIGN     (APPLICATION_PGP | SEC_SIGN)
+#define PGP_GOODSIGN (APPLICATION_PGP | SEC_GOODSIGN)
+#define PGP_KEY      (APPLICATION_PGP | SEC_KEYBLOCK)
+#define PGP_INLINE   (APPLICATION_PGP | SEC_INLINE)
 
-#define SMIME_ENCRYPT  (APPLICATION_SMIME | ENCRYPT)
-#define SMIME_SIGN     (APPLICATION_SMIME | SIGN)
-#define SMIME_GOODSIGN (APPLICATION_SMIME | GOODSIGN)
-#define SMIME_BADSIGN  (APPLICATION_SMIME | BADSIGN)
-#define SMIME_OPAQUE   (APPLICATION_SMIME | SIGNOPAQUE)
+#define SMIME_ENCRYPT  (APPLICATION_SMIME | SEC_ENCRYPT)
+#define SMIME_SIGN     (APPLICATION_SMIME | SEC_SIGN)
+#define SMIME_GOODSIGN (APPLICATION_SMIME | SEC_GOODSIGN)
+#define SMIME_BADSIGN  (APPLICATION_SMIME | SEC_BADSIGN)
+#define SMIME_OPAQUE   (APPLICATION_SMIME | SEC_SIGNOPAQUE)
 
 /* WITHCRYPTO actually replaces ifdefs so make the code more readable.
  * Because it is defined as a constant and known at compile time, the

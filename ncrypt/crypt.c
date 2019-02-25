@@ -176,10 +176,10 @@ int mutt_protect(struct Email *msg, char *keylist)
   if (!WithCrypto)
     return -1;
 
-  if (!(msg->security & (ENCRYPT | SIGN)))
+  if (!(msg->security & (SEC_ENCRYPT | SEC_SIGN)))
     return 0;
 
-  if ((msg->security & SIGN) && !crypt_valid_passphrase(msg->security))
+  if ((msg->security & SEC_SIGN) && !crypt_valid_passphrase(msg->security))
     return -1;
 
   if (((WithCrypto & APPLICATION_PGP) != 0) && ((msg->security & PGP_INLINE) == PGP_INLINE))
@@ -243,7 +243,7 @@ int mutt_protect(struct Email *msg, char *keylist)
   if (WithCrypto & APPLICATION_PGP)
     tmp_pgp_pbody = msg->content;
 
-  if (CryptUsePka && (msg->security & SIGN))
+  if (CryptUsePka && (msg->security & SEC_SIGN))
   {
     /* Set sender (necessary for e.g. PKA).  */
     const char *mailbox = NULL;
@@ -277,7 +277,7 @@ int mutt_protect(struct Email *msg, char *keylist)
     msg->content->mime_headers = protected_headers;
   }
 
-  if (msg->security & SIGN)
+  if (msg->security & SEC_SIGN)
   {
     if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME))
     {
@@ -289,13 +289,13 @@ int mutt_protect(struct Email *msg, char *keylist)
     }
 
     if (((WithCrypto & APPLICATION_PGP) != 0) && (msg->security & APPLICATION_PGP) &&
-        (!(flags & ENCRYPT) || PgpRetainableSigs))
+        (!(flags & SEC_ENCRYPT) || PgpRetainableSigs))
     {
       tmp_pbody = crypt_pgp_sign_message(msg->content);
       if (!tmp_pbody)
         goto bail;
 
-      flags &= ~SIGN;
+      flags &= ~SEC_SIGN;
       pbody = tmp_pbody;
       tmp_pgp_pbody = tmp_pbody;
     }
@@ -307,7 +307,7 @@ int mutt_protect(struct Email *msg, char *keylist)
     }
   }
 
-  if (msg->security & ENCRYPT)
+  if (msg->security & SEC_ENCRYPT)
   {
     if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME))
     {
@@ -331,7 +331,7 @@ int mutt_protect(struct Email *msg, char *keylist)
 
     if (((WithCrypto & APPLICATION_PGP) != 0) && (msg->security & APPLICATION_PGP))
     {
-      pbody = crypt_pgp_encrypt_message(tmp_pgp_pbody, keylist, (flags & SIGN));
+      pbody = crypt_pgp_encrypt_message(tmp_pgp_pbody, keylist, (flags & SEC_SIGN));
       if (!pbody)
       {
         /* did we perform a retainable signature? */
@@ -390,7 +390,7 @@ int mutt_is_multipart_signed(struct Body *b)
     return 0;
 
   if (!(mutt_str_strcasecmp(p, "multipart/mixed") != 0))
-    return SIGN;
+    return SEC_SIGN;
 
   if (((WithCrypto & APPLICATION_PGP) != 0) &&
       !(mutt_str_strcasecmp(p, "application/pgp-signature") != 0))
@@ -657,7 +657,7 @@ int mutt_is_application_smime(struct Body *m)
 /**
  * crypt_query - Check out the type of encryption used
  * @param m Body of email
- * @retval num Flags, e.g. #GOODSIGN
+ * @retval num Flags, e.g. #SEC_GOODSIGN
  * @retval 0   Error
  *
  * Set the cached status values if there are any.
@@ -681,16 +681,16 @@ int crypt_query(struct Body *m)
     {
       t |= mutt_is_application_smime(m);
       if (t && m->goodsig)
-        t |= GOODSIGN;
+        t |= SEC_GOODSIGN;
       if (t && m->badsig)
-        t |= BADSIGN;
+        t |= SEC_BADSIGN;
     }
   }
   else if (((WithCrypto & APPLICATION_PGP) != 0) && m->type == TYPE_TEXT)
   {
     t |= mutt_is_application_pgp(m);
     if (t && m->goodsig)
-      t |= GOODSIGN;
+      t |= SEC_GOODSIGN;
   }
 
   if (m->type == TYPE_MULTIPART)
@@ -700,7 +700,7 @@ int crypt_query(struct Body *m)
     t |= mutt_is_malformed_multipart_pgp_encrypted(m);
 
     if (t && m->goodsig)
-      t |= GOODSIGN;
+      t |= SEC_GOODSIGN;
   }
 
   if (m->type == TYPE_MULTIPART || m->type == TYPE_MESSAGE)
@@ -714,10 +714,10 @@ int crypt_query(struct Body *m)
       u &= v;
       w |= v;
     }
-    t |= u | (w & ~GOODSIGN);
+    t |= u | (w & ~SEC_GOODSIGN);
 
-    if ((w & GOODSIGN) && !(u & GOODSIGN))
-      t |= PARTSIGN;
+    if ((w & SEC_GOODSIGN) && !(u & SEC_GOODSIGN))
+      t |= SEC_PARTSIGN;
   }
 
   return t;
@@ -849,7 +849,7 @@ void crypt_extract_keys_from_messages(struct EmailList *el)
     struct Email *e = en->email;
 
     mutt_parse_mime_message(Context->mailbox, e);
-    if (e->security & ENCRYPT && !crypt_valid_passphrase(e->security))
+    if (e->security & SEC_ENCRYPT && !crypt_valid_passphrase(e->security))
     {
       mutt_file_fclose(&fpout);
       break;
@@ -868,7 +868,7 @@ void crypt_extract_keys_from_messages(struct EmailList *el)
 
     if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME))
     {
-      if (e->security & ENCRYPT)
+      if (e->security & SEC_ENCRYPT)
       {
         mutt_copy_message_ctx(fpout, Context->mailbox, e,
                               MUTT_CM_NOHEADER | MUTT_CM_DECODE_CRYPT | MUTT_CM_DECODE_SMIME,
@@ -945,7 +945,7 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
 
   *keylist = NULL;
 
-  if (oppenc_mode || (msg->security & ENCRYPT))
+  if (oppenc_mode || (msg->security & SEC_ENCRYPT))
   {
     if (((WithCrypto & APPLICATION_PGP) != 0) && (msg->security & APPLICATION_PGP))
     {
@@ -998,18 +998,18 @@ void crypt_opportunistic_encrypt(struct Email *msg)
   if (!WithCrypto)
     return;
 
-  if (!(CryptOpportunisticEncrypt && (msg->security & OPPENCRYPT)))
+  if (!(CryptOpportunisticEncrypt && (msg->security & SEC_OPPENCRYPT)))
     return;
 
   crypt_get_keys(msg, &pgpkeylist, 1);
   if (pgpkeylist)
   {
-    msg->security |= ENCRYPT;
+    msg->security |= SEC_ENCRYPT;
     FREE(&pgpkeylist);
   }
   else
   {
-    msg->security &= ~ENCRYPT;
+    msg->security &= ~SEC_ENCRYPT;
   }
 }
 
@@ -1045,8 +1045,8 @@ static void crypt_fetch_signatures(struct Body ***signatures, struct Body *a, in
  */
 bool mutt_should_hide_protected_subject(struct Email *e)
 {
-  if (CryptProtectedHeadersWrite && (e->security & ENCRYPT) && !(e->security & INLINE) &&
-      CryptProtectedHeadersSubject && *CryptProtectedHeadersSubject)
+  if (CryptProtectedHeadersWrite && (e->security & SEC_ENCRYPT) &&
+      !(e->security & SEC_INLINE) && CryptProtectedHeadersSubject && *CryptProtectedHeadersSubject)
   {
     return true;
   }
@@ -1111,7 +1111,7 @@ int mutt_signed_handler(struct Body *a, struct State *s)
   {
     switch (signed_type)
     {
-      case SIGN:
+      case SEC_SIGN:
         if (a->next->type != TYPE_MULTIPART ||
             (mutt_str_strcasecmp(a->next->subtype, "mixed") != 0))
         {

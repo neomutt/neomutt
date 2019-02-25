@@ -396,7 +396,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
 
   bool is_message = mutt_is_message_type(a->type, a->subtype);
   if ((WithCrypto != 0) && is_message && a->email &&
-      (a->email->security & ENCRYPT) && !crypt_valid_passphrase(a->email->security))
+      (a->email->security & SEC_ENCRYPT) && !crypt_valid_passphrase(a->email->security))
   {
     return rc;
   }

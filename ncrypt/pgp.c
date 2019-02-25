@@ -1724,7 +1724,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
     int c;
     struct FgetConv *fc = NULL;
 
-    if (flags & ENCRYPT)
+    if (flags & SEC_ENCRYPT)
       send_charset = "us-ascii";
     else
       send_charset = "utf-8";
@@ -1774,7 +1774,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
 
   if (pgp_use_gpg_agent())
     *PgpPass = 0;
-  if (flags & SIGN)
+  if (flags & SEC_SIGN)
     fprintf(pgpin, "%s\n", PgpPass);
   mutt_file_fclose(&pgpin);
 
@@ -1808,7 +1808,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
 
   if (empty)
   {
-    if (flags & SIGN)
+    if (flags & SEC_SIGN)
       pgp_class_void_passphrase(); /* just in case */
     unlink(pgpoutfile);
     return NULL;
@@ -1821,7 +1821,8 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
   b->type = TYPE_TEXT;
   b->subtype = mutt_str_strdup("plain");
 
-  mutt_param_set(&b->parameter, "x-action", (flags & ENCRYPT) ? "pgp-encrypted" : "pgp-signed");
+  mutt_param_set(&b->parameter, "x-action",
+                 (flags & SEC_ENCRYPT) ? "pgp-encrypted" : "pgp-signed");
   mutt_param_set(&b->parameter, "charset", send_charset);
 
   b->filename = mutt_str_strdup(pgpoutfile);
@@ -1832,7 +1833,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
   b->noconv = true;
   b->use_disp = false;
 
-  if (!(flags & ENCRYPT))
+  if (!(flags & SEC_ENCRYPT))
     b->encoding = a->encoding;
 
   return b;
@@ -1854,16 +1855,16 @@ int pgp_class_send_menu(struct Email *msg)
     return msg->security;
 
   /* If autoinline and no crypto options set, then set inline. */
-  if (PgpAutoinline &&
-      !((msg->security & APPLICATION_PGP) && (msg->security & (SIGN | ENCRYPT))))
+  if (PgpAutoinline && !((msg->security & APPLICATION_PGP) &&
+                         (msg->security & (SEC_SIGN | SEC_ENCRYPT))))
   {
-    msg->security |= INLINE;
+    msg->security |= SEC_INLINE;
   }
 
   msg->security |= APPLICATION_PGP;
 
   char *mime_inline = NULL;
-  if (msg->security & INLINE)
+  if (msg->security & SEC_INLINE)
   {
     /* L10N: The next string MUST have the same highlighted letter
              One of them will appear in each of the three strings marked "(inline"), below. */
@@ -1880,9 +1881,9 @@ int pgp_class_send_menu(struct Email *msg)
    * NOTE: "Signing" and "Clearing" only adjust the sign bit, so we have different
    *       letter choices for those.
    */
-  if (CryptOpportunisticEncrypt && (msg->security & OPPENCRYPT))
+  if (CryptOpportunisticEncrypt && (msg->security & SEC_OPPENCRYPT))
   {
-    if (msg->security & (ENCRYPT | SIGN))
+    if (msg->security & (SEC_ENCRYPT | SEC_SIGN))
     {
       snprintf(promptbuf, sizeof(promptbuf),
                /* L10N: PGP options (inline) (opportunistic encryption is on) */
@@ -1912,7 +1913,7 @@ int pgp_class_send_menu(struct Email *msg)
     /* When the message is not selected for signing or encryption, the toggle
      * between PGP/MIME and Traditional doesn't make sense.
      */
-    if (msg->security & (ENCRYPT | SIGN))
+    if (msg->security & (SEC_ENCRYPT | SEC_SIGN))
     {
       snprintf(promptbuf, sizeof(promptbuf),
                /* L10N: PGP options (inline) (opportunistic encryption is off) */
@@ -1938,7 +1939,7 @@ int pgp_class_send_menu(struct Email *msg)
   /* Opportunistic encryption is unset */
   else
   {
-    if (msg->security & (ENCRYPT | SIGN))
+    if (msg->security & (SEC_ENCRYPT | SEC_SIGN))
     {
       snprintf(promptbuf, sizeof(promptbuf),
                /* L10N: PGP options (inline) */
@@ -1977,49 +1978,49 @@ int pgp_class_send_menu(struct Email *msg)
           mutt_str_replace(&PgpSignAs, input_signas);
           pgp_free_key(&p);
 
-          msg->security |= SIGN;
+          msg->security |= SEC_SIGN;
 
           crypt_pgp_void_passphrase(); /* probably need a different passphrase */
         }
         break;
 
       case 'b': /* (b)oth */
-        msg->security |= (ENCRYPT | SIGN);
+        msg->security |= (SEC_ENCRYPT | SEC_SIGN);
         break;
 
       case 'C':
-        msg->security &= ~SIGN;
+        msg->security &= ~SEC_SIGN;
         break;
 
       case 'c': /* (c)lear     */
-        msg->security &= ~(ENCRYPT | SIGN);
+        msg->security &= ~(SEC_ENCRYPT | SEC_SIGN);
         break;
 
       case 'e': /* (e)ncrypt */
-        msg->security |= ENCRYPT;
-        msg->security &= ~SIGN;
+        msg->security |= SEC_ENCRYPT;
+        msg->security &= ~SEC_SIGN;
         break;
 
       case 'i': /* toggle (i)nline */
-        msg->security ^= INLINE;
+        msg->security ^= SEC_INLINE;
         break;
 
       case 'O': /* oppenc mode on */
-        msg->security |= OPPENCRYPT;
+        msg->security |= SEC_OPPENCRYPT;
         crypt_opportunistic_encrypt(msg);
         break;
 
       case 'o': /* oppenc mode off */
-        msg->security &= ~OPPENCRYPT;
+        msg->security &= ~SEC_OPPENCRYPT;
         break;
 
       case 'S': /* (s)ign in oppenc mode */
-        msg->security |= SIGN;
+        msg->security |= SEC_SIGN;
         break;
 
       case 's': /* (s)ign */
-        msg->security &= ~ENCRYPT;
-        msg->security |= SIGN;
+        msg->security &= ~SEC_ENCRYPT;
+        msg->security |= SEC_SIGN;
         break;
     }
   }

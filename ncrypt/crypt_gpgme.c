@@ -5367,7 +5367,7 @@ void smime_gpgme_init(void)
  * gpgme_send_menu - Show the user the encryption/signing menu
  * @param msg      Email
  * @param is_smime True if an SMIME message
- * @retval num Flags, e.g. #APPLICATION_SMIME | #ENCRYPT
+ * @retval num Flags, e.g. #APPLICATION_SMIME | #SEC_ENCRYPT
  */
 static int gpgme_send_menu(struct Email *msg, int is_smime)
 {
@@ -5386,7 +5386,7 @@ static int gpgme_send_menu(struct Email *msg, int is_smime)
    * NOTE: "Signing" and "Clearing" only adjust the sign bit, so we have different
    *       letter choices for those.
    */
-  if (CryptOpportunisticEncrypt && (msg->security & OPPENCRYPT))
+  if (CryptOpportunisticEncrypt && (msg->security & SEC_OPPENCRYPT))
   {
     if (is_smime)
     {
@@ -5467,25 +5467,25 @@ static int gpgme_send_menu(struct Email *msg, int is_smime)
           mutt_str_replace(is_smime ? &SmimeDefaultKey : &PgpSignAs, input_signas);
           crypt_free_key(&p);
 
-          msg->security |= SIGN;
+          msg->security |= SEC_SIGN;
         }
         break;
 
       case 'b': /* (b)oth */
-        msg->security |= (ENCRYPT | SIGN);
+        msg->security |= (SEC_ENCRYPT | SEC_SIGN);
         break;
 
       case 'C':
-        msg->security &= ~SIGN;
+        msg->security &= ~SEC_SIGN;
         break;
 
       case 'c': /* (c)lear */
-        msg->security &= ~(ENCRYPT | SIGN);
+        msg->security &= ~(SEC_ENCRYPT | SEC_SIGN);
         break;
 
       case 'e': /* (e)ncrypt */
-        msg->security |= ENCRYPT;
-        msg->security &= ~SIGN;
+        msg->security |= SEC_ENCRYPT;
+        msg->security &= ~SEC_SIGN;
         break;
 
       case 'm': /* (p)gp or s/(m)ime */
@@ -5505,21 +5505,21 @@ static int gpgme_send_menu(struct Email *msg, int is_smime)
         break;
 
       case 'O': /* oppenc mode on */
-        msg->security |= OPPENCRYPT;
+        msg->security |= SEC_OPPENCRYPT;
         crypt_opportunistic_encrypt(msg);
         break;
 
       case 'o': /* oppenc mode off */
-        msg->security &= ~OPPENCRYPT;
+        msg->security &= ~SEC_OPPENCRYPT;
         break;
 
       case 'S': /* (s)ign in oppenc mode */
-        msg->security |= SIGN;
+        msg->security |= SEC_SIGN;
         break;
 
       case 's': /* (s)ign */
-        msg->security &= ~ENCRYPT;
-        msg->security |= SIGN;
+        msg->security &= ~SEC_ENCRYPT;
+        msg->security |= SEC_SIGN;
         break;
     }
   }

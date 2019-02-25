@@ -114,7 +114,7 @@ struct CryptModuleSpecs
   /**
    * send_menu - Ask the user whether to sign and/or encrypt the email
    * @param msg Email
-   * @retval num Flags, e.g. #APPLICATION_PGP | #ENCRYPT
+   * @retval num Flags, e.g. #APPLICATION_PGP | #SEC_ENCRYPT
    */
   int          (*send_menu)(struct Email *msg);
   /**
@@ -152,7 +152,7 @@ struct CryptModuleSpecs
   /**
    * pgp_traditional_encryptsign - Create an inline PGP encrypted, signed email
    * @param a       Body of the email
-   * @param flags   Flags, e.g. #ENCRYPT
+   * @param flags   Flags, e.g. #SEC_ENCRYPT
    * @param keylist List of keys to encrypt to (space-separated)
    * @retval ptr  New encrypted/siged Body
    * @retval NULL Error

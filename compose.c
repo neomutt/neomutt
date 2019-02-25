@@ -280,17 +280,17 @@ static void redraw_crypt_lines(struct Email *msg)
     return;
   }
 
-  if ((msg->security & (ENCRYPT | SIGN)) == (ENCRYPT | SIGN))
+  if ((msg->security & (SEC_ENCRYPT | SEC_SIGN)) == (SEC_ENCRYPT | SEC_SIGN))
   {
     SETCOLOR(MT_COLOR_COMPOSE_SECURITY_BOTH);
     addstr(_("Sign, Encrypt"));
   }
-  else if (msg->security & ENCRYPT)
+  else if (msg->security & SEC_ENCRYPT)
   {
     SETCOLOR(MT_COLOR_COMPOSE_SECURITY_ENCRYPT);
     addstr(_("Encrypt"));
   }
-  else if (msg->security & SIGN)
+  else if (msg->security & SEC_SIGN)
   {
     SETCOLOR(MT_COLOR_COMPOSE_SECURITY_SIGN);
     addstr(_("Sign"));
@@ -303,11 +303,11 @@ static void redraw_crypt_lines(struct Email *msg)
   }
   NORMAL_COLOR;
 
-  if ((msg->security & (ENCRYPT | SIGN)))
+  if ((msg->security & (SEC_ENCRYPT | SEC_SIGN)))
   {
     if (((WithCrypto & APPLICATION_PGP) != 0) && (msg->security & APPLICATION_PGP))
     {
-      if ((msg->security & INLINE))
+      if ((msg->security & SEC_INLINE))
         addstr(_(" (inline PGP)"));
       else
         addstr(_(" (PGP/MIME)"));
@@ -316,7 +316,7 @@ static void redraw_crypt_lines(struct Email *msg)
       addstr(_(" (S/MIME)"));
   }
 
-  if (CryptOpportunisticEncrypt && (msg->security & OPPENCRYPT))
+  if (CryptOpportunisticEncrypt && (msg->security & SEC_OPPENCRYPT))
     addstr(_(" (OppEnc mode)"));
 
   mutt_window_clrtoeol(MuttIndexWindow);
@@ -324,7 +324,7 @@ static void redraw_crypt_lines(struct Email *msg)
   mutt_window_clrtoeol(MuttIndexWindow);
 
   if (((WithCrypto & APPLICATION_PGP) != 0) &&
-      (msg->security & APPLICATION_PGP) && (msg->security & SIGN))
+      (msg->security & APPLICATION_PGP) && (msg->security & SEC_SIGN))
   {
     SETCOLOR(MT_COLOR_COMPOSE_HEADER);
     printw("%*s", HeaderPadding[HDR_CRYPTINFO], _(Prompts[HDR_CRYPTINFO]));
@@ -333,7 +333,7 @@ static void redraw_crypt_lines(struct Email *msg)
   }
 
   if (((WithCrypto & APPLICATION_SMIME) != 0) &&
-      (msg->security & APPLICATION_SMIME) && (msg->security & SIGN))
+      (msg->security & APPLICATION_SMIME) && (msg->security & SEC_SIGN))
   {
     SETCOLOR(MT_COLOR_COMPOSE_HEADER);
     printw("%*s", HeaderPadding[HDR_CRYPTINFO], _(Prompts[HDR_CRYPTINFO]));
@@ -342,7 +342,7 @@ static void redraw_crypt_lines(struct Email *msg)
   }
 
   if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME) &&
-      (msg->security & ENCRYPT) && SmimeEncryptWith && *SmimeEncryptWith)
+      (msg->security & SEC_ENCRYPT) && SmimeEncryptWith && *SmimeEncryptWith)
   {
     SETCOLOR(MT_COLOR_COMPOSE_HEADER);
     mutt_window_mvprintw(MuttIndexWindow, HDR_CRYPTINFO, 40, "%s", _("Encrypt with: "));
@@ -1943,7 +1943,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         }
         if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME))
         {
-          if (msg->security & (ENCRYPT | SIGN))
+          if (msg->security & (SEC_ENCRYPT | SEC_SIGN))
           {
             if (mutt_yesorno(_("S/MIME already selected. Clear and continue? "),
                              MUTT_YES) != MUTT_YES)
@@ -1951,7 +1951,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
               mutt_clear_error();
               break;
             }
-            msg->security &= ~(ENCRYPT | SIGN);
+            msg->security &= ~(SEC_ENCRYPT | SEC_SIGN);
           }
           msg->security &= ~APPLICATION_SMIME;
           msg->security |= APPLICATION_PGP;
@@ -1978,14 +1978,14 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
 
         if (((WithCrypto & APPLICATION_PGP) != 0) && (msg->security & APPLICATION_PGP))
         {
-          if (msg->security & (ENCRYPT | SIGN))
+          if (msg->security & (SEC_ENCRYPT | SEC_SIGN))
           {
             if (mutt_yesorno(_("PGP already selected. Clear and continue? "), MUTT_YES) != MUTT_YES)
             {
               mutt_clear_error();
               break;
             }
-            msg->security &= ~(ENCRYPT | SIGN);
+            msg->security &= ~(SEC_ENCRYPT | SEC_SIGN);
           }
           msg->security &= ~APPLICATION_PGP;
           msg->security |= APPLICATION_SMIME;

@@ -1147,7 +1147,7 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *
     {
       need_secured = 1;
 
-      if (type & ENCRYPT)
+      if (type & SEC_ENCRYPT)
       {
         if (!crypt_valid_passphrase(APPLICATION_SMIME))
           goto decrypt_failed;
@@ -1170,7 +1170,7 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *
         goto decrypt_failed;
       }
 
-      if (secured && (type & ENCRYPT))
+      if (secured && (type & SEC_ENCRYPT))
         e->security |= SMIME_ENCRYPT;
     }
 
@@ -1442,13 +1442,13 @@ void mutt_view_attachments(struct Email *e)
         }
 #endif
 
-        if ((WithCrypto != 0) && (e->security & ENCRYPT))
+        if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT))
         {
           mutt_message(_("Deletion of attachments from encrypted messages is "
                          "unsupported"));
           break;
         }
-        if ((WithCrypto != 0) && (e->security & (SIGN | PARTSIGN)))
+        if ((WithCrypto != 0) && (e->security & (SEC_SIGN | SEC_PARTSIGN)))
         {
           mutt_message(_("Deletion of attachments from signed messages may "
                          "invalidate the signature"));

@@ -1469,7 +1469,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool a
 
   if (WithCrypto)
   {
-    if ((MimeForwardDecode || ForwardDecrypt) && (e->security & ENCRYPT))
+    if ((MimeForwardDecode || ForwardDecrypt) && (e->security & SEC_ENCRYPT))
     {
       if (!crypt_valid_passphrase(e->security))
         return NULL;
@@ -1505,7 +1505,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool a
     if (WithCrypto & APPLICATION_SMIME)
       pgp &= ~SMIME_ENCRYPT;
   }
-  else if ((WithCrypto != 0) && ForwardDecrypt && (e->security & ENCRYPT))
+  else if ((WithCrypto != 0) && ForwardDecrypt && (e->security & SEC_ENCRYPT))
   {
     if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_multipart_encrypted(e->content))
     {
@@ -3232,17 +3232,17 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   if (((WithCrypto & APPLICATION_PGP) != 0) && post && (e->security & APPLICATION_PGP))
   {
     fputs("X-Mutt-PGP: ", msg->fp);
-    if (e->security & ENCRYPT)
+    if (e->security & SEC_ENCRYPT)
       fputc('E', msg->fp);
-    if (e->security & OPPENCRYPT)
+    if (e->security & SEC_OPPENCRYPT)
       fputc('O', msg->fp);
-    if (e->security & SIGN)
+    if (e->security & SEC_SIGN)
     {
       fputc('S', msg->fp);
       if (PgpSignAs && *PgpSignAs)
         fprintf(msg->fp, "<%s>", PgpSignAs);
     }
-    if (e->security & INLINE)
+    if (e->security & SEC_INLINE)
       fputc('I', msg->fp);
     fputc('\n', msg->fp);
   }
@@ -3251,21 +3251,21 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   if (((WithCrypto & APPLICATION_SMIME) != 0) && post && (e->security & APPLICATION_SMIME))
   {
     fputs("X-Mutt-SMIME: ", msg->fp);
-    if (e->security & ENCRYPT)
+    if (e->security & SEC_ENCRYPT)
     {
       fputc('E', msg->fp);
       if (SmimeEncryptWith && *SmimeEncryptWith)
         fprintf(msg->fp, "C<%s>", SmimeEncryptWith);
     }
-    if (e->security & OPPENCRYPT)
+    if (e->security & SEC_OPPENCRYPT)
       fputc('O', msg->fp);
-    if (e->security & SIGN)
+    if (e->security & SEC_SIGN)
     {
       fputc('S', msg->fp);
       if (SmimeSignAs && *SmimeSignAs)
         fprintf(msg->fp, "<%s>", SmimeSignAs);
     }
-    if (e->security & INLINE)
+    if (e->security & SEC_INLINE)
       fputc('I', msg->fp);
     fputc('\n', msg->fp);
   }

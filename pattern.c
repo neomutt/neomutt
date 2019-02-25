@@ -1132,7 +1132,8 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
     {
       mutt_parse_mime_message(m, e);
 
-      if ((WithCrypto != 0) && (e->security & ENCRYPT) && !crypt_valid_passphrase(e->security))
+      if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT) &&
+          !crypt_valid_passphrase(e->security))
       {
         mx_msg_close(m, &msg);
         if (s.fpout)
@@ -2123,15 +2124,15 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
     case MUTT_CRYPT_SIGN:
       if (!WithCrypto)
         break;
-      return pat->not^((e->security & SIGN) ? 1 : 0);
+      return pat->not^((e->security & SEC_SIGN) ? 1 : 0);
     case MUTT_CRYPT_VERIFIED:
       if (!WithCrypto)
         break;
-      return pat->not^((e->security & GOODSIGN) ? 1 : 0);
+      return pat->not^((e->security & SEC_GOODSIGN) ? 1 : 0);
     case MUTT_CRYPT_ENCRYPT:
       if (!WithCrypto)
         break;
-      return pat->not^((e->security & ENCRYPT) ? 1 : 0);
+      return pat->not^((e->security & SEC_ENCRYPT) ? 1 : 0);
     case MUTT_PGP_KEY:
       if (!(WithCrypto & APPLICATION_PGP))
         break;

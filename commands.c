@@ -103,7 +103,7 @@ static void update_protected_headers(struct Email *cur)
     return;
 
   /* Grab protected headers to update in the index */
-  if (cur->security & SIGN)
+  if (cur->security & SEC_SIGN)
   {
     /* Don't update on a bad signature.
      *
@@ -111,7 +111,7 @@ static void update_protected_headers(struct Email *cur)
      * encrypted part of a nested encrypt/signed.  But properly handling that
      * case would require more complexity in the decryption handlers, which
      * I'm not sure is worth it. */
-    if (!(cur->security & GOODSIGN))
+    if (!(cur->security & SEC_GOODSIGN))
       return;
 
     if (mutt_is_multipart_signed(cur->content) && cur->content->parts)
@@ -123,7 +123,7 @@ static void update_protected_headers(struct Email *cur)
       prot_headers = cur->content->mime_headers;
     }
   }
-  if (!prot_headers && (cur->security & ENCRYPT))
+  if (!prot_headers && (cur->security & SEC_ENCRYPT))
   {
     if ((WithCrypto & APPLICATION_PGP) &&
         (mutt_is_valid_multipart_pgp_encrypted(cur->content) ||
@@ -192,7 +192,7 @@ int mutt_display_message(struct Email *cur)
   /* see if crypto is needed for this message.  if so, we should exit curses */
   if ((WithCrypto != 0) && cur->security)
   {
-    if (cur->security & ENCRYPT)
+    if (cur->security & SEC_ENCRYPT)
     {
       if (cur->security & APPLICATION_SMIME)
         crypt_smime_getkeys(cur->env);
@@ -201,7 +201,7 @@ int mutt_display_message(struct Email *cur)
 
       cmflags |= MUTT_CM_VERIFY;
     }
-    else if (cur->security & SIGN)
+    else if (cur->security & SEC_SIGN)
     {
       /* find out whether or not the verify signature */
       /* L10N: Used for the $crypt_verify_sig prompt */
@@ -212,7 +212,7 @@ int mutt_display_message(struct Email *cur)
     }
   }
 
-  if (cmflags & MUTT_CM_VERIFY || cur->security & ENCRYPT)
+  if (cmflags & MUTT_CM_VERIFY || cur->security & SEC_ENCRYPT)
   {
     if (cur->security & APPLICATION_PGP)
     {
@@ -291,7 +291,7 @@ int mutt_display_message(struct Email *cur)
   if (WithCrypto)
   {
     /* update crypto information for this message */
-    cur->security &= ~(GOODSIGN | BADSIGN);
+    cur->security &= ~(SEC_GOODSIGN | SEC_BADSIGN);
     cur->security |= crypt_query(cur->content);
 
     /* Remove color cache for this message, in case there
@@ -306,26 +306,26 @@ int mutt_display_message(struct Email *cur)
   {
     if ((WithCrypto != 0) && (cur->security & APPLICATION_SMIME) && (cmflags & MUTT_CM_VERIFY))
     {
-      if (cur->security & GOODSIGN)
+      if (cur->security & SEC_GOODSIGN)
       {
         if (crypt_smime_verify_sender(cur) == 0)
           mutt_message(_("S/MIME signature successfully verified"));
         else
           mutt_error(_("S/MIME certificate owner does not match sender"));
       }
-      else if (cur->security & PARTSIGN)
+      else if (cur->security & SEC_PARTSIGN)
         mutt_message(_("Warning: Part of this message has not been signed"));
-      else if (cur->security & SIGN || cur->security & BADSIGN)
+      else if (cur->security & SEC_SIGN || cur->security & SEC_BADSIGN)
         mutt_error(_("S/MIME signature could NOT be verified"));
     }
 
     if ((WithCrypto != 0) && (cur->security & APPLICATION_PGP) && (cmflags & MUTT_CM_VERIFY))
     {
-      if (cur->security & GOODSIGN)
+      if (cur->security & SEC_GOODSIGN)
         mutt_message(_("PGP signature successfully verified"));
-      else if (cur->security & PARTSIGN)
+      else if (cur->security & SEC_PARTSIGN)
         mutt_message(_("Warning: Part of this message has not been signed"));
-      else if (cur->security & SIGN)
+      else if (cur->security & SEC_SIGN)
         mutt_message(_("PGP signature could NOT be verified"));
     }
 
@@ -506,7 +506,7 @@ static void pipe_msg(struct Mailbox *m, struct Email *e, FILE *fp, bool decode, 
 
   pipe_set_flags(decode, print, &cmflags, &chflags);
 
-  if ((WithCrypto != 0) && decode && e->security & ENCRYPT)
+  if ((WithCrypto != 0) && decode && e->security & SEC_ENCRYPT)
   {
     if (!crypt_valid_passphrase(e->security))
       return;
@@ -555,7 +555,8 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
     if ((WithCrypto != 0) && decode)
     {
       mutt_parse_mime_message(m, en->email);
-      if ((en->email->security & ENCRYPT) && !crypt_valid_passphrase(en->email->security))
+      if ((en->email->security & SEC_ENCRYPT) &&
+          !crypt_valid_passphrase(en->email->security))
         return 1;
     }
     mutt_endwin();
@@ -582,7 +583,8 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
       {
         mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
         mutt_parse_mime_message(m, en->email);
-        if ((en->email->security & ENCRYPT) && !crypt_valid_passphrase(en->email->security))
+        if ((en->email->security & SEC_ENCRYPT) &&
+            !crypt_valid_passphrase(en->email->security))
         {
           return 1;
         }
@@ -887,7 +889,7 @@ static void set_copy_flags(struct Email *e, bool decode, bool decrypt,
   *cmflags = 0;
   *chflags = CH_UPDATE_LEN;
 
-  if ((WithCrypto != 0) && !decode && decrypt && (e->security & ENCRYPT))
+  if ((WithCrypto != 0) && !decode && decrypt && (e->security & SEC_ENCRYPT))
   {
     if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_multipart_encrypted(e->content))
     {
@@ -895,12 +897,12 @@ static void set_copy_flags(struct Email *e, bool decode, bool decrypt,
       *cmflags = MUTT_CM_DECODE_PGP;
     }
     else if (((WithCrypto & APPLICATION_PGP) != 0) &&
-             mutt_is_application_pgp(e->content) & ENCRYPT)
+             mutt_is_application_pgp(e->content) & SEC_ENCRYPT)
     {
       decode = 1;
     }
     else if (((WithCrypto & APPLICATION_SMIME) != 0) &&
-             mutt_is_application_smime(e->content) & ENCRYPT)
+             mutt_is_application_smime(e->content) & SEC_ENCRYPT)
     {
       *chflags = CH_NONEWLINE | CH_XMIT | CH_MIME;
       *cmflags = MUTT_CM_DECODE_SMIME;
@@ -1007,7 +1009,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete,
 
   if (WithCrypto)
   {
-    need_passphrase = (en->email->security & ENCRYPT);
+    need_passphrase = (en->email->security & SEC_ENCRYPT);
     app = en->email->security;
   }
   mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);

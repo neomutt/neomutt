@@ -1437,7 +1437,7 @@ int smime_class_verify_sender(struct Email *e)
     return 1;
   }
 
-  if (e->security & ENCRYPT)
+  if (e->security & SEC_ENCRYPT)
   {
     mutt_copy_message_ctx(fpout, Context->mailbox, e, MUTT_CM_DECODE_CRYPT & MUTT_CM_DECODE_SMIME,
                           CH_MIME | CH_WEED | CH_NONEWLINE);
@@ -2043,7 +2043,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
   mutt_file_fclose(&tmpfp);
 
   FILE *smimein = NULL;
-  if ((type & ENCRYPT) &&
+  if ((type & SEC_ENCRYPT) &&
       (thepid = smime_invoke_decrypt(&smimein, NULL, NULL, -1, fileno(smimeout),
                                      fileno(smimeerr), tmpfname)) == -1)
   {
@@ -2057,9 +2057,10 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     mutt_file_fclose(&smimeerr);
     return NULL;
   }
-  else if ((type & SIGNOPAQUE) &&
-           (thepid = smime_invoke_verify(&smimein, NULL, NULL, -1, fileno(smimeout),
-                                         fileno(smimeerr), NULL, tmpfname, SIGNOPAQUE)) == -1)
+  else if ((type & SEC_SIGNOPAQUE) &&
+           (thepid = smime_invoke_verify(&smimein, NULL, NULL, -1,
+                                         fileno(smimeout), fileno(smimeerr),
+                                         NULL, tmpfname, SEC_SIGNOPAQUE)) == -1)
   {
     mutt_file_fclose(&smimeout);
     mutt_file_unlink(tmpfname);
@@ -2072,7 +2073,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     return NULL;
   }
 
-  if (type & ENCRYPT)
+  if (type & SEC_ENCRYPT)
   {
     if (!smime_class_valid_passphrase())
       smime_class_void_passphrase();
@@ -2100,7 +2101,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
       state_attach_puts(_("[-- End of OpenSSL output --]\n\n"), s);
     }
 
-    if (type & ENCRYPT)
+    if (type & SEC_ENCRYPT)
     {
       state_attach_puts(_("[-- The following data is S/MIME"
                           " encrypted --]\n"),
@@ -2113,7 +2114,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
   fflush(smimeout);
   rewind(smimeout);
 
-  if (type & ENCRYPT)
+  if (type & SEC_ENCRYPT)
   {
     /* void the passphrase, even if that wasn't the problem */
     if (fgetc(smimeout) == EOF)
@@ -2200,13 +2201,13 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
 
   if (s->flags & MUTT_DISPLAY)
   {
-    if (type & ENCRYPT)
+    if (type & SEC_ENCRYPT)
       state_attach_puts(_("\n[-- End of S/MIME encrypted data. --]\n"), s);
     else
       state_attach_puts(_("\n[-- End of S/MIME signed data. --]\n"), s);
   }
 
-  if (type & SIGNOPAQUE)
+  if (type & SEC_SIGNOPAQUE)
   {
     char *line = NULL;
     int lineno = 0;
@@ -2333,7 +2334,7 @@ int smime_class_send_menu(struct Email *msg)
    * NOTE: "Signing" and "Clearing" only adjust the sign bit, so we have different
    *       letter choices for those.
    */
-  if (CryptOpportunisticEncrypt && (msg->security & OPPENCRYPT))
+  if (CryptOpportunisticEncrypt && (msg->security & SEC_OPPENCRYPT))
   {
     /* L10N: S/MIME options (opportunistic encryption is on) */
     prompt = _("S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc "
@@ -2377,7 +2378,7 @@ int smime_class_send_menu(struct Email *msg)
           mutt_str_replace(&SmimeSignAs, key->hash);
           smime_free_key(&key);
 
-          msg->security |= SIGN;
+          msg->security |= SEC_SIGN;
 
           /* probably need a different passphrase */
           crypt_smime_void_passphrase();
@@ -2386,43 +2387,43 @@ int smime_class_send_menu(struct Email *msg)
         break;
 
       case 'b': /* (b)oth */
-        msg->security |= (ENCRYPT | SIGN);
+        msg->security |= (SEC_ENCRYPT | SEC_SIGN);
         break;
 
       case 'c': /* (c)lear */
-        msg->security &= ~(ENCRYPT | SIGN);
+        msg->security &= ~(SEC_ENCRYPT | SEC_SIGN);
         break;
 
       case 'C':
-        msg->security &= ~SIGN;
+        msg->security &= ~SEC_SIGN;
         break;
 
       case 'e': /* (e)ncrypt */
-        msg->security |= ENCRYPT;
-        msg->security &= ~SIGN;
+        msg->security |= SEC_ENCRYPT;
+        msg->security &= ~SEC_SIGN;
         break;
 
       case 'O': /* oppenc mode on */
-        msg->security |= OPPENCRYPT;
+        msg->security |= SEC_OPPENCRYPT;
         crypt_opportunistic_encrypt(msg);
         break;
 
       case 'o': /* oppenc mode off */
-        msg->security &= ~OPPENCRYPT;
+        msg->security &= ~SEC_OPPENCRYPT;
         break;
 
       case 'S': /* (s)ign in oppenc mode */
-        msg->security |= SIGN;
+        msg->security |= SEC_SIGN;
         break;
 
       case 's': /* (s)ign */
-        msg->security &= ~ENCRYPT;
-        msg->security |= SIGN;
+        msg->security &= ~SEC_ENCRYPT;
+        msg->security |= SEC_SIGN;
         break;
 
       case 'w': /* encrypt (w)ith */
       {
-        msg->security |= ENCRYPT;
+        msg->security |= SEC_ENCRYPT;
         do
         {
           switch (mutt_multi_choice(_("Choose algorithm family: 1: DES, 2: "

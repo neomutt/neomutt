@@ -1330,11 +1330,11 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       else if (src[0] == 'c') /* crypto */
       {
         const char *ch = NULL;
-        if ((WithCrypto != 0) && (e->security & GOODSIGN))
+        if ((WithCrypto != 0) && (e->security & SEC_GOODSIGN))
           ch = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_GOOD_SIGN);
-        else if ((WithCrypto != 0) && (e->security & ENCRYPT))
+        else if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT))
           ch = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_ENCRYPTED);
-        else if ((WithCrypto != 0) && (e->security & SIGN))
+        else if ((WithCrypto != 0) && (e->security & SEC_SIGN))
           ch = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_SIGNED);
         else if (((WithCrypto & APPLICATION_PGP) != 0) && ((e->security & PGP_KEY) == PGP_KEY))
         {
@@ -1396,11 +1396,11 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         second = get_nth_wchar(FlagChars, FLAG_CHAR_DELETED);
       else if (e->attach_del)
         second = get_nth_wchar(FlagChars, FLAG_CHAR_DELETED_ATTACH);
-      else if ((WithCrypto != 0) && (e->security & GOODSIGN))
+      else if ((WithCrypto != 0) && (e->security & SEC_GOODSIGN))
         second = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_GOOD_SIGN);
-      else if ((WithCrypto != 0) && (e->security & ENCRYPT))
+      else if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT))
         second = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_ENCRYPTED);
-      else if ((WithCrypto != 0) && (e->security & SIGN))
+      else if ((WithCrypto != 0) && (e->security & SEC_SIGN))
         second = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_SIGNED);
       else if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & PGP_KEY))
         second = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_CONTAINS_KEY);

@@ -707,7 +707,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e, int flags, in
 
     rc = mutt_body_handler(body, &s);
   }
-  else if ((WithCrypto != 0) && (flags & MUTT_CM_DECODE_CRYPT) && (e->security & ENCRYPT))
+  else if ((WithCrypto != 0) && (flags & MUTT_CM_DECODE_CRYPT) && (e->security & SEC_ENCRYPT))
   {
     struct Body *cur = NULL;
     FILE *fp = NULL;

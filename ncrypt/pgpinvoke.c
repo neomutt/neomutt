@@ -369,7 +369,7 @@ pid_t pgp_invoke_encrypt(FILE **pgpin, FILE **pgpout, FILE **pgperr,
  * @param[in]  pgperrfd stderr for the command, or -1 (OPTIONAL)
  * @param[in]  fname    Filename to pass to the command
  * @param[in]  uids     List of IDs/fingerprints, space separated
- * @param[in]  flags    Flags, e.g. #SIGN, #ENCRYPT
+ * @param[in]  flags    Flags, e.g. #SEC_SIGN, #SEC_ENCRYPT
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
@@ -380,11 +380,11 @@ pid_t pgp_invoke_traditional(FILE **pgpin, FILE **pgpout, FILE **pgperr,
                              int pgpinfd, int pgpoutfd, int pgperrfd,
                              const char *fname, const char *uids, int flags)
 {
-  if (flags & ENCRYPT)
+  if (flags & SEC_ENCRYPT)
   {
     return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
-                      (flags & SIGN), fname, NULL, uids,
-                      (flags & SIGN) ? PgpEncryptSignCommand : PgpEncryptOnlyCommand);
+                      (flags & SEC_SIGN), fname, NULL, uids,
+                      (flags & SEC_SIGN) ? PgpEncryptSignCommand : PgpEncryptOnlyCommand);
   }
   else
   {
