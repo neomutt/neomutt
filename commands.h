@@ -25,6 +25,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include "mutt_menu.h"
 
 struct Body;
 struct Email;
@@ -44,7 +45,7 @@ extern bool          C_PromptAfter;
 
 void ci_bounce_message(struct Mailbox *m, struct EmailList *el);
 void mutt_check_stats(void);
-bool mutt_check_traditional_pgp(struct EmailList *el, int *redraw);
+bool mutt_check_traditional_pgp(struct EmailList *el, MuttRedrawFlags *redraw);
 void mutt_display_address(struct Envelope *env);
 int  mutt_display_message(struct Email *cur);
 int  mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp);

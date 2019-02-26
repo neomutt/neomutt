@@ -1276,10 +1276,10 @@ int mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
 /**
  * check_traditional_pgp - Check for an inline PGP content
  * @param[in]  e      Header of message to check
- * @param[out] redraw Set of #REDRAW_FULL if the screen may need redrawing
+ * @param[out] redraw Flags if the screen needs redrawing, see #MuttRedrawFlags
  * @retval true If message contains inline PGP content
  */
-static bool check_traditional_pgp(struct Email *e, int *redraw)
+static bool check_traditional_pgp(struct Email *e, MuttRedrawFlags *redraw)
 {
   bool rc = false;
 
@@ -1304,10 +1304,10 @@ static bool check_traditional_pgp(struct Email *e, int *redraw)
 /**
  * mutt_check_traditional_pgp - Check if a message has inline PGP content
  * @param[in]  el     List of Emails to check
- * @param[out] redraw Set of #REDRAW_FULL if the screen may need redrawing
+ * @param[out] redraw Flags if the screen needs redrawing, see #MuttRedrawFlags
  * @retval true If message contains inline PGP content
  */
-bool mutt_check_traditional_pgp(struct EmailList *el, int *redraw)
+bool mutt_check_traditional_pgp(struct EmailList *el, MuttRedrawFlags *redraw)
 {
   bool rc = false;
   struct EmailNode *en = NULL;

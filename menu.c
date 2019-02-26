@@ -1070,9 +1070,9 @@ void mutt_menu_pop_current(struct Menu *menu)
 
 /**
  * mutt_menu_set_current_redraw - Set redraw flags on the current menu
- * @param redraw Flags to set, e.g. #REDRAW_INDEX
+ * @param redraw Flags to set, see #MuttRedrawFlags
  */
-void mutt_menu_set_current_redraw(int redraw)
+void mutt_menu_set_current_redraw(MuttRedrawFlags redraw)
 {
   struct Menu *current_menu = get_current_menu();
   if (current_menu)
@@ -1096,7 +1096,7 @@ void mutt_menu_set_current_redraw_full(void)
  *
  * This is ignored if it's not the current menu.
  */
-void mutt_menu_set_redraw(int menu_type, int redraw)
+void mutt_menu_set_redraw(int menu_type, MuttRedrawFlags redraw)
 {
   if (CurrentMenu == menu_type)
     mutt_menu_set_current_redraw(redraw);
