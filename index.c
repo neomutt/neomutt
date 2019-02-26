@@ -734,14 +734,14 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
   if (!e)
     return;
 
-  int flag = MUTT_FORMAT_ARROWCURSOR | MUTT_FORMAT_INDEX;
+  MuttFormatFlags flags = MUTT_FORMAT_ARROWCURSOR | MUTT_FORMAT_INDEX;
   struct MuttThread *tmp = NULL;
 
   if ((C_Sort & SORT_MASK) == SORT_THREADS && e->tree)
   {
-    flag |= MUTT_FORMAT_TREE; /* display the thread tree */
+    flags |= MUTT_FORMAT_TREE; /* display the thread tree */
     if (e->display_subject)
-      flag |= MUTT_FORMAT_FORCESUBJ;
+      flags |= MUTT_FORMAT_FORCESUBJ;
     else
     {
       const int reverse = C_Sort & SORT_REVERSE;
@@ -765,13 +765,13 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
          * subject... */
         if (reverse ? tmp->message->msgno > edgemsgno : tmp->message->msgno < edgemsgno)
         {
-          flag |= MUTT_FORMAT_FORCESUBJ;
+          flags |= MUTT_FORMAT_FORCESUBJ;
           break;
         }
         else if (tmp->message->virtual >= 0)
           break;
       }
-      if (flag & MUTT_FORMAT_FORCESUBJ)
+      if (flags & MUTT_FORMAT_FORCESUBJ)
       {
         for (tmp = e->thread->prev; tmp; tmp = tmp->prev)
         {
@@ -783,7 +783,7 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
             break;
           else if (tmp->message->virtual >= 0)
           {
-            flag &= ~MUTT_FORMAT_FORCESUBJ;
+            flags &= ~MUTT_FORMAT_FORCESUBJ;
             break;
           }
         }
@@ -792,7 +792,7 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
   }
 
   mutt_make_string_flags(buf, buflen, NONULL(C_IndexFormat), Context,
-                         Context->mailbox, e, flag);
+                         Context->mailbox, e, flags);
 }
 
 /**

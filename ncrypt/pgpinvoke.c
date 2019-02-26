@@ -94,7 +94,7 @@ struct PgpCommandContext
 static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int cols,
                                    char op, const char *src, const char *prec,
                                    const char *if_str, const char *else_str,
-                                   unsigned long data, int flags)
+                                   unsigned long data, MuttFormatFlags flags)
 {
   char fmt[128];
   struct PgpCommandContext *cctx = (struct PgpCommandContext *) data;

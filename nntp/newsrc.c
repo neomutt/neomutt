@@ -919,7 +919,7 @@ void nntp_clear_cache(struct NntpAccountData *adata)
  */
 const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char op,
                             const char *src, const char *prec, const char *if_str,
-                            const char *else_str, unsigned long data, int flags)
+                            const char *else_str, unsigned long data, MuttFormatFlags flags)
 {
   struct NntpAccountData *adata = (struct NntpAccountData *) data;
   struct ConnAccount *acct = &adata->conn->account;
