@@ -55,7 +55,8 @@ struct Mapping;
 #define fgetc fgetc_unlocked
 #endif
 
-/* flags for mutt_enter_string_full() */
+typedef uint16_t CompletionFlags;    ///< Flags for mutt_enter_string_full(), e.g. #MUTT_ALIAS
+#define MUTT_COMP_NO_FLAGS       0   ///< No flags are set
 #define MUTT_ALIAS         (1 << 0)  ///< Do alias "completion" by calling up the alias-menu
 #define MUTT_FILE          (1 << 1)  ///< Do file completion
 #define MUTT_EFILE         (1 << 2)  ///< Do file completion, plus incoming folders

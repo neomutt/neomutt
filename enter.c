@@ -133,7 +133,7 @@ struct EnterState *mutt_enter_state_new(void)
  * @param buf    Buffer to store the string
  * @param buflen Buffer length
  * @param col    Initial cursor position
- * @param flags  Flags such as MUTT_FILE
+ * @param flags  Flags, see #CompletionFlags
  * @retval 0 if input was given
  * @retval -1 if abort
  *
@@ -142,7 +142,7 @@ struct EnterState *mutt_enter_state_new(void)
  * well, because there is no active menu for the built-in editor.
  * Most callers should prefer mutt_get_field() instead.
  */
-int mutt_enter_string(char *buf, size_t buflen, int col, int flags)
+int mutt_enter_string(char *buf, size_t buflen, int col, CompletionFlags flags)
 {
   int rc;
   struct EnterState *es = mutt_enter_state_new();
@@ -165,7 +165,7 @@ int mutt_enter_string(char *buf, size_t buflen, int col, int flags)
  * @param[in]  buf      Buffer to store the string
  * @param[in]  buflen   Buffer length
  * @param[in]  col      Initial cursor position
- * @param[in]  flags    Flags such as MUTT_FILE
+ * @param[in]  flags    Flags, see #CompletionFlags
  * @param[in]  multiple Allow multiple matches
  * @param[out] files    List of files selected
  * @param[out] numfiles Number of files selected
@@ -174,8 +174,9 @@ int mutt_enter_string(char *buf, size_t buflen, int col, int flags)
  * @retval 0  Selection made
  * @retval -1 Aborted
  */
-int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, bool multiple,
-                           char ***files, int *numfiles, struct EnterState *state)
+int mutt_enter_string_full(char *buf, size_t buflen, int col,
+                           CompletionFlags flags, bool multiple, char ***files,
+                           int *numfiles, struct EnterState *state)
 {
   int width = MuttMessageWindow->cols - col - 1;
   int redraw;

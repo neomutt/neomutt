@@ -240,7 +240,7 @@ struct Event mutt_getch(void)
  * @param[in]  field    Prompt
  * @param[in]  buf      Buffer for the result
  * @param[in]  buflen   Length of buffer
- * @param[in]  complete Flags for completion, e.g. #MUTT_FILE
+ * @param[in]  complete Flags, see #CompletionFlags
  * @param[in]  multiple Allow multiple selections
  * @param[out] files    List of files selected
  * @param[out] numfiles Number of files selected
@@ -248,8 +248,8 @@ struct Event mutt_getch(void)
  * @retval 0  Selection made
  * @retval -1 Aborted
  */
-int mutt_get_field_full(const char *field, char *buf, size_t buflen,
-                        int complete, bool multiple, char ***files, int *numfiles)
+int mutt_get_field_full(const char *field, char *buf, size_t buflen, CompletionFlags complete,
+                        bool multiple, char ***files, int *numfiles)
 {
   int ret;
   int x;
@@ -284,12 +284,12 @@ int mutt_get_field_full(const char *field, char *buf, size_t buflen,
  * @param msg    Prompt
  * @param buf    Buffer for the result
  * @param buflen Length of buffer
- * @param flags  Flags for completion, e.g. #MUTT_FILE
+ * @param flags  Flags, see #CompletionFlags
  * @retval 1  Redraw the screen and call the function again
  * @retval 0  Selection made
  * @retval -1 Aborted
  */
-int mutt_get_field_unbuffered(const char *msg, char *buf, size_t buflen, int flags)
+int mutt_get_field_unbuffered(const char *msg, char *buf, size_t buflen, CompletionFlags flags)
 {
   int rc;
 
