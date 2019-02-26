@@ -172,7 +172,7 @@ static void store_size(const struct Mailbox *m)
 
 /**
  * find_hook - Find a hook to match a path
- * @param type Type of hook, e.g. #MUTT_CLOSE_HOOK
+ * @param type Type of hook, see #HookFlags
  * @param path Filename to test
  * @retval ptr  Matching hook command
  * @retval NULL No matches
@@ -186,7 +186,7 @@ static void store_size(const struct Mailbox *m)
  * Call:
  *      find_hook (#MUTT_OPEN_HOOK, "myfile.gz");
  */
-static const char *find_hook(int type, const char *path)
+static const char *find_hook(HookFlags type, const char *path)
 {
   if (!path)
     return NULL;

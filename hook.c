@@ -63,7 +63,7 @@ bool C_SaveName; ///< Config: Save outgoing message to mailbox of recipient's na
  */
 struct Hook
 {
-  int type;                ///< Hook type
+  HookFlags type;          ///< Hook type
   struct Regex regex;      ///< Regular expression
   char *command;           ///< Filename, command or pattern to execute
   struct Pattern *pattern; ///< Used for fcc,save,send-hook
@@ -71,7 +71,7 @@ struct Hook
 };
 static TAILQ_HEAD(, Hook) Hooks = TAILQ_HEAD_INITIALIZER(Hooks);
 
-static int current_hook_type = 0;
+static HookFlags current_hook_type = MUTT_HOOK_NO_FLAGS;
 
 /**
  * mutt_parse_hook - Parse the 'hook' family of commands - Implements ::command_t
@@ -303,11 +303,11 @@ static void delete_hook(struct Hook *h)
 
 /**
  * mutt_delete_hooks - Delete matching hooks
- * @param type Hook type to delete, e.g. #MUTT_SEND_HOOK
+ * @param type Hook type to delete, see #HookFlags
  *
  * If 0 is passed, all the hooks will be deleted.
  */
-void mutt_delete_hooks(int type)
+void mutt_delete_hooks(HookFlags type)
 {
   struct Hook *h = NULL;
   struct Hook *tmp = NULL;
@@ -412,13 +412,13 @@ void mutt_folder_hook(const char *path, const char *desc)
 
 /**
  * mutt_find_hook - Find a matching hook
- * @param type Type, e.g. #MUTT_FOLDER_HOOK
+ * @param type Hook type, see #HookFlags
  * @param pat  Pattern to match
  * @retval ptr Command string
  *
  * @note The returned string must not be freed.
  */
-char *mutt_find_hook(int type, const char *pat)
+char *mutt_find_hook(HookFlags type, const char *pat)
 {
   struct Hook *tmp = NULL;
 
@@ -437,9 +437,9 @@ char *mutt_find_hook(int type, const char *pat)
  * mutt_message_hook - Perform a message hook
  * @param m   Mailbox Context
  * @param e   Email
- * @param type Hook type, e.g. #MUTT_MESSAGE_HOOK
+ * @param type Hook type, see #HookFlags
  */
-void mutt_message_hook(struct Mailbox *m, struct Email *e, int type)
+void mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type)
 {
   struct Buffer err, token;
   struct Hook *hook = NULL;
@@ -485,14 +485,14 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, int type)
  * addr_hook - Perform an address hook (get a path)
  * @param path    Buffer for path
  * @param pathlen Length of buffer
- * @param type    Type e.g. #MUTT_FCC_HOOK
+ * @param type    Hook type, see #HookFlags
  * @param ctx     Mailbox Context
  * @param e       Email
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx,
-                     struct Email *e)
+static int addr_hook(char *path, size_t pathlen, HookFlags type,
+                     struct Context *ctx, struct Email *e)
 {
   struct Hook *hook = NULL;
   struct PatternCache cache = { 0 };
@@ -582,9 +582,9 @@ void mutt_select_fcc(char *path, size_t pathlen, struct Email *e)
  * list_hook - Find hook strings matching
  * @param[out] matches List of hook strings
  * @param[in]  match   String to match
- * @param[in]  hook    Hook type, e.g. #MUTT_CRYPT_HOOK
+ * @param[in]  hook    Hook type, see #HookFlags
  */
-static void list_hook(struct ListHead *matches, const char *match, int hook)
+static void list_hook(struct ListHead *matches, const char *match, HookFlags hook)
 {
   struct Hook *tmp = NULL;
 
@@ -702,12 +702,12 @@ void mutt_timeout_hook(void)
 
 /**
  * mutt_startup_shutdown_hook - Execute any startup/shutdown hooks
- * @param type Hook type: MUTT_STARTUP_HOOK or MUTT_SHUTDOWN_HOOK
+ * @param type Hook type: #MUTT_STARTUP_HOOK or #MUTT_SHUTDOWN_HOOK
  *
  * The user can configure hooks to be run on startup/shutdown.
  * This function finds all the matching hooks and executes them.
  */
-void mutt_startup_shutdown_hook(int type)
+void mutt_startup_shutdown_hook(HookFlags type)
 {
   struct Hook *hook = NULL;
   struct Buffer token = { 0 };

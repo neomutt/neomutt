@@ -38,7 +38,8 @@ extern char *C_DefaultHook;
 extern bool  C_ForceName;
 extern bool  C_SaveName;
 
-/* types for mutt_parse_hook() */
+typedef uint32_t HookFlags;          ///< Flags for mutt_parse_hook(), e.g. #MUTT_FOLDER_HOOK
+#define MUTT_HOOK_NO_FLAGS       0   ///< No flags are set
 #define MUTT_FOLDER_HOOK   (1 << 0)  ///< folder-hook: when entering a mailbox
 #define MUTT_MBOX_HOOK     (1 << 1)  ///< mbox-hook: move messages after reading them
 #define MUTT_SEND_HOOK     (1 << 2)  ///< send-hook: when composing a new email
@@ -64,14 +65,14 @@ extern bool  C_SaveName;
 void  mutt_account_hook(const char *url);
 void  mutt_crypt_hook(struct ListHead *list, struct Address *addr);
 void  mutt_default_save(char *path, size_t pathlen, struct Email *e);
-void  mutt_delete_hooks(int type);
-char *mutt_find_hook(int type, const char *pat);
+void  mutt_delete_hooks(HookFlags type);
+char *mutt_find_hook(HookFlags type, const char *pat);
 void  mutt_folder_hook(const char *path, const char *desc);
-void  mutt_message_hook(struct Mailbox *m, struct Email *e, int type);
+void  mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type);
 enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 void  mutt_select_fcc(char *path, size_t pathlen, struct Email *e);
-void  mutt_startup_shutdown_hook(int type);
+void  mutt_startup_shutdown_hook(HookFlags type);
 void  mutt_timeout_hook(void);
 
 #endif /* MUTT_HOOK_H */
