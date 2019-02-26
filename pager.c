@@ -3233,9 +3233,10 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;
 
-        int replyflags = SEND_REPLY | (ch == OP_GROUP_REPLY ? SEND_GROUP_REPLY : 0) |
-                         (ch == OP_GROUP_CHAT_REPLY ? SEND_GROUP_CHAT_REPLY : 0) |
-                         (ch == OP_LIST_REPLY ? SEND_LIST_REPLY : 0);
+        SendFlags replyflags =
+            SEND_REPLY | (ch == OP_GROUP_REPLY ? SEND_GROUP_REPLY : 0) |
+            (ch == OP_GROUP_CHAT_REPLY ? SEND_GROUP_CHAT_REPLY : 0) |
+            (ch == OP_LIST_REPLY ? SEND_LIST_REPLY : 0);
 
         if (IsMsgAttach(extra))
           mutt_attach_reply(extra->fp, extra->email, extra->actx, extra->body, replyflags);

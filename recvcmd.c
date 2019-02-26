@@ -622,7 +622,7 @@ bail:
  * @param fp    File handle to attachment
  * @param actx  Attachment Context
  * @param cur   Attachment to forward (OPTIONAL)
- * @param flags Send mode, e.g. #SEND_RESEND
+ * @param flags Send mode, see #SendFlags
  *
  * This is different from the previous function since we want to mimic the
  * index menu's behavior.
@@ -631,7 +631,8 @@ bail:
  * context structure to find messages, while, on the attachment menu, messages
  * are referenced through the attachment index.
  */
-static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *cur, int flags)
+static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
+                                struct Body *cur, SendFlags flags)
 {
   struct Email *e_cur = NULL;
   struct Email *e_tmp = NULL;
@@ -747,10 +748,10 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
  * @param e     Email
  * @param actx  Attachment Context
  * @param cur   Current message
- * @param flags Send mode, e.g. #SEND_RESEND
+ * @param flags Send mode, see #SendFlags
  */
 void mutt_attach_forward(FILE *fp, struct Email *e, struct AttachCtx *actx,
-                         struct Body *cur, int flags)
+                         struct Body *cur, SendFlags flags)
 {
   if (check_all_msg(actx, cur, false))
     attach_forward_msgs(fp, actx, cur, flags);
@@ -770,7 +771,7 @@ void mutt_attach_forward(FILE *fp, struct Email *e, struct AttachCtx *actx,
  * @param env    Envelope to fill in
  * @param actx   Attachment Context
  * @param parent Parent Email
- * @param flags  Flags, e.g. #SEND_LIST_REPLY
+ * @param flags  Flags, see #SendFlags
  * @retval  0 Success
  * @retval -1 Error
  *
@@ -785,7 +786,7 @@ void mutt_attach_forward(FILE *fp, struct Email *e, struct AttachCtx *actx,
  * Note that this code is horribly similar to envelope_defaults() from send.c.
  */
 static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx *actx,
-                                          struct Email *parent, int flags)
+                                          struct Email *parent, SendFlags flags)
 {
   struct Envelope *curenv = NULL;
   struct Email *e = NULL;
@@ -899,10 +900,10 @@ static void attach_include_reply(FILE *fp, FILE *tmpfp, struct Email *cur)
  * @param e     Email
  * @param actx  Attachment Context
  * @param cur   Current message
- * @param flags Send mode, e.g. #SEND_RESEND
+ * @param flags Send mode, see #SendFlags
  */
 void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
-                       struct Body *cur, int flags)
+                       struct Body *cur, SendFlags flags)
 {
   bool mime_reply_any = false;
 

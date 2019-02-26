@@ -80,7 +80,8 @@ extern char *        C_Signature;
 extern bool          C_SigOnTop;
 extern bool          C_UseFrom;
 
-/* flags to ci_send_message() */
+typedef uint16_t SendFlags;             ///< Flags for ci_send_message(), e.g. #SEND_REPLY
+#define SEND_NO_FLAGS               0   ///< No flags are set
 #define SEND_REPLY            (1 << 0)  ///< Reply to sender
 #define SEND_GROUP_REPLY      (1 << 1)  ///< Reply to all
 #define SEND_LIST_REPLY       (1 << 2)  ///< Reply to mailing list
@@ -97,11 +98,11 @@ extern bool          C_UseFrom;
 #define SEND_GROUP_CHAT_REPLY (1 << 13) ///< Reply to all recipients preserving To/Cc
 #define SEND_NEWS             (1 << 14) ///< Reply to a news article
 
-int             ci_send_message(int flags, struct Email *msg, const char *tempfile, struct Context *ctx, struct EmailList *el);
+int             ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile, struct Context *ctx, struct EmailList *el);
 void            mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv);
 struct Address *mutt_default_from(void);
 void            mutt_encode_descriptions(struct Body *b, bool recurse);
-int             mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags);
+int             mutt_fetch_recips(struct Envelope *out, struct Envelope *in, SendFlags flags);
 void            mutt_fix_reply_recipients(struct Envelope *env);
 void            mutt_forward_intro(struct Mailbox *m, struct Email *e, FILE *fp);
 void            mutt_forward_trailer(struct Mailbox *m, struct Email *e, FILE *fp);

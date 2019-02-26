@@ -1320,7 +1320,7 @@ void mutt_view_attachments(struct Email *e)
 {
   char helpstr[1024];
   struct Body *cur = NULL;
-  int flags = 0;
+  SendFlags flags = SEND_NO_FLAGS;
   int op = OP_NULL;
 
   struct Mailbox *m = Context ? Context->mailbox : NULL;

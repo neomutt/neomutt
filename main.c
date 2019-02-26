@@ -416,7 +416,7 @@ int main(int argc, char *argv[], char *envp[])
   struct ListHead alias_queries = STAILQ_HEAD_INITIALIZER(alias_queries);
   struct ListHead cc_list = STAILQ_HEAD_INITIALIZER(cc_list);
   struct ListHead bcc_list = STAILQ_HEAD_INITIALIZER(bcc_list);
-  int sendflags = 0;
+  SendFlags sendflags = SEND_NO_FLAGS;
   int flags = 0;
   int version = 0;
   int i;

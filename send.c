@@ -261,11 +261,11 @@ static int edit_address(struct Address **a, const char *field)
 /**
  * edit_envelope - Edit Envelope fields
  * @param en    Envelope to edit
- * @param flags Flags, e.g. #SEND_LIST_REPLY
+ * @param flags Flags, see #SendFlags
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int edit_envelope(struct Envelope *en, int flags)
+static int edit_envelope(struct Envelope *en, SendFlags flags)
 {
   char buf[8192];
 
@@ -610,12 +610,12 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *out)
  * default_to - Generate default email addresses
  * @param[out] to      'To' address
  * @param[in]  env     Envelope to populate
- * @param[in]  flags   Flags, e.g. #SEND_LIST_REPLY
+ * @param[in]  flags   Flags, see #SendFlags
  * @param[in]  hmfupto If true, add 'followup-to' address to 'to' address
  * @retval  0 Success
  * @retval -1 Aborted
  */
-static int default_to(struct Address **to, struct Envelope *env, int flags, int hmfupto)
+static int default_to(struct Address **to, struct Envelope *env, SendFlags flags, int hmfupto)
 {
   char prompt[256];
 
@@ -692,11 +692,11 @@ static int default_to(struct Address **to, struct Envelope *env, int flags, int 
  * mutt_fetch_recips - Generate recpients for a reply email
  * @param out   Envelope to populate
  * @param in    Envelope of source email
- * @param flags Flags, e.g. SEND_LIST_REPLY
+ * @param flags Flags, see #SendFlags
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
+int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, SendFlags flags)
 {
   struct Address *tmp = NULL;
   int hmfupto = -1;
@@ -900,12 +900,12 @@ static void make_reference_headers(struct EmailList *el, struct Envelope *env)
  * @param env   Envelope for result
  * @param m     Mailbox
  * @param el    List of Emails to use
- * @param flags Flags, e.g. #SEND_REPLY
+ * @param flags Flags, see #SendFlags
  * @retval  0 Success
  * @retval -1 Failure
  */
 static int envelope_defaults(struct Envelope *env, struct Mailbox *m,
-                             struct EmailList *el, int flags)
+                             struct EmailList *el, SendFlags flags)
 {
   if (!el || STAILQ_EMPTY(el))
     return -1;
@@ -968,13 +968,13 @@ static int envelope_defaults(struct Envelope *env, struct Mailbox *m,
  * generate_body - Create a new email body
  * @param tempfp Stream for outgoing message
  * @param msg    Header for outgoing message
- * @param flags  Compose mode
+ * @param flags  Compose mode, see #SendFlags
  * @param m      Mailbox
  * @param el     List of Emails to use
  * @retval  0 Success
  * @retval -1 Error
  */
-static int generate_body(FILE *tempfp, struct Email *msg, int flags,
+static int generate_body(FILE *tempfp, struct Email *msg, SendFlags flags,
                          struct Mailbox *m, struct EmailList *el)
 {
   int i;
@@ -1466,13 +1466,13 @@ static bool search_attach_keyword(char *filename)
  * @param[in]  fcc_len       Length of fcc buffer
  * @param[in]  clear_content Cleartext content of Email
  * @param[in]  pgpkeylist    List of pgp keys
- * @param[in]  flags         Send mode, e.g. #SEND_RESEND
+ * @param[in]  flags         Send mode, see #SendFlags
  * @param[out] finalpath     Path of final folder
  * @retval  0 Success
  * @retval -1 Error
  */
 static int save_fcc(struct Email *msg, char *fcc, size_t fcc_len, struct Body *clear_content,
-                    char *pgpkeylist, int flags, char **finalpath)
+                    char *pgpkeylist, SendFlags flags, char **finalpath)
 {
   int rc = 0;
   struct Body *save_content = NULL;
@@ -1632,11 +1632,11 @@ full_fcc:
  * @param msg   Email to postpone
  * @param cur   Current Email in the index
  * @param fcc   Folder for 'sent mail'
- * @param flags Send mode, e.g. #SEND_RESEND
+ * @param flags Send mode, see #SendFlags
  * @retval  0 Success
  * @retval -1 Error
  */
-static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, int flags)
+static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, SendFlags flags)
 {
   char *pgpkeylist = NULL;
   char *encrypt_as = NULL;
@@ -1724,16 +1724,16 @@ static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, int
 
 /**
  * ci_send_message - Send an email
- * @param flags    send mode, e.g. #SEND_RESEND
- * @param msg      template to use for new message
- * @param tempfile file specified by -i or -H
- * @param ctx      current mailbox
+ * @param flags    Send mode, see #SendFlags
+ * @param msg      Template to use for new message
+ * @param tempfile File specified by -i or -H
+ * @param ctx      Current mailbox
  * @param el       List of Emails to send
  * @retval  0 Message was successfully sent
  * @retval -1 Message was aborted or an error occurred
  * @retval  1 Message was postponed
  */
-int ci_send_message(int flags, struct Email *msg, const char *tempfile,
+int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
                     struct Context *ctx, struct EmailList *el)
 {
   char buf[1024];
@@ -1803,12 +1803,13 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
 
     if (flags == SEND_POSTPONED)
     {
-      flags = mutt_get_postponed(ctx, msg, &cur, fcc, sizeof(fcc));
-      if (flags < 0)
+      rc = mutt_get_postponed(ctx, msg, &cur, fcc, sizeof(fcc));
+      if (rc < 0)
       {
         flags = SEND_POSTPONED;
         goto cleanup;
       }
+      flags = rc;
 #ifdef USE_NNTP
       /* If postponed message is a news article, it have
        * a "Newsgroups:" header line, then set appropriate flag.
