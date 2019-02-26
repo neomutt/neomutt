@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include "mutt.h"
 #include "browser.h"
+#include "pager.h"
 
 struct Context;
 struct Pager;
@@ -44,7 +45,7 @@ extern int MuttGetchTimeout; ///< Timeout in ms for mutt_getch()
 
 int          mutt_addwch(wchar_t wc);
 int          mutt_any_key_to_continue(const char *s);
-int          mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct Pager *info);
+int          mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color, struct Pager *info);
 void         mutt_edit_file(const char *editor, const char *file);
 void         mutt_endwin(void);
 int          mutt_enter_fname_full(const char *prompt, char *buf, size_t blen, bool mailbox, bool multiple, char ***files, int *numfiles, int flags);

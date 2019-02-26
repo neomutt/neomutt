@@ -38,7 +38,8 @@ extern bool          C_SmartWrap;
 extern struct Regex *C_Smileys;
 extern bool          C_Tilde;
 
-/* dynamic internal flags */
+typedef uint16_t PagerFlags;              ///< Flags for mutt_pager(), e.g. #MUTT_SHOWFLAT
+#define MUTT_PAGER_NO_FLAGS         0     ///< No flags are set
 #define MUTT_SHOWFLAT         (1 << 0)    ///< Show characters (used for displaying help)
 #define MUTT_SHOWCOLOR        (1 << 1)    ///< Show characters in color otherwise don't show characters
 #define MUTT_HIDE             (1 << 2)    ///< Don't show quoted text
@@ -69,7 +70,7 @@ struct Pager
   struct AttachCtx *actx; /**< attachment information */
 };
 
-int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *extra);
+int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct Pager *extra);
 
 void mutt_clear_pager_position(void);
 

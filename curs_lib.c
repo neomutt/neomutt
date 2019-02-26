@@ -562,12 +562,13 @@ int mutt_any_key_to_continue(const char *s)
  * mutt_do_pager - Display some page-able text to the user
  * @param banner   Message for status bar
  * @param tempfile File to display
- * @param do_color Flags, e.g. #MUTT_PAGER_MESSAGE
+ * @param do_color Flags, see #PagerFlags
  * @param info     Info about current mailbox (OPTIONAL)
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct Pager *info)
+int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
+                  struct Pager *info)
 {
   int rc;
 
