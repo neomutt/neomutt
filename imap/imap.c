@@ -1247,7 +1247,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
   else if (mdata->check_status & IMAP_FLAGS_PENDING)
     result = MUTT_FLAGS;
 
-  mdata->check_status = 0;
+  mdata->check_status = IMAP_OPEN_NO_FLAGS;
 
   return result;
 }

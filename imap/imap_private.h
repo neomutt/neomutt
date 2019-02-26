@@ -61,6 +61,8 @@ struct Progress;
 #define SEQLEN 5
 #define IMAP_MAX_CMDLEN 1024 ///< Maximum length of command lines before they must be split (for lazy servers)
 
+typedef uint8_t ImapOpenFlags;         ///< Flags, e.g. #MUTT_THREAD_COLLAPSE
+#define IMAP_OPEN_NO_FLAGS          0  ///< No flags are set
 #define IMAP_REOPEN_ALLOW     (1 << 0) ///< Allow re-opening a folder upon expunge
 #define IMAP_EXPUNGE_EXPECTED (1 << 1) ///< Messages will be expunged from the server
 #define IMAP_EXPUNGE_PENDING  (1 << 2) ///< Messages on the server have been expunged
@@ -212,8 +214,8 @@ struct ImapMboxData
   char *munge_name;  /**< Munged version of the mailbox name */
   char *real_name;   /**< Original Mailbox name, e.g.: INBOX can be just \0 */
 
-  unsigned char reopen;        /**< Flags, e.g. #IMAP_REOPEN_ALLOW */
-  unsigned short check_status; /**< Flags, e.g. #IMAP_NEWMAIL_PENDING */
+  ImapOpenFlags reopen;        /**< Flags, e.g. #IMAP_REOPEN_ALLOW */
+  ImapOpenFlags check_status;  /**< Flags, e.g. #IMAP_NEWMAIL_PENDING */
   unsigned int new_mail_count; /**< Set when EXISTS notifies of new mail */
 
   // IMAP STATUS information
