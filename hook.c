@@ -114,7 +114,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
                      (data & (MUTT_FOLDER_HOOK | MUTT_SEND_HOOK | MUTT_SEND2_HOOK |
                               MUTT_ACCOUNT_HOOK | MUTT_REPLY_HOOK)) ?
                          MUTT_TOKEN_SPACE :
-                         0);
+                         MUTT_TOKEN_NO_FLAGS);
 
   if (!command.data)
   {

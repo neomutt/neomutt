@@ -69,7 +69,8 @@ typedef uint16_t CompletionFlags;    ///< Flags for mutt_enter_string_full(), e.
 #define MUTT_NM_QUERY      (1 << 9)  ///< Notmuch query mode.
 #define MUTT_NM_TAG        (1 << 10) ///< Notmuch tag +/- mode.
 
-/* flags for mutt_extract_token() */
+typedef uint16_t TokenFlags;               ///< Flags for mutt_extract_token(), e.g. #MUTT_TOKEN_EQUAL
+#define MUTT_TOKEN_NO_FLAGS            0   ///< No flags are set
 #define MUTT_TOKEN_EQUAL         (1 << 0)  ///< Treat '=' as a special
 #define MUTT_TOKEN_CONDENSE      (1 << 1)  ///< ^(char) to control chars (macros)
 #define MUTT_TOKEN_SPACE         (1 << 2)  ///< Don't treat whitespace as a term
@@ -211,7 +212,7 @@ int safe_asprintf(char **, const char *, ...);
 
 char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping *items);
 
-int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags);
+int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags);
 void mutt_free_opts(void);
 int query_quadoption(int opt, const char *prompt);
 int mutt_label_complete(char *buf, size_t buflen, int numtabs);

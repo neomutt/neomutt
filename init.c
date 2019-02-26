@@ -2673,11 +2673,11 @@ int mutt_dump_variables(bool hide_sensitive)
  * mutt_extract_token - Extract one token from a string
  * @param dest  Buffer for the result
  * @param tok   Buffer containing tokens
- * @param flags Flags, e.g. #MUTT_TOKEN_SPACE
+ * @param flags Flags, see #TokenFlags
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
+int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags)
 {
   if (!dest || !tok)
     return -1;
