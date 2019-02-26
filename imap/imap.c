@@ -2171,7 +2171,7 @@ fail:
 /**
  * imap_mbox_open_append - Implements MxOps::mbox_open_append()
  */
-static int imap_mbox_open_append(struct Mailbox *m, int flags)
+static int imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
   if (!m || !m->account)
     return -1;

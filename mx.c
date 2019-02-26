@@ -172,11 +172,11 @@ int mx_access(const char *path, int flags)
 /**
  * mx_open_mailbox_append - Open a mailbox for appending
  * @param m     Mailbox
- * @param flags Flags, e.g. #MUTT_READONLY
+ * @param flags Flags, see #OpenMailboxFlags
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int mx_open_mailbox_append(struct Mailbox *m, int flags)
+static int mx_open_mailbox_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
   if (!m)
     return -1;
@@ -239,11 +239,11 @@ static int mx_open_mailbox_append(struct Mailbox *m, int flags)
 /**
  * mx_mbox_open - Open a mailbox and parse it
  * @param m     Mailbox to open
- * @param flags Flags, e.g. #MUTT_NOSORT
+ * @param flags Flags, see #OpenMailboxFlags
  * @retval ptr  Mailbox context
  * @retval NULL Error
  */
-struct Context *mx_mbox_open(struct Mailbox *m, int flags)
+struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
 {
   if (!m)
     return NULL;

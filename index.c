@@ -680,11 +680,11 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
 
   const int flags = (C_ReadOnly || (op == OP_MAIN_CHANGE_FOLDER_READONLY)
 #ifdef USE_NOTMUCH
-                     || (op == OP_MAIN_VFOLDER_FROM_QUERY_READONLY)
+                                  || (op == OP_MAIN_VFOLDER_FROM_QUERY_READONLY)
 #endif
-                         ) ?
-                        MUTT_READONLY :
-                        0;
+                                      ) ?
+                                     MUTT_READONLY :
+                                     MUTT_OPEN_NO_FLAGS;
 
   bool free_m = false;
   if (!m)
@@ -1012,7 +1012,7 @@ static void index_custom_redraw(struct Menu *menu)
 int mutt_index_menu(void)
 {
   char buf[PATH_MAX], helpstr[1024];
-  int flags;
+  OpenMailboxFlags flags;
   int op = OP_NULL;
   bool done = false; /* controls when to exit the "event" loop */
   bool tag = false;  /* has the tag-prefix command been pressed? */
@@ -2204,7 +2204,7 @@ int mutt_index_menu(void)
           flags = MUTT_READONLY;
         }
         else
-          flags = 0;
+          flags = MUTT_OPEN_NO_FLAGS;
 
         if (flags)
           cp = _("Open mailbox in read-only mode");
