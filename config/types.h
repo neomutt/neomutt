@@ -54,8 +54,8 @@
 #define DT_DISABLED     0x4000 /**< Config item is disabled */
 #define DT_MY_CONFIG    0x8000 /**< Config item is a "my_" variable */
 
-/* forced redraw/resort types + other flags */
-#define R_NONE        0             ///< No refresh/resort flags
+typedef uint16_t ConfigRedrawFlags; ///< Flags for redraw/resort, e.g. #R_INDEX
+#define R_NONE              0       ///< No refresh/resort flags
 #define R_INDEX       (1 << 0)      ///< Redraw the index menu (MENU_MAIN)
 #define R_PAGER       (1 << 1)      ///< Redraw the pager menu
 #define R_PAGER_FLOW  (1 << 2)      ///< Reflow line_info and redraw the pager menu

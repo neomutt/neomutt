@@ -1583,7 +1583,7 @@ bool mutt_menu_listener(const struct ConfigSet *cs, struct HashElem *he,
                         const char *name, enum ConfigEvent ev)
 {
   const struct ConfigDef *cdef = he->data;
-  int flags = cdef->flags;
+  ConfigRedrawFlags flags = cdef->flags;
 
   if (flags == 0)
     return true;
