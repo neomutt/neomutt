@@ -26,6 +26,7 @@
 #define MUTT_MUTT_ACCOUNT_H
 
 #include <stdbool.h>
+#include <stdint.h>
 
 struct ConnAccount;
 struct Url;
@@ -54,7 +55,8 @@ enum AccountType
   MUTT_ACCT_TYPE_NNTP,     ///< Nntp (Usenet) Account
 };
 
-/* account flags */
+typedef uint8_t MuttAccountFlags;     ///< Flags, Which ConnAccount fields are initialised, e.g. #MUTT_ACCT_PORT
+#define MUTT_ACCT__NO_FLAGS       0   ///< No flags are set
 #define MUTT_ACCT_PORT      (1 << 0)  ///< Port field has been set
 #define MUTT_ACCT_USER      (1 << 1)  ///< User field has been set
 #define MUTT_ACCT_LOGIN     (1 << 2)  ///< Login field has been set
