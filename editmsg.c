@@ -183,7 +183,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
     goto bail;
   }
 
-  int of = 0;
+  MsgOpenFlags of = MUTT_MSG_NO_FLAGS;
   int cf = (((tmpctx->mailbox->magic == MUTT_MBOX) || (tmpctx->mailbox->magic == MUTT_MMDF)) ?
                 0 :
                 CH_NOSTATUS);

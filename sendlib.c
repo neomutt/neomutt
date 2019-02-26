@@ -3152,7 +3152,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   bool need_mailbox_cleanup = false;
   struct stat st;
   char buf[128];
-  int onm_flags;
+  MsgOpenFlags onm_flags;
 
   if (post)
     set_noconv_flags(e->content, true);

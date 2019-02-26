@@ -59,7 +59,8 @@ typedef uint8_t OpenMailboxFlags;   ///< Flags for mutt_open_mailbox(), e.g. #MU
 #define MUTT_APPENDNEW     (1 << 6) ///< Set in mx_open_mailbox_append if the mailbox doesn't exist.
                                     ///< Used by maildir/mh to create the mailbox.
 
-/* mx_msg_open_new() */
+typedef uint8_t MsgOpenFlags;      ///< Flags for mx_msg_open_new(), e.g. #MUTT_ADD_FROM
+#define MUTT_MSG_NO_FLAGS       0  ///< No flags are set
 #define MUTT_ADD_FROM     (1 << 0) ///< add a From_ line
 #define MUTT_SET_DRAFT    (1 << 1) ///< set the message draft flag
 
@@ -277,7 +278,7 @@ struct Context *mx_mbox_open       (struct Mailbox *m, OpenMailboxFlags flags);
 int             mx_mbox_sync       (struct Mailbox *m, int *index_hint);
 int             mx_msg_close       (struct Mailbox *m, struct Message **msg);
 int             mx_msg_commit      (struct Mailbox *m, struct Message *msg);
-struct Message *mx_msg_open_new    (struct Mailbox *m, struct Email *e, int flags);
+struct Message *mx_msg_open_new    (struct Mailbox *m, struct Email *e, MsgOpenFlags flags);
 struct Message *mx_msg_open        (struct Mailbox *m, int msgno);
 int             mx_msg_padding_size(struct Mailbox *m);
 int             mx_save_hcache     (struct Mailbox *m, struct Email *e);

@@ -923,10 +923,10 @@ int mx_mbox_sync(struct Mailbox *m, int *index_hint)
  * mx_msg_open_new - Open a new message
  * @param m     Destination mailbox
  * @param e     Message being copied (required for maildir support, because the filename depends on the message flags)
- * @param flags Flags, e.g. #MUTT_SET_DRAFT
+ * @param flags Flags, see #MsgOpenFlags
  * @retval ptr New Message
  */
-struct Message *mx_msg_open_new(struct Mailbox *m, struct Email *e, int flags)
+struct Message *mx_msg_open_new(struct Mailbox *m, struct Email *e, MsgOpenFlags flags)
 {
   if (!m)
     return NULL;
