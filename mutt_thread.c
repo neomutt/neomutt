@@ -1214,10 +1214,10 @@ void mutt_set_virtual(struct Context *ctx)
  * mutt_traverse_thread - Recurse through an email thread, matching messages
  * @param ctx  Mailbox
  * @param cur  Header of current message
- * @param flag Flag to set, e.g. #MUTT_THREAD_NEXT_UNREAD
+ * @param flag Flag to set, see #MuttThreadFlags
  * @retval num Number of matches
  */
-int mutt_traverse_thread(struct Context *ctx, struct Email *cur, int flag)
+int mutt_traverse_thread(struct Context *ctx, struct Email *cur, MuttThreadFlags flag)
 {
   struct MuttThread *thread = NULL, *top = NULL;
   struct Email *roothdr = NULL;
