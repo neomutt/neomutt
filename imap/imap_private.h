@@ -69,7 +69,8 @@ typedef uint8_t ImapOpenFlags;         ///< Flags, e.g. #MUTT_THREAD_COLLAPSE
 #define IMAP_NEWMAIL_PENDING  (1 << 3) ///< New mail is waiting on the server
 #define IMAP_FLAGS_PENDING    (1 << 4) ///< Flags have changed on the server
 
-/* imap_exec flags (see imap_exec) */
+typedef uint8_t ImapCmdFlags;          ///< Flags for imap_exec(), e.g. #IMAP_CMD_PASS
+#define IMAP_CMD_NO_FLAGS          0   ///< No flags are set
 #define IMAP_CMD_PASS        (1 << 0)  ///< Command contains a password. Suppress logging
 #define IMAP_CMD_QUEUE       (1 << 1)  ///< Queue a command, do not execute
 #define IMAP_CMD_POLL        (1 << 2)  ///< Poll the tcp connection before running the imap command
@@ -279,7 +280,7 @@ int imap_cmd_step(struct ImapAccountData *adata);
 void imap_cmd_finish(struct ImapAccountData *adata);
 bool imap_code(const char *s);
 const char *imap_cmd_trailer(struct ImapAccountData *adata);
-int imap_exec(struct ImapAccountData *adata, const char *cmdstr, int flags);
+int imap_exec(struct ImapAccountData *adata, const char *cmdstr, ImapCmdFlags flags);
 int imap_cmd_idle(struct ImapAccountData *adata);
 
 /* message.c */
