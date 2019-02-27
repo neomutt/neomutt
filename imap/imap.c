@@ -796,9 +796,7 @@ void imap_expunge_mailbox(struct Mailbox *m)
     {
       mutt_debug(LL_DEBUG2, "Expunging message UID %u.\n", imap_edata_get(e)->uid);
 
-      e->active = false;
       e->deleted = true;
-      m->size -= e->content->length;
 
       imap_cache_del(m, e);
 #ifdef USE_HCACHE
