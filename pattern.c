@@ -2326,7 +2326,7 @@ bool mutt_limit_current_thread(struct Email *e)
 
 /**
  * mutt_pattern_func - Perform some Pattern matching
- * @param op     Operation to perform, e.g. MUTT_LIMIT
+ * @param op     Operation to perform, e.g. #MUTT_LIMIT
  * @param prompt Prompt to show the user
  * @retval  0 Success
  * @retval -1 Failure

@@ -1823,15 +1823,15 @@ void mutt_write_references(const struct ListHead *r, FILE *f, size_t trim)
 
 /**
  * print_val - Add pieces to an email header, wrapping where necessary
- * @param fp    File to write to
- * @param pfx   Prefix for headers
- * @param value Text to be added
- * @param flags Flags, e.g. #CH_DISPLAY
- * @param col   Column that this text starts at
+ * @param fp      File to write to
+ * @param pfx     Prefix for headers
+ * @param value   Text to be added
+ * @param chflags Flags, e.g. #CH_DISPLAY
+ * @param col     Column that this text starts at
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int print_val(FILE *fp, const char *pfx, const char *value, int flags, size_t col)
+static int print_val(FILE *fp, const char *pfx, const char *value, int chflags, size_t col)
 {
   while (value && *value)
   {
@@ -1839,7 +1839,7 @@ static int print_val(FILE *fp, const char *pfx, const char *value, int flags, si
       return -1;
     /* corner-case: break words longer than 998 chars by force,
      * mandated by RFC5322 */
-    if (!(flags & CH_DISPLAY) && ++col >= 998)
+    if (!(chflags & CH_DISPLAY) && ++col >= 998)
     {
       if (fputs("\n ", fp) < 0)
         return -1;
@@ -1850,7 +1850,7 @@ static int print_val(FILE *fp, const char *pfx, const char *value, int flags, si
       if (*(value + 1) && pfx && *pfx && fputs(pfx, fp) == EOF)
         return -1;
       /* for display, turn folding spaces into folding tabs */
-      if ((flags & CH_DISPLAY) && (*(value + 1) == ' ' || *(value + 1) == '\t'))
+      if ((chflags & CH_DISPLAY) && (*(value + 1) == ' ' || *(value + 1) == '\t'))
       {
         value++;
         while (*value && (*value == ' ' || *value == '\t'))
@@ -1872,19 +1872,19 @@ static int print_val(FILE *fp, const char *pfx, const char *value, int flags, si
  * @param value   Header value
  * @param pfx     Prefix for header
  * @param wraplen Column to wrap at
- * @param flags   Flags, e.g. #CH_DISPLAY
+ * @param chflags Flags, e.g. #CH_DISPLAY
  * @retval  0 Success
  * @retval -1 Failure
  */
 static int fold_one_header(FILE *fp, const char *tag, const char *value,
-                           const char *pfx, int wraplen, int flags)
+                           const char *pfx, int wraplen, int chflags)
 {
   const char *p = value;
   char buf[HUGE_STRING] = "";
   int first = 1, col = 0, l = 0;
-  const bool display = (flags & CH_DISPLAY);
+  const bool display = (chflags & CH_DISPLAY);
 
-  mutt_debug(5, "pfx=[%s], tag=[%s], flags=%d value=[%s]\n", pfx, tag, flags, NONULL(value));
+  mutt_debug(5, "pfx=[%s], tag=[%s], flags=%d value=[%s]\n", pfx, tag, chflags, NONULL(value));
 
   if (tag && *tag && fprintf(fp, "%s%s: ", NONULL(pfx), tag) < 0)
     return -1;
@@ -1931,11 +1931,11 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
       }
       if (fputc('\t', fp) == EOF)
         return -1;
-      if (print_val(fp, pfx, pc, flags, col) < 0)
+      if (print_val(fp, pfx, pc, chflags, col) < 0)
         return -1;
       col += 8;
     }
-    else if (print_val(fp, pfx, buf, flags, col) < 0)
+    else if (print_val(fp, pfx, buf, chflags, col) < 0)
       return -1;
     col += w;
 
@@ -2012,19 +2012,19 @@ static char *unfold_header(char *s)
  * @param pfx     Prefix for header
  * @param start   Start of header line
  * @param end     End of header line
- * @param flags   Flags, e.g. #CH_DISPLAY
+ * @param chflags Flags, e.g. #CH_DISPLAY
  * @retval  0 Success
  * @retval -1 Failure
  */
 static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char *pfx,
-                            const char *start, const char *end, int flags)
+                            const char *start, const char *end, int chflags)
 {
   char *tagbuf = NULL, *valbuf = NULL, *t = NULL;
   int is_from = (end - start) > 5 && mutt_str_startswith(start, "from ", CASE_IGNORE);
 
   /* only pass through folding machinery if necessary for sending,
      never wrap From_ headers on sending */
-  if (!(flags & CH_DISPLAY) && (pfxw + max <= wraplen || is_from))
+  if (!(chflags & CH_DISPLAY) && (pfxw + max <= wraplen || is_from))
   {
     valbuf = mutt_str_substr_dup(start, end);
     mutt_debug(5, "buf[%s%s] short enough, max width = %d <= %d\n", NONULL(pfx),
@@ -2045,7 +2045,7 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
       FREE(&valbuf);
       return 0;
     }
-    if (print_val(fp, pfx, valbuf, flags, mutt_str_strlen(pfx)) < 0)
+    if (print_val(fp, pfx, valbuf, chflags, mutt_str_strlen(pfx)) < 0)
     {
       FREE(&valbuf);
       return -1;
@@ -2081,7 +2081,7 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
     }
     mutt_debug(LL_DEBUG2, "buf[%s%s] too long, max width = %d > %d\n",
                NONULL(pfx), NONULL(valbuf), max, wraplen);
-    if (fold_one_header(fp, tagbuf, valbuf, pfx, wraplen, flags) < 0)
+    if (fold_one_header(fp, tagbuf, valbuf, pfx, wraplen, chflags) < 0)
     {
       FREE(&valbuf);
       FREE(&tagbuf);
@@ -2100,7 +2100,7 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
  * @param value   Header value
  * @param pfx     Prefix for header
  * @param wraplen Column to wrap at
- * @param flags   Flags, e.g. #CH_DISPLAY
+ * @param chflags Flags, e.g. #CH_DISPLAY
  * @retval  0 Success
  * @retval -1 Failure
  *
@@ -2108,13 +2108,13 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
  * for each one
  */
 int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
-                          const char *pfx, int wraplen, int flags)
+                          const char *pfx, int wraplen, int chflags)
 {
   char *p = (char *) value, *last = NULL, *line = NULL;
   int max = 0, w, rc = -1;
   int pfxw = mutt_strwidth(pfx);
   char *v = mutt_str_strdup(value);
-  bool display = (flags & CH_DISPLAY);
+  bool display = (chflags & CH_DISPLAY);
 
   if (!display || Weed)
     v = unfold_header(v);
@@ -2143,7 +2143,7 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
     }
     else
     {
-      rc = fold_one_header(fp, tag, v, pfx, wraplen, flags);
+      rc = fold_one_header(fp, tag, v, pfx, wraplen, chflags);
       goto out;
     }
   }
@@ -2170,7 +2170,7 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
     line = ++p;
     if (*p != ' ' && *p != '\t')
     {
-      if (write_one_header(fp, pfxw, max, wraplen, pfx, last, p, flags) < 0)
+      if (write_one_header(fp, pfxw, max, wraplen, pfx, last, p, chflags) < 0)
         goto out;
       last = p;
       max = 0;
@@ -2178,7 +2178,7 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
   }
 
   if (last && *last)
-    if (write_one_header(fp, pfxw, max, wraplen, pfx, last, p, flags) < 0)
+    if (write_one_header(fp, pfxw, max, wraplen, pfx, last, p, chflags) < 0)
       goto out;
 
   rc = 0;
@@ -2967,10 +2967,10 @@ static int bounce_message(FILE *fp, struct Email *e, struct Address *to,
   if (f)
   {
     char date[SHORT_STRING];
-    int ch_flags = CH_XMIT | CH_NONEWLINE | CH_NOQFROM;
+    int chflags = CH_XMIT | CH_NONEWLINE | CH_NOQFROM;
 
     if (!BounceDelivered)
-      ch_flags |= CH_WEED_DELIVERED;
+      chflags |= CH_WEED_DELIVERED;
 
     fseeko(fp, e->offset, SEEK_SET);
     fprintf(f, "Resent-From: %s", resent_from);
@@ -2980,7 +2980,7 @@ static int bounce_message(FILE *fp, struct Email *e, struct Address *to,
     FREE(&msgid_str);
     fputs("Resent-To: ", f);
     mutt_write_address_list(to, f, 11, 0);
-    mutt_copy_header(fp, e, f, ch_flags, NULL);
+    mutt_copy_header(fp, e, f, chflags, NULL);
     fputc('\n', f);
     mutt_file_copy_bytes(fp, f, e->content->length);
     if (mutt_file_fclose(&f) != 0)
