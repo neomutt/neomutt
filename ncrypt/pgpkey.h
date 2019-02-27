@@ -24,6 +24,7 @@
 #define MUTT_NCRYPT_PGPKEY_H
 
 #include <stdbool.h>
+#include "ncrypt.h"
 
 struct Address;
 
@@ -38,8 +39,8 @@ enum PgpRing
 
 struct Body *pgp_class_make_key_attachment(void);
 
-struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, short abilities, enum PgpRing keyring);
-struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities, enum PgpRing keyring, bool oppenc_mode);
-struct PgpKeyInfo *pgp_getkeybystr(char *p, short abilities, enum PgpRing keyring);
+struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, KeyFlags abilities, enum PgpRing keyring);
+struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities, enum PgpRing keyring, bool oppenc_mode);
+struct PgpKeyInfo *pgp_getkeybystr(char *p, KeyFlags abilities, enum PgpRing keyring);
 
 #endif /* MUTT_NCRYPT_PGPKEY_H */

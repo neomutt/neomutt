@@ -411,12 +411,12 @@ static pid_t smime_invoke(FILE **smimein, FILE **smimeout, FILE **smimeerr,
 
 /**
  * smime_key_flags - Turn SMIME key flags into a string
- * @param flags Flags, e.g. #KEYFLAG_CANENCRYPT
+ * @param flags Flags, see #KeyFlags
  * @retval ptr Flag string
  *
  * Note: The string is statically allocated.
  */
-static char *smime_key_flags(int flags)
+static char *smime_key_flags(KeyFlags flags)
 {
   static char buf[3];
 
@@ -779,12 +779,12 @@ static struct SmimeKey *smime_get_key_by_hash(char *hash, bool public)
 /**
  * smime_get_key_by_addr - Find an SIME key by address
  * @param mailbox   Email address to match
- * @param abilities Abilities to match, e.g. #KEYFLAG_CANENCRYPT
+ * @param abilities Abilities to match, see #KeyFlags
  * @param public    If true, only get the public keys
  * @param may_ask   If true, the user may be asked to select a key
  * @retval ptr Matching key
  */
-static struct SmimeKey *smime_get_key_by_addr(char *mailbox, short abilities,
+static struct SmimeKey *smime_get_key_by_addr(char *mailbox, KeyFlags abilities,
                                               bool public, bool may_ask)
 {
   struct SmimeKey *results = NULL, *result = NULL;
@@ -859,11 +859,11 @@ static struct SmimeKey *smime_get_key_by_addr(char *mailbox, short abilities,
 /**
  * smime_get_key_by_str - Find an SMIME key by string
  * @param str       String to match
- * @param abilities Abilities to match, e.g. #KEYFLAG_CANENCRYPT
+ * @param abilities Abilities to match, see #KeyFlags
  * @param public    If true, only get the public keys
  * @retval ptr Matching key
  */
-static struct SmimeKey *smime_get_key_by_str(char *str, short abilities, bool public)
+static struct SmimeKey *smime_get_key_by_str(char *str, KeyFlags abilities, bool public)
 {
   struct SmimeKey *results = NULL, *result = NULL;
   struct SmimeKey *matches = NULL;
@@ -905,11 +905,11 @@ static struct SmimeKey *smime_get_key_by_str(char *str, short abilities, bool pu
 /**
  * smime_ask_for_key - Ask the user to select a key
  * @param prompt    Prompt to show the user
- * @param abilities Abilities to match, e.g. #KEYFLAG_CANENCRYPT
+ * @param abilities Abilities to match, see #KeyFlags
  * @param public    If true, only get the public keys
  * @retval ptr Selected SMIME key
  */
-static struct SmimeKey *smime_ask_for_key(char *prompt, short abilities, bool public)
+static struct SmimeKey *smime_ask_for_key(char *prompt, KeyFlags abilities, bool public)
 {
   struct SmimeKey *key = NULL;
   char resp[128];

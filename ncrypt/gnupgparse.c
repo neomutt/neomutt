@@ -135,7 +135,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
   bool is_fpr = false;
   char *pend = NULL, *p = NULL;
   int trust = 0;
-  int flags = 0;
+  KeyFlags flags = KEYFLAG_NO_FLAGS;
   struct PgpKeyInfo tmp;
 
   *is_subkey = 0;

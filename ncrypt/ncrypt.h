@@ -50,6 +50,7 @@
 #define MUTT_NCRYPT_NCRYPT_H
 
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 
 struct Address;
@@ -156,6 +157,8 @@ extern char *C_SmimeVerifyOpaqueCommand;
 #define WithCrypto 0
 #endif
 
+typedef uint16_t KeyFlags;                  ///< Flags describing PGP/SMIME keys, e.g. #KEYFLAG_CANSIGN
+#define KEYFLAG_NO_FLAGS                0   ///< No flags are set
 #define KEYFLAG_CANSIGN           (1 << 0)  ///< Key is suitable for signing
 #define KEYFLAG_CANENCRYPT        (1 << 1)  ///< Key is suitable for encryption
 #define KEYFLAG_ISX509            (1 << 2)  ///< Key is an X.509 key

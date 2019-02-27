@@ -43,7 +43,7 @@ struct SmimeKey
   char *label;
   char *issuer;
   char trust; /**< i=Invalid r=revoked e=expired u=unverified v=verified t=trusted */
-  int flags;
+  KeyFlags flags;
   struct SmimeKey *next;
 };
 
