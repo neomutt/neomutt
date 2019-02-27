@@ -1110,8 +1110,8 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
     s.fp_in = msg->fp;
     s.flags = MUTT_CHARCONV;
 #ifdef USE_FMEMOPEN
-    s.fpout = open_memstream(&temp, &tempsize);
-    if (!s.fpout)
+    s.fp_out = open_memstream(&temp, &tempsize);
+    if (!s.fp_out)
     {
       mutt_perror(_("Error opening 'memory stream'"));
       return false;
@@ -1151,7 +1151,7 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
     }
 
 #ifdef USE_FMEMOPEN
-    fclose(s.fpout);
+    fclose(s.fp_out);
     lng = tempsize;
 
     if (tempsize)
