@@ -584,12 +584,13 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
  * @param fpout   Where to write output
  * @param fpin    Where to get input
  * @param e       Email being copied
- * @param cmflags Flags, e.g. #MUTT_CM_NOHEADER
+ * @param cmflags Flags, see #CopyMessageFlags
  * @param chflags Flags, see #CopyHeaderFlags
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e, int cmflags, CopyHeaderFlags chflags)
+int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e,
+                         CopyMessageFlags cmflags, CopyHeaderFlags chflags)
 {
   struct Body *body = e->content;
   char prefix[128];
@@ -787,7 +788,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e, int cmflags, 
  * @param fpout   FILE pointer to write to
  * @param src     Source mailbox
  * @param e       Email
- * @param cmflags Flags, see: mutt_copy_message_fp()
+ * @param cmflags Flags, see #CopyMessageFlags
  * @param chflags Flags, see #CopyHeaderFlags
  * @retval  0 Success
  * @retval -1 Failure
@@ -796,7 +797,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e, int cmflags, 
  * like partial decode, where it is worth displaying as much as possible
  */
 int mutt_copy_message_ctx(FILE *fpout, struct Mailbox *src, struct Email *e,
-                          int cmflags, CopyHeaderFlags chflags)
+                          CopyMessageFlags cmflags, CopyHeaderFlags chflags)
 {
   struct Message *msg = mx_msg_open(src, e->msgno);
   if (!msg)
@@ -819,13 +820,13 @@ int mutt_copy_message_ctx(FILE *fpout, struct Mailbox *src, struct Email *e,
  * @param fpin    where to get input
  * @param src     source mailbox
  * @param e       Email being copied
- * @param cmflags mutt_open_copy_message() flags
+ * @param cmflags Flags, see #CopyMessageFlags
  * @param chflags Flags, see #CopyHeaderFlags
  * @retval  0 Success
  * @retval -1 Error
  */
 static int append_message(struct Mailbox *dest, FILE *fpin, struct Mailbox *src,
-                          struct Email *e, int cmflags, CopyHeaderFlags chflags)
+                          struct Email *e, CopyMessageFlags cmflags, CopyHeaderFlags chflags)
 {
   char buf[256];
   struct Message *msg = NULL;
@@ -860,13 +861,13 @@ static int append_message(struct Mailbox *dest, FILE *fpin, struct Mailbox *src,
  * @param dest    Destination Mailbox
  * @param src     Source Mailbox
  * @param e       Email
- * @param cmflags mutt_open_copy_message() flags
+ * @param cmflags Flags, see #CopyMessageFlags
  * @param chflags Flags, see #CopyHeaderFlags
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_append_message(struct Mailbox *dest, struct Mailbox *src,
-                        struct Email *e, int cmflags, CopyHeaderFlags chflags)
+int mutt_append_message(struct Mailbox *dest, struct Mailbox *src, struct Email *e,
+                        CopyMessageFlags cmflags, CopyHeaderFlags chflags)
 {
   struct Message *msg = mx_msg_open(src, e->msgno);
   if (!msg)

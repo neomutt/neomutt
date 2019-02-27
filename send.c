@@ -496,7 +496,7 @@ void mutt_forward_trailer(struct Mailbox *m, struct Email *e, FILE *fp)
 static int include_forward(struct Mailbox *m, struct Email *e, FILE *out)
 {
   CopyHeaderFlags chflags = CH_DECODE;
-  int cmflags = 0;
+  CopyMessageFlags cmflags = MUTT_CM_NO_FLAGS;
 
   mutt_parse_mime_message(m, e);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
@@ -577,7 +577,8 @@ void mutt_make_post_indent(struct Mailbox *m, struct Email *e, FILE *out)
  */
 static int include_reply(struct Mailbox *m, struct Email *e, FILE *out)
 {
-  int cmflags = MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV | MUTT_CM_REPLYING;
+  CopyMessageFlags cmflags =
+      MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV | MUTT_CM_REPLYING;
   CopyHeaderFlags chflags = CH_DECODE;
 
   if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT))

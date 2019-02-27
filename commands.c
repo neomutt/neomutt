@@ -177,7 +177,7 @@ int mutt_display_message(struct Email *cur)
   char tempfile[PATH_MAX], buf[1024];
   int rc = 0;
   bool builtin = false;
-  int cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
+  CopyMessageFlags cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
   CopyHeaderFlags chflags;
   FILE *fpout = NULL;
   FILE *fpfilterout = NULL;
@@ -470,10 +470,11 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
  * pipe_set_flags - Generate flags for copy header/message
  * @param[in]  decode  If true decode the message
  * @param[in]  print   If true, mark the message for printing
- * @param[out] cmflags Copy message flags, e.g. MUTT_CM_DECODE
+ * @param[out] cmflags Flags, see #CopyMessageFlags
  * @param[out] chflags Flags, see #CopyHeaderFlags
  */
-static void pipe_set_flags(bool decode, bool print, int *cmflags, CopyHeaderFlags *chflags)
+static void pipe_set_flags(bool decode, bool print, CopyMessageFlags *cmflags,
+                           CopyHeaderFlags *chflags)
 {
   if (decode)
   {
@@ -501,7 +502,7 @@ static void pipe_set_flags(bool decode, bool print, int *cmflags, CopyHeaderFlag
  */
 static void pipe_msg(struct Mailbox *m, struct Email *e, FILE *fp, bool decode, bool print)
 {
-  int cmflags = 0;
+  CopyMessageFlags cmflags = MUTT_CM_NO_FLAGS;
   CopyHeaderFlags chflags = CH_FROM;
 
   pipe_set_flags(decode, print, &cmflags, &chflags);
@@ -881,13 +882,13 @@ void mutt_display_address(struct Envelope *env)
  * @param[in]  e       Email
  * @param[in]  decode  If true, decode the message
  * @param[in]  decrypt If true, decrypt the message
- * @param[out] cmflags Copy message flags, e.g. MUTT_CM_DECODE
+ * @param[out] cmflags Flags, see #CopyMessageFlags
  * @param[out] chflags Flags, see #CopyHeaderFlags
  */
 static void set_copy_flags(struct Email *e, bool decode, bool decrypt,
-                           int *cmflags, CopyHeaderFlags *chflags)
+                           CopyMessageFlags *cmflags, CopyHeaderFlags *chflags)
 {
-  *cmflags = 0;
+  *cmflags = MUTT_CM_NO_FLAGS;
   *chflags = CH_UPDATE_LEN;
 
   if ((WithCrypto != 0) && !decode && decrypt && (e->security & SEC_ENCRYPT))
@@ -941,8 +942,8 @@ static void set_copy_flags(struct Email *e, bool decode, bool decrypt,
 int mutt_save_message_ctx(struct Email *e, bool delete, bool decode,
                           bool decrypt, struct Mailbox *m)
 {
-  int cmflags;
-  CopyHeaderFlags chflags;
+  CopyMessageFlags cmflags = MUTT_CM_NO_FLAGS;
+  CopyHeaderFlags chflags = CH_NO_FLAGS;
   int rc;
 
   set_copy_flags(e, decode, decrypt, &cmflags, &chflags);

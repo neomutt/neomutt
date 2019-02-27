@@ -1465,7 +1465,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool a
   char buf[1024];
   struct Body *body = NULL;
   FILE *fp = NULL;
-  int cmflags;
+  CopyMessageFlags cmflags;
   int pgp = WithCrypto ? e->security : 0;
 
   if (WithCrypto)
@@ -1494,7 +1494,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool a
   mutt_parse_mime_message(m, e);
 
   CopyHeaderFlags chflags = CH_XMIT;
-  cmflags = 0;
+  cmflags = MUTT_CM_NO_FLAGS;
 
   /* If we are attaching a message, ignore C_MimeForwardDecode */
   if (!attach_msg && C_MimeForwardDecode)

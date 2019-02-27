@@ -678,7 +678,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
       return;
     }
 
-    int cmflags = 0;
+    CopyMessageFlags cmflags = MUTT_CM_NO_FLAGS;
     if (C_ForwardQuote)
     {
       chflags |= CH_PREFIX;
@@ -877,7 +877,7 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
  */
 static void attach_include_reply(FILE *fp, FILE *tmpfp, struct Email *cur)
 {
-  int cmflags = MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV;
+  CopyMessageFlags cmflags = MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV;
   CopyHeaderFlags chflags = CH_DECODE;
 
   mutt_make_attribution(Context->mailbox, cur, tmpfp);
