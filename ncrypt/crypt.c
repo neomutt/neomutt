@@ -1069,7 +1069,7 @@ int mutt_protected_headers_handler(struct Body *a, struct State *s)
       state_mark_protected_header(s);
       mutt_write_one_header(s->fp_out, "Subject", a->mime_headers->subject,
                             s->prefix, mutt_window_wrap_cols(MuttIndexWindow, C_Wrap),
-                            (s->flags & MUTT_DISPLAY) ? CH_DISPLAY : 0);
+                            (s->flags & MUTT_DISPLAY) ? CH_DISPLAY : CH_NO_FLAGS);
       state_puts("\n", s);
     }
   }

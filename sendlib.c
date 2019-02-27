@@ -1465,7 +1465,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool a
   char buf[1024];
   struct Body *body = NULL;
   FILE *fp = NULL;
-  int cmflags, chflags;
+  int cmflags;
   int pgp = WithCrypto ? e->security : 0;
 
   if (WithCrypto)
@@ -1493,7 +1493,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool a
 
   mutt_parse_mime_message(m, e);
 
-  chflags = CH_XMIT;
+  CopyHeaderFlags chflags = CH_XMIT;
   cmflags = 0;
 
   /* If we are attaching a message, ignore C_MimeForwardDecode */
@@ -1827,12 +1827,13 @@ void mutt_write_references(const struct ListHead *r, FILE *f, size_t trim)
  * @param fp      File to write to
  * @param pfx     Prefix for headers
  * @param value   Text to be added
- * @param chflags Flags, e.g. #CH_DISPLAY
+ * @param chflags Flags, see #CopyHeaderFlags
  * @param col     Column that this text starts at
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int print_val(FILE *fp, const char *pfx, const char *value, int chflags, size_t col)
+static int print_val(FILE *fp, const char *pfx, const char *value,
+                     CopyHeaderFlags chflags, size_t col)
 {
   while (value && *value)
   {
@@ -1873,19 +1874,20 @@ static int print_val(FILE *fp, const char *pfx, const char *value, int chflags, 
  * @param value   Header value
  * @param pfx     Prefix for header
  * @param wraplen Column to wrap at
- * @param chflags Flags, e.g. #CH_DISPLAY
+ * @param chflags Flags, see #CopyHeaderFlags
  * @retval  0 Success
  * @retval -1 Failure
  */
 static int fold_one_header(FILE *fp, const char *tag, const char *value,
-                           const char *pfx, int wraplen, int chflags)
+                           const char *pfx, int wraplen, CopyHeaderFlags chflags)
 {
   const char *p = value;
   char buf[8192] = "";
   int first = 1, col = 0, l = 0;
   const bool display = (chflags & CH_DISPLAY);
 
-  mutt_debug(5, "pfx=[%s], tag=[%s], flags=%d value=[%s]\n", pfx, tag, chflags, NONULL(value));
+  mutt_debug(5, "pfx=[%s], tag=[%s], flags=%d value=[%s]\n", pfx, tag, chflags,
+             NONULL(value));
 
   if (tag && *tag && fprintf(fp, "%s%s: ", NONULL(pfx), tag) < 0)
     return -1;
@@ -2013,12 +2015,12 @@ static char *unfold_header(char *s)
  * @param pfx     Prefix for header
  * @param start   Start of header line
  * @param end     End of header line
- * @param chflags Flags, e.g. #CH_DISPLAY
+ * @param chflags Flags, see #CopyHeaderFlags
  * @retval  0 Success
  * @retval -1 Failure
  */
 static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char *pfx,
-                            const char *start, const char *end, int chflags)
+                            const char *start, const char *end, CopyHeaderFlags chflags)
 {
   char *tagbuf = NULL, *valbuf = NULL, *t = NULL;
   int is_from = (end - start) > 5 && mutt_str_startswith(start, "from ", CASE_IGNORE);
@@ -2101,7 +2103,7 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
  * @param value   Header value
  * @param pfx     Prefix for header
  * @param wraplen Column to wrap at
- * @param chflags Flags, e.g. #CH_DISPLAY
+ * @param chflags Flags, see #CopyHeaderFlags
  * @retval  0 Success
  * @retval -1 Failure
  *
@@ -2109,7 +2111,7 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
  * for each one
  */
 int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
-                          const char *pfx, int wraplen, int chflags)
+                          const char *pfx, int wraplen, CopyHeaderFlags chflags)
 {
   char *p = (char *) value, *last = NULL, *line = NULL;
   int max = 0, w, rc = -1;
@@ -2968,7 +2970,7 @@ static int bounce_message(FILE *fp, struct Email *e, struct Address *to,
   if (f)
   {
     char date[128];
-    int chflags = CH_XMIT | CH_NONEWLINE | CH_NOQFROM;
+    CopyHeaderFlags chflags = CH_XMIT | CH_NONEWLINE | CH_NOQFROM;
 
     if (!C_BounceDelivered)
       chflags |= CH_WEED_DELIVERED;

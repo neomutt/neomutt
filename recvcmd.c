@@ -399,7 +399,7 @@ static struct AttachPtr *find_parent(struct AttachCtx *actx, struct Body *cur, s
  */
 static void include_header(bool quote, FILE *ifp, struct Email *e, FILE *ofp, char *prefix)
 {
-  int chflags = CH_DECODE;
+  CopyHeaderFlags chflags = CH_DECODE;
   char prefix2[128];
 
   if (C_Weed)
@@ -642,7 +642,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
   char tmpbody[PATH_MAX];
   FILE *tmpfp = NULL;
 
-  int chflags = CH_XMIT;
+  CopyHeaderFlags chflags = CH_XMIT;
 
   if (cur)
     e_cur = cur->email;
@@ -878,7 +878,7 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
 static void attach_include_reply(FILE *fp, FILE *tmpfp, struct Email *cur)
 {
   int cmflags = MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV;
-  int chflags = CH_DECODE;
+  CopyHeaderFlags chflags = CH_DECODE;
 
   mutt_make_attribution(Context->mailbox, cur, tmpfp);
 

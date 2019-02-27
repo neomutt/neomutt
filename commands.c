@@ -178,7 +178,7 @@ int mutt_display_message(struct Email *cur)
   int rc = 0;
   bool builtin = false;
   int cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
-  int chflags;
+  CopyHeaderFlags chflags;
   FILE *fpout = NULL;
   FILE *fpfilterout = NULL;
   pid_t filterpid = -1;
@@ -471,9 +471,9 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
  * @param[in]  decode  If true decode the message
  * @param[in]  print   If true, mark the message for printing
  * @param[out] cmflags Copy message flags, e.g. MUTT_CM_DECODE
- * @param[out] chflags Copy header flags, e.g. CH_DECODE
+ * @param[out] chflags Flags, see #CopyHeaderFlags
  */
-static void pipe_set_flags(bool decode, bool print, int *cmflags, int *chflags)
+static void pipe_set_flags(bool decode, bool print, int *cmflags, CopyHeaderFlags *chflags)
 {
   if (decode)
   {
@@ -502,7 +502,7 @@ static void pipe_set_flags(bool decode, bool print, int *cmflags, int *chflags)
 static void pipe_msg(struct Mailbox *m, struct Email *e, FILE *fp, bool decode, bool print)
 {
   int cmflags = 0;
-  int chflags = CH_FROM;
+  CopyHeaderFlags chflags = CH_FROM;
 
   pipe_set_flags(decode, print, &cmflags, &chflags);
 
@@ -882,10 +882,10 @@ void mutt_display_address(struct Envelope *env)
  * @param[in]  decode  If true, decode the message
  * @param[in]  decrypt If true, decrypt the message
  * @param[out] cmflags Copy message flags, e.g. MUTT_CM_DECODE
- * @param[out] chflags Copy header flags, e.g. CH_DECODE
+ * @param[out] chflags Flags, see #CopyHeaderFlags
  */
 static void set_copy_flags(struct Email *e, bool decode, bool decrypt,
-                           int *cmflags, int *chflags)
+                           int *cmflags, CopyHeaderFlags *chflags)
 {
   *cmflags = 0;
   *chflags = CH_UPDATE_LEN;
@@ -941,7 +941,8 @@ static void set_copy_flags(struct Email *e, bool decode, bool decrypt,
 int mutt_save_message_ctx(struct Email *e, bool delete, bool decode,
                           bool decrypt, struct Mailbox *m)
 {
-  int cmflags, chflags;
+  int cmflags;
+  CopyHeaderFlags chflags;
   int rc;
 
   set_copy_flags(e, decode, decrypt, &cmflags, &chflags);
