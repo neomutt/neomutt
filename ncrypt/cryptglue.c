@@ -131,11 +131,11 @@ void crypt_init(void)
 
 /**
  * crypt_invoke_message - Display an informative message
- * @param type Crypto type, e.g. #APPLICATION_PGP
+ * @param type Crypto type, see #SecurityFlags
  *
  * Show a message that a backend will be invoked.
  */
-void crypt_invoke_message(int type)
+void crypt_invoke_message(SecurityFlags type)
 {
   if (((WithCrypto & APPLICATION_PGP) != 0) && (type & APPLICATION_PGP))
     mutt_message(_("Invoking PGP..."));
@@ -145,11 +145,11 @@ void crypt_invoke_message(int type)
 
 /**
  * crypt_has_module_backend - Is there a crypto backend for a given type?
- * @param type Crypto type, e.g. #APPLICATION_PGP
+ * @param type Crypto type, see #SecurityFlags
  * @retval true  Backend is present
  * @retval false Backend is not present
  */
-bool crypt_has_module_backend(int type)
+bool crypt_has_module_backend(SecurityFlags type)
 {
   if (((WithCrypto & APPLICATION_PGP) != 0) && (type & APPLICATION_PGP) &&
       crypto_module_lookup(APPLICATION_PGP))

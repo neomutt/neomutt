@@ -115,6 +115,8 @@ extern long  C_SmimeTimeout;
 extern char *C_SmimeVerifyCommand;
 extern char *C_SmimeVerifyOpaqueCommand;
 
+typedef uint16_t SecurityFlags;           ///< Flags, e.g. #SEC_ENCRYPT
+#define SEC_NO_FLAGS                  0   ///< No flags are set
 #define SEC_ENCRYPT             (1 << 0)  ///< Email is encrypted
 #define SEC_SIGN                (1 << 1)  ///< Email is signed
 #define SEC_GOODSIGN            (1 << 2)  ///< Email has a valid signature
@@ -182,9 +184,9 @@ void         crypt_forget_passphrase(void);
 int          crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode);
 void         crypt_opportunistic_encrypt(struct Email *msg);
 int          crypt_query(struct Body *m);
-int          crypt_valid_passphrase(int flags);
-int          mutt_is_application_pgp(struct Body *m);
-int          mutt_is_application_smime(struct Body *m);
+int          crypt_valid_passphrase(SecurityFlags flags);
+SecurityFlags mutt_is_application_pgp(struct Body *m);
+SecurityFlags mutt_is_application_smime(struct Body *m);
 int          mutt_is_malformed_multipart_pgp_encrypted(struct Body *b);
 int          mutt_is_multipart_encrypted(struct Body *b);
 int          mutt_is_multipart_signed(struct Body *b);
@@ -195,9 +197,9 @@ bool         mutt_should_hide_protected_subject(struct Email *e);
 int          mutt_signed_handler(struct Body *a, struct State *s);
 
 /* cryptglue.c */
-bool         crypt_has_module_backend(int type);
+bool         crypt_has_module_backend(SecurityFlags type);
 void         crypt_init(void);
-void         crypt_invoke_message(int type);
+void         crypt_invoke_message(SecurityFlags type);
 int          crypt_pgp_application_handler(struct Body *m, struct State *s);
 int          crypt_pgp_check_traditional(FILE *fp, struct Body *b, bool just_one);
 int          crypt_pgp_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d);

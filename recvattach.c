@@ -1136,7 +1136,8 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *
   struct Body *m = NULL;
   struct Body *new_body = NULL;
   FILE *new_fp = NULL;
-  int type, need_secured, secured;
+  SecurityFlags type;
+  int need_secured, secured;
 
   for (m = parts; m; m = m->next)
   {

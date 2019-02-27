@@ -25,6 +25,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include "ncrypt.h"
 
 struct Address;
 struct Body;
@@ -152,12 +153,12 @@ struct CryptModuleSpecs
   /**
    * pgp_traditional_encryptsign - Create an inline PGP encrypted, signed email
    * @param a       Body of the email
-   * @param flags   Flags, e.g. #SEC_ENCRYPT
+   * @param flags   Flags, see #SecurityFlags
    * @param keylist List of keys to encrypt to (space-separated)
    * @retval ptr  New encrypted/siged Body
    * @retval NULL Error
    */
-  struct Body *(*pgp_traditional_encryptsign)(struct Body *a, int flags, char *keylist);
+  struct Body *(*pgp_traditional_encryptsign)(struct Body *a, SecurityFlags flags, char *keylist);
   /**
    * pgp_invoke_getkeys - Run a command to download a PGP key
    * @param addr Address to search for

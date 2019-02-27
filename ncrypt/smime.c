@@ -2007,7 +2007,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
   struct stat info;
   struct Body *p = NULL;
   pid_t thepid = -1;
-  unsigned int type = mutt_is_application_smime(m);
+  SecurityFlags type = mutt_is_application_smime(m);
 
   if (!(type & APPLICATION_SMIME))
     return NULL;

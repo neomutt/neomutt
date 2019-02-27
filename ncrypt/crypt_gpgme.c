@@ -2666,14 +2666,13 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 int pgp_gpgme_check_traditional(FILE *fp, struct Body *b, bool just_one)
 {
   int rc = 0;
-  int r;
   for (; b; b = b->next)
   {
     if (!just_one && is_multipart(b))
       rc = (pgp_gpgme_check_traditional(fp, b->parts, false) || rc);
     else if (b->type == TYPE_TEXT)
     {
-      r = mutt_is_application_pgp(b);
+      SecurityFlags r = mutt_is_application_pgp(b);
       if (r != 0)
         rc = (rc || r);
       else
@@ -4450,7 +4449,7 @@ static char *list_to_pattern(struct ListHead *list)
  *
  * Select by looking at the HINTS list.
  */
-static struct CryptKeyInfo *get_candidates(struct ListHead *hints, unsigned int app, int secret)
+static struct CryptKeyInfo *get_candidates(struct ListHead *hints, SecurityFlags app, int secret)
 {
   struct CryptKeyInfo *db = NULL, *k = NULL, **kend = NULL;
   gpgme_error_t err;

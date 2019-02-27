@@ -1667,7 +1667,7 @@ struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign)
 /**
  * pgp_class_traditional_encryptsign - Implements CryptModuleSpecs::pgp_traditional_encryptsign()
  */
-struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *keylist)
+struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags flags, char *keylist)
 {
   struct Body *b = NULL;
 
