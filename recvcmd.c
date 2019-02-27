@@ -552,7 +552,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   st.flags = MUTT_CHARCONV;
   if (Weed)
     st.flags |= MUTT_WEED;
-  st.fpout = tmpfp;
+  st.fp_out = tmpfp;
 
   /* where do we append new MIME parts? */
   struct Body **last = &e_tmp->content;
@@ -563,7 +563,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
 
     if (!mime_fwd_all && mutt_can_decode(cur))
     {
-      st.fpin = fp;
+      st.fp_in = fp;
       mutt_body_handler(cur, &st);
       state_putc('\n', &st);
     }
@@ -583,7 +583,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
       {
         if (actx->idx[i]->content->tagged && mutt_can_decode(actx->idx[i]->content))
         {
-          st.fpin = actx->idx[i]->fp;
+          st.fp_in = actx->idx[i]->fp;
           mutt_body_handler(actx->idx[i]->content, &st);
           state_putc('\n', &st);
         }
@@ -627,9 +627,9 @@ bail:
  * This is different from the previous function since we want to mimic the
  * index menu's behavior.
  *
- * Code reuse from ci_send_message is not possible here - ci_send_message
- * relies on a context structure to find messages, while, on the attachment
- * menu, messages are referenced through the attachment index.
+ * Code reuse from ci_send_message() is not possible here - it relies on a
+ * context structure to find messages, while, on the attachment menu, messages
+ * are referenced through the attachment index.
  */
 static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *cur, int flags)
 {
@@ -991,7 +991,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
     mutt_make_attribution(Context->mailbox, e_parent, tmpfp);
 
     memset(&st, 0, sizeof(struct State));
-    st.fpout = tmpfp;
+    st.fp_out = tmpfp;
 
     if (!TextFlowed)
     {
@@ -1014,7 +1014,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
     {
       if (mutt_can_decode(cur))
       {
-        st.fpin = fp;
+        st.fp_in = fp;
         mutt_body_handler(cur, &st);
         state_putc('\n', &st);
       }
@@ -1027,7 +1027,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
       {
         if (actx->idx[i]->content->tagged && mutt_can_decode(actx->idx[i]->content))
         {
-          st.fpin = actx->idx[i]->fp;
+          st.fp_in = actx->idx[i]->fp;
           mutt_body_handler(actx->idx[i]->content, &st);
           state_putc('\n', &st);
         }

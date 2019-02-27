@@ -196,7 +196,7 @@ static bool first_mailing_list(char *buf, size_t buflen, struct Address *a)
  *
  * The colors are stored as "magic" strings embedded in the text.
  */
-static size_t add_index_color(char *buf, size_t buflen, enum FormatFlag flags, char color)
+static size_t add_index_color(char *buf, size_t buflen, int flags, char color)
 {
   /* only add color markers if we are operating on main index entries. */
   if (!(flags & MUTT_FORMAT_INDEX))
@@ -301,8 +301,7 @@ static const char *make_from_prefix(enum FieldType disp)
  * The field can optionally be prefixed by a character from $from_chars.
  * If $from_chars is not set, the prefix will be, "To", "Cc", etc
  */
-static void make_from(struct Envelope *env, char *buf, size_t buflen,
-                      bool do_lists, enum FormatFlag flags)
+static void make_from(struct Envelope *env, char *buf, size_t buflen, bool do_lists, int flags)
 {
   if (!env || !buf)
     return;
@@ -547,7 +546,7 @@ static bool thread_is_old(struct Context *ctx, struct Email *e)
 static const char *index_format_str(char *buf, size_t buflen, size_t col, int cols,
                                     char op, const char *src, const char *prec,
                                     const char *if_str, const char *else_str,
-                                    unsigned long data, enum FormatFlag flags)
+                                    unsigned long data, int flags)
 {
   struct HdrFormatInfo *hfi = (struct HdrFormatInfo *) data;
   char fmt[SHORT_STRING], tmp[LONG_STRING], *p, *tags = NULL;
@@ -666,15 +665,15 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       {
         const char *cp = NULL;
         struct tm *tm = NULL;
-        time_t T;
+        time_t now;
         int j = 0;
 
         if (optional && ((op == '[') || (op == '(')))
         {
           char *is = NULL;
-          T = time(NULL);
-          tm = localtime(&T);
-          T -= (op == '(') ? e->received : e->date_sent;
+          now = time(NULL);
+          tm = localtime(&now);
+          now -= (op == '(') ? e->received : e->date_sent;
 
           is = (char *) prec;
           int invert = 0;
@@ -756,7 +755,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           if (j < 0)
             j *= -1;
 
-          if (((T > j) || (T < (-1 * j))) ^ invert)
+          if (((now > j) || (now < (-1 * j))) ^ invert)
             optional = 0;
           break;
         }
@@ -819,18 +818,18 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           tm = localtime(&e->received);
         else if (op == '<')
         {
-          T = time(NULL);
-          tm = localtime(&T);
+          now = time(NULL);
+          tm = localtime(&now);
         }
         else
         {
           /* restore sender's time zone */
-          T = e->date_sent;
+          now = e->date_sent;
           if (e->zoccident)
-            T -= (e->zhours * 3600 + e->zminutes * 60);
+            now -= (e->zhours * 3600 + e->zminutes * 60);
           else
-            T += (e->zhours * 3600 + e->zminutes * 60);
-          tm = gmtime(&T);
+            now += (e->zhours * 3600 + e->zminutes * 60);
+          tm = gmtime(&now);
         }
 
         if (!do_locales)
@@ -1330,11 +1329,11 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       else if (src[0] == 'c') /* crypto */
       {
         const char *ch = NULL;
-        if ((WithCrypto != 0) && (e->security & GOODSIGN))
+        if ((WithCrypto != 0) && (e->security & SEC_GOODSIGN))
           ch = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_GOOD_SIGN);
-        else if ((WithCrypto != 0) && (e->security & ENCRYPT))
+        else if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT))
           ch = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_ENCRYPTED);
-        else if ((WithCrypto != 0) && (e->security & SIGN))
+        else if ((WithCrypto != 0) && (e->security & SEC_SIGN))
           ch = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_SIGNED);
         else if (((WithCrypto & APPLICATION_PGP) != 0) && ((e->security & PGP_KEY) == PGP_KEY))
         {
@@ -1396,11 +1395,11 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         second = get_nth_wchar(FlagChars, FLAG_CHAR_DELETED);
       else if (e->attach_del)
         second = get_nth_wchar(FlagChars, FLAG_CHAR_DELETED_ATTACH);
-      else if ((WithCrypto != 0) && (e->security & GOODSIGN))
+      else if ((WithCrypto != 0) && (e->security & SEC_GOODSIGN))
         second = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_GOOD_SIGN);
-      else if ((WithCrypto != 0) && (e->security & ENCRYPT))
+      else if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT))
         second = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_ENCRYPTED);
-      else if ((WithCrypto != 0) && (e->security & SIGN))
+      else if ((WithCrypto != 0) && (e->security & SEC_SIGN))
         second = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_SIGNED);
       else if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & PGP_KEY))
         second = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_CONTAINS_KEY);
@@ -1454,7 +1453,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
  * @param flags  Format flags
  */
 void mutt_make_string_flags(char *buf, size_t buflen, const char *s, struct Context *ctx,
-                            struct Mailbox *m, struct Email *e, enum FormatFlag flags)
+                            struct Mailbox *m, struct Email *e, int flags)
 {
   struct HdrFormatInfo hfi;
 
@@ -1477,7 +1476,7 @@ void mutt_make_string_flags(char *buf, size_t buflen, const char *s, struct Cont
  * @param flags  Format flags
  */
 void mutt_make_string_info(char *buf, size_t buflen, int cols, const char *s,
-                           struct HdrFormatInfo *hfi, enum FormatFlag flags)
+                           struct HdrFormatInfo *hfi, int flags)
 {
   mutt_expando_format(buf, buflen, 0, cols, s, index_format_str, (unsigned long) hfi, flags);
 }

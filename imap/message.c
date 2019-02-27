@@ -1709,7 +1709,7 @@ out:
 
 /**
  * imap_cache_del - Delete an email from the body cache
- * @param m     Selected Imap Mailb
+ * @param m     Selected Imap Mailbox
  * @param e     Email
  * @retval  0 Success
  * @retval -1 Failure

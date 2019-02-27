@@ -487,15 +487,15 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
 
   rc = 0;
 
-  fseeko(s->fpin, m->offset, SEEK_SET);
+  fseeko(s->fp_in, m->offset, SEEK_SET);
   last_pos = m->offset;
 
   for (bytes = m->length; bytes > 0;)
   {
-    if (!fgets(buf, sizeof(buf), s->fpin))
+    if (!fgets(buf, sizeof(buf), s->fp_in))
       break;
 
-    offset = ftello(s->fpin);
+    offset = ftello(s->fp_in);
     bytes -= (offset - last_pos); /* don't rely on mutt_str_strlen(buf) */
     last_pos = offset;
 
@@ -540,9 +540,9 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
       }
 
       fputs(buf, tmpfp);
-      while (bytes > 0 && fgets(buf, sizeof(buf) - 1, s->fpin))
+      while (bytes > 0 && fgets(buf, sizeof(buf) - 1, s->fp_in))
       {
-        offset = ftello(s->fpin);
+        offset = ftello(s->fp_in);
         bytes -= (offset - last_pos); /* don't rely on mutt_str_strlen(buf) */
         last_pos = offset;
 
@@ -636,7 +636,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
           {
             rewind(pgperr);
             crypt_current_time(s, "PGP");
-            rc = pgp_copy_checksig(pgperr, s->fpout);
+            rc = pgp_copy_checksig(pgperr, s->fp_out);
 
             if (rc == 0)
               have_any_sigs = true;
@@ -890,8 +890,8 @@ int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
     return -1;
   }
 
-  fseeko(s->fpin, sigbdy->offset, SEEK_SET);
-  mutt_file_copy_bytes(s->fpin, fp, sigbdy->length);
+  fseeko(s->fp_in, sigbdy->offset, SEEK_SET);
+  mutt_file_copy_bytes(s->fp_in, fp, sigbdy->length);
   mutt_file_fclose(&fp);
 
   FILE *pgperr = mutt_file_mkstemp();
@@ -907,14 +907,14 @@ int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
   thepid = pgp_invoke_verify(NULL, &pgpout, NULL, -1, -1, fileno(pgperr), tempfile, sigfile);
   if (thepid != -1)
   {
-    if (pgp_copy_checksig(pgpout, s->fpout) >= 0)
+    if (pgp_copy_checksig(pgpout, s->fp_out) >= 0)
       badsig = 0;
 
     mutt_file_fclose(&pgpout);
     fflush(pgperr);
     rewind(pgperr);
 
-    if (pgp_copy_checksig(pgperr, s->fpout) >= 0)
+    if (pgp_copy_checksig(pgperr, s->fp_out) >= 0)
       badsig = 0;
 
     const int rv = mutt_wait_filter(thepid);
@@ -953,8 +953,8 @@ static void pgp_extract_keys_from_attachment(FILE *fp, struct Body *top)
     return;
   }
 
-  s.fpin = fp;
-  s.fpout = tempfp;
+  s.fp_in = fp;
+  s.fp_out = tempfp;
 
   mutt_body_handler(top, &s);
 
@@ -1026,8 +1026,8 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
    * the temporary file.
    */
 
-  fseeko(s->fpin, a->offset, SEEK_SET);
-  mutt_file_copy_bytes(s->fpin, pgptmp, a->length);
+  fseeko(s->fp_in, a->offset, SEEK_SET);
+  mutt_file_copy_bytes(s->fp_in, pgptmp, a->length);
   mutt_file_fclose(&pgptmp);
 
   thepid = pgp_invoke_decrypt(&pgpin, &pgpout, NULL, -1, -1, fileno(pgperr), pgptmpfile);
@@ -1079,7 +1079,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   if (s->flags & MUTT_DISPLAY)
   {
     rewind(pgperr);
-    if (pgp_copy_checksig(pgperr, s->fpout) == 0 && !rv)
+    if (pgp_copy_checksig(pgperr, s->fp_out) == 0 && !rv)
       p->goodsig = true;
     else
       p->goodsig = false;
@@ -1145,7 +1145,7 @@ int pgp_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
   else
     return -1;
 
-  s.fpin = fpin;
+  s.fp_in = fpin;
 
   if (need_decode)
   {
@@ -1160,8 +1160,8 @@ int pgp_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
       return -1;
     }
 
-    fseeko(s.fpin, b->offset, SEEK_SET);
-    s.fpout = decoded_fp;
+    fseeko(s.fp_in, b->offset, SEEK_SET);
+    s.fp_out = decoded_fp;
 
     mutt_decode_attachment(b, &s);
 
@@ -1169,8 +1169,8 @@ int pgp_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
     b->length = ftello(decoded_fp);
     b->offset = 0;
     rewind(decoded_fp);
-    s.fpin = decoded_fp;
-    s.fpout = 0;
+    s.fp_in = decoded_fp;
+    s.fp_out = 0;
   }
 
   *fpout = mutt_file_mkstemp();
@@ -1237,10 +1237,10 @@ int pgp_class_encrypted_handler(struct Body *a, struct State *s)
     a->mime_headers = tattach->mime_headers;
     tattach->mime_headers = NULL;
 
-    fpin = s->fpin;
-    s->fpin = fpout;
+    fpin = s->fp_in;
+    s->fp_in = fpout;
     rc = mutt_body_handler(tattach, s);
-    s->fpin = fpin;
+    s->fp_in = fpin;
 
     /* Embedded multipart signed protected headers override the
      * encrypted headers.  We need to do this after the handler so
@@ -1724,7 +1724,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
     int c;
     struct FgetConv *fc = NULL;
 
-    if (flags & ENCRYPT)
+    if (flags & SEC_ENCRYPT)
       send_charset = "us-ascii";
     else
       send_charset = "utf-8";
@@ -1774,7 +1774,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
 
   if (pgp_use_gpg_agent())
     *PgpPass = 0;
-  if (flags & SIGN)
+  if (flags & SEC_SIGN)
     fprintf(pgpin, "%s\n", PgpPass);
   mutt_file_fclose(&pgpin);
 
@@ -1808,7 +1808,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
 
   if (empty)
   {
-    if (flags & SIGN)
+    if (flags & SEC_SIGN)
       pgp_class_void_passphrase(); /* just in case */
     unlink(pgpoutfile);
     return NULL;
@@ -1821,7 +1821,8 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
   b->type = TYPE_TEXT;
   b->subtype = mutt_str_strdup("plain");
 
-  mutt_param_set(&b->parameter, "x-action", (flags & ENCRYPT) ? "pgp-encrypted" : "pgp-signed");
+  mutt_param_set(&b->parameter, "x-action",
+                 (flags & SEC_ENCRYPT) ? "pgp-encrypted" : "pgp-signed");
   mutt_param_set(&b->parameter, "charset", send_charset);
 
   b->filename = mutt_str_strdup(pgpoutfile);
@@ -1832,7 +1833,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
   b->noconv = true;
   b->use_disp = false;
 
-  if (!(flags & ENCRYPT))
+  if (!(flags & SEC_ENCRYPT))
     b->encoding = a->encoding;
 
   return b;
@@ -1854,16 +1855,16 @@ int pgp_class_send_menu(struct Email *msg)
     return msg->security;
 
   /* If autoinline and no crypto options set, then set inline. */
-  if (PgpAutoinline &&
-      !((msg->security & APPLICATION_PGP) && (msg->security & (SIGN | ENCRYPT))))
+  if (PgpAutoinline && !((msg->security & APPLICATION_PGP) &&
+                         (msg->security & (SEC_SIGN | SEC_ENCRYPT))))
   {
-    msg->security |= INLINE;
+    msg->security |= SEC_INLINE;
   }
 
   msg->security |= APPLICATION_PGP;
 
   char *mime_inline = NULL;
-  if (msg->security & INLINE)
+  if (msg->security & SEC_INLINE)
   {
     /* L10N: The next string MUST have the same highlighted letter
              One of them will appear in each of the three strings marked "(inline"), below. */
@@ -1880,9 +1881,9 @@ int pgp_class_send_menu(struct Email *msg)
    * NOTE: "Signing" and "Clearing" only adjust the sign bit, so we have different
    *       letter choices for those.
    */
-  if (CryptOpportunisticEncrypt && (msg->security & OPPENCRYPT))
+  if (CryptOpportunisticEncrypt && (msg->security & SEC_OPPENCRYPT))
   {
-    if (msg->security & (ENCRYPT | SIGN))
+    if (msg->security & (SEC_ENCRYPT | SEC_SIGN))
     {
       snprintf(promptbuf, sizeof(promptbuf),
                /* L10N: PGP options (inline) (opportunistic encryption is on) */
@@ -1912,7 +1913,7 @@ int pgp_class_send_menu(struct Email *msg)
     /* When the message is not selected for signing or encryption, the toggle
      * between PGP/MIME and Traditional doesn't make sense.
      */
-    if (msg->security & (ENCRYPT | SIGN))
+    if (msg->security & (SEC_ENCRYPT | SEC_SIGN))
     {
       snprintf(promptbuf, sizeof(promptbuf),
                /* L10N: PGP options (inline) (opportunistic encryption is off) */
@@ -1938,7 +1939,7 @@ int pgp_class_send_menu(struct Email *msg)
   /* Opportunistic encryption is unset */
   else
   {
-    if (msg->security & (ENCRYPT | SIGN))
+    if (msg->security & (SEC_ENCRYPT | SEC_SIGN))
     {
       snprintf(promptbuf, sizeof(promptbuf),
                /* L10N: PGP options (inline) */
@@ -1977,49 +1978,49 @@ int pgp_class_send_menu(struct Email *msg)
           mutt_str_replace(&PgpSignAs, input_signas);
           pgp_free_key(&p);
 
-          msg->security |= SIGN;
+          msg->security |= SEC_SIGN;
 
           crypt_pgp_void_passphrase(); /* probably need a different passphrase */
         }
         break;
 
       case 'b': /* (b)oth */
-        msg->security |= (ENCRYPT | SIGN);
+        msg->security |= (SEC_ENCRYPT | SEC_SIGN);
         break;
 
       case 'C':
-        msg->security &= ~SIGN;
+        msg->security &= ~SEC_SIGN;
         break;
 
       case 'c': /* (c)lear     */
-        msg->security &= ~(ENCRYPT | SIGN);
+        msg->security &= ~(SEC_ENCRYPT | SEC_SIGN);
         break;
 
       case 'e': /* (e)ncrypt */
-        msg->security |= ENCRYPT;
-        msg->security &= ~SIGN;
+        msg->security |= SEC_ENCRYPT;
+        msg->security &= ~SEC_SIGN;
         break;
 
       case 'i': /* toggle (i)nline */
-        msg->security ^= INLINE;
+        msg->security ^= SEC_INLINE;
         break;
 
       case 'O': /* oppenc mode on */
-        msg->security |= OPPENCRYPT;
+        msg->security |= SEC_OPPENCRYPT;
         crypt_opportunistic_encrypt(msg);
         break;
 
       case 'o': /* oppenc mode off */
-        msg->security &= ~OPPENCRYPT;
+        msg->security &= ~SEC_OPPENCRYPT;
         break;
 
       case 'S': /* (s)ign in oppenc mode */
-        msg->security |= SIGN;
+        msg->security |= SEC_SIGN;
         break;
 
       case 's': /* (s)ign */
-        msg->security &= ~ENCRYPT;
-        msg->security |= SIGN;
+        msg->security &= ~SEC_ENCRYPT;
+        msg->security |= SEC_SIGN;
         break;
     }
   }

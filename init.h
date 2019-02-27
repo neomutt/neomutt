@@ -1020,7 +1020,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** Escape character to use for functions in the built-in editor.
   */
-  { "external_search_command",   DT_COMMAND, R_NONE, &SearchCommand, 0 },
+  { "external_search_command",   DT_COMMAND, R_NONE, &ExternalSearchCommand, 0 },
   /*
    ** .pp
    ** If set, contains the name of the external program used by "~I" patterns.
@@ -1703,7 +1703,7 @@ struct ConfigDef MuttVars[] = {
   ** This variable defaults to your user name on the local machine.
   */
 #endif
-  { "implicit_autoview", DT_BOOL,R_NONE, &ImplicitAutoview, false },
+  { "implicit_autoview", DT_BOOL, R_NONE, &ImplicitAutoview, false },
   /*
   ** .pp
   ** If set to "yes", NeoMutt will look for a mailcap entry with the
@@ -1876,7 +1876,7 @@ struct ConfigDef MuttVars[] = {
   ** This variable configures how often (in seconds) NeoMutt should look for
   ** new mail. Also see the $$timeout variable.
   */
-  { "mail_check_recent",DT_BOOL, R_NONE, &MailCheckRecent, true },
+  { "mail_check_recent", DT_BOOL, R_NONE, &MailCheckRecent, true },
   /*
   ** .pp
   ** When \fIset\fP, NeoMutt will only notify you about new mail that has been received
@@ -1954,7 +1954,7 @@ struct ConfigDef MuttVars[] = {
   ** to maildir-style mailboxes.  Setting it will have no effect on other
   ** mailbox types.
   */
-  { "mark_macro_prefix",DT_STRING, R_NONE, &MarkMacroPrefix, IP "'" },
+  { "mark_macro_prefix", DT_STRING, R_NONE, &MarkMacroPrefix, IP "'" },
   /*
   ** .pp
   ** Prefix for macros created using mark-message.  A new macro
@@ -1993,7 +1993,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** Also see the $$move variable.
   */
-  { "mbox_type",        DT_MAGIC,R_NONE, &MboxType, MUTT_MBOX },
+  { "mbox_type",        DT_MAGIC, R_NONE, &MboxType, MUTT_MBOX },
   /*
   ** .pp
   ** The default mailbox type used when creating new folders. May be any of
@@ -2986,7 +2986,7 @@ struct ConfigDef MuttVars[] = {
   ** This variable defaults to your user name on the local machine.
   */
 #endif /* USE_POP */
-  { "post_indent_string",DT_STRING, R_NONE, &PostIndentString, 0 },
+  { "post_indent_string", DT_STRING, R_NONE, &PostIndentString, 0 },
   /*
   ** .pp
   ** Similar to the $$attribution variable, NeoMutt will append this

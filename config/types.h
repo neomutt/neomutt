@@ -55,22 +55,21 @@
 #define DT_MY_CONFIG    0x8000 /**< Config item is a "my_" variable */
 
 /* forced redraw/resort types + other flags */
-#define R_NONE        0        /**< No refresh/resort flags */
-#define R_INDEX       (1 << 0) /**< redraw the index menu (MENU_MAIN) */
-#define R_PAGER       (1 << 1) /**< redraw the pager menu */
-#define R_PAGER_FLOW  (1 << 2) /**< reflow line_info and redraw the pager menu */
-#define R_RESORT      (1 << 3) /**< resort the mailbox */
-#define R_RESORT_SUB  (1 << 4) /**< resort subthreads */
-#define R_RESORT_INIT (1 << 5) /**< resort from scratch */
-#define R_TREE        (1 << 6) /**< redraw the thread tree */
-#define R_REFLOW      (1 << 7) /**< reflow window layout and full redraw */
-#define R_SIDEBAR     (1 << 8) /**< redraw the sidebar */
-#define R_MENU        (1 << 9) /**< redraw all menus */
+#define R_NONE        0             ///< No refresh/resort flags
+#define R_INDEX       (1 << 0)      ///< Redraw the index menu (MENU_MAIN)
+#define R_PAGER       (1 << 1)      ///< Redraw the pager menu
+#define R_PAGER_FLOW  (1 << 2)      ///< Reflow line_info and redraw the pager menu
+#define R_RESORT      (1 << 3)      ///< Resort the mailbox
+#define R_RESORT_SUB  (1 << 4)      ///< Resort subthreads
+#define R_RESORT_INIT (1 << 5)      ///< Resort from scratch
+#define R_TREE        (1 << 6)      ///< Redraw the thread tree
+#define R_REFLOW      (1 << 7)      ///< Reflow window layout and full redraw
+#define R_SIDEBAR     (1 << 8)      ///< Redraw the sidebar
+#define R_MENU        (1 << 9)      ///< Redraw all menus
+#define F_SENSITIVE   (1 << 10)     ///< Config item contains sensitive value (will be OR'd with R_ flags above)
+
 #define R_BOTH        (R_INDEX | R_PAGER)
 #define R_RESORT_BOTH (R_RESORT | R_RESORT_SUB)
-
-/* general flags, to be OR'd with the R_ flags above (so keep shifting..) */
-#define F_SENSITIVE   (1 << 10) /**< Config item contains sensitive value */
 #define IS_SENSITIVE(x) (((x).flags & F_SENSITIVE) == F_SENSITIVE)
 
 #endif /* MUTT_CONFIG_TYPES_H */

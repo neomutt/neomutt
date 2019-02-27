@@ -381,34 +381,10 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
  * @param in     FILE pointer to read from
  * @param e      Email
  * @param out    FILE pointer to write to
- * @param flags  Flags, see below
- * @param prefix Prefix for quoting headers
+ * @param flags  Flags, e.g. #CH_DECODE
+ * @param prefix Prefix for quoting headers (if #CH_PREFIX is set)
  * @retval  0 Success
  * @retval -1 Failure
- *
- * flags:
- * * #CH_DECODE       RFC2047 header decoding
- * * #CH_FROM         retain the "From " message separator
- * * #CH_FORCE_FROM   give CH_FROM precedence over CH_WEED
- * * #CH_MIME         ignore MIME fields
- * * #CH_NOLEN        don't write Content-Length: and Lines:
- * * #CH_NONEWLINE    don't output a newline after the header
- * * #CH_NOSTATUS     ignore the Status: and X-Status:
- * * #CH_PREFIX       quote header with $indent_string
- * * #CH_REORDER      output header in order specified by 'hdr_order'
- * * #CH_TXTPLAIN     generate text/plain MIME headers [hack alert.]
- * * #CH_UPDATE       write new Status: and X-Status:
- * * #CH_UPDATE_LEN   write new Content-Length: and Lines:
- * * #CH_XMIT         ignore Lines: and Content-Length:
- * * #CH_WEED         do header weeding
- * * #CH_NOQFROM      ignore ">From " line
- * * #CH_UPDATE_IRT   update the In-Reply-To: header
- * * #CH_UPDATE_REFS  update the References: header
- * * #CH_UPDATE_LABEL update the X-Label: header
- * * #CH_VIRTUAL      write virtual header lines too
- *
- * prefix
- * * string to use if CH_PREFIX is set
  */
 int mutt_copy_header(FILE *in, struct Email *e, FILE *out, int flags, const char *prefix)
 {
@@ -606,19 +582,10 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
  * @param fpout   Where to write output
  * @param fpin    Where to get input
  * @param e       Email being copied
- * @param flags   See below
+ * @param flags   Flags, e.g. #MUTT_CM_NOHEADER
  * @param chflags Flags to mutt_copy_header()
  * @retval  0 Success
  * @retval -1 Failure
- *
- * * #MUTT_CM_NOHEADER   don't copy header
- * * #MUTT_CM_PREFIX     quote header and body
- * * #MUTT_CM_DECODE     decode message body to text/plain
- * * #MUTT_CM_DISPLAY    displaying output to the user
- * * #MUTT_CM_PRINTING   printing the message
- * * #MUTT_CM_UPDATE     update structures in memory after syncing
- * * #MUTT_CM_DECODE_PGP used for decoding PGP messages
- * * #MUTT_CM_CHARCONV   perform character set conversion
  */
 int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e, int flags, int chflags)
 {
@@ -720,8 +687,8 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e, int flags, in
   {
     /* now make a text/plain version of the message */
     struct State s = { 0 };
-    s.fpin = fpin;
-    s.fpout = fpout;
+    s.fp_in = fpin;
+    s.fp_out = fpout;
     if (flags & MUTT_CM_PREFIX)
       s.prefix = prefix;
     if (flags & MUTT_CM_DISPLAY)
@@ -740,7 +707,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e, int flags, in
 
     rc = mutt_body_handler(body, &s);
   }
-  else if ((WithCrypto != 0) && (flags & MUTT_CM_DECODE_CRYPT) && (e->security & ENCRYPT))
+  else if ((WithCrypto != 0) && (flags & MUTT_CM_DECODE_CRYPT) && (e->security & SEC_ENCRYPT))
   {
     struct Body *cur = NULL;
     FILE *fp = NULL;

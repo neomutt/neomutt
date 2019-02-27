@@ -73,8 +73,8 @@ static void pgp_dearmor(FILE *in, FILE *out)
   char *r = NULL;
 
   struct State state = { 0 };
-  state.fpin = in;
-  state.fpout = out;
+  state.fp_in = in;
+  state.fp_out = out;
 
   /* find the beginning of ASCII armor */
 

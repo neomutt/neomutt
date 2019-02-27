@@ -239,16 +239,9 @@ static int mx_open_mailbox_append(struct Mailbox *m, int flags)
 /**
  * mx_mbox_open - Open a mailbox and parse it
  * @param m     Mailbox to open
- * @param flags See below
+ * @param flags Flags, e.g. #MUTT_NOSORT
  * @retval ptr  Mailbox context
  * @retval NULL Error
- *
- * flags:
- * * #MUTT_NOSORT   do not sort mailbox
- * * #MUTT_APPEND   open mailbox for appending
- * * #MUTT_READONLY open mailbox in read-only mode
- * * #MUTT_QUIET    only print error messages
- * * #MUTT_PEEK     revert atime where applicable
  */
 struct Context *mx_mbox_open(struct Mailbox *m, int flags)
 {

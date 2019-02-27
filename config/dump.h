@@ -31,21 +31,27 @@ struct Buffer;
 struct ConfigSet;
 struct HashElem;
 
-#define CS_DUMP_STYLE_MUTT   0 /**< Display config in Mutt style */
-#define CS_DUMP_STYLE_NEO    1 /**< Display config in NeoMutt style */
+/**
+ * enum CsDumpStyle - Styles of dumping all the config
+ */
+enum CsDumpStyle
+{
+  CS_DUMP_STYLE_MUTT,  ///< Display config in Mutt style
+  CS_DUMP_STYLE_NEO,   ///< Display config in NeoMutt style
+};
 
-#define CS_DUMP_ONLY_CHANGED   (1 << 0) /**< Only show config that the user has changed */
-#define CS_DUMP_HIDE_SENSITIVE (1 << 1) /**< Obscure sensitive information like passwords */
-#define CS_DUMP_NO_ESCAPING    (1 << 2) /**< Do not escape special chars, or quote the string */
-#define CS_DUMP_HIDE_NAME      (1 << 3) /**< Do not print the name of the config item */
-#define CS_DUMP_HIDE_VALUE     (1 << 4) /**< Do not print the value of the config item */
-#define CS_DUMP_SHOW_DEFAULTS  (1 << 5) /**< Show the default value for the config item */
-#define CS_DUMP_SHOW_DISABLED  (1 << 6) /**< Show disabled config items, too */
-#define CS_DUMP_SHOW_SYNONYMS  (1 << 7) /**< Show synonyms and the config items their linked to */
+#define CS_DUMP_ONLY_CHANGED   (1 << 0) ///< Only show config that the user has changed
+#define CS_DUMP_HIDE_SENSITIVE (1 << 1) ///< Obscure sensitive information like passwords
+#define CS_DUMP_NO_ESCAPING    (1 << 2) ///< Do not escape special chars, or quote the string
+#define CS_DUMP_HIDE_NAME      (1 << 3) ///< Do not print the name of the config item
+#define CS_DUMP_HIDE_VALUE     (1 << 4) ///< Do not print the value of the config item
+#define CS_DUMP_SHOW_DEFAULTS  (1 << 5) ///< Show the default value for the config item
+#define CS_DUMP_SHOW_DISABLED  (1 << 6) ///< Show disabled config items, too
+#define CS_DUMP_SHOW_SYNONYMS  (1 << 7) ///< Show synonyms and the config items their linked to
 
 void              dump_config_mutt(struct ConfigSet *cs, struct HashElem *he, struct Buffer *value, struct Buffer *initial, int flags, FILE *fp);
 void              dump_config_neo(struct ConfigSet *cs, struct HashElem *he, struct Buffer *value, struct Buffer *initial, int flags, FILE *fp);
-bool              dump_config(struct ConfigSet *cs, int style, int flags, FILE *fp);
+bool              dump_config(struct ConfigSet *cs, enum CsDumpStyle style, int flags, FILE *fp);
 int               elem_list_sort(const void *a, const void *b);
 size_t            escape_string(struct Buffer *buf, const char *src);
 struct HashElem **get_elem_list(struct ConfigSet *cs);

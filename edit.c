@@ -391,8 +391,8 @@ static void be_edit_header(struct Envelope *e, bool force)
 /**
  * mutt_builtin_editor - Show the user the built-in editor
  * @param path File to read
- * @param msg  Header of new message
- * @param cur  Header of current message
+ * @param msg  New Email
+ * @param cur  Current Email
  * @retval  0 Success
  * @retval -1 Error
  */

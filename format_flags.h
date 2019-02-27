@@ -25,20 +25,14 @@
 
 #include <stddef.h>
 
-/**
- * enum FormatFlag - Control the behaviour of mutt_expando_format()
- */
-enum FormatFlag
-{
-  MUTT_FORMAT_FORCESUBJ   = (1 << 0), ///< print the subject even if unchanged
-  MUTT_FORMAT_TREE        = (1 << 1), ///< draw the thread tree
-  MUTT_FORMAT_OPTIONAL    = (1 << 2), ///< allow optional field processing
-  MUTT_FORMAT_STAT_FILE   = (1 << 3), ///< used by attach_format_str
-  MUTT_FORMAT_ARROWCURSOR = (1 << 4), ///< reserve space for arrow_cursor
-  MUTT_FORMAT_INDEX       = (1 << 5), ///< this is a main index entry
-  MUTT_FORMAT_NOFILTER    = (1 << 6), ///< do not allow filtering on this pass
-  MUTT_FORMAT_PLAIN       = (1 << 7), ///< do not prepend DISP_TO, DISP_CC ...
-};
+#define MUTT_FORMAT_FORCESUBJ   (1 << 0) ///< Print the subject even if unchanged
+#define MUTT_FORMAT_TREE        (1 << 1) ///< Draw the thread tree
+#define MUTT_FORMAT_OPTIONAL    (1 << 2) ///< Allow optional field processing
+#define MUTT_FORMAT_STAT_FILE   (1 << 3) ///< Used by attach_format_str
+#define MUTT_FORMAT_ARROWCURSOR (1 << 4) ///< Reserve space for arrow_cursor
+#define MUTT_FORMAT_INDEX       (1 << 5) ///< This is a main index entry
+#define MUTT_FORMAT_NOFILTER    (1 << 6) ///< Do not allow filtering on this pass
+#define MUTT_FORMAT_PLAIN       (1 << 7) ///< Do not prepend DISP_TO, DISP_CC ...
 
 /**
  * typedef format_t - Prototype for a mutt_expando_format() callback function
@@ -64,6 +58,6 @@ enum FormatFlag
 typedef const char *format_t(char *buf, size_t buflen, size_t col, int cols,
                              char op, const char *src, const char *prec,
                              const char *if_str, const char *else_str,
-                             unsigned long data, enum FormatFlag flags);
+                             unsigned long data, int flags);
 
 #endif /* MUTT_FORMAT_FLAGS_H */

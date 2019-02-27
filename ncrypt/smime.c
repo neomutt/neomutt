@@ -212,7 +212,7 @@ int smime_class_valid_passphrase(void)
 static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int cols,
                                      char op, const char *src, const char *prec,
                                      const char *if_str, const char *else_str,
-                                     unsigned long data, enum FormatFlag flags)
+                                     unsigned long data, int flags)
 {
   char fmt[SHORT_STRING];
   struct SmimeCommandContext *cctx = (struct SmimeCommandContext *) data;
@@ -1437,7 +1437,7 @@ int smime_class_verify_sender(struct Email *e)
     return 1;
   }
 
-  if (e->security & ENCRYPT)
+  if (e->security & SEC_ENCRYPT)
   {
     mutt_copy_message_ctx(fpout, Context->mailbox, e, MUTT_CM_DECODE_CRYPT & MUTT_CM_DECODE_SMIME,
                           CH_MIME | CH_WEED | CH_NONEWLINE);
@@ -1899,9 +1899,9 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
   snprintf(signedfile, sizeof(signedfile), "%s.sig", tempfile);
 
   /* decode to a tempfile, saving the original destination */
-  FILE *fp = s->fpout;
-  s->fpout = mutt_file_fopen(signedfile, "w");
-  if (!s->fpout)
+  FILE *fp = s->fp_out;
+  s->fp_out = mutt_file_fopen(signedfile, "w");
+  if (!s->fp_out)
   {
     mutt_perror(signedfile);
     return -1;
@@ -1920,14 +1920,14 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
 
   mutt_decode_attachment(sigbdy, s);
 
-  sigbdy->length = ftello(s->fpout);
+  sigbdy->length = ftello(s->fp_out);
   sigbdy->offset = 0;
-  mutt_file_fclose(&s->fpout);
+  mutt_file_fclose(&s->fp_out);
 
   /* restore final destination and substitute the tempfile for input */
-  s->fpout = fp;
-  fp = s->fpin;
-  s->fpin = fopen(signedfile, "r");
+  s->fp_out = fp;
+  fp = s->fp_in;
+  s->fp_in = fopen(signedfile, "r");
 
   /* restore the prefix */
   s->prefix = save_prefix;
@@ -1972,7 +1972,7 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
 
   fflush(smimeerr);
   rewind(smimeerr);
-  mutt_file_copy_stream(smimeerr, s->fpout);
+  mutt_file_copy_stream(smimeerr, s->fp_out);
   mutt_file_fclose(&smimeerr);
 
   state_attach_puts(_("[-- End of OpenSSL output --]\n\n"), s);
@@ -1983,8 +1983,8 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
   sigbdy->offset = tmpoffset;
 
   /* restore the original source stream */
-  mutt_file_fclose(&s->fpin);
-  s->fpin = fp;
+  mutt_file_fclose(&s->fp_in);
+  s->fp_in = fp;
 
   return badsig;
 }
@@ -2035,15 +2035,15 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     return NULL;
   }
 
-  fseeko(s->fpin, m->offset, SEEK_SET);
+  fseeko(s->fp_in, m->offset, SEEK_SET);
 
-  mutt_file_copy_bytes(s->fpin, tmpfp, m->length);
+  mutt_file_copy_bytes(s->fp_in, tmpfp, m->length);
 
   fflush(tmpfp);
   mutt_file_fclose(&tmpfp);
 
   FILE *smimein = NULL;
-  if ((type & ENCRYPT) &&
+  if ((type & SEC_ENCRYPT) &&
       (thepid = smime_invoke_decrypt(&smimein, NULL, NULL, -1, fileno(smimeout),
                                      fileno(smimeerr), tmpfname)) == -1)
   {
@@ -2057,9 +2057,10 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     mutt_file_fclose(&smimeerr);
     return NULL;
   }
-  else if ((type & SIGNOPAQUE) &&
-           (thepid = smime_invoke_verify(&smimein, NULL, NULL, -1, fileno(smimeout),
-                                         fileno(smimeerr), NULL, tmpfname, SIGNOPAQUE)) == -1)
+  else if ((type & SEC_SIGNOPAQUE) &&
+           (thepid = smime_invoke_verify(&smimein, NULL, NULL, -1,
+                                         fileno(smimeout), fileno(smimeerr),
+                                         NULL, tmpfname, SEC_SIGNOPAQUE)) == -1)
   {
     mutt_file_fclose(&smimeout);
     mutt_file_unlink(tmpfname);
@@ -2072,7 +2073,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     return NULL;
   }
 
-  if (type & ENCRYPT)
+  if (type & SEC_ENCRYPT)
   {
     if (!smime_class_valid_passphrase())
       smime_class_void_passphrase();
@@ -2096,11 +2097,11 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
       ungetc(c, smimeerr);
 
       crypt_current_time(s, "OpenSSL");
-      mutt_file_copy_stream(smimeerr, s->fpout);
+      mutt_file_copy_stream(smimeerr, s->fp_out);
       state_attach_puts(_("[-- End of OpenSSL output --]\n\n"), s);
     }
 
-    if (type & ENCRYPT)
+    if (type & SEC_ENCRYPT)
     {
       state_attach_puts(_("[-- The following data is S/MIME"
                           " encrypted --]\n"),
@@ -2113,7 +2114,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
   fflush(smimeout);
   rewind(smimeout);
 
-  if (type & ENCRYPT)
+  if (type & SEC_ENCRYPT)
   {
     /* void the passphrase, even if that wasn't the problem */
     if (fgetc(smimeout) == EOF)
@@ -2170,13 +2171,13 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     m->mime_headers = p->mime_headers;
     p->mime_headers = NULL;
 
-    if (s->fpout)
+    if (s->fp_out)
     {
       rewind(fpout);
-      tmpfp_buffer = s->fpin;
-      s->fpin = fpout;
+      tmpfp_buffer = s->fp_in;
+      s->fp_in = fpout;
       mutt_body_handler(p, s);
-      s->fpin = tmpfp_buffer;
+      s->fp_in = tmpfp_buffer;
     }
 
     /* Embedded multipart signed protected headers override the
@@ -2200,13 +2201,13 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
 
   if (s->flags & MUTT_DISPLAY)
   {
-    if (type & ENCRYPT)
+    if (type & SEC_ENCRYPT)
       state_attach_puts(_("\n[-- End of S/MIME encrypted data. --]\n"), s);
     else
       state_attach_puts(_("\n[-- End of S/MIME signed data. --]\n"), s);
   }
 
-  if (type & SIGNOPAQUE)
+  if (type & SEC_SIGNOPAQUE)
   {
     char *line = NULL;
     int lineno = 0;
@@ -2246,8 +2247,8 @@ int smime_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   if (b->parts)
     return -1;
 
-  s.fpin = fpin;
-  fseeko(s.fpin, b->offset, SEEK_SET);
+  s.fp_in = fpin;
+  fseeko(s.fp_in, b->offset, SEEK_SET);
 
   FILE *tmpfp = mutt_file_mkstemp();
   if (!tmpfp)
@@ -2256,14 +2257,14 @@ int smime_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
     return -1;
   }
 
-  s.fpout = tmpfp;
+  s.fp_out = tmpfp;
   mutt_decode_attachment(b, &s);
   fflush(tmpfp);
-  b->length = ftello(s.fpout);
+  b->length = ftello(s.fp_out);
   b->offset = 0;
   rewind(tmpfp);
-  s.fpin = tmpfp;
-  s.fpout = 0;
+  s.fp_in = tmpfp;
+  s.fp_out = 0;
 
   *fpout = mutt_file_mkstemp();
   if (!*fpout)
@@ -2333,7 +2334,7 @@ int smime_class_send_menu(struct Email *msg)
    * NOTE: "Signing" and "Clearing" only adjust the sign bit, so we have different
    *       letter choices for those.
    */
-  if (CryptOpportunisticEncrypt && (msg->security & OPPENCRYPT))
+  if (CryptOpportunisticEncrypt && (msg->security & SEC_OPPENCRYPT))
   {
     /* L10N: S/MIME options (opportunistic encryption is on) */
     prompt = _("S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc "
@@ -2377,7 +2378,7 @@ int smime_class_send_menu(struct Email *msg)
           mutt_str_replace(&SmimeSignAs, key->hash);
           smime_free_key(&key);
 
-          msg->security |= SIGN;
+          msg->security |= SEC_SIGN;
 
           /* probably need a different passphrase */
           crypt_smime_void_passphrase();
@@ -2386,43 +2387,43 @@ int smime_class_send_menu(struct Email *msg)
         break;
 
       case 'b': /* (b)oth */
-        msg->security |= (ENCRYPT | SIGN);
+        msg->security |= (SEC_ENCRYPT | SEC_SIGN);
         break;
 
       case 'c': /* (c)lear */
-        msg->security &= ~(ENCRYPT | SIGN);
+        msg->security &= ~(SEC_ENCRYPT | SEC_SIGN);
         break;
 
       case 'C':
-        msg->security &= ~SIGN;
+        msg->security &= ~SEC_SIGN;
         break;
 
       case 'e': /* (e)ncrypt */
-        msg->security |= ENCRYPT;
-        msg->security &= ~SIGN;
+        msg->security |= SEC_ENCRYPT;
+        msg->security &= ~SEC_SIGN;
         break;
 
       case 'O': /* oppenc mode on */
-        msg->security |= OPPENCRYPT;
+        msg->security |= SEC_OPPENCRYPT;
         crypt_opportunistic_encrypt(msg);
         break;
 
       case 'o': /* oppenc mode off */
-        msg->security &= ~OPPENCRYPT;
+        msg->security &= ~SEC_OPPENCRYPT;
         break;
 
       case 'S': /* (s)ign in oppenc mode */
-        msg->security |= SIGN;
+        msg->security |= SEC_SIGN;
         break;
 
       case 's': /* (s)ign */
-        msg->security &= ~ENCRYPT;
-        msg->security |= SIGN;
+        msg->security &= ~SEC_ENCRYPT;
+        msg->security |= SEC_SIGN;
         break;
 
       case 'w': /* encrypt (w)ith */
       {
-        msg->security |= ENCRYPT;
+        msg->security |= SEC_ENCRYPT;
         do
         {
           switch (mutt_multi_choice(_("Choose algorithm family: 1: DES, 2: "

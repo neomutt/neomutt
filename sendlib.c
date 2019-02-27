@@ -1219,15 +1219,15 @@ static void transform_to_7bit(struct Body *a, FILE *fpin)
       a->force_charset = true;
 
       mutt_mktemp(buf, sizeof(buf));
-      s.fpout = mutt_file_fopen(buf, "w");
-      if (!s.fpout)
+      s.fp_out = mutt_file_fopen(buf, "w");
+      if (!s.fp_out)
       {
         mutt_perror("fopen");
         return;
       }
-      s.fpin = fpin;
+      s.fp_in = fpin;
       mutt_decode_attachment(a, &s);
-      mutt_file_fclose(&s.fpout);
+      mutt_file_fclose(&s.fp_out);
       FREE(&a->d_filename);
       a->d_filename = a->filename;
       a->filename = mutt_str_strdup(buf);
@@ -1469,7 +1469,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool a
 
   if (WithCrypto)
   {
-    if ((MimeForwardDecode || ForwardDecrypt) && (e->security & ENCRYPT))
+    if ((MimeForwardDecode || ForwardDecrypt) && (e->security & SEC_ENCRYPT))
     {
       if (!crypt_valid_passphrase(e->security))
         return NULL;
@@ -1505,7 +1505,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool a
     if (WithCrypto & APPLICATION_SMIME)
       pgp &= ~SMIME_ENCRYPT;
   }
-  else if ((WithCrypto != 0) && ForwardDecrypt && (e->security & ENCRYPT))
+  else if ((WithCrypto != 0) && ForwardDecrypt && (e->security & SEC_ENCRYPT))
   {
     if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_multipart_encrypted(e->content))
     {
@@ -3232,17 +3232,17 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   if (((WithCrypto & APPLICATION_PGP) != 0) && post && (e->security & APPLICATION_PGP))
   {
     fputs("X-Mutt-PGP: ", msg->fp);
-    if (e->security & ENCRYPT)
+    if (e->security & SEC_ENCRYPT)
       fputc('E', msg->fp);
-    if (e->security & OPPENCRYPT)
+    if (e->security & SEC_OPPENCRYPT)
       fputc('O', msg->fp);
-    if (e->security & SIGN)
+    if (e->security & SEC_SIGN)
     {
       fputc('S', msg->fp);
       if (PgpSignAs && *PgpSignAs)
         fprintf(msg->fp, "<%s>", PgpSignAs);
     }
-    if (e->security & INLINE)
+    if (e->security & SEC_INLINE)
       fputc('I', msg->fp);
     fputc('\n', msg->fp);
   }
@@ -3251,21 +3251,21 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   if (((WithCrypto & APPLICATION_SMIME) != 0) && post && (e->security & APPLICATION_SMIME))
   {
     fputs("X-Mutt-SMIME: ", msg->fp);
-    if (e->security & ENCRYPT)
+    if (e->security & SEC_ENCRYPT)
     {
       fputc('E', msg->fp);
       if (SmimeEncryptWith && *SmimeEncryptWith)
         fprintf(msg->fp, "C<%s>", SmimeEncryptWith);
     }
-    if (e->security & OPPENCRYPT)
+    if (e->security & SEC_OPPENCRYPT)
       fputc('O', msg->fp);
-    if (e->security & SIGN)
+    if (e->security & SEC_SIGN)
     {
       fputc('S', msg->fp);
       if (SmimeSignAs && *SmimeSignAs)
         fprintf(msg->fp, "<%s>", SmimeSignAs);
     }
-    if (e->security & INLINE)
+    if (e->security & SEC_INLINE)
       fputc('I', msg->fp);
     fputc('\n', msg->fp);
   }

@@ -55,11 +55,11 @@ enum AccountType
 };
 
 /* account flags */
-#define MUTT_ACCT_PORT  (1 << 0)
-#define MUTT_ACCT_USER  (1 << 1)
-#define MUTT_ACCT_LOGIN (1 << 2)
-#define MUTT_ACCT_PASS  (1 << 3)
-#define MUTT_ACCT_SSL   (1 << 4)
+#define MUTT_ACCT_PORT      (1 << 0)  ///< Port field has been set
+#define MUTT_ACCT_USER      (1 << 1)  ///< User field has been set
+#define MUTT_ACCT_LOGIN     (1 << 2)  ///< Login field has been set
+#define MUTT_ACCT_PASS      (1 << 3)  ///< Password field has been set
+#define MUTT_ACCT_SSL       (1 << 4)  ///< Account uses SSL/TLS
 
 bool mutt_account_match(const struct ConnAccount *a1, const struct ConnAccount *a2);
 int mutt_account_fromurl(struct ConnAccount *account, const struct Url *url);

@@ -63,10 +63,10 @@ bool SaveName; ///< Config: Save outgoing message to mailbox of recipient's name
  */
 struct Hook
 {
-  int type;                /**< hook type */
-  struct Regex regex;      /**< regular expression */
-  char *command;           /**< filename, command or pattern to execute */
-  struct Pattern *pattern; /**< used for fcc,save,send-hook */
+  int type;                ///< Hook type
+  struct Regex regex;      ///< Regular expression
+  char *command;           ///< Filename, command or pattern to execute
+  struct Pattern *pattern; ///< Used for fcc,save,send-hook
   TAILQ_ENTRY(Hook) entries;
 };
 static TAILQ_HEAD(, Hook) Hooks = TAILQ_HEAD_INITIALIZER(Hooks);

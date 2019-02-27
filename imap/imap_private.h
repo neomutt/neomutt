@@ -40,9 +40,8 @@ struct Mailbox;
 struct Message;
 struct Progress;
 
-/* -- symbols -- */
-#define IMAP_PORT 143
-#define IMAP_SSL_PORT 993
+#define IMAP_PORT     143  ///< Default port for IMAP
+#define IMAP_SSL_PORT 993  ///< Port for IMAP over SSL/TLS
 
 /* logging levels */
 #define IMAP_LOG_CMD  2
@@ -50,31 +49,28 @@ struct Progress;
 #define IMAP_LOG_PASS 5
 
 /* IMAP command responses. Used in ImapCommand.state too */
-#define IMAP_CMD_OK       0  /**< `<tag> OK ...` */
-#define IMAP_CMD_BAD      -1 /**< `<tag> BAD ...` */
-#define IMAP_CMD_NO       -2 /**< `<tag> NO ...` */
-#define IMAP_CMD_CONTINUE 1  /**< `* ...` */
-#define IMAP_CMD_RESPOND  2  /**< `+` */
-#define IMAP_CMD_NEW      3  /**< ImapCommand.state additions */
+#define IMAP_CMD_NO       -2  ///< `<tag> NO ...`
+#define IMAP_CMD_BAD      -1  ///< `<tag> BAD ...`
+#define IMAP_CMD_OK        0  ///< `<tag> OK ...`
+#define IMAP_CMD_CONTINUE  1  ///< `* ...`
+#define IMAP_CMD_RESPOND   2  ///< `+`
+#define IMAP_CMD_NEW       3  ///< ImapCommand.state additions
 
-/* number of entries in the hash table */
-#define IMAP_CACHE_LEN 10
+#define IMAP_CACHE_LEN 10 ///< number of entries in the hash table */
 
 #define SEQLEN 5
-/* maximum length of command lines before they must be split (for
- * lazy servers) */
-#define IMAP_MAX_CMDLEN 1024
+#define IMAP_MAX_CMDLEN 1024 ///< Maximum length of command lines before they must be split (for lazy servers)
 
-#define IMAP_REOPEN_ALLOW     (1 << 0)
-#define IMAP_EXPUNGE_EXPECTED (1 << 1)
-#define IMAP_EXPUNGE_PENDING  (1 << 2)
-#define IMAP_NEWMAIL_PENDING  (1 << 3)
-#define IMAP_FLAGS_PENDING    (1 << 4)
+#define IMAP_REOPEN_ALLOW     (1 << 0) ///< Allow re-opening a folder upon expunge
+#define IMAP_EXPUNGE_EXPECTED (1 << 1) ///< Messages will be expunged from the server
+#define IMAP_EXPUNGE_PENDING  (1 << 2) ///< Messages on the server have been expunged
+#define IMAP_NEWMAIL_PENDING  (1 << 3) ///< New mail is waiting on the server
+#define IMAP_FLAGS_PENDING    (1 << 4) ///< Flags have changed on the server
 
 /* imap_exec flags (see imap_exec) */
-#define IMAP_CMD_PASS    (1 << 0)  /**< Run the imap command and all previous commands queued */
-#define IMAP_CMD_QUEUE   (1 << 1)  /**< Queue a command */
-#define IMAP_CMD_POLL    (1 << 2)  /**< Poll the tcp connection before running the imap command */
+#define IMAP_CMD_PASS        (1 << 0)  ///< Command contains a password. Suppress logging
+#define IMAP_CMD_QUEUE       (1 << 1)  ///< Queue a command, do not execute
+#define IMAP_CMD_POLL        (1 << 2)  ///< Poll the tcp connection before running the imap command
 
 /**
  * enum ImapExecResult - imap_exec return code

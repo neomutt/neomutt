@@ -35,7 +35,7 @@
 struct Email
 {
   unsigned int security : 12; /**< bit 0-8: flags, bit 9,10: application.
-                                 see: mutt_crypt.h pgplib.h, smime.h */
+                                 see: ncrypt/ncrypt.h pgplib.h, smime.h */
 
   bool mime            : 1; /**< has a MIME-Version email? */
   bool flagged         : 1; /**< marked important? */

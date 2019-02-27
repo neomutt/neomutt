@@ -229,7 +229,7 @@ void dump_config_neo(struct ConfigSet *cs, struct HashElem *he, struct Buffer *v
  * @param flags Display flags, e.g. #CS_DUMP_ONLY_CHANGED
  * @param fp    File to write config to
  */
-bool dump_config(struct ConfigSet *cs, int style, int flags, FILE *fp)
+bool dump_config(struct ConfigSet *cs, enum CsDumpStyle style, int flags, FILE *fp)
 {
   if (!cs)
     return false;

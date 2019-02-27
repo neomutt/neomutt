@@ -396,7 +396,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
 
   bool is_message = mutt_is_message_type(a->type, a->subtype);
   if ((WithCrypto != 0) && is_message && a->email &&
-      (a->email->security & ENCRYPT) && !crypt_valid_passphrase(a->email->security))
+      (a->email->security & SEC_ENCRYPT) && !crypt_valid_passphrase(a->email->security))
   {
     return rc;
   }
@@ -570,18 +570,18 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
          */
         struct State decode_state = { 0 };
 
-        decode_state.fpout = mutt_file_fopen(pagerfile, "w");
-        if (!decode_state.fpout)
+        decode_state.fp_out = mutt_file_fopen(pagerfile, "w");
+        if (!decode_state.fp_out)
         {
           mutt_debug(LL_DEBUG1, "mutt_file_fopen(%s) errno=%d %s\n", pagerfile,
                      errno, strerror(errno));
           mutt_perror(pagerfile);
           goto return_error;
         }
-        decode_state.fpin = fp;
+        decode_state.fp_in = fp;
         decode_state.flags = MUTT_CHARCONV;
         mutt_decode_attachment(a, &decode_state);
-        if (fclose(decode_state.fpout) == EOF)
+        if (fclose(decode_state.fp_out) == EOF)
           mutt_debug(LL_DEBUG1, "fclose(%s) errno=%d %s\n", pagerfile, errno,
                      strerror(errno));
       }
@@ -696,9 +696,9 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfi
     s.flags = MUTT_CHARCONV;
 
     if (outfile && *outfile)
-      thepid = mutt_create_filter_fd(path, &s.fpout, NULL, NULL, -1, out, -1);
+      thepid = mutt_create_filter_fd(path, &s.fp_out, NULL, NULL, -1, out, -1);
     else
-      thepid = mutt_create_filter(path, &s.fpout, NULL, NULL);
+      thepid = mutt_create_filter(path, &s.fp_out, NULL, NULL);
 
     if (thepid < 0)
     {
@@ -706,9 +706,9 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfi
       goto bail;
     }
 
-    s.fpin = fp;
+    s.fp_in = fp;
     mutt_decode_attachment(b, &s);
-    mutt_file_fclose(&s.fpout);
+    mutt_file_fclose(&s.fp_out);
   }
   else
   {
@@ -850,16 +850,16 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
 
       struct State s = { 0 };
 
-      s.fpout = save_attachment_open(path, flags);
-      if (!s.fpout)
+      s.fp_out = save_attachment_open(path, flags);
+      if (!s.fp_out)
       {
         mutt_perror("fopen");
         return -1;
       }
-      fseeko((s.fpin = fp), m->offset, SEEK_SET);
+      fseeko((s.fp_in = fp), m->offset, SEEK_SET);
       mutt_decode_attachment(m, &s);
 
-      if (mutt_file_fsync_close(&s.fpout) != 0)
+      if (mutt_file_fsync_close(&s.fp_out) != 0)
       {
         mutt_perror("fclose");
         return -1;
@@ -927,13 +927,13 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
   s.flags = displaying;
 
   if (flags == MUTT_SAVE_APPEND)
-    s.fpout = fopen(path, "a");
+    s.fp_out = fopen(path, "a");
   else if (flags == MUTT_SAVE_OVERWRITE)
-    s.fpout = fopen(path, "w");
+    s.fp_out = fopen(path, "w");
   else
-    s.fpout = mutt_file_fopen(path, "w");
+    s.fp_out = mutt_file_fopen(path, "w");
 
-  if (!s.fpout)
+  if (!s.fp_out)
   {
     mutt_perror("fopen");
     return -1;
@@ -948,12 +948,12 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
     if (stat(m->filename, &st) == -1)
     {
       mutt_perror("stat");
-      mutt_file_fclose(&s.fpout);
+      mutt_file_fclose(&s.fp_out);
       return -1;
     }
 
-    s.fpin = fopen(m->filename, "r");
-    if (!s.fpin)
+    s.fp_in = fopen(m->filename, "r");
+    if (!s.fp_in)
     {
       mutt_perror("fopen");
       return -1;
@@ -967,20 +967,20 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
     m->offset = 0;
     saved_parts = m->parts;
     saved_hdr = m->email;
-    mutt_parse_part(s.fpin, m);
+    mutt_parse_part(s.fp_in, m);
 
     if (m->noconv || is_multipart(m))
       s.flags |= MUTT_CHARCONV;
   }
   else
   {
-    s.fpin = fp;
+    s.fp_in = fp;
     s.flags |= MUTT_CHARCONV;
   }
 
   mutt_body_handler(m, &s);
 
-  if (mutt_file_fsync_close(&s.fpout) != 0)
+  if (mutt_file_fsync_close(&s.fp_out) != 0)
   {
     mutt_perror("fclose");
     rc = -1;
@@ -995,7 +995,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
       m->parts = saved_parts;
       m->email = saved_hdr;
     }
-    mutt_file_fclose(&s.fpin);
+    mutt_file_fclose(&s.fp_in);
   }
 
   return rc;

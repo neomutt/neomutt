@@ -500,7 +500,7 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *out)
   mutt_parse_mime_message(m, e);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
-  if ((WithCrypto != 0) && (e->security & ENCRYPT) && ForwardDecode)
+  if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT) && ForwardDecode)
   {
     /* make sure we have the user's passphrase before proceeding... */
     if (!crypt_valid_passphrase(e->security))
@@ -579,7 +579,7 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *out)
   int cmflags = MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV | MUTT_CM_REPLYING;
   int chflags = CH_DECODE;
 
-  if ((WithCrypto != 0) && (e->security & ENCRYPT))
+  if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT))
   {
     /* make sure we have the user's passphrase before proceeding... */
     if (!crypt_valid_passphrase(e->security))
@@ -1391,7 +1391,7 @@ int mutt_resend_message(FILE *fp, struct Context *ctx, struct Email *cur)
 
     if (CryptOpportunisticEncrypt)
     {
-      msg->security |= OPPENCRYPT;
+      msg->security |= SEC_OPPENCRYPT;
       crypt_opportunistic_encrypt(msg);
     }
   }
@@ -1504,24 +1504,24 @@ static int save_fcc(struct Email *msg, char *fcc, size_t fcc_len, struct Body *c
   struct Body *save_sig = NULL;
   struct Body *save_parts = NULL;
 
-  if ((WithCrypto != 0) && (msg->security & (ENCRYPT | SIGN)) && FccClear)
+  if ((WithCrypto != 0) && (msg->security & (SEC_ENCRYPT | SEC_SIGN)) && FccClear)
   {
     msg->content = clear_content;
-    msg->security &= ~(ENCRYPT | SIGN);
+    msg->security &= ~(SEC_ENCRYPT | SEC_SIGN);
     mutt_env_free(&msg->content->mime_headers);
   }
 
   /* check to see if the user wants copies of all attachments */
   if (msg->content->type == TYPE_MULTIPART)
   {
-    if ((WithCrypto != 0) && (msg->security & (ENCRYPT | SIGN)) &&
+    if ((WithCrypto != 0) && (msg->security & (SEC_ENCRYPT | SEC_SIGN)) &&
         ((mutt_str_strcmp(msg->content->subtype, "encrypted") == 0) ||
          (mutt_str_strcmp(msg->content->subtype, "signed") == 0)))
     {
       if ((clear_content->type == TYPE_MULTIPART) &&
           query_quadoption(FccAttach, _("Save attachments in Fcc?")) == MUTT_NO)
       {
-        if (!(msg->security & ENCRYPT) && (msg->security & SIGN))
+        if (!(msg->security & SEC_ENCRYPT) && (msg->security & SEC_SIGN))
         {
           /* save initial signature and attachments */
           save_sig = msg->content->parts->next;
@@ -1654,7 +1654,7 @@ static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, int
 
   mutt_encode_descriptions(msg->content, true);
 
-  if ((WithCrypto != 0) && PostponeEncrypt && (msg->security & ENCRYPT))
+  if ((WithCrypto != 0) && PostponeEncrypt && (msg->security & SEC_ENCRYPT))
   {
     if (((WithCrypto & APPLICATION_PGP) != 0) && (msg->security & APPLICATION_PGP))
       encrypt_as = PgpDefaultKey;
@@ -1665,16 +1665,16 @@ static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, int
 
     if (encrypt_as && *encrypt_as)
     {
-      is_signed = msg->security & SIGN;
+      is_signed = msg->security & SEC_SIGN;
       if (is_signed)
-        msg->security &= ~SIGN;
+        msg->security &= ~SEC_SIGN;
 
       pgpkeylist = mutt_str_strdup(encrypt_as);
       clear_content = msg->content;
       if (mutt_protect(msg, pgpkeylist) == -1)
       {
         if (is_signed)
-          msg->security |= SIGN;
+          msg->security |= SEC_SIGN;
         FREE(&pgpkeylist);
         msg->content = mutt_remove_multipart(msg->content);
         decode_descriptions(msg->content);
@@ -1682,7 +1682,7 @@ static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, int
       }
 
       if (is_signed)
-        msg->security |= SIGN;
+        msg->security |= SEC_SIGN;
       FREE(&pgpkeylist);
 
       mutt_encode_descriptions(msg->content, false);
@@ -2158,22 +2158,22 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
       !(flags & (SEND_BATCH | SEND_MAILX | SEND_POSTPONED | SEND_RESEND)))
   {
     if (CryptAutosign)
-      msg->security |= SIGN;
+      msg->security |= SEC_SIGN;
     if (CryptAutoencrypt)
-      msg->security |= ENCRYPT;
-    if (CryptReplyencrypt && cur && (cur->security & ENCRYPT))
-      msg->security |= ENCRYPT;
-    if (CryptReplysign && cur && (cur->security & SIGN))
-      msg->security |= SIGN;
-    if (CryptReplysignencrypted && cur && (cur->security & ENCRYPT))
-      msg->security |= SIGN;
+      msg->security |= SEC_ENCRYPT;
+    if (CryptReplyencrypt && cur && (cur->security & SEC_ENCRYPT))
+      msg->security |= SEC_ENCRYPT;
+    if (CryptReplysign && cur && (cur->security & SEC_SIGN))
+      msg->security |= SEC_SIGN;
+    if (CryptReplysignencrypted && cur && (cur->security & SEC_ENCRYPT))
+      msg->security |= SEC_SIGN;
     if (((WithCrypto & APPLICATION_PGP) != 0) &&
-        ((msg->security & (ENCRYPT | SIGN)) || CryptOpportunisticEncrypt))
+        ((msg->security & (SEC_ENCRYPT | SEC_SIGN)) || CryptOpportunisticEncrypt))
     {
       if (PgpAutoinline)
-        msg->security |= INLINE;
-      if (PgpReplyinline && cur && (cur->security & INLINE))
-        msg->security |= INLINE;
+        msg->security |= SEC_INLINE;
+      if (PgpReplyinline && cur && (cur->security & SEC_INLINE))
+        msg->security |= SEC_INLINE;
     }
 
     if (msg->security || CryptOpportunisticEncrypt)
@@ -2227,9 +2227,9 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
        * or CryptReplyencrypt, then don't enable opportunistic encrypt for
        * the message.
        */
-      if (!(msg->security & ENCRYPT))
+      if (!(msg->security & SEC_ENCRYPT))
       {
-        msg->security |= OPPENCRYPT;
+        msg->security |= SEC_OPPENCRYPT;
         crypt_opportunistic_encrypt(msg);
       }
     }
@@ -2386,7 +2386,7 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
 
   if (WithCrypto)
   {
-    if (msg->security & (ENCRYPT | SIGN))
+    if (msg->security & (SEC_ENCRYPT | SEC_SIGN))
     {
       /* save the decrypted attachments */
       clear_content = msg->content;
@@ -2428,13 +2428,13 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
     {
       if (!WithCrypto)
         ;
-      else if ((msg->security & ENCRYPT) ||
-               ((msg->security & SIGN) && msg->content->type == TYPE_APPLICATION))
+      else if ((msg->security & SEC_ENCRYPT) ||
+               ((msg->security & SEC_SIGN) && msg->content->type == TYPE_APPLICATION))
       {
         mutt_body_free(&msg->content); /* destroy PGP data */
         msg->content = clear_content;  /* restore clear text. */
       }
-      else if ((msg->security & SIGN) && msg->content->type == TYPE_MULTIPART)
+      else if ((msg->security & SEC_SIGN) && msg->content->type == TYPE_MULTIPART)
       {
         mutt_body_free(&msg->content->parts->next); /* destroy sig */
         msg->content = mutt_remove_multipart(msg->content);

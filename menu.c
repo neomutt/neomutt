@@ -969,30 +969,30 @@ void mutt_menu_init(void)
 
 /**
  * mutt_menu_new - Create a new Menu
- * @param menu Menu type, e.g. MENU_PAGER
+ * @param type Menu type, e.g. #MENU_PAGER
  * @retval ptr New Menu
  */
-struct Menu *mutt_menu_new(int menu)
+struct Menu *mutt_menu_new(enum MenuType type)
 {
-  struct Menu *p = mutt_mem_calloc(1, sizeof(struct Menu));
+  struct Menu *menu = mutt_mem_calloc(1, sizeof(struct Menu));
 
-  if ((menu < 0) || (menu >= MENU_MAX))
-    menu = MENU_GENERIC;
+  if (type >= MENU_MAX)
+    type = MENU_GENERIC;
 
-  p->menu = menu;
-  p->current = 0;
-  p->top = 0;
-  p->offset = 0;
-  p->redraw = REDRAW_FULL;
-  p->pagelen = MuttIndexWindow->rows;
-  p->indexwin = MuttIndexWindow;
-  p->statuswin = MuttStatusWindow;
-  p->helpwin = MuttHelpWindow;
-  p->messagewin = MuttMessageWindow;
-  p->menu_color = default_color;
-  p->menu_search = generic_search;
+  menu->menu = type;
+  menu->current = 0;
+  menu->top = 0;
+  menu->offset = 0;
+  menu->redraw = REDRAW_FULL;
+  menu->pagelen = MuttIndexWindow->rows;
+  menu->indexwin = MuttIndexWindow;
+  menu->statuswin = MuttStatusWindow;
+  menu->helpwin = MuttHelpWindow;
+  menu->messagewin = MuttMessageWindow;
+  menu->menu_color = default_color;
+  menu->menu_search = generic_search;
 
-  return p;
+  return menu;
 }
 
 /**

@@ -27,25 +27,26 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "config/lib.h"
+#include "keymap.h"
 
 /* These Config Variables are only used in menu.c */
 extern short MenuContext;
-extern bool  MenuMoveOff; /**< allow menu to scroll past last entry */
-extern bool  MenuScroll;  /**< scroll menu instead of implicit next-page */
+extern bool  MenuMoveOff;
+extern bool  MenuScroll;
 
 struct ConfigSet;
 struct HashElem;
 
-#define REDRAW_INDEX          (1 << 0)
-#define REDRAW_MOTION         (1 << 1)
-#define REDRAW_MOTION_RESYNCH (1 << 2)
-#define REDRAW_CURRENT        (1 << 3)
-#define REDRAW_STATUS         (1 << 4)
-#define REDRAW_FULL           (1 << 5)
-#define REDRAW_BODY           (1 << 6)
-#define REDRAW_FLOW           (1 << 7) /* Used by pager to reflow text */
+#define REDRAW_INDEX          (1 << 0) ///< Redraw the index
+#define REDRAW_MOTION         (1 << 1) ///< Redraw after moving the menu list
+#define REDRAW_MOTION_RESYNCH (1 << 2) ///< Redraw any changing the menu selection
+#define REDRAW_CURRENT        (1 << 3) ///< Redraw the current line of the menu
+#define REDRAW_STATUS         (1 << 4) ///< Redraw the status bar
+#define REDRAW_FULL           (1 << 5) ///< Redraw everything
+#define REDRAW_BODY           (1 << 6) ///< Redraw the pager
+#define REDRAW_FLOW           (1 << 7) ///< Used by pager to reflow text
 #ifdef USE_SIDEBAR
-#define REDRAW_SIDEBAR        (1 << 8)
+#define REDRAW_SIDEBAR        (1 << 8) ///< Redraw the sidebar
 #endif
 
 #define MUTT_MODEFMT "-- NeoMutt: %s"
@@ -154,7 +155,7 @@ void         mutt_menu_current_redraw(void);
 void         mutt_menu_destroy(struct Menu **p);
 void         mutt_menu_init(void);
 int          mutt_menu_loop(struct Menu *menu);
-struct Menu *mutt_menu_new(int menu);
+struct Menu *mutt_menu_new(enum MenuType type);
 void         mutt_menu_pop_current(struct Menu *menu);
 void         mutt_menu_push_current(struct Menu *menu);
 void         mutt_menu_set_current_redraw_full(void);

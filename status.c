@@ -90,7 +90,7 @@ static char *get_sort_str(char *buf, size_t buflen, int method)
 static const char *status_format_str(char *buf, size_t buflen, size_t col, int cols,
                                      char op, const char *src, const char *prec,
                                      const char *if_str, const char *else_str,
-                                     unsigned long data, enum FormatFlag flags)
+                                     unsigned long data, int flags)
 {
   char fmt[SHORT_STRING], tmp[SHORT_STRING], *cp = NULL;
   int count, optional = (flags & MUTT_FORMAT_OPTIONAL);

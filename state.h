@@ -27,31 +27,31 @@
 #include <stdint.h>
 #include <stdio.h>
 
+/* flags for the State struct */
+#define MUTT_DISPLAY        (1 << 0) ///< Output is displayed to the user
+#define MUTT_VERIFY         (1 << 1) ///< Perform signature verification
+#define MUTT_PENDINGPREFIX  (1 << 2) ///< Prefix to write, but character must follow
+#define MUTT_WEED           (1 << 3) ///< Weed headers even when not in display mode
+#define MUTT_CHARCONV       (1 << 4) ///< Do character set conversions
+#define MUTT_PRINTING       (1 << 5) ///< Are we printing? - MUTT_DISPLAY "light"
+#define MUTT_REPLYING       (1 << 6) ///< Are we replying?
+#define MUTT_FIRSTDONE      (1 << 7) ///< The first attachment has been done
+
 /**
  * struct State - Keep track when processing files
  */
 struct State
 {
-  FILE *fpin;
-  FILE *fpout;
-  char *prefix;
-  int flags;
+  FILE      *fp_in;  ///< File to read from
+  FILE      *fp_out; ///< File to write to
+  char      *prefix; ///< String to add to the beginning of each output line
+  int flags;    ///< Flags, e.g. #MUTT_DISPLAY
 };
-
-/* flags for the State struct */
-#define MUTT_DISPLAY       (1 << 0) /**< output is displayed to the user */
-#define MUTT_VERIFY        (1 << 1) /**< perform signature verification */
-#define MUTT_PENDINGPREFIX (1 << 2) /**< prefix to write, but character must follow */
-#define MUTT_WEED          (1 << 3) /**< weed headers even when not in display mode */
-#define MUTT_CHARCONV      (1 << 4) /**< Do character set conversions */
-#define MUTT_PRINTING      (1 << 5) /**< are we printing? - MUTT_DISPLAY "light" */
-#define MUTT_REPLYING      (1 << 6) /**< are we replying? */
-#define MUTT_FIRSTDONE     (1 << 7) /**< the first attachment has been done */
 
 #define state_set_prefix(s) ((s)->flags |= MUTT_PENDINGPREFIX)
 #define state_reset_prefix(s) ((s)->flags &= ~MUTT_PENDINGPREFIX)
-#define state_puts(x, y) fputs(x, (y)->fpout)
-#define state_putc(x, y) fputc(x, (y)->fpout)
+#define state_puts(x, y) fputs(x, (y)->fp_out)
+#define state_putc(x, y) fputc(x, (y)->fp_out)
 
 void state_mark_attach(struct State *s);
 void state_mark_protected_header (struct State *s);

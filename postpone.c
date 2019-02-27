@@ -447,7 +447,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
  * @param p                Header string to parse
  * @param set_empty_signas Allow an empty "Sign as"
  * @param crypt_app App, e.g. #APPLICATION_PGP
- * @retval num Flags, e.g. #ENCRYPT
+ * @retval num Flags, e.g. #SEC_ENCRYPT
  */
 int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
 {
@@ -487,12 +487,12 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
 
       case 'e':
       case 'E':
-        flags |= ENCRYPT;
+        flags |= SEC_ENCRYPT;
         break;
 
       case 'i':
       case 'I':
-        flags |= INLINE;
+        flags |= SEC_INLINE;
         break;
 
       /* This used to be the micalg parameter.
@@ -517,12 +517,12 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
 
       case 'o':
       case 'O':
-        flags |= OPPENCRYPT;
+        flags |= SEC_OPPENCRYPT;
         break;
 
       case 's':
       case 'S':
-        flags |= SIGN;
+        flags |= SEC_SIGN;
         q = sign_as;
 
         if (*(p + 1) == '<')
@@ -555,13 +555,13 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
   /* Set {Smime,Pgp}SignAs, if desired. */
 
   if (((WithCrypto & APPLICATION_PGP) != 0) && (crypt_app == APPLICATION_PGP) &&
-      (flags & SIGN) && (set_empty_signas || *sign_as))
+      (flags & SEC_SIGN) && (set_empty_signas || *sign_as))
   {
     mutt_str_replace(&PgpSignAs, sign_as);
   }
 
   if (((WithCrypto & APPLICATION_SMIME) != 0) && (crypt_app == APPLICATION_SMIME) &&
-      (flags & SIGN) && (set_empty_signas || *sign_as))
+      (flags & SEC_SIGN) && (set_empty_signas || *sign_as))
   {
     mutt_str_replace(&SmimeSignAs, sign_as);
   }
@@ -652,7 +652,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
    */
   if ((WithCrypto != 0) && mutt_is_multipart_signed(newhdr->content))
   {
-    newhdr->security |= SIGN;
+    newhdr->security |= SEC_SIGN;
     if (((WithCrypto & APPLICATION_PGP) != 0) &&
         (mutt_str_strcasecmp(
              mutt_param_get(&newhdr->content->parameter, "protocol"),
@@ -685,7 +685,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
   if (newhdr->content->type == TYPE_MULTIPART)
     newhdr->content = mutt_remove_multipart(newhdr->content);
 
-  s.fpin = bfp;
+  s.fp_in = bfp;
 
   /* create temporary files for all attachments */
   for (b = newhdr->content; b; b = b->next)
@@ -727,14 +727,14 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
     }
 
     mutt_adv_mktemp(file, sizeof(file));
-    s.fpout = mutt_file_fopen(file, "w");
-    if (!s.fpout)
+    s.fp_out = mutt_file_fopen(file, "w");
+    if (!s.fp_out)
       goto bail;
 
     if (((WithCrypto & APPLICATION_PGP) != 0) &&
-        ((sec_type = mutt_is_application_pgp(b)) & (ENCRYPT | SIGN)))
+        ((sec_type = mutt_is_application_pgp(b)) & (SEC_ENCRYPT | SEC_SIGN)))
     {
-      if (sec_type & ENCRYPT)
+      if (sec_type & SEC_ENCRYPT)
       {
         if (!crypt_valid_passphrase(APPLICATION_PGP))
           goto bail;
@@ -759,9 +759,9 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
       mutt_param_delete(&b->parameter, "x-action");
     }
     else if (((WithCrypto & APPLICATION_SMIME) != 0) &&
-             ((sec_type = mutt_is_application_smime(b)) & (ENCRYPT | SIGN)))
+             ((sec_type = mutt_is_application_smime(b)) & (SEC_ENCRYPT | SEC_SIGN)))
     {
-      if (sec_type & ENCRYPT)
+      if (sec_type & SEC_ENCRYPT)
       {
         if (!crypt_valid_passphrase(APPLICATION_SMIME))
           goto bail;
@@ -782,7 +782,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
     else
       mutt_decode_attachment(b, &s);
 
-    if (mutt_file_fclose(&s.fpout) != 0)
+    if (mutt_file_fclose(&s.fp_out) != 0)
       goto bail;
 
     mutt_str_replace(&b->filename, file);
@@ -805,8 +805,8 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
   /* Fix encryption flags. */
 
   /* No inline if multipart. */
-  if ((WithCrypto != 0) && (newhdr->security & INLINE) && newhdr->content->next)
-    newhdr->security &= ~INLINE;
+  if ((WithCrypto != 0) && (newhdr->security & SEC_INLINE) && newhdr->content->next)
+    newhdr->security &= ~SEC_INLINE;
 
   /* Do we even support multiple mechanisms? */
   newhdr->security &= WithCrypto | ~(APPLICATION_PGP | APPLICATION_SMIME);
