@@ -227,7 +227,7 @@ void ctx_update_tables(struct Context *ctx, bool committing)
     }
     else
     {
-      if (m->magic == MUTT_MH || m->magic == MUTT_MAILDIR)
+      if (m->magic == MUTT_MH || m->magic == MUTT_MAILDIR || m->magic == MUTT_IMAP)
       {
         m->size -= (m->emails[i]->content->length + m->emails[i]->content->offset -
                     m->emails[i]->content->hdr_offset);
