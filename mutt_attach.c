@@ -388,7 +388,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
   bool use_pager = true;
   char type[256];
   char command[STR_COMMAND];
-  char descrip[256];
+  char desc[256];
   char *fname = NULL;
   struct Rfc1524MailcapEntry *entry = NULL;
   int rc = -1;
@@ -525,13 +525,13 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
       {
         if (a->description)
         {
-          snprintf(descrip, sizeof(descrip),
-                   _("---Command: %-20.20s Description: %s"), command, a->description);
+          snprintf(desc, sizeof(desc), _("---Command: %-20.20s Description: %s"),
+                   command, a->description);
         }
         else
         {
-          snprintf(descrip, sizeof(descrip),
-                   _("---Command: %-30.30s Attachment: %s"), command, type);
+          snprintf(desc, sizeof(desc), _("---Command: %-30.30s Attachment: %s"),
+                   command, type);
         }
       }
 
@@ -609,11 +609,11 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
     }
 
     if (a->description)
-      mutt_str_strfcpy(descrip, a->description, sizeof(descrip));
+      mutt_str_strfcpy(desc, a->description, sizeof(desc));
     else if (a->filename)
-      snprintf(descrip, sizeof(descrip), _("---Attachment: %s: %s"), a->filename, type);
+      snprintf(desc, sizeof(desc), _("---Attachment: %s: %s"), a->filename, type);
     else
-      snprintf(descrip, sizeof(descrip), _("---Attachment: %s"), type);
+      snprintf(desc, sizeof(desc), _("---Attachment: %s"), type);
   }
 
   /* We only reach this point if there have been no errors */
@@ -627,7 +627,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
     info.actx = actx;
     info.email = e;
 
-    rc = mutt_do_pager(descrip, pagerfile,
+    rc = mutt_do_pager(desc, pagerfile,
                        MUTT_PAGER_ATTACHMENT | (is_message ? MUTT_PAGER_MESSAGE : 0),
                        &info);
     *pagerfile = '\0';
