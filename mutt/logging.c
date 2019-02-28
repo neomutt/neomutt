@@ -35,6 +35,7 @@
 #include <time.h>
 #include <unistd.h>
 #include "logging.h"
+#include "date.h"
 #include "file.h"
 #include "memory.h"
 #include "message.h"
@@ -83,7 +84,7 @@ static const char *timestamp(time_t stamp)
 
   if (stamp != last)
   {
-    strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", localtime(&stamp));
+    mutt_date_localtime_format(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", stamp);
     last = stamp;
   }
 
@@ -377,7 +378,7 @@ int log_queue_save(FILE *fp)
   struct LogLine *ll = NULL;
   STAILQ_FOREACH(ll, &LogQueue, entries)
   {
-    strftime(buf, sizeof(buf), "%H:%M:%S", localtime(&ll->time));
+    mutt_date_localtime_format(buf, sizeof(buf), "%H:%M:%S", ll->time);
     fprintf(fp, "[%s]<%c> %s", buf, LevelAbbr[ll->level + 3], ll->message);
     if (ll->level <= 0)
       fputs("\n", fp);

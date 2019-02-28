@@ -2459,19 +2459,17 @@ const char *mutt_fqdn(bool may_hide_host)
 static char *gen_msgid(void)
 {
   char buf[128];
-  time_t now;
   unsigned char rndid[MUTT_RANDTAG_LEN + 1];
 
   mutt_rand_base32(rndid, sizeof(rndid) - 1);
   rndid[MUTT_RANDTAG_LEN] = 0;
-  now = time(NULL);
-  struct tm *tm = gmtime(&now);
   const char *fqdn = mutt_fqdn(false);
   if (!fqdn)
     fqdn = NONULL(ShortHostname);
 
-  snprintf(buf, sizeof(buf), "<%d%02d%02d%02d%02d%02d.%s@%s>", tm->tm_year + 1900,
-           tm->tm_mon + 1, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec, rndid, fqdn);
+  struct tm tm = mutt_date_gmtime(MUTT_DATE_NOW);
+  snprintf(buf, sizeof(buf), "<%d%02d%02d%02d%02d%02d.%s@%s>", tm.tm_year + 1900,
+           tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec, rndid, fqdn);
   return mutt_str_strdup(buf);
 }
 

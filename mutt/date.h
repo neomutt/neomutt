@@ -26,6 +26,8 @@
 #include <stdbool.h>
 #include <time.h>
 
+#define MUTT_DATE_NOW -9999 ///< Constant representing the 'current time', see: mutt_date_gmtime(), mutt_date_localtime()
+
 /**
  * struct Tz - List of recognised Timezones
  */
@@ -37,16 +39,19 @@ struct Tz
   bool zoccident;         /**< True if west of UTC, False if East */
 };
 
-time_t mutt_date_add_timeout(time_t now, long timeout);
-int    mutt_date_check_month(const char *s);
-bool   mutt_date_is_day_name(const char *s);
-time_t mutt_date_local_tz(time_t t);
-char * mutt_date_make_date(char *buf, size_t buflen);
-int    mutt_date_make_imap(char *buf, size_t buflen, time_t timestamp);
-time_t mutt_date_make_time(struct tm *t, int local);
-int    mutt_date_make_tls(char *buf, size_t buflen, time_t timestamp);
-void   mutt_date_normalize_time(struct tm *tm);
-time_t mutt_date_parse_date(const char *s, struct Tz *tz_out);
-time_t mutt_date_parse_imap(const char *s);
+time_t    mutt_date_add_timeout(time_t now, long timeout);
+int       mutt_date_check_month(const char *s);
+struct tm mutt_date_gmtime(time_t t);
+bool      mutt_date_is_day_name(const char *s);
+size_t    mutt_date_localtime_format(char *buf, size_t buflen, char *format, time_t t);
+struct tm mutt_date_localtime(time_t t);
+time_t    mutt_date_local_tz(time_t t);
+char *    mutt_date_make_date(char *buf, size_t buflen);
+int       mutt_date_make_imap(char *buf, size_t buflen, time_t timestamp);
+time_t    mutt_date_make_time(struct tm *t, int local);
+int       mutt_date_make_tls(char *buf, size_t buflen, time_t timestamp);
+void      mutt_date_normalize_time(struct tm *tm);
+time_t    mutt_date_parse_date(const char *s, struct Tz *tz_out);
+time_t    mutt_date_parse_imap(const char *s);
 
 #endif /* MUTT_LIB_DATE_H */

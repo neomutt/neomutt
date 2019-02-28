@@ -78,7 +78,6 @@ bool C_SmimeSelfEncrypt; ///< Config: Encrypted messages will also be encrypt to
  */
 void crypt_current_time(struct State *s, const char *app_name)
 {
-  time_t t;
   char p[256], tmp[256];
 
   if (!WithCrypto)
@@ -86,8 +85,7 @@ void crypt_current_time(struct State *s, const char *app_name)
 
   if (C_CryptTimestamp)
   {
-    t = time(NULL);
-    strftime(p, sizeof(p), _(" (current time: %c)"), localtime(&t));
+    mutt_date_localtime_format(p, sizeof(p), _(" (current time: %c)"), MUTT_DATE_NOW);
   }
   else
     *p = '\0';
