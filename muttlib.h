@@ -68,10 +68,10 @@ int         mutt_save_confirm(const char *s, struct stat *st);
 void        mutt_save_path(char *d, size_t dsize, struct Address *a);
 void        mutt_sleep(short s);
 
-#define mutt_mktemp(a, b)               mutt_mktemp_pfx_sfx(a, b, "neomutt", NULL)
-#define mutt_mktemp_pfx_sfx(a, b, c, d) mutt_mktemp_full(a, b, c, d, __FILE__, __LINE__)
+#define mutt_mktemp(buf, buflen)                         mutt_mktemp_pfx_sfx(buf, buflen, "neomutt", NULL)
+#define mutt_mktemp_pfx_sfx(buf, buflen, prefix, suffix) mutt_mktemp_full(buf, buflen, prefix, suffix, __FILE__, __LINE__)
 
-#define mutt_buffer_mktemp(a)               mutt_buffer_mktemp_pfx_sfx(a, "neomutt", NULL)
-#define mutt_buffer_mktemp_pfx_sfx(a, b, c) mutt_buffer_mktemp_full(a, b, c, __FILE__, __LINE__)
+#define mutt_buffer_mktemp(buf)                         mutt_buffer_mktemp_pfx_sfx(buf, "neomutt", NULL)
+#define mutt_buffer_mktemp_pfx_sfx(buf, prefix, suffix) mutt_buffer_mktemp_full(buf, prefix, suffix, __FILE__, __LINE__)
 
 #endif /* MUTT_MUTTLIB_H */

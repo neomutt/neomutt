@@ -43,13 +43,13 @@ struct Buffer;
 
 /**
  * REGCOMP - Compile a regular expression
- * @param X regex_t struct to fill
- * @param Y Regular expression string
- * @param Z Flags
+ * @param preg   regex_t struct to fill
+ * @param regex  Regular expression string
+ * @param cflags Flags
  * @retval   0 Success
  * @retval num Failure, e.g. REG_BADPAT
  */
-#define REGCOMP(X, Y, Z) regcomp(X, Y, REG_WORDS | REG_EXTENDED | (Z))
+#define REGCOMP(preg, regex, cflags) regcomp(preg, regex, REG_WORDS | REG_EXTENDED | (cflags))
 
 /**
  * struct Regex - Cached regular expression

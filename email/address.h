@@ -56,7 +56,7 @@ extern int AddressError;
 extern const char *const AddressErrors[];
 extern const char AddressSpecials[];
 
-#define address_error(x) AddressErrors[x]
+#define address_error(num) AddressErrors[num]
 
 struct Address *mutt_addr_append(struct Address **a, struct Address *b, bool prune);
 void            mutt_addr_cat(char *buf, size_t buflen, const char *value, const char *specials);

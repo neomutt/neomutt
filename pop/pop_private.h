@@ -125,7 +125,7 @@ int pop_authenticate(struct PopAccountData *adata);
 void pop_apop_timestamp(struct PopAccountData *adata, char *buf);
 
 /* pop_lib.c */
-#define pop_query(A, B, C) pop_query_d(A, B, C, NULL)
+#define pop_query(adata, buf, buflen) pop_query_d(adata, buf, buflen, NULL)
 int pop_parse_path(const char *path, struct ConnAccount *acct);
 int pop_connect(struct PopAccountData *adata);
 int pop_open_connection(struct PopAccountData *adata);

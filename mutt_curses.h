@@ -54,10 +54,10 @@
 #undef mvaddstr
 
 /* We redefine the helper macros to hide the compiler warnings */
-#define addnstr(s, n)         waddnstr(stdscr, ((char *) s), (n))
-#define addstr(x)             waddstr(stdscr, ((char *) x))
-#define mvaddnstr(y, x, s, n) mvwaddnstr(stdscr, (y), (x), ((char *) s), (n))
-#define mvaddstr(y, x, s)     mvwaddstr(stdscr, (y), (x), ((char *) s))
+#define addnstr(str, n)         waddnstr(stdscr, ((char *) str), (n))
+#define addstr(x)               waddstr(stdscr, ((char *) x))
+#define mvaddnstr(y, x, str, n) mvwaddnstr(stdscr, (y), (x), ((char *) str), (n))
+#define mvaddstr(y, x, str)     mvwaddstr(stdscr, (y), (x), ((char *) str))
 
 #define KEY_DC SL_KEY_DELETE
 #define KEY_IC SL_KEY_IC
@@ -93,12 +93,12 @@ void mutt_curs_set(int cursor);
 #define mutt_curs_set(x)
 #endif
 
-#define ctrl(c) ((c) - '@')
+#define ctrl(ch) ((ch) - '@')
 
 #ifdef KEY_ENTER
-#define CI_is_return(c) ((c) == '\r' || (c) == '\n' || (c) == KEY_ENTER)
+#define CI_is_return(ch) ((ch) == '\r' || (ch) == '\n' || (ch) == KEY_ENTER)
 #else
-#define CI_is_return(c) ((c) == '\r' || (c) == '\n')
+#define CI_is_return(ch) ((ch) == '\r' || (ch) == '\n')
 #endif
 
 /**

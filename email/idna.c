@@ -56,16 +56,16 @@ bool C_IdnEncode; ///< Config: (idn) Encode international domain names
 #ifdef HAVE_LIBIDN
 /* Work around incompatibilities in the libidn API */
 #if (!defined(HAVE_IDNA_TO_ASCII_8Z) && defined(HAVE_IDNA_TO_ASCII_FROM_UTF8))
-#define idna_to_ascii_8z(a, b, c)                                              \
-  idna_to_ascii_from_utf8(a, b, (c) &1, ((c) &2) ? 1 : 0)
+#define idna_to_ascii_8z(input, output, flags)                                 \
+  idna_to_ascii_from_utf8(input, output, (flags) &1, ((flags) &2) ? 1 : 0)
 #endif
 #if (!defined(HAVE_IDNA_TO_ASCII_LZ) && defined(HAVE_IDNA_TO_ASCII_FROM_LOCALE))
-#define idna_to_ascii_lz(a, b, c)                                              \
-  idna_to_ascii_from_locale(a, b, (c) &1, ((c) &2) ? 1 : 0)
+#define idna_to_ascii_lz(input, output, flags)                                 \
+  idna_to_ascii_from_locale(input, output, (flags) &1, ((flags) &2) ? 1 : 0)
 #endif
 #if (!defined(HAVE_IDNA_TO_UNICODE_8Z8Z) && defined(HAVE_IDNA_TO_UNICODE_UTF8_FROM_UTF8))
-#define idna_to_unicode_8z8z(a, b, c)                                          \
-  idna_to_unicode_utf8_from_utf8(a, b, (c) &1, ((c) &2) ? 1 : 0)
+#define idna_to_unicode_8z8z(input, output, flags)                             \
+  idna_to_unicode_utf8_from_utf8(input, output, (flags) &1, ((flags) &2) ? 1 : 0)
 #endif
 #endif /* HAVE_LIBIDN */
 

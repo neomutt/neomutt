@@ -45,9 +45,9 @@
 #define ENCWORD_LEN_MAX 75
 #define ENCWORD_LEN_MIN 9 /* strlen ("=?.?.?.?=") */
 
-#define HSPACE(x) (((x) == '\0') || ((x) == ' ') || ((x) == '\t'))
+#define HSPACE(ch) (((ch) == '\0') || ((ch) == ' ') || ((ch) == '\t'))
 
-#define CONTINUATION_BYTE(c) (((c) &0xc0) == 0x80)
+#define CONTINUATION_BYTE(ch) (((ch) &0xc0) == 0x80)
 
 /**
  * typedef encoder_t - Prototype for an encoding function

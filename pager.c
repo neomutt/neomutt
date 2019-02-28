@@ -96,9 +96,10 @@ bool C_Tilde; ///< Config: Character to pad blank lines in the pager
 
 #define ISHEADER(x) ((x) == MT_COLOR_HEADER || (x) == MT_COLOR_HDEFAULT)
 
-#define IsAttach(x) (x && (x)->body)
-#define IsMsgAttach(x) (x && (x)->fp && (x)->body && (x)->body->email)
-#define IsEmail(x) (x && (x)->email && !(x)->body)
+#define IsAttach(pager) (pager && (pager)->body)
+#define IsMsgAttach(pager)                                                     \
+  (pager && (pager)->fp && (pager)->body && (pager)->body->email)
+#define IsEmail(pager) (pager && (pager)->email && !(pager)->body)
 
 static const char *Not_available_in_this_menu =
     N_("Not available in this menu");
@@ -110,8 +111,8 @@ static const char *Function_not_permitted_in_attach_message_mode =
 static int TopLine = 0;
 static struct Email *OldHdr = NULL;
 
-#define CHECK_MODE(x)                                                          \
-  if (!(x))                                                                    \
+#define CHECK_MODE(test)                                                       \
+  if (!(test))                                                                 \
   {                                                                            \
     mutt_flushinp();                                                           \
     mutt_error(_(Not_available_in_this_menu));                                 \

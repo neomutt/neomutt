@@ -91,7 +91,8 @@ bool C_ThoroughSearch; ///< Config: Decode headers and messages before searching
 #define KILO 1024
 #define MEGA 1048576
 #define EMSG(e) (((e)->msgno) + 1)
-#define CTX_MSGNO(c) (EMSG((c)->mailbox->emails[(c)->mailbox->v2r[(c)->menu->current]]))
+#define CTX_MSGNO(ctx)                                                         \
+  (EMSG((ctx)->mailbox->emails[(ctx)->mailbox->v2r[(ctx)->menu->current]]))
 
 #define MUTT_MAXRANGE -1
 

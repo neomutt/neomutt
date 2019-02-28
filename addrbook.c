@@ -49,7 +49,7 @@
 char *C_AliasFormat; ///< Config: printf-like format string for the alias menu
 short C_SortAlias;   ///< Config: Sort method for the alias menu
 
-#define RSORT(x) ((C_SortAlias & SORT_REVERSE) ? -x : x)
+#define RSORT(num) ((C_SortAlias & SORT_REVERSE) ? -num : num)
 
 static const struct Mapping AliasHelp[] = {
   { N_("Exit"), OP_EXIT },      { N_("Del"), OP_DELETE },

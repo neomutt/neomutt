@@ -27,7 +27,7 @@ struct Buffer;
 
 extern const int Index64[];
 
-#define base64val(c) Index64[(unsigned int) (c)]
+#define base64val(ch) Index64[(unsigned int) (ch)]
 
 int    mutt_b64_decode(const char *in, char *out, size_t olen);
 size_t mutt_b64_encode(const char *in, size_t inlen, char *out, size_t outlen);
