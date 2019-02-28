@@ -599,7 +599,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
   char helpstr[1024], buf[1024], tmpbuf[256];
   char cmd[1024], tempfile[PATH_MAX];
   FILE *fp = NULL, *devnull = NULL;
-  pid_t thepid;
+  pid_t pid;
   struct PgpKeyInfo *kp = NULL;
   struct PgpUid *a = NULL;
   int (*f)(const void *, const void *);
@@ -712,9 +712,9 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
         snprintf(tmpbuf, sizeof(tmpbuf), "0x%s",
                  pgp_fpr_or_lkeyid(pgp_principal_key(KeyTable[menu->current]->parent)));
 
-        thepid = pgp_invoke_verify_key(NULL, NULL, NULL, -1, fileno(fp),
-                                       fileno(devnull), tmpbuf);
-        if (thepid == -1)
+        pid = pgp_invoke_verify_key(NULL, NULL, NULL, -1, fileno(fp),
+                                    fileno(devnull), tmpbuf);
+        if (pid == -1)
         {
           mutt_perror(_("Can't create filter"));
           unlink(tempfile);
@@ -722,7 +722,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
           mutt_file_fclose(&devnull);
         }
 
-        mutt_wait_filter(thepid);
+        mutt_wait_filter(pid);
         mutt_file_fclose(&fp);
         mutt_file_fclose(&devnull);
         mutt_clear_error();
@@ -878,7 +878,7 @@ struct Body *pgp_class_make_key_attachment(void)
   FILE *tempfp = NULL;
   FILE *devnull = NULL;
   struct stat sb;
-  pid_t thepid;
+  pid_t pid;
   OptPgpCheckTrust = false;
 
   struct PgpKeyInfo *key =
@@ -910,8 +910,8 @@ struct Body *pgp_class_make_key_attachment(void)
 
   mutt_message(_("Invoking PGP..."));
 
-  thepid = pgp_invoke_export(NULL, NULL, NULL, -1, fileno(tempfp), fileno(devnull), tmp);
-  if (thepid == -1)
+  pid = pgp_invoke_export(NULL, NULL, NULL, -1, fileno(tempfp), fileno(devnull), tmp);
+  if (pid == -1)
   {
     mutt_perror(_("Can't create filter"));
     unlink(tempf);
@@ -920,7 +920,7 @@ struct Body *pgp_class_make_key_attachment(void)
     return NULL;
   }
 
-  mutt_wait_filter(thepid);
+  mutt_wait_filter(pid);
 
   mutt_file_fclose(&tempfp);
   mutt_file_fclose(&devnull);

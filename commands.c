@@ -545,7 +545,7 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
     return 1;
 
   int rc = 0;
-  pid_t thepid;
+  pid_t pid;
   FILE *fpout = NULL;
 
   if (!STAILQ_NEXT(en, entries))
@@ -562,8 +562,8 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
     }
     mutt_endwin();
 
-    thepid = mutt_create_filter(cmd, &fpout, NULL, NULL);
-    if (thepid < 0)
+    pid = mutt_create_filter(cmd, &fpout, NULL, NULL);
+    if (pid < 0)
     {
       mutt_perror(_("Can't create filter process"));
       return 1;
@@ -572,7 +572,7 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
     OptKeepQuiet = true;
     pipe_msg(m, en->email, fpout, decode, print);
     mutt_file_fclose(&fpout);
-    rc = mutt_wait_filter(thepid);
+    rc = mutt_wait_filter(pid);
     OptKeepQuiet = false;
   }
   else
@@ -598,8 +598,8 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
       {
         mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
         mutt_endwin();
-        thepid = mutt_create_filter(cmd, &fpout, NULL, NULL);
-        if (thepid < 0)
+        pid = mutt_create_filter(cmd, &fpout, NULL, NULL);
+        if (pid < 0)
         {
           mutt_perror(_("Can't create filter process"));
           return 1;
@@ -610,7 +610,7 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
         if (sep)
           fputs(sep, fpout);
         mutt_file_fclose(&fpout);
-        if (mutt_wait_filter(thepid) != 0)
+        if (mutt_wait_filter(pid) != 0)
           rc = 1;
         OptKeepQuiet = false;
       }
@@ -618,8 +618,8 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
     else
     {
       mutt_endwin();
-      thepid = mutt_create_filter(cmd, &fpout, NULL, NULL);
-      if (thepid < 0)
+      pid = mutt_create_filter(cmd, &fpout, NULL, NULL);
+      if (pid < 0)
       {
         mutt_perror(_("Can't create filter process"));
         return 1;
@@ -634,7 +634,7 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
           fputs(sep, fpout);
       }
       mutt_file_fclose(&fpout);
-      if (mutt_wait_filter(thepid) != 0)
+      if (mutt_wait_filter(pid) != 0)
         rc = 1;
       OptKeepQuiet = false;
     }

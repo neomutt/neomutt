@@ -477,7 +477,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
   char tmpfname[PATH_MAX];
   FILE *pgpout = NULL, *pgpin = NULL, *pgperr = NULL;
   FILE *tmpfp = NULL;
-  pid_t thepid;
+  pid_t pid;
 
   bool maybe_goodsig = true;
   bool have_any_sigs = false;
@@ -592,9 +592,9 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
           goto out;
         }
 
-        thepid = pgp_invoke_decode(&pgpin, NULL, NULL, -1, fileno(pgpout),
-                                   fileno(pgperr), tmpfname, (needpass != 0));
-        if (thepid == -1)
+        pid = pgp_invoke_decode(&pgpin, NULL, NULL, -1, fileno(pgpout),
+                                fileno(pgperr), tmpfname, (needpass != 0));
+        if (pid == -1)
         {
           mutt_file_fclose(&pgpout);
           maybe_goodsig = false;
@@ -615,7 +615,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
 
           mutt_file_fclose(&pgpin);
 
-          rv = mutt_wait_filter(thepid);
+          rv = mutt_wait_filter(pid);
 
           fflush(pgperr);
           /* If we are expecting an encrypted message, verify status fd output.
@@ -879,7 +879,7 @@ int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
 {
   char sigfile[PATH_MAX];
   FILE *pgpout = NULL;
-  pid_t thepid;
+  pid_t pid;
   int badsig = -1;
 
   snprintf(sigfile, sizeof(sigfile), "%s.asc", tempfile);
@@ -905,8 +905,8 @@ int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
 
   crypt_current_time(s, "PGP");
 
-  thepid = pgp_invoke_verify(NULL, &pgpout, NULL, -1, -1, fileno(pgperr), tempfile, sigfile);
-  if (thepid != -1)
+  pid = pgp_invoke_verify(NULL, &pgpout, NULL, -1, -1, fileno(pgperr), tempfile, sigfile);
+  if (pid != -1)
   {
     if (pgp_copy_checksig(pgpout, s->fp_out) >= 0)
       badsig = 0;
@@ -918,7 +918,7 @@ int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
     if (pgp_copy_checksig(pgperr, s->fp_out) >= 0)
       badsig = 0;
 
-    const int rv = mutt_wait_filter(thepid);
+    const int rv = mutt_wait_filter(pid);
     if (rv)
       badsig = -1;
 
@@ -1004,7 +1004,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   struct stat info;
   struct Body *tattach = NULL;
   char pgptmpfile[PATH_MAX];
-  pid_t thepid;
+  pid_t pid;
   int rv;
 
   FILE *pgperr = mutt_file_mkstemp();
@@ -1031,8 +1031,8 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   mutt_file_copy_bytes(s->fp_in, pgptmp, a->length);
   mutt_file_fclose(&pgptmp);
 
-  thepid = pgp_invoke_decrypt(&pgpin, &pgpout, NULL, -1, -1, fileno(pgperr), pgptmpfile);
-  if (thepid == -1)
+  pid = pgp_invoke_decrypt(&pgpin, &pgpout, NULL, -1, -1, fileno(pgperr), pgptmpfile);
+  if (pid == -1)
   {
     mutt_file_fclose(&pgperr);
     unlink(pgptmpfile);
@@ -1064,7 +1064,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   }
 
   mutt_file_fclose(&pgpout);
-  rv = mutt_wait_filter(thepid);
+  rv = mutt_wait_filter(pid);
   mutt_file_unlink(pgptmpfile);
 
   fflush(pgperr);
@@ -1298,7 +1298,7 @@ struct Body *pgp_class_sign_message(struct Body *a)
   FILE *pgpin = NULL, *pgpout = NULL, *pgperr = NULL, *sfp = NULL;
   bool err = false;
   bool empty = true;
-  pid_t thepid;
+  pid_t pid;
 
   crypt_convert_to_7bit(a); /* Signed data _must_ be in 7-bit format. */
 
@@ -1324,8 +1324,8 @@ struct Body *pgp_class_sign_message(struct Body *a)
   mutt_write_mime_body(a, sfp);
   mutt_file_fclose(&sfp);
 
-  thepid = pgp_invoke_sign(&pgpin, &pgpout, &pgperr, -1, -1, -1, signedfile);
-  if (thepid == -1)
+  pid = pgp_invoke_sign(&pgpin, &pgpout, &pgperr, -1, -1, -1, signedfile);
+  if (pid == -1)
   {
     mutt_perror(_("Can't open PGP subprocess"));
     mutt_file_fclose(&fp);
@@ -1361,7 +1361,7 @@ struct Body *pgp_class_sign_message(struct Body *a)
     fputs(buf, stdout);
   }
 
-  if (mutt_wait_filter(thepid) && C_PgpCheckExit)
+  if (mutt_wait_filter(pid) && C_PgpCheckExit)
     empty = true;
 
   mutt_file_fclose(&pgperr);
@@ -1547,7 +1547,7 @@ struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign)
   struct Body *t = NULL;
   int err = 0;
   int empty = 0;
-  pid_t thepid;
+  pid_t pid;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
   FILE *fpout = mutt_file_fopen(tempfile, "w+");
@@ -1585,9 +1585,9 @@ struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign)
   mutt_write_mime_body(a, fptmp);
   mutt_file_fclose(&fptmp);
 
-  thepid = pgp_invoke_encrypt(&pgpin, NULL, NULL, -1, fileno(fpout),
-                              fileno(pgperr), pgpinfile, keylist, sign);
-  if (thepid == -1)
+  pid = pgp_invoke_encrypt(&pgpin, NULL, NULL, -1, fileno(fpout),
+                           fileno(pgperr), pgpinfile, keylist, sign);
+  if (pid == -1)
   {
     mutt_file_fclose(&fpout);
     mutt_file_fclose(&pgperr);
@@ -1603,7 +1603,7 @@ struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign)
   }
   mutt_file_fclose(&pgpin);
 
-  if (mutt_wait_filter(thepid) && C_PgpCheckExit)
+  if (mutt_wait_filter(pid) && C_PgpCheckExit)
     empty = 1;
 
   unlink(pgpinfile);
@@ -1685,7 +1685,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
 
   char buf[256];
 
-  pid_t thepid;
+  pid_t pid;
 
   if (a->type != TYPE_TEXT)
     return NULL;
@@ -1761,9 +1761,9 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
     return NULL;
   }
 
-  thepid = pgp_invoke_traditional(&pgpin, NULL, NULL, -1, fileno(pgpout),
-                                  fileno(pgperr), pgpinfile, keylist, flags);
-  if (thepid == -1)
+  pid = pgp_invoke_traditional(&pgpin, NULL, NULL, -1, fileno(pgpout),
+                               fileno(pgperr), pgpinfile, keylist, flags);
+  if (pid == -1)
   {
     mutt_perror(_("Can't invoke PGP"));
     mutt_file_fclose(&pgpout);
@@ -1779,7 +1779,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
     fprintf(pgpin, "%s\n", PgpPass);
   mutt_file_fclose(&pgpin);
 
-  if (mutt_wait_filter(thepid) && C_PgpCheckExit)
+  if (mutt_wait_filter(pid) && C_PgpCheckExit)
     empty = true;
 
   mutt_file_unlink(pgpinfile);

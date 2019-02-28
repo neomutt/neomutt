@@ -64,7 +64,7 @@
 pid_t mutt_create_filter_fd(const char *cmd, FILE **in, FILE **out, FILE **err,
                             int fdin, int fdout, int fderr)
 {
-  int pin[2], pout[2], perr[2], thepid;
+  int pin[2], pout[2], perr[2], pid;
 
   if (in)
   {
@@ -108,8 +108,8 @@ pid_t mutt_create_filter_fd(const char *cmd, FILE **in, FILE **out, FILE **err,
 
   mutt_sig_block_system();
 
-  thepid = fork();
-  if (thepid == 0)
+  pid = fork();
+  if (pid == 0)
   {
     mutt_sig_unblock_system(false);
 
@@ -159,7 +159,7 @@ pid_t mutt_create_filter_fd(const char *cmd, FILE **in, FILE **out, FILE **err,
     execle(EXECSHELL, "sh", "-c", cmd, NULL, mutt_envlist_getlist());
     _exit(127);
   }
-  else if (thepid == -1)
+  else if (pid == -1)
   {
     mutt_sig_unblock_system(true);
 
@@ -202,7 +202,7 @@ pid_t mutt_create_filter_fd(const char *cmd, FILE **in, FILE **out, FILE **err,
     *err = fdopen(perr[0], "r");
   }
 
-  return thepid;
+  return pid;
 }
 
 /**

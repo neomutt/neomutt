@@ -133,16 +133,16 @@ bool C_UseFrom;    ///< Config: Set the 'From' header for outgoing mail
 static void append_signature(FILE *f)
 {
   FILE *tmpfp = NULL;
-  pid_t thepid;
+  pid_t pid;
 
-  if (C_Signature && (tmpfp = mutt_open_read(C_Signature, &thepid)))
+  if (C_Signature && (tmpfp = mutt_open_read(C_Signature, &pid)))
   {
     if (C_SigDashes)
       fputs("\n-- \n", f);
     mutt_file_copy_stream(tmpfp, f);
     mutt_file_fclose(&tmpfp);
-    if (thepid != -1)
-      mutt_wait_filter(thepid);
+    if (pid != -1)
+      mutt_wait_filter(pid);
   }
 }
 

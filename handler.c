@@ -536,7 +536,7 @@ static int autoview_handler(struct Body *a, struct State *s)
   FILE *fpout = NULL;
   FILE *fperr = NULL;
   int piped = false;
-  pid_t thepid;
+  pid_t pid;
   int rc = 0;
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
@@ -574,17 +574,17 @@ static int autoview_handler(struct Body *a, struct State *s)
     if (!piped)
     {
       mutt_file_fclose(&fpin);
-      thepid = mutt_create_filter(cmd, NULL, &fpout, &fperr);
+      pid = mutt_create_filter(cmd, NULL, &fpout, &fperr);
     }
     else
     {
       unlink(tempfile);
       fflush(fpin);
       rewind(fpin);
-      thepid = mutt_create_filter_fd(cmd, NULL, &fpout, &fperr, fileno(fpin), -1, -1);
+      pid = mutt_create_filter_fd(cmd, NULL, &fpout, &fperr, fileno(fpin), -1, -1);
     }
 
-    if (thepid < 0)
+    if (pid < 0)
     {
       mutt_perror(_("Can't create filter"));
       if (s->flags & MUTT_DISPLAY)
@@ -642,7 +642,7 @@ static int autoview_handler(struct Body *a, struct State *s)
     mutt_file_fclose(&fpout);
     mutt_file_fclose(&fperr);
 
-    mutt_wait_filter(thepid);
+    mutt_wait_filter(pid);
     if (piped)
       mutt_file_fclose(&fpin);
     else

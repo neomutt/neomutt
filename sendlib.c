@@ -1562,12 +1562,12 @@ static void run_mime_type_query(struct Body *att)
   char *buf = NULL;
   size_t buflen;
   int dummy = 0;
-  pid_t thepid;
+  pid_t pid;
 
   mutt_file_expand_fmt_quote(cmd, sizeof(cmd), C_MimeTypeQueryCommand, att->filename);
 
-  thepid = mutt_create_filter(cmd, NULL, &fp, &fperr);
-  if (thepid < 0)
+  pid = mutt_create_filter(cmd, NULL, &fp, &fperr);
+  if (pid < 0)
   {
     mutt_error(_("Error running \"%s\""), cmd);
     return;
@@ -1583,7 +1583,7 @@ static void run_mime_type_query(struct Body *att)
 
   mutt_file_fclose(&fp);
   mutt_file_fclose(&fperr);
-  mutt_wait_filter(thepid);
+  mutt_wait_filter(pid);
 }
 
 /**

@@ -53,7 +53,7 @@ int mutt_system(const char *cmd)
   struct sigaction act;
   struct sigaction oldtstp;
   struct sigaction oldcont;
-  pid_t thepid;
+  pid_t pid;
 
   if (!cmd || !*cmd)
     return 0;
@@ -71,8 +71,8 @@ int mutt_system(const char *cmd)
   sigaction(SIGTSTP, &act, &oldtstp);
   sigaction(SIGCONT, &act, &oldcont);
 
-  thepid = fork();
-  if (thepid == 0)
+  pid = fork();
+  if (pid == 0)
   {
     act.sa_flags = 0;
 
@@ -88,10 +88,10 @@ int mutt_system(const char *cmd)
     execle(EXECSHELL, "sh", "-c", cmd, NULL, mutt_envlist_getlist());
     _exit(127); /* execl error */
   }
-  else if (thepid != -1)
+  else if (pid != -1)
   {
 #ifdef USE_IMAP
-    rc = imap_wait_keepalive(thepid);
+    rc = imap_wait_keepalive(pid);
 #endif
   }
 
@@ -101,7 +101,7 @@ int mutt_system(const char *cmd)
   /* reset SIGINT, SIGQUIT and SIGCHLD */
   mutt_sig_unblock_system(true);
 
-  rc = (thepid != -1) ? (WIFEXITED(rc) ? WEXITSTATUS(rc) : -1) : -1;
+  rc = (pid != -1) ? (WIFEXITED(rc) ? WEXITSTATUS(rc) : -1) : -1;
 
   return rc;
 }

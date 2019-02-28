@@ -485,7 +485,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
 
   if (use_mailcap)
   {
-    pid_t thepid = 0;
+    pid_t pid = 0;
     int tempfd = -1, pagerfd = -1;
 
     if (!use_pager)
@@ -507,9 +507,9 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
         goto return_error;
       }
 
-      thepid = mutt_create_filter_fd(cmd, NULL, NULL, NULL, use_pipe ? tempfd : -1,
-                                     use_pager ? pagerfd : -1, -1);
-      if (thepid == -1)
+      pid = mutt_create_filter_fd(cmd, NULL, NULL, NULL, use_pipe ? tempfd : -1,
+                                  use_pager ? pagerfd : -1, -1);
+      if (pid == -1)
       {
         if (pagerfd != -1)
           close(pagerfd);
@@ -534,7 +534,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
         }
       }
 
-      if ((mutt_wait_filter(thepid) || (entry->needsterminal && C_WaitKey)) && !use_pager)
+      if ((mutt_wait_filter(pid) || (entry->needsterminal && C_WaitKey)) && !use_pager)
         mutt_any_key_to_continue(NULL);
 
       if (tempfd != -1)
@@ -669,7 +669,7 @@ return_error:
  */
 int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfile)
 {
-  pid_t thepid;
+  pid_t pid;
   int out = -1;
   int rc = 0;
 
@@ -695,11 +695,11 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfi
     s.flags = MUTT_CHARCONV;
 
     if (outfile && *outfile)
-      thepid = mutt_create_filter_fd(path, &s.fp_out, NULL, NULL, -1, out, -1);
+      pid = mutt_create_filter_fd(path, &s.fp_out, NULL, NULL, -1, out, -1);
     else
-      thepid = mutt_create_filter(path, &s.fp_out, NULL, NULL);
+      pid = mutt_create_filter(path, &s.fp_out, NULL, NULL);
 
-    if (thepid < 0)
+    if (pid < 0)
     {
       mutt_perror(_("Can't create filter"));
       goto bail;
@@ -728,11 +728,11 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfi
     }
 
     if (outfile && *outfile)
-      thepid = mutt_create_filter_fd(path, &ofp, NULL, NULL, -1, out, -1);
+      pid = mutt_create_filter_fd(path, &ofp, NULL, NULL, -1, out, -1);
     else
-      thepid = mutt_create_filter(path, &ofp, NULL, NULL);
+      pid = mutt_create_filter(path, &ofp, NULL, NULL);
 
-    if (thepid < 0)
+    if (pid < 0)
     {
       mutt_perror(_("Can't create filter"));
       mutt_file_fclose(&ifp);
@@ -752,7 +752,7 @@ bail:
     close(out);
 
   /* check for error exit from child process */
-  if (mutt_wait_filter(thepid) != 0)
+  if (mutt_wait_filter(pid) != 0)
     rc = 0;
 
   if (rc == 0 || C_WaitKey)
@@ -1017,7 +1017,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
 {
   char newfile[PATH_MAX] = "";
   char type[256];
-  pid_t thepid;
+  pid_t pid;
   FILE *ifp = NULL, *fpout = NULL;
   bool unlink_newfile = false;
 
@@ -1070,8 +1070,8 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
         return 0;
       }
 
-      thepid = mutt_create_filter(cmd, &fpout, NULL, NULL);
-      if (thepid < 0)
+      pid = mutt_create_filter(cmd, &fpout, NULL, NULL);
+      if (pid < 0)
       {
         mutt_perror(_("Can't create filter"));
         rfc1524_free_entry(&entry);
@@ -1081,7 +1081,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       mutt_file_copy_stream(ifp, fpout);
       mutt_file_fclose(&fpout);
       mutt_file_fclose(&ifp);
-      if (mutt_wait_filter(thepid) || C_WaitKey)
+      if (mutt_wait_filter(pid) || C_WaitKey)
         mutt_any_key_to_continue(NULL);
     }
     else
@@ -1132,8 +1132,8 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       mutt_debug(LL_DEBUG2, "successfully opened %s read-only\n", newfile);
 
       mutt_endwin();
-      thepid = mutt_create_filter(NONULL(C_PrintCommand), &fpout, NULL, NULL);
-      if (thepid < 0)
+      pid = mutt_create_filter(NONULL(C_PrintCommand), &fpout, NULL, NULL);
+      if (pid < 0)
       {
         mutt_perror(_("Can't create filter"));
         goto bail0;
@@ -1146,7 +1146,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       mutt_file_fclose(&fpout);
       mutt_file_fclose(&ifp);
 
-      if (mutt_wait_filter(thepid) != 0 || C_WaitKey)
+      if (mutt_wait_filter(pid) != 0 || C_WaitKey)
         mutt_any_key_to_continue(NULL);
       rc = 1;
     }

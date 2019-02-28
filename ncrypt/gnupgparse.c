@@ -412,7 +412,7 @@ bail:
 struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct ListHead *hints)
 {
   FILE *fp = NULL;
-  pid_t thepid;
+  pid_t pid;
   char buf[1024];
   struct PgpKeyInfo *db = NULL, **kend = NULL, *k = NULL, *kk = NULL, *mainkey = NULL;
   int is_sub;
@@ -424,8 +424,8 @@ struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct ListHead *hin
 
   mutt_str_replace(&chs, C_Charset);
 
-  thepid = pgp_invoke_list_keys(NULL, &fp, NULL, -1, -1, devnull, keyring, hints);
-  if (thepid == -1)
+  pid = pgp_invoke_list_keys(NULL, &fp, NULL, -1, -1, devnull, keyring, hints);
+  if (pid == -1)
   {
     close(devnull);
     return NULL;
@@ -466,7 +466,7 @@ struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct ListHead *hin
     mutt_perror("fgets");
 
   mutt_file_fclose(&fp);
-  mutt_wait_filter(thepid);
+  mutt_wait_filter(pid);
 
   close(devnull);
 
