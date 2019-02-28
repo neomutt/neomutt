@@ -1060,7 +1060,7 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 
   char buf[1024];
   char path[PATH_MAX];
-  struct Progress progressbar;
+  struct Progress progress;
   struct PopAccountData *adata = pop_adata_get(m);
   struct Email *e = m->emails[msgno];
   struct PopEmailData *edata = e->edata;
@@ -1109,7 +1109,7 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
       return -1;
     }
 
-    mutt_progress_init(&progressbar, _("Fetching message..."), MUTT_PROGRESS_SIZE,
+    mutt_progress_init(&progress, _("Fetching message..."), MUTT_PROGRESS_SIZE,
                        C_NetInc, e->content->length + e->content->offset - 1);
 
     /* see if we can put in body cache; use our cache as fallback */
@@ -1129,7 +1129,7 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 
     snprintf(buf, sizeof(buf), "RETR %d\r\n", e->refno);
 
-    const int ret = pop_fetch_data(adata, buf, &progressbar, fetch_message, msg->fp);
+    const int ret = pop_fetch_data(adata, buf, &progress, fetch_message, msg->fp);
     if (ret == 0)
       break;
 

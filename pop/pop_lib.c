@@ -477,11 +477,11 @@ int pop_query_d(struct PopAccountData *adata, char *buf, size_t buflen, char *ms
 
 /**
  * pop_fetch_data - Read Headers with callback function
- * @param adata       POP Account data
- * @param query       POP query to send to server
- * @param progressbar Progress bar
- * @param func        Function called for each header read
- * @param data        Data to pass to the callback
+ * @param adata    POP Account data
+ * @param query    POP query to send to server
+ * @param progress Progress bar
+ * @param func     Function called for each header read
+ * @param data     Data to pass to the callback
  * @retval  0 Successful
  * @retval -1 Connection lost
  * @retval -2 Invalid command or execution error
@@ -491,7 +491,7 @@ int pop_query_d(struct PopAccountData *adata, char *buf, size_t buflen, char *ms
  * func(NULL, *data)  if  rewind(*data)  needs, exits when fail or done.
  */
 int pop_fetch_data(struct PopAccountData *adata, const char *query,
-                   struct Progress *progressbar, int (*func)(char *, void *), void *data)
+                   struct Progress *progress, int (*func)(char *, void *), void *data)
 {
   char buf[1024];
   long pos = 0;
@@ -533,8 +533,8 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
     }
     else
     {
-      if (progressbar)
-        mutt_progress_update(progressbar, pos, -1);
+      if (progress)
+        mutt_progress_update(progress, pos, -1);
       if ((ret == 0) && (func(inbuf, data) < 0))
         ret = -3;
       lenbuf = 0;
@@ -603,14 +603,14 @@ int pop_reconnect(struct Mailbox *m)
     int ret = pop_open_connection(adata);
     if (ret == 0)
     {
-      struct Progress progressbar;
-      mutt_progress_init(&progressbar, _("Verifying message indexes..."),
+      struct Progress progress;
+      mutt_progress_init(&progress, _("Verifying message indexes..."),
                          MUTT_PROGRESS_SIZE, C_NetInc, 0);
 
       for (int i = 0; i < m->msg_count; i++)
         m->emails[i]->refno = -1;
 
-      ret = pop_fetch_data(adata, "UIDL\r\n", &progressbar, check_uidl, m);
+      ret = pop_fetch_data(adata, "UIDL\r\n", &progress, check_uidl, m);
       if (ret == -2)
       {
         mutt_error("%s", adata->err_msg);

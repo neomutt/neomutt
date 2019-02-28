@@ -525,13 +525,12 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
       {
         if (a->description)
         {
-          snprintf(desc, sizeof(desc),
-                   _("---Command: %-20.20s Description: %s"), cmd, a->description);
+          snprintf(desc, sizeof(desc), _("---Command: %-20.20s Description: %s"),
+                   cmd, a->description);
         }
         else
         {
-          snprintf(desc, sizeof(desc),
-                   _("---Command: %-30.30s Attachment: %s"), cmd, type);
+          snprintf(desc, sizeof(desc), _("---Command: %-30.30s Attachment: %s"), cmd, type);
         }
       }
 
