@@ -399,19 +399,17 @@ void mutt_hcache_free(header_cache_t *hc, void **data)
 int mutt_hcache_store(header_cache_t *hc, const char *key, size_t keylen,
                       struct Email *e, unsigned int uidvalidity)
 {
-  char *data = NULL;
-  int dlen;
-  int ret;
-
   if (!hc)
     return -1;
 
-  data = mutt_hcache_dump(hc, e, &dlen, uidvalidity);
-  ret = mutt_hcache_store_raw(hc, key, keylen, data, dlen);
+  int dlen = 0;
+
+  char *data = mutt_hcache_dump(hc, e, &dlen, uidvalidity);
+  int rc = mutt_hcache_store_raw(hc, key, keylen, data, dlen);
 
   FREE(&data);
 
-  return ret;
+  return rc;
 }
 
 /**

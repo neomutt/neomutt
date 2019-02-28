@@ -520,11 +520,11 @@ void mutt_rand_base32(void *buf, size_t buflen)
  */
 uint32_t mutt_rand32(void)
 {
-  uint32_t ret = 0;
+  uint32_t num = 0;
 
-  if (mutt_randbuf(&ret, sizeof(ret)) < 0)
+  if (mutt_randbuf(&num, sizeof(num)) < 0)
     mutt_exit(1);
-  return ret;
+  return num;
 }
 
 /**
@@ -533,11 +533,11 @@ uint32_t mutt_rand32(void)
  */
 uint64_t mutt_rand64(void)
 {
-  uint64_t ret = 0;
+  uint64_t num = 0;
 
-  if (mutt_randbuf(&ret, sizeof(ret)) < 0)
+  if (mutt_randbuf(&num, sizeof(num)) < 0)
     mutt_exit(1);
-  return ret;
+  return num;
 }
 
 /**

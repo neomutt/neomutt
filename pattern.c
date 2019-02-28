@@ -2145,9 +2145,9 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
     case MUTT_DRIVER_TAGS:
     {
       char *tags = driver_tags_get(&e->tags);
-      bool ret = (pat->not^(tags &&patmatch(pat, tags) == 0));
+      bool rc = (pat->not^(tags &&patmatch(pat, tags) == 0));
       FREE(&tags);
-      return ret;
+      return rc;
     }
     case MUTT_HORMEL:
       if (!e->env)

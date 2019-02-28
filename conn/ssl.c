@@ -1346,11 +1346,11 @@ static int ssl_socket_open(struct Connection *conn)
   if (raw_socket_open(conn) < 0)
     return -1;
 
-  int ret = ssl_setup(conn);
-  if (ret)
+  int rc = ssl_setup(conn);
+  if (rc)
     raw_socket_close(conn);
 
-  return ret;
+  return rc;
 }
 
 /**
@@ -1429,14 +1429,14 @@ int mutt_ssl_starttls(struct Connection *conn)
   if (ssl_init())
     return -1;
 
-  int ret = ssl_setup(conn);
+  int rc = ssl_setup(conn);
 
   /* hmm. watch out if we're starting TLS over any method other than raw. */
   conn->conn_read = ssl_socket_read;
   conn->conn_write = ssl_socket_write;
   conn->conn_close = ssl_socket_close_and_restore;
 
-  return ret;
+  return rc;
 }
 
 /**

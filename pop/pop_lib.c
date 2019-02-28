@@ -498,9 +498,9 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
   size_t lenbuf = 0;
 
   mutt_str_strfcpy(buf, query, sizeof(buf));
-  int ret = pop_query(adata, buf, sizeof(buf));
-  if (ret < 0)
-    return ret;
+  int rc = pop_query(adata, buf, sizeof(buf));
+  if (rc < 0)
+    return rc;
 
   char *inbuf = mutt_mem_malloc(sizeof(buf));
 
@@ -511,7 +511,7 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
     if (chunk < 0)
     {
       adata->status = POP_DISCONNECTED;
-      ret = -1;
+      rc = -1;
       break;
     }
 
@@ -535,8 +535,8 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
     {
       if (progress)
         mutt_progress_update(progress, pos, -1);
-      if ((ret == 0) && (func(inbuf, data) < 0))
-        ret = -3;
+      if ((rc == 0) && (func(inbuf, data) < 0))
+        rc = -3;
       lenbuf = 0;
     }
 
@@ -544,7 +544,7 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
   }
 
   FREE(&inbuf);
-  return ret;
+  return rc;
 }
 
 /**
