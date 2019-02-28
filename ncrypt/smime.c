@@ -1429,7 +1429,7 @@ void smime_class_invoke_import(char *infile, char *mailbox)
 int smime_class_verify_sender(struct Email *e)
 {
   char *mbox = NULL, *certfile = NULL, tempfname[PATH_MAX];
-  int retval = 1;
+  int rc = 1;
 
   mutt_mktemp(tempfname, sizeof(tempfname));
   FILE *fp_out = mutt_file_fopen(tempfname, "w");
@@ -1473,7 +1473,7 @@ int smime_class_verify_sender(struct Email *e)
           mutt_any_key_to_continue(NULL);
       }
       else
-        retval = 0;
+        rc = 0;
       mutt_file_unlink(certfile);
       FREE(&certfile);
     }
@@ -1484,7 +1484,7 @@ int smime_class_verify_sender(struct Email *e)
     mutt_any_key_to_continue(_("no mbox"));
 
   mutt_file_unlink(tempfname);
-  return retval;
+  return rc;
 }
 
 /*
@@ -2307,7 +2307,7 @@ bail:
  */
 int smime_class_application_handler(struct Body *m, struct State *s)
 {
-  int rv = -1;
+  int rc = -1;
 
   /* clear out any mime headers before the handler, so they can't be spoofed. */
   mutt_env_free(&m->mime_headers);
@@ -2315,10 +2315,10 @@ int smime_class_application_handler(struct Body *m, struct State *s)
   struct Body *tattach = smime_handle_entity(m, s, NULL);
   if (tattach)
   {
-    rv = 0;
+    rc = 0;
     mutt_body_free(&tattach);
   }
-  return rv;
+  return rc;
 }
 
 /**

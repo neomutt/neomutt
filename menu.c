@@ -1142,7 +1142,7 @@ void mutt_menu_current_redraw(void)
  */
 static int menu_search(struct Menu *menu, int op)
 {
-  int r = 0, wrap = 0;
+  int rc = 0, wrap = 0;
   int search_dir;
   regex_t re;
   char buf[128];
@@ -1176,34 +1176,34 @@ static int menu_search(struct Menu *menu, int op)
   if (search_buf)
   {
     int flags = mutt_mb_is_lower(search_buf) ? REG_ICASE : 0;
-    r = REGCOMP(&re, search_buf, REG_NOSUB | flags);
+    rc = REGCOMP(&re, search_buf, REG_NOSUB | flags);
   }
 
-  if (r != 0)
+  if (rc != 0)
   {
-    regerror(r, &re, buf, sizeof(buf));
+    regerror(rc, &re, buf, sizeof(buf));
     mutt_error("%s", buf);
     return -1;
   }
 
-  r = menu->current + search_dir;
+  rc = menu->current + search_dir;
 search_next:
   if (wrap)
     mutt_message(_("Search wrapped to top"));
-  while (r >= 0 && r < menu->max)
+  while (rc >= 0 && rc < menu->max)
   {
-    if (menu->menu_search(menu, &re, r) == 0)
+    if (menu->menu_search(menu, &re, rc) == 0)
     {
       regfree(&re);
-      return r;
+      return rc;
     }
 
-    r += search_dir;
+    rc += search_dir;
   }
 
   if (C_WrapSearch && wrap++ == 0)
   {
-    r = search_dir == 1 ? 0 : menu->max - 1;
+    rc = search_dir == 1 ? 0 : menu->max - 1;
     goto search_next;
   }
   regfree(&re);

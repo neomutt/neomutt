@@ -1090,17 +1090,17 @@ bool mutt_str_inline_replace(char *buf, size_t buflen, size_t xlen, const char *
  */
 int mutt_str_remall_strcasestr(char *str, const char *target)
 {
-  int retval = 1;
+  int rc = 1;
 
   // Look through an ensure all instances of the substring are gone.
   while ((str = (char *) mutt_str_strcasestr(str, target)))
   {
     size_t target_len = mutt_str_strlen(target);
     memmove(str, str + target_len, 1 + strlen(str + target_len));
-    retval = 0; // If we got here, then a substring existed and has been removed.
+    rc = 0; // If we got here, then a substring existed and has been removed.
   }
 
-  return retval;
+  return rc;
 }
 
 /**

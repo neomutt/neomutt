@@ -1203,7 +1203,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
 
   /* overload keyboard timeout to avoid many mailbox checks in a row.
    * Most users don't like having to wait exactly when they press a key. */
-  int result = 0;
+  int rc = 0;
 
   /* try IDLE first, unless force is set */
   if (!force && C_ImapIdle && (adata->capabilities & IMAP_CAP_IDLE) &&
@@ -1214,7 +1214,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
   }
   if (adata->state == IMAP_IDLE)
   {
-    while ((result = mutt_socket_poll(adata->conn, 0)) > 0)
+    while ((rc = mutt_socket_poll(adata->conn, 0)) > 0)
     {
       if (imap_cmd_step(adata) != IMAP_CMD_CONTINUE)
       {
@@ -1222,7 +1222,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
         return -1;
       }
     }
-    if (result < 0)
+    if (rc < 0)
     {
       mutt_debug(LL_DEBUG1, "Poll failed, disabling IDLE\n");
       adata->capabilities &= ~IMAP_CAP_IDLE; // Clear the flag
@@ -1240,15 +1240,15 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
   imap_cmd_finish(adata);
 
   if (mdata->check_status & IMAP_EXPUNGE_PENDING)
-    result = MUTT_REOPENED;
+    rc = MUTT_REOPENED;
   else if (mdata->check_status & IMAP_NEWMAIL_PENDING)
-    result = MUTT_NEW_MAIL;
+    rc = MUTT_NEW_MAIL;
   else if (mdata->check_status & IMAP_FLAGS_PENDING)
-    result = MUTT_FLAGS;
+    rc = MUTT_FLAGS;
 
   mdata->check_status = IMAP_OPEN_NO_FLAGS;
 
-  return result;
+  return rc;
 }
 
 /**

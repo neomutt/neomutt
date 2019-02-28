@@ -287,7 +287,7 @@ static size_t parsekeys(const char *str, keycode_t *d, size_t max)
 static enum CommandResult km_bind_err(const char *s, int menu, int op,
                                       char *macro, char *desc, struct Buffer *err)
 {
-  enum CommandResult retval = MUTT_CMD_SUCCESS;
+  enum CommandResult rc = MUTT_CMD_SUCCESS;
   struct Keymap *last = NULL, *next = NULL;
   keycode_t buf[MAX_SEQ];
   size_t pos = 0, lastpos = 0;
@@ -335,7 +335,7 @@ static enum CommandResult km_bind_err(const char *s, int menu, int op,
                   "https://neomutt.org/guide/configuration.html#bind-warnings"),
                 old_binding, new_binding, mutt_map_get_name(menu, Menus), new_binding);
           }
-          retval = MUTT_CMD_WARNING;
+          rc = MUTT_CMD_WARNING;
         }
         len = tmp->eq;
         next = tmp->next;
@@ -377,7 +377,7 @@ static enum CommandResult km_bind_err(const char *s, int menu, int op,
     Keymaps[menu] = map;
   }
 
-  return retval;
+  return rc;
 }
 
 /**

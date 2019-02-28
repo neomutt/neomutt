@@ -350,7 +350,7 @@ static int pgp_check_pgp_decryption_okay_regex(FILE *fp_in)
  */
 static int pgp_check_decryption_okay(FILE *fp_in)
 {
-  int rv = -1;
+  int rc = -1;
   char *line = NULL, *s = NULL;
   int lineno = 0;
   size_t linelen;
@@ -376,14 +376,14 @@ static int pgp_check_decryption_okay(FILE *fp_in)
       {
         mutt_debug(LL_DEBUG2,
                    "\tPLAINTEXT encountered outside of DECRYPTION.\n");
-        rv = -2;
+        rc = -2;
         break;
       }
     }
     else if (mutt_str_startswith(s, "DECRYPTION_FAILED", CASE_MATCH))
     {
       mutt_debug(LL_DEBUG2, "\tDECRYPTION_FAILED encountered.  Failure.\n");
-      rv = -3;
+      rc = -3;
       break;
     }
     else if (mutt_str_startswith(s, "DECRYPTION_OKAY", CASE_MATCH))
@@ -391,12 +391,12 @@ static int pgp_check_decryption_okay(FILE *fp_in)
       /* Don't break out because we still have to check for
        * PLAINTEXT outside of the decryption boundaries. */
       mutt_debug(LL_DEBUG2, "\tDECRYPTION_OKAY encountered.\n");
-      rv = 0;
+      rc = 0;
     }
   }
   FREE(&line);
 
-  return rv;
+  return rc;
 }
 
 /**

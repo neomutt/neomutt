@@ -808,7 +808,7 @@ static bool test_last_status_new(FILE *fp)
 {
   struct Email *e = NULL;
   struct Envelope *tmp_envelope = NULL;
-  bool result = false;
+  bool rc = false;
 
   if (fseek_last_message(fp) == -1)
     return false;
@@ -816,12 +816,12 @@ static bool test_last_status_new(FILE *fp)
   e = mutt_email_new();
   tmp_envelope = mutt_rfc822_read_header(fp, e, false, false);
   if (!(e->read || e->old))
-    result = true;
+    rc = true;
 
   mutt_env_free(&tmp_envelope);
   mutt_email_free(&e);
 
-  return result;
+  return rc;
 }
 
 /**
