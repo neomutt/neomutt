@@ -253,7 +253,7 @@ static struct Email *select_msg(struct Context *ctx)
             menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
           }
           else
-            menu->redraw |= REDRAW_MOTION_RESYNCH;
+            menu->redraw |= REDRAW_MOTION_RESYNC;
         }
         else
           menu->redraw |= REDRAW_CURRENT;

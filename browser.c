@@ -1946,7 +1946,7 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
             nntp_newsrc_update(CurrentNewsSrv);
             if ((menu->current + 1) < menu->max)
               menu->current++;
-            menu->redraw = REDRAW_MOTION_RESYNCH;
+            menu->redraw = REDRAW_MOTION_RESYNC;
           }
           if (rc)
             menu->redraw = REDRAW_INDEX;
@@ -2051,7 +2051,7 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
             {
               if ((menu->current + 1) < menu->max)
                 menu->current++;
-              menu->redraw = REDRAW_MOTION_RESYNCH;
+              menu->redraw = REDRAW_MOTION_RESYNC;
               break;
             }
           }

@@ -1419,7 +1419,7 @@ void mutt_view_attachments(struct Email *e)
         if (!menu->tagprefix && C_Resolve && menu->current < menu->max - 1)
           menu->current++;
 
-        menu->redraw = REDRAW_MOTION_RESYNCH | REDRAW_FULL;
+        menu->redraw = REDRAW_MOTION_RESYNC | REDRAW_FULL;
         break;
 
       case OP_DELETE:
@@ -1462,7 +1462,7 @@ void mutt_view_attachments(struct Email *e)
             if (C_Resolve && menu->current < menu->max - 1)
             {
               menu->current++;
-              menu->redraw = REDRAW_MOTION_RESYNCH;
+              menu->redraw = REDRAW_MOTION_RESYNC;
             }
             else
               menu->redraw = REDRAW_CURRENT;
@@ -1502,7 +1502,7 @@ void mutt_view_attachments(struct Email *e)
           if (C_Resolve && menu->current < menu->max - 1)
           {
             menu->current++;
-            menu->redraw = REDRAW_MOTION_RESYNCH;
+            menu->redraw = REDRAW_MOTION_RESYNC;
           }
           else
             menu->redraw = REDRAW_CURRENT;

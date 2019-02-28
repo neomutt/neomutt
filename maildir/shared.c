@@ -1010,7 +1010,7 @@ int mh_commit_msg(struct Mailbox *m, struct Message *msg, struct Email *e, bool 
  * m is the mail folder we commit to.
  *
  * e is a header structure to which we write the message's new
- * file name.  This is used in the mh and maildir folder synch
+ * file name.  This is used in the mh and maildir folder sync
  * routines.  When this routine is invoked from mx_msg_commit(),
  * e is NULL.
  *

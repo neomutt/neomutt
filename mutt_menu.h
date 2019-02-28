@@ -41,7 +41,7 @@ typedef uint16_t MuttRedrawFlags;      ///< Flags, e.g. #REDRAW_INDEX
 #define REDRAW_NO_FLAGS             0  ///< No flags are set
 #define REDRAW_INDEX          (1 << 0) ///< Redraw the index
 #define REDRAW_MOTION         (1 << 1) ///< Redraw after moving the menu list
-#define REDRAW_MOTION_RESYNCH (1 << 2) ///< Redraw any changing the menu selection
+#define REDRAW_MOTION_RESYNC  (1 << 2) ///< Redraw any changing the menu selection
 #define REDRAW_CURRENT        (1 << 3) ///< Redraw the current line of the menu
 #define REDRAW_STATUS         (1 << 4) ///< Redraw the status bar
 #define REDRAW_FULL           (1 << 5) ///< Redraw everything

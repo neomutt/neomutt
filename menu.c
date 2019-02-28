@@ -486,7 +486,7 @@ void menu_redraw_motion(struct Menu *menu)
     /* clear the pointer */
     addstr("  ");
 
-    if (menu->redraw & REDRAW_MOTION_RESYNCH)
+    if (menu->redraw & REDRAW_MOTION_RESYNC)
     {
       menu_make_entry(buf, sizeof(buf), menu, menu->oldcurrent);
       menu_pad_string(menu, buf, sizeof(buf));
@@ -1305,7 +1305,7 @@ int menu_redraw(struct Menu *menu)
 #endif
   if (menu->redraw & REDRAW_INDEX)
     menu_redraw_index(menu);
-  else if (menu->redraw & (REDRAW_MOTION | REDRAW_MOTION_RESYNCH))
+  else if (menu->redraw & (REDRAW_MOTION | REDRAW_MOTION_RESYNC))
     menu_redraw_motion(menu);
   else if (menu->redraw == REDRAW_CURRENT)
     menu_redraw_current(menu);
@@ -1526,7 +1526,7 @@ int mutt_menu_loop(struct Menu *menu)
             if (j && C_Resolve && menu->current < menu->max - 1)
             {
               menu->current++;
-              menu->redraw |= REDRAW_MOTION_RESYNCH;
+              menu->redraw |= REDRAW_MOTION_RESYNC;
             }
             else
               menu->redraw |= REDRAW_CURRENT;
