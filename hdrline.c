@@ -664,7 +664,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       /* preprocess $date_format to handle %Z */
       {
         const char *cp = NULL;
-        struct tm *tm = NULL;
+        struct tm tm = { 0 };
         time_t now;
         int j = 0;
 
@@ -672,7 +672,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         {
           char *is = NULL;
           now = time(NULL);
-          tm = localtime(&now);
+          tm = mutt_date_localtime(now);
           now -= (op == '(') ? e->received : e->date_sent;
 
           is = (char *) prec;
@@ -695,8 +695,8 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
                   t--;
                   t *= (60 * 60 * 24 * 365);
                 }
-                t += ((tm->tm_mon * 60 * 60 * 24 * 30) + (tm->tm_mday * 60 * 60 * 24) +
-                      (tm->tm_hour * 60 * 60) + (tm->tm_min * 60) + tm->tm_sec);
+                t += ((tm.tm_mon * 60 * 60 * 24 * 30) + (tm.tm_mday * 60 * 60 * 24) +
+                      (tm.tm_hour * 60 * 60) + (tm.tm_min * 60) + tm.tm_sec);
                 break;
 
               case 'm':
@@ -705,8 +705,8 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
                   t--;
                   t *= (60 * 60 * 24 * 30);
                 }
-                t += ((tm->tm_mday * 60 * 60 * 24) + (tm->tm_hour * 60 * 60) +
-                      (tm->tm_min * 60) + tm->tm_sec);
+                t += ((tm.tm_mday * 60 * 60 * 24) + (tm.tm_hour * 60 * 60) +
+                      (tm.tm_min * 60) + tm.tm_sec);
                 break;
 
               case 'w':
@@ -715,8 +715,8 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
                   t--;
                   t *= (60 * 60 * 24 * 7);
                 }
-                t += ((tm->tm_wday * 60 * 60 * 24) + (tm->tm_hour * 60 * 60) +
-                      (tm->tm_min * 60) + tm->tm_sec);
+                t += ((tm.tm_wday * 60 * 60 * 24) + (tm.tm_hour * 60 * 60) +
+                      (tm.tm_min * 60) + tm.tm_sec);
                 break;
 
               case 'd':
@@ -725,7 +725,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
                   t--;
                   t *= (60 * 60 * 24);
                 }
-                t += ((tm->tm_hour * 60 * 60) + (tm->tm_min * 60) + tm->tm_sec);
+                t += ((tm.tm_hour * 60 * 60) + (tm.tm_min * 60) + tm.tm_sec);
                 break;
 
               case 'H':
@@ -734,7 +734,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
                   t--;
                   t *= (60 * 60);
                 }
-                t += ((tm->tm_min * 60) + tm->tm_sec);
+                t += ((tm.tm_min * 60) + tm.tm_sec);
                 break;
 
               case 'M':
@@ -743,7 +743,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
                   t--;
                   t *= (60);
                 }
-                t += (tm->tm_sec);
+                t += (tm.tm_sec);
                 break;
 
               default:
@@ -813,13 +813,12 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         *p = '\0';
 
         if ((op == '[') || (op == 'D'))
-          tm = localtime(&e->date_sent);
+          tm = mutt_date_localtime(e->date_sent);
         else if (op == '(')
-          tm = localtime(&e->received);
+          tm = mutt_date_localtime(e->received);
         else if (op == '<')
         {
-          now = time(NULL);
-          tm = localtime(&now);
+          tm = mutt_date_localtime(MUTT_DATE_NOW);
         }
         else
         {
@@ -829,12 +828,12 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
             now -= (e->zhours * 3600 + e->zminutes * 60);
           else
             now += (e->zhours * 3600 + e->zminutes * 60);
-          tm = gmtime(&now);
+          tm = mutt_date_gmtime(now);
         }
 
         if (!do_locales)
           setlocale(LC_TIME, "C");
-        strftime(tmp, sizeof(tmp), buf, tm);
+        strftime(tmp, sizeof(tmp), buf, &tm);
         if (!do_locales)
           setlocale(LC_TIME, "");
 

@@ -396,7 +396,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
         if (!do_locales)
           setlocale(LC_TIME, "C");
         char date[128];
-        strftime(date, sizeof(date), t_fmt, localtime(&folder->ff->mtime));
+        mutt_date_localtime_format(date, sizeof(date), t_fmt, folder->ff->mtime);
         if (!do_locales)
           setlocale(LC_TIME, "");
 
