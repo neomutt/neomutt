@@ -88,7 +88,7 @@ struct NntpAccountData
   unsigned int status     : 3;
   bool cacheable          : 1;
   bool newsrc_modified    : 1;
-  FILE *newsrc_fp;
+  FILE *fp_newsrc;
   char *newsrc_file;
   char *authenticators;
   char *overview_fmt;

@@ -180,30 +180,30 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
   struct stat st;
 
   mutt_mktemp(path, sizeof(path));
-  FILE *ofp = mutt_file_fopen(path, "w");
-  if (!ofp)
+  FILE *fp_out = mutt_file_fopen(path, "w");
+  if (!fp_out)
   {
     mutt_perror(path);
     return;
   }
 
   mutt_env_to_local(msg->env);
-  mutt_rfc822_write_header(ofp, msg->env, NULL, MUTT_WRITE_HEADER_EDITHDRS, false, false);
-  fputc('\n', ofp); /* tie off the header. */
+  mutt_rfc822_write_header(fp_out, msg->env, NULL, MUTT_WRITE_HEADER_EDITHDRS, false, false);
+  fputc('\n', fp_out); /* tie off the header. */
 
   /* now copy the body of the message. */
-  FILE *ifp = fopen(body, "r");
-  if (!ifp)
+  FILE *fp_in = fopen(body, "r");
+  if (!fp_in)
   {
     mutt_perror(body);
-    mutt_file_fclose(&ofp);
+    mutt_file_fclose(&fp_out);
     return;
   }
 
-  mutt_file_copy_stream(ifp, ofp);
+  mutt_file_copy_stream(fp_in, fp_out);
 
-  mutt_file_fclose(&ifp);
-  mutt_file_fclose(&ofp);
+  mutt_file_fclose(&fp_in);
+  mutt_file_fclose(&fp_out);
 
   if (stat(path, &st) == -1)
   {
@@ -227,27 +227,27 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
   mutt_list_free(&msg->env->userhdrs);
 
   /* Read the temp file back in */
-  ifp = fopen(path, "r");
-  if (!ifp)
+  fp_in = fopen(path, "r");
+  if (!fp_in)
   {
     mutt_perror(path);
     return;
   }
 
-  ofp = mutt_file_fopen(body, "w");
-  if (!ofp)
+  fp_out = mutt_file_fopen(body, "w");
+  if (!fp_out)
   {
     /* intentionally leak a possible temporary file here */
-    mutt_file_fclose(&ifp);
+    mutt_file_fclose(&fp_in);
     mutt_perror(body);
     return;
   }
 
-  n = mutt_rfc822_read_header(ifp, NULL, true, false);
-  while ((i = fread(buf, 1, sizeof(buf), ifp)) > 0)
-    fwrite(buf, 1, i, ofp);
-  mutt_file_fclose(&ofp);
-  mutt_file_fclose(&ifp);
+  n = mutt_rfc822_read_header(fp_in, NULL, true, false);
+  while ((i = fread(buf, 1, sizeof(buf), fp_in)) > 0)
+    fwrite(buf, 1, i, fp_out);
+  mutt_file_fclose(&fp_out);
+  mutt_file_fclose(&fp_in);
   mutt_file_unlink(path);
 
   /* in case the user modifies/removes the In-Reply-To header with

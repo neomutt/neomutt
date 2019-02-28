@@ -106,10 +106,10 @@ int             mutt_fetch_recips(struct Envelope *out, struct Envelope *in, Sen
 void            mutt_fix_reply_recipients(struct Envelope *env);
 void            mutt_forward_intro(struct Mailbox *m, struct Email *e, FILE *fp);
 void            mutt_forward_trailer(struct Mailbox *m, struct Email *e, FILE *fp);
-void            mutt_make_attribution(struct Mailbox *m, struct Email *e, FILE *out);
+void            mutt_make_attribution(struct Mailbox *m, struct Email *e, FILE *fp_out);
 void            mutt_make_forward_subject(struct Envelope *env, struct Mailbox *m, struct Email *e);
 void            mutt_make_misc_reply_headers(struct Envelope *env, struct Envelope *curenv);
-void            mutt_make_post_indent(struct Mailbox *m, struct Email *e, FILE *out);
+void            mutt_make_post_indent(struct Mailbox *m, struct Email *e, FILE *fp_out);
 struct Address *mutt_remove_xrefs(struct Address *a, struct Address *b);
 int             mutt_resend_message(FILE *fp, struct Context *ctx, struct Email *cur);
 void            mutt_set_followup_to(struct Envelope *e);

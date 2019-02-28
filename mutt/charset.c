@@ -806,7 +806,7 @@ bool mutt_ch_check_charset(const char *cs, bool strict)
 
 /**
  * mutt_ch_fgetconv_open - Prepare a file for charset conversion
- * @param file  FILE ptr to prepare
+ * @param fp    FILE ptr to prepare
  * @param from  Current character set
  * @param to    Destination character set
  * @param flags Flags, e.g. MUTT_ICONV_HOOK_FROM
@@ -814,7 +814,7 @@ bool mutt_ch_check_charset(const char *cs, bool strict)
  *
  * Parameter flags is given as-is to mutt_ch_iconv_open().
  */
-struct FgetConv *mutt_ch_fgetconv_open(FILE *file, const char *from, const char *to, int flags)
+struct FgetConv *mutt_ch_fgetconv_open(FILE *fp, const char *from, const char *to, int flags)
 {
   struct FgetConv *fc = NULL;
   iconv_t cd = (iconv_t) -1;
@@ -835,7 +835,7 @@ struct FgetConv *mutt_ch_fgetconv_open(FILE *file, const char *from, const char 
   }
   else
     fc = mutt_mem_malloc(sizeof(struct FgetConvNot));
-  fc->fp = file;
+  fc->fp = fp;
   fc->cd = cd;
   return fc;
 }

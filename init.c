@@ -360,13 +360,13 @@ static char *getmailname(void)
 
   for (size_t i = 0; i < mutt_array_size(mn_files); i++)
   {
-    FILE *f = mutt_file_fopen(mn_files[i], "r");
-    if (!f)
+    FILE *fp = mutt_file_fopen(mn_files[i], "r");
+    if (!fp)
       continue;
 
     size_t len = 0;
-    mailname = mutt_file_read_line(NULL, &len, f, NULL, 0);
-    mutt_file_fclose(&f);
+    mailname = mutt_file_read_line(NULL, &len, fp, NULL, 0);
+    mutt_file_fclose(&fp);
     if (mailname && *mailname)
       break;
 
@@ -750,7 +750,6 @@ static void remove_from_stailq(struct ListHead *head, const char *str)
  */
 static int source_rc(const char *rcfile_path, struct Buffer *err)
 {
-  FILE *f = NULL;
   int line = 0, rc = 0, warnings = 0;
   enum CommandResult line_rc;
   struct Buffer token;
@@ -800,15 +799,15 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
 
   mutt_debug(LL_DEBUG2, "Reading configuration file '%s'.\n", rcfile);
 
-  f = mutt_open_read(rcfile, &pid);
-  if (!f)
+  FILE *fp = mutt_open_read(rcfile, &pid);
+  if (!fp)
   {
     mutt_buffer_printf(err, "%s: %s", rcfile, strerror(errno));
     return -1;
   }
 
   mutt_buffer_init(&token);
-  while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, MUTT_CONT)))
+  while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, MUTT_CONT)))
   {
     const int conv = C_ConfigCharset && (*C_ConfigCharset) && C_Charset;
     if (conv)
@@ -852,7 +851,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
   }
   FREE(&token.data);
   FREE(&linebuf);
-  mutt_file_fclose(&f);
+  mutt_file_fclose(&fp);
   if (pid != -1)
     mutt_wait_filter(pid);
   if (rc)

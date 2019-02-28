@@ -42,7 +42,7 @@ struct CompressInfo
   long size;                     /**< size of the compressed file */
   const struct MxOps *child_ops; /**< callbacks of de-compressed file */
   bool locked;                   /**< if realpath is locked */
-  FILE *lockfp;                  /**< fp used for locking */
+  FILE *fp_lock;                 /**< fp used for locking */
 };
 
 bool mutt_comp_can_append(struct Mailbox *m);

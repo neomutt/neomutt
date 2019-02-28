@@ -805,16 +805,16 @@ static gpgme_data_t body_to_data_object(struct Body *a, bool convert)
   gpgme_data_t data;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  FILE *fptmp = mutt_file_fopen(tempfile, "w+");
-  if (!fptmp)
+  FILE *fp_tmp = mutt_file_fopen(tempfile, "w+");
+  if (!fp_tmp)
   {
     mutt_perror(tempfile);
     return NULL;
   }
 
-  mutt_write_mime_header(a, fptmp);
-  fputc('\n', fptmp);
-  mutt_write_mime_body(a, fptmp);
+  mutt_write_mime_header(a, fp_tmp);
+  fputc('\n', fp_tmp);
+  mutt_write_mime_body(a, fp_tmp);
 
   if (convert)
   {
@@ -822,8 +822,8 @@ static gpgme_data_t body_to_data_object(struct Body *a, bool convert)
     unsigned char buf[1];
 
     data = create_gpgme_data();
-    rewind(fptmp);
-    while ((c = fgetc(fptmp)) != EOF)
+    rewind(fp_tmp);
+    while ((c = fgetc(fp_tmp)) != EOF)
     {
       if (c == '\r')
         hadcr = 1;
@@ -841,12 +841,12 @@ static gpgme_data_t body_to_data_object(struct Body *a, bool convert)
       buf[0] = c;
       gpgme_data_write(data, buf, 1);
     }
-    mutt_file_fclose(&fptmp);
+    mutt_file_fclose(&fp_tmp);
     gpgme_data_seek(data, 0, SEEK_SET);
   }
   else
   {
-    mutt_file_fclose(&fptmp);
+    mutt_file_fclose(&fp_tmp);
     err = gpgme_data_new_from_file(&data, tempfile, 1);
   }
   unlink(tempfile);
@@ -928,15 +928,15 @@ static int data_object_to_stream(gpgme_data_t data, FILE *fp)
 /**
  * data_object_to_tempfile - Copy a data object to a temporary file
  * @param[in]  data   GPGME data object
- * @param[out] ret_fp Temporary file
+ * @param[out] fp_ret Temporary file
  * @retval ptr Name of temporary file
  *
- * If ret_fp is passed in, the file will be rewound, left open, and returned
+ * If fp_ret is passed in, the file will be rewound, left open, and returned
  * via that parameter.
  *
  * @note The caller must free the returned file name
  */
-static char *data_object_to_tempfile(gpgme_data_t data, FILE **ret_fp)
+static char *data_object_to_tempfile(gpgme_data_t data, FILE **fp_ret)
 {
   int err;
   char tempf[PATH_MAX];
@@ -966,7 +966,7 @@ static char *data_object_to_tempfile(gpgme_data_t data, FILE **ret_fp)
       }
     }
   }
-  if (ret_fp)
+  if (fp_ret)
     rewind(fp);
   else
     mutt_file_fclose(&fp);
@@ -977,8 +977,8 @@ static char *data_object_to_tempfile(gpgme_data_t data, FILE **ret_fp)
     mutt_file_fclose(&fp);
     return NULL;
   }
-  if (ret_fp)
-    *ret_fp = fp;
+  if (fp_ret)
+    *fp_ret = fp;
   return mutt_str_strdup(tempf);
 }
 
@@ -2073,7 +2073,7 @@ int smime_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tem
  * decrypt_part - Decrypt a PGP or SMIME message
  * @param[in]  a           Body of message
  * @param[in]  s           State to use
- * @param[in]  fpout       File to write to
+ * @param[in]  fp_out       File to write to
  * @param[in]  is_smime    True if an SMIME message
  * @param[out] r_is_signed Flag, R_IS_SIGNED (PGP only)
  * @retval ptr Newly allocated Body
@@ -2082,10 +2082,10 @@ int smime_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tem
  * encrypted and signed message, for S/MIME it returns true when it is not a
  * encrypted but a signed message.
  */
-static struct Body *decrypt_part(struct Body *a, struct State *s, FILE *fpout,
+static struct Body *decrypt_part(struct Body *a, struct State *s, FILE *fp_out,
                                  bool is_smime, int *r_is_signed)
 {
-  if (!a || !s || !fpout)
+  if (!a || !s || !fp_out)
     return NULL;
 
   struct stat info;
@@ -2169,7 +2169,7 @@ restart:
 
   /* Read the output from GPGME, and make sure to change CRLF to LF,
      otherwise read_mime_header has a hard time parsing the message.  */
-  if (data_object_to_stream(plaintext, fpout))
+  if (data_object_to_stream(plaintext, fp_out))
   {
     gpgme_data_release(plaintext);
     gpgme_release(ctx);
@@ -2214,19 +2214,19 @@ restart:
   gpgme_release(ctx);
   ctx = NULL;
 
-  fflush(fpout);
-  rewind(fpout);
-  tattach = mutt_read_mime_header(fpout, 0);
+  fflush(fp_out);
+  rewind(fp_out);
+  tattach = mutt_read_mime_header(fp_out, 0);
   if (tattach)
   {
     /* Need to set the length of this body part.  */
-    fstat(fileno(fpout), &info);
+    fstat(fileno(fp_out), &info);
     tattach->length = info.st_size - tattach->offset;
 
     tattach->warnsig = anywarn;
 
     /* See if we need to recurse on this MIME part.  */
-    mutt_parse_part(fpout, tattach);
+    mutt_parse_part(fp_out, tattach);
   }
 
   return tattach;
@@ -2235,7 +2235,7 @@ restart:
 /**
  * pgp_gpgme_decrypt_mime - Implements CryptModuleSpecs::decrypt_mime()
  */
-int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
+int pgp_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur)
 {
   struct State s = { 0 };
   struct Body *first_part = b;
@@ -2244,7 +2244,7 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
   int saved_type = 0;
   LOFF_T saved_offset = 0;
   size_t saved_length = 0;
-  FILE *decoded_fp = NULL;
+  FILE *fp_decoded = NULL;
   int rc = 0;
 
   first_part->goodsig = false;
@@ -2265,7 +2265,7 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
   else
     return -1;
 
-  s.fp_in = fpin;
+  s.fp_in = fp_in;
 
   if (need_decode)
   {
@@ -2273,38 +2273,38 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
     saved_offset = b->offset;
     saved_length = b->length;
 
-    decoded_fp = mutt_file_mkstemp();
-    if (!decoded_fp)
+    fp_decoded = mutt_file_mkstemp();
+    if (!fp_decoded)
     {
       mutt_perror(_("Can't create temporary file"));
       return -1;
     }
 
     fseeko(s.fp_in, b->offset, SEEK_SET);
-    s.fp_out = decoded_fp;
+    s.fp_out = fp_decoded;
 
     mutt_decode_attachment(b, &s);
 
-    fflush(decoded_fp);
-    b->length = ftello(decoded_fp);
+    fflush(fp_decoded);
+    b->length = ftello(fp_decoded);
     b->offset = 0;
-    rewind(decoded_fp);
-    s.fp_in = decoded_fp;
+    rewind(fp_decoded);
+    s.fp_in = fp_decoded;
     s.fp_out = 0;
   }
 
-  *fpout = mutt_file_mkstemp();
-  if (!*fpout)
+  *fp_out = mutt_file_mkstemp();
+  if (!*fp_out)
   {
     mutt_perror(_("Can't create temporary file"));
     rc = -1;
     goto bail;
   }
 
-  *cur = decrypt_part(b, &s, *fpout, false, &is_signed);
+  *cur = decrypt_part(b, &s, *fp_out, false, &is_signed);
   if (!*cur)
     rc = -1;
-  rewind(*fpout);
+  rewind(*fp_out);
   if (is_signed > 0)
     first_part->goodsig = true;
 
@@ -2314,7 +2314,7 @@ bail:
     b->type = saved_type;
     b->length = saved_length;
     b->offset = saved_offset;
-    mutt_file_fclose(&decoded_fp);
+    mutt_file_fclose(&fp_decoded);
   }
 
   return rc;
@@ -2323,7 +2323,7 @@ bail:
 /**
  * smime_gpgme_decrypt_mime - Implements CryptModuleSpecs::decrypt_mime()
  */
-int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
+int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur)
 {
   struct State s = { 0 };
   int is_signed;
@@ -2344,40 +2344,40 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   saved_b_type = b->type;
   saved_b_offset = b->offset;
   saved_b_length = b->length;
-  s.fp_in = fpin;
+  s.fp_in = fp_in;
   fseeko(s.fp_in, b->offset, SEEK_SET);
-  FILE *tmpfp = mutt_file_mkstemp();
-  if (!tmpfp)
+  FILE *fp_tmp = mutt_file_mkstemp();
+  if (!fp_tmp)
   {
     mutt_perror(_("Can't create temporary file"));
     return -1;
   }
 
-  s.fp_out = tmpfp;
+  s.fp_out = fp_tmp;
   mutt_decode_attachment(b, &s);
-  fflush(tmpfp);
+  fflush(fp_tmp);
   b->length = ftello(s.fp_out);
   b->offset = 0;
-  rewind(tmpfp);
+  rewind(fp_tmp);
 
   memset(&s, 0, sizeof(s));
-  s.fp_in = tmpfp;
+  s.fp_in = fp_tmp;
   s.fp_out = 0;
-  *fpout = mutt_file_mkstemp();
-  if (!*fpout)
+  *fp_out = mutt_file_mkstemp();
+  if (!*fp_out)
   {
     mutt_perror(_("Can't create temporary file"));
     return -1;
   }
 
-  *cur = decrypt_part(b, &s, *fpout, true, &is_signed);
+  *cur = decrypt_part(b, &s, *fp_out, true, &is_signed);
   if (*cur)
     (*cur)->goodsig = is_signed > 0;
   b->type = saved_b_type;
   b->length = saved_b_length;
   b->offset = saved_b_offset;
-  mutt_file_fclose(&tmpfp);
-  rewind(*fpout);
+  mutt_file_fclose(&fp_tmp);
+  rewind(*fp_out);
   if (*cur && !is_signed && !(*cur)->parts && mutt_is_application_smime(*cur))
   {
     /* Assume that this is a opaque signed s/mime message.  This is
@@ -2396,41 +2396,41 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
     saved_b_offset = bb->offset;
     saved_b_length = bb->length;
     memset(&s, 0, sizeof(s));
-    s.fp_in = *fpout;
+    s.fp_in = *fp_out;
     fseeko(s.fp_in, bb->offset, SEEK_SET);
-    FILE *tmpfp2 = mutt_file_mkstemp();
-    if (!tmpfp2)
+    FILE *fp_tmp2 = mutt_file_mkstemp();
+    if (!fp_tmp2)
     {
       mutt_perror(_("Can't create temporary file"));
       return -1;
     }
 
-    s.fp_out = tmpfp2;
+    s.fp_out = fp_tmp2;
     mutt_decode_attachment(bb, &s);
-    fflush(tmpfp2);
+    fflush(fp_tmp2);
     bb->length = ftello(s.fp_out);
     bb->offset = 0;
-    rewind(tmpfp2);
-    mutt_file_fclose(fpout);
+    rewind(fp_tmp2);
+    mutt_file_fclose(fp_out);
 
     memset(&s, 0, sizeof(s));
-    s.fp_in = tmpfp2;
+    s.fp_in = fp_tmp2;
     s.fp_out = 0;
-    *fpout = mutt_file_mkstemp();
-    if (!*fpout)
+    *fp_out = mutt_file_mkstemp();
+    if (!*fp_out)
     {
       mutt_perror(_("Can't create temporary file"));
       return -1;
     }
 
-    tmp_b = decrypt_part(bb, &s, *fpout, true, &is_signed);
+    tmp_b = decrypt_part(bb, &s, *fp_out, true, &is_signed);
     if (tmp_b)
       tmp_b->goodsig = is_signed > 0;
     bb->type = saved_b_type;
     bb->length = saved_b_length;
     bb->offset = saved_b_offset;
-    mutt_file_fclose(&tmpfp2);
-    rewind(*fpout);
+    mutt_file_fclose(&fp_tmp2);
+    rewind(*fp_out);
     mutt_body_free(cur);
     *cur = tmp_b;
   }
@@ -2606,7 +2606,6 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 {
   char tempfile[PATH_MAX];
   char buf[8192];
-  FILE *tfp = NULL;
 
   bool sgn = false;
   bool enc = false;
@@ -2621,14 +2620,14 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
     return 0;
   }
 
-  tfp = fopen(tempfile, "r");
-  if (!tfp)
+  FILE *fp_tmp = fopen(tempfile, "r");
+  if (!fp_tmp)
   {
     unlink(tempfile);
     return 0;
   }
 
-  while (fgets(buf, sizeof(buf), tfp))
+  while (fgets(buf, sizeof(buf), fp_tmp))
   {
     size_t plen = mutt_str_startswith(buf, "-----BEGIN PGP ", CASE_MATCH);
     if (plen != 0)
@@ -2645,7 +2644,7 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
       }
     }
   }
-  mutt_file_fclose(&tfp);
+  mutt_file_fclose(&fp_tmp);
   unlink(tempfile);
 
   if (!enc && !sgn)
@@ -2695,16 +2694,16 @@ void pgp_gpgme_invoke_import(const char *fname)
   gpgme_import_status_t st;
   int any;
 
-  FILE *in = mutt_file_fopen(fname, "r");
-  if (!in)
+  FILE *fp_in = mutt_file_fopen(fname, "r");
+  if (!fp_in)
   {
     mutt_perror(fname);
     goto leave;
   }
-  /* Note that the stream, "in", needs to be kept open while the keydata
+  /* Note that the stream, "fp_in", needs to be kept open while the keydata
    * is used.
    */
-  gpgme_error_t err = gpgme_data_new_from_stream(&keydata, in);
+  gpgme_error_t err = gpgme_data_new_from_stream(&keydata, fp_in);
   if (err != GPG_ERR_NO_ERROR)
   {
     mutt_error(_("error allocating data object: %s"), gpgme_strerror(err));
@@ -2778,7 +2777,7 @@ void pgp_gpgme_invoke_import(const char *fname)
 leave:
   gpgme_release(ctx);
   gpgme_data_release(keydata);
-  mutt_file_fclose(&in);
+  mutt_file_fclose(&fp_in);
 }
 
 /**
@@ -2861,7 +2860,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
   long bytes;
   LOFF_T last_pos;
   char buf[8192];
-  FILE *pgpout = NULL;
+  FILE *fp_out = NULL;
 
   gpgme_error_t err = 0;
   gpgme_data_t armored_data = NULL;
@@ -2924,7 +2923,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
       /* Invoke PGP if needed */
       if (pgp_keyblock)
       {
-        pgp_gpgme_extract_keys(armored_data, &pgpout);
+        pgp_gpgme_extract_keys(armored_data, &fp_out);
       }
       else if (!clearsign || (s->flags & MUTT_VERIFY))
       {
@@ -2998,10 +2997,10 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
                               s);
           }
 
-          tmpfname = data_object_to_tempfile(plaintext, &pgpout);
+          tmpfname = data_object_to_tempfile(plaintext, &fp_out);
           if (!tmpfname)
           {
-            mutt_file_fclose(&pgpout);
+            mutt_file_fclose(&fp_out);
             state_puts(_("Error: copy data failed\n"), s);
           }
           else
@@ -3032,11 +3031,11 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
       {
         copy_clearsigned(armored_data, s, body_charset);
       }
-      else if (pgpout)
+      else if (fp_out)
       {
         int c;
-        rewind(pgpout);
-        struct FgetConv *fc = mutt_ch_fgetconv_open(pgpout, "utf-8", C_Charset, 0);
+        rewind(fp_out);
+        struct FgetConv *fc = mutt_ch_fgetconv_open(fp_out, "utf-8", C_Charset, 0);
         while ((c = mutt_ch_fgetconv(fc)) != EOF)
         {
           state_putc(c, s);
@@ -3058,9 +3057,9 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
       }
 
       gpgme_data_release(armored_data);
-      if (pgpout)
+      if (fp_out)
       {
-        mutt_file_fclose(&pgpout);
+        mutt_file_fclose(&fp_out);
       }
     }
     else
@@ -3100,8 +3099,8 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
 
   mutt_debug(LL_DEBUG2, "Entering handler\n");
 
-  FILE *fpout = mutt_file_mkstemp();
-  if (!fpout)
+  FILE *fp_out = mutt_file_mkstemp();
+  if (!fp_out)
   {
     mutt_perror(_("Can't create temporary file"));
     if (s->flags & MUTT_DISPLAY)
@@ -3113,7 +3112,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
     return -1;
   }
 
-  struct Body *tattach = decrypt_part(a, s, fpout, false, &is_signed);
+  struct Body *tattach = decrypt_part(a, s, fp_out, false, &is_signed);
   if (tattach)
   {
     tattach->goodsig = is_signed > 0;
@@ -3137,10 +3136,10 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
     tattach->mime_headers = NULL;
 
     {
-      FILE *savefp = s->fp_in;
-      s->fp_in = fpout;
+      FILE *fp_save = s->fp_in;
+      s->fp_in = fp_out;
       rc = mutt_body_handler(tattach, s);
-      s->fp_in = savefp;
+      s->fp_in = fp_save;
     }
 
     /* Embedded multipart signed protected headers override the
@@ -3178,7 +3177,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
     rc = -1;
   }
 
-  mutt_file_fclose(&fpout);
+  mutt_file_fclose(&fp_out);
   mutt_debug(LL_DEBUG2, "Leaving handler\n");
 
   return rc;
@@ -3197,8 +3196,8 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
   /* clear out any mime headers before the handler, so they can't be spoofed. */
   mutt_env_free(&a->mime_headers);
   a->warnsig = false;
-  FILE *fpout = mutt_file_mkstemp();
-  if (!fpout)
+  FILE *fp_out = mutt_file_mkstemp();
+  if (!fp_out)
   {
     mutt_perror(_("Can't create temporary file"));
     if (s->flags & MUTT_DISPLAY)
@@ -3210,7 +3209,7 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
     return -1;
   }
 
-  struct Body *tattach = decrypt_part(a, s, fpout, true, &is_signed);
+  struct Body *tattach = decrypt_part(a, s, fp_out, true, &is_signed);
   if (tattach)
   {
     tattach->goodsig = is_signed > 0;
@@ -3233,10 +3232,10 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
     tattach->mime_headers = NULL;
 
     {
-      FILE *savefp = s->fp_in;
-      s->fp_in = fpout;
+      FILE *fp_save = s->fp_in;
+      s->fp_in = fp_out;
       rc = mutt_body_handler(tattach, s);
-      s->fp_in = savefp;
+      s->fp_in = fp_save;
     }
 
     /* Embedded multipart signed protected headers override the
@@ -3275,7 +3274,7 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
     mutt_body_free(&tattach);
   }
 
-  mutt_file_fclose(&fpout);
+  mutt_file_fclose(&fp_out);
   mutt_debug(LL_DEBUG2, "Leaving handler\n");
 
   return rc;

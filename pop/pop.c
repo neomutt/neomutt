@@ -160,10 +160,10 @@ static struct PopEmailData *pop_edata_new(const char *uid)
  */
 static int fetch_message(char *line, void *file)
 {
-  FILE *f = file;
+  FILE *fp = file;
 
-  fputs(line, f);
-  if (fputc('\n', f) == EOF)
+  fputs(line, fp);
+  if (fputc('\n', fp) == EOF)
     return -1;
 
   return 0;
@@ -180,8 +180,8 @@ static int fetch_message(char *line, void *file)
  */
 static int pop_read_header(struct PopAccountData *adata, struct Email *e)
 {
-  FILE *f = mutt_file_mkstemp();
-  if (!f)
+  FILE *fp = mutt_file_mkstemp();
+  if (!fp)
   {
     mutt_perror(_("Can't create temporary file"));
     return -3;
@@ -198,7 +198,7 @@ static int pop_read_header(struct PopAccountData *adata, struct Email *e)
     sscanf(buf, "+OK %d %zu", &index, &length);
 
     snprintf(buf, sizeof(buf), "TOP %d 0\r\n", e->refno);
-    rc = pop_fetch_data(adata, buf, NULL, fetch_message, f);
+    rc = pop_fetch_data(adata, buf, NULL, fetch_message, fp);
 
     if (adata->cmd_top == 2)
     {
@@ -224,14 +224,14 @@ static int pop_read_header(struct PopAccountData *adata, struct Email *e)
   {
     case 0:
     {
-      rewind(f);
-      e->env = mutt_rfc822_read_header(f, e, false, false);
+      rewind(fp);
+      e->env = mutt_rfc822_read_header(fp, e, false, false);
       e->content->length = length - e->content->offset + 1;
-      rewind(f);
-      while (!feof(f))
+      rewind(fp);
+      while (!feof(fp))
       {
         e->content->length--;
-        fgets(buf, sizeof(buf), f);
+        fgets(buf, sizeof(buf), fp);
       }
       break;
     }
@@ -247,7 +247,7 @@ static int pop_read_header(struct PopAccountData *adata, struct Email *e)
     }
   }
 
-  mutt_file_fclose(&f);
+  mutt_file_fclose(&fp);
   return rc;
 }
 

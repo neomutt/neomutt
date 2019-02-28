@@ -1280,7 +1280,7 @@ static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
 
 /**
  * fill_buffer - Fill a buffer from a file
- * @param[in]     f         File to read from
+ * @param[in]     fp        File to read from
  * @param[in,out] last_pos  End of last read
  * @param[in]     offset    Position start reading from
  * @param[out]    buf       Buffer to fill
@@ -1290,7 +1290,7 @@ static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
  * @retval >=0 Bytes read
  * @retval -1  Error
  */
-static int fill_buffer(FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char **buf,
+static int fill_buffer(FILE *fp, LOFF_T *last_pos, LOFF_T offset, unsigned char **buf,
                        unsigned char **fmt, size_t *blen, int *buf_ready)
 {
   unsigned char *p = NULL, *q = NULL;
@@ -1300,14 +1300,14 @@ static int fill_buffer(FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *
   if (*buf_ready == 0)
   {
     if (offset != *last_pos)
-      fseeko(f, offset, SEEK_SET);
-    *buf = (unsigned char *) mutt_file_read_line((char *) *buf, blen, f, &l, MUTT_EOL);
+      fseeko(fp, offset, SEEK_SET);
+    *buf = (unsigned char *) mutt_file_read_line((char *) *buf, blen, fp, &l, MUTT_EOL);
     if (!*buf)
     {
       fmt[0] = 0;
       return -1;
     }
-    *last_pos = ftello(f);
+    *last_pos = ftello(fp);
     b_read = (int) (*last_pos - offset);
     *buf_ready = 1;
 
@@ -1541,7 +1541,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
 
 /**
  * display_line - Print a line on screen
- * @param[in]  f               File to read from
+ * @param[in]  fp              File to read from
  * @param[out] last_pos        Offset into file
  * @param[out] line_info       Line attributes
  * @param[in]  n               Line number
@@ -1557,7 +1557,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
  * @retval 0  normal exit, line was not displayed
  * @retval >0 normal exit, line was displayed
  */
-static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
+static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
                         int n, int *last, int *max, PagerFlags flags,
                         struct QClass **quote_list, int *q_level, bool *force_redraw,
                         regex_t *search_re, struct MuttWindow *pager_window)
@@ -1599,7 +1599,7 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
   if (flags & MUTT_PAGER_LOGS)
   {
     /* determine the line class */
-    if (fill_buffer(f, last_pos, (*line_info)[n].offset, &buf, &fmt, &buflen, &buf_ready) < 0)
+    if (fill_buffer(fp, last_pos, (*line_info)[n].offset, &buf, &fmt, &buflen, &buf_ready) < 0)
     {
       if (change_last)
         (*last)--;
@@ -1621,7 +1621,7 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
     if ((*line_info)[n].type == -1)
     {
       /* determine the line class */
-      if (fill_buffer(f, last_pos, (*line_info)[n].offset, &buf, &fmt, &buflen, &buf_ready) < 0)
+      if (fill_buffer(fp, last_pos, (*line_info)[n].offset, &buf, &fmt, &buflen, &buf_ready) < 0)
       {
         if (change_last)
           (*last)--;
@@ -1650,7 +1650,7 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
   if ((flags & MUTT_SHOWCOLOR) && !(*line_info)[n].continuation &&
       ((*line_info)[n].type == MT_COLOR_QUOTED) && !(*line_info)[n].quote)
   {
-    if (fill_buffer(f, last_pos, (*line_info)[n].offset, &buf, &fmt, &buflen, &buf_ready) < 0)
+    if (fill_buffer(fp, last_pos, (*line_info)[n].offset, &buf, &fmt, &buflen, &buf_ready) < 0)
     {
       if (change_last)
         (*last)--;
@@ -1672,7 +1672,7 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
   if ((flags & MUTT_SEARCH) && !(*line_info)[n].continuation &&
       (*line_info)[n].search_cnt == -1)
   {
-    if (fill_buffer(f, last_pos, (*line_info)[n].offset, &buf, &fmt, &buflen, &buf_ready) < 0)
+    if (fill_buffer(fp, last_pos, (*line_info)[n].offset, &buf, &fmt, &buflen, &buf_ready) < 0)
     {
       if (change_last)
         (*last)--;
@@ -1718,7 +1718,7 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
     goto out; /* fake display */
   }
 
-  b_read = fill_buffer(f, last_pos, (*line_info)[n].offset, &buf, &fmt, &buflen, &buf_ready);
+  b_read = fill_buffer(fp, last_pos, (*line_info)[n].offset, &buf, &fmt, &buflen, &buf_ready);
   if (b_read < 0)
   {
     if (change_last)

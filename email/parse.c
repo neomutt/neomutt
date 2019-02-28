@@ -931,7 +931,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
 
 /**
  * mutt_rfc822_read_line - Read a header line from a file
- * @param f       File to read from
+ * @param fp      File to read from
  * @param line    Buffer to store the result
  * @param linelen Length of buffer
  * @retval ptr Line read from file
@@ -940,7 +940,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
  * lines.  "line" must point to a dynamically allocated string; it is
  * increased if more space is required to fit the whole line.
  */
-char *mutt_rfc822_read_line(FILE *f, char *line, size_t *linelen)
+char *mutt_rfc822_read_line(FILE *fp, char *line, size_t *linelen)
 {
   char *buf = line;
   int ch;
@@ -948,8 +948,8 @@ char *mutt_rfc822_read_line(FILE *f, char *line, size_t *linelen)
 
   while (true)
   {
-    if (!fgets(buf, *linelen - offset, f) || /* end of file or */
-        (ISSPACE(*line) && !offset))         /* end of headers */
+    if (!fgets(buf, *linelen - offset, fp) || /* end of file or */
+        (ISSPACE(*line) && !offset))          /* end of headers */
     {
       *line = 0;
       return line;
@@ -970,17 +970,17 @@ char *mutt_rfc822_read_line(FILE *f, char *line, size_t *linelen)
       }
 
       /* check to see if the next line is a continuation line */
-      ch = fgetc(f);
+      ch = fgetc(fp);
       if ((ch != ' ') && (ch != '\t'))
       {
-        ungetc(ch, f);
+        ungetc(ch, fp);
         return line; /* next line is a separate header field or EOH */
       }
 
       /* eat tabs and spaces from the beginning of the continuation line */
-      while (((ch = fgetc(f)) == ' ') || (ch == '\t'))
+      while (((ch = fgetc(fp)) == ' ') || (ch == '\t'))
         ;
-      ungetc(ch, f);
+      ungetc(ch, fp);
       *++buf = ' '; /* string is still terminated because we removed
                        at least one whitespace char above */
     }
@@ -1000,7 +1000,7 @@ char *mutt_rfc822_read_line(FILE *f, char *line, size_t *linelen)
 
 /**
  * mutt_rfc822_read_header - parses an RFC822 header
- * @param f         Stream to read from
+ * @param fp        Stream to read from
  * @param e         Current Email (optional)
  * @param user_hdrs If set, store user headers
  *                  Used for recall-message and postpone modes
@@ -1011,7 +1011,7 @@ char *mutt_rfc822_read_line(FILE *f, char *line, size_t *linelen)
  *
  * Caller should free the Envelope using mutt_env_free().
  */
-struct Envelope *mutt_rfc822_read_header(FILE *f, struct Email *e, bool user_hdrs, bool weed)
+struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hdrs, bool weed)
 {
   struct Envelope *env = mutt_env_new();
   char *p = NULL;
@@ -1037,9 +1037,9 @@ struct Envelope *mutt_rfc822_read_header(FILE *f, struct Email *e, bool user_hdr
     }
   }
 
-  while ((loc = ftello(f)) != -1)
+  while ((loc = ftello(fp)) != -1)
   {
-    line = mutt_rfc822_read_line(f, line, &linelen);
+    line = mutt_rfc822_read_line(fp, line, &linelen);
     if (*line == '\0')
       break;
     p = strpbrk(line, ": \t");
@@ -1059,7 +1059,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *f, struct Email *e, bool user_hdr
         continue;
       }
 
-      fseeko(f, loc, SEEK_SET);
+      fseeko(fp, loc, SEEK_SET);
       break; /* end of header */
     }
 
@@ -1118,7 +1118,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *f, struct Email *e, bool user_hdr
   if (e)
   {
     e->content->hdr_offset = e->offset;
-    e->content->offset = ftello(f);
+    e->content->offset = ftello(fp);
 
     rfc2047_decode_envelope(env);
 

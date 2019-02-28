@@ -532,9 +532,9 @@ static int autoview_handler(struct Body *a, struct State *s)
   char cmd[STR_COMMAND];
   char tempfile[PATH_MAX] = "";
   char *fname = NULL;
-  FILE *fpin = NULL;
-  FILE *fpout = NULL;
-  FILE *fperr = NULL;
+  FILE *fp_in = NULL;
+  FILE *fp_out = NULL;
+  FILE *fp_err = NULL;
   int piped = false;
   pid_t pid;
   int rc = 0;
@@ -561,27 +561,27 @@ static int autoview_handler(struct Body *a, struct State *s)
       mutt_message(_("Invoking autoview command: %s"), cmd);
     }
 
-    fpin = mutt_file_fopen(tempfile, "w+");
-    if (!fpin)
+    fp_in = mutt_file_fopen(tempfile, "w+");
+    if (!fp_in)
     {
       mutt_perror("fopen");
       rfc1524_free_entry(&entry);
       return -1;
     }
 
-    mutt_file_copy_bytes(s->fp_in, fpin, a->length);
+    mutt_file_copy_bytes(s->fp_in, fp_in, a->length);
 
     if (!piped)
     {
-      mutt_file_fclose(&fpin);
-      pid = mutt_create_filter(cmd, NULL, &fpout, &fperr);
+      mutt_file_fclose(&fp_in);
+      pid = mutt_create_filter(cmd, NULL, &fp_out, &fp_err);
     }
     else
     {
       unlink(tempfile);
-      fflush(fpin);
-      rewind(fpin);
-      pid = mutt_create_filter_fd(cmd, NULL, &fpout, &fperr, fileno(fpin), -1, -1);
+      fflush(fp_in);
+      rewind(fp_in);
+      pid = mutt_create_filter_fd(cmd, NULL, &fp_out, &fp_err, fileno(fp_in), -1, -1);
     }
 
     if (pid < 0)
@@ -598,13 +598,13 @@ static int autoview_handler(struct Body *a, struct State *s)
 
     if (s->prefix)
     {
-      while (fgets(buf, sizeof(buf), fpout))
+      while (fgets(buf, sizeof(buf), fp_out))
       {
         state_puts(s->prefix, s);
         state_puts(buf, s);
       }
       /* check for data on stderr */
-      if (fgets(buf, sizeof(buf), fperr))
+      if (fgets(buf, sizeof(buf), fp_err))
       {
         if (s->flags & MUTT_DISPLAY)
         {
@@ -614,7 +614,7 @@ static int autoview_handler(struct Body *a, struct State *s)
 
         state_puts(s->prefix, s);
         state_puts(buf, s);
-        while (fgets(buf, sizeof(buf), fperr))
+        while (fgets(buf, sizeof(buf), fp_err))
         {
           state_puts(s->prefix, s);
           state_puts(buf, s);
@@ -623,9 +623,9 @@ static int autoview_handler(struct Body *a, struct State *s)
     }
     else
     {
-      mutt_file_copy_stream(fpout, s->fp_out);
+      mutt_file_copy_stream(fp_out, s->fp_out);
       /* Check for stderr messages */
-      if (fgets(buf, sizeof(buf), fperr))
+      if (fgets(buf, sizeof(buf), fp_err))
       {
         if (s->flags & MUTT_DISPLAY)
         {
@@ -634,17 +634,17 @@ static int autoview_handler(struct Body *a, struct State *s)
         }
 
         state_puts(buf, s);
-        mutt_file_copy_stream(fperr, s->fp_out);
+        mutt_file_copy_stream(fp_err, s->fp_out);
       }
     }
 
   bail:
-    mutt_file_fclose(&fpout);
-    mutt_file_fclose(&fperr);
+    mutt_file_fclose(&fp_out);
+    mutt_file_fclose(&fp_err);
 
     mutt_wait_filter(pid);
     if (piped)
-      mutt_file_fclose(&fpin);
+      mutt_file_fclose(&fp_in);
     else
       mutt_file_unlink(tempfile);
 

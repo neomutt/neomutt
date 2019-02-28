@@ -54,9 +54,9 @@ void mutt_actx_add_attach(struct AttachCtx *actx, struct AttachPtr *attach)
 /**
  * mutt_actx_add_fp - Save a File handle to the Attachment Context
  * @param actx   Attachment context
- * @param new_fp File handle to save
+ * @param fp_new File handle to save
  */
-void mutt_actx_add_fp(struct AttachCtx *actx, FILE *new_fp)
+void mutt_actx_add_fp(struct AttachCtx *actx, FILE *fp_new)
 {
   if (actx->fp_len == actx->fp_max)
   {
@@ -66,7 +66,7 @@ void mutt_actx_add_fp(struct AttachCtx *actx, FILE *new_fp)
       actx->fp_idx[i] = NULL;
   }
 
-  actx->fp_idx[actx->fp_len++] = new_fp;
+  actx->fp_idx[actx->fp_len++] = fp_new;
 }
 
 /**

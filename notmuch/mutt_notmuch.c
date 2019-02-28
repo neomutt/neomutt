@@ -916,11 +916,11 @@ static void append_message(struct Mailbox *m, notmuch_query_t *q,
 
     if (folder)
     {
-      FILE *f = maildir_open_find_message(folder, path, &newpath);
-      if (f)
+      FILE *fp = maildir_open_find_message(folder, path, &newpath);
+      if (fp)
       {
-        e = maildir_parse_stream(MUTT_MAILDIR, f, newpath, false, NULL);
-        fclose(f);
+        e = maildir_parse_stream(MUTT_MAILDIR, fp, newpath, false, NULL);
+        fclose(fp);
 
         mutt_debug(LL_DEBUG1, "nm: not up-to-date: %s -> %s\n", path, newpath);
       }

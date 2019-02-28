@@ -68,7 +68,6 @@ int mutt_get_tmp_attachment(struct Body *a)
 {
   char type[256];
   char tempfile[PATH_MAX];
-  FILE *fpin = NULL, *fpout = NULL;
   struct stat st;
 
   if (a->unlink)
@@ -84,9 +83,10 @@ int mutt_get_tmp_attachment(struct Body *a)
   if (stat(a->filename, &st) == -1)
     return -1;
 
-  if ((fpin = fopen(a->filename, "r")) && (fpout = mutt_file_fopen(tempfile, "w")))
+  FILE *fp_in = NULL, *fp_out = NULL;
+  if ((fp_in = fopen(a->filename, "r")) && (fp_out = mutt_file_fopen(tempfile, "w")))
   {
-    mutt_file_copy_stream(fpin, fpout);
+    mutt_file_copy_stream(fp_in, fp_out);
     mutt_str_replace(&a->filename, tempfile);
     a->unlink = true;
 
@@ -94,10 +94,10 @@ int mutt_get_tmp_attachment(struct Body *a)
       mutt_stamp_attachment(a);
   }
   else
-    mutt_perror(fpin ? tempfile : a->filename);
+    mutt_perror(fp_in ? tempfile : a->filename);
 
-  mutt_file_fclose(&fpin);
-  mutt_file_fclose(&fpout);
+  mutt_file_fclose(&fp_in);
+  mutt_file_fclose(&fp_out);
 
   return a->unlink ? 0 : -1;
 }
@@ -193,16 +193,16 @@ int mutt_compose_attachment(struct Body *a)
             fseeko(fp, b->offset, SEEK_SET);
             mutt_body_free(&b);
             mutt_mktemp(tempfile, sizeof(tempfile));
-            FILE *tfp = mutt_file_fopen(tempfile, "w");
-            if (!tfp)
+            FILE *fp_tmp = mutt_file_fopen(tempfile, "w");
+            if (!fp_tmp)
             {
               mutt_perror(_("Failure to open file to strip headers"));
               mutt_file_fclose(&fp);
               goto bailout;
             }
-            mutt_file_copy_stream(fp, tfp);
+            mutt_file_copy_stream(fp, fp_tmp);
             mutt_file_fclose(&fp);
-            mutt_file_fclose(&tfp);
+            mutt_file_fclose(&fp_tmp);
             mutt_file_unlink(a->filename);
             if (mutt_file_rename(tempfile, a->filename) != 0)
             {
@@ -712,11 +712,8 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfi
   else
   {
     /* send case */
-
-    FILE *ofp = NULL;
-
-    FILE *ifp = fopen(b->filename, "r");
-    if (!ifp)
+    FILE *fp_in = fopen(b->filename, "r");
+    if (!fp_in)
     {
       mutt_perror("fopen");
       if (outfile && *outfile)
@@ -727,21 +724,22 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfi
       return 0;
     }
 
+    FILE *fp_out = NULL;
     if (outfile && *outfile)
-      pid = mutt_create_filter_fd(path, &ofp, NULL, NULL, -1, out, -1);
+      pid = mutt_create_filter_fd(path, &fp_out, NULL, NULL, -1, out, -1);
     else
-      pid = mutt_create_filter(path, &ofp, NULL, NULL);
+      pid = mutt_create_filter(path, &fp_out, NULL, NULL);
 
     if (pid < 0)
     {
       mutt_perror(_("Can't create filter"));
-      mutt_file_fclose(&ifp);
+      mutt_file_fclose(&fp_in);
       goto bail;
     }
 
-    mutt_file_copy_stream(ifp, ofp);
-    mutt_file_fclose(&ofp);
-    mutt_file_fclose(&ifp);
+    mutt_file_copy_stream(fp_in, fp_out);
+    mutt_file_fclose(&fp_out);
+    mutt_file_fclose(&fp_in);
   }
 
   rc = 1;
@@ -872,30 +870,30 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
 
     /* In send mode, just copy file */
 
-    FILE *ofp = fopen(m->filename, "r");
-    if (!ofp)
+    FILE *fp_old = fopen(m->filename, "r");
+    if (!fp_old)
     {
       mutt_perror("fopen");
       return -1;
     }
 
-    FILE *nfp = save_attachment_open(path, flags);
-    if (!nfp)
+    FILE *fp_new = save_attachment_open(path, flags);
+    if (!fp_new)
     {
       mutt_perror("fopen");
-      mutt_file_fclose(&ofp);
+      mutt_file_fclose(&fp_old);
       return -1;
     }
 
-    if (mutt_file_copy_stream(ofp, nfp) == -1)
+    if (mutt_file_copy_stream(fp_old, fp_new) == -1)
     {
       mutt_error(_("Write fault"));
-      mutt_file_fclose(&ofp);
-      mutt_file_fclose(&nfp);
+      mutt_file_fclose(&fp_old);
+      mutt_file_fclose(&fp_new);
       return -1;
     }
-    mutt_file_fclose(&ofp);
-    if (mutt_file_fsync_close(&nfp) != 0)
+    mutt_file_fclose(&fp_old);
+    if (mutt_file_fsync_close(&fp_new) != 0)
     {
       mutt_error(_("Write fault"));
       return -1;
@@ -1018,7 +1016,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
   char newfile[PATH_MAX] = "";
   char type[256];
   pid_t pid;
-  FILE *ifp = NULL, *fpout = NULL;
+  FILE *fp_in = NULL, *fp_out = NULL;
   bool unlink_newfile = false;
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
@@ -1062,25 +1060,25 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     /* interactive program */
     if (piped)
     {
-      ifp = fopen(newfile, "r");
-      if (!ifp)
+      fp_in = fopen(newfile, "r");
+      if (!fp_in)
       {
         mutt_perror("fopen");
         rfc1524_free_entry(&entry);
         return 0;
       }
 
-      pid = mutt_create_filter(cmd, &fpout, NULL, NULL);
+      pid = mutt_create_filter(cmd, &fp_out, NULL, NULL);
       if (pid < 0)
       {
         mutt_perror(_("Can't create filter"));
         rfc1524_free_entry(&entry);
-        mutt_file_fclose(&ifp);
+        mutt_file_fclose(&fp_in);
         return 0;
       }
-      mutt_file_copy_stream(ifp, fpout);
-      mutt_file_fclose(&fpout);
-      mutt_file_fclose(&ifp);
+      mutt_file_copy_stream(fp_in, fp_out);
+      mutt_file_fclose(&fp_out);
+      mutt_file_fclose(&fp_in);
       if (mutt_wait_filter(pid) || C_WaitKey)
         mutt_any_key_to_continue(NULL);
     }
@@ -1114,16 +1112,16 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
 
     int rc = 0;
 
-    ifp = NULL;
-    fpout = NULL;
+    fp_in = NULL;
+    fp_out = NULL;
 
     mutt_mktemp(newfile, sizeof(newfile));
     if (mutt_decode_save_attachment(fp, a, newfile, MUTT_PRINTING, 0) == 0)
     {
       mutt_debug(LL_DEBUG2, "successfully decoded %s type attachment to %s\n", type, newfile);
 
-      ifp = fopen(newfile, "r");
-      if (!ifp)
+      fp_in = fopen(newfile, "r");
+      if (!fp_in)
       {
         mutt_perror("fopen");
         goto bail0;
@@ -1132,7 +1130,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       mutt_debug(LL_DEBUG2, "successfully opened %s read-only\n", newfile);
 
       mutt_endwin();
-      pid = mutt_create_filter(NONULL(C_PrintCommand), &fpout, NULL, NULL);
+      pid = mutt_create_filter(NONULL(C_PrintCommand), &fp_out, NULL, NULL);
       if (pid < 0)
       {
         mutt_perror(_("Can't create filter"));
@@ -1141,18 +1139,18 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
 
       mutt_debug(LL_DEBUG2, "Filter created.\n");
 
-      mutt_file_copy_stream(ifp, fpout);
+      mutt_file_copy_stream(fp_in, fp_out);
 
-      mutt_file_fclose(&fpout);
-      mutt_file_fclose(&ifp);
+      mutt_file_fclose(&fp_out);
+      mutt_file_fclose(&fp_in);
 
       if (mutt_wait_filter(pid) != 0 || C_WaitKey)
         mutt_any_key_to_continue(NULL);
       rc = 1;
     }
   bail0:
-    mutt_file_fclose(&ifp);
-    mutt_file_fclose(&fpout);
+    mutt_file_fclose(&fp_in);
+    mutt_file_fclose(&fp_out);
     mutt_file_unlink(newfile);
     return rc;
   }

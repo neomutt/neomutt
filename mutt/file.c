@@ -142,42 +142,42 @@ static int put_file_in_place(const char *path, const char *safe_file, const char
 
 /**
  * mutt_file_fclose - Close a FILE handle (and NULL the pointer)
- * @param[out] f FILE handle to close
+ * @param[out] fp FILE handle to close
  * @retval 0   Success
  * @retval EOF Error, see errno
  */
-int mutt_file_fclose(FILE **f)
+int mutt_file_fclose(FILE **fp)
 {
-  if (!f || !*f)
+  if (!fp || !*fp)
     return 0;
 
-  int r = fclose(*f);
-  *f = NULL;
+  int r = fclose(*fp);
+  *fp = NULL;
   return r;
 }
 
 /**
  * mutt_file_fsync_close - Flush the data, before closing a file (and NULL the pointer)
- * @param[out] f FILE handle to close
+ * @param[out] fp FILE handle to close
  * @retval 0   Success
  * @retval EOF Error, see errno
  */
-int mutt_file_fsync_close(FILE **f)
+int mutt_file_fsync_close(FILE **fp)
 {
-  if (!f || !*f)
+  if (!fp || !*fp)
     return 0;
 
   int r = 0;
 
-  if (fflush(*f) || fsync(fileno(*f)))
+  if (fflush(*fp) || fsync(fileno(*fp)))
   {
     int save_errno = errno;
     r = -1;
-    mutt_file_fclose(f);
+    mutt_file_fclose(fp);
     errno = save_errno;
   }
   else
-    r = mutt_file_fclose(f);
+    r = mutt_file_fclose(fp);
 
   return r;
 }
@@ -211,67 +211,67 @@ void mutt_file_unlink(const char *s)
     return;
   }
 
-  FILE *f = fdopen(fd, "r+");
-  if (f)
+  FILE *fp = fdopen(fd, "r+");
+  if (fp)
   {
     unlink(s);
     char buf[2048] = { 0 };
     while (sb.st_size > 0)
     {
-      fwrite(buf, 1, MIN(sizeof(buf), sb.st_size), f);
+      fwrite(buf, 1, MIN(sizeof(buf), sb.st_size), fp);
       sb.st_size -= MIN(sizeof(buf), sb.st_size);
     }
-    mutt_file_fclose(&f);
+    mutt_file_fclose(&fp);
   }
 }
 
 /**
  * mutt_file_copy_bytes - Copy some content from one file to another
- * @param in   Source file
- * @param out  Destination file
- * @param size Maximum number of bytes to copy
+ * @param fp_in  Source file
+ * @param fp_out Destination file
+ * @param size   Maximum number of bytes to copy
  * @retval  0 Success
  * @retval -1 Error, see errno
  */
-int mutt_file_copy_bytes(FILE *in, FILE *out, size_t size)
+int mutt_file_copy_bytes(FILE *fp_in, FILE *fp_out, size_t size)
 {
   while (size > 0)
   {
     char buf[2048];
     size_t chunk = (size > sizeof(buf)) ? sizeof(buf) : size;
-    chunk = fread(buf, 1, chunk, in);
+    chunk = fread(buf, 1, chunk, fp_in);
     if (chunk < 1)
       break;
-    if (fwrite(buf, 1, chunk, out) != chunk)
+    if (fwrite(buf, 1, chunk, fp_out) != chunk)
       return -1;
 
     size -= chunk;
   }
 
-  if (fflush(out) != 0)
+  if (fflush(fp_out) != 0)
     return -1;
   return 0;
 }
 
 /**
  * mutt_file_copy_stream - Copy the contents of one file into another
- * @param fin  Source file
- * @param fout Destination file
+ * @param fp_in  Source file
+ * @param fp_out Destination file
  * @retval  0 Success
  * @retval -1 Error, see errno
  */
-int mutt_file_copy_stream(FILE *fin, FILE *fout)
+int mutt_file_copy_stream(FILE *fp_in, FILE *fp_out)
 {
   size_t l;
   char buf[1024];
 
-  while ((l = fread(buf, 1, sizeof(buf), fin)) > 0)
+  while ((l = fread(buf, 1, sizeof(buf), fp_in)) > 0)
   {
-    if (fwrite(buf, 1, l, fout) != l)
+    if (fwrite(buf, 1, l, fp_out) != l)
       return -1;
   }
 
-  if (fflush(fout) != 0)
+  if (fflush(fp_out) != 0)
     return -1;
   return 0;
 }
@@ -572,18 +572,18 @@ FILE *mutt_file_fopen(const char *path, const char *mode)
 
 /**
  * mutt_file_sanitize_filename - Replace unsafe characters in a filename
- * @param f     Filename to make safe
+ * @param fp     Filename to make safe
  * @param slash Replace '/' characters too
  */
-void mutt_file_sanitize_filename(char *f, bool slash)
+void mutt_file_sanitize_filename(char *fp, bool slash)
 {
-  if (!f)
+  if (!fp)
     return;
 
-  for (; *f; f++)
+  for (; *fp; fp++)
   {
-    if ((slash && (*f == '/')) || !strchr(safe_chars, *f))
-      *f = '_';
+    if ((slash && (*fp == '/')) || !strchr(safe_chars, *fp))
+      *fp = '_';
   }
 }
 
@@ -874,14 +874,14 @@ FILE *mutt_file_mkstemp_full(const char *file, int line, const char *func)
 
 /**
  * mutt_file_decrease_mtime - Decrease a file's modification time by 1 second
- * @param f  Filename
+ * @param fp Filename
  * @param st struct stat for the file (optional)
  * @retval num Updated Unix mtime
  * @retval -1  Error, see errno
  *
  * If a file's mtime is NOW, then set it to 1 second in the past.
  */
-time_t mutt_file_decrease_mtime(const char *f, struct stat *st)
+time_t mutt_file_decrease_mtime(const char *fp, struct stat *st)
 {
   struct utimbuf utim;
   struct stat st2;
@@ -889,7 +889,7 @@ time_t mutt_file_decrease_mtime(const char *f, struct stat *st)
 
   if (!st)
   {
-    if (stat(f, &st2) == -1)
+    if (stat(fp, &st2) == -1)
       return -1;
     st = &st2;
   }
@@ -900,7 +900,7 @@ time_t mutt_file_decrease_mtime(const char *f, struct stat *st)
     mtime -= 1;
     utim.actime = mtime;
     utim.modtime = mtime;
-    utime(f, &utim);
+    utime(fp, &utim);
   }
 
   return mtime;
@@ -1239,24 +1239,23 @@ void mutt_file_unlink_empty(const char *path)
  */
 int mutt_file_rename(const char *oldfile, const char *newfile)
 {
-  FILE *ofp = NULL, *nfp = NULL;
-
   if (access(oldfile, F_OK) != 0)
     return 1;
   if (access(newfile, F_OK) == 0)
     return 2;
-  ofp = fopen(oldfile, "r");
-  if (!ofp)
+
+  FILE *fp_old = fopen(oldfile, "r");
+  if (!fp_old)
     return 3;
-  nfp = mutt_file_fopen(newfile, "w");
-  if (!nfp)
+  FILE *fp_new = mutt_file_fopen(newfile, "w");
+  if (!fp_new)
   {
-    mutt_file_fclose(&ofp);
+    mutt_file_fclose(&fp_old);
     return 3;
   }
-  mutt_file_copy_stream(ofp, nfp);
-  mutt_file_fclose(&nfp);
-  mutt_file_fclose(&ofp);
+  mutt_file_copy_stream(fp_old, fp_new);
+  mutt_file_fclose(&fp_new);
+  mutt_file_fclose(&fp_old);
   mutt_file_unlink(oldfile);
   return 0;
 }

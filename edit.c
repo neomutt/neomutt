@@ -80,7 +80,7 @@ static char *EditorHelp2 =
 
 /**
  * be_snarf_data - Read data from a file into a buffer
- * @param[in]  f      File to read from
+ * @param[in]  fp     File to read from
  * @param[out] buf    Buffer allocated to save data
  * @param[out] bufmax Allocated size of buffer
  * @param[out] buflen Bytes of buffer used
@@ -89,7 +89,7 @@ static char *EditorHelp2 =
  * @param[in]  prefix If true, prefix the lines with the #C_IndentString
  * @retval ptr Pointer to allocated buffer
  */
-static char **be_snarf_data(FILE *f, char **buf, int *bufmax, int *buflen,
+static char **be_snarf_data(FILE *fp, char **buf, int *bufmax, int *buflen,
                             LOFF_T offset, int bytes, int prefix)
 {
   char tmp[8192];
@@ -105,10 +105,10 @@ static char **be_snarf_data(FILE *f, char **buf, int *bufmax, int *buflen,
     tmplen = sizeof(tmp) - tmplen;
   }
 
-  fseeko(f, offset, SEEK_SET);
+  fseeko(fp, offset, SEEK_SET);
   while (bytes > 0)
   {
-    if (!fgets(p, tmplen - 1, f))
+    if (!fgets(p, tmplen - 1, fp))
       break;
     bytes -= mutt_str_strlen(p);
     if (*bufmax == *buflen)
@@ -138,17 +138,17 @@ static char **be_snarf_file(const char *path, char **buf, int *max, int *len, bo
   char tmp[1024];
   struct stat sb;
 
-  FILE *f = fopen(path, "r");
-  if (f)
+  FILE *fp = fopen(path, "r");
+  if (fp)
   {
-    fstat(fileno(f), &sb);
-    buf = be_snarf_data(f, buf, max, len, 0, sb.st_size, 0);
+    fstat(fileno(fp), &sb);
+    buf = be_snarf_data(fp, buf, max, len, 0, sb.st_size, 0);
     if (verbose)
     {
       snprintf(tmp, sizeof(tmp), "\"%s\" %lu bytes\n", path, (unsigned long) sb.st_size);
       addstr(tmp);
     }
-    mutt_file_fclose(&f);
+    mutt_file_fclose(&fp);
   }
   else
   {
@@ -168,16 +168,16 @@ static char **be_snarf_file(const char *path, char **buf, int *max, int *len, bo
  */
 static int be_barf_file(const char *path, char **buf, int buflen)
 {
-  FILE *f = fopen(path, "w");
-  if (!f)
+  FILE *fp = fopen(path, "w");
+  if (!fp)
   {
     addstr(strerror(errno));
     addch('\n');
     return -1;
   }
   for (int i = 0; i < buflen; i++)
-    fputs(buf[i], f);
-  if (fclose(f) == 0)
+    fputs(buf[i], fp);
+  if (fclose(fp) == 0)
     return 0;
   printw("fclose: %s\n", strerror(errno));
   return -1;

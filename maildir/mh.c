@@ -168,8 +168,6 @@ static void mhs_write_one_sequence(FILE *fp, struct MhSequences *mhs,
  */
 void mh_update_sequences(struct Mailbox *m)
 {
-  FILE *ofp = NULL, *nfp = NULL;
-
   char sequences[PATH_MAX];
   char *tmpfname = NULL;
   char *buf = NULL;
@@ -192,7 +190,8 @@ void mh_update_sequences(struct Mailbox *m)
   snprintf(seq_replied, sizeof(seq_replied), "%s:", NONULL(C_MhSeqReplied));
   snprintf(seq_flagged, sizeof(seq_flagged), "%s:", NONULL(C_MhSeqFlagged));
 
-  if (mh_mkstemp(m, &nfp, &tmpfname) != 0)
+  FILE *fp_new = NULL;
+  if (mh_mkstemp(m, &fp_new, &tmpfname) != 0)
   {
     /* error message? */
     return;
@@ -201,20 +200,20 @@ void mh_update_sequences(struct Mailbox *m)
   snprintf(sequences, sizeof(sequences), "%s/.mh_sequences", m->path);
 
   /* first, copy unknown sequences */
-  ofp = fopen(sequences, "r");
-  if (ofp)
+  FILE *fp_old = fopen(sequences, "r");
+  if (fp_old)
   {
-    while ((buf = mutt_file_read_line(buf, &s, ofp, &l, 0)))
+    while ((buf = mutt_file_read_line(buf, &s, fp_old, &l, 0)))
     {
       if (mutt_str_startswith(buf, seq_unseen, CASE_MATCH) ||
           mutt_str_startswith(buf, seq_flagged, CASE_MATCH) ||
           mutt_str_startswith(buf, seq_replied, CASE_MATCH))
         continue;
 
-      fprintf(nfp, "%s\n", buf);
+      fprintf(fp_new, "%s\n", buf);
     }
   }
-  mutt_file_fclose(&ofp);
+  mutt_file_fclose(&fp_old);
 
   /* now, update our unseen, flagged, and replied sequences */
   for (l = 0; l < m->msg_count; l++)
@@ -250,16 +249,16 @@ void mh_update_sequences(struct Mailbox *m)
 
   /* write out the new sequences */
   if (unseen)
-    mhs_write_one_sequence(nfp, &mhs, MH_SEQ_UNSEEN, NONULL(C_MhSeqUnseen));
+    mhs_write_one_sequence(fp_new, &mhs, MH_SEQ_UNSEEN, NONULL(C_MhSeqUnseen));
   if (flagged)
-    mhs_write_one_sequence(nfp, &mhs, MH_SEQ_FLAGGED, NONULL(C_MhSeqFlagged));
+    mhs_write_one_sequence(fp_new, &mhs, MH_SEQ_FLAGGED, NONULL(C_MhSeqFlagged));
   if (replied)
-    mhs_write_one_sequence(nfp, &mhs, MH_SEQ_REPLIED, NONULL(C_MhSeqReplied));
+    mhs_write_one_sequence(fp_new, &mhs, MH_SEQ_REPLIED, NONULL(C_MhSeqReplied));
 
   mhs_free_sequences(&mhs);
 
   /* try to commit the changes - no guarantee here */
-  mutt_file_fclose(&nfp);
+  mutt_file_fclose(&fp_new);
 
   unlink(sequences);
   if (mutt_file_safe_rename(tmpfname, sequences) != 0)

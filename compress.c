@@ -78,21 +78,21 @@ static bool lock_realpath(struct Mailbox *m, bool excl)
     return true;
 
   if (excl)
-    ci->lockfp = fopen(m->realpath, "a");
+    ci->fp_lock = fopen(m->realpath, "a");
   else
-    ci->lockfp = fopen(m->realpath, "r");
-  if (!ci->lockfp)
+    ci->fp_lock = fopen(m->realpath, "r");
+  if (!ci->fp_lock)
   {
     mutt_perror(m->realpath);
     return false;
   }
 
-  int r = mutt_file_lock(fileno(ci->lockfp), excl, true);
+  int r = mutt_file_lock(fileno(ci->fp_lock), excl, true);
   if (r == 0)
     ci->locked = true;
   else if (excl)
   {
-    mutt_file_fclose(&ci->lockfp);
+    mutt_file_fclose(&ci->fp_lock);
     m->readonly = true;
     return true;
   }
@@ -116,10 +116,10 @@ static void unlock_realpath(struct Mailbox *m)
   if (!ci->locked)
     return;
 
-  mutt_file_unlock(fileno(ci->lockfp));
+  mutt_file_unlock(fileno(ci->fp_lock));
 
   ci->locked = false;
-  mutt_file_fclose(&ci->lockfp);
+  mutt_file_fclose(&ci->fp_lock);
 }
 
 /**

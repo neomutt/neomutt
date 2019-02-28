@@ -749,18 +749,18 @@ static bool mbox_has_new(struct Mailbox *m)
 
 /**
  * fseek_last_message - Find the last message in the file
- * @param f File to search
+ * @param fp File to search
  * @retval  0 Success
  * @retval -1 No message found
  */
-static int fseek_last_message(FILE *f)
+static int fseek_last_message(FILE *fp)
 {
   LOFF_T pos;
   char buf[BUFSIZ + 9] = { 0 }; /* 7 for "\n\nFrom " */
   size_t bytes_read;
 
-  fseek(f, 0, SEEK_END);
-  pos = ftello(f);
+  fseek(fp, 0, SEEK_END);
+  pos = ftello(fp);
 
   /* Set 'bytes_read' to the size of the last, probably partial, buf;
    * 0 < 'bytes_read' <= 'BUFSIZ'.  */
@@ -773,8 +773,8 @@ static int fseek_last_message(FILE *f)
   {
     /* we save in the buf at the end the first 7 chars from the last read */
     strncpy(buf + BUFSIZ, buf, 5 + 2); /* 2 == 2 * mutt_str_strlen(CRLF) */
-    fseeko(f, pos, SEEK_SET);
-    bytes_read = fread(buf, sizeof(char), bytes_read, f);
+    fseeko(fp, pos, SEEK_SET);
+    bytes_read = fread(buf, sizeof(char), bytes_read, fp);
     if (bytes_read == 0)
       return -1;
     /* 'i' is Index into 'buf' for scanning.  */
@@ -782,7 +782,7 @@ static int fseek_last_message(FILE *f)
     {
       if (mutt_str_startswith(buf + i, "\n\nFrom ", CASE_MATCH))
       { /* found it - go to the beginning of the From */
-        fseeko(f, pos + i + 2, SEEK_SET);
+        fseeko(fp, pos + i + 2, SEEK_SET);
         return 0;
       }
     }
@@ -792,7 +792,7 @@ static int fseek_last_message(FILE *f)
   /* here we are at the beginning of the file */
   if (mutt_str_startswith(buf, "From ", CASE_MATCH))
   {
-    fseek(f, 0, SEEK_SET);
+    fseek(fp, 0, SEEK_SET);
     return 0;
   }
 
@@ -801,20 +801,20 @@ static int fseek_last_message(FILE *f)
 
 /**
  * test_last_status_new - Is the last message new
- * @param f File to check
+ * @param fp File to check
  * @retval true if the last message is new
  */
-static bool test_last_status_new(FILE *f)
+static bool test_last_status_new(FILE *fp)
 {
   struct Email *e = NULL;
   struct Envelope *tmp_envelope = NULL;
   bool result = false;
 
-  if (fseek_last_message(f) == -1)
+  if (fseek_last_message(fp) == -1)
     return false;
 
   e = mutt_email_new();
-  tmp_envelope = mutt_rfc822_read_header(f, e, false, false);
+  tmp_envelope = mutt_rfc822_read_header(fp, e, false, false);
   if (!(e->read || e->old))
     result = true;
 
@@ -831,7 +831,6 @@ static bool test_last_status_new(FILE *f)
  */
 bool mbox_test_new_folder(const char *path)
 {
-  FILE *f = NULL;
   bool rc = false;
 
   enum MailboxType magic = mx_path_probe(path, NULL);
@@ -839,11 +838,11 @@ bool mbox_test_new_folder(const char *path)
   if ((magic != MUTT_MBOX) && (magic != MUTT_MMDF))
     return false;
 
-  f = fopen(path, "rb");
-  if (f)
+  FILE *fp = fopen(path, "rb");
+  if (fp)
   {
-    rc = test_last_status_new(f);
-    mutt_file_fclose(&f);
+    rc = test_last_status_new(fp);
+    mutt_file_fclose(&fp);
   }
 
   return rc;

@@ -827,14 +827,13 @@ void crypt_extract_keys_from_messages(struct EmailList *el)
 {
   char tempfname[PATH_MAX], *mbox = NULL;
   struct Address *tmp = NULL;
-  FILE *fpout = NULL;
 
   if (!WithCrypto)
     return;
 
   mutt_mktemp(tempfname, sizeof(tempfname));
-  fpout = mutt_file_fopen(tempfname, "w");
-  if (!fpout)
+  FILE *fp_out = mutt_file_fopen(tempfname, "w");
+  if (!fp_out)
   {
     mutt_perror(tempfname);
     return;
@@ -851,15 +850,15 @@ void crypt_extract_keys_from_messages(struct EmailList *el)
     mutt_parse_mime_message(Context->mailbox, e);
     if (e->security & SEC_ENCRYPT && !crypt_valid_passphrase(e->security))
     {
-      mutt_file_fclose(&fpout);
+      mutt_file_fclose(&fp_out);
       break;
     }
 
     if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & APPLICATION_PGP))
     {
-      mutt_copy_message_ctx(fpout, Context->mailbox, e,
+      mutt_copy_message_ctx(fp_out, Context->mailbox, e,
                             MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
-      fflush(fpout);
+      fflush(fp_out);
 
       mutt_endwin();
       puts(_("Trying to extract PGP keys...\n"));
@@ -870,13 +869,13 @@ void crypt_extract_keys_from_messages(struct EmailList *el)
     {
       if (e->security & SEC_ENCRYPT)
       {
-        mutt_copy_message_ctx(fpout, Context->mailbox, e,
+        mutt_copy_message_ctx(fp_out, Context->mailbox, e,
                               MUTT_CM_NOHEADER | MUTT_CM_DECODE_CRYPT | MUTT_CM_DECODE_SMIME,
                               0);
       }
       else
-        mutt_copy_message_ctx(fpout, Context->mailbox, e, 0, 0);
-      fflush(fpout);
+        mutt_copy_message_ctx(fp_out, Context->mailbox, e, 0, 0);
+      fflush(fp_out);
 
       if (e->env->from)
         tmp = mutt_expand_aliases(e->env->from);
@@ -892,10 +891,10 @@ void crypt_extract_keys_from_messages(struct EmailList *el)
       }
     }
 
-    rewind(fpout);
+    rewind(fp_out);
   }
 
-  mutt_file_fclose(&fpout);
+  mutt_file_fclose(&fp_out);
   if (isendwin())
     mutt_any_key_to_continue(NULL);
 

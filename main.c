@@ -843,8 +843,8 @@ int main(int argc, char *argv[], char *envp[])
   else if (subject || msg || sendflags || draft_file || include_file ||
            !STAILQ_EMPTY(&attach) || optind < argc)
   {
-    FILE *fin = NULL;
-    FILE *fout = NULL;
+    FILE *fp_in = NULL;
+    FILE *fp_out = NULL;
     char *tempfile = NULL, *infile = NULL;
     char *bodytext = NULL, *bodyfile = NULL;
     int rv = 0;
@@ -893,7 +893,7 @@ int main(int argc, char *argv[], char *envp[])
 
     if (infile || bodytext)
     {
-      /* Prepare fin and expanded_infile. */
+      /* Prepare fp_in and expanded_infile. */
       if (infile)
       {
         if (mutt_str_strcmp("-", infile) == 0)
@@ -903,14 +903,14 @@ int main(int argc, char *argv[], char *envp[])
             mutt_error(_("Cannot use -E flag with stdin"));
             goto main_curses; // TEST27: neomutt -E -H -
           }
-          fin = stdin;
+          fp_in = stdin;
         }
         else
         {
           mutt_str_strfcpy(expanded_infile, infile, sizeof(expanded_infile));
           mutt_expand_path(expanded_infile, sizeof(expanded_infile));
-          fin = fopen(expanded_infile, "r");
-          if (!fin)
+          fp_in = fopen(expanded_infile, "r");
+          if (!fp_in)
           {
             mutt_perror(expanded_infile);
             goto main_curses; // TEST28: neomutt -E -H missing
@@ -918,7 +918,7 @@ int main(int argc, char *argv[], char *envp[])
         }
       }
 
-      /* Copy input to a tempfile, and re-point fin to the tempfile.
+      /* Copy input to a tempfile, and re-point fp_in to the tempfile.
        * Note: stdin is always copied to a tempfile, ensuring draft_file
        * can stat and get the correct st_size below.
        */
@@ -928,26 +928,26 @@ int main(int argc, char *argv[], char *envp[])
         mutt_mktemp(buf, sizeof(buf));
         tempfile = mutt_str_strdup(buf);
 
-        fout = mutt_file_fopen(tempfile, "w");
-        if (!fout)
+        fp_out = mutt_file_fopen(tempfile, "w");
+        if (!fp_out)
         {
-          mutt_file_fclose(&fin);
+          mutt_file_fclose(&fp_in);
           mutt_perror(tempfile);
           FREE(&tempfile);
           goto main_curses; // TEST29: neomutt -H existing-file (where tmpdir=/path/to/FILE blocking tmpdir)
         }
-        if (fin)
+        if (fp_in)
         {
-          mutt_file_copy_stream(fin, fout);
-          if (fin != stdin)
-            mutt_file_fclose(&fin);
+          mutt_file_copy_stream(fp_in, fp_out);
+          if (fp_in != stdin)
+            mutt_file_fclose(&fp_in);
         }
         else if (bodytext)
-          fputs(bodytext, fout);
-        mutt_file_fclose(&fout);
+          fputs(bodytext, fp_out);
+        mutt_file_fclose(&fp_out);
 
-        fin = fopen(tempfile, "r");
-        if (!fin)
+        fp_in = fopen(tempfile, "r");
+        if (!fp_in)
         {
           mutt_perror(tempfile);
           FREE(&tempfile);
@@ -972,19 +972,19 @@ int main(int argc, char *argv[], char *envp[])
         sendflags |= SEND_DRAFT_FILE;
 
         /* Set up a "context" header with just enough information so that
-         * mutt_prepare_template() can parse the message in fin.
+         * mutt_prepare_template() can parse the message in fp_in.
          */
         struct Email *context_hdr = mutt_email_new();
         context_hdr->offset = 0;
         context_hdr->content = mutt_body_new();
-        if (fstat(fileno(fin), &st) != 0)
+        if (fstat(fileno(fp_in), &st) != 0)
         {
           mutt_perror(draft_file);
           goto main_curses; // TEST31: can't test
         }
         context_hdr->content->length = st.st_size;
 
-        if (mutt_prepare_template(fin, NULL, msg, context_hdr, false) < 0)
+        if (mutt_prepare_template(fp_in, NULL, msg, context_hdr, false) < 0)
         {
           mutt_error(_("Cannot parse message template: %s"), draft_file);
           mutt_env_free(&opts_env);
@@ -1026,7 +1026,7 @@ int main(int argc, char *argv[], char *envp[])
       else
         bodyfile = tempfile;
 
-      mutt_file_fclose(&fin);
+      mutt_file_fclose(&fp_in);
     }
 
     FREE(&bodytext);
@@ -1078,8 +1078,8 @@ int main(int argc, char *argv[], char *envp[])
           mutt_perror(expanded_infile);
           goto main_curses; // TEST33: neomutt -H read-only -s test john@example.com -E
         }
-        fout = mutt_file_fopen(expanded_infile, "a");
-        if (!fout)
+        fp_out = mutt_file_fopen(expanded_infile, "a");
+        if (!fp_out)
         {
           mutt_perror(expanded_infile);
           goto main_curses; // TEST34: can't test
@@ -1098,17 +1098,17 @@ int main(int argc, char *argv[], char *envp[])
         }
 
         mutt_rfc822_write_header(
-            fout, msg->env, msg->content, MUTT_WRITE_HEADER_POSTPONE, false,
+            fp_out, msg->env, msg->content, MUTT_WRITE_HEADER_POSTPONE, false,
             C_CryptProtectedHeadersRead && mutt_should_hide_protected_subject(msg));
         if (C_ResumeEditedDraftFiles)
-          fprintf(fout, "X-Mutt-Resume-Draft: 1\n");
-        fputc('\n', fout);
-        if ((mutt_write_mime_body(msg->content, fout) == -1))
+          fprintf(fp_out, "X-Mutt-Resume-Draft: 1\n");
+        fputc('\n', fp_out);
+        if ((mutt_write_mime_body(msg->content, fp_out) == -1))
         {
-          mutt_file_fclose(&fout);
+          mutt_file_fclose(&fp_out);
           goto main_curses; // TEST35: can't test
         }
-        mutt_file_fclose(&fout);
+        mutt_file_fclose(&fp_out);
       }
 
       mutt_email_free(&msg);

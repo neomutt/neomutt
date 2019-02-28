@@ -179,8 +179,6 @@ int mutt_display_message(struct Email *cur)
   bool builtin = false;
   CopyMessageFlags cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
   CopyHeaderFlags chflags;
-  FILE *fpout = NULL;
-  FILE *fpfilterout = NULL;
   pid_t filterpid = -1;
   int res;
 
@@ -227,8 +225,9 @@ int mutt_display_message(struct Email *cur)
   }
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  fpout = mutt_file_fopen(tempfile, "w");
-  if (!fpout)
+  FILE *fp_filter_out = NULL;
+  FILE *fp_out = mutt_file_fopen(tempfile, "w");
+  if (!fp_out)
   {
     mutt_error(_("Could not create temporary file"));
     return 0;
@@ -236,14 +235,14 @@ int mutt_display_message(struct Email *cur)
 
   if (C_DisplayFilter && *C_DisplayFilter)
   {
-    fpfilterout = fpout;
-    fpout = NULL;
-    filterpid = mutt_create_filter_fd(C_DisplayFilter, &fpout, NULL, NULL, -1,
-                                      fileno(fpfilterout), -1);
+    fp_filter_out = fp_out;
+    fp_out = NULL;
+    filterpid = mutt_create_filter_fd(C_DisplayFilter, &fp_out, NULL, NULL, -1,
+                                      fileno(fp_filter_out), -1);
     if (filterpid < 0)
     {
       mutt_error(_("Cannot create display filter"));
-      mutt_file_fclose(&fpfilterout);
+      mutt_file_fclose(&fp_filter_out);
       unlink(tempfile);
       return 0;
     }
@@ -260,8 +259,8 @@ int mutt_display_message(struct Email *cur)
     hfi.email = cur;
     mutt_make_string_info(buf, sizeof(buf), MuttIndexWindow->cols,
                           NONULL(C_PagerFormat), &hfi, 0);
-    fputs(buf, fpout);
-    fputs("\n\n", fpout);
+    fputs(buf, fp_out);
+    fputs("\n\n", fp_out);
   }
 
   chflags = (C_Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_FROM | CH_DISPLAY;
@@ -269,24 +268,24 @@ int mutt_display_message(struct Email *cur)
   if (Context->mailbox->magic == MUTT_NOTMUCH)
     chflags |= CH_VIRTUAL;
 #endif
-  res = mutt_copy_message_ctx(fpout, Context->mailbox, cur, cmflags, chflags);
+  res = mutt_copy_message_ctx(fp_out, Context->mailbox, cur, cmflags, chflags);
 
-  if ((mutt_file_fclose(&fpout) != 0 && errno != EPIPE) || res < 0)
+  if ((mutt_file_fclose(&fp_out) != 0 && errno != EPIPE) || res < 0)
   {
     mutt_error(_("Could not copy message"));
-    if (fpfilterout)
+    if (fp_filter_out)
     {
       mutt_wait_filter(filterpid);
-      mutt_file_fclose(&fpfilterout);
+      mutt_file_fclose(&fp_filter_out);
     }
     mutt_file_unlink(tempfile);
     return 0;
   }
 
-  if (fpfilterout && mutt_wait_filter(filterpid) != 0)
+  if (fp_filter_out && mutt_wait_filter(filterpid) != 0)
     mutt_any_key_to_continue(NULL);
 
-  mutt_file_fclose(&fpfilterout); /* XXX - check result? */
+  mutt_file_fclose(&fp_filter_out); /* XXX - check result? */
 
   if (WithCrypto)
   {
@@ -546,7 +545,7 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
 
   int rc = 0;
   pid_t pid;
-  FILE *fpout = NULL;
+  FILE *fp_out = NULL;
 
   if (!STAILQ_NEXT(en, entries))
   {
@@ -562,7 +561,7 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
     }
     mutt_endwin();
 
-    pid = mutt_create_filter(cmd, &fpout, NULL, NULL);
+    pid = mutt_create_filter(cmd, &fp_out, NULL, NULL);
     if (pid < 0)
     {
       mutt_perror(_("Can't create filter process"));
@@ -570,8 +569,8 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
     }
 
     OptKeepQuiet = true;
-    pipe_msg(m, en->email, fpout, decode, print);
-    mutt_file_fclose(&fpout);
+    pipe_msg(m, en->email, fp_out, decode, print);
+    mutt_file_fclose(&fp_out);
     rc = mutt_wait_filter(pid);
     OptKeepQuiet = false;
   }
@@ -598,18 +597,18 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
       {
         mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
         mutt_endwin();
-        pid = mutt_create_filter(cmd, &fpout, NULL, NULL);
+        pid = mutt_create_filter(cmd, &fp_out, NULL, NULL);
         if (pid < 0)
         {
           mutt_perror(_("Can't create filter process"));
           return 1;
         }
         OptKeepQuiet = true;
-        pipe_msg(m, en->email, fpout, decode, print);
+        pipe_msg(m, en->email, fp_out, decode, print);
         /* add the message separator */
         if (sep)
-          fputs(sep, fpout);
-        mutt_file_fclose(&fpout);
+          fputs(sep, fp_out);
+        mutt_file_fclose(&fp_out);
         if (mutt_wait_filter(pid) != 0)
           rc = 1;
         OptKeepQuiet = false;
@@ -618,7 +617,7 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
     else
     {
       mutt_endwin();
-      pid = mutt_create_filter(cmd, &fpout, NULL, NULL);
+      pid = mutt_create_filter(cmd, &fp_out, NULL, NULL);
       if (pid < 0)
       {
         mutt_perror(_("Can't create filter process"));
@@ -628,12 +627,12 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
       STAILQ_FOREACH(en, el, entries)
       {
         mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
-        pipe_msg(m, en->email, fpout, decode, print);
+        pipe_msg(m, en->email, fp_out, decode, print);
         /* add the message separator */
         if (sep)
-          fputs(sep, fpout);
+          fputs(sep, fp_out);
       }
-      mutt_file_fclose(&fpout);
+      mutt_file_fclose(&fp_out);
       if (mutt_wait_filter(pid) != 0)
         rc = 1;
       OptKeepQuiet = false;

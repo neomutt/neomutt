@@ -450,7 +450,7 @@ bool mutt_is_text_part(struct Body *b)
   return false;
 }
 
-static FILE *frandom;
+static FILE *fp_random;
 
 /**
  * mutt_randbuf - Fill a buffer with randomness
@@ -478,17 +478,17 @@ int mutt_randbuf(void *buf, size_t buflen)
 #endif
   /* let's try urandom in case we're on an old kernel, or the user has
    * configured selinux, seccomp or something to not allow getrandom */
-  if (!frandom)
+  if (!fp_random)
   {
-    frandom = fopen("/dev/urandom", "rb");
-    if (!frandom)
+    fp_random = fopen("/dev/urandom", "rb");
+    if (!fp_random)
     {
       mutt_error(_("open /dev/urandom: %s"), strerror(errno));
       return -1;
     }
-    setbuf(frandom, NULL);
+    setbuf(fp_random, NULL);
   }
-  if (fread(buf, 1, buflen, frandom) != buflen)
+  if (fread(buf, 1, buflen, fp_random) != buflen)
   {
     mutt_error(_("read /dev/urandom: %s"), strerror(errno));
     return -1;
@@ -818,7 +818,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
   char prefix[128], tmp[1024], *cp = NULL, *wptr = buf, ch;
   char if_str[128], else_str[128];
   size_t wlen, count, len, wid;
-  FILE *filter = NULL;
+  FILE *fp_filter = NULL;
   char *recycler = NULL;
 
   char src2[256];
@@ -895,13 +895,13 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
 
       col -= wlen; /* reset to passed in value */
       wptr = buf;  /* reset write ptr */
-      pid_t pid = mutt_create_filter(cmd->data, NULL, &filter, NULL);
+      pid_t pid = mutt_create_filter(cmd->data, NULL, &fp_filter, NULL);
       if (pid != -1)
       {
         int rc;
 
-        n = fread(buf, 1, buflen /* already decremented */, filter);
-        mutt_file_fclose(&filter);
+        n = fread(buf, 1, buflen /* already decremented */, fp_filter);
+        mutt_file_fclose(&fp_filter);
         rc = mutt_wait_filter(pid);
         if (rc != 0)
           mutt_debug(LL_DEBUG1, "format pipe cmd exited code %d\n", rc);
@@ -1336,7 +1336,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
  */
 FILE *mutt_open_read(const char *path, pid_t *thepid)
 {
-  FILE *f = NULL;
+  FILE *fp = NULL;
   struct stat s;
 
   size_t len = mutt_str_strlen(path);
@@ -1353,7 +1353,7 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
 
     p[len - 1] = 0;
     mutt_endwin();
-    *thepid = mutt_create_filter(p, NULL, &f, NULL);
+    *thepid = mutt_create_filter(p, NULL, &fp, NULL);
     FREE(&p);
   }
   else
@@ -1365,10 +1365,10 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
       errno = EINVAL;
       return NULL;
     }
-    f = fopen(path, "r");
+    fp = fopen(path, "r");
     *thepid = -1;
   }
-  return f;
+  return fp;
 }
 
 /**

@@ -40,13 +40,13 @@
 
 /**
  * mutt_create_filter_fd - Run a command on a pipe (optionally connect stdin/stdout)
- * @param[in]  cmd   Command line to invoke using `sh -c`
- * @param[out] in    File stream pointing to stdin for the command process, can be NULL
- * @param[out] out   File stream pointing to stdout for the command process, can be NULL
- * @param[out] err   File stream pointing to stderr for the command process, can be NULL
- * @param[in]  fdin  If `in` is NULL and fdin is not -1 then fdin will be used as stdin for the command process
- * @param[in]  fdout If `out` is NULL and fdout is not -1 then fdout will be used as stdout for the command process
- * @param[in]  fderr If `error` is NULL and fderr is not -1 then fderr will be used as stderr for the command process
+ * @param[in]  cmd    Command line to invoke using `sh -c`
+ * @param[out] fp_in  File stream pointing to stdin for the command process, can be NULL
+ * @param[out] fp_out File stream pointing to stdout for the command process, can be NULL
+ * @param[out] fp_err File stream pointing to stderr for the command process, can be NULL
+ * @param[in]  fdin   If `in` is NULL and fdin is not -1 then fdin will be used as stdin for the command process
+ * @param[in]  fdout  If `out` is NULL and fdout is not -1 then fdout will be used as stdout for the command process
+ * @param[in]  fderr  If `error` is NULL and fderr is not -1 then fderr will be used as stderr for the command process
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
@@ -58,27 +58,27 @@
  *    mutt_create_filter_fd(commandline, NULL, NULL, NULL, -1, -1, -1);
  * @endcode
  *
- * Additionally, in, out, and err will point to FILE* streams representing the
- * processes stdin, stdout, and stderr.
+ * Additionally, fp_in, fp_out, and fp_err will point to FILE* streams
+ * representing the processes stdin, stdout, and stderr.
  */
-pid_t mutt_create_filter_fd(const char *cmd, FILE **in, FILE **out, FILE **err,
-                            int fdin, int fdout, int fderr)
+pid_t mutt_create_filter_fd(const char *cmd, FILE **fp_in, FILE **fp_out,
+                            FILE **fp_err, int fdin, int fdout, int fderr)
 {
   int pin[2], pout[2], perr[2], pid;
 
-  if (in)
+  if (fp_in)
   {
-    *in = 0;
+    *fp_in = 0;
     if (pipe(pin) == -1)
       return -1;
   }
 
-  if (out)
+  if (fp_out)
   {
-    *out = 0;
+    *fp_out = 0;
     if (pipe(pout) == -1)
     {
-      if (in)
+      if (fp_in)
       {
         close(pin[0]);
         close(pin[1]);
@@ -87,17 +87,17 @@ pid_t mutt_create_filter_fd(const char *cmd, FILE **in, FILE **out, FILE **err,
     }
   }
 
-  if (err)
+  if (fp_err)
   {
-    *err = 0;
+    *fp_err = 0;
     if (pipe(perr) == -1)
     {
-      if (in)
+      if (fp_in)
       {
         close(pin[0]);
         close(pin[1]);
       }
-      if (out)
+      if (fp_out)
       {
         close(pout[0]);
         close(pout[1]);
@@ -113,7 +113,7 @@ pid_t mutt_create_filter_fd(const char *cmd, FILE **in, FILE **out, FILE **err,
   {
     mutt_sig_unblock_system(false);
 
-    if (in)
+    if (fp_in)
     {
       close(pin[1]);
       dup2(pin[0], 0);
@@ -125,7 +125,7 @@ pid_t mutt_create_filter_fd(const char *cmd, FILE **in, FILE **out, FILE **err,
       close(fdin);
     }
 
-    if (out)
+    if (fp_out)
     {
       close(pout[0]);
       dup2(pout[1], 1);
@@ -137,7 +137,7 @@ pid_t mutt_create_filter_fd(const char *cmd, FILE **in, FILE **out, FILE **err,
       close(fdout);
     }
 
-    if (err)
+    if (fp_err)
     {
       close(perr[0]);
       dup2(perr[1], 2);
@@ -163,19 +163,19 @@ pid_t mutt_create_filter_fd(const char *cmd, FILE **in, FILE **out, FILE **err,
   {
     mutt_sig_unblock_system(true);
 
-    if (in)
+    if (fp_in)
     {
       close(pin[0]);
       close(pin[1]);
     }
 
-    if (out)
+    if (fp_out)
     {
       close(pout[0]);
       close(pout[1]);
     }
 
-    if (err)
+    if (fp_err)
     {
       close(perr[0]);
       close(perr[1]);
@@ -184,22 +184,22 @@ pid_t mutt_create_filter_fd(const char *cmd, FILE **in, FILE **out, FILE **err,
     return -1;
   }
 
-  if (out)
+  if (fp_out)
   {
     close(pout[1]);
-    *out = fdopen(pout[0], "r");
+    *fp_out = fdopen(pout[0], "r");
   }
 
-  if (in)
+  if (fp_in)
   {
     close(pin[0]);
-    *in = fdopen(pin[1], "w");
+    *fp_in = fdopen(pin[1], "w");
   }
 
-  if (err)
+  if (fp_err)
   {
     close(perr[1]);
-    *err = fdopen(perr[0], "r");
+    *fp_err = fdopen(perr[0], "r");
   }
 
   return pid;
@@ -207,15 +207,15 @@ pid_t mutt_create_filter_fd(const char *cmd, FILE **in, FILE **out, FILE **err,
 
 /**
  * mutt_create_filter - Set up filter program
- * @param[in]  s   Command string
- * @param[out] in  FILE pointer of stdin
- * @param[out] out FILE pointer of stdout
- * @param[out] err FILE pointer of stderr
+ * @param[in]  s      Command string
+ * @param[out] fp_in  FILE pointer of stdin
+ * @param[out] fp_out FILE pointer of stdout
+ * @param[out] fp_err FILE pointer of stderr
  * @retval num PID of filter
  */
-pid_t mutt_create_filter(const char *s, FILE **in, FILE **out, FILE **err)
+pid_t mutt_create_filter(const char *s, FILE **fp_in, FILE **fp_out, FILE **fp_err)
 {
-  return mutt_create_filter_fd(s, in, out, err, -1, -1, -1);
+  return mutt_create_filter_fd(s, fp_in, fp_out, fp_err, -1, -1, -1);
 }
 
 /**

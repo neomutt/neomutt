@@ -204,7 +204,7 @@ static int dup_hash_inc(struct Hash *dup_hash, char *str)
  */
 static void shrink_histfile(void)
 {
-  FILE *tmpfp = NULL;
+  FILE *fp_tmp = NULL;
   int n[HC_MAX] = { 0 };
   int line, hclass, read;
   char *linebuf = NULL, *p = NULL;
@@ -212,8 +212,8 @@ static void shrink_histfile(void)
   bool regen_file = false;
   struct Hash *dup_hashes[HC_MAX] = { 0 };
 
-  FILE *f = fopen(C_HistoryFile, "r");
-  if (!f)
+  FILE *fp = fopen(C_HistoryFile, "r");
+  if (!fp)
     return;
 
   if (C_HistoryRemoveDups)
@@ -221,7 +221,7 @@ static void shrink_histfile(void)
       dup_hashes[hclass] = mutt_hash_new(MAX(10, C_SaveHistory * 2), MUTT_HASH_STRDUP_KEYS);
 
   line = 0;
-  while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, 0)))
+  while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, 0)))
   {
     if (sscanf(linebuf, "%d:%n", &hclass, &read) < 1 || read == 0 ||
         *(p = linebuf + strlen(linebuf) - 1) != '|' || hclass < 0)
@@ -255,15 +255,15 @@ static void shrink_histfile(void)
 
   if (regen_file)
   {
-    tmpfp = mutt_file_mkstemp();
-    if (!tmpfp)
+    fp_tmp = mutt_file_mkstemp();
+    if (!fp_tmp)
     {
       mutt_perror(_("Can't create temporary file"));
       goto cleanup;
     }
-    rewind(f);
+    rewind(fp);
     line = 0;
-    while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, 0)))
+    while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, 0)))
     {
       if (sscanf(linebuf, "%d:%n", &hclass, &read) < 1 || read == 0 ||
           *(p = linebuf + strlen(linebuf) - 1) != '|' || hclass < 0)
@@ -280,22 +280,22 @@ static void shrink_histfile(void)
       }
       *p = '|';
       if (n[hclass]-- <= C_SaveHistory)
-        fprintf(tmpfp, "%s\n", linebuf);
+        fprintf(fp_tmp, "%s\n", linebuf);
     }
   }
 
 cleanup:
-  mutt_file_fclose(&f);
+  mutt_file_fclose(&fp);
   FREE(&linebuf);
-  if (tmpfp)
+  if (fp_tmp)
   {
-    if ((fflush(tmpfp) == 0) && (f = fopen(C_HistoryFile, "w")))
+    if ((fflush(fp_tmp) == 0) && (fp = fopen(C_HistoryFile, "w")))
     {
-      rewind(tmpfp);
-      mutt_file_copy_stream(tmpfp, f);
-      mutt_file_fclose(&f);
+      rewind(fp_tmp);
+      mutt_file_copy_stream(fp_tmp, fp);
+      mutt_file_fclose(&fp);
     }
-    mutt_file_fclose(&tmpfp);
+    mutt_file_fclose(&fp_tmp);
   }
   if (C_HistoryRemoveDups)
     for (hclass = 0; hclass < HC_MAX; hclass++)
@@ -310,14 +310,13 @@ cleanup:
 static void save_history(enum HistoryClass hclass, const char *str)
 {
   static int n = 0;
-  FILE *f = NULL;
   char *tmp = NULL;
 
   if (!str || !*str) /* This shouldn't happen, but it's safer. */
     return;
 
-  f = fopen(C_HistoryFile, "a");
-  if (!f)
+  FILE *fp = fopen(C_HistoryFile, "a");
+  if (!fp)
   {
     mutt_perror("fopen");
     return;
@@ -328,18 +327,18 @@ static void save_history(enum HistoryClass hclass, const char *str)
 
   /* Format of a history item (1 line): "<histclass>:<string>|".
    * We add a '|' in order to avoid lines ending with '\'. */
-  fprintf(f, "%d:", (int) hclass);
+  fprintf(fp, "%d:", (int) hclass);
   for (char *p = tmp; *p; p++)
   {
     /* Don't copy \n as a history item must fit on one line. The string
      * shouldn't contain such a character anyway, but as this can happen
      * in practice, we must deal with that. */
     if (*p != '\n')
-      putc((unsigned char) *p, f);
+      putc((unsigned char) *p, fp);
   }
-  fputs("|\n", f);
+  fputs("|\n", fp);
 
-  mutt_file_fclose(&f);
+  mutt_file_fclose(&fp);
   FREE(&tmp);
 
   if (--n < 0)
@@ -591,11 +590,11 @@ void mutt_hist_read_file(void)
   char *linebuf = NULL, *p = NULL;
   size_t buflen;
 
-  FILE *f = fopen(C_HistoryFile, "r");
-  if (!f)
+  FILE *fp = fopen(C_HistoryFile, "r");
+  if (!fp)
     return;
 
-  while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, 0)))
+  while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, 0)))
   {
     read = 0;
     if (sscanf(linebuf, "%d:%n", &hclass, &read) < 1 || read == 0 ||
@@ -617,7 +616,7 @@ void mutt_hist_read_file(void)
     }
   }
 
-  mutt_file_fclose(&f);
+  mutt_file_fclose(&fp);
   FREE(&linebuf);
 }
 

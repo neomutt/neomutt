@@ -52,12 +52,12 @@
 #endif
 
 static int address_header_decode(char **h);
-static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *date);
+static int copy_delete_attach(struct Body *b, FILE *fp_in, FILE *fp_out, char *date);
 
 /**
  * mutt_copy_hdr - Copy header from one file to another
- * @param in        FILE pointer to read from
- * @param out       FILE pointer to write to
+ * @param fp_in     FILE pointer to read from
+ * @param fp_out    FILE pointer to write to
  * @param off_start Offset to start from
  * @param off_end   Offset to finish at
  * @param chflags   Flags, see #CopyHeaderFlags
@@ -69,7 +69,7 @@ static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *dat
  * avoid creating a Header structure in message_handler().  Also, this one will
  * wrap headers much more aggressively than the other one.
  */
-int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
+int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
                   CopyHeaderFlags chflags, const char *prefix)
 {
   bool from = false;
@@ -87,8 +87,8 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
   if (off_start < 0)
     return -1;
 
-  if (ftello(in) != off_start)
-    if (fseeko(in, off_start, SEEK_SET) < 0)
+  if (ftello(fp_in) != off_start)
+    if (fseeko(fp_in, off_start, SEEK_SET) < 0)
       return -1;
 
   buf[0] = '\n';
@@ -99,11 +99,11 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
     /* Without these flags to complicate things
      * we can do a more efficient line to line copying
      */
-    while (ftello(in) < off_end)
+    while (ftello(fp_in) < off_end)
     {
       nl = strchr(buf, '\n');
 
-      if (!fgets(buf, sizeof(buf), in))
+      if (!fgets(buf, sizeof(buf), fp_in))
         break;
 
       /* Is it the beginning of a header? */
@@ -146,7 +146,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
         ignore = false;
       }
 
-      if (!ignore && fputs(buf, out) == EOF)
+      if (!ignore && fputs(buf, fp_out) == EOF)
         return -1;
     }
     return 0;
@@ -175,12 +175,12 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
   headers = mutt_mem_calloc(hdr_count, sizeof(char *));
 
   /* Read all the headers into the array */
-  while (ftello(in) < off_end)
+  while (ftello(fp_in) < off_end)
   {
     nl = strchr(buf, '\n');
 
     /* Read a line */
-    if (!fgets(buf, sizeof(buf), in))
+    if (!fgets(buf, sizeof(buf), fp_in))
       break;
 
     /* Is it the beginning of a header? */
@@ -310,7 +310,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
         this_one_len += blen;
       }
     }
-  } /* while (ftello (in) < off_end) */
+  } /* while (ftello (fp_in) < off_end) */
 
   /* Do we have anything pending?  -- XXX, same code as in above in the loop. */
   if (this_one)
@@ -347,9 +347,9 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
 
       if (chflags & (CH_DECODE | CH_PREFIX))
       {
-        if (mutt_write_one_header(out, 0, headers[x], (chflags & CH_PREFIX) ? prefix : 0,
-                                  mutt_window_wrap_cols(MuttIndexWindow, C_Wrap),
-                                  chflags) == -1)
+        if (mutt_write_one_header(
+                fp_out, 0, headers[x], (chflags & CH_PREFIX) ? prefix : 0,
+                mutt_window_wrap_cols(MuttIndexWindow, C_Wrap), chflags) == -1)
         {
           error = true;
           break;
@@ -357,7 +357,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
       }
       else
       {
-        if (fputs(headers[x], out) == EOF)
+        if (fputs(headers[x], fp_out) == EOF)
         {
           error = true;
           break;
@@ -379,15 +379,15 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
 
 /**
  * mutt_copy_header - Copy Email header
- * @param in       FILE pointer to read from
+ * @param fp_in    FILE pointer to read from
  * @param e        Email
- * @param out      FILE pointer to write to
+ * @param fp_out   FILE pointer to write to
  * @param chflags  See #CopyHeaderFlags
  * @param prefix   Prefix for quoting headers (if #CH_PREFIX is set)
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_copy_header(FILE *in, struct Email *e, FILE *out,
+int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
                      CopyHeaderFlags chflags, const char *prefix)
 {
   char *temp_hdr = NULL;
@@ -400,69 +400,69 @@ int mutt_copy_header(FILE *in, struct Email *e, FILE *out,
                ((e->env->changed & MUTT_ENV_CHANGED_SUBJECT) ? CH_UPDATE_SUBJECT : 0);
   }
 
-  if (mutt_copy_hdr(in, out, e->offset, e->content->offset, chflags, prefix) == -1)
+  if (mutt_copy_hdr(fp_in, fp_out, e->offset, e->content->offset, chflags, prefix) == -1)
     return -1;
 
   if (chflags & CH_TXTPLAIN)
   {
     char chsbuf[128];
     char buf[128];
-    fputs("MIME-Version: 1.0\n", out);
-    fputs("Content-Transfer-Encoding: 8bit\n", out);
-    fputs("Content-Type: text/plain; charset=", out);
+    fputs("MIME-Version: 1.0\n", fp_out);
+    fputs("Content-Transfer-Encoding: 8bit\n", fp_out);
+    fputs("Content-Type: text/plain; charset=", fp_out);
     mutt_ch_canonical_charset(chsbuf, sizeof(chsbuf), C_Charset ? C_Charset : "us-ascii");
     mutt_addr_cat(buf, sizeof(buf), chsbuf, MimeSpecials);
-    fputs(buf, out);
-    fputc('\n', out);
+    fputs(buf, fp_out);
+    fputc('\n', fp_out);
   }
 
   if ((chflags & CH_UPDATE_IRT) && !STAILQ_EMPTY(&e->env->in_reply_to))
   {
-    fputs("In-Reply-To:", out);
+    fputs("In-Reply-To:", fp_out);
     struct ListNode *np = NULL;
     STAILQ_FOREACH(np, &e->env->in_reply_to, entries)
     {
-      fputc(' ', out);
-      fputs(np->data, out);
+      fputc(' ', fp_out);
+      fputs(np->data, fp_out);
     }
-    fputc('\n', out);
+    fputc('\n', fp_out);
   }
 
   if ((chflags & CH_UPDATE_REFS) && !STAILQ_EMPTY(&e->env->references))
   {
-    fputs("References:", out);
-    mutt_write_references(&e->env->references, out, 0);
-    fputc('\n', out);
+    fputs("References:", fp_out);
+    mutt_write_references(&e->env->references, fp_out, 0);
+    fputc('\n', fp_out);
   }
 
   if ((chflags & CH_UPDATE) && (chflags & CH_NOSTATUS) == 0)
   {
     if (e->old || e->read)
     {
-      fputs("Status: ", out);
+      fputs("Status: ", fp_out);
       if (e->read)
-        fputs("RO", out);
+        fputs("RO", fp_out);
       else if (e->old)
-        fputc('O', out);
-      fputc('\n', out);
+        fputc('O', fp_out);
+      fputc('\n', fp_out);
     }
 
     if (e->flagged || e->replied)
     {
-      fputs("X-Status: ", out);
+      fputs("X-Status: ", fp_out);
       if (e->replied)
-        fputc('A', out);
+        fputc('A', fp_out);
       if (e->flagged)
-        fputc('F', out);
-      fputc('\n', out);
+        fputc('F', fp_out);
+      fputc('\n', fp_out);
     }
   }
 
   if (chflags & CH_UPDATE_LEN && (chflags & CH_NOLEN) == 0)
   {
-    fprintf(out, "Content-Length: " OFF_T_FMT "\n", e->content->length);
+    fprintf(fp_out, "Content-Length: " OFF_T_FMT "\n", e->content->length);
     if (e->lines != 0 || e->content->length == 0)
-      fprintf(out, "Lines: %d\n", e->lines);
+      fprintf(fp_out, "Lines: %d\n", e->lines);
   }
 
 #ifdef USE_NOTMUCH
@@ -476,18 +476,18 @@ int mutt_copy_header(FILE *in, struct Email *e, FILE *out,
       mutt_str_strfcpy(buf, folder, sizeof(buf));
       mutt_pretty_mailbox(buf, sizeof(buf));
 
-      fputs("Folder: ", out);
-      fputs(buf, out);
-      fputc('\n', out);
+      fputs("Folder: ", fp_out);
+      fputs(buf, fp_out);
+      fputc('\n', fp_out);
     }
   }
 #endif
   char *tags = driver_tags_get(&e->tags);
   if (tags && !(C_Weed && mutt_matches_ignore("tags")))
   {
-    fputs("Tags: ", out);
-    fputs(tags, out);
-    fputc('\n', out);
+    fputs("Tags: ", fp_out);
+    fputs(tags, fp_out);
+    fputc('\n', fp_out);
   }
   FREE(&tags);
 
@@ -501,8 +501,9 @@ int mutt_copy_header(FILE *in, struct Email *e, FILE *out,
       temp_hdr = mutt_str_strdup(temp_hdr);
       rfc2047_encode(&temp_hdr, NULL, sizeof("X-Label:"), C_SendCharset);
     }
-    if (mutt_write_one_header(out, "X-Label", temp_hdr, chflags & CH_PREFIX ? prefix : 0,
-                              mutt_window_wrap_cols(MuttIndexWindow, C_Wrap), chflags) == -1)
+    if (mutt_write_one_header(
+            fp_out, "X-Label", temp_hdr, chflags & CH_PREFIX ? prefix : 0,
+            mutt_window_wrap_cols(MuttIndexWindow, C_Wrap), chflags) == -1)
     {
       return -1;
     }
@@ -520,8 +521,9 @@ int mutt_copy_header(FILE *in, struct Email *e, FILE *out,
       temp_hdr = mutt_str_strdup(temp_hdr);
       rfc2047_encode(&temp_hdr, NULL, sizeof("Subject:"), C_SendCharset);
     }
-    if (mutt_write_one_header(out, "Subject", temp_hdr, chflags & CH_PREFIX ? prefix : 0,
-                              mutt_window_wrap_cols(MuttIndexWindow, C_Wrap), chflags) == -1)
+    if (mutt_write_one_header(
+            fp_out, "Subject", temp_hdr, chflags & CH_PREFIX ? prefix : 0,
+            mutt_window_wrap_cols(MuttIndexWindow, C_Wrap), chflags) == -1)
       return -1;
     if (!(chflags & CH_DECODE))
       FREE(&temp_hdr);
@@ -530,11 +532,11 @@ int mutt_copy_header(FILE *in, struct Email *e, FILE *out,
   if ((chflags & CH_NONEWLINE) == 0)
   {
     if (chflags & CH_PREFIX)
-      fputs(prefix, out);
-    fputc('\n', out); /* add header terminator */
+      fputs(prefix, fp_out);
+    fputc('\n', fp_out); /* add header terminator */
   }
 
-  if (ferror(out) || feof(out))
+  if (ferror(fp_out) || feof(fp_out))
     return -1;
 
   return 0;
@@ -581,15 +583,15 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
 
 /**
  * mutt_copy_message_fp - make a copy of a message from a FILE pointer
- * @param fpout   Where to write output
- * @param fpin    Where to get input
+ * @param fp_out   Where to write output
+ * @param fp_in    Where to get input
  * @param e       Email being copied
  * @param cmflags Flags, see #CopyMessageFlags
  * @param chflags Flags, see #CopyHeaderFlags
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e,
+int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
                          CopyMessageFlags cmflags, CopyHeaderFlags chflags)
 {
   struct Body *body = e->content;
@@ -626,30 +628,30 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e,
       date[dlen - 1] = '\"';
 
       /* Count the number of lines and bytes to be deleted */
-      fseeko(fpin, body->offset, SEEK_SET);
-      new_lines = e->lines - count_delete_lines(fpin, body, &new_length, dlen);
+      fseeko(fp_in, body->offset, SEEK_SET);
+      new_lines = e->lines - count_delete_lines(fp_in, body, &new_length, dlen);
 
       /* Copy the headers */
-      if (mutt_copy_header(fpin, e, fpout, chflags | CH_NOLEN | CH_NONEWLINE, NULL))
+      if (mutt_copy_header(fp_in, e, fp_out, chflags | CH_NOLEN | CH_NONEWLINE, NULL))
         return -1;
-      fprintf(fpout, "Content-Length: " OFF_T_FMT "\n", new_length);
+      fprintf(fp_out, "Content-Length: " OFF_T_FMT "\n", new_length);
       if (new_lines <= 0)
         new_lines = 0;
       else
-        fprintf(fpout, "Lines: %d\n", new_lines);
+        fprintf(fp_out, "Lines: %d\n", new_lines);
 
-      putc('\n', fpout);
-      if (ferror(fpout) || feof(fpout))
+      putc('\n', fp_out);
+      if (ferror(fp_out) || feof(fp_out))
         return -1;
-      new_offset = ftello(fpout);
+      new_offset = ftello(fp_out);
 
       /* Copy the body */
-      if (fseeko(fpin, body->offset, SEEK_SET) < 0)
+      if (fseeko(fp_in, body->offset, SEEK_SET) < 0)
         return -1;
-      if (copy_delete_attach(body, fpin, fpout, date))
+      if (copy_delete_attach(body, fp_in, fp_out, date))
         return -1;
 
-      LOFF_T fail = ((ftello(fpout) - new_offset) - new_length);
+      LOFF_T fail = ((ftello(fp_out) - new_offset) - new_length);
       if (fail)
       {
         mutt_error(ngettext("The length calculation was wrong by %ld byte",
@@ -678,20 +680,21 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e,
       return 0;
     }
 
-    if (mutt_copy_header(fpin, e, fpout, chflags, (chflags & CH_PREFIX) ? prefix : NULL) == -1)
+    if (mutt_copy_header(fp_in, e, fp_out, chflags,
+                         (chflags & CH_PREFIX) ? prefix : NULL) == -1)
     {
       return -1;
     }
 
-    new_offset = ftello(fpout);
+    new_offset = ftello(fp_out);
   }
 
   if (cmflags & MUTT_CM_DECODE)
   {
     /* now make a text/plain version of the message */
     struct State s = { 0 };
-    s.fp_in = fpin;
-    s.fp_out = fpout;
+    s.fp_in = fp_in;
+    s.fp_out = fp_out;
     if (cmflags & MUTT_CM_PREFIX)
       s.prefix = prefix;
     if (cmflags & MUTT_CM_DISPLAY)
@@ -718,15 +721,15 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e,
     if (((WithCrypto & APPLICATION_PGP) != 0) && (cmflags & MUTT_CM_DECODE_PGP) &&
         (e->security & APPLICATION_PGP) && e->content->type == TYPE_MULTIPART)
     {
-      if (crypt_pgp_decrypt_mime(fpin, &fp, e->content, &cur))
+      if (crypt_pgp_decrypt_mime(fp_in, &fp, e->content, &cur))
         return -1;
-      fputs("MIME-Version: 1.0\n", fpout);
+      fputs("MIME-Version: 1.0\n", fp_out);
     }
 
     if (((WithCrypto & APPLICATION_SMIME) != 0) && (cmflags & MUTT_CM_DECODE_SMIME) &&
         (e->security & APPLICATION_SMIME) && e->content->type == TYPE_APPLICATION)
     {
-      if (crypt_smime_decrypt_mime(fpin, &fp, e->content, &cur))
+      if (crypt_smime_decrypt_mime(fp_in, &fp, e->content, &cur))
         return -1;
     }
 
@@ -736,12 +739,12 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e,
       return -1;
     }
 
-    mutt_write_mime_header(cur, fpout);
-    fputc('\n', fpout);
+    mutt_write_mime_header(cur, fp_out);
+    fputc('\n', fp_out);
 
     if (fseeko(fp, cur->offset, SEEK_SET) < 0)
       return -1;
-    if (mutt_file_copy_bytes(fp, fpout, cur->length) == -1)
+    if (mutt_file_copy_bytes(fp, fp_out, cur->length) == -1)
     {
       mutt_file_fclose(&fp);
       mutt_body_free(&cur);
@@ -752,25 +755,25 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e,
   }
   else
   {
-    if (fseeko(fpin, body->offset, SEEK_SET) < 0)
+    if (fseeko(fp_in, body->offset, SEEK_SET) < 0)
       return -1;
     if (cmflags & MUTT_CM_PREFIX)
     {
       int c;
       size_t bytes = body->length;
 
-      fputs(prefix, fpout);
+      fputs(prefix, fp_out);
 
-      while ((c = fgetc(fpin)) != EOF && bytes--)
+      while ((c = fgetc(fp_in)) != EOF && bytes--)
       {
-        fputc(c, fpout);
+        fputc(c, fp_out);
         if (c == '\n')
         {
-          fputs(prefix, fpout);
+          fputs(prefix, fp_out);
         }
       }
     }
-    else if (mutt_file_copy_bytes(fpin, fpout, body->length) == -1)
+    else if (mutt_file_copy_bytes(fp_in, fp_out, body->length) == -1)
       return -1;
   }
 
@@ -785,7 +788,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e,
 
 /**
  * mutt_copy_message_ctx - Copy a message from a Context
- * @param fpout   FILE pointer to write to
+ * @param fp_out   FILE pointer to write to
  * @param src     Source mailbox
  * @param e       Email
  * @param cmflags Flags, see #CopyMessageFlags
@@ -796,7 +799,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e,
  * should be made to return -1 on fatal errors, and 1 on non-fatal errors
  * like partial decode, where it is worth displaying as much as possible
  */
-int mutt_copy_message_ctx(FILE *fpout, struct Mailbox *src, struct Email *e,
+int mutt_copy_message_ctx(FILE *fp_out, struct Mailbox *src, struct Email *e,
                           CopyMessageFlags cmflags, CopyHeaderFlags chflags)
 {
   struct Message *msg = mx_msg_open(src, e->msgno);
@@ -804,8 +807,8 @@ int mutt_copy_message_ctx(FILE *fpout, struct Mailbox *src, struct Email *e,
     return -1;
   if (!e->content)
     return -1;
-  int r = mutt_copy_message_fp(fpout, msg->fp, e, cmflags, chflags);
-  if ((r == 0) && (ferror(fpout) || feof(fpout)))
+  int r = mutt_copy_message_fp(fp_out, msg->fp, e, cmflags, chflags);
+  if ((r == 0) && (ferror(fp_out) || feof(fp_out)))
   {
     mutt_debug(LL_DEBUG1, "failed to detect EOF!\n");
     r = -1;
@@ -817,7 +820,7 @@ int mutt_copy_message_ctx(FILE *fpout, struct Mailbox *src, struct Email *e,
 /**
  * append_message - appends a copy of the given message to a mailbox
  * @param dest    destination mailbox
- * @param fpin    where to get input
+ * @param fp_in    where to get input
  * @param src     source mailbox
  * @param e       Email being copied
  * @param cmflags Flags, see #CopyMessageFlags
@@ -825,16 +828,16 @@ int mutt_copy_message_ctx(FILE *fpout, struct Mailbox *src, struct Email *e,
  * @retval  0 Success
  * @retval -1 Error
  */
-static int append_message(struct Mailbox *dest, FILE *fpin, struct Mailbox *src,
+static int append_message(struct Mailbox *dest, FILE *fp_in, struct Mailbox *src,
                           struct Email *e, CopyMessageFlags cmflags, CopyHeaderFlags chflags)
 {
   char buf[256];
   struct Message *msg = NULL;
   int r;
 
-  if (fseeko(fpin, e->offset, SEEK_SET) < 0)
+  if (fseeko(fp_in, e->offset, SEEK_SET) < 0)
     return -1;
-  if (!fgets(buf, sizeof(buf), fpin))
+  if (!fgets(buf, sizeof(buf), fp_in))
     return -1;
 
   msg = mx_msg_open_new(dest, e, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
@@ -843,7 +846,7 @@ static int append_message(struct Mailbox *dest, FILE *fpin, struct Mailbox *src,
   if (dest->magic == MUTT_MBOX || dest->magic == MUTT_MMDF)
     chflags |= CH_FROM | CH_FORCE_FROM;
   chflags |= (dest->magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
-  r = mutt_copy_message_fp(msg->fp, fpin, e, cmflags, chflags);
+  r = mutt_copy_message_fp(msg->fp, fp_in, e, cmflags, chflags);
   if (mx_msg_commit(dest, msg) != 0)
     r = -1;
 
@@ -880,8 +883,8 @@ int mutt_append_message(struct Mailbox *dest, struct Mailbox *src, struct Email 
 /**
  * copy_delete_attach - Copy a message, deleting marked attachments
  * @param b     Email Body
- * @param fpin  FILE pointer to read from
- * @param fpout FILE pointer to write to
+ * @param fp_in  FILE pointer to read from
+ * @param fp_out FILE pointer to write to
  * @param date  Date stamp
  * @retval  0 Success
  * @retval -1 Failure
@@ -890,7 +893,7 @@ int mutt_append_message(struct Mailbox *dest, struct Mailbox *src, struct Email 
  * any attachments which are marked for deletion.
  * Nothing is changed in the original message -- this is left to the caller.
  */
-static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *date)
+static int copy_delete_attach(struct Body *b, FILE *fp_in, FILE *fp_out, char *date)
 {
   struct Body *part = NULL;
 
@@ -899,37 +902,37 @@ static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *dat
     if (part->deleted || part->parts)
     {
       /* Copy till start of this part */
-      if (mutt_file_copy_bytes(fpin, fpout, part->hdr_offset - ftello(fpin)))
+      if (mutt_file_copy_bytes(fp_in, fp_out, part->hdr_offset - ftello(fp_in)))
         return -1;
 
       if (part->deleted)
       {
         fprintf(
-            fpout,
+            fp_out,
             "Content-Type: message/external-body; access-type=x-mutt-deleted;\n"
             "\texpiration=%s; length=" OFF_T_FMT "\n"
             "\n",
             date + 5, part->length);
-        if (ferror(fpout))
+        if (ferror(fp_out))
           return -1;
 
         /* Copy the original mime headers */
-        if (mutt_file_copy_bytes(fpin, fpout, part->offset - ftello(fpin)))
+        if (mutt_file_copy_bytes(fp_in, fp_out, part->offset - ftello(fp_in)))
           return -1;
 
         /* Skip the deleted body */
-        fseeko(fpin, part->offset + part->length, SEEK_SET);
+        fseeko(fp_in, part->offset + part->length, SEEK_SET);
       }
       else
       {
-        if (copy_delete_attach(part, fpin, fpout, date))
+        if (copy_delete_attach(part, fp_in, fp_out, date))
           return -1;
       }
     }
   }
 
   /* Copy the last parts */
-  if (mutt_file_copy_bytes(fpin, fpout, b->offset + b->length - ftello(fpin)))
+  if (mutt_file_copy_bytes(fp_in, fp_out, b->offset + b->length - ftello(fp_in)))
     return -1;
 
   return 0;
