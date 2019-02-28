@@ -68,8 +68,6 @@ typedef uint16_t ConfigRedrawFlags; ///< Flags for redraw/resort, e.g. #R_INDEX
 #define R_MENU        (1 << 9)      ///< Redraw all menus
 #define F_SENSITIVE   (1 << 10)     ///< Config item contains sensitive value (will be OR'd with R_ flags above)
 
-#define R_BOTH        (R_INDEX | R_PAGER)
-#define R_RESORT_BOTH (R_RESORT | R_RESORT_SUB)
 #define IS_SENSITIVE(x) (((x).flags & F_SENSITIVE) == F_SENSITIVE)
 
 #endif /* MUTT_CONFIG_TYPES_H */
