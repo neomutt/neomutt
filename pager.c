@@ -3128,7 +3128,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         if (IsAttach(extra))
           mutt_pipe_attachment_list(extra->actx, extra->fp, false, extra->body, false);
         else
-          mutt_pipe_message(extra->email);
+          mutt_pipe_message(Context->mailbox, extra->email);
         break;
 
       case OP_PRINT:
@@ -3136,7 +3136,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         if (IsAttach(extra))
           mutt_print_attachment_list(extra->actx, extra->fp, false, extra->body);
         else
-          mutt_print_message(extra->email);
+          mutt_print_message(Context->mailbox, extra->email);
         break;
 
       case OP_MAIL:
