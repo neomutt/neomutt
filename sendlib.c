@@ -2023,7 +2023,7 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
                             const char *start, const char *end, CopyHeaderFlags chflags)
 {
   char *tagbuf = NULL, *valbuf = NULL, *t = NULL;
-  int is_from = (end - start) > 5 && mutt_str_startswith(start, "from ", CASE_IGNORE);
+  bool is_from = ((end - start) > 5) && mutt_str_startswith(start, "from ", CASE_IGNORE);
 
   /* only pass through folding machinery if necessary for sending,
      never wrap From_ headers on sending */

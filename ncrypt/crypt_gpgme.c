@@ -1645,7 +1645,6 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
 static void show_fingerprint(gpgme_key_t key, struct State *state)
 {
   const char *s = NULL;
-  int is_pgp;
   char *buf = NULL, *p = NULL;
   const char *prefix = _("Fingerprint: ");
 
@@ -1654,7 +1653,7 @@ static void show_fingerprint(gpgme_key_t key, struct State *state)
   s = key->subkeys ? key->subkeys->fpr : NULL;
   if (!s)
     return;
-  is_pgp = (key->protocol == GPGME_PROTOCOL_OpenPGP);
+  bool is_pgp = (key->protocol == GPGME_PROTOCOL_OpenPGP);
 
   buf = mutt_mem_malloc(strlen(prefix) + strlen(s) * 4 + 2);
   strcpy(buf, prefix);
@@ -4072,7 +4071,6 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
   char shortbuf[128];
   unsigned long aval = 0;
   const char *delim = NULL;
-  int is_pgp = 0;
   gpgme_user_id_t uid = NULL;
   static int max_header_width = 0;
 
@@ -4090,7 +4088,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
       KeyInfoPadding[i] += max_header_width;
   }
 
-  is_pgp = key->protocol == GPGME_PROTOCOL_OpenPGP;
+  bool is_pgp = (key->protocol == GPGME_PROTOCOL_OpenPGP);
 
   for (idx = 0, uid = key->uids; uid; idx++, uid = uid->next)
   {

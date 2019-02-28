@@ -90,7 +90,7 @@ static void history_make_entry(char *buf, size_t buflen, struct Menu *menu, int 
  */
 static void history_menu(char *buf, size_t buflen, char **matches, int match_count)
 {
-  int done = 0;
+  bool done = false;
   char helpstr[1024];
   char title[256];
 
@@ -114,7 +114,7 @@ static void history_menu(char *buf, size_t buflen, char **matches, int match_cou
         /* fall through */
 
       case OP_EXIT:
-        done = 1;
+        done = true;
         break;
     }
   }

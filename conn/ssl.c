@@ -992,7 +992,7 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
 
   done = 0;
   OptIgnoreMacroEvents = true;
-  while (!done)
+  while (done == 0)
   {
     switch (mutt_menu_loop(menu))
     {
@@ -1012,7 +1012,7 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
             done = 1;
           mutt_file_fclose(&fp);
         }
-        if (!done)
+        if (done == 0)
         {
           mutt_error(_("Warning: Couldn't save certificate"));
         }

@@ -526,9 +526,9 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
     prompt = NULL;
     mutt_expand_path(buf, sizeof(buf));
 
-    const int is_message = (fp && body->email && body->encoding != ENC_BASE64 &&
-                            body->encoding != ENC_QUOTED_PRINTABLE &&
-                            mutt_is_message_type(body->type, body->subtype));
+    bool is_message = (fp && body->email && (body->encoding != ENC_BASE64) &&
+                       (body->encoding != ENC_QUOTED_PRINTABLE) &&
+                       mutt_is_message_type(body->type, body->subtype));
 
     if (is_message)
     {

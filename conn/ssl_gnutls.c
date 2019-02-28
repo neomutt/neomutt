@@ -684,7 +684,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
 
   done = 0;
   OptIgnoreMacroEvents = true;
-  while (!done)
+  while (done == 0)
   {
     switch (mutt_menu_loop(menu))
     {
@@ -722,7 +722,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
           }
           mutt_file_fclose(&fp);
         }
-        if (!done)
+        if (done == 0)
         {
           mutt_error(_("Warning: Couldn't save certificate"));
         }

@@ -365,7 +365,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
       query_table[i].data = queryp;
 
     int done = 0;
-    while (!done)
+    while (done == 0)
     {
       const int op = mutt_menu_loop(menu);
       switch (op)

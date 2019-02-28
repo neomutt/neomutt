@@ -865,7 +865,7 @@ static int nntp_query(struct NntpMboxData *mdata, char *line, size_t linelen)
 static int nntp_fetch_lines(struct NntpMboxData *mdata, char *query, size_t qlen,
                             const char *msg, int (*func)(char *, void *), void *data)
 {
-  int done = false;
+  bool done = false;
   int rc;
 
   while (!done)

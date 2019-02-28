@@ -677,10 +677,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           now -= (op == '(') ? e->received : e->date_sent;
 
           is = (char *) prec;
-          int invert = 0;
+          bool invert = false;
           if (*is == '>')
           {
-            invert = 1;
+            invert = true;
             is++;
           }
 

@@ -340,7 +340,8 @@ int maildir_parse_dir(struct Mailbox *m, struct Maildir ***last,
                       const char *subdir, int *count, struct Progress *progress)
 {
   struct dirent *de = NULL;
-  int rc = 0, is_old = 0;
+  int rc = 0;
+  bool is_old = false;
   struct Maildir *entry = NULL;
   struct Email *e = NULL;
 

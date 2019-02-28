@@ -1642,7 +1642,6 @@ static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, Sen
 {
   char *pgpkeylist = NULL;
   char *encrypt_as = NULL;
-  int is_signed;
   struct Body *clear_content = NULL;
 
   if (!(C_Postponed && *C_Postponed))
@@ -1667,7 +1666,7 @@ static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, Sen
 
     if (encrypt_as && *encrypt_as)
     {
-      is_signed = msg->security & SEC_SIGN;
+      bool is_signed = (msg->security & SEC_SIGN);
       if (is_signed)
         msg->security &= ~SEC_SIGN;
 

@@ -126,7 +126,7 @@ static void fix_uid(char *uid)
  * @retval ptr  PgpKeyInfo containing the (merged) results
  * @retval NULL Error
  */
-static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKeyInfo *k)
+static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpKeyInfo *k)
 {
   struct PgpUid *uid = NULL;
   int field = 0;
@@ -138,7 +138,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
   KeyFlags flags = KEYFLAG_NO_FLAGS;
   struct PgpKeyInfo tmp;
 
-  *is_subkey = 0;
+  *is_subkey = false;
   if (!*buf)
     return NULL;
 
@@ -173,11 +173,11 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
         if (mutt_str_strcmp(p, "pub") == 0)
           is_pub = true;
         else if (mutt_str_strcmp(p, "sub") == 0)
-          *is_subkey = 1;
+          *is_subkey = true;
         else if (mutt_str_strcmp(p, "sec") == 0)
           ;
         else if (mutt_str_strcmp(p, "ssb") == 0)
-          *is_subkey = 1;
+          *is_subkey = true;
         else if (mutt_str_strcmp(p, "uid") == 0)
           is_uid = true;
         else if (mutt_str_strcmp(p, "fpr") == 0)
@@ -415,7 +415,7 @@ struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct ListHead *hin
   pid_t pid;
   char buf[1024];
   struct PgpKeyInfo *db = NULL, **kend = NULL, *k = NULL, *kk = NULL, *mainkey = NULL;
-  int is_sub;
+  bool is_sub = false;
   int devnull;
 
   devnull = open("/dev/null", O_RDWR);
