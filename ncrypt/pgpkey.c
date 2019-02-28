@@ -328,10 +328,10 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
  */
 static void pgp_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
-  struct PgpUid **KeyTable = menu->data;
+  struct PgpUid **key_table = menu->data;
   struct PgpEntry entry;
 
-  entry.uid = KeyTable[line];
+  entry.uid = key_table[line];
   entry.num = line + 1;
 
   mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(C_PgpEntryFormat),
@@ -592,7 +592,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
                                          struct Address *p, const char *s)
 {
   int keymax;
-  struct PgpUid **KeyTable = NULL;
+  struct PgpUid **key_table = NULL;
   struct Menu *menu = NULL;
   int i;
   bool done = false;
@@ -627,10 +627,10 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
       if (i == keymax)
       {
         keymax += 5;
-        mutt_mem_realloc(&KeyTable, sizeof(struct PgpUid *) * keymax);
+        mutt_mem_realloc(&key_table, sizeof(struct PgpUid *) * keymax);
       }
 
-      KeyTable[i++] = a;
+      key_table[i++] = a;
     }
   }
 
@@ -656,7 +656,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
       f = pgp_compare_trust;
       break;
   }
-  qsort(KeyTable, i, sizeof(struct PgpUid *), f);
+  qsort(key_table, i, sizeof(struct PgpUid *), f);
 
   helpstr[0] = 0;
   mutt_make_help(buf, sizeof(buf), _("Exit  "), MENU_PGP, OP_EXIT);
@@ -672,7 +672,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
   menu->max = i;
   menu->menu_make_entry = pgp_make_entry;
   menu->help = helpstr;
-  menu->data = KeyTable;
+  menu->data = key_table;
   mutt_menu_push_current(menu);
 
   if (p)
@@ -710,7 +710,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
         mutt_message(_("Invoking PGP..."));
 
         snprintf(tmpbuf, sizeof(tmpbuf), "0x%s",
-                 pgp_fpr_or_lkeyid(pgp_principal_key(KeyTable[menu->current]->parent)));
+                 pgp_fpr_or_lkeyid(pgp_principal_key(key_table[menu->current]->parent)));
 
         pid = pgp_invoke_verify_key(NULL, NULL, NULL, -1, fileno(fp),
                                     fileno(devnull), tmpbuf);
@@ -727,7 +727,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
         mutt_file_fclose(&devnull);
         mutt_clear_error();
         snprintf(cmd, sizeof(cmd), _("Key ID: 0x%s"),
-                 pgp_keyid(pgp_principal_key(KeyTable[menu->current]->parent)));
+                 pgp_keyid(pgp_principal_key(key_table[menu->current]->parent)));
         mutt_do_pager(cmd, tempfile, 0, NULL);
         menu->redraw = REDRAW_FULL;
 
@@ -735,7 +735,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
 
       case OP_VIEW_ID:
 
-        mutt_message("%s", NONULL(KeyTable[menu->current]->addr));
+        mutt_message("%s", NONULL(key_table[menu->current]->addr));
         break;
 
       case OP_GENERIC_SELECT_ENTRY:
@@ -744,27 +744,27 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
 
         if (OptPgpCheckTrust)
         {
-          if (!pgp_key_is_valid(KeyTable[menu->current]->parent))
+          if (!pgp_key_is_valid(key_table[menu->current]->parent))
           {
             mutt_error(_("This key can't be used: expired/disabled/revoked"));
             break;
           }
         }
 
-        if (OptPgpCheckTrust && (!pgp_id_is_valid(KeyTable[menu->current]) ||
-                                 !pgp_id_is_strong(KeyTable[menu->current])))
+        if (OptPgpCheckTrust && (!pgp_id_is_valid(key_table[menu->current]) ||
+                                 !pgp_id_is_strong(key_table[menu->current])))
         {
           const char *str = "";
           char buf2[1024];
 
-          if (KeyTable[menu->current]->flags & KEYFLAG_CANTUSE)
+          if (key_table[menu->current]->flags & KEYFLAG_CANTUSE)
           {
             str = _("ID is expired/disabled/revoked. Do you really want to use "
                     "the key?");
           }
           else
           {
-            switch (KeyTable[menu->current]->trust & 0x03)
+            switch (key_table[menu->current]->trust & 0x03)
             {
               case 0:
                 str = _("ID has undefined validity. Do you really want to use "
@@ -789,7 +789,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
           }
         }
 
-        kp = KeyTable[menu->current]->parent;
+        kp = key_table[menu->current]->parent;
         done = true;
         break;
 
@@ -803,7 +803,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
 
   mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);
-  FREE(&KeyTable);
+  FREE(&key_table);
 
   return kp;
 }

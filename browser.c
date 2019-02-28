@@ -1006,18 +1006,18 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
    */
   if (mutt_str_startswith(OldLastDir, LastDir, CASE_MATCH))
   {
-    char TargetDir[PATH_MAX] = "";
+    char target_dir[PATH_MAX] = "";
 
 #ifdef USE_IMAP
     /* Check what kind of dir OldLastDir is. */
     if (imap_path_probe(OldLastDir, NULL) == MUTT_IMAP)
     {
-      mutt_str_strfcpy(TargetDir, OldLastDir, sizeof(TargetDir));
-      imap_clean_path(TargetDir, sizeof(TargetDir));
+      mutt_str_strfcpy(target_dir, OldLastDir, sizeof(target_dir));
+      imap_clean_path(target_dir, sizeof(target_dir));
     }
     else
 #endif
-      mutt_str_strfcpy(TargetDir, strrchr(OldLastDir, '/') + 1, sizeof(TargetDir));
+      mutt_str_strfcpy(target_dir, strrchr(OldLastDir, '/') + 1, sizeof(target_dir));
 
     /* If we get here, it means that LastDir is the parent directory of
      * OldLastDir.  I.e., we're returning from a subdirectory, and we want
@@ -1025,7 +1025,7 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
     bool matched = false;
     for (unsigned int i = 0; i < state->entrylen; i++)
     {
-      if (mutt_str_strcmp(state->entry[i].name, TargetDir) == 0)
+      if (mutt_str_strcmp(state->entry[i].name, target_dir) == 0)
       {
         menu->current = i;
         matched = true;
@@ -1103,7 +1103,7 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
   /* Keeps in memory the directory we were in when hitting '='
    * to go directly to $folder (#C_Folder)
    */
-  char GotoSwapper[PATH_MAX] = "";
+  char goto_swapper[PATH_MAX] = "";
 
   mailbox = mailbox && folder;
 
@@ -1448,8 +1448,8 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
 
             browser_highlight_default(&state, menu);
             init_menu(&state, menu, title, sizeof(title), mailbox);
-            if (GotoSwapper[0])
-              GotoSwapper[0] = '\0';
+            if (goto_swapper[0])
+              goto_swapper[0] = '\0';
             break;
           }
         }
@@ -1829,12 +1829,12 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
           if (C_Folder)
           {
             mutt_debug(LL_DEBUG3, "= hit! Folder: %s, LastDir: %s\n", C_Folder, LastDir);
-            if (GotoSwapper[0] == '\0')
+            if (goto_swapper[0] == '\0')
             {
               if (mutt_str_strcmp(LastDir, C_Folder) != 0)
               {
-                /* Stores into GotoSwapper LastDir, and swaps to C_Folder */
-                mutt_str_strfcpy(GotoSwapper, LastDir, sizeof(GotoSwapper));
+                /* Stores into goto_swapper LastDir, and swaps to C_Folder */
+                mutt_str_strfcpy(goto_swapper, LastDir, sizeof(goto_swapper));
                 mutt_str_strfcpy(OldLastDir, LastDir, sizeof(OldLastDir));
                 mutt_str_strfcpy(LastDir, C_Folder, sizeof(LastDir));
               }
@@ -1842,8 +1842,8 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
             else
             {
               mutt_str_strfcpy(OldLastDir, LastDir, sizeof(OldLastDir));
-              mutt_str_strfcpy(LastDir, GotoSwapper, sizeof(LastDir));
-              GotoSwapper[0] = '\0';
+              mutt_str_strfcpy(LastDir, goto_swapper, sizeof(LastDir));
+              goto_swapper[0] = '\0';
             }
           }
         }
@@ -2102,6 +2102,6 @@ bail:
     mutt_menu_destroy(&menu);
   }
 
-  if (GotoSwapper[0])
-    GotoSwapper[0] = '\0';
+  if (goto_swapper[0])
+    goto_swapper[0] = '\0';
 }

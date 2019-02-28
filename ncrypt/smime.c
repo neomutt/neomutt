@@ -440,8 +440,8 @@ static char *smime_key_flags(KeyFlags flags)
  */
 static void smime_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
-  struct SmimeKey **Table = menu->data;
-  struct SmimeKey *this = Table[line];
+  struct SmimeKey **table = menu->data;
+  struct SmimeKey *this = table[line];
   char *truststate = NULL;
   switch (this->trust)
   {

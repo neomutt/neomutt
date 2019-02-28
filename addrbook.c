@@ -189,7 +189,7 @@ void mutt_alias_menu(char *buf, size_t buflen, struct AliasList *aliases)
 {
   struct Alias *a = NULL, *last = NULL;
   struct Menu *menu = NULL;
-  struct Alias **AliasTable = NULL;
+  struct Alias **alias_table = NULL;
   int t = -1;
   int i;
   bool done = false;
@@ -221,9 +221,9 @@ new_aliases:
     menu->max++;
   }
 
-  mutt_mem_realloc(&AliasTable, menu->max * sizeof(struct Alias *));
-  menu->data = AliasTable;
-  if (!AliasTable)
+  mutt_mem_realloc(&alias_table, menu->max * sizeof(struct Alias *));
+  menu->data = alias_table;
+  if (!alias_table)
     return;
 
   if (last)
@@ -232,18 +232,18 @@ new_aliases:
   i = omax;
   TAILQ_FOREACH_FROM(a, aliases, entries)
   {
-    AliasTable[i] = a;
+    alias_table[i] = a;
     i++;
   }
 
   if ((C_SortAlias & SORT_MASK) != SORT_ORDER)
   {
-    qsort(AliasTable, menu->max, sizeof(struct Alias *),
+    qsort(alias_table, menu->max, sizeof(struct Alias *),
           (C_SortAlias & SORT_MASK) == SORT_ADDRESS ? alias_sort_address : alias_sort_alias);
   }
 
   for (i = 0; i < menu->max; i++)
-    AliasTable[i]->num = i;
+    alias_table[i]->num = i;
 
   last = TAILQ_LAST(aliases, AliasList);
 
@@ -263,13 +263,13 @@ new_aliases:
         if (menu->tagprefix)
         {
           for (i = 0; i < menu->max; i++)
-            if (AliasTable[i]->tagged)
-              AliasTable[i]->del = (op == OP_DELETE);
+            if (alias_table[i]->tagged)
+              alias_table[i]->del = (op == OP_DELETE);
           menu->redraw |= REDRAW_INDEX;
         }
         else
         {
-          AliasTable[menu->current]->del = (op == OP_DELETE);
+          alias_table[menu->current]->del = (op == OP_DELETE);
           menu->redraw |= REDRAW_CURRENT;
           if (C_Resolve && menu->current < menu->max - 1)
           {
@@ -290,19 +290,19 @@ new_aliases:
 
   for (i = 0; i < menu->max; i++)
   {
-    if (AliasTable[i]->tagged)
+    if (alias_table[i]->tagged)
     {
-      mutt_addr_write(buf, buflen, AliasTable[i]->addr, true);
+      mutt_addr_write(buf, buflen, alias_table[i]->addr, true);
       t = -1;
     }
   }
 
   if (t != -1)
   {
-    mutt_addr_write(buf, buflen, AliasTable[t]->addr, true);
+    mutt_addr_write(buf, buflen, alias_table[t]->addr, true);
   }
 
   mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);
-  FREE(&AliasTable);
+  FREE(&alias_table);
 }
