@@ -83,7 +83,7 @@ static int lua_mutt_call(lua_State *l)
   mutt_debug(LL_DEBUG2, " * lua_mutt_call()\n");
   struct Buffer token, expn, err;
   char buf[1024] = "";
-  const struct Command *command = NULL;
+  const struct Command *cmd = NULL;
   int rc = 0;
 
   mutt_buffer_init(&token);
@@ -96,14 +96,14 @@ static int lua_mutt_call(lua_State *l)
 
   if (lua_gettop(l) == 0)
   {
-    luaL_error(l, "Error command argument required.");
+    luaL_error(l, "Error cmd argument required.");
     return -1;
   }
 
-  command = mutt_command_get(lua_tostring(l, 1));
-  if (!command)
+  cmd = mutt_command_get(lua_tostring(l, 1));
+  if (!cmd)
   {
-    luaL_error(l, "Error command %s not found.", lua_tostring(l, 1));
+    luaL_error(l, "Error cmd %s not found.", lua_tostring(l, 1));
     return -1;
   }
 
@@ -118,7 +118,7 @@ static int lua_mutt_call(lua_State *l)
   expn.dptr = buf;
   expn.dsize = mutt_str_strlen(buf);
 
-  if (command->func(&token, &expn, command->data, &err))
+  if (cmd->func(&token, &expn, cmd->data, &err))
   {
     luaL_error(l, "NeoMutt error: %s", err.data);
     rc = -1;

@@ -82,7 +82,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
                                    unsigned long data, struct Buffer *err)
 {
   struct Hook *ptr = NULL;
-  struct Buffer command, pattern;
+  struct Buffer cmd, pattern;
   int rc;
   bool not = false, warning = false;
   regex_t *rx = NULL;
@@ -90,7 +90,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
   char path[PATH_MAX];
 
   mutt_buffer_init(&pattern);
-  mutt_buffer_init(&command);
+  mutt_buffer_init(&cmd);
 
   if (~data & MUTT_GLOBAL_HOOK) /* NOT a global hook */
   {
@@ -110,13 +110,13 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     }
   }
 
-  mutt_extract_token(&command, s,
+  mutt_extract_token(&cmd, s,
                      (data & (MUTT_FOLDER_HOOK | MUTT_SEND_HOOK | MUTT_SEND2_HOOK |
                               MUTT_ACCOUNT_HOOK | MUTT_REPLY_HOOK)) ?
                          MUTT_TOKEN_SPACE :
                          MUTT_TOKEN_NO_FLAGS);
 
-  if (!command.data)
+  if (!cmd.data)
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), buf->data);
     goto warn;
@@ -156,9 +156,9 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
 #ifdef USE_COMPRESSED
   else if (data & (MUTT_APPEND_HOOK | MUTT_OPEN_HOOK | MUTT_CLOSE_HOOK))
   {
-    if (mutt_comp_valid_command(command.data) == 0)
+    if (mutt_comp_valid_command(cmd.data) == 0)
     {
-      mutt_buffer_strcpy(err, _("badly formatted command string"));
+      mutt_buffer_strcpy(err, _("badly formatted cmd string"));
       return MUTT_CMD_ERROR;
     }
   }
@@ -182,11 +182,11 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
 
   if (data & (MUTT_MBOX_HOOK | MUTT_SAVE_HOOK | MUTT_FCC_HOOK))
   {
-    mutt_str_strfcpy(path, command.data, sizeof(path));
+    mutt_str_strfcpy(path, cmd.data, sizeof(path));
     mutt_expand_path(path, sizeof(path));
-    FREE(&command.data);
-    mutt_buffer_init(&command);
-    command.data = mutt_str_strdup(path);
+    FREE(&cmd.data);
+    mutt_buffer_init(&cmd);
+    cmd.data = mutt_str_strdup(path);
   }
 
   /* check to make sure that a matching hook doesn't already exist */
@@ -195,9 +195,9 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     if (data & MUTT_GLOBAL_HOOK)
     {
       /* Ignore duplicate global hooks */
-      if (mutt_str_strcmp(ptr->command, command.data) == 0)
+      if (mutt_str_strcmp(ptr->command, cmd.data) == 0)
       {
-        FREE(&command.data);
+        FREE(&cmd.data);
         return MUTT_CMD_SUCCESS;
       }
     }
@@ -209,24 +209,24 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
                   MUTT_TIMEOUT_HOOK | MUTT_STARTUP_HOOK | MUTT_SHUTDOWN_HOOK))
       {
         /* these hooks allow multiple commands with the same
-         * pattern, so if we've already seen this pattern/command pair, just
+         * pattern, so if we've already seen this pattern/cmd pair, just
          * ignore it instead of creating a duplicate */
-        if (mutt_str_strcmp(ptr->command, command.data) == 0)
+        if (mutt_str_strcmp(ptr->command, cmd.data) == 0)
         {
-          FREE(&command.data);
+          FREE(&cmd.data);
           FREE(&pattern.data);
           return MUTT_CMD_SUCCESS;
         }
       }
       else
       {
-        /* other hooks only allow one command per pattern, so update the
-         * entry with the new command.  this currently does not change the
+        /* other hooks only allow one cmd per pattern, so update the
+         * entry with the new cmd.  this currently does not change the
          * order of execution of the hooks, which i think is desirable since
          * a common action to perform is to change the default (.) entry
          * based upon some other information. */
         FREE(&ptr->command);
-        ptr->command = command.data;
+        ptr->command = cmd.data;
         FREE(&pattern.data);
         return MUTT_CMD_SUCCESS;
       }
@@ -237,10 +237,10 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
   {
     /* These are managed separately by the charset code */
     enum LookupType type = (data & MUTT_CHARSET_HOOK) ? MUTT_LOOKUP_CHARSET : MUTT_LOOKUP_ICONV;
-    if (!mutt_ch_lookup_add(type, pattern.data, command.data, err))
+    if (!mutt_ch_lookup_add(type, pattern.data, cmd.data, err))
       goto error;
     FREE(&pattern.data);
-    FREE(&command.data);
+    FREE(&cmd.data);
     return MUTT_CMD_SUCCESS;
   }
   else if (data & (MUTT_SEND_HOOK | MUTT_SEND2_HOOK | MUTT_SAVE_HOOK |
@@ -267,7 +267,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
 
   ptr = mutt_mem_calloc(1, sizeof(struct Hook));
   ptr->type = data;
-  ptr->command = command.data;
+  ptr->command = cmd.data;
   ptr->pattern = pat;
   ptr->regex.pattern = pattern.data;
   ptr->regex.regex = rx;
@@ -280,7 +280,7 @@ warn:
 error:
   if (~data & MUTT_GLOBAL_HOOK) /* NOT a global hook */
     FREE(&pattern.data);
-  FREE(&command.data);
+  FREE(&cmd.data);
   return (warning ? MUTT_CMD_WARNING : MUTT_CMD_ERROR);
 }
 

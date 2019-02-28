@@ -1262,7 +1262,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
 static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata, bool queue)
 {
   char *uid_validity_flag;
-  char command[2048];
+  char cmd[2048];
 
   if (!adata || !mdata)
     return -1;
@@ -1287,13 +1287,13 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
     return -1;
   }
 
-  snprintf(command, sizeof(command), "STATUS %s (UIDNEXT %s UNSEEN RECENT MESSAGES)",
+  snprintf(cmd, sizeof(cmd), "STATUS %s (UIDNEXT %s UNSEEN RECENT MESSAGES)",
            mdata->munge_name, uid_validity_flag);
 
-  int rc = imap_exec(adata, command, queue ? IMAP_CMD_QUEUE : 0 | IMAP_CMD_POLL);
+  int rc = imap_exec(adata, cmd, queue ? IMAP_CMD_QUEUE : 0 | IMAP_CMD_POLL);
   if (rc < 0)
   {
-    mutt_debug(LL_DEBUG1, "Error queueing command\n");
+    mutt_debug(LL_DEBUG1, "Error queueing cmd\n");
     return rc;
   }
   return mdata->messages;

@@ -529,7 +529,7 @@ static int autoview_handler(struct Body *a, struct State *s)
   struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
   char buf[1024];
   char type[256];
-  char command[STR_COMMAND];
+  char cmd[STR_COMMAND];
   char tempfile[PATH_MAX] = "";
   char *fname = NULL;
   FILE *fpin = NULL;
@@ -549,16 +549,16 @@ static int autoview_handler(struct Body *a, struct State *s)
 
   if (entry->command)
   {
-    mutt_str_strfcpy(command, entry->command, sizeof(command));
+    mutt_str_strfcpy(cmd, entry->command, sizeof(cmd));
 
     /* rfc1524_expand_command returns 0 if the file is required */
-    piped = rfc1524_expand_command(a, tempfile, type, command, sizeof(command));
+    piped = rfc1524_expand_command(a, tempfile, type, cmd, sizeof(cmd));
 
     if (s->flags & MUTT_DISPLAY)
     {
       state_mark_attach(s);
-      state_printf(s, _("[-- Autoview using %s --]\n"), command);
-      mutt_message(_("Invoking autoview command: %s"), command);
+      state_printf(s, _("[-- Autoview using %s --]\n"), cmd);
+      mutt_message(_("Invoking autoview command: %s"), cmd);
     }
 
     fpin = mutt_file_fopen(tempfile, "w+");
@@ -574,14 +574,14 @@ static int autoview_handler(struct Body *a, struct State *s)
     if (!piped)
     {
       mutt_file_fclose(&fpin);
-      thepid = mutt_create_filter(command, NULL, &fpout, &fperr);
+      thepid = mutt_create_filter(cmd, NULL, &fpout, &fperr);
     }
     else
     {
       unlink(tempfile);
       fflush(fpin);
       rewind(fpin);
-      thepid = mutt_create_filter_fd(command, NULL, &fpout, &fperr, fileno(fpin), -1, -1);
+      thepid = mutt_create_filter_fd(cmd, NULL, &fpout, &fperr, fileno(fpin), -1, -1);
     }
 
     if (thepid < 0)
@@ -590,7 +590,7 @@ static int autoview_handler(struct Body *a, struct State *s)
       if (s->flags & MUTT_DISPLAY)
       {
         state_mark_attach(s);
-        state_printf(s, _("[-- Can't run %s. --]\n"), command);
+        state_printf(s, _("[-- Can't run %s. --]\n"), cmd);
       }
       rc = -1;
       goto bail;
@@ -609,7 +609,7 @@ static int autoview_handler(struct Body *a, struct State *s)
         if (s->flags & MUTT_DISPLAY)
         {
           state_mark_attach(s);
-          state_printf(s, _("[-- Autoview stderr of %s --]\n"), command);
+          state_printf(s, _("[-- Autoview stderr of %s --]\n"), cmd);
         }
 
         state_puts(s->prefix, s);
@@ -630,7 +630,7 @@ static int autoview_handler(struct Body *a, struct State *s)
         if (s->flags & MUTT_DISPLAY)
         {
           state_mark_attach(s);
-          state_printf(s, _("[-- Autoview stderr of %s --]\n"), command);
+          state_printf(s, _("[-- Autoview stderr of %s --]\n"), cmd);
         }
 
         state_puts(buf, s);

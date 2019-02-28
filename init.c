@@ -2630,7 +2630,7 @@ void mutt_commands_apply(void *data, void (*application)(void *, const struct Co
  */
 int mutt_dump_variables(bool hide_sensitive)
 {
-  char command[256];
+  char cmd[256];
 
   struct Buffer err, token;
 
@@ -2650,8 +2650,8 @@ int mutt_dump_variables(bool hide_sensitive)
       mutt_message("%s='***'", MuttVars[i].name);
       continue;
     }
-    snprintf(command, sizeof(command), "set ?%s\n", MuttVars[i].name);
-    if (mutt_parse_rc_line(command, &token, &err) == MUTT_CMD_ERROR)
+    snprintf(cmd, sizeof(cmd), "set ?%s\n", MuttVars[i].name);
+    if (mutt_parse_rc_line(cmd, &token, &err) == MUTT_CMD_ERROR)
     {
       mutt_message("%s", err.data);
       FREE(&token.data);

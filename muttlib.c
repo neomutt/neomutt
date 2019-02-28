@@ -862,18 +862,18 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
       struct Buffer *srcbuf = mutt_buffer_from(srccopy);
       srcbuf->dptr = srcbuf->data;
       struct Buffer *word = mutt_buffer_new();
-      struct Buffer *command = mutt_buffer_new();
+      struct Buffer *cmd = mutt_buffer_new();
 
       /* Iterate expansions across successive arguments */
       do
       {
-        /* Extract the command name and copy to command line */
+        /* Extract the cmd name and copy to cmd line */
         mutt_debug(LL_DEBUG3, "fmtpipe +++: %s\n", srcbuf->dptr);
         if (word->data)
           *word->data = '\0';
         mutt_extract_token(word, srcbuf, 0);
         mutt_debug(LL_DEBUG3, "fmtpipe %2d: %s\n", i++, word->data);
-        mutt_buffer_addch(command, '\'');
+        mutt_buffer_addch(cmd, '\'');
         mutt_expando_format(tmp, sizeof(tmp), 0, cols, word->data, callback,
                             data, flags | MUTT_FORMAT_NOFILTER);
         for (char *p = tmp; p && *p; p++)
@@ -884,20 +884,20 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
              * single-quoted material.  double-quoting instead will lead
              * shell variable expansions, so break out of the single-quoted
              * span, insert a double-quoted single quote, and resume. */
-            mutt_buffer_addstr(command, "'\"'\"'");
+            mutt_buffer_addstr(cmd, "'\"'\"'");
           }
           else
-            mutt_buffer_addch(command, *p);
+            mutt_buffer_addch(cmd, *p);
         }
-        mutt_buffer_addch(command, '\'');
-        mutt_buffer_addch(command, ' ');
+        mutt_buffer_addch(cmd, '\'');
+        mutt_buffer_addch(cmd, ' ');
       } while (MoreArgs(srcbuf));
 
-      mutt_debug(LL_DEBUG3, "fmtpipe > %s\n", command->data);
+      mutt_debug(LL_DEBUG3, "fmtpipe > %s\n", cmd->data);
 
       col -= wlen; /* reset to passed in value */
       wptr = buf;  /* reset write ptr */
-      pid_t pid = mutt_create_filter(command->data, NULL, &filter, NULL);
+      pid_t pid = mutt_create_filter(cmd->data, NULL, &filter, NULL);
       if (pid != -1)
       {
         int rc;
@@ -906,7 +906,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         mutt_file_fclose(&filter);
         rc = mutt_wait_filter(pid);
         if (rc != 0)
-          mutt_debug(LL_DEBUG1, "format pipe command exited code %d\n", rc);
+          mutt_debug(LL_DEBUG1, "format pipe cmd exited code %d\n", rc);
         if (n > 0)
         {
           buf[n] = 0;
@@ -953,7 +953,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         *wptr = '\0';
       }
 
-      mutt_buffer_free(&command);
+      mutt_buffer_free(&cmd);
       mutt_buffer_free(&srcbuf);
       mutt_buffer_free(&word);
       return;
