@@ -326,7 +326,6 @@ static int query_tag(struct Menu *menu, int sel, int act)
 static void query_menu(char *buf, size_t buflen, struct Query *results, bool retbuf)
 {
   struct Menu *menu = NULL;
-  struct Email *msg = NULL;
   struct Entry *query_table = NULL;
   struct Query *queryp = NULL;
   char title[256];
@@ -360,8 +359,8 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
     query_table = mutt_mem_calloc(menu->max, sizeof(struct Entry));
     menu->data = query_table;
 
-    int i;
-    for (i = 0, queryp = results; queryp; queryp = queryp->next, i++)
+    queryp = results;
+    for (int i = 0; queryp; queryp = queryp->next, i++)
       query_table[i].data = queryp;
 
     int done = 0;
@@ -416,7 +415,8 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
                 menu->data = query_table =
                     mutt_mem_calloc(menu->max, sizeof(struct Entry));
 
-                for (i = 0, queryp = results; queryp; queryp = queryp->next, i++)
+                queryp = results;
+                for (int i = 0; queryp; queryp = queryp->next, i++)
                   query_table[i].data = queryp;
               }
               else
@@ -428,7 +428,8 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
 
                 menu->data = query_table;
 
-                for (i = 0, queryp = results; queryp; queryp = queryp->next, i++)
+                queryp = results;
+                for (int i = 0; queryp; queryp = queryp->next, i++)
                 {
                   /* once we hit new entries, clear/init the tag */
                   if (queryp == newresults)
@@ -448,7 +449,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
           {
             struct Address *naddr = NULL;
 
-            for (i = 0; i < menu->max; i++)
+            for (int i = 0; i < menu->max; i++)
             {
               if (query_table[i].tagged)
               {
@@ -477,7 +478,8 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
           }
         /* fallthrough */
         case OP_MAIL:
-          msg = mutt_email_new();
+        {
+          struct Email *msg = mutt_email_new();
           msg->env = mutt_env_new();
           if (!menu->tagprefix)
           {
@@ -485,7 +487,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
           }
           else
           {
-            for (i = 0; i < menu->max; i++)
+            for (int i = 0; i < menu->max; i++)
             {
               if (query_table[i].tagged)
               {
@@ -498,6 +500,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
           ci_send_message(0, msg, NULL, Context, NULL);
           menu->redraw = REDRAW_FULL;
           break;
+        }
 
         case OP_EXIT:
           done = 1;
@@ -514,7 +517,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
       memset(buf, 0, buflen);
 
       /* check for tagged entries */
-      for (i = 0; i < menu->max; i++)
+      for (int i = 0; i < menu->max; i++)
       {
         if (query_table[i].tagged)
         {

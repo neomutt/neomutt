@@ -173,7 +173,6 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
   char p[PATH_MAX] = "";
   char q[PATH_MAX] = "";
   char tmp[PATH_MAX];
-  char *t = NULL;
 
   const char *tail = "";
 
@@ -194,12 +193,11 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
         }
         else
         {
-          struct passwd *pw = NULL;
-          t = strchr(buf + 1, '/');
+          char *t = strchr(buf + 1, '/');
           if (t)
             *t = 0;
 
-          pw = getpwnam(buf + 1);
+          struct passwd *pw = getpwnam(buf + 1);
           if (pw)
           {
             mutt_str_strfcpy(p, pw->pw_dir, sizeof(p));

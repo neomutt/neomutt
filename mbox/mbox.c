@@ -566,7 +566,6 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
   struct Email **old_hdrs = NULL;
   int old_msg_count;
   bool msg_mod = false;
-  int i, j;
   int rc = -1;
 
   /* silent operations */
@@ -578,9 +577,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
   /* our heuristics require the old mailbox to be unsorted */
   if (C_Sort != SORT_ORDER)
   {
-    short old_sort;
-
-    old_sort = C_Sort;
+    short old_sort = C_Sort;
     C_Sort = SORT_ORDER;
     mutt_mailbox_changed(m, MBN_RESORT);
     C_Sort = old_sort;
@@ -597,7 +594,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
   FREE(&m->v2r);
   if (m->readonly)
   {
-    for (i = 0; i < m->msg_count; i++)
+    for (int i = 0; i < m->msg_count; i++)
       mutt_email_free(&(m->emails[i])); /* nothing to do! */
     FREE(&m->emails);
   }
@@ -645,8 +642,8 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
   if (rc == -1)
   {
     /* free the old headers */
-    for (j = 0; j < old_msg_count; j++)
-      mutt_email_free(&(old_hdrs[j]));
+    for (int i = 0; i < old_msg_count; i++)
+      mutt_email_free(&(old_hdrs[i]));
     FREE(&old_hdrs);
 
     m->quiet = false;
@@ -659,7 +656,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
 
   if (!m->readonly)
   {
-    for (i = 0; i < m->msg_count; i++)
+    for (int i = 0; i < m->msg_count; i++)
     {
       bool found = false;
 
@@ -668,6 +665,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
        * "advanced" towards the beginning of the folder, so we begin the
        * search at index "i"
        */
+      int j;
       for (j = i; j < old_msg_count; j++)
       {
         if (!old_hdrs[j])
@@ -719,7 +717,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
     }
 
     /* free the remaining old headers */
-    for (j = 0; j < old_msg_count; j++)
+    for (int j = 0; j < old_msg_count; j++)
     {
       if (old_hdrs[j])
       {

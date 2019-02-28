@@ -3310,9 +3310,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
                                     unsigned long data, MuttFormatFlags flags)
 {
   char fmt[128];
-  KeyFlags kflags = KEYFLAG_NO_FLAGS;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
-  const char *s = NULL;
 
   struct CryptEntry *entry = (struct CryptEntry *) data;
   struct CryptKeyInfo *key = entry->key;
@@ -3320,14 +3318,15 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
   /*    if (isupper ((unsigned char) op)) */
   /*      key = pkey; */
 
-  kflags = (key->flags /* | (pkey->flags & KEYFLAG_RESTRICTIONS)
-                          | uid->flags */);
+  KeyFlags kflags = (key->flags /* | (pkey->flags & KEYFLAG_RESTRICTIONS)
+                                   | uid->flags */);
 
   switch (tolower(op))
   {
     case 'a':
       if (!optional)
       {
+        const char *s = NULL;
         snprintf(fmt, sizeof(fmt), "%%%s.3s", prec);
         if (key->kobj->subkeys)
           s = gpgme_pubkey_algo_name(key->kobj->subkeys->pubkey_algo);
@@ -3394,6 +3393,8 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
       break;
 
     case 't':
+    {
+      char *s = NULL;
       if ((kflags & KEYFLAG_ISX509))
         s = "x";
       else
@@ -3424,6 +3425,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
       snprintf(fmt, sizeof(fmt), "%%%sc", prec);
       snprintf(buf, buflen, fmt, *s);
       break;
+    }
 
     case 'u':
       if (!optional)
@@ -3981,7 +3983,6 @@ enum KeyCap
  */
 static unsigned int key_check_cap(gpgme_key_t key, enum KeyCap cap)
 {
-  gpgme_subkey_t subkey = NULL;
   unsigned int ret = 0;
 
   switch (cap)
@@ -3990,7 +3991,7 @@ static unsigned int key_check_cap(gpgme_key_t key, enum KeyCap cap)
       ret = key->can_encrypt;
       if (ret == 0)
       {
-        for (subkey = key->subkeys; subkey; subkey = subkey->next)
+        for (gpgme_subkey_t subkey = key->subkeys; subkey; subkey = subkey->next)
         {
           ret = subkey->can_encrypt;
           if (ret != 0)
@@ -4002,7 +4003,7 @@ static unsigned int key_check_cap(gpgme_key_t key, enum KeyCap cap)
       ret = key->can_sign;
       if (ret == 0)
       {
-        for (subkey = key->subkeys; subkey; subkey = subkey->next)
+        for (gpgme_subkey_t subkey = key->subkeys; subkey; subkey = subkey->next)
         {
           ret = subkey->can_sign;
           if (ret != 0)
@@ -4014,7 +4015,7 @@ static unsigned int key_check_cap(gpgme_key_t key, enum KeyCap cap)
       ret = key->can_certify;
       if (ret == 0)
       {
-        for (subkey = key->subkeys; subkey; subkey = subkey->next)
+        for (gpgme_subkey_t subkey = key->subkeys; subkey; subkey = subkey->next)
         {
           ret = subkey->can_certify;
           if (ret != 0)

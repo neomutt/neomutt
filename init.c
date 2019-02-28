@@ -1108,7 +1108,6 @@ static enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
   struct GroupList gc = STAILQ_HEAD_INITIALIZER(gc);
   enum GroupState state = GS_NONE;
   struct Address *addr = NULL;
-  char *estr = NULL;
 
   do
   {
@@ -1148,6 +1147,8 @@ static enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
           break;
 
         case GS_ADDR:
+        {
+          char *estr = NULL;
           addr = mutt_addr_parse_list2(NULL, buf->data);
           if (!addr)
             goto bail;
@@ -1165,6 +1166,7 @@ static enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
             mutt_grouplist_remove_addrlist(&gc, addr);
           mutt_addr_free(&addr);
           break;
+        }
       }
     }
   } while (MoreArgs(s));

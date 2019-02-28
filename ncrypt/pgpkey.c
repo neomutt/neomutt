@@ -177,7 +177,6 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
                                  unsigned long data, MuttFormatFlags flags)
 {
   char fmt[128];
-  KeyFlags kflags = KEYFLAG_NO_FLAGS;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   struct PgpEntry *entry = (struct PgpEntry *) data;
@@ -188,7 +187,7 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
   if (isupper((unsigned char) op))
     key = pkey;
 
-  kflags = key->flags | (pkey->flags & KEYFLAG_RESTRICTIONS) | uid->flags;
+  KeyFlags kflags = key->flags | (pkey->flags & KEYFLAG_RESTRICTIONS) | uid->flags;
 
   switch (tolower(op))
   {
@@ -591,22 +590,18 @@ static int pgp_id_matches_addr(struct Address *addr, struct Address *u_addr, str
 static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
                                          struct Address *p, const char *s)
 {
-  int keymax;
   struct PgpUid **key_table = NULL;
   struct Menu *menu = NULL;
   int i;
   bool done = false;
   char helpstr[1024], buf[1024], tmpbuf[256];
   char cmd[1024], tempfile[PATH_MAX];
-  FILE *fp = NULL, *devnull = NULL;
-  pid_t pid;
   struct PgpKeyInfo *kp = NULL;
   struct PgpUid *a = NULL;
-  int (*f)(const void *, const void *);
 
   bool unusable = false;
 
-  keymax = 0;
+  int keymax = 0;
 
   for (i = 0, kp = keys; kp; kp = kp->next)
   {
@@ -634,12 +629,13 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
     }
   }
 
-  if (!i && unusable)
+  if ((i == 0) && unusable)
   {
     mutt_error(_("All matching keys are expired, revoked, or disabled"));
     return NULL;
   }
 
+  int (*f)(const void *, const void *);
   switch (C_PgpSortKeys & SORT_MASK)
   {
     case SORT_ADDRESS:
@@ -693,13 +689,13 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
       case OP_VERIFY_KEY:
 
         mutt_mktemp(tempfile, sizeof(tempfile));
-        devnull = fopen("/dev/null", "w");
+        FILE *devnull = fopen("/dev/null", "w");
         if (!devnull)
         {
           mutt_perror(_("Can't open /dev/null"));
           break;
         }
-        fp = mutt_file_fopen(tempfile, "w");
+        FILE *fp = mutt_file_fopen(tempfile, "w");
         if (!fp)
         {
           mutt_file_fclose(&devnull);
@@ -712,8 +708,8 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
         snprintf(tmpbuf, sizeof(tmpbuf), "0x%s",
                  pgp_fpr_or_lkeyid(pgp_principal_key(key_table[menu->current]->parent)));
 
-        pid = pgp_invoke_verify_key(NULL, NULL, NULL, -1, fileno(fp),
-                                    fileno(devnull), tmpbuf);
+        pid_t pid = pgp_invoke_verify_key(NULL, NULL, NULL, -1, fileno(fp),
+                                          fileno(devnull), tmpbuf);
         if (pid == -1)
         {
           mutt_perror(_("Can't create filter"));

@@ -361,10 +361,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
                                      unsigned long data, MuttFormatFlags flags)
 {
   char fn[128], fmt[128], permission[11];
-  char *t_fmt = NULL;
   struct Folder *folder = (struct Folder *) data;
-  struct passwd *pw = NULL;
-  struct group *gr = NULL;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   switch (op)
@@ -380,6 +377,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
       {
         bool do_locales = true;
 
+        char *t_fmt = NULL;
         if (op == 'D')
         {
           t_fmt = NONULL(C_DateFormat);
@@ -464,7 +462,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
     case 'g':
       if (folder->ff->local)
       {
-        gr = getgrgid(folder->ff->gid);
+        struct group *gr = getgrgid(folder->ff->gid);
         if (gr)
           mutt_format_s(buf, buflen, prec, gr->gr_name);
         else
@@ -562,7 +560,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
     case 'u':
       if (folder->ff->local)
       {
-        pw = getpwuid(folder->ff->uid);
+        struct passwd *pw = getpwuid(folder->ff->uid);
         if (pw)
           mutt_format_s(buf, buflen, prec, pw->pw_name);
         else

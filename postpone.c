@@ -234,14 +234,14 @@ static struct Email *select_msg(struct Context *ctx)
 
   while (!done)
   {
-    const int i = mutt_menu_loop(menu);
-    switch (i)
+    const int op = mutt_menu_loop(menu);
+    switch (op)
     {
       case OP_DELETE:
       case OP_UNDELETE:
         /* should deleted draft messages be saved in the trash folder? */
         mutt_set_flag(ctx->mailbox, ctx->mailbox->emails[menu->current],
-                      MUTT_DELETE, (i == OP_DELETE));
+                      MUTT_DELETE, (op == OP_DELETE));
         PostCount = ctx->mailbox->msg_count - ctx->mailbox->msg_deleted;
         if (C_Resolve && menu->current < menu->max - 1)
         {

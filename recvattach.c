@@ -214,7 +214,6 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
   char charset[128];
   struct AttachPtr *aptr = (struct AttachPtr *) data;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
-  size_t l;
 
   switch (op)
   {
@@ -366,6 +365,8 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
       }
       break;
     case 's':
+    {
+      size_t l;
       if (flags & MUTT_FORMAT_STAT_FILE)
       {
         struct stat st;
@@ -385,6 +386,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
         optional = 0;
 
       break;
+    }
     case 't':
       if (!optional)
         snprintf(buf, buflen, "%c", aptr->content->tagged ? '*' : ' ');
@@ -1320,8 +1322,6 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
 void mutt_view_attachments(struct Email *e)
 {
   char helpstr[1024];
-  struct Body *cur = NULL;
-  SendFlags flags = SEND_NO_FLAGS;
   int op = OP_NULL;
 
   struct Mailbox *m = Context ? Context->mailbox : NULL;
@@ -1397,7 +1397,7 @@ void mutt_view_attachments(struct Email *e)
         if (((WithCrypto & APPLICATION_PGP) != 0) &&
             recvattach_pgp_check_traditional(actx, menu))
         {
-          e->security = crypt_query(cur);
+          e->security = crypt_query(NULL);
           menu->redraw = REDRAW_FULL;
         }
         break;
@@ -1569,16 +1569,17 @@ void mutt_view_attachments(struct Email *e)
       case OP_GROUP_REPLY:
       case OP_GROUP_CHAT_REPLY:
       case OP_LIST_REPLY:
-
+      {
         CHECK_ATTACH;
 
-        flags = SEND_REPLY | (op == OP_GROUP_REPLY ? SEND_GROUP_REPLY : 0) |
-                (op == OP_GROUP_CHAT_REPLY ? SEND_GROUP_CHAT_REPLY : 0) |
-                (op == OP_LIST_REPLY ? SEND_LIST_REPLY : 0);
+        SendFlags flags = SEND_REPLY | (op == OP_GROUP_REPLY ? SEND_GROUP_REPLY : 0) |
+                          (op == OP_GROUP_CHAT_REPLY ? SEND_GROUP_CHAT_REPLY : 0) |
+                          (op == OP_LIST_REPLY ? SEND_LIST_REPLY : 0);
         mutt_attach_reply(CURATTACH->fp, e, actx,
                           menu->tagprefix ? NULL : CURATTACH->content, flags);
         menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_COMPOSE_TO_SENDER:
         CHECK_ATTACH;
