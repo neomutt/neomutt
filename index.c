@@ -3256,7 +3256,7 @@ int mutt_index_menu(void)
       case OP_PIPE:
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
-        mutt_pipe_message(tag ? NULL : CUR_EMAIL);
+        mutt_pipe_message(Context->mailbox, tag ? NULL : CUR_EMAIL);
 
 #ifdef USE_IMAP
         /* in an IMAP folder index with imap_peek=no, piping could change
@@ -3273,7 +3273,7 @@ int mutt_index_menu(void)
       case OP_PRINT:
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
-        mutt_print_message(tag ? NULL : CUR_EMAIL);
+        mutt_print_message(Context->mailbox, tag ? NULL : CUR_EMAIL);
 
 #ifdef USE_IMAP
         /* in an IMAP folder index with imap_peek=no, printing could change
