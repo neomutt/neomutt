@@ -381,15 +381,15 @@ bool mutt_ch_chscmp(const char *cs1, const char *cs2)
   if (!cs1 || !cs2)
     return false;
 
-  char buffer[256];
+  char buf[256];
 
-  mutt_ch_canonical_charset(buffer, sizeof(buffer), cs1);
+  mutt_ch_canonical_charset(buf, sizeof(buf), cs1);
 
-  int len1 = mutt_str_strlen(buffer);
+  int len1 = mutt_str_strlen(buf);
   int len2 = mutt_str_strlen(cs2);
 
-  return mutt_str_strncasecmp(((len1 > len2) ? buffer : cs2),
-                              ((len1 > len2) ? cs2 : buffer), MIN(len1, len2)) == 0;
+  return mutt_str_strncasecmp(((len1 > len2) ? buf : cs2),
+                              ((len1 > len2) ? cs2 : buf), MIN(len1, len2)) == 0;
 }
 
 /**
@@ -955,11 +955,11 @@ char *mutt_ch_fgetconvs(char *buf, size_t buflen, struct FgetConv *fc)
  */
 void mutt_ch_set_charset(const char *charset)
 {
-  char buffer[256];
+  char buf[256];
 
-  mutt_ch_canonical_charset(buffer, sizeof(buffer), charset);
+  mutt_ch_canonical_charset(buf, sizeof(buf), charset);
 
-  if (mutt_ch_is_utf8(buffer))
+  if (mutt_ch_is_utf8(buf))
   {
     CharsetIsUtf8 = true;
     ReplacementChar = 0xfffd; /* replacement character */
@@ -971,7 +971,7 @@ void mutt_ch_set_charset(const char *charset)
   }
 
 #if defined(HAVE_BIND_TEXTDOMAIN_CODESET) && defined(ENABLE_NLS)
-  bind_textdomain_codeset(PACKAGE, buffer);
+  bind_textdomain_codeset(PACKAGE, buf);
 #endif
 }
 

@@ -655,16 +655,16 @@ void mutt_pipe_message(struct Mailbox *m, struct EmailList *el)
   if (!m || !el)
     return;
 
-  char buffer[1024] = { 0 };
+  char buf[1024] = { 0 };
 
-  if ((mutt_get_field(_("Pipe to command: "), buffer, sizeof(buffer), MUTT_CMD) != 0) ||
-      (buffer[0] == '\0'))
+  if ((mutt_get_field(_("Pipe to command: "), buf, sizeof(buf), MUTT_CMD) != 0) ||
+      (buf[0] == '\0'))
   {
     return;
   }
 
-  mutt_expand_path(buffer, sizeof(buffer));
-  pipe_message(m, el, buffer, C_PipeDecode, false, C_PipeSplit, C_PipeSep);
+  mutt_expand_path(buf, sizeof(buf));
+  pipe_message(m, el, buf, C_PipeDecode, false, C_PipeSplit, C_PipeSep);
 }
 
 /**
@@ -815,17 +815,17 @@ void mutt_shell_escape(void)
  */
 void mutt_enter_command(void)
 {
-  char buffer[1024] = { 0 };
+  char buf[1024] = { 0 };
 
   /* if enter is pressed after : with no command, just return */
-  if (mutt_get_field(":", buffer, sizeof(buffer), MUTT_COMMAND) != 0 || !buffer[0])
+  if (mutt_get_field(":", buf, sizeof(buf), MUTT_COMMAND) != 0 || !buf[0])
     return;
 
   struct Buffer *err = mutt_buffer_alloc(256);
   struct Buffer *token = mutt_buffer_alloc(256);
 
-  /* check if buffer is a valid icommand, else fall back quietly to parse_rc_lines */
-  enum CommandResult rc = mutt_parse_icommand(buffer, err);
+  /* check if buf is a valid icommand, else fall back quietly to parse_rc_lines */
+  enum CommandResult rc = mutt_parse_icommand(buf, err);
   if (!mutt_buffer_is_empty(err))
   {
     /* since errbuf could potentially contain printf() sequences in it,
@@ -838,7 +838,7 @@ void mutt_enter_command(void)
   }
   else if (rc != MUTT_CMD_SUCCESS)
   {
-    rc = mutt_parse_rc_line(buffer, token, err);
+    rc = mutt_parse_rc_line(buf, token, err);
     if (!mutt_buffer_is_empty(err))
     {
       if (rc == MUTT_CMD_SUCCESS) /* command succeeded with message */

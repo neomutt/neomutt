@@ -406,13 +406,13 @@ int mutt_copy_header(FILE *in, struct Email *e, FILE *out,
   if (chflags & CH_TXTPLAIN)
   {
     char chsbuf[128];
-    char buffer[128];
+    char buf[128];
     fputs("MIME-Version: 1.0\n", out);
     fputs("Content-Transfer-Encoding: 8bit\n", out);
     fputs("Content-Type: text/plain; charset=", out);
     mutt_ch_canonical_charset(chsbuf, sizeof(chsbuf), C_Charset ? C_Charset : "us-ascii");
-    mutt_addr_cat(buffer, sizeof(buffer), chsbuf, MimeSpecials);
-    fputs(buffer, out);
+    mutt_addr_cat(buf, sizeof(buf), chsbuf, MimeSpecials);
+    fputs(buf, out);
     fputc('\n', out);
   }
 

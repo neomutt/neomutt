@@ -82,7 +82,7 @@ static int lua_mutt_call(lua_State *l)
 {
   mutt_debug(LL_DEBUG2, " * lua_mutt_call()\n");
   struct Buffer token, expn, err;
-  char buffer[1024] = "";
+  char buf[1024] = "";
   const struct Command *command = NULL;
   int rc = 0;
 
@@ -110,13 +110,13 @@ static int lua_mutt_call(lua_State *l)
   for (int i = 2; i <= lua_gettop(l); i++)
   {
     const char *s = lua_tostring(l, i);
-    mutt_str_strncat(buffer, sizeof(buffer), s, mutt_str_strlen(s));
-    mutt_str_strncat(buffer, sizeof(buffer), " ", 1);
+    mutt_str_strncat(buf, sizeof(buf), s, mutt_str_strlen(s));
+    mutt_str_strncat(buf, sizeof(buf), " ", 1);
   }
 
-  expn.data = buffer;
-  expn.dptr = buffer;
-  expn.dsize = mutt_str_strlen(buffer);
+  expn.data = buf;
+  expn.dptr = buf;
+  expn.dsize = mutt_str_strlen(buf);
 
   if (command->func(&token, &expn, command->data, &err))
   {
@@ -295,7 +295,7 @@ static int lua_mutt_enter(lua_State *l)
 {
   mutt_debug(LL_DEBUG2, " * lua_mutt_enter()\n");
   struct Buffer token, err;
-  char *buffer = mutt_str_strdup(lua_tostring(l, -1));
+  char *buf = mutt_str_strdup(lua_tostring(l, -1));
   int rc = 0;
 
   mutt_buffer_init(&err);
@@ -304,7 +304,7 @@ static int lua_mutt_enter(lua_State *l)
   err.dsize = 256;
   err.data = mutt_mem_malloc(err.dsize);
 
-  if (mutt_parse_rc_line(buffer, &token, &err))
+  if (mutt_parse_rc_line(buf, &token, &err))
   {
     luaL_error(l, "NeoMutt error: %s", err.data);
     rc = -1;
@@ -317,7 +317,7 @@ static int lua_mutt_enter(lua_State *l)
       rc++;
   }
 
-  FREE(&buffer);
+  FREE(&buf);
   FREE(&err.data);
 
   return rc;

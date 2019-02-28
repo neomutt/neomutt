@@ -1850,13 +1850,13 @@ static int match_threadchildren(struct Pattern *pat, enum PatternExecFlag flags,
  */
 static int match_content_type(const struct Pattern *pat, struct Body *b)
 {
-  char buffer[256];
+  char buf[256];
   if (!b)
     return 0;
 
-  snprintf(buffer, sizeof(buffer), "%s/%s", TYPE(b), b->subtype);
+  snprintf(buf, sizeof(buf), "%s/%s", TYPE(b), b->subtype);
 
-  if (patmatch(pat, buffer) == 0)
+  if (patmatch(pat, buf) == 0)
     return 1;
   if (match_content_type(pat, b->parts))
     return 1;

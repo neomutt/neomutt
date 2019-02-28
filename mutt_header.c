@@ -172,7 +172,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
                        char *fcc, size_t fcclen)
 {
   char path[PATH_MAX]; /* tempfile used to edit headers + body */
-  char buffer[1024];
+  char buf[1024];
   const char *p = NULL;
   int i;
   struct Envelope *n = NULL;
@@ -244,8 +244,8 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
   }
 
   n = mutt_rfc822_read_header(ifp, NULL, true, false);
-  while ((i = fread(buffer, 1, sizeof(buffer), ifp)) > 0)
-    fwrite(buffer, 1, i, ofp);
+  while ((i = fread(buf, 1, sizeof(buf), ifp)) > 0)
+    fwrite(buf, 1, i, ofp);
   mutt_file_fclose(&ofp);
   mutt_file_fclose(&ifp);
   mutt_file_unlink(path);

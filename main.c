@@ -717,9 +717,8 @@ int main(int argc, char *argv[], char *envp[])
   }
   if (!C_NewsServer)
   {
-    char buffer[1024];
-    char *server =
-        mutt_file_read_keyword(SYSCONFDIR "/nntpserver", buffer, sizeof(buffer));
+    char buf[1024];
+    char *server = mutt_file_read_keyword(SYSCONFDIR "/nntpserver", buf, sizeof(buf));
     cs_str_string_set(Config, "news_server", server, NULL);
   }
   if (C_NewsServer)

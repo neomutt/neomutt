@@ -1699,7 +1699,7 @@ static char *openssl_md_to_smime_micalg(char *md)
  */
 struct Body *smime_class_sign_message(struct Body *a)
 {
-  char buffer[1024];
+  char buf[1024];
   char signedfile[PATH_MAX], filetosign[PATH_MAX];
   FILE *smimein = NULL, *smimeout = NULL, *smimeerr = NULL, *sfp = NULL;
   int err = 0;
@@ -1774,10 +1774,10 @@ struct Body *smime_class_sign_message(struct Body *a)
   err = 0;
   fflush(smimeerr);
   rewind(smimeerr);
-  while (fgets(buffer, sizeof(buffer) - 1, smimeerr))
+  while (fgets(buf, sizeof(buf) - 1, smimeerr))
   {
     err = 1;
-    fputs(buffer, stdout);
+    fputs(buf, stdout);
   }
   mutt_file_fclose(&smimeerr);
 

@@ -758,13 +758,13 @@ static bool mbox_has_new(struct Mailbox *m)
 static int fseek_last_message(FILE *f)
 {
   LOFF_T pos;
-  char buffer[BUFSIZ + 9] = { 0 }; /* 7 for "\n\nFrom " */
+  char buf[BUFSIZ + 9] = { 0 }; /* 7 for "\n\nFrom " */
   size_t bytes_read;
 
   fseek(f, 0, SEEK_END);
   pos = ftello(f);
 
-  /* Set 'bytes_read' to the size of the last, probably partial, buffer;
+  /* Set 'bytes_read' to the size of the last, probably partial, buf;
    * 0 < 'bytes_read' <= 'BUFSIZ'.  */
   bytes_read = pos % BUFSIZ;
   if (bytes_read == 0)
@@ -773,16 +773,16 @@ static int fseek_last_message(FILE *f)
    * reads will be on block boundaries, which might increase efficiency.  */
   while ((pos -= bytes_read) >= 0)
   {
-    /* we save in the buffer at the end the first 7 chars from the last read */
-    strncpy(buffer + BUFSIZ, buffer, 5 + 2); /* 2 == 2 * mutt_str_strlen(CRLF) */
+    /* we save in the buf at the end the first 7 chars from the last read */
+    strncpy(buf + BUFSIZ, buf, 5 + 2); /* 2 == 2 * mutt_str_strlen(CRLF) */
     fseeko(f, pos, SEEK_SET);
-    bytes_read = fread(buffer, sizeof(char), bytes_read, f);
+    bytes_read = fread(buf, sizeof(char), bytes_read, f);
     if (bytes_read == 0)
       return -1;
-    /* 'i' is Index into 'buffer' for scanning.  */
+    /* 'i' is Index into 'buf' for scanning.  */
     for (int i = bytes_read; i >= 0; i--)
     {
-      if (mutt_str_startswith(buffer + i, "\n\nFrom ", CASE_MATCH))
+      if (mutt_str_startswith(buf + i, "\n\nFrom ", CASE_MATCH))
       { /* found it - go to the beginning of the From */
         fseeko(f, pos + i + 2, SEEK_SET);
         return 0;
@@ -792,7 +792,7 @@ static int fseek_last_message(FILE *f)
   }
 
   /* here we are at the beginning of the file */
-  if (mutt_str_startswith(buffer, "From ", CASE_MATCH))
+  if (mutt_str_startswith(buf, "From ", CASE_MATCH))
   {
     fseek(f, 0, SEEK_SET);
     return 0;
@@ -1054,13 +1054,13 @@ static int mbox_mbox_check(struct Mailbox *m, int *index_hint)
        * see the message separator at *exactly* what used to be the end of the
        * folder.
        */
-      char buffer[1024];
+      char buf[1024];
       if (fseeko(adata->fp, m->size, SEEK_SET) != 0)
         mutt_debug(LL_DEBUG1, "#1 fseek() failed\n");
-      if (fgets(buffer, sizeof(buffer), adata->fp))
+      if (fgets(buf, sizeof(buf), adata->fp))
       {
-        if ((m->magic == MUTT_MBOX && mutt_str_startswith(buffer, "From ", CASE_MATCH)) ||
-            (m->magic == MUTT_MMDF && (mutt_str_strcmp(buffer, MMDF_SEP) == 0)))
+        if ((m->magic == MUTT_MBOX && mutt_str_startswith(buf, "From ", CASE_MATCH)) ||
+            (m->magic == MUTT_MMDF && (mutt_str_strcmp(buf, MMDF_SEP) == 0)))
         {
           if (fseeko(adata->fp, m->size, SEEK_SET) != 0)
             mutt_debug(LL_DEBUG1, "#2 fseek() failed\n");

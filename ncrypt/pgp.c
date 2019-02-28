@@ -1293,7 +1293,7 @@ int pgp_class_encrypted_handler(struct Body *a, struct State *s)
 struct Body *pgp_class_sign_message(struct Body *a)
 {
   struct Body *t = NULL;
-  char buffer[1024];
+  char buf[1024];
   char sigfile[PATH_MAX], signedfile[PATH_MAX];
   FILE *pgpin = NULL, *pgpout = NULL, *pgperr = NULL, *sfp = NULL;
   bool err = false;
@@ -1342,23 +1342,23 @@ struct Body *pgp_class_sign_message(struct Body *a)
   /* Read back the PGP signature.  Also, change MESSAGE=>SIGNATURE as
    * recommended for future releases of PGP.
    */
-  while (fgets(buffer, sizeof(buffer) - 1, pgpout))
+  while (fgets(buf, sizeof(buf) - 1, pgpout))
   {
-    if (mutt_str_strcmp("-----BEGIN PGP MESSAGE-----\n", buffer) == 0)
+    if (mutt_str_strcmp("-----BEGIN PGP MESSAGE-----\n", buf) == 0)
       fputs("-----BEGIN PGP SIGNATURE-----\n", fp);
-    else if (mutt_str_strcmp("-----END PGP MESSAGE-----\n", buffer) == 0)
+    else if (mutt_str_strcmp("-----END PGP MESSAGE-----\n", buf) == 0)
       fputs("-----END PGP SIGNATURE-----\n", fp);
     else
-      fputs(buffer, fp);
+      fputs(buf, fp);
     empty = false; /* got some output, so we're ok */
   }
 
   /* check for errors from PGP */
   err = false;
-  while (fgets(buffer, sizeof(buffer) - 1, pgperr))
+  while (fgets(buf, sizeof(buf) - 1, pgperr))
   {
     err = true;
-    fputs(buffer, stdout);
+    fputs(buf, stdout);
   }
 
   if (mutt_wait_filter(thepid) && C_PgpCheckExit)

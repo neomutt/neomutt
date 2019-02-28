@@ -703,7 +703,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
     struct stat s;
     DIR *dp = NULL;
     struct dirent *de = NULL;
-    char buffer[PATH_MAX + 128];
+    char buf[PATH_MAX + 128];
 
     while (stat(d, &s) == -1)
     {
@@ -754,8 +754,8 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
         continue;
       }
 
-      mutt_path_concat(buffer, d, de->d_name, sizeof(buffer));
-      if (lstat(buffer, &s) == -1)
+      mutt_path_concat(buf, d, de->d_name, sizeof(buf));
+      if (lstat(buf, &s) == -1)
         continue;
 
       /* No size for directories or symlinks */
@@ -767,7 +767,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       struct MailboxNode *np = NULL;
       STAILQ_FOREACH(np, &AllMailboxes, entries)
       {
-        if (mutt_str_strcmp(buffer, np->mailbox->path) != 0)
+        if (mutt_str_strcmp(buf, np->mailbox->path) != 0)
           break;
       }
 
@@ -830,16 +830,16 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
         np->mailbox->msg_unread = Context->mailbox->msg_unread;
       }
 
-      char buffer[PATH_MAX];
-      mutt_str_strfcpy(buffer, np->mailbox->path, sizeof(buffer));
+      char buf[PATH_MAX];
+      mutt_str_strfcpy(buf, np->mailbox->path, sizeof(buf));
       if (C_BrowserAbbreviateMailboxes)
-        mutt_pretty_mailbox(buffer, sizeof(buffer));
+        mutt_pretty_mailbox(buf, sizeof(buf));
 
       switch (np->mailbox->magic)
       {
         case MUTT_IMAP:
         case MUTT_POP:
-          add_folder(menu, state, buffer, np->mailbox->desc, NULL, np->mailbox, NULL);
+          add_folder(menu, state, buf, np->mailbox->desc, NULL, np->mailbox, NULL);
           continue;
         case MUTT_NOTMUCH:
         case MUTT_NNTP:
@@ -871,7 +871,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
           s.st_mtime = st2.st_mtime;
       }
 
-      add_folder(menu, state, buffer, np->mailbox->desc, &s, np->mailbox, NULL);
+      add_folder(menu, state, buf, np->mailbox->desc, &s, np->mailbox, NULL);
     }
   }
   browser_sort(state);

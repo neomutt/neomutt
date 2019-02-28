@@ -95,7 +95,7 @@ void mutt_auto_subscribe(const char *mailto)
 static void parse_parameters(struct ParameterList *param, const char *s)
 {
   struct Parameter *new = NULL;
-  char buffer[1024];
+  char buf[1024];
   const char *p = NULL;
   size_t i;
 
@@ -138,13 +138,13 @@ static void parse_parameters(struct ParameterList *param, const char *s)
       {
         bool state_ascii = true;
         s++;
-        for (i = 0; *s && (i < (sizeof(buffer) - 1)); i++, s++)
+        for (i = 0; *s && (i < (sizeof(buf) - 1)); i++, s++)
         {
           if (C_AssumedCharset && *C_AssumedCharset)
           {
             /* As iso-2022-* has a character of '"' with non-ascii state,
              * ignore it. */
-            if ((*s == 0x1b) && (i < (sizeof(buffer) - 2)))
+            if ((*s == 0x1b) && (i < (sizeof(buf) - 2)))
             {
               if ((s[1] == '(') && ((s[2] == 'B') || (s[2] == 'J')))
                 state_ascii = true;
@@ -157,28 +157,28 @@ static void parse_parameters(struct ParameterList *param, const char *s)
           if (*s == '\\')
           {
             /* Quote the next character */
-            buffer[i] = s[1];
+            buf[i] = s[1];
             if (!*++s)
               break;
           }
           else
-            buffer[i] = *s;
+            buf[i] = *s;
         }
-        buffer[i] = 0;
+        buf[i] = 0;
         if (*s)
           s++; /* skip over the " */
       }
       else
       {
-        for (i = 0; *s && (*s != ' ') && (*s != ';') && (i < (sizeof(buffer) - 1)); i++, s++)
-          buffer[i] = *s;
-        buffer[i] = 0;
+        for (i = 0; *s && (*s != ' ') && (*s != ';') && (i < (sizeof(buf) - 1)); i++, s++)
+          buf[i] = *s;
+        buf[i] = 0;
       }
 
       /* if the attribute token was missing, 'new' will be NULL */
       if (new)
       {
-        new->value = mutt_str_strdup(buffer);
+        new->value = mutt_str_strdup(buf);
 
         mutt_debug(LL_DEBUG2, "parse_parameter: '%s' = '%s'\n",
                    new->attribute ? new->attribute : "", new->value ? new->value : "");
@@ -496,11 +496,11 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
       ct->subtype = mutt_str_strdup("rfc822");
     else if (ct->type == TYPE_OTHER)
     {
-      char buffer[128];
+      char buf[128];
 
       ct->type = TYPE_APPLICATION;
-      snprintf(buffer, sizeof(buffer), "x-%s", s);
-      ct->subtype = mutt_str_strdup(buffer);
+      snprintf(buf, sizeof(buf), "x-%s", s);
+      ct->subtype = mutt_str_strdup(buf);
     }
     else
       ct->subtype = mutt_str_strdup("x-unknown");
@@ -1325,7 +1325,7 @@ void mutt_parse_part(FILE *fp, struct Body *b)
  */
 struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off, bool digest)
 {
-  char buffer[1024];
+  char buf[1024];
   struct Body *head = NULL, *last = NULL, *new = NULL;
   bool final = false; /* did we see the ending boundary? */
 
@@ -1336,14 +1336,13 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
   }
 
   const size_t blen = mutt_str_strlen(boundary);
-  while ((ftello(fp) < end_off) && fgets(buffer, sizeof(buffer), fp))
+  while ((ftello(fp) < end_off) && fgets(buf, sizeof(buf), fp))
   {
-    const size_t len = mutt_str_strlen(buffer);
+    const size_t len = mutt_str_strlen(buf);
 
-    const size_t crlf = ((len > 1) && (buffer[len - 2] == '\r')) ? 1 : 0;
+    const size_t crlf = ((len > 1) && (buf[len - 2] == '\r')) ? 1 : 0;
 
-    if ((buffer[0] == '-') && (buffer[1] == '-') &&
-        mutt_str_startswith(buffer + 2, boundary, CASE_MATCH))
+    if ((buf[0] == '-') && (buf[1] == '-') && mutt_str_startswith(buf + 2, boundary, CASE_MATCH))
     {
       if (last)
       {
@@ -1358,17 +1357,17 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
       if (len > 0)
       {
         /* Remove any trailing whitespace, up to the length of the boundary */
-        for (size_t i = len - 1; ISSPACE(buffer[i]) && (i >= (blen + 2)); i--)
-          buffer[i] = 0;
+        for (size_t i = len - 1; ISSPACE(buf[i]) && (i >= (blen + 2)); i--)
+          buf[i] = 0;
       }
 
       /* Check for the end boundary */
-      if (mutt_str_strcmp(buffer + blen + 2, "--") == 0)
+      if (mutt_str_strcmp(buf + blen + 2, "--") == 0)
       {
         final = true;
         break; /* done parsing */
       }
-      else if (buffer[2 + blen] == 0)
+      else if (buf[2 + blen] == 0)
       {
         new = mutt_read_mime_header(fp, digest);
 
@@ -1379,7 +1378,7 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
           if (mutt_str_atoi(mutt_param_get(&new->parameter, "content-lines"), &lines) < 0)
             lines = 0;
           for (; lines; lines--)
-            if ((ftello(fp) >= end_off) || !fgets(buffer, sizeof(buffer), fp))
+            if ((ftello(fp) >= end_off) || !fgets(buf, sizeof(buf), fp))
               break;
         }
 #endif

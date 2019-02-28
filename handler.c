@@ -527,7 +527,7 @@ static bool is_autoview(struct Body *b)
 static int autoview_handler(struct Body *a, struct State *s)
 {
   struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
-  char buffer[1024];
+  char buf[1024];
   char type[256];
   char command[STR_COMMAND];
   char tempfile[PATH_MAX] = "";
@@ -598,13 +598,13 @@ static int autoview_handler(struct Body *a, struct State *s)
 
     if (s->prefix)
     {
-      while (fgets(buffer, sizeof(buffer), fpout))
+      while (fgets(buf, sizeof(buf), fpout))
       {
         state_puts(s->prefix, s);
-        state_puts(buffer, s);
+        state_puts(buf, s);
       }
       /* check for data on stderr */
-      if (fgets(buffer, sizeof(buffer), fperr))
+      if (fgets(buf, sizeof(buf), fperr))
       {
         if (s->flags & MUTT_DISPLAY)
         {
@@ -613,11 +613,11 @@ static int autoview_handler(struct Body *a, struct State *s)
         }
 
         state_puts(s->prefix, s);
-        state_puts(buffer, s);
-        while (fgets(buffer, sizeof(buffer), fperr))
+        state_puts(buf, s);
+        while (fgets(buf, sizeof(buf), fperr))
         {
           state_puts(s->prefix, s);
-          state_puts(buffer, s);
+          state_puts(buf, s);
         }
       }
     }
@@ -625,7 +625,7 @@ static int autoview_handler(struct Body *a, struct State *s)
     {
       mutt_file_copy_stream(fpout, s->fp_out);
       /* Check for stderr messages */
-      if (fgets(buffer, sizeof(buffer), fperr))
+      if (fgets(buf, sizeof(buf), fperr))
       {
         if (s->flags & MUTT_DISPLAY)
         {
@@ -633,7 +633,7 @@ static int autoview_handler(struct Body *a, struct State *s)
           state_printf(s, _("[-- Autoview stderr of %s --]\n"), command);
         }
 
-        state_puts(buffer, s);
+        state_puts(buf, s);
         mutt_file_copy_stream(fperr, s->fp_out);
       }
     }

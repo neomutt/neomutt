@@ -336,12 +336,11 @@ static char *find_cfg(const char *home, const char *xdg_cfg_home)
 
     for (int j = 0; names[j]; j++)
     {
-      char buffer[256];
+      char buf[256];
 
-      snprintf(buffer, sizeof(buffer), "%s/%s%s", locations[i][0],
-               locations[i][1], names[j]);
-      if (access(buffer, F_OK) == 0)
-        return mutt_str_strdup(buffer);
+      snprintf(buf, sizeof(buf), "%s/%s%s", locations[i][0], locations[i][1], names[j]);
+      if (access(buf, F_OK) == 0)
+        return mutt_str_strdup(buf);
     }
   }
 
@@ -3018,7 +3017,7 @@ int mutt_get_hook_type(const char *name)
  */
 int mutt_init(bool skip_sys_rc, struct ListHead *commands)
 {
-  char buffer[1024];
+  char buf[1024];
   int need_pause = 0;
   struct Buffer err;
 
@@ -3050,11 +3049,11 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   if (!p)
   {
 #ifdef HOMESPOOL
-    mutt_path_concat(buffer, NONULL(HomeDir), MAILPATH, sizeof(buffer));
+    mutt_path_concat(buf, NONULL(HomeDir), MAILPATH, sizeof(buf));
 #else
-    mutt_path_concat(buffer, MAILPATH, NONULL(Username), sizeof(buffer));
+    mutt_path_concat(buf, MAILPATH, NONULL(Username), sizeof(buf));
 #endif
-    p = buffer;
+    p = buf;
   }
   cs_str_initial_set(Config, "spoolfile", p, NULL);
   cs_str_reset(Config, "spoolfile", NULL);
@@ -3062,17 +3061,17 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   p = mutt_str_getenv("REPLYTO");
   if (p)
   {
-    struct Buffer buf, token;
+    struct Buffer tmp, token;
 
-    snprintf(buffer, sizeof(buffer), "Reply-To: %s", p);
+    snprintf(buf, sizeof(buf), "Reply-To: %s", p);
 
-    mutt_buffer_init(&buf);
-    buf.data = buffer;
-    buf.dptr = buffer;
-    buf.dsize = mutt_str_strlen(buffer);
+    mutt_buffer_init(&tmp);
+    tmp.data = buf;
+    tmp.dptr = buf;
+    tmp.dsize = mutt_str_strlen(buf);
 
     mutt_buffer_init(&token);
-    parse_my_hdr(&token, &buf, 0, &err); /* adds to UserHeader */
+    parse_my_hdr(&token, &tmp, 0, &err); /* adds to UserHeader */
     FREE(&token.data);
   }
 
@@ -3137,8 +3136,8 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
 
     if (!xdg_cfg_home && HomeDir)
     {
-      snprintf(buffer, sizeof(buffer), "%s/.config", HomeDir);
-      xdg_cfg_home = buffer;
+      snprintf(buf, sizeof(buf), "%s/.config", HomeDir);
+      xdg_cfg_home = buf;
     }
 
     char *config = find_cfg(HomeDir, xdg_cfg_home);
@@ -3152,10 +3151,10 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
     struct ListNode *np = NULL;
     STAILQ_FOREACH(np, &Muttrc, entries)
     {
-      mutt_str_strfcpy(buffer, np->data, sizeof(buffer));
+      mutt_str_strfcpy(buf, np->data, sizeof(buf));
       FREE(&np->data);
-      mutt_expand_path(buffer, sizeof(buffer));
-      np->data = mutt_str_strdup(buffer);
+      mutt_expand_path(buf, sizeof(buf));
+      np->data = mutt_str_strdup(buf);
       if (access(np->data, F_OK))
       {
         mutt_perror(np->data);
@@ -3175,27 +3174,27 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   {
     do
     {
-      if (mutt_set_xdg_path(XDG_CONFIG_DIRS, buffer, sizeof(buffer)))
+      if (mutt_set_xdg_path(XDG_CONFIG_DIRS, buf, sizeof(buf)))
         break;
 
-      snprintf(buffer, sizeof(buffer), "%s/neomuttrc", SYSCONFDIR);
-      if (access(buffer, F_OK) == 0)
+      snprintf(buf, sizeof(buf), "%s/neomuttrc", SYSCONFDIR);
+      if (access(buf, F_OK) == 0)
         break;
 
-      snprintf(buffer, sizeof(buffer), "%s/Muttrc", SYSCONFDIR);
-      if (access(buffer, F_OK) == 0)
+      snprintf(buf, sizeof(buf), "%s/Muttrc", SYSCONFDIR);
+      if (access(buf, F_OK) == 0)
         break;
 
-      snprintf(buffer, sizeof(buffer), "%s/neomuttrc", PKGDATADIR);
-      if (access(buffer, F_OK) == 0)
+      snprintf(buf, sizeof(buf), "%s/neomuttrc", PKGDATADIR);
+      if (access(buf, F_OK) == 0)
         break;
 
-      snprintf(buffer, sizeof(buffer), "%s/Muttrc", PKGDATADIR);
+      snprintf(buf, sizeof(buf), "%s/Muttrc", PKGDATADIR);
     } while (false);
 
-    if (access(buffer, F_OK) == 0)
+    if (access(buf, F_OK) == 0)
     {
-      if (source_rc(buffer, &err) != 0)
+      if (source_rc(buf, &err) != 0)
       {
         mutt_error("%s", err.data);
         need_pause = 1; // TEST11: neomutt (error in /etc/neomuttrc)
@@ -3228,8 +3227,8 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
     struct passwd *pw = getpwuid(getuid());
     if (pw)
     {
-      char buf[256];
-      C_Realname = mutt_str_strdup(mutt_gecos_name(buf, sizeof(buf), pw));
+      char name[256];
+      C_Realname = mutt_str_strdup(mutt_gecos_name(name, sizeof(name), pw));
     }
   }
   cs_str_initial_set(Config, "realname", C_Realname, NULL);

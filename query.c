@@ -608,9 +608,9 @@ void mutt_query_menu(char *buf, size_t buflen)
 
   if (!buf)
   {
-    char buffer[256] = "";
+    char tmp[256] = "";
 
-    query_menu(buffer, sizeof(buffer), NULL, false);
+    query_menu(tmp, sizeof(tmp), NULL, false);
   }
   else
   {
