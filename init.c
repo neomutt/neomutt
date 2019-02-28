@@ -3282,7 +3282,7 @@ enum CommandResult mutt_parse_rc_line(/* const */ char *line,
                                       struct Buffer *token, struct Buffer *err)
 {
   int i;
-  enum CommandResult r = MUTT_CMD_SUCCESS;
+  enum CommandResult rc = MUTT_CMD_SUCCESS;
   struct Buffer expn;
 
   if (!line || !*line)
@@ -3310,8 +3310,8 @@ enum CommandResult mutt_parse_rc_line(/* const */ char *line,
     {
       if (mutt_str_strcmp(token->data, Commands[i].name) == 0)
       {
-        r = Commands[i].func(token, &expn, Commands[i].data, err);
-        if (r != MUTT_CMD_SUCCESS)
+        rc = Commands[i].func(token, &expn, Commands[i].data, err);
+        if (rc != MUTT_CMD_SUCCESS)
         {              /* -1 Error, +1 Finish */
           goto finish; /* Propagate return code */
         }
@@ -3321,14 +3321,14 @@ enum CommandResult mutt_parse_rc_line(/* const */ char *line,
     if (!Commands[i].name)
     {
       mutt_buffer_printf(err, _("%s: unknown command"), NONULL(token->data));
-      r = MUTT_CMD_ERROR;
+      rc = MUTT_CMD_ERROR;
       break; /* Ignore the rest of the line */
     }
   }
 finish:
   if (expn.destroy)
     FREE(&expn.data);
-  return r;
+  return rc;
 }
 
 /**

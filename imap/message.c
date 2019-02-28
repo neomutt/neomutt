@@ -2027,9 +2027,9 @@ bail:
  */
 int imap_msg_commit(struct Mailbox *m, struct Message *msg)
 {
-  int r = mutt_file_fclose(&msg->fp);
-  if (r != 0)
-    return r;
+  int rc = mutt_file_fclose(&msg->fp);
+  if (rc != 0)
+    return rc;
 
   return imap_append_message(m, msg);
 }

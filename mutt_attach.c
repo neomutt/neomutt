@@ -801,7 +801,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
       char buf[8192];
       struct Message *msg = NULL;
       CopyHeaderFlags chflags = CH_NO_FLAGS;
-      int r = -1;
+      int rc = -1;
 
       struct Email *en = m->email;
       en->msgno = e->msgno; /* required for MH/maildir */
@@ -830,16 +830,16 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
       if ((mutt_copy_message_fp(msg->fp, fp, en, 0, chflags) == 0) &&
           (mx_msg_commit(ctx->mailbox, msg) == 0))
       {
-        r = 0;
+        rc = 0;
       }
       else
       {
-        r = -1;
+        rc = -1;
       }
 
       mx_msg_close(ctx->mailbox, &msg);
       mx_mbox_close(&ctx);
-      return r;
+      return rc;
     }
     else
     {

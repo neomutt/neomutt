@@ -66,7 +66,7 @@ static const struct ImapAuth imap_authenticators[] = {
  */
 int imap_authenticate(struct ImapAccountData *adata)
 {
-  int r = IMAP_AUTH_FAILURE;
+  int rc = IMAP_AUTH_FAILURE;
 
   if (C_ImapAuthenticators && *C_ImapAuthenticators)
   {
@@ -91,11 +91,11 @@ int imap_authenticate(struct ImapAccountData *adata)
         const struct ImapAuth *auth = &imap_authenticators[i];
         if (!auth->method || (mutt_str_strcasecmp(auth->method, method) == 0))
         {
-          r = auth->authenticate(adata, method);
-          if (r == IMAP_AUTH_SUCCESS)
+          rc = auth->authenticate(adata, method);
+          if (rc == IMAP_AUTH_SUCCESS)
           {
             FREE(&methods);
-            return r;
+            return rc;
           }
         }
       }
@@ -110,12 +110,12 @@ int imap_authenticate(struct ImapAccountData *adata)
 
     for (size_t i = 0; i < mutt_array_size(imap_authenticators); ++i)
     {
-      r = imap_authenticators[i].authenticate(adata, NULL);
-      if (r == IMAP_AUTH_SUCCESS)
-        return r;
+      rc = imap_authenticators[i].authenticate(adata, NULL);
+      if (rc == IMAP_AUTH_SUCCESS)
+        return rc;
     }
   }
 
   mutt_error(_("No authenticators available or wrong credentials"));
-  return r;
+  return rc;
 }

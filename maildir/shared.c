@@ -475,9 +475,9 @@ static int maildir_add_to_context(struct Mailbox *m, struct Maildir *md)
  */
 int maildir_move_to_context(struct Mailbox *m, struct Maildir **md)
 {
-  int r = maildir_add_to_context(m, *md);
+  int num = maildir_add_to_context(m, *md);
   maildir_free_maildir(md);
-  return r;
+  return num;
 }
 
 #ifdef USE_HCACHE
@@ -1627,7 +1627,7 @@ int maildir_check_empty(const char *path)
 {
   DIR *dp = NULL;
   struct dirent *de = NULL;
-  int r = 1; /* assume empty until we find a message */
+  int rc = 1; /* assume empty until we find a message */
   char realpath[PATH_MAX];
   int iter = 0;
 
@@ -1646,15 +1646,15 @@ int maildir_check_empty(const char *path)
     {
       if (*de->d_name != '.')
       {
-        r = 0;
+        rc = 0;
         break;
       }
     }
     closedir(dp);
     iter++;
-  } while (r && iter < 2);
+  } while (rc && iter < 2);
 
-  return r;
+  return rc;
 }
 
 /**
@@ -1667,7 +1667,7 @@ int maildir_check_empty(const char *path)
 int mh_check_empty(const char *path)
 {
   struct dirent *de = NULL;
-  int r = 1; /* assume empty until we find a message */
+  int rc = 1; /* assume empty until we find a message */
 
   DIR *dp = opendir(path);
   if (!dp)
@@ -1676,13 +1676,13 @@ int mh_check_empty(const char *path)
   {
     if (mh_valid_message(de->d_name))
     {
-      r = 0;
+      rc = 0;
       break;
     }
   }
   closedir(dp);
 
-  return r;
+  return rc;
 }
 
 /**

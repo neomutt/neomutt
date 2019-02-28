@@ -151,9 +151,9 @@ int mutt_file_fclose(FILE **fp)
   if (!fp || !*fp)
     return 0;
 
-  int r = fclose(*fp);
+  int rc = fclose(*fp);
   *fp = NULL;
-  return r;
+  return rc;
 }
 
 /**
@@ -167,19 +167,19 @@ int mutt_file_fsync_close(FILE **fp)
   if (!fp || !*fp)
     return 0;
 
-  int r = 0;
+  int rc = 0;
 
   if (fflush(*fp) || fsync(fileno(*fp)))
   {
     int save_errno = errno;
-    r = -1;
+    rc = -1;
     mutt_file_fclose(fp);
     errno = save_errno;
   }
   else
-    r = mutt_file_fclose(fp);
+    rc = mutt_file_fclose(fp);
 
-  return r;
+  return rc;
 }
 
 /**

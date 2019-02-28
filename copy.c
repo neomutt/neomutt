@@ -807,14 +807,14 @@ int mutt_copy_message_ctx(FILE *fp_out, struct Mailbox *src, struct Email *e,
     return -1;
   if (!e->content)
     return -1;
-  int r = mutt_copy_message_fp(fp_out, msg->fp, e, cmflags, chflags);
-  if ((r == 0) && (ferror(fp_out) || feof(fp_out)))
+  int rc = mutt_copy_message_fp(fp_out, msg->fp, e, cmflags, chflags);
+  if ((rc == 0) && (ferror(fp_out) || feof(fp_out)))
   {
     mutt_debug(LL_DEBUG1, "failed to detect EOF!\n");
-    r = -1;
+    rc = -1;
   }
   mx_msg_close(src, &msg);
-  return r;
+  return rc;
 }
 
 /**
@@ -833,7 +833,7 @@ static int append_message(struct Mailbox *dest, FILE *fp_in, struct Mailbox *src
 {
   char buf[256];
   struct Message *msg = NULL;
-  int r;
+  int rc;
 
   if (fseeko(fp_in, e->offset, SEEK_SET) < 0)
     return -1;
@@ -846,9 +846,9 @@ static int append_message(struct Mailbox *dest, FILE *fp_in, struct Mailbox *src
   if (dest->magic == MUTT_MBOX || dest->magic == MUTT_MMDF)
     chflags |= CH_FROM | CH_FORCE_FROM;
   chflags |= (dest->magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
-  r = mutt_copy_message_fp(msg->fp, fp_in, e, cmflags, chflags);
+  rc = mutt_copy_message_fp(msg->fp, fp_in, e, cmflags, chflags);
   if (mx_msg_commit(dest, msg) != 0)
-    r = -1;
+    rc = -1;
 
 #ifdef USE_NOTMUCH
   if (msg->committed_path && dest->magic == MUTT_MAILDIR && src->magic == MUTT_NOTMUCH)
@@ -856,7 +856,7 @@ static int append_message(struct Mailbox *dest, FILE *fp_in, struct Mailbox *src
 #endif
 
   mx_msg_close(dest, &msg);
-  return r;
+  return rc;
 }
 
 /**
@@ -875,9 +875,9 @@ int mutt_append_message(struct Mailbox *dest, struct Mailbox *src, struct Email 
   struct Message *msg = mx_msg_open(src, e->msgno);
   if (!msg)
     return -1;
-  int r = append_message(dest, msg->fp, src, e, cmflags, chflags);
+  int rc = append_message(dest, msg->fp, src, e, cmflags, chflags);
   mx_msg_close(src, &msg);
-  return r;
+  return rc;
 }
 
 /**

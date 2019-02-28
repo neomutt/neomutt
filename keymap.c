@@ -1251,7 +1251,7 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
 {
   const struct Binding *bindings = NULL;
   int menu[sizeof(Menus) / sizeof(struct Mapping) - 1], nummenus;
-  enum CommandResult r = MUTT_CMD_SUCCESS;
+  enum CommandResult rc = MUTT_CMD_SUCCESS;
 
   char *key = parse_keymap(menu, s, mutt_array_size(menu), &nummenus, err, true);
   if (!key)
@@ -1262,7 +1262,7 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
   if (MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too many arguments"), "bind");
-    r = MUTT_CMD_ERROR;
+    rc = MUTT_CMD_ERROR;
   }
   else if (mutt_str_strcasecmp("noop", buf->data) == 0)
   {
@@ -1279,10 +1279,10 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
        * however for other menus try generic first. */
       if ((menu[i] != MENU_PAGER) && (menu[i] != MENU_EDITOR) && (menu[i] != MENU_GENERIC))
       {
-        r = try_bind(key, menu[i], buf->data, OpGeneric, err);
-        if (r == 0)
+        rc = try_bind(key, menu[i], buf->data, OpGeneric, err);
+        if (rc == 0)
           continue;
-        if (r == -2)
+        if (rc == -2)
           break;
       }
 
@@ -1291,12 +1291,12 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
       bindings = km_get_table(menu[i]);
       if (bindings)
       {
-        r = try_bind(key, menu[i], buf->data, bindings, err);
+        rc = try_bind(key, menu[i], buf->data, bindings, err);
       }
     }
   }
   FREE(&key);
-  return r;
+  return rc;
 }
 
 /**
@@ -1308,7 +1308,7 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
                                     unsigned long data, struct Buffer *err)
 {
   int menu[sizeof(Menus) / sizeof(struct Mapping) - 1], nummenus;
-  enum CommandResult r = MUTT_CMD_ERROR;
+  enum CommandResult rc = MUTT_CMD_ERROR;
   char *seq = NULL;
 
   char *key = parse_keymap(menu, s, mutt_array_size(menu), &nummenus, err, false);
@@ -1336,7 +1336,7 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
       {
         for (int i = 0; i < nummenus; ++i)
         {
-          r = km_bind(key, menu[i], OP_MACRO, seq, buf->data);
+          rc = km_bind(key, menu[i], OP_MACRO, seq, buf->data);
         }
       }
 
@@ -1346,12 +1346,12 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
     {
       for (int i = 0; i < nummenus; ++i)
       {
-        r = km_bind(key, menu[i], OP_MACRO, buf->data, NULL);
+        rc = km_bind(key, menu[i], OP_MACRO, buf->data, NULL);
       }
     }
   }
   FREE(&key);
-  return r;
+  return rc;
 }
 
 /**

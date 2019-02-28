@@ -1062,10 +1062,10 @@ int mx_msg_close(struct Mailbox *m, struct Message **msg)
   if (!m || !msg || !*msg)
     return 0;
 
-  int r = 0;
+  int rc = 0;
 
   if (m->mx_ops && m->mx_ops->msg_close)
-    r = m->mx_ops->msg_close(m, *msg);
+    rc = m->mx_ops->msg_close(m, *msg);
 
   if ((*msg)->path)
   {
@@ -1076,7 +1076,7 @@ int mx_msg_close(struct Mailbox *m, struct Message **msg)
 
   FREE(&(*msg)->committed_path);
   FREE(msg);
-  return r;
+  return rc;
 }
 
 /**

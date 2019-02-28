@@ -1024,7 +1024,7 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
                                       bool dry_run, bool color)
 {
   int object = 0, attr = 0, fg = 0, bg = 0, q_level = 0, match = 0;
-  enum CommandResult r = MUTT_CMD_SUCCESS;
+  enum CommandResult rc = MUTT_CMD_SUCCESS;
 
   if (parse_object(buf, s, &object, &q_level, err) == -1)
     return MUTT_CMD_ERROR;
@@ -1082,11 +1082,11 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
 #endif
 
   if (object == MT_COLOR_HEADER)
-    r = add_pattern(&ColorHdrList, buf->data, false, fg, bg, attr, err, false, match);
+    rc = add_pattern(&ColorHdrList, buf->data, false, fg, bg, attr, err, false, match);
   else if (object == MT_COLOR_BODY)
-    r = add_pattern(&ColorBodyList, buf->data, true, fg, bg, attr, err, false, match);
+    rc = add_pattern(&ColorBodyList, buf->data, true, fg, bg, attr, err, false, match);
   else if (object == MT_COLOR_ATTACH_HEADERS)
-    r = add_pattern(&ColorAttachList, buf->data, true, fg, bg, attr, err, false, match);
+    rc = add_pattern(&ColorAttachList, buf->data, true, fg, bg, attr, err, false, match);
   else if ((object == MT_COLOR_STATUS) && MoreArgs(s))
   {
     /* 'color status fg bg' can have up to 2 arguments:
@@ -1110,31 +1110,31 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_WARNING;
     }
 
-    r = add_pattern(&ColorStatusList, buf->data, true, fg, bg, attr, err, false, match);
+    rc = add_pattern(&ColorStatusList, buf->data, true, fg, bg, attr, err, false, match);
   }
   else if (object == MT_COLOR_INDEX)
   {
-    r = add_pattern(&ColorIndexList, buf->data, true, fg, bg, attr, err, true, match);
+    rc = add_pattern(&ColorIndexList, buf->data, true, fg, bg, attr, err, true, match);
     mutt_menu_set_redraw_full(MENU_MAIN);
   }
   else if (object == MT_COLOR_INDEX_AUTHOR)
   {
-    r = add_pattern(&ColorIndexAuthorList, buf->data, true, fg, bg, attr, err, true, match);
+    rc = add_pattern(&ColorIndexAuthorList, buf->data, true, fg, bg, attr, err, true, match);
     mutt_menu_set_redraw_full(MENU_MAIN);
   }
   else if (object == MT_COLOR_INDEX_FLAGS)
   {
-    r = add_pattern(&ColorIndexFlagsList, buf->data, true, fg, bg, attr, err, true, match);
+    rc = add_pattern(&ColorIndexFlagsList, buf->data, true, fg, bg, attr, err, true, match);
     mutt_menu_set_redraw_full(MENU_MAIN);
   }
   else if (object == MT_COLOR_INDEX_SUBJECT)
   {
-    r = add_pattern(&ColorIndexSubjectList, buf->data, true, fg, bg, attr, err, true, match);
+    rc = add_pattern(&ColorIndexSubjectList, buf->data, true, fg, bg, attr, err, true, match);
     mutt_menu_set_redraw_full(MENU_MAIN);
   }
   else if (object == MT_COLOR_INDEX_TAG)
   {
-    r = add_pattern(&ColorIndexTagList, buf->data, true, fg, bg, attr, err, true, match);
+    rc = add_pattern(&ColorIndexTagList, buf->data, true, fg, bg, attr, err, true, match);
     mutt_menu_set_redraw_full(MENU_MAIN);
   }
   else if (object == MT_COLOR_QUOTED)
@@ -1168,7 +1168,7 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
       mutt_menu_set_redraw_full(MENU_MAIN);
   }
 
-  return r;
+  return rc;
 }
 
 #ifdef HAVE_COLOR

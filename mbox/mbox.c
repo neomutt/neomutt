@@ -141,8 +141,8 @@ static int mbox_lock_mailbox(struct Mailbox *m, bool excl, bool retry)
   if (!adata)
     return -1;
 
-  int r = mutt_file_lock(fileno(adata->fp), excl, retry);
-  if (r == 0)
+  int rc = mutt_file_lock(fileno(adata->fp), excl, retry);
+  if (rc == 0)
     adata->locked = true;
   else if (retry && !excl)
   {
@@ -150,7 +150,7 @@ static int mbox_lock_mailbox(struct Mailbox *m, bool excl, bool retry)
     return 0;
   }
 
-  return r;
+  return rc;
 }
 
 /**
