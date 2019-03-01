@@ -3254,9 +3254,13 @@ int mutt_index_menu(void)
       }
 
       case OP_PIPE:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
-        mutt_pipe_message(Context->mailbox, tag ? NULL : CUR_EMAIL);
+        struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+        el_add_tagged(&el, Context, CUR_EMAIL, tag);
+        mutt_pipe_message(Context->mailbox, &el);
+        el_free(&el);
 
 #ifdef USE_IMAP
         /* in an IMAP folder index with imap_peek=no, piping could change
@@ -3267,13 +3271,17 @@ int mutt_index_menu(void)
           menu->redraw |= (tag ? REDRAW_INDEX : REDRAW_CURRENT) | REDRAW_STATUS;
         }
 #endif
-
         break;
+      }
 
       case OP_PRINT:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
-        mutt_print_message(Context->mailbox, tag ? NULL : CUR_EMAIL);
+        struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+        el_add_tagged(&el, Context, CUR_EMAIL, tag);
+        mutt_print_message(Context->mailbox, &el);
+        el_free(&el);
 
 #ifdef USE_IMAP
         /* in an IMAP folder index with imap_peek=no, printing could change
@@ -3284,8 +3292,8 @@ int mutt_index_menu(void)
           menu->redraw |= (tag ? REDRAW_INDEX : REDRAW_CURRENT) | REDRAW_STATUS;
         }
 #endif
-
         break;
+      }
 
       case OP_MAIN_READ_THREAD:
       case OP_MAIN_READ_SUBTHREAD:
