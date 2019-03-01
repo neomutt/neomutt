@@ -461,7 +461,7 @@ static int compile_search(struct Mailbox *m, const struct Pattern *pat, struct B
       case MUTT_SERVERSEARCH:
       {
         struct ImapAccountData *adata = imap_adata_get(m);
-        if (!(adata->capabilities & IMAP_CAP_X_GM_EXT1))
+        if (!(adata->capabilities & IMAP_CAP_X_GM_EXT_1))
         {
           mutt_error(_("Server-side custom search not supported: %s"), pat->p.str);
           return -1;
