@@ -71,18 +71,18 @@ char *C_SmtpAuthenticators; ///< Config: (smtp) List of allowed authentication m
 #define SMTP_AUTH_UNAVAIL 1
 #define SMTP_AUTH_FAIL -1
 
+// clang-format off
 /**
- * enum SmtpCapability - SMTP server capabilities
+ * SmtpCapability - SMTP server capabilities
  */
-enum SmtpCapability
-{
-  SMTP_CAP_STARTTLS,     ///< Server supports STARTTLS command
-  SMTP_CAP_AUTH,         ///< Server supports AUTH command
-  SMTP_CAP_DSN,          ///< Server supports Delivery Status Notification
-  SMTP_CAP_EIGHTBITMIME, ///< Server supports 8-bit MIME content
-  SMTP_CAP_SMTPUTF8,     ///< Server accepts UTF-8 strings
-  SMTP_CAP_MAX,
-};
+#define SMTP_CAP_STARTTLS     (1 << 0) ///< Server supports STARTTLS command
+#define SMTP_CAP_AUTH         (1 << 1) ///< Server supports AUTH command
+#define SMTP_CAP_DSN          (1 << 2) ///< Server supports Delivery Status Notification
+#define SMTP_CAP_EIGHTBITMIME (1 << 3) ///< Server supports 8-bit MIME content
+#define SMTP_CAP_SMTPUTF8     (1 << 4) ///< Server accepts UTF-8 strings
+
+#define SMTP_CAP_ALL         ((1 << 5) - 1)
+// clang-format on
 
 static char *AuthMechs = NULL;
 static unsigned int Capabilities;
