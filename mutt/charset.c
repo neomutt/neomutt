@@ -313,7 +313,7 @@ int mutt_ch_convert_nonmime_string(char **ps)
  */
 void mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name)
 {
-  char in[LONG_STRING], scratch[LONG_STRING];
+  char in[1024], scratch[1024];
 
   mutt_str_strfcpy(in, name, sizeof(in));
   char *ext = strchr(in, '/');
@@ -381,7 +381,7 @@ bool mutt_ch_chscmp(const char *cs1, const char *cs2)
   if (!cs1 || !cs2)
     return false;
 
-  char buffer[STRING];
+  char buffer[256];
 
   mutt_ch_canonical_charset(buffer, sizeof(buffer), cs1);
 
@@ -400,7 +400,7 @@ bool mutt_ch_chscmp(const char *cs1, const char *cs2)
  */
 char *mutt_ch_get_default_charset(void)
 {
-  static char fcharset[SHORT_STRING];
+  static char fcharset[128];
   const char *c = C_AssumedCharset;
   const char *c1 = NULL;
 
@@ -422,7 +422,7 @@ char *mutt_ch_get_default_charset(void)
  */
 char *mutt_ch_get_langinfo_charset(void)
 {
-  char buf[LONG_STRING] = "";
+  char buf[1024] = "";
 
   mutt_ch_canonical_charset(buf, sizeof(buf), nl_langinfo(CODESET));
 
@@ -530,8 +530,8 @@ const char *mutt_ch_charset_lookup(const char *chs)
  */
 iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, int flags)
 {
-  char tocode1[SHORT_STRING];
-  char fromcode1[SHORT_STRING];
+  char tocode1[128];
+  char fromcode1[128];
   const char *tocode2 = NULL, *fromcode2 = NULL;
   const char *tmp = NULL;
 
@@ -955,7 +955,7 @@ char *mutt_ch_fgetconvs(char *buf, size_t buflen, struct FgetConv *fc)
  */
 void mutt_ch_set_charset(const char *charset)
 {
-  char buffer[STRING];
+  char buffer[256];
 
   mutt_ch_canonical_charset(buffer, sizeof(buffer), charset);
 
@@ -1046,7 +1046,7 @@ char *mutt_ch_choose(const char *fromcode, const char *charsets, const char *u,
     if (dlen)
       *dlen = elen;
 
-    char canonical_buf[LONG_STRING];
+    char canonical_buf[1024];
     mutt_ch_canonical_charset(canonical_buf, sizeof(canonical_buf), tocode);
     mutt_str_replace(&tocode, canonical_buf);
   }

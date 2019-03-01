@@ -326,7 +326,7 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
  */
 static int msg_parse_fetch(struct ImapHeader *h, char *s)
 {
-  char tmp[SHORT_STRING];
+  char tmp[128];
   char *ptmp = NULL;
   size_t plen = 0;
 
@@ -708,7 +708,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
                                           bool store_flag_updates, bool eval_condstore)
 {
   struct Progress progress;
-  char buf[LONG_STRING];
+  char buf[1024];
 
   struct Mailbox *m = adata->mailbox;
   struct ImapMboxData *mdata = imap_mdata_get(m);
@@ -919,7 +919,7 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
                                                   unsigned long long hc_modseq, bool eval_qresync)
 {
   struct Progress progress;
-  char buf[LONG_STRING];
+  char buf[1024];
   unsigned int header_msn = 0;
 
   struct Mailbox *m = adata->mailbox;
@@ -1417,9 +1417,9 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
     return -1;
 
   FILE *fp = NULL;
-  char buf[LONG_STRING * 2];
+  char buf[1024 * 2];
   char internaldate[IMAP_DATELEN];
-  char imap_flags[SHORT_STRING];
+  char imap_flags[128];
   size_t len;
   struct Progress progressbar;
   size_t sent;
@@ -1835,7 +1835,7 @@ int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
     return -1;
 
   struct Envelope *newenv = NULL;
-  char buf[LONG_STRING];
+  char buf[1024];
   char *pc = NULL;
   unsigned int bytes;
   struct Progress progressbar;

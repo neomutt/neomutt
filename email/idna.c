@@ -279,7 +279,7 @@ cleanup:
  */
 const char *mutt_idna_print_version(void)
 {
-  static char vstring[STRING];
+  static char vstring[256];
 
 #ifdef HAVE_IDN2_H
   snprintf(vstring, sizeof(vstring), "libidn2: %s (compiled with %s)",

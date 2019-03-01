@@ -128,7 +128,7 @@ int mutt_label_message(struct Mailbox *m, struct EmailList *el)
   if (!m || !el)
     return 0;
 
-  char buf[LONG_STRING] = { 0 };
+  char buf[1024] = { 0 };
   char *new = NULL;
 
   struct EmailNode *en = STAILQ_FIRST(el);
@@ -172,7 +172,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
                        char *fcc, size_t fcclen)
 {
   char path[PATH_MAX]; /* tempfile used to edit headers + body */
-  char buffer[LONG_STRING];
+  char buffer[1024];
   const char *p = NULL;
   int i;
   struct Envelope *n = NULL;

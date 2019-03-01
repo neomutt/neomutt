@@ -360,7 +360,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
                                      const char *if_str, const char *else_str,
                                      unsigned long data, int flags)
 {
-  char fn[SHORT_STRING], fmt[SHORT_STRING], permission[11];
+  char fn[128], fmt[128], permission[11];
   char *t_fmt = NULL;
   struct Folder *folder = (struct Folder *) data;
   struct passwd *pw = NULL;
@@ -397,7 +397,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
 
         if (!do_locales)
           setlocale(LC_TIME, "C");
-        char date[SHORT_STRING];
+        char date[128];
         strftime(date, sizeof(date), t_fmt, localtime(&folder->ff->mtime));
         if (!do_locales)
           setlocale(LC_TIME, "");
@@ -703,7 +703,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
     struct stat s;
     DIR *dp = NULL;
     struct dirent *de = NULL;
-    char buffer[PATH_MAX + SHORT_STRING];
+    char buffer[PATH_MAX + 128];
 
     while (stat(d, &s) == -1)
     {
@@ -1090,8 +1090,8 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
 {
   char buf[PATH_MAX];
   char prefix[PATH_MAX] = "";
-  char helpstr[LONG_STRING];
-  char title[STRING];
+  char helpstr[1024];
+  char title[256];
   struct BrowserState state = { 0 };
   struct Menu *menu = NULL;
   bool kill_prefix = false;
@@ -1563,7 +1563,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           mutt_error(_("Delete is only supported for IMAP mailboxes"));
         else
         {
-          char msg[SHORT_STRING];
+          char msg[128];
           int nentry = menu->current;
 
           // TODO(sileht): It could be better to select INBOX instead. But I
@@ -2001,7 +2001,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
 
           if ((op == OP_SUBSCRIBE_PATTERN) || (op == OP_UNSUBSCRIBE_PATTERN))
           {
-            char tmp[STRING];
+            char tmp[256];
 
             buf[0] = '\0';
             if (op == OP_SUBSCRIBE_PATTERN)
@@ -2084,7 +2084,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
 #endif /* USE_NNTP */
 #ifdef USE_IMAP
         {
-          char tmp[STRING];
+          char tmp[256];
           mutt_str_strfcpy(tmp, state.entry[menu->current].name, sizeof(tmp));
           mutt_expand_path(tmp, sizeof(tmp));
           imap_subscribe(tmp, (op == OP_BROWSER_SUBSCRIBE));

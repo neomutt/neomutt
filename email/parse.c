@@ -74,7 +74,7 @@ void mutt_auto_subscribe(const char *mailto)
       !mutt_regexlist_match(&UnSubscribedLists, lpenv->to->mailbox))
   {
     struct Buffer err;
-    char errbuf[STRING];
+    char errbuf[256];
     memset(&err, 0, sizeof(err));
     err.data = errbuf;
     err.dsize = sizeof(errbuf);
@@ -95,7 +95,7 @@ void mutt_auto_subscribe(const char *mailto)
 static void parse_parameters(struct ParameterList *param, const char *s)
 {
   struct Parameter *new = NULL;
-  char buffer[LONG_STRING];
+  char buffer[1024];
   const char *p = NULL;
   size_t i;
 
@@ -496,7 +496,7 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
       ct->subtype = mutt_str_strdup("rfc822");
     else if (ct->type == TYPE_OTHER)
     {
-      char buffer[SHORT_STRING];
+      char buffer[128];
 
       ct->type = TYPE_APPLICATION;
       snprintf(buffer, sizeof(buffer), "x-%s", s);
@@ -987,10 +987,10 @@ char *mutt_rfc822_read_line(FILE *f, char *line, size_t *linelen)
 
     buf++;
     offset = buf - line;
-    if (*linelen < (offset + STRING))
+    if (*linelen < (offset + 256))
     {
       /* grow the buffer */
-      *linelen += STRING;
+      *linelen += 256;
       mutt_mem_realloc(&line, *linelen);
       buf = line + offset;
     }
@@ -1014,11 +1014,11 @@ char *mutt_rfc822_read_line(FILE *f, char *line, size_t *linelen)
 struct Envelope *mutt_rfc822_read_header(FILE *f, struct Email *e, bool user_hdrs, bool weed)
 {
   struct Envelope *env = mutt_env_new();
-  char *line = mutt_mem_malloc(LONG_STRING);
   char *p = NULL;
   LOFF_T loc;
-  size_t linelen = LONG_STRING;
-  char buf[LONG_STRING + 1];
+  size_t linelen = 1024;
+  char *line = mutt_mem_malloc(linelen);
+  char buf[linelen + 1];
 
   if (e)
   {
@@ -1045,7 +1045,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *f, struct Email *e, bool user_hdr
     p = strpbrk(line, ": \t");
     if (!p || (*p != ':'))
     {
-      char return_path[LONG_STRING];
+      char return_path[1024];
       time_t t;
 
       /* some bogus MTAs will quote the original "From " line */
@@ -1164,8 +1164,8 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
   struct Body *p = mutt_body_new();
   struct Envelope *env = mutt_env_new();
   char *c = NULL;
-  char *line = mutt_mem_malloc(LONG_STRING);
-  size_t linelen = LONG_STRING;
+  size_t linelen = 1024;
+  char *line = mutt_mem_malloc(linelen);
 
   p->hdr_offset = ftello(fp);
 
@@ -1325,7 +1325,7 @@ void mutt_parse_part(FILE *fp, struct Body *b)
  */
 struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off, bool digest)
 {
-  char buffer[LONG_STRING];
+  char buffer[1024];
   struct Body *head = NULL, *last = NULL, *new = NULL;
   bool final = false; /* did we see the ending boundary? */
 
@@ -1336,7 +1336,7 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
   }
 
   const size_t blen = mutt_str_strlen(boundary);
-  while ((ftello(fp) < end_off) && fgets(buffer, LONG_STRING, fp))
+  while ((ftello(fp) < end_off) && fgets(buffer, sizeof(buffer), fp))
   {
     const size_t len = mutt_str_strlen(buffer);
 
@@ -1379,7 +1379,7 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
           if (mutt_str_atoi(mutt_param_get(&new->parameter, "content-lines"), &lines) < 0)
             lines = 0;
           for (; lines; lines--)
-            if ((ftello(fp) >= end_off) || !fgets(buffer, LONG_STRING, fp))
+            if ((ftello(fp) >= end_off) || !fgets(buffer, sizeof(buffer), fp))
               break;
         }
 #endif

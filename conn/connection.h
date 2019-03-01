@@ -37,7 +37,7 @@ struct Connection
   struct ConnAccount account;
   unsigned int ssf; /**< security strength factor, in bits */
 
-  char inbuf[LONG_STRING];
+  char inbuf[1024];
   int bufpos;
 
   int fd;

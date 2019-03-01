@@ -387,7 +387,7 @@ void menu_redraw_full(struct Menu *menu)
  */
 void menu_redraw_status(struct Menu *menu)
 {
-  char buf[STRING];
+  char buf[256];
 
   snprintf(buf, sizeof(buf), MUTT_MODEFMT, menu->title);
   SETCOLOR(MT_COLOR_STATUS);
@@ -415,7 +415,7 @@ void menu_redraw_sidebar(struct Menu *menu)
  */
 void menu_redraw_index(struct Menu *menu)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
   bool do_color;
   int attr;
 
@@ -465,7 +465,7 @@ void menu_redraw_index(struct Menu *menu)
  */
 void menu_redraw_motion(struct Menu *menu)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
 
   if (menu->dialog)
   {
@@ -523,7 +523,7 @@ void menu_redraw_motion(struct Menu *menu)
  */
 void menu_redraw_current(struct Menu *menu)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
   int attr = menu->menu_color(menu->current);
 
   mutt_window_move(menu->indexwin, menu->current + menu->offset - menu->top, 0);
@@ -630,7 +630,7 @@ static void menu_jump(struct Menu *menu)
   if (menu->max)
   {
     mutt_unget_event(LastKey, 0);
-    char buf[SHORT_STRING];
+    char buf[128];
     buf[0] = '\0';
     if (mutt_get_field(_("Jump to: "), buf, sizeof(buf), 0) == 0 && buf[0])
     {
@@ -952,7 +952,7 @@ static int default_color(int line)
  */
 static int generic_search(struct Menu *menu, regex_t *rx, int line)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
 
   menu_make_entry(buf, sizeof(buf), menu, line);
   return regexec(rx, buf, 0, NULL, 0);
@@ -1145,7 +1145,7 @@ static int menu_search(struct Menu *menu, int op)
   int r = 0, wrap = 0;
   int search_dir;
   regex_t re;
-  char buf[SHORT_STRING];
+  char buf[128];
   char *search_buf =
       menu->menu >= 0 && menu->menu < MENU_MAX ? SearchBuffers[menu->menu] : NULL;
 

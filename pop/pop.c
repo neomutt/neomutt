@@ -89,7 +89,7 @@ bool C_PopLast;  ///< Config: (pop) Use the 'LAST' command to fetch new mail
  */
 static const char *cache_id(const char *id)
 {
-  static char clean[SHORT_STRING];
+  static char clean[128];
   mutt_str_strfcpy(clean, id, sizeof(clean));
   mutt_file_sanitize_filename(clean, true);
   return clean;
@@ -189,7 +189,7 @@ static int pop_read_header(struct PopAccountData *adata, struct Email *e)
 
   int index = 0;
   size_t length = 0;
-  char buf[LONG_STRING];
+  char buf[1024];
 
   snprintf(buf, sizeof(buf), "LIST %d\r\n", e->refno);
   int rc = pop_query(adata, buf, sizeof(buf));
@@ -360,7 +360,7 @@ static header_cache_t *pop_hcache_open(struct PopAccountData *adata, const char 
     return mutt_hcache_open(C_HeaderCache, path, NULL);
 
   struct Url url;
-  char p[LONG_STRING];
+  char p[1024];
 
   mutt_account_tourl(&adata->conn->account, &url);
   url.path = HC_FNAME;
@@ -587,8 +587,8 @@ void pop_fetch_mail(void)
     return;
   }
 
-  char buffer[LONG_STRING];
-  char msgbuf[SHORT_STRING];
+  char buffer[1024];
+  char msgbuf[128];
   int delanswer, last = 0, msgs, bytes, rset = 0, ret;
   struct ConnAccount acct;
 
@@ -939,7 +939,7 @@ static int pop_mbox_sync(struct Mailbox *m, int *index_hint)
     return -1;
 
   int i, j, ret = 0;
-  char buf[LONG_STRING];
+  char buf[1024];
   struct PopAccountData *adata = pop_adata_get(m);
   struct Progress progress;
 #ifdef USE_HCACHE
@@ -1058,7 +1058,7 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   if (!m)
     return -1;
 
-  char buf[LONG_STRING];
+  char buf[1024];
   char path[PATH_MAX];
   struct Progress progressbar;
   struct PopAccountData *adata = pop_adata_get(m);

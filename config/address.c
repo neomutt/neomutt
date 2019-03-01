@@ -115,7 +115,7 @@ static int address_string_get(const struct ConfigSet *cs, void *var,
   if (!cs || !cdef)
     return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
 
-  char tmp[HUGE_STRING] = "";
+  char tmp[8192] = "";
   const char *str = NULL;
 
   if (var)

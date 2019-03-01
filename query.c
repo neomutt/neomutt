@@ -137,11 +137,11 @@ static struct Query *run_query(char *s, int quiet)
   FILE *fp = NULL;
   struct Query *first = NULL;
   struct Query *cur = NULL;
-  char cmd[HUGE_STRING];
+  char cmd[STR_COMMAND];
   char *buf = NULL;
   size_t buflen;
   int dummy = 0;
-  char msg[STRING];
+  char msg[256];
   char *p = NULL;
   pid_t thepid;
 
@@ -251,8 +251,8 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
 {
   struct Entry *entry = (struct Entry *) data;
   struct Query *query = entry->data;
-  char fmt[SHORT_STRING];
-  char tmp[STRING] = "";
+  char fmt[128];
+  char tmp[256] = "";
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   switch (op)
@@ -329,7 +329,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
   struct Email *msg = NULL;
   struct Entry *QueryTable = NULL;
   struct Query *queryp = NULL;
-  char title[STRING];
+  char title[256];
 
   if (!results)
   {
@@ -349,7 +349,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
     menu->menu_search = query_search;
     menu->menu_tag = query_tag;
     menu->title = title;
-    char helpstr[LONG_STRING];
+    char helpstr[1024];
     menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_QUERY, QueryHelp);
     mutt_menu_push_current(menu);
 
@@ -608,7 +608,7 @@ void mutt_query_menu(char *buf, size_t buflen)
 
   if (!buf)
   {
-    char buffer[STRING] = "";
+    char buffer[256] = "";
 
     query_menu(buffer, sizeof(buffer), NULL, false);
   }

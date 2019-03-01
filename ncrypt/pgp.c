@@ -74,7 +74,7 @@ struct Regex *C_PgpGoodSign; ///< Config: Text indicating a good signature
 long C_PgpTimeout;           ///< Config: Time in seconds to cache a passphrase
 bool C_PgpUseGpgAgent;       ///< Config: Use a PGP agent for caching passwords
 
-char PgpPass[LONG_STRING];
+char PgpPass[1024];
 time_t PgpExptime = 0; /* when does the cached passphrase expire? */
 
 /**
@@ -414,7 +414,7 @@ static int pgp_check_decryption_okay(FILE *fpin)
  */
 static void pgp_copy_clearsigned(FILE *fpin, struct State *s, char *charset)
 {
-  char buf[HUGE_STRING];
+  char buf[8192];
   bool complete, armor_header;
 
   rewind(fpin);
@@ -473,7 +473,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
   int c = 1;
   long bytes;
   LOFF_T last_pos, offset;
-  char buf[HUGE_STRING];
+  char buf[8192];
   char tmpfname[PATH_MAX];
   FILE *pgpout = NULL, *pgpin = NULL, *pgperr = NULL;
   FILE *tmpfp = NULL;
@@ -483,7 +483,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
   bool have_any_sigs = false;
 
   char *gpgcharset = NULL;
-  char body_charset[STRING];
+  char body_charset[256];
   mutt_body_get_charset(m, body_charset, sizeof(body_charset));
 
   rc = 0;
@@ -789,7 +789,7 @@ out:
 static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 {
   char tempfile[PATH_MAX];
-  char buf[HUGE_STRING];
+  char buf[8192];
   FILE *tfp = NULL;
 
   bool sgn = false;
@@ -999,7 +999,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   if (!a || !s || !fpout || !p)
     return NULL;
 
-  char buf[LONG_STRING];
+  char buf[1024];
   FILE *pgpin = NULL, *pgpout = NULL, *pgptmp = NULL;
   struct stat info;
   struct Body *tattach = NULL;
@@ -1293,7 +1293,7 @@ int pgp_class_encrypted_handler(struct Body *a, struct State *s)
 struct Body *pgp_class_sign_message(struct Body *a)
 {
   struct Body *t = NULL;
-  char buffer[LONG_STRING];
+  char buffer[1024];
   char sigfile[PATH_MAX], signedfile[PATH_MAX];
   FILE *pgpin = NULL, *pgpout = NULL, *pgperr = NULL, *sfp = NULL;
   bool err = false;
@@ -1426,7 +1426,7 @@ char *pgp_class_find_keys(struct Address *addrlist, bool oppenc_mode)
   struct Address *addr = NULL;
   struct Address *p = NULL, *q = NULL;
   struct PgpKeyInfo *k_info = NULL;
-  char buf[LONG_STRING];
+  char buf[1024];
   int r;
   bool key_selected;
 
@@ -1540,7 +1540,7 @@ char *pgp_class_find_keys(struct Address *addrlist, bool oppenc_mode)
  */
 struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
   char tempfile[PATH_MAX];
   char pgpinfile[PATH_MAX];
   FILE *pgpin = NULL, *fptmp = NULL;
@@ -1674,7 +1674,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
   char pgpoutfile[PATH_MAX];
   char pgpinfile[PATH_MAX];
 
-  char body_charset[STRING];
+  char body_charset[256];
   char *from_charset = NULL;
   const char *send_charset = NULL;
 
@@ -1683,7 +1683,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
   bool empty = false;
   bool err;
 
-  char buf[STRING];
+  char buf[256];
 
   pid_t thepid;
 
@@ -1849,7 +1849,7 @@ int pgp_class_send_menu(struct Email *msg)
   const char *prompt = NULL;
   const char *letters = NULL;
   const char *choices = NULL;
-  char promptbuf[LONG_STRING];
+  char promptbuf[1024];
   int choice;
 
   if (!(WithCrypto & APPLICATION_PGP))
@@ -1974,7 +1974,7 @@ int pgp_class_send_menu(struct Email *msg)
         p = pgp_ask_for_key(_("Sign as: "), NULL, 0, PGP_SECRING);
         if (p)
         {
-          char input_signas[SHORT_STRING];
+          char input_signas[128];
           snprintf(input_signas, sizeof(input_signas), "0x%s", pgp_fpr_or_lkeyid(p));
           mutt_str_replace(&C_PgpSignAs, input_signas);
           pgp_free_key(&p);

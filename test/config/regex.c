@@ -98,8 +98,8 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
 
   struct Buffer value;
   mutt_buffer_init(&value);
-  value.data = mutt_mem_calloc(1, STRING);
-  value.dsize = STRING;
+  value.dsize = 256;
+  value.data = mutt_mem_calloc(1, value.dsize);
   mutt_buffer_reset(&value);
 
   int rc;
@@ -667,8 +667,8 @@ void config_regex(void)
 {
   struct Buffer err;
   mutt_buffer_init(&err);
-  err.data = mutt_mem_calloc(1, STRING);
-  err.dsize = STRING;
+  err.dsize = 256;
+  err.data = mutt_mem_calloc(1, err.dsize);
   mutt_buffer_reset(&err);
 
   struct ConfigSet *cs = cs_new(30);

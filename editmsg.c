@@ -60,7 +60,7 @@
 static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
 {
   char fname[PATH_MAX];
-  char buf[STRING];
+  char buf[256];
   int rc;
   struct stat sb;
 

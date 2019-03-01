@@ -66,6 +66,8 @@
 #include "protos.h"
 #include "socket.h"
 
+const int dialog_row_len = 128;
+
 /* Just in case OpenSSL doesn't define DEVRANDOM */
 #ifndef DEVRANDOM
 #define DEVRANDOM "/dev/urandom"
@@ -138,7 +140,7 @@ static int ssl_load_certificates(SSL_CTX *ctx)
   X509 *cert = NULL;
   X509_STORE *store = NULL;
   int rc = 1;
-  char buf[STRING];
+  char buf[256];
 
   mutt_debug(LL_DEBUG2, "loading trusted certificates\n");
   store = SSL_CTX_get_cert_store(ctx);
@@ -393,7 +395,7 @@ static int ssl_socket_open_err(struct Connection *conn)
  */
 static char *x509_get_part(X509_NAME *name, int nid)
 {
-  static char data[SHORT_STRING];
+  static char data[128];
 
   if (!name || X509_NAME_get_text_by_NID(name, nid, data, sizeof(data)) < 0)
     mutt_str_strfcpy(data, _("Unknown"), sizeof(data));
@@ -887,9 +889,9 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   };
   X509_NAME *x509_subject = NULL;
   X509_NAME *x509_issuer = NULL;
-  char helpstr[LONG_STRING];
-  char buf[STRING];
-  char title[STRING];
+  char helpstr[1024];
+  char buf[256];
+  char title[256];
   struct Menu *menu = mutt_menu_new(MENU_GENERIC);
   int done, row;
   FILE *fp = NULL;
@@ -900,45 +902,43 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   menu->max = mutt_array_size(part) * 2 + 11;
   menu->dialog = mutt_mem_calloc(1, menu->max * sizeof(char *));
   for (int i = 0; i < menu->max; i++)
-    menu->dialog[i] = mutt_mem_calloc(1, SHORT_STRING * sizeof(char));
+    menu->dialog[i] = mutt_mem_calloc(1, dialog_row_len * sizeof(char));
 
   row = 0;
-  mutt_str_strfcpy(menu->dialog[row], _("This certificate belongs to:"), SHORT_STRING);
+  mutt_str_strfcpy(menu->dialog[row], _("This certificate belongs to:"), dialog_row_len);
   row++;
   x509_subject = X509_get_subject_name(cert);
   for (unsigned int u = 0; u < mutt_array_size(part); u++)
   {
-    snprintf(menu->dialog[row++], SHORT_STRING, "   %s",
-             x509_get_part(x509_subject, part[u]));
+    snprintf(menu->dialog[row++], dialog_row_len, "   %s", x509_get_part(x509_subject, part[u]));
   }
 
   row++;
-  mutt_str_strfcpy(menu->dialog[row], _("This certificate was issued by:"), SHORT_STRING);
+  mutt_str_strfcpy(menu->dialog[row], _("This certificate was issued by:"), dialog_row_len);
   row++;
   x509_issuer = X509_get_issuer_name(cert);
   for (unsigned int u = 0; u < mutt_array_size(part); u++)
   {
-    snprintf(menu->dialog[row++], SHORT_STRING, "   %s",
-             x509_get_part(x509_issuer, part[u]));
+    snprintf(menu->dialog[row++], dialog_row_len, "   %s", x509_get_part(x509_issuer, part[u]));
   }
 
   row++;
-  snprintf(menu->dialog[row++], SHORT_STRING, "%s", _("This certificate is valid"));
-  snprintf(menu->dialog[row++], SHORT_STRING, _("   from %s"),
+  snprintf(menu->dialog[row++], dialog_row_len, "%s", _("This certificate is valid"));
+  snprintf(menu->dialog[row++], dialog_row_len, _("   from %s"),
            asn1time_to_string(X509_getm_notBefore(cert)));
-  snprintf(menu->dialog[row++], SHORT_STRING, _("     to %s"),
+  snprintf(menu->dialog[row++], dialog_row_len, _("     to %s"),
            asn1time_to_string(X509_getm_notAfter(cert)));
 
   row++;
   buf[0] = '\0';
   x509_fingerprint(buf, sizeof(buf), cert, EVP_sha1);
-  snprintf(menu->dialog[row++], SHORT_STRING, _("SHA1 Fingerprint: %s"), buf);
+  snprintf(menu->dialog[row++], dialog_row_len, _("SHA1 Fingerprint: %s"), buf);
   buf[0] = '\0';
   buf[40] = '\0'; /* Ensure the second printed line is null terminated */
   x509_fingerprint(buf, sizeof(buf), cert, EVP_sha256);
   buf[39] = '\0'; /* Divide into two lines of output */
-  snprintf(menu->dialog[row++], SHORT_STRING, "%s%s", _("SHA256 Fingerprint: "), buf);
-  snprintf(menu->dialog[row++], SHORT_STRING, "%*s%s",
+  snprintf(menu->dialog[row++], dialog_row_len, "%s%s", _("SHA256 Fingerprint: "), buf);
+  snprintf(menu->dialog[row++], dialog_row_len, "%*s%s",
            (int) mutt_str_strlen(_("SHA256 Fingerprint: ")), "", buf + 40);
 
   snprintf(title, sizeof(title),
@@ -1053,7 +1053,7 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
  */
 static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
 {
-  char buf[STRING];
+  char buf[256];
   const char *host = NULL;
   size_t len;
   int pos;

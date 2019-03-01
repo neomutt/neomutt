@@ -107,8 +107,8 @@ void ac_free(const struct ConfigSet *cs, struct CfgAccount **ac)
   char child[128];
   struct Buffer err;
   mutt_buffer_init(&err);
-  err.data = mutt_mem_calloc(1, STRING);
-  err.dsize = STRING;
+  err.dsize = 256;
+  err.data = mutt_mem_calloc(1, err.dsize);
 
   for (size_t i = 0; i < (*ac)->num_vars; i++)
   {

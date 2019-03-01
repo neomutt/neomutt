@@ -176,7 +176,7 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
                                  const char *if_str, const char *else_str,
                                  unsigned long data, int flags)
 {
-  char fmt[SHORT_STRING];
+  char fmt[128];
   int kflags = 0;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
@@ -260,7 +260,7 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
     case '[':
 
     {
-      char buf2[SHORT_STRING];
+      char buf2[128];
       bool do_locales = true;
       struct tm *tm = NULL;
       size_t len;
@@ -596,8 +596,8 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
   struct Menu *menu = NULL;
   int i;
   bool done = false;
-  char helpstr[LONG_STRING], buf[LONG_STRING], tmpbuf[STRING];
-  char cmd[LONG_STRING], tempfile[PATH_MAX];
+  char helpstr[1024], buf[1024], tmpbuf[256];
+  char cmd[1024], tempfile[PATH_MAX];
   FILE *fp = NULL, *devnull = NULL;
   pid_t thepid;
   struct PgpKeyInfo *kp = NULL;
@@ -755,7 +755,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
                                  !pgp_id_is_strong(KeyTable[menu->current])))
         {
           const char *str = "";
-          char buf2[LONG_STRING];
+          char buf2[1024];
 
           if (KeyTable[menu->current]->flags & KEYFLAG_CANTUSE)
           {
@@ -819,7 +819,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
 struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, short abilities, enum PgpRing keyring)
 {
   struct PgpKeyInfo *key = NULL;
-  char resp[SHORT_STRING];
+  char resp[128];
   struct PgpCache *l = NULL;
 
   mutt_clear_error();
@@ -872,8 +872,8 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, short abilities, en
 struct Body *pgp_class_make_key_attachment(void)
 {
   struct Body *att = NULL;
-  char buf[LONG_STRING];
-  char tempf[PATH_MAX], tmp[STRING];
+  char buf[1024];
+  char tempf[PATH_MAX], tmp[256];
   FILE *tempfp = NULL;
   FILE *devnull = NULL;
   struct stat sb;

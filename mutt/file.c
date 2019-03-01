@@ -263,7 +263,7 @@ int mutt_file_copy_bytes(FILE *in, FILE *out, size_t size)
 int mutt_file_copy_stream(FILE *fin, FILE *fout)
 {
   size_t l;
-  char buf[LONG_STRING];
+  char buf[1024];
 
   while ((l = fread(buf, 1, sizeof(buf), fin)) > 0)
   {
@@ -636,8 +636,8 @@ char *mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, int
 
   if (!line)
   {
-    line = mutt_mem_malloc(STRING);
-    *size = STRING;
+    *size = 256;
+    line = mutt_mem_malloc(*size);
   }
 
   while (true)
@@ -681,7 +681,7 @@ char *mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, int
         ungetc(c, fp); /* undo our damage */
         /* There wasn't room for the line -- increase "line" */
         offset = *size - 1; /* overwrite the terminating 0 */
-        *size += STRING;
+        *size += 256;
         mutt_mem_realloc(&line, *size);
       }
     }

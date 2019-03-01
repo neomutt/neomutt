@@ -74,8 +74,8 @@ int rfc1524_expand_command(struct Body *a, const char *filename,
 {
   int x = 0, y = 0;
   int needspipe = true;
-  char buf[HUGE_STRING];
-  char type2[LONG_STRING];
+  char buf[STR_COMMAND];
+  char type2[1024];
 
   mutt_str_strfcpy(type2, type, sizeof(type2));
 
@@ -94,8 +94,8 @@ int rfc1524_expand_command(struct Body *a, const char *filename,
       x++;
       if (command[x] == '{')
       {
-        char param[STRING];
-        char pvalue[STRING];
+        char param[256];
+        char pvalue[256];
         char *pvalue2 = NULL;
         int z = 0;
 
@@ -329,7 +329,7 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
 
           if (get_field_text(field + plen, &test_command, type, filename, line) && test_command)
           {
-            const size_t len = mutt_str_strlen(test_command) + STRING;
+            const size_t len = mutt_str_strlen(test_command) + 256;
             mutt_mem_realloc(&test_command, len);
             if (rfc1524_expand_command(a, a->filename, type, test_command, len) == 1)
             {
@@ -457,7 +457,7 @@ int rfc1524_mailcap_lookup(struct Body *a, char *type,
     return 0;
   }
 
-  mutt_check_lookup_list(a, type, SHORT_STRING);
+  mutt_check_lookup_list(a, type, 128);
 
   while (!found && *curr)
   {

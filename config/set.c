@@ -269,8 +269,8 @@ bool cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], 
 
   struct Buffer err;
   mutt_buffer_init(&err);
-  err.data = calloc(1, STRING);
-  err.dsize = STRING;
+  err.dsize = 256;
+  err.data = calloc(1, err.dsize);
 
   bool rc = true;
 
@@ -302,8 +302,8 @@ struct HashElem *cs_inherit_variable(const struct ConfigSet *cs,
 
   struct Buffer err;
   mutt_buffer_init(&err);
-  err.data = calloc(1, STRING);
-  err.dsize = STRING;
+  err.dsize = 256;
+  err.data = calloc(1, err.dsize);
 
   struct Inheritance *i = mutt_mem_calloc(1, sizeof(*i));
   i->parent = parent;

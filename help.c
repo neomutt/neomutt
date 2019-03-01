@@ -87,11 +87,11 @@ static const struct Binding *help_lookup_function(int op, int menu)
  * @param menu   Current Menu
  * @param op     Operation, e.g. OP_DELETE
  *
- * This will return something like: "buf:delete"
+ * This will return something like: "d:delete"
  */
 void mutt_make_help(char *buf, size_t buflen, const char *txt, int menu, int op)
 {
-  char tmp[SHORT_STRING];
+  char tmp[128];
 
   if (km_expand_key(tmp, sizeof(tmp), km_find_func(menu, op)) ||
       km_expand_key(tmp, sizeof(tmp), km_find_func(MENU_GENERIC, op)))
@@ -294,7 +294,7 @@ static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, co
   if (split)
   {
     col = 0;
-    col_b = LONG_STRING;
+    col_b = 1024;
     fputc('\n', f);
   }
   else
@@ -327,7 +327,7 @@ static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, co
 
   if (split)
   {
-    print_macro(f, LONG_STRING, &t3);
+    print_macro(f, 1024, &t3);
     fputc('\n', f);
   }
   else
@@ -374,7 +374,7 @@ static void dump_menu(FILE *f, int menu)
 {
   struct Keymap *map = NULL;
   const struct Binding *b = NULL;
-  char buf[SHORT_STRING];
+  char buf[128];
 
   /* browse through the keymap table */
   for (map = Keymaps[menu]; map; map = map->next)
@@ -438,7 +438,7 @@ static void dump_unbound(FILE *f, const struct Binding *funcs,
 void mutt_help(int menu)
 {
   char t[PATH_MAX];
-  char buf[SHORT_STRING];
+  char buf[128];
   FILE *f = NULL;
 
   mutt_mktemp(t, sizeof(t));

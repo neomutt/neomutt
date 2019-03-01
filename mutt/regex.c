@@ -342,14 +342,14 @@ int mutt_replacelist_add(struct ReplaceList *rl, const char *pat,
  *
  * If 'buf' is NULL, a new string will be returned.  It must be freed by the caller.
  *
- * @note This function uses a fixed size buffer of LONG_STRING and so should
+ * @note This function uses a fixed size buffer of 1024 and so should
  * only be used for visual modifications, such as disp_subj.
  */
 char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, const char *str)
 {
   static regmatch_t *pmatch = NULL;
   static size_t nmatch = 0;
-  static char twinbuf[2][LONG_STRING];
+  static char twinbuf[2][1024];
   int switcher = 0;
   char *p = NULL;
   size_t cpysize, tlen;
@@ -366,7 +366,7 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
   src = twinbuf[switcher];
   dst = src;
 
-  mutt_str_strfcpy(src, str, LONG_STRING);
+  mutt_str_strfcpy(src, str, 1024);
 
   struct ReplaceListNode *np = NULL;
   STAILQ_FOREACH(np, rl, entries)
@@ -389,7 +389,7 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
       /* Copy into other twinbuf with substitutions */
       if (np->template)
       {
-        for (p = np->template; *p && (tlen < LONG_STRING - 1);)
+        for (p = np->template; *p && (tlen < 1023);)
         {
           if (*p == '%')
           {
@@ -397,14 +397,14 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
             if (*p == 'L')
             {
               p++;
-              cpysize = MIN(pmatch[0].rm_so, LONG_STRING - tlen - 1);
+              cpysize = MIN(pmatch[0].rm_so, 1023 - tlen);
               strncpy(&dst[tlen], src, cpysize);
               tlen += cpysize;
             }
             else if (*p == 'R')
             {
               p++;
-              cpysize = MIN(strlen(src) - pmatch[0].rm_eo, LONG_STRING - tlen - 1);
+              cpysize = MIN(strlen(src) - pmatch[0].rm_eo, 1023 - tlen);
               strncpy(&dst[tlen], &src[pmatch[0].rm_eo], cpysize);
               tlen += cpysize;
             }
@@ -414,7 +414,7 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
               while (isdigit((unsigned char) *p)) /* skip subst token */
                 p++;
               for (int i = pmatch[n].rm_so;
-                   (i < pmatch[n].rm_eo) && (tlen < LONG_STRING - 1); i++)
+                   (i < pmatch[n].rm_eo) && (tlen < 1023); i++)
               {
                 dst[tlen++] = src[i];
               }

@@ -86,8 +86,8 @@ bool log_listener(const struct ConfigSet *cs, struct HashElem *he,
 {
   struct Buffer result;
   mutt_buffer_init(&result);
-  result.data = mutt_mem_calloc(1, STRING);
-  result.dsize = STRING;
+  result.dsize = 256;
+  result.data = mutt_mem_calloc(1, result.dsize);
 
   const char *events[] = { "set", "reset", "initial-set" };
 
@@ -129,8 +129,8 @@ void cs_dump_set(const struct ConfigSet *cs)
 
   struct Buffer result;
   mutt_buffer_init(&result);
-  result.data = mutt_mem_calloc(1, STRING);
-  result.dsize = STRING;
+  result.dsize = 256;
+  result.data = mutt_mem_calloc(1, result.dsize);
 
   char tmp[128];
   char *list[26] = { 0 };

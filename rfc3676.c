@@ -404,7 +404,7 @@ void rfc3676_space_stuff(struct Email *e)
   size_t len = 0;
   unsigned char c = '\0';
   FILE *in = NULL, *out = NULL;
-  char buf[LONG_STRING];
+  char buf[1024];
   char tmpfile[PATH_MAX];
 
   if (!e || !e->content || !e->content->filename)

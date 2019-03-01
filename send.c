@@ -235,7 +235,7 @@ static struct Address *find_mailing_lists(struct Address *t, struct Address *c)
  */
 static int edit_address(struct Address **a, const char *field)
 {
-  char buf[HUGE_STRING];
+  char buf[8192];
   char *err = NULL;
   int idna_ok = 0;
 
@@ -267,7 +267,7 @@ static int edit_address(struct Address **a, const char *field)
  */
 static int edit_envelope(struct Envelope *en, int flags)
 {
-  char buf[HUGE_STRING];
+  char buf[8192];
 
 #ifdef USE_NNTP
   if (OptNewsSend)
@@ -457,7 +457,7 @@ void mutt_forward_intro(struct Mailbox *m, struct Email *e, FILE *fp)
   if (!C_ForwardAttributionIntro || !fp)
     return;
 
-  char buf[LONG_STRING];
+  char buf[1024];
   setlocale(LC_TIME, NONULL(C_AttributionLocale));
   mutt_make_string(buf, sizeof(buf), C_ForwardAttributionIntro, NULL, m, e);
   setlocale(LC_TIME, "");
@@ -476,7 +476,7 @@ void mutt_forward_trailer(struct Mailbox *m, struct Email *e, FILE *fp)
   if (!C_ForwardAttributionTrailer || !fp)
     return;
 
-  char buf[LONG_STRING];
+  char buf[1024];
   setlocale(LC_TIME, NONULL(C_AttributionLocale));
   mutt_make_string(buf, sizeof(buf), C_ForwardAttributionTrailer, NULL, m, e);
   setlocale(LC_TIME, "");
@@ -541,7 +541,7 @@ void mutt_make_attribution(struct Mailbox *m, struct Email *e, FILE *out)
   if (!C_Attribution || !out)
     return;
 
-  char buf[LONG_STRING];
+  char buf[1024];
   setlocale(LC_TIME, NONULL(C_AttributionLocale));
   mutt_make_string(buf, sizeof(buf), C_Attribution, NULL, m, e);
   setlocale(LC_TIME, "");
@@ -560,7 +560,7 @@ void mutt_make_post_indent(struct Mailbox *m, struct Email *e, FILE *out)
   if (!C_PostIndentString || !out)
     return;
 
-  char buf[STRING];
+  char buf[256];
   mutt_make_string(buf, sizeof(buf), C_PostIndentString, NULL, m, e);
   fputs(buf, out);
   fputc('\n', out);
@@ -617,7 +617,7 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *out)
  */
 static int default_to(struct Address **to, struct Envelope *env, int flags, int hmfupto)
 {
-  char prompt[STRING];
+  char prompt[256];
 
   if (flags && env->mail_followup_to && hmfupto == MUTT_YES)
   {
@@ -703,7 +703,7 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
 
   if ((flags & (SEND_LIST_REPLY | SEND_GROUP_REPLY | SEND_GROUP_CHAT_REPLY)) && in->mail_followup_to)
   {
-    char prompt[STRING];
+    char prompt[256];
     snprintf(prompt, sizeof(prompt), _("Follow-up to %s%s?"),
              in->mail_followup_to->mailbox, in->mail_followup_to->next ? ",..." : "");
 
@@ -815,7 +815,7 @@ void mutt_make_forward_subject(struct Envelope *env, struct Mailbox *m, struct E
   if (!env)
     return;
 
-  char buf[STRING];
+  char buf[256];
 
   /* set the default subject for the message. */
   mutt_make_string(buf, sizeof(buf), NONULL(C_ForwardFormat), NULL, m, cur);
@@ -1442,11 +1442,11 @@ static bool search_attach_keyword(char *filename)
   if (!attf)
     return false;
 
-  char *inputline = mutt_mem_malloc(LONG_STRING);
+  char *inputline = mutt_mem_malloc(1024);
   bool found = false;
   while (!feof(attf))
   {
-    fgets(inputline, LONG_STRING, attf);
+    fgets(inputline, 1024, attf);
     if (!mutt_is_quote_line(inputline, NULL) &&
         regexec(C_AbortNoattachRegex->regex, inputline, 0, NULL, 0) == 0)
     {
@@ -1736,7 +1736,7 @@ static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, int
 int ci_send_message(int flags, struct Email *msg, const char *tempfile,
                     struct Context *ctx, struct EmailList *el)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
   char fcc[PATH_MAX] = ""; /* where to copy this message */
   FILE *tempfp = NULL;
   struct Body *pbody = NULL;

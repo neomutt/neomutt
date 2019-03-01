@@ -70,7 +70,7 @@ static short PreviousSort = SORT_ORDER; /* sidebar_sort_method */
  */
 struct SbEntry
 {
-  char box[STRING];        /**< formatted mailbox name */
+  char box[256];           /**< formatted mailbox name */
   struct Mailbox *mailbox; /**< Mailbox this represents */
   bool is_hidden;          /**< Don't show, e.g. $sidebar_new_mail_only */
 };
@@ -117,7 +117,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
 {
   struct SbEntry *sbe = (struct SbEntry *) data;
   unsigned int optional;
-  char fmt[STRING];
+  char fmt[256];
 
   if (!sbe || !buf)
     return src;
@@ -934,7 +934,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
         mutt_str_strcat(sidebar_folder_name, sfn_len, tmp_folder_name);
       }
     }
-    char str[STRING];
+    char str[256];
     make_sidebar_entry(str, sizeof(str), w, sidebar_folder_name, entry);
     printw("%s", str);
     if (sidebar_folder_depth > 0)

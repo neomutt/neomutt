@@ -75,7 +75,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
   bool from = false;
   bool this_is_from = false;
   bool ignore = false;
-  char buf[LONG_STRING]; /* should be long enough to get most fields in one pass */
+  char buf[1024]; /* should be long enough to get most fields in one pass */
   char *nl = NULL;
   char **headers = NULL;
   int hdr_count;
@@ -403,8 +403,8 @@ int mutt_copy_header(FILE *in, struct Email *e, FILE *out, int chflags, const ch
 
   if (chflags & CH_TXTPLAIN)
   {
-    char chsbuf[SHORT_STRING];
-    char buffer[SHORT_STRING];
+    char chsbuf[128];
+    char buffer[128];
     fputs("MIME-Version: 1.0\n", out);
     fputs("Content-Transfer-Encoding: 8bit\n", out);
     fputs("Content-Type: text/plain; charset=", out);
@@ -470,7 +470,7 @@ int mutt_copy_header(FILE *in, struct Email *e, FILE *out, int chflags, const ch
     char *folder = nm_email_get_folder(e);
     if (folder && !(C_Weed && mutt_matches_ignore("folder")))
     {
-      char buf[LONG_STRING];
+      char buf[1024];
       mutt_str_strfcpy(buf, folder, sizeof(buf));
       mutt_pretty_mailbox(buf, sizeof(buf));
 
@@ -590,7 +590,7 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
 int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e, int cmflags, int chflags)
 {
   struct Body *body = e->content;
-  char prefix[SHORT_STRING];
+  char prefix[128];
   LOFF_T new_offset = -1;
   int rc = 0;
 
@@ -612,7 +612,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e, int cmflags, 
     {
       int new_lines;
       LOFF_T new_length = body->length;
-      char date[SHORT_STRING];
+      char date[128];
 
       mutt_date_make_date(date, sizeof(date));
       int dlen = mutt_str_strlen(date);
@@ -825,7 +825,7 @@ int mutt_copy_message_ctx(FILE *fpout, struct Mailbox *src, struct Email *e,
 static int append_message(struct Mailbox *dest, FILE *fpin, struct Mailbox *src,
                           struct Email *e, int cmflags, int chflags)
 {
-  char buf[STRING];
+  char buf[256];
   struct Message *msg = NULL;
   int r;
 
@@ -945,9 +945,9 @@ static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *dat
  */
 static void format_address_header(char **h, struct Address *a)
 {
-  char buf[HUGE_STRING];
-  char cbuf[STRING];
-  char c2buf[STRING];
+  char buf[8192];
+  char cbuf[256];
+  char c2buf[256];
   char *p = NULL;
   size_t linelen, buflen, plen;
 

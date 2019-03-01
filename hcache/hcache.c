@@ -462,7 +462,7 @@ int mutt_hcache_delete(header_cache_t *hc, const char *key, size_t keylen)
  */
 const char *mutt_hcache_backend_list(void)
 {
-  char tmp[STRING] = { 0 };
+  char tmp[256] = { 0 };
   const struct HcacheOps **ops = hcache_ops;
   size_t len = 0;
 
@@ -470,9 +470,9 @@ const char *mutt_hcache_backend_list(void)
   {
     if (len != 0)
     {
-      len += snprintf(tmp + len, STRING - len, ", ");
+      len += snprintf(tmp + len, sizeof(tmp) - len, ", ");
     }
-    len += snprintf(tmp + len, STRING - len, "%s", (*ops)->name);
+    len += snprintf(tmp + len, sizeof(tmp) - len, "%s", (*ops)->name);
   }
 
   return mutt_str_strdup(tmp);

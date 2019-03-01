@@ -167,8 +167,8 @@ static struct Remailer **mix_type2_list(size_t *l)
   pid_t mm_pid;
   int devnull;
 
-  char cmd[HUGE_STRING];
-  char line[HUGE_STRING];
+  char cmd[STR_COMMAND];
+  char line[8192];
   char *t = NULL;
 
   struct Remailer **type2_list = NULL, *p = NULL;
@@ -437,7 +437,7 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
                                   const char *if_str, const char *else_str,
                                   unsigned long data, int flags)
 {
-  char fmt[SHORT_STRING];
+  char fmt[128];
   struct Remailer *remailer = (struct Remailer *) data;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
@@ -564,7 +564,7 @@ void mix_make_chain(struct ListHead *chainhead)
   struct Coord *coords = NULL;
 
   struct Menu *menu = NULL;
-  char helpstr[LONG_STRING];
+  char helpstr[1024];
   bool loop = true;
 
   char *t = NULL;
@@ -826,7 +826,7 @@ int mix_check_message(struct Email *msg)
  */
 int mix_send_message(struct ListHead *chain, const char *tempfile)
 {
-  char cd_quoted[STRING];
+  char cd_quoted[256];
   int i = 0;
 
   struct Buffer *cmd = mutt_buffer_pool_get();

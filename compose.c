@@ -402,7 +402,7 @@ static int check_attachments(struct AttachCtx *actx)
 {
   int r;
   struct stat st;
-  char pretty[PATH_MAX], msg[PATH_MAX + SHORT_STRING];
+  char pretty[PATH_MAX], msg[PATH_MAX + 128];
 
   for (int i = 0; i < actx->idxlen; i++)
   {
@@ -439,7 +439,7 @@ static int check_attachments(struct AttachCtx *actx)
  */
 static void draw_envelope_addr(int line, struct Address *addr)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
 
   buf[0] = '\0';
   mutt_addr_write(buf, sizeof(buf), addr, true);
@@ -519,7 +519,7 @@ static void draw_envelope(struct Email *msg, char *fcc)
  */
 static void edit_address_list(int line, struct Address **addr)
 {
-  char buf[HUGE_STRING] = ""; /* needs to be large for alias expansion */
+  char buf[8192] = ""; /* needs to be large for alias expansion */
   char *err = NULL;
 
   mutt_addrlist_to_local(*addr);
@@ -698,7 +698,7 @@ static void compose_custom_redraw(struct Menu *menu)
 
   if (menu->redraw & REDRAW_STATUS)
   {
-    char buf[LONG_STRING];
+    char buf[1024];
     compose_status_line(buf, sizeof(buf), 0, MuttStatusWindow->cols, menu,
                         NONULL(C_ComposeFormat));
     mutt_window_move(MuttStatusWindow, 0, 0);
@@ -813,7 +813,7 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
                                       const char *if_str, const char *else_str,
                                       unsigned long data, int flags)
 {
-  char fmt[SHORT_STRING], tmp[SHORT_STRING];
+  char fmt[128], tmp[128];
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
   struct Menu *menu = (struct Menu *) data;
 
@@ -886,7 +886,7 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
  */
 int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email *cur, int flags)
 {
-  char helpstr[LONG_STRING]; // This isn't copied by the help bar
+  char helpstr[1024]; // This isn't copied by the help bar
   char buf[PATH_MAX];
   int op_close = OP_NULL;
   int rc = -1;
@@ -1763,7 +1763,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         mutt_expand_path(buf, sizeof(buf));
 
         /* Call to lookup_mime_type () ?  maybe later */
-        char type[STRING] = { 0 };
+        char type[256] = { 0 };
         if (mutt_get_field("Content-Type: ", type, sizeof(type), 0) != 0 || !type[0])
           continue;
 

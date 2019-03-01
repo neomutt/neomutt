@@ -188,7 +188,7 @@ static int fetch_auth(char *line, void *data)
 */
 static int pop_capabilities(struct PopAccountData *adata, int mode)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
 
   /* don't check capabilities on reconnect */
   if (adata->capabilities)
@@ -267,7 +267,7 @@ static int pop_capabilities(struct PopAccountData *adata, int mode)
 */
 int pop_connect(struct PopAccountData *adata)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
 
   adata->status = POP_NONE;
   if (mutt_socket_open(adata->conn) < 0 ||
@@ -302,7 +302,7 @@ int pop_connect(struct PopAccountData *adata)
 */
 int pop_open_connection(struct PopAccountData *adata)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
 
   int rc = pop_connect(adata);
   if (rc < 0)
@@ -411,7 +411,7 @@ void pop_logout(struct Mailbox *m)
   if (adata->status == POP_CONNECTED)
   {
     int ret = 0;
-    char buf[LONG_STRING];
+    char buf[1024];
     mutt_message(_("Closing connection to POP server..."));
 
     if (m->readonly)
@@ -493,7 +493,7 @@ int pop_query_d(struct PopAccountData *adata, char *buf, size_t buflen, char *ms
 int pop_fetch_data(struct PopAccountData *adata, const char *query,
                    struct Progress *progressbar, int (*func)(char *, void *), void *data)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
   long pos = 0;
   size_t lenbuf = 0;
 

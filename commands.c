@@ -174,7 +174,7 @@ static void update_protected_headers(struct Email *cur)
  */
 int mutt_display_message(struct Email *cur)
 {
-  char tempfile[PATH_MAX], buf[LONG_STRING];
+  char tempfile[PATH_MAX], buf[1024];
   int rc = 0;
   bool builtin = false;
   int cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
@@ -339,7 +339,7 @@ int mutt_display_message(struct Email *cur)
   {
     int r;
 
-    char cmd[HUGE_STRING];
+    char cmd[STR_COMMAND];
     mutt_endwin();
     snprintf(cmd, sizeof(cmd), "%s %s", NONULL(C_Pager), tempfile);
     r = mutt_system(cmd);
@@ -372,9 +372,9 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   if (!m || !el || STAILQ_EMPTY(el))
     return;
 
-  char prompt[SHORT_STRING];
-  char scratch[SHORT_STRING];
-  char buf[HUGE_STRING] = { 0 };
+  char prompt[128];
+  char scratch[128];
+  char buf[8192] = { 0 };
   struct Address *addr = NULL;
   char *err = NULL;
   int rc;
@@ -654,7 +654,7 @@ void mutt_pipe_message(struct Mailbox *m, struct EmailList *el)
   if (!m || !el)
     return;
 
-  char buffer[LONG_STRING] = { 0 };
+  char buffer[1024] = { 0 };
 
   if ((mutt_get_field(_("Pipe to command: "), buffer, sizeof(buffer), MUTT_CMD) != 0) ||
       (buffer[0] == '\0'))
@@ -786,7 +786,7 @@ int mutt_select_sort(int reverse)
  */
 void mutt_shell_escape(void)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
 
   buf[0] = '\0';
   if (mutt_get_field(_("Shell command: "), buf, sizeof(buf), MUTT_CMD) != 0)
@@ -814,14 +814,14 @@ void mutt_shell_escape(void)
  */
 void mutt_enter_command(void)
 {
-  char buffer[LONG_STRING] = { 0 };
+  char buffer[1024] = { 0 };
 
   /* if enter is pressed after : with no command, just return */
   if (mutt_get_field(":", buffer, sizeof(buffer), MUTT_COMMAND) != 0 || !buffer[0])
     return;
 
-  struct Buffer *err = mutt_buffer_alloc(STRING);
-  struct Buffer *token = mutt_buffer_alloc(STRING);
+  struct Buffer *err = mutt_buffer_alloc(256);
+  struct Buffer *token = mutt_buffer_alloc(256);
 
   /* check if buffer is a valid icommand, else fall back quietly to parse_rc_lines */
   enum CommandResult rc = mutt_parse_icommand(buffer, err);
@@ -859,7 +859,7 @@ void mutt_enter_command(void)
 void mutt_display_address(struct Envelope *env)
 {
   const char *pfx = NULL;
-  char buf[SHORT_STRING];
+  char buf[128];
 
   struct Address *addr = mutt_get_address(env, &pfx);
   if (!addr)
@@ -1177,10 +1177,10 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete,
  */
 int mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
 {
-  char buf[LONG_STRING];
-  char obuf[LONG_STRING];
-  char tmp[STRING];
-  char charset[STRING];
+  char buf[1024];
+  char obuf[1024];
+  char tmp[256];
+  char charset[256];
 
   short charset_changed = 0;
   short type_changed = 0;

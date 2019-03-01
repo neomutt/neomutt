@@ -59,7 +59,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
   sasl_conn_t *saslconn = NULL;
   sasl_interact_t *interaction = NULL;
   int rc;
-  char inbuf[LONG_STRING];
+  char inbuf[1024];
   const char *mech = NULL;
   const char *pc = NULL;
   unsigned int len = 0, olen = 0, client_start;
@@ -102,7 +102,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
 
   mutt_message(_("Authenticating (SASL)..."));
 
-  size_t bufsize = ((olen * 2) > LONG_STRING) ? (olen * 2) : LONG_STRING;
+  size_t bufsize = MAX((olen * 2), 1024);
   char *buf = mutt_mem_malloc(bufsize);
 
   snprintf(buf, bufsize, "AUTH %s", mech);
@@ -234,7 +234,7 @@ static enum PopAuthRes pop_auth_apop(struct PopAccountData *adata, const char *m
   struct Md5Ctx mctx;
   unsigned char digest[16];
   char hash[33];
-  char buf[LONG_STRING];
+  char buf[1024];
 
   if (mutt_account_getpass(&adata->conn->account) || !adata->conn->account.pass[0])
     return POP_A_FAILURE;
@@ -289,7 +289,7 @@ static enum PopAuthRes pop_auth_user(struct PopAccountData *adata, const char *m
 
   mutt_message(_("Logging in..."));
 
-  char buf[LONG_STRING];
+  char buf[1024];
   snprintf(buf, sizeof(buf), "USER %s\r\n", adata->conn->account.user);
   int ret = pop_query(adata, buf, sizeof(buf));
 
@@ -374,7 +374,7 @@ static enum PopAuthRes pop_auth_oauth(struct PopAccountData *adata, const char *
   mutt_socket_send(adata->conn, "\001");
 
   char *err = adata->err_msg;
-  char decoded_err[LONG_STRING];
+  char decoded_err[1024];
   int len = mutt_b64_decode(adata->err_msg, decoded_err, sizeof(decoded_err) - 1);
   if (len >= 0)
   {

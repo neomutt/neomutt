@@ -66,7 +66,7 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
   char tmp[PATH_MAX];
   char relpath[PATH_MAX];
   struct ConnAccount conn_account;
-  char mailbox[LONG_STRING];
+  char mailbox[1024];
 
   if (imap_parse_path(state->folder, &conn_account, mailbox, sizeof(mailbox)))
     return;
@@ -366,7 +366,7 @@ int imap_mailbox_create(const char *path)
 {
   struct ImapAccountData *adata = NULL;
   struct ImapMboxData *mdata = NULL;
-  char name[LONG_STRING];
+  char name[1024];
   short n;
 
   if (imap_adata_find(path, &adata, &mdata) < 0)

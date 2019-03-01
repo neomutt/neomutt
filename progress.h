@@ -43,7 +43,7 @@ struct Progress
   long pos;
   size_t size;
   unsigned int timestamp;
-  char sizestr[SHORT_STRING];
+  char sizestr[128];
 };
 
 void mutt_progress_init(struct Progress *progress, const char *msg,

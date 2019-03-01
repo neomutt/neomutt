@@ -216,7 +216,7 @@ static struct Email *select_msg(struct Context *ctx)
 {
   int r = -1;
   bool done = false;
-  char helpstr[LONG_STRING];
+  char helpstr[1024];
 
   struct Menu *menu = mutt_menu_new(MENU_POST);
   menu->menu_make_entry = post_make_entry;
@@ -451,8 +451,8 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
  */
 int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
 {
-  char smime_cryptalg[LONG_STRING] = "\0";
-  char sign_as[LONG_STRING] = "\0", *q = NULL;
+  char smime_cryptalg[1024] = "\0";
+  char sign_as[1024] = "\0", *q = NULL;
   int flags = 0;
 
   if (!WithCrypto)

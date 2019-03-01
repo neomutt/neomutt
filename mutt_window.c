@@ -53,7 +53,7 @@ struct MuttWindow *MuttSidebarWindow = NULL; /**< Sidebar Window */
  */
 static int vw_printw(SLcurses_Window_Type *win, const char *fmt, va_list ap)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
 
   (void) SLvsnprintf(buf, sizeof(buf), (char *) fmt, ap);
   SLcurses_waddnstr(win, buf, -1);

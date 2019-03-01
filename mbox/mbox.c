@@ -188,8 +188,8 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
   if (!adata)
     return -1;
 
-  char buf[HUGE_STRING];
-  char return_path[LONG_STRING];
+  char buf[8192];
+  char return_path[1024];
   int count = 0;
   int lines;
   time_t t;
@@ -211,7 +211,7 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
 
   if (!m->quiet)
   {
-    char msgbuf[STRING];
+    char msgbuf[256];
     snprintf(msgbuf, sizeof(msgbuf), _("Reading %s..."), m->path);
     mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, C_ReadInc, 0);
   }
@@ -354,7 +354,7 @@ static int mbox_parse_mailbox(struct Mailbox *m)
     return -1;
 
   struct stat sb;
-  char buf[HUGE_STRING], return_path[STRING];
+  char buf[8192], return_path[256];
   struct Email *e_cur = NULL;
   time_t t;
   int count = 0, lines = 0;
@@ -377,7 +377,7 @@ static int mbox_parse_mailbox(struct Mailbox *m)
 
   if (!m->quiet)
   {
-    char msgbuf[STRING];
+    char msgbuf[256];
     snprintf(msgbuf, sizeof(msgbuf), _("Reading %s..."), m->path);
     mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, C_ReadInc, 0);
   }
@@ -1054,7 +1054,7 @@ static int mbox_mbox_check(struct Mailbox *m, int *index_hint)
        * see the message separator at *exactly* what used to be the end of the
        * folder.
        */
-      char buffer[LONG_STRING];
+      char buffer[1024];
       if (fseeko(adata->fp, m->size, SEEK_SET) != 0)
         mutt_debug(LL_DEBUG1, "#1 fseek() failed\n");
       if (fgets(buffer, sizeof(buffer), adata->fp))
@@ -1647,7 +1647,7 @@ enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
   }
 
   enum MailboxType magic = MUTT_UNKNOWN;
-  char tmp[STRING];
+  char tmp[256];
   if (fgets(tmp, sizeof(tmp), fp))
   {
     if (mutt_str_startswith(tmp, "From ", CASE_MATCH))

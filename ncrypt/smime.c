@@ -98,7 +98,7 @@ struct SmimeCommandContext
   const char *intermediates; /**< %i */
 };
 
-char SmimePass[STRING];
+char SmimePass[256];
 time_t SmimeExptime = 0; /* when does the cached passphrase expire? */
 
 static char SmimeKeyToUse[PATH_MAX] = { 0 };
@@ -214,7 +214,7 @@ static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int c
                                      const char *if_str, const char *else_str,
                                      unsigned long data, int flags)
 {
-  char fmt[SHORT_STRING];
+  char fmt[128];
   struct SmimeCommandContext *cctx = (struct SmimeCommandContext *) data;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
@@ -225,7 +225,7 @@ static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         char path[PATH_MAX];
-        char buf1[LONG_STRING], buf2[LONG_STRING];
+        char buf1[1024], buf2[1024];
         struct stat sb;
 
         mutt_str_strfcpy(path, C_SmimeCaLocation, sizeof(path));
@@ -386,7 +386,7 @@ static pid_t smime_invoke(FILE **smimein, FILE **smimeout, FILE **smimeerr,
                           const char *intermediates, const char *format)
 {
   struct SmimeCommandContext cctx = { 0 };
-  char cmd[HUGE_STRING];
+  char cmd[STR_COMMAND];
 
   if (!format || !*format)
     return (pid_t) -1;
@@ -532,8 +532,8 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
   int table_index = 0;
   struct SmimeKey *key = NULL;
   struct SmimeKey *selected_key = NULL;
-  char helpstr[LONG_STRING];
-  char buf[LONG_STRING];
+  char helpstr[1024];
+  char buf[1024];
   char title[256];
   struct Menu *menu = NULL;
   const char *s = "";
@@ -717,7 +717,7 @@ static struct SmimeKey *smime_parse_key(char *buf)
 static struct SmimeKey *smime_get_candidates(char *search, bool public)
 {
   char index_file[PATH_MAX];
-  char buf[LONG_STRING];
+  char buf[1024];
   struct SmimeKey *key = NULL, *results = NULL;
   struct SmimeKey **results_end = &results;
 
@@ -912,7 +912,7 @@ static struct SmimeKey *smime_get_key_by_str(char *str, short abilities, bool pu
 static struct SmimeKey *smime_ask_for_key(char *prompt, short abilities, bool public)
 {
   struct SmimeKey *key = NULL;
-  char resp[SHORT_STRING];
+  char resp[128];
 
   if (!prompt)
     prompt = _("Enter keyID: ");
@@ -948,7 +948,7 @@ static void getkeys(char *mailbox)
 
   if (!key)
   {
-    char buf[STRING];
+    char buf[256];
     snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), mailbox);
     key = smime_ask_for_key(buf, KEYFLAG_CANENCRYPT, false);
   }
@@ -1057,7 +1057,7 @@ char *smime_class_find_keys(struct Address *addrlist, bool oppenc_mode)
     key = smime_get_key_by_addr(q->mailbox, KEYFLAG_CANENCRYPT, true, !oppenc_mode);
     if (!key && !oppenc_mode)
     {
-      char buf[LONG_STRING];
+      char buf[1024];
       snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), q->mailbox);
       key = smime_ask_for_key(buf, KEYFLAG_CANENCRYPT, true);
     }
@@ -1094,7 +1094,7 @@ char *smime_class_find_keys(struct Address *addrlist, bool oppenc_mode)
 static int smime_handle_cert_email(char *certificate, char *mailbox, bool copy,
                                    char ***buffer, int *num)
 {
-  char email[STRING];
+  char email[256];
   int rc = -1, count = 0;
   pid_t thepid;
   size_t len = 0;
@@ -1357,7 +1357,7 @@ static char *smime_extract_signer_certificate(char *infile)
  */
 void smime_class_invoke_import(char *infile, char *mailbox)
 {
-  char *certfile = NULL, buf[STRING];
+  char *certfile = NULL, buf[256];
   FILE *smimein = NULL;
 
   FILE *fperr = mutt_file_mkstemp();
@@ -1544,7 +1544,7 @@ static pid_t smime_invoke_sign(FILE **smimein, FILE **smimeout, FILE **smimeerr,
  */
 struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
 {
-  char buf[LONG_STRING], certfile[PATH_MAX];
+  char buf[1024], certfile[PATH_MAX];
   char tempfile[PATH_MAX];
   char smimeinfile[PATH_MAX];
   char *cert_end = NULL;
@@ -1699,7 +1699,7 @@ static char *openssl_md_to_smime_micalg(char *md)
  */
 struct Body *smime_class_sign_message(struct Body *a)
 {
-  char buffer[LONG_STRING];
+  char buffer[1024];
   char signedfile[PATH_MAX], filetosign[PATH_MAX];
   FILE *smimein = NULL, *smimeout = NULL, *smimeerr = NULL, *sfp = NULL;
   int err = 0;
@@ -2140,7 +2140,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
       return NULL;
     }
   }
-  char buf[HUGE_STRING];
+  char buf[8192];
   while (fgets(buf, sizeof(buf) - 1, smimeout))
   {
     const size_t len = mutt_str_strlen(buf);

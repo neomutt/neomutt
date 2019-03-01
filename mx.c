@@ -805,7 +805,7 @@ int mx_mbox_sync(struct Mailbox *m, int *index_hint)
 
   if (m->dontwrite)
   {
-    char buf[STRING], tmp[STRING];
+    char buf[256], tmp[256];
     if (km_expand_key(buf, sizeof(buf), km_find_func(MENU_MAIN, OP_TOGGLE_WRITE)))
       snprintf(tmp, sizeof(tmp), _(" Press '%s' to toggle write"), buf);
     else
@@ -829,7 +829,7 @@ int mx_mbox_sync(struct Mailbox *m, int *index_hint)
 
   if (m->msg_deleted != 0)
   {
-    char buf[SHORT_STRING];
+    char buf[128];
 
     snprintf(buf, sizeof(buf),
              ngettext("Purge %d deleted message?", "Purge %d deleted messages?", m->msg_deleted),

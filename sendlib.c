@@ -374,7 +374,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
 
       fputc(';', f);
 
-      char buf[STRING];
+      char buf[256];
       buf[0] = 0;
       tmp = mutt_str_strdup(np->value);
       const int encode = rfc2231_encode_string(&tmp);
@@ -442,7 +442,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
           else
             t = fn;
 
-          char buf[STRING];
+          char buf[256];
           buf[0] = 0;
           tmp = mutt_str_strdup(t);
           const int encode = rfc2231_encode_string(&tmp);
@@ -503,7 +503,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
       mutt_error(_("No boundary parameter found [report this error]"));
       return -1;
     }
-    char boundary[SHORT_STRING];
+    char boundary[128];
     mutt_str_strfcpy(boundary, p, sizeof(boundary));
 
     for (struct Body *t = a->parts; t; t = t->next)
@@ -537,7 +537,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
 
   if (a->type == TYPE_TEXT && (!a->noconv))
   {
-    char send_charset[SHORT_STRING];
+    char send_charset[128];
     fc = mutt_ch_fgetconv_open(
         fpin, a->charset, mutt_body_get_charset(a, send_charset, sizeof(send_charset)), 0);
   }
@@ -1027,7 +1027,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
     {
       if (!chs)
       {
-        char chsbuf[STRING];
+        char chsbuf[256];
         mutt_ch_canonical_charset(chsbuf, sizeof(chsbuf), tocode);
         mutt_param_set(&b->parameter, "charset", chsbuf);
       }
@@ -1074,7 +1074,7 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
   FILE *f = NULL;
   char *p = NULL, *q = NULL, *ct = NULL;
   char buf[PATH_MAX];
-  char subtype[STRING], xtype[STRING];
+  char subtype[256], xtype[256];
   int szf, sze, cur_sze;
   int type;
   bool found_mimetypes = false;
@@ -1340,7 +1340,7 @@ static void set_encoding(struct Body *b, struct Content *info)
 {
   if (b->type == TYPE_TEXT)
   {
-    char send_charset[SHORT_STRING];
+    char send_charset[128];
     char *chsname = mutt_body_get_charset(b, send_charset, sizeof(send_charset));
     if ((info->lobin && !mutt_str_startswith(chsname, "iso-2022", CASE_IGNORE)) ||
         info->linemax > 990 || (info->from && C_EncodeFrom))
@@ -1432,7 +1432,7 @@ char *mutt_body_get_charset(struct Body *b, char *buf, size_t buflen)
 void mutt_update_encoding(struct Body *a)
 {
   struct Content *info = NULL;
-  char chsbuf[STRING];
+  char chsbuf[256];
 
   /* override noconv when it's us-ascii */
   if (mutt_ch_is_us_ascii(mutt_body_get_charset(a, chsbuf, sizeof(chsbuf))))
@@ -1462,7 +1462,7 @@ void mutt_update_encoding(struct Body *a)
  */
 struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool attach_msg)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
   struct Body *body = NULL;
   FILE *fp = NULL;
   int cmflags, chflags;
@@ -1558,7 +1558,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool a
 static void run_mime_type_query(struct Body *att)
 {
   FILE *fp, *fperr;
-  char cmd[HUGE_STRING];
+  char cmd[STR_COMMAND];
   char *buf = NULL;
   size_t buflen;
   int dummy = 0;
@@ -1743,7 +1743,7 @@ struct Body *mutt_remove_multipart(struct Body *b)
 void mutt_write_address_list(struct Address *addr, FILE *fp, int linelen, bool display)
 {
   struct Address *tmp = NULL;
-  char buf[LONG_STRING];
+  char buf[1024];
   int count = 0;
 
   while (addr)
@@ -1881,7 +1881,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
                            const char *pfx, int wraplen, int chflags)
 {
   const char *p = value;
-  char buf[HUGE_STRING] = "";
+  char buf[8192] = "";
   int first = 1, col = 0, l = 0;
   const bool display = (chflags & CH_DISPLAY);
 
@@ -2217,7 +2217,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
                              struct Body *attach, enum MuttWriteHeaderMode mode,
                              bool privacy, bool hide_protected_subject)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
   char *p = NULL, *q = NULL;
   bool has_agent = false; /* user defined user-agent header field exists */
 
@@ -2466,7 +2466,7 @@ const char *mutt_fqdn(bool may_hide_host)
  */
 static char *gen_msgid(void)
 {
-  char buf[SHORT_STRING];
+  char buf[128];
   time_t now;
   unsigned char rndid[MUTT_RANDTAG_LEN + 1];
 
@@ -2727,7 +2727,7 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
 #ifdef USE_NNTP
   if (OptNewsSend)
   {
-    char cmd[LONG_STRING];
+    char cmd[1024];
 
     mutt_expando_format(cmd, sizeof(cmd), 0, MuttIndexWindow->cols,
                         NONULL(C_Inews), nntp_format_str, 0, 0);
@@ -2905,7 +2905,7 @@ void mutt_prepare_envelope(struct Envelope *env, bool final)
       env->to->group = 1;
       env->to->next = mutt_addr_new();
 
-      char buf[LONG_STRING];
+      char buf[1024];
       buf[0] = 0;
       mutt_addr_cat(buf, sizeof(buf), "undisclosed-recipients", AddressSpecials);
 
@@ -2967,7 +2967,7 @@ static int bounce_message(FILE *fp, struct Email *e, struct Address *to,
   FILE *f = mutt_file_fopen(tempfile, "w");
   if (f)
   {
-    char date[SHORT_STRING];
+    char date[128];
     int chflags = CH_XMIT | CH_NONEWLINE | CH_NOQFROM;
 
     if (!C_BounceDelivered)
@@ -3016,7 +3016,7 @@ int mutt_bounce_message(FILE *fp, struct Email *e, struct Address *to)
     return -1;
 
   const char *fqdn = mutt_fqdn(true);
-  char resent_from[STRING];
+  char resent_from[256];
   char *err = NULL;
 
   resent_from[0] = '\0';
@@ -3151,7 +3151,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   int rc = -1;
   bool need_mailbox_cleanup = false;
   struct stat st;
-  char buf[SHORT_STRING];
+  char buf[128];
   int onm_flags;
 
   if (post)
@@ -3291,7 +3291,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
 
   if (tempfp)
   {
-    char sasha[LONG_STRING];
+    char sasha[1024];
     int lines = 0;
 
     mutt_write_mime_body(e->content, tempfp);

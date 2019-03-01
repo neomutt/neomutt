@@ -92,7 +92,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
                                      const char *if_str, const char *else_str,
                                      unsigned long data, int flags)
 {
-  char fmt[SHORT_STRING], tmp[SHORT_STRING], *cp = NULL;
+  char fmt[128], tmp[128], *cp = NULL;
   int count, optional = (flags & MUTT_FORMAT_OPTIONAL);
   struct Menu *menu = (struct Menu *) data;
 

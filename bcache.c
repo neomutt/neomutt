@@ -64,7 +64,7 @@ struct BodyCache
  */
 static int bcache_path(struct ConnAccount *account, const char *mailbox, char *dst, size_t dstlen)
 {
-  char host[STRING];
+  char host[256];
   struct Url url = { U_UNKNOWN };
   int len;
 

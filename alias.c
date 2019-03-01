@@ -110,7 +110,7 @@ static struct Address *expand_aliases_r(struct Address *a, struct ListHead *expn
 
         if (pw)
         {
-          char namebuf[STRING];
+          char namebuf[256];
 
           mutt_gecos_name(namebuf, sizeof(namebuf), pw);
           mutt_str_replace(&a->personal, namebuf);
@@ -258,7 +258,7 @@ static int check_alias_name(const char *s, char *dest, size_t destlen)
  */
 static bool string_is_address(const char *str, const char *u, const char *d)
 {
-  char buf[LONG_STRING];
+  char buf[1024];
 
   snprintf(buf, sizeof(buf), "%s@%s", NONULL(u), NONULL(d));
   if (mutt_str_strcasecmp(str, buf) == 0)
@@ -368,9 +368,9 @@ struct Address *mutt_get_address(struct Envelope *env, const char **pfxp)
 void mutt_alias_create(struct Envelope *cur, struct Address *iaddr)
 {
   struct Alias *new = NULL;
-  char buf[LONG_STRING], tmp[LONG_STRING], prompt[SHORT_STRING], *pc = NULL;
+  char buf[1024], tmp[1024], prompt[128], *pc = NULL;
   char *err = NULL;
-  char fixed[LONG_STRING];
+  char fixed[1024];
   FILE *rc = NULL;
   struct Address *addr = NULL;
 
@@ -599,7 +599,7 @@ int mutt_alias_complete(char *buf, size_t buflen)
 {
   struct Alias *a = NULL, *tmp = NULL;
   struct AliasList a_list = TAILQ_HEAD_INITIALIZER(a_list);
-  char bestname[HUGE_STRING] = { 0 };
+  char bestname[8192] = { 0 };
 
   if (buf[0] != 0) /* avoid empty string as strstr argument */
   {

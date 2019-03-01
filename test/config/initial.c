@@ -93,8 +93,8 @@ void config_initial(void)
 
   struct Buffer err;
   mutt_buffer_init(&err);
-  err.data = mutt_mem_calloc(1, STRING);
-  err.dsize = STRING;
+  err.dsize = 256;
+  err.data = mutt_mem_calloc(1, err.dsize);
   mutt_buffer_reset(&err);
 
   struct ConfigSet *cs = cs_new(30);

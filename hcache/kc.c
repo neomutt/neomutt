@@ -148,8 +148,7 @@ static void hcache_kyotocabinet_close(void **ctx)
  */
 static const char *hcache_kyotocabinet_backend(void)
 {
-  /* SHORT_STRING(128) should be more than enough for KCVERSION */
-  static char version_cache[SHORT_STRING] = "";
+  static char version_cache[128] = ""; ///< should be more than enough for KCVERSION
   if (!version_cache[0])
     snprintf(version_cache, sizeof(version_cache), "kyotocabinet %s", KCVERSION);
 

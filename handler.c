@@ -290,22 +290,22 @@ static void qp_decode_line(char *dest, char *src, size_t *l, int last)
  * size.
  *
  * Now, we don't special-case if the line we read with fgets() isn't
- * terminated. We don't care about this, since STRING > 78, so corrupted input
- * will just be corrupted a bit more. That implies that STRING+1 bytes are
+ * terminated. We don't care about this, since 256 > 78, so corrupted input
+ * will just be corrupted a bit more. That implies that 256+1 bytes are
  * always sufficient to store the result of qp_decode_line.
  *
  * Finally, at soft line breaks, some part of a multibyte character may have
  * been left over by convert_to_state(). This shouldn't be more than 6
- * characters, so STRING + 7 should be sufficient memory to store the decoded
+ * characters, so 256+7 should be sufficient memory to store the decoded
  * data.
  *
  * Just to make sure that I didn't make some off-by-one error above, we just
- * use STRING*2 for the target buffer's size.
+ * use 512 for the target buffer's size.
  */
 static void decode_quoted(struct State *s, long len, bool istext, iconv_t cd)
 {
-  char line[STRING];
-  char decline[2 * STRING];
+  char line[256];
+  char decline[512];
   size_t l = 0;
   size_t l3;
 
@@ -370,7 +370,7 @@ static unsigned char decode_byte(char ch)
  */
 static void decode_uuencoded(struct State *s, long len, bool istext, iconv_t cd)
 {
-  char tmps[SHORT_STRING];
+  char tmps[128];
   char *pt = NULL;
   char bufi[BUFI_SIZE];
   size_t k = 0;
@@ -432,7 +432,7 @@ static void decode_uuencoded(struct State *s, long len, bool istext, iconv_t cd)
 static bool is_mmnoask(const char *buf)
 {
   char *p = NULL;
-  char tmp[LONG_STRING], *q = NULL;
+  char tmp[1024], *q = NULL;
 
   const char *val = mutt_str_getenv("MM_NOASK");
   if (!val)
@@ -481,7 +481,7 @@ static bool is_mmnoask(const char *buf)
  */
 static bool is_autoview(struct Body *b)
 {
-  char type[SHORT_STRING];
+  char type[128];
   bool is_av = false;
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(b), b->subtype);
@@ -527,9 +527,9 @@ static bool is_autoview(struct Body *b)
 static int autoview_handler(struct Body *a, struct State *s)
 {
   struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
-  char buffer[LONG_STRING];
-  char type[STRING];
-  char command[HUGE_STRING];
+  char buffer[1024];
+  char type[256];
+  char command[STR_COMMAND];
   char tempfile[PATH_MAX] = "";
   char *fname = NULL;
   FILE *fpin = NULL;
@@ -745,7 +745,7 @@ static int message_handler(struct Body *a, struct State *s)
 static int external_body_handler(struct Body *b, struct State *s)
 {
   const char *str = NULL;
-  char strbuf[LONG_STRING]; // STRING might be too short but LONG_STRING should be large enough
+  char strbuf[1024];
 
   const char *access_type = mutt_param_get(&b->parameter, "access-type");
   if (!access_type)
@@ -1647,7 +1647,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
                                          C_HonorDisposition && (plaintext || handler)))
   {
     const char *str = NULL;
-    char keystroke[SHORT_STRING];
+    char keystroke[128];
     keystroke[0] = '\0';
 
     if (!OptViewAttach)

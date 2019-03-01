@@ -1254,7 +1254,7 @@ static int get_micalg(gpgme_ctx_t ctx, int use_smime, char *buf, size_t buflen)
  */
 static void print_time(time_t t, struct State *s)
 {
-  char p[STRING];
+  char p[256];
 
   strftime(p, sizeof(p), nl_langinfo(D_T_FMT), localtime(&t));
   state_puts(p, s);
@@ -1872,7 +1872,7 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *s)
       ; /* No state information so no way to print anything. */
     else if (err)
     {
-      char buf[LONG_STRING];
+      char buf[1024];
       snprintf(buf, sizeof(buf), _("Error getting key information for KeyID %s: %s\n"),
                fpr, gpgme_strerror(err));
       state_puts(buf, s);
@@ -2019,7 +2019,7 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
 
         if (non_pka_notations)
         {
-          char buf[SHORT_STRING];
+          char buf[128];
           snprintf(buf, sizeof(buf),
                    _("*** Begin Notation (signature by: %s) ***\n"), sig->fpr);
           state_puts(buf, s);
@@ -2460,7 +2460,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
   gpgme_subkey_t subkey;
   const char *shortid = NULL;
   size_t len;
-  char date[STRING];
+  char date[256];
   int more;
   int rc = -1;
   time_t tt;
@@ -2606,7 +2606,7 @@ static int line_compare(const char *a, size_t n, const char *b)
 static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 {
   char tempfile[PATH_MAX];
-  char buf[HUGE_STRING];
+  char buf[8192];
   FILE *tfp = NULL;
 
   bool sgn = false;
@@ -2800,7 +2800,7 @@ leave:
  */
 static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
 {
-  char buf[HUGE_STRING];
+  char buf[8192];
   bool complete, armor_header;
   FILE *fp = NULL;
 
@@ -2862,7 +2862,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
   bool clearsign = false;
   long bytes;
   LOFF_T last_pos;
-  char buf[HUGE_STRING];
+  char buf[8192];
   FILE *pgpout = NULL;
 
   gpgme_error_t err = 0;
@@ -2871,7 +2871,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
   bool maybe_goodsig = true;
   bool have_any_sigs = false;
 
-  char body_charset[STRING]; /* Only used for clearsigned messages. */
+  char body_charset[256]; /* Only used for clearsigned messages. */
 
   mutt_debug(LL_DEBUG2, "Entering handler\n");
 
@@ -3311,7 +3311,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
                                     const char *if_str, const char *else_str,
                                     unsigned long data, int flags)
 {
-  char fmt[SHORT_STRING];
+  char fmt[128];
   int kflags = 0;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
   const char *s = NULL;
@@ -3437,7 +3437,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
 
     case '[':
     {
-      char buf2[SHORT_STRING];
+      char buf2[128];
       bool do_locales = true;
       struct tm *tm = NULL;
       size_t len;
@@ -4070,7 +4070,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
   const char *s = NULL, *s2 = NULL;
   time_t tt = 0;
   struct tm *tm = NULL;
-  char shortbuf[SHORT_STRING];
+  char shortbuf[128];
   unsigned long aval = 0;
   const char *delim = NULL;
   int is_pgp = 0;
@@ -4323,7 +4323,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
  */
 static void verify_key(struct CryptKeyInfo *key)
 {
-  char cmd[LONG_STRING], tempfile[PATH_MAX];
+  char cmd[1024], tempfile[PATH_MAX];
   const char *s = NULL;
   gpgme_ctx_t listctx = NULL;
   gpgme_error_t err;
@@ -4629,7 +4629,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
   int keymax;
   int i;
   bool done = false;
-  char helpstr[LONG_STRING], buf[LONG_STRING];
+  char helpstr[1024], buf[1024];
   struct CryptKeyInfo *k = NULL;
   int (*f)(const void *, const void *);
   enum MenuType menu_to_use = MENU_GENERIC;
@@ -4766,7 +4766,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
                                  !crypt_id_is_strong(key_table[menu->current])))
         {
           const char *warn_s = NULL;
-          char buf2[LONG_STRING];
+          char buf2[1024];
 
           if (key_table[menu->current]->flags & KEYFLAG_CANTUSE)
           {
@@ -5041,7 +5041,7 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, short ab
                                               unsigned int app, int *forced_valid)
 {
   struct CryptKeyInfo *key = NULL;
-  char resp[SHORT_STRING];
+  char resp[128];
   struct CryptCache *l = NULL;
   int dummy;
 
@@ -5117,7 +5117,7 @@ static char *find_keys(struct Address *addrlist, unsigned int app, bool oppenc_m
   struct Address *p = NULL, *q = NULL;
   struct CryptKeyInfo *k_info = NULL;
   const char *fqdn = mutt_fqdn(true);
-  char buf[LONG_STRING];
+  char buf[1024];
   int forced_valid;
   int r;
   bool key_selected;
@@ -5253,7 +5253,7 @@ struct Body *pgp_gpgme_make_key_attachment(void)
   gpgme_data_t keydata = NULL;
   gpgme_error_t err;
   struct Body *att = NULL;
-  char buf[LONG_STRING];
+  char buf[1024];
   struct stat sb;
 
   OptPgpCheckTrust = false;
@@ -5463,7 +5463,7 @@ static int gpgme_send_menu(struct Email *msg, int is_smime)
                               is_smime ? APPLICATION_SMIME : APPLICATION_PGP, NULL);
         if (p)
         {
-          char input_signas[SHORT_STRING];
+          char input_signas[128];
           snprintf(input_signas, sizeof(input_signas), "0x%s", crypt_fpr_or_lkeyid(p));
           mutt_str_replace(is_smime ? &C_SmimeDefaultKey : &C_PgpSignAs, input_signas);
           crypt_free_key(&p);

@@ -642,8 +642,8 @@ int mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn)
  */
 int mutt_sasl_interact(sasl_interact_t *interaction)
 {
-  char prompt[SHORT_STRING];
-  char resp[SHORT_STRING];
+  char prompt[128];
+  char resp[128];
 
   while (interaction->id != SASL_CB_LIST_END)
   {

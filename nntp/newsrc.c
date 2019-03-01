@@ -446,7 +446,7 @@ int nntp_newsrc_update(struct NntpAccountData *adata)
   if (!adata)
     return -1;
 
-  buflen = 10 * LONG_STRING;
+  buflen = 10240;
   buf = mutt_mem_calloc(1, buflen);
   off = 0;
 
@@ -470,7 +470,7 @@ int nntp_newsrc_update(struct NntpAccountData *adata)
     /* write entries */
     for (unsigned int j = 0; j < mdata->newsrc_len; j++)
     {
-      if (off + LONG_STRING > buflen)
+      if (off + 1024 > buflen)
       {
         buflen *= 2;
         mutt_mem_realloc(&buf, buflen);
@@ -572,8 +572,8 @@ int nntp_add_group(char *line, void *data)
 {
   struct NntpAccountData *adata = data;
   struct NntpMboxData *mdata = NULL;
-  char group[LONG_STRING] = "";
-  char desc[HUGE_STRING] = "";
+  char group[1024] = "";
+  char desc[8192] = "";
   char mod;
   anum_t first, last;
 
@@ -611,7 +611,7 @@ int nntp_add_group(char *line, void *data)
  */
 static int active_get_cache(struct NntpAccountData *adata)
 {
-  char buf[HUGE_STRING];
+  char buf[8192];
   char file[PATH_MAX];
   time_t t;
 
@@ -653,7 +653,7 @@ int nntp_active_save_cache(struct NntpAccountData *adata)
   if (!adata->cacheable)
     return 0;
 
-  buflen = 10 * LONG_STRING;
+  buflen = 10240;
   buf = mutt_mem_calloc(1, buflen);
   snprintf(buf, buflen, "%lu\n", (unsigned long) adata->newgroups_time);
   off = strlen(buf);
@@ -924,7 +924,7 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
   struct NntpAccountData *adata = (struct NntpAccountData *) data;
   struct ConnAccount *acct = &adata->conn->account;
   struct Url url;
-  char fn[SHORT_STRING], fmt[SHORT_STRING], *p = NULL;
+  char fn[128], fmt[128], *p = NULL;
 
   switch (op)
   {

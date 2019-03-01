@@ -325,7 +325,7 @@ static void expand_command_str(const struct Mailbox *m, const char *cmd, char *b
 static int execute_command(struct Mailbox *m, const char *command, const char *progress)
 {
   int rc = 1;
-  char sys_cmd[HUGE_STRING];
+  char sys_cmd[STR_COMMAND];
 
   if (!m || !command || !progress)
     return 0;

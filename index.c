@@ -983,7 +983,7 @@ static void index_custom_redraw(struct Menu *menu)
 
   if (menu->redraw & REDRAW_STATUS)
   {
-    char buf[LONG_STRING];
+    char buf[1024];
     menu_status_line(buf, sizeof(buf), menu, NONULL(C_StatusFormat));
     mutt_window_move(MuttStatusWindow, 0, 0);
     SETCOLOR(MT_COLOR_STATUS);
@@ -1011,7 +1011,7 @@ static void index_custom_redraw(struct Menu *menu)
  */
 int mutt_index_menu(void)
 {
-  char buf[PATH_MAX], helpstr[LONG_STRING];
+  char buf[PATH_MAX], helpstr[1024];
   int flags;
   int op = OP_NULL;
   bool done = false; /* controls when to exit the "event" loop */
@@ -1125,7 +1125,7 @@ int mutt_index_menu(void)
                 beep();
               if (C_NewMailCommand)
               {
-                char cmd[LONG_STRING];
+                char cmd[1024];
                 menu_status_line(cmd, sizeof(cmd), menu, NONULL(C_NewMailCommand));
                 if (mutt_system(cmd) != 0)
                   mutt_error(_("Error running \"%s\""), cmd);
@@ -1168,7 +1168,7 @@ int mutt_index_menu(void)
             beep();
           if (C_NewMailCommand)
           {
-            char cmd[LONG_STRING];
+            char cmd[1024];
             menu_status_line(cmd, sizeof(cmd), menu, NONULL(C_NewMailCommand));
             if (mutt_system(cmd) != 0)
               mutt_error(_("Error running \"%s\""), cmd);
@@ -1623,7 +1623,7 @@ int mutt_index_menu(void)
           mutt_message(_("No limit pattern is in effect"));
         else
         {
-          char buf2[STRING];
+          char buf2[256];
           /* L10N: ask for a limit to apply */
           snprintf(buf2, sizeof(buf2), _("Limit: %s"), Context->pattern);
           mutt_message("%s", buf2);
@@ -1641,7 +1641,7 @@ int mutt_index_menu(void)
                                -1;
         if (op == OP_TOGGLE_READ)
         {
-          char buf2[LONG_STRING];
+          char buf2[1024];
 
           if (!Context->pattern || (strncmp(Context->pattern, "!~R!~D~s", 8) != 0))
           {
@@ -2035,7 +2035,7 @@ int mutt_index_menu(void)
 
           if (!Context->mailbox->quiet)
           {
-            char msgbuf[STRING];
+            char msgbuf[256];
             snprintf(msgbuf, sizeof(msgbuf), _("Update tags..."));
             mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, 1,
                                Context->mailbox->msg_tagged);
@@ -3346,7 +3346,7 @@ int mutt_index_menu(void)
           if (!mutt_get_field(_("Enter macro stroke: "), buf2, sizeof(buf2), MUTT_CLEAR) &&
               buf2[0])
           {
-            char str[STRING], macro[STRING];
+            char str[256], macro[256];
             snprintf(str, sizeof(str), "%s%s", C_MarkMacroPrefix, buf2);
             snprintf(macro, sizeof(macro), "<search>~i \"%s\"\n", CUR_EMAIL->env->message_id);
             /* L10N: "message hotkey" is the key bindings menu description of a
