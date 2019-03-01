@@ -140,21 +140,27 @@ struct Mapping IndexNewsHelp[] = {
 #define CAN_COLLAPSE(email)                                                    \
   ((C_CollapseUnread || !UNREAD(email)) && (C_CollapseFlagged || !FLAGGED(email)))
 
-// Checks to perform before running a function
-#define CHECK_IN_MAILBOX (1 << 0)
-#define CHECK_MSGCOUNT (1 << 1)
-#define CHECK_VISIBLE (1 << 2)
-#define CHECK_READONLY (1 << 3)
-#define CHECK_ATTACH (1 << 4)
+// clang-format off
+/**
+ * typedef CheckFlags - Checks to perform before running a function
+ */
+typedef uint8_t CheckFlags;       ///< Flags, e.g. #CHECK_IN_MAILBOX
+#define CHECK_NO_FLAGS         0  ///< No flags are set
+#define CHECK_IN_MAILBOX (1 << 0) ///< Is there a mailbox open?
+#define CHECK_MSGCOUNT   (1 << 1) ///< Are there any messages?
+#define CHECK_VISIBLE    (1 << 2) ///< Is the selected message visible in the index?
+#define CHECK_READONLY   (1 << 3) ///< Is the mailbox readonly?
+#define CHECK_ATTACH     (1 << 4) ///< Is the user in message-attach mode?
+// clang-format on
 
 /**
  * prereq - Check the pre-requisites for a function
  * @param ctx    Mailbox
  * @param menu   Current Menu
- * @param checks Checks to perform, e.g. #CHECK_MSGCOUNT
+ * @param checks Checks to perform, see #CheckFlags
  * @retval bool true if the checks pass successfully
  */
-static bool prereq(struct Context *ctx, struct Menu *menu, int checks)
+static bool prereq(struct Context *ctx, struct Menu *menu, CheckFlags checks)
 {
   bool result = true;
 
