@@ -29,6 +29,8 @@
 #include <stdio.h>
 #include <time.h>
 #include "config/lib.h"
+#include "mutt.h"
+#include "ncrypt/ncrypt.h"
 
 struct Context;
 struct EnterState;
@@ -70,11 +72,11 @@ int mutt_change_flag(struct Mailbox *m, struct EmailList *el, int bf);
 
 int mutt_complete(char *buf, size_t buflen);
 int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr, struct Email *e, bool resend);
-int mutt_enter_string(char *buf, size_t buflen, int col, int flags);
-int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, bool multiple,
-                       char ***files, int *numfiles, struct EnterState *state);
+int mutt_enter_string(char *buf, size_t buflen, int col, CompletionFlags flags);
+int mutt_enter_string_full(char *buf, size_t buflen, int col, CompletionFlags flags, bool multiple,
+                           char ***files, int *numfiles, struct EnterState *state);
 int mutt_get_postponed(struct Context *ctx, struct Email *e, struct Email **cur, char *fcc, size_t fcclen);
-int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app);
+SecurityFlags mutt_parse_crypt_hdr(const char *p, int set_empty_signas, SecurityFlags crypt_app);
 int mutt_num_postponed(struct Mailbox *m, bool force);
 int mutt_thread_set_flag(struct Email *e, int flag, bool bf, bool subthread);
 void mutt_update_num_postponed(void);

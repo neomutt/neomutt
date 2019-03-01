@@ -40,6 +40,8 @@ enum CsDumpStyle
   CS_DUMP_STYLE_NEO,   ///< Display config in NeoMutt style
 };
 
+typedef uint8_t ConfigDumpFlags;        ///< Flags for dump_config(), e.g. #CS_DUMP_ONLY_CHANGED
+#define CS_DUMP_NO_FLAGS             0  ///< No flags are set
 #define CS_DUMP_ONLY_CHANGED   (1 << 0) ///< Only show config that the user has changed
 #define CS_DUMP_HIDE_SENSITIVE (1 << 1) ///< Obscure sensitive information like passwords
 #define CS_DUMP_NO_ESCAPING    (1 << 2) ///< Do not escape special chars, or quote the string
@@ -49,9 +51,9 @@ enum CsDumpStyle
 #define CS_DUMP_SHOW_DISABLED  (1 << 6) ///< Show disabled config items, too
 #define CS_DUMP_SHOW_SYNONYMS  (1 << 7) ///< Show synonyms and the config items their linked to
 
-void              dump_config_mutt(struct ConfigSet *cs, struct HashElem *he, struct Buffer *value, struct Buffer *initial, int flags, FILE *fp);
-void              dump_config_neo(struct ConfigSet *cs, struct HashElem *he, struct Buffer *value, struct Buffer *initial, int flags, FILE *fp);
-bool              dump_config(struct ConfigSet *cs, enum CsDumpStyle style, int flags, FILE *fp);
+void              dump_config_mutt(struct ConfigSet *cs, struct HashElem *he, struct Buffer *value, struct Buffer *initial, ConfigDumpFlags flags, FILE *fp);
+void              dump_config_neo(struct ConfigSet *cs, struct HashElem *he, struct Buffer *value, struct Buffer *initial, ConfigDumpFlags flags, FILE *fp);
+bool              dump_config(struct ConfigSet *cs, enum CsDumpStyle style, ConfigDumpFlags flags, FILE *fp);
 int               elem_list_sort(const void *a, const void *b);
 size_t            escape_string(struct Buffer *buf, const char *src);
 struct HashElem **get_elem_list(struct ConfigSet *cs);

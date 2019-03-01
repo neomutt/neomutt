@@ -23,6 +23,8 @@
 #ifndef MUTT_CONN_ACCOUNT_H
 #define MUTT_CONN_ACCOUNT_H
 
+#include "mutt_account.h"
+
 /**
  * struct ConnAccount - Login details for a remote server
  */
@@ -33,8 +35,8 @@ struct ConnAccount
   char pass[256];
   char host[128];
   unsigned short port;
-  unsigned char type;  ///< Connection type, e.g. #MUTT_ACCT_TYPE_IMAP
-  unsigned char flags; ///< Which fields are initialised, e.g. #MUTT_ACCT_USER
+  unsigned char type;     ///< Connection type, e.g. #MUTT_ACCT_TYPE_IMAP
+  MuttAccountFlags flags; ///< Which fields are initialised, e.g. #MUTT_ACCT_USER
 };
 
 #endif /* MUTT_CONN_ACCOUNT_H */

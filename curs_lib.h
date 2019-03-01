@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include "mutt.h"
 #include "browser.h"
+#include "pager.h"
 
 struct Context;
 struct Pager;
@@ -44,7 +45,7 @@ extern int MuttGetchTimeout; ///< Timeout in ms for mutt_getch()
 
 int          mutt_addwch(wchar_t wc);
 int          mutt_any_key_to_continue(const char *s);
-int          mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct Pager *info);
+int          mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color, struct Pager *info);
 void         mutt_edit_file(const char *editor, const char *file);
 void         mutt_endwin(void);
 int          mutt_enter_fname_full(const char *prompt, char *buf, size_t blen, bool mailbox, bool multiple, char ***files, int *numfiles, int flags);
@@ -55,8 +56,8 @@ void         mutt_format_s(char *buf, size_t buflen, const char *prec, const cha
 void         mutt_format_s_tree(char *buf, size_t buflen, const char *prec, const char *s);
 void         mutt_getch_timeout(int delay);
 struct Event mutt_getch(void);
-int          mutt_get_field_full(const char *field, char *buf, size_t buflen, int complete, bool multiple, char ***files, int *numfiles);
-int          mutt_get_field_unbuffered(const char *msg, char *buf, size_t buflen, int flags);
+int          mutt_get_field_full(const char *field, char *buf, size_t buflen, CompletionFlags complete, bool multiple, char ***files, int *numfiles);
+int          mutt_get_field_unbuffered(const char *msg, char *buf, size_t buflen, CompletionFlags flags);
 int          mutt_multi_choice(const char *prompt, const char *letters);
 void         mutt_need_hard_redraw(void);
 void         mutt_paddstr(int n, const char *s);

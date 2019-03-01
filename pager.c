@@ -278,12 +278,12 @@ static int comp_syntax_t(const void *m1, const void *m2)
  * @param line_info Line info array
  * @param n         Line Number (index into line_info)
  * @param cnt       If true, this is a continuation line
- * @param flags     Flags, e.g. #MUTT_PAGER_LOGS
+ * @param flags     Flags, see #PagerFlags
  * @param special   Flags, e.g. A_BOLD
  * @param a         ANSI attributes
  */
-static void resolve_color(struct Line *line_info, int n, int cnt, int flags,
-                          int special, struct AnsiAttr *a)
+static void resolve_color(struct Line *line_info, int n, int cnt,
+                          PagerFlags flags, int special, struct AnsiAttr *a)
 {
   int def_color;         /* color without syntax highlight */
   int color;             /* final color */
@@ -1351,7 +1351,7 @@ static int fill_buffer(FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *
  * @param[out] line_info    Line info
  * @param[in]  n            Line number (index into line_info)
  * @param[in]  buf          Text to display
- * @param[in]  flags        Flags, e.g. #MUTT_PAGER_NOWRAP
+ * @param[in]  flags        Flags, see #PagerFlags
  * @param[out] pa           ANSI attributes used
  * @param[in]  cnt          Length of text buffer
  * @param[out] pspace       Index of last whitespace character
@@ -1361,9 +1361,9 @@ static int fill_buffer(FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *
  * @param[in]  pager_window Window to write to
  * @retval num Number of characters displayed
  */
-static int format_line(struct Line **line_info, int n, unsigned char *buf, int flags,
-                       struct AnsiAttr *pa, int cnt, int *pspace, int *pvch,
-                       int *pcol, int *pspecial, struct MuttWindow *pager_window)
+static int format_line(struct Line **line_info, int n, unsigned char *buf,
+                       PagerFlags flags, struct AnsiAttr *pa, int cnt, int *pspace,
+                       int *pvch, int *pcol, int *pspecial, struct MuttWindow *pager_window)
 {
   int space = -1; /* index of the last space or TAB */
   int col = C_Markers ? (*line_info)[n].continuation : 0;
@@ -1542,7 +1542,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf, int f
  * @param[in]  n               Line number
  * @param[out] last            Last line
  * @param[out] max             Maximum number of lines
- * @param[in]  flags           Flags, e.g. #MUTT_SHOWFLAT
+ * @param[in]  flags           Flags, see #PagerFlags
  * @param[out] quote_list      Email quoting style
  * @param[out] q_level         Level of quoting
  * @param[out] force_redraw    Force a repaint
@@ -1552,10 +1552,10 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf, int f
  * @retval 0  normal exit, line was not displayed
  * @retval >0 normal exit, line was displayed
  */
-static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info, int n,
-                        int *last, int *max, int flags, struct QClass **quote_list,
-                        int *q_level, bool *force_redraw, regex_t *search_re,
-                        struct MuttWindow *pager_window)
+static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
+                        int n, int *last, int *max, PagerFlags flags,
+                        struct QClass **quote_list, int *q_level, bool *force_redraw,
+                        regex_t *search_re, struct MuttWindow *pager_window)
 {
   unsigned char *buf = NULL, *fmt = NULL;
   size_t buflen = 0;
@@ -1881,7 +1881,7 @@ void mutt_clear_pager_position(void)
  */
 struct PagerRedrawData
 {
-  int flags;
+  PagerFlags flags;
   struct Pager *extra;
   int indexlen;
   int indicator; /**< the indicator line of the PI */
@@ -1893,7 +1893,7 @@ struct PagerRedrawData
   int topline;
   bool force_redraw;
   int has_types;
-  int hide_quoted;
+  PagerFlags hide_quoted;
   int q_level;
   struct QClass *quote_list;
   LOFF_T last_pos;
@@ -1905,7 +1905,7 @@ struct PagerRedrawData
   struct Menu *index; /**< the Pager Index (PI) */
   regex_t search_re;
   bool search_compiled;
-  int search_flag;
+  PagerFlags search_flag;
   bool search_back;
   const char *banner;
   char *helpstr;
@@ -2226,7 +2226,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
  * there so that we can do operations on the current message without the need
  * to pop back out to the main-menu.
  */
-int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *extra)
+int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct Pager *extra)
 {
   static char searchbuf[256] = "";
   char buffer[1024];
@@ -3233,9 +3233,10 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;
 
-        int replyflags = SEND_REPLY | (ch == OP_GROUP_REPLY ? SEND_GROUP_REPLY : 0) |
-                         (ch == OP_GROUP_CHAT_REPLY ? SEND_GROUP_CHAT_REPLY : 0) |
-                         (ch == OP_LIST_REPLY ? SEND_LIST_REPLY : 0);
+        SendFlags replyflags =
+            SEND_REPLY | (ch == OP_GROUP_REPLY ? SEND_GROUP_REPLY : 0) |
+            (ch == OP_GROUP_CHAT_REPLY ? SEND_GROUP_CHAT_REPLY : 0) |
+            (ch == OP_LIST_REPLY ? SEND_LIST_REPLY : 0);
 
         if (IsMsgAttach(extra))
           mutt_attach_reply(extra->fp, extra->email, extra->actx, extra->body, replyflags);

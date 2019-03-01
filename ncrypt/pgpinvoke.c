@@ -94,7 +94,7 @@ struct PgpCommandContext
 static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int cols,
                                    char op, const char *src, const char *prec,
                                    const char *if_str, const char *else_str,
-                                   unsigned long data, int flags)
+                                   unsigned long data, MuttFormatFlags flags)
 {
   char fmt[128];
   struct PgpCommandContext *cctx = (struct PgpCommandContext *) data;
@@ -369,16 +369,16 @@ pid_t pgp_invoke_encrypt(FILE **pgpin, FILE **pgpout, FILE **pgperr,
  * @param[in]  pgperrfd stderr for the command, or -1 (OPTIONAL)
  * @param[in]  fname    Filename to pass to the command
  * @param[in]  uids     List of IDs/fingerprints, space separated
- * @param[in]  flags    Flags, e.g. #SEC_SIGN, #SEC_ENCRYPT
+ * @param[in]  flags    Flags, see #SecurityFlags
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
  * @note `pgpin` has priority over `pgpinfd`.
  *       Likewise `pgpout` and `pgperr`.
  */
-pid_t pgp_invoke_traditional(FILE **pgpin, FILE **pgpout, FILE **pgperr,
-                             int pgpinfd, int pgpoutfd, int pgperrfd,
-                             const char *fname, const char *uids, int flags)
+pid_t pgp_invoke_traditional(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
+                             int pgpoutfd, int pgperrfd, const char *fname,
+                             const char *uids, SecurityFlags flags)
 {
   if (flags & SEC_ENCRYPT)
   {

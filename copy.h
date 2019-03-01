@@ -28,7 +28,8 @@
 struct Email;
 struct Mailbox;
 
-/**< flags to mutt_copy_message */
+typedef uint16_t CopyMessageFlags;     ///< Flags for mutt_copy_message(), e.g. #MUTT_CM_NOHEADER
+#define MUTT_CM_NO_FLAGS           0   ///< No flags are set
 #define MUTT_CM_NOHEADER     (1 << 0)  ///< Don't copy the message header
 #define MUTT_CM_PREFIX       (1 << 1)  ///< Quote the header and body
 #define MUTT_CM_DECODE       (1 << 2)  ///< Decode the message body into text/plain
@@ -43,7 +44,8 @@ struct Mailbox;
 #define MUTT_CM_VERIFY       (1 << 11) ///< Do signature verification
 #define MUTT_CM_DECODE_CRYPT (MUTT_CM_DECODE_PGP | MUTT_CM_DECODE_SMIME)
 
-/* flags for mutt_copy_header() */
+typedef uint32_t CopyHeaderFlags;   ///< Flags for mutt_copy_header(), e.g. #CH_UPDATE
+#define CH_NO_FLAGS             0   ///< No flags are set
 #define CH_UPDATE         (1 << 0)  ///< Update the status and x-status fields?
 #define CH_WEED           (1 << 1)  ///< Weed the headers?
 #define CH_DECODE         (1 << 2)  ///< Do RFC2047 header decoding
@@ -67,14 +69,13 @@ struct Mailbox;
 #define CH_UPDATE_SUBJECT (1 << 20) ///< Update Subject: protected header update
 #define CH_VIRTUAL        (1 << 21) ///< Write virtual header lines too
 
-int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
-                  int chflags, const char *prefix);
+int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, CopyHeaderFlags chflags, const char *prefix);
 
-int mutt_copy_header(FILE *in, struct Email *e, FILE *out, int chflags, const char *prefix);
+int mutt_copy_header(FILE *in, struct Email *e, FILE *out, CopyHeaderFlags chflags, const char *prefix);
 
-int mutt_copy_message_fp(FILE *fpout, FILE *fpin,           struct Email *e, int cmflags, int chflags);
-int mutt_copy_message_ctx(FILE *fpout, struct Mailbox *src, struct Email *e, int cmflags, int chflags);
+int mutt_copy_message_fp(FILE *fpout, FILE *fpin,           struct Email *e, CopyMessageFlags cmflags, CopyHeaderFlags chflags);
+int mutt_copy_message_ctx(FILE *fpout, struct Mailbox *src, struct Email *e, CopyMessageFlags cmflags, CopyHeaderFlags chflags);
 
-int mutt_append_message(struct Mailbox *dest, struct Mailbox *src, struct Email *e, int cmflags, int chflags);
+int mutt_append_message(struct Mailbox *dest, struct Mailbox *src, struct Email *e, CopyMessageFlags cmflags, CopyHeaderFlags chflags);
 
 #endif /* MUTT_COPY_H */

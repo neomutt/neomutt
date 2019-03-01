@@ -26,6 +26,7 @@
 
 #include <stdbool.h>
 #include <time.h>
+#include "ncrypt.h"
 
 /**
  * struct PgpUid - PGP User ID
@@ -47,7 +48,7 @@ struct PgpKeyInfo
   char *keyid;
   char *fingerprint;
   struct PgpUid *address;
-  int flags;
+  KeyFlags flags;
   short keylen;
   time_t gen_time;
   int numalg;

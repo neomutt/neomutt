@@ -150,11 +150,11 @@ struct HashElem **get_elem_list(struct ConfigSet *cs)
  * @param he      HashElem representing config item
  * @param value   Current value of the config item
  * @param initial Initial value of the config item
- * @param flags   Flags, e.g. #CS_DUMP_ONLY_CHANGED
+ * @param flags   Flags, see #ConfigDumpFlags
  * @param fp      File pointer to write to
  */
 void dump_config_mutt(struct ConfigSet *cs, struct HashElem *he, struct Buffer *value,
-                      struct Buffer *initial, int flags, FILE *fp)
+                      struct Buffer *initial, ConfigDumpFlags flags, FILE *fp)
 {
   const char *name = he->key.strkey;
 
@@ -181,11 +181,11 @@ void dump_config_mutt(struct ConfigSet *cs, struct HashElem *he, struct Buffer *
  * @param he      HashElem representing config item
  * @param value   Current value of the config item
  * @param initial Initial value of the config item
- * @param flags   Flags, e.g. #CS_DUMP_ONLY_CHANGED
+ * @param flags   Flags, see #ConfigDumpFlags
  * @param fp      File pointer to write to
  */
 void dump_config_neo(struct ConfigSet *cs, struct HashElem *he, struct Buffer *value,
-                     struct Buffer *initial, int flags, FILE *fp)
+                     struct Buffer *initial, ConfigDumpFlags flags, FILE *fp)
 {
   const char *name = he->key.strkey;
 
@@ -226,10 +226,11 @@ void dump_config_neo(struct ConfigSet *cs, struct HashElem *he, struct Buffer *v
  * dump_config - Write all the config to a file
  * @param cs    ConfigSet to dump
  * @param style Output style, e.g. #CS_DUMP_STYLE_MUTT
- * @param flags Display flags, e.g. #CS_DUMP_ONLY_CHANGED
+ * @param flags Flags, see #ConfigDumpFlags
  * @param fp    File to write config to
  */
-bool dump_config(struct ConfigSet *cs, enum CsDumpStyle style, int flags, FILE *fp)
+bool dump_config(struct ConfigSet *cs, enum CsDumpStyle style,
+                 ConfigDumpFlags flags, FILE *fp)
 {
   if (!cs)
     return false;

@@ -81,7 +81,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
     return -1;
   }
 
-  const int chflags =
+  const CopyHeaderFlags chflags =
       CH_NOLEN | ((m->magic == MUTT_MBOX || m->magic == MUTT_MMDF) ? 0 : CH_NOSTATUS);
   rc = mutt_append_message(tmpctx->mailbox, m, e, 0, chflags);
   int oerrno = errno;
@@ -183,10 +183,11 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
     goto bail;
   }
 
-  int of = 0;
-  int cf = (((tmpctx->mailbox->magic == MUTT_MBOX) || (tmpctx->mailbox->magic == MUTT_MMDF)) ?
-                0 :
-                CH_NOSTATUS);
+  MsgOpenFlags of = MUTT_MSG_NO_FLAGS;
+  CopyHeaderFlags cf =
+      (((tmpctx->mailbox->magic == MUTT_MBOX) || (tmpctx->mailbox->magic == MUTT_MMDF)) ?
+           CH_NO_FLAGS :
+           CH_NOSTATUS);
 
   if (fgets(buf, sizeof(buf), fp) && is_from(buf, NULL, 0, NULL))
   {

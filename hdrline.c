@@ -190,13 +190,13 @@ static bool first_mailing_list(char *buf, size_t buflen, struct Address *a)
  * add_index_color - Insert a color marker into a string
  * @param buf    Buffer to store marker
  * @param buflen Buffer length
- * @param flags  Flags, e.g. MUTT_FORMAT_INDEX
+ * @param flags  Flags, see #MuttFormatFlags
  * @param color  Color, e.g. MT_COLOR_MESSAGE
  * @retval num Characters written
  *
  * The colors are stored as "magic" strings embedded in the text.
  */
-static size_t add_index_color(char *buf, size_t buflen, int flags, char color)
+static size_t add_index_color(char *buf, size_t buflen, MuttFormatFlags flags, char color)
 {
   /* only add color markers if we are operating on main index entries. */
   if (!(flags & MUTT_FORMAT_INDEX))
@@ -293,7 +293,7 @@ static const char *make_from_prefix(enum FieldType disp)
  * @param buf      Buffer to store the result
  * @param buflen   Size of the buffer
  * @param do_lists Should we check for mailing lists?
- * @param flags    Format flags, e.g. #MUTT_FORMAT_PLAIN
+ * @param flags    Format flags, see #MuttFormatFlags
  *
  * Generate the %F or %L field in $index_format.
  * This is the author, or recipient of the email.
@@ -301,7 +301,8 @@ static const char *make_from_prefix(enum FieldType disp)
  * The field can optionally be prefixed by a character from $from_chars.
  * If $from_chars is not set, the prefix will be, "To", "Cc", etc
  */
-static void make_from(struct Envelope *env, char *buf, size_t buflen, bool do_lists, int flags)
+static void make_from(struct Envelope *env, char *buf, size_t buflen,
+                      bool do_lists, MuttFormatFlags flags)
 {
   if (!env || !buf)
     return;
@@ -546,7 +547,7 @@ static bool thread_is_old(struct Context *ctx, struct Email *e)
 static const char *index_format_str(char *buf, size_t buflen, size_t col, int cols,
                                     char op, const char *src, const char *prec,
                                     const char *if_str, const char *else_str,
-                                    unsigned long data, int flags)
+                                    unsigned long data, MuttFormatFlags flags)
 {
   struct HdrFormatInfo *hfi = (struct HdrFormatInfo *) data;
   char fmt[128], tmp[1024], *p, *tags = NULL;
@@ -873,7 +874,8 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       {
         const bool is_plain = (src[0] == 'p');
         colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_AUTHOR);
-        make_from(e->env, tmp, sizeof(tmp), false, (is_plain ? MUTT_FORMAT_PLAIN : 0));
+        make_from(e->env, tmp, sizeof(tmp), false,
+                  (is_plain ? MUTT_FORMAT_PLAIN : MUTT_FORMAT_NO_FLAGS));
         mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
         add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
 
@@ -1450,10 +1452,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
  * @param ctx    Mailbox Context
  * @param m      Mailbox
  * @param e      Email
- * @param flags  Format flags
+ * @param flags  Flags, see #MuttFormatFlags
  */
 void mutt_make_string_flags(char *buf, size_t buflen, const char *s, struct Context *ctx,
-                            struct Mailbox *m, struct Email *e, int flags)
+                            struct Mailbox *m, struct Email *e, MuttFormatFlags flags)
 {
   struct HdrFormatInfo hfi;
 
@@ -1473,10 +1475,10 @@ void mutt_make_string_flags(char *buf, size_t buflen, const char *s, struct Cont
  * @param cols   Number of screen columns
  * @param s      printf-line format string
  * @param hfi    Mailbox data to pass to the formatter
- * @param flags  Format flags
+ * @param flags  Flags, see #MuttFormatFlags
  */
 void mutt_make_string_info(char *buf, size_t buflen, int cols, const char *s,
-                           struct HdrFormatInfo *hfi, int flags)
+                           struct HdrFormatInfo *hfi, MuttFormatFlags flags)
 {
   mutt_expando_format(buf, buflen, 0, cols, s, index_format_str, (unsigned long) hfi, flags);
 }

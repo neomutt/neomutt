@@ -162,7 +162,7 @@ struct ConfigDef
 {
   const char   *name;      /**< User-visible name */
   unsigned int  type;      /**< Variable type, e.g. #DT_STRING */
-  intptr_t      flags;     /**< Notification flags, e.g. #R_PAGER */
+  intptr_t      flags;     /**< Notification flags, see #ConfigRedrawFlags */
   void         *var;       /**< Pointer to the global variable */
   intptr_t      initial;   /**< Initial value */
   cs_validator  validator; /**< Validator callback function */

@@ -27,7 +27,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
-/* flags for the State struct */
+typedef uint8_t StateFlags;          ///< Flags for State->flags, e.g. #MUTT_DISPLAY
+#define MUTT_STATE_NO_FLAGS       0  ///< No flags are set
 #define MUTT_DISPLAY        (1 << 0) ///< Output is displayed to the user
 #define MUTT_VERIFY         (1 << 1) ///< Perform signature verification
 #define MUTT_PENDINGPREFIX  (1 << 2) ///< Prefix to write, but character must follow
@@ -45,7 +46,7 @@ struct State
   FILE      *fp_in;  ///< File to read from
   FILE      *fp_out; ///< File to write to
   char      *prefix; ///< String to add to the beginning of each output line
-  int flags;    ///< Flags, e.g. #MUTT_DISPLAY
+  StateFlags flags;  ///< Flags, e.g. #MUTT_DISPLAY
 };
 
 #define state_set_prefix(s) ((s)->flags |= MUTT_PENDINGPREFIX)

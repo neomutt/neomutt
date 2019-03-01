@@ -60,7 +60,7 @@ static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *dat
  * @param out       FILE pointer to write to
  * @param off_start Offset to start from
  * @param off_end   Offset to finish at
- * @param chflags   Flags (see below)
+ * @param chflags   Flags, see #CopyHeaderFlags
  * @param prefix    Prefix for quoting headers
  * @retval  0 Success
  * @retval -1 Failure
@@ -70,7 +70,7 @@ static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *dat
  * wrap headers much more aggressively than the other one.
  */
 int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
-                  int chflags, const char *prefix)
+                  CopyHeaderFlags chflags, const char *prefix)
 {
   bool from = false;
   bool this_is_from = false;
@@ -348,7 +348,8 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
       if (chflags & (CH_DECODE | CH_PREFIX))
       {
         if (mutt_write_one_header(out, 0, headers[x], (chflags & CH_PREFIX) ? prefix : 0,
-                                  mutt_window_wrap_cols(MuttIndexWindow, C_Wrap), chflags) == -1)
+                                  mutt_window_wrap_cols(MuttIndexWindow, C_Wrap),
+                                  chflags) == -1)
         {
           error = true;
           break;
@@ -381,21 +382,22 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
  * @param in       FILE pointer to read from
  * @param e        Email
  * @param out      FILE pointer to write to
- * @param chflags  Flags, e.g. #CH_DECODE
+ * @param chflags  See #CopyHeaderFlags
  * @param prefix   Prefix for quoting headers (if #CH_PREFIX is set)
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_copy_header(FILE *in, struct Email *e, FILE *out, int chflags, const char *prefix)
+int mutt_copy_header(FILE *in, struct Email *e, FILE *out,
+                     CopyHeaderFlags chflags, const char *prefix)
 {
   char *temp_hdr = NULL;
 
   if (e->env)
   {
     chflags |= ((e->env->changed & MUTT_ENV_CHANGED_IRT) ? CH_UPDATE_IRT : 0) |
-             ((e->env->changed & MUTT_ENV_CHANGED_REFS) ? CH_UPDATE_REFS : 0) |
-             ((e->env->changed & MUTT_ENV_CHANGED_XLABEL) ? CH_UPDATE_LABEL : 0) |
-             ((e->env->changed & MUTT_ENV_CHANGED_SUBJECT) ? CH_UPDATE_SUBJECT : 0);
+               ((e->env->changed & MUTT_ENV_CHANGED_REFS) ? CH_UPDATE_REFS : 0) |
+               ((e->env->changed & MUTT_ENV_CHANGED_XLABEL) ? CH_UPDATE_LABEL : 0) |
+               ((e->env->changed & MUTT_ENV_CHANGED_SUBJECT) ? CH_UPDATE_SUBJECT : 0);
   }
 
   if (mutt_copy_hdr(in, out, e->offset, e->content->offset, chflags, prefix) == -1)
@@ -582,12 +584,13 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
  * @param fpout   Where to write output
  * @param fpin    Where to get input
  * @param e       Email being copied
- * @param cmflags Flags, e.g. #MUTT_CM_NOHEADER
- * @param chflags Flags to mutt_copy_header()
+ * @param cmflags Flags, see #CopyMessageFlags
+ * @param chflags Flags, see #CopyHeaderFlags
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e, int cmflags, int chflags)
+int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e,
+                         CopyMessageFlags cmflags, CopyHeaderFlags chflags)
 {
   struct Body *body = e->content;
   char prefix[128];
@@ -785,8 +788,8 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e, int cmflags, 
  * @param fpout   FILE pointer to write to
  * @param src     Source mailbox
  * @param e       Email
- * @param cmflags Flags, see: mutt_copy_message_fp()
- * @param chflags Header flags, see: mutt_copy_header()
+ * @param cmflags Flags, see #CopyMessageFlags
+ * @param chflags Flags, see #CopyHeaderFlags
  * @retval  0 Success
  * @retval -1 Failure
  *
@@ -794,7 +797,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e, int cmflags, 
  * like partial decode, where it is worth displaying as much as possible
  */
 int mutt_copy_message_ctx(FILE *fpout, struct Mailbox *src, struct Email *e,
-                          int cmflags, int chflags)
+                          CopyMessageFlags cmflags, CopyHeaderFlags chflags)
 {
   struct Message *msg = mx_msg_open(src, e->msgno);
   if (!msg)
@@ -817,13 +820,13 @@ int mutt_copy_message_ctx(FILE *fpout, struct Mailbox *src, struct Email *e,
  * @param fpin    where to get input
  * @param src     source mailbox
  * @param e       Email being copied
- * @param cmflags mutt_open_copy_message() flags
- * @param chflags mutt_copy_header() flags
+ * @param cmflags Flags, see #CopyMessageFlags
+ * @param chflags Flags, see #CopyHeaderFlags
  * @retval  0 Success
  * @retval -1 Error
  */
 static int append_message(struct Mailbox *dest, FILE *fpin, struct Mailbox *src,
-                          struct Email *e, int cmflags, int chflags)
+                          struct Email *e, CopyMessageFlags cmflags, CopyHeaderFlags chflags)
 {
   char buf[256];
   struct Message *msg = NULL;
@@ -858,13 +861,13 @@ static int append_message(struct Mailbox *dest, FILE *fpin, struct Mailbox *src,
  * @param dest    Destination Mailbox
  * @param src     Source Mailbox
  * @param e       Email
- * @param cmflags mutt_open_copy_message() cmflags
- * @param chflags mutt_copy_header() cmflags
+ * @param cmflags Flags, see #CopyMessageFlags
+ * @param chflags Flags, see #CopyHeaderFlags
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_append_message(struct Mailbox *dest, struct Mailbox *src,
-                        struct Email *e, int cmflags, int chflags)
+int mutt_append_message(struct Mailbox *dest, struct Mailbox *src, struct Email *e,
+                        CopyMessageFlags cmflags, CopyHeaderFlags chflags)
 {
   struct Message *msg = mx_msg_open(src, e->msgno);
   if (!msg)

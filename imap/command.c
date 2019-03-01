@@ -119,13 +119,13 @@ static struct ImapCommand *cmd_new(struct ImapAccountData *adata)
  * cmd_queue - Add a IMAP command to the queue
  * @param adata Imap Account data
  * @param cmdstr Command string
- * @param flags  Server flags, e.g. #IMAP_CMD_POLL
+ * @param flags  Server flags, see #ImapCmdFlags
  * @retval  0 Success
  * @retval <0 Failure, e.g. #IMAP_CMD_BAD
  *
  * If the queue is full, attempts to drain it.
  */
-static int cmd_queue(struct ImapAccountData *adata, const char *cmdstr, int flags)
+static int cmd_queue(struct ImapAccountData *adata, const char *cmdstr, ImapCmdFlags flags)
 {
   if (cmd_queue_full(adata))
   {
@@ -183,11 +183,11 @@ static void cmd_handle_fatal(struct ImapAccountData *adata)
  * cmd_start - Start a new IMAP command
  * @param adata Imap Account data
  * @param cmdstr Command string
- * @param flags  Command flags, e.g. #IMAP_CMD_QUEUE
+ * @param flags  Command flags, see #ImapCmdFlags
  * @retval  0 Success
  * @retval <0 Failure, e.g. #IMAP_CMD_BAD
  */
-static int cmd_start(struct ImapAccountData *adata, const char *cmdstr, int flags)
+static int cmd_start(struct ImapAccountData *adata, const char *cmdstr, ImapCmdFlags flags)
 {
   int rc;
 
@@ -1215,14 +1215,14 @@ const char *imap_cmd_trailer(struct ImapAccountData *adata)
  * imap_exec - Execute a command and wait for the response from the server
  * @param adata Imap Account data
  * @param cmdstr Command to execute
- * @param flags  Flags, e.g. #IMAP_CMD_PASS
+ * @param flags  Flags, see #ImapCmdFlags
  * @retval #IMAP_EXEC_SUCCESS Command successful or queued
  * @retval #IMAP_EXEC_ERROR   Command returned an error
  * @retval #IMAP_EXEC_FATAL   Imap connection failure
  *
  * Also, handle untagged responses.
  */
-int imap_exec(struct ImapAccountData *adata, const char *cmdstr, int flags)
+int imap_exec(struct ImapAccountData *adata, const char *cmdstr, ImapCmdFlags flags)
 {
   int rc;
 

@@ -46,6 +46,8 @@ extern unsigned char C_Move;
 extern char *        C_Trash;
 
 /* flags for mutt_open_mailbox() */
+typedef uint8_t OpenMailboxFlags;   ///< Flags for mutt_open_mailbox(), e.g. #MUTT_NOSORT
+#define MUTT_OPEN_NO_FLAGS       0  ///< No flags are set
 #define MUTT_NOSORT        (1 << 0) ///< Do not sort the mailbox after opening it
 #define MUTT_APPEND        (1 << 1) ///< Open mailbox for appending messages
 #define MUTT_READONLY      (1 << 2) ///< Open in read-only mode
@@ -57,7 +59,8 @@ extern char *        C_Trash;
 #define MUTT_APPENDNEW     (1 << 6) ///< Set in mx_open_mailbox_append if the mailbox doesn't exist.
                                     ///< Used by maildir/mh to create the mailbox.
 
-/* mx_msg_open_new() */
+typedef uint8_t MsgOpenFlags;      ///< Flags for mx_msg_open_new(), e.g. #MUTT_ADD_FROM
+#define MUTT_MSG_NO_FLAGS       0  ///< No flags are set
 #define MUTT_ADD_FROM     (1 << 0) ///< add a From_ line
 #define MUTT_SET_DRAFT    (1 << 1) ///< set the message draft flag
 
@@ -129,11 +132,11 @@ struct MxOps
   /**
    * mbox_open_append - Open a Mailbox for appending
    * @param m     Mailbox to open
-   * @param flags e.g. #MUTT_READONLY
+   * @param flags Flags, see #OpenMailboxFlags
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*mbox_open_append)(struct Mailbox *m, int flags);
+  int (*mbox_open_append)(struct Mailbox *m, OpenMailboxFlags flags);
   /**
    * mbox_check - Check for new mail
    * @param m          Mailbox
@@ -271,11 +274,11 @@ struct MxOps
 int             mx_mbox_check      (struct Mailbox *m, int *index_hint);
 int             mx_mbox_check_stats(struct Mailbox *m, int flags);
 int             mx_mbox_close      (struct Context **ptr);
-struct Context *mx_mbox_open       (struct Mailbox *m, int flags);
+struct Context *mx_mbox_open       (struct Mailbox *m, OpenMailboxFlags flags);
 int             mx_mbox_sync       (struct Mailbox *m, int *index_hint);
 int             mx_msg_close       (struct Mailbox *m, struct Message **msg);
 int             mx_msg_commit      (struct Mailbox *m, struct Message *msg);
-struct Message *mx_msg_open_new    (struct Mailbox *m, struct Email *e, int flags);
+struct Message *mx_msg_open_new    (struct Mailbox *m, struct Email *e, MsgOpenFlags flags);
 struct Message *mx_msg_open        (struct Mailbox *m, int msgno);
 int             mx_msg_padding_size(struct Mailbox *m);
 int             mx_save_hcache     (struct Mailbox *m, struct Email *e);

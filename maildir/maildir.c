@@ -304,7 +304,7 @@ static int maildir_mbox_open(struct Mailbox *m)
 /**
  * maildir_mbox_open_append - Implements MxOps::mbox_open_append()
  */
-static int maildir_mbox_open_append(struct Mailbox *m, int flags)
+static int maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
   if (!m)
     return -1;

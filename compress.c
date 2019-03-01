@@ -172,7 +172,7 @@ static void store_size(const struct Mailbox *m)
 
 /**
  * find_hook - Find a hook to match a path
- * @param type Type of hook, e.g. #MUTT_CLOSE_HOOK
+ * @param type Type of hook, see #HookFlags
  * @param path Filename to test
  * @retval ptr  Matching hook command
  * @retval NULL No matches
@@ -186,7 +186,7 @@ static void store_size(const struct Mailbox *m)
  * Call:
  *      find_hook (#MUTT_OPEN_HOOK, "myfile.gz");
  */
-static const char *find_hook(int type, const char *path)
+static const char *find_hook(HookFlags type, const char *path)
 {
   if (!path)
     return NULL;
@@ -262,7 +262,7 @@ static void free_compress_info(struct Mailbox *m)
 static const char *compress_format_str(char *buf, size_t buflen, size_t col, int cols,
                                        char op, const char *src, const char *prec,
                                        const char *if_str, const char *else_str,
-                                       unsigned long data, int flags)
+                                       unsigned long data, MuttFormatFlags flags)
 {
   if (!buf || (data == 0))
     return src;
@@ -517,7 +517,7 @@ cmo_fail:
  * To append to a compressed mailbox we need an append-hook (or both open- and
  * close-hooks).
  */
-static int comp_mbox_open_append(struct Mailbox *m, int flags)
+static int comp_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
   if (!m)
     return -1;

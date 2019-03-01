@@ -82,12 +82,12 @@ static const char trust_flags[] = "?- +";
 
 /**
  * pgp_key_abilities - Turn PGP key abilities into a string
- * @param flags Flags, e.g. #KEYFLAG_CANENCRYPT
+ * @param flags Flags, see #KeyFlags
  * @retval ptr Abilities string
  *
  * @note This returns a pointer to a static buffer
  */
-static char *pgp_key_abilities(int flags)
+static char *pgp_key_abilities(KeyFlags flags)
 {
   static char buf[3];
 
@@ -112,10 +112,10 @@ static char *pgp_key_abilities(int flags)
 
 /**
  * pgp_flags - Turn PGP key flags into a string
- * @param flags Flags, e.g. #KEYFLAG_REVOKED
+ * @param flags Flags, see #KeyFlags
  * @retval char Flag character
  */
-static char pgp_flags(int flags)
+static char pgp_flags(KeyFlags flags)
 {
   if (flags & KEYFLAG_REVOKED)
     return 'R';
@@ -174,10 +174,10 @@ struct PgpEntry
 static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
                                  char op, const char *src, const char *prec,
                                  const char *if_str, const char *else_str,
-                                 unsigned long data, int flags)
+                                 unsigned long data, MuttFormatFlags flags)
 {
   char fmt[128];
-  int kflags = 0;
+  KeyFlags kflags = KEYFLAG_NO_FLAGS;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   struct PgpEntry *entry = (struct PgpEntry *) data;
@@ -812,11 +812,12 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
  * pgp_ask_for_key - Ask the user for a PGP key
  * @param tag       Prompt for the user
  * @param whatfor   Use for key, e.g. "signing"
- * @param abilities Abilities to match, e.g. #KEYFLAG_CANENCRYPT
+ * @param abilities Abilities to match, see #KeyFlags
  * @param keyring   PGP keyring to use
  * @retval ptr Selected PGP key
  */
-struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, short abilities, enum PgpRing keyring)
+struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, KeyFlags abilities,
+                                   enum PgpRing keyring)
 {
   struct PgpKeyInfo *key = NULL;
   char resp[128];
@@ -981,12 +982,12 @@ static struct PgpKeyInfo **pgp_get_lastp(struct PgpKeyInfo *p)
 /**
  * pgp_getkeybyaddr - Find a PGP key by address
  * @param a           Email address to match
- * @param abilities   Abilities to match, e.g. #KEYFLAG_CANENCRYPT
+ * @param abilities   Abilities to match, see #KeyFlags
  * @param keyring     PGP keyring to use
  * @param oppenc_mode If true, use opportunistic encryption
  * @retval ptr Matching PGP key
  */
-struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities,
+struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
                                     enum PgpRing keyring, bool oppenc_mode)
 {
   if (!a)
@@ -1117,11 +1118,11 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities,
 /**
  * pgp_getkeybystr - Find a PGP key by string
  * @param p         String to match
- * @param abilities   Abilities to match, e.g. #KEYFLAG_CANENCRYPT
+ * @param abilities   Abilities to match, see #KeyFlags
  * @param keyring     PGP keyring to use
  * @retval ptr Matching PGP key
  */
-struct PgpKeyInfo *pgp_getkeybystr(char *p, short abilities, enum PgpRing keyring)
+struct PgpKeyInfo *pgp_getkeybystr(char *p, KeyFlags abilities, enum PgpRing keyring)
 {
   struct ListHead hints = STAILQ_HEAD_INITIALIZER(hints);
   struct PgpKeyInfo *keys = NULL;

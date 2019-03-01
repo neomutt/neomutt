@@ -416,7 +416,7 @@ int main(int argc, char *argv[], char *envp[])
   struct ListHead alias_queries = STAILQ_HEAD_INITIALIZER(alias_queries);
   struct ListHead cc_list = STAILQ_HEAD_INITIALIZER(cc_list);
   struct ListHead bcc_list = STAILQ_HEAD_INITIALIZER(bcc_list);
-  int sendflags = 0;
+  SendFlags sendflags = SEND_NO_FLAGS;
   int flags = 0;
   int version = 0;
   int i;
@@ -748,7 +748,7 @@ int main(int argc, char *argv[], char *envp[])
   if (dump_variables)
   {
     dump_config(Config, CS_DUMP_STYLE_NEO,
-                hide_sensitive ? CS_DUMP_HIDE_SENSITIVE : 0, stdout);
+                hide_sensitive ? CS_DUMP_HIDE_SENSITIVE : CS_DUMP_NO_FLAGS, stdout);
     goto main_ok; // TEST18: neomutt -D
   }
 

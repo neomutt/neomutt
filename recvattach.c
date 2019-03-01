@@ -205,9 +205,10 @@ void mutt_update_tree(struct AttachCtx *actx)
  * | \%u     | Unlink
  * | \%X     | Number of qualifying MIME parts in this part and its children
  */
-const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, char op,
-                              const char *src, const char *prec, const char *if_str,
-                              const char *else_str, unsigned long data, int flags)
+const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
+                              char op, const char *src, const char *prec,
+                              const char *if_str, const char *else_str,
+                              unsigned long data, MuttFormatFlags flags)
 {
   char fmt[128];
   char charset[128];
@@ -1135,7 +1136,8 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *
   struct Body *m = NULL;
   struct Body *new_body = NULL;
   FILE *new_fp = NULL;
-  int type, need_secured, secured;
+  SecurityFlags type;
+  int need_secured, secured;
 
   for (m = parts; m; m = m->next)
   {
@@ -1319,7 +1321,7 @@ void mutt_view_attachments(struct Email *e)
 {
   char helpstr[1024];
   struct Body *cur = NULL;
-  int flags = 0;
+  SendFlags flags = SEND_NO_FLAGS;
   int op = OP_NULL;
 
   struct Mailbox *m = Context ? Context->mailbox : NULL;

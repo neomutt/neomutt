@@ -42,6 +42,8 @@ extern bool C_SortRe;
 extern bool C_StrictThreads;
 extern bool C_ThreadReceived;
 
+typedef uint8_t MuttThreadFlags;         ///< Flags, e.g. #MUTT_THREAD_COLLAPSE
+#define MUTT_THREAD_NO_FLAGS          0  ///< No flags are set
 #define MUTT_THREAD_COLLAPSE    (1 << 0) ///< Collapse an email thread
 #define MUTT_THREAD_UNCOLLAPSE  (1 << 1) ///< Uncollapse an email thread
 #define MUTT_THREAD_GET_HIDDEN  (1 << 2) ///< Count non-visible emails in a thread
@@ -49,7 +51,7 @@ extern bool C_ThreadReceived;
 #define MUTT_THREAD_NEXT_UNREAD (1 << 4) ///< Find the next unread email
 #define MUTT_THREAD_FLAGGED     (1 << 5) ///< Count flagged emails in a thread
 
-int mutt_traverse_thread(struct Context *ctx, struct Email *cur, int flag);
+int mutt_traverse_thread(struct Context *ctx, struct Email *cur, MuttThreadFlags flag);
 #define mutt_collapse_thread(ctx, cur)         mutt_traverse_thread(ctx, cur, MUTT_THREAD_COLLAPSE)
 #define mutt_uncollapse_thread(ctx, cur)       mutt_traverse_thread(ctx, cur, MUTT_THREAD_UNCOLLAPSE)
 #define mutt_get_hidden(ctx, cur)              mutt_traverse_thread(ctx, cur, MUTT_THREAD_GET_HIDDEN)

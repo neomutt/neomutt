@@ -1247,7 +1247,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
   else if (mdata->check_status & IMAP_FLAGS_PENDING)
     result = MUTT_FLAGS;
 
-  mdata->check_status = 0;
+  mdata->check_status = IMAP_OPEN_NO_FLAGS;
 
   return result;
 }
@@ -2171,7 +2171,7 @@ fail:
 /**
  * imap_mbox_open_append - Implements MxOps::mbox_open_append()
  */
-static int imap_mbox_open_append(struct Mailbox *m, int flags)
+static int imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
   if (!m || !m->account)
     return -1;

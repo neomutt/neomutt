@@ -803,7 +803,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
 
       char buf[8192];
       struct Message *msg = NULL;
-      int chflags = 0;
+      CopyHeaderFlags chflags = CH_NO_FLAGS;
       int r = -1;
 
       struct Email *en = m->email;

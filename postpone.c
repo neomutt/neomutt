@@ -447,16 +447,16 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
  * @param p                Header string to parse
  * @param set_empty_signas Allow an empty "Sign as"
  * @param crypt_app App, e.g. #APPLICATION_PGP
- * @retval num Flags, e.g. #SEC_ENCRYPT
+ * @retval num SecurityFlags, see #SecurityFlags
  */
-int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
+SecurityFlags mutt_parse_crypt_hdr(const char *p, int set_empty_signas, SecurityFlags crypt_app)
 {
   char smime_cryptalg[1024] = "\0";
   char sign_as[1024] = "\0", *q = NULL;
-  int flags = 0;
+  SecurityFlags flags = SEC_NO_FLAGS;
 
   if (!WithCrypto)
-    return 0;
+    return SEC_NO_FLAGS;
 
   p = mutt_str_skip_email_wsp(p);
   for (; *p; p++)
@@ -478,7 +478,7 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
           if (*p != '>')
           {
             mutt_error(_("Illegal S/MIME header"));
-            return 0;
+            return SEC_NO_FLAGS;
           }
         }
 
@@ -509,7 +509,7 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
           if (*p != '>')
           {
             mutt_error(_("Illegal crypto header"));
-            return 0;
+            return SEC_NO_FLAGS;
           }
         }
 
@@ -535,7 +535,7 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
           if (*p != '>')
           {
             mutt_error(_("Illegal crypto header"));
-            return 0;
+            return SEC_NO_FLAGS;
           }
         }
 
@@ -544,7 +544,7 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
 
       default:
         mutt_error(_("Illegal crypto header"));
-        return 0;
+        return SEC_NO_FLAGS;
     }
   }
 
@@ -590,7 +590,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
   FILE *bfp = NULL;
   int rc = -1;
   struct State s = { 0 };
-  int sec_type;
+  SecurityFlags sec_type;
   struct Envelope *protected_headers = NULL;
 
   if (!fp && !(msg = mx_msg_open(m, e->msgno)))

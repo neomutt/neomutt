@@ -37,6 +37,8 @@ extern bool  C_MenuScroll;
 struct ConfigSet;
 struct HashElem;
 
+typedef uint16_t MuttRedrawFlags;      ///< Flags, e.g. #REDRAW_INDEX
+#define REDRAW_NO_FLAGS             0  ///< No flags are set
 #define REDRAW_INDEX          (1 << 0) ///< Redraw the index
 #define REDRAW_MOTION         (1 << 1) ///< Redraw after moving the menu list
 #define REDRAW_MOTION_RESYNCH (1 << 2) ///< Redraw any changing the menu selection
@@ -61,7 +63,7 @@ struct Menu
   void *data;  /**< extra data for the current menu */
   int current; /**< current entry */
   int max;     /**< the number of entries in the menu */
-  int redraw;  /**< when to redraw the screen */
+  MuttRedrawFlags redraw;  /**< when to redraw the screen */
   int menu;    /**< menu definition for keymap entries. */
   int offset;  /**< row offset within the window to start the index */
   int pagelen; /**< number of entries per screen */
@@ -159,9 +161,9 @@ struct Menu *mutt_menu_new(enum MenuType type);
 void         mutt_menu_pop_current(struct Menu *menu);
 void         mutt_menu_push_current(struct Menu *menu);
 void         mutt_menu_set_current_redraw_full(void);
-void         mutt_menu_set_current_redraw(int redraw);
+void         mutt_menu_set_current_redraw(MuttRedrawFlags redraw);
 void         mutt_menu_set_redraw_full(int menu_type);
-void         mutt_menu_set_redraw(int menu_type, int redraw);
+void         mutt_menu_set_redraw(int menu_type, MuttRedrawFlags redraw);
 
 bool mutt_menu_listener(const struct ConfigSet *cs, struct HashElem *he, const char *name, enum ConfigEvent ev);
 

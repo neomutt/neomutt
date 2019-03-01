@@ -114,7 +114,7 @@ struct CryptKeyInfo
   gpgme_key_t kobj;
   int idx;                   /**< and the user ID at this index */
   const char *uid;           /**< and for convenience point to this user ID */
-  unsigned int flags;        /**< global and per uid flags (for convenience) */
+  KeyFlags flags;            /**< global and per uid flags (for convenience) */
   gpgme_validity_t validity; /**< uid validity (cached for convenience) */
 };
 
@@ -516,12 +516,12 @@ static const char *crypt_fpr_or_lkeyid(struct CryptKeyInfo *k)
 
 /**
  * crypt_key_abilities - Parse key flags into a string
- * @param flags Flags, e.g. #KEYFLAG_CANENCRYPT
+ * @param flags Flags, see #KeyFlags
  * @retval ptr Flag string
  *
  * Note: The string is statically allocated.
  */
-static char *crypt_key_abilities(int flags)
+static char *crypt_key_abilities(KeyFlags flags)
 {
   static char buf[3];
 
@@ -546,12 +546,12 @@ static char *crypt_key_abilities(int flags)
 
 /**
  * crypt_flags - Parse the key flags into a single character
- * @param flags Flags, e.g. #KEYFLAG_EXPIRED
+ * @param flags Flags, see #KeyFlags
  * @retval char Flag character
  *
  * The returned character describes the most important flag.
  */
-static char crypt_flags(int flags)
+static char crypt_flags(KeyFlags flags)
 {
   if (flags & KEYFLAG_REVOKED)
     return 'R';
@@ -2666,14 +2666,13 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 int pgp_gpgme_check_traditional(FILE *fp, struct Body *b, bool just_one)
 {
   int rc = 0;
-  int r;
   for (; b; b = b->next)
   {
     if (!just_one && is_multipart(b))
       rc = (pgp_gpgme_check_traditional(fp, b->parts, false) || rc);
     else if (b->type == TYPE_TEXT)
     {
-      r = mutt_is_application_pgp(b);
+      SecurityFlags r = mutt_is_application_pgp(b);
       if (r != 0)
         rc = (rc || r);
       else
@@ -3309,10 +3308,10 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
 static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int cols,
                                     char op, const char *src, const char *prec,
                                     const char *if_str, const char *else_str,
-                                    unsigned long data, int flags)
+                                    unsigned long data, MuttFormatFlags flags)
 {
   char fmt[128];
-  int kflags = 0;
+  KeyFlags kflags = KEYFLAG_NO_FLAGS;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
   const char *s = NULL;
 
@@ -4450,7 +4449,7 @@ static char *list_to_pattern(struct ListHead *list)
  *
  * Select by looking at the HINTS list.
  */
-static struct CryptKeyInfo *get_candidates(struct ListHead *hints, unsigned int app, int secret)
+static struct CryptKeyInfo *get_candidates(struct ListHead *hints, SecurityFlags app, int secret)
 {
   struct CryptKeyInfo *db = NULL, *k = NULL, **kend = NULL;
   gpgme_error_t err;
@@ -4505,7 +4504,7 @@ static struct CryptKeyInfo *get_candidates(struct ListHead *hints, unsigned int 
 
     while (!(err = gpgme_op_keylist_next(ctx, &key)))
     {
-      unsigned int flags = 0;
+      KeyFlags flags = KEYFLAG_NO_FLAGS;
 
       if (key_check_cap(key, KEY_CAP_CAN_ENCRYPT))
         flags |= KEYFLAG_CANENCRYPT;
@@ -4556,7 +4555,7 @@ static struct CryptKeyInfo *get_candidates(struct ListHead *hints, unsigned int 
 
     while (!(err = gpgme_op_keylist_next(ctx, &key)))
     {
-      unsigned int flags = KEYFLAG_ISX509;
+      KeyFlags flags = KEYFLAG_ISX509;
 
       if (key_check_cap(key, KEY_CAP_CAN_ENCRYPT))
         flags |= KEYFLAG_CANENCRYPT;
@@ -4828,14 +4827,14 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
 /**
  * crypt_getkeybyaddr - Find a key by email address
  * @param[in]  a            Address to match
- * @param[in]  abilities    Abilities to match, e.g. #KEYFLAG_CANENCRYPT
+ * @param[in]  abilities    Abilities to match, see #KeyFlags
  * @param[in]  app          Application type, e.g. #APPLICATION_PGP
  * @param[out] forced_valid Set to true if user overrode key's validity
  * @param[in]  oppenc_mode  If true, use opportunistic encryption
  * @retval ptr Matching key
  */
 static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
-                                               short abilities, unsigned int app,
+                                               KeyFlags abilities, unsigned int app,
                                                int *forced_valid, bool oppenc_mode)
 {
   struct Address *r = NULL, *p = NULL;
@@ -4958,12 +4957,12 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
 /**
  * crypt_getkeybystr - Find a key by string
  * @param[in]  p            String to match
- * @param[in]  abilities    Abilities to match, e.g. #KEYFLAG_CANENCRYPT
+ * @param[in]  abilities    Abilities to match, see #KeyFlags
  * @param[in]  app          Application type, e.g. #APPLICATION_PGP
  * @param[out] forced_valid Set to true if user overrode key's validity
  * @retval ptr Matching key
  */
-static struct CryptKeyInfo *crypt_getkeybystr(char *p, short abilities,
+static struct CryptKeyInfo *crypt_getkeybystr(char *p, KeyFlags abilities,
                                               unsigned int app, int *forced_valid)
 {
   struct ListHead hints = STAILQ_HEAD_INITIALIZER(hints);
@@ -5029,7 +5028,7 @@ static struct CryptKeyInfo *crypt_getkeybystr(char *p, short abilities,
  * crypt_ask_for_key - Ask the user for a key
  * @param[in]  tag          Prompt to display
  * @param[in]  whatfor      Label to use (OPTIONAL)
- * @param[in]  abilities    Flags, e.g. #KEYFLAG_CANSIGN
+ * @param[in]  abilities    Flags, see #KeyFlags
  * @param[in]  app          Application type, e.g. #APPLICATION_PGP
  * @param[out] forced_valid Set to true if user overrode key's validity
  * @retval ptr Copy of the selected key
@@ -5037,7 +5036,7 @@ static struct CryptKeyInfo *crypt_getkeybystr(char *p, short abilities,
  * If whatfor is not null use it as default and store it under that label as
  * the next default.
  */
-static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, short abilities,
+static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, KeyFlags abilities,
                                               unsigned int app, int *forced_valid)
 {
   struct CryptKeyInfo *key = NULL;

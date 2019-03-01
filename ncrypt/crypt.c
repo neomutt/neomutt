@@ -138,11 +138,11 @@ static void disable_coredumps(void)
 
 /**
  * crypt_valid_passphrase - Check that we have a usable passphrase, ask if not
- * @param flags Flags, e.g. #APPLICATION_PGP
+ * @param flags Flags, see #SecurityFlags
  * @retval  0 Success
  * @retval -1 Failure
  */
-int crypt_valid_passphrase(int flags)
+int crypt_valid_passphrase(SecurityFlags flags)
 {
   int rc = 0;
 
@@ -523,11 +523,11 @@ int mutt_is_malformed_multipart_pgp_encrypted(struct Body *b)
  * mutt_is_application_pgp - Does the message use PGP?
  * @param m Body of email
  * @retval >0 Message uses PGP, e.g. #PGP_ENCRYPT
- * @retval  0 Message doesn't use PGP
+ * @retval  0 Message doesn't use PGP, (#SEC_NO_FLAGS)
  */
-int mutt_is_application_pgp(struct Body *m)
+SecurityFlags mutt_is_application_pgp(struct Body *m)
 {
-  int t = 0;
+  SecurityFlags t = SEC_NO_FLAGS;
   char *p = NULL;
 
   if (m->type == TYPE_APPLICATION)
@@ -582,15 +582,15 @@ int mutt_is_application_pgp(struct Body *m)
  * mutt_is_application_smime - Does the message use S/MIME?
  * @param m Body of email
  * @retval >0 Message uses S/MIME, e.g. #SMIME_ENCRYPT
- * @retval  0 Message doesn't use S/MIME
+ * @retval  0 Message doesn't use S/MIME, (#SEC_NO_FLAGS)
  */
-int mutt_is_application_smime(struct Body *m)
+SecurityFlags mutt_is_application_smime(struct Body *m)
 {
   if (!m)
-    return 0;
+    return SEC_NO_FLAGS;
 
   if (((m->type & TYPE_APPLICATION) == 0) || !m->subtype)
-    return 0;
+    return SEC_NO_FLAGS;
 
   char *t = NULL;
   bool complain = false;
@@ -606,7 +606,7 @@ int mutt_is_application_smime(struct Body *m)
       else if (mutt_str_strcasecmp(t, "signed-data") == 0)
         return SMIME_SIGN | SMIME_OPAQUE;
       else
-        return 0;
+        return SEC_NO_FLAGS;
     }
     /* Netscape 4.7 uses
       * Content-Description: S/MIME Encrypted Message
@@ -617,7 +617,7 @@ int mutt_is_application_smime(struct Body *m)
     complain = true;
   }
   else if (mutt_str_strcasecmp(m->subtype, "octet-stream") != 0)
-    return 0;
+    return SEC_NO_FLAGS;
 
   t = mutt_param_get(&m->parameter, "name");
 
@@ -632,7 +632,7 @@ int mutt_is_application_smime(struct Body *m)
       mutt_message(
           _("S/MIME messages with no hints on content are unsupported"));
     }
-    return 0;
+    return SEC_NO_FLAGS;
   }
 
   /* no .p7c, .p10 support yet. */
@@ -651,26 +651,26 @@ int mutt_is_application_smime(struct Body *m)
       return SMIME_SIGN | SMIME_OPAQUE;
   }
 
-  return 0;
+  return SEC_NO_FLAGS;
 }
 
 /**
  * crypt_query - Check out the type of encryption used
  * @param m Body of email
  * @retval num Flags, e.g. #SEC_GOODSIGN
- * @retval 0   Error
+ * @retval 0   Error (#SEC_NO_FLAGS)
  *
  * Set the cached status values if there are any.
  */
 int crypt_query(struct Body *m)
 {
-  int t = 0;
+  SecurityFlags t = SEC_NO_FLAGS;
 
   if (!WithCrypto)
-    return 0;
+    return SEC_NO_FLAGS;
 
   if (!m)
-    return 0;
+    return SEC_NO_FLAGS;
 
   if (m->type == TYPE_APPLICATION)
   {
@@ -1069,7 +1069,7 @@ int mutt_protected_headers_handler(struct Body *a, struct State *s)
       state_mark_protected_header(s);
       mutt_write_one_header(s->fp_out, "Subject", a->mime_headers->subject,
                             s->prefix, mutt_window_wrap_cols(MuttIndexWindow, C_Wrap),
-                            (s->flags & MUTT_DISPLAY) ? CH_DISPLAY : 0);
+                            (s->flags & MUTT_DISPLAY) ? CH_DISPLAY : CH_NO_FLAGS);
       state_puts("\n", s);
     }
   }

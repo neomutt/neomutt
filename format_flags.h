@@ -25,6 +25,8 @@
 
 #include <stddef.h>
 
+typedef uint8_t MuttFormatFlags;         ///< Flags for mutt_expando_format(), e.g. #MUTT_FORMAT_FORCESUBJ
+#define MUTT_FORMAT_NO_FLAGS          0  ///< No flags are set
 #define MUTT_FORMAT_FORCESUBJ   (1 << 0) ///< Print the subject even if unchanged
 #define MUTT_FORMAT_TREE        (1 << 1) ///< Draw the thread tree
 #define MUTT_FORMAT_OPTIONAL    (1 << 2) ///< Allow optional field processing
@@ -46,7 +48,7 @@
  * @param[in]  if_str   If condition is met, display this string
  * @param[in]  else_str Otherwise, display this string
  * @param[in]  data     Pointer to the mailbox Context
- * @param[in]  flags    Format flags
+ * @param[in]  flags    Flags, see #MuttFormatFlags
  * @retval src (unchanged)
  *
  * Each callback function implements some expandos, e.g.
@@ -58,6 +60,6 @@
 typedef const char *format_t(char *buf, size_t buflen, size_t col, int cols,
                              char op, const char *src, const char *prec,
                              const char *if_str, const char *else_str,
-                             unsigned long data, int flags);
+                             unsigned long data, MuttFormatFlags flags);
 
 #endif /* MUTT_FORMAT_FLAGS_H */
