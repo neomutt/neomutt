@@ -416,7 +416,7 @@ void mutt_md5_process_bytes(const void *buffer, size_t len, struct Md5Ctx *ctx)
     {
       mutt_md5_process_block(ctx->buffer, 64, ctx);
       left_over -= 64;
-      memcpy(ctx->buffer, &ctx->buffer[16], left_over);
+      memmove(ctx->buffer, &ctx->buffer[16], left_over);
     }
     ctx->buflen = left_over;
   }
