@@ -73,8 +73,10 @@ char *C_SmtpAuthenticators; ///< Config: (smtp) List of allowed authentication m
 
 // clang-format off
 /**
- * SmtpCapability - SMTP server capabilities
+ * typedef SmtpCapFlags - SMTP server capabilities
  */
+typedef uint8_t SmtpCapFlags;           ///< Flags, e.g. #SMTP_CAP_STARTTLS
+#define SMTP_CAP_NO_FLAGS            0  ///< No flags are set
 #define SMTP_CAP_STARTTLS     (1 << 0) ///< Server supports STARTTLS command
 #define SMTP_CAP_AUTH         (1 << 1) ///< Server supports AUTH command
 #define SMTP_CAP_DSN          (1 << 2) ///< Server supports Delivery Status Notification
@@ -85,7 +87,7 @@ char *C_SmtpAuthenticators; ///< Config: (smtp) List of allowed authentication m
 // clang-format on
 
 static char *AuthMechs = NULL;
-static unsigned int Capabilities;
+static SmtpCapFlags Capabilities;
 
 /**
  * valid_smtp_code - Is the is a valid SMTP return code?
