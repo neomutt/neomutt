@@ -51,8 +51,6 @@ typedef uint16_t MuttRedrawFlags;      ///< Flags, e.g. #REDRAW_INDEX
 #define REDRAW_SIDEBAR        (1 << 8) ///< Redraw the sidebar
 #endif
 
-#define MUTT_MODEFMT "-- NeoMutt: %s"
-
 /**
  * struct Menu - GUI selectable list of items
  */

@@ -389,7 +389,7 @@ void menu_redraw_status(struct Menu *menu)
 {
   char buf[256];
 
-  snprintf(buf, sizeof(buf), MUTT_MODEFMT, menu->title);
+  snprintf(buf, sizeof(buf), "-- NeoMutt: %s", menu->title);
   SETCOLOR(MT_COLOR_STATUS);
   mutt_window_move(menu->statuswin, 0, 0);
   mutt_paddstr(menu->statuswin->cols, buf);

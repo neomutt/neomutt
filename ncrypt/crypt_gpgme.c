@@ -3344,7 +3344,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
         snprintf(buf, buflen, fmt, crypt_key_abilities(kflags));
       }
-      else if (!(kflags & (KEYFLAG_ABILITIES)))
+      else if (!(kflags & KEYFLAG_ABILITIES))
         optional = 0;
       break;
 
@@ -3354,7 +3354,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
         snprintf(fmt, sizeof(fmt), "%%%sc", prec);
         snprintf(buf, buflen, fmt, crypt_flags(kflags));
       }
-      else if (!(kflags & (KEYFLAG_RESTRICTIONS)))
+      else if (!(kflags & KEYFLAG_RESTRICTIONS))
         optional = 0;
       break;
 
@@ -3650,7 +3650,7 @@ static int compare_key_trust(const void *a, const void *b)
   unsigned long ts = 0, tt = 0;
   int r;
 
-  r = (((*s)->flags & (KEYFLAG_RESTRICTIONS)) - ((*t)->flags & (KEYFLAG_RESTRICTIONS)));
+  r = (((*s)->flags & KEYFLAG_RESTRICTIONS) - ((*t)->flags & KEYFLAG_RESTRICTIONS));
   if (r != 0)
     return r > 0;
 

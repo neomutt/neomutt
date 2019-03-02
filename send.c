@@ -2258,8 +2258,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
   /* specify a default fcc.  if we are in batchmode, only save a copy of
    * the message if the value of $copy is yes or ask-yes */
 
-  if (!fcc[0] && !(flags & (SEND_POSTPONED_FCC)) &&
-      (!(flags & SEND_BATCH) || (C_Copy & 0x1)))
+  if (!fcc[0] && !(flags & SEND_POSTPONED_FCC) && (!(flags & SEND_BATCH) || (C_Copy & 0x1)))
   {
     /* set the default FCC */
     if (!msg->env->from)

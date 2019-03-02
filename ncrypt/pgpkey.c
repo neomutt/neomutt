@@ -205,7 +205,7 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
         snprintf(buf, buflen, fmt, pgp_key_abilities(kflags));
       }
-      else if (!(kflags & (KEYFLAG_ABILITIES)))
+      else if (!(kflags & KEYFLAG_ABILITIES))
         optional = 0;
       break;
     case 'f':
@@ -214,7 +214,7 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
         snprintf(fmt, sizeof(fmt), "%%%sc", prec);
         snprintf(buf, buflen, fmt, pgp_flags(kflags));
       }
-      else if (!(kflags & (KEYFLAG_RESTRICTIONS)))
+      else if (!(kflags & KEYFLAG_RESTRICTIONS))
         optional = 0;
       break;
     case 'k':
@@ -464,8 +464,8 @@ static int compare_key_trust(const void *a, const void *b)
   struct PgpUid **s = (struct PgpUid **) a;
   struct PgpUid **t = (struct PgpUid **) b;
 
-  r = (((*s)->parent->flags & (KEYFLAG_RESTRICTIONS)) -
-       ((*t)->parent->flags & (KEYFLAG_RESTRICTIONS)));
+  r = (((*s)->parent->flags & KEYFLAG_RESTRICTIONS) -
+       ((*t)->parent->flags & KEYFLAG_RESTRICTIONS));
   if (r != 0)
     return r > 0;
   r = ((*s)->trust - (*t)->trust);

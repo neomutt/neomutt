@@ -142,7 +142,7 @@ typedef uint16_t SecurityFlags;           ///< Flags, e.g. #SEC_ENCRYPT
 #define SMIME_BADSIGN  (APPLICATION_SMIME | SEC_BADSIGN)
 #define SMIME_OPAQUE   (APPLICATION_SMIME | SEC_SIGNOPAQUE)
 
-/* WITHCRYPTO actually replaces ifdefs so make the code more readable.
+/* WITHCRYPTO actually replaces ifdefs to make the code more readable.
  * Because it is defined as a constant and known at compile time, the
  * compiler can do dead code elimination and thus it behaves
  * effectively as a conditional compile directive. It is set to false
