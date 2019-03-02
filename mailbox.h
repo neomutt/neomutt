@@ -60,17 +60,19 @@ enum MailboxNotification
 /**
  * ACL Rights - These show permission to...
  */
-#define MUTT_ACL_ADMIN   (1 <<  0)  ///< administer the account (get/set permissions)
-#define MUTT_ACL_CREATE  (1 <<  1)  ///< create a mailbox
-#define MUTT_ACL_DELETE  (1 <<  2)  ///< delete a message
-#define MUTT_ACL_DELMX   (1 <<  3)  ///< delete a mailbox
-#define MUTT_ACL_EXPUNGE (1 <<  4)  ///< expunge messages
-#define MUTT_ACL_INSERT  (1 <<  5)  ///< add/copy into the mailbox (used when editing a message)
-#define MUTT_ACL_LOOKUP  (1 <<  6)  ///< lookup mailbox (visible to 'list')
-#define MUTT_ACL_POST    (1 <<  7)  ///< post (submit messages to the server)
-#define MUTT_ACL_READ    (1 <<  8)  ///< read the mailbox
-#define MUTT_ACL_SEEN    (1 <<  9)  ///< change the 'seen' status of a message
-#define MUTT_ACL_WRITE   (1 << 10)  ///< write to a message (for flagging or linking threads)
+typedef uint16_t AclFlags;          ///< Flags, e.g. #MUTT_ACL_ADMIN
+#define MUTT_ACL_NO_FLAGS       0   ///< No flags are set
+#define MUTT_ACL_ADMIN   (1 <<  0)  ///< Administer the account (get/set permissions)
+#define MUTT_ACL_CREATE  (1 <<  1)  ///< Create a mailbox
+#define MUTT_ACL_DELETE  (1 <<  2)  ///< Delete a message
+#define MUTT_ACL_DELMX   (1 <<  3)  ///< Delete a mailbox
+#define MUTT_ACL_EXPUNGE (1 <<  4)  ///< Expunge messages
+#define MUTT_ACL_INSERT  (1 <<  5)  ///< Add/copy into the mailbox (used when editing a message)
+#define MUTT_ACL_LOOKUP  (1 <<  6)  ///< Lookup mailbox (visible to 'list')
+#define MUTT_ACL_POST    (1 <<  7)  ///< Post (submit messages to the server)
+#define MUTT_ACL_READ    (1 <<  8)  ///< Read the mailbox
+#define MUTT_ACL_SEEN    (1 <<  9)  ///< Change the 'seen' status of a message
+#define MUTT_ACL_WRITE   (1 << 10)  ///< Write to a message (for flagging or linking threads)
 
 #define MUTT_ACL_ALL    ((1 << 11) - 1)
 
@@ -116,7 +118,7 @@ struct Mailbox
   bool quiet                  : 1; /**< inhibit status messages? */
   bool readonly               : 1; /**< don't allow changes to the mailbox */
 
-  unsigned int rights; /**< ACL bits */
+  AclFlags rights; /**< ACL bits, see #AclFlags */
 
 #ifdef USE_COMPRESSED
   void *compress_info; /**< compressed mbox module private data */

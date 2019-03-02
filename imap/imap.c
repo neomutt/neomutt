@@ -154,14 +154,14 @@ static char *get_flags(struct ListHead *hflags, char *s)
 /**
  * set_flag - append str to flags if we currently have permission according to aclflag
  * @param[in]  m       Selected Imap Mailbox
- * @param[in]  aclflag Permissions, e.g. #MUTT_ACL_WRITE
+ * @param[in]  aclflag Permissions, see #AclFlags
  * @param[in]  flag    Does the email have the flag set?
  * @param[in]  str     Server flag name
  * @param[out] flags   Buffer for server command
  * @param[in]  flsize  Length of buffer
  */
-static void set_flag(struct Mailbox *m, int aclflag, int flag, const char *str,
-                     char *flags, size_t flsize)
+static void set_flag(struct Mailbox *m, AclFlags aclflag, int flag,
+                     const char *str, char *flags, size_t flsize)
 {
   if (m->rights & aclflag)
     if (flag && imap_has_flag(&imap_mdata_get(m)->flags, str))
@@ -294,13 +294,13 @@ static bool compare_flags_for_copy(struct Email *e)
 /**
  * sync_helper - Sync flag changes to the server
  * @param m     Selected Imap Mailbox
- * @param right ACL, e.g. #MUTT_ACL_DELETE
+ * @param right ACL, see #AclFlags
  * @param flag  Mutt flag, e.g. MUTT_DELETED
  * @param name  Name of server flag
  * @retval >=0 Success, number of messages
  * @retval  -1 Failure
  */
-static int sync_helper(struct Mailbox *m, int right, int flag, const char *name)
+static int sync_helper(struct Mailbox *m, AclFlags right, int flag, const char *name)
 {
   int count = 0;
   int rc;

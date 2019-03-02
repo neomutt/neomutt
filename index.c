@@ -206,11 +206,11 @@ static bool prereq(struct Context *ctx, struct Menu *menu, CheckFlags checks)
 /**
  * check_acl - Check the ACLs for a function
  * @param ctx Mailbox
- * @param acl ACL, e.g. #MUTT_ACL_DELETE
+ * @param acl ACL, see #AclFlags
  * @param msg Error message for failure
  * @retval bool true if the function is permitted
  */
-static bool check_acl(struct Context *ctx, int acl, const char *msg)
+static bool check_acl(struct Context *ctx, AclFlags acl, const char *msg)
 {
   if (!ctx || !ctx->mailbox)
     return false;
@@ -2881,7 +2881,7 @@ int mutt_index_menu(void)
       {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
           break;
-        /* CHECK_ACL(MUTT_ACL_WRITE); */
+        /* check_acl(MUTT_ACL_WRITE); */
 
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_tagged(&el, Context, CUR_EMAIL, tag);
