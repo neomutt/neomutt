@@ -70,10 +70,11 @@ struct Hash
   intptr_t hash_data;        ///< Data to pass to the elem_free() function
 };
 
-/* flags for mutt_hash_new() */
-#define MUTT_HASH_STRCASECMP  (1 << 0) /**< use strcasecmp() to compare keys */
-#define MUTT_HASH_STRDUP_KEYS (1 << 1) /**< make a copy of the keys */
-#define MUTT_HASH_ALLOW_DUPS  (1 << 2) /**< allow duplicate keys to be inserted */
+typedef uint8_t HashFlags;             ///< Flags for mutt_hash_new(), e.g. #MUTT_HASH_STRCASECMP
+#define MUTT_HASH_NO_FLAGS          0  ///< No flags are set
+#define MUTT_HASH_STRCASECMP  (1 << 0) ///< use strcasecmp() to compare keys
+#define MUTT_HASH_STRDUP_KEYS (1 << 1) ///< make a copy of the keys
+#define MUTT_HASH_ALLOW_DUPS  (1 << 2) ///< allow duplicate keys to be inserted
 
 void             mutt_hash_delete(struct Hash *table, const char *strkey, const void *data);
 struct HashElem *mutt_hash_find_bucket(const struct Hash *table, const char *strkey);
@@ -84,8 +85,8 @@ struct HashElem *mutt_hash_insert(struct Hash *table, const char *strkey, void *
 void             mutt_hash_int_delete(struct Hash *table, unsigned int intkey, const void *data);
 void *           mutt_hash_int_find(const struct Hash *table, unsigned int intkey);
 struct HashElem *mutt_hash_int_insert(struct Hash *table, unsigned int intkey, void *data);
-struct Hash *    mutt_hash_int_new(size_t nelem, int flags);
-struct Hash *    mutt_hash_new(size_t nelem, int flags);
+struct Hash *    mutt_hash_int_new(size_t nelem, HashFlags flags);
+struct Hash *    mutt_hash_new(size_t nelem, HashFlags flags);
 void             mutt_hash_set_destructor(struct Hash *table, hashelem_free_t fn, intptr_t fn_data);
 struct HashElem *mutt_hash_typed_insert(struct Hash *table, const char *strkey, int type, void *data);
 
