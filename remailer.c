@@ -56,11 +56,6 @@
 char *C_MixEntryFormat; ///< Config: (mixmaster) printf-like format string for the mixmaster chain
 char *C_Mixmaster; ///< Config: (mixmaster) External command to route a mixmaster message
 
-#define MIX_CAP_COMPRESS (1 << 0)
-#define MIX_CAP_MIDDLEMAN (1 << 1)
-#define MIX_CAP_NEWSPOST (1 << 2)
-#define MIX_CAP_NEWSMAIL (1 << 3)
-
 /**
  * struct Coord - Screen coordinates
  */
@@ -73,11 +68,11 @@ struct Coord
 /**
  * mix_get_caps - Get Mixmaster Capabilities
  * @param capstr Capability string to parse
- * @retval num Capabilities, e.g. #MIX_CAP_COMPRESS
+ * @retval num Capabilities, see #MixCapFlags
  */
-static int mix_get_caps(const char *capstr)
+static MixCapFlags mix_get_caps(const char *capstr)
 {
-  int caps = 0;
+  MixCapFlags caps = MIX_CAP_NO_FLAGS;
 
   while (*capstr)
   {
