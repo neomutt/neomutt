@@ -1024,7 +1024,7 @@ static int recvattach_pgp_check_traditional(struct AttachCtx *actx, struct Menu 
 static void recvattach_edit_content_type(struct AttachCtx *actx,
                                          struct Menu *menu, struct Email *e)
 {
-  if (mutt_edit_content_type(e, CURATTACH->content, CURATTACH->fp) != 1)
+  if (!mutt_edit_content_type(e, CURATTACH->content, CURATTACH->fp))
     return;
 
   /* The mutt_update_recvattach_menu() will overwrite any changes

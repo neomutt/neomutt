@@ -1172,21 +1172,20 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete,
  * @param e  Email
  * @param b  Attachment
  * @param fp File handle to the attachment
- * @retval 1 A structural change is made
- * @retval 0 Otherwise
+ * @retval bool true if a structural change is made
  *
  * recvattach requires the return code to know when to regenerate the actx.
  */
-int mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
+bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
 {
   char buf[1024];
   char obuf[1024];
   char tmp[256];
   char charset[256];
 
-  short charset_changed = 0;
-  short type_changed = 0;
-  short structure_changed = 0;
+  bool charset_changed = false;
+  bool type_changed = false;
+  bool structure_changed = false;
 
   char *cp = mutt_param_get(&b->parameter, "charset");
   mutt_str_strfcpy(charset, cp, sizeof(charset));
@@ -1204,8 +1203,8 @@ int mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
     }
   }
 
-  if (mutt_get_field("Content-Type: ", buf, sizeof(buf), 0) != 0 || buf[0] == 0)
-    return 0;
+  if ((mutt_get_field("Content-Type: ", buf, sizeof(buf), 0) != 0) || (buf[0] == '\0'))
+    return false;
 
   /* clean up previous junk */
   mutt_param_free(&b->parameter);
@@ -1214,20 +1213,19 @@ int mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
   mutt_parse_content_type(buf, b);
 
   snprintf(tmp, sizeof(tmp), "%s/%s", TYPE(b), NONULL(b->subtype));
-  type_changed = mutt_str_strcasecmp(tmp, obuf);
+  type_changed = (mutt_str_strcasecmp(tmp, obuf) != 0);
   charset_changed =
-      mutt_str_strcasecmp(charset, mutt_param_get(&b->parameter, "charset"));
+      (mutt_str_strcasecmp(charset, mutt_param_get(&b->parameter, "charset")) != 0);
 
   /* if in send mode, check for conversion - current setting is default. */
 
-  if (!e && b->type == TYPE_TEXT && charset_changed)
+  if (!e && (b->type == TYPE_TEXT) && charset_changed)
   {
-    int r;
     snprintf(tmp, sizeof(tmp), _("Convert to %s upon sending?"),
              mutt_param_get(&b->parameter, "charset"));
-    r = mutt_yesorno(tmp, !b->noconv);
-    if (r != MUTT_ABORT)
-      b->noconv = (r == MUTT_NO);
+    int ans = mutt_yesorno(tmp, !b->noconv);
+    if (ans != MUTT_ABORT)
+      b->noconv = (ans == MUTT_NO);
   }
 
   /* inform the user */
@@ -1235,7 +1233,7 @@ int mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
   snprintf(tmp, sizeof(tmp), "%s/%s", TYPE(b), NONULL(b->subtype));
   if (type_changed)
     mutt_message(_("Content-Type changed to %s"), tmp);
-  if (b->type == TYPE_TEXT && charset_changed)
+  if ((b->type == TYPE_TEXT) && charset_changed)
   {
     if (type_changed)
       mutt_sleep(1);
@@ -1244,23 +1242,23 @@ int mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
                  mutt_param_get(&b->parameter, "charset"));
   }
 
-  b->force_charset |= charset_changed ? 1 : 0;
+  b->force_charset |= charset_changed;
 
   if (!is_multipart(b) && b->parts)
   {
-    structure_changed = 1;
+    structure_changed = true;
     mutt_body_free(&b->parts);
   }
   if (!mutt_is_message_type(b->type, b->subtype) && b->email)
   {
-    structure_changed = 1;
+    structure_changed = true;
     b->email->content = NULL;
     mutt_email_free(&b->email);
   }
 
   if (fp && !b->parts && (is_multipart(b) || mutt_is_message_type(b->type, b->subtype)))
   {
-    structure_changed = 1;
+    structure_changed = true;
     mutt_parse_part(fp, b);
   }
 
