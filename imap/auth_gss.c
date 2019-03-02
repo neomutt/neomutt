@@ -118,7 +118,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method
   unsigned long buf_size;
   int rc, retval = IMAP_AUTH_FAILURE;
 
-  if (!(adata->capabilities & IMAP_CAP_AGSSAPI))
+  if (!(adata->capabilities & IMAP_CAP_AUTH_GSSAPI))
     return IMAP_AUTH_UNAVAIL;
 
   if (mutt_account_getuser(&adata->conn->account) < 0)

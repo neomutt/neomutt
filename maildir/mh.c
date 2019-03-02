@@ -88,9 +88,9 @@ void mhs_free_sequences(struct MhSequences *mhs)
  * mhs_check - Get the flags for a given sequence
  * @param mhs Sequences
  * @param i   Index number required
- * @retval num Flags, e.g. #MH_SEQ_UNSEEN
+ * @retval num Flags, see #MhSeqFlags
  */
-short mhs_check(struct MhSequences *mhs, int i)
+MhSeqFlags mhs_check(struct MhSequences *mhs, int i)
 {
   if (!mhs->flags || (i > mhs->max))
     return 0;
@@ -102,10 +102,10 @@ short mhs_check(struct MhSequences *mhs, int i)
  * mhs_set - Set a flag for a given sequence
  * @param mhs Sequences
  * @param i   Index number
- * @param f   Flags, e.g. #MH_SEQ_UNSEEN
- * @retval num Resulting flags
+ * @param f   Flags, see #MhSeqFlags
+ * @retval num Resulting flags, see #MhSeqFlags
  */
-short mhs_set(struct MhSequences *mhs, int i, short f)
+MhSeqFlags mhs_set(struct MhSequences *mhs, int i, MhSeqFlags f)
 {
   mhs_alloc(mhs, i);
   mhs->flags[i] |= f;
@@ -116,10 +116,11 @@ short mhs_set(struct MhSequences *mhs, int i, short f)
  * mhs_write_one_sequence - Write a flag sequence to a file
  * @param fp  File to write to
  * @param mhs Sequence list
- * @param f   Flag, e.g. MH_SEQ_UNSEEN
+ * @param f   Flag, see #MhSeqFlags
  * @param tag string tag, e.g. "unseen"
  */
-static void mhs_write_one_sequence(FILE *fp, struct MhSequences *mhs, short f, const char *tag)
+static void mhs_write_one_sequence(FILE *fp, struct MhSequences *mhs,
+                                   MhSeqFlags f, const char *tag)
 {
   fprintf(fp, "%s:", tag);
 
@@ -309,7 +310,7 @@ int mh_read_sequences(struct MhSequences *mhs, const char *path)
   char *buf = NULL;
   size_t sz = 0;
 
-  short f;
+  MhSeqFlags f;
   int first, last, rc = 0;
 
   char pathname[PATH_MAX];
@@ -506,7 +507,7 @@ void mh_update_maildir(struct Maildir *md, struct MhSequences *mhs)
 
     if (mutt_str_atoi(p, &i) < 0)
       continue;
-    short f = mhs_check(mhs, i);
+    MhSeqFlags f = mhs_check(mhs, i);
 
     md->email->read = (f & MH_SEQ_UNSEEN) ? false : true;
     md->email->flagged = (f & MH_SEQ_FLAGGED) ? true : false;

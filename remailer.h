@@ -33,8 +33,14 @@ extern char *C_MixEntryFormat;
 extern char *C_Mixmaster;
 
 /* Mixmaster's maximum chain length.  Don't change this. */
-
 #define MAXMIXES 19
+
+typedef uint8_t MixCapFlags;       ///< Flags, e.g. #MIX_CAP_NO_FLAGS
+#define MIX_CAP_NO_FLAGS        0  ///< No flags are set
+#define MIX_CAP_COMPRESS  (1 << 0)
+#define MIX_CAP_MIDDLEMAN (1 << 1)
+#define MIX_CAP_NEWSPOST  (1 << 2)
+#define MIX_CAP_NEWSMAIL  (1 << 3)
 
 /**
  * struct Remailer - A Mixmaster remailer
@@ -45,7 +51,7 @@ struct Remailer
   char *shortname;
   char *addr;
   char *ver;
-  int caps;
+  MixCapFlags caps;
 };
 
 /**

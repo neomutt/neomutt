@@ -182,22 +182,26 @@ struct Line
   unsigned int is_cont_hdr; /**< this line is a continuation of the previous header line */
 };
 
-#define ANSI_OFF (1 << 0)
-#define ANSI_BLINK (1 << 1)
-#define ANSI_BOLD (1 << 2)
-#define ANSI_UNDERLINE (1 << 3)
-#define ANSI_REVERSE (1 << 4)
-#define ANSI_COLOR (1 << 5)
+// clang-format off
+typedef uint8_t AnsiFlags;      ///< Flags, e.g. #ANSI_OFF
+#define ANSI_NO_FLAGS        0  ///< No flags are set
+#define ANSI_OFF       (1 << 0) ///< Turn off colours and attributes
+#define ANSI_BLINK     (1 << 1) ///< Blinking text
+#define ANSI_BOLD      (1 << 2) ///< Bold text
+#define ANSI_UNDERLINE (1 << 3) ///< Underlined text
+#define ANSI_REVERSE   (1 << 4) ///< Reverse video
+#define ANSI_COLOR     (1 << 5) ///< Use colours
+// clang-format on
 
 /**
  * struct AnsiAttr - An ANSI escape sequence
  */
 struct AnsiAttr
 {
-  int attr;
-  int fg;
-  int bg;
-  int pair;
+  AnsiFlags attr; ///< Attributes, e.g. underline, bold, etc
+  int fg;         ///< Foreground colour
+  int bg;         ///< Background colour
+  int pair;       ///< Curses colour pair
 };
 
 static short InHelp = 0;

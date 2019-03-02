@@ -3032,7 +3032,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   ReverseAliases = mutt_hash_new(1031, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS |
                                            MUTT_HASH_ALLOW_DUPS);
   TagTransforms = mutt_hash_new(64, MUTT_HASH_STRCASECMP);
-  TagFormats = mutt_hash_new(64, 0);
+  TagFormats = mutt_hash_new(64, MUTT_HASH_NO_FLAGS);
 
   mutt_menu_init();
   mutt_buffer_pool_init();

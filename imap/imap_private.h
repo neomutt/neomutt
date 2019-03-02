@@ -113,18 +113,20 @@ enum ImapState
 };
 
 /**
- * ImapCaps - Capabilities we are interested in
+ * typedef ImapCapFlags - Capabilities we are interested in
  *
  * @note This must be kept in the same order as Capabilities.
  */
+typedef uint32_t ImapCapFlags;              ///< Flags, e.g. #IMAP_CAP_IMAP4
+#define IMAP_CAP_NO_FLAGS                0  ///< No flags are set
 #define IMAP_CAP_IMAP4            (1 <<  0) ///< Server supports IMAP4
 #define IMAP_CAP_IMAP4REV1        (1 <<  1) ///< Server supports IMAP4rev1
 #define IMAP_CAP_STATUS           (1 <<  2) ///< Server supports STATUS command
 #define IMAP_CAP_ACL              (1 <<  3) ///< RFC2086: IMAP4 ACL extension
 #define IMAP_CAP_NAMESPACE        (1 <<  4) ///< RFC2342: IMAP4 Namespace
-#define IMAP_CAP_ACRAM_MD5        (1 <<  5) ///< RFC2195: CRAM-MD5 authentication
-#define IMAP_CAP_AGSSAPI          (1 <<  6) ///< RFC1731: GSSAPI authentication
-#define IMAP_CAP_AUTH_ANON        (1 <<  7) ///< AUTH=ANONYMOUS
+#define IMAP_CAP_AUTH_CRAM_MD5    (1 <<  5) ///< RFC2195: CRAM-MD5 authentication
+#define IMAP_CAP_AUTH_GSSAPI      (1 <<  6) ///< RFC1731: GSSAPI authentication
+#define IMAP_CAP_AUTH_ANONYMOUS   (1 <<  7) ///< AUTH=ANONYMOUS
 #define IMAP_CAP_AUTH_OAUTHBEARER (1 <<  8) ///< RFC7628: AUTH=OAUTHBEARER
 #define IMAP_CAP_STARTTLS         (1 <<  9) ///< RFC2595: STARTTLS
 #define IMAP_CAP_LOGINDISABLED    (1 << 10) ///< RFC2595: LOGINDISABLED
@@ -133,7 +135,7 @@ enum ImapState
 #define IMAP_CAP_ENABLE           (1 << 13) ///< RFC5161
 #define IMAP_CAP_CONDSTORE        (1 << 14) ///< RFC7162
 #define IMAP_CAP_QRESYNC          (1 << 15) ///< RFC7162
-#define IMAP_CAP_X_GM_EXT1        (1 << 16) ///< https://developers.google.com/gmail/imap/imap-extensions
+#define IMAP_CAP_X_GM_EXT_1       (1 << 16) ///< https://developers.google.com/gmail/imap/imap-extensions
 
 #define IMAP_CAP_ALL             ((1 << 17) - 1)
 
@@ -179,7 +181,7 @@ struct ImapAccountData
    * tracking all possible capabilities. bah. (1) I don't like because
    * it's just no fun to get the same information twice */
   char *capstr;
-  unsigned int capabilities;
+  ImapCapFlags capabilities;
   unsigned char seqid; /* tag sequence prefix */
   unsigned int seqno; ///< tag sequence number, e.g. '{seqid}0001'
   time_t lastread; /**< last time we read a command for the server */

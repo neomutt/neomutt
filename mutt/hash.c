@@ -272,10 +272,10 @@ static void union_hash_delete(struct Hash *table, union HashKey key, const void 
 /**
  * mutt_hash_new - Create a new Hash table (with string keys)
  * @param nelem Number of elements it should contain
- * @param flags Flags, e.g. #MUTT_HASH_STRCASECMP
+ * @param flags Flags, see #HashFlags
  * @retval ptr New Hash table
  */
-struct Hash *mutt_hash_new(size_t nelem, int flags)
+struct Hash *mutt_hash_new(size_t nelem, HashFlags flags)
 {
   struct Hash *table = new_hash(nelem);
   if (flags & MUTT_HASH_STRCASECMP)
@@ -298,10 +298,10 @@ struct Hash *mutt_hash_new(size_t nelem, int flags)
 /**
  * mutt_hash_int_new - Create a new Hash table (with integer keys)
  * @param nelem Number of elements it should contain
- * @param flags Flags, e.g. #MUTT_HASH_ALLOW_DUPS
+ * @param flags Flags, see #HashFlags
  * @retval ptr New Hash table
  */
-struct Hash *mutt_hash_int_new(size_t nelem, int flags)
+struct Hash *mutt_hash_int_new(size_t nelem, HashFlags flags)
 {
   struct Hash *table = new_hash(nelem);
   table->gen_hash = gen_int_hash;

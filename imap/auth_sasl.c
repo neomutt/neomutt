@@ -82,7 +82,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
       return IMAP_AUTH_FAILURE;
     }
 
-    if ((adata->capabilities & IMAP_CAP_AUTH_ANON) &&
+    if ((adata->capabilities & IMAP_CAP_AUTH_ANONYMOUS) &&
         (!adata->conn->account.user[0] ||
          mutt_str_startswith(adata->conn->account.user, "anonymous", CASE_MATCH)))
     {

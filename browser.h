@@ -36,10 +36,11 @@ extern bool  C_ShowOnlyUnread;
 extern short C_SortBrowser;
 extern char *C_VfolderFormat;
 
-/* flags to mutt_select_file() */
-#define MUTT_SEL_MAILBOX (1 << 0)
-#define MUTT_SEL_MULTI   (1 << 1)
-#define MUTT_SEL_FOLDER  (1 << 2)
+typedef uint8_t SelectFileFlags;  ///< Flags for mutt_select_file(), e.g. #MUTT_SEL_MAILBOX
+#define MUTT_SEL_NO_FLAGS      0  ///< No flags are set
+#define MUTT_SEL_MAILBOX (1 << 0) ///< Select a mailbox
+#define MUTT_SEL_MULTI   (1 << 1) ///< Multi-selection is enabled
+#define MUTT_SEL_FOLDER  (1 << 2) ///< Select a local directory
 
 /**
  * struct Folder - A folder/dir in the browser
@@ -101,7 +102,7 @@ struct BrowserState
 #endif
 };
 
-void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int *numfiles);
+void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags, char ***files, int *numfiles);
 void mutt_browser_select_dir(const char *f);
 
 #endif /* MUTT_BROWSER_H */

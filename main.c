@@ -89,14 +89,18 @@
 /* These Config Variables are only used in main.c */
 bool C_ResumeEditedDraftFiles; ///< Config: Resume editing previously saved draft files
 
-#define MUTT_IGNORE (1 << 0)  /* -z */
-#define MUTT_MAILBOX (1 << 1) /* -Z */
-#define MUTT_NOSYSRC (1 << 2) /* -n */
-#define MUTT_RO (1 << 3)      /* -R */
-#define MUTT_SELECT (1 << 4)  /* -y */
+// clang-format off
+typedef uint8_t CliFlags;         ///< Flags for command line options, e.g. #MUTT_CLI_IGNORE
+#define MUTT_CLI_NO_FLAGS      0  ///< No flags are set
+#define MUTT_CLI_IGNORE  (1 << 0) ///< -z Open first mailbox if it has mail
+#define MUTT_CLI_MAILBOX (1 << 1) ///< -Z Open first mailbox if is has new mail
+#define MUTT_CLI_NOSYSRC (1 << 2) ///< -n Do not read the system-wide config file
+#define MUTT_CLI_RO      (1 << 3) ///< -R Open mailbox in read-only mode
+#define MUTT_CLI_SELECT  (1 << 4) ///< -y Start with a list of all mailboxes
 #ifdef USE_NNTP
-#define MUTT_NEWS (1 << 5) /* -g and -G */
+#define MUTT_CLI_NEWS    (1 << 5) ///< -g/-G Start with a list of all newsgroups
 #endif
+// clang-format on
 
 /**
  * test_parse_set - Test the config parsing
@@ -417,7 +421,7 @@ int main(int argc, char *argv[], char *envp[])
   struct ListHead cc_list = STAILQ_HEAD_INITIALIZER(cc_list);
   struct ListHead bcc_list = STAILQ_HEAD_INITIALIZER(bcc_list);
   SendFlags sendflags = SEND_NO_FLAGS;
-  int flags = 0;
+  CliFlags flags = MUTT_CLI_NO_FLAGS;
   int version = 0;
   int i;
   bool explicit_folder = false;
@@ -518,7 +522,7 @@ int main(int argc, char *argv[], char *envp[])
           cli_nntp = optarg;
           /* fallthrough */
         case 'G': /* List of newsgroups */
-          flags |= MUTT_SELECT | MUTT_NEWS;
+          flags |= MUTT_CLI_SELECT | MUTT_CLI_NEWS;
           break;
 #endif
         case 'H':
@@ -534,7 +538,7 @@ int main(int argc, char *argv[], char *envp[])
           new_magic = optarg;
           break;
         case 'n':
-          flags |= MUTT_NOSYSRC;
+          flags |= MUTT_CLI_NOSYSRC;
           break;
         case 'p':
           sendflags |= SEND_POSTPONED;
@@ -543,7 +547,7 @@ int main(int argc, char *argv[], char *envp[])
           mutt_list_insert_tail(&queries, mutt_str_strdup(optarg));
           break;
         case 'R':
-          flags |= MUTT_RO; /* read-only mode */
+          flags |= MUTT_CLI_RO; /* read-only mode */
           break;
         case 'S':
           hide_sensitive = true;
@@ -561,13 +565,13 @@ int main(int argc, char *argv[], char *envp[])
           sendflags |= SEND_MAILX;
           break;
         case 'y': /* My special hack mode */
-          flags |= MUTT_SELECT;
+          flags |= MUTT_CLI_SELECT;
           break;
         case 'Z':
-          flags |= MUTT_MAILBOX | MUTT_IGNORE;
+          flags |= MUTT_CLI_MAILBOX | MUTT_CLI_IGNORE;
           break;
         case 'z':
-          flags |= MUTT_IGNORE;
+          flags |= MUTT_CLI_IGNORE;
           break;
         default:
           usage();
@@ -685,7 +689,7 @@ int main(int argc, char *argv[], char *envp[])
   }
 
   /* set defaults and read init files */
-  if (mutt_init(flags & MUTT_NOSYSRC, &commands) != 0)
+  if (mutt_init(flags & MUTT_CLI_NOSYSRC, &commands) != 0)
     goto main_curses;
 
   /* The command line overrides the config */
@@ -1125,7 +1129,7 @@ int main(int argc, char *argv[], char *envp[])
   }
   else
   {
-    if (flags & MUTT_MAILBOX)
+    if (flags & MUTT_CLI_MAILBOX)
     {
 #ifdef USE_IMAP
       bool passive = C_ImapPassive;
@@ -1142,10 +1146,10 @@ int main(int argc, char *argv[], char *envp[])
       C_ImapPassive = passive;
 #endif
     }
-    else if (flags & MUTT_SELECT)
+    else if (flags & MUTT_CLI_SELECT)
     {
 #ifdef USE_NNTP
-      if (flags & MUTT_NEWS)
+      if (flags & MUTT_CLI_NEWS)
       {
         OptNews = true;
         CurrentNewsSrv = nntp_select_server(Context->mailbox, C_NewsServer, false);
@@ -1190,7 +1194,7 @@ int main(int argc, char *argv[], char *envp[])
     mutt_str_replace(&CurrentFolder, folder);
     mutt_str_replace(&LastFolder, folder);
 
-    if (flags & MUTT_IGNORE)
+    if (flags & MUTT_CLI_IGNORE)
     {
       /* check to see if there are any messages in the folder */
       switch (mx_check_empty(folder))
@@ -1209,7 +1213,7 @@ int main(int argc, char *argv[], char *envp[])
 
     repeat_error = true;
     struct Mailbox *m = mx_path_resolve(folder);
-    Context = mx_mbox_open(m, ((flags & MUTT_RO) || C_ReadOnly) ? MUTT_READONLY : 0);
+    Context = mx_mbox_open(m, ((flags & MUTT_CLI_RO) || C_ReadOnly) ? MUTT_READONLY : 0);
     if (!Context)
     {
       mailbox_free(&m);
