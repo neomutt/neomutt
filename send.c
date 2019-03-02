@@ -979,7 +979,7 @@ static int envelope_defaults(struct Envelope *env, struct Mailbox *m,
 static int generate_body(FILE *tempfp, struct Email *msg, SendFlags flags,
                          struct Mailbox *m, struct EmailList *el)
 {
-  int i;
+  enum QuadOption ans;
   struct Body *tmp = NULL;
   struct EmailNode *en = NULL;
   bool single = true;
@@ -991,11 +991,11 @@ static int generate_body(FILE *tempfp, struct Email *msg, SendFlags flags,
 
   if (flags & SEND_REPLY)
   {
-    i = query_quadoption(C_Include, _("Include message in reply?"));
-    if (i == MUTT_ABORT)
+    ans = query_quadoption(C_Include, _("Include message in reply?"));
+    if (ans == MUTT_ABORT)
       return -1;
 
-    if (i == MUTT_YES)
+    if (ans == MUTT_YES)
     {
       mutt_message(_("Including quoted message..."));
       if (!single)
@@ -1016,8 +1016,8 @@ static int generate_body(FILE *tempfp, struct Email *msg, SendFlags flags,
   }
   else if (flags & SEND_FORWARD)
   {
-    i = query_quadoption(C_MimeForward, _("Forward as attachment?"));
-    if (i == MUTT_YES)
+    ans = query_quadoption(C_MimeForward, _("Forward as attachment?"));
+    if (ans == MUTT_YES)
     {
       struct Body *last = msg->content;
 
@@ -1052,7 +1052,7 @@ static int generate_body(FILE *tempfp, struct Email *msg, SendFlags flags,
         }
       }
     }
-    else if (i != -1)
+    else if (ans != MUTT_ABORT)
     {
       if (single)
         include_forward(m, en->email, tempfp);
