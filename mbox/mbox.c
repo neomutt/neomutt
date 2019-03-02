@@ -1759,7 +1759,8 @@ static int mmdf_msg_padding_size(struct Mailbox *m)
 static int mbox_mbox_check_stats(struct Mailbox *m, int flags)
 {
   struct stat sb = { 0 };
-  stat(m->path, &sb);
+  if (stat(m->path, &sb) != 0)
+    return -1;
 
   bool new_or_changed;
 
