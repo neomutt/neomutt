@@ -1878,7 +1878,14 @@ static int nm_mbox_check_stats(struct Mailbox *m, int flags)
     if (item->value && (strcmp(item->name, "query") == 0))
       db_query = item->value;
     else if (item->value && (strcmp(item->name, "limit") == 0))
-      mutt_str_atoi(item->value, &limit); // Try to parse the limit
+    {
+      // Try to parse the limit
+      if (mutt_str_atoi(item->value, &limit) != 0)
+      {
+        mutt_error(_("failed to parse limit: %s"), limit);
+        goto done;
+      }
+    }
   }
 
   if (!db_query)
