@@ -58,18 +58,20 @@ struct Maildir
   struct Maildir *next;
 };
 
+typedef uint8_t MhSeqFlags;     ///< Flags, e.g. #MH_SEQ_UNSEEN
+#define MH_SEQ_NO_FLAGS         ///< No flags are set
+#define MH_SEQ_UNSEEN  (1 << 0) ///< Email hasn't been read
+#define MH_SEQ_REPLIED (1 << 1) ///< Email has been replied to
+#define MH_SEQ_FLAGGED (1 << 2) ///< Email is flagged
+
 /**
  * struct MhSequences - Set of MH sequence numbers
  */
 struct MhSequences
 {
-  int max;
-  short *flags;
+  int max;           ///< Number of flags stored
+  MhSeqFlags *flags; ///< Flags for each email
 };
-
-#define MH_SEQ_UNSEEN (1 << 0)
-#define MH_SEQ_REPLIED (1 << 1)
-#define MH_SEQ_FLAGGED (1 << 2)
 
 /* MXAPI shared functions */
 int             maildir_ac_add     (struct Account *a, struct Mailbox *m);
@@ -100,9 +102,9 @@ int                     mh_commit_msg          (struct Mailbox *m, struct Messag
 int                     mh_mkstemp             (struct Mailbox *m, FILE **fp, char **tgt);
 int                     mh_read_dir            (struct Mailbox *m, const char *subdir);
 int                     mh_read_sequences      (struct MhSequences *mhs, const char *path);
-short                   mhs_check              (struct MhSequences *mhs, int i);
+MhSeqFlags              mhs_check              (struct MhSequences *mhs, int i);
 void                    mhs_free_sequences     (struct MhSequences *mhs);
-short                   mhs_set                (struct MhSequences *mhs, int i, short f);
+MhSeqFlags              mhs_set                (struct MhSequences *mhs, int i, MhSeqFlags f);
 mode_t                  mh_umask               (struct Mailbox *m);
 void                    mh_update_maildir      (struct Maildir *md, struct MhSequences *mhs);
 void                    mh_update_sequences    (struct Mailbox *m);
