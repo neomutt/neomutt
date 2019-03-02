@@ -113,10 +113,12 @@ enum ImapState
 };
 
 /**
- * ImapCaps - Capabilities we are interested in
+ * typedef ImapCapFlags - Capabilities we are interested in
  *
  * @note This must be kept in the same order as Capabilities.
  */
+typedef uint32_t ImapCapFlags;              ///< Flags, e.g. #IMAP_CAP_IMAP4
+#define IMAP_CAP_NO_FLAGS                0  ///< No flags are set
 #define IMAP_CAP_IMAP4            (1 <<  0) ///< Server supports IMAP4
 #define IMAP_CAP_IMAP4REV1        (1 <<  1) ///< Server supports IMAP4rev1
 #define IMAP_CAP_STATUS           (1 <<  2) ///< Server supports STATUS command
@@ -179,7 +181,7 @@ struct ImapAccountData
    * tracking all possible capabilities. bah. (1) I don't like because
    * it's just no fun to get the same information twice */
   char *capstr;
-  unsigned int capabilities;
+  ImapCapFlags capabilities;
   unsigned char seqid; /* tag sequence prefix */
   unsigned int seqno; ///< tag sequence number, e.g. '{seqid}0001'
   time_t lastread; /**< last time we read a command for the server */
