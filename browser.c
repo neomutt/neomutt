@@ -1082,11 +1082,12 @@ void mutt_browser_select_dir(const char *f)
  * mutt_select_file - Let the user select a file
  * @param[in]  file     Buffer for the result
  * @param[in]  filelen  Length of buffer
- * @param[in]  flags    Flags, e.g. MUTT_SEL_MULTI
+ * @param[in]  flags    Flags, see #SelectFileFlags
  * @param[out] files    Array of selected files
  * @param[out] numfiles Number of selected files
  */
-void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int *numfiles)
+void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
+                      char ***files, int *numfiles)
 {
   char buf[PATH_MAX];
   char prefix[PATH_MAX] = "";

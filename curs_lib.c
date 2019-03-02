@@ -602,12 +602,12 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
  * @param[in]  multiple Allow multiple selections
  * @param[out] files    List of files selected
  * @param[out] numfiles Number of files selected
- * @param[in]  flags    Flags, e.g. #MUTT_SEL_FOLDER
+ * @param[in]  flags    Flags, see #SelectFileFlags
  * @retval  0 Success
  * @retval -1 Error
  */
 int mutt_enter_fname_full(const char *prompt, char *buf, size_t buflen, bool mailbox,
-                          bool multiple, char ***files, int *numfiles, int flags)
+                          bool multiple, char ***files, int *numfiles, SelectFileFlags flags)
 {
   struct Event ch;
 
