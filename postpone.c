@@ -369,15 +369,13 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
     size_t plen = mutt_str_startswith(np->data, "X-Mutt-References:", CASE_IGNORE);
     if (plen)
     {
-      if (ctx)
-      {
-        /* if a mailbox is currently open, look to see if the original message
-           the user attempted to reply to is in this mailbox */
-        p = mutt_str_skip_email_wsp(np->data + plen);
-        if (!ctx->mailbox->id_hash)
-          ctx->mailbox->id_hash = mutt_make_id_hash(ctx->mailbox);
-        *cur = mutt_hash_find(ctx->mailbox->id_hash, p);
-      }
+      /* if a mailbox is currently open, look to see if the original message
+          the user attempted to reply to is in this mailbox */
+      p = mutt_str_skip_email_wsp(np->data + plen);
+      if (!ctx->mailbox->id_hash)
+        ctx->mailbox->id_hash = mutt_make_id_hash(ctx->mailbox);
+      *cur = mutt_hash_find(ctx->mailbox->id_hash, p);
+
       if (*cur)
         rc |= SEND_REPLY;
     }
