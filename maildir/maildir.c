@@ -46,15 +46,15 @@
 #include "mutt/mutt.h"
 #include "config/lib.h"
 #include "email/lib.h"
-#include "mutt.h"
-#include "context.h"
 #include "globals.h"
-#include "lib.h"
 #include "mailbox.h"
 #include "maildir/lib.h"
 #include "monitor.h"
 #include "muttlib.h"
 #include "mx.h"
+#ifdef USE_HCACHE
+#include "hcache/hcache.h"
+#endif
 
 /**
  * maildir_check_dir - Check for new mail / mail counts

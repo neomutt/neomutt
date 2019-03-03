@@ -23,6 +23,8 @@
 #ifndef MUTT_COPY_H
 #define MUTT_COPY_H
 
+#include "config.h"
+#include <stdint.h>
 #include <stdio.h>
 
 struct Email;

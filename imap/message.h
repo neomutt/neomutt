@@ -26,7 +26,6 @@
 
 #include <stdbool.h>
 #include <time.h>
-#include "email/lib.h"
 
 /**
  * struct ImapEmailData - IMAP-specific Email data - @extends Email

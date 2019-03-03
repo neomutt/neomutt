@@ -30,10 +30,7 @@
 #include <limits.h>
 #include <stdint.h>
 #include <string.h>
-#include "mutt/buffer.h"
-#include "mutt/logging.h"
-#include "mutt/mapping.h"
-#include "mutt/string2.h"
+#include "mutt/mutt.h"
 #include "sort.h"
 #include "set.h"
 #include "types.h"

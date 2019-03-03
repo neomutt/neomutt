@@ -24,6 +24,7 @@
 #define MUTT_SEND_H
 
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 
 struct Address;

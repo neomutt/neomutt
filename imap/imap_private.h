@@ -25,7 +25,9 @@
 #ifndef MUTT_IMAP_IMAP_PRIVATE_H
 #define MUTT_IMAP_IMAP_PRIVATE_H
 
+#include "config.h"
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <time.h>
 #include "mutt/mutt.h"
@@ -36,7 +38,6 @@
 #endif
 
 struct Email;
-struct ImapEmailData;
 struct Mailbox;
 struct Message;
 struct Progress;

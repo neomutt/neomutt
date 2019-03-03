@@ -24,6 +24,7 @@
 #define MUTT_PAGER_H
 
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 
 /* These Config Variables are only used in pager.c */

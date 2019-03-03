@@ -40,13 +40,10 @@
 #include <time.h>
 #include "imap_private.h"
 #include "mutt/mutt.h"
-#include "config/lib.h"
 #include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
-#include "context.h"
 #include "globals.h"
-#include "imap/imap.h"
 #include "mailbox.h"
 #include "message.h"
 #include "mutt_account.h"

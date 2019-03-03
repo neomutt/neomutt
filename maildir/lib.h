@@ -35,10 +35,11 @@
 #ifndef MUTT_MAILDIR_LIB_H
 #define MUTT_MAILDIR_LIB_H
 
+#include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
-#include "mx.h"
 #include "config/lib.h"
+#include "mx.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif

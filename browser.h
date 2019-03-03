@@ -24,6 +24,7 @@
 #define MUTT_BROWSER_H
 
 #include <stdbool.h>
+#include <stdint.h>
 #include <sys/types.h>
 #include <time.h>
 

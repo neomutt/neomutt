@@ -24,6 +24,7 @@
 #define MUTT_FORMAT_FLAGS_H
 
 #include <stddef.h>
+#include <stdint.h>
 
 typedef uint8_t MuttFormatFlags;         ///< Flags for mutt_expando_format(), e.g. #MUTT_FORMAT_FORCESUBJ
 #define MUTT_FORMAT_NO_FLAGS          0  ///< No flags are set

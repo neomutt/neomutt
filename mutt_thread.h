@@ -24,6 +24,7 @@
 #define MUTT_MUTT_THREAD_H
 
 #include <stdbool.h>
+#include <stdint.h>
 
 struct Context;
 struct Email;

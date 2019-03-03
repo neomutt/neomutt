@@ -36,10 +36,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include "mutt/logging.h"
-#include "mutt/memory.h"
-#include "mutt/message.h"
-#include "mutt/string2.h"
+#include "logging.h"
+#include "memory.h"
+#include "message.h"
+#include "string2.h"
 
 /**
  * mutt_path_tidy_slash - Remove unnecessary slashes and dots

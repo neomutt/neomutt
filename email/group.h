@@ -25,12 +25,9 @@
 #define MUTT_GROUP_H
 
 #include <stdbool.h>
-#include "mutt/queue.h"
-#include "mutt/regex3.h"
+#include "mutt/mutt.h"
 
 struct Address;
-struct Buffer;
-struct Hash;
 
 #define MUTT_GROUP   0
 #define MUTT_UNGROUP 1

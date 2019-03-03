@@ -43,7 +43,6 @@
 #include "mutt.h"
 #include "message.h"
 #include "bcache.h"
-#include "context.h"
 #include "curs_lib.h"
 #include "globals.h"
 #include "imap/imap.h"

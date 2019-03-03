@@ -29,11 +29,10 @@
 #include "config.h"
 #include <stddef.h>
 #include <limits.h>
+#include <stdbool.h>
 #include <stdint.h>
-#include "mutt/buffer.h"
-#include "mutt/memory.h"
-#include "mutt/string2.h"
-#include "email/address.h"
+#include "mutt/mutt.h"
+#include "email/lib.h"
 #include "address.h"
 #include "set.h"
 #include "types.h"

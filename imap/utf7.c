@@ -29,7 +29,6 @@
 #include "config.h"
 #include <stdbool.h>
 #include <string.h>
-#include "imap_private.h"
 #include "mutt/mutt.h"
 
 // clang-format off

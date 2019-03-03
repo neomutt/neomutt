@@ -50,7 +50,6 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "mutt.h"
-#include "account.h"
 #include "context.h"
 #include "copy.h"
 #include "globals.h"
@@ -68,6 +67,8 @@
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif
+
+struct Account;
 
 /* These Config Variables are only used in maildir/mh.c */
 bool C_CheckNew; ///< Config: (maildir,mh) Check for new mail while the mailbox is open

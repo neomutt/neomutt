@@ -24,6 +24,7 @@
 #define MUTT_MAILDIR_MAILDIR_PRIVATE_H
 
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include <time.h>

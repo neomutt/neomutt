@@ -26,7 +26,6 @@
 
 #include <stdio.h>
 #include <time.h>
-#include "mutt/mutt.h"
 #include "connaccount.h"
 
 /**

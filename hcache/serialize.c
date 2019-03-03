@@ -37,7 +37,6 @@
 #include <sys/types.h>
 #include "mutt/mutt.h"
 #include "email/lib.h"
-#include "email/parse.h"
 #include "globals.h"
 #include "hcache.h"
 

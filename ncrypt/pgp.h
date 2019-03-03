@@ -27,6 +27,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include "ncrypt.h"
 
 struct Address;
 struct Body;

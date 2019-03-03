@@ -35,6 +35,10 @@
 #define MUTT_MBOX_MBOX_H
 
 #include <stdbool.h>
+#include <stdio.h>
+#include <time.h>
+#include "config/lib.h"
+#include "mx.h"
 
 struct Mailbox;
 struct stat;

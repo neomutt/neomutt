@@ -30,8 +30,7 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdlib.h>
-#include "mutt/mutt.h"
-#include "email/lib.h"
+#include "email/address.h"
 #include "group.h"
 
 static struct Hash *Groups = NULL;

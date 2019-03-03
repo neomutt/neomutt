@@ -32,11 +32,7 @@
 #include <regex.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include "mutt/buffer.h"
-#include "mutt/mbyte.h"
-#include "mutt/memory.h"
-#include "mutt/regex3.h"
-#include "mutt/string2.h"
+#include "mutt/mutt.h"
 #include "regex2.h"
 #include "set.h"
 #include "types.h"

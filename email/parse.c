@@ -34,7 +34,7 @@
 #include <string.h>
 #include <time.h>
 #include "mutt/mutt.h"
-#include "mutt/regex3.h"
+#include "mutt.h"
 #include "parse.h"
 #include "address.h"
 #include "body.h"

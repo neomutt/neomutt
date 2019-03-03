@@ -24,10 +24,10 @@
 #define MUTT_CONFIG_REGEX_H
 
 #include <regex.h>
-#include <stdbool.h>
 
 struct Buffer;
 struct ConfigSet;
+struct Regex;
 
 void regex_init(struct ConfigSet *cs);
 struct Regex *regex_new(const char *str, int flags, struct Buffer *err);

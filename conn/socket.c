@@ -30,25 +30,13 @@
 
 #include "config.h"
 #include <errno.h>
-#include <fcntl.h>
-#include <netdb.h>
-#include <netinet/in.h>
-#include <signal.h>
-#include <stdbool.h>
-#include <stdio.h>
 #include <string.h>
-#include <sys/select.h>
-#include <sys/socket.h>
-#include <sys/time.h>
 #include <time.h>
-#include <unistd.h>
 #include "mutt/mutt.h"
 #include "socket.h"
 #include "conn_globals.h"
 #include "connaccount.h"
 #include "connection.h"
-#include "globals.h"
-#include "options.h"
 #include "protos.h"
 #include "ssl.h"
 #include "tunnel.h"

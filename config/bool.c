@@ -31,11 +31,7 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include "mutt/buffer.h"
-#include "mutt/hash.h"
-#include "mutt/logging.h"
-#include "mutt/memory.h"
-#include "mutt/string2.h"
+#include "mutt/mutt.h"
 #include "set.h"
 #include "types.h"
 

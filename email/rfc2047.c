@@ -36,10 +36,10 @@
 #include <stdbool.h>
 #include <string.h>
 #include "mutt/mutt.h"
-#include "email/lib.h"
 #include "rfc2047.h"
 #include "address.h"
 #include "email_globals.h"
+#include "envelope.h"
 #include "mime.h"
 
 #define ENCWORD_LEN_MAX 75

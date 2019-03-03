@@ -24,6 +24,7 @@
 #define MUTT_REMAILER_H
 
 #include <stddef.h>
+#include <stdint.h>
 
 struct ListHead;
 struct Email;

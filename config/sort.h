@@ -23,7 +23,7 @@
 #ifndef MUTT_CONFIG_SORT_H
 #define MUTT_CONFIG_SORT_H
 
-#include "mutt/mapping.h"
+#include "mutt/mutt.h"
 
 struct ConfigSet;
 

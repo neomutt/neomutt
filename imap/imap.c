@@ -36,18 +36,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <unistd.h>
 #include "imap_private.h"
 #include "mutt/mutt.h"
+#include "config/lib.h"
 #include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "imap.h"
 #include "account.h"
 #include "auth.h"
-#include "bcache.h"
 #include "commands.h"
-#include "context.h"
 #include "curs_lib.h"
 #include "globals.h"
 #include "hook.h"
@@ -60,7 +58,6 @@
 #include "mx.h"
 #include "pattern.h"
 #include "progress.h"
-#include "protos.h"
 #include "sort.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
@@ -68,6 +65,8 @@
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
+
+struct stat;
 
 /* These Config Variables are only used in imap/imap.c */
 bool C_ImapIdle; ///< Config: (imap) Use the IMAP IDLE extension to check for new mail

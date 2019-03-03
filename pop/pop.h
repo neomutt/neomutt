@@ -26,6 +26,8 @@
 #include <stdbool.h>
 #include "mx.h"
 
+struct stat;
+
 /**
  * @page pop POP: Network mailbox
  *

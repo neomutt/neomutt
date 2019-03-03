@@ -29,6 +29,7 @@
 #include <sys/types.h>
 #include <time.h>
 #include "mutt/mutt.h"
+#include "config/lib.h"
 #include "mutt_commands.h"
 #include "where.h"
 

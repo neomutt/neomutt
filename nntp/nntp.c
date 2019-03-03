@@ -54,7 +54,6 @@
 #include "mutt_logging.h"
 #include "mutt_parse.h"
 #include "mutt_socket.h"
-#include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"

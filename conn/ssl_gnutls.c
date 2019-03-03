@@ -38,7 +38,6 @@
 #include <time.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "mutt.h"
 #include "conn_globals.h"
 #include "connaccount.h"
 #include "connection.h"

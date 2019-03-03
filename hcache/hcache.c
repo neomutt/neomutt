@@ -32,7 +32,6 @@
  */
 
 #include "config.h"
-#include "email/lib.h"
 #include "muttlib.h"
 #include "serialize.h"
 
@@ -50,6 +49,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "email/lib.h"
 #include "backend.h"
 #include "hcache.h"
 #include "hcache/hcversion.h"

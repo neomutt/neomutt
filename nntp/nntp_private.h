@@ -23,7 +23,7 @@
 #ifndef MUTT_NNTP_NNTP_PRIVATE_H
 #define MUTT_NNTP_NNTP_PRIVATE_H
 
-#include <inttypes.h>
+#include "config.h"
 #include <stdint.h>
 #include "nntp.h"
 #ifdef USE_HCACHE
@@ -31,7 +31,6 @@
 #endif
 
 struct Connection;
-struct Context;
 struct Email;
 struct Mailbox;
 

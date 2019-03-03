@@ -23,6 +23,7 @@
 #ifndef MUTT_EMAIL_ENVELOPE_H
 #define MUTT_EMAIL_ENVELOPE_H
 
+#include "config.h"
 #include <stdbool.h>
 #include "mutt/mutt.h"
 

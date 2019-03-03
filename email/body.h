@@ -23,6 +23,7 @@
 #ifndef MUTT_EMAIL_BODY_H
 #define MUTT_EMAIL_BODY_H
 
+#include "config.h"
 #include <stdbool.h>
 #include <time.h>
 #include "parameter.h"

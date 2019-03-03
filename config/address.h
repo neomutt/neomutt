@@ -23,8 +23,7 @@
 #ifndef MUTT_CONFIG_ADDRESS_H
 #define MUTT_CONFIG_ADDRESS_H
 
-#include <stdbool.h>
-
+struct Address;
 struct ConfigSet;
 
 void address_init(struct ConfigSet *cs);

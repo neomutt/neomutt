@@ -42,13 +42,11 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "account.h"
-#include "context.h"
 #include "globals.h"
 #include "mailbox.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
-#include "muttlib.h"
 #include "progress.h"
 
 /* These Config Variables are only used in pop/pop_lib.c */

@@ -23,6 +23,8 @@
 #ifndef MUTT_CONFIG_TYPES_H
 #define MUTT_CONFIG_TYPES_H
 
+#include <stdint.h>
+
 /* Data Types */
 #define DT_ADDRESS    1   /**< e-mail address */
 #define DT_BOOL       2   /**< boolean option */

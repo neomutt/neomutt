@@ -23,8 +23,8 @@
 #ifndef MUTT_CONFIG_DUMP_H
 #define MUTT_CONFIG_DUMP_H
 
-#include <stddef.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 
 struct Buffer;

@@ -28,15 +28,14 @@
  */
 
 #include "config.h"
+#include <stdio.h>
 #include "imap_private.h"
 #include "mutt/mutt.h"
 #include "conn/conn.h"
-#include "mutt.h"
 #include "auth.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
-#include "muttlib.h"
 
 /**
  * imap_auth_oauth - Authenticate an IMAP connection using OAUTHBEARER

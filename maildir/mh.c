@@ -44,14 +44,11 @@
 #include "mutt/mutt.h"
 #include "config/lib.h"
 #include "email/lib.h"
-#include "mutt.h"
-#include "context.h"
 #include "errno.h"
 #include "globals.h"
 #include "lib.h"
 #include "mailbox.h"
 #include "monitor.h"
-#include "muttlib.h"
 #include "mx.h"
 
 /**

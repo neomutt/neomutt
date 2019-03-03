@@ -48,16 +48,17 @@
 #ifndef MUTT_IMAP_IMAP_H
 #define MUTT_IMAP_IMAP_H
 
-#include "conn/conn.h"
-#include <stdbool.h>
 #include <stddef.h>
+#include <stdbool.h>
 #include <sys/types.h>
 #include "mx.h"
 
 struct BrowserState;
-struct Email;
+struct ConnAccount;
 struct EmailList;
+struct Mailbox;
 struct Pattern;
+struct stat;
 
 /* These Config Variables are only used in imap/auth.c */
 extern char *C_ImapAuthenticators;

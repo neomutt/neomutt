@@ -45,7 +45,6 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "bcache.h"
-#include "context.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "mailbox.h"

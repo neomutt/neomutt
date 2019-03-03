@@ -31,11 +31,8 @@
 #include <stdint.h>
 #include <string.h>
 #include <wchar.h>
-#include "mutt/buffer.h"
-#include "mutt/logging.h"
-#include "mutt/memory.h"
-#include "mutt/string2.h"
-#include "config/mbtable.h"
+#include "mutt/mutt.h"
+#include "mbtable.h"
 #include "set.h"
 #include "types.h"
 
