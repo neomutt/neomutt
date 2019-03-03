@@ -96,14 +96,15 @@ bool C_ThoroughSearch; ///< Config: Decode headers and messages before searching
 
 #define MUTT_MAXRANGE -1
 
-/* constants for parse_date_range() */
-#define MUTT_PDR_NONE     0x0000
-#define MUTT_PDR_MINUS    0x0001
-#define MUTT_PDR_PLUS     0x0002
-#define MUTT_PDR_WINDOW   0x0004
-#define MUTT_PDR_ABSOLUTE 0x0008
-#define MUTT_PDR_DONE     0x0010
-#define MUTT_PDR_ERROR    0x0100
+typedef uint16_t PatternFlags;     ///< Flags for parse_date_range(), e.g. #MUTT_PDR_MINUS
+#define MUTT_PDR_NO_FLAGS       0  ///< No flags are set
+#define MUTT_PDR_MINUS    (1 << 0) ///< Pattern contains a range
+#define MUTT_PDR_PLUS     (1 << 1) ///< Extend the range using '+'
+#define MUTT_PDR_WINDOW   (1 << 2) ///< Extend the range in both directions using '*'
+#define MUTT_PDR_ABSOLUTE (1 << 3) ///< Absolute pattern range
+#define MUTT_PDR_DONE     (1 << 4) ///< Pattern parse successfully
+#define MUTT_PDR_ERROR    (1 << 8) ///< Invalid pattern
+
 #define MUTT_PDR_ERRORDONE (MUTT_PDR_ERROR | MUTT_PDR_DONE)
 
 #define RANGE_DOT    '.'
@@ -450,7 +451,7 @@ static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
 static const char *parse_date_range(const char *pc, struct tm *min, struct tm *max,
                                     bool have_min, struct tm *base_min, struct Buffer *err)
 {
-  int flag = MUTT_PDR_NONE;
+  PatternFlags flag = MUTT_PDR_NO_FLAGS;
   while (*pc && ((flag & MUTT_PDR_DONE) == 0))
   {
     const char *pt = NULL;
@@ -464,7 +465,7 @@ static const char *parse_date_range(const char *pc, struct tm *min, struct tm *m
         pt = get_offset(min, pc, -1);
         if (pc == pt)
         {
-          if (flag == MUTT_PDR_NONE)
+          if (flag == MUTT_PDR_NO_FLAGS)
           { /* nothing yet and no offset parsed => absolute date? */
             if (!get_date(pc, max, err))
               flag |= (MUTT_PDR_ABSOLUTE | MUTT_PDR_ERRORDONE); /* done bad */
@@ -482,7 +483,7 @@ static const char *parse_date_range(const char *pc, struct tm *min, struct tm *m
         else
         {
           pc = pt;
-          if (flag == MUTT_PDR_NONE && !have_min)
+          if (flag == MUTT_PDR_NO_FLAGS && !have_min)
           { /* the very first "-3d" without a previous absolute date */
             max->tm_year = min->tm_year;
             max->tm_mon = min->tm_mon;
