@@ -137,6 +137,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
   int trust = 0;
   KeyFlags flags = KEYFLAG_NO_FLAGS;
   struct PgpKeyInfo tmp;
+  char tstr[11];
 
   *is_subkey = false;
   if (!*buf)
@@ -262,7 +263,6 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
 
         if (strchr(p, '-')) /* gpg pre-2.0.10 used format (yyyy-mm-dd) */
         {
-          char tstr[11];
           struct tm time;
 
           time.tm_sec = 0;

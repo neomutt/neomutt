@@ -118,20 +118,20 @@ static void update_protected_headers(struct Email *cur)
     {
       prot_headers = cur->content->parts->mime_headers;
     }
-    else if ((WithCrypto & APPLICATION_SMIME) && mutt_is_application_smime(cur->content))
+    else if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(cur->content))
     {
       prot_headers = cur->content->mime_headers;
     }
   }
   if (!prot_headers && (cur->security & SEC_ENCRYPT))
   {
-    if ((WithCrypto & APPLICATION_PGP) &&
+    if (((WithCrypto & APPLICATION_PGP) != 0) &&
         (mutt_is_valid_multipart_pgp_encrypted(cur->content) ||
          mutt_is_malformed_multipart_pgp_encrypted(cur->content)))
     {
       prot_headers = cur->content->mime_headers;
     }
-    else if ((WithCrypto & APPLICATION_SMIME) && mutt_is_application_smime(cur->content))
+    else if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(cur->content))
     {
       prot_headers = cur->content->mime_headers;
     }

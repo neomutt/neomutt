@@ -871,18 +871,18 @@ int imap_open_connection(struct ImapAccountData *adata)
     /* Attempt STARTTLS if available and desired. */
     if (!adata->conn->ssf && (C_SslForceTls || (adata->capabilities & IMAP_CAP_STARTTLS)))
     {
-      int rc;
+      enum QuadOption ans;
 
       if (C_SslForceTls)
-        rc = MUTT_YES;
-      else if ((rc = query_quadoption(C_SslStarttls,
-                                      _("Secure connection with TLS?"))) == MUTT_ABORT)
+        ans = MUTT_YES;
+      else if ((ans = query_quadoption(C_SslStarttls,
+                                       _("Secure connection with TLS?"))) == MUTT_ABORT)
       {
         goto err_close_conn;
       }
-      if (rc == MUTT_YES)
+      if (ans == MUTT_YES)
       {
-        rc = imap_exec(adata, "STARTTLS", 0);
+        enum ImapExecResult rc = imap_exec(adata, "STARTTLS", 0);
         if (rc == IMAP_EXEC_FATAL)
           goto bail;
         if (rc != IMAP_EXEC_ERROR)

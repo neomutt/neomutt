@@ -508,8 +508,7 @@ static int addr_hook(char *path, size_t pathlen, HookFlags type,
       struct Mailbox *m = ctx ? ctx->mailbox : NULL;
       if ((mutt_pattern_exec(hook->pattern, 0, m, e, &cache) > 0) ^ hook->regex.not)
       {
-        mutt_make_string_flags(path, pathlen, hook->command, ctx, ctx->mailbox,
-                               e, MUTT_FORMAT_PLAIN);
+        mutt_make_string_flags(path, pathlen, hook->command, ctx, m, e, MUTT_FORMAT_PLAIN);
         return 0;
       }
     }
