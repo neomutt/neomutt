@@ -1857,7 +1857,7 @@ int pgp_class_send_menu(struct Email *msg)
 
   /* If autoinline and no crypto options set, then set inline. */
   if (C_PgpAutoinline && !((msg->security & APPLICATION_PGP) &&
-                         (msg->security & (SEC_SIGN | SEC_ENCRYPT))))
+                           (msg->security & (SEC_SIGN | SEC_ENCRYPT))))
   {
     msg->security |= SEC_INLINE;
   }

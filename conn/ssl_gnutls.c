@@ -536,7 +536,8 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   snprintf(menu->dialog[row++], dialog_row_len, "   %s  %s", dn_common_name, dn_email);
   snprintf(menu->dialog[row++], dialog_row_len, "   %s", dn_organization);
   snprintf(menu->dialog[row++], dialog_row_len, "   %s", dn_organizational_unit);
-  snprintf(menu->dialog[row++], dialog_row_len, "   %s  %s  %s", dn_locality, dn_province, dn_country);
+  snprintf(menu->dialog[row++], dialog_row_len, "   %s  %s  %s", dn_locality,
+           dn_province, dn_country);
   row++;
 
   mutt_str_strfcpy(menu->dialog[row], _("This certificate was issued by:"), dialog_row_len);
@@ -635,7 +636,8 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   {
     row++;
     mutt_str_strfcpy(menu->dialog[row],
-                     _("WARNING: Server hostname does not match certificate"), dialog_row_len);
+                     _("WARNING: Server hostname does not match certificate"),
+                     dialog_row_len);
   }
   if (certerr & CERTERR_SIGNERNOTCA)
   {

@@ -686,11 +686,11 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
 
   const int flags = (C_ReadOnly || (op == OP_MAIN_CHANGE_FOLDER_READONLY)
 #ifdef USE_NOTMUCH
-                                  || (op == OP_MAIN_VFOLDER_FROM_QUERY_READONLY)
+                     || (op == OP_MAIN_VFOLDER_FROM_QUERY_READONLY)
 #endif
-                                      ) ?
-                                     MUTT_READONLY :
-                                     MUTT_OPEN_NO_FLAGS;
+                         ) ?
+                        MUTT_READONLY :
+                        MUTT_OPEN_NO_FLAGS;
 
   bool free_m = false;
   if (!m)

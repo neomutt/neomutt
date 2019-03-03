@@ -184,7 +184,7 @@ static struct RangeRegex range_regexes[] = {
 // clang-format on
 
 static struct Pattern *SearchPattern = NULL; /**< current search pattern */
-static char LastSearch[256] = { 0 };      /**< last pattern searched for */
+static char LastSearch[256] = { 0 };         /**< last pattern searched for */
 static char LastSearchExpn[1024] = { 0 }; /**< expanded version of LastSearch */
 
 /**
