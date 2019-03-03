@@ -1218,7 +1218,7 @@ void maildir_update_tables(struct Context *ctx, int *index_hint)
 
   if (C_Sort != SORT_ORDER)
   {
-    const short old_sort = C_Sort;
+    const enum SortType old_sort = C_Sort;
     C_Sort = SORT_ORDER;
     mutt_sort_headers(ctx, true);
     C_Sort = old_sort;

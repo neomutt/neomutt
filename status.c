@@ -48,10 +48,10 @@ struct MbTable *C_StatusChars; ///< Config: Indicator characters for the status 
  * get_sort_str - Get the sort method as a string
  * @param buf    Buffer for the sort string
  * @param buflen Length of the buffer
- * @param method Sort method, e.g. #SORT_DATE
+ * @param method Sort method, see #SortType
  * @retval ptr Buffer pointer
  */
-static char *get_sort_str(char *buf, size_t buflen, int method)
+static char *get_sort_str(char *buf, size_t buflen, enum SortType method)
 {
   snprintf(buf, buflen, "%s%s%s", (method & SORT_REVERSE) ? "reverse-" : "",
            (method & SORT_LAST) ? "last-" : "",

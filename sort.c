@@ -314,12 +314,12 @@ static int compare_label(const void *a, const void *b)
 
 /**
  * mutt_get_sort_func - Get the sort function for a given sort id
- * @param method Sort id, e.g. #SORT_DATE
+ * @param method Sort type, see #SortType
  * @retval ptr sort function - Implements ::sort_t
  */
-sort_t *mutt_get_sort_func(int method)
+sort_t *mutt_get_sort_func(enum SortType method)
 {
-  switch (method & SORT_MASK)
+  switch (method)
   {
     case SORT_DATE:
       return compare_date_sent;
@@ -415,8 +415,8 @@ void mutt_sort_headers(struct Context *ctx, bool init)
     }
     mutt_sort_threads(ctx, init);
   }
-  else if (!(sortfunc = mutt_get_sort_func(C_Sort)) ||
-           !(AuxSort = mutt_get_sort_func(C_SortAux)))
+  else if (!(sortfunc = mutt_get_sort_func(C_Sort & SORT_MASK)) ||
+           !(AuxSort = mutt_get_sort_func(C_SortAux & SORT_MASK)))
   {
     mutt_error(_("Could not find sorting function [report this bug]"));
     return;

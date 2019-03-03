@@ -304,7 +304,7 @@ void nntp_newsrc_gen_entries(struct Mailbox *m)
   struct NntpMboxData *mdata = m->mdata;
   anum_t last = 0, first = 1;
   bool series;
-  int save_sort = SORT_ORDER;
+  enum SortType save_sort = SORT_ORDER;
   unsigned int entries;
 
   if (C_Sort != SORT_ORDER)

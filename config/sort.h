@@ -42,27 +42,35 @@ extern const struct Mapping SortSidebarMethods[];
 #define DT_SORT_AUX     0x200 /**< Sort id for #SortAliasMethods */
 #define DT_SORT_SIDEBAR 0x400 /**< Sort id for #SortSidebarMethods */
 
-#define SORT_DATE      1 /**< Sort by the date the email was sent. */
-#define SORT_SIZE      2 /**< Sort by the size of the email */
-#define SORT_ALPHA     3 /**< Required by makedoc.c */
-#define SORT_SUBJECT   3 /**< Sort by the email's subject */
-#define SORT_FROM      4 /**< Sort by the email's From field */
-#define SORT_ORDER     5 /**< Sort by the order the messages appear in the mailbox */
-#define SORT_THREADS   6 /**< Sort by email threads */
-#define SORT_RECEIVED  7 /**< Sort by when the message were delivered locally */
-#define SORT_TO        8 /**< Sort by the email's To field */
-#define SORT_SCORE     9 /**< Sort by the email's score */
-#define SORT_ALIAS    10 /**< Sort by email alias */
-#define SORT_ADDRESS  11 /**< Sort by email address */
-#define SORT_KEYID    12 /**< Sort by the encryption key's ID */
-#define SORT_TRUST    13 /**< Sort by encryption key's trust level */
-#define SORT_SPAM     14 /**< Sort by the email's spam score */
-#define SORT_COUNT    15 /**< Sort by number of emails in a folder */
-#define SORT_UNREAD   16 /**< Sort by the number of unread emails */
-#define SORT_FLAGGED  17 /**< Sort by the number of flagged emails */
-#define SORT_PATH     18 /**< Sort by the folder's path */
-#define SORT_LABEL    19 /**< Sort by the emails label */
-#define SORT_DESC     20 /**< Sort by the folder's description */
+/**
+ * enum SortType - Methods for sorting
+ */
+enum SortType
+{
+  SORT_DATE     =  1, ///< Sort by the date the email was sent
+  SORT_SIZE     =  2, ///< Sort by the size of the email
+  SORT_ALPHA    =  3, ///< Required by makedoc.c
+  SORT_SUBJECT  =  3, ///< Sort by the email's subject
+  SORT_FROM     =  4, ///< Sort by the email's From field
+  SORT_ORDER    =  5, ///< Sort by the order the messages appear in the mailbox
+  SORT_THREADS  =  6, ///< Sort by email threads
+  SORT_RECEIVED =  7, ///< Sort by when the message were delivered locally
+  SORT_TO       =  8, ///< Sort by the email's To field
+  SORT_SCORE    =  9, ///< Sort by the email's score
+  SORT_ALIAS    = 10, ///< Sort by email alias
+  SORT_ADDRESS  = 11, ///< Sort by email address
+  SORT_KEYID    = 12, ///< Sort by the encryption key's ID
+  SORT_TRUST    = 13, ///< Sort by encryption key's trust level
+  SORT_SPAM     = 14, ///< Sort by the email's spam score
+  SORT_COUNT    = 15, ///< Sort by number of emails in a folder
+  SORT_UNREAD   = 16, ///< Sort by the number of unread emails
+  SORT_FLAGGED  = 17, ///< Sort by the number of flagged emails
+  SORT_PATH     = 18, ///< Sort by the folder's path
+  SORT_LABEL    = 19, ///< Sort by the emails label
+  SORT_DESC     = 20, ///< Sort by the folder's description
+
+  SORT_MAX,
+};
 
 /* C_Sort and C_SortAux are shorts, and are a composite of a constant sort
  * operation number and a set of compounded bitflags.

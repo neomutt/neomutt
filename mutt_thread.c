@@ -639,7 +639,7 @@ static int compare_threads(const void *a, const void *b)
    */
   else
   {
-    sort_func = mutt_get_sort_func(C_Sort);
+    sort_func = mutt_get_sort_func(C_Sort & SORT_MASK);
     return sort_func ? 1 : 0;
   }
 }

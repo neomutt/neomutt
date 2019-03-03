@@ -1132,7 +1132,8 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
 
   char tempfile[PATH_MAX];
   char buf[32];
-  int i, j, save_sort = SORT_ORDER;
+  int i, j;
+  enum SortType save_sort = SORT_ORDER;
   int rc = -1;
   int need_sort = 0; /* flag to resort mailbox if new mail arrives */
   int first = -1;    /* first message to be written */

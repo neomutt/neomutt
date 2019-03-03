@@ -708,12 +708,12 @@ void mutt_print_message(struct Mailbox *m, struct EmailList *el)
 /**
  * mutt_select_sort - Ask the user for a sort method
  * @param reverse If true make it a reverse sort
- * @retval num Sort type, e.g. #SORT_DATE
+ * @retval num Sort type, see #SortType
  */
-int mutt_select_sort(int reverse)
+int mutt_select_sort(bool reverse)
 {
-  int method = C_Sort; /* save the current method in case of abort */
-  int new_sort = -1;
+  enum SortType method = C_Sort; /* save the current method in case of abort */
+  enum SortType new_sort = C_Sort;
 
   switch (mutt_multi_choice(reverse ?
                                 /* L10N: The highlighted letters must match the "Sort" options */

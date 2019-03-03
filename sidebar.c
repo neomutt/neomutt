@@ -428,7 +428,7 @@ static void unsort_entries(void)
  */
 static void sort_entries(void)
 {
-  short ssm = (C_SidebarSortMethod & SORT_MASK);
+  enum SortType ssm = (C_SidebarSortMethod & SORT_MASK);
 
   /* These are the only sort methods we understand */
   if ((ssm == SORT_COUNT) || (ssm == SORT_UNREAD) || (ssm == SORT_FLAGGED) || (ssm == SORT_PATH))

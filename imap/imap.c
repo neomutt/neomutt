@@ -178,7 +178,7 @@ static void set_flag(struct Mailbox *m, AclFlags aclflag, int flag,
  * @param[out] pos     Cursor used for multiple calls to this function
  * @retval num Messages in the set
  *
- * @note Headers must be in SORT_ORDER. See imap_exec_msgset() for args.
+ * @note Headers must be in #SORT_ORDER. See imap_exec_msgset() for args.
  * Pos is an opaque pointer a la strtok(). It should be 0 at first call.
  */
 static int make_msg_set(struct Mailbox *m, struct Buffer *buf, int flag,
