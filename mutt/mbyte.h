@@ -32,12 +32,10 @@
 extern bool OptLocales;
 
 #ifdef LOCALES_HACK
-#define IsPrint(c) (isprint((unsigned char) (c)) || ((unsigned char) (c) >= 0xa0))
+#define IsPrint(ch) (isprint((unsigned char) (ch)) || ((unsigned char) (ch) >= 0xa0))
 #define IsWPrint(wc) (iswprint(wc) || wc >= 0xa0)
 #else
-#define IsPrint(c)                                                             \
-  (isprint((unsigned char) (c)) ||                                             \
-   (OptLocales ? 0 : ((unsigned char) (c) >= 0xa0)))
+#define IsPrint(ch) (isprint((unsigned char) (ch)) || (OptLocales ? 0 : ((unsigned char) (ch) >= 0xa0)))
 #define IsWPrint(wc) (iswprint(wc) || (OptLocales ? 0 : (wc >= 0xa0)))
 #endif
 

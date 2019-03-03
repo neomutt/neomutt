@@ -715,7 +715,7 @@ static void compose_custom_redraw(struct Menu *menu)
 
   if (menu->redraw & REDRAW_INDEX)
     menu_redraw_index(menu);
-  else if (menu->redraw & (REDRAW_MOTION | REDRAW_MOTION_RESYNCH))
+  else if (menu->redraw & (REDRAW_MOTION | REDRAW_MOTION_RESYNC))
     menu_redraw_motion(menu);
   else if (menu->redraw == REDRAW_CURRENT)
     menu_redraw_current(menu);

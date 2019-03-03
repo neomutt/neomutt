@@ -413,8 +413,7 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
               long n = strtoul(p, &p, 10);        /* get subst number */
               while (isdigit((unsigned char) *p)) /* skip subst token */
                 p++;
-              for (int i = pmatch[n].rm_so;
-                   (i < pmatch[n].rm_eo) && (tlen < 1023); i++)
+              for (int i = pmatch[n].rm_so; (i < pmatch[n].rm_eo) && (tlen < 1023); i++)
               {
                 dst[tlen++] = src[i];
               }

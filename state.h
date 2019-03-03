@@ -49,10 +49,10 @@ struct State
   StateFlags flags;  ///< Flags, e.g. #MUTT_DISPLAY
 };
 
-#define state_set_prefix(s) ((s)->flags |= MUTT_PENDINGPREFIX)
-#define state_reset_prefix(s) ((s)->flags &= ~MUTT_PENDINGPREFIX)
-#define state_puts(x, y) fputs(x, (y)->fp_out)
-#define state_putc(x, y) fputc(x, (y)->fp_out)
+#define state_set_prefix(state) ((state)->flags |= MUTT_PENDINGPREFIX)
+#define state_reset_prefix(state) ((state)->flags &= ~MUTT_PENDINGPREFIX)
+#define state_puts(str, state) fputs(str, (state)->fp_out)
+#define state_putc(str, state) fputc(str, (state)->fp_out)
 
 void state_mark_attach(struct State *s);
 void state_mark_protected_header (struct State *s);

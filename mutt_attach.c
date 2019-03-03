@@ -111,7 +111,7 @@ int mutt_get_tmp_attachment(struct Body *a)
 int mutt_compose_attachment(struct Body *a)
 {
   char type[256];
-  char command[STR_COMMAND];
+  char cmd[STR_COMMAND];
   char newfile[PATH_MAX] = "";
   struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
   bool unlink_newfile = false;
@@ -123,9 +123,9 @@ int mutt_compose_attachment(struct Body *a)
     if (entry->composecommand || entry->composetypecommand)
     {
       if (entry->composetypecommand)
-        mutt_str_strfcpy(command, entry->composetypecommand, sizeof(command));
+        mutt_str_strfcpy(cmd, entry->composetypecommand, sizeof(cmd));
       else
-        mutt_str_strfcpy(command, entry->composecommand, sizeof(command));
+        mutt_str_strfcpy(cmd, entry->composecommand, sizeof(cmd));
       if (rfc1524_expand_filename(entry->nametemplate, a->filename, newfile, sizeof(newfile)))
       {
         mutt_debug(LL_DEBUG1, "oldfile: %s\t newfile: %s\n", a->filename, newfile);
@@ -140,7 +140,7 @@ int mutt_compose_attachment(struct Body *a)
       else
         mutt_str_strfcpy(newfile, a->filename, sizeof(newfile));
 
-      if (rfc1524_expand_command(a, newfile, type, command, sizeof(command)))
+      if (rfc1524_expand_command(a, newfile, type, cmd, sizeof(cmd)))
       {
         /* For now, editing requires a file, no piping */
         mutt_error(_("Mailcap compose entry requires %%s"));
@@ -150,9 +150,9 @@ int mutt_compose_attachment(struct Body *a)
         int r;
 
         mutt_endwin();
-        r = mutt_system(command);
+        r = mutt_system(cmd);
         if (r == -1)
-          mutt_error(_("Error running \"%s\""), command);
+          mutt_error(_("Error running \"%s\""), cmd);
 
         if (r != -1 && entry->composetypecommand)
         {
@@ -248,7 +248,7 @@ bailout:
 int mutt_edit_attachment(struct Body *a)
 {
   char type[256];
-  char command[STR_COMMAND];
+  char cmd[STR_COMMAND];
   char newfile[PATH_MAX] = "";
   struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
   bool unlink_newfile = false;
@@ -259,7 +259,7 @@ int mutt_edit_attachment(struct Body *a)
   {
     if (entry->editcommand)
     {
-      mutt_str_strfcpy(command, entry->editcommand, sizeof(command));
+      mutt_str_strfcpy(cmd, entry->editcommand, sizeof(cmd));
       if (rfc1524_expand_filename(entry->nametemplate, a->filename, newfile, sizeof(newfile)))
       {
         mutt_debug(LL_DEBUG1, "oldfile: %s\t newfile: %s\n", a->filename, newfile);
@@ -274,7 +274,7 @@ int mutt_edit_attachment(struct Body *a)
       else
         mutt_str_strfcpy(newfile, a->filename, sizeof(newfile));
 
-      if (rfc1524_expand_command(a, newfile, type, command, sizeof(command)))
+      if (rfc1524_expand_command(a, newfile, type, cmd, sizeof(cmd)))
       {
         /* For now, editing requires a file, no piping */
         mutt_error(_("Mailcap Edit entry requires %%s"));
@@ -283,9 +283,9 @@ int mutt_edit_attachment(struct Body *a)
       else
       {
         mutt_endwin();
-        if (mutt_system(command) == -1)
+        if (mutt_system(cmd) == -1)
         {
-          mutt_error(_("Error running \"%s\""), command);
+          mutt_error(_("Error running \"%s\""), cmd);
           goto bailout;
         }
       }
@@ -387,8 +387,8 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
   bool use_pipe = false;
   bool use_pager = true;
   char type[256];
-  char command[STR_COMMAND];
-  char descrip[256];
+  char cmd[STR_COMMAND];
+  char desc[256];
   char *fname = NULL;
   struct Rfc1524MailcapEntry *entry = NULL;
   int rc = -1;
@@ -429,7 +429,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
       mutt_error(_("MIME type not defined.  Cannot view attachment."));
       goto return_error;
     }
-    mutt_str_strfcpy(command, entry->command, sizeof(command));
+    mutt_str_strfcpy(cmd, entry->command, sizeof(cmd));
 
     if (fp)
     {
@@ -467,7 +467,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
       mutt_file_chmod(tempfile, S_IRUSR);
     }
 
-    use_pipe = rfc1524_expand_command(a, tempfile, type, command, sizeof(command));
+    use_pipe = rfc1524_expand_command(a, tempfile, type, cmd, sizeof(cmd));
     use_pager = entry->copiousoutput;
   }
 
@@ -485,7 +485,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
 
   if (use_mailcap)
   {
-    pid_t thepid = 0;
+    pid_t pid = 0;
     int tempfd = -1, pagerfd = -1;
 
     if (!use_pager)
@@ -507,9 +507,9 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
         goto return_error;
       }
 
-      thepid = mutt_create_filter_fd(command, NULL, NULL, NULL, use_pipe ? tempfd : -1,
-                                     use_pager ? pagerfd : -1, -1);
-      if (thepid == -1)
+      pid = mutt_create_filter_fd(cmd, NULL, NULL, NULL, use_pipe ? tempfd : -1,
+                                  use_pager ? pagerfd : -1, -1);
+      if (pid == -1)
       {
         if (pagerfd != -1)
           close(pagerfd);
@@ -525,17 +525,16 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
       {
         if (a->description)
         {
-          snprintf(descrip, sizeof(descrip),
-                   _("---Command: %-20.20s Description: %s"), command, a->description);
+          snprintf(desc, sizeof(desc), _("---Command: %-20.20s Description: %s"),
+                   cmd, a->description);
         }
         else
         {
-          snprintf(descrip, sizeof(descrip),
-                   _("---Command: %-30.30s Attachment: %s"), command, type);
+          snprintf(desc, sizeof(desc), _("---Command: %-30.30s Attachment: %s"), cmd, type);
         }
       }
 
-      if ((mutt_wait_filter(thepid) || (entry->needsterminal && C_WaitKey)) && !use_pager)
+      if ((mutt_wait_filter(pid) || (entry->needsterminal && C_WaitKey)) && !use_pager)
         mutt_any_key_to_continue(NULL);
 
       if (tempfd != -1)
@@ -545,10 +544,10 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
     }
     else
     {
-      /* interactive command */
-      int rv = mutt_system(command);
+      /* interactive cmd */
+      int rv = mutt_system(cmd);
       if (rv == -1)
-        mutt_debug(LL_DEBUG1, "Error running \"%s\"!", command);
+        mutt_debug(LL_DEBUG1, "Error running \"%s\"!", cmd);
 
       if ((rv != 0) || (entry->needsterminal && C_WaitKey))
         mutt_any_key_to_continue(NULL);
@@ -609,11 +608,11 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
     }
 
     if (a->description)
-      mutt_str_strfcpy(descrip, a->description, sizeof(descrip));
+      mutt_str_strfcpy(desc, a->description, sizeof(desc));
     else if (a->filename)
-      snprintf(descrip, sizeof(descrip), _("---Attachment: %s: %s"), a->filename, type);
+      snprintf(desc, sizeof(desc), _("---Attachment: %s: %s"), a->filename, type);
     else
-      snprintf(descrip, sizeof(descrip), _("---Attachment: %s"), type);
+      snprintf(desc, sizeof(desc), _("---Attachment: %s"), type);
   }
 
   /* We only reach this point if there have been no errors */
@@ -627,7 +626,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
     info.actx = actx;
     info.email = e;
 
-    rc = mutt_do_pager(descrip, pagerfile,
+    rc = mutt_do_pager(desc, pagerfile,
                        MUTT_PAGER_ATTACHMENT | (is_message ? MUTT_PAGER_MESSAGE : 0),
                        &info);
     *pagerfile = '\0';
@@ -670,7 +669,7 @@ return_error:
  */
 int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfile)
 {
-  pid_t thepid;
+  pid_t pid;
   int out = -1;
   int rc = 0;
 
@@ -696,11 +695,11 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfi
     s.flags = MUTT_CHARCONV;
 
     if (outfile && *outfile)
-      thepid = mutt_create_filter_fd(path, &s.fp_out, NULL, NULL, -1, out, -1);
+      pid = mutt_create_filter_fd(path, &s.fp_out, NULL, NULL, -1, out, -1);
     else
-      thepid = mutt_create_filter(path, &s.fp_out, NULL, NULL);
+      pid = mutt_create_filter(path, &s.fp_out, NULL, NULL);
 
-    if (thepid < 0)
+    if (pid < 0)
     {
       mutt_perror(_("Can't create filter"));
       goto bail;
@@ -729,11 +728,11 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfi
     }
 
     if (outfile && *outfile)
-      thepid = mutt_create_filter_fd(path, &ofp, NULL, NULL, -1, out, -1);
+      pid = mutt_create_filter_fd(path, &ofp, NULL, NULL, -1, out, -1);
     else
-      thepid = mutt_create_filter(path, &ofp, NULL, NULL);
+      pid = mutt_create_filter(path, &ofp, NULL, NULL);
 
-    if (thepid < 0)
+    if (pid < 0)
     {
       mutt_perror(_("Can't create filter"));
       mutt_file_fclose(&ifp);
@@ -753,7 +752,7 @@ bail:
     close(out);
 
   /* check for error exit from child process */
-  if (mutt_wait_filter(thepid) != 0)
+  if (mutt_wait_filter(pid) != 0)
     rc = 0;
 
   if (rc == 0 || C_WaitKey)
@@ -1018,7 +1017,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
 {
   char newfile[PATH_MAX] = "";
   char type[256];
-  pid_t thepid;
+  pid_t pid;
   FILE *ifp = NULL, *fpout = NULL;
   bool unlink_newfile = false;
 
@@ -1026,7 +1025,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
 
   if (rfc1524_mailcap_lookup(a, type, NULL, MUTT_PRINT))
   {
-    char command[STR_COMMAND];
+    char cmd[STR_COMMAND];
     int piped = false;
 
     mutt_debug(LL_DEBUG2, "Using mailcap...\n");
@@ -1055,8 +1054,8 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     if (fp && (mutt_save_attachment(fp, a, newfile, 0, NULL) != 0))
       return 0;
 
-    mutt_str_strfcpy(command, entry->printcommand, sizeof(command));
-    piped = rfc1524_expand_command(a, newfile, type, command, sizeof(command));
+    mutt_str_strfcpy(cmd, entry->printcommand, sizeof(cmd));
+    piped = rfc1524_expand_command(a, newfile, type, cmd, sizeof(cmd));
 
     mutt_endwin();
 
@@ -1071,8 +1070,8 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
         return 0;
       }
 
-      thepid = mutt_create_filter(command, &fpout, NULL, NULL);
-      if (thepid < 0)
+      pid = mutt_create_filter(cmd, &fpout, NULL, NULL);
+      if (pid < 0)
       {
         mutt_perror(_("Can't create filter"));
         rfc1524_free_entry(&entry);
@@ -1082,14 +1081,14 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       mutt_file_copy_stream(ifp, fpout);
       mutt_file_fclose(&fpout);
       mutt_file_fclose(&ifp);
-      if (mutt_wait_filter(thepid) || C_WaitKey)
+      if (mutt_wait_filter(pid) || C_WaitKey)
         mutt_any_key_to_continue(NULL);
     }
     else
     {
-      int rc = mutt_system(command);
+      int rc = mutt_system(cmd);
       if (rc == -1)
-        mutt_debug(LL_DEBUG1, "Error running \"%s\"!", command);
+        mutt_debug(LL_DEBUG1, "Error running \"%s\"!", cmd);
 
       if ((rc != 0) || C_WaitKey)
         mutt_any_key_to_continue(NULL);
@@ -1133,8 +1132,8 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       mutt_debug(LL_DEBUG2, "successfully opened %s read-only\n", newfile);
 
       mutt_endwin();
-      thepid = mutt_create_filter(NONULL(C_PrintCommand), &fpout, NULL, NULL);
-      if (thepid < 0)
+      pid = mutt_create_filter(NONULL(C_PrintCommand), &fpout, NULL, NULL);
+      if (pid < 0)
       {
         mutt_perror(_("Can't create filter"));
         goto bail0;
@@ -1147,7 +1146,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       mutt_file_fclose(&fpout);
       mutt_file_fclose(&ifp);
 
-      if (mutt_wait_filter(thepid) != 0 || C_WaitKey)
+      if (mutt_wait_filter(pid) != 0 || C_WaitKey)
         mutt_any_key_to_continue(NULL);
       rc = 1;
     }

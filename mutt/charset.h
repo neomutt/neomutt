@@ -103,7 +103,7 @@ bool             mutt_ch_lookup_add(enum LookupType type, const char *pat, const
 void             mutt_ch_lookup_remove(void);
 void             mutt_ch_set_charset(const char *charset);
 
-#define mutt_ch_is_utf8(a)     mutt_ch_chscmp(a, "utf-8")
-#define mutt_ch_is_us_ascii(a) mutt_ch_chscmp(a, "us-ascii")
+#define mutt_ch_is_utf8(str)     mutt_ch_chscmp(str, "utf-8")
+#define mutt_ch_is_us_ascii(str) mutt_ch_chscmp(str, "us-ascii")
 
 #endif /* MUTT_LIB_CHARSET_H */

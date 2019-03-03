@@ -73,8 +73,8 @@ void         mutt_unget_string(const char *s);
 size_t       mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *width);
 int          mutt_yesorno(const char *msg, int def);
 
-#define mutt_enter_fname(A, B, C, D)   mutt_enter_fname_full(A, B, C, D, false, NULL, NULL, 0)
-#define mutt_get_field(A, B, C, D)     mutt_get_field_full(A, B, C, D, false, NULL, NULL)
-#define mutt_get_password(A, B, C)     mutt_get_field_unbuffered(A, B, C, MUTT_PASS)
+#define mutt_enter_fname(prompt, buf, buflen, mailbox) mutt_enter_fname_full(prompt, buf, buflen, mailbox, false, NULL, NULL, 0)
+#define mutt_get_field(field, buf, buflen, complete)   mutt_get_field_full(field, buf, buflen, complete, false, NULL, NULL)
+#define mutt_get_password(msg, buf, buflen)            mutt_get_field_unbuffered(msg, buf, buflen, MUTT_PASS)
 
 #endif /* MUTT_CURS_LIB_H */

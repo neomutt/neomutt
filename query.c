@@ -143,12 +143,12 @@ static struct Query *run_query(char *s, int quiet)
   int dummy = 0;
   char msg[256];
   char *p = NULL;
-  pid_t thepid;
+  pid_t pid;
 
   mutt_file_expand_fmt_quote(cmd, sizeof(cmd), C_QueryCommand, s);
 
-  thepid = mutt_create_filter(cmd, NULL, &fp, NULL);
-  if (thepid < 0)
+  pid = mutt_create_filter(cmd, NULL, &fp, NULL);
+  if (pid < 0)
   {
     mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", cmd);
     return 0;
@@ -188,7 +188,7 @@ static struct Query *run_query(char *s, int quiet)
   }
   FREE(&buf);
   mutt_file_fclose(&fp);
-  if (mutt_wait_filter(thepid))
+  if (mutt_wait_filter(pid))
   {
     mutt_debug(LL_DEBUG1, "Error: %s\n", msg);
     if (!quiet)
@@ -326,8 +326,7 @@ static int query_tag(struct Menu *menu, int sel, int act)
 static void query_menu(char *buf, size_t buflen, struct Query *results, bool retbuf)
 {
   struct Menu *menu = NULL;
-  struct Email *msg = NULL;
-  struct Entry *QueryTable = NULL;
+  struct Entry *query_table = NULL;
   struct Query *queryp = NULL;
   char title[256];
 
@@ -357,15 +356,15 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
     for (queryp = results; queryp; queryp = queryp->next)
       menu->max++;
 
-    QueryTable = mutt_mem_calloc(menu->max, sizeof(struct Entry));
-    menu->data = QueryTable;
+    query_table = mutt_mem_calloc(menu->max, sizeof(struct Entry));
+    menu->data = query_table;
 
-    int i;
-    for (i = 0, queryp = results; queryp; queryp = queryp->next, i++)
-      QueryTable[i].data = queryp;
+    queryp = results;
+    for (int i = 0; queryp; queryp = queryp->next, i++)
+      query_table[i].data = queryp;
 
     int done = 0;
-    while (!done)
+    while (done == 0)
     {
       const int op = mutt_menu_loop(menu);
       switch (op)
@@ -385,7 +384,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
               {
                 free_query(&results);
                 results = newresults;
-                FREE(&QueryTable);
+                FREE(&query_table);
               }
               else
               {
@@ -413,30 +412,32 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
 
               if (op == OP_QUERY)
               {
-                menu->data = QueryTable =
+                menu->data = query_table =
                     mutt_mem_calloc(menu->max, sizeof(struct Entry));
 
-                for (i = 0, queryp = results; queryp; queryp = queryp->next, i++)
-                  QueryTable[i].data = queryp;
+                queryp = results;
+                for (int i = 0; queryp; queryp = queryp->next, i++)
+                  query_table[i].data = queryp;
               }
               else
               {
                 bool clear = false;
 
                 /* append */
-                mutt_mem_realloc(&QueryTable, menu->max * sizeof(struct Entry));
+                mutt_mem_realloc(&query_table, menu->max * sizeof(struct Entry));
 
-                menu->data = QueryTable;
+                menu->data = query_table;
 
-                for (i = 0, queryp = results; queryp; queryp = queryp->next, i++)
+                queryp = results;
+                for (int i = 0; queryp; queryp = queryp->next, i++)
                 {
                   /* once we hit new entries, clear/init the tag */
                   if (queryp == newresults)
                     clear = true;
 
-                  QueryTable[i].data = queryp;
+                  query_table[i].data = queryp;
                   if (clear)
-                    QueryTable[i].tagged = false;
+                    query_table[i].tagged = false;
                 }
               }
             }
@@ -448,11 +449,11 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
           {
             struct Address *naddr = NULL;
 
-            for (i = 0; i < menu->max; i++)
+            for (int i = 0; i < menu->max; i++)
             {
-              if (QueryTable[i].tagged)
+              if (query_table[i].tagged)
               {
-                struct Address *a = result_to_addr(QueryTable[i].data);
+                struct Address *a = result_to_addr(query_table[i].data);
                 mutt_addr_append(&naddr, a, false);
                 mutt_addr_free(&a);
               }
@@ -463,7 +464,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
           }
           else
           {
-            struct Address *a = result_to_addr(QueryTable[menu->current].data);
+            struct Address *a = result_to_addr(query_table[menu->current].data);
             mutt_alias_create(NULL, a);
             mutt_addr_free(&a);
           }
@@ -477,19 +478,20 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
           }
         /* fallthrough */
         case OP_MAIL:
-          msg = mutt_email_new();
+        {
+          struct Email *msg = mutt_email_new();
           msg->env = mutt_env_new();
           if (!menu->tagprefix)
           {
-            msg->env->to = result_to_addr(QueryTable[menu->current].data);
+            msg->env->to = result_to_addr(query_table[menu->current].data);
           }
           else
           {
-            for (i = 0; i < menu->max; i++)
+            for (int i = 0; i < menu->max; i++)
             {
-              if (QueryTable[i].tagged)
+              if (query_table[i].tagged)
               {
-                struct Address *a = result_to_addr(QueryTable[i].data);
+                struct Address *a = result_to_addr(query_table[i].data);
                 mutt_addr_append(&msg->env->to, a, false);
                 mutt_addr_free(&a);
               }
@@ -498,6 +500,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
           ci_send_message(0, msg, NULL, Context, NULL);
           menu->redraw = REDRAW_FULL;
           break;
+        }
 
         case OP_EXIT:
           done = 1;
@@ -514,13 +517,13 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
       memset(buf, 0, buflen);
 
       /* check for tagged entries */
-      for (i = 0; i < menu->max; i++)
+      for (int i = 0; i < menu->max; i++)
       {
-        if (QueryTable[i].tagged)
+        if (query_table[i].tagged)
         {
           if (curpos == 0)
           {
-            struct Address *tmpa = result_to_addr(QueryTable[i].data);
+            struct Address *tmpa = result_to_addr(query_table[i].data);
             mutt_addrlist_to_local(tmpa);
             tagged = true;
             mutt_addr_write(buf, buflen, tmpa, false);
@@ -529,7 +532,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
           }
           else if (curpos + 2 < buflen)
           {
-            struct Address *tmpa = result_to_addr(QueryTable[i].data);
+            struct Address *tmpa = result_to_addr(query_table[i].data);
             mutt_addrlist_to_local(tmpa);
             strcat(buf, ", ");
             mutt_addr_write((char *) buf + curpos + 1, buflen - curpos - 1, tmpa, false);
@@ -541,7 +544,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
       /* then enter current message */
       if (!tagged)
       {
-        struct Address *tmpa = result_to_addr(QueryTable[menu->current].data);
+        struct Address *tmpa = result_to_addr(query_table[menu->current].data);
         mutt_addrlist_to_local(tmpa);
         mutt_addr_write(buf, buflen, tmpa, false);
         mutt_addr_free(&tmpa);
@@ -549,7 +552,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
     }
 
     free_query(&results);
-    FREE(&QueryTable);
+    FREE(&query_table);
     mutt_menu_pop_current(menu);
     mutt_menu_destroy(&menu);
   }
@@ -608,9 +611,9 @@ void mutt_query_menu(char *buf, size_t buflen)
 
   if (!buf)
   {
-    char buffer[256] = "";
+    char tmp[256] = "";
 
-    query_menu(buffer, sizeof(buffer), NULL, false);
+    query_menu(tmp, sizeof(tmp), NULL, false);
   }
   else
   {

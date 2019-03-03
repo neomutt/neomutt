@@ -686,11 +686,11 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
 
   const int flags = (C_ReadOnly || (op == OP_MAIN_CHANGE_FOLDER_READONLY)
 #ifdef USE_NOTMUCH
-                                  || (op == OP_MAIN_VFOLDER_FROM_QUERY_READONLY)
+                     || (op == OP_MAIN_VFOLDER_FROM_QUERY_READONLY)
 #endif
-                                      ) ?
-                                     MUTT_READONLY :
-                                     MUTT_OPEN_NO_FLAGS;
+                         ) ?
+                        MUTT_READONLY :
+                        MUTT_OPEN_NO_FLAGS;
 
   bool free_m = false;
   if (!m)
@@ -981,7 +981,7 @@ static void index_custom_redraw(struct Menu *menu)
       menu_redraw_index(menu);
       menu->redraw |= REDRAW_STATUS;
     }
-    else if (menu->redraw & (REDRAW_MOTION_RESYNCH | REDRAW_MOTION))
+    else if (menu->redraw & (REDRAW_MOTION_RESYNC | REDRAW_MOTION))
       menu_redraw_motion(menu);
     else if (menu->redraw & REDRAW_CURRENT)
       menu_redraw_current(menu);
@@ -1390,14 +1390,14 @@ int mutt_index_menu(void)
             if (e->virtual != -1)
             {
               menu->current = e->virtual;
-              menu->redraw = REDRAW_MOTION_RESYNCH;
+              menu->redraw = REDRAW_MOTION_RESYNC;
             }
             else if (e->collapsed)
             {
               mutt_uncollapse_thread(Context, e);
               mutt_set_virtual(Context);
               menu->current = e->virtual;
-              menu->redraw = REDRAW_MOTION_RESYNCH;
+              menu->redraw = REDRAW_MOTION_RESYNC;
             }
             else
               mutt_error(_("Message is not visible in limited view"));
@@ -1786,7 +1786,7 @@ int mutt_index_menu(void)
           if (C_Resolve && menu->current < Context->mailbox->vcount - 1)
           {
             menu->current++;
-            menu->redraw |= REDRAW_MOTION_RESYNCH;
+            menu->redraw |= REDRAW_MOTION_RESYNC;
           }
           else
             menu->redraw |= REDRAW_CURRENT;
@@ -2108,7 +2108,7 @@ int mutt_index_menu(void)
               menu->redraw = REDRAW_CURRENT;
             }
             else
-              menu->redraw = REDRAW_MOTION_RESYNCH;
+              menu->redraw = REDRAW_MOTION_RESYNC;
           }
           else
             menu->redraw = REDRAW_CURRENT;
@@ -2596,7 +2596,7 @@ int mutt_index_menu(void)
               menu->redraw |= REDRAW_CURRENT;
             }
             else
-              menu->redraw |= REDRAW_MOTION_RESYNCH;
+              menu->redraw |= REDRAW_MOTION_RESYNC;
           }
           else
             menu->redraw |= REDRAW_CURRENT;
@@ -2754,7 +2754,7 @@ int mutt_index_menu(void)
               menu->redraw |= REDRAW_CURRENT;
             }
             else
-              menu->redraw |= REDRAW_MOTION_RESYNCH;
+              menu->redraw |= REDRAW_MOTION_RESYNC;
           }
           else
             menu->redraw |= REDRAW_CURRENT;
@@ -2799,7 +2799,7 @@ int mutt_index_menu(void)
               menu->redraw |= REDRAW_CURRENT;
             }
             else
-              menu->redraw |= REDRAW_MOTION_RESYNCH;
+              menu->redraw |= REDRAW_MOTION_RESYNC;
           }
           else
             menu->redraw |= REDRAW_CURRENT;
@@ -2900,7 +2900,7 @@ int mutt_index_menu(void)
               menu->redraw |= REDRAW_CURRENT;
             }
             else
-              menu->redraw |= REDRAW_MOTION_RESYNCH;
+              menu->redraw |= REDRAW_MOTION_RESYNC;
           }
           else
             menu->redraw |= REDRAW_CURRENT;
@@ -3018,7 +3018,7 @@ int mutt_index_menu(void)
               continue;
             }
             else
-              menu->redraw |= REDRAW_MOTION_RESYNCH;
+              menu->redraw |= REDRAW_MOTION_RESYNC;
           }
           else
             menu->redraw |= REDRAW_CURRENT;
@@ -3506,7 +3506,7 @@ int mutt_index_menu(void)
           if (C_Resolve && menu->current < (Context->mailbox->vcount - 1))
           {
             menu->current++;
-            menu->redraw |= REDRAW_MOTION_RESYNCH;
+            menu->redraw |= REDRAW_MOTION_RESYNC;
           }
           else
             menu->redraw |= REDRAW_CURRENT;

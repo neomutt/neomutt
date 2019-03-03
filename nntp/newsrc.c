@@ -923,20 +923,22 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
 {
   struct NntpAccountData *adata = (struct NntpAccountData *) data;
   struct ConnAccount *acct = &adata->conn->account;
-  struct Url url;
-  char fn[128], fmt[128], *p = NULL;
+  char fn[128], fmt[128];
 
   switch (op)
   {
     case 'a':
+    {
+      struct Url url;
       mutt_account_tourl(acct, &url);
       url_tostring(&url, fn, sizeof(fn), U_PATH);
-      p = strchr(fn, '/');
+      char *p = strchr(fn, '/');
       if (p)
         *p = '\0';
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, fn);
       break;
+    }
     case 'p':
       snprintf(fmt, sizeof(fmt), "%%%su", prec);
       snprintf(buf, buflen, fmt, acct->port);
@@ -956,14 +958,17 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
       snprintf(buf, buflen, fmt, fn);
       break;
     case 'S':
+    {
+      struct Url url;
       mutt_account_tourl(acct, &url);
       url_tostring(&url, fn, sizeof(fn), U_PATH);
-      p = strchr(fn, ':');
+      char *p = strchr(fn, ':');
       if (p)
         *p = '\0';
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, fn);
       break;
+    }
     case 'u':
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, acct->user);

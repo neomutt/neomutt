@@ -1645,7 +1645,6 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
 static void show_fingerprint(gpgme_key_t key, struct State *state)
 {
   const char *s = NULL;
-  int is_pgp;
   char *buf = NULL, *p = NULL;
   const char *prefix = _("Fingerprint: ");
 
@@ -1654,7 +1653,7 @@ static void show_fingerprint(gpgme_key_t key, struct State *state)
   s = key->subkeys ? key->subkeys->fpr : NULL;
   if (!s)
     return;
-  is_pgp = (key->protocol == GPGME_PROTOCOL_OpenPGP);
+  bool is_pgp = (key->protocol == GPGME_PROTOCOL_OpenPGP);
 
   buf = mutt_mem_malloc(strlen(prefix) + strlen(s) * 4 + 2);
   strcpy(buf, prefix);
@@ -3311,9 +3310,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
                                     unsigned long data, MuttFormatFlags flags)
 {
   char fmt[128];
-  KeyFlags kflags = KEYFLAG_NO_FLAGS;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
-  const char *s = NULL;
 
   struct CryptEntry *entry = (struct CryptEntry *) data;
   struct CryptKeyInfo *key = entry->key;
@@ -3321,14 +3318,15 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
   /*    if (isupper ((unsigned char) op)) */
   /*      key = pkey; */
 
-  kflags = (key->flags /* | (pkey->flags & KEYFLAG_RESTRICTIONS)
-                          | uid->flags */);
+  KeyFlags kflags = (key->flags /* | (pkey->flags & KEYFLAG_RESTRICTIONS)
+                                   | uid->flags */);
 
   switch (tolower(op))
   {
     case 'a':
       if (!optional)
       {
+        const char *s = NULL;
         snprintf(fmt, sizeof(fmt), "%%%s.3s", prec);
         if (key->kobj->subkeys)
           s = gpgme_pubkey_algo_name(key->kobj->subkeys->pubkey_algo);
@@ -3344,7 +3342,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
         snprintf(buf, buflen, fmt, crypt_key_abilities(kflags));
       }
-      else if (!(kflags & (KEYFLAG_ABILITIES)))
+      else if (!(kflags & KEYFLAG_ABILITIES))
         optional = 0;
       break;
 
@@ -3354,7 +3352,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
         snprintf(fmt, sizeof(fmt), "%%%sc", prec);
         snprintf(buf, buflen, fmt, crypt_flags(kflags));
       }
-      else if (!(kflags & (KEYFLAG_RESTRICTIONS)))
+      else if (!(kflags & KEYFLAG_RESTRICTIONS))
         optional = 0;
       break;
 
@@ -3395,6 +3393,8 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
       break;
 
     case 't':
+    {
+      char *s = NULL;
       if ((kflags & KEYFLAG_ISX509))
         s = "x";
       else
@@ -3425,6 +3425,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
       snprintf(fmt, sizeof(fmt), "%%%sc", prec);
       snprintf(buf, buflen, fmt, *s);
       break;
+    }
 
     case 'u':
       if (!optional)
@@ -3650,7 +3651,7 @@ static int compare_key_trust(const void *a, const void *b)
   unsigned long ts = 0, tt = 0;
   int r;
 
-  r = (((*s)->flags & (KEYFLAG_RESTRICTIONS)) - ((*t)->flags & (KEYFLAG_RESTRICTIONS)));
+  r = (((*s)->flags & KEYFLAG_RESTRICTIONS) - ((*t)->flags & KEYFLAG_RESTRICTIONS));
   if (r != 0)
     return r > 0;
 
@@ -3982,7 +3983,6 @@ enum KeyCap
  */
 static unsigned int key_check_cap(gpgme_key_t key, enum KeyCap cap)
 {
-  gpgme_subkey_t subkey = NULL;
   unsigned int ret = 0;
 
   switch (cap)
@@ -3991,7 +3991,7 @@ static unsigned int key_check_cap(gpgme_key_t key, enum KeyCap cap)
       ret = key->can_encrypt;
       if (ret == 0)
       {
-        for (subkey = key->subkeys; subkey; subkey = subkey->next)
+        for (gpgme_subkey_t subkey = key->subkeys; subkey; subkey = subkey->next)
         {
           ret = subkey->can_encrypt;
           if (ret != 0)
@@ -4003,7 +4003,7 @@ static unsigned int key_check_cap(gpgme_key_t key, enum KeyCap cap)
       ret = key->can_sign;
       if (ret == 0)
       {
-        for (subkey = key->subkeys; subkey; subkey = subkey->next)
+        for (gpgme_subkey_t subkey = key->subkeys; subkey; subkey = subkey->next)
         {
           ret = subkey->can_sign;
           if (ret != 0)
@@ -4015,7 +4015,7 @@ static unsigned int key_check_cap(gpgme_key_t key, enum KeyCap cap)
       ret = key->can_certify;
       if (ret == 0)
       {
-        for (subkey = key->subkeys; subkey; subkey = subkey->next)
+        for (gpgme_subkey_t subkey = key->subkeys; subkey; subkey = subkey->next)
         {
           ret = subkey->can_certify;
           if (ret != 0)
@@ -4072,7 +4072,6 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
   char shortbuf[128];
   unsigned long aval = 0;
   const char *delim = NULL;
-  int is_pgp = 0;
   gpgme_user_id_t uid = NULL;
   static int max_header_width = 0;
 
@@ -4090,7 +4089,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
       KeyInfoPadding[i] += max_header_width;
   }
 
-  is_pgp = key->protocol == GPGME_PROTOCOL_OpenPGP;
+  bool is_pgp = (key->protocol == GPGME_PROTOCOL_OpenPGP);
 
   for (idx = 0, uid = key->uids; uid; idx++, uid = uid->next)
   {

@@ -133,16 +133,16 @@ bool C_UseFrom;    ///< Config: Set the 'From' header for outgoing mail
 static void append_signature(FILE *f)
 {
   FILE *tmpfp = NULL;
-  pid_t thepid;
+  pid_t pid;
 
-  if (C_Signature && (tmpfp = mutt_open_read(C_Signature, &thepid)))
+  if (C_Signature && (tmpfp = mutt_open_read(C_Signature, &pid)))
   {
     if (C_SigDashes)
       fputs("\n-- \n", f);
     mutt_file_copy_stream(tmpfp, f);
     mutt_file_fclose(&tmpfp);
-    if (thepid != -1)
-      mutt_wait_filter(thepid);
+    if (pid != -1)
+      mutt_wait_filter(pid);
   }
 }
 
@@ -979,7 +979,7 @@ static int envelope_defaults(struct Envelope *env, struct Mailbox *m,
 static int generate_body(FILE *tempfp, struct Email *msg, SendFlags flags,
                          struct Mailbox *m, struct EmailList *el)
 {
-  int i;
+  enum QuadOption ans;
   struct Body *tmp = NULL;
   struct EmailNode *en = NULL;
   bool single = true;
@@ -991,11 +991,11 @@ static int generate_body(FILE *tempfp, struct Email *msg, SendFlags flags,
 
   if (flags & SEND_REPLY)
   {
-    i = query_quadoption(C_Include, _("Include message in reply?"));
-    if (i == MUTT_ABORT)
+    ans = query_quadoption(C_Include, _("Include message in reply?"));
+    if (ans == MUTT_ABORT)
       return -1;
 
-    if (i == MUTT_YES)
+    if (ans == MUTT_YES)
     {
       mutt_message(_("Including quoted message..."));
       if (!single)
@@ -1016,8 +1016,8 @@ static int generate_body(FILE *tempfp, struct Email *msg, SendFlags flags,
   }
   else if (flags & SEND_FORWARD)
   {
-    i = query_quadoption(C_MimeForward, _("Forward as attachment?"));
-    if (i == MUTT_YES)
+    ans = query_quadoption(C_MimeForward, _("Forward as attachment?"));
+    if (ans == MUTT_YES)
     {
       struct Body *last = msg->content;
 
@@ -1052,7 +1052,7 @@ static int generate_body(FILE *tempfp, struct Email *msg, SendFlags flags,
         }
       }
     }
-    else if (i != -1)
+    else if (ans != MUTT_ABORT)
     {
       if (single)
         include_forward(m, en->email, tempfp);
@@ -1642,7 +1642,6 @@ static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, Sen
 {
   char *pgpkeylist = NULL;
   char *encrypt_as = NULL;
-  int is_signed;
   struct Body *clear_content = NULL;
 
   if (!(C_Postponed && *C_Postponed))
@@ -1667,7 +1666,7 @@ static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, Sen
 
     if (encrypt_as && *encrypt_as)
     {
-      is_signed = msg->security & SEC_SIGN;
+      bool is_signed = (msg->security & SEC_SIGN);
       if (is_signed)
         msg->security &= ~SEC_SIGN;
 
@@ -2258,8 +2257,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
   /* specify a default fcc.  if we are in batchmode, only save a copy of
    * the message if the value of $copy is yes or ask-yes */
 
-  if (!fcc[0] && !(flags & (SEND_POSTPONED_FCC)) &&
-      (!(flags & SEND_BATCH) || (C_Copy & 0x1)))
+  if (!fcc[0] && !(flags & SEND_POSTPONED_FCC) && (!(flags & SEND_BATCH) || (C_Copy & 0x1)))
   {
     /* set the default FCC */
     if (!msg->env->from)

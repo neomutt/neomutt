@@ -214,7 +214,6 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
   char charset[128];
   struct AttachPtr *aptr = (struct AttachPtr *) data;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
-  size_t l;
 
   switch (op)
   {
@@ -366,6 +365,8 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
       }
       break;
     case 's':
+    {
+      size_t l;
       if (flags & MUTT_FORMAT_STAT_FILE)
       {
         struct stat st;
@@ -385,6 +386,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
         optional = 0;
 
       break;
+    }
     case 't':
       if (!optional)
         snprintf(buf, buflen, "%c", aptr->content->tagged ? '*' : ' ');
@@ -526,9 +528,9 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
     prompt = NULL;
     mutt_expand_path(buf, sizeof(buf));
 
-    const int is_message = (fp && body->email && body->encoding != ENC_BASE64 &&
-                            body->encoding != ENC_QUOTED_PRINTABLE &&
-                            mutt_is_message_type(body->type, body->subtype));
+    bool is_message = (fp && body->email && (body->encoding != ENC_BASE64) &&
+                       (body->encoding != ENC_QUOTED_PRINTABLE) &&
+                       mutt_is_message_type(body->type, body->subtype));
 
     if (is_message)
     {
@@ -809,10 +811,10 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
   if (!filter && !C_AttachSplit)
   {
     mutt_endwin();
-    pid_t thepid = mutt_create_filter(buf, &state.fp_out, NULL, NULL);
+    pid_t pid = mutt_create_filter(buf, &state.fp_out, NULL, NULL);
     pipe_attachment_list(buf, actx, fp, tag, top, filter, &state);
     mutt_file_fclose(&state.fp_out);
-    if (mutt_wait_filter(thepid) != 0 || C_WaitKey)
+    if (mutt_wait_filter(pid) != 0 || C_WaitKey)
       mutt_any_key_to_continue(NULL);
   }
   else
@@ -960,10 +962,10 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, stru
     if (!can_print(actx, top, tag))
       return;
     mutt_endwin();
-    pid_t thepid = mutt_create_filter(NONULL(C_PrintCommand), &state.fp_out, NULL, NULL);
+    pid_t pid = mutt_create_filter(NONULL(C_PrintCommand), &state.fp_out, NULL, NULL);
     print_attachment_list(actx, fp, tag, top, &state);
     mutt_file_fclose(&state.fp_out);
-    if (mutt_wait_filter(thepid) != 0 || C_WaitKey)
+    if (mutt_wait_filter(pid) != 0 || C_WaitKey)
       mutt_any_key_to_continue(NULL);
   }
   else
@@ -1024,7 +1026,7 @@ static int recvattach_pgp_check_traditional(struct AttachCtx *actx, struct Menu 
 static void recvattach_edit_content_type(struct AttachCtx *actx,
                                          struct Menu *menu, struct Email *e)
 {
-  if (mutt_edit_content_type(e, CURATTACH->content, CURATTACH->fp) != 1)
+  if (!mutt_edit_content_type(e, CURATTACH->content, CURATTACH->fp))
     return;
 
   /* The mutt_update_recvattach_menu() will overwrite any changes
@@ -1320,8 +1322,6 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
 void mutt_view_attachments(struct Email *e)
 {
   char helpstr[1024];
-  struct Body *cur = NULL;
-  SendFlags flags = SEND_NO_FLAGS;
   int op = OP_NULL;
 
   struct Mailbox *m = Context ? Context->mailbox : NULL;
@@ -1397,7 +1397,7 @@ void mutt_view_attachments(struct Email *e)
         if (((WithCrypto & APPLICATION_PGP) != 0) &&
             recvattach_pgp_check_traditional(actx, menu))
         {
-          e->security = crypt_query(cur);
+          e->security = crypt_query(NULL);
           menu->redraw = REDRAW_FULL;
         }
         break;
@@ -1419,7 +1419,7 @@ void mutt_view_attachments(struct Email *e)
         if (!menu->tagprefix && C_Resolve && menu->current < menu->max - 1)
           menu->current++;
 
-        menu->redraw = REDRAW_MOTION_RESYNCH | REDRAW_FULL;
+        menu->redraw = REDRAW_MOTION_RESYNC | REDRAW_FULL;
         break;
 
       case OP_DELETE:
@@ -1462,7 +1462,7 @@ void mutt_view_attachments(struct Email *e)
             if (C_Resolve && menu->current < menu->max - 1)
             {
               menu->current++;
-              menu->redraw = REDRAW_MOTION_RESYNCH;
+              menu->redraw = REDRAW_MOTION_RESYNC;
             }
             else
               menu->redraw = REDRAW_CURRENT;
@@ -1502,7 +1502,7 @@ void mutt_view_attachments(struct Email *e)
           if (C_Resolve && menu->current < menu->max - 1)
           {
             menu->current++;
-            menu->redraw = REDRAW_MOTION_RESYNCH;
+            menu->redraw = REDRAW_MOTION_RESYNC;
           }
           else
             menu->redraw = REDRAW_CURRENT;
@@ -1569,16 +1569,17 @@ void mutt_view_attachments(struct Email *e)
       case OP_GROUP_REPLY:
       case OP_GROUP_CHAT_REPLY:
       case OP_LIST_REPLY:
-
+      {
         CHECK_ATTACH;
 
-        flags = SEND_REPLY | (op == OP_GROUP_REPLY ? SEND_GROUP_REPLY : 0) |
-                (op == OP_GROUP_CHAT_REPLY ? SEND_GROUP_CHAT_REPLY : 0) |
-                (op == OP_LIST_REPLY ? SEND_LIST_REPLY : 0);
+        SendFlags flags = SEND_REPLY | (op == OP_GROUP_REPLY ? SEND_GROUP_REPLY : 0) |
+                          (op == OP_GROUP_CHAT_REPLY ? SEND_GROUP_CHAT_REPLY : 0) |
+                          (op == OP_LIST_REPLY ? SEND_LIST_REPLY : 0);
         mutt_attach_reply(CURATTACH->fp, e, actx,
                           menu->tagprefix ? NULL : CURATTACH->content, flags);
         menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_COMPOSE_TO_SENDER:
         CHECK_ATTACH;

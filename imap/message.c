@@ -1421,7 +1421,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   char internaldate[IMAP_DATELEN];
   char imap_flags[128];
   size_t len;
-  struct Progress progressbar;
+  struct Progress progress;
   size_t sent;
   int c, last;
   int rc;
@@ -1451,8 +1451,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   }
   rewind(fp);
 
-  mutt_progress_init(&progressbar, _("Uploading message..."),
-                     MUTT_PROGRESS_SIZE, C_NetInc, len);
+  mutt_progress_init(&progress, _("Uploading message..."), MUTT_PROGRESS_SIZE, C_NetInc, len);
 
   mutt_date_make_imap(internaldate, sizeof(internaldate), msg->received);
 
@@ -1500,7 +1499,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
     {
       sent += len;
       flush_buffer(buf, &len, adata->conn);
-      mutt_progress_update(&progressbar, sent, -1);
+      mutt_progress_update(&progress, sent, -1);
     }
   }
 
@@ -1838,7 +1837,7 @@ int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   char buf[1024];
   char *pc = NULL;
   unsigned int bytes;
-  struct Progress progressbar;
+  struct Progress progress;
   unsigned int uid;
   bool retried = false;
   bool read;
@@ -1925,11 +1924,10 @@ int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
           }
           if (output_progress)
           {
-            mutt_progress_init(&progressbar, _("Fetching message..."),
+            mutt_progress_init(&progress, _("Fetching message..."),
                                MUTT_PROGRESS_SIZE, C_NetInc, bytes);
           }
-          if (imap_read_literal(msg->fp, adata, bytes,
-                                output_progress ? &progressbar : NULL) < 0)
+          if (imap_read_literal(msg->fp, adata, bytes, output_progress ? &progress : NULL) < 0)
           {
             goto bail;
           }

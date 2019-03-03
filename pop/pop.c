@@ -587,7 +587,7 @@ void pop_fetch_mail(void)
     return;
   }
 
-  char buffer[1024];
+  char buf[1024];
   char msgbuf[128];
   int delanswer, last = 0, msgs, bytes, rset = 0, ret;
   struct ConnAccount acct;
@@ -626,8 +626,8 @@ void pop_fetch_mail(void)
   mutt_message(_("Checking for new messages..."));
 
   /* find out how many messages are in the mailbox. */
-  mutt_str_strfcpy(buffer, "STAT\r\n", sizeof(buffer));
-  ret = pop_query(adata, buffer, sizeof(buffer));
+  mutt_str_strfcpy(buf, "STAT\r\n", sizeof(buf));
+  ret = pop_query(adata, buf, sizeof(buf));
   if (ret == -1)
     goto fail;
   if (ret == -2)
@@ -636,17 +636,17 @@ void pop_fetch_mail(void)
     goto finish;
   }
 
-  sscanf(buffer, "+OK %d %d", &msgs, &bytes);
+  sscanf(buf, "+OK %d %d", &msgs, &bytes);
 
   /* only get unread messages */
   if (msgs > 0 && C_PopLast)
   {
-    mutt_str_strfcpy(buffer, "LAST\r\n", sizeof(buffer));
-    ret = pop_query(adata, buffer, sizeof(buffer));
+    mutt_str_strfcpy(buf, "LAST\r\n", sizeof(buf));
+    ret = pop_query(adata, buf, sizeof(buf));
     if (ret == -1)
       goto fail;
     if (ret == 0)
-      sscanf(buffer, "+OK %d", &last);
+      sscanf(buf, "+OK %d", &last);
   }
 
   if (msgs <= last)
@@ -678,8 +678,8 @@ void pop_fetch_mail(void)
       ret = -3;
     else
     {
-      snprintf(buffer, sizeof(buffer), "RETR %d\r\n", i);
-      ret = pop_fetch_data(adata, buffer, NULL, fetch_message, msg->fp);
+      snprintf(buf, sizeof(buf), "RETR %d\r\n", i);
+      ret = pop_fetch_data(adata, buf, NULL, fetch_message, msg->fp);
       if (ret == -3)
         rset = 1;
 
@@ -695,8 +695,8 @@ void pop_fetch_mail(void)
     if ((ret == 0) && (delanswer == MUTT_YES))
     {
       /* delete the message on the server */
-      snprintf(buffer, sizeof(buffer), "DELE %d\r\n", i);
-      ret = pop_query(adata, buffer, sizeof(buffer));
+      snprintf(buf, sizeof(buf), "DELE %d\r\n", i);
+      ret = pop_query(adata, buf, sizeof(buf));
     }
 
     if (ret == -1)
@@ -727,15 +727,15 @@ void pop_fetch_mail(void)
   if (rset)
   {
     /* make sure no messages get deleted */
-    mutt_str_strfcpy(buffer, "RSET\r\n", sizeof(buffer));
-    if (pop_query(adata, buffer, sizeof(buffer)) == -1)
+    mutt_str_strfcpy(buf, "RSET\r\n", sizeof(buf));
+    if (pop_query(adata, buf, sizeof(buf)) == -1)
       goto fail;
   }
 
 finish:
   /* exit gracefully */
-  mutt_str_strfcpy(buffer, "QUIT\r\n", sizeof(buffer));
-  if (pop_query(adata, buffer, sizeof(buffer)) == -1)
+  mutt_str_strfcpy(buf, "QUIT\r\n", sizeof(buf));
+  if (pop_query(adata, buf, sizeof(buf)) == -1)
     goto fail;
   mutt_socket_close(conn);
   FREE(&conn);
@@ -1060,7 +1060,7 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 
   char buf[1024];
   char path[PATH_MAX];
-  struct Progress progressbar;
+  struct Progress progress;
   struct PopAccountData *adata = pop_adata_get(m);
   struct Email *e = m->emails[msgno];
   struct PopEmailData *edata = e->edata;
@@ -1109,7 +1109,7 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
       return -1;
     }
 
-    mutt_progress_init(&progressbar, _("Fetching message..."), MUTT_PROGRESS_SIZE,
+    mutt_progress_init(&progress, _("Fetching message..."), MUTT_PROGRESS_SIZE,
                        C_NetInc, e->content->length + e->content->offset - 1);
 
     /* see if we can put in body cache; use our cache as fallback */
@@ -1129,7 +1129,7 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 
     snprintf(buf, sizeof(buf), "RETR %d\r\n", e->refno);
 
-    const int ret = pop_fetch_data(adata, buf, &progressbar, fetch_message, msg->fp);
+    const int ret = pop_fetch_data(adata, buf, &progress, fetch_message, msg->fp);
     if (ret == 0)
       break;
 

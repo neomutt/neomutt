@@ -72,15 +72,16 @@ extern const char *const BodyTypes[];
 extern const char *const BodyEncodings[];
 extern const char MimeSpecials[];
 
-#define hexval(c) IndexHex[(unsigned int) (c)]
+#define hexval(ch) IndexHex[(unsigned int) (ch)]
 
-#define is_multipart(x)                                                               \
-  (((x)->type == TYPE_MULTIPART) || (((x)->type == TYPE_MESSAGE) && ((x)->subtype) && \
-                                     ((strcasecmp((x)->subtype, "rfc822") == 0) ||    \
-                                      (strcasecmp((x)->subtype, "news") == 0))))
+#define is_multipart(body)                                                     \
+  (((body)->type == TYPE_MULTIPART) ||                                         \
+   (((body)->type == TYPE_MESSAGE) && ((body)->subtype) &&                     \
+    ((strcasecmp((body)->subtype, "rfc822") == 0) ||                           \
+     (strcasecmp((body)->subtype, "news") == 0))))
 
-#define TYPE(X)                                                                \
-  ((X->type == TYPE_OTHER) && X->xtype ? X->xtype : BodyTypes[(X->type)])
-#define ENCODING(X) BodyEncodings[(X)]
+#define TYPE(body)                                                             \
+  ((body->type == TYPE_OTHER) && body->xtype ? body->xtype : BodyTypes[(body->type)])
+#define ENCODING(x) BodyEncodings[(x)]
 
 #endif /* MUTT_EMAIL_MIME_H */

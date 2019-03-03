@@ -769,7 +769,6 @@ void mix_make_chain(struct ListHead *chainhead)
  */
 int mix_check_message(struct Email *msg)
 {
-  const char *fqdn = NULL;
   bool need_hostname = false;
 
   if (msg->env->cc || msg->env->bcc)
@@ -795,7 +794,7 @@ int mix_check_message(struct Email *msg)
 
   if (need_hostname)
   {
-    fqdn = mutt_fqdn(true);
+    const char *fqdn = mutt_fqdn(true);
     if (!fqdn)
     {
       mutt_error(_("Please set the hostname variable to a proper value when "

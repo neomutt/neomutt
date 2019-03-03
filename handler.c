@@ -527,16 +527,16 @@ static bool is_autoview(struct Body *b)
 static int autoview_handler(struct Body *a, struct State *s)
 {
   struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
-  char buffer[1024];
+  char buf[1024];
   char type[256];
-  char command[STR_COMMAND];
+  char cmd[STR_COMMAND];
   char tempfile[PATH_MAX] = "";
   char *fname = NULL;
   FILE *fpin = NULL;
   FILE *fpout = NULL;
   FILE *fperr = NULL;
   int piped = false;
-  pid_t thepid;
+  pid_t pid;
   int rc = 0;
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
@@ -549,16 +549,16 @@ static int autoview_handler(struct Body *a, struct State *s)
 
   if (entry->command)
   {
-    mutt_str_strfcpy(command, entry->command, sizeof(command));
+    mutt_str_strfcpy(cmd, entry->command, sizeof(cmd));
 
     /* rfc1524_expand_command returns 0 if the file is required */
-    piped = rfc1524_expand_command(a, tempfile, type, command, sizeof(command));
+    piped = rfc1524_expand_command(a, tempfile, type, cmd, sizeof(cmd));
 
     if (s->flags & MUTT_DISPLAY)
     {
       state_mark_attach(s);
-      state_printf(s, _("[-- Autoview using %s --]\n"), command);
-      mutt_message(_("Invoking autoview command: %s"), command);
+      state_printf(s, _("[-- Autoview using %s --]\n"), cmd);
+      mutt_message(_("Invoking autoview command: %s"), cmd);
     }
 
     fpin = mutt_file_fopen(tempfile, "w+");
@@ -574,23 +574,23 @@ static int autoview_handler(struct Body *a, struct State *s)
     if (!piped)
     {
       mutt_file_fclose(&fpin);
-      thepid = mutt_create_filter(command, NULL, &fpout, &fperr);
+      pid = mutt_create_filter(cmd, NULL, &fpout, &fperr);
     }
     else
     {
       unlink(tempfile);
       fflush(fpin);
       rewind(fpin);
-      thepid = mutt_create_filter_fd(command, NULL, &fpout, &fperr, fileno(fpin), -1, -1);
+      pid = mutt_create_filter_fd(cmd, NULL, &fpout, &fperr, fileno(fpin), -1, -1);
     }
 
-    if (thepid < 0)
+    if (pid < 0)
     {
       mutt_perror(_("Can't create filter"));
       if (s->flags & MUTT_DISPLAY)
       {
         state_mark_attach(s);
-        state_printf(s, _("[-- Can't run %s. --]\n"), command);
+        state_printf(s, _("[-- Can't run %s. --]\n"), cmd);
       }
       rc = -1;
       goto bail;
@@ -598,26 +598,26 @@ static int autoview_handler(struct Body *a, struct State *s)
 
     if (s->prefix)
     {
-      while (fgets(buffer, sizeof(buffer), fpout))
+      while (fgets(buf, sizeof(buf), fpout))
       {
         state_puts(s->prefix, s);
-        state_puts(buffer, s);
+        state_puts(buf, s);
       }
       /* check for data on stderr */
-      if (fgets(buffer, sizeof(buffer), fperr))
+      if (fgets(buf, sizeof(buf), fperr))
       {
         if (s->flags & MUTT_DISPLAY)
         {
           state_mark_attach(s);
-          state_printf(s, _("[-- Autoview stderr of %s --]\n"), command);
+          state_printf(s, _("[-- Autoview stderr of %s --]\n"), cmd);
         }
 
         state_puts(s->prefix, s);
-        state_puts(buffer, s);
-        while (fgets(buffer, sizeof(buffer), fperr))
+        state_puts(buf, s);
+        while (fgets(buf, sizeof(buf), fperr))
         {
           state_puts(s->prefix, s);
-          state_puts(buffer, s);
+          state_puts(buf, s);
         }
       }
     }
@@ -625,15 +625,15 @@ static int autoview_handler(struct Body *a, struct State *s)
     {
       mutt_file_copy_stream(fpout, s->fp_out);
       /* Check for stderr messages */
-      if (fgets(buffer, sizeof(buffer), fperr))
+      if (fgets(buf, sizeof(buf), fperr))
       {
         if (s->flags & MUTT_DISPLAY)
         {
           state_mark_attach(s);
-          state_printf(s, _("[-- Autoview stderr of %s --]\n"), command);
+          state_printf(s, _("[-- Autoview stderr of %s --]\n"), cmd);
         }
 
-        state_puts(buffer, s);
+        state_puts(buf, s);
         mutt_file_copy_stream(fperr, s->fp_out);
       }
     }
@@ -642,7 +642,7 @@ static int autoview_handler(struct Body *a, struct State *s)
     mutt_file_fclose(&fpout);
     mutt_file_fclose(&fperr);
 
-    mutt_wait_filter(thepid);
+    mutt_wait_filter(pid);
     if (piped)
       mutt_file_fclose(&fpin);
     else

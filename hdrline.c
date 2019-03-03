@@ -551,8 +551,6 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 {
   struct HdrFormatInfo *hfi = (struct HdrFormatInfo *) data;
   char fmt[128], tmp[1024], *p, *tags = NULL;
-  const char *wch = NULL;
-  int i;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
   int threads = ((C_Sort & SORT_MASK) == SORT_THREADS);
   int is_index = (flags & MUTT_FORMAT_INDEX);
@@ -677,10 +675,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           now -= (op == '(') ? e->received : e->date_sent;
 
           is = (char *) prec;
-          int invert = 0;
+          bool invert = false;
           if (*is == '>')
           {
-            invert = 1;
+            invert = true;
             is++;
           }
 
@@ -957,10 +955,11 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       break;
 
     case 'J':
+    {
+      bool have_tags = true;
       tags = driver_tags_get_transformed(&e->tags);
       if (tags)
       {
-        i = 1; /* reduce reuse recycle */
         if (flags & MUTT_FORMAT_TREE)
         {
           char *parent_tags = NULL;
@@ -974,24 +973,25 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
                 driver_tags_get_transformed(&e->thread->parent->message->tags);
           }
           if (parent_tags && mutt_str_strcasecmp(tags, parent_tags) == 0)
-            i = 0;
+            have_tags = false;
           FREE(&parent_tags);
         }
       }
       else
-        i = 0;
+        have_tags = false;
 
       if (optional)
-        optional = i;
+        optional = have_tags;
 
       colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_TAGS);
-      if (i)
+      if (have_tags)
         mutt_format_s(buf + colorlen, buflen - colorlen, prec, tags);
       else
         mutt_format_s(buf + colorlen, buflen - colorlen, prec, "");
       add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       FREE(&tags);
       break;
+    }
 
     case 'l':
       if (!optional)
@@ -1148,6 +1148,8 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     break;
 
     case 'S':
+    {
+      const char *wch = NULL;
       if (e->deleted)
         wch = get_nth_wchar(C_FlagChars, FLAG_CHAR_DELETED);
       else if (e->attach_del)
@@ -1170,6 +1172,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
       add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       break;
+    }
 
     case 't':
       tmp[0] = 0;
@@ -1185,12 +1188,15 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       break;
 
     case 'T':
+    {
+      int i;
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt,
                (C_ToChars && ((i = user_is_recipient(e))) < C_ToChars->len) ?
                    C_ToChars->chars[i] :
                    " ");
       break;
+    }
 
     case 'u':
       if (e->env->from && e->env->from->mailbox)
@@ -1266,9 +1272,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       break;
 
     case 'Y':
+    {
+      bool label = true;
       if (e->env->x_label)
       {
-        i = 1; /* reduce reuse recycle */
         struct Email *etmp = NULL;
         if (flags & MUTT_FORMAT_TREE && (e->thread->prev && e->thread->prev->message &&
                                          e->thread->prev->message->env->x_label))
@@ -1282,21 +1289,22 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           etmp = e->thread->parent->message;
         }
         if (etmp && (mutt_str_strcasecmp(e->env->x_label, etmp->env->x_label) == 0))
-          i = 0;
+          label = false;
       }
       else
-        i = 0;
+        label = false;
 
       if (optional)
-        optional = i;
+        optional = label;
 
       colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_LABEL);
-      if (i)
+      if (label)
         mutt_format_s(buf + colorlen, buflen - colorlen, prec, NONULL(e->env->x_label));
       else
         mutt_format_s(buf + colorlen, buflen - colorlen, prec, "");
       add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       break;
+    }
 
     case 'z':
       if (src[0] == 's') /* status: deleted/new/old/replied */

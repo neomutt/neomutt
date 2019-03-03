@@ -226,7 +226,7 @@ struct ConfigDef MuttVars[] = {
   ** be redrawn on the screen when moving to the next or previous entries
   ** in the menu.
   */
-  { "ascii_chars",      DT_BOOL, R_BOTH, &C_AsciiChars, false },
+  { "ascii_chars",      DT_BOOL, R_INDEX|R_PAGER, &C_AsciiChars, false },
   /*
   ** .pp
   ** If \fIset\fP, NeoMutt will use plain ASCII characters when displaying thread
@@ -635,7 +635,7 @@ struct ConfigDef MuttVars[] = {
   ** $$crypt_replyencrypt,
   ** $$crypt_autosign, $$crypt_replysign and $$smime_is_default.
   */
-  { "crypt_chars",       DT_MBTABLE,    R_BOTH, &C_CryptChars, IP "SPsK " },
+  { "crypt_chars",       DT_MBTABLE,    R_INDEX|R_PAGER, &C_CryptChars, IP "SPsK " },
   /*
   ** .pp
   ** Controls the characters used in cryptography flags.
@@ -1077,7 +1077,7 @@ struct ConfigDef MuttVars[] = {
   ** signed.
   ** (PGP only)
   */
-  { "flag_chars",       DT_MBTABLE,    R_BOTH, &C_FlagChars, IP "*!DdrONon- " },
+  { "flag_chars",       DT_MBTABLE,    R_INDEX|R_PAGER, &C_FlagChars, IP "*!DdrONon- " },
   /*
   ** .pp
   ** Controls the characters used in several flags.
@@ -1256,7 +1256,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** If not specified, then it may be read from the environment variable \fC$$$EMAIL\fP.
   */
-  { "from_chars",               DT_MBTABLE,    R_BOTH, &C_FromChars, 0 },
+  { "from_chars",               DT_MBTABLE,    R_INDEX|R_PAGER, &C_FromChars, 0 },
   /*
   ** .pp
   ** Controls the character used to prefix the %F and %L fields in the
@@ -1296,7 +1296,7 @@ struct ConfigDef MuttVars[] = {
   ** "Franklin" to "Franklin, Steve".
   */
 #ifdef USE_NNTP
-  { "group_index_format", DT_STRING|DT_NOT_EMPTY, R_BOTH, &C_GroupIndexFormat, IP "%4C %M%N %5s  %-45.45f %d" },
+  { "group_index_format", DT_STRING|DT_NOT_EMPTY, R_INDEX|R_PAGER, &C_GroupIndexFormat, IP "%4C %M%N %5s  %-45.45f %d" },
   /*
   ** .pp
   ** This variable allows you to customize the newsgroup browser display to
@@ -1737,7 +1737,7 @@ struct ConfigDef MuttVars[] = {
   ** This option is a format string, please see the description of
   ** $$index_format for supported \fCprintf(3)\fP-style sequences.
   */
-  { "index_format",     DT_STRING|DT_NOT_EMPTY,  R_BOTH, &C_IndexFormat, IP "%4C %Z %{%b %d} %-15.15L (%?l?%4l&%4c?) %s" },
+  { "index_format",     DT_STRING|DT_NOT_EMPTY,  R_INDEX|R_PAGER, &C_IndexFormat, IP "%4C %Z %{%b %d} %-15.15L (%?l?%4l&%4c?) %s" },
   /*
   ** .pp
   ** This variable allows you to customize the message index display to
@@ -1961,7 +1961,7 @@ struct ConfigDef MuttVars[] = {
   ** automatically generated with \fI<mark-message>a\fP will be composed
   ** from this prefix and the letter \fIa\fP.
   */
-  { "mark_old",         DT_BOOL, R_BOTH, &C_MarkOld, true },
+  { "mark_old",         DT_BOOL, R_INDEX|R_PAGER, &C_MarkOld, true },
   /*
   ** .pp
   ** Controls whether or not NeoMutt marks \fInew\fP \fBunread\fP
@@ -1985,7 +1985,7 @@ struct ConfigDef MuttVars[] = {
   ** the \fInot\fP operator "!".  Only files whose names match this mask
   ** will be shown. The match is always case-sensitive.
   */
-  { "mbox",             DT_PATH|DT_MAILBOX, R_BOTH, &C_Mbox, IP "~/mbox" },
+  { "mbox",             DT_PATH|DT_MAILBOX, R_INDEX|R_PAGER, &C_Mbox, IP "~/mbox" },
   /*
   ** .pp
   ** This specifies the folder into which read mail in your $$spoolfile
@@ -3183,7 +3183,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** If \fIset\fP, all folders are opened in read-only mode.
   */
-  { "realname",         DT_STRING,  R_BOTH, &C_Realname, 0 },
+  { "realname",         DT_STRING,  R_INDEX|R_PAGER, &C_Realname, 0 },
   /*
   ** .pp
   ** This variable specifies what "real" or "personal" name should be used
@@ -3315,7 +3315,7 @@ struct ConfigDef MuttVars[] = {
   ** user-defined headers, and other processing effects from being
   ** made multiple times to the draft file.
   */
-  { "reverse_alias",    DT_BOOL, R_BOTH, &C_ReverseAlias, false },
+  { "reverse_alias",    DT_BOOL, R_INDEX|R_PAGER, &C_ReverseAlias, false },
   /*
   ** .pp
   ** This variable controls whether or not NeoMutt will display the "personal"
@@ -3335,7 +3335,7 @@ struct ConfigDef MuttVars[] = {
   ** "abd30425@somewhere.net."  This is useful when the person's e-mail
   ** address is not human friendly.
   */
-  { "reverse_name",     DT_BOOL, R_BOTH, &C_ReverseName, false },
+  { "reverse_name",     DT_BOOL, R_INDEX|R_PAGER, &C_ReverseName, false },
   /*
   ** .pp
   ** It may sometimes arrive that you receive mail to a certain machine,
@@ -3349,7 +3349,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** Also see the "$alternates" command.
   */
-  { "reverse_realname", DT_BOOL, R_BOTH, &C_ReverseRealname, true },
+  { "reverse_realname", DT_BOOL, R_INDEX|R_PAGER, &C_ReverseRealname, true },
   /*
   ** .pp
   ** This variable fine-tunes the behavior of the $$reverse_name feature.
@@ -3628,7 +3628,7 @@ struct ConfigDef MuttVars[] = {
   ** \fC<sidebar-prev-new>\fP command is similarly affected, wrapping around to
   ** the end of the list.
   */
-  { "sidebar_on_right", DT_BOOL, R_BOTH|R_REFLOW, &C_SidebarOnRight, false },
+  { "sidebar_on_right", DT_BOOL, R_INDEX|R_PAGER|R_REFLOW, &C_SidebarOnRight, false },
   /*
   ** .pp
   ** When set, the sidebar will appear on the right-hand side of the screen.
@@ -4082,7 +4082,7 @@ struct ConfigDef MuttVars[] = {
   ** .dd unsorted (leave in order specified in .neomuttrc)
   ** .ie
   */
-  { "sort_aux",         DT_SORT|DT_SORT_AUX, R_INDEX|R_RESORT_BOTH, &C_SortAux, SORT_DATE },
+  { "sort_aux",         DT_SORT|DT_SORT_AUX, R_INDEX|R_RESORT|R_RESORT_SUB, &C_SortAux, SORT_DATE },
   /*
   ** .pp
   ** This provides a secondary sort for messages in the "index" menu, used
@@ -4295,7 +4295,7 @@ struct ConfigDef MuttVars[] = {
 #endif /* defined HAVE_SSL_PARTIAL_CHAIN */
 #endif /* defined USE_SSL_OPENSSL */
 #endif /* defined(USE_SSL) */
-  { "status_chars",     DT_MBTABLE, R_BOTH, &C_StatusChars, IP "-*%A" },
+  { "status_chars",     DT_MBTABLE, R_INDEX|R_PAGER, &C_StatusChars, IP "-*%A" },
   /*
   ** .pp
   ** Controls the characters used by the "%r" indicator in $$status_format.
@@ -4312,7 +4312,7 @@ struct ConfigDef MuttVars[] = {
   **                 forwarding, etc. are not permitted in this mode)
   ** .de
   */
-  { "status_format",    DT_STRING,  R_BOTH, &C_StatusFormat, IP "-%r-NeoMutt: %D [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---" },
+  { "status_format",    DT_STRING,  R_INDEX|R_PAGER, &C_StatusFormat, IP "-%r-NeoMutt: %D [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---" },
   /*
   ** .pp
   ** Controls the format of the status line displayed in the "index"
@@ -4485,7 +4485,7 @@ struct ConfigDef MuttVars[] = {
   ** If this variable is not set, the environment variable \fC$$$TMPDIR\fP is
   ** used.  Failing that, then "\fC/tmp\fP" is used.
   */
-  { "to_chars",         DT_MBTABLE, R_BOTH, &C_ToChars, IP " +TCFLR" },
+  { "to_chars",         DT_MBTABLE, R_INDEX|R_PAGER, &C_ToChars, IP " +TCFLR" },
   /*
   ** .pp
   ** Controls the character used to indicate mail addressed to you.
@@ -4510,21 +4510,21 @@ struct ConfigDef MuttVars[] = {
   ** NOTE: When you delete a message in the trash folder, it is really
   ** deleted, so that you have a way to clean the trash.
   */
-  { "ts_enabled",        DT_BOOL,  R_BOTH, &C_TsEnabled, false },
+  { "ts_enabled",        DT_BOOL,  R_INDEX|R_PAGER, &C_TsEnabled, false },
   /* The default must be off to force in the validity checking. */
   /*
   ** .pp
   ** Controls whether NeoMutt tries to set the terminal status line and icon name.
   ** Most terminal emulators emulate the status line in the window title.
   */
-  { "ts_icon_format",    DT_STRING,  R_BOTH, &C_TsIconFormat, IP "M%?n?AIL&ail?" },
+  { "ts_icon_format",    DT_STRING,  R_INDEX|R_PAGER, &C_TsIconFormat, IP "M%?n?AIL&ail?" },
   /*
   ** .pp
   ** Controls the format of the icon title, as long as "$$ts_enabled" is set.
   ** This string is identical in formatting to the one used by
   ** "$$status_format".
   */
-  { "ts_status_format",  DT_STRING,   R_BOTH, &C_TsStatusFormat, IP "NeoMutt with %?m?%m messages&no messages?%?n? [%n NEW]?" },
+  { "ts_status_format",  DT_STRING,   R_INDEX|R_PAGER, &C_TsStatusFormat, IP "NeoMutt with %?m?%m messages&no messages?%?n? [%n NEW]?" },
   /*
   ** .pp
   ** Controls the format of the terminal status line (or window title),

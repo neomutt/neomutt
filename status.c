@@ -92,8 +92,8 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
                                      const char *if_str, const char *else_str,
                                      unsigned long data, MuttFormatFlags flags)
 {
-  char fmt[128], tmp[128], *cp = NULL;
-  int count, optional = (flags & MUTT_FORMAT_OPTIONAL);
+  char fmt[128], tmp[128];
+  int optional = (flags & MUTT_FORMAT_OPTIONAL);
   struct Menu *menu = (struct Menu *) data;
 
   *buf = 0;
@@ -240,7 +240,8 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       break;
 
     case 'p':
-      count = mutt_num_postponed(Context ? Context->mailbox : NULL, false);
+    {
+      int count = mutt_num_postponed(Context ? Context->mailbox : NULL, false);
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -249,10 +250,13 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       else if (!count)
         optional = 0;
       break;
+    }
 
     case 'P':
+    {
       if (!menu)
         break;
+      char *cp = NULL;
       if (menu->top + menu->pagelen >= menu->max)
       {
         cp = menu->top ?
@@ -263,13 +267,14 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       }
       else
       {
-        count = (100 * (menu->top + menu->pagelen)) / menu->max;
+        int count = (100 * (menu->top + menu->pagelen)) / menu->max;
         snprintf(tmp, sizeof(tmp), "%d%%", count);
         cp = tmp;
       }
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, cp);
       break;
+    }
 
     case 'r':
     {

@@ -371,7 +371,6 @@ void mutt_alias_create(struct Envelope *cur, struct Address *iaddr)
   char buf[1024], tmp[1024], prompt[128], *pc = NULL;
   char *err = NULL;
   char fixed[1024];
-  FILE *rc = NULL;
   struct Address *addr = NULL;
 
   if (cur)
@@ -480,52 +479,53 @@ retry_name:
   if (mutt_get_field(_("Save to file: "), buf, sizeof(buf), MUTT_FILE) != 0)
     return;
   mutt_expand_path(buf, sizeof(buf));
-  rc = fopen(buf, "a+");
-  if (rc)
+  FILE *fp_alias = fopen(buf, "a+");
+  if (!fp_alias)
   {
-    /* terminate existing file with \n if necessary */
-    if (fseek(rc, 0, SEEK_END))
-      goto fseek_err;
-    if (ftell(rc) > 0)
-    {
-      if (fseek(rc, -1, SEEK_CUR) < 0)
-        goto fseek_err;
-      if (fread(buf, 1, 1, rc) != 1)
-      {
-        mutt_perror(_("Error reading alias file"));
-        mutt_file_fclose(&rc);
-        return;
-      }
-      if (fseek(rc, 0, SEEK_END) < 0)
-        goto fseek_err;
-      if (buf[0] != '\n')
-        fputc('\n', rc);
-    }
-
-    if (check_alias_name(new->name, NULL, 0))
-      mutt_file_quote_filename(new->name, buf, sizeof(buf));
-    else
-      mutt_str_strfcpy(buf, new->name, sizeof(buf));
-    recode_buf(buf, sizeof(buf));
-    fprintf(rc, "alias %s ", buf);
-    buf[0] = '\0';
-    mutt_addr_write(buf, sizeof(buf), new->addr, false);
-    recode_buf(buf, sizeof(buf));
-    write_safe_address(rc, buf);
-    fputc('\n', rc);
-    if (mutt_file_fsync_close(&rc) != 0)
-      mutt_perror(_("Trouble adding alias"));
-    else
-      mutt_message(_("Alias added"));
-  }
-  else
     mutt_perror(buf);
+    return;
+  }
+
+  /* terminate existing file with \n if necessary */
+  if (fseek(fp_alias, 0, SEEK_END))
+    goto fseek_err;
+  if (ftell(fp_alias) > 0)
+  {
+    if (fseek(fp_alias, -1, SEEK_CUR) < 0)
+      goto fseek_err;
+    if (fread(buf, 1, 1, fp_alias) != 1)
+    {
+      mutt_perror(_("Error reading alias file"));
+      mutt_file_fclose(&fp_alias);
+      return;
+    }
+    if (fseek(fp_alias, 0, SEEK_END) < 0)
+      goto fseek_err;
+    if (buf[0] != '\n')
+      fputc('\n', fp_alias);
+  }
+
+  if (check_alias_name(new->name, NULL, 0))
+    mutt_file_quote_filename(new->name, buf, sizeof(buf));
+  else
+    mutt_str_strfcpy(buf, new->name, sizeof(buf));
+  recode_buf(buf, sizeof(buf));
+  fprintf(fp_alias, "alias %s ", buf);
+  buf[0] = '\0';
+  mutt_addr_write(buf, sizeof(buf), new->addr, false);
+  recode_buf(buf, sizeof(buf));
+  write_safe_address(fp_alias, buf);
+  fputc('\n', fp_alias);
+  if (mutt_file_fsync_close(&fp_alias) != 0)
+    mutt_perror(_("Trouble adding alias"));
+  else
+    mutt_message(_("Alias added"));
 
   return;
 
 fseek_err:
   mutt_perror(_("Error seeking in alias file"));
-  mutt_file_fclose(&rc);
+  mutt_file_fclose(&fp_alias);
 }
 
 /**

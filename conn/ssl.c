@@ -910,7 +910,8 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   x509_subject = X509_get_subject_name(cert);
   for (unsigned int u = 0; u < mutt_array_size(part); u++)
   {
-    snprintf(menu->dialog[row++], dialog_row_len, "   %s", x509_get_part(x509_subject, part[u]));
+    snprintf(menu->dialog[row++], dialog_row_len, "   %s",
+             x509_get_part(x509_subject, part[u]));
   }
 
   row++;
@@ -919,7 +920,8 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   x509_issuer = X509_get_issuer_name(cert);
   for (unsigned int u = 0; u < mutt_array_size(part); u++)
   {
-    snprintf(menu->dialog[row++], dialog_row_len, "   %s", x509_get_part(x509_issuer, part[u]));
+    snprintf(menu->dialog[row++], dialog_row_len, "   %s",
+             x509_get_part(x509_issuer, part[u]));
   }
 
   row++;
@@ -990,7 +992,7 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
 
   done = 0;
   OptIgnoreMacroEvents = true;
-  while (!done)
+  while (done == 0)
   {
     switch (mutt_menu_loop(menu))
     {
@@ -1010,7 +1012,7 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
             done = 1;
           mutt_file_fclose(&fp);
         }
-        if (!done)
+        if (done == 0)
         {
           mutt_error(_("Warning: Couldn't save certificate"));
         }

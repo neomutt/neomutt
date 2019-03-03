@@ -96,9 +96,10 @@ bool C_Tilde; ///< Config: Character to pad blank lines in the pager
 
 #define ISHEADER(x) ((x) == MT_COLOR_HEADER || (x) == MT_COLOR_HDEFAULT)
 
-#define IsAttach(x) (x && (x)->body)
-#define IsMsgAttach(x) (x && (x)->fp && (x)->body && (x)->body->email)
-#define IsEmail(x) (x && (x)->email && !(x)->body)
+#define IsAttach(pager) (pager && (pager)->body)
+#define IsMsgAttach(pager)                                                     \
+  (pager && (pager)->fp && (pager)->body && (pager)->body->email)
+#define IsEmail(pager) (pager && (pager)->email && !(pager)->body)
 
 static const char *Not_available_in_this_menu =
     N_("Not available in this menu");
@@ -110,8 +111,8 @@ static const char *Function_not_permitted_in_attach_message_mode =
 static int TopLine = 0;
 static struct Email *OldHdr = NULL;
 
-#define CHECK_MODE(x)                                                          \
-  if (!(x))                                                                    \
+#define CHECK_MODE(test)                                                       \
+  if (!(test))                                                                 \
   {                                                                            \
     mutt_flushinp();                                                           \
     mutt_error(_(Not_available_in_this_menu));                                 \
@@ -1925,7 +1926,7 @@ struct PagerRedrawData
 static void pager_custom_redraw(struct Menu *pager_menu)
 {
   struct PagerRedrawData *rd = pager_menu->redraw_data;
-  char buffer[1024];
+  char buf[1024];
 
   if (!rd)
     return;
@@ -1998,8 +1999,8 @@ static void pager_custom_redraw(struct Menu *pager_menu)
         const int err = REGCOMP(&rd->search_re, rd->searchbuf, REG_NEWLINE | flags);
         if (err != 0)
         {
-          regerror(err, &rd->search_re, buffer, sizeof(buffer));
-          mutt_error("%s", buffer);
+          regerror(err, &rd->search_re, buf, sizeof(buf));
+          mutt_error("%s", buf);
           rd->search_compiled = false;
         }
         else
@@ -2174,11 +2175,11 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     if (IsEmail(rd->extra) || IsMsgAttach(rd->extra))
     {
       size_t l1 = rd->pager_status_window->cols * MB_LEN_MAX;
-      size_t l2 = sizeof(buffer);
+      size_t l2 = sizeof(buf);
       hfi.email = (IsEmail(rd->extra)) ? rd->extra->email : rd->extra->body->email;
-      mutt_make_string_info(buffer, l1 < l2 ? l1 : l2, rd->pager_status_window->cols,
+      mutt_make_string_info(buf, l1 < l2 ? l1 : l2, rd->pager_status_window->cols,
                             NONULL(C_PagerFormat), &hfi, 0);
-      mutt_draw_statusline(rd->pager_status_window->cols, buffer, l2);
+      mutt_draw_statusline(rd->pager_status_window->cols, buf, l2);
     }
     else
     {
@@ -2189,10 +2190,10 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     NORMAL_COLOR;
     if (C_TsEnabled && TsSupported && rd->index)
     {
-      menu_status_line(buffer, sizeof(buffer), rd->index, NONULL(C_TsStatusFormat));
-      mutt_ts_status(buffer);
-      menu_status_line(buffer, sizeof(buffer), rd->index, NONULL(C_TsIconFormat));
-      mutt_ts_icon(buffer);
+      menu_status_line(buf, sizeof(buf), rd->index, NONULL(C_TsStatusFormat));
+      mutt_ts_status(buf);
+      menu_status_line(buf, sizeof(buf), rd->index, NONULL(C_TsIconFormat));
+      mutt_ts_icon(buf);
     }
   }
 
@@ -2204,11 +2205,11 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       menu_redraw_current(rd->index);
 
     /* print out the index status bar */
-    menu_status_line(buffer, sizeof(buffer), rd->index, NONULL(C_StatusFormat));
+    menu_status_line(buf, sizeof(buf), rd->index, NONULL(C_StatusFormat));
 
     mutt_window_move(rd->index_status_window, 0, 0);
     SETCOLOR(MT_COLOR_STATUS);
-    mutt_draw_statusline(rd->index_status_window->cols, buffer, sizeof(buffer));
+    mutt_draw_statusline(rd->index_status_window->cols, buf, sizeof(buf));
     NORMAL_COLOR;
   }
 
@@ -2233,7 +2234,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
 int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct Pager *extra)
 {
   static char searchbuf[256] = "";
-  char buffer[1024];
+  char buf[1024];
   char helpstr[256];
   char tmphelp[256];
   int ch = 0, rc = -1;
@@ -2298,19 +2299,19 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   if (IsEmail(extra))
   {
     mutt_str_strfcpy(tmphelp, helpstr, sizeof(tmphelp));
-    mutt_compile_help(buffer, sizeof(buffer), MENU_PAGER,
+    mutt_compile_help(buf, sizeof(buf), MENU_PAGER,
 #ifdef USE_NNTP
                       (Context && (Context->mailbox->magic == MUTT_NNTP)) ?
                           PagerNewsHelpExtra :
 #endif
                           PagerHelpExtra);
-    snprintf(helpstr, sizeof(helpstr), "%s %s", tmphelp, buffer);
+    snprintf(helpstr, sizeof(helpstr), "%s %s", tmphelp, buf);
   }
   if (!InHelp)
   {
     mutt_str_strfcpy(tmphelp, helpstr, sizeof(tmphelp));
-    mutt_make_help(buffer, sizeof(buffer), _("Help"), MENU_PAGER, OP_HELP);
-    snprintf(helpstr, sizeof(helpstr), "%s %s", tmphelp, buffer);
+    mutt_make_help(buf, sizeof(buf), _("Help"), MENU_PAGER, OP_HELP);
+    snprintf(helpstr, sizeof(helpstr), "%s %s", tmphelp, buf);
   }
 
   rd.index_status_window = mutt_mem_calloc(1, sizeof(struct MuttWindow));
@@ -2670,16 +2671,16 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
       case OP_SEARCH:
       case OP_SEARCH_REVERSE:
-        mutt_str_strfcpy(buffer, searchbuf, sizeof(buffer));
+        mutt_str_strfcpy(buf, searchbuf, sizeof(buf));
         if (mutt_get_field(((ch == OP_SEARCH) || (ch == OP_SEARCH_NEXT)) ?
                                _("Search for: ") :
                                _("Reverse search for: "),
-                           buffer, sizeof(buffer), MUTT_CLEAR) != 0)
+                           buf, sizeof(buf), MUTT_CLEAR) != 0)
         {
           break;
         }
 
-        if (strcmp(buffer, searchbuf) == 0)
+        if (strcmp(buf, searchbuf) == 0)
         {
           if (rd.search_compiled)
           {
@@ -2694,10 +2695,10 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           }
         }
 
-        if (!buffer[0])
+        if (!buf[0])
           break;
 
-        mutt_str_strfcpy(searchbuf, buffer, sizeof(searchbuf));
+        mutt_str_strfcpy(searchbuf, buf, sizeof(searchbuf));
 
         /* leave search_back alone if ch == OP_SEARCH_NEXT */
         if (ch == OP_SEARCH)
@@ -2720,8 +2721,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         int err = REGCOMP(&rd.search_re, searchbuf, REG_NEWLINE | rflags);
         if (err != 0)
         {
-          regerror(err, &rd.search_re, buffer, sizeof(buffer));
-          mutt_error("%s", buffer);
+          regerror(err, &rd.search_re, buf, sizeof(buf));
+          mutt_error("%s", buf);
           for (size_t i = 0; i < rd.max_line; i++)
           {
             /* cleanup */
