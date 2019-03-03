@@ -267,32 +267,32 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
       unsigned char charval[16];
       unsigned int intval;
     } digest;
-    struct Md5Ctx ctx;
+    struct Md5Ctx md5ctx;
 
     hcachever = HCACHEVER;
 
-    mutt_md5_init_ctx(&ctx);
+    mutt_md5_init_ctx(&md5ctx);
 
     /* Seed with the compiled-in header structure hash */
-    mutt_md5_process_bytes(&hcachever, sizeof(hcachever), &ctx);
+    mutt_md5_process_bytes(&hcachever, sizeof(hcachever), &md5ctx);
 
     /* Mix in user's spam list */
     struct ReplaceListNode *sp = NULL;
     STAILQ_FOREACH(sp, &SpamList, entries)
     {
-      mutt_md5_process(sp->regex->pattern, &ctx);
-      mutt_md5_process(sp->template, &ctx);
+      mutt_md5_process(sp->regex->pattern, &md5ctx);
+      mutt_md5_process(sp->template, &md5ctx);
     }
 
     /* Mix in user's nospam list */
     struct RegexListNode *np = NULL;
     STAILQ_FOREACH(np, &NoSpamList, entries)
     {
-      mutt_md5_process(np->regex->pattern, &ctx);
+      mutt_md5_process(np->regex->pattern, &md5ctx);
     }
 
     /* Get a hash and take its bytes as an (unsigned int) hash version */
-    mutt_md5_finish_ctx(&ctx, digest.charval);
+    mutt_md5_finish_ctx(&md5ctx, digest.charval);
     hcachever = digest.intval;
   }
 

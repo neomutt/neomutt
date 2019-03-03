@@ -47,10 +47,10 @@ struct Md5Ctx
 
 void *mutt_md5(const char *string, void *resbuf);
 void *mutt_md5_bytes(const void *buffer, size_t len, void *resbuf);
-void *mutt_md5_finish_ctx(struct Md5Ctx *ctx, void *resbuf);
-void  mutt_md5_init_ctx(struct Md5Ctx *ctx);
-void  mutt_md5_process(const char *string, struct Md5Ctx *ctx);
-void  mutt_md5_process_bytes(const void *buffer, size_t len, struct Md5Ctx *ctx);
+void *mutt_md5_finish_ctx(struct Md5Ctx *md5ctx, void *resbuf);
+void  mutt_md5_init_ctx(struct Md5Ctx *md5ctx);
+void  mutt_md5_process(const char *string, struct Md5Ctx *md5ctx);
+void  mutt_md5_process_bytes(const void *buffer, size_t len, struct Md5Ctx *md5ctx);
 void  mutt_md5_toascii(const void *digest, char *resbuf);
 
 #endif /* MUTT_LIB_MD5_H */

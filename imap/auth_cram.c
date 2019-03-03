@@ -47,7 +47,7 @@
  */
 static void hmac_md5(const char *password, char *challenge, unsigned char *response)
 {
-  struct Md5Ctx ctx;
+  struct Md5Ctx md5ctx;
   unsigned char ipad[MD5_BLOCK_LEN] = { 0 };
   unsigned char opad[MD5_BLOCK_LEN] = { 0 };
   unsigned char secret[MD5_BLOCK_LEN + 1];
@@ -77,16 +77,16 @@ static void hmac_md5(const char *password, char *challenge, unsigned char *respo
   }
 
   /* inner hash: challenge and ipadded secret */
-  mutt_md5_init_ctx(&ctx);
-  mutt_md5_process_bytes(ipad, MD5_BLOCK_LEN, &ctx);
-  mutt_md5_process(challenge, &ctx);
-  mutt_md5_finish_ctx(&ctx, response);
+  mutt_md5_init_ctx(&md5ctx);
+  mutt_md5_process_bytes(ipad, MD5_BLOCK_LEN, &md5ctx);
+  mutt_md5_process(challenge, &md5ctx);
+  mutt_md5_finish_ctx(&md5ctx, response);
 
   /* outer hash: inner hash and opadded secret */
-  mutt_md5_init_ctx(&ctx);
-  mutt_md5_process_bytes(opad, MD5_BLOCK_LEN, &ctx);
-  mutt_md5_process_bytes(response, MD5_DIGEST_LEN, &ctx);
-  mutt_md5_finish_ctx(&ctx, response);
+  mutt_md5_init_ctx(&md5ctx);
+  mutt_md5_process_bytes(opad, MD5_BLOCK_LEN, &md5ctx);
+  mutt_md5_process_bytes(response, MD5_DIGEST_LEN, &md5ctx);
+  mutt_md5_finish_ctx(&md5ctx, response);
 }
 
 /**
