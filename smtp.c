@@ -681,18 +681,19 @@ static int smtp_open(struct Connection *conn, bool esmtp)
     return rc;
 
 #ifdef USE_SSL
+  enum QuadOption ans = MUTT_NO;
   if (conn->ssf)
-    rc = MUTT_NO;
+    ans = MUTT_NO;
   else if (C_SslForceTls)
-    rc = MUTT_YES;
+    ans = MUTT_YES;
   else if ((Capabilities & SMTP_CAP_STARTTLS) &&
-           (rc = query_quadoption(C_SslStarttls,
-                                  _("Secure connection with TLS?"))) == MUTT_ABORT)
+           (ans = query_quadoption(C_SslStarttls,
+                                   _("Secure connection with TLS?"))) == MUTT_ABORT)
   {
-    return rc;
+    return -1;
   }
 
-  if (rc == MUTT_YES)
+  if (ans == MUTT_YES)
   {
     if (mutt_socket_send(conn, "STARTTLS\r\n") < 0)
       return SMTP_ERR_WRITE;

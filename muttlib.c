@@ -693,7 +693,7 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
     return -1;
   if (S_ISDIR(st.st_mode))
   {
-    int rc = 0;
+    enum QuadOption ans = MUTT_NO;
     if (directory)
     {
       switch (mutt_multi_choice
@@ -722,8 +722,8 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
     /* L10N:
        Means "The path you specified as the destination file is a directory."
        See the msgid "Save to file: " (alias.c, recvattach.c) */
-    else if ((rc = mutt_yesorno(_("File is a directory, save under it?"), MUTT_YES)) != MUTT_YES)
-      return (rc == MUTT_NO) ? 1 : -1;
+    else if ((ans = mutt_yesorno(_("File is a directory, save under it?"), MUTT_YES)) != MUTT_YES)
+      return (ans == MUTT_NO) ? 1 : -1;
 
     char tmp[PATH_MAX];
     mutt_str_strfcpy(tmp, mutt_path_basename(NONULL(attname)), sizeof(tmp));
@@ -1383,7 +1383,6 @@ int mutt_save_confirm(const char *s, struct stat *st)
 {
   char tmp[PATH_MAX];
   int ret = 0;
-  int rc;
 
   enum MailboxType magic = mx_path_probe(s, NULL);
 
@@ -1400,10 +1399,10 @@ int mutt_save_confirm(const char *s, struct stat *st)
     if (C_Confirmappend)
     {
       snprintf(tmp, sizeof(tmp), _("Append messages to %s?"), s);
-      rc = mutt_yesorno(tmp, MUTT_YES);
-      if (rc == MUTT_NO)
+      enum QuadOption ans = mutt_yesorno(tmp, MUTT_YES);
+      if (ans == MUTT_NO)
         ret = 1;
-      else if (rc == MUTT_ABORT)
+      else if (ans == MUTT_ABORT)
         ret = -1;
     }
   }
@@ -1435,10 +1434,10 @@ int mutt_save_confirm(const char *s, struct stat *st)
       if (C_Confirmcreate)
       {
         snprintf(tmp, sizeof(tmp), _("Create %s?"), s);
-        rc = mutt_yesorno(tmp, MUTT_YES);
-        if (rc == MUTT_NO)
+        enum QuadOption ans = mutt_yesorno(tmp, MUTT_YES);
+        if (ans == MUTT_NO)
           ret = 1;
-        else if (rc == MUTT_ABORT)
+        else if (ans == MUTT_ABORT)
           ret = -1;
       }
 

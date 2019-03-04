@@ -701,7 +701,7 @@ static int default_to(struct Address **to, struct Envelope *env, SendFlags flags
 int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, SendFlags flags)
 {
   struct Address *tmp = NULL;
-  int hmfupto = -1;
+  enum QuadOption hmfupto = MUTT_ABORT;
 
   if ((flags & (SEND_LIST_REPLY | SEND_GROUP_REPLY | SEND_GROUP_CHAT_REPLY)) && in->mail_followup_to)
   {
@@ -720,8 +720,8 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, SendFlags flags
     mutt_addr_append(&out->to, tmp, false);
     mutt_addr_free(&tmp);
 
-    if (in->mail_followup_to && hmfupto == MUTT_YES &&
-        default_to(&out->cc, in, flags & SEND_LIST_REPLY, hmfupto) == MUTT_ABORT)
+    if (in->mail_followup_to && (hmfupto == MUTT_YES) &&
+        default_to(&out->cc, in, flags & SEND_LIST_REPLY, (hmfupto == MUTT_YES)) == MUTT_ABORT)
     {
       return -1; /* abort */
     }
@@ -733,7 +733,7 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, SendFlags flags
   else
   {
     if (default_to(&out->to, in, flags & (SEND_GROUP_REPLY | SEND_GROUP_CHAT_REPLY),
-                   hmfupto) == -1)
+                   (hmfupto == MUTT_YES)) == -1)
       return -1; /* abort */
 
     if ((flags & (SEND_GROUP_REPLY | SEND_GROUP_CHAT_REPLY)) &&
@@ -979,7 +979,9 @@ static int envelope_defaults(struct Envelope *env, struct Mailbox *m,
 static int generate_body(FILE *fp_tmp, struct Email *msg, SendFlags flags,
                          struct Mailbox *m, struct EmailList *el)
 {
-  enum QuadOption ans;
+  if (!el || STAILQ_EMPTY(el))
+    return -1;
+
   struct Body *tmp = NULL;
   struct EmailNode *en = NULL;
   bool single = true;
@@ -995,7 +997,8 @@ static int generate_body(FILE *fp_tmp, struct Email *msg, SendFlags flags,
 
   if (flags & SEND_REPLY)
   {
-    ans = query_quadoption(C_Include, _("Include message in reply?"));
+    enum QuadOption ans =
+        query_quadoption(C_Include, _("Include message in reply?"));
     if (ans == MUTT_ABORT)
       return -1;
 
@@ -1020,7 +1023,8 @@ static int generate_body(FILE *fp_tmp, struct Email *msg, SendFlags flags,
   }
   else if (flags & SEND_FORWARD)
   {
-    ans = query_quadoption(C_MimeForward, _("Forward as attachment?"));
+    enum QuadOption ans =
+        query_quadoption(C_MimeForward, _("Forward as attachment?"));
     if (ans == MUTT_YES)
     {
       struct Body *last = msg->content;
@@ -1781,11 +1785,12 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
     /* If the user is composing a new message, check to see if there
      * are any postponed messages first.
      */
-    i = query_quadoption(C_Recall, _("Recall postponed message?"));
-    if (i == MUTT_ABORT)
+    enum QuadOption ans =
+        query_quadoption(C_Recall, _("Recall postponed message?"));
+    if (ans == MUTT_ABORT)
       return rc;
 
-    if (i == MUTT_YES)
+    if (ans == MUTT_YES)
       flags |= SEND_POSTPONED;
   }
 
@@ -2337,8 +2342,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
   }
 
   if (!msg->env->subject && !(flags & SEND_BATCH) &&
-      (i = query_quadoption(C_AbortNosubject,
-                            _("No subject, abort sending?"))) != MUTT_NO)
+      (query_quadoption(C_AbortNosubject, _("No subject, abort sending?")) != MUTT_NO))
   {
     /* if the abort is automatic, print an error message */
     if (C_AbortNosubject == MUTT_YES)

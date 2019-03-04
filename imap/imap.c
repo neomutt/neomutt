@@ -1085,7 +1085,7 @@ out:
  *       desirable to propagate that flag into the copy.
  */
 int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
-                               struct Buffer *cmd, int *err_continue)
+                               struct Buffer *cmd, enum QuadOption *err_continue)
 {
   struct ImapAccountData *adata = imap_adata_get(m);
   if (!adata || adata->mailbox != m)
@@ -1532,7 +1532,7 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
   int rc = -1;
   bool triedcreate = false;
   struct Buffer *sync_cmd = NULL;
-  int err_continue = MUTT_NO;
+  enum QuadOption err_continue = MUTT_NO;
 
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapAccountData *dest_adata = NULL;
@@ -1766,7 +1766,7 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   {
     if (close)
     {
-      if (mutt_yesorno(_("Error saving flags. Close anyway?"), 0) == MUTT_YES)
+      if (mutt_yesorno(_("Error saving flags. Close anyway?"), MUTT_NO) == MUTT_YES)
       {
         adata->state = IMAP_AUTHENTICATED;
         return 0;
@@ -2188,7 +2188,7 @@ static int imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 
   char buf[PATH_MAX + 64];
   snprintf(buf, sizeof(buf), _("Create %s?"), mdata->name);
-  if (C_Confirmcreate && mutt_yesorno(buf, 1) != MUTT_YES)
+  if (C_Confirmcreate && mutt_yesorno(buf, MUTT_YES) != MUTT_YES)
     return -1;
 
   if (imap_create_mailbox(adata, mdata->name) < 0)

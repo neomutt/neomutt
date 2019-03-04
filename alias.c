@@ -416,6 +416,7 @@ retry_name:
         goto retry_name;
       case MUTT_ABORT:
         return;
+      default:; // do nothing
     }
   }
 

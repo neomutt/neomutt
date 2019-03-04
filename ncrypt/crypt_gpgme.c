@@ -4796,7 +4796,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
 
           snprintf(buf2, sizeof(buf2), "%s", warn_s);
 
-          if (mutt_yesorno(buf2, 0) != MUTT_YES)
+          if (mutt_yesorno(buf2, MUTT_NO) != MUTT_YES)
           {
             mutt_clear_error();
             break;
@@ -5116,7 +5116,6 @@ static char *find_keys(struct Address *addrlist, unsigned int app, bool oppenc_m
   const char *fqdn = mutt_fqdn(true);
   char buf[1024];
   int forced_valid;
-  int r;
   bool key_selected;
 
   for (p = addrlist; p; p = p->next)
@@ -5133,14 +5132,14 @@ static char *find_keys(struct Address *addrlist, unsigned int app, bool oppenc_m
       if (crypt_hook)
       {
         crypt_hook_val = crypt_hook->data;
-        r = MUTT_YES;
+        enum QuadOption ans = MUTT_YES;
         if (!oppenc_mode && C_CryptConfirmhook)
         {
           snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"),
                    crypt_hook_val, p->mailbox);
-          r = mutt_yesorno(buf, MUTT_YES);
+          ans = mutt_yesorno(buf, MUTT_YES);
         }
-        if (r == MUTT_YES)
+        if (ans == MUTT_YES)
         {
           if (crypt_is_numerical_keyid(crypt_hook_val))
           {
@@ -5163,7 +5162,7 @@ static char *find_keys(struct Address *addrlist, unsigned int app, bool oppenc_m
             k_info = crypt_getkeybystr(crypt_hook_val, KEYFLAG_CANENCRYPT, app, &forced_valid);
           }
         }
-        else if (r == MUTT_NO)
+        else if (ans == MUTT_NO)
         {
           if (key_selected || STAILQ_NEXT(crypt_hook, entries))
           {
@@ -5171,7 +5170,7 @@ static char *find_keys(struct Address *addrlist, unsigned int app, bool oppenc_m
             continue;
           }
         }
-        else if (r == MUTT_ABORT)
+        else if (ans == MUTT_ABORT)
         {
           FREE(&keylist);
           mutt_addr_free(&addr);

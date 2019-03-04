@@ -3386,9 +3386,9 @@ int mutt_query_variables(struct ListHead *queries)
  * query_quadoption - Ask the user a quad-question
  * @param opt    Option to use
  * @param prompt Message to show to the user
- * @retval num Result, e.g. #MUTT_YES
+ * @retval enum Result, see #QuadOption
  */
-int query_quadoption(int opt, const char *prompt)
+enum QuadOption query_quadoption(enum QuadOption opt, const char *prompt)
 {
   switch (opt)
   {

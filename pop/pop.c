@@ -589,7 +589,7 @@ void pop_fetch_mail(void)
 
   char buf[1024];
   char msgbuf[128];
-  int delanswer, last = 0, msgs, bytes, rset = 0, ret;
+  int last = 0, msgs, bytes, rset = 0, ret;
   struct ConnAccount acct;
 
   char *p = mutt_mem_calloc(strlen(C_PopHost) + 7, sizeof(char));
@@ -663,7 +663,8 @@ void pop_fetch_mail(void)
     goto finish;
   }
 
-  delanswer = query_quadoption(C_PopDelete, _("Delete messages from server?"));
+  enum QuadOption delanswer =
+      query_quadoption(C_PopDelete, _("Delete messages from server?"));
 
   snprintf(msgbuf, sizeof(msgbuf),
            ngettext("Reading new messages (%d byte)...",

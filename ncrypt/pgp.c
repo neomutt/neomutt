@@ -1428,7 +1428,6 @@ char *pgp_class_find_keys(struct Address *addrlist, bool oppenc_mode)
   struct Address *p = NULL, *q = NULL;
   struct PgpKeyInfo *k_info = NULL;
   char buf[1024];
-  int r;
   bool key_selected;
 
   const char *fqdn = mutt_fqdn(true);
@@ -1446,13 +1445,13 @@ char *pgp_class_find_keys(struct Address *addrlist, bool oppenc_mode)
       if (crypt_hook)
       {
         keyID = crypt_hook->data;
-        r = MUTT_YES;
+        enum QuadOption ans = MUTT_YES;
         if (!oppenc_mode && C_CryptConfirmhook)
         {
           snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"), keyID, p->mailbox);
-          r = mutt_yesorno(buf, MUTT_YES);
+          ans = mutt_yesorno(buf, MUTT_YES);
         }
-        if (r == MUTT_YES)
+        if (ans == MUTT_YES)
         {
           if (crypt_is_numerical_keyid(keyID))
           {
@@ -1473,7 +1472,7 @@ char *pgp_class_find_keys(struct Address *addrlist, bool oppenc_mode)
             k_info = pgp_getkeybystr(keyID, KEYFLAG_CANENCRYPT, PGP_PUBRING);
           }
         }
-        else if (r == MUTT_NO)
+        else if (ans == MUTT_NO)
         {
           if (key_selected || STAILQ_NEXT(crypt_hook, entries))
           {
@@ -1481,7 +1480,7 @@ char *pgp_class_find_keys(struct Address *addrlist, bool oppenc_mode)
             continue;
           }
         }
-        else if (r == MUTT_ABORT)
+        else if (ans == MUTT_ABORT)
         {
           FREE(&keylist);
           mutt_addr_free(&addr);

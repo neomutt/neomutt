@@ -322,11 +322,12 @@ int pop_open_connection(struct PopAccountData *adata)
       adata->use_stls = 2;
     if (adata->use_stls == 0)
     {
-      rc = query_quadoption(C_SslStarttls, _("Secure connection with TLS?"));
-      if (rc == MUTT_ABORT)
+      enum QuadOption ans =
+          query_quadoption(C_SslStarttls, _("Secure connection with TLS?"));
+      if (ans == MUTT_ABORT)
         return -2;
       adata->use_stls = 1;
-      if (rc == MUTT_YES)
+      if (ans == MUTT_YES)
         adata->use_stls = 2;
     }
     if (adata->use_stls == 2)

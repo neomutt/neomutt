@@ -539,7 +539,9 @@ int mx_mbox_close(struct Context **ptr)
 
   struct Mailbox *m = ctx->mailbox;
 
-  int i, move_messages = 0, purge = 1, read_msgs = 0;
+  int i, read_msgs = 0;
+  enum QuadOption move_messages = MUTT_NO;
+  enum QuadOption purge = MUTT_YES;
   char mbox[PATH_MAX];
   char buf[PATH_MAX + 64];
 
@@ -557,11 +559,11 @@ int mx_mbox_close(struct Context **ptr)
 
     if (mdata && mdata->adata && mdata->group)
     {
-      int rc =
+      enum QuadOption ans =
           query_quadoption(C_CatchupNewsgroup, _("Mark all articles read?"));
-      if (rc == MUTT_ABORT)
+      if (ans == MUTT_ABORT)
         return -1;
-      else if (rc == MUTT_YES)
+      else if (ans == MUTT_YES)
         mutt_newsgroup_catchup(Context->mailbox, mdata->adata, mdata->group);
     }
   }

@@ -466,7 +466,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   FILE *fp_parent = NULL;
   char tmpbody[PATH_MAX];
   char prefix[256];
-  int rc = 0;
+  enum QuadOption ans = MUTT_ABORT;
 
   /* First, find the parent message.
    * Note: This could be made an option by just
@@ -521,11 +521,11 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
    * or attach them.
    */
   if ((!cur || mutt_can_decode(cur)) &&
-      (rc = query_quadoption(C_MimeForward, _("Forward as attachments?"))) == MUTT_YES)
+      (ans = query_quadoption(C_MimeForward, _("Forward as attachments?"))) == MUTT_YES)
   {
     mime_fwd_all = true;
   }
-  else if (rc == -1)
+  else if (ans == MUTT_ABORT)
   {
     goto bail;
   }
@@ -535,12 +535,12 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
    */
   if (!mime_fwd_all && !cur && (nattach > 1) && !check_can_decode(actx, cur))
   {
-    rc = query_quadoption(
+    ans = query_quadoption(
         C_MimeForwardRest,
         _("Can't decode all tagged attachments.  MIME-forward the others?"));
-    if (rc == MUTT_ABORT)
+    if (ans == MUTT_ABORT)
       goto bail;
-    else if (rc == MUTT_NO)
+    else if (ans == MUTT_NO)
       mime_fwd_any = false;
   }
 
@@ -636,7 +636,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
 {
   struct Email *e_cur = NULL;
   struct Email *e_tmp = NULL;
-  int rc;
+  enum QuadOption ans;
 
   struct Body **last = NULL;
   char tmpbody[PATH_MAX];
@@ -664,8 +664,8 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
 
   tmpbody[0] = '\0';
 
-  rc = query_quadoption(C_MimeForward, _("Forward MIME encapsulated?"));
-  if (rc == MUTT_NO)
+  ans = query_quadoption(C_MimeForward, _("Forward MIME encapsulated?"));
+  if (ans == MUTT_NO)
   {
     /* no MIME encapsulation */
 
@@ -716,7 +716,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
     }
     mutt_file_fclose(&fp_tmp);
   }
-  else if (rc == MUTT_YES) /* do MIME encapsulation - we don't need to do much here */
+  else if (ans == MUTT_YES) /* do MIME encapsulation - we don't need to do much here */
   {
     last = &e_tmp->content;
     if (cur)
@@ -944,12 +944,12 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
 
   if (nattach > 1 && !check_can_decode(actx, cur))
   {
-    const int rc = query_quadoption(C_MimeForwardRest,
-                                    _("Can't decode all tagged attachments.  "
-                                      "MIME-encapsulate the others?"));
-    if (rc == MUTT_ABORT)
+    const enum QuadOption ans = query_quadoption(
+        C_MimeForwardRest, _("Can't decode all tagged attachments.  "
+                             "MIME-encapsulate the others?"));
+    if (ans == MUTT_ABORT)
       return;
-    else if (rc == MUTT_YES)
+    else if (ans == MUTT_YES)
       mime_reply_any = true;
   }
   else if (nattach == 1)

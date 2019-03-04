@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include <time.h>
 #include "mutt/mutt.h"
+#include "config/lib.h"
 #include "conn/conn.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
@@ -269,7 +270,7 @@ void imap_close_connection(struct ImapAccountData *adata);
 int imap_read_literal(FILE *fp, struct ImapAccountData *adata, unsigned long bytes, struct Progress *pbar);
 void imap_expunge_mailbox(struct Mailbox *m);
 int imap_login(struct ImapAccountData *adata);
-int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e, struct Buffer *cmd, int *err_continue);
+int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e, struct Buffer *cmd, enum QuadOption *err_continue);
 bool imap_has_flag(struct ListHead *flag_list, const char *flag);
 int imap_adata_find(const char *path, struct ImapAccountData **adata, struct ImapMboxData **mdata);
 
@@ -313,7 +314,7 @@ int imap_hcache_clear_uid_seqset(struct ImapMboxData *mdata);
 char *imap_hcache_get_uid_seqset(struct ImapMboxData *mdata);
 #endif
 
-int imap_continue(const char *msg, const char *resp);
+enum QuadOption imap_continue(const char *msg, const char *resp);
 void imap_error(const char *where, const char *msg);
 struct ImapAccountData *imap_adata_new(void);
 void imap_adata_free(void **ptr);

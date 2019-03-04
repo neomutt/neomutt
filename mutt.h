@@ -29,6 +29,7 @@
 #include <regex.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include "config/lib.h"
 #include "mutt_commands.h"
 
 struct Buffer;
@@ -214,7 +215,7 @@ char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping
 
 int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags);
 void mutt_free_opts(void);
-int query_quadoption(int opt, const char *prompt);
+enum QuadOption query_quadoption(enum QuadOption opt, const char *prompt);
 int mutt_label_complete(char *buf, size_t buflen, int numtabs);
 int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs);
 int mutt_var_value_complete(char *buf, size_t buflen, int pos);
