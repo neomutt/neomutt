@@ -1184,6 +1184,27 @@ warn:
 }
 
 /**
+ * is_function - Is the argument a neomutt function?
+ * @param name  Command name to be searched for
+ * @retval true  Function found
+ * @retval false Function not found
+*/
+static bool is_function(const char *name)
+{
+  for (int i = 0; i < MENU_MAX; i++)
+  {
+    const struct Binding *b = km_get_table(Menus[i].value);
+    if (!b)
+      continue;
+
+    for (int j = 0; b[j].name; j++)
+      if (mutt_str_strcmp(name, b[j].name) == 0)
+        return true;
+  }
+  return false;
+}
+
+/**
  * parse_ifdef - Parse the 'ifdef' and 'ifndef' commands - Implements ::command_t
  *
  * The 'ifdef' command allows conditional elements in the config file.
@@ -1203,54 +1224,13 @@ static enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
 
   mutt_extract_token(buf, s, 0);
 
-  /* is the item defined as a variable? */
-  struct HashElem *he = cs_get_elem(Config, buf->data);
-  bool res = (he != NULL);
-
-  /* is the item a compiled-in feature? */
-  if (!res)
-  {
-    res = feature_enabled(buf->data);
-  }
-
-  /* or a function? */
-  if (!res)
-  {
-    for (int i = 0; !res && (i < MENU_MAX); i++)
-    {
-      const struct Binding *b = km_get_table(Menus[i].value);
-      if (!b)
-        continue;
-
-      for (int j = 0; b[j].name; j++)
-      {
-        if (mutt_str_strcmp(buf->data, b[j].name) == 0)
-        {
-          res = true;
-          break;
-        }
-      }
-    }
-  }
-
-  /* or a command? */
-  if (!res)
-  {
-    for (int i = 0; Commands[i].name; i++)
-    {
-      if (mutt_str_strcmp(buf->data, Commands[i].name) == 0)
-      {
-        res = true;
-        break;
-      }
-    }
-  }
-
-  /* or a my_ var? */
-  if (!res)
-  {
-    res = !!myvar_get(buf->data);
-  }
+  // is the item defined as:
+  bool res = cs_get_elem(Config, buf->data) // a variable?
+             || feature_enabled(buf->data)  // a compiled-in feature?
+             || is_function(buf->data)      // a function?
+             || mutt_command_get(buf->data) // a command?
+             || myvar_get(buf->data)        // a my_ variable?
+             || mutt_str_getenv(buf->data); // an environment variable?
 
   if (!MoreArgs(s))
   {
@@ -2592,7 +2572,6 @@ static enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buff
 }
 #endif
 
-#ifdef USE_LUA
 /**
  * mutt_command_get - Get a Command by its name
  * @param s Command string to lookup
@@ -2606,7 +2585,6 @@ const struct Command *mutt_command_get(const char *s)
       return &Commands[i];
   return NULL;
 }
-#endif
 
 #ifdef USE_LUA
 /**

@@ -12794,6 +12794,7 @@ finish                                    <emphasis role="comment"># Finish read
 
         <para>
           Here a symbol can be a <link linkend="variables">$variable</link>,
+          environment variable,
           <link linkend="functions">&lt;function&gt;</link>,
           <link linkend="commands">command</link> or compile-time symbol, such
           as <quote>imap</quote>.
@@ -12850,7 +12851,7 @@ ifndef sidebar finish
 <emphasis role="comment">#   ifndef symbol "config-command [args...]"</emphasis>
 <emphasis role="comment">#   finish</emphasis>
 <emphasis role="comment"># The 'ifdef' command tests whether NeoMutt understands the name of</emphasis>
-<emphasis role="comment"># a variable, function, command or compile-time symbol.</emphasis>
+<emphasis role="comment"># a variable, environment variable, function, command or compile-time symbol.</emphasis>
 
 <emphasis role="comment"># If it does, then it executes a config command.</emphasis>
 
@@ -12860,6 +12861,8 @@ ifndef sidebar finish
 
 <emphasis role="comment"># If the 'trash' variable exists, set it.</emphasis>
 ifdef trash 'set trash=~/Mail/trash'
+<emphasis role="comment"># If the 'PS1' environment variable exists, source config file.</emphasis>
+ifdef PS1 'source .neomutt/interactive.rc'
 <emphasis role="comment"># If the 'tag-pattern' function exists, bind a key to it.</emphasis>
 ifdef tag-pattern 'bind index &lt;F6&gt; tag-pattern'
 <emphasis role="comment"># If the 'imap-fetch-mail' command exists, read my IMAP config.</emphasis>
