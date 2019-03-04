@@ -347,13 +347,13 @@ static int do_search(const struct Pattern *search, int allpats)
   {
     switch (pat->op)
     {
-      case MUTT_BODY:
-      case MUTT_HEADER:
-      case MUTT_WHOLE_MSG:
+      case MUTT_PAT_BODY:
+      case MUTT_PAT_HEADER:
+      case MUTT_PAT_WHOLE_MSG:
         if (pat->stringmatch)
           rc++;
         break;
-      case MUTT_SERVERSEARCH:
+      case MUTT_PAT_SERVERSEARCH:
         rc++;
         break;
       default:
@@ -403,7 +403,7 @@ static int compile_search(struct Mailbox *m, const struct Pattern *pat, struct B
       {
         if (do_search(clause, 0))
         {
-          if (pat->op == MUTT_OR && clauses > 1)
+          if (pat->op == MUTT_PAT_OR && clauses > 1)
             mutt_buffer_addstr(buf, "OR ");
           clauses--;
 
@@ -426,7 +426,7 @@ static int compile_search(struct Mailbox *m, const struct Pattern *pat, struct B
 
     switch (pat->op)
     {
-      case MUTT_HEADER:
+      case MUTT_PAT_HEADER:
         mutt_buffer_addstr(buf, "HEADER ");
 
         /* extract header name */
@@ -448,17 +448,17 @@ static int compile_search(struct Mailbox *m, const struct Pattern *pat, struct B
         imap_quote_string(term, sizeof(term), delim, false);
         mutt_buffer_addstr(buf, term);
         break;
-      case MUTT_BODY:
+      case MUTT_PAT_BODY:
         mutt_buffer_addstr(buf, "BODY ");
         imap_quote_string(term, sizeof(term), pat->p.str, false);
         mutt_buffer_addstr(buf, term);
         break;
-      case MUTT_WHOLE_MSG:
+      case MUTT_PAT_WHOLE_MSG:
         mutt_buffer_addstr(buf, "TEXT ");
         imap_quote_string(term, sizeof(term), pat->p.str, false);
         mutt_buffer_addstr(buf, term);
         break;
-      case MUTT_SERVERSEARCH:
+      case MUTT_PAT_SERVERSEARCH:
       {
         struct ImapAccountData *adata = imap_adata_get(m);
         if (!(adata->capabilities & IMAP_CAP_X_GM_EXT_1))

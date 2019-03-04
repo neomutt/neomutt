@@ -102,11 +102,12 @@ typedef uint16_t TokenFlags;               ///< Flags for mutt_extract_token(), 
 #define MUTT_SPECIAL_INDEX MUTT_TREE_MAX
 
 /**
- * enum MuttMisc - Unsorted flags
+ * enum MessageType - To set flags or match patterns
+ *
+ * @sa mutt_set_flag(), mutt_pattern_func()
  */
-enum MuttMisc
+enum MessageType
 {
-  /* action codes used by mutt_set_flag() and mutt_pattern_func() */
   MUTT_ALL = 1,    ///< All messages
   MUTT_NONE,       ///< No messages
   MUTT_NEW,        ///< New messages
@@ -126,51 +127,7 @@ enum MuttMisc
   MUTT_SUPERSEDED, ///< Superseded messages
   MUTT_TRASH,      ///< Trashed messages
 
-  /* actions for mutt_pattern_comp/mutt_pattern_exec */
-  MUTT_AND,             ///< Both patterns must match
-  MUTT_OR,              ///< Either pattern can match
-  MUTT_THREAD,          ///< Pattern matches email thread
-  MUTT_PARENT,          ///< Pattern matches parent
-  MUTT_CHILDREN,        ///< Pattern matches a child email
-  MUTT_TO,              ///< Pattern matches 'To:' field
-  MUTT_CC,              ///< Pattern matches 'Cc:' field
-  MUTT_COLLAPSED,       ///< Thread is collapsed
-  MUTT_SUBJECT,         ///< Pattern matches 'Subject:' field
-  MUTT_FROM,            ///< Pattern matches 'From:' field
-  MUTT_DATE,            ///< Pattern matches 'Date:' field
-  MUTT_DATE_RECEIVED,   ///< Pattern matches date received
-  MUTT_DUPLICATED,      ///< Duplicate message
-  MUTT_UNREFERENCED,    ///< Message is unreferenced in the thread
-  MUTT_BROKEN,          ///< Message is part of a broken thread
-  MUTT_ID,              ///< Pattern matches email's Message-Id
-  MUTT_ID_EXTERNAL,     ///< Message-Id is among results from an external query
-  MUTT_BODY,            ///< Pattern matches email's body
-  MUTT_HEADER,          ///< Pattern matches email's header
-  MUTT_HORMEL,          ///< Pattern matches email's spam score
-  MUTT_WHOLE_MSG,       ///< Pattern matches raw email text
-  MUTT_SENDER,          ///< Pattern matches sender
-  MUTT_MESSAGE,         ///< Pattern matches message number
-  MUTT_SCORE,           ///< Pattern matches email's score
-  MUTT_SIZE,            ///< Pattern matches email's size
-  MUTT_REFERENCE,       ///< Pattern matches 'References:' or 'In-Reply-To:' field
-  MUTT_RECIPIENT,       ///< User is a recipient of the email
-  MUTT_LIST,            ///< Email is on mailing list
-  MUTT_SUBSCRIBED_LIST, ///< Email is on subscribed mailing list
-  MUTT_PERSONAL_RECIP,  ///< Email is addressed to the user
-  MUTT_PERSONAL_FROM,   ///< Email is from the user
-  MUTT_ADDRESS,         ///< Pattern matches any address field
-  MUTT_CRYPT_SIGN,      ///< Message is signed
-  MUTT_CRYPT_VERIFIED,  ///< Message is crypographically verified
-  MUTT_CRYPT_ENCRYPT,   ///< Message is encrypted
-  MUTT_PGP_KEY,         ///< Message has PGP key
-  MUTT_XLABEL,          ///< Pattern matches keyword/label
-  MUTT_SERVERSEARCH,    ///< Server-side pattern matches
-  MUTT_DRIVER_TAGS,     ///< Pattern matches message tags
-  MUTT_MIMEATTACH,      ///< Pattern matches number of attachments
-  MUTT_MIMETYPE,        ///< Pattern matches MIME type
-#ifdef USE_NNTP
-  MUTT_NEWSGROUPS,      ///< Pattern matches newsgroup
-#endif
+  MUTT_MT_MAX,
 };
 
 /* flags for parse_spam_list */
