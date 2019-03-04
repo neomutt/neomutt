@@ -11,6 +11,7 @@
 #
 ## CC       - C compiler
 ## CXX      - C++ compiler
+## CPP      - C preprocessor
 ## CCACHE   - Set to "none" to disable automatic use of ccache
 ## CFLAGS   - Additional C compiler flags
 ## CXXFLAGS - Additional C++ compiler flags
@@ -696,6 +697,15 @@ if {[get-define CC] eq ""} {
 }
 
 define CCACHE [find-an-executable [get-env CCACHE ccache]]
+
+# If any of these are set in the environment, propagate them to the AUTOREMAKE commandline
+foreach i {CC CXX CCACHE CPP CFLAGS CXXFLAGS CXXFLAGS LDFLAGS LIBS CROSS CPPFLAGS LINKFLAGS CC_FOR_BUILD LD} {
+	if {[env-is-set $i]} {
+		# Note: If the variable is set on the command line, get-env will return that value
+		# so the command line will continue to override the environment
+		define-append AUTOREMAKE [quote-if-needed $i=[get-env $i ""]]
+	}
+}
 
 # Initial cctest settings
 cc-store-settings {-cflags {} -includes {} -declare {} -link 0 -lang c -libs {} -code {} -nooutput 0}

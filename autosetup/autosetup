@@ -709,6 +709,9 @@ proc define-append {name args} {
 	if {[get-define $name ""] ne ""} {
 		# Avoid duplicates
 		foreach arg $args {
+			if {$arg eq ""} {
+				continue
+			}
 			set found 0
 			foreach str [split $::define($name) " "] {
 				if {$str eq $arg} {
@@ -1860,7 +1863,7 @@ WRAPPER="$0"; export WRAPPER; "autosetup" "$@"
 		writefile configure \
 {#!/bin/sh
 dir="`dirname "$0"`/autosetup"
-WRAPPER="$0"; export WRAPPER; exec "`$dir/autosetup-find-tclsh`" "$dir/autosetup" "$@"
+WRAPPER="$0"; export WRAPPER; exec "`"$dir/autosetup-find-tclsh"`" "$dir/autosetup" "$@"
 }
 	}
 	catch {exec chmod 755 configure}
