@@ -979,16 +979,19 @@ static int envelope_defaults(struct Envelope *env, struct Mailbox *m,
 static int generate_body(FILE *tempfp, struct Email *msg, SendFlags flags,
                          struct Mailbox *m, struct EmailList *el)
 {
-  if (!el || STAILQ_EMPTY(el))
-    return -1;
-
   enum QuadOption ans;
   struct Body *tmp = NULL;
   struct EmailNode *en = NULL;
   bool single = true;
 
-  en = STAILQ_FIRST(el);
-  single = !STAILQ_NEXT(en, entries);
+  if (el)
+    en = STAILQ_FIRST(el);
+  if (en)
+    single = !STAILQ_NEXT(en, entries);
+
+  /* An EmailList is required for replying and forwarding */
+  if (!el && (flags & (SEND_REPLY | SEND_FORWARD)))
+    return -1;
 
   if (flags & SEND_REPLY)
   {
