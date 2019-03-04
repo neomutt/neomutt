@@ -75,7 +75,7 @@ int mutt_get_tmp_attachment(struct Body *a)
 
   struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
-  rfc1524_mailcap_lookup(a, type, entry, 0);
+  rfc1524_mailcap_lookup(a, type, entry, MUTT_MC_NO_FLAGS);
   rfc1524_expand_filename(entry->nametemplate, a->filename, tempfile, sizeof(tempfile));
 
   rfc1524_free_entry(&entry);
@@ -118,7 +118,7 @@ int mutt_compose_attachment(struct Body *a)
   int rc = 0;
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
-  if (rfc1524_mailcap_lookup(a, type, entry, MUTT_COMPOSE))
+  if (rfc1524_mailcap_lookup(a, type, entry, MUTT_MC_COMPOSE))
   {
     if (entry->composecommand || entry->composetypecommand)
     {
@@ -255,7 +255,7 @@ int mutt_edit_attachment(struct Body *a)
   int rc = 0;
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
-  if (rfc1524_mailcap_lookup(a, type, entry, MUTT_EDIT))
+  if (rfc1524_mailcap_lookup(a, type, entry, MUTT_MC_EDIT))
   {
     if (entry->editcommand)
     {
@@ -405,7 +405,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
   if (use_mailcap)
   {
     entry = rfc1524_new_entry();
-    if (!rfc1524_mailcap_lookup(a, type, entry, 0))
+    if (!rfc1524_mailcap_lookup(a, type, entry, MUTT_MC_NO_FLAGS))
     {
       if (mode == MUTT_VA_REGULAR)
       {
@@ -1019,7 +1019,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
 
-  if (rfc1524_mailcap_lookup(a, type, NULL, MUTT_PRINT))
+  if (rfc1524_mailcap_lookup(a, type, NULL, MUTT_MC_PRINT))
   {
     char cmd[STR_COMMAND];
     int piped = false;
@@ -1027,7 +1027,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     mutt_debug(LL_DEBUG2, "Using mailcap...\n");
 
     struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
-    rfc1524_mailcap_lookup(a, type, entry, MUTT_PRINT);
+    rfc1524_mailcap_lookup(a, type, entry, MUTT_MC_PRINT);
     if (rfc1524_expand_filename(entry->nametemplate, a->filename, newfile, sizeof(newfile)))
     {
       if (!fp)

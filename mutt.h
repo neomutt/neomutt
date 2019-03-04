@@ -172,12 +172,6 @@ enum MuttMisc
   MUTT_NEWSGROUPS,      ///< Pattern matches newsgroup
 #endif
 
-  /* Options for Mailcap lookup */
-  MUTT_EDIT,     ///< Mailcap edit field
-  MUTT_COMPOSE,  ///< Mailcap compose field
-  MUTT_PRINT,    ///< Mailcap print field
-  MUTT_AUTOVIEW, ///< Mailcap autoview field
-
   MUTT_SAVE_APPEND,    ///< Append to existing file - mutt_save_attachment()
   MUTT_SAVE_OVERWRITE, ///< Overwrite existing file - mutt_save_attachment()
 };

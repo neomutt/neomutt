@@ -516,7 +516,7 @@ static bool is_autoview(struct Body *b)
    *
    * @warning type is altered by this call as a result of 'mime_lookup' support */
   if (is_av)
-    return rfc1524_mailcap_lookup(b, type, NULL, MUTT_AUTOVIEW);
+    return rfc1524_mailcap_lookup(b, type, NULL, MUTT_MC_AUTOVIEW);
 
   return false;
 }
@@ -540,7 +540,7 @@ static int autoview_handler(struct Body *a, struct State *s)
   int rc = 0;
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
-  rfc1524_mailcap_lookup(a, type, entry, MUTT_AUTOVIEW);
+  rfc1524_mailcap_lookup(a, type, entry, MUTT_MC_AUTOVIEW);
 
   fname = mutt_str_strdup(a->filename);
   mutt_file_sanitize_filename(fname, true);

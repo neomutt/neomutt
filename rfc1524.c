@@ -200,15 +200,15 @@ static int get_field_text(char *field, char **entry, char *type, char *filename,
  * @param filename Filename
  * @param type     Type, e.g. "text/plain"
  * @param entry    Entry, e.g. "compose"
- * @param opt      Option, e.g. #MUTT_EDIT
- * @retval 1 Success
- * @retval 0 Failure
+ * @param opt      Option, see #MailcapLookup
+ * @retval true  Success
+ * @retval false Failure
  */
-static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
-                                 struct Rfc1524MailcapEntry *entry, int opt)
+static bool rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
+                                  struct Rfc1524MailcapEntry *entry, enum MailcapLookup opt)
 {
   char *buf = NULL;
-  int found = false;
+  bool found = false;
   int line = 0;
 
   /* rfc1524 mailcap file is of the format:
@@ -350,22 +350,22 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
         }
       } /* while (ch) */
 
-      if (opt == MUTT_AUTOVIEW)
+      if (opt == MUTT_MC_AUTOVIEW)
       {
         if (!copiousoutput)
           found = false;
       }
-      else if (opt == MUTT_COMPOSE)
+      else if (opt == MUTT_MC_COMPOSE)
       {
         if (!composecommand)
           found = false;
       }
-      else if (opt == MUTT_EDIT)
+      else if (opt == MUTT_MC_EDIT)
       {
         if (!editcommand)
           found = false;
       }
-      else if (opt == MUTT_PRINT)
+      else if (opt == MUTT_MC_PRINT)
       {
         if (!printcommand)
           found = false;
@@ -430,16 +430,14 @@ void rfc1524_free_entry(struct Rfc1524MailcapEntry **entry)
  * @param a      Message body
  * @param type   Text type in "type/subtype" format
  * @param entry  struct Rfc1524MailcapEntry to populate with results
- * @param opt    Type of mailcap entry to lookup
- * @retval 1 Success. If *entry is not NULL it populates it with the mailcap entry
- * @retval 0 No matching entry is found
- *
- * opt can be one of: #MUTT_EDIT, #MUTT_COMPOSE, #MUTT_PRINT, #MUTT_AUTOVIEW
+ * @param opt    Type of mailcap entry to lookup, see #MailcapLookup
+ * @retval true  If *entry is not NULL it populates it with the mailcap entry
+ * @retval false No matching entry is found
  *
  * Find the given type in the list of mailcap files.
  */
-int rfc1524_mailcap_lookup(struct Body *a, char *type,
-                           struct Rfc1524MailcapEntry *entry, int opt)
+bool rfc1524_mailcap_lookup(struct Body *a, char *type,
+                            struct Rfc1524MailcapEntry *entry, enum MailcapLookup opt)
 {
   char path[PATH_MAX];
   int found = false;
@@ -454,7 +452,7 @@ int rfc1524_mailcap_lookup(struct Body *a, char *type,
   if (!curr || !*curr)
   {
     mutt_error(_("No mailcap path specified"));
-    return 0;
+    return false;
   }
 
   mutt_check_lookup_list(a, type, 128);
