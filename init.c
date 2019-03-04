@@ -1215,37 +1215,19 @@ static enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
   }
 
   /* or a function? */
-  if (!res)
+  // for loop guarded by !res conditional.
+  for (int i = 0; !res && (i < MENU_MAX); i++)
   {
-    for (int i = 0; !res && (i < MENU_MAX); i++)
-    {
-      const struct Binding *b = km_get_table(Menus[i].value);
-      if (!b)
-        continue;
+    const struct Binding *b = km_get_table(Menus[i].value);
 
-      for (int j = 0; b[j].name; j++)
-      {
-        if (mutt_str_strcmp(buf->data, b[j].name) == 0)
-        {
-          res = true;
-          break;
-        }
-      }
-    }
+    for (int j = 0; b && !res && b[j].name; j++)
+      res = (mutt_str_strcmp(buf->data, b[j].name) == 0);
   }
 
-  /* or a command? */
-  if (!res)
-  {
-    for (int i = 0; Commands[i].name; i++)
-    {
-      if (mutt_str_strcmp(buf->data, Commands[i].name) == 0)
-      {
-        res = true;
-        break;
-      }
-    }
-  }
+  // or a command?
+  // for loop guarded by !res conditional.
+  for (int i = 0; !res && Commands[i].name; i++)
+    res = mutt_str_strcmp(buf->data, Commands[i].name) == 0;
 
   /* or a my_ var? */
   if (!res)
@@ -1267,8 +1249,6 @@ static enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
     if (rc == MUTT_CMD_ERROR)
     {
       mutt_error(_("Error: %s"), err->data);
-      FREE(&token.data);
-      return MUTT_CMD_ERROR;
     }
     FREE(&token.data);
     return rc;
