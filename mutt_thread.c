@@ -40,6 +40,7 @@
 #include "context.h"
 #include "curs_lib.h"
 #include "mailbox.h"
+#include "mutt_menu.h"
 #include "mx.h"
 #include "protos.h"
 #include "sort.h"
@@ -286,8 +287,8 @@ static void calculate_visibility(struct Context *ctx, int *max_depth)
 void mutt_draw_tree(struct Context *ctx)
 {
   char *pfx = NULL, *mypfx = NULL, *arrow = NULL, *myarrow = NULL, *new_tree = NULL;
-  char corner = (C_Sort & SORT_REVERSE) ? MUTT_TREE_ULCORNER : MUTT_TREE_LLCORNER;
-  char vtee = (C_Sort & SORT_REVERSE) ? MUTT_TREE_BTEE : MUTT_TREE_TTEE;
+  enum TreeChar corner = (C_Sort & SORT_REVERSE) ? MUTT_TREE_ULCORNER : MUTT_TREE_LLCORNER;
+  enum TreeChar vtee = (C_Sort & SORT_REVERSE) ? MUTT_TREE_BTEE : MUTT_TREE_TTEE;
   int depth = 0, start_depth = 0, max_depth = 0, width = C_NarrowTree ? 1 : 2;
   struct MuttThread *nextdisp = NULL, *pseudo = NULL, *parent = NULL, *tree = ctx->tree;
 

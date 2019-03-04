@@ -83,24 +83,6 @@ typedef uint16_t TokenFlags;               ///< Flags for mutt_extract_token(), 
 #define MUTT_TOKEN_NOSHELL       (1 << 8)  ///< Don't expand environment variables
 #define MUTT_TOKEN_QUESTION      (1 << 9)  ///< Treat '?' as a special
 
-/* tree characters for linearize_tree and print_enriched_string */
-#define MUTT_TREE_LLCORNER 1
-#define MUTT_TREE_ULCORNER 2
-#define MUTT_TREE_LTEE     3
-#define MUTT_TREE_HLINE    4
-#define MUTT_TREE_VLINE    5
-#define MUTT_TREE_SPACE    6
-#define MUTT_TREE_RARROW   7
-#define MUTT_TREE_STAR     8
-#define MUTT_TREE_HIDDEN   9
-#define MUTT_TREE_EQUALS   10
-#define MUTT_TREE_TTEE     11
-#define MUTT_TREE_BTEE     12
-#define MUTT_TREE_MISSING  13
-#define MUTT_TREE_MAX      14
-
-#define MUTT_SPECIAL_INDEX MUTT_TREE_MAX
-
 /**
  * enum MessageType - To set flags or match patterns
  *
