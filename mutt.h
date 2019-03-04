@@ -171,9 +171,6 @@ enum MuttMisc
 #ifdef USE_NNTP
   MUTT_NEWSGROUPS,      ///< Pattern matches newsgroup
 #endif
-
-  MUTT_SAVE_APPEND,    ///< Append to existing file - mutt_save_attachment()
-  MUTT_SAVE_OVERWRITE, ///< Overwrite existing file - mutt_save_attachment()
 };
 
 /* flags for parse_spam_list */

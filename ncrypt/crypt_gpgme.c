@@ -2614,7 +2614,7 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
     return 0;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  if (mutt_decode_save_attachment(fp, b, tempfile, 0, 0) != 0)
+  if (mutt_decode_save_attachment(fp, b, tempfile, 0, MUTT_SAVE_NO_FLAGS) != 0)
   {
     unlink(tempfile);
     return 0;

@@ -460,7 +460,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
     {
       /* recv case: we need to save the attachment to a file */
       FREE(&fname);
-      if (mutt_save_attachment(fp, a, tempfile, 0, NULL) == -1)
+      if (mutt_save_attachment(fp, a, tempfile, MUTT_SAVE_NO_FLAGS, NULL) == -1)
         goto return_error;
       mutt_file_chmod(tempfile, S_IRUSR);
     }
@@ -588,7 +588,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
          * mutt_decode_attachment() since it assumes the content-encoding has
          * already been applied
          */
-        if (mutt_save_attachment(fp, a, pagerfile, 0, NULL))
+        if (mutt_save_attachment(fp, a, pagerfile, MUTT_SAVE_NO_FLAGS, NULL))
           goto return_error;
       }
     }
@@ -597,7 +597,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
       /* Use built-in handler */
       OptViewAttach = true; /* disable the "use 'v' to view this part"
                              * message in case of error */
-      if (mutt_decode_save_attachment(fp, a, pagerfile, MUTT_DISPLAY, 0))
+      if (mutt_decode_save_attachment(fp, a, pagerfile, MUTT_DISPLAY, MUTT_SAVE_NO_FLAGS))
       {
         OptViewAttach = false;
         goto return_error;
@@ -758,15 +758,15 @@ bail:
 
 /**
  * save_attachment_open - Open a file to write an attachment to
- * @param path  Path to file to open
- * @param flags Flags, e.g. #MUTT_SAVE_APPEND
+ * @param path Path to file to open
+ * @param opt  Save option, see #SaveAttach
  * @retval ptr File handle to attachment file
  */
-static FILE *save_attachment_open(char *path, int flags)
+static FILE *save_attachment_open(char *path, enum SaveAttach opt)
 {
-  if (flags == MUTT_SAVE_APPEND)
+  if (opt == MUTT_SAVE_APPEND)
     return fopen(path, "a");
-  if (flags == MUTT_SAVE_OVERWRITE)
+  if (opt == MUTT_SAVE_OVERWRITE)
     return fopen(path, "w");
 
   return mutt_file_fopen(path, "w");
@@ -774,15 +774,16 @@ static FILE *save_attachment_open(char *path, int flags)
 
 /**
  * mutt_save_attachment - Save an attachment
- * @param fp    Source file stream. Can be NULL
- * @param m     Email Body
- * @param path  Where to save the attachment
- * @param flags Flags, e.g. #MUTT_SAVE_APPEND
- * @param e     Current Email. Can be NULL
+ * @param fp   Source file stream. Can be NULL
+ * @param m    Email Body
+ * @param path Where to save the attachment
+ * @param opt  Save option, see #SaveAttach
+ * @param e    Current Email. Can be NULL
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct Email *e)
+int mutt_save_attachment(FILE *fp, struct Body *m, char *path,
+                         enum SaveAttach opt, struct Email *e)
 {
   if (!m)
     return -1;
@@ -845,7 +846,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
 
       struct State s = { 0 };
 
-      s.fp_out = save_attachment_open(path, flags);
+      s.fp_out = save_attachment_open(path, opt);
       if (!s.fp_out)
       {
         mutt_perror("fopen");
@@ -875,7 +876,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
       return -1;
     }
 
-    FILE *fp_new = save_attachment_open(path, flags);
+    FILE *fp_new = save_attachment_open(path, opt);
     if (!fp_new)
     {
       mutt_perror("fopen");
@@ -907,11 +908,12 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
  * @param m          Attachment
  * @param path       Path to save the Attachment to
  * @param displaying Flags, e.g. #MUTT_DISPLAY
- * @param flags      Flags, e.g. #MUTT_SAVE_APPEND
+ * @param opt        Save option, see #SaveAttach
  * @retval 0  Success
  * @retval -1 Error
  */
-int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displaying, int flags)
+int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path,
+                                int displaying, enum SaveAttach opt)
 {
   struct State s = { 0 };
   unsigned int saved_encoding = 0;
@@ -921,9 +923,9 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
 
   s.flags = displaying;
 
-  if (flags == MUTT_SAVE_APPEND)
+  if (opt == MUTT_SAVE_APPEND)
     s.fp_out = fopen(path, "a");
-  else if (flags == MUTT_SAVE_OVERWRITE)
+  else if (opt == MUTT_SAVE_OVERWRITE)
     s.fp_out = fopen(path, "w");
   else
     s.fp_out = mutt_file_fopen(path, "w");
@@ -1047,7 +1049,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     }
 
     /* in recv mode, save file to newfile first */
-    if (fp && (mutt_save_attachment(fp, a, newfile, 0, NULL) != 0))
+    if (fp && (mutt_save_attachment(fp, a, newfile, MUTT_SAVE_NO_FLAGS, NULL) != 0))
       return 0;
 
     mutt_str_strfcpy(cmd, entry->printcommand, sizeof(cmd));
@@ -1114,7 +1116,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     fp_out = NULL;
 
     mutt_mktemp(newfile, sizeof(newfile));
-    if (mutt_decode_save_attachment(fp, a, newfile, MUTT_PRINTING, 0) == 0)
+    if (mutt_decode_save_attachment(fp, a, newfile, MUTT_PRINTING, MUTT_SAVE_NO_FLAGS) == 0)
     {
       mutt_debug(LL_DEBUG2, "successfully decoded %s type attachment to %s\n", type, newfile);
 

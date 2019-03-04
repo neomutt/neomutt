@@ -675,14 +675,14 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
  * @param[in]  path      Path to save the file
  * @param[out] fname     Buffer for filename
  * @param[out] flen      Length of buffer
- * @param[out] append    Flags set to #MUTT_SAVE_APPEND or #MUTT_SAVE_OVERWRITE
+ * @param[out] opt       Save option, see #SaveAttach
  * @param[out] directory Directory to save under (OPTIONAL)
  * @retval  0 Success
  * @retval -1 Abort
  * @retval  1 Error
  */
 int mutt_check_overwrite(const char *attname, const char *path, char *fname,
-                         size_t flen, int *append, char **directory)
+                         size_t flen, enum SaveAttach *opt, char **directory)
 {
   struct stat st;
 
@@ -736,7 +736,7 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
     mutt_path_concat(fname, path, tmp, flen);
   }
 
-  if (*append == 0 && access(fname, F_OK) == 0)
+  if ((*opt == MUTT_SAVE_NO_FLAGS) && access(fname, F_OK) == 0)
   {
     switch (
         mutt_multi_choice(_("File exists, (o)verwrite, (a)ppend, or (c)ancel?"),
@@ -749,10 +749,10 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
         return 1;
 
       case 2: /* append */
-        *append = MUTT_SAVE_APPEND;
+        *opt = MUTT_SAVE_APPEND;
         break;
       case 1: /* overwrite */
-        *append = MUTT_SAVE_OVERWRITE;
+        *opt = MUTT_SAVE_OVERWRITE;
         break;
     }
   }

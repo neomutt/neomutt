@@ -494,7 +494,7 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
 {
   char *prompt = NULL;
   char buf[PATH_MAX], tfile[PATH_MAX];
-  int append = 0;
+  enum SaveAttach opt = MUTT_SAVE_NO_FLAGS;
   int rc;
 
   if (body->filename)
@@ -549,7 +549,7 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
     }
     else
     {
-      rc = mutt_check_overwrite(body->filename, buf, tfile, sizeof(tfile), &append, directory);
+      rc = mutt_check_overwrite(body->filename, buf, tfile, sizeof(tfile), &opt, directory);
       if (rc == -1)
         return -1;
       else if (rc == 1)
@@ -560,7 +560,7 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
     }
 
     mutt_message(_("Saving..."));
-    if (mutt_save_attachment(fp, body, tfile, append, (e || !is_message) ? e : body->email) == 0)
+    if (mutt_save_attachment(fp, body, tfile, opt, (e || !is_message) ? e : body->email) == 0)
     {
       mutt_message(_("Attachment saved"));
       return 0;
@@ -607,7 +607,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
       {
         if (!buf[0])
         {
-          int append = 0;
+          enum SaveAttach opt = MUTT_SAVE_NO_FLAGS;
 
           mutt_str_strfcpy(buf, mutt_path_basename(NONULL(top->filename)), sizeof(buf));
           prepend_savedir(buf, sizeof(buf));
@@ -618,9 +618,9 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
             return;
           }
           mutt_expand_path(buf, sizeof(buf));
-          if (mutt_check_overwrite(top->filename, buf, tfile, sizeof(tfile), &append, NULL))
+          if (mutt_check_overwrite(top->filename, buf, tfile, sizeof(tfile), &opt, NULL))
             return;
-          rc = mutt_save_attachment(fp, top, tfile, append, e);
+          rc = mutt_save_attachment(fp, top, tfile, opt, e);
           if ((rc == 0) && C_AttachSep && (fp_out = fopen(tfile, "a")))
           {
             fprintf(fp_out, "%s", C_AttachSep);
@@ -900,7 +900,8 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
           FILE *fp_in = NULL;
 
           mutt_mktemp(newfile, sizeof(newfile));
-          if (mutt_decode_save_attachment(fp, top, newfile, MUTT_PRINTING, 0) == 0)
+          if (mutt_decode_save_attachment(fp, top, newfile, MUTT_PRINTING,
+                                          MUTT_SAVE_NO_FLAGS) == 0)
           {
             if (!state->fp_out)
             {
