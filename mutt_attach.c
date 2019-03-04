@@ -363,14 +363,12 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
  * mutt_view_attachment - View an attachment
  * @param fp     Source file stream. Can be NULL
  * @param a      The message body containing the attachment
- * @param flag   Option flag for how the attachment should be viewed
+ * @param mode   How the attachment should be viewed, see #ViewAttachMode
  * @param e      Current Email. Can be NULL
  * @param actx   Attachment context
  * @retval 0   If the viewer is run and exited successfully
  * @retval -1  Error
  * @retval num Return value of mutt_do_pager() when it is used
- *
- * flag can be one of: #MUTT_MAILCAP, #MUTT_REGULAR, #MUTT_AS_TEXT
  *
  * Display a message attachment using the viewer program configured in mailcap.
  * If there is no mailcap entry for a file type, view the image as text.
@@ -378,8 +376,8 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
  * attachment this way will block the main neomutt process until the viewer process
  * exits.
  */
-int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
-                         struct AttachCtx *actx)
+int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
+                         struct Email *e, struct AttachCtx *actx)
 {
   char tempfile[PATH_MAX] = "";
   char pagerfile[PATH_MAX] = "";
@@ -401,7 +399,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
     return rc;
   }
   use_mailcap =
-      (flag == MUTT_MAILCAP || (flag == MUTT_REGULAR && mutt_needs_mailcap(a)));
+      (mode == MUTT_VA_MAILCAP || (mode == MUTT_VA_REGULAR && mutt_needs_mailcap(a)));
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
 
   if (use_mailcap)
@@ -409,12 +407,12 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
     entry = rfc1524_new_entry();
     if (!rfc1524_mailcap_lookup(a, type, entry, 0))
     {
-      if (flag == MUTT_REGULAR)
+      if (mode == MUTT_VA_REGULAR)
       {
         /* fallback to view as text */
         rfc1524_free_entry(&entry);
         mutt_error(_("No matching mailcap entry found.  Viewing as text."));
-        flag = MUTT_AS_TEXT;
+        mode = MUTT_VA_AS_TEXT;
         use_mailcap = false;
       }
       else
@@ -557,7 +555,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
   {
     /* Don't use mailcap; the attachment is viewed in the pager */
 
-    if (flag == MUTT_AS_TEXT)
+    if (mode == MUTT_VA_AS_TEXT)
     {
       /* just let me see the raw data */
       if (fp)

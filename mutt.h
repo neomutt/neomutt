@@ -106,13 +106,8 @@ typedef uint16_t TokenFlags;               ///< Flags for mutt_extract_token(), 
  */
 enum MuttMisc
 {
-  /* mutt_view_attachment() */
-  MUTT_REGULAR = 1, ///< View using default method
-  MUTT_MAILCAP,     ///< Force viewing using mailcap entry
-  MUTT_AS_TEXT,     ///< Force viewing as text
-
   /* action codes used by mutt_set_flag() and mutt_pattern_func() */
-  MUTT_ALL,        ///< All messages
+  MUTT_ALL = 1,    ///< All messages
   MUTT_NONE,       ///< No messages
   MUTT_NEW,        ///< New messages
   MUTT_OLD,        ///< Old messages

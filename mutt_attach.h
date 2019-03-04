@@ -33,6 +33,16 @@ struct Menu;
 struct Email;
 struct Body;
 
+/**
+ * enum ViewAttachMode - Options for mutt_view_attachment()
+ */
+enum ViewAttachMode
+{
+  MUTT_VA_REGULAR = 1, ///< View using default method
+  MUTT_VA_MAILCAP,     ///< Force viewing using mailcap entry
+  MUTT_VA_AS_TEXT,     ///< Force viewing as text
+};
+
 int attach_tag(struct Menu *menu, int sel, int act);
 int mutt_attach_display_loop(struct Menu *menu, int op, struct Email *e,
                              struct AttachCtx *actx, bool recv);
@@ -44,7 +54,7 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
                                 struct Body *top);
 
-int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e, struct AttachCtx *actx);
+int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode, struct Email *e, struct AttachCtx *actx);
 
 void mutt_check_lookup_list(struct Body *b, char *type, size_t len);
 int mutt_compose_attachment(struct Body *a);
