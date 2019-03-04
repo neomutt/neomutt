@@ -982,6 +982,41 @@ static char *data_object_to_tempfile(gpgme_data_t data, FILE **fp_ret)
   return mutt_str_strdup(tempf);
 }
 
+#if GPGME_VERSION_NUMBER >= 0x010b00 /* gpgme >= 1.11.0 */
+
+/**
+ * create_recipient_string - XXX
+ * @param keylist    Keys, space-separated
+ * @param recpstring Buffer to store the recipients
+ * @param use_smime  Use SMIME
+ */
+static void create_recipient_string(const char *keylist, struct Buffer *recpstring, int use_smime)
+{
+  unsigned int n = 0;
+
+  const char *s = keylist;
+  do
+  {
+    while (*s == ' ')
+      s++;
+    if (*s != '\0')
+    {
+      if (n == 0)
+      {
+        if (!use_smime)
+          mutt_buffer_addstr(recpstring, "--\n");
+      }
+      else
+        mutt_buffer_addch(recpstring, '\n');
+      n++;
+
+      while ((*s != '\0') && (*s != ' '))
+        mutt_buffer_addch(recpstring, *s++);
+    }
+  } while (*s != '\0');
+}
+
+#else
 /**
  * free_recipient_set - Free a set of recipients
  * @param p_rset Set of GPGME keys
@@ -1009,11 +1044,11 @@ static void free_recipient_set(gpgme_key_t **p_rset)
 
 /**
  * create_recipient_set - Create a GpgmeRecipientSet from a string of keys
- * @param keylist  Keys, space-separated
- * @param protocol GPGME protocol
+ * @param keylist   Keys, space-separated
+ * @param use_smime Use SMIME
  * @retval ptr GPGME key set
  */
-static gpgme_key_t *create_recipient_set(const char *keylist, gpgme_protocol_t protocol)
+static gpgme_key_t *create_recipient_set(const char *keylist, bool use_smime)
 {
   int err;
   const char *s = NULL;
@@ -1023,7 +1058,7 @@ static gpgme_key_t *create_recipient_set(const char *keylist, gpgme_protocol_t p
   gpgme_key_t key = NULL;
   gpgme_ctx_t context = NULL;
 
-  context = create_gpgme_context((protocol == GPGME_PROTOCOL_CMS));
+  context = create_gpgme_context(use_smime);
   s = keylist;
   do
   {
@@ -1069,6 +1104,8 @@ static gpgme_key_t *create_recipient_set(const char *keylist, gpgme_protocol_t p
 
   return rset;
 }
+
+#endif /* GPGME_VERSION_NUMBER >= 0x010b00 */
 
 /**
  * set_signer - Make sure that the correct signer is set
@@ -1142,18 +1179,32 @@ static gpgme_error_t set_pka_sig_notation(gpgme_ctx_t ctx)
 /**
  * encrypt_gpgme_object - Encrypt the GPGPME data object
  * @param plaintext       GPGME data object with plain text message
- * @param rset            Set of recipients to encrypt to
+ * @param keylist         List of keys to encrypt to
  * @param use_smime       If true, use SMIME
  * @param combined_signed If true, sign and encrypt the message (PGP only)
  * @retval ptr Name of temporary file containing encrypted text
  */
-static char *encrypt_gpgme_object(gpgme_data_t plaintext, gpgme_key_t *rset,
+static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist,
                                   bool use_smime, bool combined_signed)
 {
   gpgme_error_t err;
   gpgme_ctx_t ctx;
   gpgme_data_t ciphertext;
   char *outfile = NULL;
+
+#if GPGME_VERSION_NUMBER >= 0x010b00 /* gpgme >= 1.11.0 */
+  struct Buffer *recpstring = mutt_buffer_pool_get();
+  create_recipient_string(keylist, recpstring, use_smime);
+  if (mutt_buffer_len(recpstring) == 0)
+  {
+    mutt_buffer_pool_release(&recpstring);
+    return NULL;
+  }
+#else
+  gpgme_key_t *rset = create_recipient_set(keylist, use_smime);
+  if (!rset)
+    return NULL;
+#endif /* GPGME_VERSION_NUMBER >= 0x010b00 */
 
   ctx = create_gpgme_context(use_smime);
   if (!use_smime)
@@ -1164,39 +1215,48 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, gpgme_key_t *rset,
   if (combined_signed)
   {
     if (set_signer(ctx, use_smime))
-    {
-      gpgme_data_release(ciphertext);
-      gpgme_release(ctx);
-      return NULL;
-    }
+      goto cleanup;
 
     if (C_CryptUsePka)
     {
       err = set_pka_sig_notation(ctx);
       if (err)
-      {
-        gpgme_data_release(ciphertext);
-        gpgme_release(ctx);
-        return NULL;
-      }
+        goto cleanup;
     }
 
+#if GPGME_VERSION_NUMBER >= 0x010b00 /* gpgme >= 1.11.0 */
+    err = gpgme_op_encrypt_sign_ext(ctx, NULL, mutt_b2s(recpstring),
+                                    GPGME_ENCRYPT_ALWAYS_TRUST, plaintext, ciphertext);
+#else
     err = gpgme_op_encrypt_sign(ctx, rset, GPGME_ENCRYPT_ALWAYS_TRUST, plaintext, ciphertext);
+#endif
   }
   else
+  {
+#if GPGME_VERSION_NUMBER >= 0x010b00 /* gpgme >= 1.11.0 */
+    err = gpgme_op_encrypt_ext(ctx, NULL, mutt_b2s(recpstring),
+                               GPGME_ENCRYPT_ALWAYS_TRUST, plaintext, ciphertext);
+#else
     err = gpgme_op_encrypt(ctx, rset, GPGME_ENCRYPT_ALWAYS_TRUST, plaintext, ciphertext);
+#endif
+  }
+
   redraw_if_needed(ctx);
   if (err)
   {
     mutt_error(_("error encrypting data: %s"), gpgme_strerror(err));
-    gpgme_data_release(ciphertext);
-    gpgme_release(ctx);
-    return NULL;
+    goto cleanup;
   }
 
-  gpgme_release(ctx);
-
   outfile = data_object_to_tempfile(ciphertext, NULL);
+
+cleanup:
+#if (GPGME_VERSION_NUMBER >= 0x010b00) /* gpgme >= 1.11.0 */
+  mutt_buffer_pool_release(&recpstring);
+#else
+  free_recipient_set(&rset);
+#endif
+  gpgme_release(ctx);
   gpgme_data_release(ciphertext);
   return outfile;
 }
@@ -1404,22 +1464,14 @@ struct Body *smime_gpgme_sign_message(struct Body *a)
  */
 struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, bool sign)
 {
-  gpgme_key_t *rset = create_recipient_set(keylist, GPGME_PROTOCOL_OpenPGP);
-  if (!rset)
-    return NULL;
-
   if (sign)
     crypt_convert_to_7bit(a);
   gpgme_data_t plaintext = body_to_data_object(a, false);
   if (!plaintext)
-  {
-    free_recipient_set(&rset);
     return NULL;
-  }
 
-  char *outfile = encrypt_gpgme_object(plaintext, rset, false, sign);
+  char *outfile = encrypt_gpgme_object(plaintext, keylist, false, sign);
   gpgme_data_release(plaintext);
-  free_recipient_set(&rset);
   if (!outfile)
     return NULL;
 
@@ -1457,24 +1509,16 @@ struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, bool sign)
  */
 struct Body *smime_gpgme_build_smime_entity(struct Body *a, char *keylist)
 {
-  gpgme_key_t *rset = create_recipient_set(keylist, GPGME_PROTOCOL_CMS);
-  if (!rset)
-    return NULL;
-
   /* OpenSSL converts line endings to crlf when encrypting.  Some
    * clients depend on this for signed+encrypted messages: they do not
    * convert line endings between decrypting and checking the
    * signature.  See #3904. */
   gpgme_data_t plaintext = body_to_data_object(a, true);
   if (!plaintext)
-  {
-    free_recipient_set(&rset);
     return NULL;
-  }
 
-  char *outfile = encrypt_gpgme_object(plaintext, rset, true, false);
+  char *outfile = encrypt_gpgme_object(plaintext, keylist, true, false);
   gpgme_data_release(plaintext);
-  free_recipient_set(&rset);
   if (!outfile)
     return NULL;
 
@@ -4773,7 +4817,19 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
             mutt_clear_error();
             break;
           }
+
+          /* A '!' is appended to a key in find_keys() when forced_valid is
+           * set.  Prior to gpgme 1.11.0, encrypt_gpgme_object() called
+           * create_recipient_set() which interpreted the '!' to mean set
+           * GPGME_VALIDITY_FULL for the key.
+           *
+           * Starting in gpgme 1.11.0, we now use a '\n' delimited recipient
+           * string, which is passed directly to the gpgme_op_encrypt_ext()
+           * function.  This allows to use the original meaning of '!' to
+           * force a subkey use. */
+#if (GPGME_VERSION_NUMBER < 0x010b00) /* gpgme < 1.11.0 */
           *forced_valid = 1;
+#endif
         }
 
         k = crypt_copy_key(key_table[menu->current]);
