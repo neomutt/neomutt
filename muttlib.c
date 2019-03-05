@@ -450,7 +450,7 @@ bool mutt_is_text_part(struct Body *b)
   return false;
 }
 
-static FILE *frandom;
+static FILE *fp_random;
 
 /**
  * mutt_randbuf - Fill a buffer with randomness
@@ -478,17 +478,17 @@ int mutt_randbuf(void *buf, size_t buflen)
 #endif
   /* let's try urandom in case we're on an old kernel, or the user has
    * configured selinux, seccomp or something to not allow getrandom */
-  if (!frandom)
+  if (!fp_random)
   {
-    frandom = fopen("/dev/urandom", "rb");
-    if (!frandom)
+    fp_random = fopen("/dev/urandom", "rb");
+    if (!fp_random)
     {
       mutt_error(_("open /dev/urandom: %s"), strerror(errno));
       return -1;
     }
-    setbuf(frandom, NULL);
+    setbuf(fp_random, NULL);
   }
-  if (fread(buf, 1, buflen, frandom) != buflen)
+  if (fread(buf, 1, buflen, fp_random) != buflen)
   {
     mutt_error(_("read /dev/urandom: %s"), strerror(errno));
     return -1;
@@ -520,11 +520,11 @@ void mutt_rand_base32(void *buf, size_t buflen)
  */
 uint32_t mutt_rand32(void)
 {
-  uint32_t ret = 0;
+  uint32_t num = 0;
 
-  if (mutt_randbuf(&ret, sizeof(ret)) < 0)
+  if (mutt_randbuf(&num, sizeof(num)) < 0)
     mutt_exit(1);
-  return ret;
+  return num;
 }
 
 /**
@@ -533,11 +533,11 @@ uint32_t mutt_rand32(void)
  */
 uint64_t mutt_rand64(void)
 {
-  uint64_t ret = 0;
+  uint64_t num = 0;
 
-  if (mutt_randbuf(&ret, sizeof(ret)) < 0)
+  if (mutt_randbuf(&num, sizeof(num)) < 0)
     mutt_exit(1);
-  return ret;
+  return num;
 }
 
 /**
@@ -675,14 +675,14 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
  * @param[in]  path      Path to save the file
  * @param[out] fname     Buffer for filename
  * @param[out] flen      Length of buffer
- * @param[out] append    Flags set to #MUTT_SAVE_APPEND or #MUTT_SAVE_OVERWRITE
+ * @param[out] opt       Save option, see #SaveAttach
  * @param[out] directory Directory to save under (OPTIONAL)
  * @retval  0 Success
  * @retval -1 Abort
  * @retval  1 Error
  */
 int mutt_check_overwrite(const char *attname, const char *path, char *fname,
-                         size_t flen, int *append, char **directory)
+                         size_t flen, enum SaveAttach *opt, char **directory)
 {
   struct stat st;
 
@@ -693,7 +693,7 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
     return -1;
   if (S_ISDIR(st.st_mode))
   {
-    int rc = 0;
+    enum QuadOption ans = MUTT_NO;
     if (directory)
     {
       switch (mutt_multi_choice
@@ -722,8 +722,8 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
     /* L10N:
        Means "The path you specified as the destination file is a directory."
        See the msgid "Save to file: " (alias.c, recvattach.c) */
-    else if ((rc = mutt_yesorno(_("File is a directory, save under it?"), MUTT_YES)) != MUTT_YES)
-      return (rc == MUTT_NO) ? 1 : -1;
+    else if ((ans = mutt_yesorno(_("File is a directory, save under it?"), MUTT_YES)) != MUTT_YES)
+      return (ans == MUTT_NO) ? 1 : -1;
 
     char tmp[PATH_MAX];
     mutt_str_strfcpy(tmp, mutt_path_basename(NONULL(attname)), sizeof(tmp));
@@ -736,7 +736,7 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
     mutt_path_concat(fname, path, tmp, flen);
   }
 
-  if (*append == 0 && access(fname, F_OK) == 0)
+  if ((*opt == MUTT_SAVE_NO_FLAGS) && access(fname, F_OK) == 0)
   {
     switch (
         mutt_multi_choice(_("File exists, (o)verwrite, (a)ppend, or (c)ancel?"),
@@ -749,10 +749,10 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
         return 1;
 
       case 2: /* append */
-        *append = MUTT_SAVE_APPEND;
+        *opt = MUTT_SAVE_APPEND;
         break;
       case 1: /* overwrite */
-        *append = MUTT_SAVE_OVERWRITE;
+        *opt = MUTT_SAVE_OVERWRITE;
         break;
     }
   }
@@ -818,7 +818,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
   char prefix[128], tmp[1024], *cp = NULL, *wptr = buf, ch;
   char if_str[128], else_str[128];
   size_t wlen, count, len, wid;
-  FILE *filter = NULL;
+  FILE *fp_filter = NULL;
   char *recycler = NULL;
 
   char src2[256];
@@ -895,13 +895,13 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
 
       col -= wlen; /* reset to passed in value */
       wptr = buf;  /* reset write ptr */
-      pid_t pid = mutt_create_filter(cmd->data, NULL, &filter, NULL);
+      pid_t pid = mutt_create_filter(cmd->data, NULL, &fp_filter, NULL);
       if (pid != -1)
       {
         int rc;
 
-        n = fread(buf, 1, buflen /* already decremented */, filter);
-        mutt_file_fclose(&filter);
+        n = fread(buf, 1, buflen /* already decremented */, fp_filter);
+        mutt_file_fclose(&fp_filter);
         rc = mutt_wait_filter(pid);
         if (rc != 0)
           mutt_debug(LL_DEBUG1, "format pipe cmd exited code %d\n", rc);
@@ -1336,7 +1336,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
  */
 FILE *mutt_open_read(const char *path, pid_t *thepid)
 {
-  FILE *f = NULL;
+  FILE *fp = NULL;
   struct stat s;
 
   size_t len = mutt_str_strlen(path);
@@ -1353,7 +1353,7 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
 
     p[len - 1] = 0;
     mutt_endwin();
-    *thepid = mutt_create_filter(p, NULL, &f, NULL);
+    *thepid = mutt_create_filter(p, NULL, &fp, NULL);
     FREE(&p);
   }
   else
@@ -1365,10 +1365,10 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
       errno = EINVAL;
       return NULL;
     }
-    f = fopen(path, "r");
+    fp = fopen(path, "r");
     *thepid = -1;
   }
-  return f;
+  return fp;
 }
 
 /**
@@ -1383,7 +1383,6 @@ int mutt_save_confirm(const char *s, struct stat *st)
 {
   char tmp[PATH_MAX];
   int ret = 0;
-  int rc;
 
   enum MailboxType magic = mx_path_probe(s, NULL);
 
@@ -1400,10 +1399,10 @@ int mutt_save_confirm(const char *s, struct stat *st)
     if (C_Confirmappend)
     {
       snprintf(tmp, sizeof(tmp), _("Append messages to %s?"), s);
-      rc = mutt_yesorno(tmp, MUTT_YES);
-      if (rc == MUTT_NO)
+      enum QuadOption ans = mutt_yesorno(tmp, MUTT_YES);
+      if (ans == MUTT_NO)
         ret = 1;
-      else if (rc == MUTT_ABORT)
+      else if (ans == MUTT_ABORT)
         ret = -1;
     }
   }
@@ -1435,10 +1434,10 @@ int mutt_save_confirm(const char *s, struct stat *st)
       if (C_Confirmcreate)
       {
         snprintf(tmp, sizeof(tmp), _("Create %s?"), s);
-        rc = mutt_yesorno(tmp, MUTT_YES);
-        if (rc == MUTT_NO)
+        enum QuadOption ans = mutt_yesorno(tmp, MUTT_YES);
+        if (ans == MUTT_NO)
           ret = 1;
-        else if (rc == MUTT_ABORT)
+        else if (ans == MUTT_ABORT)
           ret = -1;
       }
 

@@ -37,10 +37,10 @@ struct Sha1Ctx
   unsigned char buffer[64];
 };
 
-void mutt_sha1_final(unsigned char digest[20], struct Sha1Ctx *context);
-void mutt_sha1_init(struct Sha1Ctx *context);
+void mutt_sha1_final(unsigned char digest[20], struct Sha1Ctx *sha1ctx);
+void mutt_sha1_init(struct Sha1Ctx *sha1ctx);
 void mutt_sha1_transform(uint32_t state[5], const unsigned char buffer[64]);
-void mutt_sha1_update(struct Sha1Ctx *context, const unsigned char *data, uint32_t len);
+void mutt_sha1_update(struct Sha1Ctx *sha1ctx, const unsigned char *data, uint32_t len);
 
 #define SHA_DIGEST_LENGTH 20
 

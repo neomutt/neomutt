@@ -128,19 +128,19 @@ bool C_UseFrom;    ///< Config: Set the 'From' header for outgoing mail
 
 /**
  * append_signature - Append a signature to an email
- * @param f File to write to
+ * @param fp File to write to
  */
-static void append_signature(FILE *f)
+static void append_signature(FILE *fp)
 {
-  FILE *tmpfp = NULL;
+  FILE *fp_tmp = NULL;
   pid_t pid;
 
-  if (C_Signature && (tmpfp = mutt_open_read(C_Signature, &pid)))
+  if (C_Signature && (fp_tmp = mutt_open_read(C_Signature, &pid)))
   {
     if (C_SigDashes)
-      fputs("\n-- \n", f);
-    mutt_file_copy_stream(tmpfp, f);
-    mutt_file_fclose(&tmpfp);
+      fputs("\n-- \n", fp);
+    mutt_file_copy_stream(fp_tmp, fp);
+    mutt_file_fclose(&fp_tmp);
     if (pid != -1)
       mutt_wait_filter(pid);
   }
@@ -487,13 +487,13 @@ void mutt_forward_trailer(struct Mailbox *m, struct Email *e, FILE *fp)
 
 /**
  * include_forward - Write out a forwarded message
- * @param m   Mailbox
- * @param e   Email
- * @param out File to write to
+ * @param m      Mailbox
+ * @param e      Email
+ * @param fp_out File to write to
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int include_forward(struct Mailbox *m, struct Email *e, FILE *out)
+static int include_forward(struct Mailbox *m, struct Email *e, FILE *fp_out)
 {
   CopyHeaderFlags chflags = CH_DECODE;
   CopyMessageFlags cmflags = MUTT_CM_NO_FLAGS;
@@ -508,7 +508,7 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *out)
       return -1;
   }
 
-  mutt_forward_intro(m, e, out);
+  mutt_forward_intro(m, e, fp_out);
 
   if (C_ForwardDecode)
   {
@@ -526,56 +526,56 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *out)
    * rather than send action */
   chflags |= CH_DISPLAY;
 
-  mutt_copy_message_ctx(out, m, e, cmflags, chflags);
-  mutt_forward_trailer(m, e, out);
+  mutt_copy_message_ctx(fp_out, m, e, cmflags, chflags);
+  mutt_forward_trailer(m, e, fp_out);
   return 0;
 }
 
 /**
  * mutt_make_attribution - Add "on DATE, PERSON wrote" header
- * @param m   Mailbox
- * @param e   Email
- * @param out File to write to
+ * @param m      Mailbox
+ * @param e      Email
+ * @param fp_out File to write to
  */
-void mutt_make_attribution(struct Mailbox *m, struct Email *e, FILE *out)
+void mutt_make_attribution(struct Mailbox *m, struct Email *e, FILE *fp_out)
 {
-  if (!C_Attribution || !out)
+  if (!C_Attribution || !fp_out)
     return;
 
   char buf[1024];
   setlocale(LC_TIME, NONULL(C_AttributionLocale));
   mutt_make_string(buf, sizeof(buf), C_Attribution, NULL, m, e);
   setlocale(LC_TIME, "");
-  fputs(buf, out);
-  fputc('\n', out);
+  fputs(buf, fp_out);
+  fputc('\n', fp_out);
 }
 
 /**
  * mutt_make_post_indent - Add suffix to replied email text
- * @param m   Mailbox
- * @param e   Email
- * @param out File to write to
+ * @param m      Mailbox
+ * @param e      Email
+ * @param fp_out File to write to
  */
-void mutt_make_post_indent(struct Mailbox *m, struct Email *e, FILE *out)
+void mutt_make_post_indent(struct Mailbox *m, struct Email *e, FILE *fp_out)
 {
-  if (!C_PostIndentString || !out)
+  if (!C_PostIndentString || !fp_out)
     return;
 
   char buf[256];
   mutt_make_string(buf, sizeof(buf), C_PostIndentString, NULL, m, e);
-  fputs(buf, out);
-  fputc('\n', out);
+  fputs(buf, fp_out);
+  fputc('\n', fp_out);
 }
 
 /**
  * include_reply - Generate the reply text for an email
- * @param m   Mailbox
- * @param e   Email
- * @param out File to write to
+ * @param m      Mailbox
+ * @param e      Email
+ * @param fp_out File to write to
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int include_reply(struct Mailbox *m, struct Email *e, FILE *out)
+static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out)
 {
   CopyMessageFlags cmflags =
       MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV | MUTT_CM_REPLYING;
@@ -591,7 +591,7 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *out)
   mutt_parse_mime_message(m, e);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
-  mutt_make_attribution(m, e, out);
+  mutt_make_attribution(m, e, fp_out);
 
   if (!C_Header)
     cmflags |= MUTT_CM_NOHEADER;
@@ -601,9 +601,9 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *out)
     cmflags |= MUTT_CM_WEED;
   }
 
-  mutt_copy_message_ctx(out, m, e, cmflags, chflags);
+  mutt_copy_message_ctx(fp_out, m, e, cmflags, chflags);
 
-  mutt_make_post_indent(m, e, out);
+  mutt_make_post_indent(m, e, fp_out);
 
   return 0;
 }
@@ -701,7 +701,7 @@ static int default_to(struct Address **to, struct Envelope *env, SendFlags flags
 int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, SendFlags flags)
 {
   struct Address *tmp = NULL;
-  int hmfupto = -1;
+  enum QuadOption hmfupto = MUTT_ABORT;
 
   if ((flags & (SEND_LIST_REPLY | SEND_GROUP_REPLY | SEND_GROUP_CHAT_REPLY)) && in->mail_followup_to)
   {
@@ -720,8 +720,8 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, SendFlags flags
     mutt_addr_append(&out->to, tmp, false);
     mutt_addr_free(&tmp);
 
-    if (in->mail_followup_to && hmfupto == MUTT_YES &&
-        default_to(&out->cc, in, flags & SEND_LIST_REPLY, hmfupto) == MUTT_ABORT)
+    if (in->mail_followup_to && (hmfupto == MUTT_YES) &&
+        default_to(&out->cc, in, flags & SEND_LIST_REPLY, (hmfupto == MUTT_YES)) == MUTT_ABORT)
     {
       return -1; /* abort */
     }
@@ -733,7 +733,7 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, SendFlags flags
   else
   {
     if (default_to(&out->to, in, flags & (SEND_GROUP_REPLY | SEND_GROUP_CHAT_REPLY),
-                   hmfupto) == -1)
+                   (hmfupto == MUTT_YES)) == -1)
       return -1; /* abort */
 
     if ((flags & (SEND_GROUP_REPLY | SEND_GROUP_CHAT_REPLY)) &&
@@ -968,7 +968,7 @@ static int envelope_defaults(struct Envelope *env, struct Mailbox *m,
 
 /**
  * generate_body - Create a new email body
- * @param tempfp Stream for outgoing message
+ * @param fp_tmp Stream for outgoing message
  * @param msg    Header for outgoing message
  * @param flags  Compose mode, see #SendFlags
  * @param m      Mailbox
@@ -976,10 +976,12 @@ static int envelope_defaults(struct Envelope *env, struct Mailbox *m,
  * @retval  0 Success
  * @retval -1 Error
  */
-static int generate_body(FILE *tempfp, struct Email *msg, SendFlags flags,
+static int generate_body(FILE *fp_tmp, struct Email *msg, SendFlags flags,
                          struct Mailbox *m, struct EmailList *el)
 {
-  enum QuadOption ans;
+  if (!el || STAILQ_EMPTY(el))
+    return -1;
+
   struct Body *tmp = NULL;
   struct EmailNode *en = NULL;
   bool single = true;
@@ -995,7 +997,8 @@ static int generate_body(FILE *tempfp, struct Email *msg, SendFlags flags,
 
   if (flags & SEND_REPLY)
   {
-    ans = query_quadoption(C_Include, _("Include message in reply?"));
+    enum QuadOption ans =
+        query_quadoption(C_Include, _("Include message in reply?"));
     if (ans == MUTT_ABORT)
       return -1;
 
@@ -1006,21 +1009,22 @@ static int generate_body(FILE *tempfp, struct Email *msg, SendFlags flags,
       {
         STAILQ_FOREACH(en, el, entries)
         {
-          if (include_reply(m, en->email, tempfp) == -1)
+          if (include_reply(m, en->email, fp_tmp) == -1)
           {
             mutt_error(_("Could not include all requested messages"));
             return -1;
           }
-          fputc('\n', tempfp);
+          fputc('\n', fp_tmp);
         }
       }
       else
-        include_reply(m, en->email, tempfp);
+        include_reply(m, en->email, fp_tmp);
     }
   }
   else if (flags & SEND_FORWARD)
   {
-    ans = query_quadoption(C_MimeForward, _("Forward as attachment?"));
+    enum QuadOption ans =
+        query_quadoption(C_MimeForward, _("Forward as attachment?"));
     if (ans == MUTT_YES)
     {
       struct Body *last = msg->content;
@@ -1059,12 +1063,12 @@ static int generate_body(FILE *tempfp, struct Email *msg, SendFlags flags,
     else if (ans != MUTT_ABORT)
     {
       if (single)
-        include_forward(m, en->email, tempfp);
+        include_forward(m, en->email, fp_tmp);
       else
       {
         STAILQ_FOREACH(en, el, entries)
         {
-          include_forward(m, en->email, tempfp);
+          include_forward(m, en->email, fp_tmp);
         }
       }
     }
@@ -1249,8 +1253,8 @@ static int send_message(struct Email *msg)
 
   /* Write out the message in MIME form. */
   mutt_mktemp(tempfile, sizeof(tempfile));
-  FILE *tempfp = mutt_file_fopen(tempfile, "w");
-  if (!tempfp)
+  FILE *fp_tmp = mutt_file_fopen(tempfile, "w");
+  if (!fp_tmp)
     return -1;
 
 #ifdef USE_SMTP
@@ -1259,12 +1263,12 @@ static int send_message(struct Email *msg)
     C_WriteBcc = false;
 #endif
 #ifdef MIXMASTER
-  mutt_rfc822_write_header(tempfp, msg->env, msg->content,
+  mutt_rfc822_write_header(fp_tmp, msg->env, msg->content,
                            MUTT_WRITE_HEADER_NORMAL, !STAILQ_EMPTY(&msg->chain),
                            mutt_should_hide_protected_subject(msg));
 #endif
 #ifndef MIXMASTER
-  mutt_rfc822_write_header(tempfp, msg->env, msg->content, MUTT_WRITE_HEADER_NORMAL,
+  mutt_rfc822_write_header(fp_tmp, msg->env, msg->content, MUTT_WRITE_HEADER_NORMAL,
                            false, mutt_should_hide_protected_subject(msg));
 #endif
 #ifdef USE_SMTP
@@ -1272,16 +1276,16 @@ static int send_message(struct Email *msg)
     C_WriteBcc = true;
 #endif
 
-  fputc('\n', tempfp); /* tie off the header. */
+  fputc('\n', fp_tmp); /* tie off the header. */
 
-  if ((mutt_write_mime_body(msg->content, tempfp) == -1))
+  if ((mutt_write_mime_body(msg->content, fp_tmp) == -1))
   {
-    mutt_file_fclose(&tempfp);
+    mutt_file_fclose(&fp_tmp);
     unlink(tempfile);
     return -1;
   }
 
-  if (fclose(tempfp) != 0)
+  if (fclose(fp_tmp) != 0)
   {
     mutt_perror(tempfile);
     unlink(tempfile);
@@ -1444,15 +1448,15 @@ static bool search_attach_keyword(char *filename)
     return false;
   }
 
-  FILE *attf = mutt_file_fopen(filename, "r");
-  if (!attf)
+  FILE *fp_att = mutt_file_fopen(filename, "r");
+  if (!fp_att)
     return false;
 
   char *inputline = mutt_mem_malloc(1024);
   bool found = false;
-  while (!feof(attf))
+  while (!feof(fp_att))
   {
-    fgets(inputline, 1024, attf);
+    fgets(inputline, 1024, fp_att);
     if (!mutt_is_quote_line(inputline, NULL) &&
         regexec(C_AbortNoattachRegex->regex, inputline, 0, NULL, 0) == 0)
     {
@@ -1461,7 +1465,7 @@ static bool search_attach_keyword(char *filename)
     }
   }
   FREE(&inputline);
-  mutt_file_fclose(&attf);
+  mutt_file_fclose(&fp_att);
   return found;
 }
 
@@ -1743,7 +1747,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
 {
   char buf[1024];
   char fcc[PATH_MAX] = ""; /* where to copy this message */
-  FILE *tempfp = NULL;
+  FILE *fp_tmp = NULL;
   struct Body *pbody = NULL;
   int i;
   bool killfrom = false;
@@ -1781,11 +1785,12 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
     /* If the user is composing a new message, check to see if there
      * are any postponed messages first.
      */
-    i = query_quadoption(C_Recall, _("Recall postponed message?"));
-    if (i == MUTT_ABORT)
+    enum QuadOption ans =
+        query_quadoption(C_Recall, _("Recall postponed message?"));
+    if (ans == MUTT_ABORT)
       return rc;
 
-    if (i == MUTT_YES)
+    if (ans == MUTT_YES)
       flags |= SEND_POSTPONED;
   }
 
@@ -1834,8 +1839,8 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
 
     if (flags & (SEND_POSTPONED | SEND_RESEND))
     {
-      tempfp = mutt_file_fopen(msg->content->filename, "a+");
-      if (!tempfp)
+      fp_tmp = mutt_file_fopen(msg->content->filename, "a+");
+      if (!fp_tmp)
       {
         mutt_perror(msg->content->filename);
         goto cleanup;
@@ -1878,19 +1883,19 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
       if (!tempfile)
       {
         mutt_mktemp(buf, sizeof(buf));
-        tempfp = mutt_file_fopen(buf, "w+");
+        fp_tmp = mutt_file_fopen(buf, "w+");
         msg->content->filename = mutt_str_strdup(buf);
       }
       else
       {
-        tempfp = mutt_file_fopen(tempfile, "a+");
+        fp_tmp = mutt_file_fopen(tempfile, "a+");
         msg->content->filename = mutt_str_strdup(tempfile);
       }
     }
     else
-      tempfp = mutt_file_fopen(msg->content->filename, "a+");
+      fp_tmp = mutt_file_fopen(msg->content->filename, "a+");
 
-    if (!tempfp)
+    if (!fp_tmp)
     {
       mutt_debug(LL_DEBUG1, "can't create tempfile %s (errno=%d)\n",
                  msg->content->filename, errno);
@@ -2030,17 +2035,17 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
       process_user_header(msg->env);
 
     if (flags & SEND_BATCH)
-      mutt_file_copy_stream(stdin, tempfp);
+      mutt_file_copy_stream(stdin, fp_tmp);
 
     if (C_SigOnTop && !(flags & (SEND_MAILX | SEND_KEY | SEND_BATCH)) &&
         C_Editor && (mutt_str_strcmp(C_Editor, "builtin") != 0))
     {
-      append_signature(tempfp);
+      append_signature(fp_tmp);
     }
 
     /* include replies/forwarded messages, unless we are given a template */
     if (!tempfile && (ctx || !(flags & (SEND_REPLY | SEND_FORWARD))) &&
-        generate_body(tempfp, msg, flags, ctx->mailbox, el) == -1)
+        generate_body(fp_tmp, msg, flags, ctx->mailbox, el) == -1)
     {
       goto cleanup;
     }
@@ -2048,7 +2053,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
     if (!C_SigOnTop && !(flags & (SEND_MAILX | SEND_KEY | SEND_BATCH)) &&
         C_Editor && (mutt_str_strcmp(C_Editor, "builtin") != 0))
     {
-      append_signature(tempfp);
+      append_signature(fp_tmp);
     }
   }
 
@@ -2064,7 +2069,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
     msg->env->from->personal = mutt_str_strdup(C_Realname);
 
   if (!(((WithCrypto & APPLICATION_PGP) != 0) && (flags & SEND_KEY)))
-    mutt_file_fclose(&tempfp);
+    mutt_file_fclose(&fp_tmp);
 
   if (flags & SEND_MAILX)
   {
@@ -2337,8 +2342,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
   }
 
   if (!msg->env->subject && !(flags & SEND_BATCH) &&
-      (i = query_quadoption(C_AbortNosubject,
-                            _("No subject, abort sending?"))) != MUTT_NO)
+      (query_quadoption(C_AbortNosubject, _("No subject, abort sending?")) != MUTT_NO))
   {
     /* if the abort is automatic, print an error message */
     if (C_AbortNosubject == MUTT_YES)
@@ -2518,7 +2522,7 @@ cleanup:
     }
   }
 
-  mutt_file_fclose(&tempfp);
+  mutt_file_fclose(&fp_tmp);
   if (!(flags & SEND_NO_FREE_HEADER))
     mutt_email_free(&msg);
 

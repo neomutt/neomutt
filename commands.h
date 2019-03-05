@@ -54,7 +54,7 @@ void mutt_pipe_message(struct Mailbox *m, struct EmailList *el);
 void mutt_print_message(struct Mailbox *m, struct EmailList *el);
 int  mutt_save_message_ctx(struct Email *e, bool delete, bool decode, bool decrypt, struct Mailbox *m);
 int  mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete, bool decode, bool decrypt);
-int  mutt_select_sort(int reverse);
+int  mutt_select_sort(bool reverse);
 void mutt_shell_escape(void);
 
 #endif /* MUTT_COMMANDS_H */

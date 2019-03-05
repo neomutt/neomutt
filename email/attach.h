@@ -49,7 +49,7 @@ struct AttachPtr
 struct AttachCtx
 {
   struct Email *email; /**< used by recvattach for updating */
-  FILE *root_fp;       /**< used by recvattach for updating */
+  FILE *fp_root;       /**< used by recvattach for updating */
 
   struct AttachPtr **idx;
   short idxlen;
@@ -69,7 +69,7 @@ struct AttachCtx
 
 void mutt_actx_add_attach(struct AttachCtx *actx, struct AttachPtr *attach);
 void mutt_actx_add_body(struct AttachCtx *actx, struct Body *new_body);
-void mutt_actx_add_fp(struct AttachCtx *actx, FILE *new_fp);
+void mutt_actx_add_fp(struct AttachCtx *actx, FILE *fp_new);
 void mutt_actx_free(struct AttachCtx **pactx);
 void mutt_actx_free_entries(struct AttachCtx *actx);
 

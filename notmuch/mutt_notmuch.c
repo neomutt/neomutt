@@ -916,11 +916,11 @@ static void append_message(struct Mailbox *m, notmuch_query_t *q,
 
     if (folder)
     {
-      FILE *f = maildir_open_find_message(folder, path, &newpath);
-      if (f)
+      FILE *fp = maildir_open_find_message(folder, path, &newpath);
+      if (fp)
       {
-        e = maildir_parse_stream(MUTT_MAILDIR, f, newpath, false, NULL);
-        fclose(f);
+        e = maildir_parse_stream(MUTT_MAILDIR, fp, newpath, false, NULL);
+        fclose(fp);
 
         mutt_debug(LL_DEBUG1, "nm: not up-to-date: %s -> %s\n", path, newpath);
       }
@@ -1781,7 +1781,7 @@ bool nm_message_is_still_queried(struct Mailbox *m, struct Email *e)
     return false;
 
   char *new_str = NULL;
-  bool result = false;
+  bool rc = false;
   if (safe_asprintf(&new_str, "id:%s and (%s)", email_get_id(e), orig_str) < 0)
     return false;
 
@@ -1798,7 +1798,7 @@ bool nm_message_is_still_queried(struct Mailbox *m, struct Email *e)
       if (!messages)
         return false;
 
-      result = notmuch_messages_valid(messages);
+      rc = notmuch_messages_valid(messages);
       notmuch_messages_destroy(messages);
       break;
     }
@@ -1809,7 +1809,7 @@ bool nm_message_is_still_queried(struct Mailbox *m, struct Email *e)
       if (!threads)
         return false;
 
-      result = notmuch_threads_valid(threads);
+      rc = notmuch_threads_valid(threads);
       notmuch_threads_destroy(threads);
       break;
     }
@@ -1818,9 +1818,9 @@ bool nm_message_is_still_queried(struct Mailbox *m, struct Email *e)
   notmuch_query_destroy(q);
 
   mutt_debug(LL_DEBUG2, "nm: checking if message is still queried: %s = %s\n",
-             new_str, result ? "true" : "false");
+             new_str, rc ? "true" : "false");
 
-  return result;
+  return rc;
 }
 
 /**

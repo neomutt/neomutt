@@ -74,7 +74,7 @@ void mutt_sha1_transform(uint32_t state[5], const unsigned char buffer[64])
   } CHAR64LONG16;
   CHAR64LONG16 block[1]; /* use array to appear as a pointer */
   memcpy(block, buffer, 64);
-  /* Copy context->state[] to working vars */
+  /* Copy sha1ctx->state[] to working vars */
   a = state[0];
   b = state[1];
   c = state[2];
@@ -161,7 +161,7 @@ void mutt_sha1_transform(uint32_t state[5], const unsigned char buffer[64])
   R4(d, e, a, b, c, 77);
   R4(c, d, e, a, b, 78);
   R4(b, c, d, e, a, 79);
-  /* Add the working vars back into context.state[] */
+  /* Add the working vars back into sha1ctx.state[] */
   state[0] += a;
   state[1] += b;
   state[2] += c;
@@ -178,57 +178,57 @@ void mutt_sha1_transform(uint32_t state[5], const unsigned char buffer[64])
 
 /**
  * mutt_sha1_init - Initialize new context
- * @param context SHA1 context
+ * @param sha1ctx SHA1 context
  */
-void mutt_sha1_init(struct Sha1Ctx *context)
+void mutt_sha1_init(struct Sha1Ctx *sha1ctx)
 {
   /* SHA1 initialization constants */
-  context->state[0] = 0x67452301;
-  context->state[1] = 0xEFCDAB89;
-  context->state[2] = 0x98BADCFE;
-  context->state[3] = 0x10325476;
-  context->state[4] = 0xC3D2E1F0;
-  context->count[0] = 0;
-  context->count[1] = 0;
+  sha1ctx->state[0] = 0x67452301;
+  sha1ctx->state[1] = 0xEFCDAB89;
+  sha1ctx->state[2] = 0x98BADCFE;
+  sha1ctx->state[3] = 0x10325476;
+  sha1ctx->state[4] = 0xC3D2E1F0;
+  sha1ctx->count[0] = 0;
+  sha1ctx->count[1] = 0;
 }
 
 /**
  * mutt_sha1_update - Run your data through this
- * @param context SHA1 context
+ * @param sha1ctx SHA1 context
  * @param data    Data to be hashed
  * @param len     Length of data
  */
-void mutt_sha1_update(struct Sha1Ctx *context, const unsigned char *data, uint32_t len)
+void mutt_sha1_update(struct Sha1Ctx *sha1ctx, const unsigned char *data, uint32_t len)
 {
   uint32_t i;
   uint32_t j;
 
-  j = context->count[0];
-  if ((context->count[0] += len << 3) < j)
-    context->count[1]++;
-  context->count[1] += (len >> 29);
+  j = sha1ctx->count[0];
+  if ((sha1ctx->count[0] += len << 3) < j)
+    sha1ctx->count[1]++;
+  sha1ctx->count[1] += (len >> 29);
   j = (j >> 3) & 63;
   if ((j + len) > 63)
   {
-    memcpy(&context->buffer[j], data, (i = 64 - j));
-    mutt_sha1_transform(context->state, context->buffer);
+    memcpy(&sha1ctx->buffer[j], data, (i = 64 - j));
+    mutt_sha1_transform(sha1ctx->state, sha1ctx->buffer);
     for (; i + 63 < len; i += 64)
     {
-      mutt_sha1_transform(context->state, &data[i]);
+      mutt_sha1_transform(sha1ctx->state, &data[i]);
     }
     j = 0;
   }
   else
     i = 0;
-  memcpy(&context->buffer[j], &data[i], len - i);
+  memcpy(&sha1ctx->buffer[j], &data[i], len - i);
 }
 
 /**
  * mutt_sha1_final - Add padding and return the message digest
  * @param[out] digest  Message digest (SHA1 sum)
- * @param[in]  context SHA1 context
+ * @param[in]  sha1ctx SHA1 context
  */
-void mutt_sha1_final(unsigned char digest[20], struct Sha1Ctx *context)
+void mutt_sha1_final(unsigned char digest[20], struct Sha1Ctx *sha1ctx)
 {
   unsigned char finalcount[8];
   unsigned char c;
@@ -236,22 +236,22 @@ void mutt_sha1_final(unsigned char digest[20], struct Sha1Ctx *context)
   for (unsigned int i = 0; i < 8; i++)
   {
     finalcount[i] =
-        (unsigned char) ((context->count[(i >= 4 ? 0 : 1)] >> ((3 - (i & 3)) * 8)) & 255); /* Endian independent */
+        (unsigned char) ((sha1ctx->count[(i >= 4 ? 0 : 1)] >> ((3 - (i & 3)) * 8)) & 255); /* Endian independent */
   }
 
   c = 0200;
-  mutt_sha1_update(context, &c, 1);
-  while ((context->count[0] & 504) != 448)
+  mutt_sha1_update(sha1ctx, &c, 1);
+  while ((sha1ctx->count[0] & 504) != 448)
   {
     c = 0000;
-    mutt_sha1_update(context, &c, 1);
+    mutt_sha1_update(sha1ctx, &c, 1);
   }
-  mutt_sha1_update(context, finalcount, 8); /* Should cause a mutt_sha1_transform() */
+  mutt_sha1_update(sha1ctx, finalcount, 8); /* Should cause a mutt_sha1_transform() */
   for (unsigned int i = 0; i < 20; i++)
   {
-    digest[i] = (unsigned char) ((context->state[i >> 2] >> ((3 - (i & 3)) * 8)) & 255);
+    digest[i] = (unsigned char) ((sha1ctx->state[i >> 2] >> ((3 - (i & 3)) * 8)) & 255);
   }
   /* Wipe variables */
-  memset(context, '\0', sizeof(*context));
+  memset(sha1ctx, '\0', sizeof(*sha1ctx));
   memset(&finalcount, '\0', sizeof(finalcount));
 }

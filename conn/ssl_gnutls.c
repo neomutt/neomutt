@@ -252,7 +252,6 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
 {
   gnutls_datum_t cert;
   unsigned char *ptr = NULL;
-  FILE *fd1 = NULL;
   gnutls_datum_t b64_data;
   unsigned char *b64_data_data = NULL;
   struct stat filestat;
@@ -265,14 +264,12 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
   b64_data_data[b64_data.size - 1] = '\0';
   b64_data.data = b64_data_data;
 
-  fd1 = fopen(C_CertificateFile, "r");
-  if (!fd1)
-  {
+  FILE *fp = fopen(C_CertificateFile, "r");
+  if (!fp)
     return 0;
-  }
 
-  b64_data.size = fread(b64_data.data, 1, b64_data.size, fd1);
-  mutt_file_fclose(&fd1);
+  b64_data.size = fread(b64_data.data, 1, b64_data.size, fp);
+  mutt_file_fclose(&fp);
 
   do
   {

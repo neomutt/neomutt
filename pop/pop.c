@@ -160,10 +160,10 @@ static struct PopEmailData *pop_edata_new(const char *uid)
  */
 static int fetch_message(char *line, void *file)
 {
-  FILE *f = file;
+  FILE *fp = file;
 
-  fputs(line, f);
-  if (fputc('\n', f) == EOF)
+  fputs(line, fp);
+  if (fputc('\n', fp) == EOF)
     return -1;
 
   return 0;
@@ -180,8 +180,8 @@ static int fetch_message(char *line, void *file)
  */
 static int pop_read_header(struct PopAccountData *adata, struct Email *e)
 {
-  FILE *f = mutt_file_mkstemp();
-  if (!f)
+  FILE *fp = mutt_file_mkstemp();
+  if (!fp)
   {
     mutt_perror(_("Can't create temporary file"));
     return -3;
@@ -198,7 +198,7 @@ static int pop_read_header(struct PopAccountData *adata, struct Email *e)
     sscanf(buf, "+OK %d %zu", &index, &length);
 
     snprintf(buf, sizeof(buf), "TOP %d 0\r\n", e->refno);
-    rc = pop_fetch_data(adata, buf, NULL, fetch_message, f);
+    rc = pop_fetch_data(adata, buf, NULL, fetch_message, fp);
 
     if (adata->cmd_top == 2)
     {
@@ -224,14 +224,14 @@ static int pop_read_header(struct PopAccountData *adata, struct Email *e)
   {
     case 0:
     {
-      rewind(f);
-      e->env = mutt_rfc822_read_header(f, e, false, false);
+      rewind(fp);
+      e->env = mutt_rfc822_read_header(fp, e, false, false);
       e->content->length = length - e->content->offset + 1;
-      rewind(f);
-      while (!feof(f))
+      rewind(fp);
+      while (!feof(fp))
       {
         e->content->length--;
-        fgets(buf, sizeof(buf), f);
+        fgets(buf, sizeof(buf), fp);
       }
       break;
     }
@@ -247,7 +247,7 @@ static int pop_read_header(struct PopAccountData *adata, struct Email *e)
     }
   }
 
-  mutt_file_fclose(&f);
+  mutt_file_fclose(&fp);
   return rc;
 }
 
@@ -406,20 +406,20 @@ static int pop_fetch_headers(struct Mailbox *m)
     m->emails[i]->refno = -1;
 
   const int old_count = m->msg_count;
-  int ret = pop_fetch_data(adata, "UIDL\r\n", NULL, fetch_uidl, m);
+  int rc = pop_fetch_data(adata, "UIDL\r\n", NULL, fetch_uidl, m);
   const int new_count = m->msg_count;
   m->msg_count = old_count;
 
   if (adata->cmd_uidl == 2)
   {
-    if (ret == 0)
+    if (rc == 0)
     {
       adata->cmd_uidl = 1;
 
       mutt_debug(LL_DEBUG1, "set UIDL capability\n");
     }
 
-    if (ret == -2 && adata->cmd_uidl == 2)
+    if (rc == -2 && adata->cmd_uidl == 2)
     {
       adata->cmd_uidl = 0;
 
@@ -435,7 +435,7 @@ static int pop_fetch_headers(struct Mailbox *m)
                        MUTT_PROGRESS_MSG, C_ReadInc, new_count - old_count);
   }
 
-  if (ret == 0)
+  if (rc == 0)
   {
     int i, deleted;
     for (i = 0, deleted = 0; i < old_count; i++)
@@ -487,12 +487,12 @@ static int pop_fetch_headers(struct Mailbox *m)
         /* Reattach the private data */
         m->emails[i]->edata = edata;
         m->emails[i]->free_edata = pop_edata_free;
-        ret = 0;
+        rc = 0;
         hcached = true;
       }
       else
 #endif
-          if ((ret = pop_read_header(adata, m->emails[i])) < 0)
+          if ((rc = pop_read_header(adata, m->emails[i])) < 0)
         break;
 #ifdef USE_HCACHE
       else
@@ -537,11 +537,11 @@ static int pop_fetch_headers(struct Mailbox *m)
   mutt_hcache_close(hc);
 #endif
 
-  if (ret < 0)
+  if (rc < 0)
   {
     for (int i = m->msg_count; i < new_count; i++)
       mutt_email_free(&m->emails[i]);
-    return ret;
+    return rc;
   }
 
   /* after putting the result into our structures,
@@ -589,7 +589,7 @@ void pop_fetch_mail(void)
 
   char buf[1024];
   char msgbuf[128];
-  int delanswer, last = 0, msgs, bytes, rset = 0, ret;
+  int last = 0, msgs, bytes, rset = 0, ret;
   struct ConnAccount acct;
 
   char *p = mutt_mem_calloc(strlen(C_PopHost) + 7, sizeof(char));
@@ -663,7 +663,8 @@ void pop_fetch_mail(void)
     goto finish;
   }
 
-  delanswer = query_quadoption(C_PopDelete, _("Delete messages from server?"));
+  enum QuadOption delanswer =
+      query_quadoption(C_PopDelete, _("Delete messages from server?"));
 
   snprintf(msgbuf, sizeof(msgbuf),
            ngettext("Reading new messages (%d byte)...",
@@ -879,12 +880,12 @@ static int pop_mbox_open(struct Mailbox *m)
 
     mutt_message(_("Fetching list of messages..."));
 
-    const int ret = pop_fetch_headers(m);
+    const int rc = pop_fetch_headers(m);
 
-    if (ret >= 0)
+    if (rc >= 0)
       return 0;
 
-    if (ret < -1)
+    if (rc < -1)
       return -1;
   }
 }
@@ -914,15 +915,15 @@ static int pop_mbox_check(struct Mailbox *m, int *index_hint)
   mutt_message(_("Checking for new messages..."));
 
   int old_msg_count = m->msg_count;
-  int ret = pop_fetch_headers(m);
+  int rc = pop_fetch_headers(m);
   pop_clear_cache(adata);
   if (m->msg_count > old_msg_count)
     mutt_mailbox_changed(m, MBN_INVALID);
 
-  if (ret < 0)
+  if (rc < 0)
     return -1;
 
-  if (ret > 0)
+  if (rc > 0)
     return MUTT_NEW_MAIL;
 
   return 0;
@@ -938,7 +939,7 @@ static int pop_mbox_sync(struct Mailbox *m, int *index_hint)
   if (!m)
     return -1;
 
-  int i, j, ret = 0;
+  int i, j, rc = 0;
   char buf[1024];
   struct PopAccountData *adata = pop_adata_get(m);
   struct Progress progress;
@@ -967,7 +968,7 @@ static int pop_mbox_sync(struct Mailbox *m, int *index_hint)
     hc = pop_hcache_open(adata, m->path);
 #endif
 
-    for (i = 0, j = 0, ret = 0; (ret == 0) && (i < m->msg_count); i++)
+    for (i = 0, j = 0, rc = 0; (rc == 0) && (i < m->msg_count); i++)
     {
       struct PopEmailData *edata = m->emails[i]->edata;
       if (m->emails[i]->deleted && m->emails[i]->refno != -1)
@@ -976,8 +977,8 @@ static int pop_mbox_sync(struct Mailbox *m, int *index_hint)
         if (!m->quiet)
           mutt_progress_update(&progress, j, -1);
         snprintf(buf, sizeof(buf), "DELE %d\r\n", m->emails[i]->refno);
-        ret = pop_query(adata, buf, sizeof(buf));
-        if (ret == 0)
+        rc = pop_query(adata, buf, sizeof(buf));
+        if (rc == 0)
         {
           mutt_bcache_del(adata->bcache, cache_id(edata->uid));
 #ifdef USE_HCACHE
@@ -998,13 +999,13 @@ static int pop_mbox_sync(struct Mailbox *m, int *index_hint)
     mutt_hcache_close(hc);
 #endif
 
-    if (ret == 0)
+    if (rc == 0)
     {
       mutt_str_strfcpy(buf, "QUIT\r\n", sizeof(buf));
-      ret = pop_query(adata, buf, sizeof(buf));
+      rc = pop_query(adata, buf, sizeof(buf));
     }
 
-    if (ret == 0)
+    if (rc == 0)
     {
       adata->clear_cache = true;
       pop_clear_cache(adata);
@@ -1012,7 +1013,7 @@ static int pop_mbox_sync(struct Mailbox *m, int *index_hint)
       return 0;
     }
 
-    if (ret == -2)
+    if (rc == -2)
     {
       mutt_error("%s", adata->err_msg);
       return -1;

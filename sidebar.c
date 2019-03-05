@@ -301,44 +301,44 @@ static int cb_qsort_sbe(const void *a, const void *b)
   struct Mailbox *m1 = sbe1->mailbox;
   struct Mailbox *m2 = sbe2->mailbox;
 
-  int result = 0;
+  int rc = 0;
 
   switch ((C_SidebarSortMethod & SORT_MASK))
   {
     case SORT_COUNT:
       if (m2->msg_count == m1->msg_count)
-        result = mutt_str_strcoll(m1->path, m2->path);
+        rc = mutt_str_strcoll(m1->path, m2->path);
       else
-        result = (m2->msg_count - m1->msg_count);
+        rc = (m2->msg_count - m1->msg_count);
       break;
     case SORT_UNREAD:
       if (m2->msg_unread == m1->msg_unread)
-        result = mutt_str_strcoll(m1->path, m2->path);
+        rc = mutt_str_strcoll(m1->path, m2->path);
       else
-        result = (m2->msg_unread - m1->msg_unread);
+        rc = (m2->msg_unread - m1->msg_unread);
       break;
     case SORT_DESC:
-      result = mutt_str_strcmp(m1->desc, m2->desc);
+      rc = mutt_str_strcmp(m1->desc, m2->desc);
       break;
     case SORT_FLAGGED:
       if (m2->msg_flagged == m1->msg_flagged)
-        result = mutt_str_strcoll(m1->path, m2->path);
+        rc = mutt_str_strcoll(m1->path, m2->path);
       else
-        result = (m2->msg_flagged - m1->msg_flagged);
+        rc = (m2->msg_flagged - m1->msg_flagged);
       break;
     case SORT_PATH:
     {
-      result = mutt_inbox_cmp(m1->path, m2->path);
-      if (result == 0)
-        result = mutt_str_strcoll(m1->path, m2->path);
+      rc = mutt_inbox_cmp(m1->path, m2->path);
+      if (rc == 0)
+        rc = mutt_str_strcoll(m1->path, m2->path);
       break;
     }
   }
 
   if (C_SidebarSortMethod & SORT_REVERSE)
-    result = -result;
+    rc = -rc;
 
-  return result;
+  return rc;
 }
 
 /**
@@ -428,7 +428,7 @@ static void unsort_entries(void)
  */
 static void sort_entries(void)
 {
-  short ssm = (C_SidebarSortMethod & SORT_MASK);
+  enum SortType ssm = (C_SidebarSortMethod & SORT_MASK);
 
   /* These are the only sort methods we understand */
   if ((ssm == SORT_COUNT) || (ssm == SORT_UNREAD) || (ssm == SORT_FLAGGED) || (ssm == SORT_PATH))

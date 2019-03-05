@@ -71,7 +71,7 @@ int          mutt_strwidth(const char *s);
 void         mutt_unget_event(int ch, int op);
 void         mutt_unget_string(const char *s);
 size_t       mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *width);
-int          mutt_yesorno(const char *msg, int def);
+enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def);
 
 #define mutt_enter_fname(prompt, buf, buflen, mailbox) mutt_enter_fname_full(prompt, buf, buflen, mailbox, false, NULL, NULL, 0)
 #define mutt_get_field(field, buf, buflen, complete)   mutt_get_field_full(field, buf, buflen, complete, false, NULL, NULL)

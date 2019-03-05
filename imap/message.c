@@ -1551,7 +1551,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool
   char prompt[PATH_MAX + 64];
   int rc;
   struct ConnAccount conn_account;
-  int err_continue = MUTT_NO;
+  enum QuadOption err_continue = MUTT_NO;
   int triedcreate = 0;
   struct EmailNode *en = STAILQ_FIRST(el);
   bool single = !STAILQ_NEXT(en, entries);
@@ -1667,7 +1667,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool
         break;
       mutt_debug(LL_DEBUG3, "server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), mbox);
-      if (C_Confirmcreate && mutt_yesorno(prompt, 1) != MUTT_YES)
+      if (C_Confirmcreate && mutt_yesorno(prompt, MUTT_YES) != MUTT_YES)
       {
         mutt_clear_error();
         goto out;
@@ -2027,9 +2027,9 @@ bail:
  */
 int imap_msg_commit(struct Mailbox *m, struct Message *msg)
 {
-  int r = mutt_file_fclose(&msg->fp);
-  if (r != 0)
-    return r;
+  int rc = mutt_file_fclose(&msg->fp);
+  if (rc != 0)
+    return rc;
 
   return imap_append_message(m, msg);
 }

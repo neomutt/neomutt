@@ -585,7 +585,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
   struct Message *msg = NULL;
   char file[PATH_MAX];
   struct Body *b = NULL;
-  FILE *bfp = NULL;
+  FILE *fp_body = NULL;
   int rc = -1;
   struct State s = { 0 };
   SecurityFlags sec_type;
@@ -597,7 +597,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
   if (!fp)
     fp = msg->fp;
 
-  bfp = fp;
+  fp_body = fp;
 
   /* parse the message header and MIME structure */
 
@@ -628,7 +628,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
       goto bail;
 
     mutt_message(_("Decrypting message..."));
-    if ((crypt_pgp_decrypt_mime(fp, &bfp, newhdr->content, &b) == -1) || !b)
+    if ((crypt_pgp_decrypt_mime(fp, &fp_body, newhdr->content, &b) == -1) || !b)
     {
       goto bail;
     }
@@ -683,7 +683,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
   if (newhdr->content->type == TYPE_MULTIPART)
     newhdr->content = mutt_remove_multipart(newhdr->content);
 
-  s.fp_in = bfp;
+  s.fp_in = fp_body;
 
   /* create temporary files for all attachments */
   for (b = newhdr->content; b; b = b->next)
@@ -823,8 +823,8 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
 bail:
 
   /* that's it. */
-  if (bfp != fp)
-    mutt_file_fclose(&bfp);
+  if (fp_body != fp)
+    mutt_file_fclose(&fp_body);
   if (msg)
     mx_msg_close(m, &msg);
 

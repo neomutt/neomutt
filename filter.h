@@ -24,9 +24,8 @@
 #include <stdio.h>
 #include <unistd.h>
 
-pid_t mutt_create_filter_fd(const char *cmd, FILE **in, FILE **out, FILE **err,
-                            int fdin, int fdout, int fderr);
-pid_t mutt_create_filter(const char *s, FILE **in, FILE **out, FILE **err);
+pid_t mutt_create_filter_fd(const char *cmd, FILE **fp_in, FILE **fp_out, FILE **fp_err, int fdin, int fdout, int fderr);
+pid_t mutt_create_filter(const char *s, FILE **fp_in, FILE **fp_out, FILE **fp_err);
 int mutt_wait_filter(pid_t pid);
 int mutt_wait_interactive_filter (pid_t pid);
 

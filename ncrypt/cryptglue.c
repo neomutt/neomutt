@@ -189,10 +189,10 @@ int crypt_pgp_valid_passphrase(void)
 /**
  * crypt_pgp_decrypt_mime - Wrapper for CryptModuleSpecs::decrypt_mime()
  */
-int crypt_pgp_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
+int crypt_pgp_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, decrypt_mime))
-    return CRYPT_MOD_CALL(PGP, decrypt_mime)(fpin, fpout, b, cur);
+    return CRYPT_MOD_CALL(PGP, decrypt_mime)(fp_in, fp_out, b, cur);
 
   return -1;
 }
@@ -370,10 +370,10 @@ int crypt_smime_valid_passphrase(void)
 /**
  * crypt_smime_decrypt_mime - Wrapper for CryptModuleSpecs::decrypt_mime()
  */
-int crypt_smime_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d)
+int crypt_smime_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, decrypt_mime))
-    return CRYPT_MOD_CALL(SMIME, decrypt_mime)(a, b, c, d);
+    return CRYPT_MOD_CALL(SMIME, decrypt_mime)(fp_in, fp_out, b, cur);
 
   return -1;
 }

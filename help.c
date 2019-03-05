@@ -134,14 +134,14 @@ char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping
 
 /**
  * print_macro - Print a macro string to a file
- * @param[in]  f        File to write to
+ * @param[in]  fp       File to write to
  * @param[in]  maxwidth Maximum width in screen columns
  * @param[out] macro    Macro string
  * @retval num Number of screen columns used
  *
  * The `macro` pointer is move past the string we've printed
  */
-static int print_macro(FILE *f, int maxwidth, const char **macro)
+static int print_macro(FILE *fp, int maxwidth, const char **macro)
 {
   int n = maxwidth;
   wchar_t wc;
@@ -173,7 +173,7 @@ static int print_macro(FILE *f, int maxwidth, const char **macro)
         if ((n1 = wcrtomb(buf, wc, &mbstate2)) != (size_t)(-1) &&
             (n2 = wcrtomb(buf + n1, 0, &mbstate2)) != (size_t)(-1))
         {
-          fputs(buf, f);
+          fputs(buf, fp);
         }
       }
     }
@@ -183,22 +183,22 @@ static int print_macro(FILE *f, int maxwidth, const char **macro)
         break;
       n -= 2;
       if (wc == '\033')
-        fprintf(f, "\\e");
+        fprintf(fp, "\\e");
       else if (wc == '\n')
-        fprintf(f, "\\n");
+        fprintf(fp, "\\n");
       else if (wc == '\r')
-        fprintf(f, "\\r");
+        fprintf(fp, "\\r");
       else if (wc == '\t')
-        fprintf(f, "\\t");
+        fprintf(fp, "\\t");
       else
-        fprintf(f, "^%c", (char) ((wc + '@') & 0x7f));
+        fprintf(fp, "^%c", (char) ((wc + '@') & 0x7f));
     }
     else
     {
       if (n < 1)
         break;
       n -= 1;
-      fprintf(f, "?");
+      fprintf(fp, "?");
     }
   }
   return maxwidth - n;
@@ -247,28 +247,28 @@ static int get_wrapped_width(const char *t, size_t wid)
 
 /**
  * pad - Write some padding to a file
- * @param f   File to write to
+ * @param fp  File to write to
  * @param col Current screen column
  * @param i   Screen column to pad until
  * @retval col Padding was added
  * @retval i   Content was already wider than col
  */
-static int pad(FILE *f, int col, int i)
+static int pad(FILE *fp, int col, int i)
 {
   if (col < i)
   {
     char fmt[32] = "";
     snprintf(fmt, sizeof(fmt), "%%-%ds", i - col);
-    fprintf(f, fmt, "");
+    fprintf(fp, fmt, "");
     return i;
   }
-  fputc(' ', f);
+  fputc(' ', fp);
   return col + 1;
 }
 
 /**
  * format_line - Write a formatted line to a file
- * @param f       File to write to
+ * @param fp      File to write to
  * @param ismacro Layout mode, see below
  * @param t1      Text part 1
  * @param t2      Text part 2
@@ -281,13 +281,13 @@ static int pad(FILE *f, int col, int i)
  * *  0 : Non-macro
  * * -1 : Macro with no description
  */
-static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, const char *t3)
+static void format_line(FILE *fp, int ismacro, const char *t1, const char *t2, const char *t3)
 {
   int col;
   int col_b;
   bool split;
 
-  fputs(t1, f);
+  fputs(t1, fp);
 
   /* don't try to press string into one line with less than 40 characters. */
   split = (MuttIndexWindow->cols < 40);
@@ -295,40 +295,40 @@ static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, co
   {
     col = 0;
     col_b = 1024;
-    fputc('\n', f);
+    fputc('\n', fp);
   }
   else
   {
     const int col_a = MuttIndexWindow->cols > 83 ? (MuttIndexWindow->cols - 32) >> 2 : 12;
     col_b = MuttIndexWindow->cols > 49 ? (MuttIndexWindow->cols - 10) >> 1 : 19;
-    col = pad(f, mutt_strwidth(t1), col_a);
+    col = pad(fp, mutt_strwidth(t1), col_a);
   }
 
   if (ismacro > 0)
   {
     if (mutt_str_strcmp(C_Pager, "builtin") == 0)
-      fputs("_\010", f);
-    fputs("M ", f);
+      fputs("_\010", fp);
+    fputs("M ", fp);
     col += 2;
 
     if (!split)
     {
-      col += print_macro(f, col_b - col - 4, &t2);
+      col += print_macro(fp, col_b - col - 4, &t2);
       if (mutt_strwidth(t2) > col_b - col)
         t2 = "...";
     }
   }
 
-  col += print_macro(f, col_b - col - 1, &t2);
+  col += print_macro(fp, col_b - col - 1, &t2);
   if (split)
-    fputc('\n', f);
+    fputc('\n', fp);
   else
-    col = pad(f, col, col_b);
+    col = pad(fp, col, col_b);
 
   if (split)
   {
-    print_macro(f, 1024, &t3);
-    fputc('\n', f);
+    print_macro(fp, 1024, &t3);
+    fputc('\n', fp);
   }
   else
   {
@@ -342,13 +342,13 @@ static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, co
         n = get_wrapped_width(t3, n);
       }
 
-      n = print_macro(f, n, &t3);
+      n = print_macro(fp, n, &t3);
 
       if (*t3)
       {
         if (mutt_str_strcmp(C_Pager, "builtin") != 0)
         {
-          fputc('\n', f);
+          fputc('\n', fp);
           n = 0;
         }
         else
@@ -357,20 +357,20 @@ static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, co
           if (C_Markers)
             n++;
         }
-        col = pad(f, n, col_b);
+        col = pad(fp, n, col_b);
       }
     }
   }
 
-  fputc('\n', f);
+  fputc('\n', fp);
 }
 
 /**
  * dump_menu - Write all the key bindings to a file
- * @param f    File to write to
+ * @param fp   File to write to
  * @param menu Current Menu
  */
-static void dump_menu(FILE *f, int menu)
+static void dump_menu(FILE *fp, int menu)
 {
   struct Keymap *map = NULL;
   const struct Binding *b = NULL;
@@ -386,14 +386,14 @@ static void dump_menu(FILE *f, int menu)
       if (map->op == OP_MACRO)
       {
         if (!map->desc)
-          format_line(f, -1, buf, "macro", map->macro);
+          format_line(fp, -1, buf, "macro", map->macro);
         else
-          format_line(f, 1, buf, map->macro, map->desc);
+          format_line(fp, 1, buf, map->macro, map->desc);
       }
       else
       {
         b = help_lookup_function(map->op, menu);
-        format_line(f, 0, buf, b ? b->name : "UNKNOWN",
+        format_line(fp, 0, buf, b ? b->name : "UNKNOWN",
                     b ? _(HelpStrings[b->op]) : _("ERROR: please report this bug"));
       }
     }
@@ -416,18 +416,18 @@ static bool is_bound(struct Keymap *map, int op)
 
 /**
  * dump_unbound - Write out all the operations with no key bindings
- * @param f     File to write to
+ * @param fp    File to write to
  * @param funcs All the bindings for the current menu
  * @param map   First key map to consider
  * @param aux   Second key map to consider
  */
-static void dump_unbound(FILE *f, const struct Binding *funcs,
+static void dump_unbound(FILE *fp, const struct Binding *funcs,
                          struct Keymap *map, struct Keymap *aux)
 {
   for (int i = 0; funcs[i].name; i++)
   {
     if (!is_bound(map, funcs[i].op) && (!aux || !is_bound(aux, funcs[i].op)))
-      format_line(f, 0, funcs[i].name, "", _(HelpStrings[funcs[i].op]));
+      format_line(fp, 0, funcs[i].name, "", _(HelpStrings[funcs[i].op]));
   }
 }
 
@@ -439,7 +439,7 @@ void mutt_help(int menu)
 {
   char t[PATH_MAX];
   char buf[128];
-  FILE *f = NULL;
+  FILE *fp = NULL;
 
   mutt_mktemp(t, sizeof(t));
 
@@ -450,27 +450,27 @@ void mutt_help(int menu)
 
   do
   {
-    f = mutt_file_fopen(t, "w");
-    if (!f)
+    fp = mutt_file_fopen(t, "w");
+    if (!fp)
     {
       mutt_perror(t);
       return;
     }
 
-    dump_menu(f, menu);
+    dump_menu(fp, menu);
     if (menu != MENU_EDITOR && menu != MENU_PAGER)
     {
-      fprintf(f, "\n%s\n\n", _("Generic bindings:"));
-      dump_menu(f, MENU_GENERIC);
+      fprintf(fp, "\n%s\n\n", _("Generic bindings:"));
+      dump_menu(fp, MENU_GENERIC);
     }
 
-    fprintf(f, "\n%s\n\n", _("Unbound functions:"));
+    fprintf(fp, "\n%s\n\n", _("Unbound functions:"));
     if (funcs)
-      dump_unbound(f, funcs, Keymaps[menu], NULL);
+      dump_unbound(fp, funcs, Keymaps[menu], NULL);
     if (menu != MENU_PAGER)
-      dump_unbound(f, OpGeneric, Keymaps[MENU_GENERIC], Keymaps[menu]);
+      dump_unbound(fp, OpGeneric, Keymaps[MENU_GENERIC], Keymaps[menu]);
 
-    mutt_file_fclose(&f);
+    mutt_file_fclose(&fp);
 
     snprintf(buf, sizeof(buf), _("Help for %s"), desc);
   } while (mutt_do_pager(buf, t, MUTT_PAGER_RETWINCH | MUTT_PAGER_MARKER | MUTT_PAGER_NSKIP | MUTT_PAGER_NOWRAP,

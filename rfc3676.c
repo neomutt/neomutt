@@ -403,7 +403,6 @@ void rfc3676_space_stuff(struct Email *e)
   int lc = 0;
   size_t len = 0;
   unsigned char c = '\0';
-  FILE *in = NULL, *out = NULL;
   char buf[1024];
   char tmpfile[PATH_MAX];
 
@@ -412,23 +411,23 @@ void rfc3676_space_stuff(struct Email *e)
 
   mutt_debug(LL_DEBUG2, "f=f: postprocess %s\n", e->content->filename);
 
-  in = mutt_file_fopen(e->content->filename, "r");
-  if (!in)
+  FILE *fp_in = mutt_file_fopen(e->content->filename, "r");
+  if (!fp_in)
     return;
 
   mutt_mktemp(tmpfile, sizeof(tmpfile));
-  out = mutt_file_fopen(tmpfile, "w+");
-  if (!out)
+  FILE *fp_out = mutt_file_fopen(tmpfile, "w+");
+  if (!fp_out)
   {
-    mutt_file_fclose(&in);
+    mutt_file_fclose(&fp_in);
     return;
   }
 
-  while (fgets(buf, sizeof(buf), in))
+  while (fgets(buf, sizeof(buf), fp_in))
   {
     if (buf[0] == ' ' || mutt_str_startswith(buf, "From ", CASE_MATCH))
     {
-      fputc(' ', out);
+      fputc(' ', fp_out);
       lc++;
       len = mutt_str_strlen(buf);
       if (len > 0)
@@ -440,10 +439,10 @@ void rfc3676_space_stuff(struct Email *e)
       if (len > 0)
         buf[len - 1] = c;
     }
-    fputs(buf, out);
+    fputs(buf, fp_out);
   }
-  mutt_file_fclose(&in);
-  mutt_file_fclose(&out);
+  mutt_file_fclose(&fp_in);
+  mutt_file_fclose(&fp_out);
   mutt_file_set_mtime(e->content->filename, tmpfile);
   unlink(e->content->filename);
   mutt_str_replace(&e->content->filename, tmpfile);

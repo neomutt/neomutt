@@ -44,7 +44,7 @@ char *pgp_short_keyid(struct PgpKeyInfo * k);
 char *pgp_long_keyid(struct PgpKeyInfo * k);
 char *pgp_fpr_or_lkeyid(struct PgpKeyInfo * k);
 
-int pgp_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur);
+int pgp_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur);
 
 char *pgp_class_find_keys(struct Address *addrlist, bool oppenc_mode);
 

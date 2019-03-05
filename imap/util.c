@@ -754,12 +754,12 @@ fallback:
  * imap_continue - display a message and ask the user if they want to go on
  * @param msg  Location of the error
  * @param resp Message for user
- * @retval num Result: #MUTT_YES, #MUTT_NO, #MUTT_ABORT
+ * @retval enum Result, See #QuadOption
  */
-int imap_continue(const char *msg, const char *resp)
+enum QuadOption imap_continue(const char *msg, const char *resp)
 {
   imap_error(msg, resp);
-  return mutt_yesorno(_("Continue?"), 0);
+  return mutt_yesorno(_("Continue?"), MUTT_NO);
 }
 
 /**

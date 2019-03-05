@@ -360,13 +360,13 @@ static char *getmailname(void)
 
   for (size_t i = 0; i < mutt_array_size(mn_files); i++)
   {
-    FILE *f = mutt_file_fopen(mn_files[i], "r");
-    if (!f)
+    FILE *fp = mutt_file_fopen(mn_files[i], "r");
+    if (!fp)
       continue;
 
     size_t len = 0;
-    mailname = mutt_file_read_line(NULL, &len, f, NULL, 0);
-    mutt_file_fclose(&f);
+    mailname = mutt_file_read_line(NULL, &len, fp, NULL, 0);
+    mutt_file_fclose(&fp);
     if (mailname && *mailname)
       break;
 
@@ -750,7 +750,6 @@ static void remove_from_stailq(struct ListHead *head, const char *str)
  */
 static int source_rc(const char *rcfile_path, struct Buffer *err)
 {
-  FILE *f = NULL;
   int line = 0, rc = 0, warnings = 0;
   enum CommandResult line_rc;
   struct Buffer token;
@@ -800,15 +799,15 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
 
   mutt_debug(LL_DEBUG2, "Reading configuration file '%s'.\n", rcfile);
 
-  f = mutt_open_read(rcfile, &pid);
-  if (!f)
+  FILE *fp = mutt_open_read(rcfile, &pid);
+  if (!fp)
   {
     mutt_buffer_printf(err, "%s: %s", rcfile, strerror(errno));
     return -1;
   }
 
   mutt_buffer_init(&token);
-  while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, MUTT_CONT)))
+  while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, MUTT_CONT)))
   {
     const int conv = C_ConfigCharset && (*C_ConfigCharset) && C_Charset;
     if (conv)
@@ -852,7 +851,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
   }
   FREE(&token.data);
   FREE(&linebuf);
-  mutt_file_fclose(&f);
+  mutt_file_fclose(&fp);
   if (pid != -1)
     mutt_wait_filter(pid);
   if (rc)
@@ -3283,7 +3282,7 @@ enum CommandResult mutt_parse_rc_line(/* const */ char *line,
                                       struct Buffer *token, struct Buffer *err)
 {
   int i;
-  enum CommandResult r = MUTT_CMD_SUCCESS;
+  enum CommandResult rc = MUTT_CMD_SUCCESS;
   struct Buffer expn;
 
   if (!line || !*line)
@@ -3311,8 +3310,8 @@ enum CommandResult mutt_parse_rc_line(/* const */ char *line,
     {
       if (mutt_str_strcmp(token->data, Commands[i].name) == 0)
       {
-        r = Commands[i].func(token, &expn, Commands[i].data, err);
-        if (r != MUTT_CMD_SUCCESS)
+        rc = Commands[i].func(token, &expn, Commands[i].data, err);
+        if (rc != MUTT_CMD_SUCCESS)
         {              /* -1 Error, +1 Finish */
           goto finish; /* Propagate return code */
         }
@@ -3322,14 +3321,14 @@ enum CommandResult mutt_parse_rc_line(/* const */ char *line,
     if (!Commands[i].name)
     {
       mutt_buffer_printf(err, _("%s: unknown command"), NONULL(token->data));
-      r = MUTT_CMD_ERROR;
+      rc = MUTT_CMD_ERROR;
       break; /* Ignore the rest of the line */
     }
   }
 finish:
   if (expn.destroy)
     FREE(&expn.data);
-  return r;
+  return rc;
 }
 
 /**
@@ -3387,9 +3386,9 @@ int mutt_query_variables(struct ListHead *queries)
  * query_quadoption - Ask the user a quad-question
  * @param opt    Option to use
  * @param prompt Message to show to the user
- * @retval num Result, e.g. #MUTT_YES
+ * @retval enum Result, see #QuadOption
  */
-int query_quadoption(int opt, const char *prompt)
+enum QuadOption query_quadoption(enum QuadOption opt, const char *prompt)
 {
   switch (opt)
   {

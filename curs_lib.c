@@ -324,10 +324,10 @@ void mutt_edit_file(const char *editor, const char *file)
 /**
  * mutt_yesorno - Ask the user a Yes/No question
  * @param msg Prompt
- * @param def Default answer, e.g. #MUTT_YES
- * @retval num Selection made, e.g. #MUTT_NO
+ * @param def Default answer, see #QuadOption
+ * @retval num Selection made, see #QuadOption
  */
-int mutt_yesorno(const char *msg, int def)
+enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
 {
   struct Event ch;
   char *yes = _("yes");

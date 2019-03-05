@@ -50,13 +50,13 @@
  */
 struct Regex *mutt_regex_compile(const char *str, int flags)
 {
-  struct Regex *r = mutt_mem_calloc(1, sizeof(struct Regex));
-  r->pattern = mutt_str_strdup(str);
-  r->regex = mutt_mem_calloc(1, sizeof(regex_t));
-  if (REGCOMP(r->regex, NONULL(str), flags) != 0)
-    mutt_regex_free(&r);
+  struct Regex *rx = mutt_mem_calloc(1, sizeof(struct Regex));
+  rx->pattern = mutt_str_strdup(str);
+  rx->regex = mutt_mem_calloc(1, sizeof(regex_t));
+  if (REGCOMP(rx->regex, NONULL(str), flags) != 0)
+    mutt_regex_free(&rx);
 
-  return r;
+  return rx;
 }
 
 /**

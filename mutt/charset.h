@@ -92,7 +92,7 @@ int              mutt_ch_convert_nonmime_string(char **ps);
 int              mutt_ch_convert_string(char **ps, const char *from, const char *to, int flags);
 int              mutt_ch_fgetconv(struct FgetConv *fc);
 void             mutt_ch_fgetconv_close(struct FgetConv **fc);
-struct FgetConv *mutt_ch_fgetconv_open(FILE *file, const char *from, const char *to, int flags);
+struct FgetConv *mutt_ch_fgetconv_open(FILE *fp, const char *from, const char *to, int flags);
 char *           mutt_ch_fgetconvs(char *buf, size_t buflen, struct FgetConv *fc);
 char *           mutt_ch_get_default_charset(void);
 char *           mutt_ch_get_langinfo_charset(void);

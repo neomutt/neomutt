@@ -61,14 +61,14 @@ struct CryptModuleSpecs
   int          (*valid_passphrase)(void);
   /**
    * decrypt_mime - Decrypt an encrypted MIME part
-   * @param[in]  fpin  File containing the encrypted part
-   * @param[out] fpout File containing the decrypted part
-   * @param[in]  b     Body of the email
-   * @param[out] cur   Body containing the decrypted part
+   * @param[in]  fp_in  File containing the encrypted part
+   * @param[out] fp_out File containing the decrypted part
+   * @param[in]  b      Body of the email
+   * @param[out] cur    Body containing the decrypted part
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int          (*decrypt_mime)(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur);
+  int          (*decrypt_mime)(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur);
   /**
    * application_handler - Manage the MIME type "application/pgp" or "application/smime"
    * @param m Body of the email

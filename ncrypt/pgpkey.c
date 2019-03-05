@@ -689,16 +689,16 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
       case OP_VERIFY_KEY:
 
         mutt_mktemp(tempfile, sizeof(tempfile));
-        FILE *devnull = fopen("/dev/null", "w");
-        if (!devnull)
+        FILE *fp_null = fopen("/dev/null", "w");
+        if (!fp_null)
         {
           mutt_perror(_("Can't open /dev/null"));
           break;
         }
-        FILE *fp = mutt_file_fopen(tempfile, "w");
-        if (!fp)
+        FILE *fp_tmp = mutt_file_fopen(tempfile, "w");
+        if (!fp_tmp)
         {
-          mutt_file_fclose(&devnull);
+          mutt_file_fclose(&fp_null);
           mutt_perror(_("Can't create temporary file"));
           break;
         }
@@ -708,19 +708,19 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
         snprintf(tmpbuf, sizeof(tmpbuf), "0x%s",
                  pgp_fpr_or_lkeyid(pgp_principal_key(key_table[menu->current]->parent)));
 
-        pid_t pid = pgp_invoke_verify_key(NULL, NULL, NULL, -1, fileno(fp),
-                                          fileno(devnull), tmpbuf);
+        pid_t pid = pgp_invoke_verify_key(NULL, NULL, NULL, -1, fileno(fp_tmp),
+                                          fileno(fp_null), tmpbuf);
         if (pid == -1)
         {
           mutt_perror(_("Can't create filter"));
           unlink(tempfile);
-          mutt_file_fclose(&fp);
-          mutt_file_fclose(&devnull);
+          mutt_file_fclose(&fp_tmp);
+          mutt_file_fclose(&fp_null);
         }
 
         mutt_wait_filter(pid);
-        mutt_file_fclose(&fp);
-        mutt_file_fclose(&devnull);
+        mutt_file_fclose(&fp_tmp);
+        mutt_file_fclose(&fp_null);
         mutt_clear_error();
         snprintf(cmd, sizeof(cmd), _("Key ID: 0x%s"),
                  pgp_keyid(pgp_principal_key(key_table[menu->current]->parent)));
@@ -871,8 +871,6 @@ struct Body *pgp_class_make_key_attachment(void)
   struct Body *att = NULL;
   char buf[1024];
   char tempf[PATH_MAX], tmp[256];
-  FILE *tempfp = NULL;
-  FILE *devnull = NULL;
   struct stat sb;
   pid_t pid;
   OptPgpCheckTrust = false;
@@ -888,38 +886,38 @@ struct Body *pgp_class_make_key_attachment(void)
 
   mutt_mktemp(tempf, sizeof(tempf));
 
-  tempfp = mutt_file_fopen(tempf, "w");
-  if (!tempfp)
+  FILE *fp_tmp = mutt_file_fopen(tempf, "w");
+  if (!fp_tmp)
   {
     mutt_perror(_("Can't create temporary file"));
     return NULL;
   }
 
-  devnull = fopen("/dev/null", "w");
-  if (!devnull)
+  FILE *fp_null = fopen("/dev/null", "w");
+  if (!fp_null)
   {
     mutt_perror(_("Can't open /dev/null"));
-    mutt_file_fclose(&tempfp);
+    mutt_file_fclose(&fp_tmp);
     unlink(tempf);
     return NULL;
   }
 
   mutt_message(_("Invoking PGP..."));
 
-  pid = pgp_invoke_export(NULL, NULL, NULL, -1, fileno(tempfp), fileno(devnull), tmp);
+  pid = pgp_invoke_export(NULL, NULL, NULL, -1, fileno(fp_tmp), fileno(fp_null), tmp);
   if (pid == -1)
   {
     mutt_perror(_("Can't create filter"));
     unlink(tempf);
-    mutt_file_fclose(&tempfp);
-    mutt_file_fclose(&devnull);
+    mutt_file_fclose(&fp_tmp);
+    mutt_file_fclose(&fp_null);
     return NULL;
   }
 
   mutt_wait_filter(pid);
 
-  mutt_file_fclose(&tempfp);
-  mutt_file_fclose(&devnull);
+  mutt_file_fclose(&fp_tmp);
+  mutt_file_fclose(&fp_null);
 
   att = mutt_body_new();
   att->filename = mutt_str_strdup(tempf);

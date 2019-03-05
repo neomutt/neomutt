@@ -68,7 +68,6 @@ int mutt_get_tmp_attachment(struct Body *a)
 {
   char type[256];
   char tempfile[PATH_MAX];
-  FILE *fpin = NULL, *fpout = NULL;
   struct stat st;
 
   if (a->unlink)
@@ -76,7 +75,7 @@ int mutt_get_tmp_attachment(struct Body *a)
 
   struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
-  rfc1524_mailcap_lookup(a, type, entry, 0);
+  rfc1524_mailcap_lookup(a, type, entry, MUTT_MC_NO_FLAGS);
   rfc1524_expand_filename(entry->nametemplate, a->filename, tempfile, sizeof(tempfile));
 
   rfc1524_free_entry(&entry);
@@ -84,9 +83,10 @@ int mutt_get_tmp_attachment(struct Body *a)
   if (stat(a->filename, &st) == -1)
     return -1;
 
-  if ((fpin = fopen(a->filename, "r")) && (fpout = mutt_file_fopen(tempfile, "w")))
+  FILE *fp_in = NULL, *fp_out = NULL;
+  if ((fp_in = fopen(a->filename, "r")) && (fp_out = mutt_file_fopen(tempfile, "w")))
   {
-    mutt_file_copy_stream(fpin, fpout);
+    mutt_file_copy_stream(fp_in, fp_out);
     mutt_str_replace(&a->filename, tempfile);
     a->unlink = true;
 
@@ -94,10 +94,10 @@ int mutt_get_tmp_attachment(struct Body *a)
       mutt_stamp_attachment(a);
   }
   else
-    mutt_perror(fpin ? tempfile : a->filename);
+    mutt_perror(fp_in ? tempfile : a->filename);
 
-  mutt_file_fclose(&fpin);
-  mutt_file_fclose(&fpout);
+  mutt_file_fclose(&fp_in);
+  mutt_file_fclose(&fp_out);
 
   return a->unlink ? 0 : -1;
 }
@@ -118,7 +118,7 @@ int mutt_compose_attachment(struct Body *a)
   int rc = 0;
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
-  if (rfc1524_mailcap_lookup(a, type, entry, MUTT_COMPOSE))
+  if (rfc1524_mailcap_lookup(a, type, entry, MUTT_MC_COMPOSE))
   {
     if (entry->composecommand || entry->composetypecommand)
     {
@@ -193,16 +193,16 @@ int mutt_compose_attachment(struct Body *a)
             fseeko(fp, b->offset, SEEK_SET);
             mutt_body_free(&b);
             mutt_mktemp(tempfile, sizeof(tempfile));
-            FILE *tfp = mutt_file_fopen(tempfile, "w");
-            if (!tfp)
+            FILE *fp_tmp = mutt_file_fopen(tempfile, "w");
+            if (!fp_tmp)
             {
               mutt_perror(_("Failure to open file to strip headers"));
               mutt_file_fclose(&fp);
               goto bailout;
             }
-            mutt_file_copy_stream(fp, tfp);
+            mutt_file_copy_stream(fp, fp_tmp);
             mutt_file_fclose(&fp);
-            mutt_file_fclose(&tfp);
+            mutt_file_fclose(&fp_tmp);
             mutt_file_unlink(a->filename);
             if (mutt_file_rename(tempfile, a->filename) != 0)
             {
@@ -255,7 +255,7 @@ int mutt_edit_attachment(struct Body *a)
   int rc = 0;
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
-  if (rfc1524_mailcap_lookup(a, type, entry, MUTT_EDIT))
+  if (rfc1524_mailcap_lookup(a, type, entry, MUTT_MC_EDIT))
   {
     if (entry->editcommand)
     {
@@ -363,14 +363,12 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
  * mutt_view_attachment - View an attachment
  * @param fp     Source file stream. Can be NULL
  * @param a      The message body containing the attachment
- * @param flag   Option flag for how the attachment should be viewed
+ * @param mode   How the attachment should be viewed, see #ViewAttachMode
  * @param e      Current Email. Can be NULL
  * @param actx   Attachment context
  * @retval 0   If the viewer is run and exited successfully
  * @retval -1  Error
  * @retval num Return value of mutt_do_pager() when it is used
- *
- * flag can be one of: #MUTT_MAILCAP, #MUTT_REGULAR, #MUTT_AS_TEXT
  *
  * Display a message attachment using the viewer program configured in mailcap.
  * If there is no mailcap entry for a file type, view the image as text.
@@ -378,8 +376,8 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
  * attachment this way will block the main neomutt process until the viewer process
  * exits.
  */
-int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
-                         struct AttachCtx *actx)
+int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
+                         struct Email *e, struct AttachCtx *actx)
 {
   char tempfile[PATH_MAX] = "";
   char pagerfile[PATH_MAX] = "";
@@ -401,20 +399,20 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
     return rc;
   }
   use_mailcap =
-      (flag == MUTT_MAILCAP || (flag == MUTT_REGULAR && mutt_needs_mailcap(a)));
+      (mode == MUTT_VA_MAILCAP || (mode == MUTT_VA_REGULAR && mutt_needs_mailcap(a)));
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
 
   if (use_mailcap)
   {
     entry = rfc1524_new_entry();
-    if (!rfc1524_mailcap_lookup(a, type, entry, 0))
+    if (!rfc1524_mailcap_lookup(a, type, entry, MUTT_MC_NO_FLAGS))
     {
-      if (flag == MUTT_REGULAR)
+      if (mode == MUTT_VA_REGULAR)
       {
         /* fallback to view as text */
         rfc1524_free_entry(&entry);
         mutt_error(_("No matching mailcap entry found.  Viewing as text."));
-        flag = MUTT_AS_TEXT;
+        mode = MUTT_VA_AS_TEXT;
         use_mailcap = false;
       }
       else
@@ -462,7 +460,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
     {
       /* recv case: we need to save the attachment to a file */
       FREE(&fname);
-      if (mutt_save_attachment(fp, a, tempfile, 0, NULL) == -1)
+      if (mutt_save_attachment(fp, a, tempfile, MUTT_SAVE_NO_FLAGS, NULL) == -1)
         goto return_error;
       mutt_file_chmod(tempfile, S_IRUSR);
     }
@@ -557,7 +555,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
   {
     /* Don't use mailcap; the attachment is viewed in the pager */
 
-    if (flag == MUTT_AS_TEXT)
+    if (mode == MUTT_VA_AS_TEXT)
     {
       /* just let me see the raw data */
       if (fp)
@@ -590,7 +588,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
          * mutt_decode_attachment() since it assumes the content-encoding has
          * already been applied
          */
-        if (mutt_save_attachment(fp, a, pagerfile, 0, NULL))
+        if (mutt_save_attachment(fp, a, pagerfile, MUTT_SAVE_NO_FLAGS, NULL))
           goto return_error;
       }
     }
@@ -599,7 +597,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
       /* Use built-in handler */
       OptViewAttach = true; /* disable the "use 'v' to view this part"
                              * message in case of error */
-      if (mutt_decode_save_attachment(fp, a, pagerfile, MUTT_DISPLAY, 0))
+      if (mutt_decode_save_attachment(fp, a, pagerfile, MUTT_DISPLAY, MUTT_SAVE_NO_FLAGS))
       {
         OptViewAttach = false;
         goto return_error;
@@ -712,11 +710,8 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfi
   else
   {
     /* send case */
-
-    FILE *ofp = NULL;
-
-    FILE *ifp = fopen(b->filename, "r");
-    if (!ifp)
+    FILE *fp_in = fopen(b->filename, "r");
+    if (!fp_in)
     {
       mutt_perror("fopen");
       if (outfile && *outfile)
@@ -727,21 +722,22 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfi
       return 0;
     }
 
+    FILE *fp_out = NULL;
     if (outfile && *outfile)
-      pid = mutt_create_filter_fd(path, &ofp, NULL, NULL, -1, out, -1);
+      pid = mutt_create_filter_fd(path, &fp_out, NULL, NULL, -1, out, -1);
     else
-      pid = mutt_create_filter(path, &ofp, NULL, NULL);
+      pid = mutt_create_filter(path, &fp_out, NULL, NULL);
 
     if (pid < 0)
     {
       mutt_perror(_("Can't create filter"));
-      mutt_file_fclose(&ifp);
+      mutt_file_fclose(&fp_in);
       goto bail;
     }
 
-    mutt_file_copy_stream(ifp, ofp);
-    mutt_file_fclose(&ofp);
-    mutt_file_fclose(&ifp);
+    mutt_file_copy_stream(fp_in, fp_out);
+    mutt_file_fclose(&fp_out);
+    mutt_file_fclose(&fp_in);
   }
 
   rc = 1;
@@ -762,15 +758,15 @@ bail:
 
 /**
  * save_attachment_open - Open a file to write an attachment to
- * @param path  Path to file to open
- * @param flags Flags, e.g. #MUTT_SAVE_APPEND
+ * @param path Path to file to open
+ * @param opt  Save option, see #SaveAttach
  * @retval ptr File handle to attachment file
  */
-static FILE *save_attachment_open(char *path, int flags)
+static FILE *save_attachment_open(char *path, enum SaveAttach opt)
 {
-  if (flags == MUTT_SAVE_APPEND)
+  if (opt == MUTT_SAVE_APPEND)
     return fopen(path, "a");
-  if (flags == MUTT_SAVE_OVERWRITE)
+  if (opt == MUTT_SAVE_OVERWRITE)
     return fopen(path, "w");
 
   return mutt_file_fopen(path, "w");
@@ -778,15 +774,16 @@ static FILE *save_attachment_open(char *path, int flags)
 
 /**
  * mutt_save_attachment - Save an attachment
- * @param fp    Source file stream. Can be NULL
- * @param m     Email Body
- * @param path  Where to save the attachment
- * @param flags Flags, e.g. #MUTT_SAVE_APPEND
- * @param e     Current Email. Can be NULL
+ * @param fp   Source file stream. Can be NULL
+ * @param m    Email Body
+ * @param path Where to save the attachment
+ * @param opt  Save option, see #SaveAttach
+ * @param e    Current Email. Can be NULL
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct Email *e)
+int mutt_save_attachment(FILE *fp, struct Body *m, char *path,
+                         enum SaveAttach opt, struct Email *e)
 {
   if (!m)
     return -1;
@@ -803,7 +800,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
       char buf[8192];
       struct Message *msg = NULL;
       CopyHeaderFlags chflags = CH_NO_FLAGS;
-      int r = -1;
+      int rc = -1;
 
       struct Email *en = m->email;
       en->msgno = e->msgno; /* required for MH/maildir */
@@ -832,16 +829,16 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
       if ((mutt_copy_message_fp(msg->fp, fp, en, 0, chflags) == 0) &&
           (mx_msg_commit(ctx->mailbox, msg) == 0))
       {
-        r = 0;
+        rc = 0;
       }
       else
       {
-        r = -1;
+        rc = -1;
       }
 
       mx_msg_close(ctx->mailbox, &msg);
       mx_mbox_close(&ctx);
-      return r;
+      return rc;
     }
     else
     {
@@ -849,7 +846,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
 
       struct State s = { 0 };
 
-      s.fp_out = save_attachment_open(path, flags);
+      s.fp_out = save_attachment_open(path, opt);
       if (!s.fp_out)
       {
         mutt_perror("fopen");
@@ -872,30 +869,30 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
 
     /* In send mode, just copy file */
 
-    FILE *ofp = fopen(m->filename, "r");
-    if (!ofp)
+    FILE *fp_old = fopen(m->filename, "r");
+    if (!fp_old)
     {
       mutt_perror("fopen");
       return -1;
     }
 
-    FILE *nfp = save_attachment_open(path, flags);
-    if (!nfp)
+    FILE *fp_new = save_attachment_open(path, opt);
+    if (!fp_new)
     {
       mutt_perror("fopen");
-      mutt_file_fclose(&ofp);
+      mutt_file_fclose(&fp_old);
       return -1;
     }
 
-    if (mutt_file_copy_stream(ofp, nfp) == -1)
+    if (mutt_file_copy_stream(fp_old, fp_new) == -1)
     {
       mutt_error(_("Write fault"));
-      mutt_file_fclose(&ofp);
-      mutt_file_fclose(&nfp);
+      mutt_file_fclose(&fp_old);
+      mutt_file_fclose(&fp_new);
       return -1;
     }
-    mutt_file_fclose(&ofp);
-    if (mutt_file_fsync_close(&nfp) != 0)
+    mutt_file_fclose(&fp_old);
+    if (mutt_file_fsync_close(&fp_new) != 0)
     {
       mutt_error(_("Write fault"));
       return -1;
@@ -911,11 +908,12 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
  * @param m          Attachment
  * @param path       Path to save the Attachment to
  * @param displaying Flags, e.g. #MUTT_DISPLAY
- * @param flags      Flags, e.g. #MUTT_SAVE_APPEND
+ * @param opt        Save option, see #SaveAttach
  * @retval 0  Success
  * @retval -1 Error
  */
-int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displaying, int flags)
+int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path,
+                                int displaying, enum SaveAttach opt)
 {
   struct State s = { 0 };
   unsigned int saved_encoding = 0;
@@ -925,9 +923,9 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
 
   s.flags = displaying;
 
-  if (flags == MUTT_SAVE_APPEND)
+  if (opt == MUTT_SAVE_APPEND)
     s.fp_out = fopen(path, "a");
-  else if (flags == MUTT_SAVE_OVERWRITE)
+  else if (opt == MUTT_SAVE_OVERWRITE)
     s.fp_out = fopen(path, "w");
   else
     s.fp_out = mutt_file_fopen(path, "w");
@@ -1018,12 +1016,12 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
   char newfile[PATH_MAX] = "";
   char type[256];
   pid_t pid;
-  FILE *ifp = NULL, *fpout = NULL;
+  FILE *fp_in = NULL, *fp_out = NULL;
   bool unlink_newfile = false;
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
 
-  if (rfc1524_mailcap_lookup(a, type, NULL, MUTT_PRINT))
+  if (rfc1524_mailcap_lookup(a, type, NULL, MUTT_MC_PRINT))
   {
     char cmd[STR_COMMAND];
     int piped = false;
@@ -1031,7 +1029,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     mutt_debug(LL_DEBUG2, "Using mailcap...\n");
 
     struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
-    rfc1524_mailcap_lookup(a, type, entry, MUTT_PRINT);
+    rfc1524_mailcap_lookup(a, type, entry, MUTT_MC_PRINT);
     if (rfc1524_expand_filename(entry->nametemplate, a->filename, newfile, sizeof(newfile)))
     {
       if (!fp)
@@ -1051,7 +1049,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     }
 
     /* in recv mode, save file to newfile first */
-    if (fp && (mutt_save_attachment(fp, a, newfile, 0, NULL) != 0))
+    if (fp && (mutt_save_attachment(fp, a, newfile, MUTT_SAVE_NO_FLAGS, NULL) != 0))
       return 0;
 
     mutt_str_strfcpy(cmd, entry->printcommand, sizeof(cmd));
@@ -1062,25 +1060,25 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     /* interactive program */
     if (piped)
     {
-      ifp = fopen(newfile, "r");
-      if (!ifp)
+      fp_in = fopen(newfile, "r");
+      if (!fp_in)
       {
         mutt_perror("fopen");
         rfc1524_free_entry(&entry);
         return 0;
       }
 
-      pid = mutt_create_filter(cmd, &fpout, NULL, NULL);
+      pid = mutt_create_filter(cmd, &fp_out, NULL, NULL);
       if (pid < 0)
       {
         mutt_perror(_("Can't create filter"));
         rfc1524_free_entry(&entry);
-        mutt_file_fclose(&ifp);
+        mutt_file_fclose(&fp_in);
         return 0;
       }
-      mutt_file_copy_stream(ifp, fpout);
-      mutt_file_fclose(&fpout);
-      mutt_file_fclose(&ifp);
+      mutt_file_copy_stream(fp_in, fp_out);
+      mutt_file_fclose(&fp_out);
+      mutt_file_fclose(&fp_in);
       if (mutt_wait_filter(pid) || C_WaitKey)
         mutt_any_key_to_continue(NULL);
     }
@@ -1114,16 +1112,16 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
 
     int rc = 0;
 
-    ifp = NULL;
-    fpout = NULL;
+    fp_in = NULL;
+    fp_out = NULL;
 
     mutt_mktemp(newfile, sizeof(newfile));
-    if (mutt_decode_save_attachment(fp, a, newfile, MUTT_PRINTING, 0) == 0)
+    if (mutt_decode_save_attachment(fp, a, newfile, MUTT_PRINTING, MUTT_SAVE_NO_FLAGS) == 0)
     {
       mutt_debug(LL_DEBUG2, "successfully decoded %s type attachment to %s\n", type, newfile);
 
-      ifp = fopen(newfile, "r");
-      if (!ifp)
+      fp_in = fopen(newfile, "r");
+      if (!fp_in)
       {
         mutt_perror("fopen");
         goto bail0;
@@ -1132,7 +1130,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       mutt_debug(LL_DEBUG2, "successfully opened %s read-only\n", newfile);
 
       mutt_endwin();
-      pid = mutt_create_filter(NONULL(C_PrintCommand), &fpout, NULL, NULL);
+      pid = mutt_create_filter(NONULL(C_PrintCommand), &fp_out, NULL, NULL);
       if (pid < 0)
       {
         mutt_perror(_("Can't create filter"));
@@ -1141,18 +1139,18 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
 
       mutt_debug(LL_DEBUG2, "Filter created.\n");
 
-      mutt_file_copy_stream(ifp, fpout);
+      mutt_file_copy_stream(fp_in, fp_out);
 
-      mutt_file_fclose(&fpout);
-      mutt_file_fclose(&ifp);
+      mutt_file_fclose(&fp_out);
+      mutt_file_fclose(&fp_in);
 
       if (mutt_wait_filter(pid) != 0 || C_WaitKey)
         mutt_any_key_to_continue(NULL);
       rc = 1;
     }
   bail0:
-    mutt_file_fclose(&ifp);
-    mutt_file_fclose(&fpout);
+    mutt_file_fclose(&fp_in);
+    mutt_file_fclose(&fp_out);
     mutt_file_unlink(newfile);
     return rc;
   }

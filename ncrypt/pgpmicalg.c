@@ -62,10 +62,10 @@ static const char *pgp_hash_to_micalg(short id)
 
 /**
  * pgp_dearmor - Unwrap an armoured PGP block
- * @param in  File to read from
- * @param out File to write to
+ * @param fp_in  File to read from
+ * @param fp_out File to write to
  */
-static void pgp_dearmor(FILE *in, FILE *out)
+static void pgp_dearmor(FILE *fp_in, FILE *fp_out)
 {
   char line[8192];
   LOFF_T start;
@@ -73,12 +73,12 @@ static void pgp_dearmor(FILE *in, FILE *out)
   char *r = NULL;
 
   struct State state = { 0 };
-  state.fp_in = in;
-  state.fp_out = out;
+  state.fp_in = fp_in;
+  state.fp_out = fp_out;
 
   /* find the beginning of ASCII armor */
 
-  while ((r = fgets(line, sizeof(line), in)))
+  while ((r = fgets(line, sizeof(line), fp_in)))
   {
     if (strncmp(line, "-----BEGIN", 10) == 0)
       break;
@@ -91,7 +91,7 @@ static void pgp_dearmor(FILE *in, FILE *out)
 
   /* skip the armor header */
 
-  while ((r = fgets(line, sizeof(line), in)))
+  while ((r = fgets(line, sizeof(line), fp_in)))
   {
     SKIPWS(r);
     if (!*r)
@@ -104,13 +104,13 @@ static void pgp_dearmor(FILE *in, FILE *out)
   }
 
   /* actual data starts here */
-  start = ftello(in);
+  start = ftello(fp_in);
   if (start < 0)
     return;
 
   /* find the checksum */
 
-  while ((r = fgets(line, sizeof(line), in)))
+  while ((r = fgets(line, sizeof(line), fp_in)))
   {
     if (*line == '=' || (strncmp(line, "-----END", 8) == 0))
       break;
@@ -121,14 +121,14 @@ static void pgp_dearmor(FILE *in, FILE *out)
     return;
   }
 
-  end = ftello(in) - strlen(line);
+  end = ftello(fp_in) - strlen(line);
   if (end < start)
   {
     mutt_debug(LL_DEBUG1, "end < start???\n");
     return;
   }
 
-  if (fseeko(in, start, SEEK_SET) == -1)
+  if (fseeko(fp_in, start, SEEK_SET) == -1)
   {
     mutt_debug(LL_DEBUG1, "Can't seekto start.\n");
     return;
@@ -179,24 +179,24 @@ static short pgp_find_hash(const char *fname)
   size_t l;
   short rc = -1;
 
-  FILE *out = mutt_file_mkstemp();
-  if (!out)
+  FILE *fp_out = mutt_file_mkstemp();
+  if (!fp_out)
   {
     mutt_perror(_("Can't create temporary file"));
     goto bye;
   }
 
-  FILE *in = fopen(fname, "r");
-  if (!in)
+  FILE *fp_in = fopen(fname, "r");
+  if (!fp_in)
   {
     mutt_perror(fname);
     goto bye;
   }
 
-  pgp_dearmor(in, out);
-  rewind(out);
+  pgp_dearmor(fp_in, fp_out);
+  rewind(fp_out);
 
-  unsigned char *p = pgp_read_packet(out, &l);
+  unsigned char *p = pgp_read_packet(fp_out, &l);
   if (p)
   {
     rc = pgp_mic_from_packet(p, l);
@@ -208,8 +208,8 @@ static short pgp_find_hash(const char *fname)
 
 bye:
 
-  mutt_file_fclose(&in);
-  mutt_file_fclose(&out);
+  mutt_file_fclose(&fp_in);
+  mutt_file_fclose(&fp_out);
   pgp_release_packet();
   return rc;
 }

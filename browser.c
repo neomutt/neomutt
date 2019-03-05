@@ -1913,7 +1913,7 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
           struct Body *b = mutt_make_file_attach(buf2);
           if (b)
           {
-            mutt_view_attachment(NULL, b, MUTT_REGULAR, NULL, NULL);
+            mutt_view_attachment(NULL, b, MUTT_VA_REGULAR, NULL, NULL);
             mutt_body_free(&b);
             menu->redraw = REDRAW_FULL;
           }

@@ -170,7 +170,7 @@ static int smtp_get_resp(struct Connection *conn)
 static int smtp_rcpt_to(struct Connection *conn, const struct Address *a)
 {
   char buf[1024];
-  int r;
+  int rc;
 
   while (a)
   {
@@ -186,9 +186,9 @@ static int smtp_rcpt_to(struct Connection *conn, const struct Address *a)
       snprintf(buf, sizeof(buf), "RCPT TO:<%s>\r\n", a->mailbox);
     if (mutt_socket_send(conn, buf) == -1)
       return SMTP_ERR_WRITE;
-    r = smtp_get_resp(conn);
-    if (r != 0)
-      return r;
+    rc = smtp_get_resp(conn);
+    if (rc != 0)
+      return rc;
     a = a->next;
   }
 
@@ -207,7 +207,7 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
   char buf[1024];
   struct Progress progress;
   struct stat st;
-  int r, term = 0;
+  int rc, term = 0;
   size_t buflen = 0;
 
   FILE *fp = fopen(msgfile, "r");
@@ -227,11 +227,11 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
     mutt_file_fclose(&fp);
     return SMTP_ERR_WRITE;
   }
-  r = smtp_get_resp(conn);
-  if (r != 0)
+  rc = smtp_get_resp(conn);
+  if (rc != 0)
   {
     mutt_file_fclose(&fp);
-    return r;
+    return rc;
   }
 
   while (fgets(buf, sizeof(buf) - 1, fp))
@@ -266,9 +266,9 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
   if (mutt_socket_send(conn, ".\r\n") == -1)
     return SMTP_ERR_WRITE;
 
-  r = smtp_get_resp(conn);
-  if (r != 0)
-    return r;
+  rc = smtp_get_resp(conn);
+  if (rc != 0)
+    return rc;
 
   return 0;
 }
@@ -681,18 +681,19 @@ static int smtp_open(struct Connection *conn, bool esmtp)
     return rc;
 
 #ifdef USE_SSL
+  enum QuadOption ans = MUTT_NO;
   if (conn->ssf)
-    rc = MUTT_NO;
+    ans = MUTT_NO;
   else if (C_SslForceTls)
-    rc = MUTT_YES;
+    ans = MUTT_YES;
   else if ((Capabilities & SMTP_CAP_STARTTLS) &&
-           (rc = query_quadoption(C_SslStarttls,
-                                  _("Secure connection with TLS?"))) == MUTT_ABORT)
+           (ans = query_quadoption(C_SslStarttls,
+                                   _("Secure connection with TLS?"))) == MUTT_ABORT)
   {
-    return rc;
+    return -1;
   }
 
-  if (rc == MUTT_YES)
+  if (ans == MUTT_YES)
   {
     if (mutt_socket_send(conn, "STARTTLS\r\n") < 0)
       return SMTP_ERR_WRITE;

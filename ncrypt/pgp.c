@@ -241,14 +241,14 @@ char *pgp_fpr_or_lkeyid(struct PgpKeyInfo *k)
 
 /**
  * pgp_copy_checksig - Copy PGP output and look for signs of a good signature
- * @param fpin  File to read from
- * @param fpout File to write to
+ * @param fp_in  File to read from
+ * @param fp_out File to write to
  * @retval  0 Success
  * @retval -1 Error
  */
-static int pgp_copy_checksig(FILE *fpin, FILE *fpout)
+static int pgp_copy_checksig(FILE *fp_in, FILE *fp_out)
 {
-  if (!fpin || !fpout)
+  if (!fp_in || !fp_out)
     return -1;
 
   int rc = -1;
@@ -259,7 +259,7 @@ static int pgp_copy_checksig(FILE *fpin, FILE *fpout)
     int lineno = 0;
     size_t linelen;
 
-    while ((line = mutt_file_read_line(line, &linelen, fpin, &lineno, 0)))
+    while ((line = mutt_file_read_line(line, &linelen, fp_in, &lineno, 0)))
     {
       if (regexec(C_PgpGoodSign->regex, line, 0, NULL, 0) == 0)
       {
@@ -271,15 +271,15 @@ static int pgp_copy_checksig(FILE *fpin, FILE *fpout)
 
       if (strncmp(line, "[GNUPG:] ", 9) == 0)
         continue;
-      fputs(line, fpout);
-      fputc('\n', fpout);
+      fputs(line, fp_out);
+      fputc('\n', fp_out);
     }
     FREE(&line);
   }
   else
   {
     mutt_debug(LL_DEBUG2, "No pattern.\n");
-    mutt_file_copy_stream(fpin, fpout);
+    mutt_file_copy_stream(fp_in, fp_out);
     rc = 1;
   }
 
@@ -288,7 +288,7 @@ static int pgp_copy_checksig(FILE *fpin, FILE *fpout)
 
 /**
  * pgp_check_pgp_decryption_okay_regex - Check PGP output to look for successful outcome
- * @param fpin File to read from
+ * @param fp_in File to read from
  * @retval  0 Success
  * @retval -1 Error
  *
@@ -296,7 +296,7 @@ static int pgp_copy_checksig(FILE *fpin, FILE *fpout)
  * This protects against messages with multipart/encrypted headers but which
  * aren't actually encrypted.  See ticket #3770
  */
-static int pgp_check_pgp_decryption_okay_regex(FILE *fpin)
+static int pgp_check_pgp_decryption_okay_regex(FILE *fp_in)
 {
   int rc = -1;
 
@@ -306,7 +306,7 @@ static int pgp_check_pgp_decryption_okay_regex(FILE *fpin)
     int lineno = 0;
     size_t linelen;
 
-    while ((line = mutt_file_read_line(line, &linelen, fpin, &lineno, 0)))
+    while ((line = mutt_file_read_line(line, &linelen, fp_in, &lineno, 0)))
     {
       if (regexec(C_PgpDecryptionOkay->regex, line, 0, NULL, 0) == 0)
       {
@@ -330,7 +330,7 @@ static int pgp_check_pgp_decryption_okay_regex(FILE *fpin)
 
 /**
  * pgp_check_decryption_okay - Check GPG output for status codes
- * @param fpin File to read from
+ * @param fp_in File to read from
  * @retval  1 - no patterns were matched (if delegated to decryption_okay_regex)
  * @retval  0 - DECRYPTION_OKAY was seen, with no PLAINTEXT outside
  * @retval -1 - No decryption status codes were encountered
@@ -348,18 +348,18 @@ static int pgp_check_pgp_decryption_okay_regex(FILE *fpin)
  * "BEGIN PGP MESSAGE" could indicate a signed and armored message.
  * For that we allow -1 and -2 as "valid" (with a warning).
  */
-static int pgp_check_decryption_okay(FILE *fpin)
+static int pgp_check_decryption_okay(FILE *fp_in)
 {
-  int rv = -1;
+  int rc = -1;
   char *line = NULL, *s = NULL;
   int lineno = 0;
   size_t linelen;
   int inside_decrypt = 0;
 
   if (!C_PgpCheckGpgDecryptStatusFd)
-    return pgp_check_pgp_decryption_okay_regex(fpin);
+    return pgp_check_pgp_decryption_okay_regex(fp_in);
 
-  while ((line = mutt_file_read_line(line, &linelen, fpin, &lineno, 0)))
+  while ((line = mutt_file_read_line(line, &linelen, fp_in, &lineno, 0)))
   {
     size_t plen = mutt_str_startswith(line, "[GNUPG:]", CASE_MATCH);
     if (plen == 0)
@@ -376,14 +376,14 @@ static int pgp_check_decryption_okay(FILE *fpin)
       {
         mutt_debug(LL_DEBUG2,
                    "\tPLAINTEXT encountered outside of DECRYPTION.\n");
-        rv = -2;
+        rc = -2;
         break;
       }
     }
     else if (mutt_str_startswith(s, "DECRYPTION_FAILED", CASE_MATCH))
     {
       mutt_debug(LL_DEBUG2, "\tDECRYPTION_FAILED encountered.  Failure.\n");
-      rv = -3;
+      rc = -3;
       break;
     }
     else if (mutt_str_startswith(s, "DECRYPTION_OKAY", CASE_MATCH))
@@ -391,17 +391,17 @@ static int pgp_check_decryption_okay(FILE *fpin)
       /* Don't break out because we still have to check for
        * PLAINTEXT outside of the decryption boundaries. */
       mutt_debug(LL_DEBUG2, "\tDECRYPTION_OKAY encountered.\n");
-      rv = 0;
+      rc = 0;
     }
   }
   FREE(&line);
 
-  return rv;
+  return rc;
 }
 
 /**
  * pgp_copy_clearsigned - Copy a clearsigned message, stripping the signature
- * @param fpin    File to read from
+ * @param fp_in    File to read from
  * @param s       State to use
  * @param charset Charset of file
  *
@@ -412,19 +412,19 @@ static int pgp_check_decryption_okay(FILE *fpin)
  * (Note that we aren't worse than Outlook &c in this, and also note that we
  * can successfully handle anything produced by any existing versions of neomutt.)
  */
-static void pgp_copy_clearsigned(FILE *fpin, struct State *s, char *charset)
+static void pgp_copy_clearsigned(FILE *fp_in, struct State *s, char *charset)
 {
   char buf[8192];
   bool complete, armor_header;
 
-  rewind(fpin);
+  rewind(fp_in);
 
   /* fromcode comes from the MIME Content-Type charset label. It might
    * be a wrong label, so we want the ability to do corrections via
    * charset-hooks. Therefore we set flags to MUTT_ICONV_HOOK_FROM.
    */
   struct FgetConv *fc =
-      mutt_ch_fgetconv_open(fpin, charset, C_Charset, MUTT_ICONV_HOOK_FROM);
+      mutt_ch_fgetconv_open(fp_in, charset, C_Charset, MUTT_ICONV_HOOK_FROM);
 
   for (complete = true, armor_header = true;
        mutt_ch_fgetconvs(buf, sizeof(buf), fc); complete = (strchr(buf, '\n')))
@@ -475,8 +475,8 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
   LOFF_T last_pos, offset;
   char buf[8192];
   char tmpfname[PATH_MAX];
-  FILE *pgpout = NULL, *pgpin = NULL, *pgperr = NULL;
-  FILE *tmpfp = NULL;
+  FILE *fp_pgp_out = NULL, *fp_pgp_in = NULL, *fp_pgp_err = NULL;
+  FILE *fp_tmp = NULL;
   pid_t pid;
 
   bool maybe_goodsig = true;
@@ -532,22 +532,22 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
 
       /* Copy PGP material to temporary file */
       mutt_mktemp(tmpfname, sizeof(tmpfname));
-      tmpfp = mutt_file_fopen(tmpfname, "w+");
-      if (!tmpfp)
+      fp_tmp = mutt_file_fopen(tmpfname, "w+");
+      if (!fp_tmp)
       {
         mutt_perror(tmpfname);
         FREE(&gpgcharset);
         return -1;
       }
 
-      fputs(buf, tmpfp);
+      fputs(buf, fp_tmp);
       while (bytes > 0 && fgets(buf, sizeof(buf) - 1, s->fp_in))
       {
         offset = ftello(s->fp_in);
         bytes -= (offset - last_pos); /* don't rely on mutt_str_strlen(buf) */
         last_pos = offset;
 
-        fputs(buf, tmpfp);
+        fputs(buf, fp_tmp);
 
         if ((needpass && (mutt_str_strcmp("-----END PGP MESSAGE-----\n", buf) == 0)) ||
             (!needpass &&
@@ -570,35 +570,35 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
         }
       }
 
-      /* leave tmpfp open in case we still need it - but flush it! */
-      fflush(tmpfp);
+      /* leave fp_tmp open in case we still need it - but flush it! */
+      fflush(fp_tmp);
 
       /* Invoke PGP if needed */
       if (!clearsign || (s->flags & MUTT_VERIFY))
       {
-        pgpout = mutt_file_mkstemp();
-        if (!pgpout)
+        fp_pgp_out = mutt_file_mkstemp();
+        if (!fp_pgp_out)
         {
           mutt_perror(_("Can't create temporary file"));
           rc = -1;
           goto out;
         }
 
-        pgperr = mutt_file_mkstemp();
-        if (!pgperr)
+        fp_pgp_err = mutt_file_mkstemp();
+        if (!fp_pgp_err)
         {
           mutt_perror(_("Can't create temporary file"));
           rc = -1;
           goto out;
         }
 
-        pid = pgp_invoke_decode(&pgpin, NULL, NULL, -1, fileno(pgpout),
-                                fileno(pgperr), tmpfname, (needpass != 0));
+        pid = pgp_invoke_decode(&fp_pgp_in, NULL, NULL, -1, fileno(fp_pgp_out),
+                                fileno(fp_pgp_err), tmpfname, (needpass != 0));
         if (pid == -1)
         {
-          mutt_file_fclose(&pgpout);
+          mutt_file_fclose(&fp_pgp_out);
           maybe_goodsig = false;
-          pgpin = NULL;
+          fp_pgp_in = NULL;
           state_attach_puts(
               _("[-- Error: unable to create PGP subprocess --]\n"), s);
         }
@@ -610,14 +610,14 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
               pgp_class_void_passphrase();
             if (pgp_use_gpg_agent())
               *PgpPass = 0;
-            fprintf(pgpin, "%s\n", PgpPass);
+            fprintf(fp_pgp_in, "%s\n", PgpPass);
           }
 
-          mutt_file_fclose(&pgpin);
+          mutt_file_fclose(&fp_pgp_in);
 
           rv = mutt_wait_filter(pid);
 
-          fflush(pgperr);
+          fflush(fp_pgp_err);
           /* If we are expecting an encrypted message, verify status fd output.
            * Note that BEGIN PGP MESSAGE does not guarantee the content is encrypted,
            * so we need to be more selective about the value of decrypt_okay_rc.
@@ -627,17 +627,17 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
            */
           if (needpass)
           {
-            rewind(pgperr);
-            decrypt_okay_rc = pgp_check_decryption_okay(pgperr);
+            rewind(fp_pgp_err);
+            decrypt_okay_rc = pgp_check_decryption_okay(fp_pgp_err);
             if (decrypt_okay_rc <= -3)
-              mutt_file_fclose(&pgpout);
+              mutt_file_fclose(&fp_pgp_out);
           }
 
           if (s->flags & MUTT_DISPLAY)
           {
-            rewind(pgperr);
+            rewind(fp_pgp_err);
             crypt_current_time(s, "PGP");
-            rc = pgp_copy_checksig(pgperr, s->fp_out);
+            rc = pgp_copy_checksig(fp_pgp_err, s->fp_out);
 
             if (rc == 0)
               have_any_sigs = true;
@@ -657,13 +657,13 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
 
         /* treat empty result as sign of failure */
         /* TODO: maybe on failure neomutt should include the original undecoded text. */
-        if (pgpout)
+        if (fp_pgp_out)
         {
-          rewind(pgpout);
-          c = fgetc(pgpout);
-          ungetc(c, pgpout);
+          rewind(fp_pgp_out);
+          c = fgetc(fp_pgp_out);
+          ungetc(c, fp_pgp_out);
         }
-        if (!clearsign && (!pgpout || c == EOF))
+        if (!clearsign && (!fp_pgp_out || c == EOF))
         {
           could_not_decrypt = true;
           pgp_class_void_passphrase();
@@ -690,11 +690,11 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
 
       if (clearsign)
       {
-        rewind(tmpfp);
-        if (tmpfp)
-          pgp_copy_clearsigned(tmpfp, s, body_charset);
+        rewind(fp_tmp);
+        if (fp_tmp)
+          pgp_copy_clearsigned(fp_tmp, s, body_charset);
       }
-      else if (pgpout)
+      else if (fp_pgp_out)
       {
         struct FgetConv *fc = NULL;
         int ch;
@@ -703,9 +703,9 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
         mutt_debug(LL_DEBUG3, "pgp: recoding inline from [%s] to [%s]\n",
                    expected_charset, C_Charset);
 
-        rewind(pgpout);
+        rewind(fp_pgp_out);
         state_set_prefix(s);
-        fc = mutt_ch_fgetconv_open(pgpout, expected_charset, C_Charset, MUTT_ICONV_HOOK_FROM);
+        fc = mutt_ch_fgetconv_open(fp_pgp_out, expected_charset, C_Charset, MUTT_ICONV_HOOK_FROM);
         while ((ch = mutt_ch_fgetconv(fc)) != EOF)
           state_prefix_putc(ch, s);
         mutt_ch_fgetconv_close(&fc);
@@ -714,10 +714,10 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
       /* Multiple PGP blocks can exist, so these need to be closed and
        * unlinked inside the loop.
        */
-      mutt_file_fclose(&tmpfp);
+      mutt_file_fclose(&fp_tmp);
       mutt_file_unlink(tmpfname);
-      mutt_file_fclose(&pgpout);
-      mutt_file_fclose(&pgperr);
+      mutt_file_fclose(&fp_pgp_out);
+      mutt_file_fclose(&fp_pgp_err);
 
       if (s->flags & MUTT_DISPLAY)
       {
@@ -759,13 +759,13 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
 out:
   m->goodsig = (maybe_goodsig && have_any_sigs);
 
-  if (tmpfp)
+  if (fp_tmp)
   {
-    mutt_file_fclose(&tmpfp);
+    mutt_file_fclose(&fp_tmp);
     mutt_file_unlink(tmpfname);
   }
-  mutt_file_fclose(&pgpout);
-  mutt_file_fclose(&pgperr);
+  mutt_file_fclose(&fp_pgp_out);
+  mutt_file_fclose(&fp_pgp_err);
 
   FREE(&gpgcharset);
 
@@ -790,7 +790,6 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 {
   char tempfile[PATH_MAX];
   char buf[8192];
-  FILE *tfp = NULL;
 
   bool sgn = false;
   bool enc = false;
@@ -800,20 +799,20 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
     return 0;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  if (mutt_decode_save_attachment(fp, b, tempfile, 0, 0) != 0)
+  if (mutt_decode_save_attachment(fp, b, tempfile, 0, MUTT_SAVE_NO_FLAGS) != 0)
   {
     unlink(tempfile);
     return 0;
   }
 
-  tfp = fopen(tempfile, "r");
-  if (!tfp)
+  FILE *fp_tmp = fopen(tempfile, "r");
+  if (!fp_tmp)
   {
     unlink(tempfile);
     return 0;
   }
 
-  while (fgets(buf, sizeof(buf), tfp))
+  while (fgets(buf, sizeof(buf), fp_tmp))
   {
     size_t plen = mutt_str_startswith(buf, "-----BEGIN PGP ", CASE_MATCH);
     if (plen != 0)
@@ -826,7 +825,7 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
         key = true;
     }
   }
-  mutt_file_fclose(&tfp);
+  mutt_file_fclose(&fp_tmp);
   unlink(tempfile);
 
   if (!enc && !sgn && !key)
@@ -878,25 +877,25 @@ int pgp_class_check_traditional(FILE *fp, struct Body *b, bool just_one)
 int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 {
   char sigfile[PATH_MAX];
-  FILE *pgpout = NULL;
+  FILE *fp_pgp_out = NULL;
   pid_t pid;
   int badsig = -1;
 
   snprintf(sigfile, sizeof(sigfile), "%s.asc", tempfile);
 
-  FILE *fp = mutt_file_fopen(sigfile, "w");
-  if (!fp)
+  FILE *fp_sig = mutt_file_fopen(sigfile, "w");
+  if (!fp_sig)
   {
     mutt_perror(sigfile);
     return -1;
   }
 
   fseeko(s->fp_in, sigbdy->offset, SEEK_SET);
-  mutt_file_copy_bytes(s->fp_in, fp, sigbdy->length);
-  mutt_file_fclose(&fp);
+  mutt_file_copy_bytes(s->fp_in, fp_sig, sigbdy->length);
+  mutt_file_fclose(&fp_sig);
 
-  FILE *pgperr = mutt_file_mkstemp();
-  if (!pgperr)
+  FILE *fp_pgp_err = mutt_file_mkstemp();
+  if (!fp_pgp_err)
   {
     mutt_perror(_("Can't create temporary file"));
     unlink(sigfile);
@@ -905,17 +904,18 @@ int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
 
   crypt_current_time(s, "PGP");
 
-  pid = pgp_invoke_verify(NULL, &pgpout, NULL, -1, -1, fileno(pgperr), tempfile, sigfile);
+  pid = pgp_invoke_verify(NULL, &fp_pgp_out, NULL, -1, -1, fileno(fp_pgp_err),
+                          tempfile, sigfile);
   if (pid != -1)
   {
-    if (pgp_copy_checksig(pgpout, s->fp_out) >= 0)
+    if (pgp_copy_checksig(fp_pgp_out, s->fp_out) >= 0)
       badsig = 0;
 
-    mutt_file_fclose(&pgpout);
-    fflush(pgperr);
-    rewind(pgperr);
+    mutt_file_fclose(&fp_pgp_out);
+    fflush(fp_pgp_err);
+    rewind(fp_pgp_err);
 
-    if (pgp_copy_checksig(pgperr, s->fp_out) >= 0)
+    if (pgp_copy_checksig(fp_pgp_err, s->fp_out) >= 0)
       badsig = 0;
 
     const int rv = mutt_wait_filter(pid);
@@ -925,7 +925,7 @@ int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
     mutt_debug(LL_DEBUG1, "mutt_wait_filter returned %d.\n", rv);
   }
 
-  mutt_file_fclose(&pgperr);
+  mutt_file_fclose(&fp_pgp_err);
 
   state_attach_puts(_("[-- End of PGP output --]\n\n"), s);
 
@@ -947,19 +947,19 @@ static void pgp_extract_keys_from_attachment(FILE *fp, struct Body *top)
   char tempfname[PATH_MAX];
 
   mutt_mktemp(tempfname, sizeof(tempfname));
-  FILE *tempfp = mutt_file_fopen(tempfname, "w");
-  if (!tempfp)
+  FILE *fp_tmp = mutt_file_fopen(tempfname, "w");
+  if (!fp_tmp)
   {
     mutt_perror(tempfname);
     return;
   }
 
   s.fp_in = fp;
-  s.fp_out = tempfp;
+  s.fp_out = fp_tmp;
 
   mutt_body_handler(top, &s);
 
-  mutt_file_fclose(&tempfp);
+  mutt_file_fclose(&fp_tmp);
 
   pgp_class_invoke_import(tempfname);
   mutt_any_key_to_continue(NULL);
@@ -987,39 +987,39 @@ void pgp_class_extract_key_from_attachment(FILE *fp, struct Body *top)
 
 /**
  * pgp_decrypt_part - Decrypt part of a PGP message
- * @param a     Body of attachment
- * @param s     State to use
- * @param fpout File to write to
- * @param p     Body of parent (main email)
+ * @param a      Body of attachment
+ * @param s      State to use
+ * @param fp_out File to write to
+ * @param p      Body of parent (main email)
  * @retval ptr New Body for the attachment
  */
 static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
-                                     FILE *fpout, struct Body *p)
+                                     FILE *fp_out, struct Body *p)
 {
-  if (!a || !s || !fpout || !p)
+  if (!a || !s || !fp_out || !p)
     return NULL;
 
   char buf[1024];
-  FILE *pgpin = NULL, *pgpout = NULL, *pgptmp = NULL;
+  FILE *fp_pgp_in = NULL, *fp_pgp_out = NULL, *fp_pgp_tmp = NULL;
   struct stat info;
   struct Body *tattach = NULL;
   char pgptmpfile[PATH_MAX];
   pid_t pid;
   int rv;
 
-  FILE *pgperr = mutt_file_mkstemp();
-  if (!pgperr)
+  FILE *fp_pgp_err = mutt_file_mkstemp();
+  if (!fp_pgp_err)
   {
     mutt_perror(_("Can't create temporary file"));
     return NULL;
   }
 
   mutt_mktemp(pgptmpfile, sizeof(pgptmpfile));
-  pgptmp = mutt_file_fopen(pgptmpfile, "w");
-  if (!pgptmp)
+  fp_pgp_tmp = mutt_file_fopen(pgptmpfile, "w");
+  if (!fp_pgp_tmp)
   {
     mutt_perror(pgptmpfile);
-    mutt_file_fclose(&pgperr);
+    mutt_file_fclose(&fp_pgp_err);
     return NULL;
   }
 
@@ -1028,13 +1028,14 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
    */
 
   fseeko(s->fp_in, a->offset, SEEK_SET);
-  mutt_file_copy_bytes(s->fp_in, pgptmp, a->length);
-  mutt_file_fclose(&pgptmp);
+  mutt_file_copy_bytes(s->fp_in, fp_pgp_tmp, a->length);
+  mutt_file_fclose(&fp_pgp_tmp);
 
-  pid = pgp_invoke_decrypt(&pgpin, &pgpout, NULL, -1, -1, fileno(pgperr), pgptmpfile);
+  pid = pgp_invoke_decrypt(&fp_pgp_in, &fp_pgp_out, NULL, -1, -1,
+                           fileno(fp_pgp_err), pgptmpfile);
   if (pid == -1)
   {
-    mutt_file_fclose(&pgperr);
+    mutt_file_fclose(&fp_pgp_err);
     unlink(pgptmpfile);
     if (s->flags & MUTT_DISPLAY)
     {
@@ -1048,70 +1049,70 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
      agent is active, because this might lead to a passphrase send as
      the message. */
   if (!pgp_use_gpg_agent())
-    fputs(PgpPass, pgpin);
-  fputc('\n', pgpin);
-  mutt_file_fclose(&pgpin);
+    fputs(PgpPass, fp_pgp_in);
+  fputc('\n', fp_pgp_in);
+  mutt_file_fclose(&fp_pgp_in);
 
   /* Read the output from PGP, and make sure to change CRLF to LF, otherwise
    * read_mime_header has a hard time parsing the message.
    */
-  while (fgets(buf, sizeof(buf) - 1, pgpout))
+  while (fgets(buf, sizeof(buf) - 1, fp_pgp_out))
   {
     size_t len = mutt_str_strlen(buf);
     if (len > 1 && buf[len - 2] == '\r')
       strcpy(buf + len - 2, "\n");
-    fputs(buf, fpout);
+    fputs(buf, fp_out);
   }
 
-  mutt_file_fclose(&pgpout);
+  mutt_file_fclose(&fp_pgp_out);
   rv = mutt_wait_filter(pid);
   mutt_file_unlink(pgptmpfile);
 
-  fflush(pgperr);
-  rewind(pgperr);
-  if (pgp_check_decryption_okay(pgperr) < 0)
+  fflush(fp_pgp_err);
+  rewind(fp_pgp_err);
+  if (pgp_check_decryption_okay(fp_pgp_err) < 0)
   {
     mutt_error(_("Decryption failed"));
     pgp_class_void_passphrase();
-    mutt_file_fclose(&pgperr);
+    mutt_file_fclose(&fp_pgp_err);
     return NULL;
   }
 
   if (s->flags & MUTT_DISPLAY)
   {
-    rewind(pgperr);
-    if (pgp_copy_checksig(pgperr, s->fp_out) == 0 && !rv)
+    rewind(fp_pgp_err);
+    if (pgp_copy_checksig(fp_pgp_err, s->fp_out) == 0 && !rv)
       p->goodsig = true;
     else
       p->goodsig = false;
     state_attach_puts(_("[-- End of PGP output --]\n\n"), s);
   }
-  mutt_file_fclose(&pgperr);
+  mutt_file_fclose(&fp_pgp_err);
 
-  fflush(fpout);
-  rewind(fpout);
+  fflush(fp_out);
+  rewind(fp_out);
 
   if (pgp_use_gpg_agent())
     mutt_need_hard_redraw();
 
-  if (fgetc(fpout) == EOF)
+  if (fgetc(fp_out) == EOF)
   {
     mutt_error(_("Decryption failed"));
     pgp_class_void_passphrase();
     return NULL;
   }
 
-  rewind(fpout);
+  rewind(fp_out);
 
-  tattach = mutt_read_mime_header(fpout, 0);
+  tattach = mutt_read_mime_header(fp_out, 0);
   if (tattach)
   {
     /* Need to set the length of this body part.  */
-    fstat(fileno(fpout), &info);
+    fstat(fileno(fp_out), &info);
     tattach->length = info.st_size - tattach->offset;
 
     /* See if we need to recurse on this MIME part.  */
-    mutt_parse_part(fpout, tattach);
+    mutt_parse_part(fp_out, tattach);
   }
 
   return tattach;
@@ -1120,7 +1121,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
 /**
  * pgp_class_decrypt_mime - Implements CryptModuleSpecs::decrypt_mime()
  */
-int pgp_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
+int pgp_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur)
 {
   struct State s = { 0 };
   struct Body *p = b;
@@ -1128,7 +1129,7 @@ int pgp_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
   int saved_type = 0;
   LOFF_T saved_offset = 0;
   size_t saved_length = 0;
-  FILE *decoded_fp = NULL;
+  FILE *fp_decoded = NULL;
   int rc = 0;
 
   if (mutt_is_valid_multipart_pgp_encrypted(b))
@@ -1146,7 +1147,7 @@ int pgp_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
   else
     return -1;
 
-  s.fp_in = fpin;
+  s.fp_in = fp_in;
 
   if (need_decode)
   {
@@ -1154,38 +1155,38 @@ int pgp_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
     saved_offset = b->offset;
     saved_length = b->length;
 
-    decoded_fp = mutt_file_mkstemp();
-    if (!decoded_fp)
+    fp_decoded = mutt_file_mkstemp();
+    if (!fp_decoded)
     {
       mutt_perror(_("Can't create temporary file"));
       return -1;
     }
 
     fseeko(s.fp_in, b->offset, SEEK_SET);
-    s.fp_out = decoded_fp;
+    s.fp_out = fp_decoded;
 
     mutt_decode_attachment(b, &s);
 
-    fflush(decoded_fp);
-    b->length = ftello(decoded_fp);
+    fflush(fp_decoded);
+    b->length = ftello(fp_decoded);
     b->offset = 0;
-    rewind(decoded_fp);
-    s.fp_in = decoded_fp;
+    rewind(fp_decoded);
+    s.fp_in = fp_decoded;
     s.fp_out = 0;
   }
 
-  *fpout = mutt_file_mkstemp();
-  if (!*fpout)
+  *fp_out = mutt_file_mkstemp();
+  if (!*fp_out)
   {
     mutt_perror(_("Can't create temporary file"));
     rc = -1;
     goto bail;
   }
 
-  *cur = pgp_decrypt_part(b, &s, *fpout, p);
+  *cur = pgp_decrypt_part(b, &s, *fp_out, p);
   if (!*cur)
     rc = -1;
-  rewind(*fpout);
+  rewind(*fp_out);
 
 bail:
   if (need_decode)
@@ -1193,7 +1194,7 @@ bail:
     b->type = saved_type;
     b->length = saved_length;
     b->offset = saved_offset;
-    mutt_file_fclose(&decoded_fp);
+    mutt_file_fclose(&fp_decoded);
   }
 
   return rc;
@@ -1204,12 +1205,12 @@ bail:
  */
 int pgp_class_encrypted_handler(struct Body *a, struct State *s)
 {
-  FILE *fpin = NULL;
+  FILE *fp_in = NULL;
   struct Body *tattach = NULL;
   int rc = 0;
 
-  FILE *fpout = mutt_file_mkstemp();
-  if (!fpout)
+  FILE *fp_out = mutt_file_mkstemp();
+  if (!fp_out)
   {
     mutt_perror(_("Can't create temporary file"));
     if (s->flags & MUTT_DISPLAY)
@@ -1220,7 +1221,7 @@ int pgp_class_encrypted_handler(struct Body *a, struct State *s)
   if (s->flags & MUTT_DISPLAY)
     crypt_current_time(s, "PGP");
 
-  tattach = pgp_decrypt_part(a, s, fpout, a);
+  tattach = pgp_decrypt_part(a, s, fp_out, a);
   if (tattach)
   {
     if (s->flags & MUTT_DISPLAY)
@@ -1238,10 +1239,10 @@ int pgp_class_encrypted_handler(struct Body *a, struct State *s)
     a->mime_headers = tattach->mime_headers;
     tattach->mime_headers = NULL;
 
-    fpin = s->fp_in;
-    s->fp_in = fpout;
+    fp_in = s->fp_in;
+    s->fp_in = fp_out;
     rc = mutt_body_handler(tattach, s);
-    s->fp_in = fpin;
+    s->fp_in = fp_in;
 
     /* Embedded multipart signed protected headers override the
      * encrypted headers.  We need to do this after the handler so
@@ -1278,7 +1279,7 @@ int pgp_class_encrypted_handler(struct Body *a, struct State *s)
     rc = -1;
   }
 
-  mutt_file_fclose(&fpout);
+  mutt_file_fclose(&fp_out);
 
   return rc;
 }
@@ -1295,7 +1296,7 @@ struct Body *pgp_class_sign_message(struct Body *a)
   struct Body *t = NULL;
   char buf[1024];
   char sigfile[PATH_MAX], signedfile[PATH_MAX];
-  FILE *pgpin = NULL, *pgpout = NULL, *pgperr = NULL, *sfp = NULL;
+  FILE *fp_pgp_in = NULL, *fp_pgp_out = NULL, *fp_pgp_err = NULL, *fp_signed = NULL;
   bool err = false;
   bool empty = true;
   pid_t pid;
@@ -1303,59 +1304,59 @@ struct Body *pgp_class_sign_message(struct Body *a)
   crypt_convert_to_7bit(a); /* Signed data _must_ be in 7-bit format. */
 
   mutt_mktemp(sigfile, sizeof(sigfile));
-  FILE *fp = mutt_file_fopen(sigfile, "w");
-  if (!fp)
+  FILE *fp_sig = mutt_file_fopen(sigfile, "w");
+  if (!fp_sig)
   {
     return NULL;
   }
 
   mutt_mktemp(signedfile, sizeof(signedfile));
-  sfp = mutt_file_fopen(signedfile, "w");
-  if (!sfp)
+  fp_signed = mutt_file_fopen(signedfile, "w");
+  if (!fp_signed)
   {
     mutt_perror(signedfile);
-    mutt_file_fclose(&fp);
+    mutt_file_fclose(&fp_sig);
     unlink(sigfile);
     return NULL;
   }
 
-  mutt_write_mime_header(a, sfp);
-  fputc('\n', sfp);
-  mutt_write_mime_body(a, sfp);
-  mutt_file_fclose(&sfp);
+  mutt_write_mime_header(a, fp_signed);
+  fputc('\n', fp_signed);
+  mutt_write_mime_body(a, fp_signed);
+  mutt_file_fclose(&fp_signed);
 
-  pid = pgp_invoke_sign(&pgpin, &pgpout, &pgperr, -1, -1, -1, signedfile);
+  pid = pgp_invoke_sign(&fp_pgp_in, &fp_pgp_out, &fp_pgp_err, -1, -1, -1, signedfile);
   if (pid == -1)
   {
     mutt_perror(_("Can't open PGP subprocess"));
-    mutt_file_fclose(&fp);
+    mutt_file_fclose(&fp_sig);
     unlink(sigfile);
     unlink(signedfile);
     return NULL;
   }
 
   if (!pgp_use_gpg_agent())
-    fputs(PgpPass, pgpin);
-  fputc('\n', pgpin);
-  mutt_file_fclose(&pgpin);
+    fputs(PgpPass, fp_pgp_in);
+  fputc('\n', fp_pgp_in);
+  mutt_file_fclose(&fp_pgp_in);
 
   /* Read back the PGP signature.  Also, change MESSAGE=>SIGNATURE as
    * recommended for future releases of PGP.
    */
-  while (fgets(buf, sizeof(buf) - 1, pgpout))
+  while (fgets(buf, sizeof(buf) - 1, fp_pgp_out))
   {
     if (mutt_str_strcmp("-----BEGIN PGP MESSAGE-----\n", buf) == 0)
-      fputs("-----BEGIN PGP SIGNATURE-----\n", fp);
+      fputs("-----BEGIN PGP SIGNATURE-----\n", fp_sig);
     else if (mutt_str_strcmp("-----END PGP MESSAGE-----\n", buf) == 0)
-      fputs("-----END PGP SIGNATURE-----\n", fp);
+      fputs("-----END PGP SIGNATURE-----\n", fp_sig);
     else
-      fputs(buf, fp);
+      fputs(buf, fp_sig);
     empty = false; /* got some output, so we're ok */
   }
 
   /* check for errors from PGP */
   err = false;
-  while (fgets(buf, sizeof(buf) - 1, pgperr))
+  while (fgets(buf, sizeof(buf) - 1, fp_pgp_err))
   {
     err = true;
     fputs(buf, stdout);
@@ -1364,11 +1365,11 @@ struct Body *pgp_class_sign_message(struct Body *a)
   if (mutt_wait_filter(pid) && C_PgpCheckExit)
     empty = true;
 
-  mutt_file_fclose(&pgperr);
-  mutt_file_fclose(&pgpout);
+  mutt_file_fclose(&fp_pgp_err);
+  mutt_file_fclose(&fp_pgp_out);
   unlink(signedfile);
 
-  if (fclose(fp) != 0)
+  if (fclose(fp_sig) != 0)
   {
     mutt_perror("fclose");
     unlink(sigfile);
@@ -1427,7 +1428,6 @@ char *pgp_class_find_keys(struct Address *addrlist, bool oppenc_mode)
   struct Address *p = NULL, *q = NULL;
   struct PgpKeyInfo *k_info = NULL;
   char buf[1024];
-  int r;
   bool key_selected;
 
   const char *fqdn = mutt_fqdn(true);
@@ -1445,13 +1445,13 @@ char *pgp_class_find_keys(struct Address *addrlist, bool oppenc_mode)
       if (crypt_hook)
       {
         keyID = crypt_hook->data;
-        r = MUTT_YES;
+        enum QuadOption ans = MUTT_YES;
         if (!oppenc_mode && C_CryptConfirmhook)
         {
           snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"), keyID, p->mailbox);
-          r = mutt_yesorno(buf, MUTT_YES);
+          ans = mutt_yesorno(buf, MUTT_YES);
         }
-        if (r == MUTT_YES)
+        if (ans == MUTT_YES)
         {
           if (crypt_is_numerical_keyid(keyID))
           {
@@ -1472,7 +1472,7 @@ char *pgp_class_find_keys(struct Address *addrlist, bool oppenc_mode)
             k_info = pgp_getkeybystr(keyID, KEYFLAG_CANENCRYPT, PGP_PUBRING);
           }
         }
-        else if (r == MUTT_NO)
+        else if (ans == MUTT_NO)
         {
           if (key_selected || STAILQ_NEXT(crypt_hook, entries))
           {
@@ -1480,7 +1480,7 @@ char *pgp_class_find_keys(struct Address *addrlist, bool oppenc_mode)
             continue;
           }
         }
-        else if (r == MUTT_ABORT)
+        else if (ans == MUTT_ABORT)
         {
           FREE(&keylist);
           mutt_addr_free(&addr);
@@ -1543,54 +1543,54 @@ struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign)
   char buf[1024];
   char tempfile[PATH_MAX];
   char pgpinfile[PATH_MAX];
-  FILE *pgpin = NULL, *fptmp = NULL;
+  FILE *fp_pgp_in = NULL, *fp_tmp = NULL;
   struct Body *t = NULL;
   int err = 0;
   int empty = 0;
   pid_t pid;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  FILE *fpout = mutt_file_fopen(tempfile, "w+");
-  if (!fpout)
+  FILE *fp_out = mutt_file_fopen(tempfile, "w+");
+  if (!fp_out)
   {
     mutt_perror(tempfile);
     return NULL;
   }
 
-  FILE *pgperr = mutt_file_mkstemp();
-  if (!pgperr)
+  FILE *fp_pgp_err = mutt_file_mkstemp();
+  if (!fp_pgp_err)
   {
     mutt_perror(_("Can't create temporary file"));
     unlink(tempfile);
-    mutt_file_fclose(&fpout);
+    mutt_file_fclose(&fp_out);
     return NULL;
   }
 
   mutt_mktemp(pgpinfile, sizeof(pgpinfile));
-  fptmp = mutt_file_fopen(pgpinfile, "w");
-  if (!fptmp)
+  fp_tmp = mutt_file_fopen(pgpinfile, "w");
+  if (!fp_tmp)
   {
     mutt_perror(pgpinfile);
     unlink(tempfile);
-    mutt_file_fclose(&fpout);
-    mutt_file_fclose(&pgperr);
+    mutt_file_fclose(&fp_out);
+    mutt_file_fclose(&fp_pgp_err);
     return NULL;
   }
 
   if (sign)
     crypt_convert_to_7bit(a);
 
-  mutt_write_mime_header(a, fptmp);
-  fputc('\n', fptmp);
-  mutt_write_mime_body(a, fptmp);
-  mutt_file_fclose(&fptmp);
+  mutt_write_mime_header(a, fp_tmp);
+  fputc('\n', fp_tmp);
+  mutt_write_mime_body(a, fp_tmp);
+  mutt_file_fclose(&fp_tmp);
 
-  pid = pgp_invoke_encrypt(&pgpin, NULL, NULL, -1, fileno(fpout),
-                           fileno(pgperr), pgpinfile, keylist, sign);
+  pid = pgp_invoke_encrypt(&fp_pgp_in, NULL, NULL, -1, fileno(fp_out),
+                           fileno(fp_pgp_err), pgpinfile, keylist, sign);
   if (pid == -1)
   {
-    mutt_file_fclose(&fpout);
-    mutt_file_fclose(&pgperr);
+    mutt_file_fclose(&fp_out);
+    mutt_file_fclose(&fp_pgp_err);
     unlink(pgpinfile);
     return NULL;
   }
@@ -1598,30 +1598,30 @@ struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign)
   if (sign)
   {
     if (!pgp_use_gpg_agent())
-      fputs(PgpPass, pgpin);
-    fputc('\n', pgpin);
+      fputs(PgpPass, fp_pgp_in);
+    fputc('\n', fp_pgp_in);
   }
-  mutt_file_fclose(&pgpin);
+  mutt_file_fclose(&fp_pgp_in);
 
   if (mutt_wait_filter(pid) && C_PgpCheckExit)
     empty = 1;
 
   unlink(pgpinfile);
 
-  fflush(fpout);
-  rewind(fpout);
+  fflush(fp_out);
+  rewind(fp_out);
   if (!empty)
-    empty = (fgetc(fpout) == EOF);
-  mutt_file_fclose(&fpout);
+    empty = (fgetc(fp_out) == EOF);
+  mutt_file_fclose(&fp_out);
 
-  fflush(pgperr);
-  rewind(pgperr);
-  while (fgets(buf, sizeof(buf) - 1, pgperr))
+  fflush(fp_pgp_err);
+  rewind(fp_pgp_err);
+  while (fgets(buf, sizeof(buf) - 1, fp_pgp_err))
   {
     err = 1;
     fputs(buf, stdout);
   }
-  mutt_file_fclose(&pgperr);
+  mutt_file_fclose(&fp_pgp_err);
 
   /* pause if there is any error output from PGP */
   if (err)
@@ -1678,8 +1678,6 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
   char *from_charset = NULL;
   const char *send_charset = NULL;
 
-  FILE *fp = NULL;
-
   bool empty = false;
   bool err;
 
@@ -1692,19 +1690,19 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
   if (mutt_str_strcasecmp(a->subtype, "plain") != 0)
     return NULL;
 
-  fp = fopen(a->filename, "r");
-  if (!fp)
+  FILE *fp_body = fopen(a->filename, "r");
+  if (!fp_body)
   {
     mutt_perror(a->filename);
     return NULL;
   }
 
   mutt_mktemp(pgpinfile, sizeof(pgpinfile));
-  FILE *pgpin = mutt_file_fopen(pgpinfile, "w");
-  if (!pgpin)
+  FILE *fp_pgp_in = mutt_file_fopen(pgpinfile, "w");
+  if (!fp_pgp_in)
   {
     mutt_perror(pgpinfile);
-    mutt_file_fclose(&fp);
+    mutt_file_fclose(&fp_body);
     return NULL;
   }
 
@@ -1731,43 +1729,43 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
       send_charset = "utf-8";
 
     /* fromcode is assumed to be correct: we set flags to 0 */
-    fc = mutt_ch_fgetconv_open(fp, from_charset, "utf-8", 0);
+    fc = mutt_ch_fgetconv_open(fp_body, from_charset, "utf-8", 0);
     while ((c = mutt_ch_fgetconv(fc)) != EOF)
-      fputc(c, pgpin);
+      fputc(c, fp_pgp_in);
 
     mutt_ch_fgetconv_close(&fc);
   }
   else
   {
     send_charset = "us-ascii";
-    mutt_file_copy_stream(fp, pgpin);
+    mutt_file_copy_stream(fp_body, fp_pgp_in);
   }
-  mutt_file_fclose(&fp);
-  mutt_file_fclose(&pgpin);
+  mutt_file_fclose(&fp_body);
+  mutt_file_fclose(&fp_pgp_in);
 
   mutt_mktemp(pgpoutfile, sizeof(pgpoutfile));
-  FILE *pgpout = mutt_file_fopen(pgpoutfile, "w+");
-  FILE *pgperr = mutt_file_mkstemp();
-  if (!pgpout || !pgperr)
+  FILE *fp_pgp_out = mutt_file_fopen(pgpoutfile, "w+");
+  FILE *fp_pgp_err = mutt_file_mkstemp();
+  if (!fp_pgp_out || !fp_pgp_err)
   {
-    mutt_perror(pgpout ? "Can't create temporary file" : pgpoutfile);
+    mutt_perror(fp_pgp_out ? "Can't create temporary file" : pgpoutfile);
     unlink(pgpinfile);
-    if (pgpout)
+    if (fp_pgp_out)
     {
-      mutt_file_fclose(&pgpout);
+      mutt_file_fclose(&fp_pgp_out);
       unlink(pgpoutfile);
     }
-    mutt_file_fclose(&pgperr);
+    mutt_file_fclose(&fp_pgp_err);
     return NULL;
   }
 
-  pid = pgp_invoke_traditional(&pgpin, NULL, NULL, -1, fileno(pgpout),
-                               fileno(pgperr), pgpinfile, keylist, flags);
+  pid = pgp_invoke_traditional(&fp_pgp_in, NULL, NULL, -1, fileno(fp_pgp_out),
+                               fileno(fp_pgp_err), pgpinfile, keylist, flags);
   if (pid == -1)
   {
     mutt_perror(_("Can't invoke PGP"));
-    mutt_file_fclose(&pgpout);
-    mutt_file_fclose(&pgperr);
+    mutt_file_fclose(&fp_pgp_out);
+    mutt_file_fclose(&fp_pgp_err);
     mutt_file_unlink(pgpinfile);
     unlink(pgpoutfile);
     return NULL;
@@ -1776,33 +1774,33 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
   if (pgp_use_gpg_agent())
     *PgpPass = 0;
   if (flags & SEC_SIGN)
-    fprintf(pgpin, "%s\n", PgpPass);
-  mutt_file_fclose(&pgpin);
+    fprintf(fp_pgp_in, "%s\n", PgpPass);
+  mutt_file_fclose(&fp_pgp_in);
 
   if (mutt_wait_filter(pid) && C_PgpCheckExit)
     empty = true;
 
   mutt_file_unlink(pgpinfile);
 
-  fflush(pgpout);
-  fflush(pgperr);
+  fflush(fp_pgp_out);
+  fflush(fp_pgp_err);
 
-  rewind(pgpout);
-  rewind(pgperr);
+  rewind(fp_pgp_out);
+  rewind(fp_pgp_err);
 
   if (!empty)
-    empty = (fgetc(pgpout) == EOF);
-  mutt_file_fclose(&pgpout);
+    empty = (fgetc(fp_pgp_out) == EOF);
+  mutt_file_fclose(&fp_pgp_out);
 
   err = false;
 
-  while (fgets(buf, sizeof(buf), pgperr))
+  while (fgets(buf, sizeof(buf), fp_pgp_err))
   {
     err = true;
     fputs(buf, stdout);
   }
 
-  mutt_file_fclose(&pgperr);
+  mutt_file_fclose(&fp_pgp_err);
 
   if (err)
     mutt_any_key_to_continue(NULL);

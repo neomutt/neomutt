@@ -69,12 +69,12 @@ typedef uint32_t CopyHeaderFlags;   ///< Flags for mutt_copy_header(), e.g. #CH_
 #define CH_UPDATE_SUBJECT (1 << 20) ///< Update Subject: protected header update
 #define CH_VIRTUAL        (1 << 21) ///< Write virtual header lines too
 
-int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, CopyHeaderFlags chflags, const char *prefix);
+int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end, CopyHeaderFlags chflags, const char *prefix);
 
-int mutt_copy_header(FILE *in, struct Email *e, FILE *out, CopyHeaderFlags chflags, const char *prefix);
+int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out, CopyHeaderFlags chflags, const char *prefix);
 
-int mutt_copy_message_fp(FILE *fpout, FILE *fpin,           struct Email *e, CopyMessageFlags cmflags, CopyHeaderFlags chflags);
-int mutt_copy_message_ctx(FILE *fpout, struct Mailbox *src, struct Email *e, CopyMessageFlags cmflags, CopyHeaderFlags chflags);
+int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in,          struct Email *e, CopyMessageFlags cmflags, CopyHeaderFlags chflags);
+int mutt_copy_message_ctx(FILE *fp_out, struct Mailbox *src, struct Email *e, CopyMessageFlags cmflags, CopyHeaderFlags chflags);
 
 int mutt_append_message(struct Mailbox *dest, struct Mailbox *src, struct Email *e, CopyMessageFlags cmflags, CopyHeaderFlags chflags);
 

@@ -67,7 +67,7 @@ int mutt_body_copy(FILE *fp, struct Body **tgt, struct Body *src)
   }
 
   mutt_adv_mktemp(tmp, sizeof(tmp));
-  if (mutt_save_attachment(fp, src, tmp, 0, NULL) == -1)
+  if (mutt_save_attachment(fp, src, tmp, MUTT_SAVE_NO_FLAGS, NULL) == -1)
     return -1;
 
   *tgt = mutt_body_new();

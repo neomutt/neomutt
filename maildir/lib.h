@@ -63,7 +63,7 @@ int           maildir_msg_open_new     (struct Mailbox *m, struct Message *msg, 
 FILE *        maildir_open_find_message(const char *folder, const char *msg, char **newname);
 void          maildir_parse_flags      (struct Email *e, const char *path);
 struct Email *maildir_parse_message    (enum MailboxType magic, const char *fname, bool is_old, struct Email *e);
-struct Email *maildir_parse_stream     (enum MailboxType magic, FILE *f, const char *fname, bool is_old, struct Email *e);
+struct Email *maildir_parse_stream     (enum MailboxType magic, FILE *fp, const char *fname, bool is_old, struct Email *e);
 bool          maildir_update_flags     (struct Mailbox *m, struct Email *o, struct Email *n);
 int           mh_check_empty           (const char *path);
 #ifdef USE_HCACHE

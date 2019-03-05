@@ -1552,7 +1552,7 @@ static int check_mailbox(struct Mailbox *m)
   struct NntpMboxData *mdata = m->mdata;
   struct NntpAccountData *adata = mdata->adata;
   time_t now = time(NULL);
-  int rc, ret = 0;
+  int rc = 0;
   void *hc = NULL;
 
   if (adata->check_time + C_NntpPoll > now)
@@ -1563,13 +1563,13 @@ static int check_mailbox(struct Mailbox *m)
     return -1;
 
   adata->check_time = now;
-  rc = nntp_group_poll(mdata, false);
-  if (rc < 0)
+  int rc2 = nntp_group_poll(mdata, false);
+  if (rc2 < 0)
   {
     nntp_newsrc_close(adata);
     return -1;
   }
-  if (rc)
+  if (rc2 != 0)
     nntp_active_save_cache(adata);
 
   /* articles have been renumbered, remove all headers */
@@ -1586,7 +1586,7 @@ static int check_mailbox(struct Mailbox *m)
       if (C_NntpContext && mdata->last_message - mdata->last_loaded > C_NntpContext)
         mdata->last_loaded = mdata->last_message - C_NntpContext;
     }
-    ret = MUTT_REOPENED;
+    rc = MUTT_REOPENED;
   }
 
   /* .newsrc has been externally modified */
@@ -1705,11 +1705,11 @@ static int check_mailbox(struct Mailbox *m)
 #endif
 
     adata->newsrc_modified = false;
-    ret = MUTT_REOPENED;
+    rc = MUTT_REOPENED;
   }
 
   /* some headers were removed, context must be updated */
-  if (ret == MUTT_REOPENED)
+  if (rc == MUTT_REOPENED)
     mutt_mailbox_changed(m, MBN_INVALID);
 
   /* fetch headers of new articles */
@@ -1726,25 +1726,25 @@ static int check_mailbox(struct Mailbox *m)
     }
 #endif
     int old_msg_count = m->msg_count;
-    rc = nntp_fetch_headers(m, hc, mdata->last_loaded + 1, mdata->last_message, false);
+    rc2 = nntp_fetch_headers(m, hc, mdata->last_loaded + 1, mdata->last_message, false);
     m->quiet = quiet;
-    if (rc == 0)
+    if (rc2 == 0)
     {
       if (m->msg_count > old_msg_count)
         mutt_mailbox_changed(m, MBN_INVALID);
       mdata->last_loaded = mdata->last_message;
     }
-    if (ret == 0 && m->msg_count > oldmsgcount)
-      ret = MUTT_NEW_MAIL;
+    if (rc == 0 && m->msg_count > oldmsgcount)
+      rc = MUTT_NEW_MAIL;
   }
 
 #ifdef USE_HCACHE
   mutt_hcache_close(hc);
 #endif
-  if (ret)
+  if (rc)
     nntp_newsrc_close(adata);
   mutt_clear_error();
-  return ret;
+  return rc;
 }
 
 /**
@@ -2603,14 +2603,14 @@ static int nntp_mbox_check(struct Mailbox *m, int *index_hint)
   if (!m)
     return -1;
 
-  int ret = check_mailbox(m);
-  if (ret == 0)
+  int rc = check_mailbox(m);
+  if (rc == 0)
   {
     struct NntpMboxData *mdata = m->mdata;
     struct NntpAccountData *adata = mdata->adata;
     nntp_newsrc_close(adata);
   }
-  return ret;
+  return rc;
 }
 
 /**

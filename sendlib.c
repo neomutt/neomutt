@@ -94,10 +94,10 @@ short C_WrapHeaders;    ///< Config: Width to wrap headers in outgoing messages
 /**
  * encode_quoted - Encode text as quoted printable
  * @param fc     Cursor for converting a file's encoding
- * @param fout   File to store the result
+ * @param fp_out File to store the result
  * @param istext Is the input text?
  */
-static void encode_quoted(struct FgetConv *fc, FILE *fout, bool istext)
+static void encode_quoted(struct FgetConv *fc, FILE *fp_out, bool istext)
 {
   int c, linelen = 0;
   char line[77], savechar;
@@ -114,8 +114,8 @@ static void encode_quoted(struct FgetConv *fc, FILE *fout, bool istext)
       if (line[linelen - 3] == '=')
       {
         line[linelen - 3] = 0;
-        fputs(line, fout);
-        fputs("=\n", fout);
+        fputs(line, fp_out);
+        fputs("=\n", fp_out);
         line[linelen] = 0;
         line[0] = '=';
         line[1] = line[linelen - 2];
@@ -127,8 +127,8 @@ static void encode_quoted(struct FgetConv *fc, FILE *fout, bool istext)
         savechar = line[linelen - 1];
         line[linelen - 1] = '=';
         line[linelen] = 0;
-        fputs(line, fout);
-        fputc('\n', fout);
+        fputs(line, fp_out);
+        fputc('\n', fp_out);
         line[0] = savechar;
         linelen = 1;
       }
@@ -159,7 +159,7 @@ static void encode_quoted(struct FgetConv *fc, FILE *fout, bool istext)
         if (linelen < 74)
         {
           sprintf(line + linelen - 1, "=%2.2X", (unsigned char) line[linelen - 1]);
-          fputs(line, fout);
+          fputs(line, fp_out);
         }
         else
         {
@@ -167,16 +167,16 @@ static void encode_quoted(struct FgetConv *fc, FILE *fout, bool istext)
 
           line[linelen - 1] = '=';
           line[linelen] = 0;
-          fputs(line, fout);
-          fprintf(fout, "\n=%2.2X", (unsigned char) savechar2);
+          fputs(line, fp_out);
+          fprintf(fp_out, "\n=%2.2X", (unsigned char) savechar2);
         }
       }
       else
       {
         line[linelen] = 0;
-        fputs(line, fout);
+        fputs(line, fp_out);
       }
-      fputc('\n', fout);
+      fputc('\n', fp_out);
       linelen = 0;
     }
     else if (c != 9 && (c < 32 || c > 126 || c == '='))
@@ -188,8 +188,8 @@ static void encode_quoted(struct FgetConv *fc, FILE *fout, bool istext)
       {
         line[linelen++] = '=';
         line[linelen] = 0;
-        fputs(line, fout);
-        fputc('\n', fout);
+        fputs(line, fp_out);
+        fputc('\n', fp_out);
         linelen = 0;
       }
       sprintf(line + linelen, "=%2.2X", (unsigned char) c);
@@ -217,14 +217,14 @@ static void encode_quoted(struct FgetConv *fc, FILE *fout, bool istext)
         savechar = line[linelen - 1];
         line[linelen - 1] = '=';
         line[linelen] = 0;
-        fputs(line, fout);
-        fputc('\n', fout);
+        fputs(line, fp_out);
+        fputc('\n', fp_out);
         sprintf(line, "=%2.2X", (unsigned char) savechar);
       }
     }
     else
       line[linelen] = 0;
-    fputs(line, fout);
+    fputs(line, fp_out);
   }
 }
 
@@ -254,10 +254,10 @@ static int b64_init(struct B64Context *bctx)
 
 /**
  * b64_flush - Save the bytes to the file
- * @param bctx  Cursor for the base64 conversion
- * @param fout File to save the output
+ * @param bctx   Cursor for the base64 conversion
+ * @param fp_out File to save the output
  */
-static void b64_flush(struct B64Context *bctx, FILE *fout)
+static void b64_flush(struct B64Context *bctx, FILE *fp_out)
 {
   /* for some reasons, mutt_b64_encode expects the
    * output buffer to be larger than 10B */
@@ -269,7 +269,7 @@ static void b64_flush(struct B64Context *bctx, FILE *fout)
 
   if (bctx->linelen >= 72)
   {
-    fputc('\n', fout);
+    fputc('\n', fp_out);
     bctx->linelen = 0;
   }
 
@@ -279,7 +279,7 @@ static void b64_flush(struct B64Context *bctx, FILE *fout)
   ret = mutt_b64_encode(bctx->buffer, bctx->size, encoded, sizeof(encoded));
   for (size_t i = 0; i < ret; i++)
   {
-    fputc(encoded[i], fout);
+    fputc(encoded[i], fp_out);
     bctx->linelen++;
   }
 
@@ -288,14 +288,14 @@ static void b64_flush(struct B64Context *bctx, FILE *fout)
 
 /**
  * b64_putc - Base64-encode one character
- * @param bctx  Cursor for the base64 conversion
- * @param c    Character to encode
- * @param fout File to save the output
+ * @param bctx   Cursor for the base64 conversion
+ * @param c      Character to encode
+ * @param fp_out File to save the output
  */
-static void b64_putc(struct B64Context *bctx, char c, FILE *fout)
+static void b64_putc(struct B64Context *bctx, char c, FILE *fp_out)
 {
   if (bctx->size == 3)
-    b64_flush(bctx, fout);
+    b64_flush(bctx, fp_out);
 
   bctx->buffer[bctx->size++] = c;
 }
@@ -303,10 +303,10 @@ static void b64_putc(struct B64Context *bctx, char c, FILE *fout)
 /**
  * encode_base64 - Base64-encode some data
  * @param fc     Cursor for converting a file's encoding
- * @param fout   File to store the result
+ * @param fp_out File to store the result
  * @param istext Is the input text?
  */
-static void encode_base64(struct FgetConv *fc, FILE *fout, int istext)
+static void encode_base64(struct FgetConv *fc, FILE *fp_out, int istext)
 {
   struct B64Context bctx;
   int ch, ch1 = EOF;
@@ -321,20 +321,20 @@ static void encode_base64(struct FgetConv *fc, FILE *fout, int istext)
       return;
     }
     if (istext && ch == '\n' && ch1 != '\r')
-      b64_putc(&bctx, '\r', fout);
-    b64_putc(&bctx, ch, fout);
+      b64_putc(&bctx, '\r', fp_out);
+    b64_putc(&bctx, ch, fp_out);
     ch1 = ch;
   }
-  b64_flush(&bctx, fout);
-  fputc('\n', fout);
+  b64_flush(&bctx, fp_out);
+  fputc('\n', fp_out);
 }
 
 /**
  * encode_8bit - Write the data as raw 8-bit data
  * @param fc     Cursor for converting a file's encoding
- * @param fout   File to store the result
+ * @param fp_out File to store the result
  */
-static void encode_8bit(struct FgetConv *fc, FILE *fout)
+static void encode_8bit(struct FgetConv *fc, FILE *fp_out)
 {
   int ch;
 
@@ -345,20 +345,20 @@ static void encode_8bit(struct FgetConv *fc, FILE *fout)
       SigInt = 0;
       return;
     }
-    fputc(ch, fout);
+    fputc(ch, fp_out);
   }
 }
 
 /**
  * mutt_write_mime_header - Create a MIME header
- * @param a Body part
- * @param f File to write to
+ * @param a  Body part
+ * @param fp File to write to
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_write_mime_header(struct Body *a, FILE *f)
+int mutt_write_mime_header(struct Body *a, FILE *fp)
 {
-  fprintf(f, "Content-Type: %s/%s", TYPE(a), a->subtype);
+  fprintf(fp, "Content-Type: %s/%s", TYPE(a), a->subtype);
 
   if (!TAILQ_EMPTY(&a->parameter))
   {
@@ -372,7 +372,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
       if (!np->value)
         continue;
 
-      fputc(';', f);
+      fputc(';', fp);
 
       char buf[256];
       buf[0] = 0;
@@ -396,26 +396,26 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
 
       if (len + tmplen + 2 > 76)
       {
-        fputs("\n\t", f);
+        fputs("\n\t", fp);
         len = tmplen + 8;
       }
       else
       {
-        fputc(' ', f);
+        fputc(' ', fp);
         len += tmplen + 1;
       }
 
-      fprintf(f, "%s%s=%s", np->attribute, encode ? "*" : "", buf);
+      fprintf(fp, "%s%s=%s", np->attribute, encode ? "*" : "", buf);
     }
   }
 
-  fputc('\n', f);
+  fputc('\n', fp);
 
   if (a->language)
-    fprintf(f, "Content-Language: %s\n", a->language);
+    fprintf(fp, "Content-Language: %s\n", a->language);
 
   if (a->description)
-    fprintf(f, "Content-Description: %s\n", a->description);
+    fprintf(fp, "Content-Description: %s\n", a->description);
 
   if (a->disposition != DISP_NONE)
   {
@@ -423,7 +423,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
 
     if (a->disposition < sizeof(dispstr) / sizeof(char *))
     {
-      fprintf(f, "Content-Disposition: %s", dispstr[a->disposition]);
+      fprintf(fp, "Content-Disposition: %s", dispstr[a->disposition]);
 
       if (a->use_disp && (a->disposition != DISP_INLINE))
       {
@@ -448,11 +448,11 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
           const int encode = rfc2231_encode_string(&tmp);
           mutt_addr_cat(buf, sizeof(buf), tmp, MimeSpecials);
           FREE(&tmp);
-          fprintf(f, "; filename%s=%s", encode ? "*" : "", buf);
+          fprintf(fp, "; filename%s=%s", encode ? "*" : "", buf);
         }
       }
 
-      fputc('\n', f);
+      fputc('\n', fp);
     }
     else
     {
@@ -461,13 +461,13 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
   }
 
   if (a->encoding != ENC_7BIT)
-    fprintf(f, "Content-Transfer-Encoding: %s\n", ENCODING(a->encoding));
+    fprintf(fp, "Content-Transfer-Encoding: %s\n", ENCODING(a->encoding));
 
   if (C_CryptProtectedHeadersWrite && a->mime_headers)
-    mutt_rfc822_write_header(f, a->mime_headers, NULL, MUTT_WRITE_HEADER_MIME, false, false);
+    mutt_rfc822_write_header(fp, a->mime_headers, NULL, MUTT_WRITE_HEADER_MIME, false, false);
 
   /* Do NOT add the terminator here!!! */
-  return ferror(f) ? -1 : 0;
+  return ferror(fp) ? -1 : 0;
 }
 
 /**
@@ -483,14 +483,14 @@ static bool write_as_text_part(struct Body *b)
 
 /**
  * mutt_write_mime_body - Write a MIME part
- * @param a Body to use
- * @param f File to write to
+ * @param a  Body to use
+ * @param fp File to write to
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_write_mime_body(struct Body *a, FILE *f)
+int mutt_write_mime_body(struct Body *a, FILE *fp)
 {
-  FILE *fpin = NULL;
+  FILE *fp_in = NULL;
   struct FgetConv *fc = NULL;
 
   if (a->type == TYPE_MULTIPART)
@@ -508,27 +508,27 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
 
     for (struct Body *t = a->parts; t; t = t->next)
     {
-      fprintf(f, "\n--%s\n", boundary);
-      if (mutt_write_mime_header(t, f) == -1)
+      fprintf(fp, "\n--%s\n", boundary);
+      if (mutt_write_mime_header(t, fp) == -1)
         return -1;
-      fputc('\n', f);
-      if (mutt_write_mime_body(t, f) == -1)
+      fputc('\n', fp);
+      if (mutt_write_mime_body(t, fp) == -1)
         return -1;
     }
-    fprintf(f, "\n--%s--\n", boundary);
-    return ferror(f) ? -1 : 0;
+    fprintf(fp, "\n--%s--\n", boundary);
+    return ferror(fp) ? -1 : 0;
   }
 
   /* This is pretty gross, but it's the best solution for now... */
   if (((WithCrypto & APPLICATION_PGP) != 0) && a->type == TYPE_APPLICATION &&
       (mutt_str_strcmp(a->subtype, "pgp-encrypted") == 0))
   {
-    fputs("Version: 1\n", f);
+    fputs("Version: 1\n", fp);
     return 0;
   }
 
-  fpin = fopen(a->filename, "r");
-  if (!fpin)
+  fp_in = fopen(a->filename, "r");
+  if (!fp_in)
   {
     mutt_debug(LL_DEBUG1, "%s no longer exists\n", a->filename);
     mutt_error(_("%s no longer exists"), a->filename);
@@ -539,31 +539,32 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
   {
     char send_charset[128];
     fc = mutt_ch_fgetconv_open(
-        fpin, a->charset, mutt_body_get_charset(a, send_charset, sizeof(send_charset)), 0);
+        fp_in, a->charset,
+        mutt_body_get_charset(a, send_charset, sizeof(send_charset)), 0);
   }
   else
-    fc = mutt_ch_fgetconv_open(fpin, 0, 0, 0);
+    fc = mutt_ch_fgetconv_open(fp_in, 0, 0, 0);
 
   mutt_sig_allow_interrupt(1);
   if (a->encoding == ENC_QUOTED_PRINTABLE)
-    encode_quoted(fc, f, write_as_text_part(a));
+    encode_quoted(fc, fp, write_as_text_part(a));
   else if (a->encoding == ENC_BASE64)
-    encode_base64(fc, f, write_as_text_part(a));
+    encode_base64(fc, fp, write_as_text_part(a));
   else if (a->type == TYPE_TEXT && (!a->noconv))
-    encode_8bit(fc, f);
+    encode_8bit(fc, fp);
   else
-    mutt_file_copy_stream(fpin, f);
+    mutt_file_copy_stream(fp_in, fp);
   mutt_sig_allow_interrupt(0);
 
   mutt_ch_fgetconv_close(&fc);
-  mutt_file_fclose(&fpin);
+  mutt_file_fclose(&fp_in);
 
   if (SigInt == 1)
   {
     SigInt = 0;
     return -1;
   }
-  return ferror(f) ? -1 : 0;
+  return ferror(fp) ? -1 : 0;
 }
 
 /**
@@ -724,7 +725,7 @@ static void update_content_info(struct Content *info, struct ContentState *s,
 
 /**
  * convert_file_to - Change the encoding of a file
- * @param[in]  file       File to convert
+ * @param[in]  fp         File to convert
  * @param[in]  fromcode   Original encoding
  * @param[in]  ncodes     Number of target encodings
  * @param[in]  tocodes    List of target encodings
@@ -747,7 +748,7 @@ static void update_content_info(struct Content *info, struct ContentState *s,
  * long as the input for any pair of charsets we might be interested
  * in.
  */
-static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
+static size_t convert_file_to(FILE *fp, const char *fromcode, int ncodes,
                               const char **tocodes, int *tocode, struct Content *info)
 {
   char bufi[256], bufu[512], bufo[4 * sizeof(bufi)];
@@ -774,12 +775,12 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
     }
   }
 
-  rewind(file);
+  rewind(fp);
   size_t ibl = 0;
   while (true)
   {
     /* Try to fill input buffer */
-    size_t n = fread(bufi + ibl, 1, sizeof(bufi) - ibl, file);
+    size_t n = fread(bufi + ibl, 1, sizeof(bufi) - ibl, fp);
     ibl += n;
 
     /* Convert to UTF-8 */
@@ -881,7 +882,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
 
 /**
  * convert_file_from_to - Convert a file between encodings
- * @param[in]  file      File to read from
+ * @param[in]  fp        File to read from
  * @param[in]  fromcodes Charsets to try converting FROM
  * @param[in]  tocodes   Charsets to try converting TO
  * @param[out] fromcode  From charset selected
@@ -900,7 +901,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
  * However, if fromcode is zero then fromcodes is assumed to be the name of a
  * single charset even if it contains a colon.
  */
-static size_t convert_file_from_to(FILE *file, const char *fromcodes, const char *tocodes,
+static size_t convert_file_from_to(FILE *fp, const char *fromcodes, const char *tocodes,
                                    char **fromcode, char **tocode, struct Content *info)
 {
   char *fcode = NULL;
@@ -940,7 +941,7 @@ static size_t convert_file_from_to(FILE *file, const char *fromcodes, const char
         continue;
       fcode = mutt_str_substr_dup(c, c1);
 
-      ret = convert_file_to(file, fcode, ncodes, (const char **) tcode, &cn, info);
+      ret = convert_file_to(fp, fcode, ncodes, (const char **) tcode, &cn, info);
       if (ret != (size_t)(-1))
       {
         *fromcode = fcode;
@@ -954,7 +955,7 @@ static size_t convert_file_from_to(FILE *file, const char *fromcodes, const char
   else
   {
     /* There is only one fromcode */
-    ret = convert_file_to(file, fromcodes, ncodes, (const char **) tcode, &cn, info);
+    ret = convert_file_to(fp, fromcodes, ncodes, (const char **) tcode, &cn, info);
     if (ret != (size_t)(-1))
     {
       *tocode = tcode[cn];
@@ -1071,7 +1072,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
  */
 int mutt_lookup_mime_type(struct Body *att, const char *path)
 {
-  FILE *f = NULL;
+  FILE *fp = NULL;
   char *p = NULL, *q = NULL, *ct = NULL;
   char buf[PATH_MAX];
   char subtype[256], xtype[256];
@@ -1112,12 +1113,12 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
         goto bye; /* shouldn't happen */
     }
 
-    f = fopen(buf, "r");
-    if (f)
+    fp = fopen(buf, "r");
+    if (fp)
     {
       found_mimetypes = true;
 
-      while (fgets(buf, sizeof(buf) - 1, f))
+      while (fgets(buf, sizeof(buf) - 1, fp))
       {
         /* weed out any comments */
         p = strchr(buf, '#');
@@ -1168,7 +1169,7 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
           p = NULL;
         }
       }
-      mutt_file_fclose(&f);
+      mutt_file_fclose(&fp);
     }
   }
 
@@ -1193,9 +1194,9 @@ bye:
 /**
  * transform_to_7bit - Convert MIME parts to 7-bit
  * @param a    Body of the email
- * @param fpin File to read
+ * @param fp_in File to read
  */
-static void transform_to_7bit(struct Body *a, FILE *fpin)
+static void transform_to_7bit(struct Body *a, FILE *fp_in)
 {
   char buf[PATH_MAX];
   struct State s = { 0 };
@@ -1208,11 +1209,11 @@ static void transform_to_7bit(struct Body *a, FILE *fpin)
       if (a->encoding != ENC_7BIT)
         a->encoding = ENC_7BIT;
 
-      transform_to_7bit(a->parts, fpin);
+      transform_to_7bit(a->parts, fp_in);
     }
     else if (mutt_is_message_type(a->type, a->subtype))
     {
-      mutt_message_to_7bit(a, fpin);
+      mutt_message_to_7bit(a, fp_in);
     }
     else
     {
@@ -1226,7 +1227,7 @@ static void transform_to_7bit(struct Body *a, FILE *fpin)
         mutt_perror("fopen");
         return;
       }
-      s.fp_in = fpin;
+      s.fp_in = fp_in;
       mutt_decode_attachment(a, &s);
       mutt_file_fclose(&s.fp_out);
       FREE(&a->d_filename);
@@ -1258,13 +1259,13 @@ void mutt_message_to_7bit(struct Body *a, FILE *fp)
 {
   char temp[PATH_MAX];
   char *line = NULL;
-  FILE *fpin = NULL;
-  FILE *fpout = NULL;
+  FILE *fp_in = NULL;
+  FILE *fp_out = NULL;
   struct stat sb;
 
   if (!a->filename && fp)
-    fpin = fp;
-  else if (!a->filename || !(fpin = fopen(a->filename, "r")))
+    fp_in = fp;
+  else if (!a->filename || !(fp_in = fopen(a->filename, "r")))
   {
     mutt_error(_("Could not open %s"), a->filename ? a->filename : "(null)");
     return;
@@ -1275,42 +1276,42 @@ void mutt_message_to_7bit(struct Body *a, FILE *fp)
     if (stat(a->filename, &sb) == -1)
     {
       mutt_perror("stat");
-      mutt_file_fclose(&fpin);
+      mutt_file_fclose(&fp_in);
     }
     a->length = sb.st_size;
   }
 
   mutt_mktemp(temp, sizeof(temp));
-  fpout = mutt_file_fopen(temp, "w+");
-  if (!fpout)
+  fp_out = mutt_file_fopen(temp, "w+");
+  if (!fp_out)
   {
     mutt_perror("fopen");
     goto cleanup;
   }
 
-  if (!fpin)
+  if (!fp_in)
     goto cleanup;
 
-  fseeko(fpin, a->offset, SEEK_SET);
-  a->parts = mutt_rfc822_parse_message(fpin, a);
+  fseeko(fp_in, a->offset, SEEK_SET);
+  a->parts = mutt_rfc822_parse_message(fp_in, a);
 
-  transform_to_7bit(a->parts, fpin);
+  transform_to_7bit(a->parts, fp_in);
 
-  mutt_copy_hdr(fpin, fpout, a->offset, a->offset + a->length,
+  mutt_copy_hdr(fp_in, fp_out, a->offset, a->offset + a->length,
                 CH_MIME | CH_NONEWLINE | CH_XMIT, NULL);
 
-  fputs("MIME-Version: 1.0\n", fpout);
-  mutt_write_mime_header(a->parts, fpout);
-  fputc('\n', fpout);
-  mutt_write_mime_body(a->parts, fpout);
+  fputs("MIME-Version: 1.0\n", fp_out);
+  mutt_write_mime_header(a->parts, fp_out);
+  fputc('\n', fp_out);
+  mutt_write_mime_body(a->parts, fp_out);
 
 cleanup:
   FREE(&line);
 
-  if (fpin && fpin != fp)
-    mutt_file_fclose(&fpin);
-  if (fpout)
-    mutt_file_fclose(&fpout);
+  if (fp_in && fp_in != fp)
+    mutt_file_fclose(&fp_in);
+  if (fp_out)
+    mutt_file_fclose(&fp_out);
   else
     return;
 
@@ -1557,7 +1558,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool a
  */
 static void run_mime_type_query(struct Body *att)
 {
-  FILE *fp, *fperr;
+  FILE *fp, *fp_err;
   char cmd[STR_COMMAND];
   char *buf = NULL;
   size_t buflen;
@@ -1566,7 +1567,7 @@ static void run_mime_type_query(struct Body *att)
 
   mutt_file_expand_fmt_quote(cmd, sizeof(cmd), C_MimeTypeQueryCommand, att->filename);
 
-  pid = mutt_create_filter(cmd, NULL, &fp, &fperr);
+  pid = mutt_create_filter(cmd, NULL, &fp, &fp_err);
   if (pid < 0)
   {
     mutt_error(_("Error running \"%s\""), cmd);
@@ -1582,7 +1583,7 @@ static void run_mime_type_query(struct Body *att)
   }
 
   mutt_file_fclose(&fp);
-  mutt_file_fclose(&fperr);
+  mutt_file_fclose(&fp_err);
   mutt_wait_filter(pid);
 }
 
@@ -1783,13 +1784,13 @@ void mutt_write_address_list(struct Address *addr, FILE *fp, int linelen, bool d
 /**
  * mutt_write_references - Add the message references to a list
  * @param r    String List of references
- * @param f    File to write to
+ * @param fp   File to write to
  * @param trim Trim the list to at most this many items
  *
  * Write the list in reverse because they are stored in reverse order when
  * parsed to speed up threading.
  */
-void mutt_write_references(const struct ListHead *r, FILE *f, size_t trim)
+void mutt_write_references(const struct ListHead *r, FILE *fp, size_t trim)
 {
   struct ListNode *np = NULL;
   size_t length = 0;
@@ -1813,10 +1814,10 @@ void mutt_write_references(const struct ListHead *r, FILE *f, size_t trim)
 
   for (size_t i = 0; i < length; ++i)
   {
-    fputc(' ', f);
-    fputs(ref[i]->data, f);
+    fputc(' ', fp);
+    fputs(ref[i]->data, fp);
     if (i != length - 1)
-      fputc('\n', f);
+      fputc('\n', fp);
   }
 
   FREE(&ref);
@@ -2966,8 +2967,8 @@ static int bounce_message(FILE *fp, struct Email *e, struct Address *to,
   char tempfile[PATH_MAX];
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  FILE *f = mutt_file_fopen(tempfile, "w");
-  if (f)
+  FILE *fp_tmp = mutt_file_fopen(tempfile, "w");
+  if (fp_tmp)
   {
     char date[128];
     CopyHeaderFlags chflags = CH_XMIT | CH_NONEWLINE | CH_NOQFROM;
@@ -2976,17 +2977,17 @@ static int bounce_message(FILE *fp, struct Email *e, struct Address *to,
       chflags |= CH_WEED_DELIVERED;
 
     fseeko(fp, e->offset, SEEK_SET);
-    fprintf(f, "Resent-From: %s", resent_from);
-    fprintf(f, "\nResent-%s", mutt_date_make_date(date, sizeof(date)));
+    fprintf(fp_tmp, "Resent-From: %s", resent_from);
+    fprintf(fp_tmp, "\nResent-%s", mutt_date_make_date(date, sizeof(date)));
     char *msgid_str = gen_msgid();
-    fprintf(f, "Resent-Message-ID: %s\n", msgid_str);
+    fprintf(fp_tmp, "Resent-Message-ID: %s\n", msgid_str);
     FREE(&msgid_str);
-    fputs("Resent-To: ", f);
-    mutt_write_address_list(to, f, 11, 0);
-    mutt_copy_header(fp, e, f, chflags, NULL);
-    fputc('\n', f);
-    mutt_file_copy_bytes(fp, f, e->content->length);
-    if (mutt_file_fclose(&f) != 0)
+    fputs("Resent-To: ", fp_tmp);
+    mutt_write_address_list(to, fp_tmp, 11, 0);
+    mutt_copy_header(fp, e, fp_tmp, chflags, NULL);
+    fputc('\n', fp_tmp);
+    mutt_file_copy_bytes(fp, fp_tmp, e->content->length);
+    if (mutt_file_fclose(&fp_tmp) != 0)
     {
       mutt_perror(tempfile);
       unlink(tempfile);
@@ -3149,7 +3150,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
 {
   struct Message *msg = NULL;
   char tempfile[PATH_MAX];
-  FILE *tempfp = NULL;
+  FILE *fp_tmp = NULL;
   int rc = -1;
   bool need_mailbox_cleanup = false;
   struct stat st;
@@ -3177,8 +3178,8 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   if ((ctx_fcc->mailbox->magic == MUTT_MMDF) || (ctx_fcc->mailbox->magic == MUTT_MBOX))
   {
     mutt_mktemp(tempfile, sizeof(tempfile));
-    tempfp = mutt_file_fopen(tempfile, "w+");
-    if (!tempfp)
+    fp_tmp = mutt_file_fopen(tempfile, "w+");
+    if (!fp_tmp)
     {
       mutt_perror(tempfile);
       mx_mbox_close(&ctx_fcc);
@@ -3196,7 +3197,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   msg = mx_msg_open_new(ctx_fcc->mailbox, e, onm_flags);
   if (!msg)
   {
-    mutt_file_fclose(&tempfp);
+    mutt_file_fclose(&fp_tmp);
     mx_mbox_close(&ctx_fcc);
     goto done;
   }
@@ -3291,29 +3292,29 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   }
 #endif
 
-  if (tempfp)
+  if (fp_tmp)
   {
     char sasha[1024];
     int lines = 0;
 
-    mutt_write_mime_body(e->content, tempfp);
+    mutt_write_mime_body(e->content, fp_tmp);
 
     /* make sure the last line ends with a newline.  Emacs doesn't ensure
      * this will happen, and it can cause problems parsing the mailbox
      * later.
      */
-    fseek(tempfp, -1, SEEK_END);
-    if (fgetc(tempfp) != '\n')
+    fseek(fp_tmp, -1, SEEK_END);
+    if (fgetc(fp_tmp) != '\n')
     {
-      fseek(tempfp, 0, SEEK_END);
-      fputc('\n', tempfp);
+      fseek(fp_tmp, 0, SEEK_END);
+      fputc('\n', fp_tmp);
     }
 
-    fflush(tempfp);
-    if (ferror(tempfp))
+    fflush(fp_tmp);
+    if (ferror(fp_tmp))
     {
       mutt_debug(LL_DEBUG1, "%s: write failed.\n", tempfile);
-      mutt_file_fclose(&tempfp);
+      mutt_file_fclose(&fp_tmp);
       unlink(tempfile);
       mx_msg_commit(ctx_fcc->mailbox, msg); /* XXX really? */
       mx_msg_close(ctx_fcc->mailbox, &msg);
@@ -3322,16 +3323,16 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     }
 
     /* count the number of lines */
-    rewind(tempfp);
-    while (fgets(sasha, sizeof(sasha), tempfp))
+    rewind(fp_tmp);
+    while (fgets(sasha, sizeof(sasha), fp_tmp))
       lines++;
-    fprintf(msg->fp, "Content-Length: " OFF_T_FMT "\n", (LOFF_T) ftello(tempfp));
+    fprintf(msg->fp, "Content-Length: " OFF_T_FMT "\n", (LOFF_T) ftello(fp_tmp));
     fprintf(msg->fp, "Lines: %d\n\n", lines);
 
     /* copy the body and clean up */
-    rewind(tempfp);
-    rc = mutt_file_copy_stream(tempfp, msg->fp);
-    if (fclose(tempfp) != 0)
+    rewind(fp_tmp);
+    rc = mutt_file_copy_stream(fp_tmp, msg->fp);
+    if (fclose(fp_tmp) != 0)
       rc = -1;
     /* if there was an error, leave the temp version */
     if (!rc)

@@ -33,6 +33,29 @@ struct Menu;
 struct Email;
 struct Body;
 
+/**
+ * enum ViewAttachMode - Options for mutt_view_attachment()
+ */
+enum ViewAttachMode
+{
+  MUTT_VA_REGULAR = 1, ///< View using default method
+  MUTT_VA_MAILCAP,     ///< Force viewing using mailcap entry
+  MUTT_VA_AS_TEXT,     ///< Force viewing as text
+};
+
+/**
+ * enum SaveAttach - Options for saving attachments
+ *
+ * @sa mutt_save_attachment(), mutt_decode_save_attachment(),
+ *     save_attachment_open(), mutt_check_overwrite()
+ */
+enum SaveAttach
+{
+  MUTT_SAVE_NO_FLAGS = 0, ///< No flags set
+  MUTT_SAVE_APPEND,       ///< Append to existing file
+  MUTT_SAVE_OVERWRITE,    ///< Overwrite existing file
+};
+
 int attach_tag(struct Menu *menu, int sel, int act);
 int mutt_attach_display_loop(struct Menu *menu, int op, struct Email *e,
                              struct AttachCtx *actx, bool recv);
@@ -44,16 +67,16 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
                                 struct Body *top);
 
-int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e, struct AttachCtx *actx);
+int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode, struct Email *e, struct AttachCtx *actx);
 
 void mutt_check_lookup_list(struct Body *b, char *type, size_t len);
 int mutt_compose_attachment(struct Body *a);
-int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displaying, int flags);
+int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displaying, enum SaveAttach opt);
 int mutt_edit_attachment(struct Body *a);
 int mutt_get_tmp_attachment(struct Body *a);
 int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfile);
 int mutt_print_attachment(FILE *fp, struct Body *a);
-int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct Email *e);
+int mutt_save_attachment(FILE *fp, struct Body *m, char *path, enum SaveAttach opt, struct Email *e);
 
 /* small helper functions to handle temporary attachment files */
 void mutt_add_temp_attachment(char *filename);

@@ -47,6 +47,7 @@
 #include "globals.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
+#include "mutt_menu.h"
 #include "mutt_parse.h"
 #include "mutt_thread.h"
 #include "mutt_window.h"

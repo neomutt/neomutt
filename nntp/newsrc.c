@@ -122,12 +122,12 @@ void nntp_acache_free(struct NntpMboxData *mdata)
  */
 void nntp_newsrc_close(struct NntpAccountData *adata)
 {
-  if (!adata->newsrc_fp)
+  if (!adata->fp_newsrc)
     return;
 
   mutt_debug(LL_DEBUG1, "Unlocking %s\n", adata->newsrc_file);
-  mutt_file_unlock(fileno(adata->newsrc_fp));
-  mutt_file_fclose(&adata->newsrc_fp);
+  mutt_file_unlock(fileno(adata->fp_newsrc));
+  mutt_file_fclose(&adata->fp_newsrc);
 }
 
 /**
@@ -166,21 +166,21 @@ int nntp_newsrc_parse(struct NntpAccountData *adata)
   char *line = NULL;
   struct stat sb;
 
-  if (adata->newsrc_fp)
+  if (adata->fp_newsrc)
   {
     /* if we already have a handle, close it and reopen */
-    mutt_file_fclose(&adata->newsrc_fp);
+    mutt_file_fclose(&adata->fp_newsrc);
   }
   else
   {
     /* if file doesn't exist, create it */
-    adata->newsrc_fp = mutt_file_fopen(adata->newsrc_file, "a");
-    mutt_file_fclose(&adata->newsrc_fp);
+    adata->fp_newsrc = mutt_file_fopen(adata->newsrc_file, "a");
+    mutt_file_fclose(&adata->fp_newsrc);
   }
 
   /* open .newsrc */
-  adata->newsrc_fp = mutt_file_fopen(adata->newsrc_file, "r");
-  if (!adata->newsrc_fp)
+  adata->fp_newsrc = mutt_file_fopen(adata->newsrc_file, "r");
+  if (!adata->fp_newsrc)
   {
     mutt_perror(adata->newsrc_file);
     return -1;
@@ -188,9 +188,9 @@ int nntp_newsrc_parse(struct NntpAccountData *adata)
 
   /* lock it */
   mutt_debug(LL_DEBUG1, "Locking %s\n", adata->newsrc_file);
-  if (mutt_file_lock(fileno(adata->newsrc_fp), false, true))
+  if (mutt_file_lock(fileno(adata->fp_newsrc), false, true))
   {
-    mutt_file_fclose(&adata->newsrc_fp);
+    mutt_file_fclose(&adata->fp_newsrc);
     return -1;
   }
 
@@ -223,7 +223,7 @@ int nntp_newsrc_parse(struct NntpAccountData *adata)
   }
 
   line = mutt_mem_malloc(sb.st_size + 1);
-  while (sb.st_size && fgets(line, sb.st_size + 1, adata->newsrc_fp))
+  while (sb.st_size && fgets(line, sb.st_size + 1, adata->fp_newsrc))
   {
     char *b = NULL, *h = NULL;
     unsigned int j = 1;
@@ -304,7 +304,7 @@ void nntp_newsrc_gen_entries(struct Mailbox *m)
   struct NntpMboxData *mdata = m->mdata;
   anum_t last = 0, first = 1;
   bool series;
-  int save_sort = SORT_ORDER;
+  enum SortType save_sort = SORT_ORDER;
   unsigned int entries;
 
   if (C_Sort != SORT_ORDER)

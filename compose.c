@@ -400,7 +400,6 @@ static void redraw_mix_line(struct ListHead *chain)
  */
 static int check_attachments(struct AttachCtx *actx)
 {
-  int r;
   struct stat st;
   char pretty[PATH_MAX], msg[PATH_MAX + 128];
 
@@ -421,10 +420,10 @@ static int check_attachments(struct AttachCtx *actx)
       mutt_pretty_mailbox(pretty, sizeof(pretty));
       snprintf(msg, sizeof(msg), _("%s [#%d] modified. Update encoding?"), pretty, i + 1);
 
-      r = mutt_yesorno(msg, MUTT_YES);
-      if (r == MUTT_YES)
+      enum QuadOption ans = mutt_yesorno(msg, MUTT_YES);
+      if (ans == MUTT_YES)
         mutt_update_encoding(actx->idx[i]->content);
-      else if (r == MUTT_ABORT)
+      else if (ans == MUTT_ABORT)
         return -1;
     }
   }
@@ -1657,7 +1656,8 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
 
         if (!fcc_set && *fcc)
         {
-          int ans = query_quadoption(C_Copy, _("Save a copy of this message?"));
+          enum QuadOption ans =
+              query_quadoption(C_Copy, _("Save a copy of this message?"));
           if (ans == MUTT_ABORT)
             break;
           else if (ans == MUTT_NO)
@@ -1858,7 +1858,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
 
       case OP_EXIT:
       {
-        int ans =
+        enum QuadOption ans =
             query_quadoption(C_Postpone, _("Save (postpone) draft message?"));
         if (ans == MUTT_NO)
         {

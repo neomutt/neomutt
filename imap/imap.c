@@ -178,7 +178,7 @@ static void set_flag(struct Mailbox *m, AclFlags aclflag, int flag,
  * @param[out] pos     Cursor used for multiple calls to this function
  * @retval num Messages in the set
  *
- * @note Headers must be in SORT_ORDER. See imap_exec_msgset() for args.
+ * @note Headers must be in #SORT_ORDER. See imap_exec_msgset() for args.
  * Pos is an opaque pointer a la strtok(). It should be 0 at first call.
  */
 static int make_msg_set(struct Mailbox *m, struct Buffer *buf, int flag,
@@ -347,13 +347,13 @@ static int do_search(const struct Pattern *search, int allpats)
   {
     switch (pat->op)
     {
-      case MUTT_BODY:
-      case MUTT_HEADER:
-      case MUTT_WHOLE_MSG:
+      case MUTT_PAT_BODY:
+      case MUTT_PAT_HEADER:
+      case MUTT_PAT_WHOLE_MSG:
         if (pat->stringmatch)
           rc++;
         break;
-      case MUTT_SERVERSEARCH:
+      case MUTT_PAT_SERVERSEARCH:
         rc++;
         break;
       default:
@@ -403,7 +403,7 @@ static int compile_search(struct Mailbox *m, const struct Pattern *pat, struct B
       {
         if (do_search(clause, 0))
         {
-          if (pat->op == MUTT_OR && clauses > 1)
+          if (pat->op == MUTT_PAT_OR && clauses > 1)
             mutt_buffer_addstr(buf, "OR ");
           clauses--;
 
@@ -426,7 +426,7 @@ static int compile_search(struct Mailbox *m, const struct Pattern *pat, struct B
 
     switch (pat->op)
     {
-      case MUTT_HEADER:
+      case MUTT_PAT_HEADER:
         mutt_buffer_addstr(buf, "HEADER ");
 
         /* extract header name */
@@ -448,17 +448,17 @@ static int compile_search(struct Mailbox *m, const struct Pattern *pat, struct B
         imap_quote_string(term, sizeof(term), delim, false);
         mutt_buffer_addstr(buf, term);
         break;
-      case MUTT_BODY:
+      case MUTT_PAT_BODY:
         mutt_buffer_addstr(buf, "BODY ");
         imap_quote_string(term, sizeof(term), pat->p.str, false);
         mutt_buffer_addstr(buf, term);
         break;
-      case MUTT_WHOLE_MSG:
+      case MUTT_PAT_WHOLE_MSG:
         mutt_buffer_addstr(buf, "TEXT ");
         imap_quote_string(term, sizeof(term), pat->p.str, false);
         mutt_buffer_addstr(buf, term);
         break;
-      case MUTT_SERVERSEARCH:
+      case MUTT_PAT_SERVERSEARCH:
       {
         struct ImapAccountData *adata = imap_adata_get(m);
         if (!(adata->capabilities & IMAP_CAP_X_GM_EXT_1))
@@ -1085,7 +1085,7 @@ out:
  *       desirable to propagate that flag into the copy.
  */
 int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
-                               struct Buffer *cmd, int *err_continue)
+                               struct Buffer *cmd, enum QuadOption *err_continue)
 {
   struct ImapAccountData *adata = imap_adata_get(m);
   if (!adata || adata->mailbox != m)
@@ -1203,7 +1203,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
 
   /* overload keyboard timeout to avoid many mailbox checks in a row.
    * Most users don't like having to wait exactly when they press a key. */
-  int result = 0;
+  int rc = 0;
 
   /* try IDLE first, unless force is set */
   if (!force && C_ImapIdle && (adata->capabilities & IMAP_CAP_IDLE) &&
@@ -1214,7 +1214,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
   }
   if (adata->state == IMAP_IDLE)
   {
-    while ((result = mutt_socket_poll(adata->conn, 0)) > 0)
+    while ((rc = mutt_socket_poll(adata->conn, 0)) > 0)
     {
       if (imap_cmd_step(adata) != IMAP_CMD_CONTINUE)
       {
@@ -1222,7 +1222,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
         return -1;
       }
     }
-    if (result < 0)
+    if (rc < 0)
     {
       mutt_debug(LL_DEBUG1, "Poll failed, disabling IDLE\n");
       adata->capabilities &= ~IMAP_CAP_IDLE; // Clear the flag
@@ -1240,15 +1240,15 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
   imap_cmd_finish(adata);
 
   if (mdata->check_status & IMAP_EXPUNGE_PENDING)
-    result = MUTT_REOPENED;
+    rc = MUTT_REOPENED;
   else if (mdata->check_status & IMAP_NEWMAIL_PENDING)
-    result = MUTT_NEW_MAIL;
+    rc = MUTT_NEW_MAIL;
   else if (mdata->check_status & IMAP_FLAGS_PENDING)
-    result = MUTT_FLAGS;
+    rc = MUTT_FLAGS;
 
   mdata->check_status = IMAP_OPEN_NO_FLAGS;
 
-  return result;
+  return rc;
 }
 
 /**
@@ -1532,7 +1532,7 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
   int rc = -1;
   bool triedcreate = false;
   struct Buffer *sync_cmd = NULL;
-  int err_continue = MUTT_NO;
+  enum QuadOption err_continue = MUTT_NO;
 
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapAccountData *dest_adata = NULL;
@@ -1766,7 +1766,7 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   {
     if (close)
     {
-      if (mutt_yesorno(_("Error saving flags. Close anyway?"), 0) == MUTT_YES)
+      if (mutt_yesorno(_("Error saving flags. Close anyway?"), MUTT_NO) == MUTT_YES)
       {
         adata->state = IMAP_AUTHENTICATED;
         return 0;
@@ -2188,7 +2188,7 @@ static int imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 
   char buf[PATH_MAX + 64];
   snprintf(buf, sizeof(buf), _("Create %s?"), mdata->name);
-  if (C_Confirmcreate && mutt_yesorno(buf, 1) != MUTT_YES)
+  if (C_Confirmcreate && mutt_yesorno(buf, MUTT_YES) != MUTT_YES)
     return -1;
 
   if (imap_create_mailbox(adata, mdata->name) < 0)

@@ -49,10 +49,22 @@ struct Rfc1524MailcapEntry
   bool xneomuttkeep  : 1; /**< do not remove the file on command exit */
 };
 
+/**
+ * enum MailcapLookup - Mailcap actions
+ */
+enum MailcapLookup
+{
+  MUTT_MC_NO_FLAGS = 0, ///< No flags set
+  MUTT_MC_EDIT,         ///< Mailcap edit field
+  MUTT_MC_COMPOSE,      ///< Mailcap compose field
+  MUTT_MC_PRINT,        ///< Mailcap print field
+  MUTT_MC_AUTOVIEW,     ///< Mailcap autoview field
+};
+
 struct Rfc1524MailcapEntry *rfc1524_new_entry(void);
 void rfc1524_free_entry(struct Rfc1524MailcapEntry **entry);
 int rfc1524_expand_command(struct Body *a, const char *filename, const char *type, char *command, int clen);
 int rfc1524_expand_filename(const char *nametemplate, const char *oldfile, char *newfile, size_t nflen);
-int rfc1524_mailcap_lookup(struct Body *a, char *type, struct Rfc1524MailcapEntry *entry, int opt);
+bool rfc1524_mailcap_lookup(struct Body *a, char *type, struct Rfc1524MailcapEntry *entry, enum MailcapLookup opt);
 
 #endif /* MUTT_RFC1524_H */
