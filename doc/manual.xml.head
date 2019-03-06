@@ -8222,11 +8222,11 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
         requiring the <quote>tag-prefix</quote>.
       </para>
       <para>
-        In <link linkend="macro"><command>macro</command>s</link> or
+        In <link linkend="macro"><command>macro</command></link>s or
         <link linkend="push"><command>push</command></link> commands, you can
         use the <literal>&lt;tag-prefix-cond&gt;</literal> operator. If there
         are no tagged messages, NeoMutt will <quote>eat</quote> the rest of the
-        macro to abort it's execution. NeoMutt will stop <quote>eating</quote>
+        macro to abort its execution. NeoMutt will stop <quote>eating</quote>
         the macro when it encounters the <literal>&lt;end-cond&gt;</literal>
         operator; after this operator the rest of the macro will be executed as
         normal.
