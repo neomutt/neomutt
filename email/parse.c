@@ -642,7 +642,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
 
     case 'e':
       if ((mutt_str_strcasecmp("xpires", line + 1) == 0) && e &&
-          mutt_date_parse_date(p, NULL) < time(NULL))
+          (mutt_date_parse_date(p, NULL) < time(NULL)))
       {
         e->expired = true;
       }
@@ -684,7 +684,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
           /* HACK - neomutt has, for a very short time, produced negative
            * Lines header values.  Ignore them.
            */
-          if (mutt_str_atoi(p, &e->lines) < 0 || (e->lines < 0))
+          if ((mutt_str_atoi(p, &e->lines) < 0) || (e->lines < 0))
             e->lines = 0;
         }
 
@@ -1233,9 +1233,9 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
     }
   }
   p->offset = ftello(fp); /* Mark the start of the real data */
-  if (p->type == TYPE_TEXT && !p->subtype)
+  if ((p->type == TYPE_TEXT) && !p->subtype)
     p->subtype = mutt_str_strdup("plain");
-  else if (p->type == TYPE_MESSAGE && !p->subtype)
+  else if ((p->type == TYPE_MESSAGE) && !p->subtype)
     p->subtype = mutt_str_strdup("rfc822");
 
   FREE(&line);
@@ -1347,7 +1347,7 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
       if (last)
       {
         last->length = ftello(fp) - last->offset - len - 1 - crlf;
-        if (last->parts && last->parts->length == 0)
+        if (last->parts && (last->parts->length == 0))
           last->parts->length = ftello(fp) - last->parts->offset - len - 1 - crlf;
         /* if the body is empty, we can end up with a -1 length */
         if (last->length < 0)

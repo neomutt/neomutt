@@ -97,7 +97,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
     return IMAP_AUTH_UNAVAIL;
   }
 
-  if (rc != SASL_OK && rc != SASL_CONTINUE)
+  if ((rc != SASL_OK) && (rc != SASL_CONTINUE))
   {
     do
     {
@@ -109,7 +109,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
 
   client_start = (olen > 0);
 
-  if (rc != SASL_OK && rc != SASL_CONTINUE)
+  if ((rc != SASL_OK) && (rc != SASL_CONTINUE))
   {
     if (method)
       mutt_debug(LL_DEBUG2, "%s unavailable\n", method);
@@ -153,7 +153,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
       irc = imap_cmd_step(adata);
     while (irc == IMAP_CMD_CONTINUE);
 
-    if (irc == IMAP_CMD_BAD || irc == IMAP_CMD_NO)
+    if ((irc == IMAP_CMD_BAD) || (irc == IMAP_CMD_NO))
       goto bail;
 
     if (irc == IMAP_CMD_RESPOND)

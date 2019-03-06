@@ -148,9 +148,9 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
     default:
       m_check->has_new = false;
 
-      if (stat(m_check->path, &sb) != 0 || (S_ISREG(sb.st_mode) && sb.st_size == 0) ||
+      if ((stat(m_check->path, &sb) != 0) || (S_ISREG(sb.st_mode) && (sb.st_size == 0)) ||
           ((m_check->magic == MUTT_UNKNOWN) &&
-           (m_check->magic = mx_path_probe(m_check->path, NULL)) <= 0))
+           ((m_check->magic = mx_path_probe(m_check->path, NULL)) <= 0)))
       {
         /* if the mailbox still doesn't exist, set the newly created flag to be
          * ready for when it does. */
@@ -164,10 +164,10 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
 
   /* check to see if the folder is the currently selected folder before polling */
   if (!m_cur || (m_cur->path[0] == '\0') ||
-      ((m_check->magic == MUTT_IMAP || m_check->magic == MUTT_NNTP ||
-        m_check->magic == MUTT_NOTMUCH || m_check->magic == MUTT_POP) ?
+      (((m_check->magic == MUTT_IMAP) || (m_check->magic == MUTT_NNTP) ||
+        (m_check->magic == MUTT_NOTMUCH) || (m_check->magic == MUTT_POP)) ?
            (mutt_str_strcmp(m_check->path, m_cur->path) != 0) :
-           (sb.st_dev != ctx_sb->st_dev || sb.st_ino != ctx_sb->st_ino)))
+           ((sb.st_dev != ctx_sb->st_dev) || (sb.st_ino != ctx_sb->st_ino))))
   {
     switch (m_check->magic)
     {
@@ -297,7 +297,7 @@ struct Mailbox *mutt_find_mailbox_desc(const char *desc)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if (np->mailbox->desc && mutt_str_strcmp(np->mailbox->desc, desc) == 0)
+    if (np->mailbox->desc && (mutt_str_strcmp(np->mailbox->desc, desc) == 0))
       return np->mailbox;
   }
 

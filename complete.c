@@ -76,7 +76,7 @@ int mutt_complete(char *buf, size_t buflen)
 
 #ifdef USE_IMAP
   /* we can use '/' as a delimiter, imap_complete rewrites it */
-  if (*buf == '=' || *buf == '+' || *buf == '!')
+  if ((*buf == '=') || (*buf == '+') || (*buf == '!'))
   {
     if (*buf == '!')
       p = NONULL(C_Spoolfile);
@@ -92,7 +92,7 @@ int mutt_complete(char *buf, size_t buflen)
     return imap_complete(buf, buflen, imap_path);
 #endif
 
-  if (*buf == '=' || *buf == '+' || *buf == '!')
+  if ((*buf == '=') || (*buf == '+') || (*buf == '!'))
   {
     dirpart[0] = *buf;
     dirpart[1] = '\0';
@@ -204,7 +204,7 @@ int mutt_complete(char *buf, size_t buflen)
         else
           tmp[0] = 0;
         mutt_str_strfcpy(tmp + strlen(tmp), filepart, sizeof(tmp) - strlen(tmp));
-        if (stat(tmp, &st) != -1 && (st.st_mode & S_IFDIR))
+        if ((stat(tmp, &st) != -1) && (st.st_mode & S_IFDIR))
         {
           mutt_str_strfcpy(filepart + strlen(filepart), "/",
                            sizeof(filepart) - strlen(filepart));
@@ -218,7 +218,7 @@ int mutt_complete(char *buf, size_t buflen)
   if (dirpart[0])
   {
     mutt_str_strfcpy(buf, dirpart, buflen);
-    if ((mutt_str_strcmp("/", dirpart) != 0) && dirpart[0] != '=' && dirpart[0] != '+')
+    if ((mutt_str_strcmp("/", dirpart) != 0) && (dirpart[0] != '=') && (dirpart[0] != '+'))
       mutt_str_strfcpy(buf + strlen(buf), "/", buflen - strlen(buf));
     mutt_str_strfcpy(buf + strlen(buf), filepart, buflen - strlen(buf));
   }

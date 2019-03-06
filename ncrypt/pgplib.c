@@ -186,7 +186,7 @@ struct PgpKeyInfo *pgp_remove_key(struct PgpKeyInfo **klist, struct PgpKeyInfo *
   struct PgpKeyInfo **last = NULL;
   struct PgpKeyInfo *p = NULL, *q = NULL, *r = NULL;
 
-  if (key->parent && key->parent != key)
+  if (key->parent && (key->parent != key))
     key = key->parent;
 
   last = klist;
@@ -217,7 +217,7 @@ void pgp_free_key(struct PgpKeyInfo **kpp)
 
   struct PgpKeyInfo *p = NULL, *q = NULL, *r = NULL;
 
-  if ((*kpp)->parent && (*kpp)->parent != *kpp)
+  if ((*kpp)->parent && ((*kpp)->parent != *kpp))
     *kpp = (*kpp)->parent;
 
   /* Order is important here:

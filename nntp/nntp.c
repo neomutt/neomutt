@@ -253,8 +253,8 @@ static int nntp_capabilities(struct NntpAccountData *adata)
   adata->hasOVER = false;
   FREE(&adata->authenticators);
 
-  if (mutt_socket_send(conn, "CAPABILITIES\r\n") < 0 ||
-      mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+  if ((mutt_socket_send(conn, "CAPABILITIES\r\n") < 0) ||
+      (mutt_socket_readln(buf, sizeof(buf), conn) < 0))
   {
     return nntp_connect_error(adata);
   }
@@ -302,7 +302,7 @@ static int nntp_capabilities(struct NntpAccountData *adata)
       if (p)
       {
         p += 11;
-        if (*p == '\0' || *p == ' ')
+        if ((*p == '\0') || (*p == ' '))
           adata->hasLIST_NEWSGROUPS = true;
       }
     }
@@ -348,24 +348,24 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
   /* no CAPABILITIES, trying DATE, LISTGROUP, LIST NEWSGROUPS */
   if (!adata->hasCAPABILITIES)
   {
-    if (mutt_socket_send(conn, "DATE\r\n") < 0 ||
-        mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+    if ((mutt_socket_send(conn, "DATE\r\n") < 0) ||
+        (mutt_socket_readln(buf, sizeof(buf), conn) < 0))
     {
       return nntp_connect_error(adata);
     }
     if (!mutt_str_startswith(buf, "500", CASE_MATCH))
       adata->hasDATE = true;
 
-    if (mutt_socket_send(conn, "LISTGROUP\r\n") < 0 ||
-        mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+    if ((mutt_socket_send(conn, "LISTGROUP\r\n") < 0) ||
+        (mutt_socket_readln(buf, sizeof(buf), conn) < 0))
     {
       return nntp_connect_error(adata);
     }
     if (!mutt_str_startswith(buf, "500", CASE_MATCH))
       adata->hasLISTGROUP = true;
 
-    if (mutt_socket_send(conn, "LIST NEWSGROUPS +\r\n") < 0 ||
-        mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+    if ((mutt_socket_send(conn, "LIST NEWSGROUPS +\r\n") < 0) ||
+        (mutt_socket_readln(buf, sizeof(buf), conn) < 0))
     {
       return nntp_connect_error(adata);
     }
@@ -384,8 +384,8 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
   /* no LIST NEWSGROUPS, trying XGTITLE */
   if (!adata->hasLIST_NEWSGROUPS)
   {
-    if (mutt_socket_send(conn, "XGTITLE\r\n") < 0 ||
-        mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+    if ((mutt_socket_send(conn, "XGTITLE\r\n") < 0) ||
+        (mutt_socket_readln(buf, sizeof(buf), conn) < 0))
     {
       return nntp_connect_error(adata);
     }
@@ -396,8 +396,8 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
   /* no OVER, trying XOVER */
   if (!adata->hasOVER)
   {
-    if (mutt_socket_send(conn, "XOVER\r\n") < 0 ||
-        mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+    if ((mutt_socket_send(conn, "XOVER\r\n") < 0) ||
+        (mutt_socket_readln(buf, sizeof(buf), conn) < 0))
     {
       return nntp_connect_error(adata);
     }
@@ -408,8 +408,8 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
   /* trying LIST OVERVIEW.FMT */
   if (adata->hasOVER || adata->hasXOVER)
   {
-    if (mutt_socket_send(conn, "LIST OVERVIEW.FMT\r\n") < 0 ||
-        mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+    if ((mutt_socket_send(conn, "LIST OVERVIEW.FMT\r\n") < 0) ||
+        (mutt_socket_readln(buf, sizeof(buf), conn) < 0))
     {
       return nntp_connect_error(adata);
     }
@@ -587,10 +587,10 @@ static int nntp_auth(struct NntpAccountData *adata)
         m = strcasestr(adata->authenticators, method);
         if (!m)
           continue;
-        if (m > adata->authenticators && *(m - 1) != ' ')
+        if ((m > adata->authenticators) && (*(m - 1) != ' '))
           continue;
         m += strlen(method);
-        if (*m != '\0' && *m != ' ')
+        if ((*m != '\0') && (*m != ' '))
           continue;
       }
       mutt_debug(LL_DEBUG1, "trying method %s\n", method);
@@ -600,8 +600,8 @@ static int nntp_auth(struct NntpAccountData *adata)
       {
         mutt_message(_("Authenticating (%s)..."), method);
         snprintf(buf, sizeof(buf), "AUTHINFO USER %s\r\n", conn->account.user);
-        if (mutt_socket_send(conn, buf) < 0 ||
-            mutt_socket_readln_d(buf, sizeof(buf), conn, MUTT_SOCK_LOG_FULL) < 0)
+        if ((mutt_socket_send(conn, buf) < 0) ||
+            (mutt_socket_readln_d(buf, sizeof(buf), conn, MUTT_SOCK_LOG_FULL) < 0))
         {
           break;
         }
@@ -615,8 +615,8 @@ static int nntp_auth(struct NntpAccountData *adata)
         {
           mutt_debug(MUTT_SOCK_LOG_FULL, "%d> AUTHINFO PASS *\n", conn->fd);
           snprintf(buf, sizeof(buf), "AUTHINFO PASS %s\r\n", conn->account.pass);
-          if (mutt_socket_send_d(conn, buf, MUTT_SOCK_LOG_FULL) < 0 ||
-              mutt_socket_readln_d(buf, sizeof(buf), conn, MUTT_SOCK_LOG_FULL) < 0)
+          if ((mutt_socket_send_d(conn, buf, MUTT_SOCK_LOG_FULL) < 0) ||
+              (mutt_socket_readln_d(buf, sizeof(buf), conn, MUTT_SOCK_LOG_FULL) < 0))
           {
             break;
           }
@@ -656,7 +656,7 @@ static int nntp_auth(struct NntpAccountData *adata)
             break;
           mutt_sasl_interact(interaction);
         }
-        if (rc != SASL_OK && rc != SASL_CONTINUE)
+        if ((rc != SASL_OK) && (rc != SASL_CONTINUE))
         {
           sasl_dispose(&saslconn);
           mutt_debug(LL_DEBUG1,
@@ -694,8 +694,8 @@ static int nntp_auth(struct NntpAccountData *adata)
           else
             mutt_debug(MUTT_SOCK_LOG_CMD, "%d> sasl_data\n", conn->fd);
           client_len = 0;
-          if (mutt_socket_send_d(conn, buf, MUTT_SOCK_LOG_FULL) < 0 ||
-              mutt_socket_readln_d(inbuf, sizeof(inbuf), conn, MUTT_SOCK_LOG_FULL) < 0)
+          if ((mutt_socket_send_d(conn, buf, MUTT_SOCK_LOG_FULL) < 0) ||
+              (mutt_socket_readln_d(inbuf, sizeof(inbuf), conn, MUTT_SOCK_LOG_FULL) < 0))
           {
             break;
           }
@@ -732,7 +732,7 @@ static int nntp_auth(struct NntpAccountData *adata)
           *buf = '\0';
         } /* looping protocol */
 
-        if (rc == SASL_OK && client_len == 0 && *inbuf == '2')
+        if ((rc == SASL_OK) && (client_len == 0) && (*inbuf == '2'))
         {
           mutt_sasl_setup_conn(conn, saslconn);
           return 0;
@@ -744,8 +744,8 @@ static int nntp_auth(struct NntpAccountData *adata)
           break;
         if (mutt_str_startswith(inbuf, "383 ", CASE_MATCH))
         {
-          if (mutt_socket_send(conn, "*\r\n") < 0 ||
-              mutt_socket_readln(inbuf, sizeof(inbuf), conn) < 0)
+          if ((mutt_socket_send(conn, "*\r\n") < 0) ||
+              (mutt_socket_readln(inbuf, sizeof(inbuf), conn) < 0))
           {
             break;
           }
@@ -832,8 +832,8 @@ static int nntp_query(struct NntpMboxData *mdata, char *line, size_t linelen)
     if (mdata->group)
     {
       snprintf(buf, sizeof(buf), "GROUP %s\r\n", mdata->group);
-      if (mutt_socket_send(adata->conn, buf) < 0 ||
-          mutt_socket_readln(buf, sizeof(buf), adata->conn) < 0)
+      if ((mutt_socket_send(adata->conn, buf) < 0) ||
+          (mutt_socket_readln(buf, sizeof(buf), adata->conn) < 0))
       {
         return nntp_connect_error(adata);
       }
@@ -902,7 +902,7 @@ static int nntp_fetch_lines(struct NntpMboxData *mdata, char *query, size_t qlen
       }
 
       p = buf;
-      if (!off && buf[0] == '.')
+      if (!off && (buf[0] == '.'))
       {
         if (buf[1] == '\0')
         {
@@ -922,7 +922,7 @@ static int nntp_fetch_lines(struct NntpMboxData *mdata, char *query, size_t qlen
         if (msg)
           mutt_progress_update(&progress, ++lines, -1);
 
-        if (rc == 0 && func(line, data) < 0)
+        if ((rc == 0) && (func(line, data) < 0))
           rc = -2;
         off = 0;
       }
@@ -1057,7 +1057,7 @@ static int fetch_tempfile(char *line, void *data)
 
   if (!line)
     rewind(fp);
-  else if (fputs(line, fp) == EOF || fputc('\n', fp) == EOF)
+  else if ((fputs(line, fp) == EOF) || (fputc('\n', fp) == EOF))
     return -1;
   return 0;
 }
@@ -1077,7 +1077,7 @@ static int fetch_numbers(char *line, void *data)
     return 0;
   if (sscanf(line, ANUM, &anum) != 1)
     return 0;
-  if (anum < fc->first || anum > fc->last)
+  if ((anum < fc->first) || (anum > fc->last))
     return 0;
   fc->messages[anum - fc->first] = 1;
   return 0;
@@ -1115,7 +1115,7 @@ static int parse_overview_line(char *line, void *data)
   mutt_debug(LL_DEBUG2, "" ANUM "\n", anum);
 
   /* out of bounds */
-  if (anum < fc->first || anum > fc->last)
+  if ((anum < fc->first) || (anum > fc->last))
     return 0;
 
   /* not in LISTGROUP */
@@ -1150,7 +1150,7 @@ static int parse_overview_line(char *line, void *data)
     field = strchr(field, '\t');
     if (field)
       *field++ = '\0';
-    if (fputs(b, fp) == EOF || fputc('\n', fp) == EOF)
+    if ((fputs(b, fp) == EOF) || (fputc('\n', fp) == EOF))
     {
       mutt_file_fclose(&fp);
       return -1;
@@ -1266,7 +1266,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
 #endif
 
   /* if empty group or nothing to do */
-  if (!last || first > last)
+  if (!last || (first > last))
     return 0;
 
   /* init fetch context */
@@ -1470,7 +1470,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
     current = first_over;
 
   /* fetch overview information */
-  if (current <= last && rc == 0 && !mdata->deleted)
+  if ((current <= last) && (rc == 0) && !mdata->deleted)
   {
     char *cmd = mdata->adata->hasOVER ? "OVER" : "XOVER";
     snprintf(buf, sizeof(buf), "%s %u-%u\r\n", cmd, current, last);
@@ -1506,7 +1506,7 @@ static int nntp_group_poll(struct NntpMboxData *mdata, bool update_stat)
     return -1;
   if (sscanf(buf, "211 " ANUM " " ANUM " " ANUM, &count, &first, &last) != 3)
     return 0;
-  if (first == mdata->first_message && last == mdata->last_message)
+  if ((first == mdata->first_message) && (last == mdata->last_message))
     return 0;
 
   /* articles have been renumbered */
@@ -1583,7 +1583,7 @@ static int check_mailbox(struct Mailbox *m)
     if (mdata->last_message < mdata->last_loaded)
     {
       mdata->last_loaded = mdata->first_message - 1;
-      if (C_NntpContext && mdata->last_message - mdata->last_loaded > C_NntpContext)
+      if (C_NntpContext && (mdata->last_message - mdata->last_loaded > C_NntpContext))
         mdata->last_loaded = mdata->last_message - C_NntpContext;
     }
     rc = MUTT_REOPENED;
@@ -1599,7 +1599,7 @@ static int check_mailbox(struct Mailbox *m)
     struct Email *e = NULL;
     anum_t first = mdata->first_message;
 
-    if (C_NntpContext && mdata->last_message - first + 1 > C_NntpContext)
+    if (C_NntpContext && (mdata->last_message - first + 1 > C_NntpContext))
       first = mdata->last_message - C_NntpContext + 1;
     messages = mutt_mem_calloc(mdata->last_loaded - first + 1, sizeof(unsigned char));
     hc = nntp_hcache_open(mdata);
@@ -1618,7 +1618,7 @@ static int check_mailbox(struct Mailbox *m)
       /* check hcache for flagged and deleted flags */
       if (hc)
       {
-        if (anum >= first && anum <= mdata->last_loaded)
+        if ((anum >= first) && (anum <= mdata->last_loaded))
           messages[anum - first] = 1;
 
         snprintf(buf, sizeof(buf), "%u", anum);
@@ -1734,7 +1734,7 @@ static int check_mailbox(struct Mailbox *m)
         mutt_mailbox_changed(m, MBN_INVALID);
       mdata->last_loaded = mdata->last_message;
     }
-    if (rc == 0 && m->msg_count > oldmsgcount)
+    if ((rc == 0) && (m->msg_count > oldmsgcount))
       rc = MUTT_NEW_MAIL;
   }
 
@@ -1797,7 +1797,7 @@ static int fetch_children(char *line, void *data)
   struct ChildCtx *cc = data;
   anum_t anum;
 
-  if (!line || sscanf(line, ANUM, &anum) != 1)
+  if (!line || (sscanf(line, ANUM, &anum) != 1))
     return 0;
   for (unsigned int i = 0; i < cc->mailbox->msg_count; i++)
     if (nntp_edata_get(cc->mailbox->emails[i])->article_num == anum)
@@ -1854,8 +1854,8 @@ int nntp_open_connection(struct NntpAccountData *adata)
   /* tell news server to switch to mode reader if it isn't so */
   if (cap > 0)
   {
-    if (mutt_socket_send(conn, "MODE READER\r\n") < 0 ||
-        mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+    if ((mutt_socket_send(conn, "MODE READER\r\n") < 0) ||
+        (mutt_socket_readln(buf, sizeof(buf), conn) < 0))
     {
       return nntp_connect_error(adata);
     }
@@ -1887,7 +1887,7 @@ int nntp_open_connection(struct NntpAccountData *adata)
 
 #ifdef USE_SSL
   /* Attempt STARTTLS if available and desired. */
-  if (adata->use_tls != 1 && (adata->hasSTARTTLS || C_SslForceTls))
+  if ((adata->use_tls != 1) && (adata->hasSTARTTLS || C_SslForceTls))
   {
     if (adata->use_tls == 0)
     {
@@ -1899,8 +1899,8 @@ int nntp_open_connection(struct NntpAccountData *adata)
     }
     if (adata->use_tls == 2)
     {
-      if (mutt_socket_send(conn, "STARTTLS\r\n") < 0 ||
-          mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+      if ((mutt_socket_send(conn, "STARTTLS\r\n") < 0) ||
+          (mutt_socket_readln(buf, sizeof(buf), conn) < 0))
       {
         return nntp_connect_error(adata);
       }
@@ -1936,8 +1936,8 @@ int nntp_open_connection(struct NntpAccountData *adata)
   }
   else
   {
-    if (mutt_socket_send(conn, "STAT\r\n") < 0 ||
-        mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+    if ((mutt_socket_send(conn, "STAT\r\n") < 0) ||
+        (mutt_socket_readln(buf, sizeof(buf), conn) < 0))
     {
       return nntp_connect_error(adata);
     }
@@ -1946,11 +1946,11 @@ int nntp_open_connection(struct NntpAccountData *adata)
   }
 
   /* authenticate */
-  if (auth && nntp_auth(adata) < 0)
+  if (auth && (nntp_auth(adata) < 0))
     return -1;
 
   /* get final capabilities after authentication */
-  if (adata->hasCAPABILITIES && (auth || cap > 0))
+  if (adata->hasCAPABILITIES && (auth || (cap > 0)))
   {
     cap = nntp_capabilities(adata);
     if (cap < 0)
@@ -2029,7 +2029,7 @@ int nntp_post(struct Mailbox *m, const char *msg)
       len++;
       buf[len] = '\0';
     }
-    if (mutt_socket_send_d(mdata->adata->conn, buf[1] == '.' ? buf : buf + 1,
+    if (mutt_socket_send_d(mdata->adata->conn, (buf[1] == '.') ? buf : buf + 1,
                            MUTT_SOCK_LOG_FULL) < 0)
     {
       mutt_file_fclose(&fp);
@@ -2038,10 +2038,10 @@ int nntp_post(struct Mailbox *m, const char *msg)
   }
   mutt_file_fclose(&fp);
 
-  if ((buf[strlen(buf) - 1] != '\n' &&
-       mutt_socket_send_d(mdata->adata->conn, "\r\n", MUTT_SOCK_LOG_FULL) < 0) ||
-      mutt_socket_send_d(mdata->adata->conn, ".\r\n", MUTT_SOCK_LOG_FULL) < 0 ||
-      mutt_socket_readln(buf, sizeof(buf), mdata->adata->conn) < 0)
+  if (((buf[strlen(buf) - 1] != '\n') &&
+       (mutt_socket_send_d(mdata->adata->conn, "\r\n", MUTT_SOCK_LOG_FULL) < 0)) ||
+      (mutt_socket_send_d(mdata->adata->conn, ".\r\n", MUTT_SOCK_LOG_FULL) < 0) ||
+      (mutt_socket_readln(buf, sizeof(buf), mdata->adata->conn) < 0))
   {
     return nntp_connect_error(mdata->adata);
   }
@@ -2429,7 +2429,7 @@ struct Account *nntp_ac_find(struct Account *a, const char *path)
  */
 int nntp_ac_add(struct Account *a, struct Mailbox *m)
 {
-  if (!a || !m || m->magic != MUTT_NNTP)
+  if (!a || !m || (m->magic != MUTT_NNTP))
     return -1;
   return 0;
 }
@@ -2450,7 +2450,8 @@ static int nntp_mbox_open(struct Mailbox *m)
   anum_t first, last, count = 0;
 
   struct Url *url = url_parse(m->path);
-  if (!url || !url->host || !url->path || !(url->scheme == U_NNTP || url->scheme == U_NNTPS))
+  if (!url || !url->host || !url->path ||
+      !((url->scheme == U_NNTP) || (url->scheme == U_NNTPS)))
   {
     url_free(&url);
     mutt_error(_("%s is an invalid newsgroup specification"), m->path);
@@ -2563,7 +2564,7 @@ static int nntp_mbox_open(struct Mailbox *m)
 
   /* strip off extra articles if adding context is greater than $nntp_context */
   first = mdata->first_message;
-  if (C_NntpContext && mdata->last_message - first + 1 > C_NntpContext)
+  if (C_NntpContext && (mdata->last_message - first + 1 > C_NntpContext))
     first = mdata->last_message - C_NntpContext + 1;
   mdata->last_loaded = first ? first - 1 : 0;
   count = mdata->first_message;
@@ -2698,7 +2699,7 @@ static int nntp_mbox_close(struct Mailbox *m)
     return 0;
 
   tmp_mdata = mutt_hash_find(mdata->adata->groups_hash, mdata->group);
-  if (!tmp_mdata || tmp_mdata != mdata)
+  if (!tmp_mdata || (tmp_mdata != mdata))
     nntp_mdata_free((void **) &mdata);
   return 0;
 }

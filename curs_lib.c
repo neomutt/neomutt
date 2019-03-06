@@ -836,7 +836,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
     if (ch.ch == -2)
       continue;
     /* (ch.ch == 0) is technically possible.  Treat the same as < 0 (abort) */
-    if (ch.ch <= 0 || CI_is_return(ch.ch))
+    if ((ch.ch <= 0) || CI_is_return(ch.ch))
     {
       choice = -1;
       break;
@@ -849,7 +849,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
         choice = p - letters + 1;
         break;
       }
-      else if (ch.ch <= '9' && ch.ch > '0')
+      else if ((ch.ch <= '9') && (ch.ch > '0'))
       {
         choice = ch.ch - '0';
         if (choice <= mutt_str_strlen(letters))
@@ -882,8 +882,8 @@ int mutt_addwch(wchar_t wc)
   size_t n1, n2;
 
   memset(&mbstate, 0, sizeof(mbstate));
-  if ((n1 = wcrtomb(buf, wc, &mbstate)) == (size_t)(-1) ||
-      (n2 = wcrtomb(buf + n1, 0, &mbstate)) == (size_t)(-1))
+  if (((n1 = wcrtomb(buf, wc, &mbstate)) == (size_t)(-1)) ||
+      ((n2 = wcrtomb(buf + n1, 0, &mbstate)) == (size_t)(-1)))
   {
     return -1; /* ERR */
   }
@@ -925,9 +925,9 @@ void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
   char *p = buf;
   for (; n && (k = mbrtowc(&wc, s, n, &mbstate1)); s += k, n -= k)
   {
-    if (k == (size_t)(-1) || k == (size_t)(-2))
+    if ((k == (size_t)(-1)) || (k == (size_t)(-2)))
     {
-      if (k == (size_t)(-1) && errno == EILSEQ)
+      if ((k == (size_t)(-1)) && (errno == EILSEQ))
         memset(&mbstate1, 0, sizeof(mbstate1));
 
       k = (k == (size_t)(-1)) ? 1 : n;
@@ -938,12 +938,12 @@ void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
       escaped = 0;
       w = 0;
     }
-    else if (arboreal && wc == MUTT_SPECIAL_INDEX)
+    else if (arboreal && (wc == MUTT_SPECIAL_INDEX))
     {
       escaped = 1;
       w = 0;
     }
-    else if (arboreal && wc < MUTT_TREE_MAX)
+    else if (arboreal && (wc < MUTT_TREE_MAX))
     {
       w = 1; /* hack */
     }
@@ -960,7 +960,7 @@ void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
     }
     if (w >= 0)
     {
-      if (w > max_width || (k2 = wcrtomb(scratch, wc, &mbstate2)) > buflen)
+      if ((w > max_width) || ((k2 = wcrtomb(scratch, wc, &mbstate2)) > buflen))
         continue;
       min_width -= w;
       max_width -= w;
@@ -1091,7 +1091,7 @@ void mutt_paddstr(int n, const char *s)
   memset(&mbstate, 0, sizeof(mbstate));
   for (; len && (k = mbrtowc(&wc, s, len, &mbstate)); s += k, len -= k)
   {
-    if (k == (size_t)(-1) || k == (size_t)(-2))
+    if ((k == (size_t)(-1)) || (k == (size_t)(-2)))
     {
       if (k == (size_t)(-1))
         memset(&mbstate, 0, sizeof(mbstate));
@@ -1139,7 +1139,7 @@ size_t mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *wi
   memset(&mbstate, 0, sizeof(mbstate));
   for (w = 0; n && (cl = mbrtowc(&wc, src, n, &mbstate)); src += cl, n -= cl)
   {
-    if (cl == (size_t)(-1) || cl == (size_t)(-2))
+    if ((cl == (size_t)(-1)) || (cl == (size_t)(-2)))
     {
       if (cl == (size_t)(-1))
         memset(&mbstate, 0, sizeof(mbstate));
@@ -1154,11 +1154,11 @@ size_t mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *wi
       cl = 2; /* skip the index coloring sequence */
       cw = 0;
     }
-    else if (cw < 0 && cl == 1 && src[0] && src[0] < MUTT_TREE_MAX)
+    else if ((cw < 0) && (cl == 1) && src[0] && (src[0] < MUTT_TREE_MAX))
       cw = 1;
     else if (cw < 0)
       cw = 0; /* unprintable wchar */
-    if (cl + l > maxlen || cw + w > maxwid)
+    if ((cl + l > maxlen) || (cw + w > maxwid))
       break;
     l += cl;
     w += cw;
@@ -1196,7 +1196,7 @@ int mutt_strwidth(const char *s)
       continue;
     }
 
-    if (k == (size_t)(-1) || k == (size_t)(-2))
+    if ((k == (size_t)(-1)) || (k == (size_t)(-2)))
     {
       if (k == (size_t)(-1))
         memset(&mbstate, 0, sizeof(mbstate));

@@ -223,8 +223,8 @@ static void shrink_histfile(void)
   line = 0;
   while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, 0)))
   {
-    if (sscanf(linebuf, "%d:%n", &hclass, &read) < 1 || read == 0 ||
-        *(p = linebuf + strlen(linebuf) - 1) != '|' || hclass < 0)
+    if ((sscanf(linebuf, "%d:%n", &hclass, &read) < 1) || (read == 0) ||
+        (*(p = linebuf + strlen(linebuf) - 1) != '|') || (hclass < 0))
     {
       mutt_error(_("Bad history file format (line %d)"), line);
       goto cleanup;
@@ -265,8 +265,8 @@ static void shrink_histfile(void)
     line = 0;
     while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, 0)))
     {
-      if (sscanf(linebuf, "%d:%n", &hclass, &read) < 1 || read == 0 ||
-          *(p = linebuf + strlen(linebuf) - 1) != '|' || hclass < 0)
+      if ((sscanf(linebuf, "%d:%n", &hclass, &read) < 1) || (read == 0) ||
+          (*(p = linebuf + strlen(linebuf) - 1) != '|') || (hclass < 0))
       {
         mutt_error(_("Bad history file format (line %d)"), line);
         goto cleanup;
@@ -597,8 +597,8 @@ void mutt_hist_read_file(void)
   while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, 0)))
   {
     read = 0;
-    if (sscanf(linebuf, "%d:%n", &hclass, &read) < 1 || read == 0 ||
-        *(p = linebuf + strlen(linebuf) - 1) != '|' || hclass < 0)
+    if ((sscanf(linebuf, "%d:%n", &hclass, &read) < 1) || (read == 0) ||
+        (*(p = linebuf + strlen(linebuf) - 1) != '|') || (hclass < 0))
     {
       mutt_error(_("Bad history file format (line %d)"), line);
       break;

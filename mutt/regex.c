@@ -358,7 +358,7 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
   if (buf && buflen)
     buf[0] = '\0';
 
-  if (!str || *str == '\0' || (buf && !buflen))
+  if (!str || (*str == '\0') || (buf && !buflen))
     return buf;
 
   twinbuf[0][0] = '\0';
@@ -507,7 +507,7 @@ bool mutt_replacelist_match(struct ReplaceList *rl, char *buf, size_t buflen, co
           /* Ensure that the integer conversion succeeded (e!=p) and bounds check.  The upper bound check
            * should not strictly be necessary since add_to_spam_list() finds the largest value, and
            * the static array above is always large enough based on that value. */
-          if (e != p && n >= 0 && n <= np->nmatch && pmatch[n].rm_so != -1)
+          if ((e != p) && (n >= 0) && (n <= np->nmatch) && (pmatch[n].rm_so != -1))
           {
             /* copy as much of the substring match as will fit in the output buffer, saving space for
              * the terminating nul char */

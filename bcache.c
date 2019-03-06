@@ -91,7 +91,7 @@ static int bcache_path(struct ConnAccount *account, const char *mailbox, char *d
 
   mutt_debug(LL_DEBUG3, "rc: %d, path: '%s'\n", len, dst);
 
-  if (len < 0 || (size_t) len >= dstlen - 1)
+  if ((len < 0) || ((size_t) len >= dstlen - 1))
     return -1;
 
   mutt_debug(LL_DEBUG3, "directory: '%s'\n", dst);
@@ -343,7 +343,7 @@ int mutt_bcache_list(struct BodyCache *bcache, bcache_list_t *want_id, void *dat
 
     mutt_debug(LL_DEBUG3, "bcache: list: dir: '%s', id :'%s'\n", bcache->path, de->d_name);
 
-    if (want_id && want_id(de->d_name, bcache, data) != 0)
+    if (want_id && (want_id(de->d_name, bcache, data) != 0))
       goto out;
 
     rc++;

@@ -293,7 +293,7 @@ static void enriched_putwc(wchar_t c, struct EnrichedState *stte)
     mutt_mem_realloc(&stte->buffer, (stte->buf_len + 1) * sizeof(wchar_t));
   }
 
-  if ((!stte->tag_level[RICH_NOFILL] && iswspace(c)) || c == (wchar_t) '\0')
+  if ((!stte->tag_level[RICH_NOFILL] && iswspace(c)) || (c == (wchar_t) '\0'))
   {
     if (c == (wchar_t) '\t')
       stte->word_len += 8 - (stte->line_len + stte->word_len) % 8;
@@ -498,7 +498,7 @@ int text_enriched_handler(struct Body *a, struct State *s)
   {
     if (state != ST_EOF)
     {
-      if (!bytes || (wc = fgetwc(s->fp_in)) == WEOF)
+      if (!bytes || ((wc = fgetwc(s->fp_in)) == WEOF))
         state = ST_EOF;
       else
         bytes--;

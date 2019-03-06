@@ -151,7 +151,7 @@ int mutt_mb_width(const char *str, int col, bool display)
         l = 1;
       /* correctly calc tab stop, even for sending as the
        * line should look pretty on the receiving end */
-      if (wc == L'\t' || (nl && wc == L' '))
+      if ((wc == L'\t') || (nl && (wc == L' ')))
       {
         nl = 0;
         l = 8 - (col % 8);
@@ -178,7 +178,7 @@ int mutt_mb_width(const char *str, int col, bool display)
 int mutt_mb_wcwidth(wchar_t wc)
 {
   int n = wcwidth(wc);
-  if (IsWPrint(wc) && n > 0)
+  if (IsWPrint(wc) && (n > 0))
     return n;
   if (!(wc & ~0x7f))
     return 2;
@@ -305,7 +305,7 @@ size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf)
       }
       wbuf[i++] = wc;
     }
-    if (*buf && (k == (size_t) -1 || k == (size_t) -2))
+    if (*buf && ((k == (size_t) -1) || (k == (size_t) -2)))
     {
       if (i >= wbuflen)
       {

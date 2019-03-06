@@ -90,7 +90,7 @@ struct ListNode *mutt_list_find(const struct ListHead *h, const char *data)
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, h, entries)
   {
-    if (np->data == data || mutt_str_strcmp(np->data, data) == 0)
+    if ((np->data == data) || (mutt_str_strcmp(np->data, data) == 0))
     {
       return np;
     }

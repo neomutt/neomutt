@@ -72,7 +72,7 @@ enum RedrawFlags
 static int my_addwch(wchar_t wc)
 {
   int n = wcwidth(wc);
-  if (IsWPrint(wc) && n > 0)
+  if (IsWPrint(wc) && (n > 0))
     return mutt_addwch(wc);
   if (!(wc & ~0x7f))
     return printw("^%c", ((int) wc + 0x40) & 0x7f);
@@ -769,7 +769,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
         }
       }
 
-      if (wc == '\r' || wc == '\n')
+      if ((wc == '\r') || (wc == '\n'))
       {
         /* Convert from wide characters */
         mutt_mb_wcstombs(buf, buflen, state->wbuf, state->lastchar);

@@ -190,7 +190,7 @@ static int make_msg_set(struct Mailbox *m, struct Buffer *buf, int flag,
   bool started = false;
 
   struct ImapAccountData *adata = imap_adata_get(m);
-  if (!adata || adata->mailbox != m)
+  if (!adata || (adata->mailbox != m))
     return -1;
 
   struct Email **emails = m->emails;
@@ -254,7 +254,7 @@ static int make_msg_set(struct Mailbox *m, struct Buffer *buf, int flag,
     }
     /* End current set if message doesn't match or we've reached the end
      * of the mailbox via inactive messages following the last match. */
-    else if (setstart && (emails[n]->active || n == adata->mailbox->msg_count - 1))
+    else if (setstart && (emails[n]->active || (n == adata->mailbox->msg_count - 1)))
     {
       if (imap_edata_get(emails[n - 1])->uid > setstart)
         mutt_buffer_add_printf(buf, ":%u", imap_edata_get(emails[n - 1])->uid);
@@ -312,7 +312,7 @@ static int sync_helper(struct Mailbox *m, AclFlags right, int flag, const char *
   if ((m->rights & right) == 0)
     return 0;
 
-  if (right == MUTT_ACL_WRITE && !imap_has_flag(&imap_mdata_get(m)->flags, name))
+  if ((right == MUTT_ACL_WRITE) && !imap_has_flag(&imap_mdata_get(m)->flags, name))
     return 0;
 
   snprintf(buf, sizeof(buf), "+FLAGS.SILENT (%s)", name);
@@ -403,7 +403,7 @@ static int compile_search(struct Mailbox *m, const struct Pattern *pat, struct B
       {
         if (do_search(clause, 0))
         {
-          if (pat->op == MUTT_PAT_OR && clauses > 1)
+          if ((pat->op == MUTT_PAT_OR) && (clauses > 1))
             mutt_buffer_addstr(buf, "OR ");
           clauses--;
 
@@ -667,7 +667,7 @@ static void imap_logout(struct ImapAccountData *adata)
 
   adata->status = IMAP_BYE;
   imap_cmd_start(adata, "LOGOUT");
-  if (C_ImapPollTimeout <= 0 || mutt_socket_poll(adata->conn, C_ImapPollTimeout) != 0)
+  if ((C_ImapPollTimeout <= 0) || (mutt_socket_poll(adata->conn, C_ImapPollTimeout) != 0))
   {
     while (imap_cmd_step(adata) == IMAP_CMD_CONTINUE)
       ;
@@ -740,7 +740,7 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
       return -1;
     }
 
-    if (r && c != '\n')
+    if (r && (c != '\n'))
       fputc('\r', fp);
 
     if (c == '\r')
@@ -1011,7 +1011,7 @@ int imap_exec_msgset(struct Mailbox *m, const char *pre, const char *post,
                      int flag, bool changed, bool invert)
 {
   struct ImapAccountData *adata = imap_adata_get(m);
-  if (!adata || adata->mailbox != m)
+  if (!adata || (adata->mailbox != m))
     return -1;
 
   struct Email **emails = NULL;
@@ -1088,7 +1088,7 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
                                struct Buffer *cmd, enum QuadOption *err_continue)
 {
   struct ImapAccountData *adata = imap_adata_get(m);
-  if (!adata || adata->mailbox != m)
+  if (!adata || (adata->mailbox != m))
     return -1;
 
   char flags[1024];
@@ -1207,7 +1207,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
 
   /* try IDLE first, unless force is set */
   if (!force && C_ImapIdle && (adata->capabilities & IMAP_CAP_IDLE) &&
-      (adata->state != IMAP_IDLE || time(NULL) >= adata->lastread + C_ImapKeepalive))
+      ((adata->state != IMAP_IDLE) || (time(NULL) >= adata->lastread + C_ImapKeepalive)))
   {
     if (imap_cmd_idle(adata) < 0)
       return -1;
@@ -1229,8 +1229,8 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
     }
   }
 
-  if ((force || (adata->state != IMAP_IDLE && time(NULL) >= adata->lastread + C_Timeout)) &&
-      imap_exec(adata, "NOOP", IMAP_CMD_POLL) != IMAP_EXEC_SUCCESS)
+  if ((force || ((adata->state != IMAP_IDLE) && (time(NULL) >= adata->lastread + C_Timeout))) &&
+      (imap_exec(adata, "NOOP", IMAP_CMD_POLL) != IMAP_EXEC_SUCCESS))
   {
     return -1;
   }
@@ -1270,7 +1270,7 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
    * IDLEd elsewhere.
    * adata->mailbox may be NULL for connections other than the current
    * mailbox's.. #3216. */
-  if (adata->mailbox && adata->mailbox->mdata == mdata)
+  if (adata->mailbox && (adata->mailbox->mdata == mdata))
   {
     adata->mailbox->has_new = false;
     return mdata->messages;
@@ -1482,7 +1482,7 @@ int imap_complete(char *buf, size_t buflen, char *path)
     listresp.name = NULL;
     rc = imap_cmd_step(adata);
 
-    if (rc == IMAP_CMD_CONTINUE && listresp.name)
+    if ((rc == IMAP_CMD_CONTINUE) && listresp.name)
     {
       /* if the folder isn't selectable, append delimiter to force browse
        * to enter it on second tab. */
@@ -1599,7 +1599,7 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
         break;
       mutt_debug(LL_DEBUG3, "server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), dest_mdata->name);
-      if (C_Confirmcreate && mutt_yesorno(prompt, 1) != MUTT_YES)
+      if (C_Confirmcreate && (mutt_yesorno(prompt, 1) != MUTT_YES))
       {
         mutt_clear_error();
         goto out;
@@ -2188,7 +2188,7 @@ static int imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 
   char buf[PATH_MAX + 64];
   snprintf(buf, sizeof(buf), _("Create %s?"), mdata->name);
-  if (C_Confirmcreate && mutt_yesorno(buf, MUTT_YES) != MUTT_YES)
+  if (C_Confirmcreate && (mutt_yesorno(buf, MUTT_YES) != MUTT_YES))
     return -1;
 
   if (imap_create_mailbox(adata, mdata->name) < 0)
@@ -2242,7 +2242,7 @@ static int imap_mbox_close(struct Mailbox *m)
    */
   if (m == adata->mailbox)
   {
-    if (adata->status != IMAP_FATAL && adata->state >= IMAP_SELECTED)
+    if ((adata->status != IMAP_FATAL) && (adata->state >= IMAP_SELECTED))
     {
       /* mx_mbox_close won't sync if there are no deleted messages
        * and the mailbox is unchanged, so we may have to close here */
@@ -2323,20 +2323,20 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t
   SKIPWS(checker);
   while (*checker != '\0')
   {
-    if (*checker < 32 || *checker >= 127 || // We allow space because it's the separator
-        *checker == 40 ||                   // (
-        *checker == 41 ||                   // )
-        *checker == 60 ||                   // <
-        *checker == 62 ||                   // >
-        *checker == 64 ||                   // @
-        *checker == 44 ||                   // ,
-        *checker == 59 ||                   // ;
-        *checker == 58 ||                   // :
-        *checker == 92 ||                   // backslash
-        *checker == 34 ||                   // "
-        *checker == 46 ||                   // .
-        *checker == 91 ||                   // [
-        *checker == 93)                     // ]
+    if ((*checker < 32) || (*checker >= 127) || // We allow space because it's the separator
+        (*checker == 40) ||                     // (
+        (*checker == 41) ||                     // )
+        (*checker == 60) ||                     // <
+        (*checker == 62) ||                     // >
+        (*checker == 64) ||                     // @
+        (*checker == 44) ||                     // ,
+        (*checker == 59) ||                     // ;
+        (*checker == 58) ||                     // :
+        (*checker == 92) ||                     // backslash
+        (*checker == 34) ||                     // "
+        (*checker == 46) ||                     // .
+        (*checker == 91) ||                     // [
+        (*checker == 93))                       // ]
     {
       mutt_error(_("Invalid IMAP flags"));
       return 0;

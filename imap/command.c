@@ -160,7 +160,7 @@ static void cmd_handle_fatal(struct ImapAccountData *adata)
 
   struct ImapMboxData *mdata = adata->mailbox->mdata;
 
-  if (adata->state >= IMAP_SELECTED && (mdata->reopen & IMAP_REOPEN_ALLOW))
+  if ((adata->state >= IMAP_SELECTED) && (mdata->reopen & IMAP_REOPEN_ALLOW))
   {
     mx_fastclose_mailbox(adata->mailbox);
     mutt_socket_close(adata->conn);
@@ -252,7 +252,7 @@ static void cmd_parse_expunge(struct ImapAccountData *adata, const char *s)
 
   struct ImapMboxData *mdata = adata->mailbox->mdata;
 
-  if (mutt_str_atoui(s, &exp_msn) < 0 || exp_msn < 1 || exp_msn > mdata->max_msn)
+  if ((mutt_str_atoui(s, &exp_msn) < 0) || (exp_msn < 1) || (exp_msn > mdata->max_msn))
     return;
 
   e = mdata->msn_index[exp_msn - 1];
@@ -855,7 +855,7 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
       mdata->unseen = count;
 
     s = value;
-    if (*s && *s != ')')
+    if (*s && (*s != ')'))
       s = imap_next_word(s);
   }
   mutt_debug(LL_DEBUG3, "%s (UIDVALIDITY: %u, UIDNEXT: %u) %d messages, %d recent, %d unseen\n",
@@ -869,7 +869,7 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
 
   if (C_MailCheckRecent)
   {
-    if (olduv && olduv == mdata->uid_validity)
+    if (olduv && (olduv == mdata->uid_validity))
     {
       if (oldun < mdata->uid_next)
         new = (mdata->unseen > 0);
@@ -939,7 +939,7 @@ static void cmd_parse_exists(struct ImapAccountData *adata, const char *pn)
   struct ImapMboxData *mdata = adata->mailbox->mdata;
 
   /* new mail arrived */
-  if (!(mdata->reopen & IMAP_EXPUNGE_PENDING) && count < mdata->max_msn)
+  if (!(mdata->reopen & IMAP_EXPUNGE_PENDING) && (count < mdata->max_msn))
   {
     /* Notes 6.0.3 has a tendency to report fewer messages exist than
      * it should. */
@@ -1237,7 +1237,7 @@ int imap_exec(struct ImapAccountData *adata, const char *cmdstr, ImapCmdFlags fl
     return IMAP_EXEC_SUCCESS;
 
   if ((flags & IMAP_CMD_POLL) && (C_ImapPollTimeout > 0) &&
-      (mutt_socket_poll(adata->conn, C_ImapPollTimeout)) == 0)
+      ((mutt_socket_poll(adata->conn, C_ImapPollTimeout)) == 0))
   {
     mutt_error(_("Connection to %s timed out"), adata->conn->account.host);
     cmd_handle_fatal(adata);
@@ -1306,7 +1306,7 @@ void imap_cmd_finish(struct ImapAccountData *adata)
     }
 
     // Then add new emails to it
-    if (mdata->reopen & IMAP_NEWMAIL_PENDING && mdata->new_mail_count > mdata->max_msn)
+    if (mdata->reopen & IMAP_NEWMAIL_PENDING && (mdata->new_mail_count > mdata->max_msn))
     {
       if (!(mdata->reopen & IMAP_EXPUNGE_PENDING))
         mdata->check_status = IMAP_NEWMAIL_PENDING;
@@ -1344,7 +1344,7 @@ int imap_cmd_idle(struct ImapAccountData *adata)
     return -1;
   }
 
-  if ((C_ImapPollTimeout > 0) && (mutt_socket_poll(adata->conn, C_ImapPollTimeout)) == 0)
+  if ((C_ImapPollTimeout > 0) && ((mutt_socket_poll(adata->conn, C_ImapPollTimeout)) == 0))
   {
     mutt_error(_("Connection to %s timed out"), adata->conn->account.host);
     cmd_handle_fatal(adata);

@@ -2007,7 +2007,7 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
               snprintf(tmp, sizeof(tmp), _("Subscribe pattern: "));
             else
               snprintf(tmp, sizeof(tmp), _("Unsubscribe pattern: "));
-            if (mutt_get_field(tmp, buf, sizeof(buf), 0) != 0 || (buf[0] == '\0'))
+            if ((mutt_get_field(tmp, buf, sizeof(buf), 0) != 0) || (buf[0] == '\0'))
             {
               break;
             }

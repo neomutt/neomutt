@@ -173,7 +173,7 @@ static int parse_fkey(char *s)
   char *t = NULL;
   int n = 0;
 
-  if (s[0] != '<' || tolower(s[1]) != 'f')
+  if ((s[0] != '<') || (tolower(s[1]) != 'f'))
     return -1;
 
   for (t = s + 2; *t && isdigit((unsigned char) *t); t++)
@@ -204,7 +204,7 @@ static int parse_keycode(const char *s)
   while (ISSPACE(*end_char))
     end_char++;
   /* negative keycodes don't make sense, also detect overflow */
-  if (*end_char != '>' || result < 0 || result == LONG_MAX)
+  if ((*end_char != '>') || (result < 0) || (result == LONG_MAX))
   {
     return -1;
   }
@@ -233,7 +233,7 @@ static size_t parsekeys(const char *str, keycode_t *d, size_t max)
   while (*s && len)
   {
     *d = '\0';
-    if (*s == '<' && (t = strchr(s, '>')))
+    if ((*s == '<') && (t = strchr(s, '>')))
     {
       t++;
       c = *t;
@@ -303,13 +303,13 @@ static enum CommandResult km_bind_err(const char *s, int menu, int op,
 
   while (tmp)
   {
-    if (pos >= len || pos >= tmp->len)
+    if ((pos >= len) || (pos >= tmp->len))
     {
       /* map and tmp match so overwrite */
       do
       {
         /* Don't warn on overwriting a 'noop' binding */
-        if (tmp->len != len && tmp->op != OP_NULL)
+        if ((tmp->len != len) && (tmp->op != OP_NULL))
         {
           /* Overwrite with the different lengths, warn */
           /* TODO: MAX_SEQ here is wrong */
@@ -431,7 +431,7 @@ static int get_op(const struct Binding *bindings, const char *start, size_t len)
   for (int i = 0; bindings[i].name; i++)
   {
     if ((mutt_str_strncasecmp(start, bindings[i].name, len) == 0) &&
-        mutt_str_strlen(bindings[i].name) == len)
+        (mutt_str_strlen(bindings[i].name) == len))
     {
       return bindings[i].op;
     }
@@ -542,7 +542,7 @@ static void generic_tokenize_push_string(char *s, void (*generic_push)(int, int)
  */
 static int retry_generic(int menu, keycode_t *keys, int keyslen, int lastkey)
 {
-  if (menu != MENU_EDITOR && menu != MENU_GENERIC && menu != MENU_PAGER)
+  if ((menu != MENU_EDITOR) && (menu != MENU_GENERIC) && (menu != MENU_PAGER))
   {
     if (lastkey)
       mutt_unget_event(lastkey, 0);
@@ -597,9 +597,9 @@ int km_dokey(int menu)
            * $timeout seconds.
            */
 #ifdef USE_INOTIFY
-          if (tmp.ch != -2 || SigWinch || MonitorFilesChanged)
+          if ((tmp.ch != -2) || SigWinch || MonitorFilesChanged)
 #else
-          if (tmp.ch != -2 || SigWinch)
+          if ((tmp.ch != -2) || SigWinch)
 #endif
             goto gotkey;
           i -= C_ImapKeepalive;
@@ -617,7 +617,7 @@ int km_dokey(int menu)
   gotkey:
 #endif
     /* hide timeouts, but not window resizes, from the line editor. */
-    if (menu == MENU_EDITOR && tmp.ch == -2 && !SigWinch)
+    if ((menu == MENU_EDITOR) && (tmp.ch == -2) && !SigWinch)
       continue;
 
     LastKey = tmp.ch;
@@ -634,10 +634,10 @@ int km_dokey(int menu)
       if ((bindings = km_get_table(menu)) && (func = mutt_get_func(bindings, tmp.op)))
         return tmp.op;
 
-      if (menu == MENU_EDITOR && mutt_get_func(OpEditor, tmp.op))
+      if ((menu == MENU_EDITOR) && mutt_get_func(OpEditor, tmp.op))
         return tmp.op;
 
-      if (menu != MENU_EDITOR && menu != MENU_PAGER)
+      if ((menu != MENU_EDITOR) && (menu != MENU_PAGER))
       {
         /* check generic menu */
         bindings = OpGeneric;
@@ -671,7 +671,7 @@ int km_dokey(int menu)
     /* Nope. Business as usual */
     while (LastKey > map->keys[pos])
     {
-      if (pos > map->eq || !map->next)
+      if ((pos > map->eq) || !map->next)
         return retry_generic(menu, map->keys, pos, LastKey);
       map = map->next;
     }
@@ -733,7 +733,7 @@ static const char *km_keyname(int c)
   if (p)
     return p;
 
-  if (c < 256 && c > -128 && iscntrl((unsigned char) c))
+  if ((c < 256) && (c > -128) && iscntrl((unsigned char) c))
   {
     if (c < 0)
       c += 256;
@@ -747,7 +747,7 @@ static const char *km_keyname(int c)
     else
       snprintf(buf, sizeof(buf), "\\%d%d%d", c >> 6, (c >> 3) & 7, c & 7);
   }
-  else if (c >= KEY_F0 && c < KEY_F(256)) /* this maximum is just a guess */
+  else if ((c >= KEY_F0) && (c < KEY_F(256))) /* this maximum is just a guess */
     sprintf(buf, "<F%d>", c - KEY_F0);
   else if (IsPrint(c))
     snprintf(buf, sizeof(buf), "%c", (unsigned char) c);
@@ -777,7 +777,7 @@ int km_expand_key(char *s, size_t len, struct Keymap *map)
     const size_t l = mutt_str_strlen(s);
     len -= l;
 
-    if (++p >= map->len || !len)
+    if ((++p >= map->len) || !len)
       return 1;
 
     s += l;
@@ -893,7 +893,7 @@ void init_extended_keys(void)
       if (keyname)
       {
         char *s = tigetstr((char *) keyname);
-        if (s && (long) (s) != -1)
+        if (s && ((long) (s) != -1))
         {
           int code = key_defined(s);
           if (code > 0)
@@ -1381,7 +1381,7 @@ enum CommandResult mutt_parse_exec(struct Buffer *buf, struct Buffer *s,
       bindings = OpGeneric;
 
     ops[nops] = get_op(bindings, function, mutt_str_strlen(function));
-    if (ops[nops] == OP_NULL && CurrentMenu != MENU_PAGER)
+    if ((ops[nops] == OP_NULL) && (CurrentMenu != MENU_PAGER))
       ops[nops] = get_op(OpGeneric, function, mutt_str_strlen(function));
 
     if (ops[nops] == OP_NULL)
@@ -1412,7 +1412,7 @@ void mutt_what_key(void)
   do
   {
     ch = getch();
-    if (ch != ERR && ch != ctrl('G'))
+    if ((ch != ERR) && (ch != ctrl('G')))
     {
       mutt_message(_("Char = %s, Octal = %o, Decimal = %d"), km_keyname(ch), ch, ch);
     }

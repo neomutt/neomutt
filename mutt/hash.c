@@ -250,7 +250,7 @@ static void union_hash_delete(struct Hash *table, union HashKey key, const void 
 
   while (ptr)
   {
-    if ((data == ptr->data || !data) && table->cmp_key(ptr->key, key) == 0)
+    if (((data == ptr->data) || !data) && (table->cmp_key(ptr->key, key) == 0))
     {
       *last = ptr->next;
       if (table->elem_free)

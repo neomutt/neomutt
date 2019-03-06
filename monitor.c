@@ -452,7 +452,7 @@ int mutt_monitor_add(struct Mailbox *m)
 
   uint32_t mask = info.isdir ? INOTIFY_MASK_DIR : INOTIFY_MASK_FILE;
   if (((INotifyFd == -1) && (monitor_init() == -1)) ||
-      (desc = inotify_add_watch(INotifyFd, info.path, mask)) == -1)
+      ((desc = inotify_add_watch(INotifyFd, info.path, mask)) == -1))
   {
     mutt_debug(LL_DEBUG2, "inotify_add_watch failed for '%s', errno=%d %s\n",
                info.path, errno, strerror(errno));

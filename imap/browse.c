@@ -98,7 +98,7 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
   (state->entry)[state->entrylen].name = mutt_str_strdup(tmp);
 
   /* mark desc with delim in browser if it can have subfolders */
-  if (!isparent && !noinferiors && strlen(relpath) < sizeof(relpath) - 1)
+  if (!isparent && !noinferiors && (strlen(relpath) < sizeof(relpath) - 1))
   {
     relpath[strlen(relpath) + 1] = '\0';
     relpath[strlen(relpath)] = delim;
@@ -155,7 +155,7 @@ static int browse_add_list_result(struct ImapAccountData *adata, const char *cmd
     list.name = NULL;
     rc = imap_cmd_step(adata);
 
-    if (rc == IMAP_CMD_CONTINUE && list.name)
+    if ((rc == IMAP_CMD_CONTINUE) && list.name)
     {
       /* Let a parent folder never be selectable for navigation */
       if (isparent)
@@ -250,10 +250,10 @@ int imap_browse(char *path, struct BrowserState *state)
     {
       list.name = 0;
       rc = imap_cmd_step(adata);
-      if (rc == IMAP_CMD_CONTINUE && list.name)
+      if ((rc == IMAP_CMD_CONTINUE) && list.name)
       {
         if (!list.noinferiors && list.name[0] &&
-            (imap_mxcmp(list.name, mbox) == 0) && n < sizeof(mbox) - 1)
+            (imap_mxcmp(list.name, mbox) == 0) && (n < sizeof(mbox) - 1))
         {
           mbox[n++] = list.delim;
           mbox[n] = '\0';

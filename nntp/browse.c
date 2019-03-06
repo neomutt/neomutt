@@ -108,13 +108,13 @@ const char *group_index_format_str(char *buf, size_t buflen, size_t col, int col
       break;
 
     case 'n':
-      if (Context && Context->mailbox->mdata == folder->ff->nd)
+      if (Context && (Context->mailbox->mdata == folder->ff->nd))
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, Context->mailbox->msg_new);
       }
-      else if (C_MarkOld && folder->ff->nd->last_cached >= folder->ff->nd->first_message &&
-               folder->ff->nd->last_cached <= folder->ff->nd->last_message)
+      else if (C_MarkOld && (folder->ff->nd->last_cached >= folder->ff->nd->first_message) &&
+               (folder->ff->nd->last_cached <= folder->ff->nd->last_message))
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, folder->ff->nd->last_message - folder->ff->nd->last_cached);
@@ -140,7 +140,7 @@ const char *group_index_format_str(char *buf, size_t buflen, size_t col, int col
                               group_index_format_str, data, flags);
         }
       }
-      else if (Context && Context->mailbox->mdata == folder->ff->nd)
+      else if (Context && (Context->mailbox->mdata == folder->ff->nd))
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, Context->mailbox->msg_unread);

@@ -87,8 +87,8 @@ static int tunnel_socket_open(struct Connection *conn)
   {
     mutt_sig_unblock_system(false);
     const int devnull = open("/dev/null", O_RDWR);
-    if (devnull < 0 || dup2(pout[0], STDIN_FILENO) < 0 ||
-        dup2(pin[1], STDOUT_FILENO) < 0 || dup2(devnull, STDERR_FILENO) < 0)
+    if ((devnull < 0) || (dup2(pout[0], STDIN_FILENO) < 0) ||
+        (dup2(pin[1], STDOUT_FILENO) < 0) || (dup2(devnull, STDERR_FILENO) < 0))
     {
       _exit(127);
     }
@@ -116,7 +116,7 @@ static int tunnel_socket_open(struct Connection *conn)
     FREE(&conn->sockdata);
     return -1;
   }
-  if (close(pin[1]) < 0 || close(pout[0]) < 0)
+  if ((close(pin[1]) < 0) || (close(pout[0]) < 0))
     mutt_perror("close");
 
   fcntl(pin[0], F_SETFD, FD_CLOEXEC);

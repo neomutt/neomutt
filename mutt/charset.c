@@ -329,11 +329,11 @@ void mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name)
 
   /* catch some common iso-8859-something misspellings */
   size_t plen;
-  if ((plen = mutt_str_startswith(in, "8859", CASE_IGNORE)) && in[plen] != '-')
+  if ((plen = mutt_str_startswith(in, "8859", CASE_IGNORE)) && (in[plen] != '-'))
     snprintf(scratch, sizeof(scratch), "iso-8859-%s", in + plen);
   else if ((plen = mutt_str_startswith(in, "8859-", CASE_IGNORE)))
     snprintf(scratch, sizeof(scratch), "iso-8859-%s", in + plen);
-  else if ((plen = mutt_str_startswith(in, "iso8859", CASE_IGNORE)) && in[plen] != '-')
+  else if ((plen = mutt_str_startswith(in, "iso8859", CASE_IGNORE)) && (in[plen] != '-'))
     snprintf(scratch, sizeof(scratch), "iso_8859-%s", in + plen);
   else if ((plen = mutt_str_startswith(in, "iso8859-", CASE_IGNORE)))
     snprintf(scratch, sizeof(scratch), "iso_8859-%s", in + plen);
@@ -600,7 +600,7 @@ size_t mutt_ch_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft,
     if (iconverrno)
       *iconverrno = errno;
 
-    if (ibl && obl && errno == EILSEQ)
+    if (ibl && obl && (errno == EILSEQ))
     {
       if (inrepls)
       {
@@ -887,8 +887,8 @@ int mutt_ch_fgetconv(struct FgetConv *fc)
    * ask why it had stopped converting ... */
 
   /* Try to read some more */
-  if (fc->ibl == sizeof(fc->bufi) ||
-      (fc->ibl && fc->ib + fc->ibl < fc->bufi + sizeof(fc->bufi)))
+  if ((fc->ibl == sizeof(fc->bufi)) ||
+      (fc->ibl && (fc->ib + fc->ibl < fc->bufi + sizeof(fc->bufi))))
   {
     fc->p = 0;
     return EOF;

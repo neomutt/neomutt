@@ -456,7 +456,7 @@ static char *apply_subject_mods(struct Envelope *env)
   if (STAILQ_EMPTY(&SubjectRegexList))
     return env->subject;
 
-  if (!env->subject || *env->subject == '\0')
+  if (!env->subject || (*env->subject == '\0'))
   {
     env->disp_subj = NULL;
     return NULL;
@@ -780,7 +780,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           if (*cp == '%')
           {
             cp++;
-            if ((*cp == 'Z' || *cp == 'z') && (op == 'd' || op == '{'))
+            if (((*cp == 'Z') || (*cp == 'z')) && ((op == 'd') || (op == '{')))
             {
               if (len >= 5)
               {
@@ -812,7 +812,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         }
         *p = 0;
 
-        if (op == '[' || op == 'D')
+        if ((op == '[') || (op == 'D'))
           tm = localtime(&e->date_sent);
         else if (op == '(')
           tm = localtime(&e->received);
@@ -842,7 +842,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
         add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
 
-        if (len > 0 && op != 'd' && op != 'D') /* Skip ending op */
+        if ((len > 0) && (op != 'd') && (op != 'D')) /* Skip ending op */
           src = cp + 1;
       }
       break;
@@ -973,7 +973,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
             parent_tags =
                 driver_tags_get_transformed(&e->thread->parent->message->tags);
           }
-          if (parent_tags && mutt_str_strcasecmp(tags, parent_tags) == 0)
+          if (parent_tags && (mutt_str_strcasecmp(tags, parent_tags) == 0))
             have_tags = false;
           FREE(&parent_tags);
         }
@@ -1043,7 +1043,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       if (!optional)
       {
         colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_COLLAPSED);
-        if (threads && is_index && e->collapsed && e->num_hidden > 1)
+        if (threads && is_index && e->collapsed && (e->num_hidden > 1))
         {
           snprintf(buf + colorlen, buflen - colorlen, fmt, e->num_hidden);
           add_index_color(buf, buflen - colorlen, flags, MT_COLOR_INDEX);
@@ -1058,7 +1058,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       }
       else
       {
-        if (!(threads && is_index && e->collapsed && e->num_hidden > 1))
+        if (!(threads && is_index && e->collapsed && (e->num_hidden > 1)))
           optional = 0;
       }
       break;
@@ -1104,7 +1104,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     case 'r':
       tmp[0] = 0;
       mutt_addr_write(tmp, sizeof(tmp), e->env->to, true);
-      if (optional && tmp[0] == '\0')
+      if (optional && (tmp[0] == '\0'))
         optional = 0;
       mutt_format_s(buf, buflen, prec, tmp);
       break;
@@ -1112,7 +1112,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     case 'R':
       tmp[0] = 0;
       mutt_addr_write(tmp, sizeof(tmp), e->env->cc, true);
-      if (optional && tmp[0] == '\0')
+      if (optional && (tmp[0] == '\0'))
         optional = 0;
       mutt_format_s(buf, buflen, prec, tmp);
       break;
@@ -1161,7 +1161,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         wch = get_nth_wchar(C_FlagChars, FLAG_CHAR_IMPORTANT);
       else if (e->replied)
         wch = get_nth_wchar(C_FlagChars, FLAG_CHAR_REPLIED);
-      else if (e->read && (ctx && ctx->msgnotreadyet != e->msgno))
+      else if (e->read && (ctx && (ctx->msgnotreadyet != e->msgno)))
         wch = get_nth_wchar(C_FlagChars, FLAG_CHAR_SEMPTY);
       else if (e->old)
         wch = get_nth_wchar(C_FlagChars, FLAG_CHAR_OLD);

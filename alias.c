@@ -397,7 +397,7 @@ void mutt_alias_create(struct Envelope *cur, struct Address *iaddr)
 
 retry_name:
   /* L10N: prompt to add a new alias */
-  if (mutt_get_field(_("Alias as: "), buf, sizeof(buf), 0) != 0 || !buf[0])
+  if ((mutt_get_field(_("Alias as: "), buf, sizeof(buf), 0) != 0) || !buf[0])
     return;
 
   /* check to see if the user already has an alias defined */
@@ -434,7 +434,7 @@ retry_name:
 
   do
   {
-    if (mutt_get_field(_("Address: "), buf, sizeof(buf), 0) != 0 || !buf[0])
+    if ((mutt_get_field(_("Address: "), buf, sizeof(buf), 0) != 0) || !buf[0])
     {
       mutt_alias_free(&new);
       return;
@@ -606,7 +606,7 @@ int mutt_alias_complete(char *buf, size_t buflen)
   {
     TAILQ_FOREACH(a, &Aliases, entries)
     {
-      if (a->name && strncmp(a->name, buf, strlen(buf)) == 0)
+      if (a->name && (strncmp(a->name, buf, strlen(buf)) == 0))
       {
         if (!bestname[0]) /* init */
         {
@@ -635,7 +635,7 @@ int mutt_alias_complete(char *buf, size_t buflen)
       /* build alias list and show it */
       TAILQ_FOREACH(a, &Aliases, entries)
       {
-        if (a->name && strncmp(a->name, buf, strlen(buf)) == 0)
+        if (a->name && (strncmp(a->name, buf, strlen(buf)) == 0))
         {
           tmp = mutt_mem_calloc(1, sizeof(struct Alias));
           memcpy(tmp, a, sizeof(struct Alias));

@@ -867,7 +867,7 @@ static int external_body_handler(struct Body *b, struct State *s)
                     (C_Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE, NULL);
     }
   }
-  else if (expiration && expire < time(NULL))
+  else if (expiration && (expire < time(NULL)))
   {
     if (s->flags & MUTT_DISPLAY)
     {
@@ -1486,7 +1486,7 @@ void mutt_decode_base64(struct State *s, size_t len, bool istext, iconv_t cd)
       ch = fgetc(s->fp_in);
       if (ch == EOF)
         break;
-      if ((ch >= 0) && (ch < 128) && (base64val(ch) != -1 || ch == '='))
+      if ((ch >= 0) && (ch < 128) && ((base64val(ch) != -1) || (ch == '=')))
         buf[i++] = ch;
     }
     if (i != 4)
@@ -1655,7 +1655,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
       if (km_expand_key(keystroke, sizeof(keystroke),
                         km_find_func(MENU_PAGER, OP_VIEW_ATTACHMENTS)))
       {
-        if (C_HonorDisposition && b->disposition == DISP_ATTACH)
+        if (C_HonorDisposition && (b->disposition == DISP_ATTACH))
         {
           /* L10N: Caution: Arguments %1$s and %2$s are also defined but should
              not be used in this translation!
@@ -1743,7 +1743,7 @@ bool mutt_can_decode(struct Body *a)
         return true;
     }
   }
-  else if ((WithCrypto != 0) && a->type == TYPE_APPLICATION)
+  else if ((WithCrypto != 0) && (a->type == TYPE_APPLICATION))
   {
     if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(a))
       return true;

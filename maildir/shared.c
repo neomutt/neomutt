@@ -637,7 +637,7 @@ static struct Maildir *maildir_sort(struct Maildir *list, size_t len,
     return list;
   }
 
-  if (len != (size_t)(-1) && len <= INS_SORT_THRESHOLD)
+  if ((len != (size_t)(-1)) && (len <= INS_SORT_THRESHOLD))
     return maildir_ins_sort(list, cmp);
 
   list = list->next;
@@ -770,7 +770,7 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
     void *data = mutt_hcache_fetch(hc, key, keylen);
     struct timeval *when = data;
 
-    if (data && !ret && lastchanged.st_mtime <= when->tv_sec)
+    if (data && !ret && (lastchanged.st_mtime <= when->tv_sec))
     {
       struct Email *e = mutt_hcache_restore((unsigned char *) data);
       e->old = p->email->old;
@@ -1161,7 +1161,7 @@ int mh_rewrite_message(struct Mailbox *m, int msgno)
      * lose flag modifications.
      */
 
-    if (m->magic == MUTT_MH && rc == 0)
+    if ((m->magic == MUTT_MH) && (rc == 0))
     {
       char newpath[PATH_MAX];
       snprintf(newpath, sizeof(newpath), "%s/%s", m->path, e->path);
@@ -1173,7 +1173,7 @@ int mh_rewrite_message(struct Mailbox *m, int msgno)
   else
     mx_msg_close(m, &dest);
 
-  if (rc == -1 && restore)
+  if ((rc == -1) && restore)
   {
     e->content->offset = old_body_offset;
     e->content->length = old_body_length;
@@ -1227,7 +1227,7 @@ void maildir_update_tables(struct Context *ctx, int *index_hint)
   const int old_count = m->msg_count;
   for (int i = 0, j = 0; i < old_count; i++)
   {
-    if (m->emails[i]->active && index_hint && *index_hint == i)
+    if (m->emails[i]->active && index_hint && (*index_hint == i))
       *index_hint = j;
 
     if (m->emails[i]->active)
@@ -1443,11 +1443,11 @@ int mh_sync_mailbox_message(struct Mailbox *m, int msgno)
 
   struct Email *e = m->emails[msgno];
 
-  if (e->deleted && (m->magic != MUTT_MAILDIR || !C_MaildirTrash))
+  if (e->deleted && ((m->magic != MUTT_MAILDIR) || !C_MaildirTrash))
   {
     char path[PATH_MAX];
     snprintf(path, sizeof(path), "%s/%s", m->path, e->path);
-    if (m->magic == MUTT_MAILDIR || (C_MhPurge && m->magic == MUTT_MH))
+    if ((m->magic == MUTT_MAILDIR) || (C_MhPurge && (m->magic == MUTT_MH)))
     {
 #ifdef USE_HCACHE
       if (hc)
@@ -1482,7 +1482,7 @@ int mh_sync_mailbox_message(struct Mailbox *m, int msgno)
     }
   }
   else if (e->changed || e->attach_del ||
-           (m->magic == MUTT_MAILDIR && (C_MaildirTrash || e->trash) &&
+           ((m->magic == MUTT_MAILDIR) && (C_MaildirTrash || e->trash) &&
             (e->deleted != e->trash)))
   {
     if (m->magic == MUTT_MAILDIR)
@@ -1587,7 +1587,7 @@ FILE *maildir_open_find_message(const char *folder, const char *msg, char **newn
                                   new_hits > cur_hits ? "new" : "cur", newname);
   if (fp || (errno != ENOENT))
   {
-    if (new_hits < UINT_MAX && cur_hits < UINT_MAX)
+    if ((new_hits < UINT_MAX) && (cur_hits < UINT_MAX))
     {
       new_hits += (new_hits > cur_hits ? 1 : 0);
       cur_hits += (new_hits > cur_hits ? 0 : 1);
@@ -1599,7 +1599,7 @@ FILE *maildir_open_find_message(const char *folder, const char *msg, char **newn
                             new_hits > cur_hits ? "cur" : "new", newname);
   if (fp || (errno != ENOENT))
   {
-    if (new_hits < UINT_MAX && cur_hits < UINT_MAX)
+    if ((new_hits < UINT_MAX) && (cur_hits < UINT_MAX))
     {
       new_hits += (new_hits > cur_hits ? 0 : 1);
       cur_hits += (new_hits > cur_hits ? 1 : 0);
@@ -1701,7 +1701,7 @@ struct Account *maildir_ac_find(struct Account *a, const char *path)
  */
 int maildir_ac_add(struct Account *a, struct Mailbox *m)
 {
-  if (!a || !m || (m->magic != MUTT_MAILDIR && m->magic != MUTT_MH))
+  if (!a || !m || ((m->magic != MUTT_MAILDIR) && (m->magic != MUTT_MH)))
     return -1;
   return 0;
 }
@@ -1779,7 +1779,7 @@ int mh_mbox_sync(struct Mailbox *m, int *index_hint)
     return i;
 
 #ifdef USE_HCACHE
-  if (m->magic == MUTT_MAILDIR || m->magic == MUTT_MH)
+  if ((m->magic == MUTT_MAILDIR) || (m->magic == MUTT_MH))
     hc = mutt_hcache_open(C_HeaderCache, m->path, NULL);
 #endif
 
@@ -1804,7 +1804,7 @@ int mh_mbox_sync(struct Mailbox *m, int *index_hint)
   }
 
 #ifdef USE_HCACHE
-  if (m->magic == MUTT_MAILDIR || m->magic == MUTT_MH)
+  if ((m->magic == MUTT_MAILDIR) || (m->magic == MUTT_MH))
     mutt_hcache_close(hc);
 #endif
 
@@ -1821,7 +1821,7 @@ int mh_mbox_sync(struct Mailbox *m, int *index_hint)
   {
     for (i = 0, j = 0; i < m->msg_count; i++)
     {
-      if (!m->emails[i]->deleted || (m->magic == MUTT_MAILDIR && C_MaildirTrash))
+      if (!m->emails[i]->deleted || ((m->magic == MUTT_MAILDIR) && C_MaildirTrash))
         m->emails[i]->index = j++;
     }
   }
@@ -1830,7 +1830,7 @@ int mh_mbox_sync(struct Mailbox *m, int *index_hint)
 
 err:
 #ifdef USE_HCACHE
-  if (m->magic == MUTT_MAILDIR || m->magic == MUTT_MH)
+  if ((m->magic == MUTT_MAILDIR) || (m->magic == MUTT_MH))
     mutt_hcache_close(hc);
 #endif
   return -1;

@@ -216,7 +216,7 @@ static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hos
     tls_fingerprint(GNUTLS_DIG_MD5, buf, sizeof(buf), cert);
     while ((linestr = mutt_file_read_line(linestr, &linestrsize, fp, &linenum, 0)))
     {
-      if (linestr[0] == '#' && linestr[1] == 'H')
+      if ((linestr[0] == '#') && (linestr[1] == 'H'))
       {
         if (regexec(&preg, linestr, 3, pmatch, 0) == 0)
         {
@@ -358,7 +358,7 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
       *certerr |= CERTERR_NOTYETVALID;
   }
 
-  if (chainidx == 0 && C_SslVerifyHost != MUTT_NO &&
+  if ((chainidx == 0) && (C_SslVerifyHost != MUTT_NO) &&
       !gnutls_x509_crt_check_hostname(cert, hostname) &&
       !tls_check_stored_hostname(certdata, hostname))
   {

@@ -95,7 +95,7 @@ static bool count_body_parts_check(struct ListHead *checklist, struct Body *b, b
     a = (struct AttachMatch *) np->data;
     mutt_debug(LL_DEBUG3, "%s %d/%s ?? %s/%s [%d]... ", dflt ? "[OK]   " : "[EXCL] ",
                b->type, b->subtype ? b->subtype : "*", a->major, a->minor, a->major_int);
-    if ((a->major_int == TYPE_ANY || a->major_int == b->type) &&
+    if (((a->major_int == TYPE_ANY) || (a->major_int == b->type)) &&
         (!b->subtype || !regexec(&a->minor_regex, b->subtype, 0, NULL, 0)))
     {
       mutt_debug(LL_DEBUG3, "yes\n");
@@ -158,8 +158,8 @@ static int count_body_parts(struct Body *body, int flags)
         shallcount = false; /* top-level multipart */
     }
 
-    if (bp->disposition == DISP_INLINE && bp->type != TYPE_MULTIPART &&
-        bp->type != TYPE_MESSAGE && bp == body)
+    if ((bp->disposition == DISP_INLINE) && (bp->type != TYPE_MULTIPART) &&
+        (bp->type != TYPE_MESSAGE) && (bp == body))
     {
       shallcount = false; /* ignore fundamental inlines */
     }

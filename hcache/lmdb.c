@@ -69,7 +69,7 @@ static int mdb_get_r_txn(struct HcacheLmdbCtx *ctx)
 {
   int rc;
 
-  if (ctx->txn && (ctx->txn_mode == TXN_READ || ctx->txn_mode == TXN_WRITE))
+  if (ctx->txn && ((ctx->txn_mode == TXN_READ) || (ctx->txn_mode == TXN_WRITE)))
     return MDB_SUCCESS;
 
   if (ctx->txn)
@@ -274,7 +274,7 @@ static int hcache_lmdb_delete(void *vctx, const char *key, size_t keylen)
     return rc;
   }
   rc = mdb_del(ctx->txn, ctx->db, &dkey, NULL);
-  if (rc != MDB_SUCCESS && rc != MDB_NOTFOUND)
+  if ((rc != MDB_SUCCESS) && (rc != MDB_NOTFOUND))
   {
     mutt_debug(LL_DEBUG2, "mdb_del: %s\n", mdb_strerror(rc));
     mdb_txn_abort(ctx->txn);
@@ -295,7 +295,7 @@ static void hcache_lmdb_close(void **vctx)
 
   struct HcacheLmdbCtx *ctx = *vctx;
 
-  if (ctx->txn && ctx->txn_mode == TXN_WRITE)
+  if (ctx->txn && (ctx->txn_mode == TXN_WRITE))
   {
     mdb_txn_commit(ctx->txn);
     ctx->txn_mode = TXN_UNINITIALIZED;

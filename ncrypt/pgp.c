@@ -450,7 +450,7 @@ static void pgp_copy_clearsigned(FILE *fp_in, struct State *s, char *charset)
     if (s->prefix)
       state_puts(s->prefix, s);
 
-    if (buf[0] == '-' && buf[1] == ' ')
+    if ((buf[0] == '-') && (buf[1] == ' '))
       state_puts(buf + 2, s);
     else
       state_puts(buf, s);
@@ -646,7 +646,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
              * Sig _is_ correct if
              *  gpg_good_sign="" && pgp_decode_command returned 0
              */
-            if (rc == -1 || rv)
+            if ((rc == -1) || rv)
               maybe_goodsig = false;
 
             state_attach_puts(_("[-- End of PGP output --]\n\n"), s);
@@ -663,7 +663,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
           c = fgetc(fp_pgp_out);
           ungetc(c, fp_pgp_out);
         }
-        if (!clearsign && (!fp_pgp_out || c == EOF))
+        if (!clearsign && (!fp_pgp_out || (c == EOF)))
         {
           could_not_decrypt = true;
           pgp_class_void_passphrase();
@@ -1059,7 +1059,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   while (fgets(buf, sizeof(buf) - 1, fp_pgp_out))
   {
     size_t len = mutt_str_strlen(buf);
-    if (len > 1 && buf[len - 2] == '\r')
+    if ((len > 1) && (buf[len - 2] == '\r'))
       strcpy(buf + len - 2, "\n");
     fputs(buf, fp_out);
   }
@@ -1081,7 +1081,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   if (s->flags & MUTT_DISPLAY)
   {
     rewind(fp_pgp_err);
-    if (pgp_copy_checksig(fp_pgp_err, s->fp_out) == 0 && !rv)
+    if ((pgp_copy_checksig(fp_pgp_err, s->fp_out) == 0) && !rv)
       p->goodsig = true;
     else
       p->goodsig = false;

@@ -95,7 +95,7 @@ static void *hcache_bdb_open(const char *path)
 
   struct HcacheDbCtx *ctx = mutt_mem_malloc(sizeof(struct HcacheDbCtx));
 
-  if (mutt_str_atoi(C_HeaderCachePagesize, &pagesize) < 0 || pagesize <= 0)
+  if ((mutt_str_atoi(C_HeaderCachePagesize, &pagesize) < 0) || (pagesize <= 0))
     pagesize = 16384;
 
   snprintf(ctx->lockfile, sizeof(ctx->lockfile), "%s-lock-hack", path);
@@ -123,7 +123,7 @@ static void *hcache_bdb_open(const char *path)
   if (ret)
     goto fail_env;
 
-  if (stat(path, &sb) != 0 && errno == ENOENT)
+  if ((stat(path, &sb) != 0) && (errno == ENOENT))
   {
     createflags |= DB_EXCL;
     ctx->db->set_pagesize(ctx->db, pagesize);

@@ -395,7 +395,7 @@ char *mutt_account_getoauthbearer(struct ConnAccount *account)
   mutt_file_fclose(&fp);
   mutt_wait_filter(pid);
 
-  if (!token || *token == '\0')
+  if (!token || (*token == '\0'))
   {
     mutt_error(_("Command returned empty string"));
     FREE(&token);

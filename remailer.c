@@ -668,7 +668,7 @@ void mix_make_chain(struct ListHead *chainhead)
       case OP_GENERIC_SELECT_ENTRY:
       case OP_MIX_APPEND:
       {
-        if (chain->cl < MAXMIXES && c_cur < chain->cl)
+        if ((chain->cl < MAXMIXES) && (c_cur < chain->cl))
           c_cur++;
       }
       /* fallthrough */
@@ -702,7 +702,7 @@ void mix_make_chain(struct ListHead *chainhead)
           for (int i = c_cur; i < chain->cl; i++)
             chain->ch[i] = chain->ch[i + 1];
 
-          if (c_cur == chain->cl && c_cur)
+          if ((c_cur == chain->cl) && c_cur)
             c_cur--;
 
           mix_screen_coordinates(type2_list, &coords, chain, c_cur);
@@ -727,7 +727,7 @@ void mix_make_chain(struct ListHead *chainhead)
 
       case OP_MIX_CHAIN_NEXT:
       {
-        if (chain->cl && c_cur < chain->cl - 1)
+        if (chain->cl && (c_cur < chain->cl - 1))
           c_cur++;
         else
           mutt_error(_("You already have the last chain element selected"));

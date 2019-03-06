@@ -211,8 +211,8 @@ static size_t try_block(const char *d, size_t dlen, const char *fromcode,
     ibl = dlen;
     ob = buf;
     obl = sizeof(buf) - strlen(tocode);
-    if (iconv(cd, (ICONV_CONST char **) &ib, &ibl, &ob, &obl) == (size_t)(-1) ||
-        iconv(cd, NULL, NULL, &ob, &obl) == (size_t)(-1))
+    if ((iconv(cd, (ICONV_CONST char **) &ib, &ibl, &ob, &obl) == (size_t)(-1)) ||
+        (iconv(cd, NULL, NULL, &ob, &obl) == (size_t)(-1)))
     {
       assert(errno == E2BIG);
       iconv_close(cd);
@@ -325,7 +325,7 @@ static size_t choose_block(char *d, size_t dlen, int col, const char *fromcode,
   {
     assert(n > 0);
     const size_t nn = try_block(d, n, fromcode, tocode, encoder, wlen);
-    if ((nn == 0) && ((col + *wlen) <= (ENCWORD_LEN_MAX + 1) || (n <= 1)))
+    if ((nn == 0) && (((col + *wlen) <= (ENCWORD_LEN_MAX + 1)) || (n <= 1)))
       break;
     n = (nn ? nn : n) - 1;
     assert(n > 0);
@@ -380,8 +380,8 @@ static char *decode_word(const char *s, size_t len, enum ContentEncoding enc)
       {
         mutt_buffer_addch(&buf, ' ');
       }
-      else if ((*it == '=') && (!(it[1] & ~127) && hexval(it[1]) != -1) &&
-               (!(it[2] & ~127) && hexval(it[2]) != -1))
+      else if ((*it == '=') && (!(it[1] & ~127) && (hexval(it[1]) != -1)) &&
+               (!(it[2] & ~127) && (hexval(it[2]) != -1)))
       {
         mutt_buffer_addch(&buf, (hexval(it[1]) << 4) | hexval(it[2]));
         it += 2;
@@ -678,7 +678,7 @@ void rfc2047_decode(char **pd)
       size_t holelen = beg ? beg - s : mutt_str_strlen(s);
 
       /* Ignore whitespace between encoded words */
-      if (beg && mutt_str_lws_len(s, holelen) == holelen)
+      if (beg && (mutt_str_lws_len(s, holelen) == holelen))
       {
         s = beg;
         continue;

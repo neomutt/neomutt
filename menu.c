@@ -576,7 +576,7 @@ void menu_check_recenter(struct Menu *menu)
   int c = MIN(C_MenuContext, menu->pagelen / 2);
   int old_top = menu->top;
 
-  if (!C_MenuMoveOff && menu->max <= menu->pagelen) /* less entries than lines */
+  if (!C_MenuMoveOff && (menu->max <= menu->pagelen)) /* less entries than lines */
   {
     if (menu->top != 0)
     {
@@ -632,9 +632,9 @@ static void menu_jump(struct Menu *menu)
     mutt_unget_event(LastKey, 0);
     char buf[128];
     buf[0] = '\0';
-    if (mutt_get_field(_("Jump to: "), buf, sizeof(buf), 0) == 0 && buf[0])
+    if ((mutt_get_field(_("Jump to: "), buf, sizeof(buf), 0) == 0) && buf[0])
     {
-      if (mutt_str_atoi(buf, &n) == 0 && n > 0 && n < menu->max + 1)
+      if ((mutt_str_atoi(buf, &n) == 0) && (n > 0) && (n < menu->max + 1))
       {
         n--; /* msg numbers are 0-based */
         menu->current = n;
@@ -658,11 +658,12 @@ void menu_next_line(struct Menu *menu)
   {
     int c = MIN(C_MenuContext, menu->pagelen / 2);
 
-    if (menu->top + 1 < menu->max - c &&
-        (C_MenuMoveOff || (menu->max > menu->pagelen && menu->top < menu->max - menu->pagelen)))
+    if ((menu->top + 1 < menu->max - c) &&
+        (C_MenuMoveOff ||
+         ((menu->max > menu->pagelen) && (menu->top < menu->max - menu->pagelen))))
     {
       menu->top++;
-      if (menu->current < menu->top + c && menu->current < menu->max - 1)
+      if ((menu->current < menu->top + c) && (menu->current < menu->max - 1))
         menu->current++;
       menu->redraw = REDRAW_INDEX;
     }
@@ -684,7 +685,7 @@ void menu_prev_line(struct Menu *menu)
     int c = MIN(C_MenuContext, menu->pagelen / 2);
 
     menu->top--;
-    if (menu->current >= menu->top + menu->pagelen - c && menu->current > 1)
+    if ((menu->current >= menu->top + menu->pagelen - c) && (menu->current > 1))
       menu->current--;
     menu->redraw = REDRAW_INDEX;
   }
@@ -717,7 +718,7 @@ static void menu_length_jump(struct Menu *menu, int jumplen)
       menu->top += jumplen;
 
       /* jumped too long? */
-      if ((neg || !C_MenuMoveOff) && DIRECTION * menu->top > tmp)
+      if ((neg || !C_MenuMoveOff) && (DIRECTION * menu->top > tmp))
         menu->top = tmp;
 
       /* need to move the cursor? */
@@ -729,7 +730,7 @@ static void menu_length_jump(struct Menu *menu, int jumplen)
 
       menu->redraw = REDRAW_INDEX;
     }
-    else if (menu->current != (neg ? 0 : menu->max - 1) && !menu->dialog)
+    else if ((menu->current != (neg ? 0 : menu->max - 1)) && !menu->dialog)
     {
       menu->current += jumplen;
       menu->redraw = REDRAW_MOTION;
@@ -1149,18 +1150,18 @@ static int menu_search(struct Menu *menu, int op)
   char *search_buf =
       menu->menu >= 0 && menu->menu < MENU_MAX ? SearchBuffers[menu->menu] : NULL;
 
-  if (!(search_buf && *search_buf) || (op != OP_SEARCH_NEXT && op != OP_SEARCH_OPPOSITE))
+  if (!(search_buf && *search_buf) || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
     mutt_str_strfcpy(buf, search_buf && *search_buf ? search_buf : "", sizeof(buf));
-    if (mutt_get_field((op == OP_SEARCH || op == OP_SEARCH_NEXT) ?
-                           _("Search for: ") :
-                           _("Reverse search for: "),
-                       buf, sizeof(buf), MUTT_CLEAR) != 0 ||
+    if ((mutt_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
+                            _("Search for: ") :
+                            _("Reverse search for: "),
+                        buf, sizeof(buf), MUTT_CLEAR) != 0) ||
         !buf[0])
     {
       return -1;
     }
-    if (menu->menu >= 0 && menu->menu < MENU_MAX)
+    if ((menu->menu >= 0) && (menu->menu < MENU_MAX))
     {
       mutt_str_replace(&SearchBuffers[menu->menu], buf);
       search_buf = SearchBuffers[menu->menu];
@@ -1201,7 +1202,7 @@ search_next:
     rc += search_dir;
   }
 
-  if (C_WrapSearch && wrap++ == 0)
+  if (C_WrapSearch && (wrap++ == 0))
   {
     rc = search_dir == 1 ? 0 : menu->max - 1;
     goto search_next;
@@ -1345,7 +1346,7 @@ int mutt_menu_loop(struct Menu *menu)
     /* Clear the tag prefix unless we just started it.  Don't clear
      * the prefix on a timeout (i==-2), but do clear on an abort (i==-1)
      */
-    if (menu->tagprefix && i != OP_TAG_PREFIX && i != OP_TAG_PREFIX_COND && i != -2)
+    if (menu->tagprefix && (i != OP_TAG_PREFIX) && (i != OP_TAG_PREFIX_COND) && (i != -2))
       menu->tagprefix = false;
 
     mutt_curs_set(0);
@@ -1376,11 +1377,11 @@ int mutt_menu_loop(struct Menu *menu)
     mutt_refresh();
 
     /* try to catch dialog keys before ops */
-    if (menu->dialog && menu_dialog_dokey(menu, &i) == 0)
+    if (menu->dialog && (menu_dialog_dokey(menu, &i) == 0))
       return i;
 
     i = km_dokey(menu->menu);
-    if (i == OP_TAG_PREFIX || i == OP_TAG_PREFIX_COND)
+    if ((i == OP_TAG_PREFIX) || (i == OP_TAG_PREFIX_COND))
     {
       if (menu->tagprefix)
       {
@@ -1523,7 +1524,7 @@ int mutt_menu_loop(struct Menu *menu)
           {
             int j = menu->menu_tag(menu, menu->current, -1);
             menu->tagged += j;
-            if (j && C_Resolve && menu->current < menu->max - 1)
+            if (j && C_Resolve && (menu->current < menu->max - 1))
             {
               menu->current++;
               menu->redraw |= REDRAW_MOTION_RESYNC;

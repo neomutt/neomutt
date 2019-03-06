@@ -64,7 +64,7 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
   int flagged = m->msg_flagged;
   int update = false;
 
-  if (m->readonly && flag != MUTT_TAG)
+  if (m->readonly && (flag != MUTT_TAG))
     return; /* don't modify anything if we are read-only */
 
   switch (flag)
@@ -116,7 +116,7 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
          * is checked in specific code in the maildir folder
          * driver.
          */
-        if (m->magic == MUTT_MAILDIR && upd_mbox && e->trash)
+        if ((m->magic == MUTT_MAILDIR) && upd_mbox && e->trash)
           m->changed = true;
       }
       break;
@@ -340,8 +340,8 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
    * search results so that any future search will match the current status
    * of this message and not what it was at the time it was last searched.
    */
-  if (e->searched && (changed != e->changed || deleted != m->msg_deleted ||
-                      tagged != m->msg_tagged || flagged != m->msg_flagged))
+  if (e->searched && ((changed != e->changed) || (deleted != m->msg_deleted) ||
+                      (tagged != m->msg_tagged) || (flagged != m->msg_flagged)))
   {
     e->searched = false;
   }
@@ -390,7 +390,7 @@ int mutt_thread_set_flag(struct Email *e, int flag, bool bf, bool subthread)
       cur = cur->parent;
   start = cur;
 
-  if (cur->message && cur != e->thread)
+  if (cur->message && (cur != e->thread))
     mutt_set_flag(Context->mailbox, cur->message, flag, bf);
 
   cur = cur->child;
@@ -399,7 +399,7 @@ int mutt_thread_set_flag(struct Email *e, int flag, bool bf, bool subthread)
 
   while (true)
   {
-    if (cur->message && cur != e->thread)
+    if (cur->message && (cur != e->thread))
       mutt_set_flag(Context->mailbox, cur->message, flag, bf);
 
     if (cur->child)

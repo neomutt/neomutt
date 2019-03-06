@@ -270,7 +270,7 @@ int mutt_socket_readln_d(char *buf, size_t buflen, struct Connection *conn, int 
   }
 
   /* strip \r from \r\n termination */
-  if (i && buf[i - 1] == '\r')
+  if (i && (buf[i - 1] == '\r'))
     i--;
   buf[i] = '\0';
 

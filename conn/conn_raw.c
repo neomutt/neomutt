@@ -337,7 +337,7 @@ int raw_socket_poll(struct Connection *conn, time_t wait_secs)
     const int rc = select(conn->fd + 1, &rfds, NULL, NULL, &tv);
     gettimeofday(&post_t, NULL);
 
-    if (rc > 0 || (rc < 0 && errno != EINTR))
+    if ((rc > 0) || ((rc < 0) && (errno != EINTR)))
       return rc;
 
     if (SigInt)

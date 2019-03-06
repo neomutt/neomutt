@@ -429,7 +429,7 @@ static int mh_mbox_check_stats(struct Mailbox *m, int flags)
 
   /* when $mail_check_recent is set and the .mh_sequences file hasn't changed
    * since the last m visit, there is no "new mail" */
-  if (C_MailCheckRecent && mh_sequences_changed(m) <= 0)
+  if (C_MailCheckRecent && (mh_sequences_changed(m) <= 0))
   {
     rc = false;
     check_new = false;
@@ -456,7 +456,7 @@ static int mh_mbox_check_stats(struct Mailbox *m, int flags)
       {
         /* if the first unseen message we encounter was in the m during the
            last visit, don't notify about it */
-        if (!C_MailCheckRecent || mh_already_notified(m, i) == 0)
+        if (!C_MailCheckRecent || (mh_already_notified(m, i) == 0))
         {
           m->has_new = true;
           rc = true;
@@ -632,7 +632,7 @@ int mh_mbox_check(struct Mailbox *m, int *index_hint)
     }
   }
 
-  if (i == -1 && stat(buf, &st_cur) == -1)
+  if ((i == -1) && (stat(buf, &st_cur) == -1))
     modified = true;
 
   if ((mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME, &m->mtime) > 0) ||

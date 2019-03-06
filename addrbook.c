@@ -271,7 +271,7 @@ new_aliases:
         {
           alias_table[menu->current]->del = (op == OP_DELETE);
           menu->redraw |= REDRAW_CURRENT;
-          if (C_Resolve && menu->current < menu->max - 1)
+          if (C_Resolve && (menu->current < menu->max - 1))
           {
             menu->current++;
             menu->redraw |= REDRAW_INDEX;

@@ -181,7 +181,7 @@ void ctx_update_tables(struct Context *ctx, bool committing)
   for (i = 0, j = 0; i < m->msg_count; i++)
   {
     if (!m->emails[i]->quasi_deleted &&
-        ((committing && (!m->emails[i]->deleted || (m->magic == MUTT_MAILDIR && C_MaildirTrash))) ||
+        ((committing && (!m->emails[i]->deleted || ((m->magic == MUTT_MAILDIR) && C_MaildirTrash))) ||
          (!committing && m->emails[i]->active)))
     {
       if (i != j)
@@ -206,7 +206,7 @@ void ctx_update_tables(struct Context *ctx, bool committing)
       else if (m->emails[j]->changed)
         m->changed = true;
 
-      if (!committing || (m->magic == MUTT_MAILDIR && C_MaildirTrash))
+      if (!committing || ((m->magic == MUTT_MAILDIR) && C_MaildirTrash))
       {
         if (m->emails[j]->deleted)
           m->msg_deleted++;
@@ -227,7 +227,7 @@ void ctx_update_tables(struct Context *ctx, bool committing)
     }
     else
     {
-      if (m->magic == MUTT_MH || m->magic == MUTT_MAILDIR || m->magic == MUTT_IMAP)
+      if ((m->magic == MUTT_MH) || (m->magic == MUTT_MAILDIR) || (m->magic == MUTT_IMAP))
       {
         m->size -= (m->emails[i]->content->length + m->emails[i]->content->offset -
                     m->emails[i]->content->hdr_offset);

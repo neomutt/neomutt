@@ -299,7 +299,7 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
   hc->folder = get_foldername(folder);
   hc->crc = hcachever;
 
-  if (!path || path[0] == '\0')
+  if (!path || (path[0] == '\0'))
   {
     FREE(&hc->folder);
     FREE(&hc);

@@ -154,7 +154,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method
                                   GSS_C_NO_OID, GSS_C_MUTUAL_FLAG | GSS_C_SEQUENCE_FLAG,
                                   0, GSS_C_NO_CHANNEL_BINDINGS, sec_token, NULL,
                                   &send_token, (unsigned int *) &cflags, NULL);
-  if (maj_stat != GSS_S_COMPLETE && maj_stat != GSS_S_CONTINUE_NEEDED)
+  if ((maj_stat != GSS_S_COMPLETE) && (maj_stat != GSS_S_CONTINUE_NEEDED))
   {
     print_gss_error(maj_stat, min_stat);
     mutt_debug(LL_DEBUG1, "Error acquiring credentials - no TGT?\n");
@@ -217,7 +217,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method
         &min_stat, GSS_C_NO_CREDENTIAL, &context, target_name, GSS_C_NO_OID,
         GSS_C_MUTUAL_FLAG | GSS_C_SEQUENCE_FLAG, 0, GSS_C_NO_CHANNEL_BINDINGS,
         sec_token, NULL, &send_token, (unsigned int *) &cflags, NULL);
-    if (maj_stat != GSS_S_COMPLETE && maj_stat != GSS_S_CONTINUE_NEEDED)
+    if ((maj_stat != GSS_S_COMPLETE) && (maj_stat != GSS_S_CONTINUE_NEEDED))
     {
       print_gss_error(maj_stat, min_stat);
       mutt_debug(LL_DEBUG1, "Error exchanging credentials\n");

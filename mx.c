@@ -312,7 +312,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   {
     if (m->magic == MUTT_MAILBOX_ERROR)
       mutt_perror(m->path);
-    else if (m->magic == MUTT_UNKNOWN || !m->mx_ops)
+    else if ((m->magic == MUTT_UNKNOWN) || !m->mx_ops)
       mutt_error(_("%s is not a mailbox"), m->path);
 
     mx_fastclose_mailbox(m);
@@ -441,7 +441,7 @@ static int trash_append(struct Mailbox *m)
   struct stat st, stc;
   int opt_confappend, rc;
 
-  if (!C_Trash || (m->msg_deleted == 0) || (m->magic == MUTT_MAILDIR && C_MaildirTrash))
+  if (!C_Trash || (m->msg_deleted == 0) || ((m->magic == MUTT_MAILDIR) && C_MaildirTrash))
   {
     return 0;
   }
@@ -477,14 +477,14 @@ static int trash_append(struct Mailbox *m)
     return -1;
   }
 
-  if (lstat(m->path, &stc) == 0 && stc.st_ino == st.st_ino &&
-      stc.st_dev == st.st_dev && stc.st_rdev == st.st_rdev)
+  if ((lstat(m->path, &stc) == 0) && (stc.st_ino == st.st_ino) &&
+      (stc.st_dev == st.st_dev) && (stc.st_rdev == st.st_rdev))
   {
     return 0; /* we are in the trash folder: simple sync */
   }
 
 #ifdef USE_IMAP
-  if (m->magic == MUTT_IMAP && (imap_path_probe(C_Trash, NULL) == MUTT_IMAP))
+  if ((m->magic == MUTT_IMAP) && (imap_path_probe(C_Trash, NULL) == MUTT_IMAP))
   {
     if (imap_fast_trash(m, C_Trash) == 0)
       return 0;
@@ -617,7 +617,7 @@ int mx_mbox_close(struct Context **ptr)
   /* There is no point in asking whether or not to purge if we are
    * just marking messages as "trash".
    */
-  if ((m->msg_deleted != 0) && !(m->magic == MUTT_MAILDIR && C_MaildirTrash))
+  if ((m->msg_deleted != 0) && !((m->magic == MUTT_MAILDIR) && C_MaildirTrash))
   {
     snprintf(buf, sizeof(buf),
              ngettext("Purge %d deleted message?", "Purge %d deleted messages?", m->msg_deleted),
@@ -705,7 +705,7 @@ int mx_mbox_close(struct Context **ptr)
   {
     if (!m->quiet)
       mutt_message(_("Mailbox is unchanged"));
-    if (m->magic == MUTT_MBOX || m->magic == MUTT_MMDF)
+    if ((m->magic == MUTT_MBOX) || (m->magic == MUTT_MMDF))
       mbox_reset_atime(m, NULL);
     mx_fastclose_mailbox(m);
     FREE(ptr);
@@ -877,7 +877,7 @@ int mx_mbox_sync(struct Mailbox *m, int *index_hint)
   if (rc == 0)
   {
 #ifdef USE_IMAP
-    if (m->magic == MUTT_IMAP && !purge)
+    if ((m->magic == MUTT_IMAP) && !purge)
     {
       if (!m->quiet)
         mutt_message(_("Mailbox checkpointed"));
@@ -907,7 +907,7 @@ int mx_mbox_sync(struct Mailbox *m, int *index_hint)
      * MH and maildir are safe.  mbox-style seems to need re-sorting,
      * at least with the new threading code.
      */
-    if (purge || (m->magic != MUTT_MAILDIR && m->magic != MUTT_MH))
+    if (purge || ((m->magic != MUTT_MAILDIR) && (m->magic != MUTT_MH)))
     {
       /* IMAP does this automatically after handling EXPUNGE */
       if (m->magic != MUTT_IMAP)
@@ -962,7 +962,7 @@ struct Message *mx_msg_open_new(struct Mailbox *m, struct Email *e, MsgOpenFlags
     if (m->magic == MUTT_MMDF)
       fputs(MMDF_SEP, msg->fp);
 
-    if ((m->magic == MUTT_MBOX || m->magic == MUTT_MMDF) && flags & MUTT_ADD_FROM)
+    if (((m->magic == MUTT_MBOX) || (m->magic == MUTT_MMDF)) && flags & MUTT_ADD_FROM)
     {
       if (e)
       {
@@ -998,7 +998,7 @@ int mx_mbox_check(struct Mailbox *m, int *index_hint)
     return -1;
 
   int rc = m->mx_ops->mbox_check(m, index_hint);
-  if (rc == MUTT_NEW_MAIL || rc == MUTT_REOPENED)
+  if ((rc == MUTT_NEW_MAIL) || (rc == MUTT_REOPENED))
     mutt_mailbox_changed(m, MBN_INVALID);
 
   return rc;

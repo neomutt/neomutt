@@ -1044,7 +1044,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
         {
           if (validity & PGP_KV_STRONGID)
           {
-            if (the_strong_valid_key && the_strong_valid_key != k)
+            if (the_strong_valid_key && (the_strong_valid_key != k))
               multi = true;
             the_strong_valid_key = k;
           }

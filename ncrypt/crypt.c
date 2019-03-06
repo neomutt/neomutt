@@ -318,7 +318,7 @@ int mutt_protect(struct Email *msg, char *keylist)
         goto bail;
       }
       /* free tmp_body if messages was signed AND encrypted ... */
-      if (tmp_smime_pbody != msg->content && tmp_smime_pbody != tmp_pbody)
+      if ((tmp_smime_pbody != msg->content) && (tmp_smime_pbody != tmp_pbody))
       {
         /* detach and don't delete msg->content,
            which tmp_smime_pbody->parts after signing. */
@@ -425,7 +425,7 @@ int mutt_is_multipart_encrypted(struct Body *b)
 
   char *p = NULL;
 
-  if (!b || b->type != TYPE_MULTIPART || !b->subtype ||
+  if (!b || (b->type != TYPE_MULTIPART) || !b->subtype ||
       (mutt_str_strcasecmp(b->subtype, "encrypted") != 0) ||
       !(p = mutt_param_get(&b->parameter, "protocol")) ||
       (mutt_str_strcasecmp(p, "application/pgp-encrypted") != 0))
@@ -448,14 +448,14 @@ int mutt_is_valid_multipart_pgp_encrypted(struct Body *b)
     return 0;
 
   b = b->parts;
-  if (!b || b->type != TYPE_APPLICATION || !b->subtype ||
+  if (!b || (b->type != TYPE_APPLICATION) || !b->subtype ||
       (mutt_str_strcasecmp(b->subtype, "pgp-encrypted") != 0))
   {
     return 0;
   }
 
   b = b->next;
-  if (!b || b->type != TYPE_APPLICATION || !b->subtype ||
+  if (!b || (b->type != TYPE_APPLICATION) || !b->subtype ||
       (mutt_str_strcasecmp(b->subtype, "octet-stream") != 0))
   {
     return 0;
@@ -485,28 +485,28 @@ int mutt_is_malformed_multipart_pgp_encrypted(struct Body *b)
   if (!(WithCrypto & APPLICATION_PGP))
     return 0;
 
-  if (!b || b->type != TYPE_MULTIPART || !b->subtype ||
+  if (!b || (b->type != TYPE_MULTIPART) || !b->subtype ||
       (mutt_str_strcasecmp(b->subtype, "mixed") != 0))
   {
     return 0;
   }
 
   b = b->parts;
-  if (!b || b->type != TYPE_TEXT || !b->subtype ||
-      (mutt_str_strcasecmp(b->subtype, "plain") != 0) || b->length != 0)
+  if (!b || (b->type != TYPE_TEXT) || !b->subtype ||
+      (mutt_str_strcasecmp(b->subtype, "plain") != 0) || (b->length != 0))
   {
     return 0;
   }
 
   b = b->next;
-  if (!b || b->type != TYPE_APPLICATION || !b->subtype ||
+  if (!b || (b->type != TYPE_APPLICATION) || !b->subtype ||
       (mutt_str_strcasecmp(b->subtype, "pgp-encrypted") != 0))
   {
     return 0;
   }
 
   b = b->next;
-  if (!b || b->type != TYPE_APPLICATION || !b->subtype ||
+  if (!b || (b->type != TYPE_APPLICATION) || !b->subtype ||
       (mutt_str_strcasecmp(b->subtype, "octet-stream") != 0))
   {
     return 0;
@@ -558,7 +558,7 @@ SecurityFlags mutt_is_application_pgp(struct Body *m)
     if (mutt_str_strcasecmp(m->subtype, "pgp-keys") == 0)
       t |= PGP_KEY;
   }
-  else if (m->type == TYPE_TEXT && (mutt_str_strcasecmp("plain", m->subtype) == 0))
+  else if ((m->type == TYPE_TEXT) && (mutt_str_strcasecmp("plain", m->subtype) == 0))
   {
     if (((p = mutt_param_get(&m->parameter, "x-mutt-action")) ||
          (p = mutt_param_get(&m->parameter, "x-action")) ||
@@ -609,9 +609,9 @@ SecurityFlags mutt_is_application_smime(struct Body *m)
         return SEC_NO_FLAGS;
     }
     /* Netscape 4.7 uses
-      * Content-Description: S/MIME Encrypted Message
-      * instead of Content-Type parameter
-      */
+     * Content-Description: S/MIME Encrypted Message
+     * instead of Content-Type parameter
+     */
     if (mutt_str_strcasecmp(m->description, "S/MIME Encrypted Message") == 0)
       return SMIME_ENCRYPT;
     complain = true;
@@ -638,7 +638,7 @@ SecurityFlags mutt_is_application_smime(struct Body *m)
   /* no .p7c, .p10 support yet. */
 
   int len = mutt_str_strlen(t) - 4;
-  if (len > 0 && *(t + len) == '.')
+  if ((len > 0) && (*(t + len) == '.'))
   {
     len++;
     if (mutt_str_strcasecmp((t + len), "p7m") == 0)
@@ -686,7 +686,7 @@ int crypt_query(struct Body *m)
         t |= SEC_BADSIGN;
     }
   }
-  else if (((WithCrypto & APPLICATION_PGP) != 0) && m->type == TYPE_TEXT)
+  else if (((WithCrypto & APPLICATION_PGP) != 0) && (m->type == TYPE_TEXT))
   {
     t |= mutt_is_application_pgp(m);
     if (t && m->goodsig)
@@ -703,7 +703,7 @@ int crypt_query(struct Body *m)
       t |= SEC_GOODSIGN;
   }
 
-  if (m->type == TYPE_MULTIPART || m->type == TYPE_MESSAGE)
+  if ((m->type == TYPE_MULTIPART) || (m->type == TYPE_MESSAGE))
   {
     int u = m->parts ? 0xffffffff : 0; /* Bits set in all parts */
     int w = 0;                         /* Bits set in any part  */
@@ -764,7 +764,7 @@ int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile)
       hadcr = true;
     else
     {
-      if (c == '\n' && !hadcr)
+      if ((c == '\n') && !hadcr)
         fputc('\r', fp);
 
       hadcr = false;
@@ -798,7 +798,7 @@ void crypt_convert_to_7bit(struct Body *a)
       else if (((WithCrypto & APPLICATION_PGP) != 0) && C_PgpStrictEnc)
         crypt_convert_to_7bit(a->parts);
     }
-    else if (a->type == TYPE_MESSAGE &&
+    else if ((a->type == TYPE_MESSAGE) &&
              (mutt_str_strcasecmp(a->subtype, "delivery-status") != 0))
     {
       if (a->encoding != ENC_7BIT)
@@ -808,7 +808,7 @@ void crypt_convert_to_7bit(struct Body *a)
       a->encoding = ENC_QUOTED_PRINTABLE;
     else if (a->encoding == ENC_BINARY)
       a->encoding = ENC_BASE64;
-    else if (a->content && a->encoding != ENC_BASE64 &&
+    else if (a->content && (a->encoding != ENC_BASE64) &&
              (a->content->from || (a->content->space && C_PgpStrictEnc)))
     {
       a->encoding = ENC_QUOTED_PRINTABLE;
@@ -1111,21 +1111,21 @@ int mutt_signed_handler(struct Body *a, struct State *s)
     switch (signed_type)
     {
       case SEC_SIGN:
-        if (a->next->type != TYPE_MULTIPART ||
+        if ((a->next->type != TYPE_MULTIPART) ||
             (mutt_str_strcasecmp(a->next->subtype, "mixed") != 0))
         {
           inconsistent = true;
         }
         break;
       case PGP_SIGN:
-        if (a->next->type != TYPE_APPLICATION ||
+        if ((a->next->type != TYPE_APPLICATION) ||
             (mutt_str_strcasecmp(a->next->subtype, "pgp-signature") != 0))
         {
           inconsistent = true;
         }
         break;
       case SMIME_SIGN:
-        if (a->next->type != TYPE_APPLICATION ||
+        if ((a->next->type != TYPE_APPLICATION) ||
             ((mutt_str_strcasecmp(a->next->subtype, "x-pkcs7-signature") != 0) &&
              (mutt_str_strcasecmp(a->next->subtype, "pkcs7-signature") != 0)))
         {
@@ -1158,7 +1158,8 @@ int mutt_signed_handler(struct Body *a, struct State *s)
       {
         for (int i = 0; i < sigcnt; i++)
         {
-          if (((WithCrypto & APPLICATION_PGP) != 0) && signatures[i]->type == TYPE_APPLICATION &&
+          if (((WithCrypto & APPLICATION_PGP) != 0) &&
+              (signatures[i]->type == TYPE_APPLICATION) &&
               (mutt_str_strcasecmp(signatures[i]->subtype, "pgp-signature") == 0))
           {
             if (crypt_pgp_verify_one(signatures[i], s, tempfile) != 0)
@@ -1167,7 +1168,8 @@ int mutt_signed_handler(struct Body *a, struct State *s)
             continue;
           }
 
-          if (((WithCrypto & APPLICATION_SMIME) != 0) && signatures[i]->type == TYPE_APPLICATION &&
+          if (((WithCrypto & APPLICATION_SMIME) != 0) &&
+              (signatures[i]->type == TYPE_APPLICATION) &&
               ((mutt_str_strcasecmp(signatures[i]->subtype,
                                     "x-pkcs7-signature") == 0) ||
                (mutt_str_strcasecmp(signatures[i]->subtype,
@@ -1252,7 +1254,8 @@ const char *crypt_get_fingerprint_or_id(char *p, const char **pphint,
   do
   {
     c = *(s1++);
-    if (('0' <= c && c <= '9') || ('A' <= c && c <= 'F') || ('a' <= c && c <= 'f'))
+    if ((('0' <= c) && (c <= '9')) || (('A' <= c) && (c <= 'F')) ||
+        (('a' <= c) && (c <= 'f')))
     {
       hexdigits++;
       if (isid == 2)
@@ -1261,7 +1264,7 @@ const char *crypt_get_fingerprint_or_id(char *p, const char **pphint,
     else if (c)
     {
       isid = 0; /* not an ID */
-      if (c == ' ' && ((hexdigits % 4) == 0))
+      if ((c == ' ') && ((hexdigits % 4) == 0))
         ; /* skip blank before or after 4 hex digits */
       else
         break; /* any other character or position */

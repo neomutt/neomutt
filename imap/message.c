@@ -116,7 +116,7 @@ static struct BodyCache *msg_cache_open(struct Mailbox *m)
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
 
-  if (!adata || adata->mailbox != m)
+  if (!adata || (adata->mailbox != m))
     return NULL;
 
   char mailbox[PATH_MAX];
@@ -141,7 +141,7 @@ static FILE *msg_cache_get(struct Mailbox *m, struct Email *e)
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
 
-  if (!e || !adata || adata->mailbox != m)
+  if (!e || !adata || (adata->mailbox != m))
     return NULL;
 
   mdata->bcache = msg_cache_open(m);
@@ -162,7 +162,7 @@ static FILE *msg_cache_put(struct Mailbox *m, struct Email *e)
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
 
-  if (!e || !adata || adata->mailbox != m)
+  if (!e || !adata || (adata->mailbox != m))
     return NULL;
 
   mdata->bcache = msg_cache_open(m);
@@ -183,7 +183,7 @@ static int msg_cache_commit(struct Mailbox *m, struct Email *e)
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
 
-  if (!e || !adata || adata->mailbox != m)
+  if (!e || !adata || (adata->mailbox != m))
     return -1;
 
   mdata->bcache = msg_cache_open(m);
@@ -206,7 +206,7 @@ static int msg_cache_clean_cb(const char *id, struct BodyCache *bcache, void *da
     return 0;
 
   /* bad UID */
-  if (uv != mdata->uid_validity || !mutt_hash_int_find(mdata->uid_hash, uid))
+  if ((uv != mdata->uid_validity) || !mutt_hash_int_find(mdata->uid_hash, uid))
     mutt_bcache_del(bcache, id);
 
   return 0;
@@ -465,7 +465,7 @@ static int msg_fetch_header(struct Mailbox *m, struct ImapHeader *ih, char *buf,
   parse_rc = msg_parse_fetch(ih, buf);
   if (!parse_rc)
     return 0;
-  if (parse_rc != -2 || !fp)
+  if ((parse_rc != -2) || !fp)
     return rc;
 
   if (imap_get_literal_count(buf, &bytes) == 0)
@@ -1027,7 +1027,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
   struct ImapMboxData *mdata = imap_mdata_get(m);
   int idx = m->msg_count;
 
-  if (!adata || adata->mailbox != m)
+  if (!adata || (adata->mailbox != m))
     return -1;
 
   if (adata->capabilities & IMAP_CAP_IMAP4REV1)
@@ -1247,7 +1247,7 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
 
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
-  if (!adata || adata->mailbox != m)
+  if (!adata || (adata->mailbox != m))
     return -1;
 
   /* make sure context has room to hold the mailbox */
@@ -1345,13 +1345,13 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
   if (read_headers_fetch_new(m, msn_begin, msn_end, evalhc, &maxuid, initial_download) < 0)
     goto bail;
 
-  if (maxuid && mdata->uid_next < maxuid + 1)
+  if (maxuid && (mdata->uid_next < maxuid + 1))
     mdata->uid_next = maxuid + 1;
 
 #ifdef USE_HCACHE
   mutt_hcache_store_raw(mdata->hcache, "/UIDVALIDITY", 12, &mdata->uid_validity,
                         sizeof(mdata->uid_validity));
-  if (maxuid && mdata->uid_next < maxuid + 1)
+  if (maxuid && (mdata->uid_next < maxuid + 1))
   {
     mutt_debug(LL_DEBUG2, "Overriding UIDNEXT: %u -> %u\n", mdata->uid_next, maxuid + 1);
     mdata->uid_next = maxuid + 1;
@@ -1444,7 +1444,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
    * Ideally we'd have a Header structure with flag info here... */
   for (last = EOF, len = 0; (c = fgetc(fp)) != EOF; last = c)
   {
-    if (c == '\n' && last != '\r')
+    if ((c == '\n') && (last != '\r'))
       len++;
 
     len++;
@@ -1490,7 +1490,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
 
   for (last = EOF, sent = len = 0; (c = fgetc(fp)) != EOF; last = c)
   {
-    if (c == '\n' && last != '\r')
+    if ((c == '\n') && (last != '\r'))
       buf[len++] = '\r';
 
     buf[len++] = c;
@@ -1667,7 +1667,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool
         break;
       mutt_debug(LL_DEBUG3, "server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), mbox);
-      if (C_Confirmcreate && mutt_yesorno(prompt, MUTT_YES) != MUTT_YES)
+      if (C_Confirmcreate && (mutt_yesorno(prompt, MUTT_YES) != MUTT_YES))
       {
         mutt_clear_error();
         goto out;
@@ -1719,7 +1719,7 @@ int imap_cache_del(struct Mailbox *m, struct Email *e)
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
 
-  if (!e || !adata || adata->mailbox != m)
+  if (!e || !adata || (adata->mailbox != m))
     return -1;
 
   mdata->bcache = msg_cache_open(m);
@@ -1738,7 +1738,7 @@ int imap_cache_clean(struct Mailbox *m)
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
 
-  if (!adata || adata->mailbox != m)
+  if (!adata || (adata->mailbox != m))
     return -1;
 
   mdata->bcache = msg_cache_open(m);
@@ -1768,7 +1768,7 @@ int imap_cache_clean(struct Mailbox *m)
 char *imap_set_flags(struct Mailbox *m, struct Email *e, char *s, bool *server_changes)
 {
   struct ImapAccountData *adata = imap_adata_get(m);
-  if (!adata || adata->mailbox != m)
+  if (!adata || (adata->mailbox != m))
     return NULL;
 
   struct ImapHeader newh = { 0 };
@@ -1850,7 +1850,7 @@ int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 
   struct ImapAccountData *adata = imap_adata_get(m);
 
-  if (!adata || adata->mailbox != m)
+  if (!adata || (adata->mailbox != m))
     return -1;
 
   struct Email *e = m->emails[msgno];

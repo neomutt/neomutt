@@ -281,7 +281,7 @@ int mutt_alloc_color(int fg, int bg)
   /* check to see if this color is already allocated to save space */
   while (p)
   {
-    if (p->fg == fg && p->bg == bg)
+    if ((p->fg == fg) && (p->bg == bg))
     {
       (p->count)++;
       return COLOR_PAIR(p->index);
@@ -319,7 +319,7 @@ int mutt_alloc_color(int fg, int bg)
   p->fg = fg;
 
 #ifdef USE_SLANG_CURSES
-  if (fg == COLOR_DEFAULT || bg == COLOR_DEFAULT)
+  if ((fg == COLOR_DEFAULT) || (bg == COLOR_DEFAULT))
   {
     char fgc[128], bgc[128];
     SLtt_set_color(i, NULL, get_color_name(fgc, sizeof(fgc), fg),
@@ -400,7 +400,7 @@ void mutt_free_color(int fg, int bg)
   struct ColorList *p = ColorList;
   while (p)
   {
-    if (p->fg == fg && p->bg == bg)
+    if ((p->fg == fg) && (p->bg == bg))
     {
       (p->count)--;
       if (p->count > 0)
@@ -748,9 +748,9 @@ static enum CommandResult add_pattern(struct ColorLineHead *top, const char *s,
   if (tmp)
   {
 #ifdef HAVE_COLOR
-    if (fg != -1 && bg != -1)
+    if ((fg != -1) && (bg != -1))
     {
-      if (tmp->fg != fg || tmp->bg != bg)
+      if ((tmp->fg != fg) || (tmp->bg != bg))
       {
         mutt_free_color(tmp->fg, tmp->bg);
         tmp->fg = fg;
@@ -797,7 +797,7 @@ static enum CommandResult add_pattern(struct ColorLineHead *top, const char *s,
     tmp->pattern = mutt_str_strdup(s);
     tmp->match = match;
 #ifdef HAVE_COLOR
-    if (fg != -1 && bg != -1)
+    if ((fg != -1) && (bg != -1))
     {
       tmp->fg = fg;
       tmp->bg = bg;
@@ -844,7 +844,7 @@ static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql,
     {
       char *eptr = NULL;
       *ql = strtol(buf->data + 6, &eptr, 10);
-      if (*eptr || *ql < 0)
+      if (*eptr || (*ql < 0))
       {
         mutt_buffer_printf(err, _("%s: no such object"), buf->data);
         return -1;
@@ -999,7 +999,7 @@ static int parse_attr_spec(struct Buffer *buf, struct Buffer *s, int *fg,
 static int fgbgattr_to_color(int fg, int bg, int attr)
 {
 #ifdef HAVE_COLOR
-  if (fg != -1 && bg != -1)
+  if ((fg != -1) && (bg != -1))
     return attr | mutt_alloc_color(fg, bg);
   else
 #endif
@@ -1067,8 +1067,8 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
   if (!OptNoCurses &&
       has_colors()
       /* delay use_default_colors() until needed, since it initializes things */
-      && (fg == COLOR_DEFAULT || bg == COLOR_DEFAULT || object == MT_COLOR_TREE) &&
-      use_default_colors() != OK)
+      && ((fg == COLOR_DEFAULT) || (bg == COLOR_DEFAULT) || (object == MT_COLOR_TREE)) &&
+      (use_default_colors() != OK))
   /* the case of the tree object is special, because a non-default
    * fg color of the tree element may be combined dynamically with
    * the default bg color of an index line, not necessarily defined in

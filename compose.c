@@ -214,7 +214,7 @@ static void calc_header_width_padding(int idx, const char *header, bool calc_max
 
   HeaderPadding[idx] = mutt_str_strlen(header);
   width = mutt_strwidth(header);
-  if (calc_max && MaxHeaderWidth < width)
+  if (calc_max && (MaxHeaderWidth < width))
     MaxHeaderWidth = width;
   HeaderPadding[idx] -= width;
 }
@@ -377,7 +377,7 @@ static void redraw_mix_line(struct ListHead *chain)
   STAILQ_FOREACH(np, chain, entries)
   {
     t = np->data;
-    if (t && t[0] == '0' && t[1] == '\0')
+    if (t && (t[0] == '0') && (t[1] == '\0'))
       t = "<random>";
 
     if (c + mutt_str_strlen(t) + 2 >= MuttIndexWindow->cols)
@@ -556,7 +556,7 @@ static int delete_attachment(struct AttachCtx *actx, int x)
   struct AttachPtr **idx = actx->idx;
   int rindex = actx->v2r[x];
 
-  if (rindex == 0 && actx->idxlen == 1)
+  if ((rindex == 0) && (actx->idxlen == 1))
   {
     mutt_error(_("You may not delete the only attachment"));
     idx[rindex]->content->tagged = false;
@@ -597,7 +597,7 @@ static void mutt_gen_compose_attach_list(struct AttachCtx *actx, struct Body *m,
 {
   for (; m; m = m->next)
   {
-    if (m->type == TYPE_MULTIPART && m->parts &&
+    if ((m->type == TYPE_MULTIPART) && m->parts &&
         (!(WithCrypto & APPLICATION_PGP) || !mutt_is_multipart_encrypted(m)))
     {
       mutt_gen_compose_attach_list(actx, m->parts, m->type, level);
@@ -1077,7 +1077,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
 
       case OP_COMPOSE_EDIT_HEADERS:
         if ((mutt_str_strcmp("builtin", C_Editor) != 0) &&
-            (op == OP_COMPOSE_EDIT_HEADERS || (op == OP_COMPOSE_EDIT_MESSAGE && C_EditHeaders)))
+            ((op == OP_COMPOSE_EDIT_HEADERS) || ((op == OP_COMPOSE_EDIT_MESSAGE) && C_EditHeaders)))
         {
           const char *tag = NULL;
           char *err = NULL;
@@ -1623,7 +1623,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
       case OP_COMPOSE_EDIT_ENCODING:
         CHECK_COUNT;
         mutt_str_strfcpy(buf, ENCODING(CURATTACH->content->encoding), sizeof(buf));
-        if (mutt_get_field("Content-Transfer-Encoding: ", buf, sizeof(buf), 0) == 0 &&
+        if ((mutt_get_field("Content-Transfer-Encoding: ", buf, sizeof(buf), 0) == 0) &&
             (buf[0] != '\0'))
         {
           int enc = mutt_check_encoding(buf);
@@ -1650,7 +1650,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         }
 
 #ifdef MIXMASTER
-        if (!STAILQ_EMPTY(&msg->chain) && mix_check_message(msg) != 0)
+        if (!STAILQ_EMPTY(&msg->chain) && (mix_check_message(msg) != 0))
           break;
 #endif
 
@@ -1755,7 +1755,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
       {
         mutt_window_clearline(MuttMessageWindow, 0);
         buf[0] = '\0';
-        if (mutt_get_field(_("New file: "), buf, sizeof(buf), MUTT_FILE) != 0 ||
+        if ((mutt_get_field(_("New file: "), buf, sizeof(buf), MUTT_FILE) != 0) ||
             (buf[0] == '\0'))
         {
           continue;
@@ -1764,7 +1764,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
 
         /* Call to lookup_mime_type () ?  maybe later */
         char type[256] = { 0 };
-        if (mutt_get_field("Content-Type: ", type, sizeof(type), 0) != 0 || !type[0])
+        if ((mutt_get_field("Content-Type: ", type, sizeof(type), 0) != 0) || !type[0])
           continue;
 
         char *p = strchr(type, '/');

@@ -378,7 +378,7 @@ int mutt_file_safe_rename(const char *src, const char *target)
 
     /* FUSE may return ENOSYS. VFAT may return EPERM. FreeBSD's
      * msdosfs may return EOPNOTSUPP.  ENOTSUP can also appear. */
-    if (errno == EXDEV || errno == ENOSYS || errno == EPERM
+    if ((errno == EXDEV) || (errno == ENOSYS) || errno == EPERM
 #ifdef ENOTSUP
         || errno == ENOTSUP
 #endif
@@ -526,7 +526,7 @@ int mutt_file_open(const char *path, int flags)
     return fd;
 
   /* make sure the file is not symlink */
-  if ((lstat(path, &osb) < 0 || fstat(fd, &nsb) < 0) || !compare_stat(&osb, &nsb))
+  if (((lstat(path, &osb) < 0) || (fstat(fd, &nsb) < 0)) || !compare_stat(&osb, &nsb))
   {
     close(fd);
     return -1;
@@ -1218,7 +1218,7 @@ void mutt_file_unlink_empty(const char *path)
     return;
   }
 
-  if (fstat(fd, &sb) == 0 && sb.st_size == 0)
+  if ((fstat(fd, &sb) == 0) && (sb.st_size == 0))
     unlink(path);
 
   mutt_file_unlock(fd);

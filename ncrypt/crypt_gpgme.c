@@ -246,7 +246,7 @@ static const char *parse_version_number(const char *s, int *number)
 {
   int val = 0;
 
-  if (*s == '0' && digit(s + 1))
+  if ((*s == '0') && digit(s + 1))
     return NULL; /* Leading zeros are not allowed.  */
   for (; digit(s); s++)
   {
@@ -385,7 +385,7 @@ static int cmp_version_strings(const char *a, const char *b, int level)
 
   for (; *a_plvl && *b_plvl; a_plvl++, b_plvl++)
   {
-    if (*a_plvl == '.' && *b_plvl == '.')
+    if ((*a_plvl == '.') && (*b_plvl == '.'))
     {
       r = strcmp(a_plvl, b_plvl);
       if (!r)
@@ -829,7 +829,7 @@ static gpgme_data_t body_to_data_object(struct Body *a, bool convert)
         hadcr = 1;
       else
       {
-        if (c == '\n' && !hadcr)
+        if ((c == '\n') && !hadcr)
         {
           buf[0] = '\r';
           gpgme_data_write(data, buf, 1);
@@ -1035,7 +1035,7 @@ static gpgme_key_t *create_recipient_set(const char *keylist, gpgme_protocol_t p
     buf[i] = 0;
     if (*buf)
     {
-      if (i > 1 && buf[i - 1] == '!')
+      if ((i > 1) && (buf[i - 1] == '!'))
       {
         /* The user selected to override the validity of that
            key. */
@@ -1618,7 +1618,7 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
 
   if (C_CryptUsePka)
   {
-    if (sig->pka_trust == 1 && sig->pka_address)
+    if ((sig->pka_trust == 1) && sig->pka_address)
     {
       state_puts(_("WARNING: PKA entry does not match "
                    "signer's address: "),
@@ -1626,7 +1626,7 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
       state_puts(sig->pka_address, s);
       state_puts("\n", s);
     }
-    else if (sig->pka_trust == 2 && sig->pka_address)
+    else if ((sig->pka_trust == 2) && sig->pka_address)
     {
       state_puts(_("PKA verified signer's address is: "), s);
       state_puts(sig->pka_address, s);
@@ -1658,7 +1658,7 @@ static void show_fingerprint(gpgme_key_t key, struct State *state)
   buf = mutt_mem_malloc(strlen(prefix) + strlen(s) * 4 + 2);
   strcpy(buf, prefix);
   p = buf + strlen(buf);
-  if (is_pgp && strlen(s) == 40)
+  if (is_pgp && (strlen(s) == 40))
   { /* PGP v4 style formatted. */
     for (int i = 0; *s && s[1] && s[2] && s[3] && s[4]; s += 4, i++)
     {
@@ -1678,7 +1678,7 @@ static void show_fingerprint(gpgme_key_t key, struct State *state)
       *p++ = s[0];
       *p++ = s[1];
       *p++ = is_pgp ? ' ' : ':';
-      if (is_pgp && i == 7)
+      if (is_pgp && (i == 7))
         *p++ = ' ';
     }
   }
@@ -2132,7 +2132,7 @@ restart:
   gpgme_data_release(ciphertext);
   if (err)
   {
-    if (is_smime && !maybe_signed && gpg_err_code(err) == GPG_ERR_NO_DATA)
+    if (is_smime && !maybe_signed && (gpg_err_code(err) == GPG_ERR_NO_DATA))
     {
       /* Check whether this might be a signed message despite what
              the mime header told us.  Retry then.  gpgsm returns the
@@ -2582,7 +2582,7 @@ static int line_compare(const char *a, size_t n, const char *b)
   if (mutt_str_strncmp(a, b, n) == 0)
   {
     /* at this point we know that 'b' is at least 'n' chars long */
-    if (b[n] == '\n' || (b[n] == '\r' && b[n + 1] == '\n'))
+    if ((b[n] == '\n') || ((b[n] == '\r') && (b[n + 1] == '\n')))
       return true;
   }
   return false;
@@ -2839,7 +2839,7 @@ static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
     if (s->prefix)
       state_puts(s->prefix, s);
 
-    if (buf[0] == '-' && buf[1] == ' ')
+    if ((buf[0] == '-') && (buf[1] == ' '))
       state_puts(buf + 2, s);
     else
       state_puts(buf, s);
@@ -3039,7 +3039,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
         while ((c = mutt_ch_fgetconv(fc)) != EOF)
         {
           state_putc(c, s);
-          if (c == '\n' && s->prefix)
+          if ((c == '\n') && s->prefix)
             state_puts(s->prefix, s);
         }
         mutt_ch_fgetconv_close(&fc);
@@ -3318,7 +3318,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
   /*      key = pkey; */
 
   KeyFlags kflags = (key->flags /* | (pkey->flags & KEYFLAG_RESTRICTIONS)
-                                   | uid->flags */);
+                                 | uid->flags */);
 
   switch (tolower(op))
   {
@@ -3815,8 +3815,8 @@ static const char *parse_dn_part(struct DnArray *array, const char *string)
       if (*s == '\\')
       { /* pair */
         s++;
-        if (*s == ',' || *s == '=' || *s == '+' || *s == '<' || *s == '>' ||
-            *s == '#' || *s == ';' || *s == '\\' || *s == '\"' || *s == ' ')
+        if ((*s == ',') || (*s == '=') || (*s == '+') || (*s == '<') || (*s == '>') ||
+            (*s == '#') || (*s == ';') || (*s == '\\') || (*s == '\"') || (*s == ' '))
         {
           n++;
         }
@@ -3830,8 +3830,8 @@ static const char *parse_dn_part(struct DnArray *array, const char *string)
       }
       else if (*s == '\"')
         return NULL; /* invalid encoding */
-      else if (*s == ',' || *s == '=' || *s == '+' || *s == '<' || *s == '>' ||
-               *s == '#' || *s == ';')
+      else if ((*s == ',') || (*s == '=') || (*s == '+') || (*s == '<') ||
+               (*s == '>') || (*s == '#') || (*s == ';'))
       {
         break;
       }
@@ -3905,7 +3905,7 @@ static struct DnArray *parse_dn(const char *string)
       goto failure;
     while (*string == ' ')
       string++;
-    if (*string && *string != ',' && *string != ';' && *string != '+')
+    if (*string && (*string != ',') && (*string != ';') && (*string != '+'))
       goto failure; /* invalid delimiter */
     if (*string)
       string++;
@@ -4176,7 +4176,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
   {
     s = key->subkeys->fpr;
     fprintf(fp, "%*s", KeyInfoPadding[KIP_FINGERPRINT], _(KeyInfoPrompts[KIP_FINGERPRINT]));
-    if (is_pgp && strlen(s) == 40)
+    if (is_pgp && (strlen(s) == 40))
     {
       for (int i = 0; *s && s[1] && s[2] && s[3] && s[4]; s += 4, i++)
       {
@@ -4196,7 +4196,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
         putc(*s, fp);
         putc(s[1], fp);
         putc(is_pgp ? ' ' : ':', fp);
-        if (is_pgp && i == 7)
+        if (is_pgp && (i == 7))
           putc(' ', fp);
       }
     }
@@ -4396,7 +4396,7 @@ static char *list_to_pattern(struct ListHead *list)
   {
     for (s = np->data; *s; s++)
     {
-      if (*s == '%' || *s == '+')
+      if ((*s == '%') || (*s == '+'))
         n += 2;
       n++;
     }
@@ -4894,7 +4894,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
         {
           if (validity & CRYPT_KV_STRONGID)
           {
-            if (the_strong_valid_key && the_strong_valid_key->kobj != k->kobj)
+            if (the_strong_valid_key && (the_strong_valid_key->kobj != k->kobj))
               multi = true;
             this_key_has_strong = true;
           }

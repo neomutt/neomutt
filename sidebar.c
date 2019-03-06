@@ -171,7 +171,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, c ? Context->mailbox->vcount : m->msg_count);
       }
-      else if ((c && Context->mailbox->vcount == m->msg_count) || !c)
+      else if ((c && (Context->mailbox->vcount == m->msg_count)) || !c)
         optional = 0;
       break;
 
@@ -446,7 +446,7 @@ static bool select_next(void)
 {
   int entry = HilIndex;
 
-  if (!EntryCount || HilIndex < 0)
+  if (!EntryCount || (HilIndex < 0))
     return false;
 
   do
@@ -471,7 +471,7 @@ static int select_next_new(void)
 {
   int entry = HilIndex;
 
-  if (!EntryCount || HilIndex < 0)
+  if (!EntryCount || (HilIndex < 0))
     return false;
 
   do
@@ -501,7 +501,7 @@ static bool select_prev(void)
 {
   int entry = HilIndex;
 
-  if (!EntryCount || HilIndex < 0)
+  if (!EntryCount || (HilIndex < 0))
     return false;
 
   do
@@ -526,7 +526,7 @@ static bool select_prev_new(void)
 {
   int entry = HilIndex;
 
-  if (!EntryCount || HilIndex < 0)
+  if (!EntryCount || (HilIndex < 0))
     return false;
 
   do
@@ -556,7 +556,7 @@ static int select_page_down(void)
 {
   int orig_hil_index = HilIndex;
 
-  if (!EntryCount || BotIndex < 0)
+  if (!EntryCount || (BotIndex < 0))
     return 0;
 
   HilIndex = BotIndex;
@@ -577,7 +577,7 @@ static int select_page_up(void)
 {
   int orig_hil_index = HilIndex;
 
-  if (!EntryCount || TopIndex < 0)
+  if (!EntryCount || (TopIndex < 0))
     return 0;
 
   HilIndex = TopIndex;
@@ -1131,15 +1131,15 @@ void mutt_sb_notify_mailbox(struct Mailbox *m, bool created)
     FREE(&Entries[del_index]);
     EntryCount--;
 
-    if (TopIndex > del_index || TopIndex == EntryCount)
+    if ((TopIndex > del_index) || (TopIndex == EntryCount))
       TopIndex--;
     if (OpnIndex == del_index)
       OpnIndex = -1;
     else if (OpnIndex > del_index)
       OpnIndex--;
-    if (HilIndex > del_index || HilIndex == EntryCount)
+    if ((HilIndex > del_index) || (HilIndex == EntryCount))
       HilIndex--;
-    if (BotIndex > del_index || BotIndex == EntryCount)
+    if ((BotIndex > del_index) || (BotIndex == EntryCount))
       BotIndex--;
 
     for (; del_index < EntryCount; del_index++)

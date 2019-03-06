@@ -130,7 +130,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
       break;
 
     if (mutt_str_startswith(inbuf, "+ ", CASE_MATCH) &&
-        sasl_decode64(inbuf + 2, strlen(inbuf + 2), buf, bufsize - 1, &len) != SASL_OK)
+        (sasl_decode64(inbuf + 2, strlen(inbuf + 2), buf, bufsize - 1, &len) != SASL_OK))
     {
       mutt_debug(LL_DEBUG1, "error base64-decoding server response.\n");
       goto bail;

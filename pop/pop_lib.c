@@ -73,7 +73,7 @@ int pop_parse_path(const char *path, struct ConnAccount *acct)
   struct Url *url = url_parse(path);
 
   if (!url || ((url->scheme != U_POP) && (url->scheme != U_POPS)) ||
-      !url->host || mutt_account_fromurl(acct, url) < 0)
+      !url->host || (mutt_account_fromurl(acct, url) < 0))
   {
     url_free(&url);
     mutt_error(_("Invalid POP URL: %s"), path);
@@ -264,14 +264,14 @@ static int pop_capabilities(struct PopAccountData *adata, int mode)
  * @retval  0 Successful
  * @retval -1 Connection lost
  * @retval -2 Invalid response
-*/
+ */
 int pop_connect(struct PopAccountData *adata)
 {
   char buf[1024];
 
   adata->status = POP_NONE;
-  if (mutt_socket_open(adata->conn) < 0 ||
-      mutt_socket_readln(buf, sizeof(buf), adata->conn) < 0)
+  if ((mutt_socket_open(adata->conn) < 0) ||
+      (mutt_socket_readln(buf, sizeof(buf), adata->conn) < 0))
   {
     mutt_error(_("Error connecting to server: %s"), adata->conn->account.host);
     return -1;
@@ -517,7 +517,7 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
     }
 
     char *p = buf;
-    if (!lenbuf && buf[0] == '.')
+    if (!lenbuf && (buf[0] == '.'))
     {
       if (buf[1] != '.')
         break;

@@ -82,8 +82,8 @@ static void fix_uid(char *uid)
 
   for (s = uid, d = uid; *s;)
   {
-    if (*s == '\\' && *(s + 1) == 'x' && isxdigit((unsigned char) *(s + 2)) &&
-        isxdigit((unsigned char) *(s + 3)))
+    if ((*s == '\\') && (*(s + 1) == 'x') &&
+        isxdigit((unsigned char) *(s + 2)) && isxdigit((unsigned char) *(s + 3)))
     {
       *d++ = hexval(*(s + 2)) << 4 | hexval(*(s + 3));
       s += 4;
@@ -93,7 +93,7 @@ static void fix_uid(char *uid)
   }
   *d = '\0';
 
-  if (chs && (cd = mutt_ch_iconv_open(chs, "utf-8", 0)) != (iconv_t) -1)
+  if (chs && ((cd = mutt_ch_iconv_open(chs, "utf-8", 0)) != (iconv_t) -1))
   {
     int n = s - uid + 1; /* chars available in original buffer */
 
@@ -110,7 +110,7 @@ static void fix_uid(char *uid)
         memcpy(uid, buf, ob - buf);
         uid[ob - buf] = '\0';
       }
-      else if (n >= 0 && ob - buf == n && (buf[n] = 0, strlen(buf) < (size_t) n))
+      else if ((n >= 0) && (ob - buf == n) && (buf[n] = 0, (strlen(buf) < (size_t) n)))
         memcpy(uid, buf, n);
     }
     FREE(&buf);
@@ -229,7 +229,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
       {
         mutt_debug(LL_DEBUG2, "key len: %s\n", p);
 
-        if (!(*is_subkey && C_PgpIgnoreSubkeys) && mutt_str_atos(p, &tmp.keylen) < 0)
+        if (!(*is_subkey && C_PgpIgnoreSubkeys) && (mutt_str_atos(p, &tmp.keylen) < 0))
         {
           goto bail;
         }

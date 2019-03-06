@@ -201,8 +201,8 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
         return MUTT_CMD_SUCCESS;
       }
     }
-    else if (ptr->type == data &&
-             ptr->regex.not == not&&(mutt_str_strcmp(pattern.data, ptr->regex.pattern) == 0))
+    else if ((ptr->type == data) && (ptr->regex.not == not) &&
+             (mutt_str_strcmp(pattern.data, ptr->regex.pattern) == 0))
     {
       if (data & (MUTT_FOLDER_HOOK | MUTT_SEND_HOOK | MUTT_SEND2_HOOK | MUTT_MESSAGE_HOOK |
                   MUTT_ACCOUNT_HOOK | MUTT_REPLY_HOOK | MUTT_CRYPT_HOOK |
@@ -314,7 +314,7 @@ void mutt_delete_hooks(HookFlags type)
 
   TAILQ_FOREACH_SAFE(h, &Hooks, entries, tmp)
   {
-    if (type == 0 || type == h->type)
+    if ((type == 0) || (type == h->type))
     {
       TAILQ_REMOVE(&Hooks, h, entries);
       delete_hook(h);
@@ -568,7 +568,7 @@ void mutt_select_fcc(char *path, size_t pathlen, struct Email *e)
       char buf[PATH_MAX];
       mutt_safe_path(buf, sizeof(buf), addr);
       mutt_path_concat(path, NONULL(C_Folder), buf, pathlen);
-      if (!C_ForceName && mx_access(path, W_OK) != 0)
+      if (!C_ForceName && (mx_access(path, W_OK) != 0))
         mutt_str_strfcpy(path, C_Record, pathlen);
     }
     else
@@ -589,8 +589,9 @@ static void list_hook(struct ListHead *matches, const char *match, HookFlags hoo
 
   TAILQ_FOREACH(tmp, &Hooks, entries)
   {
-    if ((tmp->type & hook) && ((match && regexec(tmp->regex.regex, match, 0, NULL, 0) == 0) ^
-                               tmp->regex.not))
+    if ((tmp->type & hook) &&
+        ((match && (regexec(tmp->regex.regex, match, 0, NULL, 0) == 0)) ^
+         tmp->regex.not))
     {
       mutt_list_insert_tail(matches, mutt_str_strdup(tmp->command));
     }

@@ -622,9 +622,9 @@ int imap_parse_path(const char *path, struct ConnAccount *account, char *mailbox
   account->type = MUTT_ACCT_TYPE_IMAP;
 
   struct Url *url = url_parse(path);
-  if (url && (url->scheme == U_IMAP || url->scheme == U_IMAPS))
+  if (url && ((url->scheme == U_IMAP) || (url->scheme == U_IMAPS)))
   {
-    if (mutt_account_fromurl(account, url) < 0 || !*account->host)
+    if ((mutt_account_fromurl(account, url) < 0) || !*account->host)
     {
       url_free(&url);
       return -1;
@@ -794,7 +794,7 @@ char *imap_fix_path(char server_delim, const char *mailbox, char *path, size_t p
   while (mailbox && *mailbox && i < plen - 1)
   {
     if ((C_ImapDelimChars && strchr(C_ImapDelimChars, *mailbox)) ||
-        (delim && *mailbox == delim))
+        (delim && (*mailbox == delim)))
     {
       /* use connection delimiter if known. Otherwise use user delimiter */
       if (server_delim == '\0')
@@ -814,7 +814,7 @@ char *imap_fix_path(char server_delim, const char *mailbox, char *path, size_t p
     }
     i++;
   }
-  if (i && path[--i] != delim)
+  if (i && (path[--i] != delim))
     i++;
   path[i] = '\0';
 
@@ -839,7 +839,7 @@ void imap_cachepath(char delim, const char *mailbox, char *dest, size_t dlen)
     {
       *s = '/';
       /* simple way to avoid collisions with UIDs */
-      if (*(p + 1) >= '0' && *(p + 1) <= '9')
+      if ((*(p + 1) >= '0') && (*(p + 1) <= '9'))
       {
         if (--dlen)
           *++s = '_';
@@ -1135,7 +1135,7 @@ void imap_allow_reopen(struct Mailbox *m)
 {
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
-  if (!adata || !adata->mailbox || adata->mailbox != m || !mdata)
+  if (!adata || !adata->mailbox || (adata->mailbox != m) || !mdata)
     return;
   mdata->reopen |= IMAP_REOPEN_ALLOW;
 }
@@ -1148,7 +1148,7 @@ void imap_disallow_reopen(struct Mailbox *m)
 {
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
-  if (!adata || !adata->mailbox || adata->mailbox != m || !mdata)
+  if (!adata || !adata->mailbox || (adata->mailbox != m) || !mdata)
     return;
   mdata->reopen &= ~IMAP_REOPEN_ALLOW;
 }

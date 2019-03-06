@@ -285,7 +285,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
       mutt_str_strfcpy(buf, en->followup_to, sizeof(buf));
     else
       buf[0] = 0;
-    if (C_AskFollowUp && mutt_get_field("Followup-To: ", buf, sizeof(buf), 0) != 0)
+    if (C_AskFollowUp && (mutt_get_field("Followup-To: ", buf, sizeof(buf), 0) != 0))
     {
       return -1;
     }
@@ -297,7 +297,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
     else
       buf[0] = 0;
     if (C_XCommentTo && C_AskXCommentTo &&
-        mutt_get_field("X-Comment-To: ", buf, sizeof(buf), 0) != 0)
+        (mutt_get_field("X-Comment-To: ", buf, sizeof(buf), 0) != 0))
     {
       return -1;
     }
@@ -307,11 +307,11 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
   else
 #endif
   {
-    if (edit_address(&en->to, _("To: ")) == -1 || !en->to)
+    if ((edit_address(&en->to, _("To: ")) == -1) || !en->to)
       return -1;
-    if (C_Askcc && edit_address(&en->cc, _("Cc: ")) == -1)
+    if (C_Askcc && (edit_address(&en->cc, _("Cc: ")) == -1))
       return -1;
-    if (C_Askbcc && edit_address(&en->bcc, _("Bcc: ")) == -1)
+    if (C_Askbcc && (edit_address(&en->bcc, _("Bcc: ")) == -1))
       return -1;
     if (C_ReplyWithXorig && (flags & (SEND_REPLY | SEND_LIST_REPLY | SEND_GROUP_REPLY)) &&
         (edit_address(&en->from, "From: ") == -1))
@@ -344,8 +344,9 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
     }
   }
 
-  if (mutt_get_field(_("Subject: "), buf, sizeof(buf), 0) != 0 ||
-      (!buf[0] && query_quadoption(C_AbortNosubject, _("No subject, abort?")) != MUTT_NO))
+  if ((mutt_get_field(_("Subject: "), buf, sizeof(buf), 0) != 0) ||
+      (!buf[0] &&
+       (query_quadoption(C_AbortNosubject, _("No subject, abort?")) != MUTT_NO)))
   {
     mutt_message(_("No subject, aborting"));
     return -1;
@@ -621,7 +622,7 @@ static int default_to(struct Address **to, struct Envelope *env, SendFlags flags
 {
   char prompt[256];
 
-  if (flags && env->mail_followup_to && hmfupto == MUTT_YES)
+  if (flags && env->mail_followup_to && (hmfupto == MUTT_YES))
   {
     mutt_addr_append(to, env->mail_followup_to, true);
     return 0;
@@ -655,7 +656,7 @@ static int default_to(struct Address **to, struct Envelope *env, SendFlags flags
       mutt_addr_append(to, env->from, false);
     }
     else if (!(mutt_addr_cmp(env->from, env->reply_to) && !env->reply_to->next) &&
-             C_ReplyTo != MUTT_YES)
+             (C_ReplyTo != MUTT_YES))
     {
       /* There are quite a few mailing lists which set the Reply-To:
        * header field to the list address, which makes it quite impossible
@@ -721,7 +722,7 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, SendFlags flags
     mutt_addr_free(&tmp);
 
     if (in->mail_followup_to && (hmfupto == MUTT_YES) &&
-        default_to(&out->cc, in, flags & SEND_LIST_REPLY, (hmfupto == MUTT_YES)) == MUTT_ABORT)
+        (default_to(&out->cc, in, flags & SEND_LIST_REPLY, (hmfupto == MUTT_YES)) == MUTT_ABORT))
     {
       return -1; /* abort */
     }
@@ -737,7 +738,7 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, SendFlags flags
       return -1; /* abort */
 
     if ((flags & (SEND_GROUP_REPLY | SEND_GROUP_CHAT_REPLY)) &&
-        (!in->mail_followup_to || hmfupto != MUTT_YES))
+        (!in->mail_followup_to || (hmfupto != MUTT_YES)))
     {
       /* if(!mutt_addr_is_user(in->to)) */
       if (flags & SEND_GROUP_REPLY)
@@ -1458,7 +1459,7 @@ static bool search_attach_keyword(char *filename)
   {
     fgets(inputline, 1024, fp_att);
     if (!mutt_is_quote_line(inputline, NULL) &&
-        regexec(C_AbortNoattachRegex->regex, inputline, 0, NULL, 0) == 0)
+        (regexec(C_AbortNoattachRegex->regex, inputline, 0, NULL, 0) == 0))
     {
       found = true;
       break;
@@ -1529,7 +1530,7 @@ static int save_fcc(struct Email *msg, char *fcc, size_t fcc_len, struct Body *c
          (mutt_str_strcmp(msg->content->subtype, "signed") == 0)))
     {
       if ((clear_content->type == TYPE_MULTIPART) &&
-          query_quadoption(C_FccAttach, _("Save attachments in Fcc?")) == MUTT_NO)
+          (query_quadoption(C_FccAttach, _("Save attachments in Fcc?")) == MUTT_NO))
       {
         if (!(msg->security & SEC_ENCRYPT) && (msg->security & SEC_SIGN))
         {
@@ -1779,7 +1780,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
     OptNewsSend = false;
 #endif
 
-  if (!flags && !msg && C_Recall != MUTT_NO &&
+  if (!flags && !msg && (C_Recall != MUTT_NO) &&
       mutt_num_postponed(ctx ? ctx->mailbox : NULL, true))
   {
     /* If the user is composing a new message, check to see if there
@@ -1949,7 +1950,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
       !((flags & SEND_DRAFT_FILE) && C_ResumeDraftFiles))
   {
     if ((flags & (SEND_REPLY | SEND_FORWARD | SEND_TO_SENDER)) && ctx &&
-        envelope_defaults(msg->env, ctx->mailbox, el, flags) == -1)
+        (envelope_defaults(msg->env, ctx->mailbox, el, flags) == -1))
     {
       goto cleanup;
     }
@@ -2015,7 +2016,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
 
     if (!(flags & SEND_KEY))
     {
-      if (C_TextFlowed && msg->content->type == TYPE_TEXT &&
+      if (C_TextFlowed && (msg->content->type == TYPE_TEXT) &&
           (mutt_str_strcasecmp(msg->content->subtype, "plain") == 0))
       {
         mutt_param_set(&msg->content->parameter, "format", "flowed");
@@ -2045,7 +2046,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
 
     /* include replies/forwarded messages, unless we are given a template */
     if (!tempfile && (ctx || !(flags & (SEND_REPLY | SEND_FORWARD))) &&
-        generate_body(fp_tmp, msg, flags, ctx->mailbox, el) == -1)
+        (generate_body(fp_tmp, msg, flags, ctx->mailbox, el) == -1))
     {
       goto cleanup;
     }
@@ -2093,8 +2094,8 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
      *    recipients.
      */
     if (!(flags & SEND_KEY) &&
-        ((flags & SEND_FORWARD) == 0 || (C_EditHeaders && C_Autoedit) ||
-         query_quadoption(C_ForwardEdit, _("Edit forwarded message?")) == MUTT_YES))
+        (((flags & SEND_FORWARD) == 0) || (C_EditHeaders && C_Autoedit) ||
+         (query_quadoption(C_ForwardEdit, _("Edit forwarded message?")) == MUTT_YES)))
     {
       /* If the this isn't a text message, look for a mailcap edit command */
       if (mutt_needs_mailcap(msg->content))
@@ -2127,7 +2128,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
        * performed.  If it has already been performed, the format=flowed
        * parameter will be present.
        */
-      if (C_TextFlowed && msg->content->type == TYPE_TEXT &&
+      if (C_TextFlowed && (msg->content->type == TYPE_TEXT) &&
           (mutt_str_strcasecmp("plain", msg->content->subtype) == 0))
       {
         char *p = mutt_param_get(&msg->content->parameter, "format");
@@ -2143,9 +2144,9 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
       if (stat(msg->content->filename, &st) == 0)
       {
         /* if the file was not modified, bail out now */
-        if (mtime == st.st_mtime && !msg->content->next &&
-            query_quadoption(C_AbortUnmodified,
-                             _("Abort unmodified message?")) == MUTT_YES)
+        if ((mtime == st.st_mtime) && !msg->content->next &&
+            (query_quadoption(C_AbortUnmodified,
+                              _("Abort unmodified message?")) == MUTT_YES))
         {
           mutt_message(_("Aborted unmodified message"));
           goto cleanup;
@@ -2367,7 +2368,8 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
       !msg->content->next && (msg->content->type == TYPE_TEXT) &&
       (mutt_str_strcasecmp(msg->content->subtype, "plain") == 0) &&
       search_attach_keyword(msg->content->filename) &&
-      query_quadoption(C_AbortNoattach, _("No attachments, cancel sending?")) != MUTT_NO)
+      (query_quadoption(C_AbortNoattach,
+                        _("No attachments, cancel sending?")) != MUTT_NO))
   {
     /* if the abort is automatic, print an error message */
     if (C_AbortNoattach == MUTT_YES)
@@ -2404,7 +2406,8 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
       /* save the decrypted attachments */
       clear_content = msg->content;
 
-      if ((crypt_get_keys(msg, &pgpkeylist, 0) == -1) || mutt_protect(msg, pgpkeylist) == -1)
+      if ((crypt_get_keys(msg, &pgpkeylist, 0) == -1) ||
+          (mutt_protect(msg, pgpkeylist) == -1))
       {
         msg->content = mutt_remove_multipart(msg->content);
 
@@ -2442,12 +2445,12 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
       if (!WithCrypto)
         ;
       else if ((msg->security & SEC_ENCRYPT) ||
-               ((msg->security & SEC_SIGN) && msg->content->type == TYPE_APPLICATION))
+               ((msg->security & SEC_SIGN) && (msg->content->type == TYPE_APPLICATION)))
       {
         mutt_body_free(&msg->content); /* destroy PGP data */
         msg->content = clear_content;  /* restore clear text. */
       }
-      else if ((msg->security & SEC_SIGN) && msg->content->type == TYPE_MULTIPART)
+      else if ((msg->security & SEC_SIGN) && (msg->content->type == TYPE_MULTIPART))
       {
         mutt_body_free(&msg->content->parts->next); /* destroy sig */
         msg->content = mutt_remove_multipart(msg->content);

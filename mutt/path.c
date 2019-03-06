@@ -189,7 +189,7 @@ bool mutt_path_pretty(char *buf, size_t buflen, const char *homedir)
   if (len == 0)
     return false;
 
-  if (buf[len] != '/' && buf[len] != '\0')
+  if ((buf[len] != '/') && (buf[len] != '\0'))
     return false;
 
   buf[0] = '~';
@@ -325,7 +325,7 @@ char *mutt_path_concat(char *d, const char *dir, const char *fname, size_t l)
 {
   const char *fmt = "%s/%s";
 
-  if (!*fname || (*dir && dir[strlen(dir) - 1] == '/'))
+  if (!*fname || (*dir && (dir[strlen(dir) - 1] == '/')))
     fmt = "%s%s";
 
   snprintf(d, l, fmt, dir, fname);

@@ -250,7 +250,7 @@ static void calculate_visibility(struct Context *ctx, int *max_depth)
     tree = ctx->tree;
     while (true)
     {
-      if (!tree->visible && tree->deep && tree->subtree_visible < 2 &&
+      if (!tree->visible && tree->deep && (tree->subtree_visible < 2) &&
           ((tree->message && hide_top_limited) || (!tree->message && hide_top_missing)))
       {
         tree->deep = false;
@@ -303,7 +303,7 @@ void mutt_draw_tree(struct Context *ctx)
     if (depth)
     {
       myarrow = arrow + (depth - start_depth - (start_depth ? 0 : 1)) * width;
-      if (depth && start_depth == depth)
+      if (depth && (start_depth == depth))
         myarrow[0] = nextdisp ? MUTT_TREE_LTEE : corner;
       else if (parent->message && !C_HideLimited)
         myarrow[0] = MUTT_TREE_HIDDEN;
@@ -422,7 +422,7 @@ static void make_subject_list(struct ListHead *subjects, struct MuttThread *cur,
     if (dateptr)
     {
       thisdate = C_ThreadReceived ? cur->message->received : cur->message->date_sent;
-      if (!*dateptr || thisdate < *dateptr)
+      if (!*dateptr || (thisdate < *dateptr))
         *dateptr = thisdate;
     }
 
@@ -479,7 +479,7 @@ static struct MuttThread *find_subject(struct Mailbox *m, struct MuttThread *cur
     for (ptr = mutt_hash_find_bucket(m->subj_hash, np->data); ptr; ptr = ptr->next)
     {
       tmp = ((struct Email *) ptr->data)->thread;
-      if (tmp != cur &&                    /* don't match the same message */
+      if ((tmp != cur) &&                  /* don't match the same message */
           !tmp->fake_thread &&             /* don't match pseudo threads */
           tmp->message->subject_changed && /* only match interesting replies */
           !is_descendant(tmp, cur) &&      /* don't match in the same thread */
@@ -563,8 +563,8 @@ static void pseudo_threads(struct Context *ctx)
          * but only do this if they have the same real subject as the
          * parent, since otherwise they rightly belong to the message
          * we're attaching. */
-        if (tmp == cur || (mutt_str_strcmp(tmp->message->env->real_subj,
-                                           parent->message->env->real_subj) == 0))
+        if ((tmp == cur) || (mutt_str_strcmp(tmp->message->env->real_subj,
+                                             parent->message->env->real_subj) == 0))
         {
           tmp->message->subject_changed = false;
 
@@ -1031,7 +1031,7 @@ void mutt_sort_threads(struct Context *ctx, bool init)
         unlink_message(&top.child, thread);
       insert_message(&new->child, new, thread);
       thread = new;
-      if (thread->message || (thread->parent && thread->parent != &top))
+      if (thread->message || (thread->parent && (thread->parent != &top)))
         break;
     }
 
@@ -1228,7 +1228,7 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *cur, MuttThreadFlags
   int min_unread_msgno = INT_MAX, min_unread = cur->virtual;
 #define CHECK_LIMIT (!ctx->pattern || cur->limited)
 
-  if ((C_Sort & SORT_MASK) != SORT_THREADS && !(flag & MUTT_THREAD_GET_HIDDEN))
+  if (((C_Sort & SORT_MASK) != SORT_THREADS) && !(flag & MUTT_THREAD_GET_HIDDEN))
   {
     mutt_error(_("Threading is not enabled"));
     return cur->virtual;
@@ -1260,7 +1260,7 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *cur, MuttThreadFlags
   if (cur->flagged && CHECK_LIMIT)
     flagged = true;
 
-  if (cur->virtual == -1 && CHECK_LIMIT)
+  if ((cur->virtual == -1) && CHECK_LIMIT)
     num_hidden++;
 
   if (flag & (MUTT_THREAD_COLLAPSE | MUTT_THREAD_UNCOLLAPSE))
@@ -1341,7 +1341,7 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *cur, MuttThreadFlags
       if (cur->flagged && CHECK_LIMIT)
         flagged = true;
 
-      if (cur->virtual == -1 && CHECK_LIMIT)
+      if ((cur->virtual == -1) && CHECK_LIMIT)
         num_hidden++;
     }
 
@@ -1401,7 +1401,7 @@ int mutt_messages_in_thread(struct Mailbox *m, struct Email *e, int flag)
   struct MuttThread *threads[2];
   int rc;
 
-  if ((C_Sort & SORT_MASK) != SORT_THREADS || !e->thread)
+  if (((C_Sort & SORT_MASK) != SORT_THREADS) || !e->thread)
     return 1;
 
   threads[0] = e->thread;

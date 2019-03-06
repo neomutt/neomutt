@@ -82,8 +82,8 @@ static void maildir_check_dir(struct Mailbox *m, const char *dir_name,
    */
   if (check_new && C_MailCheckRecent)
   {
-    if (stat(mutt_b2s(path), &sb) == 0 &&
-        mutt_file_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->last_visited) < 0)
+    if ((stat(mutt_b2s(path), &sb) == 0) &&
+        (mutt_file_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->last_visited) < 0))
     {
       check_new = false;
     }
@@ -124,7 +124,7 @@ static void maildir_check_dir(struct Mailbox *m, const char *dir_name,
         {
           mutt_buffer_printf(msgpath, "%s/%s", mutt_b2s(path), de->d_name);
           /* ensure this message was received since leaving this m */
-          if (stat(mutt_b2s(msgpath), &sb) == 0 &&
+          if ((stat(mutt_b2s(msgpath), &sb) == 0) &&
               (mutt_file_stat_timespec_compare(&sb, MUTT_STAT_CTIME, &m->last_visited) <= 0))
           {
             continue;

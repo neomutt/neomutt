@@ -820,7 +820,7 @@ size_t mutt_str_lws_len(const char *s, size_t n)
     }
   }
 
-  if (len != 0 && strchr("\r\n", *(p - 1))) /* LWS doesn't end with CRLF */
+  if ((len != 0) && strchr("\r\n", *(p - 1))) /* LWS doesn't end with CRLF */
     len = 0;
   return len;
 }

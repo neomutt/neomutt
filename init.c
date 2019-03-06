@@ -116,7 +116,7 @@ enum GroupState
 static void add_to_stailq(struct ListHead *head, const char *str)
 {
   /* don't add a NULL or empty string to the list */
-  if (!str || *str == '\0')
+  if (!str || (*str == '\0'))
     return;
 
   /* check to make sure the item is not already on this list */
@@ -181,7 +181,7 @@ static void matches_ensure_morespace(int current)
  * @param dlen Length of dest buffer
  *
  * Changes the dest buffer if necessary/possible to aid completion.
-*/
+ */
 static void candidate(char *try, const char *src, char *dest, size_t dlen)
 {
   if (!dest || !try || !src)
@@ -235,7 +235,7 @@ static int complete_all_nm_tags(const char *pt)
   nm_db_longrun_init(Context->mailbox, false);
 
   /* Work out how many tags there are. */
-  if (nm_get_all_tags(Context->mailbox, NULL, &tag_count_1) || tag_count_1 == 0)
+  if (nm_get_all_tags(Context->mailbox, NULL, &tag_count_1) || (tag_count_1 == 0))
     goto done;
 
   /* Free the old list, if any. */
@@ -250,7 +250,7 @@ static int complete_all_nm_tags(const char *pt)
   nm_tags[tag_count_1] = NULL;
 
   /* Get all the tags. */
-  if (nm_get_all_tags(Context->mailbox, nm_tags, &tag_count_2) || tag_count_1 != tag_count_2)
+  if (nm_get_all_tags(Context->mailbox, nm_tags, &tag_count_2) || (tag_count_1 != tag_count_2))
   {
     FREE(&nm_tags);
     nm_tags = NULL;
@@ -475,7 +475,7 @@ static enum CommandResult parse_attach_list(struct Buffer *buf, struct Buffer *s
   {
     mutt_extract_token(buf, s, 0);
 
-    if (!buf->data || *buf->data == '\0')
+    if (!buf->data || (*buf->data == '\0'))
       continue;
 
     a = mutt_mem_malloc(sizeof(struct AttachMatch));
@@ -649,7 +649,7 @@ static enum CommandResult parse_unattach_list(struct Buffer *buf, struct Buffer 
       a = (struct AttachMatch *) np->data;
       mutt_debug(LL_DEBUG3, "check %s/%s [%d] : %s/%s [%d]\n", a->major,
                  a->minor, a->major_int, tmp, minor, major);
-      if (a->major_int == major && (mutt_str_strcasecmp(minor, a->minor) == 0))
+      if ((a->major_int == major) && (mutt_str_strcasecmp(minor, a->minor) == 0))
       {
         mutt_debug(LL_DEBUG3, "removed %s/%s [%d]\n", a->major, a->minor, a->major_int);
         regfree(&a->minor_regex);
@@ -1009,7 +1009,7 @@ static enum CommandResult parse_attachments(struct Buffer *buf, struct Buffer *s
   struct ListHead *head = NULL;
 
   mutt_extract_token(buf, s, 0);
-  if (!buf->data || *buf->data == '\0')
+  if (!buf->data || (*buf->data == '\0'))
   {
     mutt_buffer_strcpy(err, _("attachments: no disposition"));
     return MUTT_CMD_WARNING;
@@ -1031,7 +1031,7 @@ static enum CommandResult parse_attachments(struct Buffer *buf, struct Buffer *s
     return MUTT_CMD_SUCCESS;
   }
 
-  if (op != '+' && op != '-')
+  if ((op != '+') && (op != '-'))
   {
     op = '+';
     category--;
@@ -1114,7 +1114,7 @@ static enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
     if (parse_grouplist(&gc, buf, s, data, err) == -1)
       goto bail;
 
-    if (data == MUTT_UNGROUP && (mutt_str_strcasecmp(buf->data, "*") == 0))
+    if ((data == MUTT_UNGROUP) && (mutt_str_strcasecmp(buf->data, "*") == 0))
     {
       mutt_grouplist_clear(&gc);
       goto out;
@@ -1134,12 +1134,13 @@ static enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
           goto warn;
 
         case GS_RX:
-          if (data == MUTT_GROUP &&
-              mutt_grouplist_add_regex(&gc, buf->data, REG_ICASE, err) != 0)
+          if ((data == MUTT_GROUP) &&
+              (mutt_grouplist_add_regex(&gc, buf->data, REG_ICASE, err) != 0))
           {
             goto bail;
           }
-          else if (data == MUTT_UNGROUP && mutt_grouplist_remove_regex(&gc, buf->data) < 0)
+          else if ((data == MUTT_UNGROUP) &&
+                   (mutt_grouplist_remove_regex(&gc, buf->data) < 0))
           {
             goto bail;
           }
@@ -2259,7 +2260,7 @@ static enum CommandResult parse_unalternates(struct Buffer *buf, struct Buffer *
     mutt_regexlist_remove(&Alternates, buf->data);
 
     if ((mutt_str_strcmp(buf->data, "*") != 0) &&
-        mutt_regexlist_add(&UnAlternates, buf->data, REG_ICASE, err) != 0)
+        (mutt_regexlist_add(&UnAlternates, buf->data, REG_ICASE, err) != 0))
     {
       return MUTT_CMD_ERROR;
     }
@@ -2279,7 +2280,7 @@ static enum CommandResult parse_unattachments(struct Buffer *buf, struct Buffer 
   struct ListHead *head = NULL;
 
   mutt_extract_token(buf, s, 0);
-  if (!buf->data || *buf->data == '\0')
+  if (!buf->data || (*buf->data == '\0'))
   {
     mutt_buffer_strcpy(err, _("unattachments: no disposition"));
     return MUTT_CMD_WARNING;
@@ -2287,7 +2288,7 @@ static enum CommandResult parse_unattachments(struct Buffer *buf, struct Buffer 
 
   p = buf->data;
   op = *p++;
-  if (op != '+' && op != '-')
+  if ((op != '+') && (op != '-'))
   {
     op = '+';
     p--;
@@ -2349,7 +2350,7 @@ static enum CommandResult parse_unlists(struct Buffer *buf, struct Buffer *s,
     mutt_regexlist_remove(&MailLists, buf->data);
 
     if ((mutt_str_strcmp(buf->data, "*") != 0) &&
-        mutt_regexlist_add(&UnMailLists, buf->data, REG_ICASE, err) != 0)
+        (mutt_regexlist_add(&UnMailLists, buf->data, REG_ICASE, err) != 0))
     {
       return MUTT_CMD_ERROR;
     }
@@ -2452,7 +2453,7 @@ static enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
 
     STAILQ_FOREACH_SAFE(np, &UserHeader, entries, tmp)
     {
-      if ((mutt_str_strncasecmp(buf->data, np->data, l) == 0) && np->data[l] == ':')
+      if ((mutt_str_strncasecmp(buf->data, np->data, l) == 0) && (np->data[l] == ':'))
       {
         STAILQ_REMOVE(&UserHeader, np, ListNode, entries);
         FREE(&np->data);
@@ -2513,7 +2514,7 @@ static enum CommandResult parse_unsubscribe(struct Buffer *buf, struct Buffer *s
     mutt_regexlist_remove(&SubscribedLists, buf->data);
 
     if ((mutt_str_strcmp(buf->data, "*") != 0) &&
-        mutt_regexlist_add(&UnSubscribedLists, buf->data, REG_ICASE, err) != 0)
+        (mutt_regexlist_add(&UnSubscribedLists, buf->data, REG_ICASE, err) != 0))
     {
       return MUTT_CMD_ERROR;
     }
@@ -2673,10 +2674,10 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
     if (!qc)
     {
       if ((ISSPACE(ch) && !(flags & MUTT_TOKEN_SPACE)) ||
-          (ch == '#' && !(flags & MUTT_TOKEN_COMMENT)) ||
-          (ch == '=' && (flags & MUTT_TOKEN_EQUAL)) ||
-          (ch == '?' && (flags & MUTT_TOKEN_QUESTION)) ||
-          (ch == ';' && !(flags & MUTT_TOKEN_SEMICOLON)) ||
+          ((ch == '#') && !(flags & MUTT_TOKEN_COMMENT)) ||
+          ((ch == '=') && (flags & MUTT_TOKEN_EQUAL)) ||
+          ((ch == '?') && (flags & MUTT_TOKEN_QUESTION)) ||
+          ((ch == ';') && !(flags & MUTT_TOKEN_SEMICOLON)) ||
           ((flags & MUTT_TOKEN_PATTERN) && strchr("~%=!|", ch)))
       {
         break;
@@ -2687,9 +2688,9 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
 
     if (ch == qc)
       qc = 0; /* end of quote */
-    else if (!qc && (ch == '\'' || ch == '"') && !(flags & MUTT_TOKEN_QUOTE))
+    else if (!qc && ((ch == '\'') || (ch == '"')) && !(flags & MUTT_TOKEN_QUOTE))
       qc = ch;
-    else if (ch == '\\' && qc != '\'')
+    else if ((ch == '\\') && (qc != '\''))
     {
       if (!*tok->dptr)
         return -1; /* premature end of token */
@@ -2728,7 +2729,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
             mutt_buffer_addch(dest, ch);
       }
     }
-    else if (ch == '^' && (flags & MUTT_TOKEN_CONDENSE))
+    else if ((ch == '^') && (flags & MUTT_TOKEN_CONDENSE))
     {
       if (!*tok->dptr)
         return -1; /* premature end of token */
@@ -2745,7 +2746,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
         mutt_buffer_addch(dest, ch);
       }
     }
-    else if (ch == '`' && (!qc || qc == '"'))
+    else if ((ch == '`') && (!qc || (qc == '"')))
     {
       FILE *fp = NULL;
       pid_t pid;
@@ -2827,8 +2828,8 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
         FREE(&expn.data);
       }
     }
-    else if (ch == '$' && (!qc || qc == '"') &&
-             (*tok->dptr == '{' || isalpha((unsigned char) *tok->dptr)))
+    else if ((ch == '$') && (!qc || (qc == '"')) &&
+             ((*tok->dptr == '{') || isalpha((unsigned char) *tok->dptr)))
     {
       const char *env = NULL;
       char *var = NULL;
@@ -2982,7 +2983,7 @@ void mutt_free_opts(void)
 int mutt_get_hook_type(const char *name)
 {
   for (const struct Command *c = Commands; c->name; c++)
-    if (c->func == mutt_parse_hook && (mutt_str_strcasecmp(c->name, name) == 0))
+    if ((c->func == mutt_parse_hook) && (mutt_str_strcasecmp(c->name, name) == 0))
       return c->data;
   return MUTT_CMD_SUCCESS;
 }
@@ -3426,14 +3427,14 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
         return 1;
     }
 
-    if (Completed[0] == 0 && UserTyped[0])
+    if ((Completed[0] == 0) && UserTyped[0])
       return 0;
 
     /* NumMatched will _always_ be at least 1 since the initial
      * user-typed string is always stored */
-    if (numtabs == 1 && NumMatched == 2)
+    if ((numtabs == 1) && (NumMatched == 2))
       snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
-    else if (numtabs > 1 && NumMatched > 2)
+    else if ((numtabs > 1) && (NumMatched > 2))
     {
       /* cycle through all the matches */
       snprintf(Completed, sizeof(Completed), "%s", Matches[(numtabs - 2) % NumMatched]);
@@ -3485,14 +3486,14 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
         return 1;
     }
 
-    if (Completed[0] == 0 && UserTyped[0])
+    if ((Completed[0] == 0) && UserTyped[0])
       return 0;
 
     /* NumMatched will _always_ be at least 1 since the initial
      * user-typed string is always stored */
-    if (numtabs == 1 && NumMatched == 2)
+    if ((numtabs == 1) && (NumMatched == 2))
       snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
-    else if (numtabs > 1 && NumMatched > 2)
+    else if ((numtabs > 1) && (NumMatched > 2))
     {
       /* cycle through all the matches */
       snprintf(Completed, sizeof(Completed), "%s", Matches[(numtabs - 2) % NumMatched]);
@@ -3504,7 +3505,7 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
   {
     const struct Binding *menu = km_get_table(CurrentMenu);
 
-    if (!menu && CurrentMenu != MENU_PAGER)
+    if (!menu && (CurrentMenu != MENU_PAGER))
       menu = OpGeneric;
 
     pt++;
@@ -3518,7 +3519,7 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
       for (num = 0; menu[num].name; num++)
         candidate(UserTyped, menu[num].name, Completed, sizeof(Completed));
       /* try the generic menu */
-      if (Completed[0] == 0 && CurrentMenu != MENU_PAGER)
+      if ((Completed[0] == 0) && (CurrentMenu != MENU_PAGER))
       {
         menu = OpGeneric;
         for (num = 0; menu[num].name; num++)
@@ -3533,14 +3534,14 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
         return 1;
     }
 
-    if (Completed[0] == 0 && UserTyped[0])
+    if ((Completed[0] == 0) && UserTyped[0])
       return 0;
 
     /* NumMatched will _always_ be at least 1 since the initial
      * user-typed string is always stored */
-    if (numtabs == 1 && NumMatched == 2)
+    if ((numtabs == 1) && (NumMatched == 2))
       snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
-    else if (numtabs > 1 && NumMatched > 2)
+    else if ((numtabs > 1) && (NumMatched > 2))
     {
       /* cycle through all the matches */
       snprintf(Completed, sizeof(Completed), "%s", Matches[(numtabs - 2) % NumMatched]);
@@ -3595,14 +3596,14 @@ int mutt_label_complete(char *buf, size_t buflen, int numtabs)
       return 1;
   }
 
-  if (Completed[0] == 0 && UserTyped[0])
+  if ((Completed[0] == 0) && UserTyped[0])
     return 0;
 
   /* NumMatched will _always_ be at least 1 since the initial
    * user-typed string is always stored */
-  if (numtabs == 1 && NumMatched == 2)
+  if ((numtabs == 1) && (NumMatched == 2))
     snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
-  else if (numtabs > 1 && NumMatched > 2)
+  else if ((numtabs > 1) && (NumMatched > 2))
   {
     /* cycle through all the matches */
     snprintf(Completed, sizeof(Completed), "%s", Matches[(numtabs - 2) % NumMatched]);
@@ -3650,14 +3651,14 @@ bool mutt_nm_query_complete(char *buf, size_t buflen, int pos, int numtabs)
         return true;
     }
 
-    if (Completed[0] == 0 && UserTyped[0])
+    if ((Completed[0] == 0) && UserTyped[0])
       return false;
 
     /* NumMatched will _always_ be at least 1 since the initial
      * user-typed string is always stored */
-    if (numtabs == 1 && NumMatched == 2)
+    if ((numtabs == 1) && (NumMatched == 2))
       snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
-    else if (numtabs > 1 && NumMatched > 2)
+    else if ((numtabs > 1) && (NumMatched > 2))
     {
       /* cycle through all the matches */
       snprintf(Completed, sizeof(Completed), "%s", Matches[(numtabs - 2) % NumMatched]);
@@ -3712,14 +3713,14 @@ bool mutt_nm_tag_complete(char *buf, size_t buflen, int numtabs)
       return true;
   }
 
-  if (Completed[0] == 0 && UserTyped[0])
+  if ((Completed[0] == 0) && UserTyped[0])
     return false;
 
   /* NumMatched will _always_ be at least 1 since the initial
    * user-typed string is always stored */
-  if (numtabs == 1 && NumMatched == 2)
+  if ((numtabs == 1) && (NumMatched == 2))
     snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
-  else if (numtabs > 1 && NumMatched > 2)
+  else if ((numtabs > 1) && (NumMatched > 2))
   {
     /* cycle through all the matches */
     snprintf(Completed, sizeof(Completed), "%s", Matches[(numtabs - 2) % NumMatched]);

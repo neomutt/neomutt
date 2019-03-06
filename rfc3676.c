@@ -265,8 +265,8 @@ static void print_flowed_line(char *line, struct State *s, int ql,
        if for DelSp=yes only one trailing space is used, we probably
        have a long word that we should break within (we leave that
        up to the pager or user) */
-    if (!(!fst->spaces && fst->delsp && last != ' ') && w < width &&
-        w + fst->width + fst->spaces > width)
+    if (!(!fst->spaces && fst->delsp && (last != ' ')) && (w < width) &&
+        (w + fst->width + fst->spaces > width))
     {
       mutt_debug(LL_DEBUG3, "f=f: break line at %lu, %lu spaces left\n",
                  fst->width, fst->spaces);
@@ -425,7 +425,7 @@ void rfc3676_space_stuff(struct Email *e)
 
   while (fgets(buf, sizeof(buf), fp_in))
   {
-    if (buf[0] == ' ' || mutt_str_startswith(buf, "From ", CASE_MATCH))
+    if ((buf[0] == ' ') || mutt_str_startswith(buf, "From ", CASE_MATCH))
     {
       fputc(' ', fp_out);
       lc++;

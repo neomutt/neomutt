@@ -153,7 +153,7 @@ static int smtp_get_resp(struct Connection *conn)
 
   } while (buf[3] == '-');
 
-  if (smtp_success(n) || n == SMTP_CONTINUE)
+  if (smtp_success(n) || (n == SMTP_CONTINUE))
     return 0;
 
   mutt_error(_("SMTP session failed: %s"), buf);
@@ -238,7 +238,7 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
   {
     buflen = mutt_str_strlen(buf);
     term = buflen && buf[buflen - 1] == '\n';
-    if (term && (buflen == 1 || buf[buflen - 2] != '\r'))
+    if (term && ((buflen == 1) || (buf[buflen - 2] != '\r')))
       snprintf(buf + buflen - 1, sizeof(buf) - buflen + 1, "\r\n");
     if (buf[0] == '.')
     {
@@ -255,7 +255,7 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
     }
     mutt_progress_update(&progress, ftell(fp), -1);
   }
-  if (!term && buflen && mutt_socket_send_d(conn, "\r\n", MUTT_SOCK_LOG_FULL) == -1)
+  if (!term && buflen && (mutt_socket_send_d(conn, "\r\n", MUTT_SOCK_LOG_FULL) == -1))
   {
     mutt_file_fclose(&fp);
     return SMTP_ERR_WRITE;
@@ -322,8 +322,8 @@ static int smtp_fill_account(struct ConnAccount *account)
   account->type = MUTT_ACCT_TYPE_SMTP;
 
   struct Url *url = url_parse(C_SmtpUrl);
-  if (!url || (url->scheme != U_SMTP && url->scheme != U_SMTPS) || !url->host ||
-      mutt_account_fromurl(account, url) < 0)
+  if (!url || ((url->scheme != U_SMTP) && (url->scheme != U_SMTPS)) ||
+      !url->host || (mutt_account_fromurl(account, url) < 0))
   {
     url_free(&url);
     mutt_error(_("Invalid SMTP URL: %s"), C_SmtpUrl);
@@ -377,7 +377,7 @@ static int smtp_helo(struct Connection *conn, bool esmtp)
     if (conn->account.flags & MUTT_ACCT_USER)
       esmtp = true;
 #ifdef USE_SSL
-    if (C_SslForceTls || C_SslStarttls != MUTT_NO)
+    if (C_SslForceTls || (C_SslStarttls != MUTT_NO))
       esmtp = true;
 #endif
   }
@@ -425,7 +425,7 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
       mutt_sasl_interact(interaction);
   } while (rc == SASL_INTERACT);
 
-  if (rc != SASL_OK && rc != SASL_CONTINUE)
+  if ((rc != SASL_OK) && (rc != SASL_CONTINUE))
   {
     mutt_debug(LL_DEBUG2, "%s unavailable\n", mech);
     sasl_dispose(&saslconn);
@@ -622,7 +622,7 @@ static int smtp_auth(struct Connection *conn)
 #endif
       }
 
-      if (r == SMTP_AUTH_FAIL && delim)
+      if ((r == SMTP_AUTH_FAIL) && delim)
       {
         mutt_error(_("%s authentication failed, trying next method"), method);
       }
@@ -687,8 +687,8 @@ static int smtp_open(struct Connection *conn, bool esmtp)
   else if (C_SslForceTls)
     ans = MUTT_YES;
   else if ((Capabilities & SMTP_CAP_STARTTLS) &&
-           (ans = query_quadoption(C_SslStarttls,
-                                   _("Secure connection with TLS?"))) == MUTT_ABORT)
+           ((ans = query_quadoption(C_SslStarttls,
+                                    _("Secure connection with TLS?"))) == MUTT_ABORT))
   {
     return -1;
   }

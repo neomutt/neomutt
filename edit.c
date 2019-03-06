@@ -115,7 +115,7 @@ static char **be_snarf_data(FILE *fp, char **buf, int *bufmax, int *buflen,
       mutt_mem_realloc(&buf, sizeof(char *) * (*bufmax += 25));
     buf[(*buflen)++] = mutt_str_strdup(tmp);
   }
-  if (buf && *bufmax == *buflen)
+  if (buf && (*bufmax == *buflen))
   { /* Do not smash memory past buf */
     mutt_mem_realloc(&buf, sizeof(char *) * (++*bufmax));
   }
@@ -423,7 +423,7 @@ int mutt_builtin_editor(const char *path, struct Email *msg, struct Email *cur)
     }
     addch('\n');
 
-    if (C_Escape && tmp[0] == C_Escape[0] && tmp[1] != C_Escape[0])
+    if (C_Escape && (tmp[0] == C_Escape[0]) && (tmp[1] != C_Escape[0]))
     {
       /* remove trailing whitespace from the line */
       p = tmp + mutt_str_strlen(tmp) - 1;

@@ -204,7 +204,7 @@ static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 
   mutt_buffer_init(&buf);
   char *pexpr = s->dptr;
-  if (mutt_extract_token(&buf, s, MUTT_TOKEN_PATTERN | MUTT_TOKEN_COMMENT) != 0 || !buf.data)
+  if ((mutt_extract_token(&buf, s, MUTT_TOKEN_PATTERN | MUTT_TOKEN_COMMENT) != 0) || !buf.data)
   {
     mutt_buffer_printf(err, _("Error in expression: %s"), pexpr);
     FREE(&buf.data);
@@ -283,7 +283,7 @@ static bool eat_query(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 
   mutt_buffer_init(&tok_buf);
   char *pexpr = s->dptr;
-  if (mutt_extract_token(&tok_buf, s, MUTT_TOKEN_PATTERN | MUTT_TOKEN_COMMENT) != 0 ||
+  if ((mutt_extract_token(&tok_buf, s, MUTT_TOKEN_PATTERN | MUTT_TOKEN_COMMENT) != 0) ||
       !tok_buf.data)
   {
     mutt_buffer_printf(err, _("Error in expression: %s"), pexpr);
@@ -349,7 +349,7 @@ static const char *get_offset(struct tm *tm, const char *s, int sign)
 {
   char *ps = NULL;
   int offset = strtol(s, &ps, 0);
-  if ((sign < 0 && offset > 0) || (sign > 0 && offset < 0))
+  if (((sign < 0) && (offset > 0)) || ((sign > 0) && (offset < 0)))
     offset = -offset;
 
   switch (*ps)
@@ -405,7 +405,7 @@ static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
   struct tm *tm = localtime(&now);
 
   t->tm_mday = strtol(s, &p, 10);
-  if (t->tm_mday < 1 || t->tm_mday > 31)
+  if ((t->tm_mday < 1) || (t->tm_mday > 31))
   {
     mutt_buffer_printf(err, _("Invalid day of month: %s"), s);
     return NULL;
@@ -419,7 +419,7 @@ static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
   }
   p++;
   t->tm_mon = strtol(p, &p, 10) - 1;
-  if (t->tm_mon < 0 || t->tm_mon > 11)
+  if ((t->tm_mon < 0) || (t->tm_mon > 11))
   {
     mutt_buffer_printf(err, _("Invalid month: %s"), p);
     return NULL;
@@ -483,7 +483,7 @@ static const char *parse_date_range(const char *pc, struct tm *min, struct tm *m
         else
         {
           pc = pt;
-          if (flag == MUTT_PDR_NO_FLAGS && !have_min)
+          if ((flag == MUTT_PDR_NO_FLAGS) && !have_min)
           { /* the very first "-3d" without a previous absolute date */
             max->tm_year = min->tm_year;
             max->tm_mon = min->tm_mon;
@@ -536,9 +536,10 @@ static const char *parse_date_range(const char *pc, struct tm *min, struct tm *m
  */
 static void adjust_date_range(struct tm *min, struct tm *max)
 {
-  if (min->tm_year > max->tm_year ||
-      (min->tm_year == max->tm_year && min->tm_mon > max->tm_mon) ||
-      (min->tm_year == max->tm_year && min->tm_mon == max->tm_mon && min->tm_mday > max->tm_mday))
+  if ((min->tm_year > max->tm_year) ||
+      ((min->tm_year == max->tm_year) && (min->tm_mon > max->tm_mon)) ||
+      ((min->tm_year == max->tm_year) && (min->tm_mon == max->tm_mon) &&
+       (min->tm_mday > max->tm_mday)))
   {
     int tmp;
 
@@ -805,7 +806,7 @@ static bool eat_range(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   else
     pat->max = MUTT_MAXRANGE;
 
-  if (skip_quote && *tmp == '"')
+  if (skip_quote && (*tmp == '"'))
     tmp++;
 
   SKIPWS(tmp);
@@ -1465,7 +1466,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
         if (thread_op)
         {
           ps.dptr++; /* skip ~ */
-          if (thread_op == MUTT_PAT_PARENT || thread_op == MUTT_PAT_CHILDREN)
+          if ((thread_op == MUTT_PAT_PARENT) || (thread_op == MUTT_PAT_CHILDREN))
             ps.dptr++;
           p = find_matching_paren(ps.dptr + 1);
           if (*p != ')')
@@ -1536,7 +1537,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
           mutt_pattern_free(&curlist);
           return NULL;
         }
-        if (entry->class && (flags & entry->class) == 0)
+        if (entry->class && ((flags & entry->class) == 0))
         {
           mutt_buffer_printf(err, _("%c: not supported in this mode"), *ps.dptr);
           mutt_pattern_free(&curlist);
@@ -1988,7 +1989,7 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
         return 0;
 #ifdef USE_IMAP
       /* IMAP search sets e->matched at search compile time */
-      if (m->magic == MUTT_IMAP && pat->stringmatch)
+      if ((m->magic == MUTT_IMAP) && pat->stringmatch)
         return e->matched;
 #endif
       return pat->not^msg_search(m, pat, e->msgno);
@@ -2197,7 +2198,7 @@ static void quote_simple(const char *str, char *buf, size_t buflen)
   buf[i++] = '"';
   while (*str && i < buflen - 3)
   {
-    if (*str == '\\' || *str == '"')
+    if ((*str == '\\') || (*str == '"'))
       buf[i++] = '\\';
     buf[i++] = *str++;
   }
@@ -2217,9 +2218,9 @@ void mutt_check_simple(char *s, size_t len, const char *simple)
 
   for (char *p = s; p && *p; p++)
   {
-    if (*p == '\\' && *(p + 1))
+    if ((*p == '\\') && *(p + 1))
       p++;
-    else if (*p == '~' || *p == '=' || *p == '%')
+    else if ((*p == '~') || (*p == '=') || (*p == '%'))
     {
       do_simple = false;
       break;
@@ -2342,8 +2343,9 @@ int mutt_pattern_func(int op, char *prompt)
   struct Progress progress;
 
   mutt_str_strfcpy(buf, Context->pattern, sizeof(buf));
-  if (prompt || op != MUTT_LIMIT)
-    if (mutt_get_field(prompt, buf, sizeof(buf), MUTT_PATTERN | MUTT_CLEAR) != 0 || !buf[0])
+  if (prompt || (op != MUTT_LIMIT))
+    if ((mutt_get_field(prompt, buf, sizeof(buf), MUTT_PATTERN | MUTT_CLEAR) != 0) ||
+        !buf[0])
       return -1;
 
   mutt_message(_("Compiling search pattern..."));
@@ -2362,7 +2364,7 @@ int mutt_pattern_func(int op, char *prompt)
   }
 
 #ifdef USE_IMAP
-  if (Context->mailbox->magic == MUTT_IMAP && imap_search(Context->mailbox, pat) < 0)
+  if ((Context->mailbox->magic == MUTT_IMAP) && (imap_search(Context->mailbox, pat) < 0))
     goto bail;
 #endif
 
@@ -2473,20 +2475,20 @@ int mutt_search_command(int cur, int op)
 {
   struct Progress progress;
 
-  if (!*LastSearch || (op != OP_SEARCH_NEXT && op != OP_SEARCH_OPPOSITE))
+  if (!*LastSearch || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
     char buf[256];
     mutt_str_strfcpy(buf, *LastSearch ? LastSearch : "", sizeof(buf));
-    if (mutt_get_field((op == OP_SEARCH || op == OP_SEARCH_NEXT) ?
-                           _("Search for: ") :
-                           _("Reverse search for: "),
-                       buf, sizeof(buf), MUTT_CLEAR | MUTT_PATTERN) != 0 ||
+    if ((mutt_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
+                            _("Search for: ") :
+                            _("Reverse search for: "),
+                        buf, sizeof(buf), MUTT_CLEAR | MUTT_PATTERN) != 0) ||
         !buf[0])
     {
       return -1;
     }
 
-    if (op == OP_SEARCH || op == OP_SEARCH_NEXT)
+    if ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT))
       OptSearchReverse = false;
     else
       OptSearchReverse = true;
@@ -2525,8 +2527,8 @@ int mutt_search_command(int cur, int op)
     for (int i = 0; i < Context->mailbox->msg_count; i++)
       Context->mailbox->emails[i]->searched = false;
 #ifdef USE_IMAP
-    if (Context->mailbox->magic == MUTT_IMAP &&
-        imap_search(Context->mailbox, SearchPattern) < 0)
+    if ((Context->mailbox->magic == MUTT_IMAP) &&
+        (imap_search(Context->mailbox, SearchPattern) < 0))
       return -1;
 #endif
     OptSearchInvalid = false;

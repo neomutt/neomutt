@@ -72,7 +72,7 @@ void mutt_check_rescore(struct Mailbox *m)
 {
   if (OptNeedRescore && C_Score)
   {
-    if ((C_Sort & SORT_MASK) == SORT_SCORE || (C_SortAux & SORT_MASK) == SORT_SCORE)
+    if (((C_Sort & SORT_MASK) == SORT_SCORE) || ((C_SortAux & SORT_MASK) == SORT_SCORE))
     {
       OptNeedResort = true;
       if ((C_Sort & SORT_MASK) == SORT_THREADS)
@@ -179,7 +179,7 @@ void mutt_score_message(struct Mailbox *m, struct Email *e, bool upd_mbox)
   {
     if (mutt_pattern_exec(tmp->pat, MUTT_MATCH_FULL_ADDRESS, NULL, e, &cache) > 0)
     {
-      if (tmp->exact || tmp->val == 9999 || tmp->val == -9999)
+      if (tmp->exact || (tmp->val == 9999) || (tmp->val == -9999))
       {
         e->score = tmp->val;
         break;

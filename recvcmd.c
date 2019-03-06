@@ -211,7 +211,7 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
     mutt_str_strfcpy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
 
   buf[0] = '\0';
-  if (mutt_get_field(prompt, buf, sizeof(buf), MUTT_ALIAS) || buf[0] == '\0')
+  if (mutt_get_field(prompt, buf, sizeof(buf), MUTT_ALIAS) || (buf[0] == '\0'))
     return;
 
   addr = mutt_addr_parse_list(addr, buf);
@@ -521,7 +521,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
    * or attach them.
    */
   if ((!cur || mutt_can_decode(cur)) &&
-      (ans = query_quadoption(C_MimeForward, _("Forward as attachments?"))) == MUTT_YES)
+      ((ans = query_quadoption(C_MimeForward, _("Forward as attachments?"))) == MUTT_YES))
   {
     mime_fwd_all = true;
   }
@@ -838,7 +838,7 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
       for (short i = 0; i < actx->idxlen; i++)
       {
         if (actx->idx[i]->content->tagged &&
-            mutt_fetch_recips(env, actx->idx[i]->content->email->env, flags) == -1)
+            (mutt_fetch_recips(env, actx->idx[i]->content->email->env, flags) == -1))
         {
           return -1;
         }
@@ -942,7 +942,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
     }
   }
 
-  if (nattach > 1 && !check_can_decode(actx, cur))
+  if ((nattach > 1) && !check_can_decode(actx, cur))
   {
     const enum QuadOption ans = query_quadoption(
         C_MimeForwardRest, _("Can't decode all tagged attachments.  "
@@ -1088,8 +1088,8 @@ void mutt_attach_mail_sender(FILE *fp, struct Email *e, struct AttachCtx *actx,
     for (int i = 0; i < actx->idxlen; i++)
     {
       if (actx->idx[i]->content->tagged &&
-          mutt_fetch_recips(e_tmp->env, actx->idx[i]->content->email->env,
-                            SEND_TO_SENDER) == -1)
+          (mutt_fetch_recips(e_tmp->env, actx->idx[i]->content->email->env,
+                             SEND_TO_SENDER) == -1))
         return;
     }
   }

@@ -154,7 +154,7 @@ int mutt_compose_attachment(struct Body *a)
         if (r == -1)
           mutt_error(_("Error running \"%s\""), cmd);
 
-        if (r != -1 && entry->composetypecommand)
+        if ((r != -1) && entry->composetypecommand)
         {
           struct Body *b = NULL;
           char tempfile[PATH_MAX];
@@ -326,7 +326,7 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
   STAILQ_FOREACH(np, &MimeLookupList, entries)
   {
     const int i = mutt_str_strlen(np->data) - 1;
-    if ((i > 0 && np->data[i - 1] == '/' && np->data[i] == '*' &&
+    if (((i > 0) && (np->data[i - 1] == '/') && (np->data[i] == '*') &&
          (mutt_str_strncasecmp(type, np->data, i) == 0)) ||
         (mutt_str_strcasecmp(type, np->data) == 0))
     {
@@ -751,7 +751,7 @@ bail:
   if (mutt_wait_filter(pid) != 0)
     rc = 0;
 
-  if (rc == 0 || C_WaitKey)
+  if ((rc == 0) || C_WaitKey)
     mutt_any_key_to_continue(NULL);
   return rc;
 }
@@ -792,8 +792,8 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path,
   {
     /* recv mode */
 
-    if (e && m->email && m->encoding != ENC_BASE64 && m->encoding != ENC_QUOTED_PRINTABLE &&
-        mutt_is_message_type(m->type, m->subtype))
+    if (e && m->email && (m->encoding != ENC_BASE64) &&
+        (m->encoding != ENC_QUOTED_PRINTABLE) && mutt_is_message_type(m->type, m->subtype))
     {
       /* message type attachments are written to mail folders. */
 
@@ -1144,7 +1144,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       mutt_file_fclose(&fp_out);
       mutt_file_fclose(&fp_in);
 
-      if (mutt_wait_filter(pid) != 0 || C_WaitKey)
+      if ((mutt_wait_filter(pid) != 0) || C_WaitKey)
         mutt_any_key_to_continue(NULL);
       rc = 1;
     }

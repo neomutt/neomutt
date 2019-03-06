@@ -232,7 +232,7 @@ static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int c
         mutt_expand_path(path, sizeof(path));
         mutt_file_quote_filename(path, buf1, sizeof(buf1));
 
-        if (stat(path, &sb) != 0 || !S_ISDIR(sb.st_mode))
+        if ((stat(path, &sb) != 0) || !S_ISDIR(sb.st_mode))
           snprintf(buf2, sizeof(buf2), "-CAfile %s", buf1);
         else
           snprintf(buf2, sizeof(buf2), "-CApath %s", buf1);
@@ -2051,8 +2051,8 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
 
   FILE *fp_smime_in = NULL;
   if ((type & SEC_ENCRYPT) &&
-      (pid = smime_invoke_decrypt(&fp_smime_in, NULL, NULL, -1, fileno(fp_smime_out),
-                                  fileno(fp_smime_err), tmpfname)) == -1)
+      ((pid = smime_invoke_decrypt(&fp_smime_in, NULL, NULL, -1, fileno(fp_smime_out),
+                                   fileno(fp_smime_err), tmpfname)) == -1))
   {
     mutt_file_fclose(&fp_smime_out);
     mutt_file_unlink(tmpfname);
@@ -2065,9 +2065,9 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
     return NULL;
   }
   else if ((type & SEC_SIGNOPAQUE) &&
-           (pid = smime_invoke_verify(&fp_smime_in, NULL, NULL, -1,
-                                      fileno(fp_smime_out), fileno(fp_smime_err),
-                                      NULL, tmpfname, SEC_SIGNOPAQUE)) == -1)
+           ((pid = smime_invoke_verify(&fp_smime_in, NULL, NULL, -1,
+                                       fileno(fp_smime_out), fileno(fp_smime_err),
+                                       NULL, tmpfname, SEC_SIGNOPAQUE)) == -1))
   {
     mutt_file_fclose(&fp_smime_out);
     mutt_file_unlink(tmpfname);
@@ -2149,7 +2149,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
   while (fgets(buf, sizeof(buf) - 1, fp_smime_out))
   {
     const size_t len = mutt_str_strlen(buf);
-    if (len > 1 && buf[len - 2] == '\r')
+    if ((len > 1) && (buf[len - 2] == '\r'))
     {
       buf[len - 2] = '\n';
       buf[len - 1] = '\0';

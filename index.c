@@ -348,8 +348,8 @@ static int ci_first_message(void)
    * If C_Sort is threaded, the latest message is first if exactly one
    * of C_Sort and C_SortAux are reverse.
    */
-  if (((C_Sort & SORT_REVERSE) && (C_Sort & SORT_MASK) != SORT_THREADS) ||
-      ((C_Sort & SORT_MASK) == SORT_THREADS && ((C_Sort ^ C_SortAux) & SORT_REVERSE)))
+  if (((C_Sort & SORT_REVERSE) && ((C_Sort & SORT_MASK) != SORT_THREADS)) ||
+      (((C_Sort & SORT_MASK) == SORT_THREADS) && ((C_Sort ^ C_SortAux) & SORT_REVERSE)))
   {
     return 0;
   }
@@ -415,7 +415,7 @@ static void resort_index(struct Menu *menu)
     }
   }
 
-  if ((C_Sort & SORT_MASK) == SORT_THREADS && menu->current < 0)
+  if (((C_Sort & SORT_MASK) == SORT_THREADS) && (menu->current < 0))
     menu->current = mutt_parent_message(Context, current, false);
 
   if (menu->current < 0)
@@ -659,7 +659,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
       if (monitor_remove_rc == 0)
         mutt_monitor_add(NULL);
 #endif
-      if (check == MUTT_NEW_MAIL || check == MUTT_REOPENED)
+      if ((check == MUTT_NEW_MAIL) || (check == MUTT_REOPENED))
         update_index(menu, Context, check, *oldcount, *index_hint);
 
       FREE(&new_last_folder);
@@ -743,7 +743,7 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
   MuttFormatFlags flags = MUTT_FORMAT_ARROWCURSOR | MUTT_FORMAT_INDEX;
   struct MuttThread *tmp = NULL;
 
-  if ((C_Sort & SORT_MASK) == SORT_THREADS && e->tree)
+  if (((C_Sort & SORT_MASK) == SORT_THREADS) && e->tree)
   {
     flags |= MUTT_FORMAT_TREE; /* display the thread tree */
     if (e->display_subject)
@@ -769,7 +769,7 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 
         /* if no ancestor is visible on current screen, provisionally force
          * subject... */
-        if (reverse ? tmp->message->msgno > edgemsgno : tmp->message->msgno < edgemsgno)
+        if (reverse ? (tmp->message->msgno > edgemsgno) : (tmp->message->msgno < edgemsgno))
         {
           flags |= MUTT_FORMAT_FORCESUBJ;
           break;
@@ -785,7 +785,7 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
             continue;
 
           /* ...but if a previous sibling is available, don't force it */
-          if (reverse ? tmp->message->msgno > edgemsgno : tmp->message->msgno < edgemsgno)
+          if (reverse ? (tmp->message->msgno > edgemsgno) : (tmp->message->msgno < edgemsgno))
             break;
           else if (tmp->message->virtual >= 0)
           {
@@ -1366,7 +1366,7 @@ int mutt_index_menu(void)
           if (op == OP_GET_MESSAGE)
           {
             buf[0] = 0;
-            if (mutt_get_field(_("Enter Message-Id: "), buf, sizeof(buf), 0) != 0 ||
+            if ((mutt_get_field(_("Enter Message-Id: "), buf, sizeof(buf), 0) != 0) ||
                 !buf[0])
             {
               break;
@@ -1688,7 +1688,7 @@ int mutt_index_menu(void)
           }
           else
             menu->current = 0;
-          if ((Context->mailbox->msg_count != 0) && (C_Sort & SORT_MASK) == SORT_THREADS)
+          if ((Context->mailbox->msg_count != 0) && ((C_Sort & SORT_MASK) == SORT_THREADS))
             mutt_draw_tree(Context);
           menu->redraw = REDRAW_FULL;
         }
@@ -1712,7 +1712,7 @@ int mutt_index_menu(void)
 
           mutt_startup_shutdown_hook(MUTT_SHUTDOWN_HOOK);
 
-          if (!Context || (check = mx_mbox_close(&Context)) == 0)
+          if (!Context || ((check = mx_mbox_close(&Context)) == 0))
             done = true;
           else
           {
@@ -1783,7 +1783,7 @@ int mutt_index_menu(void)
                        Context->last_tag);
 
           menu->redraw |= REDRAW_STATUS;
-          if (C_Resolve && menu->current < Context->mailbox->vcount - 1)
+          if (C_Resolve && (menu->current < Context->mailbox->vcount - 1))
           {
             menu->current++;
             menu->redraw |= REDRAW_MOTION_RESYNC;
@@ -2125,7 +2125,7 @@ int mutt_index_menu(void)
       case OP_MAIN_VFOLDER_FROM_QUERY:
       case OP_MAIN_VFOLDER_FROM_QUERY_READONLY:
         buf[0] = '\0';
-        if (mutt_get_field("Query: ", buf, sizeof(buf), MUTT_NM_QUERY) != 0 || !buf[0])
+        if ((mutt_get_field("Query: ", buf, sizeof(buf), MUTT_NM_QUERY) != 0) || !buf[0])
         {
           mutt_message(_("No query, aborting"));
           break;
@@ -3412,11 +3412,11 @@ int mutt_index_menu(void)
           break;
         if ((op != OP_FOLLOWUP) || !CUR_EMAIL->env->followup_to ||
             (mutt_str_strcasecmp(CUR_EMAIL->env->followup_to, "poster") != 0) ||
-            query_quadoption(C_FollowupToPoster,
-                             _("Reply by mail as poster prefers?")) != MUTT_YES)
+            (query_quadoption(C_FollowupToPoster,
+                              _("Reply by mail as poster prefers?")) != MUTT_YES))
         {
           if (Context && (Context->mailbox->magic == MUTT_NNTP) &&
-              !((struct NntpMboxData *) Context->mailbox->mdata)->allowed && query_quadoption(C_PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+              !((struct NntpMboxData *) Context->mailbox->mdata)->allowed && (query_quadoption(C_PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
           {
             break;
           }
@@ -3503,7 +3503,7 @@ int mutt_index_menu(void)
         }
         else
         {
-          if (C_Resolve && menu->current < (Context->mailbox->vcount - 1))
+          if (C_Resolve && (menu->current < (Context->mailbox->vcount - 1)))
           {
             menu->current++;
             menu->redraw |= REDRAW_MOTION_RESYNC;

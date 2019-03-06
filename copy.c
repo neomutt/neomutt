@@ -107,7 +107,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
         break;
 
       /* Is it the beginning of a header? */
-      if (nl && buf[0] != ' ' && buf[0] != '\t')
+      if (nl && (buf[0] != ' ') && (buf[0] != '\t'))
       {
         ignore = true;
         if (!from && mutt_str_startswith(buf, "From ", CASE_MATCH))
@@ -119,7 +119,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
         else if ((chflags & CH_NOQFROM) && mutt_str_startswith(buf, ">From ", CASE_IGNORE))
           continue;
 
-        else if (buf[0] == '\n' || (buf[0] == '\r' && buf[1] == '\n'))
+        else if ((buf[0] == '\n') || ((buf[0] == '\r') && (buf[1] == '\n')))
           break; /* end of header */
 
         if ((chflags & (CH_UPDATE | CH_XMIT | CH_NOSTATUS)) &&
@@ -146,7 +146,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
         ignore = false;
       }
 
-      if (!ignore && fputs(buf, fp_out) == EOF)
+      if (!ignore && (fputs(buf, fp_out) == EOF))
         return -1;
     }
     return 0;
@@ -184,7 +184,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
       break;
 
     /* Is it the beginning of a header? */
-    if (nl && buf[0] != ' ' && buf[0] != '\t')
+    if (nl && (buf[0] != ' ') && (buf[0] != '\t'))
     {
       /* Do we have anything pending? */
       if (this_one)
@@ -227,7 +227,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
         this_is_from = true;
         from = true;
       }
-      else if (buf[0] == '\n' || (buf[0] == '\r' && buf[1] == '\n'))
+      else if ((buf[0] == '\n') || ((buf[0] == '\r') && (buf[1] == '\n')))
         break; /* end of header */
 
       /* note: CH_FROM takes precedence over header weeding. */
@@ -435,7 +435,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
     fputc('\n', fp_out);
   }
 
-  if ((chflags & CH_UPDATE) && (chflags & CH_NOSTATUS) == 0)
+  if ((chflags & CH_UPDATE) && ((chflags & CH_NOSTATUS) == 0))
   {
     if (e->old || e->read)
     {
@@ -458,10 +458,10 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
     }
   }
 
-  if (chflags & CH_UPDATE_LEN && (chflags & CH_NOLEN) == 0)
+  if (chflags & CH_UPDATE_LEN && ((chflags & CH_NOLEN) == 0))
   {
     fprintf(fp_out, "Content-Length: " OFF_T_FMT "\n", e->content->length);
-    if (e->lines != 0 || e->content->length == 0)
+    if ((e->lines != 0) || (e->content->length == 0))
       fprintf(fp_out, "Lines: %d\n", e->lines);
   }
 
@@ -719,7 +719,7 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
     FILE *fp = NULL;
 
     if (((WithCrypto & APPLICATION_PGP) != 0) && (cmflags & MUTT_CM_DECODE_PGP) &&
-        (e->security & APPLICATION_PGP) && e->content->type == TYPE_MULTIPART)
+        (e->security & APPLICATION_PGP) && (e->content->type == TYPE_MULTIPART))
     {
       if (crypt_pgp_decrypt_mime(fp_in, &fp, e->content, &cur))
         return -1;
@@ -727,7 +727,7 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
     }
 
     if (((WithCrypto & APPLICATION_SMIME) != 0) && (cmflags & MUTT_CM_DECODE_SMIME) &&
-        (e->security & APPLICATION_SMIME) && e->content->type == TYPE_APPLICATION)
+        (e->security & APPLICATION_SMIME) && (e->content->type == TYPE_APPLICATION))
     {
       if (crypt_smime_decrypt_mime(fp_in, &fp, e->content, &cur))
         return -1;
@@ -777,7 +777,8 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
       return -1;
   }
 
-  if ((cmflags & MUTT_CM_UPDATE) && (cmflags & MUTT_CM_NOHEADER) == 0 && new_offset != -1)
+  if ((cmflags & MUTT_CM_UPDATE) && ((cmflags & MUTT_CM_NOHEADER) == 0) &&
+      (new_offset != -1))
   {
     body->offset = new_offset;
     mutt_body_free(&body->parts);
@@ -843,7 +844,7 @@ static int append_message(struct Mailbox *dest, FILE *fp_in, struct Mailbox *src
   msg = mx_msg_open_new(dest, e, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
   if (!msg)
     return -1;
-  if (dest->magic == MUTT_MBOX || dest->magic == MUTT_MMDF)
+  if ((dest->magic == MUTT_MBOX) || (dest->magic == MUTT_MMDF))
     chflags |= CH_FROM | CH_FORCE_FROM;
   chflags |= (dest->magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
   rc = mutt_copy_message_fp(msg->fp, fp_in, e, cmflags, chflags);
@@ -851,7 +852,7 @@ static int append_message(struct Mailbox *dest, FILE *fp_in, struct Mailbox *src
     rc = -1;
 
 #ifdef USE_NOTMUCH
-  if (msg->committed_path && dest->magic == MUTT_MAILDIR && src->magic == MUTT_NOTMUCH)
+  if (msg->committed_path && (dest->magic == MUTT_MAILDIR) && (src->magic == MUTT_NOTMUCH))
     nm_update_filename(src, NULL, msg->committed_path, e);
 #endif
 
@@ -972,7 +973,7 @@ static void format_address_header(char **h, struct Address *a)
     const size_t l = mutt_addr_write(buf, sizeof(buf), a, false);
     a->next = tmp;
 
-    if (count && linelen + l > 74)
+    if (count && (linelen + l > 74))
     {
       strcpy(cbuf, "\n\t");
       linelen = l + 8;

@@ -270,7 +270,7 @@ int mutt_display_message(struct Email *cur)
 #endif
   res = mutt_copy_message_ctx(fp_out, Context->mailbox, cur, cmflags, chflags);
 
-  if ((mutt_file_fclose(&fp_out) != 0 && errno != EPIPE) || res < 0)
+  if (((mutt_file_fclose(&fp_out) != 0) && (errno != EPIPE)) || (res < 0))
   {
     mutt_error(_("Could not copy message"));
     if (fp_filter_out)
@@ -282,7 +282,7 @@ int mutt_display_message(struct Email *cur)
     return 0;
   }
 
-  if (fp_filter_out && mutt_wait_filter(filterpid) != 0)
+  if (fp_filter_out && (mutt_wait_filter(filterpid) != 0))
     mutt_any_key_to_continue(NULL);
 
   mutt_file_fclose(&fp_filter_out); /* XXX - check result? */
@@ -349,7 +349,7 @@ int mutt_display_message(struct Email *cur)
       keypad(stdscr, true);
     if (r != -1)
       mutt_set_flag(Context->mailbox, cur, MUTT_READ, true);
-    if (r != -1 && C_PromptAfter)
+    if ((r != -1) && C_PromptAfter)
     {
       mutt_unget_event(mutt_any_key_to_continue(_("Command: ")), 0);
       rc = km_dokey(MENU_PAGER);
@@ -817,7 +817,7 @@ void mutt_enter_command(void)
   char buf[1024] = { 0 };
 
   /* if enter is pressed after : with no command, just return */
-  if (mutt_get_field(":", buf, sizeof(buf), MUTT_COMMAND) != 0 || !buf[0])
+  if ((mutt_get_field(":", buf, sizeof(buf), MUTT_COMMAND) != 0) || !buf[0])
     return;
 
   struct Buffer *err = mutt_buffer_alloc(256);

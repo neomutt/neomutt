@@ -107,7 +107,7 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
     return 0;
 
   // We currently are in the C_Postponed mailbox so just pick the current status
-  if (m && mutt_str_strcmp(C_Postponed, m->realpath) == 0)
+  if (m && (mutt_str_strcmp(C_Postponed, m->realpath) == 0))
   {
     PostCount = m->msg_count - m->msg_deleted;
     return PostCount;
@@ -148,7 +148,7 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
     char buf[PATH_MAX];
 
     snprintf(buf, sizeof(buf), "%s/new", C_Postponed);
-    if (access(buf, F_OK) == 0 && stat(buf, &st) == -1)
+    if ((access(buf, F_OK) == 0) && (stat(buf, &st) == -1))
     {
       PostCount = 0;
       LastModify = 0;
@@ -243,7 +243,7 @@ static struct Email *select_msg(struct Context *ctx)
         mutt_set_flag(ctx->mailbox, ctx->mailbox->emails[menu->current],
                       MUTT_DELETE, (op == OP_DELETE));
         PostCount = ctx->mailbox->msg_count - ctx->mailbox->msg_deleted;
-        if (C_Resolve && menu->current < menu->max - 1)
+        if (C_Resolve && (menu->current < menu->max - 1))
         {
           menu->oldcurrent = menu->current;
           menu->current++;

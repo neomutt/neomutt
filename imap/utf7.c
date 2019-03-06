@@ -94,7 +94,7 @@ static char *utf7_to_utf8(const char *u7, size_t u7len, char **u8, size_t *u8len
       u7++;
       u7len--;
 
-      if (u7len && *u7 == '-')
+      if (u7len && (*u7 == '-'))
       {
         *p++ = '&';
         continue;
@@ -104,7 +104,7 @@ static char *utf7_to_utf8(const char *u7, size_t u7len, char **u8, size_t *u8len
       k = 10;
       for (; u7len; u7++, u7len--)
       {
-        if ((*u7 & 0x80) || (b = Index64u[(int) *u7]) == -1)
+        if ((*u7 & 0x80) || ((b = Index64u[(int) *u7]) == -1))
           break;
         if (k > 0)
         {
@@ -116,7 +116,7 @@ static char *utf7_to_utf8(const char *u7, size_t u7len, char **u8, size_t *u8len
           ch |= b >> (-k);
           if (ch < 0x80)
           {
-            if (0x20 <= ch && ch < 0x7f)
+            if ((0x20 <= ch) && (ch < 0x7f))
             {
               /* Printable US-ASCII */
               goto bail;
@@ -138,23 +138,23 @@ static char *utf7_to_utf8(const char *u7, size_t u7len, char **u8, size_t *u8len
           k += 10;
         }
       }
-      if (ch || k < 6)
+      if (ch || (k < 6))
       {
         /* Non-zero or too many extra bits */
         goto bail;
       }
-      if (!u7len || *u7 != '-')
+      if (!u7len || (*u7 != '-'))
       {
         /* BASE64 not properly terminated */
         goto bail;
       }
-      if (u7len > 2 && u7[1] == '&' && u7[2] != '-')
+      if ((u7len > 2) && (u7[1] == '&') && (u7[2] != '-'))
       {
         /* Adjacent BASE64 sections */
         goto bail;
       }
     }
-    else if (*u7 < 0x20 || *u7 >= 0x7f)
+    else if ((*u7 < 0x20) || (*u7 >= 0x7f))
     {
       /* Not printable US-ASCII */
       goto bail;
@@ -251,12 +251,12 @@ static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len
         goto bail;
       ch = (ch << 6) | (u8[i] & 0x3f);
     }
-    if (n > 1 && !(ch >> (n * 5 + 1)))
+    if ((n > 1) && !(ch >> (n * 5 + 1)))
       goto bail;
     u8 += n;
     u8len -= n;
 
-    if (ch < 0x20 || ch >= 0x7f)
+    if ((ch < 0x20) || (ch >= 0x7f))
     {
       if (!base64)
       {
@@ -348,7 +348,7 @@ void imap_utf_decode(bool unicode, char **s)
   else
     t = utf7_to_utf8(*s, strlen(*s), 0, 0);
 
-  if (t && mutt_ch_convert_string(&t, "utf-8", C_Charset, 0) == 0)
+  if (t && (mutt_ch_convert_string(&t, "utf-8", C_Charset, 0) == 0))
   {
     FREE(s);
     *s = t;

@@ -173,7 +173,8 @@ void mutt_update_tree(struct AttachCtx *actx)
     else
       actx->idx[rindex]->tree = mutt_str_strdup(buf);
 
-    if ((2 * (actx->idx[rindex]->level + 2)) < sizeof(buf) && actx->idx[rindex]->level)
+    if (((2 * (actx->idx[rindex]->level + 2)) < sizeof(buf)) &&
+        actx->idx[rindex]->level)
     {
       s = buf + 2 * (actx->idx[rindex]->level - 1);
       *s++ = (actx->idx[rindex]->content->next) ? '\005' : '\006';
@@ -242,7 +243,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
         snprintf(buf, buflen, fmt,
                  aptr->content->type != TYPE_TEXT || aptr->content->noconv ? 'n' : 'c');
       }
-      else if (aptr->content->type != TYPE_TEXT || aptr->content->noconv)
+      else if ((aptr->content->type != TYPE_TEXT) || aptr->content->noconv)
         optional = 0;
       break;
     case 'd':
@@ -297,7 +298,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
     case 'f':
       if (!optional)
       {
-        if (aptr->content->filename && *aptr->content->filename == '/')
+        if (aptr->content->filename && (*aptr->content->filename == '/'))
         {
           char path[PATH_MAX];
 
@@ -506,7 +507,8 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
     else
       mutt_str_strfcpy(buf, body->filename, sizeof(buf));
   }
-  else if (body->email && body->encoding != ENC_BASE64 && body->encoding != ENC_QUOTED_PRINTABLE &&
+  else if (body->email && (body->encoding != ENC_BASE64) &&
+           (body->encoding != ENC_QUOTED_PRINTABLE) &&
            mutt_is_message_type(body->type, body->subtype))
   {
     mutt_default_save(buf, sizeof(buf), body->email);
@@ -519,7 +521,7 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
   prompt = _("Save to file: ");
   while (prompt)
   {
-    if (mutt_get_field(prompt, buf, sizeof(buf), MUTT_FILE) != 0 || !buf[0])
+    if ((mutt_get_field(prompt, buf, sizeof(buf), MUTT_FILE) != 0) || !buf[0])
     {
       mutt_clear_error();
       return -1;
@@ -612,7 +614,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
           mutt_str_strfcpy(buf, mutt_path_basename(NONULL(top->filename)), sizeof(buf));
           prepend_savedir(buf, sizeof(buf));
 
-          if (mutt_get_field(_("Save to file: "), buf, sizeof(buf), MUTT_FILE) != 0 ||
+          if ((mutt_get_field(_("Save to file: "), buf, sizeof(buf), MUTT_FILE) != 0) ||
               !buf[0])
           {
             return;
@@ -799,8 +801,8 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
   /* perform charset conversion on text attachments when piping */
   state.flags = MUTT_CHARCONV;
 
-  if (mutt_get_field((filter ? _("Filter through: ") : _("Pipe to: ")), buf,
-                     sizeof(buf), MUTT_CMD) != 0 ||
+  if ((mutt_get_field((filter ? _("Filter through: ") : _("Pipe to: ")), buf,
+                      sizeof(buf), MUTT_CMD) != 0) ||
       !buf[0])
   {
     return;
@@ -814,7 +816,7 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
     pid_t pid = mutt_create_filter(buf, &state.fp_out, NULL, NULL);
     pipe_attachment_list(buf, actx, fp, tag, top, filter, &state);
     mutt_file_fclose(&state.fp_out);
-    if (mutt_wait_filter(pid) != 0 || C_WaitKey)
+    if ((mutt_wait_filter(pid) != 0) || C_WaitKey)
       mutt_any_key_to_continue(NULL);
   }
   else
@@ -966,7 +968,7 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, stru
     pid_t pid = mutt_create_filter(NONULL(C_PrintCommand), &state.fp_out, NULL, NULL);
     print_attachment_list(actx, fp, tag, top, &state);
     mutt_file_fclose(&state.fp_out);
-    if (mutt_wait_filter(pid) != 0 || C_WaitKey)
+    if ((mutt_wait_filter(pid) != 0) || C_WaitKey)
       mutt_any_key_to_continue(NULL);
   }
   else
@@ -1207,8 +1209,8 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *
       mutt_error(_("Can't decrypt encrypted message"));
 
     /* Strip out the top level multipart */
-    if (m->type == TYPE_MULTIPART && m->parts && !need_secured &&
-        (parent_type == -1 && mutt_str_strcasecmp("alternative", m->subtype)))
+    if ((m->type == TYPE_MULTIPART) && m->parts && !need_secured &&
+        ((parent_type == -1) && mutt_str_strcasecmp("alternative", m->subtype)))
     {
       mutt_generate_recvattach_list(actx, e, m->parts, fp, m->type, level, decrypted);
     }
@@ -1304,7 +1306,7 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
 
   while ((rindex < actx->idxlen) && (actx->idx[rindex]->level > curlevel))
   {
-    if (C_DigestCollapse && actx->idx[rindex]->content->type == TYPE_MULTIPART &&
+    if (C_DigestCollapse && (actx->idx[rindex]->content->type == TYPE_MULTIPART) &&
         !mutt_str_strcasecmp(actx->idx[rindex]->content->subtype, "digest"))
     {
       actx->idx[rindex]->content->collapsed = true;
@@ -1418,7 +1420,7 @@ void mutt_view_attachments(struct Email *e)
         mutt_save_attachment_list(actx, CURATTACH->fp, menu->tagprefix,
                                   CURATTACH->content, e, menu);
 
-        if (!menu->tagprefix && C_Resolve && menu->current < menu->max - 1)
+        if (!menu->tagprefix && C_Resolve && (menu->current < menu->max - 1))
           menu->current++;
 
         menu->redraw = REDRAW_MOTION_RESYNC | REDRAW_FULL;
@@ -1461,7 +1463,7 @@ void mutt_view_attachments(struct Email *e)
           if (CURATTACH->parent_type == TYPE_MULTIPART)
           {
             CURATTACH->content->deleted = true;
-            if (C_Resolve && menu->current < menu->max - 1)
+            if (C_Resolve && (menu->current < menu->max - 1))
             {
               menu->current++;
               menu->redraw = REDRAW_MOTION_RESYNC;
@@ -1501,7 +1503,7 @@ void mutt_view_attachments(struct Email *e)
         if (!menu->tagprefix)
         {
           CURATTACH->content->deleted = false;
-          if (C_Resolve && menu->current < menu->max - 1)
+          if (C_Resolve && (menu->current < menu->max - 1))
           {
             menu->current++;
             menu->redraw = REDRAW_MOTION_RESYNC;

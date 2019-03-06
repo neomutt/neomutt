@@ -153,7 +153,7 @@ static int print_macro(FILE *fp, int maxwidth, const char **macro)
   memset(&mbstate2, 0, sizeof(mbstate2));
   for (; len && (k = mbrtowc(&wc, *macro, len, &mbstate1)); *macro += k, len -= k)
   {
-    if (k == (size_t)(-1) || k == (size_t)(-2))
+    if ((k == (size_t)(-1)) || (k == (size_t)(-2)))
     {
       if (k == (size_t)(-1))
         memset(&mbstate1, 0, sizeof(mbstate1));
@@ -162,7 +162,7 @@ static int print_macro(FILE *fp, int maxwidth, const char **macro)
     }
     /* glibc-2.1.3's wcwidth() returns 1 for unprintable chars! */
     const int w = wcwidth(wc);
-    if (IsWPrint(wc) && w >= 0)
+    if (IsWPrint(wc) && (w >= 0))
     {
       if (w > n)
         break;
@@ -170,14 +170,14 @@ static int print_macro(FILE *fp, int maxwidth, const char **macro)
       {
         char buf[MB_LEN_MAX * 2];
         size_t n1, n2;
-        if ((n1 = wcrtomb(buf, wc, &mbstate2)) != (size_t)(-1) &&
-            (n2 = wcrtomb(buf + n1, 0, &mbstate2)) != (size_t)(-1))
+        if (((n1 = wcrtomb(buf, wc, &mbstate2)) != (size_t)(-1)) &&
+            ((n2 = wcrtomb(buf + n1, 0, &mbstate2)) != (size_t)(-1)))
         {
           fputs(buf, fp);
         }
       }
     }
-    else if (wc < 0x20 || wc == 0x7f)
+    else if ((wc < 0x20) || (wc == 0x7f))
     {
       if (n < 2)
         break;
@@ -227,7 +227,7 @@ static int get_wrapped_width(const char *t, size_t wid)
   {
     if (*s == ' ')
       m = n;
-    if (k == (size_t)(-1) || k == (size_t)(-2))
+    if ((k == (size_t)(-1)) || (k == (size_t)(-2)))
     {
       if (k == (size_t)(-1))
         memset(&mbstate, 0, sizeof(mbstate));
@@ -458,7 +458,7 @@ void mutt_help(int menu)
     }
 
     dump_menu(fp, menu);
-    if (menu != MENU_EDITOR && menu != MENU_PAGER)
+    if ((menu != MENU_EDITOR) && (menu != MENU_PAGER))
     {
       fprintf(fp, "\n%s\n\n", _("Generic bindings:"));
       dump_menu(fp, MENU_GENERIC);

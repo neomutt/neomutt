@@ -419,7 +419,7 @@ static int pop_fetch_headers(struct Mailbox *m)
       mutt_debug(LL_DEBUG1, "set UIDL capability\n");
     }
 
-    if (rc == -2 && adata->cmd_uidl == 2)
+    if ((rc == -2) && (adata->cmd_uidl == 2))
     {
       adata->cmd_uidl = 0;
 
@@ -639,7 +639,7 @@ void pop_fetch_mail(void)
   sscanf(buf, "+OK %d %d", &msgs, &bytes);
 
   /* only get unread messages */
-  if (msgs > 0 && C_PopLast)
+  if ((msgs > 0) && C_PopLast)
   {
     mutt_str_strfcpy(buf, "LAST\r\n", sizeof(buf));
     ret = pop_query(adata, buf, sizeof(buf));
@@ -684,7 +684,7 @@ void pop_fetch_mail(void)
       if (ret == -3)
         rset = 1;
 
-      if (ret == 0 && mx_msg_commit(ctx->mailbox, msg) != 0)
+      if ((ret == 0) && (mx_msg_commit(ctx->mailbox, msg) != 0))
       {
         rset = 1;
         ret = -3;
@@ -779,7 +779,7 @@ struct Account *pop_ac_find(struct Account *a, const char *path)
  */
 int pop_ac_add(struct Account *a, struct Mailbox *m)
 {
-  if (!a || !m || m->magic != MUTT_POP)
+  if (!a || !m || (m->magic != MUTT_POP))
     return -1;
 
   if (!a->adata)
@@ -971,7 +971,7 @@ static int pop_mbox_sync(struct Mailbox *m, int *index_hint)
     for (i = 0, j = 0, rc = 0; (rc == 0) && (i < m->msg_count); i++)
     {
       struct PopEmailData *edata = m->emails[i]->edata;
-      if (m->emails[i]->deleted && m->emails[i]->refno != -1)
+      if (m->emails[i]->deleted && (m->emails[i]->refno != -1))
       {
         j++;
         if (!m->quiet)

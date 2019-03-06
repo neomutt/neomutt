@@ -264,7 +264,7 @@ time_t mutt_date_make_time(struct tm *t, int local)
   /* The leap years are 1972 and every 4. year until 2096,
    * but this algorithm will fail after year 2099 */
   g += t->tm_mday;
-  if ((t->tm_year % 4) || t->tm_mon < 2)
+  if ((t->tm_year % 4) || (t->tm_mon < 2))
     g--;
   t->tm_yday = g;
 
@@ -522,7 +522,7 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
          */
         ptz = uncomment_timezone(tzstr, sizeof(tzstr), t);
 
-        if (*ptz == '+' || *ptz == '-')
+        if ((*ptz == '+') || (*ptz == '-'))
         {
           if (ptz[1] && ptz[2] && ptz[3] && ptz[4] &&
               isdigit((unsigned char) ptz[1]) && isdigit((unsigned char) ptz[2]) &&

@@ -1562,7 +1562,7 @@ static unsigned int count_query(notmuch_database_t *db, const char *qstr, int li
   notmuch_query_destroy(q);
   mutt_debug(LL_DEBUG1, "nm: count '%s', result=%d\n", qstr, res);
 
-  if (limit > 0 && res > limit)
+  if ((limit > 0) && (res > limit))
     res = limit;
 
   return res;
@@ -2007,7 +2007,7 @@ int nm_record_message(struct Mailbox *m, char *path, struct Email *e)
     goto done;
   }
 
-  if (st == NOTMUCH_STATUS_SUCCESS && msg)
+  if ((st == NOTMUCH_STATUS_SUCCESS) && msg)
   {
     notmuch_message_maildir_flags_to_tags(msg);
     if (e)
@@ -2098,7 +2098,7 @@ struct Account *nm_ac_find(struct Account *a, const char *path)
  */
 int nm_ac_add(struct Account *a, struct Mailbox *m)
 {
-  if (!a || !m || m->magic != MUTT_NOTMUCH)
+  if (!a || !m || (m->magic != MUTT_NOTMUCH))
     return -1;
 
   if (!a->adata)

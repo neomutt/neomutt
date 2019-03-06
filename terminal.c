@@ -61,7 +61,7 @@ bool mutt_ts_capability(void)
 
   /* If tsl is set, then terminfo says that status lines work. */
   char *tcaps = tigetstr("tsl");
-  if (tcaps && tcaps != (char *) -1 && *tcaps)
+  if (tcaps && (tcaps != (char *) -1) && *tcaps)
   {
     /* update the static definitions of tsl/fsl from terminfo */
     tsl = tcaps;

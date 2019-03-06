@@ -111,7 +111,7 @@ int rfc1524_expand_command(struct Body *a, const char *filename,
 
         y += mutt_file_quote_filename(pvalue, buf + y, sizeof(buf) - y);
       }
-      else if (command[x] == 's' && filename)
+      else if ((command[x] == 's') && filename)
       {
         y += mutt_file_quote_filename(filename, buf + y, sizeof(buf) - y);
         needspipe = false;
@@ -243,7 +243,7 @@ static bool rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
       ch = get_field(buf);
       if ((mutt_str_strcasecmp(buf, type) != 0) &&
           ((mutt_str_strncasecmp(buf, type, btlen) != 0) ||
-           (buf[btlen] != 0 &&                           /* implicit wild */
+           ((buf[btlen] != 0) &&                         /* implicit wild */
             (mutt_str_strcmp(buf + btlen, "/*") != 0)))) /* wildsubtype */
       {
         continue;
@@ -540,7 +540,7 @@ int rfc1524_expand_filename(const char *nametemplate, const char *oldfile,
     ps = 0;
     for (i = 0; nametemplate[i]; i++)
     {
-      if (nametemplate[i] == '%' && nametemplate[i + 1] == 's')
+      if ((nametemplate[i] == '%') && (nametemplate[i + 1] == 's'))
       {
         ps = 1;
         break;
@@ -548,7 +548,7 @@ int rfc1524_expand_filename(const char *nametemplate, const char *oldfile,
 
       /* note that the following will _not_ read beyond oldfile's end. */
 
-      if (lmatch && nametemplate[i] != oldfile[i])
+      if (lmatch && (nametemplate[i] != oldfile[i]))
         lmatch = false;
     }
 

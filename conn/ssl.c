@@ -233,7 +233,7 @@ static int add_entropy(const char *file)
   mutt_message(_("Filling entropy pool: %s..."), file);
 
   /* check that the file permissions are secure */
-  if (st.st_uid != getuid() || ((st.st_mode & (S_IWGRP | S_IRGRP)) != 0) ||
+  if ((st.st_uid != getuid()) || ((st.st_mode & (S_IWGRP | S_IRGRP)) != 0) ||
       ((st.st_mode & (S_IWOTH | S_IROTH)) != 0))
   {
     mutt_error(_("%s has insecure permissions"), file);
@@ -397,7 +397,7 @@ static char *x509_get_part(X509_NAME *name, int nid)
 {
   static char data[128];
 
-  if (!name || X509_NAME_get_text_by_NID(name, nid, data, sizeof(data)) < 0)
+  if (!name || (X509_NAME_get_text_by_NID(name, nid, data, sizeof(data)) < 0))
     mutt_str_strfcpy(data, _("Unknown"), sizeof(data));
 
   return data;
@@ -473,10 +473,11 @@ static bool compare_certificates(X509 *cert, X509 *peercert,
   /* Avoid CPU-intensive digest calculation if the certificates are
    * not even remotely equal.
    */
-  if (X509_subject_name_cmp(cert, peercert) != 0 || X509_issuer_name_cmp(cert, peercert) != 0)
+  if ((X509_subject_name_cmp(cert, peercert) != 0) ||
+      (X509_issuer_name_cmp(cert, peercert) != 0))
     return false;
 
-  if (!X509_digest(cert, EVP_sha256(), md, &mdlen) || peermdlen != mdlen)
+  if (!X509_digest(cert, EVP_sha256(), md, &mdlen) || (peermdlen != mdlen))
     return false;
 
   if (memcmp(peermd, md, mdlen) != 0)
@@ -549,7 +550,7 @@ static bool hostname_match(const char *hostname, const char *certname)
     cmp2 = hostname;
   }
 
-  if (*cmp1 == '\0' || *cmp2 == '\0')
+  if ((*cmp1 == '\0') || (*cmp2 == '\0'))
   {
     return false;
   }
@@ -776,9 +777,9 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
       subj_alt_name = sk_GENERAL_NAME_value(subj_alt_names, i);
       if (subj_alt_name->type == GEN_DNS)
       {
-        if (subj_alt_name->d.ia5->length >= 0 &&
-            mutt_str_strlen((char *) subj_alt_name->d.ia5->data) ==
-                (size_t) subj_alt_name->d.ia5->length &&
+        if ((subj_alt_name->d.ia5->length >= 0) &&
+            (mutt_str_strlen((char *) subj_alt_name->d.ia5->data) ==
+             (size_t) subj_alt_name->d.ia5->length) &&
             (match_found = hostname_match(hostname_ascii,
                                           (char *) (subj_alt_name->d.ia5->data))))
         {
@@ -1131,7 +1132,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
 
   /* check hostname only for the leaf certificate */
   buf[0] = 0;
-  if (pos == 0 && C_SslVerifyHost != MUTT_NO)
+  if ((pos == 0) && (C_SslVerifyHost != MUTT_NO))
   {
     if (check_host(cert, host, buf, sizeof(buf)) == 0)
     {
@@ -1362,7 +1363,7 @@ static int ssl_socket_read(struct Connection *conn, char *buf, size_t count)
   int rc;
 
   rc = SSL_read(data->ssl, buf, count);
-  if (rc <= 0 || errno == EINTR)
+  if ((rc <= 0) || (errno == EINTR))
   {
     if (errno == EINTR)
     {
@@ -1384,7 +1385,7 @@ static int ssl_socket_write(struct Connection *conn, const char *buf, size_t cou
   int rc;
 
   rc = SSL_write(data->ssl, buf, count);
-  if (rc <= 0 || errno == EINTR)
+  if ((rc <= 0) || (errno == EINTR))
   {
     if (errno == EINTR)
     {
@@ -1405,7 +1406,7 @@ static int ssl_socket_close(struct Connection *conn)
 
   if (data)
   {
-    if (data->isopen && raw_socket_poll(conn, 0) >= 0)
+    if (data->isopen && (raw_socket_poll(conn, 0) >= 0))
       SSL_shutdown(data->ssl);
 
     /* hold onto this for the life of neomutt, in case we want to reconnect.

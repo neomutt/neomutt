@@ -841,7 +841,7 @@ int main(int argc, char *argv[], char *envp[])
     goto main_curses;
   }
   else if (subject || msg || sendflags || draft_file || include_file ||
-           !STAILQ_EMPTY(&attach) || optind < argc)
+           !STAILQ_EMPTY(&attach) || (optind < argc))
   {
     FILE *fp_in = NULL;
     FILE *fp_out = NULL;

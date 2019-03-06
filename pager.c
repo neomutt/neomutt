@@ -324,7 +324,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt,
   else
     def_color = ColorDefs[line_info[m].type];
 
-  if ((flags & MUTT_SHOWCOLOR) && line_info[m].type == MT_COLOR_QUOTED)
+  if ((flags & MUTT_SHOWCOLOR) && (line_info[m].type == MT_COLOR_QUOTED))
   {
     struct QClass *class = line_info[m].quote;
 
@@ -880,9 +880,10 @@ int mutt_is_quote_line(char *line, regmatch_t *pmatch)
     pmatch = pmatch_internal;
 
   if (C_QuoteRegex && C_QuoteRegex->regex &&
-      regexec(C_QuoteRegex->regex, line, 1, pmatch, 0) == 0)
+      (regexec(C_QuoteRegex->regex, line, 1, pmatch, 0) == 0))
   {
-    if (C_Smileys && C_Smileys->regex && regexec(C_Smileys->regex, line, 1, smatch, 0) == 0)
+    if (C_Smileys && C_Smileys->regex &&
+        (regexec(C_Smileys->regex, line, 1, smatch, 0) == 0))
     {
       if (smatch[0].rm_so > 0)
       {
@@ -925,7 +926,8 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
   bool null_rx;
   int offset, i = 0;
 
-  if (n == 0 || ISHEADER(line_info[n - 1].type) || (check_protected_header_marker(raw) == 0))
+  if ((n == 0) || ISHEADER(line_info[n - 1].type) ||
+      (check_protected_header_marker(raw) == 0))
   {
     if (buf[0] == '\n') /* end of header */
     {
@@ -936,7 +938,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
     {
       /* if this is a continuation of the previous line, use the previous
        * line's color as default. */
-      if (n > 0 && (buf[0] == ' ' || buf[0] == '\t'))
+      if ((n > 0) && ((buf[0] == ' ') || (buf[0] == '\t')))
       {
         line_info[n].type = line_info[n - 1].type; /* wrapped line */
         if (!C_HeaderColorPartial)
@@ -1012,7 +1014,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
   else if (mutt_is_quote_line(buf, pmatch))
 
   {
-    if (q_classify && line_info[n].quote == NULL)
+    if (q_classify && (line_info[n].quote == NULL))
     {
       line_info[n].quote = classify_quote(quote_list, buf + pmatch[0].rm_so,
                                           pmatch[0].rm_eo - pmatch[0].rm_so,
@@ -1024,8 +1026,8 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
     line_info[n].type = MT_COLOR_NORMAL;
 
   /* body patterns */
-  if (line_info[n].type == MT_COLOR_NORMAL || line_info[n].type == MT_COLOR_QUOTED ||
-      (line_info[n].type == MT_COLOR_HDEFAULT && C_HeaderColorPartial))
+  if ((line_info[n].type == MT_COLOR_NORMAL) || (line_info[n].type == MT_COLOR_QUOTED) ||
+      ((line_info[n].type == MT_COLOR_HDEFAULT) && C_HeaderColorPartial))
   {
     size_t nl;
 
@@ -1055,8 +1057,8 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
       null_rx = false;
       STAILQ_FOREACH(color_line, head, entries)
       {
-        if (!color_line->stop_matching && regexec(&color_line->regex, buf + offset, 1, pmatch,
-                                                  (offset ? REG_NOTBOL : 0)) == 0)
+        if (!color_line->stop_matching && (regexec(&color_line->regex, buf + offset, 1, pmatch,
+                                                   (offset ? REG_NOTBOL : 0)) == 0))
         {
           if (pmatch[0].rm_eo != pmatch[0].rm_so)
           {
@@ -1078,9 +1080,9 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
             i = line_info[n].chunks - 1;
             pmatch[0].rm_so += offset;
             pmatch[0].rm_eo += offset;
-            if (!found || pmatch[0].rm_so < (line_info[n].syntax)[i].first ||
-                (pmatch[0].rm_so == (line_info[n].syntax)[i].first &&
-                 pmatch[0].rm_eo > (line_info[n].syntax)[i].last))
+            if (!found || (pmatch[0].rm_so < (line_info[n].syntax)[i].first) ||
+                ((pmatch[0].rm_so == (line_info[n].syntax)[i].first) &&
+                 (pmatch[0].rm_eo > (line_info[n].syntax)[i].last)))
             {
               (line_info[n].syntax)[i].color = color_line->pair;
               (line_info[n].syntax)[i].first = pmatch[0].rm_so;
@@ -1148,9 +1150,9 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
             i = line_info[n].chunks - 1;
             pmatch[0].rm_so += offset;
             pmatch[0].rm_eo += offset;
-            if (!found || pmatch[0].rm_so < (line_info[n].syntax)[i].first ||
-                (pmatch[0].rm_so == (line_info[n].syntax)[i].first &&
-                 pmatch[0].rm_eo > (line_info[n].syntax)[i].last))
+            if (!found || (pmatch[0].rm_so < (line_info[n].syntax)[i].first) ||
+                ((pmatch[0].rm_so == (line_info[n].syntax)[i].first) &&
+                 (pmatch[0].rm_eo > (line_info[n].syntax)[i].last)))
             {
               (line_info[n].syntax)[i].color = color_line->pair;
               (line_info[n].syntax)[i].first = pmatch[0].rm_so;
@@ -1214,27 +1216,27 @@ static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
     }
     while (pos < x)
     {
-      if (buf[pos] == '1' && (pos + 1 == x || buf[pos + 1] == ';'))
+      if ((buf[pos] == '1') && ((pos + 1 == x) || (buf[pos + 1] == ';')))
       {
         a->attr |= ANSI_BOLD;
         pos += 2;
       }
-      else if (buf[pos] == '4' && (pos + 1 == x || buf[pos + 1] == ';'))
+      else if ((buf[pos] == '4') && ((pos + 1 == x) || (buf[pos + 1] == ';')))
       {
         a->attr |= ANSI_UNDERLINE;
         pos += 2;
       }
-      else if (buf[pos] == '5' && (pos + 1 == x || buf[pos + 1] == ';'))
+      else if ((buf[pos] == '5') && ((pos + 1 == x) || (buf[pos + 1] == ';')))
       {
         a->attr |= ANSI_BLINK;
         pos += 2;
       }
-      else if (buf[pos] == '7' && (pos + 1 == x || buf[pos + 1] == ';'))
+      else if ((buf[pos] == '7') && ((pos + 1 == x) || (buf[pos + 1] == ';')))
       {
         a->attr |= ANSI_REVERSE;
         pos += 2;
       }
-      else if (buf[pos] == '0' && (pos + 1 == x || buf[pos + 1] == ';'))
+      else if ((buf[pos] == '0') && ((pos + 1 == x) || (buf[pos + 1] == ';')))
       {
 #ifdef HAVE_COLOR
         if (a->pair != -1)
@@ -1244,7 +1246,7 @@ static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
         a->pair = -1;
         pos += 2;
       }
-      else if (buf[pos] == '3' && isdigit(buf[pos + 1]))
+      else if ((buf[pos] == '3') && isdigit(buf[pos + 1]))
       {
 #ifdef HAVE_COLOR
         if (a->pair != -1)
@@ -1255,7 +1257,7 @@ static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
         a->fg = buf[pos + 1] - '0';
         pos += 3;
       }
-      else if (buf[pos] == '4' && isdigit(buf[pos + 1]))
+      else if ((buf[pos] == '4') && isdigit(buf[pos + 1]))
       {
 #ifdef HAVE_COLOR
         if (a->pair != -1)
@@ -1318,11 +1320,11 @@ static int fill_buffer(FILE *fp, LOFF_T *last_pos, LOFF_T offset, unsigned char 
     q = *fmt;
     while (*p)
     {
-      if (*p == '\010' && (p > *buf))
+      if ((*p == '\010') && (p > *buf))
       {
         if (*(p + 1) == '_') /* underline */
           p += 2;
-        else if (*(p + 1) && q > *fmt) /* bold or overstrike */
+        else if (*(p + 1) && (q > *fmt)) /* bold or overstrike */
         {
           *(q - 1) = *(p + 1);
           p += 2;
@@ -1330,12 +1332,12 @@ static int fill_buffer(FILE *fp, LOFF_T *last_pos, LOFF_T offset, unsigned char 
         else /* ^H */
           *q++ = *p++;
       }
-      else if (*p == '\033' && *(p + 1) == '[' && is_ansi(p + 2))
+      else if ((*p == '\033') && (*(p + 1) == '[') && is_ansi(p + 2))
       {
         while (*p++ != 'm') /* skip ANSI sequence */
           ;
       }
-      else if (*p == '\033' && *(p + 1) == ']' &&
+      else if ((*p == '\033') && (*(p + 1) == ']') &&
                ((check_attachment_marker((char *) p) == 0) ||
                 (check_protected_header_marker((char *) p) == 0)))
       {
@@ -1405,7 +1407,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
       break;
 
     k = mbrtowc(&wc, (char *) buf + ch, cnt - ch, &mbstate);
-    if (k == (size_t)(-2) || k == (size_t)(-1))
+    if ((k == (size_t)(-2)) || (k == (size_t)(-1)))
     {
       if (k == (size_t)(-1))
         memset(&mbstate, 0, sizeof(mbstate));
@@ -1424,7 +1426,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
     if (CharsetIsUtf8)
     {
       /* zero width space, zero width no-break space */
-      if (wc == 0x200B || wc == 0xFEFF)
+      if ((wc == 0x200B) || (wc == 0xFEFF))
       {
         mutt_debug(LL_DEBUG3, "skip zero-width character U+%04X\n", (unsigned short) wc);
         continue;
@@ -1454,7 +1456,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
         {
           special |= (wc == '_' && special & A_UNDERLINE) ? A_UNDERLINE : A_BOLD;
         }
-        else if (wc == '_' || wc1 == '_')
+        else if ((wc == '_') || (wc1 == '_'))
         {
           special |= A_UNDERLINE;
           wc = (wc1 == '_') ? wc : wc1;
@@ -1480,7 +1482,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
     }
 
     /* no-break space, narrow no-break space */
-    if (IsWPrint(wc) || (CharsetIsUtf8 && (wc == 0x00A0 || wc == 0x202F)))
+    if (IsWPrint(wc) || (CharsetIsUtf8 && ((wc == 0x00A0) || (wc == 0x202F))))
     {
       if (wc == ' ')
       {
@@ -1507,7 +1509,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
       else
         col = t;
     }
-    else if (wc < 0x20 || wc == 0x7f)
+    else if ((wc < 0x20) || (wc == 0x7f))
     {
       if (col + 2 > wrap_cols)
         break;
@@ -1637,7 +1639,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
     }
 
     /* this also prevents searching through the hidden lines */
-    if ((flags & MUTT_HIDE) && (*line_info)[n].type == MT_COLOR_QUOTED)
+    if ((flags & MUTT_HIDE) && ((*line_info)[n].type == MT_COLOR_QUOTED))
       flags = 0; /* MUTT_NOSHOW */
   }
 
@@ -1657,7 +1659,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
       goto out;
     }
     if (C_QuoteRegex && C_QuoteRegex->regex &&
-        regexec(C_QuoteRegex->regex, (char *) fmt, 1, pmatch, 0) == 0)
+        (regexec(C_QuoteRegex->regex, (char *) fmt, 1, pmatch, 0) == 0))
     {
       (*line_info)[n].quote =
           classify_quote(quote_list, (char *) fmt + pmatch[0].rm_so,
@@ -1670,7 +1672,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
   }
 
   if ((flags & MUTT_SEARCH) && !(*line_info)[n].continuation &&
-      (*line_info)[n].search_cnt == -1)
+      ((*line_info)[n].search_cnt == -1))
   {
     if (fill_buffer(fp, last_pos, (*line_info)[n].offset, &buf, &fmt, &buflen, &buf_ready) < 0)
     {
@@ -1705,13 +1707,13 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
     }
   }
 
-  if (!(flags & MUTT_SHOW) && (*line_info)[n + 1].offset > 0)
+  if (!(flags & MUTT_SHOW) && ((*line_info)[n + 1].offset > 0))
   {
     /* we've already scanned this line, so just exit */
     rc = 0;
     goto out;
   }
-  if ((flags & MUTT_SHOWCOLOR) && *force_redraw && (*line_info)[n + 1].offset > 0)
+  if ((flags & MUTT_SHOWCOLOR) && *force_redraw && ((*line_info)[n + 1].offset > 0))
   {
     /* no need to try to display this line... */
     rc = 1;
@@ -1763,7 +1765,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
   if (*buf_ptr == '\n')
     buf_ptr++;
 
-  if ((int) (buf_ptr - buf) < b_read && !(*line_info)[n + 1].continuation)
+  if (((int) (buf_ptr - buf) < b_read) && !(*line_info)[n + 1].continuation)
     append_line(*line_info, n, (int) (buf_ptr - buf));
   (*line_info)[n + 1].offset = (*line_info)[n].offset + (long) (buf_ptr - buf);
 
@@ -1787,7 +1789,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
 #endif
 
   /* end the last color pattern (needed by S-Lang) */
-  if (special || (col != pager_window->cols && (flags & (MUTT_SHOWCOLOR | MUTT_SEARCH))))
+  if (special || ((col != pager_window->cols) && (flags & (MUTT_SHOWCOLOR | MUTT_SEARCH))))
     resolve_color(*line_info, n, vch, flags, 0, &a);
 
   /* Fill the blank space at the end of the line with the prevailing color.
@@ -1840,7 +1842,7 @@ static int up_n_lines(int nlines, struct Line *info, int cur, bool hiding)
   while (cur > 0 && nlines > 0)
   {
     cur--;
-    if (!hiding || info[cur].type != MT_COLOR_QUOTED)
+    if (!hiding || (info[cur].type != MT_COLOR_QUOTED))
       nlines--;
   }
 
@@ -2083,7 +2085,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
                         &rd->quote_list, &rd->q_level, &rd->force_redraw,
                         &rd->search_re, rd->pager_window) == 0)
     {
-      if (!rd->line_info[i].continuation && ++j == rd->lines)
+      if (!rd->line_info[i].continuation && (++j == rd->lines))
       {
         rd->topline = i;
         if (!rd->search_flag)
@@ -2099,7 +2101,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
   }
 #endif
 
-  if ((pager_menu->redraw & REDRAW_BODY) || rd->topline != rd->oldtopline)
+  if ((pager_menu->redraw & REDRAW_BODY) || (rd->topline != rd->oldtopline))
   {
     do
     {
@@ -2613,8 +2615,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
             int i;
             for (i = wrapped ? 0 : rd.topline + searchctx + 1; i < rd.last_line; i++)
             {
-              if ((!rd.hide_quoted || rd.line_info[i].type != MT_COLOR_QUOTED) &&
-                  !rd.line_info[i].continuation && rd.line_info[i].search_cnt > 0)
+              if ((!rd.hide_quoted || (rd.line_info[i].type != MT_COLOR_QUOTED)) &&
+                  !rd.line_info[i].continuation && (rd.line_info[i].search_cnt > 0))
               {
                 break;
               }
@@ -2637,8 +2639,9 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
             int i;
             for (i = wrapped ? rd.last_line : rd.topline + searchctx - 1; i >= 0; i--)
             {
-              if ((!rd.hide_quoted || (rd.has_types && rd.line_info[i].type != MT_COLOR_QUOTED)) &&
-                  !rd.line_info[i].continuation && rd.line_info[i].search_cnt > 0)
+              if ((!rd.hide_quoted ||
+                   (rd.has_types && (rd.line_info[i].type != MT_COLOR_QUOTED))) &&
+                  !rd.line_info[i].continuation && (rd.line_info[i].search_cnt > 0))
               {
                 break;
               }
@@ -3166,8 +3169,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_POST:
         CHECK_MODE(IsEmail(extra) && !IsAttach(extra));
         CHECK_ATTACH;
-        if (extra->ctx && extra->ctx->mailbox->magic == MUTT_NNTP &&
-            !((struct NntpMboxData *) extra->ctx->mailbox->mdata)->allowed && query_quadoption(C_PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+        if (extra->ctx && (extra->ctx->mailbox->magic == MUTT_NNTP) &&
+            !((struct NntpMboxData *) extra->ctx->mailbox->mdata)->allowed && (query_quadoption(C_PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
         {
           break;
         }
@@ -3178,8 +3181,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_FORWARD_TO_GROUP:
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;
-        if (extra->ctx && extra->ctx->mailbox->magic == MUTT_NNTP &&
-            !((struct NntpMboxData *) extra->ctx->mailbox->mdata)->allowed && query_quadoption(C_PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+        if (extra->ctx && (extra->ctx->mailbox->magic == MUTT_NNTP) &&
+            !((struct NntpMboxData *) extra->ctx->mailbox->mdata)->allowed && (query_quadoption(C_PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
         {
           break;
         }
@@ -3205,11 +3208,11 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           followup_to = extra->email->env->followup_to;
 
         if (!followup_to || (mutt_str_strcasecmp(followup_to, "poster") != 0) ||
-            query_quadoption(C_FollowupToPoster,
-                             _("Reply by mail as poster prefers?")) != MUTT_YES)
+            (query_quadoption(C_FollowupToPoster,
+                              _("Reply by mail as poster prefers?")) != MUTT_YES))
         {
           if (extra->ctx && (extra->ctx->mailbox->magic == MUTT_NNTP) &&
-              !((struct NntpMboxData *) extra->ctx->mailbox->mdata)->allowed && query_quadoption(C_PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+              !((struct NntpMboxData *) extra->ctx->mailbox->mdata)->allowed && (query_quadoption(C_PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES))
           {
             break;
           }

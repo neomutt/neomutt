@@ -95,7 +95,7 @@ void mutt_buffer_adv_mktemp(struct Buffer *buf)
     mutt_buffer_printf(buf, "%s/%s", NONULL(C_Tmpdir), mutt_b2s(prefix));
 
     struct stat sb;
-    if (lstat(mutt_b2s(buf), &sb) == -1 && errno == ENOENT)
+    if ((lstat(mutt_b2s(buf), &sb) == -1) && (errno == ENOENT))
       goto out;
 
     char *suffix = strrchr(prefix->data, '.');
@@ -133,7 +133,7 @@ void mutt_adv_mktemp(char *buf, size_t buflen)
     mutt_file_sanitize_filename(prefix, true);
     snprintf(buf, buflen, "%s/%s", NONULL(C_Tmpdir), prefix);
     struct stat sb;
-    if (lstat(buf, &sb) == -1 && errno == ENOENT)
+    if ((lstat(buf, &sb) == -1) && (errno == ENOENT))
       return;
 
     char *suffix = strrchr(prefix, '.');
@@ -186,7 +186,7 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
     {
       case '~':
       {
-        if (*(buf + 1) == '/' || *(buf + 1) == 0)
+        if ((*(buf + 1) == '/') || (*(buf + 1) == 0))
         {
           mutt_str_strfcpy(p, HomeDir, sizeof(p));
           tail = buf + 1;
@@ -227,14 +227,14 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
         enum MailboxType mb_type = mx_path_probe(C_Folder, NULL);
 
         /* if folder = {host} or imap[s]://host/: don't append slash */
-        if ((mb_type == MUTT_IMAP) && (C_Folder[strlen(C_Folder) - 1] == '}' ||
-                                       C_Folder[strlen(C_Folder) - 1] == '/'))
+        if ((mb_type == MUTT_IMAP) && ((C_Folder[strlen(C_Folder) - 1] == '}') ||
+                                       (C_Folder[strlen(C_Folder) - 1] == '/')))
         {
           mutt_str_strfcpy(p, C_Folder, sizeof(p));
         }
         else if (mb_type == MUTT_NOTMUCH)
           mutt_str_strfcpy(p, C_Folder, sizeof(p));
-        else if (C_Folder && *C_Folder && C_Folder[strlen(C_Folder) - 1] == '/')
+        else if (C_Folder && *C_Folder && (C_Folder[strlen(C_Folder) - 1] == '/'))
           mutt_str_strfcpy(p, C_Folder, sizeof(p));
         else
           snprintf(p, sizeof(p), "%s/", NONULL(C_Folder));
@@ -441,7 +441,7 @@ bool mutt_is_text_part(struct Body *b)
       return true;
   }
 
-  if (((WithCrypto & APPLICATION_PGP) != 0) && t == TYPE_APPLICATION)
+  if (((WithCrypto & APPLICATION_PGP) != 0) && (t == TYPE_APPLICATION))
   {
     if (mutt_str_strcasecmp("pgp-keys", s) == 0)
       return true;
@@ -555,7 +555,7 @@ void mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix,
                      NONULL(C_Hostname), (int) getuid(), (int) getpid(),
                      random(), random(), suffix ? "." : "", NONULL(suffix));
   mutt_debug(LL_DEBUG3, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, mutt_b2s(buf));
-  if (unlink(mutt_b2s(buf)) && errno != ENOENT)
+  if (unlink(mutt_b2s(buf)) && (errno != ENOENT))
   {
     mutt_debug(LL_DEBUG1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src,
                line, mutt_b2s(buf), strerror(errno), errno);
@@ -588,7 +588,7 @@ void mutt_mktemp_full(char *buf, size_t buflen, const char *prefix,
                src, line, buflen, n);
   }
   mutt_debug(LL_DEBUG3, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, buf);
-  if (unlink(buf) && errno != ENOENT)
+  if (unlink(buf) && (errno != ENOENT))
   {
     mutt_debug(LL_DEBUG1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src,
                line, buf, strerror(errno), errno);
@@ -611,7 +611,7 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
 
   scheme = url_check_scheme(buf);
 
-  if (scheme == U_IMAP || scheme == U_IMAPS)
+  if ((scheme == U_IMAP) || (scheme == U_IMAPS))
   {
     imap_pretty_mailbox(buf, C_Folder);
     return;
@@ -639,12 +639,12 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
      */
     while (*p)
     {
-      if (*p == '/' && p[1] == '/')
+      if ((*p == '/') && (p[1] == '/'))
       {
         *q++ = '/';
         p += 2;
       }
-      else if (p[0] == '/' && p[1] == '.' && p[2] == '/')
+      else if ((p[0] == '/') && (p[1] == '.') && (p[2] == '/'))
       {
         *q++ = '/';
         p += 3;
@@ -654,15 +654,16 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
     }
     *q = 0;
   }
-  else if (strstr(p, "..") && (scheme == U_UNKNOWN || scheme == U_FILE) && realpath(p, tmp))
+  else if (strstr(p, "..") && ((scheme == U_UNKNOWN) || (scheme == U_FILE)) &&
+           realpath(p, tmp))
     mutt_str_strfcpy(p, tmp, buflen - (p - buf));
 
-  if ((len = mutt_str_startswith(buf, C_Folder, CASE_MATCH)) && buf[len] == '/')
+  if ((len = mutt_str_startswith(buf, C_Folder, CASE_MATCH)) && (buf[len] == '/'))
   {
     *buf++ = '=';
     memmove(buf, buf + len, mutt_str_strlen(buf + len) + 1);
   }
-  else if ((len = mutt_str_startswith(buf, HomeDir, CASE_MATCH)) && buf[len] == '/')
+  else if ((len = mutt_str_startswith(buf, HomeDir, CASE_MATCH)) && (buf[len] == '/'))
   {
     *buf++ = '~';
     memmove(buf, buf + len - 1, mutt_str_strlen(buf + len - 1) + 1);
@@ -727,8 +728,8 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
 
     char tmp[PATH_MAX];
     mutt_str_strfcpy(tmp, mutt_path_basename(NONULL(attname)), sizeof(tmp));
-    if (mutt_get_field(_("File under directory: "), tmp, sizeof(tmp),
-                       MUTT_FILE | MUTT_CLEAR) != 0 ||
+    if ((mutt_get_field(_("File under directory: "), tmp, sizeof(tmp),
+                        MUTT_FILE | MUTT_CLEAR) != 0) ||
         !tmp[0])
     {
       return -1;
@@ -736,7 +737,7 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
     mutt_path_concat(fname, path, tmp, flen);
   }
 
-  if ((*opt == MUTT_SAVE_NO_FLAGS) && access(fname, F_OK) == 0)
+  if ((*opt == MUTT_SAVE_NO_FLAGS) && (access(fname, F_OK) == 0))
   {
     switch (
         mutt_multi_choice(_("File exists, (o)verwrite, (a)ppend, or (c)ancel?"),
@@ -836,7 +837,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
 
     /* Do not consider filters if no pipe at end */
     int n = mutt_str_strlen(src);
-    if (n > 1 && src[n - 1] == '|')
+    if ((n > 1) && (src[n - 1] == '|'))
     {
       /* Scan backwards for backslashes */
       off = n;
@@ -846,7 +847,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
 
     /* If number of backslashes is even, the pipe is real. */
     /* n-off is the number of backslashes. */
-    if (off > 0 && ((n - off) % 2) == 0)
+    if ((off > 0) && (((n - off) % 2) == 0))
     {
       char srccopy[1024];
       int i = 0;
@@ -916,11 +917,11 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
            * generated %-tokens that neomutt can expand.  Eliminate the '%'
            * marker and recycle the string through mutt_expando_format().
            * To literally end with "%", use "%%". */
-          if ((n > 0) && buf[n - 1] == '%')
+          if ((n > 0) && (buf[n - 1] == '%'))
           {
             n--;
             buf[n] = '\0'; /* remove '%' */
-            if ((n > 0) && buf[n - 1] != '%')
+            if ((n > 0) && (buf[n - 1] != '%'))
             {
               recycler = mutt_str_strdup(buf);
               if (recycler)
@@ -1123,7 +1124,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
       }
 
       /* handle generic cases first */
-      if (ch == '>' || ch == '*')
+      if ((ch == '>') || (ch == '*'))
       {
         /* %>X: right justify to EOL, left takes precedence
          * %*X: right justify to EOL, right takes precedence */
@@ -1137,7 +1138,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         }
 
         /* see if there's room to add content, else ignore */
-        if ((col < cols && wlen < buflen) || soft)
+        if (((col < cols) && (wlen < buflen)) || soft)
         {
           int pad;
 
@@ -1211,10 +1212,10 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         }
 
         /* see if there's room to add content, else ignore */
-        if (col < cols && wlen < buflen)
+        if ((col < cols) && (wlen < buflen))
         {
           int c = (cols - col) / pw;
-          if (c > 0 && wlen + (c * pl) > buflen)
+          if ((c > 0) && (wlen + (c * pl) > buflen))
             c = ((signed) (buflen - wlen)) / pl;
           while (c > 0)
           {
@@ -1626,7 +1627,7 @@ void mutt_get_parent_path(char *path, char *buf, size_t buflen)
 int mutt_inbox_cmp(const char *a, const char *b)
 {
   /* fast-track in case the paths have been mutt_pretty_mailbox'ified */
-  if (a[0] == '+' && b[0] == '+')
+  if ((a[0] == '+') && (b[0] == '+'))
   {
     return (mutt_str_strcasecmp(a + 1, "inbox") == 0) ?
                -1 :
