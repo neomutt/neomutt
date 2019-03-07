@@ -3767,50 +3767,50 @@ static void print_dn_parts(FILE *fp, struct DnArray *dn)
 
 /**
  * parse_dn_part - Parse an RDN
- * @param array  Array for results
- * @param string String to parse
+ * @param array Array for results
+ * @param str   String to parse
  * @retval ptr First character after Distinguished Name
  *
  * This is a helper to parse_dn()
  */
-static const char *parse_dn_part(struct DnArray *array, const char *string)
+static const char *parse_dn_part(struct DnArray *array, const char *str)
 {
   const char *s = NULL, *s1 = NULL;
   size_t n;
   char *p = NULL;
 
   /* parse attribute type */
-  for (s = string + 1; *s && *s != '='; s++)
+  for (s = str + 1; *s && *s != '='; s++)
     ;
   if (!*s)
     return NULL; /* error */
-  n = s - string;
+  n = s - str;
   if (!n)
     return NULL; /* empty key */
   array->key = mutt_mem_malloc(n + 1);
   p = array->key;
-  memcpy(p, string, n); /* fixme: trim trailing spaces */
+  memcpy(p, str, n); /* fixme: trim trailing spaces */
   p[n] = 0;
-  string = s + 1;
+  str = s + 1;
 
-  if (*string == '#')
+  if (*str == '#')
   { /* hexstring */
-    string++;
-    for (s = string; isxdigit(*s); s++)
+    str++;
+    for (s = str; isxdigit(*s); s++)
       s++;
-    n = s - string;
+    n = s - str;
     if (!n || (n & 1))
       return NULL; /* empty or odd number of digits */
     n /= 2;
     p = mutt_mem_malloc(n + 1);
     array->value = (char *) p;
-    for (s1 = string; n; s1 += 2, n--)
+    for (s1 = str; n; s1 += 2, n--)
       sscanf(s1, "%2hhx", (unsigned char *) p++);
     *p = 0;
   }
   else
   { /* regular v3 quoted string */
-    for (n = 0, s = string; *s; s++)
+    for (n = 0, s = str; *s; s++)
     {
       if (*s == '\\')
       { /* pair */
@@ -3841,7 +3841,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *string)
 
     p = mutt_mem_malloc(n + 1);
     array->value = (char *) p;
-    for (s = string; n; s++, n--)
+    for (s = str; n; s++, n--)
     {
       if (*s == '\\')
       {
@@ -3864,13 +3864,13 @@ static const char *parse_dn_part(struct DnArray *array, const char *string)
 
 /**
  * parse_dn - Parse a DN and return an array-ized one
- * @param string String to parse
+ * @param str String to parse
  * @retval ptr Array of Distinguished Names
  *
  * This is not a validating parser and it does not support any old-stylish
  * syntax; gpgme is expected to return only rfc2253 compatible strings.
  */
-static struct DnArray *parse_dn(const char *string)
+static struct DnArray *parse_dn(const char *str)
 {
   struct DnArray *array = NULL;
   size_t arrayidx, arraysize;
@@ -3878,11 +3878,11 @@ static struct DnArray *parse_dn(const char *string)
   arraysize = 7; /* C,ST,L,O,OU,CN,email */
   array = mutt_mem_malloc((arraysize + 1) * sizeof(*array));
   arrayidx = 0;
-  while (*string)
+  while (*str)
   {
-    while (*string == ' ')
-      string++;
-    if (!*string)
+    while (*str == ' ')
+      str++;
+    if (!*str)
       break; /* ready */
     if (arrayidx >= arraysize)
     {
@@ -3899,16 +3899,16 @@ static struct DnArray *parse_dn(const char *string)
     }
     array[arrayidx].key = NULL;
     array[arrayidx].value = NULL;
-    string = parse_dn_part(array + arrayidx, string);
+    str = parse_dn_part(array + arrayidx, str);
     arrayidx++;
-    if (!string)
+    if (!str)
       goto failure;
-    while (*string == ' ')
-      string++;
-    if (*string && (*string != ',') && (*string != ';') && (*string != '+'))
+    while (*str == ' ')
+      str++;
+    if (*str && (*str != ',') && (*str != ';') && (*str != '+'))
       goto failure; /* invalid delimiter */
-    if (*string)
-      string++;
+    if (*str)
+      str++;
   }
   array[arrayidx].key = NULL;
   array[arrayidx].value = NULL;
