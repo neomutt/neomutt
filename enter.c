@@ -709,8 +709,8 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
             LastKey = event.ch;
             goto self_insert;
           }
+          break;
         }
-        break;
 
         case OP_EDITOR_TRANSPOSE_CHARS:
           if (state->lastchar < 2)

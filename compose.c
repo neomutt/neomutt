@@ -1719,8 +1719,8 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
           mutt_str_replace(&CURATTACH->content->d_filename, buf);
           menu->redraw = REDRAW_CURRENT;
         }
+        break;
       }
-      break;
 
       case OP_COMPOSE_RENAME_FILE:
         CHECK_COUNT;

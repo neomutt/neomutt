@@ -2497,8 +2497,8 @@ int smime_class_send_menu(struct Email *msg)
               break;
           }
         } while (choice == -1);
+        break;
       }
-      break;
     }
   }
 

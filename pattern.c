@@ -491,8 +491,8 @@ static const char *parse_date_range(const char *pc, struct tm *min, struct tm *m
           }
           flag |= MUTT_PDR_MINUS;
         }
+        break;
       }
-      break;
       case '+':
       { /* enlarge plus range */
         pt = get_offset(max, pc, 1);
@@ -503,8 +503,8 @@ static const char *parse_date_range(const char *pc, struct tm *min, struct tm *m
           pc = pt;
           flag |= MUTT_PDR_PLUS;
         }
+        break;
       }
-      break;
       case '*':
       { /* enlarge window in both directions */
         pt = get_offset(min, pc, -1);
@@ -515,8 +515,8 @@ static const char *parse_date_range(const char *pc, struct tm *min, struct tm *m
           pc = get_offset(max, pc, 1);
           flag |= MUTT_PDR_WINDOW;
         }
+        break;
       }
-      break;
       default:
         flag |= MUTT_PDR_ERRORDONE;
     }

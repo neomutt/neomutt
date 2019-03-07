@@ -844,8 +844,8 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
         if ((len > 0) && (op != 'd') && (op != 'D')) /* Skip ending op */
           src = cp + 1;
+        break;
       }
-      break;
 
     case 'e':
       snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -937,8 +937,8 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           FREE(&tags);
         }
       }
+      break;
     }
-    break;
 
     case 'H':
       /* (Hormel) spam score */
@@ -1145,8 +1145,8 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         mutt_format_s(buf + colorlen, buflen - colorlen, prec, NONULL(subj));
         add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       }
+      break;
     }
-    break;
 
     case 'S':
     {
@@ -1260,8 +1260,8 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
       snprintf(fmt, sizeof(fmt), "%%%sd", prec);
       snprintf(buf, buflen, fmt, count);
+      break;
     }
-    break;
 
     case 'y':
       if (optional)

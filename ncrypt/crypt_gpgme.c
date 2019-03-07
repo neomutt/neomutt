@@ -3493,8 +3493,8 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
       snprintf(buf, buflen, fmt, buf2);
       if (len > 0)
         src = cp + 1;
+      break;
     }
-    break;
 
     default:
       *buf = '\0';

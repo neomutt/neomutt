@@ -218,8 +218,8 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
             tail = buf;
           }
         }
+        break;
       }
-      break;
 
       case '=':
       case '+':
@@ -240,8 +240,8 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
           snprintf(p, sizeof(p), "%s/", NONULL(C_Folder));
 
         tail = buf + 1;
+        break;
       }
-      break;
 
         /* elm compatibility, @ expands alias to user name */
 
@@ -264,22 +264,22 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
 
           tail = "";
         }
+        break;
       }
-      break;
 
       case '>':
       {
         mutt_str_strfcpy(p, C_Mbox, sizeof(p));
         tail = buf + 1;
+        break;
       }
-      break;
 
       case '<':
       {
         mutt_str_strfcpy(p, C_Record, sizeof(p));
         tail = buf + 1;
+        break;
       }
-      break;
 
       case '!':
       {
@@ -293,22 +293,22 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
           mutt_str_strfcpy(p, C_Spoolfile, sizeof(p));
           tail = buf + 1;
         }
+        break;
       }
-      break;
 
       case '-':
       {
         mutt_str_strfcpy(p, LastFolder, sizeof(p));
         tail = buf + 1;
+        break;
       }
-      break;
 
       case '^':
       {
         mutt_str_strfcpy(p, CurrentFolder, sizeof(p));
         tail = buf + 1;
+        break;
       }
-      break;
 
       default:
       {

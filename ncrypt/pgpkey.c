@@ -309,8 +309,8 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
       snprintf(buf, buflen, fmt, buf2);
       if (len > 0)
         src = cp + 1;
+      break;
     }
-    break;
     default:
       *buf = '\0';
   }
