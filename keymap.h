@@ -27,6 +27,8 @@
 #include "mutt/mutt.h"
 #include "mutt_commands.h"
 
+#define MUTT_UNBIND  1<<0
+#define MUTT_UNMACRO 1<<1
 /* maximal length of a key binding sequence used for buffer in km_bindkey */
 #define MAX_SEQ 8
 
@@ -132,5 +134,7 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigne
 enum CommandResult mutt_parse_exec(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 enum CommandResult mutt_parse_push(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+enum CommandResult mutt_parse_unmacro(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 
 #endif /* MUTT_KEYMAP_H */

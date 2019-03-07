@@ -4884,6 +4884,7 @@ const struct Command Commands[] = {
   { "unalternative_order", parse_unstailq,         UL &AlternativeOrderList },
   { "unattachments",       parse_unattachments,    0 },
   { "unauto_view",         parse_unstailq,         UL &AutoViewList },
+  { "unbind",              mutt_parse_unbind,      MUTT_UNBIND },
 #ifdef HAVE_COLOR
   { "uncolor",             mutt_parse_uncolor,     0 },
 #endif
@@ -4892,6 +4893,7 @@ const struct Command Commands[] = {
   { "unhook",              mutt_parse_unhook,      0 },
   { "unignore",            parse_unignore,         0 },
   { "unlists",             parse_unlists,          0 },
+  { "unmacro",             mutt_parse_unbind,      MUTT_UNMACRO },
   { "unmailboxes",         parse_unmailboxes,      0 },
   { "unmailto_allow",      parse_unstailq,         UL &MailToAllow },
   { "unmime_lookup",       parse_unstailq,         UL &MimeLookupList },
