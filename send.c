@@ -1488,13 +1488,12 @@ static int save_fcc(struct Email *msg, char *fcc, size_t fcc_len, struct Body *c
   mutt_expand_path(fcc, fcc_len);
 
   /* Don't save a copy when we are in batch-mode, and the FCC
-  * folder is on an IMAP server: This would involve possibly lots
-  * of user interaction, which is not available in batch mode.
-  *
-  * Note: A patch to fix the problems with the use of IMAP servers
-  * from non-curses mode is available from Brendan Cully.  However,
-  * I'd like to think a bit more about this before including it.
-  */
+   * folder is on an IMAP server: This would involve possibly lots
+   * of user interaction, which is not available in batch mode.
+   *
+   * Note: A patch to fix the problems with the use of IMAP servers
+   * from non-curses mode is available from Brendan Cully.  However,
+   * I'd like to think a bit more about this before including it.  */
 
 #ifdef USE_IMAP
   if ((flags & SEND_BATCH) && (fcc[0] != '\0') && (imap_path_probe(fcc, NULL) == MUTT_IMAP))

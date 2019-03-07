@@ -1189,7 +1189,7 @@ warn:
  * @param name  Command name to be searched for
  * @retval true  Function found
  * @retval false Function not found
-*/
+ */
 static bool is_function(const char *name)
 {
   for (int i = 0; i < MENU_MAX; i++)

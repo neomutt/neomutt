@@ -59,7 +59,7 @@
 #define terminate_buffer(str, strlen) terminate_string(str, strlen, sizeof(str) - 1)
 
 /**
- * CaseSensitivity - Should a string's case matter when matching?
+ * enum CaseSensitivity - Should a string's case matter when matching?
  */
 enum CaseSensitivity
 {

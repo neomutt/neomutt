@@ -36,6 +36,9 @@
 #include "pgppacket.h"
 #include "state.h"
 
+/**
+ * struct HashAlgorithms - PGP Hashing algorithms
+ */
 static const struct
 {
   short id;
