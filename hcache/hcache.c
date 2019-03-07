@@ -112,7 +112,7 @@ static const struct HcacheOps *hcache_get_backend_ops(const char *backend)
     return *ops;
   }
 
-  for (; *ops; ++ops)
+  for (; *ops; ops++)
     if (strcmp(backend, (*ops)->name) == 0)
       break;
 
@@ -464,7 +464,7 @@ const char *mutt_hcache_backend_list(void)
   const struct HcacheOps **ops = hcache_ops;
   size_t len = 0;
 
-  for (; *ops; ++ops)
+  for (; *ops; ops++)
   {
     if (len != 0)
     {

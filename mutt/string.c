@@ -921,7 +921,7 @@ const char *mutt_str_rstrnstr(const char *haystack, size_t haystack_length, cons
 
   for (const char *p = haystack_end; p >= haystack; --p)
   {
-    for (size_t i = 0; i < needle_length; ++i)
+    for (size_t i = 0; i < needle_length; i++)
     {
       if (p[i] != needle[i])
         goto next;

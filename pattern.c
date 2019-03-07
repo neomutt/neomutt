@@ -1039,7 +1039,7 @@ static bool eat_message_range(struct Pattern *pat, struct Buffer *s, struct Buff
     skip_quote = true;
   }
 
-  for (int i_kind = 0; i_kind != RANGE_K_INVALID; ++i_kind)
+  for (int i_kind = 0; i_kind != RANGE_K_INVALID; i_kind++)
   {
     switch (eat_range_by_regex(pat, s, i_kind, err))
     {

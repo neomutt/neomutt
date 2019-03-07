@@ -374,7 +374,7 @@ static char *decode_word(const char *s, size_t len, enum ContentEncoding enc)
   if (enc == ENC_QUOTED_PRINTABLE)
   {
     struct Buffer buf = { 0 };
-    for (; it < end; ++it)
+    for (; it < end; it++)
     {
       if (*it == '_')
       {

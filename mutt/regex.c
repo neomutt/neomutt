@@ -513,7 +513,7 @@ bool mutt_replacelist_match(struct ReplaceList *rl, char *buf, size_t buflen, co
              * the terminating nul char */
             int idx;
             for (idx = pmatch[n].rm_so;
-                 (idx < pmatch[n].rm_eo) && (tlen < buflen - 1); ++idx)
+                 (idx < pmatch[n].rm_eo) && (tlen < buflen - 1); idx++)
             {
               buf[tlen++] = str[idx];
             }

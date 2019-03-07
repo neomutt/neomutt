@@ -103,7 +103,7 @@ struct MonitorInfo
 static void mutt_poll_fd_add(int fd, short events)
 {
   int i = 0;
-  for (; (i < PollFdsCount) && (PollFds[i].fd != fd); ++i)
+  for (; (i < PollFdsCount) && (PollFds[i].fd != fd); i++)
     ;
 
   if (i == PollFdsCount)
@@ -130,7 +130,7 @@ static void mutt_poll_fd_add(int fd, short events)
 static int mutt_poll_fd_remove(int fd)
 {
   int i = 0;
-  for (; (i < PollFdsCount) && (PollFds[i].fd != fd); ++i)
+  for (; (i < PollFdsCount) && (PollFds[i].fd != fd); i++)
     ;
   if (i == PollFdsCount)
     return -1;
@@ -380,7 +380,7 @@ int mutt_monitor_poll(void)
     else
     {
       bool inputReady = false;
-      for (int i = 0; fds && (i < PollFdsCount); ++i)
+      for (int i = 0; fds && (i < PollFdsCount); i++)
       {
         if (PollFds[i].revents)
         {

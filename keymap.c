@@ -859,7 +859,7 @@ static const struct Extkey ExtKeys[] = {
  */
 static const char *find_ext_name(const char *key)
 {
-  for (int j = 0; ExtKeys[j].name; ++j)
+  for (int j = 0; ExtKeys[j].name; j++)
   {
     if (strcasecmp(key, ExtKeys[j].name) == 0)
       return ExtKeys[j].sym;
@@ -884,7 +884,7 @@ void init_extended_keys(void)
 
   use_extended_names(true);
 
-  for (int j = 0; KeyNames[j].name; ++j)
+  for (int j = 0; KeyNames[j].name; j++)
   {
     if (KeyNames[j].value == -1)
     {
@@ -1266,14 +1266,14 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
   }
   else if (mutt_str_strcasecmp("noop", buf->data) == 0)
   {
-    for (int i = 0; i < nummenus; ++i)
+    for (int i = 0; i < nummenus; i++)
     {
       km_bindkey(key, menu[i], OP_NULL); /* the 'unbind' command */
     }
   }
   else
   {
-    for (int i = 0; i < nummenus; ++i)
+    for (int i = 0; i < nummenus; i++)
     {
       /* The pager and editor menus don't use the generic map,
        * however for other menus try generic first. */
@@ -1334,7 +1334,7 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
       }
       else
       {
-        for (int i = 0; i < nummenus; ++i)
+        for (int i = 0; i < nummenus; i++)
         {
           rc = km_bind(key, menu[i], OP_MACRO, seq, buf->data);
         }
@@ -1344,7 +1344,7 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
     }
     else
     {
-      for (int i = 0; i < nummenus; ++i)
+      for (int i = 0; i < nummenus; i++)
       {
         rc = km_bind(key, menu[i], OP_MACRO, buf->data, NULL);
       }

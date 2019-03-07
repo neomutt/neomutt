@@ -1511,7 +1511,7 @@ void mutt_encode_path(char *buf, size_t buflen, const char *src)
   size_t len = mutt_str_strfcpy(buf, (rc == 0) ? p : src, buflen);
 
   /* convert the path to POSIX "Portable Filename Character Set" */
-  for (size_t i = 0; i < len; ++i)
+  for (size_t i = 0; i < len; i++)
   {
     if (!isalnum(buf[i]) && !strchr("/.-_", buf[i]))
     {

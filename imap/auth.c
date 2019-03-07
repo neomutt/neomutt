@@ -86,7 +86,7 @@ int imap_authenticate(struct ImapAccountData *adata)
 
       mutt_debug(LL_DEBUG2, "Trying method %s\n", method);
 
-      for (size_t i = 0; i < mutt_array_size(imap_authenticators); ++i)
+      for (size_t i = 0; i < mutt_array_size(imap_authenticators); i++)
       {
         const struct ImapAuth *auth = &imap_authenticators[i];
         if (!auth->method || (mutt_str_strcasecmp(auth->method, method) == 0))
@@ -108,7 +108,7 @@ int imap_authenticate(struct ImapAccountData *adata)
     /* Fall back to default: any authenticator */
     mutt_debug(LL_DEBUG2, "Trying pre-defined imap_authenticators.\n");
 
-    for (size_t i = 0; i < mutt_array_size(imap_authenticators); ++i)
+    for (size_t i = 0; i < mutt_array_size(imap_authenticators); i++)
     {
       rc = imap_authenticators[i].authenticate(adata, NULL);
       if (rc == IMAP_AUTH_SUCCESS)

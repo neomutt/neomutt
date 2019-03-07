@@ -1812,7 +1812,7 @@ void mutt_write_references(const struct ListHead *r, FILE *fp, size_t trim)
       break;
   }
 
-  for (size_t i = 0; i < length; ++i)
+  for (size_t i = 0; i < length; i++)
   {
     fputc(' ', fp);
     fputs(ref[i]->data, fp);
