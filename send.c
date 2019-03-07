@@ -980,9 +980,6 @@ static int envelope_defaults(struct Envelope *env, struct Mailbox *m,
 static int generate_body(FILE *fp_tmp, struct Email *msg, SendFlags flags,
                          struct Mailbox *m, struct EmailList *el)
 {
-  if (!el || STAILQ_EMPTY(el))
-    return -1;
-
   struct Body *tmp = NULL;
   struct EmailNode *en = NULL;
   bool single = true;
