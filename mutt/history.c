@@ -114,10 +114,11 @@ static int OldSize = 0;
  */
 static struct History *get_history(enum HistoryClass hclass)
 {
-  if (hclass >= HC_MAX)
+  if (hclass >= HC_MAX || C_History == 0)
     return NULL;
 
-  return &Histories[hclass];
+  struct History *hist = &Histories[hclass];
+  return hist->hist ? hist : NULL;
 }
 
 /**
@@ -362,8 +363,7 @@ static void remove_history_dups(enum HistoryClass hclass, const char *str)
 {
   int source, dest, old_last;
   struct History *h = get_history(hclass);
-
-  if ((C_History == 0) || !h)
+  if (!h)
     return; /* disabled */
 
   /* Remove dups from 0..last-1 compacting up. */
@@ -411,10 +411,10 @@ static void remove_history_dups(enum HistoryClass hclass, const char *str)
  */
 int mutt_hist_search(const char *search_buf, enum HistoryClass hclass, char **matches)
 {
-  struct History *h = get_history(hclass);
   int match_count = 0, cur;
 
-  if ((C_History == 0) || !h)
+  struct History *h = get_history(hclass);
+  if (!h)
     return 0;
 
   cur = h->last;
@@ -478,8 +478,7 @@ void mutt_hist_init(void)
 void mutt_hist_add(enum HistoryClass hclass, const char *str, bool save)
 {
   struct History *h = get_history(hclass);
-
-  if ((C_History == 0) || !h)
+  if (!h)
     return; /* disabled */
 
   if (*str)
@@ -516,8 +515,7 @@ void mutt_hist_add(enum HistoryClass hclass, const char *str, bool save)
 char *mutt_hist_next(enum HistoryClass hclass)
 {
   struct History *h = get_history(hclass);
-
-  if ((C_History == 0) || !h)
+  if (!h)
     return ""; /* disabled */
 
   int next = h->cur;
@@ -544,8 +542,7 @@ char *mutt_hist_next(enum HistoryClass hclass)
 char *mutt_hist_prev(enum HistoryClass hclass)
 {
   struct History *h = get_history(hclass);
-
-  if ((C_History == 0) || !h)
+  if (!h)
     return ""; /* disabled */
 
   int prev = h->cur;
@@ -572,8 +569,7 @@ char *mutt_hist_prev(enum HistoryClass hclass)
 void mutt_hist_reset_state(enum HistoryClass hclass)
 {
   struct History *h = get_history(hclass);
-
-  if ((C_History == 0) || !h)
+  if (!h)
     return; /* disabled */
 
   h->cur = h->last;
@@ -634,8 +630,7 @@ void mutt_hist_read_file(void)
 bool mutt_hist_at_scratch(enum HistoryClass hclass)
 {
   struct History *h = get_history(hclass);
-
-  if (!C_History || !h)
+  if (!h)
     return false; /* disabled */
 
   return h->cur == h->last;
@@ -652,8 +647,7 @@ bool mutt_hist_at_scratch(enum HistoryClass hclass)
 void mutt_hist_save_scratch(enum HistoryClass hclass, const char *str)
 {
   struct History *h = get_history(hclass);
-
-  if ((C_History == 0) || !h)
+  if (!h)
     return; /* disabled */
 
   /* Don't check if str has a value because the scratch buffer may contain
