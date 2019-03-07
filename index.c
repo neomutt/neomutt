@@ -1580,8 +1580,7 @@ int mutt_index_menu(void)
         /* L10N: CHECK_ACL */
         /* L10N: Due to the implementation details we do not know whether we
             delete zero, 1, 12, ... messages. So in English we use
-            "messages". Your language might have other means to express this.
-          */
+            "messages". Your language might have other means to express this.  */
         if (!check_acl(Context, MUTT_ACL_DELETE, _("Cannot delete messages")))
           break;
 
@@ -1806,8 +1805,7 @@ int mutt_index_menu(void)
         /* L10N: CHECK_ACL */
         /* L10N: Due to the implementation details we do not know whether we
             undelete zero, 1, 12, ... messages. So in English we use
-            "messages". Your language might have other means to express this.
-          */
+            "messages". Your language might have other means to express this. */
         if (!check_acl(Context, MUTT_ACL_DELETE, _("Cannot undelete messages")))
           break;
 
@@ -3036,8 +3034,7 @@ int mutt_index_menu(void)
         /* L10N: CHECK_ACL */
         /* L10N: Due to the implementation details we do not know whether we
            delete zero, 1, 12, ... messages. So in English we use
-           "messages". Your language might have other means to express this.
-         */
+           "messages". Your language might have other means to express this. */
         if (!check_acl(Context, MUTT_ACL_DELETE, _("Cannot delete messages")))
           break;
 
@@ -3178,15 +3175,15 @@ int mutt_index_menu(void)
           Context->mailbox->changed = true;
           menu->redraw = REDRAW_FULL;
           /* L10N: This is displayed when the x-label on one or more
-           * messages is edited. */
+             messages is edited. */
           mutt_message(ngettext("%d label changed", "%d labels changed", num_changed),
                        num_changed);
         }
         else
         {
           /* L10N: This is displayed when editing an x-label, but no messages
-           * were updated.  Possibly due to canceling at the prompt or if the new
-           * label is the same as the old label. */
+             were updated.  Possibly due to canceling at the prompt or if the new
+             label is the same as the old label. */
           mutt_message(_("No labels changed"));
         }
         break;
@@ -3310,8 +3307,7 @@ int mutt_index_menu(void)
         /* L10N: CHECK_ACL */
         /* L10N: Due to the implementation details we do not know whether we
            mark zero, 1, 12, ... messages as read. So in English we use
-           "messages". Your language might have other means to express this.
-         */
+           "messages". Your language might have other means to express this. */
         if (!check_acl(Context, MUTT_ACL_SEEN, _("Cannot mark messages as read")))
           break;
 
@@ -3524,8 +3520,7 @@ int mutt_index_menu(void)
         /* L10N: CHECK_ACL */
         /* L10N: Due to the implementation details we do not know whether we
             undelete zero, 1, 12, ... messages. So in English we use
-            "messages". Your language might have other means to express this.
-          */
+            "messages". Your language might have other means to express this. */
         if (!check_acl(Context, MUTT_ACL_DELETE, _("Cannot undelete messages")))
           break;
 

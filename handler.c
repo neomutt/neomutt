@@ -796,8 +796,7 @@ static int external_body_handler(struct Body *b, struct State *s)
                  Sadly, we cannot do anything about that at the moment besides
                  passing the precise size in bytes. If you are interested the
                  function responsible for the prettification is
-                 mutt_str_pretty_size() in mutt/string.c.
-               */
+                 mutt_str_pretty_size() in mutt/string.c. */
               "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
               "[-- on %s --]\n",
               "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
@@ -820,8 +819,7 @@ static int external_body_handler(struct Body *b, struct State *s)
                  Sadly, we cannot do anything about that at the moment besides
                  passing the precise size in bytes. If you are interested the
                  function responsible for the prettification is
-                 mutt_str_pretty_size() in mutt/string.c.
-               */
+                 mutt_str_pretty_size() in mutt/string.c.  */
               "[-- This %s/%s attachment (size %s byte) has been deleted --]\n",
               "[-- This %s/%s attachment (size %s bytes) has been deleted "
               "--]\n",
@@ -839,8 +837,7 @@ static int external_body_handler(struct Body *b, struct State *s)
              expands to a date as returned by `mutt_date_parse_date()`.
 
              Caution: Argument three %3$ is also defined but should not be used
-             in this translation!
-           */
+             in this translation!  */
           str = _("[-- This %s/%s attachment has been deleted --]\n[-- on %4$s "
                   "--]\n");
         }
@@ -848,8 +845,7 @@ static int external_body_handler(struct Body *b, struct State *s)
         {
           /* L10N: If the translation of this string is a multi line string, then
              each line should start with "[-- " and end with " --]".
-             The first "%s/%s" is a MIME type, e.g. "text/plain".
-           */
+             The first "%s/%s" is a MIME type, e.g. "text/plain". */
           str = _("[-- This %s/%s attachment has been deleted --]\n");
         }
       }
@@ -873,8 +869,7 @@ static int external_body_handler(struct Body *b, struct State *s)
     {
       /* L10N: If the translation of this string is a multi line string, then
          each line should start with "[-- " and end with " --]".
-         The "%s/%s" is a MIME type, e.g. "text/plain".
-       */
+         The "%s/%s" is a MIME type, e.g. "text/plain". */
       snprintf(strbuf, sizeof(strbuf), _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated external source has --]\n[-- expired. --]\n"),
                TYPE(b->parts), b->parts->subtype);
       state_attach_puts(strbuf, s);
@@ -891,8 +886,7 @@ static int external_body_handler(struct Body *b, struct State *s)
          each line should start with "[-- " and end with " --]".
          The "%s/%s" is a MIME type, e.g. "text/plain".  The %s after
          access-type is an access-type as defined by the MIME RFCs, e.g. "FTP",
-         "LOCAL-FILE", "MAIL-SERVER".
-       */
+         "LOCAL-FILE", "MAIL-SERVER". */
       snprintf(strbuf, sizeof(strbuf), _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated access-type %s is unsupported --]\n"),
                TYPE(b->parts), b->parts->subtype, access_type);
       state_attach_puts(strbuf, s);
@@ -1659,17 +1653,14 @@ int mutt_body_handler(struct Body *b, struct State *s)
         {
           /* L10N: Caution: Arguments %1$s and %2$s are also defined but should
              not be used in this translation!
-
-             %3$s expands to a keystroke/key binding, e.g. 'v'.
-           */
+             %3$s expands to a keystroke/key binding, e.g. 'v'.  */
           str = _(
               "[-- This is an attachment (use '%3$s' to view this part) --]\n");
         }
         else
         {
           /* L10N: %s/%s is a MIME type, e.g. "text/plain".
-             The last %s expands to a keystroke/key binding, e.g. 'v'.
-           */
+             The last %s expands to a keystroke/key binding, e.g. 'v'. */
           str =
               _("[-- %s/%s is unsupported (use '%s' to view this part) --]\n");
         }

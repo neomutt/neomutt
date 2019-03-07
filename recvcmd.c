@@ -300,10 +300,6 @@ void mutt_attach_resend(FILE *fp, struct AttachCtx *actx, struct Body *cur)
 }
 
 /**
- ** forward-message, from the attachment menu
- **/
-
-/**
  * find_common_parent - find a common parent message for the tagged attachments
  * @param actx    Attachment context
  * @param nattach Number of tagged attachments
@@ -763,10 +759,6 @@ void mutt_attach_forward(FILE *fp, struct Email *e, struct AttachCtx *actx,
 }
 
 /**
- ** the various reply functions, from the attachment menu
- **/
-
-/**
  * attach_reply_envelope_defaults - Create the envelope defaults for a reply
  * @param env    Envelope to fill in
  * @param actx   Attachment Context
@@ -1069,8 +1061,7 @@ void mutt_attach_mail_sender(FILE *fp, struct Email *e, struct AttachCtx *actx,
   if (!check_all_msg(actx, cur, 0))
   {
     /* L10N: You will see this error message if you invoke <compose-to-sender>
-       when you are on a normal attachment.
-     */
+       when you are on a normal attachment.  */
     mutt_error(_("You may only compose to sender with message/rfc822 parts"));
     return;
   }

@@ -731,8 +731,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
           {
             /* L10N: You will see this error message if (1) you are decrypting
                (not encrypting) something and (2) it is a plaintext. So the
-               message does not mean "You failed to encrypt the message."
-            */
+               message does not mean "You failed to encrypt the message." */
             mutt_error(_("PGP message is not encrypted"));
           }
           else
@@ -1866,13 +1865,13 @@ int pgp_class_send_menu(struct Email *msg)
   if (msg->security & SEC_INLINE)
   {
     /* L10N: The next string MUST have the same highlighted letter
-             One of them will appear in each of the three strings marked "(inline"), below. */
+       One of them will appear in each of the three strings marked "(inline"), below. */
     mime_inline = _("PGP/M(i)ME");
   }
   else
   {
     /* L10N: The previous string MUST have the same highlighted letter
-             One of them will appear in each of the three strings marked "(inline"), below. */
+       One of them will appear in each of the three strings marked "(inline"), below. */
     mime_inline = _("(i)nline");
   }
   /* Opportunistic encrypt is controlling encryption.  Allow to toggle

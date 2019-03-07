@@ -232,8 +232,7 @@ static void usage(void)
          "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]\n"
          "  neomutt -v[v]\n"));
 
-  /* L10N: Try to limit to 80 columns
-           If more space is needed add an indented line */
+  /* L10N: Try to limit to 80 columns.  If more space is needed add an indented line */
   puts(_("options:\n"
          "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
          "                remaining arguments as addresses even if they start with a dash\n"

@@ -3402,8 +3402,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         /* L10N: CHECK_ACL */
         /* L10N: Due to the implementation details we do not know whether we
            undelete zero, 1, 12, ... messages. So in English we use
-           "messages". Your language might have other means to express this.
-         */
+           "messages". Your language might have other means to express this. */
         CHECK_ACL(MUTT_ACL_DELETE, _("Cannot undelete messages"));
 
         int r = mutt_thread_set_flag(extra->email, MUTT_DELETE, false,

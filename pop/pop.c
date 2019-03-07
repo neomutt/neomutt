@@ -717,7 +717,7 @@ void pop_fetch_mail(void)
     }
 
     /* L10N: The plural is picked by the second numerical argument, i.e.
-     * the %d right before 'messages', i.e. the total number of messages. */
+       the %d right before 'messages', i.e. the total number of messages. */
     mutt_message(ngettext("%s [%d of %d message read]",
                           "%s [%d of %d messages read]", msgs - last),
                  msgbuf, i - last, msgs - last);

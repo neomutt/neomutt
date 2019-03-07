@@ -2450,10 +2450,7 @@ const char *mutt_fqdn(bool may_hide_host)
     if (p)
       p++;
 
-    /* sanity check: don't hide the host if
-      * the fqdn is something like detebe.org.
-      */
-
+    // sanity check: don't hide the host if the fqdn is something like example.com
     if (!p || !strchr(p, '.'))
       p = C_Hostname;
   }

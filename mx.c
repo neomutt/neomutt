@@ -471,8 +471,7 @@ static int trash_append(struct Mailbox *m)
   if (rc != 0)
   {
     /* L10N: Although we know the precise number of messages, we do not show it to the user.
-       So feel free to use a "generic plural" as plural translation if your language has one.
-     */
+       So feel free to use a "generic plural" as plural translation if your language has one. */
     mutt_error(ngettext("message not deleted", "messages not deleted", delmsgcount));
     return -1;
   }

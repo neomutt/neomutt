@@ -1781,8 +1781,7 @@ static void print_smime_keyinfo(const char *msg, gpgme_signature_t sig,
     else
     {
       /* L10N: You will see this message in place of "KeyID "
-         if the S/MIME key has no ID. This is quite an error.
-       */
+         if the S/MIME key has no ID. This is quite an error. */
       state_puts(_("no signature fingerprint available"), s);
     }
     state_puts("\n", s);
@@ -1906,9 +1905,8 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *s)
       /* 0 indicates no expiration */
       if (sig->exp_timestamp)
       {
-        /* L10N:
-             This is trying to match the width of the
-             "Problem signature from:" translation just above. */
+        /* L10N: This is trying to match the width of the
+           "Problem signature from:" translation just above. */
         state_puts(_("               expires: "), s);
         print_time(sig->exp_timestamp, s);
         state_puts("\n", s);
@@ -4046,10 +4044,9 @@ enum KeyInfo
 };
 
 static const char *const KeyInfoPrompts[] = {
-  /* L10N:
-   * The following are the headers for the "verify key" output from the
-   * GPGME key selection menu (bound to "c" in the key selection menu).
-   * They will be automatically aligned. */
+  /* L10N: The following are the headers for the "verify key" output from the
+     GPGME key selection menu (bound to "c" in the key selection menu).
+     They will be automatically aligned. */
   N_("Name: "),      N_("aka: "),       N_("Valid From: "),  N_("Valid To: "),
   N_("Key Type: "),  N_("Key Usage: "), N_("Fingerprint: "), N_("Serial-No: "),
   N_("Issued By: "), N_("Subkey: ")
@@ -4146,8 +4143,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
     aval = key->subkeys->length;
 
   fprintf(fp, "%*s", KeyInfoPadding[KIP_KEY_TYPE], _(KeyInfoPrompts[KIP_KEY_TYPE]));
-  /* L10N: This is printed after "Key Type: " and looks like this:
-   *       PGP, 2048 bit RSA */
+  /* L10N: This is printed after "Key Type: " and looks like this: PGP, 2048 bit RSA */
   fprintf(fp, ngettext("%s, %lu bit %s\n", "%s, %lu bit %s\n", aval), s2, aval, s);
 
   fprintf(fp, "%*s", KeyInfoPadding[KIP_KEY_USAGE], _(KeyInfoPrompts[KIP_KEY_USAGE]));
@@ -4288,8 +4284,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
       aval = subkey->length;
 
       fprintf(fp, "%*s", KeyInfoPadding[KIP_KEY_TYPE], _(KeyInfoPrompts[KIP_KEY_TYPE]));
-      /* L10N: This is printed after "Key Type: " and looks like this:
-       *       PGP, 2048 bit RSA */
+      /* L10N: This is printed after "Key Type: " and looks like this: PGP, 2048 bit RSA */
       fprintf(fp, ngettext("%s, %lu bit %s\n", "%s, %lu bit %s\n", aval), "PGP", aval, s);
 
       fprintf(fp, "%*s", KeyInfoPadding[KIP_KEY_USAGE], _(KeyInfoPrompts[KIP_KEY_USAGE]));
@@ -4723,8 +4718,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
     }
     else
     {
-      /* L10N:
-         e.g. 'S/MIME keys matching "Michael Elkins".' */
+      /* L10N: e.g. 'S/MIME keys matching "Michael Elkins".' */
       snprintf(buf, sizeof(buf), _("%s \"%s\""), ts, s);
     }
     menu->title = buf;
@@ -5282,8 +5276,7 @@ struct Body *pgp_gpgme_make_key_attachment(void)
   att->use_disp = false;
   att->type = TYPE_APPLICATION;
   att->subtype = mutt_str_strdup("pgp-keys");
-  /* L10N:
-     MIME description for exported (attached) keys.
+  /* L10N: MIME description for exported (attached) keys.
      You can translate this entry to a non-ASCII string (it will be encoded),
      but it may be safer to keep it untranslated. */
   snprintf(buf, sizeof(buf), _("PGP Key 0x%s"), crypt_keyid(key));

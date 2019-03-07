@@ -155,14 +155,12 @@ static const char *const Prompts[] = {
   /* L10N: Compose menu field.  Holds "Encrypt", "Sign" related information */
   N_("Security: "),
   /* L10N:
-   * This string is used by the compose menu.
-   * Since it is hidden by default, it does not increase the
-   * indentation of other compose menu fields.  However, if possible,
-   * it should not be longer than the other compose menu fields.
-   *
-   * Since it shares the row with "Encrypt with:", it should not be longer
-   * than 15-20 character cells.
-   */
+     This string is used by the compose menu.
+     Since it is hidden by default, it does not increase the
+     indentation of other compose menu fields.  However, if possible,
+     it should not be longer than the other compose menu fields.
+     Since it shares the row with "Encrypt with:", it should not be longer
+     than 15-20 character cells.  */
   N_("Sign as: "),
 #ifdef USE_NNTP
   /* L10N: Compose menu field.  May not want to translate. */
@@ -1732,8 +1730,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
           struct stat st;
           if (stat(CURATTACH->content->filename, &st) == -1)
           {
-            /* L10N:
-               "stat" is a system call. Do "man 2 stat" for more information. */
+            /* L10N: "stat" is a system call. Do "man 2 stat" for more information. */
             mutt_error(_("Can't stat %s: %s"), buf, strerror(errno));
             break;
           }

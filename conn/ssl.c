@@ -962,12 +962,10 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   allow_always = allow_always && C_CertificateFile &&
                  check_certificate_expiration(cert, true);
 
-  /* L10N:
-   * These four letters correspond to the choices in the next four strings:
-   * (r)eject, accept (o)nce, (a)ccept always, (s)kip.
-   * These prompts are the interactive certificate confirmation prompts for
-   * an OpenSSL connection.
-   */
+  /* L10N: These four letters correspond to the choices in the next four strings:
+     (r)eject, accept (o)nce, (a)ccept always, (s)kip.
+     These prompts are the interactive certificate confirmation prompts for
+     an OpenSSL connection. */
   menu->keys = _("roas");
   if (allow_always)
   {
@@ -1263,8 +1261,8 @@ static int ssl_setup(struct Connection *conn)
   if (!ssldata->sctx)
   {
     /* L10N: an SSL context is a data structure returned by the OpenSSL
-             function SSL_CTX_new().  In this case it returned NULL: an
-             error condition.  */
+       function SSL_CTX_new().  In this case it returned NULL: an
+       error condition.  */
     mutt_error(_("Unable to create SSL context"));
     ssl_dprint_err_stack();
     goto free_sasldata;

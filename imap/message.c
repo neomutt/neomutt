@@ -714,8 +714,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
   struct ImapMboxData *mdata = imap_mdata_get(m);
   int idx = m->msg_count;
 
-  /* L10N:
-     Comparing the cached data with the IMAP server's data */
+  /* L10N: Comparing the cached data with the IMAP server's data */
   mutt_progress_init(&progress, _("Evaluating cache..."), MUTT_PROGRESS_MSG,
                      C_ReadInc, msn_end);
 
