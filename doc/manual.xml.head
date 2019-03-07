@@ -3865,6 +3865,23 @@ set alias_file=~/.mail_aliases
         <arg choice="plain">
           <replaceable class="parameter">function</replaceable>
         </arg>
+        <command>unbind</command>
+        <group choice="req">
+          <arg choice="plain">
+            <replaceable class="parameter">*</replaceable>
+          </arg>
+          <arg choice="plain">
+            <replaceable class="parameter">map</replaceable>
+          </arg>
+          <arg choice="opt" rep="repeat">
+            <replaceable class="parameter">,map</replaceable>
+          </arg>
+        </group>
+        <group choice="opt">
+          <arg choice="plain">
+            <replaceable class="parameter">key</replaceable>
+          </arg>
+        </group>
       </cmdsynopsis>
       <para>
         This command allows you to change the default key bindings (operation
@@ -3875,6 +3892,12 @@ set alias_file=~/.mail_aliases
         Multiple maps may be specified by separating them with commas (no
         additional whitespace is allowed). The currently defined maps are:
       </para>
+      <note>
+        <para>
+          Missing key sequence in unmacro command means unmacro all macros in menus
+          given in <emphasis>menu</emphasis>.
+        </para>
+      </note>
       <anchor id="maps" />
       <variablelist>
         <varlistentry>
@@ -4174,6 +4197,15 @@ bind index g  noop
 bind index gg first-entry
 </screen>
 
+        <para>
+          The same is also possible using <literal>unbind</literal>.
+        </para>
+
+<screen>
+unbind index g
+bind index gg first-entry
+</screen>
+
       </sect2>
     </sect1>
 
@@ -4314,6 +4346,24 @@ folder-hook work "set sort=threads"
         <arg choice="opt">
           <replaceable class="parameter">description</replaceable>
         </arg>
+        <command>unmacro</command>
+        <group choice="req">
+          <arg choice="plain">
+            <replaceable class="parameter">*</replaceable>
+          </arg>
+          <arg choice="plain">
+            <replaceable class="parameter">map</replaceable>
+          </arg>
+          <arg choice="opt" rep="repeat">
+            <replaceable class="parameter">,map</replaceable>
+          </arg>
+        </group>
+        <group choice="opt">
+          <arg choice="plain">
+            <replaceable class="parameter">key</replaceable>
+          </arg>
+        </group>
+
       </cmdsynopsis>
       <para>
         Macros are useful when you would like a single key to perform a series
@@ -4358,6 +4408,12 @@ folder-hook work "set sort=threads"
         <para>
           Macro definitions (if any) listed in the help screen(s), are silently
           truncated at the screen width, and are not wrapped.
+        </para>
+      </note>
+      <note>
+        <para>
+          Missing key sequence in unmacro command means unmacro all macros in menus
+          given in <emphasis>menu</emphasis>.
         </para>
       </note>
     </sect1>

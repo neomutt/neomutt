@@ -573,7 +573,7 @@ int km_dokey(int menu)
   int pos = 0;
   int n = 0;
 
-  if (!map)
+  if (!map && (menu != MENU_EDITOR))
     return retry_generic(menu, NULL, 0, 0);
 
   while (true)
@@ -666,6 +666,9 @@ int km_dokey(int menu)
       if (func)
         continue;
     }
+
+    if (!map)
+      return tmp.op;
 
     /* Nope. Business as usual */
     while (LastKey > map->keys[pos])
@@ -1296,6 +1299,152 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
   }
   FREE(&key);
   return rc;
+}
+
+/**
+ * parse_menu - Parse menu-names into an array
+ * @param menu     Array for results
+ * @param s        String containing menu-names
+ * @param err      Buffer for error messages
+ *
+ * Expects to see: <menu-string>[,<menu-string>]
+ */
+static void *parse_menu(int *menu, char *s, struct Buffer *err)
+{
+  char *menu_names_dup = mutt_str_strdup(s);
+  char *menu_name = NULL;
+
+  while ((menu_name = strsep(&menu_names_dup, ",")))
+  {
+    int value = mutt_map_get_value(menu_name, Menus);
+    if (value == -1)
+    {
+      mutt_buffer_printf(err, _("%s: no such menu"), menu_name);
+      FREE(&menu_names_dup);
+      return NULL;
+    }
+    else
+      menu[value] = true;
+  }
+
+  FREE(&menu_names_dup);
+  return NULL;
+}
+
+/**
+ * km_unbind_all - Free all the keys in the supplied Keymap
+ * @param map  Keymap mapping
+ * @param mode Undo bind or macro, e.g. #MUTT_UNBIND, #MUTT_UNMACRO
+ *
+ * Iterate through Keymap and free keys defined either by "macro" or "bind".
+ */
+static void km_unbind_all(struct Keymap **map, unsigned long mode)
+{
+  struct Keymap *next = NULL;
+  struct Keymap *first = NULL;
+  struct Keymap *last = NULL;
+  struct Keymap *cur = *map;
+
+  while (cur)
+  {
+    next = cur->next;
+    if (((mode & MUTT_UNBIND) && !cur->macro) || ((mode & MUTT_UNMACRO) && cur->macro))
+    {
+      FREE(&cur->macro);
+      FREE(&cur->keys);
+      FREE(&cur->desc);
+      FREE(&cur);
+    }
+    else if (!first)
+    {
+      first = last = cur;
+    }
+    else if (last)
+    {
+      last->next = cur;
+      last = cur;
+    }
+    else
+    {
+      last = cur;
+    }
+    cur = next;
+  }
+
+  if (last)
+    last->next = NULL;
+
+  *map = first;
+}
+
+/**
+ * mutt_parse_unbind - Parse the 'unbind' command - Implements ::command_t
+ *
+ * Command unbinds:
+ * - one binding in one menu-name
+ * - one binding in all menu-names
+ * - all bindings in all menu-names
+ *
+ * unbind `<menu-name[,...]|*>` [`<key_sequence>`]
+ */
+enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
+                                     unsigned long data, struct Buffer *err)
+{
+  int menu[MENU_MAX] = { 0 };
+  bool all_keys = false;
+  char *key = NULL;
+
+  mutt_extract_token(buf, s, 0);
+  if (mutt_str_strcmp(buf->data, "*") == 0)
+  {
+    for (int i = 0; i < MENU_MAX; i++)
+      menu[i] = 1;
+  }
+  else
+    parse_menu(menu, buf->data, err);
+
+  if (MoreArgs(s))
+  {
+    mutt_extract_token(buf, s, 0);
+    key = buf->data;
+  }
+  else
+    all_keys = true;
+
+  if (MoreArgs(s))
+  {
+    const char *cmd = (data & MUTT_UNMACRO) ? "unmacro" : "unbind";
+
+    mutt_buffer_printf(err, _("%s: too many arguments"), cmd);
+    return MUTT_CMD_ERROR;
+  }
+
+  for (int i = 0; i < MENU_MAX; i++)
+  {
+    if (menu[i] != 1)
+      continue;
+    if (all_keys)
+    {
+      km_unbind_all(&Keymaps[i], data);
+      km_bindkey("<enter>", MENU_GENERIC, OP_GENERIC_SELECT_ENTRY);
+      km_bindkey("<return>", MENU_GENERIC, OP_GENERIC_SELECT_ENTRY);
+      km_bindkey("<enter>", MENU_MAIN, OP_DISPLAY_MESSAGE);
+      km_bindkey("<return>", MENU_MAIN, OP_DISPLAY_MESSAGE);
+      km_bindkey("<backspace>", MENU_EDITOR, OP_EDITOR_BACKSPACE);
+      km_bindkey("\177", MENU_EDITOR, OP_EDITOR_BACKSPACE);
+      km_bindkey(":", MENU_GENERIC, OP_ENTER_COMMAND);
+      km_bindkey(":", MENU_PAGER, OP_ENTER_COMMAND);
+      if (i != MENU_EDITOR)
+      {
+        km_bindkey("?", i, OP_HELP);
+        km_bindkey("q", i, OP_EXIT);
+      }
+    }
+    else
+      km_bindkey(key, i, OP_NULL);
+  }
+
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
