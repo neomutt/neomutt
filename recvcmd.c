@@ -466,8 +466,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
 
   /* First, find the parent message.
    * Note: This could be made an option by just
-   * putting the following lines into an if block.
-   */
+   * putting the following lines into an if block.  */
   struct AttachPtr *parent = find_parent(actx, cur, nattach);
   if (parent)
   {
@@ -514,8 +513,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
    * original message's header.
    *
    * The next part is more interesting: either include the message bodies,
-   * or attach them.
-   */
+   * or attach them.  */
   if ((!cur || mutt_can_decode(cur)) &&
       ((ans = query_quadoption(C_MimeForward, _("Forward as attachments?"))) == MUTT_YES))
   {
@@ -527,8 +525,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   }
 
   /* shortcut MIMEFWDREST when there is only one attachment.
-   * Is this intuitive?
-   */
+   * Is this intuitive?  */
   if (!mime_fwd_all && !cur && (nattach > 1) && !check_can_decode(actx, cur))
   {
     ans = query_quadoption(

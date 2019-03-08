@@ -325,8 +325,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   /* if the user has a 'push' command in their .neomuttrc, or in a folder-hook,
    * it will cause the progress messages not to be displayed because
    * mutt_refresh() will think we are in the middle of a macro.  so set a
-   * flag to indicate that we should really refresh the screen.
-   */
+   * flag to indicate that we should really refresh the screen.  */
   OptForceRefresh = true;
 
   if (!m->quiet)
@@ -614,8 +613,7 @@ int mx_mbox_close(struct Context **ptr)
   }
 
   /* There is no point in asking whether or not to purge if we are
-   * just marking messages as "trash".
-   */
+   * just marking messages as "trash".  */
   if ((m->msg_deleted != 0) && !((m->magic == MUTT_MAILDIR) && C_MaildirTrash))
   {
     snprintf(buf, sizeof(buf),
@@ -904,8 +902,7 @@ int mx_mbox_sync(struct Mailbox *m, int *index_hint)
      * sort order in order to synchronize folders.
      *
      * MH and maildir are safe.  mbox-style seems to need re-sorting,
-     * at least with the new threading code.
-     */
+     * at least with the new threading code.  */
     if (purge || ((m->magic != MUTT_MAILDIR) && (m->magic != MUTT_MH)))
     {
       /* IMAP does this automatically after handling EXPUNGE */

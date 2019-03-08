@@ -318,8 +318,7 @@ static void decode_quoted(struct State *s, long len, bool istext, iconv_t cd)
      * out to be longer than this.  Just process the line in chunks.  This
      * really shouldn't happen according the MIME spec, since Q-P encoded
      * lines are at most 76 characters, but we should be liberal about what
-     * we accept.
-     */
+     * we accept.  */
     if (!fgets(line, MIN((ssize_t) sizeof(line), len + 1), s->fp_in))
       break;
 
@@ -327,8 +326,7 @@ static void decode_quoted(struct State *s, long len, bool istext, iconv_t cd)
     len -= linelen;
 
     /* inspect the last character we read so we can tell if we got the
-     * entire line.
-     */
+     * entire line.  */
     const int last = linelen ? line[linelen - 1] : 0;
 
     /* chop trailing whitespace if we got the full line */
@@ -1314,14 +1312,12 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
       }
 #endif
       /* decoding the attachment changes the size and offset, so save a copy
-       * of the "real" values now, and restore them after processing
-       */
+       * of the "real" values now, and restore them after processing */
       tmplength = b->length;
       tmpoffset = b->offset;
 
       /* if we are decoding binary bodies, we don't want to prefix each
-       * line with the prefix or else the data will get corrupted.
-       */
+       * line with the prefix or else the data will get corrupted.  */
       save_prefix = s->prefix;
       s->prefix = NULL;
 
@@ -1548,8 +1544,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
     if (mutt_str_strcasecmp("plain", b->subtype) == 0)
     {
       /* avoid copying this part twice since removing the transfer-encoding is
-       * the only operation needed.
-       */
+       * the only operation needed.  */
       if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(b))
         handler = crypt_pgp_application_handler;
       else if (C_ReflowText &&

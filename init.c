@@ -3100,8 +3100,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
    * understand more than the "subject" and "body" headers. Clients that
    * resolve mailto URLs into mail messages should be able to correctly
    * create RFC822-compliant mail messages using the "subject" and "body"
-   * headers.
-   */
+   * headers.  */
   add_to_stailq(&MailToAllow, "body");
   add_to_stailq(&MailToAllow, "subject");
   /* Cc, In-Reply-To, and References help with not breaking threading on
@@ -3645,8 +3644,7 @@ bool mutt_nm_query_complete(char *buf, size_t buflen, int pos, int numtabs)
       complete_all_nm_tags(pt);
 
       /* All matches are stored. Longest non-ambiguous string is ""
-       * i.e. don't change 'buf'. Fake successful return this time.
-       */
+       * i.e. don't change 'buf'. Fake successful return this time.  */
       if (UserTyped[0] == 0)
         return true;
     }
@@ -3707,8 +3705,7 @@ bool mutt_nm_tag_complete(char *buf, size_t buflen, int numtabs)
     complete_all_nm_tags(pt);
 
     /* All matches are stored. Longest non-ambiguous string is ""
-     * i.e. don't change 'buf'. Fake successful return this time.
-     */
+     * i.e. don't change 'buf'. Fake successful return this time.  */
     if (UserTyped[0] == 0)
       return true;
   }

@@ -1059,8 +1059,7 @@ int md_commit_message(struct Mailbox *m, struct Message *msg, struct Email *e)
       /* Adjust the mtime on the file to match the time at which this
        * message was received.  Currently this is only set when copying
        * messages between mailboxes, so we test to ensure that it is
-       * actually set.
-       */
+       * actually set.  */
       if (msg->received)
       {
         struct utimbuf ut;
@@ -1158,8 +1157,7 @@ int mh_rewrite_message(struct Mailbox *m, int msgno)
      *
      * Anyway, if this fails, the message is in the folder, so
      * all what happens is that a concurrently running neomutt will
-     * lose flag modifications.
-     */
+     * lose flag modifications.  */
 
     if ((m->magic == MUTT_MH) && (rc == 0))
     {
@@ -1392,8 +1390,7 @@ struct Email *maildir_parse_stream(enum MailboxType magic, FILE *fp,
   if (magic == MUTT_MAILDIR)
   {
     /* maildir stores its flags in the filename, so ignore the
-     * flags in the header of the message
-     */
+     * flags in the header of the message */
 
     e->old = is_old;
     maildir_parse_flags(e, fname);
@@ -1533,8 +1530,7 @@ bool maildir_update_flags(struct Mailbox *m, struct Email *o, struct Email *n)
     return -1;
 
   /* save the global state here so we can reset it at the
-   * end of list block if required.
-   */
+   * end of list block if required.  */
   bool context_changed = m->changed;
 
   /* user didn't modify this message.  alter the flags to match the
@@ -1554,15 +1550,13 @@ bool maildir_update_flags(struct Mailbox *m, struct Email *o, struct Email *n)
   /* mutt_set_flag() will set this, but we don't need to
    * sync the changes we made because we just updated the
    * context to match the current on-disk state of the
-   * message.
-   */
+   * message.  */
   bool header_changed = o->changed;
   o->changed = false;
 
   /* if the mailbox was not modified before we made these
    * changes, unset the changed flag since nothing needs to
-   * be synchronized.
-   */
+   * be synchronized.  */
   if (!context_changed)
     m->changed = false;
 
@@ -1636,8 +1630,7 @@ int maildir_check_empty(const char *path)
   do
   {
     /* we do "cur" on the first iteration since it's more likely that we'll
-     * find old messages without having to scan both subdirs
-     */
+     * find old messages without having to scan both subdirs */
     snprintf(realpath, sizeof(realpath), "%s/%s", path, iter == 0 ? "cur" : "new");
     dp = opendir(realpath);
     if (!dp)

@@ -353,8 +353,7 @@ int mutt_file_safe_rename(const char *src, const char *target)
      * source symlink.  It might be more correct to use stat() on src.
      * I am not doing so to minimize changes in behavior: the function
      * used lstat() further below for 20 years without issue, and I
-     * believe was never intended to be used on a src symlink.
-     */
+     * believe was never intended to be used on a src symlink.  */
     if ((lstat(src, &ssb) == 0) && (lstat(target, &tsb) == 0) &&
         (compare_stat(&ssb, &tsb) == 0))
     {
@@ -406,8 +405,7 @@ int mutt_file_safe_rename(const char *src, const char *target)
    * on filesystems that don't properly support hard links, such as sshfs.  The
    * filesystem creates the link, but the resulting file is given a different
    * inode number by the sshfs layer.  This results in an infinite loop
-   * creating links.
-   */
+   * creating links.  */
 #if 0
   /* Stat both links and check if they are equal. */
   if (lstat(src, &ssb) == -1)

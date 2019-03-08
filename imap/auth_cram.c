@@ -119,8 +119,7 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapAccountData *adata, const char *m
    * The data encoded in the first ready response contains a presumptively
    * arbitrary string of random digits, a timestamp, and the fully-qualified
    * primary host name of the server. The syntax of the unencoded form must
-   * correspond to that of an RFC822 'msg-id' [RFC822] as described in [POP3].
-   */
+   * correspond to that of an RFC822 'msg-id' [RFC822] as described in [POP3].  */
   do
     rc = imap_cmd_step(adata);
   while (rc == IMAP_CMD_CONTINUE);
@@ -150,8 +149,7 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapAccountData *adata, const char *m
    * Note: The user name shouldn't be quoted. Since the digest can't contain
    *   spaces, there is no ambiguity. Some servers get this wrong, we'll work
    *   around them when the bug report comes in. Until then, we'll remain
-   *   blissfully RFC-compliant.
-   */
+   *   blissfully RFC-compliant.  */
   hmac_md5(adata->conn->account.pass, obuf, hmac_response);
   /* dubious optimisation I saw elsewhere: make the whole string in one call */
   int off = snprintf(obuf, sizeof(obuf), "%s ", adata->conn->account.user);

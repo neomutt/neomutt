@@ -781,8 +781,7 @@ static int tls_check_certificate(struct Connection *conn)
     if (i == 0)
     {
       /* This is the peer's end-entity X.509 certificate.  Stash the result
-       * to check later in this function.
-       */
+       * to check later in this function.  */
       rcpeer = rc;
     }
 
@@ -810,8 +809,7 @@ static int tls_check_certificate(struct Connection *conn)
 
       certstat = tls_verify_peers(state);
       /* If the cert chain now verifies, and the peer's cert was otherwise
-       * valid (rcpeer==0), we are done.
-       */
+       * valid (rcpeer==0), we are done.  */
       if (!certstat && !rcpeer)
         return 1;
     }
@@ -1206,8 +1204,7 @@ static int tls_socket_close(struct Connection *conn)
      *
      * It is not required for the initiator of the close to wait for the
      * responding close_notify alert before closing the read side of the
-     * connection.
-     */
+     * connection.  */
     gnutls_bye(data->state, GNUTLS_SHUT_WR);
 
     gnutls_certificate_free_credentials(data->xcred);

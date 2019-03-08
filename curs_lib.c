@@ -353,8 +353,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
   /* In order to prevent the default answer to the question to wrapped
    * around the screen in the even the question is wider than the screen,
    * ensure there is enough room for the answer and truncate the question
-   * to fit.
-   */
+   * to fit.  */
   safe_asprintf(&answer_string, " ([%s]/%s): ", def == MUTT_YES ? yes : no,
                 def == MUTT_YES ? no : yes);
   answer_string_wid = mutt_strwidth(answer_string);

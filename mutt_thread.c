@@ -293,8 +293,7 @@ void mutt_draw_tree(struct Context *ctx)
   struct MuttThread *nextdisp = NULL, *pseudo = NULL, *parent = NULL, *tree = ctx->tree;
 
   /* Do the visibility calculations and free the old thread chars.
-   * From now on we can simply ignore invisible subtrees
-   */
+   * From now on we can simply ignore invisible subtrees */
   calculate_visibility(ctx, &max_depth);
   pfx = mutt_mem_malloc(width * max_depth + 2);
   arrow = mutt_mem_malloc(width * max_depth + 2);
@@ -636,8 +635,7 @@ static int compare_threads(const void *a, const void *b)
                         &(*((struct MuttThread **) b))->sort_key);
   }
   /* a hack to let us reset sort_func even though we can't
-   * have extra arguments because of qsort
-   */
+   * have extra arguments because of qsort */
   else
   {
     sort_func = mutt_get_sort_func(C_Sort & SORT_MASK);
@@ -660,8 +658,7 @@ struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, bool init)
   /* we put things into the array backwards to save some cycles,
    * but we want to have to move less stuff around if we're
    * resorting, so we sort backwards and then put them back
-   * in reverse order so they're forwards
-   */
+   * in reverse order so they're forwards */
   C_Sort ^= SORT_REVERSE;
   if (compare_threads(NULL, NULL) == 0)
     return thread;
@@ -993,8 +990,7 @@ void mutt_sort_threads(struct Context *ctx, bool init)
          * data that we have.  otherwise, use the first reference
          * if it's different than the first in-reply-to, otherwise use
          * the second reference (since at least eudora puts the most
-         * recent reference in in-reply-to and the rest in references)
-         */
+         * recent reference in in-reply-to and the rest in references) */
         if (STAILQ_EMPTY(&cur->env->references))
           ref = STAILQ_NEXT(ref, entries);
         else

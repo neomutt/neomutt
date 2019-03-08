@@ -91,8 +91,7 @@ static int get_quote_level(const char *line)
 static int space_quotes(struct State *s)
 {
   /* Allow quote spacing in the pager even for C_TextFlowed,
-   * but obviously not when replying.
-   */
+   * but obviously not when replying.  */
   if (C_TextFlowed && (s->flags & MUTT_REPLYING))
     return 0;
 
@@ -142,8 +141,7 @@ static size_t print_indent(int ql, struct State *s, int add_suffix)
   if (s->prefix)
   {
     /* use given prefix only for format=fixed replies to format=flowed,
-     * for format=flowed replies to format=flowed, use '>' indentation
-     */
+     * for format=flowed replies to format=flowed, use '>' indentation */
     if (C_TextFlowed)
       ql++;
     else
@@ -339,8 +337,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
     const unsigned int newql = get_quote_level(buf);
 
     /* end flowed paragraph (if we're within one) if quoting level
-     * changes (should not but can happen, see RFC3676, sec. 4.5.)
-     */
+     * changes (should not but can happen, see RFC3676, sec. 4.5.) */
     if (newql != quotelevel)
       flush_par(s, &fst);
 

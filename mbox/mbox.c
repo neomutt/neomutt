@@ -432,8 +432,7 @@ static int mbox_parse_mailbox(struct Mailbox *m)
 
       /* if we know how long this message is, either just skip over the body,
        * or if we don't know how many lines there are, count them now (this will
-       * save time by not having to search for the next message marker).
-       */
+       * save time by not having to search for the next message marker).  */
       if (e_cur->content->length > 0)
       {
         LOFF_T tmploc;
@@ -441,8 +440,7 @@ static int mbox_parse_mailbox(struct Mailbox *m)
         loc = ftello(adata->fp);
 
         /* The test below avoids a potential integer overflow if the
-         * content-length is huge (thus necessarily invalid).
-         */
+         * content-length is huge (thus necessarily invalid).  */
         tmploc = (e_cur->content->length < m->size) ?
                      (loc + e_cur->content->length + 1) :
                      -1;
@@ -450,8 +448,7 @@ static int mbox_parse_mailbox(struct Mailbox *m)
         if ((tmploc > 0) && (tmploc < m->size))
         {
           /* check to see if the content-length looks valid.  we expect to
-           * to see a valid message separator at this point in the stream
-           */
+           * to see a valid message separator at this point in the stream */
           if ((fseeko(adata->fp, tmploc, SEEK_SET) != 0) ||
               !fgets(buf, sizeof(buf), adata->fp) ||
               !mutt_str_startswith(buf, "From ", CASE_MATCH))
@@ -470,16 +467,14 @@ static int mbox_parse_mailbox(struct Mailbox *m)
         else if (tmploc != m->size)
         {
           /* content-length would put us past the end of the file, so it
-           * must be wrong
-           */
+           * must be wrong */
           e_cur->content->length = -1;
         }
 
         if (e_cur->content->length != -1)
         {
           /* good content-length.  check to see if we know how many lines
-           * are in this message.
-           */
+           * are in this message.  */
           if (e_cur->lines == 0)
           {
             int cl = e_cur->content->length;
@@ -521,8 +516,7 @@ static int mbox_parse_mailbox(struct Mailbox *m)
   /* Only set the content-length of the previous message if we have read more
    * than one message during _this_ invocation.  If this routine is called
    * when new mail is received, we need to make sure not to clobber what
-   * previously was the last message since the headers may be sorted.
-   */
+   * previously was the last message since the headers may be sorted.  */
   if (count > 0)
   {
     struct Email *e = m->emails[m->msg_count - 1];
@@ -663,8 +657,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
       /* some messages have been deleted, and new  messages have been
        * appended at the end; the heuristic is that old messages have then
        * "advanced" towards the beginning of the folder, so we begin the
-       * search at index "i"
-       */
+       * search at index "i" */
       int j;
       for (j = i; j < old_msg_count; j++)
       {
@@ -700,8 +693,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
         {
           /* Only update the flags if the old header was changed;
            * otherwise, the header may have been modified externally,
-           * and we don't want to lose _those_ changes
-           */
+           * and we don't want to lose _those_ changes */
           mutt_set_flag(m, m->emails[i], MUTT_FLAG, old_hdrs[j]->flagged);
           mutt_set_flag(m, m->emails[i], MUTT_REPLIED, old_hdrs[j]->replied);
           mutt_set_flag(m, m->emails[i], MUTT_OLD, old_hdrs[j]->old);
@@ -872,8 +864,7 @@ void mbox_reset_atime(struct Mailbox *m, struct stat *st)
   utimebuf.modtime = st->st_mtime;
 
   /* When $mbox_check_recent is set, existing new mail is ignored, so do not
-   * reset the atime to mtime-1 to signal new mail.
-   */
+   * reset the atime to mtime-1 to signal new mail.  */
   if (!C_MailCheckRecent && (utimebuf.actime >= utimebuf.modtime) && mbox_has_new(m))
   {
     utimebuf.actime = utimebuf.modtime - 1;
@@ -1039,8 +1030,7 @@ static int mbox_mbox_check(struct Mailbox *m, int *index_hint)
           mutt_sig_unblock();
           /* we couldn't lock the mailbox, but nothing serious happened:
            * probably the new mail arrived: no reason to wait till we can
-           * parse it: we'll get it on the next pass
-           */
+           * parse it: we'll get it on the next pass */
           return MUTT_LOCKED;
         }
         unlock = 1;
@@ -1049,8 +1039,7 @@ static int mbox_mbox_check(struct Mailbox *m, int *index_hint)
       /* Check to make sure that the only change to the mailbox is that
        * message(s) were appended to this file.  My heuristic is that we should
        * see the message separator at *exactly* what used to be the end of the
-       * folder.
-       */
+       * folder.  */
       char buf[1024];
       if (fseeko(adata->fp, m->size, SEEK_SET) != 0)
         mutt_debug(LL_DEBUG1, "#1 fseek() failed\n");
@@ -1156,8 +1145,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
   }
 
   /* need to open the file for writing in such a way that it does not truncate
-   * the file, so use read-write mode.
-   */
+   * the file, so use read-write mode.  */
   adata->fp = freopen(m->path, "r+", adata->fp);
   if (!adata->fp)
   {
@@ -1204,8 +1192,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
   }
 
   /* find the first deleted/changed message.  we save a lot of time by only
-   * rewriting the mailbox from the point where it has actually changed.
-   */
+   * rewriting the mailbox from the point where it has actually changed.  */
   for (i = 0; (i < m->msg_count) && !m->emails[i]->deleted &&
               !m->emails[i]->changed && !m->emails[i]->attach_del;
        i++)
@@ -1215,8 +1202,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
   {
     /* this means ctx->changed or m->msg_deleted was set, but no
      * messages were found to be changed or deleted.  This should
-     * never happen, is we presume it is a bug in neomutt.
-     */
+     * never happen, is we presume it is a bug in neomutt.  */
     mutt_error(
         _("sync: mbox modified, but no modified messages (report this bug)"));
     mutt_debug(LL_DEBUG1, "no modified messages.\n");
@@ -1230,8 +1216,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
   offset = m->emails[i]->offset;
 
   /* the offset stored in the header does not include the MMDF_SEP, so make
-   * sure we seek to the correct location
-   */
+   * sure we seek to the correct location */
   if (m->magic == MUTT_MMDF)
     offset -= (sizeof(MMDF_SEP) - 1);
 
@@ -1250,8 +1235,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
     if (!m->quiet)
       mutt_progress_update(&progress, i, (int) (ftello(adata->fp) / (m->size / 100 + 1)));
     /* back up some information which is needed to restore offsets when
-     * something fails.
-     */
+     * something fails.  */
 
     old_offset[i - first].valid = true;
     old_offset[i - first].hdr = m->emails[i]->offset;
@@ -1275,8 +1259,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
 
       /* save the new offset for this message.  we add 'offset' because the
        * temporary file only contains saved message which are located after
-       * 'offset' in the real mailbox
-       */
+       * 'offset' in the real mailbox */
       new_offset[i - first].hdr = ftello(fp) + offset;
 
       if (mutt_copy_message_ctx(fp, m, m->emails[i], MUTT_CM_UPDATE,
@@ -1291,8 +1274,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
        * will be wrong, so update what we can, which is the offset of this
        * message, and the offset of the body.  If this is a multipart message,
        * we just flush the in memory cache so that the message will be reparsed
-       * if the user accesses it later.
-       */
+       * if the user accesses it later.  */
       new_offset[i - first].body = ftello(fp) - m->emails[i]->content->length + offset;
       mutt_body_free(&m->emails[i]->content->parts);
 
@@ -1367,8 +1349,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
     else
     {
       /* copy the temp mailbox back into place starting at the first
-       * change/deleted message
-       */
+       * change/deleted message */
       if (!m->quiet)
         mutt_message(_("Committing changes..."));
       i = mutt_file_copy_stream(fp, adata->fp);
@@ -1393,9 +1374,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
 
   if ((mutt_file_fclose(&adata->fp) != 0) || (i == -1))
   {
-    /* error occurred while writing the mailbox back, so keep the temp copy
-     * around
-     */
+    /* error occurred while writing the mailbox back, so keep the temp copy around */
 
     char savefile[PATH_MAX];
 
@@ -1659,8 +1638,7 @@ enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
   {
     /* need to restore the times here, the file was not really accessed,
      * only the type was accessed.  This is important, because detection
-     * of "new mail" depends on those times set correctly.
-     */
+     * of "new mail" depends on those times set correctly.  */
 #ifdef HAVE_UTIMENSAT
     struct timespec ts[2];
     mutt_file_get_stat_timespec(&ts[0], &st, MUTT_STAT_ATIME);

@@ -1088,8 +1088,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
     else if (the_strong_valid_key && !multi)
     {
       /* There was precisely one strong match on a valid ID.
-       * Proceed without asking the user.
-       */
+       * Proceed without asking the user.  */
       pgp_remove_key(&matches, the_strong_valid_key);
       k = the_strong_valid_key;
     }
@@ -1148,8 +1147,7 @@ struct PgpKeyInfo *pgp_getkeybystr(char *p, KeyFlags abilities, enum PgpRing key
       continue;
 
     /* This shouldn't happen, but keys without any addresses aren't selectable
-     * in pgp_select_key().
-     */
+     * in pgp_select_key().  */
     if (!k->address)
       continue;
 

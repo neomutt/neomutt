@@ -74,8 +74,7 @@ const int dialog_row_len = 128;
 #endif
 
 /* LibreSSL defines OPENSSL_VERSION_NUMBER but sets it to 0x20000000L.
- * So technically we don't need the defined(OPENSSL_VERSION_NUMBER) check.
- */
+ * So technically we don't need the defined(OPENSSL_VERSION_NUMBER) check.  */
 #if (defined(OPENSSL_VERSION_NUMBER) && OPENSSL_VERSION_NUMBER < 0x10100000L) || \
     (defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER < 0x2070000fL)
 #define X509_get0_notBefore X509_get_notBefore
@@ -87,8 +86,7 @@ const int dialog_row_len = 128;
 
 /* This is ugly, but as RAND_status came in on OpenSSL version 0.9.5
  * and the code has to support older versions too, this is seemed to
- * be cleaner way compared to having even uglier #ifdefs all around.
- */
+ * be cleaner way compared to having even uglier #ifdefs all around.  */
 #ifdef HAVE_RAND_STATUS
 #define HAVE_ENTROPY() (RAND_status() == 1)
 #else
@@ -471,8 +469,7 @@ static bool compare_certificates(X509 *cert, X509 *peercert,
   unsigned int mdlen;
 
   /* Avoid CPU-intensive digest calculation if the certificates are
-   * not even remotely equal.
-   */
+   * not even remotely equal.  */
   if ((X509_subject_name_cmp(cert, peercert) != 0) ||
       (X509_issuer_name_cmp(cert, peercert) != 0))
     return false;
@@ -818,8 +815,7 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
       goto out;
     }
     /* cast is safe since bufsize is incremented above, so bufsize-1 is always
-     * zero or greater.
-     */
+     * zero or greater.  */
     if (mutt_str_strlen(buf) == (size_t) bufsize - 1)
     {
       match_found = hostname_match(hostname_ascii, buf);
@@ -957,8 +953,7 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   /* Inside ssl_verify_callback(), this function is guarded by a call to
    * check_certificate_by_digest().  This means if check_certificate_expiration() is
    * true, then check_certificate_file() must be false.  Therefore we don't need
-   * to also scan the certificate file here.
-   */
+   * to also scan the certificate file here.  */
   allow_always = allow_always && C_CertificateFile &&
                  check_certificate_expiration(cert, true);
 
@@ -1080,8 +1075,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
    * not verify and the user manually chose to skip it via the
    * $ssl_verify_partial_chains option.
    * In this case, all following certificates need to be treated as non-verified
-   * until one is actually verified.
-   */
+   * until one is actually verified.  */
   skip_mode = (SSL_get_ex_data(ssl, SkipModeExDataIndex));
 
   cert = X509_STORE_CTX_get_current_cert(ctx);
@@ -1095,8 +1089,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
 #ifdef HAVE_SSL_PARTIAL_CHAIN
   /* Sometimes, when a certificate is (s)kipped, OpenSSL will pass it
    * a second time with preverify_ok = 1.  Don't show it or the user
-   * will think their "s" key is broken.
-   */
+   * will think their "s" key is broken.  */
   if (C_SslVerifyPartialChains)
   {
     static int last_pos = 0;

@@ -198,8 +198,7 @@ static void print_utf8(FILE *fp, const char *buf, size_t len)
   tstr[len] = 0;
 
   /* fromcode "utf-8" is sure, so we don't want
-   * charset-hook corrections: flags must be 0.
-   */
+   * charset-hook corrections: flags must be 0.  */
   mutt_ch_convert_string(&tstr, "utf-8", C_Charset, 0);
   fputs(tstr, fp);
   FREE(&tstr);
@@ -1318,8 +1317,7 @@ static struct Body *sign_message(struct Body *a, bool use_smime)
     return NULL;
   }
   /* Check for zero signatures generated.  This can occur when $pgp_sign_as is
-   * unset and there is no default key specified in ~/.gnupg/gpg.conf
-   */
+   * unset and there is no default key specified in ~/.gnupg/gpg.conf */
   sigres = gpgme_op_sign_result(ctx);
   if (!sigres->signatures)
   {
@@ -2694,8 +2692,7 @@ void pgp_gpgme_invoke_import(const char *fname)
     goto leave;
   }
   /* Note that the stream, "fp_in", needs to be kept open while the keydata
-   * is used.
-   */
+   * is used.  */
   gpgme_error_t err = gpgme_data_new_from_stream(&keydata, fp_in);
   if (err != GPG_ERR_NO_ERROR)
   {
@@ -2805,8 +2802,7 @@ static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
 
   /* fromcode comes from the MIME Content-Type charset label. It might
    * be a wrong label, so we want the ability to do corrections via
-   * charset-hooks. Therefore we set flags to MUTT_ICONV_HOOK_FROM.
-   */
+   * charset-hooks. Therefore we set flags to MUTT_ICONV_HOOK_FROM.  */
   struct FgetConv *fc = mutt_ch_fgetconv_open(fp, charset, C_Charset, MUTT_ICONV_HOOK_FROM);
 
   for (complete = true, armor_header = true;
@@ -3006,8 +3002,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
 
       /* Now, copy cleartext to the screen.  NOTE - we expect that PGP
        * outputs utf-8 cleartext.  This may not always be true, but it
-       * seems to be a reasonable guess.
-       */
+       * seems to be a reasonable guess.  */
       if (s->flags & MUTT_DISPLAY)
       {
         if (needpass)
@@ -3145,8 +3140,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
 
     /* if a multipart/signed is the _only_ sub-part of a
      * multipart/encrypted, cache signature verification
-     * status.
-     */
+     * status.  */
     if (mutt_is_multipart_signed(tattach) && !tattach->next)
       a->goodsig |= tattach->goodsig;
 
@@ -3240,8 +3234,7 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
     }
 
     /* if a multipart/signed is the _only_ sub-part of a multipart/encrypted,
-     * cache signature verification status.
-     */
+     * cache signature verification status.  */
     if (mutt_is_multipart_signed(tattach) && !tattach->next)
     {
       a->goodsig = tattach->goodsig;
@@ -4920,8 +4913,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
     else if (the_strong_valid_key && !multi)
     {
       /* There was precisely one strong match on a valid ID.
-       * Proceed without asking the user.
-       */
+       * Proceed without asking the user.  */
       k = crypt_copy_key(the_strong_valid_key);
     }
     else
@@ -5569,8 +5561,7 @@ static bool verify_sender(struct Email *e)
           {
             /* Assume address is 'mailbox@domainname'.
              * The mailbox part is case-sensitive,
-             * the domainname is not. (RFC2821)
-             */
+             * the domainname is not. (RFC2821) */
             const char *tmp_email = uid->email + 1;
             const char *tmp_sender = sender->mailbox;
             /* length of mailbox part including '@' */

@@ -669,8 +669,7 @@ static void set_changed_flag(struct Mailbox *m, struct Email *e, int local_chang
   /* If there are local_changes, we only want to note if the server
    * flags have changed, so we can set a reopen flag in
    * cmd_parse_fetch().  We don't want to count a local modification
-   * to the header flag as a "change".
-   */
+   * to the header flag as a "change".  */
   if ((old_hd_flag == new_hd_flag) && local_changes)
     return;
 
@@ -1092,8 +1091,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
 
       /* this DO loop does two things:
        * 1. handles untagged messages, so we can try again on the same msg
-       * 2. fetches the tagged response at the end of the last message.
-       */
+       * 2. fetches the tagged response at the end of the last message.  */
       do
       {
         rc = imap_cmd_step(adata);
@@ -1185,8 +1183,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
      *
      * Note: The RFC says we shouldn't get any EXPUNGE responses in the
      * middle of a FETCH.  But just to be cautious, use the current state
-     * of max_msn, not fetch_msn_end to set the next start range.
-     */
+     * of max_msn, not fetch_msn_end to set the next start range.  */
     if (mdata->reopen & IMAP_NEWMAIL_PENDING)
     {
       /* update to the last value we actually pulled down */
@@ -1278,8 +1275,7 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
         has_condstore = true;
 
       /* If IMAP_CAP_QRESYNC and ImapQResync then Mutt sends ENABLE QRESYNC.
-       * If we receive an ENABLED response back, then adata->qresync is set.
-       */
+       * If we receive an ENABLED response back, then adata->qresync is set.  */
       if (adata->qresync)
         has_qresync = true;
     }
@@ -1364,8 +1360,7 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
   /* We currently only sync CONDSTORE and QRESYNC on the initial download.
    * To do it more often, we'll need to deal with flag updates combined with
    * unsync'ed local flag changes.  We'll also need to properly sync flags to
-   * the header cache on close.  I'm not sure it's worth the added complexity.
-   */
+   * the header cache on close.  I'm not sure it's worth the added complexity.  */
   if (initial_download)
   {
     if (has_condstore || has_qresync)
@@ -1801,8 +1796,7 @@ char *imap_set_flags(struct Mailbox *m, struct Email *e, char *s, bool *server_c
   m->readonly = false;
 
   /* This is redundant with the following two checks. Removing:
-   * mutt_set_flag (m, e, MUTT_NEW, !(edata->read || edata->old));
-   */
+   * mutt_set_flag (m, e, MUTT_NEW, !(edata->read || edata->old)); */
   set_changed_flag(m, e, local_changes, server_changes, MUTT_OLD, old_edata.old,
                    edata->old, e->old);
   set_changed_flag(m, e, local_changes, server_changes, MUTT_READ,
@@ -1969,8 +1963,7 @@ int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 
 parsemsg:
   /* Update the header information.  Previously, we only downloaded a
-   * portion of the headers, those required for the main display.
-   */
+   * portion of the headers, those required for the main display.  */
   rewind(msg->fp);
   /* It may be that the Status header indicates a message is read, but the
    * IMAP server doesn't know the message has been \Seen. So we capture

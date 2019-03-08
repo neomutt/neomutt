@@ -93,8 +93,7 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
      * The user agent interpreting a mailto URL SHOULD choose not to create
      * a message if any of the headers are considered dangerous; it may also
      * choose to create a message with only a subset of the headers given in
-     * the URL.
-     */
+     * the URL.  */
     if (mutt_list_match(tag, &MailToAllow))
     {
       if (mutt_str_strcasecmp(tag, "body") == 0)

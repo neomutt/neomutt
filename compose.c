@@ -727,8 +727,7 @@ static void compose_custom_redraw(struct Menu *menu)
 static void compose_attach_swap(struct Body *msg, struct AttachPtr **idx, short first)
 {
   /* Reorder Body pointers.
-   * Must traverse msg from top since Body has no previous ptr.
-   */
+   * Must traverse msg from top since Body has no previous ptr.  */
   for (struct Body *part = msg; part; part = part->next)
   {
     if (part->next == idx[first]->content)
@@ -1639,8 +1638,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
 
       case OP_COMPOSE_SEND_MESSAGE:
         /* Note: We don't invoke send2-hook here, since we want to leave
-         * users an opportunity to change settings from the ":" prompt.
-         */
+         * users an opportunity to change settings from the ":" prompt.  */
         if (check_attachments(actx) != 0)
         {
           menu->redraw = REDRAW_FULL;
@@ -1712,8 +1710,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         if (ret == 0)
         {
           /* As opposed to RENAME_FILE, we don't check buf[0] because it's
-           * valid to set an empty string here, to erase what was set
-           */
+           * valid to set an empty string here, to erase what was set */
           mutt_str_replace(&CURATTACH->content->d_filename, buf);
           menu->redraw = REDRAW_CURRENT;
         }

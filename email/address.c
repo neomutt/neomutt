@@ -796,8 +796,8 @@ bool mutt_addr_valid_msgid(const char *msgid)
    * atom           = 1*<any CHAR except specials, SPACE and CTLs>
    * CHAR           = ( 0.-127. )
    * specials       = "(" / ")" / "<" / ">" / "@"
-                    / "," / ";" / ":" / "\" / <">
-                    / "." / "[" / "]"
+   *                / "," / ";" / ":" / "\" / <">
+   *                / "." / "[" / "]"
    * SPACE          = ( 32. )
    * CTLS           = ( 0.-31., 127.)
    * quoted-string  = <"> *(qtext/quoted-pair) <">

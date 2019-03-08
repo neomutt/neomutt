@@ -225,8 +225,7 @@ void pgp_free_key(struct PgpKeyInfo **kpp)
    * - First free all children.
    * - If we are an orphan (i.e., our parent was not in the key list),
    *   free our parent.
-   * - free ourselves.
-   */
+   * - free ourselves.  */
 
   for (p = *kpp; p; p = q)
   {

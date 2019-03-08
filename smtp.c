@@ -389,8 +389,7 @@ static int smtp_helo(struct Connection *conn, bool esmtp)
   snprintf(buf, sizeof(buf), "%s %s\r\n", esmtp ? "EHLO" : "HELO", fqdn);
   /* XXX there should probably be a wrapper in mutt_socket.c that
    * repeatedly calls conn->write until all data is sent.  This
-   * currently doesn't check for a short write.
-   */
+   * currently doesn't check for a short write.  */
   if (mutt_socket_send(conn, buf) == -1)
     return SMTP_ERR_WRITE;
   return smtp_get_resp(conn);

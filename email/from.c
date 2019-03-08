@@ -127,8 +127,7 @@ bool is_from(const char *s, char *path, size_t pathlen, time_t *tp)
 
   /* do a quick check to make sure that this isn't really the day of the week.
    * this could happen when receiving mail from a local user whose login name
-   * is the same as a three-letter abbreviation of the day of the week.
-   */
+   * is the same as a three-letter abbreviation of the day of the week.  */
   if (mutt_date_is_day_name(s))
   {
     s = mutt_str_next_word(s);

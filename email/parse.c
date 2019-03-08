@@ -119,8 +119,7 @@ static void parse_parameters(struct ParameterList *param, const char *s)
         i--;
 
       /* the check for the missing parameter token is here so that we can skip
-       * over any quoted value that may be present.
-       */
+       * over any quoted value that may be present.  */
       if (i == 0)
       {
         mutt_debug(LL_DEBUG1, "missing attribute: %s\n", s);
@@ -486,8 +485,7 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
   if (!ct->subtype)
   {
     /* Some older non-MIME mailers (i.e., mailtool, elm) have a content-type
-     * field, so we can attempt to convert the type to Body here.
-     */
+     * field, so we can attempt to convert the type to Body here.  */
     if (ct->type == TYPE_TEXT)
       ct->subtype = mutt_str_strdup("plain");
     else if (ct->type == TYPE_AUDIO)
@@ -682,8 +680,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
         if (e)
         {
           /* HACK - neomutt has, for a very short time, produced negative
-           * Lines header values.  Ignore them.
-           */
+           * Lines header values.  Ignore them.  */
           if ((mutt_str_atoi(p, &e->lines) < 0) || (e->lines < 0))
             e->lines = 0;
         }
@@ -1382,10 +1379,7 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
               break;
         }
 #endif
-        /* Consistency checking - catch
-         * bad attachment end boundaries
-         */
-
+        /* Consistency checking - catch bad attachment end boundaries */
         if (new->offset > end_off)
         {
           mutt_body_free(&new);

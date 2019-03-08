@@ -241,8 +241,7 @@ void ctx_update_tables(struct Context *ctx, bool committing)
       /* The path mx_mbox_check() -> imap_check_mailbox() ->
        *          imap_expunge_mailbox() -> ctx_update_tables()
        * can occur before a call to mx_mbox_sync(), resulting in
-       * last_tag being stale if it's not reset here.
-       */
+       * last_tag being stale if it's not reset here.  */
       if (ctx->last_tag == m->emails[i])
         ctx->last_tag = NULL;
       mutt_email_free(&m->emails[i]);

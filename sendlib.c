@@ -109,8 +109,7 @@ static void encode_quoted(struct FgetConv *fc, FILE *fp_out, bool istext)
     {
       /* If the last character is "quoted", then be sure to move all three
        * characters to the next line.  Otherwise, just move the last
-       * character...
-       */
+       * character...  */
       if (line[linelen - 3] == '=')
       {
         line[linelen - 3] = 0;
@@ -182,8 +181,7 @@ static void encode_quoted(struct FgetConv *fc, FILE *fp_out, bool istext)
     else if ((c != 9) && ((c < 32) || (c > 126) || (c == '=')))
     {
       /* Check to make sure there is enough room for the quoted character.
-       * If not, wrap to the next line.
-       */
+       * If not, wrap to the next line.  */
       if (linelen > 73)
       {
         line[linelen++] = '=';
@@ -198,8 +196,7 @@ static void encode_quoted(struct FgetConv *fc, FILE *fp_out, bool istext)
     else
     {
       /* Don't worry about wrapping the line here.  That will happen during
-       * the next iteration when I'll also know what the next character is.
-       */
+       * the next iteration when I'll also know what the next character is.  */
       line[linelen++] = c;
     }
   }
@@ -380,10 +377,9 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
       const int encode = rfc2231_encode_string(&tmp);
       mutt_addr_cat(buf, sizeof(buf), tmp, MimeSpecials);
 
-      /* Dirty hack to make messages readable by Outlook Express
-       * for the Mac: force quotes around the boundary parameter
-       * even when they aren't needed.
-       */
+      /* Dirty hack to make messages readable by Outlook Express for the Mac:
+       * force quotes around the boundary parameter even when they aren't
+       * needed.  */
 
       if ((mutt_str_strcasecmp(np->attribute, "boundary") == 0) && (strcmp(buf, tmp) == 0))
       {
@@ -1090,8 +1086,7 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
   for (int count = 0; count < 4; count++)
   {
     /* can't use strtok() because we use it in an inner loop below, so use
-     * a switch statement here instead.
-     */
+     * a switch statement here instead.  */
     switch (count)
     {
       /* last file with last entry to match wins type/xtype */
@@ -1602,8 +1597,7 @@ struct Body *mutt_make_file_attach(const char *path)
     run_mime_type_query(att);
 
   /* Attempt to determine the appropriate content-type based on the filename
-   * suffix.
-   */
+   * suffix.  */
   if (!att->subtype)
     mutt_lookup_mime_type(att, path);
 
@@ -1625,8 +1619,7 @@ struct Body *mutt_make_file_attach(const char *path)
         ((info->lobin == 0) || ((info->lobin + info->hibin + info->ascii) / info->lobin >= 10)))
     {
       /* Statistically speaking, there should be more than 10% "lobin"
-       * chars if this is really a binary file...
-       */
+       * chars if this is really a binary file...  */
       att->type = TYPE_TEXT;
       att->subtype = mutt_str_strdup("plain");
     }
@@ -2228,8 +2221,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
     fputs(mutt_date_make_date(buf, sizeof(buf)), fp);
 
   /* UseFrom is not consulted here so that we can still write a From:
-   * field if the user sets it with the 'my_hdr' command
-   */
+   * field if the user sets it with the 'my_hdr' command */
   if (env->from && !privacy)
   {
     buf[0] = 0;
@@ -2533,8 +2525,7 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
     pid_t ppid = getppid();
 
     /* we want the delivery to continue even after the main process dies,
-     * so we put ourselves into another session right away
-     */
+     * so we put ourselves into another session right away */
     setsid();
 
     /* next we close all open files */
@@ -2596,8 +2587,7 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
 
     /* C_SendmailWait > 0: interrupt waitpid() after C_SendmailWait seconds
      * C_SendmailWait = 0: wait forever
-     * C_SendmailWait < 0: don't wait
-     */
+     * C_SendmailWait < 0: don't wait */
     if (C_SendmailWait > 0)
     {
       SigAlrm = 0;
@@ -2899,8 +2889,7 @@ void mutt_prepare_envelope(struct Envelope *env, bool final)
     {
       /* some MTA's will put an Apparently-To: header field showing the Bcc:
        * recipients if there is no To: or Cc: field, so attempt to suppress
-       * it by using an empty To: field.
-       */
+       * it by using an empty To: field.  */
       env->to = mutt_addr_new();
       env->to->group = 1;
       env->to->next = mutt_addr_new();
@@ -3026,8 +3015,7 @@ int mutt_bounce_message(FILE *fp, struct Email *e, struct Address *to)
    * in $from, so we add it here.  The reason it is not added in
    * mutt_default_from() is that during normal sending, we execute
    * send-hooks and set the realname last so that it can be changed based
-   * upon message criteria.
-   */
+   * upon message criteria.  */
   if (!from->personal)
     from->personal = mutt_str_strdup(C_Realname);
 
@@ -3050,8 +3038,7 @@ int mutt_bounce_message(FILE *fp, struct Email *e, struct Address *to)
 
   /* prepare recipient list. idna conversion appears to happen before this
    * function is called, since the user receives confirmation of the address
-   * list being bounced to.
-   */
+   * list being bounced to.  */
   struct Address *resent_to = mutt_addr_copy_list(to, false);
   rfc2047_encode_addrlist(resent_to, "Resent-To");
 
@@ -3170,8 +3157,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   }
 
   /* We need to add a Content-Length field to avoid problems where a line in
-   * the message body begins with "From "
-   */
+   * the message body begins with "From " */
   if ((ctx_fcc->mailbox->magic == MUTT_MMDF) || (ctx_fcc->mailbox->magic == MUTT_MBOX))
   {
     mutt_mktemp(tempfile, sizeof(tempfile));
@@ -3200,8 +3186,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   }
 
   /* post == 1 => postpone message.
-   * post == 0 => Normal mode.
-   */
+   * post == 0 => Normal mode.  */
   mutt_rfc822_write_header(
       msg->fp, e->env, e->content, post ? MUTT_WRITE_HEADER_POSTPONE : MUTT_WRITE_HEADER_NORMAL,
       false, C_CryptProtectedHeadersRead && mutt_should_hide_protected_subject(e));
@@ -3210,14 +3195,12 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
    * Message-ID: of message replied to.  Save it using a special X-Mutt-
    * header so it can be picked up if the message is recalled at a later
    * point in time.  This will allow the message to be marked as replied if
-   * the same mailbox is still open.
-   */
+   * the same mailbox is still open.  */
   if (post && msgid)
     fprintf(msg->fp, "X-Mutt-References: %s\n", msgid);
 
   /* (postponement) save the Fcc: using a special X-Mutt- header so that
-   * it can be picked up when the message is recalled
-   */
+   * it can be picked up when the message is recalled */
   if (post && fcc)
     fprintf(msg->fp, "X-Mutt-Fcc: %s\n", fcc);
 
@@ -3273,8 +3256,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
 
 #ifdef MIXMASTER
   /* (postponement) if the mail is to be sent through a mixmaster
-   * chain, save that information
-   */
+   * chain, save that information */
 
   if (post && !STAILQ_EMPTY(&e->chain))
   {
@@ -3296,10 +3278,8 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
 
     mutt_write_mime_body(e->content, fp_tmp);
 
-    /* make sure the last line ends with a newline.  Emacs doesn't ensure
-     * this will happen, and it can cause problems parsing the mailbox
-     * later.
-     */
+    /* make sure the last line ends with a newline.  Emacs doesn't ensure this
+     * will happen, and it can cause problems parsing the mailbox later.  */
     fseek(fp_tmp, -1, SEEK_END);
     if (fgetc(fp_tmp) != '\n')
     {

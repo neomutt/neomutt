@@ -629,8 +629,7 @@ static int default_to(struct Address **to, struct Envelope *env, SendFlags flags
   }
 
   /* Exit now if we're setting up the default Cc list for list-reply
-   * (only set if Mail-Followup-To is present and honoured).
-   */
+   * (only set if Mail-Followup-To is present and honoured).  */
   if (flags & SEND_LIST_REPLY)
     return 0;
 
@@ -661,8 +660,7 @@ static int default_to(struct Address **to, struct Envelope *env, SendFlags flags
       /* There are quite a few mailing lists which set the Reply-To:
        * header field to the list address, which makes it quite impossible
        * to send a message to only the sender of the message.  This
-       * provides a way to do that.
-       */
+       * provides a way to do that.  */
       /* L10N: Asks whether the user respects the reply-to header.
          If she says no, neomutt will reply to the from header's address instead. */
       snprintf(prompt, sizeof(prompt), _("Reply to %s%s?"),
@@ -788,8 +786,7 @@ void mutt_fix_reply_recipients(struct Envelope *env)
   if (!C_Metoo)
   {
     /* the order is important here.  do the CC: first so that if the
-     * the user is the only recipient, it ends up on the TO: field
-     */
+     * the user is the only recipient, it ends up on the TO: field */
     env->cc = remove_user(env->cc, (env->to == NULL));
     env->to = remove_user(env->to, (env->cc == NULL) || C_ReplySelf);
   }
@@ -835,8 +832,7 @@ void mutt_make_misc_reply_headers(struct Envelope *env, struct Envelope *curenv)
     return;
 
   /* This takes precedence over a subject that might have
-   * been taken from a List-Post header.  Is that correct?
-   */
+   * been taken from a List-Post header.  Is that correct?  */
   if (curenv->real_subj)
   {
     FREE(&env->subject);
@@ -1101,8 +1097,7 @@ void mutt_set_followup_to(struct Envelope *env)
   struct Address *from = NULL;
 
   /* Only generate the Mail-Followup-To if the user has requested it, and
-   * it hasn't already been set
-   */
+   * it hasn't already been set */
 
   if (!C_FollowupTo)
     return;
@@ -1120,8 +1115,7 @@ void mutt_set_followup_to(struct Envelope *env)
     if (mutt_is_list_cc(0, env->to, env->cc))
     {
       /* this message goes to known mailing lists, so create a proper
-       * mail-followup-to header
-       */
+       * mail-followup-to header */
 
       t = mutt_addr_append(&env->mail_followup_to, env->to, false);
       mutt_addr_append(&t, env->cc, true);
@@ -1130,11 +1124,10 @@ void mutt_set_followup_to(struct Envelope *env)
     /* remove ourselves from the mail-followup-to header */
     env->mail_followup_to = remove_user(env->mail_followup_to, false);
 
-    /* If we are not subscribed to any of the lists in question,
-     * re-add ourselves to the mail-followup-to header.  The
-     * mail-followup-to header generated is a no-op with group-reply,
-     * but makes sure list-reply has the desired effect.
-     */
+    /* If we are not subscribed to any of the lists in question, re-add
+     * ourselves to the mail-followup-to header.  The mail-followup-to header
+     * generated is a no-op with group-reply, but makes sure list-reply has the
+     * desired effect.  */
 
     if (env->mail_followup_to && !mutt_is_list_recipient(false, env->to, env->cc))
     {
@@ -1193,8 +1186,7 @@ static struct Address *set_reverse_name(struct Envelope *env)
   {
     tmp = mutt_addr_copy(tmp);
     /* when $reverse_realname is not set, clear the personal name so that it
-     * may be set via a reply- or send-hook.
-     */
+     * may be set via a reply- or send-hook.  */
     if (!C_ReverseRealname)
       FREE(&tmp->personal);
   }
@@ -1689,8 +1681,7 @@ static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, Sen
   }
 
   /* make sure the message is written to the right part of a maildir
-   * postponed folder.
-   */
+   * postponed folder.  */
   msg->read = false;
   msg->old = false;
 
@@ -1773,8 +1764,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
       mutt_num_postponed(ctx ? ctx->mailbox : NULL, true))
   {
     /* If the user is composing a new message, check to see if there
-     * are any postponed messages first.
-     */
+     * are any postponed messages first.  */
     enum QuadOption ans =
         query_quadoption(C_Recall, _("Recall postponed message?"));
     if (ans == MUTT_ABORT)
@@ -1794,8 +1784,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
 
   /* Delay expansion of aliases until absolutely necessary--shouldn't
    * be necessary unless we are prompting the user or about to execute a
-   * send-hook.
-   */
+   * send-hook.  */
 
   if (!msg)
   {
@@ -1812,8 +1801,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
       flags = rc;
 #ifdef USE_NNTP
       /* If postponed message is a news article, it have
-       * a "Newsgroups:" header line, then set appropriate flag.
-       */
+       * a "Newsgroups:" header line, then set appropriate flag.  */
       if (msg->env->newsgroups)
       {
         flags |= SEND_NEWS;
@@ -1853,8 +1841,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
   if (!(flags & (SEND_KEY | SEND_POSTPONED | SEND_RESEND)))
   {
     /* When SEND_DRAFT_FILE is set, the caller has already
-     * created the "parent" body structure.
-     */
+     * created the "parent" body structure.  */
     if (!(flags & SEND_DRAFT_FILE))
     {
       pbody = mutt_body_new();
@@ -1906,8 +1893,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
      * either replying to a real or postponed message, therefore no aliases
      * should exist since the user has not had the opportunity to add
      * addresses to the list.  We just have to ensure the postponed messages
-     * have their aliases expanded.
-     */
+     * have their aliases expanded.  */
 
     if (msg->env->from)
     {
@@ -1925,8 +1911,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
      *
      * If there is already a from address recorded in 'msg->env->from',
      * then it theoretically comes from C_ReverseName handling, and we don't use
-     * the 'X-Orig-To header'.
-     */
+     * the 'X-Orig-To header'.  */
     if (cur->env->x_original_to && !msg->env->from)
     {
       msg->env->from = mutt_addr_copy(cur->env->x_original_to);
@@ -1987,8 +1972,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
 
       /* set the replied flag for the message we are generating so that the
        * user can use ~Q in a send-hook to know when reply-hook's are also
-       * being used.
-       */
+       * being used.  */
       msg->replied = true;
     }
 
@@ -1999,8 +1983,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
     /* Unset the replied flag from the message we are composing since it is
      * no longer required.  This is done here because the FCC'd copy of
      * this message was erroneously get the 'R'eplied flag when stored in
-     * a maildir-style mailbox.
-     */
+     * a maildir-style mailbox.  */
     msg->replied = false;
 
     if (!(flags & SEND_KEY))
@@ -2049,8 +2032,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
 
   /* This hook is even called for postponed messages, and can, e.g., be
    * used for setting the editor, the sendmail path, or the
-   * envelope sender.
-   */
+   * envelope sender.  */
   mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
 
   /* wait until now to set the real name portion of our return address so
@@ -2080,8 +2062,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
      *    This is controlled by the quadoption $forward_edit.  However, if
      *    both $edit_headers and $autoedit are set, we want to ignore the
      *    setting of $forward_edit because the user probably needs to add the
-     *    recipients.
-     */
+     *    recipients.  */
     if (!(flags & SEND_KEY) &&
         (((flags & SEND_FORWARD) == 0) || (C_EditHeaders && C_Autoedit) ||
          (query_quadoption(C_ForwardEdit, _("Edit forwarded message?")) == MUTT_YES)))
@@ -2115,8 +2096,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
       /* If using format=flowed, perform space stuffing.  Avoid stuffing when
        * recalling a postponed message where the stuffing was already
        * performed.  If it has already been performed, the format=flowed
-       * parameter will be present.
-       */
+       * parameter will be present.  */
       if (C_TextFlowed && (msg->content->type == TYPE_TEXT) &&
           (mutt_str_strcasecmp("plain", msg->content->subtype) == 0))
       {
@@ -2155,8 +2135,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
    * 6) we are in batch mode
    *
    * This is done after allowing the user to edit the message so that security
-   * settings can be configured with send2-hook and $edit_headers.
-   */
+   * settings can be configured with send2-hook and $edit_headers.  */
   if ((WithCrypto != 0) && (msg->security == 0) &&
       !(flags & (SEND_BATCH | SEND_MAILX | SEND_POSTPONED | SEND_RESEND)))
   {
@@ -2187,8 +2166,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
        *
        * Problem: At least with forwarding, this doesn't really
        * make much sense. Should we have an option to completely
-       * disable individual mechanisms at run-time?
-       */
+       * disable individual mechanisms at run-time?  */
       if (cur)
       {
         if (((WithCrypto & APPLICATION_PGP) != 0) && C_CryptAutopgp &&
@@ -2204,8 +2182,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
       }
 
       /* No crypto mechanism selected? Use availability + smime_is_default
-       * for the decision.
-       */
+       * for the decision.  */
       if (!(msg->security & (APPLICATION_SMIME | APPLICATION_PGP)))
       {
         if (((WithCrypto & APPLICATION_SMIME) != 0) && C_CryptAutosmime && C_SmimeIsDefault)
@@ -2228,8 +2205,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
     {
       /* If something has already enabled encryption, e.g. C_CryptAutoencrypt
        * or C_CryptReplyencrypt, then don't enable opportunistic encrypt for
-       * the message.
-       */
+       * the message.  */
       if (!(msg->security & SEC_ENCRYPT))
       {
         msg->security |= SEC_OPPENCRYPT;
@@ -2244,8 +2220,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
 
   /* Deal with the corner case where the crypto module backend is not available.
    * This can happen if configured without pgp/smime and with gpgme, but
-   * $crypt_use_gpgme is unset.
-   */
+   * $crypt_use_gpgme is unset.  */
   if (msg->security && !crypt_has_module_backend(msg->security))
   {
     mutt_error(_(
@@ -2374,16 +2349,14 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
 
   /* Ok, we need to do it this way instead of handling all fcc stuff in
    * one place in order to avoid going to main_loop with encoded "env"
-   * in case of error.  Ugh.
-   */
+   * in case of error.  Ugh.  */
 
   mutt_encode_descriptions(msg->content, true);
 
   /* Make sure that clear_content and free_clear_content are
    * properly initialized -- we may visit this particular place in
    * the code multiple times, including after a failed call to
-   * mutt_protect().
-   */
+   * mutt_protect().  */
 
   clear_content = NULL;
   free_clear_content = false;

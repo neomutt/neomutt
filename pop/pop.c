@@ -334,8 +334,7 @@ static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
   }
 
   /* message not found in context -> remove it from cache
-   * return the result of bcache, so we stop upon its first error
-   */
+   * return the result of bcache, so we stop upon its first error */
   return mutt_bcache_del(bcache, cache_id(id));
 }
 
@@ -475,8 +474,7 @@ static int pop_fetch_headers(struct Mailbox *m)
          * - e->data needs to a separate pointer as it's driver-specific
          *   data freed separately elsewhere
          *   (the old e->data should point inside a malloc'd block from
-         *   hcache so there shouldn't be a memleak here)
-         */
+         *   hcache so there shouldn't be a memleak here) */
         struct Email *e = mutt_hcache_restore((unsigned char *) data);
         mutt_hcache_free(hc, &data);
         mutt_email_free(&m->emails[i]);
@@ -510,8 +508,7 @@ static int pop_fetch_headers(struct Mailbox *m)
        *          folder and not when opening it XXX)
        * - if 'hcached' is false, we don't have the message in our hcache:
        *        - if we also have a body: read
-       *        - if we don't have a body: new
-       */
+       *        - if we don't have a body: new */
       const bool bcached =
           (mutt_bcache_exists(adata->bcache, cache_id(edata->uid)) == 0);
       m->emails[i]->old = false;
@@ -546,8 +543,7 @@ static int pop_fetch_headers(struct Mailbox *m)
 
   /* after putting the result into our structures,
    * clean up cache, i.e. wipe messages deleted outside
-   * the availability of our cache
-   */
+   * the availability of our cache */
   if (C_MessageCacheClean)
     mutt_bcache_list(adata->bcache, msg_cache_check, m);
 
@@ -1073,8 +1069,7 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
     return 0;
 
   /* see if we already have the message in our cache in
-   * case $message_cachedir is unset
-   */
+   * case $message_cachedir is unset */
   struct PopCache *cache = &adata->cache[e->index % POP_CACHE_LEN];
 
   if (cache->path)
@@ -1156,8 +1151,7 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   }
 
   /* Update the header information.  Previously, we only downloaded a
-   * portion of the headers, those required for the main display.
-   */
+   * portion of the headers, those required for the main display.  */
   if (bcache)
     mutt_bcache_commit(adata->bcache, cache_id(edata->uid));
   else

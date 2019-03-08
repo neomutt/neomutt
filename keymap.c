@@ -594,8 +594,7 @@ int km_dokey(int menu)
           mutt_getch_timeout(-1);
           /* If a timeout was not received, or the window was resized, exit the
            * loop now.  Otherwise, continue to loop until reaching a total of
-           * $timeout seconds.
-           */
+           * $timeout seconds.  */
 #ifdef USE_INOTIFY
           if ((tmp.ch != -2) || SigWinch || MonitorFilesChanged)
 #else

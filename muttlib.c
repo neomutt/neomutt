@@ -635,8 +635,7 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
   if (strstr(p, "//") || strstr(p, "/./"))
   {
     /* first attempt to collapse the pathname, this is more
-     * lightweight than realpath() and doesn't resolve links
-     */
+     * lightweight than realpath() and doesn't resolve links */
     while (*p)
     {
       if ((*p == '/') && (p[1] == '/'))
@@ -925,8 +924,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
                 /* buflen is decremented at the start of this function
                  * to save space for the terminal nul char.  We can add
                  * it back for the recursive call since the expansion of
-                 * format pipes does not try to append a nul itself.
-                 */
+                 * format pipes does not try to append a nul itself.  */
                 mutt_expando_format(buf, buflen + 1, col, cols, recycler,
                                     callback, data, flags);
                 FREE(&recycler);

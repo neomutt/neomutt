@@ -610,8 +610,7 @@ SecurityFlags mutt_is_application_smime(struct Body *m)
     }
     /* Netscape 4.7 uses
      * Content-Description: S/MIME Encrypted Message
-     * instead of Content-Type parameter
-     */
+     * instead of Content-Type parameter */
     if (mutt_str_strcasecmp(m->description, "S/MIME Encrypted Message") == 0)
       return SMIME_ENCRYPT;
     complain = true;
@@ -925,8 +924,7 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
   char *self_encrypt = NULL;
 
   /* Do a quick check to make sure that we can find all of the encryption
-   * keys if the user has requested this service.
-   */
+   * keys if the user has requested this service.  */
 
   if (!WithCrypto)
     return 0;

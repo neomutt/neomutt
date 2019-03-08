@@ -74,8 +74,7 @@ static int bcache_path(struct ConnAccount *account, const char *mailbox, char *d
   /* make up a Url we can turn into a string */
   mutt_account_tourl(account, &url);
   /* mutt_account_tourl() just sets up some pointers;
-   * if this ever changes, we have a memleak here
-   */
+   * if this ever changes, we have a memleak here */
   url.path = NULL;
   if (url_tostring(&url, host, sizeof(host), U_PATH) < 0)
   {

@@ -155,8 +155,7 @@ int mutt_complete(char *buf, size_t buflen)
   }
 
   /* special case to handle when there is no filepart yet.  find the first
-   * file/directory which is not "." or ".."
-   */
+   * file/directory which is not "." or ".." */
   len = mutt_str_strlen(filepart);
   if (len == 0)
   {

@@ -346,8 +346,7 @@ static int ci_first_message(void)
 
   /* If C_Sort is reverse and not threaded, the latest message is first.
    * If C_Sort is threaded, the latest message is first if exactly one
-   * of C_Sort and C_SortAux are reverse.
-   */
+   * of C_Sort and C_SortAux are reverse.  */
   if (((C_Sort & SORT_REVERSE) && ((C_Sort & SORT_MASK) != SORT_THREADS)) ||
       (((C_Sort & SORT_MASK) == SORT_THREADS) && ((C_Sort ^ C_SortAux) & SORT_REVERSE)))
   {
@@ -1060,15 +1059,13 @@ int mutt_index_menu(void)
   while (true)
   {
     /* Clear the tag prefix unless we just started it.  Don't clear
-     * the prefix on a timeout (op==-2), but do clear on an abort (op==-1)
-     */
+     * the prefix on a timeout (op==-2), but do clear on an abort (op==-1) */
     if (tag && (op != OP_TAG_PREFIX) && (op != OP_TAG_PREFIX_COND) && (op != -2))
       tag = false;
 
     /* check if we need to resort the index because just about
      * any 'op' below could do mutt_enter_command(), either here or
-     * from any new menu launched, and change $sort/$sort_aux
-     */
+     * from any new menu launched, and change $sort/$sort_aux */
     if (OptNeedResort && Context && (Context->mailbox->msg_count != 0) &&
         (menu->current >= 0))
       resort_index(menu);
@@ -1092,8 +1089,7 @@ int mutt_index_menu(void)
       int check;
       /* check for new mail in the mailbox.  If nonzero, then something has
        * changed about the file (either we got new mail or the file was
-       * modified underneath us.)
-       */
+       * modified underneath us.) */
 
       index_hint = ((Context->mailbox->vcount != 0) && (menu->current >= 0) &&
                     (menu->current < Context->mailbox->vcount)) ?
@@ -1222,8 +1218,7 @@ int mutt_index_menu(void)
         SigWinch = 0;
         menu->top = 0; /* so we scroll the right amount */
         /* force a real complete redraw.  clrtobot() doesn't seem to be able
-         * to handle every case without this.
-         */
+         * to handle every case without this.  */
         clearok(stdscr, true);
         continue;
       }
@@ -2312,8 +2307,7 @@ int mutt_index_menu(void)
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
         /* toggle the weeding of headers so that a user can press the key
-         * again while reading the message.
-         */
+         * again while reading the message.  */
         if (op == OP_DISPLAY_HEADERS)
           bool_str_toggle(Config, "weed", NULL);
 
@@ -3268,8 +3262,7 @@ int mutt_index_menu(void)
 
 #ifdef USE_IMAP
         /* in an IMAP folder index with imap_peek=no, piping could change
-         * new or old messages status to read. Redraw what's needed.
-         */
+         * new or old messages status to read. Redraw what's needed.  */
         if ((Context->mailbox->magic == MUTT_IMAP) && !C_ImapPeek)
         {
           menu->redraw |= (tag ? REDRAW_INDEX : REDRAW_CURRENT) | REDRAW_STATUS;
@@ -3289,8 +3282,7 @@ int mutt_index_menu(void)
 
 #ifdef USE_IMAP
         /* in an IMAP folder index with imap_peek=no, printing could change
-         * new or old messages status to read. Redraw what's needed.
-         */
+         * new or old messages status to read. Redraw what's needed.  */
         if ((Context->mailbox->magic == MUTT_IMAP) && !C_ImapPeek)
         {
           menu->redraw |= (tag ? REDRAW_INDEX : REDRAW_CURRENT) | REDRAW_STATUS;

@@ -70,8 +70,7 @@ enum ImapAuthRes imap_auth_oauth(struct ImapAccountData *adata, const char *meth
   snprintf(ibuf, ilen, "AUTHENTICATE OAUTHBEARER %s", oauthbearer);
 
   /* This doesn't really contain a password, but the token is good for
-   * an hour, so suppress it anyways.
-   */
+   * an hour, so suppress it anyways.  */
   rc = imap_exec(adata, ibuf, IMAP_CMD_PASS);
 
   FREE(&oauthbearer);
@@ -80,8 +79,7 @@ enum ImapAuthRes imap_auth_oauth(struct ImapAccountData *adata, const char *meth
   if (rc == IMAP_EXEC_SUCCESS)
   {
     /* The error response was in SASL continuation, so continue the SASL
-     * to cause a failure and exit SASL input.  See RFC 7628 3.2.3
-     */
+     * to cause a failure and exit SASL input.  See RFC 7628 3.2.3 */
     mutt_socket_send(adata->conn, "\001");
     rc = imap_exec(adata, ibuf, 0);
   }

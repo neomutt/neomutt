@@ -455,8 +455,7 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
   char scratch[128];
 
   /* Don't modify our argument. Fixed-size buffer is ok here since
-   * the date format imposes a natural limit.
-   */
+   * the date format imposes a natural limit.  */
 
   mutt_str_strfcpy(scratch, s, sizeof(scratch));
 
@@ -518,8 +517,7 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
 
       case 4: /* timezone */
         /* sometimes we see things like (MST) or (-0700) so attempt to
-         * compensate by uncommenting the string if non-RFC822 compliant
-         */
+         * compensate by uncommenting the string if non-RFC822 compliant */
         ptz = uncomment_timezone(tzstr, sizeof(tzstr), t);
 
         if ((*ptz == '+') || (*ptz == '-'))

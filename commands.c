@@ -868,9 +868,7 @@ void mutt_display_address(struct Envelope *env)
   /* Note: We don't convert IDNA to local representation this time.
    * That is intentional, so the user has an opportunity to copy &
    * paste the on-the-wire form of the address to other, IDN-unable
-   * software.
-   */
-
+   * software.  */
   buf[0] = '\0';
   mutt_addr_write(buf, sizeof(buf), addr, false);
   mutt_message("%s: %s", pfx, buf);
@@ -1030,8 +1028,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete,
     buf[pathlen - 1] = '\0';
 
   /* This is an undocumented feature of ELM pointed out to me by Felix von
-   * Leitner <leitner@prz.fu-berlin.de>
-   */
+   * Leitner <leitner@prz.fu-berlin.de> */
   if (mutt_str_strcmp(buf, ".") == 0)
     mutt_str_strfcpy(buf, LastSaveFolder, sizeof(buf));
   else

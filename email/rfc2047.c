@@ -663,8 +663,7 @@ void rfc2047_decode(char **pd)
 
   /* Keep some state in case the next decoded word is using the same charset
    * and it happens to be split in the middle of a multibyte character.
-   * See https://github.com/neomutt/neomutt/issues/1015
-   */
+   * See https://github.com/neomutt/neomutt/issues/1015 */
   struct Buffer prev = { 0 }; /* Previously decoded word                */
   char *prev_charset = NULL;  /* Previously used charset                */
   size_t prev_charsetlen = 0; /* Length of the previously used charset  */

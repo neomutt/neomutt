@@ -278,8 +278,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
   mutt_expand_aliases_env(msg->env);
 
   /* search through the user defined headers added to see if
-   * fcc: or attach: or pgp: was specified
-   */
+   * fcc: or attach: or pgp: was specified */
 
   struct ListNode *np, *tmp;
   STAILQ_FOREACH_SAFE(np, &msg->env->userhdrs, entries, tmp)
@@ -362,8 +361,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
 void mutt_make_label_hash(struct Mailbox *m)
 {
   /* 131 is just a rough prime estimate of how many distinct
-   * labels someone might have in a m.
-   */
+   * labels someone might have in a m.  */
   m->label_hash = mutt_hash_new(131, MUTT_HASH_STRDUP_KEYS);
 }
 

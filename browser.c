@@ -930,8 +930,7 @@ static void browser_highlight_default(struct BrowserState *state, struct Menu *m
   menu->top = 0;
   /* Reset menu position to 1.
    * We do not risk overflow as the init_menu function changes
-   * current if it is bigger than state->entrylen.
-   */
+   * current if it is bigger than state->entrylen.  */
   if ((mutt_str_strcmp(state->entry[0].desc, "..") == 0) ||
       (mutt_str_strcmp(state->entry[0].desc, "../") == 0))
   {
@@ -1000,8 +999,7 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
   /* Browser tracking feature.
    * The goal is to highlight the good directory if LastDir is the parent dir
    * of OldLastDir (this occurs mostly when one hit "../"). It should also work
-   * properly when the user is in examine_mailboxes-mode.
-   */
+   * properly when the user is in examine_mailboxes-mode.  */
   if (mutt_str_startswith(OldLastDir, LastDir, CASE_MATCH))
   {
     char target_dir[PATH_MAX] = "";
@@ -1099,8 +1097,7 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
   bool mailbox = (flags & MUTT_SEL_MAILBOX);
 
   /* Keeps in memory the directory we were in when hitting '='
-   * to go directly to $folder (#C_Folder)
-   */
+   * to go directly to $folder (#C_Folder) */
   char goto_swapper[PATH_MAX] = "";
 
   mailbox = mailbox && folder;
@@ -1190,8 +1187,7 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
     {
       /* Whether we use the tracking feature of the browser depends
        * on which sort method we chose to use. This variable is defined
-       * only to help readability of the code.
-       */
+       * only to help readability of the code.  */
       bool browser_track = false;
 
       switch (C_SortBrowser & SORT_MASK)
@@ -1216,15 +1212,13 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
        * when listing folders on startup with "neomutt -y").
        *
        * This tracker is only used when browser_track is true,
-       * meaning only with sort methods SUBJECT/DESC for now.
-       */
+       * meaning only with sort methods SUBJECT/DESC for now.  */
       if (CurrentFolder)
       {
         if (LastDir[0] == '\0')
         {
           /* If browsing in "local"-mode, than we chose to define LastDir to
-           * MailDir
-           */
+           * MailDir */
           switch (mx_path_probe(CurrentFolder, NULL))
           {
             case MUTT_IMAP:
@@ -1249,8 +1243,7 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
       }
 
       /* When browser tracking feature is disabled, shoot a 0
-       * on first char of OldLastDir to make it useless.
-       */
+       * on first char of OldLastDir to make it useless.  */
       if (!browser_track)
         OldLastDir[0] = '\0';
     }

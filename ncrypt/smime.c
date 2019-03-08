@@ -626,14 +626,12 @@ static struct SmimeKey *smime_parse_key(char *buf)
   {
     /* Some users manually maintain their .index file, and use a tab
      * as a delimiter, which the old parsing code (using fscanf)
-     * happened to allow.  smime_keys uses a space, so search for both.
-     */
+     * happened to allow.  smime_keys uses a space, so search for both.  */
     if ((pend = strchr(p, ' ')) || (pend = strchr(p, '\t')) || (pend = strchr(p, '\n')))
       *pend++ = 0;
 
     /* For backward compatibility, don't count consecutive delimiters
-     * as an empty field.
-     */
+     * as an empty field.  */
     if (!*p)
       continue;
 
@@ -1899,14 +1897,12 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
     return -1;
   }
   /* decoding the attachment changes the size and offset, so save a copy
-   * of the "real" values now, and restore them after processing
-   */
+   * of the "real" values now, and restore them after processing */
   tmplength = sigbdy->length;
   tmpoffset = sigbdy->offset;
 
   /* if we are decoding binary bodies, we don't want to prefix each
-   * line with the prefix or else the data will get corrupted.
-   */
+   * line with the prefix or else the data will get corrupted.  */
   char *save_prefix = s->prefix;
   s->prefix = NULL;
 
@@ -2324,8 +2320,7 @@ int smime_class_send_menu(struct Email *msg)
 
   /* Opportunistic encrypt is controlling encryption.
    * NOTE: "Signing" and "Clearing" only adjust the sign bit, so we have different
-   *       letter choices for those.
-   */
+   *       letter choices for those.  */
   if (C_CryptOpportunisticEncrypt && (msg->security & SEC_OPPENCRYPT))
   {
     /* L10N: S/MIME options (opportunistic encryption is on) */
@@ -2336,8 +2331,7 @@ int smime_class_send_menu(struct Email *msg)
     choices = "SwaCo";
   }
   /* Opportunistic encryption option is set, but is toggled off
-   * for this message.
-   */
+   * for this message.  */
   else if (C_CryptOpportunisticEncrypt)
   {
     /* L10N: S/MIME options (opportunistic encryption is off) */

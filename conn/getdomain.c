@@ -62,8 +62,7 @@ int getdnsdomainname(char *buf, size_t buflen)
 
   /* Allow 0.1 seconds to get the FQDN (fully-qualified domain name).
    * If it takes longer, the system is mis-configured and the network is not
-   * working properly, so...
-   */
+   * working properly, so...  */
   struct timespec timeout = { 0, 100000000 };
   struct gaicb *reqs[1];
   reqs[0] = mutt_mem_calloc(1, sizeof(*reqs[0]));

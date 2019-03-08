@@ -187,8 +187,7 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, int flags)
 #ifdef HAVE_LIBIDN
     /* If the original domain was UTF-8, idna encoding here could
      * produce a non-matching domain!  Thus we only want to do the
-     * idna_to_ascii_8z() if the original domain was IDNA encoded.
-     */
+     * idna_to_ascii_8z() if the original domain was IDNA encoded.  */
     if (is_idn_encoded && C_IdnDecode)
     {
       if (idna_to_ascii_8z(reversed_domain, &tmp, IDNA_ALLOW_UNASSIGNED) != IDNA_SUCCESS)

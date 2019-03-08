@@ -736,8 +736,7 @@ static bool eat_range(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   bool skip_quote = false;
 
   /* If simple_search is set to "~m %s", the range will have double quotes
-   * around it...
-   */
+   * around it...  */
   if (*s->dptr == '"')
   {
     s->dptr++;
@@ -1030,8 +1029,7 @@ static bool eat_message_range(struct Pattern *pat, struct Buffer *s, struct Buff
   }
 
   /* If simple_search is set to "~m %s", the range will have double quotes
-   * around it...
-   */
+   * around it...  */
   if (*s->dptr == '"')
   {
     s->dptr++;
@@ -1982,8 +1980,7 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
       /* m can be NULL in certain cases, such as when replying to a message
        * from the attachment menu and the user has a reply-hook using "~e" (bug
        * #2190).
-       * This is also the case when message scoring.
-       */
+       * This is also the case when message scoring.  */
       if (!m)
         return 0;
 #ifdef USE_IMAP
@@ -2227,8 +2224,7 @@ void mutt_check_simple(char *s, size_t len, const char *simple)
   }
 
   /* XXX - is mutt_str_strcasecmp() right here, or should we use locale's
-   * equivalences?
-   */
+   * equivalences?  */
 
   if (do_simple) /* yup, so spoof a real request */
   {

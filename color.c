@@ -182,10 +182,7 @@ static void free_color_line(struct ColorLine *tmp, bool free_colors)
     mutt_free_color(tmp->fg, tmp->bg);
 #endif
 
-  /* we should really introduce a container
-   * type for regular expressions.
-   */
-
+  /* we should really introduce a container type for regular expressions.  */
   regfree(&tmp->regex);
   mutt_pattern_free(&tmp->color_pattern);
   FREE(&tmp->pattern);
@@ -259,9 +256,7 @@ static char *get_color_name(char *dest, size_t destlen, int val)
   }
 
   /* Sigh. If we got this far, the color is of the form 'colorN'
-   * Slang can handle this itself, so just return 'colorN'
-   */
-
+   * Slang can handle this itself, so just return 'colorN' */
   snprintf(dest, destlen, "color%d", val);
   return dest;
 }
@@ -1069,11 +1064,9 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
       /* delay use_default_colors() until needed, since it initializes things */
       && ((fg == COLOR_DEFAULT) || (bg == COLOR_DEFAULT) || (object == MT_COLOR_TREE)) &&
       (use_default_colors() != OK))
-  /* the case of the tree object is special, because a non-default
-   * fg color of the tree element may be combined dynamically with
-   * the default bg color of an index line, not necessarily defined in
-   * a rc file.
-   */
+  /* the case of the tree object is special, because a non-default fg color of
+   * the tree element may be combined dynamically with the default bg color of
+   * an index line, not necessarily defined in a rc file.  */
   {
     mutt_buffer_strcpy(err, _("default colors not supported"));
     return MUTT_CMD_ERROR;
@@ -1092,8 +1085,7 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
     /* 'color status fg bg' can have up to 2 arguments:
      * 0 arguments: sets the default status color (handled below by else part)
      * 1 argument : colorize pattern on match
-     * 2 arguments: colorize nth submatch of pattern
-     */
+     * 2 arguments: colorize nth submatch of pattern */
     mutt_extract_token(buf, s, 0);
 
     if (MoreArgs(s))
