@@ -22,7 +22,7 @@
  */
 
 /**
- * @page group Handling for email address groups
+ * @page email_group Handling for email address groups
  *
  * Handling for email address groups
  */
@@ -33,11 +33,6 @@
 #include "mutt/mutt.h"
 #include "email/lib.h"
 #include "group.h"
-#include "hash.h"
-#include "logging.h"
-#include "memory.h"
-#include "regex3.h"
-#include "string2.h"
 
 static struct Hash *Groups = NULL;
 

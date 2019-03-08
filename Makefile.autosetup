@@ -237,7 +237,7 @@ ALLOBJS+=	$(LIBCONFIGOBJS)
 # libemail
 LIBEMAIL=	libemail.a
 LIBEMAILOBJS=	email/address.o email/attach.o email/body.o \
-		email/email_globals.o email/envelope.o email/from.o \
+		email/email_globals.o email/envelope.o email/from.o email/group.o \
 		email/email.o email/idna.o email/mime.o email/parameter.o \
 		email/parse.o email/rfc2047.o email/rfc2231.o email/tags.o \
 		email/thread.o email/url.o
@@ -249,7 +249,7 @@ ALLOBJS+=	$(LIBEMAILOBJS)
 # libmutt
 LIBMUTT=	libmutt.a
 LIBMUTTOBJS=	mutt/base64.o mutt/buffer.o mutt/charset.o mutt/date.o \
-		mutt/envlist.o mutt/exit.o mutt/file.o mutt/group.o mutt/hash.o \
+		mutt/envlist.o mutt/exit.o mutt/file.o mutt/hash.o \
 		mutt/history.o mutt/list.o mutt/logging.o mutt/mapping.o \
 		mutt/mbyte.o mutt/md5.o mutt/memory.o mutt/path.o mutt/regex.o \
 		mutt/sha1.o mutt/signal.o mutt/string.o
