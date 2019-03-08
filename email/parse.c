@@ -1432,7 +1432,7 @@ struct Body *mutt_rfc822_parse_message(FILE *fp, struct Body *parent)
   struct Body *msg = parent->email->content;
 
   /* ignore the length given in the content-length since it could be wrong
-     and we already have the info to calculate the correct length */
+   * and we already have the info to calculate the correct length */
   /* if (msg->length == -1) */
   msg->length = parent->length - (msg->offset - parent->offset);
 

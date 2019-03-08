@@ -1629,14 +1629,14 @@ int mutt_body_handler(struct Body *b, struct State *s)
   }
 
   /* only respect disposition == attachment if we're not
-     displaying from the attachment menu (i.e. pager) */
+   * displaying from the attachment menu (i.e. pager) */
   if ((!C_HonorDisposition || ((b->disposition != DISP_ATTACH) || OptViewAttach)) &&
       (plaintext || handler))
   {
     rc = run_decode_and_handler(b, s, handler, plaintext);
   }
   /* print hint to use attachment menu for disposition == attachment
-     if we're not already being called from there */
+   * if we're not already being called from there */
   else if ((s->flags & MUTT_DISPLAY) || ((b->disposition == DISP_ATTACH) && !OptViewAttach &&
                                          C_HonorDisposition && (plaintext || handler)))
   {

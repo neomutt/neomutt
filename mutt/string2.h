@@ -42,7 +42,7 @@
 #define S_BKG 126
 
 /* this macro must check for (*c == 0) since isspace(0) has unreliable behavior
-   on some systems */
+ * on some systems */
 #define SKIPWS(ch)                                                             \
   while (*(ch) && isspace((unsigned char) *(ch)))                              \
     ch++;

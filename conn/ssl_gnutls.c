@@ -985,7 +985,7 @@ static int tls_set_priority(struct TlsSockData *data)
   }
 
   /* We use default priorities (see gnutls documentation),
-     except for protocol version */
+   * except for protocol version */
   gnutls_set_default_priority(data->state);
   gnutls_protocol_set_priority(data->state, protocol_priority);
   return 0;
@@ -1031,7 +1031,7 @@ static int tls_negotiate(struct Connection *conn)
 
 #ifdef HAVE_DECL_GNUTLS_VERIFY_DISABLE_TIME_CHECKS
   /* disable checking certificate activation/expiration times
-     in gnutls, we do the checks ourselves */
+   * in gnutls, we do the checks ourselves */
   gnutls_certificate_set_verify_flags(data->xcred, GNUTLS_VERIFY_DISABLE_TIME_CHECKS);
 #endif
 

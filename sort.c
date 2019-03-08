@@ -403,7 +403,7 @@ void mutt_sort_headers(struct Context *ctx, bool init)
   {
     AuxSort = NULL;
     /* if $sort_aux changed after the mailbox is sorted, then all the
-       subthreads need to be resorted */
+     * subthreads need to be resorted */
     if (OptSortSubthreads)
     {
       int i = C_Sort;

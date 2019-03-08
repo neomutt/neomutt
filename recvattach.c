@@ -1092,7 +1092,7 @@ int mutt_attach_display_loop(struct Menu *menu, int op, struct Email *e,
         break;
       case OP_EDIT_TYPE:
         /* when we edit the content-type, we should redisplay the attachment
-           immediately */
+         * immediately */
         mutt_edit_content_type(e, CURATTACH->content, CURATTACH->fp);
         if (recv)
           recvattach_edit_content_type(actx, menu, e);

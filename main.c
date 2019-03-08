@@ -293,7 +293,7 @@ static int start_curses(void)
 #endif
 #else
   /* should come before initscr() so that ncurses 4.2 doesn't try to install
-     its own SIGWINCH handler */
+   * its own SIGWINCH handler */
   mutt_signal_init();
 #endif
   if (!initscr())

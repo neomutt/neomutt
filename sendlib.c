@@ -2027,7 +2027,7 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
   bool is_from = ((end - start) > 5) && mutt_str_startswith(start, "from ", CASE_IGNORE);
 
   /* only pass through folding machinery if necessary for sending,
-     never wrap From_ headers on sending */
+   * never wrap From_ headers on sending */
   if (!(chflags & CH_DISPLAY) && ((pfxw + max <= wraplen) || is_from))
   {
     valbuf = mutt_str_substr_dup(start, end);

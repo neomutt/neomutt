@@ -370,7 +370,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
     if (plen)
     {
       /* if a mailbox is currently open, look to see if the original message
-          the user attempted to reply to is in this mailbox */
+       * the user attempted to reply to is in this mailbox */
       p = mutt_str_skip_email_wsp(np->data + plen);
       if (!ctx->mailbox->id_hash)
         ctx->mailbox->id_hash = mutt_make_id_hash(ctx->mailbox);

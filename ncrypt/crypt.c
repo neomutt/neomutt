@@ -321,7 +321,7 @@ int mutt_protect(struct Email *msg, char *keylist)
       if ((tmp_smime_pbody != msg->content) && (tmp_smime_pbody != tmp_pbody))
       {
         /* detach and don't delete msg->content,
-           which tmp_smime_pbody->parts after signing. */
+         * which tmp_smime_pbody->parts after signing. */
         tmp_smime_pbody->parts = tmp_smime_pbody->parts->next;
         msg->content->next = NULL;
         mutt_body_free(&tmp_smime_pbody);
@@ -644,7 +644,7 @@ SecurityFlags mutt_is_application_smime(struct Body *m)
     if (mutt_str_strcasecmp((t + len), "p7m") == 0)
     {
       /* Not sure if this is the correct thing to do, but
-        it's required for compatibility with Outlook */
+       * it's required for compatibility with Outlook */
       return SMIME_SIGN | SMIME_OPAQUE;
     }
     else if (mutt_str_strcasecmp((t + len), "p7s") == 0)

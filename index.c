@@ -1479,7 +1479,7 @@ int mutt_index_menu(void)
             Context->mailbox->quiet = quiet;
 
             /* Similar to OP_MAIN_ENTIRE_THREAD, keep displaying the old message, but
-               update the index */
+             * update the index */
             if (menu->menu == MENU_PAGER)
             {
               menu->current = oldcur->virtual;
@@ -1514,7 +1514,7 @@ int mutt_index_menu(void)
           {
             mutt_error(_("No deleted messages found in the thread"));
             /* Similar to OP_MAIN_ENTIRE_THREAD, keep displaying the old message, but
-               update the index */
+             * update the index */
             if (menu->menu == MENU_PAGER)
             {
               op = OP_DISPLAY_MESSAGE;

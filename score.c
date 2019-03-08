@@ -119,7 +119,7 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
   }
 
   /* look for an existing entry and update the value, else add it to the end
-     of the list */
+   * of the list */
   for (ptr = ScoreList, last = NULL; ptr; last = ptr, ptr = ptr->next)
     if (mutt_str_strcmp(pattern, ptr->str) == 0)
       break;

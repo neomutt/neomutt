@@ -342,7 +342,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
     if ((flags & MUTT_NOSORT) == 0)
     {
       /* avoid unnecessary work since the mailbox is completely unthreaded
-         to begin with */
+       * to begin with */
       OptSortSubthreads = false;
       OptNeedRescore = false;
       mutt_sort_headers(ctx, true);

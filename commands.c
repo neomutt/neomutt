@@ -294,7 +294,7 @@ int mutt_display_message(struct Email *cur)
     cur->security |= crypt_query(cur->content);
 
     /* Remove color cache for this message, in case there
-       are color patterns for both ~g and ~V */
+     * are color patterns for both ~g and ~V */
     cur->pair = 0;
 
     /* Grab protected headers and update the header and index */

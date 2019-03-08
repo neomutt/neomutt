@@ -1044,17 +1044,15 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
     return NULL;
   }
 
-  /* send the PGP passphrase to the subprocess.  Never do this if the
-     agent is active, because this might lead to a passphrase send as
-     the message. */
+  /* send the PGP passphrase to the subprocess.  Never do this if the agent is
+   * active, because this might lead to a passphrase send as the message. */
   if (!pgp_use_gpg_agent())
     fputs(PgpPass, fp_pgp_in);
   fputc('\n', fp_pgp_in);
   mutt_file_fclose(&fp_pgp_in);
 
   /* Read the output from PGP, and make sure to change CRLF to LF, otherwise
-   * read_mime_header has a hard time parsing the message.
-   */
+   * read_mime_header has a hard time parsing the message.  */
   while (fgets(buf, sizeof(buf) - 1, fp_pgp_out))
   {
     size_t len = mutt_str_strlen(buf);

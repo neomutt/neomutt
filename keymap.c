@@ -478,7 +478,7 @@ static void generic_tokenize_push_string(char *s, void (*generic_push)(int, int)
   while (p >= s)
   {
     /* if we see something like "<PageUp>", look to see if it is a real
-       function name and return the corresponding value */
+     * function name and return the corresponding value */
     if (*p == '>')
     {
       for (pp = p - 1; pp >= s && *pp != '<'; pp--)
@@ -1023,7 +1023,7 @@ void km_init(void)
   km_bindkey("<enter>", MENU_COMPOSE, OP_VIEW_ATTACH);
 
   /* edit-to (default "t") hides generic tag-entry in Compose menu
-     This will bind tag-entry to  "T" in the Compose menu */
+   * This will bind tag-entry to  "T" in the Compose menu */
   km_bindkey("T", MENU_COMPOSE, OP_TAG);
 }
 

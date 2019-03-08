@@ -104,7 +104,7 @@ struct DnArray
 };
 
 /* We work based on user IDs, getting from a user ID to the key is
-   check and does not need any memory (gpgme uses reference counting). */
+ * check and does not need any memory (gpgme uses reference counting). */
 /**
  * struct CryptKeyInfo - A stored PGP key
  */
@@ -904,7 +904,7 @@ static int data_object_to_stream(gpgme_data_t data, FILE *fp)
   while ((nread = gpgme_data_read(data, buf, sizeof(buf))) > 0)
   {
     /* fixme: we are not really converting CRLF to LF but just
-         skipping CR. Doing it correctly needs a more complex logic */
+     * skipping CR. Doing it correctly needs a more complex logic */
     for (char *p = buf; nread; p++, nread--)
     {
       if (*p != '\r')
@@ -1037,8 +1037,7 @@ static gpgme_key_t *create_recipient_set(const char *keylist, gpgme_protocol_t p
     {
       if ((i > 1) && (buf[i - 1] == '!'))
       {
-        /* The user selected to override the validity of that
-           key. */
+        /* The user selected to override the validity of that key. */
         buf[i - 1] = 0;
 
         err = gpgme_get_key(context, buf, &key, 0);
@@ -1350,7 +1349,7 @@ static struct Body *sign_message(struct Body *a, bool use_smime)
   mutt_param_set(&t->parameter, "protocol",
                  use_smime ? "application/pkcs7-signature" : "application/pgp-signature");
   /* Get the micalg from gpgme.  Old gpgme versions don't support this
-     for S/MIME so we assume sha-1 in this case. */
+   * for S/MIME so we assume sha-1 in this case. */
   if (get_micalg(ctx, use_smime, buf, sizeof(buf)) == 0)
     mutt_param_set(&t->parameter, "micalg", buf);
   else if (use_smime)
@@ -1788,7 +1787,7 @@ static void print_smime_keyinfo(const char *msg, gpgme_signature_t sig,
   }
 
   /* timestamp is 0 when verification failed.
-     "Jan 1 1970" is not the created date. */
+   * "Jan 1 1970" is not the created date. */
   if (sig->timestamp)
   {
     msgwid = mutt_strwidth(msg) - mutt_strwidth(_("created: ")) + 1;
@@ -1827,8 +1826,8 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *s)
   if (result)
   {
     /* FIXME: this code should use a static variable and remember
-         the current position in the list of signatures, IMHO.
-         -moritz.  */
+     * the current position in the list of signatures, IMHO.
+     * -moritz.  */
     int i;
     for (i = 0, sig = result->signatures; sig && (i < idx); i++, sig = sig->next)
       ;
@@ -1940,7 +1939,7 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
     return -1;
 
   /* We need to tell gpgme about the encoding because the backend can't
-     auto-detect plain base-64 encoding which is used by S/MIME. */
+   * auto-detect plain base-64 encoding which is used by S/MIME. */
   if (is_smime)
     gpgme_data_set_encoding(signature, GPGME_DATA_ENCODING_BASE64);
 
@@ -1954,8 +1953,7 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
   ctx = create_gpgme_context(is_smime);
 
   /* Note: We don't need a current time output because GPGME avoids
-     such an attack by separating the meta information from the
-     data. */
+   * such an attack by separating the meta information from the data. */
   state_attach_puts(_("[-- Begin signature information --]\n"), s);
 
   err = gpgme_op_verify(ctx, signature, message, NULL);
@@ -2132,11 +2130,10 @@ restart:
   {
     if (is_smime && !maybe_signed && (gpg_err_code(err) == GPG_ERR_NO_DATA))
     {
-      /* Check whether this might be a signed message despite what
-             the mime header told us.  Retry then.  gpgsm returns the
-             error information "unsupported Algorithm '?'" but gpgme
-             will not store this unknown algorithm, thus we test that
-             it has not been set. */
+      /* Check whether this might be a signed message despite what the mime
+       * header told us.  Retry then.  gpgsm returns the error information
+       * "unsupported Algorithm '?'" but gpgme will not store this unknown
+       * algorithm, thus we test that it has not been set. */
       gpgme_decrypt_result_t result;
 
       result = gpgme_op_decrypt_result(ctx);
@@ -2166,7 +2163,7 @@ restart:
   redraw_if_needed(ctx);
 
   /* Read the output from GPGME, and make sure to change CRLF to LF,
-     otherwise read_mime_header has a hard time parsing the message.  */
+   * otherwise read_mime_header has a hard time parsing the message.  */
   if (data_object_to_stream(plaintext, fp_out))
   {
     gpgme_data_release(plaintext);
@@ -2336,9 +2333,9 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
     return -1;
 
   /* Decode the body - we need to pass binary CMS to the
-     backend.  The backend allows for Base64 encoded data but it does
-     not allow for QP which I have seen in some messages.  So better
-     do it here. */
+   * backend.  The backend allows for Base64 encoded data but it does
+   * not allow for QP which I have seen in some messages.  So better
+   * do it here. */
   saved_b_type = b->type;
   saved_b_offset = b->offset;
   saved_b_length = b->length;
@@ -2378,15 +2375,13 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
   rewind(*fp_out);
   if (*cur && !is_signed && !(*cur)->parts && mutt_is_application_smime(*cur))
   {
-    /* Assume that this is a opaque signed s/mime message.  This is
-         an ugly way of doing it but we have anyway a problem with
-         arbitrary encoded S/MIME messages: Only the outer part may be
-         encrypted.  The entire mime parsing should be revamped,
-         probably by keeping the temporary files so that we don't
-         need to decrypt them all the time.  Inner parts of an
-         encrypted part can then point into this file and there won't
-         ever be a need to decrypt again.  This needs a partial
-         rewrite of the MIME engine. */
+    /* Assume that this is a opaque signed s/mime message.  This is an ugly way
+     * of doing it but we have anyway a problem with arbitrary encoded S/MIME
+     * messages: Only the outer part may be encrypted.  The entire mime parsing
+     * should be revamped, probably by keeping the temporary files so that we
+     * don't need to decrypt them all the time.  Inner parts of an encrypted
+     * part can then point into this file and there won't ever be a need to
+     * decrypt again.  This needs a partial rewrite of the MIME engine. */
     struct Body *bb = *cur;
     struct Body *tmp_b = NULL;
 
@@ -2871,8 +2866,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
   mutt_debug(LL_DEBUG2, "Entering handler\n");
 
   /* For clearsigned messages we won't be able to get a character set
-     but we know that this may only be text thus we assume Latin-1
-     here. */
+   * but we know that this may only be text thus we assume Latin-1 here. */
   if (!mutt_body_get_charset(m, body_charset, sizeof(body_charset)))
     mutt_str_strfcpy(body_charset, "iso-8859-1", sizeof(body_charset));
 
@@ -2940,8 +2934,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
           {
             /* Decrypt verify can't handle signed only messages. */
             gpgme_data_seek(armored_data, 0, SEEK_SET);
-            /* Must release plaintext so that we supply an
-                         uninitialized object. */
+            /* Must release plaintext so that we supply an uninitialized object. */
             gpgme_data_release(plaintext);
             plaintext = create_gpgme_data();
             err = gpgme_op_verify(ctx, armored_data, NULL, plaintext);
@@ -3357,7 +3350,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
       if (!optional)
       {
         /* fixme: we need a way to distinguish between main and subkeys.
-           Store the idx in entry? */
+         * Store the idx in entry? */
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
         snprintf(buf, buflen, fmt, crypt_keyid(key));
       }
@@ -4461,10 +4454,9 @@ static struct CryptKeyInfo *get_candidates(struct ListHead *hints, SecurityFlags
 
   if ((app & APPLICATION_PGP))
   {
-    /* It's all a mess.  That old GPGME expects different things
-         depending on the protocol.  For gpg we don't need percent
-         escaped pappert but simple strings passed in an array to the
-         keylist_ext_start function. */
+    /* It's all a mess.  That old GPGME expects different things depending on
+     * the protocol.  For gpg we don't need percent escaped pappert but simple
+     * strings passed in an array to the keylist_ext_start function. */
     size_t n = 0;
     struct ListNode *np = NULL;
     STAILQ_FOREACH(np, hints, entries)
@@ -4742,7 +4734,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
 
       case OP_GENERIC_SELECT_ENTRY:
         /* FIXME make error reporting more verbose - this should be
-             easy because gpgme provides more information */
+         * easy because gpgme provides more information */
         if (OptPgpCheckTrust)
         {
           if (!crypt_key_is_valid(key_table[menu->current]))

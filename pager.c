@@ -2022,7 +2022,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       if (!rd->index)
       {
         /* only allocate the space if/when we need the index.
-           Initialise the menu as per the main index */
+         * Initialise the menu as per the main index */
         rd->index = mutt_menu_new(MENU_MAIN);
         rd->index->menu_make_entry = index_make_entry;
         rd->index->menu_color = index_color;

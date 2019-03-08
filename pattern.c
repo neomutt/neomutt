@@ -594,16 +594,15 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 
   memset(&min, 0, sizeof(min));
   /* the '0' time is Jan 1, 1970 UTC, so in order to prevent a negative time
-     when doing timezone conversion, we use Jan 2, 1970 UTC as the base
-     here */
+   * when doing timezone conversion, we use Jan 2, 1970 UTC as the base here */
   min.tm_mday = 2;
   min.tm_year = 70;
 
   memset(&max, 0, sizeof(max));
 
-  /* Arbitrary year in the future.  Don't set this too high
-     or mutt_date_make_time() returns something larger than will
-     fit in a time_t on some systems */
+  /* Arbitrary year in the future.  Don't set this too high or
+   * mutt_date_make_time() returns something larger than will fit in a time_t
+   * on some systems */
   max.tm_year = 130;
   max.tm_mon = 11;
   max.tm_mday = 31;
@@ -614,9 +613,9 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   if (strchr("<>=", buf.data[0]))
   {
     /* offset from current time
-       <3d      less than three days ago
-       >3d      more than three days ago
-       =3d      exactly three days ago */
+     *  <3d  less than three days ago
+     *  >3d  more than three days ago
+     *  =3d  exactly three days ago */
     time_t now = time(NULL);
     struct tm *tm = localtime(&now);
     bool exact = false;
@@ -699,7 +698,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
       }
 
       /* preset max date for relative offsets,
-         if nothing follows we search for messages on a specific day */
+       * if nothing follows we search for messages on a specific day */
       max.tm_year = min.tm_year;
       max.tm_mon = min.tm_mon;
       max.tm_mday = min.tm_mday;
@@ -2494,7 +2493,7 @@ int mutt_search_command(int cur, int op)
       OptSearchReverse = true;
 
     /* compare the *expanded* version of the search pattern in case
-       $simple_search has changed while we were searching */
+     * $simple_search has changed while we were searching */
     char temp[1024];
     mutt_str_strfcpy(temp, buf, sizeof(temp));
     mutt_check_simple(temp, sizeof(temp), NONULL(C_SimpleSearch));

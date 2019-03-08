@@ -887,9 +887,9 @@ static void make_reference_headers(struct EmailList *el, struct Envelope *env)
   else
     mutt_add_to_reference_headers(env, en->email->env);
 
-  /* if there's more than entry in In-Reply-To (i.e. message has
-     multiple parents), don't generate a References: header as it's
-     discouraged by RFC2822, sect. 3.6.4 */
+  /* if there's more than entry in In-Reply-To (i.e. message has multiple
+   * parents), don't generate a References: header as it's discouraged by
+   * RFC2822, sect. 3.6.4 */
   if (!single && !STAILQ_EMPTY(&env->in_reply_to) &&
       STAILQ_NEXT(STAILQ_FIRST(&env->in_reply_to), entries))
   {
@@ -2054,7 +2054,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
   mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
 
   /* wait until now to set the real name portion of our return address so
-     that $realname can be set in a send-hook */
+   * that $realname can be set in a send-hook */
   if (msg->env->from && !msg->env->from->personal && !(flags & (SEND_RESEND | SEND_POSTPONED)))
     msg->env->from->personal = mutt_str_strdup(C_Realname);
 
@@ -2481,7 +2481,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
     mutt_body_free(&clear_content);
 
   /* set 'replied' flag only if the user didn't change/remove
-     In-Reply-To: and References: headers during edit */
+   * In-Reply-To: and References: headers during edit */
   if (flags & SEND_REPLY)
   {
     if (cur && ctx)

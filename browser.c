@@ -1072,7 +1072,7 @@ void mutt_browser_select_dir(const char *f)
   mutt_str_strfcpy(OldLastDir, f, sizeof(OldLastDir));
 
   /* Method that will fetch the parent path depending on the
-     type of the path. */
+   * type of the path. */
   mutt_get_parent_path(OldLastDir, LastDir, sizeof(LastDir));
 }
 

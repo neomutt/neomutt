@@ -1195,8 +1195,7 @@ static char *smime_extract_certificate(char *infile)
   }
 
   /* Step 1: Convert the signature to a PKCS#7 structure, as we can't
-     extract the full set of certificates directly.
-  */
+   * extract the full set of certificates directly.  */
   pid = smime_invoke(NULL, NULL, NULL, -1, fileno(fp_out), fileno(fp_err), infile,
                      NULL, NULL, NULL, NULL, NULL, NULL, C_SmimePk7outCommand);
   if (pid == -1)

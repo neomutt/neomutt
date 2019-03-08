@@ -260,11 +260,10 @@ static void print_flowed_line(char *line, struct State *s, int ql,
       fst->spaces++;
 
     w = mutt_strwidth(p);
-    /* see if we need to break the line but make sure the first
-       word is put on the line regardless;
-       if for DelSp=yes only one trailing space is used, we probably
-       have a long word that we should break within (we leave that
-       up to the pager or user) */
+    /* see if we need to break the line but make sure the first word is put on
+     * the line regardless; if for DelSp=yes only one trailing space is used,
+     * we probably have a long word that we should break within (we leave that
+     * up to the pager or user) */
     if (!(!fst->spaces && fst->delsp && (last != ' ')) && (w < width) &&
         (w + fst->width + fst->spaces > width))
     {

@@ -2804,7 +2804,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
       mutt_wait_filter(pid);
 
       /* if we got output, make a new string consisting of the shell output
-         plus whatever else was left on the original line */
+       * plus whatever else was left on the original line */
       /* BUT: If this is inside a quoted string, directly add output to
        * the token */
       if (expn.data && qc)
@@ -3149,7 +3149,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   }
 
   /* Process the global rc file if it exists and the user hasn't explicitly
-     requested not to via "-n".  */
+   * requested not to via "-n".  */
   if (!skip_sys_rc)
   {
     do
