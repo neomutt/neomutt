@@ -2215,7 +2215,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
 
     /* No permissible mechanisms found.  Don't sign or encrypt. */
     if (!(msg->security & (APPLICATION_SMIME | APPLICATION_PGP)))
-      msg->security = 0;
+      msg->security = SEC_NO_FLAGS;
   }
 
   /* Deal with the corner case where the crypto module backend is not available.
@@ -2225,7 +2225,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
   {
     mutt_error(_(
         "No crypto backend configured.  Disabling message security setting."));
-    msg->security = 0;
+    msg->security = SEC_NO_FLAGS;
   }
 
   /* specify a default fcc.  if we are in batchmode, only save a copy of

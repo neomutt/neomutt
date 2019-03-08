@@ -1462,7 +1462,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool a
   struct Body *body = NULL;
   FILE *fp = NULL;
   CopyMessageFlags cmflags;
-  int pgp = WithCrypto ? e->security : 0;
+  SecurityFlags pgp = WithCrypto ? e->security : SEC_NO_FLAGS;
 
   if (WithCrypto)
   {

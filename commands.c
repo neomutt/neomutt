@@ -1261,7 +1261,7 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
   if ((WithCrypto != 0) && e)
   {
     if (e->content == b)
-      e->security = 0;
+      e->security = SEC_NO_FLAGS;
 
     e->security |= crypt_query(b);
   }

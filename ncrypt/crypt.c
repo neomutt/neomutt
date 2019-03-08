@@ -372,22 +372,20 @@ bail:
 /**
  * mutt_is_multipart_signed - Is a message signed?
  * @param b Body of email
- * @retval >0 Message is signed, e.g. #PGP_SIGN
- * @retval  0 Message is not signed
+ * @retval num Message is signed, see #SecurityFlags
+ * @retval   0 Message is not signed (#SEC_NO_FLAGS)
  */
-int mutt_is_multipart_signed(struct Body *b)
+SecurityFlags mutt_is_multipart_signed(struct Body *b)
 {
-  char *p = NULL;
-
-  if (!b || !(b->type == TYPE_MULTIPART) || !b->subtype ||
+  if (!b || (b->type != TYPE_MULTIPART) || !b->subtype ||
       (mutt_str_strcasecmp(b->subtype, "signed") != 0))
   {
-    return 0;
+    return SEC_NO_FLAGS;
   }
 
-  p = mutt_param_get(&b->parameter, "protocol");
+  char *p = mutt_param_get(&b->parameter, "protocol");
   if (!p)
-    return 0;
+    return SEC_NO_FLAGS;
 
   if (!(mutt_str_strcasecmp(p, "multipart/mixed") != 0))
     return SEC_SIGN;
@@ -409,19 +407,19 @@ int mutt_is_multipart_signed(struct Body *b)
     return SMIME_SIGN;
   }
 
-  return 0;
+  return SEC_NO_FLAGS;
 }
 
 /**
  * mutt_is_multipart_encrypted - Does the message have encrypted parts?
  * @param b Body of email
- * @retval >0 Message has got encrypted parts, e.g. #PGP_ENCRYPT
- * @retval  0 Message hasn't got encrypted parts
+ * @retval num Message has got encrypted parts, see #SecurityFlags
+ * @retval   0 Message hasn't got encrypted parts (#SEC_NO_FLAGS)
  */
-int mutt_is_multipart_encrypted(struct Body *b)
+SecurityFlags mutt_is_multipart_encrypted(struct Body *b)
 {
   if ((WithCrypto & APPLICATION_PGP) == 0)
-    return 0;
+    return SEC_NO_FLAGS;
 
   char *p = NULL;
 
@@ -430,7 +428,7 @@ int mutt_is_multipart_encrypted(struct Body *b)
       !(p = mutt_param_get(&b->parameter, "protocol")) ||
       (mutt_str_strcasecmp(p, "application/pgp-encrypted") != 0))
   {
-    return 0;
+    return SEC_NO_FLAGS;
   }
 
   return PGP_ENCRYPT;
@@ -444,7 +442,7 @@ int mutt_is_multipart_encrypted(struct Body *b)
  */
 int mutt_is_valid_multipart_pgp_encrypted(struct Body *b)
 {
-  if (mutt_is_multipart_encrypted(b) == 0)
+  if (mutt_is_multipart_encrypted(b) == SEC_NO_FLAGS)
     return 0;
 
   b = b->parts;
@@ -467,8 +465,8 @@ int mutt_is_valid_multipart_pgp_encrypted(struct Body *b)
 /**
  * mutt_is_malformed_multipart_pgp_encrypted - Check for malformed layout
  * @param b Body of email
- * @retval PGP_ENCRYPT Success
- * @retval 0          Error
+ * @retval num Success, see #SecurityFlags
+ * @retval   0 Error, (#SEC_NO_FLAGS)
  *
  * This checks for the malformed layout caused by MS Exchange in
  * some cases:
@@ -480,41 +478,41 @@ int mutt_is_valid_multipart_pgp_encrypted(struct Body *b)
  * ```
  * See ticket #3742
  */
-int mutt_is_malformed_multipart_pgp_encrypted(struct Body *b)
+SecurityFlags mutt_is_malformed_multipart_pgp_encrypted(struct Body *b)
 {
   if (!(WithCrypto & APPLICATION_PGP))
-    return 0;
+    return SEC_NO_FLAGS;
 
   if (!b || (b->type != TYPE_MULTIPART) || !b->subtype ||
       (mutt_str_strcasecmp(b->subtype, "mixed") != 0))
   {
-    return 0;
+    return SEC_NO_FLAGS;
   }
 
   b = b->parts;
   if (!b || (b->type != TYPE_TEXT) || !b->subtype ||
       (mutt_str_strcasecmp(b->subtype, "plain") != 0) || (b->length != 0))
   {
-    return 0;
+    return SEC_NO_FLAGS;
   }
 
   b = b->next;
   if (!b || (b->type != TYPE_APPLICATION) || !b->subtype ||
       (mutt_str_strcasecmp(b->subtype, "pgp-encrypted") != 0))
   {
-    return 0;
+    return SEC_NO_FLAGS;
   }
 
   b = b->next;
   if (!b || (b->type != TYPE_APPLICATION) || !b->subtype ||
       (mutt_str_strcasecmp(b->subtype, "octet-stream") != 0))
   {
-    return 0;
+    return SEC_NO_FLAGS;
   }
 
   b = b->next;
   if (b)
-    return 0;
+    return SEC_NO_FLAGS;
 
   return PGP_ENCRYPT;
 }
@@ -656,70 +654,67 @@ SecurityFlags mutt_is_application_smime(struct Body *m)
 /**
  * crypt_query - Check out the type of encryption used
  * @param m Body of email
- * @retval num Flags, e.g. #SEC_GOODSIGN
+ * @retval num Flags, see #SecurityFlags
  * @retval 0   Error (#SEC_NO_FLAGS)
  *
  * Set the cached status values if there are any.
  */
-int crypt_query(struct Body *m)
+SecurityFlags crypt_query(struct Body *m)
 {
-  SecurityFlags t = SEC_NO_FLAGS;
-
-  if (!WithCrypto)
+  if (!WithCrypto || !m)
     return SEC_NO_FLAGS;
 
-  if (!m)
-    return SEC_NO_FLAGS;
+  SecurityFlags rc = SEC_NO_FLAGS;
 
   if (m->type == TYPE_APPLICATION)
   {
     if (WithCrypto & APPLICATION_PGP)
-      t |= mutt_is_application_pgp(m);
+      rc |= mutt_is_application_pgp(m);
 
     if (WithCrypto & APPLICATION_SMIME)
     {
-      t |= mutt_is_application_smime(m);
-      if (t && m->goodsig)
-        t |= SEC_GOODSIGN;
-      if (t && m->badsig)
-        t |= SEC_BADSIGN;
+      rc |= mutt_is_application_smime(m);
+      if (rc && m->goodsig)
+        rc |= SEC_GOODSIGN;
+      if (rc && m->badsig)
+        rc |= SEC_BADSIGN;
     }
   }
   else if (((WithCrypto & APPLICATION_PGP) != 0) && (m->type == TYPE_TEXT))
   {
-    t |= mutt_is_application_pgp(m);
-    if (t && m->goodsig)
-      t |= SEC_GOODSIGN;
+    rc |= mutt_is_application_pgp(m);
+    if (rc && m->goodsig)
+      rc |= SEC_GOODSIGN;
   }
 
   if (m->type == TYPE_MULTIPART)
   {
-    t |= mutt_is_multipart_encrypted(m);
-    t |= mutt_is_multipart_signed(m);
-    t |= mutt_is_malformed_multipart_pgp_encrypted(m);
+    rc |= mutt_is_multipart_encrypted(m);
+    rc |= mutt_is_multipart_signed(m);
+    rc |= mutt_is_malformed_multipart_pgp_encrypted(m);
 
-    if (t && m->goodsig)
-      t |= SEC_GOODSIGN;
+    if (rc && m->goodsig)
+      rc |= SEC_GOODSIGN;
   }
 
   if ((m->type == TYPE_MULTIPART) || (m->type == TYPE_MESSAGE))
   {
-    int u = m->parts ? 0xffffffff : 0; /* Bits set in all parts */
-    int w = 0;                         /* Bits set in any part  */
+    SecurityFlags u = m->parts ? SEC_ALL_FLAGS : 0; /* Bits set in all parts */
+    SecurityFlags w = SEC_NO_FLAGS;                 /* Bits set in any part  */
 
     for (struct Body *b = m->parts; b; b = b->next)
     {
-      const int v = crypt_query(b);
+      const SecurityFlags v = crypt_query(b);
       u &= v;
       w |= v;
     }
-    t |= u | (w & ~SEC_GOODSIGN);
+    rc |= u | (w & ~SEC_GOODSIGN);
 
     if ((w & SEC_GOODSIGN) && !(u & SEC_GOODSIGN))
-      t |= SEC_PARTSIGN;
+      rc |= SEC_PARTSIGN;
   }
 
-  return t;
+  return rc;
 }
 
 /**
@@ -1079,9 +1074,7 @@ int mutt_protected_headers_handler(struct Body *a, struct State *s)
  */
 int mutt_signed_handler(struct Body *a, struct State *s)
 {
-  int signed_type;
   bool inconsistent = false;
-
   struct Body *b = a;
   struct Body **signatures = NULL;
   int sigcnt = 0;
@@ -1091,8 +1084,8 @@ int mutt_signed_handler(struct Body *a, struct State *s)
     return -1;
 
   a = a->parts;
-  signed_type = mutt_is_multipart_signed(b);
-  if (!signed_type)
+  SecurityFlags signed_type = mutt_is_multipart_signed(b);
+  if (signed_type == SEC_NO_FLAGS)
   {
     /* A null protocol value is already checked for in mutt_body_handler() */
     state_printf(s,

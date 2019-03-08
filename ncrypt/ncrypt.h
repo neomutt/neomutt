@@ -130,6 +130,8 @@ typedef uint16_t SecurityFlags;           ///< Flags, e.g. #SEC_ENCRYPT
 #define APPLICATION_SMIME       (1 << 10) ///< Use SMIME to encrypt/sign
 #define PGP_TRADITIONAL_CHECKED (1 << 11) ///< Email has a traditional (inline) signature
 
+#define SEC_ALL_FLAGS          ((1 << 12) - 1)
+
 #define PGP_ENCRYPT  (APPLICATION_PGP | SEC_ENCRYPT)
 #define PGP_SIGN     (APPLICATION_PGP | SEC_SIGN)
 #define PGP_GOODSIGN (APPLICATION_PGP | SEC_GOODSIGN)
@@ -183,13 +185,13 @@ void         crypt_extract_keys_from_messages(struct EmailList *el);
 void         crypt_forget_passphrase(void);
 int          crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode);
 void         crypt_opportunistic_encrypt(struct Email *msg);
-int          crypt_query(struct Body *m);
+SecurityFlags crypt_query(struct Body *m);
 int          crypt_valid_passphrase(SecurityFlags flags);
 SecurityFlags mutt_is_application_pgp(struct Body *m);
 SecurityFlags mutt_is_application_smime(struct Body *m);
-int          mutt_is_malformed_multipart_pgp_encrypted(struct Body *b);
-int          mutt_is_multipart_encrypted(struct Body *b);
-int          mutt_is_multipart_signed(struct Body *b);
+SecurityFlags mutt_is_malformed_multipart_pgp_encrypted(struct Body *b);
+SecurityFlags mutt_is_multipart_encrypted(struct Body *b);
+SecurityFlags mutt_is_multipart_signed(struct Body *b);
 int          mutt_is_valid_multipart_pgp_encrypted(struct Body *b);
 int          mutt_protect(struct Email *msg, char *keylist);
 int          mutt_protected_headers_handler(struct Body *m, struct State *s);
