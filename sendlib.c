@@ -372,7 +372,7 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
       fputc(';', fp);
 
       char buf[256];
-      buf[0] = 0;
+      buf[0] = '\0';
       tmp = mutt_str_strdup(np->value);
       const int encode = rfc2231_encode_string(&tmp);
       mutt_addr_cat(buf, sizeof(buf), tmp, MimeSpecials);
@@ -439,7 +439,7 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
             t = fn;
 
           char buf[256];
-          buf[0] = 0;
+          buf[0] = '\0';
           tmp = mutt_str_strdup(t);
           const int encode = rfc2231_encode_string(&tmp);
           mutt_addr_cat(buf, sizeof(buf), tmp, MimeSpecials);
@@ -1118,7 +1118,7 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
         /* weed out any comments */
         p = strchr(buf, '#');
         if (p)
-          *p = 0;
+          *p = '\0';
 
         /* remove any leading space. */
         ct = buf;
@@ -1744,7 +1744,7 @@ void mutt_write_address_list(struct Address *addr, FILE *fp, int linelen, bool d
   {
     tmp = addr->next;
     addr->next = NULL;
-    buf[0] = 0;
+    buf[0] = '\0';
     mutt_addr_write(buf, sizeof(buf), addr, display);
     size_t len = mutt_str_strlen(buf);
     if (count && (linelen + len > 74))
@@ -1896,7 +1896,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
     const char *next = mutt_str_find_word(p);
     l = MIN(sizeof(buf) - 1, next - p);
     memcpy(buf, p, l);
-    buf[l] = 0;
+    buf[l] = '\0';
 
     /* determine width: character cells for display, bytes for sending
      * (we get pure ascii only) */
@@ -1995,7 +1995,7 @@ static char *unfold_header(char *s)
     *q++ = *p++;
   }
   if (q)
-    *q = 0;
+    *q = '\0';
 
   return s;
 }
@@ -2154,7 +2154,7 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
 
     /* find maximum line width in current header */
     if (p)
-      *p = 0;
+      *p = '\0';
     w = mutt_mb_width(line, 0, display);
     if (w > max)
       max = w;
@@ -2224,14 +2224,14 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
    * field if the user sets it with the 'my_hdr' command */
   if (env->from && !privacy)
   {
-    buf[0] = 0;
+    buf[0] = '\0';
     mutt_addr_write(buf, sizeof(buf), env->from, false);
     fprintf(fp, "From: %s\n", buf);
   }
 
   if (env->sender && !privacy)
   {
-    buf[0] = 0;
+    buf[0] = '\0';
     mutt_addr_write(buf, sizeof(buf), env->sender, false);
     fprintf(fp, "Sender: %s\n", buf);
   }
@@ -2895,7 +2895,7 @@ void mutt_prepare_envelope(struct Envelope *env, bool final)
       env->to->next = mutt_addr_new();
 
       char buf[1024];
-      buf[0] = 0;
+      buf[0] = '\0';
       mutt_addr_cat(buf, sizeof(buf), "undisclosed-recipients", AddressSpecials);
 
       env->to->mailbox = mutt_str_strdup(buf);

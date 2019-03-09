@@ -96,7 +96,7 @@ void mutt_body_free(struct Body **p)
     FREE(&b);
   }
 
-  *p = 0;
+  *p = NULL;
 }
 
 /**

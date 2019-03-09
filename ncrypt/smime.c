@@ -539,7 +539,7 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
   snprintf(title, sizeof(title), _("S/MIME certificates matching \"%s\""), query);
 
   /* Make Helpstring */
-  helpstr[0] = 0;
+  helpstr[0] = '\0';
   mutt_make_help(buf, sizeof(buf), _("Exit  "), MENU_SMIME, OP_EXIT);
   strcat(helpstr, buf);
   mutt_make_help(buf, sizeof(buf), _("Select  "), MENU_SMIME, OP_GENERIC_SELECT_ENTRY);
@@ -905,7 +905,7 @@ static struct SmimeKey *smime_ask_for_key(char *prompt, KeyFlags abilities, bool
 
   while (true)
   {
-    resp[0] = 0;
+    resp[0] = '\0';
     if (mutt_get_field(prompt, resp, sizeof(resp), MUTT_CLEAR) != 0)
       return NULL;
 
@@ -1362,7 +1362,7 @@ void smime_class_invoke_import(char *infile, char *mailbox)
   if (C_SmimeAskCertLabel)
   {
     if ((mutt_get_field(_("Label for certificate: "), buf, sizeof(buf), 0) != 0) ||
-        (buf[0] == 0))
+        (buf[0] == '\0'))
     {
       mutt_file_fclose(&fp_out);
       mutt_file_fclose(&fp_err);

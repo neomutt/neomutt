@@ -231,7 +231,7 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
     return;
   }
 
-  buf[0] = 0;
+  buf[0] = '\0';
   mutt_addr_write(buf, sizeof(buf), addr, true);
 
 #define EXTRA_SPACE (15 + 7 + 2)

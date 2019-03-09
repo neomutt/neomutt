@@ -162,7 +162,7 @@ void mutt_update_tree(struct AttachCtx *actx)
       }
       else
         s = buf;
-      *s = 0;
+      *s = '\0';
     }
 
     if (actx->idx[rindex]->tree)
@@ -416,7 +416,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
       }
       break;
     default:
-      *buf = 0;
+      *buf = '\0';
   }
 
   if (optional)
@@ -514,7 +514,7 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
     mutt_default_save(buf, sizeof(buf), body->email);
   }
   else
-    buf[0] = 0;
+    buf[0] = '\0';
 
   prepend_savedir(buf, sizeof(buf));
 
@@ -594,7 +594,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
   int last = menu ? menu->current : -1;
   FILE *fp_out = NULL;
 
-  buf[0] = 0;
+  buf[0] = '\0';
 
   for (int i = 0; !tag || (i < actx->idxlen); i++)
   {
@@ -696,7 +696,7 @@ static void query_pipe_attachment(char *command, FILE *fp, struct Body *body, bo
     mutt_mktemp(tfile, sizeof(tfile));
   }
   else
-    tfile[0] = 0;
+    tfile[0] = '\0';
 
   if (mutt_pipe_attachment(fp, body, command, tfile))
   {
@@ -797,7 +797,7 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
   if (fp)
     filter = false; /* sanity check: we can't filter in the recv case yet */
 
-  buf[0] = 0;
+  buf[0] = '\0';
   /* perform charset conversion on text attachments when piping */
   state.flags = MUTT_CHARCONV;
 

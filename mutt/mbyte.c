@@ -123,7 +123,7 @@ bool mutt_mb_get_initials(const char *name, char *buf, size_t buflen)
       name++;
   }
 
-  *buf = 0;
+  *buf = '\0';
   return true;
 }
 

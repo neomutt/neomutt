@@ -96,7 +96,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
   struct Menu *menu = (struct Menu *) data;
 
-  *buf = 0;
+  *buf = '\0';
   switch (op)
   {
     case 'b':
@@ -294,7 +294,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       }
 
       if (!C_StatusChars || !C_StatusChars->len)
-        buf[0] = 0;
+        buf[0] = '\0';
       else if (i >= C_StatusChars->len)
         snprintf(buf, buflen, "%s", C_StatusChars->chars[0]);
       else
@@ -361,7 +361,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       break;
 
     case 0:
-      *buf = 0;
+      *buf = '\0';
       return src;
 
     default:

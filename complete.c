@@ -201,7 +201,7 @@ int mutt_complete(char *buf, size_t buflen)
           mutt_str_strfcpy(tmp + strlen(tmp), "/", sizeof(tmp) - strlen(tmp));
         }
         else
-          tmp[0] = 0;
+          tmp[0] = '\0';
         mutt_str_strfcpy(tmp + strlen(tmp), filepart, sizeof(tmp) - strlen(tmp));
         if ((stat(tmp, &st) != -1) && (st.st_mode & S_IFDIR))
         {

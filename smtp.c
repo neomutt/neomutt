@@ -105,7 +105,7 @@ static bool valid_smtp_code(char *buf, size_t buflen, int *n)
   code[0] = buf[0];
   code[1] = buf[1];
   code[2] = buf[2];
-  code[3] = 0;
+  code[3] = '\0';
   if (mutt_str_atoi(code, n) < 0)
     return false;
   return true;

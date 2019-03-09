@@ -1449,8 +1449,8 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
 
   mutt_date_make_imap(internaldate, sizeof(internaldate), msg->received);
 
-  imap_flags[0] = 0;
-  imap_flags[1] = 0;
+  imap_flags[0] = '\0';
+  imap_flags[1] = '\0';
 
   if (msg->flags.read)
     mutt_str_strcat(imap_flags, sizeof(imap_flags), " \\Seen");

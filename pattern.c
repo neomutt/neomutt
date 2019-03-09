@@ -2199,7 +2199,7 @@ static void quote_simple(const char *str, char *buf, size_t buflen)
     buf[i++] = *str++;
   }
   buf[i++] = '"';
-  buf[i] = 0;
+  buf[i] = '\0';
 }
 
 /**

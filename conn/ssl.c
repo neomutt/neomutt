@@ -1122,7 +1122,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
   }
 
   /* check hostname only for the leaf certificate */
-  buf[0] = 0;
+  buf[0] = '\0';
   if ((pos == 0) && (C_SslVerifyHost != MUTT_NO))
   {
     if (check_host(cert, host, buf, sizeof(buf)) == 0)

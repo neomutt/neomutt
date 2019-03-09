@@ -1360,7 +1360,7 @@ int mutt_index_menu(void)
 
           if (op == OP_GET_MESSAGE)
           {
-            buf[0] = 0;
+            buf[0] = '\0';
             if ((mutt_get_field(_("Enter Message-Id: "), buf, sizeof(buf), 0) != 0) ||
                 !buf[0])
             {
@@ -1527,7 +1527,7 @@ int mutt_index_menu(void)
           break;
         if (isdigit(LastKey))
           mutt_unget_event(LastKey, 0);
-        buf[0] = 0;
+        buf[0] = '\0';
         if ((mutt_get_field(_("Jump to message: "), buf, sizeof(buf), 0) != 0) ||
             (buf[0] == '\0'))
         {

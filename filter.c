@@ -68,14 +68,14 @@ pid_t mutt_create_filter_fd(const char *cmd, FILE **fp_in, FILE **fp_out,
 
   if (fp_in)
   {
-    *fp_in = 0;
+    *fp_in = NULL;
     if (pipe(pin) == -1)
       return -1;
   }
 
   if (fp_out)
   {
-    *fp_out = 0;
+    *fp_out = NULL;
     if (pipe(pout) == -1)
     {
       if (fp_in)
@@ -89,7 +89,7 @@ pid_t mutt_create_filter_fd(const char *cmd, FILE **fp_in, FILE **fp_out,
 
   if (fp_err)
   {
-    *fp_err = 0;
+    *fp_err = NULL;
     if (pipe(perr) == -1)
     {
       if (fp_in)

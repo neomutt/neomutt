@@ -122,7 +122,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
   if (!sbe || !buf)
     return src;
 
-  buf[0] = 0; /* Just in case there's nothing to do */
+  buf[0] = '\0'; /* Just in case there's nothing to do */
 
   struct Mailbox *m = sbe->mailbox;
   if (!m)
@@ -276,13 +276,13 @@ static void make_sidebar_entry(char *buf, size_t buflen, int width, char *box,
   {
     /* Pad with spaces */
     memset(buf + s, ' ', width - w);
-    buf[s + width - w] = 0;
+    buf[s + width - w] = '\0';
   }
   else if (w > width)
   {
     /* Truncate to fit */
     size_t len = mutt_wstr_trunc(buf, buflen, width, NULL);
-    buf[len] = 0;
+    buf[len] = '\0';
   }
 }
 
@@ -928,7 +928,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
         int sfn_len = mutt_str_strlen(tmp_folder_name) +
                       sidebar_folder_depth * mutt_str_strlen(C_SidebarIndentString) + 1;
         sidebar_folder_name = mutt_mem_malloc(sfn_len);
-        sidebar_folder_name[0] = 0;
+        sidebar_folder_name[0] = '\0';
         for (int i = 0; i < sidebar_folder_depth; i++)
           mutt_str_strcat(sidebar_folder_name, sfn_len, NONULL(C_SidebarIndentString));
         mutt_str_strcat(sidebar_folder_name, sfn_len, tmp_folder_name);

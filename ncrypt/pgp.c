@@ -95,7 +95,7 @@ int pgp_class_valid_passphrase(void)
 
   if (pgp_use_gpg_agent())
   {
-    *PgpPass = 0;
+    *PgpPass = '\0';
     return 1; /* handled by gpg-agent */
   }
 
@@ -608,7 +608,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
             if (!pgp_class_valid_passphrase())
               pgp_class_void_passphrase();
             if (pgp_use_gpg_agent())
-              *PgpPass = 0;
+              *PgpPass = '\0';
             fprintf(fp_pgp_in, "%s\n", PgpPass);
           }
 
@@ -1761,7 +1761,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
   }
 
   if (pgp_use_gpg_agent())
-    *PgpPass = 0;
+    *PgpPass = '\0';
   if (flags & SEC_SIGN)
     fprintf(fp_pgp_in, "%s\n", PgpPass);
   mutt_file_fclose(&fp_pgp_in);

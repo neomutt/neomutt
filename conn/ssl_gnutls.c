@@ -891,7 +891,7 @@ static int tls_set_priority(struct TlsSockData *data)
   priority_size = mutt_str_strlen(C_SslCiphers) + 128;
   char *priority = mutt_mem_malloc(priority_size);
 
-  priority[0] = 0;
+  priority[0] = '\0';
   if (C_SslCiphers)
     mutt_str_strcat(priority, priority_size, C_SslCiphers);
   else
