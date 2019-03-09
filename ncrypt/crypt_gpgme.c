@@ -1031,13 +1031,13 @@ static gpgme_key_t *create_recipient_set(const char *keylist, gpgme_protocol_t p
     int i;
     for (i = 0; *s && *s != ' ' && i < sizeof(buf) - 1;)
       buf[i++] = *s++;
-    buf[i] = 0;
-    if (*buf)
+    buf[i] = '\0';
+    if (*buf != '\0')
     {
       if ((i > 1) && (buf[i - 1] == '!'))
       {
         /* The user selected to override the validity of that key. */
-        buf[i - 1] = 0;
+        buf[i - 1] = '\0';
 
         err = gpgme_get_key(context, buf, &key, 0);
         if (!err)
@@ -1220,7 +1220,7 @@ static int get_micalg(gpgme_ctx_t ctx, int use_smime, char *buf, size_t buflen)
   if (buflen < 5)
     return -1;
 
-  *buf = 0;
+  *buf = '\0';
   result = gpgme_op_sign_result(ctx);
   if (result && result->signatures)
   {
@@ -1242,7 +1242,7 @@ static int get_micalg(gpgme_ctx_t ctx, int use_smime, char *buf, size_t buflen)
     }
   }
 
-  return *buf ? 0 : -1;
+  return (*buf != '\0') ? 0 : -1;
 }
 
 /**
@@ -1684,7 +1684,7 @@ static void show_fingerprint(gpgme_key_t key, struct State *state)
   for (; *s; s++)
     *p++ = *s;
   *p++ = '\n';
-  *p = 0;
+  *p = '\0';
   state_puts(buf, state);
   FREE(&buf);
 }
@@ -3456,7 +3456,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
           len--;
         }
       }
-      *p = 0;
+      *p = '\0';
 
       {
         time_t tt = 0;
@@ -3790,7 +3790,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
     array->value = (char *) p;
     for (s1 = str; n; s1 += 2, n--)
       sscanf(s1, "%2hhx", (unsigned char *) p++);
-    *p = 0;
+    *p = '\0';
   }
   else
   { /* regular v3 quoted string */
@@ -3841,7 +3841,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
       else
         *p++ = *s;
     }
-    *p = 0;
+    *p = '\0';
   }
   return s;
 }
@@ -4160,7 +4160,9 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
     fprintf(fp, "%*s", KeyInfoPadding[KIP_FINGERPRINT], _(KeyInfoPrompts[KIP_FINGERPRINT]));
     if (is_pgp && (strlen(s) == 40))
     {
-      for (int i = 0; *s && s[1] && s[2] && s[3] && s[4]; s += 4, i++)
+      for (int i = 0; (s[0] != '\0') && (s[1] != '\0') && (s[2] != '\0') &&
+                      (s[3] != '\0') && (s[4] != '\0');
+           s += 4, i++)
       {
         putc(*s, fp);
         putc(s[1], fp);
@@ -4173,7 +4175,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
     }
     else
     {
-      for (int i = 0; *s && s[1] && s[2]; s += 2, i++)
+      for (int i = 0; (s[0] != '\0') && (s[1] != '\0') && (s[2] != '\0'); s += 2, i++)
       {
         putc(*s, fp);
         putc(s[1], fp);
@@ -4414,7 +4416,7 @@ static char *list_to_pattern(struct ListHead *list)
       }
     }
   }
-  *p = 0;
+  *p = '\0';
   return pattern;
 }
 
@@ -4664,7 +4666,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
   else if (app & APPLICATION_SMIME)
     menu_to_use = MENU_KEY_SELECT_SMIME;
 
-  helpstr[0] = 0;
+  helpstr[0] = '\0';
   mutt_make_help(buf, sizeof(buf), _("Exit  "), menu_to_use, OP_EXIT);
   strcat(helpstr, buf);
   mutt_make_help(buf, sizeof(buf), _("Select  "), menu_to_use, OP_GENERIC_SELECT_ENTRY);
@@ -5026,7 +5028,7 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, KeyFlags
   mutt_clear_error();
 
   *forced_valid = 0;
-  resp[0] = 0;
+  resp[0] = '\0';
   if (whatfor)
   {
     for (l = id_defaults; l; l = l->next)
@@ -5041,7 +5043,7 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, KeyFlags
 
   while (true)
   {
-    resp[0] = 0;
+    resp[0] = '\0';
     if (mutt_get_field(tag, resp, sizeof(resp), MUTT_CLEAR) != 0)
       return NULL;
 

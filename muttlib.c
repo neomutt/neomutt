@@ -101,7 +101,7 @@ void mutt_buffer_adv_mktemp(struct Buffer *buf)
     char *suffix = strrchr(prefix->data, '.');
     if (suffix)
     {
-      *suffix = 0;
+      *suffix = '\0';
       suffix++;
     }
     mutt_buffer_mktemp_pfx_sfx(buf, mutt_b2s(prefix), suffix);
@@ -139,7 +139,7 @@ void mutt_adv_mktemp(char *buf, size_t buflen)
     char *suffix = strrchr(prefix, '.');
     if (suffix)
     {
-      *suffix = 0;
+      *suffix = '\0';
       suffix++;
     }
     mutt_mktemp_pfx_sfx(buf, buflen, prefix, suffix);
@@ -195,7 +195,7 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
         {
           char *t = strchr(buf + 1, '/');
           if (t)
-            *t = 0;
+            *t = '\0';
 
           struct passwd *pw = getpwnam(buf + 1);
           if (pw)
@@ -651,7 +651,7 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
       else
         *q++ = *p++;
     }
-    *q = 0;
+    *q = '\0';
   }
   else if (strstr(p, "..") && ((scheme == U_UNKNOWN) || (scheme == U_FILE)) &&
            realpath(p, tmp))
@@ -773,12 +773,12 @@ void mutt_save_path(char *buf, size_t buflen, struct Address *addr)
     {
       char *p = strpbrk(buf, "%@");
       if (p)
-        *p = 0;
+        *p = '\0';
     }
     mutt_str_strlower(buf);
   }
   else
-    *buf = 0;
+    *buf = '\0';
 }
 
 /**
@@ -903,7 +903,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
           mutt_debug(LL_DEBUG1, "format pipe cmd exited code %d\n", rc);
         if (n > 0)
         {
-          buf[n] = 0;
+          buf[n] = '\0';
           while ((n > 0) && (buf[n - 1] == '\n' || buf[n - 1] == '\r'))
             buf[--n] = '\0';
           mutt_debug(5, "fmtpipe < %s\n", buf);
@@ -937,7 +937,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
           /* read error */
           mutt_debug(LL_DEBUG1, "error reading from fmtpipe: %s (errno=%d)\n",
                      strerror(errno), errno);
-          *wptr = 0;
+          *wptr = '\0';
         }
       }
       else
@@ -1005,7 +1005,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
           *cp++ = *src++;
           count++;
         }
-        *cp = 0;
+        *cp = '\0';
       }
       else
       {
@@ -1020,7 +1020,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
           *cp++ = *src++;
           count++;
         }
-        *cp = 0;
+        *cp = '\0';
 
         if (!*src)
           break; /* bad format */
@@ -1071,7 +1071,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
           *cp++ = *src++;
           count++;
         }
-        *cp = 0;
+        *cp = '\0';
 
         /* eat the 'else' part of the string (optional) */
         if (*src == '&')
@@ -1109,7 +1109,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
           *cp++ = *src++;
           count++;
         }
-        *cp = 0;
+        *cp = '\0';
 
         if (!*src)
           break; /* bad format */
@@ -1172,7 +1172,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
             int offset = ((flags & MUTT_FORMAT_ARROWCURSOR) && C_ArrowCursor) ? 3 : 0;
             int avail_cols = (cols > offset) ? (cols - offset) : 0;
             /* \0-terminate buf for length computation in mutt_wstr_trunc() */
-            *wptr = 0;
+            *wptr = '\0';
             /* make sure right part is at most as wide as display */
             len = mutt_wstr_trunc(tmp, buflen, avail_cols, &wid);
             /* truncate left so that right part fits completely in */
@@ -1316,7 +1316,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
       }
     }
   }
-  *wptr = 0;
+  *wptr = '\0';
 }
 
 /**

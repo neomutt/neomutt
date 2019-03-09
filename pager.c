@@ -1033,7 +1033,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
      * for regex matching */
     nl = mutt_str_strlen(buf);
     if ((nl > 0) && (buf[nl - 1] == '\n'))
-      buf[nl - 1] = 0;
+      buf[nl - 1] = '\0';
 
     i = 0;
     offset = 0;
@@ -1118,7 +1118,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
     /* don't consider line endings part of the buffer for regex matching */
     nl = mutt_str_strlen(buf);
     if ((nl > 0) && (buf[nl - 1] == '\n'))
-      buf[nl - 1] = 0;
+      buf[nl - 1] = '\0';
 
     i = 0;
     offset = 0;
@@ -1181,7 +1181,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
  */
 static bool is_ansi(unsigned char *buf)
 {
-  while (*buf && (isdigit(*buf) || *buf == ';'))
+  while ((*buf != '\0') && (isdigit(*buf) || *buf == ';'))
     buf++;
   return *buf == 'm';
 }
@@ -1304,7 +1304,7 @@ static int fill_buffer(FILE *fp, LOFF_T *last_pos, LOFF_T offset, unsigned char 
     *buf = (unsigned char *) mutt_file_read_line((char *) *buf, blen, fp, &l, MUTT_EOL);
     if (!*buf)
     {
-      fmt[0] = 0;
+      fmt[0] = '\0';
       return -1;
     }
     *last_pos = ftello(fp);
@@ -1346,7 +1346,7 @@ static int fill_buffer(FILE *fp, LOFF_T *last_pos, LOFF_T offset, unsigned char 
       else
         *q++ = *p++;
     }
-    *q = 0;
+    *q = '\0';
   }
   return b_read;
 }

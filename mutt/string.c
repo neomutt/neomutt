@@ -164,7 +164,7 @@ static char_cmp get_char_cmp(enum CaseSensitivity cs)
  */
 size_t mutt_str_startswith(const char *str, const char *prefix, enum CaseSensitivity cs)
 {
-  if (!str || !str[0] || !prefix || !prefix[0])
+  if (!str || (str[0] == '\0') || !prefix || !prefix[0])
   {
     return 0;
   }
@@ -407,7 +407,7 @@ char *mutt_str_strcat(char *buf, size_t buflen, const char *s)
 
   buflen--; /* Space for the trailing '\0'. */
 
-  for (; *buf && buflen; buflen--)
+  for (; (*buf != '\0') && buflen; buflen--)
     buf++;
   for (; *s && buflen; buflen--)
     *buf++ = *s++;

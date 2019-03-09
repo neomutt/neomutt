@@ -163,7 +163,7 @@ static void parse_parameters(struct ParameterList *param, const char *s)
           else
             buf[i] = *s;
         }
-        buf[i] = 0;
+        buf[i] = '\0';
         if (*s)
           s++; /* skip over the " */
       }
@@ -171,7 +171,7 @@ static void parse_parameters(struct ParameterList *param, const char *s)
       {
         for (i = 0; *s && (*s != ' ') && (*s != ';') && (i < (sizeof(buf) - 1)); i++, s++)
           buf[i] = *s;
-        buf[i] = 0;
+        buf[i] = '\0';
       }
 
       /* if the attribute token was missing, 'new' will be NULL */
@@ -948,7 +948,7 @@ char *mutt_rfc822_read_line(FILE *fp, char *line, size_t *linelen)
     if (!fgets(buf, *linelen - offset, fp) || /* end of file or */
         (ISSPACE(*line) && !offset))          /* end of headers */
     {
-      *line = 0;
+      *line = '\0';
       return line;
     }
 
@@ -962,8 +962,8 @@ char *mutt_rfc822_read_line(FILE *fp, char *line, size_t *linelen)
       /* we did get a full line. remove trailing space */
       while (ISSPACE(*buf))
       {
-        *buf-- = 0; /* we cannot come beyond line's beginning because
-                     * it begins with a non-space */
+        *buf-- = '\0'; /* we cannot come beyond line's beginning because
+                        * it begins with a non-space */
       }
 
       /* check to see if the next line is a continuation line */
@@ -1067,7 +1067,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
       if (!mutt_regexlist_match(&NoSpamList, line))
       {
         /* if spam tag already exists, figure out how to amend it */
-        if (env->spam && *buf)
+        if (env->spam && (*buf != '\0'))
         {
           /* If C_SpamSeparator defined, append with separator */
           if (C_SpamSeparator)
@@ -1086,7 +1086,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
         }
 
         /* spam tag is new, and match expr is non-empty; copy */
-        else if (!env->spam && *buf)
+        else if (!env->spam && (*buf != '\0'))
         {
           env->spam = mutt_buffer_from(buf);
         }
@@ -1102,7 +1102,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
       }
     }
 
-    *p = 0;
+    *p = '\0';
     p = mutt_str_skip_email_wsp(p + 1);
     if (!*p)
       continue; /* skip empty header fields */
@@ -1176,7 +1176,7 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
     c = strchr(line, ':');
     if (c)
     {
-      *c = 0;
+      *c = '\0';
       c = mutt_str_skip_email_wsp(c + 1);
       if (!*c)
       {
@@ -1355,7 +1355,7 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
       {
         /* Remove any trailing whitespace, up to the length of the boundary */
         for (size_t i = len - 1; ISSPACE(buf[i]) && (i >= (blen + 2)); i--)
-          buf[i] = 0;
+          buf[i] = '\0';
       }
 
       /* Check for the end boundary */
@@ -1364,7 +1364,7 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
         final = true;
         break; /* done parsing */
       }
-      else if (buf[2 + blen] == 0)
+      else if (buf[2 + blen] == '\0')
       {
         new = mutt_read_mime_header(fp, digest);
 

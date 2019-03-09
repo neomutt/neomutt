@@ -154,7 +154,7 @@ static char *get_field(char *s)
     }
     else
     {
-      *ch = 0;
+      *ch = '\0';
       ch = mutt_str_skip_email_wsp(ch + 1);
       break;
     }
@@ -242,7 +242,7 @@ static bool rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
       ch = get_field(buf);
       if ((mutt_str_strcasecmp(buf, type) != 0) &&
           ((mutt_str_strncasecmp(buf, type, btlen) != 0) ||
-           ((buf[btlen] != 0) &&                         /* implicit wild */
+           ((buf[btlen] != '\0') &&                      /* implicit wild */
             (mutt_str_strcmp(buf + btlen, "/*") != 0)))) /* wildsubtype */
       {
         continue;
@@ -509,7 +509,7 @@ int rfc1524_expand_filename(const char *nametemplate, const char *oldfile,
   char left[PATH_MAX];
   char right[PATH_MAX];
 
-  newfile[0] = 0;
+  newfile[0] = '\0';
 
   /* first, ignore leading path components */
 
@@ -583,12 +583,12 @@ int rfc1524_expand_filename(const char *nametemplate, const char *oldfile,
         rmatch = false;
 
       if (lmatch)
-        *left = 0;
+        *left = '\0';
       else
         mutt_str_strnfcpy(left, nametemplate, i, sizeof(left));
 
       if (rmatch)
-        *right = 0;
+        *right = '\0';
       else
         mutt_str_strfcpy(right, nametemplate + i + 2, sizeof(right));
 

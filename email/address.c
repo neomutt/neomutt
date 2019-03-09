@@ -697,7 +697,7 @@ void mutt_addr_cat(char *buf, size_t buflen, const char *value, const char *spec
       tmplen--;
     }
     *pc++ = '"';
-    *pc = 0;
+    *pc = '\0';
     mutt_str_strfcpy(buf, tmp, buflen);
   }
   else
@@ -1127,7 +1127,7 @@ void mutt_addr_write_single(char *buf, size_t buflen, struct Address *addr, bool
 done:
   /* no need to check for length here since we already save space at the
    * beginning of this routine */
-  *pbuf = 0;
+  *pbuf = '\0';
 }
 
 /**
@@ -1194,7 +1194,7 @@ size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool disp
     }
   }
 done:
-  *pbuf = 0;
+  *pbuf = '\0';
   return pbuf - buf;
 }
 

@@ -316,7 +316,7 @@ void url_pct_encode(char *buf, size_t buflen, const char *src)
 {
   static const char *alph = "0123456789ABCDEF";
 
-  *buf = 0;
+  *buf = '\0';
   buflen--;
   while (src && *src && (buflen != 0))
   {
@@ -335,7 +335,7 @@ void url_pct_encode(char *buf, size_t buflen, const char *src)
     *buf++ = *src++;
     buflen--;
   }
-  *buf = 0;
+  *buf = '\0';
 }
 
 /**

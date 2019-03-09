@@ -380,7 +380,7 @@ static void make_from_addr(struct Envelope *hdr, char *buf, size_t buflen, bool 
   else if (hdr->from)
     mutt_str_strfcpy(buf, hdr->from->mailbox, buflen);
   else
-    *buf = 0;
+    *buf = '\0';
 }
 
 /**
@@ -551,7 +551,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
                                     unsigned long data, MuttFormatFlags flags)
 {
   struct HdrFormatInfo *hfi = (struct HdrFormatInfo *) data;
-  char fmt[128], tmp[1024], *p, *tags = NULL;
+  char fmt[128], tmp[1024], *p = NULL, *tags = NULL;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
   int threads = ((C_Sort & SORT_MASK) == SORT_THREADS);
   int is_index = (flags & MUTT_FORMAT_INDEX);
@@ -563,7 +563,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
   if (!e || !e->env)
     return src;
-  buf[0] = 0;
+  buf[0] = '\0';
   switch (op)
   {
     case 'A':
@@ -608,7 +608,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       if (!first_mailing_list(buf, buflen, e->env->to) &&
           !first_mailing_list(buf, buflen, e->env->cc))
       {
-        buf[0] = 0;
+        buf[0] = '\0';
       }
       if (buf[0])
       {
@@ -810,7 +810,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
             len--;
           }
         }
-        *p = 0;
+        *p = '\0';
 
         if ((op == '[') || (op == 'D'))
           tm = localtime(&e->date_sent);
@@ -863,7 +863,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       break;
 
     case 'f':
-      tmp[0] = 0;
+      tmp[0] = '\0';
       mutt_addr_write(tmp, sizeof(tmp), e->env->from, true);
       mutt_format_s(buf, buflen, prec, tmp);
       break;
@@ -909,7 +909,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       {
         format[0] = op;
         format[1] = *src;
-        format[2] = 0;
+        format[2] = '\0';
 
         tag = mutt_hash_find(TagFormats, format);
         if (tag)
@@ -926,7 +926,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       {
         format[0] = op;
         format[1] = *prec;
-        format[2] = 0;
+        format[2] = '\0';
 
         tag = mutt_hash_find(TagFormats, format);
         if (tag)
@@ -1081,7 +1081,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       {
         make_from_addr(e->env, tmp, sizeof(tmp), true);
         if (!C_SaveAddress && (p = strpbrk(tmp, "%@")))
-          *p = 0;
+          *p = '\0';
         mutt_format_s(buf, buflen, prec, tmp);
       }
       else if (!check_for_mailing_list_addr(e->env->to, NULL, 0) &&
@@ -1102,7 +1102,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 #endif
 
     case 'r':
-      tmp[0] = 0;
+      tmp[0] = '\0';
       mutt_addr_write(tmp, sizeof(tmp), e->env->to, true);
       if (optional && (tmp[0] == '\0'))
         optional = 0;
@@ -1110,7 +1110,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       break;
 
     case 'R':
-      tmp[0] = 0;
+      tmp[0] = '\0';
       mutt_addr_write(tmp, sizeof(tmp), e->env->cc, true);
       if (optional && (tmp[0] == '\0'))
         optional = 0;
@@ -1176,7 +1176,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     }
 
     case 't':
-      tmp[0] = 0;
+      tmp[0] = '\0';
       if (!check_for_mailing_list(e->env->to, "To ", tmp, sizeof(tmp)) &&
           !check_for_mailing_list(e->env->cc, "Cc ", tmp, sizeof(tmp)))
       {
@@ -1205,10 +1205,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         mutt_str_strfcpy(tmp, mutt_addr_for_display(e->env->from), sizeof(tmp));
         p = strpbrk(tmp, "%@");
         if (p)
-          *p = 0;
+          *p = '\0';
       }
       else
-        tmp[0] = 0;
+        tmp[0] = '\0';
       mutt_format_s(buf, buflen, prec, tmp);
       break;
 
@@ -1220,13 +1220,13 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         else if (e->env->cc)
           mutt_format_s(tmp, sizeof(tmp), prec, mutt_get_name(e->env->cc));
         else
-          *tmp = 0;
+          *tmp = '\0';
       }
       else
         mutt_format_s(tmp, sizeof(tmp), prec, mutt_get_name(e->env->from));
       p = strpbrk(tmp, " %@");
       if (p)
-        *p = 0;
+        *p = '\0';
       mutt_format_s(buf, buflen, prec, tmp);
       break;
 

@@ -241,7 +241,7 @@ static int edit_address(struct Address **a, const char *field)
 
   do
   {
-    buf[0] = 0;
+    buf[0] = '\0';
     mutt_addrlist_to_local(*a);
     mutt_addr_write(buf, sizeof(buf), *a, false);
     if (mutt_get_field(field, buf, sizeof(buf), MUTT_ALIAS) != 0)
@@ -275,7 +275,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
     if (en->newsgroups)
       mutt_str_strfcpy(buf, en->newsgroups, sizeof(buf));
     else
-      buf[0] = 0;
+      buf[0] = '\0';
     if (mutt_get_field("Newsgroups: ", buf, sizeof(buf), 0) != 0)
       return -1;
     FREE(&en->newsgroups);
@@ -284,7 +284,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
     if (en->followup_to)
       mutt_str_strfcpy(buf, en->followup_to, sizeof(buf));
     else
-      buf[0] = 0;
+      buf[0] = '\0';
     if (C_AskFollowUp && (mutt_get_field("Followup-To: ", buf, sizeof(buf), 0) != 0))
     {
       return -1;
@@ -295,7 +295,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
     if (en->x_comment_to)
       mutt_str_strfcpy(buf, en->x_comment_to, sizeof(buf));
     else
-      buf[0] = 0;
+      buf[0] = '\0';
     if (C_XCommentTo && C_AskXCommentTo &&
         (mutt_get_field("X-Comment-To: ", buf, sizeof(buf), 0) != 0))
     {
@@ -331,7 +331,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
   {
     const char *p = NULL;
 
-    buf[0] = 0;
+    buf[0] = '\0';
     struct ListNode *uh = NULL;
     STAILQ_FOREACH(uh, &UserHeader, entries)
     {

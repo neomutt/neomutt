@@ -45,7 +45,7 @@ static int long_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
     return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
 
   long num = 0;
-  if (!value || !value[0] || (mutt_str_atol(value, &num) < 0))
+  if (!value || (value[0] == '\0') || (mutt_str_atol(value, &num) < 0))
   {
     mutt_buffer_printf(err, "Invalid long: %s", NONULL(value));
     return CSR_ERR_INVALID | CSR_INV_TYPE;

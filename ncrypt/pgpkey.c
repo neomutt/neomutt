@@ -295,7 +295,7 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
           len--;
         }
       }
-      *p = 0;
+      *p = '\0';
 
       tm = localtime(&key->gen_time);
 
@@ -654,7 +654,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
   }
   qsort(key_table, i, sizeof(struct PgpUid *), f);
 
-  helpstr[0] = 0;
+  helpstr[0] = '\0';
   mutt_make_help(buf, sizeof(buf), _("Exit  "), MENU_PGP, OP_EXIT);
   strcat(helpstr, buf);
   mutt_make_help(buf, sizeof(buf), _("Select  "), MENU_PGP, OP_GENERIC_SELECT_ENTRY);
@@ -821,7 +821,7 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, KeyFlags abilities,
 
   mutt_clear_error();
 
-  resp[0] = 0;
+  resp[0] = '\0';
   if (whatfor)
   {
     for (l = id_defaults; l; l = l->next)
@@ -836,7 +836,7 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, KeyFlags abilities,
 
   while (true)
   {
-    resp[0] = 0;
+    resp[0] = '\0';
     if (mutt_get_field(tag, resp, sizeof(resp), MUTT_CLEAR) != 0)
       return NULL;
 

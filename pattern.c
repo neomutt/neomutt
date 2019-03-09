@@ -210,7 +210,7 @@ static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
     FREE(&buf.data);
     return false;
   }
-  if (!*buf.data)
+  if (buf.data[0] == '\0')
   {
     mutt_buffer_printf(err, "%s", _("Empty expression"));
     FREE(&buf.data);
@@ -585,7 +585,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
     mutt_buffer_printf(err, _("Error in expression: %s"), pexpr);
     return false;
   }
-  if (!*buf.data)
+  if (buf.data[0] == '\0')
   {
     FREE(&buf.data);
     mutt_buffer_printf(err, "%s", _("Empty expression"));
@@ -2199,7 +2199,7 @@ static void quote_simple(const char *str, char *buf, size_t buflen)
     buf[i++] = *str++;
   }
   buf[i++] = '"';
-  buf[i] = 0;
+  buf[i] = '\0';
 }
 
 /**

@@ -712,7 +712,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
 
         if (c && (c > d))
         {
-          *c = 0;
+          *c = '\0';
           continue;
         }
       }

@@ -1153,7 +1153,7 @@ size_t mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *wi
       cl = 2; /* skip the index coloring sequence */
       cw = 0;
     }
-    else if ((cw < 0) && (cl == 1) && src[0] && (src[0] < MUTT_TREE_MAX))
+    else if ((cw < 0) && (cl == 1) && (src[0] != '\0') && (src[0] < MUTT_TREE_MAX))
       cw = 1;
     else if (cw < 0)
       cw = 0; /* unprintable wchar */

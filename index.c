@@ -1360,7 +1360,7 @@ int mutt_index_menu(void)
 
           if (op == OP_GET_MESSAGE)
           {
-            buf[0] = 0;
+            buf[0] = '\0';
             if ((mutt_get_field(_("Enter Message-Id: "), buf, sizeof(buf), 0) != 0) ||
                 !buf[0])
             {
@@ -1527,7 +1527,7 @@ int mutt_index_menu(void)
           break;
         if (isdigit(LastKey))
           mutt_unget_event(LastKey, 0);
-        buf[0] = 0;
+        buf[0] = '\0';
         if ((mutt_get_field(_("Jump to message: "), buf, sizeof(buf), 0) != 0) ||
             (buf[0] == '\0'))
         {
@@ -2217,7 +2217,7 @@ int mutt_index_menu(void)
           mutt_str_strfcpy(buf, Context->mailbox->path, sizeof(buf));
           mutt_pretty_mailbox(buf, sizeof(buf));
           mutt_mailbox(Context ? Context->mailbox : NULL, buf, sizeof(buf));
-          if (!buf[0])
+          if (buf[0] == '\0')
           {
             mutt_error(_("No mailboxes have new mail"));
             break;

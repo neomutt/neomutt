@@ -522,7 +522,7 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
 
         if ((*ptz == '+') || (*ptz == '-'))
         {
-          if (ptz[1] && ptz[2] && ptz[3] && ptz[4] &&
+          if ((ptz[1] != '\0') && (ptz[2] != '\0') && (ptz[3] != '\0') && (ptz[4] != '\0') &&
               isdigit((unsigned char) ptz[1]) && isdigit((unsigned char) ptz[2]) &&
               isdigit((unsigned char) ptz[3]) && isdigit((unsigned char) ptz[4]))
           {
