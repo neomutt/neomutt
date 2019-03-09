@@ -521,7 +521,7 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
   prompt = _("Save to file: ");
   while (prompt)
   {
-    if ((mutt_get_field(prompt, buf, sizeof(buf), MUTT_FILE) != 0) || !buf[0])
+    if ((mutt_get_field(prompt, buf, sizeof(buf), MUTT_FILE) != 0) || (buf[0] == '\0'))
     {
       mutt_clear_error();
       return -1;
@@ -607,7 +607,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
     {
       if (!C_AttachSplit)
       {
-        if (!buf[0])
+        if (buf[0] == '\0')
         {
           enum SaveAttach opt = MUTT_SAVE_NO_FLAGS;
 
@@ -803,7 +803,7 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 
   if ((mutt_get_field((filter ? _("Filter through: ") : _("Pipe to: ")), buf,
                       sizeof(buf), MUTT_CMD) != 0) ||
-      !buf[0])
+      (buf[0] == '\0'))
   {
     return;
   }

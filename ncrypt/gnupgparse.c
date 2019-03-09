@@ -140,7 +140,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
   char tstr[11];
 
   *is_subkey = false;
-  if (!*buf)
+  if (*buf == '\0')
     return NULL;
 
   /* if we're given a key, merge our parsing results, else

@@ -2217,7 +2217,7 @@ int mutt_index_menu(void)
           mutt_str_strfcpy(buf, Context->mailbox->path, sizeof(buf));
           mutt_pretty_mailbox(buf, sizeof(buf));
           mutt_mailbox(Context ? Context->mailbox : NULL, buf, sizeof(buf));
-          if (!buf[0])
+          if (buf[0] == '\0')
           {
             mutt_error(_("No mailboxes have new mail"));
             break;

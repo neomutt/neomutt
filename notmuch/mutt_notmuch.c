@@ -2460,7 +2460,7 @@ static int nm_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
     return -1;
 
   struct NmMboxData *mdata = nm_mdata_get(m);
-  if (!buf || !*buf || !mdata)
+  if (!buf || (*buf == '\0') || !mdata)
     return -1;
 
   notmuch_database_t *db = NULL;

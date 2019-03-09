@@ -192,7 +192,7 @@ static void candidate(char *try, const char *src, char *dest, size_t dlen)
 
   matches_ensure_morespace(NumMatched);
   Matches[NumMatched++] = src;
-  if (dest[0] == 0)
+  if (dest[0] == '\0')
     mutt_str_strfcpy(dest, src, dlen);
   else
   {
@@ -3422,11 +3422,11 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
 
       /* All matches are stored. Longest non-ambiguous string is ""
        * i.e. don't change 'buf'. Fake successful return this time */
-      if (UserTyped[0] == 0)
+      if (UserTyped[0] == '\0')
         return 1;
     }
 
-    if ((Completed[0] == 0) && UserTyped[0])
+    if ((Completed[0] == '\0') && UserTyped[0])
       return 0;
 
     /* NumMatched will _always_ be at least 1 since the initial
@@ -3481,7 +3481,7 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
 
       /* All matches are stored. Longest non-ambiguous string is ""
        * i.e. don't change 'buf'. Fake successful return this time */
-      if (UserTyped[0] == 0)
+      if (UserTyped[0] == '\0')
         return 1;
     }
 
@@ -3518,7 +3518,7 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
       for (num = 0; menu[num].name; num++)
         candidate(UserTyped, menu[num].name, Completed, sizeof(Completed));
       /* try the generic menu */
-      if ((Completed[0] == 0) && (CurrentMenu != MENU_PAGER))
+      if ((Completed[0] == '\0') && (CurrentMenu != MENU_PAGER))
       {
         menu = OpGeneric;
         for (num = 0; menu[num].name; num++)
@@ -3529,11 +3529,11 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
 
       /* All matches are stored. Longest non-ambiguous string is ""
        * i.e. don't change 'buf'. Fake successful return this time */
-      if (UserTyped[0] == 0)
+      if (UserTyped[0] == '\0')
         return 1;
     }
 
-    if ((Completed[0] == 0) && UserTyped[0])
+    if ((Completed[0] == '\0') && UserTyped[0])
       return 0;
 
     /* NumMatched will _always_ be at least 1 since the initial
@@ -3591,11 +3591,11 @@ int mutt_label_complete(char *buf, size_t buflen, int numtabs)
 
     /* All matches are stored. Longest non-ambiguous string is ""
      * i.e. don't change 'buf'. Fake successful return this time */
-    if (UserTyped[0] == 0)
+    if (UserTyped[0] == '\0')
       return 1;
   }
 
-  if ((Completed[0] == 0) && UserTyped[0])
+  if ((Completed[0] == '\0') && UserTyped[0])
     return 0;
 
   /* NumMatched will _always_ be at least 1 since the initial
@@ -3645,11 +3645,11 @@ bool mutt_nm_query_complete(char *buf, size_t buflen, int pos, int numtabs)
 
       /* All matches are stored. Longest non-ambiguous string is ""
        * i.e. don't change 'buf'. Fake successful return this time.  */
-      if (UserTyped[0] == 0)
+      if (UserTyped[0] == '\0')
         return true;
     }
 
-    if ((Completed[0] == 0) && UserTyped[0])
+    if ((Completed[0] == '\0') && UserTyped[0])
       return false;
 
     /* NumMatched will _always_ be at least 1 since the initial
@@ -3706,11 +3706,11 @@ bool mutt_nm_tag_complete(char *buf, size_t buflen, int numtabs)
 
     /* All matches are stored. Longest non-ambiguous string is ""
      * i.e. don't change 'buf'. Fake successful return this time.  */
-    if (UserTyped[0] == 0)
+    if (UserTyped[0] == '\0')
       return true;
   }
 
-  if ((Completed[0] == 0) && UserTyped[0])
+  if ((Completed[0] == '\0') && UserTyped[0])
     return false;
 
   /* NumMatched will _always_ be at least 1 since the initial
@@ -3740,7 +3740,7 @@ int mutt_var_value_complete(char *buf, size_t buflen, int pos)
 {
   char *pt = buf;
 
-  if (buf[0] == 0)
+  if (buf[0] == '\0')
     return 0;
 
   SKIPWS(buf);

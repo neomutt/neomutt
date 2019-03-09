@@ -934,7 +934,7 @@ static int alternative_handler(struct Body *a, struct State *s)
     char *c = strchr(np->data, '/');
     if (c)
     {
-      wild = ((c[1] == '*') && (c[2] == 0));
+      wild = ((c[1] == '*') && (c[2] == '\0'));
       btlen = c - np->data;
     }
     else

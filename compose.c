@@ -1758,8 +1758,11 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
 
         /* Call to lookup_mime_type () ?  maybe later */
         char type[256] = { 0 };
-        if ((mutt_get_field("Content-Type: ", type, sizeof(type), 0) != 0) || !type[0])
+        if ((mutt_get_field("Content-Type: ", type, sizeof(type), 0) != 0) ||
+            (type[0] == '\0'))
+        {
           continue;
+        }
 
         char *p = strchr(type, '/');
         if (!p)

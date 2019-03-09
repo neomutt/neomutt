@@ -1364,7 +1364,7 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
         final = true;
         break; /* done parsing */
       }
-      else if (buf[2 + blen] == 0)
+      else if (buf[2 + blen] == '\0')
       {
         new = mutt_read_mime_header(fp, digest);
 

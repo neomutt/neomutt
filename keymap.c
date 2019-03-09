@@ -1150,7 +1150,7 @@ static char *parse_keymap(int *menu, struct Buffer *s, int maxmenus,
     /* key sequence */
     mutt_extract_token(&buf, s, 0);
 
-    if (!*buf.data)
+    if (buf.data[0] == '\0')
     {
       mutt_buffer_printf(err, _("%s: null key sequence"), bind ? "bind" : "macro");
     }
@@ -1316,7 +1316,7 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
 
   mutt_extract_token(buf, s, MUTT_TOKEN_CONDENSE);
   /* make sure the macro sequence is not an empty string */
-  if (!*buf->data)
+  if (buf->data[0] == '\0')
   {
     mutt_buffer_strcpy(err, _("macro: empty key sequence"));
   }
