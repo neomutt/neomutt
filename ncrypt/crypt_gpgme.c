@@ -1032,7 +1032,7 @@ static gpgme_key_t *create_recipient_set(const char *keylist, gpgme_protocol_t p
     for (i = 0; *s && *s != ' ' && i < sizeof(buf) - 1;)
       buf[i++] = *s++;
     buf[i] = '\0';
-    if (*buf)
+    if (*buf != '\0')
     {
       if ((i > 1) && (buf[i - 1] == '!'))
       {
@@ -1242,7 +1242,7 @@ static int get_micalg(gpgme_ctx_t ctx, int use_smime, char *buf, size_t buflen)
     }
   }
 
-  return *buf ? 0 : -1;
+  return (*buf != '\0') ? 0 : -1;
 }
 
 /**
@@ -4160,7 +4160,9 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
     fprintf(fp, "%*s", KeyInfoPadding[KIP_FINGERPRINT], _(KeyInfoPrompts[KIP_FINGERPRINT]));
     if (is_pgp && (strlen(s) == 40))
     {
-      for (int i = 0; *s && s[1] && s[2] && s[3] && s[4]; s += 4, i++)
+      for (int i = 0; (s[0] != '\0') && (s[1] != '\0') && (s[2] != '\0') &&
+                      (s[3] != '\0') && (s[4] != '\0');
+           s += 4, i++)
       {
         putc(*s, fp);
         putc(s[1], fp);
@@ -4173,7 +4175,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
     }
     else
     {
-      for (int i = 0; *s && s[1] && s[2]; s += 2, i++)
+      for (int i = 0; (s[0] != '\0') && (s[1] != '\0') && (s[2] != '\0'); s += 2, i++)
       {
         putc(*s, fp);
         putc(s[1], fp);

@@ -291,7 +291,7 @@ size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf)
   wchar_t *wbuf = *pwbuf;
   size_t wbuflen = *pwbuflen;
 
-  while (*buf)
+  while (*buf != '\0')
   {
     memset(&st, 0, sizeof(st));
     for (; (k = mbrtowc(&wc, buf, MB_LEN_MAX, &st)) && k != (size_t)(-1) &&
@@ -305,7 +305,7 @@ size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf)
       }
       wbuf[i++] = wc;
     }
-    if (*buf && ((k == (size_t) -1) || (k == (size_t) -2)))
+    if ((*buf != '\0') && ((k == (size_t) -1) || (k == (size_t) -2)))
     {
       if (i >= wbuflen)
       {

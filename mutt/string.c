@@ -407,7 +407,7 @@ char *mutt_str_strcat(char *buf, size_t buflen, const char *s)
 
   buflen--; /* Space for the trailing '\0'. */
 
-  for (; *buf && buflen; buflen--)
+  for (; (*buf != '\0') && buflen; buflen--)
     buf++;
   for (; *s && buflen; buflen--)
     *buf++ = *s++;

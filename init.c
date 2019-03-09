@@ -1319,7 +1319,7 @@ static enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
     if (data & MUTT_NAMED)
     {
       mutt_extract_token(buf, s, 0);
-      if (buf->data && *buf->data)
+      if (buf->data && (*buf->data != '\0'))
       {
         m->desc = mutt_str_strdup(buf->data);
       }
@@ -2093,7 +2093,7 @@ static enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *
       return MUTT_CMD_WARNING;
     }
 
-    if (buf->data && *buf->data)
+    if (buf->data && (*buf->data != '\0'))
     {
       /* Expand and subscribe */
       if (imap_subscribe(mutt_expand_path(buf->data, buf->dsize), true) != 0)
@@ -2135,7 +2135,7 @@ static enum CommandResult parse_tag_formats(struct Buffer *buf, struct Buffer *s
     char *tag = NULL, *format = NULL;
 
     mutt_extract_token(buf, s, 0);
-    if (buf->data && *buf->data)
+    if (buf->data && (*buf->data != '\0'))
       tag = mutt_str_strdup(buf->data);
     else
       continue;
@@ -2174,7 +2174,7 @@ static enum CommandResult parse_tag_transforms(struct Buffer *buf, struct Buffer
     char *tag = NULL, *transform = NULL;
 
     mutt_extract_token(buf, s, 0);
-    if (buf->data && *buf->data)
+    if (buf->data && (*buf->data != '\0'))
       tag = mutt_str_strdup(buf->data);
     else
       continue;
@@ -2547,7 +2547,7 @@ static enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buff
       return MUTT_CMD_WARNING;
     }
 
-    if (buf->data && *buf->data)
+    if (buf->data && (*buf->data != '\0'))
     {
       /* Expand and subscribe */
       if (imap_subscribe(mutt_expand_path(buf->data, buf->dsize), false) != 0)
@@ -3426,7 +3426,7 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
         return 1;
     }
 
-    if ((Completed[0] == '\0') && UserTyped[0])
+    if ((Completed[0] == '\0') && (UserTyped[0] != '\0'))
       return 0;
 
     /* NumMatched will _always_ be at least 1 since the initial
@@ -3533,7 +3533,7 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
         return 1;
     }
 
-    if ((Completed[0] == '\0') && UserTyped[0])
+    if ((Completed[0] == '\0') && (UserTyped[0] != '\0'))
       return 0;
 
     /* NumMatched will _always_ be at least 1 since the initial
@@ -3595,7 +3595,7 @@ int mutt_label_complete(char *buf, size_t buflen, int numtabs)
       return 1;
   }
 
-  if ((Completed[0] == '\0') && UserTyped[0])
+  if ((Completed[0] == '\0') && (UserTyped[0] != '\0'))
     return 0;
 
   /* NumMatched will _always_ be at least 1 since the initial
@@ -3649,7 +3649,7 @@ bool mutt_nm_query_complete(char *buf, size_t buflen, int pos, int numtabs)
         return true;
     }
 
-    if ((Completed[0] == '\0') && UserTyped[0])
+    if ((Completed[0] == '\0') && (UserTyped[0] != '\0'))
       return false;
 
     /* NumMatched will _always_ be at least 1 since the initial
@@ -3710,7 +3710,7 @@ bool mutt_nm_tag_complete(char *buf, size_t buflen, int numtabs)
       return true;
   }
 
-  if ((Completed[0] == '\0') && UserTyped[0])
+  if ((Completed[0] == '\0') && (UserTyped[0] != '\0'))
     return false;
 
   /* NumMatched will _always_ be at least 1 since the initial

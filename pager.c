@@ -1181,7 +1181,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
  */
 static bool is_ansi(unsigned char *buf)
 {
-  while (*buf && (isdigit(*buf) || *buf == ';'))
+  while ((*buf != '\0') && (isdigit(*buf) || *buf == ';'))
     buf++;
   return *buf == 'm';
 }

@@ -314,7 +314,7 @@ static int nntp_capabilities(struct NntpAccountData *adata)
 #endif
   if (strcasestr(authinfo, " USER "))
   {
-    if (*buf)
+    if (*buf != '\0')
       mutt_str_strcat(buf, sizeof(buf), " ");
     mutt_str_strcat(buf, sizeof(buf), "USER");
   }
@@ -674,7 +674,7 @@ static int nntp_auth(struct NntpAccountData *adata)
           if (client_len)
           {
             nntp_log_binbuf(client_out, client_len, "SASL", MUTT_SOCK_LOG_FULL);
-            if (*buf)
+            if (*buf != '\0')
               mutt_str_strcat(buf, sizeof(buf), " ");
             len = strlen(buf);
             if (sasl_encode64(client_out, client_len, buf + len,

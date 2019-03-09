@@ -602,7 +602,7 @@ int mutt_alias_complete(char *buf, size_t buflen)
   struct AliasList a_list = TAILQ_HEAD_INITIALIZER(a_list);
   char bestname[8192] = { 0 };
 
-  if (buf[0] != 0) /* avoid empty string as strstr argument */
+  if (buf[0] != '\0') /* avoid empty string as strstr argument */
   {
     TAILQ_FOREACH(a, &Aliases, entries)
     {
@@ -623,7 +623,7 @@ int mutt_alias_complete(char *buf, size_t buflen)
       }
     }
 
-    if (bestname[0] != 0)
+    if (bestname[0] != '\0')
     {
       if (mutt_str_strcmp(bestname, buf) != 0)
       {
@@ -647,7 +647,7 @@ int mutt_alias_complete(char *buf, size_t buflen)
 
   bestname[0] = '\0';
   mutt_alias_menu(bestname, sizeof(bestname), !TAILQ_EMPTY(&a_list) ? &a_list : &Aliases);
-  if (bestname[0] != 0)
+  if (bestname[0] != '\0')
     mutt_str_strfcpy(buf, bestname, buflen);
 
   /* free the alias list */

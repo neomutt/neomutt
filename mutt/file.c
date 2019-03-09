@@ -1283,7 +1283,7 @@ char *mutt_file_read_keyword(const char *file, char *buf, size_t buflen)
   SKIPWS(buf);
   char *start = buf;
 
-  while (*buf && !isspace(*buf))
+  while ((*buf != '\0') && !isspace(*buf))
     buf++;
 
   *buf = '\0';
