@@ -318,8 +318,7 @@ static void decode_quoted(struct State *s, long len, bool istext, iconv_t cd)
      * out to be longer than this.  Just process the line in chunks.  This
      * really shouldn't happen according the MIME spec, since Q-P encoded
      * lines are at most 76 characters, but we should be liberal about what
-     * we accept.
-     */
+     * we accept.  */
     if (!fgets(line, MIN((ssize_t) sizeof(line), len + 1), s->fp_in))
       break;
 
@@ -327,8 +326,7 @@ static void decode_quoted(struct State *s, long len, bool istext, iconv_t cd)
     len -= linelen;
 
     /* inspect the last character we read so we can tell if we got the
-     * entire line.
-     */
+     * entire line.  */
     const int last = linelen ? line[linelen - 1] : 0;
 
     /* chop trailing whitespace if we got the full line */
@@ -796,8 +794,7 @@ static int external_body_handler(struct Body *b, struct State *s)
                  Sadly, we cannot do anything about that at the moment besides
                  passing the precise size in bytes. If you are interested the
                  function responsible for the prettification is
-                 mutt_str_pretty_size() in mutt/string.c.
-               */
+                 mutt_str_pretty_size() in mutt/string.c. */
               "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
               "[-- on %s --]\n",
               "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
@@ -820,8 +817,7 @@ static int external_body_handler(struct Body *b, struct State *s)
                  Sadly, we cannot do anything about that at the moment besides
                  passing the precise size in bytes. If you are interested the
                  function responsible for the prettification is
-                 mutt_str_pretty_size() in mutt/string.c.
-               */
+                 mutt_str_pretty_size() in mutt/string.c.  */
               "[-- This %s/%s attachment (size %s byte) has been deleted --]\n",
               "[-- This %s/%s attachment (size %s bytes) has been deleted "
               "--]\n",
@@ -839,8 +835,7 @@ static int external_body_handler(struct Body *b, struct State *s)
              expands to a date as returned by `mutt_date_parse_date()`.
 
              Caution: Argument three %3$ is also defined but should not be used
-             in this translation!
-           */
+             in this translation!  */
           str = _("[-- This %s/%s attachment has been deleted --]\n[-- on %4$s "
                   "--]\n");
         }
@@ -848,8 +843,7 @@ static int external_body_handler(struct Body *b, struct State *s)
         {
           /* L10N: If the translation of this string is a multi line string, then
              each line should start with "[-- " and end with " --]".
-             The first "%s/%s" is a MIME type, e.g. "text/plain".
-           */
+             The first "%s/%s" is a MIME type, e.g. "text/plain". */
           str = _("[-- This %s/%s attachment has been deleted --]\n");
         }
       }
@@ -873,8 +867,7 @@ static int external_body_handler(struct Body *b, struct State *s)
     {
       /* L10N: If the translation of this string is a multi line string, then
          each line should start with "[-- " and end with " --]".
-         The "%s/%s" is a MIME type, e.g. "text/plain".
-       */
+         The "%s/%s" is a MIME type, e.g. "text/plain". */
       snprintf(strbuf, sizeof(strbuf), _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated external source has --]\n[-- expired. --]\n"),
                TYPE(b->parts), b->parts->subtype);
       state_attach_puts(strbuf, s);
@@ -891,8 +884,7 @@ static int external_body_handler(struct Body *b, struct State *s)
          each line should start with "[-- " and end with " --]".
          The "%s/%s" is a MIME type, e.g. "text/plain".  The %s after
          access-type is an access-type as defined by the MIME RFCs, e.g. "FTP",
-         "LOCAL-FILE", "MAIL-SERVER".
-       */
+         "LOCAL-FILE", "MAIL-SERVER". */
       snprintf(strbuf, sizeof(strbuf), _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated access-type %s is unsupported --]\n"),
                TYPE(b->parts), b->parts->subtype, access_type);
       state_attach_puts(strbuf, s);
@@ -1320,14 +1312,12 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
       }
 #endif
       /* decoding the attachment changes the size and offset, so save a copy
-       * of the "real" values now, and restore them after processing
-       */
+       * of the "real" values now, and restore them after processing */
       tmplength = b->length;
       tmpoffset = b->offset;
 
       /* if we are decoding binary bodies, we don't want to prefix each
-       * line with the prefix or else the data will get corrupted.
-       */
+       * line with the prefix or else the data will get corrupted.  */
       save_prefix = s->prefix;
       s->prefix = NULL;
 
@@ -1554,8 +1544,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
     if (mutt_str_strcasecmp("plain", b->subtype) == 0)
     {
       /* avoid copying this part twice since removing the transfer-encoding is
-       * the only operation needed.
-       */
+       * the only operation needed.  */
       if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(b))
         handler = crypt_pgp_application_handler;
       else if (C_ReflowText &&
@@ -1635,14 +1624,14 @@ int mutt_body_handler(struct Body *b, struct State *s)
   }
 
   /* only respect disposition == attachment if we're not
-     displaying from the attachment menu (i.e. pager) */
+   * displaying from the attachment menu (i.e. pager) */
   if ((!C_HonorDisposition || ((b->disposition != DISP_ATTACH) || OptViewAttach)) &&
       (plaintext || handler))
   {
     rc = run_decode_and_handler(b, s, handler, plaintext);
   }
   /* print hint to use attachment menu for disposition == attachment
-     if we're not already being called from there */
+   * if we're not already being called from there */
   else if ((s->flags & MUTT_DISPLAY) || ((b->disposition == DISP_ATTACH) && !OptViewAttach &&
                                          C_HonorDisposition && (plaintext || handler)))
   {
@@ -1659,17 +1648,14 @@ int mutt_body_handler(struct Body *b, struct State *s)
         {
           /* L10N: Caution: Arguments %1$s and %2$s are also defined but should
              not be used in this translation!
-
-             %3$s expands to a keystroke/key binding, e.g. 'v'.
-           */
+             %3$s expands to a keystroke/key binding, e.g. 'v'.  */
           str = _(
               "[-- This is an attachment (use '%3$s' to view this part) --]\n");
         }
         else
         {
           /* L10N: %s/%s is a MIME type, e.g. "text/plain".
-             The last %s expands to a keystroke/key binding, e.g. 'v'.
-           */
+             The last %s expands to a keystroke/key binding, e.g. 'v'. */
           str =
               _("[-- %s/%s is unsupported (use '%s' to view this part) --]\n");
         }

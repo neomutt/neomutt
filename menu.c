@@ -1127,8 +1127,7 @@ void mutt_menu_current_redraw(void)
     {
       /* On a REDRAW_FULL with a non-customized redraw, menu_redraw()
        * will return OP_REDRAW to give the calling menu-loop a chance to
-       * customize output.
-       */
+       * customize output.  */
       menu_redraw(current_menu);
     }
   }
@@ -1344,8 +1343,7 @@ int mutt_menu_loop(struct Menu *menu)
     }
 
     /* Clear the tag prefix unless we just started it.  Don't clear
-     * the prefix on a timeout (i==-2), but do clear on an abort (i==-1)
-     */
+     * the prefix on a timeout (i==-2), but do clear on an abort (i==-1) */
     if (menu->tagprefix && (i != OP_TAG_PREFIX) && (i != OP_TAG_PREFIX_COND) && (i != -2))
       menu->tagprefix = false;
 

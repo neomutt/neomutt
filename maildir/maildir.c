@@ -78,8 +78,7 @@ static void maildir_check_dir(struct Mailbox *m, const char *dir_name,
   mutt_buffer_printf(path, "%s/%s", m->path, dir_name);
 
   /* when $mail_check_recent is set, if the new/ directory hasn't been modified since
-   * the user last exited the m, then we know there is no recent mail.
-   */
+   * the user last exited the m, then we know there is no recent mail.  */
   if (check_new && C_MailCheckRecent)
   {
     if ((stat(mutt_b2s(path), &sb) == 0) &&
@@ -154,8 +153,7 @@ cleanup:
 static int maildir_read_dir(struct Mailbox *m)
 {
   /* maildir looks sort of like MH, except that there are two subdirectories
-   * of the main folder path from which to read messages
-   */
+   * of the main folder path from which to read messages */
   if ((mh_read_dir(m, "new") == -1) || (mh_read_dir(m, "cur") == -1))
     return -1;
 
@@ -189,8 +187,7 @@ void maildir_gen_flags(char *dest, size_t destlen, struct Email *e)
    * subdirectory have the :unique string appended, regardless of whether
    * or not there are any flags.  If .old is set, we know that this message
    * will end up in the cur directory, so we include it in the following
-   * test even though there is no associated flag.
-   */
+   * test even though there is no associated flag.  */
 
   if (e && (e->flagged || e->replied || e->read || e->deleted || e->old || e->maildir_flags))
   {
@@ -431,8 +428,7 @@ int maildir_mbox_check(struct Mailbox *m, int *index_hint)
   }
 
   /* do a fast scan of just the filenames in
-   * the subdirectories that have changed.
-   */
+   * the subdirectories that have changed.  */
   md = NULL;
   last = &md;
   if (changed & 1)
@@ -442,8 +438,7 @@ int maildir_mbox_check(struct Mailbox *m, int *index_hint)
 
   /* we create a hash table keyed off the canonical (sans flags) filename
    * of each message we scanned.  This is used in the loop over the
-   * existing messages below to do some correlation.
-   */
+   * existing messages below to do some correlation.  */
   fnames = mutt_hash_new(count, 0);
 
   for (p = md; p; p = p->next)
@@ -465,14 +460,12 @@ int maildir_mbox_check(struct Mailbox *m, int *index_hint)
       m->emails[i]->active = true;
 
       /* check to see if the message has moved to a different
-       * subdirectory.  If so, update the associated filename.
-       */
+       * subdirectory.  If so, update the associated filename.  */
       if (mutt_str_strcmp(m->emails[i]->path, p->email->path) != 0)
         mutt_str_replace(&m->emails[i]->path, p->email->path);
 
       /* if the user hasn't modified the flags on this message, update
-       * the flags we just detected.
-       */
+       * the flags we just detected.  */
       if (!m->emails[i]->changed)
         if (maildir_update_flags(m, m->emails[i], p->email))
           flags_changed = true;
@@ -492,23 +485,20 @@ int maildir_mbox_check(struct Mailbox *m, int *index_hint)
     }
     /* This message was not in the list of messages we just scanned.
      * Check to see if we have enough information to know if the
-     * message has disappeared out from underneath us.
-     */
+     * message has disappeared out from underneath us.  */
     else if (((changed & 1) && (strncmp(m->emails[i]->path, "new/", 4) == 0)) ||
              ((changed & 2) && (strncmp(m->emails[i]->path, "cur/", 4) == 0)))
     {
       /* This message disappeared, so we need to simulate a "reopen"
        * event.  We know it disappeared because we just scanned the
-       * subdirectory it used to reside in.
-       */
+       * subdirectory it used to reside in.  */
       occult = true;
     }
     else
     {
       /* This message resides in a subdirectory which was not
        * modified, so we assume that it is still present and
-       * unchanged.
-       */
+       * unchanged.  */
       m->emails[i]->active = true;
     }
   }

@@ -647,28 +647,24 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
            _("SSL Certificate check (certificate %zu of %zu in chain)"), len - idx, len);
   menu->title = title;
   /* certificates with bad dates, or that are revoked, must be
-   accepted manually each and every time */
+   * accepted manually each and every time */
   if (C_CertificateFile && !savedcert &&
       !(certerr & (CERTERR_EXPIRED | CERTERR_NOTYETVALID | CERTERR_REVOKED)))
   {
     menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always");
-    /* L10N:
-   * These three letters correspond to the choices in the string:
-   * (r)eject, accept (o)nce, (a)ccept always.
-   * This is an interactive certificate confirmation prompt for
-   * a GNUTLS connection.
-   */
+    /* L10N: These three letters correspond to the choices in the string:
+       (r)eject, accept (o)nce, (a)ccept always.
+       This is an interactive certificate confirmation prompt for
+       a GNUTLS connection. */
     menu->keys = _("roa");
   }
   else
   {
     menu->prompt = _("(r)eject, accept (o)nce");
-    /* L10N:
-   * These two letters correspond to the choices in the string:
-   * (r)eject, accept (o)nce.
-   * These is an interactive certificate confirmation prompt for
-   * a GNUTLS connection.
-   */
+    /* L10N: These two letters correspond to the choices in the string:
+       (r)eject, accept (o)nce.
+       These is an interactive certificate confirmation prompt for
+       a GNUTLS connection. */
     menu->keys = _("ro");
   }
 
@@ -785,8 +781,7 @@ static int tls_check_certificate(struct Connection *conn)
     if (i == 0)
     {
       /* This is the peer's end-entity X.509 certificate.  Stash the result
-       * to check later in this function.
-       */
+       * to check later in this function.  */
       rcpeer = rc;
     }
 
@@ -814,8 +809,7 @@ static int tls_check_certificate(struct Connection *conn)
 
       certstat = tls_verify_peers(state);
       /* If the cert chain now verifies, and the peer's cert was otherwise
-       * valid (rcpeer==0), we are done.
-       */
+       * valid (rcpeer==0), we are done.  */
       if (!certstat && !rcpeer)
         return 1;
     }
@@ -989,7 +983,7 @@ static int tls_set_priority(struct TlsSockData *data)
   }
 
   /* We use default priorities (see gnutls documentation),
-     except for protocol version */
+   * except for protocol version */
   gnutls_set_default_priority(data->state);
   gnutls_protocol_set_priority(data->state, protocol_priority);
   return 0;
@@ -1035,7 +1029,7 @@ static int tls_negotiate(struct Connection *conn)
 
 #ifdef HAVE_DECL_GNUTLS_VERIFY_DISABLE_TIME_CHECKS
   /* disable checking certificate activation/expiration times
-     in gnutls, we do the checks ourselves */
+   * in gnutls, we do the checks ourselves */
   gnutls_certificate_set_verify_flags(data->xcred, GNUTLS_VERIFY_DISABLE_TIME_CHECKS);
 #endif
 
@@ -1210,8 +1204,7 @@ static int tls_socket_close(struct Connection *conn)
      *
      * It is not required for the initiator of the close to wait for the
      * responding close_notify alert before closing the read side of the
-     * connection.
-     */
+     * connection.  */
     gnutls_bye(data->state, GNUTLS_SHUT_WR);
 
     gnutls_certificate_free_credentials(data->xcred);

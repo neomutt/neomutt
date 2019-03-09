@@ -165,14 +165,12 @@ static int count_body_parts(struct Body *body, int flags)
     }
 
     /* If this body isn't scheduled for enumeration already, don't bother
-     * profiling it further.
-     */
+     * profiling it further.  */
     if (shallcount)
     {
       /* Turn off shallcount if message type is not in ok list,
        * or if it is in except list. Check is done separately for
-       * inlines vs. attachments.
-       */
+       * inlines vs. attachments.  */
 
       if (bp->disposition == DISP_ATTACH)
       {

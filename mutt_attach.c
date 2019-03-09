@@ -563,8 +563,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
         /* Viewing from a received message.
          *
          * Don't use mutt_save_attachment() because we want to perform charset
-         * conversion since this will be displayed by the internal pager.
-         */
+         * conversion since this will be displayed by the internal pager.  */
         struct State decode_state = { 0 };
 
         decode_state.fp_out = mutt_file_fopen(pagerfile, "w");
@@ -586,8 +585,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
       {
         /* in compose mode, just copy the file.  we can't use
          * mutt_decode_attachment() since it assumes the content-encoding has
-         * already been applied
-         */
+         * already been applied */
         if (mutt_save_attachment(fp, a, pagerfile, MUTT_SAVE_NO_FLAGS, NULL))
           goto return_error;
       }

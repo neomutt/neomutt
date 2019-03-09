@@ -42,7 +42,7 @@
 #define S_BKG 126
 
 /* this macro must check for (*c == 0) since isspace(0) has unreliable behavior
-   on some systems */
+ * on some systems */
 #define SKIPWS(ch)                                                             \
   while (*(ch) && isspace((unsigned char) *(ch)))                              \
     ch++;
@@ -59,7 +59,7 @@
 #define terminate_buffer(str, strlen) terminate_string(str, strlen, sizeof(str) - 1)
 
 /**
- * CaseSensitivity - Should a string's case matter when matching?
+ * enum CaseSensitivity - Should a string's case matter when matching?
  */
 enum CaseSensitivity
 {

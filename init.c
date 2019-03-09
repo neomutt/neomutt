@@ -1189,7 +1189,7 @@ warn:
  * @param name  Command name to be searched for
  * @retval true  Function found
  * @retval false Function not found
-*/
+ */
 static bool is_function(const char *name)
 {
   for (int i = 0; i < MENU_MAX; i++)
@@ -2804,7 +2804,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
       mutt_wait_filter(pid);
 
       /* if we got output, make a new string consisting of the shell output
-         plus whatever else was left on the original line */
+       * plus whatever else was left on the original line */
       /* BUT: If this is inside a quoted string, directly add output to
        * the token */
       if (expn.data && qc)
@@ -3100,8 +3100,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
    * understand more than the "subject" and "body" headers. Clients that
    * resolve mailto URLs into mail messages should be able to correctly
    * create RFC822-compliant mail messages using the "subject" and "body"
-   * headers.
-   */
+   * headers.  */
   add_to_stailq(&MailToAllow, "body");
   add_to_stailq(&MailToAllow, "subject");
   /* Cc, In-Reply-To, and References help with not breaking threading on
@@ -3149,7 +3148,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   }
 
   /* Process the global rc file if it exists and the user hasn't explicitly
-     requested not to via "-n".  */
+   * requested not to via "-n".  */
   if (!skip_sys_rc)
   {
     do
@@ -3645,8 +3644,7 @@ bool mutt_nm_query_complete(char *buf, size_t buflen, int pos, int numtabs)
       complete_all_nm_tags(pt);
 
       /* All matches are stored. Longest non-ambiguous string is ""
-       * i.e. don't change 'buf'. Fake successful return this time.
-       */
+       * i.e. don't change 'buf'. Fake successful return this time.  */
       if (UserTyped[0] == 0)
         return true;
     }
@@ -3707,8 +3705,7 @@ bool mutt_nm_tag_complete(char *buf, size_t buflen, int numtabs)
     complete_all_nm_tags(pt);
 
     /* All matches are stored. Longest non-ambiguous string is ""
-     * i.e. don't change 'buf'. Fake successful return this time.
-     */
+     * i.e. don't change 'buf'. Fake successful return this time.  */
     if (UserTyped[0] == 0)
       return true;
   }

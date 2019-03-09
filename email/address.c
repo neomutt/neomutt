@@ -796,8 +796,8 @@ bool mutt_addr_valid_msgid(const char *msgid)
    * atom           = 1*<any CHAR except specials, SPACE and CTLs>
    * CHAR           = ( 0.-127. )
    * specials       = "(" / ")" / "<" / ">" / "@"
-                    / "," / ";" / ":" / "\" / <">
-                    / "." / "[" / "]"
+   *                / "," / ";" / ":" / "\" / <">
+   *                / "." / "[" / "]"
    * SPACE          = ( 32. )
    * CTLS           = ( 0.-31., 127.)
    * quoted-string  = <"> *(qtext/quoted-pair) <">
@@ -1126,7 +1126,7 @@ void mutt_addr_write_single(char *buf, size_t buflen, struct Address *addr, bool
   }
 done:
   /* no need to check for length here since we already save space at the
-     beginning of this routine */
+   * beginning of this routine */
   *pbuf = 0;
 }
 
@@ -1170,17 +1170,17 @@ size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool disp
   for (; addr && (buflen > 0); addr = addr->next)
   {
     /* use buflen+1 here because we already saved space for the trailing
-       nul char, and the subroutine can make use of it */
+     * nul char, and the subroutine can make use of it */
     mutt_addr_write_single(pbuf, buflen + 1, addr, display);
 
     /* this should be safe since we always have at least 1 char passed into
-       the above call, which means 'pbuf' should always be nul terminated */
+     * the above call, which means 'pbuf' should always be nul terminated */
     len = mutt_str_strlen(pbuf);
     pbuf += len;
     buflen -= len;
 
     /* if there is another address, and it's not a group mailbox name or
-       group terminator, add a comma to separate the addresses */
+     * group terminator, add a comma to separate the addresses */
     if (addr->next && addr->next->mailbox && !addr->group)
     {
       if (buflen == 0)

@@ -280,16 +280,14 @@ int mutt_replacelist_add(struct ReplaceList *rl, const char *pat,
        * now we're supporting removals, which means we're supporting
        * re-adds conceptually. So we probably want this to imply a
        * removal, then do an add. We can achieve the removal by freeing
-       * the template, and leaving t pointed at the current item.
-       */
+       * the template, and leaving t pointed at the current item.  */
       FREE(&np->template);
       break;
     }
   }
 
   /* If np is set, it's pointing into an extant ReplaceList* that we want to
-   * update. Otherwise we want to make a new one to link at the rl's end.
-   */
+   * update. Otherwise we want to make a new one to link at the rl's end.  */
   if (np)
   {
     mutt_regex_free(&rx);

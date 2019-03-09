@@ -96,8 +96,7 @@ int mutt_body_copy(FILE *fp, struct Body **tgt, struct Body *src)
   b->description = mutt_str_strdup(b->description);
 
   /* we don't seem to need the Header structure currently.
-   * XXX this may change in the future
-   */
+   * XXX this may change in the future */
 
   if (b->email)
     b->email = NULL;

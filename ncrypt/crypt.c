@@ -321,7 +321,7 @@ int mutt_protect(struct Email *msg, char *keylist)
       if ((tmp_smime_pbody != msg->content) && (tmp_smime_pbody != tmp_pbody))
       {
         /* detach and don't delete msg->content,
-           which tmp_smime_pbody->parts after signing. */
+         * which tmp_smime_pbody->parts after signing. */
         tmp_smime_pbody->parts = tmp_smime_pbody->parts->next;
         msg->content->next = NULL;
         mutt_body_free(&tmp_smime_pbody);
@@ -610,8 +610,7 @@ SecurityFlags mutt_is_application_smime(struct Body *m)
     }
     /* Netscape 4.7 uses
      * Content-Description: S/MIME Encrypted Message
-     * instead of Content-Type parameter
-     */
+     * instead of Content-Type parameter */
     if (mutt_str_strcasecmp(m->description, "S/MIME Encrypted Message") == 0)
       return SMIME_ENCRYPT;
     complain = true;
@@ -644,7 +643,7 @@ SecurityFlags mutt_is_application_smime(struct Body *m)
     if (mutt_str_strcasecmp((t + len), "p7m") == 0)
     {
       /* Not sure if this is the correct thing to do, but
-        it's required for compatibility with Outlook */
+       * it's required for compatibility with Outlook */
       return SMIME_SIGN | SMIME_OPAQUE;
     }
     else if (mutt_str_strcasecmp((t + len), "p7s") == 0)
@@ -925,8 +924,7 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
   char *self_encrypt = NULL;
 
   /* Do a quick check to make sure that we can find all of the encryption
-   * keys if the user has requested this service.
-   */
+   * keys if the user has requested this service.  */
 
   if (!WithCrypto)
     return 0;

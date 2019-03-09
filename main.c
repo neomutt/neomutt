@@ -232,8 +232,7 @@ static void usage(void)
          "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]\n"
          "  neomutt -v[v]\n"));
 
-  /* L10N: Try to limit to 80 columns
-           If more space is needed add an indented line */
+  /* L10N: Try to limit to 80 columns.  If more space is needed add an indented line */
   puts(_("options:\n"
          "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
          "                remaining arguments as addresses even if they start with a dash\n"
@@ -294,7 +293,7 @@ static int start_curses(void)
 #endif
 #else
   /* should come before initscr() so that ncurses 4.2 doesn't try to install
-     its own SIGWINCH handler */
+   * its own SIGWINCH handler */
   mutt_signal_init();
 #endif
   if (!initscr())
@@ -459,8 +458,7 @@ int main(int argc, char *argv[], char *envp[])
     /* We're getopt'ing POSIXLY, so we'll be here every time getopt()
      * encounters a non-option.  That could be a file to attach
      * (all non-options between -a and --) or it could be an address
-     * (which gets collapsed to the front of argv).
-     */
+     * (which gets collapsed to the front of argv).  */
     for (; optind < argc; optind++)
     {
       if ((argv[optind][0] == '-') && (argv[optind][1] != '\0'))
@@ -920,8 +918,7 @@ int main(int argc, char *argv[], char *envp[])
 
       /* Copy input to a tempfile, and re-point fp_in to the tempfile.
        * Note: stdin is always copied to a tempfile, ensuring draft_file
-       * can stat and get the correct st_size below.
-       */
+       * can stat and get the correct st_size below.  */
       if (!edit_infile)
       {
         char buf[1024];
@@ -955,15 +952,13 @@ int main(int argc, char *argv[], char *envp[])
         }
       }
       /* If editing the infile, keep it around afterwards so
-       * it doesn't get unlinked, and we can rebuild the draft_file
-       */
+       * it doesn't get unlinked, and we can rebuild the draft_file */
       else
         sendflags |= SEND_NO_FREE_HEADER;
 
       /* Parse the draft_file into the full Header/Body structure.
        * Set SEND_DRAFT_FILE so ci_send_message doesn't overwrite
-       * our msg->content.
-       */
+       * our msg->content.  */
       if (draft_file)
       {
         struct Envelope *opts_env = msg->env;
@@ -972,8 +967,7 @@ int main(int argc, char *argv[], char *envp[])
         sendflags |= SEND_DRAFT_FILE;
 
         /* Set up a "context" header with just enough information so that
-         * mutt_prepare_template() can parse the message in fp_in.
-         */
+         * mutt_prepare_template() can parse the message in fp_in.  */
         struct Email *context_hdr = mutt_email_new();
         context_hdr->offset = 0;
         context_hdr->content = mutt_body_new();
@@ -1017,8 +1011,7 @@ int main(int argc, char *argv[], char *envp[])
         mutt_email_free(&context_hdr);
       }
       /* Editing the include_file: pass it directly in.
-       * Note that SEND_NO_FREE_HEADER is set above so it isn't unlinked.
-       */
+       * Note that SEND_NO_FREE_HEADER is set above so it isn't unlinked.  */
       else if (edit_infile)
         bodyfile = expanded_infile;
       /* For bodytext and unedited include_file: use the tempfile.
@@ -1086,8 +1079,7 @@ int main(int argc, char *argv[], char *envp[])
         }
 
         /* If the message was sent or postponed, these will already
-         * have been done.
-         */
+         * have been done.  */
         if (rv < 0)
         {
           if (msg->content->next)

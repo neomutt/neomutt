@@ -421,8 +421,7 @@ static void pgp_copy_clearsigned(FILE *fp_in, struct State *s, char *charset)
 
   /* fromcode comes from the MIME Content-Type charset label. It might
    * be a wrong label, so we want the ability to do corrections via
-   * charset-hooks. Therefore we set flags to MUTT_ICONV_HOOK_FROM.
-   */
+   * charset-hooks. Therefore we set flags to MUTT_ICONV_HOOK_FROM.  */
   struct FgetConv *fc =
       mutt_ch_fgetconv_open(fp_in, charset, C_Charset, MUTT_ICONV_HOOK_FROM);
 
@@ -623,8 +622,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
            * so we need to be more selective about the value of decrypt_okay_rc.
            *
            * -3 indicates we actively found a DECRYPTION_FAILED.
-           * -2 and -1 indicate part or all of the content was plaintext.
-           */
+           * -2 and -1 indicate part or all of the content was plaintext.  */
           if (needpass)
           {
             rewind(fp_pgp_err);
@@ -644,8 +642,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
             /* Sig is bad if
              * gpg_good_sign-pattern did not match || pgp_decode_command returned not 0
              * Sig _is_ correct if
-             *  gpg_good_sign="" && pgp_decode_command returned 0
-             */
+             *  gpg_good_sign="" && pgp_decode_command returned 0 */
             if ((rc == -1) || rv)
               maybe_goodsig = false;
 
@@ -712,8 +709,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
       }
 
       /* Multiple PGP blocks can exist, so these need to be closed and
-       * unlinked inside the loop.
-       */
+       * unlinked inside the loop.  */
       mutt_file_fclose(&fp_tmp);
       mutt_file_unlink(tmpfname);
       mutt_file_fclose(&fp_pgp_out);
@@ -731,8 +727,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
           {
             /* L10N: You will see this error message if (1) you are decrypting
                (not encrypting) something and (2) it is a plaintext. So the
-               message does not mean "You failed to encrypt the message."
-            */
+               message does not mean "You failed to encrypt the message." */
             mutt_error(_("PGP message is not encrypted"));
           }
           else
@@ -1024,8 +1019,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   }
 
   /* Position the stream at the beginning of the body, and send the data to
-   * the temporary file.
-   */
+   * the temporary file.  */
 
   fseeko(s->fp_in, a->offset, SEEK_SET);
   mutt_file_copy_bytes(s->fp_in, fp_pgp_tmp, a->length);
@@ -1045,17 +1039,15 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
     return NULL;
   }
 
-  /* send the PGP passphrase to the subprocess.  Never do this if the
-     agent is active, because this might lead to a passphrase send as
-     the message. */
+  /* send the PGP passphrase to the subprocess.  Never do this if the agent is
+   * active, because this might lead to a passphrase send as the message. */
   if (!pgp_use_gpg_agent())
     fputs(PgpPass, fp_pgp_in);
   fputc('\n', fp_pgp_in);
   mutt_file_fclose(&fp_pgp_in);
 
   /* Read the output from PGP, and make sure to change CRLF to LF, otherwise
-   * read_mime_header has a hard time parsing the message.
-   */
+   * read_mime_header has a hard time parsing the message.  */
   while (fgets(buf, sizeof(buf) - 1, fp_pgp_out))
   {
     size_t len = mutt_str_strlen(buf);
@@ -1256,8 +1248,7 @@ int pgp_class_encrypted_handler(struct Body *a, struct State *s)
 
     /* if a multipart/signed is the _only_ sub-part of a
      * multipart/encrypted, cache signature verification
-     * status.
-     */
+     * status.  */
     if (mutt_is_multipart_signed(tattach) && !tattach->next)
       a->goodsig |= tattach->goodsig;
 
@@ -1341,8 +1332,7 @@ struct Body *pgp_class_sign_message(struct Body *a)
   mutt_file_fclose(&fp_pgp_in);
 
   /* Read back the PGP signature.  Also, change MESSAGE=>SIGNATURE as
-   * recommended for future releases of PGP.
-   */
+   * recommended for future releases of PGP.  */
   while (fgets(buf, sizeof(buf) - 1, fp_pgp_out))
   {
     if (mutt_str_strcmp("-----BEGIN PGP MESSAGE-----\n", buf) == 0)
@@ -1709,8 +1699,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
   /* The following code is really correct:  If noconv is set,
    * a's charset parameter contains the on-disk character set, and
    * we have to convert from that to utf-8.  If noconv is not set,
-   * we have to convert from $charset to utf-8.
-   */
+   * we have to convert from $charset to utf-8.  */
 
   mutt_body_get_charset(a, body_charset, sizeof(body_charset));
   if (a->noconv)
@@ -1866,20 +1855,19 @@ int pgp_class_send_menu(struct Email *msg)
   if (msg->security & SEC_INLINE)
   {
     /* L10N: The next string MUST have the same highlighted letter
-             One of them will appear in each of the three strings marked "(inline"), below. */
+       One of them will appear in each of the three strings marked "(inline"), below. */
     mime_inline = _("PGP/M(i)ME");
   }
   else
   {
     /* L10N: The previous string MUST have the same highlighted letter
-             One of them will appear in each of the three strings marked "(inline"), below. */
+       One of them will appear in each of the three strings marked "(inline"), below. */
     mime_inline = _("(i)nline");
   }
   /* Opportunistic encrypt is controlling encryption.  Allow to toggle
    * between inline and mime, but not turn encryption on or off.
    * NOTE: "Signing" and "Clearing" only adjust the sign bit, so we have different
-   *       letter choices for those.
-   */
+   *       letter choices for those.  */
   if (C_CryptOpportunisticEncrypt && (msg->security & SEC_OPPENCRYPT))
   {
     if (msg->security & (SEC_ENCRYPT | SEC_SIGN))
@@ -1905,13 +1893,11 @@ int pgp_class_send_menu(struct Email *msg)
     }
   }
   /* Opportunistic encryption option is set, but is toggled off
-   * for this message.
-   */
+   * for this message.  */
   else if (C_CryptOpportunisticEncrypt)
   {
     /* When the message is not selected for signing or encryption, the toggle
-     * between PGP/MIME and Traditional doesn't make sense.
-     */
+     * between PGP/MIME and Traditional doesn't make sense.  */
     if (msg->security & (SEC_ENCRYPT | SEC_SIGN))
     {
       snprintf(promptbuf, sizeof(promptbuf),

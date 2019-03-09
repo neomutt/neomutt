@@ -97,8 +97,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
   if ((chflags & (CH_REORDER | CH_WEED | CH_MIME | CH_DECODE | CH_PREFIX | CH_WEED_DELIVERED)) == 0)
   {
     /* Without these flags to complicate things
-     * we can do a more efficient line to line copying
-     */
+     * we can do a more efficient line to line copying */
     while (ftello(fp_in) < off_end)
     {
       nl = strchr(buf, '\n');
@@ -158,8 +157,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
 
   /* We are going to read and collect the headers in an array
    * so we are able to do re-ordering.
-   * First count the number of entries in the array
-   */
+   * First count the number of entries in the array */
   if (chflags & CH_REORDER)
   {
     struct ListNode *np = NULL;
@@ -342,9 +340,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
     if (headers[x])
     {
       /* We couldn't do the prefixing when reading because RFC2047
-       * decoding may have concatenated lines.
-       */
-
+       * decoding may have concatenated lines.  */
       if (chflags & (CH_DECODE | CH_PREFIX))
       {
         if (mutt_write_one_header(

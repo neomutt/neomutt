@@ -197,8 +197,7 @@ static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len
   bool base64 = false;
 
   /* In the worst case we convert 2 chars to 7 chars. For example:
-   * "\x10&\x10&..." -> "&ABA-&-&ABA-&-...".
-   */
+   * "\x10&\x10&..." -> "&ABA-&-&ABA-&-...".  */
   char *buf = mutt_mem_malloc((u8len / 2) * 7 + 6);
   char *p = buf;
 

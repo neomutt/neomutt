@@ -501,8 +501,7 @@ static char *get_query_string(struct NmMboxData *mdata, bool window)
 
     /* if a date part is defined, do not apply windows (to avoid the risk of
      * having a non-intersected date frame). A good improvement would be to
-     * accept if they intersect
-     */
+     * accept if they intersect */
     if (!strstr(mdata->db_query, "date:") &&
         windowed_query_from_query(mdata->db_query, buf, sizeof(buf)))
     {
@@ -748,8 +747,7 @@ static int init_email(struct Email *e, const char *path, notmuch_message_t *msg)
   e->free_edata = nm_edata_free;
 
   /* Notmuch ensures that message Id exists (if not notmuch Notmuch will
-   * generate an ID), so it's more safe than use neomutt Email->env->id
-   */
+   * generate an ID), so it's more safe than use neomutt Email->env->id */
   const char *id = notmuch_message_get_message_id(msg);
   edata->virtual_id = mutt_str_strdup(id);
 
@@ -1394,8 +1392,7 @@ static int remove_filename(struct Mailbox *m, const char *path)
     return -1;
 
   /* note that unlink() is probably unnecessary here, it's already removed
-   * by mh_sync_mailbox_message(), but for sure...
-   */
+   * by mh_sync_mailbox_message(), but for sure...  */
   notmuch_filenames_t *ls = NULL;
   st = notmuch_database_remove_message(db, path);
   switch (st)
@@ -2244,8 +2241,7 @@ static int nm_mbox_check(struct Mailbox *m, int *index_hint)
     e->active = true;
 
     /* Check to see if the message has moved to a different subdirectory.
-     * If so, update the associated filename.
-     */
+     * If so, update the associated filename.  */
     new = get_message_last_filename(msg);
     email_get_fullpath(e, old, sizeof(old));
 
@@ -2254,10 +2250,8 @@ static int nm_mbox_check(struct Mailbox *m, int *index_hint)
 
     if (!e->changed)
     {
-      /* if the user hasn't modified the flags on
-       * this message, update the flags we just
-       * detected.
-       */
+      /* if the user hasn't modified the flags on this message, update the
+       * flags we just detected.  */
       struct Email tmp = { 0 };
       maildir_parse_flags(&tmp, new);
       maildir_update_flags(m, e, &tmp);

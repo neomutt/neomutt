@@ -171,8 +171,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
 
     /* At this stage remain only message-hooks, reply-hooks, send-hooks,
      * send2-hooks, save-hooks, and fcc-hooks: All those allowing full
-     * patterns. If given a simple regex, we expand $default_hook.
-     */
+     * patterns. If given a simple regex, we expand $default_hook.  */
     mutt_str_strfcpy(tmp, pattern.data, sizeof(tmp));
     mutt_check_simple(tmp, sizeof(tmp), C_DefaultHook);
     FREE(&pattern.data);

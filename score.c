@@ -119,7 +119,7 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
   }
 
   /* look for an existing entry and update the value, else add it to the end
-     of the list */
+   * of the list */
   for (ptr = ScoreList, last = NULL; ptr; last = ptr, ptr = ptr->next)
     if (mutt_str_strcmp(pattern, ptr->str) == 0)
       break;
@@ -143,8 +143,7 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
   {
     /* 'buf' arg was cleared and 'pattern' holds the only reference;
      * as here 'ptr' != NULL -> update the value only in which case
-     * ptr->str already has the string, so pattern should be freed.
-     */
+     * ptr->str already has the string, so pattern should be freed.  */
     FREE(&pattern);
   }
   pc = buf->data;

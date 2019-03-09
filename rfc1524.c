@@ -219,8 +219,7 @@ static bool rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
    * extradefs are of the form:
    *  def1="definition"; def2="define \;";
    * line wraps with a \ at the end of the line
-   * # for comments
-   */
+   * # for comments */
 
   /* find length of basetype */
   char *ch = strchr(type, '/');
@@ -323,8 +322,7 @@ static bool rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
         else if ((plen = mutt_str_startswith(field, "test", CASE_IGNORE)))
         {
           /* This routine executes the given test command to determine
-           * if this is the right entry.
-           */
+           * if this is the right entry.  */
           char *test_command = NULL;
 
           if (get_field_text(field + plen, &test_command, type, filename, line) && test_command)
@@ -447,8 +445,7 @@ bool rfc1524_mailcap_lookup(struct Body *a, char *type,
    * joy.  They say
    * $HOME/.mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap, etc
    * and overridden by the MAILCAPS environment variable, and, just to be nice,
-   * we'll make it specifiable in .neomuttrc
-   */
+   * we'll make it specifiable in .neomuttrc */
   if (!curr || !*curr)
   {
     mutt_error(_("No mailcap path specified"));
@@ -566,8 +563,7 @@ int rfc1524_expand_filename(const char *nametemplate, const char *oldfile,
        *   thus the i + 2.
        * - If there was a left hand match, this stuff
        *   must not be counted again.  That's done by the
-       *   condition (j >= (lmatch ? i : 0)).
-       */
+       *   condition (j >= (lmatch ? i : 0)).  */
 
       rmatch = true;
 

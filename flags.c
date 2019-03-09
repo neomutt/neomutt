@@ -114,8 +114,7 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
          * been changed, and is marked accordingly.  However, we do
          * _not_ mark the message itself changed, because trashing
          * is checked in specific code in the maildir folder
-         * driver.
-         */
+         * driver.  */
         if ((m->magic == MUTT_MAILDIR) && upd_mbox && e->trash)
           m->changed = true;
       }
@@ -338,8 +337,7 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
 
   /* if the message status has changed, we need to invalidate the cached
    * search results so that any future search will match the current status
-   * of this message and not what it was at the time it was last searched.
-   */
+   * of this message and not what it was at the time it was last searched.  */
   if (e->searched && ((changed != e->changed) || (deleted != m->msg_deleted) ||
                       (tagged != m->msg_tagged) || (flagged != m->msg_flagged)))
   {

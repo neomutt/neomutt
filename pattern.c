@@ -594,16 +594,15 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 
   memset(&min, 0, sizeof(min));
   /* the '0' time is Jan 1, 1970 UTC, so in order to prevent a negative time
-     when doing timezone conversion, we use Jan 2, 1970 UTC as the base
-     here */
+   * when doing timezone conversion, we use Jan 2, 1970 UTC as the base here */
   min.tm_mday = 2;
   min.tm_year = 70;
 
   memset(&max, 0, sizeof(max));
 
-  /* Arbitrary year in the future.  Don't set this too high
-     or mutt_date_make_time() returns something larger than will
-     fit in a time_t on some systems */
+  /* Arbitrary year in the future.  Don't set this too high or
+   * mutt_date_make_time() returns something larger than will fit in a time_t
+   * on some systems */
   max.tm_year = 130;
   max.tm_mon = 11;
   max.tm_mday = 31;
@@ -614,9 +613,9 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   if (strchr("<>=", buf.data[0]))
   {
     /* offset from current time
-       <3d      less than three days ago
-       >3d      more than three days ago
-       =3d      exactly three days ago */
+     *  <3d  less than three days ago
+     *  >3d  more than three days ago
+     *  =3d  exactly three days ago */
     time_t now = time(NULL);
     struct tm *tm = localtime(&now);
     bool exact = false;
@@ -699,7 +698,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
       }
 
       /* preset max date for relative offsets,
-         if nothing follows we search for messages on a specific day */
+       * if nothing follows we search for messages on a specific day */
       max.tm_year = min.tm_year;
       max.tm_mon = min.tm_mon;
       max.tm_mday = min.tm_mday;
@@ -737,8 +736,7 @@ static bool eat_range(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   bool skip_quote = false;
 
   /* If simple_search is set to "~m %s", the range will have double quotes
-   * around it...
-   */
+   * around it...  */
   if (*s->dptr == '"')
   {
     s->dptr++;
@@ -1031,8 +1029,7 @@ static bool eat_message_range(struct Pattern *pat, struct Buffer *s, struct Buff
   }
 
   /* If simple_search is set to "~m %s", the range will have double quotes
-   * around it...
-   */
+   * around it...  */
   if (*s->dptr == '"')
   {
     s->dptr++;
@@ -1983,8 +1980,7 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
       /* m can be NULL in certain cases, such as when replying to a message
        * from the attachment menu and the user has a reply-hook using "~e" (bug
        * #2190).
-       * This is also the case when message scoring.
-       */
+       * This is also the case when message scoring.  */
       if (!m)
         return 0;
 #ifdef USE_IMAP
@@ -2228,8 +2224,7 @@ void mutt_check_simple(char *s, size_t len, const char *simple)
   }
 
   /* XXX - is mutt_str_strcasecmp() right here, or should we use locale's
-   * equivalences?
-   */
+   * equivalences?  */
 
   if (do_simple) /* yup, so spoof a real request */
   {
@@ -2494,7 +2489,7 @@ int mutt_search_command(int cur, int op)
       OptSearchReverse = true;
 
     /* compare the *expanded* version of the search pattern in case
-       $simple_search has changed while we were searching */
+     * $simple_search has changed while we were searching */
     char temp[1024];
     mutt_str_strfcpy(temp, buf, sizeof(temp));
     mutt_check_simple(temp, sizeof(temp), NONULL(C_SimpleSearch));

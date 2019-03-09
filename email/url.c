@@ -238,9 +238,8 @@ struct Url *url_parse(const char *src)
     it = at + 1;
   }
 
-  /* IPv6 literal address.  It may contain colons, so set p to start
-   * the port scan after it.
-   */
+  /* IPv6 literal address.  It may contain colons, so set p to start the port
+   * scan after it.  */
   if ((*it == '[') && (p = strchr(it, ']')))
   {
     it++;

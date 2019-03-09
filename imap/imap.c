@@ -2238,8 +2238,7 @@ static int imap_mbox_close(struct Mailbox *m)
    *
    * So when these are equal, it means we are actually closing the
    * mailbox and should clean up adata.  Otherwise, we don't want to
-   * touch adata - it's still being used.
-   */
+   * touch adata - it's still being used.  */
   if (m == adata->mailbox)
   {
     if ((adata->status != IMAP_FATAL) && (adata->state >= IMAP_SELECTED))

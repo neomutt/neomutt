@@ -372,8 +372,7 @@ void mutt_sort_headers(struct Context *ctx, bool init)
   {
     /* this function gets called by mutt_sync_mailbox(), which may have just
      * deleted all the messages.  the virtual message numbers are not updated
-     * in that routine, so we must make sure to zero the vcount member.
-     */
+     * in that routine, so we must make sure to zero the vcount member.  */
     ctx->mailbox->vcount = 0;
     ctx->vsize = 0;
     mutt_clear_threads(ctx);
@@ -403,7 +402,7 @@ void mutt_sort_headers(struct Context *ctx, bool init)
   {
     AuxSort = NULL;
     /* if $sort_aux changed after the mailbox is sorted, then all the
-       subthreads need to be resorted */
+     * subthreads need to be resorted */
     if (OptSortSubthreads)
     {
       int i = C_Sort;

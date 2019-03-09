@@ -593,8 +593,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
 
           /* next class to test; if tmp is a shorter prefix for another
            * node, that node can only be in the top level list, so don't
-           * go down after this point
-           */
+           * go down after this point */
           q_list = tmp->next;
         }
         else
@@ -954,8 +953,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
 
       /* When this option is unset, we color the entire header the
        * same color.  Otherwise, we handle the header patterns just
-       * like body patterns (further below).
-       */
+       * like body patterns (further below).  */
       if (!C_HeaderColorPartial)
       {
         STAILQ_FOREACH(color_line, &ColorHdrList, entries)
@@ -1647,8 +1645,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
    * don't want to compute it every time MUTT_TYPES is set, since this
    * would slow down the "bottom" function unacceptably. A compromise
    * solution is hence to call regexec() again, just to find out the
-   * length of the quote prefix.
-   */
+   * length of the quote prefix.  */
   if ((flags & MUTT_SHOWCOLOR) && !(*line_info)[n].continuation &&
       ((*line_info)[n].type == MT_COLOR_QUOTED) && !(*line_info)[n].quote)
   {
@@ -1794,8 +1791,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
 
   /* Fill the blank space at the end of the line with the prevailing color.
    * ncurses does an implicit clrtoeol() when you do addch('\n') so we have
-   * to make sure to reset the color *after* that
-   */
+   * to make sure to reset the color *after* that */
   if (flags & MUTT_SHOWCOLOR)
   {
     m = ((*line_info)[n].continuation) ? ((*line_info)[n].syntax)[0].first : n;
@@ -1812,8 +1808,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
 
   /* reset the color back to normal.  This *must* come after the
    * clrtoeol, otherwise the color for this line will not be
-   * filled to the right margin.
-   */
+   * filled to the right margin.  */
   if (flags & MUTT_SHOWCOLOR)
     NORMAL_COLOR;
 
@@ -2022,7 +2017,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       if (!rd->index)
       {
         /* only allocate the space if/when we need the index.
-           Initialise the menu as per the main index */
+         * Initialise the menu as per the main index */
         rd->index = mutt_menu_new(MENU_MAIN);
         rd->index->menu_make_entry = index_make_entry;
         rd->index->menu_color = index_color;
@@ -2936,8 +2931,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
         /* --------------------------------------------------------------------
          * The following are operations on the current message rather than
-         * adjusting the view of the message.
-         */
+         * adjusting the view of the message.  */
 
       case OP_BOUNCE_MESSAGE:
       {
@@ -3402,8 +3396,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         /* L10N: CHECK_ACL */
         /* L10N: Due to the implementation details we do not know whether we
            undelete zero, 1, 12, ... messages. So in English we use
-           "messages". Your language might have other means to express this.
-         */
+           "messages". Your language might have other means to express this. */
         CHECK_ACL(MUTT_ACL_DELETE, _("Cannot undelete messages"));
 
         int r = mutt_thread_set_flag(extra->email, MUTT_DELETE, false,

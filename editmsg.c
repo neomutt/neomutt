@@ -105,8 +105,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
    * truncate the last newline in the temp file, which is logically part of
    * the message separator, and not the body of the message.  If we fail to
    * remove it, the message will grow by one line each time the user edits
-   * the message.
-   */
+   * the message.  */
   if ((sb.st_size != 0) && (truncate(fname, sb.st_size - 1) == -1))
   {
     mutt_error(_("could not truncate temporary mail folder: %s"), strerror(errno));

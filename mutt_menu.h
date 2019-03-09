@@ -100,8 +100,7 @@ struct Menu
   /* Setting dialog != NULL overrides normal menu behavior.
    * In dialog mode menubar is hidden and prompt keys are checked before
    * normal menu movement keys. This can cause problems with scrolling, if
-   * prompt keys override movement keys.
-   */
+   * prompt keys override movement keys.  */
   char **dialog; /**< dialog lines themselves */
   char *prompt;  /**< prompt for user, similar to mutt_multi_choice */
   char *keys;    /**< keys used in the prompt */

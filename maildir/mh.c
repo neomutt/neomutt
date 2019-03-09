@@ -455,7 +455,7 @@ static int mh_mbox_check_stats(struct Mailbox *m, int flags)
       if (check_new)
       {
         /* if the first unseen message we encounter was in the m during the
-           last visit, don't notify about it */
+         * last visit, don't notify about it */
         if (!C_MailCheckRecent || (mh_already_notified(m, i) == 0))
         {
           m->has_new = true;

@@ -112,8 +112,7 @@ void mutt_signal_init(void)
    * are in blocking mode, SLsys_getkey() will not return an error unless
    * a handler function is defined and it returns -1.  This is needed so
    * that if the user resizes the screen while at a prompt, it will just
-   * abort and go back to the main-menu.
-   */
+   * abort and go back to the main-menu.  */
   SLang_getkey_intr_hook = mutt_intr_hook;
 #endif
 }

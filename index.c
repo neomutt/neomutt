@@ -346,8 +346,7 @@ static int ci_first_message(void)
 
   /* If C_Sort is reverse and not threaded, the latest message is first.
    * If C_Sort is threaded, the latest message is first if exactly one
-   * of C_Sort and C_SortAux are reverse.
-   */
+   * of C_Sort and C_SortAux are reverse.  */
   if (((C_Sort & SORT_REVERSE) && ((C_Sort & SORT_MASK) != SORT_THREADS)) ||
       (((C_Sort & SORT_MASK) == SORT_THREADS) && ((C_Sort ^ C_SortAux) & SORT_REVERSE)))
   {
@@ -1060,15 +1059,13 @@ int mutt_index_menu(void)
   while (true)
   {
     /* Clear the tag prefix unless we just started it.  Don't clear
-     * the prefix on a timeout (op==-2), but do clear on an abort (op==-1)
-     */
+     * the prefix on a timeout (op==-2), but do clear on an abort (op==-1) */
     if (tag && (op != OP_TAG_PREFIX) && (op != OP_TAG_PREFIX_COND) && (op != -2))
       tag = false;
 
     /* check if we need to resort the index because just about
      * any 'op' below could do mutt_enter_command(), either here or
-     * from any new menu launched, and change $sort/$sort_aux
-     */
+     * from any new menu launched, and change $sort/$sort_aux */
     if (OptNeedResort && Context && (Context->mailbox->msg_count != 0) &&
         (menu->current >= 0))
       resort_index(menu);
@@ -1092,8 +1089,7 @@ int mutt_index_menu(void)
       int check;
       /* check for new mail in the mailbox.  If nonzero, then something has
        * changed about the file (either we got new mail or the file was
-       * modified underneath us.)
-       */
+       * modified underneath us.) */
 
       index_hint = ((Context->mailbox->vcount != 0) && (menu->current >= 0) &&
                     (menu->current < Context->mailbox->vcount)) ?
@@ -1222,8 +1218,7 @@ int mutt_index_menu(void)
         SigWinch = 0;
         menu->top = 0; /* so we scroll the right amount */
         /* force a real complete redraw.  clrtobot() doesn't seem to be able
-         * to handle every case without this.
-         */
+         * to handle every case without this.  */
         clearok(stdscr, true);
         continue;
       }
@@ -1479,7 +1474,7 @@ int mutt_index_menu(void)
             Context->mailbox->quiet = quiet;
 
             /* Similar to OP_MAIN_ENTIRE_THREAD, keep displaying the old message, but
-               update the index */
+             * update the index */
             if (menu->menu == MENU_PAGER)
             {
               menu->current = oldcur->virtual;
@@ -1514,7 +1509,7 @@ int mutt_index_menu(void)
           {
             mutt_error(_("No deleted messages found in the thread"));
             /* Similar to OP_MAIN_ENTIRE_THREAD, keep displaying the old message, but
-               update the index */
+             * update the index */
             if (menu->menu == MENU_PAGER)
             {
               op = OP_DISPLAY_MESSAGE;
@@ -1580,8 +1575,7 @@ int mutt_index_menu(void)
         /* L10N: CHECK_ACL */
         /* L10N: Due to the implementation details we do not know whether we
             delete zero, 1, 12, ... messages. So in English we use
-            "messages". Your language might have other means to express this.
-          */
+            "messages". Your language might have other means to express this.  */
         if (!check_acl(Context, MUTT_ACL_DELETE, _("Cannot delete messages")))
           break;
 
@@ -1806,8 +1800,7 @@ int mutt_index_menu(void)
         /* L10N: CHECK_ACL */
         /* L10N: Due to the implementation details we do not know whether we
             undelete zero, 1, 12, ... messages. So in English we use
-            "messages". Your language might have other means to express this.
-          */
+            "messages". Your language might have other means to express this. */
         if (!check_acl(Context, MUTT_ACL_DELETE, _("Cannot undelete messages")))
           break;
 
@@ -2314,8 +2307,7 @@ int mutt_index_menu(void)
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
         /* toggle the weeding of headers so that a user can press the key
-         * again while reading the message.
-         */
+         * again while reading the message.  */
         if (op == OP_DISPLAY_HEADERS)
           bool_str_toggle(Config, "weed", NULL);
 
@@ -3036,8 +3028,7 @@ int mutt_index_menu(void)
         /* L10N: CHECK_ACL */
         /* L10N: Due to the implementation details we do not know whether we
            delete zero, 1, 12, ... messages. So in English we use
-           "messages". Your language might have other means to express this.
-         */
+           "messages". Your language might have other means to express this. */
         if (!check_acl(Context, MUTT_ACL_DELETE, _("Cannot delete messages")))
           break;
 
@@ -3178,15 +3169,15 @@ int mutt_index_menu(void)
           Context->mailbox->changed = true;
           menu->redraw = REDRAW_FULL;
           /* L10N: This is displayed when the x-label on one or more
-           * messages is edited. */
+             messages is edited. */
           mutt_message(ngettext("%d label changed", "%d labels changed", num_changed),
                        num_changed);
         }
         else
         {
           /* L10N: This is displayed when editing an x-label, but no messages
-           * were updated.  Possibly due to canceling at the prompt or if the new
-           * label is the same as the old label. */
+             were updated.  Possibly due to canceling at the prompt or if the new
+             label is the same as the old label. */
           mutt_message(_("No labels changed"));
         }
         break;
@@ -3271,8 +3262,7 @@ int mutt_index_menu(void)
 
 #ifdef USE_IMAP
         /* in an IMAP folder index with imap_peek=no, piping could change
-         * new or old messages status to read. Redraw what's needed.
-         */
+         * new or old messages status to read. Redraw what's needed.  */
         if ((Context->mailbox->magic == MUTT_IMAP) && !C_ImapPeek)
         {
           menu->redraw |= (tag ? REDRAW_INDEX : REDRAW_CURRENT) | REDRAW_STATUS;
@@ -3292,8 +3282,7 @@ int mutt_index_menu(void)
 
 #ifdef USE_IMAP
         /* in an IMAP folder index with imap_peek=no, printing could change
-         * new or old messages status to read. Redraw what's needed.
-         */
+         * new or old messages status to read. Redraw what's needed.  */
         if ((Context->mailbox->magic == MUTT_IMAP) && !C_ImapPeek)
         {
           menu->redraw |= (tag ? REDRAW_INDEX : REDRAW_CURRENT) | REDRAW_STATUS;
@@ -3310,8 +3299,7 @@ int mutt_index_menu(void)
         /* L10N: CHECK_ACL */
         /* L10N: Due to the implementation details we do not know whether we
            mark zero, 1, 12, ... messages as read. So in English we use
-           "messages". Your language might have other means to express this.
-         */
+           "messages". Your language might have other means to express this. */
         if (!check_acl(Context, MUTT_ACL_SEEN, _("Cannot mark messages as read")))
           break;
 
@@ -3524,8 +3512,7 @@ int mutt_index_menu(void)
         /* L10N: CHECK_ACL */
         /* L10N: Due to the implementation details we do not know whether we
             undelete zero, 1, 12, ... messages. So in English we use
-            "messages". Your language might have other means to express this.
-          */
+            "messages". Your language might have other means to express this. */
         if (!check_acl(Context, MUTT_ACL_DELETE, _("Cannot undelete messages")))
           break;
 

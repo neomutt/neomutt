@@ -123,14 +123,14 @@ static void dump_bind(struct Buffer *buf, struct Mapping *menu, struct Keymap *m
   }
 
   /* The pager and editor menus don't use the generic map,
-    * however for other menus try generic first. */
+   * however for other menus try generic first. */
   if ((menu->value != MENU_PAGER) && (menu->value != MENU_EDITOR) && (menu->value != MENU_GENERIC))
   {
     fn_name = mutt_get_func(OpGeneric, map->op);
   }
 
   /* if it's one of the menus above or generic doesn't find
-    * the function, try with its own menu. */
+   * the function, try with its own menu. */
   if (!fn_name)
   {
     const struct Binding *bindings = km_get_table(menu->value);

@@ -635,8 +635,7 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
   if (strstr(p, "//") || strstr(p, "/./"))
   {
     /* first attempt to collapse the pathname, this is more
-     * lightweight than realpath() and doesn't resolve links
-     */
+     * lightweight than realpath() and doesn't resolve links */
     while (*p)
     {
       if ((*p == '/') && (p[1] == '/'))
@@ -698,12 +697,9 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
     if (directory)
     {
       switch (mutt_multi_choice
-              /* L10N:
-                 Means "The path you specified as the destination file is a directory."
+              /* L10N: Means "The path you specified as the destination file is a directory."
                  See the msgid "Save to file: " (alias.c, recvattach.c)
-
-                 These three letters correspond to the choices in the string.
-               */
+                 These three letters correspond to the choices in the string.  */
               (_("File is a directory, save under it? [(y)es, (n)o, (a)ll]"), _("yna")))
       {
         case 3: /* all */
@@ -720,8 +716,7 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
           return 1;
       }
     }
-    /* L10N:
-       Means "The path you specified as the destination file is a directory."
+    /* L10N: Means "The path you specified as the destination file is a directory."
        See the msgid "Save to file: " (alias.c, recvattach.c) */
     else if ((ans = mutt_yesorno(_("File is a directory, save under it?"), MUTT_YES)) != MUTT_YES)
       return (ans == MUTT_NO) ? 1 : -1;
@@ -929,8 +924,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
                 /* buflen is decremented at the start of this function
                  * to save space for the terminal nul char.  We can add
                  * it back for the recursive call since the expansion of
-                 * format pipes does not try to append a nul itself.
-                 */
+                 * format pipes does not try to append a nul itself.  */
                 mutt_expando_format(buf, buflen + 1, col, cols, recycler,
                                     callback, data, flags);
                 FREE(&recycler);

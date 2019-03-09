@@ -370,7 +370,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
     if (plen)
     {
       /* if a mailbox is currently open, look to see if the original message
-          the user attempted to reply to is in this mailbox */
+       * the user attempted to reply to is in this mailbox */
       p = mutt_str_skip_email_wsp(np->data + plen);
       if (!ctx->mailbox->id_hash)
         ctx->mailbox->id_hash = mutt_make_id_hash(ctx->mailbox);
@@ -388,8 +388,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
       /* note that x-mutt-fcc was present.  we do this because we want to add a
        * default fcc if the header was missing, but preserve the request of the
        * user to not make a copy if the header field is present, but empty.
-       * see http://dev.mutt.org/trac/ticket/3653
-       */
+       * see http://dev.mutt.org/trac/ticket/3653 */
       rc |= SEND_POSTPONED_FCC;
     }
     else if (((WithCrypto & APPLICATION_PGP) != 0) &&
@@ -496,8 +495,7 @@ SecurityFlags mutt_parse_crypt_hdr(const char *p, int set_empty_signas, Security
       /* This used to be the micalg parameter.
        *
        * It's no longer needed, so we just skip the parameter in order
-       * to be able to recall old messages.
-       */
+       * to be able to recall old messages.  */
       case 'm':
       case 'M':
         if (*(p + 1) == '<')
@@ -610,8 +608,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
 
   /* If resending a message, don't keep message_id or mail_followup_to.
    * Otherwise, we are resuming a postponed message, and want to keep those
-   * headers if they exist.
-   */
+   * headers if they exist.  */
   if (resend)
   {
     FREE(&newhdr->env->message_id);
@@ -646,8 +643,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
   }
 
   /* remove a potential multipart/signed layer - useful when
-   * resending messages
-   */
+   * resending messages */
   if ((WithCrypto != 0) && mutt_is_multipart_signed(newhdr->content))
   {
     newhdr->security |= SEC_SIGN;
@@ -678,8 +674,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
    *
    * XXX - we don't handle multipart/alternative in any
    * smart way when sending messages.  However, one may
-   * consider this a feature.
-   */
+   * consider this a feature.  */
   if (newhdr->content->type == TYPE_MULTIPART)
     newhdr->content = mutt_remove_multipart(newhdr->content);
 
@@ -689,8 +684,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
   for (b = newhdr->content; b; b = b->next)
   {
     /* what follows is roughly a receive-mode variant of
-     * mutt_get_tmp_attachment () from muttlib.c
-     */
+     * mutt_get_tmp_attachment () from muttlib.c */
 
     file[0] = '\0';
     if (b->filename)

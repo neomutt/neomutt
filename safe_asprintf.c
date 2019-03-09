@@ -54,8 +54,7 @@ int safe_asprintf(char **strp, const char *fmt, ...)
   va_end(ap);
 
   /* GNU libc man page for vasprintf(3) states that the value of *strp
-   * is undefined when the return code is -1.
-   */
+   * is undefined when the return code is -1.  */
   if (n < 0)
   {
     mutt_error(_("Out of memory"));
@@ -94,8 +93,7 @@ int safe_asprintf(char **strp, const char *fmt, ...)
     if (n < rlen)
     {
       /* reduce space to just that which was used.  note that 'n' does not
-       * include the terminal nul char.
-       */
+       * include the terminal nul char.  */
       if (n == 0) /* convention is to use NULL for zero-length strings. */
         FREE(strp);
       else if (n != rlen - 1)

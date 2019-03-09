@@ -185,7 +185,7 @@ static int fetch_auth(char *line, void *data)
  * @retval  0 Successful
  * @retval -1 Connection lost
  * @retval -2 Execution error
-*/
+ */
 static int pop_capabilities(struct PopAccountData *adata, int mode)
 {
   char buf[1024];
@@ -299,7 +299,7 @@ int pop_connect(struct PopAccountData *adata)
  * @retval -1 Connection lost
  * @retval -2 Invalid command or execution error
  * @retval -3 Authentication cancelled
-*/
+ */
 int pop_open_connection(struct PopAccountData *adata)
 {
   char buf[1024];
@@ -445,7 +445,7 @@ void pop_logout(struct Mailbox *m)
  * @retval  0 Successful
  * @retval -1 Connection lost
  * @retval -2 Invalid command or execution error
-*/
+ */
 int pop_query_d(struct PopAccountData *adata, char *buf, size_t buflen, char *msg)
 {
   if (adata->status != POP_CONNECTED)

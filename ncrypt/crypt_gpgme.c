@@ -104,7 +104,7 @@ struct DnArray
 };
 
 /* We work based on user IDs, getting from a user ID to the key is
-   check and does not need any memory (gpgme uses reference counting). */
+ * check and does not need any memory (gpgme uses reference counting). */
 /**
  * struct CryptKeyInfo - A stored PGP key
  */
@@ -198,8 +198,7 @@ static void print_utf8(FILE *fp, const char *buf, size_t len)
   tstr[len] = 0;
 
   /* fromcode "utf-8" is sure, so we don't want
-   * charset-hook corrections: flags must be 0.
-   */
+   * charset-hook corrections: flags must be 0.  */
   mutt_ch_convert_string(&tstr, "utf-8", C_Charset, 0);
   fputs(tstr, fp);
   FREE(&tstr);
@@ -904,7 +903,7 @@ static int data_object_to_stream(gpgme_data_t data, FILE *fp)
   while ((nread = gpgme_data_read(data, buf, sizeof(buf))) > 0)
   {
     /* fixme: we are not really converting CRLF to LF but just
-         skipping CR. Doing it correctly needs a more complex logic */
+     * skipping CR. Doing it correctly needs a more complex logic */
     for (char *p = buf; nread; p++, nread--)
     {
       if (*p != '\r')
@@ -1037,8 +1036,7 @@ static gpgme_key_t *create_recipient_set(const char *keylist, gpgme_protocol_t p
     {
       if ((i > 1) && (buf[i - 1] == '!'))
       {
-        /* The user selected to override the validity of that
-           key. */
+        /* The user selected to override the validity of that key. */
         buf[i - 1] = 0;
 
         err = gpgme_get_key(context, buf, &key, 0);
@@ -1319,8 +1317,7 @@ static struct Body *sign_message(struct Body *a, bool use_smime)
     return NULL;
   }
   /* Check for zero signatures generated.  This can occur when $pgp_sign_as is
-   * unset and there is no default key specified in ~/.gnupg/gpg.conf
-   */
+   * unset and there is no default key specified in ~/.gnupg/gpg.conf */
   sigres = gpgme_op_sign_result(ctx);
   if (!sigres->signatures)
   {
@@ -1350,7 +1347,7 @@ static struct Body *sign_message(struct Body *a, bool use_smime)
   mutt_param_set(&t->parameter, "protocol",
                  use_smime ? "application/pkcs7-signature" : "application/pgp-signature");
   /* Get the micalg from gpgme.  Old gpgme versions don't support this
-     for S/MIME so we assume sha-1 in this case. */
+   * for S/MIME so we assume sha-1 in this case. */
   if (get_micalg(ctx, use_smime, buf, sizeof(buf)) == 0)
     mutt_param_set(&t->parameter, "micalg", buf);
   else if (use_smime)
@@ -1781,15 +1778,14 @@ static void print_smime_keyinfo(const char *msg, gpgme_signature_t sig,
     else
     {
       /* L10N: You will see this message in place of "KeyID "
-         if the S/MIME key has no ID. This is quite an error.
-       */
+         if the S/MIME key has no ID. This is quite an error. */
       state_puts(_("no signature fingerprint available"), s);
     }
     state_puts("\n", s);
   }
 
   /* timestamp is 0 when verification failed.
-     "Jan 1 1970" is not the created date. */
+   * "Jan 1 1970" is not the created date. */
   if (sig->timestamp)
   {
     msgwid = mutt_strwidth(msg) - mutt_strwidth(_("created: ")) + 1;
@@ -1828,8 +1824,8 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *s)
   if (result)
   {
     /* FIXME: this code should use a static variable and remember
-         the current position in the list of signatures, IMHO.
-         -moritz.  */
+     * the current position in the list of signatures, IMHO.
+     * -moritz.  */
     int i;
     for (i = 0, sig = result->signatures; sig && (i < idx); i++, sig = sig->next)
       ;
@@ -1906,9 +1902,8 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *s)
       /* 0 indicates no expiration */
       if (sig->exp_timestamp)
       {
-        /* L10N:
-             This is trying to match the width of the
-             "Problem signature from:" translation just above. */
+        /* L10N: This is trying to match the width of the
+           "Problem signature from:" translation just above. */
         state_puts(_("               expires: "), s);
         print_time(sig->exp_timestamp, s);
         state_puts("\n", s);
@@ -1942,7 +1937,7 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
     return -1;
 
   /* We need to tell gpgme about the encoding because the backend can't
-     auto-detect plain base-64 encoding which is used by S/MIME. */
+   * auto-detect plain base-64 encoding which is used by S/MIME. */
   if (is_smime)
     gpgme_data_set_encoding(signature, GPGME_DATA_ENCODING_BASE64);
 
@@ -1956,8 +1951,7 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
   ctx = create_gpgme_context(is_smime);
 
   /* Note: We don't need a current time output because GPGME avoids
-     such an attack by separating the meta information from the
-     data. */
+   * such an attack by separating the meta information from the data. */
   state_attach_puts(_("[-- Begin signature information --]\n"), s);
 
   err = gpgme_op_verify(ctx, signature, message, NULL);
@@ -2134,11 +2128,10 @@ restart:
   {
     if (is_smime && !maybe_signed && (gpg_err_code(err) == GPG_ERR_NO_DATA))
     {
-      /* Check whether this might be a signed message despite what
-             the mime header told us.  Retry then.  gpgsm returns the
-             error information "unsupported Algorithm '?'" but gpgme
-             will not store this unknown algorithm, thus we test that
-             it has not been set. */
+      /* Check whether this might be a signed message despite what the mime
+       * header told us.  Retry then.  gpgsm returns the error information
+       * "unsupported Algorithm '?'" but gpgme will not store this unknown
+       * algorithm, thus we test that it has not been set. */
       gpgme_decrypt_result_t result;
 
       result = gpgme_op_decrypt_result(ctx);
@@ -2168,7 +2161,7 @@ restart:
   redraw_if_needed(ctx);
 
   /* Read the output from GPGME, and make sure to change CRLF to LF,
-     otherwise read_mime_header has a hard time parsing the message.  */
+   * otherwise read_mime_header has a hard time parsing the message.  */
   if (data_object_to_stream(plaintext, fp_out))
   {
     gpgme_data_release(plaintext);
@@ -2338,9 +2331,9 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
     return -1;
 
   /* Decode the body - we need to pass binary CMS to the
-     backend.  The backend allows for Base64 encoded data but it does
-     not allow for QP which I have seen in some messages.  So better
-     do it here. */
+   * backend.  The backend allows for Base64 encoded data but it does
+   * not allow for QP which I have seen in some messages.  So better
+   * do it here. */
   saved_b_type = b->type;
   saved_b_offset = b->offset;
   saved_b_length = b->length;
@@ -2380,15 +2373,13 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
   rewind(*fp_out);
   if (*cur && !is_signed && !(*cur)->parts && mutt_is_application_smime(*cur))
   {
-    /* Assume that this is a opaque signed s/mime message.  This is
-         an ugly way of doing it but we have anyway a problem with
-         arbitrary encoded S/MIME messages: Only the outer part may be
-         encrypted.  The entire mime parsing should be revamped,
-         probably by keeping the temporary files so that we don't
-         need to decrypt them all the time.  Inner parts of an
-         encrypted part can then point into this file and there won't
-         ever be a need to decrypt again.  This needs a partial
-         rewrite of the MIME engine. */
+    /* Assume that this is a opaque signed s/mime message.  This is an ugly way
+     * of doing it but we have anyway a problem with arbitrary encoded S/MIME
+     * messages: Only the outer part may be encrypted.  The entire mime parsing
+     * should be revamped, probably by keeping the temporary files so that we
+     * don't need to decrypt them all the time.  Inner parts of an encrypted
+     * part can then point into this file and there won't ever be a need to
+     * decrypt again.  This needs a partial rewrite of the MIME engine. */
     struct Body *bb = *cur;
     struct Body *tmp_b = NULL;
 
@@ -2701,8 +2692,7 @@ void pgp_gpgme_invoke_import(const char *fname)
     goto leave;
   }
   /* Note that the stream, "fp_in", needs to be kept open while the keydata
-   * is used.
-   */
+   * is used.  */
   gpgme_error_t err = gpgme_data_new_from_stream(&keydata, fp_in);
   if (err != GPG_ERR_NO_ERROR)
   {
@@ -2812,8 +2802,7 @@ static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
 
   /* fromcode comes from the MIME Content-Type charset label. It might
    * be a wrong label, so we want the ability to do corrections via
-   * charset-hooks. Therefore we set flags to MUTT_ICONV_HOOK_FROM.
-   */
+   * charset-hooks. Therefore we set flags to MUTT_ICONV_HOOK_FROM.  */
   struct FgetConv *fc = mutt_ch_fgetconv_open(fp, charset, C_Charset, MUTT_ICONV_HOOK_FROM);
 
   for (complete = true, armor_header = true;
@@ -2873,8 +2862,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
   mutt_debug(LL_DEBUG2, "Entering handler\n");
 
   /* For clearsigned messages we won't be able to get a character set
-     but we know that this may only be text thus we assume Latin-1
-     here. */
+   * but we know that this may only be text thus we assume Latin-1 here. */
   if (!mutt_body_get_charset(m, body_charset, sizeof(body_charset)))
     mutt_str_strfcpy(body_charset, "iso-8859-1", sizeof(body_charset));
 
@@ -2942,8 +2930,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
           {
             /* Decrypt verify can't handle signed only messages. */
             gpgme_data_seek(armored_data, 0, SEEK_SET);
-            /* Must release plaintext so that we supply an
-                         uninitialized object. */
+            /* Must release plaintext so that we supply an uninitialized object. */
             gpgme_data_release(plaintext);
             plaintext = create_gpgme_data();
             err = gpgme_op_verify(ctx, armored_data, NULL, plaintext);
@@ -3015,8 +3002,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
 
       /* Now, copy cleartext to the screen.  NOTE - we expect that PGP
        * outputs utf-8 cleartext.  This may not always be true, but it
-       * seems to be a reasonable guess.
-       */
+       * seems to be a reasonable guess.  */
       if (s->flags & MUTT_DISPLAY)
       {
         if (needpass)
@@ -3154,8 +3140,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
 
     /* if a multipart/signed is the _only_ sub-part of a
      * multipart/encrypted, cache signature verification
-     * status.
-     */
+     * status.  */
     if (mutt_is_multipart_signed(tattach) && !tattach->next)
       a->goodsig |= tattach->goodsig;
 
@@ -3249,8 +3234,7 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
     }
 
     /* if a multipart/signed is the _only_ sub-part of a multipart/encrypted,
-     * cache signature verification status.
-     */
+     * cache signature verification status.  */
     if (mutt_is_multipart_signed(tattach) && !tattach->next)
     {
       a->goodsig = tattach->goodsig;
@@ -3359,7 +3343,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
       if (!optional)
       {
         /* fixme: we need a way to distinguish between main and subkeys.
-           Store the idx in entry? */
+         * Store the idx in entry? */
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
         snprintf(buf, buflen, fmt, crypt_keyid(key));
       }
@@ -3767,50 +3751,50 @@ static void print_dn_parts(FILE *fp, struct DnArray *dn)
 
 /**
  * parse_dn_part - Parse an RDN
- * @param array  Array for results
- * @param string String to parse
+ * @param array Array for results
+ * @param str   String to parse
  * @retval ptr First character after Distinguished Name
  *
  * This is a helper to parse_dn()
  */
-static const char *parse_dn_part(struct DnArray *array, const char *string)
+static const char *parse_dn_part(struct DnArray *array, const char *str)
 {
   const char *s = NULL, *s1 = NULL;
   size_t n;
   char *p = NULL;
 
   /* parse attribute type */
-  for (s = string + 1; *s && *s != '='; s++)
+  for (s = str + 1; *s && *s != '='; s++)
     ;
   if (!*s)
     return NULL; /* error */
-  n = s - string;
+  n = s - str;
   if (!n)
     return NULL; /* empty key */
   array->key = mutt_mem_malloc(n + 1);
   p = array->key;
-  memcpy(p, string, n); /* fixme: trim trailing spaces */
+  memcpy(p, str, n); /* fixme: trim trailing spaces */
   p[n] = 0;
-  string = s + 1;
+  str = s + 1;
 
-  if (*string == '#')
+  if (*str == '#')
   { /* hexstring */
-    string++;
-    for (s = string; isxdigit(*s); s++)
+    str++;
+    for (s = str; isxdigit(*s); s++)
       s++;
-    n = s - string;
+    n = s - str;
     if (!n || (n & 1))
       return NULL; /* empty or odd number of digits */
     n /= 2;
     p = mutt_mem_malloc(n + 1);
     array->value = (char *) p;
-    for (s1 = string; n; s1 += 2, n--)
+    for (s1 = str; n; s1 += 2, n--)
       sscanf(s1, "%2hhx", (unsigned char *) p++);
     *p = 0;
   }
   else
   { /* regular v3 quoted string */
-    for (n = 0, s = string; *s; s++)
+    for (n = 0, s = str; *s; s++)
     {
       if (*s == '\\')
       { /* pair */
@@ -3841,7 +3825,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *string)
 
     p = mutt_mem_malloc(n + 1);
     array->value = (char *) p;
-    for (s = string; n; s++, n--)
+    for (s = str; n; s++, n--)
     {
       if (*s == '\\')
       {
@@ -3864,13 +3848,13 @@ static const char *parse_dn_part(struct DnArray *array, const char *string)
 
 /**
  * parse_dn - Parse a DN and return an array-ized one
- * @param string String to parse
+ * @param str String to parse
  * @retval ptr Array of Distinguished Names
  *
  * This is not a validating parser and it does not support any old-stylish
  * syntax; gpgme is expected to return only rfc2253 compatible strings.
  */
-static struct DnArray *parse_dn(const char *string)
+static struct DnArray *parse_dn(const char *str)
 {
   struct DnArray *array = NULL;
   size_t arrayidx, arraysize;
@@ -3878,11 +3862,11 @@ static struct DnArray *parse_dn(const char *string)
   arraysize = 7; /* C,ST,L,O,OU,CN,email */
   array = mutt_mem_malloc((arraysize + 1) * sizeof(*array));
   arrayidx = 0;
-  while (*string)
+  while (*str)
   {
-    while (*string == ' ')
-      string++;
-    if (!*string)
+    while (*str == ' ')
+      str++;
+    if (!*str)
       break; /* ready */
     if (arrayidx >= arraysize)
     {
@@ -3899,16 +3883,16 @@ static struct DnArray *parse_dn(const char *string)
     }
     array[arrayidx].key = NULL;
     array[arrayidx].value = NULL;
-    string = parse_dn_part(array + arrayidx, string);
+    str = parse_dn_part(array + arrayidx, str);
     arrayidx++;
-    if (!string)
+    if (!str)
       goto failure;
-    while (*string == ' ')
-      string++;
-    if (*string && (*string != ',') && (*string != ';') && (*string != '+'))
+    while (*str == ' ')
+      str++;
+    if (*str && (*str != ',') && (*str != ';') && (*str != '+'))
       goto failure; /* invalid delimiter */
-    if (*string)
-      string++;
+    if (*str)
+      str++;
   }
   array[arrayidx].key = NULL;
   array[arrayidx].value = NULL;
@@ -4046,10 +4030,9 @@ enum KeyInfo
 };
 
 static const char *const KeyInfoPrompts[] = {
-  /* L10N:
-   * The following are the headers for the "verify key" output from the
-   * GPGME key selection menu (bound to "c" in the key selection menu).
-   * They will be automatically aligned. */
+  /* L10N: The following are the headers for the "verify key" output from the
+     GPGME key selection menu (bound to "c" in the key selection menu).
+     They will be automatically aligned. */
   N_("Name: "),      N_("aka: "),       N_("Valid From: "),  N_("Valid To: "),
   N_("Key Type: "),  N_("Key Usage: "), N_("Fingerprint: "), N_("Serial-No: "),
   N_("Issued By: "), N_("Subkey: ")
@@ -4146,8 +4129,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
     aval = key->subkeys->length;
 
   fprintf(fp, "%*s", KeyInfoPadding[KIP_KEY_TYPE], _(KeyInfoPrompts[KIP_KEY_TYPE]));
-  /* L10N: This is printed after "Key Type: " and looks like this:
-   *       PGP, 2048 bit RSA */
+  /* L10N: This is printed after "Key Type: " and looks like this: PGP, 2048 bit RSA */
   fprintf(fp, ngettext("%s, %lu bit %s\n", "%s, %lu bit %s\n", aval), s2, aval, s);
 
   fprintf(fp, "%*s", KeyInfoPadding[KIP_KEY_USAGE], _(KeyInfoPrompts[KIP_KEY_USAGE]));
@@ -4288,8 +4270,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
       aval = subkey->length;
 
       fprintf(fp, "%*s", KeyInfoPadding[KIP_KEY_TYPE], _(KeyInfoPrompts[KIP_KEY_TYPE]));
-      /* L10N: This is printed after "Key Type: " and looks like this:
-       *       PGP, 2048 bit RSA */
+      /* L10N: This is printed after "Key Type: " and looks like this: PGP, 2048 bit RSA */
       fprintf(fp, ngettext("%s, %lu bit %s\n", "%s, %lu bit %s\n", aval), "PGP", aval, s);
 
       fprintf(fp, "%*s", KeyInfoPadding[KIP_KEY_USAGE], _(KeyInfoPrompts[KIP_KEY_USAGE]));
@@ -4466,10 +4447,9 @@ static struct CryptKeyInfo *get_candidates(struct ListHead *hints, SecurityFlags
 
   if ((app & APPLICATION_PGP))
   {
-    /* It's all a mess.  That old GPGME expects different things
-         depending on the protocol.  For gpg we don't need percent
-         escaped pappert but simple strings passed in an array to the
-         keylist_ext_start function. */
+    /* It's all a mess.  That old GPGME expects different things depending on
+     * the protocol.  For gpg we don't need percent escaped pappert but simple
+     * strings passed in an array to the keylist_ext_start function. */
     size_t n = 0;
     struct ListNode *np = NULL;
     STAILQ_FOREACH(np, hints, entries)
@@ -4723,8 +4703,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
     }
     else
     {
-      /* L10N:
-         e.g. 'S/MIME keys matching "Michael Elkins".' */
+      /* L10N: e.g. 'S/MIME keys matching "Michael Elkins".' */
       snprintf(buf, sizeof(buf), _("%s \"%s\""), ts, s);
     }
     menu->title = buf;
@@ -4748,7 +4727,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
 
       case OP_GENERIC_SELECT_ENTRY:
         /* FIXME make error reporting more verbose - this should be
-             easy because gpgme provides more information */
+         * easy because gpgme provides more information */
         if (OptPgpCheckTrust)
         {
           if (!crypt_key_is_valid(key_table[menu->current]))
@@ -4934,8 +4913,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
     else if (the_strong_valid_key && !multi)
     {
       /* There was precisely one strong match on a valid ID.
-       * Proceed without asking the user.
-       */
+       * Proceed without asking the user.  */
       k = crypt_copy_key(the_strong_valid_key);
     }
     else
@@ -5282,8 +5260,7 @@ struct Body *pgp_gpgme_make_key_attachment(void)
   att->use_disp = false;
   att->type = TYPE_APPLICATION;
   att->subtype = mutt_str_strdup("pgp-keys");
-  /* L10N:
-     MIME description for exported (attached) keys.
+  /* L10N: MIME description for exported (attached) keys.
      You can translate this entry to a non-ASCII string (it will be encoded),
      but it may be safer to keep it untranslated. */
   snprintf(buf, sizeof(buf), _("PGP Key 0x%s"), crypt_keyid(key));
@@ -5584,8 +5561,7 @@ static bool verify_sender(struct Email *e)
           {
             /* Assume address is 'mailbox@domainname'.
              * The mailbox part is case-sensitive,
-             * the domainname is not. (RFC2821)
-             */
+             * the domainname is not. (RFC2821) */
             const char *tmp_email = uid->email + 1;
             const char *tmp_sender = sender->mailbox;
             /* length of mailbox part including '@' */

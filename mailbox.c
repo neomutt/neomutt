@@ -443,8 +443,7 @@ bool mutt_mailbox_list(void)
     return true;
   }
   /* there were no mailboxes needing to be notified, so clean up since
-   * MailboxNotify has somehow gotten out of sync
-   */
+   * MailboxNotify has somehow gotten out of sync */
   MailboxNotify = 0;
   return false;
 }
