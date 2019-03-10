@@ -339,56 +339,67 @@ void url_pct_encode(char *buf, size_t buflen, const char *src)
 }
 
 /**
- * url_tostring - Output the URL string for a given Url object
+ * url_tobuffer - Output the URL string for a given Url object
  * @param u      Url to turn into a string
  * @param buf    Buffer for the result
- * @param buflen Length of buffer
  * @param flags  Flags, e.g. #U_PATH
  * @retval  0 Success
  * @retval -1 Error
  */
-int url_tostring(struct Url *u, char *buf, size_t buflen, int flags)
+int url_tobuffer(struct Url *u, struct Buffer *buf, int flags)
 {
   if (u->scheme == U_UNKNOWN)
     return -1;
 
-  snprintf(buf, buflen, "%s:", mutt_map_get_name(u->scheme, UrlMap));
+  mutt_buffer_printf(buf, "%s:", mutt_map_get_name(u->scheme, UrlMap));
 
   if (u->host)
   {
     if (!(flags & U_PATH))
-      mutt_str_strcat(buf, buflen, "//");
-    size_t l = strlen(buf);
-    buflen -= l;
-    buf += l;
+      mutt_buffer_addstr(buf, "//");
 
     if (u->user && (u->user[0] || !(flags & U_PATH)))
     {
       char str[256];
       url_pct_encode(str, sizeof(str), u->user);
-      snprintf(buf, buflen, "%s@", str);
-      l = strlen(buf);
-      buflen -= l;
-      buf += l;
+      mutt_buffer_add_printf(buf, "%s@", str);
     }
 
     if (strchr(u->host, ':'))
-      snprintf(buf, buflen, "[%s]", u->host);
+      mutt_buffer_add_printf(buf, "[%s]", u->host);
     else
-      snprintf(buf, buflen, "%s", u->host);
-
-    l = strlen(buf);
-    buflen -= l;
-    buf += l;
+      mutt_buffer_add_printf(buf, "%s", u->host);
 
     if (u->port)
-      snprintf(buf, buflen, ":%hu/", u->port);
+      mutt_buffer_add_printf(buf, ":%hu/", u->port);
     else
-      snprintf(buf, buflen, "/");
+      mutt_buffer_addstr(buf, "/");
   }
 
   if (u->path)
-    mutt_str_strcat(buf, buflen, u->path);
+    mutt_buffer_addstr(buf, u->path);
 
   return 0;
+}
+
+/**
+ * url_tostring - Output the URL string for a given Url object
+ * @param u      Url to turn into a string
+ * @param dest   Buffer for the result
+ * @param len    Length of buffer
+ * @param flags  Flags, e.g. #U_PATH
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+int url_tostring(struct Url *u, char *dest, size_t len, int flags)
+{
+  struct Buffer *dest_buf = mutt_buffer_pool_get();
+
+  int retval = url_tobuffer(u, dest_buf, flags);
+  if (retval == 0)
+    mutt_str_strfcpy(dest, mutt_b2s(dest_buf), len);
+
+  mutt_buffer_pool_release(&dest_buf);
+
+  return retval;
 }

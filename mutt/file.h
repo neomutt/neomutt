@@ -29,6 +29,7 @@
 #include <sys/types.h>
 #include <time.h>
 
+struct Buffer;
 struct stat;
 extern char *C_Tmpdir;
 
@@ -109,7 +110,7 @@ int         mutt_file_rename(const char *oldfile, const char *newfile);
 int         mutt_file_rmtree(const char *path);
 int         mutt_file_safe_rename(const char *src, const char *target);
 void        mutt_file_sanitize_filename(char *fp, bool slash);
-int         mutt_file_sanitize_regex(char *dest, size_t destlen, const char *src);
+int         mutt_file_sanitize_regex(struct Buffer *dest, const char *src);
 void        mutt_file_set_mtime(const char *from, const char *to);
 int         mutt_file_stat_compare(struct stat *sba, enum MuttStatType sba_type, struct stat *sbb, enum MuttStatType sbb_type);
 int         mutt_file_stat_timespec_compare(struct stat *sba, enum MuttStatType type, struct timespec *b);
