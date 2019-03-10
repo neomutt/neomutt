@@ -192,7 +192,7 @@ static int make_msg_set(struct Mailbox *m, struct Buffer *buf, int flag,
 
   struct Email **emails = m->emails;
 
-  for (n = *pos; (n < m->msg_count) && ((buf->dptr - buf->data) < IMAP_MAX_CMDLEN); n++)
+  for (n = *pos; (n < m->msg_count) && (mutt_buffer_len(buf) < IMAP_MAX_CMDLEN); n++)
   {
     bool match = false; /* whether current message matches flag condition */
     /* don't include pending expunged messages.
@@ -1042,7 +1042,7 @@ int imap_exec_msgset(struct Mailbox *m, const char *pre, const char *post,
 
   do
   {
-    cmd->dptr = cmd->data;
+    mutt_buffer_reset(cmd);
     mutt_buffer_add_printf(cmd, "%s ", pre);
     rc = make_msg_set(m, cmd, flag, changed, invert, &pos);
     if (rc > 0)
@@ -1105,7 +1105,7 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
   }
 
   snprintf(uid, sizeof(uid), "%u", imap_edata_get(e)->uid);
-  cmd->dptr = cmd->data;
+  mutt_buffer_reset(cmd);
   mutt_buffer_addstr(cmd, "UID STORE ");
   mutt_buffer_addstr(cmd, uid);
 

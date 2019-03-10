@@ -200,12 +200,12 @@ static int cmd_start(struct ImapAccountData *adata, const char *cmdstr, ImapCmdF
   if (flags & IMAP_CMD_QUEUE)
     return 0;
 
-  if (adata->cmdbuf->dptr == adata->cmdbuf->data)
+  if (mutt_buffer_len(adata->cmdbuf) == 0)
     return IMAP_CMD_BAD;
 
   rc = mutt_socket_send_d(adata->conn, adata->cmdbuf->data,
                           (flags & IMAP_CMD_PASS) ? IMAP_LOG_PASS : IMAP_LOG_CMD);
-  adata->cmdbuf->dptr = adata->cmdbuf->data;
+  mutt_buffer_reset(adata->cmdbuf);
 
   /* unidle when command queue is flushed */
   if (adata->state == IMAP_IDLE)

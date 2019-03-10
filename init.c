@@ -2665,8 +2665,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
   char qc = 0; /* quote char */
   char *pc = NULL;
 
-  /* reset the destination pointer to the beginning of the buffer */
-  dest->dptr = dest->data;
+  mutt_buffer_reset(dest);
 
   SKIPWS(tok->dptr);
   while ((ch = *tok->dptr))
@@ -3002,9 +3001,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   struct Buffer err;
 
   mutt_buffer_init(&err);
-  err.dsize = 256;
-  err.data = mutt_mem_malloc(err.dsize);
-  err.dptr = err.data;
+  mutt_buffer_increase_size(&err, 256);
 
   mutt_grouplist_init();
   /* reverse alias keys need to be strdup'ed because of idna conversions */

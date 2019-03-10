@@ -1073,12 +1073,9 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
             mutt_buffer_addstr(env->spam, C_SpamSeparator);
             mutt_buffer_addstr(env->spam, buf);
           }
-
-          /* else overwrite */
-          else
+          else /* overwrite */
           {
-            env->spam->dptr = env->spam->data;
-            *env->spam->dptr = '\0';
+            mutt_buffer_reset(env->spam);
             mutt_buffer_addstr(env->spam, buf);
           }
         }
