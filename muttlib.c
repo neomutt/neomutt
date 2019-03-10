@@ -613,7 +613,7 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
 
   if ((scheme == U_IMAP) || (scheme == U_IMAPS))
   {
-    imap_pretty_mailbox(buf, C_Folder);
+    imap_pretty_mailbox(buf, buflen, C_Folder);
     return;
   }
 
