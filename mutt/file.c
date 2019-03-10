@@ -42,6 +42,7 @@
 #include <unistd.h>
 #include <utime.h>
 #include "file.h"
+#include "buffer.h"
 #include "logging.h"
 #include "memory.h"
 #include "message.h"
@@ -587,30 +588,22 @@ void mutt_file_sanitize_filename(char *fp, bool slash)
 
 /**
  * mutt_file_sanitize_regex - Escape any regex-magic characters in a string
- * @param dest    Buffer for result
- * @param destlen Length of buffer
- * @param src     String to transform
+ * @param dest Buffer for result
+ * @param src  String to transform
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_file_sanitize_regex(char *dest, size_t destlen, const char *src)
+int mutt_file_sanitize_regex(struct Buffer *dest, const char *src)
 {
-  while (*src && (--destlen > 2))
+  mutt_buffer_reset(dest);
+  while (*src != '\0')
   {
     if (strchr(rx_special_chars, *src))
-    {
-      *dest++ = '\\';
-      destlen--;
-    }
-    *dest++ = *src++;
+      mutt_buffer_addch(dest, '\\');
+    mutt_buffer_addch(dest, *src++);
   }
 
-  *dest = '\0';
-
-  if (*src)
-    return -1;
-  else
-    return 0;
+  return 0;
 }
 
 /**

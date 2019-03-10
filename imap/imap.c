@@ -2491,6 +2491,20 @@ int imap_path_canon(char *buf, size_t buflen)
 }
 
 /**
+ * imap_expand_path - Buffer wrapper around imap_path_canon()
+ * @param buf Path to expand 
+ * @retval  0 Success
+ * @retval -1 Failure
+ *
+ * @note The path is expanded in place
+ */
+int imap_expand_path(struct Buffer *buf)
+{
+  mutt_buffer_increase_size(buf, PATH_MAX);
+  return imap_path_canon(buf->data, PATH_MAX);
+}
+
+/**
  * imap_path_pretty - Implements MxOps::path_pretty()
  */
 int imap_path_pretty(char *buf, size_t buflen, const char *folder)
