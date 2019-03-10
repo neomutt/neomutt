@@ -852,8 +852,10 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
       strncpy(srccopy, src, n);
       srccopy[n - 1] = '\0';
 
-      /* prepare BUFFERs */
+      /* prepare Buffers */
       struct Buffer *srcbuf = mutt_buffer_from(srccopy);
+      /* note: we are resetting dptr and *reading* from the buffer, so we don't
+       * want to use mutt_buffer_reset(). */
       srcbuf->dptr = srcbuf->data;
       struct Buffer *word = mutt_buffer_new();
       struct Buffer *cmd = mutt_buffer_new();

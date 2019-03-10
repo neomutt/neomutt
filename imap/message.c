@@ -639,7 +639,7 @@ static void imap_fetch_msn_seqset(struct Buffer *b, struct ImapAccountData *adat
   /* Too big.  Just query the whole range then. */
   if ((chunks == 150) || (mutt_str_strlen(b->data) > 500))
   {
-    b->dptr = b->data;
+    mutt_buffer_reset(b);
     mutt_buffer_add_printf(b, "%u:%u", msn_begin, msn_end);
   }
 }
