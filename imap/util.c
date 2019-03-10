@@ -530,11 +530,8 @@ int imap_hcache_store_uid_seqset(struct ImapMboxData *mdata)
   mutt_buffer_increase_size(b, 8192);
   imap_msn_index_to_uid_seqset(b, mdata);
 
-  size_t seqset_size = b->dptr - b->data;
-  if (seqset_size == 0)
-    b->data[0] = '\0';
-
-  int rc = mutt_hcache_store_raw(mdata->hcache, "/UIDSEQSET", 10, b->data, seqset_size + 1);
+  int rc = mutt_hcache_store_raw(mdata->hcache, "/UIDSEQSET", 10, b->data,
+                                 mutt_buffer_len(b) + 1);
   mutt_debug(LL_DEBUG3, "Stored /UIDSEQSET %s\n", b->data);
   mutt_buffer_free(&b);
   return rc;
