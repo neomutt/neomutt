@@ -106,7 +106,7 @@ void imap_logout_all(void);
 
 /* util.c */
 int imap_parse_path(const char *path, struct ConnAccount *account, char *mailbox, size_t mailboxlen);
-void imap_pretty_mailbox(char *path, const char *folder);
+void imap_pretty_mailbox(char *path, size_t pathlen, const char *folder);
 
 int imap_wait_keepalive(pid_t pid);
 void imap_keepalive(void);
