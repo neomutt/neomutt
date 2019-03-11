@@ -1304,7 +1304,7 @@ static int fill_buffer(FILE *fp, LOFF_T *last_pos, LOFF_T offset, unsigned char 
     *buf = (unsigned char *) mutt_file_read_line((char *) *buf, blen, fp, &l, MUTT_EOL);
     if (!*buf)
     {
-      fmt[0] = '\0';
+      fmt[0] = NULL;
       return -1;
     }
     *last_pos = ftello(fp);
