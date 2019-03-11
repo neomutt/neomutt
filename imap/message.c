@@ -1864,7 +1864,16 @@ int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 
   msg->fp = msg_cache_put(m, e);
   if (!msg->fp)
-    return -1;
+  {
+    char path[PATH_MAX];
+    mutt_mktemp(path, sizeof(path));
+    msg->fp = mutt_file_fopen(path, "w+");
+    if (!msg->fp)
+    {
+      return -1;
+    }
+    unlink(path);
+  }
 
   /* mark this header as currently inactive so the command handler won't
    * also try to update it. HACK until all this code can be moved into the
