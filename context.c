@@ -49,7 +49,6 @@ void ctx_free(struct Context **ctx)
   if (!ctx || !*ctx)
     return;
 
-  mailbox_free(&(*ctx)->mailbox);
   FREE(ctx);
 }
 
