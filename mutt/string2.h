@@ -33,7 +33,7 @@
 
 #define STR_COMMAND 8192  ///< Enough space for a long command line
 
-#define NONULL(x) (x ? x : "")
+#define NONULL(x) ((x) ? (x) : "")
 #define ISSPACE(ch) isspace((unsigned char) ch)
 #define EMAIL_WSP " \t\r\n"
 
@@ -51,9 +51,9 @@
   do                                                                           \
   {                                                                            \
     if ((strlen) < (buflen))                                                   \
-      str[(strlen)] = 0;                                                       \
+      str[(strlen)] = '\0';                                                    \
     else                                                                       \
-      str[(buflen)] = 0;                                                       \
+      str[(buflen)] = '\0';                                                    \
   } while (false)
 
 #define terminate_buffer(str, strlen) terminate_string(str, strlen, sizeof(str) - 1)

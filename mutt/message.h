@@ -34,7 +34,7 @@
 #else
 #define _(a) (a)
 #define N_(a) a
-#define ngettext(x, xs, n) ((n) == 1 ? (x) : (xs))
+#define ngettext(x, xs, n) (((n) == 1) ? (x) : (xs))
 #endif
 
 #endif /* MUTT_LIB_MESSAGE_H */
