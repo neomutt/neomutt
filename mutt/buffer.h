@@ -59,6 +59,7 @@ struct Buffer *mutt_buffer_new          (void);
 int            mutt_buffer_printf       (struct Buffer *buf, const char *fmt, ...);
 void           mutt_buffer_reset        (struct Buffer *buf);
 void           mutt_buffer_strcpy       (struct Buffer *buf, const char *s);
+void           mutt_buffer_strcpy_n     (struct Buffer *buf, const char *s, size_t len);
 
 void           mutt_buffer_pool_free    (void);
 struct Buffer *mutt_buffer_pool_get     (void);
