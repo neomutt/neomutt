@@ -160,13 +160,13 @@ char *mutt_expand_path(char *buf, size_t buflen)
 }
 
 /**
- * mutt_buffer_expand_path - Create the canonical path (with regex char escaping)
+ * mutt_buffer_expand_path_regex - Create the canonical path (with regex char escaping)
  * @param buf     Buffer with path
  * @param regex If true, escape any regex characters
  *
  * @note The path is expanded in-place
  */
-void mutt_buffer_expand_path(struct Buffer *buf, bool regex)
+void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
 {
   const char *s = NULL;
   const char *tail = "";
@@ -180,7 +180,7 @@ void mutt_buffer_expand_path(struct Buffer *buf, bool regex)
   do
   {
     recurse = false;
-    s = buf->data;
+    s = mutt_b2s(buf);
 
     switch (*s)
     {
@@ -264,7 +264,7 @@ void mutt_buffer_expand_path(struct Buffer *buf, bool regex)
           e->env->to = NULL;
           mutt_email_free(&e);
           /* Avoid infinite recursion if the resulting folder starts with '@' */
-          if (*(p->data) != '@')
+          if (*(mutt_b2s(p)) != '@')
             recurse = true;
 
           tail = "";
@@ -322,7 +322,7 @@ void mutt_buffer_expand_path(struct Buffer *buf, bool regex)
       }
     }
 
-    if (regex && *p->data && !recurse)
+    if (regex && *(mutt_b2s(p)) && !recurse)
     {
       mutt_file_sanitize_regex(q, mutt_b2s(p));
       mutt_buffer_printf(tmp, "%s%s", mutt_b2s(q), tail);
@@ -346,6 +346,17 @@ void mutt_buffer_expand_path(struct Buffer *buf, bool regex)
 }
 
 /**
+ * mutt_buffer_expand_path - Create the canonical path
+ * @param buf     Buffer with path
+ *
+ * @note The path is expanded in-place
+ */
+void mutt_buffer_expand_path(struct Buffer *buf)
+{
+  mutt_buffer_expand_path_regex(buf, 0);
+}
+
+/**
  * mutt_expand_path_regex - Create the canonical path (with regex char escaping)
  * @param buf     Buffer with path
  * @param buflen  Length of buffer
@@ -358,8 +369,8 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
 {
   struct Buffer *tmp = mutt_buffer_pool_get();
 
-  mutt_buffer_addstr(tmp, buf);
-  mutt_buffer_expand_path(tmp, regex);
+  mutt_buffer_addstr(tmp, NONULL(buf));
+  mutt_buffer_expand_path_regex(tmp, regex);
   mutt_str_strfcpy(buf, mutt_b2s(tmp), buflen);
 
   mutt_buffer_pool_release(&tmp);
