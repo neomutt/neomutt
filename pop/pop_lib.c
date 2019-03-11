@@ -119,7 +119,7 @@ static void pop_error(struct PopAccountData *adata, char *msg)
 }
 
 /**
- * fetch_capa - Parse CAPA output
+ * fetch_capa - Parse CAPA output - Implements ::pop_fetch_t
  * @param line List of capabilities
  * @param data POP data
  * @retval 0 (always)
@@ -152,7 +152,7 @@ static int fetch_capa(char *line, void *data)
 }
 
 /**
- * fetch_auth - Fetch list of the authentication mechanisms
+ * fetch_auth - Fetch list of the authentication mechanisms - Implements ::pop_fetch_t
  * @param line List of authentication methods
  * @param data POP data
  * @retval 0 (always)
@@ -479,18 +479,18 @@ int pop_query_d(struct PopAccountData *adata, char *buf, size_t buflen, char *ms
  * @param adata    POP Account data
  * @param query    POP query to send to server
  * @param progress Progress bar
- * @param func     Function called for each header read
+ * @param callback Function called for each header read
  * @param data     Data to pass to the callback
  * @retval  0 Successful
  * @retval -1 Connection lost
  * @retval -2 Invalid command or execution error
- * @retval -3 Error in func(*line, *data)
+ * @retval -3 Error in callback(*line, *data)
  *
- * This function calls  func(*line, *data)  for each received line,
- * func(NULL, *data)  if  rewind(*data)  needs, exits when fail or done.
+ * This function calls  callback(*line, *data)  for each received line,
+ * callback(NULL, *data)  if  rewind(*data)  needs, exits when fail or done.
  */
 int pop_fetch_data(struct PopAccountData *adata, const char *query,
-                   struct Progress *progress, int (*func)(char *, void *), void *data)
+                   struct Progress *progress, pop_fetch_t callback, void *data)
 {
   char buf[1024];
   long pos = 0;
@@ -534,7 +534,7 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
     {
       if (progress)
         mutt_progress_update(progress, pos, -1);
-      if ((rc == 0) && (func(inbuf, data) < 0))
+      if ((rc == 0) && (callback(inbuf, data) < 0))
         rc = -3;
       lenbuf = 0;
     }
@@ -547,7 +547,7 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
 }
 
 /**
- * check_uidl - find message with this UIDL and set refno
+ * check_uidl - find message with this UIDL and set refno - Implements ::pop_fetch_t
  * @param line String containing UIDL
  * @param data POP data
  * @retval  0 Success

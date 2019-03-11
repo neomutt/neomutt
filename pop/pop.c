@@ -152,15 +152,15 @@ static struct PopEmailData *pop_edata_new(const char *uid)
 }
 
 /**
- * fetch_message - write line to file
+ * fetch_message - write line to file - Implements ::pop_fetch_t
  * @param line String to write
- * @param file FILE pointer to write to
+ * @param data FILE pointer to write to
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int fetch_message(char *line, void *file)
+static int fetch_message(char *line, void *data)
 {
-  FILE *fp = file;
+  FILE *fp = data;
 
   fputs(line, fp);
   if (fputc('\n', fp) == EOF)
@@ -252,7 +252,7 @@ static int pop_read_header(struct PopAccountData *adata, struct Email *e)
 }
 
 /**
- * fetch_uidl - parse UIDL
+ * fetch_uidl - parse UIDL - Implements ::pop_fetch_t
  * @param line String to parse
  * @param data Mailbox
  * @retval  0 Success
