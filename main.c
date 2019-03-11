@@ -1246,6 +1246,7 @@ main_exit:
   mutt_window_free();
   mutt_buffer_pool_free();
   mutt_envlist_free();
+  mutt_browser_cleanup();
   mutt_free_opts();
   mutt_free_keys();
   cs_free(&Config);
