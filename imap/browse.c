@@ -180,7 +180,7 @@ static int browse_add_list_result(struct ImapAccountData *adata, const char *cmd
  *
  * Fill out browser_state, given a current folder to browse
  */
-int imap_browse(char *path, struct BrowserState *state)
+int imap_browse(const char *path, struct BrowserState *state)
 {
   struct ImapAccountData *adata = NULL;
   struct ImapList list;

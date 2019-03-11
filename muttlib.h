@@ -54,7 +54,7 @@ char *      mutt_expand_path(char *s, size_t slen);
 char *      mutt_expand_path_regex(char *buf, size_t buflen, bool regex);
 char *      mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw);
 void        mutt_getcwd(struct Buffer *cwd);
-void        mutt_get_parent_path(char *path, char *buf, size_t buflen);
+void        mutt_get_parent_path(const char *path, char *buf, size_t buflen);
 int         mutt_inbox_cmp(const char *a, const char *b);
 bool        mutt_is_text_part(struct Body *b);
 const char *mutt_make_version(void);

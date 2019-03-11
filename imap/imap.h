@@ -94,7 +94,7 @@ int imap_path_canon(char *buf, size_t buflen);
 extern struct MxOps MxImapOps;
 
 /* browse.c */
-int imap_browse(char *path, struct BrowserState *state);
+int imap_browse(const char *path, struct BrowserState *state);
 int imap_mailbox_create(const char *folder);
 int imap_mailbox_rename(const char *path);
 

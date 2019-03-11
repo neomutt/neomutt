@@ -1605,7 +1605,7 @@ int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize)
  * @param buf    Buffer for the result
  * @param buflen Length of buffer
  */
-void mutt_get_parent_path(char *path, char *buf, size_t buflen)
+void mutt_get_parent_path(const char *path, char *buf, size_t buflen)
 {
   enum MailboxType mb_magic = mx_path_probe(path, NULL);
 
@@ -1698,6 +1698,25 @@ int mutt_inbox_cmp(const char *a, const char *b)
     return 1;
 
   return 0;
+}
+
+/**
+ * mutt_buffer_concat - Join a directory name and a filename
+ * @param d     Buffer to add to
+ * @param dir   Directory name
+ * @param fname File name
+ *
+ * If both dir and fname are supplied, they are separated with '/'.
+ * If either is missing, then the other will be copied exactly.
+ */
+void mutt_buffer_concat_path(struct Buffer *d, const char *dir, const char *fname)
+{
+  const char *fmt = "%s/%s";
+
+  if (!*fname || (*dir && dir[strlen(dir) - 1] == '/'))
+    fmt = "%s%s";
+
+  mutt_buffer_printf(d, fmt, dir, fname);
 }
 
 /**
