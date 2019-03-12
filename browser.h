@@ -104,6 +104,7 @@ struct BrowserState
 };
 
 void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags, char ***files, int *numfiles);
+void mutt_buffer_select_file(struct Buffer *f, SelectFileFlags flags, char ***files, int *numfiles);
 void mutt_browser_select_dir(const char *f);
 void mutt_browser_cleanup(void);
 void mutt_buffer_concat_path(struct Buffer *d, const char *dir, const char *fname);
