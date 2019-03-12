@@ -710,6 +710,19 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
 }
 
 /**
+ * mutt_buffer_pretty_mailbox - Shorten a mailbox path using '~' or '='
+ * @param s Buffer containing Mailbox name
+ */
+void mutt_buffer_pretty_mailbox(struct Buffer *s)
+{
+  /* This reduces the size of the Buffer, so we can pass it through.
+   * We adjust the size just to make sure s->data is not NULL though */
+  mutt_buffer_increase_size(s, PATH_MAX);
+  mutt_pretty_mailbox(s->data, s->dsize);
+  mutt_buffer_fix_dptr(s);
+}
+
+/**
  * mutt_check_overwrite - Ask the user if overwriting is necessary
  * @param[in]  attname   Attachment name
  * @param[in]  path      Path to save the file
