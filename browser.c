@@ -1103,7 +1103,6 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
                       char ***files, int *numfiles)
 {
   char buf[PATH_MAX];
-  char prefix[PATH_MAX] = "";
   char helpstr[1024];
   char title[256];
   struct BrowserState state = { 0 };
@@ -1119,6 +1118,10 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
 
   mailbox = mailbox && folder;
 
+  struct Buffer *OldLastDir = mutt_buffer_pool_get();
+  struct Buffer *tmp = mutt_buffer_pool_get();
+  struct Buffer *prefix = mutt_buffer_pool_get();
+
   if (!LastDir)
   {
     LastDir = mutt_buffer_alloc(PATH_MAX);
@@ -1129,7 +1132,7 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
   if (OptNews)
   {
     if (file[0] != '\0')
-      mutt_str_strfcpy(prefix, file, sizeof(prefix));
+      mutt_buffer_strcpy(prefix, file);
     else
     {
       struct NntpAccountData *adata = CurrentNewsSrv;
@@ -1189,9 +1192,9 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
       }
 
       if ((i <= 0) && (file[0] != '/'))
-        mutt_str_strfcpy(prefix, file, sizeof(prefix));
+        mutt_buffer_strcpy(prefix, file);
       else
-        mutt_str_strfcpy(prefix, file + i + 1, sizeof(prefix));
+        mutt_buffer_strcpy(prefix, file + i + 1);
       kill_prefix = true;
 #ifdef USE_IMAP
     }
@@ -1296,7 +1299,7 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
       if (!state.imap_browse)
 #endif
   {
-    if (examine_directory(NULL, &state, mutt_b2s(LastDir), prefix) == -1)
+    if (examine_directory(NULL, &state, mutt_b2s(LastDir), mutt_b2s(prefix)) == -1)
       goto bail;
   }
   menu = mutt_menu_new(MENU_FOLDER);
@@ -1317,8 +1320,6 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
 
   init_menu(&state, menu, title, sizeof(title), mailbox);
 
-  struct Buffer *OldLastDir = mutt_buffer_pool_get();
-  struct Buffer *tmp = mutt_buffer_pool_get();
   int op;
   while (true)
   {
@@ -1433,7 +1434,7 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
             destroy_state(&state);
             if (kill_prefix)
             {
-              prefix[0] = '\0';
+              mutt_buffer_reset(prefix);
               kill_prefix = false;
             }
             mailbox = false;
@@ -1449,11 +1450,11 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
             else
 #endif
             {
-              if (examine_directory(menu, &state, mutt_b2s(LastDir), prefix) == -1)
+              if (examine_directory(menu, &state, mutt_b2s(LastDir), mutt_b2s(prefix)) == -1)
               {
                 /* try to restore the old values */
                 mutt_buffer_strcpy(LastDir, mutt_b2s(OldLastDir));
-                if (examine_directory(menu, &state, mutt_b2s(LastDir), prefix) == -1)
+                if (examine_directory(menu, &state, mutt_b2s(LastDir), mutt_b2s(prefix)) == -1)
                 {
                   mutt_buffer_strcpy(LastDir, NONULL(HomeDir));
                   goto bail;
@@ -1693,12 +1694,13 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
               if (S_ISDIR(st.st_mode))
               {
                 destroy_state(&state);
-                if (examine_directory(menu, &state, buf, prefix) == 0)
+                if (examine_directory(menu, &state, buf, mutt_b2s(prefix)) == 0)
                   mutt_buffer_strcpy(LastDir, buf);
                 else
                 {
                   mutt_error(_("Error scanning directory"));
-                  if (examine_directory(menu, &state, mutt_b2s(LastDir), prefix) == -1)
+                  if (examine_directory(menu, &state, mutt_b2s(LastDir),
+                                        mutt_b2s(prefix)) == -1)
                   {
                     goto bail;
                   }
@@ -1866,7 +1868,7 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
           }
         }
         destroy_state(&state);
-        prefix[0] = '\0';
+        mutt_buffer_reset(prefix);
         kill_prefix = false;
 
         if (mailbox)
@@ -1883,7 +1885,7 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
           menu->data = state.entry;
         }
 #endif
-        else if (examine_directory(menu, &state, mutt_b2s(LastDir), prefix) == -1)
+        else if (examine_directory(menu, &state, mutt_b2s(LastDir), mutt_b2s(prefix)) == -1)
           goto bail;
         init_menu(&state, menu, title, sizeof(title), mailbox);
         break;
@@ -2116,6 +2118,7 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
 bail:
   mutt_buffer_pool_release(&OldLastDir);
   mutt_buffer_pool_release(&tmp);
+  mutt_buffer_pool_release(&prefix);
 
   if (menu)
   {
