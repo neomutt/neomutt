@@ -192,7 +192,7 @@ static bool first_mailing_list(char *buf, size_t buflen, struct Address *a)
  * @param buf    Buffer to store marker
  * @param buflen Buffer length
  * @param flags  Flags, see #MuttFormatFlags
- * @param color  Color, e.g. MT_COLOR_MESSAGE
+ * @param color  Color, e.g. #MT_COLOR_MESSAGE
  * @retval num Characters written
  *
  * The colors are stored as "magic" strings embedded in the text.

@@ -297,7 +297,7 @@ static bool compare_flags_for_copy(struct Email *e)
  * sync_helper - Sync flag changes to the server
  * @param m     Selected Imap Mailbox
  * @param right ACL, see #AclFlags
- * @param flag  Mutt flag, e.g. MUTT_DELETED
+ * @param flag  Mutt flag, e.g. #MUTT_DELETED
  * @param name  Name of server flag
  * @retval >=0 Success, number of messages
  * @retval  -1 Failure
@@ -999,9 +999,9 @@ static int compare_uid(const void *a, const void *b)
  * @param m       Selected Imap Mailbox
  * @param pre     prefix commands
  * @param post    postfix commands
- * @param flag    flag type on which to filter, e.g. MUTT_REPLIED
+ * @param flag    flag type on which to filter, e.g. #MUTT_REPLIED
  * @param changed include only changed messages in message set
- * @param invert  invert sense of flag, eg MUTT_READ matches unread messages
+ * @param invert  invert sense of flag, eg #MUTT_READ matches unread messages
  * @retval num Matched messages
  * @retval -1  Failure
  *

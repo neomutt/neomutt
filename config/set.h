@@ -85,8 +85,8 @@ typedef bool    (*cs_listener)   (const struct ConfigSet *cs, struct HashElem *h
  * @param cdef  Config definition
  * @param value Native value
  * @param err   Message for the user
- * @retval CSR_SUCCESS     Success
- * @retval CSR_ERR_INVALID Failure
+ * @retval #CSR_SUCCESS     Success
+ * @retval #CSR_ERR_INVALID Failure
  */
 typedef int     (*cs_validator)  (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
 /**

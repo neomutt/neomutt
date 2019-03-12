@@ -813,7 +813,7 @@ static bool eat_range(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
  * @param regerr Regex error code
  * @param preg   Regex pattern buffer
  * @param err    Buffer for error messages
- * @retval RANGE_E_SYNTAX Always
+ * @retval #RANGE_E_SYNTAX Always
  */
 static int report_regerror(int regerr, regex_t *preg, struct Buffer *err)
 {

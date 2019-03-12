@@ -434,7 +434,7 @@ char *mutt_ch_get_langinfo_charset(void)
 
 /**
  * mutt_ch_lookup_add - Add a new character set lookup
- * @param type    Type of character set, e.g. MUTT_LOOKUP_CHARSET
+ * @param type    Type of character set, e.g. #MUTT_LOOKUP_CHARSET
  * @param pat     Pattern to match
  * @param replace Replacement string
  * @param err     Buffer for error message
@@ -809,7 +809,7 @@ bool mutt_ch_check_charset(const char *cs, bool strict)
  * @param fp    FILE ptr to prepare
  * @param from  Current character set
  * @param to    Destination character set
- * @param flags Flags, e.g. MUTT_ICONV_HOOK_FROM
+ * @param flags Flags, e.g. #MUTT_ICONV_HOOK_FROM
  * @retval ptr fgetconv handle
  *
  * Parameter flags is given as-is to mutt_ch_iconv_open().
