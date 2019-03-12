@@ -436,7 +436,7 @@ int mutt_change_flag(struct Mailbox *m, struct EmailList *el, bool bf)
     return -1;
 
   int flag;
-  struct Event event;
+  struct KeyEvent event;
 
   mutt_window_mvprintw(MuttMessageWindow, 0, 0,
                        "%s? (D/N/O/r/*/!): ", bf ? _("Set flag") : _("Clear flag"));

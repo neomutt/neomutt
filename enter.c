@@ -699,7 +699,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
 
         case OP_EDITOR_QUOTE_CHAR:
         {
-          struct Event event;
+          struct KeyEvent event;
           do
           {
             event = mutt_getch();

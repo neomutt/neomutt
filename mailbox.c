@@ -558,10 +558,10 @@ void mutt_mailbox_next(struct Mailbox *m_cur, char *s, size_t slen)
  */
 void mutt_mailbox_changed(struct Mailbox *m, enum MailboxNotification action)
 {
-  if (!m || !m->notify)
+  if (!m || !m->notify2)
     return;
 
-  m->notify(m, action);
+  m->notify2(m, action);
 }
 
 /**

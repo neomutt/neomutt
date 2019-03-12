@@ -1255,13 +1255,13 @@ static int menu_dialog_translate_op(int i)
 /**
  * menu_dialog_dokey - Check if there are any menu key events to process
  * @param menu Current Menu
- * @param ip   Event ID
+ * @param ip   KeyEvent ID
  * @retval  0 An event occurred for the menu, or a timeout
  * @retval -1 There was an event, but not for menu
  */
 static int menu_dialog_dokey(struct Menu *menu, int *ip)
 {
-  struct Event ch;
+  struct KeyEvent ch;
   char *p = NULL;
 
   do
