@@ -1107,13 +1107,12 @@ void mutt_browser_select_dir(const char *f)
 /**
  * mutt_select_file - Let the user select a file
  * @param[in]  file     Buffer for the result
- * @param[in]  filelen  Length of buffer
  * @param[in]  flags    Flags, see #SelectFileFlags
  * @param[out] files    Array of selected files
  * @param[out] numfiles Number of selected files
  */
-void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
-                      char ***files, int *numfiles)
+void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
+                             char ***files, int *numfiles)
 {
   char helpstr[1024];
   char title[256];
@@ -1144,8 +1143,8 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
 #ifdef USE_NNTP
   if (OptNews)
   {
-    if (file[0] != '\0')
-      mutt_buffer_strcpy(prefix, file);
+    if (mutt_b2s(file)[0] != '\0')
+      mutt_buffer_strcpy(prefix, mutt_b2s(file));
     else
     {
       struct NntpAccountData *adata = CurrentNewsSrv;
@@ -1165,15 +1164,15 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
   }
   else
 #endif
-      if (file[0] != '\0')
+      if (mutt_b2s(file)[0] != '\0')
   {
-    mutt_expand_path(file, filelen);
+    mutt_buffer_expand_path(file);
 #ifdef USE_IMAP
-    if (imap_path_probe(file, NULL) == MUTT_IMAP)
+    if (imap_path_probe(mutt_b2s(file), NULL) == MUTT_IMAP)
     {
       init_state(&state, NULL);
       state.imap_browse = true;
-      if (imap_browse(file, &state) == 0)
+      if (imap_browse(mutt_b2s(file), &state) == 0)
       {
         mutt_buffer_strcpy(LastDir, state.folder);
         browser_sort(&state);
@@ -1183,31 +1182,31 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
     {
 #endif
       int i;
-      for (i = mutt_str_strlen(file) - 1; (i > 0) && (file[i] != '/'); i--)
+      for (i = mutt_buffer_len(file) - 1; (i > 0) && ((mutt_b2s(file))[i] != '/'); i--)
         ;
       if (i > 0)
       {
-        if (file[0] == '/')
-          mutt_buffer_strcpy_n(LastDir, file, i);
+        if ((mutt_b2s(file))[0] == '/')
+          mutt_buffer_strcpy_n(LastDir, mutt_b2s(file), i);
         else
         {
           mutt_getcwd(LastDir);
           mutt_buffer_addch(LastDir, '/');
-          mutt_buffer_addstr_n(LastDir, file, i);
+          mutt_buffer_addstr_n(LastDir, mutt_b2s(file), i);
         }
       }
       else
       {
-        if (file[0] == '/')
+        if ((mutt_b2s(file))[0] == '/')
           mutt_buffer_strcpy(LastDir, "/");
         else
           mutt_getcwd(LastDir);
       }
 
-      if ((i <= 0) && (file[0] != '/'))
-        mutt_buffer_strcpy(prefix, file);
+      if ((i <= 0) && (mutt_b2s(file)[0] != '/'))
+        mutt_buffer_strcpy(prefix, mutt_b2s(file));
       else
-        mutt_buffer_strcpy(prefix, file + i + 1);
+        mutt_buffer_strcpy(prefix, mutt_b2s(file) + i + 1);
       kill_prefix = true;
 #ifdef USE_IMAP
     }
@@ -1301,7 +1300,7 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
     }
   }
 
-  file[0] = '\0';
+  mutt_buffer_reset(file);
 
   if (mailbox)
   {
@@ -1488,15 +1487,16 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
 
         if (mailbox || OptNews) /* USE_NNTP */
         {
-          mutt_str_strfcpy(file, state.entry[menu->current].name, filelen);
-          mutt_expand_path(file, filelen);
+          mutt_buffer_strcpy(file, state.entry[menu->current].name);
+          mutt_buffer_expand_path(file);
         }
 #ifdef USE_IMAP
         else if (state.imap_browse)
-          mutt_str_strfcpy(file, state.entry[menu->current].name, filelen);
+          mutt_buffer_strcpy(file, state.entry[menu->current].name);
 #endif
         else
-          mutt_path_concat(file, mutt_b2s(LastDir), state.entry[menu->current].name, filelen);
+          mutt_buffer_concat_path(file, mutt_b2s(LastDir),
+                                  state.entry[menu->current].name);
         /* fallthrough */
 
       case OP_EXIT:
@@ -1521,12 +1521,12 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
             }
             *files = tfiles;
           }
-          else if (file[0] != '\0') /* no tagged entries. return selected entry */
+          else if (mutt_b2s(file)[0] != '\0') /* no tagged entries. return selected entry */
           {
             *numfiles = 1;
             tfiles = mutt_mem_calloc(*numfiles, sizeof(char *));
-            mutt_expand_path(file, filelen);
-            tfiles[0] = mutt_str_strdup(file);
+            mutt_buffer_expand_path(file);
+            tfiles[0] = mutt_str_strdup(mutt_b2s(file));
             *files = tfiles;
           }
         }
@@ -1912,7 +1912,7 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
         /* buf comes from the buffer pool, so defaults to size 1024 */
         if (mutt_get_field(_("New file name: "), buf->data, buf->dsize, MUTT_FILE) == 0)
         {
-          mutt_str_strfcpy(file, mutt_b2s(buf), filelen);
+          mutt_buffer_strcpy(file, mutt_b2s(buf));
           destroy_state(&state);
           goto bail;
         }
@@ -1928,7 +1928,7 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
 #ifdef USE_IMAP
         if (state.entry[menu->current].selectable)
         {
-          mutt_str_strfcpy(file, state.entry[menu->current].name, filelen);
+          mutt_buffer_strcpy(file, state.entry[menu->current].name);
           destroy_state(&state);
           goto bail;
         }
@@ -2145,4 +2145,24 @@ bail:
 
   if (goto_swapper[0] != '\0')
     goto_swapper[0] = '\0';
+}
+
+/**
+ * mutt_select_file - Let the user select a file
+ * @param[in]  file     Buffer for the result
+ * @param[in]  filelen  Length of buffer
+ * @param[in]  flags    Flags, see #SelectFileFlags
+ * @param[out] files    Array of selected files
+ * @param[out] numfiles Number of selected files
+ */
+void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
+                      char ***files, int *numfiles)
+{
+  struct Buffer *f_buf = mutt_buffer_pool_get();
+
+  mutt_buffer_strcpy(f_buf, NONULL(file));
+  mutt_buffer_select_file(f_buf, flags, files, numfiles);
+  mutt_str_strfcpy(file, mutt_b2s(f_buf), filelen);
+
+  mutt_buffer_pool_release(&f_buf);
 }
