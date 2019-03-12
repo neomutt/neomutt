@@ -334,14 +334,17 @@ static void browser_sort(struct BrowserState *state)
 static bool link_is_dir(const char *folder, const char *path)
 {
   struct stat st;
-  char fullpath[PATH_MAX];
+  bool retval = false;
 
-  mutt_path_concat(fullpath, folder, path, sizeof(fullpath));
+  struct Buffer *fullpath = mutt_buffer_pool_get();
+  mutt_buffer_concat_path(fullpath, folder, path);
 
-  if (stat(fullpath, &st) == 0)
-    return S_ISDIR(st.st_mode);
+  if (stat(mutt_b2s(fullpath), &st) == 0)
+    retval = S_ISDIR(st.st_mode);
 
-  return false;
+  mutt_buffer_pool_release(&fullpath);
+
+  return retval;
 }
 
 /**
@@ -682,6 +685,8 @@ static void init_state(struct BrowserState *state, struct Menu *menu)
 static int examine_directory(struct Menu *menu, struct BrowserState *state,
                              const char *d, const char *prefix)
 {
+  int rc = -1;
+  struct Buffer *buf = mutt_buffer_pool_get();
 #ifdef USE_NNTP
   if (OptNews)
   {
@@ -710,7 +715,6 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
     struct stat s;
     DIR *dp = NULL;
     struct dirent *de = NULL;
-    char buf[PATH_MAX + 128];
 
     while (stat(d, &s) == -1)
     {
@@ -726,13 +730,13 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
         }
       }
       mutt_perror(d);
-      return -1;
+      goto ed_out;
     }
 
     if (!S_ISDIR(s.st_mode))
     {
       mutt_error(_("%s is not a directory"), d);
-      return -1;
+      goto ed_out;
     }
 
     mutt_mailbox_check(Context->mailbox, 0);
@@ -741,7 +745,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
     if (!dp)
     {
       mutt_perror(d);
-      return -1;
+      goto ed_out;
     }
 
     init_state(state, menu);
@@ -761,8 +765,8 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
         continue;
       }
 
-      mutt_path_concat(buf, d, de->d_name, sizeof(buf));
-      if (lstat(buf, &s) == -1)
+      mutt_buffer_concat_path(buf, d, de->d_name);
+      if (lstat(mutt_b2s(buf), &s) == -1)
         continue;
 
       /* No size for directories or symlinks */
@@ -774,7 +778,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       struct MailboxNode *np = NULL;
       STAILQ_FOREACH(np, &AllMailboxes, entries)
       {
-        if (mutt_str_strcmp(buf, np->mailbox->path) != 0)
+        if (mutt_str_strcmp(mutt_b2s(buf), np->mailbox->path) != 0)
           break;
       }
 
@@ -789,7 +793,10 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
     closedir(dp);
   }
   browser_sort(state);
-  return 0;
+  rc = 0;
+ed_out:
+  mutt_buffer_pool_release(&buf);
+  return rc;
 }
 
 /**
@@ -802,6 +809,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
 static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
 {
   struct stat s;
+  struct Buffer *md = NULL;
 
 #ifdef USE_NNTP
   if (OptNews)
@@ -826,6 +834,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
 
     if (STAILQ_EMPTY(&AllMailboxes))
       return -1;
+    md = mutt_buffer_pool_get();
     mutt_mailbox_check(Context ? Context->mailbox : NULL, 0);
 
     struct MailboxNode *np = NULL;
@@ -866,13 +875,12 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
       if (np->mailbox->magic == MUTT_MAILDIR)
       {
         struct stat st2;
-        char md[PATH_MAX];
 
-        snprintf(md, sizeof(md), "%s/new", np->mailbox->path);
-        if (stat(md, &s) < 0)
+        mutt_buffer_printf(md, "%s/new", np->mailbox->path);
+        if (stat(mutt_b2s(md), &s) < 0)
           s.st_mtime = 0;
-        snprintf(md, sizeof(md), "%s/cur", np->mailbox->path);
-        if (stat(md, &st2) < 0)
+        mutt_buffer_printf(md, "%s/cur", np->mailbox->path);
+        if (stat(mutt_b2s(md), &st2) < 0)
           st2.st_mtime = 0;
         if (st2.st_mtime > s.st_mtime)
           s.st_mtime = st2.st_mtime;
@@ -882,6 +890,8 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
     }
   }
   browser_sort(state);
+
+  mutt_buffer_pool_release(&md);
   return 0;
 }
 
@@ -996,12 +1006,13 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
     }
     else
     {
-      char path[PATH_MAX];
+      struct Buffer *path = mutt_buffer_pool_get();
       menu->is_mailbox_list = false;
-      mutt_str_strfcpy(path, mutt_b2s(LastDir), sizeof(path));
-      mutt_pretty_mailbox(path, sizeof(path));
-      snprintf(title, titlelen, _("Directory [%s], File mask: %s"), path,
-               NONULL(C_Mask ? C_Mask->pattern : NULL));
+      mutt_buffer_strcpy(path, mutt_b2s(LastDir));
+      mutt_buffer_pretty_mailbox(path);
+      snprintf(title, titlelen, _("Directory [%s], File mask: %s"),
+               mutt_b2s(path), NONULL(C_Mask ? C_Mask->pattern : NULL));
+      mutt_buffer_pool_release(&path);
     }
   }
 
@@ -1501,10 +1512,9 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
               struct FolderFile ff = state.entry[i];
               if (ff.tagged)
               {
-                char full[PATH_MAX];
-                mutt_path_concat(full, mutt_b2s(LastDir), ff.name, sizeof(full));
-                mutt_expand_path(full, sizeof(full));
-                tfiles[j++] = mutt_str_strdup(full);
+                mutt_buffer_concat_path(tmp, mutt_b2s(LastDir), ff.name);
+                mutt_buffer_expand_path(tmp);
+                tfiles[j++] = mutt_str_strdup(mutt_b2s(tmp));
               }
             }
             *files = tfiles;
