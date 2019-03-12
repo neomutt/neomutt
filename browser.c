@@ -1102,7 +1102,6 @@ void mutt_browser_select_dir(const char *f)
 void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
                       char ***files, int *numfiles)
 {
-  char buf[PATH_MAX];
   char helpstr[1024];
   char title[256];
   struct BrowserState state = { 0 };
@@ -1120,6 +1119,7 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
 
   struct Buffer *OldLastDir = mutt_buffer_pool_get();
   struct Buffer *tmp = mutt_buffer_pool_get();
+  struct Buffer *buf = mutt_buffer_pool_get();
   struct Buffer *prefix = mutt_buffer_pool_get();
 
   if (!LastDir)
@@ -1350,22 +1350,22 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
           /* make sure this isn't a MH or maildir mailbox */
           if (mailbox)
           {
-            mutt_str_strfcpy(buf, state.entry[menu->current].name, sizeof(buf));
-            mutt_expand_path(buf, sizeof(buf));
+            mutt_buffer_strcpy(buf, state.entry[menu->current].name);
+            mutt_buffer_expand_path(buf);
           }
 #ifdef USE_IMAP
           else if (state.imap_browse)
           {
-            mutt_str_strfcpy(buf, state.entry[menu->current].name, sizeof(buf));
+            mutt_buffer_strcpy(buf, state.entry[menu->current].name);
           }
 #endif
           else
           {
-            mutt_path_concat(buf, mutt_b2s(LastDir),
-                             state.entry[menu->current].name, sizeof(buf));
+            mutt_buffer_concat_path(buf, mutt_b2s(LastDir),
+                                    state.entry[menu->current].name);
           }
 
-          enum MailboxType magic = mx_path_probe(buf, NULL);
+          enum MailboxType magic = mx_path_probe(mutt_b2s(buf), NULL);
           if ((op == OP_DESCEND_DIRECTORY) || (magic == MUTT_MAILBOX_ERROR) ||
               (magic == MUTT_UNKNOWN)
 #ifdef USE_IMAP
@@ -1632,37 +1632,36 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
           break;
 #endif
 
-        mutt_str_strfcpy(buf, mutt_b2s(LastDir), sizeof(buf));
+        mutt_buffer_strcpy(buf, mutt_b2s(LastDir));
 #ifdef USE_IMAP
         if (!state.imap_browse)
 #endif
         {
           /* add '/' at the end of the directory name if not already there */
-          size_t len = mutt_str_strlen(buf);
-          if ((len > 0) && (buf[len - 1] != '/') && (sizeof(buf) > (len + 1)))
-          {
-            buf[len] = '/';
-            buf[len + 1] = '\0';
-          }
+          size_t len = mutt_buffer_len(buf);
+          if ((len > 0) && (mutt_b2s(LastDir)[len - 1] != '/'))
+            mutt_buffer_addch(buf, '/');
         }
 
         if (op == OP_CHANGE_DIRECTORY)
         {
-          int ret = mutt_get_field(_("Chdir to: "), buf, sizeof(buf), MUTT_FILE);
-          if (ret != 0)
+          /* buf comes from the buffer pool, so defaults to size 1024 */
+          int ret = mutt_get_field(_("Chdir to: "), buf->data, buf->dsize, MUTT_FILE);
+          if ((ret != 0) && (mutt_b2s(buf)[0] == '\0'))
             break;
         }
         else if (op == OP_GOTO_PARENT)
-          mutt_get_parent_path(buf, buf, sizeof(buf));
+          mutt_get_parent_path(mutt_b2s(buf), buf->data, buf->dsize);
 
-        if (buf[0] != '\0')
+        if (mutt_b2s(buf)[0] != '\0')
         {
+          mutt_buffer_fix_dptr(buf);
           mailbox = false;
-          mutt_expand_path(buf, sizeof(buf));
+          mutt_buffer_expand_path(buf);
 #ifdef USE_IMAP
-          if (imap_path_probe(buf, NULL) == MUTT_IMAP)
+          if (imap_path_probe(mutt_b2s(buf), NULL) == MUTT_IMAP)
           {
-            mutt_buffer_strcpy(LastDir, buf);
+            mutt_buffer_strcpy(LastDir, mutt_b2s(buf));
             destroy_state(&state);
             init_state(&state, NULL);
             state.imap_browse = true;
@@ -1675,27 +1674,27 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
           else
 #endif
           {
-            if (*buf != '/')
+            if (mutt_b2s(buf)[0] != '/')
             {
               /* in case dir is relative, make it relative to LastDir,
                * not current working dir */
-              mutt_buffer_concat_path(tmp, mutt_b2s(LastDir), buf);
-              mutt_str_strfcpy(buf, mutt_b2s(tmp), sizeof(buf));
+              mutt_buffer_concat_path(tmp, mutt_b2s(LastDir), mutt_b2s(buf));
+              mutt_buffer_strcpy(buf, mutt_b2s(tmp));
             }
             /* Resolve path from <chdir>
              * Avoids buildup such as /a/b/../../c
              * Symlinks are always unraveled to keep code simple */
-            if (mutt_path_realpath(buf) == 0)
+            if (mutt_path_realpath(buf->data) == 0)
               break;
 
             struct stat st;
-            if (stat(buf, &st) == 0)
+            if (stat(mutt_b2s(buf), &st) == 0)
             {
               if (S_ISDIR(st.st_mode))
               {
                 destroy_state(&state);
-                if (examine_directory(menu, &state, buf, mutt_b2s(prefix)) == 0)
-                  mutt_buffer_strcpy(LastDir, buf);
+                if (examine_directory(menu, &state, mutt_b2s(buf), mutt_b2s(prefix)) == 0)
+                  mutt_buffer_strcpy(LastDir, mutt_b2s(buf));
                 else
                 {
                   mutt_error(_("Error scanning directory"));
@@ -1709,27 +1708,29 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
                 init_menu(&state, menu, title, sizeof(title), mailbox);
               }
               else
-                mutt_error(_("%s is not a directory"), buf);
+                mutt_error(_("%s is not a directory"), mutt_b2s(buf));
             }
             else
-              mutt_perror(buf);
+              mutt_perror(mutt_b2s(buf));
           }
         }
         break;
 
       case OP_ENTER_MASK:
       {
-        mutt_str_strfcpy(buf, C_Mask ? C_Mask->pattern : NULL, sizeof(buf));
-        if (mutt_get_field(_("File Mask: "), buf, sizeof(buf), 0) != 0)
+        mutt_buffer_strcpy(buf, C_Mask ? C_Mask->pattern : NULL);
+        if (mutt_get_field(_("File Mask: "), buf->data, buf->dsize, 0) != 0)
           break;
+
+        mutt_buffer_fix_dptr(buf);
 
         mailbox = false;
         /* assume that the user wants to see everything */
-        if (buf[0] == '\0')
-          mutt_str_strfcpy(buf, ".", sizeof(buf));
+        if (mutt_b2s(buf)[0] == '\0')
+          mutt_buffer_strcpy(buf, ".");
 
         struct Buffer errmsg = { 0 };
-        int rc = cs_str_string_set(Config, "mask", buf, NULL);
+        int rc = cs_str_string_set(Config, "mask", mutt_b2s(buf), NULL);
         if (CSR_RESULT(rc) != CSR_SUCCESS)
         {
           if (!mutt_buffer_is_empty(&errmsg))
@@ -1895,10 +1896,11 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
         break;
 
       case OP_BROWSER_NEW_FILE:
-        snprintf(buf, sizeof(buf), "%s/", mutt_b2s(LastDir));
-        if (mutt_get_field(_("New file name: "), buf, sizeof(buf), MUTT_FILE) == 0)
+        mutt_buffer_printf(buf, "%s/", mutt_b2s(LastDir));
+        /* buf comes from the buffer pool, so defaults to size 1024 */
+        if (mutt_get_field(_("New file name: "), buf->data, buf->dsize, MUTT_FILE) == 0)
         {
-          mutt_str_strfcpy(file, buf, filelen);
+          mutt_str_strfcpy(file, mutt_b2s(buf), filelen);
           destroy_state(&state);
           goto bail;
         }
@@ -2018,19 +2020,21 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
           struct NntpAccountData *adata = CurrentNewsSrv;
           regex_t rx;
           memset(&rx, 0, sizeof(rx));
-          char *s = buf;
+          char *s = buf->data;
           int i = menu->current;
 
           if ((op == OP_SUBSCRIBE_PATTERN) || (op == OP_UNSUBSCRIBE_PATTERN))
           {
             char tmp2[256];
 
-            buf[0] = '\0';
+            mutt_buffer_reset(buf);
             if (op == OP_SUBSCRIBE_PATTERN)
               snprintf(tmp2, sizeof(tmp2), _("Subscribe pattern: "));
             else
               snprintf(tmp2, sizeof(tmp2), _("Unsubscribe pattern: "));
-            if ((mutt_get_field(tmp2, buf, sizeof(buf), 0) != 0) || (buf[0] == '\0'))
+            /* buf comes from the buffer pool, so defaults to size 1024 */
+            if ((mutt_get_field(tmp2, buf->data, buf->dsize, 0) != 0) ||
+                (mutt_b2s(buf)[0] == '\0'))
             {
               break;
             }
@@ -2038,9 +2042,9 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
             int err = REGCOMP(&rx, s, REG_NOSUB);
             if (err != 0)
             {
-              regerror(err, &rx, buf, sizeof(buf));
+              regerror(err, &rx, buf->data, buf->dsize);
               regfree(&rx);
-              mutt_error("%s", buf);
+              mutt_error("%s", mutt_b2s(buf));
               break;
             }
             menu->redraw = REDRAW_FULL;
@@ -2118,6 +2122,7 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
 bail:
   mutt_buffer_pool_release(&OldLastDir);
   mutt_buffer_pool_release(&tmp);
+  mutt_buffer_pool_release(&buf);
   mutt_buffer_pool_release(&prefix);
 
   if (menu)
