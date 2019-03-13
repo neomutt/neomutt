@@ -55,6 +55,7 @@
 #include "mutt/mutt.h"
 #include "config/lib.h"
 #include "email/lib.h"
+#include "hcache/hcache.h"
 #include "mutt.h"
 #include "mutt_notmuch.h"
 #include "account.h"
@@ -873,8 +874,8 @@ static struct Email *get_mutt_email(struct Mailbox *m, notmuch_message_t *msg)
  * @param msg   Notmuch message
  * @param dedup De-duplicate results
  */
-static void append_message(struct Mailbox *m, notmuch_query_t *q,
-                           notmuch_message_t *msg, bool dedup)
+static void append_message(header_cache_t *h, struct Mailbox *m,
+                           notmuch_query_t *q, notmuch_message_t *msg, bool dedup)
 {
   char *newpath = NULL;
   struct Email *e = NULL;
@@ -905,31 +906,46 @@ static void append_message(struct Mailbox *m, notmuch_query_t *q,
     mutt_debug(LL_DEBUG2, "nm: allocate mx memory\n");
     mx_alloc_memory(m);
   }
-  if (access(path, F_OK) == 0)
-    e = maildir_parse_message(MUTT_MAILDIR, path, false, NULL);
+
+  void *from_cache = mutt_hcache_fetch(h, path, mutt_str_strlen(path));
+  if (from_cache)
+  {
+    e = mutt_hcache_restore(from_cache);
+  }
   else
   {
-    /* maybe moved try find it... */
-    char *folder = get_folder_from_path(path);
-
-    if (folder)
+    if (access(path, F_OK) == 0)
+      e = maildir_parse_message(MUTT_MAILDIR, path, false, NULL);
+    else
     {
-      FILE *fp = maildir_open_find_message(folder, path, &newpath);
-      if (fp)
-      {
-        e = maildir_parse_stream(MUTT_MAILDIR, fp, newpath, false, NULL);
-        fclose(fp);
+      /* maybe moved try find it... */
+      char *folder = get_folder_from_path(path);
 
-        mutt_debug(LL_DEBUG1, "nm: not up-to-date: %s -> %s\n", path, newpath);
+      if (folder)
+      {
+        FILE *fp = maildir_open_find_message(folder, path, &newpath);
+        if (fp)
+        {
+          e = maildir_parse_stream(MUTT_MAILDIR, fp, newpath, false, NULL);
+          fclose(fp);
+
+          mutt_debug(LL_DEBUG1, "nm: not up-to-date: %s -> %s\n", path, newpath);
+        }
       }
+      FREE(&folder);
     }
-    FREE(&folder);
   }
 
   if (!e)
   {
     mutt_debug(LL_DEBUG1, "nm: failed to parse message: %s\n", path);
     goto done;
+  }
+
+  if (!from_cache)
+  {
+    mutt_hcache_store(h, newpath ? newpath : path,
+        mutt_str_strlen(newpath ? newpath : path), e, 0);
   }
   if (init_email(e, newpath ? newpath : path, msg) != 0)
   {
@@ -969,7 +985,7 @@ done:
  *
  * Careful, this calls itself recursively to make sure we get everything.
  */
-static void append_replies(struct Mailbox *m, notmuch_query_t *q,
+static void append_replies(header_cache_t *h, struct Mailbox *m, notmuch_query_t *q,
                            notmuch_message_t *top, bool dedup)
 {
   notmuch_messages_t *msgs = NULL;
@@ -978,9 +994,9 @@ static void append_replies(struct Mailbox *m, notmuch_query_t *q,
        notmuch_messages_move_to_next(msgs))
   {
     notmuch_message_t *nm = notmuch_messages_get(msgs);
-    append_message(m, q, nm, dedup);
+    append_message(h, m, q, nm, dedup);
     /* recurse through all the replies to this message too */
-    append_replies(m, q, nm, dedup);
+    append_replies(h, m, q, nm, dedup);
     notmuch_message_destroy(nm);
   }
 }
@@ -995,7 +1011,7 @@ static void append_replies(struct Mailbox *m, notmuch_query_t *q,
  * add each top level reply in the thread, and then add each reply to the top
  * level replies
  */
-static void append_thread(struct Mailbox *m, notmuch_query_t *q,
+static void append_thread(header_cache_t *h, struct Mailbox *m, notmuch_query_t *q,
                           notmuch_thread_t *thread, bool dedup)
 {
   notmuch_messages_t *msgs = NULL;
@@ -1004,8 +1020,8 @@ static void append_thread(struct Mailbox *m, notmuch_query_t *q,
        notmuch_messages_valid(msgs); notmuch_messages_move_to_next(msgs))
   {
     notmuch_message_t *nm = notmuch_messages_get(msgs);
-    append_message(m, q, nm, dedup);
-    append_replies(m, q, nm, dedup);
+    append_message(h, m, q, nm, dedup);
+    append_replies(h, m, q, nm, dedup);
     notmuch_message_destroy(nm);
   }
 }
@@ -1060,18 +1076,23 @@ static bool read_mesgs_query(struct Mailbox *m, notmuch_query_t *q, bool dedup)
   if (!msgs)
     return false;
 
+  header_cache_t *h = mutt_hcache_open(C_HeaderCache, m->path, NULL);
+
   for (; notmuch_messages_valid(msgs) && ((limit == 0) || (m->msg_count < limit));
        notmuch_messages_move_to_next(msgs))
   {
     if (SigInt == 1)
     {
+      mutt_hcache_close(h);
       SigInt = 0;
       return false;
     }
     notmuch_message_t *nm = notmuch_messages_get(msgs);
-    append_message(m, q, nm, dedup);
+    append_message(h, m, q, nm, dedup);
     notmuch_message_destroy(nm);
   }
+
+  mutt_hcache_close(h);
   return true;
 }
 
@@ -1122,6 +1143,8 @@ static bool read_threads_query(struct Mailbox *m, notmuch_query_t *q, bool dedup
   if (!threads)
     return false;
 
+  header_cache_t *h = mutt_hcache_open(C_HeaderCache, m->path, NULL);
+
   for (; notmuch_threads_valid(threads) && ((limit == 0) || (m->msg_count < limit));
        notmuch_threads_move_to_next(threads))
   {
@@ -1131,9 +1154,11 @@ static bool read_threads_query(struct Mailbox *m, notmuch_query_t *q, bool dedup
       return false;
     }
     notmuch_thread_t *thread = notmuch_threads_get(threads);
-    append_thread(m, q, thread, dedup);
+    append_thread(h, m, q, thread, dedup);
     notmuch_thread_destroy(thread);
   }
+
+  mutt_hcache_close(h);
   return true;
 }
 
@@ -2220,6 +2245,8 @@ static int nm_mbox_check(struct Mailbox *m, int *index_hint)
     goto done;
 #endif
 
+  header_cache_t *h = mutt_hcache_open(C_HeaderCache, m->path, NULL);
+
   for (int i = 0; notmuch_messages_valid(msgs) && ((limit == 0) || (i < limit));
        notmuch_messages_move_to_next(msgs), i++)
   {
@@ -2232,7 +2259,7 @@ static int nm_mbox_check(struct Mailbox *m, int *index_hint)
     if (!e)
     {
       /* new email */
-      append_message(m, NULL, msg, 0);
+      append_message(h, m, NULL, msg, 0);
       notmuch_message_destroy(msg);
       continue;
     }
@@ -2262,6 +2289,8 @@ static int nm_mbox_check(struct Mailbox *m, int *index_hint)
 
     notmuch_message_destroy(msg);
   }
+
+  mutt_hcache_close(h);
 
   for (int i = 0; i < m->msg_count; i++)
   {
