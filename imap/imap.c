@@ -197,8 +197,11 @@ static int make_msg_set(struct Mailbox *m, struct Buffer *buf, int flag,
   for (n = *pos; (n < m->msg_count) && ((buf->dptr - buf->data) < IMAP_MAX_CMDLEN); n++)
   {
     bool match = false; /* whether current message matches flag condition */
-    /* don't include pending expunged messages */
-    if (emails[n]->active)
+    /* don't include pending expunged messages.
+     *
+     * TODO: can we unset active in cmd_parse_expunge() and
+     * cmd_parse_vanished() instead of checking for index != INT_MAX. */
+    if (emails[n]->active && (emails[n]->index != INT_MAX))
     {
       switch (flag)
       {
