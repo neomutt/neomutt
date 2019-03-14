@@ -64,9 +64,6 @@
 #ifdef USE_NOTMUCH
 #include "notmuch/mutt_notmuch.h"
 #endif
-#ifdef USE_HCACHE
-#include "hcache/hcache.h"
-#endif
 
 struct Account;
 
@@ -1430,11 +1427,7 @@ struct Email *maildir_parse_message(enum MailboxType magic, const char *fname,
  * @retval  0 Success
  * @retval -1 Error
  */
-#ifdef USE_HCACHE
 int mh_sync_mailbox_message(struct Mailbox *m, int msgno, header_cache_t *hc)
-#else
-int mh_sync_mailbox_message(struct Mailbox *m, int msgno)
-#endif
 {
   if (!m || !m->emails)
     return -1;
@@ -1512,6 +1505,8 @@ int mh_sync_mailbox_message(struct Mailbox *m, int msgno)
     }
     mutt_hcache_store(hc, key, keylen, e, 0);
   }
+#else
+  (void)hc; // chase compiler warning about hc not being used
 #endif
 
   return 0;
@@ -1758,9 +1753,7 @@ int mh_mbox_sync(struct Mailbox *m, int *index_hint)
     return -1;
 
   int i, j;
-#ifdef USE_HCACHE
   header_cache_t *hc = NULL;
-#endif
   char msgbuf[PATH_MAX + 64];
   struct Progress progress;
 
@@ -1788,13 +1781,8 @@ int mh_mbox_sync(struct Mailbox *m, int *index_hint)
     if (!m->quiet)
       mutt_progress_update(&progress, i, -1);
 
-#ifdef USE_HCACHE
     if (mh_sync_mailbox_message(m, i, hc) == -1)
       goto err;
-#else
-    if (mh_sync_mailbox_message(m, i) == -1)
-      goto err;
-#endif
   }
 
 #ifdef USE_HCACHE

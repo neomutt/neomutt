@@ -85,6 +85,25 @@ char *C_NmUnreadTag;  ///< Config: (notmuch) Tag to use for unread messages
 char *C_NmFlaggedTag; ///< Config: (notmuch) Tag to use for flagged messages
 char *C_NmRepliedTag; ///< Config: (notmuch) Tag to use for replied messages
 
+static header_cache_t *nm_hcache_open(struct Mailbox *m)
+{
+#ifdef USE_HCACHE
+  return mutt_hcache_open(C_HeaderCache, m->path, NULL);
+#else
+  (void)m;
+  return NULL;
+#endif
+}
+
+void nm_hcache_close(header_cache_t *h)
+{
+#ifdef USE_HCACHE
+  mutt_hcache_close(h);
+#else
+  (void)h;
+#endif
+}
+
 /**
  * string_to_query_type - Lookup a query type
  * @param str String to lookup
@@ -877,6 +896,10 @@ static struct Email *get_mutt_email(struct Mailbox *m, notmuch_message_t *msg)
 static void append_message(header_cache_t *h, struct Mailbox *m,
                            notmuch_query_t *q, notmuch_message_t *msg, bool dedup)
 {
+#ifndef USE_HCACHE
+  (void)h; // chase compiler warning about h not being used
+#endif
+
   char *newpath = NULL;
   struct Email *e = NULL;
 
@@ -907,12 +930,14 @@ static void append_message(header_cache_t *h, struct Mailbox *m,
     mx_alloc_memory(m);
   }
 
+#ifdef USE_HCACHE
   void *from_cache = mutt_hcache_fetch(h, path, mutt_str_strlen(path));
   if (from_cache)
   {
     e = mutt_hcache_restore(from_cache);
   }
   else
+#endif
   {
     if (access(path, F_OK) == 0)
       e = maildir_parse_message(MUTT_MAILDIR, path, false, NULL);
@@ -942,11 +967,18 @@ static void append_message(header_cache_t *h, struct Mailbox *m,
     goto done;
   }
 
-  if (!from_cache)
+#ifdef USE_HCACHE
+
+  if (from_cache)
+  {
+    mutt_hcache_free(h, from_cache);
+  }
+  else
   {
     mutt_hcache_store(h, newpath ? newpath : path,
         mutt_str_strlen(newpath ? newpath : path), e, 0);
   }
+#endif
   if (init_email(e, newpath ? newpath : path, msg) != 0)
   {
     mutt_email_free(&e);
@@ -1076,14 +1108,14 @@ static bool read_mesgs_query(struct Mailbox *m, notmuch_query_t *q, bool dedup)
   if (!msgs)
     return false;
 
-  header_cache_t *h = mutt_hcache_open(C_HeaderCache, m->path, NULL);
+  header_cache_t *h = nm_hcache_open(m);
 
   for (; notmuch_messages_valid(msgs) && ((limit == 0) || (m->msg_count < limit));
        notmuch_messages_move_to_next(msgs))
   {
     if (SigInt == 1)
     {
-      mutt_hcache_close(h);
+      nm_hcache_close(h);
       SigInt = 0;
       return false;
     }
@@ -1092,7 +1124,7 @@ static bool read_mesgs_query(struct Mailbox *m, notmuch_query_t *q, bool dedup)
     notmuch_message_destroy(nm);
   }
 
-  mutt_hcache_close(h);
+  nm_hcache_close(h);
   return true;
 }
 
@@ -1143,7 +1175,7 @@ static bool read_threads_query(struct Mailbox *m, notmuch_query_t *q, bool dedup
   if (!threads)
     return false;
 
-  header_cache_t *h = mutt_hcache_open(C_HeaderCache, m->path, NULL);
+  header_cache_t *h = nm_hcache_open(m);
 
   for (; notmuch_threads_valid(threads) && ((limit == 0) || (m->msg_count < limit));
        notmuch_threads_move_to_next(threads))
@@ -1158,7 +1190,7 @@ static bool read_threads_query(struct Mailbox *m, notmuch_query_t *q, bool dedup
     notmuch_thread_destroy(thread);
   }
 
-  mutt_hcache_close(h);
+  nm_hcache_close(h);
   return true;
 }
 
@@ -2245,7 +2277,7 @@ static int nm_mbox_check(struct Mailbox *m, int *index_hint)
     goto done;
 #endif
 
-  header_cache_t *h = mutt_hcache_open(C_HeaderCache, m->path, NULL);
+  header_cache_t *h = nm_hcache_open(m);
 
   for (int i = 0; notmuch_messages_valid(msgs) && ((limit == 0) || (i < limit));
        notmuch_messages_move_to_next(msgs), i++)
@@ -2290,7 +2322,7 @@ static int nm_mbox_check(struct Mailbox *m, int *index_hint)
     notmuch_message_destroy(msg);
   }
 
-  mutt_hcache_close(h);
+  nm_hcache_close(h);
 
   for (int i = 0; i < m->msg_count; i++)
   {
@@ -2347,6 +2379,8 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
     mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, C_WriteInc, m->msg_count);
   }
 
+  header_cache_t *h = nm_hcache_open(m);
+
   for (int i = 0; i < m->msg_count; i++)
   {
     char old[PATH_MAX], new[PATH_MAX];
@@ -2370,11 +2404,7 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
 
     mutt_str_strfcpy(m->path, edata->folder, sizeof(m->path));
     m->magic = edata->magic;
-#ifdef USE_HCACHE
-    rc = mh_sync_mailbox_message(m, i, NULL);
-#else
-    rc = mh_sync_mailbox_message(m, i);
-#endif
+    rc = mh_sync_mailbox_message(m, i, h);
     mutt_str_strfcpy(m->path, uri, sizeof(m->path));
     m->magic = MUTT_NOTMUCH;
 
@@ -2405,6 +2435,8 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
     m->mtime.tv_sec = time(NULL);
     m->mtime.tv_nsec = 0;
   }
+
+  nm_hcache_close(h);
 
   FREE(&uri);
   mutt_debug(LL_DEBUG1, "nm: .... sync done [rc=%d]\n", rc);

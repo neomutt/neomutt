@@ -40,9 +40,7 @@
 #include <stdio.h>
 #include "config/lib.h"
 #include "mx.h"
-#ifdef USE_HCACHE
 #include "hcache/hcache.h"
-#endif
 
 struct Mailbox;
 struct Email;
@@ -67,10 +65,6 @@ struct Email *maildir_parse_message    (enum MailboxType magic, const char *fnam
 struct Email *maildir_parse_stream     (enum MailboxType magic, FILE *fp, const char *fname, bool is_old, struct Email *e);
 bool          maildir_update_flags     (struct Mailbox *m, struct Email *o, struct Email *n);
 int           mh_check_empty           (const char *path);
-#ifdef USE_HCACHE
 int           mh_sync_mailbox_message  (struct Mailbox *m, int msgno, header_cache_t *hc);
-#else
-int           mh_sync_mailbox_message  (struct Mailbox *m, int msgno);
-#endif
 
 #endif /* MUTT_MAILDIR_LIB_H */
