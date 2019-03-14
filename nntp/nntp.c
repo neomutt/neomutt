@@ -1256,7 +1256,6 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
   int rc = 0;
   anum_t current;
   anum_t first_over = first;
-  void *hdata = NULL;
 
   /* if empty group or nothing to do */
   if (!last || (first > last))
@@ -1350,7 +1349,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
 
 #ifdef USE_HCACHE
     /* try to fetch header from cache */
-    hdata = mutt_hcache_fetch(fc.hc, buf, strlen(buf));
+    void *hdata = mutt_hcache_fetch(fc.hc, buf, strlen(buf));
     if (hdata)
     {
       mutt_debug(LL_DEBUG2, "mutt_hcache_fetch %s\n", buf);
@@ -2617,7 +2616,6 @@ static int nntp_mbox_sync(struct Mailbox *m, int *index_hint)
 
   struct NntpMboxData *mdata = m->mdata;
   int rc;
-  header_cache_t *hc = NULL;
 
   /* check for new articles */
   mdata->adata->check_time = 0;
@@ -2627,7 +2625,7 @@ static int nntp_mbox_sync(struct Mailbox *m, int *index_hint)
 
 #ifdef USE_HCACHE
   mdata->last_cached = 0;
-  hc = nntp_hcache_open(mdata);
+  header_cache_t *hc = nntp_hcache_open(mdata);
 #endif
 
   for (int i = 0; i < m->msg_count; i++)
