@@ -792,9 +792,9 @@ void mutt_shell_escape(void)
   if (mutt_get_field(_("Shell command: "), buf, sizeof(buf), MUTT_CMD) != 0)
     return;
 
-  if (!buf[0] && C_Shell)
+  if ((buf[0] == '\0') && C_Shell)
     mutt_str_strfcpy(buf, C_Shell, sizeof(buf));
-  if (!buf[0])
+  if (buf[0] == '\0')
     return;
 
   mutt_window_clearline(MuttMessageWindow, 0);

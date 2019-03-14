@@ -648,7 +648,7 @@ return_error:
   if (entry)
     rfc1524_free_entry(&entry);
 
-  if (pagerfile[0])
+  if (pagerfile[0] != '\0')
     mutt_file_unlink(pagerfile);
 
   return rc;

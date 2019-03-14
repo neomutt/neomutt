@@ -614,7 +614,7 @@ int mutt_enter_fname_full(const char *prompt, char *buf, size_t buflen, bool mai
   mutt_window_mvaddstr(MuttMessageWindow, 0, 0, (char *) prompt);
   addstr(_(" ('?' for list): "));
   NORMAL_COLOR;
-  if (buf[0])
+  if (buf[0] != '\0')
     addstr(buf);
   mutt_window_clrtoeol(MuttMessageWindow);
   mutt_refresh();

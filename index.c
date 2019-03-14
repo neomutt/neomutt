@@ -2278,7 +2278,7 @@ int mutt_index_menu(void)
           /* Selected directory is okay, let's save it. */
           mutt_browser_select_dir(buf);
 
-          if (!buf[0])
+          if (buf[0] == '\0')
           {
             mutt_window_clearline(MuttMessageWindow, 0);
             break;
