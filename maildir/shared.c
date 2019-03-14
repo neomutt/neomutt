@@ -1496,8 +1496,6 @@ int mh_sync_mailbox_message(struct Mailbox *m, int msgno, header_cache_t *hc)
     }
     mutt_hcache_store(hc, key, keylen, e, 0);
   }
-#else
-  (void)hc; // chase compiler warning about hc not being used
 #endif
 
   return 0;
