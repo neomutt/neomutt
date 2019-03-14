@@ -59,9 +59,7 @@
 #include "pattern.h"
 #include "progress.h"
 #include "sort.h"
-#ifdef USE_HCACHE
 #include "hcache/hcache.h"
-#endif
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

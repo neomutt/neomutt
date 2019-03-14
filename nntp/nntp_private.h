@@ -26,9 +26,7 @@
 #include "config.h"
 #include <stdint.h>
 #include "nntp.h"
-#ifdef USE_HCACHE
 #include "hcache/hcache.h"
-#endif
 
 struct Connection;
 struct Email;
@@ -61,10 +59,7 @@ void nntp_mdata_free(void **ptr);
 void nntp_newsrc_gen_entries(struct Mailbox *m);
 int  nntp_open_connection(struct NntpAccountData *adata);
 void nntp_article_status(struct Mailbox *m, struct Email *e, char *group, anum_t anum);
-
-#ifdef USE_HCACHE
 header_cache_t *nntp_hcache_open(struct NntpMboxData *mdata);
 void nntp_hcache_update(struct NntpMboxData *mdata, header_cache_t *hc);
-#endif
 
 #endif /* MUTT_NNTP_NNTP_PRIVATE_H */

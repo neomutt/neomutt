@@ -120,12 +120,10 @@ WHERE char *C_ImapUser;                      ///< Config: (imap) Username for th
 WHERE char *C_Mbox;                          ///< Config: Folder that receives read emails (see Move)
 WHERE char *C_MailcapPath;                   ///< Config: Colon-separated list of mailcap files
 WHERE char *C_Folder;                        ///< Config: Base folder for a set of mailboxes
-#ifdef USE_HCACHE
 WHERE char *C_HeaderCache;                   ///< Config: (hcache) Directory/file for the header cache database
 #if defined(HAVE_GDBM) || defined(HAVE_BDB)
 WHERE char *C_HeaderCachePagesize;           ///< Config: (hcache) Database page size (gdbm,bdb4)
 #endif /* HAVE_GDBM || HAVE_BDB */
-#endif /* USE_HCACHE */
 
 #ifdef USE_SOCKET
 WHERE short C_NetInc;                        ///< Config: (socket) Update the progress bar after this many KB sent/received (0 to disable)
@@ -217,11 +215,9 @@ WHERE bool C_EditHeaders;                    ///< Config: Let the user edit the 
 WHERE bool C_FlagSafe;                       ///< Config: Protect flagged messages from deletion
 WHERE bool C_ForwardDecode;                  ///< Config: Decode the message when forwarding it
 WHERE bool C_ForwardQuote;                   ///< Config: Automatically quote a forwarded message using #C_IndentString
-#ifdef USE_HCACHE
 #if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
 WHERE bool C_HeaderCacheCompress;            ///< Config: (hcache) Enable database compression (qdbm,tokyocabinet,kyotocabinet)
 #endif /* HAVE_QDBM */
-#endif
 WHERE bool C_Header;                         ///< Config: Include the message headers in the reply email (Weed applies)
 WHERE bool C_Help;                           ///< Config: Display a help line with common key bindings
 #ifdef USE_IMAP

@@ -56,9 +56,7 @@
 #include "message.h"
 #include "mutt_account.h"
 #include "options.h"
-#ifdef USE_HCACHE
 #include "hcache/hcache.h"
-#endif
 
 /* These Config Variables are only used in imap/util.c */
 char *C_ImapDelimChars; ///< Config: (imap) Characters that denote separators in IMAP folders
@@ -465,7 +463,7 @@ struct Email *imap_hcache_get(struct ImapMboxData *mdata, unsigned int uid)
     return NULL;
 
   sprintf(key, "/%u", uid);
-  uv = mutt_hcache_fetch(mdata->hcache, key, imap_hcache_keylen(key));
+  uv = mutt_hcache_fetch(mdata->hcache, key, mutt_str_strlen(key));
   if (uv)
   {
     if (*(unsigned int *) uv == mdata->uid_validity)
@@ -493,7 +491,7 @@ int imap_hcache_put(struct ImapMboxData *mdata, struct Email *e)
     return -1;
 
   sprintf(key, "/%u", imap_edata_get(e)->uid);
-  return mutt_hcache_store(mdata->hcache, key, imap_hcache_keylen(key), e, mdata->uid_validity);
+  return mutt_hcache_store(mdata->hcache, key, mutt_str_strlen(key), e, mdata->uid_validity);
 }
 
 /**
@@ -511,7 +509,7 @@ int imap_hcache_del(struct ImapMboxData *mdata, unsigned int uid)
     return -1;
 
   sprintf(key, "/%u", uid);
-  return mutt_hcache_delete(mdata->hcache, key, imap_hcache_keylen(key));
+  return mutt_hcache_delete(mdata->hcache, key, mutt_str_strlen(key));
 }
 
 /**

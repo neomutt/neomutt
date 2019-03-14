@@ -90,7 +90,6 @@ static header_cache_t *nm_hcache_open(struct Mailbox *m)
 #ifdef USE_HCACHE
   return mutt_hcache_open(C_HeaderCache, m->path, NULL);
 #else
-  (void)m;
   return NULL;
 #endif
 }
@@ -99,8 +98,6 @@ void nm_hcache_close(header_cache_t *h)
 {
 #ifdef USE_HCACHE
   mutt_hcache_close(h);
-#else
-  (void)h;
 #endif
 }
 
@@ -896,10 +893,6 @@ static struct Email *get_mutt_email(struct Mailbox *m, notmuch_message_t *msg)
 static void append_message(header_cache_t *h, struct Mailbox *m,
                            notmuch_query_t *q, notmuch_message_t *msg, bool dedup)
 {
-#ifndef USE_HCACHE
-  (void)h; // chase compiler warning about h not being used
-#endif
-
   char *newpath = NULL;
   struct Email *e = NULL;
 

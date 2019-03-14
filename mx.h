@@ -29,9 +29,7 @@
 #include <stdio.h>
 #include <time.h>
 #include "config/lib.h"
-#ifdef USE_HCACHE
 #include "hcache/hcache.h"
-#endif
 
 struct Email;
 struct Context;

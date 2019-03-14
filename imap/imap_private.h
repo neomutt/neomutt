@@ -33,9 +33,7 @@
 #include "mutt/mutt.h"
 #include "config/lib.h"
 #include "conn/conn.h"
-#ifdef USE_HCACHE
 #include "hcache/hcache.h"
-#endif
 
 struct Email;
 struct Mailbox;
@@ -239,10 +237,7 @@ struct ImapMboxData
   unsigned int max_msn;        /**< the largest MSN fetched so far */
   struct BodyCache *bcache;
 
-#ifdef USE_HCACHE
   header_cache_t *hcache;
-#endif
-
 };
 
 /**
@@ -344,9 +339,5 @@ void imap_utf_encode(bool unicode, char **s);
 void imap_utf_decode(bool unicode, char **s);
 void imap_allow_reopen(struct Mailbox *m);
 void imap_disallow_reopen(struct Mailbox *m);
-
-#ifdef USE_HCACHE
-#define imap_hcache_keylen mutt_str_strlen
-#endif /* USE_HCACHE */
 
 #endif /* MUTT_IMAP_IMAP_PRIVATE_H */

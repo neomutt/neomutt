@@ -52,9 +52,7 @@
 #include "monitor.h"
 #include "muttlib.h"
 #include "mx.h"
-#ifdef USE_HCACHE
 #include "hcache/hcache.h"
-#endif
 
 /**
  * maildir_check_dir - Check for new mail / mail counts

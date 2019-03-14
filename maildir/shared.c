@@ -478,7 +478,6 @@ int maildir_move_to_context(struct Mailbox *m, struct Maildir **md)
   return num;
 }
 
-#ifdef USE_HCACHE
 /**
  * maildir_hcache_keylen - Calculate the length of the Maildir path
  * @param fn File name
@@ -491,7 +490,6 @@ size_t maildir_hcache_keylen(const char *fn)
   const char *p = strrchr(fn, ':');
   return p ? (size_t)(p - fn) : mutt_str_strlen(fn);
 }
-#endif
 
 /**
  * md_cmp_inode - Compare two Maildirs by inode number
@@ -707,12 +705,6 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
   char fn[PATH_MAX];
   int count;
   bool sort = false;
-#ifdef USE_HCACHE
-  const char *key = NULL;
-  size_t keylen;
-  struct stat lastchanged;
-  int ret;
-#endif
 
 #ifdef USE_HCACHE
   header_cache_t *hc = mutt_hcache_open(C_HeaderCache, m->path, NULL);
@@ -745,16 +737,15 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
     snprintf(fn, sizeof(fn), "%s/%s", m->path, p->email->path);
 
 #ifdef USE_HCACHE
+    struct stat lastchanged = { 0 };
+    int ret = 0;
     if (C_MaildirHeaderCacheVerify)
     {
       ret = stat(fn, &lastchanged);
     }
-    else
-    {
-      lastchanged.st_mtime = 0;
-      ret = 0;
-    }
 
+    const char *key = NULL;
+    size_t keylen = 0;
     if (m->magic == MUTT_MH)
     {
       key = p->email->path;
