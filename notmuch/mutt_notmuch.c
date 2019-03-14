@@ -971,7 +971,7 @@ static void append_message(header_cache_t *h, struct Mailbox *m,
 
   if (from_cache)
   {
-    mutt_hcache_free(h, from_cache);
+    mutt_hcache_free(h, &from_cache);
   }
   else
   {
