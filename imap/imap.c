@@ -1905,8 +1905,7 @@ int imap_ac_add(struct Account *a, struct Mailbox *m)
  * @retval  0 Success
  * @retval -1 Failure
  *
- * This method ensure ImapAccountData is connected and logged to
- * the imap server.
+ * Ensure ImapAccountData is connected and logged into the imap server.
  */
 int imap_login(struct ImapAccountData *adata)
 {
