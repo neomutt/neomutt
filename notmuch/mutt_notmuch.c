@@ -85,6 +85,11 @@ char *C_NmUnreadTag;  ///< Config: (notmuch) Tag to use for unread messages
 char *C_NmFlaggedTag; ///< Config: (notmuch) Tag to use for flagged messages
 char *C_NmRepliedTag; ///< Config: (notmuch) Tag to use for replied messages
 
+/**
+ * nm_hcache_open - Open a header cache
+ * @param m Mailbox
+ * @retval ptr Header cache handle
+ */
 static header_cache_t *nm_hcache_open(struct Mailbox *m)
 {
 #ifdef USE_HCACHE
@@ -94,6 +99,10 @@ static header_cache_t *nm_hcache_open(struct Mailbox *m)
 #endif
 }
 
+/**
+ * nm_hcache_close - Close the header cache
+ * @param h Header cache handle
+ */
 void nm_hcache_close(header_cache_t *h)
 {
 #ifdef USE_HCACHE
