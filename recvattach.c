@@ -460,6 +460,9 @@ static void prepend_savedir(char *buf, size_t bufsize)
 {
   const char *savedir = C_AttachSaveDir;
 
+  if (buf[0] == '/')
+    return;
+
   if (!savedir || !*savedir)
     savedir = "./";
 
