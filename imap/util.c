@@ -147,6 +147,8 @@ int imap_adata_find(const char *path, struct ImapAccountData **adata,
       continue;
 
     tmp_adata = np->adata;
+    if (!tmp_adata)
+      continue;
     if (imap_account_match(&tmp_adata->conn_account, &conn_account))
     {
       *mdata = imap_mdata_new(tmp_adata, tmp);
