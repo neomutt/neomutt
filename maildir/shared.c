@@ -415,13 +415,13 @@ cleanup:
 }
 
 /**
- * maildir_add_to_context - Add the Maildir list to the Mailbox
+ * maildir_add_to_mailbox - Add the Maildir list to the Mailbox
  * @param m   Mailbox
  * @param md  Maildir list to copy
  * @retval num Number of new emails
  * @retval 0   Error
  */
-static int maildir_add_to_context(struct Mailbox *m, struct Maildir *md)
+static int maildir_add_to_mailbox(struct Mailbox *m, struct Maildir *md)
 {
   if (!m)
     return 0;
@@ -468,15 +468,15 @@ static int maildir_add_to_context(struct Mailbox *m, struct Maildir *md)
 }
 
 /**
- * maildir_move_to_context - Copy the Maildir list to the Mailbox
+ * maildir_move_to_mailbox - Copy the Maildir list to the Mailbox
  * @param[in]  m   Mailbox
  * @param[out] md  Maildir list to copy, then free
  * @retval num Number of new emails
  * @retval 0   Error
  */
-int maildir_move_to_context(struct Mailbox *m, struct Maildir **md)
+int maildir_move_to_mailbox(struct Mailbox *m, struct Maildir **md)
 {
-  int num = maildir_add_to_context(m, *md);
+  int num = maildir_add_to_mailbox(m, *md);
   maildir_free_maildir(md);
   return num;
 }
@@ -876,7 +876,7 @@ int mh_read_dir(struct Mailbox *m, const char *subdir)
     mhs_free_sequences(&mhs);
   }
 
-  maildir_move_to_context(m, &md);
+  maildir_move_to_mailbox(m, &md);
 
   if (!mdata->mh_umask)
     mdata->mh_umask = mh_umask(m);

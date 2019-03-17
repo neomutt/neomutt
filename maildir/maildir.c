@@ -514,7 +514,7 @@ int maildir_mbox_check(struct Mailbox *m, int *index_hint)
   maildir_delayed_parsing(m, &md, NULL);
 
   /* Incorporate new messages */
-  num_new = maildir_move_to_context(m, &md);
+  num_new = maildir_move_to_mailbox(m, &md);
   if (num_new > 0)
     mutt_mailbox_changed(m, MBN_INVALID);
 
