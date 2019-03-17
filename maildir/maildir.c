@@ -56,6 +56,11 @@
 #include "hcache/hcache.h"
 #endif
 
+// Flags for maildir_mbox_check()
+#define MMC_NO_DIRS 0        ///< No directories changed
+#define MMC_NEW_DIR (1 << 0) ///< 'new' directory changed
+#define MMC_CUR_DIR (1 << 1) ///< 'cur' directory changed
+
 /**
  * maildir_check_dir - Check for new mail / mail counts
  * @param m           Mailbox to check
@@ -368,8 +373,7 @@ int maildir_mbox_check(struct Mailbox *m, int *index_hint)
 
   struct stat st_new;         /* status of the "new" subdirectory */
   struct stat st_cur;         /* status of the "cur" subdirectory */
-  int changed = 0;            /* bitmask representing which subdirectories
-                                 have changed.  0x1 = new, 0x2 = cur */
+  int changed = MMC_NO_DIRS;  /* which subdirectories have changed */
   bool occult = false;        /* messages were removed from the mailbox */
   int num_new = 0;            /* number of new messages added to the mailbox */
   bool flags_changed = false; /* message flags were changed in the mailbox */
@@ -401,11 +405,11 @@ int maildir_mbox_check(struct Mailbox *m, int *index_hint)
 
   /* determine which subdirectories need to be scanned */
   if (mutt_file_stat_timespec_compare(&st_new, MUTT_STAT_MTIME, &m->mtime) > 0)
-    changed = 1;
+    changed = MMC_NEW_DIR;
   if (mutt_file_stat_timespec_compare(&st_cur, MUTT_STAT_MTIME, &mdata->mtime_cur) > 0)
-    changed |= 2;
+    changed |= MMC_CUR_DIR;
 
-  if (!changed)
+  if (changed == MMC_NO_DIRS)
   {
     mutt_buffer_pool_release(&buf);
     return 0; /* nothing to do */
@@ -431,9 +435,9 @@ int maildir_mbox_check(struct Mailbox *m, int *index_hint)
    * the subdirectories that have changed.  */
   md = NULL;
   last = &md;
-  if (changed & 1)
+  if (changed & MMC_NEW_DIR)
     maildir_parse_dir(m, &last, "new", &count, NULL);
-  if (changed & 2)
+  if (changed & MMC_CUR_DIR)
     maildir_parse_dir(m, &last, "cur", &count, NULL);
 
   /* we create a hash table keyed off the canonical (sans flags) filename
@@ -486,8 +490,8 @@ int maildir_mbox_check(struct Mailbox *m, int *index_hint)
     /* This message was not in the list of messages we just scanned.
      * Check to see if we have enough information to know if the
      * message has disappeared out from underneath us.  */
-    else if (((changed & 1) && (strncmp(m->emails[i]->path, "new/", 4) == 0)) ||
-             ((changed & 2) && (strncmp(m->emails[i]->path, "cur/", 4) == 0)))
+    else if (((changed & MMC_NEW_DIR) && (strncmp(m->emails[i]->path, "new/", 4) == 0)) ||
+             ((changed & MMC_CUR_DIR) && (strncmp(m->emails[i]->path, "cur/", 4) == 0)))
     {
       /* This message disappeared, so we need to simulate a "reopen"
        * event.  We know it disappeared because we just scanned the
