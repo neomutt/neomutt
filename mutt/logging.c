@@ -166,11 +166,11 @@ int log_file_set_filename(const char *file, bool verbose)
  * @retval  0 Success
  * @retval -1 Error, level is out of range
  *
- * The level can be between 0 and LL_DEBUG5.
+ * The level should be: LL_MESSAGE <= level < LL_MAX.
  */
 int log_file_set_level(int level, bool verbose)
 {
-  if ((level < 0) || (level > 5))
+  if ((level < LL_MESSAGE) || (level >= LL_MAX))
     return -1;
 
   if (level == LogFileLevel)
@@ -178,7 +178,7 @@ int log_file_set_level(int level, bool verbose)
 
   LogFileLevel = level;
 
-  if (level == 0)
+  if (level == LL_MESSAGE)
   {
     log_file_close(verbose);
   }
@@ -194,7 +194,7 @@ int log_file_set_level(int level, bool verbose)
     log_file_open(verbose);
   }
 
-  if (LogFileLevel == LL_DEBUG5)
+  if (LogFileLevel >= LL_DEBUG5)
   {
     fprintf(LogFileFP,
             "\n"

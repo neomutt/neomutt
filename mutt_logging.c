@@ -325,7 +325,7 @@ int mutt_log_start(void)
 int level_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                     intptr_t value, struct Buffer *err)
 {
-  if ((value < 0) || (value > LL_DEBUG5))
+  if ((value < 0) || (value >= LL_MAX))
   {
     mutt_buffer_printf(err, _("Invalid value for option %s: %ld"), cdef->name, value);
     return CSR_ERR_INVALID;
