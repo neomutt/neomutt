@@ -638,7 +638,7 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
      * lightweight than realpath() and doesn't resolve links */
     while (*p)
     {
-      if ((*p == '/') && (p[1] == '/'))
+      if ((p[0] == '/') && (p[1] == '/'))
       {
         *q++ = '/';
         p += 2;

@@ -1439,7 +1439,7 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
 
             browser_highlight_default(&state, menu);
             init_menu(&state, menu, title, sizeof(title), mailbox);
-            if (goto_swapper[0])
+            if (goto_swapper[0] != '\0')
               goto_swapper[0] = '\0';
             break;
           }
@@ -2093,6 +2093,6 @@ bail:
     mutt_menu_destroy(&menu);
   }
 
-  if (goto_swapper[0])
+  if (goto_swapper[0] != '\0')
     goto_swapper[0] = '\0';
 }

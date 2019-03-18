@@ -195,7 +195,7 @@ int mutt_complete(char *buf, size_t buflen)
         mutt_str_strfcpy(filepart, de->d_name, sizeof(filepart));
 
         /* check to see if it is a directory */
-        if (dirpart[0])
+        if (dirpart[0] != '\0')
         {
           mutt_str_strfcpy(tmp, exp_dirpart, sizeof(tmp));
           mutt_str_strfcpy(tmp + strlen(tmp), "/", sizeof(tmp) - strlen(tmp));
@@ -214,7 +214,7 @@ int mutt_complete(char *buf, size_t buflen)
   }
   closedir(dirp);
 
-  if (dirpart[0])
+  if (dirpart[0] != '\0')
   {
     mutt_str_strfcpy(buf, dirpart, buflen);
     if ((mutt_str_strcmp("/", dirpart) != 0) && (dirpart[0] != '=') && (dirpart[0] != '+'))

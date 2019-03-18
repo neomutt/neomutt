@@ -1163,7 +1163,7 @@ int main(int argc, char *argv[], char *envp[])
       }
     }
 
-    if (!folder[0])
+    if (folder[0] == '\0')
     {
       if (C_Spoolfile)
         mutt_str_strfcpy(folder, C_Spoolfile, sizeof(folder));

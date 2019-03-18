@@ -1,6 +1,6 @@
 2018-07-16  Richard Russon  <rich@flatcap.org>
 * Features
-  - <check-stats> function
+  - \<check-stats\> function
 * Bug Fixes
   - Lots
 

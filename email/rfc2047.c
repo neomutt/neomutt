@@ -380,7 +380,7 @@ static char *decode_word(const char *s, size_t len, enum ContentEncoding enc)
       {
         mutt_buffer_addch(&buf, ' ');
       }
-      else if ((*it == '=') && (!(it[1] & ~127) && (hexval(it[1]) != -1)) &&
+      else if ((it[0] == '=') && (!(it[1] & ~127) && (hexval(it[1]) != -1)) &&
                (!(it[2] & ~127) && (hexval(it[2]) != -1)))
       {
         mutt_buffer_addch(&buf, (hexval(it[1]) << 4) | hexval(it[2]));

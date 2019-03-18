@@ -27,8 +27,8 @@
 
 #undef MAX
 #undef MIN
-#define MAX(a, b) ((a) < (b) ? (b) : (a))
-#define MIN(a, b) ((a) < (b) ? (a) : (b))
+#define MAX(a, b) (((a) < (b)) ? (b) : (a))
+#define MIN(a, b) (((a) < (b)) ? (a) : (b))
 
 #define mutt_array_size(x) (sizeof(x) / sizeof((x)[0]))
 

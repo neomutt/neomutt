@@ -122,6 +122,15 @@ struct PopAuth
 int pop_authenticate(struct PopAccountData *adata);
 void pop_apop_timestamp(struct PopAccountData *adata, char *buf);
 
+/**
+ * typedef pop_fetch_t - Callback function to handle POP server responses
+ * @param line String to parse
+ * @param data Private data passed to pop_fetch_data()
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
+typedef int (*pop_fetch_t)(char *str, void *data);
+
 /* pop_lib.c */
 #define pop_query(adata, buf, buflen) pop_query_d(adata, buf, buflen, NULL)
 int pop_parse_path(const char *path, struct ConnAccount *acct);
@@ -129,7 +138,7 @@ int pop_connect(struct PopAccountData *adata);
 int pop_open_connection(struct PopAccountData *adata);
 int pop_query_d(struct PopAccountData *adata, char *buf, size_t buflen, char *msg);
 int pop_fetch_data(struct PopAccountData *adata, const char *query,
-                   struct Progress *progress, int (*func)(char *, void *), void *data);
+                   struct Progress *progress, pop_fetch_t callback, void *data);
 int pop_reconnect(struct Mailbox *m);
 void pop_logout(struct Mailbox *m);
 struct PopAccountData *pop_adata_get(struct Mailbox *m);

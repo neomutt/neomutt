@@ -610,7 +610,7 @@ static enum CommandResult parse_replace_list(struct Buffer *buf, struct Buffer *
  * @param s    Buffer containing the unattachments command
  * @param head List of AttachMatch to remove from
  * @param err  Buffer for error messages
- * @retval MUTT_CMD_SUCCESS Always
+ * @retval #MUTT_CMD_SUCCESS Always
  */
 static enum CommandResult parse_unattach_list(struct Buffer *buf, struct Buffer *s,
                                               struct ListHead *head, struct Buffer *err)
@@ -1081,8 +1081,8 @@ static enum CommandResult parse_echo(struct Buffer *buf, struct Buffer *s,
 
 /**
  * parse_finish - Parse the 'finish' command - Implements ::command_t
- * @retval  MUTT_CMD_FINISH Stop processing the current file
- * @retval  MUTT_CMD_WARNING Failed
+ * @retval  #MUTT_CMD_FINISH Stop processing the current file
+ * @retval  #MUTT_CMD_WARNING Failed
  *
  * If the 'finish' command is found, we should stop reading the current file.
  */

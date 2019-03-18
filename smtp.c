@@ -598,7 +598,7 @@ static int smtp_auth(struct Connection *conn)
       delim = strchr(method, ':');
       if (delim)
         *delim++ = '\0';
-      if (!method[0])
+      if (method[0] == '\0')
         continue;
 
       mutt_debug(LL_DEBUG2, "Trying method %s\n", method);

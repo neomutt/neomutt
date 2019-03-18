@@ -93,7 +93,7 @@ void                    maildir_delayed_parsing(struct Mailbox *m, struct Maildi
 size_t                  maildir_hcache_keylen  (const char *fn);
 struct MaildirMboxData *maildir_mdata_get      (struct Mailbox *m);
 int                     maildir_mh_open_message(struct Mailbox *m, struct Message *msg, int msgno, bool is_maildir);
-int                     maildir_move_to_context(struct Mailbox *m, struct Maildir **md);
+int                     maildir_move_to_mailbox(struct Mailbox *m, struct Maildir **md);
 int                     maildir_parse_dir      (struct Mailbox *m, struct Maildir ***last, const char *subdir, int *count, struct Progress *progress);
 void                    maildir_parse_flags    (struct Email *e, const char *path);
 struct Email *          maildir_parse_message  (enum MailboxType magic, const char *fname, bool is_old, struct Email *e);

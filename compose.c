@@ -587,7 +587,7 @@ static int delete_attachment(struct AttachCtx *actx, int x)
  * mutt_gen_compose_attach_list - Generate the attachment list for the compose screen
  * @param actx        Attachment context
  * @param m           Attachment
- * @param parent_type Attachment type, e.g TYPE_MULTIPART
+ * @param parent_type Attachment type, e.g #TYPE_MULTIPART
  * @param level       Nesting depth of attachment
  */
 static void mutt_gen_compose_attach_list(struct AttachCtx *actx, struct Body *m,

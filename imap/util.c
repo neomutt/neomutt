@@ -147,6 +147,8 @@ int imap_adata_find(const char *path, struct ImapAccountData **adata,
       continue;
 
     tmp_adata = np->adata;
+    if (!tmp_adata)
+      continue;
     if (imap_account_match(&tmp_adata->conn_account, &conn_account))
     {
       *mdata = imap_mdata_new(tmp_adata, tmp);
@@ -1156,6 +1158,8 @@ void imap_disallow_reopen(struct Mailbox *m)
  */
 bool imap_account_match(const struct ConnAccount *a1, const struct ConnAccount *a2)
 {
+  if (!a1 || !a2)
+    return false;
   if (a1->type != a2->type)
     return false;
   if (mutt_str_strcasecmp(a1->host, a2->host) != 0)

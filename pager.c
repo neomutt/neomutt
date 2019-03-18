@@ -2693,7 +2693,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           }
         }
 
-        if (!buf[0])
+        if (buf[0] == '\0')
           break;
 
         mutt_str_strfcpy(searchbuf, buf, sizeof(searchbuf));
