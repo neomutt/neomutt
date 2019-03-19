@@ -659,11 +659,10 @@ const struct Binding OpMix[] = { /* map: mixmaster */
 /**
  * OpSummary - Key bindings for the summary menu
  */
-const struct Binding OpSummary[] =
-{
-  { "quit", OP_QUIT, "q"  },
-  { "help", OP_HELP, "?"  },
-  { NULL,   0,       NULL },
+const struct Binding OpSummary[] = { /* map: summary */
+  { "quit",                  OP_QUIT,                        "q" },
+  { "help",                  OP_HELP,                        "?" },
+  { NULL,                    0,                              NULL },
 };
 
 // clang-format on
