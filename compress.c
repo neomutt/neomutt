@@ -225,9 +225,9 @@ static struct CompressInfo *set_compress_info(struct Mailbox *m)
   struct CompressInfo *ci = mutt_mem_calloc(1, sizeof(struct CompressInfo));
   m->compress_info = ci;
 
-  ci->open = mutt_str_strdup(o);
-  ci->close = mutt_str_strdup(c);
-  ci->append = mutt_str_strdup(a);
+  ci->cmd_open = mutt_str_strdup(o);
+  ci->cmd_close = mutt_str_strdup(c);
+  ci->cmd_append = mutt_str_strdup(a);
 
   return ci;
 }
@@ -242,9 +242,9 @@ static void free_compress_info(struct Mailbox *m)
     return;
 
   struct CompressInfo *ci = m->compress_info;
-  FREE(&ci->open);
-  FREE(&ci->close);
-  FREE(&ci->append);
+  FREE(&ci->cmd_open);
+  FREE(&ci->cmd_close);
+  FREE(&ci->cmd_append);
 
   unlock_realpath(m);
 
@@ -376,7 +376,7 @@ bool mutt_comp_can_append(struct Mailbox *m)
 
   /* We have an open-hook, so to append we need an append-hook,
    * or a close-hook. */
-  if (ci->append || ci->close)
+  if (ci->cmd_append || ci->cmd_close)
     return true;
 
   mutt_error(_("Cannot append without an append-hook or close-hook : %s"), m->path);
@@ -466,7 +466,7 @@ static int comp_mbox_open(struct Mailbox *m)
     return -1;
 
   /* If there's no close-hook, or the file isn't writable */
-  if (!ci->close || (access(m->path, W_OK) != 0))
+  if (!ci->cmd_close || (access(m->path, W_OK) != 0))
     m->readonly = true;
 
   if (setup_paths(m) != 0)
@@ -479,7 +479,7 @@ static int comp_mbox_open(struct Mailbox *m)
     goto cmo_fail;
   }
 
-  int rc = execute_command(m, ci->open, _("Decompressing %s"));
+  int rc = execute_command(m, ci->cmd_open, _("Decompressing %s"));
   if (rc == 0)
     goto cmo_fail;
 
@@ -528,7 +528,7 @@ static int comp_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
     return -1;
 
   /* To append we need an append-hook or a close-hook */
-  if (!ci->append && !ci->close)
+  if (!ci->cmd_append && !ci->cmd_close)
   {
     mutt_error(_("Cannot append without an append-hook or close-hook : %s"), m->path);
     goto cmoa_fail1;
@@ -546,12 +546,12 @@ static int comp_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
   }
 
   /* Open the existing mailbox, unless we are appending */
-  if (!ci->append && (mutt_file_get_size(m->realpath) > 0))
+  if (!ci->cmd_append && (mutt_file_get_size(m->realpath) > 0))
   {
-    int rc = execute_command(m, ci->open, _("Decompressing %s"));
+    int rc = execute_command(m, ci->cmd_open, _("Decompressing %s"));
     if (rc == 0)
     {
-      mutt_error(_("Compress command failed: %s"), ci->open);
+      mutt_error(_("Compress command failed: %s"), ci->cmd_open);
       goto cmoa_fail2;
     }
     m->magic = mx_path_probe(m->path, NULL);
@@ -624,7 +624,7 @@ static int comp_mbox_check(struct Mailbox *m, int *index_hint)
     return -1;
   }
 
-  int rc = execute_command(m, ci->open, _("Decompressing %s"));
+  int rc = execute_command(m, ci->cmd_open, _("Decompressing %s"));
   store_size(m);
   unlock_realpath(m);
   if (rc == 0)
@@ -646,7 +646,7 @@ static int comp_mbox_sync(struct Mailbox *m, int *index_hint)
 
   struct CompressInfo *ci = m->compress_info;
 
-  if (!ci->close)
+  if (!ci->cmd_close)
   {
     mutt_error(_("Can't sync a compressed file without a close-hook"));
     return -1;
@@ -670,7 +670,7 @@ static int comp_mbox_sync(struct Mailbox *m, int *index_hint)
   if (rc != 0)
     goto sync_cleanup;
 
-  rc = execute_command(m, ci->close, _("Compressing %s"));
+  rc = execute_command(m, ci->cmd_close, _("Compressing %s"));
   if (rc == 0)
   {
     rc = -1;
@@ -714,14 +714,14 @@ static int comp_mbox_close(struct Mailbox *m)
     const char *msg = NULL;
 
     /* The file exists and we can append */
-    if ((access(m->realpath, F_OK) == 0) && ci->append)
+    if ((access(m->realpath, F_OK) == 0) && ci->cmd_append)
     {
-      append = ci->append;
+      append = ci->cmd_append;
       msg = _("Compressed-appending to %s...");
     }
     else
     {
-      append = ci->close;
+      append = ci->cmd_close;
       msg = _("Compressing %s...");
     }
 
