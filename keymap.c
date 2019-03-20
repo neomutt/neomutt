@@ -578,7 +578,7 @@ int km_dokey(int menu)
 
   while (true)
   {
-    int i = C_Timeout > 0 ? C_Timeout : 60;
+    int i = (C_Timeout > 0) ? C_Timeout : 60;
 #ifdef USE_IMAP
     /* keepalive may need to run more frequently than C_Timeout allows */
     if (C_ImapKeepalive)
@@ -587,7 +587,7 @@ int km_dokey(int menu)
         imap_keepalive();
       else
       {
-        while (C_ImapKeepalive && C_ImapKeepalive < i)
+        while (C_ImapKeepalive && (C_ImapKeepalive < i))
         {
           mutt_getch_timeout(C_ImapKeepalive * 1000);
           tmp = mutt_getch();

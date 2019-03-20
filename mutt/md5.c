@@ -363,7 +363,7 @@ void mutt_md5_process_bytes(const void *buffer, size_t len, struct Md5Ctx *md5ct
   if (md5ctx->buflen != 0)
   {
     size_t left_over = md5ctx->buflen;
-    size_t add = (128 - left_over) > len ? len : (128 - left_over);
+    size_t add = ((128 - left_over) > len) ? len : (128 - left_over);
 
     memcpy(&((char *) md5ctx->buffer)[left_over], buffer, add);
     md5ctx->buflen += add;

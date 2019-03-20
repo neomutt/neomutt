@@ -232,7 +232,7 @@ struct Event mutt_getch(void)
 
   ret.ch = ch;
   ret.op = 0;
-  return ch == ctrl('G') ? err : ret;
+  return (ch == ctrl('G')) ? err : ret;
 }
 
 /**
@@ -354,8 +354,8 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
    * around the screen in the even the question is wider than the screen,
    * ensure there is enough room for the answer and truncate the question
    * to fit.  */
-  safe_asprintf(&answer_string, " ([%s]/%s): ", def == MUTT_YES ? yes : no,
-                def == MUTT_YES ? no : yes);
+  safe_asprintf(&answer_string, " ([%s]/%s): ", (def == MUTT_YES) ? yes : no,
+                (def == MUTT_YES) ? no : yes);
   answer_string_wid = mutt_strwidth(answer_string);
   msg_wid = mutt_strwidth(msg);
 
@@ -445,7 +445,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
 
   if (def != MUTT_ABORT)
   {
-    addstr((char *) (def == MUTT_YES ? yes : no));
+    addstr((char *) ((def == MUTT_YES) ? yes : no));
     mutt_refresh();
   }
   else
@@ -968,7 +968,7 @@ void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
       buflen -= k2;
     }
   }
-  w = (int) buflen < min_width ? buflen : min_width;
+  w = ((int) buflen < min_width) ? buflen : min_width;
   if (w <= 0)
     *p = '\0';
   else if (justify == FMT_RIGHT) /* right justify */

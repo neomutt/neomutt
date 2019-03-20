@@ -1723,7 +1723,7 @@ void nm_parse_type_from_query(struct NmMboxData *mdata, char *buf)
     if (mutt_str_strcasestr(buf, variants[i]) != NULL)
     {
       // variants[] is setup such that type can be determined via modulo 2.
-      mdata->query_type = (i % 2) == 0 ? NM_QUERY_TYPE_THREADS : NM_QUERY_TYPE_MESGS;
+      mdata->query_type = ((i % 2) == 0) ? NM_QUERY_TYPE_THREADS : NM_QUERY_TYPE_MESGS;
 
       mutt_str_remall_strcasestr(buf, variants[i]);
     }

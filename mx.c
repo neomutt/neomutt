@@ -947,7 +947,7 @@ struct Message *mx_msg_open_new(struct Mailbox *m, struct Email *e, MsgOpenFlags
     msg->flags.flagged = e->flagged;
     msg->flags.replied = e->replied;
     msg->flags.read = e->read;
-    msg->flags.draft = (flags & MUTT_SET_DRAFT) ? true : false;
+    msg->flags.draft = (flags & MUTT_SET_DRAFT);
     msg->received = e->received;
   }
 

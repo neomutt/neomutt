@@ -542,7 +542,8 @@ pid_t pgp_invoke_list_keys(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_er
 
   pid_t rc = pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, pgpinfd, pgpoutfd,
                         pgperrfd, 0, NULL, NULL, mutt_b2s(uids),
-                        keyring == PGP_SECRING ? C_PgpListSecringCommand : C_PgpListPubringCommand);
+                        (keyring == PGP_SECRING) ? C_PgpListSecringCommand :
+                                                   C_PgpListPubringCommand);
 
   mutt_buffer_pool_release(&uids);
   return rc;

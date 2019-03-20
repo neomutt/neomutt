@@ -1147,7 +1147,7 @@ static int menu_search(struct Menu *menu, int op)
   regex_t re;
   char buf[128];
   char *search_buf =
-      menu->menu >= 0 && menu->menu < MENU_MAX ? SearchBuffers[menu->menu] : NULL;
+      ((menu->menu >= 0) && (menu->menu < MENU_MAX)) ? SearchBuffers[menu->menu] : NULL;
 
   if (!(search_buf && *search_buf) || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
@@ -1166,7 +1166,7 @@ static int menu_search(struct Menu *menu, int op)
       search_buf = SearchBuffers[menu->menu];
     }
     menu->search_dir =
-        (op == OP_SEARCH || op == OP_SEARCH_NEXT) ? MUTT_SEARCH_DOWN : MUTT_SEARCH_UP;
+        ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? MUTT_SEARCH_DOWN : MUTT_SEARCH_UP;
   }
 
   search_dir = (menu->search_dir == MUTT_SEARCH_UP) ? -1 : 1;
@@ -1203,7 +1203,7 @@ search_next:
 
   if (C_WrapSearch && (wrap++ == 0))
   {
-    rc = search_dir == 1 ? 0 : menu->max - 1;
+    rc = (search_dir == 1) ? 0 : menu->max - 1;
     goto search_next;
   }
   regfree(&re);

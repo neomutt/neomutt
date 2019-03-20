@@ -1563,25 +1563,25 @@ FILE *maildir_open_find_message(const char *folder, const char *msg, char **newn
   maildir_canon_filename(unique, msg);
 
   FILE *fp = md_open_find_message(folder, mutt_b2s(unique),
-                                  new_hits > cur_hits ? "new" : "cur", newname);
+                                  (new_hits > cur_hits) ? "new" : "cur", newname);
   if (fp || (errno != ENOENT))
   {
     if ((new_hits < UINT_MAX) && (cur_hits < UINT_MAX))
     {
-      new_hits += (new_hits > cur_hits ? 1 : 0);
-      cur_hits += (new_hits > cur_hits ? 0 : 1);
+      new_hits += ((new_hits > cur_hits) ? 1 : 0);
+      cur_hits += ((new_hits > cur_hits) ? 0 : 1);
     }
 
     goto cleanup;
   }
   fp = md_open_find_message(folder, mutt_b2s(unique),
-                            new_hits > cur_hits ? "cur" : "new", newname);
+                            (new_hits > cur_hits) ? "cur" : "new", newname);
   if (fp || (errno != ENOENT))
   {
     if ((new_hits < UINT_MAX) && (cur_hits < UINT_MAX))
     {
-      new_hits += (new_hits > cur_hits ? 0 : 1);
-      cur_hits += (new_hits > cur_hits ? 1 : 0);
+      new_hits += ((new_hits > cur_hits) ? 0 : 1);
+      cur_hits += ((new_hits > cur_hits) ? 1 : 0);
     }
 
     goto cleanup;
@@ -1616,7 +1616,7 @@ int maildir_check_empty(const char *path)
   {
     /* we do "cur" on the first iteration since it's more likely that we'll
      * find old messages without having to scan both subdirs */
-    snprintf(realpath, sizeof(realpath), "%s/%s", path, iter == 0 ? "cur" : "new");
+    snprintf(realpath, sizeof(realpath), "%s/%s", path, (iter == 0) ? "cur" : "new");
     dp = opendir(realpath);
     if (!dp)
       return -1;

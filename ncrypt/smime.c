@@ -1123,7 +1123,7 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, bool copy,
     if (mutt_str_startswith(email, mailbox, CASE_IGNORE))
       rc = 1;
 
-    rc = rc < 0 ? 0 : rc;
+    rc = (rc < 0) ? 0 : rc;
     count++;
   }
 

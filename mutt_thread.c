@@ -811,12 +811,11 @@ static void check_subjects(struct Mailbox *m, bool init)
     else if (cur->env->real_subj && tmp->message->env->real_subj)
     {
       cur->subject_changed =
-          (mutt_str_strcmp(cur->env->real_subj, tmp->message->env->real_subj) != 0) ? true : false;
+          (mutt_str_strcmp(cur->env->real_subj, tmp->message->env->real_subj) != 0);
     }
     else
     {
-      cur->subject_changed =
-          (cur->env->real_subj || tmp->message->env->real_subj) ? true : false;
+      cur->subject_changed = (cur->env->real_subj || tmp->message->env->real_subj);
     }
   }
 }

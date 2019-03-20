@@ -239,7 +239,7 @@ new_aliases:
   if ((C_SortAlias & SORT_MASK) != SORT_ORDER)
   {
     qsort(alias_table, menu->max, sizeof(struct Alias *),
-          (C_SortAlias & SORT_MASK) == SORT_ADDRESS ? alias_sort_address : alias_sort_alias);
+          ((C_SortAlias & SORT_MASK) == SORT_ADDRESS) ? alias_sort_address : alias_sort_alias);
   }
 
   for (i = 0; i < menu->max; i++)

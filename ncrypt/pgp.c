@@ -695,7 +695,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
       {
         struct FgetConv *fc = NULL;
         int ch;
-        char *expected_charset = gpgcharset && *gpgcharset ? gpgcharset : "utf-8";
+        char *expected_charset = (gpgcharset && *gpgcharset) ? gpgcharset : "utf-8";
 
         mutt_debug(LL_DEBUG3, "pgp: recoding inline from [%s] to [%s]\n",
                    expected_charset, C_Charset);

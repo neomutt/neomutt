@@ -314,7 +314,7 @@ static enum PopAuthRes pop_auth_user(struct PopAccountData *adata, const char *m
     snprintf(buf, sizeof(buf), "PASS %s\r\n", adata->conn->account.pass);
     ret = pop_query_d(adata, buf, sizeof(buf),
                       /* don't print the password unless we're at the ungodly debugging level */
-                      C_DebugLevel < MUTT_SOCK_LOG_FULL ? "PASS *\r\n" : NULL);
+                      (C_DebugLevel < MUTT_SOCK_LOG_FULL) ? "PASS *\r\n" : NULL);
   }
 
   switch (ret)

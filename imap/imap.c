@@ -1622,7 +1622,7 @@ out:
   mutt_buffer_free(&sync_cmd);
   imap_mdata_free((void *) &dest_mdata);
 
-  return (rc == IMAP_EXEC_SUCCESS ? 0 : -1);
+  return ((rc == IMAP_EXEC_SUCCESS) ? 0 : -1);
 }
 
 /**

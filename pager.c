@@ -1452,7 +1452,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
 
         if (wc == wc1)
         {
-          special |= (wc == '_' && special & A_UNDERLINE) ? A_UNDERLINE : A_BOLD;
+          special |= ((wc == '_') && (special & A_UNDERLINE)) ? A_UNDERLINE : A_BOLD;
         }
         else if ((wc == '_') || (wc1 == '_'))
         {
@@ -1951,7 +1951,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     if (IsEmail(rd->extra) && C_PagerIndexLines)
     {
       memcpy(rd->index_window, MuttIndexWindow, sizeof(struct MuttWindow));
-      rd->index_window->rows = rd->indexlen > 0 ? rd->indexlen - 1 : 0;
+      rd->index_window->rows = (rd->indexlen > 0) ? rd->indexlen - 1 : 0;
 
       if (C_StatusOnTop)
       {
@@ -2174,7 +2174,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       size_t l1 = rd->pager_status_window->cols * MB_LEN_MAX;
       size_t l2 = sizeof(buf);
       hfi.email = (IsEmail(rd->extra)) ? rd->extra->email : rd->extra->body->email;
-      mutt_make_string_info(buf, l1 < l2 ? l1 : l2, rd->pager_status_window->cols,
+      mutt_make_string_info(buf, (l1 < l2) ? l1 : l2, rd->pager_status_window->cols,
                             NONULL(C_PagerFormat), &hfi, 0);
       mutt_draw_statusline(rd->pager_status_window->cols, buf, l2);
     }
@@ -3236,9 +3236,9 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         CHECK_ATTACH;
 
         SendFlags replyflags =
-            SEND_REPLY | (ch == OP_GROUP_REPLY ? SEND_GROUP_REPLY : 0) |
-            (ch == OP_GROUP_CHAT_REPLY ? SEND_GROUP_CHAT_REPLY : 0) |
-            (ch == OP_LIST_REPLY ? SEND_LIST_REPLY : 0);
+            SEND_REPLY | ((ch == OP_GROUP_REPLY) ? SEND_GROUP_REPLY : 0) |
+            ((ch == OP_GROUP_CHAT_REPLY) ? SEND_GROUP_CHAT_REPLY : 0) |
+            ((ch == OP_LIST_REPLY) ? SEND_LIST_REPLY : 0);
 
         if (IsMsgAttach(extra))
           mutt_attach_reply(extra->fp, extra->email, extra->actx, extra->body, replyflags);

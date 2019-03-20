@@ -3309,8 +3309,8 @@ int mutt_index_menu(void)
           if (C_Resolve)
           {
             menu->current =
-                (op == OP_MAIN_READ_THREAD ? mutt_next_thread(CUR_EMAIL) :
-                                             mutt_next_subthread(CUR_EMAIL));
+                ((op == OP_MAIN_READ_THREAD) ? mutt_next_thread(CUR_EMAIL) :
+                                               mutt_next_subthread(CUR_EMAIL));
             if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
@@ -3416,7 +3416,7 @@ int mutt_index_menu(void)
               break;
             struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
             el_add_tagged(&el, Context, CUR_EMAIL, tag);
-            ci_send_message((op == OP_FOLLOWUP ? SEND_REPLY : SEND_FORWARD) | SEND_NEWS,
+            ci_send_message(((op == OP_FOLLOWUP) ? SEND_REPLY : SEND_FORWARD) | SEND_NEWS,
                             NULL, NULL, Context, &el);
             el_free(&el);
           }

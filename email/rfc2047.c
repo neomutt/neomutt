@@ -217,7 +217,7 @@ static size_t try_block(const char *d, size_t dlen, const char *fromcode,
       assert(errno == E2BIG);
       iconv_close(cd);
       assert(ib > d);
-      return (ib - d == dlen) ? dlen : ib - d + 1;
+      return ((ib - d) == dlen) ? dlen : ib - d + 1;
     }
     iconv_close(cd);
   }

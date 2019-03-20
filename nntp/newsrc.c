@@ -662,7 +662,7 @@ int nntp_active_save_cache(struct NntpAccountData *adata)
     if (!mdata || mdata->deleted)
       continue;
 
-    if (off + strlen(mdata->group) + (mdata->desc ? strlen(mdata->desc) : 0) + 50 > buflen)
+    if ((off + strlen(mdata->group) + (mdata->desc ? strlen(mdata->desc) : 0) + 50) > buflen)
     {
       buflen *= 2;
       mutt_mem_realloc(&buf, buflen);

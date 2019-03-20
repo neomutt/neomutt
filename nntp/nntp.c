@@ -437,7 +437,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
         if (!cont && (mutt_str_strcmp(".", adata->overview_fmt + off) == 0))
           break;
 
-        cont = chunk >= buflen - off ? 1 : 0;
+        cont = (chunk >= (buflen - off)) ? 1 : 0;
         off += strlen(adata->overview_fmt + off);
         if (!cont)
         {

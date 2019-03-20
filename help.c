@@ -299,8 +299,9 @@ static void format_line(FILE *fp, int ismacro, const char *t1, const char *t2, c
   }
   else
   {
-    const int col_a = MuttIndexWindow->cols > 83 ? (MuttIndexWindow->cols - 32) >> 2 : 12;
-    col_b = MuttIndexWindow->cols > 49 ? (MuttIndexWindow->cols - 10) >> 1 : 19;
+    const int col_a =
+        (MuttIndexWindow->cols > 83) ? (MuttIndexWindow->cols - 32) >> 2 : 12;
+    col_b = (MuttIndexWindow->cols > 49) ? (MuttIndexWindow->cols - 10) >> 1 : 19;
     col = pad(fp, mutt_strwidth(t1), col_a);
   }
 

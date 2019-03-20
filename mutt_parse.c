@@ -203,7 +203,7 @@ static int count_body_parts(struct Body *body, int flags)
     }
   }
 
-  mutt_debug(LL_DEBUG3, "return %d\n", count < 0 ? 0 : count);
+  mutt_debug(LL_DEBUG3, "return %d\n", (count < 0) ? 0 : count);
   return (count < 0) ? 0 : count;
 }
 

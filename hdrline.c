@@ -762,7 +762,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
         p = buf;
 
-        cp = (op == 'd' || op == 'D') ? (NONULL(C_DateFormat)) : src;
+        cp = ((op == 'd') || (op == 'D')) ? (NONULL(C_DateFormat)) : src;
         bool do_locales;
         if (*cp == '!')
         {
@@ -773,9 +773,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           do_locales = true;
 
         size_t len = buflen - 1;
-        while (len > 0 && (((op == 'd' || op == 'D') && *cp) ||
-                           (op == '{' && *cp != '}') || (op == '[' && *cp != ']') ||
-                           (op == '(' && *cp != ')') || (op == '<' && *cp != '>')))
+        while ((len > 0) &&
+               ((((op == 'd') || (op == 'D')) && *cp) ||
+                ((op == '{') && (*cp != '}')) || ((op == '[') && (*cp != ']')) ||
+                ((op == '(') && (*cp != ')')) || ((op == '<') && (*cp != '>'))))
         {
           if (*cp == '%')
           {

@@ -308,7 +308,7 @@ int imap_browse(char *path, struct BrowserState *state)
     {
       char relpath[2];
       /* folder may be "/" */
-      snprintf(relpath, sizeof(relpath), "%c", n < 0 ? '\0' : adata->delim);
+      snprintf(relpath, sizeof(relpath), "%c", (n < 0) ? '\0' : adata->delim);
       if (showparents)
         add_folder(adata->delim, relpath, true, false, state, true);
       if (!state->folder)

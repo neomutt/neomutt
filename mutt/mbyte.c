@@ -66,7 +66,7 @@ int mutt_mb_charlen(const char *s, int *width)
   k = mbrtowc(&wc, s, n, &mbstate);
   if (width)
     *width = wcwidth(wc);
-  return (k == (size_t)(-1) || k == (size_t)(-2)) ? -1 : k;
+  return ((k == (size_t)(-1)) || (k == (size_t)(-2))) ? -1 : k;
 }
 
 /**

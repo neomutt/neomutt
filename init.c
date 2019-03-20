@@ -1155,7 +1155,7 @@ static enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
           if (mutt_addrlist_to_intl(addr, &estr))
           {
             mutt_buffer_printf(err, _("%sgroup: warning: bad IDN '%s'"),
-                               data == 1 ? "un" : "", estr);
+                               (data == 1) ? "un" : "", estr);
             mutt_addr_free(&addr);
             FREE(&estr);
             goto bail;

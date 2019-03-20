@@ -634,7 +634,7 @@ time_t mutt_date_parse_imap(const char *s)
   struct tm t;
   time_t tz;
 
-  t.tm_mday = (s[0] == ' ' ? s[1] - '0' : (s[0] - '0') * 10 + (s[1] - '0'));
+  t.tm_mday = ((s[0] == ' ') ? s[1] - '0' : (s[0] - '0') * 10 + (s[1] - '0'));
   s += 2;
   if (*s != '-')
     return 0;

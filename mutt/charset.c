@@ -553,9 +553,9 @@ iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, int flags)
 
   /* always apply iconv-hooks to suit system's iconv tastes */
   tocode2 = mutt_ch_iconv_lookup(tocode1);
-  tocode2 = (tocode2) ? tocode2 : tocode1;
+  tocode2 = tocode2 ? tocode2 : tocode1;
   fromcode2 = mutt_ch_iconv_lookup(fromcode1);
-  fromcode2 = (fromcode2) ? fromcode2 : fromcode1;
+  fromcode2 = fromcode2 ? fromcode2 : fromcode1;
 
   /* call system iconv with names it appreciates */
   cd = iconv_open(tocode2, fromcode2);

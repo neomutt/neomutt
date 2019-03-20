@@ -236,7 +236,8 @@ void mutt_sha1_final(unsigned char digest[20], struct Sha1Ctx *sha1ctx)
   for (unsigned int i = 0; i < 8; i++)
   {
     finalcount[i] =
-        (unsigned char) ((sha1ctx->count[(i >= 4 ? 0 : 1)] >> ((3 - (i & 3)) * 8)) & 255); /* Endian independent */
+        (unsigned char) ((sha1ctx->count[((i >= 4) ? 0 : 1)] >> ((3 - (i & 3)) * 8)) &
+                         255); /* Endian independent */
   }
 
   c = 0200;

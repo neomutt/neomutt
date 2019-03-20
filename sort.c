@@ -260,7 +260,7 @@ static int compare_spam(const void *a, const void *b)
       (strtod((*ppa)->env->spam->data, &aptr) - strtod((*ppb)->env->spam->data, &bptr));
 
   /* map double into comparison (-1, 0, or 1) */
-  result = (difference < 0.0 ? -1 : difference > 0.0 ? 1 : 0);
+  result = ((difference < 0.0) ? -1 : (difference > 0.0) ? 1 : 0);
 
   /* If either aptr or bptr is equal to data, there is no numeric    */
   /* value for that spam attribute. In this case, compare lexically. */

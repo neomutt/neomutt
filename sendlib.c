@@ -1885,7 +1885,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
 
   if (tag && *tag && (fprintf(fp, "%s%s: ", NONULL(pfx), tag) < 0))
     return -1;
-  col = mutt_str_strlen(tag) + (tag && *tag ? 2 : 0) + mutt_str_strlen(pfx);
+  col = mutt_str_strlen(tag) + ((tag && *tag) ? 2 : 0) + mutt_str_strlen(pfx);
 
   while (p && *p)
   {
@@ -2383,7 +2383,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
     fprintf(fp, "User-Agent: NeoMutt/%s%s\n", PACKAGE_VERSION, GitVer);
   }
 
-  return ferror(fp) == 0 ? 0 : -1;
+  return (ferror(fp) == 0) ? 0 : -1;
 }
 
 /**
@@ -2614,7 +2614,7 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
     }
     else
     {
-      st = (C_SendmailWait > 0 && errno == EINTR && SigAlrm) ? S_BKG : S_ERR;
+      st = ((C_SendmailWait > 0) && (errno == EINTR) && SigAlrm) ? S_BKG : S_ERR;
       if ((C_SendmailWait > 0) && tempfile && *tempfile)
       {
         unlink(*tempfile);

@@ -431,7 +431,7 @@ int mutt_path_to_absolute(char *path, const char *reference)
 
   path_len = sizeof(abs_path) - strlen(path);
 
-  mutt_str_strncat(abs_path, sizeof(abs_path), path, path_len > 0 ? path_len : 0);
+  mutt_str_strncat(abs_path, sizeof(abs_path), path, (path_len > 0) ? path_len : 0);
 
   path = realpath(abs_path, path);
   if (!path && (errno != ENOENT))

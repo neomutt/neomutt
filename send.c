@@ -2437,9 +2437,9 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
 
   if (!OptNoCurses && !(flags & SEND_MAILX))
   {
-    mutt_message(i != 0 ? _("Sending in background") :
-                          (flags & SEND_NEWS) ? _("Article posted") : /* USE_NNTP */
-                              _("Mail sent"));
+    mutt_message((i != 0) ? _("Sending in background") :
+                            (flags & SEND_NEWS) ? _("Article posted") : /* USE_NNTP */
+                                _("Mail sent"));
 #ifdef USE_NOTMUCH
     if (C_NmRecord)
       nm_record_message(ctx ? ctx->mailbox : NULL, finalpath, cur);

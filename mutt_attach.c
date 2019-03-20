@@ -336,18 +336,19 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
       if (n != TYPE_OTHER)
       {
         snprintf(type, len, "%s/%s",
-                 n == TYPE_AUDIO ? "audio" :
-                                   n == TYPE_APPLICATION ?
-                                   "application" :
-                                   n == TYPE_IMAGE ?
-                                   "image" :
-                                   n == TYPE_MESSAGE ?
-                                   "message" :
-                                   n == TYPE_MODEL ?
-                                   "model" :
-                                   n == TYPE_MULTIPART ?
-                                   "multipart" :
-                                   n == TYPE_TEXT ? "text" : n == TYPE_VIDEO ? "video" : "other",
+                 (n == TYPE_AUDIO) ?
+                     "audio" :
+                     (n == TYPE_APPLICATION) ?
+                     "application" :
+                     (n == TYPE_IMAGE) ?
+                     "image" :
+                     (n == TYPE_MESSAGE) ?
+                     "message" :
+                     (n == TYPE_MODEL) ?
+                     "model" :
+                     (n == TYPE_MULTIPART) ?
+                     "multipart" :
+                     (n == TYPE_TEXT) ? "text" : (n == TYPE_VIDEO) ? "video" : "other",
                  tmp.subtype);
         mutt_debug(LL_DEBUG1, "\"%s\" -> %s\n", b->filename, type);
       }
@@ -823,7 +824,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path,
       }
       if ((ctx->mailbox->magic == MUTT_MBOX) || (ctx->mailbox->magic == MUTT_MMDF))
         chflags = CH_FROM | CH_UPDATE_LEN;
-      chflags |= (ctx->mailbox->magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
+      chflags |= ((ctx->mailbox->magic == MUTT_MAILDIR) ? CH_NOSTATUS : CH_UPDATE);
       if ((mutt_copy_message_fp(msg->fp, fp, en, 0, chflags) == 0) &&
           (mx_msg_commit(ctx->mailbox, msg) == 0))
       {

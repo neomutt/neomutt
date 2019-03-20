@@ -84,7 +84,7 @@ static int bcache_path(struct ConnAccount *account, const char *mailbox, char *d
 
   size_t mailboxlen = mutt_str_strlen(mailbox);
   len = snprintf(dst, dstlen, "%s/%s%s%s", C_MessageCachedir, host, NONULL(mailbox),
-                 (mailboxlen != 0 && mailbox[mailboxlen - 1] == '/') ? "" : "/");
+                 ((mailboxlen != 0) && (mailbox[mailboxlen - 1] == '/')) ? "" : "/");
 
   mutt_encode_path(dst, dstlen, dst);
 
@@ -293,9 +293,9 @@ int mutt_bcache_exists(struct BodyCache *bcache, const char *id)
   if (stat(path, &st) < 0)
     rc = -1;
   else
-    rc = S_ISREG(st.st_mode) && st.st_size != 0 ? 0 : -1;
+    rc = (S_ISREG(st.st_mode) && (st.st_size != 0)) ? 0 : -1;
 
-  mutt_debug(LL_DEBUG3, "bcache: exists: '%s': %s\n", path, rc == 0 ? "yes" : "no");
+  mutt_debug(LL_DEBUG3, "bcache: exists: '%s': %s\n", path, (rc == 0) ? "yes" : "no");
 
   return rc;
 }

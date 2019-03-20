@@ -241,7 +241,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
       {
         snprintf(fmt, sizeof(fmt), "%%%sc", prec);
         snprintf(buf, buflen, fmt,
-                 aptr->content->type != TYPE_TEXT || aptr->content->noconv ? 'n' : 'c');
+                 ((aptr->content->type != TYPE_TEXT) || aptr->content->noconv) ? 'n' : 'c');
       }
       else if ((aptr->content->type != TYPE_TEXT) || aptr->content->noconv)
         optional = 0;
@@ -1577,9 +1577,9 @@ void mutt_view_attachments(struct Email *e)
       {
         CHECK_ATTACH;
 
-        SendFlags flags = SEND_REPLY | (op == OP_GROUP_REPLY ? SEND_GROUP_REPLY : 0) |
-                          (op == OP_GROUP_CHAT_REPLY ? SEND_GROUP_CHAT_REPLY : 0) |
-                          (op == OP_LIST_REPLY ? SEND_LIST_REPLY : 0);
+        SendFlags flags = SEND_REPLY | ((op == OP_GROUP_REPLY) ? SEND_GROUP_REPLY : 0) |
+                          ((op == OP_GROUP_CHAT_REPLY) ? SEND_GROUP_CHAT_REPLY : 0) |
+                          ((op == OP_LIST_REPLY) ? SEND_LIST_REPLY : 0);
         mutt_attach_reply(CURATTACH->fp, e, actx,
                           menu->tagprefix ? NULL : CURATTACH->content, flags);
         menu->redraw = REDRAW_FULL;

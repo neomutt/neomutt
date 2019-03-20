@@ -254,7 +254,7 @@ static const char *parse_version_number(const char *s, int *number)
     val += *s - '0';
   }
   *number = val;
-  return val < 0 ? NULL : s;
+  return (val < 0) ? NULL : s;
 }
 
 /**
@@ -344,14 +344,14 @@ static int cmp_version_strings(const char *a, const char *b, int level)
     level %= 10;
 
   a_major = a_minor = a_micro = 0;
-  a_plvl = parse_version_string(a, &a_major, level > 1 ? &a_minor : NULL,
-                                level > 2 ? &a_micro : NULL);
+  a_plvl = parse_version_string(a, &a_major, (level > 1) ? &a_minor : NULL,
+                                (level > 2) ? &a_micro : NULL);
   if (!a_plvl)
     a_major = a_minor = a_micro = 0; /* Error.  */
 
   b_major = b_minor = b_micro = 0;
-  b_plvl = parse_version_string(b, &b_major, level > 1 ? &b_minor : NULL,
-                                level > 2 ? &b_micro : NULL);
+  b_plvl = parse_version_string(b, &b_major, (level > 1) ? &b_minor : NULL,
+                                (level > 2) ? &b_micro : NULL);
   if (!b_plvl)
     b_major = b_minor = b_micro = 0;
 

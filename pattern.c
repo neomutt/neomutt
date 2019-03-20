@@ -2525,7 +2525,7 @@ int mutt_search_command(int cur, int op)
     OptSearchInvalid = false;
   }
 
-  int incr = (OptSearchReverse) ? -1 : 1;
+  int incr = OptSearchReverse ? -1 : 1;
   if (op == OP_SEARCH_OPPOSITE)
     incr = -incr;
 
