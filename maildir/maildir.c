@@ -148,22 +148,6 @@ cleanup:
 }
 
 /**
- * maildir_read_dir - Read a Maildir style mailbox
- * @param m   Mailbox
- * @retval  0 Success
- * @retval -1 Failure
- */
-static int maildir_read_dir(struct Mailbox *m)
-{
-  /* maildir looks sort of like MH, except that there are two subdirectories
-   * of the main folder path from which to read messages */
-  if ((mh_read_dir(m, "new") == -1) || (mh_read_dir(m, "cur") == -1))
-    return -1;
-
-  return 0;
-}
-
-/**
  * ch_compare - qsort callback to sort characters
  * @param a First  character to compare
  * @param b Second character to compare
@@ -298,7 +282,12 @@ cleanup:
  */
 static int maildir_mbox_open(struct Mailbox *m)
 {
-  return maildir_read_dir(m);
+  /* maildir looks sort of like MH, except that there are two subdirectories
+   * of the main folder path from which to read messages */
+  if ((mh_read_dir(m, "new") == -1) || (mh_read_dir(m, "cur") == -1))
+    return -1;
+
+  return 0;
 }
 
 /**
