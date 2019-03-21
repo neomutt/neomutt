@@ -828,7 +828,8 @@ select messages.
 .TS
 box tab(|);
 lb s | lb
-l s | lx .
+l s | lx
+.
 \0Pattern|Description
 _
 \0~A|T{
