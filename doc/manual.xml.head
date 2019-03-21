@@ -2158,6 +2158,59 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
             </tbody>
           </tgroup>
         </table>
+
+        <para>
+          In the <emphasis>index</emphasis>, the subject of threaded children
+          messages will be prepended with thread tree characters. By default,
+          the subject itself will not be duplicated unless
+          <link linkend="hide-thread-subject">$hide_thread_subject</link>is
+          unset.  Special characters will be added to the thread tree as
+          detailed in <xref linkend="tab-thread-chars" />.
+        </para>
+        <table id="tab-thread-chars">
+          <title>Special Thread Characters</title>
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry>Character</entry>
+                <entry>Description</entry>
+                <entry>Notes</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>&amp;</entry>
+                <entry>hidden message</entry>
+                <entry>see 
+                <link linkend="hide-limited">$hide_limited</link>and 
+                <link linkend="hide-top-limited">$hide_top_limited</link></entry>
+              </row>
+              <row>
+                <entry>?</entry>
+                <entry>missing message</entry>
+                <entry>see 
+                <link linkend="hide-missing">$hide_missing</link>and 
+                <link linkend="hide-top-missing">$hide_top_missing</link></entry>
+              </row>
+              <row>
+                <entry>*</entry>
+                <entry>pseudo thread</entry>
+                <entry>see 
+                <link linkend="strict-threads">$strict_threads</link>; not displayed
+                when <link linkend="narrow-tree">$narrow_tree</link>is set</entry>
+              </row>
+              <row>
+                <entry>=</entry>
+                <entry>duplicate thread</entry>
+                <entry>see 
+                <link linkend="duplicate-threads">$duplicate_threads</link>; not
+                displayed when 
+                <link linkend="narrow-tree">$narrow_tree</link>is set</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+
         <para>
           Collapsing a thread displays only the first message in the thread and
           hides the others. This is useful when threads contain so many
