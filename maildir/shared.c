@@ -64,9 +64,6 @@
 #ifdef USE_NOTMUCH
 #include "notmuch/mutt_notmuch.h"
 #endif
-#ifdef USE_HCACHE
-#include "hcache/hcache.h"
-#endif
 
 struct Account;
 
@@ -481,7 +478,6 @@ int maildir_move_to_mailbox(struct Mailbox *m, struct Maildir **md)
   return num;
 }
 
-#ifdef USE_HCACHE
 /**
  * maildir_hcache_keylen - Calculate the length of the Maildir path
  * @param fn File name
@@ -494,7 +490,6 @@ size_t maildir_hcache_keylen(const char *fn)
   const char *p = strrchr(fn, ':');
   return p ? (size_t)(p - fn) : mutt_str_strlen(fn);
 }
-#endif
 
 /**
  * md_cmp_inode - Compare two Maildirs by inode number
@@ -710,12 +705,6 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
   char fn[PATH_MAX];
   int count;
   bool sort = false;
-#ifdef USE_HCACHE
-  const char *key = NULL;
-  size_t keylen;
-  struct stat lastchanged;
-  int ret;
-#endif
 
 #ifdef USE_HCACHE
   header_cache_t *hc = mutt_hcache_open(C_HeaderCache, m->path, NULL);
@@ -748,16 +737,15 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
     snprintf(fn, sizeof(fn), "%s/%s", m->path, p->email->path);
 
 #ifdef USE_HCACHE
+    struct stat lastchanged = { 0 };
+    int ret = 0;
     if (C_MaildirHeaderCacheVerify)
     {
       ret = stat(fn, &lastchanged);
     }
-    else
-    {
-      lastchanged.st_mtime = 0;
-      ret = 0;
-    }
 
+    const char *key = NULL;
+    size_t keylen = 0;
     if (m->magic == MUTT_MH)
     {
       key = p->email->path;
@@ -1430,11 +1418,7 @@ struct Email *maildir_parse_message(enum MailboxType magic, const char *fname,
  * @retval  0 Success
  * @retval -1 Error
  */
-#ifdef USE_HCACHE
 int mh_sync_mailbox_message(struct Mailbox *m, int msgno, header_cache_t *hc)
-#else
-int mh_sync_mailbox_message(struct Mailbox *m, int msgno)
-#endif
 {
   if (!m || !m->emails)
     return -1;
@@ -1758,9 +1742,7 @@ int mh_mbox_sync(struct Mailbox *m, int *index_hint)
     return -1;
 
   int i, j;
-#ifdef USE_HCACHE
   header_cache_t *hc = NULL;
-#endif
   char msgbuf[PATH_MAX + 64];
   struct Progress progress;
 
@@ -1788,13 +1770,8 @@ int mh_mbox_sync(struct Mailbox *m, int *index_hint)
     if (!m->quiet)
       mutt_progress_update(&progress, i, -1);
 
-#ifdef USE_HCACHE
     if (mh_sync_mailbox_message(m, i, hc) == -1)
       goto err;
-#else
-    if (mh_sync_mailbox_message(m, i) == -1)
-      goto err;
-#endif
   }
 
 #ifdef USE_HCACHE

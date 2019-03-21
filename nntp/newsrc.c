@@ -56,9 +56,7 @@
 #include "nntp.h"
 #include "protos.h"
 #include "sort.h"
-#ifdef USE_HCACHE
 #include "hcache/hcache.h"
-#endif
 
 /* These Config Variables are only used in nntp/newsrc.c */
 char *C_NewsCacheDir; ///< Config: (nntp) Directory for cached news articles
@@ -992,9 +990,6 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
 struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool leave_lock)
 {
   char file[PATH_MAX];
-#ifdef USE_HCACHE
-  char *p = NULL;
-#endif
   int rc;
   struct ConnAccount acct = { { 0 } };
   struct NntpAccountData *adata = NULL;
@@ -1117,7 +1112,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
         void *hdata = NULL;
         char *group = entry->d_name;
 
-        p = group + strlen(group) - 7;
+        char *p = group + strlen(group) - 7;
         if ((strlen(group) < 8) || (strcmp(p, ".hcache") != 0))
           continue;
         *p = '\0';

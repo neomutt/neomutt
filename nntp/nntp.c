@@ -60,9 +60,7 @@
 #include "progress.h"
 #include "protos.h"
 #include "sort.h"
-#ifdef USE_HCACHE
 #include "hcache/hcache.h"
-#endif
 #ifdef USE_SASL
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
@@ -98,9 +96,7 @@ struct FetchCtx
   bool restore;
   unsigned char *messages;
   struct Progress progress;
-#ifdef USE_HCACHE
   header_cache_t *hc;
-#endif
 };
 
 /**
@@ -1260,9 +1256,6 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
   int rc = 0;
   anum_t current;
   anum_t first_over = first;
-#ifdef USE_HCACHE
-  void *hdata = NULL;
-#endif
 
   /* if empty group or nothing to do */
   if (!last || (first > last))
@@ -1276,9 +1269,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
   fc.messages = mutt_mem_calloc(last - first + 1, sizeof(unsigned char));
   if (!fc.messages)
     return -1;
-#ifdef USE_HCACHE
   fc.hc = hc;
-#endif
 
   if (!m->emails)
   {
@@ -1358,7 +1349,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
 
 #ifdef USE_HCACHE
     /* try to fetch header from cache */
-    hdata = mutt_hcache_fetch(fc.hc, buf, strlen(buf));
+    void *hdata = mutt_hcache_fetch(fc.hc, buf, strlen(buf));
     if (hdata)
     {
       mutt_debug(LL_DEBUG2, "mutt_hcache_fetch %s\n", buf);
@@ -2623,9 +2614,6 @@ static int nntp_mbox_sync(struct Mailbox *m, int *index_hint)
 
   struct NntpMboxData *mdata = m->mdata;
   int rc;
-#ifdef USE_HCACHE
-  header_cache_t *hc = NULL;
-#endif
 
   /* check for new articles */
   mdata->adata->check_time = 0;
@@ -2635,7 +2623,7 @@ static int nntp_mbox_sync(struct Mailbox *m, int *index_hint)
 
 #ifdef USE_HCACHE
   mdata->last_cached = 0;
-  hc = nntp_hcache_open(mdata);
+  header_cache_t *hc = nntp_hcache_open(mdata);
 #endif
 
   for (int i = 0; i < m->msg_count; i++)

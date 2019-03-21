@@ -58,9 +58,7 @@
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "progress.h"
-#ifdef USE_HCACHE
 #include "hcache/hcache.h"
-#endif
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
@@ -73,10 +71,8 @@ unsigned char C_PopDelete; ///< Config: (pop) After downloading POP messages, de
 char *C_PopHost; ///< Config: (pop) Url of the POP server
 bool C_PopLast;  ///< Config: (pop) Use the 'LAST' command to fetch new mail
 
-#ifdef USE_HCACHE
 #define HC_FNAME "neomutt" /* filename for hcache as POP lacks paths */
 #define HC_FEXT "hcache"   /* extension for hcache as POP lacks paths */
-#endif
 
 /**
  * cache_id - Make a message-cache-compatible id
