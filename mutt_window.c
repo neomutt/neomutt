@@ -193,6 +193,21 @@ int mutt_window_mvaddstr(struct MuttWindow *win, int row, int col, const char *s
 }
 
 /**
+ * mutt_window_mvaddnstr - Move the cursor and write a fixed string to a Window with string length
+ * @param win Window to write to
+ * @param row Row to move to
+ * @param col Column to move to
+ * @param str String to write
+ * @param n   Length of string
+ * @retval OK  Success
+ * @retval ERR Error
+ */
+int mutt_window_mvaddnstr(struct MuttWindow *win, int row, int col, const char *str, int n)
+{
+  return mvaddnstr(win->row_offset + row, win->col_offset + col, str, n);
+}
+
+/**
  * mutt_window_mvprintw - Move the cursor and write a formatted string to a Window
  * @param win Window to write to
  * @param row Row to move to
