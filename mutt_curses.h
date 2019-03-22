@@ -170,6 +170,7 @@ enum ColorId
   MT_COLOR_COMPOSE_SECURITY_SIGN,    ///< Mail will be signed
   MT_COLOR_COMPOSE_SECURITY_BOTH,    ///< Mail will be encrypted and signed
   MT_COLOR_COMPOSE_SECURITY_NONE,    ///< Mail will not be encrypted or signed
+  MT_COLOR_OPTIONS,                  ///< Options in prompt
   MT_COLOR_MAX,
 };
 

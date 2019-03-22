@@ -4630,6 +4630,11 @@ folder-hook work "set sort=threads"
         </listitem>
         <listitem>
           <para>
+            options (the key letters in multi-choice questions)
+          </para>
+        </listitem>
+        <listitem>
+          <para>
             <link linkend="progress">progress</link> (visual progress bar)
           </para>
         </listitem>
