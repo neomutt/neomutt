@@ -1184,6 +1184,7 @@ static bool read_threads_query(struct Mailbox *m, notmuch_query_t *q, bool dedup
   {
     if (SigInt == 1)
     {
+      nm_hcache_close(h);
       SigInt = 0;
       return false;
     }
