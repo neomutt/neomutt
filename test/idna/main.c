@@ -26,10 +26,10 @@
  * Add your test cases to this list.
  *****************************************************************************/
 #define NEOMUTT_TEST_LIST                                                      \
-  NEOMUTT_TEST_ITEM(mutt_idna_intl_to_local)                                   \
-  NEOMUTT_TEST_ITEM(mutt_idna_local_to_intl)                                   \
-  NEOMUTT_TEST_ITEM(mutt_idna_print_version)                                   \
-  NEOMUTT_TEST_ITEM(mutt_idna_to_ascii_lz)
+  NEOMUTT_TEST_ITEM(test_mutt_idna_intl_to_local)                              \
+  NEOMUTT_TEST_ITEM(test_mutt_idna_local_to_intl)                              \
+  NEOMUTT_TEST_ITEM(test_mutt_idna_print_version)                              \
+  NEOMUTT_TEST_ITEM(test_mutt_idna_to_ascii_lz)
 
 /******************************************************************************
  * You probably don't need to touch what follows.

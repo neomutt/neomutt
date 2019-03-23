@@ -30,6 +30,7 @@ void test_mutt_idna_intl_to_local(void)
 {
   // char * mutt_idna_intl_to_local(const char *user, const char *domain, int flags);
 
+#ifdef HAVE_LIBIDN
   {
     TEST_CHECK(!mutt_idna_intl_to_local(NULL, "banana", 0));
   }
@@ -37,4 +38,5 @@ void test_mutt_idna_intl_to_local(void)
   {
     TEST_CHECK(!mutt_idna_intl_to_local("apple", NULL, 0));
   }
+#endif
 }

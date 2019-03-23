@@ -19,6 +19,7 @@ addons:
       - libgnutls-dev
       - libgpgme11-dev
       - libgss-dev
+      - libidn2-0-dev
       - libkyotocabinet-dev
       - liblmdb-dev
       - liblua5.2-dev

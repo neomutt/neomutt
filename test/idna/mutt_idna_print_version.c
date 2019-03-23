@@ -29,4 +29,6 @@
 void test_mutt_idna_print_version(void)
 {
   // const char *mutt_idna_print_version(void);
+#ifdef HAVE_LIBIDN
+#endif
 }

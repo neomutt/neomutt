@@ -717,6 +717,7 @@ if {[get-define want-idn]} {
   cc-with [list -cflags -I$idn_prefix/include -libs -L$idn_prefix/lib] {
     set idn2 [cc-check-includes idn2.h]
     incr idn2 [cc-check-includes idn/idn2.h]
+    set  sprcv [cc-check-function-in-lib stringprep_check_version idn]
     set lu8  [cc-check-function-in-lib idn2_lookup_u8 idn2]
     if {$idn2 == 0 || $lu8 == 0} {
       user-error "Unable to find GNU libidn2"

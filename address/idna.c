@@ -38,6 +38,7 @@
 #include <idn/stringprep.h>
 #endif
 #ifdef HAVE_IDN2_H
+#include <idna.h>
 #include <idn2.h>
 #elif defined(HAVE_IDN_IDN2_H)
 #include <idn/idn2.h>
@@ -106,6 +107,9 @@ static bool check_idn(char *domain)
  */
 int mutt_idna_to_ascii_lz(const char *input, char **output, int flags)
 {
+  if (!input || !output)
+    return 1;
+
   return idna_to_ascii_lz(input, output, flags);
 }
 #endif /* HAVE_LIBIDN */
