@@ -3071,7 +3071,7 @@ msgstr ""
 #. These three letters correspond to the choices in the string.
 #: muttlib.c:703
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
-msgstr "Filen är en katalog, spara i den? [(j)a, n(ej), (a)lla]"
+msgstr "Filen är en katalog, spara i den? [(j)a, (n)ej, (a)lla]"
 
 #: muttlib.c:703
 msgid "yna"
