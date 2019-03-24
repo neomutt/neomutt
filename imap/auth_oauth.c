@@ -57,6 +57,10 @@ enum ImapAuthRes imap_auth_oauth(struct ImapAccountData *adata, const char *meth
     return IMAP_AUTH_UNAVAIL;
   }
 
+  /* If they did not explicitly request or configure oauth then fail quietly */
+  if (!(method || (C_ImapOauthRefreshCmd && *C_ImapOauthRefreshCmd)))
+    return IMAP_AUTH_UNAVAIL;
+
   mutt_message(_("Authenticating (OAUTHBEARER)..."));
 
   /* We get the access token from the imap_oauth_refresh_command */
