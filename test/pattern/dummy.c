@@ -59,7 +59,7 @@ int mutt_count_body_parts(struct Mailbox *m, struct Email *e)
   return g_body_parts;
 }
 
-pid_t mutt_create_filter(const char *s, FILE **in, FILE **out, FILE **err)
+pid_t mutt_create_filter(const char *s, FILE **fp_in, FILE **fp_out, FILE **fp_err)
 {
   return -1;
 }

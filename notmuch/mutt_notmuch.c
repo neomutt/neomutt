@@ -894,6 +894,7 @@ static struct Email *get_mutt_email(struct Mailbox *m, notmuch_message_t *msg)
 
 /**
  * append_message - Associate a message
+ * @param h     Header cache handle
  * @param m     Mailbox
  * @param q     Notmuch query
  * @param msg   Notmuch message
@@ -1012,6 +1013,7 @@ done:
 
 /**
  * append_replies - add all the replies to a given messages into the display
+ * @param h     Header cache handle
  * @param m     Mailbox
  * @param q     Notmuch query
  * @param top   Notmuch message
@@ -1037,6 +1039,7 @@ static void append_replies(header_cache_t *h, struct Mailbox *m, notmuch_query_t
 
 /**
  * append_thread - add each top level reply in the thread
+ * @param h      Header cache handle
  * @param m      Mailbox
  * @param q      Notmuch query
  * @param thread Notmuch thread
