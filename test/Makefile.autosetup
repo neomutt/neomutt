@@ -43,11 +43,14 @@ $(TEST_BINARY): $(TEST_OBJS) $(MUTTLIBS)
 $(TEST_CONFIG): $(PWD)/test/config $(CONFIG_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(CONFIG_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
-$(TEST_PATTERN): $(PATTERN_OBJS) $(MUTTLIBS)
+$(TEST_PATTERN): $(PWD)/test/pattern $(PATTERN_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(PATTERN_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
 $(PWD)/test/config:
 	$(MKDIR_P) $(PWD)/test/config
+
+$(PWD)/test/pattern:
+	$(MKDIR_P) $(PWD)/test/pattern
 
 all-test: $(TEST_BINARY) $(TEST_CONFIG) $(TEST_PATTERN)
 
