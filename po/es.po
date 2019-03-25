@@ -4030,67 +4030,65 @@ msgstr "GPGME: protocolo OpenPGP no disponible"
 msgid "GPGME: CMS protocol not available"
 msgstr "GPGME: protocolo CMS no disponible"
 
+#. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5372
-#, fuzzy
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s, inc(l)uido, o ca(n)celar? "
+msgstr "S/MIME ¿(f)irmar, firmar (c)omo, (p)gp, ca(n)celar o (m)odo oppenc off? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5374
 msgid "sapco"
-msgstr "dicoln"
+msgstr "fcpnm"
 
+#. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5381
-#, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s, inc(l)uido, o ca(n)celar? "
+msgstr "PGP ¿(f)irmar, firmar (c)omo, s/m(i)me, ca(n)celar o (m)odo oppenc off? "
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5383
 msgid "samco"
-msgstr "dicoln"
+msgstr "fcinm"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5393
-#, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
-msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s, inc(l)uido, o ca(n)celar? "
+msgstr "S/MIME ¿(e)ncriptar, (f)irmar, firmar (c)omo, amb(o)s, (p)gp, ca(n)celar o (m)odo oppenc? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5396
 msgid "esabpco"
-msgstr "dicoln"
+msgstr "efcopnm"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5402
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
-msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s, inc(l)uido, o ca(n)celar? "
+msgstr "PGP ¿(e)ncriptar, (f)irmar, firmar (c)omo, amb(o)s, s/m(i)me, ca(n)celar o (m)odo oppenc? "
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5405
 msgid "esabmco"
-msgstr "dicoln"
+msgstr "efcoinm"
 
+#. L10N: S/MIME options
 #: ncrypt/crypt_gpgme.c:5416
-#, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s, inc(l)uido, o ca(n)celar? "
+msgstr "S/MIME ¿(e)ncriptar, (f)irmar, firmar (c)omo, amb(o)s, (p)gp o ca(n)celar? "
 
 #. L10N: S/MIME options
 #: ncrypt/crypt_gpgme.c:5418
 msgid "esabpc"
-msgstr "dicoln"
+msgstr "efcopn"
 
+#. L10N: PGP options
 #: ncrypt/crypt_gpgme.c:5425
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s, inc(l)uido, o ca(n)celar? "
+msgstr "PGP ¿(e)ncriptar, (f)irmar, firmar (c)omo, amb(o)s, s/m(i)me o ca(n)celar? "
 
 #. L10N: PGP options
 #: ncrypt/crypt_gpgme.c:5427
 msgid "esabmc"
-msgstr "dicoln"
+msgstr "efcoin"
 
 #: ncrypt/crypt_gpgme.c:5587
 msgid "Failed to verify sender"
@@ -4155,82 +4153,79 @@ msgstr "No se pudo invocar PGP"
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1859
 msgid "PGP/M(i)ME"
-msgstr ""
+msgstr "PGP/M(i)ME"
 
 #. L10N: The previous string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1865
 msgid "(i)nline"
-msgstr "en l(í)nea"
+msgstr "en l(i)nea"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #: ncrypt/pgp.c:1877
-#, fuzzy, c-format
+#, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
-msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s, inc(l)uido, o ca(n)celar? "
+msgstr "PGP ¿(f)irmar, firmar (c)omo, formato %s, ca(n)celar o (m)odo oppenc off? "
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
 #: ncrypt/pgp.c:1883
 msgid "saico"
-msgstr "dicoln"
+msgstr "fcinm"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1889
-#, fuzzy
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s, inc(l)uido, o ca(n)celar? "
+msgstr "PGP ¿(f)irmar, firmar (c)omo, ca(n)celar o (m)odo oppenc off? "
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1891
 msgid "saco"
-msgstr "dicoln"
+msgstr "fcnm"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: ncrypt/pgp.c:1905
-#, fuzzy, c-format
+#, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
-msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s, inc(l)uido, o ca(n)celar? "
+msgstr "PGP ¿(e)ncriptar, (f)irmar, firmar (c)omo, amb(o)s, formato %s, ca(n)celar o (m)odo oppenc? "
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
 #: ncrypt/pgp.c:1911
 msgid "esabico"
-msgstr "dicoln"
+msgstr "efcoinm"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1917
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s, inc(l)uido, o ca(n)celar? "
+msgstr "PGP ¿(e)ncriptar, (f)irmar, firmar (c)omo, amb(o)s, ca(n)celar o (m)odo oppenc? "
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1920
 msgid "esabco"
-msgstr "dicoln"
+msgstr "efconm"
 
 #. L10N: PGP options (inline)
 #: ncrypt/pgp.c:1931
-#, fuzzy, c-format
+#, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
-msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s, inc(l)uido, o ca(n)celar? "
+msgstr "PGP ¿(e)ncriptar, (f)irmar, firmar (c)omo, amb(o)s, formato %s o ca(n)celar? "
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
 #: ncrypt/pgp.c:1937
 msgid "esabic"
-msgstr "dicoln"
+msgstr "efcoin"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1943
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
-msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s, inc(l)uido, o ca(n)celar? "
+msgstr "PGP ¿(e)ncriptar, (f)irmar, firmar (c)omo, amb(o)s o ca(n)celar?"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1945
 msgid "esabc"
-msgstr "dicoln"
+msgstr "efcon"
 
 #: ncrypt/pgpinvoke.c:454
 msgid "Fetching PGP key..."
@@ -4431,36 +4426,33 @@ msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2327
-#, fuzzy
 msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s o ca(n)celar? "
+msgstr "S/MIME ¿(f)irmar, enc(r)iptar con, firmar (c)omo, ca(n)celar o (m)odo oppenc off? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2330
 msgid "swaco"
-msgstr "dicon"
+msgstr "frcnm"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2338
-#, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s o ca(n)celar? "
+msgstr "S/MIME ¿(e)ncriptar, (f)irmar, enc(r)iptar con, firmar (c)omo, amb(o)s, ca(n)celar o (m)odo oppenc? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2341
 msgid "eswabco"
-msgstr "dicon"
+msgstr "efrconm"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2348
-#, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s o ca(n)celar? "
+msgstr "S/MIME ¿(e)ncriptar, (f)irmar, enc(r)iptar con, firmar (c)omo, amb(o)s o ca(n)celar? "
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2351
 msgid "eswabc"
-msgstr "dicon"
+msgstr "efrcon"
 
 #: ncrypt/smime.c:2415
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
