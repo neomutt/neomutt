@@ -459,6 +459,7 @@ enum CommandResult mutt_lua_parse(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_ERROR;
   }
   mutt_debug(LL_DEBUG2, " * %s -> success\n", s->dptr);
+  mutt_buffer_reset(s); // Clear the rest of the line
   return MUTT_CMD_SUCCESS;
 }
 
