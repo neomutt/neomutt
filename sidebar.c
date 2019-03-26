@@ -355,8 +355,9 @@ static int cb_qsort_sbe(const void *a, const void *b)
  */
 static void update_entries_visibility(void)
 {
-  short new_only = C_SidebarNewMailOnly;
-  short non_empty_only = C_SidebarNonEmptyOnly;
+  /* Aliases for readability */
+  const bool new_only = C_SidebarNewMailOnly;
+  const bool non_empty_only = C_SidebarNonEmptyOnly;
   struct SbEntry *sbe = NULL;
 
   /* Take the fast path if there is no need to test visibilities */
