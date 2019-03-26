@@ -58,6 +58,7 @@ bool C_SidebarFolderIndent; ///< Config: (sidebar) Indent nested folders
 char *C_SidebarFormat; ///< Config: (sidebar) printf-like format string for the sidebar panel
 char *C_SidebarIndentString; ///< Config: (sidebar) Indent nested folders using this string
 bool C_SidebarNewMailOnly; ///< Config: (sidebar) Only show folders with new/flagged mail
+bool C_SidebarNonEmptyOnly; ///< Config: (sidebar) Only show folders with a non-zero number of mail
 bool C_SidebarNextNewWrap; ///< Config: (sidebar) Wrap around when searching for the next mailbox with new mail
 bool C_SidebarShortPath; ///< Config: (sidebar) Abbreviate the paths using the #C_Folder variable
 short C_SidebarSortMethod; ///< Config: (sidebar) Method to sort the sidebar
@@ -355,10 +356,11 @@ static int cb_qsort_sbe(const void *a, const void *b)
 static void update_entries_visibility(void)
 {
   short new_only = C_SidebarNewMailOnly;
+  short non_empty_only = C_SidebarNonEmptyOnly;
   struct SbEntry *sbe = NULL;
 
   /* Take the fast path if there is no need to test visibilities */
-  if (!new_only)
+  if (!new_only && !non_empty_only)
   {
     for (int i = 0; i < EntryCount; i++)
     {
@@ -384,6 +386,11 @@ static void update_entries_visibility(void)
     {
       /* Explicitly asked to be visible */
       continue;
+    }
+
+    if (non_empty_only && (i != OpnIndex) && (sbe->mailbox->msg_count == 0))
+    {
+        sbe->is_hidden = true;
     }
 
     if (new_only && (i != OpnIndex) && (sbe->mailbox->msg_unread == 0) &&
@@ -640,9 +647,9 @@ static bool prepare_sidebar(int page_size)
 
   /* Set the Top and Bottom to frame the HilIndex in groups of page_size */
 
-  /* If C_SidebarNewMailOnly is set, some entries may be hidden so we
-   * need to scan for the framing interval */
-  if (C_SidebarNewMailOnly)
+  /* If C_SidebarNewMailOnly or C_SidebarNonEmptyOnly is set, some entries
+   * may be hidden so we need to scan for the framing interval */
+  if (C_SidebarNewMailOnly || C_SidebarNonEmptyOnly)
   {
     TopIndex = -1;
     BotIndex = -1;

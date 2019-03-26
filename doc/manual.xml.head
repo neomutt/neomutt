@@ -1029,6 +1029,12 @@ set sidebar_indent_string="  "          <emphasis role="comment"># Indent with t
               show mailboxes that contain new, or flagged, email.
             </para>
             <para>
+              Sometimes it is useful to only show mailboxes that have mails in
+              them, while hiding the rest.
+              <literal>$sidebar_non_empty_mailbox_only</literal> tells the
+              Sidebar to only show mailboxes with a non-zero number of mails.
+            </para>
+            <para>
               If you want some mailboxes to be always visible, then use the
               <literal>sidebar_whitelist</literal> command. It takes a list of
               mailboxes as parameters.
