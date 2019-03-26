@@ -356,14 +356,22 @@ static void update_entries_visibility(void)
 {
   short new_only = C_SidebarNewMailOnly;
   struct SbEntry *sbe = NULL;
+
+  /* Take the fast path if there is no need to test visibilities */
+  if (!new_only)
+  {
+    for (int i = 0; i < EntryCount; i++)
+    {
+      Entries[i]->is_hidden = false;
+    }
+    return;
+  }
+
   for (int i = 0; i < EntryCount; i++)
   {
     sbe = Entries[i];
 
     sbe->is_hidden = false;
-
-    if (!new_only)
-      continue;
 
     if ((i == OpnIndex) || (sbe->mailbox->msg_unread > 0) ||
         sbe->mailbox->has_new || (sbe->mailbox->msg_flagged > 0))
