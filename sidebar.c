@@ -373,15 +373,9 @@ static void update_entries_visibility(void)
 
     sbe->is_hidden = false;
 
-    if ((i == OpnIndex) || (sbe->mailbox->msg_unread > 0) ||
-        sbe->mailbox->has_new || (sbe->mailbox->msg_flagged > 0))
-    {
-      continue;
-    }
-
     if (Context && (mutt_str_strcmp(sbe->mailbox->realpath, Context->mailbox->realpath) == 0))
     {
-      /* Spool directory */
+      /* Spool directories are always visible */
       continue;
     }
 
@@ -392,7 +386,11 @@ static void update_entries_visibility(void)
       continue;
     }
 
-    sbe->is_hidden = true;
+    if (new_only && (i != OpnIndex) && (sbe->mailbox->msg_unread == 0) &&
+        (sbe->mailbox->msg_flagged == 0) && !sbe->mailbox->has_new)
+    {
+        sbe->is_hidden = true;
+    }
   }
 }
 
