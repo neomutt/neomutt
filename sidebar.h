@@ -38,6 +38,7 @@ extern bool  C_SidebarFolderIndent;
 extern char *C_SidebarFormat;
 extern char *C_SidebarIndentString;
 extern bool  C_SidebarNewMailOnly;
+extern bool  C_SidebarNonEmptyOnly;
 extern bool  C_SidebarNextNewWrap;
 extern bool  C_SidebarShortPath;
 extern short C_SidebarSortMethod;
