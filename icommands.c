@@ -112,10 +112,10 @@ finish:
  */
 static void dump_bind(struct Buffer *buf, struct Mapping *menu, struct Keymap *map)
 {
-  char key_binding[MAX_SEQ];
+  char key_binding[32];
   const char *fn_name = NULL;
 
-  km_expand_key(key_binding, MAX_SEQ, map);
+  km_expand_key(key_binding, sizeof(key_binding), map);
   if (map->op == OP_NULL)
   {
     mutt_buffer_add_printf(buf, "bind %s %s noop\n", menu->name, key_binding);
