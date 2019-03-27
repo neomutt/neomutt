@@ -391,13 +391,13 @@ static void update_entries_visibility(void)
 
     if (non_empty_only && (i != OpnIndex) && (sbe->mailbox->msg_count == 0))
     {
-        sbe->is_hidden = true;
+      sbe->is_hidden = true;
     }
 
     if (new_only && (i != OpnIndex) && (sbe->mailbox->msg_unread == 0) &&
         (sbe->mailbox->msg_flagged == 0) && !sbe->mailbox->has_new)
     {
-        sbe->is_hidden = true;
+      sbe->is_hidden = true;
     }
   }
 }
