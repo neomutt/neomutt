@@ -412,17 +412,18 @@ cleanup:
 }
 
 /**
- * maildir_add_to_mailbox - Add the Maildir list to the Mailbox
- * @param m   Mailbox
- * @param md  Maildir list to copy
+ * maildir_move_to_mailbox - Copy the Maildir list to the Mailbox
+ * @param[in]  m   Mailbox
+ * @param[out] ptr Maildir list to copy, then free
  * @retval num Number of new emails
  * @retval 0   Error
  */
-static int maildir_add_to_mailbox(struct Mailbox *m, struct Maildir *md)
+int maildir_move_to_mailbox(struct Mailbox *m, struct Maildir **ptr)
 {
   if (!m)
     return 0;
 
+  struct Maildir *md = *ptr;
   int oldmsgcount = m->msg_count;
 
   if (!m->emails)
@@ -434,47 +435,33 @@ static int maildir_add_to_mailbox(struct Mailbox *m, struct Maildir *md)
     mx_alloc_memory(m);
   }
 
-  while (md)
+  for (; md; md = md->next)
   {
     mutt_debug(LL_DEBUG2, "Considering %s\n", NONULL(md->canon_fname));
+    if (!md->email)
+      continue;
 
-    if (md->email)
-    {
-      mutt_debug(LL_DEBUG2, "Adding header structure. Flags: %s%s%s%s%s\n",
-                 md->email->flagged ? "f" : "", md->email->deleted ? "D" : "",
-                 md->email->replied ? "r" : "", md->email->old ? "O" : "",
-                 md->email->read ? "R" : "");
-      if (m->msg_count == m->email_max)
-        mx_alloc_memory(m);
+    mutt_debug(LL_DEBUG2, "Adding header structure. Flags: %s%s%s%s%s\n",
+                md->email->flagged ? "f" : "", md->email->deleted ? "D" : "",
+                md->email->replied ? "r" : "", md->email->old ? "O" : "",
+                md->email->read ? "R" : "");
+    if (m->msg_count == m->email_max)
+      mx_alloc_memory(m);
 
-      m->emails[m->msg_count] = md->email;
-      m->emails[m->msg_count]->index = m->msg_count;
-      m->size += md->email->content->length + md->email->content->offset -
-                 md->email->content->hdr_offset;
+    m->emails[m->msg_count] = md->email;
+    m->emails[m->msg_count]->index = m->msg_count;
+    m->size += md->email->content->length + md->email->content->offset -
+                md->email->content->hdr_offset;
 
-      md->email = NULL;
-      m->msg_count++;
-    }
-    md = md->next;
+    md->email = NULL;
+    m->msg_count++;
   }
 
+  int num = 0;
   if (m->msg_count > oldmsgcount)
-    return m->msg_count - oldmsgcount;
+    num = m->msg_count - oldmsgcount;
 
-  return 0;
-}
-
-/**
- * maildir_move_to_mailbox - Copy the Maildir list to the Mailbox
- * @param[in]  m   Mailbox
- * @param[out] md  Maildir list to copy, then free
- * @retval num Number of new emails
- * @retval 0   Error
- */
-int maildir_move_to_mailbox(struct Mailbox *m, struct Maildir **md)
-{
-  int num = maildir_add_to_mailbox(m, *md);
-  maildir_free_maildir(md);
+  maildir_free_maildir(ptr);
   return num;
 }
 
