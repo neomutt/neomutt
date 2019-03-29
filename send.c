@@ -2018,7 +2018,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
 
     /* include replies/forwarded messages, unless we are given a template */
     if (!tempfile && (ctx || !(flags & (SEND_REPLY | SEND_FORWARD))) &&
-        (generate_body(fp_tmp, msg, flags, ctx->mailbox, el) == -1))
+        (generate_body(fp_tmp, msg, flags, ctx ? ctx->mailbox : NULL, el) == -1))
     {
       goto cleanup;
     }
