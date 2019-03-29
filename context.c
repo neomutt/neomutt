@@ -226,10 +226,10 @@ void ctx_update_tables(struct Context *ctx, bool committing)
     }
     else
     {
-      if ((m->magic == MUTT_MH) || (m->magic == MUTT_MAILDIR) || (m->magic == MUTT_IMAP))
+      if ((m->magic == MUTT_NOTMUCH) || (m->magic == MUTT_MH) ||
+          (m->magic == MUTT_MAILDIR) || (m->magic == MUTT_IMAP))
       {
-        m->size -= (m->emails[i]->content->length + m->emails[i]->content->offset -
-                    m->emails[i]->content->hdr_offset);
+        mutt_mailbox_size_sub(m, m->emails[i]);
       }
       /* remove message from the hash tables */
       if (m->subj_hash && m->emails[i]->env->real_subj)
