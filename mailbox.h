@@ -176,4 +176,7 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force);
 bool mutt_mailbox_notify(struct Mailbox *m_cur);
 void mutt_mailbox_changed(struct Mailbox *m, enum MailboxNotification action);
 
+void mutt_mailbox_size_add(struct Mailbox *m, const struct Email *e);
+void mutt_mailbox_size_sub(struct Mailbox *m, const struct Email *e);
+
 #endif /* MUTT_MAILBOX_H */

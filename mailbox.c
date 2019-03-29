@@ -533,3 +533,37 @@ void mutt_mailbox_changed(struct Mailbox *m, enum MailboxNotification action)
 
   m->notify(m, action);
 }
+
+/**
+ * email_size - Helper function to make sure we always use the same metric to
+ * compute the size of an email
+ * @param e Email
+ * @retval num Size of the email, in bytes
+ */
+static size_t email_size(const struct Email *e)
+{
+  if (!e || !e->content)
+    return 0;
+  return e->content->length + e->content->offset - e->content->hdr_offset;
+}
+
+/**
+ * mutt_mailbox_size_add - Add an email's size to the total size of a Mailbox
+ * @param m Mailbox
+ * @param e Email
+ */
+void mutt_mailbox_size_add(struct Mailbox *m, const struct Email *e)
+{
+  m->size += email_size(e);
+}
+
+/**
+ * mutt_mailbox_size_sub - Subtract an email's size from the total size of a Mailbox
+ * @param m Mailbox
+ * @param e Email
+ */
+void mutt_mailbox_size_sub(struct Mailbox *m, const struct Email *e)
+{
+  m->size -= email_size(e);
+}
+

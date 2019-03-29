@@ -991,7 +991,7 @@ static void append_message(header_cache_t *h, struct Mailbox *m,
 
   e->active = true;
   e->index = m->msg_count;
-  m->size += e->content->length + e->content->offset - e->content->hdr_offset;
+  mutt_mailbox_size_add(m, e);
   m->emails[m->msg_count] = e;
   m->msg_count++;
 
