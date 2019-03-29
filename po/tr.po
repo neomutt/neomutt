@@ -4411,36 +4411,36 @@ msgid "eswabc"
 msgstr "rmafkp"
 
 #: ncrypt/smime.c:2415
-msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
-msgstr "Algoritma ailesini seçin: 1: DES, 2: RC2, 3: AES, şifresi(z)? "
+msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear? "
+msgstr "Algoritma ailesini seçin: (1) DES, (2) RC2, (3) AES, şifresi(z)? "
 
-#. L10N: Options for: Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear?
+#. L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
 #: ncrypt/smime.c:2418
 msgid "123c"
 msgstr "123z"
 
 #: ncrypt/smime.c:2421
-msgid "1: DES, 2: Triple-DES "
-msgstr "1: DES, 2: Triple-DES "
+msgid "(1) DES, (2) Triple-DES "
+msgstr "(1) DES, (2) Triple-DES "
 
-#. L10N: Options for: 1: DES, 2: Triple-DES
+#. L10N: Options for: (1) DES, (2) Triple-DES
 #: ncrypt/smime.c:2423
 msgid "12"
 msgstr "12"
 
 #: ncrypt/smime.c:2436
-msgid "1: RC2-40, 2: RC2-64, 3: RC2-128 "
-msgstr "1: RC2-40, 2: RC2-64, 3: RC2-128 "
+msgid "(1) RC2-40, (2) RC2-64, (3) RC2-128 "
+msgstr "(1) RC2-40, (2) RC2-64, (3) RC2-128 "
 
-#. L10N: Options for: 1: RC2-40, 2: RC2-64, 3: RC2-128
-#. L10N: Options for: 1: AES128, 2: AES192, 3: AES256
+#. L10N: Options for: (1) RC2-40, (2) RC2-64, (3) RC2-128
+#. L10N: Options for: (1) AES128, (2) AES192, (3) AES256
 #: ncrypt/smime.c:2438 ncrypt/smime.c:2456
 msgid "123"
 msgstr "123"
 
 #: ncrypt/smime.c:2454
-msgid "1: AES128, 2: AES192, 3: AES256 "
-msgstr "1: AES128, 2: AES192, 3: AES256 "
+msgid "(1) AES128, (2) AES192, (3) AES256 "
+msgstr "(1) AES128, (2) AES192, (3) AES256 "
 
 #: nntp/newsrc.c:630
 msgid "Loading list of groups from cache..."
