@@ -202,7 +202,7 @@ msgstr "Es können nur IMAP-Mailboxen gelöscht werden"
 #: browser.c:1566
 #, fuzzy
 msgid "Can't delete currently selected mailbox"
-msgstr "Zeige den Namen der derzeit ausgewählten Datei"
+msgstr "Kann derzeit ausgewählte Mailbox nicht löschen"
 
 #: browser.c:1570
 #, c-format
@@ -837,7 +837,7 @@ msgstr "Anhang kann nicht erzeugt werden"
 #: compose.c:1859
 #, fuzzy
 msgid "Save (postpone) draft message?"
-msgstr "Zurückgestellte Nachricht weiterbearbeiten?"
+msgstr "Nachricht als Entwurf speichern?"
 
 #: compose.c:1917
 msgid "Write message to mailbox"
@@ -1678,7 +1678,7 @@ msgstr "Menü \"%s\" existiert nicht"
 #: icommands.c:268
 #, fuzzy, c-format
 msgid "%s: no %s for this menu"
-msgstr "Menü \"%s\" existiert nicht"
+msgstr "%s: kein %s für dieses Menü"
 
 #: icommands.c:278 icommands.c:290 imap/message.c:1052
 #, c-format
