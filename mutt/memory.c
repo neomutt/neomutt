@@ -82,7 +82,7 @@ void mutt_mem_free(void *ptr)
   if (*p)
   {
     free(*p);
-    *p = 0;
+    *p = NULL;
   }
 }
 
