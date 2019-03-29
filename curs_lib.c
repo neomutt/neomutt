@@ -795,7 +795,6 @@ int mutt_multi_choice(const char *prompt, const char *letters)
   int choice;
   bool redraw = true;
   int prompt_lines = 1;
-  char *p = NULL;
 
   while (true)
   {
@@ -821,9 +820,39 @@ int mutt_multi_choice(const char *prompt, const char *letters)
         mutt_menu_current_redraw();
       }
 
+      mutt_window_move(MuttMessageWindow, 0, 0);
+
+      if ((ColorDefs[MT_COLOR_OPTIONS] != 0) &&
+          (ColorDefs[MT_COLOR_OPTIONS] != ColorDefs[MT_COLOR_PROMPT]))
+      {
+        char *cur = NULL;
+
+        while ((cur = strchr(prompt, '(')))
+        {
+          // write the part between prompt and cur using MT_COLOR_PROMPT
+          SETCOLOR(MT_COLOR_PROMPT);
+          addnstr(prompt, cur - prompt);
+
+          if (isalnum(cur[1]) && cur[2] == ')')
+          {
+            // we have a single letter within parentheses
+            SETCOLOR(MT_COLOR_OPTIONS);
+            addch(cur[1]);
+            prompt = cur + 3;
+          }
+          else
+          {
+            // we have a parenthesis followed by something else
+            addch(cur[0]);
+            prompt = cur + 1;
+          }
+        }
+      }
+
       SETCOLOR(MT_COLOR_PROMPT);
-      mutt_window_mvaddstr(MuttMessageWindow, 0, 0, prompt);
+      addstr(prompt);
       NORMAL_COLOR;
+
       mutt_window_clrtoeol(MuttMessageWindow);
     }
 
@@ -842,7 +871,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
     }
     else
     {
-      p = strchr(letters, ch.ch);
+      char *p = strchr(letters, ch.ch);
       if (p)
       {
         choice = p - letters + 1;
