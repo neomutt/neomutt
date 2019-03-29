@@ -40,7 +40,7 @@ char *C_ImapAuthenticators; ///< Config: (imap) List of allowed IMAP authenticat
  * imap_authenticators - Accepted authentication methods
  */
 static const struct ImapAuth imap_authenticators[] = {
-  { imap_auth_plain, "plain" },
+  { imap_auth_oauth, "oauthbearer" }, { imap_auth_plain, "plain" },
 #ifdef USE_SASL
   { imap_auth_sasl, NULL },
 #else
@@ -53,7 +53,7 @@ static const struct ImapAuth imap_authenticators[] = {
 #ifndef USE_SASL
   { imap_auth_cram_md5, "cram-md5" },
 #endif
-  { imap_auth_login, "login" },       { imap_auth_oauth, "oauthbearer" },
+  { imap_auth_login, "login" },
 };
 
 /**
