@@ -50,9 +50,7 @@
  */
 void *mutt_mem_calloc(size_t nmemb, size_t size)
 {
-  void *p = NULL;
-
-  if (!nmemb || !size)
+  if ((nmemb == 0) || (size == 0))
     return NULL;
 
   if (nmemb > (SIZE_MAX / size))
@@ -61,7 +59,7 @@ void *mutt_mem_calloc(size_t nmemb, size_t size)
     mutt_exit(1);
   }
 
-  p = calloc(nmemb, size);
+  void *p = calloc(nmemb, size);
   if (!p)
   {
     mutt_error(_("Out of memory"));
@@ -98,11 +96,10 @@ void mutt_mem_free(void *ptr)
  */
 void *mutt_mem_malloc(size_t size)
 {
-  void *p = NULL;
-
   if (size == 0)
     return NULL;
-  p = malloc(size);
+
+  void *p = malloc(size);
   if (!p)
   {
     mutt_error(_("Out of memory"));
@@ -123,7 +120,6 @@ void *mutt_mem_malloc(size_t size)
  */
 void mutt_mem_realloc(void *ptr, size_t size)
 {
-  void *r = NULL;
   void **p = (void **) ptr;
 
   if (size == 0)
@@ -136,7 +132,7 @@ void mutt_mem_realloc(void *ptr, size_t size)
     return;
   }
 
-  r = realloc(*p, size);
+  void *r = realloc(*p, size);
   if (!r)
   {
     mutt_error(_("Out of memory"));
