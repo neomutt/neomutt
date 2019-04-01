@@ -760,7 +760,7 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
 
       fputs(prefix, fp_out);
 
-      while ((c = fgetc(fp_in)) != EOF && bytes--)
+      while (((c = fgetc(fp_in)) != EOF) && bytes--)
       {
         fputc(c, fp_out);
         if (c == '\n')

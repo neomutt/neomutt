@@ -246,7 +246,7 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
   edata->old = false;
 
   /* start parsing */
-  while (*s && *s != ')')
+  while (*s && (*s != ')'))
   {
     if ((plen = mutt_str_startswith(s, "\\deleted", CASE_IGNORE)))
     {
@@ -283,7 +283,7 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
       char *flag_word = s;
       bool is_system_keyword = mutt_str_startswith(s, "\\", CASE_IGNORE);
 
-      while (*s && !ISSPACE(*s) && *s != ')')
+      while (*s && !ISSPACE(*s) && (*s != ')'))
         s++;
 
       ctmp = *s;
@@ -395,7 +395,7 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
         return -1;
       }
       s++;
-      while (*s && *s != ')')
+      while (*s && (*s != ')'))
         s++;
       if (*s == ')')
         s++;

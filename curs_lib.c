@@ -833,7 +833,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
           SETCOLOR(MT_COLOR_PROMPT);
           addnstr(prompt, cur - prompt);
 
-          if (isalnum(cur[1]) && cur[2] == ')')
+          if (isalnum(cur[1]) && (cur[2] == ')'))
           {
             // we have a single letter within parentheses
             SETCOLOR(MT_COLOR_OPTIONS);

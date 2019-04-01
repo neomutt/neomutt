@@ -158,7 +158,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
         SETCOLOR(MT_COLOR_TREE);
 #endif
 
-      while (*s && *s < MUTT_TREE_MAX)
+      while (*s && (*s < MUTT_TREE_MAX))
       {
         switch (*s)
         {
@@ -1190,7 +1190,7 @@ static int menu_search(struct Menu *menu, int op)
 search_next:
   if (wrap)
     mutt_message(_("Search wrapped to top"));
-  while (rc >= 0 && rc < menu->max)
+  while ((rc >= 0) && (rc < menu->max))
   {
     if (menu->menu_search(menu, &re, rc) == 0)
     {

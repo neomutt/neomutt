@@ -231,7 +231,7 @@ static int check_sig(const char *s, struct Line *info, int n)
 {
   int count = 0;
 
-  while (n > 0 && count <= NUM_SIG_LINES)
+  while ((n > 0) && (count <= NUM_SIG_LINES))
   {
     if (info[n].type != MT_COLOR_SIGNATURE)
       break;
@@ -332,7 +332,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt,
     {
       def_color = class->color;
 
-      while (class && class->length > cnt)
+      while (class && (class->length > cnt))
       {
         def_color = class->color;
         class = class->up;
@@ -994,9 +994,9 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
     i = n + 1;
 
     line_info[n].type = MT_COLOR_SIGNATURE;
-    while (i < last && check_sig(buf, line_info, i - 1) == 0 &&
-           (line_info[i].type == MT_COLOR_NORMAL || line_info[i].type == MT_COLOR_QUOTED ||
-            line_info[i].type == MT_COLOR_HEADER))
+    while ((i < last) && (check_sig(buf, line_info, i - 1) == 0) &&
+           ((line_info[i].type == MT_COLOR_NORMAL) || (line_info[i].type == MT_COLOR_QUOTED) ||
+            (line_info[i].type == MT_COLOR_HEADER)))
     {
       /* oops... */
       if (line_info[i].chunks)
@@ -1181,7 +1181,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
  */
 static bool is_ansi(unsigned char *buf)
 {
-  while ((*buf != '\0') && (isdigit(*buf) || *buf == ';'))
+  while ((*buf != '\0') && (isdigit(*buf) || (*buf == ';')))
     buf++;
   return *buf == 'm';
 }
@@ -1197,7 +1197,7 @@ static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
 {
   int x = pos;
 
-  while (isdigit(buf[x]) || buf[x] == ';')
+  while (isdigit(buf[x]) || (buf[x] == ';'))
     x++;
 
   /* Character Attributes */
@@ -1268,7 +1268,7 @@ static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
       }
       else
       {
-        while (pos < x && buf[pos] != ';')
+        while ((pos < x) && (buf[pos] != ';'))
           pos++;
         pos++;
       }
@@ -1388,10 +1388,11 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
   for (ch = 0, vch = 0; ch < cnt; ch += k, vch += k)
   {
     /* Handle ANSI sequences */
-    while (cnt - ch >= 2 && buf[ch] == '\033' && buf[ch + 1] == '[' && is_ansi(buf + ch + 2))
+    while ((cnt - ch >= 2) && (buf[ch] == '\033') && (buf[ch + 1] == '[') &&
+           is_ansi(buf + ch + 2))
       ch = grok_ansi(buf, ch + 2, pa) + 1;
 
-    while (cnt - ch >= 2 && buf[ch] == '\033' && buf[ch + 1] == ']' &&
+    while ((cnt - ch >= 2) && (buf[ch] == '\033') && (buf[ch + 1] == ']') &&
            ((check_attachment_marker((char *) buf + ch) == 0) ||
             (check_protected_header_marker((char *) buf + ch) == 0)))
     {
@@ -1737,7 +1738,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
     {
       buf_ptr = buf + ch;
       /* skip trailing blanks */
-      while (ch && (buf[ch] == ' ' || buf[ch] == '\t' || buf[ch] == '\r'))
+      while (ch && ((buf[ch] == ' ') || (buf[ch] == '\t') || (buf[ch] == '\r')))
         ch--;
       /* A very long word with leading spaces causes infinite
        * wrapping when MUTT_PAGER_NSKIP is set.  A folded header
@@ -1752,7 +1753,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
     if (!(flags & MUTT_PAGER_NSKIP))
     {
       /* skip leading blanks on the next line too */
-      while (*buf_ptr == ' ' || *buf_ptr == '\t')
+      while ((*buf_ptr == ' ') || (*buf_ptr == '\t'))
         buf_ptr++;
     }
   }
@@ -1834,7 +1835,7 @@ out:
  */
 static int up_n_lines(int nlines, struct Line *info, int cur, bool hiding)
 {
-  while (cur > 0 && nlines > 0)
+  while ((cur > 0) && (nlines > 0))
   {
     cur--;
     if (!hiding || (info[cur].type != MT_COLOR_QUOTED))
@@ -2106,8 +2107,8 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       rd->lines = 0;
       rd->force_redraw = false;
 
-      while (rd->lines < rd->pager_window->rows &&
-             rd->line_info[rd->curline].offset <= rd->sb.st_size - 1)
+      while ((rd->lines < rd->pager_window->rows) &&
+             (rd->line_info[rd->curline].offset <= rd->sb.st_size - 1))
       {
         if (display_line(rd->fp, &rd->last_pos, &rd->line_info, rd->curline,
                          &rd->last_line, &rd->max_line,
@@ -2850,7 +2851,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           /* Skip all the email headers */
           if (ISHEADER(rd.line_info[new_topline].type))
           {
-            while ((new_topline < rd.last_line ||
+            while (((new_topline < rd.last_line) ||
                     (0 == (dretval = display_line(
                                rd.fp, &rd.last_pos, &rd.line_info, new_topline, &rd.last_line,
                                &rd.max_line, MUTT_TYPES | (flags & MUTT_PAGER_NOWRAP),
@@ -2864,13 +2865,13 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
             break;
           }
 
-          while (((new_topline + C_SkipQuotedOffset) < rd.last_line ||
+          while ((((new_topline + C_SkipQuotedOffset) < rd.last_line) ||
                   (0 == (dretval = display_line(
                              rd.fp, &rd.last_pos, &rd.line_info, new_topline, &rd.last_line,
                              &rd.max_line, MUTT_TYPES | (flags & MUTT_PAGER_NOWRAP),
                              &rd.quote_list, &rd.q_level, &rd.force_redraw,
                              &rd.search_re, rd.pager_window)))) &&
-                 rd.line_info[new_topline + C_SkipQuotedOffset].type != MT_COLOR_QUOTED)
+                 (rd.line_info[new_topline + C_SkipQuotedOffset].type != MT_COLOR_QUOTED))
           {
             new_topline++;
           }
@@ -2881,13 +2882,13 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
             break;
           }
 
-          while (((new_topline + C_SkipQuotedOffset) < rd.last_line ||
+          while ((((new_topline + C_SkipQuotedOffset) < rd.last_line) ||
                   (0 == (dretval = display_line(
                              rd.fp, &rd.last_pos, &rd.line_info, new_topline, &rd.last_line,
                              &rd.max_line, MUTT_TYPES | (flags & MUTT_PAGER_NOWRAP),
                              &rd.quote_list, &rd.q_level, &rd.force_redraw,
                              &rd.search_re, rd.pager_window)))) &&
-                 rd.line_info[new_topline + C_SkipQuotedOffset].type == MT_COLOR_QUOTED)
+                 (rd.line_info[new_topline + C_SkipQuotedOffset].type == MT_COLOR_QUOTED))
           {
             new_topline++;
           }

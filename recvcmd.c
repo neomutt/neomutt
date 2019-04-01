@@ -344,7 +344,7 @@ static int is_parent(short i, struct AttachCtx *actx, struct Body *cur)
 {
   short level = actx->idx[i]->level;
 
-  while ((++i < actx->idxlen) && actx->idx[i]->level > level)
+  while ((++i < actx->idxlen) && (actx->idx[i]->level > level))
   {
     if (actx->idx[i]->content == cur)
       return true;

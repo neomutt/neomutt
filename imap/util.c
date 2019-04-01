@@ -786,7 +786,7 @@ char *imap_fix_path(char server_delim, const char *mailbox, char *path, size_t p
   int i = 0;
   char delim = server_delim;
 
-  while (mailbox && *mailbox && i < plen - 1)
+  while (mailbox && *mailbox && (i < plen - 1))
   {
     if ((C_ImapDelimChars && strchr(C_ImapDelimChars, *mailbox)) ||
         (delim && (*mailbox == delim)))
@@ -796,7 +796,7 @@ char *imap_fix_path(char server_delim, const char *mailbox, char *path, size_t p
         delim = *mailbox;
 
       while (*mailbox && ((C_ImapDelimChars && strchr(C_ImapDelimChars, *mailbox)) ||
-                          (delim && *mailbox == delim)))
+                          (delim && (*mailbox == delim))))
       {
         mailbox++;
       }
@@ -1103,7 +1103,7 @@ int imap_wait_keepalive(pid_t pid)
   sigaction(SIGALRM, &act, &oldalrm);
 
   alarm(C_ImapKeepalive);
-  while (waitpid(pid, &rc, 0) < 0 && errno == EINTR)
+  while ((waitpid(pid, &rc, 0) < 0) && (errno == EINTR))
   {
     alarm(0); /* cancel a possibly pending alarm */
     imap_keepalive();

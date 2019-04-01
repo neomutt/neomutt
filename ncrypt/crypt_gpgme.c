@@ -776,7 +776,7 @@ static int have_gpg_version(const char *version)
 
     ctx = create_gpgme_context(false);
     engineinfo = gpgme_ctx_get_engine_info(ctx);
-    while (engineinfo && engineinfo->protocol != GPGME_PROTOCOL_OpenPGP)
+    while (engineinfo && (engineinfo->protocol != GPGME_PROTOCOL_OpenPGP))
       engineinfo = engineinfo->next;
     if (!engineinfo)
     {
@@ -2473,7 +2473,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
     }
 
     engineinfo = gpgme_ctx_get_engine_info(tmpctx);
-    while (engineinfo && engineinfo->protocol != GPGME_PROTOCOL_OpenPGP)
+    while (engineinfo && (engineinfo->protocol != GPGME_PROTOCOL_OpenPGP))
       engineinfo = engineinfo->next;
     if (!engineinfo)
     {
@@ -3435,7 +3435,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
       }
 
       len = buflen - 1;
-      while (len > 0 && *cp != ']')
+      while ((len > 0) && (*cp != ']'))
       {
         if (*cp == '%')
         {

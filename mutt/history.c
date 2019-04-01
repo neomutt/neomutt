@@ -114,7 +114,7 @@ static int OldSize = 0;
  */
 static struct History *get_history(enum HistoryClass hclass)
 {
-  if (hclass >= HC_MAX || C_History == 0)
+  if ((hclass >= HC_MAX) || (C_History == 0))
     return NULL;
 
   struct History *hist = &Histories[hclass];

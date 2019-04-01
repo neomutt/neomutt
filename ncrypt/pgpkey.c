@@ -274,7 +274,7 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
       }
 
       len = buflen - 1;
-      while (len > 0 && *cp != ']')
+      while ((len > 0) && (*cp != ']'))
       {
         if (*cp == '%')
         {

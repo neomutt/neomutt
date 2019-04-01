@@ -540,7 +540,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
       }
 
       fputs(buf, fp_tmp);
-      while (bytes > 0 && fgets(buf, sizeof(buf) - 1, s->fp_in))
+      while ((bytes > 0) && fgets(buf, sizeof(buf) - 1, s->fp_in))
       {
         offset = ftello(s->fp_in);
         bytes -= (offset - last_pos); /* don't rely on mutt_str_strlen(buf) */

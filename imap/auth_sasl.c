@@ -147,7 +147,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
   irc = IMAP_CMD_CONTINUE;
 
   /* looping protocol */
-  while (rc == SASL_CONTINUE || olen > 0)
+  while ((rc == SASL_CONTINUE) || (olen > 0))
   {
     do
       irc = imap_cmd_step(adata);

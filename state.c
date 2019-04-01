@@ -108,7 +108,7 @@ int state_putws(const wchar_t *ws, struct State *s)
 {
   const wchar_t *p = ws;
 
-  while (p && *p != L'\0')
+  while (p && (*p != L'\0'))
   {
     if (state_putwc(*p, s) < 0)
       return -1;

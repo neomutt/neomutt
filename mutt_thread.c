@@ -441,7 +441,7 @@ static void make_subject_list(struct ListHead *subjects, struct MuttThread *cur,
         mutt_list_insert_after(subjects, np, env->real_subj);
     }
 
-    while (!cur->next && cur != start)
+    while (!cur->next && (cur != start))
     {
       cur = cur->parent;
     }
@@ -579,7 +579,7 @@ static void pseudo_threads(struct Context *ctx)
           }
         }
 
-        while (!tmp->next && tmp != cur)
+        while (!tmp->next && (tmp != cur))
         {
           tmp = tmp->parent;
         }
@@ -891,7 +891,7 @@ void mutt_sort_threads(struct Context *ctx, bool init)
           while (!tmp->message)
             tmp = tmp->child;
           tmp->check_subject = true;
-          while (!tmp->next && tmp != thread)
+          while (!tmp->next && (tmp != thread))
             tmp = tmp->parent;
           if (tmp != thread)
             tmp = tmp->next;

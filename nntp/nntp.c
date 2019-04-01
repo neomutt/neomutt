@@ -663,7 +663,7 @@ static int nntp_auth(struct NntpAccountData *adata)
         snprintf(buf, sizeof(buf), "AUTHINFO SASL %s", method);
 
         /* looping protocol */
-        while (rc == SASL_CONTINUE || (rc == SASL_OK && client_len))
+        while ((rc == SASL_CONTINUE) || ((rc == SASL_OK) && client_len))
         {
           /* send out client response */
           if (client_len)

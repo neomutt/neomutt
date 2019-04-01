@@ -509,7 +509,7 @@ static int parse_color_name(const char *s, uint32_t *col, int *attr, bool is_fg,
   {
     s += 1;
     *col = strtoul(s, &eptr, 16);
-    if (!*s || *eptr || (*col == COLOR_UNSET && !OptNoCurses && has_colors()))
+    if (!*s || *eptr || ((*col == COLOR_UNSET) && !OptNoCurses && has_colors()))
     {
       snprintf(err->data, err->dsize, _("%s: color not supported by term"), s);
       return -1;
