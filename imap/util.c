@@ -51,12 +51,12 @@
 #include "bcache.h"
 #include "curs_lib.h"
 #include "globals.h"
+#include "hcache/hcache.h"
 #include "imap/imap.h"
 #include "mailbox.h"
 #include "message.h"
 #include "mutt_account.h"
 #include "options.h"
-#include "hcache/hcache.h"
 
 /* These Config Variables are only used in imap/util.c */
 char *C_ImapDelimChars; ///< Config: (imap) Characters that denote separators in IMAP folders

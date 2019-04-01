@@ -355,7 +355,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
    * ensure there is enough room for the answer and truncate the question
    * to fit.  */
   mutt_str_asprintf(&answer_string, " ([%s]/%s): ", (def == MUTT_YES) ? yes : no,
-                (def == MUTT_YES) ? no : yes);
+                    (def == MUTT_YES) ? no : yes);
   answer_string_wid = mutt_strwidth(answer_string);
   msg_wid = mutt_strwidth(msg);
 

@@ -183,7 +183,8 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   }
 
   MsgOpenFlags of = MUTT_MSG_NO_FLAGS;
-  CopyHeaderFlags cf = (((ctx_app->mailbox->magic == MUTT_MBOX) || (ctx_app->mailbox->magic == MUTT_MMDF)) ?
+  CopyHeaderFlags cf =
+      (((ctx_app->mailbox->magic == MUTT_MBOX) || (ctx_app->mailbox->magic == MUTT_MMDF)) ?
            CH_NO_FLAGS :
            CH_NOSTATUS);
 

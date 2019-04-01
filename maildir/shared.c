@@ -442,9 +442,9 @@ int maildir_move_to_mailbox(struct Mailbox *m, struct Maildir **ptr)
       continue;
 
     mutt_debug(LL_DEBUG2, "Adding header structure. Flags: %s%s%s%s%s\n",
-                md->email->flagged ? "f" : "", md->email->deleted ? "D" : "",
-                md->email->replied ? "r" : "", md->email->old ? "O" : "",
-                md->email->read ? "R" : "");
+               md->email->flagged ? "f" : "", md->email->deleted ? "D" : "",
+               md->email->replied ? "r" : "", md->email->old ? "O" : "",
+               md->email->read ? "R" : "");
     if (m->msg_count == m->email_max)
       mx_alloc_memory(m);
 

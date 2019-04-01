@@ -48,6 +48,7 @@
 #include "context.h"
 #include "curs_lib.h"
 #include "globals.h"
+#include "hcache/hcache.h"
 #include "hook.h"
 #include "mailbox.h"
 #include "mutt_account.h"
@@ -60,7 +61,6 @@
 #include "progress.h"
 #include "protos.h"
 #include "sort.h"
-#include "hcache/hcache.h"
 #ifdef USE_SASL
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>

@@ -47,6 +47,7 @@
 #include "bcache.h"
 #include "format_flags.h"
 #include "globals.h"
+#include "hcache/hcache.h"
 #include "mailbox.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
@@ -56,7 +57,6 @@
 #include "nntp.h"
 #include "protos.h"
 #include "sort.h"
-#include "hcache/hcache.h"
 
 /* These Config Variables are only used in nntp/newsrc.c */
 char *C_NewsCacheDir; ///< Config: (nntp) Directory for cached news articles
