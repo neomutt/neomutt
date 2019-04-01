@@ -30,13 +30,16 @@
 #include <ctype.h>
 #include <errno.h>
 #include <limits.h>
+#include <stdarg.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
+#include "exit.h"
 #include "logging.h"
 #include "memory.h"
+#include "message.h"
 #include "string2.h"
 #include "list.h"
 #ifdef HAVE_SYSEXITS_H
@@ -1176,3 +1179,76 @@ struct ListHead mutt_str_split(const char *src, char sep)
 
   return head;
 }
+
+#ifdef HAVE_VASPRINTF
+/**
+ * mutt_str_asprintf - Format a string, allocating space as necessary
+ * @param[out] strp New string saved here
+ * @param[in]  fmt  Format string
+ * @param[in]  ...  Format arguments
+ * @retval num Characters written
+ * @retval -1  Error
+ */
+int mutt_str_asprintf(char **strp, const char *fmt, ...)
+{
+  va_list ap;
+  int n;
+
+  va_start(ap, fmt);
+  n = vasprintf(strp, fmt, ap);
+  va_end(ap);
+
+  /* GNU libc man page for vasprintf(3) states that the value of *strp
+   * is undefined when the return code is -1.  */
+  if (n < 0)
+  {
+    mutt_error(_("Out of memory"));
+    mutt_exit(1);
+  }
+
+  if (n == 0)
+  {
+    /* NeoMutt convention is to use NULL for 0-length strings */
+    FREE(strp);
+  }
+
+  return n;
+}
+#else
+/* Allocate a C-string large enough to contain the formatted string.
+ * This is essentially malloc+sprintf in one.
+ */
+int mutt_str_asprintf(char **strp, const char *fmt, ...)
+{
+  int rlen = 256;
+
+  *strp = mutt_mem_malloc(rlen);
+  while (true)
+  {
+    va_list ap;
+    va_start(ap, fmt);
+    const int n = vsnprintf(*strp, rlen, fmt, ap);
+    va_end(ap);
+    if (n < 0)
+    {
+      FREE(strp);
+      return n;
+    }
+
+    if (n < rlen)
+    {
+      /* reduce space to just that which was used.  note that 'n' does not
+       * include the terminal nul char.  */
+      if (n == 0) /* convention is to use NULL for zero-length strings. */
+        FREE(strp);
+      else if (n != rlen - 1)
+        mutt_mem_realloc(strp, n + 1);
+      return n;
+    }
+    /* increase size and try again */
+    rlen = n + 1;
+    mutt_mem_realloc(strp, rlen);
+  }
+  /* not reached */
+}
+#endif /* HAVE_ASPRINTF */

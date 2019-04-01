@@ -1833,7 +1833,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
   if ((flags & SEND_LIST_REPLY) && cur && cur->env && cur->env->list_post)
   {
     /* Use any list-post header as a template */
-    url_parse_mailto(msg->env, NULL, cur->env->list_post);
+    mutt_parse_mailto(msg->env, NULL, cur->env->list_post);
     /* We don't let them set the sender's address. */
     mutt_addr_free(&msg->env->from);
   }

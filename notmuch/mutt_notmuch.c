@@ -1842,7 +1842,7 @@ bool nm_message_is_still_queried(struct Mailbox *m, struct Email *e)
 
   char *new_str = NULL;
   bool rc = false;
-  if (safe_asprintf(&new_str, "id:%s and (%s)", email_get_id(e), orig_str) < 0)
+  if (mutt_str_asprintf(&new_str, "id:%s and (%s)", email_get_id(e), orig_str) < 0)
     return false;
 
   mutt_debug(LL_DEBUG2, "nm: checking if message is still queried: %s\n", new_str);
@@ -1978,12 +1978,12 @@ static int nm_mbox_check_stats(struct Mailbox *m, int flags)
   char *qstr = NULL;
 
   // unread messages
-  safe_asprintf(&qstr, "( %s ) tag:%s", db_query, C_NmUnreadTag);
+  mutt_str_asprintf(&qstr, "( %s ) tag:%s", db_query, C_NmUnreadTag);
   m->msg_unread = count_query(db, qstr, limit);
   FREE(&qstr);
 
   // flagged messages
-  safe_asprintf(&qstr, "( %s ) tag:%s", db_query, C_NmFlaggedTag);
+  mutt_str_asprintf(&qstr, "( %s ) tag:%s", db_query, C_NmFlaggedTag);
   m->msg_flagged = count_query(db, qstr, limit);
   FREE(&qstr);
 

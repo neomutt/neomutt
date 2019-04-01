@@ -57,13 +57,11 @@ extern const char *GitVer;
 
 WHERE struct Hash *ReverseAliases;     ///< Hash table of aliases (email address -> alias)
 WHERE struct Hash *TagFormats;         ///< Hash table of tag-formats (tag -> format string)
-WHERE struct Hash *AutoSubscribeCache; ///< Hash table of auto-subscribed mailing lists
 
 /* Lists of strings */
 WHERE struct ListHead AlternativeOrderList INITVAL(STAILQ_HEAD_INITIALIZER(AlternativeOrderList)); ///< List of preferred mime types to display
 WHERE struct ListHead AutoViewList INITVAL(STAILQ_HEAD_INITIALIZER(AutoViewList));                 ///< List of mime types to auto view
 WHERE struct ListHead HeaderOrderList INITVAL(STAILQ_HEAD_INITIALIZER(HeaderOrderList));           ///< List of header fields in the order they should be displayed
-WHERE struct ListHead MailToAllow INITVAL(STAILQ_HEAD_INITIALIZER(MailToAllow));                   ///< List of permitted fields in a mailto: uri
 WHERE struct ListHead MimeLookupList INITVAL(STAILQ_HEAD_INITIALIZER(MimeLookupList));             ///< List of mime types that that shouldn't use the mailcap entry
 WHERE struct ListHead Muttrc INITVAL(STAILQ_HEAD_INITIALIZER(Muttrc));                             ///< List of config files to read
 #ifdef USE_SIDEBAR
@@ -77,14 +75,8 @@ WHERE struct ListHead AttachAllow INITVAL(STAILQ_HEAD_INITIALIZER(AttachAllow));
 WHERE struct ListHead AttachExclude INITVAL(STAILQ_HEAD_INITIALIZER(AttachExclude)); ///< List of attachment types to be ignored
 WHERE struct ListHead InlineAllow INITVAL(STAILQ_HEAD_INITIALIZER(InlineAllow));     ///< List of inline types to counted
 WHERE struct ListHead InlineExclude INITVAL(STAILQ_HEAD_INITIALIZER(InlineExclude)); ///< List of inline types to ignore
-
 WHERE struct RegexList Alternates INITVAL(STAILQ_HEAD_INITIALIZER(Alternates));               ///< List of regexes to match the user's alternate email addresses
 WHERE struct RegexList UnAlternates INITVAL(STAILQ_HEAD_INITIALIZER(UnAlternates));           ///< List of regexes to blacklist false matches in Alternates
-WHERE struct RegexList MailLists INITVAL(STAILQ_HEAD_INITIALIZER(MailLists));                 ///< List of regexes to match mailing lists
-WHERE struct RegexList UnMailLists INITVAL(STAILQ_HEAD_INITIALIZER(UnMailLists));             ///< List of regexes to blacklist false matches in MailLists
-WHERE struct RegexList SubscribedLists INITVAL(STAILQ_HEAD_INITIALIZER(SubscribedLists));     ///< List of regexes to match subscribed mailing lists
-WHERE struct RegexList UnSubscribedLists INITVAL(STAILQ_HEAD_INITIALIZER(UnSubscribedLists)); ///< List of regexes to blacklist false matches in SubscribedLists
-WHERE struct ReplaceList SubjectRegexList INITVAL(STAILQ_HEAD_INITIALIZER(SubjectRegexList)); ///< List of regexes to tidy the view of the email's subject
 
 /* flags for received signals */
 WHERE SIG_ATOMIC_VOLATILE_T SigAlrm;  ///< true after SIGALRM is received

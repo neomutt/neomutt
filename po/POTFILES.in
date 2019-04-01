@@ -128,7 +128,6 @@ mutt_parse.c
 mutt_signal.c
 mutt_socket.c
 mutt_thread.c
-mutt_url.c
 mutt_window.c
 mx.c
 myvar.c
@@ -170,7 +169,6 @@ remailer.c
 resize.c
 rfc1524.c
 rfc3676.c
-safe_asprintf.c
 score.c
 send.c
 sendlib.c
