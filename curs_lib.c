@@ -938,7 +938,7 @@ int mutt_addwch(wchar_t wc)
  * character cells when printed.
  */
 void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
-                        int justify, char pad_char, const char *s, size_t n, int arboreal)
+                        int justify, char pad_char, const char *s, size_t n, bool arboreal)
 {
   wchar_t wc;
   int w;
@@ -1050,7 +1050,7 @@ void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
  * except that the numbers in the conversion specification refer to
  * the number of character cells when printed.
  */
-static void format_s_x(char *buf, size_t buflen, const char *prec, const char *s, int arboreal)
+static void format_s_x(char *buf, size_t buflen, const char *prec, const char *s, bool arboreal)
 {
   int justify = FMT_RIGHT;
   char *p = NULL;
@@ -1089,7 +1089,7 @@ static void format_s_x(char *buf, size_t buflen, const char *prec, const char *s
  */
 void mutt_format_s(char *buf, size_t buflen, const char *prec, const char *s)
 {
-  format_s_x(buf, buflen, prec, s, 0);
+  format_s_x(buf, buflen, prec, s, false);
 }
 
 /**
@@ -1101,7 +1101,7 @@ void mutt_format_s(char *buf, size_t buflen, const char *prec, const char *s)
  */
 void mutt_format_s_tree(char *buf, size_t buflen, const char *prec, const char *s)
 {
-  format_s_x(buf, buflen, prec, s, 1);
+  format_s_x(buf, buflen, prec, s, true);
 }
 
 /**

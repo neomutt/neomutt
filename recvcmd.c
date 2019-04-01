@@ -242,7 +242,7 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
   if (mutt_strwidth(prompt) > MuttMessageWindow->cols - EXTRA_SPACE)
   {
     mutt_simple_format(prompt, sizeof(prompt) - 4, 0, MuttMessageWindow->cols - EXTRA_SPACE,
-                       FMT_LEFT, 0, prompt, sizeof(prompt), 0);
+                       FMT_LEFT, 0, prompt, sizeof(prompt), false);
     mutt_str_strcat(prompt, sizeof(prompt), "...?");
   }
   else
