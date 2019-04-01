@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2019-04-01 11:49+0000\n"
+"POT-Creation-Date: 2019-03-29 11:40+0000\n"
 "PO-Revision-Date: 2018-05-31 13:50+0000\n"
 "Last-Translator: TAKAHASHI Tamotsu <ttakah@lapis.plala.or.jp>\n"
 "Language-Team: neomutt-j <neomutt-j-users@lists.osdn.me>\n"
@@ -1416,7 +1416,7 @@ msgstr "メッセージファイルをオープンできない: %s"
 msgid "Can't append to folder: %s"
 msgstr "フォルダに追加できない: %s"
 
-#: email/parse.c:1329
+#: email/parse.c:1331
 msgid "multipart message has no boundary parameter"
 msgstr "マルチパートのメッセージだが boundary パラメータがない"
 
@@ -1958,7 +1958,7 @@ msgid "Abort download and close mailbox?"
 msgstr ""
 
 #: imap/message.c:549 mutt/memory.c:58 mutt/memory.c:65 mutt/memory.c:105
-#: mutt/memory.c:138 mutt/string.c:1205 mx.c:1091
+#: mutt/memory.c:138 mx.c:1091 safe_asprintf.c:60
 msgid "Out of memory"
 msgstr "メモリ不足"
 
@@ -2677,27 +2677,27 @@ msgstr "文字 = %s, 8進 = %o, 10進 = %d"
 msgid "New mail in "
 msgstr "新着メールあり: "
 
-#: maildir/shared.c:815
+#: maildir/shared.c:816
 #, c-format
 msgid "Scanning %s..."
 msgstr "%s をスキャン中..."
 
-#: maildir/shared.c:837 mbox/mbox.c:214 mbox/mbox.c:380 mx.c:329
+#: maildir/shared.c:838 mbox/mbox.c:214 mbox/mbox.c:380 mx.c:329
 #, c-format
 msgid "Reading %s..."
 msgstr "%s 読み出し中..."
 
-#: maildir/shared.c:910 maildir/shared.c:1006
+#: maildir/shared.c:911 maildir/shared.c:1007
 msgid "Could not flush message to disk"
 msgstr "メッセージをディスクに書き込み終えられなかった"
 
-#: maildir/shared.c:1046
+#: maildir/shared.c:1047
 #, fuzzy
 msgid "md_commit_message(): unable to set time on file"
 msgstr "_maildir_commit_message(): ファイルに時刻を設定できない"
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/shared.c:1750 mbox/mbox.c:1228 mx.c:416 notmuch/mutt_notmuch.c:2384
+#: maildir/shared.c:1751 mbox/mbox.c:1228 mx.c:416 notmuch/mutt_notmuch.c:2384
 #, c-format
 msgid "Writing %s..."
 msgstr "%s 書き込み中..."

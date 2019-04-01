@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2019-04-01 11:49+0000\n"
+"POT-Creation-Date: 2019-03-29 11:40+0000\n"
 "PO-Revision-Date: 2004-03-03 10:25+900\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Im Eunjea <eunjea@kldp.org>\n"
@@ -1457,7 +1457,7 @@ msgstr "메세지 파일을 열 수 없음: %s"
 msgid "Can't append to folder: %s"
 msgstr "폴더에 첨가할 수 없음: %s"
 
-#: email/parse.c:1329
+#: email/parse.c:1331
 msgid "multipart message has no boundary parameter"
 msgstr "다중 파트 메일에 경계 변수가 없음"
 
@@ -1994,7 +1994,7 @@ msgid "Abort download and close mailbox?"
 msgstr ""
 
 #: imap/message.c:549 mutt/memory.c:58 mutt/memory.c:65 mutt/memory.c:105
-#: mutt/memory.c:138 mutt/string.c:1205 mx.c:1091
+#: mutt/memory.c:138 mx.c:1091 safe_asprintf.c:60
 msgid "Out of memory"
 msgstr "메모리 부족"
 
@@ -2735,28 +2735,28 @@ msgstr "Char = %s, Octal = %o, Decimal = %d"
 msgid "New mail in "
 msgstr "새 메일 도착 "
 
-#: maildir/shared.c:815
+#: maildir/shared.c:816
 #, fuzzy, c-format
 msgid "Scanning %s..."
 msgstr "%s 선택 중..."
 
-#: maildir/shared.c:837 mbox/mbox.c:214 mbox/mbox.c:380 mx.c:329
+#: maildir/shared.c:838 mbox/mbox.c:214 mbox/mbox.c:380 mx.c:329
 #, c-format
 msgid "Reading %s..."
 msgstr "%s 읽는 중..."
 
-#: maildir/shared.c:910 maildir/shared.c:1006
+#: maildir/shared.c:911 maildir/shared.c:1007
 #, fuzzy
 msgid "Could not flush message to disk"
 msgstr "메일을 보낼 수 없음."
 
-#: maildir/shared.c:1046
+#: maildir/shared.c:1047
 #, fuzzy
 msgid "md_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): 파일 시간을 설정할 수 없음"
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/shared.c:1750 mbox/mbox.c:1228 mx.c:416 notmuch/mutt_notmuch.c:2384
+#: maildir/shared.c:1751 mbox/mbox.c:1228 mx.c:416 notmuch/mutt_notmuch.c:2384
 #, c-format
 msgid "Writing %s..."
 msgstr "%s 쓰는 중..."

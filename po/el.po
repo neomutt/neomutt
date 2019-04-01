@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2019-04-01 11:49+0000\n"
+"POT-Creation-Date: 2019-03-29 11:40+0000\n"
 "PO-Revision-Date: 2005-02-01 00:01GMT+2\n"
 "Last-Translator: Dokianakis Fanis <madf@hellug.gr>\n"
 "Language-Team: Greek <EL@li.org>\n"
@@ -1469,7 +1469,7 @@ msgstr "Αδυναμία πρόσβασης στο αρχείο μηνυμάτω
 msgid "Can't append to folder: %s"
 msgstr "Αδυναμία πρόσθεσης στο φάκελο: %s"
 
-#: email/parse.c:1329
+#: email/parse.c:1331
 msgid "multipart message has no boundary parameter"
 msgstr "το πολυμερές μήνυμα δεν έχει οριοθέτουσα παράμετρο"
 
@@ -2015,7 +2015,7 @@ msgid "Abort download and close mailbox?"
 msgstr ""
 
 #: imap/message.c:549 mutt/memory.c:58 mutt/memory.c:65 mutt/memory.c:105
-#: mutt/memory.c:138 mutt/string.c:1205 mx.c:1091
+#: mutt/memory.c:138 mx.c:1091 safe_asprintf.c:60
 msgid "Out of memory"
 msgstr "Η μνήμη εξαντλήθηκε"
 
@@ -2756,28 +2756,28 @@ msgstr "Χαρακτ = %s, Οκταδικός = %o, Δεκαδικός = %d"
 msgid "New mail in "
 msgstr "Νέα αλληλογραφία στο "
 
-#: maildir/shared.c:815
+#: maildir/shared.c:816
 #, fuzzy, c-format
 msgid "Scanning %s..."
 msgstr "Επιλογή %s..."
 
-#: maildir/shared.c:837 mbox/mbox.c:214 mbox/mbox.c:380 mx.c:329
+#: maildir/shared.c:838 mbox/mbox.c:214 mbox/mbox.c:380 mx.c:329
 #, c-format
 msgid "Reading %s..."
 msgstr "Ανάγνωση %s..."
 
-#: maildir/shared.c:910 maildir/shared.c:1006
+#: maildir/shared.c:911 maildir/shared.c:1007
 #, fuzzy
 msgid "Could not flush message to disk"
 msgstr "Αδυναμία αποστολής του μηνύματος."
 
-#: maildir/shared.c:1046
+#: maildir/shared.c:1047
 #, fuzzy
 msgid "md_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): αδυναμία ορισμού χρόνου στο αρχείο"
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/shared.c:1750 mbox/mbox.c:1228 mx.c:416 notmuch/mutt_notmuch.c:2384
+#: maildir/shared.c:1751 mbox/mbox.c:1228 mx.c:416 notmuch/mutt_notmuch.c:2384
 #, c-format
 msgid "Writing %s..."
 msgstr "Εγγραφή %s..."

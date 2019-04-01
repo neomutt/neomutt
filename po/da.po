@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2019-04-01 11:49+0000\n"
+"POT-Creation-Date: 2019-03-29 11:40+0000\n"
 "PO-Revision-Date: 2017-02-16 18:06+0100\n"
 "Last-Translator: Morten Bo Johansen <mbj@mbjnet.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -1424,7 +1424,7 @@ msgstr "Kan ikke åbne brev: %s"
 msgid "Can't append to folder: %s"
 msgstr "Kan ikke føje til brevbakke: %s"
 
-#: email/parse.c:1329
+#: email/parse.c:1331
 msgid "multipart message has no boundary parameter"
 msgstr "brev med flere dele har ingen \"boundary\"-parameter"
 
@@ -1966,7 +1966,7 @@ msgid "Abort download and close mailbox?"
 msgstr ""
 
 #: imap/message.c:549 mutt/memory.c:58 mutt/memory.c:65 mutt/memory.c:105
-#: mutt/memory.c:138 mutt/string.c:1205 mx.c:1091
+#: mutt/memory.c:138 mx.c:1091 safe_asprintf.c:60
 msgid "Out of memory"
 msgstr "Ikke mere hukommelse"
 
@@ -2685,27 +2685,27 @@ msgstr "Tegn = %s, oktalt = %o, decimalt = %d"
 msgid "New mail in "
 msgstr "Ny post i "
 
-#: maildir/shared.c:815
+#: maildir/shared.c:816
 #, c-format
 msgid "Scanning %s..."
 msgstr "Skanner %s ..."
 
-#: maildir/shared.c:837 mbox/mbox.c:214 mbox/mbox.c:380 mx.c:329
+#: maildir/shared.c:838 mbox/mbox.c:214 mbox/mbox.c:380 mx.c:329
 #, c-format
 msgid "Reading %s..."
 msgstr "Læser %s ..."
 
-#: maildir/shared.c:910 maildir/shared.c:1006
+#: maildir/shared.c:911 maildir/shared.c:1007
 msgid "Could not flush message to disk"
 msgstr "Kunne ikke gemme brev på disken"
 
-#: maildir/shared.c:1046
+#: maildir/shared.c:1047
 #, fuzzy
 msgid "md_commit_message(): unable to set time on file"
 msgstr "_maildir_commit_message(): kan ikke sætte tidsstempel på fil"
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/shared.c:1750 mbox/mbox.c:1228 mx.c:416 notmuch/mutt_notmuch.c:2384
+#: maildir/shared.c:1751 mbox/mbox.c:1228 mx.c:416 notmuch/mutt_notmuch.c:2384
 #, c-format
 msgid "Writing %s..."
 msgstr "Skriver %s ..."

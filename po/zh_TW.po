@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2019-04-01 11:49+0000\n"
+"POT-Creation-Date: 2019-03-29 11:40+0000\n"
 "PO-Revision-Date: 2001-09-06 18:25+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -1464,7 +1464,7 @@ msgstr "無法開啟信件檔案：%s"
 msgid "Can't append to folder: %s"
 msgstr "無法把資料加到檔案夾：%s"
 
-#: email/parse.c:1329
+#: email/parse.c:1331
 msgid "multipart message has no boundary parameter"
 msgstr "多部份郵件沒有分隔的參數"
 
@@ -2004,7 +2004,7 @@ msgid "Abort download and close mailbox?"
 msgstr ""
 
 #: imap/message.c:549 mutt/memory.c:58 mutt/memory.c:65 mutt/memory.c:105
-#: mutt/memory.c:138 mutt/string.c:1205 mx.c:1091
+#: mutt/memory.c:138 mx.c:1091 safe_asprintf.c:60
 msgid "Out of memory"
 msgstr "記憶體不足"
 
@@ -2748,27 +2748,27 @@ msgstr ""
 msgid "New mail in "
 msgstr "在 %s 有新信件"
 
-#: maildir/shared.c:815
+#: maildir/shared.c:816
 #, fuzzy, c-format
 msgid "Scanning %s..."
 msgstr "正在選擇 %s …"
 
-#: maildir/shared.c:837 mbox/mbox.c:214 mbox/mbox.c:380 mx.c:329
+#: maildir/shared.c:838 mbox/mbox.c:214 mbox/mbox.c:380 mx.c:329
 #, c-format
 msgid "Reading %s..."
 msgstr "讀取 %s 中…"
 
-#: maildir/shared.c:910 maildir/shared.c:1006
+#: maildir/shared.c:911 maildir/shared.c:1007
 #, fuzzy
 msgid "Could not flush message to disk"
 msgstr "無法寄出信件"
 
-#: maildir/shared.c:1046
+#: maildir/shared.c:1047
 msgid "md_commit_message(): unable to set time on file"
 msgstr ""
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/shared.c:1750 mbox/mbox.c:1228 mx.c:416 notmuch/mutt_notmuch.c:2384
+#: maildir/shared.c:1751 mbox/mbox.c:1228 mx.c:416 notmuch/mutt_notmuch.c:2384
 #, c-format
 msgid "Writing %s..."
 msgstr "寫入 %s 中…"
