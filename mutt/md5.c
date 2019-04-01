@@ -86,10 +86,10 @@ static void mutt_md5_process_block(const void *buffer, size_t len, struct Md5Ctx
   while (words < endp)
   {
     md5_uint32 *cwp = correct_words;
-    md5_uint32 A_save = A;
-    md5_uint32 B_save = B;
-    md5_uint32 C_save = C;
-    md5_uint32 D_save = D;
+    md5_uint32 save_A = A;
+    md5_uint32 save_B = B;
+    md5_uint32 save_C = C;
+    md5_uint32 save_D = D;
 
     /* First round: using the given function, the context and a constant the
      * next context is computed.  Because the algorithms processing unit is a
@@ -203,10 +203,10 @@ static void mutt_md5_process_block(const void *buffer, size_t len, struct Md5Ctx
     OP(FI, B, C, D, A, 9, 21, 0xeb86d391);
 
     /* Add the starting values of the context. */
-    A += A_save;
-    B += B_save;
-    C += C_save;
-    D += D_save;
+    A += save_A;
+    B += save_B;
+    C += save_C;
+    D += save_D;
   }
 
   /* Put checksum in context given as argument. */
