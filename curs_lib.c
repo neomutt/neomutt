@@ -927,7 +927,7 @@ int mutt_addwch(wchar_t wc)
  * @param[in]  buflen    Buffer length
  * @param[in]  min_width Minimum width
  * @param[in]  max_width Maximum width
- * @param[in]  justify   Justification, e.g. #FMT_RIGHT
+ * @param[in]  justify   Justification, e.g. #JUSTIFY_RIGHT
  * @param[in]  pad_char  Padding character
  * @param[in]  s         String to format
  * @param[in]  n         Number of bytes of string to format
@@ -938,7 +938,8 @@ int mutt_addwch(wchar_t wc)
  * character cells when printed.
  */
 void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
-                        int justify, char pad_char, const char *s, size_t n, bool arboreal)
+                        enum FormatJustify justify, char pad_char,
+                        const char *s, size_t n, bool arboreal)
 {
   wchar_t wc;
   int w;
@@ -1000,7 +1001,7 @@ void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
   w = ((int) buflen < min_width) ? buflen : min_width;
   if (w <= 0)
     *p = '\0';
-  else if (justify == FMT_RIGHT) /* right justify */
+  else if (justify == JUSTIFY_RIGHT) /* right justify */
   {
     p[w] = '\0';
     while (--p >= buf)
@@ -1008,7 +1009,7 @@ void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
     while (--w >= 0)
       buf[w] = pad_char;
   }
-  else if (justify == FMT_CENTER) /* center */
+  else if (justify == JUSTIFY_CENTER) /* center */
   {
     char *savedp = p;
     int half = (w + 1) / 2; /* half of cushion space */
@@ -1052,7 +1053,7 @@ void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
  */
 static void format_s_x(char *buf, size_t buflen, const char *prec, const char *s, bool arboreal)
 {
-  int justify = FMT_RIGHT;
+  enum FormatJustify justify = JUSTIFY_RIGHT;
   char *p = NULL;
   int min_width;
   int max_width = INT_MAX;
@@ -1060,12 +1061,12 @@ static void format_s_x(char *buf, size_t buflen, const char *prec, const char *s
   if (*prec == '-')
   {
     prec++;
-    justify = FMT_LEFT;
+    justify = JUSTIFY_LEFT;
   }
   else if (*prec == '=')
   {
     prec++;
-    justify = FMT_CENTER;
+    justify = JUSTIFY_CENTER;
   }
   min_width = strtol(prec, &p, 10);
   if (*p == '.')

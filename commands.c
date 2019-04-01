@@ -426,7 +426,7 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   if (mutt_strwidth(prompt) > MuttMessageWindow->cols - EXTRA_SPACE)
   {
     mutt_simple_format(prompt, sizeof(prompt), 0, MuttMessageWindow->cols - EXTRA_SPACE,
-                       FMT_LEFT, 0, scratch, sizeof(scratch), false);
+                       JUSTIFY_LEFT, 0, scratch, sizeof(scratch), false);
     mutt_str_strcat(prompt, sizeof(prompt), "...?");
   }
   else

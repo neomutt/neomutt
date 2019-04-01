@@ -38,10 +38,15 @@ extern bool C_MetaKey; /**< interpret ALT-x as ESC-x */
 
 extern int MuttGetchTimeout; ///< Timeout in ms for mutt_getch()
 
-/* For mutt_simple_format() justifications */
-#define FMT_LEFT   -1
-#define FMT_CENTER 0
-#define FMT_RIGHT  1
+/**
+ * enum FormatJustify - Alignment for mutt_simple_format()
+ */
+enum FormatJustify
+{
+  JUSTIFY_LEFT = -1,  ///< Left justify the text
+  JUSTIFY_CENTER = 0, ///< Centre the text
+  JUSTIFY_RIGHT = 1,  ///< Right justify the text
+};
 
 int          mutt_addwch(wchar_t wc);
 int          mutt_any_key_to_continue(const char *s);
@@ -66,7 +71,7 @@ void         mutt_push_macro_event(int ch, int op);
 void         mutt_query_exit(void);
 void         mutt_refresh(void);
 void         mutt_show_error(void);
-void         mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width, int justify, char pad_char, const char *s, size_t n, bool arboreal);
+void         mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width, enum FormatJustify justify, char pad_char, const char *s, size_t n, bool arboreal);
 int          mutt_strwidth(const char *s);
 void         mutt_unget_event(int ch, int op);
 void         mutt_unget_string(const char *s);

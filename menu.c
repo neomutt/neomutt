@@ -345,7 +345,7 @@ static void menu_pad_string(struct Menu *menu, char *buf, size_t buflen)
   int shift = C_ArrowCursor ? 3 : 0;
   int cols = menu->indexwin->cols - shift;
 
-  mutt_simple_format(buf, buflen, cols, cols, FMT_LEFT, ' ', scratch,
+  mutt_simple_format(buf, buflen, cols, cols, JUSTIFY_LEFT, ' ', scratch,
                      mutt_str_strlen(scratch), true);
   buf[buflen - 1] = '\0';
   FREE(&scratch);
