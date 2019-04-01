@@ -1019,7 +1019,7 @@ void mutt_str_pretty_size(char *buf, size_t buflen, size_t num)
 {
   if (num < 1000)
   {
-    snprintf(buf, buflen, "%d", (int) num);
+    snprintf(buf, buflen, "%dB", (int) num);
   }
   else if (num < 10189) /* 0.1K - 9.9K */
   {
