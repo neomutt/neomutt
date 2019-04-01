@@ -437,7 +437,6 @@ static int trash_append(struct Mailbox *m)
   if (!m)
     return -1;
 
-  int i;
   struct stat st, stc;
   int opt_confappend, rc;
 
@@ -448,7 +447,7 @@ static int trash_append(struct Mailbox *m)
 
   int delmsgcount = 0;
   int first_del = -1;
-  for (i = 0; i < m->msg_count; i++)
+  for (int i = 0; i < m->msg_count; i++)
   {
     if (m->emails[i]->deleted && (!m->emails[i]->purge))
     {
@@ -495,7 +494,7 @@ static int trash_append(struct Mailbox *m)
   if (ctx_trash)
   {
     /* continue from initial scan above */
-    for (i = first_del; i < m->msg_count; i++)
+    for (int i = first_del; i < m->msg_count; i++)
     {
       if (m->emails[i]->deleted && (!m->emails[i]->purge))
       {
