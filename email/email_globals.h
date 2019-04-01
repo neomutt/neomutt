@@ -27,6 +27,7 @@
 #include "mutt/mutt.h"
 
 /* Config items */
+extern bool                C_AutoSubscribe;
 extern bool                C_MarkOld;
 extern struct Regex *      C_ReplyRegex;
 extern char *              C_SendCharset;
@@ -34,9 +35,16 @@ extern char *              C_SpamSeparator;
 extern bool                C_Weed;
 
 /* Global variables */
-extern struct ListHead Ignore;      ///< List of header patterns to ignore
-extern struct RegexList NoSpamList; ///< List of regexes to whitelist non-spam emails
-extern struct ReplaceList SpamList; ///< List of regexes and patterns to match spam emails
-extern struct ListHead UnIgnore;    ///< List of header patterns to unignore (see)
+extern struct ListHead Ignore;              ///< List of header patterns to ignore
+extern struct RegexList NoSpamList;         ///< List of regexes to whitelist non-spam emails
+extern struct ReplaceList SpamList;         ///< List of regexes and patterns to match spam emails
+extern struct ListHead UnIgnore;            ///< List of header patterns to unignore (see)
+extern struct ListHead MailToAllow;         ///< List of permitted fields in a mailto: uri
+extern struct Hash *AutoSubscribeCache;     ///< Hash table of auto-subscribed mailing lists
+extern struct RegexList UnSubscribedLists;  ///< List of regexes to blacklist false matches in SubscribedLists
+extern struct RegexList MailLists;          ///< List of regexes to match mailing lists
+extern struct RegexList UnMailLists;        ///< List of regexes to blacklist false matches in MailLists
+extern struct RegexList SubscribedLists;    ///< List of regexes to match subscribed mailing lists
+extern struct ReplaceList SubjectRegexList; ///< List of regexes to tidy the view of the email's subject
 
 #endif /* MUTT_EMAIL_EMAIL_GLOBALS_H */

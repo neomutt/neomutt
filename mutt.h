@@ -134,8 +134,6 @@ struct AttachMatch
 
 #define EXECSHELL "/bin/sh"
 
-int safe_asprintf(char **, const char *, ...);
-
 char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping *items);
 
 int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags);

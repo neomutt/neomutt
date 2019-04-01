@@ -860,7 +860,7 @@ int main(int argc, char *argv[], char *envp[])
     {
       if (url_check_scheme(argv[i]) == U_MAILTO)
       {
-        if (url_parse_mailto(msg->env, &bodytext, argv[i]) < 0)
+        if (mutt_parse_mailto(msg->env, &bodytext, argv[i]) < 0)
         {
           mutt_error(_("Failed to parse mailto: link"));
           goto main_curses; // TEST25: neomutt mailto:

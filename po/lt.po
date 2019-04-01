@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2019-03-29 11:40+0000\n"
+"POT-Creation-Date: 2019-04-01 11:49+0000\n"
 "PO-Revision-Date: 2000-11-29 21:22+0200\n"
 "Last-Translator: Marius Gedminas <marius@gedmin.as>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -1392,7 +1392,7 @@ msgstr "Negaliu atidaryti laiško bylos: %s"
 msgid "Can't append to folder: %s"
 msgstr "Negaliu pridurti laiško prie aplanko: %s"
 
-#: email/parse.c:1331
+#: email/parse.c:1329
 msgid "multipart message has no boundary parameter"
 msgstr "kelių dalių laiškas neturi boundary parametro"
 
@@ -1930,7 +1930,7 @@ msgid "Abort download and close mailbox?"
 msgstr "Nutraukti siuntimą ir uždaryti pašto dėžutę?"
 
 #: imap/message.c:549 mutt/memory.c:58 mutt/memory.c:65 mutt/memory.c:105
-#: mutt/memory.c:138 mx.c:1091 safe_asprintf.c:60
+#: mutt/memory.c:138 mutt/string.c:1205 mx.c:1091
 msgid "Out of memory"
 msgstr "Baigėsi atmintis"
 
@@ -2632,26 +2632,26 @@ msgstr "Simbolis = %s, aštuonetaine sistema = %o, dešimtaine = %d"
 msgid "New mail in "
 msgstr "Naujas paštas dėžutėje "
 
-#: maildir/shared.c:816
+#: maildir/shared.c:815
 #, c-format
 msgid "Scanning %s..."
 msgstr "Skaitau %s..."
 
-#: maildir/shared.c:838 mbox/mbox.c:214 mbox/mbox.c:380 mx.c:329
+#: maildir/shared.c:837 mbox/mbox.c:214 mbox/mbox.c:380 mx.c:329
 #, c-format
 msgid "Reading %s..."
 msgstr "Skaitau %s..."
 
-#: maildir/shared.c:911 maildir/shared.c:1007
+#: maildir/shared.c:910 maildir/shared.c:1006
 msgid "Could not flush message to disk"
 msgstr "Negalėjau įrašyti laiško į diską."
 
-#: maildir/shared.c:1047
+#: maildir/shared.c:1046
 msgid "md_commit_message(): unable to set time on file"
 msgstr "md_commit_message(): nepavyko nustatyti bylos laiko"
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/shared.c:1751 mbox/mbox.c:1228 mx.c:416 notmuch/mutt_notmuch.c:2384
+#: maildir/shared.c:1750 mbox/mbox.c:1228 mx.c:416 notmuch/mutt_notmuch.c:2384
 #, c-format
 msgid "Writing %s..."
 msgstr "Rašau %s..."

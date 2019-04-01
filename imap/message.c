@@ -1027,12 +1027,12 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
 
   if (adata->capabilities & IMAP_CAP_IMAP4REV1)
   {
-    safe_asprintf(&hdrreq, "BODY.PEEK[HEADER.FIELDS (%s%s%s)]", want_headers,
+    mutt_str_asprintf(&hdrreq, "BODY.PEEK[HEADER.FIELDS (%s%s%s)]", want_headers,
                   C_ImapHeaders ? " " : "", NONULL(C_ImapHeaders));
   }
   else if (adata->capabilities & IMAP_CAP_IMAP4)
   {
-    safe_asprintf(&hdrreq, "RFC822.HEADER.LINES (%s%s%s)", want_headers,
+    mutt_str_asprintf(&hdrreq, "RFC822.HEADER.LINES (%s%s%s)", want_headers,
                   C_ImapHeaders ? " " : "", NONULL(C_ImapHeaders));
   }
   else
@@ -1069,7 +1069,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
 
     fetch_msn_end = msn_end;
     char *cmd = NULL;
-    safe_asprintf(&cmd, "FETCH %s (UID FLAGS INTERNALDATE RFC822.SIZE %s)", b->data, hdrreq);
+    mutt_str_asprintf(&cmd, "FETCH %s (UID FLAGS INTERNALDATE RFC822.SIZE %s)", b->data, hdrreq);
     imap_cmd_start(adata, cmd);
     FREE(&cmd);
     mutt_buffer_free(&b);

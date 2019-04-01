@@ -42,10 +42,8 @@
 #include "email_globals.h"
 #include "envelope.h"
 #include "from.h"
-#include "globals.h"
 #include "mime.h"
 #include "parameter.h"
-#include "protos.h"
 #include "rfc2047.h"
 #include "rfc2231.h"
 #include "url.h"
@@ -68,7 +66,7 @@ void mutt_auto_subscribe(const char *mailto)
 
   lpenv = mutt_env_new(); /* parsed envelope from the List-Post mailto: URL */
 
-  if ((url_parse_mailto(lpenv, NULL, mailto) != -1) && lpenv->to && lpenv->to->mailbox &&
+  if ((mutt_parse_mailto(lpenv, NULL, mailto) != -1) && lpenv->to && lpenv->to->mailbox &&
       !mutt_regexlist_match(&UnSubscribedLists, lpenv->to->mailbox) &&
       !mutt_regexlist_match(&UnMailLists, lpenv->to->mailbox) &&
       !mutt_regexlist_match(&UnSubscribedLists, lpenv->to->mailbox))
@@ -1436,4 +1434,93 @@ struct Body *mutt_rfc822_parse_message(FILE *fp, struct Body *parent)
 
   mutt_parse_part(fp, msg);
   return msg;
+}
+
+/**
+ * mutt_parse_mailto - Parse a mailto:// url
+ * @param[in]  e    Envelope to fill
+ * @param[out] body Body to
+ * @param[in]  src  String to parse
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+int mutt_parse_mailto(struct Envelope *e, char **body, const char *src)
+{
+  char *p = NULL;
+  char *tag = NULL, *value = NULL;
+
+  int rc = -1;
+
+  char *t = strchr(src, ':');
+  if (!t)
+    return -1;
+
+  /* copy string for safe use of strtok() */
+  char *tmp = mutt_str_strdup(t + 1);
+  if (!tmp)
+    return -1;
+
+  char *headers = strchr(tmp, '?');
+  if (headers)
+    *headers++ = '\0';
+
+  if (url_pct_decode(tmp) < 0)
+    goto out;
+
+  e->to = mutt_addr_parse_list(e->to, tmp);
+
+  tag = headers ? strtok_r(headers, "&", &p) : NULL;
+
+  for (; tag; tag = strtok_r(NULL, "&", &p))
+  {
+    value = strchr(tag, '=');
+    if (value)
+      *value++ = '\0';
+    if (!value || !*value)
+      continue;
+
+    if (url_pct_decode(tag) < 0)
+      goto out;
+    if (url_pct_decode(value) < 0)
+      goto out;
+
+    /* Determine if this header field is on the allowed list.  Since NeoMutt
+     * interprets some header fields specially (such as
+     * "Attach: ~/.gnupg/secring.gpg"), care must be taken to ensure that
+     * only safe fields are allowed.
+     *
+     * RFC2368, "4. Unsafe headers"
+     * The user agent interpreting a mailto URL SHOULD choose not to create
+     * a message if any of the headers are considered dangerous; it may also
+     * choose to create a message with only a subset of the headers given in
+     * the URL.  */
+    if (mutt_list_match(tag, &MailToAllow))
+    {
+      if (mutt_str_strcasecmp(tag, "body") == 0)
+      {
+        if (body)
+          mutt_str_replace(body, value);
+      }
+      else
+      {
+        char *scratch = NULL;
+        size_t taglen = mutt_str_strlen(tag);
+
+        mutt_str_asprintf(&scratch, "%s: %s", tag, value);
+        scratch[taglen] = 0; /* overwrite the colon as mutt_rfc822_parse_line expects */
+        value = mutt_str_skip_email_wsp(&scratch[taglen + 1]);
+        mutt_rfc822_parse_line(e, NULL, scratch, value, true, false, true);
+        FREE(&scratch);
+      }
+    }
+  }
+
+  /* RFC2047 decode after the RFC822 parsing */
+  rfc2047_decode_envelope(e);
+
+  rc = 0;
+
+out:
+  FREE(&tmp);
+  return rc;
 }

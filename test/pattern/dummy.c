@@ -120,8 +120,3 @@ const char *myvar_get(const char *var)
 {
   return g_myvar;
 }
-
-int url_parse_mailto(struct Envelope *e, char **body, const char *src)
-{
-  return -1;
-}
