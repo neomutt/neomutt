@@ -648,12 +648,15 @@ void pop_fetch_mail(void)
   }
 
   struct Mailbox *m_spool = mx_path_resolve(C_Spoolfile);
-  struct Context *ctx = mx_mbox_open(m_spool, MUTT_APPEND);
+  struct Context *ctx = mx_mbox_open(m_spool, MUTT_OPEN_NO_FLAGS);
   if (!ctx)
   {
     mailbox_free(&m_spool);
     goto finish;
   }
+
+  bool old_append = m_spool->append;
+  m_spool->append = true;
 
   enum QuadOption delanswer =
       query_quadoption(C_PopDelete, _("Delete messages from server?"));
@@ -694,6 +697,7 @@ void pop_fetch_mail(void)
 
     if (ret == -1)
     {
+      m_spool->append = old_append;
       mx_mbox_close(&ctx);
       goto fail;
     }
@@ -715,6 +719,7 @@ void pop_fetch_mail(void)
                  msgbuf, i - last, msgs - last);
   }
 
+  m_spool->append = old_append;
   mx_mbox_close(&ctx);
 
   if (rset)
