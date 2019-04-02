@@ -2014,6 +2014,7 @@ parsemsg:
   return 0;
 
 bail:
+  e->active = true;
   mutt_file_fclose(&msg->fp);
   imap_cache_del(m, e);
   return -1;
