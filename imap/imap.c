@@ -1159,9 +1159,6 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
   mutt_buffer_addstr(cmd, flags);
   mutt_buffer_addstr(cmd, ")");
 
-  /* dumb hack for bad UW-IMAP 4.7 servers spurious FLAGS updates */
-  e->active = false;
-
   /* after all this it's still possible to have no flags, if you
    * have no ACL rights */
   if (*flags && (imap_exec(adata, cmd->data, 0) != IMAP_EXEC_SUCCESS) &&
@@ -1169,17 +1166,13 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
   {
     *err_continue = imap_continue("imap_sync_message: STORE failed", adata->buf);
     if (*err_continue != MUTT_YES)
-    {
-      e->active = true;
       return -1;
-    }
   }
 
   /* server have now the updated flags */
   FREE(&imap_edata_get(e)->flags_remote);
   imap_edata_get(e)->flags_remote = driver_tags_get_with_hidden(&e->tags);
 
-  e->active = true;
   if (e->deleted == imap_edata_get(e)->deleted)
     e->changed = false;
 
