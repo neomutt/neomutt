@@ -100,3 +100,15 @@ bool mutt_email_cmp_strict(const struct Email *e1, const struct Email *e2)
       return false;
   }
 }
+
+/**
+ * mutt_email_size - compute the size of an email
+ * @param e Email
+ * @retval num Size of the email, in bytes
+ */
+size_t mutt_email_size(const struct Email *e)
+{
+  if (!e || !e->content)
+    return 0;
+  return e->content->length + e->content->offset - e->content->hdr_offset;
+}
