@@ -201,12 +201,12 @@ int smime_class_valid_passphrase(void)
  * | Expando | Description
  * |:--------|:-----------------------------------------------------------------
  * | \%a     | Algorithm used for encryption
- * | \%C     | CA location: Depending on whether $smime_ca_location points to a directory or file
+ * | \%C     | CA location: Depending on whether `$smime_ca_location` points to a directory or file
  * | \%c     | One or more certificate IDs
- * | \%d     | Message digest algorithm specified with $smime_sign_digest_alg
+ * | \%d     | Message digest algorithm specified with `$smime_sign_digest_alg`
  * | \%f     | File containing a message
  * | \%i     | Intermediate certificates
- * | \%k     | The key-pair specified with $smime_default_key
+ * | \%k     | The key-pair specified with `$smime_default_key`
  * | \%s     | File containing the signature part of a multipart/signed attachment when verifying it
  */
 static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int cols,

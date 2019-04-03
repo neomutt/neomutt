@@ -65,8 +65,8 @@ static char *get_sort_str(char *buf, size_t buflen, enum SortType method)
  * | Expando | Description
  * |:--------|:--------------------------------------------------------
  * | \%b     | Number of incoming folders with unread messages
- * | \%d     | Number of deleted messages
  * | \%D     | Description of the mailbox
+ * | \%d     | Number of deleted messages
  * | \%f     | Full mailbox path
  * | \%F     | Number of flagged messages
  * | \%h     | Hostname
@@ -80,8 +80,8 @@ static char *get_sort_str(char *buf, size_t buflen, enum SortType method)
  * | \%P     | Percent of way through index
  * | \%R     | Number of read messages
  * | \%r     | Readonly/wontwrite/changed flag
- * | \%S     | Current aux sorting method ($sort_aux)
- * | \%s     | Current sorting method ($sort)
+ * | \%S     | Current aux sorting method (`$sort_aux`)
+ * | \%s     | Current sorting method (`$sort`)
  * | \%t     | # of tagged messages
  * | \%u     | Number of unread messages
  * | \%V     | Currently active limit pattern

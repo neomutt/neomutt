@@ -3269,23 +3269,23 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------
- * | \%u     | User id
  * | \%n     | Number
- * | \%t     | Trust/validity of the key-uid association
  * | \%p     | Protocol
+ * | \%t     | Trust/validity of the key-uid association
+ * | \%u     | User id
  * | \%[...] | Date of key using strftime(3)
  * |         |
- * | \%k     | Key id
  * | \%a     | Algorithm
- * | \%l     | Length
- * | \%f     | Flags
  * | \%c     | Capabilities
+ * | \%f     | Flags
+ * | \%k     | Key id
+ * | \%l     | Length
  * |         |
- * | \%K     | Key id of the principal key
  * | \%A     | Algorithm of the principal key
- * | \%L     | Length of the principal key
- * | \%F     | Flags of the principal key
  * | \%C     | Capabilities of the principal key
+ * | \%F     | Flags of the principal key
+ * | \%K     | Key id of the principal key
+ * | \%L     | Length of the principal key
  */
 static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int cols,
                                     char op, const char *src, const char *prec,

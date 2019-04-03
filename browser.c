@@ -342,17 +342,17 @@ static bool link_is_dir(const char *folder, const char *path)
  * |:--------|:--------------------------------------------------------
  * | \%C     | Current file number
  * | \%d     | Date/time folder was last modified
- * | \%D     | Date/time folder was last modified using $$date_format.
+ * | \%D     | Date/time folder was last modified using `$date_format.`
  * | \%F     | File permissions
- * | \%f     | Filename (with suffix '/', '@' or '*')
+ * | \%f     | Filename (with suffix `/`, `@` or `*`)
  * | \%g     | Group name (or numeric gid, if missing)
  * | \%i     | Description of the folder
  * | \%l     | Number of hard links
- * | \%m     | Number of messages in the mailbox *
+ * | \%m     | Number of messages in the mailbox
  * | \%N     | N if mailbox has new mail, blank otherwise
- * | \%n     | Number of unread messages in the mailbox *
+ * | \%n     | Number of unread messages in the mailbox
  * | \%s     | Size in bytes
- * | \%t     | '*' if the file is tagged, blank otherwise
+ * | \%t     | `*` if the file is tagged, blank otherwise
  * | \%u     | Owner name (or numeric uid, if missing)
  */
 static const char *folder_format_str(char *buf, size_t buflen, size_t col, int cols,

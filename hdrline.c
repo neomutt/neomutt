@@ -495,21 +495,22 @@ static bool thread_is_old(struct Context *ctx, struct Email *e)
  *
  * | Expando | Description
  * |:--------|:-----------------------------------------------------------------
+ * | \%(fmt) | Date/time when the message was received
  * | \%a     | Address of the author
  * | \%A     | Reply-to address (if present; otherwise: address of author)
  * | \%b     | Filename of the original message folder (think mailbox)
- * | \%B     | The list to which the letter was sent, or else the folder name (%b).
+ * | \%B     | The list to which the letter was sent, or else the folder name (%b)
  * | \%C     | Current message number
  * | \%c     | Number of characters (bytes) in the message
- * | \%D     | Date and time of message using $date_format and local timezone
- * | \%d     | Date and time of message using $date_format and sender's timezone
+ * | \%D     | Date and time of message using `$date_format` and local timezone
+ * | \%d     | Date and time of message using `$date_format` and sender's timezone
  * | \%e     | Current message number in thread
  * | \%E     | Number of messages in current thread
- * | \%F     | Author name, or recipient name if the message is from you
  * | \%Fp    | Like %F, but plain. No contextual formatting is applied to recipient name
+ * | \%F     | Author name, or recipient name if the message is from you
  * | \%f     | Sender (address + real name), either From: or Return-Path:
- * | \%g     | Message tags (e.g. notmuch tags/imap flags)
  * | \%Gx    | Individual message tag (e.g. notmuch tags/imap flags)
+ * | \%g     | Message tags (e.g. notmuch tags/imap flags)
  * | \%H     | Spam attribute(s) of this message
  * | \%I     | Initials of author
  * | \%i     | Message-id of the current message
@@ -519,8 +520,8 @@ static bool thread_is_old(struct Context *ctx, struct Email *e)
  * | \%l     | Number of lines in the message
  * | \%M     | Number of hidden messages if the thread is collapsed
  * | \%m     | Total number of message in the mailbox
- * | \%N     | Message score
  * | \%n     | Author's real name (or address if missing)
+ * | \%N     | Message score
  * | \%O     | Like %L, except using address instead of name
  * | \%P     | Progress indicator for the built-in pager (how much of the file has been displayed)
  * | \%q     | Newsgroup name (if compiled with NNTP support)
@@ -528,20 +529,19 @@ static bool thread_is_old(struct Context *ctx, struct Email *e)
  * | \%r     | Comma separated list of To: recipients
  * | \%S     | Single character status of the message (N/O/D/d/!/r/-)
  * | \%s     | Subject of the message
- * | \%T     | The appropriate character from the $$to_chars string
  * | \%t     | 'To:' field (recipients)
+ * | \%T     | The appropriate character from the `$to_chars` string
  * | \%u     | User (login) name of the author
  * | \%v     | First name of the author, or the recipient if the message is from you
  * | \%W     | Name of organization of author ('Organization:' field)
  * | \%x     | 'X-Comment-To:' field (if present and compiled with NNTP support)
  * | \%X     | Number of MIME attachments
- * | \%Y     | 'X-Label:' field (if present, tree unfolded, and != parent's x-label)
  * | \%y     | 'X-Label:' field (if present)
- * | \%Z     | Combined message flags
+ * | \%Y     | 'X-Label:' field (if present, tree unfolded, and != parent's x-label)
  * | \%zc    | Message crypto flags
  * | \%zs    | Message status flags
  * | \%zt    | Message tag flags
- * | \%(fmt) | Date/time when the message was received
+ * | \%Z     | Combined message flags
  * | \%[fmt] | Message date/time converted to the local time zone
  * | \%{fmt} | Message date/time converted to sender's time zone
  */
