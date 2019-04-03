@@ -5970,6 +5970,16 @@ folder-hook . 'push "&lt;enter-command&gt;score ~= 10&lt;enter&gt;"'
         defined for a given message.)
       </para>
       <para>
+        Note: the value displayed by <literal>%H</literal>and searched by
+        <literal>~H</literal>is stored in the
+        <link linkend="caching">header cache</link>. Mutt isn't smart enough to
+        invalidate a header cache entry based on changing <literal>spam</literal>
+        rules, so if you aren't seeing correct <literal>%H</literal>values, try
+        temporarily turning off the header cache. If that fixes the problem,
+        then once your spam rules are set to your liking, remove your stale
+        header cache files and turn the header cache back on.
+      </para>
+      <para>
         Your first step is to define your external filter's spam patterns using
         the <command>spam</command> command. <emphasis>pattern</emphasis>
         should be a regular expression that matches a header in a mail message.
