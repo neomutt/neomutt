@@ -200,6 +200,8 @@ static void reset_tilde(struct ConfigSet *cs)
  */
 void mutt_exit(int code)
 {
+  clear();
+  refresh();
   mutt_endwin();
   exit(code);
 }
@@ -1233,6 +1235,8 @@ int main(int argc, char *argv[], char *envp[])
 main_ok:
   rc = 0;
 main_curses:
+  clear();
+  refresh();
   mutt_endwin();
   log_queue_flush(log_disp_terminal);
   mutt_unlink_temp_attachments();
