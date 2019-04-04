@@ -84,7 +84,7 @@ struct PgpCommandContext
  *
  * | Expando | Description
  * |:--------|:-----------------------------------------------------------------
- * | \%a     | Value of $pgp_sign_as if set, otherwise $pgp_default_key
+ * | \%a     | Value of `$pgp_sign_as` if set, otherwise `$pgp_default_key`
  * | \%f     | File containing a message
  * | \%p     | Expands to PGPPASSFD=0 when a pass phrase is needed, to an empty string otherwise
  * | \%r     | One or more key IDs (or fingerprints if available)

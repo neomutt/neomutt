@@ -37,11 +37,11 @@
 #include <string.h>
 #include <strings.h>
 #include "exit.h"
+#include "list.h"
 #include "logging.h"
 #include "memory.h"
 #include "message.h"
 #include "string2.h"
-#include "list.h"
 #ifdef HAVE_SYSEXITS_H
 #include <sysexits.h>
 #endif
@@ -978,7 +978,7 @@ int mutt_str_word_casecmp(const char *a, const char *b)
 bool mutt_str_is_ascii(const char *p, size_t len)
 {
   const char *s = p;
-  while (s && (unsigned int) (s - p) < len)
+  while (s && ((unsigned int) (s - p) < len))
   {
     if ((*s & 0x80) != 0)
       return false;

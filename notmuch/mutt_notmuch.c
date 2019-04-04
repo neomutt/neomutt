@@ -55,12 +55,12 @@
 #include "mutt/mutt.h"
 #include "config/lib.h"
 #include "email/lib.h"
-#include "hcache/hcache.h"
 #include "mutt.h"
 #include "mutt_notmuch.h"
 #include "account.h"
 #include "curs_lib.h"
 #include "globals.h"
+#include "hcache/hcache.h"
 #include "index.h"
 #include "mailbox.h"
 #include "maildir/lib.h"
@@ -979,7 +979,7 @@ static void append_message(header_cache_t *h, struct Mailbox *m,
   else
   {
     mutt_hcache_store(h, newpath ? newpath : path,
-        mutt_str_strlen(newpath ? newpath : path), e, 0);
+                      mutt_str_strlen(newpath ? newpath : path), e, 0);
   }
 #endif
   if (init_email(e, newpath ? newpath : path, msg) != 0)
@@ -1021,8 +1021,8 @@ done:
  *
  * Careful, this calls itself recursively to make sure we get everything.
  */
-static void append_replies(header_cache_t *h, struct Mailbox *m, notmuch_query_t *q,
-                           notmuch_message_t *top, bool dedup)
+static void append_replies(header_cache_t *h, struct Mailbox *m,
+                           notmuch_query_t *q, notmuch_message_t *top, bool dedup)
 {
   notmuch_messages_t *msgs = NULL;
 
@@ -1048,8 +1048,8 @@ static void append_replies(header_cache_t *h, struct Mailbox *m, notmuch_query_t
  * add each top level reply in the thread, and then add each reply to the top
  * level replies
  */
-static void append_thread(header_cache_t *h, struct Mailbox *m, notmuch_query_t *q,
-                          notmuch_thread_t *thread, bool dedup)
+static void append_thread(header_cache_t *h, struct Mailbox *m,
+                          notmuch_query_t *q, notmuch_thread_t *thread, bool dedup)
 {
   notmuch_messages_t *msgs = NULL;
 

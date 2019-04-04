@@ -242,7 +242,7 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
   if (mutt_strwidth(prompt) > MuttMessageWindow->cols - EXTRA_SPACE)
   {
     mutt_simple_format(prompt, sizeof(prompt) - 4, 0, MuttMessageWindow->cols - EXTRA_SPACE,
-                       FMT_LEFT, 0, prompt, sizeof(prompt), 0);
+                       JUSTIFY_LEFT, 0, prompt, sizeof(prompt), false);
     mutt_str_strcat(prompt, sizeof(prompt), "...?");
   }
   else
@@ -344,7 +344,7 @@ static int is_parent(short i, struct AttachCtx *actx, struct Body *cur)
 {
   short level = actx->idx[i]->level;
 
-  while ((++i < actx->idxlen) && actx->idx[i]->level > level)
+  while ((++i < actx->idxlen) && (actx->idx[i]->level > level))
   {
     if (actx->idx[i]->content == cur)
       return true;

@@ -69,14 +69,14 @@ static int ColorQuoteSize;
 #define COLOR_DEFAULT (-2)
 #define COLOR_UNSET UINT32_MAX
 
-#define GET_COLOR_VALUE(v) ((v) & 0xffffff)
+#define GET_COLOR_VALUE(v) ((v) &0xffffff)
 
 /*
  * Flags for the high 8bits of the color value.
  *
  * Note that no flag means it's a palette color.
  */
-#define RGB24              (1u << 24)
+#define RGB24 (1u << 24)
 
 /**
  * struct ColorList - A set of colors
@@ -469,7 +469,8 @@ void mutt_free_color(uint32_t fg, uint32_t bg)
  *
  * Parse a colour name, such as "red", "brightgreen", "color123".
  */
-static int parse_color_name(const char *s, uint32_t *col, int *attr, bool is_fg, struct Buffer *err)
+static int parse_color_name(const char *s, uint32_t *col, int *attr, bool is_fg,
+                            struct Buffer *err)
 {
   char *eptr = NULL;
   bool is_alert = false, is_bright = false, is_light = false;
@@ -508,7 +509,7 @@ static int parse_color_name(const char *s, uint32_t *col, int *attr, bool is_fg,
   {
     s += 1;
     *col = strtoul(s, &eptr, 16);
-    if (!*s || *eptr || (*col == COLOR_UNSET && !OptNoCurses && has_colors()))
+    if (!*s || *eptr || ((*col == COLOR_UNSET) && !OptNoCurses && has_colors()))
     {
       snprintf(err->data, err->dsize, _("%s: color not supported by term"), s);
       return -1;

@@ -355,7 +355,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
    * ensure there is enough room for the answer and truncate the question
    * to fit.  */
   mutt_str_asprintf(&answer_string, " ([%s]/%s): ", (def == MUTT_YES) ? yes : no,
-                (def == MUTT_YES) ? no : yes);
+                    (def == MUTT_YES) ? no : yes);
   answer_string_wid = mutt_strwidth(answer_string);
   msg_wid = mutt_strwidth(msg);
 
@@ -833,7 +833,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
           SETCOLOR(MT_COLOR_PROMPT);
           addnstr(prompt, cur - prompt);
 
-          if (isalnum(cur[1]) && cur[2] == ')')
+          if (isalnum(cur[1]) && (cur[2] == ')'))
           {
             // we have a single letter within parentheses
             SETCOLOR(MT_COLOR_OPTIONS);
@@ -927,7 +927,7 @@ int mutt_addwch(wchar_t wc)
  * @param[in]  buflen    Buffer length
  * @param[in]  min_width Minimum width
  * @param[in]  max_width Maximum width
- * @param[in]  justify   Justification, e.g. #FMT_RIGHT
+ * @param[in]  justify   Justification, e.g. #JUSTIFY_RIGHT
  * @param[in]  pad_char  Padding character
  * @param[in]  s         String to format
  * @param[in]  n         Number of bytes of string to format
@@ -938,7 +938,8 @@ int mutt_addwch(wchar_t wc)
  * character cells when printed.
  */
 void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
-                        int justify, char pad_char, const char *s, size_t n, int arboreal)
+                        enum FormatJustify justify, char pad_char,
+                        const char *s, size_t n, bool arboreal)
 {
   wchar_t wc;
   int w;
@@ -1000,7 +1001,7 @@ void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
   w = ((int) buflen < min_width) ? buflen : min_width;
   if (w <= 0)
     *p = '\0';
-  else if (justify == FMT_RIGHT) /* right justify */
+  else if (justify == JUSTIFY_RIGHT) /* right justify */
   {
     p[w] = '\0';
     while (--p >= buf)
@@ -1008,7 +1009,7 @@ void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
     while (--w >= 0)
       buf[w] = pad_char;
   }
-  else if (justify == FMT_CENTER) /* center */
+  else if (justify == JUSTIFY_CENTER) /* center */
   {
     char *savedp = p;
     int half = (w + 1) / 2; /* half of cushion space */
@@ -1050,9 +1051,9 @@ void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
  * except that the numbers in the conversion specification refer to
  * the number of character cells when printed.
  */
-static void format_s_x(char *buf, size_t buflen, const char *prec, const char *s, int arboreal)
+static void format_s_x(char *buf, size_t buflen, const char *prec, const char *s, bool arboreal)
 {
-  int justify = FMT_RIGHT;
+  enum FormatJustify justify = JUSTIFY_RIGHT;
   char *p = NULL;
   int min_width;
   int max_width = INT_MAX;
@@ -1060,12 +1061,12 @@ static void format_s_x(char *buf, size_t buflen, const char *prec, const char *s
   if (*prec == '-')
   {
     prec++;
-    justify = FMT_LEFT;
+    justify = JUSTIFY_LEFT;
   }
   else if (*prec == '=')
   {
     prec++;
-    justify = FMT_CENTER;
+    justify = JUSTIFY_CENTER;
   }
   min_width = strtol(prec, &p, 10);
   if (*p == '.')
@@ -1089,7 +1090,7 @@ static void format_s_x(char *buf, size_t buflen, const char *prec, const char *s
  */
 void mutt_format_s(char *buf, size_t buflen, const char *prec, const char *s)
 {
-  format_s_x(buf, buflen, prec, s, 0);
+  format_s_x(buf, buflen, prec, s, false);
 }
 
 /**
@@ -1101,7 +1102,7 @@ void mutt_format_s(char *buf, size_t buflen, const char *prec, const char *s)
  */
 void mutt_format_s_tree(char *buf, size_t buflen, const char *prec, const char *s)
 {
-  format_s_x(buf, buflen, prec, s, 1);
+  format_s_x(buf, buflen, prec, s, true);
 }
 
 /**

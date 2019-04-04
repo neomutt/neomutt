@@ -39,7 +39,7 @@ struct Email
   SecurityFlags security;   /**< bit 0-8: flags, bit 9,10: application.
                                  see: ncrypt/ncrypt.h pgplib.h, smime.h */
 
-  bool mime            : 1; /**< has a MIME-Version email? */
+  bool mime            : 1; /**< has a MIME-Version header? */
   bool flagged         : 1; /**< marked important? */
   bool tagged          : 1;
   bool deleted         : 1;

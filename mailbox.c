@@ -553,4 +553,3 @@ void mutt_mailbox_size_sub(struct Mailbox *m, const struct Email *e)
 {
   m->size -= mutt_email_size(e);
 }
-

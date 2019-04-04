@@ -440,7 +440,7 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
         return;
       }
       s++;
-      while (*s && *s != ')')
+      while (*s && (*s != ')'))
         s++;
       if (*s == ')')
         s++;
@@ -479,7 +479,7 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
         return;
       }
       s++;
-      while (*s && *s != ')')
+      while (*s && (*s != ')'))
         s++;
       if (*s == ')')
         s++;
@@ -751,7 +751,7 @@ static void cmd_parse_search(struct ImapAccountData *adata, const char *s)
 
   mutt_debug(LL_DEBUG2, "Handling SEARCH\n");
 
-  while ((s = imap_next_word((char *) s)) && *s != '\0')
+  while ((s = imap_next_word((char *) s)) && (*s != '\0'))
   {
     if (mutt_str_atoui(s, &uid) < 0)
       continue;
@@ -827,7 +827,7 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
     mutt_debug(LL_DEBUG1, "Error parsing STATUS\n");
     return;
   }
-  while (*s && *s != ')')
+  while (*s && (*s != ')'))
   {
     value = imap_next_word(s);
 
@@ -906,7 +906,7 @@ static void cmd_parse_enabled(struct ImapAccountData *adata, const char *s)
 {
   mutt_debug(LL_DEBUG2, "Handling ENABLED\n");
 
-  while ((s = imap_next_word((char *) s)) && *s != '\0')
+  while ((s = imap_next_word((char *) s)) && (*s != '\0'))
   {
     if (mutt_str_startswith(s, "UTF8=ACCEPT", CASE_IGNORE) ||
         mutt_str_startswith(s, "UTF8=ONLY", CASE_IGNORE))

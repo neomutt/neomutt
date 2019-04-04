@@ -836,7 +836,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
     {
       /* Scan backwards for backslashes */
       off = n;
-      while (off > 0 && src[off - 2] == '\\')
+      while ((off > 0) && (src[off - 2] == '\\'))
         off--;
     }
 
@@ -904,7 +904,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         if (n > 0)
         {
           buf[n] = '\0';
-          while ((n > 0) && (buf[n - 1] == '\n' || buf[n - 1] == '\r'))
+          while ((n > 0) && ((buf[n - 1] == '\n') || (buf[n - 1] == '\r')))
             buf[--n] = '\0';
           mutt_debug(5, "fmtpipe < %s\n", buf);
 
@@ -953,7 +953,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
     }
   }
 
-  while (*src && wlen < buflen)
+  while (*src && (wlen < buflen))
   {
     if (*src == '%')
     {
@@ -1014,8 +1014,8 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         /* eat the format string */
         cp = prefix;
         count = 0;
-        while (count < sizeof(prefix) && (isdigit((unsigned char) *src) ||
-                                          *src == '.' || *src == '-' || *src == '='))
+        while ((count < sizeof(prefix)) && (isdigit((unsigned char) *src) || (*src == '.') ||
+                                            (*src == '-') || (*src == '=')))
         {
           *cp++ = *src++;
           count++;
@@ -1227,7 +1227,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         bool tolower = false;
         bool nodots = false;
 
-        while (ch == '_' || ch == ':')
+        while ((ch == '_') || (ch == ':'))
         {
           if (ch == '_')
             tolower = true;

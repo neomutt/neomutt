@@ -195,7 +195,7 @@ int log_disp_curses(time_t stamp, const char *file, int line,
     error_pause();
 
   mutt_simple_format(ErrorBuf, sizeof(ErrorBuf), 0, MuttMessageWindow->cols,
-                     FMT_LEFT, 0, buf, sizeof(buf), 0);
+                     JUSTIFY_LEFT, 0, buf, sizeof(buf), false);
   ErrorBufMessage = true;
 
   if (!OptKeepQuiet)

@@ -1849,7 +1849,7 @@ static int print_val(FILE *fp, const char *pfx, const char *value,
       if ((chflags & CH_DISPLAY) && ((*(value + 1) == ' ') || (*(value + 1) == '\t')))
       {
         value++;
-        while (*value && (*value == ' ' || *value == '\t'))
+        while (*value && ((*value == ' ') || (*value == '\t')))
           value++;
         if (fputc('\t', fp) == EOF)
           return -1;
@@ -1921,7 +1921,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
     if (display && fold)
     {
       char *pc = buf;
-      while (*pc && (*pc == ' ' || *pc == '\t'))
+      while (*pc && ((*pc == ' ') || (*pc == '\t')))
       {
         pc++;
         col--;
@@ -1943,7 +1943,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
      * XXX this covers ASCII space only, for display we probably
      * want something like iswspace() here */
     const char *sp = next;
-    while (*sp && (*sp == ' ' || *sp == '\t'))
+    while (*sp && ((*sp == ' ') || (*sp == '\t')))
       sp++;
     if (*sp == '\n')
     {
@@ -2071,7 +2071,7 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
       /* skip over any leading whitespace (WSP, as defined in RFC5322)
        * NOTE: mutt_str_skip_email_wsp() does the wrong thing here.
        *       See tickets 3609 and 3716. */
-      while (*t == ' ' || *t == '\t')
+      while ((*t == ' ') || (*t == '\t'))
         t++;
 
       valbuf = mutt_str_substr_dup(t, end);

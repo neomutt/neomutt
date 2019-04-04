@@ -48,6 +48,7 @@
 #include "context.h"
 #include "curs_lib.h"
 #include "globals.h"
+#include "hcache/hcache.h"
 #include "hook.h"
 #include "mailbox.h"
 #include "mutt_account.h"
@@ -60,7 +61,6 @@
 #include "progress.h"
 #include "protos.h"
 #include "sort.h"
-#include "hcache/hcache.h"
 #ifdef USE_SASL
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
@@ -663,7 +663,7 @@ static int nntp_auth(struct NntpAccountData *adata)
         snprintf(buf, sizeof(buf), "AUTHINFO SASL %s", method);
 
         /* looping protocol */
-        while (rc == SASL_CONTINUE || (rc == SASL_OK && client_len))
+        while ((rc == SASL_CONTINUE) || ((rc == SASL_OK) && client_len))
         {
           /* send out client response */
           if (client_len)

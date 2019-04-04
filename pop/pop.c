@@ -48,6 +48,7 @@
 #include "bcache.h"
 #include "context.h"
 #include "globals.h"
+#include "hcache/hcache.h"
 #include "hook.h"
 #include "mailbox.h"
 #include "mutt_account.h"
@@ -58,7 +59,6 @@
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "progress.h"
-#include "hcache/hcache.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

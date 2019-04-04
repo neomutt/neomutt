@@ -45,6 +45,7 @@
 #include "bcache.h"
 #include "curs_lib.h"
 #include "globals.h"
+#include "hcache/hcache.h"
 #include "imap/imap.h"
 #include "mailbox.h"
 #include "mutt_account.h"
@@ -55,7 +56,6 @@
 #include "mx.h"
 #include "progress.h"
 #include "protos.h"
-#include "hcache/hcache.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
@@ -246,7 +246,7 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
   edata->old = false;
 
   /* start parsing */
-  while (*s && *s != ')')
+  while (*s && (*s != ')'))
   {
     if ((plen = mutt_str_startswith(s, "\\deleted", CASE_IGNORE)))
     {
@@ -283,7 +283,7 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
       char *flag_word = s;
       bool is_system_keyword = mutt_str_startswith(s, "\\", CASE_IGNORE);
 
-      while (*s && !ISSPACE(*s) && *s != ')')
+      while (*s && !ISSPACE(*s) && (*s != ')'))
         s++;
 
       ctmp = *s;
@@ -395,7 +395,7 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
         return -1;
       }
       s++;
-      while (*s && *s != ')')
+      while (*s && (*s != ')'))
         s++;
       if (*s == ')')
         s++;
@@ -1028,12 +1028,12 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
   if (adata->capabilities & IMAP_CAP_IMAP4REV1)
   {
     mutt_str_asprintf(&hdrreq, "BODY.PEEK[HEADER.FIELDS (%s%s%s)]", want_headers,
-                  C_ImapHeaders ? " " : "", NONULL(C_ImapHeaders));
+                      C_ImapHeaders ? " " : "", NONULL(C_ImapHeaders));
   }
   else if (adata->capabilities & IMAP_CAP_IMAP4)
   {
     mutt_str_asprintf(&hdrreq, "RFC822.HEADER.LINES (%s%s%s)", want_headers,
-                  C_ImapHeaders ? " " : "", NONULL(C_ImapHeaders));
+                      C_ImapHeaders ? " " : "", NONULL(C_ImapHeaders));
   }
   else
   { /* Unable to fetch headers for lower versions */
@@ -1069,7 +1069,8 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
 
     fetch_msn_end = msn_end;
     char *cmd = NULL;
-    mutt_str_asprintf(&cmd, "FETCH %s (UID FLAGS INTERNALDATE RFC822.SIZE %s)", b->data, hdrreq);
+    mutt_str_asprintf(&cmd, "FETCH %s (UID FLAGS INTERNALDATE RFC822.SIZE %s)",
+                      b->data, hdrreq);
     imap_cmd_start(adata, cmd);
     FREE(&cmd);
     mutt_buffer_free(&b);

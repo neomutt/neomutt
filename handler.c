@@ -177,7 +177,7 @@ static void decode_xbit(struct State *s, long len, bool istext, iconv_t cd)
   int c;
   char bufi[BUFI_SIZE];
   size_t l = 0;
-  while ((c = fgetc(s->fp_in)) != EOF && len--)
+  while (((c = fgetc(s->fp_in)) != EOF) && len--)
   {
     if ((c == '\r') && len)
     {
@@ -332,7 +332,7 @@ static void decode_quoted(struct State *s, long len, bool istext, iconv_t cd)
     /* chop trailing whitespace if we got the full line */
     if (last == '\n')
     {
-      while (linelen > 0 && ISSPACE(line[linelen - 1]))
+      while ((linelen > 0) && ISSPACE(line[linelen - 1]))
         linelen--;
       line[linelen] = '\0';
     }
@@ -672,7 +672,7 @@ static int text_plain_handler(struct Body *b, struct State *s)
     if ((mutt_str_strcmp(buf, "-- ") != 0) && C_TextFlowed)
     {
       l = mutt_str_strlen(buf);
-      while (l > 0 && buf[l - 1] == ' ')
+      while ((l > 0) && (buf[l - 1] == ' '))
         buf[--l] = '\0';
     }
     if (s->prefix)

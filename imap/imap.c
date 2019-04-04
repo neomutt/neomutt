@@ -120,7 +120,7 @@ static char *get_flags(struct ListHead *hflags, char *s)
   }
 
   /* update caller's flags handle */
-  while (*s && *s != ')')
+  while (*s && (*s != ')'))
   {
     s++;
     SKIPWS(s);
@@ -493,7 +493,7 @@ static size_t longest_common_prefix(char *dest, const char *src, size_t start, s
 {
   size_t pos = start;
 
-  while (pos < dlen && dest[pos] && dest[pos] == src[pos])
+  while ((pos < dlen) && dest[pos] && (dest[pos] == src[pos]))
     pos++;
   dest[pos] = '\0';
 
@@ -2343,7 +2343,7 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t
     }
 
     /* Skip duplicate space */
-    while (*checker == ' ' && *(checker + 1) == ' ')
+    while ((*checker == ' ') && (*(checker + 1) == ' '))
       checker++;
 
     /* copy char to new and go the next one */

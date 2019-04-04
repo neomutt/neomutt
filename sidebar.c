@@ -100,16 +100,16 @@ enum DivType
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------
+ * | \%!     | 'n!' Flagged messages
  * | \%B     | Name of the mailbox
- * | \%d     | Number of deleted messages
  * | \%D     | Description of the mailbox
+ * | \%d     | Number of deleted messages
  * | \%F     | Number of Flagged messages in the mailbox
  * | \%L     | Number of messages after limiting
  * | \%n     | N if mailbox has new mail, blank otherwise
  * | \%N     | Number of unread messages in the mailbox
  * | \%S     | Size of mailbox (total number of messages)
  * | \%t     | Number of tagged messages
- * | \%!     | 'n!' Flagged messages
  */
 static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int cols,
                                       char op, const char *src, const char *prec,

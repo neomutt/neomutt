@@ -157,20 +157,22 @@ struct PgpEntry
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------
- * | \%a     | Algorithm
- * | \%A     | Algorithm of the princ. key
- * | \%c     | Capabilities
- * | \%C     | Capabilities of the princ. key
- * | \%f     | Flags
- * | \%F     | Flags of the princ. key
- * | \%k     | Key id
- * | \%K     | Key id of the principal key
- * | \%l     | Length
- * | \%L     | Length of the princ. key
  * | \%n     | Number
  * | \%t     | Trust/validity of the key-uid association
  * | \%u     | User id
  * | \%[...] | Date of key using strftime(3)
+ * |         |
+ * | \%a     | Algorithm
+ * | \%c     | Capabilities
+ * | \%f     | Flags
+ * | \%k     | Key id
+ * | \%l     | Length
+ * |         |
+ * | \%A     | Algorithm of the principal key
+ * | \%C     | Capabilities of the principal key
+ * | \%F     | Flags of the principal key
+ * | \%K     | Key id of the principal key
+ * | \%L     | Length of the principal key
  */
 static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
                                  char op, const char *src, const char *prec,
@@ -274,7 +276,7 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
       }
 
       len = buflen - 1;
-      while (len > 0 && *cp != ']')
+      while ((len > 0) && (*cp != ']'))
       {
         if (*cp == '%')
         {

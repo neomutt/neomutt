@@ -242,7 +242,7 @@ static int query_search(struct Menu *menu, regex_t *rx, int line)
  * | \%c     | Current entry number
  * | \%e     | Extra information
  * | \%n     | Destination name
- * | \%t     | '*' if current entry is tagged, a space otherwise
+ * | \%t     | `*` if current entry is tagged, a space otherwise
  */
 static const char *query_format_str(char *buf, size_t buflen, size_t col, int cols,
                                     char op, const char *src, const char *prec,

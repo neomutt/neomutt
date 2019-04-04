@@ -158,7 +158,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
         SETCOLOR(MT_COLOR_TREE);
 #endif
 
-      while (*s && *s < MUTT_TREE_MAX)
+      while (*s && (*s < MUTT_TREE_MAX))
       {
         switch (*s)
         {
@@ -345,8 +345,8 @@ static void menu_pad_string(struct Menu *menu, char *buf, size_t buflen)
   int shift = C_ArrowCursor ? 3 : 0;
   int cols = menu->indexwin->cols - shift;
 
-  mutt_simple_format(buf, buflen, cols, cols, FMT_LEFT, ' ', scratch,
-                     mutt_str_strlen(scratch), 1);
+  mutt_simple_format(buf, buflen, cols, cols, JUSTIFY_LEFT, ' ', scratch,
+                     mutt_str_strlen(scratch), true);
   buf[buflen - 1] = '\0';
   FREE(&scratch);
 }
@@ -1190,7 +1190,7 @@ static int menu_search(struct Menu *menu, int op)
 search_next:
   if (wrap)
     mutt_message(_("Search wrapped to top"));
-  while (rc >= 0 && rc < menu->max)
+  while ((rc >= 0) && (rc < menu->max))
   {
     if (menu->menu_search(menu, &re, rc) == 0)
     {

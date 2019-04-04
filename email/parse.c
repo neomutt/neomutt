@@ -113,7 +113,7 @@ static void parse_parameters(struct ParameterList *param, const char *s)
     {
       i = p - s;
       /* remove whitespace from the end of the attribute name */
-      while (i > 0 && mutt_str_is_email_wsp(s[i - 1]))
+      while ((i > 0) && mutt_str_is_email_wsp(s[i - 1]))
         i--;
 
       /* the check for the missing parameter token is here so that we can skip

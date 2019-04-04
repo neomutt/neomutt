@@ -2214,7 +2214,7 @@ static void quote_simple(const char *str, char *buf, size_t buflen)
   int i = 0;
 
   buf[i++] = '"';
-  while (*str && i < buflen - 3)
+  while (*str && (i < buflen - 3))
   {
     if ((*str == '\\') || (*str == '"'))
       buf[i++] = '\\';

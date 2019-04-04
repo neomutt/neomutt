@@ -60,7 +60,8 @@ static void message_bar(int percent, const char *fmt, ...)
   l = mutt_strwidth(buf);
   va_end(ap);
 
-  mutt_simple_format(buf2, sizeof(buf2), 0, COLS - 2, FMT_LEFT, 0, buf, sizeof(buf), 0);
+  mutt_simple_format(buf2, sizeof(buf2), 0, COLS - 2, JUSTIFY_LEFT, 0, buf,
+                     sizeof(buf), false);
 
   move(LINES - 1, 0);
 

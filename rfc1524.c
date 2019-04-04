@@ -82,7 +82,7 @@ int rfc1524_expand_command(struct Body *a, const char *filename,
   if (C_MailcapSanitize)
     mutt_file_sanitize_filename(type2, false);
 
-  while (x < clen - 1 && command[x] && y < sizeof(buf) - 1)
+  while ((x < clen - 1) && command[x] && (y < sizeof(buf) - 1))
   {
     if (command[x] == '\\')
     {
@@ -100,7 +100,7 @@ int rfc1524_expand_command(struct Body *a, const char *filename,
         int z = 0;
 
         x++;
-        while (command[x] && command[x] != '}' && z < sizeof(param) - 1)
+        while (command[x] && (command[x] != '}') && (z < sizeof(param) - 1))
           param[z++] = command[x++];
         param[z] = '\0';
 
@@ -457,7 +457,7 @@ bool rfc1524_mailcap_lookup(struct Body *a, char *type,
   while (!found && *curr)
   {
     int x = 0;
-    while (*curr && *curr != ':' && x < sizeof(path) - 1)
+    while (*curr && (*curr != ':') && (x < sizeof(path) - 1))
     {
       path[x++] = *curr;
       curr++;
