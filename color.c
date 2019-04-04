@@ -69,8 +69,6 @@ static int ColorQuoteSize;
 #define COLOR_DEFAULT (-2)
 #define COLOR_UNSET UINT32_MAX
 
-#define GET_COLOR_VALUE(v) ((v) &0xffffff)
-
 /*
  * Flags for the high 8bits of the color value.
  *
@@ -248,7 +246,7 @@ static char *get_color_name(char *dest, size_t destlen, uint32_t val)
 
   if (val & RGB24)
   {
-    assert(snprintf(dest, destlen, "#%06X", GET_COLOR_VALUE(val)) == 7);
+    assert(snprintf(dest, destlen, "#%06X", val & 0xffffff) == 7);
     return dest;
   }
 
