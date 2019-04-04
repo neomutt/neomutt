@@ -384,6 +384,7 @@ void mx_fastclose_mailbox(struct Mailbox *m)
     m->mx_ops->mbox_close(m);
 
   mutt_mailbox_changed(m, MBN_CLOSED);
+  m->notify = NULL;
 
   mutt_hash_free(&m->subj_hash);
   mutt_hash_free(&m->id_hash);
