@@ -818,7 +818,7 @@ msgid "The current attachment will be converted"
 msgstr "현재 첨부물은 변환 가능함"
 
 #: compose.c:1616
-msgid "Empty Content-Language"
+msgid "Empty 'Content-Language'"
 msgstr ""
 
 #: compose.c:1634
@@ -4785,7 +4785,7 @@ msgstr "헤더를 포함한 메세지 편집"
 
 #: opcodes.h:57
 #, fuzzy
-msgid "edit the Content-Language of the attachment"
+msgid "edit the 'Content-Language' of the attachment"
 msgstr "파일을 고친 후 첨부하기"
 
 #: opcodes.h:58

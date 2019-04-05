@@ -821,7 +821,7 @@ msgid "The current attachment will be converted"
 msgstr "Gehigarri hau bihurtua izango da"
 
 #: compose.c:1616
-msgid "Empty Content-Language"
+msgid "Empty 'Content-Language'"
 msgstr ""
 
 #: compose.c:1634
@@ -4751,7 +4751,7 @@ msgstr "mezua buruekin editatu"
 
 #: opcodes.h:57
 #, fuzzy
-msgid "edit the Content-Language of the attachment"
+msgid "edit the 'Content-Language' of the attachment"
 msgstr "gehitu behar den fitxategia editatu"
 
 #: opcodes.h:58

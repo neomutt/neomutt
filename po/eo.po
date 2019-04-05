@@ -815,7 +815,7 @@ msgid "The current attachment will be converted"
 msgstr "Ĉi tiu parto estos konvertita"
 
 #: compose.c:1616
-msgid "Empty Content-Language"
+msgid "Empty 'Content-Language'"
 msgstr ""
 
 #: compose.c:1634
@@ -4689,7 +4689,7 @@ msgstr "redakti la mesaĝon kun ĉapo"
 
 #: opcodes.h:57
 #, fuzzy
-msgid "edit the Content-Language of the attachment"
+msgid "edit the 'Content-Language' of the attachment"
 msgstr "redakti la dosieron aldonotan"
 
 #: opcodes.h:58

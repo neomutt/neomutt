@@ -784,8 +784,8 @@ msgid "The current attachment will be converted"
 msgstr "Esamas priedas bus konvertuotas"
 
 #: compose.c:1616
-msgid "Empty Content-Language"
-msgstr "Tuščia Content-Language antraštė"
+msgid "Empty 'Content-Language'"
+msgstr "Tuščia 'Content-Language' antraštė"
 
 #: compose.c:1634
 msgid "Invalid encoding"
@@ -4659,8 +4659,8 @@ msgid "edit the message with headers"
 msgstr "taisyti laišką su antraštėmis"
 
 #: opcodes.h:57
-msgid "edit the Content-Language of the attachment"
-msgstr "taisyti priedo Content-Language antraštę"
+msgid "edit the 'Content-Language' of the attachment"
+msgstr "taisyti priedo 'Content-Language' antraštę"
 
 #: opcodes.h:58
 msgid "edit the message"

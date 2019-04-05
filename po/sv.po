@@ -821,7 +821,7 @@ msgid "The current attachment will be converted"
 msgstr "Den aktiva bilagan kommer att bli konverterad"
 
 #: compose.c:1616
-msgid "Empty Content-Language"
+msgid "Empty 'Content-Language'"
 msgstr ""
 
 #: compose.c:1634
@@ -4754,7 +4754,7 @@ msgstr "redigera meddelandet med huvuden"
 
 #: opcodes.h:57
 #, fuzzy
-msgid "edit the Content-Language of the attachment"
+msgid "edit the 'Content-Language' of the attachment"
 msgstr "redigera filen som ska bifogas"
 
 #: opcodes.h:58

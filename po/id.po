@@ -818,7 +818,7 @@ msgid "The current attachment will be converted"
 msgstr "Lampiran yg dipilih akan dikonversi"
 
 #: compose.c:1616
-msgid "Empty Content-Language"
+msgid "Empty 'Content-Language'"
 msgstr ""
 
 #: compose.c:1634
@@ -4733,7 +4733,7 @@ msgstr "edit surat berikut dengan headers"
 
 #: opcodes.h:57
 #, fuzzy
-msgid "edit the Content-Language of the attachment"
+msgid "edit the 'Content-Language' of the attachment"
 msgstr "edit file yang akan dilampirkan"
 
 #: opcodes.h:58

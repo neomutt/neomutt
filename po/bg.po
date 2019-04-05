@@ -826,7 +826,7 @@ msgid "The current attachment will be converted"
 msgstr "Това приложение ще бъде прекодирано"
 
 #: compose.c:1616
-msgid "Empty Content-Language"
+msgid "Empty 'Content-Language'"
 msgstr ""
 
 #: compose.c:1634
@@ -4794,7 +4794,7 @@ msgstr "редактира писмо и заглавните му полета"
 
 #: opcodes.h:57
 #, fuzzy
-msgid "edit the Content-Language of the attachment"
+msgid "edit the 'Content-Language' of the attachment"
 msgstr "избор на файл, който да бъде приложен"
 
 #: opcodes.h:58

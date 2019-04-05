@@ -779,7 +779,7 @@ msgid "The current attachment will be converted"
 msgstr "O anexo atual será convertido"
 
 #: compose.c:1616
-msgid "Empty Content-Language"
+msgid "Empty 'Content-Language'"
 msgstr "'Content-Language' vazio"
 
 #: compose.c:1634
@@ -4642,7 +4642,7 @@ msgid "edit the message with headers"
 msgstr "edita a mensagem e seus cabeçalhos"
 
 #: opcodes.h:57
-msgid "edit the Content-Language of the attachment"
+msgid "edit the 'Content-Language' of the attachment"
 msgstr "edita valor de 'Content-Language:' do anexo"
 
 #: opcodes.h:58

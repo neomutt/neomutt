@@ -783,8 +783,8 @@ msgid "The current attachment will be converted"
 msgstr "Der aktuelle Anhang wird konvertiert werden"
 
 #: compose.c:1616
-msgid "Empty Content-Language"
-msgstr "Leeres Content-Language-Feld"
+msgid "Empty 'Content-Language'"
+msgstr "Leeres 'Content-Language'-Feld"
 
 #: compose.c:1634
 msgid "Invalid encoding"
@@ -4647,8 +4647,8 @@ msgid "edit the message with headers"
 msgstr "Bearbeite Nachricht (einschließlich Kopf)"
 
 #: opcodes.h:57
-msgid "edit the Content-Language of the attachment"
-msgstr "Bearbeite Content-Language-Feld des Anhangs"
+msgid "edit the 'Content-Language' of the attachment"
+msgstr "Bearbeite 'Content-Language'-Feld des Anhangs"
 
 #: opcodes.h:58
 msgid "edit the message"

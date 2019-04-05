@@ -827,7 +827,7 @@ msgid "The current attachment will be converted"
 msgstr "Η τρέχουσα προσάρτηση θα μετατραπεί"
 
 #: compose.c:1616
-msgid "Empty Content-Language"
+msgid "Empty 'Content-Language'"
 msgstr ""
 
 #: compose.c:1634
@@ -4803,7 +4803,7 @@ msgstr "επεξεργασία του μηνύματος με επικεφαλί
 
 #: opcodes.h:57
 #, fuzzy
-msgid "edit the Content-Language of the attachment"
+msgid "edit the 'Content-Language' of the attachment"
 msgstr "επεξεργασία του φακέλου που θα προσαρτηθεί"
 
 #: opcodes.h:58

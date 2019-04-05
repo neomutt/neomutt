@@ -54,7 +54,7 @@
   _fmt(OP_COMPOSE_EDIT_FOLLOWUP_TO,       N_("edit the Followup-To field")) \
   _fmt(OP_COMPOSE_EDIT_FROM,              N_("edit the from field")) \
   _fmt(OP_COMPOSE_EDIT_HEADERS,           N_("edit the message with headers")) \
-  _fmt(OP_COMPOSE_EDIT_LANGUAGE,          N_("edit the Content-Language of the attachment")) \
+  _fmt(OP_COMPOSE_EDIT_LANGUAGE,          N_("edit the 'Content-Language' of the attachment")) \
   _fmt(OP_COMPOSE_EDIT_MESSAGE,           N_("edit the message")) \
   _fmt(OP_COMPOSE_EDIT_MIME,              N_("edit attachment using mailcap entry")) \
   _fmt(OP_COMPOSE_EDIT_NEWSGROUPS,        N_("edit the newsgroups list")) \

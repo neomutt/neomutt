@@ -816,7 +816,7 @@ msgid "The current attachment will be converted"
 msgstr "Den aktuelle del vil blive konverteret"
 
 #: compose.c:1616
-msgid "Empty Content-Language"
+msgid "Empty 'Content-Language'"
 msgstr ""
 
 #: compose.c:1634
@@ -4677,7 +4677,7 @@ msgstr "redigér brevet med brevhoved"
 
 #: opcodes.h:57
 #, fuzzy
-msgid "edit the Content-Language of the attachment"
+msgid "edit the 'Content-Language' of the attachment"
 msgstr "redigér i den fil der skal vedlægges"
 
 #: opcodes.h:58

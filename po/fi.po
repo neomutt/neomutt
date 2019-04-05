@@ -785,8 +785,8 @@ msgid "The current attachment will be converted"
 msgstr "Tämä liite konvertoidaan"
 
 #: compose.c:1616
-msgid "Empty Content-Language"
-msgstr "Tyhjä Content-Language"
+msgid "Empty 'Content-Language'"
+msgstr "Tyhjä 'Content-Language'"
 
 #: compose.c:1634
 msgid "Invalid encoding"
@@ -4646,8 +4646,8 @@ msgid "edit the message with headers"
 msgstr "muokkaa viestiä otsakkeineen"
 
 #: opcodes.h:57
-msgid "edit the Content-Language of the attachment"
-msgstr "muokkaa liitteen Content-Language-kenttää"
+msgid "edit the 'Content-Language' of the attachment"
+msgstr "muokkaa liitteen 'Content-Language'-kenttää"
 
 #: opcodes.h:58
 msgid "edit the message"

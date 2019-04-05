@@ -821,7 +821,7 @@ msgid "The current attachment will be converted"
 msgstr "這個附件會被轉換"
 
 #: compose.c:1616
-msgid "Empty Content-Language"
+msgid "Empty 'Content-Language'"
 msgstr ""
 
 #: compose.c:1634
@@ -4827,7 +4827,7 @@ msgstr "編輯信件與標頭"
 
 #: opcodes.h:57
 #, fuzzy
-msgid "edit the Content-Language of the attachment"
+msgid "edit the 'Content-Language' of the attachment"
 msgstr "編輯附件的檔案名稱"
 
 #: opcodes.h:58

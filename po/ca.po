@@ -880,7 +880,7 @@ msgid "The current attachment will be converted"
 msgstr "Es convertirà l’adjunció actual"
 
 #: compose.c:1616
-msgid "Empty Content-Language"
+msgid "Empty 'Content-Language'"
 msgstr ""
 
 #: compose.c:1634
@@ -4963,7 +4963,7 @@ msgstr "Edita el missatge amb capçaleres."
 
 #: opcodes.h:57
 #, fuzzy
-msgid "edit the Content-Language of the attachment"
+msgid "edit the 'Content-Language' of the attachment"
 msgstr "Edita un fitxer a adjuntar."
 
 #: opcodes.h:58

@@ -840,7 +840,7 @@ msgid "The current attachment will be converted"
 msgstr "Tiontófar an t-iatán reatha"
 
 #: compose.c:1616
-msgid "Empty Content-Language"
+msgid "Empty 'Content-Language'"
 msgstr ""
 
 #: compose.c:1634
@@ -4811,7 +4811,7 @@ msgstr "cuir an teachtaireacht in eagar le ceanntásca"
 
 #: opcodes.h:57
 #, fuzzy
-msgid "edit the Content-Language of the attachment"
+msgid "edit the 'Content-Language' of the attachment"
 msgstr "cuir an comhad le ceangal in eagar"
 
 #: opcodes.h:58

@@ -803,8 +803,8 @@ msgid "The current attachment will be converted"
 msgstr "Táto príloha bude prevedená"
 
 #: compose.c:1616
-msgid "Empty Content-Language"
-msgstr "Prázdny Content-Language"
+msgid "Empty 'Content-Language'"
+msgstr "Prázdny 'Content-Language'"
 
 #: compose.c:1634
 msgid "Invalid encoding"
@@ -4763,7 +4763,7 @@ msgstr "upraviť správu s hlavičkami"
 
 #: opcodes.h:57
 #, fuzzy
-msgid "edit the Content-Language of the attachment"
+msgid "edit the 'Content-Language' of the attachment"
 msgstr "upraviť prikladaný súbor"
 
 #: opcodes.h:58

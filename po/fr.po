@@ -855,7 +855,7 @@ msgid "The current attachment will be converted"
 msgstr "L'attachement courant sera converti"
 
 #: compose.c:1616
-msgid "Empty Content-Language"
+msgid "Empty 'Content-Language'"
 msgstr ""
 
 #: compose.c:1634
@@ -4865,7 +4865,7 @@ msgstr "éditer le message avec ses en-têtes"
 
 #: opcodes.h:57
 #, fuzzy
-msgid "edit the Content-Language of the attachment"
+msgid "edit the 'Content-Language' of the attachment"
 msgstr "éditer le fichier à attacher"
 
 #: opcodes.h:58

@@ -777,8 +777,8 @@ msgid "The current attachment will be converted"
 msgstr "当前附件将被转换"
 
 #: compose.c:1616
-msgid "Empty Content-Language"
-msgstr "空的 Content-Language"
+msgid "Empty 'Content-Language'"
+msgstr "空的 'Content-Language'"
 
 #: compose.c:1634
 msgid "Invalid encoding"
@@ -4619,8 +4619,8 @@ msgid "edit the message with headers"
 msgstr "编辑有信件头的信件"
 
 #: opcodes.h:57
-msgid "edit the Content-Language of the attachment"
-msgstr "编辑附件的 Content-Language"
+msgid "edit the 'Content-Language' of the attachment"
+msgstr "编辑附件的 'Content-Language'"
 
 #: opcodes.h:58
 msgid "edit the message"

@@ -814,7 +814,7 @@ msgid "The current attachment will be converted"
 msgstr "Deze bijlage zal geconverteerd worden"
 
 #: compose.c:1616
-msgid "Empty Content-Language"
+msgid "Empty 'Content-Language'"
 msgstr ""
 
 #: compose.c:1634
@@ -4703,7 +4703,7 @@ msgstr "bewerk het bericht (inclusief header)"
 
 #: opcodes.h:57
 #, fuzzy
-msgid "edit the Content-Language of the attachment"
+msgid "edit the 'Content-Language' of the attachment"
 msgstr "Bewerk de taal van de bijlage"
 
 #: opcodes.h:58

@@ -784,7 +784,7 @@ msgid "The current attachment will be converted"
 msgstr "Bieżący załacznik zostanie przekonwertowany"
 
 #: compose.c:1616
-msgid "Empty Content-Language"
+msgid "Empty 'Content-Language'"
 msgstr ""
 
 #: compose.c:1634
@@ -4601,8 +4601,8 @@ msgid "edit the message with headers"
 msgstr "edytuj treść listu i nagłówków"
 
 #: opcodes.h:57
-msgid "edit the Content-Language of the attachment"
-msgstr "edytuj Content-Language pliku załącznika"
+msgid "edit the 'Content-Language' of the attachment"
+msgstr "edytuj 'Content-Language' pliku załącznika"
 
 #: opcodes.h:58
 msgid "edit the message"

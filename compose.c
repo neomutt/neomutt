@@ -1613,7 +1613,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
           mutt_clear_error();
         }
         else
-          mutt_warning(_("Empty Content-Language"));
+          mutt_warning(_("Empty 'Content-Language'"));
         mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
 
