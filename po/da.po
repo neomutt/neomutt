@@ -236,14 +236,14 @@ msgstr "Filmaske: "
 #. L10N: The highlighted letters must match the "Sort" options
 #: browser.c:1755
 #, fuzzy
-msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
-msgstr "Omvendt sortering efter (d)ato, (a)lfabetisk, (s)tr. eller (i)ngen? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
+msgstr "Omvendt sortering efter (d)ato, (a)lfabetisk, (s)tr. eller (i)ngen?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
 #: browser.c:1758
 #, fuzzy
-msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
-msgstr "Sortering efter (d)ato, (a)lfabetisk, (s)tr. eller (i)ngen? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
+msgstr "Sortering efter (d)ato, (a)lfabetisk, (s)tr. eller (i)ngen?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
 #: browser.c:1761
@@ -891,16 +891,16 @@ msgid "No PGP backend configured"
 msgstr "Ingen PGP-ressource er konfigureret"
 
 #: compose.c:1945
-msgid "S/MIME already selected. Clear and continue? "
-msgstr "S/MIME allerede valgt. Ryd & fortsæt? "
+msgid "S/MIME already selected. Clear and continue?"
+msgstr "S/MIME allerede valgt. Ryd & fortsæt?"
 
 #: compose.c:1972
 msgid "No S/MIME backend configured"
 msgstr "Ingen S/MIME-ressource er konfigureret"
 
 #: compose.c:1980
-msgid "PGP already selected. Clear and continue? "
-msgstr "PGP allerede valgt. Ryd & fortsæt? "
+msgid "PGP already selected. Clear and continue?"
+msgstr "PGP allerede valgt. Ryd & fortsæt?"
 
 #: compress.c:382 compress.c:533
 #, c-format
@@ -3975,8 +3975,8 @@ msgid "GPGME: CMS protocol not available"
 msgstr "GPGME: CMS-protokol utilgængelig"
 
 #: ncrypt/crypt_gpgme.c:5362
-msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME (u)nderskriv, underskriv (s)om, (p)gp, r(y)d eller (o)ppenc-tilstand fra? "
+msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off?"
+msgstr "S/MIME (u)nderskriv, underskriv (s)om, (p)gp, r(y)d eller (o)ppenc-tilstand fra?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5364
@@ -3984,8 +3984,8 @@ msgid "sapco"
 msgstr "uspyo"
 
 #: ncrypt/crypt_gpgme.c:5371
-msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP (u)nderskriv, underskriv (s)om, s/(m)ime, r(y)d eller (o)ppenc-tilstand fra? "
+msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP (u)nderskriv, underskriv (s)om, s/(m)ime, r(y)d eller (o)ppenc-tilstand fra?"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5373
@@ -3994,8 +3994,8 @@ msgstr "usmyo"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5383
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, (p)gp, r(y)d eller (o)ppenc-tilstand fra? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode?"
+msgstr "S/MIME (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, (p)gp, r(y)d eller (o)ppenc-tilstand fra?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5386
@@ -4005,8 +4005,8 @@ msgstr "kusbpyo"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5392
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
-msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, s/(m)ime, r(y)d eller (o)ppenc-tilstand? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode?"
+msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, s/(m)ime, r(y)d eller (o)ppenc-tilstand?"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5395
@@ -4015,8 +4015,8 @@ msgid "esabmco"
 msgstr "kusbmyo"
 
 #: ncrypt/crypt_gpgme.c:5406
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr "S/MIME (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, (p)gp, eller r(y)d? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
+msgstr "S/MIME (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, (p)gp, eller r(y)d?"
 
 #. L10N: S/MIME options
 #: ncrypt/crypt_gpgme.c:5408
@@ -4025,8 +4025,8 @@ msgid "esabpc"
 msgstr "kusbpy"
 
 #: ncrypt/crypt_gpgme.c:5415
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, s/(m)ime, eller r(y)d? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
+msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, s/(m)ime, eller r(y)d?"
 
 #. L10N: PGP options
 #: ncrypt/crypt_gpgme.c:5417
@@ -4106,8 +4106,8 @@ msgstr "(i)ntegreret"
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #: ncrypt/pgp.c:1877
 #, c-format
-msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP (u)nderskriv, underskriv (s)om, %s-format, r(y)d eller (o)ppenc-tilstand fra? "
+msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP (u)nderskriv, underskriv (s)om, %s-format, r(y)d eller (o)ppenc-tilstand fra?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4117,8 +4117,8 @@ msgstr "usiyo"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1889
-msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP (u)nderskriv, underskriv (s)om, r(y)d eller (o)ppenc-tilstand fra? "
+msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP (u)nderskriv, underskriv (s)om, r(y)d eller (o)ppenc-tilstand fra?"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1891
@@ -4128,8 +4128,8 @@ msgstr "usyo"
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: ncrypt/pgp.c:1905
 #, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
-msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, %s-format, r(y)d eller (o)ppenc-tilstand? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode?"
+msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, %s-format, r(y)d eller (o)ppenc-tilstand?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4140,8 +4140,8 @@ msgstr "kusbiyo"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1917
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, r(y)d eller (o)ppenc-tilstand? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
+msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, r(y)d eller (o)ppenc-tilstand?"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1920
@@ -4152,7 +4152,7 @@ msgstr "kusbyo"
 #. L10N: PGP options (inline)
 #: ncrypt/pgp.c:1931
 #, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear?"
 msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, %s-format, r(y)d "
 
 #. L10N: PGP options (inline)
@@ -4164,8 +4164,8 @@ msgstr "kusbiy"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1943
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
-msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge eller r(y)d? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear?"
+msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge eller r(y)d?"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1945
@@ -4353,8 +4353,8 @@ msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2327
-msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME (u).skriv, kryptér (m)ed, u.skriv (s)om, r(y)d eller (o)ppenc-tilstand fra? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off?"
+msgstr "S/MIME (u).skriv, kryptér (m)ed, u.skriv (s)om, r(y)d eller (o)ppenc-tilstand fra?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2330
@@ -4363,8 +4363,8 @@ msgstr "umsyo"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2338
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME (k)ryptér, (u).skriv, kryptér (m)ed, u.skriv (s)om, (b)egge, r(y)d eller (o)ppenc-tilstand? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
+msgstr "S/MIME (k)ryptér, (u).skriv, kryptér (m)ed, u.skriv (s)om, (b)egge, r(y)d eller (o)ppenc-tilstand?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2341
@@ -4374,8 +4374,8 @@ msgstr "kumsbyo"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2348
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr "S/MIME (k)ryptér, (u).skriv, kryptér (m)ed, u.skriv (s)om, (b)egge, r(y)d? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?"
+msgstr "S/MIME (k)ryptér, (u).skriv, kryptér (m)ed, u.skriv (s)om, (b)egge, r(y)d?"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2351
@@ -4384,8 +4384,8 @@ msgid "eswabc"
 msgstr "kumsby"
 
 #: ncrypt/smime.c:2415
-msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear? "
-msgstr "Vælg algoritme-familie: (1) DES, (2) RC2, (3) AES, eller r(y)d? "
+msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"
+msgstr "Vælg algoritme-familie: (1) DES, (2) RC2, (3) AES, eller r(y)d?"
 
 #. L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
 #: ncrypt/smime.c:2418
@@ -6270,7 +6270,7 @@ msgstr "Gem bilag i Fcc?"
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
 #: send.c:1567
-msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip? "
+msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr ""
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt

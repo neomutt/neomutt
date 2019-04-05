@@ -853,6 +853,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
       addstr(prompt);
       NORMAL_COLOR;
 
+      addch(' ');
       mutt_window_clrtoeol(MuttMessageWindow);
     }
 

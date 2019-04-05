@@ -235,13 +235,13 @@ msgstr "文件掩码："
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: browser.c:1755
-msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
-msgstr "按日期(d)，字母表(a)，大小(z),描述(e),计数(c),新件(w)反向排序或不反向排序(n)? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
+msgstr "按日期(d)，字母表(a)，大小(z),描述(e),计数(c),新件(w)反向排序或不反向排序(n)?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
 #: browser.c:1758
-msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
-msgstr "按日期(d)，字母表(a)，大小(z),描述(e),计数(c),新件(w)排序或不排序(n)? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
+msgstr "按日期(d)，字母表(a)，大小(z),描述(e),计数(c),新件(w)排序或不排序(n)?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
 #: browser.c:1761
@@ -851,7 +851,7 @@ msgid "No PGP backend configured"
 msgstr "未配置 PGP 后端"
 
 #: compose.c:1945
-msgid "S/MIME already selected. Clear and continue? "
+msgid "S/MIME already selected. Clear and continue?"
 msgstr "已经选择了 S/MIME 。清除并继续？"
 
 #: compose.c:1972
@@ -859,7 +859,7 @@ msgid "No S/MIME backend configured"
 msgstr "未配置 S/MIME 后端"
 
 #: compose.c:1980
-msgid "PGP already selected. Clear and continue? "
+msgid "PGP already selected. Clear and continue?"
 msgstr "已经选择了 PGP。清除并继续？"
 
 #: compress.c:382 compress.c:533
@@ -3945,7 +3945,7 @@ msgid "GPGME: CMS protocol not available"
 msgstr "GPGME：CMS 协议不可用"
 
 #: ncrypt/crypt_gpgme.c:5362
-msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
+msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off?"
 msgstr "S/MIME 签署(s)，选择身份签署(a)，(p)gp，清除(c)，或关闭机遇加密模式(o)？"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
@@ -3954,7 +3954,7 @@ msgid "sapco"
 msgstr "sapco"
 
 #: ncrypt/crypt_gpgme.c:5371
-msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
+msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off?"
 msgstr "PGP 签署(s)，选择身份签署(a)，s/(m)ime，清除(c)，或关闭机遇加密模式(o)？"
 
 #. L10N: PGP options (opportunistic encryption is on)
@@ -3964,7 +3964,7 @@ msgstr "samco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5383
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode?"
 msgstr "S/MIME 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，(p)gp，清除(c)，或使用机遇加密模式(o)？"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
@@ -3974,7 +3974,7 @@ msgstr "esabpco"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5392
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode?"
 msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，s/(m)ime，清除(c)，或使用机遇加密模式(o)？"
 
 #. L10N: PGP options (opportunistic encryption is off)
@@ -3983,7 +3983,7 @@ msgid "esabmco"
 msgstr "esabmco"
 
 #: ncrypt/crypt_gpgme.c:5406
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
 msgstr "S/MIME 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，(p)gp或清除(c)？"
 
 #. L10N: S/MIME options
@@ -3992,7 +3992,7 @@ msgid "esabpc"
 msgstr "esabpc"
 
 #: ncrypt/crypt_gpgme.c:5415
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
 msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，s/(m)ime 或清除(c)？"
 
 #. L10N: PGP options
@@ -4071,7 +4071,7 @@ msgstr "嵌入(i)"
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #: ncrypt/pgp.c:1877
 #, c-format
-msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
+msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off?"
 msgstr "PGP 签署(s)，选择身份签署(a)，%s 格式，清除(c)，或关闭机遇加密模式(o)？"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
@@ -4082,7 +4082,7 @@ msgstr "saico"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1889
-msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off?"
 msgstr "PGP 签署(s)，选择身份签署(a)，清除(c)，或关闭机遇加密模式(o)？"
 
 #. L10N: PGP options (opportunistic encryption is on)
@@ -4093,7 +4093,7 @@ msgstr "saco"
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: ncrypt/pgp.c:1905
 #, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode?"
 msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，同时(b)，%s 格式，清除(c)，或使用机遇加密模式(o)？"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
@@ -4104,7 +4104,7 @@ msgstr "esabico"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1917
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
 msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，清除(c)，或使用机遇加密模式(o)？"
 
 #. L10N: PGP options (opportunistic encryption is off)
@@ -4115,7 +4115,7 @@ msgstr "esabco"
 #. L10N: PGP options (inline)
 #: ncrypt/pgp.c:1931
 #, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear?"
 msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，同时(b)，%s 格式，或清除(c)？"
 
 #. L10N: PGP options (inline)
@@ -4126,7 +4126,7 @@ msgstr "esabic"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1943
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear?"
 msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，或清除(c)？"
 
 #. L10N: PGP options
@@ -4313,7 +4313,7 @@ msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2327
-msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off?"
 msgstr "S/MIME 签署(s)，选择身份加密(w)，选择身份签署(a)，清除(c)，或关闭机遇加密模式(o)？"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
@@ -4323,7 +4323,7 @@ msgstr "swaco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2338
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
 msgstr "S/MIME 加密(e)，签署(s)，选择身份加密(w)，选择身份签署(a)，两者皆要(b)，清除(c)，或使用机遇加密模式(o)？"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
@@ -4333,7 +4333,7 @@ msgstr "eswabco"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2348
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?"
 msgstr "S/MIME 加密(e)，签署(s)，选择身份加密(w)，选择身份签署(a)，两者皆要(b)，或清除(c)？"
 
 #. L10N: S/MIME options
@@ -4342,7 +4342,7 @@ msgid "eswabc"
 msgstr "eswabc"
 
 #: ncrypt/smime.c:2415
-msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear? "
+msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"
 msgstr "选择算法类别：(1) DES, (2) RC2, (3) AES, 或(c)清除？"
 
 #. L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
@@ -6168,7 +6168,7 @@ msgstr "将附件保存到 Fcc 吗？"
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
 #: send.c:1567
-msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip? "
+msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr "Fcc 失败。重试(r)，更改信箱(m)，或跳过(s)？"
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt

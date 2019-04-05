@@ -279,12 +279,12 @@ msgstr "Màscara de fitxers: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: browser.c:1755
-msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr ""
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
 #: browser.c:1758
-msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr ""
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
@@ -957,16 +957,16 @@ msgid "No PGP backend configured"
 msgstr "No heu configurat cap implementació de PGP."
 
 #: compose.c:1945
-msgid "S/MIME already selected. Clear and continue? "
-msgstr "El missatge ja empra S/MIME.  Voleu posar-lo en clar i continuar? "
+msgid "S/MIME already selected. Clear and continue?"
+msgstr "El missatge ja empra S/MIME.  Voleu posar-lo en clar i continuar?"
 
 #: compose.c:1972
 msgid "No S/MIME backend configured"
 msgstr "No heu configurat cap implementació de S/MIME."
 
 #: compose.c:1980
-msgid "PGP already selected. Clear and continue? "
-msgstr "El missatge ja empra PGP.  Voleu posar-lo en clar i continuar? "
+msgid "PGP already selected. Clear and continue?"
+msgstr "El missatge ja empra PGP.  Voleu posar-lo en clar i continuar?"
 
 #: compress.c:382 compress.c:533
 #, c-format
@@ -3214,7 +3214,7 @@ msgstr "Fitxer a sota del directori: "
 
 #: muttlib.c:738
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
-msgstr "El fitxer ja existeix; (s)obreescriu, (a)fegeix, (c)ancel·la? "
+msgstr "El fitxer ja existeix; (s)obreescriu, (a)fegeix, (c)ancel·la?"
 
 # ivb (2001/11/27)
 # ivb  (s)obreescriu, (a)fegeix, (c)ancel·la
@@ -4215,8 +4215,8 @@ msgid "GPGME: CMS protocol not available"
 msgstr "GPGME: El protocol CMS no es troba disponible."
 
 #: ncrypt/crypt_gpgme.c:5362
-msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME: (s)igna, si(g)na com a, (p)gp, (c)lar, no (o)portunista? "
+msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off?"
+msgstr "S/MIME: (s)igna, si(g)na com a, (p)gp, (c)lar, no (o)portunista?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5364
@@ -4224,8 +4224,8 @@ msgid "sapco"
 msgstr "sgpco"
 
 #: ncrypt/crypt_gpgme.c:5371
-msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP: (s)igna, si(g)na com a, s/(m)ime, (c)lar, no (o)portunista? "
+msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP: (s)igna, si(g)na com a, s/(m)ime, (c)lar, no (o)portunista?"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5373
@@ -4234,8 +4234,8 @@ msgstr "sgmco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5383
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (p)gp, (c)lar, (o)portunista? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode?"
+msgstr "S/MIME: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (p)gp, (c)lar, (o)portunista?"
 
 # (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (p)gp, (c)lar, (o)portunista
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
@@ -4247,8 +4247,8 @@ msgstr "xsgapco"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5392
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
-msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, s/(m)ime, (c)lar, (o)portunista? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode?"
+msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, s/(m)ime, (c)lar, (o)portunista?"
 
 # (x)ifra, (s)igna, si(g)na com a, (a)mbdós, s/(m)ime, (c)lar, (o)portunista
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
@@ -4259,8 +4259,8 @@ msgid "esabmco"
 msgstr "xsgamco"
 
 #: ncrypt/crypt_gpgme.c:5406
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr "S/MIME: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (p)gp, (c)lar? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
+msgstr "S/MIME: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (p)gp, (c)lar?"
 
 # (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (p)gp, (c)lar
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
@@ -4271,8 +4271,8 @@ msgid "esabpc"
 msgstr "xsgapc"
 
 #: ncrypt/crypt_gpgme.c:5415
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, s/(m)ime, (c)lar? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
+msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, s/(m)ime, (c)lar?"
 
 # (x)ifra, (s)igna, si(g)na com a, (a)mbdós, s/(m)ime, (c)lar
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
@@ -4358,8 +4358,8 @@ msgstr "en lín(i)a"
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #: ncrypt/pgp.c:1877
 #, c-format
-msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP: (s)igna, si(g)na com a, %s, (c)lar, no (o)portunista? "
+msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP: (s)igna, si(g)na com a, %s, (c)lar, no (o)portunista?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4369,8 +4369,8 @@ msgstr "sgico"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1889
-msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP: (s)igna, si(g)na com a, (c)lar, no (o)portunista? "
+msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP: (s)igna, si(g)na com a, (c)lar, no (o)portunista?"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1891
@@ -4382,8 +4382,8 @@ msgstr "sgco"
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: ncrypt/pgp.c:1905
 #, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
-msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, %s, (c)lar, (o)portunista? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode?"
+msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, %s, (c)lar, (o)portunista?"
 
 # (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (c)lar, (o)portunista
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
@@ -4396,8 +4396,8 @@ msgstr "xsgaico"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1917
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (c)lar, (o)portunista? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
+msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (c)lar, (o)portunista?"
 
 # (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (c)lar, (o)portunista
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
@@ -4412,8 +4412,8 @@ msgstr "xsgaco"
 #. L10N: PGP options (inline)
 #: ncrypt/pgp.c:1931
 #, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
-msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, %s, (c)lar? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear?"
+msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, %s, (c)lar?"
 
 # (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (c)lar
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
@@ -4426,8 +4426,8 @@ msgstr "xsgaic"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1943
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
-msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (c)lar? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear?"
+msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (c)lar?"
 
 # (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (c)lar
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
@@ -4627,8 +4627,8 @@ msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2327
-msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME: (s)igna, xi(f)ra amb, si(g)na com a, (c)lar, no (o)portunista? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off?"
+msgstr "S/MIME: (s)igna, xi(f)ra amb, si(g)na com a, (c)lar, no (o)portunista?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2330
@@ -4637,8 +4637,8 @@ msgstr "sfgco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2338
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME: (x)ifra, (s)igna, xi(f)ra amb, si(g)na com a, (a)mbdós, (c)lar, (o)portunista? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
+msgstr "S/MIME: (x)ifra, (s)igna, xi(f)ra amb, si(g)na com a, (a)mbdós, (c)lar, (o)portunista?"
 
 # (x)ifra, (s)igna, xi(f)ra amb, si(g)na com a, (a)mbdós, (c)lar, (o)portunista
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
@@ -4650,8 +4650,8 @@ msgstr "xsfgaco"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2348
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr "S/MIME: (x)ifra, (s)igna, xi(f)ra amb, si(g)na com a, (a)mbdós, (c)lar? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?"
+msgstr "S/MIME: (x)ifra, (s)igna, xi(f)ra amb, si(g)na com a, (a)mbdós, (c)lar?"
 
 # ivb (2003/03/26)
 # ivb  (x)ifra, (s)igna, xi(f)ra amb, si(g)na com a, (a)mbdós, (c)lar
@@ -4663,8 +4663,8 @@ msgid "eswabc"
 msgstr "xsfgac"
 
 #: ncrypt/smime.c:2415
-msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear? "
-msgstr "Trieu la família d’algorismes: (1) DES, (2) RC2, (3) AES, (c)lar? "
+msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"
+msgstr "Trieu la família d’algorismes: (1) DES, (2) RC2, (3) AES, (c)lar?"
 
 #. L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
 #: ncrypt/smime.c:2418
@@ -6613,7 +6613,7 @@ msgstr "Voleu desar les adjuncions al fitxer de còpia?"
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
 #: send.c:1567
-msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip? "
+msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr ""
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt

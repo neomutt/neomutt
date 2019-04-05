@@ -238,14 +238,14 @@ msgstr "File Mask: "
 #. L10N: The highlighted letters must match the "Sort" options
 #: browser.c:1755
 #, fuzzy
-msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
-msgstr "Urut terbalik berdasarkan (t)anggal, (a)bjad, (u)kuran atau (n)ggak diurut? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
+msgstr "Urut terbalik berdasarkan (t)anggal, (a)bjad, (u)kuran atau (n)ggak diurut?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
 #: browser.c:1758
 #, fuzzy
-msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
-msgstr "Urut berdasarkan (t)anggal, (a)bjad, (u)kuran atau (n)ggak diurut? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
+msgstr "Urut berdasarkan (t)anggal, (a)bjad, (u)kuran atau (n)ggak diurut?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
 #: browser.c:1761
@@ -894,16 +894,16 @@ msgid "No PGP backend configured"
 msgstr ""
 
 #: compose.c:1945
-msgid "S/MIME already selected. Clear and continue? "
-msgstr "S/MIME sudah dipilih. Bersihkan & lanjut? "
+msgid "S/MIME already selected. Clear and continue?"
+msgstr "S/MIME sudah dipilih. Bersihkan & lanjut?"
 
 #: compose.c:1972
 msgid "No S/MIME backend configured"
 msgstr ""
 
 #: compose.c:1980
-msgid "PGP already selected. Clear and continue? "
-msgstr "PGP sudah dipilih. Bersihkan & lanjut? "
+msgid "PGP already selected. Clear and continue?"
+msgstr "PGP sudah dipilih. Bersihkan & lanjut?"
 
 #: compress.c:382 compress.c:533
 #, c-format
@@ -4020,8 +4020,8 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:5362
 #, fuzzy
-msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, (p)gp atau (b)ersih? "
+msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off?"
+msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, (p)gp atau (b)ersih?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5364
@@ -4030,8 +4030,8 @@ msgstr "etsdpb"
 
 #: ncrypt/crypt_gpgme.c:5371
 #, fuzzy
-msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, s/(m)ime atau (b)ersih? "
+msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, s/(m)ime atau (b)ersih?"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5373
@@ -4041,8 +4041,8 @@ msgstr "etsdmb"
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5383
 #, fuzzy
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, (p)gp atau (b)ersih? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode?"
+msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, (p)gp atau (b)ersih?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5386
@@ -4053,8 +4053,8 @@ msgstr "etsdpb"
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5392
 #, fuzzy
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
-msgstr "PGP (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, s/(m)ime atau (b)ersih? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode?"
+msgstr "PGP (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, s/(m)ime atau (b)ersih?"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5395
@@ -4064,8 +4064,8 @@ msgstr "etsdmb"
 
 #: ncrypt/crypt_gpgme.c:5406
 #, fuzzy
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, (p)gp atau (b)ersih? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
+msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, (p)gp atau (b)ersih?"
 
 #. L10N: S/MIME options
 #: ncrypt/crypt_gpgme.c:5408
@@ -4075,8 +4075,8 @@ msgstr "etsdpb"
 
 #: ncrypt/crypt_gpgme.c:5415
 #, fuzzy
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr "PGP (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, s/(m)ime atau (b)ersih? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
+msgstr "PGP (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, s/(m)ime atau (b)ersih?"
 
 #. L10N: PGP options
 #: ncrypt/crypt_gpgme.c:5417
@@ -4156,8 +4156,8 @@ msgstr "(i)nline"
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #: ncrypt/pgp.c:1877
 #, fuzzy, c-format
-msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih? "
+msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off?"
+msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4168,8 +4168,8 @@ msgstr "etsdb"
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1889
 #, fuzzy
-msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih? "
+msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off?"
+msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih?"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1891
@@ -4179,8 +4179,8 @@ msgstr "etsdb"
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: ncrypt/pgp.c:1905
 #, fuzzy, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode?"
+msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4192,8 +4192,8 @@ msgstr "etsdb"
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1917
 #, fuzzy
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
+msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih?"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1920
@@ -4204,8 +4204,8 @@ msgstr "etsdb"
 #. L10N: PGP options (inline)
 #: ncrypt/pgp.c:1931
 #, fuzzy, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
-msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear?"
+msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih?"
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4217,8 +4217,8 @@ msgstr "etsdb"
 #. L10N: PGP options
 #: ncrypt/pgp.c:1943
 #, fuzzy
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
-msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear?"
+msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih?"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1945
@@ -4408,8 +4408,8 @@ msgstr ""
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2327
 #, fuzzy
-msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME (e)nkrip, (t)andatangan, enkrip d(g), tandatangan (s)bg, ke(d)uanya, atau (b)ersih? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off?"
+msgstr "S/MIME (e)nkrip, (t)andatangan, enkrip d(g), tandatangan (s)bg, ke(d)uanya, atau (b)ersih?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2330
@@ -4419,8 +4419,8 @@ msgstr "etgsdb"
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2338
 #, fuzzy
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME (e)nkrip, (t)andatangan, enkrip d(g), tandatangan (s)bg, ke(d)uanya, atau (b)ersih? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
+msgstr "S/MIME (e)nkrip, (t)andatangan, enkrip d(g), tandatangan (s)bg, ke(d)uanya, atau (b)ersih?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2341
@@ -4430,8 +4430,8 @@ msgstr "etgsdb"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2348
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr "S/MIME (e)nkrip, (t)andatangan, enkrip d(g), tandatangan (s)bg, ke(d)uanya, atau (b)ersih? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?"
+msgstr "S/MIME (e)nkrip, (t)andatangan, enkrip d(g), tandatangan (s)bg, ke(d)uanya, atau (b)ersih?"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2351
@@ -4440,8 +4440,8 @@ msgid "eswabc"
 msgstr "etgsdb"
 
 #: ncrypt/smime.c:2415
-msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear? "
-msgstr "Pilih algoritma: (1) DES, (2) RC2, (3) AES, atau (b)atal? "
+msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"
+msgstr "Pilih algoritma: (1) DES, (2) RC2, (3) AES, atau (b)atal?"
 
 #. L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
 #: ncrypt/smime.c:2418
@@ -6338,7 +6338,7 @@ msgstr "tampilkan lampiran sebagai teks"
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
 #: send.c:1567
-msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip? "
+msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr ""
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt

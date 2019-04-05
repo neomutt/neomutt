@@ -241,13 +241,13 @@ msgstr "Файлова маска: "
 #. L10N: The highlighted letters must match the "Sort" options
 #: browser.c:1755
 #, fuzzy
-msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Обратно подреждане по дата(d), азбучен ред(a), размер(z) или без подреждане(n)?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
 #: browser.c:1758
 #, fuzzy
-msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Подреждане по дата(d), азбучен ред(a), размер(z) или без подреждане(n)?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
@@ -903,8 +903,8 @@ msgstr ""
 
 #: compose.c:1945
 #, fuzzy
-msgid "S/MIME already selected. Clear and continue? "
-msgstr "S/MIME-шифроване вече е избрано. Clear and continue? "
+msgid "S/MIME already selected. Clear and continue?"
+msgstr "S/MIME-шифроване вече е избрано. Clear and continue?"
 
 #: compose.c:1972
 msgid "No S/MIME backend configured"
@@ -912,8 +912,8 @@ msgstr ""
 
 #: compose.c:1980
 #, fuzzy
-msgid "PGP already selected. Clear and continue? "
-msgstr "PGP-шифроване вече е избрано. Clear and continue? "
+msgid "PGP already selected. Clear and continue?"
+msgstr "PGP-шифроване вече е избрано. Clear and continue?"
 
 #: compress.c:382 compress.c:533
 #, c-format
@@ -4088,7 +4088,7 @@ msgid "GPGME: CMS protocol not available"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:5362
-msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
+msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off?"
 msgstr "PGP шифроване(e), подпис(s), подпис като(a), и двете(b) или без тях(f)?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
@@ -4097,7 +4097,7 @@ msgid "sapco"
 msgstr "esabf"
 
 #: ncrypt/crypt_gpgme.c:5371
-msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
+msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off?"
 msgstr "PGP шифроване(e), подпис(s), подпис като(a), и двете(b) или без тях(f)?"
 
 #. L10N: PGP options (opportunistic encryption is on)
@@ -4108,7 +4108,7 @@ msgstr "esabf"
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5383
 #, fuzzy
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode?"
 msgstr "PGP шифроване(e), подпис(s), подпис като(a), и двете(b) или без тях(f)?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
@@ -4119,7 +4119,7 @@ msgstr "esabf"
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5392
 #, fuzzy
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode?"
 msgstr "PGP шифроване(e), подпис(s), подпис като(a), и двете(b) или без тях(f)?"
 
 #. L10N: PGP options (opportunistic encryption is off)
@@ -4129,7 +4129,7 @@ msgstr "esabf"
 
 #: ncrypt/crypt_gpgme.c:5406
 #, fuzzy
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
 msgstr "PGP шифроване(e), подпис(s), подпис като(a), и двете(b) или без тях(f)?"
 
 #. L10N: S/MIME options
@@ -4139,7 +4139,7 @@ msgstr "esabf"
 
 #: ncrypt/crypt_gpgme.c:5415
 #, fuzzy
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
 msgstr "PGP шифроване(e), подпис(s), подпис като(a), и двете(b) или без тях(f)?"
 
 #. L10N: PGP options
@@ -4220,7 +4220,7 @@ msgstr ""
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #: ncrypt/pgp.c:1877
 #, fuzzy, c-format
-msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
+msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off?"
 msgstr "PGP шифроване(e), подпис(s), подпис като(a), и двете(b) или без тях(f)?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
@@ -4232,7 +4232,7 @@ msgstr "esabf"
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1889
 #, fuzzy
-msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off?"
 msgstr "PGP шифроване(e), подпис(s), подпис като(a), и двете(b) или без тях(f)?"
 
 #. L10N: PGP options (opportunistic encryption is on)
@@ -4243,7 +4243,7 @@ msgstr "esabf"
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: ncrypt/pgp.c:1905
 #, fuzzy, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode?"
 msgstr "PGP шифроване(e), подпис(s), подпис като(a), и двете(b) или без тях(f)?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
@@ -4255,7 +4255,7 @@ msgstr "esabf"
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1917
 #, fuzzy
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
 msgstr "PGP шифроване(e), подпис(s), подпис като(a), и двете(b) или без тях(f)?"
 
 #. L10N: PGP options (opportunistic encryption is off)
@@ -4266,7 +4266,7 @@ msgstr "esabf"
 #. L10N: PGP options (inline)
 #: ncrypt/pgp.c:1931
 #, fuzzy, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear?"
 msgstr "PGP шифроване(e), подпис(s), подпис като(a), и двете(b) или без тях(f)?"
 
 #. L10N: PGP options (inline)
@@ -4278,7 +4278,7 @@ msgstr "esabf"
 #. L10N: PGP options
 #: ncrypt/pgp.c:1943
 #, fuzzy
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear?"
 msgstr "PGP шифроване(e), подпис(s), подпис като(a), и двете(b) или без тях(f)?"
 
 #. L10N: PGP options
@@ -4470,7 +4470,7 @@ msgstr ""
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2327
 #, fuzzy
-msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off?"
 msgstr "S/MIME шифроване(e), подпис(s), шифроване с(w), подпис като(a), и двете(b) или без тях(f)?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
@@ -4481,7 +4481,7 @@ msgstr "eswabf"
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2338
 #, fuzzy
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
 msgstr "S/MIME шифроване(e), подпис(s), шифроване с(w), подпис като(a), и двете(b) или без тях(f)?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
@@ -4492,7 +4492,7 @@ msgstr "eswabf"
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2348
 #, fuzzy
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?"
 msgstr "S/MIME шифроване(e), подпис(s), шифроване с(w), подпис като(a), и двете(b) или без тях(f)?"
 
 #. L10N: S/MIME options
@@ -4501,7 +4501,7 @@ msgid "eswabc"
 msgstr "eswabf"
 
 #: ncrypt/smime.c:2415
-msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear? "
+msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"
 msgstr ""
 
 #. L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
@@ -6415,7 +6415,7 @@ msgstr "показва приложението като текст"
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
 #: send.c:1567
-msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip? "
+msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr ""
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt

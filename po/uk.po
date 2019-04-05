@@ -235,13 +235,13 @@ msgstr "Маска: "
 #. L10N: The highlighted letters must match the "Sort" options
 #: browser.c:1755
 #, fuzzy
-msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Зворотньо сортувати за датою(d), літерою(a), розміром(z), чи не сортувати(n)?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
 #: browser.c:1758
 #, fuzzy
-msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Сортувати за датою(d), літерою(a), розміром(z), чи не сортувати(n)?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
@@ -895,16 +895,16 @@ msgid "No PGP backend configured"
 msgstr "Підтримку PGP не налаштовано"
 
 #: compose.c:1945
-msgid "S/MIME already selected. Clear and continue? "
-msgstr "S/MIME вже вибрано. Очистити і продовжити? "
+msgid "S/MIME already selected. Clear and continue?"
+msgstr "S/MIME вже вибрано. Очистити і продовжити?"
 
 #: compose.c:1972
 msgid "No S/MIME backend configured"
 msgstr "Підтримку S/MIME не налаштовано"
 
 #: compose.c:1980
-msgid "PGP already selected. Clear and continue? "
-msgstr "PGP вже вибрано. Очистити і продовжити? "
+msgid "PGP already selected. Clear and continue?"
+msgstr "PGP вже вибрано. Очистити і продовжити?"
 
 #: compress.c:382 compress.c:533
 #, c-format
@@ -4002,8 +4002,8 @@ msgid "GPGME: CMS protocol not available"
 msgstr "GPGME: протокол CMS не доступний"
 
 #: ncrypt/crypt_gpgme.c:5362
-msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME (s)підп., (a)підп. як, (p)gp, (c)відміна, вимкнути (o)ppenc? "
+msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off?"
+msgstr "S/MIME (s)підп., (a)підп. як, (p)gp, (c)відміна, вимкнути (o)ppenc?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5364
@@ -4011,8 +4011,8 @@ msgid "sapco"
 msgstr "sapco"
 
 #: ncrypt/crypt_gpgme.c:5371
-msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP (s)підп., (a)підп. як, s/(m)ime, (c)відміна, вимкнути (o)ppenc? "
+msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP (s)підп., (a)підп. як, s/(m)ime, (c)відміна, вимкнути (o)ppenc?"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5373
@@ -4021,8 +4021,8 @@ msgstr "samco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5383
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME (e)шифр, (s)підп, (a)підп. як, (b)усе, (p)gp, (c)відм, вимк. (o)ppenc? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode?"
+msgstr "S/MIME (e)шифр, (s)підп, (a)підп. як, (b)усе, (p)gp, (c)відм, вимк. (o)ppenc?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5386
@@ -4032,8 +4032,8 @@ msgstr "esabpco"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5392
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
-msgstr "PGP (e)шифр, (s)підп, (a)підп. як, (b)усе, s/(m)ime, (c)відм, вимк. (o)ppenc? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode?"
+msgstr "PGP (e)шифр, (s)підп, (a)підп. як, (b)усе, s/(m)ime, (c)відм, вимк. (o)ppenc?"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5395
@@ -4042,8 +4042,8 @@ msgid "esabmco"
 msgstr "esabmco"
 
 #: ncrypt/crypt_gpgme.c:5406
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr "S/MIME (e)шифр., (s)підп., (a)підп. як, (b)усе, (p)gp, (c)відміна? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
+msgstr "S/MIME (e)шифр., (s)підп., (a)підп. як, (b)усе, (p)gp, (c)відміна?"
 
 #. L10N: S/MIME options
 #: ncrypt/crypt_gpgme.c:5408
@@ -4052,8 +4052,8 @@ msgid "esabpc"
 msgstr "esabpc"
 
 #: ncrypt/crypt_gpgme.c:5415
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr "PGP (e)шифр., (s)підп., (a)підп. як, (b)усе, s/(m)ime, (c)відміна? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
+msgstr "PGP (e)шифр., (s)підп., (a)підп. як, (b)усе, s/(m)ime, (c)відміна?"
 
 #. L10N: PGP options
 #: ncrypt/crypt_gpgme.c:5417
@@ -4133,8 +4133,8 @@ msgstr "(i)PGP/текст"
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #: ncrypt/pgp.c:1877
 #, c-format
-msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP (s)підп., (a)підп. як, %s, (c)відміна, вимкнути (o)ppenc? "
+msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP (s)підп., (a)підп. як, %s, (c)відміна, вимкнути (o)ppenc?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4144,8 +4144,8 @@ msgstr "saco"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1889
-msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP (s)підп., (a)підп. як, (c)відміна, вимкнути (o)ppenc? "
+msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP (s)підп., (a)підп. як, (c)відміна, вимкнути (o)ppenc?"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1891
@@ -4155,8 +4155,8 @@ msgstr "saco"
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: ncrypt/pgp.c:1905
 #, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
-msgstr "PGP (e)шифр, (s)підп, (a)підп. як, (b)усе, %s, (c)відм, вимк. (o)ppenc? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode?"
+msgstr "PGP (e)шифр, (s)підп, (a)підп. як, (b)усе, %s, (c)відм, вимк. (o)ppenc?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4167,8 +4167,8 @@ msgstr "esabico"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1917
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "PGP (e)шифр, (s)підп, (a)підп. як, (b)усе, (c)відм, вимк. (o)ppenc? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
+msgstr "PGP (e)шифр, (s)підп, (a)підп. як, (b)усе, (c)відм, вимк. (o)ppenc?"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1920
@@ -4179,8 +4179,8 @@ msgstr "esabco"
 #. L10N: PGP options (inline)
 #: ncrypt/pgp.c:1931
 #, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
-msgstr "PGP (e)шифр., (s)підп., (a)підп. як, (b)усе, %s, (c)відміна? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear?"
+msgstr "PGP (e)шифр., (s)підп., (a)підп. як, (b)усе, %s, (c)відміна?"
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4191,8 +4191,8 @@ msgstr "esabic"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1943
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
-msgstr "PGP (e)шифр., (s)підп., (a)підп. як, (b)усе, (c)відміна? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear?"
+msgstr "PGP (e)шифр., (s)підп., (a)підп. як, (b)усе, (c)відміна?"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1945
@@ -4380,8 +4380,8 @@ msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2327
-msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME (s)підп., (w)шифр. з, (a)підп. як, (c)відм., вимкнути (o)ppenc? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off?"
+msgstr "S/MIME (s)підп., (w)шифр. з, (a)підп. як, (c)відм., вимкнути (o)ppenc?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2330
@@ -4390,7 +4390,7 @@ msgstr "swaco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2338
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
 msgstr "S/MIME (e)шифр, (s)підп, (w)шифр.з, (a)підп.як, (b)усе, (c)відм, вимк.(o)ppenc?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
@@ -4401,8 +4401,8 @@ msgstr "eswabco"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2348
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr "S/MIME (e)шифр., (s)підп., (w)шифр. з, (a)підп. як, (b)усе, (c)відміна? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?"
+msgstr "S/MIME (e)шифр., (s)підп., (w)шифр. з, (a)підп. як, (b)усе, (c)відміна?"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2351
@@ -4411,7 +4411,7 @@ msgid "eswabc"
 msgstr "eswabc"
 
 #: ncrypt/smime.c:2415
-msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear? "
+msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"
 msgstr "Виберіть сімейство алгоритмів: (1) DES, (2) RC2, (3) AES, (c)відмінити?"
 
 #. L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
@@ -6303,7 +6303,7 @@ msgstr "Зберегти додатки в Fcc?"
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
 #: send.c:1567
-msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip? "
+msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr ""
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt

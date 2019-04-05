@@ -237,13 +237,13 @@ msgstr "Tiedostomaski: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: browser.c:1755
-msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
-msgstr "Järjestele (p)äivän, (a)akkosten, (k)oon, ku(v)auksen, uusien (m)äärän mukaan laskevasti, vai ei lai(n)kaan? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
+msgstr "Järjestele (p)äivän, (a)akkosten, (k)oon, ku(v)auksen, uusien (m)äärän mukaan laskevasti, vai ei lai(n)kaan?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
 #: browser.c:1758
-msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
-msgstr "Järjestele (p)äivän, (a)akkosten, (k)oon, ku(v)auksen, uusien (m)äärän mukaan, vai ei lai(n)kaan? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
+msgstr "Järjestele (p)äivän, (a)akkosten, (k)oon, ku(v)auksen, uusien (m)äärän mukaan, vai ei lai(n)kaan?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
 #: browser.c:1761
@@ -860,7 +860,7 @@ msgid "No PGP backend configured"
 msgstr "PGP-sovellusta ei ole asetettu"
 
 #: compose.c:1945
-msgid "S/MIME already selected. Clear and continue? "
+msgid "S/MIME already selected. Clear and continue?"
 msgstr "S/MIME on jo valittu, poistetaanko ja jatketaan?"
 
 #: compose.c:1972
@@ -868,7 +868,7 @@ msgid "No S/MIME backend configured"
 msgstr "S/MIME-sovellusta ei ole asetettu"
 
 #: compose.c:1980
-msgid "PGP already selected. Clear and continue? "
+msgid "PGP already selected. Clear and continue?"
 msgstr "PGP on jo valittu, poistetaanko ja jatketaan?"
 
 #: compress.c:382 compress.c:533
@@ -3971,7 +3971,7 @@ msgid "GPGME: CMS protocol not available"
 msgstr "GPGME: CMS-protokolla puuttuu"
 
 #: ncrypt/crypt_gpgme.c:5362
-msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
+msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off?"
 msgstr "S/MIME-(a)llekirjoita, -allekirjoita (n)imellä, (p)gp, (t)yhjennä tai poista (o)ppenc käytöstä?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
@@ -3980,7 +3980,7 @@ msgid "sapco"
 msgstr "anpto"
 
 #: ncrypt/crypt_gpgme.c:5371
-msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
+msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off?"
 msgstr "PGP-(a)llekirjoita, -allekirjoita (n)imellä, (s)/mime, (t)yhjennä tai poista (o)ppenc käytöstä?"
 
 #. L10N: PGP options (opportunistic encryption is on)
@@ -3990,7 +3990,7 @@ msgstr "ansto"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5383
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode?"
 msgstr "S/MIME-sa(l)aa, -(a)llekirjoita, allekirjoita (n)imellä, (m)olemmat, (p)gp, (t)yhjennä, tai poista (o)ppenc käytöstä?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
@@ -4000,7 +4000,7 @@ msgstr "lanmpto"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5392
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode?"
 msgstr "PGP-sa(l)aa, -(a)llekirjoita, allekirjoita (n)imellä, (m)olemmat, (s)/mime, (t)yhennä, tai poista (o)ppenc käytöstä?"
 
 #. L10N: PGP options (opportunistic encryption is off)
@@ -4009,7 +4009,7 @@ msgid "esabmco"
 msgstr "lanmsto"
 
 #: ncrypt/crypt_gpgme.c:5406
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
 msgstr "S/MIME-sa(l)aa, -(a)llekirjoita, allekirjoita (n)imellä, (m)olemmat, (p)gp, (t)yhjennä, tai poista (o)ppenc käytöstä?"
 
 #. L10N: S/MIME options
@@ -4018,7 +4018,7 @@ msgid "esabpc"
 msgstr "lanmpto"
 
 #: ncrypt/crypt_gpgme.c:5415
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
 msgstr "PGP-sa(l)aa, -(a)llekirjoita, -allekirjoita (n)imellä, (m)olemmat, (s)/mime, tai (t)yhjennä?"
 
 #. L10N: PGP options
@@ -4098,7 +4098,7 @@ msgstr "(i)nline"
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #: ncrypt/pgp.c:1877
 #, c-format
-msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
+msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off?"
 msgstr "PGP-(a)llekirjoita, (n)imellä, %s-formaatti, (t)yhjennä, (o)ppenc pois?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
@@ -4109,7 +4109,7 @@ msgstr "anito"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1889
-msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off?"
 msgstr "PGP-(a)llekirjoita, (n)imellä, (t)yhjennä, (o)ppenc pois?"
 
 #. L10N: PGP options (opportunistic encryption is on)
@@ -4120,8 +4120,8 @@ msgstr "anto"
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: ncrypt/pgp.c:1905
 #, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
-msgstr "PGP-(s)alaa, -(a)llekirjoita, (n)imellä, (m)olemmat, %s-formaatti, (t)yhjennä, tai (o)ppenc? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode?"
+msgstr "PGP-(s)alaa, -(a)llekirjoita, (n)imellä, (m)olemmat, %s-formaatti, (t)yhjennä, tai (o)ppenc?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4131,7 +4131,7 @@ msgstr "sanmito"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1917
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
 msgstr "PGP-(s)alaa, -(a)llekirjoita, (n)imellä, (t)yhjennä tai (o)ppenc?"
 
 #. L10N: PGP options (opportunistic encryption is off)
@@ -4142,7 +4142,7 @@ msgstr "sanmto"
 #. L10N: PGP options (inline)
 #: ncrypt/pgp.c:1931
 #, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear?"
 msgstr "PGP-(s)alaa, -(a)llekirjoita, (n)imellä, (m)olemmat, %s-formaatti, tai (t)yhjennä?"
 
 #. L10N: PGP options (inline)
@@ -4153,7 +4153,7 @@ msgstr "sanmit"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1943
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear?"
 msgstr "PGP-(s)alaa, -(a)llekirjoita, (n)imellä, (m)olemmat tai (t)yhjennä"
 
 #. L10N: PGP options
@@ -4340,8 +4340,8 @@ msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2327
-msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME-(a)llekirjoita, -salaa (k)anssa, allek. (n)imellä, (t)yhjennä, tai (o)ppenc pois? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off?"
+msgstr "S/MIME-(a)llekirjoita, -salaa (k)anssa, allek. (n)imellä, (t)yhjennä, tai (o)ppenc pois?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2330
@@ -4350,8 +4350,8 @@ msgstr "aknto"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2338
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME-(s)alaa, -(a)llekirjoita, -salaa (k)anssa, -allek. (n)imellä, (m)olemmat, (t)yhjennä, tai (o)ppenc? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
+msgstr "S/MIME-(s)alaa, -(a)llekirjoita, -salaa (k)anssa, -allek. (n)imellä, (m)olemmat, (t)yhjennä, tai (o)ppenc?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2341
@@ -4360,8 +4360,8 @@ msgstr "saknmto"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2348
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr "S/MIME-(s)alaa, (a)llekirjoita, -salaa (k)anssa, -allek. (n)imellä, (m)olemmat, tai (t)yhjennä? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?"
+msgstr "S/MIME-(s)alaa, (a)llekirjoita, -salaa (k)anssa, -allek. (n)imellä, (m)olemmat, tai (t)yhjennä?"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2351
@@ -4369,7 +4369,7 @@ msgid "eswabc"
 msgstr "saknmt"
 
 #: ncrypt/smime.c:2415
-msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear? "
+msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"
 msgstr "Valitse algoritmiperhe: (1) DES, (2) RC2, (3) AES tai (t)yhjennä"
 
 #. L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
@@ -6205,7 +6205,7 @@ msgstr "Tallennetaanko liitteet FCC-kansioon myös?"
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
 #: send.c:1567
-msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip? "
+msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr ""
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt

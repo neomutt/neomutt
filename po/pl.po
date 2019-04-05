@@ -230,12 +230,12 @@ msgstr "Wzorzec nazw plików: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: browser.c:1755
-msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Sortowanie odwrotne wg (d)aty, (a)lfabetu, (o)pisu, ro(z)miaru, li(c)zby, liczby no(w)ych, żad(n)e?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
 #: browser.c:1758
-msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Sortowanie wg (d)aty, (a)lfabetu, (o)pisu, ro(z)miaru, li(c)zby, liczby no(w)ych, żad(n)e?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
@@ -859,16 +859,16 @@ msgid "No PGP backend configured"
 msgstr "Nie skonfigurowano beckendu PGP"
 
 #: compose.c:1945
-msgid "S/MIME already selected. Clear and continue? "
-msgstr "Wybrano już S/MIME. Anulować wybór S/MIME i kontynuować? "
+msgid "S/MIME already selected. Clear and continue?"
+msgstr "Wybrano już S/MIME. Anulować wybór S/MIME i kontynuować?"
 
 #: compose.c:1972
 msgid "No S/MIME backend configured"
 msgstr "Nie skonfigurowano beckendu S/MIME"
 
 #: compose.c:1980
-msgid "PGP already selected. Clear and continue? "
-msgstr "Wybrano już PGP. Anulować wybór PGP i kontynuować? "
+msgid "PGP already selected. Clear and continue?"
+msgstr "Wybrano już PGP. Anulować wybór PGP i kontynuować?"
 
 #: compress.c:382 compress.c:533
 #, c-format
@@ -3926,8 +3926,8 @@ msgid "GPGME: CMS protocol not available"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:5362
-msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME: (p)odpisz, podpisz (j)ako, p(g)p, wy(c)zyść lub wyłącz tryb (o)ppenc? "
+msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off?"
+msgstr "S/MIME: (p)odpisz, podpisz (j)ako, p(g)p, wy(c)zyść lub wyłącz tryb (o)ppenc?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5364
@@ -3935,8 +3935,8 @@ msgid "sapco"
 msgstr "pjgco"
 
 #: ncrypt/crypt_gpgme.c:5371
-msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP: (p)odpisz, podpisz (j)ako, s/(m)ime, wy(c)zyść lub wyłącz tryb (o)ppenc? "
+msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP: (p)odpisz, podpisz (j)ako, s/(m)ime, wy(c)zyść lub wyłącz tryb (o)ppenc?"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5373
@@ -3945,8 +3945,8 @@ msgstr "pjmco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5383
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME: (z)aszyfruj, (p)odpisz, podpisz (j)ako, o(b)a, p(g)p, wy(c)zyść lub tryb (o)ppenc? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode?"
+msgstr "S/MIME: (z)aszyfruj, (p)odpisz, podpisz (j)ako, o(b)a, p(g)p, wy(c)zyść lub tryb (o)ppenc?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5386
@@ -3955,8 +3955,8 @@ msgstr "zpjbgco"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5392
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
-msgstr "PGP: (z)aszyfruj, (p)odpisz, podpisz (j)ako, o(b)a, (s)/mime, wy(c)zyść lub tryb (o)ppenc? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode?"
+msgstr "PGP: (z)aszyfruj, (p)odpisz, podpisz (j)ako, o(b)a, (s)/mime, wy(c)zyść lub tryb (o)ppenc?"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5395
@@ -3964,7 +3964,7 @@ msgid "esabmco"
 msgstr "zpjbsco"
 
 #: ncrypt/crypt_gpgme.c:5406
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
 msgstr "S/MIME: (z)aszyfruj, (p)odpisz, podpisz (j)ako, o(b)a, p(g)p, (a)nuluj?"
 
 #. L10N: S/MIME options
@@ -3973,8 +3973,8 @@ msgid "esabpc"
 msgstr "zpjbga"
 
 #: ncrypt/crypt_gpgme.c:5415
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr "PGP: (z)aszyfruj, (p)odpisz, podpisz (j)ako, o(b)a, (s)/mime lub (w)yczyść? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
+msgstr "PGP: (z)aszyfruj, (p)odpisz, podpisz (j)ako, o(b)a, (s)/mime lub (w)yczyść?"
 
 #. L10N: PGP options
 #: ncrypt/crypt_gpgme.c:5417
@@ -4053,8 +4053,8 @@ msgstr "(i)nline"
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #: ncrypt/pgp.c:1877
 #, c-format
-msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP: (p)odpisz, podpisz (j)ako, format %s, (w)yczyść lub wyłącz tryb (o)ppenc? "
+msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP: (p)odpisz, podpisz (j)ako, format %s, (w)yczyść lub wyłącz tryb (o)ppenc?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4064,8 +4064,8 @@ msgstr "pjiwo"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1889
-msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP: (p)odpisz, podpisz (j)ako, (w)yczyść lub wyłącz tryb (o)ppenc? "
+msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP: (p)odpisz, podpisz (j)ako, (w)yczyść lub wyłącz tryb (o)ppenc?"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1891
@@ -4075,8 +4075,8 @@ msgstr "pjwo"
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: ncrypt/pgp.c:1905
 #, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
-msgstr "PGP: (z)aszyfruj, podpi(s)z, podpisz j(a)ko, o(b)a, format %s, (w)yczyć lub tryb (o)ppenc? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode?"
+msgstr "PGP: (z)aszyfruj, podpi(s)z, podpisz j(a)ko, o(b)a, format %s, (w)yczyć lub tryb (o)ppenc?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4086,8 +4086,8 @@ msgstr "zsabiwo"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1917
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "PGP: (z)aszyfruj, podpi(s)z, podpisz j(a)ko, o(b)a, (w)yczyć lub tryb (o)ppenc? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
+msgstr "PGP: (z)aszyfruj, podpi(s)z, podpisz j(a)ko, o(b)a, (w)yczyć lub tryb (o)ppenc?"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1920
@@ -4097,8 +4097,8 @@ msgstr "zsabwo"
 #. L10N: PGP options (inline)
 #: ncrypt/pgp.c:1931
 #, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
-msgstr "PGP: (z)aszyfruj, podpi(s)z, podpisz j(a)ko, o(b)a, format %s lub  (w)yczyć? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear?"
+msgstr "PGP: (z)aszyfruj, podpi(s)z, podpisz j(a)ko, o(b)a, format %s lub  (w)yczyć?"
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4108,8 +4108,8 @@ msgstr "zsabiw"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1943
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
-msgstr "PGP: (z)aszyfruj, podpi(s)z, podpisz j(a)ko, o(b)a lub (w)yczyć? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear?"
+msgstr "PGP: (z)aszyfruj, podpi(s)z, podpisz j(a)ko, o(b)a lub (w)yczyć?"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1945
@@ -4295,8 +4295,8 @@ msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2327
-msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME: (p)odpisz, zaszyfruj (u)żywając, podp. (j)ako, (w)yczyć lub tryb (o)ppenc? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off?"
+msgstr "S/MIME: (p)odpisz, zaszyfruj (u)żywając, podp. (j)ako, (w)yczyć lub tryb (o)ppenc?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2330
@@ -4305,8 +4305,8 @@ msgstr "pujwo"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2338
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME: (z)aszyfruj, (p)odpisz, zaszyfruj (u)żywając, podp. (j)ako, o(b)a, (w)yczyć lub tryb (o)ppenc? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
+msgstr "S/MIME: (z)aszyfruj, (p)odpisz, zaszyfruj (u)żywając, podp. (j)ako, o(b)a, (w)yczyć lub tryb (o)ppenc?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2341
@@ -4315,7 +4315,7 @@ msgstr "zpujbwo"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2348
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?"
 msgstr "S/MIME: (z)aszyfruj, (p)odpisz, (m)etoda, podp. (j)ako, o(b)a, (a)nuluj?"
 
 #. L10N: S/MIME options
@@ -4324,8 +4324,8 @@ msgid "eswabc"
 msgstr "zpmjba"
 
 #: ncrypt/smime.c:2415
-msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear? "
-msgstr "Wybierz algorytm: (1) DES, (2) RC2, (3) AES, (a)nuluj? "
+msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"
+msgstr "Wybierz algorytm: (1) DES, (2) RC2, (3) AES, (a)nuluj?"
 
 #. L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
 #: ncrypt/smime.c:2418
@@ -6164,7 +6164,7 @@ msgstr "Zapisać załącznik w Fcc?"
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
 #: send.c:1567
-msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip? "
+msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr ""
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt

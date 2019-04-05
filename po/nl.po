@@ -235,13 +235,13 @@ msgstr "Bestandsmasker: "
 #. L10N: The highlighted letters must match the "Sort" options
 #: browser.c:1755
 #, fuzzy
-msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
-msgstr "Achteruit sorteren op (d)atum, bestands(g)rootte, (a)lfabet of (n)iet? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
+msgstr "Achteruit sorteren op (d)atum, bestands(g)rootte, (a)lfabet of (n)iet?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
 #: browser.c:1758
 #, fuzzy
-msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Sorteren op (d)atum, bestands(g)rootte, (a)lfabet of helemaal (n)iet?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
@@ -889,16 +889,16 @@ msgid "No PGP backend configured"
 msgstr "Geen PGP software beschikbaar"
 
 #: compose.c:1945
-msgid "S/MIME already selected. Clear and continue? "
-msgstr "S/MIME is al geselecteerd.  Wissen & doorgaan? "
+msgid "S/MIME already selected. Clear and continue?"
+msgstr "S/MIME is al geselecteerd.  Wissen & doorgaan?"
 
 #: compose.c:1972
 msgid "No S/MIME backend configured"
 msgstr "Geen S/MIME software beschikbaar"
 
 #: compose.c:1980
-msgid "PGP already selected. Clear and continue? "
-msgstr "PGP is al geselecteerd.  Wissen & doorgaan? "
+msgid "PGP already selected. Clear and continue?"
+msgstr "PGP is al geselecteerd.  Wissen & doorgaan?"
 
 #: compress.c:382 compress.c:533
 #, c-format
@@ -3996,8 +3996,8 @@ msgid "GPGME: CMS protocol not available"
 msgstr "GPGME: CMS-protocol is niet beschikbaar"
 
 #: ncrypt/crypt_gpgme.c:5362
-msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME (o)nderteken, ondert. (a)ls, (p)gp, (g)een, of oppenc (u)it? "
+msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off?"
+msgstr "S/MIME (o)nderteken, ondert. (a)ls, (p)gp, (g)een, of oppenc (u)it?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5364
@@ -4005,8 +4005,8 @@ msgid "sapco"
 msgstr "oapgu"
 
 #: ncrypt/crypt_gpgme.c:5371
-msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP (o)nderteken, ondert. (a)ls, s/(m)ime, (g)een, of oppenc (u)it? "
+msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP (o)nderteken, ondert. (a)ls, s/(m)ime, (g)een, of oppenc (u)it?"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5373
@@ -4015,8 +4015,8 @@ msgstr "oamgu"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5383
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME (v)ersleutel, (o)ndert., ond. (a)ls, (b)eiden, (p)gp, (g)een, opp(e)nc? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode?"
+msgstr "S/MIME (v)ersleutel, (o)ndert., ond. (a)ls, (b)eiden, (p)gp, (g)een, opp(e)nc?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5386
@@ -4026,8 +4026,8 @@ msgstr "voabpge"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5392
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
-msgstr "PGP (v)ersleutel, (o)ndert., ond. (a)ls, (b)eiden, s/(m)ime, (g)een, opp(e)nc? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode?"
+msgstr "PGP (v)ersleutel, (o)ndert., ond. (a)ls, (b)eiden, s/(m)ime, (g)een, opp(e)nc?"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5395
@@ -4036,8 +4036,8 @@ msgid "esabmco"
 msgstr "voabmge"
 
 #: ncrypt/crypt_gpgme.c:5406
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr "S/MIME (v)ersleutel, (o)nderteken, ond. (a)ls, (b)eiden, (p)gp, of (g)een? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
+msgstr "S/MIME (v)ersleutel, (o)nderteken, ond. (a)ls, (b)eiden, (p)gp, of (g)een?"
 
 #. L10N: S/MIME options
 #: ncrypt/crypt_gpgme.c:5408
@@ -4046,8 +4046,8 @@ msgid "esabpc"
 msgstr "voabpg"
 
 #: ncrypt/crypt_gpgme.c:5415
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr "PGP (v)ersleutel, (o)nderteken, ond. (a)ls, (b)eiden, s/(m)ime, of (g)een? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
+msgstr "PGP (v)ersleutel, (o)nderteken, ond. (a)ls, (b)eiden, s/(m)ime, of (g)een?"
 
 #. L10N: PGP options
 #: ncrypt/crypt_gpgme.c:5417
@@ -4127,8 +4127,8 @@ msgstr "(i)nline"
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #: ncrypt/pgp.c:1877
 #, c-format
-msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP (o)nderteken, ondert. (a)ls, %s, (g)een, of oppenc (u)it? "
+msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP (o)nderteken, ondert. (a)ls, %s, (g)een, of oppenc (u)it?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4138,8 +4138,8 @@ msgstr "oaigu"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1889
-msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP (o)nderteken, ondert. (a)ls, (g)een, of oppenc (u)it? "
+msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP (o)nderteken, ondert. (a)ls, (g)een, of oppenc (u)it?"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1891
@@ -4149,8 +4149,8 @@ msgstr "oagu"
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: ncrypt/pgp.c:1905
 #, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
-msgstr "PGP (v)ersleutel, (o)ndert., ond. (a)ls, (b)eiden, %s, (g)een, opp(e)nc? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode?"
+msgstr "PGP (v)ersleutel, (o)ndert., ond. (a)ls, (b)eiden, %s, (g)een, opp(e)nc?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4161,8 +4161,8 @@ msgstr "voabige"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1917
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "PGP (v)ersleutel, (o)nderteken, ond. (a)ls, (b)eiden, (g)een, opp(e)nc-modus? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
+msgstr "PGP (v)ersleutel, (o)nderteken, ond. (a)ls, (b)eiden, (g)een, opp(e)nc-modus?"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1920
@@ -4173,8 +4173,8 @@ msgstr "voabge"
 #. L10N: PGP options (inline)
 #: ncrypt/pgp.c:1931
 #, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
-msgstr "PGP (v)ersleutel, (o)nderteken, ond. (a)ls, (b)eiden, %s, of (g)een? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear?"
+msgstr "PGP (v)ersleutel, (o)nderteken, ond. (a)ls, (b)eiden, %s, of (g)een?"
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4185,8 +4185,8 @@ msgstr "voabig"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1943
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
-msgstr "PGP (v)ersleutel, (o)nderteken, ond. (a)ls, (b)eiden, of (g)een? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear?"
+msgstr "PGP (v)ersleutel, (o)nderteken, ond. (a)ls, (b)eiden, of (g)een?"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1945
@@ -4378,8 +4378,8 @@ msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2327
-msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME (o)ndert, versl. (m)et, ond. (a)ls, (b)eiden, (g)een, opp(e)nc-modus? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off?"
+msgstr "S/MIME (o)ndert, versl. (m)et, ond. (a)ls, (b)eiden, (g)een, opp(e)nc-modus?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2330
@@ -4388,8 +4388,8 @@ msgstr "omabge"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2338
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME (v)ersl, (o)ndert, versl. (m)et, ond. (a)ls, (b)eiden, (g)een, opp(e)nc? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
+msgstr "S/MIME (v)ersl, (o)ndert, versl. (m)et, ond. (a)ls, (b)eiden, (g)een, opp(e)nc?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2341
@@ -4399,8 +4399,8 @@ msgstr "vomabge"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2348
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr "S/MIME (v)ersleutel, (o)ndert, versl. (m)et, ond. (a)ls, (b)eiden, (g)een? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?"
+msgstr "S/MIME (v)ersleutel, (o)ndert, versl. (m)et, ond. (a)ls, (b)eiden, (g)een?"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2351
@@ -4409,8 +4409,8 @@ msgid "eswabc"
 msgstr "vomabg"
 
 #: ncrypt/smime.c:2415
-msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear? "
-msgstr "Kies een algoritmefamilie: (1) DES, (2) RC2, (3) AES, of (g)een? "
+msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"
+msgstr "Kies een algoritmefamilie: (1) DES, (2) RC2, (3) AES, of (g)een?"
 
 #. L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
 #: ncrypt/smime.c:2418
@@ -6297,7 +6297,7 @@ msgstr "Bijlages opslaan in Fcc?"
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
 #: send.c:1567
-msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip? "
+msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr ""
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt

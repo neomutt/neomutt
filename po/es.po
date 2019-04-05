@@ -230,13 +230,13 @@ msgstr "Patrón de archivos: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: browser.c:1755
-msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "¿Ordenar al reverso por (f)echa, (t)amaño, d(e)scripción, (a)lfabéticamente o (s)in órden?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
 #: browser.c:1758
-msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
-msgstr "¿Ordenar por (f)echa, (t)amaño, (d)escripción, (n)úmero, n(o)vedad, (a)lfabéticamente o (s)in órden? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
+msgstr "¿Ordenar por (f)echa, (t)amaño, (d)escripción, (n)úmero, n(o)vedad, (a)lfabéticamente o (s)in órden?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
 #: browser.c:1761
@@ -864,7 +864,7 @@ msgid "No PGP backend configured"
 msgstr ""
 
 #: compose.c:1945
-msgid "S/MIME already selected. Clear and continue? "
+msgid "S/MIME already selected. Clear and continue?"
 msgstr "S/MIME ya ha sido seleccionado. ¿Limpiar y continuar?"
 
 #: compose.c:1972
@@ -872,7 +872,7 @@ msgid "No S/MIME backend configured"
 msgstr ""
 
 #: compose.c:1980
-msgid "PGP already selected. Clear and continue? "
+msgid "PGP already selected. Clear and continue?"
 msgstr "PGP ya ha sido seleccionado. ¿Limpiar y continuar?"
 
 #: compress.c:382 compress.c:533
@@ -4032,8 +4032,8 @@ msgid "GPGME: CMS protocol not available"
 msgstr "GPGME: protocolo CMS no disponible"
 
 #: ncrypt/crypt_gpgme.c:5362
-msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME ¿(f)irmar, firmar (c)omo, (p)gp, ca(n)celar o (m)odo oppenc off? "
+msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off?"
+msgstr "S/MIME ¿(f)irmar, firmar (c)omo, (p)gp, ca(n)celar o (m)odo oppenc off?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5364
@@ -4041,8 +4041,8 @@ msgid "sapco"
 msgstr "fcpnm"
 
 #: ncrypt/crypt_gpgme.c:5371
-msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP ¿(f)irmar, firmar (c)omo, s/m(i)me, ca(n)celar o (m)odo oppenc off? "
+msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP ¿(f)irmar, firmar (c)omo, s/m(i)me, ca(n)celar o (m)odo oppenc off?"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5373
@@ -4051,8 +4051,8 @@ msgstr "fcinm"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5383
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME ¿(e)ncriptar, (f)irmar, firmar (c)omo, amb(o)s, (p)gp, ca(n)celar o (m)odo oppenc? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode?"
+msgstr "S/MIME ¿(e)ncriptar, (f)irmar, firmar (c)omo, amb(o)s, (p)gp, ca(n)celar o (m)odo oppenc?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5386
@@ -4061,8 +4061,8 @@ msgstr "efcopnm"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5392
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
-msgstr "PGP ¿(e)ncriptar, (f)irmar, firmar (c)omo, amb(o)s, s/m(i)me, ca(n)celar o (m)odo oppenc? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode?"
+msgstr "PGP ¿(e)ncriptar, (f)irmar, firmar (c)omo, amb(o)s, s/m(i)me, ca(n)celar o (m)odo oppenc?"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5395
@@ -4070,8 +4070,8 @@ msgid "esabmco"
 msgstr "efcoinm"
 
 #: ncrypt/crypt_gpgme.c:5406
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr "S/MIME ¿(e)ncriptar, (f)irmar, firmar (c)omo, amb(o)s, (p)gp o ca(n)celar? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
+msgstr "S/MIME ¿(e)ncriptar, (f)irmar, firmar (c)omo, amb(o)s, (p)gp o ca(n)celar?"
 
 #. L10N: S/MIME options
 #: ncrypt/crypt_gpgme.c:5408
@@ -4079,8 +4079,8 @@ msgid "esabpc"
 msgstr "efcopn"
 
 #: ncrypt/crypt_gpgme.c:5415
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr "PGP ¿(e)ncriptar, (f)irmar, firmar (c)omo, amb(o)s, s/m(i)me o ca(n)celar? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
+msgstr "PGP ¿(e)ncriptar, (f)irmar, firmar (c)omo, amb(o)s, s/m(i)me o ca(n)celar?"
 
 #. L10N: PGP options
 #: ncrypt/crypt_gpgme.c:5417
@@ -4161,8 +4161,8 @@ msgstr "en l(i)nea"
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #: ncrypt/pgp.c:1877
 #, c-format
-msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP ¿(f)irmar, firmar (c)omo, formato %s, ca(n)celar o (m)odo oppenc off? "
+msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP ¿(f)irmar, firmar (c)omo, formato %s, ca(n)celar o (m)odo oppenc off?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4172,8 +4172,8 @@ msgstr "fcinm"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1889
-msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP ¿(f)irmar, firmar (c)omo, ca(n)celar o (m)odo oppenc off? "
+msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP ¿(f)irmar, firmar (c)omo, ca(n)celar o (m)odo oppenc off?"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1891
@@ -4183,8 +4183,8 @@ msgstr "fcnm"
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: ncrypt/pgp.c:1905
 #, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
-msgstr "PGP ¿(e)ncriptar, (f)irmar, firmar (c)omo, amb(o)s, formato %s, ca(n)celar o (m)odo oppenc? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode?"
+msgstr "PGP ¿(e)ncriptar, (f)irmar, firmar (c)omo, amb(o)s, formato %s, ca(n)celar o (m)odo oppenc?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4194,8 +4194,8 @@ msgstr "efcoinm"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1917
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "PGP ¿(e)ncriptar, (f)irmar, firmar (c)omo, amb(o)s, ca(n)celar o (m)odo oppenc? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
+msgstr "PGP ¿(e)ncriptar, (f)irmar, firmar (c)omo, amb(o)s, ca(n)celar o (m)odo oppenc?"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1920
@@ -4205,8 +4205,8 @@ msgstr "efconm"
 #. L10N: PGP options (inline)
 #: ncrypt/pgp.c:1931
 #, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
-msgstr "PGP ¿(e)ncriptar, (f)irmar, firmar (c)omo, amb(o)s, formato %s o ca(n)celar? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear?"
+msgstr "PGP ¿(e)ncriptar, (f)irmar, firmar (c)omo, amb(o)s, formato %s o ca(n)celar?"
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4216,7 +4216,7 @@ msgstr "efcoin"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1943
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear?"
 msgstr "PGP ¿(e)ncriptar, (f)irmar, firmar (c)omo, amb(o)s o ca(n)celar?"
 
 #. L10N: PGP options
@@ -4423,8 +4423,8 @@ msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2327
-msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME ¿(f)irmar, enc(r)iptar con, firmar (c)omo, ca(n)celar o (m)odo oppenc off? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off?"
+msgstr "S/MIME ¿(f)irmar, enc(r)iptar con, firmar (c)omo, ca(n)celar o (m)odo oppenc off?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2330
@@ -4433,8 +4433,8 @@ msgstr "frcnm"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2338
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME ¿(e)ncriptar, (f)irmar, enc(r)iptar con, firmar (c)omo, amb(o)s, ca(n)celar o (m)odo oppenc? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
+msgstr "S/MIME ¿(e)ncriptar, (f)irmar, enc(r)iptar con, firmar (c)omo, amb(o)s, ca(n)celar o (m)odo oppenc?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2341
@@ -4443,8 +4443,8 @@ msgstr "efrconm"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2348
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr "S/MIME ¿(e)ncriptar, (f)irmar, enc(r)iptar con, firmar (c)omo, amb(o)s o ca(n)celar? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?"
+msgstr "S/MIME ¿(e)ncriptar, (f)irmar, enc(r)iptar con, firmar (c)omo, amb(o)s o ca(n)celar?"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2351
@@ -4452,7 +4452,7 @@ msgid "eswabc"
 msgstr "efrcon"
 
 #: ncrypt/smime.c:2415
-msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear? "
+msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"
 msgstr ""
 
 #. L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
@@ -6364,7 +6364,7 @@ msgstr "mostrar archivos adjuntos como texto"
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
 #: send.c:1567
-msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip? "
+msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr ""
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt

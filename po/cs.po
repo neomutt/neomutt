@@ -238,12 +238,12 @@ msgstr "Souborová maska: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: browser.c:1755
-msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Obrácené řazení dle (d)ata, (p)ísmena, (v)elikosti či (n)eřadit?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
 #: browser.c:1758
-msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Řadit dle (d)ata, (p)ísmena, (v)elikosti, popi(s)u, poč(t)u, počtu n(o)vých či (n)eřadit?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
@@ -869,7 +869,7 @@ msgid "No PGP backend configured"
 msgstr "Není nakonfigurováno a přeloženo s podporou PGP"
 
 #: compose.c:1945
-msgid "S/MIME already selected. Clear and continue? "
+msgid "S/MIME already selected. Clear and continue?"
 msgstr "Je aktivní S/MIME, zrušit jej a pokračovat?"
 
 #: compose.c:1972
@@ -877,7 +877,7 @@ msgid "No S/MIME backend configured"
 msgstr "Není nakonfigurováno a přeloženo s podporou S/MIME"
 
 #: compose.c:1980
-msgid "PGP already selected. Clear and continue? "
+msgid "PGP already selected. Clear and continue?"
 msgstr "Je aktivní PGP, zrušit jej a pokračovat?"
 
 #: compress.c:382 compress.c:533
@@ -3996,8 +3996,8 @@ msgid "GPGME: CMS protocol not available"
 msgstr "GPGME: Protokol CMS není dostupný"
 
 #: ncrypt/crypt_gpgme.c:5362
-msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME (p)odepsat, podepsat (j)ako, p(g)p, (n)ic či vypnout pří(l)ež. šifr.? "
+msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off?"
+msgstr "S/MIME (p)odepsat, podepsat (j)ako, p(g)p, (n)ic či vypnout pří(l)ež. šifr.?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5364
@@ -4005,8 +4005,8 @@ msgid "sapco"
 msgstr "pjgnl"
 
 #: ncrypt/crypt_gpgme.c:5371
-msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP (p)odepsat, podepsat (j)ako, s/(m)ime, (n)ic či vypnout pří(l)ež. šifr.? "
+msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP (p)odepsat, podepsat (j)ako, s/(m)ime, (n)ic či vypnout pří(l)ež. šifr.?"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5373
@@ -4015,8 +4015,8 @@ msgstr "pjmnl"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5383
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME šif(r)ovat, (p)odepsat, pod.(j)ako, (o)bojí, p(g)p, (n)ic, pří(l).šifr.? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode?"
+msgstr "S/MIME šif(r)ovat, (p)odepsat, pod.(j)ako, (o)bojí, p(g)p, (n)ic, pří(l).šifr.?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5386
@@ -4025,8 +4025,8 @@ msgstr "rpjognl"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5392
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
-msgstr "PGP šif(r)ovat, (p)odepsat, pod.(j)ako, (o)bojí, s/(m)ime, (n)ic, pří(l).šifr.? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode?"
+msgstr "PGP šif(r)ovat, (p)odepsat, pod.(j)ako, (o)bojí, s/(m)ime, (n)ic, pří(l).šifr.?"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5395
@@ -4034,8 +4034,8 @@ msgid "esabmco"
 msgstr "rpjomnl"
 
 #: ncrypt/crypt_gpgme.c:5406
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr "S/MIME šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, p(g)p či (n)ic? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
+msgstr "S/MIME šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, p(g)p či (n)ic?"
 
 #. L10N: S/MIME options
 #: ncrypt/crypt_gpgme.c:5408
@@ -4043,8 +4043,8 @@ msgid "esabpc"
 msgstr "rpjogn"
 
 #: ncrypt/crypt_gpgme.c:5415
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr "PGP šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, s/(m)ime, či (n)ic? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
+msgstr "PGP šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, s/(m)ime, či (n)ic?"
 
 #. L10N: PGP options
 #: ncrypt/crypt_gpgme.c:5417
@@ -4124,8 +4124,8 @@ msgstr "(i)nline"
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #: ncrypt/pgp.c:1877
 #, c-format
-msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP (p)odepsat, pod.(j)ako, formát %s, (n)ic, vypnout pří(l).šifr.? "
+msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP (p)odepsat, pod.(j)ako, formát %s, (n)ic, vypnout pří(l).šifr.?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4135,8 +4135,8 @@ msgstr "pjinl"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1889
-msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP (p)odepsat, podepsat (j)ako, (n)ic, vypnout pří(l). šifr.? "
+msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP (p)odepsat, podepsat (j)ako, (n)ic, vypnout pří(l). šifr.?"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1891
@@ -4147,8 +4147,8 @@ msgstr "pjnl"
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: ncrypt/pgp.c:1905
 #, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
-msgstr "PGP šif(r)ovat, (p)odep., pod.(j)ako, (o)bojí, %s, (n)ic, pří(l).šif.? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode?"
+msgstr "PGP šif(r)ovat, (p)odep., pod.(j)ako, (o)bojí, %s, (n)ic, pří(l).šif.?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4158,8 +4158,8 @@ msgstr "rpjoinl"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1917
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "PGP šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, (n)ic, pří(l). šifr.? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
+msgstr "PGP šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, (n)ic, pří(l). šifr.?"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1920
@@ -4170,7 +4170,7 @@ msgstr "rpjonl"
 #. L10N: PGP options (inline)
 #: ncrypt/pgp.c:1931
 #, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear?"
 msgstr "PGP šif(r)ovat, (p)odepsat, podp (j)ako, (o)bojí, formát %s, či (n)ic?"
 
 #. L10N: PGP options (inline)
@@ -4181,8 +4181,8 @@ msgstr "rpjoin"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1943
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
-msgstr "PGP šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, či (n)ic? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear?"
+msgstr "PGP šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, či (n)ic?"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1945
@@ -4368,8 +4368,8 @@ msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2327
-msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME (p)odepsat, šifr. po(m)ocí, podep. (j)ako, (n)ic, vypnout pří(l). šifr.? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off?"
+msgstr "S/MIME (p)odepsat, šifr. po(m)ocí, podep. (j)ako, (n)ic, vypnout pří(l). šifr.?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2330
@@ -4378,8 +4378,8 @@ msgstr "pmjnl"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2338
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME šif(r)., (p)ode., šif.po(m)ocí, pod.(j)ako, (o)bojí, (n)ic, pří(l).šif.? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
+msgstr "S/MIME šif(r)., (p)ode., šif.po(m)ocí, pod.(j)ako, (o)bojí, (n)ic, pří(l).šif.?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2341
@@ -4388,8 +4388,8 @@ msgstr "rpmjonl"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2348
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr "S/MIME šif(r)ovat, (p)odepsat, šifr. po(m)ocí, podep. (j)ako, (o)bojí či (n)ic? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?"
+msgstr "S/MIME šif(r)ovat, (p)odepsat, šifr. po(m)ocí, podep. (j)ako, (o)bojí či (n)ic?"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2351
@@ -4397,8 +4397,8 @@ msgid "eswabc"
 msgstr "rpmjon"
 
 #: ncrypt/smime.c:2415
-msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear? "
-msgstr "Vyberte rodinu algoritmů: (1) DES, (2) RC2, (3) AES nebo (n)ešifrovaný? "
+msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"
+msgstr "Vyberte rodinu algoritmů: (1) DES, (2) RC2, (3) AES nebo (n)ešifrovaný?"
 
 #. L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
 #: ncrypt/smime.c:2418
@@ -6239,7 +6239,7 @@ msgstr "Uložit do Fcc přílohy?"
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
 #: send.c:1567
-msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip? "
+msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr ""
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt

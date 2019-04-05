@@ -1564,7 +1564,7 @@ full_fcc:
              (r)etry tries the same mailbox again.
              alternate (m)ailbox prompts for a different mailbox to try.
              (s)kip aborts saving.  */
-          _("Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip? "),
+          _("Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"),
           /* L10N: These correspond to the "Fcc failed" multi-choice prompt
              (r)etry, alternate (m)ailbox, or (s)kip.
              Any similarity to famous leaders of the FSF is coincidental.  */

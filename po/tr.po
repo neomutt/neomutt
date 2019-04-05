@@ -234,13 +234,13 @@ msgstr "Dosya Maskesi: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: browser.c:1755
-msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
-msgstr "Tersine sıralama seçeneği: (t)arih, (a)lfabetik, (b)oyut, tarı(m), (s)ayı, (y)eni, (h)iç? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
+msgstr "Tersine sıralama seçeneği: (t)arih, (a)lfabetik, (b)oyut, tarı(m), (s)ayı, (y)eni, (h)iç?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
 #: browser.c:1758
-msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
-msgstr "Sıralama seçeneği: (t)arih, (a)lfabetik, (b)oyut, tarı(m), (s)ayı, (y)eni, (h)iç? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
+msgstr "Sıralama seçeneği: (t)arih, (a)lfabetik, (b)oyut, tarı(m), (s)ayı, (y)eni, (h)iç?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
 #: browser.c:1761
@@ -883,7 +883,7 @@ msgid "No PGP backend configured"
 msgstr ""
 
 #: compose.c:1945
-msgid "S/MIME already selected. Clear and continue? "
+msgid "S/MIME already selected. Clear and continue?"
 msgstr "S/MIME zaten seçili durumda. Önceki iptâl edilerek devam edilsin mi?"
 
 #: compose.c:1972
@@ -891,7 +891,7 @@ msgid "No S/MIME backend configured"
 msgstr ""
 
 #: compose.c:1980
-msgid "PGP already selected. Clear and continue? "
+msgid "PGP already selected. Clear and continue?"
 msgstr "PGP zaten seçili durumda. Önceki iptâl edilerek devam edilsin mi?"
 
 #: compress.c:382 compress.c:533
@@ -4002,8 +4002,8 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:5362
 #, fuzzy
-msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME i(m)zala, (f)arklı imzala, p(g)p, i(p)tal, veya (o)ppenc modu kapalı? "
+msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off?"
+msgstr "S/MIME i(m)zala, (f)arklı imzala, p(g)p, i(p)tal, veya (o)ppenc modu kapalı?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5364
@@ -4012,8 +4012,8 @@ msgstr "mfgpo"
 
 #: ncrypt/crypt_gpgme.c:5371
 #, fuzzy
-msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP i(m)zala, (f)arklı imzala, (s)/mime, i(p)tal, veya (o)ppenc modu kapalı? "
+msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP i(m)zala, (f)arklı imzala, (s)/mime, i(p)tal, veya (o)ppenc modu kapalı?"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5373
@@ -4022,8 +4022,8 @@ msgstr "mfspo"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5383
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, p(g)p, i(p)tal, veya (o)ppenc modu? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode?"
+msgstr "S/MIME şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, p(g)p, i(p)tal, veya (o)ppenc modu?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5386
@@ -4032,8 +4032,8 @@ msgstr "rmfkgpo"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5392
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
-msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, (s)/mime, i(p)tal, veya (o)ppenc modu? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode?"
+msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, (s)/mime, i(p)tal, veya (o)ppenc modu?"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5395
@@ -4041,8 +4041,8 @@ msgid "esabmco"
 msgstr "rmfkspo"
 
 #: ncrypt/crypt_gpgme.c:5406
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr "S/MIME şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, p(g)p, i(p)tal? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
+msgstr "S/MIME şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, p(g)p, i(p)tal?"
 
 #. L10N: S/MIME options
 #: ncrypt/crypt_gpgme.c:5408
@@ -4050,8 +4050,8 @@ msgid "esabpc"
 msgstr "rmfkgp"
 
 #: ncrypt/crypt_gpgme.c:5415
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, (s)/mime, i(p)tal? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
+msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, (s)/mime, i(p)tal?"
 
 #. L10N: PGP options
 #: ncrypt/crypt_gpgme.c:5417
@@ -4130,8 +4130,8 @@ msgstr "satır(i)çi"
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #: ncrypt/pgp.c:1877
 #, fuzzy, c-format
-msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, %s, i(p)tal? "
+msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, %s, i(p)tal?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4142,8 +4142,8 @@ msgstr "rmfkp"
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1889
 #, fuzzy
-msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, %s, i(p)tal? "
+msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, %s, i(p)tal?"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1891
@@ -4153,8 +4153,8 @@ msgstr "rmfkp"
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: ncrypt/pgp.c:1905
 #, fuzzy, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
-msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, %s, i(p)tal? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode?"
+msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, %s, i(p)tal?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4166,8 +4166,8 @@ msgstr "rmfkp"
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1917
 #, fuzzy
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, %s, i(p)tal? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
+msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, %s, i(p)tal?"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1920
@@ -4178,8 +4178,8 @@ msgstr "rmfkp"
 #. L10N: PGP options (inline)
 #: ncrypt/pgp.c:1931
 #, fuzzy, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
-msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, %s, i(p)tal? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear?"
+msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, %s, i(p)tal?"
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4191,8 +4191,8 @@ msgstr "rmfkp"
 #. L10N: PGP options
 #: ncrypt/pgp.c:1943
 #, fuzzy
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
-msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, %s, i(p)tal? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear?"
+msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, %s, i(p)tal?"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1945
@@ -4382,7 +4382,7 @@ msgstr ""
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2327
 #, fuzzy
-msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off?"
 msgstr "S/MIME şif(r)ele, i(m)zala, f(a)rklı şifrele, (f)arklı imzala, i(k)isi de, i(p)tal?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
@@ -4393,7 +4393,7 @@ msgstr "rmafkp"
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2338
 #, fuzzy
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
 msgstr "S/MIME şif(r)ele, i(m)zala, f(a)rklı şifrele, (f)arklı imzala, i(k)isi de, i(p)tal?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
@@ -4403,7 +4403,7 @@ msgstr "rmafkp"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2348
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?"
 msgstr "S/MIME şif(r)ele, i(m)zala, f(a)rklı şifrele, (f)arklı imzala, i(k)isi de, i(p)tal?"
 
 #. L10N: S/MIME options
@@ -4412,8 +4412,8 @@ msgid "eswabc"
 msgstr "rmafkp"
 
 #: ncrypt/smime.c:2415
-msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear? "
-msgstr "Algoritma ailesini seçin: (1) DES, (2) RC2, (3) AES, şifresi(z)? "
+msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"
+msgstr "Algoritma ailesini seçin: (1) DES, (2) RC2, (3) AES, şifresi(z)?"
 
 #. L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
 #: ncrypt/smime.c:2418
@@ -6315,7 +6315,7 @@ msgstr "eki metin olarak göster"
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
 #: send.c:1567
-msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip? "
+msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr ""
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt

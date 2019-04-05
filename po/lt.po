@@ -230,13 +230,13 @@ msgstr "Bylų kaukė: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: browser.c:1755
-msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
-msgstr "Atvirkščiai rikiuoti pagal (d)atą, (v)ardą, d(y)dį, (a)prašymą, (k)iekį, na(u)jų žinučių kiekį ar (n)erikiuoti? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
+msgstr "Atvirkščiai rikiuoti pagal (d)atą, (v)ardą, d(y)dį, (a)prašymą, (k)iekį, na(u)jų žinučių kiekį ar (n)erikiuoti?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
 #: browser.c:1758
-msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
-msgstr "Rikiuoti pagal (d)atą, (v)ardą, d(y)dį, (a)prašymą, (k)iekį, na(u)jų žinučių kiekį ar (n)erikiuoti? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
+msgstr "Rikiuoti pagal (d)atą, (v)ardą, d(y)dį, (a)prašymą, (k)iekį, na(u)jų žinučių kiekį ar (n)erikiuoti?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
 #: browser.c:1761
@@ -859,16 +859,16 @@ msgid "No PGP backend configured"
 msgstr "PGP nesukonfigūruotas"
 
 #: compose.c:1945
-msgid "S/MIME already selected. Clear and continue? "
-msgstr "S/MIME jau pasirinktas. Išjungti ir tęsti? "
+msgid "S/MIME already selected. Clear and continue?"
+msgstr "S/MIME jau pasirinktas. Išjungti ir tęsti?"
 
 #: compose.c:1972
 msgid "No S/MIME backend configured"
 msgstr "S/MIME nesukonfigūruotas"
 
 #: compose.c:1980
-msgid "PGP already selected. Clear and continue? "
-msgstr "PGP jau pasirinktas. Išjungti ir tęsti? "
+msgid "PGP already selected. Clear and continue?"
+msgstr "PGP jau pasirinktas. Išjungti ir tęsti?"
 
 #: compress.c:382 compress.c:533
 #, c-format
@@ -3984,8 +3984,8 @@ msgid "GPGME: CMS protocol not available"
 msgstr "GPGME: CMS protokolas nepasiekiamas"
 
 #: ncrypt/crypt_gpgme.c:5362
-msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME: pa(s)irašyti, pasirašyt k(a)ip, (p)gp, (n)ereikia ar išjungti (o)portunistinį šifravimą? "
+msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off?"
+msgstr "S/MIME: pa(s)irašyti, pasirašyt k(a)ip, (p)gp, (n)ereikia ar išjungti (o)portunistinį šifravimą?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5364
@@ -3993,8 +3993,8 @@ msgid "sapco"
 msgstr "sapno"
 
 #: ncrypt/crypt_gpgme.c:5371
-msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP: pa(s)irašyti, pasirašyt k(a)ip, s/(m)ime, (n)ereikia ar išjungti (o)portunistinį šifravimą? "
+msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP: pa(s)irašyti, pasirašyt k(a)ip, s/(m)ime, (n)ereikia ar išjungti (o)portunistinį šifravimą?"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5373
@@ -4003,8 +4003,8 @@ msgstr "samno"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5383
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME: (š)ifruoti, pa(s)irašyti, pasirašyti k(a)ip, a(b)u, (p)gp, (n)ereikia ar įjungti (o)portunistinį šifravimą? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode?"
+msgstr "S/MIME: (š)ifruoti, pa(s)irašyti, pasirašyti k(a)ip, a(b)u, (p)gp, (n)ereikia ar įjungti (o)portunistinį šifravimą?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5386
@@ -4013,8 +4013,8 @@ msgstr "šsabpno"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5392
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
-msgstr "PGP: (š)ifruoti, pa(s)irašyti, pasirašyti k(a)ip, a(b)u, s/(m)ime, (n)ereikia ar įjungti (o)portunistinį šifravimą? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode?"
+msgstr "PGP: (š)ifruoti, pa(s)irašyti, pasirašyti k(a)ip, a(b)u, s/(m)ime, (n)ereikia ar įjungti (o)portunistinį šifravimą?"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5395
@@ -4022,8 +4022,8 @@ msgid "esabmco"
 msgstr "šsabmno"
 
 #: ncrypt/crypt_gpgme.c:5406
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr "S/MIME: (š)ifruoti, pa(s)irašyti, pasirašyti k(a)ip, a(b)u, (p)gp ar (n)ereikia? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
+msgstr "S/MIME: (š)ifruoti, pa(s)irašyti, pasirašyti k(a)ip, a(b)u, (p)gp ar (n)ereikia?"
 
 #. L10N: S/MIME options
 #: ncrypt/crypt_gpgme.c:5408
@@ -4031,8 +4031,8 @@ msgid "esabpc"
 msgstr "šsabpn"
 
 #: ncrypt/crypt_gpgme.c:5415
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr "PGP: (š)ifruoti, pa(s)irašyti, pasirašyti k(a)ip, a(b)u, s/(m)ime ar (n)ereikia? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
+msgstr "PGP: (š)ifruoti, pa(s)irašyti, pasirašyti k(a)ip, a(b)u, s/(m)ime ar (n)ereikia?"
 
 #. L10N: PGP options
 #: ncrypt/crypt_gpgme.c:5417
@@ -4111,8 +4111,8 @@ msgstr "(i)nline"
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #: ncrypt/pgp.c:1877
 #, c-format
-msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP: pa(s)irašyti, pasirašyti k(a)ip, %s formatu, (n)ereikia ar išjungti (o)portunistinį šifravimą? "
+msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP: pa(s)irašyti, pasirašyti k(a)ip, %s formatu, (n)ereikia ar išjungti (o)portunistinį šifravimą?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4122,8 +4122,8 @@ msgstr "saino"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1889
-msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP: pa(s)irašyti, pasirašyti k(a)ip, (n)ereikia ar išjungti (o)portunistinį šifravimą? "
+msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off?"
+msgstr "PGP: pa(s)irašyti, pasirašyti k(a)ip, (n)ereikia ar išjungti (o)portunistinį šifravimą?"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1891
@@ -4133,8 +4133,8 @@ msgstr "sano"
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: ncrypt/pgp.c:1905
 #, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
-msgstr "PGP: (š)ifruoti, pa(s)irašyti, pasirašyti k(a)ip, a(b)u, %s formatu, (n)ereikia ar įjungti (o)portunistinį šifravimą? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode?"
+msgstr "PGP: (š)ifruoti, pa(s)irašyti, pasirašyti k(a)ip, a(b)u, %s formatu, (n)ereikia ar įjungti (o)portunistinį šifravimą?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4144,8 +4144,8 @@ msgstr "šsabino"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1917
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "PGP: (š)ifruoti, pa(s)irašyti, pasirašyti k(a)ip, a(b)u, (n)ereikia, ar įjungti (o)portunistinį šifravimą? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
+msgstr "PGP: (š)ifruoti, pa(s)irašyti, pasirašyti k(a)ip, a(b)u, (n)ereikia, ar įjungti (o)portunistinį šifravimą?"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1920
@@ -4155,8 +4155,8 @@ msgstr "šsabno"
 #. L10N: PGP options (inline)
 #: ncrypt/pgp.c:1931
 #, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
-msgstr "PGP: (š)ifruoti, pa(s)irašyti, pasirašyti k(a)ip, a(b)u, %s formatu ar (n)ereikia? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear?"
+msgstr "PGP: (š)ifruoti, pa(s)irašyti, pasirašyti k(a)ip, a(b)u, %s formatu ar (n)ereikia?"
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4166,8 +4166,8 @@ msgstr "šsabin"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1943
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
-msgstr "PGP: (š)ifruoti, pa(s)irašyti, pasirašyti k(a)ip, a(b)u ar (n)ereikia? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear?"
+msgstr "PGP: (š)ifruoti, pa(s)irašyti, pasirašyti k(a)ip, a(b)u ar (n)ereikia?"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1945
@@ -4353,8 +4353,8 @@ msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2327
-msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME: pa(s)irašyti, šifruo(t)i su, pasirašyti k(a)ip, (n)ereikia ar išjungti (o)portunistinį šifravimą? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off?"
+msgstr "S/MIME: pa(s)irašyti, šifruo(t)i su, pasirašyti k(a)ip, (n)ereikia ar išjungti (o)portunistinį šifravimą?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2330
@@ -4363,8 +4363,8 @@ msgstr "stano"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2338
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME: (š)ifruoti, pa(s)irašyti, šifruo(t)i su, pasirašyt k(a)ip, a(b)u, (n)ereikia ar įjungti (o)portunistinį šifravimą? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
+msgstr "S/MIME: (š)ifruoti, pa(s)irašyti, šifruo(t)i su, pasirašyt k(a)ip, a(b)u, (n)ereikia ar įjungti (o)portunistinį šifravimą?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2341
@@ -4373,8 +4373,8 @@ msgstr "šstabno"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2348
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr "S/MIME: (š)ifruoti, pa(s)irašyti, užšifruo(t)i su, pasirašyt k(a)ip, a(b)u ar (n)ereikia? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?"
+msgstr "S/MIME: (š)ifruoti, pa(s)irašyti, užšifruo(t)i su, pasirašyt k(a)ip, a(b)u ar (n)ereikia?"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2351
@@ -4382,8 +4382,8 @@ msgid "eswabc"
 msgstr "šstabn"
 
 #: ncrypt/smime.c:2415
-msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear? "
-msgstr "Pasirinkite algoritmą: (1) DES, (2) RC2, (3) AES ar (n)ereikia? "
+msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"
+msgstr "Pasirinkite algoritmą: (1) DES, (2) RC2, (3) AES ar (n)ereikia?"
 
 #. L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
 #: ncrypt/smime.c:2418
@@ -6223,7 +6223,7 @@ msgstr "Išsaugoti priedus Fcc?"
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
 #: send.c:1567
-msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip? "
+msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr ""
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt
