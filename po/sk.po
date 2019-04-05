@@ -3087,7 +3087,7 @@ msgstr ""
 #. These three letters correspond to the choices in the string.
 #: muttlib.c:703
 #, fuzzy
-msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
+msgid "File is a directory, save under it: (y)es, (n)o, (a)ll?"
 msgstr "Súbor je adresár, uložiť v ňom?"
 
 #: muttlib.c:703

@@ -3042,8 +3042,8 @@ msgstr "/dev/urandom skaitymas: %s"
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
 #. These three letters correspond to the choices in the string.
 #: muttlib.c:703
-msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
-msgstr "Byla yra katalogas, saugoti joje? [(t)aip, (n)e, (v)isiems]"
+msgid "File is a directory, save under it: (y)es, (n)o, (a)ll?"
+msgstr "Byla yra katalogas, saugoti joje? (t)aip, (n)e, (v)isiems"
 
 #: muttlib.c:703
 msgid "yna"

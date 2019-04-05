@@ -3011,8 +3011,8 @@ msgstr "读取 /dev/urandom：%s"
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
 #. These three letters correspond to the choices in the string.
 #: muttlib.c:703
-msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
-msgstr "文件是一个目录，在其下保存吗？[是(y), 否(n), 全部(a)]"
+msgid "File is a directory, save under it: (y)es, (n)o, (a)ll?"
+msgstr "文件是一个目录，在其下保存吗？是(y), 否(n), 全部(a)"
 
 #: muttlib.c:703
 msgid "yna"

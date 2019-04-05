@@ -3036,8 +3036,8 @@ msgstr "leer /dev/urandom: %s"
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
 #. These three letters correspond to the choices in the string.
 #: muttlib.c:703
-msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
-msgstr "Este archivo es un directorio, ¿guardar en él? [(s)í, (n)o, (t)odos]"
+msgid "File is a directory, save under it: (y)es, (n)o, (a)ll?"
+msgstr "Este archivo es un directorio, ¿guardar en él? (s)í, (n)o, (t)odos"
 
 #: muttlib.c:703
 msgid "yna"

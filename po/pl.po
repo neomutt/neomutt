@@ -2984,8 +2984,8 @@ msgstr ""
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
 #. These three letters correspond to the choices in the string.
 #: muttlib.c:703
-msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
-msgstr "Ten plik jest katalogim, zapisać w nim? [(t)ak, (n)ie, (w)szystkie]"
+msgid "File is a directory, save under it: (y)es, (n)o, (a)ll?"
+msgstr "Ten plik jest katalogim, zapisać w nim? (t)ak, (n)ie, (w)szystkie"
 
 #: muttlib.c:703
 msgid "yna"

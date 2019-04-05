@@ -3111,8 +3111,8 @@ msgstr ""
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
 #. These three letters correspond to the choices in the string.
 #: muttlib.c:703
-msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
-msgstr "Файлът е директория. Желаете ли да запишете в нея? [(y) да, (n) не, (a) всички]"
+msgid "File is a directory, save under it: (y)es, (n)o, (a)ll?"
+msgstr "Файлът е директория. Желаете ли да запишете в нея? (y) да, (n) не, (a) всички"
 
 #: muttlib.c:703
 msgid "yna"
