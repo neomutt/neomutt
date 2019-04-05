@@ -3020,7 +3020,7 @@ msgstr "ler /dev/urandom: %s"
 #. These three letters correspond to the choices in the string.
 #: muttlib.c:703
 msgid "File is a directory, save under it: (y)es, (n)o, (a)ll?"
-msgstr "O caminho é um diretório, salvar ali dentro? y)sim, n)não, a)todos"
+msgstr "O caminho é um diretório, salvar ali dentro? (y)sim, (n)não, (a)todos"
 
 #: muttlib.c:703
 msgid "yna"
@@ -3038,7 +3038,7 @@ msgstr "Arquivo no diretório: "
 
 #: muttlib.c:738
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
-msgstr "Arquivo existe, o)sobrescreve, a)concatena ou c)cancela?"
+msgstr "Arquivo existe, (o)sobrescreve, (a)concatena ou (c)cancela?"
 
 #. L10N: Options for: File exists, (o)verwrite, (a)ppend, or (c)ancel?
 #: muttlib.c:740
@@ -3957,7 +3957,7 @@ msgstr "GPGME: protocolo CMS indisponível"
 
 #: ncrypt/crypt_gpgme.c:5362
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off?"
-msgstr "s)assinar S/MIME, a)assinar como, p)pgp, c)limpar, o)desligar modo oppenc?"
+msgstr "(s)assinar S/MIME, (a)assinar como, (p)pgp, (c)limpar, (o)desligar modo oppenc?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5364
@@ -3966,7 +3966,7 @@ msgstr "sapco"
 
 #: ncrypt/crypt_gpgme.c:5371
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off?"
-msgstr "s)assinar PGP, a)assinar como, m)s/mime, c)limpar, o)desligar modo oppenc?"
+msgstr "(s)assinar PGP, (a)assinar como, (m)s/mime, (c)limpar, (o)desligar modo oppenc?"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5373
@@ -3976,7 +3976,7 @@ msgstr "samco"
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5383
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode?"
-msgstr "e)encriptar, s)assinar, a)assinar como, b)ambos, p)pgp, c)limpar, ou o)oppenc?"
+msgstr "(e)encriptar, (s)assinar, (a)assinar como, (b)ambos, (p)pgp, (c)limpar, ou (o)oppenc?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5386
@@ -3986,7 +3986,7 @@ msgstr "esabpco"
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5392
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode?"
-msgstr "e)encriptar, s)assinar, a)assinar como, b)ambos, m)s/mime, c)limpar, ou o)oppenc?"
+msgstr "(e)encriptar, (s)assinar, (a)assinar como, (b)ambos, (m)s/mime, (c)limpar, ou (o)oppenc?"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5395
@@ -3995,7 +3995,7 @@ msgstr "esabmco"
 
 #: ncrypt/crypt_gpgme.c:5406
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
-msgstr "e)encriptar com S/MIME, s)assinar, a)assinar como, b)ambos, p)pgp, ou c)limpar"
+msgstr "(e)encriptar com S/MIME, (s)assinar, (a)assinar como, (b)ambos, (p)pgp, ou (c)limpar"
 
 #. L10N: S/MIME options
 #: ncrypt/crypt_gpgme.c:5408
@@ -4004,7 +4004,7 @@ msgstr "esabpc"
 
 #: ncrypt/crypt_gpgme.c:5415
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
-msgstr "e)encriptar com PGP, s)assinar, a)assinar como, b)ambos, m)s/mime, ou c)limpar"
+msgstr "(e)encriptar com PGP, (s)assinar, (a)assinar como, (b)ambos, (m)s/mime, ou (c)limpar"
 
 #. L10N: PGP options
 #: ncrypt/crypt_gpgme.c:5417
@@ -4084,7 +4084,7 @@ msgstr "i)incorporado"
 #: ncrypt/pgp.c:1877
 #, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off?"
-msgstr "s)assinar com PGP, a) assinar como, %s format, c)limpar, ou o)desligar modo oppenc?"
+msgstr "(s)assinar com PGP, (a) assinar como, %s format, (c)limpar, ou (o)desligar modo oppenc?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4095,7 +4095,7 @@ msgstr "saico"
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1889
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off?"
-msgstr "s)assinar com PGP, a) assinar como, c)limpar, ou o)desligar modo oppenc?"
+msgstr "(s)assinar com PGP, (a) assinar como, (c)limpar, ou (o)desligar modo oppenc?"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1891
@@ -4106,7 +4106,7 @@ msgstr "saco"
 #: ncrypt/pgp.c:1905
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode?"
-msgstr "e)encriptar, s)assinar, a)assinar como, b)ambos, %s format, c)limpar, ou o)modo oppenc?"
+msgstr "(e)encriptar, (s)assinar, (a)assinar como, (b)ambos, %s format, (c)limpar, ou (o)modo oppenc?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4117,7 +4117,7 @@ msgstr "esabico"
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1917
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
-msgstr "e)encriptar com PGP, s)assinar, a)assinar como, b)ambos, c)limpar, ou o)modo oppenc?"
+msgstr "(e)encriptar com PGP, (s)assinar, (a)assinar como, (b)ambos, (c)limpar, ou (o)modo oppenc?"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1920
@@ -4128,7 +4128,7 @@ msgstr "esabco"
 #: ncrypt/pgp.c:1931
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear?"
-msgstr "e)encriptar com PGP, s)assinar, a)assinar como, b)ambos, %s format, ou c)limpar?"
+msgstr "(e)encriptar com PGP, (s)assinar, (a)assinar como, (b)ambos, %s format, ou (c)limpar?"
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4139,7 +4139,7 @@ msgstr "esabic"
 #. L10N: PGP options
 #: ncrypt/pgp.c:1943
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear?"
-msgstr "e)encriptar com PGP, s)assinar, a)assinar como, b)ambos, ou c)limpar?"
+msgstr "(e)encriptar com PGP, (s)assinar, (a)assinar como, (b)ambos, ou (c)limpar?"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1945
@@ -4326,7 +4326,7 @@ msgstr ""
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2327
 msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off?"
-msgstr "s)assinar com S/MIME, w)encriptar com, a)assinar como, c)limpar, ou o)modo oppenc desligado?"
+msgstr "(s)assinar com S/MIME, (w)encriptar com, (a)assinar como, (c)limpar, ou (o)modo oppenc desligado?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2330
@@ -4336,7 +4336,7 @@ msgstr "swaco"
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2338
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
-msgstr "e)encriptar com S/MIME, s)assinar, w)encriptar com, a)assinar como, b)ambos, c)limpar, ou o)modo oppenc?"
+msgstr "(e)encriptar com S/MIME, (s)assinar, (w)encriptar com, (a)assinar como, (b)ambos, (c)limpar, ou (o)modo oppenc?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2341
@@ -4346,7 +4346,7 @@ msgstr "eswabco"
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2348
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?"
-msgstr "e)encriptar com S/MIME, s)assinar, w)encriptar com, a)assinar como, b)ambos, c)limpar?"
+msgstr "(e)encriptar com S/MIME, (s)assinar, (w)encriptar com, (a)assinar como, (b)ambos, (c)limpar?"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2351
@@ -4355,7 +4355,7 @@ msgstr "eswabc"
 
 #: ncrypt/smime.c:2415
 msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"
-msgstr "Escolha uma família de algorítimos: 1)DES, 2)RC2, 3)AES, or c)limpar?"
+msgstr "Escolha uma família de algorítimos: (1) DES, (2) RC2, (3) AES, or (c)limpar?"
 
 #. L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
 #: ncrypt/smime.c:2418
@@ -4364,7 +4364,7 @@ msgstr "123c"
 
 #: ncrypt/smime.c:2421
 msgid "(1) DES, (2) Triple-DES?"
-msgstr "1)DES, 2)Triple-DES "
+msgstr "(1) DES, (2) Triple-DES?"
 
 #. L10N: Options for: (1) DES, (2) Triple-DES
 #: ncrypt/smime.c:2423
@@ -4373,7 +4373,7 @@ msgstr "12"
 
 #: ncrypt/smime.c:2436
 msgid "(1) RC2-40, (2) RC2-64, (3) RC2-128?"
-msgstr "1)RC2-40, 2)RC2-64, 3)RC2-128 "
+msgstr "(1) RC2-40, (2) RC2-64, (3) RC2-128?"
 
 #. L10N: Options for: (1) RC2-40, (2) RC2-64, (3) RC2-128
 #. L10N: Options for: (1) AES128, (2) AES192, (3) AES256
@@ -4383,7 +4383,7 @@ msgstr "123"
 
 #: ncrypt/smime.c:2454
 msgid "(1) AES128, (2) AES192, (3) AES256?"
-msgstr "1)AES128, 2)AES192, 3)AES256 "
+msgstr "(1) AES128, (2) AES192, (3) AES256?"
 
 #: nntp/newsrc.c:628
 msgid "Loading list of groups from cache..."

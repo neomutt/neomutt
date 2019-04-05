@@ -230,13 +230,13 @@ msgstr "ファイルマスク: "
 #: browser.c:1755
 #, fuzzy
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
-msgstr "逆順の整列 (d:日付, a:ABC順, z:サイズ, n:整列しない)"
+msgstr "逆順の整列 (d)日付, (a)ABC順, (z)サイズ, (n)整列しない"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
 #: browser.c:1758
 #, fuzzy
 msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
-msgstr "整列 (d:日付, a:ABC順, z:サイズ, n:整列しない)"
+msgstr "整列 (d)日付, (a)ABC順, (z)サイズ, (n)整列しない"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
 #: browser.c:1761
@@ -438,12 +438,12 @@ msgstr[0] "メッセージは印刷できなかった"
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:720
 msgid "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?"
-msgstr "逆順(d:時 f:送者 r:着順 s:題 o:宛 t:スレ u:無 z:長 c:得点 p:スパム l:ラベル)"
+msgstr "逆順 (d)時 (f)送者 (r)着順 (s)題 (o)宛 (t)スレ (u)無 (z)長 (c)得点 (p)スパム (l)ラベル"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: commands.c:724
 msgid "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?"
-msgstr "整列(d:時 f:送者 r:着順 s:題 o:宛 t:スレ u:無 z:長 c:得点 p:スパム l:ラベル)"
+msgstr "整列 (d)時 (f)送者 (r)着順 (s)題 (o)宛 (t)スレ (u)無 (z)長 (c)得点 (p)スパム (l)ラベル"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: commands.c:728
@@ -3023,7 +3023,7 @@ msgstr ""
 #. These three letters correspond to the choices in the string.
 #: muttlib.c:703
 msgid "File is a directory, save under it: (y)es, (n)o, (a)ll?"
-msgstr "そこはディレクトリ。その中に保存? (y:する, n:しない, a:すべて保存)"
+msgstr "そこはディレクトリ。その中に保存? (y)する, (n)しない, (a)すべて保存)"
 
 #: muttlib.c:703
 msgid "yna"
@@ -3042,7 +3042,7 @@ msgstr "ディレクトリ配下のファイル: "
 
 #: muttlib.c:738
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
-msgstr "ファイルが存在する。o:上書き, a:追加, c:中止"
+msgstr "ファイルが存在する。(o)上書き, (a)追加, (c)中止"
 
 #. L10N: Options for: File exists, (o)verwrite, (a)ppend, or (c)ancel?
 #: muttlib.c:740
@@ -3971,7 +3971,7 @@ msgstr "GPGME: CMS プロトコルが利用できない"
 
 #: ncrypt/crypt_gpgme.c:5362
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off?"
-msgstr "S/MIME s:署名, a:署名鍵選択, p:PGP, c:なし, o:日和見暗号オフ "
+msgstr "S/MIME (s)署名, (a)署名鍵選択, (p)PGP, (c)なし, (o)日和見暗号オフ "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5364
@@ -3980,7 +3980,7 @@ msgstr "sapco"
 
 #: ncrypt/crypt_gpgme.c:5371
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off?"
-msgstr "PGP s:署名, a:署名鍵選択, m:S/MIME, c:なし, o:日和見暗号オフ "
+msgstr "PGP (s)署名, (a)署名鍵選択, (m)S/MIME, (c)なし, (o)日和見暗号オフ "
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5373
@@ -3991,7 +3991,7 @@ msgstr "samco"
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5383
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode?"
-msgstr "S/MIME e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, p:PGP, c:なし, o:日和見暗号 "
+msgstr "S/MIME (e)暗号化, (s)署名, (a)署名鍵選択, (b)暗号+署名, (p)PGP, (c)なし, (o)日和見暗号 "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5386
@@ -4001,7 +4001,7 @@ msgstr "esabpco"
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5392
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode?"
-msgstr "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, m:S/MIME, c:なし, o:日和見暗号 "
+msgstr "PGP (e)暗号化, (s)署名, (a)署名鍵選択, (b)暗号+署名, (m)S/MIME, (c)なし, (o)日和見暗号 "
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5395
@@ -4010,7 +4010,7 @@ msgstr "esabmco"
 
 #: ncrypt/crypt_gpgme.c:5406
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
-msgstr "S/MIME e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, p:PGP, c:なし "
+msgstr "S/MIME (e)暗号化, (s)署名, (a)署名鍵選択, (b)暗号+署名, (p)PGP, (c)なし "
 
 #. L10N: S/MIME options
 #: ncrypt/crypt_gpgme.c:5408
@@ -4019,7 +4019,7 @@ msgstr "esabpc"
 
 #: ncrypt/crypt_gpgme.c:5415
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
-msgstr "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, m:S/MIME, c:なし "
+msgstr "PGP (e)暗号化, (s)署名, (a)署名鍵選択, (b)暗号+署名, (m)S/MIME, (c)なし "
 
 #. L10N: PGP options
 #: ncrypt/crypt_gpgme.c:5417
@@ -4099,7 +4099,7 @@ msgstr "i:インライン"
 #: ncrypt/pgp.c:1877
 #, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off?"
-msgstr "PGP s:署名, a:署名鍵選択, %s形式, c:なし, o:日和見暗号オフ "
+msgstr "PGP (s)署名, (a)署名鍵選択, %s形式, (c)なし, (o)日和見暗号オフ "
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4110,7 +4110,7 @@ msgstr "saico"
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1889
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off?"
-msgstr "PGP s:署名, a:署名鍵選択, c:なし, o:日和見暗号オフ "
+msgstr "PGP (s)署名, (a)署名鍵選択, (c)なし, (o)日和見暗号オフ "
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1891
@@ -4121,7 +4121,7 @@ msgstr "saco"
 #: ncrypt/pgp.c:1905
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode?"
-msgstr "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, %s形式, c:なし, o:日和見暗号 "
+msgstr "PGP (e)暗号化, (s)署名, (a)署名鍵選択, (b)暗号+署名, %s形式, (c)なし, (o)日和見暗号 "
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4132,7 +4132,7 @@ msgstr "esabico"
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1917
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
-msgstr "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, c:なし, o:日和見暗号 "
+msgstr "PGP (e)暗号化, (s)署名, (a)署名鍵選択, (b)暗号+署名, (c)なし, (o)日和見暗号 "
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1920
@@ -4143,7 +4143,7 @@ msgstr "esabco"
 #: ncrypt/pgp.c:1931
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear?"
-msgstr "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, %s形式, c:なし "
+msgstr "PGP (e)暗号化, (s)署名, (a)署名鍵選択, (b)暗号+署名, %s形式, (c)なし "
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4154,7 +4154,7 @@ msgstr "esabic"
 #. L10N: PGP options
 #: ncrypt/pgp.c:1943
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear?"
-msgstr "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, c:なし "
+msgstr "PGP (e)暗号化, (s)署名, (a)署名鍵選択, (b)暗号+署名, (c)なし "
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1945
@@ -4343,7 +4343,7 @@ msgstr ""
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2327
 msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off?"
-msgstr "S/MIME s:署名, w:暗号選択, a:署名鍵選択, c:なし, o:日和見暗号オフ "
+msgstr "S/MIME (s)署名, (w)暗号選択, (a)署名鍵選択, (c)なし, (o)日和見暗号オフ "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2330
@@ -4354,7 +4354,7 @@ msgstr "swaco"
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2338
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
-msgstr "S/MIME e:暗号化,s:署名,w:暗号選択,a:署名鍵選択,b:暗号+署名,c:なし,o:日和見暗号 "
+msgstr "S/MIME (e)暗号化,(s)署名,(w)暗号選択,(a)署名鍵選択,(b)暗号+署名,(c)なし,(o)日和見暗号 "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2341
@@ -4364,7 +4364,7 @@ msgstr "eswabco"
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2348
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?"
-msgstr "S/MIME e:暗号化, s:署名, w:暗号選択, a:署名鍵選択, b:暗号+署名, c:なし "
+msgstr "S/MIME (e)暗号化, (s)署名, (w)暗号選択, (a)署名鍵選択, (b)暗号+署名, (c)なし "
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2351

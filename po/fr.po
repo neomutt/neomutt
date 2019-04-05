@@ -4155,7 +4155,7 @@ msgstr "GPGME : protocole CMS non disponible"
 
 #: ncrypt/crypt_gpgme.c:5362
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off?"
-msgstr "Signer s/mime, En tant que, Pgp, Rien, ou mode Oppenc inactif?"
+msgstr "(S)igner s/mime, (E)n tant que, (P)gp, (R)ien, ou mode (O)ppenc inactif?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5364
@@ -4164,7 +4164,7 @@ msgstr "sepro"
 
 #: ncrypt/crypt_gpgme.c:5371
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off?"
-msgstr "Signer pgp, En tant que, s/Mime, Rien, ou mode Oppenc inactif?"
+msgstr "(S)igner pgp, (E)n tant que, s/(M)ime, (R)ien, ou mode (O)ppenc inactif?"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:5373
@@ -4174,7 +4174,7 @@ msgstr "semro"
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5383
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode?"
-msgstr "Chiffrer s/mime, Signer, En tant que, les Deux, Pgp, Rien, ou mode Oppenc?"
+msgstr "(C)hiffrer s/mime, (S)igner, (E)n tant que, les (D)eux, (P)gp, (R)ien, ou mode (O)ppenc?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5386
@@ -4184,7 +4184,7 @@ msgstr "csedpro"
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5392
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode?"
-msgstr "Chiffrer pgp, Signer, En tant que, les Deux, s/Mime, Rien, ou mode Oppenc?"
+msgstr "(C)hiffrer pgp, (S)igner, (E)n tant que, les (D)eux, s/(M)ime, (R)ien, ou mode (O)ppenc?"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5395
@@ -4193,7 +4193,7 @@ msgstr "csedmro"
 
 #: ncrypt/crypt_gpgme.c:5406
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
-msgstr "Chiffrer s/mime, Signer, En tant que, les Deux, Pgp, ou Rien?"
+msgstr "(C)hiffrer s/mime, (S)igner, (E)n tant que, les (D)eux, (P)gp, ou (R)ien?"
 
 #. L10N: S/MIME options
 #: ncrypt/crypt_gpgme.c:5408
@@ -4202,7 +4202,7 @@ msgstr "csedpr"
 
 #: ncrypt/crypt_gpgme.c:5415
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
-msgstr "Chiffrer pgp, Signer, En tant que, les Deux, s/Mime, ou Rien?"
+msgstr "(C)hiffrer pgp, (S)igner, (E)n tant que, les (D)eux, s/(M)ime, ou (R)ien?"
 
 #. L10N: PGP options
 #: ncrypt/crypt_gpgme.c:5417
@@ -4270,19 +4270,19 @@ msgstr "Impossible d'invoquer PGP"
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1859
 msgid "PGP/M(i)ME"
-msgstr "pgp/mIme"
+msgstr "pgp/m(I)me"
 
 #. L10N: The previous string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1865
 msgid "(i)nline"
-msgstr "en lIgne"
+msgstr "en l(I)gne"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #: ncrypt/pgp.c:1877
 #, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off?"
-msgstr "Signer pgp, En tant que, format %s, Rien, ou mode Oppenc inactif?"
+msgstr "(S)igner pgp, (E)n tant que, format %s, (R)ien, ou mode (O)ppenc inactif?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4293,7 +4293,7 @@ msgstr "seiro"
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1889
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off?"
-msgstr "Signer pgp, En tant que, Rien, ou mode Oppenc inactif?"
+msgstr "(S)igner pgp, (E)n tant que, (R)ien, ou mode (O)ppenc inactif?"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1891
@@ -4304,7 +4304,7 @@ msgstr "sero"
 #: ncrypt/pgp.c:1905
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode?"
-msgstr "Chiffrer pgp, Signer, En tant que, les Deux, format %s, Rien, ou Oppenc?"
+msgstr "(C)hiffrer pgp, (S)igner, (E)n tant que, les (D)eux, format %s, (R)ien, ou (O)ppenc?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4315,7 +4315,7 @@ msgstr "csediro"
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1917
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
-msgstr "Chiffrer pgp, Signer, En tant que, les Deux, Rien, ou mode Oppenc?"
+msgstr "(C)hiffrer pgp, (S)igner, (E)n tant que, les (D)eux, (R)ien, ou mode (O)ppenc?"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1920
@@ -4326,7 +4326,7 @@ msgstr "csedro"
 #: ncrypt/pgp.c:1931
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear?"
-msgstr "Chiffrer pgp, Signer, En tant que, les Deux, format %s, ou Rien?"
+msgstr "(C)hiffrer pgp, (S)igner, (E)n tant que, les (D)eux, format %s, ou (R)ien?"
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -4337,7 +4337,7 @@ msgstr "csedir"
 #. L10N: PGP options
 #: ncrypt/pgp.c:1943
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear?"
-msgstr "Chiffrer pgp, Signer, En tant que, les Deux, ou Rien?"
+msgstr "(C)hiffrer pgp, (S)igner, (E)n tant que, les (D)eux, ou (R)ien?"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1945
@@ -4529,7 +4529,7 @@ msgstr ""
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2327
 msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off?"
-msgstr "Signer s/mime, chiffer Avec, signer En tant que, Rien, ou Oppenc inactif?"
+msgstr "(S)igner s/mime, chiffer (A)vec, signer (E)n tant que, (R)ien, ou (O)ppenc inactif?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2330
@@ -4539,7 +4539,7 @@ msgstr "saero"
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2338
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
-msgstr "Ch. s/mime, Signer, ch. Avec, signer En tant que, les Deux, Rien, ou Oppenc?"
+msgstr "(C)h. s/mime, (S)igner, ch. (A)vec, signer (E)n tant que, les (D)eux, (R)ien, ou (O)ppenc?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2341
@@ -4549,7 +4549,7 @@ msgstr "csaedro"
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2348
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?"
-msgstr "Chiffrer s/mime, Signer, ch. Avec, signer En tant que, les Deux, ou Rien?"
+msgstr "(C)hiffrer s/mime, (S)igner, ch. (A)vec, signer (E)n tant que, les (D)eux, ou (R)ien?"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2351
