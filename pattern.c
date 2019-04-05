@@ -1478,7 +1478,7 @@ struct PatternHead *mutt_pattern_comp(/* const */ char *s, int flags, struct Buf
           p = find_matching_paren(ps.dptr + 1);
           if (*p != ')')
           {
-            mutt_buffer_printf(err, _("mismatched brackets: %s"), ps.dptr);
+            mutt_buffer_printf(err, _("mismatched parentheses: %s"), ps.dptr);
             goto cleanup;
           }
           tmp = mutt_pattern_node_new();
@@ -1575,7 +1575,7 @@ struct PatternHead *mutt_pattern_comp(/* const */ char *s, int flags, struct Buf
         p = find_matching_paren(ps.dptr + 1);
         if (*p != ')')
         {
-          mutt_buffer_printf(err, _("mismatched parenthesis: %s"), ps.dptr);
+          mutt_buffer_printf(err, _("mismatched parentheses: %s"), ps.dptr);
           goto cleanup;
         }
         /* compile the sub-expression */

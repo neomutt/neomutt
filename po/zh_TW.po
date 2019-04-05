@@ -5947,7 +5947,7 @@ msgstr "錯失參數"
 
 #: pattern.c:1578
 #, c-format
-msgid "mismatched parenthesis: %s"
+msgid "mismatched parentheses: %s"
 msgstr "不對稱的括弧：%s"
 
 #: pattern.c:1611

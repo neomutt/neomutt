@@ -5796,7 +5796,7 @@ msgstr "відсутній параметр"
 
 #: pattern.c:1578
 #, c-format
-msgid "mismatched parenthesis: %s"
+msgid "mismatched parentheses: %s"
 msgstr "невідповідна дужка: %s"
 
 #: pattern.c:1611

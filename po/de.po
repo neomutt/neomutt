@@ -5708,7 +5708,7 @@ msgstr "Fehlendes Parameterargument"
 
 #: pattern.c:1578
 #, c-format
-msgid "mismatched parenthesis: %s"
+msgid "mismatched parentheses: %s"
 msgstr "Unpassende Klammern: %s"
 
 #: pattern.c:1611

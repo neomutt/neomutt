@@ -60,7 +60,7 @@ int AddressError = 0;
  * These must defined in the same order as enum AddressError.
  */
 const char *const AddressErrors[] = {
-  "out of memory",   "mismatched parenthesis", "mismatched quotes",
+  "out of memory",   "mismatched parentheses", "mismatched quotes",
   "bad route in <>", "bad address in <>",      "bad address spec",
 };
 

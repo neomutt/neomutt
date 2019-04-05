@@ -6085,7 +6085,7 @@ msgstr "Manca un paràmetre."
 
 #: pattern.c:1578
 #, c-format
-msgid "mismatched parenthesis: %s"
+msgid "mismatched parentheses: %s"
 msgstr "Els parèntesis no estan aparellats: %s"
 
 #: pattern.c:1611

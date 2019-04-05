@@ -5690,8 +5690,8 @@ msgstr "missing parameter"
 
 #: pattern.c:1578
 #, c-format
-msgid "mismatched parenthesis: %s"
-msgstr "mismatched parenthesis: %s"
+msgid "mismatched parentheses: %s"
+msgstr "mismatched parentheses: %s"
 
 #: pattern.c:1611
 msgid "empty pattern"

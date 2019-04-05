@@ -5896,7 +5896,7 @@ msgstr "변수가 빠짐"
 
 #: pattern.c:1578
 #, c-format
-msgid "mismatched parenthesis: %s"
+msgid "mismatched parentheses: %s"
 msgstr "삽입 어구가 맞지 않음: %s"
 
 #: pattern.c:1611

@@ -5906,7 +5906,7 @@ msgstr "липсва параметър"
 
 #: pattern.c:1578
 #, c-format
-msgid "mismatched parenthesis: %s"
+msgid "mismatched parentheses: %s"
 msgstr "неподходящо поставени скоби: %s"
 
 #: pattern.c:1611

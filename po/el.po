@@ -5914,7 +5914,7 @@ msgstr "έλλειψη παραμέτρου"
 
 #: pattern.c:1578
 #, c-format
-msgid "mismatched parenthesis: %s"
+msgid "mismatched parentheses: %s"
 msgstr "αταίριαστη παρένθεση/εις: %s"
 
 #: pattern.c:1611

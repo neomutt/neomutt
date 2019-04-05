@@ -5768,7 +5768,7 @@ msgstr "manglende parameter"
 
 #: pattern.c:1578
 #, c-format
-msgid "mismatched parenthesis: %s"
+msgid "mismatched parentheses: %s"
 msgstr "parenteser matcher ikke: %s"
 
 #: pattern.c:1611

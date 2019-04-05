@@ -5833,7 +5833,7 @@ msgstr "parametro mancante"
 
 #: pattern.c:1578
 #, c-format
-msgid "mismatched parenthesis: %s"
+msgid "mismatched parentheses: %s"
 msgstr "parentesi fuori posto: %s"
 
 #: pattern.c:1611

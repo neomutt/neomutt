@@ -5854,7 +5854,7 @@ msgstr "falta un parámetro"
 
 #: pattern.c:1578
 #, c-format
-msgid "mismatched parenthesis: %s"
+msgid "mismatched parentheses: %s"
 msgstr "paréntesis sin contraparte: %s"
 
 #: pattern.c:1611

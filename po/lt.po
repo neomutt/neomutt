@@ -5720,7 +5720,7 @@ msgstr "trūksta parametro"
 
 #: pattern.c:1578
 #, c-format
-msgid "mismatched parenthesis: %s"
+msgid "mismatched parentheses: %s"
 msgstr "trūkstami skliausteliai: %s"
 
 #: pattern.c:1611

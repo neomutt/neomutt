@@ -5676,7 +5676,7 @@ msgstr "缺少参数"
 
 #: pattern.c:1578
 #, c-format
-msgid "mismatched parenthesis: %s"
+msgid "mismatched parentheses: %s"
 msgstr "不匹配的圆括号：%s"
 
 #: pattern.c:1611
