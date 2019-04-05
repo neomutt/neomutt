@@ -4373,7 +4373,7 @@ msgid "123c"
 msgstr "123c"
 
 #: ncrypt/smime.c:2421
-msgid "(1) DES, (2) Triple-DES "
+msgid "(1) DES, (2) Triple-DES?"
 msgstr "1)DES, 2)Triple-DES "
 
 #. L10N: Options for: (1) DES, (2) Triple-DES
@@ -4382,7 +4382,7 @@ msgid "12"
 msgstr "12"
 
 #: ncrypt/smime.c:2436
-msgid "(1) RC2-40, (2) RC2-64, (3) RC2-128 "
+msgid "(1) RC2-40, (2) RC2-64, (3) RC2-128?"
 msgstr "1)RC2-40, 2)RC2-64, 3)RC2-128 "
 
 #. L10N: Options for: (1) RC2-40, (2) RC2-64, (3) RC2-128
@@ -4392,7 +4392,7 @@ msgid "123"
 msgstr "123"
 
 #: ncrypt/smime.c:2454
-msgid "(1) AES128, (2) AES192, (3) AES256 "
+msgid "(1) AES128, (2) AES192, (3) AES256?"
 msgstr "1)AES128, 2)AES192, 3)AES256 "
 
 #: nntp/newsrc.c:628
