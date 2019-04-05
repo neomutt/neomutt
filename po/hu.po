@@ -119,11 +119,6 @@ msgstr ""
 msgid "Message cache isn't a directory: %s"
 msgstr "A(z) %s nem könyvtár"
 
-#: bcache.c:224
-#, fuzzy, c-format
-msgid "Can't create %s %s"
-msgstr "Nem tudom létrehozni %s: %s."
-
 #: browser.c:87
 msgid "Chdir"
 msgstr "Könyvtárváltás"

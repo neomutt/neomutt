@@ -121,11 +121,6 @@ msgstr "Pfad zu lang: %s%s%s"
 msgid "Message cache isn't a directory: %s"
 msgstr "Nachrichten-Cache ist kein Verzeichnis %s"
 
-#: bcache.c:224
-#, c-format
-msgid "Can't create %s %s"
-msgstr "Kann %s nicht anlegen: %s"
-
 #: browser.c:87
 msgid "Chdir"
 msgstr "Verzeichnis"

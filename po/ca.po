@@ -161,11 +161,6 @@ msgstr ""
 msgid "Message cache isn't a directory: %s"
 msgstr "«%s» no és un directori"
 
-#: bcache.c:224
-#, fuzzy, c-format
-msgid "Can't create %s %s"
-msgstr "No s’ha pogut crear «%s»: %s"
-
 #: browser.c:87
 msgid "Chdir"
 msgstr "Canvia de directori"

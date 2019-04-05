@@ -122,11 +122,6 @@ msgstr "路径太长：%s%s%s"
 msgid "Message cache isn't a directory: %s"
 msgstr "信件缓存不是一个目录：%s"
 
-#: bcache.c:224
-#, c-format
-msgid "Can't create %s %s"
-msgstr "无法创建 %s %s"
-
 #: browser.c:87
 msgid "Chdir"
 msgstr "改变目录"

@@ -120,11 +120,6 @@ msgstr "Dosyayolu çok uzun: %s%s%s"
 msgid "Message cache isn't a directory: %s"
 msgstr "Mesaj önbelleği bir dizin değil: %s"
 
-#: bcache.c:224
-#, c-format
-msgid "Can't create %s %s"
-msgstr "%s %s yaratılamadı"
-
 #: browser.c:87
 msgid "Chdir"
 msgstr "Dizine geç"

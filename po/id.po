@@ -120,11 +120,6 @@ msgstr ""
 msgid "Message cache isn't a directory: %s"
 msgstr "%s bukan direktori"
 
-#: bcache.c:224
-#, fuzzy, c-format
-msgid "Can't create %s %s"
-msgstr "Tidak bisa membuat %s: %s."
-
 #: browser.c:87
 msgid "Chdir"
 msgstr "Pindah dir"

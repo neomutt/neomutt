@@ -118,11 +118,6 @@ msgstr ""
 msgid "Message cache isn't a directory: %s"
 msgstr "%s er ikke et filkatalog"
 
-#: bcache.c:224
-#, fuzzy, c-format
-msgid "Can't create %s %s"
-msgstr "Kan ikke oprette %s: %s."
-
 #: browser.c:87
 msgid "Chdir"
 msgstr "Skift filkatalog"

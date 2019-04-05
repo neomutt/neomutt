@@ -125,11 +125,6 @@ msgstr "Cesta je příliš dlouhá: %s%s%s"
 msgid "Message cache isn't a directory: %s"
 msgstr "Cache se zprávami %s není adresářem"
 
-#: bcache.c:224
-#, c-format
-msgid "Can't create %s %s"
-msgstr "%s nelze vytvořit: %s"
-
 #: browser.c:87
 msgid "Chdir"
 msgstr "Změnit adresář"

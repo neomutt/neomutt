@@ -117,11 +117,6 @@ msgstr "Ścieżka za długa: %s%s%s"
 msgid "Message cache isn't a directory: %s"
 msgstr "Pamięć podręczna (cache) wiadomości nie jest katalogiem: %s"
 
-#: bcache.c:224
-#, c-format
-msgid "Can't create %s %s"
-msgstr "Nie można utworzyć %s: %s"
-
 #: browser.c:87
 msgid "Chdir"
 msgstr "Zmień katalog"

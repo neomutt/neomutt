@@ -221,7 +221,7 @@ FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id)
   {
     if (mutt_file_mkdir(bcache->path, S_IRWXU | S_IRWXG | S_IRWXO) < 0)
     {
-      mutt_error(_("Can't create %s %s"), bcache->path, strerror(errno));
+      mutt_error(_("Can't create %s: %s"), bcache->path, strerror(errno));
       return NULL;
     }
   }

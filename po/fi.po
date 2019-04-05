@@ -123,11 +123,6 @@ msgstr "liian pitkä polku: %s%s%s"
 msgid "Message cache isn't a directory: %s"
 msgstr "Viestivälimuisti ei ole hakemisto: %s"
 
-#: bcache.c:224
-#, c-format
-msgid "Can't create %s %s"
-msgstr "Ei voitu luoda kohdetta %s %s"
-
 #: browser.c:87
 msgid "Chdir"
 msgstr "Chdir"

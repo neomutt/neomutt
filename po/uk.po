@@ -118,11 +118,6 @@ msgstr ""
 msgid "Message cache isn't a directory: %s"
 msgstr "%s не є каталогом"
 
-#: bcache.c:224
-#, fuzzy, c-format
-msgid "Can't create %s %s"
-msgstr "Неможливо створити %s: %s"
-
 #: browser.c:87
 msgid "Chdir"
 msgstr "Перейти:"

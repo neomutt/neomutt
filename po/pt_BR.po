@@ -117,11 +117,6 @@ msgstr "Caminho longo demais: %s%s%s"
 msgid "Message cache isn't a directory: %s"
 msgstr "Cachê de mensagens não é um diretório: %s"
 
-#: bcache.c:224
-#, c-format
-msgid "Can't create %s %s"
-msgstr "Não é possível criar %s %s"
-
 #: browser.c:87
 msgid "Chdir"
 msgstr "Diretório"

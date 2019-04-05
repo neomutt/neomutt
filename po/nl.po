@@ -117,11 +117,6 @@ msgstr "Het pad is te lang: %s%s%s"
 msgid "Message cache isn't a directory: %s"
 msgstr "%s is geen map"
 
-#: bcache.c:224
-#, fuzzy, c-format
-msgid "Can't create %s %s"
-msgstr "Kan bestand %s niet aanmaken: %s"
-
 #: browser.c:87
 msgid "Chdir"
 msgstr "Andere map"

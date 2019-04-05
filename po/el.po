@@ -122,11 +122,6 @@ msgstr ""
 msgid "Message cache isn't a directory: %s"
 msgstr "Το %s δεν είναι κατάλογος"
 
-#: bcache.c:224
-#, fuzzy, c-format
-msgid "Can't create %s %s"
-msgstr "Αδυναμία δημιουργίας του %s: %s."
-
 #: browser.c:87
 msgid "Chdir"
 msgstr "Αλλαγή καταλόγου"

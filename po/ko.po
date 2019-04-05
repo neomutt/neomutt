@@ -120,11 +120,6 @@ msgstr ""
 msgid "Message cache isn't a directory: %s"
 msgstr "%s는 디렉토리가 아닙니다"
 
-#: bcache.c:224
-#, fuzzy, c-format
-msgid "Can't create %s %s"
-msgstr "%s를 만들 수 없음: %s."
-
 #: browser.c:87
 msgid "Chdir"
 msgstr "디렉토리 이동"

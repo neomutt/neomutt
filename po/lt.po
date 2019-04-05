@@ -117,11 +117,6 @@ msgstr "Kelias per ilgas: %s%s%s"
 msgid "Message cache isn't a directory: %s"
 msgstr "Pranešimų talpykla nėra katalogas: %s"
 
-#: bcache.c:224
-#, c-format
-msgid "Can't create %s %s"
-msgstr "Negaliu sukurti %s: %s"
-
 #: browser.c:87
 msgid "Chdir"
 msgstr "Pereiti"
