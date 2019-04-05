@@ -3078,7 +3078,7 @@ msgid "Command returned empty string"
 msgstr "命令返回了空字符串"
 
 #: mutt_attach.c:134 mutt_attach.c:268 mutt_attach.c:448 mutt_attach.c:1038
-msgid "Can't match nametemplate, continue?"
+msgid "Can't match 'nametemplate', continue?"
 msgstr "无法匹配名称模板，继续？"
 
 #: mutt_attach.c:146

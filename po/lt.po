@@ -3109,7 +3109,7 @@ msgid "Command returned empty string"
 msgstr "Komanda grąžino tuščią rezultatą"
 
 #: mutt_attach.c:134 mutt_attach.c:268 mutt_attach.c:448 mutt_attach.c:1038
-msgid "Can't match nametemplate, continue?"
+msgid "Can't match 'nametemplate', continue?"
 msgstr "Negaliu rasti tinkančio vardo, tęsti?"
 
 #: mutt_attach.c:146

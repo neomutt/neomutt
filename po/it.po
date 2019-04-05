@@ -3133,8 +3133,8 @@ msgstr ""
 
 # FIXME
 #: mutt_attach.c:134 mutt_attach.c:268 mutt_attach.c:448 mutt_attach.c:1038
-msgid "Can't match nametemplate, continue?"
-msgstr "Il nametemplate non corrisponde, continuare?"
+msgid "Can't match 'nametemplate', continue?"
+msgstr "Il 'nametemplate' non corrisponde, continuare?"
 
 #: mutt_attach.c:146
 #, c-format

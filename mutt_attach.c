@@ -131,7 +131,7 @@ int mutt_compose_attachment(struct Body *a)
         mutt_debug(LL_DEBUG1, "oldfile: %s\t newfile: %s\n", a->filename, newfile);
         if (mutt_file_symlink(a->filename, newfile) == -1)
         {
-          if (mutt_yesorno(_("Can't match nametemplate, continue?"), MUTT_YES) != MUTT_YES)
+          if (mutt_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) != MUTT_YES)
             goto bailout;
         }
         else
@@ -265,7 +265,7 @@ int mutt_edit_attachment(struct Body *a)
         mutt_debug(LL_DEBUG1, "oldfile: %s\t newfile: %s\n", a->filename, newfile);
         if (mutt_file_symlink(a->filename, newfile) == -1)
         {
-          if (mutt_yesorno(_("Can't match nametemplate, continue?"), MUTT_YES) != MUTT_YES)
+          if (mutt_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) != MUTT_YES)
             goto bailout;
         }
         else
@@ -445,7 +445,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
         /* send case: the file is already there */
         if (mutt_file_symlink(a->filename, tempfile) == -1)
         {
-          if (mutt_yesorno(_("Can't match nametemplate, continue?"), MUTT_YES) == MUTT_YES)
+          if (mutt_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) == MUTT_YES)
             mutt_str_strfcpy(tempfile, a->filename, sizeof(tempfile));
           else
             goto return_error;
@@ -1035,7 +1035,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       {
         if (mutt_file_symlink(a->filename, newfile) == -1)
         {
-          if (mutt_yesorno(_("Can't match nametemplate, continue?"), MUTT_YES) != MUTT_YES)
+          if (mutt_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) != MUTT_YES)
           {
             rfc1524_free_entry(&entry);
             return 0;

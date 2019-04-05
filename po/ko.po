@@ -3158,7 +3158,7 @@ msgid "Command returned empty string"
 msgstr ""
 
 #: mutt_attach.c:134 mutt_attach.c:268 mutt_attach.c:448 mutt_attach.c:1038
-msgid "Can't match nametemplate, continue?"
+msgid "Can't match 'nametemplate', continue?"
 msgstr "이름 템플레이트와 일치하지 않음. 계속할까요?"
 
 #: mutt_attach.c:146

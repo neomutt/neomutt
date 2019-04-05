@@ -3121,7 +3121,7 @@ msgid "Command returned empty string"
 msgstr "Příkaz vrátil prázdný řetězec"
 
 #: mutt_attach.c:134 mutt_attach.c:268 mutt_attach.c:448 mutt_attach.c:1038
-msgid "Can't match nametemplate, continue?"
+msgid "Can't match 'nametemplate', continue?"
 msgstr "Shodu pro jmenný vzor nelze nalézt, pokračovat?"
 
 #: mutt_attach.c:146
