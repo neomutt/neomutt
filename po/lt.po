@@ -4699,7 +4699,7 @@ msgid "group tagged attachments as 'multipart/alternative'"
 msgstr "grupuoti pažymėtus priedus kaip alternatyvas"
 
 #: opcodes.h:67
-msgid "group tagged attachments as multipart/multilingual"
+msgid "group tagged attachments as 'multipart/multilingual'"
 msgstr "grupuoti pažymėtus priedus kaip kalbų alternatyvas"
 
 #: opcodes.h:68

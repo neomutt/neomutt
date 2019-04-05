@@ -4687,8 +4687,8 @@ msgid "group tagged attachments as 'multipart/alternative'"
 msgstr "Gruppiere markierte Anhänge als 'multipart/alternative'"
 
 #: opcodes.h:67
-msgid "group tagged attachments as multipart/multilingual"
-msgstr "Gruppiere markierte Anhänge als multipart/multilingual"
+msgid "group tagged attachments as 'multipart/multilingual'"
+msgstr "Gruppiere markierte Anhänge als 'multipart/multilingual'"
 
 #: opcodes.h:68
 msgid "run ispell on the message"

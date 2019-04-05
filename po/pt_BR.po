@@ -4682,7 +4682,7 @@ msgid "group tagged attachments as 'multipart/alternative'"
 msgstr "agrupamento de anexos rotulado como 'multipart/alternative'"
 
 #: opcodes.h:67
-msgid "group tagged attachments as multipart/multilingual"
+msgid "group tagged attachments as 'multipart/multilingual'"
 msgstr "agrupamento de anexos rotulado como 'multipart/multilingual'"
 
 #: opcodes.h:68

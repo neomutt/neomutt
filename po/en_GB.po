@@ -4673,8 +4673,8 @@ msgid "group tagged attachments as 'multipart/alternative'"
 msgstr "group tagged attachments as 'multipart/alternative'"
 
 #: opcodes.h:67
-msgid "group tagged attachments as multipart/multilingual"
-msgstr "group tagged attachments as multipart/multilingual"
+msgid "group tagged attachments as 'multipart/multilingual'"
+msgstr "group tagged attachments as 'multipart/multilingual'"
 
 #: opcodes.h:68
 msgid "run ispell on the message"

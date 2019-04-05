@@ -4659,8 +4659,8 @@ msgid "group tagged attachments as 'multipart/alternative'"
 msgstr "将已标记的附件组为 'multipart/alternative'"
 
 #: opcodes.h:67
-msgid "group tagged attachments as multipart/multilingual"
-msgstr "将已标记的附件组为 multipart/multilingual"
+msgid "group tagged attachments as 'multipart/multilingual'"
+msgstr "将已标记的附件组为 'multipart/multilingual'"
 
 #: opcodes.h:68
 msgid "run ispell on the message"
