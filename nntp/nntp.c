@@ -639,7 +639,7 @@ static int nntp_auth(struct NntpAccountData *adata)
 
         if (mutt_sasl_client_new(conn, &saslconn) < 0)
         {
-          mutt_debug(LL_DEBUG1, "error allocating SASL connection.\n");
+          mutt_debug(LL_DEBUG1, "error allocating SASL connection\n");
           continue;
         }
 
@@ -655,7 +655,7 @@ static int nntp_auth(struct NntpAccountData *adata)
         {
           sasl_dispose(&saslconn);
           mutt_debug(LL_DEBUG1,
-                     "error starting SASL authentication exchange.\n");
+                     "error starting SASL authentication exchange\n");
           continue;
         }
 
@@ -675,7 +675,7 @@ static int nntp_auth(struct NntpAccountData *adata)
             if (sasl_encode64(client_out, client_len, buf + len,
                               sizeof(buf) - len, &len) != SASL_OK)
             {
-              mutt_debug(LL_DEBUG1, "error base64-encoding client response.\n");
+              mutt_debug(LL_DEBUG1, "error base64-encoding client response\n");
               break;
             }
           }
@@ -708,7 +708,7 @@ static int nntp_auth(struct NntpAccountData *adata)
           else if (sasl_decode64(inbuf + 4, strlen(inbuf + 4), buf,
                                  sizeof(buf) - 1, &len) != SASL_OK)
           {
-            mutt_debug(LL_DEBUG1, "error base64-decoding server response.\n");
+            mutt_debug(LL_DEBUG1, "error base64-decoding server response\n");
             break;
           }
           else

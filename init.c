@@ -797,7 +797,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
     }
   }
 
-  mutt_debug(LL_DEBUG2, "Reading configuration file '%s'.\n", rcfile);
+  mutt_debug(LL_DEBUG2, "Reading configuration file '%s'\n", rcfile);
 
   FILE *fp = mutt_open_read(rcfile, &pid);
   if (!fp)
@@ -932,7 +932,7 @@ static enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   }
 
   mutt_extract_token(buf, s, MUTT_TOKEN_QUOTE | MUTT_TOKEN_SPACE | MUTT_TOKEN_SEMICOLON);
-  mutt_debug(5, "Second token is '%s'.\n", buf->data);
+  mutt_debug(5, "Second token is '%s'\n", buf->data);
 
   tmp->addr = mutt_addr_parse_list2(tmp->addr, buf->data);
 

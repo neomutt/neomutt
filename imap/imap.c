@@ -796,7 +796,7 @@ void imap_expunge_mailbox(struct Mailbox *m)
 
     if (e->index == INT_MAX)
     {
-      mutt_debug(LL_DEBUG2, "Expunging message UID %u.\n", imap_edata_get(e)->uid);
+      mutt_debug(LL_DEBUG2, "Expunging message UID %u\n", imap_edata_get(e)->uid);
 
       e->deleted = true;
 
@@ -2112,7 +2112,7 @@ static int imap_mbox_open(struct Mailbox *m)
   if (mutt_str_startswith(imap_get_qualifier(adata->buf), "[READ-ONLY]", CASE_IGNORE) &&
       !(adata->capabilities & IMAP_CAP_ACL))
   {
-    mutt_debug(LL_DEBUG2, "Mailbox is read-only.\n");
+    mutt_debug(LL_DEBUG2, "Mailbox is read-only\n");
     m->readonly = true;
   }
 

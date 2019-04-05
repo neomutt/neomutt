@@ -881,7 +881,7 @@ int maildir_mh_open_message(struct Mailbox *m, struct Message *msg, int msgno, b
   if (!msg->fp)
   {
     mutt_perror(path);
-    mutt_debug(LL_DEBUG1, "fopen: %s: %s (errno %d).\n", path, strerror(errno), errno);
+    mutt_debug(LL_DEBUG1, "fopen: %s: %s (errno %d)\n", path, strerror(errno), errno);
     return -1;
   }
 
@@ -1027,7 +1027,7 @@ int md_commit_message(struct Mailbox *m, struct Message *msg, struct Email *e)
                        mutt_rand64(), NONULL(ShortHostname), suffix);
     mutt_buffer_printf(full, "%s/%s", m->path, mutt_b2s(path));
 
-    mutt_debug(LL_DEBUG2, "renaming %s to %s.\n", msg->path, mutt_b2s(full));
+    mutt_debug(LL_DEBUG2, "renaming %s to %s\n", msg->path, mutt_b2s(full));
 
     if (mutt_file_safe_rename(msg->path, mutt_b2s(full)) == 0)
     {

@@ -1013,7 +1013,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
   if (!keys)
     return NULL;
 
-  mutt_debug(5, "looking for %s <%s>.\n", a->personal, a->mailbox);
+  mutt_debug(5, "looking for %s <%s>\n", a->personal, a->mailbox);
 
   for (k = keys; k; k = kn)
   {

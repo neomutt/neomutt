@@ -1232,7 +1232,7 @@ static int multipart_handler(struct Body *a, struct State *s)
     if (rc != 0)
     {
       mutt_error(_("One or more parts of this message could not be displayed"));
-      mutt_debug(LL_DEBUG1, "Failed on attachment #%d, type %s/%s.\n", count,
+      mutt_debug(LL_DEBUG1, "Failed on attachment #%d, type %s/%s\n", count,
                  TYPE(p), NONULL(p->subtype));
     }
 
@@ -1298,7 +1298,7 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
       if (!s->fp_out)
       {
         mutt_error(_("Unable to open 'memory stream'"));
-        mutt_debug(LL_DEBUG1, "Can't open 'memory stream'.\n");
+        mutt_debug(LL_DEBUG1, "Can't open 'memory stream'\n");
         return -1;
       }
 #else
@@ -1307,7 +1307,7 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
       if (!s->fp_out)
       {
         mutt_error(_("Unable to open temporary file"));
-        mutt_debug(LL_DEBUG1, "Can't open %s.\n", tempfile);
+        mutt_debug(LL_DEBUG1, "Can't open %s\n", tempfile);
         return -1;
       }
 #endif
@@ -1374,7 +1374,7 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
     rc = handler(b, s);
     if (rc != 0)
     {
-      mutt_debug(LL_DEBUG1, "Failed on attachment of type %s/%s.\n", TYPE(b),
+      mutt_debug(LL_DEBUG1, "Failed on attachment of type %s/%s\n", TYPE(b),
                  NONULL(b->subtype));
     }
 
@@ -1483,7 +1483,7 @@ void mutt_decode_base64(struct State *s, size_t len, bool istext, iconv_t cd)
     {
       /* "i" may be zero if there is trailing whitespace, which is not an error */
       if (i != 0)
-        mutt_debug(LL_DEBUG2, "didn't get a multiple of 4 chars.\n");
+        mutt_debug(LL_DEBUG2, "didn't get a multiple of 4 chars\n");
       break;
     }
 
@@ -1692,7 +1692,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
   s->flags = oflags | (s->flags & MUTT_FIRSTDONE);
   if (rc != 0)
   {
-    mutt_debug(LL_DEBUG1, "Bailing on attachment of type %s/%s.\n", TYPE(b),
+    mutt_debug(LL_DEBUG1, "Bailing on attachment of type %s/%s\n", TYPE(b),
                NONULL(b->subtype));
   }
 

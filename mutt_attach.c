@@ -546,7 +546,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
       /* interactive cmd */
       int rv = mutt_system(cmd);
       if (rv == -1)
-        mutt_debug(LL_DEBUG1, "Error running \"%s\"!", cmd);
+        mutt_debug(LL_DEBUG1, "Error running \"%s\"", cmd);
 
       if ((rv != 0) || (entry->needsterminal && C_WaitKey))
         mutt_any_key_to_continue(NULL);
@@ -1025,7 +1025,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     char cmd[STR_COMMAND];
     int piped = false;
 
-    mutt_debug(LL_DEBUG2, "Using mailcap...\n");
+    mutt_debug(LL_DEBUG2, "Using mailcap\n");
 
     struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
     rfc1524_mailcap_lookup(a, type, entry, MUTT_MC_PRINT);
@@ -1085,7 +1085,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     {
       int rc = mutt_system(cmd);
       if (rc == -1)
-        mutt_debug(LL_DEBUG1, "Error running \"%s\"!", cmd);
+        mutt_debug(LL_DEBUG1, "Error running \"%s\"", cmd);
 
       if ((rc != 0) || C_WaitKey)
         mutt_any_key_to_continue(NULL);
@@ -1136,7 +1136,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
         goto bail0;
       }
 
-      mutt_debug(LL_DEBUG2, "Filter created.\n");
+      mutt_debug(LL_DEBUG2, "Filter created\n");
 
       mutt_file_copy_stream(fp_in, fp_out);
 

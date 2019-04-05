@@ -196,14 +196,14 @@ static int ssl_set_verify_partial(SSL_CTX *ctx)
       X509_VERIFY_PARAM_set_flags(param, X509_V_FLAG_PARTIAL_CHAIN);
       if (SSL_CTX_set1_param(ctx, param) == 0)
       {
-        mutt_debug(LL_DEBUG2, "SSL_CTX_set1_param() failed.\n");
+        mutt_debug(LL_DEBUG2, "SSL_CTX_set1_param() failed\n");
         rc = -1;
       }
       X509_VERIFY_PARAM_free(param);
     }
     else
     {
-      mutt_debug(LL_DEBUG2, "X509_VERIFY_PARAM_new() failed.\n");
+      mutt_debug(LL_DEBUG2, "X509_VERIFY_PARAM_new() failed\n");
       rc = -1;
     }
   }
@@ -1101,7 +1101,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
       if (X509_digest(last_cert, EVP_sha256(), last_cert_md, &last_cert_mdlen) &&
           compare_certificates(cert, last_cert, last_cert_md, last_cert_mdlen))
       {
-        mutt_debug(LL_DEBUG2, "ignoring duplicate skipped certificate.\n");
+        mutt_debug(LL_DEBUG2, "ignoring duplicate skipped certificate\n");
         return true;
       }
     }

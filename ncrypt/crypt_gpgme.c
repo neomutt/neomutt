@@ -1052,7 +1052,7 @@ static gpgme_key_t *create_recipient_set(const char *keylist, gpgme_protocol_t p
         rset[rset_n++] = key;
       else
       {
-        mutt_error(_("error adding recipient '%s': %s\n"), buf, gpgme_strerror(err));
+        mutt_error(_("error adding recipient '%s': %s"), buf, gpgme_strerror(err));
         rset[rset_n] = NULL;
         free_recipient_set(&rset);
         gpgme_release(context);
@@ -2042,7 +2042,7 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
   gpgme_release(ctx);
 
   state_attach_puts(_("[-- End signature information --]\n\n"), s);
-  mutt_debug(LL_DEBUG1, "returning %d.\n", badsig);
+  mutt_debug(LL_DEBUG1, "returning %d\n", badsig);
 
   return badsig ? 1 : anywarn ? 2 : 0;
 }
@@ -4837,7 +4837,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
   if (!keys)
     return NULL;
 
-  mutt_debug(5, "looking for %s <%s>.\n", a ? a->personal : "", a ? a->mailbox : "");
+  mutt_debug(5, "looking for %s <%s>\n", a ? a->personal : "", a ? a->mailbox : "");
 
   for (k = keys; k; k = k->next)
   {
@@ -4968,7 +4968,7 @@ static struct CryptKeyInfo *crypt_getkeybystr(char *p, KeyFlags abilities,
         (ps && (mutt_str_strcasecmp(ps, crypt_short_keyid(k)) == 0)) ||
         mutt_str_stristr(k->uid, p))
     {
-      mutt_debug(5, "match.\n");
+      mutt_debug(5, "match\n");
 
       struct CryptKeyInfo *tmp = crypt_copy_key(k);
       *matches_endp = tmp;
@@ -4976,7 +4976,7 @@ static struct CryptKeyInfo *crypt_getkeybystr(char *p, KeyFlags abilities,
     }
     else
     {
-      mutt_debug(5, "no match.\n");
+      mutt_debug(5, "no match\n");
     }
   }
 

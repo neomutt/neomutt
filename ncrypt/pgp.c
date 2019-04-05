@@ -263,11 +263,11 @@ static int pgp_copy_checksig(FILE *fp_in, FILE *fp_out)
     {
       if (regexec(C_PgpGoodSign->regex, line, 0, NULL, 0) == 0)
       {
-        mutt_debug(LL_DEBUG2, "\"%s\" matches regex.\n", line);
+        mutt_debug(LL_DEBUG2, "\"%s\" matches regex\n", line);
         rc = 0;
       }
       else
-        mutt_debug(LL_DEBUG2, "\"%s\" doesn't match regex.\n", line);
+        mutt_debug(LL_DEBUG2, "\"%s\" doesn't match regex\n", line);
 
       if (strncmp(line, "[GNUPG:] ", 9) == 0)
         continue;
@@ -278,7 +278,7 @@ static int pgp_copy_checksig(FILE *fp_in, FILE *fp_out)
   }
   else
   {
-    mutt_debug(LL_DEBUG2, "No pattern.\n");
+    mutt_debug(LL_DEBUG2, "No pattern\n");
     mutt_file_copy_stream(fp_in, fp_out);
     rc = 1;
   }
@@ -310,18 +310,18 @@ static int pgp_check_pgp_decryption_okay_regex(FILE *fp_in)
     {
       if (regexec(C_PgpDecryptionOkay->regex, line, 0, NULL, 0) == 0)
       {
-        mutt_debug(LL_DEBUG2, "\"%s\" matches regex.\n", line);
+        mutt_debug(LL_DEBUG2, "\"%s\" matches regex\n", line);
         rc = 0;
         break;
       }
       else
-        mutt_debug(LL_DEBUG2, "\"%s\" doesn't match regex.\n", line);
+        mutt_debug(LL_DEBUG2, "\"%s\" doesn't match regex\n", line);
     }
     FREE(&line);
   }
   else
   {
-    mutt_debug(LL_DEBUG2, "No pattern.\n");
+    mutt_debug(LL_DEBUG2, "No pattern\n");
     rc = 1;
   }
 
@@ -365,7 +365,7 @@ static int pgp_check_decryption_okay(FILE *fp_in)
     if (plen == 0)
       continue;
     s = line + plen;
-    mutt_debug(LL_DEBUG2, "checking \"%s\".\n", line);
+    mutt_debug(LL_DEBUG2, "checking \"%s\"\n", line);
     if (mutt_str_startswith(s, "BEGIN_DECRYPTION", CASE_MATCH))
       inside_decrypt = 1;
     else if (mutt_str_startswith(s, "END_DECRYPTION", CASE_MATCH))
@@ -375,14 +375,14 @@ static int pgp_check_decryption_okay(FILE *fp_in)
       if (!inside_decrypt)
       {
         mutt_debug(LL_DEBUG2,
-                   "\tPLAINTEXT encountered outside of DECRYPTION.\n");
+                   "\tPLAINTEXT encountered outside of DECRYPTION\n");
         rc = -2;
         break;
       }
     }
     else if (mutt_str_startswith(s, "DECRYPTION_FAILED", CASE_MATCH))
     {
-      mutt_debug(LL_DEBUG2, "\tDECRYPTION_FAILED encountered.  Failure.\n");
+      mutt_debug(LL_DEBUG2, "\tDECRYPTION_FAILED encountered.  Failure\n");
       rc = -3;
       break;
     }
@@ -390,7 +390,7 @@ static int pgp_check_decryption_okay(FILE *fp_in)
     {
       /* Don't break out because we still have to check for
        * PLAINTEXT outside of the decryption boundaries. */
-      mutt_debug(LL_DEBUG2, "\tDECRYPTION_OKAY encountered.\n");
+      mutt_debug(LL_DEBUG2, "\tDECRYPTION_OKAY encountered\n");
       rc = 0;
     }
   }
@@ -917,7 +917,7 @@ int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
     if (rv)
       badsig = -1;
 
-    mutt_debug(LL_DEBUG1, "mutt_wait_filter returned %d.\n", rv);
+    mutt_debug(LL_DEBUG1, "mutt_wait_filter returned %d\n", rv);
   }
 
   mutt_file_fclose(&fp_pgp_err);
@@ -926,7 +926,7 @@ int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
 
   mutt_file_unlink(sigfile);
 
-  mutt_debug(LL_DEBUG1, "returning %d.\n", badsig);
+  mutt_debug(LL_DEBUG1, "returning %d\n", badsig);
 
   return badsig;
 }

@@ -197,14 +197,14 @@ enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method
 
     if (rc != IMAP_CMD_RESPOND)
     {
-      mutt_debug(LL_DEBUG1, "#1 Error receiving server response.\n");
+      mutt_debug(LL_DEBUG1, "#1 Error receiving server response\n");
       gss_release_name(&min_stat, &target_name);
       goto bail;
     }
 
     if (mutt_b64_buffer_decode(buf2, adata->buf + 2) < 0)
     {
-      mutt_debug(LL_DEBUG1, "Invalid base64 server response.\n");
+      mutt_debug(LL_DEBUG1, "Invalid base64 server response\n");
       gss_release_name(&min_stat, &target_name);
       goto err_abort_cmd;
     }
@@ -240,12 +240,12 @@ enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method
 
   if (rc != IMAP_CMD_RESPOND)
   {
-    mutt_debug(LL_DEBUG1, "#2 Error receiving server response.\n");
+    mutt_debug(LL_DEBUG1, "#2 Error receiving server response\n");
     goto bail;
   }
   if (mutt_b64_buffer_decode(buf2, adata->buf + 2) < 0)
   {
-    mutt_debug(LL_DEBUG1, "Invalid base64 server response.\n");
+    mutt_debug(LL_DEBUG1, "Invalid base64 server response\n");
     goto err_abort_cmd;
   }
   request_buf.value = buf2->data;
@@ -308,7 +308,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method
   while (rc == IMAP_CMD_CONTINUE);
   if (rc == IMAP_CMD_RESPOND)
   {
-    mutt_debug(LL_DEBUG1, "Unexpected server continuation request.\n");
+    mutt_debug(LL_DEBUG1, "Unexpected server continuation request\n");
     goto err_abort_cmd;
   }
   if (imap_code(adata->buf))

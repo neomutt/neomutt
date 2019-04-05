@@ -79,25 +79,25 @@ static int getnameinfo_err(int ret)
     case EAI_AGAIN:
       mutt_debug(LL_DEBUG1,
                  "The name could not be resolved at this time.  Future "
-                 "attempts may succeed.\n");
+                 "attempts may succeed\n");
       err = SASL_TRYAGAIN;
       break;
     case EAI_BADFLAGS:
-      mutt_debug(LL_DEBUG1, "The flags had an invalid value.\n");
+      mutt_debug(LL_DEBUG1, "The flags had an invalid value\n");
       err = SASL_BADPARAM;
       break;
     case EAI_FAIL:
-      mutt_debug(LL_DEBUG1, "A non-recoverable error occurred.\n");
+      mutt_debug(LL_DEBUG1, "A non-recoverable error occurred\n");
       err = SASL_FAIL;
       break;
     case EAI_FAMILY:
       mutt_debug(LL_DEBUG1,
                  "The address family was not recognized or the address "
-                 "length was invalid for the specified family.\n");
+                 "length was invalid for the specified family\n");
       err = SASL_BADPROT;
       break;
     case EAI_MEMORY:
-      mutt_debug(LL_DEBUG1, "There was a memory allocation failure.\n");
+      mutt_debug(LL_DEBUG1, "There was a memory allocation failure\n");
       err = SASL_NOMEM;
       break;
     case EAI_NONAME:
@@ -110,7 +110,7 @@ static int getnameinfo_err(int ret)
     case EAI_SYSTEM:
       mutt_debug(LL_DEBUG1,
                  "A system error occurred.  The error code can be found in "
-                 "errno(%d,%s)).\n",
+                 "errno(%d,%s))\n",
                  errno, strerror(errno));
       err = SASL_FAIL; /* no real equivalent */
       break;
@@ -225,7 +225,7 @@ static int mutt_sasl_start(void)
 
   if (rc != SASL_OK)
   {
-    mutt_debug(LL_DEBUG1, "libsasl initialisation failed.\n");
+    mutt_debug(LL_DEBUG1, "libsasl initialisation failed\n");
     return SASL_FAIL;
   }
 
@@ -647,7 +647,7 @@ int mutt_sasl_interact(sasl_interact_t *interaction)
 
   while (interaction->id != SASL_CB_LIST_END)
   {
-    mutt_debug(LL_DEBUG2, "filling in SASL interaction %ld.\n", interaction->id);
+    mutt_debug(LL_DEBUG2, "filling in SASL interaction %ld\n", interaction->id);
 
     snprintf(prompt, sizeof(prompt), "%s: ", interaction->prompt);
     resp[0] = '\0';

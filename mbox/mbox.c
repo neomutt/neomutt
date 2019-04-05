@@ -1075,7 +1075,7 @@ static int mbox_mbox_check(struct Mailbox *m, int *index_hint)
       }
       else
       {
-        mutt_debug(LL_DEBUG1, "fgets returned NULL.\n");
+        mutt_debug(LL_DEBUG1, "fgets returned NULL\n");
         modified = true;
       }
     }
@@ -1204,7 +1204,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
      * never happen, is we presume it is a bug in neomutt.  */
     mutt_error(
         _("sync: mbox modified, but no modified messages (report this bug)"));
-    mutt_debug(LL_DEBUG1, "no modified messages.\n");
+    mutt_debug(LL_DEBUG1, "no modified messages\n");
     unlink(tempfile);
     goto bail;
   }
@@ -1301,7 +1301,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
   if (fclose(fp) != 0)
   {
     fp = NULL;
-    mutt_debug(LL_DEBUG1, "mutt_file_fclose (&) returned non-zero.\n");
+    mutt_debug(LL_DEBUG1, "mutt_file_fclose (&) returned non-zero\n");
     unlink(tempfile);
     mutt_perror(tempfile);
     goto bail;
@@ -1334,7 +1334,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
       ((m->magic == MUTT_MBOX) && !mutt_str_startswith(buf, "From ", CASE_MATCH)) ||
       ((m->magic == MUTT_MMDF) && (mutt_str_strcmp(MMDF_SEP, buf) != 0)))
   {
-    mutt_debug(LL_DEBUG1, "message not in expected position.\n");
+    mutt_debug(LL_DEBUG1, "message not in expected position\n");
     mutt_debug(LL_DEBUG1, "\tLINE: %s\n", buf);
     i = -1;
   }

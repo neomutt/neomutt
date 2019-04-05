@@ -69,7 +69,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
 
   if (mutt_sasl_client_new(adata->conn, &saslconn) < 0)
   {
-    mutt_debug(LL_DEBUG1, "Error allocating SASL connection.\n");
+    mutt_debug(LL_DEBUG1, "Error allocating SASL connection\n");
     return POP_A_FAILURE;
   }
 
@@ -131,7 +131,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
     if (mutt_str_startswith(inbuf, "+ ", CASE_MATCH) &&
         (sasl_decode64(inbuf + 2, strlen(inbuf + 2), buf, bufsize - 1, &len) != SASL_OK))
     {
-      mutt_debug(LL_DEBUG1, "error base64-decoding server response.\n");
+      mutt_debug(LL_DEBUG1, "error base64-decoding server response\n");
       goto bail;
     }
 
@@ -166,7 +166,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
       }
       if (sasl_encode64(pc, olen, buf, bufsize, &olen) != SASL_OK)
       {
-        mutt_debug(LL_DEBUG1, "error base64-encoding client response.\n");
+        mutt_debug(LL_DEBUG1, "error base64-encoding client response\n");
         goto bail;
       }
     }
@@ -470,7 +470,7 @@ int pop_authenticate(struct PopAccountData *adata)
   else
   {
     /* Fall back to default: any authenticator */
-    mutt_debug(LL_DEBUG2, "Using any available method.\n");
+    mutt_debug(LL_DEBUG2, "Using any available method\n");
     authenticator = pop_authenticators;
 
     while (authenticator->authenticate)

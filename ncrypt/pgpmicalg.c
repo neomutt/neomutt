@@ -88,7 +88,7 @@ static void pgp_dearmor(FILE *fp_in, FILE *fp_out)
   }
   if (!r)
   {
-    mutt_debug(LL_DEBUG1, "Can't find begin of ASCII armor.\n");
+    mutt_debug(LL_DEBUG1, "Can't find begin of ASCII armor\n");
     return;
   }
 
@@ -102,7 +102,7 @@ static void pgp_dearmor(FILE *fp_in, FILE *fp_out)
   }
   if (!r)
   {
-    mutt_debug(LL_DEBUG1, "Armor header doesn't end.\n");
+    mutt_debug(LL_DEBUG1, "Armor header doesn't end\n");
     return;
   }
 
@@ -120,7 +120,7 @@ static void pgp_dearmor(FILE *fp_in, FILE *fp_out)
   }
   if (!r)
   {
-    mutt_debug(LL_DEBUG1, "Can't find end of ASCII armor.\n");
+    mutt_debug(LL_DEBUG1, "Can't find end of ASCII armor\n");
     return;
   }
 
@@ -133,7 +133,7 @@ static void pgp_dearmor(FILE *fp_in, FILE *fp_out)
 
   if (fseeko(fp_in, start, SEEK_SET) == -1)
   {
-    mutt_debug(LL_DEBUG1, "Can't seekto start.\n");
+    mutt_debug(LL_DEBUG1, "Can't seekto start\n");
     return;
   }
 
@@ -151,7 +151,7 @@ static short pgp_mic_from_packet(unsigned char *p, size_t len)
   /* is signature? */
   if ((p[0] & 0x3f) != PT_SIG)
   {
-    mutt_debug(LL_DEBUG1, "tag = %d, want %d.\n", p[0] & 0x3f, PT_SIG);
+    mutt_debug(LL_DEBUG1, "tag = %d, want %d\n", p[0] & 0x3f, PT_SIG);
     return -1;
   }
 
@@ -167,7 +167,7 @@ static short pgp_mic_from_packet(unsigned char *p, size_t len)
   }
   else
   {
-    mutt_debug(LL_DEBUG1, "Bad signature packet.\n");
+    mutt_debug(LL_DEBUG1, "Bad signature packet\n");
     return -1;
   }
 }
@@ -206,7 +206,7 @@ static short pgp_find_hash(const char *fname)
   }
   else
   {
-    mutt_debug(LL_DEBUG1, "No packet.\n");
+    mutt_debug(LL_DEBUG1, "No packet\n");
   }
 
 bye:
