@@ -103,7 +103,7 @@ static int getnameinfo_err(int ret)
     case EAI_NONAME:
       mutt_debug(LL_DEBUG1,
                  "The name does not resolve for the supplied parameters.  "
-                 "NI_NAMEREQD is set and the host's name cannot be located, "
+                 "NI_NAMEREQD is set and the host's name can't be located, "
                  "or both nodename and servname were null.\n");
       err = SASL_FAIL; /* no real equivalent */
       break;

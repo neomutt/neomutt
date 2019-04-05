@@ -326,7 +326,7 @@ msgid "Could not create temporary file"
 msgstr "Kunne ikke oprette midlertidig fil"
 
 #: commands.c:244
-msgid "Cannot create display filter"
+msgid "Can't create display filter"
 msgstr "Kan ikke oprette fremvisningsfilter"
 
 #: commands.c:275
@@ -740,7 +740,7 @@ msgstr "Bilag gemt"
 
 #: compose.c:1140 compose.c:1156
 #, fuzzy
-msgid "The fundamental part cannot be moved"
+msgid "The fundamental part can't be moved"
 msgstr "Den aktuelle del vil ikke blive konverteret"
 
 #: compose.c:1151
@@ -899,7 +899,7 @@ msgstr "PGP allerede valgt. Ryd & fortsæt?"
 
 #: compress.c:382 compress.c:533
 #, c-format
-msgid "Cannot append without an append-hook or close-hook : %s"
+msgid "Can't append without an append-hook or close-hook : %s"
 msgstr "Kan ikke tilføje uden en \"append-hook\" eller \"close-hook\" : %s"
 
 #: compress.c:478 compress.c:544 compress.c:623 compress.c:661 mbox/mbox.c:1161
@@ -1051,11 +1051,11 @@ msgid "Failed to find enough entropy on your system"
 msgstr "Kunne ikke finde nok entropi på dit system"
 
 #: conn/ssl.c:797
-msgid "cannot get certificate subject"
+msgid "can't get certificate subject"
 msgstr "kan ikke hente certifikatets \"subject\""
 
 #: conn/ssl.c:806 conn/ssl.c:814
-msgid "cannot get certificate common name"
+msgid "can't get certificate common name"
 msgstr "kan ikke finde certifikatets \"common name\""
 
 #: conn/ssl.c:828
@@ -1482,7 +1482,7 @@ msgstr "[-- Fejl: \"message/external-body\" har ingen \"access-type\"-parameter 
 #. example although '1K' and '1024' represent the same number your
 #. language might inflect the noun 'byte' differently.
 #.
-#. Sadly, we cannot do anything about that at the moment besides
+#. Sadly, we can't do anything about that at the moment besides
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
@@ -1511,7 +1511,7 @@ msgstr[1] ""
 #. example although '1K' and '1024' represent the same number your
 #. language might inflect the noun 'byte' differently.
 #.
-#. Sadly, we cannot do anything about that at the moment besides
+#. Sadly, we can't do anything about that at the moment besides
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
@@ -1800,7 +1800,7 @@ msgid "Mailbox created"
 msgstr "Brevbakke oprettet"
 
 #: imap/browse.c:431
-msgid "Cannot rename root folder"
+msgid "Can't rename root folder"
 msgstr "Kan ikke omdøbe rodkatalog"
 
 #: imap/browse.c:435
@@ -2057,7 +2057,7 @@ msgid "%s: Operation not permitted by ACL"
 msgstr "%s: Operationen er ikke tilladt af ACL"
 
 #: index.c:378
-msgid "Cannot toggle write on a readonly mailbox"
+msgid "Can't toggle write on a readonly mailbox"
 msgstr "Kan ikke skrive til en skrivebeskyttet brevbakke"
 
 #: index.c:385
@@ -2153,7 +2153,7 @@ msgstr "Brevet er ikke synligt"
 #.
 #: index.c:1580 index.c:3033 pager.c:3047
 #, fuzzy
-msgid "Cannot delete messages"
+msgid "Can't delete messages"
 msgstr "Kan ikke slette brev"
 
 #: index.c:1583
@@ -2192,7 +2192,7 @@ msgstr "Udvælg breve efter mønster: "
 #. "messages". Your language might have other means to express this.
 #: index.c:1805 index.c:3517 pager.c:3400
 #, fuzzy
-msgid "Cannot undelete messages"
+msgid "Can't undelete messages"
 msgstr "Kan ikke fortryde sletning af brev"
 
 #: index.c:1809
@@ -2281,7 +2281,7 @@ msgstr "Afslut NeoMutt uden at gemme?"
 #. L10N: CHECK_ACL
 #: index.c:2381
 #, fuzzy
-msgid "Cannot break thread"
+msgid "Can't break thread"
 msgstr "Kan ikke sammenkæde tråde"
 
 #: index.c:2398
@@ -2289,12 +2289,12 @@ msgid "Thread broken"
 msgstr "Tråden er brudt"
 
 #: index.c:2411
-msgid "Thread cannot be broken, message is not part of a thread"
+msgid "Thread can't be broken, message is not part of a thread"
 msgstr "Tråden må ikke være brudt, brevet er ikke en del af en tråd"
 
 #. L10N: CHECK_ACL
 #: index.c:2420
-msgid "Cannot link threads"
+msgid "Can't link threads"
 msgstr "Kan ikke sammenkæde tråde"
 
 #: index.c:2426
@@ -2351,12 +2351,12 @@ msgstr "Søgning fortsat fra bund"
 
 #. L10N: CHECK_ACL
 #: index.c:2722
-msgid "Cannot flag message"
+msgid "Can't flag message"
 msgstr "Kan ikke give brev statusindikator"
 
 #. L10N: CHECK_ACL
 #: index.c:2762 pager.c:3359
-msgid "Cannot toggle new"
+msgid "Can't toggle new"
 msgstr "Kan ikke skifte mellem ny/ikke-ny"
 
 #: index.c:2840
@@ -2374,12 +2374,12 @@ msgstr "Tråden indeholder ulæste breve"
 
 #. L10N: CHECK_ACL
 #: index.c:2982 pager.c:3002
-msgid "Cannot delete message"
+msgid "Can't delete message"
 msgstr "Kan ikke slette brev"
 
 #. L10N: CHECK_ACL
 #: index.c:3097
-msgid "Cannot edit message"
+msgid "Can't edit message"
 msgstr "Kan ikke redigere brev"
 
 #. L10N: This is displayed when the x-label on one or more
@@ -2404,7 +2404,7 @@ msgstr "Ingen etiketter ændret"
 #. "messages". Your language might have other means to express this.
 #: index.c:3304
 #, fuzzy
-msgid "Cannot mark messages as read"
+msgid "Can't mark messages as read"
 msgstr "Kan ikke markére breve som læst"
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
@@ -2428,7 +2428,7 @@ msgstr "brevets genvejstast"
 msgid "Message bound to %s"
 msgstr "Brevet er tildelt %s"
 
-#. L10N: This error is printed if <mark-message> cannot find a
+#. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
 #: index.c:3363
 msgid "No message ID to macro"
@@ -2444,7 +2444,7 @@ msgstr ""
 
 #. L10N: CHECK_ACL
 #: index.c:3479 pager.c:3379
-msgid "Cannot undelete message"
+msgid "Can't undelete message"
 msgstr "Kan ikke fortryde sletning af brev"
 
 #: init.c:295
@@ -2798,12 +2798,12 @@ msgid "No recipients specified"
 msgstr "Ingen angivelse af modtagere"
 
 #: main.c:901
-msgid "Cannot use -E flag with stdin"
+msgid "Can't use -E flag with stdin"
 msgstr "Kan ikke bruge tilvalget -E sammen med standardinddata"
 
 #: main.c:983
 #, fuzzy, c-format
-msgid "Cannot parse message template: %s"
+msgid "Can't parse message template: %s"
 msgstr "Kan ikke åbne brev: %s"
 
 #: main.c:1049 mutt_header.c:334
@@ -2879,11 +2879,11 @@ msgid "No entries"
 msgstr "Ingen punkter"
 
 #: menu.c:671
-msgid "You cannot scroll down farther"
+msgid "You can't scroll down farther"
 msgstr "Du kan ikke komme længere ned"
 
 #: menu.c:693
-msgid "You cannot scroll up farther"
+msgid "You can't scroll up farther"
 msgstr "Du kan ikke komme længere op"
 
 #: menu.c:740
@@ -3137,7 +3137,7 @@ msgid "No matching mailcap entry found.  Viewing as text."
 msgstr "Ingen passende mailcap-regler fundet. Viser som tekst."
 
 #: mutt_attach.c:428
-msgid "MIME type not defined.  Cannot view attachment."
+msgid "MIME type not defined.  Can't view attachment."
 msgstr "MIME-typen er ikke defineret. Kan ikke vise bilag."
 
 #: mutt_attach.c:527
@@ -3193,7 +3193,7 @@ msgstr "Kunne ikke låse %s.\n"
 
 #: mutt_socket.c:66
 #, fuzzy, c-format
-msgid "SSL is unavailable, cannot connect to %s"
+msgid "SSL is unavailable, can't connect to %s"
 msgstr "SSL er ikke tilgængelig."
 
 #: mutt_thread.c:1163
@@ -3300,7 +3300,7 @@ msgid "[-- %s output follows%s --]\n"
 msgstr "[-- %s uddata følger%s --]\n"
 
 #. L10N: Due to the implementation details (e.g. some passwords are managed
-#. by gpg-agent) we cannot know whether we forgot zero, 1, 12, ...
+#. by gpg-agent) we can't know whether we forgot zero, 1, 12, ...
 #. passwords. So in English we use "Passphrases". Your language might
 #. have other means to express this.
 #: ncrypt/crypt.c:114
@@ -5619,7 +5619,7 @@ msgstr "Venter på fcntl-lås ... %d"
 
 #: notmuch/nm_db.c:132
 #, c-format
-msgid "Cannot open notmuch database: %s: %s"
+msgid "Can't open notmuch database: %s: %s"
 msgstr ""
 
 #: notmuch/nm_db.c:133
@@ -6278,7 +6278,7 @@ msgid "Fcc mailbox"
 msgstr "Ingen brevbakke.\n"
 
 #: send.c:1639
-msgid "Cannot postpone.  $postponed is unset"
+msgid "Can't postpone.  $postponed is unset"
 msgstr ""
 
 #: send.c:1769

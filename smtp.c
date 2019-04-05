@@ -546,7 +546,7 @@ static int smtp_auth_plain(struct Connection *conn)
 {
   char buf[1024];
 
-  /* Get username and password. Bail out of any cannot be retrieved. */
+  /* Get username and password. Bail out of any can't be retrieved. */
   if ((mutt_account_getuser(&conn->account) < 0) ||
       (mutt_account_getpass(&conn->account) < 0))
   {

@@ -1137,7 +1137,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         }
         if (menu->current == 1)
         {
-          mutt_error(_("The fundamental part cannot be moved"));
+          mutt_error(_("The fundamental part can't be moved"));
           break;
         }
         compose_attach_swap(msg->content, actx->idx, menu->current - 1);
@@ -1153,7 +1153,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         }
         if (menu->current == 0)
         {
-          mutt_error(_("The fundamental part cannot be moved"));
+          mutt_error(_("The fundamental part can't be moved"));
           break;
         }
         compose_attach_swap(msg->content, actx->idx, menu->current);

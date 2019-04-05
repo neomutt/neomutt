@@ -325,7 +325,7 @@ msgid "Could not create temporary file"
 msgstr "Ne eblis krei dumtempan dosieron"
 
 #: commands.c:244
-msgid "Cannot create display filter"
+msgid "Can't create display filter"
 msgstr "Ne eblas krei vidig-filtrilon"
 
 #: commands.c:275
@@ -739,7 +739,7 @@ msgstr "Parto skribita"
 
 #: compose.c:1140 compose.c:1156
 #, fuzzy
-msgid "The fundamental part cannot be moved"
+msgid "The fundamental part can't be moved"
 msgstr "Ĉi tiu parto ne estos konvertita"
 
 #: compose.c:1151
@@ -898,7 +898,7 @@ msgstr "PGP jam elektita.  Ĉu nuligi kaj daŭrigi?"
 
 #: compress.c:382 compress.c:533
 #, c-format
-msgid "Cannot append without an append-hook or close-hook : %s"
+msgid "Can't append without an append-hook or close-hook : %s"
 msgstr "Ne eblas aldoni sen 'append-hook' aŭ 'close-hook': %s"
 
 #: compress.c:478 compress.c:544 compress.c:623 compress.c:661 mbox/mbox.c:1161
@@ -1050,11 +1050,11 @@ msgid "Failed to find enough entropy on your system"
 msgstr "Ne trovis sufiĉe da entropio en via sistemo"
 
 #: conn/ssl.c:797
-msgid "cannot get certificate subject"
+msgid "can't get certificate subject"
 msgstr "ne eblas akiri atestilan temon"
 
 #: conn/ssl.c:806 conn/ssl.c:814
-msgid "cannot get certificate common name"
+msgid "can't get certificate common name"
 msgstr "ne eblas akiri atestilan normalan nomon"
 
 #: conn/ssl.c:828
@@ -1481,7 +1481,7 @@ msgstr "[-- Eraro: parto message/external ne havas parametro access-type --]\n"
 #. example although '1K' and '1024' represent the same number your
 #. language might inflect the noun 'byte' differently.
 #.
-#. Sadly, we cannot do anything about that at the moment besides
+#. Sadly, we can't do anything about that at the moment besides
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
@@ -1510,7 +1510,7 @@ msgstr[1] ""
 #. example although '1K' and '1024' represent the same number your
 #. language might inflect the noun 'byte' differently.
 #.
-#. Sadly, we cannot do anything about that at the moment besides
+#. Sadly, we can't do anything about that at the moment besides
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
@@ -1799,7 +1799,7 @@ msgid "Mailbox created"
 msgstr "Poŝtfako kreita"
 
 #: imap/browse.c:431
-msgid "Cannot rename root folder"
+msgid "Can't rename root folder"
 msgstr "Ne eblas renomi radikan poŝtujon"
 
 #: imap/browse.c:435
@@ -2056,7 +2056,7 @@ msgid "%s: Operation not permitted by ACL"
 msgstr "%s: operacio ne permesiĝas de ACL"
 
 #: index.c:378
-msgid "Cannot toggle write on a readonly mailbox"
+msgid "Can't toggle write on a readonly mailbox"
 msgstr "Ne eblas ŝanĝi skribostaton ĉe nurlega poŝtfako"
 
 #: index.c:385
@@ -2152,7 +2152,7 @@ msgstr "Tiu mesaĝo ne estas videbla"
 #.
 #: index.c:1580 index.c:3033 pager.c:3047
 #, fuzzy
-msgid "Cannot delete messages"
+msgid "Can't delete messages"
 msgstr "Ne eblas forviŝi mesaĝon"
 
 #: index.c:1583
@@ -2191,7 +2191,7 @@ msgstr "Marki mesaĝojn laŭ la ŝablono: "
 #. "messages". Your language might have other means to express this.
 #: index.c:1805 index.c:3517 pager.c:3400
 #, fuzzy
-msgid "Cannot undelete messages"
+msgid "Can't undelete messages"
 msgstr "Ne eblas malforviŝi mesaĝon"
 
 #: index.c:1809
@@ -2280,7 +2280,7 @@ msgstr "Eliri el NeoMutt sen skribi?"
 #. L10N: CHECK_ACL
 #: index.c:2381
 #, fuzzy
-msgid "Cannot break thread"
+msgid "Can't break thread"
 msgstr "Ne eblas ligi fadenojn"
 
 #: index.c:2398
@@ -2288,12 +2288,12 @@ msgid "Thread broken"
 msgstr "Fadeno rompiĝis"
 
 #: index.c:2411
-msgid "Thread cannot be broken, message is not part of a thread"
+msgid "Thread can't be broken, message is not part of a thread"
 msgstr "Ne eblas rompi fadenon; mesaĝo ne estas parto de fadeno"
 
 #. L10N: CHECK_ACL
 #: index.c:2420
-msgid "Cannot link threads"
+msgid "Can't link threads"
 msgstr "Ne eblas ligi fadenojn"
 
 #: index.c:2426
@@ -2350,12 +2350,12 @@ msgstr "Serĉo rekomencis ĉe la fino"
 
 #. L10N: CHECK_ACL
 #: index.c:2722
-msgid "Cannot flag message"
+msgid "Can't flag message"
 msgstr "Ne eblas flagi mesaĝon"
 
 #. L10N: CHECK_ACL
 #: index.c:2762 pager.c:3359
-msgid "Cannot toggle new"
+msgid "Can't toggle new"
 msgstr "Ne eblas (mal)ŝalti \"nova\""
 
 #: index.c:2840
@@ -2373,12 +2373,12 @@ msgstr "Fadeno enhavas nelegitajn mesaĝojn"
 
 #. L10N: CHECK_ACL
 #: index.c:2982 pager.c:3002
-msgid "Cannot delete message"
+msgid "Can't delete message"
 msgstr "Ne eblas forviŝi mesaĝon"
 
 #. L10N: CHECK_ACL
 #: index.c:3097
-msgid "Cannot edit message"
+msgid "Can't edit message"
 msgstr "Ne eblas redakti mesaĝon"
 
 #. L10N: This is displayed when the x-label on one or more
@@ -2403,7 +2403,7 @@ msgstr "Neniu etikedo ŝanĝiĝis"
 #. "messages". Your language might have other means to express this.
 #: index.c:3304
 #, fuzzy
-msgid "Cannot mark messages as read"
+msgid "Can't mark messages as read"
 msgstr "Ne eblas marki mesaĝo(j)n kiel legita(j)n"
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
@@ -2427,7 +2427,7 @@ msgstr "fulmklavo por mesaĝo"
 msgid "Message bound to %s"
 msgstr "Mesaĝo ligiĝis al %s"
 
-#. L10N: This error is printed if <mark-message> cannot find a
+#. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
 #: index.c:3363
 msgid "No message ID to macro"
@@ -2443,7 +2443,7 @@ msgstr ""
 
 #. L10N: CHECK_ACL
 #: index.c:3479 pager.c:3379
-msgid "Cannot undelete message"
+msgid "Can't undelete message"
 msgstr "Ne eblas malforviŝi mesaĝon"
 
 #: init.c:295
@@ -2797,12 +2797,12 @@ msgid "No recipients specified"
 msgstr "Nenia ricevonto specifita"
 
 #: main.c:901
-msgid "Cannot use -E flag with stdin"
+msgid "Can't use -E flag with stdin"
 msgstr "Ne eblas uzi opcio '-E' kun ĉefenigujo"
 
 #: main.c:983
 #, fuzzy, c-format
-msgid "Cannot parse message template: %s"
+msgid "Can't parse message template: %s"
 msgstr "Ne eblas malfermi mesaĝodosieron: %s"
 
 #: main.c:1049 mutt_header.c:334
@@ -2878,11 +2878,11 @@ msgid "No entries"
 msgstr "Neniaj registroj"
 
 #: menu.c:671
-msgid "You cannot scroll down farther"
+msgid "You can't scroll down farther"
 msgstr "Ne eblas rulumi pli malsupren"
 
 #: menu.c:693
-msgid "You cannot scroll up farther"
+msgid "You can't scroll up farther"
 msgstr "Ne eblas rulumi pli supren"
 
 #: menu.c:740
@@ -3136,7 +3136,7 @@ msgid "No matching mailcap entry found.  Viewing as text."
 msgstr "Neniu Mailcap-regulo kongruas.  Traktas kiel tekston."
 
 #: mutt_attach.c:428
-msgid "MIME type not defined.  Cannot view attachment."
+msgid "MIME type not defined.  Can't view attachment."
 msgstr "MIME-speco ne difinita.  Ne eblas vidigi parton."
 
 #: mutt_attach.c:527
@@ -3192,7 +3192,7 @@ msgstr "Ne eblis ŝlosi %s\n"
 
 #: mutt_socket.c:66
 #, fuzzy, c-format
-msgid "SSL is unavailable, cannot connect to %s"
+msgid "SSL is unavailable, can't connect to %s"
 msgstr "SSL ne disponeblas."
 
 #: mutt_thread.c:1163
@@ -3299,7 +3299,7 @@ msgid "[-- %s output follows%s --]\n"
 msgstr "[-- %s eligo sekvas%s --]\n"
 
 #. L10N: Due to the implementation details (e.g. some passwords are managed
-#. by gpg-agent) we cannot know whether we forgot zero, 1, 12, ...
+#. by gpg-agent) we can't know whether we forgot zero, 1, 12, ...
 #. passwords. So in English we use "Passphrases". Your language might
 #. have other means to express this.
 #: ncrypt/crypt.c:114
@@ -5632,7 +5632,7 @@ msgstr "Atendas fcntl-ŝloson... %d"
 
 #: notmuch/nm_db.c:132
 #, c-format
-msgid "Cannot open notmuch database: %s: %s"
+msgid "Can't open notmuch database: %s: %s"
 msgstr ""
 
 #: notmuch/nm_db.c:133
@@ -6291,7 +6291,7 @@ msgid "Fcc mailbox"
 msgstr "Mankas poŝtfako.\n"
 
 #: send.c:1639
-msgid "Cannot postpone.  $postponed is unset"
+msgid "Can't postpone.  $postponed is unset"
 msgstr ""
 
 #: send.c:1769

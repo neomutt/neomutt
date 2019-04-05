@@ -425,7 +425,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
   {
     if (!entry->command)
     {
-      mutt_error(_("MIME type not defined.  Cannot view attachment."));
+      mutt_error(_("MIME type not defined.  Can't view attachment."));
       goto return_error;
     }
     mutt_str_strfcpy(cmd, entry->command, sizeof(cmd));

@@ -323,7 +323,7 @@ msgid "Could not create temporary file"
 msgstr "一時ファイルを作成できなかった"
 
 #: commands.c:244
-msgid "Cannot create display filter"
+msgid "Can't create display filter"
 msgstr "表示用フィルタを作成できない"
 
 #: commands.c:275
@@ -731,7 +731,7 @@ msgstr "添付ファイルを保存した。"
 
 #: compose.c:1140 compose.c:1156
 #, fuzzy
-msgid "The fundamental part cannot be moved"
+msgid "The fundamental part can't be moved"
 msgstr "現在の添付ファイルは変換されない。"
 
 #: compose.c:1151
@@ -890,7 +890,7 @@ msgstr "PGP が既に選択されている。解除して継続?"
 
 #: compress.c:382 compress.c:533
 #, c-format
-msgid "Cannot append without an append-hook or close-hook : %s"
+msgid "Can't append without an append-hook or close-hook : %s"
 msgstr "append-hook か close-hook がないと追加できない : %s"
 
 #: compress.c:478 compress.c:544 compress.c:623 compress.c:661 mbox/mbox.c:1161
@@ -1042,11 +1042,11 @@ msgid "Failed to find enough entropy on your system"
 msgstr "実行中のシステムには十分な乱雑さを見つけられなかった"
 
 #: conn/ssl.c:797
-msgid "cannot get certificate subject"
+msgid "can't get certificate subject"
 msgstr "証明書の subject を得られない"
 
 #: conn/ssl.c:806 conn/ssl.c:814
-msgid "cannot get certificate common name"
+msgid "can't get certificate common name"
 msgstr "証明書の common name を得られない"
 
 #: conn/ssl.c:828
@@ -1475,7 +1475,7 @@ msgstr "[-- エラー: message/external-body に access-type パラメータの�
 #. example although '1K' and '1024' represent the same number your
 #. language might inflect the noun 'byte' differently.
 #.
-#. Sadly, we cannot do anything about that at the moment besides
+#. Sadly, we can't do anything about that at the moment besides
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
@@ -1501,7 +1501,7 @@ msgstr[0] ""
 #. example although '1K' and '1024' represent the same number your
 #. language might inflect the noun 'byte' differently.
 #.
-#. Sadly, we cannot do anything about that at the moment besides
+#. Sadly, we can't do anything about that at the moment besides
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
@@ -1793,7 +1793,7 @@ msgid "Mailbox created"
 msgstr "メールボックスが作成された。"
 
 #: imap/browse.c:431
-msgid "Cannot rename root folder"
+msgid "Can't rename root folder"
 msgstr "ルートフォルダはリネーム (移動) できない"
 
 # 長いから「メールボックス」を削ってもいいかも
@@ -2050,7 +2050,7 @@ msgid "%s: Operation not permitted by ACL"
 msgstr "%s: 操作が ACL で許可されていない"
 
 #: index.c:378
-msgid "Cannot toggle write on a readonly mailbox"
+msgid "Can't toggle write on a readonly mailbox"
 msgstr "読み出し専用メールボックスでは変更の書き込みを切替できない"
 
 #: index.c:385
@@ -2147,7 +2147,7 @@ msgstr "そのメッセージは可視ではない。"
 #.
 #: index.c:1580 index.c:3033 pager.c:3047
 #, fuzzy
-msgid "Cannot delete messages"
+msgid "Can't delete messages"
 msgstr "メッセージを削除できない"
 
 #: index.c:1583
@@ -2186,7 +2186,7 @@ msgstr "メッセージにタグを付けるためのパターン: "
 #. "messages". Your language might have other means to express this.
 #: index.c:1805 index.c:3517 pager.c:3400
 #, fuzzy
-msgid "Cannot undelete messages"
+msgid "Can't undelete messages"
 msgstr "メッセージの削除状態を解除できない"
 
 #: index.c:1809
@@ -2274,7 +2274,7 @@ msgstr "保存しないで NeoMutt を抜ける?"
 #. L10N: CHECK_ACL
 #: index.c:2381
 #, fuzzy
-msgid "Cannot break thread"
+msgid "Can't break thread"
 msgstr "スレッドをつなげられない"
 
 #: index.c:2398
@@ -2282,12 +2282,12 @@ msgid "Thread broken"
 msgstr "スレッドが外された"
 
 #: index.c:2411
-msgid "Thread cannot be broken, message is not part of a thread"
+msgid "Thread can't be broken, message is not part of a thread"
 msgstr "スレッドを外せない。メッセージがスレッドの一部ではない"
 
 #. L10N: CHECK_ACL
 #: index.c:2420
-msgid "Cannot link threads"
+msgid "Can't link threads"
 msgstr "スレッドをつなげられない"
 
 #: index.c:2426
@@ -2344,12 +2344,12 @@ msgstr "検索は一番下に戻った。"
 
 #. L10N: CHECK_ACL
 #: index.c:2722
-msgid "Cannot flag message"
+msgid "Can't flag message"
 msgstr "メッセージにフラグを設定できない"
 
 #. L10N: CHECK_ACL
 #: index.c:2762 pager.c:3359
-msgid "Cannot toggle new"
+msgid "Can't toggle new"
 msgstr "新着フラグを切替できない"
 
 #: index.c:2840
@@ -2367,12 +2367,12 @@ msgstr "スレッド中に未読メッセージがある。"
 
 #. L10N: CHECK_ACL
 #: index.c:2982 pager.c:3002
-msgid "Cannot delete message"
+msgid "Can't delete message"
 msgstr "メッセージを削除できない"
 
 #. L10N: CHECK_ACL
 #: index.c:3097
-msgid "Cannot edit message"
+msgid "Can't edit message"
 msgstr "メッセージを編集できない"
 
 #. L10N: This is displayed when the x-label on one or more
@@ -2396,7 +2396,7 @@ msgstr "ラベルは変更されなかった。"
 #. "messages". Your language might have other means to express this.
 #: index.c:3304
 #, fuzzy
-msgid "Cannot mark messages as read"
+msgid "Can't mark messages as read"
 msgstr "メッセージを既読にマークできない"
 
 # つまり ~a とすれば後から 'a で戻ってこられるという機能の a の部分。
@@ -2421,7 +2421,7 @@ msgstr "(mark-message キー)"
 msgid "Message bound to %s"
 msgstr "メッセージは %s に割り当てられた。"
 
-#. L10N: This error is printed if <mark-message> cannot find a
+#. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
 #: index.c:3363
 msgid "No message ID to macro"
@@ -2437,7 +2437,7 @@ msgstr ""
 
 #. L10N: CHECK_ACL
 #: index.c:3479 pager.c:3379
-msgid "Cannot undelete message"
+msgid "Can't undelete message"
 msgstr "メッセージの削除状態を解除できない"
 
 #: init.c:295
@@ -2790,12 +2790,12 @@ msgid "No recipients specified"
 msgstr "受信者が指定されていない。"
 
 #: main.c:901
-msgid "Cannot use -E flag with stdin"
+msgid "Can't use -E flag with stdin"
 msgstr "標準入力には -E フラグを使用できない"
 
 #: main.c:983
 #, fuzzy, c-format
-msgid "Cannot parse message template: %s"
+msgid "Can't parse message template: %s"
 msgstr "メッセージファイルをオープンできない: %s"
 
 #: main.c:1049 mutt_header.c:334
@@ -2871,11 +2871,11 @@ msgid "No entries"
 msgstr "エントリがない。"
 
 #: menu.c:671
-msgid "You cannot scroll down farther"
+msgid "You can't scroll down farther"
 msgstr "これより下にはスクロールできない。"
 
 #: menu.c:693
-msgid "You cannot scroll up farther"
+msgid "You can't scroll up farther"
 msgstr "これより上にはスクロールできない。"
 
 #: menu.c:740
@@ -3132,7 +3132,7 @@ msgid "No matching mailcap entry found.  Viewing as text."
 msgstr "mailcap に一致エントリがない。テキストとして表示中。"
 
 #: mutt_attach.c:428
-msgid "MIME type not defined.  Cannot view attachment."
+msgid "MIME type not defined.  Can't view attachment."
 msgstr "MIME 形式が定義されていない。添付ファイルを表示できない。"
 
 #: mutt_attach.c:527
@@ -3188,7 +3188,7 @@ msgstr "%s をロックできなかった\n"
 
 #: mutt_socket.c:66
 #, fuzzy, c-format
-msgid "SSL is unavailable, cannot connect to %s"
+msgid "SSL is unavailable, can't connect to %s"
 msgstr "SSL が利用できない。"
 
 #: mutt_thread.c:1163
@@ -3292,7 +3292,7 @@ msgid "[-- %s output follows%s --]\n"
 msgstr "[-- %s 出力は以下の通り%s --]\n"
 
 #. L10N: Due to the implementation details (e.g. some passwords are managed
-#. by gpg-agent) we cannot know whether we forgot zero, 1, 12, ...
+#. by gpg-agent) we can't know whether we forgot zero, 1, 12, ...
 #. passwords. So in English we use "Passphrases". Your language might
 #. have other means to express this.
 #: ncrypt/crypt.c:114
@@ -5619,7 +5619,7 @@ msgstr "fcntl ロック待ち... %d"
 
 #: notmuch/nm_db.c:132
 #, c-format
-msgid "Cannot open notmuch database: %s: %s"
+msgid "Can't open notmuch database: %s: %s"
 msgstr ""
 
 #: notmuch/nm_db.c:133
@@ -6274,7 +6274,7 @@ msgid "Fcc mailbox"
 msgstr "メールボックスの指定がない。\n"
 
 #: send.c:1639
-msgid "Cannot postpone.  $postponed is unset"
+msgid "Can't postpone.  $postponed is unset"
 msgstr ""
 
 #: send.c:1769

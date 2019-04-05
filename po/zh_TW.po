@@ -329,7 +329,7 @@ msgid "Could not create temporary file"
 msgstr "無法建立暫存檔"
 
 #: commands.c:244
-msgid "Cannot create display filter"
+msgid "Can't create display filter"
 msgstr "無法建立顯示過濾器"
 
 #: commands.c:275
@@ -746,7 +746,7 @@ msgstr "附件已被儲存"
 
 #: compose.c:1140 compose.c:1156
 #, fuzzy
-msgid "The fundamental part cannot be moved"
+msgid "The fundamental part can't be moved"
 msgstr "這個附件不會被轉換"
 
 #: compose.c:1151
@@ -905,7 +905,7 @@ msgstr ""
 
 #: compress.c:382 compress.c:533
 #, c-format
-msgid "Cannot append without an append-hook or close-hook : %s"
+msgid "Can't append without an append-hook or close-hook : %s"
 msgstr ""
 
 #: compress.c:478 compress.c:544 compress.c:623 compress.c:661 mbox/mbox.c:1161
@@ -1060,12 +1060,12 @@ msgstr ""
 
 #: conn/ssl.c:797
 #, fuzzy
-msgid "cannot get certificate subject"
+msgid "can't get certificate subject"
 msgstr "無法從對方拿取驗証"
 
 #: conn/ssl.c:806 conn/ssl.c:814
 #, fuzzy
-msgid "cannot get certificate common name"
+msgid "can't get certificate common name"
 msgstr "無法從對方拿取驗証"
 
 #: conn/ssl.c:828
@@ -1522,7 +1522,7 @@ msgstr "[-- 錯誤：message/external-body 沒有存取類型 (access-type) 的�
 #. example although '1K' and '1024' represent the same number your
 #. language might inflect the noun 'byte' differently.
 #.
-#. Sadly, we cannot do anything about that at the moment besides
+#. Sadly, we can't do anything about that at the moment besides
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
@@ -1548,7 +1548,7 @@ msgstr[0] ""
 #. example although '1K' and '1024' represent the same number your
 #. language might inflect the noun 'byte' differently.
 #.
-#. Sadly, we cannot do anything about that at the moment besides
+#. Sadly, we can't do anything about that at the moment besides
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
@@ -1839,7 +1839,7 @@ msgstr "已完成建立郵箱"
 
 #: imap/browse.c:431
 #, fuzzy
-msgid "Cannot rename root folder"
+msgid "Can't rename root folder"
 msgstr "無法建立過濾器"
 
 #: imap/browse.c:435
@@ -2098,7 +2098,7 @@ msgid "%s: Operation not permitted by ACL"
 msgstr ""
 
 #: index.c:378
-msgid "Cannot toggle write on a readonly mailbox"
+msgid "Can't toggle write on a readonly mailbox"
 msgstr "無法寫入到一個唯讀的信箱"
 
 #: index.c:385
@@ -2195,7 +2195,7 @@ msgstr "這封信件無法顯示"
 #.
 #: index.c:1580 index.c:3033 pager.c:3047
 #, fuzzy
-msgid "Cannot delete messages"
+msgid "Can't delete messages"
 msgstr "沒有要反刪除的信件"
 
 #: index.c:1583
@@ -2234,7 +2234,7 @@ msgstr "標記信件的條件："
 #. "messages". Your language might have other means to express this.
 #: index.c:1805 index.c:3517 pager.c:3400
 #, fuzzy
-msgid "Cannot undelete messages"
+msgid "Can't undelete messages"
 msgstr "沒有要反刪除的信件"
 
 #: index.c:1809
@@ -2324,7 +2324,7 @@ msgstr "不儲存便離開 NeoMutt 嗎？"
 #. L10N: CHECK_ACL
 #: index.c:2381
 #, fuzzy
-msgid "Cannot break thread"
+msgid "Can't break thread"
 msgstr "無法建立過濾器"
 
 #: index.c:2398
@@ -2332,12 +2332,12 @@ msgid "Thread broken"
 msgstr ""
 
 #: index.c:2411
-msgid "Thread cannot be broken, message is not part of a thread"
+msgid "Thread can't be broken, message is not part of a thread"
 msgstr ""
 
 #. L10N: CHECK_ACL
 #: index.c:2420
-msgid "Cannot link threads"
+msgid "Can't link threads"
 msgstr ""
 
 #: index.c:2426
@@ -2400,12 +2400,12 @@ msgstr "搜尋至結尾"
 #. L10N: CHECK_ACL
 #: index.c:2722
 #, fuzzy
-msgid "Cannot flag message"
+msgid "Can't flag message"
 msgstr "顯示信件"
 
 #. L10N: CHECK_ACL
 #: index.c:2762 pager.c:3359
-msgid "Cannot toggle new"
+msgid "Can't toggle new"
 msgstr ""
 
 #: index.c:2840
@@ -2424,13 +2424,13 @@ msgstr "序列中有尚未讀取的信件"
 #. L10N: CHECK_ACL
 #: index.c:2982 pager.c:3002
 #, fuzzy
-msgid "Cannot delete message"
+msgid "Can't delete message"
 msgstr "沒有要反刪除的信件"
 
 #. L10N: CHECK_ACL
 #: index.c:3097
 #, fuzzy
-msgid "Cannot edit message"
+msgid "Can't edit message"
 msgstr "無法寫信件"
 
 #. L10N: This is displayed when the x-label on one or more
@@ -2455,7 +2455,7 @@ msgstr "信箱沒有變動"
 #. "messages". Your language might have other means to express this.
 #: index.c:3304
 #, fuzzy
-msgid "Cannot mark messages as read"
+msgid "Can't mark messages as read"
 msgstr "跳到這個序列的主信件"
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
@@ -2481,7 +2481,7 @@ msgstr "信件被延遲寄出"
 msgid "Message bound to %s"
 msgstr "郵件已被傳送"
 
-#. L10N: This error is printed if <mark-message> cannot find a
+#. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
 #: index.c:3363
 #, fuzzy
@@ -2499,7 +2499,7 @@ msgstr ""
 #. L10N: CHECK_ACL
 #: index.c:3479 pager.c:3379
 #, fuzzy
-msgid "Cannot undelete message"
+msgid "Can't undelete message"
 msgstr "沒有要反刪除的信件"
 
 #: init.c:295
@@ -2861,12 +2861,12 @@ msgid "No recipients specified"
 msgstr "沒有指定收件人"
 
 #: main.c:901
-msgid "Cannot use -E flag with stdin"
+msgid "Can't use -E flag with stdin"
 msgstr ""
 
 #: main.c:983
 #, fuzzy, c-format
-msgid "Cannot parse message template: %s"
+msgid "Can't parse message template: %s"
 msgstr "無法開啟信件檔案：%s"
 
 #: main.c:1049 mutt_header.c:334
@@ -2942,11 +2942,11 @@ msgid "No entries"
 msgstr "沒有資料"
 
 #: menu.c:671
-msgid "You cannot scroll down farther"
+msgid "You can't scroll down farther"
 msgstr "您無法再向下捲動了"
 
 #: menu.c:693
-msgid "You cannot scroll up farther"
+msgid "You can't scroll up farther"
 msgstr "您無法再向上捲動了"
 
 #: menu.c:740
@@ -3202,7 +3202,7 @@ msgid "No matching mailcap entry found.  Viewing as text."
 msgstr "沒有發現配合 mailcap 的登錄。將以文字檔方式瀏覽"
 
 #: mutt_attach.c:428
-msgid "MIME type not defined.  Cannot view attachment."
+msgid "MIME type not defined.  Can't view attachment."
 msgstr "MIME 形式未被定義. 無法顯示附件內容"
 
 #: mutt_attach.c:527
@@ -3258,7 +3258,7 @@ msgstr "無法鎖住 %s。\n"
 
 #: mutt_socket.c:66
 #, fuzzy, c-format
-msgid "SSL is unavailable, cannot connect to %s"
+msgid "SSL is unavailable, can't connect to %s"
 msgstr "沒有 SSL 功能"
 
 #: mutt_thread.c:1163
@@ -3366,7 +3366,7 @@ msgid "[-- %s output follows%s --]\n"
 msgstr "[-- 以下為 PGP 輸出的資料（現在時間：%c) --]\n"
 
 #. L10N: Due to the implementation details (e.g. some passwords are managed
-#. by gpg-agent) we cannot know whether we forgot zero, 1, 12, ...
+#. by gpg-agent) we can't know whether we forgot zero, 1, 12, ...
 #. passwords. So in English we use "Passphrases". Your language might
 #. have other means to express this.
 #: ncrypt/crypt.c:114
@@ -5797,7 +5797,7 @@ msgstr "正在等待 fcntl 的鎖定… %d"
 
 #: notmuch/nm_db.c:132
 #, c-format
-msgid "Cannot open notmuch database: %s: %s"
+msgid "Can't open notmuch database: %s: %s"
 msgstr ""
 
 #: notmuch/nm_db.c:133
@@ -6461,7 +6461,7 @@ msgid "Fcc mailbox"
 msgstr "沒有信箱。\n"
 
 #: send.c:1639
-msgid "Cannot postpone.  $postponed is unset"
+msgid "Can't postpone.  $postponed is unset"
 msgstr ""
 
 #: send.c:1769

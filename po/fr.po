@@ -354,7 +354,7 @@ msgid "Could not create temporary file"
 msgstr "Impossible de créer le fichier temporaire "
 
 #: commands.c:244
-msgid "Cannot create display filter"
+msgid "Can't create display filter"
 msgstr "Impossible de créer le filtre d'affichage"
 
 #: commands.c:275
@@ -779,7 +779,7 @@ msgstr "Attachement sauvé"
 
 #: compose.c:1140 compose.c:1156
 #, fuzzy
-msgid "The fundamental part cannot be moved"
+msgid "The fundamental part can't be moved"
 msgstr "L'attachement courant ne sera pas converti"
 
 #: compose.c:1151
@@ -942,7 +942,7 @@ msgstr "PGP déjà sélectionné. Effacer & continuer?"
 
 #: compress.c:382 compress.c:533
 #, c-format
-msgid "Cannot append without an append-hook or close-hook : %s"
+msgid "Can't append without an append-hook or close-hook : %s"
 msgstr "Impossible d'ajouter sans append-hook ou close-hook : %s"
 
 #: compress.c:478 compress.c:544 compress.c:623 compress.c:661 mbox/mbox.c:1161
@@ -1105,11 +1105,11 @@ msgid "Failed to find enough entropy on your system"
 msgstr "Impossible de trouver assez d'entropie sur votre système"
 
 #: conn/ssl.c:797
-msgid "cannot get certificate subject"
+msgid "can't get certificate subject"
 msgstr "impossible d'obtenir le détenteur du certificat (subject)"
 
 #: conn/ssl.c:806 conn/ssl.c:814
-msgid "cannot get certificate common name"
+msgid "can't get certificate common name"
 msgstr "impossible d'obtenir le nom du détenteur du certificat (CN)"
 
 #: conn/ssl.c:828
@@ -1554,7 +1554,7 @@ msgstr "[-- Erreur : message/external-body n'a pas de paramètre access-type --]
 #. example although '1K' and '1024' represent the same number your
 #. language might inflect the noun 'byte' differently.
 #.
-#. Sadly, we cannot do anything about that at the moment besides
+#. Sadly, we can't do anything about that at the moment besides
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
@@ -1584,7 +1584,7 @@ msgstr[1] ""
 #. example although '1K' and '1024' represent the same number your
 #. language might inflect the noun 'byte' differently.
 #.
-#. Sadly, we cannot do anything about that at the moment besides
+#. Sadly, we can't do anything about that at the moment besides
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
@@ -1888,7 +1888,7 @@ msgid "Mailbox created"
 msgstr "Boîte aux lettres créée"
 
 #: imap/browse.c:431
-msgid "Cannot rename root folder"
+msgid "Can't rename root folder"
 msgstr "Impossible de renommer le dossier racine"
 
 #: imap/browse.c:435
@@ -2161,7 +2161,7 @@ msgid "%s: Operation not permitted by ACL"
 msgstr "%s : opération non permise par les ACL"
 
 #: index.c:378
-msgid "Cannot toggle write on a readonly mailbox"
+msgid "Can't toggle write on a readonly mailbox"
 msgstr "Impossible de rendre inscriptible une boîte aux lettres en lecture seule "
 
 #: index.c:385
@@ -2260,7 +2260,7 @@ msgstr "Ce message n'est pas visible"
 #.
 #: index.c:1580 index.c:3033 pager.c:3047
 #, fuzzy
-msgid "Cannot delete messages"
+msgid "Can't delete messages"
 msgstr "Impossible d'effacer le message"
 
 #: index.c:1583
@@ -2300,7 +2300,7 @@ msgstr "Marquer les messages correspondant à : "
 #. "messages". Your language might have other means to express this.
 #: index.c:1805 index.c:3517 pager.c:3400
 #, fuzzy
-msgid "Cannot undelete messages"
+msgid "Can't undelete messages"
 msgstr "Impossible de récupérer le message"
 
 #: index.c:1809
@@ -2389,7 +2389,7 @@ msgstr "Quitter NeoMutt sans sauvegarder?"
 #. L10N: CHECK_ACL
 #: index.c:2381
 #, fuzzy
-msgid "Cannot break thread"
+msgid "Can't break thread"
 msgstr "Impossible de lier les discussions"
 
 #: index.c:2398
@@ -2397,12 +2397,12 @@ msgid "Thread broken"
 msgstr "Discussion cassée"
 
 #: index.c:2411
-msgid "Thread cannot be broken, message is not part of a thread"
+msgid "Thread can't be broken, message is not part of a thread"
 msgstr "La discussion ne peut pas être cassée, le message n'est pas dans une discussion"
 
 #. L10N: CHECK_ACL
 #: index.c:2420
-msgid "Cannot link threads"
+msgid "Can't link threads"
 msgstr "Impossible de lier les discussions"
 
 #: index.c:2426
@@ -2459,12 +2459,12 @@ msgstr "La recherche est repartie de la fin"
 
 #. L10N: CHECK_ACL
 #: index.c:2722
-msgid "Cannot flag message"
+msgid "Can't flag message"
 msgstr "Impossible de marquer le message"
 
 #. L10N: CHECK_ACL
 #: index.c:2762 pager.c:3359
-msgid "Cannot toggle new"
+msgid "Can't toggle new"
 msgstr "Impossible d'inverser l'indic. 'nouveau'"
 
 #: index.c:2840
@@ -2482,12 +2482,12 @@ msgstr "Cette discussion contient des messages non-lus"
 
 #. L10N: CHECK_ACL
 #: index.c:2982 pager.c:3002
-msgid "Cannot delete message"
+msgid "Can't delete message"
 msgstr "Impossible d'effacer le message"
 
 #. L10N: CHECK_ACL
 #: index.c:3097
-msgid "Cannot edit message"
+msgid "Can't edit message"
 msgstr "Impossible d'éditer le message"
 
 #. L10N: This is displayed when the x-label on one or more
@@ -2512,7 +2512,7 @@ msgstr "Aucun label n'a changé"
 #. "messages". Your language might have other means to express this.
 #: index.c:3304
 #, fuzzy
-msgid "Cannot mark messages as read"
+msgid "Can't mark messages as read"
 msgstr "Impossible de marquer le(s) message(s) comme lu(s)"
 
 # , c-format
@@ -2537,7 +2537,7 @@ msgstr "hotkey (marque-page)"
 msgid "Message bound to %s"
 msgstr "Message lié à %s"
 
-#. L10N: This error is printed if <mark-message> cannot find a
+#. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
 #: index.c:3363
 msgid "No message ID to macro"
@@ -2553,7 +2553,7 @@ msgstr ""
 
 #. L10N: CHECK_ACL
 #: index.c:3479 pager.c:3379
-msgid "Cannot undelete message"
+msgid "Can't undelete message"
 msgstr "Impossible de récupérer le message"
 
 # , c-format
@@ -2927,13 +2927,13 @@ msgid "No recipients specified"
 msgstr "Pas de destinataire spécifié"
 
 #: main.c:901
-msgid "Cannot use -E flag with stdin"
+msgid "Can't use -E flag with stdin"
 msgstr "Impossible d'utiliser l'option -E avec stdin"
 
 # , c-format
 #: main.c:983
 #, fuzzy, c-format
-msgid "Cannot parse message template: %s"
+msgid "Can't parse message template: %s"
 msgstr "Impossible d'ouvrir le fichier : %s"
 
 # , c-format
@@ -3012,11 +3012,11 @@ msgid "No entries"
 msgstr "Pas d'entrées"
 
 #: menu.c:671
-msgid "You cannot scroll down farther"
+msgid "You can't scroll down farther"
 msgstr "Défilement vers le bas impossible"
 
 #: menu.c:693
-msgid "You cannot scroll up farther"
+msgid "You can't scroll up farther"
 msgstr "Défilement vers le haut impossible"
 
 #: menu.c:740
@@ -3282,7 +3282,7 @@ msgid "No matching mailcap entry found.  Viewing as text."
 msgstr "Pas d'entrée mailcap correspondante. Visualisation en texte."
 
 #: mutt_attach.c:428
-msgid "MIME type not defined.  Cannot view attachment."
+msgid "MIME type not defined.  Can't view attachment."
 msgstr "Type MIME non défini. Impossible de visualiser l'attachement."
 
 #: mutt_attach.c:527
@@ -3340,7 +3340,7 @@ msgstr "Impossible de verrouiller %s\n"
 
 #: mutt_socket.c:66
 #, fuzzy, c-format
-msgid "SSL is unavailable, cannot connect to %s"
+msgid "SSL is unavailable, can't connect to %s"
 msgstr "SSL n'est pas disponible."
 
 #: mutt_thread.c:1163
@@ -3456,7 +3456,7 @@ msgid "[-- %s output follows%s --]\n"
 msgstr "[-- La sortie %s suit%s --]\n"
 
 #. L10N: Due to the implementation details (e.g. some passwords are managed
-#. by gpg-agent) we cannot know whether we forgot zero, 1, 12, ...
+#. by gpg-agent) we can't know whether we forgot zero, 1, 12, ...
 #. passwords. So in English we use "Passphrases". Your language might
 #. have other means to express this.
 #: ncrypt/crypt.c:114
@@ -5808,7 +5808,7 @@ msgstr "Attente du verrouillage fcntl... %d"
 
 #: notmuch/nm_db.c:132
 #, c-format
-msgid "Cannot open notmuch database: %s: %s"
+msgid "Can't open notmuch database: %s: %s"
 msgstr ""
 
 #: notmuch/nm_db.c:133
@@ -6492,7 +6492,7 @@ msgid "Fcc mailbox"
 msgstr "Boîte aux lettres Fcc"
 
 #: send.c:1639
-msgid "Cannot postpone.  $postponed is unset"
+msgid "Can't postpone.  $postponed is unset"
 msgstr "Impossible d'ajourner. $postponed est non renseigné"
 
 #: send.c:1769

@@ -373,7 +373,7 @@ void mutt_md5_process_bytes(const void *buffer, size_t len, struct Md5Ctx *md5ct
       mutt_md5_process_block(md5ctx->buffer, md5ctx->buflen & ~63, md5ctx);
 
       md5ctx->buflen &= 63;
-      /* The regions in the following copy operation cannot overlap. */
+      /* The regions in the following copy operation can't overlap. */
       memcpy(md5ctx->buffer, &((char *) md5ctx->buffer)[(left_over + add) & ~63],
              md5ctx->buflen);
     }

@@ -325,7 +325,7 @@ msgid "Could not create temporary file"
 msgstr "Не вийшло створити тимчасовий файл"
 
 #: commands.c:244
-msgid "Cannot create display filter"
+msgid "Can't create display filter"
 msgstr "Неможливо створити фільтр відображення"
 
 #: commands.c:275
@@ -743,7 +743,7 @@ msgstr "Додаток записано"
 
 #: compose.c:1140 compose.c:1156
 #, fuzzy
-msgid "The fundamental part cannot be moved"
+msgid "The fundamental part can't be moved"
 msgstr "Поточний додаток не буде перетворено"
 
 #: compose.c:1151
@@ -903,7 +903,7 @@ msgstr "PGP вже вибрано. Очистити і продовжити?"
 
 #: compress.c:382 compress.c:533
 #, c-format
-msgid "Cannot append without an append-hook or close-hook : %s"
+msgid "Can't append without an append-hook or close-hook : %s"
 msgstr "Неможливо дозаписати без append-hook або close-hook: %s"
 
 #: compress.c:478 compress.c:544 compress.c:623 compress.c:661 mbox/mbox.c:1161
@@ -1055,11 +1055,11 @@ msgid "Failed to find enough entropy on your system"
 msgstr "Не вдалося знайти достятньо ентропії на вашій системі"
 
 #: conn/ssl.c:797
-msgid "cannot get certificate subject"
+msgid "can't get certificate subject"
 msgstr "неможливо отримати subject сертифікату"
 
 #: conn/ssl.c:806 conn/ssl.c:814
-msgid "cannot get certificate common name"
+msgid "can't get certificate common name"
 msgstr "Неможливо отримати common name сертифікату"
 
 #: conn/ssl.c:828
@@ -1487,7 +1487,7 @@ msgstr "[-- Помилка: message/external-body не має параметру
 #. example although '1K' and '1024' represent the same number your
 #. language might inflect the noun 'byte' differently.
 #.
-#. Sadly, we cannot do anything about that at the moment besides
+#. Sadly, we can't do anything about that at the moment besides
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
@@ -1519,7 +1519,7 @@ msgstr[2] ""
 #. example although '1K' and '1024' represent the same number your
 #. language might inflect the noun 'byte' differently.
 #.
-#. Sadly, we cannot do anything about that at the moment besides
+#. Sadly, we can't do anything about that at the moment besides
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
@@ -1809,7 +1809,7 @@ msgid "Mailbox created"
 msgstr "Поштову скриньку створено"
 
 #: imap/browse.c:431
-msgid "Cannot rename root folder"
+msgid "Can't rename root folder"
 msgstr "Неможливо перейменувати кореневу скриньку"
 
 #: imap/browse.c:435
@@ -2069,7 +2069,7 @@ msgid "%s: Operation not permitted by ACL"
 msgstr "%s: Операція не дозволена ACL"
 
 #: index.c:378
-msgid "Cannot toggle write on a readonly mailbox"
+msgid "Can't toggle write on a readonly mailbox"
 msgstr "Скринька тільки для читання, ввімкнути запис неможливо"
 
 #: index.c:385
@@ -2165,7 +2165,7 @@ msgstr "Цей лист не можна побачити"
 #.
 #: index.c:1580 index.c:3033 pager.c:3047
 #, fuzzy
-msgid "Cannot delete messages"
+msgid "Can't delete messages"
 msgstr "Неможливо видалити лист"
 
 #: index.c:1583
@@ -2204,7 +2204,7 @@ msgstr "Виділити листи за шаблоном: "
 #. "messages". Your language might have other means to express this.
 #: index.c:1805 index.c:3517 pager.c:3400
 #, fuzzy
-msgid "Cannot undelete messages"
+msgid "Can't undelete messages"
 msgstr "Неможливо відновити лист"
 
 #: index.c:1809
@@ -2293,7 +2293,7 @@ msgstr "Покинути NeoMutt без збереження змін?"
 #. L10N: CHECK_ACL
 #: index.c:2381
 #, fuzzy
-msgid "Cannot break thread"
+msgid "Can't break thread"
 msgstr "Неможливо з’єднати розмови"
 
 #: index.c:2398
@@ -2301,12 +2301,12 @@ msgid "Thread broken"
 msgstr "Розмову розурвано"
 
 #: index.c:2411
-msgid "Thread cannot be broken, message is not part of a thread"
+msgid "Thread can't be broken, message is not part of a thread"
 msgstr "Розмовву неможливо розірвати: повідомлення не є частиною розмови"
 
 #. L10N: CHECK_ACL
 #: index.c:2420
-msgid "Cannot link threads"
+msgid "Can't link threads"
 msgstr "Неможливо з’єднати розмови"
 
 #: index.c:2426
@@ -2363,12 +2363,12 @@ msgstr "Досягнуто початок. Пошук перенесено на 
 
 #. L10N: CHECK_ACL
 #: index.c:2722
-msgid "Cannot flag message"
+msgid "Can't flag message"
 msgstr "Неможливо змінити атрибут листа"
 
 #. L10N: CHECK_ACL
 #: index.c:2762 pager.c:3359
-msgid "Cannot toggle new"
+msgid "Can't toggle new"
 msgstr "Неможливо змінити атрибут \"Нове\""
 
 #: index.c:2840
@@ -2386,12 +2386,12 @@ msgstr "Розмова має нечитані листи"
 
 #. L10N: CHECK_ACL
 #: index.c:2982 pager.c:3002
-msgid "Cannot delete message"
+msgid "Can't delete message"
 msgstr "Неможливо видалити лист"
 
 #. L10N: CHECK_ACL
 #: index.c:3097
-msgid "Cannot edit message"
+msgid "Can't edit message"
 msgstr "Неможливо редагувати лист"
 
 #. L10N: This is displayed when the x-label on one or more
@@ -2417,7 +2417,7 @@ msgstr "Жодної позначки не було змінено"
 #. "messages". Your language might have other means to express this.
 #: index.c:3304
 #, fuzzy
-msgid "Cannot mark messages as read"
+msgid "Can't mark messages as read"
 msgstr "Неможливо позначити лист(и) прочитаним(и)"
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
@@ -2441,7 +2441,7 @@ msgstr "макрос листа"
 msgid "Message bound to %s"
 msgstr "Лист пов’язаний з %s"
 
-#. L10N: This error is printed if <mark-message> cannot find a
+#. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
 #: index.c:3363
 msgid "No message ID to macro"
@@ -2457,7 +2457,7 @@ msgstr ""
 
 #. L10N: CHECK_ACL
 #: index.c:3479 pager.c:3379
-msgid "Cannot undelete message"
+msgid "Can't undelete message"
 msgstr "Неможливо відновити лист"
 
 #: init.c:295
@@ -2812,12 +2812,12 @@ msgid "No recipients specified"
 msgstr "Отримувачів не вказано"
 
 #: main.c:901
-msgid "Cannot use -E flag with stdin"
+msgid "Can't use -E flag with stdin"
 msgstr "Неможливо використовувати -E з stdin"
 
 #: main.c:983
 #, fuzzy, c-format
-msgid "Cannot parse message template: %s"
+msgid "Can't parse message template: %s"
 msgstr "Неможливо відкрити файл повідомлення: %s"
 
 #: main.c:1049 mutt_header.c:334
@@ -2893,11 +2893,11 @@ msgid "No entries"
 msgstr "Жодної позицїї"
 
 #: menu.c:671
-msgid "You cannot scroll down farther"
+msgid "You can't scroll down farther"
 msgstr "Нижче прокручувати неможна"
 
 #: menu.c:693
-msgid "You cannot scroll up farther"
+msgid "You can't scroll up farther"
 msgstr "Вище прокручувати неможна"
 
 #: menu.c:740
@@ -3151,7 +3151,7 @@ msgid "No matching mailcap entry found.  Viewing as text."
 msgstr "Не знайдено відомостей у mailcap. Показано як текст."
 
 #: mutt_attach.c:428
-msgid "MIME type not defined.  Cannot view attachment."
+msgid "MIME type not defined.  Can't view attachment."
 msgstr "Тип MIME не визначено. Неможливо показати додаток."
 
 #: mutt_attach.c:527
@@ -3207,7 +3207,7 @@ msgstr "Не вийшло заблокувати %s\n"
 
 #: mutt_socket.c:66
 #, fuzzy, c-format
-msgid "SSL is unavailable, cannot connect to %s"
+msgid "SSL is unavailable, can't connect to %s"
 msgstr "SSL недоступний."
 
 #: mutt_thread.c:1163
@@ -3317,7 +3317,7 @@ msgid "[-- %s output follows%s --]\n"
 msgstr "[-- Результат роботи %s%s --]\n"
 
 #. L10N: Due to the implementation details (e.g. some passwords are managed
-#. by gpg-agent) we cannot know whether we forgot zero, 1, 12, ...
+#. by gpg-agent) we can't know whether we forgot zero, 1, 12, ...
 #. passwords. So in English we use "Passphrases". Your language might
 #. have other means to express this.
 #: ncrypt/crypt.c:114
@@ -5647,7 +5647,7 @@ msgstr "Чекання блокування fctnl... %d"
 
 #: notmuch/nm_db.c:132
 #, c-format
-msgid "Cannot open notmuch database: %s: %s"
+msgid "Can't open notmuch database: %s: %s"
 msgstr ""
 
 #: notmuch/nm_db.c:133
@@ -6311,7 +6311,7 @@ msgid "Fcc mailbox"
 msgstr "Не поштова скринька.\n"
 
 #: send.c:1639
-msgid "Cannot postpone.  $postponed is unset"
+msgid "Can't postpone.  $postponed is unset"
 msgstr ""
 
 #: send.c:1769

@@ -791,7 +791,7 @@ static int external_body_handler(struct Body *b, struct State *s)
                  example although '1K' and '1024' represent the same number your
                  language might inflect the noun 'byte' differently.
 
-                 Sadly, we cannot do anything about that at the moment besides
+                 Sadly, we can't do anything about that at the moment besides
                  passing the precise size in bytes. If you are interested the
                  function responsible for the prettification is
                  mutt_str_pretty_size() in mutt/string.c. */
@@ -814,7 +814,7 @@ static int external_body_handler(struct Body *b, struct State *s)
                  example although '1K' and '1024' represent the same number your
                  language might inflect the noun 'byte' differently.
 
-                 Sadly, we cannot do anything about that at the moment besides
+                 Sadly, we can't do anything about that at the moment besides
                  passing the precise size in bytes. If you are interested the
                  function responsible for the prettification is
                  mutt_str_pretty_size() in mutt/string.c.  */
@@ -1349,7 +1349,7 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
         s->fp_in = fmemopen(temp, tempsize, "r");
       }
       else
-      { /* fmemopen cannot handle zero-length buffers */
+      { /* fmemopen can't handle zero-length buffers */
         s->fp_in = mutt_file_fopen("/dev/null", "r");
       }
       if (!s->fp_in)

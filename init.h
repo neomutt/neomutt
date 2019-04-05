@@ -389,7 +389,7 @@ struct ConfigDef MuttVars[] = {
   ** message.  The send-menu may still be accessed once you have finished
   ** editing the body of your message.
   ** .pp
-  ** \fBNote:\fP when this option is \fIset\fP, you cannot use send-hooks that depend
+  ** \fBNote:\fP when this option is \fIset\fP, you can't use send-hooks that depend
   ** on the recipients when composing a new (non-reply) message, as the initial
   ** list of recipients is empty.
   ** .pp
@@ -1099,7 +1099,7 @@ struct ConfigDef MuttVars[] = {
   { "flag_safe", DT_BOOL, R_NONE, &C_FlagSafe, false },
   /*
   ** .pp
-  ** If set, flagged messages cannot be deleted.
+  ** If set, flagged messages can't be deleted.
   */
   { "folder",           DT_PATH|DT_MAILBOX, R_NONE, &C_Folder, IP "~/Mail" },
   /*
@@ -1277,7 +1277,7 @@ struct ConfigDef MuttVars[] = {
   ** for the corresponding character.
   ** .pp
   ** This slightly odd interface is necessitated by NeoMutt's handling of
-  ** string variables; one cannot tell a variable that is unset from one
+  ** string variables; one can't tell a variable that is unset from one
   ** that is set to the empty string.
   */
   { "gecos_mask",       DT_REGEX,   R_NONE, &C_GecosMask, IP "^[^,]*" },
@@ -2118,7 +2118,7 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** When forwarding multiple attachments of a MIME message from the attachment
-  ** menu, attachments which cannot be decoded in a reasonable manner will
+  ** menu, attachments which can't be decoded in a reasonable manner will
   ** be attached to the newly composed message if this option is \fIset\fP.
   */
 #ifdef USE_NNTP
@@ -3468,7 +3468,7 @@ struct ConfigDef MuttVars[] = {
   ** "iso-8859-2", "koi8-r" or "iso-2022-jp") either instead of or after
   ** "iso-8859-1".
   ** .pp
-  ** In case the text cannot be converted into one of these exactly,
+  ** In case the text can't be converted into one of these exactly,
   ** NeoMutt uses $$charset as a fallback.
   */
   { "sendmail", DT_COMMAND, R_NONE, &C_Sendmail, IP SENDMAIL " -oem -oi" },
@@ -4158,7 +4158,7 @@ struct ConfigDef MuttVars[] = {
   { "spoolfile",        DT_PATH|DT_MAILBOX, R_NONE, &C_Spoolfile, 0 },
   /*
   ** .pp
-  ** If your spool mailbox is in a non-default place where NeoMutt cannot find
+  ** If your spool mailbox is in a non-default place where NeoMutt can't find
   ** it, you can specify its location with this variable.
   ** .pp
   ** If not specified, then the environment variables \fC$$$MAIL\fP and

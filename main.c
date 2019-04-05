@@ -898,7 +898,7 @@ int main(int argc, char *argv[], char *envp[])
         {
           if (edit_infile)
           {
-            mutt_error(_("Cannot use -E flag with stdin"));
+            mutt_error(_("Can't use -E flag with stdin"));
             goto main_curses; // TEST27: neomutt -E -H -
           }
           fp_in = stdin;
@@ -980,7 +980,7 @@ int main(int argc, char *argv[], char *envp[])
 
         if (mutt_prepare_template(fp_in, NULL, msg, context_hdr, false) < 0)
         {
-          mutt_error(_("Cannot parse message template: %s"), draft_file);
+          mutt_error(_("Can't parse message template: %s"), draft_file);
           mutt_env_free(&opts_env);
           mutt_email_free(&context_hdr);
           goto main_curses;

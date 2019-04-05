@@ -241,7 +241,7 @@ int mutt_display_message(struct Email *cur)
                                       fileno(fp_filter_out), -1);
     if (filterpid < 0)
     {
-      mutt_error(_("Cannot create display filter"));
+      mutt_error(_("Can't create display filter"));
       mutt_file_fclose(&fp_filter_out);
       unlink(tempfile);
       return 0;

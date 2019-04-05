@@ -316,8 +316,8 @@ msgid "Could not create temporary file"
 msgstr "Could not create temporary file"
 
 #: commands.c:244
-msgid "Cannot create display filter"
-msgstr "Cannot create display filter"
+msgid "Can't create display filter"
+msgstr "Can't create display filter"
 
 #: commands.c:275
 msgid "Could not copy message"
@@ -704,8 +704,8 @@ msgid "Attachment is already at top"
 msgstr "Attachment is already at top"
 
 #: compose.c:1140 compose.c:1156
-msgid "The fundamental part cannot be moved"
-msgstr "The fundamental part cannot be moved"
+msgid "The fundamental part can't be moved"
+msgstr "The fundamental part can't be moved"
 
 #: compose.c:1151
 msgid "Attachment is already at bottom"
@@ -858,8 +858,8 @@ msgstr "PGP already selected. Clear and continue?"
 
 #: compress.c:382 compress.c:533
 #, c-format
-msgid "Cannot append without an append-hook or close-hook : %s"
-msgstr "Cannot append without an append-hook or close-hook : %s"
+msgid "Can't append without an append-hook or close-hook : %s"
+msgstr "Can't append without an append-hook or close-hook : %s"
 
 #: compress.c:478 compress.c:544 compress.c:623 compress.c:661 mbox/mbox.c:1161
 msgid "Unable to lock mailbox"
@@ -1010,12 +1010,12 @@ msgid "Failed to find enough entropy on your system"
 msgstr "Failed to find enough entropy on your system"
 
 #: conn/ssl.c:797
-msgid "cannot get certificate subject"
-msgstr "cannot get certificate subject"
+msgid "can't get certificate subject"
+msgstr "can't get certificate subject"
 
 #: conn/ssl.c:806 conn/ssl.c:814
-msgid "cannot get certificate common name"
-msgstr "cannot get certificate common name"
+msgid "can't get certificate common name"
+msgstr "can't get certificate common name"
 
 #: conn/ssl.c:828
 #, c-format
@@ -1440,7 +1440,7 @@ msgstr "[-- Error: message/external-body has no access-type parameter --]\n"
 #. example although '1K' and '1024' represent the same number your
 #. language might inflect the noun 'byte' differently.
 #.
-#. Sadly, we cannot do anything about that at the moment besides
+#. Sadly, we can't do anything about that at the moment besides
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
@@ -1469,7 +1469,7 @@ msgstr[1] ""
 #. example although '1K' and '1024' represent the same number your
 #. language might inflect the noun 'byte' differently.
 #.
-#. Sadly, we cannot do anything about that at the moment besides
+#. Sadly, we can't do anything about that at the moment besides
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
@@ -1750,8 +1750,8 @@ msgid "Mailbox created"
 msgstr "Mailbox created"
 
 #: imap/browse.c:431
-msgid "Cannot rename root folder"
-msgstr "Cannot rename root folder"
+msgid "Can't rename root folder"
+msgstr "Can't rename root folder"
 
 #: imap/browse.c:435
 #, c-format
@@ -2001,8 +2001,8 @@ msgid "%s: Operation not permitted by ACL"
 msgstr "%s: Operation not permitted by ACL"
 
 #: index.c:378
-msgid "Cannot toggle write on a readonly mailbox"
-msgstr "Cannot toggle write on a readonly mailbox"
+msgid "Can't toggle write on a readonly mailbox"
+msgstr "Can't toggle write on a readonly mailbox"
 
 #: index.c:385
 msgid "Changes to folder will be written on folder exit"
@@ -2093,8 +2093,8 @@ msgstr "That message is not visible"
 #. "messages". Your language might have other means to express this.
 #.
 #: index.c:1580 index.c:3033 pager.c:3047
-msgid "Cannot delete messages"
-msgstr "Cannot delete messages"
+msgid "Can't delete messages"
+msgstr "Can't delete messages"
 
 #: index.c:1583
 msgid "Delete messages matching: "
@@ -2131,8 +2131,8 @@ msgstr "Tag messages matching: "
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
 #: index.c:1805 index.c:3517 pager.c:3400
-msgid "Cannot undelete messages"
-msgstr "Cannot undelete messages"
+msgid "Can't undelete messages"
+msgstr "Can't undelete messages"
 
 #: index.c:1809
 msgid "Undelete messages matching: "
@@ -2213,21 +2213,21 @@ msgstr "Exit NeoMutt without saving?"
 
 #. L10N: CHECK_ACL
 #: index.c:2381
-msgid "Cannot break thread"
-msgstr "Cannot break thread"
+msgid "Can't break thread"
+msgstr "Can't break thread"
 
 #: index.c:2398
 msgid "Thread broken"
 msgstr "Thread broken"
 
 #: index.c:2411
-msgid "Thread cannot be broken, message is not part of a thread"
-msgstr "Thread cannot be broken, message is not part of a thread"
+msgid "Thread can't be broken, message is not part of a thread"
+msgstr "Thread can't be broken, message is not part of a thread"
 
 #. L10N: CHECK_ACL
 #: index.c:2420
-msgid "Cannot link threads"
-msgstr "Cannot link threads"
+msgid "Can't link threads"
+msgstr "Can't link threads"
 
 #: index.c:2426
 msgid "No Message-ID: header available to link thread"
@@ -2283,13 +2283,13 @@ msgstr "Search wrapped to bottom"
 
 #. L10N: CHECK_ACL
 #: index.c:2722
-msgid "Cannot flag message"
-msgstr "Cannot flag message"
+msgid "Can't flag message"
+msgstr "Can't flag message"
 
 #. L10N: CHECK_ACL
 #: index.c:2762 pager.c:3359
-msgid "Cannot toggle new"
-msgstr "Cannot toggle new"
+msgid "Can't toggle new"
+msgstr "Can't toggle new"
 
 #: index.c:2840
 msgid "No more threads"
@@ -2305,13 +2305,13 @@ msgstr "Thread contains unread or flagged messages"
 
 #. L10N: CHECK_ACL
 #: index.c:2982 pager.c:3002
-msgid "Cannot delete message"
-msgstr "Cannot delete message"
+msgid "Can't delete message"
+msgstr "Can't delete message"
 
 #. L10N: CHECK_ACL
 #: index.c:3097
-msgid "Cannot edit message"
-msgstr "Cannot edit message"
+msgid "Can't edit message"
+msgstr "Can't edit message"
 
 #. L10N: This is displayed when the x-label on one or more
 #. messages is edited.
@@ -2334,8 +2334,8 @@ msgstr "No labels changed"
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
 #: index.c:3304
-msgid "Cannot mark messages as read"
-msgstr "Cannot mark messages as read"
+msgid "Can't mark messages as read"
+msgstr "Can't mark messages as read"
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
@@ -2358,7 +2358,7 @@ msgstr "message hotkey"
 msgid "Message bound to %s"
 msgstr "Message bound to %s"
 
-#. L10N: This error is printed if <mark-message> cannot find a
+#. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
 #: index.c:3363
 msgid "No message ID to macro"
@@ -2374,8 +2374,8 @@ msgstr "Posting to this group not allowed, may be moderated. Continue?"
 
 #. L10N: CHECK_ACL
 #: index.c:3479 pager.c:3379
-msgid "Cannot undelete message"
-msgstr "Cannot undelete message"
+msgid "Can't undelete message"
+msgstr "Can't undelete message"
 
 #: init.c:295
 #, c-format
@@ -2782,13 +2782,13 @@ msgid "No recipients specified"
 msgstr "No recipients specified"
 
 #: main.c:901
-msgid "Cannot use -E flag with stdin"
-msgstr "Cannot use -E flag with stdin"
+msgid "Can't use -E flag with stdin"
+msgstr "Can't use -E flag with stdin"
 
 #: main.c:983
 #, c-format
-msgid "Cannot parse message template: %s"
-msgstr "Cannot parse message template: %s"
+msgid "Can't parse message template: %s"
+msgstr "Can't parse message template: %s"
 
 #: main.c:1049 mutt_header.c:334
 #, c-format
@@ -2863,12 +2863,12 @@ msgid "No entries"
 msgstr "No entries"
 
 #: menu.c:671
-msgid "You cannot scroll down farther"
-msgstr "You cannot scroll down farther"
+msgid "You can't scroll down farther"
+msgstr "You can't scroll down farther"
 
 #: menu.c:693
-msgid "You cannot scroll up farther"
-msgstr "You cannot scroll up farther"
+msgid "You can't scroll up farther"
+msgstr "You can't scroll up farther"
 
 #: menu.c:740
 msgid "You are on the first page"
@@ -3118,8 +3118,8 @@ msgid "No matching mailcap entry found.  Viewing as text."
 msgstr "No matching mailcap entry found.  Viewing as text."
 
 #: mutt_attach.c:428
-msgid "MIME type not defined.  Cannot view attachment."
-msgstr "MIME type not defined.  Cannot view attachment."
+msgid "MIME type not defined.  Can't view attachment."
+msgstr "MIME type not defined.  Can't view attachment."
 
 #: mutt_attach.c:527
 #, c-format
@@ -3174,8 +3174,8 @@ msgstr "Couldn't source lua source: %s"
 
 #: mutt_socket.c:66
 #, c-format
-msgid "SSL is unavailable, cannot connect to %s"
-msgstr "SSL is unavailable, cannot connect to %s"
+msgid "SSL is unavailable, can't connect to %s"
+msgstr "SSL is unavailable, can't connect to %s"
 
 #: mutt_thread.c:1163
 msgid "Parent message is not available"
@@ -3280,7 +3280,7 @@ msgid "[-- %s output follows%s --]\n"
 msgstr "[-- %s output follows%s --]\n"
 
 #. L10N: Due to the implementation details (e.g. some passwords are managed
-#. by gpg-agent) we cannot know whether we forgot zero, 1, 12, ...
+#. by gpg-agent) we can't know whether we forgot zero, 1, 12, ...
 #. passwords. So in English we use "Passphrases". Your language might
 #. have other means to express this.
 #: ncrypt/crypt.c:114
@@ -5547,8 +5547,8 @@ msgstr "Waiting for notmuch DB... (%d sec)"
 
 #: notmuch/nm_db.c:132
 #, c-format
-msgid "Cannot open notmuch database: %s: %s"
-msgstr "Cannot open notmuch database: %s: %s"
+msgid "Can't open notmuch database: %s: %s"
+msgstr "Can't open notmuch database: %s: %s"
 
 #: notmuch/nm_db.c:133
 msgid "unknown reason"
@@ -6194,8 +6194,8 @@ msgid "Fcc mailbox"
 msgstr "Fcc mailbox"
 
 #: send.c:1639
-msgid "Cannot postpone.  $postponed is unset"
-msgstr "Cannot postpone.  $postponed is unset"
+msgid "Can't postpone.  $postponed is unset"
+msgstr "Can't postpone.  $postponed is unset"
 
 #: send.c:1769
 msgid "Recall postponed message?"

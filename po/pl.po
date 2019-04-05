@@ -318,7 +318,7 @@ msgid "Could not create temporary file"
 msgstr "Nie można utworzyć pliku tymczasowego"
 
 #: commands.c:244
-msgid "Cannot create display filter"
+msgid "Can't create display filter"
 msgstr "Nie można utworzyć filtru wyświetlania"
 
 #: commands.c:275
@@ -711,7 +711,7 @@ msgid "Attachment is already at top"
 msgstr "Załącznik jest już na samej górze"
 
 #: compose.c:1140 compose.c:1156
-msgid "The fundamental part cannot be moved"
+msgid "The fundamental part can't be moved"
 msgstr "Fundamentalna część nie może być przeniesiona"
 
 #: compose.c:1151
@@ -867,7 +867,7 @@ msgstr "Wybrano już PGP. Anulować wybór PGP i kontynuować?"
 
 #: compress.c:382 compress.c:533
 #, c-format
-msgid "Cannot append without an append-hook or close-hook : %s"
+msgid "Can't append without an append-hook or close-hook : %s"
 msgstr "Nie można dołączyć bez ustawienia append-hook lub close-hook : %s"
 
 #: compress.c:478 compress.c:544 compress.c:623 compress.c:661 mbox/mbox.c:1161
@@ -1019,11 +1019,11 @@ msgid "Failed to find enough entropy on your system"
 msgstr "Zgromadzenie odpowiedniej ilości entropii nie powiodło się"
 
 #: conn/ssl.c:797
-msgid "cannot get certificate subject"
+msgid "can't get certificate subject"
 msgstr "nie można pobrać tematu certyfikatu"
 
 #: conn/ssl.c:806 conn/ssl.c:814
-msgid "cannot get certificate common name"
+msgid "can't get certificate common name"
 msgstr "nie można pobrać nazwy certyfikatu"
 
 #: conn/ssl.c:828
@@ -1450,7 +1450,7 @@ msgstr "[-- Błąd: message/external-body nie ma ustawionego rodzaju dostępu --
 #. example although '1K' and '1024' represent the same number your
 #. language might inflect the noun 'byte' differently.
 #.
-#. Sadly, we cannot do anything about that at the moment besides
+#. Sadly, we can't do anything about that at the moment besides
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
@@ -1482,7 +1482,7 @@ msgstr[2] ""
 #. example although '1K' and '1024' represent the same number your
 #. language might inflect the noun 'byte' differently.
 #.
-#. Sadly, we cannot do anything about that at the moment besides
+#. Sadly, we can't do anything about that at the moment besides
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
@@ -1765,7 +1765,7 @@ msgid "Mailbox created"
 msgstr "Skrzynka została utworzona"
 
 #: imap/browse.c:431
-msgid "Cannot rename root folder"
+msgid "Can't rename root folder"
 msgstr "Nie można zmienić nazwy nadrzędnego folderu"
 
 #: imap/browse.c:435
@@ -2019,7 +2019,7 @@ msgid "%s: Operation not permitted by ACL"
 msgstr "%s: operacja nie dozwolona przez ACL"
 
 #: index.c:378
-msgid "Cannot toggle write on a readonly mailbox"
+msgid "Can't toggle write on a readonly mailbox"
 msgstr "Nie można zapisać do skrzynki oznaczonej jako 'tylko do odczytu'"
 
 #: index.c:385
@@ -2111,7 +2111,7 @@ msgstr "Ten list nie jest widoczny"
 #. "messages". Your language might have other means to express this.
 #.
 #: index.c:1580 index.c:3033 pager.c:3047
-msgid "Cannot delete messages"
+msgid "Can't delete messages"
 msgstr "Nie można skasować listów"
 
 #: index.c:1583
@@ -2149,7 +2149,7 @@ msgstr "Zaznacz pasujące listy: "
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
 #: index.c:1805 index.c:3517 pager.c:3400
-msgid "Cannot undelete messages"
+msgid "Can't undelete messages"
 msgstr "Nieudane przywrócenie listów"
 
 #: index.c:1809
@@ -2231,7 +2231,7 @@ msgstr "Wyjść z NeoMutta bez zapisywania zmian?"
 
 #. L10N: CHECK_ACL
 #: index.c:2381
-msgid "Cannot break thread"
+msgid "Can't break thread"
 msgstr "Nie można rozłączyć wątku"
 
 #: index.c:2398
@@ -2239,12 +2239,12 @@ msgid "Thread broken"
 msgstr "Wątek został przerwany"
 
 #: index.c:2411
-msgid "Thread cannot be broken, message is not part of a thread"
+msgid "Thread can't be broken, message is not part of a thread"
 msgstr "Wątek nie może być rozłączony, wiadomość nie jest częścią wątku"
 
 #. L10N: CHECK_ACL
 #: index.c:2420
-msgid "Cannot link threads"
+msgid "Can't link threads"
 msgstr "Ne mogę połączyć wątków"
 
 #: index.c:2426
@@ -2301,12 +2301,12 @@ msgstr "Kontynuacja poszukiwania od końca"
 
 #. L10N: CHECK_ACL
 #: index.c:2722
-msgid "Cannot flag message"
+msgid "Can't flag message"
 msgstr "Nie można ustawić flagi dla wiadomości"
 
 #. L10N: CHECK_ACL
 #: index.c:2762 pager.c:3359
-msgid "Cannot toggle new"
+msgid "Can't toggle new"
 msgstr "Nie mogę przełączyć flagi new"
 
 #: index.c:2840
@@ -2323,12 +2323,12 @@ msgstr "Wątek zawiera listy nieprzeczytane lub posiadające flagę"
 
 #. L10N: CHECK_ACL
 #: index.c:2982 pager.c:3002
-msgid "Cannot delete message"
+msgid "Can't delete message"
 msgstr "Nie można skasować listu"
 
 #. L10N: CHECK_ACL
 #: index.c:3097
-msgid "Cannot edit message"
+msgid "Can't edit message"
 msgstr "Nie można edytować listu"
 
 #. L10N: This is displayed when the x-label on one or more
@@ -2353,7 +2353,7 @@ msgstr "Nie zmieniono etykiet"
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
 #: index.c:3304
-msgid "Cannot mark messages as read"
+msgid "Can't mark messages as read"
 msgstr "Nie można oznaczyć wiadomości jako przeczytane"
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
@@ -2377,7 +2377,7 @@ msgstr "hotkey listu"
 msgid "Message bound to %s"
 msgstr "Kopia została wysłana do %s"
 
-#. L10N: This error is printed if <mark-message> cannot find a
+#. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
 #: index.c:3363
 msgid "No message ID to macro"
@@ -2393,7 +2393,7 @@ msgstr "Dodawanie postów w tej grupie jest niedozwolone, możliwa moderacja. Ko
 
 #. L10N: CHECK_ACL
 #: index.c:3479 pager.c:3379
-msgid "Cannot undelete message"
+msgid "Can't undelete message"
 msgstr "Nieudane przywrócenie listu"
 
 #: init.c:295
@@ -2745,12 +2745,12 @@ msgid "No recipients specified"
 msgstr "Nie wskazano adresatów listu"
 
 #: main.c:901
-msgid "Cannot use -E flag with stdin"
+msgid "Can't use -E flag with stdin"
 msgstr "Nie można użyć przełącznika -E wraz ze stdin"
 
 #: main.c:983
 #, c-format
-msgid "Cannot parse message template: %s"
+msgid "Can't parse message template: %s"
 msgstr "Nie można dopasować szablonu wiadomości: %s"
 
 #: main.c:1049 mutt_header.c:334
@@ -2826,11 +2826,11 @@ msgid "No entries"
 msgstr "Brak pozycji"
 
 #: menu.c:671
-msgid "You cannot scroll down farther"
+msgid "You can't scroll down farther"
 msgstr "Nie można niżej przewinąć"
 
 #: menu.c:693
-msgid "You cannot scroll up farther"
+msgid "You can't scroll up farther"
 msgstr "Nie można wyżej przewinąć"
 
 #: menu.c:740
@@ -3081,7 +3081,7 @@ msgid "No matching mailcap entry found.  Viewing as text."
 msgstr "Brak odpowiedniego wpisu w 'mailcap'. Wyświetlam jako tekst."
 
 #: mutt_attach.c:428
-msgid "MIME type not defined.  Cannot view attachment."
+msgid "MIME type not defined.  Can't view attachment."
 msgstr "Typ MIME nie został zdefiniowany. Nie można wyświetlić załącznika."
 
 #: mutt_attach.c:527
@@ -3137,7 +3137,7 @@ msgstr "Nie można wczytać kodu lua: %s"
 
 #: mutt_socket.c:66
 #, c-format
-msgid "SSL is unavailable, cannot connect to %s"
+msgid "SSL is unavailable, can't connect to %s"
 msgstr "Protokół SSL nie jest dostępny, nieudane połączenie z %s"
 
 #: mutt_thread.c:1163
@@ -3246,7 +3246,7 @@ msgid "[-- %s output follows%s --]\n"
 msgstr "[-- Wynik działania %s %s --]\n"
 
 #. L10N: Due to the implementation details (e.g. some passwords are managed
-#. by gpg-agent) we cannot know whether we forgot zero, 1, 12, ...
+#. by gpg-agent) we can't know whether we forgot zero, 1, 12, ...
 #. passwords. So in English we use "Passphrases". Your language might
 #. have other means to express this.
 #: ncrypt/crypt.c:114
@@ -5517,7 +5517,7 @@ msgstr "Oczekiwanie na notmuch DB... (%d sec)"
 
 #: notmuch/nm_db.c:132
 #, c-format
-msgid "Cannot open notmuch database: %s: %s"
+msgid "Can't open notmuch database: %s: %s"
 msgstr "Nie można otworzyć bazy notmuch: %s: %s"
 
 #: notmuch/nm_db.c:133
@@ -6172,7 +6172,7 @@ msgid "Fcc mailbox"
 msgstr "Brak skrzynki.\n"
 
 #: send.c:1639
-msgid "Cannot postpone.  $postponed is unset"
+msgid "Can't postpone.  $postponed is unset"
 msgstr ""
 
 #: send.c:1769

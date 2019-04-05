@@ -328,7 +328,7 @@ msgid "Could not create temporary file"
 msgstr "Tidak bisa membuat file sementara"
 
 #: commands.c:244
-msgid "Cannot create display filter"
+msgid "Can't create display filter"
 msgstr "Tidak bisa membuat tampilan filter"
 
 #: commands.c:275
@@ -743,7 +743,7 @@ msgstr "Lampiran telah disimpan"
 
 #: compose.c:1140 compose.c:1156
 #, fuzzy
-msgid "The fundamental part cannot be moved"
+msgid "The fundamental part can't be moved"
 msgstr "Lampiran yg dipilih tidak akan dikonersi"
 
 #: compose.c:1151
@@ -902,7 +902,7 @@ msgstr "PGP sudah dipilih. Bersihkan & lanjut?"
 
 #: compress.c:382 compress.c:533
 #, c-format
-msgid "Cannot append without an append-hook or close-hook : %s"
+msgid "Can't append without an append-hook or close-hook : %s"
 msgstr ""
 
 #: compress.c:478 compress.c:544 compress.c:623 compress.c:661 mbox/mbox.c:1161
@@ -1056,12 +1056,12 @@ msgstr "Gagal menemukan cukup entropy di sistem anda"
 
 #: conn/ssl.c:797
 #, fuzzy
-msgid "cannot get certificate subject"
+msgid "can't get certificate subject"
 msgstr "Tidak bisa mengambil sertifikat"
 
 #: conn/ssl.c:806 conn/ssl.c:814
 #, fuzzy
-msgid "cannot get certificate common name"
+msgid "can't get certificate common name"
 msgstr "Tidak bisa mengambil sertifikat"
 
 #: conn/ssl.c:828
@@ -1491,7 +1491,7 @@ msgstr "[-- Error:  message/external-body tidak punya parameter access-type --]\
 #. example although '1K' and '1024' represent the same number your
 #. language might inflect the noun 'byte' differently.
 #.
-#. Sadly, we cannot do anything about that at the moment besides
+#. Sadly, we can't do anything about that at the moment besides
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
@@ -1517,7 +1517,7 @@ msgstr[0] ""
 #. example although '1K' and '1024' represent the same number your
 #. language might inflect the noun 'byte' differently.
 #.
-#. Sadly, we cannot do anything about that at the moment besides
+#. Sadly, we can't do anything about that at the moment besides
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
@@ -1808,7 +1808,7 @@ msgstr "Kotak surat telah dibuat"
 
 #: imap/browse.c:431
 #, fuzzy
-msgid "Cannot rename root folder"
+msgid "Can't rename root folder"
 msgstr "Tidak bisa menghapus kotak surat utama"
 
 #: imap/browse.c:435
@@ -2062,7 +2062,7 @@ msgid "%s: Operation not permitted by ACL"
 msgstr "Tidak dapat %s: tidak diijinkan oleh ACL"
 
 #: index.c:378
-msgid "Cannot toggle write on a readonly mailbox"
+msgid "Can't toggle write on a readonly mailbox"
 msgstr "Kotak surat read-only, tidak bisa toggle write"
 
 #: index.c:385
@@ -2158,7 +2158,7 @@ msgstr "Surat itu tidak bisa dilihat"
 #.
 #: index.c:1580 index.c:3033 pager.c:3047
 #, fuzzy
-msgid "Cannot delete messages"
+msgid "Can't delete messages"
 msgstr "tidak jadi hapus surat"
 
 #: index.c:1583
@@ -2197,7 +2197,7 @@ msgstr "Tandai surat-surat yang: "
 #. "messages". Your language might have other means to express this.
 #: index.c:1805 index.c:3517 pager.c:3400
 #, fuzzy
-msgid "Cannot undelete messages"
+msgid "Can't undelete messages"
 msgstr "tidak jadi hapus surat"
 
 #: index.c:1809
@@ -2286,7 +2286,7 @@ msgstr "Keluar dari NeoMutt tanpa menyimpan?"
 #. L10N: CHECK_ACL
 #: index.c:2381
 #, fuzzy
-msgid "Cannot break thread"
+msgid "Can't break thread"
 msgstr "hubungkan thread"
 
 #: index.c:2398
@@ -2294,13 +2294,13 @@ msgid "Thread broken"
 msgstr "Thread dipecah"
 
 #: index.c:2411
-msgid "Thread cannot be broken, message is not part of a thread"
+msgid "Thread can't be broken, message is not part of a thread"
 msgstr ""
 
 #. L10N: CHECK_ACL
 #: index.c:2420
 #, fuzzy
-msgid "Cannot link threads"
+msgid "Can't link threads"
 msgstr "hubungkan thread"
 
 #: index.c:2426
@@ -2362,13 +2362,13 @@ msgstr "Pencarian kembali ke bawah"
 #. L10N: CHECK_ACL
 #: index.c:2722
 #, fuzzy
-msgid "Cannot flag message"
+msgid "Can't flag message"
 msgstr "tandai surat"
 
 #. L10N: CHECK_ACL
 #: index.c:2762 pager.c:3359
 #, fuzzy
-msgid "Cannot toggle new"
+msgid "Can't toggle new"
 msgstr "tandai/tidak baru"
 
 #: index.c:2840
@@ -2387,13 +2387,13 @@ msgstr "Thread berisi surat yang belum dibaca"
 #. L10N: CHECK_ACL
 #: index.c:2982 pager.c:3002
 #, fuzzy
-msgid "Cannot delete message"
+msgid "Can't delete message"
 msgstr "tidak jadi hapus surat"
 
 #. L10N: CHECK_ACL
 #: index.c:3097
 #, fuzzy
-msgid "Cannot edit message"
+msgid "Can't edit message"
 msgstr "Tidak dapat menulis surat"
 
 #. L10N: This is displayed when the x-label on one or more
@@ -2418,7 +2418,7 @@ msgstr "Kotak surat tidak berubah"
 #. "messages". Your language might have other means to express this.
 #: index.c:3304
 #, fuzzy
-msgid "Cannot mark messages as read"
+msgid "Can't mark messages as read"
 msgstr "loncat ke surat induk di thread ini"
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
@@ -2444,7 +2444,7 @@ msgstr "Surat ditunda."
 msgid "Message bound to %s"
 msgstr "Surat telah dibounce"
 
-#. L10N: This error is printed if <mark-message> cannot find a
+#. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
 #: index.c:3363
 #, fuzzy
@@ -2462,7 +2462,7 @@ msgstr ""
 #. L10N: CHECK_ACL
 #: index.c:3479 pager.c:3379
 #, fuzzy
-msgid "Cannot undelete message"
+msgid "Can't undelete message"
 msgstr "tidak jadi hapus surat"
 
 #: init.c:295
@@ -2817,12 +2817,12 @@ msgid "No recipients specified"
 msgstr "Tidak ada penerima yang disebutkan"
 
 #: main.c:901
-msgid "Cannot use -E flag with stdin"
+msgid "Can't use -E flag with stdin"
 msgstr ""
 
 #: main.c:983
 #, fuzzy, c-format
-msgid "Cannot parse message template: %s"
+msgid "Can't parse message template: %s"
 msgstr "Tidak bisa membuka file surat: %s"
 
 #: main.c:1049 mutt_header.c:334
@@ -2898,11 +2898,11 @@ msgid "No entries"
 msgstr "Tidak ada entry"
 
 #: menu.c:671
-msgid "You cannot scroll down farther"
+msgid "You can't scroll down farther"
 msgstr "Sudah tidak bisa geser lagi. Jebol nanti"
 
 #: menu.c:693
-msgid "You cannot scroll up farther"
+msgid "You can't scroll up farther"
 msgstr "Sudah tidak bisa geser lagi. Jebol nanti"
 
 #: menu.c:740
@@ -3157,7 +3157,7 @@ msgid "No matching mailcap entry found.  Viewing as text."
 msgstr "Tidak ada jenis yang cocok di file mailcap. Ditampilkan sebagai teks."
 
 #: mutt_attach.c:428
-msgid "MIME type not defined.  Cannot view attachment."
+msgid "MIME type not defined.  Can't view attachment."
 msgstr "Jenis MIME tidak didefinisikan. Tidak bisa melihat lampiran."
 
 #: mutt_attach.c:527
@@ -3213,7 +3213,7 @@ msgstr "Tidak bisa mengunci %s\n"
 
 #: mutt_socket.c:66
 #, fuzzy, c-format
-msgid "SSL is unavailable, cannot connect to %s"
+msgid "SSL is unavailable, can't connect to %s"
 msgstr "SSL tidak tersedia."
 
 #: mutt_thread.c:1163
@@ -3319,7 +3319,7 @@ msgid "[-- %s output follows%s --]\n"
 msgstr "[-- Keluaran dari %s%s --]\n"
 
 #. L10N: Due to the implementation details (e.g. some passwords are managed
-#. by gpg-agent) we cannot know whether we forgot zero, 1, 12, ...
+#. by gpg-agent) we can't know whether we forgot zero, 1, 12, ...
 #. passwords. So in English we use "Passphrases". Your language might
 #. have other means to express this.
 #: ncrypt/crypt.c:114
@@ -5690,7 +5690,7 @@ msgstr "Menunggu fcntl lock... %d"
 
 #: notmuch/nm_db.c:132
 #, c-format
-msgid "Cannot open notmuch database: %s: %s"
+msgid "Can't open notmuch database: %s: %s"
 msgstr ""
 
 #: notmuch/nm_db.c:133
@@ -6346,7 +6346,7 @@ msgid "Fcc mailbox"
 msgstr "Tidak ada kotak surat.\n"
 
 #: send.c:1639
-msgid "Cannot postpone.  $postponed is unset"
+msgid "Can't postpone.  $postponed is unset"
 msgstr ""
 
 #: send.c:1769

@@ -318,7 +318,7 @@ msgid "Could not create temporary file"
 msgstr "Negaliu sukurti laikinos bylos"
 
 #: commands.c:244
-msgid "Cannot create display filter"
+msgid "Can't create display filter"
 msgstr "Negaliu sukurti ekrano filtro"
 
 #: commands.c:275
@@ -711,7 +711,7 @@ msgid "Attachment is already at top"
 msgstr "Priedas jau yra viršuje"
 
 #: compose.c:1140 compose.c:1156
-msgid "The fundamental part cannot be moved"
+msgid "The fundamental part can't be moved"
 msgstr "Esminė dalis negali būti perkelta"
 
 #: compose.c:1151
@@ -867,7 +867,7 @@ msgstr "PGP jau pasirinktas. Išjungti ir tęsti?"
 
 #: compress.c:382 compress.c:533
 #, c-format
-msgid "Cannot append without an append-hook or close-hook : %s"
+msgid "Can't append without an append-hook or close-hook : %s"
 msgstr "Negaliu papildyti be append-hoook ar close-hook: %s"
 
 #: compress.c:478 compress.c:544 compress.c:623 compress.c:661 mbox/mbox.c:1161
@@ -1019,11 +1019,11 @@ msgid "Failed to find enough entropy on your system"
 msgstr "Nepavyko rasti pakankamai entropijos tavo sistemoje"
 
 #: conn/ssl.c:797
-msgid "cannot get certificate subject"
+msgid "can't get certificate subject"
 msgstr "nepavyko gauti sertifikato objekto"
 
 #: conn/ssl.c:806 conn/ssl.c:814
-msgid "cannot get certificate common name"
+msgid "can't get certificate common name"
 msgstr "nepavyko gauti sertifikato bendrojo vardo"
 
 #: conn/ssl.c:828
@@ -1450,7 +1450,7 @@ msgstr "[-- Klaida: message/external-body dalis neturi access-type parametro --]
 #. example although '1K' and '1024' represent the same number your
 #. language might inflect the noun 'byte' differently.
 #.
-#. Sadly, we cannot do anything about that at the moment besides
+#. Sadly, we can't do anything about that at the moment besides
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
@@ -1482,7 +1482,7 @@ msgstr[2] ""
 #. example although '1K' and '1024' represent the same number your
 #. language might inflect the noun 'byte' differently.
 #.
-#. Sadly, we cannot do anything about that at the moment besides
+#. Sadly, we can't do anything about that at the moment besides
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
@@ -1764,7 +1764,7 @@ msgid "Mailbox created"
 msgstr "Dėžutė sukurta"
 
 #: imap/browse.c:431
-msgid "Cannot rename root folder"
+msgid "Can't rename root folder"
 msgstr "Negaliu pervadinti pagrindinio katalogo"
 
 #: imap/browse.c:435
@@ -2018,7 +2018,7 @@ msgid "%s: Operation not permitted by ACL"
 msgstr "%s: veiksmas neleidžiamas pagal ACL"
 
 #: index.c:378
-msgid "Cannot toggle write on a readonly mailbox"
+msgid "Can't toggle write on a readonly mailbox"
 msgstr "Negaliu perjungti tik skaitomos dėžutės rašomumo"
 
 #: index.c:385
@@ -2110,7 +2110,7 @@ msgstr "Tas laiškas yra nematomas"
 #. "messages". Your language might have other means to express this.
 #.
 #: index.c:1580 index.c:3033 pager.c:3047
-msgid "Cannot delete messages"
+msgid "Can't delete messages"
 msgstr "Negaliu ištrinti laiškų"
 
 #: index.c:1583
@@ -2148,7 +2148,7 @@ msgstr "Pažymėti laiškus, tenkinančius: "
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
 #: index.c:1805 index.c:3517 pager.c:3400
-msgid "Cannot undelete messages"
+msgid "Can't undelete messages"
 msgstr "Negaliu atstatyti ištrintų laiškų"
 
 #: index.c:1809
@@ -2230,7 +2230,7 @@ msgstr "Išeiti iš NeoMutt neišsaugojus pakeitimų?"
 
 #. L10N: CHECK_ACL
 #: index.c:2381
-msgid "Cannot break thread"
+msgid "Can't break thread"
 msgstr "Negaliu perskelti gijos"
 
 #: index.c:2398
@@ -2238,12 +2238,12 @@ msgid "Thread broken"
 msgstr "Gija perskelta"
 
 #: index.c:2411
-msgid "Thread cannot be broken, message is not part of a thread"
+msgid "Thread can't be broken, message is not part of a thread"
 msgstr "Gija negali būti perskelta: laiškas nėra gijoje"
 
 #. L10N: CHECK_ACL
 #: index.c:2420
-msgid "Cannot link threads"
+msgid "Can't link threads"
 msgstr "Negaliu sujungti gijų"
 
 #: index.c:2426
@@ -2300,12 +2300,12 @@ msgstr "Paieška peršoko į apačią"
 
 #. L10N: CHECK_ACL
 #: index.c:2722
-msgid "Cannot flag message"
+msgid "Can't flag message"
 msgstr "Negaliu pakeisti pakeisti laiško vėliavėlių"
 
 #. L10N: CHECK_ACL
 #: index.c:2762 pager.c:3359
-msgid "Cannot toggle new"
+msgid "Can't toggle new"
 msgstr "Negaliu pakeisti naujumo"
 
 #: index.c:2840
@@ -2322,12 +2322,12 @@ msgstr "Gijoje yra neskaitytų ar vėliavėle pažymėtų laiškų"
 
 #. L10N: CHECK_ACL
 #: index.c:2982 pager.c:3002
-msgid "Cannot delete message"
+msgid "Can't delete message"
 msgstr "Negaliu ištrinti laiško"
 
 #. L10N: CHECK_ACL
 #: index.c:3097
-msgid "Cannot edit message"
+msgid "Can't edit message"
 msgstr "Negaliu redaguoti laiško"
 
 #. L10N: This is displayed when the x-label on one or more
@@ -2352,7 +2352,7 @@ msgstr "Etiketės nepakeistos"
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
 #: index.c:3304
-msgid "Cannot mark messages as read"
+msgid "Can't mark messages as read"
 msgstr "Negaliu pažymėti laiškų kaip skaitytų"
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
@@ -2376,7 +2376,7 @@ msgstr "šokti į pažymėtą laišką"
 msgid "Message bound to %s"
 msgstr "Laiško makrokomanda %s sukurta"
 
-#. L10N: This error is printed if <mark-message> cannot find a
+#. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
 #: index.c:3363
 msgid "No message ID to macro"
@@ -2392,7 +2392,7 @@ msgstr "Siuntimas į šią grupę neleidžiamas, gali būti moderuotas. Tęsti?"
 
 #. L10N: CHECK_ACL
 #: index.c:3479 pager.c:3379
-msgid "Cannot undelete message"
+msgid "Can't undelete message"
 msgstr "Negaliu atstatyti ištrinto laiško"
 
 #: init.c:295
@@ -2803,12 +2803,12 @@ msgid "No recipients specified"
 msgstr "Nenurodyti jokie gavėjai"
 
 #: main.c:901
-msgid "Cannot use -E flag with stdin"
+msgid "Can't use -E flag with stdin"
 msgstr "Negalima naudoti -E rakto su standartine įvestimi"
 
 #: main.c:983
 #, c-format
-msgid "Cannot parse message template: %s"
+msgid "Can't parse message template: %s"
 msgstr "Nepavyko išanalizuoti laiško šablono: %s"
 
 #: main.c:1049 mutt_header.c:334
@@ -2884,11 +2884,11 @@ msgid "No entries"
 msgstr "Nėra įrašų"
 
 #: menu.c:671
-msgid "You cannot scroll down farther"
+msgid "You can't scroll down farther"
 msgstr "Tu negali slinkti žemyn daugiau"
 
 #: menu.c:693
-msgid "You cannot scroll up farther"
+msgid "You can't scroll up farther"
 msgstr "Tu negali slinkti aukštyn daugiau"
 
 #: menu.c:740
@@ -3139,7 +3139,7 @@ msgid "No matching mailcap entry found.  Viewing as text."
 msgstr "Neradau tinkamo mailcap įrašo.  Rodau kaip tekstą."
 
 #: mutt_attach.c:428
-msgid "MIME type not defined.  Cannot view attachment."
+msgid "MIME type not defined.  Can't view attachment."
 msgstr "MIME tipas neapibrėžtas.  Negaliu parodyti priedo."
 
 #: mutt_attach.c:527
@@ -3195,7 +3195,7 @@ msgstr "Nepavyko įvykdyti lua bylos: %s"
 
 #: mutt_socket.c:66
 #, c-format
-msgid "SSL is unavailable, cannot connect to %s"
+msgid "SSL is unavailable, can't connect to %s"
 msgstr "SSL nepasiekiamas, negaliu prisijungti prie %s"
 
 #: mutt_thread.c:1163
@@ -3304,7 +3304,7 @@ msgid "[-- %s output follows%s --]\n"
 msgstr "[-- Toliau %s išvestis%s --]\n"
 
 #. L10N: Due to the implementation details (e.g. some passwords are managed
-#. by gpg-agent) we cannot know whether we forgot zero, 1, 12, ...
+#. by gpg-agent) we can't know whether we forgot zero, 1, 12, ...
 #. passwords. So in English we use "Passphrases". Your language might
 #. have other means to express this.
 #: ncrypt/crypt.c:114
@@ -5576,7 +5576,7 @@ msgstr "Laukiu notmuch DB... (%d sek.)"
 
 #: notmuch/nm_db.c:132
 #, c-format
-msgid "Cannot open notmuch database: %s: %s"
+msgid "Can't open notmuch database: %s: %s"
 msgstr "Nepavyko atidaryti notmuch duomenų bazės: %s: %s"
 
 #: notmuch/nm_db.c:133
@@ -6231,7 +6231,7 @@ msgid "Fcc mailbox"
 msgstr "Nėra dėžutės.\n"
 
 #: send.c:1639
-msgid "Cannot postpone.  $postponed is unset"
+msgid "Can't postpone.  $postponed is unset"
 msgstr ""
 
 #: send.c:1769

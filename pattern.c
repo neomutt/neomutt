@@ -1160,7 +1160,7 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
       }
     }
     else
-    { /* fmemopen cannot handle empty buffers */
+    { /* fmemopen can't handle empty buffers */
       fp = mutt_file_fopen("/dev/null", "r");
       if (!fp)
       {
