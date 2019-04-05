@@ -902,11 +902,6 @@ msgstr "Compressing %s"
 msgid "Compressed-appending to %s..."
 msgstr "Compressed-appending to %s..."
 
-#: compress.c:725
-#, c-format
-msgid "Compressing %s..."
-msgstr "Compressing %s..."
-
 #: compress.c:732 editmsg.c:245
 #, c-format
 msgid "Error. Preserving temporary file: %s"

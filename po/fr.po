@@ -988,12 +988,6 @@ msgstr "Compression de %s"
 msgid "Compressed-appending to %s..."
 msgstr "Ajout avec compression à %s..."
 
-# , c-format
-#: compress.c:725
-#, c-format
-msgid "Compressing %s..."
-msgstr "Compression de %s..."
-
 #: compress.c:732 editmsg.c:245
 #, c-format
 msgid "Error. Preserving temporary file: %s"

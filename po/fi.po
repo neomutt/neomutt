@@ -912,11 +912,6 @@ msgstr "Pakataan kohdetta %s"
 msgid "Compressed-appending to %s..."
 msgstr "Pakattu lisäys kohteeseen %s..."
 
-#: compress.c:725
-#, c-format
-msgid "Compressing %s..."
-msgstr "Pakataan kohdetta %s..."
-
 #: compress.c:732 editmsg.c:245
 #, c-format
 msgid "Error. Preserving temporary file: %s"

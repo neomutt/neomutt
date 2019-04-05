@@ -903,11 +903,6 @@ msgstr "正在压缩中 %s"
 msgid "Compressed-appending to %s..."
 msgstr "正在压缩到 %s..."
 
-#: compress.c:725
-#, c-format
-msgid "Compressing %s..."
-msgstr "正在压缩中 %s..."
-
 #: compress.c:732 editmsg.c:245
 #, c-format
 msgid "Error. Preserving temporary file: %s"

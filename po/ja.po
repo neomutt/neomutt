@@ -934,11 +934,6 @@ msgstr "%s を圧縮中"
 msgid "Compressed-appending to %s..."
 msgstr "%s に圧縮追加中..."
 
-#: compress.c:725
-#, c-format
-msgid "Compressing %s..."
-msgstr "%s を圧縮中..."
-
 #: compress.c:732 editmsg.c:245
 #, c-format
 msgid "Error. Preserving temporary file: %s"

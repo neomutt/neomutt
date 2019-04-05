@@ -722,7 +722,7 @@ static int comp_mbox_close(struct Mailbox *m)
     else
     {
       append = ci->cmd_close;
-      msg = _("Compressing %s...");
+      msg = _("Compressing %s");
     }
 
     int rc = execute_command(m, append, msg);

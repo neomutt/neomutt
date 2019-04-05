@@ -945,11 +945,6 @@ msgstr "Copio in %s..."
 msgid "Compressed-appending to %s..."
 msgstr "Copio in %s..."
 
-#: compress.c:725
-#, fuzzy, c-format
-msgid "Compressing %s..."
-msgstr "Copio in %s..."
-
 #: compress.c:732 editmsg.c:245
 #, c-format
 msgid "Error. Preserving temporary file: %s"

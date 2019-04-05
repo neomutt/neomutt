@@ -946,11 +946,6 @@ msgstr "%s로 복사..."
 msgid "Compressed-appending to %s..."
 msgstr "%s로 복사..."
 
-#: compress.c:725
-#, fuzzy, c-format
-msgid "Compressing %s..."
-msgstr "%s로 복사..."
-
 #: compress.c:732 editmsg.c:245
 #, c-format
 msgid "Error. Preserving temporary file: %s"
