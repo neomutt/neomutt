@@ -4682,8 +4682,8 @@ msgid "get a temporary copy of an attachment"
 msgstr "hae väliaikaiskopio liitteestä"
 
 #: opcodes.h:66
-msgid "group tagged attachments as multipart/alternative"
-msgstr "ryhmitä merkityt liitteet tyypiksi multipart/alternative"
+msgid "group tagged attachments as 'multipart/alternative'"
+msgstr "ryhmitä merkityt liitteet tyypiksi 'multipart/alternative'"
 
 #: opcodes.h:67
 msgid "group tagged attachments as multipart/multilingual"

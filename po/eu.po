@@ -4789,7 +4789,7 @@ msgid "get a temporary copy of an attachment"
 msgstr "eskuratu gehigarriaren behin-behineko kopia"
 
 #: opcodes.h:66
-msgid "group tagged attachments as multipart/alternative"
+msgid "group tagged attachments as 'multipart/alternative'"
 msgstr ""
 
 #: opcodes.h:67

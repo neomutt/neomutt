@@ -4695,7 +4695,7 @@ msgid "get a temporary copy of an attachment"
 msgstr "gauti laikiną priedo kopiją"
 
 #: opcodes.h:66
-msgid "group tagged attachments as multipart/alternative"
+msgid "group tagged attachments as 'multipart/alternative'"
 msgstr "grupuoti pažymėtus priedus kaip alternatyvas"
 
 #: opcodes.h:67

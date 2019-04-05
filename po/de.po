@@ -4683,8 +4683,8 @@ msgid "get a temporary copy of an attachment"
 msgstr "Lade eine temporäre Kopie eines Anhangs"
 
 #: opcodes.h:66
-msgid "group tagged attachments as multipart/alternative"
-msgstr "Gruppiere markierte Anhänge als multipart/alternative"
+msgid "group tagged attachments as 'multipart/alternative'"
+msgstr "Gruppiere markierte Anhänge als 'multipart/alternative'"
 
 #: opcodes.h:67
 msgid "group tagged attachments as multipart/multilingual"

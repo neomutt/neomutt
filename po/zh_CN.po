@@ -4655,8 +4655,8 @@ msgid "get a temporary copy of an attachment"
 msgstr "取得附件的临时副本"
 
 #: opcodes.h:66
-msgid "group tagged attachments as multipart/alternative"
-msgstr "将已标记的附件组为 multipart/alternative"
+msgid "group tagged attachments as 'multipart/alternative'"
+msgstr "将已标记的附件组为 'multipart/alternative'"
 
 #: opcodes.h:67
 msgid "group tagged attachments as multipart/multilingual"

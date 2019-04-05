@@ -4710,7 +4710,7 @@ msgid "get a temporary copy of an attachment"
 msgstr "pracovat s dočasnou kopií přílohy"
 
 #: opcodes.h:66
-msgid "group tagged attachments as multipart/alternative"
+msgid "group tagged attachments as 'multipart/alternative'"
 msgstr "seskupit označené přílohy jako alternativy, „multipart/alternative“"
 
 #: opcodes.h:67
