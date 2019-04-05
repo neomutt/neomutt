@@ -396,8 +396,8 @@ msgstr "주소 분석 중 오류"
 
 #: commands.c:424 recvcmd.c:240
 #, fuzzy, c-format
-msgid "Bounce message to %s"
-msgid_plural "Bounce messages to %s"
+msgid "Bounce message to %s?"
+msgid_plural "Bounce messages to %s?"
 msgstr[0] "%s에게 메일 전달"
 
 #: commands.c:439 recvcmd.c:255

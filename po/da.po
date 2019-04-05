@@ -393,10 +393,10 @@ msgstr "Ugyldig adresse"
 
 #: commands.c:424 recvcmd.c:240
 #, fuzzy, c-format
-msgid "Bounce message to %s"
-msgid_plural "Bounce messages to %s"
-msgstr[0] "Gensend brev til %s"
-msgstr[1] "Gensend breve til %s"
+msgid "Bounce message to %s?"
+msgid_plural "Bounce messages to %s?"
+msgstr[0] "Gensend brev til %s?"
+msgstr[1] "Gensend breve til %s?"
 
 #: commands.c:439 recvcmd.c:255
 #, fuzzy

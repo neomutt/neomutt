@@ -392,8 +392,8 @@ msgstr "Errorea helbidea analizatzean"
 
 #: commands.c:424 recvcmd.c:240
 #, fuzzy, c-format
-msgid "Bounce message to %s"
-msgid_plural "Bounce messages to %s"
+msgid "Bounce message to %s?"
+msgid_plural "Bounce messages to %s?"
 msgstr[0] "Mezua %s-ra errebotatu"
 msgstr[1] "Mezuak %s-ra errebotatu"
 

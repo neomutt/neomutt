@@ -389,10 +389,10 @@ msgstr "Adres ayrıştırılırken hata"
 
 #: commands.c:424 recvcmd.c:240
 #, fuzzy, c-format
-msgid "Bounce message to %s"
-msgid_plural "Bounce messages to %s"
+msgid "Bounce message to %s?"
+msgid_plural "Bounce messages to %s?"
 msgstr[0] "İletiyi %s adresine geri gönder"
-msgstr[1] "İletilerin geri gönderme adresi: %s"
+msgstr[1] "İletilerin geri gönderme adresi: %s?"
 
 #: commands.c:439 recvcmd.c:255
 #, fuzzy

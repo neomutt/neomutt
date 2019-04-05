@@ -394,11 +394,11 @@ msgstr "Ошибка разбора адреса"
 
 #: commands.c:424 recvcmd.c:240
 #, fuzzy, c-format
-msgid "Bounce message to %s"
-msgid_plural "Bounce messages to %s"
-msgstr[0] "Перенаправить сообщение %s"
-msgstr[1] "Перенаправить сообщения %s"
-msgstr[2] "Перенаправить сообщения %s"
+msgid "Bounce message to %s?"
+msgid_plural "Bounce messages to %s?"
+msgstr[0] "Перенаправить сообщение %s?"
+msgstr[1] "Перенаправить сообщения %s?"
+msgstr[2] "Перенаправить сообщения %s?"
 
 #: commands.c:439 recvcmd.c:255
 #, fuzzy

@@ -394,10 +394,10 @@ msgstr "Viga aadressi analüüsimisel"
 
 #: commands.c:424 recvcmd.c:240
 #, fuzzy, c-format
-msgid "Bounce message to %s"
-msgid_plural "Bounce messages to %s"
-msgstr[0] "Peegelda teade aadressile %s"
-msgstr[1] "Peegelda teated aadressile %s"
+msgid "Bounce message to %s?"
+msgid_plural "Bounce messages to %s?"
+msgstr[0] "Peegelda teade aadressile %s?"
+msgstr[1] "Peegelda teated aadressile %s?"
 
 #: commands.c:439 recvcmd.c:255
 #, fuzzy

@@ -440,8 +440,8 @@ msgstr "Error en interpretar l’adreça."
 # ivb  El programa posa l’interrogant.
 #: commands.c:424 recvcmd.c:240
 #, fuzzy, c-format
-msgid "Bounce message to %s"
-msgid_plural "Bounce messages to %s"
+msgid "Bounce message to %s?"
+msgid_plural "Bounce messages to %s?"
 msgstr[0] "Voleu redirigir el missatge a «%s»"
 msgstr[1] "Voleu redirigir els missatges a «%s»"
 

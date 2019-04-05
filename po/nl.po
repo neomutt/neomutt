@@ -392,10 +392,10 @@ msgstr "Ongeldig adres"
 
 #: commands.c:424 recvcmd.c:240
 #, fuzzy, c-format
-msgid "Bounce message to %s"
-msgid_plural "Bounce messages to %s"
-msgstr[0] "Bericht doorsturen aan %s"
-msgstr[1] "Berichten doorsturen aan %s"
+msgid "Bounce message to %s?"
+msgid_plural "Bounce messages to %s?"
+msgstr[0] "Bericht doorsturen aan %s?"
+msgstr[1] "Berichten doorsturen aan %s?"
 
 #: commands.c:439 recvcmd.c:255
 #, fuzzy

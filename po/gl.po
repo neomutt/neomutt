@@ -396,10 +396,10 @@ msgstr "¡Erro analizando enderezo"
 
 #: commands.c:424 recvcmd.c:240
 #, fuzzy, c-format
-msgid "Bounce message to %s"
-msgid_plural "Bounce messages to %s"
-msgstr[0] "Rebotar mensaxe a %s"
-msgstr[1] "Rebotar mensaxes a %s"
+msgid "Bounce message to %s?"
+msgid_plural "Bounce messages to %s?"
+msgstr[0] "Rebotar mensaxe a %s?"
+msgstr[1] "Rebotar mensaxes a %s?"
 
 #: commands.c:439 recvcmd.c:255
 #, fuzzy

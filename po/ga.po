@@ -393,13 +393,13 @@ msgstr "Earráid agus seoladh á pharsáil"
 
 #: commands.c:424 recvcmd.c:240
 #, fuzzy, c-format
-msgid "Bounce message to %s"
-msgid_plural "Bounce messages to %s"
-msgstr[0] "Scinn teachtaireacht go %s"
-msgstr[1] "Scinn teachtaireachtaí go %s"
-msgstr[2] "Scinn teachtaireachtaí go %s"
-msgstr[3] "Scinn teachtaireachtaí go %s"
-msgstr[4] "Scinn teachtaireachtaí go %s"
+msgid "Bounce message to %s?"
+msgid_plural "Bounce messages to %s?"
+msgstr[0] "Scinn teachtaireacht go %s?"
+msgstr[1] "Scinn teachtaireachtaí go %s?"
+msgstr[2] "Scinn teachtaireachtaí go %s?"
+msgstr[3] "Scinn teachtaireachtaí go %s?"
+msgstr[4] "Scinn teachtaireachtaí go %s?"
 
 #: commands.c:439 recvcmd.c:255
 #, fuzzy

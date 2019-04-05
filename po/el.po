@@ -398,10 +398,10 @@ msgstr "Σφάλμα κατά την ανάλυση της διεύθυνσης"
 
 #: commands.c:424 recvcmd.c:240
 #, fuzzy, c-format
-msgid "Bounce message to %s"
-msgid_plural "Bounce messages to %s"
-msgstr[0] "Διαβίβαση μηνύματος στον %s"
-msgstr[1] "Διαβίβαση μηνυμάτων στον %s"
+msgid "Bounce message to %s?"
+msgid_plural "Bounce messages to %s?"
+msgstr[0] "Διαβίβαση μηνύματος στον %s?"
+msgstr[1] "Διαβίβαση μηνυμάτων στον %s?"
 
 #: commands.c:439 recvcmd.c:255
 #, fuzzy

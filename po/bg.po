@@ -398,10 +398,10 @@ msgstr "Грешка при разчитане на адресът"
 
 #: commands.c:424 recvcmd.c:240
 #, fuzzy, c-format
-msgid "Bounce message to %s"
-msgid_plural "Bounce messages to %s"
-msgstr[0] "Препращане на писмото към %s"
-msgstr[1] "Препращане на писмото към %s"
+msgid "Bounce message to %s?"
+msgid_plural "Bounce messages to %s?"
+msgstr[0] "Препращане на писмото към %s?"
+msgstr[1] "Препращане на писмото към %s?"
 
 #: commands.c:439 recvcmd.c:255
 #, fuzzy

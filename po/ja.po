@@ -390,8 +390,8 @@ msgstr "アドレス解析エラー"
 
 #: commands.c:424 recvcmd.c:240
 #, fuzzy, c-format
-msgid "Bounce message to %s"
-msgid_plural "Bounce messages to %s"
+msgid "Bounce message to %s?"
+msgid_plural "Bounce messages to %s?"
 msgstr[0] "%s へメッセージ再送"
 
 #: commands.c:439 recvcmd.c:255

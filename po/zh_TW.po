@@ -398,9 +398,9 @@ msgstr "無法分析位址"
 
 #: commands.c:424 recvcmd.c:240
 #, fuzzy, c-format
-msgid "Bounce message to %s"
-msgid_plural "Bounce messages to %s"
-msgstr[0] "把郵件直接傳送至 %s"
+msgid "Bounce message to %s?"
+msgid_plural "Bounce messages to %s?"
+msgstr[0] "把郵件直接傳送至 %s?"
 
 #: commands.c:439 recvcmd.c:255
 #, fuzzy

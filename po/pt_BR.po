@@ -384,10 +384,10 @@ msgstr "Erro ao interpretar endereço"
 
 #: commands.c:424 recvcmd.c:240
 #, c-format
-msgid "Bounce message to %s"
-msgid_plural "Bounce messages to %s"
-msgstr[0] "Replicar mensagem para %s"
-msgstr[1] "Replicar mensagens para %s"
+msgid "Bounce message to %s?"
+msgid_plural "Bounce messages to %s?"
+msgstr[0] "Replicar mensagem para %s?"
+msgstr[1] "Replicar mensagens para %s?"
 
 #: commands.c:439 recvcmd.c:255
 msgid "Message not bounced"

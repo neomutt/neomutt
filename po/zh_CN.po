@@ -388,9 +388,9 @@ msgstr "解析地址出错"
 
 #: commands.c:424 recvcmd.c:240
 #, c-format
-msgid "Bounce message to %s"
-msgid_plural "Bounce messages to %s"
-msgstr[0] "重发信件至 %s"
+msgid "Bounce message to %s?"
+msgid_plural "Bounce messages to %s?"
+msgstr[0] "重发信件至 %s?"
 
 #: commands.c:439 recvcmd.c:255
 msgid "Message not bounced"

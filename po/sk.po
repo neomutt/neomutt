@@ -385,11 +385,11 @@ msgstr "Chyba pri analýze adresy"
 
 #: commands.c:424 recvcmd.c:240
 #, fuzzy, c-format
-msgid "Bounce message to %s"
-msgid_plural "Bounce messages to %s"
-msgstr[0] "Presmerovať správu do %s"
-msgstr[1] "Presmerovať správy do %s"
-msgstr[2] "Presmerovať správy do %s"
+msgid "Bounce message to %s?"
+msgid_plural "Bounce messages to %s?"
+msgstr[0] "Presmerovať správu do %s?"
+msgstr[1] "Presmerovať správy do %s?"
+msgstr[2] "Presmerovať správy do %s?"
 
 #: commands.c:439 recvcmd.c:255
 #, fuzzy

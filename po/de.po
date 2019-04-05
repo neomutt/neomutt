@@ -388,8 +388,8 @@ msgstr "Unverständliche Adresse"
 
 #: commands.c:424 recvcmd.c:240
 #, c-format
-msgid "Bounce message to %s"
-msgid_plural "Bounce messages to %s"
+msgid "Bounce message to %s?"
+msgid_plural "Bounce messages to %s?"
 msgstr[0] "Nachricht neu an %s versenden"
 msgstr[1] "Nachrichten neu an %s versenden"
 

@@ -395,9 +395,9 @@ msgstr "Gagal menguraikan alamat"
 
 #: commands.c:424 recvcmd.c:240
 #, fuzzy, c-format
-msgid "Bounce message to %s"
-msgid_plural "Bounce messages to %s"
-msgstr[0] "Bounce surat ke %s"
+msgid "Bounce message to %s?"
+msgid_plural "Bounce messages to %s?"
+msgstr[0] "Bounce surat ke %s?"
 
 #: commands.c:439 recvcmd.c:255
 #, fuzzy

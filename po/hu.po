@@ -395,8 +395,8 @@ msgstr "Hibás cím"
 
 #: commands.c:424 recvcmd.c:240
 #, fuzzy, c-format
-msgid "Bounce message to %s"
-msgid_plural "Bounce messages to %s"
+msgid "Bounce message to %s?"
+msgid_plural "Bounce messages to %s?"
 msgstr[0] "Levél visszaküldése %s részére"
 msgstr[1] "Levél visszaküldése %s részére"
 

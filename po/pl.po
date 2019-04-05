@@ -383,11 +383,11 @@ msgstr "Błąd interpretacji adresu"
 
 #: commands.c:424 recvcmd.c:240
 #, c-format
-msgid "Bounce message to %s"
-msgid_plural "Bounce messages to %s"
-msgstr[0] "Wyślij kopię listu do %s"
-msgstr[1] "Wyślij kopie listów do %s"
-msgstr[2] "Wyślij kopie listów do %s"
+msgid "Bounce message to %s?"
+msgid_plural "Bounce messages to %s?"
+msgstr[0] "Wyślij kopię listu do %s?"
+msgstr[1] "Wyślij kopie listów do %s?"
+msgstr[2] "Wyślij kopie listów do %s?"
 
 #: commands.c:439 recvcmd.c:255
 msgid "Message not bounced"
