@@ -775,7 +775,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
     struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
     if (!mutt_path_to_absolute(rcfile, np ? NONULL(np->data) : ""))
     {
-      mutt_error(_("Error: impossible to build path of '%s'"), rcfile_path);
+      mutt_error(_("Error: Can't build path of '%s'"), rcfile_path);
       return -1;
     }
 
@@ -1710,7 +1710,7 @@ static enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
                 }
                 else
                 {
-                  mutt_error(_("Error: impossible to build path of '%s'"), scratch);
+                  mutt_error(_("Error: Can't build path of '%s'"), scratch);
                 }
               }
             }

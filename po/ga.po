@@ -2544,7 +2544,7 @@ msgstr "níl go leor argóintí ann"
 
 #: init.c:778 init.c:1713
 #, c-format
-msgid "Error: impossible to build path of '%s'"
+msgid "Error: Can't build path of '%s'"
 msgstr ""
 
 #: init.c:795

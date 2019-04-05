@@ -2396,8 +2396,8 @@ msgstr "out of arguments"
 
 #: init.c:778 init.c:1713
 #, c-format
-msgid "Error: impossible to build path of '%s'"
-msgstr "Error: impossible to build path of '%s'"
+msgid "Error: Can't build path of '%s'"
+msgstr "Error: Can't build path of '%s'"
 
 #: init.c:795
 #, c-format
