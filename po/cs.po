@@ -733,7 +733,7 @@ msgid "Grouping 'alternatives' requires at least 2 tagged messages"
 msgstr "Seskupování alternativ vyžaduje alespoň 2 označené zprávy"
 
 #: compose.c:1251
-msgid "Grouping multilingual requires at least 2 tagged messages"
+msgid "Grouping 'multilingual' requires at least 2 tagged messages"
 msgstr "Seskupování vícejazyčných vyžaduje alespoň 2 označené zprávy"
 
 #: compose.c:1264

@@ -1248,7 +1248,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         if (menu->tagged < 2)
         {
           mutt_error(
-              _("Grouping multilingual requires at least 2 tagged messages"));
+              _("Grouping 'multilingual' requires at least 2 tagged messages"));
           break;
         }
 

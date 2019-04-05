@@ -751,7 +751,7 @@ msgid "Grouping 'alternatives' requires at least 2 tagged messages"
 msgstr "Alternatieve groeperingen vereisen zeker 2 gemarkeerde berichten"
 
 #: compose.c:1251
-msgid "Grouping multilingual requires at least 2 tagged messages"
+msgid "Grouping 'multilingual' requires at least 2 tagged messages"
 msgstr "Meertalige groeperingen vereisen zeker 2 gemarkeerde berichten"
 
 #: compose.c:1264

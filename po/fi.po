@@ -725,7 +725,7 @@ msgid "Grouping 'alternatives' requires at least 2 tagged messages"
 msgstr "Vaihtoehtojen ryhmittely vaatii vähintään 2 merkittyä viestiä"
 
 #: compose.c:1251
-msgid "Grouping multilingual requires at least 2 tagged messages"
+msgid "Grouping 'multilingual' requires at least 2 tagged messages"
 msgstr "Monikielinen ryhmittely vaatii vähintään 2 merkittyä viestiä"
 
 #: compose.c:1264

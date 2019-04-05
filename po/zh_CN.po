@@ -718,7 +718,7 @@ msgid "Grouping 'alternatives' requires at least 2 tagged messages"
 msgstr "组合备选部分需要至少标记两个信件"
 
 #: compose.c:1251
-msgid "Grouping multilingual requires at least 2 tagged messages"
+msgid "Grouping 'multilingual' requires at least 2 tagged messages"
 msgstr "组合多语言部分需要至少标记两个信件"
 
 #: compose.c:1264
