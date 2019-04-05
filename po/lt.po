@@ -719,7 +719,7 @@ msgid "Attachment is already at bottom"
 msgstr "Priedas jau yra apačioje"
 
 #: compose.c:1169
-msgid "Grouping alternatives requires at least 2 tagged messages"
+msgid "Grouping 'alternatives' requires at least 2 tagged messages"
 msgstr "Alternatyvų grupavimui reikia bent dviejų pažymėtų laiškų"
 
 #: compose.c:1251

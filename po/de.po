@@ -719,8 +719,8 @@ msgid "Attachment is already at bottom"
 msgstr "Anhang befindet sich bereits am Ende"
 
 #: compose.c:1169
-msgid "Grouping alternatives requires at least 2 tagged messages"
-msgstr "Gruppierung von multipart/alternative erfordert wenigstens zwei markierte Nachrichten"
+msgid "Grouping 'alternatives' requires at least 2 tagged messages"
+msgstr "Gruppierung von 'multipart/alternative' erfordert wenigstens zwei markierte Nachrichten"
 
 #: compose.c:1251
 msgid "Grouping multilingual requires at least 2 tagged messages"

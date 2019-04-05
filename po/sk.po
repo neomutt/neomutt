@@ -736,7 +736,7 @@ msgid "Attachment is already at bottom"
 msgstr "Príloha bola prefiltrovaná"
 
 #: compose.c:1169
-msgid "Grouping alternatives requires at least 2 tagged messages"
+msgid "Grouping 'alternatives' requires at least 2 tagged messages"
 msgstr ""
 
 #: compose.c:1251

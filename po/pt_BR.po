@@ -715,7 +715,7 @@ msgid "Attachment is already at bottom"
 msgstr "Anexo já é o último da lista"
 
 #: compose.c:1169
-msgid "Grouping alternatives requires at least 2 tagged messages"
+msgid "Grouping 'alternatives' requires at least 2 tagged messages"
 msgstr "Alternativas para grupo requerem ao menos 2 mensagens rotuladas"
 
 #: compose.c:1251

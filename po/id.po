@@ -752,7 +752,7 @@ msgid "Attachment is already at bottom"
 msgstr "Lampiran telah difilter"
 
 #: compose.c:1169
-msgid "Grouping alternatives requires at least 2 tagged messages"
+msgid "Grouping 'alternatives' requires at least 2 tagged messages"
 msgstr ""
 
 #: compose.c:1251

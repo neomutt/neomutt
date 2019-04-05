@@ -747,7 +747,7 @@ msgid "Attachment is already at bottom"
 msgstr "De bijlage staat al onderaan"
 
 #: compose.c:1169
-msgid "Grouping alternatives requires at least 2 tagged messages"
+msgid "Grouping 'alternatives' requires at least 2 tagged messages"
 msgstr "Alternatieve groeperingen vereisen zeker 2 gemarkeerde berichten"
 
 #: compose.c:1251
