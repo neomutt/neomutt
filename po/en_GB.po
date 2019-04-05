@@ -720,8 +720,8 @@ msgid "Grouping multilingual requires at least 2 tagged messages"
 msgstr "Grouping multilingual requires at least 2 tagged messages"
 
 #: compose.c:1264
-msgid "Not all parts have Content-Language: set, continue?"
-msgstr "Not all parts have Content-Language: set, continue?"
+msgid "Not all parts have 'Content-Language' set, continue?"
+msgstr "Not all parts have 'Content-Language' set, continue?"
 
 #: compose.c:1266
 msgid "Not sending this message"

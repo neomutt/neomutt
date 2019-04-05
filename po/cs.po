@@ -737,7 +737,7 @@ msgid "Grouping multilingual requires at least 2 tagged messages"
 msgstr "Seskupování vícejazyčných vyžaduje alespoň 2 označené zprávy"
 
 #: compose.c:1264
-msgid "Not all parts have Content-Language: set, continue?"
+msgid "Not all parts have 'Content-Language' set, continue?"
 msgstr "Ne všechny části mají nastaveno „Content-Language“, pokračovat?"
 
 #: compose.c:1266

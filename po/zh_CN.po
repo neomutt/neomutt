@@ -722,8 +722,8 @@ msgid "Grouping multilingual requires at least 2 tagged messages"
 msgstr "组合多语言部分需要至少标记两个信件"
 
 #: compose.c:1264
-msgid "Not all parts have Content-Language: set, continue?"
-msgstr "有些部分没有设置 Content-Language: ，是否继续？"
+msgid "Not all parts have 'Content-Language' set, continue?"
+msgstr "有些部分没有设置 'Content-Language' ，是否继续？"
 
 #: compose.c:1266
 msgid "Not sending this message"

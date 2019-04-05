@@ -755,7 +755,7 @@ msgid "Grouping multilingual requires at least 2 tagged messages"
 msgstr "Meertalige groeperingen vereisen zeker 2 gemarkeerde berichten"
 
 #: compose.c:1264
-msgid "Not all parts have Content-Language: set, continue?"
+msgid "Not all parts have 'Content-Language' set, continue?"
 msgstr "Niet alle onderdelen hebben taal ingesteld. Verdergaan?"
 
 #: compose.c:1266

@@ -727,8 +727,8 @@ msgid "Grouping multilingual requires at least 2 tagged messages"
 msgstr "Kalbų grupavimui reikia bent dviejų pažymėtų laiškų"
 
 #: compose.c:1264
-msgid "Not all parts have Content-Language: set, continue?"
-msgstr "Ne visos dalys turi Content-Language: antraštę, tęsti?"
+msgid "Not all parts have 'Content-Language' set, continue?"
+msgstr "Ne visos dalys turi 'Content-Language' antraštę, tęsti?"
 
 #: compose.c:1266
 msgid "Not sending this message"

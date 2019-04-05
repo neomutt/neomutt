@@ -1261,7 +1261,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         if (menu->tagged != tagged_with_lang_num)
         {
           if (mutt_yesorno(
-                  _("Not all parts have Content-Language: set, continue?"), MUTT_YES) != MUTT_YES)
+                  _("Not all parts have 'Content-Language' set, continue?"), MUTT_YES) != MUTT_YES)
           {
             mutt_message(_("Not sending this message"));
             break;

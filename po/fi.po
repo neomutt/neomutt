@@ -729,8 +729,8 @@ msgid "Grouping multilingual requires at least 2 tagged messages"
 msgstr "Monikielinen ryhmittely vaatii vähintään 2 merkittyä viestiä"
 
 #: compose.c:1264
-msgid "Not all parts have Content-Language: set, continue?"
-msgstr "Kaikissa osissa ei ole Content-Language:-ostaketta, jatketaanko joka tapauksessa?"
+msgid "Not all parts have 'Content-Language' set, continue?"
+msgstr "Kaikissa osissa ei ole 'Content-Language'-ostaketta, jatketaanko joka tapauksessa?"
 
 #: compose.c:1266
 msgid "Not sending this message"
