@@ -223,18 +223,18 @@ void mutt_sig_unblock_system(bool catch)
 
 /**
  * mutt_sig_allow_interrupt - Allow/disallow Ctrl-C (SIGINT)
- * @param disposition True to allow Ctrl-C to interrupt signals
+ * @param allow True to allow Ctrl-C to interrupt signals
  *
  * Allow the user to interrupt some long operations.
  */
-void mutt_sig_allow_interrupt(int disposition)
+void mutt_sig_allow_interrupt(bool allow)
 {
   struct sigaction sa;
 
   memset(&sa, 0, sizeof(sa));
   sa.sa_handler = sig_handler;
 #ifdef SA_RESTART
-  if (disposition == 0)
+  if (!allow)
     sa.sa_flags |= SA_RESTART;
 #endif
   sigaction(SIGINT, &sa, NULL);
