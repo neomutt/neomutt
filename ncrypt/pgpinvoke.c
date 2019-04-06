@@ -425,7 +425,6 @@ void pgp_class_invoke_getkeys(struct Address *addr)
   char buf[PATH_MAX];
   char tmp[1024];
   char cmd[STR_COMMAND];
-  int devnull;
 
   char *personal = NULL;
 
@@ -448,7 +447,7 @@ void pgp_class_invoke_getkeys(struct Address *addr)
 
   mutt_pgp_command(cmd, sizeof(cmd), &cctx, C_PgpGetkeysCommand);
 
-  devnull = open("/dev/null", O_RDWR);
+  int fd_null = open("/dev/null", O_RDWR);
 
   if (!isendwin())
     mutt_message(_("Fetching PGP key..."));
@@ -459,8 +458,8 @@ void pgp_class_invoke_getkeys(struct Address *addr)
   if (!isendwin())
     mutt_clear_error();
 
-  if (devnull >= 0)
-    close(devnull);
+  if (fd_null >= 0)
+    close(fd_null);
 }
 
 /**
