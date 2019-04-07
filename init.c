@@ -473,7 +473,7 @@ static enum CommandResult parse_attach_list(struct Buffer *buf, struct Buffer *s
 
   do
   {
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
     if (!buf->data || (*buf->data == '\0'))
       continue;
@@ -550,7 +550,7 @@ static int parse_grouplist(struct GroupList *ctx, struct Buffer *buf,
       goto bail;
     }
 
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
     mutt_grouplist_add(ctx, mutt_pattern_group(buf->data));
 
@@ -560,7 +560,7 @@ static int parse_grouplist(struct GroupList *ctx, struct Buffer *buf,
       goto bail;
     }
 
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
   }
 
   return 0;
@@ -584,7 +584,7 @@ static enum CommandResult parse_replace_list(struct Buffer *buf, struct Buffer *
     mutt_buffer_printf(err, _("%s: too few arguments"), "subjectrx");
     return MUTT_CMD_WARNING;
   }
-  mutt_extract_token(buf, s, 0);
+  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
   /* Second token is a replacement template */
   if (!MoreArgs(s))
@@ -592,7 +592,7 @@ static enum CommandResult parse_replace_list(struct Buffer *buf, struct Buffer *
     mutt_buffer_printf(err, _("%s: too few arguments"), "subjectrx");
     return MUTT_CMD_WARNING;
   }
-  mutt_extract_token(&templ, s, 0);
+  mutt_extract_token(&templ, s, MUTT_TOKEN_NO_FLAGS);
 
   if (mutt_replacelist_add(list, buf->data, templ.data, err) != 0)
   {
@@ -621,7 +621,7 @@ static enum CommandResult parse_unattach_list(struct Buffer *buf, struct Buffer 
 
   do
   {
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     FREE(&tmp);
 
     if (mutt_str_strcasecmp(buf->data, "any") == 0)
@@ -682,7 +682,7 @@ static enum CommandResult parse_unreplace_list(struct Buffer *buf, struct Buffer
     return MUTT_CMD_WARNING;
   }
 
-  mutt_extract_token(buf, s, 0);
+  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
   /* "*" is a special case. */
   if (mutt_str_strcmp(buf->data, "*") == 0)
@@ -900,7 +900,7 @@ static enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_WARNING;
   }
 
-  mutt_extract_token(buf, s, 0);
+  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
   if (parse_grouplist(&gc, buf, s, data, err) == -1)
     return MUTT_CMD_ERROR;
@@ -977,7 +977,7 @@ static enum CommandResult parse_alternates(struct Buffer *buf, struct Buffer *s,
 
   do
   {
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
     if (parse_grouplist(&gc, buf, s, data, err) == -1)
       goto bail;
@@ -1008,7 +1008,7 @@ static enum CommandResult parse_attachments(struct Buffer *buf, struct Buffer *s
   char op, *category = NULL;
   struct ListHead *head = NULL;
 
-  mutt_extract_token(buf, s, 0);
+  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
   if (!buf->data || (*buf->data == '\0'))
   {
     mutt_buffer_strcpy(err, _("attachments: no disposition"));
@@ -1070,7 +1070,7 @@ static enum CommandResult parse_echo(struct Buffer *buf, struct Buffer *s,
     mutt_buffer_printf(err, _("%s: too few arguments"), "echo");
     return MUTT_CMD_WARNING;
   }
-  mutt_extract_token(buf, s, 0);
+  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
   OptForceRefresh = true;
   mutt_message("%s", buf->data);
   OptForceRefresh = false;
@@ -1110,7 +1110,7 @@ static enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
 
   do
   {
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     if (parse_grouplist(&gc, buf, s, data, err) == -1)
       goto bail;
 
@@ -1223,7 +1223,7 @@ static enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
 {
   struct Buffer token = { 0 };
 
-  mutt_extract_token(buf, s, 0);
+  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
   // is the item defined as:
   bool res = cs_get_elem(Config, buf->data) // a variable?
@@ -1264,7 +1264,7 @@ static enum CommandResult parse_ignore(struct Buffer *buf, struct Buffer *s,
 {
   do
   {
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     remove_from_stailq(&UnIgnore, buf->data);
     add_to_stailq(&Ignore, buf->data);
   } while (MoreArgs(s));
@@ -1282,7 +1282,7 @@ static enum CommandResult parse_lists(struct Buffer *buf, struct Buffer *s,
 
   do
   {
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
     if (parse_grouplist(&gc, buf, s, data, err) == -1)
       goto bail;
@@ -1318,7 +1318,7 @@ static enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
 
     if (data & MUTT_NAMED)
     {
-      mutt_extract_token(buf, s, 0);
+      mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
       if (buf->data && (*buf->data != '\0'))
       {
         m->desc = mutt_str_strdup(buf->data);
@@ -1330,7 +1330,7 @@ static enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
       }
     }
 
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     if (mutt_buffer_is_empty(buf))
     {
       /* Skip empty tokens. */
@@ -1445,7 +1445,7 @@ static enum CommandResult parse_path_list(struct Buffer *buf, struct Buffer *s,
 
   do
   {
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     mutt_str_strfcpy(path, buf->data, sizeof(path));
     mutt_expand_path(path, sizeof(path));
     add_to_stailq((struct ListHead *) data, path);
@@ -1466,7 +1466,7 @@ static enum CommandResult parse_path_unlist(struct Buffer *buf, struct Buffer *s
 
   do
   {
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     /* Check for deletion of entire list */
     if (mutt_str_strcmp(buf->data, "*") == 0)
     {
@@ -1890,7 +1890,7 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
   }
 
   char *name = mutt_str_strdup(buf->data);
-  mutt_extract_token(buf, s, 0);
+  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
   mutt_envlist_set(name, buf->data, true);
   FREE(&name);
 
@@ -1907,7 +1907,7 @@ static enum CommandResult parse_source(struct Buffer *buf, struct Buffer *s,
 
   do
   {
-    if (mutt_extract_token(buf, s, 0) != 0)
+    if (mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS) != 0)
     {
       mutt_buffer_printf(err, _("source: error at %s"), s->dptr);
       return MUTT_CMD_ERROR;
@@ -1947,7 +1947,7 @@ static enum CommandResult parse_spam_list(struct Buffer *buf, struct Buffer *s,
   }
 
   /* Extract the first token, a regex */
-  mutt_extract_token(buf, s, 0);
+  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
   /* data should be either MUTT_SPAM or MUTT_NOSPAM. MUTT_SPAM is for spam commands. */
   if (data == MUTT_SPAM)
@@ -1955,7 +1955,7 @@ static enum CommandResult parse_spam_list(struct Buffer *buf, struct Buffer *s,
     /* If there's a second parameter, it's a template for the spam tag. */
     if (MoreArgs(s))
     {
-      mutt_extract_token(&templ, s, 0);
+      mutt_extract_token(&templ, s, MUTT_TOKEN_NO_FLAGS);
 
       /* Add to the spam list. */
       if (mutt_replacelist_add(&SpamList, buf->data, templ.data, err) != 0)
@@ -2012,7 +2012,7 @@ static enum CommandResult parse_stailq(struct Buffer *buf, struct Buffer *s,
 {
   do
   {
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     add_to_stailq((struct ListHead *) data, buf->data);
   } while (MoreArgs(s));
 
@@ -2043,7 +2043,7 @@ static enum CommandResult parse_subscribe(struct Buffer *buf, struct Buffer *s,
 
   do
   {
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
     if (parse_grouplist(&gc, buf, s, data, err) == -1)
       goto bail;
@@ -2085,7 +2085,7 @@ static enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *
 
   if (MoreArgs(s))
   {
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
     if (MoreArgs(s))
     {
@@ -2134,13 +2134,13 @@ static enum CommandResult parse_tag_formats(struct Buffer *buf, struct Buffer *s
   {
     char *tag = NULL, *format = NULL;
 
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     if (buf->data && (*buf->data != '\0'))
       tag = mutt_str_strdup(buf->data);
     else
       continue;
 
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     format = mutt_str_strdup(buf->data);
 
     /* avoid duplicates */
@@ -2173,13 +2173,13 @@ static enum CommandResult parse_tag_transforms(struct Buffer *buf, struct Buffer
   {
     char *tag = NULL, *transform = NULL;
 
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     if (buf->data && (*buf->data != '\0'))
       tag = mutt_str_strdup(buf->data);
     else
       continue;
 
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     transform = mutt_str_strdup(buf->data);
 
     /* avoid duplicates */
@@ -2207,7 +2207,7 @@ static enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s,
 
   do
   {
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
     if (mutt_str_strcmp("*", buf->data) == 0)
     {
@@ -2256,7 +2256,7 @@ static enum CommandResult parse_unalternates(struct Buffer *buf, struct Buffer *
   alternates_clean();
   do
   {
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     mutt_regexlist_remove(&Alternates, buf->data);
 
     if ((mutt_str_strcmp(buf->data, "*") != 0) &&
@@ -2279,7 +2279,7 @@ static enum CommandResult parse_unattachments(struct Buffer *buf, struct Buffer 
   char op, *p = NULL;
   struct ListHead *head = NULL;
 
-  mutt_extract_token(buf, s, 0);
+  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
   if (!buf->data || (*buf->data == '\0'))
   {
     mutt_buffer_strcpy(err, _("unattachments: no disposition"));
@@ -2324,7 +2324,7 @@ static enum CommandResult parse_unignore(struct Buffer *buf, struct Buffer *s,
 {
   do
   {
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
     /* don't add "*" to the unignore list */
     if (strcmp(buf->data, "*") != 0)
@@ -2345,7 +2345,7 @@ static enum CommandResult parse_unlists(struct Buffer *buf, struct Buffer *s,
   mutt_hash_free(&AutoSubscribeCache);
   do
   {
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     mutt_regexlist_remove(&SubscribedLists, buf->data);
     mutt_regexlist_remove(&MailLists, buf->data);
 
@@ -2373,7 +2373,7 @@ static enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s
 
   while (!clear_all && MoreArgs(s))
   {
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
     if (mutt_str_strcmp(buf->data, "*") == 0)
     {
@@ -2440,7 +2440,7 @@ static enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
 
   do
   {
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     if (mutt_str_strcmp("*", buf->data) == 0)
     {
       mutt_list_free(&UserHeader);
@@ -2474,7 +2474,7 @@ static enum CommandResult parse_unstailq(struct Buffer *buf, struct Buffer *s,
 {
   do
   {
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     /* Check for deletion of entire list */
     if (mutt_str_strcmp(buf->data, "*") == 0)
     {
@@ -2510,7 +2510,7 @@ static enum CommandResult parse_unsubscribe(struct Buffer *buf, struct Buffer *s
   mutt_hash_free(&AutoSubscribeCache);
   do
   {
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     mutt_regexlist_remove(&SubscribedLists, buf->data);
 
     if ((mutt_str_strcmp(buf->data, "*") != 0) &&
@@ -2539,7 +2539,7 @@ static enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buff
 
   if (MoreArgs(s))
   {
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
     if (MoreArgs(s))
     {
@@ -3280,7 +3280,7 @@ enum CommandResult mutt_parse_rc_line(/* const */ char *line,
       expn.dptr++;
       continue;
     }
-    mutt_extract_token(token, &expn, 0);
+    mutt_extract_token(token, &expn, MUTT_TOKEN_NO_FLAGS);
     for (i = 0; Commands[i].name; i++)
     {
       if (mutt_str_strcmp(token->data, Commands[i].name) == 0)

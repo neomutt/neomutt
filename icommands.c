@@ -84,7 +84,7 @@ enum CommandResult mutt_parse_icommand(/* const */ char *line, struct Buffer *er
   SKIPWS(expn.dptr);
   while (*expn.dptr)
   {
-    mutt_extract_token(&token, &expn, 0);
+    mutt_extract_token(&token, &expn, MUTT_TOKEN_NO_FLAGS);
     for (size_t i = 0; ICommandList[i].name; i++)
     {
       if (mutt_str_strcmp(token.data, ICommandList[i].name) != 0)
@@ -235,7 +235,7 @@ static enum CommandResult icmd_bind(struct Buffer *buf, struct Buffer *s,
   if (!MoreArgs(s))
     dump_all = true;
   else
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
   if (MoreArgs(s))
   {

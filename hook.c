@@ -101,7 +101,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
       not = true;
     }
 
-    mutt_extract_token(&pattern, s, 0);
+    mutt_extract_token(&pattern, s, MUTT_TOKEN_NO_FLAGS);
 
     if (!MoreArgs(s))
     {
@@ -329,7 +329,7 @@ enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s,
 {
   while (MoreArgs(s))
   {
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     if (mutt_str_strcmp("*", buf->data) == 0)
     {
       if (current_hook_type)

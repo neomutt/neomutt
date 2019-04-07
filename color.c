@@ -575,7 +575,7 @@ static void do_uncolor(struct Buffer *buf, struct Buffer *s,
   struct ColorLine *np = NULL, *tmp = NULL;
   do
   {
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     if (mutt_str_strcmp("*", buf->data) == 0)
     {
       np = STAILQ_FIRST(cl);
@@ -636,7 +636,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
   int object = 0;
   bool do_cache = false;
 
-  mutt_extract_token(buf, s, 0);
+  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
   object = mutt_map_get_value(buf->data, Fields);
   if (object == -1)
@@ -682,7 +682,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
   {
     /* just eat the command, but don't do anything real about it */
     do
-      mutt_extract_token(buf, s, 0);
+      mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     while (MoreArgs(s));
 
     return MUTT_CMD_SUCCESS;
@@ -870,7 +870,7 @@ static int parse_object(struct Buffer *buf, struct Buffer *s, uint32_t *o,
     return -1;
   }
 
-  mutt_extract_token(buf, s, 0);
+  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
   if (mutt_str_startswith(buf->data, "quoted", CASE_MATCH))
   {
     if (buf->data[6])
@@ -896,7 +896,7 @@ static int parse_object(struct Buffer *buf, struct Buffer *s, uint32_t *o,
       return -1;
     }
 
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
     *o = mutt_map_get_value(buf->data, ComposeFields);
     if (*o == -1)
@@ -944,7 +944,7 @@ static int parse_color_pair(struct Buffer *buf, struct Buffer *s, uint32_t *fg,
       return -1;
     }
 
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
     if (mutt_str_strcasecmp("bold", buf->data) == 0)
       *attr |= A_BOLD;
@@ -972,7 +972,7 @@ static int parse_color_pair(struct Buffer *buf, struct Buffer *s, uint32_t *fg,
     return -1;
   }
 
-  mutt_extract_token(buf, s, 0);
+  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
   if (parse_color_name(buf->data, bg, attr, false, err) != 0)
     return -1;
@@ -999,7 +999,7 @@ static int parse_attr_spec(struct Buffer *buf, struct Buffer *s, uint32_t *fg,
     return -1;
   }
 
-  mutt_extract_token(buf, s, 0);
+  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
   if (mutt_str_strcasecmp("bold", buf->data) == 0)
     *attr |= A_BOLD;
@@ -1079,7 +1079,7 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_WARNING;
     }
 
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
   }
 
   if (MoreArgs(s) && (object != MT_COLOR_STATUS))
@@ -1125,12 +1125,12 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
      * 0 arguments: sets the default status color (handled below by else part)
      * 1 argument : colorize pattern on match
      * 2 arguments: colorize nth submatch of pattern */
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
     if (MoreArgs(s))
     {
       struct Buffer temporary = { 0 };
-      mutt_extract_token(&temporary, s, 0);
+      mutt_extract_token(&temporary, s, MUTT_TOKEN_NO_FLAGS);
       match = atoi(temporary.data);
       FREE(&temporary.data);
     }

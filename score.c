@@ -101,7 +101,7 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
   struct Score *ptr = NULL, *last = NULL;
   char *pattern = NULL, *pc = NULL;
 
-  mutt_extract_token(buf, s, 0);
+  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
   if (!MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), "score");
@@ -109,7 +109,7 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
   }
   pattern = buf->data;
   mutt_buffer_init(buf);
-  mutt_extract_token(buf, s, 0);
+  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
   if (MoreArgs(s))
   {
     FREE(&pattern);
@@ -206,7 +206,7 @@ enum CommandResult mutt_parse_unscore(struct Buffer *buf, struct Buffer *s,
 
   while (MoreArgs(s))
   {
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     if (mutt_str_strcmp("*", buf->data) == 0)
     {
       for (tmp = ScoreList; tmp;)
