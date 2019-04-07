@@ -481,16 +481,15 @@ bool mutt_mailbox_notify(struct Mailbox *m_cur)
 }
 
 /**
- * mutt_mailbox - incoming folders completion routine
+ * mutt_buffer_mailbox - incoming folders completion routine
  * @param m_cur Current Mailbox
  * @param s     Buffer containing name of current mailbox
- * @param slen  Buffer length
  *
  * Given a folder name, find the next incoming folder with new mail.
  */
-void mutt_mailbox(struct Mailbox *m_cur, char *s, size_t slen)
+void mutt_buffer_mailbox(struct Mailbox *m_cur, struct Buffer *s)
 {
-  mutt_expand_path(s, slen);
+  mutt_buffer_expand_path(s);
 
   if (mutt_mailbox_check(m_cur, 0))
   {
@@ -505,11 +504,11 @@ void mutt_mailbox(struct Mailbox *m_cur, char *s, size_t slen)
         mutt_expand_path(np->mailbox->path, sizeof(np->mailbox->path));
         if ((found || pass) && np->mailbox->has_new)
         {
-          mutt_str_strfcpy(s, np->mailbox->path, slen);
-          mutt_pretty_mailbox(s, slen);
+          mutt_buffer_strcpy(s, np->mailbox->path);
+          mutt_buffer_pretty_mailbox(s);
           return;
         }
-        if (mutt_str_strcmp(s, np->mailbox->path) == 0)
+        if (mutt_str_strcmp(mutt_b2s(s), np->mailbox->path) == 0)
           found = 1;
       }
     }
@@ -518,7 +517,26 @@ void mutt_mailbox(struct Mailbox *m_cur, char *s, size_t slen)
   }
 
   /* no folders with new mail */
-  *s = '\0';
+  mutt_buffer_reset(s);
+}
+
+/**
+ * mutt_mailbox - incoming folders completion routine
+ * @param m_cur Current Mailbox
+ * @param s     Buffer containing name of current mailbox
+ * @param slen  Buffer length
+ *
+ * Given a folder name, find the next incoming folder with new mail.
+ */
+void mutt_mailbox(struct Mailbox *m_cur, char *s, size_t slen)
+{
+  struct Buffer *s_buf = mutt_buffer_pool_get();
+
+  mutt_buffer_addstr(s_buf, NONULL(s));
+  mutt_buffer_mailbox(m_cur, s_buf);
+  mutt_str_strfcpy(s, mutt_b2s(s_buf), slen);
+
+  mutt_buffer_pool_release(&s_buf);
 }
 
 /**
