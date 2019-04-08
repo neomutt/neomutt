@@ -138,6 +138,25 @@ int rfc1524_expand_command(struct Body *a, const char *filename,
 }
 
 /**
+ * rfc1524_expand_command - Expand expandos in a command
+ * @param a        Email Body
+ * @param filename File containing the email text
+ * @param type     Type, e.g. "text/plain"
+ * @param command  Buffer containing command
+ * @retval 0 Command works on a file
+ * @retval 1 Command works on a pipe
+ */
+int mutt_buffer_rfc1524_expand_command(struct Body *a, const char *filename,
+                                       const char *type, struct Buffer *command)
+{
+  mutt_buffer_increase_size(command, PATH_MAX);
+  int rc = rfc1524_expand_command(a, filename, type, command->data, command->dsize);
+  mutt_buffer_fix_dptr(command);
+
+  return rc;
+}
+
+/**
  * get_field - NUL terminate a RFC1524 field
  * @param s String to alter
  * @retval ptr  Start of next field
@@ -613,4 +632,22 @@ int rfc1524_expand_filename(const char *nametemplate, const char *oldfile,
     return 0;
   else
     return 1;
+}
+
+/**
+ * mutt_buffer_rfc1524_expand_filename - Expand a new filename from a template or existing filename
+ * @param nametemplate Template
+ * @param oldfile      Original filename
+ * @param newfile      Buffer for new filename
+ * @retval 0 if the left and right components of the oldfile and newfile match
+ * @retval 1 otherwise
+ */
+int mutt_buffer_rfc1524_expand_filename(const char *nametemplate,
+                                        const char *oldfile, struct Buffer *newfile)
+{
+  mutt_buffer_increase_size(newfile, PATH_MAX);
+  int rc = rfc1524_expand_filename(nametemplate, oldfile, newfile->data, newfile->dsize);
+  mutt_buffer_fix_dptr(newfile);
+
+  return rc;
 }

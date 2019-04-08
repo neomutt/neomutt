@@ -67,4 +67,7 @@ int rfc1524_expand_command(struct Body *a, const char *filename, const char *typ
 int rfc1524_expand_filename(const char *nametemplate, const char *oldfile, char *newfile, size_t nflen);
 bool rfc1524_mailcap_lookup(struct Body *a, char *type, struct Rfc1524MailcapEntry *entry, enum MailcapLookup opt);
 
+int mutt_buffer_rfc1524_expand_command(struct Body *a, const char *filename, const char *type, struct Buffer *command);
+int mutt_buffer_rfc1524_expand_filename(const char *nametemplate, const char *oldfile, struct Buffer *newfile);
+
 #endif /* MUTT_RFC1524_H */
