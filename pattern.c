@@ -199,8 +199,6 @@ static char LastSearchExpn[1024] = { 0 }; /**< expanded version of LastSearch */
 static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 {
   struct Buffer buf;
-  char errmsg[256];
-  int r;
 
   mutt_buffer_init(&buf);
   char *pexpr = s->dptr;
@@ -232,10 +230,11 @@ static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   {
     pat->p.regex = mutt_mem_malloc(sizeof(regex_t));
     int flags = mutt_mb_is_lower(buf.data) ? REG_ICASE : 0;
-    r = REGCOMP(pat->p.regex, buf.data, REG_NEWLINE | REG_NOSUB | flags);
-    if (r != 0)
+    int rc = REGCOMP(pat->p.regex, buf.data, REG_NEWLINE | REG_NOSUB | flags);
+    if (rc != 0)
     {
-      regerror(r, pat->p.regex, errmsg, sizeof(errmsg));
+      char errmsg[256];
+      regerror(rc, pat->p.regex, errmsg, sizeof(errmsg));
       mutt_buffer_add_printf(err, "'%s': %s", buf.data, errmsg);
       FREE(&buf.data);
       FREE(&pat->p.regex);
