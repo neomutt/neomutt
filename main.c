@@ -402,7 +402,7 @@ bool get_user_info(struct ConfigSet *cs)
  */
 int main(int argc, char *argv[], char *envp[])
 {
-  char folder[PATH_MAX] = "";
+  struct Buffer *folder = NULL;
   char *subject = NULL;
   char *include_file = NULL;
   char *draft_file = NULL;
@@ -512,7 +512,9 @@ int main(int argc, char *argv[], char *envp[])
           mutt_list_insert_tail(&Muttrc, mutt_str_strdup(optarg));
           break;
         case 'f':
-          mutt_str_strfcpy(folder, optarg, sizeof(folder));
+          if (!folder)
+            folder = mutt_buffer_new();
+          mutt_buffer_strcpy(folder, optarg);
           explicit_folder = true;
           break;
 #ifdef USE_NNTP
@@ -1131,8 +1133,8 @@ int main(int argc, char *argv[], char *envp[])
         mutt_message(_("No mailbox with new mail"));
         goto main_curses; // TEST37: neomutt -Z (no new mail)
       }
-      folder[0] = '\0';
-      mutt_mailbox(Context ? Context->mailbox : NULL, folder, sizeof(folder));
+      mutt_buffer_reset(folder);
+      mutt_buffer_mailbox(Context ? Context->mailbox : NULL, folder);
 #ifdef USE_IMAP
       C_ImapPassive = passive;
 #endif
@@ -1154,21 +1156,20 @@ int main(int argc, char *argv[], char *envp[])
         mutt_error(_("No incoming mailboxes defined"));
         goto main_curses; // TEST39: neomutt -n -F /dev/null -y
       }
-      folder[0] = '\0';
-      mutt_select_file(folder, sizeof(folder),
-                       MUTT_SEL_FOLDER | MUTT_SEL_MAILBOX, NULL, NULL);
-      if (folder[0] == '\0')
+      mutt_buffer_reset(folder);
+      mutt_buffer_select_file(folder, MUTT_SEL_FOLDER | MUTT_SEL_MAILBOX, NULL, NULL);
+      if (mutt_buffer_len(folder) == 0)
       {
         goto main_ok; // TEST40: neomutt -y (quit selection)
       }
     }
 
-    if (folder[0] == '\0')
+    if (mutt_buffer_len(folder) == 0)
     {
       if (C_Spoolfile)
-        mutt_str_strfcpy(folder, C_Spoolfile, sizeof(folder));
+        mutt_buffer_strcpy(folder, C_Spoolfile);
       else if (C_Folder)
-        mutt_str_strfcpy(folder, C_Folder, sizeof(folder));
+        mutt_buffer_strcpy(folder, C_Folder);
       /* else no folder */
     }
 
@@ -1176,22 +1177,23 @@ int main(int argc, char *argv[], char *envp[])
     if (OptNews)
     {
       OptNews = false;
-      nntp_expand_path(folder, sizeof(folder), &CurrentNewsSrv->conn->account);
+      mutt_buffer_increase_size(folder, PATH_MAX);
+      nntp_expand_path(folder->data, folder->dsize, &CurrentNewsSrv->conn->account);
     }
     else
 #endif
-      mutt_expand_path(folder, sizeof(folder));
+      mutt_buffer_expand_path(folder);
 
-    mutt_str_replace(&CurrentFolder, folder);
-    mutt_str_replace(&LastFolder, folder);
+    mutt_str_replace(&CurrentFolder, mutt_b2s(folder));
+    mutt_str_replace(&LastFolder, mutt_b2s(folder));
 
     if (flags & MUTT_CLI_IGNORE)
     {
       /* check to see if there are any messages in the folder */
-      switch (mx_check_empty(folder))
+      switch (mx_check_empty(mutt_b2s(folder)))
       {
         case -1:
-          mutt_perror(folder);
+          mutt_perror(mutt_b2s(folder));
           goto main_curses; // TEST41: neomutt -z -f missing
         case 1:
           mutt_error(_("Mailbox is empty"));
@@ -1199,11 +1201,11 @@ int main(int argc, char *argv[], char *envp[])
       }
     }
 
-    mutt_folder_hook(folder, NULL);
+    mutt_folder_hook(mutt_b2s(folder), NULL);
     mutt_startup_shutdown_hook(MUTT_STARTUP_HOOK);
 
     repeat_error = true;
-    struct Mailbox *m = mx_path_resolve(folder);
+    struct Mailbox *m = mx_path_resolve(mutt_b2s(folder));
     Context = mx_mbox_open(m, ((flags & MUTT_CLI_RO) || C_ReadOnly) ? MUTT_READONLY : 0);
     if (!Context)
     {
@@ -1241,6 +1243,7 @@ main_curses:
   if (repeat_error && ErrorBufMessage)
     puts(ErrorBuf);
 main_exit:
+  mutt_buffer_free(&folder);
   mutt_list_free(&queries);
   crypto_module_free();
   mutt_window_free();
