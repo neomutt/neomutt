@@ -86,7 +86,7 @@ void mutt_body_free(struct Body **p)
 
     if (b->email)
     {
-      /* Don't free twice (b->hdr->content = b->parts) */
+      /* Don't free twice (b->email->content = b->parts) */
       b->email->content = NULL;
       mutt_email_free(&b->email);
     }
