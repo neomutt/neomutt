@@ -258,12 +258,12 @@ int mutt_display_message(struct Email *cur)
     hfi.pager_progress = ExtPagerProgress;
     hfi.email = cur;
     mutt_make_string_info(buf, sizeof(buf), MuttIndexWindow->cols,
-                          NONULL(C_PagerFormat), &hfi, 0);
+                          NONULL(C_PagerFormat), &hfi, MUTT_FORMAT_NO_FLAGS);
     fputs(buf, fp_out);
     fputs("\n\n", fp_out);
   }
 
-  chflags = (C_Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_FROM | CH_DISPLAY;
+  chflags = (C_Weed ? (CH_WEED | CH_REORDER) : CH_NO_FLAGS) | CH_DECODE | CH_FROM | CH_DISPLAY;
 #ifdef USE_NOTMUCH
   if (Context->mailbox->magic == MUTT_NOTMUCH)
     chflags |= CH_VIRTUAL;

@@ -267,7 +267,7 @@ static void make_sidebar_entry(char *buf, size_t buflen, int width, char *box,
   mutt_str_strfcpy(sbe->box, box, sizeof(sbe->box));
 
   mutt_expando_format(buf, buflen, 0, width, NONULL(C_SidebarFormat),
-                      sidebar_format_str, (unsigned long) sbe, 0);
+                      sidebar_format_str, (unsigned long) sbe, MUTT_FORMAT_NO_FLAGS);
 
   /* Force string to be exactly the right width */
   int w = mutt_strwidth(buf);

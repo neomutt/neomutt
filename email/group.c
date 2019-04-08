@@ -42,7 +42,7 @@ static struct Hash *Groups = NULL;
  */
 void mutt_grouplist_init(void)
 {
-  Groups = mutt_hash_new(1031, 0);
+  Groups = mutt_hash_new(1031, MUTT_HASH_NO_FLAGS);
 }
 
 /**

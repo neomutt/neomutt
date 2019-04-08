@@ -595,7 +595,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   /* now that we have the template, send it. */
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   el_add_email(&el, e_parent);
-  ci_send_message(0, e_tmp, tmpbody, NULL, &el);
+  ci_send_message(SEND_NO_FLAGS, e_tmp, tmpbody, NULL, &el);
   el_free(&el);
   return;
 
@@ -1081,5 +1081,5 @@ void mutt_attach_mail_sender(FILE *fp, struct Email *e, struct AttachCtx *actx,
         return;
     }
   }
-  ci_send_message(0, e_tmp, NULL, NULL, NULL);
+  ci_send_message(SEND_NO_FLAGS, e_tmp, NULL, NULL, NULL);
 }

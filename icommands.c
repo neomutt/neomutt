@@ -285,7 +285,7 @@ static enum CommandResult icmd_bind(struct Buffer *buf, struct Buffer *s,
   mutt_buffer_free(&filebuf);
 
   struct Pager info = { 0 };
-  if (mutt_pager((bind) ? "bind" : "macro", tempfile, 0, &info) == -1)
+  if (mutt_pager((bind) ? "bind" : "macro", tempfile, MUTT_PAGER_NO_FLAGS, &info) == -1)
   {
     mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
     return MUTT_CMD_ERROR;
@@ -312,7 +312,7 @@ static enum CommandResult icmd_set(struct Buffer *buf, struct Buffer *s,
 
   if (mutt_str_strcmp(s->data, "set all") == 0)
   {
-    dump_config(Config, CS_DUMP_STYLE_NEO, 0, fp_out);
+    dump_config(Config, CS_DUMP_STYLE_NEO, CS_DUMP_NO_FLAGS, fp_out);
   }
   else if (mutt_str_strcmp(s->data, "set") == 0)
   {
@@ -327,7 +327,7 @@ static enum CommandResult icmd_set(struct Buffer *buf, struct Buffer *s,
   mutt_file_fclose(&fp_out);
 
   struct Pager info = { 0 };
-  if (mutt_pager("set", tempfile, 0, &info) == -1)
+  if (mutt_pager("set", tempfile, MUTT_PAGER_NO_FLAGS, &info) == -1)
   {
     mutt_buffer_addstr(err, _("Could not create temporary file"));
     return MUTT_CMD_ERROR;
@@ -356,7 +356,7 @@ static enum CommandResult icmd_version(struct Buffer *buf, struct Buffer *s,
   mutt_file_fclose(&fp_out);
 
   struct Pager info = { 0 };
-  if (mutt_pager("version", tempfile, 0, &info) == -1)
+  if (mutt_pager("version", tempfile, MUTT_PAGER_NO_FLAGS, &info) == -1)
   {
     mutt_buffer_addstr(err, _("Could not create temporary file"));
     return MUTT_CMD_ERROR;

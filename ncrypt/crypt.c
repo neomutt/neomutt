@@ -696,8 +696,8 @@ SecurityFlags crypt_query(struct Body *m)
 
   if ((m->type == TYPE_MULTIPART) || (m->type == TYPE_MESSAGE))
   {
-    SecurityFlags u = m->parts ? SEC_ALL_FLAGS : 0; /* Bits set in all parts */
-    SecurityFlags w = SEC_NO_FLAGS;                 /* Bits set in any part  */
+    SecurityFlags u = m->parts ? SEC_ALL_FLAGS : SEC_NO_FLAGS; /* Bits set in all parts */
+    SecurityFlags w = SEC_NO_FLAGS; /* Bits set in any part  */
 
     for (struct Body *b = m->parts; b; b = b->next)
     {
@@ -848,7 +848,7 @@ void crypt_extract_keys_from_messages(struct EmailList *el)
     if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & APPLICATION_PGP))
     {
       mutt_copy_message_ctx(fp_out, Context->mailbox, e,
-                            MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
+                            MUTT_CM_DECODE | MUTT_CM_CHARCONV, CH_NO_FLAGS);
       fflush(fp_out);
 
       mutt_endwin();
@@ -862,10 +862,10 @@ void crypt_extract_keys_from_messages(struct EmailList *el)
       {
         mutt_copy_message_ctx(fp_out, Context->mailbox, e,
                               MUTT_CM_NOHEADER | MUTT_CM_DECODE_CRYPT | MUTT_CM_DECODE_SMIME,
-                              0);
+                              CH_NO_FLAGS);
       }
       else
-        mutt_copy_message_ctx(fp_out, Context->mailbox, e, 0, 0);
+        mutt_copy_message_ctx(fp_out, Context->mailbox, e, MUTT_CM_NO_FLAGS, CH_NO_FLAGS);
       fflush(fp_out);
 
       if (e->env->from)

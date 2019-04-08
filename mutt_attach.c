@@ -624,7 +624,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
     info.email = e;
 
     rc = mutt_do_pager(desc, pagerfile,
-                       MUTT_PAGER_ATTACHMENT | (is_message ? MUTT_PAGER_MESSAGE : 0),
+                       MUTT_PAGER_ATTACHMENT | (is_message ? MUTT_PAGER_MESSAGE : MUTT_PAGER_NO_FLAGS),
                        &info);
     *pagerfile = '\0';
   }
@@ -816,7 +816,8 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path,
         mailbox_free(&m_att);
         return -1;
       }
-      msg = mx_msg_open_new(ctx->mailbox, en, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
+      msg = mx_msg_open_new(ctx->mailbox, en,
+                            is_from(buf, NULL, 0, NULL) ? MUTT_MSG_NO_FLAGS : MUTT_ADD_FROM);
       if (!msg)
       {
         mx_mbox_close(&ctx);
@@ -825,7 +826,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path,
       if ((ctx->mailbox->magic == MUTT_MBOX) || (ctx->mailbox->magic == MUTT_MMDF))
         chflags = CH_FROM | CH_UPDATE_LEN;
       chflags |= ((ctx->mailbox->magic == MUTT_MAILDIR) ? CH_NOSTATUS : CH_UPDATE);
-      if ((mutt_copy_message_fp(msg->fp, fp, en, 0, chflags) == 0) &&
+      if ((mutt_copy_message_fp(msg->fp, fp, en, MUTT_CM_NO_FLAGS, chflags) == 0) &&
           (mx_msg_commit(ctx->mailbox, msg) == 0))
       {
         rc = 0;

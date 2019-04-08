@@ -1955,7 +1955,7 @@ int pgp_class_send_menu(struct Email *msg)
       case 'a': /* sign (a)s */
         OptPgpCheckTrust = false;
 
-        p = pgp_ask_for_key(_("Sign as: "), NULL, 0, PGP_SECRING);
+        p = pgp_ask_for_key(_("Sign as: "), NULL, KEYFLAG_NO_FLAGS, PGP_SECRING);
         if (p)
         {
           char input_signas[128];

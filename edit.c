@@ -318,7 +318,7 @@ static void be_edit_header(struct Envelope *e, bool force)
   mutt_addr_write(tmp, sizeof(tmp), e->to, false);
   if (!e->to || force)
   {
-    if (mutt_enter_string(tmp, sizeof(tmp), 4, 0) == 0)
+    if (mutt_enter_string(tmp, sizeof(tmp), 4, MUTT_COMP_NO_FLAGS) == 0)
     {
       mutt_addr_free(&e->to);
       e->to = mutt_addr_parse_list2(e->to, tmp);
@@ -340,7 +340,7 @@ static void be_edit_header(struct Envelope *e, bool force)
   {
     addstr("Subject: ");
     mutt_str_strfcpy(tmp, e->subject ? e->subject : "", sizeof(tmp));
-    if (mutt_enter_string(tmp, sizeof(tmp), 9, 0) == 0)
+    if (mutt_enter_string(tmp, sizeof(tmp), 9, MUTT_COMP_NO_FLAGS) == 0)
       mutt_str_replace(&e->subject, tmp);
     addch('\n');
   }
@@ -351,7 +351,7 @@ static void be_edit_header(struct Envelope *e, bool force)
     tmp[0] = '\0';
     mutt_addrlist_to_local(e->cc);
     mutt_addr_write(tmp, sizeof(tmp), e->cc, false);
-    if (mutt_enter_string(tmp, sizeof(tmp), 4, 0) == 0)
+    if (mutt_enter_string(tmp, sizeof(tmp), 4, MUTT_COMP_NO_FLAGS) == 0)
     {
       mutt_addr_free(&e->cc);
       e->cc = mutt_addr_parse_list2(e->cc, tmp);
@@ -372,7 +372,7 @@ static void be_edit_header(struct Envelope *e, bool force)
     tmp[0] = '\0';
     mutt_addrlist_to_local(e->bcc);
     mutt_addr_write(tmp, sizeof(tmp), e->bcc, false);
-    if (mutt_enter_string(tmp, sizeof(tmp), 5, 0) == 0)
+    if (mutt_enter_string(tmp, sizeof(tmp), 5, MUTT_COMP_NO_FLAGS) == 0)
     {
       mutt_addr_free(&e->bcc);
       e->bcc = mutt_addr_parse_list2(e->bcc, tmp);
@@ -416,7 +416,7 @@ int mutt_builtin_editor(const char *path, struct Email *msg, struct Email *cur)
   tmp[0] = '\0';
   while (!done)
   {
-    if (mutt_enter_string(tmp, sizeof(tmp), 0, 0) == -1)
+    if (mutt_enter_string(tmp, sizeof(tmp), 0, MUTT_COMP_NO_FLAGS) == -1)
     {
       tmp[0] = '\0';
       continue;

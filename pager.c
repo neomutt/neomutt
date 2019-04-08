@@ -1727,7 +1727,8 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
   }
 
   /* now chose a good place to break the line */
-  cnt = format_line(line_info, n, buf, flags, 0, b_read, &ch, &vch, &col, &special, pager_window);
+  cnt = format_line(line_info, n, buf, flags, NULL, b_read, &ch, &vch, &col,
+                    &special, pager_window);
   buf_ptr = buf + cnt;
 
   /* move the break point only if smart_wrap is set */
@@ -2176,7 +2177,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       size_t l2 = sizeof(buf);
       hfi.email = (IsEmail(rd->extra)) ? rd->extra->email : rd->extra->body->email;
       mutt_make_string_info(buf, (l1 < l2) ? l1 : l2, rd->pager_status_window->cols,
-                            NONULL(C_PagerFormat), &hfi, 0);
+                            NONULL(C_PagerFormat), &hfi, MUTT_FORMAT_NO_FLAGS);
       mutt_draw_statusline(rd->pager_status_window->cols, buf, l2);
     }
     else
@@ -3156,7 +3157,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_MAIL:
         CHECK_MODE(IsEmail(extra) && !IsAttach(extra));
         CHECK_ATTACH;
-        ci_send_message(0, NULL, NULL, extra->ctx, NULL);
+        ci_send_message(SEND_NO_FLAGS, NULL, NULL, extra->ctx, NULL);
         pager_menu->redraw = REDRAW_FULL;
         break;
 
@@ -3236,10 +3237,13 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;
 
-        SendFlags replyflags =
-            SEND_REPLY | ((ch == OP_GROUP_REPLY) ? SEND_GROUP_REPLY : 0) |
-            ((ch == OP_GROUP_CHAT_REPLY) ? SEND_GROUP_CHAT_REPLY : 0) |
-            ((ch == OP_LIST_REPLY) ? SEND_LIST_REPLY : 0);
+        SendFlags replyflags = SEND_REPLY;
+        if (ch == OP_GROUP_REPLY)
+          replyflags |= SEND_GROUP_REPLY;
+        else if (ch == OP_GROUP_CHAT_REPLY)
+          replyflags |= SEND_GROUP_CHAT_REPLY;
+        else if (ch == OP_LIST_REPLY)
+          replyflags |= SEND_LIST_REPLY;
 
         if (IsMsgAttach(extra))
           mutt_attach_reply(extra->fp, extra->email, extra->actx, extra->body, replyflags);
@@ -3270,7 +3274,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         CHECK_MODE(IsEmail(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;
         if (IsMsgAttach(extra))
-          mutt_attach_forward(extra->fp, extra->email, extra->actx, extra->body, 0);
+          mutt_attach_forward(extra->fp, extra->email, extra->actx, extra->body, SEND_NO_FLAGS);
         else
         {
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);

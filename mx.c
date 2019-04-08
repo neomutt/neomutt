@@ -499,7 +499,8 @@ static int trash_append(struct Mailbox *m)
     {
       if (m->emails[i]->deleted && (!m->emails[i]->purge))
       {
-        if (mutt_append_message(ctx_trash->mailbox, m, m->emails[i], 0, 0) == -1)
+        if (mutt_append_message(ctx_trash->mailbox, m, m->emails[i],
+                                MUTT_CM_NO_FLAGS, CH_NO_FLAGS) == -1)
         {
           mx_mbox_close(&ctx_trash);
           return -1;
@@ -683,7 +684,7 @@ int mx_mbox_close(struct Context **ptr)
             !(m->emails[i]->flagged && C_KeepFlagged))
         {
           if (mutt_append_message(ctx_read->mailbox, ctx->mailbox, m->emails[i],
-                                  0, CH_UPDATE_LEN) == 0)
+                                  MUTT_CM_NO_FLAGS, CH_UPDATE_LEN) == 0)
           {
             mutt_set_flag(m, m->emails[i], MUTT_DELETE, true);
             mutt_set_flag(m, m->emails[i], MUTT_PURGE, true);

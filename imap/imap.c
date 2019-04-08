@@ -77,7 +77,7 @@ bool C_ImapIdle; ///< Config: (imap) Use the IMAP IDLE extension to check for ne
  */
 static int check_capabilities(struct ImapAccountData *adata)
 {
-  if (imap_exec(adata, "CAPABILITY", 0) != IMAP_EXEC_SUCCESS)
+  if (imap_exec(adata, "CAPABILITY", IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS)
   {
     imap_error("check_capabilities", adata->buf);
     return -1;
@@ -576,7 +576,7 @@ int imap_create_mailbox(struct ImapAccountData *adata, char *mailbox)
   imap_munge_mbox_name(adata->unicode, mbox, sizeof(mbox), mailbox);
   snprintf(buf, sizeof(buf), "CREATE %s", mbox);
 
-  if (imap_exec(adata, buf, 0) != IMAP_EXEC_SUCCESS)
+  if (imap_exec(adata, buf, IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS)
   {
     mutt_error(_("CREATE failed: %s"), imap_cmd_trailer(adata));
     return -1;
@@ -623,7 +623,7 @@ int imap_rename_mailbox(struct ImapAccountData *adata, char *oldname, const char
   struct Buffer *b = mutt_buffer_pool_get();
   mutt_buffer_printf(b, "RENAME %s %s", oldmbox, newmbox);
 
-  if (imap_exec(adata, mutt_b2s(b), 0) != IMAP_EXEC_SUCCESS)
+  if (imap_exec(adata, mutt_b2s(b), IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS)
     rc = -1;
 
   mutt_buffer_pool_release(&b);
@@ -648,7 +648,7 @@ int imap_delete_mailbox(struct Mailbox *m, char *path)
   imap_munge_mbox_name(adata->unicode, mbox, sizeof(mbox), url->path);
   url_free(&url);
   snprintf(buf, sizeof(buf), "DELETE %s", mbox);
-  if (imap_exec(m->account->adata, buf, 0) != IMAP_EXEC_SUCCESS)
+  if (imap_exec(m->account->adata, buf, IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS)
     return -1;
 
   return 0;
@@ -883,7 +883,7 @@ int imap_open_connection(struct ImapAccountData *adata)
       }
       if (ans == MUTT_YES)
       {
-        enum ImapExecResult rc = imap_exec(adata, "STARTTLS", 0);
+        enum ImapExecResult rc = imap_exec(adata, "STARTTLS", IMAP_CMD_NO_FLAGS);
         if (rc == IMAP_EXEC_FATAL)
           goto bail;
         if (rc != IMAP_EXEC_ERROR)
@@ -896,7 +896,7 @@ int imap_open_connection(struct ImapAccountData *adata)
           else
           {
             /* RFC2595 demands we recheck CAPABILITY after TLS completes. */
-            if (imap_exec(adata, "CAPABILITY", 0))
+            if (imap_exec(adata, "CAPABILITY", IMAP_CMD_NO_FLAGS))
               goto bail;
           }
         }
@@ -1161,7 +1161,7 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
 
   /* after all this it's still possible to have no flags, if you
    * have no ACL rights */
-  if (*flags && (imap_exec(adata, cmd->data, 0) != IMAP_EXEC_SUCCESS) &&
+  if (*flags && (imap_exec(adata, cmd->data, IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS) &&
       err_continue && (*err_continue != MUTT_YES))
   {
     *err_continue = imap_continue("imap_sync_message: STORE failed", adata->buf);
@@ -1284,7 +1284,7 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
   snprintf(cmd, sizeof(cmd), "STATUS %s (UIDNEXT %s UNSEEN RECENT MESSAGES)",
            mdata->munge_name, uid_validity_flag);
 
-  int rc = imap_exec(adata, cmd, queue ? IMAP_CMD_QUEUE : 0 | IMAP_CMD_POLL);
+  int rc = imap_exec(adata, cmd, queue ? IMAP_CMD_QUEUE : IMAP_CMD_NO_FLAGS | IMAP_CMD_POLL);
   if (rc < 0)
   {
     mutt_debug(LL_DEBUG1, "Error queueing cmd\n");
@@ -1368,7 +1368,7 @@ int imap_search(struct Mailbox *m, const struct PatternHead *pat)
     FREE(&buf.data);
     return -1;
   }
-  if (imap_exec(adata, buf.data, 0) != IMAP_EXEC_SUCCESS)
+  if (imap_exec(adata, buf.data, IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS)
   {
     FREE(&buf.data);
     return -1;
@@ -1418,7 +1418,7 @@ int imap_subscribe(char *path, bool subscribe)
 
   snprintf(buf, sizeof(buf), "%sSUBSCRIBE %s", subscribe ? "" : "UN", mdata->munge_name);
 
-  if (imap_exec(adata, buf, 0) != IMAP_EXEC_SUCCESS)
+  if (imap_exec(adata, buf, IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS)
   {
     imap_mdata_free((void *) &mdata);
     return -1;
@@ -1581,7 +1581,7 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
     }
 
     /* let's get it on */
-    rc = imap_exec(adata, NULL, 0);
+    rc = imap_exec(adata, NULL, IMAP_CMD_NO_FLAGS);
     if (rc == IMAP_EXEC_ERROR)
     {
       if (triedcreate)
@@ -1754,7 +1754,7 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
 
   /* Flush the queued flags if any were changed in sync_helper. */
   if (rc > 0)
-    if (imap_exec(adata, NULL, 0) != IMAP_EXEC_SUCCESS)
+    if (imap_exec(adata, NULL, IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS)
       rc = -1;
 
   if (rc < 0)
@@ -1793,7 +1793,7 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
     mutt_message(_("Expunging messages from server..."));
     /* Set expunge bit so we don't get spurious reopened messages */
     mdata->reopen |= IMAP_EXPUNGE_EXPECTED;
-    if (imap_exec(adata, "EXPUNGE", 0) != IMAP_EXEC_SUCCESS)
+    if (imap_exec(adata, "EXPUNGE", IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS)
     {
       mdata->reopen &= ~IMAP_EXPUNGE_EXPECTED;
       imap_error(_("imap_sync_mailbox: EXPUNGE failed"), adata->buf);
@@ -1943,7 +1943,7 @@ int imap_login(struct ImapAccountData *adata)
     imap_exec(adata, "LIST \"\" \"\"", IMAP_CMD_QUEUE);
 
     /* we may need the root delimiter before we open a mailbox */
-    imap_exec(adata, NULL, 0);
+    imap_exec(adata, NULL, IMAP_CMD_NO_FLAGS);
   }
 
   if (adata->state < IMAP_AUTHENTICATED)
@@ -2400,7 +2400,7 @@ static int imap_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
 
     /* Should we return here, or we are fine and we could
      * continue to add new flags */
-    if (imap_exec(adata, cmd->data, 0) != IMAP_EXEC_SUCCESS)
+    if (imap_exec(adata, cmd->data, IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS)
     {
       mutt_buffer_free(&cmd);
       return -1;
@@ -2425,7 +2425,7 @@ static int imap_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
     mutt_buffer_addstr(cmd, buf);
     mutt_buffer_addstr(cmd, ")");
 
-    if (imap_exec(adata, cmd->data, 0) != IMAP_EXEC_SUCCESS)
+    if (imap_exec(adata, cmd->data, IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS)
     {
       mutt_debug(LL_DEBUG1, "fail to add new flags\n");
       mutt_buffer_free(&cmd);

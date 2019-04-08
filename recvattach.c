@@ -420,9 +420,11 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
   }
 
   if (optional)
-    mutt_expando_format(buf, buflen, col, cols, if_str, attach_format_str, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, if_str, attach_format_str, data,
+                        MUTT_FORMAT_NO_FLAGS);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(buf, buflen, col, cols, else_str, attach_format_str, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, else_str, attach_format_str,
+                        data, MUTT_FORMAT_NO_FLAGS);
   return src;
 }
 
@@ -1542,7 +1544,7 @@ void mutt_view_attachments(struct Email *e)
       case OP_FORWARD_MESSAGE:
         CHECK_ATTACH;
         mutt_attach_forward(CURATTACH->fp, e, actx,
-                            menu->tagprefix ? NULL : CURATTACH->content, 0);
+                            menu->tagprefix ? NULL : CURATTACH->content, SEND_NO_FLAGS);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -1577,9 +1579,14 @@ void mutt_view_attachments(struct Email *e)
       {
         CHECK_ATTACH;
 
-        SendFlags flags = SEND_REPLY | ((op == OP_GROUP_REPLY) ? SEND_GROUP_REPLY : 0) |
-                          ((op == OP_GROUP_CHAT_REPLY) ? SEND_GROUP_CHAT_REPLY : 0) |
-                          ((op == OP_LIST_REPLY) ? SEND_LIST_REPLY : 0);
+        SendFlags flags = SEND_REPLY;
+        if (op == OP_GROUP_REPLY)
+          flags |= SEND_GROUP_REPLY;
+        else if (op == OP_GROUP_CHAT_REPLY)
+          flags |= SEND_GROUP_CHAT_REPLY;
+        else if (op == OP_LIST_REPLY)
+          flags |= SEND_LIST_REPLY;
+
         mutt_attach_reply(CURATTACH->fp, e, actx,
                           menu->tagprefix ? NULL : CURATTACH->content, flags);
         menu->redraw = REDRAW_FULL;

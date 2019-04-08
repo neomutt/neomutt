@@ -285,9 +285,11 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
   }
 
   if (optional)
-    mutt_expando_format(buf, buflen, col, cols, if_str, query_format_str, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, if_str, query_format_str, data,
+                        MUTT_FORMAT_NO_FLAGS);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(buf, buflen, col, cols, else_str, query_format_str, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, else_str, query_format_str,
+                        data, MUTT_FORMAT_NO_FLAGS);
 
   return src;
 }
@@ -497,7 +499,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
               }
             }
           }
-          ci_send_message(0, msg, NULL, Context, NULL);
+          ci_send_message(SEND_NO_FLAGS, msg, NULL, Context, NULL);
           menu->redraw = REDRAW_FULL;
           break;
         }

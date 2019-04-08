@@ -866,7 +866,7 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
                                 struct Menu *menu, const char *src)
 {
   mutt_expando_format(buf, buflen, col, cols, src, compose_format_str,
-                      (unsigned long) menu, 0);
+                      (unsigned long) menu, MUTT_FORMAT_NO_FLAGS);
 }
 
 /**

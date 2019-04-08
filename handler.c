@@ -717,9 +717,9 @@ static int message_handler(struct Body *a, struct State *s)
                   (((s->flags & MUTT_WEED) ||
                     ((s->flags & (MUTT_DISPLAY | MUTT_PRINTING)) && C_Weed)) ?
                        (CH_WEED | CH_REORDER) :
-                       0) |
-                      (s->prefix ? CH_PREFIX : 0) | CH_DECODE | CH_FROM |
-                      ((s->flags & MUTT_DISPLAY) ? CH_DISPLAY : 0),
+                       CH_NO_FLAGS) |
+                      (s->prefix ? CH_PREFIX : CH_NO_FLAGS) | CH_DECODE | CH_FROM |
+                      ((s->flags & MUTT_DISPLAY) ? CH_DISPLAY : CH_NO_FLAGS),
                   s->prefix);
 
     if (s->prefix)
@@ -859,7 +859,7 @@ static int external_body_handler(struct Body *b, struct State *s)
       }
 
       mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset,
-                    (C_Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE, NULL);
+                    (C_Weed ? (CH_WEED | CH_REORDER) : CH_NO_FLAGS) | CH_DECODE, NULL);
     }
   }
   else if (expiration && (expire < time(NULL)))
@@ -874,7 +874,7 @@ static int external_body_handler(struct Body *b, struct State *s)
       state_attach_puts(strbuf, s);
 
       mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset,
-                    (C_Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_DISPLAY, NULL);
+                    (C_Weed ? (CH_WEED | CH_REORDER) : CH_NO_FLAGS) | CH_DECODE | CH_DISPLAY, NULL);
     }
   }
   else
@@ -891,7 +891,7 @@ static int external_body_handler(struct Body *b, struct State *s)
       state_attach_puts(strbuf, s);
 
       mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset,
-                    (C_Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_DISPLAY, NULL);
+                    (C_Weed ? (CH_WEED | CH_REORDER) : CH_NO_FLAGS) | CH_DECODE | CH_DISPLAY, NULL);
     }
   }
 

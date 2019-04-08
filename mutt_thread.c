@@ -1432,7 +1432,7 @@ int mutt_messages_in_thread(struct Mailbox *m, struct Email *e, int flag)
  */
 struct Hash *mutt_make_id_hash(struct Mailbox *m)
 {
-  struct Hash *hash = mutt_hash_new(m->msg_count * 2, 0);
+  struct Hash *hash = mutt_hash_new(m->msg_count * 2, MUTT_HASH_NO_FLAGS);
 
   for (int i = 0; i < m->msg_count; i++)
   {

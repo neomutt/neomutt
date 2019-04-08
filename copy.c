@@ -837,7 +837,7 @@ static int append_message(struct Mailbox *dest, FILE *fp_in, struct Mailbox *src
   if (!fgets(buf, sizeof(buf), fp_in))
     return -1;
 
-  msg = mx_msg_open_new(dest, e, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
+  msg = mx_msg_open_new(dest, e, is_from(buf, NULL, 0, NULL) ? MUTT_MSG_NO_FLAGS : MUTT_ADD_FROM);
   if (!msg)
     return -1;
   if ((dest->magic == MUTT_MBOX) || (dest->magic == MUTT_MMDF))

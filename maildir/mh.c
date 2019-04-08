@@ -306,7 +306,7 @@ int mh_read_sequences(struct MhSequences *mhs, const char *path)
   char *buf = NULL;
   size_t sz = 0;
 
-  MhSeqFlags f;
+  MhSeqFlags flags;
   int first, last, rc = 0;
 
   char pathname[PATH_MAX];
@@ -323,11 +323,11 @@ int mh_read_sequences(struct MhSequences *mhs, const char *path)
       continue;
 
     if (mutt_str_strcmp(t, C_MhSeqUnseen) == 0)
-      f = MH_SEQ_UNSEEN;
+      flags = MH_SEQ_UNSEEN;
     else if (mutt_str_strcmp(t, C_MhSeqFlagged) == 0)
-      f = MH_SEQ_FLAGGED;
+      flags = MH_SEQ_FLAGGED;
     else if (mutt_str_strcmp(t, C_MhSeqReplied) == 0)
-      f = MH_SEQ_REPLIED;
+      flags = MH_SEQ_REPLIED;
     else /* unknown sequence */
       continue;
 
@@ -340,7 +340,7 @@ int mh_read_sequences(struct MhSequences *mhs, const char *path)
         goto out;
       }
       for (; first <= last; first++)
-        mhs_set(mhs, first, f);
+        mhs_set(mhs, first, flags);
     }
   }
 
@@ -503,11 +503,11 @@ void mh_update_maildir(struct Maildir *md, struct MhSequences *mhs)
 
     if (mutt_str_atoi(p, &i) < 0)
       continue;
-    MhSeqFlags f = mhs_check(mhs, i);
+    MhSeqFlags flags = mhs_check(mhs, i);
 
-    md->email->read = (f & MH_SEQ_UNSEEN) ? false : true;
-    md->email->flagged = (f & MH_SEQ_FLAGGED) ? true : false;
-    md->email->replied = (f & MH_SEQ_REPLIED) ? true : false;
+    md->email->read = (flags & MH_SEQ_UNSEEN) ? false : true;
+    md->email->flagged = (flags & MH_SEQ_FLAGGED) ? true : false;
+    md->email->replied = (flags & MH_SEQ_REPLIED) ? true : false;
   }
 }
 
@@ -669,7 +669,7 @@ int mh_mbox_check(struct Mailbox *m, int *index_hint)
   mhs_free_sequences(&mhs);
 
   /* check for modifications and adjust flags */
-  fnames = mutt_hash_new(count, 0);
+  fnames = mutt_hash_new(count, MUTT_HASH_NO_FLAGS);
 
   for (p = md; p; p = p->next)
   {

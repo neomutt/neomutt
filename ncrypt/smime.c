@@ -335,9 +335,11 @@ static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int c
   }
 
   if (optional)
-    mutt_expando_format(buf, buflen, col, cols, if_str, fmt_smime_command, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, if_str, fmt_smime_command, data,
+                        MUTT_FORMAT_NO_FLAGS);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(buf, buflen, col, cols, else_str, fmt_smime_command, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, else_str, fmt_smime_command,
+                        data, MUTT_FORMAT_NO_FLAGS);
 
   return src;
 }
@@ -353,7 +355,7 @@ static void smime_command(char *buf, size_t buflen,
                           struct SmimeCommandContext *cctx, const char *fmt)
 {
   mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(fmt),
-                      fmt_smime_command, (unsigned long) cctx, 0);
+                      fmt_smime_command, (unsigned long) cctx, MUTT_FORMAT_NO_FLAGS);
   mutt_debug(LL_DEBUG2, "%s\n", buf);
 }
 
@@ -1428,7 +1430,7 @@ int smime_class_verify_sender(struct Email *e)
                           CH_MIME | CH_WEED | CH_NONEWLINE);
   }
   else
-    mutt_copy_message_ctx(fp_out, Context->mailbox, e, 0, 0);
+    mutt_copy_message_ctx(fp_out, Context->mailbox, e, MUTT_CM_NO_FLAGS, CH_NO_FLAGS);
 
   fflush(fp_out);
   mutt_file_fclose(&fp_out);

@@ -2965,7 +2965,7 @@ void mutt_free_opts(void)
   mutt_replacelist_free(&SpamList);
   mutt_replacelist_free(&SubjectRegexList);
 
-  mutt_delete_hooks(0);
+  mutt_delete_hooks(MUTT_HOOK_NO_FLAGS);
 
   mutt_hist_free();
   mutt_free_keys();
@@ -3348,7 +3348,7 @@ int mutt_query_variables(struct ListHead *queries)
       mutt_buffer_strcpy(value, tmp->data);
     }
 
-    dump_config_neo(Config, he, value, NULL, 0, stdout);
+    dump_config_neo(Config, he, value, NULL, CS_DUMP_NO_FLAGS, stdout);
   }
 
   mutt_buffer_free(&value);
