@@ -170,6 +170,7 @@ void mutt_mailbox_setnotified(struct Mailbox *m);
 #define MUTT_MAILBOX_CHECK_FORCE       (1 << 0)
 #define MUTT_MAILBOX_CHECK_FORCE_STATS (1 << 1)
 
+void mutt_buffer_mailbox(struct Mailbox *m_cur, struct Buffer *s);
 void mutt_mailbox(struct Mailbox *m_cur, char *s, size_t slen);
 bool mutt_mailbox_list(void);
 int mutt_mailbox_check(struct Mailbox *m_cur, int force);
