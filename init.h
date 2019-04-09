@@ -1619,7 +1619,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** This variable defaults to the value of $$imap_user.
   */
-  { "imap_oauth_refresh_command", DT_STRING, R_NONE, &C_ImapOauthRefreshCmd, 0 },
+  { "imap_oauth_refresh_command", DT_STRING, R_NONE|F_SENSITIVE, &C_ImapOauthRefreshCmd, 0 },
   /*
   ** .pp
   ** The command to run to generate an OAUTH refresh token for
@@ -2965,7 +2965,7 @@ struct ConfigDef MuttVars[] = {
   ** for retrieving only unread messages from the POP server when using
   ** the \fC$<fetch-mail>\fP function.
   */
-  { "pop_oauth_refresh_command", DT_STRING, R_NONE, &C_PopOauthRefreshCmd, 0 },
+  { "pop_oauth_refresh_command", DT_STRING, R_NONE|F_SENSITIVE, &C_PopOauthRefreshCmd, 0 },
   /*
   ** .pp
   ** The command to run to generate an OAUTH refresh token for
@@ -4030,7 +4030,7 @@ struct ConfigDef MuttVars[] = {
   ** set smtp_authenticators="digest-md5:cram-md5"
   ** .te
   */
-  { "smtp_oauth_refresh_command", DT_STRING, R_NONE, &C_SmtpOauthRefreshCmd, 0 },
+  { "smtp_oauth_refresh_command", DT_STRING, R_NONE|F_SENSITIVE, &C_SmtpOauthRefreshCmd, 0 },
   /*
   ** .pp
   ** The command to run to generate an OAUTH refresh token for
