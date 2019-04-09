@@ -404,7 +404,6 @@ bool get_user_info(struct ConfigSet *cs)
  */
 int main(int argc, char *argv[], char *envp[])
 {
-  struct Buffer *folder = NULL;
   char *subject = NULL;
   char *include_file = NULL;
   char *draft_file = NULL;
@@ -436,6 +435,7 @@ int main(int argc, char *argv[], char *envp[])
   int double_dash = argc, nargc = 1;
   int rc = 1;
   bool repeat_error = false;
+  struct Buffer *folder = mutt_buffer_new();
 
   MuttLogger = log_disp_terminal;
 
@@ -514,8 +514,6 @@ int main(int argc, char *argv[], char *envp[])
           mutt_list_insert_tail(&Muttrc, mutt_str_strdup(optarg));
           break;
         case 'f':
-          if (!folder)
-            folder = mutt_buffer_new();
           mutt_buffer_strcpy(folder, optarg);
           explicit_folder = true;
           break;
