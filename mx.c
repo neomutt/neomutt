@@ -491,9 +491,12 @@ static int trash_append(struct Mailbox *m)
 #endif
 
   struct Mailbox *m_trash = mx_path_resolve(C_Trash);
-  struct Context *ctx_trash = mx_mbox_open(m_trash, MUTT_APPEND);
+  struct Context *ctx_trash = mx_mbox_open(m_trash, MUTT_OPEN_NO_FLAGS);
   if (ctx_trash)
   {
+    bool old_append = m_trash->append;
+    m_trash->append = true;
+
     /* continue from initial scan above */
     for (int i = first_del; i < m->msg_count; i++)
     {
@@ -502,12 +505,14 @@ static int trash_append(struct Mailbox *m)
         if (mutt_append_message(ctx_trash->mailbox, m, m->emails[i],
                                 MUTT_CM_NO_FLAGS, CH_NO_FLAGS) == -1)
         {
+          m_trash->append = old_append;
           mx_mbox_close(&ctx_trash);
           return -1;
         }
       }
     }
 
+    m_trash->append = old_append;
     mx_mbox_close(&ctx_trash);
   }
   else
