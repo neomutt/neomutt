@@ -129,7 +129,7 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
       else
 #endif
       {
-        mutt_error(_("Cannot open notmuch database: %s: %s"), filename,
+        mutt_error(_("Can't open notmuch database: %s: %s"), filename,
                    st ? notmuch_status_to_string(st) : _("unknown reason"));
       }
     }

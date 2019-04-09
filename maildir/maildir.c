@@ -596,7 +596,7 @@ int maildir_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e
     snprintf(path, sizeof(path), "%s/tmp/%s.%lld.R%" PRIu64 ".%s%s", m->path, subdir,
              (long long) time(NULL), mutt_rand64(), NONULL(ShortHostname), suffix);
 
-    mutt_debug(LL_DEBUG2, "Trying %s.\n", path);
+    mutt_debug(LL_DEBUG2, "Trying %s\n", path);
 
     fd = open(path, O_WRONLY | O_EXCL | O_CREAT, 0666);
     if (fd == -1)
@@ -610,7 +610,7 @@ int maildir_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e
     }
     else
     {
-      mutt_debug(LL_DEBUG2, "Success.\n");
+      mutt_debug(LL_DEBUG2, "Success\n");
       msg->path = mutt_str_strdup(path);
       break;
     }

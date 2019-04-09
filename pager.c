@@ -1339,7 +1339,7 @@ static int fill_buffer(FILE *fp, LOFF_T *last_pos, LOFF_T offset, unsigned char 
                ((check_attachment_marker((char *) p) == 0) ||
                 (check_protected_header_marker((char *) p) == 0)))
       {
-        mutt_debug(LL_DEBUG2, "Seen attachment marker.\n");
+        mutt_debug(LL_DEBUG2, "Seen attachment marker\n");
         while (*p++ != '\a') /* skip pseudo-ANSI sequence */
           ;
       }
@@ -1410,7 +1410,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
     {
       if (k == (size_t)(-1))
         memset(&mbstate, 0, sizeof(mbstate));
-      mutt_debug(LL_DEBUG1, "mbrtowc returned %lu; errno = %d.\n", k, errno);
+      mutt_debug(LL_DEBUG1, "mbrtowc returned %lu; errno = %d\n", k, errno);
       if (col + 4 > wrap_cols)
         break;
       col += 4;
@@ -3000,7 +3000,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         CHECK_MODE(IsEmail(extra));
         CHECK_READONLY;
         /* L10N: CHECK_ACL */
-        CHECK_ACL(MUTT_ACL_DELETE, _("Cannot delete message"));
+        CHECK_ACL(MUTT_ACL_DELETE, _("Can't delete message"));
 
         mutt_set_flag(Context->mailbox, extra->email, MUTT_DELETE, true);
         mutt_set_flag(Context->mailbox, extra->email, MUTT_PURGE, (ch == OP_PURGE_MESSAGE));
@@ -3045,7 +3045,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
            delete zero, 1, 12, ... messages. So in English we use
            "messages". Your language might have other means to express this.
          */
-        CHECK_ACL(MUTT_ACL_DELETE, _("Cannot delete messages"));
+        CHECK_ACL(MUTT_ACL_DELETE, _("Can't delete messages"));
 
         int subthread = (ch == OP_DELETE_SUBTHREAD);
         int r = mutt_thread_set_flag(extra->email, MUTT_DELETE, 1, subthread);
@@ -3116,7 +3116,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         CHECK_MODE(IsEmail(extra));
         CHECK_READONLY;
         /* L10N: CHECK_ACL */
-        CHECK_ACL(MUTT_ACL_WRITE, "Cannot flag message");
+        CHECK_ACL(MUTT_ACL_WRITE, "Can't flag message");
 
         mutt_set_flag(Context->mailbox, extra->email, MUTT_FLAG, !extra->email->flagged);
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
@@ -3357,7 +3357,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         CHECK_MODE(IsEmail(extra));
         CHECK_READONLY;
         /* L10N: CHECK_ACL */
-        CHECK_ACL(MUTT_ACL_SEEN, _("Cannot toggle new"));
+        CHECK_ACL(MUTT_ACL_SEEN, _("Can't toggle new"));
 
         if (extra->email->read || extra->email->old)
           mutt_set_flag(Context->mailbox, extra->email, MUTT_NEW, true);
@@ -3377,7 +3377,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         CHECK_MODE(IsEmail(extra));
         CHECK_READONLY;
         /* L10N: CHECK_ACL */
-        CHECK_ACL(MUTT_ACL_DELETE, _("Cannot undelete message"));
+        CHECK_ACL(MUTT_ACL_DELETE, _("Can't undelete message"));
 
         mutt_set_flag(Context->mailbox, extra->email, MUTT_DELETE, false);
         mutt_set_flag(Context->mailbox, extra->email, MUTT_PURGE, false);
@@ -3398,7 +3398,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         /* L10N: Due to the implementation details we do not know whether we
            undelete zero, 1, 12, ... messages. So in English we use
            "messages". Your language might have other means to express this. */
-        CHECK_ACL(MUTT_ACL_DELETE, _("Cannot undelete messages"));
+        CHECK_ACL(MUTT_ACL_DELETE, _("Can't undelete messages"));
 
         int r = mutt_thread_set_flag(extra->email, MUTT_DELETE, false,
                                      (ch != OP_UNDELETE_THREAD));

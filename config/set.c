@@ -478,7 +478,7 @@ int cs_he_initial_set(const struct ConfigSet *cs, struct HashElem *he,
   {
     struct Inheritance *i = he->data;
     cdef = i->parent->data;
-    mutt_debug(LL_DEBUG1, "Variable '%s' is inherited type.\n", cdef->name);
+    mutt_debug(LL_DEBUG1, "Variable '%s' is inherited type\n", cdef->name);
     return CSR_ERR_CODE;
   }
 

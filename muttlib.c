@@ -554,7 +554,7 @@ void mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix,
   mutt_buffer_printf(buf, "%s/%s-%s-%d-%d-%ld%ld%s%s", NONULL(C_Tmpdir), NONULL(prefix),
                      NONULL(C_Hostname), (int) getuid(), (int) getpid(),
                      random(), random(), suffix ? "." : "", NONULL(suffix));
-  mutt_debug(LL_DEBUG3, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, mutt_b2s(buf));
+  mutt_debug(LL_DEBUG3, "%s:%d: mutt_mktemp returns \"%s\"\n", src, line, mutt_b2s(buf));
   if (unlink(mutt_b2s(buf)) && (errno != ENOENT))
   {
     mutt_debug(LL_DEBUG1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src,
@@ -587,7 +587,7 @@ void mutt_mktemp_full(char *buf, size_t buflen, const char *prefix,
                "filename! buflen=%zu but need %zu\n",
                src, line, buflen, n);
   }
-  mutt_debug(LL_DEBUG3, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, buf);
+  mutt_debug(LL_DEBUG3, "%s:%d: mutt_mktemp returns \"%s\"\n", src, line, buf);
   if (unlink(buf) && (errno != ENOENT))
   {
     mutt_debug(LL_DEBUG1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src,
@@ -700,7 +700,7 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
               /* L10N: Means "The path you specified as the destination file is a directory."
                  See the msgid "Save to file: " (alias.c, recvattach.c)
                  These three letters correspond to the choices in the string.  */
-              (_("File is a directory, save under it? [(y)es, (n)o, (a)ll]"), _("yna")))
+              (_("File is a directory, save under it: (y)es, (n)o, (a)ll?"), _("yna")))
       {
         case 3: /* all */
           mutt_str_replace(directory, fname);

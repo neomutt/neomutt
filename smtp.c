@@ -444,7 +444,7 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
     if (sasl_encode64(data, len, buf + mutt_str_strlen(buf),
                       bufsize - mutt_str_strlen(buf), &len) != SASL_OK)
     {
-      mutt_debug(LL_DEBUG1, "#1 error base64-encoding client response.\n");
+      mutt_debug(LL_DEBUG1, "#1 error base64-encoding client response\n");
       goto fail;
     }
   }
@@ -465,7 +465,7 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
 
     if (sasl_decode64(buf + 4, strlen(buf + 4), buf, bufsize - 1, &len) != SASL_OK)
     {
-      mutt_debug(LL_DEBUG1, "error base64-decoding server response.\n");
+      mutt_debug(LL_DEBUG1, "error base64-decoding server response\n");
       goto fail;
     }
 
@@ -485,7 +485,7 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
       }
       if (sasl_encode64(data, len, buf, bufsize, &len) != SASL_OK)
       {
-        mutt_debug(LL_DEBUG1, "#2 error base64-encoding client response.\n");
+        mutt_debug(LL_DEBUG1, "#2 error base64-encoding client response\n");
         goto fail;
       }
     }
@@ -546,7 +546,7 @@ static int smtp_auth_plain(struct Connection *conn)
 {
   char buf[1024];
 
-  /* Get username and password. Bail out of any cannot be retrieved. */
+  /* Get username and password. Bail out of any can't be retrieved. */
   if ((mutt_account_getuser(&conn->account) < 0) ||
       (mutt_account_getpass(&conn->account) < 0))
   {

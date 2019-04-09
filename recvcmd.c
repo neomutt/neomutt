@@ -237,7 +237,7 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
 #define EXTRA_SPACE (15 + 7 + 2)
   /* See commands.c.  */
   snprintf(prompt, sizeof(prompt) - 4,
-           ngettext("Bounce message to %s", "Bounce messages to %s", p), buf);
+           ngettext("Bounce message to %s?", "Bounce messages to %s?", p), buf);
 
   if (mutt_strwidth(prompt) > MuttMessageWindow->cols - EXTRA_SPACE)
   {

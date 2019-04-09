@@ -668,7 +668,7 @@ void menu_next_line(struct Menu *menu)
       menu->redraw = REDRAW_INDEX;
     }
     else
-      mutt_error(_("You cannot scroll down farther"));
+      mutt_error(_("You can't scroll down farther"));
   }
   else
     mutt_error(_("No entries"));
@@ -690,7 +690,7 @@ void menu_prev_line(struct Menu *menu)
     menu->redraw = REDRAW_INDEX;
   }
   else
-    mutt_error(_("You cannot scroll up farther"));
+    mutt_error(_("You can't scroll up farther"));
 }
 
 /**

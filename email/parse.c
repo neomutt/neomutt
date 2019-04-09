@@ -960,7 +960,7 @@ char *mutt_rfc822_read_line(FILE *fp, char *line, size_t *linelen)
       /* we did get a full line. remove trailing space */
       while (ISSPACE(*buf))
       {
-        *buf-- = '\0'; /* we cannot come beyond line's beginning because
+        *buf-- = '\0'; /* we can't come beyond line's beginning because
                         * it begins with a non-space */
       }
 

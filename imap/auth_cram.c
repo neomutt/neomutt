@@ -133,7 +133,7 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapAccountData *adata, const char *m
   len = mutt_b64_decode(adata->buf + 2, obuf, sizeof(obuf));
   if (len == -1)
   {
-    mutt_debug(LL_DEBUG1, "Error decoding base64 response.\n");
+    mutt_debug(LL_DEBUG1, "Error decoding base64 response\n");
     goto bail;
   }
 
@@ -168,7 +168,7 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapAccountData *adata, const char *m
 
   if (rc != IMAP_CMD_OK)
   {
-    mutt_debug(LL_DEBUG1, "Error receiving server response.\n");
+    mutt_debug(LL_DEBUG1, "Error receiving server response\n");
     goto bail;
   }
 

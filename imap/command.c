@@ -335,12 +335,12 @@ static void cmd_parse_vanished(struct ImapAccountData *adata, char *s)
 
     if ((exp_msn < 1) || (exp_msn > mdata->max_msn))
     {
-      mutt_debug(LL_DEBUG1, "VANISHED: msn for UID %u is incorrect.\n", uid);
+      mutt_debug(LL_DEBUG1, "VANISHED: msn for UID %u is incorrect\n", uid);
       continue;
     }
     if (mdata->msn_index[exp_msn - 1] != e)
     {
-      mutt_debug(LL_DEBUG1, "VANISHED: msn_index for UID %u is incorrect.\n", uid);
+      mutt_debug(LL_DEBUG1, "VANISHED: msn_index for UID %u is incorrect\n", uid);
       continue;
     }
 
@@ -456,12 +456,12 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
       SKIPWS(s);
       if (mutt_str_atoui(s, &uid) < 0)
       {
-        mutt_debug(LL_DEBUG1, "Illegal UID.  Skipping update.\n");
+        mutt_debug(LL_DEBUG1, "Illegal UID.  Skipping update\n");
         return;
       }
       if (uid != imap_edata_get(e)->uid)
       {
-        mutt_debug(LL_DEBUG1, "UID vs MSN mismatch.  Skipping update.\n");
+        mutt_debug(LL_DEBUG1, "UID vs MSN mismatch.  Skipping update\n");
         return;
       }
       uid_checked = 1;
@@ -945,10 +945,10 @@ static void cmd_parse_exists(struct ImapAccountData *adata, const char *pn)
   /* at least the InterChange server sends EXISTS messages freely,
    * even when there is no new mail */
   else if (count == mdata->max_msn)
-    mutt_debug(LL_DEBUG3, "superfluous EXISTS message.\n");
+    mutt_debug(LL_DEBUG3, "superfluous EXISTS message\n");
   else
   {
-    mutt_debug(LL_DEBUG2, "New mail in %s - %d messages total.\n", mdata->name, count);
+    mutt_debug(LL_DEBUG2, "New mail in %s - %d messages total\n", mdata->name, count);
     mdata->reopen |= IMAP_NEWMAIL_PENDING;
     mdata->new_mail_count = count;
   }
@@ -1083,7 +1083,7 @@ int imap_cmd_step(struct ImapAccountData *adata)
     c = mutt_socket_readln_d(adata->buf + len, adata->blen - len, adata->conn, MUTT_SOCK_LOG_FULL);
     if (c <= 0)
     {
-      mutt_debug(LL_DEBUG1, "Error reading server response.\n");
+      mutt_debug(LL_DEBUG1, "Error reading server response\n");
       cmd_handle_fatal(adata);
       return IMAP_CMD_BAD;
     }

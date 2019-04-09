@@ -1144,7 +1144,7 @@ void mutt_set_followup_to(struct Envelope *env)
         for (t = from; t && t->next; t = t->next)
           ;
 
-        t->next = env->mail_followup_to; /* t cannot be NULL at this point. */
+        t->next = env->mail_followup_to; /* t can't be NULL at this point. */
         env->mail_followup_to = from;
       }
     }
@@ -1564,7 +1564,7 @@ full_fcc:
              (r)etry tries the same mailbox again.
              alternate (m)ailbox prompts for a different mailbox to try.
              (s)kip aborts saving.  */
-          _("Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip? "),
+          _("Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"),
           /* L10N: These correspond to the "Fcc failed" multi-choice prompt
              (r)etry, alternate (m)ailbox, or (s)kip.
              Any similarity to famous leaders of the FSF is coincidental.  */
@@ -1636,7 +1636,7 @@ static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, Sen
 
   if (!(C_Postponed && *C_Postponed))
   {
-    mutt_error(_("Cannot postpone.  $postponed is unset"));
+    mutt_error(_("Can't postpone.  $postponed is unset"));
     return -1;
   }
 

@@ -149,7 +149,7 @@ void mutt_hcache_free(header_cache_t *hc, void **data);
 /**
  * mutt_hcache_restore - restore a Header from data retrieved from the cache
  * @param d Data retrieved using mutt_hcache_fetch or mutt_hcache_fetch_raw
- * @retval ptr Success, the restored header (cannot be NULL)
+ * @retval ptr Success, the restored header (can't be NULL)
  *
  * @note The returned Header must be free'd by caller code with
  *       mutt_email_free().

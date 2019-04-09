@@ -379,7 +379,7 @@ bool mutt_comp_can_append(struct Mailbox *m)
   if (ci->cmd_append || ci->cmd_close)
     return true;
 
-  mutt_error(_("Cannot append without an append-hook or close-hook : %s"), m->path);
+  mutt_error(_("Can't append without an append-hook or close-hook : %s"), m->path);
   return false;
 }
 
@@ -387,7 +387,7 @@ bool mutt_comp_can_append(struct Mailbox *m)
  * mutt_comp_can_read - Can we read from this file?
  * @param path Pathname of file to be tested
  * @retval true  Yes, we can read the file
- * @retval false No, we cannot read the file
+ * @retval false No, we can't read the file
  *
  * Search for an 'open-hook' with a regex that matches the path.
  *
@@ -530,7 +530,7 @@ static int comp_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
   /* To append we need an append-hook or a close-hook */
   if (!ci->cmd_append && !ci->cmd_close)
   {
-    mutt_error(_("Cannot append without an append-hook or close-hook : %s"), m->path);
+    mutt_error(_("Can't append without an append-hook or close-hook : %s"), m->path);
     goto cmoa_fail1;
   }
 
@@ -722,7 +722,7 @@ static int comp_mbox_close(struct Mailbox *m)
     else
     {
       append = ci->cmd_close;
-      msg = _("Compressing %s...");
+      msg = _("Compressing %s");
     }
 
     int rc = execute_command(m, append, msg);

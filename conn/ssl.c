@@ -196,14 +196,14 @@ static int ssl_set_verify_partial(SSL_CTX *ctx)
       X509_VERIFY_PARAM_set_flags(param, X509_V_FLAG_PARTIAL_CHAIN);
       if (SSL_CTX_set1_param(ctx, param) == 0)
       {
-        mutt_debug(LL_DEBUG2, "SSL_CTX_set1_param() failed.\n");
+        mutt_debug(LL_DEBUG2, "SSL_CTX_set1_param() failed\n");
         rc = -1;
       }
       X509_VERIFY_PARAM_free(param);
     }
     else
     {
-      mutt_debug(LL_DEBUG2, "X509_VERIFY_PARAM_new() failed.\n");
+      mutt_debug(LL_DEBUG2, "X509_VERIFY_PARAM_new() failed\n");
       rc = -1;
     }
   }
@@ -794,7 +794,7 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
     if (!x509_subject)
     {
       if (err && errlen)
-        mutt_str_strfcpy(err, _("cannot get certificate subject"), errlen);
+        mutt_str_strfcpy(err, _("can't get certificate subject"), errlen);
       goto out;
     }
 
@@ -803,7 +803,7 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
     if (bufsize == -1)
     {
       if (err && errlen)
-        mutt_str_strfcpy(err, _("cannot get certificate common name"), errlen);
+        mutt_str_strfcpy(err, _("can't get certificate common name"), errlen);
       goto out;
     }
     bufsize++; /* space for the terminal nul char */
@@ -811,7 +811,7 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
     if (X509_NAME_get_text_by_NID(x509_subject, NID_commonName, buf, bufsize) == -1)
     {
       if (err && errlen)
-        mutt_str_strfcpy(err, _("cannot get certificate common name"), errlen);
+        mutt_str_strfcpy(err, _("can't get certificate common name"), errlen);
       goto out;
     }
     /* cast is safe since bufsize is incremented above, so bufsize-1 is always
@@ -1101,7 +1101,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
       if (X509_digest(last_cert, EVP_sha256(), last_cert_md, &last_cert_mdlen) &&
           compare_certificates(cert, last_cert, last_cert_md, last_cert_mdlen))
       {
-        mutt_debug(LL_DEBUG2, "ignoring duplicate skipped certificate.\n");
+        mutt_debug(LL_DEBUG2, "ignoring duplicate skipped certificate\n");
         return true;
       }
     }

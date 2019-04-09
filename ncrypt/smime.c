@@ -2325,7 +2325,7 @@ int smime_class_send_menu(struct Email *msg)
   {
     /* L10N: S/MIME options (opportunistic encryption is on) */
     prompt = _("S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc "
-               "mode off? ");
+               "mode off?");
     /* L10N: S/MIME options (opportunistic encryption is on) */
     letters = _("swaco");
     choices = "SwaCo";
@@ -2336,7 +2336,7 @@ int smime_class_send_menu(struct Email *msg)
   {
     /* L10N: S/MIME options (opportunistic encryption is off) */
     prompt = _("S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, "
-               "(c)lear, or (o)ppenc mode? ");
+               "(c)lear, or (o)ppenc mode?");
     /* L10N: S/MIME options (opportunistic encryption is off) */
     letters = _("eswabco");
     choices = "eswabcO";
@@ -2346,7 +2346,7 @@ int smime_class_send_menu(struct Email *msg)
   {
     /* L10N: S/MIME options */
     prompt = _("S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, "
-               "or (c)lear? ");
+               "or (c)lear?");
     /* L10N: S/MIME options */
     letters = _("eswabc");
     choices = "eswabc";
@@ -2413,12 +2413,12 @@ int smime_class_send_menu(struct Email *msg)
         do
         {
           switch (mutt_multi_choice(_("Choose algorithm family: (1) DES, (2) "
-                                      "RC2, (3) AES, or (c)lear? "),
+                                      "RC2, (3) AES, or (c)lear?"),
                                     // L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
                                     _("123c")))
           {
             case 1:
-              switch (choice = mutt_multi_choice(_("(1) DES, (2) Triple-DES "),
+              switch (choice = mutt_multi_choice(_("(1) DES, (2) Triple-DES?"),
                                                  // L10N: Options for: (1) DES, (2) Triple-DES
                                                  _("12")))
               {
@@ -2433,7 +2433,7 @@ int smime_class_send_menu(struct Email *msg)
 
             case 2:
               switch (choice = mutt_multi_choice(
-                          _("(1) RC2-40, (2) RC2-64, (3) RC2-128 "),
+                          _("(1) RC2-40, (2) RC2-64, (3) RC2-128?"),
                           // L10N: Options for: (1) RC2-40, (2) RC2-64, (3) RC2-128
                           _("123")))
               {
@@ -2451,7 +2451,7 @@ int smime_class_send_menu(struct Email *msg)
 
             case 3:
               switch (choice = mutt_multi_choice(
-                          _("(1) AES128, (2) AES192, (3) AES256 "),
+                          _("(1) AES128, (2) AES192, (3) AES256?"),
                           // L10N: Options for: (1) AES128, (2) AES192, (3) AES256
                           _("123")))
               {

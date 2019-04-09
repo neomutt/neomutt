@@ -386,14 +386,14 @@ int mutt_file_safe_rename(const char *src, const char *target)
 #endif
     )
     {
-      mutt_debug(LL_DEBUG1, "trying rename...\n");
+      mutt_debug(LL_DEBUG1, "trying rename\n");
       if (rename(src, target) == -1)
       {
         mutt_debug(LL_DEBUG1, "rename (%s, %s) failed: %s (%d)\n", src, target,
                    strerror(errno), errno);
         return -1;
       }
-      mutt_debug(LL_DEBUG1, "rename succeeded.\n");
+      mutt_debug(LL_DEBUG1, "rename succeeded\n");
 
       return 0;
     }
@@ -424,7 +424,7 @@ int mutt_file_safe_rename(const char *src, const char *target)
 
   if (!compare_stat(&ssb, &tsb))
   {
-    mutt_debug(LL_DEBUG1, "stat blocks for %s and %s diverge; pretending EEXIST.\n", src, target);
+    mutt_debug(LL_DEBUG1, "stat blocks for %s and %s diverge; pretending EEXIST\n", src, target);
     errno = EEXIST;
     return -1;
   }
@@ -1078,7 +1078,7 @@ int mutt_file_lock(int fd, bool excl, bool timeout)
 
   while (fcntl(fd, F_SETLK, &lck) == -1)
   {
-    mutt_debug(LL_DEBUG1, "fcntl errno %d.\n", errno);
+    mutt_debug(LL_DEBUG1, "fcntl errno %d\n", errno);
     if ((errno != EAGAIN) && (errno != EACCES))
     {
       mutt_perror("fcntl");

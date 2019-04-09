@@ -71,7 +71,7 @@ struct Group *mutt_pattern_group(const char *k)
   p = mutt_hash_find(Groups, k);
   if (!p)
   {
-    mutt_debug(LL_DEBUG2, "Creating group %s.\n", k);
+    mutt_debug(LL_DEBUG2, "Creating group %s\n", k);
     p = mutt_mem_calloc(1, sizeof(struct Group));
     p->name = mutt_str_strdup(k);
     STAILQ_INIT(&p->rs);

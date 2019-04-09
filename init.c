@@ -775,7 +775,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
     struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
     if (!mutt_path_to_absolute(rcfile, np ? NONULL(np->data) : ""))
     {
-      mutt_error(_("Error: impossible to build path of '%s'"), rcfile_path);
+      mutt_error(_("Error: Can't build path of '%s'"), rcfile_path);
       return -1;
     }
 
@@ -797,7 +797,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
     }
   }
 
-  mutt_debug(LL_DEBUG2, "Reading configuration file '%s'.\n", rcfile);
+  mutt_debug(LL_DEBUG2, "Reading configuration file '%s'\n", rcfile);
 
   FILE *fp = mutt_open_read(rcfile, &pid);
   if (!fp)
@@ -932,7 +932,7 @@ static enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   }
 
   mutt_extract_token(buf, s, MUTT_TOKEN_QUOTE | MUTT_TOKEN_SPACE | MUTT_TOKEN_SEMICOLON);
-  mutt_debug(5, "Second token is '%s'.\n", buf->data);
+  mutt_debug(5, "Second token is '%s'\n", buf->data);
 
   tmp->addr = mutt_addr_parse_list2(tmp->addr, buf->data);
 
@@ -1530,7 +1530,7 @@ static enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
 
     if (prefix && (data != MUTT_SET_SET))
     {
-      mutt_buffer_printf(err, "ERR22 cannot use 'inv', 'no', '&' or '?' with the '%s' command",
+      mutt_buffer_printf(err, "ERR22 can't use 'inv', 'no', '&' or '?' with the '%s' command",
                          set_commands[data]);
       return MUTT_CMD_WARNING;
     }
@@ -1574,14 +1574,14 @@ static enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
     {
       if (prefix)
       {
-        mutt_buffer_printf(
-            err, "ERR02 cannot use a prefix when querying a variable");
+        mutt_buffer_printf(err,
+                           "ERR02 can't use a prefix when querying a variable");
         return MUTT_CMD_WARNING;
       }
 
       if (reset || unset || inv)
       {
-        mutt_buffer_printf(err, "ERR03 cannot query a variable with the '%s' command",
+        mutt_buffer_printf(err, "ERR03 can't query a variable with the '%s' command",
                            set_commands[data]);
         return MUTT_CMD_WARNING;
       }
@@ -1594,13 +1594,13 @@ static enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       if (prefix)
       {
         mutt_buffer_printf(err,
-                           "ERR04 cannot use prefix when setting a variable");
+                           "ERR04 can't use prefix when setting a variable");
         return MUTT_CMD_WARNING;
       }
 
       if (reset || unset || inv)
       {
-        mutt_buffer_printf(err, "ERR05 cannot set a variable with the '%s' command",
+        mutt_buffer_printf(err, "ERR05 can't set a variable with the '%s' command",
                            set_commands[data]);
         return MUTT_CMD_WARNING;
       }
@@ -1710,7 +1710,7 @@ static enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
                 }
                 else
                 {
-                  mutt_error(_("Error: impossible to build path of '%s'"), scratch);
+                  mutt_error(_("Error: Can't build path of '%s'"), scratch);
                 }
               }
             }
@@ -3096,7 +3096,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
 #endif
 
   /* RFC2368, "4. Unsafe headers"
-   * The creator of a mailto URL cannot expect the resolver of a URL to
+   * The creator of a mailto URL can't expect the resolver of a URL to
    * understand more than the "subject" and "body" headers. Clients that
    * resolve mailto URLs into mail messages should be able to correctly
    * create RFC822-compliant mail messages using the "subject" and "body"

@@ -1137,7 +1137,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         }
         if (menu->current == 1)
         {
-          mutt_error(_("The fundamental part cannot be moved"));
+          mutt_error(_("The fundamental part can't be moved"));
           break;
         }
         compose_attach_swap(msg->content, actx->idx, menu->current - 1);
@@ -1153,7 +1153,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         }
         if (menu->current == 0)
         {
-          mutt_error(_("The fundamental part cannot be moved"));
+          mutt_error(_("The fundamental part can't be moved"));
           break;
         }
         compose_attach_swap(msg->content, actx->idx, menu->current);
@@ -1166,7 +1166,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         if (menu->tagged < 2)
         {
           mutt_error(
-              _("Grouping alternatives requires at least 2 tagged messages"));
+              _("Grouping 'alternatives' requires at least 2 tagged messages"));
           break;
         }
 
@@ -1248,7 +1248,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         if (menu->tagged < 2)
         {
           mutt_error(
-              _("Grouping multilingual requires at least 2 tagged messages"));
+              _("Grouping 'multilingual' requires at least 2 tagged messages"));
           break;
         }
 
@@ -1261,7 +1261,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         if (menu->tagged != tagged_with_lang_num)
         {
           if (mutt_yesorno(
-                  _("Not all parts have Content-Language: set, continue?"), MUTT_YES) != MUTT_YES)
+                  _("Not all parts have 'Content-Language' set, continue?"), MUTT_YES) != MUTT_YES)
           {
             mutt_message(_("Not sending this message"));
             break;
@@ -1613,7 +1613,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
           mutt_clear_error();
         }
         else
-          mutt_warning(_("Empty Content-Language"));
+          mutt_warning(_("Empty 'Content-Language'"));
         mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
 
@@ -1942,8 +1942,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         {
           if (msg->security & (SEC_ENCRYPT | SEC_SIGN))
           {
-            if (mutt_yesorno(_("S/MIME already selected. Clear and continue? "),
-                             MUTT_YES) != MUTT_YES)
+            if (mutt_yesorno(_("S/MIME already selected. Clear and continue?"), MUTT_YES) != MUTT_YES)
             {
               mutt_clear_error();
               break;
@@ -1977,7 +1976,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         {
           if (msg->security & (SEC_ENCRYPT | SEC_SIGN))
           {
-            if (mutt_yesorno(_("PGP already selected. Clear and continue? "), MUTT_YES) != MUTT_YES)
+            if (mutt_yesorno(_("PGP already selected. Clear and continue?"), MUTT_YES) != MUTT_YES)
             {
               mutt_clear_error();
               break;

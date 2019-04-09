@@ -61,7 +61,7 @@ static const struct SysExits
   { 0xff & EX_DATAERR, "Data format error." },
 #endif
 #ifdef EX_NOINPUT
-  { 0xff & EX_NOINPUT, "Cannot open input." },
+  { 0xff & EX_NOINPUT, "Can't open input." },
 #endif
 #ifdef EX_NOUSER
   { 0xff & EX_NOUSER, "User unknown." },

@@ -428,7 +428,7 @@ int imap_mailbox_rename(const char *path)
 
   if (mdata->real_name[0] == '\0')
   {
-    mutt_error(_("Cannot rename root folder"));
+    mutt_error(_("Can't rename root folder"));
     goto err;
   }
 

@@ -70,7 +70,7 @@ int imap_authenticate(struct ImapAccountData *adata)
 
   if (C_ImapAuthenticators && *C_ImapAuthenticators)
   {
-    mutt_debug(LL_DEBUG2, "Trying user-defined imap_authenticators.\n");
+    mutt_debug(LL_DEBUG2, "Trying user-defined imap_authenticators\n");
 
     /* Try user-specified list of authentication methods */
     char *methods = mutt_str_strdup(C_ImapAuthenticators);
@@ -106,7 +106,7 @@ int imap_authenticate(struct ImapAccountData *adata)
   else
   {
     /* Fall back to default: any authenticator */
-    mutt_debug(LL_DEBUG2, "Trying pre-defined imap_authenticators.\n");
+    mutt_debug(LL_DEBUG2, "Trying pre-defined imap_authenticators\n");
 
     for (size_t i = 0; i < mutt_array_size(imap_authenticators); i++)
     {

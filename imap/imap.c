@@ -796,7 +796,7 @@ void imap_expunge_mailbox(struct Mailbox *m)
 
     if (e->index == INT_MAX)
     {
-      mutt_debug(LL_DEBUG2, "Expunging message UID %u.\n", imap_edata_get(e)->uid);
+      mutt_debug(LL_DEBUG2, "Expunging message UID %u\n", imap_edata_get(e)->uid);
 
       e->deleted = true;
 
@@ -1601,7 +1601,7 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
         break;
       mutt_debug(LL_DEBUG3, "server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), dest_mdata->name);
-      if (C_Confirmcreate && (mutt_yesorno(prompt, 1) != MUTT_YES))
+      if (C_Confirmcreate && (mutt_yesorno(prompt, MUTT_YES) != MUTT_YES))
       {
         mutt_clear_error();
         goto out;
@@ -2112,7 +2112,7 @@ static int imap_mbox_open(struct Mailbox *m)
   if (mutt_str_startswith(imap_get_qualifier(adata->buf), "[READ-ONLY]", CASE_IGNORE) &&
       !(adata->capabilities & IMAP_CAP_ACL))
   {
-    mutt_debug(LL_DEBUG2, "Mailbox is read-only.\n");
+    mutt_debug(LL_DEBUG2, "Mailbox is read-only\n");
     m->readonly = true;
   }
 

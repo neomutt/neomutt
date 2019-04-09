@@ -2376,7 +2376,7 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
   bool changed = false;
   char msgbuf[PATH_MAX + 64];
 
-  mutt_debug(LL_DEBUG1, "nm: sync start ...\n");
+  mutt_debug(LL_DEBUG1, "nm: sync start\n");
 
   if (!m->quiet)
   {

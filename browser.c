@@ -1753,10 +1753,10 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
             (reverse) ?
                 /* L10N: The highlighted letters must match the "Sort" options */
                 _("Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, "
-                  "(c)ount, ne(w) count, or do(n)'t sort? ") :
+                  "(c)ount, ne(w) count, or do(n)'t sort?") :
                 /* L10N: The highlighted letters must match the "Reverse Sort" options */
                 _("Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, "
-                  "ne(w) count, or do(n)'t sort? "),
+                  "ne(w) count, or do(n)'t sort?"),
             /* L10N: These must match the highlighted letters from "Sort" and "Reverse Sort" */
             _("dazecwn")))
         {

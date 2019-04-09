@@ -722,14 +722,14 @@ bool mutt_addr_is_user(struct Address *addr)
 
   if (mutt_regexlist_match(&Alternates, addr->mailbox))
   {
-    mutt_debug(5, "yes, %s matched by alternates.\n", addr->mailbox);
+    mutt_debug(5, "yes, %s matched by alternates\n", addr->mailbox);
     if (mutt_regexlist_match(&UnAlternates, addr->mailbox))
-      mutt_debug(5, "but, %s matched by unalternates.\n", addr->mailbox);
+      mutt_debug(5, "but, %s matched by unalternates\n", addr->mailbox);
     else
       return true;
   }
 
-  mutt_debug(5, "no, all failed.\n");
+  mutt_debug(5, "no, all failed\n");
   return false;
 }
 

@@ -54,7 +54,7 @@
 static int handle_panic(lua_State *l)
 {
   mutt_debug(LL_DEBUG1, "lua runtime panic: %s\n", lua_tostring(l, -1));
-  mutt_error("Lua runtime panic: %s\n", lua_tostring(l, -1));
+  mutt_error("Lua runtime panic: %s", lua_tostring(l, -1));
   lua_pop(l, 1);
   return -1;
 }
@@ -67,7 +67,7 @@ static int handle_panic(lua_State *l)
 static int handle_error(lua_State *l)
 {
   mutt_debug(LL_DEBUG1, "lua runtime error: %s\n", lua_tostring(l, -1));
-  mutt_error("Lua runtime error: %s\n", lua_tostring(l, -1));
+  mutt_error("Lua runtime error: %s", lua_tostring(l, -1));
   lua_pop(l, 1);
   return -1;
 }

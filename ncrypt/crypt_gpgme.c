@@ -1052,7 +1052,7 @@ static gpgme_key_t *create_recipient_set(const char *keylist, gpgme_protocol_t p
         rset[rset_n++] = key;
       else
       {
-        mutt_error(_("error adding recipient '%s': %s\n"), buf, gpgme_strerror(err));
+        mutt_error(_("error adding recipient '%s': %s"), buf, gpgme_strerror(err));
         rset[rset_n] = NULL;
         free_recipient_set(&rset);
         gpgme_release(context);
@@ -2042,7 +2042,7 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
   gpgme_release(ctx);
 
   state_attach_puts(_("[-- End signature information --]\n\n"), s);
-  mutt_debug(LL_DEBUG1, "returning %d.\n", badsig);
+  mutt_debug(LL_DEBUG1, "returning %d\n", badsig);
 
   return badsig ? 1 : anywarn ? 2 : 0;
 }
@@ -4837,7 +4837,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
   if (!keys)
     return NULL;
 
-  mutt_debug(5, "looking for %s <%s>.\n", a ? a->personal : "", a ? a->mailbox : "");
+  mutt_debug(5, "looking for %s <%s>\n", a ? a->personal : "", a ? a->mailbox : "");
 
   for (k = keys; k; k = k->next)
   {
@@ -4968,7 +4968,7 @@ static struct CryptKeyInfo *crypt_getkeybystr(char *p, KeyFlags abilities,
         (ps && (mutt_str_strcasecmp(ps, crypt_short_keyid(k)) == 0)) ||
         mutt_str_stristr(k->uid, p))
     {
-      mutt_debug(5, "match.\n");
+      mutt_debug(5, "match\n");
 
       struct CryptKeyInfo *tmp = crypt_copy_key(k);
       *matches_endp = tmp;
@@ -4976,7 +4976,7 @@ static struct CryptKeyInfo *crypt_getkeybystr(char *p, KeyFlags abilities,
     }
     else
     {
-      mutt_debug(5, "no match.\n");
+      mutt_debug(5, "no match\n");
     }
   }
 
@@ -5359,7 +5359,7 @@ static int gpgme_send_menu(struct Email *msg, int is_smime)
     {
       /* L10N: S/MIME options (opportunistic encryption is on) */
       prompt =
-          _("S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? ");
+          _("S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off?");
       /* L10N: S/MIME options (opportunistic encryption is on) */
       letters = _("sapco");
       choices = "SapCo";
@@ -5368,7 +5368,7 @@ static int gpgme_send_menu(struct Email *msg, int is_smime)
     {
       /* L10N: PGP options (opportunistic encryption is on) */
       prompt =
-          _("PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? ");
+          _("PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off?");
       /* L10N: PGP options (opportunistic encryption is on) */
       letters = _("samco");
       choices = "SamCo";
@@ -5381,7 +5381,7 @@ static int gpgme_send_menu(struct Email *msg, int is_smime)
     {
       /* L10N: S/MIME options (opportunistic encryption is off) */
       prompt = _("S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, "
-                 "or (o)ppenc mode? ");
+                 "or (o)ppenc mode?");
       /* L10N: S/MIME options (opportunistic encryption is off) */
       letters = _("esabpco");
       choices = "esabpcO";
@@ -5390,7 +5390,7 @@ static int gpgme_send_menu(struct Email *msg, int is_smime)
     {
       /* L10N: PGP options (opportunistic encryption is off) */
       prompt = _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, "
-                 "or (o)ppenc mode? ");
+                 "or (o)ppenc mode?");
       /* L10N: PGP options (opportunistic encryption is off) */
       letters = _("esabmco");
       choices = "esabmcO";
@@ -5403,7 +5403,7 @@ static int gpgme_send_menu(struct Email *msg, int is_smime)
     {
       /* L10N: S/MIME options */
       prompt =
-          _("S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? ");
+          _("S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?");
       /* L10N: S/MIME options */
       letters = _("esabpc");
       choices = "esabpc";
@@ -5412,7 +5412,7 @@ static int gpgme_send_menu(struct Email *msg, int is_smime)
     {
       /* L10N: PGP options */
       prompt =
-          _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? ");
+          _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?");
       /* L10N: PGP options */
       letters = _("esabmc");
       choices = "esabmc";

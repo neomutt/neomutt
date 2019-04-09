@@ -108,7 +108,7 @@ void crypt_forget_passphrase(void)
   if (WithCrypto)
   {
     /* L10N: Due to the implementation details (e.g. some passwords are managed
-       by gpg-agent) we cannot know whether we forgot zero, 1, 12, ...
+       by gpg-agent) we can't know whether we forgot zero, 1, 12, ...
        passwords. So in English we use "Passphrases". Your language might
        have other means to express this. */
     mutt_message(_("Passphrases forgotten"));

@@ -241,7 +241,7 @@ int mutt_display_message(struct Email *cur)
                                       fileno(fp_filter_out), -1);
     if (filterpid < 0)
     {
-      mutt_error(_("Cannot create display filter"));
+      mutt_error(_("Can't create display filter"));
       mutt_file_fclose(&fp_filter_out);
       unlink(tempfile);
       return 0;
@@ -421,7 +421,7 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
 
 #define EXTRA_SPACE (15 + 7 + 2)
   snprintf(scratch, sizeof(scratch),
-           ngettext("Bounce message to %s", "Bounce messages to %s", msg_count), buf);
+           ngettext("Bounce message to %s?", "Bounce messages to %s?", msg_count), buf);
 
   if (mutt_strwidth(prompt) > MuttMessageWindow->cols - EXTRA_SPACE)
   {
@@ -719,11 +719,11 @@ int mutt_select_sort(bool reverse)
                                 /* L10N: The highlighted letters must match the "Sort" options */
                                 _("Rev-Sort "
                                   "(d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/"
-                                  "(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?: ") :
+                                  "(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?") :
                                 /* L10N: The highlighted letters must match the "Rev-Sort" options */
                                 _("Sort "
                                   "(d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/"
-                                  "(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?: "),
+                                  "(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?"),
                             /* L10N: These must match the highlighted letters from "Sort" and "Rev-Sort" */
                             _("dfrsotuzcpl")))
   {
@@ -802,7 +802,7 @@ void mutt_shell_escape(void)
   fflush(stdout);
   int rc = mutt_system(buf);
   if (rc == -1)
-    mutt_debug(LL_DEBUG1, "Error running \"%s\"!", buf);
+    mutt_debug(LL_DEBUG1, "Error running \"%s\"", buf);
 
   if ((rc != 0) || C_WaitKey)
     mutt_any_key_to_continue(NULL);

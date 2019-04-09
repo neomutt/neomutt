@@ -1006,7 +1006,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
   fp = fopen(fname, "r");
   if (!fp)
   {
-    mutt_debug(LL_DEBUG1, "%s: %s (errno %d).\n", fname, strerror(errno), errno);
+    mutt_debug(LL_DEBUG1, "%s: %s (errno %d)\n", fname, strerror(errno), errno);
     return NULL;
   }
 
@@ -1104,7 +1104,7 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
         snprintf(buf, sizeof(buf), "%s/.mime.types", NONULL(HomeDir));
         break;
       default:
-        mutt_debug(LL_DEBUG1, "Internal error, count = %d.\n", count);
+        mutt_debug(LL_DEBUG1, "Internal error, count = %d\n", count);
         goto bye; /* shouldn't happen */
     }
 
@@ -3149,7 +3149,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   struct Context *ctx_fcc = mx_mbox_open(m_fcc, MUTT_APPEND | MUTT_QUIET);
   if (!ctx_fcc)
   {
-    mutt_debug(LL_DEBUG1, "unable to open mailbox %s in append-mode, aborting.\n", path);
+    mutt_debug(LL_DEBUG1, "unable to open mailbox %s in append-mode, aborting\n", path);
     mailbox_free(&m_fcc);
     goto done;
   }
@@ -3288,7 +3288,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     fflush(fp_tmp);
     if (ferror(fp_tmp))
     {
-      mutt_debug(LL_DEBUG1, "%s: write failed.\n", tempfile);
+      mutt_debug(LL_DEBUG1, "%s: write failed\n", tempfile);
       mutt_file_fclose(&fp_tmp);
       unlink(tempfile);
       mx_msg_commit(ctx_fcc->mailbox, msg); /* XXX really? */

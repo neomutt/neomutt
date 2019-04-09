@@ -131,7 +131,7 @@ int mutt_compose_attachment(struct Body *a)
         mutt_debug(LL_DEBUG1, "oldfile: %s\t newfile: %s\n", a->filename, newfile);
         if (mutt_file_symlink(a->filename, newfile) == -1)
         {
-          if (mutt_yesorno(_("Can't match nametemplate, continue?"), MUTT_YES) != MUTT_YES)
+          if (mutt_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) != MUTT_YES)
             goto bailout;
         }
         else
@@ -265,7 +265,7 @@ int mutt_edit_attachment(struct Body *a)
         mutt_debug(LL_DEBUG1, "oldfile: %s\t newfile: %s\n", a->filename, newfile);
         if (mutt_file_symlink(a->filename, newfile) == -1)
         {
-          if (mutt_yesorno(_("Can't match nametemplate, continue?"), MUTT_YES) != MUTT_YES)
+          if (mutt_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) != MUTT_YES)
             goto bailout;
         }
         else
@@ -425,7 +425,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
   {
     if (!entry->command)
     {
-      mutt_error(_("MIME type not defined.  Cannot view attachment."));
+      mutt_error(_("MIME type not defined.  Can't view attachment."));
       goto return_error;
     }
     mutt_str_strfcpy(cmd, entry->command, sizeof(cmd));
@@ -445,7 +445,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
         /* send case: the file is already there */
         if (mutt_file_symlink(a->filename, tempfile) == -1)
         {
-          if (mutt_yesorno(_("Can't match nametemplate, continue?"), MUTT_YES) == MUTT_YES)
+          if (mutt_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) == MUTT_YES)
             mutt_str_strfcpy(tempfile, a->filename, sizeof(tempfile));
           else
             goto return_error;
@@ -546,7 +546,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
       /* interactive cmd */
       int rv = mutt_system(cmd);
       if (rv == -1)
-        mutt_debug(LL_DEBUG1, "Error running \"%s\"!", cmd);
+        mutt_debug(LL_DEBUG1, "Error running \"%s\"", cmd);
 
       if ((rv != 0) || (entry->needsterminal && C_WaitKey))
         mutt_any_key_to_continue(NULL);
@@ -1025,7 +1025,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     char cmd[STR_COMMAND];
     int piped = false;
 
-    mutt_debug(LL_DEBUG2, "Using mailcap...\n");
+    mutt_debug(LL_DEBUG2, "Using mailcap\n");
 
     struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
     rfc1524_mailcap_lookup(a, type, entry, MUTT_MC_PRINT);
@@ -1035,7 +1035,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       {
         if (mutt_file_symlink(a->filename, newfile) == -1)
         {
-          if (mutt_yesorno(_("Can't match nametemplate, continue?"), MUTT_YES) != MUTT_YES)
+          if (mutt_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) != MUTT_YES)
           {
             rfc1524_free_entry(&entry);
             return 0;
@@ -1085,7 +1085,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     {
       int rc = mutt_system(cmd);
       if (rc == -1)
-        mutt_debug(LL_DEBUG1, "Error running \"%s\"!", cmd);
+        mutt_debug(LL_DEBUG1, "Error running \"%s\"", cmd);
 
       if ((rc != 0) || C_WaitKey)
         mutt_any_key_to_continue(NULL);
@@ -1136,7 +1136,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
         goto bail0;
       }
 
-      mutt_debug(LL_DEBUG2, "Filter created.\n");
+      mutt_debug(LL_DEBUG2, "Filter created\n");
 
       mutt_file_copy_stream(fp_in, fp_out);
 
