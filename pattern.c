@@ -2241,34 +2241,30 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
  * quote_simple - Apply simple quoting to a string
  * @param str    String to quote
  * @param buf    Buffer for the result
- * @param buflen Length of buffer
  */
-static void quote_simple(const char *str, char *buf, size_t buflen)
+static void quote_simple(const char *str, struct Buffer *buf)
 {
-  int i = 0;
-
-  buf[i++] = '"';
-  while (*str && (i < buflen - 3))
+  mutt_buffer_reset(buf);
+  mutt_buffer_addch(buf, '"');
+  while (*str)
   {
     if ((*str == '\\') || (*str == '"'))
-      buf[i++] = '\\';
-    buf[i++] = *str++;
+      mutt_buffer_addch(buf, '\\');
+    mutt_buffer_addch(buf, *str++);
   }
-  buf[i++] = '"';
-  buf[i] = '\0';
+  mutt_buffer_addch(buf, '"');
 }
 
 /**
  * mutt_check_simple - Convert a simple search into a real request
- * @param s      Buffer for the result
- * @param len    Length of buffer
+ * @param buf    Buffer for the result
  * @param simple Search string to convert
  */
-void mutt_check_simple(char *s, size_t len, const char *simple)
+void mutt_check_simple(struct Buffer *buf, const char *simple)
 {
   bool do_simple = true;
 
-  for (char *p = s; p && *p; p++)
+  for (const char *p = mutt_b2s(buf); p && *p; p++)
   {
     if ((*p == '\\') && *(p + 1))
       p++;
@@ -2285,32 +2281,36 @@ void mutt_check_simple(char *s, size_t len, const char *simple)
   if (do_simple) /* yup, so spoof a real request */
   {
     /* convert old tokens into the new format */
-    if ((mutt_str_strcasecmp("all", s) == 0) || (mutt_str_strcmp("^", s) == 0) ||
-        (mutt_str_strcmp(".", s) == 0)) /* ~A is more efficient */
+    if ((mutt_str_strcasecmp("all", mutt_b2s(buf)) == 0) ||
+        (mutt_str_strcmp("^", mutt_b2s(buf)) == 0) ||
+        (mutt_str_strcmp(".", mutt_b2s(buf)) == 0)) /* ~A is more efficient */
     {
-      mutt_str_strfcpy(s, "~A", len);
+      mutt_buffer_strcpy(buf, "~A");
     }
-    else if (mutt_str_strcasecmp("del", s) == 0)
-      mutt_str_strfcpy(s, "~D", len);
-    else if (mutt_str_strcasecmp("flag", s) == 0)
-      mutt_str_strfcpy(s, "~F", len);
-    else if (mutt_str_strcasecmp("new", s) == 0)
-      mutt_str_strfcpy(s, "~N", len);
-    else if (mutt_str_strcasecmp("old", s) == 0)
-      mutt_str_strfcpy(s, "~O", len);
-    else if (mutt_str_strcasecmp("repl", s) == 0)
-      mutt_str_strfcpy(s, "~Q", len);
-    else if (mutt_str_strcasecmp("read", s) == 0)
-      mutt_str_strfcpy(s, "~R", len);
-    else if (mutt_str_strcasecmp("tag", s) == 0)
-      mutt_str_strfcpy(s, "~T", len);
-    else if (mutt_str_strcasecmp("unread", s) == 0)
-      mutt_str_strfcpy(s, "~U", len);
+    else if (mutt_str_strcasecmp("del", mutt_b2s(buf)) == 0)
+      mutt_buffer_strcpy(buf, "~D");
+    else if (mutt_str_strcasecmp("flag", mutt_b2s(buf)) == 0)
+      mutt_buffer_strcpy(buf, "~F");
+    else if (mutt_str_strcasecmp("new", mutt_b2s(buf)) == 0)
+      mutt_buffer_strcpy(buf, "~N");
+    else if (mutt_str_strcasecmp("old", mutt_b2s(buf)) == 0)
+      mutt_buffer_strcpy(buf, "~O");
+    else if (mutt_str_strcasecmp("repl", mutt_b2s(buf)) == 0)
+      mutt_buffer_strcpy(buf, "~Q");
+    else if (mutt_str_strcasecmp("read", mutt_b2s(buf)) == 0)
+      mutt_buffer_strcpy(buf, "~R");
+    else if (mutt_str_strcasecmp("tag", mutt_b2s(buf)) == 0)
+      mutt_buffer_strcpy(buf, "~T");
+    else if (mutt_str_strcasecmp("unread", mutt_b2s(buf)) == 0)
+      mutt_buffer_strcpy(buf, "~U");
     else
     {
-      char tmp[1024];
-      quote_simple(s, tmp, sizeof(tmp));
-      mutt_file_expand_fmt(s, len, simple, tmp);
+      struct Buffer *tmp = mutt_buffer_pool_get();
+      quote_simple(mutt_b2s(buf), tmp);
+      /* TODO: this will be fixed in the set of commits. */
+      mutt_file_expand_fmt(buf->data, buf->dsize, simple, mutt_b2s(tmp));
+      mutt_buffer_fix_dptr(buf);
+      mutt_buffer_pool_release(&tmp);
     }
   }
 }
@@ -2383,26 +2383,32 @@ bool mutt_limit_current_thread(struct Email *e)
  */
 int mutt_pattern_func(int op, char *prompt)
 {
-  char buf[1024] = "";
   struct Buffer err;
   int rc = -1;
   struct Progress progress;
+  struct Buffer *buf = mutt_buffer_pool_get();
 
-  mutt_str_strfcpy(buf, Context->pattern, sizeof(buf));
+  mutt_buffer_strcpy(buf, NONULL(Context->pattern));
   if (prompt || (op != MUTT_LIMIT))
-    if ((mutt_get_field(prompt, buf, sizeof(buf), MUTT_PATTERN | MUTT_CLEAR) != 0) ||
-        !buf[0])
+  {
+    if ((mutt_get_field(prompt, buf->data, buf->dsize, MUTT_PATTERN | MUTT_CLEAR) != 0) ||
+        !(mutt_b2s(buf)[0]))
+    {
+      mutt_buffer_pool_release(&buf);
       return -1;
+    }
+  }
+  mutt_buffer_fix_dptr(buf);
 
   mutt_message(_("Compiling search pattern..."));
 
-  char *simple = mutt_str_strdup(buf);
-  mutt_check_simple(buf, sizeof(buf), NONULL(C_SimpleSearch));
+  char *simple = mutt_str_strdup(mutt_b2s(buf));
+  mutt_check_simple(buf, NONULL(C_SimpleSearch));
 
   mutt_buffer_init(&err);
   err.dsize = 256;
   err.data = mutt_mem_malloc(err.dsize);
-  struct PatternHead *pat = mutt_pattern_comp(buf, MUTT_FULL_MSG, &err);
+  struct PatternHead *pat = mutt_pattern_comp(buf->data, MUTT_FULL_MSG, &err);
   if (!pat)
   {
     mutt_error("%s", err.data);
@@ -2489,20 +2495,21 @@ int mutt_pattern_func(int op, char *prompt)
       mutt_error(_("No messages matched criteria"));
 
     /* record new limit pattern, unless match all */
-    char *pbuf = buf;
+    const char *pbuf = mutt_b2s(buf);
     while (*pbuf == ' ')
       pbuf++;
     if (mutt_str_strcmp(pbuf, "~A") != 0)
     {
       Context->pattern = simple;
       simple = NULL; /* don't clobber it */
-      Context->limit_pattern = mutt_pattern_comp(buf, MUTT_FULL_MSG, &err);
+      Context->limit_pattern = mutt_pattern_comp(buf->data, MUTT_FULL_MSG, &err);
     }
   }
 
   rc = 0;
 
 bail:
+  mutt_buffer_pool_release(&buf);
   FREE(&simple);
   mutt_pattern_free(&pat);
   FREE(&err.data);
@@ -2541,11 +2548,11 @@ int mutt_search_command(int cur, int op)
 
     /* compare the *expanded* version of the search pattern in case
      * $simple_search has changed while we were searching */
-    char temp[1024];
-    mutt_str_strfcpy(temp, buf, sizeof(temp));
-    mutt_check_simple(temp, sizeof(temp), NONULL(C_SimpleSearch));
+    struct Buffer *tmp = mutt_buffer_pool_get();
+    mutt_buffer_strcpy(tmp, buf);
+    mutt_check_simple(tmp, NONULL(C_SimpleSearch));
 
-    if (!SearchPattern || (mutt_str_strcmp(temp, LastSearchExpn) != 0))
+    if (!SearchPattern || (mutt_str_strcmp(mutt_b2s(tmp), LastSearchExpn) != 0))
     {
       struct Buffer err;
       mutt_buffer_init(&err);
@@ -2555,9 +2562,10 @@ int mutt_search_command(int cur, int op)
       mutt_pattern_free(&SearchPattern);
       err.dsize = 256;
       err.data = mutt_mem_malloc(err.dsize);
-      SearchPattern = mutt_pattern_comp(temp, MUTT_FULL_MSG, &err);
+      SearchPattern = mutt_pattern_comp(tmp->data, MUTT_FULL_MSG, &err);
       if (!SearchPattern)
       {
+        mutt_buffer_pool_release(&tmp);
         mutt_error("%s", err.data);
         FREE(&err.data);
         LastSearch[0] = '\0';
@@ -2566,6 +2574,8 @@ int mutt_search_command(int cur, int op)
       FREE(&err.data);
       mutt_clear_error();
     }
+
+    mutt_buffer_pool_release(&tmp);
   }
 
   if (OptSearchInvalid)
