@@ -162,7 +162,7 @@ void cs_init(struct ConfigSet *cs, size_t size)
     return; /* LCOV_EXCL_LINE */
 
   memset(cs, 0, sizeof(*cs));
-  cs->hash = mutt_hash_new(size, 0);
+  cs->hash = mutt_hash_new(size, MUTT_HASH_NO_FLAGS);
   mutt_hash_set_destructor(cs->hash, destroy, (intptr_t) cs);
 }
 

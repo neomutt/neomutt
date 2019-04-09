@@ -160,7 +160,6 @@ static struct Remailer **mix_type2_list(size_t *l)
 {
   FILE *fp = NULL;
   pid_t mm_pid;
-  int devnull;
 
   char cmd[STR_COMMAND];
   char line[8192];
@@ -172,16 +171,16 @@ static struct Remailer **mix_type2_list(size_t *l)
   if (!l)
     return NULL;
 
-  devnull = open("/dev/null", O_RDWR);
-  if (devnull == -1)
+  int fd_null = open("/dev/null", O_RDWR);
+  if (fd_null == -1)
     return NULL;
 
   snprintf(cmd, sizeof(cmd), "%s -T", C_Mixmaster);
 
-  mm_pid = mutt_create_filter_fd(cmd, NULL, &fp, NULL, devnull, -1, devnull);
+  mm_pid = mutt_create_filter_fd(cmd, NULL, &fp, NULL, fd_null, -1, fd_null);
   if (mm_pid == -1)
   {
-    close(devnull);
+    close(fd_null);
     return NULL;
   }
 
@@ -235,7 +234,7 @@ static struct Remailer **mix_type2_list(size_t *l)
   mix_add_entry(&type2_list, NULL, &slots, &used);
   mutt_wait_filter(mm_pid);
 
-  close(devnull);
+  close(fd_null);
 
   return type2_list;
 }
@@ -479,9 +478,11 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
   }
 
   if (optional)
-    mutt_expando_format(buf, buflen, col, cols, if_str, attach_format_str, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, if_str, attach_format_str, data,
+                        MUTT_FORMAT_NO_FLAGS);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(buf, buflen, col, cols, else_str, attach_format_str, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, else_str, attach_format_str,
+                        data, MUTT_FORMAT_NO_FLAGS);
   return src;
 }
 

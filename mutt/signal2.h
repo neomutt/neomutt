@@ -31,7 +31,7 @@
  */
 typedef void (*sig_handler_t)(int sig);
 
-void mutt_sig_allow_interrupt(int disposition);
+void mutt_sig_allow_interrupt(bool allow);
 void mutt_sig_block(void);
 void mutt_sig_block_system(void);
 void mutt_sig_empty_handler(int sig);

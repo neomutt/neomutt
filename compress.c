@@ -308,7 +308,7 @@ static void expand_command_str(const struct Mailbox *m, const char *cmd, char *b
     return;
 
   mutt_expando_format(buf, buflen, 0, buflen, cmd, compress_format_str,
-                      (unsigned long) m, 0);
+                      (unsigned long) m, MUTT_FORMAT_NO_FLAGS);
 }
 
 /**

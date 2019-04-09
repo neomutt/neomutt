@@ -475,7 +475,7 @@ enum CommandResult mutt_lua_source_file(struct Buffer *buf, struct Buffer *s,
 
   char path[PATH_MAX];
 
-  if (mutt_extract_token(buf, s, 0) != 0)
+  if (mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS) != 0)
   {
     mutt_buffer_printf(err, _("source: error at %s"), s->dptr);
     return MUTT_CMD_ERROR;

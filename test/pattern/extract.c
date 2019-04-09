@@ -25,10 +25,10 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
     if (!qc)
     {
       if ((ISSPACE(ch) && !(flags & MUTT_TOKEN_SPACE)) ||
-          (ch == '#' && !(flags & MUTT_TOKEN_COMMENT)) ||
-          (ch == '=' && (flags & MUTT_TOKEN_EQUAL)) ||
-          (ch == '?' && (flags & MUTT_TOKEN_QUESTION)) ||
-          (ch == ';' && !(flags & MUTT_TOKEN_SEMICOLON)) ||
+          ((ch == '#') && !(flags & MUTT_TOKEN_COMMENT)) ||
+          ((ch == '=') && (flags & MUTT_TOKEN_EQUAL)) ||
+          ((ch == '?') && (flags & MUTT_TOKEN_QUESTION)) ||
+          ((ch == ';') && !(flags & MUTT_TOKEN_SEMICOLON)) ||
           ((flags & MUTT_TOKEN_PATTERN) && strchr("~%=!|", ch)))
       {
         break;
@@ -39,9 +39,9 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
 
     if (ch == qc)
       qc = 0; /* end of quote */
-    else if (!qc && (ch == '\'' || ch == '"') && !(flags & MUTT_TOKEN_QUOTE))
+    else if (!qc && ((ch == '\'') || (ch == '"')) && !(flags & MUTT_TOKEN_QUOTE))
       qc = ch;
-    else if (ch == '\\' && qc != '\'')
+    else if ((ch == '\\') && (qc != '\''))
     {
       if (!*tok->dptr)
         return -1; /* premature end of token */
@@ -80,7 +80,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
             mutt_buffer_addch(dest, ch);
       }
     }
-    else if (ch == '^' && (flags & MUTT_TOKEN_CONDENSE))
+    else if ((ch == '^') && (flags & MUTT_TOKEN_CONDENSE))
     {
       if (!*tok->dptr)
         return -1; /* premature end of token */
@@ -97,7 +97,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
         mutt_buffer_addch(dest, ch);
       }
     }
-    else if (ch == '`' && (!qc || qc == '"'))
+    else if ((ch == '`') && (!qc || (qc == '"')))
     {
       FILE *fp = NULL;
       pid_t pid;
@@ -119,7 +119,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
       } while (pc && *pc != '`');
       if (!pc)
       {
-        mutt_debug(1, "mismatched backticks\n");
+        mutt_debug(LL_DEBUG1, "mismatched backticks\n");
         return -1;
       }
       struct Buffer cmd;
@@ -140,7 +140,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
       pid = mutt_create_filter(cmd.data, NULL, &fp, NULL);
       if (pid < 0)
       {
-        mutt_debug(1, "unable to fork command: %s\n", cmd);
+        mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", cmd);
         FREE(&cmd.data);
         return -1;
       }
@@ -155,7 +155,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
       mutt_wait_filter(pid);
 
       /* if we got output, make a new string consisting of the shell output
-         plus whatever else was left on the original line */
+       * plus whatever else was left on the original line */
       /* BUT: If this is inside a quoted string, directly add output to
        * the token */
       if (expn.data && qc)
@@ -179,8 +179,8 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
         FREE(&expn.data);
       }
     }
-    else if (ch == '$' && (!qc || qc == '"') &&
-             (*tok->dptr == '{' || isalpha((unsigned char) *tok->dptr)))
+    else if ((ch == '$') && (!qc || (qc == '"')) &&
+             ((*tok->dptr == '{') || isalpha((unsigned char) *tok->dptr)))
     {
       const char *env = NULL;
       char *var = NULL;

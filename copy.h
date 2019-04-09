@@ -67,7 +67,7 @@ typedef uint32_t CopyHeaderFlags;   ///< Flags for mutt_copy_header(), e.g. #CH_
 #define CH_UPDATE_IRT     (1 << 16) ///< Update In-Reply-To:
 #define CH_UPDATE_REFS    (1 << 17) ///< Update References:
 #define CH_DISPLAY        (1 << 18) ///< Display result to user
-#define CH_UPDATE_LABEL   (1 << 19) ///< Update X-Label: from hdr->env->x_label?
+#define CH_UPDATE_LABEL   (1 << 19) ///< Update X-Label: from email->env->x_label?
 #define CH_UPDATE_SUBJECT (1 << 20) ///< Update Subject: protected header update
 #define CH_VIRTUAL        (1 << 21) ///< Write virtual header lines too
 

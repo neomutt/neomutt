@@ -3203,7 +3203,7 @@ int mutt_index_menu(void)
       case OP_MAIL:
         if (!prereq(Context, menu, CHECK_ATTACH))
           break;
-        ci_send_message(0, NULL, NULL, Context, NULL);
+        ci_send_message(SEND_NO_FLAGS, NULL, NULL, Context, NULL);
         menu->redraw = REDRAW_FULL;
         break;
 

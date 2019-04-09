@@ -2297,7 +2297,7 @@ static int nm_mbox_check(struct Mailbox *m, int *index_hint)
     if (!e)
     {
       /* new email */
-      append_message(h, m, NULL, msg, 0);
+      append_message(h, m, NULL, msg, false);
       notmuch_message_destroy(msg);
       continue;
     }

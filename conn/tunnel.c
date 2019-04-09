@@ -87,9 +87,9 @@ static int tunnel_socket_open(struct Connection *conn)
   if (pid == 0)
   {
     mutt_sig_unblock_system(false);
-    const int devnull = open("/dev/null", O_RDWR);
-    if ((devnull < 0) || (dup2(pout[0], STDIN_FILENO) < 0) ||
-        (dup2(pin[1], STDOUT_FILENO) < 0) || (dup2(devnull, STDERR_FILENO) < 0))
+    const int fd_null = open("/dev/null", O_RDWR);
+    if ((fd_null < 0) || (dup2(pout[0], STDIN_FILENO) < 0) ||
+        (dup2(pin[1], STDOUT_FILENO) < 0) || (dup2(fd_null, STDERR_FILENO) < 0))
     {
       _exit(127);
     }
@@ -97,7 +97,7 @@ static int tunnel_socket_open(struct Connection *conn)
     close(pin[1]);
     close(pout[0]);
     close(pout[1]);
-    close(devnull);
+    close(fd_null);
 
     /* Don't let the subprocess think it can use the controlling tty */
     setsid();

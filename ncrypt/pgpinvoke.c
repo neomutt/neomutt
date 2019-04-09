@@ -164,9 +164,11 @@ static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int col
   }
 
   if (optional)
-    mutt_expando_format(buf, buflen, col, cols, if_str, fmt_pgp_command, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, if_str, fmt_pgp_command, data,
+                        MUTT_FORMAT_NO_FLAGS);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(buf, buflen, col, cols, else_str, fmt_pgp_command, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, else_str, fmt_pgp_command, data,
+                        MUTT_FORMAT_NO_FLAGS);
 
   return src;
 }
@@ -182,7 +184,7 @@ static void mutt_pgp_command(char *buf, size_t buflen,
                              struct PgpCommandContext *cctx, const char *fmt)
 {
   mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(fmt),
-                      fmt_pgp_command, (unsigned long) cctx, 0);
+                      fmt_pgp_command, (unsigned long) cctx, MUTT_FORMAT_NO_FLAGS);
   mutt_debug(LL_DEBUG2, "%s\n", buf);
 }
 
@@ -425,7 +427,6 @@ void pgp_class_invoke_getkeys(struct Address *addr)
   char buf[PATH_MAX];
   char tmp[1024];
   char cmd[STR_COMMAND];
-  int devnull;
 
   char *personal = NULL;
 
@@ -448,7 +449,7 @@ void pgp_class_invoke_getkeys(struct Address *addr)
 
   mutt_pgp_command(cmd, sizeof(cmd), &cctx, C_PgpGetkeysCommand);
 
-  devnull = open("/dev/null", O_RDWR);
+  int fd_null = open("/dev/null", O_RDWR);
 
   if (!isendwin())
     mutt_message(_("Fetching PGP key..."));
@@ -459,8 +460,8 @@ void pgp_class_invoke_getkeys(struct Address *addr)
   if (!isendwin())
     mutt_clear_error();
 
-  if (devnull >= 0)
-    close(devnull);
+  if (fd_null >= 0)
+    close(fd_null);
 }
 
 /**

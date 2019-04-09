@@ -1196,10 +1196,9 @@ int mutt_file_unlock(int fd)
  */
 void mutt_file_unlink_empty(const char *path)
 {
-  int fd;
   struct stat sb;
 
-  fd = open(path, O_RDWR);
+  int fd = open(path, O_RDWR);
   if (fd == -1)
     return;
 

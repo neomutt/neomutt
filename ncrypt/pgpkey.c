@@ -316,9 +316,11 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
   }
 
   if (optional)
-    mutt_expando_format(buf, buflen, col, cols, if_str, attach_format_str, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, if_str, attach_format_str, data,
+                        MUTT_FORMAT_NO_FLAGS);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(buf, buflen, col, cols, else_str, attach_format_str, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, else_str, attach_format_str,
+                        data, MUTT_FORMAT_NO_FLAGS);
   return src;
 }
 
@@ -724,7 +726,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
         mutt_clear_error();
         snprintf(cmd, sizeof(cmd), _("Key ID: 0x%s"),
                  pgp_keyid(pgp_principal_key(key_table[menu->current]->parent)));
-        mutt_do_pager(cmd, tempfile, 0, NULL);
+        mutt_do_pager(cmd, tempfile, MUTT_PAGER_NO_FLAGS, NULL);
         menu->redraw = REDRAW_FULL;
 
         break;
@@ -875,8 +877,8 @@ struct Body *pgp_class_make_key_attachment(void)
   pid_t pid;
   OptPgpCheckTrust = false;
 
-  struct PgpKeyInfo *key =
-      pgp_ask_for_key(_("Please enter the key ID: "), NULL, 0, PGP_PUBRING);
+  struct PgpKeyInfo *key = pgp_ask_for_key(_("Please enter the key ID: "), NULL,
+                                           KEYFLAG_NO_FLAGS, PGP_PUBRING);
 
   if (!key)
     return NULL;

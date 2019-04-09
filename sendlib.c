@@ -2293,9 +2293,9 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
   {
     if (hide_protected_subject &&
         ((mode == MUTT_WRITE_HEADER_NORMAL) || (mode == MUTT_WRITE_HEADER_POSTPONE)))
-      mutt_write_one_header(fp, "Subject", C_CryptProtectedHeadersSubject, NULL, 0, 0);
+      mutt_write_one_header(fp, "Subject", C_CryptProtectedHeadersSubject, NULL, 0, CH_NO_FLAGS);
     else
-      mutt_write_one_header(fp, "Subject", env->subject, NULL, 0, 0);
+      mutt_write_one_header(fp, "Subject", env->subject, NULL, 0, CH_NO_FLAGS);
   }
   else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
     fputs("Subject:\n", fp);
@@ -2371,7 +2371,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
         }
       }
 
-      mutt_write_one_header(fp, tmp->data, p, NULL, 0, 0);
+      mutt_write_one_header(fp, tmp->data, p, NULL, 0, CH_NO_FLAGS);
       *q = ':';
     }
   }
@@ -2717,7 +2717,7 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
     char cmd[1024];
 
     mutt_expando_format(cmd, sizeof(cmd), 0, MuttIndexWindow->cols,
-                        NONULL(C_Inews), nntp_format_str, 0, 0);
+                        NONULL(C_Inews), nntp_format_str, 0, MUTT_FORMAT_NO_FLAGS);
     if (!*cmd)
     {
       i = nntp_post(Context->mailbox, msg);
@@ -2847,7 +2847,8 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
         struct stat st;
 
         if ((stat(childout, &st) == 0) && (st.st_size > 0))
-          mutt_do_pager(_("Output of the delivery process"), childout, 0, NULL);
+          mutt_do_pager(_("Output of the delivery process"), childout,
+                        MUTT_PAGER_NO_FLAGS, NULL);
       }
     }
   }

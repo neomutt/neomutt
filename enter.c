@@ -646,8 +646,8 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
                  (memcmp(tempbuf, state->wbuf, state->lastchar * sizeof(wchar_t)) == 0)))
             {
               mutt_select_file(buf, buflen,
-                               ((flags & MUTT_EFILE) ? MUTT_SEL_FOLDER : 0) |
-                                   (multiple ? MUTT_SEL_MULTI : 0),
+                               ((flags & MUTT_EFILE) ? MUTT_SEL_FOLDER : MUTT_SEL_NO_FLAGS) |
+                                   (multiple ? MUTT_SEL_MULTI : MUTT_SEL_NO_FLAGS),
                                files, numfiles);
               if (buf[0] != '\0')
               {

@@ -415,18 +415,17 @@ struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct ListHead *hin
   char buf[1024];
   struct PgpKeyInfo *db = NULL, **kend = NULL, *k = NULL, *kk = NULL, *mainkey = NULL;
   bool is_sub = false;
-  int devnull;
 
-  devnull = open("/dev/null", O_RDWR);
-  if (devnull == -1)
+  int fd_null = open("/dev/null", O_RDWR);
+  if (fd_null == -1)
     return NULL;
 
   mutt_str_replace(&chs, C_Charset);
 
-  pid = pgp_invoke_list_keys(NULL, &fp, NULL, -1, -1, devnull, keyring, hints);
+  pid = pgp_invoke_list_keys(NULL, &fp, NULL, -1, -1, fd_null, keyring, hints);
   if (pid == -1)
   {
-    close(devnull);
+    close(fd_null);
     return NULL;
   }
 
@@ -467,7 +466,7 @@ struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct ListHead *hin
   mutt_file_fclose(&fp);
   mutt_wait_filter(pid);
 
-  close(devnull);
+  close(fd_null);
 
   return db;
 }

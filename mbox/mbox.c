@@ -1178,12 +1178,12 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
 
   /* Create a temporary file to write the new version of the mailbox in. */
   mutt_mktemp(tempfile, sizeof(tempfile));
-  i = open(tempfile, O_WRONLY | O_EXCL | O_CREAT, 0600);
-  if ((i == -1) || !(fp = fdopen(i, "w")))
+  int fd = open(tempfile, O_WRONLY | O_EXCL | O_CREAT, 0600);
+  if ((fd == -1) || !(fp = fdopen(fd, "w")))
   {
-    if (-1 != i)
+    if (fd != -1)
     {
-      close(i);
+      close(fd);
       unlink(tempfile);
     }
     mutt_error(_("Could not create temporary file"));

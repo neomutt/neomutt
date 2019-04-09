@@ -2368,7 +2368,7 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
   size_t saved_b_length;
   int saved_b_type;
 
-  if (mutt_is_application_smime(b) == 0)
+  if (mutt_is_application_smime(b) == SEC_NO_FLAGS)
     return -1;
 
   if (b->parts)
@@ -2706,7 +2706,7 @@ int pgp_gpgme_check_traditional(FILE *fp, struct Body *b, bool just_one)
     else if (b->type == TYPE_TEXT)
     {
       SecurityFlags r = mutt_is_application_pgp(b);
-      if (r != 0)
+      if (r)
         rc = (rc || r);
       else
         rc = (pgp_check_traditional_one_body(fp, b) || rc);
@@ -3525,9 +3525,11 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
   }
 
   if (optional)
-    mutt_expando_format(buf, buflen, col, cols, if_str, attach_format_str, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, if_str, attach_format_str, data,
+                        MUTT_FORMAT_NO_FLAGS);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(buf, buflen, col, cols, else_str, attach_format_str, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, else_str, attach_format_str,
+                        data, MUTT_FORMAT_NO_FLAGS);
   return src;
 }
 
@@ -4390,7 +4392,7 @@ leave:
   mutt_file_fclose(&fp);
   mutt_clear_error();
   snprintf(cmd, sizeof(cmd), _("Key ID: 0x%s"), crypt_keyid(key));
-  mutt_do_pager(cmd, tempfile, 0, NULL);
+  mutt_do_pager(cmd, tempfile, MUTT_PAGER_NO_FLAGS, NULL);
 }
 
 /**
@@ -5281,8 +5283,8 @@ struct Body *pgp_gpgme_make_key_attachment(void)
 
   OptPgpCheckTrust = false;
 
-  struct CryptKeyInfo *key = crypt_ask_for_key(_("Please enter the key ID: "),
-                                               NULL, 0, APPLICATION_PGP, NULL);
+  struct CryptKeyInfo *key = crypt_ask_for_key(_("Please enter the key ID: "), NULL,
+                                               KEYFLAG_NO_FLAGS, APPLICATION_PGP, NULL);
   if (!key)
     goto bail;
   export_keys[0] = key->kobj;

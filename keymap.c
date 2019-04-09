@@ -1127,7 +1127,7 @@ static char *parse_keymap(int *menu, struct Buffer *s, int maxmenus,
   mutt_buffer_init(&buf);
 
   /* menu name */
-  mutt_extract_token(&buf, s, 0);
+  mutt_extract_token(&buf, s, MUTT_TOKEN_NO_FLAGS);
   char *p = buf.data;
   if (MoreArgs(s))
   {
@@ -1151,7 +1151,7 @@ static char *parse_keymap(int *menu, struct Buffer *s, int maxmenus,
     }
     *nummenus = i;
     /* key sequence */
-    mutt_extract_token(&buf, s, 0);
+    mutt_extract_token(&buf, s, MUTT_TOKEN_NO_FLAGS);
 
     if (buf.data[0] == '\0')
     {
@@ -1260,7 +1260,7 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_ERROR;
 
   /* function to execute */
-  mutt_extract_token(buf, s, 0);
+  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
   if (MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too many arguments"), "bind");
@@ -1394,7 +1394,7 @@ enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
   bool all_keys = false;
   char *key = NULL;
 
-  mutt_extract_token(buf, s, 0);
+  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
   if (mutt_str_strcmp(buf->data, "*") == 0)
   {
     for (int i = 0; i < MENU_MAX; i++)
@@ -1405,7 +1405,7 @@ enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
 
   if (MoreArgs(s))
   {
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     key = buf->data;
   }
   else
@@ -1521,7 +1521,7 @@ enum CommandResult mutt_parse_exec(struct Buffer *buf, struct Buffer *s,
 
   do
   {
-    mutt_extract_token(buf, s, 0);
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     function = buf->data;
 
     bindings = km_get_table(CurrentMenu);

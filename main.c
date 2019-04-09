@@ -1206,7 +1206,7 @@ int main(int argc, char *argv[], char *envp[])
 
     repeat_error = true;
     struct Mailbox *m = mx_path_resolve(folder);
-    Context = mx_mbox_open(m, ((flags & MUTT_CLI_RO) || C_ReadOnly) ? MUTT_READONLY : 0);
+    Context = mx_mbox_open(m, ((flags & MUTT_CLI_RO) || C_ReadOnly) ? MUTT_READONLY : MUTT_OPEN_NO_FLAGS);
     if (!Context)
     {
       mailbox_free(&m);

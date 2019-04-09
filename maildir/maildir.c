@@ -430,7 +430,7 @@ int maildir_mbox_check(struct Mailbox *m, int *index_hint)
   /* we create a hash table keyed off the canonical (sans flags) filename
    * of each message we scanned.  This is used in the loop over the
    * existing messages below to do some correlation.  */
-  fnames = mutt_hash_new(count, 0);
+  fnames = mutt_hash_new(count, MUTT_HASH_NO_FLAGS);
 
   for (p = md; p; p = p->next)
   {

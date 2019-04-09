@@ -199,8 +199,6 @@ static char LastSearchExpn[1024] = { 0 }; /**< expanded version of LastSearch */
 static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 {
   struct Buffer buf;
-  char errmsg[256];
-  int r;
 
   mutt_buffer_init(&buf);
   char *pexpr = s->dptr;
@@ -232,10 +230,11 @@ static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   {
     pat->p.regex = mutt_mem_malloc(sizeof(regex_t));
     int flags = mutt_mb_is_lower(buf.data) ? REG_ICASE : 0;
-    r = REGCOMP(pat->p.regex, buf.data, REG_NEWLINE | REG_NOSUB | flags);
-    if (r != 0)
+    int rc = REGCOMP(pat->p.regex, buf.data, REG_NEWLINE | REG_NOSUB | flags);
+    if (rc != 0)
     {
-      regerror(r, pat->p.regex, errmsg, sizeof(errmsg));
+      char errmsg[256];
+      regerror(rc, pat->p.regex, errmsg, sizeof(errmsg));
       mutt_buffer_add_printf(err, "'%s': %s", buf.data, errmsg);
       FREE(&buf.data);
       FREE(&pat->p.regex);
@@ -450,8 +449,8 @@ static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
 static const char *parse_date_range(const char *pc, struct tm *min, struct tm *max,
                                     bool have_min, struct tm *base_min, struct Buffer *err)
 {
-  PatternFlags flag = MUTT_PDR_NO_FLAGS;
-  while (*pc && ((flag & MUTT_PDR_DONE) == 0))
+  PatternFlags flags = MUTT_PDR_NO_FLAGS;
+  while (*pc && ((flags & MUTT_PDR_DONE) == 0))
   {
     const char *pt = NULL;
     char ch = *pc++;
@@ -464,31 +463,31 @@ static const char *parse_date_range(const char *pc, struct tm *min, struct tm *m
         pt = get_offset(min, pc, -1);
         if (pc == pt)
         {
-          if (flag == MUTT_PDR_NO_FLAGS)
+          if (flags == MUTT_PDR_NO_FLAGS)
           { /* nothing yet and no offset parsed => absolute date? */
             if (!get_date(pc, max, err))
-              flag |= (MUTT_PDR_ABSOLUTE | MUTT_PDR_ERRORDONE); /* done bad */
+              flags |= (MUTT_PDR_ABSOLUTE | MUTT_PDR_ERRORDONE); /* done bad */
             else
             {
               /* reestablish initial base minimum if not specified */
               if (!have_min)
                 memcpy(min, base_min, sizeof(struct tm));
-              flag |= (MUTT_PDR_ABSOLUTE | MUTT_PDR_DONE); /* done good */
+              flags |= (MUTT_PDR_ABSOLUTE | MUTT_PDR_DONE); /* done good */
             }
           }
           else
-            flag |= MUTT_PDR_ERRORDONE;
+            flags |= MUTT_PDR_ERRORDONE;
         }
         else
         {
           pc = pt;
-          if ((flag == MUTT_PDR_NO_FLAGS) && !have_min)
+          if ((flags == MUTT_PDR_NO_FLAGS) && !have_min)
           { /* the very first "-3d" without a previous absolute date */
             max->tm_year = min->tm_year;
             max->tm_mon = min->tm_mon;
             max->tm_mday = min->tm_mday;
           }
-          flag |= MUTT_PDR_MINUS;
+          flags |= MUTT_PDR_MINUS;
         }
         break;
       }
@@ -496,11 +495,11 @@ static const char *parse_date_range(const char *pc, struct tm *min, struct tm *m
       { /* enlarge plus range */
         pt = get_offset(max, pc, 1);
         if (pc == pt)
-          flag |= MUTT_PDR_ERRORDONE;
+          flags |= MUTT_PDR_ERRORDONE;
         else
         {
           pc = pt;
-          flag |= MUTT_PDR_PLUS;
+          flags |= MUTT_PDR_PLUS;
         }
         break;
       }
@@ -508,24 +507,24 @@ static const char *parse_date_range(const char *pc, struct tm *min, struct tm *m
       { /* enlarge window in both directions */
         pt = get_offset(min, pc, -1);
         if (pc == pt)
-          flag |= MUTT_PDR_ERRORDONE;
+          flags |= MUTT_PDR_ERRORDONE;
         else
         {
           pc = get_offset(max, pc, 1);
-          flag |= MUTT_PDR_WINDOW;
+          flags |= MUTT_PDR_WINDOW;
         }
         break;
       }
       default:
-        flag |= MUTT_PDR_ERRORDONE;
+        flags |= MUTT_PDR_ERRORDONE;
     }
     SKIPWS(pc);
   }
-  if ((flag & MUTT_PDR_ERROR) && !(flag & MUTT_PDR_ABSOLUTE))
+  if ((flags & MUTT_PDR_ERROR) && !(flags & MUTT_PDR_ABSOLUTE))
   { /* get_date has its own error message, don't overwrite it here */
     mutt_buffer_printf(err, _("Invalid relative date: %s"), pc - 1);
   }
-  return (flag & MUTT_PDR_ERROR) ? NULL : pc;
+  return (flags & MUTT_PDR_ERROR) ? NULL : pc;
 }
 
 /**

@@ -1096,7 +1096,7 @@ int mh_rewrite_message(struct Mailbox *m, int msgno)
   long old_body_length = e->content->length;
   long old_hdr_lines = e->lines;
 
-  struct Message *dest = mx_msg_open_new(m, e, 0);
+  struct Message *dest = mx_msg_open_new(m, e, MUTT_MSG_NO_FLAGS);
   if (!dest)
     return -1;
 

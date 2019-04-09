@@ -577,7 +577,7 @@ static void imap_alloc_uid_hash(struct ImapAccountData *adata, unsigned int msn_
 {
   struct ImapMboxData *mdata = adata->mailbox->mdata;
   if (!mdata->uid_hash)
-    mdata->uid_hash = mutt_hash_int_new(MAX(6 * msn_count / 5, 30), 0);
+    mdata->uid_hash = mutt_hash_int_new(MAX(6 * msn_count / 5, 30), MUTT_HASH_NO_FLAGS);
 }
 
 /**
@@ -1646,7 +1646,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool
     }
 
     /* let's get it on */
-    rc = imap_exec(adata, NULL, 0);
+    rc = imap_exec(adata, NULL, IMAP_CMD_NO_FLAGS);
     if (rc == IMAP_EXEC_ERROR)
     {
       if (triedcreate)

@@ -1037,7 +1037,7 @@ static int cmd_handle_untagged(struct ImapAccountData *adata)
  */
 int imap_cmd_start(struct ImapAccountData *adata, const char *cmdstr)
 {
-  return cmd_start(adata, cmdstr, 0);
+  return cmd_start(adata, cmdstr, IMAP_CMD_NO_FLAGS);
 }
 
 /**

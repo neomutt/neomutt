@@ -353,32 +353,32 @@ static void make_from(struct Envelope *env, char *buf, size_t buflen,
 
 /**
  * make_from_addr - Create a 'from' address for a reply email
- * @param hdr      Envelope of current email
+ * @param env      Envelope of current email
  * @param buf      Buffer for the result
  * @param buflen   Length of buffer
  * @param do_lists If true, check for mailing lists
  */
-static void make_from_addr(struct Envelope *hdr, char *buf, size_t buflen, bool do_lists)
+static void make_from_addr(struct Envelope *env, char *buf, size_t buflen, bool do_lists)
 {
-  if (!hdr || !buf)
+  if (!env || !buf)
     return;
 
-  bool me = mutt_addr_is_user(hdr->from);
+  bool me = mutt_addr_is_user(env->from);
 
   if (do_lists || me)
   {
-    if (check_for_mailing_list_addr(hdr->to, buf, buflen))
+    if (check_for_mailing_list_addr(env->to, buf, buflen))
       return;
-    if (check_for_mailing_list_addr(hdr->cc, buf, buflen))
+    if (check_for_mailing_list_addr(env->cc, buf, buflen))
       return;
   }
 
-  if (me && hdr->to)
-    snprintf(buf, buflen, "%s", hdr->to->mailbox);
-  else if (me && hdr->cc)
-    snprintf(buf, buflen, "%s", hdr->cc->mailbox);
-  else if (hdr->from)
-    mutt_str_strfcpy(buf, hdr->from->mailbox, buflen);
+  if (me && env->to)
+    snprintf(buf, buflen, "%s", env->to->mailbox);
+  else if (me && env->cc)
+    snprintf(buf, buflen, "%s", env->cc->mailbox);
+  else if (env->from)
+    mutt_str_strfcpy(buf, env->from->mailbox, buflen);
   else
     *buf = '\0';
 }

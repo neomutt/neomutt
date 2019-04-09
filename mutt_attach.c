@@ -485,7 +485,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
   if (use_mailcap)
   {
     pid_t pid = 0;
-    int tempfd = -1, pagerfd = -1;
+    int fd_temp = -1, fd_pager = -1;
 
     if (!use_pager)
       mutt_endwin();
@@ -493,28 +493,28 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
     if (use_pager || use_pipe)
     {
       if (use_pager &&
-          ((pagerfd = mutt_file_open(pagerfile, O_CREAT | O_EXCL | O_WRONLY)) == -1))
+          ((fd_pager = mutt_file_open(pagerfile, O_CREAT | O_EXCL | O_WRONLY)) == -1))
       {
         mutt_perror("open");
         goto return_error;
       }
-      if (use_pipe && ((tempfd = open(tempfile, 0)) == -1))
+      if (use_pipe && ((fd_temp = open(tempfile, 0)) == -1))
       {
-        if (pagerfd != -1)
-          close(pagerfd);
+        if (fd_pager != -1)
+          close(fd_pager);
         mutt_perror("open");
         goto return_error;
       }
 
-      pid = mutt_create_filter_fd(cmd, NULL, NULL, NULL, use_pipe ? tempfd : -1,
-                                  use_pager ? pagerfd : -1, -1);
+      pid = mutt_create_filter_fd(cmd, NULL, NULL, NULL, use_pipe ? fd_temp : -1,
+                                  use_pager ? fd_pager : -1, -1);
       if (pid == -1)
       {
-        if (pagerfd != -1)
-          close(pagerfd);
+        if (fd_pager != -1)
+          close(fd_pager);
 
-        if (tempfd != -1)
-          close(tempfd);
+        if (fd_temp != -1)
+          close(fd_temp);
 
         mutt_error(_("Can't create filter"));
         goto return_error;
@@ -536,10 +536,10 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
       if ((mutt_wait_filter(pid) || (entry->needsterminal && C_WaitKey)) && !use_pager)
         mutt_any_key_to_continue(NULL);
 
-      if (tempfd != -1)
-        close(tempfd);
-      if (pagerfd != -1)
-        close(pagerfd);
+      if (fd_temp != -1)
+        close(fd_temp);
+      if (fd_pager != -1)
+        close(fd_pager);
     }
     else
     {
@@ -624,7 +624,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
     info.email = e;
 
     rc = mutt_do_pager(desc, pagerfile,
-                       MUTT_PAGER_ATTACHMENT | (is_message ? MUTT_PAGER_MESSAGE : 0),
+                       MUTT_PAGER_ATTACHMENT | (is_message ? MUTT_PAGER_MESSAGE : MUTT_PAGER_NO_FLAGS),
                        &info);
     *pagerfile = '\0';
   }
@@ -816,7 +816,8 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path,
         mailbox_free(&m_att);
         return -1;
       }
-      msg = mx_msg_open_new(ctx->mailbox, en, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
+      msg = mx_msg_open_new(ctx->mailbox, en,
+                            is_from(buf, NULL, 0, NULL) ? MUTT_MSG_NO_FLAGS : MUTT_ADD_FROM);
       if (!msg)
       {
         mx_mbox_close(&ctx);
@@ -825,7 +826,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path,
       if ((ctx->mailbox->magic == MUTT_MBOX) || (ctx->mailbox->magic == MUTT_MMDF))
         chflags = CH_FROM | CH_UPDATE_LEN;
       chflags |= ((ctx->mailbox->magic == MUTT_MAILDIR) ? CH_NOSTATUS : CH_UPDATE);
-      if ((mutt_copy_message_fp(msg->fp, fp, en, 0, chflags) == 0) &&
+      if ((mutt_copy_message_fp(msg->fp, fp, en, MUTT_CM_NO_FLAGS, chflags) == 0) &&
           (mx_msg_commit(ctx->mailbox, msg) == 0))
       {
         rc = 0;

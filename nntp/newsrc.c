@@ -1077,8 +1077,8 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
   /* load .newsrc */
   if (rc >= 0)
   {
-    mutt_expando_format(file, sizeof(file), 0, MuttIndexWindow->cols,
-                        NONULL(C_Newsrc), nntp_format_str, (unsigned long) adata, 0);
+    mutt_expando_format(file, sizeof(file), 0, MuttIndexWindow->cols, NONULL(C_Newsrc),
+                        nntp_format_str, (unsigned long) adata, MUTT_FORMAT_NO_FLAGS);
     mutt_expand_path(file, sizeof(file));
     adata->newsrc_file = mutt_str_strdup(file);
     rc = nntp_newsrc_parse(adata);
