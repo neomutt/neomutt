@@ -794,6 +794,36 @@ size_t mutt_file_quote_filename(const char *filename, char *buf, size_t buflen)
 }
 
 /**
+ * mutt_buffer_quote_filename - Quote a filename to survive the shell's quoting rules
+ * @param buf      Buffer for the result
+ * @param filename String to convert
+ * @retval num Bytes written to the buffer
+ */
+void mutt_buffer_quote_filename(struct Buffer *buf, const char *filename)
+{
+  if (!buf || !filename)
+    return;
+
+  mutt_buffer_reset(buf);
+  mutt_buffer_addch(buf, '\'');
+
+  for (; *filename != '\0'; filename++)
+  {
+    if ((*filename == '\'') || (*filename == '`'))
+    {
+      mutt_buffer_addch(buf, '\'');
+      mutt_buffer_addch(buf, '\\');
+      mutt_buffer_addch(buf, *filename);
+      mutt_buffer_addch(buf, '\'');
+    }
+    else
+      mutt_buffer_addch(buf, *filename);
+  }
+
+  mutt_buffer_addch(buf, '\'');
+}
+
+/**
  * mutt_file_mkdir - Recursively create directories
  * @param path Directories to create
  * @param mode Permissions for final directory

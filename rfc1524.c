@@ -72,22 +72,23 @@ bool C_MailcapSanitize; ///< Config: Restrict the possible characters in mailcap
 int rfc1524_expand_command(struct Body *a, const char *filename,
                            const char *type, char *command, int clen)
 {
-  int x = 0, y = 0;
+  int x = 0;
   int needspipe = true;
-  char buf[STR_COMMAND];
   char type2[1024];
+  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *quoted = mutt_buffer_pool_get();
 
   mutt_str_strfcpy(type2, type, sizeof(type2));
 
   if (C_MailcapSanitize)
     mutt_file_sanitize_filename(type2, false);
 
-  while ((x < clen - 1) && command[x] && (y < sizeof(buf) - 1))
+  while ((x < clen - 1) && command[x])
   {
     if (command[x] == '\\')
     {
       x++;
-      buf[y++] = command[x++];
+      mutt_buffer_addch(buf, command[x++]);
     }
     else if (command[x] == '%')
     {
@@ -115,24 +116,29 @@ int rfc1524_expand_command(struct Body *a, const char *filename,
         if (C_MailcapSanitize)
           mutt_file_sanitize_filename(pvalue, false);
 
-        y += mutt_file_quote_filename(pvalue, buf + y, sizeof(buf) - y);
+        mutt_buffer_quote_filename(quoted, pvalue);
+        mutt_buffer_addstr(buf, mutt_b2s(quoted));
       }
       else if ((command[x] == 's') && filename)
       {
-        y += mutt_file_quote_filename(filename, buf + y, sizeof(buf) - y);
+        mutt_buffer_quote_filename(quoted, filename);
+        mutt_buffer_addstr(buf, mutt_b2s(quoted));
         needspipe = false;
       }
       else if (command[x] == 't')
       {
-        y += mutt_file_quote_filename(type2, buf + y, sizeof(buf) - y);
+        mutt_buffer_quote_filename(quoted, type);
+        mutt_buffer_addstr(buf, mutt_b2s(quoted));
       }
       x++;
     }
     else
-      buf[y++] = command[x++];
+      mutt_buffer_addch(buf, command[x++]);
   }
-  buf[y] = '\0';
-  mutt_str_strfcpy(command, buf, clen);
+  mutt_str_strfcpy(command, mutt_b2s(buf), clen);
+
+  mutt_buffer_pool_release(&buf);
+  mutt_buffer_pool_release(&quoted);
 
   return needspipe;
 }

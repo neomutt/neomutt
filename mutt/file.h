@@ -121,4 +121,6 @@ void        mutt_file_unlink(const char *s);
 void        mutt_file_unlink_empty(const char *path);
 int         mutt_file_unlock(int fd);
 
+void        mutt_buffer_quote_filename(struct Buffer *buf, const char *filename);
+
 #endif /* MUTT_LIB_FILE_H */
