@@ -1356,20 +1356,21 @@ int mutt_file_check_empty(const char *path)
 }
 
 /**
- * mutt_file_expand_fmt_quote - Replace `%s` in a string with a filename
+ * mutt_buffer_file_expand_fmt_quote - Replace `%s` in a string with a filename
  * @param dest    Buffer for the result
- * @param destlen Length of buffer
  * @param fmt     printf-like format string
  * @param src     Filename to substitute
  *
  * This function also quotes the file to prevent shell problems.
  */
-void mutt_file_expand_fmt_quote(char *dest, size_t destlen, const char *fmt, const char *src)
+void mutt_buffer_file_expand_fmt_quote(struct Buffer *dest, const char *fmt, const char *src)
 {
   char tmp[PATH_MAX];
 
   mutt_file_quote_filename(src, tmp, sizeof(tmp));
-  mutt_file_expand_fmt(dest, destlen, fmt, tmp);
+  /* TODO: this will be fixed in the next commit */
+  mutt_file_expand_fmt(dest->data, dest->dsize, fmt, tmp);
+  mutt_buffer_fix_dptr(dest);
 }
 
 /**

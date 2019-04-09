@@ -1554,20 +1554,22 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool a
 static void run_mime_type_query(struct Body *att)
 {
   FILE *fp, *fp_err;
-  char cmd[STR_COMMAND];
   char *buf = NULL;
   size_t buflen;
   int dummy = 0;
   pid_t pid;
+  struct Buffer *cmd = mutt_buffer_pool_get();
 
-  mutt_file_expand_fmt_quote(cmd, sizeof(cmd), C_MimeTypeQueryCommand, att->filename);
+  mutt_buffer_file_expand_fmt_quote(cmd, C_MimeTypeQueryCommand, att->filename);
 
-  pid = mutt_create_filter(cmd, NULL, &fp, &fp_err);
+  pid = mutt_create_filter(mutt_b2s(cmd), NULL, &fp, &fp_err);
   if (pid < 0)
   {
-    mutt_error(_("Error running \"%s\""), cmd);
+    mutt_error(_("Error running \"%s\""), mutt_b2s(cmd));
+    mutt_buffer_pool_release(&cmd);
     return;
   }
+  mutt_buffer_pool_release(&cmd);
 
   buf = mutt_file_read_line(buf, &buflen, fp, &dummy, 0);
   if (buf)
