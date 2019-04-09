@@ -2485,7 +2485,7 @@ int imap_path_canon(char *buf, size_t buflen)
 
 /**
  * imap_expand_path - Buffer wrapper around imap_path_canon()
- * @param buf Path to expand 
+ * @param buf Path to expand
  * @retval  0 Success
  * @retval -1 Failure
  *

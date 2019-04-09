@@ -2181,30 +2181,30 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
               <row>
                 <entry>&amp;</entry>
                 <entry>hidden message</entry>
-                <entry>see 
-                <link linkend="hide-limited">$hide_limited</link>and 
+                <entry>see
+                <link linkend="hide-limited">$hide_limited</link>and
                 <link linkend="hide-top-limited">$hide_top_limited</link></entry>
               </row>
               <row>
                 <entry>?</entry>
                 <entry>missing message</entry>
-                <entry>see 
-                <link linkend="hide-missing">$hide_missing</link>and 
+                <entry>see
+                <link linkend="hide-missing">$hide_missing</link>and
                 <link linkend="hide-top-missing">$hide_top_missing</link></entry>
               </row>
               <row>
                 <entry>*</entry>
                 <entry>pseudo thread</entry>
-                <entry>see 
+                <entry>see
                 <link linkend="strict-threads">$strict_threads</link>; not displayed
                 when <link linkend="narrow-tree">$narrow_tree</link>is set</entry>
               </row>
               <row>
                 <entry>=</entry>
                 <entry>duplicate thread</entry>
-                <entry>see 
+                <entry>see
                 <link linkend="duplicate-threads">$duplicate_threads</link>; not
-                displayed when 
+                displayed when
                 <link linkend="narrow-tree">$narrow_tree</link>is set</entry>
               </row>
             </tbody>
@@ -9243,7 +9243,7 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
         </para>
       <itemizedlist>
         <listitem>
-          <para>Reply envelope settings. 
+          <para>Reply envelope settings.
             <link linkend="reverse-name">$reverse_name</link>processing. To, Cc,
             Subject, References header defaults.
           </para>
@@ -9255,9 +9255,9 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
           </para>
         </listitem>
         <listitem>
-          <para>Prompts for To, Cc, Bcc, Subject headers. See 
-          <link linkend="askcc">$askcc</link>, 
-          <link linkend="askbcc">$askbcc</link>, 
+          <para>Prompts for To, Cc, Bcc, Subject headers. See
+          <link linkend="askcc">$askcc</link>,
+          <link linkend="askbcc">$askbcc</link>,
           <link linkend="fast-reply">$fast_reply</link>.</para>
         </listitem>
         <listitem>
