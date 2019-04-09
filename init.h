@@ -1718,6 +1718,17 @@ struct ConfigDef MuttVars[] = {
   ** Controls whether or not a copy of the message(s) you are replying to
   ** is included in your reply.
   */
+  { "include_encrypted", DT_BOOL, R_NONE, &C_IncludeEncrypted, false },
+  /*
+  ** .pp
+  ** Controls whether or not Mutt includes separately encrypted attachment
+  ** contents when replying.
+  ** .pp
+  ** This variable was added to prevent accidental exposure of encrypted
+  ** contents when replying to an attacker.  If a previously encrypted message
+  ** were attached by the attacker, they could trick an unwary recipient into
+  ** decrypting and including the message in their reply.
+  */
   { "include_onlyfirst",        DT_BOOL, R_NONE, &C_IncludeOnlyfirst, false },
   /*
   ** .pp

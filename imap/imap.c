@@ -192,7 +192,7 @@ static int make_msg_set(struct Mailbox *m, struct Buffer *buf, int flag,
 
   struct Email **emails = m->emails;
 
-  for (n = *pos; (n < m->msg_count) && ((buf->dptr - buf->data) < IMAP_MAX_CMDLEN); n++)
+  for (n = *pos; (n < m->msg_count) && (mutt_buffer_len(buf) < IMAP_MAX_CMDLEN); n++)
   {
     bool match = false; /* whether current message matches flag condition */
     /* don't include pending expunged messages.
@@ -1042,7 +1042,7 @@ int imap_exec_msgset(struct Mailbox *m, const char *pre, const char *post,
 
   do
   {
-    cmd->dptr = cmd->data;
+    mutt_buffer_reset(cmd);
     mutt_buffer_add_printf(cmd, "%s ", pre);
     rc = make_msg_set(m, cmd, flag, changed, invert, &pos);
     if (rc > 0)
@@ -1105,7 +1105,7 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
   }
 
   snprintf(uid, sizeof(uid), "%u", imap_edata_get(e)->uid);
-  cmd->dptr = cmd->data;
+  mutt_buffer_reset(cmd);
   mutt_buffer_addstr(cmd, "UID STORE ");
   mutt_buffer_addstr(cmd, uid);
 
@@ -1159,9 +1159,6 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
   mutt_buffer_addstr(cmd, flags);
   mutt_buffer_addstr(cmd, ")");
 
-  /* dumb hack for bad UW-IMAP 4.7 servers spurious FLAGS updates */
-  e->active = false;
-
   /* after all this it's still possible to have no flags, if you
    * have no ACL rights */
   if (*flags && (imap_exec(adata, cmd->data, 0) != IMAP_EXEC_SUCCESS) &&
@@ -1169,17 +1166,13 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
   {
     *err_continue = imap_continue("imap_sync_message: STORE failed", adata->buf);
     if (*err_continue != MUTT_YES)
-    {
-      e->active = true;
       return -1;
-    }
   }
 
   /* server have now the updated flags */
   FREE(&imap_edata_get(e)->flags_remote);
   imap_edata_get(e)->flags_remote = driver_tags_get_with_hidden(&e->tags);
 
-  e->active = true;
   if (e->deleted == imap_edata_get(e)->deleted)
     e->changed = false;
 
@@ -2491,6 +2484,20 @@ int imap_path_canon(char *buf, size_t buflen)
 }
 
 /**
+ * imap_expand_path - Buffer wrapper around imap_path_canon()
+ * @param buf Path to expand 
+ * @retval  0 Success
+ * @retval -1 Failure
+ *
+ * @note The path is expanded in place
+ */
+int imap_expand_path(struct Buffer *buf)
+{
+  mutt_buffer_increase_size(buf, PATH_MAX);
+  return imap_path_canon(buf->data, PATH_MAX);
+}
+
+/**
  * imap_path_pretty - Implements MxOps::path_pretty()
  */
 int imap_path_pretty(char *buf, size_t buflen, const char *folder)
@@ -2498,7 +2505,7 @@ int imap_path_pretty(char *buf, size_t buflen, const char *folder)
   if (!buf || !folder)
     return -1;
 
-  imap_pretty_mailbox(buf, folder);
+  imap_pretty_mailbox(buf, buflen, folder);
   return 0;
 }
 

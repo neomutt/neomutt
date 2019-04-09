@@ -50,7 +50,9 @@ struct Body
   char *d_filename;               /**< filename to be used for the
                                     content-disposition header.
                                    * If NULL, filename is used instead.  */
-  char *charset;                  /**< charset of attached file */
+  char *charset;                  /**< send mode: charset of attached file as stored
+                                   * on disk.  the charset used in the generated
+                                   * message is stored in parameter. */
   struct Content *content;        /**< structure used to store detailed info about
                                    * the content of the attachment.  this is used
                                    * to determine what content-transfer-encoding

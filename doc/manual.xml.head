@@ -2158,6 +2158,59 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
             </tbody>
           </tgroup>
         </table>
+
+        <para>
+          In the <emphasis>index</emphasis>, the subject of threaded children
+          messages will be prepended with thread tree characters. By default,
+          the subject itself will not be duplicated unless
+          <link linkend="hide-thread-subject">$hide_thread_subject</link>is
+          unset.  Special characters will be added to the thread tree as
+          detailed in <xref linkend="tab-thread-chars" />.
+        </para>
+        <table id="tab-thread-chars">
+          <title>Special Thread Characters</title>
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry>Character</entry>
+                <entry>Description</entry>
+                <entry>Notes</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>&amp;</entry>
+                <entry>hidden message</entry>
+                <entry>see 
+                <link linkend="hide-limited">$hide_limited</link>and 
+                <link linkend="hide-top-limited">$hide_top_limited</link></entry>
+              </row>
+              <row>
+                <entry>?</entry>
+                <entry>missing message</entry>
+                <entry>see 
+                <link linkend="hide-missing">$hide_missing</link>and 
+                <link linkend="hide-top-missing">$hide_top_missing</link></entry>
+              </row>
+              <row>
+                <entry>*</entry>
+                <entry>pseudo thread</entry>
+                <entry>see 
+                <link linkend="strict-threads">$strict_threads</link>; not displayed
+                when <link linkend="narrow-tree">$narrow_tree</link>is set</entry>
+              </row>
+              <row>
+                <entry>=</entry>
+                <entry>duplicate thread</entry>
+                <entry>see 
+                <link linkend="duplicate-threads">$duplicate_threads</link>; not
+                displayed when 
+                <link linkend="narrow-tree">$narrow_tree</link>is set</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+
         <para>
           Collapsing a thread displays only the first message in the thread and
           hides the others. This is useful when threads contain so many
@@ -5917,6 +5970,16 @@ folder-hook . 'push "&lt;enter-command&gt;score ~= 10&lt;enter&gt;"'
         defined for a given message.)
       </para>
       <para>
+        Note: the value displayed by <literal>%H</literal>and searched by
+        <literal>~H</literal>is stored in the
+        <link linkend="caching">header cache</link>. Mutt isn't smart enough to
+        invalidate a header cache entry based on changing <literal>spam</literal>
+        rules, so if you aren't seeing correct <literal>%H</literal>values, try
+        temporarily turning off the header cache. If that fixes the problem,
+        then once your spam rules are set to your liking, remove your stale
+        header cache files and turn the header cache back on.
+      </para>
+      <para>
         Your first step is to define your external filter's spam patterns using
         the <command>spam</command> command. <emphasis>pattern</emphasis>
         should be a regular expression that matches a header in a mail message.
@@ -8398,7 +8461,8 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
       </itemizedlist>
       <para>
         for specific details on each type of <emphasis>hook</emphasis>
-        available.
+        available.  Also see <link linkend="compose-flow">Message Composition
+        Flow</link> for an overview of the composition process.
       </para>
       <note>
         <para>
@@ -9169,6 +9233,111 @@ unset confirmappend
 macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;echo 'Saved to archive'&lt;enter&gt;"
 </screen>
 
+    </sect1>
+
+    <sect1 id="compose-flow">
+      <title>Message Composition Flow</title>
+        <para>
+          This is a brief overview of the steps Mutt takes during message
+          composition. It also shows the order and timing of hook execution.
+        </para>
+      <itemizedlist>
+        <listitem>
+          <para>Reply envelope settings. 
+            <link linkend="reverse-name">$reverse_name</link>processing. To, Cc,
+            Subject, References header defaults.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <link linkend="my-hdr">my_hdr</link>processing for To, Cc, Bcc,
+            Subject headers.
+          </para>
+        </listitem>
+        <listitem>
+          <para>Prompts for To, Cc, Bcc, Subject headers. See 
+          <link linkend="askcc">$askcc</link>, 
+          <link linkend="askbcc">$askbcc</link>, 
+          <link linkend="fast-reply">$fast_reply</link>.</para>
+        </listitem>
+        <listitem>
+          <para>
+            From header setting. Note: this is so
+            <link linkend="send-hook">send-hook</link>s below can match ~P, but
+            From is re-set further below in case a send-hook changes the value.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <link linkend="reply-hook">reply-hook</link>
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <link linkend="send-hook">send-hook</link>
+          </para>
+        </listitem>
+        <listitem>
+          <para>From header setting.</para>
+        </listitem>
+        <listitem>
+          <para>
+            <link linkend="my-hdr">my_hdr</link> processing for From, Reply-To,
+            Message-ID and user-defined headers. The To, Cc, Bcc, Subject, and
+            Return-Path headers are ignored at this stage.
+          </para>
+        </listitem>
+        <listitem>
+          <para>Message body and signature generation.</para>
+        </listitem>
+        <listitem>
+          <para>
+            <link linkend="send2-hook">send2-hook</link>
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <link linkend="realname">$realname</link>part of From header setting.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <link linkend="editor">$editor</link>invocation for the message.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <link linkend="send2-hook">send2-hook</link>
+          </para>
+        </listitem>
+        <listitem>
+          <para>Cryptographic settings.</para>
+        </listitem>
+        <listitem>
+          <para>
+          <link linkend="fcc-hook">fcc-hook</link>. Fcc setting.</para>
+        </listitem>
+        <listitem>
+          <para>
+            <link linkend="compose-menu">Compose menu</link>. Note:
+            <link linkend="send2-hook">send2-hook</link>
+            is evaluated each time the headers are changed.
+          </para>
+        </listitem>
+        <listitem>
+          <para>Message encryption and signing. Key selection.</para>
+        </listitem>
+        <listitem>
+          <para>Message sending.</para>
+        </listitem>
+        <listitem>
+          <para>
+            Fcc saving. Note: prior to version 1.12, the Fcc was saved before
+            sending the message. It is now saved afterwards, but the if saving
+            fails, the user is prompted.
+          </para>
+        </listitem>
+      </itemizedlist>
     </sect1>
 
     <sect1 id="misc-topics">

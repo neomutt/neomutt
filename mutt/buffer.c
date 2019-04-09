@@ -320,6 +320,20 @@ void mutt_buffer_strcpy(struct Buffer *buf, const char *s)
 }
 
 /**
+ * mutt_buffer_strcpy - Copy a string into a Buffer
+ * @param buf Buffer to overwrite
+ * @param s   String to copy
+ * @param len Length of string to copy
+ *
+ * Overwrites any existing content.
+ */
+void mutt_buffer_strcpy_n(struct Buffer *buf, const char *s, size_t len)
+{
+  mutt_buffer_reset(buf);
+  mutt_buffer_addstr_n(buf, s, len);
+}
+
+/**
  * mutt_buffer_increase_size - Increase the allocated size of a buffer
  * @param buf      Buffer to change
  * @param new_size New size

@@ -104,7 +104,13 @@ int rfc1524_expand_command(struct Body *a, const char *filename,
           param[z++] = command[x++];
         param[z] = '\0';
 
-        pvalue2 = mutt_param_get(&a->parameter, param);
+        /* In send mode, use the current charset, since the message hasn't
+         * been converted yet.   If noconv is set, then we assume the
+         * charset parameter has the correct value instead. */
+        if ((mutt_str_strcasecmp(param, "charset") == 0) && a->charset && !a->noconv)
+          pvalue2 = a->charset;
+        else
+          pvalue2 = mutt_param_get(&a->parameter, param);
         mutt_str_strfcpy(pvalue, pvalue2, sizeof(pvalue));
         if (C_MailcapSanitize)
           mutt_file_sanitize_filename(pvalue, false);

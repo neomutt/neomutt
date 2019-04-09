@@ -63,6 +63,7 @@
 /* These Config Variables are only used in handler.c */
 bool C_HonorDisposition; ///< Config: Don't display MIME parts inline if they have a disposition of 'attachment'
 bool C_ImplicitAutoview; ///< Config: Display MIME attachments inline if a 'copiousoutput' mailcap entry exists
+bool C_IncludeEncrypted; ///< Config: Whether to include encrypted content when replying
 bool C_IncludeOnlyfirst; ///< Config: Only include the first attachment when replying
 char *C_PreferredLanguages; ///< Config: Preferred languages for multilingual MIME
 bool C_ReflowText; ///< Config: Reformat paragraphs of 'format=flowed' text
@@ -1528,6 +1529,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
 
   bool plaintext = false;
   handler_t handler = NULL;
+  handler_t encrypted_handler = NULL;
   int rc = 0;
 
   int oflags = s->flags;
@@ -1546,7 +1548,10 @@ int mutt_body_handler(struct Body *b, struct State *s)
       /* avoid copying this part twice since removing the transfer-encoding is
        * the only operation needed.  */
       if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(b))
-        handler = crypt_pgp_application_handler;
+      {
+        encrypted_handler = crypt_pgp_application_handler;
+        handler = encrypted_handler;
+      }
       else if (C_ReflowText &&
                (mutt_str_strcasecmp("flowed",
                                     mutt_param_get(&b->parameter, "format")) == 0))
@@ -1593,11 +1598,13 @@ int mutt_body_handler(struct Body *b, struct State *s)
     }
     else if (mutt_is_valid_multipart_pgp_encrypted(b))
     {
-      handler = valid_pgp_encrypted_handler;
+      encrypted_handler = valid_pgp_encrypted_handler;
+      handler = encrypted_handler;
     }
     else if (mutt_is_malformed_multipart_pgp_encrypted(b))
     {
-      handler = malformed_pgp_encrypted_handler;
+      encrypted_handler = malformed_pgp_encrypted_handler;
+      handler = encrypted_handler;
     }
 
     if (!handler)
@@ -1618,9 +1625,15 @@ int mutt_body_handler(struct Body *b, struct State *s)
       plaintext = true;
     }
     else if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(b))
-      handler = crypt_pgp_application_handler;
+    {
+      encrypted_handler = crypt_pgp_application_handler;
+      handler = encrypted_handler;
+    }
     else if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(b))
-      handler = crypt_smime_application_handler;
+    {
+      encrypted_handler = crypt_smime_application_handler;
+      handler = encrypted_handler;
+    }
   }
 
   /* only respect disposition == attachment if we're not
@@ -1628,6 +1641,14 @@ int mutt_body_handler(struct Body *b, struct State *s)
   if ((!C_HonorDisposition || ((b->disposition != DISP_ATTACH) || OptViewAttach)) &&
       (plaintext || handler))
   {
+    /* Prevent encrypted attachments from being included in replies
+     * unless $include_encrypted is set. */
+    if ((s->flags & MUTT_REPLYING) && (s->flags & MUTT_FIRSTDONE) &&
+        encrypted_handler && !C_IncludeEncrypted)
+    {
+      goto cleanup;
+    }
+
     rc = run_decode_and_handler(b, s, handler, plaintext);
   }
   /* print hint to use attachment menu for disposition == attachment
@@ -1689,6 +1710,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
     state_printf(s, str, TYPE(b), b->subtype, keystroke);
   }
 
+cleanup:
   s->flags = oflags | (s->flags & MUTT_FIRSTDONE);
   if (rc != 0)
   {

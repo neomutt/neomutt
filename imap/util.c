@@ -530,11 +530,8 @@ int imap_hcache_store_uid_seqset(struct ImapMboxData *mdata)
   mutt_buffer_increase_size(b, 8192);
   imap_msn_index_to_uid_seqset(b, mdata);
 
-  size_t seqset_size = b->dptr - b->data;
-  if (seqset_size == 0)
-    b->data[0] = '\0';
-
-  int rc = mutt_hcache_store_raw(mdata->hcache, "/UIDSEQSET", 10, b->data, seqset_size + 1);
+  int rc = mutt_hcache_store_raw(mdata->hcache, "/UIDSEQSET", 10, b->data,
+                                 mutt_buffer_len(b) + 1);
   mutt_debug(LL_DEBUG3, "Stored /UIDSEQSET %s\n", b->data);
   mutt_buffer_free(&b);
   return rc;
@@ -682,12 +679,13 @@ int imap_mxcmp(const char *mx1, const char *mx2)
 
 /**
  * imap_pretty_mailbox - Prettify an IMAP mailbox name
- * @param path   Mailbox name to be tidied
- * @param folder Path to use for '+' abbreviations
+ * @param path    Mailbox name to be tidied
+ * @param pathlen Length of path
+ * @param folder  Path to use for '+' abbreviations
  *
  * Called by mutt_pretty_mailbox() to make IMAP paths look nice.
  */
-void imap_pretty_mailbox(char *path, const char *folder)
+void imap_pretty_mailbox(char *path, size_t pathlen, const char *folder)
 {
   struct ConnAccount target_conn_account, home_conn_account;
   struct Url url;
@@ -739,10 +737,7 @@ void imap_pretty_mailbox(char *path, const char *folder)
 fallback:
   mutt_account_tourl(&target_conn_account, &url);
   url.path = target_mailbox;
-  /* FIXME: That hard-coded constant is bogus. But we need the actual
-   *   size of the buffer from mutt_pretty_mailbox. And these pretty
-   *   operations usually shrink the result. Still... */
-  url_tostring(&url, path, 1024, 0);
+  url_tostring(&url, path, pathlen, 0);
 }
 
 /**

@@ -160,47 +160,47 @@ char *mutt_expand_path(char *buf, size_t buflen)
 }
 
 /**
- * mutt_expand_path_regex - Create the canonical path (with regex char escaping)
+ * mutt_buffer_expand_path_regex - Create the canonical path (with regex char escaping)
  * @param buf     Buffer with path
- * @param buflen  Length of buffer
  * @param regex If true, escape any regex characters
- * @retval ptr The expanded string
  *
  * @note The path is expanded in-place
  */
-char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
+void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
 {
-  char p[PATH_MAX] = "";
-  char q[PATH_MAX] = "";
-  char tmp[PATH_MAX];
-
+  const char *s = NULL;
   const char *tail = "";
 
   bool recurse = false;
 
+  struct Buffer *p = mutt_buffer_pool_get();
+  struct Buffer *q = mutt_buffer_pool_get();
+  struct Buffer *tmp = mutt_buffer_pool_get();
+
   do
   {
     recurse = false;
+    s = mutt_b2s(buf);
 
-    switch (*buf)
+    switch (*s)
     {
       case '~':
       {
-        if ((*(buf + 1) == '/') || (*(buf + 1) == 0))
+        if ((*(s + 1) == '/') || (*(s + 1) == 0))
         {
-          mutt_str_strfcpy(p, HomeDir, sizeof(p));
-          tail = buf + 1;
+          mutt_buffer_strcpy(p, HomeDir);
+          tail = s + 1;
         }
         else
         {
-          char *t = strchr(buf + 1, '/');
+          char *t = strchr(s + 1, '/');
           if (t)
             *t = '\0';
 
-          struct passwd *pw = getpwnam(buf + 1);
+          struct passwd *pw = getpwnam(s + 1);
           if (pw)
           {
-            mutt_str_strfcpy(p, pw->pw_dir, sizeof(p));
+            mutt_buffer_strcpy(p, pw->pw_dir);
             if (t)
             {
               *t = '/';
@@ -214,8 +214,8 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
             /* user not found! */
             if (t)
               *t = '/';
-            *p = '\0';
-            tail = buf;
+            mutt_buffer_reset(p);
+            tail = s;
           }
         }
         break;
@@ -230,16 +230,16 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
         if ((mb_type == MUTT_IMAP) && ((C_Folder[strlen(C_Folder) - 1] == '}') ||
                                        (C_Folder[strlen(C_Folder) - 1] == '/')))
         {
-          mutt_str_strfcpy(p, C_Folder, sizeof(p));
+          mutt_buffer_strcpy(p, NONULL(C_Folder));
         }
         else if (mb_type == MUTT_NOTMUCH)
-          mutt_str_strfcpy(p, C_Folder, sizeof(p));
+          mutt_buffer_strcpy(p, NONULL(C_Folder));
         else if (C_Folder && *C_Folder && (C_Folder[strlen(C_Folder) - 1] == '/'))
-          mutt_str_strfcpy(p, C_Folder, sizeof(p));
+          mutt_buffer_strcpy(p, NONULL(C_Folder));
         else
-          snprintf(p, sizeof(p), "%s/", NONULL(C_Folder));
+          mutt_buffer_printf(p, "%s/", NONULL(C_Folder));
 
-        tail = buf + 1;
+        tail = s + 1;
         break;
       }
 
@@ -247,19 +247,24 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
 
       case '@':
       {
-        struct Address *alias = mutt_alias_lookup(buf + 1);
+        struct Address *alias = mutt_alias_lookup(s + 1);
         if (alias)
         {
           struct Email *e = mutt_email_new();
           e->env = mutt_env_new();
           e->env->from = alias;
           e->env->to = alias;
-          mutt_default_save(p, sizeof(p), e);
+
+          /* TODO: fix mutt_default_save() to use Buffer */
+          mutt_buffer_increase_size(p, PATH_MAX);
+          mutt_default_save(p->data, p->dsize, e);
+          mutt_buffer_fix_dptr(p);
+
           e->env->from = NULL;
           e->env->to = NULL;
           mutt_email_free(&e);
           /* Avoid infinite recursion if the resulting folder starts with '@' */
-          if (*p != '@')
+          if (*(mutt_b2s(p)) != '@')
             recurse = true;
 
           tail = "";
@@ -269,71 +274,106 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
 
       case '>':
       {
-        mutt_str_strfcpy(p, C_Mbox, sizeof(p));
-        tail = buf + 1;
+        mutt_buffer_strcpy(p, C_Mbox);
+        tail = s + 1;
         break;
       }
 
       case '<':
       {
-        mutt_str_strfcpy(p, C_Record, sizeof(p));
-        tail = buf + 1;
+        mutt_buffer_strcpy(p, C_Record);
+        tail = s + 1;
         break;
       }
 
       case '!':
       {
-        if (*(buf + 1) == '!')
+        if (*(s + 1) == '!')
         {
-          mutt_str_strfcpy(p, LastFolder, sizeof(p));
-          tail = buf + 2;
+          mutt_buffer_strcpy(p, LastFolder);
+          tail = s + 2;
         }
         else
         {
-          mutt_str_strfcpy(p, C_Spoolfile, sizeof(p));
-          tail = buf + 1;
+          mutt_buffer_strcpy(p, C_Spoolfile);
+          tail = s + 1;
         }
         break;
       }
 
       case '-':
       {
-        mutt_str_strfcpy(p, LastFolder, sizeof(p));
-        tail = buf + 1;
+        mutt_buffer_strcpy(p, LastFolder);
+        tail = s + 1;
         break;
       }
 
       case '^':
       {
-        mutt_str_strfcpy(p, CurrentFolder, sizeof(p));
-        tail = buf + 1;
+        mutt_buffer_strcpy(p, CurrentFolder);
+        tail = s + 1;
         break;
       }
 
       default:
       {
-        *p = '\0';
-        tail = buf;
+        mutt_buffer_reset(p);
+        tail = s;
       }
     }
 
-    if (regex && *p && !recurse)
+    if (regex && *(mutt_b2s(p)) && !recurse)
     {
-      mutt_file_sanitize_regex(q, sizeof(q), p);
-      snprintf(tmp, sizeof(tmp), "%s%s", q, tail);
+      mutt_file_sanitize_regex(q, mutt_b2s(p));
+      mutt_buffer_printf(tmp, "%s%s", mutt_b2s(q), tail);
     }
     else
-      snprintf(tmp, sizeof(tmp), "%s%s", p, tail);
+      mutt_buffer_printf(tmp, "%s%s", mutt_b2s(p), tail);
 
-    mutt_str_strfcpy(buf, tmp, buflen);
+    mutt_buffer_strcpy(buf, mutt_b2s(tmp));
   } while (recurse);
+
+  mutt_buffer_pool_release(&p);
+  mutt_buffer_pool_release(&q);
+  mutt_buffer_pool_release(&tmp);
 
 #ifdef USE_IMAP
   /* Rewrite IMAP path in canonical form - aids in string comparisons of
    * folders. May possibly fail, in which case buf should be the same. */
-  if (imap_path_probe(buf, NULL) == MUTT_IMAP)
-    imap_path_canon(buf, buflen);
+  if (imap_path_probe(mutt_b2s(buf), NULL) == MUTT_IMAP)
+    imap_expand_path(buf);
 #endif
+}
+
+/**
+ * mutt_buffer_expand_path - Create the canonical path
+ * @param buf     Buffer with path
+ *
+ * @note The path is expanded in-place
+ */
+void mutt_buffer_expand_path(struct Buffer *buf)
+{
+  mutt_buffer_expand_path_regex(buf, 0);
+}
+
+/**
+ * mutt_expand_path_regex - Create the canonical path (with regex char escaping)
+ * @param buf     Buffer with path
+ * @param buflen  Length of buffer
+ * @param regex If true, escape any regex characters
+ * @retval ptr The expanded string
+ *
+ * @note The path is expanded in-place
+ */
+char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
+{
+  struct Buffer *tmp = mutt_buffer_pool_get();
+
+  mutt_buffer_addstr(tmp, NONULL(buf));
+  mutt_buffer_expand_path_regex(tmp, regex);
+  mutt_str_strfcpy(buf, mutt_b2s(tmp), buflen);
+
+  mutt_buffer_pool_release(&tmp);
 
   return buf;
 }
@@ -613,7 +653,7 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
 
   if ((scheme == U_IMAP) || (scheme == U_IMAPS))
   {
-    imap_pretty_mailbox(buf, C_Folder);
+    imap_pretty_mailbox(buf, buflen, C_Folder);
     return;
   }
 
@@ -852,8 +892,10 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
       strncpy(srccopy, src, n);
       srccopy[n - 1] = '\0';
 
-      /* prepare BUFFERs */
+      /* prepare Buffers */
       struct Buffer *srcbuf = mutt_buffer_from(srccopy);
+      /* note: we are resetting dptr and *reading* from the buffer, so we don't
+       * want to use mutt_buffer_reset(). */
       srcbuf->dptr = srcbuf->data;
       struct Buffer *word = mutt_buffer_new();
       struct Buffer *cmd = mutt_buffer_new();
@@ -1656,4 +1698,23 @@ int mutt_inbox_cmp(const char *a, const char *b)
     return 1;
 
   return 0;
+}
+
+/**
+ * mutt_getcwd - Get the current working directory
+ * @param cwd Buffer for the result
+ */
+void mutt_getcwd(struct Buffer *cwd)
+{
+  mutt_buffer_increase_size(cwd, PATH_MAX);
+  char *retval = getcwd(cwd->data, cwd->dsize);
+  while (!retval && (errno == ERANGE))
+  {
+    mutt_buffer_increase_size(cwd, cwd->dsize + 256);
+    retval = getcwd(cwd->data, cwd->dsize);
+  }
+  if (retval)
+    mutt_buffer_fix_dptr(cwd);
+  else
+    mutt_buffer_reset(cwd);
 }

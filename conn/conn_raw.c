@@ -267,8 +267,12 @@ int raw_socket_read(struct Connection *conn, char *buf, size_t count)
   int rc;
 
   mutt_sig_allow_interrupt(1);
-  rc = read(conn->fd, buf, count);
-  if (rc == -1)
+  do
+  {
+    rc = read(conn->fd, buf, count);
+  } while (rc < 0 && (errno == EINTR));
+
+  if (rc < 0)
   {
     mutt_error(_("Error talking to %s (%s)"), conn->account.host, strerror(errno));
     SigInt = 0;
@@ -291,24 +295,28 @@ int raw_socket_read(struct Connection *conn, char *buf, size_t count)
 int raw_socket_write(struct Connection *conn, const char *buf, size_t count)
 {
   int rc;
+  size_t sent = 0;
 
   mutt_sig_allow_interrupt(1);
-  rc = write(conn->fd, buf, count);
-  if (rc == -1)
+  do
   {
-    mutt_error(_("Error talking to %s (%s)"), conn->account.host, strerror(errno));
-    SigInt = 0;
-  }
+    do
+    {
+      rc = write(conn->fd, buf + sent, count - sent);
+    } while (rc < 0 && (errno == EINTR));
+
+    if (rc < 0)
+    {
+      mutt_error(_("Error talking to %s (%s)"), conn->account.host, strerror(errno));
+      mutt_sig_allow_interrupt(0);
+      return -1;
+    }
+
+    sent += rc;
+  } while ((sent < count) && (SigInt == 0));
+
   mutt_sig_allow_interrupt(0);
-
-  if (SigInt)
-  {
-    mutt_error(_("Connection to %s has been aborted"), conn->account.host);
-    SigInt = 0;
-    rc = -1;
-  }
-
-  return rc;
+  return sent;
 }
 
 /**
