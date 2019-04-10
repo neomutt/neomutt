@@ -65,13 +65,9 @@ struct Pattern
 };
 SLIST_HEAD(PatternHead, Pattern);
 
-/**
- * enum PatternExecFlag - Flags for mutt_pattern_exec()
- */
-enum PatternExecFlag
-{
-  MUTT_MATCH_FULL_ADDRESS = 1, ///< Match the full address
-};
+typedef uint8_t PatternExecFlags;         ///< Flags for mutt_pattern_exec(), e.g. #MUTT_MATCH_FULL_ADDRESS
+#define MUTT_PAT_EXEC_NO_FLAGS         0  ///< No flags are set
+#define MUTT_MATCH_FULL_ADDRESS  (1 << 0) ///< Match the full address
 
 /**
  * struct PatternCache - Cache commonly-used patterns
@@ -149,7 +145,7 @@ enum PatternType
   MUTT_PAT_MAX,
 };
 
-int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
+int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
                       struct Mailbox *m, struct Email *e, struct PatternCache *cache);
 struct PatternHead *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer *err);
 void mutt_check_simple(char *s, size_t len, const char *simple);
