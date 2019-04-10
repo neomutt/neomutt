@@ -513,11 +513,10 @@ bool rfc1524_mailcap_lookup(struct Body *a, char *type,
 }
 
 /**
- * rfc1524_expand_filename - Expand a new filename from a template or existing filename
+ * mutt_buffer_rfc1524_expand_filename - Expand a new filename from a template or existing filename
  * @param nametemplate Template
  * @param oldfile      Original filename
  * @param newfile      Buffer for new filename
- * @param nflen        Buffer length
  * @retval 0 if the left and right components of the oldfile and newfile match
  * @retval 1 otherwise
  *
@@ -531,16 +530,14 @@ bool rfc1524_mailcap_lookup(struct Body *a, char *type,
  * for a "%s". If none is found, the nametemplate is used as the template for
  * newfile.  The first path component of the nametemplate and oldfile are ignored.
  */
-int rfc1524_expand_filename(const char *nametemplate, const char *oldfile,
-                            char *newfile, size_t nflen)
+int mutt_buffer_rfc1524_expand_filename(const char *nametemplate,
+                                        const char *oldfile, struct Buffer *newfile)
 {
   int i, j, k;
   char *s = NULL;
   bool lmatch = false, rmatch = false;
-  char left[PATH_MAX];
-  char right[PATH_MAX];
 
-  newfile[0] = '\0';
+  mutt_buffer_reset(newfile);
 
   /* first, ignore leading path components */
 
@@ -553,11 +550,11 @@ int rfc1524_expand_filename(const char *nametemplate, const char *oldfile,
   if (!nametemplate)
   {
     if (oldfile)
-      mutt_str_strfcpy(newfile, oldfile, nflen);
+      mutt_buffer_strcpy(newfile, oldfile);
   }
   else if (!oldfile)
   {
-    mutt_file_expand_fmt(newfile, nflen, nametemplate, "neomutt");
+    mutt_file_expand_fmt(newfile, nametemplate, "neomutt");
   }
   else /* oldfile && nametemplate */
   {
@@ -613,47 +610,29 @@ int rfc1524_expand_filename(const char *nametemplate, const char *oldfile,
       if (k >= i + 2)
         rmatch = false;
 
-      if (lmatch)
-        *left = '\0';
-      else
-        mutt_str_strnfcpy(left, nametemplate, i, sizeof(left));
+      struct Buffer *left = mutt_buffer_pool_get();
+      struct Buffer *right = mutt_buffer_pool_get();
 
-      if (rmatch)
-        *right = '\0';
-      else
-        mutt_str_strfcpy(right, nametemplate + i + 2, sizeof(right));
+      if (!lmatch)
+        mutt_buffer_strcpy_n(left, nametemplate, i);
+      if (!rmatch)
+        mutt_buffer_strcpy(right, nametemplate + i + 2);
+      mutt_buffer_printf(newfile, "%s%s%s", mutt_b2s(left), oldfile, mutt_b2s(right));
 
-      snprintf(newfile, nflen, "%s%s%s", left, oldfile, right);
+      mutt_buffer_pool_release(&left);
+      mutt_buffer_pool_release(&right);
     }
     else
     {
       /* no "%s" in the name template. */
-      mutt_str_strfcpy(newfile, nametemplate, nflen);
+      mutt_buffer_strcpy(newfile, nametemplate);
     }
   }
 
-  mutt_adv_mktemp(newfile, nflen);
+  mutt_buffer_adv_mktemp(newfile);
 
   if (rmatch && lmatch)
     return 0;
   else
     return 1;
-}
-
-/**
- * mutt_buffer_rfc1524_expand_filename - Expand a new filename from a template or existing filename
- * @param nametemplate Template
- * @param oldfile      Original filename
- * @param newfile      Buffer for new filename
- * @retval 0 if the left and right components of the oldfile and newfile match
- * @retval 1 otherwise
- */
-int mutt_buffer_rfc1524_expand_filename(const char *nametemplate,
-                                        const char *oldfile, struct Buffer *newfile)
-{
-  mutt_buffer_increase_size(newfile, PATH_MAX);
-  int rc = rfc1524_expand_filename(nametemplate, oldfile, newfile->data, newfile->dsize);
-  mutt_buffer_fix_dptr(newfile);
-
-  return rc;
 }

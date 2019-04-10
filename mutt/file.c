@@ -1365,70 +1365,58 @@ int mutt_file_check_empty(const char *path)
  */
 void mutt_buffer_file_expand_fmt_quote(struct Buffer *dest, const char *fmt, const char *src)
 {
-  char tmp[PATH_MAX];
+  struct Buffer *tmp = mutt_buffer_pool_get();
 
-  mutt_file_quote_filename(src, tmp, sizeof(tmp));
-  /* TODO: this will be fixed in the next commit */
-  mutt_file_expand_fmt(dest->data, dest->dsize, fmt, tmp);
-  mutt_buffer_fix_dptr(dest);
+  mutt_buffer_quote_filename(tmp, src);
+  mutt_file_expand_fmt(dest, fmt, mutt_b2s(tmp));
+  mutt_buffer_pool_release(&tmp);
 }
 
 /**
  * mutt_file_expand_fmt - Replace `%s` in a string with a filename
  * @param dest    Buffer for the result
- * @param destlen Length of buffer
  * @param fmt     printf-like format string
  * @param src     Filename to substitute
  */
-void mutt_file_expand_fmt(char *dest, size_t destlen, const char *fmt, const char *src)
+void mutt_file_expand_fmt(struct Buffer *dest, const char *fmt, const char *src)
 {
   if (!dest || !fmt || !src)
     return;
 
   const char *p = NULL;
-  char *d = NULL;
-  size_t slen;
   bool found = false;
 
-  slen = mutt_str_strlen(src);
-  destlen--;
+  mutt_buffer_reset(dest);
 
-  for (p = fmt, d = dest; (destlen != 0) && *p; p++)
+  for (p = fmt; *p; p++)
   {
     if (*p == '%')
     {
       switch (p[1])
       {
         case '%':
-          *d++ = *p++;
-          destlen--;
+          mutt_buffer_addch(dest, *p++);
           break;
         case 's':
           found = true;
-          mutt_str_strfcpy(d, src, destlen + 1);
-          d += (destlen > slen) ? slen : destlen;
-          destlen -= (destlen > slen) ? slen : destlen;
+          mutt_buffer_addstr(dest, src);
           p++;
           break;
         default:
-          *d++ = *p;
-          destlen--;
+          mutt_buffer_addch(dest, *p);
           break;
       }
     }
     else
     {
-      *d++ = *p;
-      destlen--;
+      mutt_buffer_addch(dest, *p);
     }
   }
 
-  *d = '\0';
-
-  if (!found && (destlen > 0))
+  if (!found)
   {
-    mutt_str_strcat(dest, destlen, " ");
-    mutt_str_strcat(dest, destlen, src);
+    mutt_buffer_addch(dest, ' ');
+    mutt_buffer_addstr(dest, src);
   }
 }
 

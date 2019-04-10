@@ -2307,9 +2307,7 @@ void mutt_check_simple(struct Buffer *buf, const char *simple)
     {
       struct Buffer *tmp = mutt_buffer_pool_get();
       quote_simple(mutt_b2s(buf), tmp);
-      /* TODO: this will be fixed in the set of commits. */
-      mutt_file_expand_fmt(buf->data, buf->dsize, simple, mutt_b2s(tmp));
-      mutt_buffer_fix_dptr(buf);
+      mutt_file_expand_fmt(buf, simple, mutt_b2s(tmp));
       mutt_buffer_pool_release(&tmp);
     }
   }
