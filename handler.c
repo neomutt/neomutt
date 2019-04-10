@@ -545,7 +545,7 @@ static int autoview_handler(struct Body *a, struct State *s)
 
   fname = mutt_str_strdup(a->filename);
   mutt_file_sanitize_filename(fname, true);
-  mutt_buffer_rfc1524_expand_filename(entry->nametemplate, fname, tempfile);
+  mutt_rfc1524_expand_filename(entry->nametemplate, fname, tempfile);
   FREE(&fname);
 
   if (entry->command)
