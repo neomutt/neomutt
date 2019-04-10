@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2019-04-09 12:48+0100\n"
-"PO-Revision-Date: 2019-01-25 17:47+0100\n"
+"PO-Revision-Date: 2019-04-10 15:11+0200\n"
 "Last-Translator: Marcin Rajner <marcin.rajner@pw.edu.pl>\n"
 "Language-Team: none\n"
 "Language: pl\n"
@@ -841,9 +841,8 @@ msgid "What we have here is a failure to make an attachment"
 msgstr "Mamy tu błąd tworzenia załącznika"
 
 #: compose.c:1859
-#, fuzzy
 msgid "Save (postpone) draft message?"
-msgstr "Wywołać odłożony list?"
+msgstr "Zapisać (odłożyć) szkic wiadomośći?"
 
 #: compose.c:1917
 msgid "Write message to mailbox"
@@ -1653,7 +1652,6 @@ msgid "mailbox shortcut expanded to empty regex"
 msgstr ""
 
 #: hook.c:161
-#, fuzzy
 msgid "badly formatted cmd string"
 msgstr "błędnie sformatowane polecenie"
 
@@ -3400,9 +3398,9 @@ msgid "error reading data object: %s"
 msgstr "Błąd czytania obiektu danych: %s"
 
 #: ncrypt/crypt_gpgme.c:1055
-#, fuzzy, c-format
+#, c-format
 msgid "error adding recipient '%s': %s"
-msgstr "Błąd dodawania odbiorcy '%s': %s"
+msgstr "błąd dodania odbiorcy '%s': %s"
 
 #: ncrypt/crypt_gpgme.c:1097
 #, c-format
@@ -3578,9 +3576,9 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2706
-#, fuzzy, c-format
+#, c-format
 msgid "Error extracting key: %s"
-msgstr "Błąd eksportowania klucza: %s"
+msgstr "Błąd uzyskania klucza: %s"
 
 #: ncrypt/crypt_gpgme.c:2946
 #, c-format
@@ -4011,7 +4009,6 @@ msgstr ""
 #. (not encrypting) something and (2) it is a plaintext. So the
 #. message does not mean "You failed to encrypt the message."
 #: ncrypt/pgp.c:731
-#, fuzzy
 msgid "PGP message is not encrypted"
 msgstr "List PGP nie został odszyfrowany"
 
@@ -4488,9 +4485,9 @@ msgid "No more messages in the thread"
 msgstr "Nie ma więcej wiadomości w wątku"
 
 #: notmuch/mutt_notmuch.c:1945
-#, fuzzy, c-format
+#, c-format
 msgid "failed to parse limit: %s"
-msgstr "nieudane dopasowanie notmuch limit: %s"
+msgstr "nieudane parsowanie limitu: %s"
 
 #: notmuch/mutt_notmuch.c:2495
 msgid "Can't write to virtual folder"
@@ -4761,9 +4758,8 @@ msgid "delete all messages in thread"
 msgstr "usuń wszystkie listy w wątku"
 
 #: opcodes.h:94
-#, fuzzy
 msgid "descend into a directory"
-msgstr "%s nie jest katalogiem"
+msgstr "wchodzenie do katalogu"
 
 #: opcodes.h:95
 msgid "display full address of sender"
@@ -4946,9 +4942,8 @@ msgid "go to parent directory"
 msgstr "idź do katalogu nadrzędnego"
 
 #: opcodes.h:140
-#, fuzzy
 msgid "reply to all recipients preserving To/Cc"
-msgstr "odpowiedz wszystkim adresatom"
+msgstr "odpowiedz wszystkim adresatom włącznie z To/CC"
 
 #: opcodes.h:141
 msgid "reply to all recipients"
@@ -5598,14 +5593,13 @@ msgid "Empty expression"
 msgstr "Puste wyrażenie"
 
 #: pattern.c:280
-#, fuzzy
 msgid "No search command defined"
-msgstr "Brak zdefiniowanej komendy odświeżania OAUTH"
+msgstr "Nie zdefiniowano komendy szukania"
 
 #: pattern.c:318
-#, fuzzy, c-format
+#, c-format
 msgid "Running search command: %s ..."
-msgstr "Wywoływanie polecenia podglądu: %s"
+msgstr "Wyszukiwanie zgodnie z komendą: %s"
 
 #: pattern.c:409
 #, c-format
@@ -6148,9 +6142,8 @@ msgid "Preparing forwarded message..."
 msgstr "Przygotowywanie listu do przesłania dalej..."
 
 #: send.c:1493
-#, fuzzy
 msgid "Fcc to an IMAP mailbox is not supported in batch mode"
-msgstr "%c: nie obsługiwane w tym trybie"
+msgstr "Fcc to skrzynki typu IMAP nie jest obsługiwanie w lini poleceń"
 
 #: send.c:1520 send.c:1546
 msgid "Save attachments in Fcc?"
@@ -6174,9 +6167,8 @@ msgstr ""
 #. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
 #. initial Fcc fails.
 #: send.c:1577
-#, fuzzy
 msgid "Fcc mailbox"
-msgstr "Brak skrzynki.\n"
+msgstr "Skrzynka Fcc"
 
 #: send.c:1639
 msgid "Can't postpone.  $postponed is unset"
