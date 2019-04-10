@@ -339,7 +339,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
     else if (((WithCrypto & APPLICATION_PGP) != 0) &&
              (plen = mutt_str_startswith(np->data, "pgp:", CASE_IGNORE)))
     {
-      msg->security = mutt_parse_crypt_hdr(np->data + plen, 0, APPLICATION_PGP);
+      msg->security = mutt_parse_crypt_hdr(np->data + plen, false, APPLICATION_PGP);
       if (msg->security)
         msg->security |= APPLICATION_PGP;
       keep = false;
