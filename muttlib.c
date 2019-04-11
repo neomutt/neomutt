@@ -1731,22 +1731,3 @@ void mutt_buffer_concat_path(struct Buffer *d, const char *dir, const char *fnam
 
   mutt_buffer_printf(d, fmt, dir, fname);
 }
-
-/**
- * mutt_getcwd - Get the current working directory
- * @param cwd Buffer for the result
- */
-void mutt_getcwd(struct Buffer *cwd)
-{
-  mutt_buffer_increase_size(cwd, PATH_MAX);
-  char *retval = getcwd(cwd->data, cwd->dsize);
-  while (!retval && (errno == ERANGE))
-  {
-    mutt_buffer_increase_size(cwd, cwd->dsize + 256);
-    retval = getcwd(cwd->data, cwd->dsize);
-  }
-  if (retval)
-    mutt_buffer_fix_dptr(cwd);
-  else
-    mutt_buffer_reset(cwd);
-}

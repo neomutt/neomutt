@@ -1190,7 +1190,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           mutt_buffer_strcpy_n(LastDir, mutt_b2s(file), i);
         else
         {
-          mutt_getcwd(LastDir);
+          mutt_path_getcwd(LastDir);
           mutt_buffer_addch(LastDir, '/');
           mutt_buffer_addstr_n(LastDir, mutt_b2s(file), i);
         }
@@ -1200,7 +1200,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         if ((mutt_b2s(file))[0] == '/')
           mutt_buffer_strcpy(LastDir, "/");
         else
-          mutt_getcwd(LastDir);
+          mutt_path_getcwd(LastDir);
       }
 
       if ((i <= 0) && (mutt_b2s(file)[0] != '/'))
@@ -1215,7 +1215,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
   else
   {
     if (!folder)
-      mutt_getcwd(LastDir);
+      mutt_path_getcwd(LastDir);
     else
     {
       /* Whether we use the tracking feature of the browser depends
@@ -1296,7 +1296,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         LastDir->data[i] = '\0';
       mutt_buffer_fix_dptr(LastDir);
       if (mutt_b2s(LastDir)[0] == '\0')
-        mutt_getcwd(LastDir);
+        mutt_path_getcwd(LastDir);
     }
   }
 
