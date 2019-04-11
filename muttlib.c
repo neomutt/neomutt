@@ -1712,22 +1712,3 @@ int mutt_inbox_cmp(const char *a, const char *b)
 
   return 0;
 }
-
-/**
- * mutt_buffer_concat_path - Join a directory name and a filename
- * @param d     Buffer to add to
- * @param dir   Directory name
- * @param fname File name
- *
- * If both dir and fname are supplied, they are separated with '/'.
- * If either is missing, then the other will be copied exactly.
- */
-void mutt_buffer_concat_path(struct Buffer *d, const char *dir, const char *fname)
-{
-  const char *fmt = "%s/%s";
-
-  if (!*fname || (*dir && dir[strlen(dir) - 1] == '/'))
-    fmt = "%s%s";
-
-  mutt_buffer_printf(d, fmt, dir, fname);
-}
