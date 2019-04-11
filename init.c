@@ -76,10 +76,10 @@
  * avoid cyclic sourcing */
 static struct ListHead MuttrcStack = STAILQ_HEAD_INITIALIZER(MuttrcStack);
 
-#define MAXERRS 128
+#define MAX_ERRS 128
 
-#define NUMVARS mutt_array_size(MuttVars)
-#define NUMCOMMANDS mutt_array_size(Commands)
+#define NUM_VARS mutt_array_size(MuttVars)
+#define NUM_COMMANDS mutt_array_size(Commands)
 
 /* Initial string that starts completion. No telling how much the user has
  * typed so far. Allocate 1024 just to be sure! */
@@ -89,7 +89,7 @@ static int NumMatched = 0;          /* Number of matches for completion */
 static char Completed[256] = { 0 }; /* completed string (command or variable) */
 static const char **Matches;
 /* this is a lie until mutt_init runs: */
-static int MatchesListsize = MAX(NUMVARS, NUMCOMMANDS) + 10;
+static int MatchesListsize = MAX(NUM_VARS, NUM_COMMANDS) + 10;
 
 #ifdef USE_NOTMUCH
 /* List of tags found in last call to mutt_nm_query_complete(). */
@@ -164,7 +164,7 @@ static void matches_ensure_morespace(int current)
   if (current <= (MatchesListsize - 2))
     return;
 
-  int base_space = MAX(NUMVARS, NUMCOMMANDS) + 1;
+  int base_space = MAX(NUM_VARS, NUM_COMMANDS) + 1;
   int extra_space = MatchesListsize - base_space;
   extra_space *= 2;
   const int space = base_space + extra_space;
@@ -508,7 +508,7 @@ static enum CommandResult parse_attach_list(struct Buffer *buf, struct Buffer *s
     tmpminor[len + 2] = '\0';
 
     a->major_int = mutt_check_mime_type(a->major);
-    ret = REGCOMP(&a->minor_regex, tmpminor, REG_ICASE);
+    ret = REG_COMP(&a->minor_regex, tmpminor, REG_ICASE);
 
     FREE(&tmpminor);
 
@@ -824,7 +824,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
     if (line_rc == MUTT_CMD_ERROR)
     {
       mutt_error(_("Error in %s, line %d: %s"), rcfile, line, err->data);
-      if (--rc < -MAXERRS)
+      if (--rc < -MAX_ERRS)
       {
         if (conv)
           FREE(&currentline);
@@ -858,7 +858,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
   {
     /* the neomuttrc source keyword */
     mutt_buffer_reset(err);
-    mutt_buffer_printf(err, (rc >= -MAXERRS) ? _("source: errors in %s") : _("source: reading aborted due to too many errors in %s"),
+    mutt_buffer_printf(err, (rc >= -MAX_ERRS) ? _("source: errors in %s") : _("source: reading aborted due to too many errors in %s"),
                        rcfile);
     rc = -1;
   }
@@ -2672,7 +2672,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
   {
     if (!qc)
     {
-      if ((ISSPACE(ch) && !(flags & MUTT_TOKEN_SPACE)) ||
+      if ((IS_SPACE(ch) && !(flags & MUTT_TOKEN_SPACE)) ||
           ((ch == '#') && !(flags & MUTT_TOKEN_COMMENT)) ||
           ((ch == '=') && (flags & MUTT_TOKEN_EQUAL)) ||
           ((ch == '?') && (flags & MUTT_TOKEN_QUESTION)) ||

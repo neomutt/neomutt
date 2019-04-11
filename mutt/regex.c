@@ -54,7 +54,7 @@ struct Regex *mutt_regex_compile(const char *str, int flags)
   struct Regex *rx = mutt_mem_calloc(1, sizeof(struct Regex));
   rx->pattern = mutt_str_strdup(str);
   rx->regex = mutt_mem_calloc(1, sizeof(regex_t));
-  if (REGCOMP(rx->regex, NONULL(str), flags) != 0)
+  if (REG_COMP(rx->regex, NONULL(str), flags) != 0)
     mutt_regex_free(&rx);
 
   return rx;
@@ -90,7 +90,7 @@ struct Regex *mutt_regex_new(const char *str, int flags, struct Buffer *err)
     str++;
   }
 
-  int rc = REGCOMP(reg->regex, str, rflags);
+  int rc = REG_COMP(reg->regex, str, rflags);
   if ((rc != 0) && err)
   {
     regerror(rc, reg->regex, err->data, err->dsize);

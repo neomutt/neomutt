@@ -230,7 +230,7 @@ static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   {
     pat->p.regex = mutt_mem_malloc(sizeof(regex_t));
     int flags = mutt_mb_is_lower(buf.data) ? REG_ICASE : 0;
-    int rc = REGCOMP(pat->p.regex, buf.data, REG_NEWLINE | REG_NOSUB | flags);
+    int rc = REG_COMP(pat->p.regex, buf.data, REG_NEWLINE | REG_NOSUB | flags);
     if (rc != 0)
     {
       char errmsg[256];

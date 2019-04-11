@@ -56,9 +56,7 @@ struct Progress;
 #define IMAP_CMD_RESPOND   2  ///< `+`
 #define IMAP_CMD_NEW       3  ///< ImapCommand.state additions
 
-#define IMAP_CACHE_LEN 10 ///< number of entries in the hash table */
-
-#define SEQLEN 5
+#define SEQ_LEN 5
 #define IMAP_MAX_CMDLEN 1024 ///< Maximum length of command lines before they must be split (for lazy servers)
 
 typedef uint8_t ImapOpenFlags;         ///< Flags, e.g. #MUTT_THREAD_COLLAPSE
@@ -155,7 +153,7 @@ struct ImapList
  */
 struct ImapCommand
 {
-  char seq[SEQLEN + 1]; ///< Command tag, e.g. 'a0001'
+  char seq[SEQ_LEN + 1]; ///< Command tag, e.g. 'a0001'
   int state;            ///< Command state, e.g. #IMAP_CMD_NEW
 };
 

@@ -846,7 +846,7 @@ void mutt_safe_path(char *buf, size_t buflen, struct Address *a)
 {
   mutt_save_path(buf, buflen, a);
   for (char *p = buf; *p; p++)
-    if ((*p == '/') || ISSPACE(*p) || !IsPrint((unsigned char) *p))
+    if ((*p == '/') || IS_SPACE(*p) || !IsPrint((unsigned char) *p))
       *p = '_';
 }
 

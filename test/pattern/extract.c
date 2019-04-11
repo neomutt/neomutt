@@ -24,7 +24,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
   {
     if (!qc)
     {
-      if ((ISSPACE(ch) && !(flags & MUTT_TOKEN_SPACE)) ||
+      if ((IS_SPACE(ch) && !(flags & MUTT_TOKEN_SPACE)) ||
           ((ch == '#') && !(flags & MUTT_TOKEN_COMMENT)) ||
           ((ch == '=') && (flags & MUTT_TOKEN_EQUAL)) ||
           ((ch == '?') && (flags & MUTT_TOKEN_QUESTION)) ||

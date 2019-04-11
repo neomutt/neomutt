@@ -74,7 +74,7 @@ static void message_bar(int percent, const char *fmt, ...)
     if (l < w)
     {
       /* The string fits within the colour bar */
-      SETCOLOR(MT_COLOR_PROGRESS);
+      SET_COLOR(MT_COLOR_PROGRESS);
       addstr(buf2);
       w -= l;
       while (w-- > 0)
@@ -91,7 +91,7 @@ static void message_bar(int percent, const char *fmt, ...)
 
       ch = buf2[off];
       buf2[off] = '\0';
-      SETCOLOR(MT_COLOR_PROGRESS);
+      SET_COLOR(MT_COLOR_PROGRESS);
       addstr(buf2);
       buf2[off] = ch;
       NORMAL_COLOR;

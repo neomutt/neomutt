@@ -427,7 +427,7 @@ int mutt_builtin_editor(const char *path, struct Email *msg, struct Email *cur)
     {
       /* remove trailing whitespace from the line */
       p = tmp + mutt_str_strlen(tmp) - 1;
-      while ((p >= tmp) && ISSPACE(*p))
+      while ((p >= tmp) && IS_SPACE(*p))
         *p-- = '\0';
 
       p = tmp + 2;

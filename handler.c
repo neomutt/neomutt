@@ -72,9 +72,9 @@ char *C_ShowMultipartAlternative; ///< Config: How to display 'multipart/alterna
 #define BUFI_SIZE 1000
 #define BUFO_SIZE 2000
 
-#define TXTHTML 1
-#define TXTPLAIN 2
-#define TXTENRICHED 3
+#define TXT_HTML 1
+#define TXT_PLAIN 2
+#define TXT_ENRICHED 3
 
 /**
  * typedef handler_t - Manage a PGP or S/MIME encrypted MIME part
@@ -333,7 +333,7 @@ static void decode_quoted(struct State *s, long len, bool istext, iconv_t cd)
     /* chop trailing whitespace if we got the full line */
     if (last == '\n')
     {
-      while ((linelen > 0) && ISSPACE(line[linelen - 1]))
+      while ((linelen > 0) && IS_SPACE(line[linelen - 1]))
         linelen--;
       line[linelen] = '\0';
     }
@@ -995,20 +995,20 @@ static int alternative_handler(struct Body *a, struct State *s)
     {
       if (b->type == TYPE_TEXT)
       {
-        if ((mutt_str_strcasecmp("plain", b->subtype) == 0) && (type <= TXTPLAIN))
+        if ((mutt_str_strcasecmp("plain", b->subtype) == 0) && (type <= TXT_PLAIN))
         {
           choice = b;
-          type = TXTPLAIN;
+          type = TXT_PLAIN;
         }
-        else if ((mutt_str_strcasecmp("enriched", b->subtype) == 0) && (type <= TXTENRICHED))
+        else if ((mutt_str_strcasecmp("enriched", b->subtype) == 0) && (type <= TXT_ENRICHED))
         {
           choice = b;
-          type = TXTENRICHED;
+          type = TXT_ENRICHED;
         }
-        else if ((mutt_str_strcasecmp("html", b->subtype) == 0) && (type <= TXTHTML))
+        else if ((mutt_str_strcasecmp("html", b->subtype) == 0) && (type <= TXT_HTML))
         {
           choice = b;
-          type = TXTHTML;
+          type = TXT_HTML;
         }
       }
       b = b->next;

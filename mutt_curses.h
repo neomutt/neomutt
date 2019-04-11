@@ -211,7 +211,7 @@ extern struct ColorLineHead ColorIndexTagList;     ///< List of colours applied 
  * right column.
  */
 #ifdef HAVE_BKGDSET
-#define SETCOLOR(X)                                                            \
+#define SET_COLOR(X)                                                            \
   do                                                                           \
   {                                                                            \
     if (ColorDefs[X] != 0)                                                     \
@@ -219,9 +219,9 @@ extern struct ColorLineHead ColorIndexTagList;     ///< List of colours applied 
     else                                                                       \
       bkgdset(ColorDefs[MT_COLOR_NORMAL] | ' ');                               \
   } while (false)
-#define ATTRSET(X) bkgdset(X | ' ')
+#define ATTR_SET(X) bkgdset(X | ' ')
 #else
-#define SETCOLOR(X)                                                            \
+#define SET_COLOR(X)                                                            \
   do                                                                           \
   {                                                                            \
     if (ColorDefs[X] != 0)                                                     \
@@ -229,7 +229,7 @@ extern struct ColorLineHead ColorIndexTagList;     ///< List of colours applied 
     else                                                                       \
       attrset(ColorDefs[MT_COLOR_NORMAL]);                                     \
   } while (false)
-#define ATTRSET attrset
+#define ATTR_SET attrset
 #endif
 
 /* reset the color to the normal terminal color as defined by 'color normal ...' */

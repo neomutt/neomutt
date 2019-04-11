@@ -2051,7 +2051,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
               break;
             }
 
-            int err = REGCOMP(&rx, s, REG_NOSUB);
+            int err = REG_COMP(&rx, s, REG_NOSUB);
             if (err != 0)
             {
               regerror(err, &rx, buf->data, buf->dsize);

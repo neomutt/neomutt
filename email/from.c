@@ -68,7 +68,7 @@ bool is_from(const char *s, char *path, size_t pathlen, time_t *tp)
     const char *p = NULL;
     short q = 0;
 
-    for (p = s; *p && (q || !ISSPACE(*p)); p++)
+    for (p = s; *p && (q || !IS_SPACE(*p)); p++)
     {
       if (*p == '\\')
       {
