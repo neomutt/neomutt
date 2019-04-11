@@ -160,7 +160,7 @@ struct PgpEntry
  * | \%n     | Number
  * | \%t     | Trust/validity of the key-uid association
  * | \%u     | User id
- * | \%[...] | Date of key using strftime(3)
+ * | \%[fmt] | Date of key using strftime(3)
  * |         |
  * | \%a     | Algorithm
  * | \%c     | Capabilities

@@ -39,8 +39,6 @@ extern bool C_ThoroughSearch;
 /* flag to mutt_pattern_comp() */
 #define MUTT_FULL_MSG (1 << 0) /* enable body and header matching */
 
-SLIST_HEAD(PatternHead, Pattern);
-
 /**
  * struct Pattern - A simple (non-regex) pattern
  */
@@ -65,6 +63,7 @@ struct Pattern
     struct ListHead multi_cases;
   } p;
 };
+SLIST_HEAD(PatternHead, Pattern);
 
 /**
  * enum PatternExecFlag - Flags for mutt_pattern_exec()

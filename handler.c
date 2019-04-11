@@ -874,7 +874,8 @@ static int external_body_handler(struct Body *b, struct State *s)
       state_attach_puts(strbuf, s);
 
       mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset,
-                    (C_Weed ? (CH_WEED | CH_REORDER) : CH_NO_FLAGS) | CH_DECODE | CH_DISPLAY, NULL);
+                    (C_Weed ? (CH_WEED | CH_REORDER) : CH_NO_FLAGS) | CH_DECODE | CH_DISPLAY,
+                    NULL);
     }
   }
   else
@@ -891,7 +892,8 @@ static int external_body_handler(struct Body *b, struct State *s)
       state_attach_puts(strbuf, s);
 
       mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset,
-                    (C_Weed ? (CH_WEED | CH_REORDER) : CH_NO_FLAGS) | CH_DECODE | CH_DISPLAY, NULL);
+                    (C_Weed ? (CH_WEED | CH_REORDER) : CH_NO_FLAGS) | CH_DECODE | CH_DISPLAY,
+                    NULL);
     }
   }
 

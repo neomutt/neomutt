@@ -69,7 +69,6 @@ struct RegexListNode
   struct Regex *regex; /**< Regex containing a regular expression */
   STAILQ_ENTRY(RegexListNode) entries; /**< Next item in list */
 };
-
 STAILQ_HEAD(RegexList, RegexListNode);
 
 /**

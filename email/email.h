@@ -123,7 +123,6 @@ struct EmailNode
   struct Email *email;
   STAILQ_ENTRY(EmailNode) entries;
 };
-
 STAILQ_HEAD(EmailList, EmailNode);
 
 bool          mutt_email_cmp_strict(const struct Email *e1, const struct Email *e2);

@@ -35,13 +35,6 @@ struct ListNode
   char *data;
   STAILQ_ENTRY(ListNode) entries;
 };
-
-/**
- * struct ListHead - A generic list of strings
- *
- * The List is stored as a STAILQ.
- * This means that insertions are quick at the head and tail of the list.
- */
 STAILQ_HEAD(ListHead, ListNode);
 
 /**

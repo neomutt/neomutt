@@ -1714,7 +1714,7 @@ int mutt_inbox_cmp(const char *a, const char *b)
 }
 
 /**
- * mutt_buffer_concat - Join a directory name and a filename
+ * mutt_buffer_concat_path - Join a directory name and a filename
  * @param d     Buffer to add to
  * @param dir   Directory name
  * @param fname File name
