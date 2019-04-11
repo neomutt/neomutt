@@ -194,7 +194,7 @@ int mutt_display_message(struct Email *cur)
     {
       if (cur->security & APPLICATION_SMIME)
         crypt_smime_getkeys(cur->env);
-      if (!crypt_valid_passphrase(cur->security))
+      if (crypt_valid_passphrase(cur->security))
         return 0;
 
       cmflags |= MUTT_CM_VERIFY;
@@ -508,7 +508,7 @@ static void pipe_msg(struct Mailbox *m, struct Email *e, FILE *fp, bool decode, 
 
   if ((WithCrypto != 0) && decode && e->security & SEC_ENCRYPT)
   {
-    if (!crypt_valid_passphrase(e->security))
+    if (crypt_valid_passphrase(e->security))
       return;
     endwin();
   }
@@ -556,7 +556,7 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
     {
       mutt_parse_mime_message(m, en->email);
       if ((en->email->security & SEC_ENCRYPT) &&
-          !crypt_valid_passphrase(en->email->security))
+          crypt_valid_passphrase(en->email->security))
         return 1;
     }
     mutt_endwin();
@@ -584,7 +584,7 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
         mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
         mutt_parse_mime_message(m, en->email);
         if ((en->email->security & SEC_ENCRYPT) &&
-            !crypt_valid_passphrase(en->email->security))
+            crypt_valid_passphrase(en->email->security))
         {
           return 1;
         }
@@ -1040,7 +1040,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete,
     return -1;
 
   if ((WithCrypto != 0) && need_passphrase && (decode || decrypt) &&
-      !crypt_valid_passphrase(app))
+      crypt_valid_passphrase(app))
   {
     return -1;
   }

@@ -53,7 +53,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s);
 int pgp_class_encrypted_handler(struct Body *a, struct State *s);
 void pgp_class_extract_key_from_attachment(FILE *fp, struct Body *top);
 void pgp_class_void_passphrase(void);
-int pgp_class_valid_passphrase(void);
+bool pgp_class_valid_passphrase(void);
 
 int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile);
 struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags flags, char *keylist);

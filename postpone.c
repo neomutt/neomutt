@@ -621,7 +621,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
       (sec_type = mutt_is_multipart_encrypted(newhdr->content)))
   {
     newhdr->security |= sec_type;
-    if (!crypt_valid_passphrase(sec_type))
+    if (crypt_valid_passphrase(sec_type))
       goto bail;
 
     mutt_message(_("Decrypting message..."));
@@ -728,7 +728,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
     {
       if (sec_type & SEC_ENCRYPT)
       {
-        if (!crypt_valid_passphrase(APPLICATION_PGP))
+        if (crypt_valid_passphrase(APPLICATION_PGP))
           goto bail;
         mutt_message(_("Decrypting message..."));
       }
@@ -755,7 +755,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
     {
       if (sec_type & SEC_ENCRYPT)
       {
-        if (!crypt_valid_passphrase(APPLICATION_SMIME))
+        if (crypt_valid_passphrase(APPLICATION_SMIME))
           goto bail;
         crypt_smime_getkeys(newhdr->env);
         mutt_message(_("Decrypting message..."));

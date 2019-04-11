@@ -89,20 +89,20 @@ void pgp_class_void_passphrase(void)
 /**
  * pgp_class_valid_passphrase - Implements CryptModuleSpecs::valid_passphrase()
  */
-int pgp_class_valid_passphrase(void)
+bool pgp_class_valid_passphrase(void)
 {
   time_t now = time(NULL);
 
   if (pgp_use_gpg_agent())
   {
     *PgpPass = '\0';
-    return 1; /* handled by gpg-agent */
+    return true; /* handled by gpg-agent */
   }
 
   if (now < PgpExptime)
   {
     /* Use cached copy.  */
-    return 1;
+    return true;
   }
 
   pgp_class_void_passphrase();
@@ -110,12 +110,12 @@ int pgp_class_valid_passphrase(void)
   if (mutt_get_password(_("Enter PGP passphrase:"), PgpPass, sizeof(PgpPass)) == 0)
   {
     PgpExptime = mutt_date_add_timeout(time(NULL), C_PgpTimeout);
-    return 1;
+    return true;
   }
   else
     PgpExptime = 0;
 
-  return 0;
+  return false;
 }
 
 /**

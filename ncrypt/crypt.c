@@ -136,12 +136,11 @@ static void disable_coredumps(void)
 /**
  * crypt_valid_passphrase - Check that we have a usable passphrase, ask if not
  * @param flags Flags, see #SecurityFlags
- * @retval  0 Success
- * @retval -1 Failure
+ * @retval true If we have a usable passphrase
  */
-int crypt_valid_passphrase(SecurityFlags flags)
+bool crypt_valid_passphrase(SecurityFlags flags)
 {
-  int rc = 0;
+  bool rc = true;
 
 #ifndef DEBUG
   disable_coredumps();
@@ -176,7 +175,7 @@ int mutt_protect(struct Email *msg, char *keylist)
   if (!(msg->security & (SEC_ENCRYPT | SEC_SIGN)))
     return 0;
 
-  if ((msg->security & SEC_SIGN) && !crypt_valid_passphrase(msg->security))
+  if ((msg->security & SEC_SIGN) && crypt_valid_passphrase(msg->security))
     return -1;
 
   if (((WithCrypto & APPLICATION_PGP) != 0) && ((msg->security & PGP_INLINE) == PGP_INLINE))
@@ -839,7 +838,7 @@ void crypt_extract_keys_from_messages(struct EmailList *el)
     struct Email *e = en->email;
 
     mutt_parse_mime_message(Context->mailbox, e);
-    if (e->security & SEC_ENCRYPT && !crypt_valid_passphrase(e->security))
+    if (e->security & SEC_ENCRYPT && crypt_valid_passphrase(e->security))
     {
       mutt_file_fclose(&fp_out);
       break;

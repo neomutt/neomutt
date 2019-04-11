@@ -1128,7 +1128,7 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
       mutt_parse_mime_message(m, e);
 
       if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT) &&
-          !crypt_valid_passphrase(e->security))
+          crypt_valid_passphrase(e->security))
       {
         mx_msg_close(m, &msg);
         if (s.fp_out)

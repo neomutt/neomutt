@@ -505,7 +505,7 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *fp_out)
   if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT) && C_ForwardDecode)
   {
     /* make sure we have the user's passphrase before proceeding... */
-    if (!crypt_valid_passphrase(e->security))
+    if (crypt_valid_passphrase(e->security))
       return -1;
   }
 
@@ -585,7 +585,7 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out)
   if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT))
   {
     /* make sure we have the user's passphrase before proceeding... */
-    if (!crypt_valid_passphrase(e->security))
+    if (crypt_valid_passphrase(e->security))
       return -1;
   }
 

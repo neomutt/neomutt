@@ -1467,7 +1467,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool a
   {
     if ((C_MimeForwardDecode || C_ForwardDecrypt) && (e->security & SEC_ENCRYPT))
     {
-      if (!crypt_valid_passphrase(e->security))
+      if (crypt_valid_passphrase(e->security))
         return NULL;
     }
   }

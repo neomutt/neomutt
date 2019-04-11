@@ -1159,7 +1159,7 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *
 
       if (type & SEC_ENCRYPT)
       {
-        if (!crypt_valid_passphrase(APPLICATION_SMIME))
+        if (crypt_valid_passphrase(APPLICATION_SMIME))
           goto decrypt_failed;
 
         if (e->env)
@@ -1189,7 +1189,7 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *
     {
       need_secured = 1;
 
-      if (!crypt_valid_passphrase(APPLICATION_PGP))
+      if (crypt_valid_passphrase(APPLICATION_PGP))
         goto decrypt_failed;
 
       secured = !crypt_pgp_decrypt_mime(fp, &fp_new, m, &new_body);
