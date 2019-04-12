@@ -81,18 +81,11 @@ static int handle_error(lua_State *l)
 static int lua_mutt_call(lua_State *l)
 {
   mutt_debug(LL_DEBUG2, " * lua_mutt_call()\n");
-  struct Buffer token, expn, err;
+  struct Buffer *err = mutt_buffer_pool_get();
+  struct Buffer *token = mutt_buffer_pool_get();
   char buf[1024] = "";
   const struct Command *cmd = NULL;
   int rc = 0;
-
-  mutt_buffer_init(&token);
-  mutt_buffer_init(&expn);
-  mutt_buffer_init(&err);
-
-  err.dsize = 256;
-  err.data = mutt_mem_malloc(err.dsize);
-  err.data[0] = '\0';
 
   if (lua_gettop(l) == 0)
   {
@@ -114,25 +107,26 @@ static int lua_mutt_call(lua_State *l)
     mutt_str_strncat(buf, sizeof(buf), " ", 1);
   }
 
+  struct Buffer expn = { 0 };
   expn.data = buf;
   expn.dptr = buf;
   expn.dsize = mutt_str_strlen(buf);
 
-  if (cmd->func(&token, &expn, cmd->data, &err))
+  if (cmd->func(token, &expn, cmd->data, err))
   {
-    luaL_error(l, "NeoMutt error: %s", err.data);
+    luaL_error(l, "NeoMutt error: %s", mutt_b2s(err));
     rc = -1;
   }
   else
   {
-    if (!lua_pushstring(l, err.data))
+    if (!lua_pushstring(l, mutt_b2s(err)))
       handle_error(l);
     else
       rc++;
   }
 
-  FREE(&err.data);
-
+  mutt_buffer_pool_release(&token);
+  mutt_buffer_pool_release(&err);
   return rc;
 }
 
