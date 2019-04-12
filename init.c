@@ -2703,7 +2703,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
           tok->dptr++;
           break;
         case 'e':
-          mutt_buffer_addch(dest, '\033');
+          mutt_buffer_addch(dest, '\033'); // Escape
           break;
         case 'f':
           mutt_buffer_addch(dest, '\f');
@@ -2736,7 +2736,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
       if (ch == '^')
         mutt_buffer_addch(dest, ch);
       else if (ch == '[')
-        mutt_buffer_addch(dest, '\033');
+        mutt_buffer_addch(dest, '\033'); // Escape
       else if (isalpha((unsigned char) ch))
         mutt_buffer_addch(dest, toupper((unsigned char) ch) - '@');
       else
@@ -3013,10 +3013,10 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   mutt_menu_init();
   mutt_buffer_pool_init();
 
-  snprintf(AttachmentMarker, sizeof(AttachmentMarker), "\033]9;%" PRIu64 "\a",
+  snprintf(AttachmentMarker, sizeof(AttachmentMarker), "\033]9;%" PRIu64 "\a", // Escape
            mutt_rand64());
 
-  snprintf(ProtectedHeaderMarker, sizeof(ProtectedHeaderMarker), "\033]8;%ld\a",
+  snprintf(ProtectedHeaderMarker, sizeof(ProtectedHeaderMarker), "\033]8;%ld\a", // Escape
            (long) time(NULL));
 
   /* "$spoolfile" precedence: config file, environment */

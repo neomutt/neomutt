@@ -985,7 +985,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
       }
     }
   }
-  else if (mutt_str_startswith(raw, "\033[0m", CASE_MATCH)) /* a little hack... */
+  else if (mutt_str_startswith(raw, "\033[0m", CASE_MATCH)) // Escape: a little hack...
     line_info[n].type = MT_COLOR_NORMAL;
   else if (check_attachment_marker((char *) raw) == 0)
     line_info[n].type = MT_COLOR_ATTACHMENT;
@@ -1318,7 +1318,7 @@ static int fill_buffer(FILE *fp, LOFF_T *last_pos, LOFF_T offset, unsigned char 
     q = *fmt;
     while (*p)
     {
-      if ((*p == '\010') && (p > *buf))
+      if ((*p == '\010') && (p > *buf)) // Ctrl-H (backspace)
       {
         if (*(p + 1) == '_') /* underline */
           p += 2;
@@ -1330,12 +1330,12 @@ static int fill_buffer(FILE *fp, LOFF_T *last_pos, LOFF_T offset, unsigned char 
         else /* ^H */
           *q++ = *p++;
       }
-      else if ((*p == '\033') && (*(p + 1) == '[') && is_ansi(p + 2))
+      else if ((*p == '\033') && (*(p + 1) == '[') && is_ansi(p + 2)) // Escape
       {
         while (*p++ != 'm') /* skip ANSI sequence */
           ;
       }
-      else if ((*p == '\033') && (*(p + 1) == ']') &&
+      else if ((*p == '\033') && (*(p + 1) == ']') && // Escape
                ((check_attachment_marker((char *) p) == 0) ||
                 (check_protected_header_marker((char *) p) == 0)))
       {
@@ -1388,11 +1388,11 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
   for (ch = 0, vch = 0; ch < cnt; ch += k, vch += k)
   {
     /* Handle ANSI sequences */
-    while ((cnt - ch >= 2) && (buf[ch] == '\033') && (buf[ch + 1] == '[') &&
+    while ((cnt - ch >= 2) && (buf[ch] == '\033') && (buf[ch + 1] == '[') && // Escape
            is_ansi(buf + ch + 2))
       ch = grok_ansi(buf, ch + 2, pa) + 1;
 
-    while ((cnt - ch >= 2) && (buf[ch] == '\033') && (buf[ch + 1] == ']') &&
+    while ((cnt - ch >= 2) && (buf[ch] == '\033') && (buf[ch + 1] == ']') && // Escape
            ((check_attachment_marker((char *) buf + ch) == 0) ||
             (check_protected_header_marker((char *) buf + ch) == 0)))
     {

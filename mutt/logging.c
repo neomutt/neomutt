@@ -485,7 +485,7 @@ int log_disp_terminal(time_t stamp, const char *file, int line,
   }
 
   if (colour > 0)
-    ret += fprintf(fp, "\033[1;%dm", colour);
+    ret += fprintf(fp, "\033[1;%dm", colour); // Escape
 
   fputs(buf, fp);
 
@@ -493,7 +493,7 @@ int log_disp_terminal(time_t stamp, const char *file, int line,
     ret += fprintf(fp, ": %s", strerror(err));
 
   if (colour > 0)
-    ret += fprintf(fp, "\033[0m");
+    ret += fprintf(fp, "\033[0m"); // Escape
 
   ret += fprintf(fp, "\n");
 

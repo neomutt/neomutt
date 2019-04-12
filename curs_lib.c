@@ -225,7 +225,7 @@ struct Event mutt_getch(void)
     /* send ALT-x as ESC-x */
     ch &= ~0x80;
     mutt_unget_event(ch, 0);
-    ret.ch = '\033';
+    ret.ch = '\033'; // Escape
     ret.op = 0;
     return ret;
   }

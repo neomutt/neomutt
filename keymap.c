@@ -97,7 +97,7 @@ static struct Mapping KeyNames[] = {
   { "<End>", KEY_END },
   { "<Enter>", '\n' },
   { "<Return>", '\r' },
-  { "<Esc>", '\033' },
+  { "<Esc>", '\033' }, // Escape
   { "<Tab>", '\t' },
   { "<Space>", ' ' },
 #ifdef KEY_BTAB

@@ -43,8 +43,8 @@
 bool TsSupported; /**< Terminal Setting is supported */
 
 /* de facto standard escapes for tsl/fsl */
-static const char *tsl = "\033]0;";
-static const char *fsl = "\007";
+static const char *tsl = "\033]0;"; // Escape
+static const char *fsl = "\007";    // Ctrl-G (BEL)
 
 /**
  * mutt_ts_capability - Check terminal capabilities
@@ -121,5 +121,5 @@ void mutt_ts_icon(char *str)
     return;
 
   /* icon setting is not supported in terminfo, so hardcode the escape */
-  fprintf(stderr, "\033]1;%s\007", str);
+  fprintf(stderr, "\033]1;%s\007", str); // Escape
 }
