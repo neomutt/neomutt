@@ -1085,11 +1085,15 @@ int mutt_file_lock(int fd, bool excl, bool timeout)
       prev_sb = sb;
 
     /* only unlock file if it is unchanged */
-    if ((prev_sb.st_size == sb.st_size) && (++count >= (timeout ? MAX_LOCK_ATTEMPTS : 0)))
+    if (prev_sb.st_size == sb.st_size)
     {
-      if (timeout)
-        mutt_error(_("Timeout exceeded while attempting fcntl lock"));
-      return -1;
+      count++;
+      if (count >= (timeout ? MAX_LOCK_ATTEMPTS : 0))
+      {
+        if (timeout)
+          mutt_error(_("Timeout exceeded while attempting fcntl lock"));
+        return -1;
+      }
     }
 
     prev_sb = sb;
