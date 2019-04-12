@@ -1015,7 +1015,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete,
   mutt_default_save(buf, sizeof(buf), en->email);
 
   mutt_pretty_mailbox(buf, sizeof(buf));
-  if (mutt_enter_fname(prompt, buf, sizeof(buf), 0) == -1)
+  if (mutt_enter_fname(prompt, buf, sizeof(buf), false) == -1)
     return -1;
 
   size_t pathlen = strlen(buf);

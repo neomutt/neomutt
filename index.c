@@ -2265,7 +2265,7 @@ int mutt_index_menu(void)
             mutt_mailbox(Context ? Context->mailbox : NULL, buf, sizeof(buf));
           }
 
-          if (mutt_enter_fname(cp, buf, sizeof(buf), 1) == -1)
+          if (mutt_enter_fname(cp, buf, sizeof(buf), true) == -1)
           {
             if (menu->menu == MENU_PAGER)
             {

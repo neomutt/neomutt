@@ -1417,7 +1417,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
             mutt_pretty_mailbox(buf, sizeof(buf));
           }
 
-        if ((mutt_enter_fname(prompt, buf, sizeof(buf), 1) == -1) || (buf[0] == '\0'))
+        if ((mutt_enter_fname(prompt, buf, sizeof(buf), true) == -1) || (buf[0] == '\0'))
           break;
 
 #ifdef USE_NNTP
@@ -1914,7 +1914,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         }
         if (actx->idxlen)
           msg->content = actx->idx[0]->content;
-        if ((mutt_enter_fname(_("Write message to mailbox"), buf, sizeof(buf), 1) != -1) &&
+        if ((mutt_enter_fname(_("Write message to mailbox"), buf, sizeof(buf), true) != -1) &&
             (buf[0] != '\0'))
         {
           mutt_message(_("Writing message to %s ..."), buf);
