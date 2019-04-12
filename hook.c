@@ -437,16 +437,13 @@ char *mutt_find_hook(HookFlags type, const char *pat)
  */
 void mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type)
 {
-  struct Buffer err, token;
   struct Hook *hook = NULL;
   struct PatternCache cache = { 0 };
+  struct Buffer *err = mutt_buffer_pool_get();
+  struct Buffer *token = mutt_buffer_pool_get();
 
   current_hook_type = type;
 
-  mutt_buffer_init(&err);
-  err.dsize = 256;
-  err.data = mutt_mem_malloc(err.dsize);
-  mutt_buffer_init(&token);
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
     if (!hook->command)
@@ -457,12 +454,12 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type)
       if ((mutt_pattern_exec(SLIST_FIRST(hook->pattern), 0, m, e, &cache) > 0) ^
           hook->regex.not)
       {
-        if (mutt_parse_rc_line(hook->command, &token, &err) == MUTT_CMD_ERROR)
+        if (mutt_parse_rc_line(hook->command, token, err) == MUTT_CMD_ERROR)
         {
-          FREE(&token.data);
-          mutt_error("%s", err.data);
+          mutt_buffer_pool_release(&token);
+          mutt_error("%s", mutt_b2s(err));
           current_hook_type = 0;
-          FREE(&err.data);
+          mutt_buffer_pool_release(&err);
 
           return;
         }
@@ -472,8 +469,8 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type)
       }
     }
   }
-  FREE(&token.data);
-  FREE(&err.data);
+  mutt_buffer_pool_release(&token);
+  mutt_buffer_pool_release(&err);
 
   current_hook_type = 0;
 }
