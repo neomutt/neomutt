@@ -1074,8 +1074,8 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete,
     mailbox_free(&m_save);
     return -1;
   }
-  bool old_append = m->append;
-  m->append = true;
+  bool old_append = m_save->append;
+  m_save->append = true;
 
 #ifdef USE_COMPRESSED
   /* If we're saving to a compressed mailbox, the stats won't be updated
@@ -1093,7 +1093,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete,
   {
     if (mutt_save_message_ctx(en->email, delete, decode, decrypt, ctx_save->mailbox) != 0)
     {
-      m->append = old_append;
+      m_save->append = old_append;
       mx_mbox_close(&ctx_save);
       return -1;
     }
@@ -1148,7 +1148,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete,
 #endif
     if (rc != 0)
     {
-      m->append = old_append;
+      m_save->append = old_append;
       mx_mbox_close(&ctx_save);
       return -1;
     }
@@ -1157,7 +1157,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete,
   const bool need_mailbox_cleanup = ((ctx_save->mailbox->magic == MUTT_MBOX) ||
                                      (ctx_save->mailbox->magic == MUTT_MMDF));
 
-  m->append = old_append;
+  m_save->append = old_append;
   mx_mbox_close(&ctx_save);
 
   if (need_mailbox_cleanup)
