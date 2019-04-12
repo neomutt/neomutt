@@ -2457,10 +2457,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
    * In-Reply-To: and References: headers during edit */
   if (flags & SEND_REPLY)
   {
-    if (cur && ctx)
-      mutt_set_flag(ctx->mailbox, cur, MUTT_REPLIED, is_reply(cur, msg));
-    else if (!(flags & SEND_POSTPONED) && ctx && ctx->mailbox &&
-             (ctx->mailbox->msg_tagged != 0))
+    if (!(flags & SEND_POSTPONED) && ctx && ctx->mailbox)
     {
       STAILQ_FOREACH(en, el, entries)
       {
