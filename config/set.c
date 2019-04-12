@@ -296,11 +296,6 @@ struct HashElem *cs_inherit_variable(const struct ConfigSet *cs,
   if (!cs || !parent)
     return NULL; /* LCOV_EXCL_LINE */
 
-  struct Buffer err;
-  mutt_buffer_init(&err);
-  err.dsize = 256;
-  err.data = calloc(1, err.dsize);
-
   struct Inheritance *i = mutt_mem_calloc(1, sizeof(*i));
   i->parent = parent;
   i->name = mutt_str_strdup(name);
@@ -312,7 +307,6 @@ struct HashElem *cs_inherit_variable(const struct ConfigSet *cs,
     FREE(&i);
   }
 
-  FREE(&err.data);
   return he;
 }
 
