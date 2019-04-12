@@ -281,28 +281,26 @@ done:
  */
 static int execute_commands(struct ListHead *p)
 {
-  struct Buffer err, token;
+  int rc = 0;
+  struct Buffer *err = mutt_buffer_pool_get();
+  struct Buffer *token = mutt_buffer_pool_get();
 
-  mutt_buffer_init(&err);
-  err.dsize = 256;
-  err.data = mutt_mem_malloc(err.dsize);
-  mutt_buffer_init(&token);
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, p, entries)
   {
-    if (mutt_parse_rc_line(np->data, &token, &err) == MUTT_CMD_ERROR)
+    if (mutt_parse_rc_line(np->data, token, err) == MUTT_CMD_ERROR)
     {
-      mutt_error(_("Error in command line: %s"), err.data);
-      FREE(&token.data);
-      FREE(&err.data);
+      mutt_error(_("Error in command line: %s"), mutt_b2s(err));
+      mutt_buffer_pool_release(&token);
+      mutt_buffer_pool_release(&err);
 
       return -1;
     }
   }
-  FREE(&token.data);
-  FREE(&err.data);
+  mutt_buffer_pool_release(&token);
+  mutt_buffer_pool_release(&err);
 
-  return 0;
+  return rc;
 }
 
 /**
