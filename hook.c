@@ -618,16 +618,11 @@ void mutt_account_hook(const char *url)
   static bool inhook = false;
 
   struct Hook *hook = NULL;
-  struct Buffer token;
-  struct Buffer err;
+  struct Buffer *err = mutt_buffer_pool_get();
+  struct Buffer *token = mutt_buffer_pool_get();
 
   if (inhook)
     return;
-
-  mutt_buffer_init(&err);
-  err.dsize = 256;
-  err.data = mutt_mem_malloc(err.dsize);
-  mutt_buffer_init(&token);
 
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
@@ -638,11 +633,11 @@ void mutt_account_hook(const char *url)
     {
       inhook = true;
 
-      if (mutt_parse_rc_line(hook->command, &token, &err) == MUTT_CMD_ERROR)
+      if (mutt_parse_rc_line(hook->command, token, err) == MUTT_CMD_ERROR)
       {
-        FREE(&token.data);
-        mutt_error("%s", err.data);
-        FREE(&err.data);
+        mutt_buffer_pool_release(&token);
+        mutt_error("%s", mutt_b2s(err));
+        mutt_buffer_pool_release(&err);
 
         inhook = false;
         return;
@@ -652,8 +647,8 @@ void mutt_account_hook(const char *url)
     }
   }
 
-  FREE(&token.data);
-  FREE(&err.data);
+  mutt_buffer_pool_release(&token);
+  mutt_buffer_pool_release(&err);
 }
 #endif
 
