@@ -1832,14 +1832,19 @@ static int print_val(FILE *fp, const char *pfx, const char *value,
   {
     if (fputc(*value, fp) == EOF)
       return -1;
-    /* corner-case: break words longer than 998 chars by force,
-     * mandated by RFC5322 */
-    if (!(chflags & CH_DISPLAY) && (++col >= 998))
+
+    if (!(chflags & CH_DISPLAY))
     {
-      if (fputs("\n ", fp) < 0)
-        return -1;
-      col = 1;
+      col++;
+      /* break words longer than 998 chars by force, mandated by RFC5322 */
+      if (col >= 998)
+      {
+        if (fputs("\n ", fp) < 0)
+          return -1;
+        col = 1;
+      }
     }
+
     if (*value == '\n')
     {
       if (*(value + 1) && pfx && *pfx && (fputs(pfx, fp) == EOF))
