@@ -2082,11 +2082,15 @@ static void pager_custom_redraw(struct Menu *pager_menu)
                         &rd->quote_list, &rd->q_level, &rd->force_redraw,
                         &rd->search_re, rd->pager_window) == 0)
     {
-      if (!rd->line_info[i].continuation && (++j == rd->lines))
+      if (!rd->line_info[i].continuation)
       {
-        rd->topline = i;
-        if (!rd->search_flag)
-          break;
+        j++;
+        if (j == rd->lines)
+        {
+          rd->topline = i;
+          if (!rd->search_flag)
+            break;
+        }
       }
     }
   }
