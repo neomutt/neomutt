@@ -719,7 +719,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
       mutt_param_delete(&b->parameter, "x-mutt-noconv");
     }
 
-    mutt_buffer_adv_mktemp(file);
+    mutt_adv_mktemp(file);
     s.fp_out = mutt_file_fopen(mutt_b2s(file), "w");
     if (!s.fp_out)
       goto bail;
