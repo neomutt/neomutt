@@ -708,7 +708,10 @@ int mh_mbox_check(struct Mailbox *m, int *index_hint)
   /* Incorporate new messages */
   num_new = maildir_move_to_mailbox(m, &md);
   if (num_new > 0)
+  {
     mutt_mailbox_changed(m, MBN_INVALID);
+    m->changed = true;
+  }
 
   if (occult)
     return MUTT_REOPENED;
