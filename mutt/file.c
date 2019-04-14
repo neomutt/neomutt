@@ -54,7 +54,7 @@ char *C_Tmpdir; ///< Config: Directory for temporary files
 /* these characters must be escaped in regular expressions */
 static const char rx_special_chars[] = "^.[$()|*+?{\\";
 
-static const char safe_chars[] =
+const char filename_safe_chars[] =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+@{}._-:%/";
 
 #define MAX_LOCK_ATTEMPTS 5
@@ -618,7 +618,7 @@ void mutt_file_sanitize_filename(char *path, bool slash)
 
   for (; *path; path++)
   {
-    if ((slash && (*path == '/')) || !strchr(safe_chars, *path))
+    if ((slash && (*path == '/')) || !strchr(filename_safe_chars, *path))
       *path = '_';
   }
 }
