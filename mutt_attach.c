@@ -148,7 +148,7 @@ int mutt_compose_attachment(struct Body *a)
       else
         mutt_buffer_strcpy(newfile, a->filename);
 
-      if (mutt_buffer_rfc1524_expand_command(a, mutt_b2s(newfile), type, cmd))
+      if (mutt_rfc1524_expand_command(a, mutt_b2s(newfile), type, cmd))
       {
         /* For now, editing requires a file, no piping */
         mutt_error(_("Mailcap compose entry requires %%s"));
@@ -285,7 +285,7 @@ int mutt_edit_attachment(struct Body *a)
       else
         mutt_buffer_strcpy(newfile, a->filename);
 
-      if (mutt_buffer_rfc1524_expand_command(a, mutt_b2s(newfile), type, cmd))
+      if (mutt_rfc1524_expand_command(a, mutt_b2s(newfile), type, cmd))
       {
         /* For now, editing requires a file, no piping */
         mutt_error(_("Mailcap Edit entry requires %%s"));
@@ -482,7 +482,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
       mutt_file_chmod(mutt_b2s(tmpfile), S_IRUSR);
     }
 
-    use_pipe = mutt_buffer_rfc1524_expand_command(a, mutt_b2s(tmpfile), type, cmd);
+    use_pipe = mutt_rfc1524_expand_command(a, mutt_b2s(tmpfile), type, cmd);
     use_pager = entry->copiousoutput;
   }
 
@@ -1077,7 +1077,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       return 0;
 
     mutt_buffer_strcpy(cmd, entry->printcommand);
-    piped = mutt_buffer_rfc1524_expand_command(a, mutt_b2s(newfile), type, cmd);
+    piped = mutt_rfc1524_expand_command(a, mutt_b2s(newfile), type, cmd);
 
     mutt_endwin();
 

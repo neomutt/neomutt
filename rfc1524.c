@@ -50,7 +50,7 @@
 bool C_MailcapSanitize; ///< Config: Restrict the possible characters in mailcap expandos
 
 /**
- * mutt_buffer_rfc1524_expand_command - Expand expandos in a command
+ * mutt_rfc1524_expand_command - Expand expandos in a command
  * @param a        Email Body
  * @param filename File containing the email text
  * @param type     Type, e.g. "text/plain"
@@ -68,8 +68,8 @@ bool C_MailcapSanitize; ///< Config: Restrict the possible characters in mailcap
  * %n is the integer number of sub-parts in the multipart
  * %F is "content-type filename" repeated for each sub-part
  */
-int mutt_buffer_rfc1524_expand_command(struct Body *a, const char *filename,
-                                       const char *type, struct Buffer *command)
+int mutt_rfc1524_expand_command(struct Body *a, const char *filename,
+                                const char *type, struct Buffer *command)
 {
   int needspipe = true;
   struct Buffer *buf = mutt_buffer_pool_get();
@@ -354,7 +354,7 @@ static bool rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
           {
             struct Buffer *command = mutt_buffer_pool_get();
             mutt_buffer_strcpy(command, test_command);
-            mutt_buffer_rfc1524_expand_command(a, a->filename, type, command);
+            mutt_rfc1524_expand_command(a, a->filename, type, command);
             if (mutt_system(mutt_b2s(command)))
             {
               /* a non-zero exit code means test failed */
