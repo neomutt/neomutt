@@ -557,7 +557,9 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, char *cmd,
       mutt_parse_mime_message(m, en->email);
       if ((en->email->security & SEC_ENCRYPT) &&
           !crypt_valid_passphrase(en->email->security))
+      {
         return 1;
+      }
     }
     mutt_endwin();
 

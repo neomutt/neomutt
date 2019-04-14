@@ -52,13 +52,13 @@ struct CryptModuleSpecs
   void         (*void_passphrase)(void);
   /**
    * valid_passphrase - Ensure we have a valid passphrase
-   * @retval 1 Success
-   * @retval 0 Failed
+   * @retval true  Success
+   * @retval false Failed
    *
    * If the passphrase is within the expiry time (backend-specific), use it.
    * If not prompt the user again.
    */
-  int          (*valid_passphrase)(void);
+  bool         (*valid_passphrase)(void);
   /**
    * decrypt_mime - Decrypt an encrypted MIME part
    * @param[in]  fp_in  File containing the encrypted part

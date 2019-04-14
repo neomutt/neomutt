@@ -186,7 +186,7 @@ void         crypt_forget_passphrase(void);
 int          crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode);
 void         crypt_opportunistic_encrypt(struct Email *msg);
 SecurityFlags crypt_query(struct Body *m);
-int          crypt_valid_passphrase(SecurityFlags flags);
+bool         crypt_valid_passphrase(SecurityFlags flags);
 SecurityFlags mutt_is_application_pgp(struct Body *m);
 SecurityFlags mutt_is_application_smime(struct Body *m);
 SecurityFlags mutt_is_malformed_multipart_pgp_encrypted(struct Body *b);
