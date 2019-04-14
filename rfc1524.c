@@ -358,18 +358,16 @@ static bool rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
 
           if (get_field_text(field + plen, &test_command, type, filename, line) && test_command)
           {
-            const size_t len = mutt_str_strlen(test_command) + 256;
-            mutt_mem_realloc(&test_command, len);
-            if (rfc1524_expand_command(a, a->filename, type, test_command, len) == 1)
-            {
-              mutt_debug(LL_DEBUG1, "Command is expecting to be piped\n");
-            }
-            if (mutt_system(test_command) != 0)
+            struct Buffer *command = mutt_buffer_pool_get();
+            mutt_buffer_strcpy(command, test_command);
+            mutt_buffer_rfc1524_expand_command(a, a->filename, type, command);
+            if (mutt_system(mutt_b2s(command)))
             {
               /* a non-zero exit code means test failed */
               found = false;
             }
             FREE(&test_command);
+            mutt_buffer_pool_release(&command);
           }
         }
         else if (mutt_str_startswith(field, "x-neomutt-keep", CASE_IGNORE))
