@@ -50,25 +50,26 @@ int mutt_body_copy(FILE *fp, struct Body **tgt, struct Body *src)
   if (!tgt || !src)
     return -1;
 
-  char tmp[PATH_MAX];
   struct Body *b = NULL;
-
   bool use_disp;
+  struct Buffer *tmp = mutt_buffer_pool_get();
 
   if (src->filename)
   {
     use_disp = true;
-    mutt_str_strfcpy(tmp, src->filename, sizeof(tmp));
+    mutt_buffer_strcpy(tmp, src->filename);
   }
   else
   {
     use_disp = false;
-    tmp[0] = '\0';
   }
 
-  mutt_adv_mktemp(tmp, sizeof(tmp));
-  if (mutt_save_attachment(fp, src, tmp, MUTT_SAVE_NO_FLAGS, NULL) == -1)
+  mutt_buffer_adv_mktemp(tmp);
+  if (mutt_save_attachment(fp, src, mutt_b2s(tmp), MUTT_SAVE_NO_FLAGS, NULL) == -1)
+  {
+    mutt_buffer_pool_release(&tmp);
     return -1;
+  }
 
   *tgt = mutt_body_new();
   b = *tgt;
@@ -78,7 +79,7 @@ int mutt_body_copy(FILE *fp, struct Body **tgt, struct Body *src)
   b->parts = NULL;
   b->next = NULL;
 
-  b->filename = mutt_str_strdup(tmp);
+  b->filename = mutt_str_strdup(mutt_b2s(tmp));
   b->use_disp = use_disp;
   b->unlink = true;
 
@@ -112,6 +113,6 @@ int mutt_body_copy(FILE *fp, struct Body **tgt, struct Body *src)
   }
 
   mutt_stamp_attachment(b);
-
+  mutt_buffer_pool_release(&tmp);
   return 0;
 }
