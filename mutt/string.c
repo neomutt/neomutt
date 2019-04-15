@@ -404,10 +404,10 @@ char *mutt_str_strdup(const char *str)
  */
 char *mutt_str_strcat(char *buf, size_t buflen, const char *s)
 {
-  char *p = buf;
-
-  if (!buflen)
+  if (!buf || (buflen == 0) || !s)
     return buf;
+
+  char *p = buf;
 
   buflen--; /* Space for the trailing '\0'. */
 
@@ -433,10 +433,10 @@ char *mutt_str_strcat(char *buf, size_t buflen, const char *s)
  */
 char *mutt_str_strncat(char *d, size_t l, const char *s, size_t sl)
 {
-  char *p = d;
-
-  if (!l)
+  if (!d || (l == 0) || !s)
     return d;
+
+  char *p = d;
 
   l--; /* Space for the trailing '\0'. */
 
@@ -462,6 +462,8 @@ char *mutt_str_strncat(char *d, size_t l, const char *s, size_t sl)
  */
 void mutt_str_replace(char **p, const char *s)
 {
+  if (!p)
+    return;
   FREE(p);
   *p = mutt_str_strdup(s);
 }
@@ -479,6 +481,9 @@ void mutt_str_replace(char **p, const char *s)
  */
 void mutt_str_append_item(char **str, const char *item, int sep)
 {
+  if (!str || !item)
+    return;
+
   char *p = NULL;
   size_t sz = strlen(item);
   size_t ssz = *str ? strlen(*str) : 0;
@@ -515,6 +520,9 @@ void mutt_str_adjust(char **p)
  */
 char *mutt_str_strlower(char *s)
 {
+  if (!s)
+    return NULL;
+
   char *p = s;
 
   while (*p)
@@ -541,6 +549,9 @@ char *mutt_str_strlower(char *s)
  */
 const char *mutt_str_strchrnul(const char *s, char c)
 {
+  if (!s)
+    return NULL;
+
   for (; *s && (*s != c); s++)
     ;
   return s;
@@ -556,9 +567,10 @@ const char *mutt_str_strchrnul(const char *s, char c)
  */
 char *mutt_str_substr_cpy(char *dest, const char *begin, const char *end, size_t destlen)
 {
-  size_t len;
+  if (!dest || !begin || !end || (destlen == 0))
+    return dest;
 
-  len = end - begin;
+  size_t len = end - begin;
   if (len > (destlen - 1))
     len = destlen - 1;
   memcpy(dest, begin, len);
@@ -719,6 +731,8 @@ const char *mutt_str_stristr(const char *haystack, const char *needle)
  */
 char *mutt_str_skip_whitespace(char *p)
 {
+  if (!p)
+    return NULL;
   SKIPWS(p);
   return p;
 }
@@ -731,6 +745,9 @@ char *mutt_str_skip_whitespace(char *p)
  */
 void mutt_str_remove_trailing_ws(char *s)
 {
+  if (!s)
+    return;
+
   for (char *p = s + mutt_str_strlen(s) - 1; (p >= s) && IS_SPACE(*p); p--)
     *p = '\0';
 }
@@ -809,6 +826,9 @@ size_t mutt_str_strnfcpy(char *dest, const char *src, size_t n, size_t dsize)
  */
 size_t mutt_str_lws_len(const char *s, size_t n)
 {
+  if (!s)
+    return 0;
+
   const char *p = s;
   size_t len = n;
 
@@ -840,6 +860,9 @@ size_t mutt_str_lws_len(const char *s, size_t n)
  */
 size_t mutt_str_lws_rlen(const char *s, size_t n)
 {
+  if (!s)
+    return 0;
+
   const char *p = s + n - 1;
   size_t len = n;
 
@@ -869,6 +892,9 @@ size_t mutt_str_lws_rlen(const char *s, size_t n)
  */
 void mutt_str_dequote_comment(char *s)
 {
+  if (!s)
+    return;
+
   char *w = s;
 
   for (; *s; s++)
@@ -901,6 +927,9 @@ void mutt_str_dequote_comment(char *s)
  */
 const char *mutt_str_next_word(const char *s)
 {
+  if (!s)
+    return NULL;
+
   while (*s && !IS_SPACE(*s))
     s++;
   SKIPWS(s);
@@ -920,6 +949,9 @@ const char *mutt_str_next_word(const char *s)
  */
 const char *mutt_str_rstrnstr(const char *haystack, size_t haystack_length, const char *needle)
 {
+  if (!haystack || (haystack_length == 0) || !needle)
+    return NULL;
+
   int needle_length = strlen(needle);
   const char *haystack_end = haystack + haystack_length - needle_length;
 
@@ -952,6 +984,14 @@ const char *mutt_str_rstrnstr(const char *haystack, size_t haystack_length, cons
  */
 int mutt_str_word_casecmp(const char *a, const char *b)
 {
+  if (!b)
+  {
+    if (a)
+      return 1;
+    else
+      return 0;
+  }
+
   char tmp[128] = "";
 
   int i;
@@ -1017,6 +1057,9 @@ const char *mutt_str_find_word(const char *src)
  */
 void mutt_str_pretty_size(char *buf, size_t buflen, size_t num)
 {
+  if (!buf)
+    return;
+
   if (num < 1000)
   {
     snprintf(buf, buflen, "%dB", (int) num);
@@ -1191,6 +1234,9 @@ struct ListHead mutt_str_split(const char *src, char sep)
  */
 int mutt_str_asprintf(char **strp, const char *fmt, ...)
 {
+  if (!strp || !*strp || !fmt)
+    return -1;
+
   va_list ap;
   int n;
 
