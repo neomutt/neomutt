@@ -125,7 +125,7 @@ static char *get_flags(struct ListHead *hflags, char *s)
     s++;
     SKIPWS(s);
     const char *flag_word = s;
-    while (*s && (*s != ')') && !ISSPACE(*s))
+    while (*s && (*s != ')') && !IS_SPACE(*s))
       s++;
     const char ctmp = *s;
     *s = '\0';

@@ -156,7 +156,7 @@ pid_t mutt_create_filter_fd(const char *cmd, FILE **fp_in, FILE **fp_out,
       mutt_envlist_set("COLUMNS", columns, 1);
     }
 
-    execle(EXECSHELL, "sh", "-c", cmd, NULL, mutt_envlist_getlist());
+    execle(EXEC_SHELL, "sh", "-c", cmd, NULL, mutt_envlist_getlist());
     _exit(127);
   }
   else if (pid == -1)

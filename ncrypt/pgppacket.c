@@ -32,7 +32,7 @@
 #include <stdlib.h>
 #include "mutt/mutt.h"
 
-#define CHUNKSIZE 1024 /**< Amount of data to read at once */
+#define CHUNK_SIZE 1024 /**< Amount of data to read at once */
 
 static unsigned char *pbuf = NULL; /**< Cache PGP data packet */
 static size_t plen = 0;            /**< Length of cached packet */
@@ -51,7 +51,7 @@ static int read_material(size_t material, size_t *used, FILE *fp)
 {
   if (*used + material >= plen)
   {
-    size_t nplen = *used + material + CHUNKSIZE;
+    size_t nplen = *used + material + CHUNK_SIZE;
 
     unsigned char *p = realloc(pbuf, nplen);
     if (!p)
@@ -94,7 +94,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
 
   if (plen == 0)
   {
-    plen = CHUNKSIZE;
+    plen = CHUNK_SIZE;
     pbuf = mutt_mem_malloc(plen);
   }
 

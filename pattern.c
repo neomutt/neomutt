@@ -230,7 +230,7 @@ static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   {
     pat->p.regex = mutt_mem_malloc(sizeof(regex_t));
     int flags = mutt_mb_is_lower(buf.data) ? REG_ICASE : 0;
-    int rc = REGCOMP(pat->p.regex, buf.data, REG_NEWLINE | REG_NOSUB | flags);
+    int rc = REG_COMP(pat->p.regex, buf.data, REG_NEWLINE | REG_NOSUB | flags);
     if (rc != 0)
     {
       char errmsg[256];
@@ -1635,7 +1635,7 @@ cleanup:
  * @param cache Cached Patterns
  * @retval true If ALL of the Patterns evaluates to true
  */
-static bool perform_and(struct PatternHead *pat, enum PatternExecFlag flags,
+static bool perform_and(struct PatternHead *pat, PatternExecFlags flags,
                         struct Mailbox *m, struct Email *e, struct PatternCache *cache)
 {
   struct Pattern *p = NULL;
@@ -1657,7 +1657,7 @@ static bool perform_and(struct PatternHead *pat, enum PatternExecFlag flags,
  * @param cache Cached Patterns
  * @retval true If ONE (or more) of the Patterns evaluates to true
  */
-static int perform_or(struct PatternHead *pat, enum PatternExecFlag flags,
+static int perform_or(struct PatternHead *pat, PatternExecFlags flags,
                       struct Mailbox *m, struct Email *e, struct PatternCache *cache)
 {
   struct Pattern *p = NULL;
@@ -1791,7 +1791,7 @@ static int match_user(int alladdr, struct Address *a1, struct Address *a2)
  * @retval 1  Success, match found
  * @retval 0  No match
  */
-static int match_threadcomplete(struct PatternHead *pat, enum PatternExecFlag flags,
+static int match_threadcomplete(struct PatternHead *pat, PatternExecFlags flags,
                                 struct Mailbox *m, struct MuttThread *t,
                                 int left, int up, int right, int down)
 {
@@ -1830,7 +1830,7 @@ static int match_threadcomplete(struct PatternHead *pat, enum PatternExecFlag fl
  * @retval  0 Pattern did not match
  * @retval -1 Error
  */
-static int match_threadparent(struct PatternHead *pat, enum PatternExecFlag flags,
+static int match_threadparent(struct PatternHead *pat, PatternExecFlags flags,
                               struct Mailbox *m, struct MuttThread *t)
 {
   if (!t || !t->parent || !t->parent->message)
@@ -1849,7 +1849,7 @@ static int match_threadparent(struct PatternHead *pat, enum PatternExecFlag flag
  * @retval  0 Pattern did not match
  * @retval -1 Error
  */
-static int match_threadchildren(struct PatternHead *pat, enum PatternExecFlag flags,
+static int match_threadchildren(struct PatternHead *pat, PatternExecFlags flags,
                                 struct Mailbox *m, struct MuttThread *t)
 {
   if (!t || !t->child)
@@ -1949,7 +1949,7 @@ static int is_pattern_cache_set(int cache_entry)
  * cache: For repeated matches against the same Header, passing in non-NULL will
  *        store some of the cacheable pattern matches in this structure.
  */
-int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
+int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
                       struct Mailbox *m, struct Email *e, struct PatternCache *cache)
 {
   int result;

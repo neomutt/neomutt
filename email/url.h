@@ -58,7 +58,6 @@ struct UrlQueryString
   char *value;
   STAILQ_ENTRY(UrlQueryString) entries;
 };
-
 STAILQ_HEAD(UrlQueryStringHead, UrlQueryString);
 
 /**

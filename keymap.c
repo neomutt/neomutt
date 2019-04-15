@@ -97,7 +97,7 @@ static struct Mapping KeyNames[] = {
   { "<End>", KEY_END },
   { "<Enter>", '\n' },
   { "<Return>", '\r' },
-  { "<Esc>", '\033' },
+  { "<Esc>", '\033' }, // Escape
   { "<Tab>", '\t' },
   { "<Space>", ' ' },
 #ifdef KEY_BTAB
@@ -201,7 +201,7 @@ static int parse_keycode(const char *s)
   char *end_char = NULL;
   long int result = strtol(s + 1, &end_char, 8);
   /* allow trailing whitespace, eg.  < 1001 > */
-  while (ISSPACE(*end_char))
+  while (IS_SPACE(*end_char))
     end_char++;
   /* negative keycodes don't make sense, also detect overflow */
   if ((*end_char != '>') || (result < 0) || (result == LONG_MAX))

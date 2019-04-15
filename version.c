@@ -319,14 +319,14 @@ static void print_compile_options(struct CompileOptions *co, FILE *fp)
     if (co[i].enabled)
     {
       if (tty)
-        fprintf(fp, "\033[1;32m+%s\033[0m ", co[i].name);
+        fprintf(fp, "\033[1;32m+%s\033[0m ", co[i].name); // Escape
       else
         fprintf(fp, "+%s ", co[i].name);
     }
     else
     {
       if (tty)
-        fprintf(fp, "\033[1;31m-%s\033[0m ", co[i].name);
+        fprintf(fp, "\033[1;31m-%s\033[0m ", co[i].name); // Escape
       else
         fprintf(fp, "-%s ", co[i].name);
     }

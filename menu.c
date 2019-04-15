@@ -153,9 +153,9 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
         /* Combining tree fg color and another bg color requires
          * having use_default_colors, because the other bg color
          * may be undefined. */
-        ATTRSET(mutt_combine_color(ColorDefs[MT_COLOR_TREE], attr));
+        ATTR_SET(mutt_combine_color(ColorDefs[MT_COLOR_TREE], attr));
 #else
-        SETCOLOR(MT_COLOR_TREE);
+        SET_COLOR(MT_COLOR_TREE);
 #endif
 
       while (*s && (*s < MUTT_TREE_MAX))
@@ -276,7 +276,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
         n--;
       }
       if (do_color)
-        ATTRSET(attr);
+        ATTR_SET(attr);
     }
     else if (*s == MUTT_SPECIAL_INDEX)
     {
@@ -365,7 +365,7 @@ void menu_redraw_full(struct Menu *menu)
 
   if (C_Help)
   {
-    SETCOLOR(MT_COLOR_STATUS);
+    SET_COLOR(MT_COLOR_STATUS);
     mutt_window_move(menu->helpwin, 0, 0);
     mutt_paddstr(menu->helpwin->cols, menu->help);
     NORMAL_COLOR;
@@ -390,7 +390,7 @@ void menu_redraw_status(struct Menu *menu)
   char buf[256];
 
   snprintf(buf, sizeof(buf), "-- NeoMutt: %s", menu->title);
-  SETCOLOR(MT_COLOR_STATUS);
+  SET_COLOR(MT_COLOR_STATUS);
   mutt_window_move(menu->statuswin, 0, 0);
   mutt_paddstr(menu->statuswin->cols, buf);
   NORMAL_COLOR;
@@ -428,17 +428,17 @@ void menu_redraw_index(struct Menu *menu)
       menu_make_entry(buf, sizeof(buf), menu, i);
       menu_pad_string(menu, buf, sizeof(buf));
 
-      ATTRSET(attr);
+      ATTR_SET(attr);
       mutt_window_move(menu->indexwin, i - menu->top + menu->offset, 0);
       do_color = true;
 
       if (i == menu->current)
       {
-        SETCOLOR(MT_COLOR_INDICATOR);
+        SET_COLOR(MT_COLOR_INDICATOR);
         if (C_ArrowCursor)
         {
           addstr("->");
-          ATTRSET(attr);
+          ATTR_SET(attr);
           addch(' ');
         }
         else
@@ -479,7 +479,7 @@ void menu_redraw_motion(struct Menu *menu)
    * position the cursor for drawing. */
   const int old_color = menu->menu_color(menu->oldcurrent);
   mutt_window_move(menu->indexwin, menu->oldcurrent + menu->offset - menu->top, 0);
-  ATTRSET(old_color);
+  ATTR_SET(old_color);
 
   if (C_ArrowCursor)
   {
@@ -495,7 +495,7 @@ void menu_redraw_motion(struct Menu *menu)
     }
 
     /* now draw it in the new location */
-    SETCOLOR(MT_COLOR_INDICATOR);
+    SET_COLOR(MT_COLOR_INDICATOR);
     mutt_window_mvaddstr(menu->indexwin, menu->current + menu->offset - menu->top, 0, "->");
   }
   else
@@ -509,7 +509,7 @@ void menu_redraw_motion(struct Menu *menu)
     const int cur_color = menu->menu_color(menu->current);
     menu_make_entry(buf, sizeof(buf), menu, menu->current);
     menu_pad_string(menu, buf, sizeof(buf));
-    SETCOLOR(MT_COLOR_INDICATOR);
+    SET_COLOR(MT_COLOR_INDICATOR);
     mutt_window_move(menu->indexwin, menu->current + menu->offset - menu->top, 0);
     print_enriched_string(menu->current, cur_color, (unsigned char *) buf, 0);
   }
@@ -530,11 +530,11 @@ void menu_redraw_current(struct Menu *menu)
   menu_make_entry(buf, sizeof(buf), menu, menu->current);
   menu_pad_string(menu, buf, sizeof(buf));
 
-  SETCOLOR(MT_COLOR_INDICATOR);
+  SET_COLOR(MT_COLOR_INDICATOR);
   if (C_ArrowCursor)
   {
     addstr("->");
-    ATTRSET(attr);
+    ATTR_SET(attr);
     addch(' ');
     menu_pad_string(menu, buf, sizeof(buf));
     print_enriched_string(menu->current, attr, (unsigned char *) buf, 1);
@@ -1176,7 +1176,7 @@ static int menu_search(struct Menu *menu, int op)
   if (search_buf)
   {
     int flags = mutt_mb_is_lower(search_buf) ? REG_ICASE : 0;
-    rc = REGCOMP(&re, search_buf, REG_NOSUB | flags);
+    rc = REG_COMP(&re, search_buf, REG_NOSUB | flags);
   }
 
   if (rc != 0)

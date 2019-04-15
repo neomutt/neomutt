@@ -27,11 +27,6 @@
 #include "mutt/mutt.h"
 
 /**
- * struct ParameterList - List of parameters
- */
-TAILQ_HEAD(ParameterList, Parameter);
-
-/**
  * struct Parameter - Attribute associated with a MIME part
  */
 struct Parameter
@@ -40,6 +35,7 @@ struct Parameter
   char *value;
   TAILQ_ENTRY(Parameter) entries;
 };
+TAILQ_HEAD(ParameterList, Parameter);
 
 bool              mutt_param_cmp_strict(const struct ParameterList *p1, const struct ParameterList *p2);
 void              mutt_param_delete(struct ParameterList *p, const char *attribute);

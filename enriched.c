@@ -310,19 +310,19 @@ static void enriched_putwc(wchar_t c, struct EnrichedState *stte)
       if (stte->tag_level[RICH_BOLD])
       {
         stte->buffer[stte->buf_used++] = c;
-        stte->buffer[stte->buf_used++] = (wchar_t) '\010';
+        stte->buffer[stte->buf_used++] = (wchar_t) '\010'; // Ctrl-H (backspace)
         stte->buffer[stte->buf_used++] = c;
       }
       else if (stte->tag_level[RICH_UNDERLINE])
       {
         stte->buffer[stte->buf_used++] = '_';
-        stte->buffer[stte->buf_used++] = (wchar_t) '\010';
+        stte->buffer[stte->buf_used++] = (wchar_t) '\010'; // Ctrl-H (backspace)
         stte->buffer[stte->buf_used++] = c;
       }
       else if (stte->tag_level[RICH_ITALIC])
       {
         stte->buffer[stte->buf_used++] = c;
-        stte->buffer[stte->buf_used++] = (wchar_t) '\010';
+        stte->buffer[stte->buf_used++] = (wchar_t) '\010'; // Ctrl-H (backspace)
         stte->buffer[stte->buf_used++] = '_';
       }
       else
@@ -402,40 +402,40 @@ static void enriched_set_flags(const wchar_t *tag, struct EnrichedState *stte)
         stte->param[stte->param_used] = (wchar_t) '\0';
         if (wcscasecmp(L"black", stte->param) == 0)
         {
-          enriched_puts("\033[30m", stte);
+          enriched_puts("\033[30m", stte); // Escape
         }
         else if (wcscasecmp(L"red", stte->param) == 0)
         {
-          enriched_puts("\033[31m", stte);
+          enriched_puts("\033[31m", stte); // Escape
         }
         else if (wcscasecmp(L"green", stte->param) == 0)
         {
-          enriched_puts("\033[32m", stte);
+          enriched_puts("\033[32m", stte); // Escape
         }
         else if (wcscasecmp(L"yellow", stte->param) == 0)
         {
-          enriched_puts("\033[33m", stte);
+          enriched_puts("\033[33m", stte); // Escape
         }
         else if (wcscasecmp(L"blue", stte->param) == 0)
         {
-          enriched_puts("\033[34m", stte);
+          enriched_puts("\033[34m", stte); // Escape
         }
         else if (wcscasecmp(L"magenta", stte->param) == 0)
         {
-          enriched_puts("\033[35m", stte);
+          enriched_puts("\033[35m", stte); // Escape
         }
         else if (wcscasecmp(L"cyan", stte->param) == 0)
         {
-          enriched_puts("\033[36m", stte);
+          enriched_puts("\033[36m", stte); // Escape
         }
         else if (wcscasecmp(L"white", stte->param) == 0)
         {
-          enriched_puts("\033[37m", stte);
+          enriched_puts("\033[37m", stte); // Escape
         }
       }
       if ((stte->s->flags & MUTT_DISPLAY) && (j == RICH_COLOR))
       {
-        enriched_puts("\033[0m", stte);
+        enriched_puts("\033[0m", stte); // Escape
       }
 
       /* flush parameter buffer when closing the tag */

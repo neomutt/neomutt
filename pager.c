@@ -94,7 +94,7 @@ bool C_SmartWrap; ///< Config: Wrap text at word boundaries
 struct Regex *C_Smileys; ///< Config: Regex to match smileys to prevent mistakes when quoting text
 bool C_Tilde; ///< Config: Character to pad blank lines in the pager
 
-#define ISHEADER(x) ((x) == MT_COLOR_HEADER || (x) == MT_COLOR_HDEFAULT)
+#define IS_HEADER(x) ((x) == MT_COLOR_HEADER || (x) == MT_COLOR_HDEFAULT)
 
 #define IsAttach(pager) (pager && (pager)->body)
 #define IsMsgAttach(pager)                                                     \
@@ -247,7 +247,7 @@ static int check_sig(const char *s, struct Line *info, int n)
     /* check for a blank line */
     while (*s)
     {
-      if (!ISSPACE(*s))
+      if (!IS_SPACE(*s))
         return 0;
       s++;
     }
@@ -304,7 +304,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt,
   {
     if (!cnt && C_Markers)
     {
-      SETCOLOR(MT_COLOR_MARKERS);
+      SET_COLOR(MT_COLOR_MARKERS);
       addch('+');
       last_color = ColorDefs[MT_COLOR_MARKERS];
     }
@@ -408,7 +408,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt,
 
   if (color != last_color)
   {
-    ATTRSET(color);
+    ATTR_SET(color);
     last_color = color;
   }
 }
@@ -925,7 +925,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
   bool null_rx;
   int offset, i = 0;
 
-  if ((n == 0) || ISHEADER(line_info[n - 1].type) ||
+  if ((n == 0) || IS_HEADER(line_info[n - 1].type) ||
       (check_protected_header_marker(raw) == 0))
   {
     if (buf[0] == '\n') /* end of header */
@@ -985,7 +985,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
       }
     }
   }
-  else if (mutt_str_startswith(raw, "\033[0m", CASE_MATCH)) /* a little hack... */
+  else if (mutt_str_startswith(raw, "\033[0m", CASE_MATCH)) // Escape: a little hack...
     line_info[n].type = MT_COLOR_NORMAL;
   else if (check_attachment_marker((char *) raw) == 0)
     line_info[n].type = MT_COLOR_ATTACHMENT;
@@ -1318,7 +1318,7 @@ static int fill_buffer(FILE *fp, LOFF_T *last_pos, LOFF_T offset, unsigned char 
     q = *fmt;
     while (*p)
     {
-      if ((*p == '\010') && (p > *buf))
+      if ((*p == '\010') && (p > *buf)) // Ctrl-H (backspace)
       {
         if (*(p + 1) == '_') /* underline */
           p += 2;
@@ -1330,12 +1330,12 @@ static int fill_buffer(FILE *fp, LOFF_T *last_pos, LOFF_T offset, unsigned char 
         else /* ^H */
           *q++ = *p++;
       }
-      else if ((*p == '\033') && (*(p + 1) == '[') && is_ansi(p + 2))
+      else if ((*p == '\033') && (*(p + 1) == '[') && is_ansi(p + 2)) // Escape
       {
         while (*p++ != 'm') /* skip ANSI sequence */
           ;
       }
-      else if ((*p == '\033') && (*(p + 1) == ']') &&
+      else if ((*p == '\033') && (*(p + 1) == ']') && // Escape
                ((check_attachment_marker((char *) p) == 0) ||
                 (check_protected_header_marker((char *) p) == 0)))
       {
@@ -1388,11 +1388,11 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
   for (ch = 0, vch = 0; ch < cnt; ch += k, vch += k)
   {
     /* Handle ANSI sequences */
-    while ((cnt - ch >= 2) && (buf[ch] == '\033') && (buf[ch + 1] == '[') &&
+    while ((cnt - ch >= 2) && (buf[ch] == '\033') && (buf[ch + 1] == '[') && // Escape
            is_ansi(buf + ch + 2))
       ch = grok_ansi(buf, ch + 2, pa) + 1;
 
-    while ((cnt - ch >= 2) && (buf[ch] == '\033') && (buf[ch + 1] == ']') &&
+    while ((cnt - ch >= 2) && (buf[ch] == '\033') && (buf[ch + 1] == ']') && // Escape
            ((check_attachment_marker((char *) buf + ch) == 0) ||
             (check_protected_header_marker((char *) buf + ch) == 0)))
     {
@@ -1734,8 +1734,8 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
   /* move the break point only if smart_wrap is set */
   if (C_SmartWrap)
   {
-    if ((cnt < b_read) && (ch != -1) && !ISHEADER((*line_info)[n].type) &&
-        !ISSPACE(buf[cnt]))
+    if ((cnt < b_read) && (ch != -1) && !IS_HEADER((*line_info)[n].type) &&
+        !IS_SPACE(buf[cnt]))
     {
       buf_ptr = buf + ch;
       /* skip trailing blanks */
@@ -1802,7 +1802,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
     else
       def_color = ColorDefs[(*line_info)[m].type];
 
-    ATTRSET(def_color);
+    ATTR_SET(def_color);
   }
 
   if (col < pager_window->cols)
@@ -1983,7 +1983,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
 
     if (C_Help)
     {
-      SETCOLOR(MT_COLOR_STATUS);
+      SET_COLOR(MT_COLOR_STATUS);
       mutt_window_move(MuttHelpWindow, 0, 0);
       mutt_paddstr(MuttHelpWindow->cols, rd->helpstr);
       NORMAL_COLOR;
@@ -1995,7 +1995,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       if (rd->search_compiled)
       {
         int flags = mutt_mb_is_lower(rd->searchbuf) ? REG_ICASE : 0;
-        const int err = REGCOMP(&rd->search_re, rd->searchbuf, REG_NEWLINE | flags);
+        const int err = REG_COMP(&rd->search_re, rd->searchbuf, REG_NEWLINE | flags);
         if (err != 0)
         {
           regerror(err, &rd->search_re, buf, sizeof(buf));
@@ -2126,7 +2126,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       rd->last_offset = rd->line_info[rd->curline].offset;
     } while (rd->force_redraw);
 
-    SETCOLOR(MT_COLOR_TILDE);
+    SET_COLOR(MT_COLOR_TILDE);
     while (rd->lines < rd->pager_window->rows)
     {
       mutt_window_clrtoeol(rd->pager_window);
@@ -2169,7 +2169,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
 
     /* print out the pager status bar */
     mutt_window_move(rd->pager_status_window, 0, 0);
-    SETCOLOR(MT_COLOR_STATUS);
+    SET_COLOR(MT_COLOR_STATUS);
 
     if (IsEmail(rd->extra) || IsMsgAttach(rd->extra))
     {
@@ -2207,7 +2207,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     menu_status_line(buf, sizeof(buf), rd->index, NONULL(C_StatusFormat));
 
     mutt_window_move(rd->index_status_window, 0, 0);
-    SETCOLOR(MT_COLOR_STATUS);
+    SET_COLOR(MT_COLOR_STATUS);
     mutt_draw_statusline(rd->index_status_window->cols, buf, sizeof(buf));
     NORMAL_COLOR;
   }
@@ -2718,7 +2718,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         }
 
         int rflags = mutt_mb_is_lower(searchbuf) ? REG_ICASE : 0;
-        int err = REGCOMP(&rd.search_re, searchbuf, REG_NEWLINE | rflags);
+        int err = REG_COMP(&rd.search_re, searchbuf, REG_NEWLINE | rflags);
         if (err != 0)
         {
           regerror(err, &rd.search_re, buf, sizeof(buf));
@@ -2850,7 +2850,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           int new_topline = rd.topline;
 
           /* Skip all the email headers */
-          if (ISHEADER(rd.line_info[new_topline].type))
+          if (IS_HEADER(rd.line_info[new_topline].type))
           {
             while (((new_topline < rd.last_line) ||
                     (0 == (dretval = display_line(
@@ -2858,7 +2858,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
                                &rd.max_line, MUTT_TYPES | (flags & MUTT_PAGER_NOWRAP),
                                &rd.quote_list, &rd.q_level, &rd.force_redraw,
                                &rd.search_re, rd.pager_window)))) &&
-                   ISHEADER(rd.line_info[new_topline].type))
+                   IS_HEADER(rd.line_info[new_topline].type))
             {
               new_topline++;
             }

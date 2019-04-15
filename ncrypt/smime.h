@@ -56,7 +56,7 @@ void         smime_class_getkeys(struct Envelope *env);
 void         smime_class_invoke_import(char *infile, char *mailbox);
 int          smime_class_send_menu(struct Email *msg);
 struct Body *smime_class_sign_message(struct Body *a);
-int          smime_class_valid_passphrase(void);
+bool         smime_class_valid_passphrase(void);
 int          smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile);
 int          smime_class_verify_sender(struct Email *e);
 void         smime_class_void_passphrase(void);

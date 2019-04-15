@@ -72,9 +72,9 @@ char *C_ShowMultipartAlternative; ///< Config: How to display 'multipart/alterna
 #define BUFI_SIZE 1000
 #define BUFO_SIZE 2000
 
-#define TXTHTML 1
-#define TXTPLAIN 2
-#define TXTENRICHED 3
+#define TXT_HTML 1
+#define TXT_PLAIN 2
+#define TXT_ENRICHED 3
 
 /**
  * typedef handler_t - Manage a PGP or S/MIME encrypted MIME part
@@ -333,7 +333,7 @@ static void decode_quoted(struct State *s, long len, bool istext, iconv_t cd)
     /* chop trailing whitespace if we got the full line */
     if (last == '\n')
     {
-      while ((linelen > 0) && ISSPACE(line[linelen - 1]))
+      while ((linelen > 0) && IS_SPACE(line[linelen - 1]))
         linelen--;
       line[linelen] = '\0';
     }
@@ -713,14 +713,15 @@ static int message_handler(struct Body *a, struct State *s)
 
   if (b->parts)
   {
-    mutt_copy_hdr(s->fp_in, s->fp_out, off_start, b->parts->offset,
-                  (((s->flags & MUTT_WEED) ||
-                    ((s->flags & (MUTT_DISPLAY | MUTT_PRINTING)) && C_Weed)) ?
-                       (CH_WEED | CH_REORDER) :
-                       CH_NO_FLAGS) |
-                      (s->prefix ? CH_PREFIX : CH_NO_FLAGS) | CH_DECODE | CH_FROM |
-                      ((s->flags & MUTT_DISPLAY) ? CH_DISPLAY : CH_NO_FLAGS),
-                  s->prefix);
+    CopyHeaderFlags chflags = CH_DECODE | CH_FROM;
+    if ((s->flags & MUTT_WEED) || ((s->flags & (MUTT_DISPLAY | MUTT_PRINTING)) && C_Weed))
+      chflags |= CH_WEED | CH_REORDER;
+    if (s->prefix)
+      chflags |= CH_PREFIX;
+    if (s->flags & MUTT_DISPLAY)
+      chflags |= CH_DISPLAY;
+
+    mutt_copy_hdr(s->fp_in, s->fp_out, off_start, b->parts->offset, chflags, s->prefix);
 
     if (s->prefix)
       state_puts(s->prefix, s);
@@ -858,8 +859,11 @@ static int external_body_handler(struct Body *b, struct State *s)
         state_printf(s, _("[-- name: %s --]\n"), b->parts->filename);
       }
 
-      mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset,
-                    (C_Weed ? (CH_WEED | CH_REORDER) : CH_NO_FLAGS) | CH_DECODE, NULL);
+      CopyHeaderFlags chflags = CH_DECODE;
+      if (C_Weed)
+        chflags |= CH_WEED | CH_REORDER;
+
+      mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset, chflags, NULL);
     }
   }
   else if (expiration && (expire < time(NULL)))
@@ -873,8 +877,11 @@ static int external_body_handler(struct Body *b, struct State *s)
                TYPE(b->parts), b->parts->subtype);
       state_attach_puts(strbuf, s);
 
-      mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset,
-                    (C_Weed ? (CH_WEED | CH_REORDER) : CH_NO_FLAGS) | CH_DECODE | CH_DISPLAY, NULL);
+      CopyHeaderFlags chflags = CH_DECODE | CH_DISPLAY;
+      if (C_Weed)
+        chflags |= CH_WEED | CH_REORDER;
+
+      mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset, chflags, NULL);
     }
   }
   else
@@ -890,8 +897,11 @@ static int external_body_handler(struct Body *b, struct State *s)
                TYPE(b->parts), b->parts->subtype, access_type);
       state_attach_puts(strbuf, s);
 
-      mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset,
-                    (C_Weed ? (CH_WEED | CH_REORDER) : CH_NO_FLAGS) | CH_DECODE | CH_DISPLAY, NULL);
+      CopyHeaderFlags chflags = CH_DECODE | CH_DISPLAY;
+      if (C_Weed)
+        chflags |= CH_WEED | CH_REORDER;
+
+      mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset, chflags, NULL);
     }
   }
 
@@ -993,20 +1003,20 @@ static int alternative_handler(struct Body *a, struct State *s)
     {
       if (b->type == TYPE_TEXT)
       {
-        if ((mutt_str_strcasecmp("plain", b->subtype) == 0) && (type <= TXTPLAIN))
+        if ((mutt_str_strcasecmp("plain", b->subtype) == 0) && (type <= TXT_PLAIN))
         {
           choice = b;
-          type = TXTPLAIN;
+          type = TXT_PLAIN;
         }
-        else if ((mutt_str_strcasecmp("enriched", b->subtype) == 0) && (type <= TXTENRICHED))
+        else if ((mutt_str_strcasecmp("enriched", b->subtype) == 0) && (type <= TXT_ENRICHED))
         {
           choice = b;
-          type = TXTENRICHED;
+          type = TXT_ENRICHED;
         }
-        else if ((mutt_str_strcasecmp("html", b->subtype) == 0) && (type <= TXTHTML))
+        else if ((mutt_str_strcasecmp("html", b->subtype) == 0) && (type <= TXT_HTML))
         {
           choice = b;
-          type = TXTHTML;
+          type = TXT_HTML;
         }
       }
       b = b->next;

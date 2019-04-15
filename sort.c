@@ -89,7 +89,7 @@ static int compare_score(const void *a, const void *b)
   struct Email **pb = (struct Email **) b;
   int result = (*pb)->score - (*pa)->score; /* note that this is reverse */
   result = perform_auxsort(result, a, b);
-  return SORTCODE(result);
+  return SORT_CODE(result);
 }
 
 /**
@@ -101,7 +101,7 @@ static int compare_size(const void *a, const void *b)
   struct Email **pb = (struct Email **) b;
   int result = (*pa)->content->length - (*pb)->content->length;
   result = perform_auxsort(result, a, b);
-  return SORTCODE(result);
+  return SORT_CODE(result);
 }
 
 /**
@@ -113,7 +113,7 @@ static int compare_date_sent(const void *a, const void *b)
   struct Email **pb = (struct Email **) b;
   int result = (*pa)->date_sent - (*pb)->date_sent;
   result = perform_auxsort(result, a, b);
-  return SORTCODE(result);
+  return SORT_CODE(result);
 }
 
 /**
@@ -137,7 +137,7 @@ static int compare_subject(const void *a, const void *b)
   else
     rc = mutt_str_strcasecmp((*pa)->env->real_subj, (*pb)->env->real_subj);
   rc = perform_auxsort(rc, a, b);
-  return SORTCODE(rc);
+  return SORT_CODE(rc);
 }
 
 /**
@@ -180,7 +180,7 @@ static int compare_to(const void *a, const void *b)
   const char *fb = mutt_get_name((*ppb)->env->to);
   int result = mutt_str_strncasecmp(fa, fb, sizeof(fa));
   result = perform_auxsort(result, a, b);
-  return SORTCODE(result);
+  return SORT_CODE(result);
 }
 
 /**
@@ -196,7 +196,7 @@ static int compare_from(const void *a, const void *b)
   const char *fb = mutt_get_name((*ppb)->env->from);
   int result = mutt_str_strncasecmp(fa, fb, sizeof(fa));
   result = perform_auxsort(result, a, b);
-  return SORTCODE(result);
+  return SORT_CODE(result);
 }
 
 /**
@@ -208,7 +208,7 @@ static int compare_date_received(const void *a, const void *b)
   struct Email **pb = (struct Email **) b;
   int result = (*pa)->received - (*pb)->received;
   result = perform_auxsort(result, a, b);
-  return SORTCODE(result);
+  return SORT_CODE(result);
 }
 
 /**
@@ -220,7 +220,7 @@ static int compare_order(const void *a, const void *b)
   struct Email **eb = (struct Email **) b;
 
   /* no need to auxsort because you will never have equality here */
-  return SORTCODE((*ea)->index - (*eb)->index);
+  return SORT_CODE((*ea)->index - (*eb)->index);
 }
 
 /**
@@ -242,15 +242,15 @@ static int compare_spam(const void *a, const void *b)
 
   /* If one msg has spam attr but other does not, sort the one with first. */
   if (ahas && !bhas)
-    return SORTCODE(1);
+    return SORT_CODE(1);
   if (!ahas && bhas)
-    return SORTCODE(-1);
+    return SORT_CODE(-1);
 
   /* Else, if neither has a spam attr, presume equality. Fall back on aux. */
   if (!ahas && !bhas)
   {
     result = perform_auxsort(result, a, b);
-    return SORTCODE(result);
+    return SORT_CODE(result);
   }
 
   /* Both have spam attrs. */
@@ -265,7 +265,7 @@ static int compare_spam(const void *a, const void *b)
   /* If either aptr or bptr is equal to data, there is no numeric    */
   /* value for that spam attribute. In this case, compare lexically. */
   if ((aptr == (*ppa)->env->spam->data) || (bptr == (*ppb)->env->spam->data))
-    return SORTCODE(strcmp(aptr, bptr));
+    return SORT_CODE(strcmp(aptr, bptr));
 
   /* Otherwise, we have numeric value for both attrs. If these values */
   /* are equal, then we first fall back upon string comparison, then  */
@@ -276,7 +276,7 @@ static int compare_spam(const void *a, const void *b)
     result = perform_auxsort(result, a, b);
   }
 
-  return SORTCODE(result);
+  return SORT_CODE(result);
 }
 
 /**
@@ -296,20 +296,20 @@ static int compare_label(const void *a, const void *b)
 
   /* First we bias toward a message with a label, if the other does not. */
   if (ahas && !bhas)
-    return SORTCODE(-1);
+    return SORT_CODE(-1);
   if (!ahas && bhas)
-    return SORTCODE(1);
+    return SORT_CODE(1);
 
   /* If neither has a label, use aux sort. */
   if (!ahas && !bhas)
   {
     result = perform_auxsort(result, a, b);
-    return SORTCODE(result);
+    return SORT_CODE(result);
   }
 
   /* If both have a label, we just do a lexical compare. */
   result = mutt_str_strcasecmp((*ppa)->env->x_label, (*ppb)->env->x_label);
-  return SORTCODE(result);
+  return SORT_CODE(result);
 }
 
 /**

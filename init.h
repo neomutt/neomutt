@@ -1552,7 +1552,7 @@ struct ConfigDef MuttVars[] = {
   ** of mailboxes it polls for new mail just as if you had issued individual
   ** "$mailboxes" commands.
   */
-  { "imap_condstore",  DT_BOOL, R_NONE, &C_ImapCondStore, 0 },
+  { "imap_condstore",  DT_BOOL, R_NONE, &C_ImapCondStore, false },
   /*
   ** .pp
   ** When \fIset\fP, mutt will use the CONDSTORE extension (RFC 7162)
@@ -1674,7 +1674,7 @@ struct ConfigDef MuttVars[] = {
   ** for new mail, before timing out and closing the connection.  Set
   ** to 0 to disable timing out.
   */
-  { "imap_qresync",  DT_BOOL, R_NONE, &C_ImapQResync, 0 },
+  { "imap_qresync",  DT_BOOL, R_NONE, &C_ImapQResync, false },
   /*
   ** .pp
   ** When \fIset\fP, mutt will use the QRESYNC extension (RFC 7162)
@@ -2503,7 +2503,7 @@ struct ConfigDef MuttVars[] = {
   ** subprocess failed.
   ** (PGP only)
   */
-  { "pgp_check_gpg_decrypt_status_fd", DT_BOOL, R_NONE, &C_PgpCheckGpgDecryptStatusFd, 1 },
+  { "pgp_check_gpg_decrypt_status_fd", DT_BOOL, R_NONE, &C_PgpCheckGpgDecryptStatusFd, true },
   /*
   ** .pp
   ** If \fIset\fP, mutt will check the status file descriptor output

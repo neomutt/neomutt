@@ -294,7 +294,7 @@ struct Regex *regex_new(const char *str, int flags, struct Buffer *err)
     str++;
   }
 
-  int rc = REGCOMP(reg->regex, str, rflags);
+  int rc = REG_COMP(reg->regex, str, rflags);
   if ((rc != 0) && err)
   {
     regerror(rc, reg->regex, err->data, err->dsize);

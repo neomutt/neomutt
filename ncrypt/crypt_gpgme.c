@@ -985,7 +985,7 @@ static char *data_object_to_tempfile(gpgme_data_t data, FILE **fp_ret)
 #if GPGME_VERSION_NUMBER >= 0x010b00 /* gpgme >= 1.11.0 */
 
 /**
- * create_recipient_string - XXX
+ * create_recipient_string - Create a string of recipients
  * @param keylist    Keys, space-separated
  * @param recpstring Buffer to store the recipients
  * @param use_smime  Use SMIME
@@ -3087,10 +3087,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
       }
 
       gpgme_data_release(armored_data);
-      if (fp_out)
-      {
-        mutt_file_fclose(&fp_out);
-      }
+      mutt_file_fclose(&fp_out);
     }
     else
     {
@@ -3317,7 +3314,7 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
  * | \%p     | Protocol
  * | \%t     | Trust/validity of the key-uid association
  * | \%u     | User id
- * | \%[...] | Date of key using strftime(3)
+ * | \%[fmt] | Date of key using strftime(3)
  * |         |
  * | \%a     | Algorithm
  * | \%c     | Capabilities

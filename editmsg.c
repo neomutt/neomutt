@@ -83,7 +83,8 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   }
 
   const CopyHeaderFlags chflags =
-      CH_NOLEN | (((m->magic == MUTT_MBOX) || (m->magic == MUTT_MMDF)) ? CH_NO_FLAGS : CH_NOSTATUS);
+      CH_NOLEN |
+      (((m->magic == MUTT_MBOX) || (m->magic == MUTT_MMDF)) ? CH_NO_FLAGS : CH_NOSTATUS);
   rc = mutt_append_message(ctx_tmp->mailbox, m, e, MUTT_CM_NO_FLAGS, chflags);
   int oerrno = errno;
 

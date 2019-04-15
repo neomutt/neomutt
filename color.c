@@ -819,7 +819,7 @@ static enum CommandResult add_pattern(struct ColorLineHead *top, const char *s,
       else
         flags = REG_ICASE;
 
-      const int r = REGCOMP(&tmp->regex, s, flags);
+      const int r = REG_COMP(&tmp->regex, s, flags);
       if (r != 0)
       {
         regerror(r, &tmp->regex, err->data, err->dsize);

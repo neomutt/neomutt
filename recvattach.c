@@ -88,7 +88,7 @@ static const char *Mailbox_is_read_only = N_("Mailbox is read-only");
     break;                                                                     \
   }
 
-#define CURATTACH actx->idx[actx->v2r[menu->current]]
+#define CUR_ATTACH actx->idx[actx->v2r[menu->current]]
 
 static const struct Mapping AttachHelp[] = {
   { N_("Exit"), OP_EXIT },   { N_("Save"), OP_SAVE }, { N_("Pipe"), OP_PIPE },
@@ -986,7 +986,7 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, stru
 static void recvattach_extract_pgp_keys(struct AttachCtx *actx, struct Menu *menu)
 {
   if (!menu->tagprefix)
-    crypt_pgp_extract_key_from_attachment(CURATTACH->fp, CURATTACH->content);
+    crypt_pgp_extract_key_from_attachment(CUR_ATTACH->fp, CUR_ATTACH->content);
   else
   {
     for (int i = 0; i < actx->idxlen; i++)
@@ -1012,7 +1012,7 @@ static int recvattach_pgp_check_traditional(struct AttachCtx *actx, struct Menu 
   int rc = 0;
 
   if (!menu->tagprefix)
-    rc = crypt_pgp_check_traditional(CURATTACH->fp, CURATTACH->content, true);
+    rc = crypt_pgp_check_traditional(CUR_ATTACH->fp, CUR_ATTACH->content, true);
   else
   {
     for (int i = 0; i < actx->idxlen; i++)
@@ -1032,12 +1032,12 @@ static int recvattach_pgp_check_traditional(struct AttachCtx *actx, struct Menu 
 static void recvattach_edit_content_type(struct AttachCtx *actx,
                                          struct Menu *menu, struct Email *e)
 {
-  if (!mutt_edit_content_type(e, CURATTACH->content, CURATTACH->fp))
+  if (!mutt_edit_content_type(e, CUR_ATTACH->content, CUR_ATTACH->fp))
     return;
 
   /* The mutt_update_recvattach_menu() will overwrite any changes
-   * made to a decrypted CURATTACH->content, so warn the user. */
-  if (CURATTACH->decrypted)
+   * made to a decrypted CUR_ATTACH->content, so warn the user. */
+  if (CUR_ATTACH->decrypted)
   {
     mutt_message(
         _("Structural changes to decrypted attachments are not supported"));
@@ -1071,7 +1071,7 @@ int mutt_attach_display_loop(struct Menu *menu, int op, struct Email *e,
         /* fallthrough */
 
       case OP_VIEW_ATTACH:
-        op = mutt_view_attachment(CURATTACH->fp, CURATTACH->content,
+        op = mutt_view_attachment(CUR_ATTACH->fp, CUR_ATTACH->content,
                                   MUTT_VA_REGULAR, e, actx);
         break;
 
@@ -1098,11 +1098,11 @@ int mutt_attach_display_loop(struct Menu *menu, int op, struct Email *e,
       case OP_EDIT_TYPE:
         /* when we edit the content-type, we should redisplay the attachment
          * immediately */
-        mutt_edit_content_type(e, CURATTACH->content, CURATTACH->fp);
+        mutt_edit_content_type(e, CUR_ATTACH->content, CUR_ATTACH->fp);
         if (recv)
           recvattach_edit_content_type(actx, menu, e);
         else
-          mutt_edit_content_type(e, CURATTACH->content, CURATTACH->fp);
+          mutt_edit_content_type(e, CUR_ATTACH->content, CUR_ATTACH->fp);
 
         menu->redraw |= REDRAW_INDEX;
         op = OP_VIEW_ATTACH;
@@ -1299,12 +1299,12 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
 {
   int rindex, curlevel;
 
-  CURATTACH->content->collapsed = !CURATTACH->content->collapsed;
+  CUR_ATTACH->content->collapsed = !CUR_ATTACH->content->collapsed;
   /* When expanding, expand all the children too */
-  if (CURATTACH->content->collapsed)
+  if (CUR_ATTACH->content->collapsed)
     return;
 
-  curlevel = CURATTACH->level;
+  curlevel = CUR_ATTACH->level;
   rindex = actx->v2r[menu->current] + 1;
 
   while ((rindex < actx->idxlen) && (actx->idx[rindex]->level > curlevel))
@@ -1363,12 +1363,12 @@ void mutt_view_attachments(struct Email *e)
     switch (op)
     {
       case OP_ATTACH_VIEW_MAILCAP:
-        mutt_view_attachment(CURATTACH->fp, CURATTACH->content, MUTT_VA_MAILCAP, e, actx);
+        mutt_view_attachment(CUR_ATTACH->fp, CUR_ATTACH->content, MUTT_VA_MAILCAP, e, actx);
         menu->redraw = REDRAW_FULL;
         break;
 
       case OP_ATTACH_VIEW_TEXT:
-        mutt_view_attachment(CURATTACH->fp, CURATTACH->content, MUTT_VA_AS_TEXT, e, actx);
+        mutt_view_attachment(CUR_ATTACH->fp, CUR_ATTACH->content, MUTT_VA_AS_TEXT, e, actx);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -1379,7 +1379,7 @@ void mutt_view_attachments(struct Email *e)
         continue;
 
       case OP_ATTACH_COLLAPSE:
-        if (!CURATTACH->content->parts)
+        if (!CUR_ATTACH->content->parts)
         {
           mutt_error(_("There are no subparts to show"));
           break;
@@ -1410,18 +1410,18 @@ void mutt_view_attachments(struct Email *e)
         break;
 
       case OP_PRINT:
-        mutt_print_attachment_list(actx, CURATTACH->fp, menu->tagprefix,
-                                   CURATTACH->content);
+        mutt_print_attachment_list(actx, CUR_ATTACH->fp, menu->tagprefix,
+                                   CUR_ATTACH->content);
         break;
 
       case OP_PIPE:
-        mutt_pipe_attachment_list(actx, CURATTACH->fp, menu->tagprefix,
-                                  CURATTACH->content, false);
+        mutt_pipe_attachment_list(actx, CUR_ATTACH->fp, menu->tagprefix,
+                                  CUR_ATTACH->content, false);
         break;
 
       case OP_SAVE:
-        mutt_save_attachment_list(actx, CURATTACH->fp, menu->tagprefix,
-                                  CURATTACH->content, e, menu);
+        mutt_save_attachment_list(actx, CUR_ATTACH->fp, menu->tagprefix,
+                                  CUR_ATTACH->content, e, menu);
 
         if (!menu->tagprefix && C_Resolve && (menu->current < menu->max - 1))
           menu->current++;
@@ -1463,9 +1463,9 @@ void mutt_view_attachments(struct Email *e)
         }
         if (!menu->tagprefix)
         {
-          if (CURATTACH->parent_type == TYPE_MULTIPART)
+          if (CUR_ATTACH->parent_type == TYPE_MULTIPART)
           {
-            CURATTACH->content->deleted = true;
+            CUR_ATTACH->content->deleted = true;
             if (C_Resolve && (menu->current < menu->max - 1))
             {
               menu->current++;
@@ -1505,7 +1505,7 @@ void mutt_view_attachments(struct Email *e)
         CHECK_READONLY;
         if (!menu->tagprefix)
         {
-          CURATTACH->content->deleted = false;
+          CUR_ATTACH->content->deleted = false;
           if (C_Resolve && (menu->current < menu->max - 1))
           {
             menu->current++;
@@ -1529,43 +1529,43 @@ void mutt_view_attachments(struct Email *e)
 
       case OP_RESEND:
         CHECK_ATTACH;
-        mutt_attach_resend(CURATTACH->fp, actx,
-                           menu->tagprefix ? NULL : CURATTACH->content);
+        mutt_attach_resend(CUR_ATTACH->fp, actx,
+                           menu->tagprefix ? NULL : CUR_ATTACH->content);
         menu->redraw = REDRAW_FULL;
         break;
 
       case OP_BOUNCE_MESSAGE:
         CHECK_ATTACH;
-        mutt_attach_bounce(m, CURATTACH->fp, actx,
-                           menu->tagprefix ? NULL : CURATTACH->content);
+        mutt_attach_bounce(m, CUR_ATTACH->fp, actx,
+                           menu->tagprefix ? NULL : CUR_ATTACH->content);
         menu->redraw = REDRAW_FULL;
         break;
 
       case OP_FORWARD_MESSAGE:
         CHECK_ATTACH;
-        mutt_attach_forward(CURATTACH->fp, e, actx,
-                            menu->tagprefix ? NULL : CURATTACH->content, SEND_NO_FLAGS);
+        mutt_attach_forward(CUR_ATTACH->fp, e, actx,
+                            menu->tagprefix ? NULL : CUR_ATTACH->content, SEND_NO_FLAGS);
         menu->redraw = REDRAW_FULL;
         break;
 
 #ifdef USE_NNTP
       case OP_FORWARD_TO_GROUP:
         CHECK_ATTACH;
-        mutt_attach_forward(CURATTACH->fp, e, actx,
-                            menu->tagprefix ? NULL : CURATTACH->content, SEND_NEWS);
+        mutt_attach_forward(CUR_ATTACH->fp, e, actx,
+                            menu->tagprefix ? NULL : CUR_ATTACH->content, SEND_NEWS);
         menu->redraw = REDRAW_FULL;
         break;
 
       case OP_FOLLOWUP:
         CHECK_ATTACH;
 
-        if (!CURATTACH->content->email->env->followup_to ||
-            (mutt_str_strcasecmp(CURATTACH->content->email->env->followup_to, "poster") != 0) ||
+        if (!CUR_ATTACH->content->email->env->followup_to ||
+            (mutt_str_strcasecmp(CUR_ATTACH->content->email->env->followup_to, "poster") != 0) ||
             (query_quadoption(C_FollowupToPoster,
                               _("Reply by mail as poster prefers?")) != MUTT_YES))
         {
-          mutt_attach_reply(CURATTACH->fp, e, actx,
-                            menu->tagprefix ? NULL : CURATTACH->content,
+          mutt_attach_reply(CUR_ATTACH->fp, e, actx,
+                            menu->tagprefix ? NULL : CUR_ATTACH->content,
                             SEND_NEWS | SEND_REPLY);
           menu->redraw = REDRAW_FULL;
           break;
@@ -1587,16 +1587,16 @@ void mutt_view_attachments(struct Email *e)
         else if (op == OP_LIST_REPLY)
           flags |= SEND_LIST_REPLY;
 
-        mutt_attach_reply(CURATTACH->fp, e, actx,
-                          menu->tagprefix ? NULL : CURATTACH->content, flags);
+        mutt_attach_reply(CUR_ATTACH->fp, e, actx,
+                          menu->tagprefix ? NULL : CUR_ATTACH->content, flags);
         menu->redraw = REDRAW_FULL;
         break;
       }
 
       case OP_COMPOSE_TO_SENDER:
         CHECK_ATTACH;
-        mutt_attach_mail_sender(CURATTACH->fp, e, actx,
-                                menu->tagprefix ? NULL : CURATTACH->content);
+        mutt_attach_mail_sender(CUR_ATTACH->fp, e, actx,
+                                menu->tagprefix ? NULL : CUR_ATTACH->content);
         menu->redraw = REDRAW_FULL;
         break;
 

@@ -149,7 +149,6 @@ struct MailboxNode
   struct Mailbox *mailbox;
   STAILQ_ENTRY(MailboxNode) entries;
 };
-
 STAILQ_HEAD(MailboxList, MailboxNode);
 
 extern struct MailboxList AllMailboxes; ///< List of all Mailboxes

@@ -1105,7 +1105,7 @@ void mutt_browser_select_dir(const char *f)
 }
 
 /**
- * mutt_select_file - Let the user select a file
+ * mutt_buffer_select_file - Let the user select a file
  * @param[in]  file     Buffer for the result
  * @param[in]  flags    Flags, see #SelectFileFlags
  * @param[out] files    Array of selected files
@@ -2051,7 +2051,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
               break;
             }
 
-            int err = REGCOMP(&rx, s, REG_NOSUB);
+            int err = REG_COMP(&rx, s, REG_NOSUB);
             if (err != 0)
             {
               regerror(err, &rx, buf->data, buf->dsize);

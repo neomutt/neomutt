@@ -68,9 +68,9 @@
 
 const int dialog_row_len = 128;
 
-/* Just in case OpenSSL doesn't define DEVRANDOM */
-#ifndef DEVRANDOM
-#define DEVRANDOM "/dev/urandom"
+/* Just in case OpenSSL doesn't define DEV_RANDOM */
+#ifndef DEV_RANDOM
+#define DEV_RANDOM "/dev/urandom"
 #endif
 
 /* LibreSSL defines OPENSSL_VERSION_NUMBER but sets it to 0x20000000L.
@@ -92,7 +92,7 @@ const int dialog_row_len = 128;
 #else
 static int entropy_byte_count = 0;
 /* OpenSSL fills the entropy pool from /dev/urandom if it exists */
-#define HAVE_ENTROPY() (!access(DEVRANDOM, R_OK) || entropy_byte_count >= 16)
+#define HAVE_ENTROPY() (!access(DEV_RANDOM, R_OK) || entropy_byte_count >= 16)
 #endif
 
 /* index for storing hostname as application specific data in SSL structure */

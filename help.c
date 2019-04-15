@@ -182,7 +182,7 @@ static int print_macro(FILE *fp, int maxwidth, const char **macro)
       if (n < 2)
         break;
       n -= 2;
-      if (wc == '\033')
+      if (wc == '\033') // Escape
         fprintf(fp, "\\e");
       else if (wc == '\n')
         fprintf(fp, "\\n");
@@ -308,7 +308,7 @@ static void format_line(FILE *fp, int ismacro, const char *t1, const char *t2, c
   if (ismacro > 0)
   {
     if (mutt_str_strcmp(C_Pager, "builtin") == 0)
-      fputs("_\010", fp);
+      fputs("_\010", fp); // Ctrl-H (backspace)
     fputs("M ", fp);
     col += 2;
 

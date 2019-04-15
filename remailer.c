@@ -321,7 +321,7 @@ static void mix_redraw_ce(struct Remailer **type2_list, struct Coord *coords,
   if (coords[i].r < MIX_MAXROW)
   {
     if (selected)
-      SETCOLOR(MT_COLOR_INDICATOR);
+      SET_COLOR(MT_COLOR_INDICATOR);
     else
       NORMAL_COLOR;
 
@@ -360,7 +360,7 @@ static void mix_redraw_chain(struct Remailer **type2_list, struct Coord *coords,
  */
 static void mix_redraw_head(struct MixChain *chain)
 {
-  SETCOLOR(MT_COLOR_STATUS);
+  SET_COLOR(MT_COLOR_STATUS);
   mutt_window_mvprintw(MuttIndexWindow, MIX_VOFFSET - 1, 0,
                        "-- Remailer chain [Length: %d]", chain ? chain->cl : 0);
   mutt_window_clrtoeol(MuttIndexWindow);
@@ -513,7 +513,7 @@ static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer 
 {
   int i;
 
-  if (chain->cl >= MAXMIXES)
+  if (chain->cl >= MAX_MIXES)
     return -1;
 
   if ((mutt_str_strcmp(s, "0") == 0) || (mutt_str_strcasecmp(s, "<random>") == 0))
@@ -669,13 +669,13 @@ void mix_make_chain(struct ListHead *chainhead)
       case OP_GENERIC_SELECT_ENTRY:
       case OP_MIX_APPEND:
       {
-        if ((chain->cl < MAXMIXES) && (c_cur < chain->cl))
+        if ((chain->cl < MAX_MIXES) && (c_cur < chain->cl))
           c_cur++;
       }
       /* fallthrough */
       case OP_MIX_INSERT:
       {
-        if (chain->cl < MAXMIXES)
+        if (chain->cl < MAX_MIXES)
         {
           chain->cl++;
           for (int i = chain->cl - 1; i > c_cur; i--)
@@ -688,7 +688,7 @@ void mix_make_chain(struct ListHead *chainhead)
         else
         {
           /* L10N The '%d' here hard-coded to 19 */
-          mutt_error(_("Mixmaster chains are limited to %d elements"), MAXMIXES);
+          mutt_error(_("Mixmaster chains are limited to %d elements"), MAX_MIXES);
         }
 
         break;

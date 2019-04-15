@@ -41,7 +41,6 @@ struct Account
   void *adata;
   void (*free_adata)(void **);
 };
-
 TAILQ_HEAD(AccountList, Account);
 
 extern struct AccountList AllAccounts; ///< List of all Accounts

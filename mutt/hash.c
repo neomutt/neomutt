@@ -34,7 +34,7 @@
 #include "memory.h"
 #include "string2.h"
 
-#define SOMEPRIME 149711
+#define SOME_PRIME 149711
 
 /**
  * gen_string_hash - Generate a hash from a string
@@ -49,7 +49,7 @@ static size_t gen_string_hash(union HashKey key, size_t n)
 
   while (*s)
     h += ((h << 7) + *s++);
-  h = (h * SOMEPRIME) % n;
+  h = (h * SOME_PRIME) % n;
 
   return h;
 }
@@ -80,7 +80,7 @@ static size_t gen_case_string_hash(union HashKey key, size_t n)
 
   while (*s)
     h += ((h << 7) + tolower(*s++));
-  h = (h * SOMEPRIME) % n;
+  h = (h * SOME_PRIME) % n;
 
   return h;
 }

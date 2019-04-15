@@ -28,7 +28,6 @@
 #include <stdbool.h>
 
 struct Mailbox;
-struct Context;
 
 /* These Config Variables are only used in sidebar.c */
 extern short C_SidebarComponentDepth;

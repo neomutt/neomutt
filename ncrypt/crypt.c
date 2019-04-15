@@ -136,12 +136,12 @@ static void disable_coredumps(void)
 /**
  * crypt_valid_passphrase - Check that we have a usable passphrase, ask if not
  * @param flags Flags, see #SecurityFlags
- * @retval  0 Success
- * @retval -1 Failure
+ * @retval true  Success
+ * @retval false Failed
  */
-int crypt_valid_passphrase(SecurityFlags flags)
+bool crypt_valid_passphrase(SecurityFlags flags)
 {
-  int rc = 0;
+  bool rc = false;
 
 #ifndef DEBUG
   disable_coredumps();

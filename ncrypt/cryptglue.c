@@ -177,12 +177,12 @@ void crypt_pgp_void_passphrase(void)
 /**
  * crypt_pgp_valid_passphrase - Wrapper for CryptModuleSpecs::valid_passphrase()
  */
-int crypt_pgp_valid_passphrase(void)
+bool crypt_pgp_valid_passphrase(void)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, valid_passphrase))
     return CRYPT_MOD_CALL(PGP, valid_passphrase)();
 
-  return 0;
+  return false;
 }
 
 /**
@@ -358,12 +358,12 @@ void crypt_smime_void_passphrase(void)
 /**
  * crypt_smime_valid_passphrase - Wrapper for CryptModuleSpecs::valid_passphrase()
  */
-int crypt_smime_valid_passphrase(void)
+bool crypt_smime_valid_passphrase(void)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, valid_passphrase))
     return CRYPT_MOD_CALL(SMIME, valid_passphrase)();
 
-  return 0;
+  return false;
 }
 
 /**

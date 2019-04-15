@@ -731,7 +731,7 @@ char *mutt_str_skip_whitespace(char *p)
  */
 void mutt_str_remove_trailing_ws(char *s)
 {
-  for (char *p = s + mutt_str_strlen(s) - 1; (p >= s) && ISSPACE(*p); p--)
+  for (char *p = s + mutt_str_strlen(s) - 1; (p >= s) && IS_SPACE(*p); p--)
     *p = '\0';
 }
 
@@ -901,7 +901,7 @@ void mutt_str_dequote_comment(char *s)
  */
 const char *mutt_str_next_word(const char *s)
 {
-  while (*s && !ISSPACE(*s))
+  while (*s && !IS_SPACE(*s))
     s++;
   SKIPWS(s);
   return s;
@@ -957,7 +957,7 @@ int mutt_str_word_casecmp(const char *a, const char *b)
   int i;
   for (i = 0; i < (sizeof(tmp) - 2); i++, b++)
   {
-    if (!*b || ISSPACE(*b))
+    if (!*b || IS_SPACE(*b))
     {
       tmp[i] = '\0';
       break;

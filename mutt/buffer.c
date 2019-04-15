@@ -320,7 +320,7 @@ void mutt_buffer_strcpy(struct Buffer *buf, const char *s)
 }
 
 /**
- * mutt_buffer_strcpy - Copy a string into a Buffer
+ * mutt_buffer_strcpy_n - Copy a string into a Buffer
  * @param buf Buffer to overwrite
  * @param s   String to copy
  * @param len Length of string to copy

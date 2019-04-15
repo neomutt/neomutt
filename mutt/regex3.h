@@ -42,14 +42,14 @@ struct Buffer;
 #endif
 
 /**
- * REGCOMP - Compile a regular expression
+ * REG_COMP - Compile a regular expression
  * @param preg   regex_t struct to fill
  * @param regex  Regular expression string
  * @param cflags Flags
  * @retval   0 Success
  * @retval num Failure, e.g. REG_BADPAT
  */
-#define REGCOMP(preg, regex, cflags) regcomp(preg, regex, REG_WORDS | REG_EXTENDED | (cflags))
+#define REG_COMP(preg, regex, cflags) regcomp(preg, regex, REG_WORDS | REG_EXTENDED | (cflags))
 
 /**
  * struct Regex - Cached regular expression
@@ -69,7 +69,6 @@ struct RegexListNode
   struct Regex *regex; /**< Regex containing a regular expression */
   STAILQ_ENTRY(RegexListNode) entries; /**< Next item in list */
 };
-
 STAILQ_HEAD(RegexList, RegexListNode);
 
 /**

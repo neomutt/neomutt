@@ -50,10 +50,6 @@ struct GroupNode
   struct Group *group;
   STAILQ_ENTRY(GroupNode) entries;
 };
-
-/**
- * struct GroupList - A list of GroupNodes
- */
 STAILQ_HEAD(GroupList, GroupNode);
 
 void mutt_grouplist_init(void);

@@ -35,7 +35,7 @@ struct Context;
 /* These Config Variables are only used in sort.c */
 extern bool C_ReverseAlias;
 
-#define SORTCODE(x) ((OptAuxSort ? C_SortAux : C_Sort) & SORT_REVERSE) ? -(x) : x
+#define SORT_CODE(x) ((OptAuxSort ? C_SortAux : C_Sort) & SORT_REVERSE) ? -(x) : x
 
 /**
  * typedef sort_t - Prototype for a function to compare two emails

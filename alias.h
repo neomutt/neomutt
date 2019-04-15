@@ -42,7 +42,6 @@ struct Alias
   short num;
   TAILQ_ENTRY(Alias) entries;
 };
-
 TAILQ_HEAD(AliasList, Alias);
 
 void            mutt_alias_create(struct Envelope *cur, struct Address *iaddr);

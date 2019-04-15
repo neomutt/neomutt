@@ -46,9 +46,9 @@ static void smime_gpgme_void_passphrase(void)
  *
  * This is handled by gpg-agent.
  */
-static int smime_gpgme_valid_passphrase(void)
+static bool smime_gpgme_valid_passphrase(void)
 {
-  return 1;
+  return true;
 }
 
 // clang-format off

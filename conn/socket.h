@@ -40,11 +40,6 @@ enum ConnectionType
 
 struct Connection;
 
-/**
- * struct ConnectionList - A list of connections
- */
-TAILQ_HEAD(ConnectionList, Connection);
-
 struct Connection *mutt_socket_new(enum ConnectionType type);
 
 int mutt_socket_open(struct Connection *conn);

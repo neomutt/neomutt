@@ -397,13 +397,13 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
               /* this is the new way */
               mutt_str_startswith(np->data, "X-Mutt-PGP:", CASE_MATCH)))
     {
-      hdr->security = mutt_parse_crypt_hdr(strchr(np->data, ':') + 1, 1, APPLICATION_PGP);
+      hdr->security = mutt_parse_crypt_hdr(strchr(np->data, ':') + 1, true, APPLICATION_PGP);
       hdr->security |= APPLICATION_PGP;
     }
     else if (((WithCrypto & APPLICATION_SMIME) != 0) &&
              mutt_str_startswith(np->data, "X-Mutt-SMIME:", CASE_MATCH))
     {
-      hdr->security = mutt_parse_crypt_hdr(strchr(np->data, ':') + 1, 1, APPLICATION_SMIME);
+      hdr->security = mutt_parse_crypt_hdr(strchr(np->data, ':') + 1, true, APPLICATION_SMIME);
       hdr->security |= APPLICATION_SMIME;
     }
 
@@ -446,7 +446,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
  * @param crypt_app App, e.g. #APPLICATION_PGP
  * @retval num SecurityFlags, see #SecurityFlags
  */
-SecurityFlags mutt_parse_crypt_hdr(const char *p, int set_empty_signas, SecurityFlags crypt_app)
+SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, SecurityFlags crypt_app)
 {
   char smime_cryptalg[1024] = "\0";
   char sign_as[1024] = "\0", *q = NULL;

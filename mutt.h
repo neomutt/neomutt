@@ -132,7 +132,7 @@ struct AttachMatch
   regex_t minor_regex;
 };
 
-#define EXECSHELL "/bin/sh"
+#define EXEC_SHELL "/bin/sh"
 
 char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping *items);
 

@@ -1149,7 +1149,7 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
             }
             *p++ = 0;
 
-            for (q = p; *q && !ISSPACE(*q); q++)
+            for (q = p; *q && !IS_SPACE(*q); q++)
               ;
 
             mutt_str_substr_cpy(subtype, p, q, sizeof(subtype));

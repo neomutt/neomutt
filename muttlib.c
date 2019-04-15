@@ -846,7 +846,7 @@ void mutt_safe_path(char *buf, size_t buflen, struct Address *a)
 {
   mutt_save_path(buf, buflen, a);
   for (char *p = buf; *p; p++)
-    if ((*p == '/') || ISSPACE(*p) || !IsPrint((unsigned char) *p))
+    if ((*p == '/') || IS_SPACE(*p) || !IsPrint((unsigned char) *p))
       *p = '_';
 }
 
@@ -1714,7 +1714,7 @@ int mutt_inbox_cmp(const char *a, const char *b)
 }
 
 /**
- * mutt_buffer_concat - Join a directory name and a filename
+ * mutt_buffer_concat_path - Join a directory name and a filename
  * @param d     Buffer to add to
  * @param dir   Directory name
  * @param fname File name

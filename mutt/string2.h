@@ -34,7 +34,7 @@
 #define STR_COMMAND 8192  ///< Enough space for a long command line
 
 #define NONULL(x) ((x) ? (x) : "")
-#define ISSPACE(ch) isspace((unsigned char) ch)
+#define IS_SPACE(ch) isspace((unsigned char) ch)
 #define EMAIL_WSP " \t\r\n"
 
 /* Exit values */

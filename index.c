@@ -992,7 +992,7 @@ static void index_custom_redraw(struct Menu *menu)
     char buf[1024];
     menu_status_line(buf, sizeof(buf), menu, NONULL(C_StatusFormat));
     mutt_window_move(MuttStatusWindow, 0, 0);
-    SETCOLOR(MT_COLOR_STATUS);
+    SET_COLOR(MT_COLOR_STATUS);
     mutt_draw_statusline(MuttStatusWindow->cols, buf, sizeof(buf));
     NORMAL_COLOR;
     menu->redraw &= ~REDRAW_STATUS;
@@ -2265,7 +2265,7 @@ int mutt_index_menu(void)
             mutt_mailbox(Context ? Context->mailbox : NULL, buf, sizeof(buf));
           }
 
-          if (mutt_enter_fname(cp, buf, sizeof(buf), 1) == -1)
+          if (mutt_enter_fname(cp, buf, sizeof(buf), true) == -1)
           {
             if (menu->menu == MENU_PAGER)
             {

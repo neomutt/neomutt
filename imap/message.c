@@ -283,7 +283,7 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
       char *flag_word = s;
       bool is_system_keyword = mutt_str_startswith(s, "\\", CASE_IGNORE);
 
-      while (*s && !ISSPACE(*s) && (*s != ')'))
+      while (*s && !IS_SPACE(*s) && (*s != ')'))
         s++;
 
       ctmp = *s;
@@ -1472,7 +1472,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   {
     mutt_debug(LL_DEBUG1, "#1 command failed: %s\n", adata->buf);
 
-    char *pc = adata->buf + SEQLEN;
+    char *pc = adata->buf + SEQ_LEN;
     SKIPWS(pc);
     pc = imap_next_word(pc);
     mutt_error("%s", pc);
@@ -1508,7 +1508,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   if (!imap_code(adata->buf))
   {
     mutt_debug(LL_DEBUG1, "#2 command failed: %s\n", adata->buf);
-    char *pc = adata->buf + SEQLEN;
+    char *pc = adata->buf + SEQ_LEN;
     SKIPWS(pc);
     pc = imap_next_word(pc);
     mutt_error("%s", pc);

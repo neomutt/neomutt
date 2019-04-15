@@ -168,14 +168,14 @@ void smime_class_void_passphrase(void)
 /**
  * smime_class_valid_passphrase - Implements CryptModuleSpecs::valid_passphrase()
  */
-int smime_class_valid_passphrase(void)
+bool smime_class_valid_passphrase(void)
 {
   time_t now = time(NULL);
 
   if (now < SmimeExptime)
   {
     /* Use cached copy.  */
-    return 1;
+    return true;
   }
 
   smime_class_void_passphrase();
@@ -183,12 +183,12 @@ int smime_class_valid_passphrase(void)
   if (mutt_get_password(_("Enter S/MIME passphrase:"), SmimePass, sizeof(SmimePass)) == 0)
   {
     SmimeExptime = mutt_date_add_timeout(time(NULL), C_SmimeTimeout);
-    return 1;
+    return true;
   }
   else
     SmimeExptime = 0;
 
-  return 0;
+  return false;
 }
 
 /*

@@ -450,7 +450,7 @@ bool mutt_ch_lookup_add(enum LookupType type, const char *pat,
     return false;
 
   regex_t *rx = mutt_mem_malloc(sizeof(regex_t));
-  int rc = REGCOMP(rx, pat, REG_ICASE);
+  int rc = REG_COMP(rx, pat, REG_ICASE);
   if (rc != 0)
   {
     regerror(rc, rx, err->data, err->dsize);

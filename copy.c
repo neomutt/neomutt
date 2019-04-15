@@ -343,9 +343,10 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
        * decoding may have concatenated lines.  */
       if (chflags & (CH_DECODE | CH_PREFIX))
       {
-        if (mutt_write_one_header(
-                fp_out, 0, headers[x], (chflags & CH_PREFIX) ? prefix : 0,
-                mutt_window_wrap_cols(MuttIndexWindow, C_Wrap), chflags) == -1)
+        const char *pre = (chflags & CH_PREFIX) ? prefix : NULL;
+        const int wraplen = mutt_window_wrap_cols(MuttIndexWindow, C_Wrap);
+
+        if (mutt_write_one_header(fp_out, 0, headers[x], pre, wraplen, chflags) == -1)
         {
           error = true;
           break;

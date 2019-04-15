@@ -909,7 +909,7 @@ char *imap_next_word(char *s)
     }
     if (*s == '\"')
       quoted = quoted ? 0 : 1;
-    if (!quoted && ISSPACE(*s))
+    if (!quoted && IS_SPACE(*s))
       break;
     s++;
   }
