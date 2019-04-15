@@ -13,6 +13,7 @@ pgpewrap
 test/config-test
 test/neomutt-test
 test/pattern-test
+test/string-test
 
 # Build products
 *.o
