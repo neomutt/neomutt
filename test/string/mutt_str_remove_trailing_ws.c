@@ -28,4 +28,9 @@
 void test_mutt_str_remove_trailing_ws(void)
 {
   // void mutt_str_remove_trailing_ws(char *s);
+
+  {
+    mutt_str_remove_trailing_ws(NULL);
+    TEST_CHECK_(1, "mutt_str_remove_trailing_ws(NULL)");
+  }
 }

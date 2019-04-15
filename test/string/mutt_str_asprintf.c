@@ -23,8 +23,23 @@
 #define TEST_NO_MAIN
 #include "acutest.h"
 #include "config.h"
+#include "mutt/mutt.h"
 
 void test_mutt_str_asprintf(void)
 {
   // int mutt_str_asprintf(char **strp, const char *fmt, ...);
+
+  {
+    TEST_CHECK(mutt_str_asprintf(NULL, "dummy") == -1);
+  }
+
+  {
+    char *ptr = NULL;
+    TEST_CHECK(mutt_str_asprintf(&ptr, "dummy") == -1);
+  }
+
+  {
+    char *ptr = NULL;
+    TEST_CHECK(mutt_str_asprintf(&ptr, NULL) == -1);
+  }
 }

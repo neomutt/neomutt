@@ -28,4 +28,15 @@
 void test_mutt_str_append_item(void)
 {
   // void mutt_str_append_item(char **str, const char *item, int sep);
+
+  {
+    mutt_str_append_item(NULL, "apple", ',');
+    TEST_CHECK_(1, "mutt_str_append_item(NULL, \"apple\", ',')");
+  }
+
+  {
+    char *ptr = NULL;
+    mutt_str_append_item(&ptr, NULL, ',');
+    TEST_CHECK_(1, "mutt_str_append_item(&ptr, NULL, ',')");
+  }
 }

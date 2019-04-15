@@ -28,4 +28,10 @@
 void test_mutt_str_substr_dup(void)
 {
   // char *mutt_str_substr_dup(const char *begin, const char *end);
+
+  const char *str = "apple banana";
+
+  {
+    TEST_CHECK(mutt_str_substr_dup(NULL, str + 7) == NULL);
+  }
 }

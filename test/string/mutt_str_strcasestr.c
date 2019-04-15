@@ -28,4 +28,16 @@
 void test_mutt_str_strcasestr(void)
 {
   // const char *mutt_str_strcasestr(const char *haystack, const char *needle);
+
+  {
+    TEST_CHECK(mutt_str_strcasestr(NULL, "apple") == NULL);
+  }
+
+  {
+    TEST_CHECK(mutt_str_strcasestr("apple", NULL) == NULL);
+  }
+
+  {
+    TEST_CHECK(mutt_str_strcasestr(NULL, NULL) == NULL);
+  }
 }

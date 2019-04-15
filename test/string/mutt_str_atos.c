@@ -28,4 +28,8 @@
 void test_mutt_str_atos(void)
 {
   // int mutt_str_atos(const char *str, short *dst);
+
+  {
+    TEST_CHECK(mutt_str_atos(NULL, NULL) == 0);
+  }
 }

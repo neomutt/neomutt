@@ -28,4 +28,8 @@
 void test_mutt_str_next_word(void)
 {
   // const char *mutt_str_next_word(const char *s);
+
+  {
+    TEST_CHECK(mutt_str_next_word(NULL) == NULL);
+  }
 }

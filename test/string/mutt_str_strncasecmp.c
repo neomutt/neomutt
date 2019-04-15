@@ -28,4 +28,16 @@
 void test_mutt_str_strncasecmp(void)
 {
   // int mutt_str_strncasecmp(const char *a, const char *b, size_t l);
+
+  {
+    TEST_CHECK(mutt_str_strncasecmp(NULL, "apple", 3) != 0);
+  }
+
+  {
+    TEST_CHECK(mutt_str_strncasecmp("apple", NULL, 3) != 0);
+  }
+
+  {
+    TEST_CHECK(mutt_str_strncasecmp(NULL, NULL, 3) == 0);
+  }
 }

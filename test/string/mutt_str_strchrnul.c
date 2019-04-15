@@ -28,4 +28,8 @@
 void test_mutt_str_strchrnul(void)
 {
   // const char *mutt_str_strchrnul(const char *s, char c);
+
+  {
+    TEST_CHECK(mutt_str_strchrnul(NULL, 'a') == NULL);
+  }
 }

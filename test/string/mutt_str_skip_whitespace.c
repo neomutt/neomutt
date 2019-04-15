@@ -28,4 +28,8 @@
 void test_mutt_str_skip_whitespace(void)
 {
   // char *mutt_str_skip_whitespace(char *p);
+
+  {
+    TEST_CHECK(mutt_str_skip_whitespace(NULL) == NULL);
+  }
 }

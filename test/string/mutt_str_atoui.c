@@ -28,4 +28,8 @@
 void test_mutt_str_atoui(void)
 {
   // int mutt_str_atoui(const char *str, unsigned int *dst);
+
+  {
+    TEST_CHECK(mutt_str_atoui(NULL, NULL) == 0);
+  }
 }

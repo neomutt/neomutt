@@ -28,4 +28,12 @@
 void test_mutt_str_startswith(void)
 {
   // size_t mutt_str_startswith(const char *str, const char *prefix, enum CaseSensitivity cs);
+
+  {
+    TEST_CHECK(mutt_str_startswith(NULL, "apple", CASE_MATCH) == 0);
+  }
+
+  {
+    TEST_CHECK(mutt_str_startswith("apple", NULL, CASE_MATCH) == 0);
+  }
 }

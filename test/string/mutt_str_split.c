@@ -28,4 +28,9 @@
 void test_mutt_str_split(void)
 {
   // struct ListHead mutt_str_split(const char *src, char sep);
+
+  {
+    struct ListHead head = mutt_str_split(NULL, ',');
+    TEST_CHECK(STAILQ_EMPTY(&head));
+  }
 }

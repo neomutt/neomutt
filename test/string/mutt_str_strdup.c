@@ -28,4 +28,13 @@
 void test_mutt_str_strdup(void)
 {
   // char *mutt_str_strdup(const char *str);
+
+  {
+    TEST_CHECK(mutt_str_strdup(NULL) == NULL);
+  }
+
+  {
+    char *ptr = NULL;
+    TEST_CHECK(mutt_str_strdup(ptr) == NULL);
+  }
 }

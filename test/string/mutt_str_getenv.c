@@ -28,4 +28,8 @@
 void test_mutt_str_getenv(void)
 {
   // const char *mutt_str_getenv(const char *name);
+
+  {
+    TEST_CHECK(mutt_str_getenv(NULL) == NULL);
+  }
 }

@@ -28,4 +28,17 @@
 void test_mutt_str_strnfcpy(void)
 {
   // size_t mutt_str_strnfcpy(char *dest, const char *src, size_t n, size_t dsize);
+
+  {
+    TEST_CHECK(mutt_str_strnfcpy(NULL, "apple", 5, 10) == 0);
+  }
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(mutt_str_strnfcpy(buf, NULL, 5, sizeof(buf)) == 0);
+  }
+
+  {
+    TEST_CHECK(mutt_str_strnfcpy(NULL, NULL, 5, 10) == 0);
+  }
 }

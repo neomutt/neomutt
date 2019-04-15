@@ -28,4 +28,17 @@
 void test_mutt_str_stristr(void)
 {
   // const char *mutt_str_stristr(const char *haystack, const char *needle);
+
+  {
+    TEST_CHECK(mutt_str_stristr(NULL, "apple") == NULL);
+  }
+
+  {
+    char *haystack = "apple";
+    TEST_CHECK(mutt_str_stristr(haystack, NULL) == haystack);
+  }
+
+  {
+    TEST_CHECK(mutt_str_stristr(NULL, NULL) == NULL);
+  }
 }

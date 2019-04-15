@@ -28,4 +28,16 @@
 void test_mutt_str_remall_strcasestr(void)
 {
   // int mutt_str_remall_strcasestr(char *str, const char *target);
+
+  {
+    TEST_CHECK(mutt_str_remall_strcasestr(NULL, "apple") == 1);
+  }
+
+  {
+    TEST_CHECK(mutt_str_remall_strcasestr("apple", NULL) == 1);
+  }
+
+  {
+    TEST_CHECK(mutt_str_remall_strcasestr(NULL, NULL) == 1);
+  }
 }

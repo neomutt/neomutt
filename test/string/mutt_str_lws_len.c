@@ -28,4 +28,8 @@
 void test_mutt_str_lws_len(void)
 {
   // size_t mutt_str_lws_len(const char *s, size_t n);
+
+  {
+    TEST_CHECK(mutt_str_lws_len(NULL, 10) == 0);
+  }
 }

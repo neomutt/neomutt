@@ -28,4 +28,15 @@
 void test_mutt_str_adjust(void)
 {
   // void mutt_str_adjust(char **p);
+
+  {
+    mutt_str_adjust(NULL);
+    TEST_CHECK_(1, "mutt_str_adjust(NULL)");
+  }
+
+  {
+    char *ptr = NULL;
+    mutt_str_adjust(&ptr);
+    TEST_CHECK_(1, "mutt_str_adjust(&ptr)");
+  }
 }

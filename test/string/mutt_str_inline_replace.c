@@ -28,4 +28,13 @@
 void test_mutt_str_inline_replace(void)
 {
   // bool mutt_str_inline_replace(char *buf, size_t buflen, size_t xlen, const char *rstr);
+
+  {
+    TEST_CHECK(mutt_str_inline_replace(NULL, 10, 2, "apple") == false);
+  }
+
+  {
+    char buf[32] = "banana";
+    TEST_CHECK(mutt_str_inline_replace(buf, sizeof(buf), 2, NULL) == false);
+  }
 }

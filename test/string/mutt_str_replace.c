@@ -28,4 +28,20 @@
 void test_mutt_str_replace(void)
 {
   // void mutt_str_replace(char **p, const char *s);
+
+  {
+    mutt_str_replace(NULL, NULL);
+    TEST_CHECK_(1, "mutt_str_replace(NULL, NULL)");
+  }
+
+  {
+    mutt_str_replace(NULL, "apple");
+    TEST_CHECK_(1, "mutt_str_replace(NULL, \"apple\")");
+  }
+
+  {
+    char *ptr = NULL;
+    mutt_str_replace(&ptr, NULL);
+    TEST_CHECK_(1, "mutt_str_replace(&ptr, NULL)");
+  }
 }

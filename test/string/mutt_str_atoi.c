@@ -28,4 +28,8 @@
 void test_mutt_str_atoi(void)
 {
   // int mutt_str_atoi(const char *str, int *dst);
+
+  {
+    TEST_CHECK(mutt_str_atoi(NULL, NULL) == 0);
+  }
 }

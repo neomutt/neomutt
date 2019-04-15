@@ -28,4 +28,16 @@
 void test_mutt_str_strcmp(void)
 {
   // int mutt_str_strcmp(const char *a, const char *b);
+
+  {
+    TEST_CHECK(mutt_str_strcmp(NULL, "apple") != 0);
+  }
+
+  {
+    TEST_CHECK(mutt_str_strcmp("apple", NULL) != 0);
+  }
+
+  {
+    TEST_CHECK(mutt_str_strcmp(NULL, NULL) == 0);
+  }
 }

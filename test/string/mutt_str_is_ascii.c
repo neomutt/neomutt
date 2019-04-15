@@ -28,4 +28,8 @@
 void test_mutt_str_is_ascii(void)
 {
   // bool mutt_str_is_ascii(const char *p, size_t len);
+
+  {
+    TEST_CHECK(mutt_str_is_ascii(NULL, 10) == true);
+  }
 }

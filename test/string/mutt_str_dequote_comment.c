@@ -28,4 +28,10 @@
 void test_mutt_str_dequote_comment(void)
 {
   // void mutt_str_dequote_comment(char *s);
+
+  {
+    mutt_str_dequote_comment(NULL);
+    TEST_CHECK_(1, "mutt_str_dequote_comment(NULL)");
+  }
+
 }

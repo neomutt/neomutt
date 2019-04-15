@@ -28,4 +28,9 @@
 void test_mutt_str_pretty_size(void)
 {
   // void mutt_str_pretty_size(char *buf, size_t buflen, size_t num);
+
+  {
+    mutt_str_pretty_size(NULL, 10, 1234);
+    TEST_CHECK_(1, "mutt_str_pretty_size(NULL, 10, 1234)");
+  }
 }

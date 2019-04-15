@@ -28,4 +28,8 @@
 void test_mutt_str_atoull(void)
 {
   // int mutt_str_atoull(const char *str, unsigned long long *dst);
+
+  {
+    TEST_CHECK(mutt_str_atoull(NULL, NULL) == 0);
+  }
 }

@@ -28,4 +28,8 @@
 void test_mutt_str_skip_email_wsp(void)
 {
   // char *mutt_str_skip_email_wsp(const char *s);
+
+  {
+    TEST_CHECK(mutt_str_skip_email_wsp(NULL) == NULL);
+  }
 }

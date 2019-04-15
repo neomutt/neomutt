@@ -28,4 +28,8 @@
 void test_mutt_str_strlen(void)
 {
   // size_t mutt_str_strlen(const char *a);
+
+  {
+    TEST_CHECK(mutt_str_strlen(NULL) == 0);
+  }
 }

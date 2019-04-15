@@ -28,4 +28,20 @@
 void test_mutt_str_substr_cpy(void)
 {
   // char *mutt_str_substr_cpy(char *dest, const char *begin, const char *end, size_t destlen);
+
+  const char *str = "apple banana";
+
+  {
+    TEST_CHECK(mutt_str_substr_cpy(NULL, str + 3, str + 7, 32) == NULL);
+  }
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(mutt_str_substr_cpy(buf, NULL, str + 7, sizeof(buf)) == buf);
+  }
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(mutt_str_substr_cpy(buf, str + 3, NULL, sizeof(buf)) == buf);
+  }
 }

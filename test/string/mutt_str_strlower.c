@@ -28,4 +28,8 @@
 void test_mutt_str_strlower(void)
 {
   // char *mutt_str_strlower(char *s);
+
+  {
+    TEST_CHECK(mutt_str_strlower(NULL) == NULL);
+  }
 }

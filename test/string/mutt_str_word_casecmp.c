@@ -28,4 +28,16 @@
 void test_mutt_str_word_casecmp(void)
 {
   // int mutt_str_word_casecmp(const char *a, const char *b);
+
+  {
+    TEST_CHECK(mutt_str_word_casecmp(NULL, "apple") != 0);
+  }
+
+  {
+    TEST_CHECK(mutt_str_word_casecmp("apple", NULL) != 0);
+  }
+
+  {
+    TEST_CHECK(mutt_str_word_casecmp(NULL, NULL) == 0);
+  }
 }

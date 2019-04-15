@@ -28,4 +28,12 @@
 void test_mutt_str_rstrnstr(void)
 {
   // const char *mutt_str_rstrnstr(const char *haystack, size_t haystack_length, const char *needle);
+
+  {
+    TEST_CHECK(mutt_str_rstrnstr(NULL, 10, "apple") == NULL);
+  }
+
+  {
+    TEST_CHECK(mutt_str_rstrnstr("apple", 10, NULL) == NULL);
+  }
 }

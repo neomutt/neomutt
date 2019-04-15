@@ -28,4 +28,8 @@
 void test_mutt_str_find_word(void)
 {
   // const char *mutt_str_find_word(const char *src);
+
+  {
+    TEST_CHECK(mutt_str_find_word(NULL) == NULL);
+  }
 }

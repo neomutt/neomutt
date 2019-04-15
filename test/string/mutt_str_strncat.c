@@ -28,4 +28,17 @@
 void test_mutt_str_strncat(void)
 {
   // char *mutt_str_strncat(char *d, size_t l, const char *s, size_t sl);
+
+  {
+    TEST_CHECK(mutt_str_strncat(NULL, 10, "apple", 5) == NULL);
+  }
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(mutt_str_strncat(buf, sizeof(buf), NULL, 5) == buf);
+  }
+
+  {
+    TEST_CHECK(mutt_str_strncat(NULL, 10, NULL, 5) == NULL);
+  }
 }
