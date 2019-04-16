@@ -33,5 +33,4 @@ void test_mutt_str_dequote_comment(void)
     mutt_str_dequote_comment(NULL);
     TEST_CHECK_(1, "mutt_str_dequote_comment(NULL)");
   }
-
 }
