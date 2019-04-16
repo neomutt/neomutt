@@ -22,7 +22,7 @@
  */
 
 /**
- * @page email_group Handling for email address groups
+ * @page addr_group Handling for email address groups
  *
  * Handling for email address groups
  */
@@ -30,8 +30,8 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdlib.h>
-#include "email/address.h"
 #include "group.h"
+#include "address/lib.h"
 
 static struct Hash *Groups = NULL;
 

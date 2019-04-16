@@ -30,7 +30,7 @@
 #include "mutt/mutt.h"
 #include "config/common.h"
 #include "config/lib.h"
-#include "email/address.h"
+#include "address/lib.h"
 
 static struct Address *VarApple;
 static struct Address *VarBanana;

@@ -52,6 +52,7 @@
 #include "email/lib.h"
 #include "mutt.h"
 #include "ssl.h"
+#include "address/lib.h"
 #include "conn_globals.h"
 #include "connaccount.h"
 #include "connection.h"

@@ -34,6 +34,7 @@
 #include "mutt/mutt.h"
 #include "email/lib.h"
 #include "address.h"
+#include "address/lib.h"
 #include "set.h"
 #include "types.h"
 

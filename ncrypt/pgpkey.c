@@ -43,6 +43,7 @@
 #include "email/lib.h"
 #include "mutt.h"
 #include "pgpkey.h"
+#include "address/lib.h"
 #include "crypt.h"
 #include "curs_lib.h"
 #include "filter.h"

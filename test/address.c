@@ -1,6 +1,6 @@
 #define TEST_NO_MAIN
 #include "acutest.h"
-#include "email/address.h"
+#include "address/lib.h"
 #include "mutt/memory.h"
 #include <string.h>
 

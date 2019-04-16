@@ -33,6 +33,7 @@
 #include "mutt/mutt.h"
 #include "email/lib.h"
 #include "sort.h"
+#include "address/lib.h"
 #include "alias.h"
 #include "context.h"
 #include "globals.h"

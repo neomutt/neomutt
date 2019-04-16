@@ -42,6 +42,7 @@
 #include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
+#include "address/lib.h"
 #include "globals.h"
 #include "mutt_account.h"
 #include "mutt_socket.h"

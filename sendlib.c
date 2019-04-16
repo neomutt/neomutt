@@ -46,6 +46,7 @@
 #include "email/lib.h"
 #include "mutt.h"
 #include "sendlib.h"
+#include "address/lib.h"
 #include "context.h"
 #include "copy.h"
 #include "curs_lib.h"

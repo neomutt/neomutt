@@ -40,6 +40,7 @@
 #include "email/lib.h"
 #include "mutt.h"
 #include "hdrline.h"
+#include "address/lib.h"
 #include "alias.h"
 #include "context.h"
 #include "curs_lib.h"

@@ -31,7 +31,7 @@
 #include <stdbool.h>
 #include "mutt/mutt.h"
 #include "envelope.h"
-#include "address.h"
+#include "address/lib.h"
 
 /**
  * mutt_env_new - Create a new Envelope
