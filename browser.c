@@ -781,7 +781,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       struct MailboxNode *np = NULL;
       STAILQ_FOREACH(np, &AllMailboxes, entries)
       {
-        if (mutt_str_strcmp(mutt_b2s(buf), np->mailbox->path) != 0)
+        if (mutt_str_strcmp(mutt_b2s(buf), mutt_b2s(np->mailbox->pathbuf)) != 0)
           break;
       }
 
@@ -850,7 +850,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
       }
 
       char buf[PATH_MAX];
-      mutt_str_strfcpy(buf, np->mailbox->path, sizeof(buf));
+      mutt_str_strfcpy(buf, mutt_b2s(np->mailbox->pathbuf), sizeof(buf));
       if (C_BrowserAbbreviateMailboxes)
         mutt_pretty_mailbox(buf, sizeof(buf));
 
@@ -862,14 +862,14 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
           continue;
         case MUTT_NOTMUCH:
         case MUTT_NNTP:
-          add_folder(menu, state, np->mailbox->path, np->mailbox->desc, NULL,
-                     np->mailbox, NULL);
+          add_folder(menu, state, mutt_b2s(np->mailbox->pathbuf),
+                     np->mailbox->desc, NULL, np->mailbox, NULL);
           continue;
         default: /* Continue */
           break;
       }
 
-      if (lstat(np->mailbox->path, &s) == -1)
+      if (lstat(mutt_b2s(np->mailbox->pathbuf), &s) == -1)
         continue;
 
       if ((!S_ISREG(s.st_mode)) && (!S_ISDIR(s.st_mode)) && (!S_ISLNK(s.st_mode)))
@@ -879,10 +879,10 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
       {
         struct stat st2;
 
-        mutt_buffer_printf(md, "%s/new", np->mailbox->path);
+        mutt_buffer_printf(md, "%s/new", mutt_b2s(np->mailbox->pathbuf));
         if (stat(mutt_b2s(md), &s) < 0)
           s.st_mtime = 0;
-        mutt_buffer_printf(md, "%s/cur", np->mailbox->path);
+        mutt_buffer_printf(md, "%s/cur", mutt_b2s(np->mailbox->pathbuf));
         if (stat(mutt_b2s(md), &st2) < 0)
           st2.st_mtime = 0;
         if (st2.st_mtime > s.st_mtime)
@@ -1612,7 +1612,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           // TODO(sileht): It could be better to select INBOX instead. But I
           // don't want to manipulate Context/AllMailboxes/mailbox->account here for now.
           // Let's just protect neomutt against crash for now. #1417
-          if (mutt_str_strcmp(Context->mailbox->path, state.entry[nentry].name) == 0)
+          if (mutt_str_strcmp(mutt_b2s(Context->mailbox->pathbuf),
+                              state.entry[nentry].name) == 0)
           {
             mutt_error(_("Can't delete currently selected mailbox"));
             break;

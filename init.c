@@ -1335,7 +1335,7 @@ static enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
       continue;
     }
 
-    mutt_str_strfcpy(m->path, buf->data, sizeof(m->path));
+    mutt_buffer_strcpy(m->pathbuf, buf->data);
     /* int rc = */ mx_path_canon2(m, C_Folder);
 
     bool new_account = false;
@@ -2403,7 +2403,7 @@ static enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s
       /* Compare against path or desc? Ensure 'tmp' is valid */
       if (!clear_this && tmp_valid)
       {
-        clear_this = (mutt_str_strcasecmp(tmp, np->mailbox->path) == 0) ||
+        clear_this = (mutt_str_strcasecmp(tmp, mutt_b2s(np->mailbox->pathbuf)) == 0) ||
                      (mutt_str_strcasecmp(tmp, np->mailbox->desc) == 0);
       }
 
@@ -3232,7 +3232,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
     {
       if (mp->mailbox->magic == MUTT_NOTMUCH)
       {
-        cs_str_string_set(Config, "spoolfile", mp->mailbox->path, NULL);
+        cs_str_string_set(Config, "spoolfile", mutt_b2s(mp->mailbox->pathbuf), NULL);
         break;
       }
     }

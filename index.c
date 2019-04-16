@@ -627,7 +627,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
     if (m)
     {
       magic = m->magic;
-      mutt_str_strfcpy(buf, m->path, buflen);
+      mutt_str_strfcpy(buf, mutt_b2s(m->pathbuf), buflen);
     }
     else
     {
@@ -638,7 +638,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
   }
 
   /* keepalive failure in mutt_enter_fname may kill connection. #3028 */
-  if (Context && (Context->mailbox->path[0] == '\0'))
+  if (Context && (mutt_buffer_is_empty(Context->mailbox->pathbuf)))
     ctx_free(&Context);
 
   if (Context)
@@ -652,7 +652,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
       new_last_folder = mutt_str_strdup(Context->mailbox->realpath);
     else
 #endif
-      new_last_folder = mutt_str_strdup(Context->mailbox->path);
+      new_last_folder = mutt_str_strdup(mutt_b2s(Context->mailbox->pathbuf));
     *oldcount = Context ? Context->mailbox->msg_count : 0;
 
     int check = mx_mbox_close(&Context);
@@ -1103,7 +1103,7 @@ int mutt_index_menu(void)
       check = mx_mbox_check(Context->mailbox, &index_hint);
       if (check < 0)
       {
-        if (!Context->mailbox || (Context->mailbox->path[0] == '\0'))
+        if (!Context->mailbox || (mutt_buffer_is_empty(Context->mailbox->pathbuf)))
         {
           /* fatal error occurred */
           ctx_free(&Context);
@@ -1922,7 +1922,7 @@ int mutt_index_menu(void)
         }
 
         /* check for a fatal error, or all messages deleted */
-        if (Context->mailbox->path[0] == '\0')
+        if (mutt_buffer_is_empty(Context->mailbox->pathbuf))
           ctx_free(&Context);
 
         /* if we were in the pager, redisplay the message */
@@ -2220,9 +2220,9 @@ int mutt_index_menu(void)
 
         buf[0] = '\0';
         if ((op == OP_MAIN_NEXT_UNREAD_MAILBOX) && Context &&
-            (Context->mailbox->path[0] != '\0'))
+            mutt_buffer_is_empty(Context->mailbox->pathbuf))
         {
-          mutt_str_strfcpy(buf, Context->mailbox->path, sizeof(buf));
+          mutt_str_strfcpy(buf, mutt_b2s(Context->mailbox->pathbuf), sizeof(buf));
           mutt_pretty_mailbox(buf, sizeof(buf));
           mutt_mailbox(Context ? Context->mailbox : NULL, buf, sizeof(buf));
           if (buf[0] == '\0')
@@ -2237,17 +2237,18 @@ int mutt_index_menu(void)
           m = mutt_sb_get_highlight();
           if (!m)
             break;
-          mutt_str_strfcpy(buf, m->path, sizeof(buf));
+          mutt_str_strfcpy(buf, mutt_b2s(m->pathbuf), sizeof(buf));
 
           /* Mark the selected dir for the neomutt browser */
-          mutt_browser_select_dir(m->path);
+          mutt_browser_select_dir(mutt_b2s(m->pathbuf));
         }
 #endif
         else
         {
-          if (C_ChangeFolderNext && Context && (Context->mailbox->path[0] != '\0'))
+          if (C_ChangeFolderNext && Context &&
+              mutt_buffer_is_empty(Context->mailbox->pathbuf))
           {
-            mutt_str_strfcpy(buf, Context->mailbox->path, sizeof(buf));
+            mutt_str_strfcpy(buf, mutt_b2s(Context->mailbox->pathbuf), sizeof(buf));
             mutt_pretty_mailbox(buf, sizeof(buf));
           }
 #ifdef USE_NNTP

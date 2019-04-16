@@ -2371,7 +2371,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       int check = mx_mbox_check(Context->mailbox, &index_hint);
       if (check < 0)
       {
-        if (!Context->mailbox || (Context->mailbox->path[0] == '\0'))
+        if (!Context->mailbox || mutt_buffer_is_empty(Context->mailbox->pathbuf))
         {
           /* fatal error occurred */
           ctx_free(&Context);

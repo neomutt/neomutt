@@ -308,7 +308,7 @@ static bool eat_query(struct Pattern *pat, int flags, struct Buffer *s, struct B
   }
   else
   {
-    char *escaped_folder = mutt_path_escape(Context->mailbox->path);
+    char *escaped_folder = mutt_path_escape(mutt_b2s(Context->mailbox->pathbuf));
     mutt_debug(LL_DEBUG2, "escaped folder path: %s\n", escaped_folder);
     mutt_buffer_addch(&cmd_buf, '\'');
     mutt_buffer_addstr(&cmd_buf, escaped_folder);

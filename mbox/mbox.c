@@ -198,9 +198,9 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
   struct stat sb;
   struct Progress progress;
 
-  if (stat(m->path, &sb) == -1)
+  if (stat(mutt_b2s(m->pathbuf), &sb) == -1)
   {
-    mutt_perror(m->path);
+    mutt_perror(mutt_b2s(m->pathbuf));
     return -1;
   }
   mutt_file_get_stat_timespec(&adata->atime, &sb, MUTT_STAT_ATIME);
@@ -212,7 +212,7 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
   if (!m->quiet)
   {
     char msgbuf[256];
-    snprintf(msgbuf, sizeof(msgbuf), _("Reading %s..."), m->path);
+    snprintf(msgbuf, sizeof(msgbuf), _("Reading %s..."), mutt_b2s(m->pathbuf));
     mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, C_ReadInc, 0);
   }
 
@@ -362,9 +362,9 @@ static int mbox_parse_mailbox(struct Mailbox *m)
   struct Progress progress;
 
   /* Save information about the folder at the time we opened it. */
-  if (stat(m->path, &sb) == -1)
+  if (stat(mutt_b2s(m->pathbuf), &sb) == -1)
   {
-    mutt_perror(m->path);
+    mutt_perror(mutt_b2s(m->pathbuf));
     return -1;
   }
 
@@ -373,12 +373,12 @@ static int mbox_parse_mailbox(struct Mailbox *m)
   mutt_file_get_stat_timespec(&adata->atime, &sb, MUTT_STAT_ATIME);
 
   if (!m->readonly)
-    m->readonly = access(m->path, W_OK) ? true : false;
+    m->readonly = access(mutt_b2s(m->pathbuf), W_OK) ? true : false;
 
   if (!m->quiet)
   {
     char msgbuf[256];
-    snprintf(msgbuf, sizeof(msgbuf), _("Reading %s..."), m->path);
+    snprintf(msgbuf, sizeof(msgbuf), _("Reading %s..."), mutt_b2s(m->pathbuf));
     mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, C_ReadInc, 0);
   }
 
@@ -619,7 +619,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
     case MUTT_MMDF:
       cmp_headers = mutt_email_cmp_strict;
       mutt_file_fclose(&adata->fp);
-      adata->fp = mutt_file_fopen(m->path, "r");
+      adata->fp = mutt_file_fopen(mutt_b2s(m->pathbuf), "r");
       if (!adata->fp)
         rc = -1;
       else if (m->magic == MUTT_MBOX)
@@ -855,7 +855,7 @@ void mbox_reset_atime(struct Mailbox *m, struct stat *st)
 
   if (!st)
   {
-    if (stat(m->path, &st2) < 0)
+    if (stat(mutt_b2s(m->pathbuf), &st2) < 0)
       return;
     st = &st2;
   }
@@ -870,7 +870,7 @@ void mbox_reset_atime(struct Mailbox *m, struct stat *st)
     utimebuf.actime = utimebuf.modtime - 1;
   }
 
-  utime(m->path, &utimebuf);
+  utime(mutt_b2s(m->pathbuf), &utimebuf);
 }
 
 /**
@@ -885,7 +885,7 @@ struct Account *mbox_ac_find(struct Account *a, const char *path)
   if (!np)
     return NULL;
 
-  if (mutt_str_strcmp(np->mailbox->path, path) != 0)
+  if (mutt_str_strcmp(mutt_b2s(np->mailbox->pathbuf), path) != 0)
     return NULL;
 
   return a;
@@ -913,10 +913,10 @@ static int mbox_mbox_open(struct Mailbox *m)
   if (!adata)
     return -1;
 
-  adata->fp = fopen(m->path, "r+");
+  adata->fp = fopen(mutt_b2s(m->pathbuf), "r+");
   if (!adata->fp)
   {
-    mutt_perror(m->path);
+    mutt_perror(mutt_b2s(m->pathbuf));
     return -1;
   }
   mutt_sig_block();
@@ -955,16 +955,16 @@ static int mbox_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
   if (!adata)
     return -1;
 
-  adata->fp = mutt_file_fopen(m->path, (flags & MUTT_NEWFOLDER) ? "w" : "a");
+  adata->fp = mutt_file_fopen(mutt_b2s(m->pathbuf), (flags & MUTT_NEWFOLDER) ? "w" : "a");
   if (!adata->fp)
   {
-    mutt_perror(m->path);
+    mutt_perror(mutt_b2s(m->pathbuf));
     return -1;
   }
 
   if (mbox_lock_mailbox(m, true, true) != false)
   {
-    mutt_error(_("Couldn't lock %s"), m->path);
+    mutt_error(_("Couldn't lock %s"), mutt_b2s(m->pathbuf));
     mutt_file_fclose(&adata->fp);
     return -1;
   }
@@ -1004,7 +1004,7 @@ static int mbox_mbox_check(struct Mailbox *m, int *index_hint)
   bool unlock = false;
   bool modified = false;
 
-  if (stat(m->path, &st) == 0)
+  if (stat(mutt_b2s(m->pathbuf), &st) == 0)
   {
     if ((mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME, &m->mtime) == 0) &&
         (st.st_size == m->size))
@@ -1146,7 +1146,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
 
   /* need to open the file for writing in such a way that it does not truncate
    * the file, so use read-write mode.  */
-  adata->fp = freopen(m->path, "r+", adata->fp);
+  adata->fp = freopen(mutt_b2s(m->pathbuf), "r+", adata->fp);
   if (!adata->fp)
   {
     mx_fastclose_mailbox(m);
@@ -1226,7 +1226,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
 
   if (!m->quiet)
   {
-    snprintf(msgbuf, sizeof(msgbuf), _("Writing %s..."), m->path);
+    snprintf(msgbuf, sizeof(msgbuf), _("Writing %s..."), mutt_b2s(m->pathbuf));
     mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, C_WriteInc, m->msg_count);
   }
 
@@ -1310,9 +1310,9 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
   fp = NULL;
 
   /* Save the state of this folder. */
-  if (stat(m->path, &statbuf) == -1)
+  if (stat(mutt_b2s(m->pathbuf), &statbuf) == -1)
   {
-    mutt_perror(m->path);
+    mutt_perror(mutt_b2s(m->pathbuf));
     unlink(tempfile);
     goto bail;
   }
@@ -1394,7 +1394,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
   mbox_reset_atime(m, &statbuf);
 
   /* reopen the mailbox in read-only mode */
-  adata->fp = fopen(m->path, "r");
+  adata->fp = fopen(mutt_b2s(m->pathbuf), "r");
   if (!adata->fp)
   {
     unlink(tempfile);
@@ -1424,7 +1424,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
 
   if (C_CheckMboxSize)
   {
-    struct Mailbox *tmp = mutt_find_mailbox(m->path);
+    struct Mailbox *tmp = mutt_find_mailbox(mutt_b2s(m->pathbuf));
     if (tmp && !tmp->has_new)
       mutt_update_mailbox(tmp);
   }
@@ -1455,7 +1455,7 @@ bail: /* Come here in case of disaster */
   FREE(&new_offset);
   FREE(&old_offset);
 
-  adata->fp = freopen(m->path, "r", adata->fp);
+  adata->fp = freopen(mutt_b2s(m->pathbuf), "r", adata->fp);
   if (!adata->fp)
   {
     mutt_error(_("Could not reopen mailbox"));
@@ -1497,7 +1497,7 @@ static int mbox_mbox_close(struct Mailbox *m)
   mutt_file_fclose(&adata->fp);
 
   /* fix up the times so mailbox won't get confused */
-  if (m->peekonly && (m->path[0] != '\0') &&
+  if (m->peekonly && mutt_buffer_is_empty(m->pathbuf) &&
       (mutt_file_timespec_compare(&m->mtime, &adata->atime) > 0))
   {
 #ifdef HAVE_UTIMENSAT
@@ -1509,7 +1509,7 @@ static int mbox_mbox_close(struct Mailbox *m)
     struct utimbuf ut;
     ut.actime = adata->atime.tv_sec;
     ut.modtime = m->mtime.tv_sec;
-    utime(m->path, &ut);
+    utime(mutt_b2s(m->pathbuf), &ut);
 #endif
   }
 
@@ -1737,7 +1737,7 @@ static int mmdf_msg_padding_size(struct Mailbox *m)
 static int mbox_mbox_check_stats(struct Mailbox *m, int flags)
 {
   struct stat sb = { 0 };
-  if (stat(m->path, &sb) != 0)
+  if (stat(mutt_b2s(m->pathbuf), &sb) != 0)
     return -1;
 
   bool new_or_changed;

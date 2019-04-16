@@ -381,7 +381,7 @@ static int pop_fetch_headers(struct Mailbox *m)
   struct Progress progress;
 
 #ifdef USE_HCACHE
-  header_cache_t *hc = pop_hcache_open(adata, m->path);
+  header_cache_t *hc = pop_hcache_open(adata, mutt_b2s(m->pathbuf));
 #endif
 
   time(&adata->check_time);
@@ -785,7 +785,7 @@ int pop_ac_add(struct Account *a, struct Mailbox *m)
     a->adata = adata;
     a->free_adata = pop_adata_free;
 
-    struct Url *url = url_parse(m->path);
+    struct Url *url = url_parse(mutt_b2s(m->pathbuf));
     if (url)
     {
       mutt_str_strfcpy(adata->conn_account.user, url->user,
@@ -822,9 +822,9 @@ static int pop_mbox_open(struct Mailbox *m)
   struct ConnAccount acct = { { 0 } };
   struct Url url;
 
-  if (pop_parse_path(m->path, &acct))
+  if (pop_parse_path(mutt_b2s(m->pathbuf), &acct))
   {
-    mutt_error(_("%s is an invalid POP path"), m->path);
+    mutt_error(_("%s is an invalid POP path"), mutt_b2s(m->pathbuf));
     return -1;
   }
 
@@ -832,8 +832,8 @@ static int pop_mbox_open(struct Mailbox *m)
   url.path = NULL;
   url_tostring(&url, buf, sizeof(buf), 0);
 
-  mutt_str_strfcpy(m->path, buf, sizeof(m->path));
-  mutt_str_replace(&m->realpath, m->path);
+  mutt_buffer_strcpy(m->pathbuf, buf);
+  mutt_str_replace(&m->realpath, mutt_b2s(m->pathbuf));
 
   struct PopAccountData *adata = m->account->adata;
   if (!adata)
@@ -962,7 +962,7 @@ static int pop_mbox_sync(struct Mailbox *m, int *index_hint)
                        MUTT_PROGRESS_MSG, C_WriteInc, num_deleted);
 
 #ifdef USE_HCACHE
-    hc = pop_hcache_open(adata, m->path);
+    hc = pop_hcache_open(adata, mutt_b2s(m->pathbuf));
 #endif
 
     for (i = 0, j = 0, rc = 0; (rc == 0) && (i < m->msg_count); i++)
@@ -1218,7 +1218,7 @@ static int pop_msg_save_hcache(struct Mailbox *m, struct Email *e)
 #ifdef USE_HCACHE
   struct PopAccountData *adata = pop_adata_get(m);
   struct PopEmailData *edata = e->edata;
-  header_cache_t *hc = pop_hcache_open(adata, m->path);
+  header_cache_t *hc = pop_hcache_open(adata, mutt_b2s(m->pathbuf));
   rc = mutt_hcache_store(hc, edata->uid, strlen(edata->uid), e, 0);
   mutt_hcache_close(hc);
 #endif

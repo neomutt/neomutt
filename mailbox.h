@@ -82,7 +82,7 @@ typedef uint16_t AclFlags;          ///< Flags, e.g. #MUTT_ACL_ADMIN
  */
 struct Mailbox
 {
-  char path[PATH_MAX];
+  struct Buffer *pathbuf;
   char *realpath; ///< used for duplicate detection, context comparison, and the sidebar
   char *desc;
   off_t size;

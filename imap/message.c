@@ -1563,7 +1563,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool
   /* check that the save-to folder is in the same account */
   if (!mutt_account_match(&adata->conn->account, &conn_account))
   {
-    mutt_debug(LL_DEBUG3, "%s not same server as %s\n", dest, m->path);
+    mutt_debug(LL_DEBUG3, "%s not same server as %s\n", dest, mutt_b2s(m->pathbuf));
     return 1;
   }
 
