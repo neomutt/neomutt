@@ -91,7 +91,7 @@
 unsigned char C_CatchupNewsgroup; ///< Config: (nntp) Mark all articles as read when leaving a newsgroup
 bool C_KeepFlagged; ///< Config: Don't move flagged messages from #C_Spoolfile to #C_Mbox
 short C_MboxType; ///< Config: Default type for creating new mailboxes
-unsigned char C_Move; ///< Config: #C_Move emails from #C_Spoolfile to #C_Mbox when read
+unsigned char C_Move; ///< Config: Move emails from #C_Spoolfile to #C_Mbox when read
 char *C_Trash; ///< Config: Folder to put deleted emails
 
 /**

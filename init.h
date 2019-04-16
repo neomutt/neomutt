@@ -1553,7 +1553,7 @@ struct ConfigDef MuttVars[] = {
   ** of mailboxes it polls for new mail just as if you had issued individual
   ** "$mailboxes" commands.
   */
-  { "imap_condstore",  DT_BOOL, R_NONE, &C_ImapCondStore, false },
+  { "imap_condstore",  DT_BOOL, R_NONE, &C_ImapCondstore, false },
   /*
   ** .pp
   ** When \fIset\fP, mutt will use the CONDSTORE extension (RFC 7162)
@@ -1620,7 +1620,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** This variable defaults to the value of $$imap_user.
   */
-  { "imap_oauth_refresh_command", DT_STRING, R_NONE|F_SENSITIVE, &C_ImapOauthRefreshCmd, 0 },
+  { "imap_oauth_refresh_command", DT_STRING, R_NONE|F_SENSITIVE, &C_ImapOauthRefreshCommand, 0 },
   /*
   ** .pp
   ** The command to run to generate an OAUTH refresh token for
@@ -1675,7 +1675,7 @@ struct ConfigDef MuttVars[] = {
   ** for new mail, before timing out and closing the connection.  Set
   ** to 0 to disable timing out.
   */
-  { "imap_qresync",  DT_BOOL, R_NONE, &C_ImapQResync, false },
+  { "imap_qresync",  DT_BOOL, R_NONE, &C_ImapQresync, false },
   /*
   ** .pp
   ** When \fIset\fP, mutt will use the QRESYNC extension (RFC 7162)
@@ -2966,7 +2966,7 @@ struct ConfigDef MuttVars[] = {
   ** for retrieving only unread messages from the POP server when using
   ** the \fC$<fetch-mail>\fP function.
   */
-  { "pop_oauth_refresh_command", DT_STRING, R_NONE|F_SENSITIVE, &C_PopOauthRefreshCmd, 0 },
+  { "pop_oauth_refresh_command", DT_STRING, R_NONE|F_SENSITIVE, &C_PopOauthRefreshCommand, 0 },
   /*
   ** .pp
   ** The command to run to generate an OAUTH refresh token for
@@ -3632,7 +3632,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** \fBSee also:\fP $$sidebar_whitelist, $$sidebar_non_empty_mailbox_only.
   */
-  { "sidebar_non_empty_mailbox_only", DT_BOOL, R_SIDEBAR, &C_SidebarNonEmptyOnly, false },
+  { "sidebar_non_empty_mailbox_only", DT_BOOL, R_SIDEBAR, &C_SidebarNonEmptyMailboxOnly, false },
   /*
   ** .pp
   ** When set, the sidebar will only display mailboxes that contain one or more mails.
@@ -4031,7 +4031,7 @@ struct ConfigDef MuttVars[] = {
   ** set smtp_authenticators="digest-md5:cram-md5"
   ** .te
   */
-  { "smtp_oauth_refresh_command", DT_STRING, R_NONE|F_SENSITIVE, &C_SmtpOauthRefreshCmd, 0 },
+  { "smtp_oauth_refresh_command", DT_STRING, R_NONE|F_SENSITIVE, &C_SmtpOauthRefreshCommand, 0 },
   /*
   ** .pp
   ** The command to run to generate an OAUTH refresh token for

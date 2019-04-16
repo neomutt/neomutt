@@ -35,8 +35,8 @@
 bool C_AutoSubscribe; ///< Config: Automatically check if the user is subscribed to a mailing list
 bool C_MarkOld = false; ///< Config: Mark new emails as old when leaving the mailbox
 struct Regex *C_ReplyRegex = NULL; ///< Config: Regex to match message reply subjects like "re: "
-char *C_SendCharset = NULL; ///< Config: Character sets for outgoing mail ///< Config: List of character sets for outgoing messages
-char *C_SpamSeparator = NULL; ///< Config: Separator for multiple spam headers ///< Config: Separator for spam headers
+char *C_SendCharset = NULL; ///< Config: Character sets for outgoing mail
+char *C_SpamSeparator = NULL; ///< Config: Separator for multiple spam headers
 bool C_Weed = false; ///< Config: Filter headers when displaying/forwarding/printing/replying
 
 /* Global variables */

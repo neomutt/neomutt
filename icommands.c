@@ -36,6 +36,12 @@
 #include "pager.h"
 #include "version.h"
 
+/**
+ * @page icommands Information commands
+ *
+ * Information commands
+ */
+
 // clang-format off
 static enum CommandResult icmd_bind   (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 static enum CommandResult icmd_set    (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);

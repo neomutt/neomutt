@@ -26,6 +26,8 @@
 /**
  * @page hcache HCACHE: Header cache API
  *
+ * Header cache API
+ *
  * This module defines the user-visible header cache API, which is used within
  * neomutt to cache and restore mail header data.
  *

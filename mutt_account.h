@@ -33,14 +33,14 @@ struct Url;
 
 /* These Config Variables are only used in mutt_account.c */
 extern char *C_ImapLogin;
-extern char *C_ImapOauthRefreshCmd;
+extern char *C_ImapOauthRefreshCommand;
 extern char *C_ImapPass;
 extern char *C_NntpPass;
 extern char *C_NntpUser;
-extern char *C_PopOauthRefreshCmd;
+extern char *C_PopOauthRefreshCommand;
 extern char *C_PopPass;
 extern char *C_PopUser;
-extern char *C_SmtpOauthRefreshCmd;
+extern char *C_SmtpOauthRefreshCommand;
 extern char *C_SmtpPass;
 
 /**

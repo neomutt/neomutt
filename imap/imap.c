@@ -1934,7 +1934,7 @@ int imap_login(struct ImapAccountData *adata)
     if (adata->capabilities & IMAP_CAP_QRESYNC)
     {
       adata->capabilities |= IMAP_CAP_CONDSTORE;
-      if (C_ImapQResync)
+      if (C_ImapQresync)
         imap_exec(adata, "ENABLE QRESYNC", IMAP_CMD_QUEUE);
     }
 
@@ -2001,7 +2001,7 @@ static int imap_mbox_open(struct Mailbox *m)
     imap_exec(adata, "LSUB \"\" \"*\"", IMAP_CMD_QUEUE);
 
 #ifdef USE_HCACHE
-  if ((adata->capabilities & IMAP_CAP_CONDSTORE) && C_ImapCondStore)
+  if ((adata->capabilities & IMAP_CAP_CONDSTORE) && C_ImapCondstore)
     condstore = " (CONDSTORE)";
   else
 #endif

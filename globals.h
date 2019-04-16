@@ -196,7 +196,6 @@ WHERE bool C_AsciiChars;                     ///< Config: Use plain ASCII charac
 WHERE bool C_Askbcc;                         ///< Config: Ask the user for the blind-carbon-copy recipients
 WHERE bool C_Askcc;                          ///< Config: Ask the user for the carbon-copy recipients
 WHERE bool C_Autoedit;                       ///< Config: Skip the initial compose menu and edit the email
-WHERE bool C_AutoSubscribe;                  ///< Config: Automatically check if the user is subscribed to a mailing list
 WHERE bool C_AutoTag;                        ///< Config: Automatically apply actions to all tagged messages
 WHERE bool C_Beep;                           ///< Config: Make a noise when an error occurs
 WHERE bool C_BeepNew;                        ///< Config: Make a noise when new mail arrives
@@ -218,11 +217,11 @@ WHERE bool C_Header;                         ///< Config: Include the message he
 WHERE bool C_Help;                           ///< Config: Display a help line with common key bindings
 #ifdef USE_IMAP
 WHERE bool C_ImapCheckSubscribed;            ///< Config: (imap) When opening a mailbox, ask the server for a list of subscribed folders
-WHERE bool C_ImapCondStore;                  ///< Config: (imap) Enable the CONDSTORE extension
+WHERE bool C_ImapCondstore;                  ///< Config: (imap) Enable the CONDSTORE extension
 WHERE bool C_ImapListSubscribed;             ///< Config: (imap) When browsing a mailbox, only display subscribed folders
 WHERE bool C_ImapPassive;                    ///< Config: (imap) Reuse an existing IMAP connection to check for new mail
 WHERE bool C_ImapPeek;                       ///< Config: (imap) Don't mark messages as read when fetching them from the server
-WHERE bool C_ImapQResync;                    ///< Config: (imap) Enable the QRESYNC extension
+WHERE bool C_ImapQresync;                    ///< Config: (imap) Enable the QRESYNC extension
 #endif
 #ifdef USE_SSL
 #ifndef USE_SSL_GNUTLS

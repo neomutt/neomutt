@@ -41,14 +41,14 @@
 
 /* These Config Variables are only used in mutt_account.c */
 char *C_ImapLogin; ///< Config: (imap) Login name for the IMAP server (defaults to #C_ImapUser)
-char *C_ImapOauthRefreshCmd; ///< Config: (imap) External command to generate OAUTH refresh token
+char *C_ImapOauthRefreshCommand; ///< Config: (imap) External command to generate OAUTH refresh token
 char *C_ImapPass; ///< Config: (imap) Password for the IMAP server
 char *C_NntpPass; ///< Config: (nntp) Password for the news server
 char *C_NntpUser; ///< Config: (nntp) Username for the news server
-char *C_PopOauthRefreshCmd; ///< Config: (pop) External command to generate OAUTH refresh token
+char *C_PopOauthRefreshCommand; ///< Config: (pop) External command to generate OAUTH refresh token
 char *C_PopPass; ///< Config: (pop) Password of the POP server
 char *C_PopUser; ///< Config: (pop) Username of the POP server
-char *C_SmtpOauthRefreshCmd; ///< Config: (smtp) External command to generate OAUTH refresh token
+char *C_SmtpOauthRefreshCommand; ///< Config: (smtp) External command to generate OAUTH refresh token
 char *C_SmtpPass; ///< Config: (smtp) Password for the SMTP server
 
 /**
@@ -361,16 +361,16 @@ char *mutt_account_getoauthbearer(struct ConnAccount *account)
     return NULL;
 
 #ifdef USE_IMAP
-  if ((account->type == MUTT_ACCT_TYPE_IMAP) && C_ImapOauthRefreshCmd)
-    cmd = C_ImapOauthRefreshCmd;
+  if ((account->type == MUTT_ACCT_TYPE_IMAP) && C_ImapOauthRefreshCommand)
+    cmd = C_ImapOauthRefreshCommand;
 #endif
 #ifdef USE_POP
-  else if ((account->type == MUTT_ACCT_TYPE_POP) && C_PopOauthRefreshCmd)
-    cmd = C_PopOauthRefreshCmd;
+  else if ((account->type == MUTT_ACCT_TYPE_POP) && C_PopOauthRefreshCommand)
+    cmd = C_PopOauthRefreshCommand;
 #endif
 #ifdef USE_SMTP
-  else if ((account->type == MUTT_ACCT_TYPE_SMTP) && C_SmtpOauthRefreshCmd)
-    cmd = C_SmtpOauthRefreshCmd;
+  else if ((account->type == MUTT_ACCT_TYPE_SMTP) && C_SmtpOauthRefreshCommand)
+    cmd = C_SmtpOauthRefreshCommand;
 #endif
 
   if (!cmd)

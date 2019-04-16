@@ -1269,7 +1269,7 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
 
     if (mdata->modseq)
     {
-      if ((adata->capabilities & IMAP_CAP_CONDSTORE) && C_ImapCondStore)
+      if ((adata->capabilities & IMAP_CAP_CONDSTORE) && C_ImapCondstore)
         has_condstore = true;
 
       /* If IMAP_CAP_QRESYNC and ImapQResync then Mutt sends ENABLE QRESYNC.

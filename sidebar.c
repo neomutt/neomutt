@@ -58,7 +58,7 @@ bool C_SidebarFolderIndent; ///< Config: (sidebar) Indent nested folders
 char *C_SidebarFormat; ///< Config: (sidebar) printf-like format string for the sidebar panel
 char *C_SidebarIndentString; ///< Config: (sidebar) Indent nested folders using this string
 bool C_SidebarNewMailOnly; ///< Config: (sidebar) Only show folders with new/flagged mail
-bool C_SidebarNonEmptyOnly; ///< Config: (sidebar) Only show folders with a non-zero number of mail
+bool C_SidebarNonEmptyMailboxOnly; ///< Config: (sidebar) Only show folders with a non-zero number of mail
 bool C_SidebarNextNewWrap; ///< Config: (sidebar) Wrap around when searching for the next mailbox with new mail
 bool C_SidebarShortPath; ///< Config: (sidebar) Abbreviate the paths using the #C_Folder variable
 short C_SidebarSortMethod; ///< Config: (sidebar) Method to sort the sidebar
@@ -357,7 +357,7 @@ static void update_entries_visibility(void)
 {
   /* Aliases for readability */
   const bool new_only = C_SidebarNewMailOnly;
-  const bool non_empty_only = C_SidebarNonEmptyOnly;
+  const bool non_empty_only = C_SidebarNonEmptyMailboxOnly;
   struct SbEntry *sbe = NULL;
 
   /* Take the fast path if there is no need to test visibilities */
@@ -648,9 +648,9 @@ static bool prepare_sidebar(int page_size)
 
   /* Set the Top and Bottom to frame the HilIndex in groups of page_size */
 
-  /* If C_SidebarNewMailOnly or C_SidebarNonEmptyOnly is set, some entries
+  /* If C_SidebarNewMailOnly or C_SidebarNonEmptyMailboxOnly is set, some entries
    * may be hidden so we need to scan for the framing interval */
-  if (C_SidebarNewMailOnly || C_SidebarNonEmptyOnly)
+  if (C_SidebarNewMailOnly || C_SidebarNonEmptyMailboxOnly)
   {
     TopIndex = -1;
     BotIndex = -1;
