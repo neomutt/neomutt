@@ -263,23 +263,20 @@ bool cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], 
   if (!cs || !vars)
     return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
 
-  struct Buffer err;
-  mutt_buffer_init(&err);
-  err.dsize = 256;
-  err.data = calloc(1, err.dsize);
+  struct Buffer *err = mutt_buffer_pool_get();
 
   bool rc = true;
 
   for (size_t i = 0; vars[i].name; i++)
   {
-    if (!reg_one_var(cs, &vars[i], &err))
+    if (!reg_one_var(cs, &vars[i], err))
     {
-      mutt_debug(LL_DEBUG1, "%s\n", err.data);
+      mutt_debug(LL_DEBUG1, "%s\n", mutt_b2s(err));
       rc = false;
     }
   }
 
-  FREE(&err.data);
+  mutt_buffer_pool_release(&err);
   return rc;
 }
 
@@ -296,11 +293,6 @@ struct HashElem *cs_inherit_variable(const struct ConfigSet *cs,
   if (!cs || !parent)
     return NULL; /* LCOV_EXCL_LINE */
 
-  struct Buffer err;
-  mutt_buffer_init(&err);
-  err.dsize = 256;
-  err.data = calloc(1, err.dsize);
-
   struct Inheritance *i = mutt_mem_calloc(1, sizeof(*i));
   i->parent = parent;
   i->name = mutt_str_strdup(name);
@@ -312,7 +304,6 @@ struct HashElem *cs_inherit_variable(const struct ConfigSet *cs,
     FREE(&i);
   }
 
-  FREE(&err.data);
   return he;
 }
 

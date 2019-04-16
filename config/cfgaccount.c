@@ -100,22 +100,19 @@ void ac_free(const struct ConfigSet *cs, struct CfgAccount **ac)
     return; /* LCOV_EXCL_LINE */
 
   char child[128];
-  struct Buffer err;
-  mutt_buffer_init(&err);
-  err.dsize = 256;
-  err.data = mutt_mem_calloc(1, err.dsize);
+  struct Buffer *err = mutt_buffer_pool_get();
 
   for (size_t i = 0; i < (*ac)->num_vars; i++)
   {
     snprintf(child, sizeof(child), "%s:%s", (*ac)->name, (*ac)->var_names[i]);
-    mutt_buffer_reset(&err);
-    int result = cs_str_reset(cs, child, &err);
+    mutt_buffer_reset(err);
+    int result = cs_str_reset(cs, child, err);
     if (CSR_RESULT(result) != CSR_SUCCESS)
-      mutt_debug(LL_DEBUG1, "reset failed for %s: %s\n", child, err.data);
+      mutt_debug(LL_DEBUG1, "reset failed for %s: %s\n", child, mutt_b2s(err));
     mutt_hash_delete(cs->hash, child, NULL);
   }
 
-  FREE(&err.data);
+  mutt_buffer_pool_release(&err);
   FREE(&(*ac)->name);
   FREE(&(*ac)->vars);
   FREE(ac);

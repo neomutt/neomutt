@@ -281,28 +281,26 @@ done:
  */
 static int execute_commands(struct ListHead *p)
 {
-  struct Buffer err, token;
+  int rc = 0;
+  struct Buffer *err = mutt_buffer_pool_get();
+  struct Buffer *token = mutt_buffer_pool_get();
 
-  mutt_buffer_init(&err);
-  err.dsize = 256;
-  err.data = mutt_mem_malloc(err.dsize);
-  mutt_buffer_init(&token);
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, p, entries)
   {
-    if (mutt_parse_rc_line(np->data, &token, &err) == MUTT_CMD_ERROR)
+    if (mutt_parse_rc_line(np->data, token, err) == MUTT_CMD_ERROR)
     {
-      mutt_error(_("Error in command line: %s"), err.data);
-      FREE(&token.data);
-      FREE(&err.data);
+      mutt_error(_("Error in command line: %s"), mutt_b2s(err));
+      mutt_buffer_pool_release(&token);
+      mutt_buffer_pool_release(&err);
 
       return -1;
     }
   }
-  FREE(&token.data);
-  FREE(&err.data);
+  mutt_buffer_pool_release(&token);
+  mutt_buffer_pool_release(&err);
 
-  return 0;
+  return rc;
 }
 
 /**
@@ -2611,14 +2609,8 @@ void mutt_commands_apply(void *data, void (*application)(void *, const struct Co
 int mutt_dump_variables(bool hide_sensitive)
 {
   char cmd[256];
-
-  struct Buffer err, token;
-
-  mutt_buffer_init(&err);
-  mutt_buffer_init(&token);
-
-  err.dsize = 256;
-  err.data = mutt_mem_malloc(err.dsize);
+  struct Buffer *err = mutt_buffer_pool_get();
+  struct Buffer *token = mutt_buffer_pool_get();
 
   for (int i = 0; MuttVars[i].name; i++)
   {
@@ -2631,19 +2623,19 @@ int mutt_dump_variables(bool hide_sensitive)
       continue;
     }
     snprintf(cmd, sizeof(cmd), "set ?%s\n", MuttVars[i].name);
-    if (mutt_parse_rc_line(cmd, &token, &err) == MUTT_CMD_ERROR)
+    if (mutt_parse_rc_line(cmd, token, err) == MUTT_CMD_ERROR)
     {
-      mutt_message("%s", err.data);
-      FREE(&token.data);
-      FREE(&err.data);
+      mutt_message("%s", mutt_b2s(err));
+      mutt_buffer_pool_release(&token);
+      mutt_buffer_pool_release(&err);
 
       return 1; // TEST17: can't test
     }
-    mutt_message("%s", err.data);
+    mutt_message("%s", mutt_b2s(err));
   }
 
-  FREE(&token.data);
-  FREE(&err.data);
+  mutt_buffer_pool_release(&token);
+  mutt_buffer_pool_release(&err);
 
   return 0;
 }
