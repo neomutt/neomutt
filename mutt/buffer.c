@@ -39,6 +39,8 @@
 
 static size_t BufferPoolCount = 0;
 static size_t BufferPoolLen = 0;
+static size_t BufferPoolIncrement = 20;
+static size_t BufferPoolInitialBufferSize = 1024;
 static struct Buffer **BufferPool = NULL;
 
 /**
@@ -360,12 +362,13 @@ void mutt_buffer_increase_size(struct Buffer *buf, size_t new_size)
 static void increase_buffer_pool(void)
 {
   struct Buffer *newbuf;
+  BufferPoolLen += BufferPoolIncrement;
+  mutt_debug(LL_DEBUG1, "%zu\n", BufferPoolLen);
 
-  BufferPoolLen += 5;
   mutt_mem_realloc(&BufferPool, BufferPoolLen * sizeof(struct Buffer *));
-  while (BufferPoolCount < 5)
+  while (BufferPoolCount < BufferPoolIncrement)
   {
-    newbuf = mutt_buffer_alloc(1024);
+    newbuf = mutt_buffer_alloc(BufferPoolInitialBufferSize);
     BufferPool[BufferPoolCount++] = newbuf;
   }
 }
@@ -420,9 +423,9 @@ void mutt_buffer_pool_release(struct Buffer **pbuf)
   }
 
   struct Buffer *buf = *pbuf;
-  if (buf->dsize > 2048)
+  if (buf->dsize > 2 * BufferPoolInitialBufferSize)
   {
-    buf->dsize = 1024;
+    buf->dsize = BufferPoolInitialBufferSize;
     mutt_mem_realloc(&buf->data, buf->dsize);
   }
   mutt_buffer_reset(buf);
