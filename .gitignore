@@ -13,12 +13,16 @@ pgpewrap
 test/config-test
 test/neomutt-test
 test/pattern-test
+test/string-test
 
 # Build products
 *.o
+*.gc??
 *.Po
 *.Tpo
 html
+lcov
+lcov.info
 lib*.a
 po/*.mo
 po/neomutt.pot

@@ -3,7 +3,6 @@ TEST_OBJS   = test/main.o \
 	      test/md5.o \
 	      test/path.o \
 	      test/rfc2047.o \
-	      test/string.o \
 	      test/address.o \
 	      test/url.o \
 	      test/file.o
@@ -23,6 +22,54 @@ PATTERN_OBJS	= test/pattern/main.o \
 		  test/pattern/extract.o \
 		  pattern.o
 
+STRING_OBJS	= test/string/main.o \
+		  test/string/mutt_str_adjust.o \
+		  test/string/mutt_str_append_item.o \
+		  test/string/mutt_str_asprintf.o \
+		  test/string/mutt_str_atoi.o \
+		  test/string/mutt_str_atol.o \
+		  test/string/mutt_str_atos.o \
+		  test/string/mutt_str_atoui.o \
+		  test/string/mutt_str_atoul.o \
+		  test/string/mutt_str_atoull.o \
+		  test/string/mutt_str_dequote_comment.o \
+		  test/string/mutt_str_find_word.o \
+		  test/string/mutt_str_getenv.o \
+		  test/string/mutt_str_inline_replace.o \
+		  test/string/mutt_str_is_ascii.o \
+		  test/string/mutt_str_is_email_wsp.o \
+		  test/string/mutt_str_lws_len.o \
+		  test/string/mutt_str_lws_rlen.o \
+		  test/string/mutt_str_next_word.o \
+		  test/string/mutt_str_pretty_size.o \
+		  test/string/mutt_str_remall_strcasestr.o \
+		  test/string/mutt_str_remove_trailing_ws.o \
+		  test/string/mutt_str_replace.o \
+		  test/string/mutt_str_rstrnstr.o \
+		  test/string/mutt_str_skip_email_wsp.o \
+		  test/string/mutt_str_skip_whitespace.o \
+		  test/string/mutt_str_split.o \
+		  test/string/mutt_str_startswith.o \
+		  test/string/mutt_str_strcasecmp.o \
+		  test/string/mutt_str_strcasestr.o \
+		  test/string/mutt_str_strcat.o \
+		  test/string/mutt_str_strchrnul.o \
+		  test/string/mutt_str_strcmp.o \
+		  test/string/mutt_str_strcoll.o \
+		  test/string/mutt_str_strdup.o \
+		  test/string/mutt_str_strfcpy.o \
+		  test/string/mutt_str_stristr.o \
+		  test/string/mutt_str_strlen.o \
+		  test/string/mutt_str_strlower.o \
+		  test/string/mutt_str_strncasecmp.o \
+		  test/string/mutt_str_strncat.o \
+		  test/string/mutt_str_strncmp.o \
+		  test/string/mutt_str_strnfcpy.o \
+		  test/string/mutt_str_substr_cpy.o \
+		  test/string/mutt_str_substr_dup.o \
+		  test/string/mutt_str_sysexit.o \
+		  test/string/mutt_str_word_casecmp.o
+
 CFLAGS	+= -I$(SRCDIR)/test
 
 TEST_BINARY = test/neomutt-test$(EXEEXT)
@@ -31,11 +78,14 @@ TEST_CONFIG = test/config-test$(EXEEXT)
 
 TEST_PATTERN = test/pattern-test$(EXEEXT)
 
+TEST_STRING = test/string-test$(EXEEXT)
+
 .PHONY: test
-test: $(TEST_BINARY) $(TEST_CONFIG) $(TEST_PATTERN)
+test: $(TEST_BINARY) $(TEST_CONFIG) $(TEST_PATTERN) $(TEST_STRING)
 	$(TEST_BINARY)
 	$(TEST_CONFIG)
 	$(TEST_PATTERN)
+	$(TEST_STRING)
 
 $(TEST_BINARY): $(TEST_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(TEST_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
@@ -46,18 +96,25 @@ $(TEST_CONFIG): $(PWD)/test/config $(CONFIG_OBJS) $(MUTTLIBS)
 $(TEST_PATTERN): $(PWD)/test/pattern $(PATTERN_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(PATTERN_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
+$(TEST_STRING): $(PWD)/test/string $(STRING_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(STRING_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
 $(PWD)/test/config:
 	$(MKDIR_P) $(PWD)/test/config
 
 $(PWD)/test/pattern:
 	$(MKDIR_P) $(PWD)/test/pattern
 
-all-test: $(TEST_BINARY) $(TEST_CONFIG) $(TEST_PATTERN)
+$(PWD)/test/string:
+	$(MKDIR_P) $(PWD)/test/string
+
+all-test: $(TEST_BINARY) $(TEST_CONFIG) $(TEST_PATTERN) $(TEST_STRING)
 
 clean-test:
 	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po) \
 	      $(TEST_CONFIG) $(CONFIG_OBJS) $(CONFIG_OBJS:.o=.Po) \
-	      $(TEST_PATTERN) $(PATTERN_OBJS) $(PATTERN_OBJS:.o=.Po)
+	      $(TEST_PATTERN) $(PATTERN_OBJS) $(PATTERN_OBJS:.o=.Po) \
+	      $(TEST_STRING) $(STRING_OBJS) $(STRING_OBJS:.o=.Po)
 
 install-test:
 uninstall-test:
@@ -70,5 +127,8 @@ CONFIG_DEPFILES = $(CONFIG_OBJS:.o=.Po)
 
 PATTERN_DEPFILES = $(PATTERN_OBJS:.o=.Po)
 -include $(PATTERN_DEPFILES)
+
+STRING_DEPFILES = $(STRING_OBJS:.o=.Po)
+-include $(STRING_DEPFILES)
 
 # vim: set ts=8 noexpandtab:

@@ -13,10 +13,6 @@
   NEOMUTT_TEST_ITEM(test_md5)                                                  \
   NEOMUTT_TEST_ITEM(test_md5_ctx)                                              \
   NEOMUTT_TEST_ITEM(test_md5_ctx_bytes)                                        \
-  NEOMUTT_TEST_ITEM(test_string_strfcpy)                                       \
-  NEOMUTT_TEST_ITEM(test_string_strnfcpy)                                      \
-  NEOMUTT_TEST_ITEM(test_string_strcasestr)                                    \
-  NEOMUTT_TEST_ITEM(test_string_split)                                         \
   NEOMUTT_TEST_ITEM(test_addr_mbox_to_udomain)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_path_tidy_slash)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_path_tidy_dotdot)                                \

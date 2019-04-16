@@ -424,6 +424,15 @@ distclean: clean
 	$(RM) $(DEPFILES) .clang_complete autosetup/jimsh0 config.h config.log \
 		conststrings.c contrib/Makefile doc/Makefile doc/neomutt.1 \
 		html Makefile po/Makefile test/Makefile
+	$(RM) *.gc?? */*.gc?? test/*/*.gc??
+	$(RM) lcov.info lcov
+
+# coverage testing
+coverage: all test
+	$(RM) lcov
+	$(RM) config/dump.gc??
+	lcov -t "result" -o lcov.info -c -d mutt -d config
+	genhtml -o lcov lcov.info
 
 # Tests for the config code
 config-test: libmutt.a libemail.a libconfig.a
