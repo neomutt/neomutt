@@ -48,6 +48,7 @@ size_t         mutt_buffer_addstr       (struct Buffer *buf, const char *s);
 size_t         mutt_buffer_addstr_n     (struct Buffer *buf, const char *s, size_t len);
 int            mutt_buffer_add_printf   (struct Buffer *buf, const char *fmt, ...);
 struct Buffer *mutt_buffer_alloc        (size_t size);
+void           mutt_buffer_concat_path  (struct Buffer *buf, const char *dir, const char *fname);
 void           mutt_buffer_fix_dptr     (struct Buffer *buf);
 void           mutt_buffer_free         (struct Buffer **p);
 struct Buffer *mutt_buffer_from         (const char *seed);
