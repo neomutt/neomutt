@@ -833,7 +833,7 @@ static int pop_mbox_open(struct Mailbox *m)
   url_tostring(&url, buf, sizeof(buf), 0);
 
   mutt_str_strfcpy(m->path, buf, sizeof(m->path));
-  mutt_str_strfcpy(m->realpath, m->path, sizeof(m->realpath));
+  mutt_str_replace(&m->realpath, m->path);
 
   struct PopAccountData *adata = m->account->adata;
   if (!adata)

@@ -83,8 +83,7 @@ typedef uint16_t AclFlags;          ///< Flags, e.g. #MUTT_ACL_ADMIN
 struct Mailbox
 {
   char path[PATH_MAX];
-  char realpath[PATH_MAX]; /**< used for duplicate detection, context
-                            * comparison, and the sidebar */
+  char *realpath; ///< used for duplicate detection, context comparison, and the sidebar
   char *desc;
   off_t size;
   bool has_new; /**< mailbox has new mail */

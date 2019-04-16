@@ -1883,7 +1883,7 @@ int imap_ac_add(struct Account *a, struct Mailbox *m)
     char buf[1024];
     imap_qualify_path(buf, sizeof(buf), &adata->conn_account, mdata->name);
     mutt_str_strfcpy(m->path, buf, sizeof(m->path));
-    mutt_str_strfcpy(m->realpath, m->path, sizeof(m->realpath));
+    mutt_str_replace(&m->realpath, m->path);
 
     m->mdata = mdata;
     m->free_mdata = imap_mdata_free;

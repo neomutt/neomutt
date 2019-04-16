@@ -1385,10 +1385,17 @@ int mx_path_canon2(struct Mailbox *m, const char *folder)
   if (!m)
     return -1;
 
-  if (m->realpath[0] == '\0')
-    mutt_str_strfcpy(m->realpath, m->path, sizeof(m->realpath));
+  char buf[PATH_MAX];
 
-  int rc = mx_path_canon(m->realpath, sizeof(m->realpath), folder, &m->magic);
+  if (m->realpath)
+    mutt_str_strfcpy(buf, m->realpath, sizeof(buf));
+  else
+    mutt_str_strfcpy(buf, m->path, sizeof(buf));
+
+  int rc = mx_path_canon(buf, sizeof(buf), folder, &m->magic);
+
+  mutt_str_replace(&m->realpath, buf);
+
   if (rc >= 0)
   {
     m->mx_ops = mx_get_ops(m->magic);

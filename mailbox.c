@@ -111,6 +111,7 @@ void mailbox_free(struct Mailbox **ptr)
   FREE(&m->desc);
   if (m->mdata && m->free_mdata)
     m->free_mdata(&m->mdata);
+  FREE(&m->realpath);
   FREE(ptr);
 }
 

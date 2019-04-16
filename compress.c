@@ -140,7 +140,7 @@ static int setup_paths(struct Mailbox *m)
   char tmp[PATH_MAX];
 
   /* Setup the right paths */
-  mutt_str_strfcpy(m->realpath, m->path, sizeof(m->realpath));
+  mutt_str_replace(&m->realpath, m->path);
 
   /* We will uncompress to /tmp */
   mutt_mktemp(tmp, sizeof(tmp));
