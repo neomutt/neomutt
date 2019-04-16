@@ -89,6 +89,8 @@ options {
   with-tokyocabinet:path    => "Location of TokyoCabinet"
 # System
   with-sysroot:path         => "Target system root"
+# Coverage testing
+  lcov=0                    => "Enable Coverage Testing"
 # Enable all options
   everything=0              => "Enable all options"
 }
@@ -102,7 +104,7 @@ if {1} {
   # Keep sorted, please.
   foreach opt {
     bdb doc everything fmemopen full-doc gdbm gnutls gpgme gss
-    homespool idn idn2 inotify kyotocabinet lmdb locales-fix lua mixmaster nls
+    homespool idn idn2 inotify kyotocabinet lcov lmdb locales-fix lua mixmaster nls
     notmuch pgp qdbm sasl smime ssl tokyocabinet
   } {
     define want-$opt [opt-bool $opt]
@@ -445,6 +447,13 @@ if {[get-define want-sasl]} {
   if {![get-define USE_SASL]} {
     user-error "Unable to find SASL"
   }
+}
+
+###############################################################################
+# Coverage Testing
+if {[get-define want-lcov]} {
+  define-append CFLAGS -fprofile-arcs -ftest-coverage
+  define-append LDFLAGS -fprofile-arcs -ftest-coverage
 }
 
 ###############################################################################
