@@ -1,8 +1,28 @@
+/**
+ * @file
+ * Test code for paths
+ *
+ * @authors
+ * Copyright (C) 2018-2019 Richard Russon <rich@flatcap.org>
+ *
+ * @copyright
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #define TEST_NO_MAIN
 #include "acutest.h"
-#include "mutt/memory.h"
-#include "mutt/path.h"
-#include "mutt/string2.h"
+#include "mutt/mutt.h"
 
 void test_mutt_path_tidy_slash(void)
 {
@@ -225,3 +245,19 @@ void test_mutt_path_tidy(void)
   }
 }
 
+void test_mutt_path_getcwd(void)
+{
+  // void mutt_path_getcwd(struct Buffer *cwd)
+
+  {
+    mutt_path_getcwd(NULL);
+    TEST_CHECK_(1, "mutt_path_getcwd(NULL)");
+  }
+
+  {
+    struct Buffer *buf = mutt_buffer_new();
+    mutt_path_getcwd(buf);
+    TEST_CHECK(buf->data[0] == '/');
+    mutt_buffer_free(&buf);
+  }
+}

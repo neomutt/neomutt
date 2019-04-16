@@ -455,6 +455,9 @@ size_t mutt_buffer_len(const struct Buffer *buf)
  */
 void mutt_buffer_concat_path(struct Buffer *buf, const char *dir, const char *fname)
 {
+  if (!buf || !dir || !fname)
+    return;
+
   const char *fmt = "%s/%s";
 
   if ((fname[0] == '\0') || ((dir[0] != '\0') && (dir[strlen(dir) - 1] == '/')))
