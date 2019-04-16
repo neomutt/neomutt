@@ -36,7 +36,7 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "parse.h"
-#include "address.h"
+#include "address/lib.h"
 #include "body.h"
 #include "email.h"
 #include "email_globals.h"

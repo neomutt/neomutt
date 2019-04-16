@@ -236,14 +236,23 @@ ALLOBJS+=	$(LIBCONFIGOBJS)
 ###############################################################################
 # libemail
 LIBEMAIL=	libemail.a
-LIBEMAILOBJS=	email/address.o email/attach.o email/body.o \
-		email/email_globals.o email/envelope.o email/from.o email/group.o \
-		email/email.o email/idna.o email/mime.o email/parameter.o \
+LIBEMAILOBJS=	email/attach.o email/body.o \
+		email/email_globals.o email/envelope.o email/from.o \
+		email/email.o email/mime.o email/parameter.o \
 		email/parse.o email/rfc2047.o email/rfc2231.o email/tags.o \
 		email/thread.o email/url.o
 CLEANFILES+=	$(LIBEMAIL) $(LIBEMAILOBJS)
 MUTTLIBS+=	$(LIBEMAIL)
 ALLOBJS+=	$(LIBEMAILOBJS)
+
+###############################################################################
+# libaddress
+LIBADDRESS=	libaddress.a
+LIBADDRESSOBJS=	address/address.o address/group.o address/idna.o 
+
+CLEANFILES+=	$(LIBADDRESS) $(LIBADDRESSOBJS)
+MUTTLIBS+=	$(LIBADDRESS)
+ALLOBJS+=	$(LIBADDRESSOBJS)
 
 ###############################################################################
 # libmutt
@@ -283,6 +292,13 @@ $(LIBMUTT): $(PWD)/mutt $(LIBMUTTOBJS)
 	$(RANLIB) $@
 $(PWD)/mutt:
 	$(MKDIR_P) $(PWD)/mutt
+
+# libaddress
+$(LIBADDRESS): $(PWD)/address $(LIBADDRESSOBJS)
+	$(AR) cr $@ $(LIBADDRESSOBJS)
+	$(RANLIB) $@
+$(PWD)/address:
+	$(MKDIR_P) $(PWD)/address
 
 # libemail
 $(LIBEMAIL): $(PWD)/email $(LIBEMAILOBJS)
@@ -374,7 +390,7 @@ git_ver.c: $(ALL_FILES)
 	cmp -s $@.tmp $@ || mv $@.tmp $@; \
 	rm -f $@.tmp
 
-hcache/hcversion.h:	$(SRCDIR)/email/address.h \
+hcache/hcversion.h:	$(SRCDIR)/address/address.h \
 			$(SRCDIR)/email/body.h \
 			$(SRCDIR)/email/email.h \
 			$(SRCDIR)/email/envelope.h \
@@ -384,7 +400,7 @@ hcache/hcversion.h:	$(SRCDIR)/email/address.h \
 			$(SRCDIR)/hcache/hcachever.sh
 	$(MKDIR_P) $(PWD)/hcache
 	( echo '#include "config.h"'; \
-	echo '#include "email/address.h"'; \
+	echo '#include "address/address.h"'; \
 	echo '#include "email/body.h"'; \
 	echo '#include "email/email.h"'; \
 	echo '#include "email/envelope.h"'; \
@@ -435,7 +451,7 @@ coverage: all test
 	genhtml -o lcov lcov.info
 
 # Tests for the config code
-config-test: libmutt.a libemail.a libconfig.a
+config-test: libmutt.a libemail.a libconfig.a libaddress.a
 
 ##############################################################################
 # include generated dependency files

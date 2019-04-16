@@ -47,6 +47,7 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "muttlib.h"
+#include "address/lib.h"
 #include "alias.h"
 #include "curs_lib.h"
 #include "filter.h"

@@ -35,6 +35,7 @@
 #include "mutt/mutt.h"
 #include "email/lib.h"
 #include "conn/conn.h"
+#include "address/lib.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"

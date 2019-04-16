@@ -21,7 +21,7 @@
  */
 
 /**
- * @page email_idna Handling of international domain names
+ * @page addr_idna Handling of international domain names
  *
  * Handling of international domain names
  */

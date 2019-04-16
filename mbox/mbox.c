@@ -45,6 +45,7 @@
 #include "mutt.h"
 #include "mbox.h"
 #include "account.h"
+#include "address/lib.h"
 #include "context.h"
 #include "copy.h"
 #include "globals.h"

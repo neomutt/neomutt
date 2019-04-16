@@ -42,6 +42,7 @@
 #include "email/lib.h"
 #include "mutt.h"
 #include "send.h"
+#include "address/lib.h"
 #include "alias.h"
 #include "compose.h"
 #include "context.h"

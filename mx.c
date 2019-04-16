@@ -44,6 +44,7 @@
 #include "mutt.h"
 #include "mx.h"
 #include "account.h"
+#include "address/lib.h"
 #include "alias.h"
 #include "context.h"
 #include "copy.h"

@@ -27,15 +27,12 @@
  *
  * | File                   | Description              |
  * | :--------------------- | :----------------------- |
- * | email/address.c        | @subpage email_address   |
  * | email/attach.c         | @subpage email_attach    |
  * | email/body.c           | @subpage email_body      |
  * | email/email_globals.c  | @subpage email_globals   |
  * | email/envelope.c       | @subpage email_envelope  |
  * | email/from.c           | @subpage email_from      |
- * | email/group.c          | @subpage email_group     |
  * | email/email.c          | @subpage email_email     |
- * | email/idna.c           | @subpage email_idna      |
  * | email/mime.c           | @subpage email_mime      |
  * | email/parameter.c      | @subpage email_parameter |
  * | email/parse.c          | @subpage email_parse     |
@@ -49,7 +46,6 @@
 #ifndef MUTT_EMAIL_LIB_H
 #define MUTT_EMAIL_LIB_H
 
-#include "address.h"
 #include "attach.h"
 #include "body.h"
 #include "content.h"
@@ -57,8 +53,6 @@
 #include "email_globals.h"
 #include "envelope.h"
 #include "from.h"
-#include "group.h"
-#include "idna2.h"
 #include "mime.h"
 #include "parameter.h"
 #include "parse.h"

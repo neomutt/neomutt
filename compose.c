@@ -41,6 +41,7 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "compose.h"
+#include "address/lib.h"
 #include "alias.h"
 #include "browser.h"
 #include "commands.h"

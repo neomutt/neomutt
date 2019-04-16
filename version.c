@@ -36,6 +36,7 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "email/lib.h"
+#include "address/lib.h"
 #include "mutt_curses.h"
 #include "ncrypt/crypt_gpgme.h"
 #ifdef USE_INOTIFY

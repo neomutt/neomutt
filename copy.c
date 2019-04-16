@@ -36,6 +36,7 @@
 #include "email/lib.h"
 #include "mutt.h"
 #include "copy.h"
+#include "address/lib.h"
 #include "context.h"
 #include "globals.h"
 #include "handler.h"
