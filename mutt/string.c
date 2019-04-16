@@ -1234,7 +1234,7 @@ struct ListHead mutt_str_split(const char *src, char sep)
  */
 int mutt_str_asprintf(char **strp, const char *fmt, ...)
 {
-  if (!strp || !*strp || !fmt)
+  if (!strp || !fmt)
     return -1;
 
   va_list ap;
