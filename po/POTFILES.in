@@ -1,5 +1,8 @@
 account.c
 addrbook.c
+address/address.c
+address/group.c
+address/idna.c
 alias.c
 bcache.c
 browser.c
@@ -37,15 +40,12 @@ copy.c
 curs_lib.c
 edit.c
 editmsg.c
-email/address.c
 email/attach.c
 email/body.c
 email/email.c
 email/email_globals.c
 email/envelope.c
 email/from.c
-email/group.c
-email/idna.c
 email/mime.c
 email/parameter.c
 email/parse.c
@@ -152,8 +152,8 @@ nntp/complete.c
 nntp/newsrc.c
 nntp/nntp.c
 notmuch/mutt_notmuch.c
-opcodes.h
 notmuch/nm_db.c
+opcodes.h
 pager.c
 pattern.c
 pgpewrap.c

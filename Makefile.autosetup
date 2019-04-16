@@ -248,7 +248,7 @@ ALLOBJS+=	$(LIBEMAILOBJS)
 ###############################################################################
 # libaddress
 LIBADDRESS=	libaddress.a
-LIBADDRESSOBJS=	address/address.o address/group.o address/idna.o 
+LIBADDRESSOBJS=	address/address.o address/group.o address/idna.o
 
 CLEANFILES+=	$(LIBADDRESS) $(LIBADDRESSOBJS)
 MUTTLIBS+=	$(LIBADDRESS)
