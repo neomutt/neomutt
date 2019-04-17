@@ -2,7 +2,7 @@
 
 [![Stars](https://img.shields.io/github/stars/neomutt/neomutt.svg?style=social&label=Stars)](https://github.com/neomutt/neomutt "Give us a Star")
 [![Twitter](https://img.shields.io/twitter/follow/NeoMutt_Org.svg?style=social&label=Follow)](https://twitter.com/NeoMutt_Org "Follow us on Twitter")
-[![Contributors](https://img.shields.io/badge/Contributors-132-orange.svg)](#contributors "All of NeoMutt's Contributors")
+[![Contributors](https://img.shields.io/badge/Contributors-157-orange.svg)](#contributors "All of NeoMutt's Contributors")
 [![Release](https://img.shields.io/github/release/neomutt/neomutt.svg)](https://github.com/neomutt/neomutt/releases/latest "Latest Release Notes")
 [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://github.com/neomutt/neomutt/blob/master/COPYRIGHT.md "Copyright Statement")
 [![Code build](https://img.shields.io/travis/neomutt/neomutt.svg?label=code)](https://travis-ci.org/neomutt/neomutt "Latest Automatic Code Build")
@@ -113,7 +113,8 @@ Here's a list of everyone who's helped NeoMutt:
 [Chris Czettel](https://github.com/christopher-john-czettel "christopher-john-czettel"),
 [Chris Salzberg](https://github.com/shioyama "shioyama"),
 [Christian Dröge](https://github.com/cdroege "cdroege"),
-[Christoph Berg](https://github.com/christophberg "christophberg"),
+[Christian Storm](https://github.com/stormc "stormc"),
+Christoph Berg,
 [cinder88](https://github.com/cinder88 "cinder88"),
 [Clemens Lang](https://github.com/neverpanic "neverpanic"),
 [Damien Riegel](https://github.com/d-k-c "d-k-c"),
@@ -180,6 +181,7 @@ Eli Winderickx,
 [Matteo Vescovi](https://github.com/mfvescovi "mfvescovi"),
 [Mehdi Abaakouk](https://github.com/sileht "sileht"),
 [Michael Bazzinotti](https://github.com/bazzinotti "bazzinotti"),
+[Mingcong Bai](https://github.com/mingcongbai "mingcongbai"),
 [Nagefire](https://github.com/nagefire "nagefire"),
 [Naveen Nathan](https://github.com/nnathan "nnathan"),
 [ng0](https://github.com/ng-0 "ng-0"),
@@ -207,14 +209,14 @@ Rubén Llorente,
 [ryt](https://github.com/0x747972 "0x747972"),
 [Santiago Torres](https://github.com/santiagotorres "santiagotorres"),
 [Serge Gebhardt](https://github.com/sgeb "sgeb"),
-[sharktamer](https://github.com/sharktamer "sharktamer"),
-[Shi Lee](https://github.com/rtlanceroad "rtlanceroad"),
+[Shane Donohoe](https://github.com/shanedabes "shanedabes"),
+Shi Lee,
 [Simon Symeonidis](https://github.com/psyomn "psyomn"),
 [somini](https://github.com/somini "somini"),
 [Stefan Assmann](https://github.com/sassmann "sassmann"),
 [Stefan Bühler](https://github.com/stbuehler "stbuehler"),
 [Stefano Zacchiroli](https://github.com/zacchiro "zacchiro"),
-[Stephen Gilles](https://github.com/s-gilles "s-gilles"),
+Stephen Gilles,
 [Stefan Kropp](https://github.com/debxwoody "debxwoody"),
 [Steve Bennett](https://github.com/msteveb "msteveb"),
 [Steven Ragnarök](https://github.com/nuclearsandwich "nuclearsandwich"),
@@ -249,10 +251,10 @@ So, a Big Thank You to:
 Aaron Schrab, Alain Penders, Benjamin Kuperman, Cedric Duval, Chris Mason,
 Christian Aichinger, Christoph Rissner, David Champion, David Riebenbauer,
 David Wilson, Don Zickus, Eric Davis, Felix von Leitner, Jan Synacek,
-Jason DeTiberus, Jeremiah Foster, Jeremy Katz, Josh Poimboeuf, Julius Plenz,
-Justin Hibbits, Kirill Shutemov, Luke Macken, Mantas Mikulenas, Patrick Brisbin,
-Paul Miller, Philippe Le Brouster, Rocco Rutte, Roland Rosenfeld, Sami Farin,
-Stefan Kuhn, Steve Kemp, Terry Chan, Thomas Glanzmann, Thomer Gil, Tim Stoakes,
+Jason DeTiberus, Jeremiah Foster, Jeremy Katz, Julius Plenz, Justin Hibbits,
+Kirill Shutemov, Luke Macken, Mantas Mikulenas, Patrick Brisbin, Paul Miller,
+Philippe Le Brouster, Rocco Rutte, Roland Rosenfeld, Sami Farin, Stefan Kuhn,
+Steve Kemp, Terry Chan, Thomas Glanzmann, Thomer Gil, Tim Stoakes,
 Tyler Earnest, Victor Manuel Jaquez Leal, Vincent Lefevre, Vladimir Marek,
 Vsevolod Volkov.
 
