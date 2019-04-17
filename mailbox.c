@@ -399,12 +399,13 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
  */
 bool mutt_mailbox_list(void)
 {
-  char path[PATH_MAX];
   char mailboxlist[512];
   size_t pos = 0;
   int first = 1;
 
   int have_unnotified = MailboxNotify;
+
+  struct Buffer *path = mutt_buffer_pool_get();
 
   mailboxlist[0] = '\0';
   pos += strlen(strncat(mailboxlist, _("New mail in "), sizeof(mailboxlist) - 1 - pos));
@@ -415,11 +416,11 @@ bool mutt_mailbox_list(void)
     if (!np->mailbox->has_new || (have_unnotified && np->mailbox->notified))
       continue;
 
-    mutt_str_strfcpy(path, mutt_b2s(np->mailbox->pathbuf), sizeof(path));
-    mutt_pretty_mailbox(path, sizeof(path));
+    mutt_buffer_strcpy(path, mutt_b2s(np->mailbox->pathbuf));
+    mutt_buffer_pretty_mailbox(path);
 
     if (!first && (MuttMessageWindow->cols >= 7) &&
-        (pos + strlen(path) >= (size_t) MuttMessageWindow->cols - 7))
+        ((pos + mutt_buffer_len(path)) >= ((size_t) MuttMessageWindow->cols - 7)))
     {
       break;
     }
@@ -434,7 +435,7 @@ bool mutt_mailbox_list(void)
       np->mailbox->notified = true;
       MailboxNotify--;
     }
-    pos += strlen(strncat(mailboxlist + pos, path, sizeof(mailboxlist) - 1 - pos));
+    pos += strlen(strncat(mailboxlist + pos, mutt_b2s(path), sizeof(mailboxlist) - 1 - pos));
     first = 0;
   }
 
@@ -442,15 +443,21 @@ bool mutt_mailbox_list(void)
   {
     strncat(mailboxlist + pos, ", ...", sizeof(mailboxlist) - 1 - pos);
   }
+
+  mutt_buffer_pool_release(&path);
+
   if (!first)
   {
     mutt_message("%s", mailboxlist);
     return true;
   }
-  /* there were no mailboxes needing to be notified, so clean up since
-   * MailboxNotify has somehow gotten out of sync */
-  MailboxNotify = 0;
-  return false;
+  else
+  {
+    /* there were no mailboxes needing to be notified, so clean up since
+     * MailboxNotify has somehow gotten out of sync */
+    MailboxNotify = 0;
+    return false;
+  }
 }
 
 /**

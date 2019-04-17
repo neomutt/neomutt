@@ -813,6 +813,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
 {
   struct stat s;
   struct Buffer *md = NULL;
+  struct Buffer *mailbox = NULL;
 
 #ifdef USE_NNTP
   if (OptNews)
@@ -837,6 +838,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
 
     if (STAILQ_EMPTY(&AllMailboxes))
       return -1;
+    mailbox = mutt_buffer_pool_get();
     md = mutt_buffer_pool_get();
     mutt_mailbox_check(Context ? Context->mailbox : NULL, 0);
 
@@ -849,16 +851,16 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
         np->mailbox->msg_unread = Context->mailbox->msg_unread;
       }
 
-      char buf[PATH_MAX];
-      mutt_str_strfcpy(buf, mutt_b2s(np->mailbox->pathbuf), sizeof(buf));
+      mutt_buffer_strcpy(mailbox, mutt_b2s(np->mailbox->pathbuf));
       if (C_BrowserAbbreviateMailboxes)
-        mutt_pretty_mailbox(buf, sizeof(buf));
+        mutt_buffer_pretty_mailbox(mailbox);
 
       switch (np->mailbox->magic)
       {
         case MUTT_IMAP:
         case MUTT_POP:
-          add_folder(menu, state, buf, np->mailbox->desc, NULL, np->mailbox, NULL);
+          add_folder(menu, state, mutt_b2s(mailbox), np->mailbox->desc, NULL,
+                     np->mailbox, NULL);
           continue;
         case MUTT_NOTMUCH:
         case MUTT_NNTP:
@@ -889,11 +891,12 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
           s.st_mtime = st2.st_mtime;
       }
 
-      add_folder(menu, state, buf, np->mailbox->desc, &s, np->mailbox, NULL);
+      add_folder(menu, state, mutt_b2s(mailbox), np->mailbox->desc, &s, np->mailbox, NULL);
     }
   }
   browser_sort(state);
 
+  mutt_buffer_pool_release(&mailbox);
   mutt_buffer_pool_release(&md);
   return 0;
 }
