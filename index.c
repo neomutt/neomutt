@@ -3142,11 +3142,11 @@ int mutt_index_menu(void)
       case OP_GROUP_REPLY:
       case OP_GROUP_CHAT_REPLY:
       {
-        SendFlags replyFlags = SEND_REPLY;
+        SendFlags replyflags = SEND_REPLY;
         if (op == OP_GROUP_REPLY)
-          replyFlags |= SEND_GROUP_REPLY;
+          replyflags |= SEND_GROUP_REPLY;
         else
-          replyFlags |= SEND_GROUP_CHAT_REPLY;
+          replyflags |= SEND_GROUP_CHAT_REPLY;
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_ATTACH))
           break;
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
@@ -3155,7 +3155,7 @@ int mutt_index_menu(void)
         {
           mutt_check_traditional_pgp(&el, &menu->redraw);
         }
-        ci_send_message(replyFlags, NULL, NULL, Context, &el);
+        ci_send_message(replyflags, NULL, NULL, Context, &el);
         el_free(&el);
         menu->redraw = REDRAW_FULL;
         break;
