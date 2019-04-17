@@ -2234,7 +2234,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 {
   static char searchbuf[256] = "";
   char buf[1024];
-  char helpstr[256];
+  char helpstr[1280];
   char tmphelp[256];
   int ch = 0, rc = -1;
   bool first = true;

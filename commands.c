@@ -372,7 +372,7 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   if (!m || !el || STAILQ_EMPTY(el))
     return;
 
-  char prompt[128];
+  char prompt[129];
   char scratch[128];
   char buf[8192] = { 0 };
   struct Address *addr = NULL;

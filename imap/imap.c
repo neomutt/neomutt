@@ -640,7 +640,7 @@ int imap_rename_mailbox(struct ImapAccountData *adata, char *oldname, const char
  */
 int imap_delete_mailbox(struct Mailbox *m, char *path)
 {
-  char buf[PATH_MAX];
+  char buf[PATH_MAX + 7];
   char mbox[PATH_MAX];
   struct Url *url = url_parse(path);
 
