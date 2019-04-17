@@ -3004,7 +3004,6 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   TagFormats = mutt_hash_new(64, MUTT_HASH_NO_FLAGS);
 
   mutt_menu_init();
-  mutt_buffer_pool_init();
 
   snprintf(AttachmentMarker, sizeof(AttachmentMarker), "\033]9;%" PRIu64 "\a", // Escape
            mutt_rand64());

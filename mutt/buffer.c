@@ -374,14 +374,6 @@ static void increase_buffer_pool(void)
 }
 
 /**
- * mutt_buffer_pool_init - Initialise the Buffer pool
- */
-void mutt_buffer_pool_init(void)
-{
-  increase_buffer_pool();
-}
-
-/**
  * mutt_buffer_pool_free - Release the Buffer pool
  */
 void mutt_buffer_pool_free(void)
