@@ -64,7 +64,6 @@ void           mutt_buffer_strcpy_n     (struct Buffer *buf, const char *s, size
 
 void           mutt_buffer_pool_free    (void);
 struct Buffer *mutt_buffer_pool_get     (void);
-void           mutt_buffer_pool_init    (void);
 void           mutt_buffer_pool_release (struct Buffer **pbuf);
 
 #endif /* MUTT_LIB_BUFFER_H */
