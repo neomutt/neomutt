@@ -2197,6 +2197,10 @@ int mutt_index_menu(void)
       case OP_MAIN_CHANGE_GROUP_READONLY:
 #endif
       {
+        bool cont = false; /* Set if we want to continue instead of break */
+
+        struct Buffer *folderbuf = mutt_buffer_pool_get();
+        mutt_buffer_increase_size(folderbuf, PATH_MAX);
         struct Mailbox *m = NULL;
         char *cp = NULL;
 #ifdef USE_NNTP
@@ -2218,17 +2222,16 @@ int mutt_index_menu(void)
         else
           cp = _("Open mailbox");
 
-        buf[0] = '\0';
         if ((op == OP_MAIN_NEXT_UNREAD_MAILBOX) && Context &&
             mutt_buffer_is_empty(Context->mailbox->pathbuf))
         {
-          mutt_str_strfcpy(buf, mutt_b2s(Context->mailbox->pathbuf), sizeof(buf));
-          mutt_pretty_mailbox(buf, sizeof(buf));
-          mutt_mailbox(Context ? Context->mailbox : NULL, buf, sizeof(buf));
-          if (buf[0] == '\0')
+          mutt_buffer_strcpy(folderbuf, mutt_b2s(Context->mailbox->pathbuf));
+          mutt_buffer_pretty_mailbox(folderbuf);
+          mutt_buffer_mailbox(Context ? Context->mailbox : NULL, folderbuf);
+          if (mutt_buffer_is_empty(folderbuf))
           {
             mutt_error(_("No mailboxes have new mail"));
-            break;
+            goto changefoldercleanup;
           }
         }
 #ifdef USE_SIDEBAR
@@ -2236,8 +2239,8 @@ int mutt_index_menu(void)
         {
           m = mutt_sb_get_highlight();
           if (!m)
-            break;
-          mutt_str_strfcpy(buf, mutt_b2s(m->pathbuf), sizeof(buf));
+            goto changefoldercleanup;
+          mutt_buffer_strcpy(folderbuf, mutt_b2s(m->pathbuf));
 
           /* Mark the selected dir for the neomutt browser */
           mutt_browser_select_dir(mutt_b2s(m->pathbuf));
@@ -2248,8 +2251,8 @@ int mutt_index_menu(void)
           if (C_ChangeFolderNext && Context &&
               mutt_buffer_is_empty(Context->mailbox->pathbuf))
           {
-            mutt_str_strfcpy(buf, mutt_b2s(Context->mailbox->pathbuf), sizeof(buf));
-            mutt_pretty_mailbox(buf, sizeof(buf));
+            mutt_buffer_strcpy(folderbuf, mutt_b2s(Context->mailbox->pathbuf));
+            mutt_buffer_pretty_mailbox(folderbuf);
           }
 #ifdef USE_NNTP
           if ((op == OP_MAIN_CHANGE_GROUP) || (op == OP_MAIN_CHANGE_GROUP_READONLY))
@@ -2263,52 +2266,59 @@ int mutt_index_menu(void)
               cp = _("Open newsgroup in read-only mode");
             else
               cp = _("Open newsgroup");
-            nntp_mailbox(m, buf, sizeof(buf));
+            nntp_mailbox(m, folderbuf->data, folderbuf->dsize);
           }
           else
 #endif
           {
             /* By default, fill buf with the next mailbox that contains unread
              * mail */
-            mutt_mailbox(Context ? Context->mailbox : NULL, buf, sizeof(buf));
+            mutt_buffer_mailbox(Context ? Context->mailbox : NULL, folderbuf);
           }
 
-          if (mutt_enter_fname(cp, buf, sizeof(buf), true) == -1)
+          if (mutt_buffer_enter_fname(cp, folderbuf, true) == -1)
           {
             if (menu->menu == MENU_PAGER)
             {
               op = OP_DISPLAY_MESSAGE;
-              continue;
+              cont = true;
             }
-            else
-              break;
+            goto changefoldercleanup;
           }
 
           /* Selected directory is okay, let's save it. */
-          mutt_browser_select_dir(buf);
+          mutt_browser_select_dir(mutt_b2s(folderbuf));
 
-          if (buf[0] == '\0')
+          if (mutt_buffer_is_empty(folderbuf))
           {
             mutt_window_clearline(MuttMessageWindow, 0);
-            break;
+            goto changefoldercleanup;
           }
         }
 
         if (!m)
-          m = mx_mbox_find2(buf);
+          m = mx_mbox_find2(mutt_b2s(folderbuf));
 
-        main_change_folder(menu, op, m, buf, sizeof(buf), &oldcount, &index_hint);
+        main_change_folder(menu, op, m, folderbuf->data, folderbuf->dsize,
+                           &oldcount, &index_hint);
 #ifdef USE_NNTP
         /* mutt_mailbox_check() must be done with mail-reader mode! */
         menu->help = mutt_compile_help(
             helpstr, sizeof(helpstr), MENU_MAIN,
             (Context && (Context->mailbox->magic == MUTT_NNTP)) ? IndexNewsHelp : IndexHelp);
 #endif
-        mutt_expand_path(buf, sizeof(buf));
+        mutt_buffer_expand_path(folderbuf);
 #ifdef USE_SIDEBAR
         mutt_sb_set_open_mailbox();
 #endif
-        break;
+        goto changefoldercleanup;
+
+      changefoldercleanup:
+        mutt_buffer_pool_release(&folderbuf);
+        if (cont)
+          continue;
+        else
+          break;
       }
 
       case OP_DISPLAY_MESSAGE:
