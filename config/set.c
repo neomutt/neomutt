@@ -261,7 +261,7 @@ bool cs_register_type(struct ConfigSet *cs, unsigned int type, const struct Conf
 bool cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], int flags)
 {
   if (!cs || !vars)
-    return CSR_ERR_CODE;
+    return false;
 
   struct Buffer *err = mutt_buffer_pool_get();
 

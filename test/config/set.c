@@ -76,6 +76,145 @@ void dummy_destroy(const struct ConfigSet *cs, void *var, const struct ConfigDef
 {
 }
 
+bool degenerate_tests(struct ConfigSet *cs)
+{
+  const struct ConfigSetType cst_dummy = {
+    "dummy", NULL, NULL, NULL, NULL, NULL, NULL,
+  };
+
+  struct HashElem *he = cs_get_elem(cs, "Banana");
+
+  cs_init(NULL, 100);
+  TEST_CHECK_(1, "cs_init(NULL, 100)");
+  cs_free(NULL);
+  TEST_CHECK_(1, "cs_free(NULL)");
+  cs_add_listener(cs, NULL);
+  TEST_CHECK_(1, "cs_add_listener(cs, NULL)");
+  cs_add_listener(NULL, log_listener);
+  TEST_CHECK_(1, "cs_add_listener(NULL, log_listener)");
+  cs_remove_listener(cs, NULL);
+  TEST_CHECK_(1, "cs_remove_listener(cs, NULL)");
+  cs_remove_listener(NULL, log_listener);
+  TEST_CHECK_(1, "cs_remove_listener(NULL, log_listener)");
+  cs_notify_listeners(NULL, he, "apple", CE_SET);
+  TEST_CHECK_(1, "cs_notify_listeners(NULL, he, \"apple\", CE_SET)");
+  cs_notify_listeners(cs, NULL, "apple", CE_SET);
+  TEST_CHECK_(1, "cs_notify_listeners(cs, NULL, \"apple\", CE_SET)");
+  cs_notify_listeners(cs, he, NULL, CE_SET);
+  TEST_CHECK_(1, "cs_notify_listeners(cs, he, NULL, CE_SET)");
+
+  if (!TEST_CHECK(cs_register_type(NULL, DT_NUMBER, &cst_dummy) == false))
+    return false;
+  if (!TEST_CHECK(cs_register_type(cs, DT_NUMBER, NULL) == false))
+    return false;
+  if (!TEST_CHECK(cs_register_variables(cs, NULL, 0) == false))
+    return false;
+  if (!TEST_CHECK(cs_register_variables(NULL, Vars, 0) == false))
+    return false;
+
+  if (!TEST_CHECK(cs_str_native_get(NULL, "apple", NULL) == INT_MIN))
+    return false;
+  if (!TEST_CHECK(cs_str_native_get(cs, NULL, NULL) == INT_MIN))
+    return false;
+
+  if (!TEST_CHECK(cs_get_elem(NULL, "apple") == NULL))
+    return false;
+  if (!TEST_CHECK(cs_get_elem(cs, NULL) == NULL))
+    return false;
+  if (!TEST_CHECK(cs_get_type_def(NULL, DT_NUMBER) == NULL))
+    return false;
+  if (!TEST_CHECK(cs_get_type_def(cs, 30) == NULL))
+    return false;
+  if (!TEST_CHECK(cs_inherit_variable(NULL, he, "apple") == NULL))
+    return false;
+  if (!TEST_CHECK(cs_inherit_variable(cs, NULL, "apple") == NULL))
+    return false;
+
+  if (!TEST_CHECK(cs_str_native_set(NULL, "apple", IP "hello", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_str_native_set(cs, NULL, IP "hello", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_he_reset(NULL, he, NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_he_reset(cs, NULL, NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_str_reset(NULL, "apple", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_str_reset(cs, NULL, NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_he_initial_set(NULL, he, "42", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_he_initial_set(cs, NULL, "42", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_he_initial_set(cs, he, "42", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_str_initial_set(NULL, "apple", "42", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_str_initial_set(cs, NULL, "42", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_str_initial_set(cs, "unknown", "42", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_str_initial_get(NULL, "apple", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_str_initial_get(cs, NULL, NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_str_initial_get(cs, "unknown", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_he_initial_get(NULL, he, NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_he_initial_get(cs, NULL, NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_he_string_set(NULL, he, "42", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_he_string_set(cs, NULL, "42", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_str_string_set(NULL, "apple", "42", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_str_string_set(cs, NULL, "42", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_he_string_get(NULL, he, NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_he_string_get(cs, NULL, NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_str_string_get(NULL, "apple", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_str_string_get(cs, NULL, NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_he_native_set(NULL, he, 42, NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_he_native_set(cs, NULL, 42, NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_str_native_set(NULL, "apple", 42, NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_str_native_set(cs, NULL, 42, NULL) != CSR_SUCCESS))
+    return false;
+
+  return true;
+}
+
+bool invalid_tests(struct ConfigSet *cs)
+{
+  struct HashElem *he = cs_get_elem(cs, "Banana");
+  he->type = 30;
+
+  if (!TEST_CHECK(cs_he_initial_set(cs, he, "42", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_he_initial_get(cs, he, NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_he_string_set(cs, he, "42", NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_he_string_get(cs, he, NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_he_native_set(cs, he, 42, NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_he_native_get(cs, he, NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_str_native_set(cs, "apple", 42, NULL) != CSR_SUCCESS))
+    return false;
+
+  return true;
+}
+
 void config_set(void)
 {
   log_line(__func__);
@@ -136,6 +275,12 @@ void config_set(void)
     TEST_MSG("This test should have failed\n");
     return;
   }
+
+  if (!degenerate_tests(cs))
+    return;
+
+  if (!invalid_tests(cs))
+    return;
 
   const char *name = "Unknown";
   int result = cs_str_string_set(cs, name, "hello", &err);

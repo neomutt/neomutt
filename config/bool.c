@@ -109,10 +109,7 @@ static int bool_string_get(const struct ConfigSet *cs, void *var,
     index = (int) cdef->initial;
 
   if (index > 1)
-  {
-    mutt_debug(LL_DEBUG1, "Variable has an invalid value: %d\n", index);
-    return CSR_ERR_INVALID | CSR_INV_TYPE;
-  }
+    return CSR_ERR_INVALID | CSR_INV_TYPE; /* LCOV_EXCL_LINE */
 
   mutt_buffer_addstr(result, BoolValues[index]);
   return CSR_SUCCESS;
