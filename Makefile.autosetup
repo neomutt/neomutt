@@ -447,8 +447,9 @@ distclean: clean
 coverage: all test
 	$(RM) lcov
 	$(RM) config/dump.gc??
-	lcov -t "result" -o lcov.info -c -d mutt -d config
-	genhtml -o lcov lcov.info
+	lcov -t "test" -o lcov.info -c -d mutt -d config
+	-genhtml -o lcov lcov.info -f
+	lcov -l lcov.info
 
 # Tests for the config code
 config-test: libmutt.a libemail.a libconfig.a libaddress.a
