@@ -62,7 +62,7 @@ bool        mutt_matches_ignore(const char *s);
 void        mutt_mktemp_full(char *s, size_t slen, const char *prefix, const char *suffix, const char *src, int line);
 bool        mutt_needs_mailcap(struct Body *m);
 FILE *      mutt_open_read(const char *path, pid_t *thepid);
-void        mutt_pretty_mailbox(char *s, size_t buflen);
+void        mutt_pretty_mailbox(char *buf, size_t buflen);
 uint32_t    mutt_rand32(void);
 uint64_t    mutt_rand64(void);
 void        mutt_rand_base32(void *out, size_t len);

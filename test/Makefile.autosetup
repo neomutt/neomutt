@@ -9,7 +9,7 @@ TEST_OBJS   = test/main.o \
 
 CONFIG_OBJS	= test/config/main.o test/config/account.o \
 		  test/config/address.o test/config/bool.o \
-		  test/config/command.o test/config/common.o \
+		  test/config/command.o test/config/common.o test/config/dump.o \
 		  test/config/initial.o test/config/long.o \
 		  test/config/magic.o test/config/mbtable.o \
 		  test/config/number.o test/config/path.o test/config/quad.o \

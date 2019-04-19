@@ -64,7 +64,8 @@
   NEOMUTT_TEST_ITEM(config_quad)                                               \
   NEOMUTT_TEST_ITEM(config_regex)                                              \
   NEOMUTT_TEST_ITEM(config_sort)                                               \
-  NEOMUTT_TEST_ITEM(config_string)
+  NEOMUTT_TEST_ITEM(config_string)                                             \
+  NEOMUTT_TEST_ITEM(config_dump)
 
 /******************************************************************************
  * You probably don't need to touch what follows.

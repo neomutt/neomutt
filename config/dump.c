@@ -36,7 +36,7 @@
 #include "set.h"
 #include "types.h"
 
-void mutt_pretty_mailbox(char *s, size_t buflen);
+void mutt_pretty_mailbox(char *buf, size_t buflen);
 
 /**
  * escape_string - Write a string to a buffer, escaping special characters
@@ -102,6 +102,9 @@ size_t pretty_var(const char *str, struct Buffer *buf)
  */
 int elem_list_sort(const void *a, const void *b)
 {
+  if (!a || !b)
+    return 0;
+
   const struct HashElem *hea = *(struct HashElem **) a;
   const struct HashElem *heb = *(struct HashElem **) b;
 
@@ -129,10 +132,7 @@ struct HashElem **get_elem_list(struct ConfigSet *cs)
   {
     list[index++] = he;
     if (index == 1022)
-    {
-      mutt_debug(LL_DEBUG1, "Too many config items to sort\n");
-      break;
-    }
+      break; /* LCOV_EXCL_LINE */
   }
 
   qsort(list, index, sizeof(struct HashElem *), elem_list_sort);
@@ -152,6 +152,9 @@ struct HashElem **get_elem_list(struct ConfigSet *cs)
 void dump_config_mutt(struct ConfigSet *cs, struct HashElem *he, struct Buffer *value,
                       struct Buffer *initial, ConfigDumpFlags flags, FILE *fp)
 {
+  if (!he || !value || !fp)
+    return;
+
   const char *name = he->key.strkey;
 
   if (DTYPE(he->type) == DT_BOOL)
@@ -183,6 +186,9 @@ void dump_config_mutt(struct ConfigSet *cs, struct HashElem *he, struct Buffer *
 void dump_config_neo(struct ConfigSet *cs, struct HashElem *he, struct Buffer *value,
                      struct Buffer *initial, ConfigDumpFlags flags, FILE *fp)
 {
+  if (!he || !value || !initial || !fp)
+    return;
+
   const char *name = he->key.strkey;
 
   if ((flags & CS_DUMP_ONLY_CHANGED) && (mutt_str_strcmp(value->data, initial->data) == 0))
@@ -235,7 +241,7 @@ bool dump_config(struct ConfigSet *cs, enum CsDumpStyle style,
 
   struct HashElem **list = get_elem_list(cs);
   if (!list)
-    return false;
+    return false; /* LCOV_EXCL_LINE */
 
   bool result = true;
 
@@ -265,8 +271,8 @@ bool dump_config(struct ConfigSet *cs, enum CsDumpStyle style,
         int rc = cs_he_string_get(cs, he, value);
         if (CSR_RESULT(rc) != CSR_SUCCESS)
         {
-          result = false;
-          break;
+          result = false; /* LCOV_EXCL_LINE */
+          break;          /* LCOV_EXCL_LINE */
         }
 
         const struct ConfigDef *cdef = he->data;
@@ -295,8 +301,8 @@ bool dump_config(struct ConfigSet *cs, enum CsDumpStyle style,
         int rc = cs_he_initial_get(cs, he, initial);
         if (CSR_RESULT(rc) != CSR_SUCCESS)
         {
-          result = false;
-          break;
+          result = false; /* LCOV_EXCL_LINE */
+          break;          /* LCOV_EXCL_LINE */
         }
 
         if ((type == DT_PATH) && !(he->type & DT_MAILBOX))
