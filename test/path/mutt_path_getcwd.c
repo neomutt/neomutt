@@ -33,4 +33,11 @@ void test_mutt_path_getcwd(void)
     mutt_path_getcwd(NULL);
     TEST_CHECK_(1, "mutt_path_getcwd(NULL)");
   }
+
+  {
+    struct Buffer *buf = mutt_buffer_new();
+    mutt_path_getcwd(buf);
+    TEST_CHECK(buf->data[0] == '/');
+    mutt_buffer_free(&buf);
+  }
 }
