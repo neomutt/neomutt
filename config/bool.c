@@ -212,7 +212,7 @@ void bool_init(struct ConfigSet *cs)
 int bool_he_toggle(struct ConfigSet *cs, struct HashElem *he, struct Buffer *err)
 {
   if (!cs || !he || !he->data)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
+    return CSR_ERR_CODE;
 
   if (DTYPE(he->type) != DT_BOOL)
     return CSR_ERR_CODE;
@@ -243,7 +243,7 @@ int bool_he_toggle(struct ConfigSet *cs, struct HashElem *he, struct Buffer *err
 int bool_str_toggle(struct ConfigSet *cs, const char *name, struct Buffer *err)
 {
   if (!cs || !name)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
+    return CSR_ERR_CODE;
 
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)

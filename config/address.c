@@ -272,7 +272,7 @@ struct Address *address_new(const char *addr)
 void address_free(struct Address **addr)
 {
   if (!addr || !*addr)
-    return; /* LCOV_EXCL_LINE */
+    return;
 
   FREE(&(*addr)->personal);
   FREE(&(*addr)->mailbox);

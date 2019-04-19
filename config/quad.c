@@ -225,7 +225,7 @@ static int quad_toggle(int opt)
 int quad_he_toggle(struct ConfigSet *cs, struct HashElem *he, struct Buffer *err)
 {
   if (!cs || !he || !he->data)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
+    return CSR_ERR_CODE;
 
   if (DTYPE(he->type) != DT_QUAD)
     return CSR_ERR_CODE;
