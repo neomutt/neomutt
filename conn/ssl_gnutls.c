@@ -457,7 +457,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   char title[256];
   FILE *fp = NULL;
   gnutls_datum_t pemdata;
-  int row, done, ret;
+  int done, ret;
 
   if (tls_check_preauth(certdata, certstat, hostname, idx, &certerr, &savedcert) == 0)
     return 1;
@@ -476,16 +476,10 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
     return 0;
   }
 
-  menu = mutt_menu_new(MENU_GENERIC);
-  menu->max = 27;
-  menu->dialog = mutt_mem_calloc(1, menu->max * sizeof(char *));
-  for (int i = 0; i < menu->max; i++)
-    menu->dialog[i] = mutt_mem_calloc(1, dialog_row_len * sizeof(char));
-  mutt_menu_push_current(menu);
+  struct Buffer *drow = mutt_buffer_pool_get();
 
-  row = 0;
-  mutt_str_strfcpy(menu->dialog[row], _("This certificate belongs to:"), dialog_row_len);
-  row++;
+  menu = mutt_menu_new(MENU_GENERIC);
+  mutt_menu_push_current(menu);
 
   buflen = sizeof(dn_common_name);
   if (gnutls_x509_crt_get_dn_by_oid(cert, GNUTLS_OID_X520_COMMON_NAME, 0, 0,
@@ -527,15 +521,15 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
     dn_country[0] = '\0';
   }
 
-  snprintf(menu->dialog[row++], dialog_row_len, "   %s  %s", dn_common_name, dn_email);
-  snprintf(menu->dialog[row++], dialog_row_len, "   %s", dn_organization);
-  snprintf(menu->dialog[row++], dialog_row_len, "   %s", dn_organizational_unit);
-  snprintf(menu->dialog[row++], dialog_row_len, "   %s  %s  %s", dn_locality,
-           dn_province, dn_country);
-  row++;
-
-  mutt_str_strfcpy(menu->dialog[row], _("This certificate was issued by:"), dialog_row_len);
-  row++;
+  mutt_menu_add_dialog_row(menu, _("This certificate belongs to:"));
+  mutt_buffer_printf(drow, "   %s  %s", dn_common_name, dn_email);
+  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
+  mutt_buffer_printf(drow, "   %s", dn_organization);
+  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
+  mutt_buffer_printf(drow, "   %s", dn_organizational_unit);
+  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
+  mutt_buffer_printf(drow, "   %s  %s  %s", dn_locality, dn_province, dn_country);
+  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
 
   buflen = sizeof(dn_common_name);
   if (gnutls_x509_crt_get_issuer_dn_by_oid(cert, GNUTLS_OID_X520_COMMON_NAME, 0,
@@ -580,64 +574,75 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
     dn_country[0] = '\0';
   }
 
-  snprintf(menu->dialog[row++], dialog_row_len, "   %s  %s", dn_common_name, dn_email);
-  snprintf(menu->dialog[row++], dialog_row_len, "   %s", dn_organization);
-  snprintf(menu->dialog[row++], dialog_row_len, "   %s", dn_organizational_unit);
-  snprintf(menu->dialog[row++], dialog_row_len, "   %s  %s  %s", dn_locality,
-           dn_province, dn_country);
-  row++;
+  mutt_menu_add_dialog_row(menu, "");
+  mutt_menu_add_dialog_row(menu, _("This certificate was issued by:"));
+  mutt_buffer_printf(drow, "   %s  %s", dn_common_name, dn_email);
+  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
+  mutt_buffer_printf(drow, "   %s", dn_organization);
+  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
+  mutt_buffer_printf(drow, "   %s", dn_organizational_unit);
+  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
+  mutt_buffer_printf(drow, "   %s  %s  %s", dn_locality, dn_province, dn_country);
+  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
 
-  snprintf(menu->dialog[row++], dialog_row_len, _("This certificate is valid"));
+  mutt_menu_add_dialog_row(menu, "");
+  mutt_menu_add_dialog_row(menu, _("This certificate is valid"));
 
   t = gnutls_x509_crt_get_activation_time(cert);
   mutt_date_make_tls(datestr, sizeof(datestr), t);
-  snprintf(menu->dialog[row++], dialog_row_len, _("   from %s"), datestr);
+  mutt_buffer_printf(drow, _("   from %s"), datestr);
 
   t = gnutls_x509_crt_get_expiration_time(cert);
   mutt_date_make_tls(datestr, sizeof(datestr), t);
-  snprintf(menu->dialog[row++], dialog_row_len, _("     to %s"), datestr);
+  mutt_buffer_printf(drow, _("     to %s"), datestr);
+  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
 
   fpbuf[0] = '\0';
   tls_fingerprint(GNUTLS_DIG_SHA, fpbuf, sizeof(fpbuf), certdata);
-  snprintf(menu->dialog[row++], dialog_row_len, _("SHA1 Fingerprint: %s"), fpbuf);
+  mutt_buffer_printf(drow, _("SHA1 Fingerprint: %s"), fpbuf);
+  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
   fpbuf[0] = '\0';
   fpbuf[40] = '\0'; /* Ensure the second printed line is null terminated */
   tls_fingerprint(GNUTLS_DIG_SHA256, fpbuf, sizeof(fpbuf), certdata);
   fpbuf[39] = '\0'; /* Divide into two lines of output */
-  snprintf(menu->dialog[row++], dialog_row_len, "%s%s", _("SHA256 Fingerprint: "), fpbuf);
-  snprintf(menu->dialog[row++], dialog_row_len, "%*s%s",
-           (int) mutt_str_strlen(_("SHA256 Fingerprint: ")), "", fpbuf + 40);
+  mutt_buffer_printf(drow, "%s%s", _("SHA256 Fingerprint: "), fpbuf);
+  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
+  mutt_buffer_printf(drow, "%*s%s", (int) mutt_str_strlen(_("SHA256 Fingerprint: ")),
+                     "", fpbuf + 40);
+  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
+
+  if (certerr)
+    mutt_menu_add_dialog_row(menu, "");
 
   if (certerr & CERTERR_NOTYETVALID)
   {
-    row++;
-    mutt_str_strfcpy(menu->dialog[row],
-                     _("WARNING: Server certificate is not yet valid"), dialog_row_len);
+    mutt_menu_add_dialog_row(menu,
+                             _("WARNING: Server certificate is not yet valid"));
   }
   if (certerr & CERTERR_EXPIRED)
   {
-    row++;
-    mutt_str_strfcpy(menu->dialog[row],
-                     _("WARNING: Server certificate has expired"), dialog_row_len);
+    mutt_menu_add_dialog_row(menu,
+                             _("WARNING: Server certificate has expired"));
   }
   if (certerr & CERTERR_REVOKED)
   {
-    row++;
-    mutt_str_strfcpy(menu->dialog[row],
-                     _("WARNING: Server certificate has been revoked"), dialog_row_len);
+    mutt_menu_add_dialog_row(menu,
+                             _("WARNING: Server certificate has been revoked"));
   }
   if (certerr & CERTERR_HOSTNAME)
   {
-    row++;
-    mutt_str_strfcpy(menu->dialog[row],
-                     _("WARNING: Server hostname does not match certificate"),
-                     dialog_row_len);
+    mutt_menu_add_dialog_row(
+        menu, _("WARNING: Server hostname does not match certificate"));
   }
   if (certerr & CERTERR_SIGNERNOTCA)
   {
-    row++;
-    mutt_str_strfcpy(menu->dialog[row],
-                     _("WARNING: Signer of server certificate is not a CA"), dialog_row_len);
+    mutt_menu_add_dialog_row(
+        menu, _("WARNING: Signer of server certificate is not a CA"));
+  }
+  if (certerr & CERTERR_INSECUREALG)
+  {
+    mutt_menu_add_dialog_row(menu, _("Warning: Server certificate was signed "
+                                     "using an insecure algorithm"));
   }
 
   snprintf(title, sizeof(title),
@@ -728,6 +733,8 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
     }
   }
   OptIgnoreMacroEvents = false;
+
+  mutt_buffer_pool_release(&drow);
   mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);
   gnutls_x509_crt_deinit(cert);
