@@ -102,6 +102,7 @@ struct Menu
    * normal menu movement keys. This can cause problems with scrolling, if
    * prompt keys override movement keys.  */
   char **dialog; /**< dialog lines themselves */
+  int dsize;     /**< number of allocated dialog lines */
   char *prompt;  /**< prompt for user, similar to mutt_multi_choice */
   char *keys;    /**< keys used in the prompt */
 
@@ -175,6 +176,7 @@ void         menu_redraw_sidebar(struct Menu *menu);
 void         menu_redraw_status(struct Menu *menu);
 int          menu_redraw(struct Menu *menu);
 void         menu_top_page(struct Menu *menu);
+void         mutt_menu_add_dialog_row(struct Menu *menu, const char *row);
 void         mutt_menu_current_redraw(void);
 void         mutt_menu_destroy(struct Menu **p);
 void         mutt_menu_init(void);
