@@ -28,4 +28,8 @@
 void test_mutt_path_parent(void)
 {
   // bool mutt_path_parent(char *buf, size_t buflen);
+
+  {
+    TEST_CHECK(!mutt_path_parent(NULL, 10));
+  }
 }

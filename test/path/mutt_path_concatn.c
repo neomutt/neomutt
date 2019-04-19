@@ -28,4 +28,18 @@
 void test_mutt_path_concatn(void)
 {
   // char *mutt_path_concatn(char *dst, size_t dstlen, const char *dir, size_t dirlen, const char *fname, size_t fnamelen);
+
+  {
+    TEST_CHECK(mutt_path_concatn(NULL, 10, "apple", 5, "banana", 6) == NULL);
+  }
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(mutt_path_concatn(buf, sizeof(buf), NULL, 5, "banana", 6) == NULL);
+  }
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(mutt_path_concatn(buf, sizeof(buf), "apple", 5, NULL, 6) == NULL);
+  }
 }

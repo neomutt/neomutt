@@ -28,4 +28,8 @@
 void test_mutt_path_realpath(void)
 {
   // size_t mutt_path_realpath(char *buf);
+
+  {
+    TEST_CHECK(mutt_path_realpath(NULL) == 0);
+  }
 }

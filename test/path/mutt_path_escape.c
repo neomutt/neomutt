@@ -28,4 +28,8 @@
 void test_mutt_path_escape(void)
 {
   // char *mutt_path_escape(const char *src);
+
+  {
+    TEST_CHECK(mutt_path_escape(NULL) == NULL);
+  }
 }

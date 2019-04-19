@@ -28,4 +28,9 @@
 void test_mutt_path_getcwd(void)
 {
   // void mutt_path_getcwd(struct Buffer *cwd);
+
+  {
+    mutt_path_getcwd(NULL);
+    TEST_CHECK_(1, "mutt_path_getcwd(NULL)");
+  }
 }

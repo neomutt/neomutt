@@ -28,4 +28,13 @@
 void test_mutt_path_abbr_folder(void)
 {
   // bool mutt_path_abbr_folder(char *buf, size_t buflen, const char *folder);
+
+  {
+    TEST_CHECK(!mutt_path_abbr_folder(NULL, 10, "apple"));
+  }
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(!mutt_path_abbr_folder(buf, sizeof(buf), NULL));
+  }
 }

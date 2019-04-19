@@ -28,4 +28,8 @@
 void test_mutt_path_tidy(void)
 {
   // bool mutt_path_tidy(char *buf);
+
+  {
+    TEST_CHECK(!mutt_path_tidy(NULL));
+  }
 }

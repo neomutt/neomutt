@@ -28,4 +28,8 @@
 void test_mutt_path_dirname(void)
 {
   // char *mutt_path_dirname(const char *path);
+
+  {
+    TEST_CHECK(mutt_path_dirname(NULL) == NULL);
+  }
 }

@@ -28,4 +28,9 @@
 void test_mutt_path_basename(void)
 {
   // const char *mutt_path_basename(const char *f);
+
+  {
+    mutt_path_basename(NULL);
+    TEST_CHECK_(1, "mutt_path_basename(NULL)");
+  }
 }
