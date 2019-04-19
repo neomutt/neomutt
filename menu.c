@@ -668,7 +668,7 @@ void menu_next_line(struct Menu *menu)
       menu->redraw = REDRAW_INDEX;
     }
     else
-      mutt_error(_("You can't scroll down farther"));
+      mutt_message(_("You can't scroll down farther"));
   }
   else
     mutt_error(_("No entries"));
@@ -690,7 +690,7 @@ void menu_prev_line(struct Menu *menu)
     menu->redraw = REDRAW_INDEX;
   }
   else
-    mutt_error(_("You can't scroll up farther"));
+    mutt_message(_("You can't scroll up farther"));
 }
 
 /**
@@ -737,7 +737,7 @@ static void menu_length_jump(struct Menu *menu, int jumplen)
     }
     else
     {
-      mutt_error(neg ? _("You are on the first page") : _("You are on the last page"));
+      mutt_message(neg ? _("You are on the first page") : _("You are on the last page"));
     }
 
     menu->current = MIN(menu->current, menu->max - 1);
@@ -922,7 +922,7 @@ static void menu_next_entry(struct Menu *menu)
     menu->redraw = REDRAW_MOTION;
   }
   else
-    mutt_error(_("You are on the last entry"));
+    mutt_message(_("You are on the last entry"));
 }
 
 /**
@@ -937,7 +937,7 @@ static void menu_prev_entry(struct Menu *menu)
     menu->redraw = REDRAW_MOTION;
   }
   else
-    mutt_error(_("You are on the first entry"));
+    mutt_message(_("You are on the first entry"));
 }
 
 /**
