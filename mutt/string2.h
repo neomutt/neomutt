@@ -68,7 +68,7 @@ enum CaseSensitivity
 };
 
 void        mutt_str_adjust(char **p);
-void        mutt_str_append_item(char **str, const char *item, int sep);
+void        mutt_str_append_item(char **str, const char *item, char sep);
 int         mutt_str_asprintf(char **strp, const char *fmt, ...);
 int         mutt_str_atoi(const char *str, int *dst);
 int         mutt_str_atol(const char *str, long *dst);
