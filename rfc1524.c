@@ -116,18 +116,18 @@ int rfc1524_expand_command(struct Body *a, const char *filename,
         if (C_MailcapSanitize)
           mutt_file_sanitize_filename(pvalue, false);
 
-        mutt_buffer_quote_filename(quoted, pvalue);
+        mutt_buffer_quote_filename(quoted, pvalue, true);
         mutt_buffer_addstr(buf, mutt_b2s(quoted));
       }
       else if ((command[x] == 's') && filename)
       {
-        mutt_buffer_quote_filename(quoted, filename);
+        mutt_buffer_quote_filename(quoted, filename, true);
         mutt_buffer_addstr(buf, mutt_b2s(quoted));
         needspipe = false;
       }
       else if (command[x] == 't')
       {
-        mutt_buffer_quote_filename(quoted, type);
+        mutt_buffer_quote_filename(quoted, type, true);
         mutt_buffer_addstr(buf, mutt_b2s(quoted));
       }
       x++;

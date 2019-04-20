@@ -409,7 +409,7 @@ void pgp_class_invoke_import(const char *fname)
 
   struct Buffer *buf_fname = mutt_buffer_pool_get();
 
-  mutt_buffer_quote_filename(buf_fname, fname);
+  mutt_buffer_quote_filename(buf_fname, fname, true);
   cctx.fname = mutt_b2s(buf_fname);
   if (C_PgpSignAs && *C_PgpSignAs)
     cctx.signas = C_PgpSignAs;
@@ -445,7 +445,7 @@ void pgp_class_invoke_getkeys(struct Address *addr)
   *tmp = '\0';
   mutt_addrlist_to_local(addr);
   mutt_addr_write_single(tmp, sizeof(tmp), addr, false);
-  mutt_buffer_quote_filename(buf, tmp);
+  mutt_buffer_quote_filename(buf, tmp, true);
 
   addr->personal = personal;
 
@@ -540,7 +540,7 @@ pid_t pgp_invoke_list_keys(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_er
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, hints, entries)
   {
-    mutt_buffer_quote_filename(quoted, (char *) np->data);
+    mutt_buffer_quote_filename(quoted, (char *) np->data, true);
     mutt_buffer_addstr(uids, mutt_b2s(quoted));
     if (STAILQ_NEXT(np, entries))
       mutt_buffer_addch(uids, ' ');

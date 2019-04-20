@@ -268,20 +268,27 @@ static const char *compress_format_str(char *buf, size_t buflen, size_t col, int
     return src;
 
   struct Mailbox *m = (struct Mailbox *) data;
-  const char *stuffing = NULL;
 
+  /* NOTE the compressed file config vars expect %f and %t to be
+   * surrounded by '' (unlike other Mutt config vars, which add the
+   * outer quotes for the user).  This is why we use the
+   * mutt_buffer_quote_filename() form with add_outer of false. */
+  struct Buffer *quoted = mutt_buffer_pool_get();
   switch (op)
   {
     case 'f':
       /* Compressed file */
-      stuffing = mutt_path_escape(m->realpath);
+      mutt_buffer_quote_filename(quoted, m->realpath, false);
+      snprintf(buf, buflen, "%s", mutt_b2s(quoted));
       break;
     case 't':
       /* Plaintext, temporary file */
-      stuffing = mutt_path_escape(mutt_b2s(m->pathbuf));
+      mutt_buffer_quote_filename(quoted, mutt_b2s(m->pathbuf), false);
+      snprintf(buf, buflen, "%s", mutt_b2s(quoted));
       break;
   }
-  snprintf(buf, buflen, "%s", NONULL(stuffing));
+
+  mutt_buffer_pool_release(&quoted);
   return src;
 }
 

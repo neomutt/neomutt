@@ -819,17 +819,19 @@ size_t mutt_file_quote_filename(const char *filename, char *buf, size_t buflen)
 
 /**
  * mutt_buffer_quote_filename - Quote a filename to survive the shell's quoting rules
- * @param buf      Buffer for the result
- * @param filename String to convert
+ * @param buf       Buffer for the result
+ * @param filename  String to convert
+ * @param add_outer If true, add 'single quotes' around the result
  * @retval num Bytes written to the buffer
  */
-void mutt_buffer_quote_filename(struct Buffer *buf, const char *filename)
+void mutt_buffer_quote_filename(struct Buffer *buf, const char *filename, bool add_outer)
 {
   if (!buf || !filename)
     return;
 
   mutt_buffer_reset(buf);
-  mutt_buffer_addch(buf, '\'');
+  if (add_outer)
+    mutt_buffer_addch(buf, '\'');
 
   for (; *filename != '\0'; filename++)
   {
@@ -844,7 +846,8 @@ void mutt_buffer_quote_filename(struct Buffer *buf, const char *filename)
       mutt_buffer_addch(buf, *filename);
   }
 
-  mutt_buffer_addch(buf, '\'');
+  if (add_outer)
+    mutt_buffer_addch(buf, '\'');
 }
 
 /**
@@ -1391,7 +1394,7 @@ void mutt_buffer_file_expand_fmt_quote(struct Buffer *dest, const char *fmt, con
 {
   struct Buffer *tmp = mutt_buffer_pool_get();
 
-  mutt_buffer_quote_filename(tmp, src);
+  mutt_buffer_quote_filename(tmp, src, true);
   mutt_file_expand_fmt(dest, fmt, mutt_b2s(tmp));
   mutt_buffer_pool_release(&tmp);
 }
