@@ -426,7 +426,7 @@ char *mutt_path_dirname(const char *path)
  *
  * @note \a path should be at least of PATH_MAX length
  */
-int mutt_path_to_absolute(char *path, const char *reference)
+bool mutt_path_to_absolute(char *path, const char *reference)
 {
   if (!path || !reference)
     return false;
