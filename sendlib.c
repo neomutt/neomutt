@@ -372,7 +372,7 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
 
       fputc(';', fp);
 
-      char buf[8192] = { 0 };
+      char buf[256] = { 0 };
       tmp = mutt_str_strdup(np->value);
       const int encode = rfc2231_encode_string(&tmp);
       mutt_addr_cat(buf, sizeof(buf), tmp, MimeSpecials);
