@@ -70,7 +70,7 @@ enum ImapAuthRes imap_auth_login(struct ImapAccountData *adata, const char *meth
     mutt_debug(LL_DEBUG2, "Sending LOGIN command for %s\n", adata->conn->account.user);
 
   snprintf(buf, sizeof(buf), "LOGIN %s %s", q_user, q_pass);
-  if (imap_exec(adata, buf, IMAP_CMD_PASS) != IMAP_EXEC_SUCCESS)
+  if (imap_exec(adata, buf, IMAP_CMD_PASS) == IMAP_EXEC_SUCCESS)
   {
     mutt_clear_error(); /* clear "Logging in...".  fixes #3524 */
     return IMAP_AUTH_SUCCESS;
