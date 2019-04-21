@@ -2969,10 +2969,10 @@ void mutt_free_opts(void)
 /**
  * mutt_get_hook_type - Find a hook by name
  * @param name Name to find
- * @retval num Data associated with the hook
- * @retval 0   Error, no matching hook
+ * @retval num                 Hook ID, e.g. #MUTT_FOLDER_HOOK
+ * @retval #MUTT_HOOK_NO_FLAGS Error, no matching hook
  */
-int mutt_get_hook_type(const char *name)
+HookFlags mutt_get_hook_type(const char *name)
 {
   for (const struct Command *c = Commands; c->name; c++)
   {
@@ -2982,7 +2982,7 @@ int mutt_get_hook_type(const char *name)
       return c->data;
     }
   }
-  return MUTT_CMD_SUCCESS;
+  return MUTT_HOOK_NO_FLAGS;
 }
 
 /**

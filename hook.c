@@ -317,7 +317,7 @@ void mutt_delete_hooks(HookFlags type)
 
   TAILQ_FOREACH_SAFE(h, &Hooks, entries, tmp)
   {
-    if ((type == 0) || (type == h->type))
+    if ((type == MUTT_HOOK_NO_FLAGS) || (type == h->type))
     {
       TAILQ_REMOVE(&Hooks, h, entries);
       delete_hook(h);
@@ -471,7 +471,7 @@ enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s,
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     if (mutt_str_strcmp("*", buf->data) == 0)
     {
-      if (current_hook_type)
+      if (current_hook_type != MUTT_TOKEN_NO_FLAGS)
       {
         mutt_buffer_printf(err, "%s", _("unhook: Can't do unhook * from within a hook"));
         return MUTT_CMD_WARNING;
@@ -482,9 +482,9 @@ enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s,
     }
     else
     {
-      int type = mutt_get_hook_type(buf->data);
+      HookFlags type = mutt_get_hook_type(buf->data);
 
-      if (!type)
+      if (type == MUTT_HOOK_NO_FLAGS)
       {
         mutt_buffer_printf(err, _("unhook: unknown hook type: %s"), buf->data);
         return MUTT_CMD_ERROR;
@@ -546,7 +546,7 @@ void mutt_folder_hook(const char *path, const char *desc)
   mutt_buffer_pool_release(&token);
   mutt_buffer_pool_release(&err);
 
-  current_hook_type = 0;
+  current_hook_type = MUTT_HOOK_NO_FLAGS;
 }
 
 /**
@@ -601,7 +601,7 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type)
         {
           mutt_buffer_pool_release(&token);
           mutt_error("%s", mutt_b2s(err));
-          current_hook_type = 0;
+          current_hook_type = MUTT_HOOK_NO_FLAGS;
           mutt_buffer_pool_release(&err);
 
           return;
@@ -615,7 +615,7 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type)
   mutt_buffer_pool_release(&token);
   mutt_buffer_pool_release(&err);
 
-  current_hook_type = 0;
+  current_hook_type = MUTT_HOOK_NO_FLAGS;
 }
 
 /**
