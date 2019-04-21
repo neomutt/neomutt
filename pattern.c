@@ -692,8 +692,8 @@ static bool eval_date_minmax(struct Pattern *pat, const char *s, struct Buffer *
   /* Since we allow two dates to be specified we'll have to adjust that. */
   adjust_date_range(&min, &max);
 
-  pat->min = mutt_date_make_time(&min, 1);
-  pat->max = mutt_date_make_time(&max, 1);
+  pat->min = mutt_date_make_time(&min, true);
+  pat->max = mutt_date_make_time(&max, true);
 
   return true;
 }

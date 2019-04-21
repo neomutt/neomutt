@@ -229,7 +229,7 @@ time_t mutt_date_local_tz(time_t t)
  * Convert a struct tm to time_t, but don't take the local timezone into
  * account unless "local" is nonzero
  */
-time_t mutt_date_make_time(struct tm *t, int local)
+time_t mutt_date_make_time(struct tm *t, bool local)
 {
   time_t g;
 
@@ -575,7 +575,7 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
     tz_out->zoccident = zoccident;
   }
 
-  time_t time = mutt_date_make_time(&tm, 0);
+  time_t time = mutt_date_make_time(&tm, false);
   /* Check we haven't overflowed the time (on 32-bit arches) */
   if ((time != TIME_T_MAX) && (time != TIME_T_MIN))
     time += tz_offset;
@@ -673,7 +673,7 @@ time_t mutt_date_parse_imap(const char *s)
   if (s[0] == '+')
     tz = -tz;
 
-  return mutt_date_make_time(&t, 0) + tz;
+  return mutt_date_make_time(&t, false) + tz;
 }
 
 /**
