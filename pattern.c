@@ -1080,19 +1080,19 @@ out:
  * patmatch - Compare a string to a Pattern
  * @param pat Pattern to use
  * @param buf String to compare
- * @retval 0 Match
- * @retval 1 No match
+ * @retval true  Match
+ * @retval false No match
  */
-static int patmatch(const struct Pattern *pat, const char *buf)
+static bool patmatch(const struct Pattern *pat, const char *buf)
 {
   if (pat->ismulti)
-    return (mutt_list_find(&pat->p.multi_cases, buf) == NULL);
+    return (mutt_list_find(&pat->p.multi_cases, buf) != NULL);
   else if (pat->stringmatch)
-    return pat->ign_case ? !strcasestr(buf, pat->p.str) : !strstr(buf, pat->p.str);
+    return pat->ign_case ? strcasestr(buf, pat->p.str) : strstr(buf, pat->p.str);
   else if (pat->groupmatch)
-    return !mutt_group_match(pat->p.group, buf);
+    return mutt_group_match(pat->p.group, buf);
   else
-    return regexec(pat->p.regex, buf, 0, NULL, 0);
+    return (regexec(pat->p.regex, buf, 0, NULL, 0) == 0);
 }
 
 /**
@@ -1230,7 +1230,7 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
     }
     else if (!fgets(buf, blen - 1, fp))
       break; /* don't loop forever */
-    if (patmatch(pat, buf) == 0)
+    if (patmatch(pat, buf))
     {
       match = true;
       break;
@@ -1713,8 +1713,8 @@ static int match_addrlist(struct Pattern *pat, bool match_personal, int n, ...)
     for (struct Address *a = va_arg(ap, struct Address *); a; a = a->next)
     {
       if (pat->alladdr ^ ((!pat->isalias || mutt_alias_reverse_lookup(a)) &&
-                          ((a->mailbox && !patmatch(pat, a->mailbox)) ||
-                           (match_personal && a->personal && !patmatch(pat, a->personal)))))
+                          ((a->mailbox && patmatch(pat, a->mailbox)) ||
+                           (match_personal && a->personal && patmatch(pat, a->personal)))))
       {
         va_end(ap);
         return !pat->alladdr; /* Found match, or non-match if alladdr */
@@ -1736,7 +1736,7 @@ static bool match_reference(struct Pattern *pat, struct ListHead *refs)
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, refs, entries)
   {
-    if (patmatch(pat, np->data) == 0)
+    if (patmatch(pat, np->data))
       return true;
   }
   return false;
@@ -1901,7 +1901,7 @@ static bool match_content_type(const struct Pattern *pat, struct Body *b)
   char buf[256];
   snprintf(buf, sizeof(buf), "%s/%s", TYPE(b), b->subtype);
 
-  if (patmatch(pat, buf) == 0)
+  if (patmatch(pat, buf))
     return true;
   if (match_content_type(pat, b->parts))
     return true;
@@ -1934,8 +1934,8 @@ static bool match_update_dynamic_date(struct Pattern *pat)
  * @retval true  Success, pattern matched
  * @retval false Pattern did not match
  */
-static bool match_mime_content_type(const struct Pattern *pat, struct Mailbox *m,
-                                   struct Email *e)
+static bool match_mime_content_type(const struct Pattern *pat,
+                                    struct Mailbox *m, struct Email *e)
 {
   mutt_parse_mime_message(m, e);
   return match_content_type(pat, e->content);
@@ -2093,12 +2093,12 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
     case MUTT_PAT_SUBJECT:
       if (!e->env)
         return 0;
-      return pat->not^(e->env->subject &&patmatch(pat, e->env->subject) == 0);
+      return pat->not^(e->env->subject &&patmatch(pat, e->env->subject));
     case MUTT_PAT_ID:
     case MUTT_PAT_ID_EXTERNAL:
       if (!e->env)
         return 0;
-      return pat->not^(e->env->message_id &&patmatch(pat, e->env->message_id) == 0);
+      return pat->not^(e->env->message_id &&patmatch(pat, e->env->message_id));
     case MUTT_PAT_SCORE:
       return pat->not^(e->score >= pat->min &&
                        (pat->max == MUTT_MAXRANGE || e->score <= pat->max));
@@ -2204,11 +2204,11 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
     case MUTT_PAT_XLABEL:
       if (!e->env)
         return 0;
-      return pat->not^(e->env->x_label &&patmatch(pat, e->env->x_label) == 0);
+      return pat->not^(e->env->x_label &&patmatch(pat, e->env->x_label));
     case MUTT_PAT_DRIVER_TAGS:
     {
       char *tags = driver_tags_get(&e->tags);
-      bool rc = (pat->not^(tags &&patmatch(pat, tags) == 0));
+      bool rc = (pat->not^(tags &&patmatch(pat, tags)));
       FREE(&tags);
       return rc;
     }
@@ -2216,7 +2216,7 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       if (!e->env)
         return 0;
       return pat->not^(e->env->spam && e->env->spam->data &&
-                       patmatch(pat, e->env->spam->data) == 0);
+                       patmatch(pat, e->env->spam->data));
     case MUTT_PAT_DUPLICATED:
       return pat->not^(e->thread && e->thread->duplicate_thread);
     case MUTT_PAT_MIMEATTACH:
@@ -2239,7 +2239,7 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
     case MUTT_PAT_NEWSGROUPS:
       if (!e->env)
         return 0;
-      return pat->not^(e->env->newsgroups &&patmatch(pat, e->env->newsgroups) == 0);
+      return pat->not^(e->env->newsgroups &&patmatch(pat, e->env->newsgroups));
 #endif
   }
   mutt_error(_("error: unknown op %d (report this error)"), pat->op);
