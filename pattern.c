@@ -1890,24 +1890,24 @@ static int match_threadchildren(struct PatternHead *pat, PatternExecFlags flags,
  * match_content_type - Match a Pattern against an Attachment's Content-Type
  * @param pat   Pattern to match
  * @param b     Attachment
- * @retval  1 Success, pattern matched
- * @retval  0 Pattern did not match
+ * @retval true  Success, pattern matched
+ * @retval false Pattern did not match
  */
-static int match_content_type(const struct Pattern *pat, struct Body *b)
+static bool match_content_type(const struct Pattern *pat, struct Body *b)
 {
-  char buf[256];
   if (!b)
-    return 0;
+    return false;
 
+  char buf[256];
   snprintf(buf, sizeof(buf), "%s/%s", TYPE(b), b->subtype);
 
   if (patmatch(pat, buf) == 0)
-    return 1;
+    return true;
   if (match_content_type(pat, b->parts))
-    return 1;
+    return true;
   if (match_content_type(pat, b->next))
-    return 1;
-  return 0;
+    return true;
+  return false;
 }
 
 /**
@@ -1931,10 +1931,10 @@ static bool match_update_dynamic_date(struct Pattern *pat)
  * @param pat   Pattern to match
  * @param m   Mailbox
  * @param e   Email
- * @retval  1 Success, pattern matched
- * @retval  0 Pattern did not match
+ * @retval true  Success, pattern matched
+ * @retval false Pattern did not match
  */
-static int match_mime_content_type(const struct Pattern *pat, struct Mailbox *m,
+static bool match_mime_content_type(const struct Pattern *pat, struct Mailbox *m,
                                    struct Email *e)
 {
   mutt_parse_mime_message(m, e);
