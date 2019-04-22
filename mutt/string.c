@@ -49,11 +49,13 @@
 /**
  * struct SysExits - Lookup table of error messages
  */
-static const struct SysExits
+struct SysExits
 {
-  int v;
-  const char *str;
-} sysexits_h[] = {
+  int err_num;
+  const char *err_str;
+};
+
+static const struct SysExits sysexits[] = {
 #ifdef EX_USAGE
   { 0xff & EX_USAGE, "Bad usage." },
 #endif
@@ -100,25 +102,22 @@ static const struct SysExits
   { 0xff & EX_NOPERM, "Local configuration error." },
 #endif
   { S_ERR, "Exec error." },
-  { -1, NULL },
 };
 
 /**
  * mutt_str_sysexit - Return a string matching an error code
- * @param e Error code, e.g. EX_NOPERM
+ * @param err_num Error code, e.g. EX_NOPERM
  * @retval ptr string representing the error code
  */
-const char *mutt_str_sysexit(int e)
+const char *mutt_str_sysexit(int err_num)
 {
-  int i;
-
-  for (i = 0; sysexits_h[i].str; i++)
+  for (size_t i = 0; i < mutt_array_size(sysexits); i++)
   {
-    if (e == sysexits_h[i].v)
-      break;
+    if (err_num == sysexits[i].err_num)
+      return sysexits[i].err_str;
   }
 
-  return sysexits_h[i].str;
+  return NULL;
 }
 
 /**
