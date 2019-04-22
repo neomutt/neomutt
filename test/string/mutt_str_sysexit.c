@@ -24,8 +24,53 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/mutt.h"
+#ifdef HAVE_SYSEXITS_H
+#include <sysexits.h>
+#endif
+
+struct TestValue
+{
+  int err_num;        ///< Error number to lookup
+  const char *result; ///< Expected result string
+};
+
+// clang-format off
+static const struct TestValue tests[] = {
+#ifdef EX_NOUSER
+  { 0xff & EX_NOUSER,      "User unknown."            },
+#endif
+#ifdef EX_NOHOST
+  { 0xff & EX_NOHOST,      "Host unknown."            },
+#endif
+#ifdef EX_UNAVAILABLE
+  { 0xff & EX_UNAVAILABLE, "Service unavailable."     },
+#endif
+#ifdef EX_IOERR
+  { 0xff & EX_IOERR,       "I/O error."               },
+#endif
+#ifdef EX_NOPERM
+  { 0xff & EX_NOPERM,      "Insufficient permission." },
+#endif
+  { 255,                   NULL                       },
+  { -1,                    NULL                       },
+};
+// clang-format on
 
 void test_mutt_str_sysexit(void)
 {
   // const char *mutt_str_sysexit(int e);
+
+  const char *result = NULL;
+
+  for (size_t i = 0; i < mutt_array_size(tests); i++)
+  {
+    TEST_MSG("Testing %d, expecting '%s'\n", tests[i].err_num, NONULL(tests[i].result));
+    result = mutt_str_sysexit(tests[i].err_num);
+
+    if (!TEST_CHECK(mutt_str_strcmp(result, tests[i].result) == 0))
+    {
+      TEST_MSG("Expected: '%s', Got: '%s'\n", result, NONULL(tests[i].result));
+      return;
+    }
+  }
 }
