@@ -262,20 +262,19 @@ int mutt_str_atos(const char *str, short *dst)
  */
 int mutt_str_atoi(const char *str, int *dst)
 {
-  int rc;
-  long res;
-  int tmp;
-  int *t = dst ? dst : &tmp;
+  if (dst)
+    *dst = 0;
 
-  *t = 0;
-
-  rc = mutt_str_atol(str, &res);
+  long res = 0;
+  int rc = mutt_str_atol(str, &res);
   if (rc < 0)
     return rc;
-  if ((int) res != res)
+  if ((res < INT_MIN) || (res > INT_MAX))
     return -2;
 
-  *t = (int) res;
+  if (dst)
+    *dst = (int) res;
+
   return 0;
 }
 
