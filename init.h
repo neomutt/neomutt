@@ -1924,7 +1924,8 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** This variable specifies which files to consult when attempting to
-  ** display MIME bodies not directly supported by NeoMutt.
+  ** display MIME bodies not directly supported by NeoMutt.  The default value
+  ** is generated during startup: see the ``$mailcap'' section of the manual.
   ** .pp
   ** $$mailcap_path is overridden by the environment variable \fC$$$MAILCAPS\fP.
   ** .pp
