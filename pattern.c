@@ -161,14 +161,24 @@ enum RangeSide
 };
 
 /**
+ * typedef pattern_eat_t - Parse a pattern
+ * @param pat   Pattern to store the results in
+ * @param flags Flags, e.g. #MUTT_PATTERN_DYNAMIC
+ * @param s     String to parse
+ * @param err   Buffer for error messages
+ * @retval true If the pattern was read successfully
+ */
+typedef bool pattern_eat_t(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err);
+
+/**
  * struct PatternFlags - Mapping between user character and internal constant
  */
 struct PatternFlags
 {
-  int tag;   /**< character used to represent this op */
-  int op;    /**< operation to perform */
-  int class; /**< Pattern class, e.g. #MUTT_FULL_MSG */
-  bool (*eat_arg)(struct Pattern *, int flags, struct Buffer *, struct Buffer *); /**< Callback function to parse the argument */
+  int tag;                ///< character used to represent this op
+  int op;                 ///< operation to perform
+  int class;              ///< Pattern class, e.g. #MUTT_FULL_MSG
+  pattern_eat_t *eat_arg; ///< Callback function to parse the argument
 };
 
 // clang-format off
@@ -191,12 +201,7 @@ static char LastSearch[256] = { 0 };      /**< last pattern searched for */
 static char LastSearchExpn[1024] = { 0 }; /**< expanded version of LastSearch */
 
 /**
- * eat_regex - Parse a regex
- * @param pat   Pattern to match
- * @param flags Flags, e.g. #MUTT_PATTERN_DYNAMIC
- * @param s     String to parse
- * @param err   Buffer for error messages
- * @retval true If the pattern was read successfully
+ * eat_regex - Parse a regex - Implements ::pattern_eat_t
  */
 static bool eat_regex(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err)
 {
@@ -264,12 +269,7 @@ static bool add_query_msgid(char *line, int line_num, void *user_data)
 }
 
 /**
- * eat_query - Parse a query for an external search program
- * @param pat   Pattern to match
- * @param flags Flags, e.g. #MUTT_PATTERN_DYNAMIC
- * @param s     String to parse
- * @param err   Buffer for error messages
- * @retval true If the pattern was read successfully
+ * eat_query - Parse a query for an external search program - Implements ::pattern_eat_t
  */
 static bool eat_query(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err)
 {
@@ -699,12 +699,7 @@ static bool eval_date_minmax(struct Pattern *pat, const char *s, struct Buffer *
 }
 
 /**
- * eat_range - Parse a number range
- * @param pat   Pattern to store the range in
- * @param flags Flags, e.g. #MUTT_PATTERN_DYNAMIC
- * @param s     String to parse
- * @param err   Buffer for error messages
- * @retval true If the pattern was read successfully
+ * eat_range - Parse a number range - Implements ::pattern_eat_t
  */
 static bool eat_range(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err)
 {
@@ -988,12 +983,7 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
 }
 
 /**
- * eat_message_range - Parse a range of message numbers
- * @param pat   Pattern to store the range in
- * @param flags Flags, e.g. #MUTT_PATTERN_DYNAMIC
- * @param s     String to parse
- * @param err   Buffer for error messages
- * @retval true If the pattern was read successfully
+ * eat_message_range - Parse a range of message numbers - Implements ::pattern_eat_t
  */
 static bool eat_message_range(struct Pattern *pat, int flags, struct Buffer *s,
                               struct Buffer *err)
@@ -1037,12 +1027,7 @@ static bool eat_message_range(struct Pattern *pat, int flags, struct Buffer *s,
 }
 
 /**
- * eat_date - Parse a date pattern
- * @param pat   Pattern to store the date in
- * @param flags Flags, e.g. #MUTT_PATTERN_DYNAMIC
- * @param s     String to parse
- * @param err   Buffer for error messages
- * @retval true If the pattern was read successfully
+ * eat_date - Parse a date pattern - Implements ::pattern_eat_t
  */
 static bool eat_date(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err)
 {
