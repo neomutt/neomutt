@@ -232,20 +232,19 @@ int mutt_str_atol(const char *str, long *dst)
  */
 int mutt_str_atos(const char *str, short *dst)
 {
-  int rc;
-  long res;
-  short tmp;
-  short *t = dst ? dst : &tmp;
+  if (dst)
+    *dst = 0;
 
-  *t = 0;
-
-  rc = mutt_str_atol(str, &res);
+  long res = 0;
+  int rc = mutt_str_atol(str, &res);
   if (rc < 0)
     return rc;
-  if ((short) res != res)
+  if ((res < SHRT_MIN) || (res > SHRT_MAX))
     return -2;
 
-  *t = (short) res;
+  if (dst)
+    *dst = (short) res;
+
   return 0;
 }
 
