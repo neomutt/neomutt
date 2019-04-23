@@ -190,7 +190,8 @@ int imap_browse(const char *path, struct BrowserState *state)
   char buf[PATH_MAX];
   char mbox[PATH_MAX];
   char munged_mbox[PATH_MAX];
-  char list_cmd[5];
+  char list_cmd[18];
+  int len;
   int n;
   char ctmp;
   bool showparents = false;
@@ -204,7 +205,6 @@ int imap_browse(const char *path, struct BrowserState *state)
 
   save_lsub = C_ImapCheckSubscribed;
   C_ImapCheckSubscribed = false;
-  mutt_str_strfcpy(list_cmd, C_ImapListSubscribed ? "LSUB" : "LIST", sizeof(list_cmd));
 
   // Pick first mailbox connected to the same server
   struct MailboxNode *np = NULL;
@@ -221,6 +221,21 @@ int imap_browse(const char *path, struct BrowserState *state)
   }
   if (!adata)
     goto fail;
+
+  if (C_ImapListSubscribed)
+  {
+    const char *lsub_cmd = "LSUB";
+
+    /* RFC3348 section 3 states LSUB is unreliable for hierarchy information.
+     * The newer LIST extensions are designed for this.  */
+    if (adata->capabilities & IMAP_CAP_LIST_EXTENDED)
+      lsub_cmd = "LIST (SUBSCRIBED)";
+    mutt_str_strfcpy(list_cmd, lsub_cmd, sizeof(list_cmd));
+  }
+  else
+  {
+    mutt_str_strfcpy(list_cmd, "LIST", sizeof(list_cmd));
+  }
 
   mutt_message(_("Getting folder list..."));
 
@@ -244,7 +259,9 @@ int imap_browse(const char *path, struct BrowserState *state)
     /* if our target exists and has inferiors, enter it if we
      * aren't already going to */
     imap_munge_mbox_name(adata->unicode, munged_mbox, sizeof(munged_mbox), mbox);
-    snprintf(buf, sizeof(buf), "%s \"\" %s", list_cmd, munged_mbox);
+    len = snprintf(buf, sizeof(buf), "%s \"\" %s", list_cmd, munged_mbox);
+    if (adata->capabilities & IMAP_CAP_LIST_EXTENDED)
+      snprintf(buf + len, sizeof(buf) - len, " RETURN (CHILDREN)");
     imap_cmd_start(adata, buf);
     adata->cmdresult = &list;
     do
@@ -332,7 +349,9 @@ int imap_browse(const char *path, struct BrowserState *state)
   snprintf(buf, sizeof(buf), "%s%%", mbox);
   imap_munge_mbox_name(adata->unicode, munged_mbox, sizeof(munged_mbox), buf);
   mutt_debug(LL_DEBUG3, "%s\n", munged_mbox);
-  snprintf(buf, sizeof(buf), "%s \"\" %s", list_cmd, munged_mbox);
+  len = snprintf(buf, sizeof(buf), "%s \"\" %s", list_cmd, munged_mbox);
+  if (adata->capabilities & IMAP_CAP_LIST_EXTENDED)
+    snprintf(buf + len, sizeof(buf) - len, " RETURN (CHILDREN)");
   if (browse_add_list_result(adata, buf, state, false))
     goto fail;
 
