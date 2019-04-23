@@ -352,20 +352,19 @@ int mutt_str_atoul(const char *str, unsigned long *dst)
  */
 int mutt_str_atoull(const char *str, unsigned long long *dst)
 {
-  unsigned long long r;
-  unsigned long long *res = dst ? dst : &r;
-  char *e = NULL;
+  if (dst)
+    *dst = 0;
 
-  /* no input: 0 */
-  if (!str || !*str)
-  {
-    *res = 0;
+  if (!str || !*str) /* no input: 0 */
     return 0;
-  }
 
+  char *e = NULL;
   errno = 0;
-  *res = strtoull(str, &e, 10);
-  if ((*res == ULLONG_MAX) && (errno == ERANGE))
+
+  unsigned long long res = strtoull(str, &e, 10);
+  if (dst)
+    *dst = res;
+  if ((res == ULLONG_MAX) && (errno == ERANGE))
     return -1;
   if (e && (*e != '\0'))
     return 1;
