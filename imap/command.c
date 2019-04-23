@@ -68,7 +68,8 @@ static const char *const Capabilities[] = {
   "AUTH=GSSAPI", "AUTH=ANONYMOUS", "AUTH=OAUTHBEARER",
   "STARTTLS",    "LOGINDISABLED",  "IDLE",
   "SASL-IR",     "ENABLE",         "CONDSTORE",
-  "QRESYNC",     "X-GM-EXT-1",     NULL,
+  "QRESYNC",     "LIST-EXTENDED",  "X-GM-EXT-1",
+  NULL,
 };
 
 /**
