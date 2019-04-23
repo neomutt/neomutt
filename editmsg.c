@@ -62,6 +62,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   char fname[PATH_MAX];
   char buf[256];
   int rc;
+  FILE *fp = NULL;
   struct stat sb;
   bool old_append = m->append;
 
@@ -167,7 +168,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
     goto bail;
   }
 
-  FILE *fp = fopen(fname, "r");
+  fp = fopen(fname, "r");
   if (!fp)
   {
     rc = -1;
