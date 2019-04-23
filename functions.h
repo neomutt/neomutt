@@ -387,6 +387,7 @@ const struct Binding OpPager[] = { /* map: pager */
   { "sync-mailbox",              OP_MAIN_SYNC_FOLDER,             "$" },
   { "tag-message",               OP_TAG,                          "t" },
   { "toggle-quoted",             OP_PAGER_HIDE_QUOTED,            "T" },
+  { "toggle-write",              OP_TOGGLE_WRITE,                 "%" },
   { "top",                       OP_PAGER_TOP,                    "^" },
   { "undelete-message",          OP_UNDELETE,                     "u" },
   { "undelete-subthread",        OP_UNDELETE_SUBTHREAD,           "\033u" },    // <Alt-u>
