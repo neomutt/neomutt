@@ -3601,6 +3601,15 @@ over several lines"
 </screen>
 
       </example>
+      <note>
+        <para>
+          Using <quote>\</quote> at the end of a line <emphasis>only</emphasis>
+          removes the newline character.
+        </para>
+        <para>
+          Any leading whitespace on the following lines will be part of the configuration.
+        </para>
+      </note>
       <para>
         It is also possible to substitute the output of a Unix command in an
         initialization file. This is accomplished by enclosing the command in
