@@ -109,10 +109,7 @@ static int bool_string_get(const struct ConfigSet *cs, void *var,
     index = (int) cdef->initial;
 
   if (index > 1)
-  {
-    mutt_debug(LL_DEBUG1, "Variable has an invalid value: %d\n", index);
-    return CSR_ERR_INVALID | CSR_INV_TYPE;
-  }
+    return CSR_ERR_INVALID | CSR_INV_TYPE; /* LCOV_EXCL_LINE */
 
   mutt_buffer_addstr(result, BoolValues[index]);
   return CSR_SUCCESS;
@@ -212,7 +209,7 @@ void bool_init(struct ConfigSet *cs)
 int bool_he_toggle(struct ConfigSet *cs, struct HashElem *he, struct Buffer *err)
 {
   if (!cs || !he || !he->data)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
+    return CSR_ERR_CODE;
 
   if (DTYPE(he->type) != DT_BOOL)
     return CSR_ERR_CODE;
@@ -243,7 +240,7 @@ int bool_he_toggle(struct ConfigSet *cs, struct HashElem *he, struct Buffer *err
 int bool_str_toggle(struct ConfigSet *cs, const char *name, struct Buffer *err)
 {
   if (!cs || !name)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
+    return CSR_ERR_CODE;
 
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)

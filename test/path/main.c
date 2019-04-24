@@ -1,9 +1,9 @@
 /**
  * @file
- * Pattern Testing
+ * Test code for Path Operations
  *
  * @authors
- * Copyright (C) 2018 Naveen Nathan <naveen@lastninja.net>
+ * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,7 +26,21 @@
  * Add your test cases to this list.
  *****************************************************************************/
 #define NEOMUTT_TEST_LIST                                                      \
-  NEOMUTT_TEST_ITEM(test_mutt_pattern_comp)
+  NEOMUTT_TEST_ITEM(test_mutt_path_abbr_folder)                                \
+  NEOMUTT_TEST_ITEM(test_mutt_path_basename)                                   \
+  NEOMUTT_TEST_ITEM(test_mutt_path_canon)                                      \
+  NEOMUTT_TEST_ITEM(test_mutt_path_concat)                                     \
+  NEOMUTT_TEST_ITEM(test_mutt_path_concatn)                                    \
+  NEOMUTT_TEST_ITEM(test_mutt_path_dirname)                                    \
+  NEOMUTT_TEST_ITEM(test_mutt_path_escape)                                     \
+  NEOMUTT_TEST_ITEM(test_mutt_path_getcwd)                                     \
+  NEOMUTT_TEST_ITEM(test_mutt_path_parent)                                     \
+  NEOMUTT_TEST_ITEM(test_mutt_path_pretty)                                     \
+  NEOMUTT_TEST_ITEM(test_mutt_path_realpath)                                   \
+  NEOMUTT_TEST_ITEM(test_mutt_path_tidy)                                       \
+  NEOMUTT_TEST_ITEM(test_mutt_path_tidy_dotdot)                                \
+  NEOMUTT_TEST_ITEM(test_mutt_path_tidy_slash)                                 \
+  NEOMUTT_TEST_ITEM(test_mutt_path_to_absolute)
 
 /******************************************************************************
  * You probably don't need to touch what follows.

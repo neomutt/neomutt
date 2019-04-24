@@ -272,7 +272,7 @@ void regex_init(struct ConfigSet *cs)
 struct Regex *regex_new(const char *str, int flags, struct Buffer *err)
 {
   if (!str)
-    return NULL; /* LCOV_EXCL_LINE */
+    return NULL;
 
   int rflags = 0;
   struct Regex *reg = mutt_mem_calloc(1, sizeof(struct Regex));
@@ -312,7 +312,7 @@ struct Regex *regex_new(const char *str, int flags, struct Buffer *err)
 void regex_free(struct Regex **r)
 {
   if (!r || !*r)
-    return; /* LCOV_EXCL_LINE */
+    return;
 
   FREE(&(*r)->pattern);
   if ((*r)->regex)

@@ -99,7 +99,7 @@ static struct HashElem *create_synonym(const struct ConfigSet *cs,
   struct HashElem *child =
       mutt_hash_typed_insert(cs->hash, cdef->name, cdef->type, (void *) cdef);
   if (!child)
-    return NULL;
+    return NULL; /* LCOV_EXCL_LINE */
 
   cdef->var = parent;
   return child;
@@ -131,7 +131,7 @@ static struct HashElem *reg_one_var(const struct ConfigSet *cs,
   struct HashElem *he =
       mutt_hash_typed_insert(cs->hash, cdef->name, cdef->type, (void *) cdef);
   if (!he)
-    return NULL;
+    return NULL; /* LCOV_EXCL_LINE */
 
   if (cst && cst->reset)
     cst->reset(cs, cdef->var, cdef, err);
@@ -159,7 +159,7 @@ struct ConfigSet *cs_new(size_t size)
 void cs_init(struct ConfigSet *cs, size_t size)
 {
   if (!cs)
-    return; /* LCOV_EXCL_LINE */
+    return;
 
   memset(cs, 0, sizeof(*cs));
   cs->hash = mutt_hash_new(size, MUTT_HASH_NO_FLAGS);
@@ -173,7 +173,7 @@ void cs_init(struct ConfigSet *cs, size_t size)
 void cs_free(struct ConfigSet **cs)
 {
   if (!cs || !*cs)
-    return; /* LCOV_EXCL_LINE */
+    return;
 
   mutt_hash_free(&(*cs)->hash);
   FREE(cs);
@@ -188,7 +188,7 @@ void cs_free(struct ConfigSet **cs)
 struct HashElem *cs_get_elem(const struct ConfigSet *cs, const char *name)
 {
   if (!cs || !name)
-    return NULL; /* LCOV_EXCL_LINE */
+    return NULL;
 
   struct HashElem *he = mutt_hash_find_elem(cs->hash, name);
   if (!he)
@@ -211,7 +211,7 @@ struct HashElem *cs_get_elem(const struct ConfigSet *cs, const char *name)
 const struct ConfigSetType *cs_get_type_def(const struct ConfigSet *cs, unsigned int type)
 {
   if (!cs)
-    return NULL; /* LCOV_EXCL_LINE */
+    return NULL;
 
   type = DTYPE(type);
   if ((type < 1) || (type >= mutt_array_size(cs->types)))
@@ -233,7 +233,7 @@ const struct ConfigSetType *cs_get_type_def(const struct ConfigSet *cs, unsigned
 bool cs_register_type(struct ConfigSet *cs, unsigned int type, const struct ConfigSetType *cst)
 {
   if (!cs || !cst)
-    return false; /* LCOV_EXCL_LINE */
+    return false;
 
   if (!cst->name || !cst->string_set || !cst->string_get || !cst->reset ||
       !cst->native_set || !cst->native_get)
@@ -261,7 +261,7 @@ bool cs_register_type(struct ConfigSet *cs, unsigned int type, const struct Conf
 bool cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], int flags)
 {
   if (!cs || !vars)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
+    return false;
 
   struct Buffer *err = mutt_buffer_pool_get();
 
@@ -291,7 +291,7 @@ struct HashElem *cs_inherit_variable(const struct ConfigSet *cs,
                                      struct HashElem *parent, const char *name)
 {
   if (!cs || !parent)
-    return NULL; /* LCOV_EXCL_LINE */
+    return NULL;
 
   struct Inheritance *i = mutt_mem_calloc(1, sizeof(*i));
   i->parent = parent;
@@ -315,7 +315,7 @@ struct HashElem *cs_inherit_variable(const struct ConfigSet *cs,
 void cs_add_listener(struct ConfigSet *cs, cs_listener fn)
 {
   if (!cs || !fn)
-    return; /* LCOV_EXCL_LINE */
+    return;
 
   for (size_t i = 0; i < mutt_array_size(cs->listeners); i++)
   {
@@ -344,7 +344,7 @@ void cs_add_listener(struct ConfigSet *cs, cs_listener fn)
 void cs_remove_listener(struct ConfigSet *cs, cs_listener fn)
 {
   if (!cs || !fn)
-    return; /* LCOV_EXCL_LINE */
+    return;
 
   for (size_t i = 0; i < mutt_array_size(cs->listeners); i++)
   {
@@ -368,7 +368,7 @@ void cs_notify_listeners(const struct ConfigSet *cs, struct HashElem *he,
                          const char *name, enum ConfigEvent ev)
 {
   if (!cs || !he || !name)
-    return; /* LCOV_EXCL_LINE */
+    return;
 
   for (size_t i = 0; i < mutt_array_size(cs->listeners); i++)
   {
@@ -389,7 +389,7 @@ void cs_notify_listeners(const struct ConfigSet *cs, struct HashElem *he,
 int cs_he_reset(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *err)
 {
   if (!cs || !he)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
+    return CSR_ERR_CODE;
 
   /* An inherited var that's already pointing to its parent.
    * Return 'success', but don't send a notification. */
@@ -436,7 +436,7 @@ int cs_he_reset(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *
 int cs_str_reset(const struct ConfigSet *cs, const char *name, struct Buffer *err)
 {
   if (!cs || !name)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
+    return CSR_ERR_CODE;
 
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
@@ -460,7 +460,7 @@ int cs_he_initial_set(const struct ConfigSet *cs, struct HashElem *he,
                       const char *value, struct Buffer *err)
 {
   if (!cs || !he)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
+    return CSR_ERR_CODE;
 
   struct ConfigDef *cdef = NULL;
   const struct ConfigSetType *cst = NULL;
@@ -501,7 +501,7 @@ int cs_str_initial_set(const struct ConfigSet *cs, const char *name,
                        const char *value, struct Buffer *err)
 {
   if (!cs || !name)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
+    return CSR_ERR_CODE;
 
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
@@ -526,7 +526,7 @@ int cs_str_initial_set(const struct ConfigSet *cs, const char *name,
 int cs_he_initial_get(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *result)
 {
   if (!cs || !he)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
+    return CSR_ERR_CODE;
 
   struct Inheritance *i = NULL;
   const struct ConfigDef *cdef = NULL;
@@ -567,7 +567,7 @@ int cs_he_initial_get(const struct ConfigSet *cs, struct HashElem *he, struct Bu
 int cs_str_initial_get(const struct ConfigSet *cs, const char *name, struct Buffer *result)
 {
   if (!cs || !name)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
+    return CSR_ERR_CODE;
 
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
@@ -591,7 +591,7 @@ int cs_he_string_set(const struct ConfigSet *cs, struct HashElem *he,
                      const char *value, struct Buffer *err)
 {
   if (!cs || !he)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
+    return CSR_ERR_CODE;
 
   struct ConfigDef *cdef = NULL;
   const struct ConfigSetType *cst = NULL;
@@ -618,7 +618,7 @@ int cs_he_string_set(const struct ConfigSet *cs, struct HashElem *he,
   }
 
   if (!var)
-    return CSR_ERR_CODE;
+    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
 
   int rc = cst->string_set(cs, var, cdef, value, err);
   if (CSR_RESULT(rc) != CSR_SUCCESS)
@@ -646,7 +646,7 @@ int cs_str_string_set(const struct ConfigSet *cs, const char *name,
                       const char *value, struct Buffer *err)
 {
   if (!cs || !name)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
+    return CSR_ERR_CODE;
 
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
@@ -668,7 +668,7 @@ int cs_str_string_set(const struct ConfigSet *cs, const char *name,
 int cs_he_string_get(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *result)
 {
   if (!cs || !he)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
+    return CSR_ERR_CODE;
 
   struct Inheritance *i = NULL;
   const struct ConfigDef *cdef = NULL;
@@ -716,7 +716,7 @@ int cs_he_string_get(const struct ConfigSet *cs, struct HashElem *he, struct Buf
 int cs_str_string_get(const struct ConfigSet *cs, const char *name, struct Buffer *result)
 {
   if (!cs || !name)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
+    return CSR_ERR_CODE;
 
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
@@ -740,7 +740,7 @@ int cs_he_native_set(const struct ConfigSet *cs, struct HashElem *he,
                      intptr_t value, struct Buffer *err)
 {
   if (!cs || !he)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
+    return CSR_ERR_CODE;
 
   const struct ConfigDef *cdef = NULL;
   const struct ConfigSetType *cst = NULL;
@@ -790,7 +790,7 @@ int cs_str_native_set(const struct ConfigSet *cs, const char *name,
                       intptr_t value, struct Buffer *err)
 {
   if (!cs || !name)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
+    return CSR_ERR_CODE;
 
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
@@ -818,10 +818,7 @@ int cs_str_native_set(const struct ConfigSet *cs, const char *name,
   }
 
   if (!cst)
-  {
-    mutt_debug(LL_DEBUG1, "Variable '%s' has an invalid type %d\n", cdef->name, he->type);
-    return CSR_ERR_CODE;
-  }
+    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
 
   int rc = cst->native_set(cs, var, cdef, value, err);
   if (CSR_RESULT(rc) == CSR_SUCCESS)
@@ -845,7 +842,7 @@ int cs_str_native_set(const struct ConfigSet *cs, const char *name,
 intptr_t cs_he_native_get(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *err)
 {
   if (!cs || !he)
-    return INT_MIN; /* LCOV_EXCL_LINE */
+    return INT_MIN;
 
   struct Inheritance *i = NULL;
   const struct ConfigDef *cdef = NULL;
@@ -892,7 +889,7 @@ intptr_t cs_he_native_get(const struct ConfigSet *cs, struct HashElem *he, struc
 intptr_t cs_str_native_get(const struct ConfigSet *cs, const char *name, struct Buffer *err)
 {
   if (!cs || !name)
-    return INT_MIN; /* LCOV_EXCL_LINE */
+    return INT_MIN;
 
   struct HashElem *he = cs_get_elem(cs, name);
   return cs_he_native_get(cs, he, err);

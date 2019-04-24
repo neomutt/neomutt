@@ -102,13 +102,27 @@ void config_account(void)
     NULL,
   };
 
+  ac = ac_new(NULL, account, CfgAccountVarStr);
+  if (!TEST_CHECK(ac == NULL))
+    return;
+
+  ac = ac_new(cs, NULL, CfgAccountVarStr);
+  if (!TEST_CHECK(ac == NULL))
+    return;
+
+  ac = ac_new(cs, account, NULL);
+  if (!TEST_CHECK(ac == NULL))
+    return;
+
   ac = ac_new(cs, account, CfgAccountVarStr);
   if (!TEST_CHECK(ac != NULL))
     return;
 
   size_t index = 0;
   mutt_buffer_reset(&err);
-  int rc = ac_set_value(ac, index, 33, &err);
+  int rc = ac_set_value(NULL, index, 33, &err);
+
+  rc = ac_set_value(ac, index, 33, &err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s\n", err.data);
@@ -127,6 +141,12 @@ void config_account(void)
   }
 
   mutt_buffer_reset(&err);
+  rc = ac_get_value(NULL, index, &err);
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_CODE))
+  {
+    TEST_MSG("%s\n", err.data);
+  }
+
   rc = ac_get_value(ac, index, &err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
@@ -230,6 +250,9 @@ void config_account(void)
     TEST_MSG("%s\n", err.data);
     return;
   }
+
+  ac_free(NULL, &ac);
+  ac_free(cs, NULL);
 
   ac_free(cs, &ac);
   cs_free(&cs);

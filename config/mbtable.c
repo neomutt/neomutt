@@ -307,7 +307,7 @@ void mbtable_init(struct ConfigSet *cs)
 void mbtable_free(struct MbTable **table)
 {
   if (!table || !*table)
-    return; /* LCOV_EXCL_LINE */
+    return;
 
   FREE(&(*table)->orig_str);
   FREE(&(*table)->chars);

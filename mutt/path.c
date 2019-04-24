@@ -304,6 +304,9 @@ bool mutt_path_canon(char *buf, size_t buflen, const char *homedir)
  */
 const char *mutt_path_basename(const char *f)
 {
+  if (!f)
+    return NULL;
+
   const char *p = strrchr(f, '/');
   if (p)
     return p + 1;
@@ -324,6 +327,9 @@ const char *mutt_path_basename(const char *f)
  */
 char *mutt_path_concat(char *d, const char *dir, const char *fname, size_t l)
 {
+  if (!d || !dir || !fname)
+    return NULL;
+
   const char *fmt = "%s/%s";
 
   if (!*fname || (*dir && (dir[strlen(dir) - 1] == '/')))
@@ -350,6 +356,9 @@ char *mutt_path_concat(char *d, const char *dir, const char *fname, size_t l)
 char *mutt_path_concatn(char *dst, size_t dstlen, const char *dir,
                         size_t dirlen, const char *fname, size_t fnamelen)
 {
+  if (!dst || !dir || !fname)
+    return NULL;
+
   size_t req;
   size_t offset = 0;
 
@@ -398,6 +407,9 @@ char *mutt_path_concatn(char *dst, size_t dstlen, const char *dir,
  */
 char *mutt_path_dirname(const char *path)
 {
+  if (!path)
+    return NULL;
+
   char buf[PATH_MAX] = { 0 };
   mutt_str_strfcpy(buf, path, sizeof(buf));
   return mutt_str_strdup(dirname(buf));
@@ -416,6 +428,9 @@ char *mutt_path_dirname(const char *path)
  */
 int mutt_path_to_absolute(char *path, const char *reference)
 {
+  if (!path || !reference)
+    return false;
+
   char abs_path[PATH_MAX];
   int path_len;
 
@@ -456,6 +471,9 @@ int mutt_path_to_absolute(char *path, const char *reference)
  */
 size_t mutt_path_realpath(char *buf)
 {
+  if (!buf)
+    return 0;
+
   char s[PATH_MAX];
 
   if (!realpath(buf, s))

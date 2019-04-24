@@ -46,7 +46,7 @@ struct CfgAccount *ac_new(const struct ConfigSet *cs, const char *name,
                           const char *var_names[])
 {
   if (!cs || !name || !var_names)
-    return NULL; /* LCOV_EXCL_LINE */
+    return NULL;
 
   int count = 0;
   for (; var_names[count]; count++)
@@ -97,7 +97,7 @@ struct CfgAccount *ac_new(const struct ConfigSet *cs, const char *name,
 void ac_free(const struct ConfigSet *cs, struct CfgAccount **ac)
 {
   if (!cs || !ac || !*ac)
-    return; /* LCOV_EXCL_LINE */
+    return;
 
   char child[128];
   struct Buffer *err = mutt_buffer_pool_get();
@@ -129,7 +129,7 @@ void ac_free(const struct ConfigSet *cs, struct CfgAccount **ac)
 int ac_set_value(const struct CfgAccount *ac, size_t vid, intptr_t value, struct Buffer *err)
 {
   if (!ac)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
+    return CSR_ERR_CODE;
   if (vid >= ac->num_vars)
     return CSR_ERR_UNKNOWN;
 
@@ -147,7 +147,7 @@ int ac_set_value(const struct CfgAccount *ac, size_t vid, intptr_t value, struct
 int ac_get_value(const struct CfgAccount *ac, size_t vid, struct Buffer *result)
 {
   if (!ac)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
+    return CSR_ERR_CODE;
   if (vid >= ac->num_vars)
     return CSR_ERR_UNKNOWN;
 

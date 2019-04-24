@@ -2,7 +2,6 @@ TEST_OBJS   = test/main.o \
 	      test/base64.o \
 	      test/buffer.o \
 	      test/md5.o \
-	      test/path.o \
 	      test/rfc2047.o \
 	      test/address.o \
 	      test/url.o \
@@ -10,12 +9,29 @@ TEST_OBJS   = test/main.o \
 
 CONFIG_OBJS	= test/config/main.o test/config/account.o \
 		  test/config/address.o test/config/bool.o \
-		  test/config/command.o test/config/common.o \
+		  test/config/command.o test/config/common.o test/config/dump.o \
 		  test/config/initial.o test/config/long.o \
 		  test/config/magic.o test/config/mbtable.o \
 		  test/config/number.o test/config/path.o test/config/quad.o \
 		  test/config/regex.o test/config/set.o test/config/sort.o \
 		  test/config/string.o test/config/synonym.o
+
+PATH_OBJS	= test/path/main.o \
+		  test/path/mutt_path_abbr_folder.o \
+		  test/path/mutt_path_basename.o \
+		  test/path/mutt_path_canon.o \
+		  test/path/mutt_path_concat.o \
+		  test/path/mutt_path_concatn.o \
+		  test/path/mutt_path_dirname.o \
+		  test/path/mutt_path_escape.o \
+		  test/path/mutt_path_getcwd.o \
+		  test/path/mutt_path_parent.o \
+		  test/path/mutt_path_pretty.o \
+		  test/path/mutt_path_realpath.o \
+		  test/path/mutt_path_tidy.o \
+		  test/path/mutt_path_tidy_dotdot.o \
+		  test/path/mutt_path_tidy_slash.o \
+		  test/path/mutt_path_to_absolute.o
 
 PATTERN_OBJS	= test/pattern/main.o \
 		  test/pattern/comp.o \
@@ -77,14 +93,17 @@ TEST_BINARY = test/neomutt-test$(EXEEXT)
 
 TEST_CONFIG = test/config-test$(EXEEXT)
 
+TEST_PATH = test/path-test$(EXEEXT)
+
 TEST_PATTERN = test/pattern-test$(EXEEXT)
 
 TEST_STRING = test/string-test$(EXEEXT)
 
 .PHONY: test
-test: $(TEST_BINARY) $(TEST_CONFIG) $(TEST_PATTERN) $(TEST_STRING)
+test: $(TEST_BINARY) $(TEST_CONFIG) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
 	$(TEST_BINARY)
 	$(TEST_CONFIG)
+	$(TEST_PATH)
 	$(TEST_PATTERN)
 	$(TEST_STRING)
 
@@ -93,6 +112,9 @@ $(TEST_BINARY): $(TEST_OBJS) $(MUTTLIBS)
 
 $(TEST_CONFIG): $(PWD)/test/config $(CONFIG_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(CONFIG_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_PATH): $(PWD)/test/path $(PATH_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(PATH_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
 $(TEST_PATTERN): $(PWD)/test/pattern $(PATTERN_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(PATTERN_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
@@ -103,17 +125,21 @@ $(TEST_STRING): $(PWD)/test/string $(STRING_OBJS) $(MUTTLIBS)
 $(PWD)/test/config:
 	$(MKDIR_P) $(PWD)/test/config
 
+$(PWD)/test/path:
+	$(MKDIR_P) $(PWD)/test/path
+
 $(PWD)/test/pattern:
 	$(MKDIR_P) $(PWD)/test/pattern
 
 $(PWD)/test/string:
 	$(MKDIR_P) $(PWD)/test/string
 
-all-test: $(TEST_BINARY) $(TEST_CONFIG) $(TEST_PATTERN) $(TEST_STRING)
+all-test: $(TEST_BINARY) $(TEST_CONFIG) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
 
 clean-test:
 	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po) \
 	      $(TEST_CONFIG) $(CONFIG_OBJS) $(CONFIG_OBJS:.o=.Po) \
+	      $(TEST_PATH) $(PATH_OBJS) $(PATH_OBJS:.o=.Po) \
 	      $(TEST_PATTERN) $(PATTERN_OBJS) $(PATTERN_OBJS:.o=.Po) \
 	      $(TEST_STRING) $(STRING_OBJS) $(STRING_OBJS:.o=.Po)
 
@@ -125,6 +151,9 @@ TEST_DEPFILES = $(TEST_OBJS:.o=.Po)
 
 CONFIG_DEPFILES = $(CONFIG_OBJS:.o=.Po)
 -include $(CONFIG_DEPFILES)
+
+PATH_DEPFILES = $(PATH_OBJS:.o=.Po)
+-include $(PATH_DEPFILES)
 
 PATTERN_DEPFILES = $(PATTERN_OBJS:.o=.Po)
 -include $(PATTERN_DEPFILES)

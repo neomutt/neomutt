@@ -184,6 +184,7 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
   char *regex = NULL;
 
   int rc;
+
   for (unsigned int i = 0; i < mutt_array_size(valid); i++)
   {
     mutt_buffer_reset(err);
@@ -301,7 +302,14 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
 
-  struct Regex *r = regex_new("hello.*", 0, err);
+  struct Regex *r = regex_new(NULL, 0, err);
+  if (!TEST_CHECK(r == NULL))
+  {
+    TEST_MSG("regex_new() succeeded when is shouldn't have\n");
+    return false;
+  }
+
+  r = regex_new("hello.*", DT_REGEX_NOSUB, err);
   const char *name = "Ilama";
   char *regex = NULL;
   bool result = false;

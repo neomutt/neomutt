@@ -256,6 +256,15 @@ static bool test_string_get(struct ConfigSet *cs, struct Buffer *err)
   }
   TEST_MSG("%s = %d, %s\n", name, VarElderberry, err->data);
 
+  // VarElderberry = 3;
+  // mutt_buffer_reset(err);
+  // rc = cs_str_string_get(cs, name, err);
+  // if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
+  // {
+  //   TEST_MSG("Get succeeded with invalid value: %s\n", err->data);
+  //   return false;
+  // }
+
   log_line(__func__);
   return true;
 }
@@ -600,6 +609,34 @@ static bool test_toggle(struct ConfigSet *cs, struct Buffer *err)
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
     return false;
+
+  rc = bool_he_toggle(NULL, he, err);
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_CODE))
+  {
+    TEST_MSG("Toggle succeeded when is shouldn't have\n");
+    return false;
+  }
+
+  rc = bool_he_toggle(cs, NULL, err);
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_CODE))
+  {
+    TEST_MSG("Toggle succeeded when is shouldn't have\n");
+    return false;
+  }
+
+  rc = bool_str_toggle(NULL, "apple", err);
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_CODE))
+  {
+    TEST_MSG("Toggle succeeded when is shouldn't have\n");
+    return false;
+  }
+
+  rc = bool_str_toggle(cs, NULL, err);
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_CODE))
+  {
+    TEST_MSG("Toggle succeeded when is shouldn't have\n");
+    return false;
+  }
 
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
