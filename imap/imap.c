@@ -1652,7 +1652,7 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   imap_allow_reopen(m);
 
   rc = imap_check_mailbox(m, false);
-  if (rc != 0)
+  if (rc < 0)
     return rc;
 
   /* if we are expunging anyway, we can do deleted messages very quickly... */
