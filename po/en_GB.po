@@ -168,6 +168,10 @@ msgstr "Newsgroups on server [%s]"
 msgid "Mailboxes [%d]"
 msgstr "Mailboxes [%d]"
 
+#, c-format
+msgid "Subscribed [%s], File mask: %s"
+msgstr "Subscribed [%s], File mask: %s"
+
 #: browser.c:994
 #, c-format
 msgid "Directory [%s], File mask: %s"

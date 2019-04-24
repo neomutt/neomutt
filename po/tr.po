@@ -173,6 +173,10 @@ msgstr "[%s] sunucuda haber grupları"
 msgid "Mailboxes [%d]"
 msgstr "[%d] posta kutusu "
 
+#, c-format
+msgid "Subscribed [%s], File mask: %s"
+msgstr "Abone [%s], Dosya maskesi: %s"
+
 #: browser.c:994
 #, c-format
 msgid "Directory [%s], File mask: %s"

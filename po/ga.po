@@ -173,6 +173,10 @@ msgstr ""
 msgid "Mailboxes [%d]"
 msgstr "Boscaí Poist [%d]"
 
+#, c-format
+msgid "Subscribed [%s], File mask: %s"
+msgstr "Liostáilte [%s], Masc comhaid: %s"
+
 #: browser.c:994
 #, c-format
 msgid "Directory [%s], File mask: %s"

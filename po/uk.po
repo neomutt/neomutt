@@ -173,6 +173,10 @@ msgstr ""
 msgid "Mailboxes [%d]"
 msgstr "Поштові скриньки [%d]"
 
+#, c-format
+msgid "Subscribed [%s], File mask: %s"
+msgstr "Підписані [%s] з маскою: %s"
+
 #: browser.c:994
 #, c-format
 msgid "Directory [%s], File mask: %s"

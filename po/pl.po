@@ -170,6 +170,10 @@ msgstr "Listy dyskusyjne na serwerze [%s]"
 msgid "Mailboxes [%d]"
 msgstr "Skrzynki [%d]"
 
+#, c-format
+msgid "Subscribed [%s], File mask: %s"
+msgstr "Zasubskrybowane [%s], wzorzec nazw plików: %s"
+
 #: browser.c:994
 #, c-format
 msgid "Directory [%s], File mask: %s"

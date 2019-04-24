@@ -178,6 +178,10 @@ msgstr "Diskusní skupiny na serveru [%s]"
 msgid "Mailboxes [%d]"
 msgstr "Schránky [%d]"
 
+#, c-format
+msgid "Subscribed [%s], File mask: %s"
+msgstr "Přihlášená schránka [%s], Souborová maska: %s"
+
 #: browser.c:994
 #, c-format
 msgid "Directory [%s], File mask: %s"

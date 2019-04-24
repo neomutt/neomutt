@@ -170,6 +170,10 @@ msgstr "Grupos de noticias en el servidor [%s]"
 msgid "Mailboxes [%d]"
 msgstr "Buzones [%d]"
 
+#, c-format
+msgid "Subscribed [%s], File mask: %s"
+msgstr "Suscrito [%s], patrón de archivos: %s"
+
 #: browser.c:994
 #, c-format
 msgid "Directory [%s], File mask: %s"
