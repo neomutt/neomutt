@@ -696,7 +696,9 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
   }
   else if (strstr(p, "..") && ((scheme == U_UNKNOWN) || (scheme == U_FILE)) &&
            realpath(p, tmp))
+  {
     mutt_str_strfcpy(p, tmp, buflen - (p - buf));
+  }
 
   if ((len = mutt_str_startswith(buf, C_Folder, CASE_MATCH)) && (buf[len] == '/'))
   {

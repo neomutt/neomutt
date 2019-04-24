@@ -203,6 +203,6 @@ bool is_from(const char *s, char *path, size_t pathlen, time_t *tp)
   tm.tm_isdst = -1;
 
   if (tp)
-    *tp = mutt_date_make_time(&tm, 0);
+    *tp = mutt_date_make_time(&tm, false);
   return true;
 }

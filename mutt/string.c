@@ -474,23 +474,21 @@ void mutt_str_replace(char **p, const char *s)
  * @param[in]  item String to append
  * @param[in]  sep separator between string item
  *
- * This function appends a string to another separate them by sep
- * if needed
+ * Append a string to another, separating them by sep if needed.
  *
  * This function alters the pointer of the caller.
  */
-void mutt_str_append_item(char **str, const char *item, int sep)
+void mutt_str_append_item(char **str, const char *item, char sep)
 {
   if (!str || !item)
     return;
 
-  char *p = NULL;
-  size_t sz = strlen(item);
-  size_t ssz = *str ? strlen(*str) : 0;
+  size_t sz = mutt_str_strlen(item);
+  size_t ssz = mutt_str_strlen(*str);
 
-  mutt_mem_realloc(str, ssz + ((ssz && sep) ? 1 : 0) + sz + 1);
-  p = *str + ssz;
-  if (sep && ssz)
+  mutt_mem_realloc(str, ssz + (((ssz > 0) && (sep != '\0')) ? 1 : 0) + sz + 1);
+  char *p = *str + ssz;
+  if ((ssz > 0) && (sep != '\0'))
     *p++ = sep;
   memcpy(p, item, sz + 1);
 }

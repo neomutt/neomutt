@@ -161,14 +161,24 @@ enum RangeSide
 };
 
 /**
+ * typedef pattern_eat_t - Parse a pattern
+ * @param pat   Pattern to store the results in
+ * @param flags Flags, e.g. #MUTT_PATTERN_DYNAMIC
+ * @param s     String to parse
+ * @param err   Buffer for error messages
+ * @retval true If the pattern was read successfully
+ */
+typedef bool pattern_eat_t(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err);
+
+/**
  * struct PatternFlags - Mapping between user character and internal constant
  */
 struct PatternFlags
 {
-  int tag;   /**< character used to represent this op */
-  int op;    /**< operation to perform */
-  int class; /**< Pattern class, e.g. #MUTT_FULL_MSG */
-  bool (*eat_arg)(struct Pattern *, int flags, struct Buffer *, struct Buffer *); /**< Callback function to parse the argument */
+  int tag;                ///< character used to represent this op
+  int op;                 ///< operation to perform
+  int class;              ///< Pattern class, e.g. #MUTT_FULL_MSG
+  pattern_eat_t *eat_arg; ///< Callback function to parse the argument
 };
 
 // clang-format off
@@ -191,12 +201,7 @@ static char LastSearch[256] = { 0 };      /**< last pattern searched for */
 static char LastSearchExpn[1024] = { 0 }; /**< expanded version of LastSearch */
 
 /**
- * eat_regex - Parse a regex
- * @param pat   Pattern to match
- * @param flags Flags, e.g. #MUTT_PATTERN_DYNAMIC
- * @param s     String to parse
- * @param err   Buffer for error messages
- * @retval true If the pattern was read successfully
+ * eat_regex - Parse a regex - Implements ::pattern_eat_t
  */
 static bool eat_regex(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err)
 {
@@ -264,12 +269,7 @@ static bool add_query_msgid(char *line, int line_num, void *user_data)
 }
 
 /**
- * eat_query - Parse a query for an external search program
- * @param pat   Pattern to match
- * @param flags Flags, e.g. #MUTT_PATTERN_DYNAMIC
- * @param s     String to parse
- * @param err   Buffer for error messages
- * @retval true If the pattern was read successfully
+ * eat_query - Parse a query for an external search program - Implements ::pattern_eat_t
  */
 static bool eat_query(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err)
 {
@@ -692,19 +692,14 @@ static bool eval_date_minmax(struct Pattern *pat, const char *s, struct Buffer *
   /* Since we allow two dates to be specified we'll have to adjust that. */
   adjust_date_range(&min, &max);
 
-  pat->min = mutt_date_make_time(&min, 1);
-  pat->max = mutt_date_make_time(&max, 1);
+  pat->min = mutt_date_make_time(&min, true);
+  pat->max = mutt_date_make_time(&max, true);
 
   return true;
 }
 
 /**
- * eat_range - Parse a number range
- * @param pat   Pattern to store the range in
- * @param flags Flags, e.g. #MUTT_PATTERN_DYNAMIC
- * @param s     String to parse
- * @param err   Buffer for error messages
- * @retval true If the pattern was read successfully
+ * eat_range - Parse a number range - Implements ::pattern_eat_t
  */
 static bool eat_range(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err)
 {
@@ -988,12 +983,7 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
 }
 
 /**
- * eat_message_range - Parse a range of message numbers
- * @param pat   Pattern to store the range in
- * @param flags Flags, e.g. #MUTT_PATTERN_DYNAMIC
- * @param s     String to parse
- * @param err   Buffer for error messages
- * @retval true If the pattern was read successfully
+ * eat_message_range - Parse a range of message numbers - Implements ::pattern_eat_t
  */
 static bool eat_message_range(struct Pattern *pat, int flags, struct Buffer *s,
                               struct Buffer *err)
@@ -1037,12 +1027,7 @@ static bool eat_message_range(struct Pattern *pat, int flags, struct Buffer *s,
 }
 
 /**
- * eat_date - Parse a date pattern
- * @param pat   Pattern to store the date in
- * @param flags Flags, e.g. #MUTT_PATTERN_DYNAMIC
- * @param s     String to parse
- * @param err   Buffer for error messages
- * @retval true If the pattern was read successfully
+ * eat_date - Parse a date pattern - Implements ::pattern_eat_t
  */
 static bool eat_date(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err)
 {
@@ -1080,19 +1065,19 @@ out:
  * patmatch - Compare a string to a Pattern
  * @param pat Pattern to use
  * @param buf String to compare
- * @retval 0 Match
- * @retval 1 No match
+ * @retval true  Match
+ * @retval false No match
  */
-static int patmatch(const struct Pattern *pat, const char *buf)
+static bool patmatch(const struct Pattern *pat, const char *buf)
 {
   if (pat->ismulti)
-    return (mutt_list_find(&pat->p.multi_cases, buf) == NULL);
+    return (mutt_list_find(&pat->p.multi_cases, buf) != NULL);
   else if (pat->stringmatch)
-    return pat->ign_case ? !strcasestr(buf, pat->p.str) : !strstr(buf, pat->p.str);
+    return pat->ign_case ? strcasestr(buf, pat->p.str) : strstr(buf, pat->p.str);
   else if (pat->groupmatch)
-    return !mutt_group_match(pat->p.group, buf);
+    return mutt_group_match(pat->p.group, buf);
   else
-    return regexec(pat->p.regex, buf, 0, NULL, 0);
+    return (regexec(pat->p.regex, buf, 0, NULL, 0) == 0);
 }
 
 /**
@@ -1230,7 +1215,7 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
     }
     else if (!fgets(buf, blen - 1, fp))
       break; /* don't loop forever */
-    if (patmatch(pat, buf) == 0)
+    if (patmatch(pat, buf))
     {
       match = true;
       break;
@@ -1713,8 +1698,8 @@ static int match_addrlist(struct Pattern *pat, bool match_personal, int n, ...)
     for (struct Address *a = va_arg(ap, struct Address *); a; a = a->next)
     {
       if (pat->alladdr ^ ((!pat->isalias || mutt_alias_reverse_lookup(a)) &&
-                          ((a->mailbox && !patmatch(pat, a->mailbox)) ||
-                           (match_personal && a->personal && !patmatch(pat, a->personal)))))
+                          ((a->mailbox && patmatch(pat, a->mailbox)) ||
+                           (match_personal && a->personal && patmatch(pat, a->personal)))))
       {
         va_end(ap);
         return !pat->alladdr; /* Found match, or non-match if alladdr */
@@ -1736,7 +1721,7 @@ static bool match_reference(struct Pattern *pat, struct ListHead *refs)
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, refs, entries)
   {
-    if (patmatch(pat, np->data) == 0)
+    if (patmatch(pat, np->data))
       return true;
   }
   return false;
@@ -1890,24 +1875,24 @@ static int match_threadchildren(struct PatternHead *pat, PatternExecFlags flags,
  * match_content_type - Match a Pattern against an Attachment's Content-Type
  * @param pat   Pattern to match
  * @param b     Attachment
- * @retval  1 Success, pattern matched
- * @retval  0 Pattern did not match
+ * @retval true  Success, pattern matched
+ * @retval false Pattern did not match
  */
-static int match_content_type(const struct Pattern *pat, struct Body *b)
+static bool match_content_type(const struct Pattern *pat, struct Body *b)
 {
-  char buf[256];
   if (!b)
-    return 0;
+    return false;
 
+  char buf[256];
   snprintf(buf, sizeof(buf), "%s/%s", TYPE(b), b->subtype);
 
-  if (patmatch(pat, buf) == 0)
-    return 1;
+  if (patmatch(pat, buf))
+    return true;
   if (match_content_type(pat, b->parts))
-    return 1;
+    return true;
   if (match_content_type(pat, b->next))
-    return 1;
-  return 0;
+    return true;
+  return false;
 }
 
 /**
@@ -1931,11 +1916,11 @@ static bool match_update_dynamic_date(struct Pattern *pat)
  * @param pat   Pattern to match
  * @param m   Mailbox
  * @param e   Email
- * @retval  1 Success, pattern matched
- * @retval  0 Pattern did not match
+ * @retval true  Success, pattern matched
+ * @retval false Pattern did not match
  */
-static int match_mime_content_type(const struct Pattern *pat, struct Mailbox *m,
-                                   struct Email *e)
+static bool match_mime_content_type(const struct Pattern *pat,
+                                    struct Mailbox *m, struct Email *e)
 {
   mutt_parse_mime_message(m, e);
   return match_content_type(pat, e->content);
@@ -2093,12 +2078,12 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
     case MUTT_PAT_SUBJECT:
       if (!e->env)
         return 0;
-      return pat->not^(e->env->subject &&patmatch(pat, e->env->subject) == 0);
+      return pat->not^(e->env->subject &&patmatch(pat, e->env->subject));
     case MUTT_PAT_ID:
     case MUTT_PAT_ID_EXTERNAL:
       if (!e->env)
         return 0;
-      return pat->not^(e->env->message_id &&patmatch(pat, e->env->message_id) == 0);
+      return pat->not^(e->env->message_id &&patmatch(pat, e->env->message_id));
     case MUTT_PAT_SCORE:
       return pat->not^(e->score >= pat->min &&
                        (pat->max == MUTT_MAXRANGE || e->score <= pat->max));
@@ -2204,11 +2189,11 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
     case MUTT_PAT_XLABEL:
       if (!e->env)
         return 0;
-      return pat->not^(e->env->x_label &&patmatch(pat, e->env->x_label) == 0);
+      return pat->not^(e->env->x_label &&patmatch(pat, e->env->x_label));
     case MUTT_PAT_DRIVER_TAGS:
     {
       char *tags = driver_tags_get(&e->tags);
-      bool rc = (pat->not^(tags &&patmatch(pat, tags) == 0));
+      bool rc = (pat->not^(tags &&patmatch(pat, tags)));
       FREE(&tags);
       return rc;
     }
@@ -2216,7 +2201,7 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       if (!e->env)
         return 0;
       return pat->not^(e->env->spam && e->env->spam->data &&
-                       patmatch(pat, e->env->spam->data) == 0);
+                       patmatch(pat, e->env->spam->data));
     case MUTT_PAT_DUPLICATED:
       return pat->not^(e->thread && e->thread->duplicate_thread);
     case MUTT_PAT_MIMEATTACH:
@@ -2239,7 +2224,7 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
     case MUTT_PAT_NEWSGROUPS:
       if (!e->env)
         return 0;
-      return pat->not^(e->env->newsgroups &&patmatch(pat, e->env->newsgroups) == 0);
+      return pat->not^(e->env->newsgroups &&patmatch(pat, e->env->newsgroups));
 #endif
   }
   mutt_error(_("error: unknown op %d (report this error)"), pat->op);

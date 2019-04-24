@@ -91,7 +91,9 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
    * to browser.c */
   if (C_Mask && C_Mask->regex &&
       !((regexec(C_Mask->regex, relpath, 0, NULL, 0) == 0) ^ C_Mask->not))
+  {
     return;
+  }
 
   imap_qualify_path(tmp, sizeof(tmp), &conn_account, folder);
   (state->entry)[state->entrylen].name = mutt_str_strdup(tmp);

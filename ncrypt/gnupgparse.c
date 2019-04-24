@@ -288,7 +288,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
             p = tstr + 8;
             goto bail;
           }
-          tmp.gen_time = mutt_date_make_time(&time, 0);
+          tmp.gen_time = mutt_date_make_time(&time, false);
         }
         else /* gpg 2.0.10+ uses seconds since 1970-01-01 */
         {
