@@ -576,10 +576,11 @@ static void cmd_parse_list(struct ImapAccountData *adata, char *s)
   {
     if (mutt_str_startswith(s, "\\NoSelect", CASE_IGNORE))
       list->noselect = true;
+    else if (mutt_str_startswith(s, "\\NonExistent", CASE_IGNORE)) /* rfc5258 */
+      list->noselect = true;
     else if (mutt_str_startswith(s, "\\NoInferiors", CASE_IGNORE))
       list->noinferiors = true;
-    /* See draft-gahrns-imap-child-mailbox-?? */
-    else if (mutt_str_startswith(s, "\\HasNoChildren", CASE_IGNORE))
+    else if (mutt_str_startswith(s, "\\HasNoChildren", CASE_IGNORE)) /* rfc5258*/
       list->noinferiors = true;
 
     s = imap_next_word(s);
@@ -606,12 +607,30 @@ static void cmd_parse_list(struct ImapAccountData *adata, char *s)
       adata->status = IMAP_FATAL;
       return;
     }
+
+    if (strlen(adata->buf) < litlen)
+    {
+      mutt_debug(LL_DEBUG1, "Error parsing LIST mailbox\n");
+      return;
+    }
+
     list->name = adata->buf;
+    s = list->name + litlen;
+    if (s[0] != '\0')
+    {
+      s[0] = '\0';
+      s++;
+      SKIPWS(s);
+    }
   }
   else
   {
-    imap_unmunge_mbox_name(adata->unicode, s);
     list->name = s;
+    /* Exclude rfc5258 RECURSIVEMATCH CHILDINFO suffix */
+    s = imap_next_word(s);
+    if (s[0] != '\0')
+      s[-1] = '\0';
+    imap_unmunge_mbox_name(adata, list->name);
   }
 
   if (list->name[0] == '\0')
