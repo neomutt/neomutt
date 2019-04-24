@@ -37,7 +37,8 @@ struct Mailbox;
 extern bool C_ThoroughSearch;
 
 /* flag to mutt_pattern_comp() */
-#define MUTT_FULL_MSG (1 << 0) /* enable body and header matching */
+#define MUTT_FULL_MSG           (1<<0)  ///< enable body and header matching
+#define MUTT_PATTERN_DYNAMIC    (1<<1)  ///< enable runtime date range evaluation
 
 /**
  * struct Pattern - A simple (non-regex) pattern
@@ -51,6 +52,7 @@ struct Pattern
   bool groupmatch : 1;
   bool ign_case : 1; /**< ignore case for local stringmatch searches */
   bool isalias : 1;
+  bool dynamic : 1;  ///< evaluate date ranges at run time
   bool ismulti : 1; /**< multiple case (only for I pattern now) */
   int min;
   int max;

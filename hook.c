@@ -70,8 +70,11 @@ struct Hook
   struct PatternHead *pattern; ///< Used for fcc,save,send-hook
   TAILQ_ENTRY(Hook) entries;
 };
-static TAILQ_HEAD(, Hook) Hooks = TAILQ_HEAD_INITIALIZER(Hooks);
+TAILQ_HEAD(HookList, Hook);
 
+static struct HookList Hooks = TAILQ_HEAD_INITIALIZER(Hooks);
+
+static struct Hash *IdxFmtHooks = NULL;
 static HookFlags current_hook_type = MUTT_HOOK_NO_FLAGS;
 
 /**
@@ -323,6 +326,141 @@ void mutt_delete_hooks(HookFlags type)
 }
 
 /**
+ * delete_idxfmt_hooklist - Delete a index-format-hook from the Hash Table
+ * @param type Type of Hash Element
+ * @param obj  Pointer to Hashed object
+ * @param data Private data
+ */
+static void delete_idxfmt_hooklist(int type, void *obj, intptr_t data)
+{
+  struct HookList *hl = obj;
+  struct Hook *h = NULL;
+  struct Hook *tmp = NULL;
+
+  TAILQ_FOREACH_SAFE(h, hl, entries, tmp)
+  {
+    TAILQ_REMOVE(hl, h, entries);
+    delete_hook(h);
+  }
+
+  FREE(&hl);
+}
+
+/**
+ * delete_idxfmt_hooks - Delete all the index-format-hooks
+ */
+static void delete_idxfmt_hooks(void)
+{
+  mutt_hash_free(&IdxFmtHooks);
+}
+
+/**
+ * mutt_parse_idxfmt_hook - Parse the 'index-format-hook' command - Implements ::command_t
+ */
+int mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
+                           unsigned long data, struct Buffer *err)
+{
+  enum CommandResult rc = MUTT_CMD_ERROR;
+  bool not = false;
+
+  struct Buffer *name = mutt_buffer_pool_get();
+  struct Buffer *pattern = mutt_buffer_pool_get();
+  struct Buffer *fmtstring = mutt_buffer_pool_get();
+
+  if (!IdxFmtHooks)
+  {
+    IdxFmtHooks = mutt_hash_new(30, MUTT_HASH_STRDUP_KEYS);
+    mutt_hash_set_destructor(IdxFmtHooks, delete_idxfmt_hooklist, 0);
+  }
+
+  if (!MoreArgs(s))
+  {
+    mutt_str_strfcpy(err->data, _("too few arguments"), err->dsize);
+    goto out;
+  }
+  mutt_extract_token(name, s, MUTT_TOKEN_NO_FLAGS);
+  struct HookList *hl = mutt_hash_find(IdxFmtHooks, mutt_b2s(name));
+
+  if (*s->dptr == '!')
+  {
+    s->dptr++;
+    SKIPWS(s->dptr);
+    not = true;
+  }
+  mutt_extract_token(pattern, s, MUTT_TOKEN_NO_FLAGS);
+
+  if (!MoreArgs(s))
+  {
+    mutt_str_strfcpy(err->data, _("too few arguments"), err->dsize);
+    goto out;
+  }
+  mutt_extract_token(fmtstring, s, MUTT_TOKEN_NO_FLAGS);
+
+  if (MoreArgs(s))
+  {
+    mutt_str_strfcpy(err->data, _("too many arguments"), err->dsize);
+    goto out;
+  }
+
+  if (C_DefaultHook)
+  {
+    mutt_buffer_increase_size(pattern, 8192);
+    mutt_check_simple(pattern->data, pattern->dsize, C_DefaultHook);
+    mutt_buffer_fix_dptr(pattern); /* not necessary, but to be safe */
+  }
+
+  /* check to make sure that a matching hook doesn't already exist */
+  struct Hook *hook = NULL;
+  if (hl)
+  {
+    TAILQ_FOREACH(hook, hl, entries)
+    {
+      if ((hook->regex.not == not) &&
+          (mutt_str_strcmp(mutt_b2s(pattern), hook->regex.pattern) == 0))
+      {
+        mutt_str_replace(&hook->command, mutt_b2s(fmtstring));
+        rc = MUTT_CMD_SUCCESS;
+        goto out;
+      }
+    }
+  }
+
+  /* MUTT_PATTERN_DYNAMIC sets so that date ranges are regenerated during
+   * matching.  This of course is slower, but index-format-hook is commonly
+   * used for date ranges, and they need to be evaluated relative to "now", not
+   * the hook compilation time.  */
+  struct PatternHead *pat =
+      mutt_pattern_comp(pattern->data, MUTT_FULL_MSG | MUTT_PATTERN_DYNAMIC, err);
+  if (!pat)
+    goto out;
+
+  hook = mutt_mem_calloc(1, sizeof(struct Hook));
+  hook->type = data;
+  hook->command = mutt_str_strdup(mutt_b2s(fmtstring));
+  hook->pattern = pat;
+  hook->regex.pattern = mutt_str_strdup(mutt_b2s(pattern));
+  hook->regex.regex = NULL;
+  hook->regex.not = not;
+
+  if (!hl)
+  {
+    hl = mutt_mem_calloc(1, sizeof(*hl));
+    TAILQ_INIT(hl);
+    mutt_hash_insert(IdxFmtHooks, mutt_b2s(name), hl);
+  }
+
+  TAILQ_INSERT_TAIL(hl, hook, entries);
+  rc = MUTT_CMD_SUCCESS;
+
+out:
+  mutt_buffer_pool_release(&name);
+  mutt_buffer_pool_release(&pattern);
+  mutt_buffer_pool_release(&fmtstring);
+
+  return rc;
+}
+
+/**
  * mutt_parse_unhook - Parse the 'unhook' command - Implements ::command_t
  */
 enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s,
@@ -339,6 +477,7 @@ enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s,
         return MUTT_CMD_WARNING;
       }
       mutt_delete_hooks(MUTT_HOOK_NO_FLAGS);
+      delete_idxfmt_hooks();
       mutt_ch_lookup_remove();
     }
     else
@@ -361,7 +500,10 @@ enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s,
                            buf->data, buf->data);
         return MUTT_CMD_WARNING;
       }
-      mutt_delete_hooks(type);
+      if (type == MUTT_IDXFMTHOOK)
+        delete_idxfmt_hooks();
+      else
+        mutt_delete_hooks(type);
     }
   }
   return MUTT_CMD_SUCCESS;
@@ -721,4 +863,42 @@ void mutt_startup_shutdown_hook(HookFlags type)
     }
   }
   FREE(&token.data);
+}
+
+/**
+ * mutt_idxfmt_hook - Get index-format-hook format string
+ * @param name Hook name
+ * @param m    Mailbox
+ * @param e    Email
+ * @retval ptr  printf(3)-like format string
+ * @retval NULL No matching hook
+ */
+const char *mutt_idxfmt_hook(const char *name, struct Mailbox *m, struct Email *e)
+{
+  if (!IdxFmtHooks)
+    return NULL;
+
+  struct HookList *hl = mutt_hash_find(IdxFmtHooks, name);
+  if (!hl)
+    return NULL;
+
+  current_hook_type = MUTT_IDXFMTHOOK;
+
+  struct PatternCache cache = { 0 };
+  const char *fmtstring = NULL;
+  struct Hook *hook = NULL;
+
+  TAILQ_FOREACH(hook, hl, entries)
+  {
+    struct Pattern *pat = SLIST_FIRST(hook->pattern);
+    if ((mutt_pattern_exec(pat, 0, m, e, &cache) > 0) ^ hook->regex.not)
+    {
+      fmtstring = hook->command;
+      break;
+    }
+  }
+
+  current_hook_type = MUTT_HOOK_NO_FLAGS;
+
+  return fmtstring;
 }
