@@ -291,20 +291,19 @@ int mutt_str_atoi(const char *str, int *dst)
  */
 int mutt_str_atoui(const char *str, unsigned int *dst)
 {
-  int rc;
+  if (dst)
+    *dst = 0;
+
   unsigned long res = 0;
-  unsigned int tmp = 0;
-  unsigned int *t = dst ? dst : &tmp;
-
-  *t = 0;
-
-  rc = mutt_str_atoul(str, &res);
+  int rc = mutt_str_atoul(str, &res);
   if (rc < 0)
     return rc;
-  if ((unsigned int) res != res)
+  if (res > UINT_MAX)
     return -2;
 
-  *t = (unsigned int) res;
+  if (dst)
+    *dst = (unsigned int) res;
+
   return rc;
 }
 
