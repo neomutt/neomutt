@@ -172,6 +172,10 @@ msgstr ""
 msgid "Mailboxes [%d]"
 msgstr "Postakutxak [%d]"
 
+#, c-format
+msgid "Subscribed [%s], File mask: %s"
+msgstr "Harpidedun [%s], Fitxategi maskara: %s"
+
 #: browser.c:994
 #, c-format
 msgid "Directory [%s], File mask: %s"

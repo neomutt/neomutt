@@ -175,6 +175,10 @@ msgstr "新闻组服务器[%s]"
 msgid "Mailboxes [%d]"
 msgstr "信箱 [%d]"
 
+#, c-format
+msgid "Subscribed [%s], File mask: %s"
+msgstr "已订阅 [%s], 文件掩码: %s"
+
 #: browser.c:994
 #, c-format
 msgid "Directory [%s], File mask: %s"

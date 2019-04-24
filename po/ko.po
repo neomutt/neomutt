@@ -175,6 +175,10 @@ msgstr ""
 msgid "Mailboxes [%d]"
 msgstr "메일함 [%d]"
 
+#, c-format
+msgid "Subscribed [%s], File mask: %s"
+msgstr "가입 [%s], 파일 매스크: %s"
+
 #: browser.c:994
 #, c-format
 msgid "Directory [%s], File mask: %s"

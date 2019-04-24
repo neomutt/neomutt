@@ -170,6 +170,10 @@ msgstr "Naujienų grupės serveryje [%s]"
 msgid "Mailboxes [%d]"
 msgstr "Pašto dėžutės [%d]"
 
+#, c-format
+msgid "Subscribed [%s], File mask: %s"
+msgstr "Užsakytos [%s], Bylų kaukė: %s"
+
 #: browser.c:994
 #, c-format
 msgid "Directory [%s], File mask: %s"

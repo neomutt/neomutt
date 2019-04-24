@@ -194,6 +194,10 @@ msgstr ""
 msgid "Mailboxes [%d]"
 msgstr "Boîtes aux lettres [%d]"
 
+#, c-format
+msgid "Subscribed [%s], File mask: %s"
+msgstr "Abonné [%s], masque de fichier : %s"
+
 # , c-format
 #: browser.c:994
 #, c-format

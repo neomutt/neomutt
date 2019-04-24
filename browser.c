@@ -1012,8 +1012,18 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
       menu->is_mailbox_list = false;
       mutt_buffer_strcpy(path, mutt_b2s(LastDir));
       mutt_buffer_pretty_mailbox(path);
-      snprintf(title, titlelen, _("Directory [%s], File mask: %s"),
-               mutt_b2s(path), NONULL(C_Mask ? C_Mask->pattern : NULL));
+#ifdef USE_IMAP
+      if (state->imap_browse && C_ImapListSubscribed)
+      {
+        snprintf(title, titlelen, _("Subscribed [%s], File mask: %s"),
+                 mutt_b2s(path), NONULL(C_Mask ? C_Mask->pattern : NULL));
+      }
+      else
+#endif
+      {
+        snprintf(title, titlelen, _("Directory [%s], File mask: %s"),
+                 mutt_b2s(path), NONULL(C_Mask ? C_Mask->pattern : NULL));
+      }
       mutt_buffer_pool_release(&path);
     }
   }

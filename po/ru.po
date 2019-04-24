@@ -175,6 +175,10 @@ msgstr ""
 msgid "Mailboxes [%d]"
 msgstr "Почтовые ящики [%d]"
 
+#, c-format
+msgid "Subscribed [%s], File mask: %s"
+msgstr "Подключение [%s], маска файла: %s"
+
 #: browser.c:994
 #, c-format
 msgid "Directory [%s], File mask: %s"

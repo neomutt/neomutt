@@ -169,6 +169,10 @@ msgstr "Skupina správ na servri [%s]"
 msgid "Mailboxes [%d]"
 msgstr "Schránky [%d]"
 
+#, fuzzy, c-format
+msgid "Subscribed [%s], File mask: %s"
+msgstr "Adresár [%s], maska súboru: %s"
+
 #: browser.c:994
 #, c-format
 msgid "Directory [%s], File mask: %s"

@@ -177,6 +177,10 @@ msgstr ""
 msgid "Mailboxes [%d]"
 msgstr "Γραμματοκιβώτια [%d]"
 
+#, c-format
+msgid "Subscribed [%s], File mask: %s"
+msgstr "Εγγεγραμμένα [%s], Μάσκα αρχείου: %s"
+
 #: browser.c:994
 #, c-format
 msgid "Directory [%s], File mask: %s"
