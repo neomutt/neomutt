@@ -197,23 +197,22 @@ size_t mutt_str_startswith(const char *str, const char *prefix, enum CaseSensiti
  */
 int mutt_str_atol(const char *str, long *dst)
 {
-  long r;
-  long *res = dst ? dst : &r;
-  char *e = NULL;
+  if (dst)
+    *dst = 0;
 
-  /* no input: 0 */
-  if (!str || !*str)
-  {
-    *res = 0;
+  if (!str || !*str) /* no input: 0 */
     return 0;
-  }
 
+  char *e = NULL;
   errno = 0;
-  *res = strtol(str, &e, 10);
+
+  long res = strtol(str, &e, 10);
+  if (dst)
+    *dst = res;
+  if (((res == LONG_MIN) || (res == LONG_MAX)) && (errno == ERANGE))
+    return -2;
   if (e && (*e != '\0'))
     return -1;
-  if (errno == ERANGE)
-    return -2;
   return 0;
 }
 
