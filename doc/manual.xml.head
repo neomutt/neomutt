@@ -11062,7 +11062,9 @@ set timeout=15
               <quote>IMAP</quote>, possibly followed by the symbol
               <quote>+</quote>, indicating that the entry contains both
               messages and subfolders. On Cyrus-like servers folders will often
-              contain both messages and subfolders.
+              contain both messages and subfolders.  A mailbox name with a
+              trailing delimiter (usually <quote>/</quote> or <quote>.</quote>)
+              indicates subfolders.
             </para>
           </listitem>
           <listitem>
