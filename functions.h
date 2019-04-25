@@ -107,8 +107,8 @@ const struct Binding OpMain[] = { /* map: index */
   { "change-folder",             OP_MAIN_CHANGE_FOLDER,             "c" },
   { "change-folder-readonly",    OP_MAIN_CHANGE_FOLDER_READONLY,    "\033c" },  // <Alt-c>
 #ifdef USE_NNTP
-  { "change-newsgroup",          OP_MAIN_CHANGE_GROUP,              NULL },
-  { "change-newsgroup-readonly", OP_MAIN_CHANGE_GROUP_READONLY,     NULL },
+  { "change-newsgroup",          OP_MAIN_CHANGE_GROUP,              "i" },
+  { "change-newsgroup-readonly", OP_MAIN_CHANGE_GROUP_READONLY,     "\033i" },
 #endif
 #ifdef USE_NOTMUCH
   { "change-vfolder",            OP_MAIN_CHANGE_VFOLDER,            NULL },
@@ -260,8 +260,8 @@ const struct Binding OpPager[] = { /* map: pager */
   { "change-folder",             OP_MAIN_CHANGE_FOLDER,           "c" },
   { "change-folder-readonly",    OP_MAIN_CHANGE_FOLDER_READONLY,  "\033c" },    // <Alt-c>
 #ifdef USE_NNTP
-  { "change-newsgroup",          OP_MAIN_CHANGE_GROUP,            NULL },
-  { "change-newsgroup-readonly", OP_MAIN_CHANGE_GROUP_READONLY,   NULL },
+  { "change-newsgroup",          OP_MAIN_CHANGE_GROUP,            "i" },
+  { "change-newsgroup-readonly", OP_MAIN_CHANGE_GROUP_READONLY,   "\033i" },
 #endif
 #ifdef USE_NOTMUCH
   { "change-vfolder",            OP_MAIN_CHANGE_VFOLDER,          NULL },
