@@ -49,11 +49,13 @@
 /**
  * struct SysExits - Lookup table of error messages
  */
-static const struct SysExits
+struct SysExits
 {
-  int v;
-  const char *str;
-} sysexits_h[] = {
+  int err_num;
+  const char *err_str;
+};
+
+static const struct SysExits sysexits[] = {
 #ifdef EX_USAGE
   { 0xff & EX_USAGE, "Bad usage." },
 #endif
@@ -100,25 +102,22 @@ static const struct SysExits
   { 0xff & EX_NOPERM, "Local configuration error." },
 #endif
   { S_ERR, "Exec error." },
-  { -1, NULL },
 };
 
 /**
  * mutt_str_sysexit - Return a string matching an error code
- * @param e Error code, e.g. EX_NOPERM
+ * @param err_num Error code, e.g. EX_NOPERM
  * @retval ptr string representing the error code
  */
-const char *mutt_str_sysexit(int e)
+const char *mutt_str_sysexit(int err_num)
 {
-  int i;
-
-  for (i = 0; sysexits_h[i].str; i++)
+  for (size_t i = 0; i < mutt_array_size(sysexits); i++)
   {
-    if (e == sysexits_h[i].v)
-      break;
+    if (err_num == sysexits[i].err_num)
+      return sysexits[i].err_str;
   }
 
-  return sysexits_h[i].str;
+  return NULL;
 }
 
 /**
@@ -198,23 +197,22 @@ size_t mutt_str_startswith(const char *str, const char *prefix, enum CaseSensiti
  */
 int mutt_str_atol(const char *str, long *dst)
 {
-  long r;
-  long *res = dst ? dst : &r;
-  char *e = NULL;
+  if (dst)
+    *dst = 0;
 
-  /* no input: 0 */
-  if (!str || !*str)
-  {
-    *res = 0;
+  if (!str || !*str) /* no input: 0 */
     return 0;
-  }
 
+  char *e = NULL;
   errno = 0;
-  *res = strtol(str, &e, 10);
+
+  long res = strtol(str, &e, 10);
+  if (dst)
+    *dst = res;
+  if (((res == LONG_MIN) || (res == LONG_MAX)) && (errno == ERANGE))
+    return -2;
   if (e && (*e != '\0'))
     return -1;
-  if (errno == ERANGE)
-    return -2;
   return 0;
 }
 
@@ -233,20 +231,19 @@ int mutt_str_atol(const char *str, long *dst)
  */
 int mutt_str_atos(const char *str, short *dst)
 {
-  int rc;
-  long res;
-  short tmp;
-  short *t = dst ? dst : &tmp;
+  if (dst)
+    *dst = 0;
 
-  *t = 0;
-
-  rc = mutt_str_atol(str, &res);
+  long res = 0;
+  int rc = mutt_str_atol(str, &res);
   if (rc < 0)
     return rc;
-  if ((short) res != res)
+  if ((res < SHRT_MIN) || (res > SHRT_MAX))
     return -2;
 
-  *t = (short) res;
+  if (dst)
+    *dst = (short) res;
+
   return 0;
 }
 
@@ -264,20 +261,19 @@ int mutt_str_atos(const char *str, short *dst)
  */
 int mutt_str_atoi(const char *str, int *dst)
 {
-  int rc;
-  long res;
-  int tmp;
-  int *t = dst ? dst : &tmp;
+  if (dst)
+    *dst = 0;
 
-  *t = 0;
-
-  rc = mutt_str_atol(str, &res);
+  long res = 0;
+  int rc = mutt_str_atol(str, &res);
   if (rc < 0)
     return rc;
-  if ((int) res != res)
+  if ((res < INT_MIN) || (res > INT_MAX))
     return -2;
 
-  *t = (int) res;
+  if (dst)
+    *dst = (int) res;
+
   return 0;
 }
 
@@ -295,20 +291,19 @@ int mutt_str_atoi(const char *str, int *dst)
  */
 int mutt_str_atoui(const char *str, unsigned int *dst)
 {
-  int rc;
+  if (dst)
+    *dst = 0;
+
   unsigned long res = 0;
-  unsigned int tmp = 0;
-  unsigned int *t = dst ? dst : &tmp;
-
-  *t = 0;
-
-  rc = mutt_str_atoul(str, &res);
+  int rc = mutt_str_atoul(str, &res);
   if (rc < 0)
     return rc;
-  if ((unsigned int) res != res)
+  if (res > UINT_MAX)
     return -2;
 
-  *t = (unsigned int) res;
+  if (dst)
+    *dst = (unsigned int) res;
+
   return rc;
 }
 
@@ -325,20 +320,19 @@ int mutt_str_atoui(const char *str, unsigned int *dst)
  */
 int mutt_str_atoul(const char *str, unsigned long *dst)
 {
-  unsigned long r = 0;
-  unsigned long *res = dst ? dst : &r;
-  char *e = NULL;
+  if (dst)
+    *dst = 0;
 
-  /* no input: 0 */
-  if (!str || !*str)
-  {
-    *res = 0;
+  if (!str || !*str) /* no input: 0 */
     return 0;
-  }
 
+  char *e = NULL;
   errno = 0;
-  *res = strtoul(str, &e, 10);
-  if ((*res == ULONG_MAX) && (errno == ERANGE))
+
+  unsigned long res = strtoul(str, &e, 10);
+  if (dst)
+    *dst = res;
+  if ((res == ULONG_MAX) && (errno == ERANGE))
     return -1;
   if (e && (*e != '\0'))
     return 1;
@@ -358,20 +352,19 @@ int mutt_str_atoul(const char *str, unsigned long *dst)
  */
 int mutt_str_atoull(const char *str, unsigned long long *dst)
 {
-  unsigned long long r;
-  unsigned long long *res = dst ? dst : &r;
-  char *e = NULL;
+  if (dst)
+    *dst = 0;
 
-  /* no input: 0 */
-  if (!str || !*str)
-  {
-    *res = 0;
+  if (!str || !*str) /* no input: 0 */
     return 0;
-  }
 
+  char *e = NULL;
   errno = 0;
-  *res = strtoull(str, &e, 10);
-  if ((*res == ULLONG_MAX) && (errno == ERANGE))
+
+  unsigned long long res = strtoull(str, &e, 10);
+  if (dst)
+    *dst = res;
+  if ((res == ULLONG_MAX) && (errno == ERANGE))
     return -1;
   if (e && (*e != '\0'))
     return 1;
