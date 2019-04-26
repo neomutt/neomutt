@@ -180,6 +180,7 @@ WHERE struct Regex *C_QuoteRegex;            ///< Config: Regex to match quoted 
 WHERE unsigned char C_Bounce;                ///< Config: Confirm before bouncing a message
 WHERE unsigned char C_Copy;                  ///< Config: Save outgoing emails to $record
 WHERE unsigned char C_Delete;                ///< Config: Really delete messages, when the mailbox is closed
+WHERE unsigned char C_ForwardAttachments;    ///< Config: Forward attachments when forwarding a message
 WHERE unsigned char C_MimeForward;           ///< Config: Forward a message as a 'message/RFC822' MIME part
 WHERE unsigned char C_Print;                 ///< Config: Confirm before printing a message
 WHERE unsigned char C_Quit;                  ///< Config: Prompt before exiting NeoMutt

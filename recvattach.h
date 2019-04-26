@@ -44,4 +44,6 @@ void mutt_update_tree(struct AttachCtx *actx);
 const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, char op, const char *src, const char *prec, const char *if_str, const char *else_str, unsigned long data, MuttFormatFlags flags);
 void mutt_view_attachments(struct Email *e);
 
+void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *e, struct Body *parts, FILE *fp, int parent_type, int level, bool decrypted);
+
 #endif /* MUTT_RECVATTACH_H */

@@ -51,10 +51,12 @@
 #include "edit.h"
 #include "filter.h"
 #include "globals.h"
+#include "handler.h"
 #include "hdrline.h"
 #include "hook.h"
 #include "mailbox.h"
 #include "mutt_attach.h"
+#include "mutt_body.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
 #include "mutt_parse.h"
@@ -63,6 +65,7 @@
 #include "options.h"
 #include "pattern.h"
 #include "protos.h"
+#include "recvattach.h"
 #include "rfc3676.h"
 #include "sendlib.h"
 #include "smtp.h"
@@ -530,6 +533,128 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *fp_out)
 
   mutt_copy_message_ctx(fp_out, m, e, cmflags, chflags);
   mutt_forward_trailer(m, e, fp_out);
+  return 0;
+}
+
+/**
+ * inline_forward_attachments - Add attachments to an email, inline
+ * @param[in]  m        Mailbox
+ * @param[in]  cur      Current Email
+ * @param[out] plast    Pointer to the last Attachment
+ * @param[out] forwardq Result of asking the user to forward the attachments, e.g. #MUTT_YES
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+static int inline_forward_attachments(struct Mailbox *m, struct Email *cur,
+                                      struct Body ***plast, int *forwardq)
+{
+  struct Body **last = *plast, *body = NULL;
+  struct Message *msg = NULL;
+  struct AttachCtx *actx = NULL;
+  int rc = 0, i;
+
+  mutt_parse_mime_message(m, cur);
+  mutt_message_hook(m, cur, MUTT_MESSAGE_HOOK);
+
+  msg = mx_msg_open(m, cur->msgno);
+  if (!msg)
+    return -1;
+
+  actx = mutt_mem_calloc(1, sizeof(*actx));
+  actx->email = cur;
+  actx->fp_root = msg->fp;
+
+  mutt_generate_recvattach_list(actx, actx->email, actx->email->content,
+                                actx->fp_root, -1, 0, 0);
+
+  for (i = 0; i < actx->idxlen; i++)
+  {
+    body = actx->idx[i]->content;
+    if ((body->type != TYPE_MULTIPART) && !mutt_can_decode(body) &&
+        !((body->type == TYPE_APPLICATION) &&
+          ((mutt_str_strcasecmp(body->subtype, "pgp-signature") == 0) ||
+           (mutt_str_strcasecmp(body->subtype, "x-pkcs7-signature") == 0) ||
+           (mutt_str_strcasecmp(body->subtype, "pkcs7-signature") == 0))))
+    {
+      /* Ask the quadoption only once */
+      if (*forwardq == -1)
+      {
+        *forwardq = query_quadoption(C_ForwardAttachments,
+                                     /* L10N:
+                                        This is the prompt for $forward_attachments.
+                                        When inline forwarding ($mime_forward answered "no"), this prompts
+                                        whether to add non-decodable attachments from the original email.
+                                        Text/plain parts and the like will be already be included in the
+                                        message contents, but other attachment, such as PDF files, will also
+                                        be added as attachments to the new mail, is this is answered yes.
+                                      */
+                                     _("Forward attachments?"));
+        if (*forwardq != MUTT_YES)
+        {
+          if (*forwardq == -1)
+            rc = -1;
+          goto cleanup;
+        }
+      }
+      if (mutt_body_copy(actx->idx[i]->fp, last, body) == -1)
+      {
+        rc = -1;
+        goto cleanup;
+      }
+      last = &((*last)->next);
+    }
+  }
+
+cleanup:
+  *plast = last;
+  mx_msg_close(m, &msg);
+  mutt_actx_free(&actx);
+  return rc;
+}
+
+/**
+ * mutt_inline_forward - Forward attachments, inline
+ * @param m Mailbox
+ * @param msg Email to alter
+ * @param cur Current Email
+ * @param out File
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+int mutt_inline_forward(struct Mailbox *m, struct Email *msg, struct Email *cur, FILE *out)
+{
+  int i, forwardq = -1;
+  struct Body **last;
+
+  if (cur)
+    include_forward(m, cur, out);
+  else
+    for (i = 0; i < m->vcount; i++)
+      if (m->emails[m->v2r[i]]->tagged)
+        include_forward(m, m->emails[m->v2r[i]], out);
+
+  if (C_ForwardDecode && (C_ForwardAttachments != MUTT_NO))
+  {
+    last = &msg->content;
+    while (*last)
+      last = &((*last)->next);
+
+    if (cur)
+    {
+      if (inline_forward_attachments(m, cur, &last, &forwardq) != 0)
+        return -1;
+    }
+    else
+      for (i = 0; i < m->vcount; i++)
+        if (m->emails[m->v2r[i]]->tagged)
+        {
+          if (inline_forward_attachments(m, m->emails[m->v2r[i]], &last, &forwardq) != 0)
+            return -1;
+          if (forwardq == MUTT_NO)
+            break;
+        }
+  }
+
   return 0;
 }
 
@@ -1056,15 +1181,8 @@ static int generate_body(FILE *fp_tmp, struct Email *msg, SendFlags flags,
     }
     else if (ans != MUTT_ABORT)
     {
-      if (single)
-        include_forward(m, en->email, fp_tmp);
-      else
-      {
-        STAILQ_FOREACH(en, el, entries)
-        {
-          include_forward(m, en->email, fp_tmp);
-        }
-      }
+      if (mutt_inline_forward(m, msg, en->email, fp_tmp) != 0)
+        return -1;
     }
     else
       return -1;

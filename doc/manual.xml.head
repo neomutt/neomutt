@@ -3178,6 +3178,14 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
         which, for example, can be set to <quote>ask-no</quote>.
       </para>
       <para>
+        Mutt's default (<link linkend="mime-forward">$mime_forward</link>=<quote>no</quote> and
+        <link linkend="forward-decode">$forward_decode</link>=<quote>yes</quote>) is
+        to use standard inline forwarding.  In that mode all text-decodable
+        parts are included in the new message body.  Other attachments from
+        the original email can also attached to the new message, based on the
+        quadoption <link linkend="forward-attachments">$forward_attachments</link>.
+      </para>
+      <para>
         The inclusion of headers is controlled by the current setting of the
         <link linkend="weed">$weed</link> variable, unless
         <link linkend="mime-forward">$mime_forward</link> is set.
@@ -3193,7 +3201,8 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
       </para>
       <para>
         Editing the message to forward follows the same procedure as sending or
-        replying to a message does.
+        replying to a message does, but can be disabled via the quadoption
+        <link linkend="forward-edit">$forward_edit</link>.
       </para>
     </sect1>
 
