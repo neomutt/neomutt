@@ -262,7 +262,7 @@ static void b64_flush(struct B64Context *bctx, FILE *fp_out)
   char encoded[11];
   size_t ret;
 
-  if (!bctx->size)
+  if (bctx->size == 0)
     return;
 
   if (bctx->linelen >= 72)
@@ -833,7 +833,7 @@ static size_t convert_file_to(FILE *fp, const char *fromcode, int ncodes,
     }
   }
 
-  if (!ret)
+  if (ret == 0)
   {
     /* Find best score */
     ret = (size_t)(-1);
@@ -852,7 +852,7 @@ static size_t convert_file_to(FILE *fp, const char *fromcode, int ncodes,
       {
         *tocode = i;
         ret = score[i];
-        if (!ret)
+        if (ret == 0)
           break;
       }
     }
@@ -3312,7 +3312,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     if (fclose(fp_tmp) != 0)
       rc = -1;
     /* if there was an error, leave the temp version */
-    if (!rc)
+    if (rc == 0)
       unlink(tempfile);
   }
   else

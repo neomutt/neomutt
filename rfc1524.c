@@ -471,7 +471,7 @@ bool rfc1524_mailcap_lookup(struct Body *a, char *type,
     if (*curr)
       curr++;
 
-    if (!x)
+    if (x == 0)
       continue;
 
     path[x] = '\0';

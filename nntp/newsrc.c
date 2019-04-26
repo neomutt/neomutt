@@ -1368,7 +1368,7 @@ void nntp_mailbox(struct Mailbox *m, char *buf, size_t buflen)
       for (unsigned int j = 0; j < m->msg_count; j++)
         if (!m->emails[j]->read && !m->emails[j]->deleted)
           unread++;
-      if (!unread)
+      if (unread == 0)
         continue;
     }
     mutt_str_strfcpy(buf, mdata->group, buflen);

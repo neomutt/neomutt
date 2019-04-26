@@ -667,7 +667,7 @@ static void set_changed_flag(struct Mailbox *m, struct Email *e, int local_chang
    * flags have changed, so we can set a reopen flag in
    * cmd_parse_fetch().  We don't want to count a local modification
    * to the header flag as a "change".  */
-  if ((old_hd_flag == new_hd_flag) && local_changes)
+  if ((old_hd_flag == new_hd_flag) && (local_changes != 0))
     return;
 
   if (new_hd_flag == h_flag)
@@ -677,7 +677,7 @@ static void set_changed_flag(struct Mailbox *m, struct Email *e, int local_chang
     *server_changes = true;
 
   /* Local changes have priority */
-  if (!local_changes)
+  if (local_changes == 0)
     mutt_set_flag(m, e, flag_name, new_hd_flag);
 }
 
@@ -1606,7 +1606,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool
       }
 
       rc = imap_exec_msgset(m, "UID COPY", mmbox, MUTT_TAG, false, false);
-      if (!rc)
+      if (rc == 0)
       {
         mutt_debug(LL_DEBUG1, "No messages tagged\n");
         rc = -1;
@@ -1808,7 +1808,7 @@ char *imap_set_flags(struct Mailbox *m, struct Email *e, char *s, bool *server_c
 
   /* this message is now definitively *not* changed (mutt_set_flag
    * marks things changed as a side-effect) */
-  if (!local_changes)
+  if (local_changes == 0)
     e->changed = false;
   m->changed &= !readonly;
   m->readonly = readonly;

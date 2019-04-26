@@ -951,7 +951,7 @@ char *mutt_rfc822_read_line(FILE *fp, char *line, size_t *linelen)
     }
 
     const size_t len = mutt_str_strlen(buf);
-    if (!len)
+    if (len == 0)
       return line;
 
     buf += len - 1;

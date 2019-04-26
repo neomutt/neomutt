@@ -786,7 +786,7 @@ static int tls_check_certificate(struct Connection *conn)
 
     if (savedcert)
     {
-      if (!preauthrc)
+      if (preauthrc == 0)
         return 1;
       else
         break;

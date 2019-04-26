@@ -613,7 +613,7 @@ size_t mutt_ch_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft,
           char *ob1 = ob;
           size_t obl1 = obl;
           iconv(cd, (ICONV_CONST char **) &ib1, &ibl1, &ob1, &obl1);
-          if (!ibl1)
+          if (ibl1 == 0)
           {
             ib++;
             ibl--;

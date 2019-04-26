@@ -439,7 +439,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
 
         cont = (chunk >= (buflen - off)) ? 1 : 0;
         off += strlen(adata->overview_fmt + off);
-        if (!cont)
+        if (cont == 0)
         {
           char *colon = NULL;
 

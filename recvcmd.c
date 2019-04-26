@@ -271,7 +271,7 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
     }
   }
 
-  if (!ret)
+  if (ret == 0)
     mutt_message(ngettext("Message bounced", "Messages bounced", p));
   else
     mutt_error(ngettext("Error bouncing message", "Error bouncing messages", p));

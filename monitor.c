@@ -309,7 +309,7 @@ static int monitor_resolve(struct MonitorInfo *info, struct Mailbox *m)
     return RESOLVERES_FAIL_NOMAILBOX;
   }
 
-  if (!info->magic)
+  if (info->magic == MUTT_UNKNOWN)
   {
     return RESOLVERES_FAIL_NOMAGIC;
   }

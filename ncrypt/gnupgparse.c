@@ -103,7 +103,7 @@ static void fix_uid(char *uid)
     char *ob = buf;
     size_t obl = n;
     iconv(cd, (ICONV_CONST char **) &ib, &ibl, &ob, &obl);
-    if (!ibl)
+    if (ibl == 0)
     {
       if (ob - buf < n)
       {

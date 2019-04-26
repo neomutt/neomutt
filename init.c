@@ -2655,7 +2655,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
     return -1;
 
   char ch;
-  char qc = 0; /* quote char */
+  char qc = '\0'; /* quote char */
   char *pc = NULL;
 
   mutt_buffer_reset(dest);
@@ -2663,7 +2663,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
   SKIPWS(tok->dptr);
   while ((ch = *tok->dptr))
   {
-    if (!qc)
+    if (qc == '\0')
     {
       if ((IS_SPACE(ch) && !(flags & MUTT_TOKEN_SPACE)) ||
           ((ch == '#') && !(flags & MUTT_TOKEN_COMMENT)) ||

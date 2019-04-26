@@ -247,7 +247,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, count);
       }
-      else if (!count)
+      else if (count == 0)
         optional = 0;
       break;
     }
@@ -311,7 +311,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, read);
       }
-      else if (!read)
+      else if (read == 0)
         optional = 0;
       break;
     }

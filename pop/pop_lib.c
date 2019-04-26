@@ -241,9 +241,9 @@ static int pop_capabilities(struct PopAccountData *adata, int mode)
 
     if (!adata->expire)
       msg = _("Unable to leave messages on server");
-    if (!adata->cmd_top)
+    if (adata->cmd_top == 0)
       msg = _("Command TOP is not supported by server");
-    if (!adata->cmd_uidl)
+    if (adata->cmd_uidl == 0)
       msg = _("Command UIDL is not supported by server");
     if (msg && adata->cmd_capa)
     {

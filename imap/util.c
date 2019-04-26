@@ -589,7 +589,7 @@ int imap_parse_path(const char *path, struct ConnAccount *account, char *mailbox
   static unsigned short ImapsPort = 0;
   struct servent *service = NULL;
 
-  if (!ImapPort)
+  if (ImapPort == 0)
   {
     service = getservbyname("imap", "tcp");
     if (service)
@@ -598,7 +598,7 @@ int imap_parse_path(const char *path, struct ConnAccount *account, char *mailbox
       ImapPort = IMAP_PORT;
     mutt_debug(LL_DEBUG3, "Using default IMAP port %d\n", ImapPort);
   }
-  if (!ImapsPort)
+  if (ImapsPort == 0)
   {
     service = getservbyname("imaps", "tcp");
     if (service)

@@ -943,7 +943,7 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
   if (!pspec->ready)
   {
     regerr = regcomp(&pspec->cooked, pspec->raw, REG_EXTENDED);
-    if (regerr)
+    if (regerr != 0)
       return report_regerror(regerr, &pspec->cooked, err);
     pspec->ready = 1;
   }
@@ -951,7 +951,7 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
   /* Match the pattern buffer against the compiled regex.
    * No match means syntax error. */
   regerr = regexec(&pspec->cooked, s->dptr, RANGE_RX_GROUPS, pmatch, 0);
-  if (regerr)
+  if (regerr != 0)
     return report_regerror(regerr, &pspec->cooked, err);
 
   if (!is_context_available(s, pmatch, kind, err))
@@ -1328,7 +1328,7 @@ static /* const */ char *find_matching_paren(/* const */ char *s)
     else if (*s == ')')
     {
       level--;
-      if (!level)
+      if (level == 0)
         break;
     }
   }

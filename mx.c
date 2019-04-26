@@ -300,7 +300,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
     return ctx;
   }
 
-  if (!m->magic)
+  if (m->magic == MUTT_UNKNOWN)
   {
     m->magic = mx_path_probe(m->path, NULL);
     m->mx_ops = mx_get_ops(m->magic);

@@ -514,7 +514,7 @@ int pop_authenticate(struct PopAccountData *adata)
     case POP_A_SOCKET:
       return -1;
     case POP_A_UNAVAIL:
-      if (!attempts)
+      if (attempts == 0)
         mutt_error(_("No authenticators available"));
   }
 

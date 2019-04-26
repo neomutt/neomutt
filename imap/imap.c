@@ -1563,7 +1563,7 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
   do
   {
     rc = imap_exec_msgset(m, "UID COPY", dest_mdata->munge_name, MUTT_TRASH, false, false);
-    if (!rc)
+    if (rc == 0)
     {
       mutt_debug(LL_DEBUG1, "No messages to trash\n");
       rc = -1;

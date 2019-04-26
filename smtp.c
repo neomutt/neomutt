@@ -334,14 +334,14 @@ static int smtp_fill_account(struct ConnAccount *account)
   if (url->scheme == U_SMTPS)
     account->flags |= MUTT_ACCT_SSL;
 
-  if (!account->port)
+  if (account->port == 0)
   {
     if (account->flags & MUTT_ACCT_SSL)
       account->port = SMTPS_PORT;
     else
     {
       static unsigned short SmtpPort = 0;
-      if (!SmtpPort)
+      if (SmtpPort == 0)
       {
         struct servent *service = getservbyname("smtp", "tcp");
         if (service)

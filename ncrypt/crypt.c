@@ -544,7 +544,7 @@ SecurityFlags mutt_is_application_pgp(struct Body *m)
         t |= PGP_KEY;
       }
 
-      if (!t)
+      if (t == SEC_NO_FLAGS)
         t |= PGP_ENCRYPT; /* not necessarily correct, but... */
     }
 
@@ -1138,7 +1138,7 @@ int mutt_signed_handler(struct Body *a, struct State *s)
   {
     crypt_fetch_signatures(&signatures, a->next, &sigcnt);
 
-    if (sigcnt)
+    if (sigcnt != 0)
     {
       char tempfile[PATH_MAX];
       mutt_mktemp(tempfile, sizeof(tempfile));
@@ -1195,7 +1195,7 @@ int mutt_signed_handler(struct Body *a, struct State *s)
 
   rc = mutt_body_handler(a, s);
 
-  if (s->flags & MUTT_DISPLAY && sigcnt)
+  if ((s->flags & MUTT_DISPLAY) && (sigcnt != 0))
     state_attach_puts(_("\n[-- End of signed data --]\n"), s);
 
   return rc;

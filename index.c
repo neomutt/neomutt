@@ -519,7 +519,7 @@ static void update_index_unthreaded(struct Context *ctx, int check, int oldcount
     int padding = mx_msg_padding_size(ctx->mailbox);
     for (int i = (check == MUTT_REOPENED) ? 0 : oldcount; i < ctx->mailbox->msg_count; i++)
     {
-      if (!i)
+      if (i == 0)
       {
         ctx->mailbox->vcount = 0;
         ctx->vsize = 0;

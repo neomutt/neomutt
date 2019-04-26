@@ -1137,7 +1137,7 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, bool copy,
     mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess"));
     rc = 1;
   }
-  else if (!rc)
+  else if (rc == 0)
     rc = 1;
   else
     rc = 0;
@@ -1626,7 +1626,7 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
   if (empty)
   {
     /* fatal error while trying to encrypt message */
-    if (!err)
+    if (err == 0)
       mutt_any_key_to_continue(_("No output from OpenSSL..."));
     mutt_file_unlink(tempfile);
     return NULL;
