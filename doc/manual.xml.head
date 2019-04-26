@@ -5346,9 +5346,9 @@ unignore posted-to:
         initialization file instead. If you also happen to get mail from
         someone whose address is <literal>neomutt-users@example.com</literal>,
         you could use
-        <literal><command>lists</command>^neomutt-users@neomutt\\.org$</literal>
+        <literal><command>lists</command> ^neomutt-users@neomutt\\.org$</literal>
         or
-        <literal><command>subscribe</command>^neomutt-users@neomutt\\.org$</literal>
+        <literal><command>subscribe</command> ^neomutt-users@neomutt\\.org$</literal>
         to match only mail from the actual list.
       </para>
       <para>
@@ -7295,51 +7295,51 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
           </thead>
           <tbody>
             <row>
-              <entry>\\y</entry>
+              <entry>\y</entry>
               <entry>
                 Matches the empty string at either the beginning or the end of
                 a word
               </entry>
             </row>
             <row>
-              <entry>\\B</entry>
+              <entry>\B</entry>
               <entry>
                 Matches the empty string within a word
               </entry>
             </row>
             <row>
-              <entry>\\&lt;</entry>
+              <entry>\&lt;</entry>
               <entry>
                 Matches the empty string at the beginning of a word
               </entry>
             </row>
             <row>
-              <entry>\\&gt;</entry>
+              <entry>\&gt;</entry>
               <entry>
                 Matches the empty string at the end of a word
               </entry>
             </row>
             <row>
-              <entry>\\w</entry>
+              <entry>\w</entry>
               <entry>
                 Matches any word-constituent character (letter, digit, or
                 underscore)
               </entry>
             </row>
             <row>
-              <entry>\\W</entry>
+              <entry>\W</entry>
               <entry>
                 Matches any character that is not word-constituent
               </entry>
             </row>
             <row>
-              <entry>\\`</entry>
+              <entry>\`</entry>
               <entry>
                 Matches the empty string at the beginning of a buffer (string)
               </entry>
             </row>
             <row>
-              <entry>\\'</entry>
+              <entry>\'</entry>
               <entry>
                 Matches the empty string at the end of a buffer
               </entry>
