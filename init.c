@@ -459,7 +459,7 @@ static bool get_hostname(void)
  * @param s    Buffer containing the attachments command
  * @param head List of AttachMatch to add to
  * @param err  Buffer for error messages
- * @retval enum e.g. #MUTT_CMD_SUCCESS
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
 static enum CommandResult parse_attach_list(struct Buffer *buf, struct Buffer *s,
                                             struct ListHead *head, struct Buffer *err)
@@ -3243,7 +3243,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
  * @param line  config line to read
  * @param token scratch buffer to be used by parser
  * @param err   where to write error messages
- * @retval enum e.g. #MUTT_CMD_SUCCESS
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  *
  * Caller should free token->data when finished.  the reason for this variable
  * is to avoid having to allocate and deallocate a lot of memory if we are
@@ -3358,7 +3358,7 @@ int mutt_query_variables(struct ListHead *queries)
  * query_quadoption - Ask the user a quad-question
  * @param opt    Option to use
  * @param prompt Message to show to the user
- * @retval enum Result, see #QuadOption
+ * @retval #QuadOption Result, e.g. #MUTT_NO
  */
 enum QuadOption query_quadoption(enum QuadOption opt, const char *prompt)
 {

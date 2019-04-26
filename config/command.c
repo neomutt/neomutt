@@ -66,7 +66,7 @@ static void command_destroy(const struct ConfigSet *cs, void *var, const struct 
  * @param cdef  Variable definition
  * @param value Value to set
  * @param err   Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * @retval num Result, e.g. #CSR_SUCCESS
  *
  * If var is NULL, then the config item's initial value will be set.
  */
@@ -131,7 +131,7 @@ static int command_string_set(const struct ConfigSet *cs, void *var, struct Conf
  * @param var    Variable to get
  * @param cdef   Variable definition
  * @param result Buffer for results or error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * @retval num Result, e.g. #CSR_SUCCESS
  *
  * If var is NULL, then the config item's initial value will be returned.
  */
@@ -162,7 +162,7 @@ static int command_string_get(const struct ConfigSet *cs, void *var,
  * @param cdef  Variable definition
  * @param value Native pointer/value to set
  * @param err   Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * @retval num Result, e.g. #CSR_SUCCESS
  */
 static int command_native_set(const struct ConfigSet *cs, void *var,
                               const struct ConfigDef *cdef, intptr_t value,
@@ -214,6 +214,7 @@ static int command_native_set(const struct ConfigSet *cs, void *var,
  * @param cdef Variable definition
  * @param err  Buffer for error messages
  * @retval intptr_t Command string
+ * @retval INT_MIN  Error
  */
 static intptr_t command_native_get(const struct ConfigSet *cs, void *var,
                                    const struct ConfigDef *cdef, struct Buffer *err)
@@ -232,7 +233,7 @@ static intptr_t command_native_get(const struct ConfigSet *cs, void *var,
  * @param var  Variable to reset
  * @param cdef Variable definition
  * @param err  Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * @retval num Result, e.g. #CSR_SUCCESS
  */
 static int command_reset(const struct ConfigSet *cs, void *var,
                          const struct ConfigDef *cdef, struct Buffer *err)

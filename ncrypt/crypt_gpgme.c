@@ -264,7 +264,7 @@ static const char *parse_version_number(const char *s, int *number)
  * @param major Version MAJOR.x.x
  * @param minor Version x.MINOR.x
  * @param micro Version x.x.MICRO
- * @retval str  Patch level
+ * @retval ptr  Patch level string
  * @retval NULL If there are fewer parts
  *
  * Break up the complete string-representation of the version number S, which
@@ -762,7 +762,7 @@ static gpgme_data_t create_gpgme_data(void)
 /**
  * have_gpg_version - Do we have a sufficent GPG version
  * @param version Minimum version
- * @retval bool ZZZ
+ * @retval true If minimum version is available
  *
  * Return true if the OpenPGP engine's version is at least VERSION.
  */
@@ -1549,7 +1549,7 @@ struct Body *smime_gpgme_build_smime_entity(struct Body *a, char *keylist)
  * @param s   State to use
  * @param sig GPGME signature
  * @retval 0 Success
- * @retval 1 There is is a severe warning
+ * @retval 1 There is a severe warning
  *
  * Display the common attributes of the signature summary SUM.
  */

@@ -61,7 +61,7 @@
  *   - trust info
  *   - key length
  *   - pubkey algo
- *   - 16 hex digits with the long keyid.
+ *   - 16 hex digits with the long keyid
  *   - timestamp (1998-02-28)
  *   - Local id
  *   - ownertrust

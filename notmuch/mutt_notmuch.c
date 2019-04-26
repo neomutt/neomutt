@@ -1066,7 +1066,7 @@ static void append_thread(header_cache_t *h, struct Mailbox *m,
 /**
  * get_messages - load messages for a query
  * @param query Notmuch query
- * @retval msgs Messages matching query
+ * @retval ptr  Messages matching query
  * @retval NULL Error occurred
  *
  * This helper method is to be the single point for retrieving messages. It
@@ -1136,7 +1136,7 @@ static bool read_mesgs_query(struct Mailbox *m, notmuch_query_t *q, bool dedup)
 /**
  * get_threads - load threads for a query
  * @param query Notmuch query
- * @retval msgs Threads matching query
+ * @retval ptr Threads matching query
  * @retval NULL Error occurred
  *
  * This helper method is to be the single point for retrieving messages. It

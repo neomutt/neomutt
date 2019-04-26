@@ -38,7 +38,7 @@
  * imap_auth_anon - Authenticate anonymously
  * @param adata Imap Account data
  * @param method Name of this authentication method
- * @retval enum Result, e.g. #IMAP_AUTH_SUCCESS
+ * @retval #ImapAuthRes Result, e.g. #IMAP_AUTH_SUCCESS
  *
  * this is basically a stripped-down version of the cram-md5 method.
  */

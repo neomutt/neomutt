@@ -34,7 +34,7 @@ struct Buffer;
  * @param s    Entire command line
  * @param data Private data to pass to parse function
  * @param err  Buffer for error messages
- * @retval enum e.g. #MUTT_CMD_SUCCESS
+ * @retval #CommandResult Result, e.g. #MUTT_CMD_SUCCESS
  */
 typedef enum CommandResult icommand_t(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 

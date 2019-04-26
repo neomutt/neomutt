@@ -1473,9 +1473,7 @@ int smime_class_verify_sender(struct Email *e)
   return rc;
 }
 
-/*
- *    Creating S/MIME - bodies.
- */
+/* Creating S/MIME - bodies */
 
 /**
  * smime_invoke_encrypt - Use SMIME to encrypt a file
@@ -1820,9 +1818,7 @@ struct Body *smime_class_sign_message(struct Body *a)
   return a;
 }
 
-/*
- *    Handling S/MIME - bodies.
- */
+/* Handling S/MIME - bodies */
 
 /**
  * smime_invoke_verify - Use SMIME to verify a file

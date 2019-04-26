@@ -204,7 +204,7 @@ void bool_init(struct ConfigSet *cs)
  * @param cs  Config items
  * @param he  HashElem representing config item
  * @param err Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * @retval num Result, e.g. #CSR_SUCCESS
  */
 int bool_he_toggle(struct ConfigSet *cs, struct HashElem *he, struct Buffer *err)
 {
@@ -235,7 +235,7 @@ int bool_he_toggle(struct ConfigSet *cs, struct HashElem *he, struct Buffer *err
  * @param cs   Config items
  * @param name Name of config item
  * @param err  Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * @retval num Result, e.g. #CSR_SUCCESS
  */
 int bool_str_toggle(struct ConfigSet *cs, const char *name, struct Buffer *err)
 {

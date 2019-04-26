@@ -102,7 +102,7 @@ static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
  * imap_auth_gss - GSS Authentication support
  * @param adata Imap Account data
  * @param method Name of this authentication method
- * @retval enum Result, e.g. #IMAP_AUTH_SUCCESS
+ * @retval #ImapAuthRes Result, e.g. #IMAP_AUTH_SUCCESS
  */
 enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method)
 {

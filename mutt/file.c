@@ -615,8 +615,8 @@ int mutt_file_sanitize_regex(struct Buffer *dest, const char *src)
  * @param[in]  flags    Flags, e.g. #MUTT_CONT
  * @retval ptr          The allocated string
  *
- * Read a line from "fp" into the dynamically allocated "s", increasing
- * "s" if necessary. The ending "\n" or "\r\n" is removed.  If a line ends
+ * Read a line from "fp" into the dynamically allocated "line", increasing
+ * "line" if necessary. The ending "\n" or "\r\n" is removed.  If a line ends
  * with "\", this char and the linefeed is removed, and the next line is read
  * too.
  */

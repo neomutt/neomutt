@@ -696,9 +696,9 @@ time_t mutt_date_add_timeout(time_t now, long timeout)
 }
 
 /**
- * mutt_date_localtime - Converts calendar time to a broken-down time structure expressed in user timezone.
+ * mutt_date_localtime - Converts calendar time to a broken-down time structure expressed in user timezone
  * @param  t  Time
- * @retval tm Broken-down time representation
+ * @retval obj Broken-down time representation
  *
  * Uses current time if t is #MUTT_DATE_NOW
  */
@@ -714,9 +714,9 @@ struct tm mutt_date_localtime(time_t t)
 }
 
 /**
- * mutt_date_gmtime - Converts calendar time to a broken-down time structure expressed in UTC timezone.
+ * mutt_date_gmtime - Converts calendar time to a broken-down time structure expressed in UTC timezone
  * @param  t  Time
- * @retval tm Broken-down time representation
+ * @retval obj Broken-down time representation
  *
  * Uses current time if t is #MUTT_DATE_NOW
  */

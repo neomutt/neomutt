@@ -279,7 +279,7 @@ static size_t parsekeys(const char *str, keycode_t *d, size_t max)
  * @param macro Macro string
  * @param desc Description of macro (OPTIONAL)
  * @param err   Buffer for error message
- * @retval enum e.g. #MUTT_CMD_SUCCESS
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  *
  * Insert a key sequence into the specified map.
  * The map is sorted by ASCII value (lowest to highest)
@@ -387,7 +387,7 @@ static enum CommandResult km_bind_err(const char *s, int menu, int op,
  * @param op    Operation, e.g. OP_DELETE
  * @param macro Macro string
  * @param desc Description of macro (OPTIONAL)
- * @retval enum e.g. #MUTT_CMD_SUCCESS
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
 enum CommandResult km_bind(char *s, int menu, int op, char *macro, char *desc)
 {
@@ -400,7 +400,7 @@ enum CommandResult km_bind(char *s, int menu, int op, char *macro, char *desc)
  * @param menu Menu id, e.g. #MENU_PAGER
  * @param op   Operation, e.g. OP_DELETE
  * @param err  Buffer for error message
- * @retval enum e.g. #MUTT_CMD_SUCCESS
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
 static enum CommandResult km_bindkey_err(const char *s, int menu, int op, struct Buffer *err)
 {
@@ -412,7 +412,7 @@ static enum CommandResult km_bindkey_err(const char *s, int menu, int op, struct
  * @param s    Key string
  * @param menu Menu id, e.g. #MENU_PAGER
  * @param op   Operation, e.g. OP_DELETE
- * @retval enum e.g. #MUTT_CMD_SUCCESS
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
 static enum CommandResult km_bindkey(const char *s, int menu, int op)
 {
@@ -1176,7 +1176,7 @@ error:
  * @param func     Function name
  * @param bindings Key bindings table
  * @param err      Buffer for error message
- * @retval enum e.g. #MUTT_CMD_SUCCESS
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
 static enum CommandResult try_bind(char *key, int menu, char *func,
                                    const struct Binding *bindings, struct Buffer *err)

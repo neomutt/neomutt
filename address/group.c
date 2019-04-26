@@ -36,7 +36,7 @@
 static struct Hash *Groups = NULL;
 
 /**
- * mutt_grouplist_init - Initialize the GroupList singleton.
+ * mutt_grouplist_init - Initialize the GroupList singleton
  *
  * This is called once from init.c when initializing the global structures.
  */
@@ -46,7 +46,7 @@ void mutt_grouplist_init(void)
 }
 
 /**
- * mutt_grouplist_free - Free GroupList singleton resource.
+ * mutt_grouplist_free - Free GroupList singleton resource
  *
  * This is called once from init.c when deinitializing the global resources.
  */

@@ -42,7 +42,7 @@ enum CommandResult
  * @param s    Buffer containing string to be parsed
  * @param data Flags associated with the command
  * @param err  Buffer for error messages
- * @retval enum e.g. #MUTT_CMD_SUCCESS
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
 typedef enum CommandResult (*command_t)(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 

@@ -467,7 +467,7 @@ int maildir_move_to_mailbox(struct Mailbox *m, struct Maildir **ptr)
 /**
  * maildir_hcache_keylen - Calculate the length of the Maildir path
  * @param fn File name
- * @retval size_t Length in bytes
+ * @retval num Length in bytes
  *
  * @note This length excludes the flags, which will vary
  */
