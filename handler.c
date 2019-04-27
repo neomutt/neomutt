@@ -129,7 +129,8 @@ static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *s)
   {
     if (cd != (iconv_t)(-1))
     {
-      ob = bufo, obl = sizeof(bufo);
+      ob = bufo;
+      obl = sizeof(bufo);
       iconv(cd, NULL, NULL, &ob, &obl);
       if (ob != bufo)
         state_prefix_put(bufo, ob - bufo, s);
@@ -148,7 +149,8 @@ static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *s)
   ibl = *l;
   while (true)
   {
-    ob = bufo, obl = sizeof(bufo);
+    ob = bufo;
+    obl = sizeof(bufo);
     mutt_ch_iconv(cd, &ib, &ibl, &ob, &obl, 0, "?", NULL);
     if (ob == bufo)
       break;
@@ -430,12 +432,12 @@ static void decode_uuencoded(struct State *s, long len, bool istext, iconv_t cd)
  */
 static bool is_mmnoask(const char *buf)
 {
-  char *p = NULL;
-  char tmp[1024], *q = NULL;
-
   const char *val = mutt_str_getenv("MM_NOASK");
   if (!val)
     return false;
+
+  char *p = NULL;
+  char tmp[1024], *q = NULL;
 
   if (mutt_str_strcmp(val, "1") == 0)
     return true;

@@ -1346,12 +1346,11 @@ void maildir_parse_flags(struct Email *e, const char *path)
 struct Email *maildir_parse_stream(enum MailboxType magic, FILE *fp,
                                    const char *fname, bool is_old, struct Email *e)
 {
-  struct stat st;
-
   if (!e)
     e = mutt_email_new();
   e->env = mutt_rfc822_read_header(fp, e, false, false);
 
+  struct stat st;
   fstat(fileno(fp), &st);
 
   if (!e->received)

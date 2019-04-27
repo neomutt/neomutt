@@ -3273,9 +3273,6 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
 
   if (fp_tmp)
   {
-    char line_buf[1024];
-    int lines = 0;
-
     mutt_write_mime_body(e->content, fp_tmp);
 
     /* make sure the last line ends with a newline.  Emacs doesn't ensure this
@@ -3300,6 +3297,8 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     }
 
     /* count the number of lines */
+    int lines = 0;
+    char line_buf[1024];
     rewind(fp_tmp);
     while (fgets(line_buf, sizeof(line_buf), fp_tmp))
       lines++;

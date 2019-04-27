@@ -768,10 +768,10 @@ static const char *km_keyname(int c)
  */
 int km_expand_key(char *s, size_t len, struct Keymap *map)
 {
-  int p = 0;
-
   if (!map)
     return 0;
+
+  int p = 0;
 
   while (true)
   {

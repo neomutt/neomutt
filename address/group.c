@@ -63,12 +63,10 @@ void mutt_grouplist_free(void)
  */
 struct Group *mutt_pattern_group(const char *pat)
 {
-  struct Group *g = NULL;
-
   if (!pat)
     return 0;
 
-  g = mutt_hash_find(Groups, pat);
+  struct Group *g = mutt_hash_find(Groups, pat);
   if (!g)
   {
     mutt_debug(LL_DEBUG2, "Creating group %s\n", pat);
@@ -197,14 +195,10 @@ static void group_add_addrlist(struct Group *g, struct Address *a)
  */
 static int group_remove_addrlist(struct Group *g, struct Address *a)
 {
-  struct Address *p = NULL;
-
-  if (!g)
-    return -1;
-  if (!a)
+  if (!g || !a)
     return -1;
 
-  for (p = a; p; p = p->next)
+  for (struct Address *p = a; p; p = p->next)
     mutt_addr_remove_from_list(&g->as, p->mailbox);
 
   return 0;

@@ -553,12 +553,12 @@ bool mutt_path_abbr_folder(char *buf, size_t buflen, const char *folder)
  */
 char *mutt_path_escape(const char *src)
 {
+  if (!src)
+    return NULL;
+
   static char dest[STR_COMMAND];
   char *destp = dest;
   int destsize = 0;
-
-  if (!src)
-    return NULL;
 
   while (*src && (destsize < sizeof(dest) - 1))
   {

@@ -756,18 +756,16 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
   char *currentline = NULL;
   char rcfile[PATH_MAX];
   size_t buflen;
-  size_t rcfilelen;
-  bool ispipe;
 
   pid_t pid;
 
   mutt_str_strfcpy(rcfile, rcfile_path, sizeof(rcfile));
 
-  rcfilelen = mutt_str_strlen(rcfile);
+  size_t rcfilelen = mutt_str_strlen(rcfile);
   if (rcfilelen == 0)
     return -1;
 
-  ispipe = rcfile[rcfilelen - 1] == '|';
+  bool ispipe = rcfile[rcfilelen - 1] == '|';
 
   if (!ispipe)
   {
@@ -945,15 +943,15 @@ static enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   mutt_grouplist_add_addrlist(&gc, tmp->addr);
   mutt_alias_add_reverse(tmp);
 
-  if (C_DebugLevel > 2)
+  if (C_DebugLevel > LL_DEBUG4)
   {
     /* A group is terminated with an empty address, so check a->mailbox */
     for (struct Address *a = tmp->addr; a && a->mailbox; a = a->next)
     {
-      if (!a->group)
-        mutt_debug(5, "  %s\n", a->mailbox);
-      else
+      if (a->group)
         mutt_debug(5, "  Group %s\n", a->mailbox);
+      else
+        mutt_debug(5, "  %s\n", a->mailbox);
     }
   }
   mutt_grouplist_destroy(&gc);

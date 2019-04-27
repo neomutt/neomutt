@@ -457,15 +457,14 @@ void imap_hcache_close(struct ImapMboxData *mdata)
  */
 struct Email *imap_hcache_get(struct ImapMboxData *mdata, unsigned int uid)
 {
-  char key[16];
-  void *uv = NULL;
-  struct Email *e = NULL;
-
   if (!mdata->hcache)
     return NULL;
 
+  char key[16];
+  struct Email *e = NULL;
+
   sprintf(key, "/%u", uid);
-  uv = mutt_hcache_fetch(mdata->hcache, key, mutt_str_strlen(key));
+  void *uv = mutt_hcache_fetch(mdata->hcache, key, mutt_str_strlen(key));
   if (uv)
   {
     if (*(unsigned int *) uv == mdata->uid_validity)
@@ -487,10 +486,10 @@ struct Email *imap_hcache_get(struct ImapMboxData *mdata, unsigned int uid)
  */
 int imap_hcache_put(struct ImapMboxData *mdata, struct Email *e)
 {
-  char key[16];
-
   if (!mdata->hcache)
     return -1;
+
+  char key[16];
 
   sprintf(key, "/%u", imap_edata_get(e)->uid);
   return mutt_hcache_store(mdata->hcache, key, mutt_str_strlen(key), e, mdata->uid_validity);
@@ -505,10 +504,10 @@ int imap_hcache_put(struct ImapMboxData *mdata, struct Email *e)
  */
 int imap_hcache_del(struct ImapMboxData *mdata, unsigned int uid)
 {
-  char key[16];
-
   if (!mdata->hcache)
     return -1;
+
+  char key[16];
 
   sprintf(key, "/%u", uid);
   return mutt_hcache_delete(mdata->hcache, key, mutt_str_strlen(key));

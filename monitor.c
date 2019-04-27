@@ -204,10 +204,10 @@ static struct Monitor *monitor_new(struct MonitorInfo *info, int descriptor)
  */
 static void monitor_delete(struct Monitor *monitor)
 {
-  struct Monitor **ptr = &Monitor;
-
   if (!monitor)
     return;
+
+  struct Monitor **ptr = &Monitor;
 
   while (true)
   {

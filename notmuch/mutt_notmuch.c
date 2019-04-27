@@ -903,12 +903,12 @@ static struct Email *get_mutt_email(struct Mailbox *m, notmuch_message_t *msg)
 static void append_message(header_cache_t *h, struct Mailbox *m,
                            notmuch_query_t *q, notmuch_message_t *msg, bool dedup)
 {
-  char *newpath = NULL;
-  struct Email *e = NULL;
-
   struct NmMboxData *mdata = nm_mdata_get(m);
   if (!mdata)
     return;
+
+  char *newpath = NULL;
+  struct Email *e = NULL;
 
   /* deduplicate */
   if (dedup && get_mutt_email(m, msg))

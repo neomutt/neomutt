@@ -2110,7 +2110,7 @@ static int imap_mbox_open(struct Mailbox *m)
   }
 
   /* dump the mailbox flags we've found */
-  if (C_DebugLevel > 2)
+  if (C_DebugLevel > LL_DEBUG2)
   {
     if (STAILQ_EMPTY(&mdata->flags))
       mutt_debug(LL_DEBUG3, "No folder flags found\n");
@@ -2386,11 +2386,6 @@ static int imap_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
   if (imap_edata_get(e)->flags_remote)
   {
     cmd = mutt_buffer_new();
-    if (!cmd)
-    {
-      mutt_debug(LL_DEBUG1, "unable to allocate buffer\n");
-      return -1;
-    }
     cmd->dptr = cmd->data;
     mutt_buffer_addstr(cmd, "UID STORE ");
     mutt_buffer_addstr(cmd, uid);
@@ -2413,11 +2408,6 @@ static int imap_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
   if (buf)
   {
     cmd = mutt_buffer_new();
-    if (!cmd)
-    {
-      mutt_debug(LL_DEBUG1, "fail to remove old flags\n");
-      return -1;
-    }
     cmd->dptr = cmd->data;
     mutt_buffer_addstr(cmd, "UID STORE ");
     mutt_buffer_addstr(cmd, uid);

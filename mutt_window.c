@@ -247,10 +247,10 @@ void mutt_window_reflow(void)
   MuttStatusWindow->col_offset = 0;
 
   memcpy(MuttHelpWindow, MuttStatusWindow, sizeof(struct MuttWindow));
-  if (!C_Help)
-    MuttHelpWindow->rows = 0;
-  else
+  if (C_Help)
     MuttHelpWindow->row_offset = C_StatusOnTop ? LINES - 2 : 0;
+  else
+    MuttHelpWindow->rows = 0;
 
   memcpy(MuttMessageWindow, MuttStatusWindow, sizeof(struct MuttWindow));
   MuttMessageWindow->row_offset = LINES - 1;

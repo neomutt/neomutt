@@ -71,8 +71,6 @@ static const char *pgp_hash_to_micalg(short id)
 static void pgp_dearmor(FILE *fp_in, FILE *fp_out)
 {
   char line[8192];
-  LOFF_T start;
-  LOFF_T end;
   char *r = NULL;
 
   struct State state = { 0 };
@@ -107,7 +105,7 @@ static void pgp_dearmor(FILE *fp_in, FILE *fp_out)
   }
 
   /* actual data starts here */
-  start = ftello(fp_in);
+  LOFF_T start = ftello(fp_in);
   if (start < 0)
     return;
 
@@ -124,7 +122,7 @@ static void pgp_dearmor(FILE *fp_in, FILE *fp_out)
     return;
   }
 
-  end = ftello(fp_in) - strlen(line);
+  LOFF_T end = ftello(fp_in) - strlen(line);
   if (end < start)
   {
     mutt_debug(LL_DEBUG1, "end < start???\n");

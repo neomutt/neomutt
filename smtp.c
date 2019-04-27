@@ -367,9 +367,6 @@ static int smtp_fill_account(struct ConnAccount *account)
  */
 static int smtp_helo(struct Connection *conn, bool esmtp)
 {
-  char buf[1024];
-  const char *fqdn = NULL;
-
   Capabilities = 0;
 
   if (!esmtp)
@@ -383,10 +380,11 @@ static int smtp_helo(struct Connection *conn, bool esmtp)
 #endif
   }
 
-  fqdn = mutt_fqdn(false);
+  const char *fqdn = mutt_fqdn(false);
   if (!fqdn)
     fqdn = NONULL(ShortHostname);
 
+  char buf[1024];
   snprintf(buf, sizeof(buf), "%s %s\r\n", esmtp ? "EHLO" : "HELO", fqdn);
   /* XXX there should probably be a wrapper in mutt_socket.c that
    * repeatedly calls conn->write until all data is sent.  This

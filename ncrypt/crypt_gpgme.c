@@ -592,10 +592,10 @@ static struct CryptKeyInfo *crypt_copy_key(struct CryptKeyInfo *key)
  */
 static void crypt_free_key(struct CryptKeyInfo **keylist)
 {
-  struct CryptKeyInfo *k = NULL;
-
   if (!keylist)
     return;
+
+  struct CryptKeyInfo *k = NULL;
 
   while (*keylist)
   {
@@ -768,7 +768,7 @@ static gpgme_data_t create_gpgme_data(void)
  */
 static bool have_gpg_version(const char *version)
 {
-  static char *engine_version;
+  static char *engine_version = NULL;
 
   if (!engine_version)
   {
@@ -869,10 +869,9 @@ static gpgme_data_t body_to_data_object(struct Body *a, bool convert)
  */
 static gpgme_data_t file_to_data_object(FILE *fp, long offset, size_t length)
 {
-  int err = 0;
   gpgme_data_t data;
 
-  err = gpgme_data_new_from_filepart(&data, NULL, fp, offset, length);
+  int err = gpgme_data_new_from_filepart(&data, NULL, fp, offset, length);
   if (err != 0)
   {
     mutt_error(_("error allocating data object: %s"), gpgme_strerror(err));
@@ -891,11 +890,10 @@ static gpgme_data_t file_to_data_object(FILE *fp, long offset, size_t length)
  */
 static int data_object_to_stream(gpgme_data_t data, FILE *fp)
 {
-  int err;
   char buf[4096];
   ssize_t nread;
 
-  err = ((gpgme_data_seek(data, 0, SEEK_SET) == -1) ? gpgme_error_from_errno(errno) : 0);
+  int err = ((gpgme_data_seek(data, 0, SEEK_SET) == -1) ? gpgme_error_from_errno(errno) : 0);
   if (err != 0)
   {
     mutt_error(_("error rewinding data object: %s"), gpgme_strerror(err));
@@ -939,7 +937,6 @@ static int data_object_to_stream(gpgme_data_t data, FILE *fp)
  */
 static char *data_object_to_tempfile(gpgme_data_t data, FILE **fp_ret)
 {
-  int err;
   char tempf[PATH_MAX];
   ssize_t nread = 0;
 
@@ -951,7 +948,7 @@ static char *data_object_to_tempfile(gpgme_data_t data, FILE **fp_ret)
     return NULL;
   }
 
-  err = ((gpgme_data_seek(data, 0, SEEK_SET) == -1) ? gpgme_error_from_errno(errno) : 0);
+  int err = ((gpgme_data_seek(data, 0, SEEK_SET) == -1) ? gpgme_error_from_errno(errno) : 0);
   if (err == 0)
   {
     char buf[4096];
@@ -1686,20 +1683,19 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
  */
 static void show_fingerprint(gpgme_key_t key, struct State *state)
 {
-  const char *s = NULL;
-  char *buf = NULL, *p = NULL;
-  const char *prefix = _("Fingerprint: ");
-
   if (!key)
     return;
-  s = key->subkeys ? key->subkeys->fpr : NULL;
+
+  const char *prefix = _("Fingerprint: ");
+
+  const char *s = key->subkeys ? key->subkeys->fpr : NULL;
   if (!s)
     return;
   bool is_pgp = (key->protocol == GPGME_PROTOCOL_OpenPGP);
 
-  buf = mutt_mem_malloc(strlen(prefix) + strlen(s) * 4 + 2);
+  char *buf = mutt_mem_malloc(strlen(prefix) + strlen(s) * 4 + 2);
   strcpy(buf, prefix);
-  p = buf + strlen(buf);
+  char *p = buf + strlen(buf);
   if (is_pgp && (strlen(s) == 40))
   { /* PGP v4 style formatted. */
     for (int i = 0; *s && s[1] && s[2] && s[3] && s[4]; s += 4, i++)
@@ -1973,7 +1969,6 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
 {
   int badsig = -1;
   int anywarn = 0;
-  int err;
   gpgme_ctx_t ctx;
   gpgme_data_t signature, message;
 
@@ -1986,7 +1981,7 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
   if (is_smime)
     gpgme_data_set_encoding(signature, GPGME_DATA_ENCODING_BASE64);
 
-  err = gpgme_data_new_from_file(&message, tempfile, 1);
+  int err = gpgme_data_new_from_file(&message, tempfile, 1);
   if (err != 0)
   {
     gpgme_data_release(signature);

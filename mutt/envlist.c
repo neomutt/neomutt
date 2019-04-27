@@ -85,10 +85,9 @@ bool mutt_envlist_set(const char *name, const char *value, bool overwrite)
 {
   char **envp = EnvList;
   char work[1024];
-  int count;
 
   /* Look for current slot to overwrite */
-  count = 0;
+  int count = 0;
   while (envp && *envp)
   {
     size_t len = mutt_str_startswith(*envp, name, CASE_MATCH);

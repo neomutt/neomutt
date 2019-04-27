@@ -235,6 +235,9 @@ static void join_continuations(struct ParameterList *p, struct Rfc2231Parameter 
  */
 void rfc2231_decode_parameters(struct ParameterList *p)
 {
+  if (!p)
+    return;
+
   struct Rfc2231Parameter *conthead = NULL;
   struct Rfc2231Parameter *conttmp = NULL;
 
@@ -244,8 +247,6 @@ void rfc2231_decode_parameters(struct ParameterList *p)
   bool encoded;
   int index;
   bool dirty = false; /* set when we may have created empty parameters. */
-  if (!p)
-    return;
 
   purge_empty_parameters(p);
 

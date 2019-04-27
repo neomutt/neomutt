@@ -1205,15 +1205,15 @@ out:
  */
 int mutt_strwidth(const char *s)
 {
-  wchar_t wc;
-  int w;
-  size_t k, n;
-  mbstate_t mbstate;
-
   if (!s)
     return 0;
 
-  n = mutt_str_strlen(s);
+  wchar_t wc;
+  int w;
+  size_t k;
+  mbstate_t mbstate;
+
+  size_t n = mutt_str_strlen(s);
 
   memset(&mbstate, 0, sizeof(mbstate));
   for (w = 0; n && (k = mbrtowc(&wc, s, n, &mbstate)); s += k, n -= k)

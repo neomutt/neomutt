@@ -155,11 +155,11 @@ fail_close:
  */
 static void *hcache_bdb_fetch(void *vctx, const char *key, size_t keylen)
 {
-  DBT dkey;
-  DBT data;
-
   if (!vctx)
     return NULL;
+
+  DBT dkey;
+  DBT data;
 
   struct HcacheDbCtx *ctx = vctx;
 
@@ -185,11 +185,11 @@ static void hcache_bdb_free(void *vctx, void **data)
  */
 static int hcache_bdb_store(void *vctx, const char *key, size_t keylen, void *data, size_t dlen)
 {
-  DBT dkey;
-  DBT databuf;
-
   if (!vctx)
     return -1;
+
+  DBT dkey;
+  DBT databuf;
 
   struct HcacheDbCtx *ctx = vctx;
 
@@ -208,10 +208,10 @@ static int hcache_bdb_store(void *vctx, const char *key, size_t keylen, void *da
  */
 static int hcache_bdb_delete(void *vctx, const char *key, size_t keylen)
 {
-  DBT dkey;
-
   if (!vctx)
     return -1;
+
+  DBT dkey;
 
   struct HcacheDbCtx *ctx = vctx;
 

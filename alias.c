@@ -549,7 +549,6 @@ struct Address *mutt_alias_reverse_lookup(struct Address *a)
  */
 void mutt_alias_add_reverse(struct Alias *t)
 {
-  struct Address *ap = NULL;
   if (!t)
     return;
 
@@ -558,7 +557,7 @@ void mutt_alias_add_reverse(struct Alias *t)
    * by all callers, but added here mostly as documentation. */
   mutt_addrlist_to_intl(t->addr, NULL);
 
-  for (ap = t->addr; ap; ap = ap->next)
+  for (struct Address *ap = t->addr; ap; ap = ap->next)
   {
     if (!ap->group && ap->mailbox)
       mutt_hash_insert(ReverseAliases, ap->mailbox, ap);
@@ -571,7 +570,6 @@ void mutt_alias_add_reverse(struct Alias *t)
  */
 void mutt_alias_delete_reverse(struct Alias *t)
 {
-  struct Address *ap = NULL;
   if (!t)
     return;
 
@@ -579,7 +577,7 @@ void mutt_alias_delete_reverse(struct Alias *t)
    * match the hash entries. */
   mutt_addrlist_to_intl(t->addr, NULL);
 
-  for (ap = t->addr; ap; ap = ap->next)
+  for (struct Address *ap = t->addr; ap; ap = ap->next)
   {
     if (!ap->group && ap->mailbox)
       mutt_hash_delete(ReverseAliases, ap->mailbox, ap);
@@ -678,8 +676,6 @@ int mutt_alias_complete(char *buf, size_t buflen)
  */
 bool mutt_addr_is_user(struct Address *addr)
 {
-  const char *fqdn = NULL;
-
   /* NULL address is assumed to be the user. */
   if (!addr)
   {
@@ -702,7 +698,7 @@ bool mutt_addr_is_user(struct Address *addr)
     mutt_debug(5, "#2 yes, %s = %s @ %s\n", addr->mailbox, Username, ShortHostname);
     return true;
   }
-  fqdn = mutt_fqdn(false);
+  const char *fqdn = mutt_fqdn(false);
   if (string_is_address(addr->mailbox, Username, fqdn))
   {
     mutt_debug(5, "#3 yes, %s = %s @ %s\n", addr->mailbox, Username, NONULL(fqdn));

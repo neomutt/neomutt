@@ -196,9 +196,7 @@ void mutt_file_unlink(const char *s)
 
   const bool is_regular_file = (lstat(s, &sb) == 0) && S_ISREG(sb.st_mode);
   if (!is_regular_file)
-  {
     return;
-  }
 
   const int fd = open(s, O_RDWR | O_NOFOLLOW);
   if (fd < 0)
@@ -739,13 +737,13 @@ bool mutt_file_map_lines(mutt_file_map_t func, void *user_data, FILE *fp, int fl
  */
 size_t mutt_file_quote_filename(const char *filename, char *buf, size_t buflen)
 {
-  size_t j = 0;
-
   if (!filename)
   {
     *buf = '\0';
     return 0;
   }
+
+  size_t j = 0;
 
   /* leave some space for the trailing characters. */
   buflen -= 6;
@@ -1108,7 +1106,7 @@ int mutt_file_lock(int fd, bool excl, bool timeout)
  */
 int mutt_file_unlock(int fd)
 {
-  struct flock unlockit = { F_UNLCK, 0, 0, 0, 0 };
+  struct flock unlockit;
 
   memset(&unlockit, 0, sizeof(struct flock));
   unlockit.l_type = F_UNLCK;

@@ -145,10 +145,10 @@ int rfc1524_expand_command(struct Body *a, const char *filename,
  */
 static char *get_field(char *s)
 {
-  char *ch = NULL;
-
   if (!s)
     return NULL;
+
+  char *ch = NULL;
 
   while ((ch = strpbrk(s, ";\\")))
   {

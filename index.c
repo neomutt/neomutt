@@ -3618,11 +3618,11 @@ int mutt_index_menu(void)
  */
 void mutt_set_header_color(struct Mailbox *m, struct Email *e)
 {
-  struct ColorLine *color = NULL;
-  struct PatternCache cache = { 0 };
-
   if (!e)
     return;
+
+  struct ColorLine *color = NULL;
+  struct PatternCache cache = { 0 };
 
   STAILQ_FOREACH(color, &ColorIndexList, entries)
   {

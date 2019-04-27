@@ -324,16 +324,14 @@ static void expand_command_str(const struct Mailbox *m, const char *cmd, char *b
  */
 static int execute_command(struct Mailbox *m, const char *command, const char *progress)
 {
-  int rc = 1;
-  char sys_cmd[STR_COMMAND];
-
   if (!m || !command || !progress)
     return 0;
 
   if (!m->quiet)
-  {
     mutt_message(progress, m->realpath);
-  }
+
+  int rc = 1;
+  char sys_cmd[STR_COMMAND];
 
   mutt_sig_block();
   endwin();

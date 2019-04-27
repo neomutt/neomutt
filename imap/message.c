@@ -323,12 +323,12 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
  */
 static int msg_parse_fetch(struct ImapHeader *h, char *s)
 {
+  if (!s)
+    return -1;
+
   char tmp[128];
   char *ptmp = NULL;
   size_t plen = 0;
-
-  if (!s)
-    return -1;
 
   while (*s)
   {
@@ -432,9 +432,7 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
  */
 static int msg_fetch_header(struct Mailbox *m, struct ImapHeader *ih, char *buf, FILE *fp)
 {
-  unsigned int bytes;
   int rc = -1; /* default now is that string isn't FETCH response */
-  int parse_rc;
 
   struct ImapAccountData *adata = imap_adata_get(m);
 
@@ -459,12 +457,13 @@ static int msg_fetch_header(struct Mailbox *m, struct ImapHeader *ih, char *buf,
 
   /* FIXME: current implementation - call msg_parse_fetch - if it returns -2,
    *   read header lines and call it again. Silly. */
-  parse_rc = msg_parse_fetch(ih, buf);
-  if (!parse_rc)
+  int parse_rc = msg_parse_fetch(ih, buf);
+  if (parse_rc == 0)
     return 0;
   if ((parse_rc != -2) || !fp)
     return rc;
 
+  unsigned int bytes = 0;
   if (imap_get_literal_count(buf, &bytes) == 0)
   {
     imap_read_literal(fp, adata, bytes, NULL);
@@ -1764,16 +1763,11 @@ char *imap_set_flags(struct Mailbox *m, struct Email *e, char *s, bool *server_c
     return NULL;
 
   struct ImapHeader newh = { 0 };
-  struct ImapEmailData old_edata;
-  bool readonly;
-  int local_changes;
-
-  local_changes = e->changed;
+  struct ImapEmailData old_edata = { 0 };
+  int local_changes = e->changed;
 
   struct ImapEmailData *edata = e->edata;
   newh.edata = edata;
-
-  memcpy(&old_edata, edata, sizeof(old_edata));
 
   mutt_debug(LL_DEBUG2, "parsing FLAGS\n");
   s = msg_parse_flags(&newh, s);
@@ -1790,7 +1784,7 @@ char *imap_set_flags(struct Mailbox *m, struct Email *e, char *s, bool *server_c
    * read-write even if it's read-only, so *server* updates of
    * flags can be processed by mutt_set_flag. mailbox->changed must
    * be restored afterwards */
-  readonly = m->readonly;
+  bool readonly = m->readonly;
   m->readonly = false;
 
   /* This is redundant with the following two checks. Removing:

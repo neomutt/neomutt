@@ -244,10 +244,10 @@ static int mutt_sasl_start(void)
  */
 static int mutt_sasl_cb_authname(void *context, int id, const char **result, unsigned int *len)
 {
-  struct ConnAccount *account = context;
-
   if (!result)
     return SASL_FAIL;
+
+  struct ConnAccount *account = context;
 
   *result = NULL;
   if (len)

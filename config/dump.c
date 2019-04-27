@@ -124,10 +124,9 @@ struct HashElem **get_elem_list(struct ConfigSet *cs)
   struct HashElem **list = mutt_mem_calloc(1024, sizeof(struct HashElem *));
   size_t index = 0;
 
-  struct HashWalkState walk;
-  memset(&walk, 0, sizeof(walk));
-
+  struct HashWalkState walk = { 0 };
   struct HashElem *he = NULL;
+
   while ((he = mutt_hash_walk(cs->hash, &walk)))
   {
     list[index++] = he;

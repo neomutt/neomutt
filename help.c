@@ -285,12 +285,11 @@ static void format_line(FILE *fp, int ismacro, const char *t1, const char *t2, c
 {
   int col;
   int col_b;
-  bool split;
 
   fputs(t1, fp);
 
   /* don't try to press string into one line with less than 40 characters. */
-  split = (MuttIndexWindow->cols < 40);
+  bool split = (MuttIndexWindow->cols < 40);
   if (split)
   {
     col = 0;
@@ -386,10 +385,10 @@ static void dump_menu(FILE *fp, int menu)
 
       if (map->op == OP_MACRO)
       {
-        if (!map->desc)
-          format_line(fp, -1, buf, "macro", map->macro);
-        else
+        if (map->desc)
           format_line(fp, 1, buf, map->macro, map->desc);
+        else
+          format_line(fp, -1, buf, "macro", map->macro);
       }
       else
       {

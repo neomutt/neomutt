@@ -125,11 +125,9 @@ static int tls_starttls_close(struct Connection *conn)
  */
 static gnutls_certificate_status_t tls_verify_peers(gnutls_session_t tlsstate)
 {
-  int verify_ret;
-  unsigned int status;
-
-  verify_ret = gnutls_certificate_verify_peers2(tlsstate, &status);
-  if (!verify_ret)
+  unsigned int status = 0;
+  int verify_ret = gnutls_certificate_verify_peers2(tlsstate, &status);
+  if (verify_ret == 0)
     return status;
 
   if (status == GNUTLS_E_NO_CERTIFICATE_FOUND)
@@ -750,7 +748,7 @@ static int tls_check_certificate(struct Connection *conn)
   const gnutls_datum_t *cert_list = NULL;
   unsigned int cert_list_size = 0;
   gnutls_certificate_status_t certstat;
-  int certerr, preauthrc, savedcert, rc = 0;
+  int certerr, savedcert, rc = 0;
   int rcpeer = -1; /* the result of tls_check_preauth() on the peer's EE cert */
 
   if (gnutls_auth_get_type(state) != GNUTLS_CRD_CERTIFICATE)
@@ -771,7 +769,7 @@ static int tls_check_certificate(struct Connection *conn)
   /* tls_verify_peers doesn't check hostname or expiration, so walk
    * from most specific to least checking these. If we see a saved certificate,
    * its status short-circuits the remaining checks. */
-  preauthrc = 0;
+  int preauthrc = 0;
   for (int i = 0; i < cert_list_size; i++)
   {
     rc = tls_check_preauth(&cert_list[i], certstat, conn->account.host, i,
@@ -1133,14 +1131,13 @@ static int tls_socket_open(struct Connection *conn)
 static int tls_socket_read(struct Connection *conn, char *buf, size_t count)
 {
   struct TlsSockData *data = conn->sockdata;
-  int rc;
-
   if (!data)
   {
     mutt_error(_("Error: no TLS socket open"));
     return -1;
   }
 
+  int rc;
   do
   {
     rc = gnutls_record_recv(data->state, buf, count);

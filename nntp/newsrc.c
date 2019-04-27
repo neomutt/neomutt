@@ -210,7 +210,6 @@ int nntp_newsrc_parse(struct NntpAccountData *adata)
   for (unsigned int i = 0; i < adata->groups_num; i++)
   {
     struct NntpMboxData *mdata = adata->groups_list[i];
-
     if (!mdata)
       continue;
 
@@ -436,16 +435,14 @@ static int update_file(char *filename, char *buf)
  */
 int nntp_newsrc_update(struct NntpAccountData *adata)
 {
-  char *buf = NULL;
-  size_t buflen, off;
-  int rc = -1;
-
   if (!adata)
     return -1;
 
-  buflen = 10240;
-  buf = mutt_mem_calloc(1, buflen);
-  off = 0;
+  int rc = -1;
+
+  size_t buflen = 10240;
+  char *buf = mutt_mem_calloc(1, buflen);
+  size_t off = 0;
 
   /* we will generate full newsrc here */
   for (unsigned int i = 0; i < adata->groups_num; i++)
@@ -642,18 +639,13 @@ static int active_get_cache(struct NntpAccountData *adata)
  */
 int nntp_active_save_cache(struct NntpAccountData *adata)
 {
-  char file[PATH_MAX];
-  char *buf = NULL;
-  size_t buflen, off;
-  int rc;
-
   if (!adata->cacheable)
     return 0;
 
-  buflen = 10240;
-  buf = mutt_mem_calloc(1, buflen);
+  size_t buflen = 10240;
+  char *buf = mutt_mem_calloc(1, buflen);
   snprintf(buf, buflen, "%lu\n", (unsigned long) adata->newgroups_time);
-  off = strlen(buf);
+  size_t off = strlen(buf);
 
   for (unsigned int i = 0; i < adata->groups_num; i++)
   {
@@ -673,9 +665,10 @@ int nntp_active_save_cache(struct NntpAccountData *adata)
     off += strlen(buf + off);
   }
 
+  char file[PATH_MAX];
   cache_expand(file, sizeof(file), &adata->conn->account, ".active");
   mutt_debug(LL_DEBUG1, "Updating %s\n", file);
-  rc = update_file(file, buf);
+  int rc = update_file(file, buf);
   FREE(&buf);
   return rc;
 }
@@ -730,16 +723,15 @@ header_cache_t *nntp_hcache_open(struct NntpMboxData *mdata)
  */
 void nntp_hcache_update(struct NntpMboxData *mdata, header_cache_t *hc)
 {
-  char buf[16];
-  bool old = false;
-  void *hdata = NULL;
-  anum_t first = 0, last = 0;
-
   if (!hc)
     return;
 
+  char buf[16];
+  bool old = false;
+  anum_t first = 0, last = 0;
+
   /* fetch previous values of first and last */
-  hdata = mutt_hcache_fetch_raw(hc, "index", 5);
+  void *hdata = mutt_hcache_fetch_raw(hc, "index", 5);
   if (hdata)
   {
     mutt_debug(LL_DEBUG2, "mutt_hcache_fetch index: %s\n", (char *) hdata);
@@ -1220,12 +1212,10 @@ void nntp_article_status(struct Mailbox *m, struct Email *e, char *group, anum_t
  */
 struct NntpMboxData *mutt_newsgroup_subscribe(struct NntpAccountData *adata, char *group)
 {
-  struct NntpMboxData *mdata = NULL;
-
   if (!adata || !adata->groups_hash || !group || !*group)
     return NULL;
 
-  mdata = mdata_find(adata, group);
+  struct NntpMboxData *mdata = mdata_find(adata, group);
   mdata->subscribed = true;
   if (!mdata->newsrc_ent)
   {
@@ -1246,12 +1236,10 @@ struct NntpMboxData *mutt_newsgroup_subscribe(struct NntpAccountData *adata, cha
  */
 struct NntpMboxData *mutt_newsgroup_unsubscribe(struct NntpAccountData *adata, char *group)
 {
-  struct NntpMboxData *mdata = NULL;
-
   if (!adata || !adata->groups_hash || !group || !*group)
     return NULL;
 
-  mdata = mutt_hash_find(adata->groups_hash, group);
+  struct NntpMboxData *mdata = mutt_hash_find(adata->groups_hash, group);
   if (!mdata)
     return NULL;
 
@@ -1275,12 +1263,10 @@ struct NntpMboxData *mutt_newsgroup_unsubscribe(struct NntpAccountData *adata, c
 struct NntpMboxData *mutt_newsgroup_catchup(struct Mailbox *m,
                                             struct NntpAccountData *adata, char *group)
 {
-  struct NntpMboxData *mdata = NULL;
-
   if (!adata || !adata->groups_hash || !group || !*group)
     return NULL;
 
-  mdata = mutt_hash_find(adata->groups_hash, group);
+  struct NntpMboxData *mdata = mutt_hash_find(adata->groups_hash, group);
   if (!mdata)
     return NULL;
 
@@ -1311,12 +1297,10 @@ struct NntpMboxData *mutt_newsgroup_catchup(struct Mailbox *m,
 struct NntpMboxData *mutt_newsgroup_uncatchup(struct Mailbox *m,
                                               struct NntpAccountData *adata, char *group)
 {
-  struct NntpMboxData *mdata = NULL;
-
   if (!adata || !adata->groups_hash || !group || !*group)
     return NULL;
 
-  mdata = mutt_hash_find(adata->groups_hash, group);
+  struct NntpMboxData *mdata = mutt_hash_find(adata->groups_hash, group);
   if (!mdata)
     return NULL;
 

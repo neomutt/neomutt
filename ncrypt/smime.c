@@ -112,10 +112,10 @@ static char fp_smime_intermediateToUse[PATH_MAX];
  */
 static void smime_free_key(struct SmimeKey **keylist)
 {
-  struct SmimeKey *key = NULL;
-
   if (!keylist)
     return;
+
+  struct SmimeKey *key = NULL;
 
   while (*keylist)
   {
@@ -137,10 +137,10 @@ static void smime_free_key(struct SmimeKey **keylist)
  */
 static struct SmimeKey *smime_copy_key(struct SmimeKey *key)
 {
-  struct SmimeKey *copy = NULL;
-
   if (!key)
     return NULL;
+
+  struct SmimeKey *copy = NULL;
 
   copy = mutt_mem_calloc(1, sizeof(struct SmimeKey));
   copy->email = mutt_str_strdup(key->email);
@@ -774,6 +774,9 @@ static struct SmimeKey *smime_get_key_by_hash(char *hash, bool public)
 static struct SmimeKey *smime_get_key_by_addr(char *mailbox, KeyFlags abilities,
                                               bool public, bool may_ask)
 {
+  if (!mailbox)
+    return NULL;
+
   struct SmimeKey *results = NULL, *result = NULL;
   struct SmimeKey *matches = NULL;
   struct SmimeKey **matches_end = &matches;
@@ -781,9 +784,6 @@ static struct SmimeKey *smime_get_key_by_addr(char *mailbox, KeyFlags abilities,
   struct SmimeKey *trusted_match = NULL;
   struct SmimeKey *valid_match = NULL;
   struct SmimeKey *return_key = NULL;
-
-  if (!mailbox)
-    return NULL;
   bool multi_trusted_matches = false;
 
   results = smime_get_candidates(mailbox, public);
@@ -852,14 +852,14 @@ static struct SmimeKey *smime_get_key_by_addr(char *mailbox, KeyFlags abilities,
  */
 static struct SmimeKey *smime_get_key_by_str(char *str, KeyFlags abilities, bool public)
 {
+  if (!str)
+    return NULL;
+
   struct SmimeKey *results = NULL, *result = NULL;
   struct SmimeKey *matches = NULL;
   struct SmimeKey **matches_end = &matches;
   struct SmimeKey *match = NULL;
   struct SmimeKey *return_key = NULL;
-
-  if (!str)
-    return NULL;
 
   results = smime_get_candidates(str, public);
   for (result = results; result; result = result->next)

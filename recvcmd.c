@@ -499,13 +499,13 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
 
   if (C_ForwardQuote)
   {
-    if (!C_TextFlowed)
+    if (C_TextFlowed)
+      mutt_str_strfcpy(prefix, ">", sizeof(prefix));
+    else
     {
       mutt_make_string(prefix, sizeof(prefix), NONULL(C_IndentString), Context,
                        Context->mailbox, e_parent);
     }
-    else
-      mutt_str_strfcpy(prefix, ">", sizeof(prefix));
   }
 
   include_header(C_ForwardQuote, fp_parent, e_parent, fp_tmp, prefix);
