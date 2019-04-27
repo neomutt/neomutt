@@ -841,9 +841,8 @@ msgid "What we have here is a failure to make an attachment"
 msgstr "Čia turėtų būti priedas, tačiau jo nepavyko padaryti"
 
 #: compose.c:1859
-#, fuzzy
 msgid "Save (postpone) draft message?"
-msgstr "Tęsti atidėtą laišką?"
+msgstr "Išsaugoti (atidėti) juodraštį?"
 
 #: compose.c:1917
 msgid "Write message to mailbox"
@@ -1652,7 +1651,6 @@ msgid "mailbox shortcut expanded to empty regex"
 msgstr "pašto dėžutės trumpinys išplėstas atitinka tuščią šabloną"
 
 #: hook.c:161
-#, fuzzy
 msgid "badly formatted cmd string"
 msgstr "blogai suformuota komanda"
 
@@ -2559,7 +2557,7 @@ msgstr "%s: nežinoma komanda"
 
 #: init.c:3848
 msgid "'charset' must contain exactly one character set name"
-msgstr ""
+msgstr "'charset' turi nurodyti vieną koduotės pavadinimą"
 
 #: init.c:3864 init.c:3888 init.c:3923
 #, c-format
@@ -3458,7 +3456,7 @@ msgid "error reading data object: %s"
 msgstr "klaida skaitant duomenų objektą: %s"
 
 #: ncrypt/crypt_gpgme.c:1055
-#, fuzzy, c-format
+#, c-format
 msgid "error adding recipient '%s': %s"
 msgstr "klaida pridedant gavėją '%s': %s"
 
@@ -3636,9 +3634,9 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2706
-#, fuzzy, c-format
+#, c-format
 msgid "Error extracting key: %s"
-msgstr "Klaida eksportuojant raktą: %s"
+msgstr "Klaida išgaunant raktą: %s"
 
 #: ncrypt/crypt_gpgme.c:2946
 #, c-format
@@ -4069,7 +4067,6 @@ msgstr ""
 #. (not encrypting) something and (2) it is a plaintext. So the
 #. message does not mean "You failed to encrypt the message."
 #: ncrypt/pgp.c:731
-#, fuzzy
 msgid "PGP message is not encrypted"
 msgstr "PGP laiškas nebuvo užšifruotas"
 
@@ -4546,9 +4543,9 @@ msgid "No more messages in the thread"
 msgstr "Gijoje daugiau nėra laiškų"
 
 #: notmuch/mutt_notmuch.c:1945
-#, fuzzy, c-format
+#, c-format
 msgid "failed to parse limit: %s"
-msgstr "nepavyko išanalizuoti notmuch ribojimo: %s"
+msgstr "nepavyko išanalizuoti ribojimo: %s"
 
 #: notmuch/mutt_notmuch.c:2495
 msgid "Can't write to virtual folder"
@@ -4819,9 +4816,8 @@ msgid "delete all messages in thread"
 msgstr "ištrinti visus laiškus gijoje"
 
 #: opcodes.h:94
-#, fuzzy
 msgid "descend into a directory"
-msgstr "%s nėra katalogas"
+msgstr "nusileisti į katalogą"
 
 #: opcodes.h:95
 msgid "display full address of sender"
@@ -5004,9 +5000,8 @@ msgid "go to parent directory"
 msgstr "eiti į tėvinį katalogą"
 
 #: opcodes.h:140
-#, fuzzy
 msgid "reply to all recipients preserving To/Cc"
-msgstr "atsakyti visiems gavėjams"
+msgstr "atsakyti visiems gavėjams išsaugant To/Cc"
 
 #: opcodes.h:141
 msgid "reply to all recipients"
@@ -5505,9 +5500,8 @@ msgid "generate virtual folder from query"
 msgstr "sukurti virtualų aplanką pagal užklausą"
 
 #: opcodes.h:276
-#, fuzzy
 msgid "generate a read-only virtual folder from query"
-msgstr "sukurti virtualų aplanką pagal užklausą"
+msgstr "sukurti virtualų aplanką tik skaitymui pagal užklausą"
 
 #: opcodes.h:277
 msgid "shifts virtual folder time window backwards"
@@ -5657,14 +5651,13 @@ msgid "Empty expression"
 msgstr "Tuščia išraiška"
 
 #: pattern.c:280
-#, fuzzy
 msgid "No search command defined"
-msgstr "OAUTH atnaujinimo komanda nebuvo apibrėžta"
+msgstr "Paieškos komanda nebuvo apibrėžta"
 
 #: pattern.c:318
-#, fuzzy, c-format
+#, c-format
 msgid "Running search command: %s ..."
-msgstr "Kviečiu autom. peržiūros komandą: %s"
+msgstr "Kviečiu paieškos komandą: %s ..."
 
 #: pattern.c:409
 #, c-format
@@ -6207,9 +6200,8 @@ msgid "Preparing forwarded message..."
 msgstr "Paruošiu persiunčiamą laišką..."
 
 #: send.c:1493
-#, fuzzy
 msgid "Fcc to an IMAP mailbox is not supported in batch mode"
-msgstr "%c: nepalaikomas šiame režime"
+msgstr "Fcc į IMAP dėžutę nepalaikoma automatiniame režime"
 
 #: send.c:1520 send.c:1546
 msgid "Save attachments in Fcc?"
@@ -6221,25 +6213,24 @@ msgstr "Išsaugoti priedus Fcc?"
 #. (s)kip aborts saving.
 #: send.c:1567
 msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
-msgstr ""
+msgstr "Fcc nepavyko.  (b)andyti vėl, naudoti kitą (d)ėžutę, ar (p)raleisti?"
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt
 #. (r)etry, alternate (m)ailbox, or (s)kip.
 #. Any similarity to famous leaders of the FSF is coincidental.
 #: send.c:1571
 msgid "rms"
-msgstr ""
+msgstr "bdp"
 
 #. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
 #. initial Fcc fails.
 #: send.c:1577
-#, fuzzy
 msgid "Fcc mailbox"
-msgstr "Nėra dėžutės.\n"
+msgstr "Fcc dėžutė"
 
 #: send.c:1639
 msgid "Can't postpone.  $postponed is unset"
-msgstr ""
+msgstr "Negaliu atidėti.  $postponed nenustatytas"
 
 #: send.c:1769
 msgid "Recall postponed message?"
