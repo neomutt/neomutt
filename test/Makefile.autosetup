@@ -57,6 +57,12 @@ GROUP_OBJS	= test/group/main.o \
 		  test/group/mutt_group_match.o \
 		  test/group/mutt_pattern_group.o
 
+IDNA_OBJS	= test/idna/main.o \
+		  test/idna/mutt_idna_intl_to_local.o \
+		  test/idna/mutt_idna_local_to_intl.o \
+		  test/idna/mutt_idna_print_version.o \
+		  test/idna/mutt_idna_to_ascii_lz.o
+
 PATH_OBJS	= test/path/main.o \
 		  test/path/mutt_path_abbr_folder.o \
 		  test/path/mutt_path_basename.o \
@@ -138,6 +144,8 @@ TEST_CONFIG = test/config-test$(EXEEXT)
 
 TEST_GROUP = test/group-test$(EXEEXT)
 
+TEST_IDNA = test/idna-test$(EXEEXT)
+
 TEST_PATH = test/path-test$(EXEEXT)
 
 TEST_PATTERN = test/pattern-test$(EXEEXT)
@@ -145,11 +153,12 @@ TEST_PATTERN = test/pattern-test$(EXEEXT)
 TEST_STRING = test/string-test$(EXEEXT)
 
 .PHONY: test
-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_CONFIG) $(TEST_GROUP) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
+test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_CONFIG) $(TEST_GROUP) $(TEST_IDNA) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
 	$(TEST_BINARY)
 	$(TEST_ADDRESS)
 	$(TEST_CONFIG)
 	$(TEST_GROUP)
+	$(TEST_IDNA)
 	$(TEST_PATH)
 	$(TEST_PATTERN)
 	$(TEST_STRING)
@@ -165,6 +174,9 @@ $(TEST_CONFIG): $(PWD)/test/config $(CONFIG_OBJS) $(MUTTLIBS)
 
 $(TEST_GROUP): $(PWD)/test/group $(GROUP_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(GROUP_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_IDNA): $(PWD)/test/idna $(IDNA_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(IDNA_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
 $(TEST_PATH): $(PWD)/test/path $(PATH_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(PATH_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
@@ -184,6 +196,9 @@ $(PWD)/test/config:
 $(PWD)/test/group:
 	$(MKDIR_P) $(PWD)/test/group
 
+$(PWD)/test/idna:
+	$(MKDIR_P) $(PWD)/test/idna
+
 $(PWD)/test/path:
 	$(MKDIR_P) $(PWD)/test/path
 
@@ -193,13 +208,14 @@ $(PWD)/test/pattern:
 $(PWD)/test/string:
 	$(MKDIR_P) $(PWD)/test/string
 
-all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_CONFIG) $(TEST_GROUP) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
+all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_CONFIG) $(TEST_GROUP) $(TEST_IDNA) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
 
 clean-test:
 	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po) \
 	      $(TEST_ADDRESS) $(ADDRESS_OBJS) $(ADDRESS_OBJS:.o=.Po) \
 	      $(TEST_CONFIG) $(CONFIG_OBJS) $(CONFIG_OBJS:.o=.Po) \
 	      $(TEST_GROUP) $(GROUP_OBJS) $(GROUP_OBJS:.o=.Po) \
+	      $(TEST_IDNA) $(IDNA_OBJS) $(IDNA_OBJS:.o=.Po) \
 	      $(TEST_PATH) $(PATH_OBJS) $(PATH_OBJS:.o=.Po) \
 	      $(TEST_PATTERN) $(PATTERN_OBJS) $(PATTERN_OBJS:.o=.Po) \
 	      $(TEST_STRING) $(STRING_OBJS) $(STRING_OBJS:.o=.Po)
@@ -218,6 +234,9 @@ CONFIG_DEPFILES = $(CONFIG_OBJS:.o=.Po)
 
 GROUP_DEPFILES = $(GROUP_OBJS:.o=.Po)
 -include $(GROUP_DEPFILES)
+
+IDNA_DEPFILES = $(IDNA_OBJS:.o=.Po)
+-include $(IDNA_DEPFILES)
 
 PATH_DEPFILES = $(PATH_OBJS:.o=.Po)
 -include $(PATH_DEPFILES)
