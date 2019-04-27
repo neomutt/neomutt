@@ -7,6 +7,34 @@ TEST_OBJS   = test/main.o \
 	      test/url.o \
 	      test/file.o
 
+ADDRESS_OBJS	= test/address/main.o \
+		  test/address/mutt_addr_append.o \
+		  test/address/mutt_addr_cat.o \
+		  test/address/mutt_addr_cmp.o \
+		  test/address/mutt_addr_cmp_strict.o \
+		  test/address/mutt_addr_copy.o \
+		  test/address/mutt_addr_copy_list.o \
+		  test/address/mutt_addr_for_display.o \
+		  test/address/mutt_addr_free.o \
+		  test/address/mutt_addr_has_recips.o \
+		  test/address/mutt_addr_is_intl.o \
+		  test/address/mutt_addr_is_local.o \
+		  test/address/mutt_addrlist_to_intl.o \
+		  test/address/mutt_addrlist_to_local.o \
+		  test/address/mutt_addr_mbox_to_udomain.o \
+		  test/address/mutt_addr_new.o \
+		  test/address/mutt_addr_parse_list2.o \
+		  test/address/mutt_addr_parse_list.o \
+		  test/address/mutt_addr_qualify.o \
+		  test/address/mutt_addr_remove_from_list.o \
+		  test/address/mutt_addr_remove_xrefs.o \
+		  test/address/mutt_addr_search.o \
+		  test/address/mutt_addr_set_intl.o \
+		  test/address/mutt_addr_set_local.o \
+		  test/address/mutt_addr_valid_msgid.o \
+		  test/address/mutt_addr_write.o \
+		  test/address/mutt_addr_write_single.o
+
 CONFIG_OBJS	= test/config/main.o test/config/account.o \
 		  test/config/address.o test/config/bool.o \
 		  test/config/command.o test/config/common.o test/config/dump.o \
@@ -91,6 +119,8 @@ CFLAGS	+= -I$(SRCDIR)/test
 
 TEST_BINARY = test/neomutt-test$(EXEEXT)
 
+TEST_ADDRESS = test/address-test$(EXEEXT)
+
 TEST_CONFIG = test/config-test$(EXEEXT)
 
 TEST_PATH = test/path-test$(EXEEXT)
@@ -100,8 +130,9 @@ TEST_PATTERN = test/pattern-test$(EXEEXT)
 TEST_STRING = test/string-test$(EXEEXT)
 
 .PHONY: test
-test: $(TEST_BINARY) $(TEST_CONFIG) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
+test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_CONFIG) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
 	$(TEST_BINARY)
+	$(TEST_ADDRESS)
 	$(TEST_CONFIG)
 	$(TEST_PATH)
 	$(TEST_PATTERN)
@@ -109,6 +140,9 @@ test: $(TEST_BINARY) $(TEST_CONFIG) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
 
 $(TEST_BINARY): $(TEST_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(TEST_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_ADDRESS): $(PWD)/test/address $(ADDRESS_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(ADDRESS_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
 $(TEST_CONFIG): $(PWD)/test/config $(CONFIG_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(CONFIG_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
@@ -122,6 +156,9 @@ $(TEST_PATTERN): $(PWD)/test/pattern $(PATTERN_OBJS) $(MUTTLIBS)
 $(TEST_STRING): $(PWD)/test/string $(STRING_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(STRING_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
+$(PWD)/test/address:
+	$(MKDIR_P) $(PWD)/test/address
+
 $(PWD)/test/config:
 	$(MKDIR_P) $(PWD)/test/config
 
@@ -134,10 +171,11 @@ $(PWD)/test/pattern:
 $(PWD)/test/string:
 	$(MKDIR_P) $(PWD)/test/string
 
-all-test: $(TEST_BINARY) $(TEST_CONFIG) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
+all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_CONFIG) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
 
 clean-test:
 	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po) \
+	      $(TEST_ADDRESS) $(ADDRESS_OBJS) $(ADDRESS_OBJS:.o=.Po) \
 	      $(TEST_CONFIG) $(CONFIG_OBJS) $(CONFIG_OBJS:.o=.Po) \
 	      $(TEST_PATH) $(PATH_OBJS) $(PATH_OBJS:.o=.Po) \
 	      $(TEST_PATTERN) $(PATTERN_OBJS) $(PATTERN_OBJS:.o=.Po) \
@@ -148,6 +186,9 @@ uninstall-test:
 
 TEST_DEPFILES = $(TEST_OBJS:.o=.Po)
 -include $(TEST_DEPFILES)
+
+ADDRESS_DEPFILES = $(ADDRESS_OBJS:.o=.Po)
+-include $(ADDRESS_DEPFILES)
 
 CONFIG_DEPFILES = $(CONFIG_OBJS:.o=.Po)
 -include $(CONFIG_DEPFILES)
