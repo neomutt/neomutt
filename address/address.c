@@ -412,6 +412,11 @@ struct Address *mutt_addr_new(void)
  */
 int mutt_addr_remove_from_list(struct Address **a, const char *mailbox)
 {
+  if (!a)
+    return -1;
+  if (!mailbox)
+    return 0;
+
   int rc = -1;
 
   struct Address *p = *a;
@@ -445,6 +450,9 @@ int mutt_addr_remove_from_list(struct Address **a, const char *mailbox)
  */
 void mutt_addr_free(struct Address **p)
 {
+  if (!p)
+    return;
+
   struct Address *t = NULL;
 
   while (*p)
@@ -464,6 +472,9 @@ void mutt_addr_free(struct Address **p)
  */
 struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
 {
+  if (!s)
+    return NULL;
+
   int ws_pending;
   const char *ps = NULL;
   char comment[1024], phrase[1024];
@@ -629,6 +640,9 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
  */
 struct Address *mutt_addr_parse_list2(struct Address *p, const char *s)
 {
+  if (!s)
+    return NULL;
+
   /* check for a simple whitespace separated list of addresses */
   const char *q = strpbrk(s, "\"<>():;,\\");
   if (!q)
@@ -680,6 +694,9 @@ void mutt_addr_qualify(struct Address *addr, const char *host)
  */
 void mutt_addr_cat(char *buf, size_t buflen, const char *value, const char *specials)
 {
+  if (!buf || !value || !specials)
+    return;
+
   if (strpbrk(value, specials))
   {
     char tmp[256], *pc = tmp;
@@ -711,6 +728,9 @@ void mutt_addr_cat(char *buf, size_t buflen, const char *value, const char *spec
  */
 struct Address *mutt_addr_copy(struct Address *addr)
 {
+  if (!addr)
+    return NULL;
+
   struct Address *p = mutt_addr_new();
 
   p->personal = mutt_str_strdup(addr->personal);
@@ -762,6 +782,9 @@ struct Address *mutt_addr_copy_list(struct Address *addr, bool prune)
  */
 struct Address *mutt_addr_append(struct Address **a, struct Address *b, bool prune)
 {
+  if (!a)
+    return NULL;
+
   struct Address *tmp = *a;
 
   while (tmp && tmp->next)
@@ -882,6 +905,8 @@ int mutt_addr_has_recips(struct Address *a)
  */
 bool mutt_addr_cmp(struct Address *a, struct Address *b)
 {
+  if (!a || !b)
+    return false;
   if (!a->mailbox || !b->mailbox)
     return false;
   if (mutt_str_strcasecmp(a->mailbox, b->mailbox) != 0)
@@ -912,6 +937,8 @@ bool mutt_addr_search(struct Address *a, struct Address *lst)
  */
 bool mutt_addr_is_intl(struct Address *a)
 {
+  if (!a)
+    return false;
   return a->intl_checked && a->is_intl;
 }
 
@@ -922,6 +949,8 @@ bool mutt_addr_is_intl(struct Address *a)
  */
 bool mutt_addr_is_local(struct Address *a)
 {
+  if (!a)
+    return false;
   return a->intl_checked && !a->is_intl;
 }
 
@@ -937,6 +966,9 @@ bool mutt_addr_is_local(struct Address *a)
  */
 int mutt_addr_mbox_to_udomain(const char *mbox, char **user, char **domain)
 {
+  if (!mbox || !user || !domain)
+    return -1;
+
   char *ptr = strchr(mbox, '@');
 
   /* Fail if '@' is missing, at the start, or at the end */
@@ -956,6 +988,9 @@ int mutt_addr_mbox_to_udomain(const char *mbox, char **user, char **domain)
  */
 void mutt_addr_set_intl(struct Address *a, char *intl_mailbox)
 {
+  if (!a)
+    return;
+
   FREE(&a->mailbox);
   a->mailbox = intl_mailbox;
   a->intl_checked = true;
@@ -969,6 +1004,9 @@ void mutt_addr_set_intl(struct Address *a, char *intl_mailbox)
  */
 void mutt_addr_set_local(struct Address *a, char *local_mailbox)
 {
+  if (!a)
+    return;
+
   FREE(&a->mailbox);
   a->mailbox = local_mailbox;
   a->intl_checked = true;
@@ -985,9 +1023,11 @@ void mutt_addr_set_local(struct Address *a, char *local_mailbox)
  */
 const char *mutt_addr_for_display(struct Address *a)
 {
+  if (!a)
+    return NULL;
+
   char *user = NULL, *domain = NULL;
   static char *buf = NULL;
-  char *local_mailbox = NULL;
 
   if (!a->mailbox || mutt_addr_is_local(a))
     return a->mailbox;
@@ -995,15 +1035,13 @@ const char *mutt_addr_for_display(struct Address *a)
   if (mutt_addr_mbox_to_udomain(a->mailbox, &user, &domain) == -1)
     return a->mailbox;
 
-  local_mailbox = mutt_idna_intl_to_local(user, domain, MI_MAY_BE_IRREVERSIBLE);
+  char *local_mailbox = mutt_idna_intl_to_local(user, domain, MI_MAY_BE_IRREVERSIBLE);
 
   FREE(&user);
   FREE(&domain);
 
   if (!local_mailbox)
-  {
     return a->mailbox;
-  }
 
   mutt_str_replace(&buf, local_mailbox);
   FREE(&local_mailbox);
@@ -1023,12 +1061,12 @@ const char *mutt_addr_for_display(struct Address *a)
  */
 void mutt_addr_write_single(char *buf, size_t buflen, struct Address *addr, bool display)
 {
+  if (!buf || !addr)
+    return;
+
   size_t len;
   char *pbuf = buf;
   char *pc = NULL;
-
-  if (!addr)
-    return;
 
   buflen--; /* save room for the terminal nul */
 
@@ -1145,6 +1183,9 @@ done:
  */
 size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool display)
 {
+  if (!buf || !addr)
+    return 0;
+
   char *pbuf = buf;
   size_t len = mutt_str_strlen(buf);
 
@@ -1327,6 +1368,9 @@ struct Address *mutt_addrlist_dedupe(struct Address *addr)
  */
 struct Address *mutt_addr_remove_xrefs(struct Address *a, struct Address *b)
 {
+  if (!a || !b)
+    return NULL;
+
   struct Address *p = NULL, *prev = NULL;
 
   struct Address *top = b;
