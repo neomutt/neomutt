@@ -29,4 +29,9 @@
 void test_mutt_grouplist_clear(void)
 {
   // void mutt_grouplist_clear(struct GroupList *head);
+
+  {
+    mutt_grouplist_clear(NULL);
+    TEST_CHECK_(1, "mutt_grouplist_clear(NULL)");
+  }
 }

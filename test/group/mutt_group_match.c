@@ -29,4 +29,13 @@
 void test_mutt_group_match(void)
 {
   // bool mutt_group_match(struct Group *g, const char *s);
+
+  {
+    TEST_CHECK(!mutt_group_match(NULL, "apple"));
+  }
+
+  {
+    struct Group group = { 0 };
+    TEST_CHECK(!mutt_group_match(&group, NULL));
+  }
 }

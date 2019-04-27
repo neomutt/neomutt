@@ -29,4 +29,9 @@
 void test_mutt_grouplist_destroy(void)
 {
   // void mutt_grouplist_destroy(struct GroupList *head);
+
+  {
+    mutt_grouplist_destroy(NULL);
+    TEST_CHECK_(1, "mutt_grouplist_destroy(NULL)");
+  }
 }
