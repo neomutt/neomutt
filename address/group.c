@@ -102,6 +102,9 @@ static void group_remove(struct Group *g)
  */
 void mutt_grouplist_clear(struct GroupList *head)
 {
+  if (!head)
+    return;
+
   struct GroupNode *np = STAILQ_FIRST(head), *next = NULL;
   while (np)
   {
@@ -132,6 +135,9 @@ static bool empty_group(struct Group *g)
  */
 void mutt_grouplist_add(struct GroupList *head, struct Group *group)
 {
+  if (!head || !group)
+    return;
+
   struct GroupNode *np = NULL;
   STAILQ_FOREACH(np, head, entries)
   {
@@ -149,6 +155,9 @@ void mutt_grouplist_add(struct GroupList *head, struct Group *group)
  */
 void mutt_grouplist_destroy(struct GroupList *head)
 {
+  if (!head)
+    return;
+
   struct GroupNode *np = STAILQ_FIRST(head), *next = NULL;
   while (np)
   {
@@ -166,12 +175,10 @@ void mutt_grouplist_destroy(struct GroupList *head)
  */
 static void group_add_addrlist(struct Group *g, struct Address *a)
 {
-  struct Address **p = NULL, *q = NULL;
+  if (!g || !a)
+    return;
 
-  if (!g)
-    return;
-  if (!a)
-    return;
+  struct Address **p = NULL, *q = NULL;
 
   for (p = &g->as; *p; p = &((*p)->next))
     ;
@@ -236,6 +243,9 @@ static int group_remove_regex(struct Group *g, const char *s)
  */
 void mutt_grouplist_add_addrlist(struct GroupList *head, struct Address *a)
 {
+  if (!head || !a)
+    return;
+
   struct GroupNode *np = NULL;
   STAILQ_FOREACH(np, head, entries)
   {
@@ -252,6 +262,9 @@ void mutt_grouplist_add_addrlist(struct GroupList *head, struct Address *a)
  */
 int mutt_grouplist_remove_addrlist(struct GroupList *head, struct Address *a)
 {
+  if (!head || !a)
+    return -1;
+
   int rc = 0;
   struct GroupNode *np = NULL;
 
@@ -278,6 +291,9 @@ int mutt_grouplist_remove_addrlist(struct GroupList *head, struct Address *a)
 int mutt_grouplist_add_regex(struct GroupList *head, const char *s, int flags,
                              struct Buffer *err)
 {
+  if (!head || !s)
+    return -1;
+
   int rc = 0;
 
   struct GroupNode *np = NULL;
@@ -299,6 +315,9 @@ int mutt_grouplist_add_regex(struct GroupList *head, const char *s, int flags,
  */
 int mutt_grouplist_remove_regex(struct GroupList *head, const char *s)
 {
+  if (!head || !s)
+    return -1;
+
   int rc = 0;
   struct GroupNode *np = NULL;
   STAILQ_FOREACH(np, head, entries)

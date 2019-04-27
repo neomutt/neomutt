@@ -446,7 +446,7 @@ distclean: clean
 # coverage testing
 coverage: all test
 	$(RM) lcov
-	lcov -t "test" -o lcov.info -c -d mutt -d config
+	lcov -t "test" -o lcov.info -c -d address -d config -d mutt
 	-genhtml -o lcov lcov.info -f
 	lcov -l lcov.info
 
