@@ -12,6 +12,7 @@ neomutt
 pgpewrap
 test/address-test
 test/config-test
+test/group-test
 test/neomutt-test
 test/path-test
 test/pattern-test

@@ -44,6 +44,19 @@ CONFIG_OBJS	= test/config/main.o test/config/account.o \
 		  test/config/regex.o test/config/set.o test/config/sort.o \
 		  test/config/string.o test/config/synonym.o
 
+GROUP_OBJS	= test/group/main.o \
+		  test/group/mutt_grouplist_add_addrlist.o \
+		  test/group/mutt_grouplist_add.o \
+		  test/group/mutt_grouplist_add_regex.o \
+		  test/group/mutt_grouplist_clear.o \
+		  test/group/mutt_grouplist_destroy.o \
+		  test/group/mutt_grouplist_free.o \
+		  test/group/mutt_grouplist_init.o \
+		  test/group/mutt_grouplist_remove_addrlist.o \
+		  test/group/mutt_grouplist_remove_regex.o \
+		  test/group/mutt_group_match.o \
+		  test/group/mutt_pattern_group.o
+
 PATH_OBJS	= test/path/main.o \
 		  test/path/mutt_path_abbr_folder.o \
 		  test/path/mutt_path_basename.o \
@@ -123,6 +136,8 @@ TEST_ADDRESS = test/address-test$(EXEEXT)
 
 TEST_CONFIG = test/config-test$(EXEEXT)
 
+TEST_GROUP = test/group-test$(EXEEXT)
+
 TEST_PATH = test/path-test$(EXEEXT)
 
 TEST_PATTERN = test/pattern-test$(EXEEXT)
@@ -130,10 +145,11 @@ TEST_PATTERN = test/pattern-test$(EXEEXT)
 TEST_STRING = test/string-test$(EXEEXT)
 
 .PHONY: test
-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_CONFIG) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
+test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_CONFIG) $(TEST_GROUP) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
 	$(TEST_BINARY)
 	$(TEST_ADDRESS)
 	$(TEST_CONFIG)
+	$(TEST_GROUP)
 	$(TEST_PATH)
 	$(TEST_PATTERN)
 	$(TEST_STRING)
@@ -146,6 +162,9 @@ $(TEST_ADDRESS): $(PWD)/test/address $(ADDRESS_OBJS) $(MUTTLIBS)
 
 $(TEST_CONFIG): $(PWD)/test/config $(CONFIG_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(CONFIG_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_GROUP): $(PWD)/test/group $(GROUP_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(GROUP_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
 $(TEST_PATH): $(PWD)/test/path $(PATH_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(PATH_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
@@ -162,6 +181,9 @@ $(PWD)/test/address:
 $(PWD)/test/config:
 	$(MKDIR_P) $(PWD)/test/config
 
+$(PWD)/test/group:
+	$(MKDIR_P) $(PWD)/test/group
+
 $(PWD)/test/path:
 	$(MKDIR_P) $(PWD)/test/path
 
@@ -171,12 +193,13 @@ $(PWD)/test/pattern:
 $(PWD)/test/string:
 	$(MKDIR_P) $(PWD)/test/string
 
-all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_CONFIG) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
+all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_CONFIG) $(TEST_GROUP) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
 
 clean-test:
 	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po) \
 	      $(TEST_ADDRESS) $(ADDRESS_OBJS) $(ADDRESS_OBJS:.o=.Po) \
 	      $(TEST_CONFIG) $(CONFIG_OBJS) $(CONFIG_OBJS:.o=.Po) \
+	      $(TEST_GROUP) $(GROUP_OBJS) $(GROUP_OBJS:.o=.Po) \
 	      $(TEST_PATH) $(PATH_OBJS) $(PATH_OBJS:.o=.Po) \
 	      $(TEST_PATTERN) $(PATTERN_OBJS) $(PATTERN_OBJS:.o=.Po) \
 	      $(TEST_STRING) $(STRING_OBJS) $(STRING_OBJS:.o=.Po)
@@ -192,6 +215,9 @@ ADDRESS_DEPFILES = $(ADDRESS_OBJS:.o=.Po)
 
 CONFIG_DEPFILES = $(CONFIG_OBJS:.o=.Po)
 -include $(CONFIG_DEPFILES)
+
+GROUP_DEPFILES = $(GROUP_OBJS:.o=.Po)
+-include $(GROUP_DEPFILES)
 
 PATH_DEPFILES = $(PATH_OBJS:.o=.Po)
 -include $(PATH_DEPFILES)
