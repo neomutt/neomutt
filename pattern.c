@@ -643,7 +643,7 @@ static bool eval_date_minmax(struct Pattern *pat, const char *s, struct Buffer *
     const char *pc = s;
 
     bool have_min = false;
-    int until_now = false;
+    bool until_now = false;
     if (isdigit((unsigned char) *pc))
     {
       /* minimum date specified */

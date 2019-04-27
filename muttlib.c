@@ -354,7 +354,7 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
  */
 void mutt_buffer_expand_path(struct Buffer *buf)
 {
-  mutt_buffer_expand_path_regex(buf, 0);
+  mutt_buffer_expand_path_regex(buf, false);
 }
 
 /**

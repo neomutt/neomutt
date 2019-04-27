@@ -781,10 +781,10 @@ static struct SmimeKey *smime_get_key_by_addr(char *mailbox, KeyFlags abilities,
   struct SmimeKey *trusted_match = NULL;
   struct SmimeKey *valid_match = NULL;
   struct SmimeKey *return_key = NULL;
-  int multi_trusted_matches = 0;
 
   if (!mailbox)
     return NULL;
+  bool multi_trusted_matches = false;
 
   results = smime_get_candidates(mailbox, public);
   for (result = results; result; result = result->next)
@@ -804,7 +804,7 @@ static struct SmimeKey *smime_get_key_by_addr(char *mailbox, KeyFlags abilities,
       {
         if (trusted_match && (mutt_str_strcasecmp(match->hash, trusted_match->hash) != 0))
         {
-          multi_trusted_matches = 1;
+          multi_trusted_matches = true;
         }
         trusted_match = match;
       }

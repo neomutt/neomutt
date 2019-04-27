@@ -766,7 +766,7 @@ static gpgme_data_t create_gpgme_data(void)
  *
  * Return true if the OpenPGP engine's version is at least VERSION.
  */
-static int have_gpg_version(const char *version)
+static bool have_gpg_version(const char *version)
 {
   static char *engine_version;
 
@@ -1559,12 +1559,12 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
   if (!key)
     return 1;
 
-  int severe = 0;
+  bool severe = false;
 
   if ((sum & GPGME_SIGSUM_KEY_REVOKED))
   {
     state_puts(_("Warning: One of the keys has been revoked\n"), s);
-    severe = 1;
+    severe = true;
   }
 
   if ((sum & GPGME_SIGSUM_KEY_EXPIRED))
@@ -1612,13 +1612,13 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
   if ((sum & GPGME_SIGSUM_CRL_MISSING))
   {
     state_puts(_("The CRL is not available\n"), s);
-    severe = 1;
+    severe = true;
   }
 
   if ((sum & GPGME_SIGSUM_CRL_TOO_OLD))
   {
     state_puts(_("Available CRL is too old\n"), s);
-    severe = 1;
+    severe = true;
   }
 
   if ((sum & GPGME_SIGSUM_BAD_POLICY))
@@ -2025,12 +2025,12 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
     verify_result = gpgme_op_verify_result(ctx);
     if (verify_result && verify_result->signatures)
     {
-      int anybad = 0;
+      bool anybad = false;
       int res;
       for (int idx = 0; (res = show_one_sig_status(ctx, idx, s)) != -1; idx++)
       {
         if (res == 1)
-          anybad = 1;
+          anybad = true;
         else if (res == 2)
           anywarn = 2;
       }
@@ -2485,7 +2485,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
   /* Before gpgme 1.9.0 and gpg 2.1.14 there was no side-effect free
    * way to view key data in GPGME, so we import the key into a
    * temporary keyring if we detect an older system.  */
-  int legacy_api;
+  bool legacy_api;
   char tmpdir[PATH_MAX];
   gpgme_ctx_t tmpctx;
   gpgme_error_t err;
@@ -2496,14 +2496,14 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
   const char *shortid = NULL;
   size_t len;
   char date[256];
-  int more;
+  bool more;
   int rc = -1;
   time_t tt;
 
 #if GPGME_VERSION_NUMBER >= 0x010900 /* gpgme >= 1.9.0 */
   legacy_api = !have_gpg_version("2.1.14");
 #else /* gpgme < 1.9.0 */
-  legacy_api = 1;
+  legacy_api = true;
 #endif
 
   tmpctx = create_gpgme_context(false);
@@ -2557,7 +2557,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
       break;
     uid = key->uids;
     subkey = key->subkeys;
-    more = 0;
+    more = false;
     while (subkey)
     {
       shortid = subkey->keyid;
@@ -2578,7 +2578,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
                 subkey->length, shortid, date);
       }
       subkey = subkey->next;
-      more = 1;
+      more = true;
     }
     gpgme_key_unref(key);
   }

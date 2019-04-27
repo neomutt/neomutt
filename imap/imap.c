@@ -338,7 +338,7 @@ static int sync_helper(struct Mailbox *m, AclFlags right, int flag, const char *
  *
  * Count the number of patterns that can be done by the server (are full-text).
  */
-static int do_search(const struct PatternHead *search, int allpats)
+static int do_search(const struct PatternHead *search, bool allpats)
 {
   int rc = 0;
   const struct Pattern *pat = NULL;
@@ -357,7 +357,7 @@ static int do_search(const struct PatternHead *search, int allpats)
         rc++;
         break;
       default:
-        if (pat->child && do_search(pat->child, 1))
+        if (pat->child && do_search(pat->child, true))
           rc++;
     }
 
@@ -384,7 +384,7 @@ static int compile_search(struct Mailbox *m, const struct PatternHead *pat, stru
 {
   struct Pattern *firstpat = SLIST_FIRST(pat);
 
-  if (do_search(pat, 0) == 0)
+  if (do_search(pat, false) == 0)
     return 0;
 
   if (firstpat->not)
@@ -394,14 +394,14 @@ static int compile_search(struct Mailbox *m, const struct PatternHead *pat, stru
   {
     int clauses;
 
-    clauses = do_search(firstpat->child, 1);
+    clauses = do_search(firstpat->child, true);
     if (clauses > 0)
     {
       mutt_buffer_addch(buf, '(');
 
       while (clauses)
       {
-        if (do_search(firstpat->child, 0))
+        if (do_search(firstpat->child, false))
         {
           if ((firstpat->op == MUTT_PAT_OR) && (clauses > 1))
             mutt_buffer_addstr(buf, "OR ");
@@ -1358,7 +1358,7 @@ int imap_search(struct Mailbox *m, const struct PatternHead *pat)
   for (int i = 0; i < m->msg_count; i++)
     m->emails[i]->matched = false;
 
-  if (do_search(pat, 1) == 0)
+  if (do_search(pat, true) == 0)
     return 0;
 
   mutt_buffer_init(&buf);

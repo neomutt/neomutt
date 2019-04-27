@@ -193,7 +193,7 @@ static const char *hcache_per_folder(const char *path, const char *folder, hcach
 
   int plen = mutt_str_strlen(path);
   int rc = stat(path, &sb);
-  int slash = (path[plen - 1] == '/');
+  bool slash = (path[plen - 1] == '/');
 
   if (((rc == 0) && !S_ISDIR(sb.st_mode)) || ((rc == -1) && !slash))
   {
