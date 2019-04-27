@@ -29,4 +29,8 @@
 void test_mutt_addrlist_to_local(void)
 {
   // int mutt_addrlist_to_local(struct Address *a);
+
+  {
+    TEST_CHECK(mutt_addrlist_to_local(NULL) == 0);
+  }
 }

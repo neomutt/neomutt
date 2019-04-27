@@ -29,4 +29,15 @@
 void test_mutt_addr_set_intl(void)
 {
   // void mutt_addr_set_intl(struct Address *a, char *intl_mailbox);
+
+  {
+    mutt_addr_set_intl(NULL, "apple");
+    TEST_CHECK_(1, "mutt_addr_set_intl(NULL, \"apple\")");
+  }
+
+  {
+    struct Address addr = { 0 };
+    mutt_addr_set_intl(&addr, NULL);
+    TEST_CHECK_(1, "mutt_addr_set_intl(&addr, NULL)");
+  }
 }

@@ -29,4 +29,13 @@
 void test_mutt_addr_remove_from_list(void)
 {
   // int mutt_addr_remove_from_list(struct Address **a, const char *mailbox);
+
+  {
+    TEST_CHECK(mutt_addr_remove_from_list(NULL, "apple") == -1);
+  }
+
+  {
+    struct Address *addr = NULL;
+    TEST_CHECK(mutt_addr_remove_from_list(&addr, NULL) == 0);
+  }
 }

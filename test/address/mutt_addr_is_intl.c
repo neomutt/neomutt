@@ -29,4 +29,8 @@
 void test_mutt_addr_is_intl(void)
 {
   // bool mutt_addr_is_intl(struct Address *a);
+
+  {
+    TEST_CHECK(!mutt_addr_is_intl(NULL));
+  }
 }

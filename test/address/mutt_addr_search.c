@@ -29,4 +29,14 @@
 void test_mutt_addr_search(void)
 {
   // bool mutt_addr_search(struct Address *a, struct Address *lst);
+
+  {
+    struct Address addr = { 0 };
+    TEST_CHECK(!mutt_addr_search(NULL, &addr));
+  }
+
+  {
+    struct Address addr = { 0 };
+    TEST_CHECK(!mutt_addr_search(&addr, NULL));
+  }
 }

@@ -29,4 +29,8 @@
 void test_mutt_addr_is_local(void)
 {
   // bool mutt_addr_is_local(struct Address *a);
+
+  {
+    TEST_CHECK(!mutt_addr_is_local(NULL));
+  }
 }

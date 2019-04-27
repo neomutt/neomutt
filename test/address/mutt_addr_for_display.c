@@ -29,4 +29,8 @@
 void test_mutt_addr_for_display(void)
 {
   // const char * mutt_addr_for_display(struct Address *a);
+
+  {
+    TEST_CHECK(!mutt_addr_for_display(NULL));
+  }
 }

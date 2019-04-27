@@ -29,4 +29,15 @@
 void test_mutt_addr_parse_list(void)
 {
   // struct Address *mutt_addr_parse_list(struct Address *top, const char *s);
+
+  {
+    struct Address *addr = NULL;
+    TEST_CHECK((addr = mutt_addr_parse_list(NULL, "apple")) != NULL);
+    mutt_addr_free(&addr);
+  }
+
+  {
+    struct Address addr = { 0 };
+    TEST_CHECK(!mutt_addr_parse_list(&addr, NULL));
+  }
 }

@@ -29,4 +29,8 @@
 void test_mutt_addr_copy(void)
 {
   // struct Address *mutt_addr_copy(struct Address *addr);
+
+  {
+    TEST_CHECK(!mutt_addr_copy(NULL));
+  }
 }

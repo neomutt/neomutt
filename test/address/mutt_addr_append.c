@@ -29,4 +29,14 @@
 void test_mutt_addr_append(void)
 {
   // struct Address *mutt_addr_append(struct Address **a, struct Address *b, bool prune);
+
+  {
+    struct Address addr = { 0 };
+    TEST_CHECK(!mutt_addr_append(NULL, &addr, false));
+  }
+
+  {
+    struct Address *addr = NULL;
+    TEST_CHECK(!mutt_addr_append(&addr, NULL, false));
+  }
 }

@@ -29,4 +29,15 @@
 void test_mutt_addr_qualify(void)
 {
   // void mutt_addr_qualify(struct Address *addr, const char *host);
+
+  {
+    mutt_addr_qualify(NULL, "example.com");
+    TEST_CHECK_(1, "mutt_addr_qualify(NULL, \"example.com\")");
+  }
+
+  {
+    struct Address addr = { 0 };
+    mutt_addr_qualify(&addr, NULL);
+    TEST_CHECK_(1, "mutt_addr_qualify(&addr, NULL)");
+  }
 }

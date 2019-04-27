@@ -29,4 +29,8 @@
 void test_mutt_addr_valid_msgid(void)
 {
   // bool mutt_addr_valid_msgid(const char *msgid);
+
+  {
+    TEST_CHECK(!mutt_addr_valid_msgid(NULL));
+  }
 }

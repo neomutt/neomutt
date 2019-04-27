@@ -29,4 +29,14 @@
 void test_mutt_addr_cmp(void)
 {
   // bool mutt_addr_cmp(struct Address *a, struct Address *b);
+
+  {
+    struct Address addr = { 0 };
+    TEST_CHECK(!mutt_addr_cmp(NULL, &addr));
+  }
+
+  {
+    struct Address addr = { 0 };
+    TEST_CHECK(!mutt_addr_cmp(&addr, NULL));
+  }
 }

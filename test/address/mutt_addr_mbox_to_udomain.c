@@ -29,4 +29,20 @@
 void test_mutt_addr_mbox_to_udomain(void)
 {
   // int mutt_addr_mbox_to_udomain(const char *mbox, char **user, char **domain);
+
+  {
+    char *user = NULL;
+    char *domain = NULL;
+    TEST_CHECK(mutt_addr_mbox_to_udomain(NULL, &user, &domain) == -1);
+  }
+
+  {
+    char *domain = NULL;
+    TEST_CHECK(mutt_addr_mbox_to_udomain("apple", NULL, &domain) == -1);
+  }
+
+  {
+    char *user = NULL;
+    TEST_CHECK(mutt_addr_mbox_to_udomain("apple", &user, NULL) == -1);
+  }
 }

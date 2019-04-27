@@ -29,4 +29,14 @@
 void test_mutt_addr_remove_xrefs(void)
 {
   // struct Address *mutt_addr_remove_xrefs(struct Address *a, struct Address *b);
+
+  {
+    struct Address addr = { 0 };
+    TEST_CHECK(mutt_addr_remove_xrefs(NULL, &addr) == NULL);
+  }
+
+  {
+    struct Address addr = { 0 };
+    TEST_CHECK(mutt_addr_remove_xrefs(&addr, NULL) == NULL);
+  }
 }

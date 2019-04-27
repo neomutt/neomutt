@@ -29,4 +29,9 @@
 void test_mutt_addr_free(void)
 {
   // void mutt_addr_free(struct Address **p);
+
+  {
+    mutt_addr_free(NULL);
+    TEST_CHECK_(1, "mutt_addr_free(NULL)");
+  }
 }

@@ -29,4 +29,14 @@
 void test_mutt_addr_write(void)
 {
   // size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool display);
+
+  {
+    struct Address addr = { 0 };
+    TEST_CHECK(mutt_addr_write(NULL, 32, &addr, false) == 0);
+  }
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(mutt_addr_write(buf, sizeof(buf), NULL, false) == 0);
+  }
 }

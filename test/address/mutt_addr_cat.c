@@ -29,4 +29,23 @@
 void test_mutt_addr_cat(void)
 {
   // void mutt_addr_cat(char *buf, size_t buflen, const char *value, const char *specials);
+
+  const char MimeSpecials[] = "@.,;:<>[]\\\"()?/= \t";
+
+  {
+    mutt_addr_cat(NULL, 32, "apple", MimeSpecials);
+    TEST_CHECK_(1, "mutt_addr_cat(NULL, 32, \"apple\", MimeSpecials)");
+  }
+
+  {
+    char buf[32];
+    mutt_addr_cat(buf, sizeof(buf), NULL, MimeSpecials);
+    TEST_CHECK_(1, "mutt_addr_cat(buf, sizeof(buf), NULL, MimeSpecials)");
+  }
+
+  {
+    char buf[32];
+    mutt_addr_cat(buf, sizeof(buf), "apple", NULL);
+    TEST_CHECK_(1, "mutt_addr_cat(buf, sizeof(buf), \"apple\", NULL)");
+  }
 }

@@ -29,4 +29,15 @@
 void test_mutt_addr_set_local(void)
 {
   // void mutt_addr_set_local(struct Address *a, char *local_mailbox);
+
+  {
+    mutt_addr_set_local(NULL, "apple");
+    TEST_CHECK_(1, "mutt_addr_set_local(NULL, \"apple\")");
+  }
+
+  {
+    struct Address addr = { 0 };
+    mutt_addr_set_local(&addr, NULL);
+    TEST_CHECK_(1, "mutt_addr_set_local(&addr, NULL)");
+  }
 }

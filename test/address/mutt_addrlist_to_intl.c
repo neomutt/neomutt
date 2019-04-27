@@ -29,4 +29,14 @@
 void test_mutt_addrlist_to_intl(void)
 {
   // int mutt_addrlist_to_intl(struct Address *a, char **err);
+
+  {
+    char *err = NULL;
+    TEST_CHECK(mutt_addrlist_to_intl(NULL, &err) == 0);
+  }
+
+  {
+    struct Address addr = { 0 };
+    TEST_CHECK(mutt_addrlist_to_intl(&addr, NULL) == 0);
+  }
 }
