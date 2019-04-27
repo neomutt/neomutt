@@ -29,4 +29,12 @@
 void test_mutt_idna_intl_to_local(void)
 {
   // char * mutt_idna_intl_to_local(const char *user, const char *domain, int flags);
+
+  {
+    TEST_CHECK(!mutt_idna_intl_to_local(NULL, "banana", 0));
+  }
+
+  {
+    TEST_CHECK(!mutt_idna_intl_to_local("apple", NULL, 0));
+  }
 }

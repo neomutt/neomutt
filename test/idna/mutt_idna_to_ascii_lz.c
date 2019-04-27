@@ -29,4 +29,13 @@
 void test_mutt_idna_to_ascii_lz(void)
 {
   // int mutt_idna_to_ascii_lz(const char *input, char **output, int flags);
+
+  {
+    char *out = NULL;
+    TEST_CHECK(mutt_idna_to_ascii_lz(NULL, &out, 0) == -1);
+  }
+
+  {
+    TEST_CHECK(mutt_idna_to_ascii_lz("apple", NULL, 0) == -1);
+  }
 }
