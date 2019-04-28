@@ -46,6 +46,7 @@ test/signal-test
 test/string-test
 test/tags-test
 test/thread-test
+test/url-test
 
 # Build products
 *.o
