@@ -251,6 +251,15 @@ MBYTE_OBJS	= test/mbyte/main.o \
 		  test/mbyte/mutt_mb_width.o \
 		  test/mbyte/mutt_mb_width_ceiling.o
 
+MD5_OBJS	= test/md5/main.o \
+		  test/md5/mutt_md5_bytes.o \
+		  test/md5/mutt_md5.o \
+		  test/md5/mutt_md5_finish_ctx.o \
+		  test/md5/mutt_md5_init_ctx.o \
+		  test/md5/mutt_md5_process_bytes.o \
+		  test/md5/mutt_md5_process.o \
+		  test/md5/mutt_md5_toascii.o
+
 PATH_OBJS	= test/path/main.o \
 		  test/path/mutt_path_abbr_folder.o \
 		  test/path/mutt_path_basename.o \
@@ -358,6 +367,8 @@ TEST_MAPPING = test/mapping-test$(EXEEXT)
 
 TEST_MBYTE = test/mbyte-test$(EXEEXT)
 
+TEST_MD5 = test/md5-test$(EXEEXT)
+
 TEST_PATH = test/path-test$(EXEEXT)
 
 TEST_PATTERN = test/pattern-test$(EXEEXT)
@@ -365,7 +376,7 @@ TEST_PATTERN = test/pattern-test$(EXEEXT)
 TEST_STRING = test/string-test$(EXEEXT)
 
 .PHONY: test
-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_MBYTE) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
+test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_MBYTE) $(TEST_MD5) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
 	$(TEST_BINARY)
 	$(TEST_ADDRESS)
 	$(TEST_BASE64)
@@ -382,6 +393,7 @@ test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSE
 	$(TEST_LOGGING)
 	$(TEST_MAPPING)
 	$(TEST_MBYTE)
+	$(TEST_MD5)
 	$(TEST_PATH)
 	$(TEST_PATTERN)
 	$(TEST_STRING)
@@ -436,6 +448,9 @@ $(TEST_MAPPING): $(PWD)/test/mapping $(MAPPING_OBJS) $(MUTTLIBS)
 
 $(TEST_MBYTE): $(PWD)/test/mbyte $(MBYTE_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(MBYTE_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_MD5): $(PWD)/test/md5 $(MD5_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(MD5_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
 $(TEST_PATH): $(PWD)/test/path $(PATH_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(PATH_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
@@ -494,6 +509,9 @@ $(PWD)/test/mapping:
 $(PWD)/test/mbyte:
 	$(MKDIR_P) $(PWD)/test/mbyte
 
+$(PWD)/test/md5:
+	$(MKDIR_P) $(PWD)/test/md5
+
 $(PWD)/test/path:
 	$(MKDIR_P) $(PWD)/test/path
 
@@ -503,7 +521,7 @@ $(PWD)/test/pattern:
 $(PWD)/test/string:
 	$(MKDIR_P) $(PWD)/test/string
 
-all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_MBYTE) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
+all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_MBYTE) $(TEST_MD5) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
 
 clean-test:
 	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po) \
@@ -522,6 +540,7 @@ clean-test:
 	      $(TEST_LOGGING) $(LOGGING_OBJS) $(LOGGING_OBJS:.o=.Po) \
 	      $(TEST_MAPPING) $(MAPPING_OBJS) $(MAPPING_OBJS:.o=.Po) \
 	      $(TEST_MBYTE) $(MBYTE_OBJS) $(MBYTE_OBJS:.o=.Po) \
+	      $(TEST_MD5) $(MD5_OBJS) $(MD5_OBJS:.o=.Po) \
 	      $(TEST_PATH) $(PATH_OBJS) $(PATH_OBJS:.o=.Po) \
 	      $(TEST_PATTERN) $(PATTERN_OBJS) $(PATTERN_OBJS:.o=.Po) \
 	      $(TEST_STRING) $(STRING_OBJS) $(STRING_OBJS:.o=.Po)
@@ -579,6 +598,9 @@ MAPPING_DEPFILES = $(MAPPING_OBJS:.o=.Po)
 
 MBYTE_DEPFILES = $(MBYTE_OBJS:.o=.Po)
 -include $(MBYTE_DEPFILES)
+
+MD5_DEPFILES = $(MD5_OBJS:.o=.Po)
+-include $(MD5_DEPFILES)
 
 PATH_DEPFILES = $(PATH_OBJS:.o=.Po)
 -include $(PATH_DEPFILES)
