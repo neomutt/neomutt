@@ -35,6 +35,7 @@ test/md5-test
 test/memory-test
 test/neomutt-test
 test/parameter-test
+test/parse-test
 test/path-test
 test/pattern-test
 test/regex-test
