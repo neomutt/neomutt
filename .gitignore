@@ -20,6 +20,7 @@ test/envlist-test
 test/file-test
 test/group-test
 test/hash-test
+test/history-test
 test/idna-test
 test/neomutt-test
 test/path-test
