@@ -27,6 +27,7 @@ test/logging-test
 test/mapping-test
 test/mbyte-test
 test/md5-test
+test/memory-test
 test/neomutt-test
 test/path-test
 test/pattern-test
