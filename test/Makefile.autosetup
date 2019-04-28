@@ -237,6 +237,20 @@ MAPPING_OBJS	= test/mapping/main.o \
 		  test/mapping/mutt_map_get_name.o \
 		  test/mapping/mutt_map_get_value.o
 
+MBYTE_OBJS	= test/mbyte/main.o \
+		  test/mbyte/mutt_mb_charlen.o \
+		  test/mbyte/mutt_mb_filter_unprintable.o \
+		  test/mbyte/mutt_mb_get_initials.o \
+		  test/mbyte/mutt_mb_is_display_corrupting_utf8.o \
+		  test/mbyte/mutt_mb_is_lower.o \
+		  test/mbyte/mutt_mb_is_shell_char.o \
+		  test/mbyte/mutt_mb_mbstowcs.o \
+		  test/mbyte/mutt_mb_wcstombs.o \
+		  test/mbyte/mutt_mb_wcswidth.o \
+		  test/mbyte/mutt_mb_wcwidth.o \
+		  test/mbyte/mutt_mb_width.o \
+		  test/mbyte/mutt_mb_width_ceiling.o
+
 PATH_OBJS	= test/path/main.o \
 		  test/path/mutt_path_abbr_folder.o \
 		  test/path/mutt_path_basename.o \
@@ -342,6 +356,8 @@ TEST_LOGGING = test/logging-test$(EXEEXT)
 
 TEST_MAPPING = test/mapping-test$(EXEEXT)
 
+TEST_MBYTE = test/mbyte-test$(EXEEXT)
+
 TEST_PATH = test/path-test$(EXEEXT)
 
 TEST_PATTERN = test/pattern-test$(EXEEXT)
@@ -349,7 +365,7 @@ TEST_PATTERN = test/pattern-test$(EXEEXT)
 TEST_STRING = test/string-test$(EXEEXT)
 
 .PHONY: test
-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
+test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_MBYTE) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
 	$(TEST_BINARY)
 	$(TEST_ADDRESS)
 	$(TEST_BASE64)
@@ -365,6 +381,7 @@ test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSE
 	$(TEST_LIST)
 	$(TEST_LOGGING)
 	$(TEST_MAPPING)
+	$(TEST_MBYTE)
 	$(TEST_PATH)
 	$(TEST_PATTERN)
 	$(TEST_STRING)
@@ -416,6 +433,9 @@ $(TEST_LOGGING): $(PWD)/test/logging $(LOGGING_OBJS) $(MUTTLIBS)
 
 $(TEST_MAPPING): $(PWD)/test/mapping $(MAPPING_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(MAPPING_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_MBYTE): $(PWD)/test/mbyte $(MBYTE_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(MBYTE_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
 $(TEST_PATH): $(PWD)/test/path $(PATH_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(PATH_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
@@ -471,6 +491,9 @@ $(PWD)/test/logging:
 $(PWD)/test/mapping:
 	$(MKDIR_P) $(PWD)/test/mapping
 
+$(PWD)/test/mbyte:
+	$(MKDIR_P) $(PWD)/test/mbyte
+
 $(PWD)/test/path:
 	$(MKDIR_P) $(PWD)/test/path
 
@@ -480,7 +503,7 @@ $(PWD)/test/pattern:
 $(PWD)/test/string:
 	$(MKDIR_P) $(PWD)/test/string
 
-all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
+all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_MBYTE) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
 
 clean-test:
 	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po) \
@@ -498,6 +521,7 @@ clean-test:
 	      $(TEST_LIST) $(LIST_OBJS) $(LIST_OBJS:.o=.Po) \
 	      $(TEST_LOGGING) $(LOGGING_OBJS) $(LOGGING_OBJS:.o=.Po) \
 	      $(TEST_MAPPING) $(MAPPING_OBJS) $(MAPPING_OBJS:.o=.Po) \
+	      $(TEST_MBYTE) $(MBYTE_OBJS) $(MBYTE_OBJS:.o=.Po) \
 	      $(TEST_PATH) $(PATH_OBJS) $(PATH_OBJS:.o=.Po) \
 	      $(TEST_PATTERN) $(PATTERN_OBJS) $(PATTERN_OBJS:.o=.Po) \
 	      $(TEST_STRING) $(STRING_OBJS) $(STRING_OBJS:.o=.Po)
@@ -552,6 +576,9 @@ LOGGING_DEPFILES = $(LOGGING_OBJS:.o=.Po)
 
 MAPPING_DEPFILES = $(MAPPING_OBJS:.o=.Po)
 -include $(MAPPING_DEPFILES)
+
+MBYTE_DEPFILES = $(MBYTE_OBJS:.o=.Po)
+-include $(MBYTE_DEPFILES)
 
 PATH_DEPFILES = $(PATH_OBJS:.o=.Po)
 -include $(PATH_DEPFILES)
