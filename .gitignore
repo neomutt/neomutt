@@ -19,6 +19,7 @@ test/charset-test
 test/config-test
 test/date-test
 test/email-test
+test/envelope-test
 test/envlist-test
 test/file-test
 test/group-test

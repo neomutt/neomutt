@@ -129,6 +129,14 @@ EMAIL_OBJS	= test/email/main.o \
 		  test/email/mutt_email_size.o \
 		  test/email/mutt_email_cmp_strict.o
 
+ENVELOPE_OBJS	= test/envelope/main.o \
+		  test/envelope/mutt_env_free.o \
+		  test/envelope/mutt_env_cmp_strict.o \
+		  test/envelope/mutt_env_to_local.o \
+		  test/envelope/mutt_env_merge.o \
+		  test/envelope/mutt_env_new.o \
+		  test/envelope/mutt_env_to_intl.o
+
 ENVLIST_OBJS	= test/envlist/main.o \
 		  test/envlist/mutt_envlist_free.o \
 		  test/envlist/mutt_envlist_getlist.o \
@@ -409,6 +417,8 @@ TEST_DATE = test/date-test$(EXEEXT)
 
 TEST_EMAIL = test/email-test$(EXEEXT)
 
+TEST_ENVELOPE = test/envelope-test$(EXEEXT)
+
 TEST_ENVLIST = test/envlist-test$(EXEEXT)
 
 TEST_FILE = test/file-test$(EXEEXT)
@@ -446,7 +456,7 @@ TEST_SIGNAL = test/signal-test$(EXEEXT)
 TEST_STRING = test/string-test$(EXEEXT)
 
 .PHONY: test
-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_ATTACH) $(TEST_BASE64) $(TEST_BODY) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_EMAIL) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_MBYTE) $(TEST_MD5) $(TEST_MEMORY) $(TEST_PATH) $(TEST_PATTERN) $(TEST_REGEX) $(TEST_SHA1) $(TEST_SIGNAL) $(TEST_STRING)
+test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_ATTACH) $(TEST_BASE64) $(TEST_BODY) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_EMAIL) $(TEST_ENVELOPE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_MBYTE) $(TEST_MD5) $(TEST_MEMORY) $(TEST_PATH) $(TEST_PATTERN) $(TEST_REGEX) $(TEST_SHA1) $(TEST_SIGNAL) $(TEST_STRING)
 	$(TEST_BINARY)
 	$(TEST_ADDRESS)
 	$(TEST_ATTACH)
@@ -456,6 +466,7 @@ test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_ATTACH) $(TEST_BASE64) $(TEST_BODY) 
 	$(TEST_CONFIG)
 	$(TEST_DATE)
 	$(TEST_EMAIL)
+	$(TEST_ENVELOPE)
 	$(TEST_ENVLIST)
 	$(TEST_FILE)
 	$(TEST_GROUP)
@@ -504,6 +515,9 @@ $(TEST_DATE): $(PWD)/test/date $(DATE_OBJS) $(MUTTLIBS)
 
 $(TEST_EMAIL): $(PWD)/test/email $(EMAIL_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(EMAIL_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_ENVELOPE): $(PWD)/test/envelope $(ENVELOPE_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(ENVELOPE_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
 $(TEST_ENVLIST): $(PWD)/test/envlist $(ENVLIST_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(ENVLIST_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
@@ -586,6 +600,9 @@ $(PWD)/test/date:
 $(PWD)/test/email:
 	$(MKDIR_P) $(PWD)/test/email
 
+$(PWD)/test/envelope:
+	$(MKDIR_P) $(PWD)/test/envelope
+
 $(PWD)/test/envlist:
 	$(MKDIR_P) $(PWD)/test/envlist
 
@@ -640,7 +657,7 @@ $(PWD)/test/signal:
 $(PWD)/test/string:
 	$(MKDIR_P) $(PWD)/test/string
 
-all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_ATTACH) $(TEST_BASE64) $(TEST_BODY) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_EMAIL) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_MBYTE) $(TEST_MD5) $(TEST_MEMORY) $(TEST_PATH) $(TEST_PATTERN) $(TEST_REGEX) $(TEST_SHA1) $(TEST_SIGNAL) $(TEST_STRING)
+all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_ATTACH) $(TEST_BASE64) $(TEST_BODY) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_EMAIL) $(TEST_ENVELOPE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_MBYTE) $(TEST_MD5) $(TEST_MEMORY) $(TEST_PATH) $(TEST_PATTERN) $(TEST_REGEX) $(TEST_SHA1) $(TEST_SIGNAL) $(TEST_STRING)
 
 clean-test:
 	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po) \
@@ -653,6 +670,7 @@ clean-test:
 	      $(TEST_CONFIG) $(CONFIG_OBJS) $(CONFIG_OBJS:.o=.Po) \
 	      $(TEST_DATE) $(DATE_OBJS) $(DATE_OBJS:.o=.Po) \
 	      $(TEST_EMAIL) $(EMAIL_OBJS) $(EMAIL_OBJS:.o=.Po) \
+	      $(TEST_ENVELOPE) $(ENVELOPE_OBJS) $(ENVELOPE_OBJS:.o=.Po) \
 	      $(TEST_ENVLIST) $(ENVLIST_OBJS) $(ENVLIST_OBJS:.o=.Po) \
 	      $(TEST_FILE) $(FILE_OBJS) $(FILE_OBJS:.o=.Po) \
 	      $(TEST_GROUP) $(GROUP_OBJS) $(GROUP_OBJS:.o=.Po) \
@@ -704,6 +722,9 @@ DATE_DEPFILES = $(DATE_OBJS:.o=.Po)
 
 EMAIL_DEPFILES = $(EMAIL_OBJS:.o=.Po)
 -include $(EMAIL_DEPFILES)
+
+ENVELOPE_DEPFILES = $(ENVELOPE_OBJS:.o=.Po)
+-include $(ENVELOPE_DEPFILES)
 
 ENVLIST_DEPFILES = $(ENVLIST_OBJS:.o=.Po)
 -include $(ENVLIST_DEPFILES)
