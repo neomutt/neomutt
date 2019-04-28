@@ -35,6 +35,12 @@ ADDRESS_OBJS	= test/address/main.o \
 		  test/address/mutt_addr_write.o \
 		  test/address/mutt_addr_write_single.o
 
+BASE64_OBJS	= test/base64/main.o \
+		  test/base64/mutt_b64_buffer_decode.o \
+		  test/base64/mutt_b64_buffer_encode.o \
+		  test/base64/mutt_b64_decode.o \
+		  test/base64/mutt_b64_encode.o
+
 CONFIG_OBJS	= test/config/main.o test/config/account.o \
 		  test/config/address.o test/config/bool.o \
 		  test/config/command.o test/config/common.o test/config/dump.o \
@@ -140,6 +146,8 @@ TEST_BINARY = test/neomutt-test$(EXEEXT)
 
 TEST_ADDRESS = test/address-test$(EXEEXT)
 
+TEST_BASE64 = test/base64-test$(EXEEXT)
+
 TEST_CONFIG = test/config-test$(EXEEXT)
 
 TEST_GROUP = test/group-test$(EXEEXT)
@@ -153,9 +161,10 @@ TEST_PATTERN = test/pattern-test$(EXEEXT)
 TEST_STRING = test/string-test$(EXEEXT)
 
 .PHONY: test
-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_CONFIG) $(TEST_GROUP) $(TEST_IDNA) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
+test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_CONFIG) $(TEST_GROUP) $(TEST_IDNA) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
 	$(TEST_BINARY)
 	$(TEST_ADDRESS)
+	$(TEST_BASE64)
 	$(TEST_CONFIG)
 	$(TEST_GROUP)
 	$(TEST_IDNA)
@@ -168,6 +177,9 @@ $(TEST_BINARY): $(TEST_OBJS) $(MUTTLIBS)
 
 $(TEST_ADDRESS): $(PWD)/test/address $(ADDRESS_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(ADDRESS_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_BASE64): $(PWD)/test/base64 $(BASE64_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(BASE64_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
 $(TEST_CONFIG): $(PWD)/test/config $(CONFIG_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(CONFIG_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
@@ -190,6 +202,9 @@ $(TEST_STRING): $(PWD)/test/string $(STRING_OBJS) $(MUTTLIBS)
 $(PWD)/test/address:
 	$(MKDIR_P) $(PWD)/test/address
 
+$(PWD)/test/base64:
+	$(MKDIR_P) $(PWD)/test/base64
+
 $(PWD)/test/config:
 	$(MKDIR_P) $(PWD)/test/config
 
@@ -208,11 +223,12 @@ $(PWD)/test/pattern:
 $(PWD)/test/string:
 	$(MKDIR_P) $(PWD)/test/string
 
-all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_CONFIG) $(TEST_GROUP) $(TEST_IDNA) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
+all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_CONFIG) $(TEST_GROUP) $(TEST_IDNA) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
 
 clean-test:
 	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po) \
 	      $(TEST_ADDRESS) $(ADDRESS_OBJS) $(ADDRESS_OBJS:.o=.Po) \
+	      $(TEST_BASE64) $(BASE64_OBJS) $(BASE64_OBJS:.o=.Po) \
 	      $(TEST_CONFIG) $(CONFIG_OBJS) $(CONFIG_OBJS:.o=.Po) \
 	      $(TEST_GROUP) $(GROUP_OBJS) $(GROUP_OBJS:.o=.Po) \
 	      $(TEST_IDNA) $(IDNA_OBJS) $(IDNA_OBJS:.o=.Po) \
@@ -228,6 +244,9 @@ TEST_DEPFILES = $(TEST_OBJS:.o=.Po)
 
 ADDRESS_DEPFILES = $(ADDRESS_OBJS:.o=.Po)
 -include $(ADDRESS_DEPFILES)
+
+BASE64_DEPFILES = $(BASE64_OBJS:.o=.Po)
+-include $(BASE64_DEPFILES)
 
 CONFIG_DEPFILES = $(CONFIG_OBJS:.o=.Po)
 -include $(CONFIG_DEPFILES)
