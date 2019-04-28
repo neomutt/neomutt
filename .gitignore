@@ -44,6 +44,7 @@ test/rfc2231-test
 test/sha1-test
 test/signal-test
 test/string-test
+test/tags-test
 
 # Build products
 *.o
