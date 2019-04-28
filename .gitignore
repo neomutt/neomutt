@@ -31,6 +31,7 @@ test/memory-test
 test/neomutt-test
 test/path-test
 test/pattern-test
+test/regex-test
 test/string-test
 
 # Build products
