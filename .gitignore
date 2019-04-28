@@ -45,6 +45,7 @@ test/sha1-test
 test/signal-test
 test/string-test
 test/tags-test
+test/thread-test
 
 # Build products
 *.o
