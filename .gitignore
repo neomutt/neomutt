@@ -24,6 +24,7 @@ test/history-test
 test/idna-test
 test/list-test
 test/logging-test
+test/mapping-test
 test/neomutt-test
 test/path-test
 test/pattern-test

@@ -233,6 +233,10 @@ LOGGING_OBJS	= test/logging/main.o \
 		  test/logging/log_queue_save.o \
 		  test/logging/log_queue_set_max_size.o
 
+MAPPING_OBJS	= test/mapping/main.o \
+		  test/mapping/mutt_map_get_name.o \
+		  test/mapping/mutt_map_get_value.o
+
 PATH_OBJS	= test/path/main.o \
 		  test/path/mutt_path_abbr_folder.o \
 		  test/path/mutt_path_basename.o \
@@ -336,6 +340,8 @@ TEST_LIST = test/list-test$(EXEEXT)
 
 TEST_LOGGING = test/logging-test$(EXEEXT)
 
+TEST_MAPPING = test/mapping-test$(EXEEXT)
+
 TEST_PATH = test/path-test$(EXEEXT)
 
 TEST_PATTERN = test/pattern-test$(EXEEXT)
@@ -343,7 +349,7 @@ TEST_PATTERN = test/pattern-test$(EXEEXT)
 TEST_STRING = test/string-test$(EXEEXT)
 
 .PHONY: test
-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
+test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
 	$(TEST_BINARY)
 	$(TEST_ADDRESS)
 	$(TEST_BASE64)
@@ -358,6 +364,7 @@ test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSE
 	$(TEST_IDNA)
 	$(TEST_LIST)
 	$(TEST_LOGGING)
+	$(TEST_MAPPING)
 	$(TEST_PATH)
 	$(TEST_PATTERN)
 	$(TEST_STRING)
@@ -406,6 +413,9 @@ $(TEST_LIST): $(PWD)/test/list $(LIST_OBJS) $(MUTTLIBS)
 
 $(TEST_LOGGING): $(PWD)/test/logging $(LOGGING_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(LOGGING_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_MAPPING): $(PWD)/test/mapping $(MAPPING_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(MAPPING_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
 $(TEST_PATH): $(PWD)/test/path $(PATH_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(PATH_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
@@ -458,6 +468,9 @@ $(PWD)/test/list:
 $(PWD)/test/logging:
 	$(MKDIR_P) $(PWD)/test/logging
 
+$(PWD)/test/mapping:
+	$(MKDIR_P) $(PWD)/test/mapping
+
 $(PWD)/test/path:
 	$(MKDIR_P) $(PWD)/test/path
 
@@ -467,7 +480,7 @@ $(PWD)/test/pattern:
 $(PWD)/test/string:
 	$(MKDIR_P) $(PWD)/test/string
 
-all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
+all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
 
 clean-test:
 	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po) \
@@ -484,6 +497,7 @@ clean-test:
 	      $(TEST_IDNA) $(IDNA_OBJS) $(IDNA_OBJS:.o=.Po) \
 	      $(TEST_LIST) $(LIST_OBJS) $(LIST_OBJS:.o=.Po) \
 	      $(TEST_LOGGING) $(LOGGING_OBJS) $(LOGGING_OBJS:.o=.Po) \
+	      $(TEST_MAPPING) $(MAPPING_OBJS) $(MAPPING_OBJS:.o=.Po) \
 	      $(TEST_PATH) $(PATH_OBJS) $(PATH_OBJS:.o=.Po) \
 	      $(TEST_PATTERN) $(PATTERN_OBJS) $(PATTERN_OBJS:.o=.Po) \
 	      $(TEST_STRING) $(STRING_OBJS) $(STRING_OBJS:.o=.Po)
@@ -535,6 +549,9 @@ LIST_DEPFILES = $(LIST_OBJS:.o=.Po)
 
 LOGGING_DEPFILES = $(LOGGING_OBJS:.o=.Po)
 -include $(LOGGING_DEPFILES)
+
+MAPPING_DEPFILES = $(MAPPING_OBJS:.o=.Po)
+-include $(MAPPING_DEPFILES)
 
 PATH_DEPFILES = $(PATH_OBJS:.o=.Po)
 -include $(PATH_DEPFILES)
