@@ -48,6 +48,11 @@ BASE64_OBJS	= test/base64/main.o \
 		  test/base64/mutt_b64_decode.o \
 		  test/base64/mutt_b64_encode.o
 
+BODY_OBJS	= test/body/main.o \
+		  test/body/mutt_body_free.o \
+		  test/body/mutt_body_cmp_strict.o \
+		  test/body/mutt_body_new.o
+
 BUFFER_OBJS	= test/buffer/main.o \
 		  test/buffer/mutt_buffer_addch.o \
 		  test/buffer/mutt_buffer_add_printf.o \
@@ -386,6 +391,8 @@ TEST_ATTACH = test/attach-test$(EXEEXT)
 
 TEST_BASE64 = test/base64-test$(EXEEXT)
 
+TEST_BODY = test/body-test$(EXEEXT)
+
 TEST_BUFFER = test/buffer-test$(EXEEXT)
 
 TEST_CHARSET = test/charset-test$(EXEEXT)
@@ -431,11 +438,12 @@ TEST_SIGNAL = test/signal-test$(EXEEXT)
 TEST_STRING = test/string-test$(EXEEXT)
 
 .PHONY: test
-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_ATTACH) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_MBYTE) $(TEST_MD5) $(TEST_MEMORY) $(TEST_PATH) $(TEST_PATTERN) $(TEST_REGEX) $(TEST_SHA1) $(TEST_SIGNAL) $(TEST_STRING)
+test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_ATTACH) $(TEST_BASE64) $(TEST_BODY) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_MBYTE) $(TEST_MD5) $(TEST_MEMORY) $(TEST_PATH) $(TEST_PATTERN) $(TEST_REGEX) $(TEST_SHA1) $(TEST_SIGNAL) $(TEST_STRING)
 	$(TEST_BINARY)
 	$(TEST_ADDRESS)
 	$(TEST_ATTACH)
 	$(TEST_BASE64)
+	$(TEST_BODY)
 	$(TEST_BUFFER)
 	$(TEST_CONFIG)
 	$(TEST_DATE)
@@ -469,6 +477,9 @@ $(TEST_ATTACH): $(PWD)/test/attach $(ATTACH_OBJS) $(MUTTLIBS)
 
 $(TEST_BASE64): $(PWD)/test/base64 $(BASE64_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(BASE64_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_BODY): $(PWD)/test/body $(BODY_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(BODY_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
 $(TEST_BUFFER): $(PWD)/test/buffer $(BUFFER_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(BUFFER_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
@@ -545,6 +556,9 @@ $(PWD)/test/attach:
 $(PWD)/test/base64:
 	$(MKDIR_P) $(PWD)/test/base64
 
+$(PWD)/test/body:
+	$(MKDIR_P) $(PWD)/test/body
+
 $(PWD)/test/buffer:
 	$(MKDIR_P) $(PWD)/test/buffer
 
@@ -611,13 +625,15 @@ $(PWD)/test/signal:
 $(PWD)/test/string:
 	$(MKDIR_P) $(PWD)/test/string
 
-all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_ATTACH) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_MBYTE) $(TEST_MD5) $(TEST_MEMORY) $(TEST_PATH) $(TEST_PATTERN) $(TEST_REGEX) $(TEST_SHA1) $(TEST_SIGNAL) $(TEST_STRING)
+all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_ATTACH) $(TEST_BASE64) $(TEST_BODY) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_MBYTE) $(TEST_MD5) $(TEST_MEMORY) $(TEST_PATH) $(TEST_PATTERN) $(TEST_REGEX) $(TEST_SHA1) $(TEST_SIGNAL) $(TEST_STRING)
 
 clean-test:
 	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po) \
 	      $(TEST_ADDRESS) $(ADDRESS_OBJS) $(ADDRESS_OBJS:.o=.Po) \
 	      $(TEST_ATTACH) $(ATTACH_OBJS) $(ATTACH_OBJS:.o=.Po) \
 	      $(TEST_BASE64) $(BASE64_OBJS) $(BASE64_OBJS:.o=.Po) \
+	      $(TEST_BODY) $(BODY_OBJS) $(BODY_OBJS:.o=.Po) \
+	      $(TEST_BUFFER) $(BUFFER_OBJS) $(BUFFER_OBJS:.o=.Po) \
 	      $(TEST_CHARSET) $(CHARSET_OBJS) $(CHARSET_OBJS:.o=.Po) \
 	      $(TEST_CONFIG) $(CONFIG_OBJS) $(CONFIG_OBJS:.o=.Po) \
 	      $(TEST_DATE) $(DATE_OBJS) $(DATE_OBJS:.o=.Po) \
@@ -654,6 +670,9 @@ ATTACH_DEPFILES = $(ATTACH_OBJS:.o=.Po)
 
 BASE64_DEPFILES = $(BASE64_OBJS:.o=.Po)
 -include $(BASE64_DEPFILES)
+
+BODY_DEPFILES = $(BODY_OBJS:.o=.Po)
+-include $(BODY_DEPFILES)
 
 BUFFER_DEPFILES = $(BUFFER_OBJS:.o=.Po)
 -include $(BUFFER_DEPFILES)

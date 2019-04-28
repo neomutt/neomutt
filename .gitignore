@@ -13,6 +13,7 @@ pgpewrap
 test/address-test
 test/attach-test
 test/base64-test
+test/body-test
 test/buffer-test
 test/charset-test
 test/config-test
