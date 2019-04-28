@@ -111,6 +111,13 @@ DATE_OBJS	= test/date/main.o \
 		  test/date/mutt_date_parse_date.o \
 		  test/date/mutt_date_parse_imap.o
 
+ENVLIST_OBJS	= test/envlist/main.o \
+		  test/envlist/mutt_envlist_free.o \
+		  test/envlist/mutt_envlist_getlist.o \
+		  test/envlist/mutt_envlist_init.o \
+		  test/envlist/mutt_envlist_set.o \
+		  test/envlist/mutt_envlist_unset.o
+
 GROUP_OBJS	= test/group/main.o \
 		  test/group/mutt_grouplist_add_addrlist.o \
 		  test/group/mutt_grouplist_add.o \
@@ -217,6 +224,8 @@ TEST_CONFIG = test/config-test$(EXEEXT)
 
 TEST_DATE = test/date-test$(EXEEXT)
 
+TEST_ENVLIST = test/envlist-test$(EXEEXT)
+
 TEST_GROUP = test/group-test$(EXEEXT)
 
 TEST_IDNA = test/idna-test$(EXEEXT)
@@ -228,13 +237,14 @@ TEST_PATTERN = test/pattern-test$(EXEEXT)
 TEST_STRING = test/string-test$(EXEEXT)
 
 .PHONY: test
-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_GROUP) $(TEST_IDNA) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
+test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_ENVLIST) $(TEST_GROUP) $(TEST_IDNA) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
 	$(TEST_BINARY)
 	$(TEST_ADDRESS)
 	$(TEST_BASE64)
 	$(TEST_BUFFER)
 	$(TEST_CONFIG)
 	$(TEST_DATE)
+	$(TEST_ENVLIST)
 	$(TEST_GROUP)
 	$(TEST_IDNA)
 	$(TEST_PATH)
@@ -261,6 +271,9 @@ $(TEST_CONFIG): $(PWD)/test/config $(CONFIG_OBJS) $(MUTTLIBS)
 
 $(TEST_DATE): $(PWD)/test/date $(DATE_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(DATE_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_ENVLIST): $(PWD)/test/envlist $(ENVLIST_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(ENVLIST_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
 $(TEST_GROUP): $(PWD)/test/group $(GROUP_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(GROUP_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
@@ -295,6 +308,9 @@ $(PWD)/test/config:
 $(PWD)/test/date:
 	$(MKDIR_P) $(PWD)/test/date
 
+$(PWD)/test/envlist:
+	$(MKDIR_P) $(PWD)/test/envlist
+
 $(PWD)/test/group:
 	$(MKDIR_P) $(PWD)/test/group
 
@@ -310,7 +326,7 @@ $(PWD)/test/pattern:
 $(PWD)/test/string:
 	$(MKDIR_P) $(PWD)/test/string
 
-all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_GROUP) $(TEST_IDNA) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
+all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_ENVLIST) $(TEST_GROUP) $(TEST_IDNA) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
 
 clean-test:
 	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po) \
@@ -319,6 +335,7 @@ clean-test:
 	      $(TEST_CHARSET) $(CHARSET_OBJS) $(CHARSET_OBJS:.o=.Po) \
 	      $(TEST_CONFIG) $(CONFIG_OBJS) $(CONFIG_OBJS:.o=.Po) \
 	      $(TEST_DATE) $(DATE_OBJS) $(DATE_OBJS:.o=.Po) \
+	      $(TEST_ENVLIST) $(ENVLIST_OBJS) $(ENVLIST_OBJS:.o=.Po) \
 	      $(TEST_GROUP) $(GROUP_OBJS) $(GROUP_OBJS:.o=.Po) \
 	      $(TEST_IDNA) $(IDNA_OBJS) $(IDNA_OBJS:.o=.Po) \
 	      $(TEST_PATH) $(PATH_OBJS) $(PATH_OBJS:.o=.Po) \
@@ -348,6 +365,9 @@ CONFIG_DEPFILES = $(CONFIG_OBJS:.o=.Po)
 
 DATE_DEPFILES = $(DATE_OBJS:.o=.Po)
 -include $(DATE_DEPFILES)
+
+ENVLIST_DEPFILES = $(ENVLIST_OBJS:.o=.Po)
+-include $(ENVLIST_DEPFILES)
 
 GROUP_DEPFILES = $(GROUP_OBJS:.o=.Po)
 -include $(GROUP_DEPFILES)
