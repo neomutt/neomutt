@@ -95,6 +95,22 @@ CONFIG_OBJS	= test/config/main.o test/config/account.o \
 		  test/config/regex.o test/config/set.o test/config/sort.o \
 		  test/config/string.o test/config/synonym.o
 
+DATE_OBJS	= test/date/main.o \
+		  test/date/mutt_date_add_timeout.o \
+		  test/date/mutt_date_check_month.o \
+		  test/date/mutt_date_gmtime.o \
+		  test/date/mutt_date_is_day_name.o \
+		  test/date/mutt_date_localtime.o \
+		  test/date/mutt_date_localtime_format.o \
+		  test/date/mutt_date_local_tz.o \
+		  test/date/mutt_date_make_date.o \
+		  test/date/mutt_date_make_imap.o \
+		  test/date/mutt_date_make_time.o \
+		  test/date/mutt_date_make_tls.o \
+		  test/date/mutt_date_normalize_time.o \
+		  test/date/mutt_date_parse_date.o \
+		  test/date/mutt_date_parse_imap.o
+
 GROUP_OBJS	= test/group/main.o \
 		  test/group/mutt_grouplist_add_addrlist.o \
 		  test/group/mutt_grouplist_add.o \
@@ -199,6 +215,8 @@ TEST_CHARSET = test/charset-test$(EXEEXT)
 
 TEST_CONFIG = test/config-test$(EXEEXT)
 
+TEST_DATE = test/date-test$(EXEEXT)
+
 TEST_GROUP = test/group-test$(EXEEXT)
 
 TEST_IDNA = test/idna-test$(EXEEXT)
@@ -210,12 +228,13 @@ TEST_PATTERN = test/pattern-test$(EXEEXT)
 TEST_STRING = test/string-test$(EXEEXT)
 
 .PHONY: test
-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_GROUP) $(TEST_IDNA) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
+test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_GROUP) $(TEST_IDNA) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
 	$(TEST_BINARY)
 	$(TEST_ADDRESS)
 	$(TEST_BASE64)
 	$(TEST_BUFFER)
 	$(TEST_CONFIG)
+	$(TEST_DATE)
 	$(TEST_GROUP)
 	$(TEST_IDNA)
 	$(TEST_PATH)
@@ -239,6 +258,9 @@ $(TEST_CHARSET): $(PWD)/test/charset $(CHARSET_OBJS) $(MUTTLIBS)
 
 $(TEST_CONFIG): $(PWD)/test/config $(CONFIG_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(CONFIG_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_DATE): $(PWD)/test/date $(DATE_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(DATE_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
 $(TEST_GROUP): $(PWD)/test/group $(GROUP_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(GROUP_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
@@ -270,6 +292,9 @@ $(PWD)/test/charset:
 $(PWD)/test/config:
 	$(MKDIR_P) $(PWD)/test/config
 
+$(PWD)/test/date:
+	$(MKDIR_P) $(PWD)/test/date
+
 $(PWD)/test/group:
 	$(MKDIR_P) $(PWD)/test/group
 
@@ -285,7 +310,7 @@ $(PWD)/test/pattern:
 $(PWD)/test/string:
 	$(MKDIR_P) $(PWD)/test/string
 
-all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_GROUP) $(TEST_IDNA) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
+all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_GROUP) $(TEST_IDNA) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
 
 clean-test:
 	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po) \
@@ -293,6 +318,7 @@ clean-test:
 	      $(TEST_BASE64) $(BASE64_OBJS) $(BASE64_OBJS:.o=.Po) \
 	      $(TEST_CHARSET) $(CHARSET_OBJS) $(CHARSET_OBJS:.o=.Po) \
 	      $(TEST_CONFIG) $(CONFIG_OBJS) $(CONFIG_OBJS:.o=.Po) \
+	      $(TEST_DATE) $(DATE_OBJS) $(DATE_OBJS:.o=.Po) \
 	      $(TEST_GROUP) $(GROUP_OBJS) $(GROUP_OBJS:.o=.Po) \
 	      $(TEST_IDNA) $(IDNA_OBJS) $(IDNA_OBJS:.o=.Po) \
 	      $(TEST_PATH) $(PATH_OBJS) $(PATH_OBJS:.o=.Po) \
@@ -319,6 +345,9 @@ CHARSET_DEPFILES = $(CHARSET_OBJS:.o=.Po)
 
 CONFIG_DEPFILES = $(CONFIG_OBJS:.o=.Po)
 -include $(CONFIG_DEPFILES)
+
+DATE_DEPFILES = $(DATE_OBJS:.o=.Po)
+-include $(DATE_DEPFILES)
 
 GROUP_DEPFILES = $(GROUP_OBJS:.o=.Po)
 -include $(GROUP_DEPFILES)

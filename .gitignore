@@ -15,6 +15,7 @@ test/base64-test
 test/buffer-test
 test/charset-test
 test/config-test
+test/date-test
 test/group-test
 test/idna-test
 test/neomutt-test
