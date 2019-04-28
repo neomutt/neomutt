@@ -18,6 +18,7 @@ test/buffer-test
 test/charset-test
 test/config-test
 test/date-test
+test/email-test
 test/envlist-test
 test/file-test
 test/group-test
