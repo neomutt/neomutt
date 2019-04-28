@@ -12,6 +12,7 @@ neomutt
 pgpewrap
 test/address-test
 test/base64-test
+test/buffer-test
 test/config-test
 test/group-test
 test/idna-test
