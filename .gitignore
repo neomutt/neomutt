@@ -11,6 +11,7 @@ doc/makedoc
 neomutt
 pgpewrap
 test/address-test
+test/attach-test
 test/base64-test
 test/buffer-test
 test/charset-test
