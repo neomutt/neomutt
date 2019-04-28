@@ -32,6 +32,7 @@ test/neomutt-test
 test/path-test
 test/pattern-test
 test/regex-test
+test/sha1-test
 test/string-test
 
 # Build products
