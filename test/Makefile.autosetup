@@ -64,6 +64,28 @@ BUFFER_OBJS	= test/buffer/main.o \
 		  test/buffer/mutt_buffer_strcpy.o \
 		  test/buffer/mutt_buffer_strcpy_n.o
 
+CHARSET_OBJS	= test/charset/main.o \
+		  test/charset/mutt_ch_canonical_charset.o \
+		  test/charset/mutt_ch_charset_lookup.o \
+		  test/charset/mutt_ch_check.o \
+		  test/charset/mutt_ch_check_charset.o \
+		  test/charset/mutt_ch_choose.o \
+		  test/charset/mutt_ch_chscmp.o \
+		  test/charset/mutt_ch_convert_nonmime_string.o \
+		  test/charset/mutt_ch_convert_string.o \
+		  test/charset/mutt_ch_fgetconv.o \
+		  test/charset/mutt_ch_fgetconv_close.o \
+		  test/charset/mutt_ch_fgetconv_open.o \
+		  test/charset/mutt_ch_fgetconvs.o \
+		  test/charset/mutt_ch_get_default_charset.o \
+		  test/charset/mutt_ch_get_langinfo_charset.o \
+		  test/charset/mutt_ch_iconv.o \
+		  test/charset/mutt_ch_iconv_lookup.o \
+		  test/charset/mutt_ch_iconv_open.o \
+		  test/charset/mutt_ch_lookup_add.o \
+		  test/charset/mutt_ch_lookup_remove.o \
+		  test/charset/mutt_ch_set_charset.o
+
 CONFIG_OBJS	= test/config/main.o test/config/account.o \
 		  test/config/address.o test/config/bool.o \
 		  test/config/command.o test/config/common.o test/config/dump.o \
@@ -173,6 +195,8 @@ TEST_BASE64 = test/base64-test$(EXEEXT)
 
 TEST_BUFFER = test/buffer-test$(EXEEXT)
 
+TEST_CHARSET = test/charset-test$(EXEEXT)
+
 TEST_CONFIG = test/config-test$(EXEEXT)
 
 TEST_GROUP = test/group-test$(EXEEXT)
@@ -186,7 +210,7 @@ TEST_PATTERN = test/pattern-test$(EXEEXT)
 TEST_STRING = test/string-test$(EXEEXT)
 
 .PHONY: test
-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CONFIG) $(TEST_GROUP) $(TEST_IDNA) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
+test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_GROUP) $(TEST_IDNA) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
 	$(TEST_BINARY)
 	$(TEST_ADDRESS)
 	$(TEST_BASE64)
@@ -209,6 +233,9 @@ $(TEST_BASE64): $(PWD)/test/base64 $(BASE64_OBJS) $(MUTTLIBS)
 
 $(TEST_BUFFER): $(PWD)/test/buffer $(BUFFER_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(BUFFER_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_CHARSET): $(PWD)/test/charset $(CHARSET_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(CHARSET_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
 $(TEST_CONFIG): $(PWD)/test/config $(CONFIG_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(CONFIG_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
@@ -237,6 +264,9 @@ $(PWD)/test/base64:
 $(PWD)/test/buffer:
 	$(MKDIR_P) $(PWD)/test/buffer
 
+$(PWD)/test/charset:
+	$(MKDIR_P) $(PWD)/test/charset
+
 $(PWD)/test/config:
 	$(MKDIR_P) $(PWD)/test/config
 
@@ -255,12 +285,13 @@ $(PWD)/test/pattern:
 $(PWD)/test/string:
 	$(MKDIR_P) $(PWD)/test/string
 
-all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CONFIG) $(TEST_GROUP) $(TEST_IDNA) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
+all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_GROUP) $(TEST_IDNA) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
 
 clean-test:
 	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po) \
 	      $(TEST_ADDRESS) $(ADDRESS_OBJS) $(ADDRESS_OBJS:.o=.Po) \
 	      $(TEST_BASE64) $(BASE64_OBJS) $(BASE64_OBJS:.o=.Po) \
+	      $(TEST_CHARSET) $(CHARSET_OBJS) $(CHARSET_OBJS:.o=.Po) \
 	      $(TEST_CONFIG) $(CONFIG_OBJS) $(CONFIG_OBJS:.o=.Po) \
 	      $(TEST_GROUP) $(GROUP_OBJS) $(GROUP_OBJS:.o=.Po) \
 	      $(TEST_IDNA) $(IDNA_OBJS) $(IDNA_OBJS:.o=.Po) \
@@ -282,6 +313,9 @@ BASE64_DEPFILES = $(BASE64_OBJS:.o=.Po)
 
 BUFFER_DEPFILES = $(BUFFER_OBJS:.o=.Po)
 -include $(BUFFER_DEPFILES)
+
+CHARSET_DEPFILES = $(CHARSET_OBJS:.o=.Po)
+-include $(CHARSET_DEPFILES)
 
 CONFIG_DEPFILES = $(CONFIG_OBJS:.o=.Po)
 -include $(CONFIG_DEPFILES)
