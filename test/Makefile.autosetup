@@ -295,6 +295,15 @@ MEMORY_OBJS	= test/memory/main.o \
 		  test/memory/mutt_mem_malloc.o \
 		  test/memory/mutt_mem_realloc.o
 
+PARAMETER_OBJS	= test/parameter/main.o \
+		  test/parameter/mutt_param_new.o \
+		  test/parameter/mutt_param_delete.o \
+		  test/parameter/mutt_param_get.o \
+		  test/parameter/mutt_param_cmp_strict.o \
+		  test/parameter/mutt_param_free_one.o \
+		  test/parameter/mutt_param_set.o \
+		  test/parameter/mutt_param_free.o
+
 PATH_OBJS	= test/path/main.o \
 		  test/path/mutt_path_abbr_folder.o \
 		  test/path/mutt_path_basename.o \
@@ -448,6 +457,8 @@ TEST_MD5 = test/md5-test$(EXEEXT)
 
 TEST_MEMORY = test/memory-test$(EXEEXT)
 
+TEST_PARAMETER = test/parameter-test$(EXEEXT)
+
 TEST_PATH = test/path-test$(EXEEXT)
 
 TEST_PATTERN = test/pattern-test$(EXEEXT)
@@ -461,7 +472,7 @@ TEST_SIGNAL = test/signal-test$(EXEEXT)
 TEST_STRING = test/string-test$(EXEEXT)
 
 .PHONY: test
-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_ATTACH) $(TEST_BASE64) $(TEST_BODY) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_EMAIL) $(TEST_ENVELOPE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_FROM) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_MBYTE) $(TEST_MD5) $(TEST_MEMORY) $(TEST_PATH) $(TEST_PATTERN) $(TEST_REGEX) $(TEST_SHA1) $(TEST_SIGNAL) $(TEST_STRING)
+test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_ATTACH) $(TEST_BASE64) $(TEST_BODY) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_EMAIL) $(TEST_ENVELOPE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_FROM) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_MBYTE) $(TEST_MD5) $(TEST_MEMORY) $(TEST_PARAMETER) $(TEST_PATH) $(TEST_PATTERN) $(TEST_REGEX) $(TEST_SHA1) $(TEST_SIGNAL) $(TEST_STRING)
 	$(TEST_BINARY)
 	$(TEST_ADDRESS)
 	$(TEST_ATTACH)
@@ -485,6 +496,7 @@ test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_ATTACH) $(TEST_BASE64) $(TEST_BODY) 
 	$(TEST_MBYTE)
 	$(TEST_MD5)
 	$(TEST_MEMORY)
+	$(TEST_PARAMETER)
 	$(TEST_PATH)
 	$(TEST_PATTERN)
 	$(TEST_REGEX)
@@ -563,6 +575,9 @@ $(TEST_MD5): $(PWD)/test/md5 $(MD5_OBJS) $(MUTTLIBS)
 
 $(TEST_MEMORY): $(PWD)/test/memory $(MEMORY_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(MEMORY_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_PARAMETER): $(PWD)/test/parameter $(PARAMETER_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(PARAMETER_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
 $(TEST_PATH): $(PWD)/test/path $(PATH_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(PATH_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
@@ -651,6 +666,9 @@ $(PWD)/test/md5:
 $(PWD)/test/memory:
 	$(MKDIR_P) $(PWD)/test/memory
 
+$(PWD)/test/parameter:
+	$(MKDIR_P) $(PWD)/test/parameter
+
 $(PWD)/test/path:
 	$(MKDIR_P) $(PWD)/test/path
 
@@ -669,7 +687,7 @@ $(PWD)/test/signal:
 $(PWD)/test/string:
 	$(MKDIR_P) $(PWD)/test/string
 
-all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_ATTACH) $(TEST_BASE64) $(TEST_BODY) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_EMAIL) $(TEST_ENVELOPE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_FROM) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_MBYTE) $(TEST_MD5) $(TEST_MEMORY) $(TEST_PATH) $(TEST_PATTERN) $(TEST_REGEX) $(TEST_SHA1) $(TEST_SIGNAL) $(TEST_STRING)
+all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_ATTACH) $(TEST_BASE64) $(TEST_BODY) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_EMAIL) $(TEST_ENVELOPE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_FROM) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_MBYTE) $(TEST_MD5) $(TEST_MEMORY) $(TEST_PARAMETER) $(TEST_PATH) $(TEST_PATTERN) $(TEST_REGEX) $(TEST_SHA1) $(TEST_SIGNAL) $(TEST_STRING)
 
 clean-test:
 	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po) \
@@ -696,6 +714,7 @@ clean-test:
 	      $(TEST_MBYTE) $(MBYTE_OBJS) $(MBYTE_OBJS:.o=.Po) \
 	      $(TEST_MD5) $(MD5_OBJS) $(MD5_OBJS:.o=.Po) \
 	      $(TEST_MEMORY) $(MEMORY_OBJS) $(MEMORY_OBJS:.o=.Po) \
+	      $(TEST_PARAMETER) $(PARAMETER_OBJS) $(PARAMETER_OBJS:.o=.Po) \
 	      $(TEST_PATH) $(PATH_OBJS) $(PATH_OBJS:.o=.Po) \
 	      $(TEST_PATTERN) $(PATTERN_OBJS) $(PATTERN_OBJS:.o=.Po) \
 	      $(TEST_REGEX) $(REGEX_OBJS) $(REGEX_OBJS:.o=.Po) \
@@ -777,6 +796,9 @@ MD5_DEPFILES = $(MD5_OBJS:.o=.Po)
 
 MEMORY_DEPFILES = $(MEMORY_OBJS:.o=.Po)
 -include $(MEMORY_DEPFILES)
+
+PARAMETER_DEPFILES = $(PARAMETER_OBJS:.o=.Po)
+-include $(PARAMETER_DEPFILES)
 
 PATH_DEPFILES = $(PATH_OBJS:.o=.Po)
 -include $(PATH_DEPFILES)
