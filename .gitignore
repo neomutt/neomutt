@@ -33,6 +33,7 @@ test/path-test
 test/pattern-test
 test/regex-test
 test/sha1-test
+test/signal-test
 test/string-test
 
 # Build products

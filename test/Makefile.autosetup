@@ -311,6 +311,16 @@ SHA1_OBJS	= test/sha1/main.o \
 		  test/sha1/mutt_sha1_transform.o \
 		  test/sha1/mutt_sha1_update.o
 
+SIGNAL_OBJS	= test/signal/main.o \
+		  test/signal/mutt_sig_allow_interrupt.o \
+		  test/signal/mutt_sig_block.o \
+		  test/signal/mutt_sig_block_system.o \
+		  test/signal/mutt_sig_empty_handler.o \
+		  test/signal/mutt_sig_exit_handler.o \
+		  test/signal/mutt_sig_init.o \
+		  test/signal/mutt_sig_unblock.o \
+		  test/signal/mutt_sig_unblock_system.o
+
 STRING_OBJS	= test/string/main.o \
 		  test/string/mutt_str_adjust.o \
 		  test/string/mutt_str_append_item.o \
@@ -407,10 +417,12 @@ TEST_REGEX = test/regex-test$(EXEEXT)
 
 TEST_SHA1 = test/sha1-test$(EXEEXT)
 
+TEST_SIGNAL = test/signal-test$(EXEEXT)
+
 TEST_STRING = test/string-test$(EXEEXT)
 
 .PHONY: test
-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_MBYTE) $(TEST_MD5) $(TEST_MEMORY) $(TEST_PATH) $(TEST_PATTERN) $(TEST_REGEX) $(TEST_SHA1) $(TEST_STRING)
+test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_MBYTE) $(TEST_MD5) $(TEST_MEMORY) $(TEST_PATH) $(TEST_PATTERN) $(TEST_REGEX) $(TEST_SHA1) $(TEST_SIGNAL) $(TEST_STRING)
 	$(TEST_BINARY)
 	$(TEST_ADDRESS)
 	$(TEST_BASE64)
@@ -433,6 +445,7 @@ test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSE
 	$(TEST_PATTERN)
 	$(TEST_REGEX)
 	$(TEST_SHA1)
+	$(TEST_SIGNAL)
 	$(TEST_STRING)
 
 $(TEST_BINARY): $(TEST_OBJS) $(MUTTLIBS)
@@ -504,6 +517,9 @@ $(TEST_REGEX): $(PWD)/test/regex $(REGEX_OBJS) $(MUTTLIBS)
 $(TEST_SHA1): $(PWD)/test/sha1 $(SHA1_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(SHA1_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
+$(TEST_SIGNAL): $(PWD)/test/signal $(SIGNAL_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(SIGNAL_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
 $(TEST_STRING): $(PWD)/test/string $(STRING_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(STRING_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
@@ -573,10 +589,13 @@ $(PWD)/test/regex:
 $(PWD)/test/sha1:
 	$(MKDIR_P) $(PWD)/test/sha1
 
+$(PWD)/test/signal:
+	$(MKDIR_P) $(PWD)/test/signal
+
 $(PWD)/test/string:
 	$(MKDIR_P) $(PWD)/test/string
 
-all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_MBYTE) $(TEST_MD5) $(TEST_MEMORY) $(TEST_PATH) $(TEST_PATTERN) $(TEST_REGEX) $(TEST_SHA1) $(TEST_STRING)
+all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_MBYTE) $(TEST_MD5) $(TEST_MEMORY) $(TEST_PATH) $(TEST_PATTERN) $(TEST_REGEX) $(TEST_SHA1) $(TEST_SIGNAL) $(TEST_STRING)
 
 clean-test:
 	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po) \
@@ -601,6 +620,7 @@ clean-test:
 	      $(TEST_PATTERN) $(PATTERN_OBJS) $(PATTERN_OBJS:.o=.Po) \
 	      $(TEST_REGEX) $(REGEX_OBJS) $(REGEX_OBJS:.o=.Po) \
 	      $(TEST_SHA1) $(SHA1_OBJS) $(SHA1_OBJS:.o=.Po) \
+	      $(TEST_SIGNAL) $(SIGNAL_OBJS) $(SIGNAL_OBJS:.o=.Po) \
 	      $(TEST_STRING) $(STRING_OBJS) $(STRING_OBJS:.o=.Po)
 
 install-test:
@@ -674,6 +694,9 @@ REGEX_DEPFILES = $(REGEX_OBJS:.o=.Po)
 
 SHA1_DEPFILES = $(SHA1_OBJS:.o=.Po)
 -include $(SHA1_DEPFILES)
+
+SIGNAL_DEPFILES = $(SIGNAL_OBJS:.o=.Po)
+-include $(SIGNAL_DEPFILES)
 
 STRING_DEPFILES = $(STRING_OBJS:.o=.Po)
 -include $(STRING_DEPFILES)
