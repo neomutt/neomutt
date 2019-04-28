@@ -22,6 +22,7 @@ test/email-test
 test/envelope-test
 test/envlist-test
 test/file-test
+test/from-test
 test/group-test
 test/hash-test
 test/history-test
