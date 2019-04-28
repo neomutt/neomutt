@@ -17,6 +17,7 @@ test/charset-test
 test/config-test
 test/date-test
 test/envlist-test
+test/file-test
 test/group-test
 test/idna-test
 test/neomutt-test
