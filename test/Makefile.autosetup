@@ -172,6 +172,22 @@ GROUP_OBJS	= test/group/main.o \
 		  test/group/mutt_group_match.o \
 		  test/group/mutt_pattern_group.o
 
+HASH_OBJS	= test/hash/main.o \
+		  test/hash/mutt_hash_delete.o \
+		  test/hash/mutt_hash_find_bucket.o \
+		  test/hash/mutt_hash_find.o \
+		  test/hash/mutt_hash_find_elem.o \
+		  test/hash/mutt_hash_free.o \
+		  test/hash/mutt_hash_insert.o \
+		  test/hash/mutt_hash_int_delete.o \
+		  test/hash/mutt_hash_int_find.o \
+		  test/hash/mutt_hash_int_insert.o \
+		  test/hash/mutt_hash_int_new.o \
+		  test/hash/mutt_hash_new.o \
+		  test/hash/mutt_hash_set_destructor.o \
+		  test/hash/mutt_hash_typed_insert.o \
+		  test/hash/mutt_hash_walk.o
+
 IDNA_OBJS	= test/idna/main.o \
 		  test/idna/mutt_idna_intl_to_local.o \
 		  test/idna/mutt_idna_local_to_intl.o \
@@ -271,6 +287,8 @@ TEST_FILE = test/file-test$(EXEEXT)
 
 TEST_GROUP = test/group-test$(EXEEXT)
 
+TEST_HASH = test/hash-test$(EXEEXT)
+
 TEST_IDNA = test/idna-test$(EXEEXT)
 
 TEST_PATH = test/path-test$(EXEEXT)
@@ -280,7 +298,7 @@ TEST_PATTERN = test/pattern-test$(EXEEXT)
 TEST_STRING = test/string-test$(EXEEXT)
 
 .PHONY: test
-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_IDNA) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
+test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_HASH) $(TEST_IDNA) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
 	$(TEST_BINARY)
 	$(TEST_ADDRESS)
 	$(TEST_BASE64)
@@ -290,6 +308,7 @@ test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSE
 	$(TEST_ENVLIST)
 	$(TEST_FILE)
 	$(TEST_GROUP)
+	$(TEST_HASH)
 	$(TEST_IDNA)
 	$(TEST_PATH)
 	$(TEST_PATTERN)
@@ -324,6 +343,9 @@ $(TEST_FILE): $(PWD)/test/file $(FILE_OBJS) $(MUTTLIBS)
 
 $(TEST_GROUP): $(PWD)/test/group $(GROUP_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(GROUP_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_HASH): $(PWD)/test/hash $(HASH_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(HASH_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
 $(TEST_IDNA): $(PWD)/test/idna $(IDNA_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(IDNA_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
@@ -364,6 +386,9 @@ $(PWD)/test/file:
 $(PWD)/test/group:
 	$(MKDIR_P) $(PWD)/test/group
 
+$(PWD)/test/hash:
+	$(MKDIR_P) $(PWD)/test/hash
+
 $(PWD)/test/idna:
 	$(MKDIR_P) $(PWD)/test/idna
 
@@ -376,7 +401,7 @@ $(PWD)/test/pattern:
 $(PWD)/test/string:
 	$(MKDIR_P) $(PWD)/test/string
 
-all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_IDNA) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
+all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_BASE64) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_GROUP) $(TEST_HASH) $(TEST_IDNA) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
 
 clean-test:
 	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po) \
@@ -388,6 +413,7 @@ clean-test:
 	      $(TEST_ENVLIST) $(ENVLIST_OBJS) $(ENVLIST_OBJS:.o=.Po) \
 	      $(TEST_FILE) $(FILE_OBJS) $(FILE_OBJS:.o=.Po) \
 	      $(TEST_GROUP) $(GROUP_OBJS) $(GROUP_OBJS:.o=.Po) \
+	      $(TEST_HASH) $(HASH_OBJS) $(HASH_OBJS:.o=.Po) \
 	      $(TEST_IDNA) $(IDNA_OBJS) $(IDNA_OBJS:.o=.Po) \
 	      $(TEST_PATH) $(PATH_OBJS) $(PATH_OBJS:.o=.Po) \
 	      $(TEST_PATTERN) $(PATTERN_OBJS) $(PATTERN_OBJS:.o=.Po) \
@@ -425,6 +451,9 @@ FILE_DEPFILES = $(FILE_OBJS:.o=.Po)
 
 GROUP_DEPFILES = $(GROUP_OBJS:.o=.Po)
 -include $(GROUP_DEPFILES)
+
+HASH_DEPFILES = $(HASH_OBJS:.o=.Po)
+-include $(HASH_DEPFILES)
 
 IDNA_DEPFILES = $(IDNA_OBJS:.o=.Po)
 -include $(IDNA_DEPFILES)
