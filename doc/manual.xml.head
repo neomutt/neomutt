@@ -17204,8 +17204,10 @@ bind index D purge-message
           a unique fashion. In order to do so, NeoMutt will <quote>leak</quote>
           some information to the outside world when sending messages: the
           generation of this header includes a step counter which is increased
-          (and rotated) with every message sent. In a longer running NeoMutt
-          session, others can make assumptions about your mailing habits
+          (and rotated) with every message sent. Other parts include the date,
+          time, PID of NeoMutt, and <link linkend="hostname">$hostname</link>.
+          In a longer running NeoMutt session, others can
+          make assumptions about your mailing habits
           depending on the number of messages sent. If this is not desired, the
           header can be manually provided using
           <link linkend="edit-headers">$edit_headers</link> (though not
