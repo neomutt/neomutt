@@ -312,7 +312,7 @@ static enum CommandResult icmd_set(struct Buffer *buf, struct Buffer *s,
   FILE *fp_out = mutt_file_fopen(tempfile, "w");
   if (!fp_out)
   {
-    mutt_buffer_addstr(err, _("Could not create temporary file"));
+    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
     return MUTT_CMD_ERROR;
   }
 
@@ -335,7 +335,7 @@ static enum CommandResult icmd_set(struct Buffer *buf, struct Buffer *s,
   struct Pager info = { 0 };
   if (mutt_pager("set", tempfile, MUTT_PAGER_NO_FLAGS, &info) == -1)
   {
-    mutt_buffer_addstr(err, _("Could not create temporary file"));
+    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
     return MUTT_CMD_ERROR;
   }
 
@@ -354,7 +354,7 @@ static enum CommandResult icmd_version(struct Buffer *buf, struct Buffer *s,
   FILE *fp_out = mutt_file_fopen(tempfile, "w");
   if (!fp_out)
   {
-    mutt_buffer_addstr(err, _("Could not create temporary file"));
+    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
     return MUTT_CMD_ERROR;
   }
 
@@ -364,7 +364,7 @@ static enum CommandResult icmd_version(struct Buffer *buf, struct Buffer *s,
   struct Pager info = { 0 };
   if (mutt_pager("version", tempfile, MUTT_PAGER_NO_FLAGS, &info) == -1)
   {
-    mutt_buffer_addstr(err, _("Could not create temporary file"));
+    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
     return MUTT_CMD_ERROR;
   }
 
