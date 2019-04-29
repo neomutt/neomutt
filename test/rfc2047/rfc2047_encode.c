@@ -30,4 +30,21 @@
 void test_rfc2047_encode(void)
 {
   // void rfc2047_encode(char **pd, const char *specials, int col, const char *charsets);
+
+  {
+    rfc2047_encode(NULL, AddressSpecials, 0, "apple");
+    TEST_CHECK_(1, "rfc2047_encode(NULL, AddressSpecials, 0, \"apple\")");
+  }
+
+  {
+    char *pd = NULL;
+    rfc2047_encode(&pd, NULL, 0, "apple");
+    TEST_CHECK_(1, "rfc2047_encode(&pd, NULL, 0, \"apple\")");
+  }
+
+  {
+    char *pd = NULL;
+    rfc2047_encode(&pd, AddressSpecials, 0, NULL);
+    TEST_CHECK_(1, "rfc2047_encode(&pd, AddressSpecials, 0, NULL)");
+  }
 }

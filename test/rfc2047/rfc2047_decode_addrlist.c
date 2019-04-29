@@ -30,4 +30,9 @@
 void test_rfc2047_decode_addrlist(void)
 {
   // void rfc2047_decode_addrlist(struct Address *a);
+
+  {
+    rfc2047_decode_addrlist(NULL);
+    TEST_CHECK_(1, "rfc2047_decode_addrlist(NULL)");
+  }
 }

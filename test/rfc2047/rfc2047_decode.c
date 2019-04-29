@@ -30,4 +30,15 @@
 void test_rfc2047_decode(void)
 {
   // void rfc2047_decode(char **pd);
+
+  {
+    rfc2047_decode(NULL);
+    TEST_CHECK_(1, "rfc2047_decode(NULL)");
+  }
+
+  {
+    char *pd = NULL;
+    rfc2047_decode(&pd);
+    TEST_CHECK_(1, "rfc2047_decode(&pd)");
+  }
 }

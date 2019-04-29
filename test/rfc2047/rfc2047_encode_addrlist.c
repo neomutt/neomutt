@@ -30,4 +30,15 @@
 void test_rfc2047_encode_addrlist(void)
 {
   // void rfc2047_encode_addrlist(struct Address *addr, const char *tag);
+
+  {
+    rfc2047_encode_addrlist(NULL, "apple");
+    TEST_CHECK_(1, "rfc2047_encode_addrlist(NULL, \"apple\")");
+  }
+
+  {
+    struct Address address = { 0 };
+    rfc2047_encode_addrlist(&address, NULL);
+    TEST_CHECK_(1, "rfc2047_encode_addrlist(&address, NULL)");
+  }
 }
