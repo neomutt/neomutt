@@ -28,4 +28,8 @@
 void test_mutt_mb_width(void)
 {
   // int mutt_mb_width(const char *str, int col, bool display);
+
+  {
+    TEST_CHECK(mutt_mb_width(NULL, 0, false) == 0);
+  }
 }

@@ -28,4 +28,16 @@
 void test_mutt_mb_wcstombs(void)
 {
   // void mutt_mb_wcstombs(char *dest, size_t dlen, const wchar_t *src, size_t slen);
+
+  {
+    wchar_t src[32] = L"apple";
+    mutt_mb_wcstombs(NULL, 10, src, 3);
+    TEST_CHECK_(1, "mutt_mb_wcstombs(&buf, sizeof(buf), src, 3)");
+  }
+
+  {
+    char buf[32] = { 0 };
+    mutt_mb_wcstombs(buf, sizeof(buf), NULL, 3);
+    TEST_CHECK_(1, "mutt_mb_wcstombs(&buf, sizeof(buf), NULL, 3)");
+  }
 }

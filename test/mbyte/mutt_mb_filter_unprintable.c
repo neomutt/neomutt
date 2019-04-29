@@ -28,4 +28,13 @@
 void test_mutt_mb_filter_unprintable(void)
 {
   // int mutt_mb_filter_unprintable(char **s);
+
+  {
+    TEST_CHECK(mutt_mb_filter_unprintable(NULL) != 0);
+  }
+
+  {
+    char *s = NULL;
+    TEST_CHECK(mutt_mb_filter_unprintable(&s) != 0);
+  }
 }

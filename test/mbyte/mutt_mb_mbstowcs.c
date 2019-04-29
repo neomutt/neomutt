@@ -28,4 +28,20 @@
 void test_mutt_mb_mbstowcs(void)
 {
   // size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf);
+
+  {
+    size_t pwbuflen = 0;
+    TEST_CHECK(mutt_mb_mbstowcs(NULL, &pwbuflen, 0, "apple") == 0);
+  }
+
+  {
+    wchar_t *wbuf = NULL;
+    TEST_CHECK(mutt_mb_mbstowcs(&wbuf, NULL, 0, "apple") == 0);
+  }
+
+  {
+    wchar_t *wbuf = NULL;
+    size_t pwbuflen = 0;
+    TEST_CHECK(mutt_mb_mbstowcs(&wbuf, &pwbuflen, 0, NULL) == 0);
+  }
 }

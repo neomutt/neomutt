@@ -28,4 +28,13 @@
 void test_mutt_mb_charlen(void)
 {
   // int mutt_mb_charlen(const char *s, int *width);
+
+  {
+    int width = 0;
+    TEST_CHECK(mutt_mb_charlen(NULL, &width) == 0);
+  }
+
+  {
+    TEST_CHECK(mutt_mb_charlen("apple", NULL) != 0);
+  }
 }

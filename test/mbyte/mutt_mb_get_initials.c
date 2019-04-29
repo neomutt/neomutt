@@ -28,4 +28,13 @@
 void test_mutt_mb_get_initials(void)
 {
   // bool mutt_mb_get_initials(const char *name, char *buf, size_t buflen);
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(!mutt_mb_get_initials(NULL, buf, sizeof(buf)));
+  }
+
+  {
+    TEST_CHECK(!mutt_mb_get_initials("apple", NULL, 10));
+  }
 }

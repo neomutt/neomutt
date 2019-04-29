@@ -28,4 +28,8 @@
 void test_mutt_mb_is_lower(void)
 {
   // bool mutt_mb_is_lower(const char *s);
+
+  {
+    TEST_CHECK(!mutt_mb_is_lower(NULL));
+  }
 }

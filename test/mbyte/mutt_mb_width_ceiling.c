@@ -28,4 +28,8 @@
 void test_mutt_mb_width_ceiling(void)
 {
   // size_t mutt_mb_width_ceiling(const wchar_t *s, size_t n, int w1);
+
+  {
+    TEST_CHECK(mutt_mb_width_ceiling(NULL, 0, 0) == 0);
+  }
 }

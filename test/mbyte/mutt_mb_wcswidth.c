@@ -28,4 +28,8 @@
 void test_mutt_mb_wcswidth(void)
 {
   // int mutt_mb_wcswidth(const wchar_t *s, size_t n);
+
+  {
+    TEST_CHECK(mutt_mb_wcswidth(NULL, 0) == 0);
+  }
 }
