@@ -37,8 +37,8 @@
 #elif defined(HAVE_IDN_STRINGPREP_H)
 #include <idn/stringprep.h>
 #endif
+#define IDN2_SKIP_LIBIDN_COMPAT
 #ifdef HAVE_IDN2_H
-#include <idna.h>
 #include <idn2.h>
 #elif defined(HAVE_IDN_IDN2_H)
 #include <idn/idn2.h>
@@ -46,6 +46,12 @@
 #include <idna.h>
 #elif defined(HAVE_IDN_IDNA_H)
 #include <idn/idna.h>
+#endif
+
+#if defined(HAVE_IDN2_H) || defined(HAVE_IDN_IDN2_H)
+#define IDN_VERSION 2
+#elif defined(HAVE_IDNA_H) || defined(HAVE_IDN_IDNA_H)
+#define IDN_VERSION 1
 #endif
 
 /* These Config Variables are only used in mutt/idna.c */
@@ -110,7 +116,11 @@ int mutt_idna_to_ascii_lz(const char *input, char **output, int flags)
   if (!input || !output)
     return 1;
 
+#if IDN_VERSION == 2
+  return idn2_to_ascii_8z(input, output, flags | IDN2_NFC_INPUT | IDN2_NONTRANSITIONAL);
+#else
   return idna_to_ascii_lz(input, output, flags);
+#endif
 }
 #endif /* HAVE_LIBIDN */
 
@@ -145,8 +155,14 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, int flags)
   bool is_idn_encoded = check_idn(local_domain);
   if (is_idn_encoded && C_IdnDecode)
   {
+#if IDN_VERSION == 2
+    if (idn2_to_unicode_8z8z(local_domain, &tmp, IDN2_ALLOW_UNASSIGNED) != IDN2_OK)
+#else
     if (idna_to_unicode_8z8z(local_domain, &tmp, IDNA_ALLOW_UNASSIGNED) != IDNA_SUCCESS)
+#endif
+    {
       goto cleanup;
+    }
     mutt_str_replace(&local_domain, tmp);
     FREE(&tmp);
   }
@@ -194,7 +210,12 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, int flags)
      * idna_to_ascii_8z() if the original domain was IDNA encoded.  */
     if (is_idn_encoded && C_IdnDecode)
     {
+#if IDN_VERSION == 2
+      if (idn2_to_ascii_8z(reversed_domain, &tmp,
+                           IDN2_ALLOW_UNASSIGNED | IDN2_NFC_INPUT | IDN2_NONTRANSITIONAL) != IDN2_OK)
+#else
       if (idna_to_ascii_8z(reversed_domain, &tmp, IDNA_ALLOW_UNASSIGNED) != IDNA_SUCCESS)
+#endif
       {
         mutt_debug(LL_DEBUG1, "Not reversible. idna_to_ascii_8z failed for domain = '%s'\n",
                    reversed_domain);
@@ -257,8 +278,15 @@ char *mutt_idna_local_to_intl(const char *user, const char *domain)
 #ifdef HAVE_LIBIDN
   if (C_IdnEncode)
   {
+#if IDN_VERSION == 2
+    if (idn2_to_ascii_8z(intl_domain, &tmp,
+                         IDN2_ALLOW_UNASSIGNED | IDN2_NFC_INPUT | IDN2_NONTRANSITIONAL) != IDN2_OK)
+#else
     if (idna_to_ascii_8z(intl_domain, &tmp, IDNA_ALLOW_UNASSIGNED) != IDNA_SUCCESS)
+#endif
+    {
       goto cleanup;
+    }
     mutt_str_replace(&intl_domain, tmp);
   }
 #endif /* HAVE_LIBIDN */
@@ -284,13 +312,15 @@ const char *mutt_idna_print_version(void)
 {
   static char vstring[256];
 
-#ifdef HAVE_IDN2_H
+#ifdef HAVE_LIBIDN
+#if IDN_VERSION == 2
   snprintf(vstring, sizeof(vstring), "libidn2: %s (compiled with %s)",
            idn2_check_version(NULL), IDN2_VERSION);
-#elif defined(HAVE_LIBIDN)
+#elif IDN_VERSION == 1
   snprintf(vstring, sizeof(vstring), "libidn: %s (compiled with %s)",
            stringprep_check_version(NULL), STRINGPREP_VERSION);
 #endif
+#endif /* HAVE_LIBIDN */
 
   return vstring;
 }
