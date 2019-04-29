@@ -47,6 +47,8 @@ struct Parameter *mutt_param_new(void)
  */
 void mutt_param_free_one(struct Parameter **p)
 {
+  if (!p || !*p)
+    return;
   FREE(&(*p)->attribute);
   FREE(&(*p)->value);
   FREE(p);
