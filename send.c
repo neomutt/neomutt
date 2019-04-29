@@ -584,9 +584,9 @@ static int inline_forward_attachments(struct Mailbox *m, struct Email *cur,
                                         This is the prompt for $forward_attachments.
                                         When inline forwarding ($mime_forward answered "no"), this prompts
                                         whether to add non-decodable attachments from the original email.
-                                        Text/plain parts and the like will be already be included in the
+                                        Text/plain parts and the like will already be included in the
                                         message contents, but other attachment, such as PDF files, will also
-                                        be added as attachments to the new mail, is this is answered yes.
+                                        be added as attachments to the new mail, if this is answered yes.
                                       */
                                      _("Forward attachments?"));
         if (*forwardq != MUTT_YES)

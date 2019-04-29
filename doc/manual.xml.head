@@ -3182,7 +3182,7 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
         <link linkend="forward-decode">$forward_decode</link>=<quote>yes</quote>) is
         to use standard inline forwarding.  In that mode all text-decodable
         parts are included in the new message body.  Other attachments from
-        the original email can also attached to the new message, based on the
+        the original email can also be attached to the new message, based on the
         quadoption <link linkend="forward-attachments">$forward_attachments</link>.
       </para>
       <para>
