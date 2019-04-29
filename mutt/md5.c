@@ -239,6 +239,9 @@ static inline void set_uint32(char *cp, md5_uint32 v)
  */
 static void *mutt_md5_read_ctx(const struct Md5Ctx *md5ctx, void *resbuf)
 {
+  if (!md5ctx || !resbuf)
+    return NULL;
+
   char *r = resbuf;
 
   set_uint32(r + 0 * sizeof(md5ctx->A), SWAP(md5ctx->A));
@@ -257,6 +260,9 @@ static void *mutt_md5_read_ctx(const struct Md5Ctx *md5ctx, void *resbuf)
  */
 void mutt_md5_init_ctx(struct Md5Ctx *md5ctx)
 {
+  if (!md5ctx)
+    return;
+
   md5ctx->A = 0x67452301;
   md5ctx->B = 0xefcdab89;
   md5ctx->C = 0x98badcfe;
@@ -278,6 +284,9 @@ void mutt_md5_init_ctx(struct Md5Ctx *md5ctx)
  */
 void *mutt_md5_finish_ctx(struct Md5Ctx *md5ctx, void *resbuf)
 {
+  if (!md5ctx)
+    return NULL;
+
   /* Take yet unprocessed bytes into account. */
   md5_uint32 bytes = md5ctx->buflen;
   size_t size = (bytes < 56) ? 64 / 4 : 64 * 2 / 4;
@@ -306,6 +315,9 @@ void *mutt_md5_finish_ctx(struct Md5Ctx *md5ctx, void *resbuf)
  */
 void *mutt_md5(const char *str, void *buf)
 {
+  if (!str)
+    return NULL;
+
   return mutt_md5_bytes(str, strlen(str), buf);
 }
 
@@ -341,6 +353,9 @@ void *mutt_md5_bytes(const void *buffer, size_t len, void *resbuf)
  */
 void mutt_md5_process(const char *str, struct Md5Ctx *md5ctx)
 {
+  if (!str)
+    return;
+
   mutt_md5_process_bytes(str, strlen(str), md5ctx);
 }
 
@@ -356,6 +371,9 @@ void mutt_md5_process(const char *str, struct Md5Ctx *md5ctx)
  */
 void mutt_md5_process_bytes(const void *buf, size_t buflen, struct Md5Ctx *md5ctx)
 {
+  if (!buf || !md5ctx)
+    return;
+
   /* When we already have some bits in our internal buffer concatenate both
    * inputs first. */
   if (md5ctx->buflen != 0)
@@ -430,6 +448,9 @@ void mutt_md5_process_bytes(const void *buf, size_t buflen, struct Md5Ctx *md5ct
  */
 void mutt_md5_toascii(const void *digest, char *resbuf)
 {
+  if (!digest || !resbuf)
+    return;
+
   const unsigned char *c = digest;
   sprintf(resbuf, "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
           c[0], c[1], c[2], c[3], c[4], c[5], c[6], c[7], c[8], c[9], c[10],
