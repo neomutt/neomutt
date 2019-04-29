@@ -28,4 +28,15 @@
 void test_mutt_mem_free(void)
 {
   // void mutt_mem_free(void *ptr);
+
+  {
+    mutt_mem_free(NULL);
+    TEST_CHECK_(1, "mutt_mem_free(NULL)");
+  }
+
+  {
+    void *ptr = NULL;
+    mutt_mem_free(&ptr);
+    TEST_CHECK_(1, "mutt_mem_free(&ptr)");
+  }
 }

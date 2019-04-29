@@ -28,4 +28,9 @@
 void test_mutt_mem_realloc(void)
 {
   // void mutt_mem_realloc(void *ptr, size_t size);
+
+  {
+    mutt_mem_realloc(NULL, 10);
+    TEST_CHECK_(1, "mutt_mem_realloc(NULL, 10)");
+  }
 }
