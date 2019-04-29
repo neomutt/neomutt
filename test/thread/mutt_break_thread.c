@@ -30,4 +30,9 @@
 void test_mutt_break_thread(void)
 {
   // void mutt_break_thread(struct Email *e);
+
+  {
+    mutt_break_thread(NULL);
+    TEST_CHECK_(1, "mutt_break_thread(NULL)");
+  }
 }

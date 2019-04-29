@@ -30,4 +30,8 @@
 void test_find_virtual(void)
 {
   // struct Email *find_virtual(struct MuttThread *cur, int reverse);
+
+  {
+    TEST_CHECK(!find_virtual(NULL, 0));
+  }
 }

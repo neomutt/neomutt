@@ -30,4 +30,16 @@
 void test_unlink_message(void)
 {
   // void unlink_message(struct MuttThread **old, struct MuttThread *cur);
+
+  {
+    struct MuttThread cur = { 0 };
+    unlink_message(NULL, &cur);
+    TEST_CHECK_(1, "unlink_message(NULL, &cur)");
+  }
+
+  {
+    struct MuttThread *old = NULL;
+    unlink_message(&old, NULL);
+    TEST_CHECK_(1, "unlink_message(&old, NULL)");
+  }
 }

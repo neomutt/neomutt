@@ -30,4 +30,16 @@
 void test_clean_references(void)
 {
   // void clean_references(struct MuttThread *brk, struct MuttThread *cur);
+
+  {
+    struct MuttThread muttthread = { 0 };
+    clean_references(NULL, &muttthread);
+    TEST_CHECK_(1, "clean_references(NULL, &muttthread)");
+  }
+
+  {
+    struct MuttThread muttthread = { 0 };
+    clean_references(&muttthread, NULL);
+    TEST_CHECK_(1, "clean_references(&muttthread, NULL)");
+  }
 }

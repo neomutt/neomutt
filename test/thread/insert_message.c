@@ -30,4 +30,25 @@
 void test_insert_message(void)
 {
   // void insert_message(struct MuttThread **new, struct MuttThread *newparent, struct MuttThread *cur);
+
+  {
+    struct MuttThread newparent = { 0 };
+    struct MuttThread cur = { 0 };
+    insert_message(NULL, &newparent, &cur);
+    TEST_CHECK_(1, "insert_message(NULL, &newparent, &cur)");
+  }
+
+  {
+    struct MuttThread *new = NULL;
+    struct MuttThread cur = { 0 };
+    insert_message(&new, NULL, &cur);
+    TEST_CHECK_(1, "insert_message(&new, NULL, &cur)");
+  }
+
+  {
+    struct MuttThread *new = NULL;
+    struct MuttThread newparent = { 0 };
+    insert_message(&new, &newparent, NULL);
+    TEST_CHECK_(1, "insert_message(&new, &newparent, NULL)");
+  }
 }

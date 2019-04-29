@@ -30,4 +30,14 @@
 void test_is_descendant(void)
 {
   // bool is_descendant(struct MuttThread *a, struct MuttThread *b);
+
+  {
+    struct MuttThread muttthread = { 0 };
+    TEST_CHECK(!is_descendant(NULL, &muttthread));
+  }
+
+  {
+    struct MuttThread muttthread = { 0 };
+    TEST_CHECK(!is_descendant(&muttthread, NULL));
+  }
 }
