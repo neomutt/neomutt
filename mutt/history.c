@@ -410,6 +410,9 @@ static void remove_history_dups(enum HistoryClass hclass, const char *str)
  */
 int mutt_hist_search(const char *search_buf, enum HistoryClass hclass, char **matches)
 {
+  if (!search_buf || !matches)
+    return 0;
+
   struct History *h = get_history(hclass);
   if (!h)
     return 0;
