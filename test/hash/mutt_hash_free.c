@@ -28,4 +28,15 @@
 void test_mutt_hash_free(void)
 {
   // void mutt_hash_free(struct Hash **ptr);
+
+  {
+    mutt_hash_free(NULL);
+    TEST_CHECK_(1, "mutt_hash_free(NULL)");
+  }
+
+  {
+    struct Hash *hash = NULL;
+    mutt_hash_free(&hash);
+    TEST_CHECK_(1, "mutt_hash_free(&hash)");
+  }
 }

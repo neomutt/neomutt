@@ -28,4 +28,14 @@
 void test_mutt_hash_walk(void)
 {
   // struct HashElem *mutt_hash_walk(const struct Hash *table, struct HashWalkState *state);
+
+  {
+    struct HashWalkState hashwalkstate = { 0 };
+    TEST_CHECK(!mutt_hash_walk(NULL, &hashwalkstate));
+  }
+
+  {
+    struct Hash hash = { 0 };
+    TEST_CHECK(!mutt_hash_walk(&hash, NULL));
+  }
 }

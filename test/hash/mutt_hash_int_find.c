@@ -28,4 +28,9 @@
 void test_mutt_hash_int_find(void)
 {
   // void *mutt_hash_int_find(const struct Hash *table, unsigned int intkey);
+
+  {
+    mutt_hash_int_find(NULL, 0);
+    TEST_CHECK_(1, "mutt_hash_int_find(NULL, 0)");
+  }
 }

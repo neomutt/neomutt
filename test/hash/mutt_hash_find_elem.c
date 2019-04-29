@@ -28,4 +28,13 @@
 void test_mutt_hash_find_elem(void)
 {
   // struct HashElem *mutt_hash_find_elem(const struct Hash *table, const char *strkey);
+
+  {
+    TEST_CHECK(!mutt_hash_find_elem(NULL, "apple"));
+  }
+
+  {
+    struct Hash hash = { 0 };
+    TEST_CHECK(!mutt_hash_find_elem(&hash, NULL));
+  }
 }

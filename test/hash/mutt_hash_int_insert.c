@@ -28,4 +28,14 @@
 void test_mutt_hash_int_insert(void)
 {
   // struct HashElem *mutt_hash_int_insert(struct Hash *table, unsigned int intkey, void *data);
+
+  {
+    TEST_CHECK(!mutt_hash_int_insert(NULL, 0, "apple"));
+  }
+
+  {
+    struct Hash *hash = mutt_hash_int_new(10, MUTT_HASH_NO_FLAGS);
+    TEST_CHECK(mutt_hash_int_insert(hash, 0, NULL) != NULL);
+    mutt_hash_free(&hash);
+  }
 }

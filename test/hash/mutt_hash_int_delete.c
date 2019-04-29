@@ -28,4 +28,16 @@
 void test_mutt_hash_int_delete(void)
 {
   // void mutt_hash_int_delete(struct Hash *table, unsigned int intkey, const void *data);
+
+  {
+    mutt_hash_int_delete(NULL, 0, "apple");
+    TEST_CHECK_(1, "mutt_hash_int_delete(NULL, 0, \"apple\")");
+  }
+
+  {
+    struct Hash *hash = mutt_hash_int_new(10, MUTT_HASH_NO_FLAGS);
+    mutt_hash_int_delete(hash, 0, NULL);
+    TEST_CHECK_(1, "mutt_hash_int_delete(hash, 0, NULL)");
+    mutt_hash_free(&hash);
+  }
 }
