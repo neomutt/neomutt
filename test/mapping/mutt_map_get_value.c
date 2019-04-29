@@ -28,4 +28,13 @@
 void test_mutt_map_get_value(void)
 {
   // int mutt_map_get_value(const char *name, const struct Mapping *map);
+
+  {
+    struct Mapping mapping = { 0 };
+    TEST_CHECK(mutt_map_get_value(NULL, &mapping) != 0);
+  }
+
+  {
+    TEST_CHECK(mutt_map_get_value("apple", NULL) != 0);
+  }
 }

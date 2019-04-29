@@ -28,4 +28,8 @@
 void test_mutt_map_get_name(void)
 {
   // const char *mutt_map_get_name(int val, const struct Mapping *map);
+
+  {
+    TEST_CHECK(!mutt_map_get_name(0, NULL));
+  }
 }
