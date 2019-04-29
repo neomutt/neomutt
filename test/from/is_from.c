@@ -30,4 +30,20 @@
 void test_is_from(void)
 {
   // bool is_from(const char *s, char *path, size_t pathlen, time_t *tp);
+
+  {
+    char buf[32] = { 0 };
+    time_t t = { 0 };
+    TEST_CHECK(!is_from(NULL, buf, sizeof(buf), &t));
+  }
+
+  {
+    time_t t = { 0 };
+    TEST_CHECK(!is_from("apple", NULL, 10, &t));
+  }
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(!is_from("apple", buf, sizeof(buf), NULL));
+  }
 }
