@@ -30,4 +30,9 @@
 void test_rfc2231_decode_parameters(void)
 {
   // void rfc2231_decode_parameters(struct ParameterList *p);
+
+  {
+    rfc2231_decode_parameters(NULL);
+    TEST_CHECK_(1, "rfc2231_decode_parameters(NULL)");
+  }
 }

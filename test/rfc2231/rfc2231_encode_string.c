@@ -30,4 +30,13 @@
 void test_rfc2231_encode_string(void)
 {
   // int rfc2231_encode_string(char **pd);
+
+  {
+    TEST_CHECK(rfc2231_encode_string(NULL) == 0);
+  }
+
+  {
+    char *pd = NULL;
+    TEST_CHECK(rfc2231_encode_string(&pd) == 0);
+  }
 }
