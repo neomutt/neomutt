@@ -28,4 +28,8 @@
 void test_mutt_buffer_init(void)
 {
   // struct Buffer *mutt_buffer_init(struct Buffer *buf);
+
+  {
+    TEST_CHECK(!mutt_buffer_init(NULL));
+  }
 }

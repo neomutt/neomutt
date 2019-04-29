@@ -28,4 +28,15 @@
 void test_mutt_buffer_strcpy_n(void)
 {
   // void mutt_buffer_strcpy_n(struct Buffer *buf, const char *s, size_t len);
+
+  {
+    mutt_buffer_strcpy_n(NULL, "apple", 3);
+    TEST_CHECK_(1, "mutt_buffer_strcpy_n(NULL, \"apple\", 3)");
+  }
+
+  {
+    struct Buffer buf = { 0 };
+    mutt_buffer_strcpy_n(&buf, NULL, 3);
+    TEST_CHECK_(1, "mutt_buffer_strcpy_n(&buf, NULL, 3)");
+  }
 }

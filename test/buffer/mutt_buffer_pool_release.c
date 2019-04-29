@@ -28,4 +28,15 @@
 void test_mutt_buffer_pool_release(void)
 {
   // void mutt_buffer_pool_release(struct Buffer **pbuf);
+
+  {
+    mutt_buffer_pool_release(NULL);
+    TEST_CHECK_(1, "mutt_buffer_pool_release(NULL)");
+  }
+
+  {
+    struct Buffer *buf = NULL;
+    mutt_buffer_pool_release(&buf);
+    TEST_CHECK_(1, "mutt_buffer_pool_release(&buf)");
+  }
 }

@@ -28,4 +28,13 @@
 void test_mutt_buffer_addstr_n(void)
 {
   // size_t mutt_buffer_addstr_n(struct Buffer *buf, const char *s, size_t len);
+
+  {
+    TEST_CHECK(mutt_buffer_addstr_n(NULL, "apple", 10) == 0);
+  }
+
+  {
+    struct Buffer buf = { 0 };
+    TEST_CHECK(mutt_buffer_addstr_n(&buf, NULL, 10) == 0);
+  }
 }

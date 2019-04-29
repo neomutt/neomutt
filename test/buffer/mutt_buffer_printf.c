@@ -28,4 +28,13 @@
 void test_mutt_buffer_printf(void)
 {
   // int mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...);
+
+  {
+    TEST_CHECK(mutt_buffer_printf(NULL, "apple") != 0);
+  }
+
+  {
+    struct Buffer buf = { 0 };
+    TEST_CHECK(mutt_buffer_printf(&buf, NULL) != 0);
+  }
 }

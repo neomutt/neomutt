@@ -28,4 +28,9 @@
 void test_mutt_buffer_increase_size(void)
 {
   // void mutt_buffer_increase_size(struct Buffer *buf, size_t new_size);
+
+  {
+    mutt_buffer_increase_size(NULL, 10);
+    TEST_CHECK_(1, "mutt_buffer_increase_size(NULL, 10)");
+  }
 }

@@ -28,4 +28,8 @@
 void test_mutt_buffer_addch(void)
 {
   // size_t mutt_buffer_addch(struct Buffer *buf, char c);
+
+  {
+    TEST_CHECK(mutt_buffer_addch(NULL, 'a') == 0);
+  }
 }

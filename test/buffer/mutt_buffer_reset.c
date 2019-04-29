@@ -28,4 +28,9 @@
 void test_mutt_buffer_reset(void)
 {
   // void mutt_buffer_reset(struct Buffer *buf);
+
+  {
+    mutt_buffer_reset(NULL);
+    TEST_CHECK_(1, "mutt_buffer_reset(NULL)");
+  }
 }

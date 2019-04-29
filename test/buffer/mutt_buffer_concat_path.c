@@ -28,4 +28,21 @@
 void test_mutt_buffer_concat_path(void)
 {
   // void mutt_buffer_concat_path(struct Buffer *buf, const char *dir, const char *fname);
+
+  {
+    mutt_buffer_concat_path(NULL, "apple", "banana");
+    TEST_CHECK_(1, "mutt_buffer_concat_path(NULL, \"apple\", \"banana\")");
+  }
+
+  {
+    struct Buffer buf = { 0 };
+    mutt_buffer_concat_path(&buf, NULL, "banana");
+    TEST_CHECK_(1, "mutt_buffer_concat_path(&buf, NULL, \"banana\")");
+  }
+
+  {
+    struct Buffer buf = { 0 };
+    mutt_buffer_concat_path(&buf, "apple", NULL);
+    TEST_CHECK_(1, "mutt_buffer_concat_path(&buf, \"apple\", NULL)");
+  }
 }

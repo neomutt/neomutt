@@ -28,4 +28,8 @@
 void test_mutt_buffer_from(void)
 {
   // struct Buffer *mutt_buffer_from(const char *seed);
+
+  {
+    TEST_CHECK(!mutt_buffer_from(NULL));
+  }
 }

@@ -28,4 +28,8 @@
 void test_mutt_buffer_len(void)
 {
   // size_t mutt_buffer_len(const struct Buffer *buf);
+
+  {
+    TEST_CHECK(mutt_buffer_len(NULL) == 0);
+  }
 }

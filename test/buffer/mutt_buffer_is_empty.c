@@ -28,4 +28,8 @@
 void test_mutt_buffer_is_empty(void)
 {
   // bool mutt_buffer_is_empty(const struct Buffer *buf);
+
+  {
+    TEST_CHECK(mutt_buffer_is_empty(NULL));
+  }
 }

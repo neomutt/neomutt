@@ -28,4 +28,9 @@
 void test_mutt_buffer_fix_dptr(void)
 {
   // void mutt_buffer_fix_dptr(struct Buffer *buf);
+
+  {
+    mutt_buffer_fix_dptr(NULL);
+    TEST_CHECK_(1, "mutt_buffer_fix_dptr(NULL)");
+  }
 }
