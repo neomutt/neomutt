@@ -28,4 +28,16 @@
 void test_mutt_sig_init(void)
 {
   // void mutt_sig_init(sig_handler_t sig_fn, sig_handler_t exit_fn);
+
+  {
+    sig_handler_t exit_fn = mutt_sig_empty_handler;
+    mutt_sig_init(NULL, exit_fn);
+    TEST_CHECK_(1, "mutt_sig_init(NULL, exit_fn)");
+  }
+
+  {
+    sig_handler_t sig_fn = mutt_sig_empty_handler;
+    mutt_sig_init(sig_fn, NULL);
+    TEST_CHECK_(1, "mutt_sig_init(sig_fn, NULL)");
+  }
 }
