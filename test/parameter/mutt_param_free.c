@@ -30,4 +30,9 @@
 void test_mutt_param_free(void)
 {
   // void mutt_param_free(struct ParameterList *p);
+
+  {
+    mutt_param_free(NULL);
+    TEST_CHECK_(1, "mutt_param_free(NULL)");
+  }
 }

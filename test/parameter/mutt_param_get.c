@@ -30,4 +30,13 @@
 void test_mutt_param_get(void)
 {
   // char *mutt_param_get(const struct ParameterList *p, const char *s);
+
+  {
+    TEST_CHECK(!mutt_param_get(NULL, "apple"));
+  }
+
+  {
+    struct ParameterList parameterlist = { 0 };
+    TEST_CHECK(!mutt_param_get(&parameterlist, NULL));
+  }
 }

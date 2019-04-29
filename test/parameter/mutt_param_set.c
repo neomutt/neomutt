@@ -30,4 +30,21 @@
 void test_mutt_param_set(void)
 {
   // void mutt_param_set(struct ParameterList *p, const char *attribute, const char *value);
+
+  {
+    mutt_param_set(NULL, "apple", "banana");
+    TEST_CHECK_(1, "mutt_param_set(NULL, \"apple\", \"banana\")");
+  }
+
+  {
+    struct ParameterList parameterlist = { 0 };
+    mutt_param_set(&parameterlist, NULL, "banana");
+    TEST_CHECK_(1, "mutt_param_set(&parameterlist, NULL, \"banana\")");
+  }
+
+  {
+    struct ParameterList parameterlist = { 0 };
+    mutt_param_set(&parameterlist, "apple", NULL);
+    TEST_CHECK_(1, "mutt_param_set(&parameterlist, \"apple\", NULL)");
+  }
 }

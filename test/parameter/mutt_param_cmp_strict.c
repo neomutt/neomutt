@@ -30,4 +30,14 @@
 void test_mutt_param_cmp_strict(void)
 {
   // bool mutt_param_cmp_strict(const struct ParameterList *p1, const struct ParameterList *p2);
+
+  {
+    struct ParameterList parameterlist = { 0 };
+    TEST_CHECK(mutt_param_cmp_strict(NULL, &parameterlist));
+  }
+
+  {
+    struct ParameterList parameterlist = { 0 };
+    TEST_CHECK(mutt_param_cmp_strict(&parameterlist, NULL));
+  }
 }

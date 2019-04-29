@@ -30,4 +30,15 @@
 void test_mutt_param_delete(void)
 {
   // void mutt_param_delete(struct ParameterList *p, const char *attribute);
+
+  {
+    mutt_param_delete(NULL, "apple");
+    TEST_CHECK_(1, "mutt_param_delete(NULL, \"apple\")");
+  }
+
+  {
+    struct ParameterList parameterlist = { 0 };
+    mutt_param_delete(&parameterlist, NULL);
+    TEST_CHECK_(1, "mutt_param_delete(&parameterlist, NULL)");
+  }
 }
