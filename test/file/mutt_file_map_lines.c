@@ -25,7 +25,29 @@
 #include "config.h"
 #include "mutt/mutt.h"
 
+bool map_dummy(char *line, int line_num, void *user_data)
+{
+  return false;
+}
+
 void test_mutt_file_map_lines(void)
 {
   // bool mutt_file_map_lines(mutt_file_map_t func, void *user_data, FILE *fp, int flags);
+
+  {
+    FILE fp = { 0 };
+    TEST_CHECK(!mutt_file_map_lines(NULL, "apple", &fp, 0));
+  }
+
+  {
+    mutt_file_map_t map = map_dummy;
+    FILE *fp = fopen("/dev/null", "r");
+    TEST_CHECK(mutt_file_map_lines(map, NULL, fp, 0));
+    fclose(fp);
+  }
+
+  {
+    mutt_file_map_t map = map_dummy;
+    TEST_CHECK(!mutt_file_map_lines(map, "apple", NULL, 0));
+  }
 }

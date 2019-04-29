@@ -28,4 +28,14 @@
 void test_mutt_file_stat_compare(void)
 {
   // int mutt_file_stat_compare(struct stat *sba, enum MuttStatType sba_type, struct stat *sbb, enum MuttStatType sbb_type);
+
+  {
+    struct stat stat = { 0 };
+    TEST_CHECK(mutt_file_stat_compare(NULL, 0, &stat, 0) == 0);
+  }
+
+  {
+    struct stat stat = { 0 };
+    TEST_CHECK(mutt_file_stat_compare(&stat, 0, NULL, 0) == 0);
+  }
 }

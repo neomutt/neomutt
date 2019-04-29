@@ -28,4 +28,13 @@
 void test_mutt_file_decrease_mtime(void)
 {
   // time_t mutt_file_decrease_mtime(const char *fp, struct stat *st);
+
+  {
+    struct stat stat = { 0 };
+    TEST_CHECK(mutt_file_decrease_mtime(NULL, &stat) != 0);
+  }
+
+  {
+    TEST_CHECK(mutt_file_decrease_mtime("apple", NULL) != 0);
+  }
 }

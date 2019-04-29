@@ -28,4 +28,14 @@
 void test_mutt_file_copy_stream(void)
 {
   // int mutt_file_copy_stream(FILE *fp_in, FILE *fp_out);
+
+  {
+    FILE fp = { 0 };
+    TEST_CHECK(mutt_file_copy_stream(NULL, &fp) != 0);
+  }
+
+  {
+    FILE fp = { 0 };
+    TEST_CHECK(mutt_file_copy_stream(&fp, NULL) != 0);
+  }
 }

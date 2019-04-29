@@ -28,4 +28,8 @@
 void test_mutt_file_get_size(void)
 {
   // long mutt_file_get_size(const char *path);
+
+  {
+    TEST_CHECK(mutt_file_get_size(NULL) == 0);
+  }
 }

@@ -28,4 +28,9 @@
 void test_mutt_file_unlink_empty(void)
 {
   // void mutt_file_unlink_empty(const char *path);
+
+  {
+    mutt_file_unlink_empty(NULL);
+    TEST_CHECK_(1, "mutt_file_unlink_empty(NULL)");
+  }
 }

@@ -28,4 +28,21 @@
 void test_mutt_file_expand_fmt_quote(void)
 {
   // void mutt_file_expand_fmt_quote(char *dest, size_t destlen, const char *fmt, const char *src);
+
+  {
+    mutt_file_expand_fmt_quote(NULL, 10, "apple", "banana");
+    TEST_CHECK_(1, "mutt_file_expand_fmt_quote(NULL, 10, \"apple\", \"banana\")");
+  }
+
+  {
+    char buf[32] = { 0 };
+    mutt_file_expand_fmt_quote(buf, sizeof(buf), NULL, "banana");
+    TEST_CHECK_(1, "mutt_file_expand_fmt_quote(&buf, sizeof(buf), NULL, \"banana\")");
+  }
+
+  {
+    char buf[32] = { 0 };
+    mutt_file_expand_fmt_quote(buf, sizeof(buf), "apple", NULL);
+    TEST_CHECK_(1, "mutt_file_expand_fmt_quote(&buf, sizeof(buf), \"apple\", NULL)");
+  }
 }

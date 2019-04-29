@@ -28,4 +28,9 @@
 void test_mutt_file_sanitize_filename(void)
 {
   // void mutt_file_sanitize_filename(char *fp, bool slash);
+
+  {
+    mutt_file_sanitize_filename(NULL, false);
+    TEST_CHECK_(1, "mutt_file_sanitize_filename(NULL, false)");
+  }
 }

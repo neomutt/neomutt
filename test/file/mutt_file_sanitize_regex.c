@@ -28,4 +28,13 @@
 void test_mutt_file_sanitize_regex(void)
 {
   // int mutt_file_sanitize_regex(struct Buffer *dest, const char *src);
+
+  {
+    TEST_CHECK(mutt_file_sanitize_regex(NULL, "apple") != 0);
+  }
+
+  {
+    struct Buffer buf = { 0 };
+    TEST_CHECK(mutt_file_sanitize_regex(&buf, NULL) != 0);
+  }
 }

@@ -28,4 +28,8 @@
 void test_mutt_file_rmtree(void)
 {
   // int mutt_file_rmtree(const char *path);
+
+  {
+    TEST_CHECK(mutt_file_rmtree(NULL) != 0);
+  }
 }

@@ -28,4 +28,14 @@
 void test_mutt_file_mkstemp_full(void)
 {
   // FILE *mutt_file_mkstemp_full(const char *file, int line, const char *func);
+
+  C_Tmpdir = "/tmp";
+
+  {
+    TEST_CHECK(mutt_file_mkstemp_full(NULL, 0, "apple") != NULL);
+  }
+
+  {
+    TEST_CHECK(mutt_file_mkstemp_full("apple", 0, NULL) != NULL);
+  }
 }

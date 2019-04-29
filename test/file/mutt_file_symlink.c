@@ -28,4 +28,12 @@
 void test_mutt_file_symlink(void)
 {
   // int mutt_file_symlink(const char *oldpath, const char *newpath);
+
+  {
+    TEST_CHECK(mutt_file_symlink(NULL, "apple") != 0);
+  }
+
+  {
+    TEST_CHECK(mutt_file_symlink("apple", NULL) != 0);
+  }
 }

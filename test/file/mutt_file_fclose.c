@@ -28,4 +28,13 @@
 void test_mutt_file_fclose(void)
 {
   // int mutt_file_fclose(FILE **fp);
+
+  {
+    TEST_CHECK(mutt_file_fclose(NULL) == 0);
+  }
+
+  {
+    FILE *fp = NULL;
+    TEST_CHECK(mutt_file_fclose(&fp) == 0);
+  }
 }

@@ -28,4 +28,13 @@
 void test_mutt_file_quote_filename(void)
 {
   // size_t mutt_file_quote_filename(const char *filename, char *buf, size_t buflen);
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(mutt_file_quote_filename(NULL, buf, sizeof(buf)) == 0);
+  }
+
+  {
+    TEST_CHECK(mutt_file_quote_filename("apple", NULL, 10) == 0);
+  }
 }

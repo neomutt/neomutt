@@ -28,4 +28,13 @@
 void test_mutt_file_read_keyword(void)
 {
   // char *mutt_file_read_keyword(const char *file, char *buf, size_t buflen);
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(!mutt_file_read_keyword(NULL, buf, sizeof(buf)));
+  }
+
+  {
+    TEST_CHECK(!mutt_file_read_keyword("apple", NULL, 10));
+  }
 }

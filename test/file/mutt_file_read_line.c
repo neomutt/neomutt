@@ -28,4 +28,35 @@
 void test_mutt_file_read_line(void)
 {
   // char *mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, int flags);
+
+  {
+    size_t size = 0;
+    FILE *fp = fopen("/dev/null", "r");
+    int line_num = 0;
+    TEST_CHECK(!mutt_file_read_line(NULL, &size, fp, &line_num, 0));
+    fclose(fp);
+  }
+
+  {
+    FILE fp = { 0 };
+    char *line = strdup("apple");
+    int line_num = 0;
+    TEST_CHECK(!mutt_file_read_line(line, NULL, &fp, &line_num, 0));
+    free(line);
+  }
+
+  {
+    size_t size = 0;
+    char *line = strdup("apple");
+    int line_num = 0;
+    TEST_CHECK(!mutt_file_read_line(line, &size, NULL, &line_num, 0));
+    free(line);
+  }
+
+  {
+    size_t size = 0;
+    char *line = strdup("apple");
+    FILE fp = { 0 };
+    TEST_CHECK(!mutt_file_read_line(line, &size, &fp, NULL, 0));
+  }
 }

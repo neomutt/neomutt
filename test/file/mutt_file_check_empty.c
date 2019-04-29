@@ -28,4 +28,8 @@
 void test_mutt_file_check_empty(void)
 {
   // int mutt_file_check_empty(const char *path);
+
+  {
+    TEST_CHECK(mutt_file_check_empty(NULL) != 0);
+  }
 }

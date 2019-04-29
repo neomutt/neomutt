@@ -28,4 +28,12 @@
 void test_mutt_file_safe_rename(void)
 {
   // int mutt_file_safe_rename(const char *src, const char *target);
+
+  {
+    TEST_CHECK(mutt_file_safe_rename(NULL, "apple") != 0);
+  }
+
+  {
+    TEST_CHECK(mutt_file_safe_rename("apple", NULL) != 0);
+  }
 }

@@ -28,4 +28,9 @@
 void test_mutt_file_unlink(void)
 {
   // void mutt_file_unlink(const char *s);
+
+  {
+    mutt_file_unlink(NULL);
+    TEST_CHECK_(1, "mutt_file_unlink(NULL)");
+  }
 }

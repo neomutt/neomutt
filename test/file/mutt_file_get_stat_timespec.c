@@ -28,4 +28,16 @@
 void test_mutt_file_get_stat_timespec(void)
 {
   // void mutt_file_get_stat_timespec(struct timespec *dest, struct stat *sb, enum MuttStatType type);
+
+  {
+    struct stat stat = { 0 };
+    mutt_file_get_stat_timespec(NULL, &stat, 0);
+    TEST_CHECK_(1, "mutt_file_get_stat_timespec(NULL, &stat, 0)");
+  }
+
+  {
+    struct timespec timespec = { 0 };
+    mutt_file_get_stat_timespec(&timespec, NULL, 0);
+    TEST_CHECK_(1, "mutt_file_get_stat_timespec(&timespec, NULL, 0)");
+  }
 }

@@ -28,4 +28,14 @@
 void test_mutt_file_timespec_compare(void)
 {
   // int mutt_file_timespec_compare(struct timespec *a, struct timespec *b);
+
+  {
+    struct timespec timespec = { 0 };
+    TEST_CHECK(mutt_file_timespec_compare(NULL, &timespec) == 0);
+  }
+
+  {
+    struct timespec timespec = { 0 };
+    TEST_CHECK(mutt_file_timespec_compare(&timespec, NULL) == 0);
+  }
 }

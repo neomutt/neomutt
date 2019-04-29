@@ -28,4 +28,12 @@
 void test_mutt_file_rename(void)
 {
   // int mutt_file_rename(const char *oldfile, const char *newfile);
+
+  {
+    TEST_CHECK(mutt_file_rename(NULL, "apple") != 0);
+  }
+
+  {
+    TEST_CHECK(mutt_file_rename("apple", NULL) != 0);
+  }
 }

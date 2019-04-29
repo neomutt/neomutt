@@ -28,4 +28,14 @@
 void test_mutt_file_iter_line(void)
 {
   // bool mutt_file_iter_line(struct MuttFileIter *iter, FILE *fp, int flags);
+
+  {
+    FILE fp = { 0 };
+    TEST_CHECK(!mutt_file_iter_line(NULL, &fp, 0));
+  }
+
+  {
+    struct MuttFileIter muttfileiter = { 0 };
+    TEST_CHECK(!mutt_file_iter_line(&muttfileiter, NULL, 0));
+  }
 }

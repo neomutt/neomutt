@@ -28,4 +28,8 @@
 void test_mutt_file_mkdir(void)
 {
   // int mutt_file_mkdir(const char *path, mode_t mode);
+
+  {
+    TEST_CHECK(mutt_file_mkdir(NULL, 0) != 0);
+  }
 }

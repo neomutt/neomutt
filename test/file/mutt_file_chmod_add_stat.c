@@ -28,4 +28,13 @@
 void test_mutt_file_chmod_add_stat(void)
 {
   // int mutt_file_chmod_add_stat(const char *path, mode_t mode, struct stat *st);
+
+  {
+    struct stat stat = { 0 };
+    TEST_CHECK(mutt_file_chmod_add_stat(NULL, 0, &stat) != 0);
+  }
+
+  {
+    TEST_CHECK(mutt_file_chmod_add_stat("apple", 0, NULL) != 0);
+  }
 }

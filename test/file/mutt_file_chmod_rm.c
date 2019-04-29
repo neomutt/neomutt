@@ -28,4 +28,8 @@
 void test_mutt_file_chmod_rm(void)
 {
   // int mutt_file_chmod_rm(const char *path, mode_t mode);
+
+  {
+    TEST_CHECK(mutt_file_chmod_rm(NULL, 0) != 0);
+  }
 }

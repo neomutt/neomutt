@@ -28,4 +28,14 @@
 void test_mutt_file_stat_timespec_compare(void)
 {
   // int mutt_file_stat_timespec_compare(struct stat *sba, enum MuttStatType type, struct timespec *b);
+
+  {
+    struct timespec timespec = { 0 };
+    TEST_CHECK(mutt_file_stat_timespec_compare(NULL, 0, &timespec) == 0);
+  }
+
+  {
+    struct stat stat = { 0 };
+    TEST_CHECK(mutt_file_stat_timespec_compare(&stat, 0, NULL) == 0);
+  }
 }

@@ -28,4 +28,14 @@
 void test_mutt_file_set_mtime(void)
 {
   // void mutt_file_set_mtime(const char *from, const char *to);
+
+  {
+    mutt_file_set_mtime(NULL, "apple");
+    TEST_CHECK_(1, "mutt_file_set_mtime(NULL, \"apple\")");
+  }
+
+  {
+    mutt_file_set_mtime("apple", NULL);
+    TEST_CHECK_(1, "mutt_file_set_mtime(\"apple\", NULL)");
+  }
 }

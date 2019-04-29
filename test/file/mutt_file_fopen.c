@@ -28,4 +28,12 @@
 void test_mutt_file_fopen(void)
 {
   // FILE *mutt_file_fopen(const char *path, const char *mode);
+
+  {
+    TEST_CHECK(!mutt_file_fopen(NULL, "banana"));
+  }
+
+  {
+    TEST_CHECK(!mutt_file_fopen("apple", NULL));
+  }
 }
