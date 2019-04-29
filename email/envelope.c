@@ -98,6 +98,9 @@ void mutt_env_free(struct Envelope **p)
  */
 void mutt_env_merge(struct Envelope *base, struct Envelope **extra)
 {
+  if (!base || !extra || !*extra)
+    return;
+
 /* copies each existing element if necessary, and sets the element
  * to NULL in the source so that mutt_env_free doesn't leave us
  * with dangling pointers. */
@@ -202,6 +205,9 @@ bool mutt_env_cmp_strict(const struct Envelope *e1, const struct Envelope *e2)
  */
 void mutt_env_to_local(struct Envelope *env)
 {
+  if (!env)
+    return;
+
   mutt_addrlist_to_local(env->return_path);
   mutt_addrlist_to_local(env->from);
   mutt_addrlist_to_local(env->to);
@@ -237,6 +243,9 @@ void mutt_env_to_local(struct Envelope *env)
  */
 int mutt_env_to_intl(struct Envelope *env, const char **tag, char **err)
 {
+  if (!env)
+    return 1;
+
   int e = 0;
   H_TO_INTL(return_path);
   H_TO_INTL(from);
