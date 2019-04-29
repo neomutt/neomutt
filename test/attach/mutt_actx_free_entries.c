@@ -30,4 +30,9 @@
 void test_mutt_actx_free_entries(void)
 {
   // void mutt_actx_free_entries(struct AttachCtx *actx);
+
+  {
+    mutt_actx_free_entries(NULL);
+    TEST_CHECK_(1, "mutt_actx_free_entries(NULL)");
+  }
 }

@@ -30,4 +30,16 @@
 void test_mutt_actx_add_body(void)
 {
   // void mutt_actx_add_body(struct AttachCtx *actx, struct Body *new_body);
+
+  {
+    struct Body body = { 0 };
+    mutt_actx_add_body(NULL, &body);
+    TEST_CHECK_(1, "mutt_actx_add_body(NULL, &body)");
+  }
+
+  {
+    struct AttachCtx attachctx = { 0 };
+    mutt_actx_add_body(&attachctx, NULL);
+    TEST_CHECK_(1, "mutt_actx_add_body(&attachctx, NULL)");
+  }
 }

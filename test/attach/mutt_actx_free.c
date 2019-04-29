@@ -30,4 +30,15 @@
 void test_mutt_actx_free(void)
 {
   // void mutt_actx_free(struct AttachCtx **pactx);
+
+  {
+    mutt_actx_free(NULL);
+    TEST_CHECK_(1, "mutt_actx_free(NULL)");
+  }
+
+  {
+    struct AttachCtx *attachctx = NULL;
+    mutt_actx_free(&attachctx);
+    TEST_CHECK_(1, "mutt_actx_free(&attachctx)");
+  }
 }

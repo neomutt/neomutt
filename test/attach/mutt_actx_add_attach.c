@@ -30,4 +30,16 @@
 void test_mutt_actx_add_attach(void)
 {
   // void mutt_actx_add_attach(struct AttachCtx *actx, struct AttachPtr *attach);
+
+  {
+    struct AttachPtr attach = { 0 };
+    mutt_actx_add_attach(NULL, &attach);
+    TEST_CHECK_(1, "mutt_actx_add_attach(NULL, &attach)");
+  }
+
+  {
+    struct AttachCtx attachctx = { 0 };
+    mutt_actx_add_attach(&attachctx, NULL);
+    TEST_CHECK_(1, "mutt_actx_add_attach(&attachctx, NULL)");
+  }
 }
