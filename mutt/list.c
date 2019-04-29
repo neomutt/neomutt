@@ -43,6 +43,9 @@
  */
 struct ListNode *mutt_list_insert_head(struct ListHead *h, char *s)
 {
+  if (!h)
+    return NULL;
+
   struct ListNode *np = mutt_mem_calloc(1, sizeof(struct ListNode));
   np->data = s;
   STAILQ_INSERT_HEAD(h, np, entries);
@@ -57,6 +60,9 @@ struct ListNode *mutt_list_insert_head(struct ListHead *h, char *s)
  */
 struct ListNode *mutt_list_insert_tail(struct ListHead *h, char *s)
 {
+  if (!h)
+    return NULL;
+
   struct ListNode *np = mutt_mem_calloc(1, sizeof(struct ListNode));
   np->data = s;
   STAILQ_INSERT_TAIL(h, np, entries);
@@ -72,6 +78,9 @@ struct ListNode *mutt_list_insert_tail(struct ListHead *h, char *s)
  */
 struct ListNode *mutt_list_insert_after(struct ListHead *h, struct ListNode *n, char *s)
 {
+  if (!h || !n)
+    return NULL;
+
   struct ListNode *np = mutt_mem_calloc(1, sizeof(struct ListNode));
   np->data = s;
   STAILQ_INSERT_AFTER(h, n, np, entries);
@@ -87,6 +96,9 @@ struct ListNode *mutt_list_insert_after(struct ListHead *h, struct ListNode *n, 
  */
 struct ListNode *mutt_list_find(const struct ListHead *h, const char *data)
 {
+  if (!h)
+    return NULL;
+
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, h, entries)
   {
@@ -104,6 +116,9 @@ struct ListNode *mutt_list_find(const struct ListHead *h, const char *data)
  */
 void mutt_list_free(struct ListHead *h)
 {
+  if (!h)
+    return;
+
   struct ListNode *np = STAILQ_FIRST(h), *next = NULL;
   while (np)
   {
@@ -144,6 +159,9 @@ void mutt_list_free_type(struct ListHead *h, list_free_t fn)
  */
 void mutt_list_clear(struct ListHead *h)
 {
+  if (!h)
+    return;
+
   struct ListNode *np = STAILQ_FIRST(h), *next = NULL;
   while (np)
   {
@@ -169,6 +187,9 @@ void mutt_list_clear(struct ListHead *h)
  */
 bool mutt_list_match(const char *s, struct ListHead *h)
 {
+  if (!h)
+    return false;
+
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, h, entries)
   {
@@ -189,6 +210,9 @@ bool mutt_list_match(const char *s, struct ListHead *h)
  */
 bool mutt_list_compare(const struct ListHead *ah, const struct ListHead *bh)
 {
+  if (!ah || !bh)
+    return false;
+
   struct ListNode *a = STAILQ_FIRST(ah);
   struct ListNode *b = STAILQ_FIRST(bh);
 
