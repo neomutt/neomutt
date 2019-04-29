@@ -28,4 +28,9 @@
 void test_mutt_hist_add(void)
 {
   // void mutt_hist_add(enum HistoryClass hclass, const char *str, bool save);
+
+  {
+    mutt_hist_add(0, NULL, false);
+    TEST_CHECK_(1, "mutt_hist_add(0, NULL, false)");
+  }
 }

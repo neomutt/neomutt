@@ -28,4 +28,14 @@
 void test_mutt_hist_search(void)
 {
   // int mutt_hist_search(const char *search_buf, enum HistoryClass hclass, char **matches);
+
+  {
+    char *matches = NULL;
+    TEST_CHECK(mutt_hist_search(NULL, 0, &matches) == 0);
+  }
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(mutt_hist_search(buf, 0, NULL) == 0);
+  }
 }

@@ -28,4 +28,9 @@
 void test_mutt_hist_save_scratch(void)
 {
   // void mutt_hist_save_scratch(enum HistoryClass hclass, const char *str);
+
+  {
+    mutt_hist_save_scratch(0, NULL);
+    TEST_CHECK_(1, "mutt_hist_save_scratch(0, NULL)");
+  }
 }
