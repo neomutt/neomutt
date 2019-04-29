@@ -30,4 +30,14 @@
 void test_mutt_body_cmp_strict(void)
 {
   // bool mutt_body_cmp_strict(const struct Body *b1, const struct Body *b2);
+
+  {
+    struct Body body = { 0 };
+    TEST_CHECK(!mutt_body_cmp_strict(NULL, &body));
+  }
+
+  {
+    struct Body body = { 0 };
+    TEST_CHECK(!mutt_body_cmp_strict(&body, NULL));
+  }
 }
