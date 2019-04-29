@@ -120,6 +120,9 @@ void *mutt_mem_malloc(size_t size)
  */
 void mutt_mem_realloc(void *ptr, size_t size)
 {
+  if (!ptr)
+    return;
+
   void **p = (void **) ptr;
 
   if (size == 0)
