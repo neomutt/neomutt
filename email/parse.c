@@ -331,7 +331,7 @@ char *mutt_extract_message_id(const char *s, const char **saveptr)
 
   if (s)
     p = s;
-  else if (saveptr)
+  else if (saveptr && *saveptr)
     p = *saveptr;
   else
     return NULL;
@@ -424,6 +424,9 @@ int mutt_check_encoding(const char *c)
  */
 void mutt_parse_content_type(const char *s, struct Body *ct)
 {
+  if (!s || !ct)
+    return;
+
   FREE(&ct->subtype);
   mutt_param_free(&ct->parameter);
 
@@ -529,6 +532,9 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
 int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
                            char *p, bool user_hdrs, bool weed, bool do_2047)
 {
+  if (!env || !line)
+    return 0;
+
   bool matched = false;
 
   switch (tolower(line[0]))
@@ -932,6 +938,9 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
  */
 char *mutt_rfc822_read_line(FILE *fp, char *line, size_t *linelen)
 {
+  if (!fp || !line || !linelen)
+    return NULL;
+
   char *buf = line;
   int ch;
   size_t offset = 0;
@@ -1003,6 +1012,9 @@ char *mutt_rfc822_read_line(FILE *fp, char *line, size_t *linelen)
  */
 struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hdrs, bool weed)
 {
+  if (!fp)
+    return NULL;
+
   struct Envelope *env = mutt_env_new();
   char *p = NULL;
   LOFF_T loc;
@@ -1148,6 +1160,9 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
  */
 struct Body *mutt_read_mime_header(FILE *fp, bool digest)
 {
+  if (!fp)
+    return NULL;
+
   struct Body *p = mutt_body_new();
   struct Envelope *env = mutt_env_new();
   char *c = NULL;
@@ -1259,6 +1274,9 @@ bool mutt_is_message_type(int type, const char *subtype)
  */
 void mutt_parse_part(FILE *fp, struct Body *b)
 {
+  if (!fp || !b)
+    return;
+
   const char *bound = NULL;
 
   switch (b->type)
@@ -1312,15 +1330,18 @@ void mutt_parse_part(FILE *fp, struct Body *b)
  */
 struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off, bool digest)
 {
-  char buf[1024];
-  struct Body *head = NULL, *last = NULL, *new = NULL;
-  bool final = false; /* did we see the ending boundary? */
+  if (!fp)
+    return NULL;
 
   if (!boundary)
   {
     mutt_error(_("multipart message has no boundary parameter"));
     return NULL;
   }
+
+  char buf[1024];
+  struct Body *head = NULL, *last = NULL, *new = NULL;
+  bool final = false; /* did we see the ending boundary? */
 
   const size_t blen = mutt_str_strlen(boundary);
   while ((ftello(fp) < end_off) && fgets(buf, sizeof(buf), fp))
@@ -1410,6 +1431,9 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
  */
 struct Body *mutt_rfc822_parse_message(FILE *fp, struct Body *parent)
 {
+  if (!fp || !parent)
+    return NULL;
+
   parent->email = mutt_email_new();
   parent->email->offset = ftello(fp);
   parent->email->env = mutt_rfc822_read_header(fp, parent->email, false, false);
@@ -1438,6 +1462,9 @@ struct Body *mutt_rfc822_parse_message(FILE *fp, struct Body *parent)
  */
 int mutt_parse_mailto(struct Envelope *e, char **body, const char *src)
 {
+  if (!e || !src)
+    return -1;
+
   char *p = NULL;
   char *tag = NULL, *value = NULL;
 
