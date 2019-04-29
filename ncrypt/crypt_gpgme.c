@@ -50,10 +50,10 @@
 #include <time.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "mutt.h"
-#include "address/lib.h"
 #include "alias.h"
 #include "crypt.h"
 #include "curs_lib.h"

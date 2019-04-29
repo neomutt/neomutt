@@ -32,11 +32,11 @@
 #include <stdbool.h>
 #include <string.h>
 #include "mutt/mutt.h"
+#include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "mutt.h"
 #include "copy.h"
-#include "address/lib.h"
 #include "context.h"
 #include "globals.h"
 #include "handler.h"

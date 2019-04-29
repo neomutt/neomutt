@@ -48,11 +48,11 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "mutt.h"
 #include "ssl.h"
-#include "address/lib.h"
 #include "conn_globals.h"
 #include "connaccount.h"
 #include "connection.h"

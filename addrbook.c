@@ -31,10 +31,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "mutt/mutt.h"
+#include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "mutt.h"
-#include "address/lib.h"
 #include "alias.h"
 #include "curs_lib.h"
 #include "format_flags.h"

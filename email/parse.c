@@ -34,9 +34,9 @@
 #include <string.h>
 #include <time.h>
 #include "mutt/mutt.h"
+#include "address/lib.h"
 #include "mutt.h"
 #include "parse.h"
-#include "address/lib.h"
 #include "body.h"
 #include "email.h"
 #include "email_globals.h"

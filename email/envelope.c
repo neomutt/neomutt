@@ -30,8 +30,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "mutt/mutt.h"
-#include "envelope.h"
 #include "address/lib.h"
+#include "envelope.h"
 
 /**
  * mutt_env_new - Create a new Envelope

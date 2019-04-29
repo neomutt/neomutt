@@ -30,8 +30,8 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdlib.h>
-#include "group.h"
 #include "address/lib.h"
+#include "group.h"
 
 static struct Hash *Groups = NULL;
 

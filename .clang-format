@@ -13,12 +13,14 @@ IncludeCategories:
   - Regex:      '"config\.h"'
     Priority:   -10
   - Regex:      '<stddef\.h>'
-    Priority:   -8
+    Priority:   -9
   - Regex:      '<.*>'
-    Priority:   -7
+    Priority:   -8
   - Regex:      '".*_private\.h"'
-    Priority:   -6
+    Priority:   -7
   - Regex:      '"mutt/.*\.h"'
+    Priority:   -6
+  - Regex:      '"address/.*\.h"'
     Priority:   -5
   - Regex:      '"config/.*\.h"'
     Priority:   -4

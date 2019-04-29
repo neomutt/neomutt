@@ -38,12 +38,12 @@
 #include <sys/stat.h>
 #include <time.h>
 #include "mutt/mutt.h"
+#include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "pattern.h"
-#include "address/lib.h"
 #include "alias.h"
 #include "context.h"
 #include "copy.h"

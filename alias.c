@@ -37,12 +37,12 @@
 #include <wchar.h>
 #include <wctype.h>
 #include "mutt/mutt.h"
+#include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "mutt.h"
 #include "alias.h"
 #include "addrbook.h"
-#include "address/lib.h"
 #include "curs_lib.h"
 #include "globals.h"
 #include "hdrline.h"

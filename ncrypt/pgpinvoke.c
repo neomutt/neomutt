@@ -35,8 +35,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
-#include "email/lib.h"
 #include "address/lib.h"
+#include "email/lib.h"
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"

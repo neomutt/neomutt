@@ -42,12 +42,12 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "muttlib.h"
-#include "address/lib.h"
 #include "alias.h"
 #include "curs_lib.h"
 #include "filter.h"

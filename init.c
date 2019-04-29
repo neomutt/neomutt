@@ -42,11 +42,11 @@
 #include <unistd.h>
 #include <wchar.h>
 #include "mutt/mutt.h"
+#include "address/lib.h"
 #include "email/lib.h"
 #include "mutt.h"
 #include "init.h"
 #include "account.h"
-#include "address/lib.h"
 #include "alias.h"
 #include "context.h"
 #include "filter.h"
