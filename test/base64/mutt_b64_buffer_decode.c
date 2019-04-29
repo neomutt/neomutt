@@ -28,4 +28,13 @@
 void test_mutt_b64_buffer_decode(void)
 {
   // int mutt_b64_buffer_decode(struct Buffer *buf, const char *in);
+
+  {
+    TEST_CHECK(mutt_b64_buffer_decode(NULL, "apple") != 0);
+  }
+
+  {
+    struct Buffer buf = { 0 };
+    TEST_CHECK(mutt_b64_buffer_decode(&buf, NULL) != 0);
+  }
 }

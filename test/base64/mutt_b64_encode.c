@@ -28,4 +28,13 @@
 void test_mutt_b64_encode(void)
 {
   // size_t mutt_b64_encode(const char *in, size_t inlen, char *out, size_t outlen);
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(mutt_b64_encode(NULL, 5, buf, sizeof(buf)) == 0);
+  }
+
+  {
+    TEST_CHECK(mutt_b64_encode("apple", 5, NULL, 10) == 0);
+  }
 }

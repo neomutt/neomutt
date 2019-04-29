@@ -28,4 +28,12 @@
 void test_mutt_b64_decode(void)
 {
   // int mutt_b64_decode(const char *in, char *out, size_t olen);
+
+  {
+    TEST_CHECK(mutt_b64_decode(NULL, "banana", 10) != 0);
+  }
+
+  {
+    TEST_CHECK(mutt_b64_decode("apple", NULL, 10) != 0);
+  }
 }
