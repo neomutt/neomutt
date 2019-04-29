@@ -28,4 +28,8 @@
 void test_mutt_date_make_date(void)
 {
   // char *mutt_date_make_date(char *buf, size_t buflen);
+
+  {
+    TEST_CHECK(!mutt_date_make_date(NULL, 10));
+  }
 }

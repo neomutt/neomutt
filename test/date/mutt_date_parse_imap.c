@@ -28,4 +28,8 @@
 void test_mutt_date_parse_imap(void)
 {
   // time_t mutt_date_parse_imap(const char *s);
+
+  {
+    TEST_CHECK(mutt_date_parse_imap(NULL) == 0);
+  }
 }

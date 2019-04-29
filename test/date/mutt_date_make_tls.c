@@ -28,4 +28,8 @@
 void test_mutt_date_make_tls(void)
 {
   // int mutt_date_make_tls(char *buf, size_t buflen, time_t timestamp);
+
+  {
+    TEST_CHECK(mutt_date_make_tls(NULL, 10, 0) != 0);
+  }
 }

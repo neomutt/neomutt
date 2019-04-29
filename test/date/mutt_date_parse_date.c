@@ -28,4 +28,13 @@
 void test_mutt_date_parse_date(void)
 {
   // time_t mutt_date_parse_date(const char *s, struct Tz *tz_out);
+
+  {
+    struct Tz tz = { 0 };
+    TEST_CHECK(mutt_date_parse_date(NULL, &tz) != 0);
+  }
+
+  {
+    TEST_CHECK(mutt_date_parse_date("apple", NULL) != 0);
+  }
 }

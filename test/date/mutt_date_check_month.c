@@ -28,4 +28,8 @@
 void test_mutt_date_check_month(void)
 {
   // int mutt_date_check_month(const char *s);
+
+  {
+    TEST_CHECK(mutt_date_check_month(NULL) != 0);
+  }
 }

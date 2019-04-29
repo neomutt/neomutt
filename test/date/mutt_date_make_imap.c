@@ -28,4 +28,8 @@
 void test_mutt_date_make_imap(void)
 {
   // int mutt_date_make_imap(char *buf, size_t buflen, time_t timestamp);
+
+  {
+    TEST_CHECK(mutt_date_make_imap(NULL, 10, 0) != 0);
+  }
 }

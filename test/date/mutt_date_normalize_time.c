@@ -28,4 +28,9 @@
 void test_mutt_date_normalize_time(void)
 {
   // void mutt_date_normalize_time(struct tm *tm);
+
+  {
+    mutt_date_normalize_time(NULL);
+    TEST_CHECK_(1, "mutt_date_normalize_time(NULL)");
+  }
 }

@@ -28,4 +28,8 @@
 void test_mutt_date_is_day_name(void)
 {
   // bool mutt_date_is_day_name(const char *s);
+
+  {
+    TEST_CHECK(!mutt_date_is_day_name(NULL));
+  }
 }
