@@ -28,4 +28,15 @@
 void test_mutt_md5_process(void)
 {
   // void mutt_md5_process(const char *str, struct Md5Ctx *md5ctx);
+
+  {
+    struct Md5Ctx md5ctx = { 0 };
+    mutt_md5_process(NULL, &md5ctx);
+    TEST_CHECK_(1, "mutt_md5_process(NULL, &md5ctx)");
+  }
+
+  {
+    mutt_md5_process("apple", NULL);
+    TEST_CHECK_(1, "mutt_md5_process(\"apple\", NULL)");
+  }
 }

@@ -28,4 +28,16 @@
 void test_mutt_md5_finish_ctx(void)
 {
   // void *mutt_md5_finish_ctx(struct Md5Ctx *md5ctx, void *resbuf);
+
+  {
+    char buf[32] = { 0 };
+    mutt_md5_finish_ctx(NULL, &buf);
+    TEST_CHECK_(1, "mutt_md5_finish_ctx(NULL, &buf)");
+  }
+
+  {
+    struct Md5Ctx md5ctx = { 0 };
+    mutt_md5_finish_ctx(&md5ctx, NULL);
+    TEST_CHECK_(1, "mutt_md5_finish_ctx(&md5ctx, NULL)");
+  }
 }

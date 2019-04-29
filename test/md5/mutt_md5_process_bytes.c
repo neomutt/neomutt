@@ -28,4 +28,16 @@
 void test_mutt_md5_process_bytes(void)
 {
   // void mutt_md5_process_bytes(const void *buffer, size_t len, struct Md5Ctx *md5ctx);
+
+  {
+    struct Md5Ctx md5ctx = { 0 };
+    mutt_md5_process_bytes(NULL, 10, &md5ctx);
+    TEST_CHECK_(1, "mutt_md5_process_bytes(NULL, 10, &md5ctx)");
+  }
+
+  {
+    char buf[32] = { 0 };
+    mutt_md5_process_bytes(&buf, sizeof(buf), NULL);
+    TEST_CHECK_(1, "mutt_md5_process_bytes(&buf, sizeof(buf), NULL)");
+  }
 }

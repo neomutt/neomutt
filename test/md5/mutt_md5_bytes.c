@@ -28,4 +28,16 @@
 void test_mutt_md5_bytes(void)
 {
   // void *mutt_md5_bytes(const void *buffer, size_t len, void *resbuf);
+
+  {
+    char buf[32] = { 0 };
+    mutt_md5_bytes(NULL, 10, &buf);
+    TEST_CHECK_(1, "mutt_md5_bytes(NULL, 10, &buf)");
+  }
+
+  {
+    char buf[32] = { 0 };
+    mutt_md5_bytes(&buf, 10, NULL);
+    TEST_CHECK_(1, "mutt_md5_bytes(&buf, 10, NULL)");
+  }
 }

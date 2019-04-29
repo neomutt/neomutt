@@ -28,4 +28,9 @@
 void test_mutt_md5_init_ctx(void)
 {
   // void mutt_md5_init_ctx(struct Md5Ctx *md5ctx);
+
+  {
+    mutt_md5_init_ctx(NULL);
+    TEST_CHECK_(1, "mutt_md5_init_ctx(NULL)");
+  }
 }

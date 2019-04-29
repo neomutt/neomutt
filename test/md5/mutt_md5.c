@@ -28,4 +28,13 @@
 void test_mutt_md5(void)
 {
   // void *mutt_md5(const char *str, void *buf);
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(!mutt_md5(NULL, &buf));
+  }
+
+  {
+    TEST_CHECK(!mutt_md5("apple", NULL));
+  }
 }

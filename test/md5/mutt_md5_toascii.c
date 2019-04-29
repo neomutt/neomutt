@@ -28,4 +28,15 @@
 void test_mutt_md5_toascii(void)
 {
   // void mutt_md5_toascii(const void *digest, char *resbuf);
+
+  {
+    char buf[32] = { 0 };
+    mutt_md5_toascii(NULL, buf);
+    TEST_CHECK_(1, "mutt_md5_toascii(NULL, &buf)");
+  }
+
+  {
+    mutt_md5_toascii("apple", NULL);
+    TEST_CHECK_(1, "mutt_md5_toascii(\"apple\", NULL)");
+  }
 }
