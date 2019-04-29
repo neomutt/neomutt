@@ -199,6 +199,9 @@ static int buffer_printf(struct Buffer *buf, const char *fmt, va_list ap)
  */
 int mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...)
 {
+  if (!buf || !fmt)
+    return -1;
+
   va_list ap;
 
   va_start(ap, fmt);
@@ -238,6 +241,9 @@ void mutt_buffer_fix_dptr(struct Buffer *buf)
  */
 int mutt_buffer_add_printf(struct Buffer *buf, const char *fmt, ...)
 {
+  if (!buf || !fmt)
+    return -1;
+
   va_list ap;
 
   va_start(ap, fmt);
