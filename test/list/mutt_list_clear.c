@@ -28,4 +28,9 @@
 void test_mutt_list_clear(void)
 {
   // void mutt_list_clear(struct ListHead *h);
+
+  {
+    mutt_list_clear(NULL);
+    TEST_CHECK_(1, "mutt_list_clear(NULL)");
+  }
 }

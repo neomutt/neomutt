@@ -28,4 +28,13 @@
 void test_mutt_list_find(void)
 {
   // struct ListNode *mutt_list_find(const struct ListHead *h, const char *data);
+
+  {
+    TEST_CHECK(!mutt_list_find(NULL, "apple"));
+  }
+
+  {
+    struct ListHead listhead = { 0 };
+    TEST_CHECK(!mutt_list_find(&listhead, NULL));
+  }
 }

@@ -28,4 +28,14 @@
 void test_mutt_list_compare(void)
 {
   // bool mutt_list_compare(const struct ListHead *ah, const struct ListHead *bh);
+
+  {
+    struct ListHead listhead = { 0 };
+    TEST_CHECK(!mutt_list_compare(NULL, &listhead));
+  }
+
+  {
+    struct ListHead listhead = { 0 };
+    TEST_CHECK(!mutt_list_compare(&listhead, NULL));
+  }
 }

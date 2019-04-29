@@ -28,4 +28,13 @@
 void test_mutt_list_match(void)
 {
   // bool mutt_list_match(const char *s, struct ListHead *h);
+
+  {
+    struct ListHead listhead = { 0 };
+    TEST_CHECK(!mutt_list_match(NULL, &listhead));
+  }
+
+  {
+    TEST_CHECK(!mutt_list_match("apple", NULL));
+  }
 }

@@ -28,4 +28,9 @@
 void test_mutt_list_free(void)
 {
   // void mutt_list_free(struct ListHead *h);
+
+  {
+    mutt_list_free(NULL);
+    TEST_CHECK_(1, "mutt_list_free(NULL)");
+  }
 }

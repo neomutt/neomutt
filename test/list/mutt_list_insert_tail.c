@@ -28,4 +28,13 @@
 void test_mutt_list_insert_tail(void)
 {
   // struct ListNode *mutt_list_insert_tail(struct ListHead *h, char *s);
+
+  {
+    TEST_CHECK(!mutt_list_insert_tail(NULL, "apple"));
+  }
+
+  {
+    struct ListHead listhead = STAILQ_HEAD_INITIALIZER(listhead);
+    TEST_CHECK(mutt_list_insert_tail(&listhead, NULL) != NULL);
+  }
 }

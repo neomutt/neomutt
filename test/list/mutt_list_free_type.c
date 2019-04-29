@@ -25,7 +25,23 @@
 #include "config.h"
 #include "mutt/mutt.h"
 
+void dummy_free(void **ptr)
+{
+}
+
 void test_mutt_list_free_type(void)
 {
   // void mutt_list_free_type(struct ListHead *h, list_free_t fn);
+
+  {
+    list_free_t fn = dummy_free;
+    mutt_list_free_type(NULL, fn);
+    TEST_CHECK_(1, "mutt_list_free_type(NULL, fn)");
+  }
+
+  {
+    struct ListHead listhead = { 0 };
+    mutt_list_free_type(&listhead, NULL);
+    TEST_CHECK_(1, "mutt_list_free_type(&listhead, NULL)");
+  }
 }

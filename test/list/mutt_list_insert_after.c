@@ -28,4 +28,20 @@
 void test_mutt_list_insert_after(void)
 {
   // struct ListNode *mutt_list_insert_after(struct ListHead *h, struct ListNode *n, char *s);
+
+  {
+    struct ListNode listnode = { 0 };
+    TEST_CHECK(!mutt_list_insert_after(NULL, &listnode, "apple"));
+  }
+
+  {
+    struct ListHead listhead = { 0 };
+    TEST_CHECK(!mutt_list_insert_after(&listhead, NULL, "apple"));
+  }
+
+  {
+    struct ListHead listhead = STAILQ_HEAD_INITIALIZER(listhead);
+    struct ListNode listnode = { 0 };
+    TEST_CHECK(mutt_list_insert_after(&listhead, &listnode, NULL) != NULL);
+  }
 }
