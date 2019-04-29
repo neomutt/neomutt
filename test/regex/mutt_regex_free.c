@@ -28,4 +28,15 @@
 void test_mutt_regex_free(void)
 {
   // void mutt_regex_free(struct Regex **r);
+
+  {
+    mutt_regex_free(NULL);
+    TEST_CHECK_(1, "mutt_regex_free(NULL)");
+  }
+
+  {
+    struct Regex *regex = NULL;
+    mutt_regex_free(&regex);
+    TEST_CHECK_(1, "mutt_regex_free(&regex)");
+  }
 }

@@ -28,4 +28,20 @@
 void test_mutt_replacelist_apply(void)
 {
   // char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, const char *str);
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(mutt_replacelist_apply(NULL, buf, sizeof(buf), "apple") == buf);
+  }
+
+  {
+    struct ReplaceList replacelist = { 0 };
+    TEST_CHECK(mutt_replacelist_apply(&replacelist, NULL, 10, "apple") != NULL);
+  }
+
+  {
+    struct ReplaceList replacelist = { 0 };
+    char buf[32] = { 0 };
+    TEST_CHECK(mutt_replacelist_apply(&replacelist, buf, sizeof(buf), NULL) == buf);
+  }
 }

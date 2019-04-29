@@ -28,4 +28,26 @@
 void test_mutt_replacelist_add(void)
 {
   // int mutt_replacelist_add(struct ReplaceList *rl, const char *pat, const char *templ, struct Buffer *err);
+
+  {
+    struct Buffer buf = { 0 };
+    TEST_CHECK(mutt_replacelist_add(NULL, "apple", "banana", &buf) == 0);
+  }
+
+  {
+    struct ReplaceList replacelist = { 0 };
+    struct Buffer buf = { 0 };
+    TEST_CHECK(mutt_replacelist_add(&replacelist, NULL, "banana", &buf) == 0);
+  }
+
+  {
+    struct ReplaceList replacelist = { 0 };
+    struct Buffer buf = { 0 };
+    TEST_CHECK(mutt_replacelist_add(&replacelist, "apple", NULL, &buf) == 0);
+  }
+
+  {
+    struct ReplaceList replacelist = STAILQ_HEAD_INITIALIZER(replacelist);
+    TEST_CHECK(mutt_replacelist_add(&replacelist, "apple", "banana", NULL) == 0);
+  }
 }

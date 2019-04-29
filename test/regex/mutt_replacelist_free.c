@@ -28,4 +28,9 @@
 void test_mutt_replacelist_free(void)
 {
   // void mutt_replacelist_free(struct ReplaceList *rl);
+
+  {
+    mutt_replacelist_free(NULL);
+    TEST_CHECK_(1, "mutt_replacelist_free(NULL)");
+  }
 }

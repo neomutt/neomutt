@@ -28,4 +28,8 @@
 void test_mutt_regex_compile(void)
 {
   // struct Regex *mutt_regex_compile(const char *str, int flags);
+
+  {
+    TEST_CHECK(!mutt_regex_compile(NULL, 0));
+  }
 }

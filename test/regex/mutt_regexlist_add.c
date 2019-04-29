@@ -28,4 +28,20 @@
 void test_mutt_regexlist_add(void)
 {
   // int mutt_regexlist_add(struct RegexList *rl, const char *str, int flags, struct Buffer *err);
+
+  {
+    struct Buffer buf = { 0 };
+    TEST_CHECK(mutt_regexlist_add(NULL, "apple", 0, &buf) == 0);
+  }
+
+  {
+    struct RegexList regexlist = { 0 };
+    struct Buffer buf = { 0 };
+    TEST_CHECK(mutt_regexlist_add(&regexlist, NULL, 0, &buf) == 0);
+  }
+
+  {
+    struct RegexList regexlist = STAILQ_HEAD_INITIALIZER(regexlist);
+    TEST_CHECK(mutt_regexlist_add(&regexlist, "apple", 0, NULL) == 0);
+  }
 }

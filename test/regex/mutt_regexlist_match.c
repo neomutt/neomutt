@@ -28,4 +28,13 @@
 void test_mutt_regexlist_match(void)
 {
   // bool mutt_regexlist_match(struct RegexList *rl, const char *str);
+
+  {
+    TEST_CHECK(!mutt_regexlist_match(NULL, "apple"));
+  }
+
+  {
+    struct RegexList regexlist = { 0 };
+    TEST_CHECK(!mutt_regexlist_match(&regexlist, NULL));
+  }
 }
