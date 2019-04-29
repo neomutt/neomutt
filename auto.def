@@ -697,12 +697,9 @@ if {[get-define want-idn]} {
   set sprep 0
   set idna 0
   cc-with [list -cflags -I$idn_prefix/include -libs -L$idn_prefix/lib] {
-    incr sprep [cc-check-includes stringprep.h]
-    incr sprep [cc-check-includes idn/stringprep.h]
-    incr idna  [cc-check-includes idna.h]
-    incr idna  [cc-check-includes idn/idna.h]
-    set  sprcv [cc-check-function-in-lib stringprep_check_version idn]
-    if {$sprep == 0 || $idna == 0 || $sprcv == 0} {
+    if {!([cc-check-includes stringprep.h] || [cc-check-includes idn/stringprep.h]) ||
+        !([cc-check-includes idna.h] || [cc-check-includes idn/idna.h]) ||
+        ![cc-check-function-in-lib stringprep_check_version idn]} {
       user-error "Unable to find GNU libidn"
     }
     define-feature libidn
@@ -715,21 +712,19 @@ if {[get-define want-idn]} {
 } elseif {[get-define want-idn2]} {
   set idn_prefix [opt-val with-idn2 $prefix]
   cc-with [list -cflags -I$idn_prefix/include -libs -L$idn_prefix/lib] {
-    set idn2 [cc-check-includes idn2.h]
-    incr idn2 [cc-check-includes idn/idn2.h]
-    set  sprcv [cc-check-function-in-lib stringprep_check_version idn]
-    set lu8  [cc-check-function-in-lib idn2_lookup_u8 idn2]
-    if {$idn2 == 0 || $lu8 == 0} {
+    if {!([cc-check-includes idn2.h] || [cc-check-includes idn/idn2.h])} {
       user-error "Unable to find GNU libidn2"
     }
+    if {![cc-check-function-in-lib idn2_to_ascii_8z     idn2] ||
+        ![cc-check-function-in-lib idn2_to_unicode_8z8z idn2] ||
+        ![cc-check-function-in-lib idn2_check_version   idn2]} {
+      user-error "Unable to find required functions in GNU libidn2.\
+                  Please consider using idn1 with './configure --idn'."
+    }
+
     define-feature libidn
     define-append CFLAGS -I$idn_prefix/include
     define-append LDFLAGS -L$idn_prefix/lib
-    cc-with {-includes "idn2.h idn/idn2.h"} {
-      cc-check-defines idna_to_unicode_utf8_from_utf8 idna_to_unicode_8z8z
-      cc-check-defines idna_to_ascii_from_utf8 idna_to_ascii_8z
-      cc-check-defines idna_to_ascii_lz idna_to_ascii_from_locale
-    }
   }
 }
 
