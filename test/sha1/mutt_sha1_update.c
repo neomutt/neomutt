@@ -28,4 +28,16 @@
 void test_mutt_sha1_update(void)
 {
   // void mutt_sha1_update(struct Sha1Ctx *sha1ctx, const unsigned char *data, uint32_t len);
+
+  {
+    unsigned char buf[32] = "apple";
+    mutt_sha1_update(NULL, buf, 0);
+    TEST_CHECK_(1, "mutt_sha1_update(NULL, buf, 0)");
+  }
+
+  {
+    struct Sha1Ctx sha1ctx = { 0 };
+    mutt_sha1_update(&sha1ctx, NULL, 0);
+    TEST_CHECK_(1, "mutt_sha1_update(&sha1ctx, NULL, 0)");
+  }
 }

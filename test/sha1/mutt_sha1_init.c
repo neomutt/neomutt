@@ -28,4 +28,9 @@
 void test_mutt_sha1_init(void)
 {
   // void mutt_sha1_init(struct Sha1Ctx *sha1ctx);
+
+  {
+    mutt_sha1_init(NULL);
+    TEST_CHECK_(1, "mutt_sha1_init(NULL)");
+  }
 }
