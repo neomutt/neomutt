@@ -28,4 +28,9 @@
 void test_mutt_envlist_init(void)
 {
   // void mutt_envlist_init(char *envp[]);
+
+  {
+    mutt_envlist_init(NULL);
+    TEST_CHECK_(1, "mutt_envlist_init(NULL)");
+  }
 }

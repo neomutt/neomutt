@@ -28,4 +28,12 @@
 void test_mutt_envlist_set(void)
 {
   // bool mutt_envlist_set(const char *name, const char *value, bool overwrite);
+
+  {
+    TEST_CHECK(!mutt_envlist_set(NULL, "banana", false));
+  }
+
+  {
+    TEST_CHECK(mutt_envlist_set("apple", NULL, false));
+  }
 }

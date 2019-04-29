@@ -28,4 +28,8 @@
 void test_mutt_envlist_unset(void)
 {
   // bool mutt_envlist_unset(const char *name);
+
+  {
+    TEST_CHECK(!mutt_envlist_unset(NULL));
+  }
 }
