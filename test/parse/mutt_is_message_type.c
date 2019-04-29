@@ -30,4 +30,8 @@
 void test_mutt_is_message_type(void)
 {
   // bool mutt_is_message_type(int type, const char *subtype);
+
+  {
+    TEST_CHECK(!mutt_is_message_type(0, NULL));
+  }
 }

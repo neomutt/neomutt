@@ -30,4 +30,13 @@
 void test_mutt_extract_message_id(void)
 {
   // char *mutt_extract_message_id(const char *s, const char **saveptr);
+
+  {
+    const char *saveptr = NULL;
+    TEST_CHECK(!mutt_extract_message_id(NULL, &saveptr));
+  }
+
+  {
+    TEST_CHECK(!mutt_extract_message_id("apple", NULL));
+  }
 }

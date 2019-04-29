@@ -30,4 +30,8 @@
 void test_mutt_check_mime_type(void)
 {
   // int mutt_check_mime_type(const char *s);
+
+  {
+    TEST_CHECK(mutt_check_mime_type(NULL) == 0);
+  }
 }

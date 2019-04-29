@@ -30,4 +30,9 @@
 void test_mutt_auto_subscribe(void)
 {
   // void mutt_auto_subscribe(const char *mailto);
+
+  {
+    mutt_auto_subscribe(NULL);
+    TEST_CHECK_(1, "mutt_auto_subscribe(NULL)");
+  }
 }

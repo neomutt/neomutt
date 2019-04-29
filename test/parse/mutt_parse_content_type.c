@@ -30,4 +30,15 @@
 void test_mutt_parse_content_type(void)
 {
   // void mutt_parse_content_type(const char *s, struct Body *ct);
+
+  {
+    struct Body body = { 0 };
+    mutt_parse_content_type(NULL, &body);
+    TEST_CHECK_(1, "mutt_parse_content_type(NULL, &body)");
+  }
+
+  {
+    mutt_parse_content_type("apple", NULL);
+    TEST_CHECK_(1, "mutt_parse_content_type(\"apple\", NULL)");
+  }
 }

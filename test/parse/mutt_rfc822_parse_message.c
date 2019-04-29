@@ -30,4 +30,14 @@
 void test_mutt_rfc822_parse_message(void)
 {
   // struct Body *mutt_rfc822_parse_message(FILE *fp, struct Body *parent);
+
+  {
+    struct Body body = { 0 };
+    TEST_CHECK(!mutt_rfc822_parse_message(NULL, &body));
+  }
+
+  {
+    FILE fp = { 0 };
+    TEST_CHECK(!mutt_rfc822_parse_message(&fp, NULL));
+  }
 }

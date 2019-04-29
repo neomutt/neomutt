@@ -30,4 +30,16 @@
 void test_mutt_parse_part(void)
 {
   // void mutt_parse_part(FILE *fp, struct Body *b);
+
+  {
+    struct Body body = { 0 };
+    mutt_parse_part(NULL, &body);
+    TEST_CHECK_(1, "mutt_parse_part(NULL, &body)");
+  }
+
+  {
+    FILE fp = { 0 };
+    mutt_parse_part(&fp, NULL);
+    TEST_CHECK_(1, "mutt_parse_part(&fp, NULL)");
+  }
 }

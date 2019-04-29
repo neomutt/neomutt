@@ -30,4 +30,8 @@
 void test_mutt_read_mime_header(void)
 {
   // struct Body *mutt_read_mime_header(FILE *fp, bool digest);
+
+  {
+    TEST_CHECK(!mutt_read_mime_header(NULL, false));
+  }
 }

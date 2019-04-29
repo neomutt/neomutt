@@ -30,4 +30,8 @@
 void test_mutt_matches_ignore(void)
 {
   // bool mutt_matches_ignore(const char *s);
+
+  {
+    TEST_CHECK(!mutt_matches_ignore(NULL));
+  }
 }

@@ -30,4 +30,26 @@
 void test_mutt_rfc822_parse_line(void)
 {
   // int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line, char *p, bool user_hdrs, bool weed, bool do_2047);
+
+  {
+    struct Email email = { 0 };
+    TEST_CHECK(mutt_rfc822_parse_line(NULL, &email, "apple", "banana", false, false, false) == 0);
+  }
+
+  {
+    struct Envelope envelope = { 0 };
+    TEST_CHECK(mutt_rfc822_parse_line(&envelope, NULL, "apple", "banana", false, false, false) == 0);
+  }
+
+  {
+    struct Envelope envelope = { 0 };
+    struct Email email = { 0 };
+    TEST_CHECK(mutt_rfc822_parse_line(&envelope, &email, NULL, "banana", false, false, false) == 0);
+  }
+
+  {
+    struct Envelope envelope = { 0 };
+    struct Email email = { 0 };
+    TEST_CHECK(mutt_rfc822_parse_line(&envelope, &email, "apple", NULL, false, false, false) == 0);
+  }
 }

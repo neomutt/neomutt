@@ -30,4 +30,20 @@
 void test_mutt_parse_mailto(void)
 {
   // int mutt_parse_mailto(struct Envelope *e, char **body, const char *src);
+
+  {
+    char *body = NULL;
+    TEST_CHECK(mutt_parse_mailto(NULL, &body, "apple") != 0);
+  }
+
+  {
+    struct Envelope envelope = { 0 };
+    TEST_CHECK(mutt_parse_mailto(&envelope, NULL, "apple") != 0);
+  }
+
+  {
+    struct Envelope envelope = { 0 };
+    char *body = NULL;
+    TEST_CHECK(mutt_parse_mailto(&envelope, &body, NULL) != 0);
+  }
 }

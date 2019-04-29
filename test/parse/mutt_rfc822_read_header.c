@@ -30,4 +30,15 @@
 void test_mutt_rfc822_read_header(void)
 {
   // struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hdrs, bool weed);
+
+  {
+    struct Email email = { 0 };
+    TEST_CHECK(!mutt_rfc822_read_header(NULL, &email, false, false));
+  }
+
+  {
+    FILE *fp = fopen("/dev/null", "r");
+    TEST_CHECK(mutt_rfc822_read_header(fp, NULL, false, false) != NULL);
+    fclose(fp);
+  }
 }

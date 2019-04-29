@@ -30,4 +30,8 @@
 void test_mutt_check_encoding(void)
 {
   // int mutt_check_encoding(const char *c);
+
+  {
+    TEST_CHECK(mutt_check_encoding(NULL) == 0);
+  }
 }
