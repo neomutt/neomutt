@@ -30,4 +30,9 @@
 void test_mutt_env_to_local(void)
 {
   // void mutt_env_to_local(struct Envelope *env);
+
+  {
+    mutt_env_to_local(NULL);
+    TEST_CHECK_(1, "mutt_env_to_local(NULL)");
+  }
 }

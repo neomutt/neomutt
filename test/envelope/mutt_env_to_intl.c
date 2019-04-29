@@ -30,4 +30,22 @@
 void test_mutt_env_to_intl(void)
 {
   // int mutt_env_to_intl(struct Envelope *env, const char **tag, char **err);
+
+  {
+    const char *tag = NULL;
+    char *err = NULL;
+    TEST_CHECK(mutt_env_to_intl(NULL, &tag, &err) == 1);
+  }
+
+  {
+    struct Envelope envelope = { 0 };
+    char *err = NULL;
+    TEST_CHECK(mutt_env_to_intl(&envelope, NULL, &err) == 0);
+  }
+
+  {
+    struct Envelope envelope = { 0 };
+    const char *tag = NULL;
+    TEST_CHECK(mutt_env_to_intl(&envelope, &tag, NULL) == 0);
+  }
 }

@@ -30,4 +30,15 @@
 void test_mutt_env_free(void)
 {
   // void mutt_env_free(struct Envelope **p);
+
+  {
+    mutt_env_free(NULL);
+    TEST_CHECK_(1, "mutt_env_free(NULL)");
+  }
+
+  {
+    struct Envelope *envelope = NULL;
+    mutt_env_free(&envelope);
+    TEST_CHECK_(1, "mutt_env_free(&envelope)");
+  }
 }

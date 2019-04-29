@@ -30,4 +30,25 @@
 void test_mutt_env_merge(void)
 {
   // void mutt_env_merge(struct Envelope *base, struct Envelope **extra);
+
+  {
+    struct Envelope envelope = { 0 };
+    struct Envelope *envp = &envelope;
+
+    mutt_env_merge(NULL, &envp);
+    TEST_CHECK_(1, "mutt_env_merge(NULL, &envp)");
+  }
+
+  {
+    struct Envelope base = { 0 };
+    mutt_env_merge(&base, NULL);
+    TEST_CHECK_(1, "mutt_env_merge(&base, NULL)");
+  }
+
+  {
+    struct Envelope base = { 0 };
+    struct Envelope *envp = NULL;
+    mutt_env_merge(&base, &envp);
+    TEST_CHECK_(1, "mutt_env_merge(&base, &envp)");
+  }
 }
