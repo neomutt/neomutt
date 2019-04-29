@@ -30,4 +30,8 @@
 void test_url_parse(void)
 {
   // struct Url *url_parse(const char *src);
+
+  {
+    TEST_CHECK(!url_parse(NULL));
+  }
 }

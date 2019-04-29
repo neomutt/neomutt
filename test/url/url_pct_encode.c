@@ -30,4 +30,15 @@
 void test_url_pct_encode(void)
 {
   // void url_pct_encode(char *buf, size_t buflen, const char *src);
+
+  {
+    url_pct_encode(NULL, 10, "apple");
+    TEST_CHECK_(1, "url_pct_encode(NULL, 10, \"apple\")");
+  }
+
+  {
+    char buf[32] = { 0 };
+    url_pct_encode(buf, sizeof(buf), NULL);
+    TEST_CHECK_(1, "url_pct_encode(&buf, sizeof(buf), NULL)");
+  }
 }

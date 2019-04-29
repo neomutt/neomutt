@@ -30,4 +30,15 @@
 void test_url_free(void)
 {
   // void url_free(struct Url **u);
+
+  {
+    url_free(NULL);
+    TEST_CHECK_(1, "url_free(NULL)");
+  }
+
+  {
+    struct Url *url = NULL;
+    url_free(&url);
+    TEST_CHECK_(1, "url_free(&url)");
+  }
 }

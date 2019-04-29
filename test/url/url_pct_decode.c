@@ -30,4 +30,8 @@
 void test_url_pct_decode(void)
 {
   // int url_pct_decode(char *s);
+
+  {
+    TEST_CHECK(url_pct_decode(NULL) != 0);
+  }
 }
