@@ -571,18 +571,18 @@ FILE *mutt_file_fopen(const char *path, const char *mode)
 
 /**
  * mutt_file_sanitize_filename - Replace unsafe characters in a filename
- * @param fp     Filename to make safe
+ * @param path  Filename to make safe
  * @param slash Replace '/' characters too
  */
-void mutt_file_sanitize_filename(char *fp, bool slash)
+void mutt_file_sanitize_filename(char *path, bool slash)
 {
-  if (!fp)
+  if (!path)
     return;
 
-  for (; *fp; fp++)
+  for (; *path; path++)
   {
-    if ((slash && (*fp == '/')) || !strchr(safe_chars, *fp))
-      *fp = '_';
+    if ((slash && (*path == '/')) || !strchr(safe_chars, *path))
+      *path = '_';
   }
 }
 

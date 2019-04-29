@@ -57,28 +57,28 @@ void mutt_grouplist_free(void)
 
 /**
  * mutt_pattern_group - Match a pattern to a Group
- * @param k Pattern to match
+ * @param pat Pattern to match
  * @retval ptr Matching Group
  * @retval ptr Newly created Group (if no match)
  */
-struct Group *mutt_pattern_group(const char *k)
+struct Group *mutt_pattern_group(const char *pat)
 {
-  struct Group *p = NULL;
+  struct Group *g = NULL;
 
-  if (!k)
+  if (!pat)
     return 0;
 
-  p = mutt_hash_find(Groups, k);
-  if (!p)
+  g = mutt_hash_find(Groups, pat);
+  if (!g)
   {
-    mutt_debug(LL_DEBUG2, "Creating group %s\n", k);
-    p = mutt_mem_calloc(1, sizeof(struct Group));
-    p->name = mutt_str_strdup(k);
-    STAILQ_INIT(&p->rs);
-    mutt_hash_insert(Groups, p->name, p);
+    mutt_debug(LL_DEBUG2, "Creating group %s\n", pat);
+    g = mutt_mem_calloc(1, sizeof(struct Group));
+    g->name = mutt_str_strdup(pat);
+    STAILQ_INIT(&g->rs);
+    mutt_hash_insert(Groups, g->name, g);
   }
 
-  return p;
+  return g;
 }
 
 /**

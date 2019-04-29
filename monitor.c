@@ -379,7 +379,7 @@ int mutt_monitor_poll(void)
     }
     else
     {
-      bool inputReady = false;
+      bool input_ready = false;
       for (int i = 0; fds && (i < PollFdsCount); i++)
       {
         if (PollFds[i].revents)
@@ -387,7 +387,7 @@ int mutt_monitor_poll(void)
           fds--;
           if (PollFds[i].fd == 0)
           {
-            inputReady = true;
+            input_ready = true;
           }
           else if (PollFds[i].fd == INotifyFd)
           {
@@ -422,7 +422,7 @@ int mutt_monitor_poll(void)
           }
         }
       }
-      if (!inputReady)
+      if (!input_ready)
         rc = MonitorFilesChanged ? -2 : -3;
     }
   }

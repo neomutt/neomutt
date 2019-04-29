@@ -64,6 +64,6 @@ int  mutt_grouplist_remove_regex(struct GroupList *head, const char *s);
 int  mutt_grouplist_remove_addrlist(struct GroupList *head, struct Address *a);
 
 bool mutt_group_match(struct Group *g, const char *s);
-struct Group *mutt_pattern_group(const char *k);
+struct Group *mutt_pattern_group(const char *pat);
 
 #endif /* MUTT_GROUP_H */

@@ -3273,7 +3273,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
 
   if (fp_tmp)
   {
-    char sasha[1024];
+    char line_buf[1024];
     int lines = 0;
 
     mutt_write_mime_body(e->content, fp_tmp);
@@ -3301,7 +3301,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
 
     /* count the number of lines */
     rewind(fp_tmp);
-    while (fgets(sasha, sizeof(sasha), fp_tmp))
+    while (fgets(line_buf, sizeof(line_buf), fp_tmp))
       lines++;
     fprintf(msg->fp, "Content-Length: " OFF_T_FMT "\n", (LOFF_T) ftello(fp_tmp));
     fprintf(msg->fp, "Lines: %d\n\n", lines);
