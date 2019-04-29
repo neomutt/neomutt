@@ -28,4 +28,8 @@
 void test_mutt_ch_fgetconv(void)
 {
   // int mutt_ch_fgetconv(struct FgetConv *fc);
+
+  {
+    TEST_CHECK(mutt_ch_fgetconv(NULL) == EOF);
+  }
 }

@@ -28,4 +28,8 @@
 void test_mutt_ch_check_charset(void)
 {
   // bool mutt_ch_check_charset(const char *cs, bool strict);
+
+  {
+    TEST_CHECK(!mutt_ch_check_charset(NULL, false));
+  }
 }

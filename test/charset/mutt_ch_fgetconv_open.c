@@ -28,4 +28,18 @@
 void test_mutt_ch_fgetconv_open(void)
 {
   // struct FgetConv *mutt_ch_fgetconv_open(FILE *fp, const char *from, const char *to, int flags);
+
+  {
+    TEST_CHECK(mutt_ch_fgetconv_open(NULL, "apple", "banana", 0) != NULL);
+  }
+
+  {
+    FILE fp = { 0 };
+    TEST_CHECK(mutt_ch_fgetconv_open(&fp, NULL, "banana", 0) != NULL);
+  }
+
+  {
+    FILE fp = { 0 };
+    TEST_CHECK(mutt_ch_fgetconv_open(&fp, "apple", NULL, 0) != NULL);
+  }
 }

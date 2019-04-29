@@ -28,4 +28,18 @@
 void test_mutt_ch_lookup_add(void)
 {
   // bool mutt_ch_lookup_add(enum LookupType type, const char *pat, const char *replace, struct Buffer *err);
+
+  {
+    struct Buffer buf = { 0 };
+    TEST_CHECK(!mutt_ch_lookup_add(0, NULL, "banana", &buf));
+  }
+
+  {
+    struct Buffer buf = { 0 };
+    TEST_CHECK(!mutt_ch_lookup_add(0, "apple", NULL, &buf));
+  }
+
+  {
+    TEST_CHECK(mutt_ch_lookup_add(0, "apple", "banana", NULL));
+  }
 }

@@ -28,4 +28,8 @@
 void test_mutt_ch_charset_lookup(void)
 {
   // const char *mutt_ch_charset_lookup(const char *chs);
+
+  {
+    TEST_CHECK(!mutt_ch_charset_lookup(NULL));
+  }
 }

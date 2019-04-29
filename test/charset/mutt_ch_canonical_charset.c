@@ -28,4 +28,15 @@
 void test_mutt_ch_canonical_charset(void)
 {
   // void mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name);
+
+  {
+    mutt_ch_canonical_charset(NULL, 10, "apple");
+    TEST_CHECK_(1, "mutt_ch_canonical_charset(NULL, 10, \"apple\")");
+  }
+
+  {
+    char buf[32] = { 0 };
+    mutt_ch_canonical_charset(buf, sizeof(buf), NULL);
+    TEST_CHECK_(1, "mutt_ch_canonical_charset(&buf, sizeof(buf), NULL)");
+  }
 }

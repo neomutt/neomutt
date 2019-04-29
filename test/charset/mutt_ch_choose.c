@@ -28,4 +28,36 @@
 void test_mutt_ch_choose(void)
 {
   // char *mutt_ch_choose(const char *fromcode, const char *charsets, const char *u, size_t ulen, char **d, size_t *dlen);
+
+  {
+    char buf_in[32] = { 0 };
+    char *buf_out = NULL;
+    size_t buflen = 0;
+    TEST_CHECK(mutt_ch_choose(NULL, "banana", buf_in, sizeof(buf_in), &buf_out, &buflen) != NULL);
+  }
+
+  {
+    char buf_in[32] = { 0 };
+    char *buf_out = NULL;
+    size_t buflen = 0;
+    TEST_CHECK(!mutt_ch_choose("apple", NULL, buf_in, sizeof(buf_in), &buf_out, &buflen));
+  }
+
+  {
+    char *buf_out = NULL;
+    size_t buflen = 0;
+    TEST_CHECK(mutt_ch_choose("apple", "banana", NULL, 10, &buf_out, &buflen) != NULL);
+  }
+
+  {
+    char buf_in[32] = { 0 };
+    size_t buflen = 0;
+    TEST_CHECK(!mutt_ch_choose("apple", "banana", buf_in, sizeof(buf_in), NULL, &buflen));
+  }
+
+  {
+    char buf_in[32] = { 0 };
+    char *buf_out = NULL;
+    TEST_CHECK(mutt_ch_choose("apple", "banana", buf_in, sizeof(buf_in), &buf_out, NULL) != NULL);
+  }
 }

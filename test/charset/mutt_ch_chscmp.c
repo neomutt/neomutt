@@ -28,4 +28,12 @@
 void test_mutt_ch_chscmp(void)
 {
   // bool mutt_ch_chscmp(const char *cs1, const char *cs2);
+
+  {
+    TEST_CHECK(!mutt_ch_chscmp(NULL, "banana"));
+  }
+
+  {
+    TEST_CHECK(!mutt_ch_chscmp("apple", NULL));
+  }
 }

@@ -28,4 +28,8 @@
 void test_mutt_ch_iconv_lookup(void)
 {
   // const char *mutt_ch_iconv_lookup(const char *chs);
+
+  {
+    TEST_CHECK(!mutt_ch_iconv_lookup(NULL));
+  }
 }

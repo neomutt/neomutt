@@ -28,4 +28,15 @@
 void test_mutt_ch_fgetconv_close(void)
 {
   // void mutt_ch_fgetconv_close(struct FgetConv **fc);
+
+  {
+    mutt_ch_fgetconv_close(NULL);
+    TEST_CHECK_(1, "mutt_ch_fgetconv_close(NULL)");
+  }
+
+  {
+    struct FgetConv *fgetconv = NULL;
+    mutt_ch_fgetconv_close(&fgetconv);
+    TEST_CHECK_(1, "mutt_ch_fgetconv_close(&fgetconv)");
+  }
 }

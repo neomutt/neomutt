@@ -28,4 +28,14 @@
 void test_mutt_ch_fgetconvs(void)
 {
   // char *mutt_ch_fgetconvs(char *buf, size_t buflen, struct FgetConv *fc);
+
+  {
+    struct FgetConv fgetconv = { 0 };
+    TEST_CHECK(!mutt_ch_fgetconvs(NULL, 10, &fgetconv));
+  }
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(!mutt_ch_fgetconvs(buf, sizeof(buf), NULL));
+  }
 }

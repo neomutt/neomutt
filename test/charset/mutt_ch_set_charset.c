@@ -28,4 +28,9 @@
 void test_mutt_ch_set_charset(void)
 {
   // void mutt_ch_set_charset(const char *charset);
+
+  {
+    mutt_ch_set_charset(NULL);
+    TEST_CHECK_(1, "mutt_ch_set_charset(NULL)");
+  }
 }

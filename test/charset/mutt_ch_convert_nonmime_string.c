@@ -28,4 +28,8 @@
 void test_mutt_ch_convert_nonmime_string(void)
 {
   // int mutt_ch_convert_nonmime_string(char **ps);
+
+  {
+    TEST_CHECK(mutt_ch_convert_nonmime_string(NULL) != 0);
+  }
 }

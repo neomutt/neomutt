@@ -28,4 +28,18 @@
 void test_mutt_ch_check(void)
 {
   // int mutt_ch_check(const char *s, size_t slen, const char *from, const char *to);
+
+  {
+    TEST_CHECK(mutt_ch_check(NULL, 10, "apple", "banana") != 0);
+  }
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(mutt_ch_check(buf, sizeof(buf), NULL, "banana") != 0);
+  }
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(mutt_ch_check(buf, sizeof(buf), "apple", NULL) != 0);
+  }
 }
