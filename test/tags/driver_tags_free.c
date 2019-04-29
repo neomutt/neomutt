@@ -30,4 +30,9 @@
 void test_driver_tags_free(void)
 {
   // void driver_tags_free(struct TagHead *head);
+
+  {
+    driver_tags_free(NULL);
+    TEST_CHECK_(1, "driver_tags_free(NULL)");
+  }
 }

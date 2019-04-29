@@ -30,4 +30,13 @@
 void test_driver_tags_replace(void)
 {
   // bool driver_tags_replace(struct TagHead *head, char *tags);
+
+  {
+    TEST_CHECK(!driver_tags_replace(NULL, "apple"));
+  }
+
+  {
+    struct TagHead taghead = { 0 };
+    TEST_CHECK(driver_tags_replace(&taghead, NULL));
+  }
 }

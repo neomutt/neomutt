@@ -30,4 +30,13 @@
 void test_driver_tags_get_transformed_for(void)
 {
   // char *driver_tags_get_transformed_for(const char *name, struct TagHead *head);
+
+  {
+    struct TagHead taghead = { 0 };
+    TEST_CHECK(!driver_tags_get_transformed_for(NULL, &taghead));
+  }
+
+  {
+    TEST_CHECK(!driver_tags_get_transformed_for("apple", NULL));
+  }
 }

@@ -30,4 +30,8 @@
 void test_driver_tags_get_transformed(void)
 {
   // char *driver_tags_get_transformed(struct TagHead *head);
+
+  {
+    TEST_CHECK(!driver_tags_get_transformed(NULL));
+  }
 }
