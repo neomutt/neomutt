@@ -224,13 +224,17 @@ time_t mutt_date_local_tz(time_t t)
  * mutt_date_make_time - Convert `struct tm` to `time_t`
  * @param t     Time to convert
  * @param local Should the local timezone be considered
- * @retval num Time in Unix format
+ * @retval num        Time in Unix format
+ * @retval TIME_T_MIN Error
  *
  * Convert a struct tm to time_t, but don't take the local timezone into
  * account unless "local" is nonzero
  */
 time_t mutt_date_make_time(struct tm *t, bool local)
 {
+  if (!t)
+    return TIME_T_MIN;
+
   time_t g;
 
   static const int AccumDaysPerMonth[mutt_array_size(Months)] = {
@@ -296,6 +300,9 @@ time_t mutt_date_make_time(struct tm *t, bool local)
  */
 void mutt_date_normalize_time(struct tm *tm)
 {
+  if (!tm)
+    return;
+
   static const char DaysPerMonth[mutt_array_size(Months)] = {
     31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31,
   };
@@ -374,6 +381,9 @@ void mutt_date_normalize_time(struct tm *tm)
  */
 char *mutt_date_make_date(char *buf, size_t buflen)
 {
+  if (!buf)
+    return NULL;
+
   time_t t = time(NULL);
   struct tm tm = mutt_date_localtime(t);
   time_t tz = mutt_date_local_tz(t);
@@ -414,7 +424,7 @@ int mutt_date_check_month(const char *s)
  */
 bool mutt_date_is_day_name(const char *s)
 {
-  if ((strlen(s) < 3) || !*(s + 3) || !IS_SPACE(*(s + 3)))
+  if (!s || (strlen(s) < 3) || !*(s + 3) || !IS_SPACE(*(s + 3)))
     return false;
 
   for (int i = 0; i < mutt_array_size(Weekdays); i++)
@@ -437,6 +447,9 @@ bool mutt_date_is_day_name(const char *s)
  */
 time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
 {
+  if (!s)
+    return -1;
+
   int count = 0;
   int hour, min, sec;
   struct tm tm = { 0 };
@@ -592,6 +605,9 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
  */
 int mutt_date_make_imap(char *buf, size_t buflen, time_t timestamp)
 {
+  if (!buf)
+    return -1;
+
   struct tm tm = mutt_date_localtime(timestamp);
   time_t tz = mutt_date_local_tz(timestamp);
 
@@ -615,6 +631,9 @@ int mutt_date_make_imap(char *buf, size_t buflen, time_t timestamp)
  */
 int mutt_date_make_tls(char *buf, size_t buflen, time_t timestamp)
 {
+  if (!buf)
+    return -1;
+
   struct tm tm = mutt_date_gmtime(timestamp);
   return snprintf(buf, buflen, "%s, %d %s %d %02d:%02d:%02d UTC",
                   Weekdays[tm.tm_wday], tm.tm_mday, Months[tm.tm_mon],
@@ -629,6 +648,9 @@ int mutt_date_make_tls(char *buf, size_t buflen, time_t timestamp)
  */
 time_t mutt_date_parse_imap(const char *s)
 {
+  if (!s)
+    return 0;
+
   struct tm t;
   time_t tz;
 
@@ -739,6 +761,9 @@ struct tm mutt_date_gmtime(time_t t)
  */
 size_t mutt_date_localtime_format(char *buf, size_t buflen, char *format, time_t t)
 {
+  if (!buf || !format)
+    return 0;
+
   struct tm tm = mutt_date_localtime(t);
   return strftime(buf, buflen, format, &tm);
 }
