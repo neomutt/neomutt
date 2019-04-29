@@ -785,6 +785,8 @@ void rfc2047_decode_addrlist(struct Address *a)
  */
 void rfc2047_decode_envelope(struct Envelope *env)
 {
+  if (!env)
+    return;
   rfc2047_decode_addrlist(env->from);
   rfc2047_decode_addrlist(env->to);
   rfc2047_decode_addrlist(env->cc);
@@ -803,6 +805,8 @@ void rfc2047_decode_envelope(struct Envelope *env)
  */
 void rfc2047_encode_envelope(struct Envelope *env)
 {
+  if (!env)
+    return;
   rfc2047_encode_addrlist(env->from, "From");
   rfc2047_encode_addrlist(env->to, "To");
   rfc2047_encode_addrlist(env->cc, "Cc");
