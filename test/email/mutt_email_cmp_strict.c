@@ -30,4 +30,14 @@
 void test_mutt_email_cmp_strict(void)
 {
   // bool mutt_email_cmp_strict(const struct Email *e1, const struct Email *e2);
+
+  {
+    struct Email email = { 0 };
+    TEST_CHECK(!mutt_email_cmp_strict(NULL, &email));
+  }
+
+  {
+    struct Email email = { 0 };
+    TEST_CHECK(!mutt_email_cmp_strict(&email, NULL));
+  }
 }

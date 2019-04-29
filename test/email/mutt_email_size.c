@@ -30,4 +30,8 @@
 void test_mutt_email_size(void)
 {
   // size_t mutt_email_size(const struct Email *e);
+
+  {
+    TEST_CHECK(mutt_email_size(NULL) == 0);
+  }
 }
