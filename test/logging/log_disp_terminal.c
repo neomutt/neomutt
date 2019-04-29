@@ -28,4 +28,12 @@
 void test_log_disp_terminal(void)
 {
   // int log_disp_terminal(time_t stamp, const char *file, int line, const char *function, int level, ...);
+
+  {
+    TEST_CHECK(log_disp_terminal(0, NULL, 0, "banana", 0, "fmt") != 0);
+  }
+
+  {
+    TEST_CHECK(log_disp_terminal(0, "apple", 0, NULL, 0, "fmt") != 0);
+  }
 }

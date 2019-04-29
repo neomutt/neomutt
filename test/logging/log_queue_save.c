@@ -28,4 +28,8 @@
 void test_log_queue_save(void)
 {
   // int log_queue_save(FILE *fp);
+
+  {
+    TEST_CHECK(log_queue_save(NULL) == 0);
+  }
 }

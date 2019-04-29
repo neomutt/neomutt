@@ -28,4 +28,9 @@
 void test_log_file_set_version(void)
 {
   // void log_file_set_version(const char *version);
+
+  {
+    log_file_set_version(NULL);
+    TEST_CHECK_(1, "log_file_set_version(NULL)");
+  }
 }

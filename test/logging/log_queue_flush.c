@@ -28,4 +28,9 @@
 void test_log_queue_flush(void)
 {
   // void log_queue_flush(log_dispatcher_t disp);
+
+  {
+    log_queue_flush(NULL);
+    TEST_CHECK_(1, "log_queue_flush(NULL)");
+  }
 }

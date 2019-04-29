@@ -28,4 +28,8 @@
 void test_log_file_set_filename(void)
 {
   // int log_file_set_filename(const char *file, bool verbose);
+
+  {
+    TEST_CHECK(log_file_set_filename(NULL, false) != 0);
+  }
 }

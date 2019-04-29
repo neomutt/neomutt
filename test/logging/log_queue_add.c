@@ -28,4 +28,8 @@
 void test_log_queue_add(void)
 {
   // int log_queue_add(struct LogLine *ll);
+
+  {
+    TEST_CHECK(log_queue_add(NULL) != 0);
+  }
 }
