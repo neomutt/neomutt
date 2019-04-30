@@ -67,6 +67,9 @@
  */
 void mutt_sha1_transform(uint32_t state[5], const unsigned char buffer[64])
 {
+  if (!state || !buffer)
+    return;
+
   uint32_t a, b, c, d, e;
   typedef union {
     unsigned char c[64];
@@ -182,6 +185,9 @@ void mutt_sha1_transform(uint32_t state[5], const unsigned char buffer[64])
  */
 void mutt_sha1_init(struct Sha1Ctx *sha1ctx)
 {
+  if (!sha1ctx)
+    return;
+
   /* SHA1 initialization constants */
   sha1ctx->state[0] = 0x67452301;
   sha1ctx->state[1] = 0xEFCDAB89;
@@ -200,6 +206,9 @@ void mutt_sha1_init(struct Sha1Ctx *sha1ctx)
  */
 void mutt_sha1_update(struct Sha1Ctx *sha1ctx, const unsigned char *data, uint32_t len)
 {
+  if (!sha1ctx || !data)
+    return;
+
   uint32_t i;
   uint32_t j;
 
@@ -230,6 +239,9 @@ void mutt_sha1_update(struct Sha1Ctx *sha1ctx, const unsigned char *data, uint32
  */
 void mutt_sha1_final(unsigned char digest[20], struct Sha1Ctx *sha1ctx)
 {
+  if (!digest || !sha1ctx)
+    return;
+
   unsigned char finalcount[8];
   unsigned char c;
 

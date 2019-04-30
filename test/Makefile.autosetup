@@ -35,6 +35,69 @@ ADDRESS_OBJS	= test/address/main.o \
 		  test/address/mutt_addr_write.o \
 		  test/address/mutt_addr_write_single.o
 
+ATTACH_OBJS	= test/attach/main.o \
+		  test/attach/mutt_actx_add_fp.o \
+		  test/attach/mutt_actx_free_entries.o \
+		  test/attach/mutt_actx_free.o \
+		  test/attach/mutt_actx_add_body.o \
+		  test/attach/mutt_actx_add_attach.o
+
+BASE64_OBJS	= test/base64/main.o \
+		  test/base64/mutt_b64_buffer_decode.o \
+		  test/base64/mutt_b64_buffer_encode.o \
+		  test/base64/mutt_b64_decode.o \
+		  test/base64/mutt_b64_encode.o
+
+BODY_OBJS	= test/body/main.o \
+		  test/body/mutt_body_free.o \
+		  test/body/mutt_body_cmp_strict.o \
+		  test/body/mutt_body_new.o
+
+BUFFER_OBJS	= test/buffer/main.o \
+		  test/buffer/mutt_buffer_addch.o \
+		  test/buffer/mutt_buffer_add_printf.o \
+		  test/buffer/mutt_buffer_addstr.o \
+		  test/buffer/mutt_buffer_addstr_n.o \
+		  test/buffer/mutt_buffer_alloc.o \
+		  test/buffer/mutt_buffer_concat_path.o \
+		  test/buffer/mutt_buffer_fix_dptr.o \
+		  test/buffer/mutt_buffer_free.o \
+		  test/buffer/mutt_buffer_from.o \
+		  test/buffer/mutt_buffer_increase_size.o \
+		  test/buffer/mutt_buffer_init.o \
+		  test/buffer/mutt_buffer_is_empty.o \
+		  test/buffer/mutt_buffer_len.o \
+		  test/buffer/mutt_buffer_new.o \
+		  test/buffer/mutt_buffer_pool_free.o \
+		  test/buffer/mutt_buffer_pool_get.o \
+		  test/buffer/mutt_buffer_pool_release.o \
+		  test/buffer/mutt_buffer_printf.o \
+		  test/buffer/mutt_buffer_reset.o \
+		  test/buffer/mutt_buffer_strcpy.o \
+		  test/buffer/mutt_buffer_strcpy_n.o
+
+CHARSET_OBJS	= test/charset/main.o \
+		  test/charset/mutt_ch_canonical_charset.o \
+		  test/charset/mutt_ch_charset_lookup.o \
+		  test/charset/mutt_ch_check.o \
+		  test/charset/mutt_ch_check_charset.o \
+		  test/charset/mutt_ch_choose.o \
+		  test/charset/mutt_ch_chscmp.o \
+		  test/charset/mutt_ch_convert_nonmime_string.o \
+		  test/charset/mutt_ch_convert_string.o \
+		  test/charset/mutt_ch_fgetconv.o \
+		  test/charset/mutt_ch_fgetconv_close.o \
+		  test/charset/mutt_ch_fgetconv_open.o \
+		  test/charset/mutt_ch_fgetconvs.o \
+		  test/charset/mutt_ch_get_default_charset.o \
+		  test/charset/mutt_ch_get_langinfo_charset.o \
+		  test/charset/mutt_ch_iconv.o \
+		  test/charset/mutt_ch_iconv_lookup.o \
+		  test/charset/mutt_ch_iconv_open.o \
+		  test/charset/mutt_ch_lookup_add.o \
+		  test/charset/mutt_ch_lookup_remove.o \
+		  test/charset/mutt_ch_set_charset.o
+
 CONFIG_OBJS	= test/config/main.o test/config/account.o \
 		  test/config/address.o test/config/bool.o \
 		  test/config/command.o test/config/common.o test/config/dump.o \
@@ -43,6 +106,87 @@ CONFIG_OBJS	= test/config/main.o test/config/account.o \
 		  test/config/number.o test/config/path.o test/config/quad.o \
 		  test/config/regex.o test/config/set.o test/config/sort.o \
 		  test/config/string.o test/config/synonym.o
+
+DATE_OBJS	= test/date/main.o \
+		  test/date/mutt_date_add_timeout.o \
+		  test/date/mutt_date_check_month.o \
+		  test/date/mutt_date_gmtime.o \
+		  test/date/mutt_date_is_day_name.o \
+		  test/date/mutt_date_localtime.o \
+		  test/date/mutt_date_localtime_format.o \
+		  test/date/mutt_date_local_tz.o \
+		  test/date/mutt_date_make_date.o \
+		  test/date/mutt_date_make_imap.o \
+		  test/date/mutt_date_make_time.o \
+		  test/date/mutt_date_make_tls.o \
+		  test/date/mutt_date_normalize_time.o \
+		  test/date/mutt_date_parse_date.o \
+		  test/date/mutt_date_parse_imap.o
+
+EMAIL_OBJS	= test/email/main.o \
+		  test/email/mutt_email_new.o \
+		  test/email/mutt_email_free.o \
+		  test/email/mutt_email_size.o \
+		  test/email/mutt_email_cmp_strict.o
+
+ENVELOPE_OBJS	= test/envelope/main.o \
+		  test/envelope/mutt_env_free.o \
+		  test/envelope/mutt_env_cmp_strict.o \
+		  test/envelope/mutt_env_to_local.o \
+		  test/envelope/mutt_env_merge.o \
+		  test/envelope/mutt_env_new.o \
+		  test/envelope/mutt_env_to_intl.o
+
+ENVLIST_OBJS	= test/envlist/main.o \
+		  test/envlist/mutt_envlist_free.o \
+		  test/envlist/mutt_envlist_getlist.o \
+		  test/envlist/mutt_envlist_init.o \
+		  test/envlist/mutt_envlist_set.o \
+		  test/envlist/mutt_envlist_unset.o
+
+FILE_OBJS	= test/file/main.o \
+		  test/file/mutt_file_check_empty.o \
+		  test/file/mutt_file_chmod_add.o \
+		  test/file/mutt_file_chmod_add_stat.o \
+		  test/file/mutt_file_chmod.o \
+		  test/file/mutt_file_chmod_rm.o \
+		  test/file/mutt_file_chmod_rm_stat.o \
+		  test/file/mutt_file_copy_bytes.o \
+		  test/file/mutt_file_copy_stream.o \
+		  test/file/mutt_file_decrease_mtime.o \
+		  test/file/mutt_file_expand_fmt.o \
+		  test/file/mutt_file_expand_fmt_quote.o \
+		  test/file/mutt_file_fclose.o \
+		  test/file/mutt_file_fopen.o \
+		  test/file/mutt_file_fsync_close.o \
+		  test/file/mutt_file_get_size.o \
+		  test/file/mutt_file_get_stat_timespec.o \
+		  test/file/mutt_file_iter_line.o \
+		  test/file/mutt_file_lock.o \
+		  test/file/mutt_file_map_lines.o \
+		  test/file/mutt_file_mkdir.o \
+		  test/file/mutt_file_mkstemp_full.o \
+		  test/file/mutt_file_open.o \
+		  test/file/mutt_file_quote_filename.o \
+		  test/file/mutt_file_read_keyword.o \
+		  test/file/mutt_file_read_line.o \
+		  test/file/mutt_file_rename.o \
+		  test/file/mutt_file_rmtree.o \
+		  test/file/mutt_file_safe_rename.o \
+		  test/file/mutt_file_sanitize_filename.o \
+		  test/file/mutt_file_sanitize_regex.o \
+		  test/file/mutt_file_set_mtime.o \
+		  test/file/mutt_file_stat_compare.o \
+		  test/file/mutt_file_stat_timespec_compare.o \
+		  test/file/mutt_file_symlink.o \
+		  test/file/mutt_file_timespec_compare.o \
+		  test/file/mutt_file_touch_atime.o \
+		  test/file/mutt_file_unlink.o \
+		  test/file/mutt_file_unlink_empty.o \
+		  test/file/mutt_file_unlock.o
+
+FROM_OBJS	= test/from/main.o \
+		  test/from/is_from.o
 
 GROUP_OBJS	= test/group/main.o \
 		  test/group/mutt_grouplist_add_addrlist.o \
@@ -57,11 +201,125 @@ GROUP_OBJS	= test/group/main.o \
 		  test/group/mutt_group_match.o \
 		  test/group/mutt_pattern_group.o
 
+HASH_OBJS	= test/hash/main.o \
+		  test/hash/mutt_hash_delete.o \
+		  test/hash/mutt_hash_find_bucket.o \
+		  test/hash/mutt_hash_find.o \
+		  test/hash/mutt_hash_find_elem.o \
+		  test/hash/mutt_hash_free.o \
+		  test/hash/mutt_hash_insert.o \
+		  test/hash/mutt_hash_int_delete.o \
+		  test/hash/mutt_hash_int_find.o \
+		  test/hash/mutt_hash_int_insert.o \
+		  test/hash/mutt_hash_int_new.o \
+		  test/hash/mutt_hash_new.o \
+		  test/hash/mutt_hash_set_destructor.o \
+		  test/hash/mutt_hash_typed_insert.o \
+		  test/hash/mutt_hash_walk.o
+
+HISTORY_OBJS	= test/history/main.o \
+		  test/history/mutt_hist_add.o \
+		  test/history/mutt_hist_at_scratch.o \
+		  test/history/mutt_hist_free.o \
+		  test/history/mutt_hist_init.o \
+		  test/history/mutt_hist_next.o \
+		  test/history/mutt_hist_prev.o \
+		  test/history/mutt_hist_read_file.o \
+		  test/history/mutt_hist_reset_state.o \
+		  test/history/mutt_hist_save_scratch.o \
+		  test/history/mutt_hist_search.o
+
 IDNA_OBJS	= test/idna/main.o \
 		  test/idna/mutt_idna_intl_to_local.o \
 		  test/idna/mutt_idna_local_to_intl.o \
 		  test/idna/mutt_idna_print_version.o \
 		  test/idna/mutt_idna_to_ascii_lz.o
+
+LIST_OBJS	= test/list/main.o \
+		  test/list/mutt_list_clear.o \
+		  test/list/mutt_list_compare.o \
+		  test/list/mutt_list_find.o \
+		  test/list/mutt_list_free.o \
+		  test/list/mutt_list_free_type.o \
+		  test/list/mutt_list_insert_after.o \
+		  test/list/mutt_list_insert_head.o \
+		  test/list/mutt_list_insert_tail.o \
+		  test/list/mutt_list_match.o
+
+LOGGING_OBJS	= test/logging/main.o \
+		  test/logging/log_disp_file.o \
+		  test/logging/log_disp_queue.o \
+		  test/logging/log_disp_terminal.o \
+		  test/logging/log_file_close.o \
+		  test/logging/log_file_open.o \
+		  test/logging/log_file_running.o \
+		  test/logging/log_file_set_filename.o \
+		  test/logging/log_file_set_level.o \
+		  test/logging/log_file_set_version.o \
+		  test/logging/log_queue_add.o \
+		  test/logging/log_queue_empty.o \
+		  test/logging/log_queue_flush.o \
+		  test/logging/log_queue_save.o \
+		  test/logging/log_queue_set_max_size.o
+
+MAPPING_OBJS	= test/mapping/main.o \
+		  test/mapping/mutt_map_get_name.o \
+		  test/mapping/mutt_map_get_value.o
+
+MBYTE_OBJS	= test/mbyte/main.o \
+		  test/mbyte/mutt_mb_charlen.o \
+		  test/mbyte/mutt_mb_filter_unprintable.o \
+		  test/mbyte/mutt_mb_get_initials.o \
+		  test/mbyte/mutt_mb_is_display_corrupting_utf8.o \
+		  test/mbyte/mutt_mb_is_lower.o \
+		  test/mbyte/mutt_mb_is_shell_char.o \
+		  test/mbyte/mutt_mb_mbstowcs.o \
+		  test/mbyte/mutt_mb_wcstombs.o \
+		  test/mbyte/mutt_mb_wcswidth.o \
+		  test/mbyte/mutt_mb_wcwidth.o \
+		  test/mbyte/mutt_mb_width.o \
+		  test/mbyte/mutt_mb_width_ceiling.o
+
+MD5_OBJS	= test/md5/main.o \
+		  test/md5/mutt_md5_bytes.o \
+		  test/md5/mutt_md5.o \
+		  test/md5/mutt_md5_finish_ctx.o \
+		  test/md5/mutt_md5_init_ctx.o \
+		  test/md5/mutt_md5_process_bytes.o \
+		  test/md5/mutt_md5_process.o \
+		  test/md5/mutt_md5_toascii.o
+
+MEMORY_OBJS	= test/memory/main.o \
+		  test/memory/mutt_mem_calloc.o \
+		  test/memory/mutt_mem_free.o \
+		  test/memory/mutt_mem_malloc.o \
+		  test/memory/mutt_mem_realloc.o
+
+PARAMETER_OBJS	= test/parameter/main.o \
+		  test/parameter/mutt_param_new.o \
+		  test/parameter/mutt_param_delete.o \
+		  test/parameter/mutt_param_get.o \
+		  test/parameter/mutt_param_cmp_strict.o \
+		  test/parameter/mutt_param_free_one.o \
+		  test/parameter/mutt_param_set.o \
+		  test/parameter/mutt_param_free.o
+
+PARSE_OBJS	= test/parse/main.o \
+		  test/parse/mutt_check_encoding.o \
+		  test/parse/mutt_matches_ignore.o \
+		  test/parse/mutt_parse_mailto.o \
+		  test/parse/mutt_auto_subscribe.o \
+		  test/parse/mutt_rfc822_parse_line.o \
+		  test/parse/mutt_rfc822_parse_message.o \
+		  test/parse/mutt_is_message_type.o \
+		  test/parse/mutt_parse_multipart.o \
+		  test/parse/mutt_check_mime_type.o \
+		  test/parse/mutt_read_mime_header.o \
+		  test/parse/mutt_parse_part.o \
+		  test/parse/mutt_rfc822_read_line.o \
+		  test/parse/mutt_parse_content_type.o \
+		  test/parse/mutt_rfc822_read_header.o \
+		  test/parse/mutt_extract_message_id.o
 
 PATH_OBJS	= test/path/main.o \
 		  test/path/mutt_path_abbr_folder.o \
@@ -85,6 +343,50 @@ PATTERN_OBJS	= test/pattern/main.o \
 		  test/pattern/dummy.o \
 		  test/pattern/extract.o \
 		  pattern.o
+
+REGEX_OBJS	= test/regex/main.o \
+		  test/regex/mutt_regex_compile.o \
+		  test/regex/mutt_regex_free.o \
+		  test/regex/mutt_regexlist_add.o \
+		  test/regex/mutt_regexlist_free.o \
+		  test/regex/mutt_regexlist_match.o \
+		  test/regex/mutt_regexlist_new.o \
+		  test/regex/mutt_regexlist_remove.o \
+		  test/regex/mutt_regex_new.o \
+		  test/regex/mutt_replacelist_add.o \
+		  test/regex/mutt_replacelist_apply.o \
+		  test/regex/mutt_replacelist_free.o \
+		  test/regex/mutt_replacelist_match.o \
+		  test/regex/mutt_replacelist_new.o \
+		  test/regex/mutt_replacelist_remove.o
+
+RFC2047_OBJS	= test/rfc2047/main.o \
+		  test/rfc2047/rfc2047_decode_addrlist.o \
+		  test/rfc2047/rfc2047_decode.o \
+		  test/rfc2047/rfc2047_decode_envelope.o \
+		  test/rfc2047/rfc2047_encode_addrlist.o \
+		  test/rfc2047/rfc2047_encode_envelope.o \
+		  test/rfc2047/rfc2047_encode.o
+
+RFC2231_OBJS	= test/rfc2231/main.o \
+		  test/rfc2231/rfc2231_encode_string.o \
+		  test/rfc2231/rfc2231_decode_parameters.o
+
+SHA1_OBJS	= test/sha1/main.o \
+		  test/sha1/mutt_sha1_final.o \
+		  test/sha1/mutt_sha1_init.o \
+		  test/sha1/mutt_sha1_transform.o \
+		  test/sha1/mutt_sha1_update.o
+
+SIGNAL_OBJS	= test/signal/main.o \
+		  test/signal/mutt_sig_allow_interrupt.o \
+		  test/signal/mutt_sig_block.o \
+		  test/signal/mutt_sig_block_system.o \
+		  test/signal/mutt_sig_empty_handler.o \
+		  test/signal/mutt_sig_exit_handler.o \
+		  test/signal/mutt_sig_init.o \
+		  test/signal/mutt_sig_unblock.o \
+		  test/signal/mutt_sig_unblock_system.o
 
 STRING_OBJS	= test/string/main.o \
 		  test/string/mutt_str_adjust.o \
@@ -134,34 +436,146 @@ STRING_OBJS	= test/string/main.o \
 		  test/string/mutt_str_sysexit.o \
 		  test/string/mutt_str_word_casecmp.o
 
+TAGS_OBJS	= test/tags/main.o \
+		  test/tags/driver_tags_get.o \
+		  test/tags/driver_tags_replace.o \
+		  test/tags/driver_tags_get_transformed.o \
+		  test/tags/driver_tags_get_with_hidden.o \
+		  test/tags/driver_tags_free.o \
+		  test/tags/driver_tags_get_transformed_for.o
+
+THREAD_OBJS	= test/thread/main.o \
+		  test/thread/thread_hash_destructor.o \
+		  test/thread/is_descendant.o \
+		  test/thread/mutt_break_thread.o \
+		  test/thread/unlink_message.o \
+		  test/thread/clean_references.o \
+		  test/thread/find_virtual.o \
+		  test/thread/insert_message.o
+
+URL_OBJS	= test/url/main.o \
+		  test/url/url_pct_encode.o \
+		  test/url/url_check_scheme.o \
+		  test/url/url_parse.o \
+		  test/url/url_free.o \
+		  test/url/url_tostring.o \
+		  test/url/url_pct_decode.o \
+		  test/url/url_tobuffer.o
+
 CFLAGS	+= -I$(SRCDIR)/test
 
 TEST_BINARY = test/neomutt-test$(EXEEXT)
 
 TEST_ADDRESS = test/address-test$(EXEEXT)
 
+TEST_ATTACH = test/attach-test$(EXEEXT)
+
+TEST_BASE64 = test/base64-test$(EXEEXT)
+
+TEST_BODY = test/body-test$(EXEEXT)
+
+TEST_BUFFER = test/buffer-test$(EXEEXT)
+
+TEST_CHARSET = test/charset-test$(EXEEXT)
+
 TEST_CONFIG = test/config-test$(EXEEXT)
+
+TEST_DATE = test/date-test$(EXEEXT)
+
+TEST_EMAIL = test/email-test$(EXEEXT)
+
+TEST_ENVELOPE = test/envelope-test$(EXEEXT)
+
+TEST_ENVLIST = test/envlist-test$(EXEEXT)
+
+TEST_FILE = test/file-test$(EXEEXT)
+
+TEST_FROM = test/from-test$(EXEEXT)
 
 TEST_GROUP = test/group-test$(EXEEXT)
 
+TEST_HASH = test/hash-test$(EXEEXT)
+
+TEST_HISTORY = test/history-test$(EXEEXT)
+
 TEST_IDNA = test/idna-test$(EXEEXT)
+
+TEST_LIST = test/list-test$(EXEEXT)
+
+TEST_LOGGING = test/logging-test$(EXEEXT)
+
+TEST_MAPPING = test/mapping-test$(EXEEXT)
+
+TEST_MBYTE = test/mbyte-test$(EXEEXT)
+
+TEST_MD5 = test/md5-test$(EXEEXT)
+
+TEST_MEMORY = test/memory-test$(EXEEXT)
+
+TEST_PARAMETER = test/parameter-test$(EXEEXT)
+
+TEST_PARSE = test/parse-test$(EXEEXT)
 
 TEST_PATH = test/path-test$(EXEEXT)
 
 TEST_PATTERN = test/pattern-test$(EXEEXT)
 
+TEST_REGEX = test/regex-test$(EXEEXT)
+
+TEST_RFC2047 = test/rfc2047-test$(EXEEXT)
+
+TEST_RFC2231 = test/rfc2231-test$(EXEEXT)
+
+TEST_SHA1 = test/sha1-test$(EXEEXT)
+
+TEST_SIGNAL = test/signal-test$(EXEEXT)
+
 TEST_STRING = test/string-test$(EXEEXT)
 
+TEST_TAGS = test/tags-test$(EXEEXT)
+
+TEST_THREAD = test/thread-test$(EXEEXT)
+
+TEST_URL = test/url-test$(EXEEXT)
+
 .PHONY: test
-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_CONFIG) $(TEST_GROUP) $(TEST_IDNA) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
+test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_ATTACH) $(TEST_BASE64) $(TEST_BODY) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_EMAIL) $(TEST_ENVELOPE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_FROM) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_MBYTE) $(TEST_MD5) $(TEST_MEMORY) $(TEST_PARAMETER) $(TEST_PARSE) $(TEST_PATH) $(TEST_PATTERN) $(TEST_REGEX) $(TEST_RFC2047) $(TEST_RFC2231) $(TEST_SHA1) $(TEST_SIGNAL) $(TEST_STRING) $(TEST_TAGS) $(TEST_THREAD) $(TEST_URL)
 	$(TEST_BINARY)
 	$(TEST_ADDRESS)
+	$(TEST_ATTACH)
+	$(TEST_BASE64)
+	$(TEST_BODY)
+	$(TEST_BUFFER)
 	$(TEST_CONFIG)
+	$(TEST_DATE)
+	$(TEST_EMAIL)
+	$(TEST_ENVELOPE)
+	$(TEST_ENVLIST)
+	$(TEST_FILE)
+	$(TEST_FROM)
 	$(TEST_GROUP)
+	$(TEST_HASH)
+	$(TEST_HISTORY)
 	$(TEST_IDNA)
+	$(TEST_LIST)
+	$(TEST_LOGGING)
+	$(TEST_MAPPING)
+	$(TEST_MBYTE)
+	$(TEST_MD5)
+	$(TEST_MEMORY)
+	$(TEST_PARAMETER)
+	$(TEST_PARSE)
 	$(TEST_PATH)
 	$(TEST_PATTERN)
+	$(TEST_REGEX)
+	$(TEST_RFC2047)
+	$(TEST_RFC2231)
+	$(TEST_SHA1)
+	$(TEST_SIGNAL)
 	$(TEST_STRING)
+	$(TEST_TAGS)
+	$(TEST_THREAD)
+	$(TEST_URL)
 
 $(TEST_BINARY): $(TEST_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(TEST_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
@@ -169,14 +583,77 @@ $(TEST_BINARY): $(TEST_OBJS) $(MUTTLIBS)
 $(TEST_ADDRESS): $(PWD)/test/address $(ADDRESS_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(ADDRESS_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
+$(TEST_ATTACH): $(PWD)/test/attach $(ATTACH_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(ATTACH_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_BASE64): $(PWD)/test/base64 $(BASE64_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(BASE64_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_BODY): $(PWD)/test/body $(BODY_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(BODY_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_BUFFER): $(PWD)/test/buffer $(BUFFER_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(BUFFER_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_CHARSET): $(PWD)/test/charset $(CHARSET_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(CHARSET_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
 $(TEST_CONFIG): $(PWD)/test/config $(CONFIG_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(CONFIG_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_DATE): $(PWD)/test/date $(DATE_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(DATE_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_EMAIL): $(PWD)/test/email $(EMAIL_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(EMAIL_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_ENVELOPE): $(PWD)/test/envelope $(ENVELOPE_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(ENVELOPE_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_ENVLIST): $(PWD)/test/envlist $(ENVLIST_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(ENVLIST_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_FILE): $(PWD)/test/file $(FILE_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(FILE_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_FROM): $(PWD)/test/from $(FROM_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(FROM_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
 $(TEST_GROUP): $(PWD)/test/group $(GROUP_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(GROUP_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
+$(TEST_HASH): $(PWD)/test/hash $(HASH_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(HASH_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_HISTORY): $(PWD)/test/history $(HISTORY_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(HISTORY_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
 $(TEST_IDNA): $(PWD)/test/idna $(IDNA_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(IDNA_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_LIST): $(PWD)/test/list $(LIST_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(LIST_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_LOGGING): $(PWD)/test/logging $(LOGGING_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(LOGGING_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_MAPPING): $(PWD)/test/mapping $(MAPPING_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(MAPPING_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_MBYTE): $(PWD)/test/mbyte $(MBYTE_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(MBYTE_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_MD5): $(PWD)/test/md5 $(MD5_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(MD5_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_MEMORY): $(PWD)/test/memory $(MEMORY_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(MEMORY_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_PARAMETER): $(PWD)/test/parameter $(PARAMETER_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(PARAMETER_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_PARSE): $(PWD)/test/parse $(PARSE_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(PARSE_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
 $(TEST_PATH): $(PWD)/test/path $(PATH_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(PATH_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
@@ -184,20 +661,107 @@ $(TEST_PATH): $(PWD)/test/path $(PATH_OBJS) $(MUTTLIBS)
 $(TEST_PATTERN): $(PWD)/test/pattern $(PATTERN_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(PATTERN_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
+$(TEST_REGEX): $(PWD)/test/regex $(REGEX_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(REGEX_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_RFC2047): $(PWD)/test/rfc2047 $(RFC2047_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(RFC2047_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_RFC2231): $(PWD)/test/rfc2231 $(RFC2231_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(RFC2231_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_SHA1): $(PWD)/test/sha1 $(SHA1_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(SHA1_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_SIGNAL): $(PWD)/test/signal $(SIGNAL_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(SIGNAL_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
 $(TEST_STRING): $(PWD)/test/string $(STRING_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(STRING_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_TAGS): $(PWD)/test/tags $(TAGS_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(TAGS_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_THREAD): $(PWD)/test/thread $(THREAD_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(THREAD_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(TEST_URL): $(PWD)/test/url $(URL_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(URL_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
 $(PWD)/test/address:
 	$(MKDIR_P) $(PWD)/test/address
 
+$(PWD)/test/attach:
+	$(MKDIR_P) $(PWD)/test/attach
+
+$(PWD)/test/base64:
+	$(MKDIR_P) $(PWD)/test/base64
+
+$(PWD)/test/body:
+	$(MKDIR_P) $(PWD)/test/body
+
+$(PWD)/test/buffer:
+	$(MKDIR_P) $(PWD)/test/buffer
+
+$(PWD)/test/charset:
+	$(MKDIR_P) $(PWD)/test/charset
+
 $(PWD)/test/config:
 	$(MKDIR_P) $(PWD)/test/config
+
+$(PWD)/test/date:
+	$(MKDIR_P) $(PWD)/test/date
+
+$(PWD)/test/email:
+	$(MKDIR_P) $(PWD)/test/email
+
+$(PWD)/test/envelope:
+	$(MKDIR_P) $(PWD)/test/envelope
+
+$(PWD)/test/envlist:
+	$(MKDIR_P) $(PWD)/test/envlist
+
+$(PWD)/test/file:
+	$(MKDIR_P) $(PWD)/test/file
+
+$(PWD)/test/from:
+	$(MKDIR_P) $(PWD)/test/from
 
 $(PWD)/test/group:
 	$(MKDIR_P) $(PWD)/test/group
 
+$(PWD)/test/hash:
+	$(MKDIR_P) $(PWD)/test/hash
+
+$(PWD)/test/history:
+	$(MKDIR_P) $(PWD)/test/history
+
 $(PWD)/test/idna:
 	$(MKDIR_P) $(PWD)/test/idna
+
+$(PWD)/test/list:
+	$(MKDIR_P) $(PWD)/test/list
+
+$(PWD)/test/logging:
+	$(MKDIR_P) $(PWD)/test/logging
+
+$(PWD)/test/mapping:
+	$(MKDIR_P) $(PWD)/test/mapping
+
+$(PWD)/test/mbyte:
+	$(MKDIR_P) $(PWD)/test/mbyte
+
+$(PWD)/test/md5:
+	$(MKDIR_P) $(PWD)/test/md5
+
+$(PWD)/test/memory:
+	$(MKDIR_P) $(PWD)/test/memory
+
+$(PWD)/test/parameter:
+	$(MKDIR_P) $(PWD)/test/parameter
+
+$(PWD)/test/parse:
+	$(MKDIR_P) $(PWD)/test/parse
 
 $(PWD)/test/path:
 	$(MKDIR_P) $(PWD)/test/path
@@ -205,20 +769,73 @@ $(PWD)/test/path:
 $(PWD)/test/pattern:
 	$(MKDIR_P) $(PWD)/test/pattern
 
+$(PWD)/test/regex:
+	$(MKDIR_P) $(PWD)/test/regex
+
+$(PWD)/test/rfc2047:
+	$(MKDIR_P) $(PWD)/test/rfc2047
+
+$(PWD)/test/rfc2231:
+	$(MKDIR_P) $(PWD)/test/rfc2231
+
+$(PWD)/test/sha1:
+	$(MKDIR_P) $(PWD)/test/sha1
+
+$(PWD)/test/signal:
+	$(MKDIR_P) $(PWD)/test/signal
+
 $(PWD)/test/string:
 	$(MKDIR_P) $(PWD)/test/string
 
-all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_CONFIG) $(TEST_GROUP) $(TEST_IDNA) $(TEST_PATH) $(TEST_PATTERN) $(TEST_STRING)
+$(PWD)/test/tags:
+	$(MKDIR_P) $(PWD)/test/tags
+
+$(PWD)/test/thread:
+	$(MKDIR_P) $(PWD)/test/thread
+
+$(PWD)/test/url:
+	$(MKDIR_P) $(PWD)/test/url
+
+all-test: $(TEST_BINARY) $(TEST_ADDRESS) $(TEST_ATTACH) $(TEST_BASE64) $(TEST_BODY) $(TEST_BUFFER) $(TEST_CHARSET) $(TEST_CONFIG) $(TEST_DATE) $(TEST_EMAIL) $(TEST_ENVELOPE) $(TEST_ENVLIST) $(TEST_FILE) $(TEST_FROM) $(TEST_GROUP) $(TEST_HASH) $(TEST_HISTORY) $(TEST_IDNA) $(TEST_LIST) $(TEST_LOGGING) $(TEST_MAPPING) $(TEST_MBYTE) $(TEST_MD5) $(TEST_MEMORY) $(TEST_PARAMETER) $(TEST_PARSE) $(TEST_PATH) $(TEST_PATTERN) $(TEST_REGEX) $(TEST_RFC2047) $(TEST_RFC2231) $(TEST_SHA1) $(TEST_SIGNAL) $(TEST_STRING) $(TEST_TAGS) $(TEST_THREAD) $(TEST_URL)
 
 clean-test:
 	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po) \
 	      $(TEST_ADDRESS) $(ADDRESS_OBJS) $(ADDRESS_OBJS:.o=.Po) \
+	      $(TEST_ATTACH) $(ATTACH_OBJS) $(ATTACH_OBJS:.o=.Po) \
+	      $(TEST_BASE64) $(BASE64_OBJS) $(BASE64_OBJS:.o=.Po) \
+	      $(TEST_BODY) $(BODY_OBJS) $(BODY_OBJS:.o=.Po) \
+	      $(TEST_BUFFER) $(BUFFER_OBJS) $(BUFFER_OBJS:.o=.Po) \
+	      $(TEST_CHARSET) $(CHARSET_OBJS) $(CHARSET_OBJS:.o=.Po) \
 	      $(TEST_CONFIG) $(CONFIG_OBJS) $(CONFIG_OBJS:.o=.Po) \
+	      $(TEST_DATE) $(DATE_OBJS) $(DATE_OBJS:.o=.Po) \
+	      $(TEST_EMAIL) $(EMAIL_OBJS) $(EMAIL_OBJS:.o=.Po) \
+	      $(TEST_ENVELOPE) $(ENVELOPE_OBJS) $(ENVELOPE_OBJS:.o=.Po) \
+	      $(TEST_ENVLIST) $(ENVLIST_OBJS) $(ENVLIST_OBJS:.o=.Po) \
+	      $(TEST_FILE) $(FILE_OBJS) $(FILE_OBJS:.o=.Po) \
+	      $(TEST_FROM) $(FROM_OBJS) $(FROM_OBJS:.o=.Po) \
 	      $(TEST_GROUP) $(GROUP_OBJS) $(GROUP_OBJS:.o=.Po) \
+	      $(TEST_HASH) $(HASH_OBJS) $(HASH_OBJS:.o=.Po) \
+	      $(TEST_HISTORY) $(HISTORY_OBJS) $(HISTORY_OBJS:.o=.Po) \
 	      $(TEST_IDNA) $(IDNA_OBJS) $(IDNA_OBJS:.o=.Po) \
+	      $(TEST_LIST) $(LIST_OBJS) $(LIST_OBJS:.o=.Po) \
+	      $(TEST_LOGGING) $(LOGGING_OBJS) $(LOGGING_OBJS:.o=.Po) \
+	      $(TEST_MAPPING) $(MAPPING_OBJS) $(MAPPING_OBJS:.o=.Po) \
+	      $(TEST_MBYTE) $(MBYTE_OBJS) $(MBYTE_OBJS:.o=.Po) \
+	      $(TEST_MD5) $(MD5_OBJS) $(MD5_OBJS:.o=.Po) \
+	      $(TEST_MEMORY) $(MEMORY_OBJS) $(MEMORY_OBJS:.o=.Po) \
+	      $(TEST_PARAMETER) $(PARAMETER_OBJS) $(PARAMETER_OBJS:.o=.Po) \
+	      $(TEST_PARSE) $(PARSE_OBJS) $(PARSE_OBJS:.o=.Po) \
 	      $(TEST_PATH) $(PATH_OBJS) $(PATH_OBJS:.o=.Po) \
 	      $(TEST_PATTERN) $(PATTERN_OBJS) $(PATTERN_OBJS:.o=.Po) \
-	      $(TEST_STRING) $(STRING_OBJS) $(STRING_OBJS:.o=.Po)
+	      $(TEST_REGEX) $(REGEX_OBJS) $(REGEX_OBJS:.o=.Po) \
+	      $(TEST_RFC2047) $(RFC2047_OBJS) $(RFC2047_OBJS:.o=.Po) \
+	      $(TEST_RFC2231) $(RFC2231_OBJS) $(RFC2231_OBJS:.o=.Po) \
+	      $(TEST_SHA1) $(SHA1_OBJS) $(SHA1_OBJS:.o=.Po) \
+	      $(TEST_SIGNAL) $(SIGNAL_OBJS) $(SIGNAL_OBJS:.o=.Po) \
+	      $(TEST_STRING) $(STRING_OBJS) $(STRING_OBJS:.o=.Po) \
+	      $(TEST_TAGS) $(TAGS_OBJS) $(TAGS_OBJS:.o=.Po) \
+	      $(TEST_THREAD) $(THREAD_OBJS) $(THREAD_OBJS:.o=.Po) \
+	      $(TEST_URL) $(URL_OBJS) $(URL_OBJS:.o=.Po)
 
 install-test:
 uninstall-test:
@@ -229,14 +846,77 @@ TEST_DEPFILES = $(TEST_OBJS:.o=.Po)
 ADDRESS_DEPFILES = $(ADDRESS_OBJS:.o=.Po)
 -include $(ADDRESS_DEPFILES)
 
+ATTACH_DEPFILES = $(ATTACH_OBJS:.o=.Po)
+-include $(ATTACH_DEPFILES)
+
+BASE64_DEPFILES = $(BASE64_OBJS:.o=.Po)
+-include $(BASE64_DEPFILES)
+
+BODY_DEPFILES = $(BODY_OBJS:.o=.Po)
+-include $(BODY_DEPFILES)
+
+BUFFER_DEPFILES = $(BUFFER_OBJS:.o=.Po)
+-include $(BUFFER_DEPFILES)
+
+CHARSET_DEPFILES = $(CHARSET_OBJS:.o=.Po)
+-include $(CHARSET_DEPFILES)
+
 CONFIG_DEPFILES = $(CONFIG_OBJS:.o=.Po)
 -include $(CONFIG_DEPFILES)
+
+DATE_DEPFILES = $(DATE_OBJS:.o=.Po)
+-include $(DATE_DEPFILES)
+
+EMAIL_DEPFILES = $(EMAIL_OBJS:.o=.Po)
+-include $(EMAIL_DEPFILES)
+
+ENVELOPE_DEPFILES = $(ENVELOPE_OBJS:.o=.Po)
+-include $(ENVELOPE_DEPFILES)
+
+ENVLIST_DEPFILES = $(ENVLIST_OBJS:.o=.Po)
+-include $(ENVLIST_DEPFILES)
+
+FILE_DEPFILES = $(FILE_OBJS:.o=.Po)
+-include $(FILE_DEPFILES)
+
+FROM_DEPFILES = $(FROM_OBJS:.o=.Po)
+-include $(FROM_DEPFILES)
 
 GROUP_DEPFILES = $(GROUP_OBJS:.o=.Po)
 -include $(GROUP_DEPFILES)
 
+HASH_DEPFILES = $(HASH_OBJS:.o=.Po)
+-include $(HASH_DEPFILES)
+
+HISTORY_DEPFILES = $(HISTORY_OBJS:.o=.Po)
+-include $(HISTORY_DEPFILES)
+
 IDNA_DEPFILES = $(IDNA_OBJS:.o=.Po)
 -include $(IDNA_DEPFILES)
+
+LIST_DEPFILES = $(LIST_OBJS:.o=.Po)
+-include $(LIST_DEPFILES)
+
+LOGGING_DEPFILES = $(LOGGING_OBJS:.o=.Po)
+-include $(LOGGING_DEPFILES)
+
+MAPPING_DEPFILES = $(MAPPING_OBJS:.o=.Po)
+-include $(MAPPING_DEPFILES)
+
+MBYTE_DEPFILES = $(MBYTE_OBJS:.o=.Po)
+-include $(MBYTE_DEPFILES)
+
+MD5_DEPFILES = $(MD5_OBJS:.o=.Po)
+-include $(MD5_DEPFILES)
+
+MEMORY_DEPFILES = $(MEMORY_OBJS:.o=.Po)
+-include $(MEMORY_DEPFILES)
+
+PARAMETER_DEPFILES = $(PARAMETER_OBJS:.o=.Po)
+-include $(PARAMETER_DEPFILES)
+
+PARSE_DEPFILES = $(PARSE_OBJS:.o=.Po)
+-include $(PARSE_DEPFILES)
 
 PATH_DEPFILES = $(PATH_OBJS:.o=.Po)
 -include $(PATH_DEPFILES)
@@ -244,7 +924,31 @@ PATH_DEPFILES = $(PATH_OBJS:.o=.Po)
 PATTERN_DEPFILES = $(PATTERN_OBJS:.o=.Po)
 -include $(PATTERN_DEPFILES)
 
+REGEX_DEPFILES = $(REGEX_OBJS:.o=.Po)
+-include $(REGEX_DEPFILES)
+
+RFC2047_DEPFILES = $(RFC2047_OBJS:.o=.Po)
+-include $(RFC2047_DEPFILES)
+
+RFC2231_DEPFILES = $(RFC2231_OBJS:.o=.Po)
+-include $(RFC2231_DEPFILES)
+
+SHA1_DEPFILES = $(SHA1_OBJS:.o=.Po)
+-include $(SHA1_DEPFILES)
+
+SIGNAL_DEPFILES = $(SIGNAL_OBJS:.o=.Po)
+-include $(SIGNAL_DEPFILES)
+
 STRING_DEPFILES = $(STRING_OBJS:.o=.Po)
 -include $(STRING_DEPFILES)
+
+TAGS_DEPFILES = $(TAGS_OBJS:.o=.Po)
+-include $(TAGS_DEPFILES)
+
+THREAD_DEPFILES = $(THREAD_OBJS:.o=.Po)
+-include $(THREAD_DEPFILES)
+
+URL_DEPFILES = $(URL_OBJS:.o=.Po)
+-include $(URL_DEPFILES)
 
 # vim: set ts=8 noexpandtab:

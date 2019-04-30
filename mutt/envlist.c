@@ -83,6 +83,9 @@ void mutt_envlist_init(char *envp[])
  */
 bool mutt_envlist_set(const char *name, const char *value, bool overwrite)
 {
+  if (!name)
+    return false;
+
   char **envp = EnvList;
   char work[1024];
 

@@ -316,6 +316,9 @@ void url_pct_encode(char *buf, size_t buflen, const char *src)
 {
   static const char *alph = "0123456789ABCDEF";
 
+  if (!buf)
+    return;
+
   *buf = '\0';
   buflen--;
   while (src && *src && (buflen != 0))
@@ -348,6 +351,8 @@ void url_pct_encode(char *buf, size_t buflen, const char *src)
  */
 int url_tobuffer(struct Url *u, struct Buffer *buf, int flags)
 {
+  if (!u || !buf)
+    return -1;
   if (u->scheme == U_UNKNOWN)
     return -1;
 
@@ -393,6 +398,9 @@ int url_tobuffer(struct Url *u, struct Buffer *buf, int flags)
  */
 int url_tostring(struct Url *u, char *dest, size_t len, int flags)
 {
+  if (!u || !dest)
+    return -1;
+
   struct Buffer *dest_buf = mutt_buffer_pool_get();
 
   int retval = url_tobuffer(u, dest_buf, flags);

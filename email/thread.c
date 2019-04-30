@@ -63,6 +63,9 @@ bool is_descendant(struct MuttThread *a, struct MuttThread *b)
  */
 void unlink_message(struct MuttThread **old, struct MuttThread *cur)
 {
+  if (!old || !cur)
+    return;
+
   struct MuttThread *tmp = NULL;
 
   if (cur->prev)
@@ -91,6 +94,9 @@ void unlink_message(struct MuttThread **old, struct MuttThread *cur)
 void insert_message(struct MuttThread **new, struct MuttThread *newparent,
                     struct MuttThread *cur)
 {
+  if (!cur || !new)
+    return;
+
   if (*new)
     (*new)->prev = cur;
 
@@ -116,6 +122,9 @@ void thread_hash_destructor(int type, void *obj, intptr_t data)
  */
 struct Email *find_virtual(struct MuttThread *cur, int reverse)
 {
+  if (!cur)
+    return NULL;
+
   struct MuttThread *top = NULL;
 
   if (cur->message && (cur->message->virtual >= 0))
@@ -216,6 +225,9 @@ void clean_references(struct MuttThread *brk, struct MuttThread *cur)
  */
 void mutt_break_thread(struct Email *e)
 {
+  if (!e)
+    return;
+
   mutt_list_free(&e->env->in_reply_to);
   mutt_list_free(&e->env->references);
   e->changed = true;

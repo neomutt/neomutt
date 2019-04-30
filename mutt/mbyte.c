@@ -54,12 +54,12 @@ bool OptLocales; /**< (pseudo) set if user has valid locale definition */
  */
 int mutt_mb_charlen(const char *s, int *width)
 {
+  if (!s || !*s)
+    return 0;
+
   wchar_t wc;
   mbstate_t mbstate;
   size_t k, n;
-
-  if (!s || !*s)
-    return 0;
 
   n = mutt_str_strlen(s);
   memset(&mbstate, 0, sizeof(mbstate));
@@ -195,6 +195,9 @@ int mutt_mb_wcwidth(wchar_t wc)
  */
 int mutt_mb_wcswidth(const wchar_t *s, size_t n)
 {
+  if (!s)
+    return 0;
+
   int w = 0;
   while (n--)
     w += mutt_mb_wcwidth(*s++);
@@ -213,6 +216,9 @@ int mutt_mb_wcswidth(const wchar_t *s, size_t n)
  */
 size_t mutt_mb_width_ceiling(const wchar_t *s, size_t n, int w1)
 {
+  if (!s)
+    return 0;
+
   const wchar_t *s0 = s;
   int w = 0;
   for (; n; s++, n--)
@@ -230,6 +236,9 @@ size_t mutt_mb_width_ceiling(const wchar_t *s, size_t n, int w1)
  */
 void mutt_mb_wcstombs(char *dest, size_t dlen, const wchar_t *src, size_t slen)
 {
+  if (!dest || !src)
+    return;
+
   mbstate_t st;
   size_t k;
 
@@ -285,6 +294,9 @@ void mutt_mb_wcstombs(char *dest, size_t dlen, const wchar_t *src, size_t slen)
  */
 size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf)
 {
+  if (!pwbuf || !pwbuflen || !buf)
+    return 0;
+
   wchar_t wc;
   mbstate_t st;
   size_t k;
@@ -345,6 +357,9 @@ bool mutt_mb_is_shell_char(wchar_t ch)
  */
 bool mutt_mb_is_lower(const char *s)
 {
+  if (!s)
+    return false;
+
   wchar_t w;
   mbstate_t mb;
   size_t l;
@@ -408,6 +423,9 @@ bool mutt_mb_is_display_corrupting_utf8(wchar_t wc)
  */
 int mutt_mb_filter_unprintable(char **s)
 {
+  if (!s || !*s)
+    return -1;
+
   wchar_t wc;
   size_t k, k2;
   char scratch[MB_LEN_MAX + 1];

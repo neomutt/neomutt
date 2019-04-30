@@ -234,6 +234,9 @@ void mutt_file_unlink(const char *s)
  */
 int mutt_file_copy_bytes(FILE *fp_in, FILE *fp_out, size_t size)
 {
+  if (!fp_in || !fp_out)
+    return -1;
+
   while (size > 0)
   {
     char buf[2048];
@@ -261,6 +264,9 @@ int mutt_file_copy_bytes(FILE *fp_in, FILE *fp_out, size_t size)
  */
 int mutt_file_copy_stream(FILE *fp_in, FILE *fp_out)
 {
+  if (!fp_in || !fp_out)
+    return -1;
+
   size_t l;
   char buf[1024];
 
@@ -448,6 +454,9 @@ success:
  */
 int mutt_file_rmtree(const char *path)
 {
+  if (!path)
+    return -1;
+
   struct dirent *de = NULL;
   char cur[PATH_MAX];
   struct stat statbuf;
@@ -593,6 +602,9 @@ void mutt_file_sanitize_filename(char *path, bool slash)
  */
 int mutt_file_sanitize_regex(struct Buffer *dest, const char *src)
 {
+  if (!dest || !src)
+    return -1;
+
   mutt_buffer_reset(dest);
   while (*src != '\0')
   {
@@ -620,6 +632,9 @@ int mutt_file_sanitize_regex(struct Buffer *dest, const char *src)
  */
 char *mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, int flags)
 {
+  if (!size || !fp)
+    return NULL;
+
   size_t offset = 0;
   char *ch = NULL;
 
@@ -697,6 +712,9 @@ char *mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, int
  */
 bool mutt_file_iter_line(struct MuttFileIter *iter, FILE *fp, int flags)
 {
+  if (!iter)
+    return false;
+
   char *p = mutt_file_read_line(iter->line, &iter->size, fp, &iter->line_num, flags);
   if (!p)
     return false;
@@ -714,6 +732,9 @@ bool mutt_file_iter_line(struct MuttFileIter *iter, FILE *fp, int flags)
  */
 bool mutt_file_map_lines(mutt_file_map_t func, void *user_data, FILE *fp, int flags)
 {
+  if (!func || !fp)
+    return false;
+
   struct MuttFileIter iter = { 0 };
   while (mutt_file_iter_line(&iter, fp, flags))
   {
@@ -737,6 +758,9 @@ bool mutt_file_map_lines(mutt_file_map_t func, void *user_data, FILE *fp, int fl
  */
 size_t mutt_file_quote_filename(const char *filename, char *buf, size_t buflen)
 {
+  if (!buf)
+    return 0;
+
   if (!filename)
   {
     *buf = '\0';
@@ -872,6 +896,9 @@ FILE *mutt_file_mkstemp_full(const char *file, int line, const char *func)
  */
 time_t mutt_file_decrease_mtime(const char *fp, struct stat *st)
 {
+  if (!fp)
+    return -1;
+
   struct utimbuf utim;
   struct stat st2;
   time_t mtime;
@@ -1324,6 +1351,9 @@ void mutt_file_expand_fmt_quote(char *dest, size_t destlen, const char *fmt, con
  */
 void mutt_file_expand_fmt(char *dest, size_t destlen, const char *fmt, const char *src)
 {
+  if (!dest || !fmt || !src)
+    return;
+
   const char *p = NULL;
   char *d = NULL;
   size_t slen;
@@ -1399,6 +1429,8 @@ long mutt_file_get_size(const char *path)
  */
 int mutt_file_timespec_compare(struct timespec *a, struct timespec *b)
 {
+  if (!a || !b)
+    return 0;
   if (a->tv_sec < b->tv_sec)
     return -1;
   if (a->tv_sec > b->tv_sec)
@@ -1419,6 +1451,9 @@ int mutt_file_timespec_compare(struct timespec *a, struct timespec *b)
  */
 void mutt_file_get_stat_timespec(struct timespec *dest, struct stat *sb, enum MuttStatType type)
 {
+  if (!dest || !sb)
+    return;
+
   dest->tv_sec = 0;
   dest->tv_nsec = 0;
 
@@ -1457,6 +1492,9 @@ void mutt_file_get_stat_timespec(struct timespec *dest, struct stat *sb, enum Mu
 int mutt_file_stat_timespec_compare(struct stat *sba, enum MuttStatType type,
                                     struct timespec *b)
 {
+  if (!sba || !b)
+    return 0;
+
   struct timespec a = { 0 };
 
   mutt_file_get_stat_timespec(&a, sba, type);
@@ -1476,6 +1514,9 @@ int mutt_file_stat_timespec_compare(struct stat *sba, enum MuttStatType type,
 int mutt_file_stat_compare(struct stat *sba, enum MuttStatType sba_type,
                            struct stat *sbb, enum MuttStatType sbb_type)
 {
+  if (!sba || !sbb)
+    return 0;
+
   struct timespec a = { 0 };
   struct timespec b = { 0 };
 

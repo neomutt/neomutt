@@ -87,6 +87,9 @@ const int Index64[128] = {
  */
 size_t mutt_b64_encode(const char *in, size_t inlen, char *out, size_t outlen)
 {
+  if (!in || !out)
+    return 0;
+
   unsigned char *begin = (unsigned char *) out;
   const unsigned char *inu = (const unsigned char *) in;
 
@@ -132,6 +135,9 @@ size_t mutt_b64_encode(const char *in, size_t inlen, char *out, size_t outlen)
  */
 int mutt_b64_decode(const char *in, char *out, size_t olen)
 {
+  if (!in || !out)
+    return -1;
+
   int len = 0;
   unsigned char digit4;
 
@@ -184,6 +190,9 @@ int mutt_b64_decode(const char *in, char *out, size_t olen)
  */
 size_t mutt_b64_buffer_encode(struct Buffer *buf, const char *in, size_t len)
 {
+  if (!buf)
+    return 0;
+
   mutt_buffer_increase_size(buf, MAX((len * 2), 1024));
   size_t num = mutt_b64_encode(in, len, buf->data, buf->dsize);
   mutt_buffer_fix_dptr(buf);
@@ -199,6 +208,9 @@ size_t mutt_b64_buffer_encode(struct Buffer *buf, const char *in, size_t len)
  */
 int mutt_b64_buffer_decode(struct Buffer *buf, const char *in)
 {
+  if (!buf)
+    return -1;
+
   mutt_buffer_increase_size(buf, mutt_str_strlen(in));
   int olen = mutt_b64_decode(in, buf->data, buf->dsize);
   /* mutt_from_base64 returns raw bytes, so don't terminate the buffer either */

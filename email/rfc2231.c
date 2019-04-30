@@ -322,6 +322,9 @@ void rfc2231_decode_parameters(struct ParameterList *p)
  */
 int rfc2231_encode_string(char **pd)
 {
+  if (!pd || !*pd)
+    return 0;
+
   int ext = 0;
   bool encode = false;
   char *charset = NULL, *s = NULL, *t = NULL, *e = NULL, *d = NULL;

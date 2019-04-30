@@ -147,6 +147,9 @@ int log_file_open(bool verbose)
  */
 int log_file_set_filename(const char *file, bool verbose)
 {
+  if (!file)
+    return -1;
+
   /* also handles both being NULL */
   if (mutt_str_strcmp(LogFileName, file) == 0)
     return 0;
@@ -291,6 +294,9 @@ int log_disp_file(time_t stamp, const char *file, int line,
  */
 int log_queue_add(struct LogLine *ll)
 {
+  if (!ll)
+    return -1;
+
   STAILQ_INSERT_TAIL(&LogQueue, ll, entries);
 
   if ((LogQueueMax > 0) && (LogQueueCount >= LogQueueMax))
