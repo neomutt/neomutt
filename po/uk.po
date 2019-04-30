@@ -1712,17 +1712,25 @@ msgstr "unhook: невідомий тип hook: %s"
 msgid "unhook: Can't delete a %s from within a %s"
 msgstr "unhook: Неможливо видалити %s з %s"
 
+#. L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
 #: icommands.c:257 keymap.c:1143 keymap.c:1322
 #, c-format
 msgid "%s: no such menu"
 msgstr "меню \"%s\" не існує"
 
+#. L10N: '%s' is the name of the menu, e.g. 'index' or 'pager', it might
+#. L10N: also be 'all' when all menus are affected.
 #: icommands.c:268
 #, fuzzy, c-format
-msgid "%s: no %s for this menu"
+msgid "%s: no binds for this menu"
 msgstr "меню \"%s\" не існує"
 
 #: icommands.c:278 icommands.c:290 imap/message.c:1050
+#, fuzzy, c-format
+msgid "%s: no macros for this menu"
+msgstr "меню \"%s\" не існує"
+
+#. L10N: '%s' is the file name of the temporary file
 #, c-format
 msgid "Could not create temporary file %s"
 msgstr "Не вийшло створити тимчасовий файл %s"

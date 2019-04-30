@@ -260,6 +260,7 @@ static enum CommandResult icmd_bind(struct Buffer *buf, struct Buffer *s,
     const int menu_index = mutt_map_get_value(buf->data, Menus);
     if (menu_index == -1)
     {
+      // L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
       mutt_buffer_printf(err, _("%s: no such menu"), buf->data);
       mutt_buffer_free(&filebuf);
       return MUTT_CMD_ERROR;
@@ -271,8 +272,10 @@ static enum CommandResult icmd_bind(struct Buffer *buf, struct Buffer *s,
 
   if (mutt_buffer_is_empty(filebuf))
   {
-    mutt_buffer_printf(err, _("%s: no %s for this menu"),
-                       dump_all ? "all" : buf->data, bind ? "binds" : "macros");
+    // L10N: '%s' is the name of the menu, e.g. 'index' or 'pager', it might
+    // L10N: also be 'all' when all menus are affected.
+    mutt_buffer_printf(err, bind ? _("%s: no binds for this menu") : _("%s: no macros for this menu"),
+                       dump_all ? "all" : buf->data);
     mutt_buffer_free(&filebuf);
     return MUTT_CMD_ERROR;
   }
@@ -281,6 +284,7 @@ static enum CommandResult icmd_bind(struct Buffer *buf, struct Buffer *s,
   fp_out = mutt_file_fopen(tempfile, "w");
   if (!fp_out)
   {
+    // L10N: '%s' is the file name of the temporary file
     mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
     mutt_buffer_free(&filebuf);
     return MUTT_CMD_ERROR;
@@ -293,6 +297,7 @@ static enum CommandResult icmd_bind(struct Buffer *buf, struct Buffer *s,
   struct Pager info = { 0 };
   if (mutt_pager((bind) ? "bind" : "macro", tempfile, MUTT_PAGER_NO_FLAGS, &info) == -1)
   {
+    // L10N: '%s' is the file name of the temporary file
     mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
     return MUTT_CMD_ERROR;
   }
@@ -312,7 +317,8 @@ static enum CommandResult icmd_set(struct Buffer *buf, struct Buffer *s,
   FILE *fp_out = mutt_file_fopen(tempfile, "w");
   if (!fp_out)
   {
-    mutt_buffer_addstr(err, _("Could not create temporary file"));
+    // L10N: '%s' is the file name of the temporary file
+    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
     return MUTT_CMD_ERROR;
   }
 
@@ -335,7 +341,8 @@ static enum CommandResult icmd_set(struct Buffer *buf, struct Buffer *s,
   struct Pager info = { 0 };
   if (mutt_pager("set", tempfile, MUTT_PAGER_NO_FLAGS, &info) == -1)
   {
-    mutt_buffer_addstr(err, _("Could not create temporary file"));
+    // L10N: '%s' is the file name of the temporary file
+    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
     return MUTT_CMD_ERROR;
   }
 
@@ -354,7 +361,8 @@ static enum CommandResult icmd_version(struct Buffer *buf, struct Buffer *s,
   FILE *fp_out = mutt_file_fopen(tempfile, "w");
   if (!fp_out)
   {
-    mutt_buffer_addstr(err, _("Could not create temporary file"));
+    // L10N: '%s' is the file name of the temporary file
+    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
     return MUTT_CMD_ERROR;
   }
 
@@ -364,7 +372,8 @@ static enum CommandResult icmd_version(struct Buffer *buf, struct Buffer *s,
   struct Pager info = { 0 };
   if (mutt_pager("version", tempfile, MUTT_PAGER_NO_FLAGS, &info) == -1)
   {
-    mutt_buffer_addstr(err, _("Could not create temporary file"));
+    // L10N: '%s' is the file name of the temporary file
+    mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
     return MUTT_CMD_ERROR;
   }
 
