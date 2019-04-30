@@ -36,7 +36,8 @@ void test_mutt_sha1_update(void)
   }
 
   {
-    struct Sha1Ctx sha1ctx = { 0 };
+    struct Sha1Ctx sha1ctx;
+    mutt_sha1_init(&sha1ctx);
     mutt_sha1_update(&sha1ctx, NULL, 0);
     TEST_CHECK_(1, "mutt_sha1_update(&sha1ctx, NULL, 0)");
   }

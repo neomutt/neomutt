@@ -30,7 +30,8 @@ void test_mutt_sha1_final(void)
   // void mutt_sha1_final(unsigned char digest[20], struct Sha1Ctx *sha1ctx);
 
   {
-    struct Sha1Ctx sha1ctx = { 0 };
+    struct Sha1Ctx sha1ctx;
+    mutt_sha1_init(&sha1ctx);
     mutt_sha1_final(NULL, &sha1ctx);
     TEST_CHECK_(1, "mutt_sha1_final(NULL, &sha1ctx)");
   }
