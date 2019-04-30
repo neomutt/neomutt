@@ -1684,7 +1684,11 @@ int mutt_index_menu(void)
           else
             menu->current = 0;
           if ((Context->mailbox->msg_count != 0) && ((C_Sort & SORT_MASK) == SORT_THREADS))
+          {
+            if (C_CollapseAll)
+              collapse_all(menu, 0);
             mutt_draw_tree(Context);
+          }
           menu->redraw = REDRAW_FULL;
         }
         if (Context->pattern)
