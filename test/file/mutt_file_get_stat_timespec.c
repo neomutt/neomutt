@@ -23,6 +23,7 @@
 #define TEST_NO_MAIN
 #include "acutest.h"
 #include "config.h"
+#include <sys/stat.h>
 #include "mutt/mutt.h"
 
 void test_mutt_file_get_stat_timespec(void)

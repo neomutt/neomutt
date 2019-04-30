@@ -23,6 +23,7 @@
 #define TEST_NO_MAIN
 #include "acutest.h"
 #include "config.h"
+#include <sys/stat.h>
 #include "mutt/mutt.h"
 
 void test_mutt_file_chmod_add_stat(void)
