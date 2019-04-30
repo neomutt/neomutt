@@ -23,7 +23,11 @@
 #define TEST_NO_MAIN
 #include "acutest.h"
 #include "config.h"
+#include <string.h>
 #include "mutt/mutt.h"
+
+static const char clear[] = "Hello";
+static const char encoded[] = "SGVsbG8=";
 
 void test_mutt_b64_decode(void)
 {
@@ -35,5 +39,35 @@ void test_mutt_b64_decode(void)
 
   {
     TEST_CHECK(mutt_b64_decode("apple", NULL, 10) != 0);
+  }
+
+  {
+    char buffer[16] = { 0 };
+    int len = mutt_b64_decode(encoded, buffer, sizeof(buffer));
+    if (!TEST_CHECK(len == sizeof(clear) - 1))
+    {
+      TEST_MSG("Expected: %zu", sizeof(clear) - 1);
+      TEST_MSG("Actual  : %zu", len);
+    }
+    buffer[len] = '\0';
+    if (!TEST_CHECK(strcmp(buffer, clear) == 0))
+    {
+      TEST_MSG("Expected: %s", clear);
+      TEST_MSG("Actual  : %s", buffer);
+    }
+  }
+
+  {
+    char out1[32] = { 0 };
+    char out2[32] = { 0 };
+
+    /* Decoding a zero-length string should fail, too */
+    int declen = mutt_b64_decode(out1, out2, sizeof(out2));
+    if (!TEST_CHECK(declen == -1))
+    {
+      TEST_MSG("Expected: %zu", -1);
+      TEST_MSG("Actual  : %zu", declen);
+    }
+
   }
 }
