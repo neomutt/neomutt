@@ -457,15 +457,14 @@ void imap_hcache_close(struct ImapMboxData *mdata)
  */
 struct Email *imap_hcache_get(struct ImapMboxData *mdata, unsigned int uid)
 {
-  char key[16];
-  void *uv = NULL;
-  struct Email *e = NULL;
-
   if (!mdata->hcache)
     return NULL;
 
+  char key[16];
+  struct Email *e = NULL;
+
   sprintf(key, "/%u", uid);
-  uv = mutt_hcache_fetch(mdata->hcache, key, mutt_str_strlen(key));
+  void *uv = mutt_hcache_fetch(mdata->hcache, key, mutt_str_strlen(key));
   if (uv)
   {
     if (*(unsigned int *) uv == mdata->uid_validity)
@@ -487,10 +486,10 @@ struct Email *imap_hcache_get(struct ImapMboxData *mdata, unsigned int uid)
  */
 int imap_hcache_put(struct ImapMboxData *mdata, struct Email *e)
 {
-  char key[16];
-
   if (!mdata->hcache)
     return -1;
+
+  char key[16];
 
   sprintf(key, "/%u", imap_edata_get(e)->uid);
   return mutt_hcache_store(mdata->hcache, key, mutt_str_strlen(key), e, mdata->uid_validity);
@@ -505,10 +504,10 @@ int imap_hcache_put(struct ImapMboxData *mdata, struct Email *e)
  */
 int imap_hcache_del(struct ImapMboxData *mdata, unsigned int uid)
 {
-  char key[16];
-
   if (!mdata->hcache)
     return -1;
+
+  char key[16];
 
   sprintf(key, "/%u", uid);
   return mutt_hcache_delete(mdata->hcache, key, mutt_str_strlen(key));
@@ -589,7 +588,7 @@ int imap_parse_path(const char *path, struct ConnAccount *account, char *mailbox
   static unsigned short ImapsPort = 0;
   struct servent *service = NULL;
 
-  if (!ImapPort)
+  if (ImapPort == 0)
   {
     service = getservbyname("imap", "tcp");
     if (service)
@@ -598,7 +597,7 @@ int imap_parse_path(const char *path, struct ConnAccount *account, char *mailbox
       ImapPort = IMAP_PORT;
     mutt_debug(LL_DEBUG3, "Using default IMAP port %d\n", ImapPort);
   }
-  if (!ImapsPort)
+  if (ImapsPort == 0)
   {
     service = getservbyname("imaps", "tcp");
     if (service)
@@ -744,7 +743,7 @@ fallback:
  * imap_continue - display a message and ask the user if they want to go on
  * @param msg  Location of the error
  * @param resp Message for user
- * @retval enum Result, See #QuadOption
+ * @retval #QuadOption Result, e.g. #MUTT_NO
  */
 enum QuadOption imap_continue(const char *msg, const char *resp)
 {

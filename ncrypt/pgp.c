@@ -42,10 +42,10 @@
 #include <time.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "mutt.h"
-#include "address/lib.h"
 #include "crypt.h"
 #include "cryptglue.h"
 #include "curs_lib.h"
@@ -1537,7 +1537,7 @@ struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign)
   FILE *fp_pgp_in = NULL, *fp_tmp = NULL;
   struct Body *t = NULL;
   int err = 0;
-  int empty = 0;
+  bool empty = false;
   pid_t pid;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
@@ -1595,7 +1595,7 @@ struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign)
   mutt_file_fclose(&fp_pgp_in);
 
   if (mutt_wait_filter(pid) && C_PgpCheckExit)
-    empty = 1;
+    empty = true;
 
   unlink(pgpinfile);
 

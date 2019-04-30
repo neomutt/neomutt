@@ -59,11 +59,11 @@ static void *hcache_gdbm_open(const char *path)
  */
 static void *hcache_gdbm_fetch(void *ctx, const char *key, size_t keylen)
 {
-  datum dkey;
-  datum data;
-
   if (!ctx)
     return NULL;
+
+  datum dkey;
+  datum data;
 
   GDBM_FILE db = ctx;
 
@@ -86,11 +86,11 @@ static void hcache_gdbm_free(void *vctx, void **data)
  */
 static int hcache_gdbm_store(void *ctx, const char *key, size_t keylen, void *data, size_t dlen)
 {
-  datum dkey;
-  datum databuf;
-
   if (!ctx)
     return -1;
+
+  datum dkey;
+  datum databuf;
 
   GDBM_FILE db = ctx;
 
@@ -108,10 +108,10 @@ static int hcache_gdbm_store(void *ctx, const char *key, size_t keylen, void *da
  */
 static int hcache_gdbm_delete(void *ctx, const char *key, size_t keylen)
 {
-  datum dkey;
-
   if (!ctx)
     return -1;
+
+  datum dkey;
 
   GDBM_FILE db = ctx;
 

@@ -361,14 +361,13 @@ static void save_history(enum HistoryClass hclass, const char *str)
  */
 static void remove_history_dups(enum HistoryClass hclass, const char *str)
 {
-  int source, dest, old_last;
   struct History *h = get_history(hclass);
   if (!h)
     return; /* disabled */
 
   /* Remove dups from 0..last-1 compacting up. */
-  source = 0;
-  dest = 0;
+  int source = 0;
+  int dest = 0;
   while (source < h->last)
   {
     if (mutt_str_strcmp(h->hist[source], str) == 0)
@@ -379,7 +378,7 @@ static void remove_history_dups(enum HistoryClass hclass, const char *str)
 
   /* Move 'last' entry up. */
   h->hist[dest] = h->hist[source];
-  old_last = h->last;
+  int old_last = h->last;
   h->last = dest;
 
   /* Fill in moved entries with NULL */
@@ -411,13 +410,12 @@ static void remove_history_dups(enum HistoryClass hclass, const char *str)
  */
 int mutt_hist_search(const char *search_buf, enum HistoryClass hclass, char **matches)
 {
-  int match_count = 0, cur;
-
   struct History *h = get_history(hclass);
   if (!h)
     return 0;
 
-  cur = h->last;
+  int match_count = 0;
+  int cur = h->last;
   do
   {
     cur--;

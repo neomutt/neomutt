@@ -34,9 +34,9 @@
 #include <string.h>
 #include <time.h>
 #include "mutt/mutt.h"
+#include "address/lib.h"
 #include "mutt.h"
 #include "parse.h"
-#include "address/lib.h"
 #include "body.h"
 #include "email.h"
 #include "email_globals.h"
@@ -54,8 +54,6 @@
  */
 void mutt_auto_subscribe(const char *mailto)
 {
-  struct Envelope *lpenv;
-
   if (!AutoSubscribeCache)
     AutoSubscribeCache = mutt_hash_new(200, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS);
 
@@ -64,22 +62,19 @@ void mutt_auto_subscribe(const char *mailto)
 
   mutt_hash_insert(AutoSubscribeCache, mailto, AutoSubscribeCache);
 
-  lpenv = mutt_env_new(); /* parsed envelope from the List-Post mailto: URL */
+  struct Envelope *lpenv = mutt_env_new(); /* parsed envelope from the List-Post mailto: URL */
 
   if ((mutt_parse_mailto(lpenv, NULL, mailto) != -1) && lpenv->to && lpenv->to->mailbox &&
       !mutt_regexlist_match(&UnSubscribedLists, lpenv->to->mailbox) &&
       !mutt_regexlist_match(&UnMailLists, lpenv->to->mailbox) &&
       !mutt_regexlist_match(&UnSubscribedLists, lpenv->to->mailbox))
   {
-    struct Buffer err;
-    char errbuf[256];
-    memset(&err, 0, sizeof(err));
-    err.data = errbuf;
-    err.dsize = sizeof(errbuf);
+    struct Buffer *err = mutt_buffer_pool_get();
     /* mutt_regexlist_add() detects duplicates, so it is safe to
      * try to add here without any checks. */
-    mutt_regexlist_add(&MailLists, lpenv->to->mailbox, REG_ICASE, &err);
-    mutt_regexlist_add(&SubscribedLists, lpenv->to->mailbox, REG_ICASE, &err);
+    mutt_regexlist_add(&MailLists, lpenv->to->mailbox, REG_ICASE, err);
+    mutt_regexlist_add(&SubscribedLists, lpenv->to->mailbox, REG_ICASE, err);
+    mutt_buffer_pool_release(&err);
   }
 
   mutt_env_free(&lpenv);
@@ -951,7 +946,7 @@ char *mutt_rfc822_read_line(FILE *fp, char *line, size_t *linelen)
     }
 
     const size_t len = mutt_str_strlen(buf);
-    if (!len)
+    if (len == 0)
       return line;
 
     buf += len - 1;

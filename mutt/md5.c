@@ -346,24 +346,24 @@ void mutt_md5_process(const char *str, struct Md5Ctx *md5ctx)
 
 /**
  * mutt_md5_process_bytes - Process a block of data
- * @param buffer Buffer to process
- * @param len    Length of buffer
+ * @param buf    Buffer to process
+ * @param buflen Length of buffer
  * @param md5ctx MD5 context
  *
  * Starting with the result of former calls of this function (or the
- * initialization function update the context for the next LEN bytes starting
- * at Buffer.  It is NOT required that LEN is a multiple of 64.
+ * initialization function update the context for the next BUFLEN bytes starting
+ * at Buffer.  It is NOT required that BUFLEN is a multiple of 64.
  */
-void mutt_md5_process_bytes(const void *buffer, size_t len, struct Md5Ctx *md5ctx)
+void mutt_md5_process_bytes(const void *buf, size_t buflen, struct Md5Ctx *md5ctx)
 {
   /* When we already have some bits in our internal buffer concatenate both
    * inputs first. */
   if (md5ctx->buflen != 0)
   {
     size_t left_over = md5ctx->buflen;
-    size_t add = ((128 - left_over) > len) ? len : (128 - left_over);
+    size_t add = ((128 - left_over) > buflen) ? buflen : (128 - left_over);
 
-    memcpy(&((char *) md5ctx->buffer)[left_over], buffer, add);
+    memcpy(&((char *) md5ctx->buffer)[left_over], buf, add);
     md5ctx->buflen += add;
 
     if (md5ctx->buflen > 64)
@@ -376,41 +376,41 @@ void mutt_md5_process_bytes(const void *buffer, size_t len, struct Md5Ctx *md5ct
              md5ctx->buflen);
     }
 
-    buffer = (const char *) buffer + add;
-    len -= add;
+    buf = (const char *) buf + add;
+    buflen -= add;
   }
 
   /* Process available complete blocks. */
-  if (len >= 64)
+  if (buflen >= 64)
   {
 #if !defined(_STRING_ARCH_unaligned)
 #define alignof(type) offsetof(struct { char c; type x; }, x)
 #define UNALIGNED_P(p) (((size_t) p) % alignof(md5_uint32) != 0)
-    if (UNALIGNED_P(buffer))
+    if (UNALIGNED_P(buf))
     {
-      while (len > 64)
+      while (buflen > 64)
       {
-        mutt_md5_process_block(memcpy(md5ctx->buffer, buffer, 64), 64, md5ctx);
-        buffer = (const char *) buffer + 64;
-        len -= 64;
+        mutt_md5_process_block(memcpy(md5ctx->buffer, buf, 64), 64, md5ctx);
+        buf = (const char *) buf + 64;
+        buflen -= 64;
       }
     }
     else
 #endif
     {
-      mutt_md5_process_block(buffer, len & ~63, md5ctx);
-      buffer = (const char *) buffer + (len & ~63);
-      len &= 63;
+      mutt_md5_process_block(buf, buflen & ~63, md5ctx);
+      buf = (const char *) buf + (buflen & ~63);
+      buflen &= 63;
     }
   }
 
   /* Move remaining bytes in internal buffer. */
-  if (len > 0)
+  if (buflen > 0)
   {
     size_t left_over = md5ctx->buflen;
 
-    memcpy(&((char *) md5ctx->buffer)[left_over], buffer, len);
-    left_over += len;
+    memcpy(&((char *) md5ctx->buffer)[left_over], buf, buflen);
+    left_over += buflen;
     if (left_over >= 64)
     {
       mutt_md5_process_block(md5ctx->buffer, 64, md5ctx);

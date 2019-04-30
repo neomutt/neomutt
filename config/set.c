@@ -384,7 +384,7 @@ void cs_notify_listeners(const struct ConfigSet *cs, struct HashElem *he,
  * @param cs   Config items
  * @param he   HashElem representing config item
  * @param err  Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * @retval num Result, e.g. #CSR_SUCCESS
  */
 int cs_he_reset(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *err)
 {
@@ -431,7 +431,7 @@ int cs_he_reset(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *
  * @param cs   Config items
  * @param name Name of config item
  * @param err  Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * @retval num Result, e.g. #CSR_SUCCESS
  */
 int cs_str_reset(const struct ConfigSet *cs, const char *name, struct Buffer *err)
 {
@@ -454,7 +454,7 @@ int cs_str_reset(const struct ConfigSet *cs, const char *name, struct Buffer *er
  * @param he    HashElem representing config item
  * @param value Value to set
  * @param err   Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * @retval num Result, e.g. #CSR_SUCCESS
  */
 int cs_he_initial_set(const struct ConfigSet *cs, struct HashElem *he,
                       const char *value, struct Buffer *err)
@@ -495,7 +495,7 @@ int cs_he_initial_set(const struct ConfigSet *cs, struct HashElem *he,
  * @param name  Name of config item
  * @param value Value to set
  * @param err   Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * @retval num Result, e.g. #CSR_SUCCESS
  */
 int cs_str_initial_set(const struct ConfigSet *cs, const char *name,
                        const char *value, struct Buffer *err)
@@ -518,7 +518,7 @@ int cs_str_initial_set(const struct ConfigSet *cs, const char *name,
  * @param cs     Config items
  * @param he     HashElem representing config item
  * @param result Buffer for results or error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * @retval num Result, e.g. #CSR_SUCCESS
  *
  * If a config item is inherited from another, then this will get the parent's
  * value.  Otherwise, it will get the config item's initial value.
@@ -559,7 +559,7 @@ int cs_he_initial_get(const struct ConfigSet *cs, struct HashElem *he, struct Bu
  * @param cs     Config items
  * @param name   Name of config item
  * @param result Buffer for results or error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * @retval num Result, e.g. #CSR_SUCCESS
  *
  * If a config item is inherited from another, then this will get the parent's
  * value.  Otherwise, it will get the config item's initial value.
@@ -585,7 +585,7 @@ int cs_str_initial_get(const struct ConfigSet *cs, const char *name, struct Buff
  * @param he    HashElem representing config item
  * @param value Value to set
  * @param err   Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * @retval num Result, e.g. #CSR_SUCCESS
  */
 int cs_he_string_set(const struct ConfigSet *cs, struct HashElem *he,
                      const char *value, struct Buffer *err)
@@ -640,7 +640,7 @@ int cs_he_string_set(const struct ConfigSet *cs, struct HashElem *he,
  * @param name  Name of config item
  * @param value Value to set
  * @param err   Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * @retval num Result, e.g. #CSR_SUCCESS
  */
 int cs_str_string_set(const struct ConfigSet *cs, const char *name,
                       const char *value, struct Buffer *err)
@@ -663,7 +663,7 @@ int cs_str_string_set(const struct ConfigSet *cs, const char *name,
  * @param cs     Config items
  * @param he     HashElem representing config item
  * @param result Buffer for results or error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * @retval num Result, e.g. #CSR_SUCCESS
  */
 int cs_he_string_get(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *result)
 {
@@ -711,7 +711,7 @@ int cs_he_string_get(const struct ConfigSet *cs, struct HashElem *he, struct Buf
  * @param cs     Config items
  * @param name   Name of config item
  * @param result Buffer for results or error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * @retval num Result, e.g. #CSR_SUCCESS
  */
 int cs_str_string_get(const struct ConfigSet *cs, const char *name, struct Buffer *result)
 {
@@ -734,7 +734,7 @@ int cs_str_string_get(const struct ConfigSet *cs, const char *name, struct Buffe
  * @param he    HashElem representing config item
  * @param value Native pointer/value to set
  * @param err   Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * @retval num Result, e.g. #CSR_SUCCESS
  */
 int cs_he_native_set(const struct ConfigSet *cs, struct HashElem *he,
                      intptr_t value, struct Buffer *err)
@@ -784,7 +784,7 @@ int cs_he_native_set(const struct ConfigSet *cs, struct HashElem *he,
  * @param name  Name of config item
  * @param value Native pointer/value to set
  * @param err   Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * @retval num Result, e.g. #CSR_SUCCESS
  */
 int cs_str_native_set(const struct ConfigSet *cs, const char *name,
                       intptr_t value, struct Buffer *err)
@@ -838,6 +838,7 @@ int cs_str_native_set(const struct ConfigSet *cs, const char *name,
  * @param he  HashElem representing config item
  * @param err Buffer for results or error messages
  * @retval intptr_t Native pointer/value
+ * @retval INT_MIN  Error
  */
 intptr_t cs_he_native_get(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *err)
 {
@@ -885,6 +886,7 @@ intptr_t cs_he_native_get(const struct ConfigSet *cs, struct HashElem *he, struc
  * @param name Name of config item
  * @param err  Buffer for error messages
  * @retval intptr_t Native pointer/value
+ * @retval INT_MIN  Error
  */
 intptr_t cs_str_native_get(const struct ConfigSet *cs, const char *name, struct Buffer *err)
 {

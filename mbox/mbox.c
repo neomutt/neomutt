@@ -41,11 +41,11 @@
 #include <unistd.h>
 #include <utime.h>
 #include "mutt/mutt.h"
+#include "address/lib.h"
 #include "email/lib.h"
 #include "mutt.h"
 #include "mbox.h"
 #include "account.h"
-#include "address/lib.h"
 #include "context.h"
 #include "copy.h"
 #include "globals.h"

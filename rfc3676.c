@@ -184,7 +184,7 @@ static void flush_par(struct State *s, struct FlowedState *fst)
  * quote_width - Calculate the paragraph width based upon the quote level
  * @param s  State to use
  * @param ql Quote level
- * @retval int Paragraph width
+ * @retval num Paragraph width
  *
  * The start of a quoted line will be ">>> ", so we need to subtract the space
  * required for the prefix from the terminal width.

@@ -38,12 +38,12 @@
 #include <sys/stat.h>
 #include <time.h>
 #include "mutt/mutt.h"
+#include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "pattern.h"
-#include "address/lib.h"
 #include "alias.h"
 #include "context.h"
 #include "copy.h"
@@ -168,7 +168,8 @@ enum RangeSide
  * @param err   Buffer for error messages
  * @retval true If the pattern was read successfully
  */
-typedef bool pattern_eat_t(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err);
+typedef bool pattern_eat_t(struct Pattern *pat, int flags, struct Buffer *s,
+                           struct Buffer *err);
 
 /**
  * struct PatternFlags - Mapping between user character and internal constant
@@ -643,7 +644,7 @@ static bool eval_date_minmax(struct Pattern *pat, const char *s, struct Buffer *
     const char *pc = s;
 
     bool have_min = false;
-    int until_now = false;
+    bool until_now = false;
     if (isdigit((unsigned char) *pc))
     {
       /* minimum date specified */
@@ -847,11 +848,8 @@ static bool is_context_available(struct Buffer *s, regmatch_t pmatch[],
  */
 static int scan_range_num(struct Buffer *s, regmatch_t pmatch[], int group, int kind)
 {
-  int num;
-  unsigned char c;
-
-  num = (int) strtol(&s->dptr[pmatch[group].rm_so], NULL, 0);
-  c = (unsigned char) (s->dptr[pmatch[group].rm_eo - 1]);
+  int num = (int) strtol(&s->dptr[pmatch[group].rm_so], NULL, 0);
+  unsigned char c = (unsigned char) (s->dptr[pmatch[group].rm_eo - 1]);
   if (toupper(c) == 'K')
     num *= KILO;
   else if (toupper(c) == 'M')
@@ -880,8 +878,6 @@ static int scan_range_num(struct Buffer *s, regmatch_t pmatch[], int group, int 
  */
 static int scan_range_slot(struct Buffer *s, regmatch_t pmatch[], int grp, int side, int kind)
 {
-  unsigned char c;
-
   /* This means the left or right subpattern was empty, e.g. ",." */
   if ((pmatch[grp].rm_so == -1) || (pmatch[grp].rm_so == pmatch[grp].rm_eo))
   {
@@ -891,7 +887,7 @@ static int scan_range_slot(struct Buffer *s, regmatch_t pmatch[], int grp, int s
       return Context->mailbox->msg_count;
   }
   /* We have something, so determine what */
-  c = (unsigned char) (s->dptr[pmatch[grp].rm_so]);
+  unsigned char c = (unsigned char) (s->dptr[pmatch[grp].rm_so]);
   switch (c)
   {
     case RANGE_CIRCUM:
@@ -915,11 +911,9 @@ static int scan_range_slot(struct Buffer *s, regmatch_t pmatch[], int grp, int s
  */
 static void order_range(struct Pattern *pat)
 {
-  int num;
-
   if (pat->min <= pat->max)
     return;
-  num = pat->min;
+  int num = pat->min;
   pat->min = pat->max;
   pat->max = num;
 }
@@ -943,7 +937,7 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
   if (!pspec->ready)
   {
     regerr = regcomp(&pspec->cooked, pspec->raw, REG_EXTENDED);
-    if (regerr)
+    if (regerr != 0)
       return report_regerror(regerr, &pspec->cooked, err);
     pspec->ready = 1;
   }
@@ -951,7 +945,7 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
   /* Match the pattern buffer against the compiled regex.
    * No match means syntax error. */
   regerr = regexec(&pspec->cooked, s->dptr, RANGE_RX_GROUPS, pmatch, 0);
-  if (regerr)
+  if (regerr != 0)
     return report_regerror(regerr, &pspec->cooked, err);
 
   if (!is_context_available(s, pmatch, kind, err))
@@ -1328,7 +1322,7 @@ static /* const */ char *find_matching_paren(/* const */ char *s)
     else if (*s == ')')
     {
       level--;
-      if (!level)
+      if (level == 0)
         break;
     }
   }
@@ -1804,12 +1798,11 @@ static int match_threadcomplete(struct PatternHead *pat, PatternExecFlags flags,
                                 struct Mailbox *m, struct MuttThread *t,
                                 int left, int up, int right, int down)
 {
-  int a;
-  struct Email *e = NULL;
-
   if (!t)
     return 0;
-  e = t->message;
+
+  int a;
+  struct Email *e = t->message;
   if (e)
     if (mutt_pattern_exec(SLIST_FIRST(pat), flags, m, e, NULL))
       return 1;
@@ -1977,9 +1970,6 @@ static int is_pattern_cache_set(int cache_entry)
 int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
                       struct Mailbox *m, struct Email *e, struct PatternCache *cache)
 {
-  int result;
-  int *cache_entry = NULL;
-
   switch (pat->op)
   {
     case MUTT_PAT_AND:
@@ -2107,11 +2097,14 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       return pat->not^match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 2,
                                      e->env->to, e->env->cc);
     case MUTT_PAT_LIST: /* known list, subscribed or not */
+    {
       if (!e->env)
         return 0;
+
+      int result;
       if (cache)
       {
-        cache_entry = pat->alladdr ? &cache->list_all : &cache->list_one;
+        int *cache_entry = pat->alladdr ? &cache->list_all : &cache->list_one;
         if (!is_pattern_cache_set(*cache_entry))
         {
           set_pattern_cache_value(
@@ -2122,12 +2115,16 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       else
         result = mutt_is_list_cc(pat->alladdr, e->env->to, e->env->cc);
       return pat->not^result;
+    }
     case MUTT_PAT_SUBSCRIBED_LIST:
+    {
       if (!e->env)
         return 0;
+
+      int result;
       if (cache)
       {
-        cache_entry = pat->alladdr ? &cache->sub_all : &cache->sub_one;
+        int *cache_entry = pat->alladdr ? &cache->sub_all : &cache->sub_one;
         if (!is_pattern_cache_set(*cache_entry))
         {
           set_pattern_cache_value(
@@ -2139,12 +2136,16 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       else
         result = mutt_is_list_recipient(pat->alladdr, e->env->to, e->env->cc);
       return pat->not^result;
+    }
     case MUTT_PAT_PERSONAL_RECIP:
+    {
       if (!e->env)
         return 0;
+
+      int result;
       if (cache)
       {
-        cache_entry = pat->alladdr ? &cache->pers_recip_all : &cache->pers_recip_one;
+        int *cache_entry = pat->alladdr ? &cache->pers_recip_all : &cache->pers_recip_one;
         if (!is_pattern_cache_set(*cache_entry))
         {
           set_pattern_cache_value(cache_entry,
@@ -2155,12 +2156,16 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       else
         result = match_user(pat->alladdr, e->env->to, e->env->cc);
       return pat->not^result;
+    }
     case MUTT_PAT_PERSONAL_FROM:
+    {
       if (!e->env)
         return 0;
+
+      int result;
       if (cache)
       {
-        cache_entry = pat->alladdr ? &cache->pers_from_all : &cache->pers_from_one;
+        int *cache_entry = pat->alladdr ? &cache->pers_from_all : &cache->pers_from_one;
         if (!is_pattern_cache_set(*cache_entry))
           set_pattern_cache_value(cache_entry, match_user(pat->alladdr, e->env->from, NULL));
         result = get_pattern_cache_value(*cache_entry);
@@ -2168,6 +2173,7 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       else
         result = match_user(pat->alladdr, e->env->from, NULL);
       return pat->not^result;
+    }
     case MUTT_PAT_COLLAPSED:
       return pat->not^(e->collapsed && e->num_hidden > 1);
     case MUTT_PAT_CRYPT_SIGN:
@@ -2317,12 +2323,10 @@ void mutt_check_simple(char *s, size_t len, const char *simple)
  */
 static struct MuttThread *top_of_thread(struct Email *e)
 {
-  struct MuttThread *t = NULL;
-
   if (!e)
     return NULL;
 
-  t = e->thread;
+  struct MuttThread *t = e->thread;
 
   while (t && t->parent)
     t = t->parent;
@@ -2338,12 +2342,10 @@ static struct MuttThread *top_of_thread(struct Email *e)
  */
 bool mutt_limit_current_thread(struct Email *e)
 {
-  struct MuttThread *me = NULL;
-
   if (!e)
     return false;
 
-  me = top_of_thread(e);
+  struct MuttThread *me = top_of_thread(e);
   if (!me)
     return false;
 
@@ -2381,10 +2383,9 @@ bool mutt_limit_current_thread(struct Email *e)
  */
 int mutt_pattern_func(int op, char *prompt)
 {
-  struct PatternHead *pat = NULL;
-  char buf[1024] = "", *simple = NULL;
+  char buf[1024] = "";
   struct Buffer err;
-  int rc = -1, padding;
+  int rc = -1;
   struct Progress progress;
 
   mutt_str_strfcpy(buf, Context->pattern, sizeof(buf));
@@ -2395,13 +2396,13 @@ int mutt_pattern_func(int op, char *prompt)
 
   mutt_message(_("Compiling search pattern..."));
 
-  simple = mutt_str_strdup(buf);
+  char *simple = mutt_str_strdup(buf);
   mutt_check_simple(buf, sizeof(buf), NONULL(C_SimpleSearch));
 
   mutt_buffer_init(&err);
   err.dsize = 256;
   err.data = mutt_mem_malloc(err.dsize);
-  pat = mutt_pattern_comp(buf, MUTT_FULL_MSG, &err);
+  struct PatternHead *pat = mutt_pattern_comp(buf, MUTT_FULL_MSG, &err);
   if (!pat)
   {
     mutt_error("%s", err.data);
@@ -2423,7 +2424,7 @@ int mutt_pattern_func(int op, char *prompt)
     Context->mailbox->vcount = 0;
     Context->vsize = 0;
     Context->collapsed = false;
-    padding = mx_msg_padding_size(Context->mailbox);
+    int padding = mx_msg_padding_size(Context->mailbox);
 
     for (int i = 0; i < Context->mailbox->msg_count; i++)
     {

@@ -439,16 +439,14 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
 
         cont = (chunk >= (buflen - off)) ? 1 : 0;
         off += strlen(adata->overview_fmt + off);
-        if (!cont)
+        if (cont == 0)
         {
-          char *colon = NULL;
-
           if (adata->overview_fmt[b] == ':')
           {
             memmove(adata->overview_fmt + b, adata->overview_fmt + b + 1, off - b - 1);
             adata->overview_fmt[off - 1] = ':';
           }
-          colon = strchr(adata->overview_fmt + b, ':');
+          char *colon = strchr(adata->overview_fmt + b, ':');
           if (!colon)
             adata->overview_fmt[off++] = ':';
           else if (strcmp(colon + 1, "full") != 0)
@@ -938,14 +936,12 @@ static int nntp_fetch_lines(struct NntpMboxData *mdata, char *query, size_t qlen
  */
 static int fetch_description(char *line, void *data)
 {
-  struct NntpAccountData *adata = data;
-  struct NntpMboxData *mdata = NULL;
-  char *desc = NULL;
-
   if (!line)
     return 0;
 
-  desc = strpbrk(line, " \t");
+  struct NntpAccountData *adata = data;
+
+  char *desc = strpbrk(line, " \t");
   if (desc)
   {
     *desc++ = '\0';
@@ -954,7 +950,7 @@ static int fetch_description(char *line, void *data)
   else
     desc = strchr(line, '\0');
 
-  mdata = mutt_hash_find(adata->groups_hash, line);
+  struct NntpMboxData *mdata = mutt_hash_find(adata->groups_hash, line);
   if (mdata && (mutt_str_strcmp(desc, mdata->desc) != 0))
   {
     mutt_str_replace(&mdata->desc, desc);
@@ -1750,8 +1746,7 @@ static int nntp_date(struct NntpAccountData *adata, time_t *now)
   {
     struct NntpMboxData mdata;
     char buf[1024];
-    struct tm tm;
-    memset(&tm, 0, sizeof(tm));
+    struct tm tm = { 0 };
 
     mdata.adata = adata;
     mdata.group = NULL;

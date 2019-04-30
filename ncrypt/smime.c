@@ -36,10 +36,10 @@
 #include <sys/stat.h>
 #include <time.h>
 #include "mutt/mutt.h"
+#include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "mutt.h"
-#include "address/lib.h"
 #include "alias.h"
 #include "context.h"
 #include "copy.h"
@@ -112,10 +112,10 @@ static char fp_smime_intermediateToUse[PATH_MAX];
  */
 static void smime_free_key(struct SmimeKey **keylist)
 {
-  struct SmimeKey *key = NULL;
-
   if (!keylist)
     return;
+
+  struct SmimeKey *key = NULL;
 
   while (*keylist)
   {
@@ -137,10 +137,10 @@ static void smime_free_key(struct SmimeKey **keylist)
  */
 static struct SmimeKey *smime_copy_key(struct SmimeKey *key)
 {
-  struct SmimeKey *copy = NULL;
-
   if (!key)
     return NULL;
+
+  struct SmimeKey *copy = NULL;
 
   copy = mutt_mem_calloc(1, sizeof(struct SmimeKey));
   copy->email = mutt_str_strdup(key->email);
@@ -774,6 +774,9 @@ static struct SmimeKey *smime_get_key_by_hash(char *hash, bool public)
 static struct SmimeKey *smime_get_key_by_addr(char *mailbox, KeyFlags abilities,
                                               bool public, bool may_ask)
 {
+  if (!mailbox)
+    return NULL;
+
   struct SmimeKey *results = NULL, *result = NULL;
   struct SmimeKey *matches = NULL;
   struct SmimeKey **matches_end = &matches;
@@ -781,10 +784,7 @@ static struct SmimeKey *smime_get_key_by_addr(char *mailbox, KeyFlags abilities,
   struct SmimeKey *trusted_match = NULL;
   struct SmimeKey *valid_match = NULL;
   struct SmimeKey *return_key = NULL;
-  int multi_trusted_matches = 0;
-
-  if (!mailbox)
-    return NULL;
+  bool multi_trusted_matches = false;
 
   results = smime_get_candidates(mailbox, public);
   for (result = results; result; result = result->next)
@@ -804,7 +804,7 @@ static struct SmimeKey *smime_get_key_by_addr(char *mailbox, KeyFlags abilities,
       {
         if (trusted_match && (mutt_str_strcasecmp(match->hash, trusted_match->hash) != 0))
         {
-          multi_trusted_matches = 1;
+          multi_trusted_matches = true;
         }
         trusted_match = match;
       }
@@ -852,14 +852,14 @@ static struct SmimeKey *smime_get_key_by_addr(char *mailbox, KeyFlags abilities,
  */
 static struct SmimeKey *smime_get_key_by_str(char *str, KeyFlags abilities, bool public)
 {
+  if (!str)
+    return NULL;
+
   struct SmimeKey *results = NULL, *result = NULL;
   struct SmimeKey *matches = NULL;
   struct SmimeKey **matches_end = &matches;
   struct SmimeKey *match = NULL;
   struct SmimeKey *return_key = NULL;
-
-  if (!str)
-    return NULL;
 
   results = smime_get_candidates(str, public);
   for (result = results; result; result = result->next)
@@ -1137,7 +1137,7 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, bool copy,
     mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess"));
     rc = 1;
   }
-  else if (!rc)
+  else if (rc == 0)
     rc = 1;
   else
     rc = 0;
@@ -1473,9 +1473,7 @@ int smime_class_verify_sender(struct Email *e)
   return rc;
 }
 
-/*
- *    Creating S/MIME - bodies.
- */
+/* Creating S/MIME - bodies */
 
 /**
  * smime_invoke_encrypt - Use SMIME to encrypt a file
@@ -1628,7 +1626,7 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
   if (empty)
   {
     /* fatal error while trying to encrypt message */
-    if (!err)
+    if (err == 0)
       mutt_any_key_to_continue(_("No output from OpenSSL..."));
     mutt_file_unlink(tempfile);
     return NULL;
@@ -1820,9 +1818,7 @@ struct Body *smime_class_sign_message(struct Body *a)
   return a;
 }
 
-/*
- *    Handling S/MIME - bodies.
- */
+/* Handling S/MIME - bodies */
 
 /**
  * smime_invoke_verify - Use SMIME to verify a file

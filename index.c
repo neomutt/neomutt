@@ -519,7 +519,7 @@ static void update_index_unthreaded(struct Context *ctx, int check, int oldcount
     int padding = mx_msg_padding_size(ctx->mailbox);
     for (int i = (check == MUTT_REOPENED) ? 0 : oldcount; i < ctx->mailbox->msg_count; i++)
     {
-      if (!i)
+      if (i == 0)
       {
         ctx->mailbox->vcount = 0;
         ctx->vsize = 0;
@@ -3618,11 +3618,11 @@ int mutt_index_menu(void)
  */
 void mutt_set_header_color(struct Mailbox *m, struct Email *e)
 {
-  struct ColorLine *color = NULL;
-  struct PatternCache cache = { 0 };
-
   if (!e)
     return;
+
+  struct ColorLine *color = NULL;
+  struct PatternCache cache = { 0 };
 
   STAILQ_FOREACH(color, &ColorIndexList, entries)
   {

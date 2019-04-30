@@ -96,7 +96,7 @@ typedef int     (*cs_validator)  (const struct ConfigSet *cs, const struct Confi
  * @param cdef  Variable definition
  * @param value Value to set
  * @param err   Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * @retval num Result, e.g. #CSR_SUCCESS
  *
  * If var is NULL, then the config item's initial value will be set.
  */
@@ -107,7 +107,7 @@ typedef int     (*cst_string_set)(const struct ConfigSet *cs, void *var,       s
  * @param var    Variable to get
  * @param cdef   Variable definition
  * @param result Buffer for results or error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * @retval num Result, e.g. #CSR_SUCCESS
  *
  * If var is NULL, then the config item's initial value will be returned.
  */
@@ -119,7 +119,7 @@ typedef int     (*cst_string_get)(const struct ConfigSet *cs, void *var, const s
  * @param cdef  Variable definition
  * @param value Native pointer/value to set
  * @param err   Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * @retval num Result, e.g. #CSR_SUCCESS
  */
 typedef int     (*cst_native_set)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, intptr_t value,    struct Buffer *err);
 /**
@@ -129,6 +129,7 @@ typedef int     (*cst_native_set)(const struct ConfigSet *cs, void *var, const s
  * @param cdef Variable definition
  * @param err  Buffer for error messages
  * @retval intptr_t Config item string
+ * @retval INT_MIN  Error
  */
 typedef intptr_t(*cst_native_get)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef,                    struct Buffer *err);
 
@@ -138,7 +139,7 @@ typedef intptr_t(*cst_native_get)(const struct ConfigSet *cs, void *var, const s
  * @param var  Variable to reset
  * @param cdef Variable definition
  * @param err  Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * @retval num Result, e.g. #CSR_SUCCESS
  */
 typedef int     (*cst_reset)     (const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, struct Buffer *err);
 /**

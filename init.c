@@ -42,11 +42,11 @@
 #include <unistd.h>
 #include <wchar.h>
 #include "mutt/mutt.h"
+#include "address/lib.h"
 #include "email/lib.h"
 #include "mutt.h"
 #include "init.h"
 #include "account.h"
-#include "address/lib.h"
 #include "alias.h"
 #include "context.h"
 #include "filter.h"
@@ -459,7 +459,7 @@ static bool get_hostname(void)
  * @param s    Buffer containing the attachments command
  * @param head List of AttachMatch to add to
  * @param err  Buffer for error messages
- * @retval enum e.g. #MUTT_CMD_SUCCESS
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
 static enum CommandResult parse_attach_list(struct Buffer *buf, struct Buffer *s,
                                             struct ListHead *head, struct Buffer *err)
@@ -756,18 +756,16 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
   char *currentline = NULL;
   char rcfile[PATH_MAX];
   size_t buflen;
-  size_t rcfilelen;
-  bool ispipe;
 
   pid_t pid;
 
   mutt_str_strfcpy(rcfile, rcfile_path, sizeof(rcfile));
 
-  rcfilelen = mutt_str_strlen(rcfile);
+  size_t rcfilelen = mutt_str_strlen(rcfile);
   if (rcfilelen == 0)
     return -1;
 
-  ispipe = rcfile[rcfilelen - 1] == '|';
+  bool ispipe = rcfile[rcfilelen - 1] == '|';
 
   if (!ispipe)
   {
@@ -945,15 +943,15 @@ static enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   mutt_grouplist_add_addrlist(&gc, tmp->addr);
   mutt_alias_add_reverse(tmp);
 
-  if (C_DebugLevel > 2)
+  if (C_DebugLevel > LL_DEBUG4)
   {
     /* A group is terminated with an empty address, so check a->mailbox */
     for (struct Address *a = tmp->addr; a && a->mailbox; a = a->next)
     {
-      if (!a->group)
-        mutt_debug(5, "  %s\n", a->mailbox);
-      else
+      if (a->group)
         mutt_debug(5, "  Group %s\n", a->mailbox);
+      else
+        mutt_debug(5, "  %s\n", a->mailbox);
     }
   }
   mutt_grouplist_destroy(&gc);
@@ -2655,7 +2653,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
     return -1;
 
   char ch;
-  char qc = 0; /* quote char */
+  char qc = '\0'; /* quote char */
   char *pc = NULL;
 
   mutt_buffer_reset(dest);
@@ -2663,7 +2661,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
   SKIPWS(tok->dptr);
   while ((ch = *tok->dptr))
   {
-    if (!qc)
+    if (qc == '\0')
     {
       if ((IS_SPACE(ch) && !(flags & MUTT_TOKEN_SPACE)) ||
           ((ch == '#') && !(flags & MUTT_TOKEN_COMMENT)) ||
@@ -3243,7 +3241,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
  * @param line  config line to read
  * @param token scratch buffer to be used by parser
  * @param err   where to write error messages
- * @retval enum e.g. #MUTT_CMD_SUCCESS
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  *
  * Caller should free token->data when finished.  the reason for this variable
  * is to avoid having to allocate and deallocate a lot of memory if we are
@@ -3358,7 +3356,7 @@ int mutt_query_variables(struct ListHead *queries)
  * query_quadoption - Ask the user a quad-question
  * @param opt    Option to use
  * @param prompt Message to show to the user
- * @retval enum Result, see #QuadOption
+ * @retval #QuadOption Result, e.g. #MUTT_NO
  */
 enum QuadOption query_quadoption(enum QuadOption opt, const char *prompt)
 {

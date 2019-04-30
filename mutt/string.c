@@ -124,7 +124,7 @@ const char *mutt_str_sysexit(int err_num)
  * char_cmp_identity - Compare two characters
  * @param a First character to compare
  * @param b Second character to compare
- * @retval a == b
+ * @retval true If (a == b)
  */
 static inline bool char_cmp_identity(char a, char b)
 {
@@ -135,7 +135,7 @@ static inline bool char_cmp_identity(char a, char b)
  * char_cmp_lower - Compare two characters ignoring case
  * @param a First character to compare
  * @param b Second character to compare
- * @retval a == b, ignoring case
+ * @retval true If (a == b), ignoring case
  */
 static inline bool char_cmp_lower(char a, char b)
 {
@@ -148,9 +148,9 @@ static inline bool char_cmp_lower(char a, char b)
 typedef bool (*char_cmp)(char, char);
 
 /**
- * get_char_cmp - Retrieve the correct function to compare characters according to a case sensitivity setting.
+ * get_char_cmp - Retrieve the correct function to compare characters according to a case sensitivity setting
  * @param cs Case sensitivity setting
- * @retval A char_cmp function pointer
+ * @retval ptr char_cmp function pointer
  */
 static char_cmp get_char_cmp(enum CaseSensitivity cs)
 {
@@ -158,11 +158,11 @@ static char_cmp get_char_cmp(enum CaseSensitivity cs)
 }
 
 /**
- * mutt_str_startswith - Check whether a string starts with a prefix.
+ * mutt_str_startswith - Check whether a string starts with a prefix
  * @param str String to check
  * @param prefix Prefix to match
  * @param cs Case sensitivity setting
- * @retval Length of prefix if str starts with prefix
+ * @retval num Length of prefix if str starts with prefix
  * @retval 0 if str does not start with prefix
  */
 size_t mutt_str_startswith(const char *str, const char *prefix, enum CaseSensitivity cs)

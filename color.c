@@ -624,7 +624,7 @@ static void do_uncolor(struct Buffer *buf, struct Buffer *s,
  * @param data          Flags associated with the command
  * @param err           Buffer for error messages
  * @param parse_uncolor If true, 'uncolor', else 'unmono'
- * @retval enum e.g. #MUTT_CMD_SUCCESS
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  *
  * usage:
  * * uncolor index pattern [pattern...]
@@ -752,7 +752,7 @@ enum CommandResult mutt_parse_unmono(struct Buffer *buf, struct Buffer *s,
  * @param err       Buffer for error messages
  * @param is_index  true of this is for the index
  * @param match     Number of regex subexpression to match (0 for entire pattern)
- * @retval enum e.g. #MUTT_CMD_SUCCESS
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
 static enum CommandResult add_pattern(struct ColorLineHead *top, const char *s,
                                       bool sensitive, uint32_t fg, uint32_t bg, int attr,
@@ -1047,7 +1047,7 @@ static int fgbgattr_to_color(int fg, int bg, int attr)
  * @param callback Function to handle command - Implements ::parser_callback_t
  * @param dry_run  If true, test the command, but don't apply it
  * @param color    If true "color", else "mono"
- * @retval enum e.g. #MUTT_CMD_SUCCESS
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  *
  * usage: color OBJECT FG BG [ REGEX ]
  *        mono  OBJECT ATTR [ REGEX ]

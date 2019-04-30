@@ -100,10 +100,10 @@ static int parse_query_string(struct UrlQueryStringHead *l, char *src)
  */
 int url_pct_decode(char *s)
 {
-  char *d = NULL;
-
   if (!s)
     return -1;
+
+  char *d = NULL;
 
   for (d = s; *s; s++)
   {

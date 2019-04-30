@@ -118,10 +118,10 @@ static bool count_body_parts_check(struct ListHead *checklist, struct Body *b, b
  */
 static int count_body_parts(struct Body *body, int flags)
 {
-  int count = 0;
-
   if (!body)
     return 0;
+
+  int count = 0;
 
   for (struct Body *bp = body; bp; bp = bp->next)
   {

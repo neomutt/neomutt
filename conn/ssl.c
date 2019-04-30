@@ -48,11 +48,11 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "mutt.h"
 #include "ssl.h"
-#include "address/lib.h"
 #include "conn_globals.h"
 #include "connaccount.h"
 #include "connection.h"
@@ -135,29 +135,27 @@ struct SslSockData
  */
 static int ssl_load_certificates(SSL_CTX *ctx)
 {
-  FILE *fp = NULL;
-  X509 *cert = NULL;
-  X509_STORE *store = NULL;
   int rc = 1;
-  char buf[256];
 
   mutt_debug(LL_DEBUG2, "loading trusted certificates\n");
-  store = SSL_CTX_get_cert_store(ctx);
+  X509_STORE *store = SSL_CTX_get_cert_store(ctx);
   if (!store)
   {
     store = X509_STORE_new();
     SSL_CTX_set_cert_store(ctx, store);
   }
 
-  fp = fopen(C_CertificateFile, "rt");
+  FILE *fp = fopen(C_CertificateFile, "rt");
   if (!fp)
     return 0;
 
+  X509 *cert = NULL;
   while (NULL != PEM_read_X509(fp, &cert, NULL, NULL))
   {
     if ((X509_cmp_current_time(X509_get0_notBefore(cert)) >= 0) ||
         (X509_cmp_current_time(X509_get0_notAfter(cert)) <= 0))
     {
+      char buf[256];
       mutt_debug(LL_DEBUG2, "filtering expired cert: %s\n",
                  X509_NAME_oneline(X509_get_subject_name(cert), buf, sizeof(buf)));
     }
@@ -220,11 +218,11 @@ static int ssl_set_verify_partial(SSL_CTX *ctx)
  */
 static int add_entropy(const char *file)
 {
-  struct stat st;
-  int n = -1;
-
   if (!file)
     return 0;
+
+  struct stat st;
+  int n = -1;
 
   if (stat(file, &st) == -1)
     return (errno == ENOENT) ? 0 : -1;
@@ -328,19 +326,16 @@ static void ssl_err(struct SslSockData *data, int err)
  */
 static void ssl_dprint_err_stack(void)
 {
-  BIO *bio = NULL;
-  char *buf = NULL;
-  long buflen;
-  char *output = NULL;
-
-  bio = BIO_new(BIO_s_mem());
+  BIO *bio = BIO_new(BIO_s_mem());
   if (!bio)
     return;
   ERR_print_errors(bio);
-  buflen = BIO_get_mem_data(bio, &buf);
+
+  char *buf = NULL;
+  long buflen = BIO_get_mem_data(bio, &buf);
   if (buflen > 0)
   {
-    output = mutt_mem_malloc(buflen + 1);
+    char *output = mutt_mem_malloc(buflen + 1);
     memcpy(output, buf, buflen);
     output[buflen] = '\0';
     mutt_debug(LL_DEBUG1, "SSL error stack: %s\n", output);
@@ -1051,21 +1046,15 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
 static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
 {
   char buf[256];
-  const char *host = NULL;
-  size_t len;
-  int pos;
-  X509 *cert = NULL;
-  SSL *ssl = NULL;
-  bool skip_mode;
 
-  ssl = X509_STORE_CTX_get_ex_data(ctx, SSL_get_ex_data_X509_STORE_CTX_idx());
+  SSL *ssl = X509_STORE_CTX_get_ex_data(ctx, SSL_get_ex_data_X509_STORE_CTX_idx());
   if (!ssl)
   {
     mutt_debug(LL_DEBUG1,
                "failed to retrieve SSL structure from X509_STORE_CTX\n");
     return false;
   }
-  host = SSL_get_ex_data(ssl, HostExDataIndex);
+  const char *host = SSL_get_ex_data(ssl, HostExDataIndex);
   if (!host)
   {
     mutt_debug(LL_DEBUG1, "failed to retrieve hostname from SSL structure\n");
@@ -1077,11 +1066,11 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
    * $ssl_verify_partial_chains option.
    * In this case, all following certificates need to be treated as non-verified
    * until one is actually verified.  */
-  skip_mode = (SSL_get_ex_data(ssl, SkipModeExDataIndex));
+  bool skip_mode = (SSL_get_ex_data(ssl, SkipModeExDataIndex));
 
-  cert = X509_STORE_CTX_get_current_cert(ctx);
-  pos = X509_STORE_CTX_get_error_depth(ctx);
-  len = sk_X509_num(X509_STORE_CTX_get0_chain(ctx));
+  X509 *cert = X509_STORE_CTX_get_current_cert(ctx);
+  int pos = X509_STORE_CTX_get_error_depth(ctx);
+  size_t len = sk_X509_num(X509_STORE_CTX_get0_chain(ctx));
 
   mutt_debug(LL_DEBUG1, "checking cert chain entry %s (preverify: %d skipmode: %d)\n",
              X509_NAME_oneline(X509_get_subject_name(cert), buf, sizeof(buf)),

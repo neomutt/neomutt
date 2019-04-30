@@ -124,7 +124,7 @@ void ac_free(const struct ConfigSet *cs, struct CfgAccount **ac)
  * @param vid   Value ID (index into CfgAccount's HashElem's)
  * @param value Native pointer/value to set
  * @param err   Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * @retval num Result, e.g. #CSR_SUCCESS
  */
 int ac_set_value(const struct CfgAccount *ac, size_t vid, intptr_t value, struct Buffer *err)
 {
@@ -142,7 +142,7 @@ int ac_set_value(const struct CfgAccount *ac, size_t vid, intptr_t value, struct
  * @param ac     Account-specific config items
  * @param vid    Value ID (index into CfgAccount's HashElem's)
  * @param result Buffer for results or error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * @retval num Result, e.g. #CSR_SUCCESS
  */
 int ac_get_value(const struct CfgAccount *ac, size_t vid, struct Buffer *result)
 {

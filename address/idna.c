@@ -304,7 +304,7 @@ cleanup:
 
 /**
  * mutt_idna_print_version - Create an IDN version string
- * @retval str Version string
+ * @retval ptr Version string
  *
  * @note This is a static string and must not be freed.
  */

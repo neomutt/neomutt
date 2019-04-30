@@ -175,12 +175,11 @@ fail_env:
  */
 static void *hcache_lmdb_fetch(void *vctx, const char *key, size_t keylen)
 {
-  MDB_val dkey;
-  MDB_val data;
-  int rc;
-
   if (!vctx)
     return NULL;
+
+  MDB_val dkey;
+  MDB_val data;
 
   struct HcacheLmdbCtx *ctx = vctx;
 
@@ -188,7 +187,7 @@ static void *hcache_lmdb_fetch(void *vctx, const char *key, size_t keylen)
   dkey.mv_size = keylen;
   data.mv_data = NULL;
   data.mv_size = 0;
-  rc = mdb_get_r_txn(ctx);
+  int rc = mdb_get_r_txn(ctx);
   if (rc != MDB_SUCCESS)
   {
     ctx->txn = NULL;
@@ -222,12 +221,11 @@ static void hcache_lmdb_free(void *vctx, void **data)
  */
 static int hcache_lmdb_store(void *vctx, const char *key, size_t keylen, void *data, size_t dlen)
 {
-  MDB_val dkey;
-  MDB_val databuf;
-  int rc;
-
   if (!vctx)
     return -1;
+
+  MDB_val dkey;
+  MDB_val databuf;
 
   struct HcacheLmdbCtx *ctx = vctx;
 
@@ -235,7 +233,7 @@ static int hcache_lmdb_store(void *vctx, const char *key, size_t keylen, void *d
   dkey.mv_size = keylen;
   databuf.mv_data = data;
   databuf.mv_size = dlen;
-  rc = mdb_get_w_txn(ctx);
+  int rc = mdb_get_w_txn(ctx);
   if (rc != MDB_SUCCESS)
   {
     mutt_debug(LL_DEBUG2, "mdb_get_w_txn: %s\n", mdb_strerror(rc));
@@ -257,17 +255,16 @@ static int hcache_lmdb_store(void *vctx, const char *key, size_t keylen, void *d
  */
 static int hcache_lmdb_delete(void *vctx, const char *key, size_t keylen)
 {
-  MDB_val dkey;
-  int rc;
-
   if (!vctx)
     return -1;
+
+  MDB_val dkey;
 
   struct HcacheLmdbCtx *ctx = vctx;
 
   dkey.mv_data = (void *) key;
   dkey.mv_size = keylen;
-  rc = mdb_get_w_txn(ctx);
+  int rc = mdb_get_w_txn(ctx);
   if (rc != MDB_SUCCESS)
   {
     mutt_debug(LL_DEBUG2, "mdb_get_w_txn: %s\n", mdb_strerror(rc));

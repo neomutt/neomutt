@@ -109,7 +109,7 @@ char *      mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_nu
 int         mutt_file_rename(const char *oldfile, const char *newfile);
 int         mutt_file_rmtree(const char *path);
 int         mutt_file_safe_rename(const char *src, const char *target);
-void        mutt_file_sanitize_filename(char *fp, bool slash);
+void        mutt_file_sanitize_filename(char *path, bool slash);
 int         mutt_file_sanitize_regex(struct Buffer *dest, const char *src);
 void        mutt_file_set_mtime(const char *from, const char *to);
 int         mutt_file_stat_compare(struct stat *sba, enum MuttStatType sba_type, struct stat *sbb, enum MuttStatType sbb_type);

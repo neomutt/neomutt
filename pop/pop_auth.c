@@ -33,9 +33,9 @@
 #include <string.h>
 #include "pop_private.h"
 #include "mutt/mutt.h"
+#include "address/lib.h"
 #include "email/lib.h"
 #include "conn/conn.h"
-#include "address/lib.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
@@ -63,7 +63,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
   char inbuf[1024];
   const char *mech = NULL;
   const char *pc = NULL;
-  unsigned int len = 0, olen = 0, client_start;
+  unsigned int len = 0, olen = 0;
 
   if (mutt_account_getpass(&adata->conn->account) || !adata->conn->account.pass[0])
     return POP_A_FAILURE;
@@ -99,7 +99,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
   /* About client_start:  If sasl_client_start() returns data via pc/olen,
    * the client is expected to send this first (after the AUTH string is sent).
    * sasl_client_start() may in fact return SASL_OK in this case.  */
-  client_start = olen;
+  unsigned int client_start = olen;
 
   mutt_message(_("Authenticating (SASL)..."));
 
@@ -514,7 +514,7 @@ int pop_authenticate(struct PopAccountData *adata)
     case POP_A_SOCKET:
       return -1;
     case POP_A_UNAVAIL:
-      if (!attempts)
+      if (attempts == 0)
         mutt_error(_("No authenticators available"));
   }
 

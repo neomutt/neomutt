@@ -42,11 +42,11 @@
 #include <time.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "mutt.h"
 #include "sendlib.h"
-#include "address/lib.h"
 #include "context.h"
 #include "copy.h"
 #include "curs_lib.h"
@@ -262,7 +262,7 @@ static void b64_flush(struct B64Context *bctx, FILE *fp_out)
   char encoded[11];
   size_t ret;
 
-  if (!bctx->size)
+  if (bctx->size == 0)
     return;
 
   if (bctx->linelen >= 72)
@@ -833,7 +833,7 @@ static size_t convert_file_to(FILE *fp, const char *fromcode, int ncodes,
     }
   }
 
-  if (!ret)
+  if (ret == 0)
   {
     /* Find best score */
     ret = (size_t)(-1);
@@ -852,7 +852,7 @@ static size_t convert_file_to(FILE *fp, const char *fromcode, int ncodes,
       {
         *tocode = i;
         ret = score[i];
-        if (!ret)
+        if (ret == 0)
           break;
       }
     }
@@ -3273,9 +3273,6 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
 
   if (fp_tmp)
   {
-    char sasha[1024];
-    int lines = 0;
-
     mutt_write_mime_body(e->content, fp_tmp);
 
     /* make sure the last line ends with a newline.  Emacs doesn't ensure this
@@ -3300,8 +3297,10 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     }
 
     /* count the number of lines */
+    int lines = 0;
+    char line_buf[1024];
     rewind(fp_tmp);
-    while (fgets(sasha, sizeof(sasha), fp_tmp))
+    while (fgets(line_buf, sizeof(line_buf), fp_tmp))
       lines++;
     fprintf(msg->fp, "Content-Length: " OFF_T_FMT "\n", (LOFF_T) ftello(fp_tmp));
     fprintf(msg->fp, "Lines: %d\n\n", lines);
@@ -3312,7 +3311,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     if (fclose(fp_tmp) != 0)
       rc = -1;
     /* if there was an error, leave the temp version */
-    if (!rc)
+    if (rc == 0)
       unlink(tempfile);
   }
   else

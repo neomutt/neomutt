@@ -145,10 +145,10 @@ int rfc1524_expand_command(struct Body *a, const char *filename,
  */
 static char *get_field(char *s)
 {
-  char *ch = NULL;
-
   if (!s)
     return NULL;
+
+  char *ch = NULL;
 
   while ((ch = strpbrk(s, ";\\")))
   {
@@ -471,7 +471,7 @@ bool rfc1524_mailcap_lookup(struct Body *a, char *type,
     if (*curr)
       curr++;
 
-    if (!x)
+    if (x == 0)
       continue;
 
     path[x] = '\0';
@@ -509,7 +509,7 @@ bool rfc1524_mailcap_lookup(struct Body *a, char *type,
 int rfc1524_expand_filename(const char *nametemplate, const char *oldfile,
                             char *newfile, size_t nflen)
 {
-  int i, j, k, ps;
+  int i, j, k;
   char *s = NULL;
   bool lmatch = false, rmatch = false;
   char left[PATH_MAX];
@@ -540,12 +540,12 @@ int rfc1524_expand_filename(const char *nametemplate, const char *oldfile,
      * (if there is one).  */
 
     lmatch = true;
-    ps = 0;
+    bool ps = false;
     for (i = 0; nametemplate[i]; i++)
     {
       if ((nametemplate[i] == '%') && (nametemplate[i + 1] == 's'))
       {
-        ps = 1;
+        ps = true;
         break;
       }
 

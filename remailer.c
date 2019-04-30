@@ -33,9 +33,9 @@
 #include <string.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "address/lib.h"
 #include "email/lib.h"
 #include "mutt.h"
-#include "address/lib.h"
 #include "curs_lib.h"
 #include "filter.h"
 #include "format_flags.h"
@@ -159,9 +159,10 @@ static void mix_free_remailer(struct Remailer **r)
  */
 static struct Remailer **mix_type2_list(size_t *l)
 {
-  FILE *fp = NULL;
-  pid_t mm_pid;
+  if (!l)
+    return NULL;
 
+  FILE *fp = NULL;
   char cmd[STR_COMMAND];
   char line[8192];
   char *t = NULL;
@@ -169,16 +170,13 @@ static struct Remailer **mix_type2_list(size_t *l)
   struct Remailer **type2_list = NULL, *p = NULL;
   size_t slots = 0, used = 0;
 
-  if (!l)
-    return NULL;
-
   int fd_null = open("/dev/null", O_RDWR);
   if (fd_null == -1)
     return NULL;
 
   snprintf(cmd, sizeof(cmd), "%s -T", C_Mixmaster);
 
-  mm_pid = mutt_create_filter_fd(cmd, NULL, &fp, NULL, fd_null, -1, fd_null);
+  pid_t mm_pid = mutt_create_filter_fd(cmd, NULL, &fp, NULL, fd_null, -1, fd_null);
   if (mm_pid == -1)
   {
     close(fd_null);
@@ -268,10 +266,10 @@ static void mix_free_type2_list(struct Remailer ***ttlp)
 static void mix_screen_coordinates(struct Remailer **type2_list, struct Coord **coordsp,
                                    struct MixChain *chain, int i)
 {
-  short c, r;
-
   if (!chain->cl)
     return;
+
+  short c, r;
 
   mutt_mem_realloc(coordsp, sizeof(struct Coord) * chain->cl);
 

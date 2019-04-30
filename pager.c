@@ -297,7 +297,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt,
   int m;
   struct Syntax *matching_chunk = NULL;
 
-  if (!cnt)
+  if (cnt == 0)
     last_color = -1; /* force attrset() */
 
   if (line_info[n].continuation)
@@ -1746,7 +1746,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
        * with a single long word shouldn't be smartwrapped
        * either.  So just disable smart_wrap if it would wrap at the
        * beginning of the line. */
-      if (!ch)
+      if (ch == 0)
         buf_ptr = buf + cnt;
       else
         cnt = ch + 1;

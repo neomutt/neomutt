@@ -274,21 +274,18 @@ int mutt_ch_convert_nonmime_string(char **ps)
   for (const char *c = C_AssumedCharset; c; c = c1 ? c1 + 1 : 0)
   {
     char *u = *ps;
-    char *s = NULL;
-    char *fromcode = NULL;
-    size_t n;
     size_t ulen = mutt_str_strlen(*ps);
 
     if (!u || !*u)
       return 0;
 
     c1 = strchr(c, ':');
-    n = c1 ? c1 - c : mutt_str_strlen(c);
-    if (!n)
+    size_t n = c1 ? c1 - c : mutt_str_strlen(c);
+    if (n == 0)
       return 0;
-    fromcode = mutt_mem_malloc(n + 1);
+    char *fromcode = mutt_mem_malloc(n + 1);
     mutt_str_strfcpy(fromcode, c, n + 1);
-    s = mutt_str_substr_dup(u, u + ulen);
+    char *s = mutt_str_substr_dup(u, u + ulen);
     int m = mutt_ch_convert_string(&s, fromcode, C_Charset, 0);
     FREE(&fromcode);
     FREE(&s);
@@ -613,7 +610,7 @@ size_t mutt_ch_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft,
           char *ob1 = ob;
           size_t obl1 = obl;
           iconv(cd, (ICONV_CONST char **) &ib1, &ibl1, &ob1, &obl1);
-          if (!ibl1)
+          if (ibl1 == 0)
           {
             ib++;
             ibl--;
@@ -777,8 +774,6 @@ int mutt_ch_convert_string(char **ps, const char *from, const char *to, int flag
  */
 bool mutt_ch_check_charset(const char *cs, bool strict)
 {
-  iconv_t cd;
-
   if (mutt_ch_is_utf8(cs))
     return true;
 
@@ -794,7 +789,7 @@ bool mutt_ch_check_charset(const char *cs, bool strict)
     }
   }
 
-  cd = mutt_ch_iconv_open(cs, cs, 0);
+  iconv_t cd = mutt_ch_iconv_open(cs, cs, 0);
   if (cd != (iconv_t)(-1))
   {
     iconv_close(cd);
@@ -995,20 +990,17 @@ char *mutt_ch_choose(const char *fromcode, const char *charsets, const char *u,
 
   for (const char *p = charsets; p; p = q ? q + 1 : 0)
   {
-    char *s = NULL, *t = NULL;
-    size_t slen, n;
-
     q = strchr(p, ':');
 
-    n = q ? q - p : strlen(p);
-    if (!n)
+    size_t n = q ? q - p : strlen(p);
+    if (n == 0)
       continue;
 
-    t = mutt_mem_malloc(n + 1);
+    char *t = mutt_mem_malloc(n + 1);
     memcpy(t, p, n);
     t[n] = '\0';
 
-    s = mutt_str_substr_dup(u, u + ulen);
+    char *s = mutt_str_substr_dup(u, u + ulen);
     const int rc = d ? mutt_ch_convert_string(&s, fromcode, t, 0) :
                        mutt_ch_check(s, ulen, fromcode, t);
     if (rc)
@@ -1017,7 +1009,7 @@ char *mutt_ch_choose(const char *fromcode, const char *charsets, const char *u,
       FREE(&s);
       continue;
     }
-    slen = mutt_str_strlen(s);
+    size_t slen = mutt_str_strlen(s);
 
     if (!tocode || (n < bestn))
     {

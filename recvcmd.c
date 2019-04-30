@@ -32,10 +32,10 @@
 #include <stdio.h>
 #include <string.h>
 #include "mutt/mutt.h"
+#include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "mutt.h"
-#include "address/lib.h"
 #include "alias.h"
 #include "context.h"
 #include "copy.h"
@@ -271,7 +271,7 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
     }
   }
 
-  if (!ret)
+  if (ret == 0)
     mutt_message(ngettext("Message bounced", "Messages bounced", p));
   else
     mutt_error(ngettext("Error bouncing message", "Error bouncing messages", p));
@@ -499,13 +499,13 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
 
   if (C_ForwardQuote)
   {
-    if (!C_TextFlowed)
+    if (C_TextFlowed)
+      mutt_str_strfcpy(prefix, ">", sizeof(prefix));
+    else
     {
       mutt_make_string(prefix, sizeof(prefix), NONULL(C_IndentString), Context,
                        Context->mailbox, e_parent);
     }
-    else
-      mutt_str_strfcpy(prefix, ">", sizeof(prefix));
   }
 
   include_header(C_ForwardQuote, fp_parent, e_parent, fp_tmp, prefix);

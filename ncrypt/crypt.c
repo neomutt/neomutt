@@ -39,10 +39,10 @@
 #include <string.h>
 #include <time.h>
 #include "mutt/mutt.h"
+#include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "mutt.h"
-#include "address/lib.h"
 #include "alias.h"
 #include "context.h"
 #include "copy.h"
@@ -544,7 +544,7 @@ SecurityFlags mutt_is_application_pgp(struct Body *m)
         t |= PGP_KEY;
       }
 
-      if (!t)
+      if (t == SEC_NO_FLAGS)
         t |= PGP_ENCRYPT; /* not necessarily correct, but... */
     }
 
@@ -727,14 +727,10 @@ SecurityFlags crypt_query(struct Body *m)
  */
 int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile)
 {
-  FILE *fp = NULL;
-  bool hadcr;
-  size_t bytes;
-
   if (!WithCrypto)
     return -1;
 
-  fp = mutt_file_fopen(tempfile, "w");
+  FILE *fp = mutt_file_fopen(tempfile, "w");
   if (!fp)
   {
     mutt_perror(tempfile);
@@ -742,8 +738,8 @@ int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile)
   }
 
   fseeko(s->fp_in, a->hdr_offset, SEEK_SET);
-  bytes = a->length + a->offset - a->hdr_offset;
-  hadcr = false;
+  size_t bytes = a->length + a->offset - a->hdr_offset;
+  bool hadcr = false;
   while (bytes > 0)
   {
     const int c = fgetc(s->fp_in);
@@ -817,11 +813,11 @@ void crypt_convert_to_7bit(struct Body *a)
  */
 void crypt_extract_keys_from_messages(struct EmailList *el)
 {
-  char tempfname[PATH_MAX], *mbox = NULL;
-  struct Address *tmp = NULL;
-
   if (!WithCrypto)
     return;
+
+  char tempfname[PATH_MAX];
+  struct Address *tmp = NULL;
 
   mutt_mktemp(tempfname, sizeof(tempfname));
   FILE *fp_out = mutt_file_fopen(tempfname, "w");
@@ -873,7 +869,7 @@ void crypt_extract_keys_from_messages(struct EmailList *el)
         tmp = mutt_expand_aliases(e->env->from);
       else if (e->env->sender)
         tmp = mutt_expand_aliases(e->env->sender);
-      mbox = tmp ? tmp->mailbox : NULL;
+      char *mbox = tmp ? tmp->mailbox : NULL;
       if (mbox)
       {
         mutt_endwin();
@@ -912,15 +908,15 @@ void crypt_extract_keys_from_messages(struct EmailList *el)
  */
 int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
 {
+  if (!WithCrypto)
+    return 0;
+
   struct Address *addrlist = NULL, *last = NULL;
   const char *fqdn = mutt_fqdn(true);
   char *self_encrypt = NULL;
 
   /* Do a quick check to make sure that we can find all of the encryption
    * keys if the user has requested this service.  */
-
-  if (!WithCrypto)
-    return 0;
 
   if (WithCrypto & APPLICATION_PGP)
     OptPgpCheckTrust = true;
@@ -983,13 +979,13 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
  */
 void crypt_opportunistic_encrypt(struct Email *msg)
 {
-  char *pgpkeylist = NULL;
-
   if (!WithCrypto)
     return;
 
   if (!(C_CryptOpportunisticEncrypt && (msg->security & SEC_OPPENCRYPT)))
     return;
+
+  char *pgpkeylist = NULL;
 
   crypt_get_keys(msg, &pgpkeylist, 1);
   if (pgpkeylist)
@@ -1072,14 +1068,14 @@ int mutt_protected_headers_handler(struct Body *a, struct State *s)
  */
 int mutt_signed_handler(struct Body *a, struct State *s)
 {
+  if (!WithCrypto)
+    return -1;
+
   bool inconsistent = false;
   struct Body *b = a;
   struct Body **signatures = NULL;
   int sigcnt = 0;
   int rc = 0;
-
-  if (!WithCrypto)
-    return -1;
 
   a = a->parts;
   SecurityFlags signed_type = mutt_is_multipart_signed(b);
@@ -1138,7 +1134,7 @@ int mutt_signed_handler(struct Body *a, struct State *s)
   {
     crypt_fetch_signatures(&signatures, a->next, &sigcnt);
 
-    if (sigcnt)
+    if (sigcnt != 0)
     {
       char tempfile[PATH_MAX];
       mutt_mktemp(tempfile, sizeof(tempfile));
@@ -1195,7 +1191,7 @@ int mutt_signed_handler(struct Body *a, struct State *s)
 
   rc = mutt_body_handler(a, s);
 
-  if (s->flags & MUTT_DISPLAY && sigcnt)
+  if ((s->flags & MUTT_DISPLAY) && (sigcnt != 0))
     state_attach_puts(_("\n[-- End of signed data --]\n"), s);
 
   return rc;

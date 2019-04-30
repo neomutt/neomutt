@@ -834,8 +834,8 @@ void mutt_sort_threads(struct Context *ctx, bool init)
 
   struct Email *cur = NULL;
   int i, oldsort, using_refs = 0;
-  struct MuttThread *thread = NULL, *new = NULL, *tmp = NULL, top;
-  memset(&top, 0, sizeof(top));
+  struct MuttThread *thread = NULL, *new = NULL, *tmp = NULL;
+  struct MuttThread top = { 0 };
   struct ListNode *ref = NULL;
 
   /* Set C_Sort to the secondary method to support the set sort_aux=reverse-*

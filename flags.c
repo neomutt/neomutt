@@ -435,7 +435,7 @@ int mutt_change_flag(struct Mailbox *m, struct EmailList *el, int bf)
   if (!m || !el || STAILQ_EMPTY(el))
     return -1;
 
-  int i, flag;
+  int flag;
   struct Event event;
 
   mutt_window_mvprintw(MuttMessageWindow, 0, 0,
@@ -447,7 +447,7 @@ int mutt_change_flag(struct Mailbox *m, struct EmailList *el, int bf)
   {
     event = mutt_getch();
   } while (event.ch == -2);
-  i = event.ch;
+  int i = event.ch;
   if (i < 0)
   {
     mutt_window_clearline(MuttMessageWindow, 0);

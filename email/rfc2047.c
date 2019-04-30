@@ -36,8 +36,8 @@
 #include <stdbool.h>
 #include <string.h>
 #include "mutt/mutt.h"
-#include "rfc2047.h"
 #include "address/lib.h"
+#include "rfc2047.h"
 #include "email_globals.h"
 #include "envelope.h"
 #include "mime.h"

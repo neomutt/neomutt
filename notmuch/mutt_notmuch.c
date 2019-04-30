@@ -903,12 +903,12 @@ static struct Email *get_mutt_email(struct Mailbox *m, notmuch_message_t *msg)
 static void append_message(header_cache_t *h, struct Mailbox *m,
                            notmuch_query_t *q, notmuch_message_t *msg, bool dedup)
 {
-  char *newpath = NULL;
-  struct Email *e = NULL;
-
   struct NmMboxData *mdata = nm_mdata_get(m);
   if (!mdata)
     return;
+
+  char *newpath = NULL;
+  struct Email *e = NULL;
 
   /* deduplicate */
   if (dedup && get_mutt_email(m, msg))
@@ -1066,7 +1066,7 @@ static void append_thread(header_cache_t *h, struct Mailbox *m,
 /**
  * get_messages - load messages for a query
  * @param query Notmuch query
- * @retval msgs Messages matching query
+ * @retval ptr  Messages matching query
  * @retval NULL Error occurred
  *
  * This helper method is to be the single point for retrieving messages. It
@@ -1136,7 +1136,7 @@ static bool read_mesgs_query(struct Mailbox *m, notmuch_query_t *q, bool dedup)
 /**
  * get_threads - load threads for a query
  * @param query Notmuch query
- * @retval msgs Threads matching query
+ * @retval ptr Threads matching query
  * @retval NULL Error occurred
  *
  * This helper method is to be the single point for retrieving messages. It

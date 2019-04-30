@@ -114,12 +114,12 @@ static void message_bar(int percent, const char *fmt, ...)
 void mutt_progress_init(struct Progress *progress, const char *msg,
                         unsigned short flags, unsigned short inc, size_t size)
 {
-  struct timeval tv = { 0, 0 };
-
   if (!progress)
     return;
   if (OptNoCurses)
     return;
+
+  struct timeval tv = { 0, 0 };
 
   memset(progress, 0, sizeof(struct Progress));
   progress->inc = inc;

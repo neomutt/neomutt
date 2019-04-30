@@ -30,13 +30,13 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdlib.h>
-#include "group.h"
 #include "address/lib.h"
+#include "group.h"
 
 static struct Hash *Groups = NULL;
 
 /**
- * mutt_grouplist_init - Initialize the GroupList singleton.
+ * mutt_grouplist_init - Initialize the GroupList singleton
  *
  * This is called once from init.c when initializing the global structures.
  */
@@ -46,7 +46,7 @@ void mutt_grouplist_init(void)
 }
 
 /**
- * mutt_grouplist_free - Free GroupList singleton resource.
+ * mutt_grouplist_free - Free GroupList singleton resource
  *
  * This is called once from init.c when deinitializing the global resources.
  */
@@ -57,28 +57,26 @@ void mutt_grouplist_free(void)
 
 /**
  * mutt_pattern_group - Match a pattern to a Group
- * @param k Pattern to match
+ * @param pat Pattern to match
  * @retval ptr Matching Group
  * @retval ptr Newly created Group (if no match)
  */
-struct Group *mutt_pattern_group(const char *k)
+struct Group *mutt_pattern_group(const char *pat)
 {
-  struct Group *p = NULL;
-
-  if (!k)
+  if (!pat)
     return 0;
 
-  p = mutt_hash_find(Groups, k);
-  if (!p)
+  struct Group *g = mutt_hash_find(Groups, pat);
+  if (!g)
   {
-    mutt_debug(LL_DEBUG2, "Creating group %s\n", k);
-    p = mutt_mem_calloc(1, sizeof(struct Group));
-    p->name = mutt_str_strdup(k);
-    STAILQ_INIT(&p->rs);
-    mutt_hash_insert(Groups, p->name, p);
+    mutt_debug(LL_DEBUG2, "Creating group %s\n", pat);
+    g = mutt_mem_calloc(1, sizeof(struct Group));
+    g->name = mutt_str_strdup(pat);
+    STAILQ_INIT(&g->rs);
+    mutt_hash_insert(Groups, g->name, g);
   }
 
-  return p;
+  return g;
 }
 
 /**
@@ -197,14 +195,10 @@ static void group_add_addrlist(struct Group *g, struct Address *a)
  */
 static int group_remove_addrlist(struct Group *g, struct Address *a)
 {
-  struct Address *p = NULL;
-
-  if (!g)
-    return -1;
-  if (!a)
+  if (!g || !a)
     return -1;
 
-  for (p = a; p; p = p->next)
+  for (struct Address *p = a; p; p = p->next)
     mutt_addr_remove_from_list(&g->as, p->mailbox);
 
   return 0;

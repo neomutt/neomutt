@@ -218,7 +218,7 @@ static int quad_toggle(int opt)
  * @param cs  Config items
  * @param he  HashElem representing config item
  * @param err Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * @retval num Result, e.g. #CSR_SUCCESS
  *
  * @sa quad_toggle()
  */
