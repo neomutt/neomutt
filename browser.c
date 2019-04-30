@@ -741,7 +741,8 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       goto ed_out;
     }
 
-    mutt_mailbox_check(Context->mailbox, 0);
+    if (Context && Context->mailbox)
+      mutt_mailbox_check(Context->mailbox, 0);
 
     dp = opendir(d);
     if (!dp)
