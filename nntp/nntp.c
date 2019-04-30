@@ -2626,7 +2626,7 @@ static int nntp_mbox_sync(struct Mailbox *m, int *index_hint)
     struct Email *e = m->emails[i];
     char buf[16];
 
-    snprintf(buf, sizeof(buf), "%d", nntp_edata_get(e)->article_num);
+    snprintf(buf, sizeof(buf), ANUM, nntp_edata_get(e)->article_num);
     if (mdata->bcache && e->deleted)
     {
       mutt_debug(LL_DEBUG2, "mutt_bcache_del %s\n", buf);
@@ -2713,7 +2713,7 @@ static int nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
       FREE(&acache->path);
     }
   }
-  snprintf(article, sizeof(article), "%d", nntp_edata_get(e)->article_num);
+  snprintf(article, sizeof(article), ANUM, nntp_edata_get(e)->article_num);
   msg->fp = mutt_bcache_get(mdata->bcache, article);
   if (msg->fp)
   {

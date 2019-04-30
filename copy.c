@@ -500,7 +500,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
       rfc2047_encode(&temp_hdr, NULL, sizeof("X-Label:"), C_SendCharset);
     }
     if (mutt_write_one_header(
-            fp_out, "X-Label", temp_hdr, chflags & CH_PREFIX ? prefix : 0,
+            fp_out, "X-Label", temp_hdr, (chflags & CH_PREFIX) ? prefix : 0,
             mutt_window_wrap_cols(MuttIndexWindow, C_Wrap), chflags) == -1)
     {
       return -1;
@@ -520,7 +520,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
       rfc2047_encode(&temp_hdr, NULL, sizeof("Subject:"), C_SendCharset);
     }
     if (mutt_write_one_header(
-            fp_out, "Subject", temp_hdr, chflags & CH_PREFIX ? prefix : 0,
+            fp_out, "Subject", temp_hdr, (chflags & CH_PREFIX) ? prefix : 0,
             mutt_window_wrap_cols(MuttIndexWindow, C_Wrap), chflags) == -1)
       return -1;
     if (!(chflags & CH_DECODE))

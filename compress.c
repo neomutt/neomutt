@@ -440,10 +440,7 @@ struct Account *comp_ac_find(struct Account *a, const char *path)
  */
 int comp_ac_add(struct Account *a, struct Mailbox *m)
 {
-  if (!a || !m)
-    return -1;
-
-  if (m->magic != MUTT_COMPRESSED)
+  if (!a || !m || (m->magic != MUTT_COMPRESSED))
     return -1;
 
   m->account = a;

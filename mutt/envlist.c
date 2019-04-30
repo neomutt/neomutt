@@ -162,7 +162,7 @@ bool mutt_envlist_unset(const char *name)
  * mutt_envlist_getlist - Get the private environment
  * @retval ptr Array of strings
  *
- * @note: The caller must not free the strings
+ * @note The caller must not free the strings
  */
 char **mutt_envlist_getlist(void)
 {

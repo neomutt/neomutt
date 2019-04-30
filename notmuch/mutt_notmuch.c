@@ -558,7 +558,7 @@ static int get_limit(struct NmMboxData *mdata)
  */
 static void apply_exclude_tags(notmuch_query_t *query)
 {
-  if (!C_NmExcludeTags || !*C_NmExcludeTags)
+  if (!C_NmExcludeTags || !query || !*C_NmExcludeTags)
     return;
 
   char *end = NULL, *tag = NULL;
@@ -2161,12 +2161,12 @@ int nm_ac_add(struct Account *a, struct Mailbox *m)
   if (!a || !m || (m->magic != MUTT_NOTMUCH))
     return -1;
 
-  if (!a->adata)
-  {
-    struct NmAccountData *adata = nm_adata_new();
-    a->adata = adata;
-    a->free_adata = nm_adata_free;
-  }
+  if (a->adata)
+    return 0;
+
+  struct NmAccountData *adata = nm_adata_new();
+  a->adata = adata;
+  a->free_adata = nm_adata_free;
 
   return 0;
 }

@@ -718,7 +718,7 @@ static int flush_doc(int docstat, FILE *out)
 
   docstat = print_it(SP_END_SECT, NULL, out, docstat);
 
-  docstat = print_it(SP_NEWLINE, NULL, out, 0);
+  print_it(SP_NEWLINE, NULL, out, 0);
 
   fd_recurse--;
   return D_INIT;

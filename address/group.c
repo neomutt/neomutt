@@ -64,7 +64,7 @@ void mutt_grouplist_free(void)
 struct Group *mutt_pattern_group(const char *pat)
 {
   if (!pat)
-    return 0;
+    return NULL;
 
   struct Group *g = mutt_hash_find(Groups, pat);
   if (!g)

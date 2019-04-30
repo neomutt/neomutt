@@ -3474,7 +3474,6 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
       char buf2[128];
       bool do_locales = true;
       struct tm tm = { 0 };
-      size_t len;
 
       char *p = buf;
 
@@ -3485,7 +3484,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
         cp++;
       }
 
-      len = buflen - 1;
+      size_t len = buflen - 1;
       while ((len > 0) && (*cp != ']'))
       {
         if (*cp == '%')
