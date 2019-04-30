@@ -3,8 +3,7 @@ TEST_OBJS   = test/main.o \
 	      test/md5.o \
 	      test/rfc2047.o \
 	      test/address.o \
-	      test/url.o \
-	      test/file.o
+	      test/url.o
 
 ADDRESS_OBJS	= test/address/main.o \
 		  test/address/mutt_addr_append.o \
@@ -144,6 +143,7 @@ ENVLIST_OBJS	= test/envlist/main.o \
 		  test/envlist/mutt_envlist_unset.o
 
 FILE_OBJS	= test/file/main.o \
+		  test/file/common.o \
 		  test/file/mutt_file_check_empty.o \
 		  test/file/mutt_file_chmod_add.o \
 		  test/file/mutt_file_chmod_add_stat.o \
