@@ -30,7 +30,8 @@ void test_mutt_date_parse_date(void)
   // time_t mutt_date_parse_date(const char *s, struct Tz *tz_out);
 
   {
-    struct Tz tz = { 0 };
+    struct Tz tz;
+    memset(&tz, 0, sizeof(tz));
     TEST_CHECK(mutt_date_parse_date(NULL, &tz) != 0);
   }
 
