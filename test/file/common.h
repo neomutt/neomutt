@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_addr_for_display()
+ * Common code for file tests
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -20,37 +20,17 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define TEST_NO_MAIN
 #include "acutest.h"
 #include "config.h"
+#include <stdio.h>
 #include "mutt/mutt.h"
-#include "address/lib.h"
-#include "common.h"
 
-void test_mutt_addr_for_display(void)
-{
-  // const char * mutt_addr_for_display(struct Address *a);
+extern const char *file_lines[];
 
-  {
-    TEST_CHECK(!mutt_addr_for_display(NULL));
-  }
+FILE *file_set_up(const char *funcname);
+void file_tear_down(FILE *fp, const char *funcname);
+size_t file_num_test_lines(void);
 
-  { /* integration */
-    char per[64] = "bobby bob";
-    char mbx[64] = "bob@bobsdomain";
+#define SET_UP() (file_set_up(__func__))
+#define TEAR_DOWN(fp) (file_tear_down((fp), __func__))
 
-    struct Address addr = {
-      .personal = per,
-      .mailbox = mbx,
-      .group = 0,
-      .next = NULL,
-      .is_intl = 0,
-      .intl_checked = 0,
-    };
-
-    const char *expected = "bob@bobsdomain";
-    const char *actual = mutt_addr_for_display(&addr);
-
-    TEST_CHECK_STR_EQ(expected, actual);
-  }
-}

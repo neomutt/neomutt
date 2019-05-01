@@ -24,6 +24,7 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/mutt.h"
+#include "common.h"
 
 void test_mutt_file_iter_line(void)
 {
@@ -37,5 +38,39 @@ void test_mutt_file_iter_line(void)
   {
     struct MuttFileIter muttfileiter = { 0 };
     TEST_CHECK(!mutt_file_iter_line(&muttfileiter, NULL, 0));
+  }
+
+  {
+    FILE *fp = SET_UP();
+    if (!fp)
+      return;
+    struct MuttFileIter iter = { 0 };
+    bool res;
+    for (int i = 0; file_lines[i]; i++)
+    {
+      res = mutt_file_iter_line(&iter, fp, 0);
+      if (!TEST_CHECK(res))
+      {
+        TEST_MSG("Expected: true");
+        TEST_MSG("Actual: false");
+      }
+      if (!TEST_CHECK(strcmp(iter.line, file_lines[i]) == 0))
+      {
+        TEST_MSG("Expected: %s", file_lines[i]);
+        TEST_MSG("Actual: %s", iter.line);
+      }
+      if (!TEST_CHECK(iter.line_num == (i + 1)))
+      {
+        TEST_MSG("Expected: %d", i + 1);
+        TEST_MSG("Actual: %d", iter.line_num);
+      }
+    }
+    res = mutt_file_iter_line(&iter, fp, 0);
+    if (!TEST_CHECK(!res))
+    {
+      TEST_MSG("Expected: false");
+      TEST_MSG("Actual: true");
+    }
+    TEAR_DOWN(fp);
   }
 }

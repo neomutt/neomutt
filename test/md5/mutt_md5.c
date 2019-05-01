@@ -24,6 +24,7 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/mutt.h"
+#include "common.h"
 
 void test_mutt_md5(void)
 {
@@ -36,5 +37,21 @@ void test_mutt_md5(void)
 
   {
     TEST_CHECK(!mutt_md5("apple", NULL));
+  }
+
+  {
+    for (size_t i = 0; test_data[i].text; i++)
+    {
+      unsigned char buf[16];
+      char digest[33];
+      mutt_md5(test_data[i].text, buf);
+      mutt_md5_toascii(buf, digest);
+      if (!TEST_CHECK(strcmp(test_data[i].hash, digest) == 0))
+      {
+        TEST_MSG("Iteration: %zu", i);
+        TEST_MSG("Expected : %s", test_data[i].hash);
+        TEST_MSG("Actual   : %s", digest);
+      }
+    }
   }
 }

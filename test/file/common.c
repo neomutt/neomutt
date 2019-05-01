@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for Buffers
+ * Common code for file tests
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -25,31 +25,46 @@
 #include "config.h"
 #include "mutt/mutt.h"
 
-void test_mutt_buffer_concat_path(void)
+const char *file_lines[] = {
+  "This is the first line.",
+  "The second line.",
+  "And the third line",
+  NULL,
+};
+
+size_t file_num_test_lines(void)
 {
-  // void mutt_buffer_concat_path(struct Buffer *buf, const char *dir, const char *fname)
+  return (sizeof(file_lines) / sizeof(const char *) - 1);
+}
 
+FILE *file_set_up(const char *funcname)
+{
+  int res = 0;
+  const char **linep = NULL;
+  FILE *fp = tmpfile();
+  if (!fp)
+    goto err1;
+  for (linep = file_lines; *linep; linep++)
   {
-    mutt_buffer_concat_path(NULL, "apple", "banana");
-    TEST_CHECK_(1, "mutt_buffer_concat_path(NULL, \"apple\", \"banana\")");
+    res = fputs(*linep, fp);
+    if (res == EOF)
+      goto err2;
+    res = fputc('\n', fp);
+    if (res == EOF)
+      goto err2;
   }
+  rewind(fp);
+  return fp;
+err2:
+  fclose(fp);
+err1:
+  TEST_MSG("Failed to set up test %s", funcname);
+  return NULL;
+}
 
-  {
-    struct Buffer buf = { 0 };
-    mutt_buffer_concat_path(&buf, NULL, "banana");
-    TEST_CHECK_(1, "mutt_buffer_concat_path(&buf, NULL, \"banana\")");
-  }
-
-  {
-    struct Buffer buf = { 0 };
-    mutt_buffer_concat_path(&buf, "apple", NULL);
-    TEST_CHECK_(1, "mutt_buffer_concat_path(&buf, \"apple\", NULL)");
-  }
-
-  {
-    struct Buffer *buf = mutt_buffer_new();
-    mutt_buffer_concat_path(buf, "apple", "banana");
-    TEST_CHECK(strcmp(mutt_b2s(buf), "apple/banana") == 0);
-    mutt_buffer_free(&buf);
-  }
+void file_tear_down(FILE *fp, const char *funcname)
+{
+  int res = fclose(fp);
+  if (res == EOF)
+    TEST_MSG("Failed to tear down test %s", funcname);
 }

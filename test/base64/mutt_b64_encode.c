@@ -23,7 +23,11 @@
 #define TEST_NO_MAIN
 #include "acutest.h"
 #include "config.h"
+#include <string.h>
 #include "mutt/mutt.h"
+
+static const char clear[] = "Hello";
+static const char encoded[] = "SGVsbG8=";
 
 void test_mutt_b64_encode(void)
 {
@@ -36,5 +40,64 @@ void test_mutt_b64_encode(void)
 
   {
     TEST_CHECK(mutt_b64_encode("apple", 5, NULL, 10) == 0);
+  }
+
+  {
+    char buffer[16] = { 0 };
+    size_t len = mutt_b64_encode(clear, sizeof(clear) - 1, buffer, sizeof(buffer));
+    if (!TEST_CHECK(len == sizeof(encoded) - 1))
+    {
+      TEST_MSG("Expected: %zu", sizeof(encoded) - 1);
+      TEST_MSG("Actual  : %zu", len);
+    }
+    if (!TEST_CHECK(strcmp(buffer, encoded) == 0))
+    {
+      TEST_MSG("Expected: %zu", encoded);
+      TEST_MSG("Actual  : %zu", buffer);
+    }
+  }
+
+  {
+    const char *in = "FuseMuse";
+    char out1[32] = { 0 };
+    size_t enclen;
+
+    /* Encoding a zero-length string should fail */
+    enclen = mutt_b64_encode(in, 0, out1, 32);
+    if (!TEST_CHECK(enclen == 0))
+    {
+      TEST_MSG("Expected: %zu", 0);
+      TEST_MSG("Actual  : %zu", enclen);
+    }
+  }
+
+  {
+    const char *in = "FuseMuse";
+    char out1[32] = { 0 };
+    char out2[32] = { 0 };
+
+    /* Encode one to eight bytes, check the lengths of the returned string */
+    for (size_t i = 1; i <= 8; i++)
+    {
+      size_t enclen = mutt_b64_encode(in, i, out1, 32);
+      size_t exp = ((i + 2) / 3) << 2;
+      if (!TEST_CHECK(enclen == exp))
+      {
+        TEST_MSG("Expected: %zu", exp);
+        TEST_MSG("Actual  : %zu", enclen);
+      }
+      int declen = mutt_b64_decode(out1, out2, sizeof(out2));
+      if (!TEST_CHECK(declen == i))
+      {
+        TEST_MSG("Expected: %zu", i);
+        TEST_MSG("Actual  : %zu", declen);
+      }
+      out2[declen] = '\0';
+      if (!TEST_CHECK(strncmp(out2, in, i) == 0))
+      {
+        TEST_MSG("Expected: %s", in);
+        TEST_MSG("Actual  : %s", out2);
+      }
+    }
   }
 }

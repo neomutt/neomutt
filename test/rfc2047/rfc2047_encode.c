@@ -26,10 +26,20 @@
 #include "mutt/mutt.h"
 #include "email/lib.h"
 #include "address/lib.h"
+#include "common.h"
 
 void test_rfc2047_encode(void)
 {
   // void rfc2047_encode(char **pd, const char *specials, int col, const char *charsets);
+
+  if (!TEST_CHECK((setlocale(LC_ALL, "en_US.UTF-8") != NULL) ||
+                  (setlocale(LC_ALL, "C.UTF-8") != NULL)))
+  {
+    TEST_MSG("Cannot set locale to (en_US|C).UTF-8");
+    return;
+  }
+
+  C_Charset = "utf-8";
 
   {
     rfc2047_encode(NULL, AddressSpecials, 0, "apple");
@@ -46,5 +56,21 @@ void test_rfc2047_encode(void)
     char *pd = NULL;
     rfc2047_encode(&pd, AddressSpecials, 0, NULL);
     TEST_CHECK_(1, "rfc2047_encode(&pd, AddressSpecials, 0, NULL)");
+  }
+
+  {
+    for (size_t i = 0; test_data[i].decoded; i++)
+    {
+      /* encode the expected result */
+      char *s = mutt_str_strdup(test_data[i].decoded);
+      rfc2047_encode(&s, NULL, 0, "utf-8");
+      if (!TEST_CHECK(strcmp(s, test_data[i].encoded) == 0))
+      {
+        TEST_MSG("Iteration: %zu", i);
+        TEST_MSG("Expected : %s", test_data[i].encoded);
+        TEST_MSG("Actual   : %s", s);
+      }
+      FREE(&s);
+    }
   }
 }

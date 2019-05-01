@@ -45,4 +45,11 @@ void test_mutt_buffer_concat_path(void)
     mutt_buffer_concat_path(&buf, "apple", NULL);
     TEST_CHECK_(1, "mutt_buffer_concat_path(&buf, \"apple\", NULL)");
   }
+
+  {
+    struct Buffer *buf = mutt_buffer_new();
+    mutt_buffer_concat_path(buf, "apple", "banana");
+    TEST_CHECK(strcmp(mutt_b2s(buf), "apple/banana") == 0);
+    mutt_buffer_free(&buf);
+  }
 }

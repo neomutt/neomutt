@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for RFC2047 Encoding
+ * Common code for RFC2047 tests
  *
  * @authors
  * Copyright (C) 2018 Pietro Cerutti <gahr@gahr.ch>
@@ -22,21 +22,14 @@
 
 #define TEST_NO_MAIN
 #include "acutest.h"
-
-#include "mutt/charset.h"
-#include "mutt/memory.h"
-#include "mutt/string2.h"
-#include "email/rfc2047.h"
-
+#include "config.h"
 #include <locale.h>
+#include "mutt/mutt.h"
+#include "email/lib.h"
+#include "common.h"
 
-static const struct
-{
-  const char *original; /* the string as received in the original email */
-  const char *decoded;  /* the expected plain-text string               */
-  const char *encoded;  /* the string as it's encoded by NeoMutt        */
-} test_data[] =
-    /* clang-format off */
+// clang-format off
+const struct Rfc2047TestData test_data[] =
 {
   {
     /* The string is split in the middle of a multi-byte sequence */
@@ -77,54 +70,8 @@ static const struct
       "=?UTF-8?Q?Sicherheitsl=C3=BCcke in praktisch allen IT-Systemen?="
     , "Sicherheitslücke in praktisch allen IT-Systemen"
     , "=?utf-8?Q?Sicherheitsl=C3=BCcke?= in praktisch allen IT-Systemen"
-  }
+  },
+  { NULL, NULL, NULL },
 };
-/* clang-format on */
+// clang-format on
 
-void test_rfc2047(void)
-{
-  if (!TEST_CHECK((setlocale(LC_ALL, "en_US.UTF-8") != NULL) ||
-                  (setlocale(LC_ALL, "C.UTF-8") != NULL)))
-  {
-    TEST_MSG("Cannot set locale to (en_US|C).UTF-8");
-    return;
-  }
-
-  C_Charset = "utf-8";
-
-  for (size_t i = 0; i < mutt_array_size(test_data); ++i)
-  {
-    /* decode the original string */
-    char *s = mutt_str_strdup(test_data[i].original);
-    rfc2047_decode(&s);
-    if (!TEST_CHECK(strcmp(s, test_data[i].decoded) == 0))
-    {
-      TEST_MSG("Iteration: %zu", i);
-      TEST_MSG("Expected : %s", test_data[i].decoded);
-      TEST_MSG("Actual   : %s", s);
-    }
-    FREE(&s);
-
-    /* encode the expected result */
-    s = mutt_str_strdup(test_data[i].decoded);
-    rfc2047_encode(&s, NULL, 0, "utf-8");
-    if (!TEST_CHECK(strcmp(s, test_data[i].encoded) == 0))
-    {
-      TEST_MSG("Iteration: %zu", i);
-      TEST_MSG("Expected : %s", test_data[i].encoded);
-      TEST_MSG("Actual   : %s", s);
-    }
-    FREE(&s);
-
-    /* decode the encoded result */
-    s = mutt_str_strdup(test_data[i].encoded);
-    rfc2047_decode(&s);
-    if (!TEST_CHECK(strcmp(s, test_data[i].decoded) == 0))
-    {
-      TEST_MSG("Iteration: %zu", i);
-      TEST_MSG("Expected : %s", test_data[i].decoded);
-      TEST_MSG("Actual   : %s", s);
-    }
-    FREE(&s);
-  }
-}

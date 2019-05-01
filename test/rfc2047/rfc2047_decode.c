@@ -26,10 +26,20 @@
 #include "mutt/mutt.h"
 #include "email/lib.h"
 #include "address/lib.h"
+#include "common.h"
 
 void test_rfc2047_decode(void)
 {
   // void rfc2047_decode(char **pd);
+
+  if (!TEST_CHECK((setlocale(LC_ALL, "en_US.UTF-8") != NULL) ||
+                  (setlocale(LC_ALL, "C.UTF-8") != NULL)))
+  {
+    TEST_MSG("Cannot set locale to (en_US|C).UTF-8");
+    return;
+  }
+
+  C_Charset = "utf-8";
 
   {
     rfc2047_decode(NULL);
@@ -40,5 +50,32 @@ void test_rfc2047_decode(void)
     char *pd = NULL;
     rfc2047_decode(&pd);
     TEST_CHECK_(1, "rfc2047_decode(&pd)");
+  }
+
+  {
+    for (size_t i = 0; test_data[i].original; i++)
+    {
+      /* decode the original string */
+      char *s = mutt_str_strdup(test_data[i].original);
+      rfc2047_decode(&s);
+      if (!TEST_CHECK(strcmp(s, test_data[i].decoded) == 0))
+      {
+        TEST_MSG("Iteration: %zu", i);
+        TEST_MSG("Expected : %s", test_data[i].decoded);
+        TEST_MSG("Actual   : %s", s);
+      }
+      FREE(&s);
+
+      /* decode the encoded result */
+      s = mutt_str_strdup(test_data[i].encoded);
+      rfc2047_decode(&s);
+      if (!TEST_CHECK(strcmp(s, test_data[i].decoded) == 0))
+      {
+        TEST_MSG("Iteration: %zu", i);
+        TEST_MSG("Expected : %s", test_data[i].decoded);
+        TEST_MSG("Actual   : %s", s);
+      }
+      FREE(&s);
+    }
   }
 }

@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for mutt_addr_for_display()
+ * Common code for MD5 tests
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -22,35 +22,21 @@
 
 #define TEST_NO_MAIN
 #include "acutest.h"
-#include "config.h"
 #include "mutt/mutt.h"
-#include "address/lib.h"
 #include "common.h"
 
-void test_mutt_addr_for_display(void)
+// clang-format off
+const struct Md5TestData test_data[] =
 {
-  // const char * mutt_addr_for_display(struct Address *a);
-
   {
-    TEST_CHECK(!mutt_addr_for_display(NULL));
-  }
+    "The quick brown fox jumps over the lazy dog",
+    "9e107d9d372bb6826bd81d3542a419d6"
+  },
+  {
+    "", // The empty string
+    "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  { NULL, NULL },
+};
+// clang-format on
 
-  { /* integration */
-    char per[64] = "bobby bob";
-    char mbx[64] = "bob@bobsdomain";
-
-    struct Address addr = {
-      .personal = per,
-      .mailbox = mbx,
-      .group = 0,
-      .next = NULL,
-      .is_intl = 0,
-      .intl_checked = 0,
-    };
-
-    const char *expected = "bob@bobsdomain";
-    const char *actual = mutt_addr_for_display(&addr);
-
-    TEST_CHECK_STR_EQ(expected, actual);
-  }
-}
