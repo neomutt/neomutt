@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_file_expand_fmt_quote()
+ * Test code for mutt_file_quote_filename()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -25,24 +25,18 @@
 #include "config.h"
 #include "mutt/mutt.h"
 
-void test_mutt_file_expand_fmt_quote(void)
+void test_mutt_buffer_quote_filename(void)
 {
-  // void mutt_file_expand_fmt_quote(char *dest, size_t destlen, const char *fmt, const char *src);
+  // void mutt_buffer_quote_filename(struct Buffer *buf, const char *filename)
 
   {
-    mutt_file_expand_fmt_quote(NULL, 10, "apple", "banana");
-    TEST_CHECK_(1, "mutt_file_expand_fmt_quote(NULL, 10, \"apple\", \"banana\")");
+    mutt_buffer_quote_filename(NULL, "apple");
+    TEST_CHECK_(1, "mutt_buffer_quote_filename(NULL, \"apple\")");
   }
 
   {
-    char buf[32] = { 0 };
-    mutt_file_expand_fmt_quote(buf, sizeof(buf), NULL, "banana");
-    TEST_CHECK_(1, "mutt_file_expand_fmt_quote(&buf, sizeof(buf), NULL, \"banana\")");
-  }
-
-  {
-    char buf[32] = { 0 };
-    mutt_file_expand_fmt_quote(buf, sizeof(buf), "apple", NULL);
-    TEST_CHECK_(1, "mutt_file_expand_fmt_quote(&buf, sizeof(buf), \"apple\", NULL)");
+    struct Buffer buf = { 0 };
+    mutt_buffer_quote_filename(&buf, NULL);
+    TEST_CHECK_(1, "mutt_buffer_quote_filename(&buf, NULL)");
   }
 }

@@ -155,7 +155,7 @@ FILE_OBJS	= test/file/main.o \
 		  test/file/mutt_file_copy_stream.o \
 		  test/file/mutt_file_decrease_mtime.o \
 		  test/file/mutt_file_expand_fmt.o \
-		  test/file/mutt_file_expand_fmt_quote.o \
+		  test/file/mutt_buffer_file_expand_fmt_quote.o \
 		  test/file/mutt_file_fclose.o \
 		  test/file/mutt_file_fopen.o \
 		  test/file/mutt_file_fsync_close.o \
@@ -168,6 +168,7 @@ FILE_OBJS	= test/file/main.o \
 		  test/file/mutt_file_mkstemp_full.o \
 		  test/file/mutt_file_open.o \
 		  test/file/mutt_file_quote_filename.o \
+		  test/file/mutt_buffer_quote_filename.o \
 		  test/file/mutt_file_read_keyword.o \
 		  test/file/mutt_file_read_line.o \
 		  test/file/mutt_file_rename.o \

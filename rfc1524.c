@@ -72,22 +72,23 @@ bool C_MailcapSanitize; ///< Config: Restrict the possible characters in mailcap
 int rfc1524_expand_command(struct Body *a, const char *filename,
                            const char *type, char *command, int clen)
 {
-  int x = 0, y = 0;
+  int x = 0;
   int needspipe = true;
-  char buf[STR_COMMAND];
   char type2[1024];
+  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *quoted = mutt_buffer_pool_get();
 
   mutt_str_strfcpy(type2, type, sizeof(type2));
 
   if (C_MailcapSanitize)
     mutt_file_sanitize_filename(type2, false);
 
-  while ((x < clen - 1) && command[x] && (y < sizeof(buf) - 1))
+  while ((x < clen - 1) && command[x])
   {
     if (command[x] == '\\')
     {
       x++;
-      buf[y++] = command[x++];
+      mutt_buffer_addch(buf, command[x++]);
     }
     else if (command[x] == '%')
     {
@@ -115,26 +116,50 @@ int rfc1524_expand_command(struct Body *a, const char *filename,
         if (C_MailcapSanitize)
           mutt_file_sanitize_filename(pvalue, false);
 
-        y += mutt_file_quote_filename(pvalue, buf + y, sizeof(buf) - y);
+        mutt_buffer_quote_filename(quoted, pvalue);
+        mutt_buffer_addstr(buf, mutt_b2s(quoted));
       }
       else if ((command[x] == 's') && filename)
       {
-        y += mutt_file_quote_filename(filename, buf + y, sizeof(buf) - y);
+        mutt_buffer_quote_filename(quoted, filename);
+        mutt_buffer_addstr(buf, mutt_b2s(quoted));
         needspipe = false;
       }
       else if (command[x] == 't')
       {
-        y += mutt_file_quote_filename(type2, buf + y, sizeof(buf) - y);
+        mutt_buffer_quote_filename(quoted, type);
+        mutt_buffer_addstr(buf, mutt_b2s(quoted));
       }
       x++;
     }
     else
-      buf[y++] = command[x++];
+      mutt_buffer_addch(buf, command[x++]);
   }
-  buf[y] = '\0';
-  mutt_str_strfcpy(command, buf, clen);
+  mutt_str_strfcpy(command, mutt_b2s(buf), clen);
+
+  mutt_buffer_pool_release(&buf);
+  mutt_buffer_pool_release(&quoted);
 
   return needspipe;
+}
+
+/**
+ * rfc1524_expand_command - Expand expandos in a command
+ * @param a        Email Body
+ * @param filename File containing the email text
+ * @param type     Type, e.g. "text/plain"
+ * @param command  Buffer containing command
+ * @retval 0 Command works on a file
+ * @retval 1 Command works on a pipe
+ */
+int mutt_buffer_rfc1524_expand_command(struct Body *a, const char *filename,
+                                       const char *type, struct Buffer *command)
+{
+  mutt_buffer_increase_size(command, PATH_MAX);
+  int rc = rfc1524_expand_command(a, filename, type, command->data, command->dsize);
+  mutt_buffer_fix_dptr(command);
+
+  return rc;
 }
 
 /**
@@ -488,11 +513,10 @@ bool rfc1524_mailcap_lookup(struct Body *a, char *type,
 }
 
 /**
- * rfc1524_expand_filename - Expand a new filename from a template or existing filename
+ * mutt_rfc1524_expand_filename - Expand a new filename from a template or existing filename
  * @param nametemplate Template
  * @param oldfile      Original filename
  * @param newfile      Buffer for new filename
- * @param nflen        Buffer length
  * @retval 0 if the left and right components of the oldfile and newfile match
  * @retval 1 otherwise
  *
@@ -506,16 +530,14 @@ bool rfc1524_mailcap_lookup(struct Body *a, char *type,
  * for a "%s". If none is found, the nametemplate is used as the template for
  * newfile.  The first path component of the nametemplate and oldfile are ignored.
  */
-int rfc1524_expand_filename(const char *nametemplate, const char *oldfile,
-                            char *newfile, size_t nflen)
+int mutt_rfc1524_expand_filename(const char *nametemplate, const char *oldfile,
+                                 struct Buffer *newfile)
 {
   int i, j, k;
   char *s = NULL;
   bool lmatch = false, rmatch = false;
-  char left[PATH_MAX];
-  char right[PATH_MAX];
 
-  newfile[0] = '\0';
+  mutt_buffer_reset(newfile);
 
   /* first, ignore leading path components */
 
@@ -528,11 +550,11 @@ int rfc1524_expand_filename(const char *nametemplate, const char *oldfile,
   if (!nametemplate)
   {
     if (oldfile)
-      mutt_str_strfcpy(newfile, oldfile, nflen);
+      mutt_buffer_strcpy(newfile, oldfile);
   }
   else if (!oldfile)
   {
-    mutt_file_expand_fmt(newfile, nflen, nametemplate, "neomutt");
+    mutt_file_expand_fmt(newfile, nametemplate, "neomutt");
   }
   else /* oldfile && nametemplate */
   {
@@ -588,26 +610,26 @@ int rfc1524_expand_filename(const char *nametemplate, const char *oldfile,
       if (k >= i + 2)
         rmatch = false;
 
-      if (lmatch)
-        *left = '\0';
-      else
-        mutt_str_strnfcpy(left, nametemplate, i, sizeof(left));
+      struct Buffer *left = mutt_buffer_pool_get();
+      struct Buffer *right = mutt_buffer_pool_get();
 
-      if (rmatch)
-        *right = '\0';
-      else
-        mutt_str_strfcpy(right, nametemplate + i + 2, sizeof(right));
+      if (!lmatch)
+        mutt_buffer_strcpy_n(left, nametemplate, i);
+      if (!rmatch)
+        mutt_buffer_strcpy(right, nametemplate + i + 2);
+      mutt_buffer_printf(newfile, "%s%s%s", mutt_b2s(left), oldfile, mutt_b2s(right));
 
-      snprintf(newfile, nflen, "%s%s%s", left, oldfile, right);
+      mutt_buffer_pool_release(&left);
+      mutt_buffer_pool_release(&right);
     }
     else
     {
       /* no "%s" in the name template. */
-      mutt_str_strfcpy(newfile, nametemplate, nflen);
+      mutt_buffer_strcpy(newfile, nametemplate);
     }
   }
 
-  mutt_adv_mktemp(newfile, nflen);
+  mutt_adv_mktemp(newfile);
 
   if (rmatch && lmatch)
     return 0;

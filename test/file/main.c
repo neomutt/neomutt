@@ -36,7 +36,7 @@
   NEOMUTT_TEST_ITEM(test_mutt_file_copy_stream)                                \
   NEOMUTT_TEST_ITEM(test_mutt_file_decrease_mtime)                             \
   NEOMUTT_TEST_ITEM(test_mutt_file_expand_fmt)                                 \
-  NEOMUTT_TEST_ITEM(test_mutt_file_expand_fmt_quote)                           \
+  NEOMUTT_TEST_ITEM(test_mutt_buffer_file_expand_fmt_quote)                    \
   NEOMUTT_TEST_ITEM(test_mutt_file_fclose)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_file_fopen)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_file_fsync_close)                                \
@@ -49,6 +49,7 @@
   NEOMUTT_TEST_ITEM(test_mutt_file_mkstemp_full)                               \
   NEOMUTT_TEST_ITEM(test_mutt_file_open)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_file_quote_filename)                             \
+  NEOMUTT_TEST_ITEM(test_mutt_buffer_quote_filename)                           \
   NEOMUTT_TEST_ITEM(test_mutt_file_read_keyword)                               \
   NEOMUTT_TEST_ITEM(test_mutt_file_read_line)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_file_rename)                                     \

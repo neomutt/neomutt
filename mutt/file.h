@@ -89,7 +89,7 @@ int         mutt_file_chmod_rm_stat(const char *path, mode_t mode, struct stat *
 int         mutt_file_copy_bytes(FILE *fp_in, FILE *fp_out, size_t size);
 int         mutt_file_copy_stream(FILE *fp_in, FILE *fp_out);
 time_t      mutt_file_decrease_mtime(const char *fp, struct stat *st);
-void        mutt_file_expand_fmt(char *dest, size_t destlen, const char *fmt, const char *src);
+void        mutt_file_expand_fmt(struct Buffer *dest, const char *fmt, const char *src);
 void        mutt_file_expand_fmt_quote(char *dest, size_t destlen, const char *fmt, const char *src);
 int         mutt_file_fclose(FILE **fp);
 FILE *      mutt_file_fopen(const char *path, const char *mode);
@@ -120,5 +120,8 @@ void        mutt_file_touch_atime(int fd);
 void        mutt_file_unlink(const char *s);
 void        mutt_file_unlink_empty(const char *path);
 int         mutt_file_unlock(int fd);
+
+void        mutt_buffer_quote_filename(struct Buffer *buf, const char *filename);
+void        mutt_buffer_file_expand_fmt_quote(struct Buffer *dest, const char *fmt, const char *src);
 
 #endif /* MUTT_LIB_FILE_H */

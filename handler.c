@@ -530,8 +530,8 @@ static int autoview_handler(struct Body *a, struct State *s)
   struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
   char buf[1024];
   char type[256];
-  char cmd[STR_COMMAND];
-  char tempfile[PATH_MAX] = "";
+  struct Buffer *cmd = mutt_buffer_pool_get();
+  struct Buffer *tempfile = mutt_buffer_pool_get();
   char *fname = NULL;
   FILE *fp_in = NULL;
   FILE *fp_out = NULL;
@@ -545,29 +545,30 @@ static int autoview_handler(struct Body *a, struct State *s)
 
   fname = mutt_str_strdup(a->filename);
   mutt_file_sanitize_filename(fname, true);
-  rfc1524_expand_filename(entry->nametemplate, fname, tempfile, sizeof(tempfile));
+  mutt_rfc1524_expand_filename(entry->nametemplate, fname, tempfile);
   FREE(&fname);
 
   if (entry->command)
   {
-    mutt_str_strfcpy(cmd, entry->command, sizeof(cmd));
+    mutt_buffer_strcpy(cmd, entry->command);
 
     /* rfc1524_expand_command returns 0 if the file is required */
-    piped = rfc1524_expand_command(a, tempfile, type, cmd, sizeof(cmd));
+    piped = mutt_buffer_rfc1524_expand_command(a, mutt_b2s(tempfile), type, cmd);
 
     if (s->flags & MUTT_DISPLAY)
     {
       state_mark_attach(s);
-      state_printf(s, _("[-- Autoview using %s --]\n"), cmd);
-      mutt_message(_("Invoking autoview command: %s"), cmd);
+      state_printf(s, _("[-- Autoview using %s --]\n"), mutt_b2s(cmd));
+      mutt_message(_("Invoking autoview command: %s"), mutt_b2s(cmd));
     }
 
-    fp_in = mutt_file_fopen(tempfile, "w+");
+    fp_in = mutt_file_fopen(mutt_b2s(tempfile), "w+");
     if (!fp_in)
     {
       mutt_perror("fopen");
       rfc1524_free_entry(&entry);
-      return -1;
+      rc = -1;
+      goto cleanup;
     }
 
     mutt_file_copy_bytes(s->fp_in, fp_in, a->length);
@@ -575,14 +576,15 @@ static int autoview_handler(struct Body *a, struct State *s)
     if (!piped)
     {
       mutt_file_fclose(&fp_in);
-      pid = mutt_create_filter(cmd, NULL, &fp_out, &fp_err);
+      pid = mutt_create_filter(mutt_b2s(cmd), NULL, &fp_out, &fp_err);
     }
     else
     {
-      unlink(tempfile);
+      unlink(mutt_b2s(tempfile));
       fflush(fp_in);
       rewind(fp_in);
-      pid = mutt_create_filter_fd(cmd, NULL, &fp_out, &fp_err, fileno(fp_in), -1, -1);
+      pid = mutt_create_filter_fd(mutt_b2s(cmd), NULL, &fp_out, &fp_err,
+                                  fileno(fp_in), -1, -1);
     }
 
     if (pid < 0)
@@ -591,7 +593,7 @@ static int autoview_handler(struct Body *a, struct State *s)
       if (s->flags & MUTT_DISPLAY)
       {
         state_mark_attach(s);
-        state_printf(s, _("[-- Can't run %s. --]\n"), cmd);
+        state_printf(s, _("[-- Can't run %s. --]\n"), mutt_b2s(cmd));
       }
       rc = -1;
       goto bail;
@@ -610,7 +612,7 @@ static int autoview_handler(struct Body *a, struct State *s)
         if (s->flags & MUTT_DISPLAY)
         {
           state_mark_attach(s);
-          state_printf(s, _("[-- Autoview stderr of %s --]\n"), cmd);
+          state_printf(s, _("[-- Autoview stderr of %s --]\n"), mutt_b2s(cmd));
         }
 
         state_puts(s->prefix, s);
@@ -631,7 +633,7 @@ static int autoview_handler(struct Body *a, struct State *s)
         if (s->flags & MUTT_DISPLAY)
         {
           state_mark_attach(s);
-          state_printf(s, _("[-- Autoview stderr of %s --]\n"), cmd);
+          state_printf(s, _("[-- Autoview stderr of %s --]\n"), mutt_b2s(cmd));
         }
 
         state_puts(buf, s);
@@ -647,12 +649,17 @@ static int autoview_handler(struct Body *a, struct State *s)
     if (piped)
       mutt_file_fclose(&fp_in);
     else
-      mutt_file_unlink(tempfile);
+      mutt_file_unlink(mutt_b2s(tempfile));
 
     if (s->flags & MUTT_DISPLAY)
       mutt_clear_error();
   }
+
+cleanup:
   rfc1524_free_entry(&entry);
+
+  mutt_buffer_pool_release(&cmd);
+  mutt_buffer_pool_release(&tempfile);
 
   return rc;
 }

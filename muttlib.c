@@ -79,10 +79,14 @@ static const char *xdg_defaults[] = {
 };
 
 /**
- * mutt_buffer_adv_mktemp - Create a temporary file
+ * mutt_adv_mktemp - Create a temporary file
  * @param buf Buffer for the name
+ *
+ * Accept a "suggestion" for file name.  If that file exists, then
+ * construct one with unique name but keep any extension.
+ * This might fail, I guess.
  */
-void mutt_buffer_adv_mktemp(struct Buffer *buf)
+void mutt_adv_mktemp(struct Buffer *buf)
 {
   if (!(buf->data && buf->data[0]))
   {
@@ -109,41 +113,6 @@ void mutt_buffer_adv_mktemp(struct Buffer *buf)
 
   out:
     mutt_buffer_pool_release(&prefix);
-  }
-}
-
-/**
- * mutt_adv_mktemp - Advanced mktemp(3)
- * @param buf    Buffer for result
- * @param buflen Length of buffer
- *
- * Modified by blong to accept a "suggestion" for file name.  If that file
- * exists, then construct one with unique name but keep any extension.  This
- * might fail, I guess.
- */
-void mutt_adv_mktemp(char *buf, size_t buflen)
-{
-  if (buf[0] == '\0')
-  {
-    mutt_mktemp(buf, buflen);
-  }
-  else
-  {
-    char prefix[PATH_MAX];
-    mutt_str_strfcpy(prefix, buf, sizeof(prefix));
-    mutt_file_sanitize_filename(prefix, true);
-    snprintf(buf, buflen, "%s/%s", NONULL(C_Tmpdir), prefix);
-    struct stat sb;
-    if ((lstat(buf, &sb) == -1) && (errno == ENOENT))
-      return;
-
-    char *suffix = strrchr(prefix, '.');
-    if (suffix)
-    {
-      *suffix = '\0';
-      suffix++;
-    }
-    mutt_mktemp_pfx_sfx(buf, buflen, prefix, suffix);
   }
 }
 

@@ -820,18 +820,18 @@ int mix_check_message(struct Email *msg)
  */
 int mix_send_message(struct ListHead *chain, const char *tempfile)
 {
-  char cd_quoted[256];
   int i = 0;
-
   struct Buffer *cmd = mutt_buffer_pool_get();
+  struct Buffer *cd_quoted = mutt_buffer_pool_get();
+
   mutt_buffer_printf(cmd, "cat %s | %s -m ", tempfile, C_Mixmaster);
 
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, chain, entries)
   {
     mutt_buffer_addstr(cmd, i ? "," : " -l ");
-    mutt_file_quote_filename(np->data, cd_quoted, sizeof(cd_quoted));
-    mutt_buffer_addstr(cmd, cd_quoted);
+    mutt_buffer_quote_filename(cd_quoted, (char *) np->data);
+    mutt_buffer_addstr(cmd, mutt_b2s(cd_quoted));
     i = 1;
   }
 
@@ -849,6 +849,7 @@ int mix_send_message(struct ListHead *chain, const char *tempfile)
   }
 
   mutt_buffer_pool_release(&cmd);
+  mutt_buffer_pool_release(&cd_quoted);
   unlink(tempfile);
   return i;
 }

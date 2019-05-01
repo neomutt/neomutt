@@ -42,8 +42,7 @@ extern struct Regex *C_GecosMask;
 
 #define MUTT_RANDTAG_LEN 16
 
-void        mutt_adv_mktemp(char *s, size_t l);
-void        mutt_buffer_adv_mktemp (struct Buffer *buf);
+void        mutt_adv_mktemp(struct Buffer *buf);
 void        mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix, const char *suffix, const char *src, int line);
 void        mutt_buffer_expand_path(struct Buffer *buf);
 void        mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex);

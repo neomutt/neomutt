@@ -581,7 +581,6 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
                           struct Email *e, bool resend)
 {
   struct Message *msg = NULL;
-  char file[PATH_MAX];
   struct Body *b = NULL;
   FILE *fp_body = NULL;
   int rc = -1;
@@ -680,16 +679,18 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
 
   s.fp_in = fp_body;
 
+  struct Buffer *file = mutt_buffer_pool_get();
+
   /* create temporary files for all attachments */
   for (b = newhdr->content; b; b = b->next)
   {
     /* what follows is roughly a receive-mode variant of
      * mutt_get_tmp_attachment () from muttlib.c */
 
-    file[0] = '\0';
+    mutt_buffer_reset(file);
     if (b->filename)
     {
-      mutt_str_strfcpy(file, b->filename, sizeof(file));
+      mutt_buffer_strcpy(file, b->filename);
       b->d_filename = mutt_str_strdup(b->filename);
     }
     else
@@ -718,8 +719,8 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
       mutt_param_delete(&b->parameter, "x-mutt-noconv");
     }
 
-    mutt_adv_mktemp(file, sizeof(file));
-    s.fp_out = mutt_file_fopen(file, "w");
+    mutt_adv_mktemp(file);
+    s.fp_out = mutt_file_fopen(mutt_b2s(file), "w");
     if (!s.fp_out)
       goto bail;
 
@@ -777,7 +778,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
     if (mutt_file_fclose(&s.fp_out) != 0)
       goto bail;
 
-    mutt_str_replace(&b->filename, file);
+    mutt_str_replace(&b->filename, mutt_b2s(file));
     b->unlink = true;
 
     mutt_stamp_attachment(b);
@@ -817,6 +818,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
 bail:
 
   /* that's it. */
+  mutt_buffer_pool_release(&file);
   if (fp_body != fp)
     mutt_file_fclose(&fp_body);
   if (msg)

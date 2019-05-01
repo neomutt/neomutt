@@ -307,18 +307,20 @@ int mutt_get_field_unbuffered(const char *msg, char *buf, size_t buflen, Complet
  */
 void mutt_edit_file(const char *editor, const char *file)
 {
-  char cmd[STR_COMMAND];
+  struct Buffer *cmd = mutt_buffer_pool_get();
 
   mutt_endwin();
-  mutt_file_expand_fmt_quote(cmd, sizeof(cmd), editor, file);
-  if (mutt_system(cmd) != 0)
+  mutt_buffer_file_expand_fmt_quote(cmd, editor, file);
+  if (mutt_system(mutt_b2s(cmd)) != 0)
   {
-    mutt_error(_("Error running \"%s\""), cmd);
+    mutt_error(_("Error running \"%s\""), mutt_b2s(cmd));
   }
   /* the terminal may have been resized while the editor owned it */
   mutt_resize_screen();
   keypad(stdscr, true);
   clearok(stdscr, true);
+
+  mutt_buffer_pool_release(&cmd);
 }
 
 /**
@@ -574,18 +576,19 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
     rc = mutt_pager(banner, tempfile, do_color, info);
   else
   {
-    char cmd[256];
+    struct Buffer *cmd = mutt_buffer_pool_get();
 
     mutt_endwin();
-    mutt_file_expand_fmt_quote(cmd, sizeof(cmd), C_Pager, tempfile);
-    if (mutt_system(cmd) == -1)
+    mutt_buffer_file_expand_fmt_quote(cmd, C_Pager, tempfile);
+    if (mutt_system(mutt_b2s(cmd)) == -1)
     {
-      mutt_error(_("Error running \"%s\""), cmd);
+      mutt_error(_("Error running \"%s\""), mutt_b2s(cmd));
       rc = -1;
     }
     else
       rc = 0;
     mutt_file_unlink(tempfile);
+    mutt_buffer_pool_release(&cmd);
   }
 
   return rc;

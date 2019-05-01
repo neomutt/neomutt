@@ -794,6 +794,36 @@ size_t mutt_file_quote_filename(const char *filename, char *buf, size_t buflen)
 }
 
 /**
+ * mutt_buffer_quote_filename - Quote a filename to survive the shell's quoting rules
+ * @param buf      Buffer for the result
+ * @param filename String to convert
+ * @retval num Bytes written to the buffer
+ */
+void mutt_buffer_quote_filename(struct Buffer *buf, const char *filename)
+{
+  if (!buf || !filename)
+    return;
+
+  mutt_buffer_reset(buf);
+  mutt_buffer_addch(buf, '\'');
+
+  for (; *filename != '\0'; filename++)
+  {
+    if ((*filename == '\'') || (*filename == '`'))
+    {
+      mutt_buffer_addch(buf, '\'');
+      mutt_buffer_addch(buf, '\\');
+      mutt_buffer_addch(buf, *filename);
+      mutt_buffer_addch(buf, '\'');
+    }
+    else
+      mutt_buffer_addch(buf, *filename);
+  }
+
+  mutt_buffer_addch(buf, '\'');
+}
+
+/**
  * mutt_file_mkdir - Recursively create directories
  * @param path Directories to create
  * @param mode Permissions for final directory
@@ -1326,78 +1356,67 @@ int mutt_file_check_empty(const char *path)
 }
 
 /**
- * mutt_file_expand_fmt_quote - Replace `%s` in a string with a filename
+ * mutt_buffer_file_expand_fmt_quote - Replace `%s` in a string with a filename
  * @param dest    Buffer for the result
- * @param destlen Length of buffer
  * @param fmt     printf-like format string
  * @param src     Filename to substitute
  *
  * This function also quotes the file to prevent shell problems.
  */
-void mutt_file_expand_fmt_quote(char *dest, size_t destlen, const char *fmt, const char *src)
+void mutt_buffer_file_expand_fmt_quote(struct Buffer *dest, const char *fmt, const char *src)
 {
-  char tmp[PATH_MAX];
+  struct Buffer *tmp = mutt_buffer_pool_get();
 
-  mutt_file_quote_filename(src, tmp, sizeof(tmp));
-  mutt_file_expand_fmt(dest, destlen, fmt, tmp);
+  mutt_buffer_quote_filename(tmp, src);
+  mutt_file_expand_fmt(dest, fmt, mutt_b2s(tmp));
+  mutt_buffer_pool_release(&tmp);
 }
 
 /**
  * mutt_file_expand_fmt - Replace `%s` in a string with a filename
  * @param dest    Buffer for the result
- * @param destlen Length of buffer
  * @param fmt     printf-like format string
  * @param src     Filename to substitute
  */
-void mutt_file_expand_fmt(char *dest, size_t destlen, const char *fmt, const char *src)
+void mutt_file_expand_fmt(struct Buffer *dest, const char *fmt, const char *src)
 {
   if (!dest || !fmt || !src)
     return;
 
   const char *p = NULL;
-  char *d = NULL;
-  size_t slen;
   bool found = false;
 
-  slen = mutt_str_strlen(src);
-  destlen--;
+  mutt_buffer_reset(dest);
 
-  for (p = fmt, d = dest; (destlen != 0) && *p; p++)
+  for (p = fmt; *p; p++)
   {
     if (*p == '%')
     {
       switch (p[1])
       {
         case '%':
-          *d++ = *p++;
-          destlen--;
+          mutt_buffer_addch(dest, *p++);
           break;
         case 's':
           found = true;
-          mutt_str_strfcpy(d, src, destlen + 1);
-          d += (destlen > slen) ? slen : destlen;
-          destlen -= (destlen > slen) ? slen : destlen;
+          mutt_buffer_addstr(dest, src);
           p++;
           break;
         default:
-          *d++ = *p;
-          destlen--;
+          mutt_buffer_addch(dest, *p);
           break;
       }
     }
     else
     {
-      *d++ = *p;
-      destlen--;
+      mutt_buffer_addch(dest, *p);
     }
   }
 
-  *d = '\0';
-
-  if (!found && (destlen > 0))
+  if (!found)
   {
-    mutt_str_strcat(dest, destlen, " ");
-    mutt_str_strcat(dest, destlen, src);
+    mutt_buffer_addch(dest, ' ');
+    mutt_buffer_addstr(dest, src);
   }
 }
 

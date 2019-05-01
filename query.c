@@ -138,22 +138,25 @@ static struct Query *run_query(char *s, int quiet)
   FILE *fp = NULL;
   struct Query *first = NULL;
   struct Query *cur = NULL;
-  char cmd[STR_COMMAND];
   char *buf = NULL;
   size_t buflen;
   int dummy = 0;
   char msg[256];
   char *p = NULL;
   pid_t pid;
+  struct Buffer *cmd = mutt_buffer_pool_get();
 
-  mutt_file_expand_fmt_quote(cmd, sizeof(cmd), C_QueryCommand, s);
+  mutt_buffer_file_expand_fmt_quote(cmd, C_QueryCommand, s);
 
-  pid = mutt_create_filter(cmd, NULL, &fp, NULL);
+  pid = mutt_create_filter(mutt_b2s(cmd), NULL, &fp, NULL);
   if (pid < 0)
   {
-    mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", cmd);
+    mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", mutt_b2s(cmd));
+    mutt_buffer_pool_release(&cmd);
     return 0;
   }
+  mutt_buffer_pool_release(&cmd);
+
   if (!quiet)
     mutt_message(_("Waiting for response..."));
   fgets(msg, sizeof(msg), fp);

@@ -404,12 +404,13 @@ pid_t pgp_invoke_traditional(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_
  */
 void pgp_class_invoke_import(const char *fname)
 {
-  char tmp_fname[PATH_MAX + 128];
   char cmd[STR_COMMAND];
   struct PgpCommandContext cctx = { 0 };
 
-  mutt_file_quote_filename(fname, tmp_fname, sizeof(tmp_fname));
-  cctx.fname = tmp_fname;
+  struct Buffer *buf_fname = mutt_buffer_pool_get();
+
+  mutt_buffer_quote_filename(buf_fname, fname);
+  cctx.fname = mutt_b2s(buf_fname);
   if (C_PgpSignAs && *C_PgpSignAs)
     cctx.signas = C_PgpSignAs;
   else
@@ -418,6 +419,8 @@ void pgp_class_invoke_import(const char *fname)
   mutt_pgp_command(cmd, sizeof(cmd), &cctx, C_PgpImportCommand);
   if (mutt_system(cmd) != 0)
     mutt_debug(LL_DEBUG1, "Error running \"%s\"", cmd);
+
+  mutt_buffer_pool_release(&buf_fname);
 }
 
 /**
@@ -425,7 +428,6 @@ void pgp_class_invoke_import(const char *fname)
  */
 void pgp_class_invoke_getkeys(struct Address *addr)
 {
-  char buf[PATH_MAX];
   char tmp[1024];
   char cmd[STR_COMMAND];
 
@@ -436,17 +438,18 @@ void pgp_class_invoke_getkeys(struct Address *addr)
   if (!C_PgpGetkeysCommand)
     return;
 
+  struct Buffer *buf = mutt_buffer_pool_get();
   personal = addr->personal;
   addr->personal = NULL;
 
   *tmp = '\0';
   mutt_addrlist_to_local(addr);
   mutt_addr_write_single(tmp, sizeof(tmp), addr, false);
-  mutt_file_quote_filename(tmp, buf, sizeof(buf));
+  mutt_buffer_quote_filename(buf, tmp);
 
   addr->personal = personal;
 
-  cctx.ids = buf;
+  cctx.ids = mutt_b2s(buf);
 
   mutt_pgp_command(cmd, sizeof(cmd), &cctx, C_PgpGetkeysCommand);
 
@@ -463,6 +466,8 @@ void pgp_class_invoke_getkeys(struct Address *addr)
 
   if (fd_null >= 0)
     close(fd_null);
+
+  mutt_buffer_pool_release(&buf);
 }
 
 /**
@@ -529,15 +534,14 @@ pid_t pgp_invoke_list_keys(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_er
                            int pgpinfd, int pgpoutfd, int pgperrfd,
                            enum PgpRing keyring, struct ListHead *hints)
 {
-  char quoted[STR_COMMAND];
-
   struct Buffer *uids = mutt_buffer_pool_get();
+  struct Buffer *quoted = mutt_buffer_pool_get();
 
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, hints, entries)
   {
-    mutt_file_quote_filename((char *) np->data, quoted, sizeof(quoted));
-    mutt_buffer_addstr(uids, quoted);
+    mutt_buffer_quote_filename(quoted, (char *) np->data);
+    mutt_buffer_addstr(uids, mutt_b2s(quoted));
     if (STAILQ_NEXT(np, entries))
       mutt_buffer_addch(uids, ' ');
   }
@@ -548,5 +552,6 @@ pid_t pgp_invoke_list_keys(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_er
                                                    C_PgpListPubringCommand);
 
   mutt_buffer_pool_release(&uids);
+  mutt_buffer_pool_release(&quoted);
   return rc;
 }
