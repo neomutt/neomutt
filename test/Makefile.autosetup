@@ -1,5 +1,4 @@
 TEST_OBJS   = test/main.o \
-	      test/buffer.o
 
 ADDRESS_OBJS	= test/address/main.o \
 		  test/address/mutt_addr_append.o \
