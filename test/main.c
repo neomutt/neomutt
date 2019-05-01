@@ -26,7 +26,6 @@
  * Add your test cases to this list.
  *****************************************************************************/
 #define NEOMUTT_TEST_LIST                                                      \
-  NEOMUTT_TEST_ITEM(test_addr_mbox_to_udomain)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_concat_path)                              \
 
 /******************************************************************************

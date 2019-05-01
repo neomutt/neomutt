@@ -25,6 +25,7 @@
 #include "config.h"
 #include "mutt/mutt.h"
 #include "address/lib.h"
+#include "common.h"
 
 void test_mutt_addr_mbox_to_udomain(void)
 {
@@ -44,5 +45,40 @@ void test_mutt_addr_mbox_to_udomain(void)
   {
     char *user = NULL;
     TEST_CHECK(mutt_addr_mbox_to_udomain("apple", &user, NULL) == -1);
+  }
+
+  { /* edge cases */
+    char *user = NULL;
+    char *domain = NULL;
+
+    if (!TEST_CHECK(mutt_addr_mbox_to_udomain("bobnodomain@", &user, &domain) == -1) ||
+        !TEST_CHECK(mutt_addr_mbox_to_udomain("bobnodomain", &user, &domain) == -1) ||
+        !TEST_CHECK(mutt_addr_mbox_to_udomain("@nobobohnoez", &user, &domain) == -1) ||
+        !TEST_CHECK(mutt_addr_mbox_to_udomain("", &user, &domain) == -1))
+    {
+      TEST_MSG("bad return");
+    }
+  }
+
+  { /* common */
+    int ret = 0;
+    const char *str = "bob@bobsdomain";
+
+    char *user = NULL;
+    char *domain = NULL;
+    ret = mutt_addr_mbox_to_udomain(str, &user, &domain);
+
+    if (!TEST_CHECK(ret == 0))
+    {
+      TEST_MSG("bad return");
+      TEST_MSG("Expected: %d", 0);
+      TEST_MSG("Actual  : %d", ret);
+    }
+
+    TEST_CHECK_STR_EQ("bob", user);
+    TEST_CHECK_STR_EQ("bobsdomain", domain);
+
+    FREE(&user);
+    FREE(&domain);
   }
 }

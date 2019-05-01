@@ -25,6 +25,7 @@
 #include "config.h"
 #include "mutt/mutt.h"
 #include "address/lib.h"
+#include "common.h"
 
 void test_mutt_addr_for_display(void)
 {
@@ -32,5 +33,24 @@ void test_mutt_addr_for_display(void)
 
   {
     TEST_CHECK(!mutt_addr_for_display(NULL));
+  }
+
+  { /* integration */
+    char per[64] = "bobby bob";
+    char mbx[64] = "bob@bobsdomain";
+
+    struct Address addr = {
+      .personal = per,
+      .mailbox = mbx,
+      .group = 0,
+      .next = NULL,
+      .is_intl = 0,
+      .intl_checked = 0,
+    };
+
+    const char *expected = "bob@bobsdomain";
+    const char *actual = mutt_addr_for_display(&addr);
+
+    TEST_CHECK_STR_EQ(expected, actual);
   }
 }
