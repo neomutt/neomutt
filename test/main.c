@@ -26,7 +26,6 @@
  * Add your test cases to this list.
  *****************************************************************************/
 #define NEOMUTT_TEST_LIST                                                      \
-  NEOMUTT_TEST_ITEM(test_rfc2047)                                              \
   NEOMUTT_TEST_ITEM(test_md5)                                                  \
   NEOMUTT_TEST_ITEM(test_md5_ctx)                                              \
   NEOMUTT_TEST_ITEM(test_md5_ctx_bytes)                                        \

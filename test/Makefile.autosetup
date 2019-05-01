@@ -1,7 +1,6 @@
 TEST_OBJS   = test/main.o \
 	      test/buffer.o \
 	      test/md5.o \
-	      test/rfc2047.o \
 	      test/address.o \
 	      test/url.o
 
@@ -361,6 +360,7 @@ REGEX_OBJS	= test/regex/main.o \
 		  test/regex/mutt_replacelist_remove.o
 
 RFC2047_OBJS	= test/rfc2047/main.o \
+		  test/rfc2047/common.o \
 		  test/rfc2047/rfc2047_decode_addrlist.o \
 		  test/rfc2047/rfc2047_decode.o \
 		  test/rfc2047/rfc2047_decode_envelope.o \

@@ -625,7 +625,7 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
  */
 void rfc2047_encode(char **pd, const char *specials, int col, const char *charsets)
 {
-  if (!C_Charset || !*pd)
+  if (!C_Charset || !pd || !*pd)
     return;
 
   if (!charsets || !*charsets)
