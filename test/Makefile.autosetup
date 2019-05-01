@@ -1,6 +1,5 @@
 TEST_OBJS   = test/main.o \
 	      test/buffer.o \
-	      test/md5.o \
 	      test/address.o \
 	      test/url.o
 
@@ -280,6 +279,7 @@ MBYTE_OBJS	= test/mbyte/main.o \
 		  test/mbyte/mutt_mb_width_ceiling.o
 
 MD5_OBJS	= test/md5/main.o \
+		  test/md5/common.o \
 		  test/md5/mutt_md5_bytes.o \
 		  test/md5/mutt_md5.o \
 		  test/md5/mutt_md5_finish_ctx.o \

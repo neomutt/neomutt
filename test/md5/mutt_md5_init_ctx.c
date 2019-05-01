@@ -24,6 +24,7 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/mutt.h"
+#include "common.h"
 
 void test_mutt_md5_init_ctx(void)
 {
@@ -32,5 +33,24 @@ void test_mutt_md5_init_ctx(void)
   {
     mutt_md5_init_ctx(NULL);
     TEST_CHECK_(1, "mutt_md5_init_ctx(NULL)");
+  }
+
+  {
+    for (size_t i = 0; test_data[i].text; i++)
+    {
+      struct Md5Ctx ctx = { 0 };
+      unsigned char buf[16];
+      char digest[33];
+      mutt_md5_init_ctx(&ctx);
+      mutt_md5_process(test_data[i].text, &ctx);
+      mutt_md5_finish_ctx(&ctx, buf);
+      mutt_md5_toascii(buf, digest);
+      if (!TEST_CHECK(strcmp(test_data[i].hash, digest) == 0))
+      {
+        TEST_MSG("Iteration: %zu", i);
+        TEST_MSG("Expected : %s", test_data[i].hash);
+        TEST_MSG("Actual   : %s", digest);
+      }
+    }
   }
 }

@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for mutt_md5()
+ * Common code for MD5 tests
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -22,36 +22,13 @@
 
 #define TEST_NO_MAIN
 #include "acutest.h"
-#include "config.h"
 #include "mutt/mutt.h"
-#include "common.h"
 
-void test_mutt_md5(void)
+struct Md5TestData
 {
-  // void *mutt_md5(const char *str, void *buf);
+  const char *text; // clear text input string
+  const char *hash; // MD5 hash digest
+};
 
-  {
-    char buf[32] = { 0 };
-    TEST_CHECK(!mutt_md5(NULL, &buf));
-  }
+extern const struct Md5TestData test_data[];
 
-  {
-    TEST_CHECK(!mutt_md5("apple", NULL));
-  }
-
-  {
-    for (size_t i = 0; test_data[i].text; i++)
-    {
-      unsigned char buf[16];
-      char digest[33];
-      mutt_md5(test_data[i].text, buf);
-      mutt_md5_toascii(buf, digest);
-      if (!TEST_CHECK(strcmp(test_data[i].hash, digest) == 0))
-      {
-        TEST_MSG("Iteration: %zu", i);
-        TEST_MSG("Expected : %s", test_data[i].hash);
-        TEST_MSG("Actual   : %s", digest);
-      }
-    }
-  }
-}
