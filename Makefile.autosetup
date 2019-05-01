@@ -450,9 +450,6 @@ coverage: all test
 	-genhtml -o lcov lcov.info -f
 	lcov -l lcov.info
 
-# Tests for the config code
-config-test: libmutt.a libemail.a libconfig.a libaddress.a
-
 ##############################################################################
 # include generated dependency files
 -include $(DEPFILES)

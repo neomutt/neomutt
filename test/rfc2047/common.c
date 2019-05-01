@@ -29,7 +29,7 @@
 #include "common.h"
 
 // clang-format off
-const struct Rfc2047TestData test_data[] =
+const struct Rfc2047TestData rfc2047_test_data[] =
 {
   {
     /* The string is split in the middle of a multi-byte sequence */

@@ -33,5 +33,5 @@ struct Rfc2047TestData
   const char *encoded;  // the string as it's encoded by NeoMutt
 };
 
-extern const struct Rfc2047TestData test_data[];
+extern const struct Rfc2047TestData rfc2047_test_data[];
 

@@ -30,5 +30,5 @@ struct Md5TestData
   const char *hash; // MD5 hash digest
 };
 
-extern const struct Md5TestData test_data[];
+extern const struct Md5TestData md5_test_data[];
 

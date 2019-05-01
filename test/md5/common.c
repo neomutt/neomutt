@@ -26,7 +26,7 @@
 #include "common.h"
 
 // clang-format off
-const struct Md5TestData test_data[] =
+const struct Md5TestData md5_test_data[] =
 {
   {
     "The quick brown fox jumps over the lazy dog",
