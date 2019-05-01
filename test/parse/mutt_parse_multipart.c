@@ -31,6 +31,8 @@ void test_mutt_parse_multipart(void)
 {
   // struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, off_t end_off, bool digest);
 
+  MuttLogger = log_disp_queue;
+
   {
     TEST_CHECK(!mutt_parse_multipart(NULL, "apple", 0, false));
   }
