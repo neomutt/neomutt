@@ -1344,7 +1344,6 @@ static enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
     {
       a = account_new();
       a->magic = m->magic;
-      TAILQ_INSERT_TAIL(&AllAccounts, a, entries);
       new_account = true;
     }
 
@@ -1370,7 +1369,15 @@ static enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
     {
       //error
       mailbox_free(&m);
+      if (new_account)
+      {
+        FREE(&a);
+      }
       continue;
+    }
+    if (new_account)
+    {
+      TAILQ_INSERT_TAIL(&AllAccounts, a, entries);
     }
 
     struct MailboxNode *mn = mutt_mem_calloc(1, sizeof(*mn));
