@@ -254,6 +254,9 @@ static void collapse_all(struct Menu *menu, int toggle)
   else
     final = CUR_EMAIL->virtual;
 
+  if (final == -1)
+    return;
+
   base = Context->mailbox->emails[Context->mailbox->v2r[final]];
 
   /* Iterate all threads, perform collapse/uncollapse as needed */
