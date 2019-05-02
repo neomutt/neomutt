@@ -261,16 +261,25 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   if (!m->account)
   {
     struct Account *a = mx_ac_find(m);
+    bool new_account = false;
     if (!a)
     {
       a = account_new();
       a->magic = m->magic;
-      TAILQ_INSERT_TAIL(&AllAccounts, a, entries);
+      new_account = true;
     }
     if (mx_ac_add(a, m) < 0)
     {
       ctx_free(&ctx);
+      if (new_account)
+      {
+        FREE(&a);
+      }
       return NULL;
+    }
+    if (new_account)
+    {
+      TAILQ_INSERT_TAIL(&AllAccounts, a, entries);
     }
   }
 
