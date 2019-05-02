@@ -31,6 +31,6 @@ struct ParameterList;
 extern bool C_Rfc2047Parameters;
 
 void rfc2231_decode_parameters(struct ParameterList *p);
-int  rfc2231_encode_string(char **pd);
+struct ParameterList rfc2231_encode_string(const char *attribute, char *value);
 
 #endif /* MUTT_EMAIL_RFC2231_H */

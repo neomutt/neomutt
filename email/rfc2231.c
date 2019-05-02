@@ -314,85 +314,164 @@ void rfc2231_decode_parameters(struct ParameterList *p)
 
 /**
  * rfc2231_encode_string - Encode a string to be suitable for an RFC2231 header
- * @param[out] pd String to encode
- * @retval 1 If string was encoded
- * @retval 0 If no
+ * @param attribute Name of attribute to encode
+ * @param value     Value of attribute to encode
+ * @retval obj String encoded as a ParameterList
+ * @retval obj Error: empty object
  *
- * The string is encoded in-place.
+ * If the value is large, the list will contain continuation lines.
  */
-int rfc2231_encode_string(char **pd)
+struct ParameterList rfc2231_encode_string(const char *attribute, char *value)
 {
-  if (!pd || !*pd)
-    return 0;
+  struct ParameterList result;
+  TAILQ_INIT(&result);
 
-  int ext = 0;
+  if (!attribute || !value)
+    return result;
+
   bool encode = false;
-  char *charset = NULL, *s = NULL, *t = NULL, *e = NULL, *d = NULL;
-  size_t slen, dlen = 0;
+  bool add_quotes = false;
+  bool free_src_value = false;
+  bool split = false;
+  int continuation_number = 0;
+  size_t dest_value_len = 0, max_value_len = 0, cur_value_len = 0;
+  char *cur = NULL, *charset = NULL, *src_value = NULL;
+  struct Parameter *current = NULL;
 
-  /* A shortcut to detect pure 7bit data.
-   * This should prevent the worst when character set handling is flawed.  */
-  for (s = *pd; *s; s++)
-    if (*s & 0x80)
-      break;
+  struct Buffer *cur_attribute = mutt_buffer_pool_get();
+  struct Buffer *cur_value = mutt_buffer_pool_get();
 
-  if (!*s)
-    return 0;
-
-  if (!C_Charset || !C_SendCharset ||
-      !(charset = mutt_ch_choose(C_Charset, C_SendCharset, *pd, strlen(*pd), &d, &dlen)))
+  // Perform charset conversion
+  for (cur = value; *cur; cur++)
   {
-    charset = mutt_str_strdup(C_Charset ? C_Charset : "unknown-8bit");
-    FREE(&d);
-    d = *pd;
-    dlen = strlen(d);
-  }
-
-  if (!mutt_ch_is_us_ascii(charset))
-    encode = true;
-
-  for (s = d, slen = dlen; slen; s++, slen--)
-  {
-    if ((*s < 0x20) || (*s >= 0x7f))
+    if ((*cur < 0x20) || (*cur >= 0x7f))
     {
       encode = true;
-      ext++;
+      break;
     }
-    else if (strchr(MimeSpecials, *s) || strchr("*'%", *s))
-      ext++;
   }
 
   if (encode)
   {
-    e = mutt_mem_malloc(dlen + 2 * ext + strlen(charset) + 3);
-    sprintf(e, "%s''", charset);
-    t = e + strlen(e);
-    for (s = d, slen = dlen; slen; s++, slen--)
+    if (C_Charset && C_SendCharset)
     {
-      if ((*s < 0x20) || (*s >= 0x7f) || strchr(MimeSpecials, *s) || strchr("*'%", *s))
+      charset = mutt_ch_choose(C_Charset, C_SendCharset, value,
+                               mutt_str_strlen(value), &src_value, NULL);
+    }
+    if (src_value)
+      free_src_value = true;
+    if (!charset)
+      charset = mutt_str_strdup(C_Charset ? C_Charset : "unknown-8bit");
+  }
+  if (!src_value)
+    src_value = value;
+
+  // Count the size the resultant value will need in total
+  if (encode)
+    dest_value_len = mutt_str_strlen(charset) + 2; /* charset'' prefix */
+
+  for (cur = src_value; *cur; cur++)
+  {
+    dest_value_len++;
+
+    if (encode)
+    {
+      /* These get converted to %xx so need a total of three chars */
+      if ((*cur < 0x20) || (*cur >= 0x7f) || strchr(MimeSpecials, *cur) ||
+          strchr("*'%", *cur))
       {
-        sprintf(t, "%%%02X", (unsigned char) *s);
-        t += 3;
+        dest_value_len += 2;
+      }
+    }
+    else
+    {
+      /* rfc822_cat() will add outer quotes if it finds MimeSpecials. */
+      if (!add_quotes && strchr(MimeSpecials, *cur))
+        add_quotes = true;
+      /* rfc822_cat() will add a backslash if it finds '\' or '"'. */
+      if ((*cur == '\\') || (*cur == '"'))
+        dest_value_len++;
+    }
+  }
+
+  // Determine if need to split into parameter value continuations
+  max_value_len = 78 - // rfc suggested line length
+                  1 -  // Leading tab on continuation line
+                  mutt_str_strlen(attribute) - // attribute
+                  (encode ? 1 : 0) -           // '*' encoding marker
+                  1 -                          // '='
+                  (add_quotes ? 2 : 0) -       // "...."
+                  1;                           // ';'
+
+  if (max_value_len < 30)
+    max_value_len = 30;
+
+  if (dest_value_len > max_value_len)
+  {
+    split = true;
+    max_value_len -= 4; /* '*n' continuation number and extra encoding
+                         * space to keep loop below simpler */
+  }
+
+  // Generate list of parameter continuations
+  cur = src_value;
+  if (encode)
+  {
+    mutt_buffer_printf(cur_value, "%s''", charset);
+    cur_value_len = mutt_buffer_len(cur_value);
+  }
+
+  while (*cur)
+  {
+    current = mutt_param_new();
+    TAILQ_INSERT_TAIL(&result, current, entries);
+
+    mutt_buffer_strcpy(cur_attribute, attribute);
+    if (split)
+      mutt_buffer_add_printf(cur_attribute, "*%d", continuation_number++);
+    if (encode)
+      mutt_buffer_addch(cur_attribute, '*');
+
+    while (*cur && (!split || (cur_value_len < max_value_len)))
+    {
+      if (encode)
+      {
+        if ((*cur < 0x20) || (*cur >= 0x7f) || strchr(MimeSpecials, *cur) ||
+            strchr("*'%", *cur))
+        {
+          mutt_buffer_add_printf(cur_value, "%%%02X", (unsigned char) *cur);
+          cur_value_len += 3;
+        }
+        else
+        {
+          mutt_buffer_addch(cur_value, *cur);
+          cur_value_len++;
+        }
       }
       else
       {
-        *t++ = *s;
+        mutt_buffer_addch(cur_value, *cur);
+        cur_value_len++;
+        if ((*cur == '\\') || (*cur == '"'))
+          cur_value_len++;
       }
-    }
-    *t = '\0';
 
-    if (d != *pd)
-      FREE(&d);
-    FREE(pd);
-    *pd = e;
+      cur++;
+    }
+
+    current->attribute = mutt_str_strdup(mutt_b2s(cur_attribute));
+    current->value = mutt_str_strdup(mutt_b2s(cur_value));
+
+    mutt_buffer_reset(cur_value);
+    cur_value_len = 0;
   }
-  else if (d != *pd)
-  {
-    FREE(pd);
-    *pd = d;
-  }
+
+  mutt_buffer_pool_release(&cur_attribute);
+  mutt_buffer_pool_release(&cur_value);
 
   FREE(&charset);
+  if (free_src_value)
+    FREE(&src_value);
 
-  return encode;
+  return result;
 }

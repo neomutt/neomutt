@@ -356,52 +356,55 @@ static void encode_8bit(struct FgetConv *fc, FILE *fp_out)
  */
 int mutt_write_mime_header(struct Body *a, FILE *fp)
 {
+  int len;
+  int tmplen;
+  char buf[256] = { 0 };
+
   fprintf(fp, "Content-Type: %s/%s", TYPE(a), a->subtype);
 
   if (!TAILQ_EMPTY(&a->parameter))
   {
-    size_t len = 25 + mutt_str_strlen(a->subtype); /* approximate len. of content-type */
+    len = 25 + mutt_str_strlen(a->subtype); /* approximate len. of content-type */
 
     struct Parameter *np = NULL;
     TAILQ_FOREACH(np, &a->parameter, entries)
     {
-      char *tmp = NULL;
-
       if (!np->value)
         continue;
 
-      fputc(';', fp);
-
-      char buf[256] = { 0 };
-      tmp = mutt_str_strdup(np->value);
-      const int encode = rfc2231_encode_string(&tmp);
-      mutt_addr_cat(buf, sizeof(buf), tmp, MimeSpecials);
-
-      /* Dirty hack to make messages readable by Outlook Express for the Mac:
-       * force quotes around the boundary parameter even when they aren't
-       * needed.  */
-
-      if ((mutt_str_strcasecmp(np->attribute, "boundary") == 0) && (strcmp(buf, tmp) == 0))
+      struct ParameterList param_conts = rfc2231_encode_string(np->attribute, np->value);
+      struct Parameter *cont = NULL;
+      TAILQ_FOREACH(cont, &param_conts, entries)
       {
-        snprintf(buf, sizeof(buf), "\"%s\"", tmp);
+        fputc(';', fp);
+
+        buf[0] = 0;
+        mutt_addr_cat(buf, sizeof(buf), cont->value, MimeSpecials);
+
+        /* Dirty hack to make messages readable by Outlook Express
+         * for the Mac: force quotes around the boundary parameter
+         * even when they aren't needed.
+         */
+        if (!mutt_str_strcasecmp(cont->attribute, "boundary") &&
+            !mutt_str_strcmp(buf, cont->value))
+          snprintf(buf, sizeof(buf), "\"%s\"", cont->value);
+
+        tmplen = mutt_str_strlen(buf) + mutt_str_strlen(cont->attribute) + 1;
+        if (len + tmplen + 2 > 76)
+        {
+          fputs("\n\t", fp);
+          len = tmplen + 1;
+        }
+        else
+        {
+          fputc(' ', fp);
+          len += tmplen + 1;
+        }
+
+        fprintf(fp, "%s=%s", cont->attribute, buf);
       }
 
-      FREE(&tmp);
-
-      const int tmplen = mutt_str_strlen(buf) + mutt_str_strlen(np->attribute) + 1;
-
-      if (len + tmplen + 2 > 76)
-      {
-        fputs("\n\t", fp);
-        len = tmplen + 8;
-      }
-      else
-      {
-        fputc(' ', fp);
-        len += tmplen + 1;
-      }
-
-      fprintf(fp, "%s%s=%s", np->attribute, encode ? "*" : "", buf);
+      mutt_param_free(&param_conts);
     }
   }
 
@@ -420,6 +423,7 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
     if (a->disposition < sizeof(dispstr) / sizeof(char *))
     {
       fprintf(fp, "Content-Disposition: %s", dispstr[a->disposition]);
+      len = 21 + mutt_str_strlen(dispstr[a->disposition]);
 
       if (a->use_disp && (a->disposition != DISP_INLINE))
       {
@@ -429,8 +433,6 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
 
         if (fn)
         {
-          char *tmp = NULL;
-
           /* Strip off the leading path... */
           char *t = strrchr(fn, '/');
           if (t)
@@ -438,13 +440,30 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
           else
             t = fn;
 
-          char buf[256];
-          buf[0] = '\0';
-          tmp = mutt_str_strdup(t);
-          const int encode = rfc2231_encode_string(&tmp);
-          mutt_addr_cat(buf, sizeof(buf), tmp, MimeSpecials);
-          FREE(&tmp);
-          fprintf(fp, "; filename%s=%s", encode ? "*" : "", buf);
+          struct ParameterList param_conts = rfc2231_encode_string("filename", t);
+          struct Parameter *cont = NULL;
+          TAILQ_FOREACH(cont, &param_conts, entries)
+          {
+            fputc(';', fp);
+            buf[0] = 0;
+            mutt_addr_cat(buf, sizeof(buf), cont->value, MimeSpecials);
+
+            tmplen = mutt_str_strlen(buf) + mutt_str_strlen(cont->attribute) + 1;
+            if (len + tmplen + 2 > 76)
+            {
+              fputs("\n\t", fp);
+              len = tmplen + 1;
+            }
+            else
+            {
+              fputc(' ', fp);
+              len += tmplen + 1;
+            }
+
+            fprintf(fp, "%s=%s", cont->attribute, buf);
+          }
+
+          mutt_param_free(&param_conts);
         }
       }
 
