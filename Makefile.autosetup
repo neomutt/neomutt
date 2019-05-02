@@ -443,15 +443,14 @@ distclean: clean
 	$(RM) *.gc?? */*.gc?? test/*/*.gc??
 	$(RM) lcov.info lcov
 
+@if ENABLE_COVERAGE
 # coverage testing
 coverage: all test
 	$(RM) lcov
 	lcov -t "test" -o lcov.info -c -d address -d config -d email -d mutt
 	-genhtml -o lcov lcov.info -f
 	lcov -l lcov.info
-
-# Tests for the config code
-config-test: libmutt.a libemail.a libconfig.a libaddress.a
+@endif
 
 ##############################################################################
 # include generated dependency files
@@ -463,6 +462,8 @@ config-test: libmutt.a libemail.a libconfig.a libaddress.a
 include po/Makefile
 include contrib/Makefile
 include doc/Makefile
+@if ENABLE_UNIT_TESTS
 include test/Makefile
+@endif
 
 # vim: set ts=8 noexpandtab:

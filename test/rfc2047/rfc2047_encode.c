@@ -59,15 +59,15 @@ void test_rfc2047_encode(void)
   }
 
   {
-    for (size_t i = 0; test_data[i].decoded; i++)
+    for (size_t i = 0; rfc2047_test_data[i].decoded; i++)
     {
       /* encode the expected result */
-      char *s = mutt_str_strdup(test_data[i].decoded);
+      char *s = mutt_str_strdup(rfc2047_test_data[i].decoded);
       rfc2047_encode(&s, NULL, 0, "utf-8");
-      if (!TEST_CHECK(strcmp(s, test_data[i].encoded) == 0))
+      if (!TEST_CHECK(strcmp(s, rfc2047_test_data[i].encoded) == 0))
       {
         TEST_MSG("Iteration: %zu", i);
-        TEST_MSG("Expected : %s", test_data[i].encoded);
+        TEST_MSG("Expected : %s", rfc2047_test_data[i].encoded);
         TEST_MSG("Actual   : %s", s);
       }
       FREE(&s);

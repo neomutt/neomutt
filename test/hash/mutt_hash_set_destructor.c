@@ -25,7 +25,7 @@
 #include "config.h"
 #include "mutt/mutt.h"
 
-void dummy_free(int type, void *obj, intptr_t data)
+void dummy_hash_free(int type, void *obj, intptr_t data)
 {
 }
 
@@ -34,7 +34,7 @@ void test_mutt_hash_set_destructor(void)
   // void mutt_hash_set_destructor(struct Hash *table, hashelem_free_t fn, intptr_t fn_data);
 
   {
-    hashelem_free_t fn = dummy_free;
+    hashelem_free_t fn = dummy_hash_free;
     mutt_hash_set_destructor(NULL, fn, (intptr_t) "apple");
     TEST_CHECK_(1, "mutt_hash_set_destructor(NULL, fn, \"apple\")");
   }
@@ -47,7 +47,7 @@ void test_mutt_hash_set_destructor(void)
 
   {
     struct Hash hash = { 0 };
-    hashelem_free_t fn = dummy_free;
+    hashelem_free_t fn = dummy_hash_free;
     mutt_hash_set_destructor(&hash, fn, 0);
     TEST_CHECK_(1, "mutt_hash_set_destructor(&hash, fn, NULL)");
   }

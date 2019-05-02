@@ -18,7 +18,7 @@ define PACKAGE_VERSION  "20180716"
 define BUGS_ADDRESS     "neomutt-devel@neomutt.org"
 
 # Subdirectories that contain additional Makefile.autosetup files
-set subdirs {po doc contrib test}
+set subdirs {po doc contrib}
 ###############################################################################
 
 ###############################################################################
@@ -89,8 +89,9 @@ options {
   with-tokyocabinet:path    => "Location of TokyoCabinet"
 # System
   with-sysroot:path         => "Target system root"
-# Coverage testing
-  lcov=0                    => "Enable Coverage Testing"
+# Testing
+  testing=0                 => "Enable Unit Testing"
+  coverage=0                => "Enable Coverage Testing"
 # Enable all options
   everything=0              => "Enable all options"
 }
@@ -103,9 +104,9 @@ options {
 if {1} {
   # Keep sorted, please.
   foreach opt {
-    bdb doc everything fmemopen full-doc gdbm gnutls gpgme gss
-    homespool idn idn2 inotify kyotocabinet lcov lmdb locales-fix lua mixmaster nls
-    notmuch pgp qdbm sasl smime ssl tokyocabinet
+    bdb coverage doc everything fmemopen full-doc gdbm gnutls gpgme gss
+    homespool idn idn2 inotify kyotocabinet lmdb locales-fix lua mixmaster nls
+    notmuch pgp qdbm sasl smime ssl testing tokyocabinet
   } {
     define want-$opt [opt-bool $opt]
   }
@@ -451,9 +452,17 @@ if {[get-define want-sasl]} {
 
 ###############################################################################
 # Coverage Testing
-if {[get-define want-lcov]} {
+if {[get-define want-coverage]} {
+  define ENABLE_COVERAGE
   define-append CFLAGS -fprofile-arcs -ftest-coverage
   define-append LDFLAGS -fprofile-arcs -ftest-coverage
+}
+
+###############################################################################
+# Unit Testing
+if {[get-define want-testing]} {
+  define ENABLE_UNIT_TESTS
+  lappend subdirs test
 }
 
 ###############################################################################

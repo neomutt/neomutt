@@ -36,19 +36,19 @@ void test_mutt_md5_init_ctx(void)
   }
 
   {
-    for (size_t i = 0; test_data[i].text; i++)
+    for (size_t i = 0; md5_test_data[i].text; i++)
     {
       struct Md5Ctx ctx = { 0 };
       unsigned char buf[16];
       char digest[33];
       mutt_md5_init_ctx(&ctx);
-      mutt_md5_process(test_data[i].text, &ctx);
+      mutt_md5_process(md5_test_data[i].text, &ctx);
       mutt_md5_finish_ctx(&ctx, buf);
       mutt_md5_toascii(buf, digest);
-      if (!TEST_CHECK(strcmp(test_data[i].hash, digest) == 0))
+      if (!TEST_CHECK(strcmp(md5_test_data[i].hash, digest) == 0))
       {
         TEST_MSG("Iteration: %zu", i);
-        TEST_MSG("Expected : %s", test_data[i].hash);
+        TEST_MSG("Expected : %s", md5_test_data[i].hash);
         TEST_MSG("Actual   : %s", digest);
       }
     }

@@ -53,26 +53,26 @@ void test_rfc2047_decode(void)
   }
 
   {
-    for (size_t i = 0; test_data[i].original; i++)
+    for (size_t i = 0; rfc2047_test_data[i].original; i++)
     {
       /* decode the original string */
-      char *s = mutt_str_strdup(test_data[i].original);
+      char *s = mutt_str_strdup(rfc2047_test_data[i].original);
       rfc2047_decode(&s);
-      if (!TEST_CHECK(strcmp(s, test_data[i].decoded) == 0))
+      if (!TEST_CHECK(strcmp(s, rfc2047_test_data[i].decoded) == 0))
       {
         TEST_MSG("Iteration: %zu", i);
-        TEST_MSG("Expected : %s", test_data[i].decoded);
+        TEST_MSG("Expected : %s", rfc2047_test_data[i].decoded);
         TEST_MSG("Actual   : %s", s);
       }
       FREE(&s);
 
       /* decode the encoded result */
-      s = mutt_str_strdup(test_data[i].encoded);
+      s = mutt_str_strdup(rfc2047_test_data[i].encoded);
       rfc2047_decode(&s);
-      if (!TEST_CHECK(strcmp(s, test_data[i].decoded) == 0))
+      if (!TEST_CHECK(strcmp(s, rfc2047_test_data[i].decoded) == 0))
       {
         TEST_MSG("Iteration: %zu", i);
-        TEST_MSG("Expected : %s", test_data[i].decoded);
+        TEST_MSG("Expected : %s", rfc2047_test_data[i].decoded);
         TEST_MSG("Actual   : %s", s);
       }
       FREE(&s);
