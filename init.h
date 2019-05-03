@@ -1704,6 +1704,15 @@ struct ConfigDef MuttVars[] = {
   ** strange behavior, such as duplicate or missing messages please
   ** file a bug report to let us know.
   */
+  { "imap_rfc5161", DT_BOOL, R_NONE, &C_ImapRfc5161, true },
+  /*
+  ** .pp
+  ** When \fIset\fP, NeoMutt will use the IMAP ENABLE extension (RFC 5161) to
+  ** select CAPABILITIES. Some servers (notably Coremail System IMap Server) do
+  ** not properly respond to ENABLE commands, which might cause NeoMutt to hang.
+  ** If your connection seems to freeze at login, try unsetting this. See also
+  ** https://github.com/neomutt/neomutt/issues/1689
+  */
   { "imap_servernoise",         DT_BOOL, R_NONE, &C_ImapServernoise, true },
   /*
   ** .pp

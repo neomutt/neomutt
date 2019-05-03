@@ -68,6 +68,7 @@ struct stat;
 
 /* These Config Variables are only used in imap/imap.c */
 bool C_ImapIdle; ///< Config: (imap) Use the IMAP IDLE extension to check for new mail
+bool C_ImapRfc5161; ///< Config: (imap) Use the IMAP ENABLE extension to select capabilities
 
 /**
  * check_capabilities - Make sure we can log in to this server
@@ -1926,7 +1927,7 @@ int imap_login(struct ImapAccountData *adata)
     imap_exec(adata, "CAPABILITY", IMAP_CMD_QUEUE);
 
     /* enable RFC6855, if the server supports that */
-    if (adata->capabilities & IMAP_CAP_ENABLE)
+    if (C_ImapRfc5161 && (adata->capabilities & IMAP_CAP_ENABLE))
       imap_exec(adata, "ENABLE UTF8=ACCEPT", IMAP_CMD_QUEUE);
 
     /* enable QRESYNC.  Advertising QRESYNC also means CONDSTORE
@@ -1934,7 +1935,7 @@ int imap_login(struct ImapAccountData *adata)
     if (adata->capabilities & IMAP_CAP_QRESYNC)
     {
       adata->capabilities |= IMAP_CAP_CONDSTORE;
-      if (C_ImapQresync)
+      if (C_ImapRfc5161 && C_ImapQresync)
         imap_exec(adata, "ENABLE QRESYNC", IMAP_CMD_QUEUE);
     }
 
