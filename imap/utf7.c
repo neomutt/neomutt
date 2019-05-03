@@ -314,19 +314,21 @@ bail:
  */
 void imap_utf_encode(bool unicode, char **s)
 {
-  if (!C_Charset || !s)
+  if (!C_Charset || !s || !*s)
     return;
 
-  char *t = mutt_str_strdup(*s);
-  if (t && (mutt_ch_convert_string(&t, C_Charset, "utf-8", 0) == 0))
+  if (mutt_ch_convert_string(s, C_Charset, "utf-8", 0) != 0)
   {
     FREE(s);
-    if (unicode)
-      *s = mutt_str_strdup(t);
-    else
-      *s = utf8_to_utf7(t, strlen(t), NULL, 0);
+    return;
   }
-  FREE(&t);
+
+  if (!unicode)
+  {
+      char *utf7 = utf8_to_utf7(*s, strlen(*s), NULL, 0);
+      FREE(s);
+      *s = utf7;
+  }
 }
 
 /**
@@ -336,21 +338,18 @@ void imap_utf_encode(bool unicode, char **s)
  */
 void imap_utf_decode(bool unicode, char **s)
 {
-  if (!C_Charset)
+  if (!C_Charset || !s || !*s)
     return;
 
-  char *t = NULL;
+  if (!unicode)
+  {
+    char *utf8 = utf7_to_utf8(*s, strlen(*s), 0, 0);
+    FREE(s);
+    *s = utf8;
+  }
 
-  if (unicode)
-    t = mutt_str_strdup(*s);
-  else
-    t = utf7_to_utf8(*s, strlen(*s), 0, 0);
-
-  if (t && (mutt_ch_convert_string(&t, "utf-8", C_Charset, 0) == 0))
+  if (mutt_ch_convert_string(s, "utf-8", C_Charset, 0) != 0)
   {
     FREE(s);
-    *s = t;
   }
-  else
-    FREE(&t);
 }
