@@ -630,7 +630,7 @@ static void cmd_parse_list(struct ImapAccountData *adata, char *s)
     s = imap_next_word(s);
     if (s[0] != '\0')
       s[-1] = '\0';
-    imap_unmunge_mbox_name(adata, list->name);
+    imap_unmunge_mbox_name(adata->unicode, list->name);
   }
 
   if (list->name[0] == '\0')
