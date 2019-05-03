@@ -317,6 +317,11 @@ void imap_utf_encode(bool unicode, char **s)
   if (!C_Charset || !s || !*s)
     return;
 
+  if (unicode && mutt_ch_is_utf8(C_Charset))
+  {
+    return;
+  }
+
   if (mutt_ch_convert_string(s, C_Charset, "utf-8", 0) != 0)
   {
     FREE(s);
@@ -340,6 +345,11 @@ void imap_utf_decode(bool unicode, char **s)
 {
   if (!C_Charset || !s || !*s)
     return;
+
+  if (unicode && mutt_ch_is_utf8(C_Charset))
+  {
+    return;
+  }
 
   if (!unicode)
   {
