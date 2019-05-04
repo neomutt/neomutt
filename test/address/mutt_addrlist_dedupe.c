@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_file_quote_filename()
+ * Test code for mutt_addrlist_dedupe()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -24,19 +24,13 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/mutt.h"
+#include "address/lib.h"
 
-void test_mutt_buffer_quote_filename(void)
+void test_mutt_addrlist_dedupe(void)
 {
-  // void mutt_buffer_quote_filename(struct Buffer *buf, const char *filename, bool add_outer)
+  // struct Address *mutt_addrlist_dedupe(struct Address *addr);
 
   {
-    mutt_buffer_quote_filename(NULL, "apple", false);
-    TEST_CHECK_(1, "mutt_buffer_quote_filename(NULL, \"apple\", false)");
-  }
-
-  {
-    struct Buffer buf = { 0 };
-    mutt_buffer_quote_filename(&buf, NULL, false);
-    TEST_CHECK_(1, "mutt_buffer_quote_filename(&buf, NULL, false)");
+    TEST_CHECK(!mutt_addrlist_dedupe(NULL));
   }
 }
