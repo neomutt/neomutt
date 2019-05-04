@@ -31,10 +31,11 @@
 
 /**
  * mutt_exit - Leave NeoMutt NOW
- * @param code Value to return to the calling environment
  *
  * Some library routines want to exit immediately on error.
  * By having this in the library, mutt_exit() can be overridden.
+ *
+ * @sa main.c
  */
 void mutt_exit(int code)
 {

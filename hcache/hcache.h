@@ -126,19 +126,6 @@ void mutt_hcache_close(header_cache_t *hc);
  */
 void *mutt_hcache_fetch(header_cache_t *hc, const char *key, size_t keylen);
 
-/**
- * mutt_hcache_fetch_raw - fetch a message's header from the cache
- * @param hc     Pointer to the header_cache_t structure got by mutt_hcache_open
- * @param key    Message identification string
- * @param keylen Length of the string pointed to by key
- * @retval ptr  Success, the data if found
- * @retval NULL Otherwise
- *
- * @note This function does not perform any check on the validity of the data
- *       found.
- * @note The returned pointer must be freed by calling mutt_hcache_free. This
- *       must be done before closing the header cache with mutt_hcache_close.
- */
 void *mutt_hcache_fetch_raw(header_cache_t *hc, const char *key, size_t keylen);
 
 /**
@@ -148,14 +135,6 @@ void *mutt_hcache_fetch_raw(header_cache_t *hc, const char *key, size_t keylen);
  */
 void mutt_hcache_free(header_cache_t *hc, void **data);
 
-/**
- * mutt_hcache_restore - restore a Header from data retrieved from the cache
- * @param d Data retrieved using mutt_hcache_fetch or mutt_hcache_fetch_raw
- * @retval ptr Success, the restored header (can't be NULL)
- *
- * @note The returned Header must be free'd by caller code with
- *       mutt_email_free().
- */
 struct Email *mutt_hcache_restore(const unsigned char *d);
 
 /**
@@ -171,16 +150,6 @@ struct Email *mutt_hcache_restore(const unsigned char *d);
 int mutt_hcache_store(header_cache_t *hc, const char *key, size_t keylen,
                       struct Email *e, unsigned int uidvalidity);
 
-/**
- * mutt_hcache_store_raw - store a key / data pair
- * @param hc     Pointer to the header_cache_t structure got by mutt_hcache_open
- * @param key    Message identification string
- * @param keylen Length of the string pointed to by key
- * @param data   Payload to associate with key
- * @param dlen   Length of the buffer pointed to by the @a data parameter
- * @retval 0   success
- * @retval num Generic or backend-specific error code otherwise
- */
 int mutt_hcache_store_raw(header_cache_t *hc, const char *key, size_t keylen,
                           void *data, size_t dlen);
 
@@ -202,12 +171,6 @@ int mutt_hcache_delete(header_cache_t *hc, const char *key, size_t keylen);
  */
 const char *mutt_hcache_backend_list(void);
 
-/**
- * mutt_hcache_is_valid_backend - Is the string a valid hcache backend
- * @param s String identifying a backend
- * @retval true  s is recognized as a valid backend
- * @retval false otherwise
- */
 bool mutt_hcache_is_valid_backend(const char *s);
 
 #endif /* MUTT_HCACHE_HCACHE_H */

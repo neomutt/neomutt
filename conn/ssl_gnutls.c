@@ -1239,7 +1239,7 @@ int mutt_ssl_socket_setup(struct Connection *conn)
 }
 
 /**
- * mutt_ssl_starttls - Set up TLS multiplexor
+ * mutt_ssl_starttls - Negotiate TLS over an already opened connection
  * @param conn Connection to a server
  * @retval  0 Success
  * @retval -1 Error

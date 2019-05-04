@@ -330,9 +330,9 @@ void imap_utf_encode(bool unicode, char **s)
 
   if (!unicode)
   {
-      char *utf7 = utf8_to_utf7(*s, strlen(*s), NULL, 0);
-      FREE(s);
-      *s = utf7;
+    char *utf7 = utf8_to_utf7(*s, strlen(*s), NULL, 0);
+    FREE(s);
+    *s = utf7;
   }
 }
 

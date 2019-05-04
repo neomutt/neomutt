@@ -77,7 +77,6 @@ struct Body *   mutt_make_message_attach(struct Mailbox *m, struct Email *e, boo
 struct Body *   mutt_make_multipart(struct Body *b);
 void            mutt_message_to_7bit(struct Body *a, FILE *fp);
 void            mutt_prepare_envelope(struct Envelope *env, bool final);
-struct Address *mutt_addrlist_dedupe(struct Address *addr);
 struct Body *   mutt_remove_multipart(struct Body *b);
 int             mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach, enum MuttWriteHeaderMode mode, bool privacy, bool hide_protected_subject);
 void            mutt_stamp_attachment(struct Body *a);

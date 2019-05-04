@@ -402,7 +402,11 @@ void mutt_md5_process_bytes(const void *buf, size_t buflen, struct Md5Ctx *md5ct
   if (buflen >= 64)
   {
 #if !defined(_STRING_ARCH_unaligned)
-#define alignof(type) offsetof(struct { char c; type x; }, x)
+#define alignof(type) offsetof(                                                \
+    struct {                                                                   \
+      char c; type x;                                                          \
+    },                                                                         \
+    x)
 #define UNALIGNED_P(p) (((size_t) p) % alignof(md5_uint32) != 0)
     if (UNALIGNED_P(buf))
     {

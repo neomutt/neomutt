@@ -1421,7 +1421,7 @@ int mutt_ssl_starttls(struct Connection *conn)
 }
 
 /**
- * mutt_ssl_socket_setup - Set up the socket multiplexor
+ * mutt_ssl_socket_setup - Set up SSL socket mulitplexor
  * @param conn Connection to a server
  * @retval  0 Success
  * @retval -1 Error

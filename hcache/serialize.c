@@ -638,9 +638,12 @@ void *mutt_hcache_dump(header_cache_t *hc, const struct Email *e, int *off, unsi
 }
 
 /**
- * mutt_hcache_restore - Deserialise a Header object
- * @param d Binary blob
- * @retval ptr Reconstructed Header
+ * mutt_hcache_restore - restore a Header from data retrieved from the cache
+ * @param d Data retrieved using mutt_hcache_fetch or mutt_hcache_fetch_raw
+ * @retval ptr Success, the restored header (can't be NULL)
+ *
+ * @note The returned Header must be free'd by caller code with
+ *       mutt_email_free().
  */
 struct Email *mutt_hcache_restore(const unsigned char *d)
 {

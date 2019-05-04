@@ -82,6 +82,7 @@ void            mutt_addr_set_local(struct Address *a, char *local_mailbox);
 bool            mutt_addr_valid_msgid(const char *msgid);
 size_t          mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool display);
 void            mutt_addr_write_single(char *buf, size_t buflen, struct Address *addr, bool display);
+struct Address *mutt_addrlist_dedupe(struct Address *addr);
 int             mutt_addrlist_to_intl(struct Address *a, char **err);
 int             mutt_addrlist_to_local(struct Address *a);
 

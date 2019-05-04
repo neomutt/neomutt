@@ -144,7 +144,7 @@ int rfc1524_expand_command(struct Body *a, const char *filename,
 }
 
 /**
- * rfc1524_expand_command - Expand expandos in a command
+ * mutt_buffer_rfc1524_expand_command - Expand expandos in a command
  * @param a        Email Body
  * @param filename File containing the email text
  * @param type     Type, e.g. "text/plain"
