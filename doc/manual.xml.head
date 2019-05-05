@@ -3302,6 +3302,102 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
         additionally written to the file <literal>~/.neomuttdebug0</literal>.
       </para>
     </sect1>
+
+    <sect1 id="encryption">
+      <title>Encryption and Signing</title>
+
+      <para>
+        OpenPGP and S/MIME are enabled in one of two ways: <quote>classic
+        mode</quote> or GPGME.  The former invokes external programs to perform
+        the various operations; it is better tested and more flexible, but
+        requires some configuration.  The latter uses the GnuPG project's GPGME
+        library.
+      </para>
+
+      <para>
+        To enable <quote>classic mode</quote>, ensure GPGME is disabled and use
+        the <literal>gpg.rc</literal> or <literal>smime.rc</literal> files that
+        come with mutt.  These are typically installed under
+        <literal>/usr/share/doc/mutt/samples/</literal>.  Source them, either
+        directly or by copying them to your .mutt directory and sourcing them.
+        Sourcing them directly from
+        <literal>/usr/share/doc/mutt/samples/</literal> has the benefit of
+        automatically using fixes and security improvements to the command
+        invocations, and is recommended.
+      </para>
+
+<screen>
+unset crypt_use_gpgme
+source /usr/share/doc/mutt/samples/gpg.rc
+source /usr/share/doc/mutt/samples/smime.rc
+</screen>
+
+      <para>
+        To use GPGME instead, simply ensure the option is enabled in your .muttrc:
+      </para>
+
+<screen>
+set crypt_use_gpgme
+</screen>
+
+      <sect2 id="enc-pgp">
+        <title>OpenPGP Configuration</title>
+
+        <para>
+          The two most important settings are
+          <link linkend="pgp-default-key">$pgp_default_key</link> and
+          <link linkend="pgp-sign-as">$pgp_sign_as</link>.  To perform
+          encryption, you must set the first variable.  If you have a separate
+          signing key, or only have a signing key, then set the second.  Most
+          people will only need to set
+          <link linkend="pgp-default-key">$pgp_default_key</link>.
+        </para>
+
+        <para>
+          Starting with version 2.1.0, GnuPG automatically uses an
+          <literal>agent</literal> to prompt for your passphrase.  If you are
+          using a version older than that, you'll need to ensure an agent is
+          running (alternatively, you can unset
+          <link linkend="pgp-use-gpg-agent">$pgp_use_gpg_agent</link> and Mutt
+          will prompt you for your passphrase).  The agent in turn uses a
+          <literal>pinentry</literal> program to display the prompt.  There are
+          many different kinds of pinentry programs that can be used: qt, gtk2,
+          gnome3, fltk, and curses.  However, Mutt does
+          <emphasis>not</emphasis> work properly with the tty pinentry program.
+          Please ensure you have one of the GUI or curses pinentry programs
+          installed and configured to be the default for your system.
+        </para>
+      </sect2>
+
+      <sect2 id="enc-smime">
+        <title>S/MIME Configuration</title>
+
+        <para>
+          As with OpenPGP, the two most important settings are
+          <link linkend="smime-default-key">$smime_default_key</link> and
+          <link linkend="smime-sign-as">$smime_sign_as</link>.  To perform
+          encryption and decryption, you must set the first variable.  If you
+          have a separate signing key, or only have a signing key, then set the
+          second.  Most people will only need to set
+          <link linkend="smime-default-key">$smime_default_key</link>.
+        </para>
+
+        <para>
+          In <quote>classic mode</quote>, keys and certificates are managed by
+          the <literal>smime_keys</literal> program that comes with Mutt.  By
+          default they are stored under <literal>~/.smime/</literal>. (This is
+          set by the <literal>smime.rc</literal> file with
+          <link linkend="smime-certificates">$smime_certificates</link> and
+          <link linkend="smime-keys">$smime_keys</link>.)  To initialize this
+          directory, use the command <quote><literal>smime_keys
+          init</literal></quote> from a shell prompt.  The program can be then
+          be used to import and list certificates.  You may also want to
+          periodically run <quote><literal>smime_keys refresh</literal></quote>
+          to update status flags for your certificates.
+        </para>
+      </sect2>
+    </sect1>
+
   </chapter>
 
   <chapter id="configuration">
