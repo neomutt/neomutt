@@ -1146,7 +1146,7 @@ static int set_signer(gpgme_ctx_t ctx, bool for_smime)
       gpgme_key_unref(key);
       gpgme_key_unref(key2);
       gpgme_release(listctx);
-      mutt_error(_("ambiguous specification of secret key `%s'\n"), signid);
+      mutt_error(_("ambiguous specification of secret key '%s'\n"), signid);
       return -1;
     }
     else
