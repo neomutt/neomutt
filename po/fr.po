@@ -3,8 +3,8 @@
 # Copyright (c) 2016 NeoMutt project.
 # This file is distributed under the same license as the NeoMutt package.
 #
-# Marc Baudoin <babafou@babafou.eu.org>, 1998-2016
-# Vincent Lefevre <vincent@vinc17.net>, 1998-2017
+# Marc Baudoin <babafou@babafou.eu.org>, 1998-2019
+# Vincent Lefevre <vincent@vinc17.net>, 1998-2019
 #
 # Note [VL]. In case you need it, you may find the latest temporary version
 #            at this URL:   https://www.vinc17.net/neomutt/fr.po
@@ -6749,3 +6749,15 @@ msgstr "Options de compilation :"
 #: version.c:420
 msgid "Compile options:"
 msgstr "Options de compilation :"
+
+#. L10N:
+#. This is the prompt for $forward_attachments.
+#. When inline forwarding ($mime_forward answered "no"), this prompts
+#. whether to add non-decodable attachments from the original email.
+#. Text/plain parts and the like will already be included in the
+#. message contents, but other attachment, such as PDF files, will also
+#. be added as attachments to the new mail, if this is answered yes.
+#.
+msgid "Forward attachments?"
+msgstr "Faire suivre les attachements ?"
+

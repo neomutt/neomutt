@@ -1187,6 +1187,15 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** Also see the $$record variable.
   */
+  { "forward_attachments", DT_QUAD, R_NONE, &C_ForwardAttachments, MUTT_ASKYES },
+  /*
+  ** .pp
+  ** When forwarding inline (i.e. $$mime_forward \fIunset\fP or
+  ** answered with ``no'' and $$forward_decode \fIset\fP), attachments
+  ** which cannot be decoded in a reasonable manner will be attached
+  ** to the newly composed message if this quadoption is \fIset\fP or
+  ** answered with ``yes''.
+  */
   { "forward_attribution_intro", DT_STRING, R_NONE, &C_ForwardAttributionIntro, IP "----- Forwarded message from %f -----" },
   /*
   ** .pp
@@ -1572,6 +1581,15 @@ struct ConfigDef MuttVars[] = {
   ** as folder separators for displaying IMAP paths. In particular it
   ** helps in using the "=" shortcut for your \fIfolder\fP variable.
   */
+  { "imap_fetch_chunk_size",        DT_LONG, R_NONE, &C_ImapFetchChunkSize, 0 },
+  /*
+  ** .pp
+  ** When set to a value greater than 0, new headers will be downloaded
+  ** in sets of this size.  If you have a very large mailbox, this might
+  ** prevent a timeout and disconnect when opening the mailbox, by sending
+  ** a FETCH per set of this size instead of a single FETCH for all new
+  ** headers.
+  */
   { "imap_headers",     DT_STRING, R_INDEX, &C_ImapHeaders, 0 },
   /*
   ** .pp
@@ -1924,7 +1942,8 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** This variable specifies which files to consult when attempting to
-  ** display MIME bodies not directly supported by NeoMutt.
+  ** display MIME bodies not directly supported by NeoMutt.  The default value
+  ** is generated during startup: see the ``$mailcap'' section of the manual.
   ** .pp
   ** $$mailcap_path is overridden by the environment variable \fC$$$MAILCAPS\fP.
   ** .pp

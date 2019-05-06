@@ -258,8 +258,8 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
  * mutt_expando_format to do the actual work. mutt_expando_format will callback to
  * us using sidebar_format_str() for the sidebar specific formatting characters.
  */
-static void make_sidebar_entry(char *buf, size_t buflen, int width, char *box,
-                               struct SbEntry *sbe)
+static void make_sidebar_entry(char *buf, size_t buflen, int width,
+                               const char *box, struct SbEntry *sbe)
 {
   if (!buf || !box || !sbe)
     return;
@@ -308,13 +308,13 @@ static int cb_qsort_sbe(const void *a, const void *b)
   {
     case SORT_COUNT:
       if (m2->msg_count == m1->msg_count)
-        rc = mutt_str_strcoll(m1->path, m2->path);
+        rc = mutt_str_strcoll(mutt_b2s(m1->pathbuf), mutt_b2s(m2->pathbuf));
       else
         rc = (m2->msg_count - m1->msg_count);
       break;
     case SORT_UNREAD:
       if (m2->msg_unread == m1->msg_unread)
-        rc = mutt_str_strcoll(m1->path, m2->path);
+        rc = mutt_str_strcoll(mutt_b2s(m1->pathbuf), mutt_b2s(m2->pathbuf));
       else
         rc = (m2->msg_unread - m1->msg_unread);
       break;
@@ -323,15 +323,15 @@ static int cb_qsort_sbe(const void *a, const void *b)
       break;
     case SORT_FLAGGED:
       if (m2->msg_flagged == m1->msg_flagged)
-        rc = mutt_str_strcoll(m1->path, m2->path);
+        rc = mutt_str_strcoll(mutt_b2s(m1->pathbuf), mutt_b2s(m2->pathbuf));
       else
         rc = (m2->msg_flagged - m1->msg_flagged);
       break;
     case SORT_PATH:
     {
-      rc = mutt_inbox_cmp(m1->path, m2->path);
+      rc = mutt_inbox_cmp(mutt_b2s(m1->pathbuf), mutt_b2s(m2->pathbuf));
       if (rc == 0)
-        rc = mutt_str_strcoll(m1->path, m2->path);
+        rc = mutt_str_strcoll(mutt_b2s(m1->pathbuf), mutt_b2s(m2->pathbuf));
       break;
     }
   }
@@ -382,7 +382,7 @@ static void update_entries_visibility(void)
       continue;
     }
 
-    if (mutt_list_find(&SidebarWhitelist, sbe->mailbox->path) ||
+    if (mutt_list_find(&SidebarWhitelist, mutt_b2s(sbe->mailbox->pathbuf)) ||
         mutt_list_find(&SidebarWhitelist, sbe->mailbox->desc))
     {
       /* Explicitly asked to be visible */
@@ -847,7 +847,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     else if (m->msg_flagged > 0)
       SET_COLOR(MT_COLOR_FLAGGED);
     else if ((ColorDefs[MT_COLOR_SB_SPOOLFILE] != 0) &&
-             (mutt_str_strcmp(m->path, C_Spoolfile) == 0))
+             (mutt_str_strcmp(mutt_b2s(m->pathbuf), C_Spoolfile) == 0))
     {
       SET_COLOR(MT_COLOR_SB_SPOOLFILE);
     }
@@ -880,20 +880,21 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
 
     /* check whether C_Folder is a prefix of the current folder's path */
     bool maildir_is_prefix = false;
-    if ((mutt_str_strlen(m->path) > maildirlen) &&
-        (mutt_str_strncmp(C_Folder, m->path, maildirlen) == 0) &&
-        C_SidebarDelimChars && strchr(C_SidebarDelimChars, m->path[maildirlen]))
+    if ((mutt_buffer_len(m->pathbuf) > maildirlen) &&
+        (mutt_str_strncmp(C_Folder, mutt_b2s(m->pathbuf), maildirlen) == 0) && C_SidebarDelimChars &&
+        strchr(C_SidebarDelimChars, mutt_b2s(m->pathbuf)[maildirlen]))
     {
       maildir_is_prefix = true;
     }
 
     /* calculate depth of current folder and generate its display name with indented spaces */
     int sidebar_folder_depth = 0;
-    char *sidebar_folder_name = NULL;
+    const char *sidebar_folder_name;
+    struct Buffer *short_folder_name = NULL;
     if (C_SidebarShortPath)
     {
       /* disregard a trailing separator, so strlen() - 2 */
-      sidebar_folder_name = m->path;
+      sidebar_folder_name = mutt_b2s(m->pathbuf);
       for (int i = mutt_str_strlen(sidebar_folder_name) - 2; i >= 0; i--)
       {
         if (C_SidebarDelimChars && strchr(C_SidebarDelimChars, sidebar_folder_name[i]))
@@ -905,7 +906,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     }
     else if ((C_SidebarComponentDepth > 0) && C_SidebarDelimChars)
     {
-      sidebar_folder_name = m->path + maildir_is_prefix * (maildirlen + 1);
+      sidebar_folder_name = mutt_b2s(m->pathbuf) + maildir_is_prefix * (maildirlen + 1);
       for (int i = 0; i < C_SidebarComponentDepth; i++)
       {
         char *chars_after_delim = strpbrk(sidebar_folder_name, C_SidebarDelimChars);
@@ -916,7 +917,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
       }
     }
     else
-      sidebar_folder_name = m->path + maildir_is_prefix * (maildirlen + 1);
+      sidebar_folder_name = mutt_b2s(m->pathbuf) + maildir_is_prefix * (maildirlen + 1);
 
     if (m->desc)
     {
@@ -925,7 +926,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     else if (maildir_is_prefix && C_SidebarFolderIndent)
     {
       int lastsep = 0;
-      const char *tmp_folder_name = m->path + maildirlen + 1;
+      const char *tmp_folder_name = mutt_b2s(m->pathbuf) + maildirlen + 1;
       int tmplen = (int) mutt_str_strlen(tmp_folder_name) - 1;
       for (int i = 0; i < tmplen; i++)
       {
@@ -939,20 +940,17 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
       {
         if (C_SidebarShortPath)
           tmp_folder_name += lastsep; /* basename */
-        int sfn_len = mutt_str_strlen(tmp_folder_name) +
-                      sidebar_folder_depth * mutt_str_strlen(C_SidebarIndentString) + 1;
-        sidebar_folder_name = mutt_mem_malloc(sfn_len);
-        sidebar_folder_name[0] = '\0';
+        short_folder_name = mutt_buffer_pool_get();
         for (int i = 0; i < sidebar_folder_depth; i++)
-          mutt_str_strcat(sidebar_folder_name, sfn_len, NONULL(C_SidebarIndentString));
-        mutt_str_strcat(sidebar_folder_name, sfn_len, tmp_folder_name);
+          mutt_buffer_addstr(short_folder_name, NONULL(C_SidebarIndentString));
+        mutt_buffer_addstr(short_folder_name, tmp_folder_name);
+        sidebar_folder_name = mutt_b2s(short_folder_name);
       }
     }
     char str[256];
     make_sidebar_entry(str, sizeof(str), w, sidebar_folder_name, entry);
     printw("%s", str);
-    if (sidebar_folder_depth > 0)
-      FREE(&sidebar_folder_name);
+    mutt_buffer_pool_release(&short_folder_name);
     row++;
   }
 

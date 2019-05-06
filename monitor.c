@@ -92,7 +92,7 @@ struct MonitorInfo
   dev_t st_dev;
   ino_t st_ino;
   struct Monitor *monitor;
-  char path_buf[PATH_MAX]; /* access via path only (maybe not initialized) */
+  struct Buffer *path_buf; /* access via path only (maybe not initialized) */
 };
 
 /**
@@ -196,6 +196,24 @@ static struct Monitor *monitor_new(struct MonitorInfo *info, int descriptor)
   Monitor = monitor;
 
   return monitor;
+}
+
+/**
+ * monitor_info_init - Set up a file monitor
+ * @param info Monitor to initialise
+ */
+static void monitor_info_init(struct MonitorInfo *info)
+{
+  memset(info, 0, sizeof(*info));
+}
+
+/**
+ * monitor_info_free - Shutdown a file monitor
+ * @param info Monitor to shut down
+ */
+static void monitor_info_free(struct MonitorInfo *info)
+{
+  mutt_buffer_free(&info->path_buf);
 }
 
 /**
@@ -327,8 +345,10 @@ static int monitor_resolve(struct MonitorInfo *info, struct Mailbox *m)
 
   if (fmt)
   {
-    snprintf(info->path_buf, sizeof(info->path_buf), fmt, info->path);
-    info->path = info->path_buf;
+    if (!info->path_buf)
+      info->path_buf = mutt_buffer_new();
+    mutt_buffer_printf(info->path_buf, fmt, info->path);
+    info->path = mutt_b2s(info->path_buf);
   }
   if (stat(info->path, &sb) != 0)
     return RESOLVERES_FAIL_STAT;
@@ -441,13 +461,16 @@ int mutt_monitor_poll(void)
 int mutt_monitor_add(struct Mailbox *m)
 {
   struct MonitorInfo info;
+  monitor_info_init(&info);
 
+  int rc = 0;
   int desc = monitor_resolve(&info, m);
   if (desc != RESOLVERES_OK_NOTEXISTING)
   {
     if (!m && (desc == RESOLVERES_OK_EXISTING))
       MonitorContextDescriptor = info.monitor->desc;
-    return (desc == RESOLVERES_OK_EXISTING) ? 0 : -1;
+    rc = (desc == RESOLVERES_OK_EXISTING) ? 0 : -1;
+    goto cleanup;
   }
 
   uint32_t mask = info.isdir ? INOTIFY_MASK_DIR : INOTIFY_MASK_FILE;
@@ -456,7 +479,8 @@ int mutt_monitor_add(struct Mailbox *m)
   {
     mutt_debug(LL_DEBUG2, "inotify_add_watch failed for '%s', errno=%d %s\n",
                info.path, errno, strerror(errno));
-    return -1;
+    rc = -1;
+    goto cleanup;
   }
 
   mutt_debug(LL_DEBUG3, "inotify_add_watch descriptor=%d for '%s'\n", desc, info.path);
@@ -464,7 +488,10 @@ int mutt_monitor_add(struct Mailbox *m)
     MonitorContextDescriptor = desc;
 
   monitor_new(&info, desc);
-  return 0;
+
+cleanup:
+  monitor_info_free(&info);
+  return rc;
 }
 
 /**
@@ -479,6 +506,10 @@ int mutt_monitor_add(struct Mailbox *m)
 int mutt_monitor_remove(struct Mailbox *m)
 {
   struct MonitorInfo info, info2;
+  int rc = 0;
+
+  monitor_info_init(&info);
+  monitor_info_init(&info2);
 
   if (!m)
   {
@@ -487,7 +518,10 @@ int mutt_monitor_remove(struct Mailbox *m)
   }
 
   if (monitor_resolve(&info, m) != RESOLVERES_OK_EXISTING)
-    return 2;
+  {
+    rc = 2;
+    goto cleanup;
+  }
 
   if (Context)
   {
@@ -496,13 +530,17 @@ int mutt_monitor_remove(struct Mailbox *m)
       if ((monitor_resolve(&info2, NULL) == RESOLVERES_OK_EXISTING) &&
           (info.st_ino == info2.st_ino) && (info.st_dev == info2.st_dev))
       {
-        return 1;
+        rc = 1;
+        goto cleanup;
       }
     }
     else
     {
       if (mutt_find_mailbox(Context->mailbox->realpath))
-        return 1;
+      {
+        rc = 1;
+        goto cleanup;
+      }
     }
   }
 
@@ -512,5 +550,9 @@ int mutt_monitor_remove(struct Mailbox *m)
 
   monitor_delete(info.monitor);
   monitor_check_free();
-  return 0;
+
+cleanup:
+  monitor_info_free(&info);
+  monitor_info_free(&info2);
+  return rc;
 }

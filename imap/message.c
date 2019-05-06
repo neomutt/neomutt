@@ -64,6 +64,7 @@ struct BodyCache;
 
 /* These Config Variables are only used in imap/message.c */
 char *C_ImapHeaders; ///< Config: (imap) Additional email headers to download when getting index
+long C_ImapFetchChunkSize; ///< Config: (imap) Download headers in blocks of this size
 
 /**
  * imap_edata_free - free ImapHeader structure
@@ -581,31 +582,52 @@ static void imap_alloc_uid_hash(struct ImapAccountData *adata, unsigned int msn_
 
 /**
  * imap_fetch_msn_seqset - Generate a sequence set
- * @param b         Buffer for the result
- * @param adata Imap Account data
- * @param msn_begin First Message Sequence number
- * @param msn_end   Last Message Sequence number
+ * @param[in]  b             Buffer for the result
+ * @param[in]  adata         Imap Account data
+ * @param[in]  evalhc        If true, check the Header Cache
+ * @param[in]  msn_begin     First Message Sequence Number
+ * @param[in]  msn_end       Last Message Sequence Number
+ * @param[out] fetch_msn_end Highest Message Sequence Number fetched
  *
  * Generates a more complicated sequence set after using the header cache,
  * in case there are missing MSNs in the middle.
- *
- * There is a suggested limit of 1000 bytes for an IMAP client request.
- * Ideally, we would generate multiple requests if the number of ranges
- * is too big, but for now just abort to using the whole range.
  */
-static void imap_fetch_msn_seqset(struct Buffer *b, struct ImapAccountData *adata,
-                                  unsigned int msn_begin, unsigned int msn_end)
+static unsigned int imap_fetch_msn_seqset(struct Buffer *b, struct ImapAccountData *adata,
+                                          bool evalhc, unsigned int msn_begin,
+                                          unsigned int msn_end, unsigned int *fetch_msn_end)
 {
   struct ImapMboxData *mdata = adata->mailbox->mdata;
-  int chunks = 0;
+  unsigned int max_headers_per_fetch = UINT_MAX;
+  bool first_chunk = true;
   int state = 0; /* 1: single msn, 2: range of msn */
+  unsigned int msn;
   unsigned int range_begin = 0;
   unsigned int range_end = 0;
+  unsigned int msn_count = 0;
 
-  for (unsigned int msn = msn_begin; msn <= (msn_end + 1); msn++)
+  mutt_buffer_reset(b);
+  if (msn_end < msn_begin)
+    return 0;
+
+  if (C_ImapFetchChunkSize > 0)
+    max_headers_per_fetch = C_ImapFetchChunkSize;
+
+  if (!evalhc)
   {
-    if ((msn <= msn_end) && !mdata->msn_index[msn - 1])
+    if (msn_end - msn_begin + 1 <= max_headers_per_fetch)
+      *fetch_msn_end = msn_end;
+    else
+      *fetch_msn_end = msn_begin + max_headers_per_fetch - 1;
+    mutt_buffer_printf(b, "%u:%u", msn_begin, *fetch_msn_end);
+    return (*fetch_msn_end - msn_begin + 1);
+  }
+
+  for (msn = msn_begin; msn <= (msn_end + 1); msn++)
+  {
+    if (msn_count < max_headers_per_fetch && msn <= msn_end && !mdata->msn_index[msn - 1])
     {
+      msn_count++;
+
       switch (state)
       {
         case 1: /* single: convert to a range */
@@ -622,25 +644,26 @@ static void imap_fetch_msn_seqset(struct Buffer *b, struct ImapAccountData *adat
     }
     else if (state)
     {
-      if (chunks++)
+      if (first_chunk)
+        first_chunk = false;
+      else
         mutt_buffer_addch(b, ',');
-      if (chunks == 150)
-        break;
 
       if (state == 1)
         mutt_buffer_add_printf(b, "%u", range_begin);
       else if (state == 2)
         mutt_buffer_add_printf(b, "%u:%u", range_begin, range_end);
       state = 0;
+
+      if ((mutt_buffer_len(b) > 500) || (msn_count >= max_headers_per_fetch))
+        break;
     }
   }
 
-  /* Too big.  Just query the whole range then. */
-  if ((chunks == 150) || (mutt_str_strlen(b->data) > 500))
-  {
-    mutt_buffer_reset(b);
-    mutt_buffer_add_printf(b, "%u:%u", msn_begin, msn_end);
-  }
+  /* The loop index goes one past to terminate the range if needed. */
+  *fetch_msn_end = msn - 1;
+
+  return msn_count;
 }
 
 /**
@@ -995,7 +1018,7 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
  * @param[in]  m                Imap Selected Mailbox
  * @param[in]  msn_begin        First Message Sequence number
  * @param[in]  msn_end          Last Message Sequence number
- * @param[in]  evalhc           if true, check the Header Cache
+ * @param[in]  evalhc           If true, check the Header Cache
  * @param[out] maxuid           Highest UID seen
  * @param[in]  initial_download true, if this is the first opening of the mailbox
  * @retval  0 Success
@@ -1012,6 +1035,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
   char tempfile[_POSIX_PATH_MAX];
   FILE *fp = NULL;
   struct ImapHeader h;
+  struct Buffer *b = NULL;
   static const char *const want_headers =
       "DATE FROM SENDER SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE "
       "CONTENT-DESCRIPTION IN-REPLY-TO REPLY-TO LINES LIST-POST X-LABEL "
@@ -1054,25 +1078,26 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
   mutt_progress_init(&progress, _("Fetching message headers..."),
                      MUTT_PROGRESS_MSG, C_ReadInc, msn_end);
 
-  while ((msn_begin <= msn_end) && (fetch_msn_end < msn_end))
-  {
-    struct Buffer *b = mutt_buffer_new();
-    if (evalhc)
-    {
-      /* In case there are holes in the header cache. */
-      evalhc = false;
-      imap_fetch_msn_seqset(b, adata, msn_begin, msn_end);
-    }
-    else
-      mutt_buffer_add_printf(b, "%u:%u", msn_begin, msn_end);
+  b = mutt_buffer_pool_get();
 
-    fetch_msn_end = msn_end;
+  /* NOTE:
+   *   The (fetch_msn_end < msn_end) used to be important to prevent
+   *   an infinite loop, in the event the server did not return all
+   *   the headers (due to a pending expunge, for example).
+   *
+   *   I believe the new chunking imap_fetch_msn_seqset()
+   *   implementation and "msn_begin = fetch_msn_end + 1" assignment
+   *   at the end of the loop makes the comparison unneeded, but to be
+   *   cautious I'm keeping it.
+   */
+  while ((fetch_msn_end < msn_end) &&
+         imap_fetch_msn_seqset(b, adata, evalhc, msn_begin, msn_end, &fetch_msn_end))
+  {
     char *cmd = NULL;
     mutt_str_asprintf(&cmd, "FETCH %s (UID FLAGS INTERNALDATE RFC822.SIZE %s)",
-                      b->data, hdrreq);
+                      mutt_b2s(b), hdrreq);
     imap_cmd_start(adata, cmd);
     FREE(&cmd);
-    mutt_buffer_free(&b);
 
     rc = IMAP_CMD_CONTINUE;
     for (int msgno = msn_begin; rc == IMAP_CMD_CONTINUE; msgno++)
@@ -1176,16 +1201,9 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
         goto bail;
     }
 
-    /* In case we get new mail while fetching the headers.
-     *
-     * Note: The RFC says we shouldn't get any EXPUNGE responses in the
-     * middle of a FETCH.  But just to be cautious, use the current state
-     * of max_msn, not fetch_msn_end to set the next start range.  */
+    /* In case we get new mail while fetching the headers. */
     if (mdata->reopen & IMAP_NEWMAIL_PENDING)
     {
-      /* update to the last value we actually pulled down */
-      fetch_msn_end = mdata->max_msn;
-      msn_begin = mdata->max_msn + 1;
       msn_end = mdata->new_mail_count;
       while (msn_end > m->email_max)
         mx_alloc_memory(m);
@@ -1193,11 +1211,24 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
       mdata->reopen &= ~IMAP_NEWMAIL_PENDING;
       mdata->new_mail_count = 0;
     }
+
+    /* Note: RFC3501 section 7.4.1 and RFC7162 section 3.2.10.2 say we
+     * must not get any EXPUNGE/VANISHED responses in the middle of a
+     * FETCH, nor when no command is in progress (e.g. between the
+     * chunked FETCH commands).  We previously tried to be robust by
+     * setting:
+     *   msn_begin = idata->max_msn + 1;
+     * but with chunking (and the mythical header cache holes) this
+     * may not be correct.  So here we must assume the msn values have
+     * not been altered during or after the fetch.
+     */
+    msn_begin = fetch_msn_end + 1;
   }
 
   retval = 0;
 
 bail:
+  mutt_buffer_pool_release(&b);
   mutt_file_fclose(&fp);
   FREE(&hdrreq);
 
@@ -1563,7 +1594,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool
   /* check that the save-to folder is in the same account */
   if (!mutt_account_match(&adata->conn->account, &conn_account))
   {
-    mutt_debug(LL_DEBUG3, "%s not same server as %s\n", dest, m->path);
+    mutt_debug(LL_DEBUG3, "%s not same server as %s\n", dest, mutt_b2s(m->pathbuf));
     return 1;
   }
 

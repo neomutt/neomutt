@@ -308,7 +308,7 @@ static bool eat_query(struct Pattern *pat, int flags, struct Buffer *s, struct B
   }
   else
   {
-    char *escaped_folder = mutt_path_escape(Context->mailbox->path);
+    char *escaped_folder = mutt_path_escape(mutt_b2s(Context->mailbox->pathbuf));
     mutt_debug(LL_DEBUG2, "escaped folder path: %s\n", escaped_folder);
     mutt_buffer_addch(&cmd_buf, '\'');
     mutt_buffer_addstr(&cmd_buf, escaped_folder);
@@ -2556,6 +2556,7 @@ int mutt_search_command(int cur, int op)
       mutt_buffer_init(&err);
       OptSearchInvalid = true;
       mutt_str_strfcpy(LastSearch, buf, sizeof(LastSearch));
+      mutt_str_strfcpy(LastSearchExpn, mutt_b2s(tmp), sizeof(LastSearchExpn));
       mutt_message(_("Compiling search pattern..."));
       mutt_pattern_free(&SearchPattern);
       err.dsize = 256;
@@ -2567,6 +2568,7 @@ int mutt_search_command(int cur, int op)
         mutt_error("%s", err.data);
         FREE(&err.data);
         LastSearch[0] = '\0';
+        LastSearchExpn[0] = '\0';
         return -1;
       }
       FREE(&err.data);

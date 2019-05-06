@@ -118,7 +118,7 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if (mutt_str_strcmp(tmp, np->mailbox->path) == 0)
+    if (mutt_str_strcmp(tmp, mutt_b2s(np->mailbox->pathbuf)) == 0)
       break;
   }
 
@@ -187,7 +187,7 @@ int imap_browse(const char *path, struct BrowserState *state)
   struct ImapAccountData *adata = NULL;
   struct ImapList list;
   struct ConnAccount conn_account;
-  char buf[PATH_MAX];
+  char buf[PATH_MAX + 1];
   char mbox[PATH_MAX];
   char munged_mbox[PATH_MAX];
   const char *list_cmd = NULL;

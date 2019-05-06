@@ -610,14 +610,41 @@ int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
 int mutt_enter_fname_full(const char *prompt, char *buf, size_t buflen, bool mailbox,
                           bool multiple, char ***files, int *numfiles, SelectFileFlags flags)
 {
+  struct Buffer *fname = mutt_buffer_pool_get();
+
+  mutt_buffer_addstr(fname, NONULL(buf));
+  int rc = mutt_buffer_enter_fname_full(prompt, fname, mailbox, multiple, files,
+                                        numfiles, flags);
+  mutt_str_strfcpy(buf, mutt_b2s(fname), buflen);
+
+  mutt_buffer_pool_release(&fname);
+  return rc;
+}
+
+/**
+ * mutt_buffer_enter_fname_full - Ask the user to select a file
+ * @param[in]  prompt   Prompt
+ * @param[in]  fname    Buffer for the result
+ * @param[in]  mailbox  If true, select mailboxes
+ * @param[in]  multiple Allow multiple selections
+ * @param[out] files    List of files selected
+ * @param[out] numfiles Number of files selected
+ * @param[in]  flags    Flags, see #SelectFileFlags
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+int mutt_buffer_enter_fname_full(const char *prompt, struct Buffer *fname,
+                                 bool mailbox, bool multiple, char ***files,
+                                 int *numfiles, SelectFileFlags flags)
+{
   struct Event ch;
 
   SET_COLOR(MT_COLOR_PROMPT);
   mutt_window_mvaddstr(MuttMessageWindow, 0, 0, (char *) prompt);
   addstr(_(" ('?' for list): "));
   NORMAL_COLOR;
-  if (buf[0] != '\0')
-    addstr(buf);
+  if (mutt_buffer_len(fname))
+    addstr(mutt_b2s(fname));
   mutt_window_clrtoeol(MuttMessageWindow);
   mutt_refresh();
 
@@ -633,15 +660,15 @@ int mutt_enter_fname_full(const char *prompt, char *buf, size_t buflen, bool mai
   else if (ch.ch == '?')
   {
     mutt_refresh();
-    buf[0] = '\0';
+    mutt_buffer_reset(fname);
 
-    if (!flags)
+    if (flags == MUTT_SEL_NO_FLAGS)
       flags = MUTT_SEL_FOLDER;
     if (multiple)
       flags |= MUTT_SEL_MULTI;
     if (mailbox)
       flags |= MUTT_SEL_MAILBOX;
-    mutt_select_file(buf, buflen, flags, files, numfiles);
+    mutt_buffer_select_file(fname, flags, files, numfiles);
   }
   else
   {
@@ -649,11 +676,14 @@ int mutt_enter_fname_full(const char *prompt, char *buf, size_t buflen, bool mai
 
     sprintf(pc, "%s: ", prompt);
     mutt_unget_event(ch.op ? 0 : ch.ch, ch.op ? ch.op : 0);
-    if (mutt_get_field_full(pc, buf, buflen, (mailbox ? MUTT_EFILE : MUTT_FILE) | MUTT_CLEAR,
+
+    mutt_buffer_increase_size(fname, 1024);
+    if (mutt_get_field_full(pc, fname->data, fname->dsize,
+                            (mailbox ? MUTT_EFILE : MUTT_FILE) | MUTT_CLEAR,
                             multiple, files, numfiles) != 0)
-    {
-      buf[0] = '\0';
-    }
+      mutt_buffer_reset(fname);
+    else
+      mutt_buffer_fix_dptr(fname);
     FREE(&pc);
   }
 

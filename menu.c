@@ -324,7 +324,7 @@ static void menu_make_entry(char *buf, size_t buflen, struct Menu *menu, int i)
 {
   if (menu->dialog)
   {
-    mutt_str_strfcpy(buf, menu->dialog[i], buflen);
+    mutt_str_strfcpy(buf, NONULL(menu->dialog[i]), buflen);
     menu->current = -1; /* hide menubar */
   }
   else
@@ -1011,6 +1011,21 @@ void mutt_menu_destroy(struct Menu **p)
   }
 
   FREE(p);
+}
+
+/**
+ * mutt_menu_add_dialog_row - Add a row to a Menu
+ * @param menu Menu to add to
+ * @param row  Row of text to add
+ */
+void mutt_menu_add_dialog_row(struct Menu *menu, const char *row)
+{
+  if (menu->dsize <= menu->max)
+  {
+    menu->dsize += 10;
+    mutt_mem_realloc(&menu->dialog, menu->dsize * sizeof(char *));
+  }
+  menu->dialog[menu->max++] = mutt_str_strdup(row);
 }
 
 /**

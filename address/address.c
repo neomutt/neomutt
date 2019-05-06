@@ -647,15 +647,15 @@ struct Address *mutt_addr_parse_list2(struct Address *p, const char *s)
   const char *q = strpbrk(s, "\"<>():;,\\");
   if (!q)
   {
-    char tmp[8192];
-
-    mutt_str_strfcpy(tmp, s, sizeof(tmp));
-    char *r = tmp;
+    struct Buffer *tmp = mutt_buffer_pool_get();
+    mutt_buffer_strcpy(tmp, s);
+    char *r = tmp->data;
     while ((r = strtok(r, " \t")))
     {
       p = mutt_addr_parse_list(p, r);
       r = NULL;
     }
+    mutt_buffer_pool_release(&tmp);
   }
   else
     p = mutt_addr_parse_list(p, s);

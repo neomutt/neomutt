@@ -1414,7 +1414,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
           if ((op == OP_COMPOSE_ATTACH_MESSAGE) ^ (Context->mailbox->magic == MUTT_NNTP))
 #endif
           {
-            mutt_str_strfcpy(buf, Context->mailbox->path, sizeof(buf));
+            mutt_str_strfcpy(buf, mutt_b2s(Context->mailbox->pathbuf), sizeof(buf));
             mutt_pretty_mailbox(buf, sizeof(buf));
           }
 
@@ -1910,7 +1910,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         buf[0] = '\0';
         if (Context)
         {
-          mutt_str_strfcpy(buf, Context->mailbox->path, sizeof(buf));
+          mutt_str_strfcpy(buf, mutt_b2s(Context->mailbox->pathbuf), sizeof(buf));
           mutt_pretty_mailbox(buf, sizeof(buf));
         }
         if (actx->idxlen)

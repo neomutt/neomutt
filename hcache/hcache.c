@@ -362,10 +362,17 @@ void *mutt_hcache_fetch(header_cache_t *hc, const char *key, size_t keylen)
 }
 
 /**
- * mutt_hcache_fetch_raw - Find the data for a key in a database backend
- * @param hc     Header cache handle
- * @param key    A message identification string
- * @param keylen The length of the string pointed to by key
+ * mutt_hcache_fetch_raw - Fetch a message's header from the cache
+ * @param hc     Pointer to the header_cache_t structure got by mutt_hcache_open
+ * @param key    Message identification string
+ * @param keylen Length of the string pointed to by key
+ * @retval ptr  Success, the data if found
+ * @retval NULL Otherwise
+ *
+ * @note This function does not perform any check on the validity of the data
+ *       found.
+ * @note The returned pointer must be freed by calling mutt_hcache_free. This
+ *       must be done before closing the header cache with mutt_hcache_close.
  */
 void *mutt_hcache_fetch_raw(header_cache_t *hc, const char *key, size_t keylen)
 {
@@ -413,13 +420,13 @@ int mutt_hcache_store(header_cache_t *hc, const char *key, size_t keylen,
 }
 
 /**
- * mutt_hcache_store_raw - Store some data in a database backend
- * @param hc     Header cache handle
- * @param key    A message identification string
- * @param keylen The length of the string pointed to by key
- * @param data   Binary blob
- * @param dlen   Length of binary blob
- * @retval 0   Success
+ * mutt_hcache_store_raw - store a key / data pair
+ * @param hc     Pointer to the header_cache_t structure got by mutt_hcache_open
+ * @param key    Message identification string
+ * @param keylen Length of the string pointed to by key
+ * @param data   Payload to associate with key
+ * @param dlen   Length of the buffer pointed to by the @a data parameter
+ * @retval 0   success
  * @retval num Generic or backend-specific error code otherwise
  */
 int mutt_hcache_store_raw(header_cache_t *hc, const char *key, size_t keylen,
@@ -477,9 +484,10 @@ const char *mutt_hcache_backend_list(void)
 }
 
 /**
- * mutt_hcache_is_valid_backend - Is this a valid hcache backend name?
- * @param s Name to check
- * @retval true If valid
+ * mutt_hcache_is_valid_backend - Is the string a valid hcache backend
+ * @param s String identifying a backend
+ * @retval true  s is recognized as a valid backend
+ * @retval false otherwise
  */
 bool mutt_hcache_is_valid_backend(const char *s)
 {

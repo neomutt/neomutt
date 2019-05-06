@@ -1335,7 +1335,7 @@ static enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
       continue;
     }
 
-    mutt_str_strfcpy(m->path, buf->data, sizeof(m->path));
+    mutt_buffer_strcpy(m->pathbuf, buf->data);
     /* int rc = */ mx_path_canon2(m, C_Folder);
 
     bool new_account = false;
@@ -2371,7 +2371,6 @@ static enum CommandResult parse_unlists(struct Buffer *buf, struct Buffer *s,
 static enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
                                             unsigned long data, struct Buffer *err)
 {
-  char tmp[PATH_MAX];
   bool tmp_valid = false;
   bool clear_all = false;
 
@@ -2386,8 +2385,7 @@ static enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s
     }
     else
     {
-      mutt_str_strfcpy(tmp, buf->data, sizeof(tmp));
-      mutt_expand_path(tmp, sizeof(tmp));
+      mutt_buffer_expand_path(buf);
       tmp_valid = true;
     }
 
@@ -2400,11 +2398,12 @@ static enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s
       bool norm = ((np->mailbox->magic != MUTT_NOTMUCH) && !(data & MUTT_VIRTUAL));
       bool clear_this = clear_all && (virt || norm);
 
-      /* Compare against path or desc? Ensure 'tmp' is valid */
+      /* Compare against path or desc? Ensure 'buf' is valid */
       if (!clear_this && tmp_valid)
       {
-        clear_this = (mutt_str_strcasecmp(tmp, np->mailbox->path) == 0) ||
-                     (mutt_str_strcasecmp(tmp, np->mailbox->desc) == 0);
+        clear_this =
+            (mutt_str_strcasecmp(mutt_b2s(buf), mutt_b2s(np->mailbox->pathbuf)) == 0) ||
+            (mutt_str_strcasecmp(mutt_b2s(buf), np->mailbox->desc) == 0);
       }
 
       if (clear_this)
@@ -3232,7 +3231,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
     {
       if (mp->mailbox->magic == MUTT_NOTMUCH)
       {
-        cs_str_string_set(Config, "spoolfile", mp->mailbox->path, NULL);
+        cs_str_string_set(Config, "spoolfile", mutt_b2s(mp->mailbox->pathbuf), NULL);
         break;
       }
     }

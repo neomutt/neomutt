@@ -232,7 +232,7 @@ static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int c
 
         mutt_buffer_strcpy(path, C_SmimeCaLocation);
         mutt_buffer_expand_path(path);
-        mutt_buffer_quote_filename(buf1, mutt_b2s(path));
+        mutt_buffer_quote_filename(buf1, mutt_b2s(path), true);
 
         if ((stat(mutt_b2s(path), &sb) != 0) || !S_ISDIR(sb.st_mode))
           mutt_buffer_printf(buf2, "-CAfile %s", mutt_b2s(buf1));

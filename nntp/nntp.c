@@ -2432,12 +2432,12 @@ static int nntp_mbox_open(struct Mailbox *m)
   void *hc = NULL;
   anum_t first, last, count = 0;
 
-  struct Url *url = url_parse(m->path);
+  struct Url *url = url_parse(mutt_b2s(m->pathbuf));
   if (!url || !url->host || !url->path ||
       !((url->scheme == U_NNTP) || (url->scheme == U_NNTPS)))
   {
     url_free(&url);
-    mutt_error(_("%s is an invalid newsgroup specification"), m->path);
+    mutt_error(_("%s is an invalid newsgroup specification"), mutt_b2s(m->pathbuf));
     return -1;
   }
 

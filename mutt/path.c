@@ -36,6 +36,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include "path.h"
 #include "buffer.h"
 #include "logging.h"
 #include "memory.h"
@@ -590,11 +591,12 @@ char *mutt_path_escape(const char *src)
 /**
  * mutt_path_getcwd - Get the current working directory
  * @param cwd Buffer for the result
+ * @retval ptr String of current working directory
  */
-void mutt_path_getcwd(struct Buffer *cwd)
+const char *mutt_path_getcwd(struct Buffer *cwd)
 {
   if (!cwd)
-    return;
+    return NULL;
 
   mutt_buffer_increase_size(cwd, PATH_MAX);
   char *retval = getcwd(cwd->data, cwd->dsize);
@@ -607,4 +609,6 @@ void mutt_path_getcwd(struct Buffer *cwd)
     mutt_buffer_fix_dptr(cwd);
   else
     mutt_buffer_reset(cwd);
+
+  return retval;
 }

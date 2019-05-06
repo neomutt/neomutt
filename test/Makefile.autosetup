@@ -9,6 +9,7 @@ ADDRESS_OBJS	= test/address/mutt_addr_append.o \
 		  test/address/mutt_addr_has_recips.o \
 		  test/address/mutt_addr_is_intl.o \
 		  test/address/mutt_addr_is_local.o \
+		  test/address/mutt_addrlist_dedupe.o \
 		  test/address/mutt_addrlist_to_intl.o \
 		  test/address/mutt_addrlist_to_local.o \
 		  test/address/mutt_addr_mbox_to_udomain.o \
@@ -432,6 +433,19 @@ URL_OBJS	= test/url/url_pct_encode.o \
 		  test/url/url_pct_decode.o \
 		  test/url/url_tobuffer.o
 
+BUILD_DIRS	= $(PWD)/test/address $(PWD)/test/attach $(PWD)/test/base64 \
+		  $(PWD)/test/body $(PWD)/test/buffer $(PWD)/test/charset \
+		  $(PWD)/test/config $(PWD)/test/date $(PWD)/test/email \
+		  $(PWD)/test/envelope $(PWD)/test/envlist $(PWD)/test/file \
+		  $(PWD)/test/from $(PWD)/test/group $(PWD)/test/hash \
+		  $(PWD)/test/history $(PWD)/test/idna $(PWD)/test/list \
+		  $(PWD)/test/logging $(PWD)/test/mapping $(PWD)/test/mbyte \
+		  $(PWD)/test/md5 $(PWD)/test/memory $(PWD)/test/parameter \
+		  $(PWD)/test/parse $(PWD)/test/path $(PWD)/test/pattern \
+		  $(PWD)/test/regex $(PWD)/test/rfc2047 $(PWD)/test/rfc2231 \
+		  $(PWD)/test/sha1 $(PWD)/test/signal $(PWD)/test/string \
+		  $(PWD)/test/tags $(PWD)/test/thread $(PWD)/test/url
+
 TEST_OBJS	= test/main.o \
 		  $(ADDRESS_OBJS) \
 		  $(ATTACH_OBJS) \
@@ -478,7 +492,10 @@ TEST_BINARY = test/neomutt-test$(EXEEXT)
 test: $(TEST_BINARY)
 	$(TEST_BINARY)
 
-$(TEST_BINARY): $(TEST_OBJS) $(MUTTLIBS)
+$(BUILD_DIRS):
+	$(MKDIR_P) $@
+
+$(TEST_BINARY): $(BUILD_DIRS) $(TEST_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(TEST_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
 all-test: $(TEST_BINARY)

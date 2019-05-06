@@ -93,7 +93,7 @@ char *C_NmRepliedTag; ///< Config: (notmuch) Tag to use for replied messages
 static header_cache_t *nm_hcache_open(struct Mailbox *m)
 {
 #ifdef USE_HCACHE
-  return mutt_hcache_open(C_HeaderCache, m->path, NULL);
+  return mutt_hcache_open(C_HeaderCache, mutt_b2s(m->pathbuf), NULL);
 #else
   return NULL;
 #endif
@@ -307,7 +307,7 @@ static int init_mailbox(struct Mailbox *m)
   if (m->mdata)
     return 0;
 
-  m->mdata = nm_mdata_new(m->path);
+  m->mdata = nm_mdata_new(mutt_b2s(m->pathbuf));
   if (!m->mdata)
     return -1;
 
@@ -1926,10 +1926,10 @@ static int nm_mbox_check_stats(struct Mailbox *m, int flags)
   int limit = C_NmDbLimit;
   mutt_debug(LL_DEBUG1, "nm: count\n");
 
-  url = url_parse(m->path);
+  url = url_parse(mutt_b2s(m->pathbuf));
   if (!url)
   {
-    mutt_error(_("failed to parse notmuch uri: %s"), m->path);
+    mutt_error(_("failed to parse notmuch uri: %s"), mutt_b2s(m->pathbuf));
     goto done;
   }
 
@@ -2019,7 +2019,7 @@ int nm_description_to_path(const char *desc, char *buf, size_t buflen)
     if ((np->mailbox->magic == MUTT_NOTMUCH) && np->mailbox->desc &&
         (strcmp(desc, np->mailbox->desc) == 0))
     {
-      mutt_str_strfcpy(buf, np->mailbox->path, buflen);
+      mutt_str_strfcpy(buf, mutt_b2s(np->mailbox->pathbuf), buflen);
       buf[buflen - 1] = '\0';
       return 0;
     }
@@ -2372,7 +2372,7 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
 
   int rc = 0;
   struct Progress progress;
-  char *uri = mutt_str_strdup(m->path);
+  char *uri = mutt_str_strdup(mutt_b2s(m->pathbuf));
   bool changed = false;
   char msgbuf[PATH_MAX + 64];
 
@@ -2381,7 +2381,7 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
   if (!m->quiet)
   {
     /* all is in this function so we don't use data->progress here */
-    snprintf(msgbuf, sizeof(msgbuf), _("Writing %s..."), m->path);
+    snprintf(msgbuf, sizeof(msgbuf), _("Writing %s..."), mutt_b2s(m->pathbuf));
     mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, C_WriteInc, m->msg_count);
   }
 
@@ -2408,10 +2408,10 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
     else
       email_get_fullpath(e, old, sizeof(old));
 
-    mutt_str_strfcpy(m->path, edata->folder, sizeof(m->path));
+    mutt_buffer_strcpy(m->pathbuf, edata->folder);
     m->magic = edata->magic;
     rc = mh_sync_mailbox_message(m, i, h);
-    mutt_str_strfcpy(m->path, uri, sizeof(m->path));
+    mutt_buffer_strcpy(m->pathbuf, uri);
     m->magic = MUTT_NOTMUCH;
 
     if (rc)
@@ -2431,7 +2431,7 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
     FREE(&edata->oldpath);
   }
 
-  mutt_str_strfcpy(m->path, uri, sizeof(m->path));
+  mutt_buffer_strcpy(m->pathbuf, uri);
   m->magic = MUTT_NOTMUCH;
 
   nm_db_release(m);

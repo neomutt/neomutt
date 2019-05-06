@@ -1912,7 +1912,7 @@ struct PagerRedrawData
   PagerFlags search_flag;
   bool search_back;
   const char *banner;
-  char *helpstr;
+  const char *helpstr;
   char *searchbuf;
   struct Line *line_info;
   FILE *fp;
@@ -2234,8 +2234,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 {
   static char searchbuf[256] = "";
   char buf[1024];
-  char helpstr[256];
-  char tmphelp[256];
+  struct Buffer *helpstr = NULL;
   int ch = 0, rc = -1;
   bool first = true;
   int searchctx = 0;
@@ -2256,7 +2255,6 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   rd.extra = extra;
   rd.indexlen = C_PagerIndexLines;
   rd.indicator = rd.indexlen / 3;
-  rd.helpstr = helpstr;
   rd.searchbuf = searchbuf;
   rd.has_types = (IsEmail(extra) || (flags & MUTT_SHOWCOLOR)) ? MUTT_TYPES : 0; /* main message or rfc822 attachment */
 
@@ -2294,24 +2292,27 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
     (rd.line_info[i].syntax)[0].last = -1;
   }
 
-  mutt_compile_help(helpstr, sizeof(helpstr), MENU_PAGER, PagerHelp);
+  helpstr = mutt_buffer_new();
+  mutt_compile_help(buf, sizeof(buf), MENU_PAGER, PagerHelp);
+  mutt_buffer_strcpy(helpstr, buf);
   if (IsEmail(extra))
   {
-    mutt_str_strfcpy(tmphelp, helpstr, sizeof(tmphelp));
     mutt_compile_help(buf, sizeof(buf), MENU_PAGER,
 #ifdef USE_NNTP
                       (Context && (Context->mailbox->magic == MUTT_NNTP)) ?
                           PagerNewsHelpExtra :
 #endif
                           PagerHelpExtra);
-    snprintf(helpstr, sizeof(helpstr), "%s %s", tmphelp, buf);
+    mutt_buffer_addch(helpstr, ' ');
+    mutt_buffer_addstr(helpstr, buf);
   }
   if (!InHelp)
   {
-    mutt_str_strfcpy(tmphelp, helpstr, sizeof(tmphelp));
     mutt_make_help(buf, sizeof(buf), _("Help"), MENU_PAGER, OP_HELP);
-    snprintf(helpstr, sizeof(helpstr), "%s %s", tmphelp, buf);
+    mutt_buffer_addch(helpstr, ' ');
+    mutt_buffer_addstr(helpstr, buf);
   }
+  rd.helpstr = mutt_b2s(helpstr);
 
   rd.index_status_window = mutt_mem_calloc(1, sizeof(struct MuttWindow));
   rd.index_window = mutt_mem_calloc(1, sizeof(struct MuttWindow));
@@ -2371,7 +2372,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       int check = mx_mbox_check(Context->mailbox, &index_hint);
       if (check < 0)
       {
-        if (!Context->mailbox || (Context->mailbox->path[0] == '\0'))
+        if (!Context->mailbox || mutt_buffer_is_empty(Context->mailbox->pathbuf))
         {
           /* fatal error occurred */
           ctx_free(&Context);
@@ -3575,6 +3576,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   if (rd.index)
     mutt_menu_destroy(&rd.index);
 
+  mutt_buffer_free(&helpstr);
   FREE(&rd.index_status_window);
   FREE(&rd.index_window);
   FREE(&rd.pager_status_window);

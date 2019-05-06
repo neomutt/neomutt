@@ -140,13 +140,13 @@ static int setup_paths(struct Mailbox *m)
   char tmp[PATH_MAX];
 
   /* Setup the right paths */
-  mutt_str_strfcpy(m->realpath, m->path, sizeof(m->realpath));
+  mutt_str_replace(&m->realpath, mutt_b2s(m->pathbuf));
 
   /* We will uncompress to /tmp */
   mutt_mktemp(tmp, sizeof(tmp));
-  mutt_str_strfcpy(m->path, tmp, sizeof(m->path));
+  mutt_buffer_strcpy(m->pathbuf, tmp);
 
-  FILE *fp = mutt_file_fopen(m->path, "w");
+  FILE *fp = mutt_file_fopen(mutt_b2s(m->pathbuf), "w");
   if (!fp)
     return -1;
 
@@ -215,12 +215,12 @@ static struct CompressInfo *set_compress_info(struct Mailbox *m)
     return m->compress_info;
 
   /* Open is compulsory */
-  const char *o = find_hook(MUTT_OPEN_HOOK, m->path);
+  const char *o = find_hook(MUTT_OPEN_HOOK, mutt_b2s(m->pathbuf));
   if (!o)
     return NULL;
 
-  const char *c = find_hook(MUTT_CLOSE_HOOK, m->path);
-  const char *a = find_hook(MUTT_APPEND_HOOK, m->path);
+  const char *c = find_hook(MUTT_CLOSE_HOOK, mutt_b2s(m->pathbuf));
+  const char *a = find_hook(MUTT_APPEND_HOOK, mutt_b2s(m->pathbuf));
 
   struct CompressInfo *ci = mutt_mem_calloc(1, sizeof(struct CompressInfo));
   m->compress_info = ci;
@@ -268,20 +268,27 @@ static const char *compress_format_str(char *buf, size_t buflen, size_t col, int
     return src;
 
   struct Mailbox *m = (struct Mailbox *) data;
-  const char *stuffing = NULL;
 
+  /* NOTE the compressed file config vars expect %f and %t to be
+   * surrounded by '' (unlike other Mutt config vars, which add the
+   * outer quotes for the user).  This is why we use the
+   * mutt_buffer_quote_filename() form with add_outer of false. */
+  struct Buffer *quoted = mutt_buffer_pool_get();
   switch (op)
   {
     case 'f':
       /* Compressed file */
-      stuffing = mutt_path_escape(m->realpath);
+      mutt_buffer_quote_filename(quoted, m->realpath, false);
+      snprintf(buf, buflen, "%s", mutt_b2s(quoted));
       break;
     case 't':
       /* Plaintext, temporary file */
-      stuffing = mutt_path_escape(m->path);
+      mutt_buffer_quote_filename(quoted, mutt_b2s(m->pathbuf), false);
+      snprintf(buf, buflen, "%s", mutt_b2s(quoted));
       break;
   }
-  snprintf(buf, buflen, "%s", NONULL(stuffing));
+
+  mutt_buffer_pool_release(&quoted);
   return src;
 }
 
@@ -377,7 +384,8 @@ bool mutt_comp_can_append(struct Mailbox *m)
   if (ci->cmd_append || ci->cmd_close)
     return true;
 
-  mutt_error(_("Can't append without an append-hook or close-hook : %s"), m->path);
+  mutt_error(_("Can't append without an append-hook or close-hook : %s"),
+             mutt_b2s(m->pathbuf));
   return false;
 }
 
@@ -464,7 +472,7 @@ static int comp_mbox_open(struct Mailbox *m)
     return -1;
 
   /* If there's no close-hook, or the file isn't writable */
-  if (!ci->cmd_close || (access(m->path, W_OK) != 0))
+  if (!ci->cmd_close || (access(mutt_b2s(m->pathbuf), W_OK) != 0))
     m->readonly = true;
 
   if (setup_paths(m) != 0)
@@ -483,7 +491,7 @@ static int comp_mbox_open(struct Mailbox *m)
 
   unlock_realpath(m);
 
-  m->magic = mx_path_probe(m->path, NULL);
+  m->magic = mx_path_probe(mutt_b2s(m->pathbuf), NULL);
   if (m->magic == MUTT_UNKNOWN)
   {
     mutt_error(_("Can't identify the contents of the compressed file"));
@@ -502,7 +510,7 @@ static int comp_mbox_open(struct Mailbox *m)
 
 cmo_fail:
   /* remove the partial uncompressed file */
-  remove(m->path);
+  remove(mutt_b2s(m->pathbuf));
   free_compress_info(m);
   return -1;
 }
@@ -528,7 +536,8 @@ static int comp_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
   /* To append we need an append-hook or a close-hook */
   if (!ci->cmd_append && !ci->cmd_close)
   {
-    mutt_error(_("Can't append without an append-hook or close-hook : %s"), m->path);
+    mutt_error(_("Can't append without an append-hook or close-hook : %s"),
+               mutt_b2s(m->pathbuf));
     goto cmoa_fail1;
   }
 
@@ -552,7 +561,7 @@ static int comp_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
       mutt_error(_("Compress command failed: %s"), ci->cmd_open);
       goto cmoa_fail2;
     }
-    m->magic = mx_path_probe(m->path, NULL);
+    m->magic = mx_path_probe(mutt_b2s(m->pathbuf), NULL);
   }
   else
     m->magic = C_MboxType;
@@ -578,7 +587,7 @@ static int comp_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 
 cmoa_fail2:
   /* remove the partial uncompressed file */
-  remove(m->path);
+  remove(mutt_b2s(m->pathbuf));
 cmoa_fail1:
   /* Free the compress_info to prevent close from trying to recompress */
   free_compress_info(m);
@@ -727,23 +736,23 @@ static int comp_mbox_close(struct Mailbox *m)
     if (rc == 0)
     {
       mutt_any_key_to_continue(NULL);
-      mutt_error(_("Error. Preserving temporary file: %s"), m->path);
+      mutt_error(_("Error. Preserving temporary file: %s"), mutt_b2s(m->pathbuf));
     }
     else
-      remove(m->path);
+      remove(mutt_b2s(m->pathbuf));
 
     unlock_realpath(m);
   }
   else
   {
     /* If the file was removed, remove the compressed folder too */
-    if ((access(m->path, F_OK) != 0) && !C_SaveEmpty)
+    if ((access(mutt_b2s(m->pathbuf), F_OK) != 0) && !C_SaveEmpty)
     {
       remove(m->realpath);
     }
     else
     {
-      remove(m->path);
+      remove(mutt_b2s(m->pathbuf));
     }
   }
 

@@ -163,7 +163,6 @@ static struct Remailer **mix_type2_list(size_t *l)
     return NULL;
 
   FILE *fp = NULL;
-  char cmd[STR_COMMAND];
   char line[8192];
   char *t = NULL;
 
@@ -174,14 +173,19 @@ static struct Remailer **mix_type2_list(size_t *l)
   if (fd_null == -1)
     return NULL;
 
-  snprintf(cmd, sizeof(cmd), "%s -T", C_Mixmaster);
+  struct Buffer *cmd = mutt_buffer_pool_get();
+  mutt_buffer_printf(cmd, "%s -T", C_Mixmaster);
 
-  pid_t mm_pid = mutt_create_filter_fd(cmd, NULL, &fp, NULL, fd_null, -1, fd_null);
+  pid_t mm_pid =
+      mutt_create_filter_fd(mutt_b2s(cmd), NULL, &fp, NULL, fd_null, -1, fd_null);
   if (mm_pid == -1)
   {
+    mutt_buffer_pool_release(&cmd);
     close(fd_null);
     return NULL;
   }
+
+  mutt_buffer_pool_release(&cmd);
 
   /* first, generate the "random" remailer */
 
@@ -830,7 +834,7 @@ int mix_send_message(struct ListHead *chain, const char *tempfile)
   STAILQ_FOREACH(np, chain, entries)
   {
     mutt_buffer_addstr(cmd, i ? "," : " -l ");
-    mutt_buffer_quote_filename(cd_quoted, (char *) np->data);
+    mutt_buffer_quote_filename(cd_quoted, (char *) np->data, true);
     mutt_buffer_addstr(cmd, mutt_b2s(cd_quoted));
     i = 1;
   }

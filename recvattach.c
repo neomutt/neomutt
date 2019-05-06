@@ -1137,9 +1137,9 @@ int mutt_attach_display_loop(struct Menu *menu, int op, struct Email *e,
  * @param level       Attachment depth
  * @param decrypted   True if attachment has been decrypted
  */
-static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *e,
-                                          struct Body *parts, FILE *fp,
-                                          int parent_type, int level, bool decrypted)
+void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *e,
+                                   struct Body *parts, FILE *fp,
+                                   int parent_type, int level, bool decrypted)
 {
   struct AttachPtr *new = NULL;
   struct Body *m = NULL;

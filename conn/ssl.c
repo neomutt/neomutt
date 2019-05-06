@@ -886,55 +886,52 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   char buf[256];
   char title[256];
   struct Menu *menu = mutt_menu_new(MENU_GENERIC);
-  int done, row;
+  int done;
   FILE *fp = NULL;
   int ALLOW_SKIP = 0; /* All caps tells Coverity that this is effectively a preproc condition */
 
   mutt_menu_push_current(menu);
 
-  menu->max = mutt_array_size(part) * 2 + 11;
-  menu->dialog = mutt_mem_calloc(1, menu->max * sizeof(char *));
-  for (int i = 0; i < menu->max; i++)
-    menu->dialog[i] = mutt_mem_calloc(1, dialog_row_len * sizeof(char));
+  struct Buffer *drow = mutt_buffer_pool_get();
 
-  row = 0;
-  mutt_str_strfcpy(menu->dialog[row], _("This certificate belongs to:"), dialog_row_len);
-  row++;
+  mutt_menu_add_dialog_row(menu, _("This certificate belongs to:"));
   x509_subject = X509_get_subject_name(cert);
   for (unsigned int u = 0; u < mutt_array_size(part); u++)
   {
-    snprintf(menu->dialog[row++], dialog_row_len, "   %s",
-             x509_get_part(x509_subject, part[u]));
+    mutt_buffer_printf(drow, "   %s", x509_get_part(x509_subject, part[u]));
+    mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
   }
 
-  row++;
-  mutt_str_strfcpy(menu->dialog[row], _("This certificate was issued by:"), dialog_row_len);
-  row++;
+  mutt_menu_add_dialog_row(menu, "");
+  mutt_menu_add_dialog_row(menu, _("This certificate was issued by:"));
   x509_issuer = X509_get_issuer_name(cert);
   for (unsigned int u = 0; u < mutt_array_size(part); u++)
   {
-    snprintf(menu->dialog[row++], dialog_row_len, "   %s",
-             x509_get_part(x509_issuer, part[u]));
+    mutt_buffer_printf(drow, "   %s", x509_get_part(x509_issuer, part[u]));
+    mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
   }
 
-  row++;
-  snprintf(menu->dialog[row++], dialog_row_len, "%s", _("This certificate is valid"));
-  snprintf(menu->dialog[row++], dialog_row_len, _("   from %s"),
-           asn1time_to_string(X509_getm_notBefore(cert)));
-  snprintf(menu->dialog[row++], dialog_row_len, _("     to %s"),
-           asn1time_to_string(X509_getm_notAfter(cert)));
+  mutt_menu_add_dialog_row(menu, "");
+  mutt_menu_add_dialog_row(menu, _("This certificate is valid"));
+  mutt_buffer_printf(drow, _("   from %s"), asn1time_to_string(X509_getm_notBefore(cert)));
+  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
+  mutt_buffer_printf(drow, _("     to %s"), asn1time_to_string(X509_getm_notAfter(cert)));
+  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
 
-  row++;
+  mutt_menu_add_dialog_row(menu, "");
   buf[0] = '\0';
   x509_fingerprint(buf, sizeof(buf), cert, EVP_sha1);
-  snprintf(menu->dialog[row++], dialog_row_len, _("SHA1 Fingerprint: %s"), buf);
+  mutt_buffer_printf(drow, _("SHA1 Fingerprint: %s"), buf);
+  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
   buf[0] = '\0';
   buf[40] = '\0'; /* Ensure the second printed line is null terminated */
   x509_fingerprint(buf, sizeof(buf), cert, EVP_sha256);
   buf[39] = '\0'; /* Divide into two lines of output */
-  snprintf(menu->dialog[row++], dialog_row_len, "%s%s", _("SHA256 Fingerprint: "), buf);
-  snprintf(menu->dialog[row++], dialog_row_len, "%*s%s",
-           (int) mutt_str_strlen(_("SHA256 Fingerprint: ")), "", buf + 40);
+  mutt_buffer_printf(drow, "%s%s", _("SHA256 Fingerprint: "), buf);
+  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
+  mutt_buffer_printf(drow, "%*s%s",
+                     (int) mutt_str_strlen(_("SHA256 Fingerprint: ")), "", buf + 40);
+  mutt_menu_add_dialog_row(menu, mutt_b2s(drow));
 
   snprintf(title, sizeof(title),
            _("SSL Certificate check (certificate %zu of %zu in chain)"), len - idx, len);
@@ -1026,6 +1023,8 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
     }
   }
   OptIgnoreMacroEvents = false;
+
+  mutt_buffer_pool_release(&drow);
   mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);
   mutt_debug(LL_DEBUG2, "done=%d\n", done);
@@ -1422,7 +1421,7 @@ int mutt_ssl_starttls(struct Connection *conn)
 }
 
 /**
- * mutt_ssl_socket_setup - Set up the socket multiplexor
+ * mutt_ssl_socket_setup - Set up SSL socket mulitplexor
  * @param conn Connection to a server
  * @retval  0 Success
  * @retval -1 Error

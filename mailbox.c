@@ -93,6 +93,8 @@ struct Mailbox *mailbox_new(void)
 {
   struct Mailbox *m = mutt_mem_calloc(1, sizeof(struct Mailbox));
 
+  m->pathbuf = mutt_buffer_new();
+
   return m;
 }
 
@@ -108,9 +110,11 @@ void mailbox_free(struct Mailbox **ptr)
   struct Mailbox *m = *ptr;
   mutt_mailbox_changed(m, MBN_CLOSED);
 
+  mutt_buffer_free(&m->pathbuf);
   FREE(&m->desc);
   if (m->mdata && m->free_mdata)
     m->free_mdata(&m->mdata);
+  FREE(&m->realpath);
   FREE(ptr);
 }
 
@@ -133,7 +137,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
   int orig_flagged = m_check->msg_flagged;
 #endif
 
-  enum MailboxType mb_magic = mx_path_probe(m_check->path, NULL);
+  enum MailboxType mb_magic = mx_path_probe(mutt_b2s(m_check->pathbuf), NULL);
 
   switch (mb_magic)
   {
@@ -148,9 +152,10 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
     default:
       m_check->has_new = false;
 
-      if ((stat(m_check->path, &sb) != 0) || (S_ISREG(sb.st_mode) && (sb.st_size == 0)) ||
+      if ((stat(mutt_b2s(m_check->pathbuf), &sb) != 0) ||
+          (S_ISREG(sb.st_mode) && (sb.st_size == 0)) ||
           ((m_check->magic == MUTT_UNKNOWN) &&
-           ((m_check->magic = mx_path_probe(m_check->path, NULL)) <= 0)))
+           ((m_check->magic = mx_path_probe(mutt_b2s(m_check->pathbuf), NULL)) <= 0)))
       {
         /* if the mailbox still doesn't exist, set the newly created flag to be
          * ready for when it does. */
@@ -163,10 +168,10 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
   }
 
   /* check to see if the folder is the currently selected folder before polling */
-  if (!m_cur || (m_cur->path[0] == '\0') ||
+  if (!m_cur || mutt_buffer_is_empty(m_cur->pathbuf) ||
       (((m_check->magic == MUTT_IMAP) || (m_check->magic == MUTT_NNTP) ||
         (m_check->magic == MUTT_NOTMUCH) || (m_check->magic == MUTT_POP)) ?
-           (mutt_str_strcmp(m_check->path, m_cur->path) != 0) :
+           (mutt_str_strcmp(mutt_b2s(m_check->pathbuf), mutt_b2s(m_cur->pathbuf)) != 0) :
            ((sb.st_dev != ctx_sb->st_dev) || (sb.st_ino != ctx_sb->st_ino))))
   {
     switch (m_check->magic)
@@ -183,7 +188,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
       default:; /* do nothing */
     }
   }
-  else if (C_CheckMboxSize && m_cur && (m_cur->path[0] != '\0'))
+  else if (C_CheckMboxSize && m_cur && mutt_buffer_is_empty(m_cur->pathbuf))
     m_check->size = (off_t) sb.st_size; /* update the size of current folder */
 
 #ifdef USE_SIDEBAR
@@ -273,7 +278,7 @@ struct Mailbox *mutt_find_mailbox(const char *path)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if ((stat(np->mailbox->path, &tmp_sb) == 0) &&
+    if ((stat(mutt_b2s(np->mailbox->pathbuf), &tmp_sb) == 0) &&
         (sb.st_dev == tmp_sb.st_dev) && (sb.st_ino == tmp_sb.st_ino))
     {
       return np->mailbox;
@@ -315,7 +320,7 @@ void mutt_update_mailbox(struct Mailbox *m)
   if (!m)
     return;
 
-  if (stat(m->path, &sb) == 0)
+  if (stat(mutt_b2s(m->pathbuf), &sb) == 0)
     m->size = (off_t) sb.st_size;
   else
     m->size = 0;
@@ -371,7 +376,7 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
 #ifdef USE_NNTP
       || (m_cur->magic == MUTT_NNTP)
 #endif
-      || stat(m_cur->path, &contex_sb) != 0)
+      || stat(mutt_b2s(m_cur->pathbuf), &contex_sb) != 0)
   {
     contex_sb.st_dev = 0;
     contex_sb.st_ino = 0;
@@ -394,12 +399,13 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
  */
 bool mutt_mailbox_list(void)
 {
-  char path[PATH_MAX];
   char mailboxlist[512];
   size_t pos = 0;
   int first = 1;
 
   int have_unnotified = MailboxNotify;
+
+  struct Buffer *path = mutt_buffer_pool_get();
 
   mailboxlist[0] = '\0';
   pos += strlen(strncat(mailboxlist, _("New mail in "), sizeof(mailboxlist) - 1 - pos));
@@ -410,11 +416,11 @@ bool mutt_mailbox_list(void)
     if (!np->mailbox->has_new || (have_unnotified && np->mailbox->notified))
       continue;
 
-    mutt_str_strfcpy(path, np->mailbox->path, sizeof(path));
-    mutt_pretty_mailbox(path, sizeof(path));
+    mutt_buffer_strcpy(path, mutt_b2s(np->mailbox->pathbuf));
+    mutt_buffer_pretty_mailbox(path);
 
     if (!first && (MuttMessageWindow->cols >= 7) &&
-        (pos + strlen(path) >= (size_t) MuttMessageWindow->cols - 7))
+        ((pos + mutt_buffer_len(path)) >= ((size_t) MuttMessageWindow->cols - 7)))
     {
       break;
     }
@@ -429,7 +435,7 @@ bool mutt_mailbox_list(void)
       np->mailbox->notified = true;
       MailboxNotify--;
     }
-    pos += strlen(strncat(mailboxlist + pos, path, sizeof(mailboxlist) - 1 - pos));
+    pos += strlen(strncat(mailboxlist + pos, mutt_b2s(path), sizeof(mailboxlist) - 1 - pos));
     first = 0;
   }
 
@@ -437,15 +443,21 @@ bool mutt_mailbox_list(void)
   {
     strncat(mailboxlist + pos, ", ...", sizeof(mailboxlist) - 1 - pos);
   }
+
+  mutt_buffer_pool_release(&path);
+
   if (!first)
   {
     mutt_message("%s", mailboxlist);
     return true;
   }
-  /* there were no mailboxes needing to be notified, so clean up since
-   * MailboxNotify has somehow gotten out of sync */
-  MailboxNotify = 0;
-  return false;
+  else
+  {
+    /* there were no mailboxes needing to be notified, so clean up since
+     * MailboxNotify has somehow gotten out of sync */
+    MailboxNotify = 0;
+    return false;
+  }
 }
 
 /**
@@ -501,14 +513,14 @@ void mutt_buffer_mailbox(struct Mailbox *m_cur, struct Buffer *s)
       {
         if (np->mailbox->magic == MUTT_NOTMUCH) /* only match real mailboxes */
           continue;
-        mutt_expand_path(np->mailbox->path, sizeof(np->mailbox->path));
+        mutt_buffer_expand_path(np->mailbox->pathbuf);
         if ((found || pass) && np->mailbox->has_new)
         {
-          mutt_buffer_strcpy(s, np->mailbox->path);
+          mutt_buffer_strcpy(s, mutt_b2s(np->mailbox->pathbuf));
           mutt_buffer_pretty_mailbox(s);
           return;
         }
-        if (mutt_str_strcmp(mutt_b2s(s), np->mailbox->path) == 0)
+        if (mutt_str_strcmp(mutt_b2s(s), mutt_b2s(np->mailbox->pathbuf)) == 0)
           found = 1;
       }
     }

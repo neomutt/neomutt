@@ -250,8 +250,8 @@ static int get_wrapped_width(const char *t, size_t wid)
  * @param fp  File to write to
  * @param col Current screen column
  * @param i   Screen column to pad until
- * @retval i   Padding was added
- * @retval col Content was already wider than col
+ * @retval num `i` - Padding was added
+ * @retval num `col` - Content was already wider than col
  */
 static int pad(FILE *fp, int col, int i)
 {

@@ -116,18 +116,18 @@ int rfc1524_expand_command(struct Body *a, const char *filename,
         if (C_MailcapSanitize)
           mutt_file_sanitize_filename(pvalue, false);
 
-        mutt_buffer_quote_filename(quoted, pvalue);
+        mutt_buffer_quote_filename(quoted, pvalue, true);
         mutt_buffer_addstr(buf, mutt_b2s(quoted));
       }
       else if ((command[x] == 's') && filename)
       {
-        mutt_buffer_quote_filename(quoted, filename);
+        mutt_buffer_quote_filename(quoted, filename, true);
         mutt_buffer_addstr(buf, mutt_b2s(quoted));
         needspipe = false;
       }
       else if (command[x] == 't')
       {
-        mutt_buffer_quote_filename(quoted, type);
+        mutt_buffer_quote_filename(quoted, type, true);
         mutt_buffer_addstr(buf, mutt_b2s(quoted));
       }
       x++;
@@ -144,7 +144,7 @@ int rfc1524_expand_command(struct Body *a, const char *filename,
 }
 
 /**
- * rfc1524_expand_command - Expand expandos in a command
+ * mutt_buffer_rfc1524_expand_command - Expand expandos in a command
  * @param a        Email Body
  * @param filename File containing the email text
  * @param type     Type, e.g. "text/plain"

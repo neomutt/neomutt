@@ -29,14 +29,15 @@
 
 void test_rfc2231_encode_string(void)
 {
-  // int rfc2231_encode_string(char **pd);
+  // struct ParameterList rfc2231_encode_string(const char *attribute, char *value);
 
   {
-    TEST_CHECK(rfc2231_encode_string(NULL) == 0);
+    struct ParameterList apple = rfc2231_encode_string(NULL, "apple");
+    TEST_CHECK(TAILQ_EMPTY(&apple));
   }
 
   {
-    char *pd = NULL;
-    TEST_CHECK(rfc2231_encode_string(&pd) == 0);
+    struct ParameterList banana = rfc2231_encode_string("banana", NULL);
+    TEST_CHECK(TAILQ_EMPTY(&banana));
   }
 }
