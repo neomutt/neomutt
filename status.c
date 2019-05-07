@@ -149,7 +149,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       {
         mutt_str_strfcpy(tmp, m->desc, sizeof(tmp));
       }
-      else if (m && mutt_buffer_is_empty(m->pathbuf))
+      else if (m && !mutt_buffer_is_empty(m->pathbuf))
       {
         mutt_str_strfcpy(tmp, mutt_b2s(m->pathbuf), sizeof(tmp));
         mutt_pretty_mailbox(tmp, sizeof(tmp));
