@@ -48,6 +48,10 @@
 #include "rfc2231.h"
 #include "url.h"
 
+/* If the 'Content-Length' is bigger than 1GiB, then it's clearly wrong.
+ * Cap the value to prevent overflow of Body.length */
+#define CONTENT_TOO_BIG (1 << 30)
+
 /**
  * mutt_auto_subscribe - Check if user is subscribed to mailing list
  * @param mailto URI of mailing list subscribe
@@ -593,9 +597,11 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
           {
             if (e)
             {
-              e->content->length = atol(p);
-              if (e->content->length < 0)
+              int rc = mutt_str_atol(p, &e->content->length);
+              if ((rc < 0) || (e->content->length < 0))
                 e->content->length = -1;
+              if (e->content->length > CONTENT_TOO_BIG)
+                e->content->length = CONTENT_TOO_BIG;
             }
             matched = true;
           }
