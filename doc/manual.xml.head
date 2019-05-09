@@ -3637,6 +3637,21 @@ set crypt_use_gpgme
       </sect2>
     </sect1>
 
+    <sect1 id="quickconfig">
+      <title>Starter NeoMuttrc</title>
+
+      <para>
+        NeoMutt is highly configurable because it's <emphasis>meant</emphasis>
+        to be customized to your needs and preferences.  However, this
+        configurability can make it difficult when just getting started.  A few
+        sample neomuttrc files come with NeoMutt, under
+        <literal>doc/neomutt/samples/</literal>.  Among them,
+        <ulink url="https://github.com/neomutt/neomutt/blob/master/contrib/sample.neomuttrc-starter">sample.neomuttrc-starter</ulink>
+        is a basic example config with a few suggested settings and pointers to
+        useful programs.
+      </para>
+    </sect1>
+
     <sect1 id="neomuttrc-syntax" xreflabel="Syntax of Initialization Files">
       <title>Syntax of Initialization Files</title>
       <para>
@@ -17469,121 +17484,6 @@ folder-hook ^pop 'set read_inc=1'
         case-insensitivity).
       </para>
     </sect1>
-  </chapter>
-
-  <chapter id="quickconfig">
-    <title>Quick-Start Config</title>
-
-    <para>
-      Mutt is highly configurable because it's <emphasis>meant</emphasis> to be
-      customized to your needs and preferences.  However, this configurability
-      can make it difficult when just getting started.  Below is a commented
-      starter .muttrc file, with a few subjective-opinion configurations thrown
-      in.  Be sure to also see the sample files in the
-      <ulink url="https://gitlab.com/muttmua/mutt/tree/stable/contrib">contrib</ulink>
-      directory.
-    </para>
-
-<screen>
-###############
-# Identity
-#
-set realname = "Example User"
-set from = "user@example.com"
-
-# If you use the entire domain:
-# alternates "@example\.com$"
-# set reverse_name
-
-# If you have another alias:
-# alternates "^mutt@example\.com$"
-
-###############
-# Example: local mailboxes
-#
-# Some people use mbsync or getmail to retrieve their mail locally.
-# $spoolfile will need to be adjusted to where your INBOX is.
-#
-set folder = ~/Mail                # This has the shortcut '+' or '='
-set spoolfile = /var/mail/user     # This has the shortcut '!'
-set record = "+sent"
-set trash = "+trash"
-set postponed = "+drafts"
-
-mailboxes ! +mutt +family +work
-
-###############
-# Example: Gmail over IMAP
-#
-set imap_user = "....."
-# To avoid storing your password in the .muttrc:
-# echo -n "mypassword" | gpg --encrypt -r 0x1234567890ABCDEF > ~/.mutt/account.gpg
-set imap_pass = `gpg --batch -q --decrypt ~/.mutt/account.gpg`
-set folder = imaps://imap.gmail.com/
-set spoolfile = "+INBOX"
-unset record                # Gmail auto-stores in "+[Gmail].Sent Mail"
-unset trash                 # Or, set, depending on your idea of deletion
-set postponed = "+[Gmail].Drafts"
-set mail_check = 60
-
-###############
-# Pager settings
-#
-ignore *
-unignore From Message-ID Date To Cc Bcc Subject
-
-set pager_stop
-
-# see also $markers and $tilde
-
-# prefer plain text to html.
-# however, for brain dead clients that bundle attachments inside a
-# multipart/alternative, prefer that alternative.
-alternative_order multipart/mixed multipart/related text/plain
-
-# consult mime.types for determining types of these attachments
-mime_lookup application/octet-stream
-
-# this requires a .mailcap entry with the copiousoutput flag
-auto_view text/html
-
-###############
-# Index settings
-#
-set quit = ask-yes
-set sort = threads
-# remember to `mkdir -p ~/.mutt/hcache` first:
-set header_cache= "~/.mutt/hcache"
-
-###############
-# Message composition settings
-#
-set edit_headers
-
-# set editor = "emacsclient -a emacs -t"
-# set editor = "vim"
-
-set mime_type_query_command = "xdg-mime query filetype"
-
-# msmtp is a solid SMTP client.
-# mutt also has built-in SMTP, or you can use an MTA like exim4 or postfix.
-set sendmail = "/usr/bin/msmtp"
-
-# lbdb is a good contact query tool.
-# Invoke via ctrl-t in an address prompt
-set query_command = "lbdbq %s"
-
-###############
-# GnuPG
-#
-unset crypt_use_gpgme
-source /usr/share/doc/mutt/samples/gpg.rc
-set pgp_default_key = "0x1234567890ABCDEF"
-set crypt_opportunistic_encrypt
-set postpone_encrypt
-
-</screen>
-
   </chapter>
 
   <chapter id="reference">
