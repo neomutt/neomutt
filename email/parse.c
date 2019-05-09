@@ -479,7 +479,7 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
 
   if (ct->type == TYPE_OTHER)
   {
-    ct->xtype = mutt_str_strdup(s);
+    mutt_str_replace(&ct->xtype, s);
   }
 
   if (!ct->subtype)
