@@ -100,7 +100,7 @@ set query_command = "/usr/bin/lbdbq"
 # GnuPG
 #
 unset crypt_use_gpgme
-source /usr/share/doc/neomutt/samples/gpg.rc
+source /usr/local/share/doc/neomutt/samples/gpg.rc
 set pgp_default_key = "0x1234567890ABCDEF"
 set crypt_opportunistic_encrypt
 set postpone_encrypt
