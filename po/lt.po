@@ -1654,14 +1654,12 @@ msgid "badly formatted cmd string"
 msgstr "blogai suformuota komanda"
 
 #: hook.c:379 hook.c:395
-#, fuzzy
 msgid "too few arguments"
-msgstr "%s: per mažai argumentų"
+msgstr "per mažai argumentų"
 
 #: hook.c:402
-#, fuzzy
 msgid "too many arguments"
-msgstr "%s: per daug argumentų"
+msgstr "per daug argumentų"
 
 #: hook.c:473
 msgid "unhook: Can't do unhook * from within a hook"
@@ -1686,14 +1684,14 @@ msgstr "%s: nėra tokio meniu"
 #. L10N: '%s' is the name of the menu, e.g. 'index' or 'pager', it might
 #. L10N: also be 'all' when all menus are affected.
 #: icommands.c:277
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no binds for this menu"
-msgstr "%s: nėra tokio meniu"
+msgstr "%s: šiame meniu nėra susiejimų"
 
 #: icommands.c:277
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no macros for this menu"
-msgstr "%s: nėra tokio meniu"
+msgstr "%s: šiame meniu nėra makrokomandų"
 
 #. L10N: '%s' is the file name of the temporary file
 #: icommands.c:288 icommands.c:301 icommands.c:321 icommands.c:345
@@ -3477,9 +3475,9 @@ msgid "secret key '%s' not found: %s"
 msgstr "slaptas raktas '%s' nerastas: %s"
 
 #: ncrypt/crypt_gpgme.c:1149
-#, fuzzy, c-format
+#, c-format
 msgid "ambiguous specification of secret key '%s'\n"
-msgstr "nevienprasmė slapto rakto specifikacija '%s'"
+msgstr "nevienprasmė slapto rakto specifikacija '%s'\n"
 
 #: ncrypt/crypt_gpgme.c:1165
 #, c-format
@@ -6187,9 +6185,8 @@ msgstr "Nėra temos, nutraukiu"
 #. be added as attachments to the new mail, if this is answered yes.
 #.
 #: send.c:591
-#, fuzzy
 msgid "Forward attachments?"
-msgstr "Persiųsti kaip priedus?"
+msgstr "Persiųsti priedus?"
 
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
