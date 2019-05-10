@@ -313,7 +313,8 @@ int mutt_replacelist_add(struct ReplaceList *rl, const char *pat,
   {
     if (*p == '%')
     {
-      int n = atoi(++p);
+      int n = 0;
+      mutt_str_atoi(++p, &n);
       if (n > np->nmatch)
         np->nmatch = n;
       while (*p && isdigit((int) *p))

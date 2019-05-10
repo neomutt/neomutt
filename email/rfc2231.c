@@ -285,7 +285,7 @@ void rfc2231_decode_parameters(struct ParameterList *p)
       encoded = (*t == '*');
       *t = '\0';
 
-      index = atoi(s);
+      mutt_str_atoi(s, &index);
 
       conttmp = new_parameter();
       conttmp->attribute = np->attribute;

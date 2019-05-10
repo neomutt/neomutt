@@ -1132,7 +1132,7 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
     {
       struct Buffer temporary = { 0 };
       mutt_extract_token(&temporary, s, MUTT_TOKEN_NO_FLAGS);
-      match = atoi(temporary.data);
+      mutt_str_atoui(temporary.data, &match);
       FREE(&temporary.data);
     }
 

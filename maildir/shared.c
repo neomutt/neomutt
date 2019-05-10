@@ -933,7 +933,7 @@ int mh_commit_msg(struct Mailbox *m, struct Message *msg, struct Email *e, bool 
     }
     if (!*cp)
     {
-      n = atoi(dep);
+      mutt_str_atoui(dep, &n);
       if (n > hi)
         hi = n;
     }

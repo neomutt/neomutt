@@ -566,10 +566,10 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
       /* add group terminator */
       cur = mutt_addr_new();
       if (last)
-      {
         last->next = cur;
-        last = cur;
-      }
+      else
+        top = cur;
+      last = cur;
 
       phraselen = 0;
       commentlen = 0;
