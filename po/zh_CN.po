@@ -1636,7 +1636,7 @@ msgid "mailbox shortcut expanded to empty regex"
 msgstr "信箱快捷键扩展到空白的正则表达式"
 
 #: hook.c:165
-msgid "badly formatted cmd string"
+msgid "badly formatted command string"
 msgstr "命令字符串格式错误"
 
 #: hook.c:379 hook.c:395

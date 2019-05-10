@@ -1662,8 +1662,7 @@ msgid "mailbox shortcut expanded to empty regex"
 msgstr "zkratka pro schránku expandována na prázdný regulární výraz"
 
 #: hook.c:165
-#, fuzzy
-msgid "badly formatted cmd string"
+msgid "badly formatted command string"
 msgstr "špatně utvořený řetězec s příkazem"
 
 #: hook.c:379 hook.c:395

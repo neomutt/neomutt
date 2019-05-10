@@ -89,14 +89,14 @@ static int lua_mutt_call(lua_State *l)
 
   if (lua_gettop(l) == 0)
   {
-    luaL_error(l, "Error cmd argument required.");
+    luaL_error(l, "Error command argument required.");
     return -1;
   }
 
   cmd = mutt_command_get(lua_tostring(l, 1));
   if (!cmd)
   {
-    luaL_error(l, "Error cmd %s not found.", lua_tostring(l, 1));
+    luaL_error(l, "Error command %s not found.", lua_tostring(l, 1));
     return -1;
   }
 

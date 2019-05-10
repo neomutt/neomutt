@@ -1768,8 +1768,7 @@ msgid "mailbox shortcut expanded to empty regex"
 msgstr "le raccourci de boîte aux lettres a donné une expression rationnelle vide"
 
 #: hook.c:165
-#, fuzzy
-msgid "badly formatted cmd string"
+msgid "badly formatted command string"
 msgstr "chaîne de commande incorrectement formatée"
 
 # , c-format

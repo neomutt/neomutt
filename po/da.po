@@ -1684,8 +1684,7 @@ msgid "mailbox shortcut expanded to empty regex"
 msgstr "genvejstaste til brevbakke udfoldet til tomt regulært udtryk"
 
 #: hook.c:165
-#, fuzzy
-msgid "badly formatted cmd string"
+msgid "badly formatted command string"
 msgstr "fejlformateret kommandostreng"
 
 #: hook.c:379 hook.c:395

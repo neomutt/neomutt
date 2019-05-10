@@ -1638,8 +1638,8 @@ msgid "mailbox shortcut expanded to empty regex"
 msgstr "mailbox shortcut expanded to empty regex"
 
 #: hook.c:165
-msgid "badly formatted cmd string"
-msgstr "badly formatted cmd string"
+msgid "badly formatted command string"
+msgstr "badly formatted command string"
 
 #: hook.c:379 hook.c:395
 msgid "too few arguments"

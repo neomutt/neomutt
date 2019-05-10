@@ -1650,7 +1650,7 @@ msgid "mailbox shortcut expanded to empty regex"
 msgstr "pašto dėžutės trumpinys išplėstas atitinka tuščią šabloną"
 
 #: hook.c:165
-msgid "badly formatted cmd string"
+msgid "badly formatted command string"
 msgstr "blogai suformuota komanda"
 
 #: hook.c:379 hook.c:395

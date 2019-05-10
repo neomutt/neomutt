@@ -1793,8 +1793,7 @@ msgid "mailbox shortcut expanded to empty regex"
 msgstr "La drecera a bústia s’ha expandit a l’expressió regular buida."
 
 #: hook.c:165
-#, fuzzy
-msgid "badly formatted cmd string"
+msgid "badly formatted command string"
 msgstr "La cadena d’ordre no té un format vàlid."
 
 #: hook.c:379 hook.c:395

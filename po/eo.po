@@ -1683,8 +1683,7 @@ msgid "mailbox shortcut expanded to empty regex"
 msgstr "poŝtfaka fulmklavo malvolvis al vaka regulesprimo"
 
 #: hook.c:165
-#, fuzzy
-msgid "badly formatted cmd string"
+msgid "badly formatted command string"
 msgstr "malbone aranĝita komandoĉeno"
 
 #: hook.c:379 hook.c:395

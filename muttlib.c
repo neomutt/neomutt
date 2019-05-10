@@ -888,7 +888,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
       /* Iterate expansions across successive arguments */
       do
       {
-        /* Extract the cmd name and copy to cmd line */
+        /* Extract the command name and copy to command line */
         mutt_debug(LL_DEBUG3, "fmtpipe +++: %s\n", srcbuf->dptr);
         if (word->data)
           *word->data = '\0';

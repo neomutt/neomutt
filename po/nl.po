@@ -1687,8 +1687,7 @@ msgid "mailbox shortcut expanded to empty regex"
 msgstr "sneltoets voor mailbox expandeerde tot lege reguliere expressie"
 
 #: hook.c:165
-#, fuzzy
-msgid "badly formatted cmd string"
+msgid "badly formatted command string"
 msgstr "onjuist opgemaakte commandotekenreeks"
 
 #: hook.c:379 hook.c:395

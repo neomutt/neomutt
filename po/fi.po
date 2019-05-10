@@ -1647,8 +1647,7 @@ msgid "mailbox shortcut expanded to empty regex"
 msgstr "postilaatikon oikopolku laventui tyhjäksi ilmaukseksi"
 
 #: hook.c:165
-#, fuzzy
-msgid "badly formatted cmd string"
+msgid "badly formatted command string"
 msgstr "epäkelpo komentojono"
 
 #: hook.c:379 hook.c:395

@@ -1696,8 +1696,7 @@ msgid "mailbox shortcut expanded to empty regex"
 msgstr "сокращение для почтового ящика раскрыто в пустое регулярное выражение"
 
 #: hook.c:165
-#, fuzzy
-msgid "badly formatted cmd string"
+msgid "badly formatted command string"
 msgstr "плохо отфороматированная командная строка"
 
 #: hook.c:379 hook.c:395

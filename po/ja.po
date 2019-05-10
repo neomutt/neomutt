@@ -1677,8 +1677,7 @@ msgstr "メールボックス記号ショートカットが空の正規表現に
 
 # %f と %t の両方が存在する必要がある
 #: hook.c:165
-#, fuzzy
-msgid "badly formatted cmd string"
+msgid "badly formatted command string"
 msgstr "不適切なコマンド文字列"
 
 #: hook.c:379 hook.c:395
