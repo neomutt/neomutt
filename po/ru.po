@@ -7,14 +7,14 @@
 # Michael Sobolev <mss@transas.com>, 1999
 # Andrew W. Nosenko <awn@bcs.zp.ua>, 2000
 # Alexey Vyskubov <alexey@pepper.spb.ru>, 2001-2010,2012,2014,2016
-# Vsevolod Volkov <vvv@mutt.org.ua>, 2002-2010, 2012, 2014-2018
+# Vsevolod Volkov <vvv@mutt.org.ua>, 2002-2010, 2012, 2014-2019
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2019-05-06 16:47+0100\n"
-"PO-Revision-Date: 2017-02-15 23:39+0200\n"
+"POT-Creation-Date: 2019-05-10 19:29+0300\n"
+"PO-Revision-Date: 2019-05-10 19:58+0300\n"
 "Last-Translator: Vsevolod Volkov <vvv@mutt.org.ua>\n"
 "Language-Team: neomutt-ru@woe.spb.ru\n"
 "Language: ru\n"
@@ -3654,10 +3654,9 @@ msgstr ""
 "[-- Ошибка: не удалось расшифровать: %s --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2759
-#, fuzzy, c-format
-msgid "Error extracting key: %s"
-msgstr "Ошибка экспорта ключа: %s"
+#, c-format
+msgid "error importing key: %s\n"
+msgstr "ошибка импорта ключа: %s\n"
 
 #: ncrypt/crypt_gpgme.c:2999
 #, c-format
@@ -4092,13 +4091,53 @@ msgstr ""
 "[-- Конец вывода программы PGP --]\n"
 "\n"
 
-#. L10N: You will see this error message if (1) you are decrypting
-#. (not encrypting) something and (2) it is a plaintext. So the
-#. message does not mean "You failed to encrypt the message."
-#: ncrypt/pgp.c:732
-#, fuzzy
-msgid "PGP message is not encrypted"
-msgstr "PGP-сообщение успешно расшифровано"
+msgid "PGP message is not encrypted."
+msgstr "PGP-сообщение не зашифровано."
+
+#. L10N:
+#. This is the prompt for $forward_attachments.
+#. When inline forwarding ($mime_forward answered "no"), this prompts
+#. whether to add non-decodable attachments from the original email.
+#. Text/plain parts and the like will already be included in the
+#. message contents, but other attachment, such as PDF files, will also
+#. be added as attachments to the new mail, if this is answered yes.
+#.
+msgid "Forward attachments?"
+msgstr "Переслать вложения?"
+
+msgid "Fcc to an IMAP mailbox is not supported in batch mode"
+msgstr "Fcc в ящик на IMAP-сервере не поддерживается в пакетном режиме"
+
+msgid "Save attachments in Fcc?"
+msgstr "Сохранить вложения в Fcc?"
+
+#. L10N:
+#. Called when saving to $record or Fcc failed after sending.
+#. (r)etry tries the same mailbox again.
+#. alternate (m)ailbox prompts for a different mailbox to try.
+#. (s)kip aborts saving.
+#.
+msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip? "
+msgstr "Ошибка сохранения в Fcc. (r)повторить, (m)другой ящик, (s)пропустить? "
+
+#. L10N:
+#. These correspond to the "Fcc failed" multi-choice prompt
+#. (r)etry, alternate (m)ailbox, or (s)kip.
+#. Any similarity to famous leaders of the FSF is coincidental.
+#.
+msgid "rms"
+msgstr "rms"
+
+#. L10N:
+#. This is the prompt to enter an "alternate (m)ailbox" when the
+#. initial Fcc fails.
+#.
+msgid "Fcc mailbox"
+msgstr "Fcc ящик"
+
+msgid "Cannot postpone.  $postponed is unset"
+msgstr "Не удалось отложить сообщение. Значение $postponed не определено."
+
 
 #: ncrypt/pgp.c:973
 msgid "Internal error.  Please submit a bug report."
@@ -4888,11 +4927,6 @@ msgstr "удалить все сообщения в поддискуссии"
 msgid "delete all messages in thread"
 msgstr "удалить все сообщения в дискуссии"
 
-#: opcodes.h:94
-#, fuzzy
-msgid "descend into a directory"
-msgstr "%s не является каталогом"
-
 #: opcodes.h:95
 msgid "display full address of sender"
 msgstr "показать полный адрес отправителя"
@@ -5078,11 +5112,6 @@ msgstr "создать макрос для текущего сообщения"
 #, fuzzy
 msgid "go to parent directory"
 msgstr "%s не является каталогом."
-
-#: opcodes.h:140
-#, fuzzy
-msgid "reply to all recipients preserving To/Cc"
-msgstr "ответить всем адресатам"
 
 #: opcodes.h:141
 msgid "reply to all recipients"
@@ -6259,19 +6288,6 @@ msgstr "Нет темы письма, отказаться?"
 msgid "No subject, aborting"
 msgstr "Нет темы письма, отказ"
 
-#. L10N:
-#. This is the prompt for $forward_attachments.
-#. When inline forwarding ($mime_forward answered "no"), this prompts
-#. whether to add non-decodable attachments from the original email.
-#. Text/plain parts and the like will already be included in the
-#. message contents, but other attachment, such as PDF files, will also
-#. be added as attachments to the new mail, if this is answered yes.
-#.
-#: send.c:591
-#, fuzzy
-msgid "Forward attachments?"
-msgstr "Переслать как вложения?"
-
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
 #: send.c:792
@@ -6304,36 +6320,17 @@ msgstr "Переслать как вложение?"
 msgid "Preparing forwarded message..."
 msgstr "Подготовка пересылаемого сообщения..."
 
-#: send.c:1612
-#, fuzzy
-msgid "Fcc to an IMAP mailbox is not supported in batch mode"
-msgstr "%c: в этом режиме не поддерживается"
+msgid "reply to all recipients preserving To/Cc"
+msgstr "ответить всем адресатам с сохранением To/Cc"
 
-#: send.c:1639 send.c:1665
-msgid "Save attachments in Fcc?"
-msgstr "Сохранить вложения в Fcc?"
+#. L10N: Help screen function description.
+#. Generated from one of the OPS files.
 
-#. L10N: Called when saving to $record or Fcc failed after sending.
-#. (r)etry tries the same mailbox again.
-#. alternate (m)ailbox prompts for a different mailbox to try.
-#. (s)kip aborts saving.
-#: send.c:1686
-msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
-msgstr ""
+msgid "descend into a directory"
+msgstr "войти в каталог"
 
-#. L10N: These correspond to the "Fcc failed" multi-choice prompt
-#. (r)etry, alternate (m)ailbox, or (s)kip.
-#. Any similarity to famous leaders of the FSF is coincidental.
-#: send.c:1690
-msgid "rms"
-msgstr ""
-
-#. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
-#. initial Fcc fails.
-#: send.c:1696
-#, fuzzy
-msgid "Fcc mailbox"
-msgstr "Нет почтового ящика.\n"
+#. L10N: Help screen function description.
+#. Generated from one of the OPS files.
 
 #: send.c:1758
 msgid "Can't postpone.  $postponed is unset"
