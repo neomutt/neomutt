@@ -28,6 +28,7 @@
  */
 
 #include "config.h"
+#include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -461,6 +462,26 @@ void mutt_addr_free(struct Address **p)
     *p = (*p)->next;
     free_address(&t);
   }
+}
+
+/**
+ * mutt_addresslist_free - Free an AddressList
+ */
+void mutt_addresslist_free(struct AddressList **al)
+{
+  if (!al)
+    return;
+
+  struct AddressNode *np = TAILQ_FIRST(*al), *next = NULL;
+  while (np)
+  {
+    next = TAILQ_NEXT(np, entries);
+    free_address(&np->addr);
+    FREE(&np);
+    np = next;
+  }
+  TAILQ_INIT(*al);
+  FREE(al);
 }
 
 /**
@@ -1405,4 +1426,62 @@ struct Address *mutt_addr_remove_xrefs(struct Address *a, struct Address *b)
     }
   }
   return top;
+}
+
+/**
+ * mutt_addresslist_append - Append an address to an AddressList
+ * @param al AddressList
+ * @param a  Address
+ */
+void mutt_addresslist_append(struct AddressList *al, struct Address *a)
+{
+  struct AddressNode *anode = mutt_mem_calloc(1, sizeof(struct AddressNode));
+  anode->addr = a;
+  TAILQ_INSERT_TAIL(al, anode, entries);
+}
+
+/**
+ * mutt_addr_to_addresslist - Convert a raw list of Address into an AddressList
+ * @param a Raw list of Address
+ * @retval ptr AddressList
+ *
+ * The Address members are shared between the input argument and the return
+ * value.
+ */
+struct AddressList *mutt_addr_to_addresslist(struct Address *a)
+{
+  struct AddressList *al = mutt_mem_calloc(1, sizeof(struct AddressList));
+  TAILQ_INIT(al);
+
+  while (a)
+  {
+    struct Address *next = a->next;
+    a->next = NULL; /* canary */
+    mutt_addresslist_append(al, a);
+    a = next;
+  }
+  return al;
+}
+
+/**
+ * mutt_addresslist_to_addr - Convert an AddressList into a raw list of Address
+ * @param a Reference list an AddressList 
+ * @retval ptr Raw list of Address
+ *
+ * The Address members are shared between the input argument and the return
+ * value.
+ */
+struct Address *mutt_addresslist_to_addr(struct AddressList *al)
+{
+  struct Address *a = NULL;
+  struct AddressNode *an, *tmp;
+  TAILQ_FOREACH_REVERSE_SAFE(an, al, AddressList, entries, tmp)
+  {
+    assert(an->addr->next == NULL); /* canary */
+    an->addr->next = a;
+    a = an->addr;
+    TAILQ_REMOVE(al, an, entries);
+    FREE(&an);
+  }
+  return a;
 }
