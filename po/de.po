@@ -1651,14 +1651,12 @@ msgid "badly formatted cmd string"
 msgstr "Falsch formatierte Kommandosequenz"
 
 #: hook.c:379 hook.c:395
-#, fuzzy
 msgid "too few arguments"
-msgstr "%s: Zu wenige Parameter"
+msgstr "Zu wenige Parameter"
 
 #: hook.c:402
-#, fuzzy
 msgid "too many arguments"
-msgstr "%s: Zu viele Parameter"
+msgstr "Zu viele Parameter"
 
 #: hook.c:473
 msgid "unhook: Can't do unhook * from within a hook"
@@ -1744,9 +1742,8 @@ msgid "Authenticating (OAUTHBEARER)..."
 msgstr "Authentifiziere (OAUTHBEARER)…"
 
 #: imap/auth_oauth.c:96
-#, fuzzy
 msgid "OAUTHBEARER authentication failed."
-msgstr "SASL-Authentifizierung fehlgeschlagen"
+msgstr "OAUTHBEARER-Authentifizierung fehlgeschlagen"
 
 #: imap/auth_sasl.c:128 nntp/nntp.c:594 nntp/nntp.c:660 smtp.c:434
 #, c-format
@@ -4068,9 +4065,8 @@ msgstr ""
 #. (not encrypting) something and (2) it is a plaintext. So the
 #. message does not mean "You failed to encrypt the message."
 #: ncrypt/pgp.c:732
-#, fuzzy
 msgid "PGP message is not encrypted"
-msgstr "PGP-Nachricht war nicht verschlüsselt"
+msgstr "PGP-Nachricht ist nicht verschlüsselt"
 
 #: ncrypt/pgp.c:973
 msgid "Internal error.  Please submit a bug report."
