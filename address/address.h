@@ -25,6 +25,7 @@
 
 #include <stddef.h>
 #include <stdbool.h>
+#include "mutt/queue.h"
 
 /**
  * struct Address - An email address
@@ -38,6 +39,13 @@ struct Address
   bool intl_checked : 1;
   struct Address *next;
 };
+
+struct AddressNode
+{
+  struct Address *addr;
+  TAILQ_ENTRY(AddressNode) entries;
+};
+TAILQ_HEAD(AddressList, AddressNode);
 
 /**
  * enum AddressError - possible values for AddressError
