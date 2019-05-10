@@ -369,7 +369,7 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
     struct Parameter *np = NULL;
     TAILQ_FOREACH(np, &a->parameter, entries)
     {
-      if (!np->value)
+      if (!np->attribute || !np->value)
         continue;
 
       struct ParameterList param_conts = rfc2231_encode_string(np->attribute, np->value);

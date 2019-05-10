@@ -3318,18 +3318,18 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
         To enable <quote>classic mode</quote>, ensure GPGME is disabled and use
         the <literal>gpg.rc</literal> or <literal>smime.rc</literal> files that
         come with mutt.  These are typically installed under
-        <literal>/usr/share/doc/mutt/samples/</literal>.  Source them, either
+        <literal>/usr/local/share/doc/mutt/samples/</literal>.  Source them, either
         directly or by copying them to your .mutt directory and sourcing them.
         Sourcing them directly from
-        <literal>/usr/share/doc/mutt/samples/</literal> has the benefit of
+        <literal>/usr/local/share/doc/mutt/samples/</literal> has the benefit of
         automatically using fixes and security improvements to the command
         invocations, and is recommended.
       </para>
 
 <screen>
 unset crypt_use_gpgme
-source /usr/share/doc/mutt/samples/gpg.rc
-source /usr/share/doc/mutt/samples/smime.rc
+source /usr/local/share/doc/mutt/samples/gpg.rc
+source /usr/local/share/doc/mutt/samples/smime.rc
 </screen>
 
       <para>
@@ -3635,6 +3635,21 @@ set crypt_use_gpgme
           </tgroup>
         </table>
       </sect2>
+    </sect1>
+
+    <sect1 id="quickconfig">
+      <title>Starter NeoMuttrc</title>
+
+      <para>
+        NeoMutt is highly configurable because it's <emphasis>meant</emphasis>
+        to be customized to your needs and preferences.  However, this
+        configurability can make it difficult when just getting started.  A few
+        sample neomuttrc files come with NeoMutt, under
+        <literal>doc/neomutt/samples/</literal>.  Among them,
+        <ulink url="https://github.com/neomutt/neomutt/blob/master/contrib/sample.neomuttrc-starter">sample.neomuttrc-starter</ulink>
+        is a basic example config with a few suggested settings and pointers to
+        useful programs.
+      </para>
     </sect1>
 
     <sect1 id="neomuttrc-syntax" xreflabel="Syntax of Initialization Files">
