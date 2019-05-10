@@ -4205,7 +4205,8 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** If your spool mailbox is in a non-default place where NeoMutt can't find
-  ** it, you can specify its location with this variable.
+  ** it, you can specify its location with this variable. The description from
+  ** "named-mailboxes" or "virtual-mailboxes" may be used for the spoolfile.
   ** .pp
   ** If not specified, then the environment variables \fC$$$MAIL\fP and
   ** \fC$$$MAILDIR\fP will be checked.
@@ -4684,6 +4685,9 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** When \fIset\fP, NeoMutt will use the first defined virtual mailbox (see
   ** virtual-mailboxes) as a spool file.
+  **
+  ** This command is now unnecessary. $$spoolfile has been extended to support
+  ** mailbox descriptions as a value.
   */
 #endif
   { "visual", DT_COMMAND, R_NONE, &C_Visual, IP "vi" },

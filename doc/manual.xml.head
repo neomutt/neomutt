@@ -15272,12 +15272,13 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
 
         <table id="table-notmuch-variables">
           <title>Notmuch Variables</title>
-          <tgroup cols="3">
+          <tgroup cols="4">
             <thead>
               <row>
                 <entry>Name</entry>
                 <entry>Type</entry>
                 <entry>Default</entry>
+                <entry>Note</entry>
               </row>
             </thead>
             <tbody>
@@ -15285,51 +15286,64 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
                 <entry><literal>nm_db_limit</literal></entry>
                 <entry>number</entry>
                 <entry><literal>0</literal></entry>
+                <entry></entry>
               </row>
               <row>
                 <entry><literal>nm_default_uri</literal></entry>
                 <entry>string</entry>
                 <entry>(empty)</entry>
+                <entry></entry>
               </row>
               <row>
                 <entry><literal>nm_exclude_tags</literal></entry>
                 <entry>string</entry>
                 <entry>(empty)</entry>
+                <entry></entry>
               </row>
               <row>
                 <entry><literal>nm_open_timeout</literal></entry>
                 <entry>number</entry>
                 <entry><literal>5</literal></entry>
+                <entry></entry>
               </row>
               <row>
                 <entry><literal>nm_query_type</literal></entry>
                 <entry>string</entry>
                 <entry><literal>messages</literal></entry>
+                <entry></entry>
               </row>
               <row>
                 <entry><literal>nm_record</literal></entry>
                 <entry>boolean</entry>
                 <entry><literal>no</literal></entry>
+                <entry></entry>
               </row>
               <row>
                 <entry><literal>nm_record_tags</literal></entry>
                 <entry>string</entry>
                 <entry>(empty)</entry>
+                <entry></entry>
               </row>
               <row>
                 <entry><literal>nm_unread_tag</literal></entry>
                 <entry>string</entry>
                 <entry><literal>unread</literal></entry>
+                <entry></entry>
               </row>
               <row>
                 <entry><literal>vfolder_format</literal></entry>
                 <entry>string</entry>
                 <entry><literal>%6n(%6N) %f</literal></entry>
+                <entry></entry>
               </row>
               <row>
                 <entry><literal>virtual_spoolfile</literal></entry>
                 <entry>boolean</entry>
                 <entry><literal>no</literal></entry>
+                <entry>
+                  Unnecessary since <link linkend="spoolfile">$spoolfile</link>
+                  supports mailbox descriptions.
+                </entry>
               </row>
             </tbody>
           </tgroup>

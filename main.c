@@ -1168,7 +1168,14 @@ int main(int argc, char *argv[], char *envp[])
     if (mutt_buffer_len(folder) == 0)
     {
       if (C_Spoolfile)
-        mutt_buffer_strcpy(folder, C_Spoolfile);
+      {
+        // Check if C_Spoolfile corresponds a mailboxes' description.
+        struct Mailbox *desc_m = mutt_find_mailbox_desc(C_Spoolfile);
+        if (desc_m)
+          mutt_buffer_strcpy(folder, desc_m->realpath);
+        else
+          mutt_buffer_strcpy(folder, C_Spoolfile);
+      }
       else if (C_Folder)
         mutt_buffer_strcpy(folder, C_Folder);
       /* else no folder */
