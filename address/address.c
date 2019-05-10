@@ -368,14 +368,13 @@ static const char *parse_addr_spec(const char *s, char *comment, size_t *comment
 
 /**
  * add_addrspec - Parse an email address and add an Address to a list
- * @param[out] top        Top of Address list
- * @param[out] last       End of Address list
+ * @param[out] al         Address list
  * @param[in]  phrase     String to parse
  * @param[out] comment    Buffer for any comments
  * @param[out] commentlen Length of any comments
  * @param[in]  commentmax Length of the comments buffer
  */
-static void add_addrspec(struct Address **top, struct Address **last, const char *phrase,
+static void add_addrspec(struct AddressList *al, const char *phrase,
                          char *comment, size_t *commentlen, size_t commentmax)
 {
   struct Address *cur = mutt_addr_new();
@@ -386,11 +385,7 @@ static void add_addrspec(struct Address **top, struct Address **last, const char
     return;
   }
 
-  if (*last)
-    (*last)->next = cur;
-  else
-    *top = cur;
-  *last = cur;
+  mutt_addresslist_append(al, cur);
 }
 
 /**
@@ -496,157 +491,150 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
   if (!s)
     return NULL;
 
-  const char *ps = NULL;
+  struct AddressList *al = mutt_addr_to_addresslist(top);
   char comment[1024], phrase[1024];
   size_t phraselen = 0, commentlen = 0;
-  struct Address *cur = NULL;
-
   AddressError = 0;
-
-  struct Address *last = top;
-  while (last && last->next)
-    last = last->next;
 
   bool ws_pending = mutt_str_is_email_wsp(*s);
 
   s = mutt_str_skip_email_wsp(s);
   while (*s)
   {
-    if (*s == ',')
+    switch (*s)
     {
-      if (phraselen != 0)
+      case ',':
+        if (phraselen != 0)
+        {
+          terminate_buffer(phrase, phraselen);
+          add_addrspec(al, phrase, comment, &commentlen, sizeof(comment) - 1);
+        }
+        else if (commentlen != 0)
+        {
+          struct AddressNode *last = TAILQ_LAST(al, AddressList);
+          if (last && last->addr && !last->addr->personal)
+          {
+            terminate_buffer(comment, commentlen);
+            last->addr->personal = mutt_str_strdup(comment);
+          }
+        }
+
+        commentlen = 0;
+        phraselen = 0;
+        s++;
+        break;
+
+      case '(':
+        if ((commentlen != 0) && (commentlen < (sizeof(comment) - 1)))
+          comment[commentlen++] = ' ';
+        s = next_token(s, comment, &commentlen, sizeof(comment) - 1);
+        if (!s)
+        {
+          mutt_addresslist_free(&al);
+          return NULL;
+        }
+        break;
+
+      case '"':
+        if ((phraselen != 0) && (phraselen < (sizeof(phrase) - 1)))
+          phrase[phraselen++] = ' ';
+        s = parse_quote(s + 1, phrase, &phraselen, sizeof(phrase) - 1);
+        if (!s)
+        {
+          mutt_addresslist_free(&al);
+          return NULL;
+        }
+        break;
+
+      case ':':
       {
+        struct Address *a = mutt_addr_new();
         terminate_buffer(phrase, phraselen);
-        add_addrspec(&top, &last, phrase, comment, &commentlen, sizeof(comment) - 1);
-      }
-      else if ((commentlen != 0) && last && !last->personal)
-      {
-        terminate_buffer(comment, commentlen);
-        last->personal = mutt_str_strdup(comment);
+        a->mailbox = mutt_str_strdup(phrase);
+        a->group = 1;
+        mutt_addresslist_append(al, a);
+        phraselen = 0;
+        commentlen = 0;
+        s++;
+        break;
       }
 
-      commentlen = 0;
-      phraselen = 0;
-      s++;
-    }
-    else if (*s == '(')
-    {
-      if ((commentlen != 0) && (commentlen < (sizeof(comment) - 1)))
-        comment[commentlen++] = ' ';
-      ps = next_token(s, comment, &commentlen, sizeof(comment) - 1);
-      if (!ps)
-      {
-        mutt_addr_free(&top);
-        return NULL;
-      }
-      s = ps;
-    }
-    else if (*s == '"')
-    {
-      if ((phraselen != 0) && (phraselen < (sizeof(phrase) - 1)))
-        phrase[phraselen++] = ' ';
-      ps = parse_quote(s + 1, phrase, &phraselen, sizeof(phrase) - 1);
-      if (!ps)
-      {
-        mutt_addr_free(&top);
-        return NULL;
-      }
-      s = ps;
-    }
-    else if (*s == ':')
-    {
-      cur = mutt_addr_new();
-      terminate_buffer(phrase, phraselen);
-      cur->mailbox = mutt_str_strdup(phrase);
-      cur->group = 1;
+      case ';':
+        if (phraselen != 0)
+        {
+          terminate_buffer(phrase, phraselen);
+          add_addrspec(al, phrase, comment, &commentlen, sizeof(comment) - 1);
+        }
+        else if (commentlen != 0)
+        {
+          struct AddressNode *last = TAILQ_LAST(al, AddressList);
+          if (last && last->addr && !last->addr->personal)
+          {
+            terminate_buffer(comment, commentlen);
+            last->addr->personal = mutt_str_strdup(comment);
+          }
+        }
 
-      if (last)
-        last->next = cur;
-      else
-        top = cur;
-      last = cur;
+        /* add group terminator */
+        mutt_addresslist_append(al, mutt_addr_new());
 
-      phraselen = 0;
-      commentlen = 0;
-      s++;
-    }
-    else if (*s == ';')
-    {
-      if (phraselen != 0)
+        phraselen = 0;
+        commentlen = 0;
+        s++;
+        break;
+
+      case '<':
       {
+        struct Address *a = mutt_addr_new();
         terminate_buffer(phrase, phraselen);
-        add_addrspec(&top, &last, phrase, comment, &commentlen, sizeof(comment) - 1);
-      }
-      else if ((commentlen != 0) && last && !last->personal)
-      {
-        terminate_buffer(comment, commentlen);
-        last->personal = mutt_str_strdup(comment);
-      }
-
-      /* add group terminator */
-      cur = mutt_addr_new();
-      if (last)
-        last->next = cur;
-      else
-        top = cur;
-      last = cur;
-
-      phraselen = 0;
-      commentlen = 0;
-      s++;
-    }
-    else if (*s == '<')
-    {
-      terminate_buffer(phrase, phraselen);
-      cur = mutt_addr_new();
-      if (phraselen != 0)
-        cur->personal = mutt_str_strdup(phrase);
-      ps = parse_route_addr(s + 1, comment, &commentlen, sizeof(comment) - 1, cur);
-      if (!ps)
-      {
-        mutt_addr_free(&top);
-        mutt_addr_free(&cur);
-        return NULL;
+        a->personal = mutt_str_strdup(phrase);
+        s = parse_route_addr(s + 1, comment, &commentlen, sizeof(comment) - 1, a);
+        if (!s)
+        {
+          mutt_addresslist_free(&al);
+          mutt_addr_free(&a);
+          return NULL;
+        }
+        mutt_addresslist_append(al, a);
+        phraselen = 0;
+        commentlen = 0;
+        break;
       }
 
-      if (last)
-        last->next = cur;
-      else
-        top = cur;
-      last = cur;
+      default:
+        if ((phraselen != 0) && (phraselen < (sizeof(phrase) - 1)) && ws_pending)
+          phrase[phraselen++] = ' ';
+        s = next_token(s, phrase, &phraselen, sizeof(phrase) - 1);
+        if (!s)
+        {
+          mutt_addresslist_free(&al);
+          return NULL;
+        }
+        break;
+    } // switch (*s)
 
-      phraselen = 0;
-      commentlen = 0;
-      s = ps;
-    }
-    else
-    {
-      if ((phraselen != 0) && (phraselen < (sizeof(phrase) - 1)) && ws_pending)
-        phrase[phraselen++] = ' ';
-      ps = next_token(s, phrase, &phraselen, sizeof(phrase) - 1);
-      if (!ps)
-      {
-        mutt_addr_free(&top);
-        return NULL;
-      }
-      s = ps;
-    }
     ws_pending = mutt_str_is_email_wsp(*s);
     s = mutt_str_skip_email_wsp(s);
-  }
+  } // while (*s)
 
   if (phraselen != 0)
   {
     terminate_buffer(phrase, phraselen);
     terminate_buffer(comment, commentlen);
-    add_addrspec(&top, &last, phrase, comment, &commentlen, sizeof(comment) - 1);
+    add_addrspec(al, phrase, comment, &commentlen, sizeof(comment) - 1);
   }
-  else if ((commentlen != 0) && last && !last->personal)
+  else if (commentlen != 0)
   {
-    terminate_buffer(comment, commentlen);
-    last->personal = mutt_str_strdup(comment);
+    struct AddressNode *last = TAILQ_LAST(al, AddressList);
+    if (last && last->addr && !last->addr->personal)
+    {
+      terminate_buffer(comment, commentlen);
+      last->addr->personal = mutt_str_strdup(comment);
+    }
   }
 
+  top = mutt_addresslist_to_addr(al);
+  mutt_addresslist_free(&al);
   return top;
 }
 
