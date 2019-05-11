@@ -1732,8 +1732,8 @@ msgstr "Autenticando (SASL)..."
 
 #: imap/auth_oauth.c:96
 #, fuzzy
-msgid "OAUTHBEARER authentication failed."
-msgstr "Autenticação SASL falhou."
+msgid "OAUTHBEARER authentication failed"
+msgstr "Autenticação OAUTHBEARER falhou."
 
 #: imap/auth_sasl.c:128 nntp/nntp.c:594 nntp/nntp.c:660 smtp.c:434
 #, c-format

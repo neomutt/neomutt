@@ -1733,7 +1733,7 @@ msgid "Authenticating (OAUTHBEARER)..."
 msgstr "Authentifiziere (OAUTHBEARER)…"
 
 #: imap/auth_oauth.c:96
-msgid "OAUTHBEARER authentication failed."
+msgid "OAUTHBEARER authentication failed"
 msgstr "OAUTHBEARER-Authentifizierung fehlgeschlagen"
 
 #: imap/auth_sasl.c:128 nntp/nntp.c:594 nntp/nntp.c:660 smtp.c:434

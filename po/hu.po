@@ -1817,8 +1817,8 @@ msgstr "Azonosítás (SASL)..."
 
 #: imap/auth_oauth.c:96
 #, fuzzy
-msgid "OAUTHBEARER authentication failed."
-msgstr "SASL azonosítás nem sikerült"
+msgid "OAUTHBEARER authentication failed"
+msgstr "OAUTHBEARER azonosítás nem sikerült"
 
 #: imap/auth_sasl.c:128 nntp/nntp.c:594 nntp/nntp.c:660 smtp.c:434
 #, fuzzy, c-format

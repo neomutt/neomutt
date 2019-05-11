@@ -1883,8 +1883,8 @@ msgstr "S’està autenticant (SASL)…"
 
 #: imap/auth_oauth.c:96
 #, fuzzy
-msgid "OAUTHBEARER authentication failed."
-msgstr "L’autenticació SASL ha fallat."
+msgid "OAUTHBEARER authentication failed"
+msgstr "L’autenticació OAUTHBEARER ha fallat."
 
 #: imap/auth_sasl.c:128 nntp/nntp.c:594 nntp/nntp.c:660 smtp.c:434
 #, c-format

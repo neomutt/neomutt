@@ -1804,8 +1804,8 @@ msgstr "인증 중 (SASL)..."
 
 #: imap/auth_oauth.c:96
 #, fuzzy
-msgid "OAUTHBEARER authentication failed."
-msgstr "SASL 인증에 실패함"
+msgid "OAUTHBEARER authentication failed"
+msgstr "OAUTHBEARER 인증에 실패함"
 
 #: imap/auth_sasl.c:128 nntp/nntp.c:594 nntp/nntp.c:660 smtp.c:434
 #, c-format

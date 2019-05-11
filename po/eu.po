@@ -1791,8 +1791,8 @@ msgstr "Autentifikatzen (SASL)..."
 
 #: imap/auth_oauth.c:96
 #, fuzzy
-msgid "OAUTHBEARER authentication failed."
-msgstr "SASL egiaztapenak huts egin du"
+msgid "OAUTHBEARER authentication failed"
+msgstr "OAUTHBEARER egiaztapenak huts egin du"
 
 #: imap/auth_sasl.c:128 nntp/nntp.c:594 nntp/nntp.c:660 smtp.c:434
 #, c-format

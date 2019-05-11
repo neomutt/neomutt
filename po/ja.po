@@ -1767,8 +1767,8 @@ msgstr "認証中 (SASL)..."
 
 #: imap/auth_oauth.c:96
 #, fuzzy
-msgid "OAUTHBEARER authentication failed."
-msgstr "SASL 認証に失敗した"
+msgid "OAUTHBEARER authentication failed"
+msgstr "OAUTHBEARER 認証に失敗した"
 
 #: imap/auth_sasl.c:128 nntp/nntp.c:594 nntp/nntp.c:660 smtp.c:434
 #, c-format

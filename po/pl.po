@@ -1738,7 +1738,7 @@ msgid "Authenticating (OAUTHBEARER)..."
 msgstr "Uwierzytelnianie (OAUTHBEARER)..."
 
 #: imap/auth_oauth.c:96
-msgid "OAUTHBEARER authentication failed."
+msgid "OAUTHBEARER authentication failed"
 msgstr "Uwierzytelnianie OAUTHBEARER nie powiodło się"
 
 #: imap/auth_sasl.c:128 nntp/nntp.c:594 nntp/nntp.c:660 smtp.c:434

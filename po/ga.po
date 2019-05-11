@@ -1825,8 +1825,8 @@ msgstr "Á fhíordheimhniú (SASL)..."
 
 #: imap/auth_oauth.c:96
 #, fuzzy
-msgid "OAUTHBEARER authentication failed."
-msgstr "Theip ar fhíordheimhniú SASL"
+msgid "OAUTHBEARER authentication failed"
+msgstr "Theip ar fhíordheimhniú OAUTHBEARER"
 
 # %s is the method, not what's being authenticated I think
 #: imap/auth_sasl.c:128 nntp/nntp.c:594 nntp/nntp.c:660 smtp.c:434

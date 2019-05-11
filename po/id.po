@@ -1782,8 +1782,8 @@ msgstr "Mengauthentikasi (SASL)..."
 
 #: imap/auth_oauth.c:96
 #, fuzzy
-msgid "OAUTHBEARER authentication failed."
-msgstr "Authentikasi SASL gagal"
+msgid "OAUTHBEARER authentication failed"
+msgstr "Authentikasi OAUTHBEARER gagal"
 
 #: imap/auth_sasl.c:128 nntp/nntp.c:594 nntp/nntp.c:660 smtp.c:434
 #, c-format

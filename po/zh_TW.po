@@ -1812,8 +1812,8 @@ msgstr "驗證中 (SASL)…"
 
 #: imap/auth_oauth.c:96
 #, fuzzy
-msgid "OAUTHBEARER authentication failed."
-msgstr "SASL 驗證失敗"
+msgid "OAUTHBEARER authentication failed"
+msgstr "OAUTHBEARER 驗證失敗"
 
 #: imap/auth_sasl.c:128 nntp/nntp.c:594 nntp/nntp.c:660 smtp.c:434
 #, fuzzy, c-format

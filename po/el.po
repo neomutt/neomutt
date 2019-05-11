@@ -1822,8 +1822,8 @@ msgstr "Αυθεντικοποίηση (SASL)..."
 
 #: imap/auth_oauth.c:96
 #, fuzzy
-msgid "OAUTHBEARER authentication failed."
-msgstr "Αυθεντικοποίηση SASL απέτυχε"
+msgid "OAUTHBEARER authentication failed"
+msgstr "Αυθεντικοποίηση OAUTHBEARER απέτυχε"
 
 #: imap/auth_sasl.c:128 nntp/nntp.c:594 nntp/nntp.c:660 smtp.c:434
 #, c-format
