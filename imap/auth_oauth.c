@@ -93,6 +93,6 @@ enum ImapAuthRes imap_auth_oauth(struct ImapAccountData *adata, const char *meth
     return IMAP_AUTH_SUCCESS;
   }
 
-  mutt_error(_("OAUTHBEARER authentication failed."));
+  mutt_error(_("OAUTHBEARER authentication failed"));
   return IMAP_AUTH_FAILURE;
 }

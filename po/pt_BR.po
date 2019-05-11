@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2019-05-06 16:47+0100\n"
+"POT-Creation-Date: 2019-05-11 10:46+0100\n"
 "PO-Revision-Date: 2018-03-19 01:14-0300\n"
 "Last-Translator: Thiago Costa de Paiva <tecepe@tecepe.eng.br>\n"
 "Language-Team: \n"
@@ -296,8 +296,9 @@ msgid "%s: command valid only for index, body, header objects"
 msgstr "%s: comando válido apenas para objetos de índice, corpo e cabeçalho"
 
 #: color.c:666 color.c:870 color.c:896 color.c:944 color.c:972 color.c:999
-#: color.c:1079 hook.c:112 hook.c:125 init.c:583 init.c:591 init.c:680
-#: init.c:1067 init.c:1235 init.c:1834 init.c:1892 keymap.c:1165 score.c:107
+#: color.c:1079 hook.c:112 hook.c:125 hook.c:379 hook.c:395 init.c:583
+#: init.c:591 init.c:680 init.c:1067 init.c:1235 init.c:1834 init.c:1892
+#: keymap.c:1165 score.c:107
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: poucos argumentos"
@@ -307,9 +308,9 @@ msgstr "%s: poucos argumentos"
 msgid "%s: no such attribute"
 msgstr "%s: atributo inexistente"
 
-#: color.c:1088 color.c:1141 hook.c:131 init.c:1091 init.c:2096 init.c:2549
-#: keymap.c:1098 keymap.c:1266 keymap.c:1418 keymap.c:1481 mutt_lua.c:475
-#: score.c:116
+#: color.c:1088 color.c:1141 hook.c:131 hook.c:402 init.c:1091 init.c:2096
+#: init.c:2549 keymap.c:1098 keymap.c:1266 keymap.c:1418 keymap.c:1481
+#: mutt_lua.c:475 score.c:116
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: muitos argumentos"
@@ -1385,7 +1386,7 @@ msgstr "Não é possível abrir o arquivo de mensagens: %s"
 msgid "Can't append to folder: %s"
 msgstr "Não é possível anexar à pasta: %s"
 
-#: email/parse.c:1338
+#: email/parse.c:1344
 msgid "multipart message has no boundary parameter"
 msgstr "mensagem multiparte não tem um parâmetro de fronteiras"
 
@@ -1643,19 +1644,8 @@ msgid "mailbox shortcut expanded to empty regex"
 msgstr "Atalho de caixa extendido como regex vazia"
 
 #: hook.c:165
-#, fuzzy
-msgid "badly formatted cmd string"
+msgid "badly formatted command string"
 msgstr "String de comando com formato inválido"
-
-#: hook.c:379 hook.c:395
-#, fuzzy
-msgid "too few arguments"
-msgstr "%s: poucos argumentos"
-
-#: hook.c:402
-#, fuzzy
-msgid "too many arguments"
-msgstr "%s: muitos argumentos"
 
 #: hook.c:473
 msgid "unhook: Can't do unhook * from within a hook"
@@ -1743,8 +1733,8 @@ msgstr "Autenticando (SASL)..."
 
 #: imap/auth_oauth.c:96
 #, fuzzy
-msgid "OAUTHBEARER authentication failed."
-msgstr "Autenticação SASL falhou."
+msgid "OAUTHBEARER authentication failed"
+msgstr "Autenticação OAUTHBEARER falhou."
 
 #: imap/auth_sasl.c:128 nntp/nntp.c:594 nntp/nntp.c:660 smtp.c:434
 #, c-format
@@ -2833,7 +2823,7 @@ msgstr "Nenhuma caixa com novas mensagens"
 msgid "No incoming mailboxes defined"
 msgstr "Nenhuma caixa de entrada definida"
 
-#: main.c:1200
+#: main.c:1207
 msgid "Mailbox is empty"
 msgstr "A caixa de mensagens está vazia"
 
@@ -3009,7 +2999,7 @@ msgstr "Erro ao conectar com servidor: %s"
 msgid "Bad regex: %s"
 msgstr "Regex inválida: %s"
 
-#: mutt/regex.c:329
+#: mutt/regex.c:330
 msgid "Not enough subexpressions for template"
 msgstr "Sub-expressões insuficientes para modelo"
 

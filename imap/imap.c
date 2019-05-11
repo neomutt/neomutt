@@ -1288,7 +1288,7 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
   int rc = imap_exec(adata, cmd, queue ? IMAP_CMD_QUEUE : IMAP_CMD_NO_FLAGS | IMAP_CMD_POLL);
   if (rc < 0)
   {
-    mutt_debug(LL_DEBUG1, "Error queueing cmd\n");
+    mutt_debug(LL_DEBUG1, "Error queueing command\n");
     return rc;
   }
   return mdata->messages;

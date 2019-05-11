@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2019-05-06 16:47+0100\n"
+"POT-Creation-Date: 2019-05-11 10:46+0100\n"
 "PO-Revision-Date: 2000-11-29 21:22+0200\n"
 "Last-Translator: Marius Gedminas <marius@gedmin.as>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -295,8 +295,9 @@ msgid "%s: command valid only for index, body, header objects"
 msgstr "%s: komanda teisinga tik indekso, teksto, antraštės objektams"
 
 #: color.c:666 color.c:870 color.c:896 color.c:944 color.c:972 color.c:999
-#: color.c:1079 hook.c:112 hook.c:125 init.c:583 init.c:591 init.c:680
-#: init.c:1067 init.c:1235 init.c:1834 init.c:1892 keymap.c:1165 score.c:107
+#: color.c:1079 hook.c:112 hook.c:125 hook.c:379 hook.c:395 init.c:583
+#: init.c:591 init.c:680 init.c:1067 init.c:1235 init.c:1834 init.c:1892
+#: keymap.c:1165 score.c:107
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: per mažai argumentų"
@@ -306,9 +307,9 @@ msgstr "%s: per mažai argumentų"
 msgid "%s: no such attribute"
 msgstr "%s: tokio atributo nėra"
 
-#: color.c:1088 color.c:1141 hook.c:131 init.c:1091 init.c:2096 init.c:2549
-#: keymap.c:1098 keymap.c:1266 keymap.c:1418 keymap.c:1481 mutt_lua.c:475
-#: score.c:116
+#: color.c:1088 color.c:1141 hook.c:131 hook.c:402 init.c:1091 init.c:2096
+#: init.c:2549 keymap.c:1098 keymap.c:1266 keymap.c:1418 keymap.c:1481
+#: mutt_lua.c:475 score.c:116
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: per daug argumentų"
@@ -1389,7 +1390,7 @@ msgstr "Negaliu atidaryti laiško bylos: %s"
 msgid "Can't append to folder: %s"
 msgstr "Negaliu pridurti laiško prie aplanko: %s"
 
-#: email/parse.c:1338
+#: email/parse.c:1344
 msgid "multipart message has no boundary parameter"
 msgstr "kelių dalių laiškas neturi boundary parametro"
 
@@ -1650,18 +1651,8 @@ msgid "mailbox shortcut expanded to empty regex"
 msgstr "pašto dėžutės trumpinys išplėstas atitinka tuščią šabloną"
 
 #: hook.c:165
-msgid "badly formatted cmd string"
+msgid "badly formatted command string"
 msgstr "blogai suformuota komanda"
-
-#: hook.c:379 hook.c:395
-#, fuzzy
-msgid "too few arguments"
-msgstr "%s: per mažai argumentų"
-
-#: hook.c:402
-#, fuzzy
-msgid "too many arguments"
-msgstr "%s: per daug argumentų"
 
 #: hook.c:473
 msgid "unhook: Can't do unhook * from within a hook"
@@ -1686,14 +1677,14 @@ msgstr "%s: nėra tokio meniu"
 #. L10N: '%s' is the name of the menu, e.g. 'index' or 'pager', it might
 #. L10N: also be 'all' when all menus are affected.
 #: icommands.c:277
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no binds for this menu"
-msgstr "%s: nėra tokio meniu"
+msgstr "%s: šiame meniu nėra susiejimų"
 
 #: icommands.c:277
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no macros for this menu"
-msgstr "%s: nėra tokio meniu"
+msgstr "%s: šiame meniu nėra makrokomandų"
 
 #. L10N: '%s' is the file name of the temporary file
 #: icommands.c:288 icommands.c:301 icommands.c:321 icommands.c:345
@@ -1747,7 +1738,7 @@ msgid "Authenticating (OAUTHBEARER)..."
 msgstr "Autentikuojuosi (OAUTHBEARER)..."
 
 #: imap/auth_oauth.c:96
-msgid "OAUTHBEARER authentication failed."
+msgid "OAUTHBEARER authentication failed"
 msgstr "OAUTHBEARER autentikacija nepavyko."
 
 #: imap/auth_sasl.c:128 nntp/nntp.c:594 nntp/nntp.c:660 smtp.c:434
@@ -2845,7 +2836,7 @@ msgstr "Nėra dėžutės su nauju paštu"
 msgid "No incoming mailboxes defined"
 msgstr "Neapibrėžta nė viena paštą gaunanti dėžutė"
 
-#: main.c:1200
+#: main.c:1207
 msgid "Mailbox is empty"
 msgstr "Dėžutė yra tuščia"
 
@@ -3020,7 +3011,7 @@ msgstr "Klaida: absoliutinant kelią"
 msgid "Bad regex: %s"
 msgstr "Blogas regex: %s"
 
-#: mutt/regex.c:329
+#: mutt/regex.c:330
 msgid "Not enough subexpressions for template"
 msgstr "Nepakanka pogrupių šablonui"
 
@@ -3477,9 +3468,9 @@ msgid "secret key '%s' not found: %s"
 msgstr "slaptas raktas '%s' nerastas: %s"
 
 #: ncrypt/crypt_gpgme.c:1149
-#, fuzzy, c-format
+#, c-format
 msgid "ambiguous specification of secret key '%s'\n"
-msgstr "nevienprasmė slapto rakto specifikacija '%s'"
+msgstr "nevienprasmė slapto rakto specifikacija '%s'\n"
 
 #: ncrypt/crypt_gpgme.c:1165
 #, c-format
@@ -6187,9 +6178,8 @@ msgstr "Nėra temos, nutraukiu"
 #. be added as attachments to the new mail, if this is answered yes.
 #.
 #: send.c:591
-#, fuzzy
 msgid "Forward attachments?"
-msgstr "Persiųsti kaip priedus?"
+msgstr "Persiųsti priedus?"
 
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.

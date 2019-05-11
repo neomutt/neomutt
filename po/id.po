@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2019-05-06 16:47+0100\n"
+"POT-Creation-Date: 2019-05-11 10:46+0100\n"
 "PO-Revision-Date: 2007-11-07 10:39+1100\n"
 "Last-Translator: Ronny Haryanto <ronny@haryan.to>\n"
 "Language-Team: Indonesian <web@linux.or.id>\n"
@@ -305,8 +305,9 @@ msgid "%s: command valid only for index, body, header objects"
 msgstr "%s: perintah hanya untuk objek indeks"
 
 #: color.c:666 color.c:870 color.c:896 color.c:944 color.c:972 color.c:999
-#: color.c:1079 hook.c:112 hook.c:125 init.c:583 init.c:591 init.c:680
-#: init.c:1067 init.c:1235 init.c:1834 init.c:1892 keymap.c:1165 score.c:107
+#: color.c:1079 hook.c:112 hook.c:125 hook.c:379 hook.c:395 init.c:583
+#: init.c:591 init.c:680 init.c:1067 init.c:1235 init.c:1834 init.c:1892
+#: keymap.c:1165 score.c:107
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: parameternya kurang"
@@ -316,9 +317,9 @@ msgstr "%s: parameternya kurang"
 msgid "%s: no such attribute"
 msgstr "%s: tidak ada atribut begitu"
 
-#: color.c:1088 color.c:1141 hook.c:131 init.c:1091 init.c:2096 init.c:2549
-#: keymap.c:1098 keymap.c:1266 keymap.c:1418 keymap.c:1481 mutt_lua.c:475
-#: score.c:116
+#: color.c:1088 color.c:1141 hook.c:131 hook.c:402 init.c:1091 init.c:2096
+#: init.c:2549 keymap.c:1098 keymap.c:1266 keymap.c:1418 keymap.c:1481
+#: mutt_lua.c:475 score.c:116
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: parameternya terlalu banyak"
@@ -1431,7 +1432,7 @@ msgstr "Tidak bisa membuka file surat: %s"
 msgid "Can't append to folder: %s"
 msgstr "Tidak bisa menambah ke kotak surat: %s"
 
-#: email/parse.c:1338
+#: email/parse.c:1344
 msgid "multipart message has no boundary parameter"
 msgstr "surat multi bagian tidak punya parameter batas"
 
@@ -1692,18 +1693,8 @@ msgid "mailbox shortcut expanded to empty regex"
 msgstr ""
 
 #: hook.c:165
-msgid "badly formatted cmd string"
+msgid "badly formatted command string"
 msgstr ""
-
-#: hook.c:379 hook.c:395
-#, fuzzy
-msgid "too few arguments"
-msgstr "%s: parameternya kurang"
-
-#: hook.c:402
-#, fuzzy
-msgid "too many arguments"
-msgstr "%s: parameternya terlalu banyak"
 
 #: hook.c:473
 msgid "unhook: Can't do unhook * from within a hook"
@@ -1792,8 +1783,8 @@ msgstr "Mengauthentikasi (SASL)..."
 
 #: imap/auth_oauth.c:96
 #, fuzzy
-msgid "OAUTHBEARER authentication failed."
-msgstr "Authentikasi SASL gagal"
+msgid "OAUTHBEARER authentication failed"
+msgstr "Authentikasi OAUTHBEARER gagal"
 
 #: imap/auth_sasl.c:128 nntp/nntp.c:594 nntp/nntp.c:660 smtp.c:434
 #, c-format
@@ -2861,7 +2852,7 @@ msgstr "Tidak ada kotak surat dengan surat baru"
 msgid "No incoming mailboxes defined"
 msgstr "Tidak ada kotak surat incoming yang didefinisikan"
 
-#: main.c:1200
+#: main.c:1207
 msgid "Mailbox is empty"
 msgstr "Kotak surat kosong"
 
@@ -3037,7 +3028,7 @@ msgstr "Kesalahan waktu menghubungi ke server: %s"
 msgid "Bad regex: %s"
 msgstr "Regex tidak benar: %s"
 
-#: mutt/regex.c:329
+#: mutt/regex.c:330
 #, fuzzy
 msgid "Not enough subexpressions for template"
 msgstr "Subekspresi untuk template spam kurang"

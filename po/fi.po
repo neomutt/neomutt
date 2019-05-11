@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2019-05-06 16:47+0100\n"
+"POT-Creation-Date: 2019-05-11 10:46+0100\n"
 "PO-Revision-Date: 2018-09-19 03:36+0200\n"
 "Last-Translator: Flammie A Pirinen <flammie@iki.fi>\n"
 "Language-Team: Finnish\n"
@@ -302,8 +302,9 @@ msgid "%s: command valid only for index, body, header objects"
 msgstr "%s: komento toimii vain objekteille index, body tai header"
 
 #: color.c:666 color.c:870 color.c:896 color.c:944 color.c:972 color.c:999
-#: color.c:1079 hook.c:112 hook.c:125 init.c:583 init.c:591 init.c:680
-#: init.c:1067 init.c:1235 init.c:1834 init.c:1892 keymap.c:1165 score.c:107
+#: color.c:1079 hook.c:112 hook.c:125 hook.c:379 hook.c:395 init.c:583
+#: init.c:591 init.c:680 init.c:1067 init.c:1235 init.c:1834 init.c:1892
+#: keymap.c:1165 score.c:107
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: liian vähän argumentteja"
@@ -313,9 +314,9 @@ msgstr "%s: liian vähän argumentteja"
 msgid "%s: no such attribute"
 msgstr "%s: attribuuttia ei ole olemassa"
 
-#: color.c:1088 color.c:1141 hook.c:131 init.c:1091 init.c:2096 init.c:2549
-#: keymap.c:1098 keymap.c:1266 keymap.c:1418 keymap.c:1481 mutt_lua.c:475
-#: score.c:116
+#: color.c:1088 color.c:1141 hook.c:131 hook.c:402 init.c:1091 init.c:2096
+#: init.c:2549 keymap.c:1098 keymap.c:1266 keymap.c:1418 keymap.c:1481
+#: mutt_lua.c:475 score.c:116
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: liikaa argumentteja"
@@ -1390,7 +1391,7 @@ msgstr "Ei voitu avata viestitiedostoa: %s"
 msgid "Can't append to folder: %s"
 msgstr "Ei voitu avata kansiota: %s"
 
-#: email/parse.c:1338
+#: email/parse.c:1344
 msgid "multipart message has no boundary parameter"
 msgstr "multipart-viestillä ei ole rajoitinmerkkiparametriä"
 
@@ -1647,19 +1648,8 @@ msgid "mailbox shortcut expanded to empty regex"
 msgstr "postilaatikon oikopolku laventui tyhjäksi ilmaukseksi"
 
 #: hook.c:165
-#, fuzzy
-msgid "badly formatted cmd string"
+msgid "badly formatted command string"
 msgstr "epäkelpo komentojono"
-
-#: hook.c:379 hook.c:395
-#, fuzzy
-msgid "too few arguments"
-msgstr "%s: liian vähän argumentteja"
-
-#: hook.c:402
-#, fuzzy
-msgid "too many arguments"
-msgstr "%s: liikaa argumentteja"
 
 #: hook.c:473
 msgid "unhook: Can't do unhook * from within a hook"
@@ -1745,7 +1735,7 @@ msgid "Authenticating (OAUTHBEARER)..."
 msgstr "Authentikoidaan (OAUTHBEARER)..."
 
 #: imap/auth_oauth.c:96
-msgid "OAUTHBEARER authentication failed."
+msgid "OAUTHBEARER authentication failed"
 msgstr "OAUTHBEARER-autentikointi epäonnistui"
 
 #: imap/auth_sasl.c:128 nntp/nntp.c:594 nntp/nntp.c:660 smtp.c:434
@@ -2838,7 +2828,7 @@ msgstr "Ei uutta postia postilaatikoissa"
 msgid "No incoming mailboxes defined"
 msgstr "Tulevien viestien postilaatikoita ei ole määritelty"
 
-#: main.c:1200
+#: main.c:1207
 msgid "Mailbox is empty"
 msgstr "Postilaatikko on tyhjä"
 
@@ -3013,7 +3003,7 @@ msgstr "Virhe: polun konversiossa absoluuttiseksi"
 msgid "Bad regex: %s"
 msgstr "Viallinen regex: %s"
 
-#: mutt/regex.c:329
+#: mutt/regex.c:330
 msgid "Not enough subexpressions for template"
 msgstr "Ei tarpeeksi ali-ilmaisuja mallinetta varten"
 

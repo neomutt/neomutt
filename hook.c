@@ -162,7 +162,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
   {
     if (mutt_comp_valid_command(cmd.data) == 0)
     {
-      mutt_buffer_strcpy(err, _("badly formatted cmd string"));
+      mutt_buffer_strcpy(err, _("badly formatted command string"));
       return MUTT_CMD_ERROR;
     }
   }
@@ -213,7 +213,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
                   MUTT_TIMEOUT_HOOK | MUTT_STARTUP_HOOK | MUTT_SHUTDOWN_HOOK))
       {
         /* these hooks allow multiple commands with the same
-         * pattern, so if we've already seen this pattern/cmd pair, just
+         * pattern, so if we've already seen this pattern/command pair, just
          * ignore it instead of creating a duplicate */
         if (mutt_str_strcmp(ptr->command, cmd.data) == 0)
         {
@@ -224,8 +224,8 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
       }
       else
       {
-        /* other hooks only allow one cmd per pattern, so update the
-         * entry with the new cmd.  this currently does not change the
+        /* other hooks only allow one command per pattern, so update the
+         * entry with the new command.  this currently does not change the
          * order of execution of the hooks, which i think is desirable since
          * a common action to perform is to change the default (.) entry
          * based upon some other information. */
@@ -376,7 +376,7 @@ int mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
 
   if (!MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("too few arguments"), err->dsize);
+    mutt_buffer_printf(err, _("%s: too few arguments"), buf->data);
     goto out;
   }
   mutt_extract_token(name, s, MUTT_TOKEN_NO_FLAGS);
@@ -392,14 +392,14 @@ int mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
 
   if (!MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("too few arguments"), err->dsize);
+    mutt_buffer_printf(err, _("%s: too few arguments"), buf->data);
     goto out;
   }
   mutt_extract_token(fmtstring, s, MUTT_TOKEN_NO_FLAGS);
 
   if (MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("too many arguments"), err->dsize);
+    mutt_buffer_printf(err, _("%s: too many arguments"), buf->data);
     goto out;
   }
 
