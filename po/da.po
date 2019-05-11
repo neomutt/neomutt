@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2019-05-10 09:04-0700\n"
+"POT-Creation-Date: 2019-05-11 10:55+0100\n"
 "PO-Revision-Date: 2019-05-10 21:15+0200\n"
 "Last-Translator: Morten Bo Johansen <mbj@mbjnet.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -303,8 +303,9 @@ msgid "%s: command valid only for index, body, header objects"
 msgstr "%s: kommandoen kan kun bruges på index-, body- og header-objekter"
 
 #: color.c:666 color.c:870 color.c:896 color.c:944 color.c:972 color.c:999
-#: color.c:1079 hook.c:112 hook.c:125 init.c:583 init.c:591 init.c:680
-#: init.c:1067 init.c:1235 init.c:1834 init.c:1892 keymap.c:1165 score.c:107
+#: color.c:1079 hook.c:112 hook.c:125 hook.c:379 hook.c:395 init.c:583
+#: init.c:591 init.c:680 init.c:1067 init.c:1235 init.c:1834 init.c:1892
+#: keymap.c:1165 score.c:107
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: for få parametre"
@@ -314,9 +315,9 @@ msgstr "%s: for få parametre"
 msgid "%s: no such attribute"
 msgstr "%s: ukendt attribut"
 
-#: color.c:1088 color.c:1141 hook.c:131 init.c:1091 init.c:2096 init.c:2549
-#: keymap.c:1098 keymap.c:1266 keymap.c:1418 keymap.c:1481 mutt_lua.c:475
-#: score.c:116
+#: color.c:1088 color.c:1141 hook.c:131 hook.c:402 init.c:1091 init.c:2096
+#: init.c:2549 keymap.c:1098 keymap.c:1266 keymap.c:1418 keymap.c:1481
+#: mutt_lua.c:475 score.c:116
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: for mange parametre"
@@ -1422,7 +1423,7 @@ msgstr "Kan ikke åbne brev: %s"
 msgid "Can't append to folder: %s"
 msgstr "Kan ikke føje til brevbakke: %s"
 
-#: email/parse.c:1338
+#: email/parse.c:1344
 msgid "multipart message has no boundary parameter"
 msgstr "brev med flere dele har ingen \"boundary\"-parameter"
 
@@ -2831,7 +2832,7 @@ msgstr "Ingen brevbakke med nye breve"
 msgid "No incoming mailboxes defined"
 msgstr "Ingen indbakker er defineret"
 
-#: main.c:1200
+#: main.c:1207
 msgid "Mailbox is empty"
 msgstr "Brevbakken er tom"
 
@@ -3007,7 +3008,7 @@ msgstr "Fejl under forbindelse til server: %s"
 msgid "Bad regex: %s"
 msgstr "Fejl i regulært udtryk: %s"
 
-#: mutt/regex.c:329
+#: mutt/regex.c:330
 msgid "Not enough subexpressions for template"
 msgstr "Ikke nok deludtryk til skabelon"
 
@@ -3627,9 +3628,10 @@ msgid ""
 "\n"
 msgstr "[-- Fejl: dekryptering fejlede: %s --]\n"
 
-#, c-format
-msgid "error importing key: %s\n"
-msgstr "fejl ved import af nøgle: %s\n"
+#: ncrypt/crypt_gpgme.c:2759
+#, fuzzy, c-format
+msgid "Error extracting key: %s"
+msgstr "Fejl ved eksportering af nøgle: %s"
 
 #: ncrypt/crypt_gpgme.c:2999
 #, c-format
@@ -4059,7 +4061,11 @@ msgstr ""
 "[-- Slut på PGP-uddata --]\n"
 "\n"
 
-msgid "PGP message is not encrypted."
+#. L10N: You will see this error message if (1) you are decrypting
+#. (not encrypting) something and (2) it is a plaintext. So the
+#. message does not mean "You failed to encrypt the message."
+#: ncrypt/pgp.c:732
+msgid "PGP message is not encrypted"
 msgstr "PGP-brev er ikke krypteret."
 
 #: ncrypt/pgp.c:973
@@ -4850,6 +4856,10 @@ msgstr "slet alle breve i deltråd"
 msgid "delete all messages in thread"
 msgstr "slet alle breve i tråd"
 
+#: opcodes.h:94
+msgid "descend into a directory"
+msgstr "gå ned i et katalog"
+
 #: opcodes.h:95
 msgid "display full address of sender"
 msgstr "vis fuld afsenderadresse"
@@ -5034,6 +5044,10 @@ msgstr "lav en genvejstast-makro for det aktuelle brev"
 #, fuzzy
 msgid "go to parent directory"
 msgstr "%s er ikke et filkatalog."
+
+#: opcodes.h:140
+msgid "reply to all recipients preserving To/Cc"
+msgstr "svar til alle modtagere og bevar To/Cc"
 
 #: opcodes.h:141
 msgid "reply to all recipients"
@@ -6205,6 +6219,18 @@ msgstr "Intet emne, afbryd?"
 msgid "No subject, aborting"
 msgstr "Intet emne, afbryder"
 
+#. L10N:
+#. This is the prompt for $forward_attachments.
+#. When inline forwarding ($mime_forward answered "no"), this prompts
+#. whether to add non-decodable attachments from the original email.
+#. Text/plain parts and the like will already be included in the
+#. message contents, but other attachment, such as PDF files, will also
+#. be added as attachments to the new mail, if this is answered yes.
+#.
+#: send.c:591
+msgid "Forward attachments?"
+msgstr "Videresend bilag?"
+
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
 #: send.c:792
@@ -6237,64 +6263,38 @@ msgstr "Videresend som bilag?"
 msgid "Preparing forwarded message..."
 msgstr "Forbereder brev til videresendelse ..."
 
-#. L10N:
-#. This is the prompt for $forward_attachments.
-#. When inline forwarding ($mime_forward answered "no"), this prompts
-#. whether to add non-decodable attachments from the original email.
-#. Text/plain parts and the like will already be included in the
-#. message contents, but other attachment, such as PDF files, will also
-#. be added as attachments to the new mail, if this is answered yes.
-#.
-msgid "Forward attachments?"
-msgstr "Videresend bilag?"
-
+#: send.c:1612
 msgid "Fcc to an IMAP mailbox is not supported in batch mode"
 msgstr "Fcc til en IMAP-brevbakke understøttes ikke i batch-tilstand"
-
-msgid "reply to all recipients preserving To/Cc"
-msgstr "svar til alle modtagere og bevar To/Cc"
-
-#. L10N: Help screen function description.
-#. Generated from one of the OPS files.
-msgid "descend into a directory"
-msgstr "gå ned i et katalog"
-
-#. L10N: Help screen function description.
-#. Generated from one of the OPS files.
-#. L10N:
-#. Called when saving to $record or Fcc failed after sending.
-#. (r)etry tries the same mailbox again.
-#. alternate (m)ailbox prompts for a different mailbox to try.
-#. (s)kip aborts saving.
-#.
-msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip? "
-msgstr "Fcc fejlede. forsøg (i)gen, alternativ (b)revbakke, eller (a)fbryd? "
-
-#. L10N:
-#. These correspond to the "Fcc failed" multi-choice prompt
-#. (r)etry, alternate (m)ailbox, or (s)kip.
-#. Any similarity to famous leaders of the FSF is coincidental.
-#.
-msgid "rms"
-msgstr "iba"
-
-#. L10N:
-#. This is the prompt to enter an "alternate (m)ailbox" when the
-#. initial Fcc fails.
-#.
-msgid "Fcc mailbox"
-msgstr "Fcc-brevbakke"
-
-msgid "Cannot postpone.  $postponed is unset"
-msgstr "Kan ikke udsætte. Variablen $postponed er ikke sat"
 
 #: send.c:1639 send.c:1665
 msgid "Save attachments in Fcc?"
 msgstr "Gem bilag i Fcc?"
 
+#. L10N: Called when saving to $record or Fcc failed after sending.
+#. (r)etry tries the same mailbox again.
+#. alternate (m)ailbox prompts for a different mailbox to try.
+#. (s)kip aborts saving.
+#: send.c:1686
+msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
+msgstr "Fcc fejlede. forsøg (i)gen, alternativ (b)revbakke, eller (a)fbryd? "
+
+#. L10N: These correspond to the "Fcc failed" multi-choice prompt
+#. (r)etry, alternate (m)ailbox, or (s)kip.
+#. Any similarity to famous leaders of the FSF is coincidental.
+#: send.c:1690
+msgid "rms"
+msgstr "iba"
+
+#. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
+#. initial Fcc fails.
+#: send.c:1696
+msgid "Fcc mailbox"
+msgstr "Fcc-brevbakke"
+
 #: send.c:1758
 msgid "Can't postpone.  $postponed is unset"
-msgstr ""
+msgstr "Kan ikke udsætte. Variablen $postponed er ikke sat"
 
 #: send.c:1888
 msgid "Recall postponed message?"

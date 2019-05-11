@@ -54,7 +54,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2019-05-06 16:47+0100\n"
+"POT-Creation-Date: 2019-05-11 10:46+0100\n"
 "PO-Revision-Date: 2017-02-18 01:24+0100\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -346,8 +346,9 @@ msgid "%s: command valid only for index, body, header objects"
 msgstr "%s: L’ordre només és vàlida per a objectes «index», «body» i «header»."
 
 #: color.c:666 color.c:870 color.c:896 color.c:944 color.c:972 color.c:999
-#: color.c:1079 hook.c:112 hook.c:125 init.c:583 init.c:591 init.c:680
-#: init.c:1067 init.c:1235 init.c:1834 init.c:1892 keymap.c:1165 score.c:107
+#: color.c:1079 hook.c:112 hook.c:125 hook.c:379 hook.c:395 init.c:583
+#: init.c:591 init.c:680 init.c:1067 init.c:1235 init.c:1834 init.c:1892
+#: keymap.c:1165 score.c:107
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: Manquen arguments."
@@ -359,9 +360,9 @@ msgstr "%s: L’atribut no existeix."
 
 # ivb (2001/12/08)
 # ivb  També apareix com a error aïllat.
-#: color.c:1088 color.c:1141 hook.c:131 init.c:1091 init.c:2096 init.c:2549
-#: keymap.c:1098 keymap.c:1266 keymap.c:1418 keymap.c:1481 mutt_lua.c:475
-#: score.c:116
+#: color.c:1088 color.c:1141 hook.c:131 hook.c:402 init.c:1091 init.c:2096
+#: init.c:2549 keymap.c:1098 keymap.c:1266 keymap.c:1418 keymap.c:1481
+#: mutt_lua.c:475 score.c:116
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: Sobren arguments."
@@ -1504,7 +1505,7 @@ msgstr "No s’ha pogut obrir el fitxer missatge: %s"
 msgid "Can't append to folder: %s"
 msgstr "No s’ha pogut afegir a la carpeta: %s"
 
-#: email/parse.c:1338
+#: email/parse.c:1344
 msgid "multipart message has no boundary parameter"
 msgstr "El missatge «multipart» no té paràmetre «boundary»."
 
@@ -2973,7 +2974,7 @@ msgstr "No hi ha cap bústia amb correu nou"
 msgid "No incoming mailboxes defined"
 msgstr "No s’ha definit cap bústia d’entrada"
 
-#: main.c:1200
+#: main.c:1207
 msgid "Mailbox is empty"
 msgstr "La bústia és buida"
 
@@ -3162,7 +3163,7 @@ msgstr "L’expressió regular no és vàlida: %s"
 #
 # Una regla usa més referències cap enrere al «format» o «reemplaçament» que
 # es defineixen al «patró».  ivb
-#: mutt/regex.c:329
+#: mutt/regex.c:330
 #, fuzzy
 msgid "Not enough subexpressions for template"
 msgstr "spam: Hi ha més referències cap enrere que subexpressions definides."

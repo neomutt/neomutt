@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2019-05-06 16:47+0100\n"
+"POT-Creation-Date: 2019-05-11 10:46+0100\n"
 "PO-Revision-Date: 2018-05-31 13:50+0000\n"
 "Last-Translator: TAKAHASHI Tamotsu <ttakah@lapis.plala.or.jp>\n"
 "Language-Team: neomutt-j <neomutt-j-users@lists.osdn.me>\n"
@@ -300,8 +300,9 @@ msgid "%s: command valid only for index, body, header objects"
 msgstr "コマンド %s はインデックス、ボディ、ヘッダにのみ有効"
 
 #: color.c:666 color.c:870 color.c:896 color.c:944 color.c:972 color.c:999
-#: color.c:1079 hook.c:112 hook.c:125 init.c:583 init.c:591 init.c:680
-#: init.c:1067 init.c:1235 init.c:1834 init.c:1892 keymap.c:1165 score.c:107
+#: color.c:1079 hook.c:112 hook.c:125 hook.c:379 hook.c:395 init.c:583
+#: init.c:591 init.c:680 init.c:1067 init.c:1235 init.c:1834 init.c:1892
+#: keymap.c:1165 score.c:107
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: 引数が少なすぎる"
@@ -311,9 +312,9 @@ msgstr "%s: 引数が少なすぎる"
 msgid "%s: no such attribute"
 msgstr "%s という属性はない"
 
-#: color.c:1088 color.c:1141 hook.c:131 init.c:1091 init.c:2096 init.c:2549
-#: keymap.c:1098 keymap.c:1266 keymap.c:1418 keymap.c:1481 mutt_lua.c:475
-#: score.c:116
+#: color.c:1088 color.c:1141 hook.c:131 hook.c:402 init.c:1091 init.c:2096
+#: init.c:2549 keymap.c:1098 keymap.c:1266 keymap.c:1418 keymap.c:1481
+#: mutt_lua.c:475 score.c:116
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: 引数が多すぎる"
@@ -1414,7 +1415,7 @@ msgstr "メッセージファイルをオープンできない: %s"
 msgid "Can't append to folder: %s"
 msgstr "フォルダに追加できない: %s"
 
-#: email/parse.c:1338
+#: email/parse.c:1344
 msgid "multipart message has no boundary parameter"
 msgstr "マルチパートのメッセージだが boundary パラメータがない"
 
@@ -2823,7 +2824,7 @@ msgstr "新着メールのあるメールボックスはない。"
 msgid "No incoming mailboxes defined"
 msgstr "到着用メールボックスが未定義。"
 
-#: main.c:1200
+#: main.c:1207
 msgid "Mailbox is empty"
 msgstr "メールボックスが空。"
 
@@ -3000,7 +3001,7 @@ msgid "Bad regex: %s"
 msgstr "不正な正規表現: %s"
 
 # 前の引数で (...) と括弧でくくった部分を後の引数で %1 や %2 として参照するやつ
-#: mutt/regex.c:329
+#: mutt/regex.c:330
 msgid "Not enough subexpressions for template"
 msgstr "テンプレートに括弧が足りない"
 

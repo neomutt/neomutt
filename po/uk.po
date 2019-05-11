@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2019-05-10 19:29+0300\n"
+"POT-Creation-Date: 2019-05-11 10:59+0100\n"
 "PO-Revision-Date: 2019-05-10 19:47+0300\n"
 "Last-Translator: Vsevolod Volkov <vvv@mutt.org.ua>\n"
 "Language-Team: \n"
@@ -302,8 +302,9 @@ msgid "%s: command valid only for index, body, header objects"
 msgstr "%s: команда можлива тільки для списку, тілі і заголовку листа"
 
 #: color.c:666 color.c:870 color.c:896 color.c:944 color.c:972 color.c:999
-#: color.c:1079 hook.c:112 hook.c:125 init.c:583 init.c:591 init.c:680
-#: init.c:1067 init.c:1235 init.c:1834 init.c:1892 keymap.c:1165 score.c:107
+#: color.c:1079 hook.c:112 hook.c:125 hook.c:379 hook.c:395 init.c:583
+#: init.c:591 init.c:680 init.c:1067 init.c:1235 init.c:1834 init.c:1892
+#: keymap.c:1165 score.c:107
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: замало аргументів"
@@ -313,9 +314,9 @@ msgstr "%s: замало аргументів"
 msgid "%s: no such attribute"
 msgstr "%s: такого атрібуту немає"
 
-#: color.c:1088 color.c:1141 hook.c:131 init.c:1091 init.c:2096 init.c:2549
-#: keymap.c:1098 keymap.c:1266 keymap.c:1418 keymap.c:1481 mutt_lua.c:475
-#: score.c:116
+#: color.c:1088 color.c:1141 hook.c:131 hook.c:402 init.c:1091 init.c:2096
+#: init.c:2549 keymap.c:1098 keymap.c:1266 keymap.c:1418 keymap.c:1481
+#: mutt_lua.c:475 score.c:116
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: забагато аргументів"
@@ -1427,7 +1428,7 @@ msgstr "Неможливо відкрити файл повідомлення: %
 msgid "Can't append to folder: %s"
 msgstr "Неможливо дозаписати до скриньки: %s"
 
-#: email/parse.c:1338
+#: email/parse.c:1344
 msgid "multipart message has no boundary parameter"
 msgstr "Багаточастинний лист не має параметру межі"
 
@@ -2845,7 +2846,7 @@ msgstr "Немає поштової скриньки з новою поштою"
 msgid "No incoming mailboxes defined"
 msgstr "Вхідних поштових скриньок не вказано"
 
-#: main.c:1200
+#: main.c:1207
 msgid "Mailbox is empty"
 msgstr "Поштова скринька порожня"
 
@@ -3021,7 +3022,7 @@ msgstr "Помилка з’єднання з сервером: %s"
 msgid "Bad regex: %s"
 msgstr "Поганий регулярний вираз: %s"
 
-#: mutt/regex.c:329
+#: mutt/regex.c:330
 msgid "Not enough subexpressions for template"
 msgstr "Недостатньо підвиразів для шаблону"
 
@@ -3653,10 +3654,6 @@ msgstr ""
 #, fuzzy, c-format
 msgid "Error extracting key: %s"
 msgstr "Помилка експорта ключа: %s"
-
-#, c-format
-msgid "error importing key: %s\n"
-msgstr "помилка імпорта ключа: %s\n"
 
 #: ncrypt/crypt_gpgme.c:2999
 #, c-format
@@ -4886,6 +4883,10 @@ msgstr "видалити всі листи гілки"
 msgid "delete all messages in thread"
 msgstr "видалити всі листи розмови"
 
+#: opcodes.h:94
+msgid "descend into a directory"
+msgstr "увійти в каталог"
+
 #: opcodes.h:95
 msgid "display full address of sender"
 msgstr "показати повну адресу відправника"
@@ -5072,16 +5073,9 @@ msgstr "створити макрос для поточного листа"
 msgid "go to parent directory"
 msgstr "%s не є каталогом."
 
+#: opcodes.h:140
 msgid "reply to all recipients preserving To/Cc"
 msgstr "відповісти всім адресатам зі збереженням To/Cc"
-
-#. L10N: Help screen function description.
-#. Generated from one of the OPS files.
-msgid "descend into a directory"
-msgstr "увійти в каталог"
-
-#. L10N: Help screen function description.
-#. Generated from one of the OPS files.
 
 #: opcodes.h:141
 msgid "reply to all recipients"
@@ -6258,6 +6252,18 @@ msgstr "Теми немає, відмінити?"
 msgid "No subject, aborting"
 msgstr "Теми немає, відмінено"
 
+#. L10N:
+#. This is the prompt for $forward_attachments.
+#. When inline forwarding ($mime_forward answered "no"), this prompts
+#. whether to add non-decodable attachments from the original email.
+#. Text/plain parts and the like will already be included in the
+#. message contents, but other attachment, such as PDF files, will also
+#. be added as attachments to the new mail, if this is answered yes.
+#.
+#: send.c:591
+msgid "Forward attachments?"
+msgstr "Переслати додатки?"
+
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
 #: send.c:792
@@ -6290,54 +6296,38 @@ msgstr "Переслати як додаток?"
 msgid "Preparing forwarded message..."
 msgstr "Підготування листа для пересилання..."
 
-#. L10N:
-#. This is the prompt for $forward_attachments.
-#. When inline forwarding ($mime_forward answered "no"), this prompts
-#. whether to add non-decodable attachments from the original email.
-#. Text/plain parts and the like will already be included in the
-#. message contents, but other attachment, such as PDF files, will also
-#. be added as attachments to the new mail, if this is answered yes.
-#.
-msgid "Forward attachments?"
-msgstr "Переслати додатки?"
-
+#: send.c:1612
 msgid "Fcc to an IMAP mailbox is not supported in batch mode"
 msgstr "Fcc в скриньку на IMAP-сервері не підтримується в пакетному режимі"
 
+#: send.c:1639 send.c:1665
 msgid "Save attachments in Fcc?"
 msgstr "Зберегти додатки в Fcc?"
 
-#. L10N:
-#. Called when saving to $record or Fcc failed after sending.
+#. L10N: Called when saving to $record or Fcc failed after sending.
 #. (r)etry tries the same mailbox again.
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
-#.
-msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip? "
-msgstr ""
-"Помилка збереження в Fcc. (r)повторити, (m)інша скринька, (s)пропустити? "
+#: send.c:1686
+msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
+msgstr "Помилка збереження в Fcc. (r)повторити, (m)інша скринька, (s)пропустити? "
 
-#. L10N:
-#. These correspond to the "Fcc failed" multi-choice prompt
+#. L10N: These correspond to the "Fcc failed" multi-choice prompt
 #. (r)etry, alternate (m)ailbox, or (s)kip.
 #. Any similarity to famous leaders of the FSF is coincidental.
-#.
+#: send.c:1690
 msgid "rms"
 msgstr "rms"
 
-#. L10N:
-#. This is the prompt to enter an "alternate (m)ailbox" when the
+#. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
 #. initial Fcc fails.
-#.
+#: send.c:1696
 msgid "Fcc mailbox"
 msgstr "Fcc скринька"
 
-msgid "Cannot postpone.  $postponed is unset"
-msgstr "Неможливо відкласти лист. Значення $postponed не встановлено."
-
 #: send.c:1758
 msgid "Can't postpone.  $postponed is unset"
-msgstr ""
+msgstr "Неможливо відкласти лист. Значення $postponed не встановлено."
 
 #: send.c:1888
 msgid "Recall postponed message?"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2019-05-06 16:47+0100\n"
+"POT-Creation-Date: 2019-05-11 10:46+0100\n"
 "PO-Revision-Date: 2007-12-15 14:05+0100\n"
 "Last-Translator: Johan Svedberg <johan@svedberg.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -302,8 +302,9 @@ msgid "%s: command valid only for index, body, header objects"
 msgstr "%s: kommandot är endast giltigt för index-objekt"
 
 #: color.c:666 color.c:870 color.c:896 color.c:944 color.c:972 color.c:999
-#: color.c:1079 hook.c:112 hook.c:125 init.c:583 init.c:591 init.c:680
-#: init.c:1067 init.c:1235 init.c:1834 init.c:1892 keymap.c:1165 score.c:107
+#: color.c:1079 hook.c:112 hook.c:125 hook.c:379 hook.c:395 init.c:583
+#: init.c:591 init.c:680 init.c:1067 init.c:1235 init.c:1834 init.c:1892
+#: keymap.c:1165 score.c:107
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: för få parametrar"
@@ -313,9 +314,9 @@ msgstr "%s: för få parametrar"
 msgid "%s: no such attribute"
 msgstr "%s: attributet finns inte"
 
-#: color.c:1088 color.c:1141 hook.c:131 init.c:1091 init.c:2096 init.c:2549
-#: keymap.c:1098 keymap.c:1266 keymap.c:1418 keymap.c:1481 mutt_lua.c:475
-#: score.c:116
+#: color.c:1088 color.c:1141 hook.c:131 hook.c:402 init.c:1091 init.c:2096
+#: init.c:2549 keymap.c:1098 keymap.c:1266 keymap.c:1418 keymap.c:1481
+#: mutt_lua.c:475 score.c:116
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: för många parametrar"
@@ -1435,7 +1436,7 @@ msgstr "Kan inte öppna meddelandefil: %s"
 msgid "Can't append to folder: %s"
 msgstr "Kan inte lägga till folder: %s"
 
-#: email/parse.c:1338
+#: email/parse.c:1344
 msgid "multipart message has no boundary parameter"
 msgstr "\"multipart\"-meddelande har ingen avgränsningsparameter"
 
@@ -2864,7 +2865,7 @@ msgstr "Ingen brevlåda med nya brev"
 msgid "No incoming mailboxes defined"
 msgstr "Inga inkommande brevlådor definierade"
 
-#: main.c:1200
+#: main.c:1207
 msgid "Mailbox is empty"
 msgstr "Brevlådan är tom"
 
@@ -3040,7 +3041,7 @@ msgstr "Fel vid anslutning till server: %s"
 msgid "Bad regex: %s"
 msgstr "Felaktigt reguljärt uttryck: %s"
 
-#: mutt/regex.c:329
+#: mutt/regex.c:330
 #, fuzzy
 msgid "Not enough subexpressions for template"
 msgstr "Inte tillräckligt med deluttryck för spam-mall"
