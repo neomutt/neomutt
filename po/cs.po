@@ -1665,16 +1665,6 @@ msgstr "zkratka pro schránku expandována na prázdný regulární výraz"
 msgid "badly formatted command string"
 msgstr "špatně utvořený řetězec s příkazem"
 
-#: hook.c:379 hook.c:395
-#, fuzzy
-msgid "too few arguments"
-msgstr "příliš málo argumentů pro %s"
-
-#: hook.c:402
-#, fuzzy
-msgid "too many arguments"
-msgstr "%s: příliš mnoho argumentů"
-
 #: hook.c:473
 msgid "unhook: Can't do unhook * from within a hook"
 msgstr "unhook: unhook * nelze provést z jiného háčku"

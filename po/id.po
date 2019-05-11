@@ -1695,16 +1695,6 @@ msgstr ""
 msgid "badly formatted command string"
 msgstr ""
 
-#: hook.c:379 hook.c:395
-#, fuzzy
-msgid "too few arguments"
-msgstr "%s: parameternya kurang"
-
-#: hook.c:402
-#, fuzzy
-msgid "too many arguments"
-msgstr "%s: parameternya terlalu banyak"
-
 #: hook.c:473
 msgid "unhook: Can't do unhook * from within a hook"
 msgstr "unhook: Tidak dapat melakukan unhook * dari hook"

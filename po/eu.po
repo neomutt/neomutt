@@ -1704,16 +1704,6 @@ msgstr ""
 msgid "badly formatted command string"
 msgstr ""
 
-#: hook.c:379 hook.c:395
-#, fuzzy
-msgid "too few arguments"
-msgstr "%s: argumentu gutxiegi"
-
-#: hook.c:402
-#, fuzzy
-msgid "too many arguments"
-msgstr "%s: argumentu gehiegi"
-
 #: hook.c:473
 msgid "unhook: Can't do unhook * from within a hook"
 msgstr "unhook: Ezin da gantxoaren barnekaldetik desengatxatu"

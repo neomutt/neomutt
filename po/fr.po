@@ -1771,17 +1771,6 @@ msgstr "le raccourci de boîte aux lettres a donné une expression rationnelle v
 msgid "badly formatted command string"
 msgstr "chaîne de commande incorrectement formatée"
 
-# , c-format
-#: hook.c:379 hook.c:395
-#, fuzzy
-msgid "too few arguments"
-msgstr "%s : pas assez d'arguments"
-
-#: hook.c:402
-#, fuzzy
-msgid "too many arguments"
-msgstr "%s: trop d'arguments"
-
 #: hook.c:473
 msgid "unhook: Can't do unhook * from within a hook"
 msgstr "unhook : impossible de faire un unhook * à l'intérieur d'un hook"

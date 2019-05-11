@@ -1725,16 +1725,6 @@ msgstr ""
 msgid "badly formatted command string"
 msgstr ""
 
-#: hook.c:379 hook.c:395
-#, fuzzy
-msgid "too few arguments"
-msgstr "%s：太少參數"
-
-#: hook.c:402
-#, fuzzy
-msgid "too many arguments"
-msgstr "%s: 太多參數"
-
 #: hook.c:473
 msgid "unhook: Can't do unhook * from within a hook"
 msgstr "unhook: 在 hook 裡面不能做 unhook *"

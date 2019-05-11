@@ -1639,16 +1639,6 @@ msgstr "信箱快捷键扩展到空白的正则表达式"
 msgid "badly formatted command string"
 msgstr "命令字符串格式错误"
 
-#: hook.c:379 hook.c:395
-#, fuzzy
-msgid "too few arguments"
-msgstr "%s：参数太少"
-
-#: hook.c:402
-#, fuzzy
-msgid "too many arguments"
-msgstr "%s：参数太多"
-
 #: hook.c:473
 msgid "unhook: Can't do unhook * from within a hook"
 msgstr "unhook：无法在一个钩子里进行 unhook * 操作"

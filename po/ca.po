@@ -1796,18 +1796,6 @@ msgstr "La drecera a bústia s’ha expandit a l’expressió regular buida."
 msgid "badly formatted command string"
 msgstr "La cadena d’ordre no té un format vàlid."
 
-#: hook.c:379 hook.c:395
-#, fuzzy
-msgid "too few arguments"
-msgstr "%s: Manquen arguments."
-
-# ivb (2001/12/08)
-# ivb  També apareix com a error aïllat.
-#: hook.c:402
-#, fuzzy
-msgid "too many arguments"
-msgstr "%s: Sobren arguments."
-
 #: hook.c:473
 msgid "unhook: Can't do unhook * from within a hook"
 msgstr "unhook: No es pot fer «unhook *» des d’un «hook»"

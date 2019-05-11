@@ -1654,16 +1654,6 @@ msgstr ""
 msgid "badly formatted command string"
 msgstr "błędnie sformatowane polecenie"
 
-#: hook.c:379 hook.c:395
-#, fuzzy
-msgid "too few arguments"
-msgstr "%s: za mało argumentów"
-
-#: hook.c:402
-#, fuzzy
-msgid "too many arguments"
-msgstr "%s: za dużo argumentów"
-
 #: hook.c:473
 msgid "unhook: Can't do unhook * from within a hook"
 msgstr "unhook: Nie można wykonać \"unhook *\" wewnątrz innego polecenia hook"

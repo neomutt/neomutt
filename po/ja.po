@@ -1680,16 +1680,6 @@ msgstr "メールボックス記号ショートカットが空の正規表現に
 msgid "badly formatted command string"
 msgstr "不適切なコマンド文字列"
 
-#: hook.c:379 hook.c:395
-#, fuzzy
-msgid "too few arguments"
-msgstr "%s: 引数が少なすぎる"
-
-#: hook.c:402
-#, fuzzy
-msgid "too many arguments"
-msgstr "%s: 引数が多すぎる"
-
 #: hook.c:473
 msgid "unhook: Can't do unhook * from within a hook"
 msgstr "unhook: フック内からは unhook * できない"

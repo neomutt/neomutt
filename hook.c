@@ -376,7 +376,7 @@ int mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
 
   if (!MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("too few arguments"), err->dsize);
+    mutt_buffer_printf(err, _("%s: too few arguments"), buf->data);
     goto out;
   }
   mutt_extract_token(name, s, MUTT_TOKEN_NO_FLAGS);
@@ -392,14 +392,14 @@ int mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
 
   if (!MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("too few arguments"), err->dsize);
+    mutt_buffer_printf(err, _("%s: too few arguments"), buf->data);
     goto out;
   }
   mutt_extract_token(fmtstring, s, MUTT_TOKEN_NO_FLAGS);
 
   if (MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("too many arguments"), err->dsize);
+    mutt_buffer_printf(err, _("%s: too many arguments"), buf->data);
     goto out;
   }
 

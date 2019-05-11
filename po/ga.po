@@ -1738,16 +1738,6 @@ msgstr ""
 msgid "badly formatted command string"
 msgstr ""
 
-#: hook.c:379 hook.c:395
-#, fuzzy
-msgid "too few arguments"
-msgstr "%s: níl go leor argóintí ann"
-
-#: hook.c:402
-#, fuzzy
-msgid "too many arguments"
-msgstr "%s: an iomarca argóintí"
-
 #: hook.c:473
 msgid "unhook: Can't do unhook * from within a hook"
 msgstr "unhook: Ní cheadaítear unhook * isteach i hook"
