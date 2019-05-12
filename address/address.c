@@ -475,7 +475,6 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
   if (!s)
     return NULL;
 
-  int ws_pending;
   const char *ps = NULL;
   char comment[1024], phrase[1024];
   size_t phraselen = 0, commentlen = 0;
@@ -487,7 +486,7 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
   while (last && last->next)
     last = last->next;
 
-  ws_pending = mutt_str_is_email_wsp(*s);
+  bool ws_pending = mutt_str_is_email_wsp(*s);
 
   s = mutt_str_skip_email_wsp(s);
   while (*s)

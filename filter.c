@@ -153,7 +153,7 @@ pid_t mutt_create_filter_fd(const char *cmd, FILE **fp_in, FILE **fp_out,
     {
       char columns[16];
       snprintf(columns, sizeof(columns), "%d", MuttIndexWindow->cols);
-      mutt_envlist_set("COLUMNS", columns, 1);
+      mutt_envlist_set("COLUMNS", columns, true);
     }
 
     execle(EXEC_SHELL, "sh", "-c", cmd, NULL, mutt_envlist_getlist());

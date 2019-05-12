@@ -806,7 +806,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
   mutt_buffer_init(&token);
   while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, MUTT_CONT)))
   {
-    const int conv = C_ConfigCharset && (*C_ConfigCharset) && C_Charset;
+    const bool conv = C_ConfigCharset && (*C_ConfigCharset) && C_Charset;
     if (conv)
     {
       currentline = mutt_str_strdup(linebuf);

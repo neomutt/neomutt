@@ -430,7 +430,7 @@ done:
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_change_flag(struct Mailbox *m, struct EmailList *el, int bf)
+int mutt_change_flag(struct Mailbox *m, struct EmailList *el, bool bf)
 {
   if (!m || !el || STAILQ_EMPTY(el))
     return -1;

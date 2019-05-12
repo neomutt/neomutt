@@ -129,7 +129,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
   if (!m)
     return src;
 
-  int c = Context && (mutt_str_strcmp(Context->mailbox->realpath, m->realpath) == 0);
+  bool c = Context && (mutt_str_strcmp(Context->mailbox->realpath, m->realpath) == 0);
 
   optional = flags & MUTT_FORMAT_OPTIONAL;
 

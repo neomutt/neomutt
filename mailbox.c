@@ -505,7 +505,7 @@ void mutt_buffer_mailbox(struct Mailbox *m_cur, struct Buffer *s)
 
   if (mutt_mailbox_check(m_cur, 0))
   {
-    int found = 0;
+    bool found = false;
     for (int pass = 0; pass < 2; pass++)
     {
       struct MailboxNode *np = NULL;
@@ -521,7 +521,7 @@ void mutt_buffer_mailbox(struct Mailbox *m_cur, struct Buffer *s)
           return;
         }
         if (mutt_str_strcmp(mutt_b2s(s), mutt_b2s(np->mailbox->pathbuf)) == 0)
-          found = 1;
+          found = true;
       }
     }
 

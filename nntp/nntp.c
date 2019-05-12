@@ -412,7 +412,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
       adata->overview_fmt = mutt_str_strdup(OverviewFmt);
     else
     {
-      int cont = 0;
+      bool cont = false;
       size_t buflen = 2048, off = 0, b = 0;
 
       FREE(&adata->overview_fmt);
@@ -437,9 +437,9 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
         if (!cont && (mutt_str_strcmp(".", adata->overview_fmt + off) == 0))
           break;
 
-        cont = (chunk >= (buflen - off)) ? 1 : 0;
+        cont = (chunk >= (buflen - off));
         off += strlen(adata->overview_fmt + off);
-        if (cont == 0)
+        if (!cont)
         {
           if (adata->overview_fmt[b] == ':')
           {

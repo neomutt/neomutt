@@ -830,7 +830,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
             switch (*p)
             {
               case 'O':
-                e->old = C_MarkOld ? true : false;
+                e->old = C_MarkOld;
                 break;
               case 'R':
                 e->read = true;
