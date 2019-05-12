@@ -257,5 +257,6 @@ void config_account(void)
   ac_free(cs, &ac);
   cs_free(&cs);
   FREE(&err.data);
+  mutt_buffer_pool_free();
   log_line(__func__);
 }

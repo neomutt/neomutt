@@ -379,5 +379,6 @@ void config_dump(void)
     return;
   if (!test_dump_config())
     return;
+  mutt_buffer_pool_free();
 }
 
