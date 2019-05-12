@@ -24,8 +24,8 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/mutt.h"
-#include "email/lib.h"
 #include "address/lib.h"
+#include "email/lib.h"
 
 void test_mutt_param_set(void)
 {
@@ -37,14 +37,16 @@ void test_mutt_param_set(void)
   }
 
   {
-    struct ParameterList parameterlist = { 0 };
+    struct ParameterList parameterlist = TAILQ_HEAD_INITIALIZER(parameterlist);
     mutt_param_set(&parameterlist, NULL, "banana");
     TEST_CHECK_(1, "mutt_param_set(&parameterlist, NULL, \"banana\")");
+    mutt_param_free(&parameterlist);
   }
 
   {
-    struct ParameterList parameterlist = { 0 };
+    struct ParameterList parameterlist = TAILQ_HEAD_INITIALIZER(parameterlist);
     mutt_param_set(&parameterlist, "apple", NULL);
     TEST_CHECK_(1, "mutt_param_set(&parameterlist, \"apple\", NULL)");
+    mutt_param_free(&parameterlist);
   }
 }

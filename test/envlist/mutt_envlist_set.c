@@ -36,4 +36,6 @@ void test_mutt_envlist_set(void)
   {
     TEST_CHECK(mutt_envlist_set("apple", NULL, false));
   }
+
+  mutt_envlist_free();
 }

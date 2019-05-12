@@ -24,8 +24,8 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/mutt.h"
-#include "email/lib.h"
 #include "address/lib.h"
+#include "email/lib.h"
 
 void test_mutt_rfc822_read_header(void)
 {
@@ -38,7 +38,9 @@ void test_mutt_rfc822_read_header(void)
 
   {
     FILE *fp = fopen("/dev/null", "r");
-    TEST_CHECK(mutt_rfc822_read_header(fp, NULL, false, false) != NULL);
+    struct Envelope *env = NULL;
+    TEST_CHECK((env = mutt_rfc822_read_header(fp, NULL, false, false)) != NULL);
+    mutt_env_free(&env);
     fclose(fp);
   }
 }

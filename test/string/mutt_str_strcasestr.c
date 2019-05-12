@@ -72,7 +72,8 @@ void test_mutt_str_strcasestr(void)
 
     TEST_CHECK_(retval1 == empty_expected, "Expected: %s, Actual %s", "", retval1);
     TEST_CHECK_(retval2 == NULL, "Expected: %s, Actual %s", NULL, retval2);
-    TEST_CHECK_(retval3 == haystack_same_size, "Expected: %s, Actual %s", haystack_same_size, retval3);
+    TEST_CHECK_(retval3 == haystack_same_size, "Expected: %s, Actual %s",
+                haystack_same_size, retval3);
   }
 
   { // Check instance where needle is not in haystack.
@@ -88,7 +89,8 @@ void test_mutt_str_strcasestr(void)
   { // Check instance haystack is the same length as the needle and needle exists.
     const char *retval = mutt_str_strcasestr(haystack_same_size, needle);
 
-    TEST_CHECK_(retval == haystack_same_size, "Expected: %s, Actual: %s", haystack_same_size, retval);
+    TEST_CHECK_(retval == haystack_same_size, "Expected: %s, Actual: %s",
+                haystack_same_size, retval);
   }
 
   { // Check instance haystack is larger and needle exists.

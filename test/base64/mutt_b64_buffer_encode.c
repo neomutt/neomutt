@@ -34,7 +34,8 @@ void test_mutt_b64_buffer_encode(void)
   }
 
   {
-    struct Buffer buf = { 0 };
-    TEST_CHECK(mutt_b64_buffer_encode(&buf, NULL, 10) == 0);
+    struct Buffer *buf = mutt_buffer_new();
+    TEST_CHECK(mutt_b64_buffer_encode(buf, NULL, 10) == 0);
+    mutt_buffer_free(&buf);
   }
 }

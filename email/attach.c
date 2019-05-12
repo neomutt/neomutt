@@ -39,7 +39,7 @@
  */
 void mutt_actx_add_attach(struct AttachCtx *actx, struct AttachPtr *attach)
 {
-  if (!actx)
+  if (!actx || !attach)
     return;
 
   if (actx->idxlen == actx->idxmax)
@@ -61,7 +61,7 @@ void mutt_actx_add_attach(struct AttachCtx *actx, struct AttachPtr *attach)
  */
 void mutt_actx_add_fp(struct AttachCtx *actx, FILE *fp_new)
 {
-  if (!actx)
+  if (!actx || !fp_new)
     return;
 
   if (actx->fp_len == actx->fp_max)
@@ -82,7 +82,7 @@ void mutt_actx_add_fp(struct AttachCtx *actx, FILE *fp_new)
  */
 void mutt_actx_add_body(struct AttachCtx *actx, struct Body *new_body)
 {
-  if (!actx)
+  if (!actx || !new_body)
     return;
 
   if (actx->body_len == actx->body_max)

@@ -32,10 +32,14 @@ void test_mutt_file_mkstemp_full(void)
   C_Tmpdir = "/tmp";
 
   {
-    TEST_CHECK(mutt_file_mkstemp_full(NULL, 0, "apple") != NULL);
+    FILE *fp = NULL;
+    TEST_CHECK((fp = mutt_file_mkstemp_full(NULL, 0, "apple")) != NULL);
+    fclose(fp);
   }
 
   {
-    TEST_CHECK(mutt_file_mkstemp_full("apple", 0, NULL) != NULL);
+    FILE *fp = NULL;
+    TEST_CHECK((fp = mutt_file_mkstemp_full("apple", 0, NULL)) != NULL);
+    fclose(fp);
   }
 }

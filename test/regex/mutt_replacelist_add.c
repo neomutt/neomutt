@@ -49,5 +49,6 @@ void test_mutt_replacelist_add(void)
   {
     struct ReplaceList replacelist = STAILQ_HEAD_INITIALIZER(replacelist);
     TEST_CHECK(mutt_replacelist_add(&replacelist, "apple", "banana", NULL) == 0);
+    mutt_replacelist_free(&replacelist);
   }
 }

@@ -24,8 +24,8 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/mutt.h"
-#include "email/lib.h"
 #include "address/lib.h"
+#include "email/lib.h"
 
 void test_mutt_check_mime_type(void)
 {

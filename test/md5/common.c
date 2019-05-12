@@ -39,4 +39,3 @@ const struct Md5TestData md5_test_data[] =
   { NULL, NULL },
 };
 // clang-format on
-

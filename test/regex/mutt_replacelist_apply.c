@@ -36,7 +36,9 @@ void test_mutt_replacelist_apply(void)
 
   {
     struct ReplaceList replacelist = { 0 };
-    TEST_CHECK(mutt_replacelist_apply(&replacelist, NULL, 10, "apple") != NULL);
+    const char *str = NULL;
+    TEST_CHECK((str = mutt_replacelist_apply(&replacelist, NULL, 10, "apple")) != NULL);
+    FREE(&str);
   }
 
   {

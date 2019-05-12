@@ -117,7 +117,8 @@ bool test_escape_string(void)
 
   {
     const char *before = "apple\nbanana\rcherry\tdamson\\endive\"fig'grape";
-    const char *after  = "apple\\nbanana\\rcherry\\tdamson\\\\endive\\\"fig'grape";
+    const char *after =
+        "apple\\nbanana\\rcherry\\tdamson\\\\endive\\\"fig'grape";
     struct Buffer *buf = mutt_buffer_alloc(256);
     if (!TEST_CHECK(escape_string(buf, before) > 0))
     {
@@ -230,31 +231,44 @@ bool test_dump_config_mutt(void)
     // Degenerate tests
 
     dump_config_mutt(NULL, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(1, "dump_config_mutt(NULL, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
+    TEST_CHECK_(
+        1,
+        "dump_config_mutt(NULL, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
     dump_config_mutt(cs, NULL, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(1, "dump_config_mutt(cs, NULL, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
+    TEST_CHECK_(
+        1,
+        "dump_config_mutt(cs, NULL, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
     dump_config_mutt(cs, he, NULL, buf_init, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(1, "dump_config_mutt(cs, he, NULL, buf_init, CS_DUMP_NO_FLAGS, fp)");
+    TEST_CHECK_(
+        1, "dump_config_mutt(cs, he, NULL, buf_init, CS_DUMP_NO_FLAGS, fp)");
     dump_config_mutt(cs, he, buf_val, NULL, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(1, "dump_config_mutt(cs, he, buf_val, NULL, CS_DUMP_NO_FLAGS, fp)");
+    TEST_CHECK_(
+        1, "dump_config_mutt(cs, he, buf_val, NULL, CS_DUMP_NO_FLAGS, fp)");
     dump_config_mutt(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, NULL);
-    TEST_CHECK_(1, "dump_config_mutt(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, NULL)");
+    TEST_CHECK_(
+        1,
+        "dump_config_mutt(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, NULL)");
 
     // Normal tests
 
     dump_config_mutt(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(1, "dump_config_mutt(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
+    TEST_CHECK_(
+        1, "dump_config_mutt(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
 
     mutt_buffer_reset(buf_val);
     mutt_buffer_addstr(buf_val, "no");
 
     dump_config_mutt(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(1, "dump_config_mutt(NULL, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
+    TEST_CHECK_(
+        1,
+        "dump_config_mutt(NULL, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
 
     he = cs_get_elem(cs, "Cherry");
 
     dump_config_mutt(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(1, "dump_config_mutt(NULL, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
+    TEST_CHECK_(
+        1,
+        "dump_config_mutt(NULL, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
 
     fclose(fp);
     mutt_buffer_free(&buf_val);
@@ -286,30 +300,43 @@ bool test_dump_config_neo(void)
     // Degenerate tests
 
     dump_config_neo(NULL, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(1, "dump_config_neo(NULL, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
+    TEST_CHECK_(
+        1,
+        "dump_config_neo(NULL, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
     dump_config_neo(cs, NULL, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(1, "dump_config_neo(cs, NULL, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
+    TEST_CHECK_(
+        1,
+        "dump_config_neo(cs, NULL, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
     dump_config_neo(cs, he, NULL, buf_init, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(1, "dump_config_neo(cs, he, NULL, buf_init, CS_DUMP_NO_FLAGS, fp)");
+    TEST_CHECK_(
+        1, "dump_config_neo(cs, he, NULL, buf_init, CS_DUMP_NO_FLAGS, fp)");
     dump_config_neo(cs, he, buf_val, NULL, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(1, "dump_config_neo(cs, he, buf_val, NULL, CS_DUMP_NO_FLAGS, fp)");
+    TEST_CHECK_(1,
+                "dump_config_neo(cs, he, buf_val, NULL, CS_DUMP_NO_FLAGS, fp)");
     dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, NULL);
-    TEST_CHECK_(1, "dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, NULL)");
+    TEST_CHECK_(
+        1,
+        "dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, NULL)");
 
     // Normal tests
 
     dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(1, "dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
+    TEST_CHECK_(
+        1, "dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
 
     dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_ONLY_CHANGED, fp);
-    TEST_CHECK_(1, "dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_ONLY_CHANGED, fp)");
+    TEST_CHECK_(
+        1,
+        "dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_ONLY_CHANGED, fp)");
 
     dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_SHOW_DEFAULTS, fp);
-    TEST_CHECK_(1, "dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_SHOW_DEFAULTS, fp)");
+    TEST_CHECK_(1, "dump_config_neo(cs, he, buf_val, buf_init, "
+                   "CS_DUMP_SHOW_DEFAULTS, fp)");
 
     he = mutt_hash_find_elem(cs->hash, "Damson");
     dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(1, "dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
+    TEST_CHECK_(
+        1, "dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
 
     fclose(fp);
     mutt_buffer_free(&buf_val);
@@ -346,9 +373,11 @@ bool test_dump_config(void)
       return false;
     if (!TEST_CHECK(dump_config(cs, CS_DUMP_STYLE_NEO, CS_DUMP_NO_FLAGS, fp) == true))
       return false;
-    if (!TEST_CHECK(dump_config(cs, CS_DUMP_STYLE_NEO, CS_DUMP_ONLY_CHANGED|CS_DUMP_HIDE_SENSITIVE, fp) == true))
+    if (!TEST_CHECK(dump_config(cs, CS_DUMP_STYLE_NEO,
+                                CS_DUMP_ONLY_CHANGED | CS_DUMP_HIDE_SENSITIVE, fp) == true))
       return false;
-    if (!TEST_CHECK(dump_config(cs, CS_DUMP_STYLE_NEO, CS_DUMP_HIDE_VALUE|CS_DUMP_SHOW_DEFAULTS, fp) == true))
+    if (!TEST_CHECK(dump_config(cs, CS_DUMP_STYLE_NEO,
+                                CS_DUMP_HIDE_VALUE | CS_DUMP_SHOW_DEFAULTS, fp) == true))
       return false;
 
     struct ConfigSet *cs_bad = cs_new(30);
@@ -379,5 +408,5 @@ void config_dump(void)
     return;
   if (!test_dump_config())
     return;
+  mutt_buffer_pool_free();
 }
-
