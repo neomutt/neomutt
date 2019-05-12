@@ -58,6 +58,9 @@
  */
 void mutt_auto_subscribe(const char *mailto)
 {
+  if (!mailto)
+    return;
+
   if (!AutoSubscribeCache)
     AutoSubscribeCache = mutt_hash_new(200, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS);
 

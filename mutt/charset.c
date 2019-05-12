@@ -490,6 +490,7 @@ void mutt_ch_lookup_remove(void)
     FREE(&l->regex.pattern);
     if (l->regex.regex)
       regfree(l->regex.regex);
+    FREE(&l->regex.regex);
     FREE(&l->regex);
     FREE(&l);
   }
@@ -1005,6 +1006,9 @@ void mutt_ch_set_charset(const char *charset)
 char *mutt_ch_choose(const char *fromcode, const char *charsets, const char *u,
                      size_t ulen, char **d, size_t *dlen)
 {
+  if (!fromcode)
+    return NULL;
+
   char *e = NULL, *tocode = NULL;
   size_t elen = 0, bestn = 0;
   const char *q = NULL;
