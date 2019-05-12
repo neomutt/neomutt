@@ -35,6 +35,8 @@ void test_mutt_regex_new(void)
   }
 
   {
-    TEST_CHECK(mutt_regex_new("apple", 0, NULL) != NULL);
+    struct Regex *regex = NULL;
+    TEST_CHECK((regex = mutt_regex_new("apple", 0, NULL)) != NULL);
+    mutt_regex_free(&regex);
   }
 }

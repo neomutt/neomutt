@@ -40,4 +40,6 @@ void test_mutt_addr_parse_list2(void)
     struct Address addr = { 0 };
     TEST_CHECK(!mutt_addr_parse_list2(&addr, NULL));
   }
+
+  mutt_buffer_pool_free();
 }

@@ -35,6 +35,8 @@ void test_mutt_list_insert_head(void)
 
   {
     struct ListHead listhead = STAILQ_HEAD_INITIALIZER(listhead);
-    TEST_CHECK(mutt_list_insert_head(&listhead, NULL) != NULL);
+    struct ListNode *newnode = NULL;
+    TEST_CHECK((newnode = mutt_list_insert_head(&listhead, NULL)) != NULL);
+    FREE(&newnode);
   }
 }

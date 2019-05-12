@@ -42,6 +42,8 @@ void test_mutt_list_insert_after(void)
   {
     struct ListHead listhead = STAILQ_HEAD_INITIALIZER(listhead);
     struct ListNode listnode = { 0 };
-    TEST_CHECK(mutt_list_insert_after(&listhead, &listnode, NULL) != NULL);
+    struct ListNode *newnode = NULL;
+    TEST_CHECK((newnode = mutt_list_insert_after(&listhead, &listnode, NULL)) != NULL);
+    FREE(&newnode);
   }
 }

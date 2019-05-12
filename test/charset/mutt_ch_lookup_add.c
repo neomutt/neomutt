@@ -42,4 +42,6 @@ void test_mutt_ch_lookup_add(void)
   {
     TEST_CHECK(mutt_ch_lookup_add(0, "apple", "banana", NULL));
   }
+
+  mutt_ch_lookup_remove();
 }

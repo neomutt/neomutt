@@ -116,5 +116,19 @@ void test_mutt_str_split(void)
     mutt_list_insert_tail(&expectedval6, "world");
     if (!TEST_CHECK(mutt_list_compare(&expectedval6, &retval6)))
       print_compared_list(expectedval6, retval6);
+
+    mutt_list_free(&retval1);
+    mutt_list_free(&retval2);
+    mutt_list_free(&retval3);
+    mutt_list_free(&retval4);
+    mutt_list_free(&retval5);
+    mutt_list_free(&retval6);
+
+    mutt_list_clear(&expectedval1);
+    mutt_list_clear(&expectedval2);
+    mutt_list_clear(&expectedval3);
+    mutt_list_clear(&expectedval4);
+    mutt_list_clear(&expectedval5);
+    mutt_list_clear(&expectedval6);
   }
 }

@@ -43,5 +43,6 @@ void test_mutt_regexlist_add(void)
   {
     struct RegexList regexlist = STAILQ_HEAD_INITIALIZER(regexlist);
     TEST_CHECK(mutt_regexlist_add(&regexlist, "apple", 0, NULL) == 0);
+    mutt_regexlist_free(&regexlist);
   }
 }

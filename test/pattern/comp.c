@@ -42,7 +42,7 @@ bool ResumeEditedDraftFiles;
  *            (3) similarly comparing lists (ListHead) is annoying.
  */
 
-/* canoncial representation of Pattern "tree",
+/* canonical representation of Pattern "tree",
  * s specifies a caller allocated buffer to write the string,
  * pat specifies the pattern,
  * indent specifies the indentation level (set to 0 if pat is root of tree),
@@ -82,19 +82,15 @@ bool ResumeEditedDraftFiles;
  */
 static int canonical_pattern(char *s, struct PatternHead *pat, int indent)
 {
+  if (!pat || !s)
+    return 0;
+
   char *p = s;
 
-  if (!pat)
-    return 0;
-
-  if (!p)
-    return 0;
-
-  for (int i = 0; i < 2*indent; i++) {
+  for (int i = 0; i < 2*indent; i++)
     p += sprintf(p, " ");
-  }
 
-  struct Pattern *e;
+  struct Pattern *e = NULL;
 
   // p += sprintf(p, "");
   *p = '\0';
@@ -127,9 +123,7 @@ static int canonical_pattern(char *s, struct PatternHead *pat, int indent)
 static int cmp_pattern(struct PatternHead *p1, struct PatternHead *p2)
 {
   if (!p1 || !p2)
-  {
     return !(!p1 && !p2);
-  }
 
   struct PatternHead p1_tmp = *p1;
   struct PatternHead p2_tmp = *p2;
@@ -181,17 +175,13 @@ static int cmp_pattern(struct PatternHead *p1, struct PatternHead *p2)
 
 void test_mutt_pattern_comp(void)
 {
-  struct Buffer err;
-  struct PatternHead *pat;
-
-  err.dsize = 1024;
-  err.data = mutt_mem_malloc(err.dsize);
+  struct Buffer *err = mutt_buffer_alloc(1024);
 
   { /* empty */
     char *s = "";
 
-    mutt_buffer_reset(&err);
-    pat = mutt_pattern_comp(s, 0, &err);
+    mutt_buffer_reset(err);
+    struct PatternHead *pat = mutt_pattern_comp(s, 0, err);
 
     if (!TEST_CHECK(!pat))
     {
@@ -200,18 +190,18 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "empty pattern";
-    if (!TEST_CHECK(!strcmp(err.data, msg)))
+    if (!TEST_CHECK(!strcmp(err->data, msg)))
     {
       TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err.data);
+      TEST_MSG("Actual  : %s", err->data);
     }
   }
 
   { /* invalid */
     char *s = "x";
 
-    mutt_buffer_reset(&err);
-    pat = mutt_pattern_comp(s, 0, &err);
+    mutt_buffer_reset(err);
+    struct PatternHead *pat = mutt_pattern_comp(s, 0, err);
 
     if (!TEST_CHECK(!pat))
     {
@@ -220,18 +210,18 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "error in pattern at: x";
-    if (!TEST_CHECK(!strcmp(err.data, msg)))
+    if (!TEST_CHECK(!strcmp(err->data, msg)))
     {
       TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err.data);
+      TEST_MSG("Actual  : %s", err->data);
     }
   }
 
   { /* missing parameter */
     char *s = "=s";
 
-    mutt_buffer_reset(&err);
-    pat = mutt_pattern_comp(s, 0, &err);
+    mutt_buffer_reset(err);
+    struct PatternHead *pat = mutt_pattern_comp(s, 0, err);
 
     if (!TEST_CHECK(!pat))
     {
@@ -240,18 +230,18 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "missing parameter";
-    if (!TEST_CHECK(!strcmp(err.data, msg)))
+    if (!TEST_CHECK(!strcmp(err->data, msg)))
     {
       TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err.data);
+      TEST_MSG("Actual  : %s", err->data);
     }
   }
 
   { /* error in pattern */
     char *s = "| =s foo";
 
-    mutt_buffer_reset(&err);
-    pat = mutt_pattern_comp(s, 0, &err);
+    mutt_buffer_reset(err);
+    struct PatternHead *pat = mutt_pattern_comp(s, 0, err);
 
     if (!TEST_CHECK(!pat))
     {
@@ -260,18 +250,18 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "error in pattern at: | =s foo";
-    if (!TEST_CHECK(!strcmp(err.data, msg)))
+    if (!TEST_CHECK(!strcmp(err->data, msg)))
     {
       TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err.data);
+      TEST_MSG("Actual  : %s", err->data);
     }
   }
 
   {
     char *s = "=s foobar";
 
-    mutt_buffer_reset(&err);
-    pat = mutt_pattern_comp(s, 0, &err);
+    mutt_buffer_reset(err);
+    struct PatternHead *pat = mutt_pattern_comp(s, 0, err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -304,10 +294,10 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "";
-    if (!TEST_CHECK(!strcmp(err.data, msg)))
+    if (!TEST_CHECK(!strcmp(err->data, msg)))
     {
       TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err.data);
+      TEST_MSG("Actual  : %s", err->data);
     }
 
     mutt_pattern_free(&pat);
@@ -316,8 +306,8 @@ void test_mutt_pattern_comp(void)
   {
     char *s = "! =s foobar";
 
-    mutt_buffer_reset(&err);
-    pat = mutt_pattern_comp(s, 0, &err);
+    mutt_buffer_reset(err);
+    struct PatternHead *pat = mutt_pattern_comp(s, 0, err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -351,10 +341,10 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "";
-    if (!TEST_CHECK(!strcmp(err.data, msg)))
+    if (!TEST_CHECK(!strcmp(err->data, msg)))
     {
       TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err.data);
+      TEST_MSG("Actual  : %s", err->data);
     }
 
     mutt_pattern_free(&pat);
@@ -363,8 +353,8 @@ void test_mutt_pattern_comp(void)
   {
     char *s = "=s foo =s bar";
 
-    mutt_buffer_reset(&err);
-    pat = mutt_pattern_comp(s, 0, &err);
+    mutt_buffer_reset(err);
+    struct PatternHead *pat = mutt_pattern_comp(s, 0, err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -430,10 +420,10 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "";
-    if (!TEST_CHECK(!strcmp(err.data, msg)))
+    if (!TEST_CHECK(!strcmp(err->data, msg)))
     {
       TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err.data);
+      TEST_MSG("Actual  : %s", err->data);
     }
 
     mutt_pattern_free(&pat);
@@ -442,8 +432,8 @@ void test_mutt_pattern_comp(void)
   {
     char *s = "(=s foo =s bar)";
 
-    mutt_buffer_reset(&err);
-    pat = mutt_pattern_comp(s, 0, &err);
+    mutt_buffer_reset(err);
+    struct PatternHead *pat = mutt_pattern_comp(s, 0, err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -509,10 +499,10 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "";
-    if (!TEST_CHECK(!strcmp(err.data, msg)))
+    if (!TEST_CHECK(!strcmp(err->data, msg)))
     {
       TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err.data);
+      TEST_MSG("Actual  : %s", err->data);
     }
 
     mutt_pattern_free(&pat);
@@ -521,8 +511,8 @@ void test_mutt_pattern_comp(void)
   {
     char *s = "! (=s foo =s bar)";
 
-    mutt_buffer_reset(&err);
-    pat = mutt_pattern_comp(s, 0, &err);
+    mutt_buffer_reset(err);
+    struct PatternHead *pat = mutt_pattern_comp(s, 0, err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -588,10 +578,10 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "";
-    if (!TEST_CHECK(!strcmp(err.data, msg)))
+    if (!TEST_CHECK(!strcmp(err->data, msg)))
     {
       TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err.data);
+      TEST_MSG("Actual  : %s", err->data);
     }
 
     mutt_pattern_free(&pat);
@@ -600,8 +590,8 @@ void test_mutt_pattern_comp(void)
   {
     char *s = "=s foo =s bar =s quux";
 
-    mutt_buffer_reset(&err);
-    pat = mutt_pattern_comp(s, 0, &err);
+    mutt_buffer_reset(err);
+    struct PatternHead *pat = mutt_pattern_comp(s, 0, err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -679,10 +669,10 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "";
-    if (!TEST_CHECK(!strcmp(err.data, msg)))
+    if (!TEST_CHECK(!strcmp(err->data, msg)))
     {
       TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err.data);
+      TEST_MSG("Actual  : %s", err->data);
     }
 
     mutt_pattern_free(&pat);
@@ -691,8 +681,8 @@ void test_mutt_pattern_comp(void)
   {
     char *s = "!(=s foo|=s bar) =s quux";
 
-    mutt_buffer_reset(&err);
-    pat = mutt_pattern_comp(s, 0, &err);
+    mutt_buffer_reset(err);
+    struct PatternHead *pat = mutt_pattern_comp(s, 0, err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -786,14 +776,14 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "";
-    if (!TEST_CHECK(!strcmp(err.data, msg)))
+    if (!TEST_CHECK(!strcmp(err->data, msg)))
     {
       TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err.data);
+      TEST_MSG("Actual  : %s", err->data);
     }
 
     mutt_pattern_free(&pat);
   }
 
-  FREE(&err.data);
+  mutt_buffer_free(&err);
 }
