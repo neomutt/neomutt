@@ -2223,7 +2223,7 @@ int mutt_index_menu(void)
           cp = _("Open mailbox");
 
         if ((op == OP_MAIN_NEXT_UNREAD_MAILBOX) && Context &&
-            mutt_buffer_is_empty(Context->mailbox->pathbuf))
+            !mutt_buffer_is_empty(Context->mailbox->pathbuf))
         {
           mutt_buffer_strcpy(folderbuf, mutt_b2s(Context->mailbox->pathbuf));
           mutt_buffer_pretty_mailbox(folderbuf);
