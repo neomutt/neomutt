@@ -24,8 +24,8 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/mutt.h"
-#include "email/lib.h"
 #include "address/lib.h"
+#include "email/lib.h"
 
 void test_mutt_rfc822_parse_line(void)
 {
@@ -33,23 +33,27 @@ void test_mutt_rfc822_parse_line(void)
 
   {
     struct Email email = { 0 };
-    TEST_CHECK(mutt_rfc822_parse_line(NULL, &email, "apple", "banana", false, false, false) == 0);
+    TEST_CHECK(mutt_rfc822_parse_line(NULL, &email, "apple", "banana", false,
+                                      false, false) == 0);
   }
 
   {
     struct Envelope envelope = { 0 };
-    TEST_CHECK(mutt_rfc822_parse_line(&envelope, NULL, "apple", "banana", false, false, false) == 0);
+    TEST_CHECK(mutt_rfc822_parse_line(&envelope, NULL, "apple", "banana", false,
+                                      false, false) == 0);
   }
 
   {
     struct Envelope envelope = { 0 };
     struct Email email = { 0 };
-    TEST_CHECK(mutt_rfc822_parse_line(&envelope, &email, NULL, "banana", false, false, false) == 0);
+    TEST_CHECK(mutt_rfc822_parse_line(&envelope, &email, NULL, "banana", false,
+                                      false, false) == 0);
   }
 
   {
     struct Envelope envelope = { 0 };
     struct Email email = { 0 };
-    TEST_CHECK(mutt_rfc822_parse_line(&envelope, &email, "apple", NULL, false, false, false) == 0);
+    TEST_CHECK(mutt_rfc822_parse_line(&envelope, &email, "apple", NULL, false,
+                                      false, false) == 0);
   }
 }

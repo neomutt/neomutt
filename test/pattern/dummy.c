@@ -36,11 +36,11 @@ struct Pattern;
 struct Progress;
 struct State;
 
-bool        g_addr_is_user       = false;
-int         g_body_parts         = 1;
-bool        g_is_mail_list       = false;
-bool        g_is_subscribed_list = false;
-const char *g_myvar              = "hello";
+bool g_addr_is_user = false;
+int g_body_parts = 1;
+bool g_is_mail_list = false;
+bool g_is_subscribed_list = false;
+const char *g_myvar = "hello";
 
 int crypt_valid_passphrase(int flags)
 {

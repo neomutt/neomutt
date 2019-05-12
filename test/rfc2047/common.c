@@ -74,4 +74,3 @@ const struct Rfc2047TestData rfc2047_test_data[] =
   { NULL, NULL, NULL },
 };
 // clang-format on
-

@@ -61,7 +61,8 @@ void test_mutt_ch_choose(void)
     char buf_in[32] = { 0 };
     char *buf_out = NULL;
     const char *result = NULL;
-    TEST_CHECK((result = mutt_ch_choose("apple", "banana", buf_in, sizeof(buf_in), &buf_out, NULL)) != NULL);
+    TEST_CHECK((result = mutt_ch_choose("apple", "banana", buf_in,
+                                        sizeof(buf_in), &buf_out, NULL)) != NULL);
     FREE(&result);
     FREE(&buf_out);
   }

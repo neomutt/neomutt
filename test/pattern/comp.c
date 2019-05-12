@@ -87,7 +87,7 @@ static int canonical_pattern(char *s, struct PatternHead *pat, int indent)
 
   char *p = s;
 
-  for (int i = 0; i < 2*indent; i++)
+  for (int i = 0; i < 2 * indent; i++)
     p += sprintf(p, " ");
 
   struct Pattern *e = NULL;

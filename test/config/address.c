@@ -28,9 +28,9 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "mutt/mutt.h"
+#include "address/lib.h"
 #include "config/common.h"
 #include "config/lib.h"
-#include "address/lib.h"
 
 static struct Address *VarApple;
 static struct Address *VarBanana;

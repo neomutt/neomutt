@@ -24,18 +24,19 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/mutt.h"
-#include "email/lib.h"
 #include "address/lib.h"
+#include "email/lib.h"
 
 struct UrlTest
 {
-  const char *source;   // source URL to parse
-  bool valid;           // expected validity
-  struct Url url;       // expected resulting URL
-  const char *qs_elem;  // expected elements of the query string, separated
-                        // and terminated by a pipe '|' character
+  const char *source;  // source URL to parse
+  bool valid;          // expected validity
+  struct Url url;      // expected resulting URL
+  const char *qs_elem; // expected elements of the query string, separated
+                       // and terminated by a pipe '|' character
 };
 
+// clang-format off
 static struct UrlTest test[] = {
   {
     "foobar foobar",
@@ -81,6 +82,7 @@ static struct UrlTest test[] = {
     "encoding|binary|"
   }
 };
+// clang-format on
 
 void check_query_string(const char *exp, const struct UrlQueryStringHead *act)
 {
