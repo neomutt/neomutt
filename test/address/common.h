@@ -20,6 +20,9 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _TEST_ADDRESS_COMMON_H
+#define _TEST_ADDRESS_COMMON_H
+
 #define TEST_NO_MAIN
 #include "acutest.h"
 #include <string.h>
@@ -35,3 +38,5 @@
       TEST_MSG("Actual  : %s", actual);                                        \
     }                                                                          \
   } while (false)
+
+#endif /* _TEST_ADDRESS_COMMON_H */

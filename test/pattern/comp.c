@@ -23,15 +23,14 @@
 #define TEST_NO_MAIN
 #define MAIN_C 1
 #include "acutest.h"
-
 #include <assert.h>
 #include <string.h>
 #include "mutt/buffer.h"
 #include "mutt/memory.h"
-#include "pattern.h"
-
 #include "alias.h"
 #include "globals.h"
+#include "pattern.h"
+
 bool ResumeEditedDraftFiles;
 
 /* All tests are limited to patterns that are stringmatch type only,
