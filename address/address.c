@@ -1393,45 +1393,31 @@ struct Address *mutt_addrlist_dedupe(struct Address *addr)
  *
  * Remove addresses from "b" which are contained in "a"
  */
-struct Address *mutt_addr_remove_xrefs(struct Address *a, struct Address *b)
+struct Address *mutt_addr_remove_xrefs(const struct Address *a, struct Address *b)
 {
   if (!a || !b)
     return NULL;
 
-  struct Address *p = NULL, *prev = NULL;
+  struct AddressList *ala = mutt_addr_to_addresslist((struct Address *) a);
+  struct AddressList *alb = mutt_addr_to_addresslist(b);
+  struct AddressNode *ana, *anb, *tmp;
 
-  struct Address *top = b;
-  while (b)
+  TAILQ_FOREACH_SAFE(anb, alb, entries, tmp)
   {
-    for (p = a; p; p = p->next)
+    TAILQ_FOREACH(ana, ala, entries)
     {
-      if (mutt_addr_cmp(p, b))
+      if (mutt_addr_cmp(ana->addr, anb->addr))
+      {
+        mutt_addresslist_free_one(alb, anb);
         break;
-    }
-    if (p)
-    {
-      if (prev)
-      {
-        prev->next = b->next;
-        b->next = NULL;
-        mutt_addr_free(&b);
-        b = prev;
       }
-      else
-      {
-        top = top->next;
-        b->next = NULL;
-        mutt_addr_free(&b);
-        b = top;
-      }
-    }
-    else
-    {
-      prev = b;
-      b = b->next;
     }
   }
-  return top;
+
+  b = mutt_addresslist_to_addr(alb);
+  FREE(&ala);
+  FREE(&alb);
+  return b;
 }
 
 /**

@@ -83,7 +83,7 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s);
 struct Address *mutt_addr_parse_list2(struct Address *p, const char *s);
 void            mutt_addr_qualify(struct Address *addr, const char *host);
 int             mutt_addr_remove_from_list(struct Address **a, const char *mailbox);
-struct Address *mutt_addr_remove_xrefs(struct Address *a, struct Address *b);
+struct Address *mutt_addr_remove_xrefs(const struct Address *a, struct Address *b);
 bool            mutt_addr_search(struct Address *a, struct Address *lst);
 void            mutt_addr_set_intl(struct Address *a, char *intl_mailbox);
 void            mutt_addr_set_local(struct Address *a, char *local_mailbox);
