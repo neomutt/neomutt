@@ -668,10 +668,13 @@ struct Address *mutt_addr_parse_list2(struct Address *p, const char *s)
  * Any addresses containing a bare name will be expanded using the hostname.
  * e.g. "john", "example.com" -> 'john@example.com'.
  */
-void mutt_addr_qualify(struct Address *addr, const char *host)
+void mutt_addr_qualify(struct Address *addr2, const char *host)
 {
-  for (; addr; addr = addr->next)
+  struct AddressList *al = mutt_addr_to_addresslist(addr2);
+  struct AddressNode *an = NULL;
+  TAILQ_FOREACH(an, al, entries)
   {
+    struct Address *addr = an->addr;
     if (!addr->group && addr->mailbox && !strchr(addr->mailbox, '@'))
     {
       char *p = mutt_mem_malloc(mutt_str_strlen(addr->mailbox) + mutt_str_strlen(host) + 2);
@@ -680,6 +683,9 @@ void mutt_addr_qualify(struct Address *addr, const char *host)
       addr->mailbox = p;
     }
   }
+
+  mutt_addresslist_to_addr(al); // addr does not change
+  FREE(&al);
 }
 
 /**
