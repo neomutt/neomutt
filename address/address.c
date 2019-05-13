@@ -1298,12 +1298,14 @@ int mutt_addrlist_to_intl(struct Address *a, char **err)
   if (err)
     *err = NULL;
 
-  for (; a; a = a->next)
+  struct AddressList *al = mutt_addr_to_addresslist(a);
+  struct AddressNode *an = NULL;
+  TAILQ_FOREACH(an, al, entries)
   {
-    if (!a->mailbox || mutt_addr_is_intl(a))
+    if (!an->addr->mailbox || mutt_addr_is_intl(an->addr))
       continue;
 
-    if (mutt_addr_mbox_to_udomain(a->mailbox, &user, &domain) == -1)
+    if (mutt_addr_mbox_to_udomain(an->addr->mailbox, &user, &domain) == -1)
       continue;
 
     intl_mailbox = mutt_idna_local_to_intl(user, domain);
@@ -1315,12 +1317,15 @@ int mutt_addrlist_to_intl(struct Address *a, char **err)
     {
       rc = -1;
       if (err && !*err)
-        *err = mutt_str_strdup(a->mailbox);
+        *err = mutt_str_strdup(an->addr->mailbox);
       continue;
     }
 
-    mutt_addr_set_intl(a, intl_mailbox);
+    mutt_addr_set_intl(an->addr, intl_mailbox);
   }
+
+  mutt_addresslist_to_addr(al);
+  FREE(&al);
 
   return rc;
 }
@@ -1335,12 +1340,14 @@ int mutt_addrlist_to_local(struct Address *a)
   char *user = NULL, *domain = NULL;
   char *local_mailbox = NULL;
 
-  for (; a; a = a->next)
+  struct AddressList *al = mutt_addr_to_addresslist(a);
+  struct AddressNode *an = NULL;
+  TAILQ_FOREACH(an, al, entries)
   {
-    if (!a->mailbox || mutt_addr_is_local(a))
+    if (!an->addr->mailbox || mutt_addr_is_local(an->addr))
       continue;
 
-    if (mutt_addr_mbox_to_udomain(a->mailbox, &user, &domain) == -1)
+    if (mutt_addr_mbox_to_udomain(an->addr->mailbox, &user, &domain) == -1)
       continue;
 
     local_mailbox = mutt_idna_intl_to_local(user, domain, 0);
@@ -1349,8 +1356,11 @@ int mutt_addrlist_to_local(struct Address *a)
     FREE(&domain);
 
     if (local_mailbox)
-      mutt_addr_set_local(a, local_mailbox);
+      mutt_addr_set_local(an->addr, local_mailbox);
   }
+
+  mutt_addresslist_to_addr(al);
+  FREE(&al);
 
   return 0;
 }
