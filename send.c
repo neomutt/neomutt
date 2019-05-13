@@ -921,7 +921,14 @@ void mutt_fix_reply_recipients(struct Envelope *env)
   /* the CC field can get cluttered, especially with lists */
   env->to = mutt_addrlist_dedupe(env->to);
   env->cc = mutt_addrlist_dedupe(env->cc);
-  env->cc = mutt_addr_remove_xrefs(env->to, env->cc);
+  struct AddressList *toal = mutt_addr_to_addresslist(env->to);
+  struct AddressList *ccal = mutt_addr_to_addresslist(env->cc);
+  mutt_addr_remove_xrefs(toal, ccal);
+  env->cc = mutt_addresslist_to_addr(ccal);
+  mutt_addresslist_clear(toal);
+  FREE(&toal);
+  mutt_addresslist_clear(ccal);
+  FREE(&ccal);
 
   if (env->cc && !env->to)
   {

@@ -35,7 +35,7 @@ void test_mutt_group_match(void)
   }
 
   {
-    struct Group group = { 0 };
+    struct Group group;
     TEST_CHECK(!mutt_group_match(&group, NULL));
   }
 }

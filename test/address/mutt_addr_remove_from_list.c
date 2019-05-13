@@ -31,11 +31,13 @@ void test_mutt_addr_remove_from_list(void)
   // int mutt_addr_remove_from_list(struct Address **a, const char *mailbox);
 
   {
-    TEST_CHECK(mutt_addr_remove_from_list(NULL, "apple") == -1);
+    int rc = mutt_addr_remove_from_list(NULL, "apple");
+    TEST_CHECK(rc == -1);
   }
 
   {
-    struct Address *addr = NULL;
-    TEST_CHECK(mutt_addr_remove_from_list(&addr, NULL) == 0);
+    struct AddressList a;
+    int rc = mutt_addr_remove_from_list(&a, NULL);
+    TEST_CHECK(rc == 0);
   }
 }

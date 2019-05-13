@@ -31,7 +31,7 @@ void test_mutt_grouplist_add(void)
   // void mutt_grouplist_add(struct GroupList *head, struct Group *group);
 
   {
-    struct Group group = { 0 };
+    struct Group group;
     mutt_grouplist_add(NULL, &group);
     TEST_CHECK_(1, "mutt_grouplist_add(NULL, &group)");
   }

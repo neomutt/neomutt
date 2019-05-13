@@ -401,20 +401,20 @@ struct Address *mutt_addr_new(void)
 
 /**
  * mutt_addr_remove_from_list - Remove an Address from a list
- * @param[out] a       Address list
+ * @param[in, out] al AddressList
  * @param[in]  mailbox Email address to match
  * @retval  0 Success
  * @retval -1 Error, or email not found
  */
-int mutt_addr_remove_from_list(struct Address **a, const char *mailbox)
+int mutt_addr_remove_from_list(struct AddressList *al, const char *mailbox)
 {
-  if (!a)
+  if (!al)
     return -1;
+
   if (!mailbox)
     return 0;
 
   int rc = -1;
-  struct AddressList *al = mutt_addr_to_addresslist(*a);
   struct AddressNode *an, *tmp;
   TAILQ_FOREACH_SAFE(an, al, entries, tmp)
   {
@@ -424,9 +424,6 @@ int mutt_addr_remove_from_list(struct Address **a, const char *mailbox)
       rc = 0;
     }
   }
-
-  *a = mutt_addresslist_to_addr(al);
-  FREE(&al);
 
   return rc;
 }
@@ -451,16 +448,7 @@ void mutt_addresslist_free(struct AddressList **al)
 {
   if (!al)
     return;
-
-  struct AddressNode *np = TAILQ_FIRST(*al), *next = NULL;
-  while (np)
-  {
-    next = TAILQ_NEXT(np, entries);
-    free_address(&np->addr);
-    FREE(&np);
-    np = next;
-  }
-  TAILQ_INIT(*al);
+  mutt_addresslist_free_all(*al);
   FREE(al);
 }
 
@@ -1405,35 +1393,27 @@ struct Address *mutt_addrlist_dedupe(struct Address *addr)
  * mutt_addr_remove_xrefs - Remove cross-references
  * @param a Reference list of Addresses
  * @param b Address list to trim
- * @retval ptr Updated Address list
  *
  * Remove addresses from "b" which are contained in "a"
  */
-struct Address *mutt_addr_remove_xrefs(const struct Address *a, struct Address *b)
+void mutt_addr_remove_xrefs(const struct AddressList *a, struct AddressList *b)
 {
   if (!a || !b)
-    return NULL;
+    return;
 
-  struct AddressList *ala = mutt_addr_to_addresslist((struct Address *) a);
-  struct AddressList *alb = mutt_addr_to_addresslist(b);
   struct AddressNode *ana, *anb, *tmp;
 
-  TAILQ_FOREACH_SAFE(anb, alb, entries, tmp)
+  TAILQ_FOREACH_SAFE(anb, b, entries, tmp)
   {
-    TAILQ_FOREACH(ana, ala, entries)
+    TAILQ_FOREACH(ana, a, entries)
     {
       if (mutt_addr_cmp(ana->addr, anb->addr))
       {
-        mutt_addresslist_free_one(alb, anb);
+        mutt_addresslist_free_one(b, anb);
         break;
       }
     }
   }
-
-  b = mutt_addresslist_to_addr(alb);
-  FREE(&ala);
-  FREE(&alb);
-  return b;
 }
 
 /**
@@ -1514,4 +1494,39 @@ void mutt_addresslist_free_one(struct AddressList *al, struct AddressNode *an)
   TAILQ_REMOVE(al, an, entries);
   free_address(&an->addr);
   FREE(&an);
+}
+
+/**
+ * mutt_addresslist_free_one - Unlinks all AddressNodes from an AddressList,
+ * frees the referenced Addresses and reinitialize the AddressList.
+ * @param al AddressList
+ */
+void mutt_addresslist_free_all(struct AddressList *al)
+{
+  struct AddressNode *np = TAILQ_FIRST(al), *next = NULL;
+  while (np)
+  {
+    next = TAILQ_NEXT(np, entries);
+    free_address(&np->addr);
+    FREE(&np);
+    np = next;
+  }
+  TAILQ_INIT(al);
+}
+
+/**
+ * mutt_addresslist_clear - Unlinks all AddressNodes from an AddressList
+ * and reinitialize the AddressList.
+ * @param al AddressList
+ */
+void mutt_addresslist_clear(struct AddressList *al)
+{
+  struct AddressNode *np = TAILQ_FIRST(al), *next = NULL;
+  while (np)
+  {
+    next = TAILQ_NEXT(np, entries);
+    FREE(&np);
+    np = next;
+  }
+  TAILQ_INIT(al);
 }

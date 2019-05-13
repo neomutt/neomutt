@@ -37,7 +37,7 @@ struct Address;
  */
 struct Group
 {
-  struct Address *as;
+  struct AddressList al;
   struct RegexList rs;
   char *name;
 };
