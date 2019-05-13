@@ -414,28 +414,19 @@ int mutt_addr_remove_from_list(struct Address **a, const char *mailbox)
     return 0;
 
   int rc = -1;
-
-  struct Address *p = *a;
-  struct Address *last = NULL;
-  while (p)
+  struct AddressList *al = mutt_addr_to_addresslist(*a);
+  struct AddressNode *an, *tmp;
+  TAILQ_FOREACH_SAFE(an, al, entries, tmp)
   {
-    if (mutt_str_strcasecmp(mailbox, p->mailbox) == 0)
+    if (mutt_str_strcasecmp(mailbox, an->addr->mailbox) == 0)
     {
-      if (last)
-        last->next = p->next;
-      else
-        (*a) = p->next;
-      struct Address *t = p;
-      p = p->next;
-      free_address(&t);
+      mutt_addresslist_free_one(al, an);
       rc = 0;
     }
-    else
-    {
-      last = p;
-      p = p->next;
-    }
   }
+
+  *a = mutt_addresslist_to_addr(al);
+  FREE(&al);
 
   return rc;
 }
