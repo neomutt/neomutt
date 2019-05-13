@@ -98,6 +98,7 @@ struct AddressList *mutt_addr_to_addresslist(struct Address *a);
 struct AddressList *mutt_addresslist_new(void);
 struct Address     *mutt_addresslist_to_addr(struct AddressList *alist);
 void                mutt_addresslist_append(struct AddressList *al, struct Address *a);
+struct AddressList *mutt_addresslist_copy(const struct AddressList *al, bool prune);
 void                mutt_addresslist_free(struct AddressList **alist);
 
 #endif /* MUTT_EMAIL_ADDRESS_H */

@@ -758,26 +758,32 @@ struct Address *mutt_addr_copy(const struct Address *addr)
  */
 struct Address *mutt_addr_copy_list(struct Address *addr, bool prune)
 {
-  struct Address *top = NULL, *last = NULL;
+  struct AddressList *al = mutt_addr_to_addresslist(addr);
+  struct AddressList *al_out = mutt_addresslist_copy(al, prune);
+  struct Address *out = mutt_addresslist_to_addr(al_out);
+  FREE(&al);
+  FREE(&al_out);
+  return out;
+}
 
-  for (; addr; addr = addr->next)
+struct AddressList *mutt_addresslist_copy(const struct AddressList *al, bool prune)
+{
+  struct AddressList *al_out = mutt_addresslist_new();
+  struct AddressNode *an = NULL;
+  TAILQ_FOREACH(an, al, entries)
   {
-    if (prune && addr->group && (!addr->next || !addr->next->mailbox))
+    struct Address *addr = an->addr;
+    struct AddressNode *next = TAILQ_NEXT(an, entries);
+    if (prune && addr->group && (!next || !next->addr->mailbox))
     {
       /* ignore this element of the list */
     }
-    else if (last)
-    {
-      last->next = mutt_addr_copy(addr);
-      last = last->next;
-    }
     else
     {
-      last = mutt_addr_copy(addr);
-      top = last;
+      mutt_addresslist_append(al_out, mutt_addr_copy(addr));
     }
   }
-  return top;
+  return al_out;
 }
 
 /**
