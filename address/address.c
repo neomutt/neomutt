@@ -957,9 +957,11 @@ bool mutt_addr_cmp(struct Address *a, struct Address *b)
  */
 bool mutt_addr_search(struct Address *a, struct Address *lst)
 {
-  for (; lst; lst = lst->next)
+  struct AddressList *al = mutt_addr_to_addresslist(lst);
+  struct AddressNode *an = NULL;
+  TAILQ_FOREACH(an, al, entries)
   {
-    if (mutt_addr_cmp(a, lst))
+    if (mutt_addr_cmp(a, an->addr))
       return true;
   }
   return false;
