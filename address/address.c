@@ -1241,11 +1241,16 @@ size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool disp
     buflen--;
   }
 
-  for (; addr && (buflen > 0); addr = addr->next)
+  struct AddressList *al = mutt_addr_to_addresslist(addr);
+  struct AddressNode *np = NULL;
+  TAILQ_FOREACH(np, al, entries)
   {
+    if (buflen == 0)
+      break;
+
     /* use buflen+1 here because we already saved space for the trailing
      * nul char, and the subroutine can make use of it */
-    mutt_addr_write_single(pbuf, buflen + 1, addr, display);
+    mutt_addr_write_single(pbuf, buflen + 1, np->addr, display);
 
     /* this should be safe since we always have at least 1 char passed into
      * the above call, which means 'pbuf' should always be nul terminated */
@@ -1255,7 +1260,8 @@ size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool disp
 
     /* if there is another address, and it's not a group mailbox name or
      * group terminator, add a comma to separate the addresses */
-    if (addr->next && addr->next->mailbox && !addr->group)
+    struct AddressNode *next = TAILQ_NEXT(np, entries);
+    if (next && next->addr->mailbox && !next->addr->group)
     {
       if (buflen == 0)
         goto done;
@@ -1267,6 +1273,10 @@ size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool disp
       buflen--;
     }
   }
+
+  mutt_addresslist_to_addr(al);
+  FREE(&al);
+
 done:
   *pbuf = '\0';
   return pbuf - buf;
