@@ -1342,41 +1342,33 @@ int mutt_addrlist_to_local(struct Address *a)
  */
 struct Address *mutt_addrlist_dedupe(struct Address *addr)
 {
-  struct Address *top = addr;
-  struct Address **last = &top;
-  struct Address *tmp = NULL;
-  bool dup;
-
-  while (addr)
+  struct AddressList *al = mutt_addr_to_addresslist(addr);
+  struct AddressNode *an = NULL;
+  TAILQ_FOREACH(an, al, entries)
   {
-    for (tmp = top, dup = false; tmp && tmp != addr; tmp = tmp->next)
+    if (an->addr->mailbox)
     {
-      if (tmp->mailbox && addr->mailbox &&
-          (mutt_str_strcasecmp(addr->mailbox, tmp->mailbox) == 0))
+      struct AddressNode *an2 = TAILQ_NEXT(an, entries), *tmp;
+      if (an2)
       {
-        dup = true;
-        break;
+        TAILQ_FOREACH_FROM_SAFE(an2, al, entries, tmp)
+        {
+          if (an2->addr->mailbox &&
+              (mutt_str_strcasecmp(an->addr->mailbox, an2->addr->mailbox) == 0))
+          {
+            mutt_debug(LL_DEBUG2, "Removing %s\n", an2->addr->mailbox);
+            TAILQ_REMOVE(al, an2, entries);
+            free_address(&an2->addr);
+            FREE(&an2);
+          }
+        }
       }
     }
-
-    if (dup)
-    {
-      mutt_debug(LL_DEBUG2, "Removing %s\n", addr->mailbox);
-
-      *last = addr->next;
-
-      addr->next = NULL;
-      mutt_addr_free(&addr);
-
-      addr = *last;
-    }
-    else
-    {
-      last = &addr->next;
-      addr = addr->next;
-    }
   }
-  return top;
+
+  addr = mutt_addresslist_to_addr(al);
+  FREE(&al);
+  return addr;
 }
 
 /**
