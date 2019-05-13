@@ -881,21 +881,33 @@ bool mutt_addr_valid_msgid(const char *msgid)
  */
 bool mutt_addr_cmp_strict(const struct Address *a, const struct Address *b)
 {
-  while (a && b)
+  // TODO - we need to cast because mutt_addr_to_addresslist modifies its
+  // parameters to set the canary. This is a temporary precautionary measure.
+  struct AddressList *ala = mutt_addr_to_addresslist((struct Address *) a);
+  struct AddressList *alb = mutt_addr_to_addresslist((struct Address *) b);
+  struct AddressNode *ana = TAILQ_FIRST(ala);
+  struct AddressNode *anb = TAILQ_FIRST(alb);
+
+  while (ana && anb)
   {
-    if ((mutt_str_strcmp(a->mailbox, b->mailbox) != 0) ||
-        (mutt_str_strcmp(a->personal, b->personal) != 0))
+    a = ana->addr;
+    b = anb->addr;
+    if ((mutt_str_strcmp(ana->addr->mailbox, anb->addr->mailbox) != 0) ||
+        (mutt_str_strcmp(ana->addr->personal, anb->addr->personal) != 0))
     {
-      return false;
+      break;
     }
 
-    a = a->next;
-    b = b->next;
+    ana = TAILQ_NEXT(ana, entries);
+    anb = TAILQ_NEXT(anb, entries);
   }
-  if (a || b)
-    return false;
 
-  return true;
+  bool res = !(ana || anb);
+
+  FREE(&ala);
+  FREE(&alb);
+
+  return res;
 }
 
 /**
