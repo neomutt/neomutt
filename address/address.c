@@ -920,13 +920,15 @@ bool mutt_addr_cmp_strict(const struct Address *a, const struct Address *b)
 int mutt_addr_has_recips(struct Address *a)
 {
   int c = 0;
-
-  for (; a; a = a->next)
+  struct AddressList *al = mutt_addr_to_addresslist(a);
+  struct AddressNode *an = NULL;
+  TAILQ_FOREACH(an, al, entries)
   {
-    if (!a->mailbox || a->group)
+    if (!an->addr->mailbox || an->addr->group)
       continue;
     c++;
   }
+  FREE(&an);
   return c;
 }
 
