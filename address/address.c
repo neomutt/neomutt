@@ -449,13 +449,11 @@ void mutt_addr_free(struct Address **p)
   if (!p)
     return;
 
-  struct Address *t = NULL;
-
-  while (*p)
+  struct AddressList *al = mutt_addr_to_addresslist(*p);
+  struct AddressNode *an, *tmp;
+  TAILQ_FOREACH_SAFE(an, al, entries, tmp)
   {
-    t = *p;
-    *p = (*p)->next;
-    free_address(&t);
+    mutt_addresslist_free_one(al, an);
   }
 }
 
@@ -1351,9 +1349,7 @@ struct Address *mutt_addrlist_dedupe(struct Address *addr)
               (mutt_str_strcasecmp(an->addr->mailbox, an2->addr->mailbox) == 0))
           {
             mutt_debug(LL_DEBUG2, "Removing %s\n", an2->addr->mailbox);
-            TAILQ_REMOVE(al, an2, entries);
-            free_address(&an2->addr);
-            FREE(&an2);
+            mutt_addresslist_free_one(al, an2);
           }
         }
       }
@@ -1479,4 +1475,17 @@ struct Address *mutt_addresslist_to_addr(struct AddressList *al)
     FREE(&an);
   }
   return a;
+}
+
+/**
+ * mutt_addresslist_free_one - Unlinks an AddressNode from an AddressList and
+ * frees the referenced Address
+ * @param al AddressList
+ * @param an AddressNode
+ */
+void mutt_addresslist_free_one(struct AddressList *al, struct AddressNode *an)
+{
+  TAILQ_REMOVE(al, an, entries);
+  free_address(&an->addr);
+  FREE(&an);
 }
