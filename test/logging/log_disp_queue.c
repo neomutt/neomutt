@@ -36,4 +36,6 @@ void test_log_disp_queue(void)
   {
     TEST_CHECK(log_disp_queue(0, "apple", 0, NULL, 0, "fmt") != 0);
   }
+
+  log_queue_empty();
 }
