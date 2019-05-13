@@ -139,13 +139,9 @@ static size_t q_encoder(char *str, const char *buf, size_t buflen, const char *t
 static char *parse_encoded_word(char *str, enum ContentEncoding *enc, char **charset,
                                 size_t *charsetlen, char **text, size_t *textlen)
 {
-  static struct Regex *re = NULL;
   regmatch_t match[4];
   size_t nmatch = 4;
-
-  if (!re)
-  {
-    re = mutt_regex_compile("=\\?"
+  struct Regex *re = mutt_regex_compile("=\\?"
                             "([^][()<>@,;:\\\"/?. =]+)" /* charset */
                             "\\?"
                             "([qQbB])" /* encoding */
@@ -154,25 +150,28 @@ static char *parse_encoded_word(char *str, enum ContentEncoding *enc, char **cha
                                          as some mailers do that, see #1189. */
                             "\\?=",
                             REG_EXTENDED);
-    assert(re && "Something is wrong with your RE engine.");
+  assert(re && "Something is wrong with your RE engine.");
+
+  char *res = NULL;
+  int rc = regexec(re->regex, str, nmatch, match, 0);
+  if (rc == 0)
+  {
+    /* Charset */
+    *charset = str + match[1].rm_so;
+    *charsetlen = match[1].rm_eo - match[1].rm_so;
+
+    /* Encoding: either Q or B */
+    *enc = ((str[match[2].rm_so] == 'Q') || (str[match[2].rm_so] == 'q')) ?
+               ENC_QUOTED_PRINTABLE :
+               ENC_BASE64;
+
+    *text = str + match[3].rm_so;
+    *textlen = match[3].rm_eo - match[3].rm_so;
+    res = str + match[0].rm_so;
   }
 
-  int rc = regexec(re->regex, str, nmatch, match, 0);
-  if (rc != 0)
-    return NULL;
-
-  /* Charset */
-  *charset = str + match[1].rm_so;
-  *charsetlen = match[1].rm_eo - match[1].rm_so;
-
-  /* Encoding: either Q or B */
-  *enc = ((str[match[2].rm_so] == 'Q') || (str[match[2].rm_so] == 'q')) ?
-             ENC_QUOTED_PRINTABLE :
-             ENC_BASE64;
-
-  *text = str + match[3].rm_so;
-  *textlen = match[3].rm_eo - match[3].rm_so;
-  return str + match[0].rm_so;
+  mutt_regex_free(&re);
+  return res;
 }
 
 /**
