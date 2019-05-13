@@ -381,7 +381,7 @@ static void add_addrspec(struct AddressList *al, const char *phrase,
 
   if (!parse_addr_spec(phrase, comment, commentlen, commentmax, cur))
   {
-    mutt_addr_free(&cur);
+    free_address(&cur);
     return;
   }
 
@@ -441,11 +441,7 @@ void mutt_addr_free(struct Address **p)
     return;
 
   struct AddressList *al = mutt_addr_to_addresslist(*p);
-  struct AddressNode *an, *tmp;
-  TAILQ_FOREACH_SAFE(an, al, entries, tmp)
-  {
-    mutt_addresslist_free_one(al, an);
-  }
+  mutt_addresslist_free(&al);
 }
 
 /**
@@ -581,7 +577,7 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
         if (!s)
         {
           mutt_addresslist_free(&al);
-          mutt_addr_free(&a);
+          free_address(&a);
           return NULL;
         }
         mutt_addresslist_append(al, a);
