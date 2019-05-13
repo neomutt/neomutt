@@ -1409,6 +1409,17 @@ struct Address *mutt_addr_remove_xrefs(struct Address *a, struct Address *b)
 }
 
 /**
+ * mutt_addresslist_new - Create a new AddressList
+ * @return a newly allocated AddressList
+ */
+struct AddressList *mutt_addresslist_new(void)
+{
+  struct AddressList *al = mutt_mem_calloc(1, sizeof(struct AddressList));
+  TAILQ_INIT(al);
+  return al;
+}
+
+/**
  * mutt_addresslist_append - Append an address to an AddressList
  * @param al AddressList
  * @param a  Address
@@ -1430,9 +1441,7 @@ void mutt_addresslist_append(struct AddressList *al, struct Address *a)
  */
 struct AddressList *mutt_addr_to_addresslist(struct Address *a)
 {
-  struct AddressList *al = mutt_mem_calloc(1, sizeof(struct AddressList));
-  TAILQ_INIT(al);
-
+  struct AddressList *al = mutt_addresslist_new();
   while (a)
   {
     struct Address *next = a->next;

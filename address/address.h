@@ -95,6 +95,7 @@ int             mutt_addrlist_to_intl(struct Address *a, char **err);
 int             mutt_addrlist_to_local(struct Address *a);
 
 struct AddressList *mutt_addr_to_addresslist(struct Address *a);
+struct AddressList *mutt_addresslist_new(void);
 struct Address     *mutt_addresslist_to_addr(struct AddressList *alist);
 void                mutt_addresslist_append(struct AddressList *al, struct Address *a);
 void                mutt_addresslist_free(struct AddressList **alist);
