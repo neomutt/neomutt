@@ -795,22 +795,33 @@ struct Address *mutt_addr_append(struct Address **a, struct Address *b, bool pru
   if (!a)
     return NULL;
 
-  struct Address *tmp = *a;
-
-  while (tmp && tmp->next)
-    tmp = tmp->next;
+  struct AddressList *ala = mutt_addr_to_addresslist(*a);
   if (!b)
-    return tmp;
-  if (tmp)
-    tmp->next = mutt_addr_copy_list(b, prune);
-  else
   {
-    *a = mutt_addr_copy_list(b, prune);
-    tmp = *a;
+    if (TAILQ_EMPTY(ala))
+      return NULL;
+    else
+      return TAILQ_LAST(ala, AddressList)->addr;
   }
-  while (tmp && tmp->next)
-    tmp = tmp->next;
-  return tmp;
+
+  struct AddressList *alb = mutt_addr_to_addresslist(b);
+  struct AddressList *alb_pruned = mutt_addresslist_copy(alb, prune);
+  struct AddressNode *an = NULL;
+  TAILQ_FOREACH(an, alb_pruned, entries)
+  {
+    mutt_addresslist_append(ala, an->addr);
+  }
+  FREE(&alb);
+  FREE(&alb_pruned);
+
+  struct Address *last = NULL;
+  if (!TAILQ_EMPTY(ala))
+  {
+    last = TAILQ_LAST(ala, AddressList)->addr;
+  }
+  *a = mutt_addresslist_to_addr(ala);
+
+  return last;
 }
 
 /**
