@@ -1391,10 +1391,10 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
 #ifdef SUN_ATTACHMENT
         if (mutt_param_get(&new->parameter, "content-lines"))
         {
-          int lines;
+          int lines = 0;
           if (mutt_str_atoi(mutt_param_get(&new->parameter, "content-lines"), &lines) < 0)
             lines = 0;
-          for (; lines; lines--)
+          for (; lines > 0; lines--)
             if ((ftello(fp) >= end_off) || !fgets(buf, sizeof(buf), fp))
               break;
         }
