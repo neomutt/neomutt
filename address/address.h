@@ -70,7 +70,7 @@ struct Address *mutt_addr_append(struct Address **a, struct Address *b, bool pru
 void            mutt_addr_cat(char *buf, size_t buflen, const char *value, const char *specials);
 bool            mutt_addr_cmp(struct Address *a, struct Address *b);
 bool            mutt_addr_cmp_strict(const struct Address *a, const struct Address *b);
-struct Address *mutt_addr_copy(struct Address *addr);
+struct Address *mutt_addr_copy(const struct Address *addr);
 struct Address *mutt_addr_copy_list(struct Address *addr, bool prune);
 const char *    mutt_addr_for_display(struct Address *a);
 void            mutt_addr_free(struct Address **p);

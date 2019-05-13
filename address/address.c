@@ -735,7 +735,7 @@ void mutt_addr_cat(char *buf, size_t buflen, const char *value, const char *spec
  * @param addr Address to copy
  * @retval ptr New Address
  */
-struct Address *mutt_addr_copy(struct Address *addr)
+struct Address *mutt_addr_copy(const struct Address *addr)
 {
   if (!addr)
     return NULL;
