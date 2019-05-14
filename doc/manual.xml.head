@@ -3743,6 +3743,19 @@ over several lines"
         <screen>my_hdr X-Operating-System: `uname -a`</screen>
       </example>
       <para>
+        To avoid the output of backticks being parsed, place them inside double
+        quotes.  In <xref linkend="ex-backtick-dblquotes"/>, the output of the
+        gpg decryption is assigned directly to $imap_pass, so that special
+        characters in the password (e.g.<quote>'</quote>, <quote>#</quote>,
+        <quote>$</quote>) are not parsed and interpreted specially by neomutt.
+      </para>
+      <example id="ex-backtick-dblquotes">
+        <title>Preventing the output of backticks from being parsed</title>
+<screen>
+set imap_pass="`gpg --batch -q --decrypt ~/.neomutt/account.gpg`"
+</screen>
+      </example>
+      <para>
         Both environment variables and NeoMutt variables can be accessed by
         prepending <quote>$</quote> to the name of the variable. For example,
       </para>
