@@ -459,12 +459,11 @@ void mutt_addresslist_free(struct AddressList **al)
  * @retval ptr  Top of the address list
  * @retval NULL Error
  */
-struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
+void mutt_addresslist_parse(struct AddressList *al, const char *s)
 {
   if (!s)
-    return NULL;
+    return;
 
-  struct AddressList *al = mutt_addr_to_addresslist(top);
   char comment[1024], phrase[1024];
   size_t phraselen = 0, commentlen = 0;
   AddressError = 0;
@@ -503,8 +502,8 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
         s = next_token(s, comment, &commentlen, sizeof(comment) - 1);
         if (!s)
         {
-          mutt_addresslist_free(&al);
-          return NULL;
+          mutt_addresslist_free_all(al);
+          return;
         }
         break;
 
@@ -514,8 +513,8 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
         s = parse_quote(s + 1, phrase, &phraselen, sizeof(phrase) - 1);
         if (!s)
         {
-          mutt_addresslist_free(&al);
-          return NULL;
+          mutt_addresslist_free_all(al);
+          return;
         }
         break;
 
@@ -564,9 +563,9 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
         s = parse_route_addr(s + 1, comment, &commentlen, sizeof(comment) - 1, a);
         if (!s)
         {
-          mutt_addresslist_free(&al);
+          mutt_addresslist_free_all(al);
           free_address(&a);
-          return NULL;
+          return;
         }
         mutt_addresslist_append(al, a);
         phraselen = 0;
@@ -580,8 +579,8 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
         s = next_token(s, phrase, &phraselen, sizeof(phrase) - 1);
         if (!s)
         {
-          mutt_addresslist_free(&al);
-          return NULL;
+          mutt_addresslist_free_all(al);
+          return;
         }
         break;
     } // switch (*s)
@@ -605,9 +604,17 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
       last->addr->personal = mutt_str_strdup(comment);
     }
   }
+}
 
+struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
+{
+  if (!s)
+    return NULL;
+
+  struct AddressList *al = mutt_addr_to_addresslist(top);
+  mutt_addresslist_parse(al, s);
   top = mutt_addresslist_to_addr(al);
-  mutt_addresslist_free(&al);
+  FREE(&al);
   return top;
 }
 
@@ -619,10 +626,10 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
  *
  * The email addresses can be separated by whitespace or commas.
  */
-struct Address *mutt_addr_parse_list2(struct Address *p, const char *s)
+void mutt_addresslist_parse2(struct AddressList *al, const char *s)
 {
   if (!s)
-    return NULL;
+    return;
 
   /* check for a simple whitespace separated list of addresses */
   const char *q = strpbrk(s, "\"<>():;,\\");
@@ -633,14 +640,24 @@ struct Address *mutt_addr_parse_list2(struct Address *p, const char *s)
     char *r = tmp->data;
     while ((r = strtok(r, " \t")))
     {
-      p = mutt_addr_parse_list(p, r);
+      mutt_addresslist_parse(al, r);
       r = NULL;
     }
     mutt_buffer_free(&tmp);
   }
   else
-    p = mutt_addr_parse_list(p, s);
+    mutt_addresslist_parse(al, s);
+}
 
+struct Address *mutt_addr_parse_list2(struct Address *p, const char *s)
+{
+  if (!s)
+    return NULL;
+
+  struct AddressList *al = mutt_addr_to_addresslist(p);
+  mutt_addresslist_parse2(al, s);
+  p = mutt_addresslist_to_addr(al);
+  FREE(&al);
   return p;
 }
 
@@ -1202,9 +1219,9 @@ done:
  *
  * @note It is assumed that `buf` is nul terminated!
  */
-size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool display)
+size_t mutt_addresslist_write(char *buf, size_t buflen, struct AddressList *al, bool display)
 {
-  if (!buf || !addr)
+  if (!buf || !al)
     return 0;
 
   char *pbuf = buf;
@@ -1229,7 +1246,6 @@ size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool disp
     buflen--;
   }
 
-  struct AddressList *al = mutt_addr_to_addresslist(addr);
   struct AddressNode *np = NULL;
   TAILQ_FOREACH(np, al, entries)
   {
@@ -1262,12 +1278,18 @@ size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool disp
     }
   }
 
-  mutt_addresslist_to_addr(al);
-  FREE(&al);
-
 done:
   *pbuf = '\0';
   return pbuf - buf;
+}
+
+size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool display)
+{
+  struct AddressList *al = mutt_addr_to_addresslist(addr);
+  size_t ret = mutt_addresslist_write(buf, buflen, al, display);
+  mutt_addresslist_to_addr(al);
+  FREE(&al);
+  return ret;
 }
 
 /**
@@ -1277,7 +1299,7 @@ done:
  * @retval 0  Success, all addresses converted
  * @retval -1 Error, err will be set to the failed address
  */
-int mutt_addrlist_to_intl(struct Address *a, char **err)
+int mutt_addresslist_to_intl(struct AddressList *al, char **err)
 {
   char *user = NULL, *domain = NULL;
   char *intl_mailbox = NULL;
@@ -1286,7 +1308,6 @@ int mutt_addrlist_to_intl(struct Address *a, char **err)
   if (err)
     *err = NULL;
 
-  struct AddressList *al = mutt_addr_to_addresslist(a);
   struct AddressNode *an = NULL;
   TAILQ_FOREACH(an, al, entries)
   {
@@ -1312,9 +1333,15 @@ int mutt_addrlist_to_intl(struct Address *a, char **err)
     mutt_addr_set_intl(an->addr, intl_mailbox);
   }
 
-  mutt_addresslist_to_addr(al);
-  FREE(&al);
+  return rc;
+}
 
+int mutt_addrlist_to_intl(struct Address *a, char **err)
+{
+  struct AddressList *al = mutt_addr_to_addresslist(a);
+  int rc = mutt_addresslist_to_intl(al, err);
+  a = mutt_addresslist_to_addr(al);
+  FREE(&al);
   return rc;
 }
 

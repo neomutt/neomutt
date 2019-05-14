@@ -759,18 +759,17 @@ int main(int argc, char *argv[], char *envp[])
   if (!STAILQ_EMPTY(&alias_queries))
   {
     rc = 0;
-    struct Address *a = NULL;
     for (; optind < argc; optind++)
       mutt_list_insert_tail(&alias_queries, mutt_str_strdup(argv[optind]));
     struct ListNode *np = NULL;
     STAILQ_FOREACH(np, &alias_queries, entries)
     {
-      a = mutt_alias_lookup(np->data);
-      if (a)
+      struct AddressList *al = mutt_alias_lookup(np->data);
+      if (al)
       {
         /* output in machine-readable form */
-        mutt_addrlist_to_intl(a, NULL);
-        mutt_write_address_list(a, stdout, 0, 0);
+        mutt_addresslist_to_intl(al, NULL);
+        mutt_write_addresslist(al, stdout, 0, 0);
       }
       else
       {

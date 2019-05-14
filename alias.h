@@ -26,8 +26,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "mutt/mutt.h"
+#include "address/address.h"
 
-struct Address;
 struct Envelope;
 
 /**
@@ -36,7 +36,7 @@ struct Envelope;
 struct Alias
 {
   char *name;
-  struct Address *addr;
+  struct AddressList addr;
   bool tagged;
   bool del;
   short num;
@@ -44,10 +44,11 @@ struct Alias
 };
 TAILQ_HEAD(AliasList, Alias);
 
-void            mutt_alias_create(struct Envelope *cur, struct Address *iaddr);
+struct Alias   *mutt_alias_new(void);
 void            mutt_alias_free(struct Alias **p);
+void            mutt_alias_create(struct Envelope *cur, struct Address *iaddr);
 void            mutt_aliaslist_free(struct AliasList *a_list);
-struct Address *mutt_alias_lookup(const char *s);
+struct AddressList *mutt_alias_lookup(const char *s);
 void            mutt_expand_aliases_env(struct Envelope *env);
 struct Address *mutt_expand_aliases(struct Address *a);
 struct Address *mutt_get_address(struct Envelope *env, const char **pfxp);

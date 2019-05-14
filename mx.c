@@ -1340,7 +1340,9 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder, enum MailboxType
     else if (buf[0] == '@')
     {
       /* elm compatibility, @ expands alias to user name */
-      struct Address *alias = mutt_alias_lookup(buf + 1);
+      struct AddressList *al = mutt_addresslist_copy(mutt_alias_lookup(buf + 1), false);
+      struct Address *alias = mutt_addresslist_to_addr(al);
+      FREE(&al);
       if (!alias)
         break;
 

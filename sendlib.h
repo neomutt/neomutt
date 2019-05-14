@@ -28,6 +28,7 @@
 #include "copy.h"
 
 struct Address;
+struct AddressList;
 struct Body;
 struct Email;
 struct Envelope;
@@ -83,6 +84,7 @@ void            mutt_stamp_attachment(struct Body *a);
 void            mutt_unprepare_envelope(struct Envelope *env);
 void            mutt_update_encoding(struct Body *a);
 void            mutt_write_address_list(struct Address *addr, FILE *fp, int linelen, bool display);
+void            mutt_write_addresslist(struct AddressList *addr, FILE *fp, int linelen, bool display);
 int             mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool post, char *fcc, char **finalpath);
 int             mutt_write_mime_body(struct Body *a, FILE *fp);
 int             mutt_write_mime_header(struct Body *a, FILE *fp);

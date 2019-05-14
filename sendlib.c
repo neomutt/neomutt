@@ -1753,16 +1753,15 @@ struct Body *mutt_remove_multipart(struct Body *b)
  * So we can handle very large recipient lists without needing a huge temporary
  * buffer in memory
  */
-void mutt_write_address_list(struct Address *addr, FILE *fp, int linelen, bool display)
+void mutt_write_addresslist(struct AddressList *al, FILE *fp, int linelen, bool display)
 {
-  struct Address *tmp = NULL;
   char buf[1024];
   int count = 0;
 
-  while (addr)
+  struct AddressNode *an = NULL;
+  TAILQ_FOREACH(an, al, entries)
   {
-    tmp = addr->next;
-    addr->next = NULL;
+    struct Address *addr = an->addr;
     buf[0] = '\0';
     mutt_addr_write(buf, sizeof(buf), addr, display);
     size_t len = mutt_str_strlen(buf);
@@ -1781,16 +1780,22 @@ void mutt_write_address_list(struct Address *addr, FILE *fp, int linelen, bool d
       linelen += len;
     }
     fputs(buf, fp);
-    addr->next = tmp;
-    if (!addr->group && addr->next && addr->next->mailbox)
+    struct AddressNode *next = TAILQ_NEXT(an, entries);
+    if (!addr->group && next && next->addr->mailbox)
     {
       linelen++;
       fputc(',', fp);
     }
-    addr = addr->next;
     count++;
   }
   fputc('\n', fp);
+}
+void mutt_write_address_list(struct Address *addr, FILE *fp, int linelen, bool display)
+{
+  struct AddressList *al = mutt_addr_to_addresslist(addr);
+  mutt_write_addresslist(al, fp, linelen, display);
+  mutt_addresslist_to_addr(al);
+  FREE(&al);
 }
 
 /**

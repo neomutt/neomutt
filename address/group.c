@@ -238,19 +238,25 @@ static int group_remove_regex(struct Group *g, const char *s)
  * @param head GroupList to add to
  * @param a    Address to add
  */
-void mutt_grouplist_add_addrlist(struct GroupList *head, struct Address *a)
+void mutt_grouplist_add_addresslist(struct GroupList *head, struct AddressList *al)
 {
-  if (!head || !a)
+  if (!head || !al)
     return;
-
-  struct AddressList *al = mutt_addr_to_addresslist(a);
 
   struct GroupNode *np = NULL;
   STAILQ_FOREACH(np, head, entries)
   {
     group_add_addrlist(np->group, al);
   }
+}
 
+void mutt_grouplist_add_addrlist(struct GroupList *head, struct Address *a)
+{
+  if (!head || !a)
+    return;
+
+  struct AddressList *al = mutt_addr_to_addresslist(a);
+  mutt_grouplist_add_addresslist(head, al);
   mutt_addresslist_to_addr(al);
   FREE(&al);
 }

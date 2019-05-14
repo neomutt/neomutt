@@ -103,5 +103,9 @@ void                mutt_addresslist_clear(struct AddressList *al);
 void                mutt_addresslist_free(struct AddressList **al);
 void                mutt_addresslist_free_one(struct AddressList *al, struct AddressNode *anode);
 void                mutt_addresslist_free_all(struct AddressList *al);
+size_t              mutt_addresslist_write(char *buf, size_t buflen, struct AddressList* addr, bool display);
+void                mutt_addresslist_parse(struct AddressList *top, const char *s);
+void                mutt_addresslist_parse2(struct AddressList *top, const char *s);
+int                 mutt_addresslist_to_intl(struct AddressList *a, char **err);
 
 #endif /* MUTT_EMAIL_ADDRESS_H */

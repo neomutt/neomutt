@@ -912,7 +912,7 @@ static enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   if (!tmp)
   {
     /* create a new alias */
-    tmp = mutt_mem_calloc(1, sizeof(struct Alias));
+    tmp = mutt_alias_new();
     tmp->name = mutt_str_strdup(buf->data);
     TAILQ_INSERT_TAIL(&Aliases, tmp, entries);
     /* give the main addressbook code a chance */
@@ -923,7 +923,7 @@ static enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   {
     mutt_alias_delete_reverse(tmp);
     /* override the previous value */
-    mutt_addr_free(&tmp->addr);
+    mutt_addresslist_free_all(&tmp->addr);
     if (CurrentMenu == MENU_ALIAS)
       mutt_menu_set_current_redraw_full();
   }
@@ -931,27 +931,31 @@ static enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   mutt_extract_token(buf, s, MUTT_TOKEN_QUOTE | MUTT_TOKEN_SPACE | MUTT_TOKEN_SEMICOLON);
   mutt_debug(5, "Second token is '%s'\n", buf->data);
 
-  tmp->addr = mutt_addr_parse_list2(tmp->addr, buf->data);
+  mutt_addresslist_parse2(&tmp->addr, buf->data);
 
-  if (mutt_addrlist_to_intl(tmp->addr, &estr))
+  if (mutt_addresslist_to_intl(&tmp->addr, &estr))
   {
     mutt_buffer_printf(err, _("Warning: Bad IDN '%s' in alias '%s'"), estr, tmp->name);
     FREE(&estr);
     goto bail;
   }
 
-  mutt_grouplist_add_addrlist(&gc, tmp->addr);
+  mutt_grouplist_add_addresslist(&gc, &tmp->addr);
   mutt_alias_add_reverse(tmp);
 
   if (C_DebugLevel > LL_DEBUG4)
   {
     /* A group is terminated with an empty address, so check a->mailbox */
-    for (struct Address *a = tmp->addr; a && a->mailbox; a = a->next)
+    struct AddressNode *an = NULL;
+    TAILQ_FOREACH(an, &tmp->addr, entries)
     {
-      if (a->group)
-        mutt_debug(5, "  Group %s\n", a->mailbox);
+      if (!an->addr->mailbox)
+        break;
+
+      if (an->addr->group)
+        mutt_debug(5, "  Group %s\n", an->addr->mailbox);
       else
-        mutt_debug(5, "  %s\n", a->mailbox);
+        mutt_debug(5, "  %s\n", an->addr->mailbox);
     }
   }
   mutt_grouplist_destroy(&gc);

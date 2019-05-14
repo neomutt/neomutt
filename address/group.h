@@ -56,6 +56,7 @@ void mutt_grouplist_init(void);
 void mutt_grouplist_free(void);
 void mutt_grouplist_add(struct GroupList *head, struct Group *group);
 void mutt_grouplist_add_addrlist(struct GroupList *head, struct Address *a);
+void mutt_grouplist_add_addresslist(struct GroupList *head, struct AddressList *a);
 int  mutt_grouplist_add_regex(struct GroupList *head, const char *s,
                               int flags, struct Buffer *err);
 void mutt_grouplist_destroy(struct GroupList *head);

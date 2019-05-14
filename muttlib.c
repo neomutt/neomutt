@@ -217,7 +217,9 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
 
       case '@':
       {
-        struct Address *alias = mutt_alias_lookup(s + 1);
+        struct AddressList *al = mutt_addresslist_copy(mutt_alias_lookup(s + 1), false);
+        struct Address *alias = mutt_addresslist_to_addr(al);
+        FREE(&al);
         if (alias)
         {
           struct Email *e = mutt_email_new();
