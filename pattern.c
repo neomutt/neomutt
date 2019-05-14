@@ -1537,6 +1537,8 @@ struct PatternHead *mutt_pattern_comp(/* const */ char *s, int flags, struct Buf
           SLIST_NEXT(SLIST_FIRST(last), entries) = pat;
         else
           curlist = tmp;
+        if (curlist != last)
+          FREE(&last);
         last = tmp;
 
         ps.dptr++; /* move past the ~ */
@@ -1613,6 +1615,8 @@ struct PatternHead *mutt_pattern_comp(/* const */ char *s, int flags, struct Buf
     mutt_buffer_strcpy(err, _("empty pattern"));
     return NULL;
   }
+  if (curlist != tmp)
+    FREE(&tmp);
   if (SLIST_NEXT(SLIST_FIRST(curlist), entries))
   {
     tmp = mutt_pattern_node_new();
