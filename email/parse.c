@@ -76,12 +76,12 @@ void mutt_auto_subscribe(const char *mailto)
       !mutt_regexlist_match(&UnMailLists, lpenv->to->mailbox) &&
       !mutt_regexlist_match(&UnSubscribedLists, lpenv->to->mailbox))
   {
-    struct Buffer *err = mutt_buffer_pool_get();
+    struct Buffer *err = mutt_buffer_new();
     /* mutt_regexlist_add() detects duplicates, so it is safe to
      * try to add here without any checks. */
     mutt_regexlist_add(&MailLists, lpenv->to->mailbox, REG_ICASE, err);
     mutt_regexlist_add(&SubscribedLists, lpenv->to->mailbox, REG_ICASE, err);
-    mutt_buffer_pool_release(&err);
+    mutt_buffer_free(&err);
   }
 
   mutt_env_free(&lpenv);

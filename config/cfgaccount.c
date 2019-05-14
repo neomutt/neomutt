@@ -100,7 +100,7 @@ void ac_free(const struct ConfigSet *cs, struct CfgAccount **ac)
     return;
 
   char child[128];
-  struct Buffer *err = mutt_buffer_pool_get();
+  struct Buffer *err = mutt_buffer_new();
 
   for (size_t i = 0; i < (*ac)->num_vars; i++)
   {
@@ -112,7 +112,7 @@ void ac_free(const struct ConfigSet *cs, struct CfgAccount **ac)
     mutt_hash_delete(cs->hash, child, NULL);
   }
 
-  mutt_buffer_pool_release(&err);
+  mutt_buffer_free(&err);
   FREE(&(*ac)->name);
   FREE(&(*ac)->vars);
   FREE(ac);

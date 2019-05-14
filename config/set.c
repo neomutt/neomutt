@@ -263,7 +263,7 @@ bool cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], 
   if (!cs || !vars)
     return false;
 
-  struct Buffer *err = mutt_buffer_pool_get();
+  struct Buffer *err = mutt_buffer_new();
 
   bool rc = true;
 
@@ -276,7 +276,7 @@ bool cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], 
     }
   }
 
-  mutt_buffer_pool_release(&err);
+  mutt_buffer_free(&err);
   return rc;
 }
 

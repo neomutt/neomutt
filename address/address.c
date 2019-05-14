@@ -647,7 +647,7 @@ struct Address *mutt_addr_parse_list2(struct Address *p, const char *s)
   const char *q = strpbrk(s, "\"<>():;,\\");
   if (!q)
   {
-    struct Buffer *tmp = mutt_buffer_pool_get();
+    struct Buffer *tmp = mutt_buffer_alloc(1024);
     mutt_buffer_strcpy(tmp, s);
     char *r = tmp->data;
     while ((r = strtok(r, " \t")))
@@ -655,7 +655,7 @@ struct Address *mutt_addr_parse_list2(struct Address *p, const char *s)
       p = mutt_addr_parse_list(p, r);
       r = NULL;
     }
-    mutt_buffer_pool_release(&tmp);
+    mutt_buffer_free(&tmp);
   }
   else
     p = mutt_addr_parse_list(p, s);
