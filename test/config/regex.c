@@ -687,7 +687,7 @@ void config_regex(void)
     return;
   dont_fail = false;
 
-  cs_add_listener(cs, log_listener);
+  cs_add_observer(cs, log_observer);
 
   set_list(cs);
 

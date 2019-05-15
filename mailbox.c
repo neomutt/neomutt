@@ -552,7 +552,7 @@ void mutt_mailbox_next(struct Mailbox *m_cur, char *s, size_t slen)
 }
 
 /**
- * mutt_mailbox_changed - Notify listeners of a change to a Mailbox
+ * mutt_mailbox_changed - Notify observers of a change to a Mailbox
  * @param m      Mailbox
  * @param action Change to Mailbox
  */

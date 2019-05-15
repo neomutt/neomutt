@@ -103,7 +103,7 @@ void config_initial(void)
   if (!cs_register_variables(cs, Vars, 0))
     return;
 
-  cs_add_listener(cs, log_listener);
+  cs_add_observer(cs, log_observer);
 
   set_list(cs);
 

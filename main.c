@@ -824,10 +824,10 @@ int main(int argc, char *argv[], char *envp[])
     goto main_ok; // TEST22: neomutt -B
   }
 
-  cs_add_listener(Config, mutt_hist_listener);
-  cs_add_listener(Config, mutt_log_listener);
-  cs_add_listener(Config, mutt_menu_listener);
-  cs_add_listener(Config, mutt_reply_listener);
+  cs_add_observer(Config, mutt_hist_observer);
+  cs_add_observer(Config, mutt_log_observer);
+  cs_add_observer(Config, mutt_menu_observer);
+  cs_add_observer(Config, mutt_reply_observer);
 
   if (sendflags & SEND_POSTPONED)
   {

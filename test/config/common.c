@@ -81,7 +81,7 @@ void short_line(void)
   TEST_MSG("%s\n", line + 40);
 }
 
-bool log_listener(const struct ConfigSet *cs, struct HashElem *he,
+bool log_observer(const struct ConfigSet *cs, struct HashElem *he,
                   const char *name, enum ConfigEvent ev)
 {
   struct Buffer result;

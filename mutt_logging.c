@@ -335,9 +335,9 @@ int level_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 }
 
 /**
- * mutt_log_listener - Listen for config changes affecting the log file - Implements ::cs_listener()
+ * mutt_log_observer - Listen for config changes affecting the log file - Implements ::cs_observer()
  */
-bool mutt_log_listener(const struct ConfigSet *cs, struct HashElem *he,
+bool mutt_log_observer(const struct ConfigSet *cs, struct HashElem *he,
                        const char *name, enum ConfigEvent ev)
 {
   if (mutt_str_strcmp(name, "debug_file") == 0)

@@ -189,6 +189,6 @@ void         mutt_menu_set_current_redraw(MuttRedrawFlags redraw);
 void         mutt_menu_set_redraw_full(int menu_type);
 void         mutt_menu_set_redraw(int menu_type, MuttRedrawFlags redraw);
 
-bool mutt_menu_listener(const struct ConfigSet *cs, struct HashElem *he, const char *name, enum ConfigEvent ev);
+bool mutt_menu_observer(const struct ConfigSet *cs, struct HashElem *he, const char *name, enum ConfigEvent ev);
 
 #endif /* MUTT_MENU_H */

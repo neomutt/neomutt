@@ -1591,9 +1591,9 @@ int mutt_menu_loop(struct Menu *menu)
 }
 
 /**
- * mutt_menu_listener - Listen for config changes affecting the menu - Implements ::cs_listener()
+ * mutt_menu_observer - Listen for config changes affecting the menu - Implements ::cs_observer()
  */
-bool mutt_menu_listener(const struct ConfigSet *cs, struct HashElem *he,
+bool mutt_menu_observer(const struct ConfigSet *cs, struct HashElem *he,
                         const char *name, enum ConfigEvent ev)
 {
   const struct ConfigDef *cdef = he->data;

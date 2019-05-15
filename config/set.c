@@ -308,74 +308,74 @@ struct HashElem *cs_inherit_variable(const struct ConfigSet *cs,
 }
 
 /**
- * cs_add_listener - Add a listener (callback function)
+ * cs_add_observer - Add a observer (callback function)
  * @param cs Config items
- * @param fn Listener callback function
+ * @param fn Observer callback function
  */
-void cs_add_listener(struct ConfigSet *cs, cs_listener fn)
+void cs_add_observer(struct ConfigSet *cs, cs_observer fn)
 {
   if (!cs || !fn)
     return;
 
-  for (size_t i = 0; i < mutt_array_size(cs->listeners); i++)
+  for (size_t i = 0; i < mutt_array_size(cs->observers); i++)
   {
-    if (cs->listeners[i] == fn)
+    if (cs->observers[i] == fn)
     {
-      mutt_debug(LL_DEBUG1, "Listener was already registered\n");
+      mutt_debug(LL_DEBUG1, "Observer was already registered\n");
       return;
     }
   }
 
-  for (size_t i = 0; i < mutt_array_size(cs->listeners); i++)
+  for (size_t i = 0; i < mutt_array_size(cs->observers); i++)
   {
-    if (!cs->listeners[i])
+    if (!cs->observers[i])
     {
-      cs->listeners[i] = fn;
+      cs->observers[i] = fn;
       return;
     }
   }
 }
 
 /**
- * cs_remove_listener - Remove a listener (callback function)
+ * cs_remove_observer - Remove a observer (callback function)
  * @param cs Config items
- * @param fn Listener callback function
+ * @param fn Observer callback function
  */
-void cs_remove_listener(struct ConfigSet *cs, cs_listener fn)
+void cs_remove_observer(struct ConfigSet *cs, cs_observer fn)
 {
   if (!cs || !fn)
     return;
 
-  for (size_t i = 0; i < mutt_array_size(cs->listeners); i++)
+  for (size_t i = 0; i < mutt_array_size(cs->observers); i++)
   {
-    if (cs->listeners[i] == fn)
+    if (cs->observers[i] == fn)
     {
-      cs->listeners[i] = NULL;
+      cs->observers[i] = NULL;
       return;
     }
   }
-  mutt_debug(LL_DEBUG1, "Listener wasn't registered\n");
+  mutt_debug(LL_DEBUG1, "Observer wasn't registered\n");
 }
 
 /**
- * cs_notify_listeners - Notify all listeners of an event
+ * cs_notify_observers - Notify all observers of an event
  * @param cs   Config items
  * @param he   HashElem representing config item
  * @param name Name of config item
  * @param ev   Type of event
  */
-void cs_notify_listeners(const struct ConfigSet *cs, struct HashElem *he,
+void cs_notify_observers(const struct ConfigSet *cs, struct HashElem *he,
                          const char *name, enum ConfigEvent ev)
 {
   if (!cs || !he || !name)
     return;
 
-  for (size_t i = 0; i < mutt_array_size(cs->listeners); i++)
+  for (size_t i = 0; i < mutt_array_size(cs->observers); i++)
   {
-    if (!cs->listeners[i])
+    if (!cs->observers[i])
       return;
 
-    cs->listeners[i](cs, he, name, ev);
+    cs->observers[i](cs, he, name, ev);
   }
 }
 
@@ -422,7 +422,7 @@ int cs_he_reset(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *
   }
 
   if ((CSR_RESULT(rc) == CSR_SUCCESS) && !(rc & CSR_SUC_NO_CHANGE))
-    cs_notify_listeners(cs, he, he->key.strkey, CE_RESET);
+    cs_notify_observers(cs, he, he->key.strkey, CE_RESET);
   return rc;
 }
 
@@ -485,7 +485,7 @@ int cs_he_initial_set(const struct ConfigSet *cs, struct HashElem *he,
   if (CSR_RESULT(rc) != CSR_SUCCESS)
     return rc;
 
-  cs_notify_listeners(cs, he, he->key.strkey, CE_INITIAL_SET);
+  cs_notify_observers(cs, he, he->key.strkey, CE_INITIAL_SET);
   return CSR_SUCCESS;
 }
 
@@ -630,7 +630,7 @@ int cs_he_string_set(const struct ConfigSet *cs, struct HashElem *he,
     he->type = i->parent->type | DT_INHERITED;
   }
   if (!(rc & CSR_SUC_NO_CHANGE))
-    cs_notify_listeners(cs, he, he->key.strkey, CE_SET);
+    cs_notify_observers(cs, he, he->key.strkey, CE_SET);
   return rc;
 }
 
@@ -772,7 +772,7 @@ int cs_he_native_set(const struct ConfigSet *cs, struct HashElem *he,
     if (he->type & DT_INHERITED)
       he->type = cdef->type | DT_INHERITED;
     if (!(rc & CSR_SUC_NO_CHANGE))
-      cs_notify_listeners(cs, he, cdef->name, CE_SET);
+      cs_notify_observers(cs, he, cdef->name, CE_SET);
   }
 
   return rc;
@@ -826,7 +826,7 @@ int cs_str_native_set(const struct ConfigSet *cs, const char *name,
     if (he->type & DT_INHERITED)
       he->type = cdef->type | DT_INHERITED;
     if (!(rc & CSR_SUC_NO_CHANGE))
-      cs_notify_listeners(cs, he, cdef->name, CE_SET);
+      cs_notify_observers(cs, he, cdef->name, CE_SET);
   }
 
   return rc;
