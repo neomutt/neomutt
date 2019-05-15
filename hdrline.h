@@ -48,7 +48,7 @@ struct HdrFormatInfo
   const char *pager_progress;
 };
 
-bool mutt_is_mail_list(struct Address *addr);
+bool mutt_is_mail_list(const struct Address *addr);
 bool mutt_is_subscribed_list(struct Address *addr);
 void mutt_make_string_flags(char *buf, size_t buflen, const char *s,
                             struct Context *ctx, struct Mailbox *m,

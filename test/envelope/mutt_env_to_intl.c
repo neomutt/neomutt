@@ -38,13 +38,15 @@ void test_mutt_env_to_intl(void)
   }
 
   {
-    struct Envelope envelope = { 0 };
+    struct Envelope envelope;
+    memset(&envelope, 0, sizeof(struct Envelope));
     char *err = NULL;
     TEST_CHECK(mutt_env_to_intl(&envelope, NULL, &err) == 0);
   }
 
   {
-    struct Envelope envelope = { 0 };
+    struct Envelope envelope;
+    memset(&envelope, 0, sizeof(struct Envelope));
     const char *tag = NULL;
     TEST_CHECK(mutt_env_to_intl(&envelope, &tag, NULL) == 0);
   }

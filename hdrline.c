@@ -98,7 +98,7 @@ enum CryptChars
  * @param addr Address to test
  * @retval true If it's a mailing list
  */
-bool mutt_is_mail_list(struct Address *addr)
+bool mutt_is_mail_list(const struct Address *addr)
 {
   if (!mutt_regexlist_match(&UnMailLists, addr->mailbox))
     return mutt_regexlist_match(&MailLists, addr->mailbox);
@@ -122,7 +122,7 @@ bool mutt_is_subscribed_list(struct Address *addr)
 
 /**
  * check_for_mailing_list - Search list of addresses for a mailing list
- * @param addr    List of addresses to search
+ * @param al      AddressList to search
  * @param pfx     Prefix string
  * @param buf     Buffer to store results
  * @param buflen  Buffer length
@@ -132,14 +132,16 @@ bool mutt_is_subscribed_list(struct Address *addr)
  * Search for a mailing list in the list of addresses pointed to by addr.
  * If one is found, print pfx and the name of the list into buf.
  */
-static bool check_for_mailing_list(struct Address *addr, const char *pfx, char *buf, int buflen)
+static bool check_for_mailing_list(struct AddressList *al, const char *pfx,
+                                   char *buf, int buflen)
 {
-  for (; addr; addr = addr->next)
+  struct AddressNode *an = NULL;
+  TAILQ_FOREACH(an, al, entries)
   {
-    if (mutt_is_subscribed_list(addr))
+    if (mutt_is_subscribed_list(an->addr))
     {
       if (pfx && buf && buflen)
-        snprintf(buf, buflen, "%s%s", pfx, mutt_get_name(addr));
+        snprintf(buf, buflen, "%s%s", pfx, mutt_get_name(an->addr));
       return true;
     }
   }
@@ -148,21 +150,22 @@ static bool check_for_mailing_list(struct Address *addr, const char *pfx, char *
 
 /**
  * check_for_mailing_list_addr - Check an address list for a mailing list
- * @param addr   Address list
+ * @param al     AddressList
  * @param buf    Buffer for the result
  * @param buflen Length of buffer
  * @retval true Mailing list found
  *
  * If one is found, print the address of the list into buf.
  */
-static bool check_for_mailing_list_addr(struct Address *addr, char *buf, int buflen)
+static bool check_for_mailing_list_addr(struct AddressList *al, char *buf, int buflen)
 {
-  for (; addr; addr = addr->next)
+  struct AddressNode *an = NULL;
+  TAILQ_FOREACH(an, al, entries)
   {
-    if (mutt_is_subscribed_list(addr))
+    if (mutt_is_subscribed_list(an->addr))
     {
       if (buf && buflen)
-        snprintf(buf, buflen, "%s", addr->mailbox);
+        snprintf(buf, buflen, "%s", an->addr->mailbox);
       return true;
     }
   }
@@ -173,16 +176,17 @@ static bool check_for_mailing_list_addr(struct Address *addr, char *buf, int buf
  * first_mailing_list - Get the first mailing list in the list of addresses
  * @param buf    Buffer for the result
  * @param buflen Length of buffer
- * @param a      Address list
+ * @param al     AddressList
  * @retval true If a mailing list was found
  */
-static bool first_mailing_list(char *buf, size_t buflen, struct Address *a)
+static bool first_mailing_list(char *buf, size_t buflen, struct AddressList *al)
 {
-  for (; a; a = a->next)
+  struct AddressNode *an = NULL;
+  TAILQ_FOREACH(an, al, entries)
   {
-    if (mutt_is_subscribed_list(a))
+    if (mutt_is_subscribed_list(an->addr))
     {
-      mutt_save_path(buf, buflen, a);
+      mutt_save_path(buf, buflen, an->addr);
       return true;
     }
   }
@@ -312,37 +316,37 @@ static void make_from(struct Envelope *env, char *buf, size_t buflen,
 
   bool me;
   enum FieldType disp;
-  struct Address *name = NULL;
+  struct AddressList *name = NULL;
 
-  me = mutt_addr_is_user(env->from);
+  me = mutt_addr_is_user(mutt_addresslist_first(&env->from));
 
   if (do_lists || me)
   {
-    if (check_for_mailing_list(env->to, make_from_prefix(DISP_TO), buf, buflen))
+    if (check_for_mailing_list(&env->to, make_from_prefix(DISP_TO), buf, buflen))
       return;
-    if (check_for_mailing_list(env->cc, make_from_prefix(DISP_CC), buf, buflen))
+    if (check_for_mailing_list(&env->cc, make_from_prefix(DISP_CC), buf, buflen))
       return;
   }
 
-  if (me && env->to)
+  if (me && !TAILQ_EMPTY(&env->to))
   {
     disp = (flags & MUTT_FORMAT_PLAIN) ? DISP_PLAIN : DISP_TO;
-    name = env->to;
+    name = &env->to;
   }
-  else if (me && env->cc)
+  else if (me && !TAILQ_EMPTY(&env->cc))
   {
     disp = DISP_CC;
-    name = env->cc;
+    name = &env->cc;
   }
-  else if (me && env->bcc)
+  else if (me && !TAILQ_EMPTY(&env->bcc))
   {
     disp = DISP_BCC;
-    name = env->bcc;
+    name = &env->bcc;
   }
-  else if (env->from)
+  else if (!TAILQ_EMPTY(&env->from))
   {
     disp = DISP_FROM;
-    name = env->from;
+    name = &env->from;
   }
   else
   {
@@ -350,7 +354,8 @@ static void make_from(struct Envelope *env, char *buf, size_t buflen,
     return;
   }
 
-  snprintf(buf, buflen, "%s%s", make_from_prefix(disp), mutt_get_name(name));
+  snprintf(buf, buflen, "%s%s", make_from_prefix(disp),
+           mutt_get_name(mutt_addresslist_first(name)));
 }
 
 /**
@@ -365,36 +370,37 @@ static void make_from_addr(struct Envelope *env, char *buf, size_t buflen, bool 
   if (!env || !buf)
     return;
 
-  bool me = mutt_addr_is_user(env->from);
+  bool me = mutt_addr_is_user(mutt_addresslist_first(&env->from));
 
   if (do_lists || me)
   {
-    if (check_for_mailing_list_addr(env->to, buf, buflen))
+    if (check_for_mailing_list_addr(&env->to, buf, buflen))
       return;
-    if (check_for_mailing_list_addr(env->cc, buf, buflen))
+    if (check_for_mailing_list_addr(&env->cc, buf, buflen))
       return;
   }
 
-  if (me && env->to)
-    snprintf(buf, buflen, "%s", env->to->mailbox);
-  else if (me && env->cc)
-    snprintf(buf, buflen, "%s", env->cc->mailbox);
-  else if (env->from)
-    mutt_str_strfcpy(buf, env->from->mailbox, buflen);
+  if (me && !TAILQ_EMPTY(&env->to))
+    snprintf(buf, buflen, "%s", mutt_addresslist_first(&env->to)->mailbox);
+  else if (me && !TAILQ_EMPTY(&env->cc))
+    snprintf(buf, buflen, "%s", mutt_addresslist_first(&env->cc)->mailbox);
+  else if (!TAILQ_EMPTY(&env->from))
+    mutt_str_strfcpy(buf, mutt_addresslist_first(&env->from)->mailbox, buflen);
   else
     *buf = '\0';
 }
 
 /**
  * user_in_addr - Do any of the addresses refer to the user?
- * @param a Address list
+ * @param al AddressList
  * @retval true If any of the addresses match one of the user's addresses
  */
-static bool user_in_addr(struct Address *a)
+static bool user_in_addr(struct AddressList *al)
 {
-  for (; a; a = a->next)
-    if (mutt_addr_is_user(a))
-      return true;
+  struct AddressNode *an = NULL;
+  TAILQ_FOREACH(an, al, entries)
+  if (mutt_addr_is_user(an->addr))
+    return true;
   return false;
 }
 
@@ -420,22 +426,22 @@ static int user_is_recipient(struct Email *e)
   {
     e->recip_valid = true;
 
-    if (mutt_addr_is_user(env->from))
+    if (mutt_addr_is_user(mutt_addresslist_first(&env->from)))
       e->recipient = 4;
-    else if (user_in_addr(env->to))
+    else if (user_in_addr(&env->to))
     {
-      if (env->to->next || env->cc)
+      if (TAILQ_NEXT(TAILQ_FIRST(&env->to), entries) || !TAILQ_EMPTY(&env->cc))
         e->recipient = 2; /* non-unique recipient */
       else
         e->recipient = 1; /* unique recipient */
     }
-    else if (user_in_addr(env->cc))
+    else if (user_in_addr(&env->cc))
       e->recipient = 3;
-    else if (check_for_mailing_list(env->to, NULL, NULL, 0))
+    else if (check_for_mailing_list(&env->to, NULL, NULL, 0))
       e->recipient = 5;
-    else if (check_for_mailing_list(env->cc, NULL, NULL, 0))
+    else if (check_for_mailing_list(&env->cc, NULL, NULL, 0))
       e->recipient = 5;
-    else if (user_in_addr(env->reply_to))
+    else if (user_in_addr(&env->reply_to))
       e->recipient = 6;
     else
       e->recipient = 0;
@@ -564,6 +570,11 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
   struct Context *ctx = hfi->ctx;
   struct Mailbox *m = hfi->mailbox;
 
+  const struct Address *reply_to = mutt_addresslist_first(&e->env->reply_to);
+  const struct Address *from = mutt_addresslist_first(&e->env->from);
+  const struct Address *to = mutt_addresslist_first(&e->env->to);
+  const struct Address *cc = mutt_addresslist_first(&e->env->cc);
+
   if (!e || !e->env)
     return src;
   buf[0] = '\0';
@@ -573,18 +584,18 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     case 'I':
       if (op == 'A')
       {
-        if (e->env->reply_to && e->env->reply_to->mailbox)
+        if (reply_to && reply_to->mailbox)
         {
           colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_AUTHOR);
           mutt_format_s(buf + colorlen, buflen - colorlen, prec,
-                        mutt_addr_for_display(e->env->reply_to));
+                        mutt_addr_for_display(reply_to));
           add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
           break;
         }
       }
       else
       {
-        if (mutt_mb_get_initials(mutt_get_name(e->env->from), tmp, sizeof(tmp)))
+        if (mutt_mb_get_initials(mutt_get_name(from), tmp, sizeof(tmp)))
         {
           colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_AUTHOR);
           mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
@@ -596,10 +607,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'a':
       colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_AUTHOR);
-      if (e->env->from && e->env->from->mailbox)
+      if (from && from->mailbox)
       {
-        mutt_format_s(buf + colorlen, buflen - colorlen, prec,
-                      mutt_addr_for_display(e->env->from));
+        mutt_format_s(buf + colorlen, buflen - colorlen, prec, mutt_addr_for_display(from));
       }
       else
         mutt_format_s(buf + colorlen, buflen - colorlen, prec, "");
@@ -608,8 +618,8 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'B':
     case 'K':
-      if (!first_mailing_list(buf, buflen, e->env->to) &&
-          !first_mailing_list(buf, buflen, e->env->cc))
+      if (!first_mailing_list(buf, buflen, &e->env->to) &&
+          !first_mailing_list(buf, buflen, &e->env->cc))
       {
         buf[0] = '\0';
       }
@@ -867,7 +877,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'f':
       tmp[0] = '\0';
-      mutt_addr_write(tmp, sizeof(tmp), e->env->from, true);
+      mutt_addresslist_write(tmp, sizeof(tmp), &e->env->from, true);
       mutt_format_s(buf, buflen, prec, tmp);
       break;
 
@@ -884,7 +894,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         if (is_plain)
           src++;
       }
-      else if (mutt_addr_is_user(e->env->from))
+      else if (mutt_addr_is_user(from))
       {
         optional = 0;
       }
@@ -1017,8 +1027,8 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
         add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       }
-      else if (!check_for_mailing_list(e->env->to, NULL, NULL, 0) &&
-               !check_for_mailing_list(e->env->cc, NULL, NULL, 0))
+      else if (!check_for_mailing_list(&e->env->to, NULL, NULL, 0) &&
+               !check_for_mailing_list(&e->env->cc, NULL, NULL, 0))
       {
         optional = 0;
       }
@@ -1036,8 +1046,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'n':
       colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_AUTHOR);
-      mutt_format_s(buf + colorlen, buflen - colorlen, prec,
-                    mutt_get_name(e->env->from));
+      mutt_format_s(buf + colorlen, buflen - colorlen, prec, mutt_get_name(from));
       add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       break;
 
@@ -1087,8 +1096,8 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           *p = '\0';
         mutt_format_s(buf, buflen, prec, tmp);
       }
-      else if (!check_for_mailing_list_addr(e->env->to, NULL, 0) &&
-               !check_for_mailing_list_addr(e->env->cc, NULL, 0))
+      else if (!check_for_mailing_list_addr(&e->env->to, NULL, 0) &&
+               !check_for_mailing_list_addr(&e->env->cc, NULL, 0))
       {
         optional = 0;
       }
@@ -1106,7 +1115,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'r':
       tmp[0] = '\0';
-      mutt_addr_write(tmp, sizeof(tmp), e->env->to, true);
+      mutt_addresslist_write(tmp, sizeof(tmp), &e->env->to, true);
       if (optional && (tmp[0] == '\0'))
         optional = 0;
       mutt_format_s(buf, buflen, prec, tmp);
@@ -1114,7 +1123,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'R':
       tmp[0] = '\0';
-      mutt_addr_write(tmp, sizeof(tmp), e->env->cc, true);
+      mutt_addresslist_write(tmp, sizeof(tmp), &e->env->cc, true);
       if (optional && (tmp[0] == '\0'))
         optional = 0;
       mutt_format_s(buf, buflen, prec, tmp);
@@ -1180,13 +1189,13 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 't':
       tmp[0] = '\0';
-      if (!check_for_mailing_list(e->env->to, "To ", tmp, sizeof(tmp)) &&
-          !check_for_mailing_list(e->env->cc, "Cc ", tmp, sizeof(tmp)))
+      if (!check_for_mailing_list(&e->env->to, "To ", tmp, sizeof(tmp)) &&
+          !check_for_mailing_list(&e->env->cc, "Cc ", tmp, sizeof(tmp)))
       {
-        if (e->env->to)
-          snprintf(tmp, sizeof(tmp), "To %s", mutt_get_name(e->env->to));
-        else if (e->env->cc)
-          snprintf(tmp, sizeof(tmp), "Cc %s", mutt_get_name(e->env->cc));
+        if (to)
+          snprintf(tmp, sizeof(tmp), "To %s", mutt_get_name(to));
+        else if (cc)
+          snprintf(tmp, sizeof(tmp), "Cc %s", mutt_get_name(cc));
       }
       mutt_format_s(buf, buflen, prec, tmp);
       break;
@@ -1203,9 +1212,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     }
 
     case 'u':
-      if (e->env->from && e->env->from->mailbox)
+      if (from && from->mailbox)
       {
-        mutt_str_strfcpy(tmp, mutt_addr_for_display(e->env->from), sizeof(tmp));
+        mutt_str_strfcpy(tmp, mutt_addr_for_display(from), sizeof(tmp));
         p = strpbrk(tmp, "%@");
         if (p)
           *p = '\0';
@@ -1216,17 +1225,17 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       break;
 
     case 'v':
-      if (mutt_addr_is_user(e->env->from))
+      if (mutt_addr_is_user(from))
       {
-        if (e->env->to)
-          mutt_format_s(tmp, sizeof(tmp), prec, mutt_get_name(e->env->to));
-        else if (e->env->cc)
-          mutt_format_s(tmp, sizeof(tmp), prec, mutt_get_name(e->env->cc));
+        if (to)
+          mutt_format_s(tmp, sizeof(tmp), prec, mutt_get_name(to));
+        else if (cc)
+          mutt_format_s(tmp, sizeof(tmp), prec, mutt_get_name(cc));
         else
           *tmp = '\0';
       }
       else
-        mutt_format_s(tmp, sizeof(tmp), prec, mutt_get_name(e->env->from));
+        mutt_format_s(tmp, sizeof(tmp), prec, mutt_get_name(from));
       p = strpbrk(tmp, " %@");
       if (p)
         *p = '\0';

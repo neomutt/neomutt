@@ -306,11 +306,11 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
         e->content->length = loc - e->content->offset;
       }
 
-      if (!e->env->return_path && return_path[0])
-        e->env->return_path = mutt_addr_parse_list(e->env->return_path, return_path);
+      if (TAILQ_EMPTY(&e->env->return_path) && return_path[0])
+        mutt_addresslist_parse(&e->env->return_path, return_path);
 
-      if (!e->env->from)
-        e->env->from = mutt_addr_copy_list(e->env->return_path, false);
+      if (TAILQ_EMPTY(&e->env->from))
+        mutt_addresslist_copy(&e->env->from, &e->env->return_path, false);
 
       m->msg_count++;
     }
@@ -497,13 +497,13 @@ static int mbox_parse_mailbox(struct Mailbox *m)
 
       m->msg_count++;
 
-      if (!e_cur->env->return_path && return_path[0])
+      if (TAILQ_EMPTY(&e_cur->env->return_path) && return_path[0])
       {
-        e_cur->env->return_path = mutt_addr_parse_list(e_cur->env->return_path, return_path);
+        mutt_addresslist_parse(&e_cur->env->return_path, return_path);
       }
 
-      if (!e_cur->env->from)
-        e_cur->env->from = mutt_addr_copy_list(e_cur->env->return_path, false);
+      if (TAILQ_EMPTY(&e_cur->env->from))
+        mutt_addresslist_copy(&e_cur->env->from, &e_cur->env->return_path, false);
 
       lines = 0;
     }

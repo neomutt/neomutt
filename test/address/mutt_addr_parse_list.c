@@ -31,13 +31,15 @@ void test_mutt_addr_parse_list(void)
   // struct Address *mutt_addr_parse_list(struct Address *top, const char *s);
 
   {
-    struct Address *addr = NULL;
-    TEST_CHECK((addr = mutt_addr_parse_list(NULL, "apple")) != NULL);
-    mutt_addr_free(&addr);
+    struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
+    mutt_addresslist_parse(&alist, "apple");
+    TEST_CHECK(mutt_addresslist_first(&alist) != NULL);
+    mutt_addresslist_free_all(&alist);
   }
 
   {
-    struct Address addr = { 0 };
-    TEST_CHECK(!mutt_addr_parse_list(&addr, NULL));
+    struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
+    mutt_addresslist_parse(&alist, NULL);
+    TEST_CHECK(mutt_addresslist_first(&alist) == NULL);
   }
 }

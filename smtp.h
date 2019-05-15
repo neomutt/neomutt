@@ -23,13 +23,15 @@
 #ifndef MUTT_SMTP_H
 #define MUTT_SMTP_H
 
-struct Address;
+struct AddressList;
 
 /* These Config Variables are only used in smtp.c */
 extern char *C_SmtpAuthenticators;
 
 #ifdef USE_SMTP
-int mutt_smtp_send(const struct Address *from, const struct Address *to, const struct Address *cc, const struct Address *bcc, const char *msgfile, bool eightbit);
+int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
+                   const struct AddressList *cc, const struct AddressList *bcc,
+                   const char *msgfile, bool eightbit);
 #endif
 
 #endif /* MUTT_SMTP_H */

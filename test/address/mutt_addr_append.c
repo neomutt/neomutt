@@ -28,15 +28,15 @@
 
 void test_mutt_addr_append(void)
 {
-  // struct Address *mutt_addr_append(struct Address **a, struct Address *b, bool prune);
-
   {
     struct Address addr = { 0 };
-    TEST_CHECK(!mutt_addr_append(NULL, &addr, false));
+    mutt_addresslist_append(NULL, &addr);
+    TEST_CHECK(true); // no crash
   }
 
   {
-    struct Address *addr = NULL;
-    TEST_CHECK(!mutt_addr_append(&addr, NULL, false));
+    struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+    mutt_addresslist_append(&al, NULL);
+    TEST_CHECK(true); // no crash
   }
 }

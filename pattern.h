@@ -28,9 +28,9 @@
 #include <stddef.h>
 #include "mutt.h"
 
-struct Address;
 struct Buffer;
 struct Email;
+struct Envelope;
 struct Mailbox;
 
 /* These Config Variables are only used in pattern.c */
@@ -154,8 +154,8 @@ void mutt_check_simple(struct Buffer *s, const char *simple);
 void mutt_pattern_free(struct PatternHead **pat);
 
 int mutt_which_case(const char *s);
-int mutt_is_list_recipient(bool alladdr, struct Address *a1, struct Address *a2);
-int mutt_is_list_cc(int alladdr, struct Address *a1, struct Address *a2);
+int mutt_is_list_recipient(bool alladdr, struct Envelope *e);
+int mutt_is_subscribed_list_recipient(bool alladdr, struct Envelope *e);
 int mutt_pattern_func(int op, char *prompt);
 int mutt_search_command(int cur, int op);
 

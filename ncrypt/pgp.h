@@ -29,7 +29,7 @@
 #include <stdio.h>
 #include "ncrypt.h"
 
-struct Address;
+struct AddressList;
 struct Body;
 struct Email;
 struct PgpKeyInfo;
@@ -47,7 +47,7 @@ char *pgp_fpr_or_lkeyid(struct PgpKeyInfo * k);
 
 int pgp_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur);
 
-char *pgp_class_find_keys(struct Address *addrlist, bool oppenc_mode);
+char *pgp_class_find_keys(struct AddressList *addrlist, bool oppenc_mode);
 
 int pgp_class_application_handler(struct Body *m, struct State *s);
 int pgp_class_encrypted_handler(struct Body *a, struct State *s);

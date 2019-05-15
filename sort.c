@@ -151,7 +151,7 @@ static int compare_subject(const void *a, const void *b)
  * 2. Personal name
  * 3. Email address
  */
-const char *mutt_get_name(struct Address *a)
+const char *mutt_get_name(const struct Address *a)
 {
   struct Address *ali = NULL;
 
@@ -177,8 +177,8 @@ static int compare_to(const void *a, const void *b)
   struct Email **ppb = (struct Email **) b;
   char fa[128];
 
-  mutt_str_strfcpy(fa, mutt_get_name((*ppa)->env->to), sizeof(fa));
-  const char *fb = mutt_get_name((*ppb)->env->to);
+  mutt_str_strfcpy(fa, mutt_get_name(mutt_addresslist_first(&(*ppa)->env->to)), sizeof(fa));
+  const char *fb = mutt_get_name(mutt_addresslist_first(&(*ppb)->env->to));
   int result = mutt_str_strncasecmp(fa, fb, sizeof(fa));
   result = perform_auxsort(result, a, b);
   return SORT_CODE(result);
@@ -193,8 +193,9 @@ static int compare_from(const void *a, const void *b)
   struct Email **ppb = (struct Email **) b;
   char fa[128];
 
-  mutt_str_strfcpy(fa, mutt_get_name((*ppa)->env->from), sizeof(fa));
-  const char *fb = mutt_get_name((*ppb)->env->from);
+  mutt_str_strfcpy(fa, mutt_get_name(mutt_addresslist_first(&(*ppa)->env->from)),
+                   sizeof(fa));
+  const char *fb = mutt_get_name(mutt_addresslist_first(&(*ppb)->env->from));
   int result = mutt_str_strncasecmp(fa, fb, sizeof(fa));
   result = perform_auxsort(result, a, b);
   return SORT_CODE(result);

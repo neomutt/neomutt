@@ -67,11 +67,11 @@ enum MuttWriteHeaderMode
 };
 
 char *          mutt_body_get_charset(struct Body *b, char *buf, size_t buflen);
-int             mutt_bounce_message(FILE *fp, struct Email *e, struct Address *to);
+int             mutt_bounce_message(FILE *fp, struct Email *e, struct AddressList *to);
 const char *    mutt_fqdn(bool may_hide_host);
 void            mutt_generate_boundary(struct ParameterList *parm);
 struct Content *mutt_get_content_info(const char *fname, struct Body *b);
-int             mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Address *cc, struct Address *bcc, const char *msg, int eightbit);
+int             mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to, struct AddressList *cc, struct AddressList *bcc, const char *msg, int eightbit);
 int             mutt_lookup_mime_type(struct Body *att, const char *path);
 struct Body *   mutt_make_file_attach(const char *path);
 struct Body *   mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool attach_msg);
@@ -83,7 +83,6 @@ int             mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct 
 void            mutt_stamp_attachment(struct Body *a);
 void            mutt_unprepare_envelope(struct Envelope *env);
 void            mutt_update_encoding(struct Body *a);
-void            mutt_write_address_list(struct Address *addr, FILE *fp, int linelen, bool display);
 void            mutt_write_addresslist(struct AddressList *addr, FILE *fp, int linelen, bool display);
 int             mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool post, char *fcc, char **finalpath);
 int             mutt_write_mime_body(struct Body *a, FILE *fp);

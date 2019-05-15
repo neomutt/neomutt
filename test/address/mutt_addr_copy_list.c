@@ -28,9 +28,10 @@
 
 void test_mutt_addr_copy_list(void)
 {
-  // struct Address *mutt_addr_copy_list(struct Address *addr, bool prune);
+  // void mutt_addresslist_copy(struct AddressList *dst, const struct AddressList *src, bool prune);
 
   {
-    TEST_CHECK(!mutt_addr_copy_list(NULL, false));
+    mutt_addresslist_copy(NULL, NULL, false);
+    TEST_CHECK(true); // no crash
   }
 }

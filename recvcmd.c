@@ -170,7 +170,6 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
   char prompt[256];
   char buf[8192];
   char *err = NULL;
-  struct Address *addr = NULL;
   int ret = 0;
   int p = 0;
 
@@ -184,7 +183,7 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
    * messages without one */
   if (cur)
   {
-    if (!cur->email->env->from)
+    if (TAILQ_EMPTY(&cur->email->env->from))
     {
       mutt_error(_("Warning: message contains no From: header"));
       mutt_clear_error();
@@ -196,7 +195,7 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
     {
       if (actx->idx[i]->content->tagged)
       {
-        if (!actx->idx[i]->content->email->env->from)
+        if (TAILQ_EMPTY(&actx->idx[i]->content->email->env->from))
         {
           mutt_error(_("Warning: message contains no From: header"));
           mutt_clear_error();
@@ -215,25 +214,25 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
   if (mutt_get_field(prompt, buf, sizeof(buf), MUTT_ALIAS) || (buf[0] == '\0'))
     return;
 
-  addr = mutt_addr_parse_list(addr, buf);
-  if (!addr)
+  struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+  mutt_addresslist_parse(&al, buf);
+  if (TAILQ_EMPTY(&al))
   {
     mutt_error(_("Error parsing address"));
     return;
   }
 
-  addr = mutt_expand_aliases(addr);
+  mutt_expand_aliases(&al);
 
-  if (mutt_addrlist_to_intl(addr, &err) < 0)
+  if (mutt_addresslist_to_intl(&al, &err) < 0)
   {
     mutt_error(_("Bad IDN: '%s'"), err);
     FREE(&err);
-    mutt_addr_free(&addr);
-    return;
+    goto end;
   }
 
   buf[0] = '\0';
-  mutt_addr_write(buf, sizeof(buf), addr, true);
+  mutt_addresslist_write(buf, sizeof(buf), &al, true);
 
 #define EXTRA_SPACE (15 + 7 + 2)
   /* See commands.c.  */
@@ -251,22 +250,21 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
 
   if (query_quadoption(C_Bounce, prompt) != MUTT_YES)
   {
-    mutt_addr_free(&addr);
     mutt_window_clearline(MuttMessageWindow, 0);
     mutt_message(ngettext("Message not bounced", "Messages not bounced", p));
-    return;
+    goto end;
   }
 
   mutt_window_clearline(MuttMessageWindow, 0);
 
   if (cur)
-    ret = mutt_bounce_message(fp, cur->email, addr);
+    ret = mutt_bounce_message(fp, cur->email, &al);
   else
   {
     for (short i = 0; i < actx->idxlen; i++)
     {
       if (actx->idx[i]->content->tagged)
-        if (mutt_bounce_message(actx->idx[i]->fp, actx->idx[i]->content->email, addr))
+        if (mutt_bounce_message(actx->idx[i]->fp, actx->idx[i]->content->email, &al))
           ret = 1;
     }
   }
@@ -276,7 +274,8 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
   else
     mutt_error(ngettext("Error bouncing message", "Error bouncing messages", p));
 
-  mutt_addr_free(&addr);
+end:
+  mutt_addresslist_free_all(&al);
 }
 
 /**
@@ -835,7 +834,7 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
       }
     }
 
-    if ((flags & SEND_LIST_REPLY) && !env->to)
+    if ((flags & SEND_LIST_REPLY) && TAILQ_EMPTY(&env->to))
     {
       mutt_error(_("No mailing lists found"));
       return -1;

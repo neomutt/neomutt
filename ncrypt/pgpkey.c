@@ -990,7 +990,6 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
   if (!a)
     return NULL;
 
-  struct Address *r = NULL, *p = NULL;
   struct ListHead hints = STAILQ_HEAD_INITIALIZER(hints);
 
   bool multi = false;
@@ -1034,11 +1033,12 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
 
     for (q = k->address; q; q = q->next)
     {
-      r = mutt_addr_parse_list(NULL, NONULL(q->addr));
-
-      for (p = r; p; p = p->next)
+      struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+      mutt_addresslist_parse(&al, NONULL(q->addr));
+      struct AddressNode *an = NULL;
+      TAILQ_FOREACH(an, &al, entries)
       {
-        int validity = pgp_id_matches_addr(a, p, q);
+        int validity = pgp_id_matches_addr(a, an->addr, q);
 
         if (validity & PGP_KV_MATCH) /* something matches */
           match = true;
@@ -1058,7 +1058,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
         }
       }
 
-      mutt_addr_free(&r);
+      mutt_addresslist_free_all(&al);
     }
 
     if (match)
@@ -1113,12 +1113,12 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
 
 /**
  * pgp_getkeybystr - Find a PGP key by string
- * @param p         String to match
+ * @param cp         String to match
  * @param abilities   Abilities to match, see #KeyFlags
  * @param keyring     PGP keyring to use
  * @retval ptr Matching PGP key
  */
-struct PgpKeyInfo *pgp_getkeybystr(char *p, KeyFlags abilities, enum PgpRing keyring)
+struct PgpKeyInfo *pgp_getkeybystr(const char *cp, KeyFlags abilities, enum PgpRing keyring)
 {
   struct ListHead hints = STAILQ_HEAD_INITIALIZER(hints);
   struct PgpKeyInfo *keys = NULL;
@@ -1129,6 +1129,7 @@ struct PgpKeyInfo *pgp_getkeybystr(char *p, KeyFlags abilities, enum PgpRing key
   size_t l;
   const char *ps = NULL, *pl = NULL, *pfcopy = NULL, *phint = NULL;
 
+  char *p = mutt_str_strdup(cp);
   l = mutt_str_strlen(p);
   if ((l > 0) && (p[l - 1] == '!'))
     p[l - 1] = 0;
@@ -1139,9 +1140,6 @@ struct PgpKeyInfo *pgp_getkeybystr(char *p, KeyFlags abilities, enum PgpRing key
   pgp_add_string_to_hints(phint, &hints);
   keys = pgp_get_candidates(keyring, &hints);
   mutt_list_free(&hints);
-
-  if (!keys)
-    goto out;
 
   for (k = keys; k; k = kn)
   {
@@ -1195,17 +1193,14 @@ struct PgpKeyInfo *pgp_getkeybystr(char *p, KeyFlags abilities, enum PgpRing key
     k = pgp_select_key(matches, NULL, p);
     if (k)
       pgp_remove_key(&matches, k);
-
     pgp_free_key(&matches);
-    FREE(&pfcopy);
-    if (l && !p[l - 1])
-      p[l - 1] = '!';
-    return k;
+  }
+  else
+  {
+    k = NULL;
   }
 
-out:
   FREE(&pfcopy);
-  if (l && !p[l - 1])
-    p[l - 1] = '!';
-  return NULL;
+  FREE(&p);
+  return k;
 }

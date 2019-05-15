@@ -443,7 +443,10 @@ void pgp_class_invoke_getkeys(struct Address *addr)
   addr->personal = NULL;
 
   *tmp = '\0';
-  mutt_addrlist_to_local(addr);
+  struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
+  mutt_addresslist_append(&alist, addr);
+  mutt_addresslist_to_local(&alist);
+  mutt_addresslist_clear(&alist);
   mutt_addr_write_single(tmp, sizeof(tmp), addr, false);
   mutt_buffer_quote_filename(buf, tmp, true);
 

@@ -215,8 +215,8 @@ int mutt_display_message(struct Email *cur)
   {
     if (cur->security & APPLICATION_PGP)
     {
-      if (cur->env->from)
-        crypt_pgp_invoke_getkeys(cur->env->from);
+      if (!TAILQ_EMPTY(&cur->env->from))
+        crypt_pgp_invoke_getkeys(mutt_addresslist_first(&cur->env->from));
 
       crypt_invoke_message(APPLICATION_PGP);
     }
@@ -375,7 +375,7 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   char prompt[129];
   char scratch[128];
   char buf[8192] = { 0 };
-  struct Address *addr = NULL;
+  struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
   char *err = NULL;
   int rc;
   int msg_count = 0;
@@ -385,7 +385,7 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   {
     /* RFC5322 mandates a From: header,
      * so warn before bouncing messages without one */
-    if (!en->email->env->from)
+    if (!TAILQ_EMPTY(&en->email->env->from))
       mutt_error(_("Warning: message contains no From: header"));
 
     msg_count++;
@@ -400,25 +400,25 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   if (rc || !buf[0])
     return;
 
-  addr = mutt_addr_parse_list2(addr, buf);
-  if (!addr)
+  mutt_addresslist_parse2(&al, buf);
+  if (TAILQ_EMPTY(&al))
   {
     mutt_error(_("Error parsing address"));
     return;
   }
 
-  addr = mutt_expand_aliases(addr);
+  mutt_expand_aliases(&al);
 
-  if (mutt_addrlist_to_intl(addr, &err) < 0)
+  if (mutt_addresslist_to_intl(&al, &err) < 0)
   {
     mutt_error(_("Bad IDN: '%s'"), err);
     FREE(&err);
-    mutt_addr_free(&addr);
+    mutt_addresslist_free_all(&al);
     return;
   }
 
   buf[0] = '\0';
-  mutt_addr_write(buf, sizeof(buf), addr, true);
+  mutt_addresslist_write(buf, sizeof(buf), &al, true);
 
 #define EXTRA_SPACE (15 + 7 + 2)
   snprintf(scratch, sizeof(scratch),
@@ -435,7 +435,7 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
 
   if (query_quadoption(C_Bounce, prompt) != MUTT_YES)
   {
-    mutt_addr_free(&addr);
+    mutt_addresslist_free_all(&al);
     mutt_window_clearline(MuttMessageWindow, 0);
     mutt_message(ngettext("Message not bounced", "Messages not bounced", msg_count));
     return;
@@ -453,14 +453,14 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
       break;
     }
 
-    rc = mutt_bounce_message(msg->fp, en->email, addr);
+    rc = mutt_bounce_message(msg->fp, en->email, &al);
     mx_msg_close(m, &msg);
 
     if (rc < 0)
       break;
   }
 
-  mutt_addr_free(&addr);
+  mutt_addresslist_free_all(&al);
   /* If no error, or background, display message. */
   if ((rc == 0) || (rc == S_BKG))
     mutt_message(ngettext("Message bounced", "Messages bounced", msg_count));
@@ -864,8 +864,8 @@ void mutt_display_address(struct Envelope *env)
   const char *pfx = NULL;
   char buf[128];
 
-  struct Address *addr = mutt_get_address(env, &pfx);
-  if (!addr)
+  struct AddressList *al = mutt_get_address(env, &pfx);
+  if (!al)
     return;
 
   /* Note: We don't convert IDNA to local representation this time.
@@ -873,7 +873,7 @@ void mutt_display_address(struct Envelope *env)
    * paste the on-the-wire form of the address to other, IDN-unable
    * software.  */
   buf[0] = '\0';
-  mutt_addr_write(buf, sizeof(buf), addr, false);
+  mutt_addresslist_write(buf, sizeof(buf), al, false);
   mutt_message("%s: %s", pfx, buf);
 }
 

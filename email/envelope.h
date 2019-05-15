@@ -26,6 +26,7 @@
 #include "config.h"
 #include <stdbool.h>
 #include "mutt/mutt.h"
+#include "address/address.h"
 
 #define MUTT_ENV_CHANGED_IRT     (1<<0)  ///< In-Reply-To changed to link/break threads
 #define MUTT_ENV_CHANGED_REFS    (1<<1)  ///< References changed to break thread
@@ -37,15 +38,15 @@
  */
 struct Envelope
 {
-  struct Address *return_path;
-  struct Address *from;
-  struct Address *to;
-  struct Address *cc;
-  struct Address *bcc;
-  struct Address *sender;
-  struct Address *reply_to;
-  struct Address *mail_followup_to;
-  struct Address *x_original_to;
+  struct AddressList return_path;
+  struct AddressList from;
+  struct AddressList to;
+  struct AddressList cc;
+  struct AddressList bcc;
+  struct AddressList sender;
+  struct AddressList reply_to;
+  struct AddressList mail_followup_to;
+  struct AddressList x_original_to;
   char *list_post; /**< this stores a mailto URL, or nothing */
   char *subject;
   char *real_subj; /**< offset of the real subject */

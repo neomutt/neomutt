@@ -4871,7 +4871,6 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
                                                KeyFlags abilities, unsigned int app,
                                                int *forced_valid, bool oppenc_mode)
 {
-  struct Address *r = NULL, *p = NULL;
   struct ListHead hints = STAILQ_HEAD_INITIALIZER(hints);
 
   int multi = false;
@@ -4917,10 +4916,12 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
     this_key_has_addr_match = false;
     match = false; /* any match */
 
-    r = mutt_addr_parse_list(NULL, k->uid);
-    for (p = r; p; p = p->next)
+    struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
+    mutt_addresslist_parse(&alist, k->uid);
+    struct AddressNode *an = NULL;
+    TAILQ_FOREACH(an, &alist, entries)
     {
-      int validity = crypt_id_matches_addr(a, p, k);
+      int validity = crypt_id_matches_addr(a, an->addr, k);
 
       if (validity & CRYPT_KV_MATCH) /* something matches */
       {
@@ -4939,7 +4940,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
         }
       }
     }
-    mutt_addr_free(&r);
+    mutt_addresslist_free_all(&alist);
 
     if (match)
     {
@@ -4995,7 +4996,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
  * @param[out] forced_valid Set to true if user overrode key's validity
  * @retval ptr Matching key
  */
-static struct CryptKeyInfo *crypt_getkeybystr(char *p, KeyFlags abilities,
+static struct CryptKeyInfo *crypt_getkeybystr(const char *p, KeyFlags abilities,
                                               unsigned int app, int *forced_valid)
 {
   struct ListHead hints = STAILQ_HEAD_INITIALIZER(hints);
@@ -5136,65 +5137,62 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, KeyFlags
  * If oppenc_mode is true, only keys that can be determined without prompting
  * will be used.
  */
-static char *find_keys(struct Address *addrlist, unsigned int app, bool oppenc_mode)
+static char *find_keys(struct AddressList *addrlist, unsigned int app, bool oppenc_mode)
 {
   struct ListHead crypt_hook_list = STAILQ_HEAD_INITIALIZER(crypt_hook_list);
   struct ListNode *crypt_hook = NULL;
-  char *crypt_hook_val = NULL;
   const char *keyID = NULL;
-  char *keylist = NULL, *t = NULL;
+  char *keylist = NULL;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
-  struct Address *addr = NULL;
-  struct Address *p = NULL, *q = NULL;
+  struct Address *p = NULL;
   struct CryptKeyInfo *k_info = NULL;
   const char *fqdn = mutt_fqdn(true);
   char buf[1024];
   int forced_valid;
   bool key_selected;
+  struct AddressList hookal = TAILQ_HEAD_INITIALIZER(hookal);
 
-  for (p = addrlist; p; p = p->next)
+  struct AddressNode *an = NULL;
+  TAILQ_FOREACH(an, addrlist, entries)
   {
     key_selected = false;
-    mutt_crypt_hook(&crypt_hook_list, p);
+    mutt_crypt_hook(&crypt_hook_list, an->addr);
     crypt_hook = STAILQ_FIRST(&crypt_hook_list);
     do
     {
-      q = p;
+      p = an->addr;
       forced_valid = 0;
       k_info = NULL;
 
       if (crypt_hook)
       {
-        crypt_hook_val = crypt_hook->data;
+        keyID = crypt_hook->data;
         enum QuadOption ans = MUTT_YES;
         if (!oppenc_mode && C_CryptConfirmhook)
         {
-          snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"),
-                   crypt_hook_val, p->mailbox);
+          snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"), keyID, p->mailbox);
           ans = mutt_yesorno(buf, MUTT_YES);
         }
         if (ans == MUTT_YES)
         {
-          if (crypt_is_numerical_keyid(crypt_hook_val))
+          if (crypt_is_numerical_keyid(keyID))
           {
-            keyID = crypt_hook_val;
             if (strncmp(keyID, "0x", 2) == 0)
               keyID += 2;
             goto bypass_selection; /* you don't see this. */
           }
 
           /* check for e-mail address */
-          if ((t = strchr(crypt_hook_val, '@')) &&
-              (addr = mutt_addr_parse_list(NULL, crypt_hook_val)))
+          mutt_addresslist_free_all(&hookal);
+          if (strchr(keyID, '@') && (mutt_addresslist_parse(&hookal, keyID) != 0))
           {
-            if (fqdn)
-              mutt_addr_qualify(addr, fqdn);
-            q = addr;
+            mutt_addresslist_qualify(&hookal, fqdn);
+            p = mutt_addresslist_first(&hookal);
           }
           else if (!oppenc_mode)
           {
-            k_info = crypt_getkeybystr(crypt_hook_val, KEYFLAG_CANENCRYPT, app, &forced_valid);
+            k_info = crypt_getkeybystr(keyID, KEYFLAG_CANENCRYPT, app, &forced_valid);
           }
         }
         else if (ans == MUTT_NO)
@@ -5208,7 +5206,7 @@ static char *find_keys(struct Address *addrlist, unsigned int app, bool oppenc_m
         else if (ans == MUTT_ABORT)
         {
           FREE(&keylist);
-          mutt_addr_free(&addr);
+          mutt_addresslist_free_all(&hookal);
           mutt_list_free(&crypt_hook_list);
           return NULL;
         }
@@ -5216,20 +5214,20 @@ static char *find_keys(struct Address *addrlist, unsigned int app, bool oppenc_m
 
       if (!k_info)
       {
-        k_info = crypt_getkeybyaddr(q, KEYFLAG_CANENCRYPT, app, &forced_valid, oppenc_mode);
+        k_info = crypt_getkeybyaddr(p, KEYFLAG_CANENCRYPT, app, &forced_valid, oppenc_mode);
       }
 
       if (!k_info && !oppenc_mode)
       {
-        snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), q->mailbox);
+        snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), p->mailbox);
 
-        k_info = crypt_ask_for_key(buf, q->mailbox, KEYFLAG_CANENCRYPT, app, &forced_valid);
+        k_info = crypt_ask_for_key(buf, p->mailbox, KEYFLAG_CANENCRYPT, app, &forced_valid);
       }
 
       if (!k_info)
       {
         FREE(&keylist);
-        mutt_addr_free(&addr);
+        mutt_addresslist_free_all(&hookal);
         mutt_list_free(&crypt_hook_list);
         return NULL;
       }
@@ -5246,7 +5244,7 @@ static char *find_keys(struct Address *addrlist, unsigned int app, bool oppenc_m
       key_selected = true;
 
       crypt_free_key(&k_info);
-      mutt_addr_free(&addr);
+      mutt_addresslist_free_all(&hookal);
 
       if (crypt_hook)
         crypt_hook = STAILQ_NEXT(crypt_hook, entries);
@@ -5261,7 +5259,7 @@ static char *find_keys(struct Address *addrlist, unsigned int app, bool oppenc_m
 /**
  * pgp_gpgme_find_keys - Implements CryptModuleSpecs::find_keys()
  */
-char *pgp_gpgme_find_keys(struct Address *addrlist, bool oppenc_mode)
+char *pgp_gpgme_find_keys(struct AddressList *addrlist, bool oppenc_mode)
 {
   return find_keys(addrlist, APPLICATION_PGP, oppenc_mode);
 }
@@ -5269,7 +5267,7 @@ char *pgp_gpgme_find_keys(struct Address *addrlist, bool oppenc_mode)
 /**
  * smime_gpgme_find_keys - Implements CryptModuleSpecs::find_keys()
  */
-char *smime_gpgme_find_keys(struct Address *addrlist, bool oppenc_mode)
+char *smime_gpgme_find_keys(struct AddressList *addrlist, bool oppenc_mode)
 {
   return find_keys(addrlist, APPLICATION_SMIME, oppenc_mode);
 }
@@ -5584,15 +5582,15 @@ static bool verify_sender(struct Email *e)
   struct Address *sender = NULL;
   bool rc = true;
 
-  if (e->env->from)
+  if (!TAILQ_EMPTY(&e->env->from))
   {
-    e->env->from = mutt_expand_aliases(e->env->from);
-    sender = e->env->from;
+    mutt_expand_aliases(&e->env->from);
+    sender = mutt_addresslist_first(&e->env->from);
   }
-  else if (e->env->sender)
+  else if (!TAILQ_EMPTY(&e->env->sender))
   {
-    e->env->sender = mutt_expand_aliases(e->env->sender);
-    sender = e->env->sender;
+    mutt_expand_aliases(&e->env->sender);
+    sender = mutt_addresslist_first(&e->env->sender);
   }
 
   if (sender)

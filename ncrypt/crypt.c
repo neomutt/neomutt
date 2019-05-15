@@ -245,10 +245,14 @@ int mutt_protect(struct Email *msg, char *keylist)
   {
     /* Set sender (necessary for e.g. PKA).  */
     const char *mailbox = NULL;
-    struct Address *from = msg->env->from;
+    struct Address *from = mutt_addresslist_first(&msg->env->from);
+    bool free_from = false;
 
     if (!from)
+    {
+      free_from = true;
       from = mutt_default_from();
+    }
 
     mailbox = from->mailbox;
     if (!mailbox && C_EnvelopeFromAddress)
@@ -259,7 +263,7 @@ int mutt_protect(struct Email *msg, char *keylist)
     else if (((WithCrypto & APPLICATION_PGP) != 0) && (msg->security & APPLICATION_PGP))
       crypt_pgp_set_sender(mailbox);
 
-    if (!msg->env->from)
+    if (free_from)
       mutt_addr_free(&from);
   }
 
@@ -865,10 +869,10 @@ void crypt_extract_keys_from_messages(struct EmailList *el)
         mutt_copy_message_ctx(fp_out, Context->mailbox, e, MUTT_CM_NO_FLAGS, CH_NO_FLAGS);
       fflush(fp_out);
 
-      if (e->env->from)
-        tmp = mutt_expand_aliases(e->env->from);
-      else if (e->env->sender)
-        tmp = mutt_expand_aliases(e->env->sender);
+      if (!TAILQ_EMPTY(&e->env->from))
+        mutt_expand_aliases(&e->env->from);
+      else if (!TAILQ_EMPTY(&e->env->sender))
+        mutt_expand_aliases(&e->env->sender);
       char *mbox = tmp ? tmp->mailbox : NULL;
       if (mbox)
       {
@@ -911,7 +915,7 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
   if (!WithCrypto)
     return 0;
 
-  struct Address *addrlist = NULL, *last = NULL;
+  struct AddressList addrlist = TAILQ_HEAD_INITIALIZER(addrlist);
   const char *fqdn = mutt_fqdn(true);
   char *self_encrypt = NULL;
 
@@ -921,13 +925,11 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
   if (WithCrypto & APPLICATION_PGP)
     OptPgpCheckTrust = true;
 
-  last = mutt_addr_append(&addrlist, msg->env->to, false);
-  last = mutt_addr_append(last ? &last : &addrlist, msg->env->cc, false);
-  mutt_addr_append(last ? &last : &addrlist, msg->env->bcc, false);
-
-  if (fqdn)
-    mutt_addr_qualify(addrlist, fqdn);
-  addrlist = mutt_addrlist_dedupe(addrlist);
+  mutt_addresslist_copy(&addrlist, &msg->env->to, false);
+  mutt_addresslist_copy(&addrlist, &msg->env->cc, false);
+  mutt_addresslist_copy(&addrlist, &msg->env->bcc, false);
+  mutt_addresslist_qualify(&addrlist, fqdn);
+  mutt_addresslist_dedupe(&addrlist);
 
   *keylist = NULL;
 
@@ -935,10 +937,10 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
   {
     if (((WithCrypto & APPLICATION_PGP) != 0) && (msg->security & APPLICATION_PGP))
     {
-      *keylist = crypt_pgp_find_keys(addrlist, oppenc_mode);
+      *keylist = crypt_pgp_find_keys(&addrlist, oppenc_mode);
       if (!*keylist)
       {
-        mutt_addr_free(&addrlist);
+        mutt_addresslist_free_all(&addrlist);
         return -1;
       }
       OptPgpCheckTrust = false;
@@ -947,10 +949,10 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
     }
     if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME))
     {
-      *keylist = crypt_smime_find_keys(addrlist, oppenc_mode);
+      *keylist = crypt_smime_find_keys(&addrlist, oppenc_mode);
       if (!*keylist)
       {
-        mutt_addr_free(&addrlist);
+        mutt_addresslist_free_all(&addrlist);
         return -1;
       }
       if (C_SmimeSelfEncrypt || (C_SmimeEncryptSelf == MUTT_YES))
@@ -965,7 +967,7 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
     sprintf(*keylist + keylist_size, " %s", self_encrypt);
   }
 
-  mutt_addr_free(&addrlist);
+  mutt_addresslist_free_all(&addrlist);
 
   return 0;
 }
@@ -1211,7 +1213,7 @@ int mutt_signed_handler(struct Body *a, struct State *s)
  * Upon return, at most one of return, *ppl and *pps pointers is non-NULL,
  * indicating the longest fingerprint or ID found, if any.
  */
-const char *crypt_get_fingerprint_or_id(char *p, const char **pphint,
+const char *crypt_get_fingerprint_or_id(const char *p, const char **pphint,
                                         const char **ppl, const char **pps)
 {
   const char *ps = NULL, *pl = NULL, *phint = NULL;

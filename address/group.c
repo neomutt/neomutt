@@ -178,14 +178,14 @@ static void group_add_addrlist(struct Group *g, const struct AddressList *al)
   if (!g || !al)
     return;
 
-  struct AddressList *new = mutt_addresslist_copy(al, false);
-  mutt_addr_remove_xrefs(&g->al, new);
+  struct AddressList new = TAILQ_HEAD_INITIALIZER(new);
+  mutt_addresslist_copy(&new, al, false);
+  mutt_addr_remove_xrefs(&g->al, &new);
   struct AddressNode *np, *tmp;
-  TAILQ_FOREACH_SAFE(np, new, entries, tmp)
+  TAILQ_FOREACH_SAFE(np, &new, entries, tmp)
   {
     TAILQ_INSERT_TAIL(&g->al, np, entries);
   }
-  FREE(&new);
 }
 
 /**
@@ -234,7 +234,7 @@ static int group_remove_regex(struct Group *g, const char *s)
 }
 
 /**
- * mutt_grouplist_add_addrlist - Add Address list to a GroupList
+ * mutt_grouplist_add_addresslist - Add Address list to a GroupList
  * @param head GroupList to add to
  * @param a    Address to add
  */
@@ -250,32 +250,20 @@ void mutt_grouplist_add_addresslist(struct GroupList *head, struct AddressList *
   }
 }
 
-void mutt_grouplist_add_addrlist(struct GroupList *head, struct Address *a)
-{
-  if (!head || !a)
-    return;
-
-  struct AddressList *al = mutt_addr_to_addresslist(a);
-  mutt_grouplist_add_addresslist(head, al);
-  mutt_addresslist_to_addr(al);
-  FREE(&al);
-}
-
 /**
- * mutt_grouplist_remove_addrlist - Remove Address from a GroupList
+ * mutt_grouplist_remove_addresslist - Remove an AddressList from a GroupList
  * @param head GroupList to remove from
- * @param a    Address to remove
+ * @param al   AddressList to remove
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_grouplist_remove_addrlist(struct GroupList *head, struct Address *a)
+int mutt_grouplist_remove_addresslist(struct GroupList *head, struct AddressList *al)
 {
-  if (!head || !a)
+  if (!head || !al)
     return -1;
 
   int rc = 0;
   struct GroupNode *np = NULL;
-  struct AddressList *al = mutt_addr_to_addresslist(a);
 
   STAILQ_FOREACH(np, head, entries)
   {
@@ -286,8 +274,6 @@ int mutt_grouplist_remove_addrlist(struct GroupList *head, struct Address *a)
       break;
   }
 
-  mutt_addresslist_clear(al);
-  FREE(&al);
   return rc;
 }
 

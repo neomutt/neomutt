@@ -267,7 +267,7 @@ struct Body *crypt_pgp_make_key_attachment(void)
 /**
  * crypt_pgp_find_keys - Wrapper for CryptModuleSpecs::find_keys()
  */
-char *crypt_pgp_find_keys(struct Address *addrlist, bool oppenc_mode)
+char *crypt_pgp_find_keys(struct AddressList *addrlist, bool oppenc_mode)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, find_keys))
     return CRYPT_MOD_CALL(PGP, find_keys)(addrlist, oppenc_mode);
@@ -422,7 +422,7 @@ int crypt_smime_verify_sender(struct Email *e)
 /**
  * crypt_smime_find_keys - Wrapper for CryptModuleSpecs::find_keys()
  */
-char *crypt_smime_find_keys(struct Address *addrlist, bool oppenc_mode)
+char *crypt_smime_find_keys(struct AddressList *addrlist, bool oppenc_mode)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, find_keys))
     return CRYPT_MOD_CALL(SMIME, find_keys)(addrlist, oppenc_mode);

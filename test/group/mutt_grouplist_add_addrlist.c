@@ -31,14 +31,14 @@ void test_mutt_grouplist_add_addrlist(void)
   // void mutt_grouplist_add_addrlist(struct GroupList *head, struct Address *a);
 
   {
-    struct Address addr = { 0 };
-    mutt_grouplist_add_addrlist(NULL, &addr);
+    struct AddressList addr = TAILQ_HEAD_INITIALIZER(addr);
+    mutt_grouplist_add_addresslist(NULL, &addr);
     TEST_CHECK_(1, "mutt_grouplist_add_addrlist(NULL, &addr)");
   }
 
   {
     struct GroupList head = { 0 };
-    mutt_grouplist_add_addrlist(&head, NULL);
+    mutt_grouplist_add_addresslist(&head, NULL);
     TEST_CHECK_(1, "mutt_grouplist_add_addrlist(&head, NULL)");
   }
 }

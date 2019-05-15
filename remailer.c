@@ -776,7 +776,7 @@ int mix_check_message(struct Email *msg)
 {
   bool need_hostname = false;
 
-  if (msg->env->cc || msg->env->bcc)
+  if (!TAILQ_EMPTY(&msg->env->cc) || !TAILQ_EMPTY(&msg->env->bcc))
   {
     mutt_error(_("Mixmaster doesn't accept Cc or Bcc headers"));
     return -1;
@@ -788,9 +788,10 @@ int mix_check_message(struct Email *msg)
    * use_domain won't be respected at this point, hidden_host will.
    */
 
-  for (struct Address *a = msg->env->to; a; a = a->next)
+  struct AddressNode *an = NULL;
+  TAILQ_FOREACH(an, &msg->env->to, entries)
   {
-    if (!a->group && !strchr(a->mailbox, '@'))
+    if (!an->addr->group && !strchr(an->addr->mailbox, '@'))
     {
       need_hostname = true;
       break;
@@ -808,9 +809,9 @@ int mix_check_message(struct Email *msg)
     }
 
     /* Cc and Bcc are empty at this point. */
-    mutt_addr_qualify(msg->env->to, fqdn);
-    mutt_addr_qualify(msg->env->reply_to, fqdn);
-    mutt_addr_qualify(msg->env->mail_followup_to, fqdn);
+    mutt_addresslist_qualify(&msg->env->to, fqdn);
+    mutt_addresslist_qualify(&msg->env->reply_to, fqdn);
+    mutt_addresslist_qualify(&msg->env->mail_followup_to, fqdn);
   }
 
   return 0;

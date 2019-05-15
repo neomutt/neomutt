@@ -67,7 +67,11 @@ static int address_string_set(const struct ConfigSet *cs, void *var, struct Conf
   /* An empty address "" will be stored as NULL */
   if (var && value && (value[0] != '\0'))
   {
-    addr = mutt_addr_parse_list(NULL, value);
+    // TODO - config can only store one
+    struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+    mutt_addresslist_parse(&al, value);
+    addr = mutt_addr_copy(mutt_addresslist_first(&al));
+    mutt_addresslist_free_all(&al);
   }
 
   int rc = CSR_SUCCESS;

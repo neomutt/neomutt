@@ -71,17 +71,20 @@ void mutt_auto_subscribe(const char *mailto)
 
   struct Envelope *lpenv = mutt_env_new(); /* parsed envelope from the List-Post mailto: URL */
 
-  if ((mutt_parse_mailto(lpenv, NULL, mailto) != -1) && lpenv->to && lpenv->to->mailbox &&
-      !mutt_regexlist_match(&UnSubscribedLists, lpenv->to->mailbox) &&
-      !mutt_regexlist_match(&UnMailLists, lpenv->to->mailbox) &&
-      !mutt_regexlist_match(&UnSubscribedLists, lpenv->to->mailbox))
+  if ((mutt_parse_mailto(lpenv, NULL, mailto) != -1) && !TAILQ_EMPTY(&lpenv->to))
   {
-    struct Buffer *err = mutt_buffer_new();
-    /* mutt_regexlist_add() detects duplicates, so it is safe to
-     * try to add here without any checks. */
-    mutt_regexlist_add(&MailLists, lpenv->to->mailbox, REG_ICASE, err);
-    mutt_regexlist_add(&SubscribedLists, lpenv->to->mailbox, REG_ICASE, err);
-    mutt_buffer_free(&err);
+    const char *mailbox = TAILQ_FIRST(&lpenv->to)->addr->mailbox;
+    if (mailbox && !mutt_regexlist_match(&UnSubscribedLists, mailbox) &&
+        !mutt_regexlist_match(&UnMailLists, mailbox) &&
+        !mutt_regexlist_match(&UnSubscribedLists, mailbox))
+    {
+      struct Buffer *err = mutt_buffer_new();
+      /* mutt_regexlist_add() detects duplicates, so it is safe to
+       * try to add here without any checks. */
+      mutt_regexlist_add(&MailLists, mailbox, REG_ICASE, err);
+      mutt_regexlist_add(&SubscribedLists, mailbox, REG_ICASE, err);
+      mutt_buffer_free(&err);
+    }
   }
 
   mutt_env_free(&lpenv);
@@ -548,12 +551,12 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
     case 'a':
       if (mutt_str_strcasecmp(line + 1, "pparently-to") == 0)
       {
-        env->to = mutt_addr_parse_list(env->to, p);
+        mutt_addresslist_parse(&env->to, p);
         matched = true;
       }
       else if (mutt_str_strcasecmp(line + 1, "pparently-from") == 0)
       {
-        env->from = mutt_addr_parse_list(env->from, p);
+        mutt_addresslist_parse(&env->from, p);
         matched = true;
       }
       break;
@@ -561,7 +564,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
     case 'b':
       if (mutt_str_strcasecmp(line + 1, "cc") == 0)
       {
-        env->bcc = mutt_addr_parse_list(env->bcc, p);
+        mutt_addresslist_parse(&env->bcc, p);
         matched = true;
       }
       break;
@@ -569,7 +572,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
     case 'c':
       if (mutt_str_strcasecmp(line + 1, "c") == 0)
       {
-        env->cc = mutt_addr_parse_list(env->cc, p);
+        mutt_addresslist_parse(&env->cc, p);
         matched = true;
       }
       else
@@ -656,7 +659,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
     case 'f':
       if (mutt_str_strcasecmp("rom", line + 1) == 0)
       {
-        env->from = mutt_addr_parse_list(env->from, p);
+        mutt_addresslist_parse(&env->from, p);
         matched = true;
       }
 #ifdef USE_NNTP
@@ -745,13 +748,13 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
           if (mutt_str_strcasecmp(line + 1 + plen, "reply-to") == 0)
           {
             /* override the Reply-To: field */
-            mutt_addr_free(&env->reply_to);
-            env->reply_to = mutt_addr_parse_list(env->reply_to, p);
+            mutt_addresslist_free_all(&env->reply_to);
+            mutt_addresslist_parse(&env->reply_to, p);
             matched = true;
           }
           else if (mutt_str_strcasecmp(line + 1 + plen, "followup-to") == 0)
           {
-            env->mail_followup_to = mutt_addr_parse_list(env->mail_followup_to, p);
+            mutt_addresslist_parse(&env->mail_followup_to, p);
             matched = true;
           }
         }
@@ -788,12 +791,12 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
       }
       else if (mutt_str_strcasecmp(line + 1, "eply-to") == 0)
       {
-        env->reply_to = mutt_addr_parse_list(env->reply_to, p);
+        mutt_addresslist_parse(&env->reply_to, p);
         matched = true;
       }
       else if (mutt_str_strcasecmp(line + 1, "eturn-path") == 0)
       {
-        env->return_path = mutt_addr_parse_list(env->return_path, p);
+        mutt_addresslist_parse(&env->return_path, p);
         matched = true;
       }
       else if (mutt_str_strcasecmp(line + 1, "eceived") == 0)
@@ -817,7 +820,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
       }
       else if (mutt_str_strcasecmp(line + 1, "ender") == 0)
       {
-        env->sender = mutt_addr_parse_list(env->sender, p);
+        mutt_addresslist_parse(&env->sender, p);
         matched = true;
       }
       else if (mutt_str_strcasecmp(line + 1, "tatus") == 0)
@@ -855,7 +858,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
     case 't':
       if (mutt_str_strcasecmp(line + 1, "o") == 0)
       {
-        env->to = mutt_addr_parse_list(env->to, p);
+        mutt_addresslist_parse(&env->to, p);
         matched = true;
       }
       break;
@@ -908,7 +911,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
 #endif
       else if (mutt_str_strcasecmp(line + 1, "-original-to") == 0)
       {
-        env->x_original_to = mutt_addr_parse_list(env->x_original_to, p);
+        mutt_addresslist_parse(&env->x_original_to, p);
         matched = true;
       }
 
@@ -1494,7 +1497,7 @@ int mutt_parse_mailto(struct Envelope *e, char **body, const char *src)
   if (url_pct_decode(tmp) < 0)
     goto out;
 
-  e->to = mutt_addr_parse_list(e->to, tmp);
+  mutt_addresslist_parse(&e->to, tmp);
 
   tag = headers ? strtok_r(headers, "&", &p) : NULL;
 

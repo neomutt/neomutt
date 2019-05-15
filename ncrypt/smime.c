@@ -994,9 +994,6 @@ static void getkeys(char *mailbox)
  */
 void smime_class_getkeys(struct Envelope *env)
 {
-  struct Address *t = NULL;
-  bool found = false;
-
   if (C_SmimeDecryptUseDefaultKey && C_SmimeDefaultKey)
   {
     snprintf(SmimeKeyToUse, sizeof(SmimeKeyToUse), "%s/%s", NONULL(C_SmimeKeys),
@@ -1008,55 +1005,54 @@ void smime_class_getkeys(struct Envelope *env)
     return;
   }
 
-  for (t = env->to; !found && t; t = t->next)
+  struct AddressNode *an = NULL;
+  TAILQ_FOREACH(an, &env->to, entries)
   {
-    if (mutt_addr_is_user(t))
+    if (mutt_addr_is_user(an->addr))
     {
-      found = true;
-      getkeys(t->mailbox);
+      getkeys(an->addr->mailbox);
+      return;
     }
   }
-  for (t = env->cc; !found && t; t = t->next)
+
+  TAILQ_FOREACH(an, &env->cc, entries)
   {
-    if (mutt_addr_is_user(t))
+    if (mutt_addr_is_user(an->addr))
     {
-      found = true;
-      getkeys(t->mailbox);
+      getkeys(an->addr->mailbox);
+      return;
     }
   }
-  if (!found && (t = mutt_default_from()))
-  {
-    getkeys(t->mailbox);
-    mutt_addr_free(&t);
-  }
+
+  struct Address *f = mutt_default_from();
+  getkeys(f->mailbox);
+  mutt_addr_free(&f);
 }
 
 /**
  * smime_class_find_keys - Implements CryptModuleSpecs::find_keys()
  */
-char *smime_class_find_keys(struct Address *addrlist, bool oppenc_mode)
+char *smime_class_find_keys(struct AddressList *al, bool oppenc_mode)
 {
   struct SmimeKey *key = NULL;
   char *keyID = NULL, *keylist = NULL;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
-  struct Address *p = NULL, *q = NULL;
 
-  for (p = addrlist; p; p = p->next)
+  struct AddressNode *an = NULL;
+  TAILQ_FOREACH(an, al, entries)
   {
-    q = p;
-
-    key = smime_get_key_by_addr(q->mailbox, KEYFLAG_CANENCRYPT, true, !oppenc_mode);
+    key = smime_get_key_by_addr(an->addr->mailbox, KEYFLAG_CANENCRYPT, true, !oppenc_mode);
     if (!key && !oppenc_mode)
     {
       char buf[1024];
-      snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), q->mailbox);
+      snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), an->addr->mailbox);
       key = smime_ask_for_key(buf, KEYFLAG_CANENCRYPT, true);
     }
     if (!key)
     {
       if (!oppenc_mode)
-        mutt_message(_("No (valid) certificate found for %s"), q->mailbox);
+        mutt_message(_("No (valid) certificate found for %s"), an->addr->mailbox);
       FREE(&keylist);
       return NULL;
     }
@@ -1443,15 +1439,15 @@ int smime_class_verify_sender(struct Email *e)
   fflush(fp_out);
   mutt_file_fclose(&fp_out);
 
-  if (e->env->from)
+  if (!TAILQ_EMPTY(&e->env->from))
   {
-    e->env->from = mutt_expand_aliases(e->env->from);
-    mbox = e->env->from->mailbox;
+    mutt_expand_aliases(&e->env->from);
+    mbox = mutt_addresslist_first(&e->env->from)->mailbox;
   }
-  else if (e->env->sender)
+  else if (!TAILQ_EMPTY(&e->env->sender))
   {
-    e->env->sender = mutt_expand_aliases(e->env->sender);
-    mbox = e->env->sender->mailbox;
+    mutt_expand_aliases(&e->env->sender);
+    mbox = mutt_addresslist_first(&e->env->sender)->mailbox;
   }
 
   if (mbox)

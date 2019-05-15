@@ -1744,7 +1744,7 @@ struct Body *mutt_remove_multipart(struct Body *b)
 }
 
 /**
- * mutt_write_address_list - wrapper around mutt_write_address()
+ * mutt_write_addresslist - wrapper around mutt_write_address()
  * @param addr    Address list
  * @param fp      File to write to
  * @param linelen Line length to use
@@ -1789,13 +1789,6 @@ void mutt_write_addresslist(struct AddressList *al, FILE *fp, int linelen, bool 
     count++;
   }
   fputc('\n', fp);
-}
-void mutt_write_address_list(struct Address *addr, FILE *fp, int linelen, bool display)
-{
-  struct AddressList *al = mutt_addr_to_addresslist(addr);
-  mutt_write_addresslist(al, fp, linelen, display);
-  mutt_addresslist_to_addr(al);
-  FREE(&al);
 }
 
 /**
@@ -2248,24 +2241,24 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
 
   /* UseFrom is not consulted here so that we can still write a From:
    * field if the user sets it with the 'my_hdr' command */
-  if (env->from && !privacy)
+  if (!TAILQ_EMPTY(&env->from) && !privacy)
   {
     buf[0] = '\0';
-    mutt_addr_write(buf, sizeof(buf), env->from, false);
+    mutt_addresslist_write(buf, sizeof(buf), &env->from, false);
     fprintf(fp, "From: %s\n", buf);
   }
 
-  if (env->sender && !privacy)
+  if (!TAILQ_EMPTY(&env->sender) && !privacy)
   {
     buf[0] = '\0';
-    mutt_addr_write(buf, sizeof(buf), env->sender, false);
+    mutt_addresslist_write(buf, sizeof(buf), &env->sender, false);
     fprintf(fp, "Sender: %s\n", buf);
   }
 
-  if (env->to)
+  if (!TAILQ_EMPTY(&env->to))
   {
     fputs("To: ", fp);
-    mutt_write_address_list(env->to, fp, 4, 0);
+    mutt_write_addresslist(&env->to, fp, 4, 0);
   }
   else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
 #ifdef USE_NNTP
@@ -2273,10 +2266,10 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
 #endif
       fputs("To:\n", fp);
 
-  if (env->cc)
+  if (!TAILQ_EMPTY(&env->cc))
   {
     fputs("Cc: ", fp);
-    mutt_write_address_list(env->cc, fp, 4, 0);
+    mutt_write_addresslist(&env->cc, fp, 4, 0);
   }
   else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
 #ifdef USE_NNTP
@@ -2284,13 +2277,13 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
 #endif
       fputs("Cc:\n", fp);
 
-  if (env->bcc)
+  if (!TAILQ_EMPTY(&env->bcc))
   {
     if ((mode == MUTT_WRITE_HEADER_POSTPONE) || (mode == MUTT_WRITE_HEADER_EDITHDRS) ||
         ((mode == MUTT_WRITE_HEADER_NORMAL) && C_WriteBcc))
     {
       fputs("Bcc: ", fp);
-      mutt_write_address_list(env->bcc, fp, 5, 0);
+      mutt_write_addresslist(&env->bcc, fp, 5, 0);
     }
   }
   else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
@@ -2331,21 +2324,21 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
   if (env->message_id && !privacy)
     fprintf(fp, "Message-ID: %s\n", env->message_id);
 
-  if (env->reply_to)
+  if (!TAILQ_EMPTY(&env->reply_to))
   {
     fputs("Reply-To: ", fp);
-    mutt_write_address_list(env->reply_to, fp, 10, 0);
+    mutt_write_addresslist(&env->reply_to, fp, 10, 0);
   }
   else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
     fputs("Reply-To:\n", fp);
 
-  if (env->mail_followup_to)
+  if (!TAILQ_EMPTY(&env->mail_followup_to))
 #ifdef USE_NNTP
     if (!OptNewsSend)
 #endif
     {
       fputs("Mail-Followup-To: ", fp);
-      mutt_write_address_list(env->mail_followup_to, fp, 18, 0);
+      mutt_write_addresslist(&env->mail_followup_to, fp, 18, 0);
     }
 
   if ((mode == MUTT_WRITE_HEADER_NORMAL) || (mode == MUTT_WRITE_HEADER_POSTPONE))
@@ -2678,24 +2671,39 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
 }
 
 /**
- * add_args - Add an Address to a dynamic array
+ * add_args_one - Add an Address to a dynamic array
  * @param[out] args    Array to add to
  * @param[out] argslen Number of entries in array
  * @param[out] argsmax Allocated size of the array
  * @param[in]  addr    Address to add
  * @retval ptr Updated array
  */
-static char **add_args(char **args, size_t *argslen, size_t *argsmax, struct Address *addr)
+static char **add_args_one(char **args, size_t *argslen, size_t *argsmax, struct Address *addr)
 {
-  for (; addr; addr = addr->next)
+  /* weed out group mailboxes, since those are for display only */
+  if (addr->mailbox && !addr->group)
   {
-    /* weed out group mailboxes, since those are for display only */
-    if (addr->mailbox && !addr->group)
-    {
-      if (*argslen == *argsmax)
-        mutt_mem_realloc(&args, (*argsmax += 5) * sizeof(char *));
-      args[(*argslen)++] = addr->mailbox;
-    }
+    if (*argslen == *argsmax)
+      mutt_mem_realloc(&args, (*argsmax += 5) * sizeof(char *));
+    args[(*argslen)++] = addr->mailbox;
+  }
+  return args;
+}
+
+/**
+ * add_args - Add a list of Addresses to a dynamic array
+ * @param[out] args    Array to add to
+ * @param[out] argslen Number of entries in array
+ * @param[out] argsmax Allocated size of the array
+ * @param[in]  al      Addresses to add
+ * @retval ptr Updated array
+ */
+static char **add_args(char **args, size_t *argslen, size_t *argsmax, struct AddressList *al)
+{
+  struct AddressNode *an = NULL;
+  TAILQ_FOREACH(an, al, entries)
+  {
+    args = add_args_one(args, argslen, argsmax, an->addr);
   }
   return args;
 }
@@ -2729,8 +2737,9 @@ static char **add_option(char **args, size_t *argslen, size_t *argsmax, char *s)
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Address *cc,
-                         struct Address *bcc, const char *msg, int eightbit)
+int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
+                         struct AddressList *cc, struct AddressList *bcc,
+                         const char *msg, int eightbit)
 {
   char *ps = NULL, *path = NULL, *s = NULL, *childout = NULL;
   char **args = NULL;
@@ -2821,9 +2830,9 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
       if (C_EnvelopeFromAddress)
       {
         args = add_option(args, &argslen, &argsmax, "-f");
-        args = add_args(args, &argslen, &argsmax, C_EnvelopeFromAddress);
+        args = add_args_one(args, &argslen, &argsmax, C_EnvelopeFromAddress);
       }
-      else if (from && !from->next)
+      else if (!TAILQ_EMPTY(from) && !TAILQ_NEXT(TAILQ_FIRST(from), entries))
       {
         args = add_option(args, &argslen, &argsmax, "-f");
         args = add_args(args, &argslen, &argsmax, from);
@@ -2910,20 +2919,21 @@ void mutt_prepare_envelope(struct Envelope *env, bool final)
 {
   if (final)
   {
-    if (env->bcc && !(env->to || env->cc))
+    if (!TAILQ_EMPTY(&env->bcc) && TAILQ_EMPTY(&env->to) && TAILQ_EMPTY(&env->cc))
     {
       /* some MTA's will put an Apparently-To: header field showing the Bcc:
        * recipients if there is no To: or Cc: field, so attempt to suppress
        * it by using an empty To: field.  */
-      env->to = mutt_addr_new();
-      env->to->group = 1;
-      env->to->next = mutt_addr_new();
+      struct Address *to = mutt_addr_new();
+      mutt_addresslist_append(&env->to, to);
+      mutt_addresslist_append(&env->to, mutt_addr_new());
+      to->group = 1;
 
       char buf[1024];
       buf[0] = '\0';
       mutt_addr_cat(buf, sizeof(buf), "undisclosed-recipients", AddressSpecials);
 
-      env->to->mailbox = mutt_str_strdup(buf);
+      to->mailbox = mutt_str_strdup(buf);
     }
 
     mutt_set_followup_to(env);
@@ -2952,7 +2962,7 @@ void mutt_unprepare_envelope(struct Envelope *env)
     rfc2047_decode(&item->data);
   }
 
-  mutt_addr_free(&env->mail_followup_to);
+  mutt_addresslist_free_all(&env->mail_followup_to);
 
   /* back conversions */
   rfc2047_decode_envelope(env);
@@ -2968,8 +2978,8 @@ void mutt_unprepare_envelope(struct Envelope *env)
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int bounce_message(FILE *fp, struct Email *e, struct Address *to,
-                          const char *resent_from, struct Address *env_from)
+static int bounce_message(FILE *fp, struct Email *e, struct AddressList *to,
+                          const char *resent_from, struct AddressList *env_from)
 {
   if (!e)
     return -1;
@@ -2994,7 +3004,7 @@ static int bounce_message(FILE *fp, struct Email *e, struct Address *to,
     fprintf(fp_tmp, "Resent-Message-ID: %s\n", msgid_str);
     FREE(&msgid_str);
     fputs("Resent-To: ", fp_tmp);
-    mutt_write_address_list(to, fp_tmp, 11, 0);
+    mutt_write_addresslist(to, fp_tmp, 11, 0);
     mutt_copy_header(fp, e, fp_tmp, chflags, NULL);
     fputc('\n', fp_tmp);
     mutt_file_copy_bytes(fp, fp_tmp, e->content->length);
@@ -3020,13 +3030,13 @@ static int bounce_message(FILE *fp, struct Email *e, struct Address *to,
  * mutt_bounce_message - Bounce an email message
  * @param fp Handle of message
  * @param e  Email
- * @param to Address to bounce to
+ * @param to AddressList to bounce to
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_bounce_message(FILE *fp, struct Email *e, struct Address *to)
+int mutt_bounce_message(FILE *fp, struct Email *e, struct AddressList *to)
 {
-  if (!fp || !e || !to)
+  if (!fp || !e || !to || TAILQ_EMPTY(to))
     return -1;
 
   const char *fqdn = mutt_fqdn(true);
@@ -3035,6 +3045,8 @@ int mutt_bounce_message(FILE *fp, struct Email *e, struct Address *to)
 
   resent_from[0] = '\0';
   struct Address *from = mutt_default_from();
+  struct AddressList from_list = TAILQ_HEAD_INITIALIZER(from_list);
+  mutt_addresslist_append(&from_list, from);
 
   /* mutt_default_from() does not use $realname if the real name is not set
    * in $from, so we add it here.  The reason it is not added in
@@ -3047,15 +3059,15 @@ int mutt_bounce_message(FILE *fp, struct Email *e, struct Address *to)
   if (fqdn)
     mutt_addr_qualify(from, fqdn);
 
-  rfc2047_encode_addrlist(from, "Resent-From");
-  if (mutt_addrlist_to_intl(from, &err))
+  rfc2047_encode_addrlist(&from_list, "Resent-From");
+  if (mutt_addresslist_to_intl(&from_list, &err))
   {
     mutt_error(_("Bad IDN %s while preparing resent-from"), err);
     FREE(&err);
     mutt_addr_free(&from);
     return -1;
   }
-  mutt_addr_write(resent_from, sizeof(resent_from), from, false);
+  mutt_addresslist_write(resent_from, sizeof(resent_from), &from_list, false);
 
 #ifdef USE_NNTP
   OptNewsSend = false;
@@ -3064,12 +3076,11 @@ int mutt_bounce_message(FILE *fp, struct Email *e, struct Address *to)
   /* prepare recipient list. idna conversion appears to happen before this
    * function is called, since the user receives confirmation of the address
    * list being bounced to.  */
-  struct Address *resent_to = mutt_addr_copy_list(to, false);
-  rfc2047_encode_addrlist(resent_to, "Resent-To");
-
-  int rc = bounce_message(fp, e, resent_to, resent_from, from);
-
-  mutt_addr_free(&resent_to);
+  struct AddressList resent_to = TAILQ_HEAD_INITIALIZER(resent_to);
+  mutt_addresslist_copy(&resent_to, to, false);
+  rfc2047_encode_addrlist(&resent_to, "Resent-To");
+  int rc = bounce_message(fp, e, &resent_to, resent_from, &from_list);
+  mutt_addresslist_free_all(&resent_to);
   mutt_addr_free(&from);
 
   return rc;

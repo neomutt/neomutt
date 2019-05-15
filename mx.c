@@ -981,12 +981,11 @@ struct Message *mx_msg_open_new(struct Mailbox *m, struct Email *e, MsgOpenFlags
     {
       if (e)
       {
-        if (e->env->return_path)
-          p = e->env->return_path;
-        else if (e->env->sender)
-          p = e->env->sender;
-        else
-          p = e->env->from;
+        p = mutt_addresslist_first(&e->env->return_path);
+        if (!p)
+          p = mutt_addresslist_first(&e->env->sender);
+        if (!p)
+          p = mutt_addresslist_first(&e->env->from);
       }
 
       fprintf(msg->fp, "From %s %s", p ? p->mailbox : NONULL(Username),
@@ -1340,19 +1339,15 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder, enum MailboxType
     else if (buf[0] == '@')
     {
       /* elm compatibility, @ expands alias to user name */
-      struct AddressList *al = mutt_addresslist_copy(mutt_alias_lookup(buf + 1), false);
-      struct Address *alias = mutt_addresslist_to_addr(al);
-      FREE(&al);
-      if (!alias)
+      struct AddressList *al = mutt_alias_lookup(buf + 1);
+      if (TAILQ_EMPTY(al))
         break;
 
       struct Email *e = mutt_email_new();
       e->env = mutt_env_new();
-      e->env->from = alias;
-      e->env->to = alias;
+      mutt_addresslist_copy(&e->env->from, al, false);
+      mutt_addresslist_copy(&e->env->to, al, false);
       mutt_default_save(buf, buflen, e);
-      e->env->from = NULL;
-      e->env->to = NULL;
       mutt_email_free(&e);
       break;
     }

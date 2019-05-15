@@ -1726,62 +1726,70 @@ static bool match_reference(struct Pattern *pat, struct ListHead *refs)
 }
 
 /**
- * mutt_is_list_recipient - Matches subscribed mailing lists
+ * mutt_is_subscribed_list_recipient - Matches subscribed mailing lists
  * @param alladdr If true, ALL Addresses must be on the subscribed list
- * @param a1      First Address list
- * @param a2      Second Address list
+ * @param e       Envelope
  * @retval true One Address is subscribed (alladdr is false)
  * @retval true All the Addresses are subscribed (alladdr is true)
  */
-int mutt_is_list_recipient(bool alladdr, struct Address *a1, struct Address *a2)
+int mutt_is_subscribed_list_recipient(bool alladdr, struct Envelope *e)
 {
-  for (; a1; a1 = a1->next)
-    if (alladdr ^ mutt_is_subscribed_list(a1))
-      return !alladdr;
-  for (; a2; a2 = a2->next)
-    if (alladdr ^ mutt_is_subscribed_list(a2))
-      return !alladdr;
+  struct AddressList *als[] = { &e->to, &e->cc, NULL };
+  struct AddressNode *an = NULL;
+  for (struct AddressList *al = *als; al; ++al)
+  {
+    TAILQ_FOREACH(an, al, entries)
+    {
+      if (alladdr ^ mutt_is_subscribed_list(an->addr))
+        return !alladdr;
+    }
+  }
   return alladdr;
 }
 
 /**
- * mutt_is_list_cc - Matches known mailing lists
+ * mutt_is_list_recipient - Matches known mailing lists
  * @param alladdr If true, ALL Addresses must be mailing lists
- * @param a1      First Address list
- * @param a2      Second Address list
+ * @param e       Envelope
  * @retval true One Address is a mailing list (alladdr is false)
  * @retval true All the Addresses are mailing lists (alladdr is true)
- *
- * The function name may seem a little bit misleading: It checks all
- * recipients in To and Cc for known mailing lists, subscribed or not.
  */
-int mutt_is_list_cc(int alladdr, struct Address *a1, struct Address *a2)
+int mutt_is_list_recipient(bool alladdr, struct Envelope *e)
 {
-  for (; a1; a1 = a1->next)
-    if (alladdr ^ mutt_is_mail_list(a1))
-      return !alladdr;
-  for (; a2; a2 = a2->next)
-    if (alladdr ^ mutt_is_mail_list(a2))
-      return !alladdr;
+  struct AddressList *als[] = { &e->to, &e->cc, NULL };
+  struct AddressNode *an = NULL;
+  for (struct AddressList *al = *als; al; ++al)
+  {
+    TAILQ_FOREACH(an, al, entries)
+    {
+      if (alladdr ^ mutt_is_mail_list(an->addr))
+        return !alladdr;
+    }
+  }
   return alladdr;
 }
 
 /**
  * match_user - Matches the user's email Address
  * @param alladdr If true, ALL Addresses must refer to the user
- * @param a1      First Address list
- * @param a2      Second Address list
+ * @param al1     First AddressList
+ * @param al2     Second AddressList
  * @retval true One Address refers to the user (alladdr is false)
  * @retval true All the Addresses refer to the user (alladdr is true)
  */
-static int match_user(int alladdr, struct Address *a1, struct Address *a2)
+static int match_user(int alladdr, struct AddressList *al1, struct AddressList *al2)
 {
-  for (; a1; a1 = a1->next)
-    if (alladdr ^ mutt_addr_is_user(a1))
+  struct AddressNode *an = NULL;
+  TAILQ_FOREACH(an, al1, entries)
+  {
+    if (alladdr ^ mutt_addr_is_user(an->addr))
       return !alladdr;
-  for (; a2; a2 = a2->next)
-    if (alladdr ^ mutt_addr_is_user(a2))
+  }
+  TAILQ_FOREACH(an, al2, entries)
+  {
+    if (alladdr ^ mutt_addr_is_user(an->addr))
       return !alladdr;
+  }
   return alladdr;
 }
 
@@ -2111,13 +2119,13 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
         int *cache_entry = pat->alladdr ? &cache->list_all : &cache->list_one;
         if (!is_pattern_cache_set(*cache_entry))
         {
-          set_pattern_cache_value(
-              cache_entry, mutt_is_list_cc(pat->alladdr, e->env->to, e->env->cc));
+          set_pattern_cache_value(cache_entry,
+                                  mutt_is_list_recipient(pat->alladdr, e->env));
         }
         result = get_pattern_cache_value(*cache_entry);
       }
       else
-        result = mutt_is_list_cc(pat->alladdr, e->env->to, e->env->cc);
+        result = mutt_is_list_recipient(pat->alladdr, e->env);
       return pat->not^result;
     }
     case MUTT_PAT_SUBSCRIBED_LIST:
@@ -2132,13 +2140,12 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
         if (!is_pattern_cache_set(*cache_entry))
         {
           set_pattern_cache_value(
-              cache_entry,
-              mutt_is_list_recipient(pat->alladdr, e->env->to, e->env->cc));
+              cache_entry, mutt_is_subscribed_list_recipient(pat->alladdr, e->env));
         }
         result = get_pattern_cache_value(*cache_entry);
       }
       else
-        result = mutt_is_list_recipient(pat->alladdr, e->env->to, e->env->cc);
+        result = mutt_is_subscribed_list_recipient(pat->alladdr, e->env);
       return pat->not^result;
     }
     case MUTT_PAT_PERSONAL_RECIP:
@@ -2152,13 +2159,13 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
         int *cache_entry = pat->alladdr ? &cache->pers_recip_all : &cache->pers_recip_one;
         if (!is_pattern_cache_set(*cache_entry))
         {
-          set_pattern_cache_value(cache_entry,
-                                  match_user(pat->alladdr, e->env->to, e->env->cc));
+          set_pattern_cache_value(
+              cache_entry, match_user(pat->alladdr, &e->env->to, &e->env->cc));
         }
         result = get_pattern_cache_value(*cache_entry);
       }
       else
-        result = match_user(pat->alladdr, e->env->to, e->env->cc);
+        result = match_user(pat->alladdr, &e->env->to, &e->env->cc);
       return pat->not^result;
     }
     case MUTT_PAT_PERSONAL_FROM:
@@ -2171,11 +2178,12 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       {
         int *cache_entry = pat->alladdr ? &cache->pers_from_all : &cache->pers_from_one;
         if (!is_pattern_cache_set(*cache_entry))
-          set_pattern_cache_value(cache_entry, match_user(pat->alladdr, e->env->from, NULL));
+          set_pattern_cache_value(cache_entry,
+                                  match_user(pat->alladdr, &e->env->from, NULL));
         result = get_pattern_cache_value(*cache_entry);
       }
       else
-        result = match_user(pat->alladdr, e->env->from, NULL);
+        result = match_user(pat->alladdr, &e->env->from, NULL);
       return pat->not^result;
     }
     case MUTT_PAT_COLLAPSED:

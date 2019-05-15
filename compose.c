@@ -433,14 +433,14 @@ static int check_attachments(struct AttachCtx *actx)
 /**
  * draw_envelope_addr - Write addresses to the compose window
  * @param line Line to write to (index into Prompts)
- * @param addr Address list to write
+ * @param al   Address list to write
  */
-static void draw_envelope_addr(int line, struct Address *addr)
+static void draw_envelope_addr(int line, struct AddressList *al)
 {
   char buf[1024];
 
   buf[0] = '\0';
-  mutt_addr_write(buf, sizeof(buf), addr, true);
+  mutt_addresslist_write(buf, sizeof(buf), al, true);
   SET_COLOR(MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw(MuttIndexWindow, line, 0, "%*s", HeaderPadding[line],
                        _(Prompts[line]));
@@ -455,14 +455,14 @@ static void draw_envelope_addr(int line, struct Address *addr)
  */
 static void draw_envelope(struct Email *msg, char *fcc)
 {
-  draw_envelope_addr(HDR_FROM, msg->env->from);
+  draw_envelope_addr(HDR_FROM, &msg->env->from);
 #ifdef USE_NNTP
   if (!OptNewsSend)
   {
 #endif
-    draw_envelope_addr(HDR_TO, msg->env->to);
-    draw_envelope_addr(HDR_CC, msg->env->cc);
-    draw_envelope_addr(HDR_BCC, msg->env->bcc);
+    draw_envelope_addr(HDR_TO, &msg->env->to);
+    draw_envelope_addr(HDR_CC, &msg->env->cc);
+    draw_envelope_addr(HDR_BCC, &msg->env->bcc);
 #ifdef USE_NNTP
   }
   else
@@ -488,7 +488,7 @@ static void draw_envelope(struct Email *msg, char *fcc)
   NORMAL_COLOR;
   mutt_paddstr(W, NONULL(msg->env->subject));
 
-  draw_envelope_addr(HDR_REPLYTO, msg->env->reply_to);
+  draw_envelope_addr(HDR_REPLYTO, &msg->env->reply_to);
 
   SET_COLOR(MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw(MuttIndexWindow, HDR_FCC, 0, "%*s",
@@ -513,23 +513,23 @@ static void draw_envelope(struct Email *msg, char *fcc)
 /**
  * edit_address_list - Let the user edit the address list
  * @param[in]     line Index into the Prompts lists
- * @param[in,out] addr Address list to edit
+ * @param[in,out] al   AddressList to edit
  */
-static void edit_address_list(int line, struct Address **addr)
+static void edit_address_list(int line, struct AddressList *al)
 {
   char buf[8192] = { 0 }; /* needs to be large for alias expansion */
   char *err = NULL;
 
-  mutt_addrlist_to_local(*addr);
-  mutt_addr_write(buf, sizeof(buf), *addr, false);
+  mutt_addresslist_to_local(al);
+  mutt_addresslist_write(buf, sizeof(buf), al, false);
   if (mutt_get_field(_(Prompts[line]), buf, sizeof(buf), MUTT_ALIAS) == 0)
   {
-    mutt_addr_free(addr);
-    *addr = mutt_addr_parse_list2(*addr, buf);
-    *addr = mutt_expand_aliases(*addr);
+    mutt_addresslist_free_all(al);
+    mutt_addresslist_parse2(al, buf);
+    mutt_expand_aliases(al);
   }
 
-  if (mutt_addrlist_to_intl(*addr, &err) != 0)
+  if (mutt_addresslist_to_intl(al, &err) != 0)
   {
     mutt_error(_("Bad IDN: '%s'"), err);
     mutt_refresh();
@@ -538,7 +538,7 @@ static void edit_address_list(int line, struct Address **addr)
 
   /* redraw the expanded list so the user can see the result */
   buf[0] = '\0';
-  mutt_addr_write(buf, sizeof(buf), *addr, true);
+  mutt_addresslist_write(buf, sizeof(buf), al, true);
   mutt_window_move(MuttIndexWindow, line, HDR_XOFFSET);
   mutt_paddstr(W, buf);
 }

@@ -649,12 +649,12 @@ int main(int argc, char *argv[], char *envp[])
     struct ListNode *np = NULL;
     STAILQ_FOREACH(np, &bcc_list, entries)
     {
-      msg->env->bcc = mutt_addr_parse_list(msg->env->bcc, np->data);
+      mutt_addresslist_parse(&msg->env->bcc, np->data);
     }
 
     STAILQ_FOREACH(np, &cc_list, entries)
     {
-      msg->env->cc = mutt_addr_parse_list(msg->env->cc, np->data);
+      mutt_addresslist_parse(&msg->env->cc, np->data);
     }
 
     mutt_list_free(&bcc_list);
@@ -869,10 +869,11 @@ int main(int argc, char *argv[], char *envp[])
         }
       }
       else
-        msg->env->to = mutt_addr_parse_list(msg->env->to, argv[i]);
+        mutt_addresslist_parse(&msg->env->to, argv[i]);
     }
 
-    if (!draft_file && C_Autoedit && !msg->env->to && !msg->env->cc)
+    if (!draft_file && C_Autoedit && TAILQ_EMPTY(&msg->env->to) &&
+        TAILQ_EMPTY(&msg->env->cc))
     {
       mutt_error(_("No recipients specified"));
       goto main_curses; // TEST26: neomutt -s test (with autoedit=yes)
@@ -1003,9 +1004,9 @@ int main(int argc, char *argv[], char *envp[])
           }
         }
 
-        mutt_addr_append(&msg->env->to, opts_env->to, false);
-        mutt_addr_append(&msg->env->cc, opts_env->cc, false);
-        mutt_addr_append(&msg->env->bcc, opts_env->bcc, false);
+        mutt_addresslist_copy(&msg->env->to, &opts_env->to, false);
+        mutt_addresslist_copy(&msg->env->cc, &opts_env->cc, false);
+        mutt_addresslist_copy(&msg->env->bcc, &opts_env->bcc, false);
         if (opts_env->subject)
           mutt_str_replace(&msg->env->subject, opts_env->subject);
 
