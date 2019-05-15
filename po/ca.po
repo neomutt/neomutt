@@ -3,7 +3,7 @@
 # Copyright (c) 2001-2004, 2006-2009, 2013-2016 NeoMutt project.
 # This file is distributed under the same license as the NeoMutt package.
 #
-# Ivan Vilata i Balaguer <ivan@selidor.net>, 2001-2004, 2006-2009, 2013-2018
+# Ivan Vilata i Balaguer <ivan@selidor.net>, 2001-2004, 2006-2009, 2013-2019
 #
 # Sóc Ivan, aquestes són les convencions que adopte per a la 1.5.22:
 #
@@ -54,8 +54,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2019-05-11 10:46+0100\n"
-"PO-Revision-Date: 2017-02-18 01:24+0100\n"
+"POT-Creation-Date: 2019-05-10 09:04-0700\n"
+"PO-Revision-Date: 2019-05-15 01:16-0400\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
 "Language: ca\n"
@@ -648,7 +648,7 @@ msgstr "Respostes a: "
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:151 compose.c:1054
 msgid "Fcc: "
-msgstr "Còpia a fitxer: "
+msgstr "Còpia a bústia: "
 
 # Ho deixe tal qual perquè és curt i a les altres cadenes traduïdes apareix «Mixmaster».  ivb
 #. L10N: "Mix" refers to the MixMaster chain for anonymous email
@@ -1177,9 +1177,8 @@ msgid "SHA1 Fingerprint: %s"
 msgstr "Empremta digital SHA1: %s"
 
 #: conn/ssl.c:930 conn/ssl.c:933 conn/ssl_gnutls.c:608 conn/ssl_gnutls.c:610
-#, fuzzy
 msgid "SHA256 Fingerprint: "
-msgstr "Empremta digital SHA256: %s"
+msgstr "Empremta digital SHA256: "
 
 #: conn/ssl.c:937 conn/ssl_gnutls.c:649
 #, c-format
@@ -1253,7 +1252,7 @@ msgstr "No s’ha pogut crear el context SSL."
 
 #: conn/ssl.c:1296
 msgid "Warning: error enabling ssl_verify_partial_chains"
-msgstr "Avís: Error en habilitar «ssl_verify_partial_chains»."
+msgstr "Avís: Error en habilitar $ssl_verify_partial_chains."
 
 #: conn/ssl_gnutls.c:135 conn/ssl_gnutls.c:763 conn/ssl_gnutls.c:772
 msgid "Unable to get certificate from peer"
@@ -1423,7 +1422,7 @@ msgstr ""
 "~r FITXER              Llegeix un FITXER a l’editor.\n"
 "~t USUARIS             Afegeix els USUARIS al camp «To:».\n"
 "~u                     Retorna a la línia anterior.\n"
-"~v                     Edita el missatge amb l’editor $VISUAL.\n"
+"~v                     Edita el missatge amb l’editor $visual.\n"
 "~w FITXER              Escriu el missatge al FITXER.\n"
 "~x                     Avorta els canvis i abandona l’editor.\n"
 "~?                     Mostra aquest missatge.\n"
@@ -1734,7 +1733,7 @@ msgstr "[-- Açò és una adjunció. (Useu «%3$s» per a veure aquesta part.) -
 #: handler.c:1700
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr "[-- No es pot mostrar «%s/%s». (Useu «%s» per a veure aquesta part.) --]\n"
+msgstr "[-- No es pot mostrar «%s/%s». (Empreu «%s» per a veure aquesta part.) --]\n"
 
 #: handler.c:1707
 #, fuzzy
@@ -1880,7 +1879,7 @@ msgstr "L’entrada ha fallat"
 #: imap/auth_oauth.c:64 pop/pop_auth.c:347 smtp.c:515
 #, fuzzy
 msgid "Authenticating (OAUTHBEARER)..."
-msgstr "S’està autenticant (SASL)…"
+msgstr "S’està autenticant (OAUTHBEARER)…"
 
 #: imap/auth_oauth.c:96
 #, fuzzy
@@ -2075,7 +2074,7 @@ msgstr "No vàlid    "
 #. L10N: This prompt is made if the user hits Ctrl-C when opening an IMAP mailbox
 #: imap/message.c:519
 msgid "Abort download and close mailbox?"
-msgstr ""
+msgstr "Voleu avortar la descàrrega i tancar la bústia?"
 
 #: imap/message.c:549 mutt/memory.c:58 mutt/memory.c:65 mutt/memory.c:105
 #: mutt/memory.c:141 mutt/string.c:1242 mx.c:1109
@@ -2089,9 +2088,8 @@ msgstr "S’està avaluant la memòria cau…"
 
 #. L10N: Fetching IMAP flag changes, using the CONDSTORE extension
 #: imap/message.c:946
-#, fuzzy
 msgid "Fetching flag updates..."
-msgstr "S’estan recollint les capçaleres dels missatges…"
+msgstr "S’estan recollint els canvis als senyaladors…"
 
 #: imap/message.c:1063
 #, fuzzy
@@ -3256,17 +3254,16 @@ msgstr "Contrasenya per a «%s@%s»: "
 #. $*_oauth_refresh_command defined. So the message does not mean "None of
 #. your $*_oauth_refresh_command's are defined."
 #: mutt_account.c:382
-#, fuzzy
 msgid "No OAUTH refresh command defined"
-msgstr "No s’ha definit cap ordre de consulta"
+msgstr "No s’ha definit l’ordre de refresc OAUTH."
 
 #: mutt_account.c:389
 msgid "Unable to run refresh command"
-msgstr ""
+msgstr "No s’ha pogut executar l’ordre de refresc."
 
 #: mutt_account.c:399
 msgid "Command returned empty string"
-msgstr ""
+msgstr "L’ordre ha retornat la cadena buida."
 
 #: mutt_attach.c:142 mutt_attach.c:279 mutt_attach.c:464 mutt_attach.c:1063
 msgid "Can't match 'nametemplate', continue?"
@@ -3390,11 +3387,12 @@ msgstr "El missatge pare no és visible en aquesta vista limitada"
 msgid "Reading from %s interrupted..."
 msgstr "S’ha interromput la cerca."
 
+# Condició d’error.  ivb
 #. L10N: Displayed if a mailbox sync fails
 #: mx.c:434
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to write %s"
-msgstr "No s’ha pogut adjuntar «%s»."
+msgstr "No s’ha pogut escriure «%s»."
 
 #. L10N: Although we know the precise number of messages, we do not show it to the user.
 #. So feel free to use a "generic plural" as plural translation if your language has one.
@@ -3604,7 +3602,7 @@ msgstr ""
 # S’ha activat «crypt_use_gpgme», però NeoMutt no s’ha compilat per a emprar GPGME.
 #: ncrypt/cryptglue.c:114
 msgid "\"crypt_use_gpgme\" set but not built with GPGME support"
-msgstr "S’ha activat «crypt_use_gpgme», però aquest NeoMutt no pot emprar GPGME"
+msgstr "S’ha activat $crypt_use_gpgme, però aquest Mutt no pot emprar GPGME."
 
 #: ncrypt/cryptglue.c:142
 msgid "Invoking S/MIME..."
@@ -3758,11 +3756,12 @@ msgstr "també conegut com a: "
 msgid "KeyID "
 msgstr "identificador "
 
+# No és una frase completa.  ivb
 #. L10N: You will see this message in place of "KeyID "
 #. if the S/MIME key has no ID. This is quite an error.
 #: ncrypt/crypt_gpgme.c:1836
 msgid "no signature fingerprint available"
-msgstr ""
+msgstr "sense empremta de signatura"
 
 # Es refereix a una signatura.  ivb
 #: ncrypt/crypt_gpgme.c:1845 ncrypt/crypt_gpgme.c:1850
@@ -3831,9 +3830,9 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2759
-#, fuzzy, c-format
-msgid "Error extracting key: %s"
-msgstr "Error en exportar la clau: %s"
+#, c-format
+msgid "error importing key: %s\n"
+msgstr "Error en importar la clau: %s\n"
 
 #: ncrypt/crypt_gpgme.c:2999
 #, c-format
@@ -4313,9 +4312,8 @@ msgstr ""
 #. (not encrypting) something and (2) it is a plaintext. So the
 #. message does not mean "You failed to encrypt the message."
 #: ncrypt/pgp.c:732
-#, fuzzy
 msgid "PGP message is not encrypted"
-msgstr "S’ha pogut desxifrar amb èxit el missatge PGP"
+msgstr "El missatge PGP no es troba xifrat"
 
 #: ncrypt/pgp.c:973
 msgid "Internal error.  Please submit a bug report."
@@ -4586,7 +4584,7 @@ msgstr "OpenSSL no ha produit cap eixida…"
 # Encara no s’ha signat.  ivb
 #: ncrypt/smime.c:1705
 msgid "Can't sign: No key specified. Use Sign As."
-msgstr "No es pot signar: no s’ha indicat cap clau.  Useu «signa com a»."
+msgstr "No es pot signar: no s’ha indicat cap clau.  Empreu «signa com a»."
 
 #: ncrypt/smime.c:1754
 msgid "Can't open OpenSSL subprocess"
@@ -4936,9 +4934,8 @@ msgid "check mailboxes for new mail"
 msgstr "Comprova si hi ha correu nou a les bústies."
 
 #: opcodes.h:44
-#, fuzzy
 msgid "calculate message statistics for all mailboxes"
-msgstr "Desa un missatge o adjunció en una bústia o fitxer."
+msgstr "Calcula estadístiques dels missatges de totes les bústies."
 
 #: opcodes.h:45
 #, fuzzy
@@ -5086,9 +5083,11 @@ msgid "toggle whether to delete file after sending it"
 msgstr "Estableix si cal esborrar un fitxer una volta enviat."
 
 #: opcodes.h:79
-#, fuzzy
 msgid "compose new message to the current message sender"
-msgstr "Redacta un nou missatge de correu."
+msgstr "Redacta un nou missatge adreçat al remitent de l’actual."
+
+msgid "reply to all recipients preserving To/Cc"
+msgstr "Respon a tots els destinataris, mantenint els camps «To» (destinatari) i «Cc» (en còpia)."
 
 #: opcodes.h:80
 msgid "update an attachment's encoding info"
@@ -5145,11 +5144,6 @@ msgstr "Esborra tots els missatges d’un subfil."
 #: opcodes.h:93
 msgid "delete all messages in thread"
 msgstr "Esborra tots els missatges d’un fil."
-
-#: opcodes.h:94
-#, fuzzy
-msgid "descend into a directory"
-msgstr "«%s» no és un directori"
 
 #: opcodes.h:95
 msgid "display full address of sender"
@@ -5341,11 +5335,6 @@ msgstr "Vos trobeu sobre el primer missatge."
 #, fuzzy
 msgid "go to parent directory"
 msgstr "«%s» no és un directori."
-
-#: opcodes.h:140
-#, fuzzy
-msgid "reply to all recipients preserving To/Cc"
-msgstr "Respon a tots els destinataris."
 
 #: opcodes.h:141
 msgid "reply to all recipients"
@@ -6229,9 +6218,8 @@ msgid "Command USER is not supported by server"
 msgstr "El servidor no permet l’ordre «USER»"
 
 #: pop/pop_auth.c:387
-#, fuzzy
 msgid "Authentication failed"
-msgstr "L’autenticació SASL ha fallat."
+msgstr "L’autenticació ha fallat."
 
 #: pop/pop_lib.c:77
 #, c-format
@@ -6456,9 +6444,8 @@ msgstr "Encapsular amb MIME les adjuncions marcades no descodificables?"
 #. L10N: You will see this error message if you invoke <compose-to-sender>
 #. when you are on a normal attachment.
 #: recvcmd.c:1063
-#, fuzzy
 msgid "You may only compose to sender with message/rfc822 parts"
-msgstr "Només es poden redirigir parts de tipus «message/rfc822»"
+msgstr "Només es pot redactar al remitent d’una part de tipus «message/rfc822»."
 
 #: remailer.c:193
 msgid "<random>"
@@ -6519,7 +6506,7 @@ msgstr "No es poden emprar les capçaleres «Cc» i «Bcc» amb Mixmaster"
 
 #: remailer.c:804
 msgid "Please set the hostname variable to a proper value when using mixmaster"
-msgstr "Per favor, establiu un valor adequat per a «hostname» quan useu Mixmaster."
+msgstr "Per favor, establiu un valor adequat per a «hostname» quan empreu Mixmaster."
 
 #: remailer.c:847
 #, c-format
@@ -6560,18 +6547,43 @@ msgstr "No hi ha assumpte; voleu avortar el missatge?"
 msgid "No subject, aborting"
 msgstr "S’avorta el missatge sense assumpte"
 
-#. L10N:
-#. This is the prompt for $forward_attachments.
-#. When inline forwarding ($mime_forward answered "no"), this prompts
-#. whether to add non-decodable attachments from the original email.
-#. Text/plain parts and the like will already be included in the
-#. message contents, but other attachment, such as PDF files, will also
-#. be added as attachments to the new mail, if this is answered yes.
-#.
-#: send.c:591
-#, fuzzy
 msgid "Forward attachments?"
-msgstr "Voleu reenviar com a adjuncions?"
+msgstr "Voleu reenviar també les adjuncions?"
+
+msgid "Fcc to an IMAP mailbox is not supported in batch mode"
+msgstr "No es permet la còpia a una bústia IMAP en el mode per lots."
+
+msgid "Save attachments in Fcc?"
+msgstr "Voleu desar les adjuncions a la bústia de còpia?"
+
+# Abreujat!  ivb
+#   La còpia a bústia ha fallat; voleu (r)eintentar, (c)anviar de bústia, (s)altar?
+#. L10N:
+#. Called when saving to $record or Fcc failed after sending.
+#. (r)etry tries the same mailbox again.
+#. alternate (m)ailbox prompts for a different mailbox to try.
+#. (s)kip aborts saving.
+#.
+msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip? "
+msgstr "La còpia a bústia ha fallat; (r)eintentar, (c)anviar de bústia, (s)altar? "
+
+#. L10N:
+#. These correspond to the "Fcc failed" multi-choice prompt
+#. (r)etry, alternate (m)ailbox, or (s)kip.
+#. Any similarity to famous leaders of the FSF is coincidental.
+#.
+msgid "rms"
+msgstr "rcs"
+
+#. L10N:
+#. This is the prompt to enter an "alternate (m)ailbox" when the
+#. initial Fcc fails.
+#.
+msgid "Fcc mailbox"
+msgstr "Còpia a bústia"
+
+msgid "Cannot postpone.  $postponed is unset"
+msgstr "No es pot postposar; $postponed no està establerta."
 
 # ivb (2001/12/07)
 # ivb  El primer «%s» és una adreça de correu i el segon potser «,...».
@@ -6608,37 +6620,6 @@ msgstr "Voleu reenviar com a adjunció?"
 #: send.c:1151
 msgid "Preparing forwarded message..."
 msgstr "S’està preparant el missatge a reenviar…"
-
-#: send.c:1612
-#, fuzzy
-msgid "Fcc to an IMAP mailbox is not supported in batch mode"
-msgstr "%c: No es permet en aquest mode."
-
-#: send.c:1639 send.c:1665
-msgid "Save attachments in Fcc?"
-msgstr "Voleu desar les adjuncions al fitxer de còpia?"
-
-#. L10N: Called when saving to $record or Fcc failed after sending.
-#. (r)etry tries the same mailbox again.
-#. alternate (m)ailbox prompts for a different mailbox to try.
-#. (s)kip aborts saving.
-#: send.c:1686
-msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
-msgstr ""
-
-#. L10N: These correspond to the "Fcc failed" multi-choice prompt
-#. (r)etry, alternate (m)ailbox, or (s)kip.
-#. Any similarity to famous leaders of the FSF is coincidental.
-#: send.c:1690
-msgid "rms"
-msgstr ""
-
-#. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
-#. initial Fcc fails.
-#: send.c:1696
-#, fuzzy
-msgid "Fcc mailbox"
-msgstr "No hi ha cap bústia activa.\n"
 
 #: send.c:1758
 msgid "Can't postpone.  $postponed is unset"
@@ -6778,7 +6759,7 @@ msgstr "L’URL d’SMTP no és vàlid: %s"
 #: smtp.c:618
 #, c-format
 msgid "SMTP authentication method %s requires SASL"
-msgstr ""
+msgstr "El mètode d’autenticació %s per a SMTP necessita SASL."
 
 #: smtp.c:625
 #, c-format
@@ -6879,9 +6860,9 @@ msgid ""
 "under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
 "Copyright © 1996-2016 Michael R. Elkins i d’altres.\n"
-"NeoMutt s’ofereix SENSE CAP GARANTIA; useu «neomutt -vv» per a obtenir-ne més\n"
-"detalls.  NeoMutt és programari lliure, i podeu, si voleu, redistribuir-lo sota\n"
-"certes condicions; useu «neomutt -vv» per a obtenir-ne més detalls.\n"
+"NeoMutt s’ofereix SENSE CAP GARANTIA; empreu «mutt -vv» per a obtenir‐ne més\n"
+"detalls.  NeoMutt és programari lliure, i podeu, si voleu, redistribuir‐lo sota\n"
+"certes condicions; empreu «mutt -vv» per a obtenir‐ne més detalls.\n"
 
 #: version.c:418
 #, fuzzy
@@ -6891,3 +6872,6 @@ msgstr "Opcions de compilació:"
 #: version.c:421
 msgid "Compile options:"
 msgstr "Opcions de compilació:"
+
+msgid "descend into a directory"
+msgstr "Entra en un directori."
