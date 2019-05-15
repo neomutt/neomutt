@@ -34,6 +34,7 @@
 
 #include "config.h"
 #include <ctype.h>
+#include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -285,7 +286,12 @@ void rfc2231_decode_parameters(struct ParameterList *p)
       encoded = (*t == '*');
       *t = '\0';
 
-      mutt_str_atoi(s, &index);
+      /* RFC2231 says that the index starts at 0 and increments by 1,
+       * thus an overflow should never occur in a valid message, thus
+       * the value INT_MAX in case of overflow does not really matter
+       * (the goal is just to avoid undefined behaviour). */
+      if (mutt_str_atoi(s, &index) != 0)
+        index = INT_MAX;
 
       conttmp = new_parameter();
       conttmp->attribute = np->attribute;
