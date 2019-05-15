@@ -726,7 +726,7 @@ void nntp_hcache_update(struct NntpMboxData *mdata, header_cache_t *hc)
   if (!hc)
     return;
 
-  char buf[16];
+  char buf[32];
   bool old = false;
   anum_t first = 0, last = 0;
 

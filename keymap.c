@@ -729,7 +729,7 @@ static void create_bindings(const struct Binding *map, int menu)
  */
 static const char *km_keyname(int c)
 {
-  static char buf[10];
+  static char buf[35];
 
   const char *p = mutt_map_get_name(c, KeyNames);
   if (p)
