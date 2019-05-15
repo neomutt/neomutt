@@ -1166,7 +1166,8 @@ static int menu_search(struct Menu *menu, int op)
 
   if (!(search_buf && *search_buf) || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
-    mutt_str_strfcpy(buf, search_buf && *search_buf ? search_buf : "", sizeof(buf));
+    mutt_str_strfcpy(buf, search_buf && (search_buf[0] != '\0') ? search_buf : "",
+                     sizeof(buf));
     if ((mutt_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
                             _("Search for: ") :
                             _("Reverse search for: "),
@@ -1282,7 +1283,10 @@ static int menu_dialog_dokey(struct Menu *menu, int *ip)
   }
   else
   {
-    mutt_unget_event(ch.op ? 0 : ch.ch, ch.op ? ch.op : 0);
+    if (ch.op == OP_NULL)
+      mutt_unget_event(ch.ch, 0);
+    else
+      mutt_unget_event(0, ch.op);
     return -1;
   }
 }

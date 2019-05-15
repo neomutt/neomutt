@@ -1932,7 +1932,7 @@ static bool match_mime_content_type(const struct Pattern *pat,
  */
 static void set_pattern_cache_value(int *cache_entry, int value)
 {
-  *cache_entry = value ? 2 : 1;
+  *cache_entry = (value != 0) ? 2 : 1;
 }
 
 /**
@@ -2533,7 +2533,7 @@ int mutt_search_command(int cur, int op)
   if (!*LastSearch || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
     char buf[256];
-    mutt_str_strfcpy(buf, *LastSearch ? LastSearch : "", sizeof(buf));
+    mutt_str_strfcpy(buf, (LastSearch[0] != '\0') ? LastSearch : "", sizeof(buf));
     if ((mutt_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
                             _("Search for: ") :
                             _("Reverse search for: "),

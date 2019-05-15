@@ -330,7 +330,7 @@ static void decode_quoted(struct State *s, long len, bool istext, iconv_t cd)
 
     /* inspect the last character we read so we can tell if we got the
      * entire line.  */
-    const int last = linelen ? line[linelen - 1] : 0;
+    const int last = (linelen != 0) ? line[linelen - 1] : 0;
 
     /* chop trailing whitespace if we got the full line */
     if (last == '\n')

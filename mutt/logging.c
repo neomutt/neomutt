@@ -424,7 +424,7 @@ int log_disp_queue(time_t stamp, const char *file, int line,
   }
 
   struct LogLine *ll = mutt_mem_calloc(1, sizeof(*ll));
-  ll->time = stamp ? stamp : time(NULL);
+  ll->time = (stamp != 0) ? stamp : time(NULL);
   ll->file = file;
   ll->line = line;
   ll->function = function;

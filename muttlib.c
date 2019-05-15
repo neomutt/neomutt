@@ -1174,7 +1174,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
             /* try to consume as many columns as we can, if we don't have
              * memory for that, use as much memory as possible */
             if (wlen + (pad * pl) + len > buflen)
-              pad = (buflen > wlen + len) ? ((buflen - wlen - len) / pl) : 0;
+              pad = (buflen > (wlen + len)) ? ((buflen - wlen - len) / pl) : 0;
             else
             {
               /* Add pre-spacing to make multi-column pad characters and

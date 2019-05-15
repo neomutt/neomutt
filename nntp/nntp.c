@@ -420,7 +420,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
 
       while (true)
       {
-        if (buflen - off < 1024)
+        if ((buflen - off) < 1024)
         {
           buflen *= 2;
           mutt_mem_realloc(&adata->overview_fmt, buflen);

@@ -1314,7 +1314,7 @@ static int get_micalg(gpgme_ctx_t ctx, int use_smime, char *buf, size_t buflen)
     }
   }
 
-  return (*buf != '\0') ? 0 : -1;
+  return (buf[0] != '\0') ? 0 : -1;
 }
 
 /**

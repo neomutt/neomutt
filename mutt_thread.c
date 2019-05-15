@@ -301,7 +301,7 @@ void mutt_draw_tree(struct Context *ctx)
   {
     if (depth)
     {
-      myarrow = arrow + (depth - start_depth - (start_depth ? 0 : 1)) * width;
+      myarrow = arrow + (depth - start_depth - ((start_depth != 0) ? 0 : 1)) * width;
       if (depth && (start_depth == depth))
         myarrow[0] = nextdisp ? MUTT_TREE_LTEE : corner;
       else if (parent->message && !C_HideLimited)

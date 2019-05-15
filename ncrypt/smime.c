@@ -1582,7 +1582,7 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
     {
       off = mutt_str_strlen(certfile);
       snprintf(certfile + off, sizeof(certfile) - off, "%s%s/%s",
-               off ? " " : "", NONULL(C_SmimeCertificates), cert_start);
+               (off != 0) ? " " : "", NONULL(C_SmimeCertificates), cert_start);
     }
     if (cert_end)
       *cert_end++ = ' ';

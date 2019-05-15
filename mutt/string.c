@@ -154,7 +154,7 @@ typedef bool (*char_cmp)(char, char);
  */
 static char_cmp get_char_cmp(enum CaseSensitivity cs)
 {
-  return cs == CASE_IGNORE ? char_cmp_lower : char_cmp_identity;
+  return (cs == CASE_IGNORE) ? char_cmp_lower : char_cmp_identity;
 }
 
 /**

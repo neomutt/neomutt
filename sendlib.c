@@ -802,7 +802,7 @@ static size_t convert_file_to(FILE *fp, const char *fromcode, int ncodes,
     const char *ib = bufi;
     char *ob = bufu;
     size_t obl = sizeof(bufu);
-    n = iconv(cd1, (ICONV_CONST char **) (ibl ? &ib : 0), &ibl, &ob, &obl);
+    n = iconv(cd1, (ICONV_CONST char **) ((ibl != 0) ? &ib : 0), &ibl, &ob, &obl);
     /* assert(n == (size_t)(-1) || !n); */
     if ((n == (size_t)(-1)) && (((errno != EINVAL) && (errno != E2BIG)) || (ib == bufi)))
     {
@@ -1904,7 +1904,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
 
   if (tag && *tag && (fprintf(fp, "%s%s: ", NONULL(pfx), tag) < 0))
     return -1;
-  col = mutt_str_strlen(tag) + ((tag && *tag) ? 2 : 0) + mutt_str_strlen(pfx);
+  col = mutt_str_strlen(tag) + ((tag && (tag[0] != '\0')) ? 2 : 0) + mutt_str_strlen(pfx);
 
   while (p && *p)
   {

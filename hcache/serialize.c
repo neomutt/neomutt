@@ -241,7 +241,7 @@ void serial_restore_address(struct Address **a, const unsigned char *d, int *off
     serial_restore_char(&(*a)->personal, d, off, convert);
     serial_restore_char(&(*a)->mailbox, d, off, false);
     serial_restore_int(&g, d, off);
-    (*a)->group = g ? true : false;
+    (*a)->group = (g != 0) ? true : false;
     a = &(*a)->next;
     counter--;
   }

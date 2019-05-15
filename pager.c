@@ -1055,8 +1055,9 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
       null_rx = false;
       STAILQ_FOREACH(color_line, head, entries)
       {
-        if (!color_line->stop_matching && (regexec(&color_line->regex, buf + offset, 1, pmatch,
-                                                   (offset ? REG_NOTBOL : 0)) == 0))
+        if (!color_line->stop_matching &&
+            (regexec(&color_line->regex, buf + offset, 1, pmatch,
+                     ((offset != 0) ? REG_NOTBOL : 0)) == 0))
         {
           if (pmatch[0].rm_eo != pmatch[0].rm_so)
           {
@@ -1133,7 +1134,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
       STAILQ_FOREACH(color_line, &ColorAttachList, entries)
       {
         if (regexec(&color_line->regex, buf + offset, 1, pmatch,
-                    (offset ? REG_NOTBOL : 0)) == 0)
+                    ((offset != 0) ? REG_NOTBOL : 0)) == 0)
         {
           if (pmatch[0].rm_eo != pmatch[0].rm_so)
           {

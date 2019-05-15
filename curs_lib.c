@@ -675,7 +675,10 @@ int mutt_buffer_enter_fname_full(const char *prompt, struct Buffer *fname,
     char *pc = mutt_mem_malloc(mutt_str_strlen(prompt) + 3);
 
     sprintf(pc, "%s: ", prompt);
-    mutt_unget_event(ch.op ? 0 : ch.ch, ch.op ? ch.op : 0);
+    if (ch.op == OP_NULL)
+      mutt_unget_event(ch.ch, 0);
+    else
+      mutt_unget_event(0, ch.op);
 
     mutt_buffer_increase_size(fname, 1024);
     if (mutt_get_field_full(pc, fname->data, fname->dsize,

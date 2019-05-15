@@ -844,7 +844,7 @@ static int append_message(struct Mailbox *dest, FILE *fp_in, struct Mailbox *src
     return -1;
   if ((dest->magic == MUTT_MBOX) || (dest->magic == MUTT_MMDF))
     chflags |= CH_FROM | CH_FORCE_FROM;
-  chflags |= (dest->magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
+  chflags |= ((dest->magic == MUTT_MAILDIR) ? CH_NOSTATUS : CH_UPDATE);
   rc = mutt_copy_message_fp(msg->fp, fp_in, e, cmflags, chflags);
   if (mx_msg_commit(dest, msg) != 0)
     rc = -1;
