@@ -1424,9 +1424,9 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
 
   if (C_CheckMboxSize)
   {
-    struct Mailbox *tmp = mutt_find_mailbox(mutt_b2s(m->pathbuf));
+    struct Mailbox *tmp = mutt_mailbox_find(mutt_b2s(m->pathbuf));
     if (tmp && !tmp->has_new)
-      mutt_update_mailbox(tmp);
+      mutt_mailbox_update(tmp);
   }
 
   return 0; /* signal success */

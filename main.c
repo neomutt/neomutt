@@ -1135,7 +1135,7 @@ int main(int argc, char *argv[], char *envp[])
         goto main_curses; // TEST37: neomutt -Z (no new mail)
       }
       mutt_buffer_reset(folder);
-      mutt_buffer_mailbox(Context ? Context->mailbox : NULL, folder);
+      mutt_mailbox_next_buffer(Context ? Context->mailbox : NULL, folder);
 #ifdef USE_IMAP
       C_ImapPassive = passive;
 #endif
@@ -1170,7 +1170,7 @@ int main(int argc, char *argv[], char *envp[])
       if (C_Spoolfile)
       {
         // Check if C_Spoolfile corresponds a mailboxes' description.
-        struct Mailbox *desc_m = mutt_find_mailbox_desc(C_Spoolfile);
+        struct Mailbox *desc_m = mutt_mailbox_find_desc(C_Spoolfile);
         if (desc_m)
           mutt_buffer_strcpy(folder, desc_m->realpath);
         else

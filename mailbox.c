@@ -223,9 +223,9 @@ void mutt_mailbox_cleanup(const char *path, struct stat *st)
 
   if (C_CheckMboxSize)
   {
-    struct Mailbox *m = mutt_find_mailbox(path);
+    struct Mailbox *m = mutt_mailbox_find(path);
     if (m && !m->has_new)
-      mutt_update_mailbox(m);
+      mutt_mailbox_update(m);
   }
   else
   {
@@ -260,11 +260,11 @@ void mutt_mailbox_cleanup(const char *path, struct stat *st)
 }
 
 /**
- * mutt_find_mailbox - Find the mailbox with a given path
+ * mutt_mailbox_find - Find the mailbox with a given path
  * @param path Path to match
  * @retval ptr Matching Mailbox
  */
-struct Mailbox *mutt_find_mailbox(const char *path)
+struct Mailbox *mutt_mailbox_find(const char *path)
 {
   if (!path)
     return NULL;
@@ -289,12 +289,12 @@ struct Mailbox *mutt_find_mailbox(const char *path)
 }
 
 /**
- * mutt_find_mailbox_desc - Find the mailbox with a given description
+ * mutt_mailbox_find_desc - Find the mailbox with a given description
  * @param desc Description to match
  * @retval ptr Matching Mailbox
  * @retval NULL No matching mailbox found
  */
-struct Mailbox *mutt_find_mailbox_desc(const char *desc)
+struct Mailbox *mutt_mailbox_find_desc(const char *desc)
 {
   if (!desc)
     return NULL;
@@ -310,10 +310,10 @@ struct Mailbox *mutt_find_mailbox_desc(const char *desc)
 }
 
 /**
- * mutt_update_mailbox - Get the mailbox's current size
+ * mutt_mailbox_update - Get the mailbox's current size
  * @param m Mailbox to check
  */
-void mutt_update_mailbox(struct Mailbox *m)
+void mutt_mailbox_update(struct Mailbox *m)
 {
   struct stat sb;
 
@@ -461,10 +461,10 @@ bool mutt_mailbox_list(void)
 }
 
 /**
- * mutt_mailbox_setnotified - Note when the user was last notified of new mail
+ * mutt_mailbox_set_notified - Note when the user was last notified of new mail
  * @param m Mailbox
  */
-void mutt_mailbox_setnotified(struct Mailbox *m)
+void mutt_mailbox_set_notified(struct Mailbox *m)
 {
   if (!m)
     return;
@@ -493,13 +493,13 @@ bool mutt_mailbox_notify(struct Mailbox *m_cur)
 }
 
 /**
- * mutt_buffer_mailbox - incoming folders completion routine
+ * mutt_mailbox_next_buffer - incoming folders completion routine
  * @param m_cur Current Mailbox
  * @param s     Buffer containing name of current mailbox
  *
  * Given a folder name, find the next incoming folder with new mail.
  */
-void mutt_buffer_mailbox(struct Mailbox *m_cur, struct Buffer *s)
+void mutt_mailbox_next_buffer(struct Mailbox *m_cur, struct Buffer *s)
 {
   mutt_buffer_expand_path(s);
 
@@ -514,7 +514,7 @@ void mutt_buffer_mailbox(struct Mailbox *m_cur, struct Buffer *s)
         if (np->mailbox->magic == MUTT_NOTMUCH) /* only match real mailboxes */
           continue;
         mutt_buffer_expand_path(np->mailbox->pathbuf);
-        if ((found || pass) && np->mailbox->has_new)
+        if ((found || (pass > 0)) && np->mailbox->has_new)
         {
           mutt_buffer_strcpy(s, mutt_b2s(np->mailbox->pathbuf));
           mutt_buffer_pretty_mailbox(s);
@@ -533,19 +533,19 @@ void mutt_buffer_mailbox(struct Mailbox *m_cur, struct Buffer *s)
 }
 
 /**
- * mutt_mailbox - incoming folders completion routine
+ * mutt_mailbox_next - incoming folders completion routine
  * @param m_cur Current Mailbox
  * @param s     Buffer containing name of current mailbox
  * @param slen  Buffer length
  *
  * Given a folder name, find the next incoming folder with new mail.
  */
-void mutt_mailbox(struct Mailbox *m_cur, char *s, size_t slen)
+void mutt_mailbox_next(struct Mailbox *m_cur, char *s, size_t slen)
 {
   struct Buffer *s_buf = mutt_buffer_pool_get();
 
   mutt_buffer_addstr(s_buf, NONULL(s));
-  mutt_buffer_mailbox(m_cur, s_buf);
+  mutt_mailbox_next_buffer(m_cur, s_buf);
   mutt_str_strfcpy(s, mutt_b2s(s_buf), slen);
 
   mutt_buffer_pool_release(&s_buf);

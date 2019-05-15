@@ -77,6 +77,10 @@ typedef uint16_t AclFlags;          ///< Flags, e.g. #MUTT_ACL_ADMIN
 
 #define MUTT_ACL_ALL    ((1 << 11) - 1)
 
+/* force flags passed to mutt_mailbox_check() */
+#define MUTT_MAILBOX_CHECK_FORCE       (1 << 0)
+#define MUTT_MAILBOX_CHECK_FORCE_STATS (1 << 1)
+
 /**
  * struct Mailbox - A mailbox
  */
@@ -152,30 +156,20 @@ STAILQ_HEAD(MailboxList, MailboxNode);
 
 extern struct MailboxList AllMailboxes; ///< List of all Mailboxes
 
-struct Mailbox *mailbox_new(void);
-void            mailbox_free(struct Mailbox **ptr);
-
-struct Mailbox *mutt_find_mailbox(const char *path);
-struct Mailbox *mutt_find_mailbox_desc(const char *desc);
-void mutt_update_mailbox(struct Mailbox *m);
-
-void mutt_mailbox_cleanup(const char *path, struct stat *st);
-
-/** mark mailbox just left as already notified */
-void mutt_mailbox_setnotified(struct Mailbox *m);
-
-/* force flags passed to mutt_mailbox_check() */
-#define MUTT_MAILBOX_CHECK_FORCE       (1 << 0)
-#define MUTT_MAILBOX_CHECK_FORCE_STATS (1 << 1)
-
-void mutt_buffer_mailbox(struct Mailbox *m_cur, struct Buffer *s);
-void mutt_mailbox(struct Mailbox *m_cur, char *s, size_t slen);
-bool mutt_mailbox_list(void);
-int mutt_mailbox_check(struct Mailbox *m_cur, int force);
-bool mutt_mailbox_notify(struct Mailbox *m_cur);
-void mutt_mailbox_changed(struct Mailbox *m, enum MailboxNotification action);
-
-void mutt_mailbox_size_add(struct Mailbox *m, const struct Email *e);
-void mutt_mailbox_size_sub(struct Mailbox *m, const struct Email *e);
+void            mailbox_free             (struct Mailbox **ptr);
+struct Mailbox *mailbox_new              (void);
+void            mutt_mailbox_changed     (struct Mailbox *m, enum MailboxNotification action);
+int             mutt_mailbox_check       (struct Mailbox *m_cur, int force);
+void            mutt_mailbox_cleanup     (const char *path, struct stat *st);
+struct Mailbox *mutt_mailbox_find        (const char *path);
+struct Mailbox *mutt_mailbox_find_desc   (const char *desc);
+bool            mutt_mailbox_list        (void);
+void            mutt_mailbox_next_buffer (struct Mailbox *m_cur, struct Buffer *s);
+void            mutt_mailbox_next        (struct Mailbox *m_cur, char *s, size_t slen);
+bool            mutt_mailbox_notify      (struct Mailbox *m_cur);
+void            mutt_mailbox_set_notified(struct Mailbox *m);
+void            mutt_mailbox_size_add    (struct Mailbox *m, const struct Email *e);
+void            mutt_mailbox_size_sub    (struct Mailbox *m, const struct Email *e);
+void            mutt_mailbox_update      (struct Mailbox *m);
 
 #endif /* MUTT_MAILBOX_H */

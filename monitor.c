@@ -536,7 +536,7 @@ int mutt_monitor_remove(struct Mailbox *m)
     }
     else
     {
-      if (mutt_find_mailbox(Context->mailbox->realpath))
+      if (mutt_mailbox_find(Context->mailbox->realpath))
       {
         rc = 1;
         goto cleanup;
