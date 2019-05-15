@@ -156,7 +156,7 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
     {
       case '~':
       {
-        if ((*(s + 1) == '/') || (*(s + 1) == 0))
+        if ((s[1] == '/') || (s[1] == '\0'))
         {
           mutt_buffer_strcpy(p, HomeDir);
           tail = s + 1;
@@ -258,7 +258,7 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
 
       case '!':
       {
-        if (*(s + 1) == '!')
+        if (s[1] == '!')
         {
           mutt_buffer_strcpy(p, LastFolder);
           tail = s + 2;

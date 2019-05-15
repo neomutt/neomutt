@@ -457,23 +457,23 @@ SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, Securit
     return SEC_NO_FLAGS;
 
   p = mutt_str_skip_email_wsp(p);
-  for (; *p; p++)
+  for (; p[0] != '\0'; p++)
   {
-    switch (*p)
+    switch (p[0])
     {
       case 'c':
       case 'C':
         q = smime_cryptalg;
 
-        if (*(p + 1) == '<')
+        if (p[1] == '<')
         {
-          for (p += 2; *p && (*p != '>') &&
+          for (p += 2; (p[0] != '\0') && (p[0] != '>') &&
                        (q < (smime_cryptalg + sizeof(smime_cryptalg) - 1));
                *q++ = *p++)
           {
           }
 
-          if (*p != '>')
+          if (p[0] != '>')
           {
             mutt_error(_("Illegal S/MIME header"));
             return SEC_NO_FLAGS;
@@ -499,11 +499,11 @@ SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, Securit
        * to be able to recall old messages.  */
       case 'm':
       case 'M':
-        if (*(p + 1) == '<')
+        if (p[1] == '<')
         {
-          for (p += 2; *p && (*p != '>'); p++)
+          for (p += 2; (p[0] != '\0') && (p[0] != '>'); p++)
             ;
-          if (*p != '>')
+          if (p[0] != '>')
           {
             mutt_error(_("Illegal crypto header"));
             return SEC_NO_FLAGS;
@@ -522,21 +522,22 @@ SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, Securit
         flags |= SEC_SIGN;
         q = sign_as;
 
-        if (*(p + 1) == '<')
+        if (p[1] == '<')
         {
-          for (p += 2; *p && (*p != '>') && (q < (sign_as + sizeof(sign_as) - 1));
+          for (p += 2;
+               (p[0] != '\0') && (*p != '>') && (q < (sign_as + sizeof(sign_as) - 1));
                *q++ = *p++)
           {
           }
 
-          if (*p != '>')
+          if (p[0] != '>')
           {
             mutt_error(_("Illegal crypto header"));
             return SEC_NO_FLAGS;
           }
         }
 
-        *q = '\0';
+        q[0] = '\0';
         break;
 
       default:

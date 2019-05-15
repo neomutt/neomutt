@@ -1848,7 +1848,7 @@ void mutt_write_references(const struct ListHead *r, FILE *fp, size_t trim)
 static int print_val(FILE *fp, const char *pfx, const char *value,
                      CopyHeaderFlags chflags, size_t col)
 {
-  while (value && *value)
+  while (value && (value[0] != '\0'))
   {
     if (fputc(*value, fp) == EOF)
       return -1;
@@ -1862,13 +1862,13 @@ static int print_val(FILE *fp, const char *pfx, const char *value,
     }
     if (*value == '\n')
     {
-      if (*(value + 1) && pfx && *pfx && (fputs(pfx, fp) == EOF))
+      if ((value[1] != '\0') && pfx && (pfx[0] != '\0') && (fputs(pfx, fp) == EOF))
         return -1;
       /* for display, turn folding spaces into folding tabs */
-      if ((chflags & CH_DISPLAY) && ((*(value + 1) == ' ') || (*(value + 1) == '\t')))
+      if ((chflags & CH_DISPLAY) && ((value[1] == ' ') || (value[1] == '\t')))
       {
         value++;
-        while (*value && ((*value == ' ') || (*value == '\t')))
+        while ((value[0] != '\0') && ((value[0] == ' ') || (value[0] == '\t')))
           value++;
         if (fputc('\t', fp) == EOF)
           return -1;
@@ -1906,7 +1906,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
     return -1;
   col = mutt_str_strlen(tag) + ((tag && (tag[0] != '\0')) ? 2 : 0) + mutt_str_strlen(pfx);
 
-  while (p && *p)
+  while (p && (p[0] != '\0'))
   {
     int fold = 0;
 
@@ -1927,7 +1927,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
     /* insert a folding \n before the current word's lwsp except for
      * header name, first word on a line (word longer than wrap width)
      * and encoded words */
-    if (!first && !enc && col && (col + w >= wraplen))
+    if (!first && !enc && col && ((col + w) >= wraplen))
     {
       col = mutt_str_strlen(pfx);
       fold = 1;
@@ -1940,7 +1940,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
     if (display && fold)
     {
       char *pc = buf;
-      while (*pc && ((*pc == ' ') || (*pc == '\t')))
+      while ((pc[0] != '\0') && ((pc[0] == ' ') || (pc[0] == '\t')))
       {
         pc++;
         col--;
@@ -1962,9 +1962,9 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
      * XXX this covers ASCII space only, for display we probably
      * want something like iswspace() here */
     const char *sp = next;
-    while (*sp && ((*sp == ' ') || (*sp == '\t')))
+    while ((sp[0] != '\0') && ((sp[0] == ' ') || (sp[0] == '\t')))
       sp++;
-    if (*sp == '\n')
+    if (sp[0] == '\n')
     {
       next = sp;
       col = 0;
@@ -1994,18 +1994,18 @@ static char *unfold_header(char *s)
 {
   char *p = s, *q = s;
 
-  while (p && *p)
+  while (p && (p[0] != '\0'))
   {
     /* remove CRLF prior to FWSP, turn \t into ' ' */
-    if ((*p == '\r') && *(p + 1) && (*(p + 1) == '\n') && *(p + 2) &&
-        ((*(p + 2) == ' ') || (*(p + 2) == '\t')))
+    if ((p[0] == '\r') && (p[1] != '\0') && (p[1] == '\n') && (p[2] != '\0') &&
+        ((p[2] == ' ') || (p[2] == '\t')))
     {
       *q++ = ' ';
       p += 3;
       continue;
     }
     /* remove LF prior to FWSP, turn \t into ' ' */
-    else if ((*p == '\n') && *(p + 1) && ((*(p + 1) == ' ') || (*(p + 1) == '\t')))
+    else if ((p[0] == '\n') && (p[1] != '\0') && ((p[1] == ' ') || (p[1] == '\t')))
     {
       *q++ = ' ';
       p += 2;
@@ -2014,7 +2014,7 @@ static char *unfold_header(char *s)
     *q++ = *p++;
   }
   if (q)
-    *q = '\0';
+    q[0] = '\0';
 
   return s;
 }

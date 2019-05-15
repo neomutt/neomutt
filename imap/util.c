@@ -822,13 +822,13 @@ void imap_cachepath(char delim, const char *mailbox, char *dest, size_t dlen)
   char *s = NULL;
   const char *p = mailbox;
 
-  for (s = dest; p && *p && dlen; dlen--)
+  for (s = dest; p && (p[0] != '\0') && (dlen > 0); dlen--)
   {
-    if (*p == delim)
+    if (p[0] == delim)
     {
       *s = '/';
       /* simple way to avoid collisions with UIDs */
-      if ((*(p + 1) >= '0') && (*(p + 1) <= '9'))
+      if ((p[1] >= '0') && (p[1] <= '9'))
       {
         if (--dlen)
           *++s = '_';

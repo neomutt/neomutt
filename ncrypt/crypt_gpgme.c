@@ -3812,9 +3812,9 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
   char *p = NULL;
 
   /* parse attribute type */
-  for (s = str + 1; *s && *s != '='; s++)
+  for (s = str + 1; (s[0] != '\0') && (s[0] != '='); s++)
     ;
-  if (!*s)
+  if (s[0] == '\0')
     return NULL; /* error */
   n = s - str;
   if (n == 0)
@@ -3852,7 +3852,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
         {
           n++;
         }
-        else if (isxdigit(*s) && isxdigit(*(s + 1)))
+        else if (isxdigit(s[0]) && isxdigit(s[1]))
         {
           s++;
           n++;
@@ -3912,9 +3912,9 @@ static struct DnArray *parse_dn(const char *str)
   arrayidx = 0;
   while (*str)
   {
-    while (*str == ' ')
+    while (str[0] == ' ')
       str++;
-    if (!*str)
+    if (str[0] == '\0')
       break; /* ready */
     if (arrayidx >= arraysize)
     {
@@ -3935,11 +3935,11 @@ static struct DnArray *parse_dn(const char *str)
     arrayidx++;
     if (!str)
       goto failure;
-    while (*str == ' ')
+    while (str[0] == ' ')
       str++;
-    if (*str && (*str != ',') && (*str != ';') && (*str != '+'))
+    if ((str[0] != '\0') && (str[0] != ',') && (str[0] != ';') && (str[0] != '+'))
       goto failure; /* invalid delimiter */
-    if (*str)
+    if (str[0] != '\0')
       str++;
   }
   array[arrayidx].key = NULL;

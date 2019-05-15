@@ -215,14 +215,13 @@ static void decode_xbit(struct State *s, long len, bool istext, iconv_t cd)
 static int qp_decode_triple(char *s, char *d)
 {
   /* soft line break */
-  if ((*s == '=') && !(*(s + 1)))
+  if ((s[0] == '=') && (s[1] == '\0'))
     return 1;
 
   /* quoted-printable triple */
-  if ((*s == '=') && isxdigit((unsigned char) *(s + 1)) &&
-      isxdigit((unsigned char) *(s + 2)))
+  if ((s[0] == '=') && isxdigit((unsigned char) s[1]) && isxdigit((unsigned char) s[2]))
   {
-    *d = (hexval(*(s + 1)) << 4) | hexval(*(s + 2));
+    *d = (hexval(s[1]) << 4) | hexval(s[2]);
     return 0;
   }
 
@@ -450,7 +449,7 @@ static bool is_mmnoask(const char *buf)
     q = strrchr(p, '/');
     if (q)
     {
-      if (*(q + 1) == '*')
+      if (q[1] == '*')
       {
         if (mutt_str_strncasecmp(buf, p, q - p) == 0)
           return true;

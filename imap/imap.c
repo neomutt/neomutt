@@ -2333,7 +2333,7 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t
     }
 
     /* Skip duplicate space */
-    while ((*checker == ' ') && (*(checker + 1) == ' '))
+    while ((checker[0] == ' ') && (checker[1] == ' '))
       checker++;
 
     /* copy char to new and go the next one */

@@ -94,8 +94,8 @@ static void driver_tags_add(struct TagHead *head, char *new_tag)
     char *p = strstr(C_HiddenTags, new_tag);
     size_t xsz = p ? mutt_str_strlen(new_tag) : 0;
 
-    if (p && ((p == C_HiddenTags) || (*(p - 1) == ',') || (*(p - 1) == ' ')) &&
-        ((*(p + xsz) == '\0') || (*(p + xsz) == ',') || (*(p + xsz) == ' ')))
+    if (p && ((p == C_HiddenTags) || (p[-1] == ',') || (p[-1] == ' ')) &&
+        ((p[xsz] == '\0') || (p[xsz] == ',') || (p[xsz] == ' ')))
     {
       np->hidden = true;
     }

@@ -836,8 +836,12 @@ static int braille_col = -1;
  */
 static int check_marker(const char *q, const char *p)
 {
-  for (; *p == *q && *q && *p && *q != '\a' && *p != '\a'; p++, q++)
-    ;
+  for (; (p[0] == q[0]) && (q[0] != '\0') && (p[0] != '\0') && (q[0] != '\a') &&
+         (p[0] != '\a');
+       p++, q++)
+  {
+  }
+
   return (int) (*p - *q);
 }
 
@@ -1319,24 +1323,24 @@ static int fill_buffer(FILE *fp, LOFF_T *last_pos, LOFF_T offset, unsigned char 
     q = *fmt;
     while (*p)
     {
-      if ((*p == '\010') && (p > *buf)) // Ctrl-H (backspace)
+      if ((p[0] == '\010') && (p > *buf)) // Ctrl-H (backspace)
       {
-        if (*(p + 1) == '_') /* underline */
+        if (p[1] == '_') /* underline */
           p += 2;
-        else if (*(p + 1) && (q > *fmt)) /* bold or overstrike */
+        else if ((p[1] != '\0') && (q > *fmt)) /* bold or overstrike */
         {
-          *(q - 1) = *(p + 1);
+          q[-1] = p[1];
           p += 2;
         }
         else /* ^H */
           *q++ = *p++;
       }
-      else if ((*p == '\033') && (*(p + 1) == '[') && is_ansi(p + 2)) // Escape
+      else if ((p[0] == '\033') && (p[1] == '[') && is_ansi(p + 2)) // Escape
       {
         while (*p++ != 'm') /* skip ANSI sequence */
           ;
       }
-      else if ((*p == '\033') && (*(p + 1) == ']') && // Escape
+      else if ((p[0] == '\033') && (p[1] == ']') && // Escape
                ((check_attachment_marker((char *) p) == 0) ||
                 (check_protected_header_marker((char *) p) == 0)))
       {
