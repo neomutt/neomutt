@@ -188,7 +188,7 @@ static bool create_hcache_dir(const char *path)
 static const char *hcache_per_folder(const char *path, const char *folder, hcache_namer_t namer)
 {
   static char hcpath[PATH_MAX + 64];
-  char suffix[32] = "";
+  char suffix[32] = { 0 };
   struct stat sb;
 
   int plen = mutt_str_strlen(path);

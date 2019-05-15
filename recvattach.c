@@ -901,7 +901,7 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
         {
           /* decode and print */
 
-          char newfile[PATH_MAX] = "";
+          char newfile[PATH_MAX] = { 0 };
           FILE *fp_in = NULL;
 
           mutt_mktemp(newfile, sizeof(newfile));

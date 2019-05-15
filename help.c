@@ -257,7 +257,7 @@ static int pad(FILE *fp, int col, int i)
 {
   if (col < i)
   {
-    char fmt[32] = "";
+    char fmt[32] = { 0 };
     snprintf(fmt, sizeof(fmt), "%%-%ds", i - col);
     fprintf(fp, fmt, "");
     return i;

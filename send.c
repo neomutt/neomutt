@@ -1846,7 +1846,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
                     struct Context *ctx, struct EmailList *el)
 {
   char buf[1024];
-  char fcc[PATH_MAX] = ""; /* where to copy this message */
+  char fcc[PATH_MAX] = { 0 }; /* where to copy this message */
   FILE *fp_tmp = NULL;
   struct Body *pbody = NULL;
   int i;

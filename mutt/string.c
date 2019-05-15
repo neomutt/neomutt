@@ -983,7 +983,7 @@ int mutt_str_word_casecmp(const char *a, const char *b)
       return 0;
   }
 
-  char tmp[128] = "";
+  char tmp[128] = { 0 };
 
   int i;
   for (i = 0; i < (sizeof(tmp) - 2); i++, b++)

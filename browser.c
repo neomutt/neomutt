@@ -1038,7 +1038,7 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
    * properly when the user is in examine_mailboxes-mode.  */
   if (mutt_str_startswith(mutt_b2s(LastDirBackup), mutt_b2s(LastDir), CASE_MATCH))
   {
-    char target_dir[PATH_MAX] = "";
+    char target_dir[PATH_MAX] = { 0 };
 
 #ifdef USE_IMAP
     /* Check what kind of dir LastDirBackup is. */
@@ -1139,7 +1139,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
   /* Keeps in memory the directory we were in when hitting '='
    * to go directly to $folder (#C_Folder) */
-  char goto_swapper[PATH_MAX] = "";
+  char goto_swapper[PATH_MAX] = { 0 };
 
   mailbox = mailbox && folder;
 

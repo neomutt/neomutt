@@ -2232,7 +2232,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
  */
 int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct Pager *extra)
 {
-  static char searchbuf[256] = "";
+  static char searchbuf[256] = { 0 };
   char buf[1024];
   struct Buffer *helpstr = NULL;
   int ch = 0, rc = -1;

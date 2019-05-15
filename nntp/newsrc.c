@@ -566,8 +566,8 @@ int nntp_add_group(char *line, void *data)
 {
   struct NntpAccountData *adata = data;
   struct NntpMboxData *mdata = NULL;
-  char group[1024] = "";
-  char desc[8192] = "";
+  char group[1024] = { 0 };
+  char desc[8192] = { 0 };
   char mod;
   anum_t first, last;
 

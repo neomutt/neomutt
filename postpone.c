@@ -448,8 +448,9 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
  */
 SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, SecurityFlags crypt_app)
 {
-  char smime_cryptalg[1024] = "\0";
-  char sign_as[1024] = "\0", *q = NULL;
+  char smime_cryptalg[1024] = { 0 };
+  char sign_as[1024] = { 0 };
+  char *q = NULL;
   SecurityFlags flags = SEC_NO_FLAGS;
 
   if (!WithCrypto)

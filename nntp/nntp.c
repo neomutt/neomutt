@@ -237,7 +237,7 @@ static int nntp_capabilities(struct NntpAccountData *adata)
   struct Connection *conn = adata->conn;
   bool mode_reader = false;
   char buf[1024];
-  char authinfo[1024] = "";
+  char authinfo[1024] = { 0 };
 
   adata->hasCAPABILITIES = false;
   adata->hasSTARTTLS = false;
@@ -630,7 +630,7 @@ static int nntp_auth(struct NntpAccountData *adata)
         sasl_conn_t *saslconn = NULL;
         sasl_interact_t *interaction = NULL;
         int rc;
-        char inbuf[1024] = "";
+        char inbuf[1024] = { 0 };
         const char *mech = NULL;
         const char *client_out = NULL;
         unsigned int client_len, len;
@@ -1484,7 +1484,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
  */
 static int nntp_group_poll(struct NntpMboxData *mdata, bool update_stat)
 {
-  char buf[1024] = "";
+  char buf[1024] = { 0 };
   anum_t count, first, last;
 
   /* use GROUP command to poll newsgroup */

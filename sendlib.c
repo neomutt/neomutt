@@ -1897,7 +1897,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
                            const char *pfx, int wraplen, CopyHeaderFlags chflags)
 {
   const char *p = value;
-  char buf[8192] = "";
+  char buf[8192] = { 0 };
   int first = 1, col = 0, l = 0;
   const bool display = (chflags & CH_DISPLAY);
 

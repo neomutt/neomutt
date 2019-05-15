@@ -76,7 +76,7 @@ int LogQueueMax = 0;   /**< Maximum number of entries in the log queue */
  */
 static const char *timestamp(time_t stamp)
 {
-  static char buf[23] = "";
+  static char buf[23] = { 0 };
   static time_t last = 0;
 
   if (stamp == 0)
@@ -408,7 +408,7 @@ int log_queue_save(FILE *fp)
 int log_disp_queue(time_t stamp, const char *file, int line,
                    const char *function, int level, ...)
 {
-  char buf[1024] = "";
+  char buf[1024] = { 0 };
   int err = errno;
 
   va_list ap;
