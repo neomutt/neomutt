@@ -142,14 +142,14 @@ static char *parse_encoded_word(char *str, enum ContentEncoding *enc, char **cha
   regmatch_t match[4];
   size_t nmatch = 4;
   struct Regex *re = mutt_regex_compile("=\\?"
-                            "([^][()<>@,;:\\\"/?. =]+)" /* charset */
-                            "\\?"
-                            "([qQbB])" /* encoding */
-                            "\\?"
-                            "([^?]+)" /* encoded text - we accept whitespace
+                                        "([^][()<>@,;:\\\"/?. =]+)" /* charset */
+                                        "\\?"
+                                        "([qQbB])" /* encoding */
+                                        "\\?"
+                                        "([^?]+)" /* encoded text - we accept whitespace
                                          as some mailers do that, see #1189. */
-                            "\\?=",
-                            REG_EXTENDED);
+                                        "\\?=",
+                                        REG_EXTENDED);
   assert(re && "Something is wrong with your RE engine.");
 
   char *res = NULL;

@@ -190,7 +190,8 @@ void dump_config_neo(struct ConfigSet *cs, struct HashElem *he, struct Buffer *v
 
   const char *name = he->key.strkey;
 
-  if ((flags & CS_DUMP_ONLY_CHANGED) && (!initial || (mutt_str_strcmp(value->data, initial->data) == 0)))
+  if ((flags & CS_DUMP_ONLY_CHANGED) &&
+      (!initial || (mutt_str_strcmp(value->data, initial->data) == 0)))
     return;
 
   if (he->type == DT_SYNONYM)

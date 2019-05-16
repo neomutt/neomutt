@@ -2764,7 +2764,7 @@ void pgp_gpgme_invoke_import(const char *fname)
   impres = gpgme_op_import_result(ctx);
   if (!impres)
   {
-    fputs ("oops: no import result returned\n", stdout);
+    fputs("oops: no import result returned\n", stdout);
     goto leave;
   }
 

@@ -111,4 +111,3 @@ void mutt_buffer_pool_release(struct Buffer **pbuf)
 
   *pbuf = NULL;
 }
-
