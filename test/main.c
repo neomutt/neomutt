@@ -29,7 +29,6 @@
   NEOMUTT_TEST_ITEM(test_mutt_addr_append)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_addr_cat)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_addr_cmp)                                        \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_cmp_strict)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_addr_copy)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_addr_copy_list)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_addr_for_display)                                \
@@ -50,6 +49,7 @@
   NEOMUTT_TEST_ITEM(test_mutt_addr_valid_msgid)                                \
   NEOMUTT_TEST_ITEM(test_mutt_addr_write)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_addr_write_single)                               \
+  NEOMUTT_TEST_ITEM(test_mutt_addresslist_equal)                               \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_to_intl)                                \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_to_local)                               \
   NEOMUTT_TEST_ITEM(test_mutt_actx_add_attach)                                 \

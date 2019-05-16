@@ -827,13 +827,18 @@ bool mutt_addr_valid_msgid(const char *msgid)
 }
 
 /**
- * mutt_addr_cmp_strict - Strictly compare two Address lists
+ * mutt_addresslist_equal - Compare two Address lists for equality
  * @param a First Address
  * @param b Second Address
  * @retval true Address lists are strictly identical
  */
-bool mutt_addresslist_cmp_strict(const struct AddressList *ala, const struct AddressList *alb)
+bool mutt_addresslist_equal(const struct AddressList *ala, const struct AddressList *alb)
 {
+  if (!ala || !alb)
+  {
+    return !(ala || alb);
+  }
+
   struct AddressNode *ana = TAILQ_FIRST(ala);
   struct AddressNode *anb = TAILQ_FIRST(alb);
 
@@ -850,15 +855,6 @@ bool mutt_addresslist_cmp_strict(const struct AddressList *ala, const struct Add
   }
 
   return !(ana || anb);
-}
-bool mutt_addr_cmp_strict(const struct Address *a, const struct Address *b)
-{
-  struct AddressList *ala = mutt_addr_to_addresslist((struct Address *) a);
-  struct AddressList *alb = mutt_addr_to_addresslist((struct Address *) b);
-  bool res = mutt_addresslist_cmp_strict(ala, alb);
-  FREE(&ala);
-  FREE(&alb);
-  return res;
 }
 
 /**

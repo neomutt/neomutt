@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_addr_cmp_strict()
+ * Test code for mutt_addresslist_equal()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -26,17 +26,17 @@
 #include "mutt/mutt.h"
 #include "address/lib.h"
 
-void test_mutt_addr_cmp_strict(void)
+void test_mutt_addresslist_equal(void)
 {
-  // bool mutt_addr_cmp_strict(const struct Address *a, const struct Address *b);
+  // bool mutt_addresslist_equal(const struct AddressList *a, const struct AddressList *b);
 
   {
-    struct Address addr = { 0 };
-    TEST_CHECK(!mutt_addr_cmp_strict(NULL, &addr));
+    struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+    TEST_CHECK(!mutt_addresslist_equal(NULL, &al));
   }
 
   {
-    struct Address addr = { 0 };
-    TEST_CHECK(!mutt_addr_cmp_strict(&addr, NULL));
+    struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+    TEST_CHECK(!mutt_addresslist_equal(&al, NULL));
   }
 }

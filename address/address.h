@@ -68,7 +68,9 @@ extern const char AddressSpecials[];
 
 void            mutt_addr_cat(char *buf, size_t buflen, const char *value, const char *specials);
 bool            mutt_addr_cmp(const struct Address *a, const struct Address *b);
-bool            mutt_addr_cmp_strict(const struct Address *a, const struct Address *b);
+
+
+
 struct Address *mutt_addr_copy(const struct Address *addr);
 const char *    mutt_addr_for_display(const struct Address *a);
 void            mutt_addr_free(struct Address **p);
@@ -109,6 +111,6 @@ void                mutt_addresslist_qualify(struct AddressList *al, const char 
 struct Address*     mutt_addresslist_first(const struct AddressList *al);
 bool                mutt_addresslist_search(const struct Address *needle, const struct AddressList *haystack);
 int                 mutt_addresslist_has_recips(const struct AddressList *al);
-bool                mutt_addresslist_cmp_strict(const struct AddressList *ala, const struct AddressList *alb);
+bool                mutt_addresslist_equal(const struct AddressList *ala, const struct AddressList *alb);
 
 #endif /* MUTT_EMAIL_ADDRESS_H */
