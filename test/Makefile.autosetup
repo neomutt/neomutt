@@ -6,8 +6,6 @@ ADDRESS_OBJS	= test/address/mutt_addr_append.o \
 		  test/address/mutt_addr_for_display.o \
 		  test/address/mutt_addr_free.o \
 		  test/address/mutt_addr_has_recips.o \
-		  test/address/mutt_addr_is_intl.o \
-		  test/address/mutt_addr_is_local.o \
 		  test/address/mutt_addresslist_equal.o \
 		  test/address/mutt_addresslist_parse2.o \
 		  test/address/mutt_addresslist_parse.o \

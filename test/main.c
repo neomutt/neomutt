@@ -34,8 +34,6 @@
   NEOMUTT_TEST_ITEM(test_mutt_addr_for_display)                                \
   NEOMUTT_TEST_ITEM(test_mutt_addr_free)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_addr_has_recips)                                 \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_is_intl)                                    \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_is_local)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_addr_mbox_to_udomain)                            \
   NEOMUTT_TEST_ITEM(test_mutt_addr_new)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_addr_remove_from_list)                           \

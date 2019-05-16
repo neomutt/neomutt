@@ -887,7 +887,7 @@ bool mutt_addresslist_search(const struct Address *needle, const struct AddressL
  * @param a Address to check
  * @retval true Address contains IDN components
  */
-bool mutt_addr_is_intl(const struct Address *a)
+static bool mutt_addr_is_intl(const struct Address *a)
 {
   if (!a)
     return false;
@@ -899,7 +899,7 @@ bool mutt_addr_is_intl(const struct Address *a)
  * @param a Address to check
  * @retval true Address contains NO IDN components
  */
-bool mutt_addr_is_local(const struct Address *a)
+static bool mutt_addr_is_local(const struct Address *a)
 {
   if (!a)
     return false;
