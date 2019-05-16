@@ -45,7 +45,7 @@ struct Connection *mutt_conn_new(const struct ConnAccount *account)
 {
   enum ConnectionType conn_type;
 
-  if (C_Tunnel && *C_Tunnel)
+  if (C_Tunnel)
     conn_type = MUTT_CONNECTION_TUNNEL;
   else if (account->flags & MUTT_ACCT_SSL)
     conn_type = MUTT_CONNECTION_SSL;

@@ -558,7 +558,7 @@ static int get_limit(struct NmMboxData *mdata)
  */
 static void apply_exclude_tags(notmuch_query_t *query)
 {
-  if (!C_NmExcludeTags || !query || !*C_NmExcludeTags)
+  if (!C_NmExcludeTags || !query)
     return;
 
   char *end = NULL, *tag = NULL;

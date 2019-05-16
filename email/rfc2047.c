@@ -690,7 +690,7 @@ void rfc2047_decode(char **pd)
 
       /* Add non-encoded part */
       {
-        if (C_AssumedCharset && *C_AssumedCharset)
+        if (C_AssumedCharset)
         {
           char *conv = mutt_str_substr_dup(s, s + holelen);
           mutt_ch_convert_nonmime_string(&conv);
@@ -768,7 +768,7 @@ void rfc2047_decode_addrlist(struct Address *a)
 {
   while (a)
   {
-    if (a->personal && ((strstr(a->personal, "=?")) || (C_AssumedCharset && *C_AssumedCharset)))
+    if (a->personal && ((strstr(a->personal, "=?")) || C_AssumedCharset))
     {
       rfc2047_decode(&a->personal);
     }

@@ -68,7 +68,7 @@ static int bcache_path(struct ConnAccount *account, const char *mailbox, char *d
   struct Url url = { U_UNKNOWN };
   int len;
 
-  if (!account || !C_MessageCachedir || !*C_MessageCachedir || !dst || (dstlen == 0))
+  if (!account || !C_MessageCachedir || !dst || (dstlen == 0))
     return -1;
 
   /* make up a Url we can turn into a string */

@@ -997,7 +997,7 @@ void smime_class_getkeys(struct Envelope *env)
   struct Address *t = NULL;
   bool found = false;
 
-  if (C_SmimeDecryptUseDefaultKey && C_SmimeDefaultKey && *C_SmimeDefaultKey)
+  if (C_SmimeDecryptUseDefaultKey && C_SmimeDefaultKey)
   {
     snprintf(SmimeKeyToUse, sizeof(SmimeKeyToUse), "%s/%s", NONULL(C_SmimeKeys),
              C_SmimeDefaultKey);
@@ -1699,7 +1699,7 @@ struct Body *smime_class_sign_message(struct Body *a)
   pid_t pid;
   char *intermediates = NULL;
 
-  char *signas = (C_SmimeSignAs && *C_SmimeSignAs) ? C_SmimeSignAs : C_SmimeDefaultKey;
+  char *signas = C_SmimeSignAs ? C_SmimeSignAs : C_SmimeDefaultKey;
   if (!signas || !*signas)
   {
     mutt_error(_("Can't sign: No key specified. Use Sign As."));

@@ -222,7 +222,7 @@ static pid_t pgp_invoke(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
   cctx.need_passphrase = need_passphrase;
   cctx.fname = fname;
   cctx.sig_fname = sig_fname;
-  if (C_PgpSignAs && *C_PgpSignAs)
+  if (C_PgpSignAs)
     cctx.signas = C_PgpSignAs;
   else
     cctx.signas = C_PgpDefaultKey;
@@ -411,7 +411,7 @@ void pgp_class_invoke_import(const char *fname)
 
   mutt_buffer_quote_filename(buf_fname, fname, true);
   cctx.fname = mutt_b2s(buf_fname);
-  if (C_PgpSignAs && *C_PgpSignAs)
+  if (C_PgpSignAs)
     cctx.signas = C_PgpSignAs;
   else
     cctx.signas = C_PgpDefaultKey;

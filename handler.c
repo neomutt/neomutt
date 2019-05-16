@@ -1794,7 +1794,7 @@ void mutt_decode_attachment(struct Body *b, struct State *s)
   if (istext && s->flags & MUTT_CHARCONV)
   {
     char *charset = mutt_param_get(&b->parameter, "charset");
-    if (!charset && C_AssumedCharset && *C_AssumedCharset)
+    if (!charset && C_AssumedCharset)
       charset = mutt_ch_get_default_charset();
     if (charset && C_Charset)
       cd = mutt_ch_iconv_open(C_Charset, charset, MUTT_ICONV_HOOK_FROM);

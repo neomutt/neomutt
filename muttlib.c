@@ -204,7 +204,7 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
         }
         else if (mb_type == MUTT_NOTMUCH)
           mutt_buffer_strcpy(p, NONULL(C_Folder));
-        else if (C_Folder && *C_Folder && (C_Folder[strlen(C_Folder) - 1] == '/'))
+        else if (C_Folder && (C_Folder[strlen(C_Folder) - 1] == '/'))
           mutt_buffer_strcpy(p, NONULL(C_Folder));
         else
           mutt_buffer_printf(p, "%s/", NONULL(C_Folder));

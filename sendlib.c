@@ -1034,9 +1034,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
   if (b && (b->type == TYPE_TEXT) && (!b->noconv && !b->force_charset))
   {
     char *chs = mutt_param_get(&b->parameter, "charset");
-    char *fchs = b->use_disp ?
-                     ((C_AttachCharset && *C_AttachCharset) ? C_AttachCharset : C_Charset) :
-                     C_Charset;
+    char *fchs = b->use_disp ? (C_AttachCharset ? C_AttachCharset : C_Charset) : C_Charset;
     if (C_Charset && (chs || C_SendCharset) &&
         (convert_file_from_to(fp, fchs, chs ? chs : C_SendCharset, &fromcode,
                               &tocode, info) != (size_t)(-1)))
@@ -1614,7 +1612,7 @@ struct Body *mutt_make_file_attach(const char *path)
   struct Body *att = mutt_body_new();
   att->filename = mutt_str_strdup(path);
 
-  if (C_MimeTypeQueryCommand && *C_MimeTypeQueryCommand && C_MimeTypeQueryFirst)
+  if (C_MimeTypeQueryCommand && C_MimeTypeQueryFirst)
     run_mime_type_query(att);
 
   /* Attempt to determine the appropriate content-type based on the filename
@@ -1622,7 +1620,7 @@ struct Body *mutt_make_file_attach(const char *path)
   if (!att->subtype)
     mutt_lookup_mime_type(att, path);
 
-  if (!att->subtype && C_MimeTypeQueryCommand && *C_MimeTypeQueryCommand && !C_MimeTypeQueryFirst)
+  if (!att->subtype && C_MimeTypeQueryCommand && !C_MimeTypeQueryFirst)
   {
     run_mime_type_query(att);
   }
@@ -3244,7 +3242,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     if (e->security & SEC_SIGN)
     {
       fputc('S', msg->fp);
-      if (C_PgpSignAs && *C_PgpSignAs)
+      if (C_PgpSignAs)
         fprintf(msg->fp, "<%s>", C_PgpSignAs);
     }
     if (e->security & SEC_INLINE)
@@ -3259,7 +3257,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     if (e->security & SEC_ENCRYPT)
     {
       fputc('E', msg->fp);
-      if (C_SmimeEncryptWith && *C_SmimeEncryptWith)
+      if (C_SmimeEncryptWith)
         fprintf(msg->fp, "C<%s>", C_SmimeEncryptWith);
     }
     if (e->security & SEC_OPPENCRYPT)
@@ -3267,7 +3265,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     if (e->security & SEC_SIGN)
     {
       fputc('S', msg->fp);
-      if (C_SmimeSignAs && *C_SmimeSignAs)
+      if (C_SmimeSignAs)
         fprintf(msg->fp, "<%s>", C_SmimeSignAs);
     }
     if (e->security & SEC_INLINE)

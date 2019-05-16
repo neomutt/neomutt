@@ -187,7 +187,7 @@ static void write_safe_address(FILE *fp, char *s)
  */
 static void recode_buf(char *buf, size_t buflen)
 {
-  if (!C_ConfigCharset || !*C_ConfigCharset || !C_Charset)
+  if (!C_ConfigCharset || !C_Charset)
     return;
 
   char *s = mutt_str_strdup(buf);

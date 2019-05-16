@@ -1056,7 +1056,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
 
   /* try to create cache directory and enable caching */
   adata->cacheable = false;
-  if ((rc >= 0) && C_NewsCacheDir && *C_NewsCacheDir)
+  if ((rc >= 0) && C_NewsCacheDir)
   {
     cache_expand(file, sizeof(file), &conn->account, NULL);
     if (mutt_file_mkdir(file, S_IRWXU) < 0)

@@ -68,7 +68,7 @@ int imap_authenticate(struct ImapAccountData *adata)
 {
   int rc = IMAP_AUTH_FAILURE;
 
-  if (C_ImapAuthenticators && *C_ImapAuthenticators)
+  if (C_ImapAuthenticators)
   {
     mutt_debug(LL_DEBUG2, "Trying user-defined imap_authenticators\n");
 

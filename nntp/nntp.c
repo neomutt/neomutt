@@ -535,7 +535,7 @@ static int nntp_auth(struct NntpAccountData *adata)
     }
 
     /* get list of authenticators */
-    if (C_NntpAuthenticators && *C_NntpAuthenticators)
+    if (C_NntpAuthenticators)
       mutt_str_strfcpy(authenticators, C_NntpAuthenticators, sizeof(authenticators));
     else if (adata->hasCAPABILITIES)
     {

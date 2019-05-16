@@ -139,7 +139,7 @@ static void parse_parameters(struct ParameterList *param, const char *s)
         s++;
         for (i = 0; *s && (i < (sizeof(buf) - 1)); i++, s++)
         {
-          if (C_AssumedCharset && *C_AssumedCharset)
+          if (C_AssumedCharset)
           {
             /* As iso-2022-* has a character of '"' with non-ascii state,
              * ignore it. */
@@ -514,9 +514,8 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
     if (!pc)
     {
       mutt_param_set(&ct->parameter, "charset",
-                     (C_AssumedCharset && *C_AssumedCharset) ?
-                         (const char *) mutt_ch_get_default_charset() :
-                         "us-ascii");
+                     (C_AssumedCharset) ? (const char *) mutt_ch_get_default_charset() :
+                                          "us-ascii");
     }
   }
 }

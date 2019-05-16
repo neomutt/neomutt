@@ -264,7 +264,7 @@ void rfc2231_decode_parameters(struct ParameterList *p)
 
       if (C_Rfc2047Parameters && np->value && strstr(np->value, "=?"))
         rfc2047_decode(&np->value);
-      else if (C_AssumedCharset && *C_AssumedCharset)
+      else if (C_AssumedCharset)
         mutt_ch_convert_nonmime_string(&np->value);
     }
     else if (*(s + 1) == '\0')

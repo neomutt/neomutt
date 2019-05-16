@@ -341,7 +341,7 @@ static enum PopAuthRes pop_auth_user(struct PopAccountData *adata, const char *m
 static enum PopAuthRes pop_auth_oauth(struct PopAccountData *adata, const char *method)
 {
   /* If they did not explicitly request or configure oauth then fail quietly */
-  if (!(method || (C_PopOauthRefreshCommand && *C_PopOauthRefreshCommand)))
+  if (!method && !C_PopOauthRefreshCommand)
     return POP_A_UNAVAIL;
 
   mutt_message(_("Authenticating (OAUTHBEARER)..."));
@@ -421,7 +421,7 @@ int pop_authenticate(struct PopAccountData *adata)
     return -3;
   }
 
-  if (C_PopAuthenticators && *C_PopAuthenticators)
+  if (C_PopAuthenticators)
   {
     /* Try user-specified list of authentication methods */
     methods = mutt_str_strdup(C_PopAuthenticators);

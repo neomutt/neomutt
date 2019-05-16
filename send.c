@@ -1753,7 +1753,7 @@ static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, Sen
   char *encrypt_as = NULL;
   struct Body *clear_content = NULL;
 
-  if (!(C_Postponed && *C_Postponed))
+  if (!C_Postponed)
   {
     mutt_error(_("Can't postpone.  $postponed is unset"));
     return -1;

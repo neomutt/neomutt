@@ -234,7 +234,7 @@ int mutt_display_message(struct Email *cur)
     return 0;
   }
 
-  if (C_DisplayFilter && *C_DisplayFilter)
+  if (C_DisplayFilter)
   {
     fp_filter_out = fp_out;
     fp_out = NULL;
@@ -679,7 +679,7 @@ void mutt_print_message(struct Mailbox *m, struct EmailList *el)
   if (!m || !el)
     return;
 
-  if (C_Print && (!C_PrintCommand || !*C_PrintCommand))
+  if (C_Print && !C_PrintCommand)
   {
     mutt_message(_("No printing command has been defined"));
     return;
