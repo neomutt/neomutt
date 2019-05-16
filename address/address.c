@@ -916,7 +916,7 @@ static bool mutt_addr_is_local(const struct Address *a)
  *
  * @warning The caller must free user and domain
  */
-int mutt_addr_mbox_to_udomain(const char *mbox, char **user, char **domain)
+static int mutt_addr_mbox_to_udomain(const char *mbox, char **user, char **domain)
 {
   if (!mbox || !user || !domain)
     return -1;

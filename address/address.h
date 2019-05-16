@@ -73,7 +73,6 @@ const char *    mutt_addr_for_display(const struct Address *a);
 void            mutt_addr_free(struct Address **a);
 size_t          mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool display);
 
-int             mutt_addr_mbox_to_udomain(const char *mbox, char **user, char **domain);
 struct Address *mutt_addr_new(void);
 int             mutt_addr_remove_from_list(struct AddressList *a, const char *mailbox);
 void            mutt_addr_remove_xrefs(const struct AddressList *a, struct AddressList *b);
