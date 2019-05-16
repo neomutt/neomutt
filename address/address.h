@@ -66,7 +66,11 @@ extern const char AddressSpecials[];
 
 #define address_error(num) AddressErrors[num]
 
+/* Utility functions that don't use struct Address or struct AddressList */
 void            mutt_addr_cat(char *buf, size_t buflen, const char *value, const char *specials);
+bool            mutt_addr_valid_msgid(const char *msgid);
+
+/* Functions that work on a single struct Address */
 bool            mutt_addr_cmp(const struct Address *a, const struct Address *b);
 struct Address *mutt_addr_copy(const struct Address *addr);
 const char *    mutt_addr_for_display(const struct Address *a);
@@ -74,11 +78,10 @@ void            mutt_addr_free(struct Address **a);
 size_t          mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool display);
 struct Address *mutt_addr_new(void);
 
-bool            mutt_addr_valid_msgid(const char *msgid);
-struct Address *mutt_addrlist_dedupe(struct Address *addr);
 int             mutt_addrlist_to_intl(struct Address *a, char **err);
 int             mutt_addrlist_to_local(struct Address *a);
 
+/* Functions that work on struct AddressList */
 struct AddressList *mutt_addr_to_addresslist(struct Address *a);
 struct AddressList *mutt_addresslist_new(void);
 struct Address     *mutt_addresslist_to_addr(struct AddressList *al);

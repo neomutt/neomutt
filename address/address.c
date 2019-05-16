@@ -1294,7 +1294,7 @@ int mutt_addrlist_to_local(struct Address *a)
 }
 
 /**
- * mutt_addrlist_dedupe - Remove duplicate addresses
+ * mutt_addresslist_dedupe - Remove duplicate addresses
  * @param addr Address list to de-dupe
  * @retval ptr Updated Address list
  *
@@ -1325,17 +1325,6 @@ void mutt_addresslist_dedupe(struct AddressList *al)
       }
     }
   }
-}
-
-struct Address *mutt_addrlist_dedupe(struct Address *addr)
-{
-  if (!addr)
-    return NULL;
-  struct AddressList *al = mutt_addr_to_addresslist(addr);
-  mutt_addresslist_dedupe(al);
-  addr = mutt_addresslist_to_addr(al);
-  FREE(&al);
-  return addr;
 }
 
 /**
