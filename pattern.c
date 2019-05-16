@@ -1693,8 +1693,11 @@ static int match_addrlist(struct Pattern *pat, bool match_personal, int n, ...)
   va_start(ap, n);
   for (; n; n--)
   {
-    for (struct Address *a = va_arg(ap, struct Address *); a; a = a->next)
+    struct AddressList *al = va_arg(ap, struct AddressList *);
+    struct AddressNode *an = NULL;
+    TAILQ_FOREACH(an, al, entries)
     {
+      struct Address *a = an->addr;
       if (pat->alladdr ^ ((!pat->isalias || mutt_alias_reverse_lookup(a)) &&
                           ((a->mailbox && patmatch(pat, a->mailbox)) ||
                            (match_personal && a->personal && patmatch(pat, a->personal)))))
@@ -2061,22 +2064,22 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       if (!e->env)
         return 0;
       return pat->not^match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1,
-                                     e->env->sender);
+                                     &e->env->sender);
     case MUTT_PAT_FROM:
       if (!e->env)
         return 0;
       return pat->not^match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1,
-                                     e->env->from);
+                                     &e->env->from);
     case MUTT_PAT_TO:
       if (!e->env)
         return 0;
       return pat->not^match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1,
-                                     e->env->to);
+                                     &e->env->to);
     case MUTT_PAT_CC:
       if (!e->env)
         return 0;
       return pat->not^match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1,
-                                     e->env->cc);
+                                     &e->env->cc);
     case MUTT_PAT_SUBJECT:
       if (!e->env)
         return 0;
@@ -2101,13 +2104,13 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       if (!e->env)
         return 0;
       return pat->not^match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 4,
-                                     e->env->from, e->env->sender, e->env->to,
-                                     e->env->cc);
+                                     &e->env->from, &e->env->sender,
+                                     &e->env->to, &e->env->cc);
     case MUTT_PAT_RECIPIENT:
       if (!e->env)
         return 0;
       return pat->not^match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 2,
-                                     e->env->to, e->env->cc);
+                                     &e->env->to, &e->env->cc);
     case MUTT_PAT_LIST: /* known list, subscribed or not */
     {
       if (!e->env)
