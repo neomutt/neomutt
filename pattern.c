@@ -1796,15 +1796,22 @@ int mutt_is_list_recipient(bool alladdr, struct Envelope *e)
 static int match_user(int alladdr, struct AddressList *al1, struct AddressList *al2)
 {
   struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, al1, entries)
+  if (al1)
   {
-    if (alladdr ^ mutt_addr_is_user(an->addr))
-      return !alladdr;
+    TAILQ_FOREACH(an, al1, entries)
+    {
+      if (alladdr ^ mutt_addr_is_user(an->addr))
+        return !alladdr;
+    }
   }
-  TAILQ_FOREACH(an, al2, entries)
+
+  if (al2)
   {
-    if (alladdr ^ mutt_addr_is_user(an->addr))
-      return !alladdr;
+    TAILQ_FOREACH(an, al2, entries)
+    {
+      if (alladdr ^ mutt_addr_is_user(an->addr))
+        return !alladdr;
+    }
   }
   return alladdr;
 }
