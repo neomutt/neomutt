@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_addr_remove_xrefs()
+ * Test code for mutt_addresslist_remove_xrefs()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -26,7 +26,7 @@
 #include "mutt/mutt.h"
 #include "address/lib.h"
 
-void test_mutt_addr_remove_xrefs(void)
+void test_mutt_addresslist_remove_xrefs(void)
 {
   // TODO - check when either argument is NULL
 }

@@ -885,7 +885,7 @@ void mutt_fix_reply_recipients(struct Envelope *env)
   /* the CC field can get cluttered, especially with lists */
   mutt_addresslist_dedupe(&env->to);
   mutt_addresslist_dedupe(&env->cc);
-  mutt_addr_remove_xrefs(&env->to, &env->cc);
+  mutt_addresslist_remove_xrefs(&env->to, &env->cc);
 
   if (!TAILQ_EMPTY(&env->cc) && TAILQ_EMPTY(&env->to))
   {

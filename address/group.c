@@ -28,6 +28,7 @@
  */
 
 #include "config.h"
+#include <assert.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include "address/lib.h"
@@ -180,12 +181,13 @@ static void group_add_addrlist(struct Group *g, const struct AddressList *al)
 
   struct AddressList new = TAILQ_HEAD_INITIALIZER(new);
   mutt_addresslist_copy(&new, al, false);
-  mutt_addr_remove_xrefs(&g->al, &new);
+  mutt_addresslist_remove_xrefs(&g->al, &new);
   struct AddressNode *np, *tmp;
   TAILQ_FOREACH_SAFE(np, &new, entries, tmp)
   {
     TAILQ_INSERT_TAIL(&g->al, np, entries);
   }
+  assert(TAILQ_EMPTY(&new));
 }
 
 /**

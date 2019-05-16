@@ -74,7 +74,6 @@ void            mutt_addr_free(struct Address **a);
 size_t          mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool display);
 struct Address *mutt_addr_new(void);
 
-void            mutt_addr_remove_xrefs(const struct AddressList *a, struct AddressList *b);
 void            mutt_addr_set_intl(struct Address *a, char *intl_mailbox);
 void            mutt_addr_set_local(struct Address *a, char *local_mailbox);
 bool            mutt_addr_valid_msgid(const char *msgid);
@@ -104,5 +103,6 @@ bool                mutt_addresslist_search(const struct Address *needle, const 
 int                 mutt_addresslist_has_recips(const struct AddressList *al);
 bool                mutt_addresslist_equal(const struct AddressList *ala, const struct AddressList *alb);
 int                 mutt_addresslist_remove(struct AddressList *al, const char *mailbox);
+void                mutt_addresslist_remove_xrefs(const struct AddressList *a, struct AddressList *b);
 
 #endif /* MUTT_EMAIL_ADDRESS_H */

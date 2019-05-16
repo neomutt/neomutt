@@ -1339,13 +1339,13 @@ struct Address *mutt_addrlist_dedupe(struct Address *addr)
 }
 
 /**
- * mutt_addr_remove_xrefs - Remove cross-references
- * @param a Reference list of Addresses
- * @param b Address list to trim
+ * mutt_addresslist_remove_xrefs - Remove cross-references
+ * @param a Reference AddressList
+ * @param b AddressLis to trim
  *
  * Remove addresses from "b" which are contained in "a"
  */
-void mutt_addr_remove_xrefs(const struct AddressList *a, struct AddressList *b)
+void mutt_addresslist_remove_xrefs(const struct AddressList *a, struct AddressList *b)
 {
   if (!a || !b)
     return;

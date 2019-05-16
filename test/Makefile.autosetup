@@ -11,11 +11,11 @@ ADDRESS_OBJS	= test/address/mutt_addr_append.o \
 		  test/address/mutt_addresslist_parse.o \
 		  test/address/mutt_addresslist_qualify.o \
 		  test/address/mutt_addresslist_remove.o \
+		  test/address/mutt_addresslist_remove_xrefs.o \
 		  test/address/mutt_addrlist_dedupe.o \
 		  test/address/mutt_addrlist_to_intl.o \
 		  test/address/mutt_addrlist_to_local.o \
 		  test/address/mutt_addr_new.o \
-		  test/address/mutt_addr_remove_xrefs.o \
 		  test/address/mutt_addr_search.o \
 		  test/address/mutt_addr_set_intl.o \
 		  test/address/mutt_addr_set_local.o \
