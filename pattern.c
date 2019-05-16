@@ -1460,17 +1460,17 @@ struct PatternHead *mutt_pattern_comp(/* const */ char *s, int flags, struct Buf
       case '~':
       {
         struct Pattern *pat = NULL;
-        if (!*(ps.dptr + 1))
+        if (ps.dptr[1] == '\0')
         {
           mutt_buffer_printf(err, _("missing pattern: %s"), ps.dptr);
           goto cleanup;
         }
         thread_op = 0;
-        if (*(ps.dptr + 1) == '(')
+        if (ps.dptr[1] == '(')
           thread_op = MUTT_PAT_THREAD;
-        else if ((*(ps.dptr + 1) == '<') && (*(ps.dptr + 2) == '('))
+        else if ((ps.dptr[1] == '<') && (ps.dptr[2] == '('))
           thread_op = MUTT_PAT_PARENT;
-        else if ((*(ps.dptr + 1) == '>') && (*(ps.dptr + 2) == '('))
+        else if ((ps.dptr[1] == '>') && (ps.dptr[2] == '('))
           thread_op = MUTT_PAT_CHILDREN;
         if (thread_op)
         {
@@ -1478,7 +1478,7 @@ struct PatternHead *mutt_pattern_comp(/* const */ char *s, int flags, struct Buf
           if ((thread_op == MUTT_PAT_PARENT) || (thread_op == MUTT_PAT_CHILDREN))
             ps.dptr++;
           p = find_matching_paren(ps.dptr + 1);
-          if (*p != ')')
+          if (p[0] != ')')
           {
             mutt_buffer_printf(err, _("mismatched parentheses: %s"), ps.dptr);
             goto cleanup;
@@ -1527,8 +1527,8 @@ struct PatternHead *mutt_pattern_comp(/* const */ char *s, int flags, struct Buf
         pat->not = not;
         pat->alladdr = alladdr;
         pat->isalias = isalias;
-        pat->stringmatch = (*ps.dptr == '=');
-        pat->groupmatch = (*ps.dptr == '%');
+        pat->stringmatch = (ps.dptr[0] == '=');
+        pat->groupmatch = (ps.dptr[0] == '%');
         not = false;
         alladdr = false;
         isalias = false;
@@ -1560,7 +1560,7 @@ struct PatternHead *mutt_pattern_comp(/* const */ char *s, int flags, struct Buf
 
         if (entry->eat_arg)
         {
-          if (!*ps.dptr)
+          if (ps.dptr[0] == '\0')
           {
             mutt_buffer_printf(err, "%s", _("missing parameter"));
             goto cleanup;
@@ -1577,7 +1577,7 @@ struct PatternHead *mutt_pattern_comp(/* const */ char *s, int flags, struct Buf
       case '(':
       {
         p = find_matching_paren(ps.dptr + 1);
-        if (*p != ')')
+        if (p[0] != ')')
         {
           mutt_buffer_printf(err, _("mismatched parentheses: %s"), ps.dptr);
           goto cleanup;
@@ -1932,7 +1932,7 @@ static bool match_mime_content_type(const struct Pattern *pat,
  */
 static void set_pattern_cache_value(int *cache_entry, int value)
 {
-  *cache_entry = value ? 2 : 1;
+  *cache_entry = (value != 0) ? 2 : 1;
 }
 
 /**
@@ -2268,11 +2268,11 @@ void mutt_check_simple(struct Buffer *buf, const char *simple)
 {
   bool do_simple = true;
 
-  for (const char *p = mutt_b2s(buf); p && *p; p++)
+  for (const char *p = mutt_b2s(buf); p && (p[0] != '\0'); p++)
   {
-    if ((*p == '\\') && *(p + 1))
+    if ((p[0] == '\\') && (p[1] != '\0'))
       p++;
-    else if ((*p == '~') || (*p == '=') || (*p == '%'))
+    else if ((p[0] == '~') || (p[0] == '=') || (p[0] == '%'))
     {
       do_simple = false;
       break;
@@ -2533,7 +2533,7 @@ int mutt_search_command(int cur, int op)
   if (!*LastSearch || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
     char buf[256];
-    mutt_str_strfcpy(buf, *LastSearch ? LastSearch : "", sizeof(buf));
+    mutt_str_strfcpy(buf, (LastSearch[0] != '\0') ? LastSearch : "", sizeof(buf));
     if ((mutt_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
                             _("Search for: ") :
                             _("Reverse search for: "),

@@ -363,7 +363,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
     mx_mbox_close(&ctx_post);
   C_Delete = opt_delete;
 
-  struct ListNode *np, *tmp;
+  struct ListNode *np = NULL, *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, &hdr->env->userhdrs, entries, tmp)
   {
     size_t plen = mutt_str_startswith(np->data, "X-Mutt-References:", CASE_IGNORE);
@@ -448,31 +448,32 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
  */
 SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, SecurityFlags crypt_app)
 {
-  char smime_cryptalg[1024] = "\0";
-  char sign_as[1024] = "\0", *q = NULL;
+  char smime_cryptalg[1024] = { 0 };
+  char sign_as[1024] = { 0 };
+  char *q = NULL;
   SecurityFlags flags = SEC_NO_FLAGS;
 
   if (!WithCrypto)
     return SEC_NO_FLAGS;
 
   p = mutt_str_skip_email_wsp(p);
-  for (; *p; p++)
+  for (; p[0] != '\0'; p++)
   {
-    switch (*p)
+    switch (p[0])
     {
       case 'c':
       case 'C':
         q = smime_cryptalg;
 
-        if (*(p + 1) == '<')
+        if (p[1] == '<')
         {
-          for (p += 2; *p && (*p != '>') &&
+          for (p += 2; (p[0] != '\0') && (p[0] != '>') &&
                        (q < (smime_cryptalg + sizeof(smime_cryptalg) - 1));
                *q++ = *p++)
           {
           }
 
-          if (*p != '>')
+          if (p[0] != '>')
           {
             mutt_error(_("Illegal S/MIME header"));
             return SEC_NO_FLAGS;
@@ -498,11 +499,11 @@ SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, Securit
        * to be able to recall old messages.  */
       case 'm':
       case 'M':
-        if (*(p + 1) == '<')
+        if (p[1] == '<')
         {
-          for (p += 2; *p && (*p != '>'); p++)
+          for (p += 2; (p[0] != '\0') && (p[0] != '>'); p++)
             ;
-          if (*p != '>')
+          if (p[0] != '>')
           {
             mutt_error(_("Illegal crypto header"));
             return SEC_NO_FLAGS;
@@ -521,21 +522,22 @@ SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, Securit
         flags |= SEC_SIGN;
         q = sign_as;
 
-        if (*(p + 1) == '<')
+        if (p[1] == '<')
         {
-          for (p += 2; *p && (*p != '>') && (q < (sign_as + sizeof(sign_as) - 1));
+          for (p += 2;
+               (p[0] != '\0') && (*p != '>') && (q < (sign_as + sizeof(sign_as) - 1));
                *q++ = *p++)
           {
           }
 
-          if (*p != '>')
+          if (p[0] != '>')
           {
             mutt_error(_("Illegal crypto header"));
             return SEC_NO_FLAGS;
           }
         }
 
-        *q = '\0';
+        q[0] = '\0';
         break;
 
       default:

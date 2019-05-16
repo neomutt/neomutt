@@ -23,15 +23,14 @@
 #define TEST_NO_MAIN
 #define MAIN_C 1
 #include "acutest.h"
-
 #include <assert.h>
 #include <string.h>
 #include "mutt/buffer.h"
 #include "mutt/memory.h"
-#include "pattern.h"
-
 #include "alias.h"
 #include "globals.h"
+#include "pattern.h"
+
 bool ResumeEditedDraftFiles;
 
 /* All tests are limited to patterns that are stringmatch type only,
@@ -130,7 +129,7 @@ static int cmp_pattern(struct PatternHead *p1, struct PatternHead *p2)
 
   while (!SLIST_EMPTY(&p1_tmp))
   {
-    struct Pattern *l, *r;
+    struct Pattern *l = NULL, *r = NULL;
 
     l = SLIST_FIRST(&p1_tmp);
     r = SLIST_FIRST(&p2_tmp);

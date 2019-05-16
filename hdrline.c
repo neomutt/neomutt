@@ -553,7 +553,8 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
                                     unsigned long data, MuttFormatFlags flags)
 {
   struct HdrFormatInfo *hfi = (struct HdrFormatInfo *) data;
-  char fmt[128], tmp[1024], *p = NULL, *tags = NULL;
+  char fmt[128], tmp[1024];
+  char *p = NULL, *tags = NULL;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
   int threads = ((C_Sort & SORT_MASK) == SORT_THREADS);
   int is_index = (flags & MUTT_FORMAT_INDEX);

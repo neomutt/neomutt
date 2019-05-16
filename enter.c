@@ -502,7 +502,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
           {
             first = true; /* clear input if user types a real key later */
             mutt_mb_wcstombs(buf, buflen, state->wbuf, state->curpos);
-            mutt_mailbox(Context ? Context->mailbox : NULL, buf, buflen);
+            mutt_mailbox_next(Context ? Context->mailbox : NULL, buf, buflen);
             state->curpos = state->lastchar =
                 mutt_mb_mbstowcs(&state->wbuf, &state->wbuflen, 0, buf);
             break;
@@ -699,7 +699,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
 
         case OP_EDITOR_QUOTE_CHAR:
         {
-          struct Event event;
+          struct KeyEvent event;
           do
           {
             event = mutt_getch();

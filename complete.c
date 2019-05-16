@@ -180,10 +180,7 @@ int mutt_complete(char *buf, size_t buflen)
         for (i = 0; filepart[i] && de->d_name[i]; i++)
         {
           if (filepart[i] != de->d_name[i])
-          {
-            filepart[i] = '\0';
             break;
-          }
         }
         filepart[i] = '\0';
       }

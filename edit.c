@@ -545,7 +545,7 @@ int mutt_builtin_editor(const char *path, struct Email *msg, struct Email *cur)
           }
           break;
         case 'w':
-          be_barf_file(*p ? p : path, buf, buflen);
+          be_barf_file((p[0] != '\0') ? p : path, buf, buflen);
           break;
         case 'x':
           abort = true;
@@ -563,7 +563,7 @@ int mutt_builtin_editor(const char *path, struct Email *msg, struct Email *cur)
       mutt_str_strcat(tmp, sizeof(tmp), "\n");
       if (buflen == bufmax)
         mutt_mem_realloc(&buf, sizeof(char *) * (bufmax += 25));
-      buf[buflen++] = mutt_str_strdup(tmp[1] == '~' ? tmp + 1 : tmp);
+      buf[buflen++] = mutt_str_strdup((tmp[1] == '~') ? tmp + 1 : tmp);
     }
 
     tmp[0] = '\0';

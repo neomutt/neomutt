@@ -280,7 +280,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
   /* search through the user defined headers added to see if
    * fcc: or attach: or pgp: was specified */
 
-  struct ListNode *np, *tmp;
+  struct ListNode *np = NULL, *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, &msg->env->userhdrs, entries, tmp)
   {
     bool keep = true;
@@ -305,15 +305,15 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
       if (*p)
       {
         size_t l = 0;
-        for (; *p && *p != ' ' && *p != '\t'; p++)
+        for (; (p[0] != '\0') && (p[0] != ' ') && (p[0] != '\t'); p++)
         {
-          if (*p == '\\')
+          if (p[0] == '\\')
           {
-            if (!*(p + 1))
+            if (p[1] == '\0')
               break;
             p++;
           }
-          if (l < sizeof(path) - 1)
+          if (l < (sizeof(path) - 1))
             path[l++] = *p;
         }
         p = mutt_str_skip_email_wsp(p);

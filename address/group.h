@@ -43,7 +43,7 @@ struct Group
 };
 
 /**
- * struct GroupNode - A node in a GroupNode
+ * struct GroupNode - An element in a GroupList
  */
 struct GroupNode
 {

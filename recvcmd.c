@@ -732,7 +732,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
 
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   el_add_email(&el, e_cur);
-  ci_send_message(flags, e_tmp, *tmpbody ? tmpbody : NULL, NULL, &el);
+  ci_send_message(flags, e_tmp, (tmpbody[0] != '\0') ? tmpbody : NULL, NULL, &el);
   el_free(&el);
 }
 

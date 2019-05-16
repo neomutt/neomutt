@@ -836,8 +836,12 @@ static int braille_col = -1;
  */
 static int check_marker(const char *q, const char *p)
 {
-  for (; *p == *q && *q && *p && *q != '\a' && *p != '\a'; p++, q++)
-    ;
+  for (; (p[0] == q[0]) && (q[0] != '\0') && (p[0] != '\0') && (q[0] != '\a') &&
+         (p[0] != '\a');
+       p++, q++)
+  {
+  }
+
   return (int) (*p - *q);
 }
 
@@ -1055,8 +1059,9 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
       null_rx = false;
       STAILQ_FOREACH(color_line, head, entries)
       {
-        if (!color_line->stop_matching && (regexec(&color_line->regex, buf + offset, 1, pmatch,
-                                                   (offset ? REG_NOTBOL : 0)) == 0))
+        if (!color_line->stop_matching &&
+            (regexec(&color_line->regex, buf + offset, 1, pmatch,
+                     ((offset != 0) ? REG_NOTBOL : 0)) == 0))
         {
           if (pmatch[0].rm_eo != pmatch[0].rm_so)
           {
@@ -1133,7 +1138,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
       STAILQ_FOREACH(color_line, &ColorAttachList, entries)
       {
         if (regexec(&color_line->regex, buf + offset, 1, pmatch,
-                    (offset ? REG_NOTBOL : 0)) == 0)
+                    ((offset != 0) ? REG_NOTBOL : 0)) == 0)
         {
           if (pmatch[0].rm_eo != pmatch[0].rm_so)
           {
@@ -1318,24 +1323,24 @@ static int fill_buffer(FILE *fp, LOFF_T *last_pos, LOFF_T offset, unsigned char 
     q = *fmt;
     while (*p)
     {
-      if ((*p == '\010') && (p > *buf)) // Ctrl-H (backspace)
+      if ((p[0] == '\010') && (p > *buf)) // Ctrl-H (backspace)
       {
-        if (*(p + 1) == '_') /* underline */
+        if (p[1] == '_') /* underline */
           p += 2;
-        else if (*(p + 1) && (q > *fmt)) /* bold or overstrike */
+        else if ((p[1] != '\0') && (q > *fmt)) /* bold or overstrike */
         {
-          *(q - 1) = *(p + 1);
+          q[-1] = p[1];
           p += 2;
         }
         else /* ^H */
           *q++ = *p++;
       }
-      else if ((*p == '\033') && (*(p + 1) == '[') && is_ansi(p + 2)) // Escape
+      else if ((p[0] == '\033') && (p[1] == '[') && is_ansi(p + 2)) // Escape
       {
         while (*p++ != 'm') /* skip ANSI sequence */
           ;
       }
-      else if ((*p == '\033') && (*(p + 1) == ']') && // Escape
+      else if ((p[0] == '\033') && (p[1] == ']') && // Escape
                ((check_attachment_marker((char *) p) == 0) ||
                 (check_protected_header_marker((char *) p) == 0)))
       {
@@ -2232,7 +2237,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
  */
 int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct Pager *extra)
 {
-  static char searchbuf[256] = "";
+  static char searchbuf[256] = { 0 };
   char buf[1024];
   struct Buffer *helpstr = NULL;
   int ch = 0, rc = -1;

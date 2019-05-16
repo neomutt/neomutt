@@ -214,13 +214,12 @@ static bool dump_menu(struct Buffer *buf, struct Mapping *menu, bool bind)
  */
 static void dump_all_menus(struct Buffer *buf, bool bind)
 {
-  bool empty;
   for (int i = 0; i < MENU_MAX; i++)
   {
     const char *menu_name = mutt_map_get_name(i, Menus);
     struct Mapping menu = { menu_name, i };
 
-    empty = dump_menu(buf, &menu, bind);
+    const bool empty = dump_menu(buf, &menu, bind);
 
     /* Add a new line for readability between menus. */
     if (!empty && (i < (MENU_MAX - 1)))

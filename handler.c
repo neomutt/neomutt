@@ -215,14 +215,13 @@ static void decode_xbit(struct State *s, long len, bool istext, iconv_t cd)
 static int qp_decode_triple(char *s, char *d)
 {
   /* soft line break */
-  if ((*s == '=') && !(*(s + 1)))
+  if ((s[0] == '=') && (s[1] == '\0'))
     return 1;
 
   /* quoted-printable triple */
-  if ((*s == '=') && isxdigit((unsigned char) *(s + 1)) &&
-      isxdigit((unsigned char) *(s + 2)))
+  if ((s[0] == '=') && isxdigit((unsigned char) s[1]) && isxdigit((unsigned char) s[2]))
   {
-    *d = (hexval(*(s + 1)) << 4) | hexval(*(s + 2));
+    *d = (hexval(s[1]) << 4) | hexval(s[2]);
     return 0;
   }
 
@@ -330,7 +329,7 @@ static void decode_quoted(struct State *s, long len, bool istext, iconv_t cd)
 
     /* inspect the last character we read so we can tell if we got the
      * entire line.  */
-    const int last = linelen ? line[linelen - 1] : 0;
+    const int last = (linelen != 0) ? line[linelen - 1] : 0;
 
     /* chop trailing whitespace if we got the full line */
     if (last == '\n')
@@ -437,7 +436,8 @@ static bool is_mmnoask(const char *buf)
     return false;
 
   char *p = NULL;
-  char tmp[1024], *q = NULL;
+  char tmp[1024];
+  char *q = NULL;
 
   if (mutt_str_strcmp(val, "1") == 0)
     return true;
@@ -450,7 +450,7 @@ static bool is_mmnoask(const char *buf)
     q = strrchr(p, '/');
     if (q)
     {
-      if (*(q + 1) == '*')
+      if (q[1] == '*')
       {
         if (mutt_str_strncasecmp(buf, p, q - p) == 0)
           return true;
@@ -1794,7 +1794,7 @@ void mutt_decode_attachment(struct Body *b, struct State *s)
   if (istext && s->flags & MUTT_CHARCONV)
   {
     char *charset = mutt_param_get(&b->parameter, "charset");
-    if (!charset && C_AssumedCharset && *C_AssumedCharset)
+    if (!charset && C_AssumedCharset)
       charset = mutt_ch_get_default_charset();
     if (charset && C_Charset)
       cd = mutt_ch_iconv_open(C_Charset, charset, MUTT_ICONV_HOOK_FROM);

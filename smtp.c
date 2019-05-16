@@ -586,7 +586,7 @@ static int smtp_auth(struct Connection *conn)
 {
   int r = SMTP_AUTH_UNAVAIL;
 
-  if (C_SmtpAuthenticators && *C_SmtpAuthenticators)
+  if (C_SmtpAuthenticators)
   {
     char *methods = mutt_str_strdup(C_SmtpAuthenticators);
     char *method = NULL;

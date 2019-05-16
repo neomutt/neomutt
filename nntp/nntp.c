@@ -237,7 +237,7 @@ static int nntp_capabilities(struct NntpAccountData *adata)
   struct Connection *conn = adata->conn;
   bool mode_reader = false;
   char buf[1024];
-  char authinfo[1024] = "";
+  char authinfo[1024] = { 0 };
 
   adata->hasCAPABILITIES = false;
   adata->hasSTARTTLS = false;
@@ -412,7 +412,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
       adata->overview_fmt = mutt_str_strdup(OverviewFmt);
     else
     {
-      int cont = 0;
+      bool cont = false;
       size_t buflen = 2048, off = 0, b = 0;
 
       FREE(&adata->overview_fmt);
@@ -420,7 +420,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
 
       while (true)
       {
-        if (buflen - off < 1024)
+        if ((buflen - off) < 1024)
         {
           buflen *= 2;
           mutt_mem_realloc(&adata->overview_fmt, buflen);
@@ -437,9 +437,9 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
         if (!cont && (mutt_str_strcmp(".", adata->overview_fmt + off) == 0))
           break;
 
-        cont = (chunk >= (buflen - off)) ? 1 : 0;
+        cont = (chunk >= (buflen - off));
         off += strlen(adata->overview_fmt + off);
-        if (cont == 0)
+        if (!cont)
         {
           if (adata->overview_fmt[b] == ':')
           {
@@ -535,7 +535,7 @@ static int nntp_auth(struct NntpAccountData *adata)
     }
 
     /* get list of authenticators */
-    if (C_NntpAuthenticators && *C_NntpAuthenticators)
+    if (C_NntpAuthenticators)
       mutt_str_strfcpy(authenticators, C_NntpAuthenticators, sizeof(authenticators));
     else if (adata->hasCAPABILITIES)
     {
@@ -630,7 +630,7 @@ static int nntp_auth(struct NntpAccountData *adata)
         sasl_conn_t *saslconn = NULL;
         sasl_interact_t *interaction = NULL;
         int rc;
-        char inbuf[1024] = "";
+        char inbuf[1024] = { 0 };
         const char *mech = NULL;
         const char *client_out = NULL;
         unsigned int client_len, len;
@@ -1484,7 +1484,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
  */
 static int nntp_group_poll(struct NntpMboxData *mdata, bool update_stat)
 {
-  char buf[1024] = "";
+  char buf[1024] = { 0 };
   anum_t count, first, last;
 
   /* use GROUP command to poll newsgroup */
@@ -2626,7 +2626,7 @@ static int nntp_mbox_sync(struct Mailbox *m, int *index_hint)
     struct Email *e = m->emails[i];
     char buf[16];
 
-    snprintf(buf, sizeof(buf), "%d", nntp_edata_get(e)->article_num);
+    snprintf(buf, sizeof(buf), ANUM, nntp_edata_get(e)->article_num);
     if (mdata->bcache && e->deleted)
     {
       mutt_debug(LL_DEBUG2, "mutt_bcache_del %s\n", buf);
@@ -2668,7 +2668,8 @@ static int nntp_mbox_close(struct Mailbox *m)
   if (!m)
     return -1;
 
-  struct NntpMboxData *mdata = m->mdata, *tmp_mdata = NULL;
+  struct NntpMboxData *mdata = m->mdata;
+  struct NntpMboxData *tmp_mdata = NULL;
   if (!mdata)
     return 0;
 
@@ -2713,7 +2714,7 @@ static int nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
       FREE(&acache->path);
     }
   }
-  snprintf(article, sizeof(article), "%d", nntp_edata_get(e)->article_num);
+  snprintf(article, sizeof(article), ANUM, nntp_edata_get(e)->article_num);
   msg->fp = mutt_bcache_get(mdata->bcache, article);
   if (msg->fp)
   {

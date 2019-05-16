@@ -256,7 +256,7 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
   struct Entry *entry = (struct Entry *) data;
   struct Query *query = entry->data;
   char fmt[128];
-  char tmp[256] = "";
+  char tmp[256] = { 0 };
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   switch (op)
@@ -617,7 +617,7 @@ void mutt_query_menu(char *buf, size_t buflen)
 
   if (!buf)
   {
-    char tmp[256] = "";
+    char tmp[256] = { 0 };
 
     query_menu(tmp, sizeof(tmp), NULL, false);
   }

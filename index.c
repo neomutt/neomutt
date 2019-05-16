@@ -623,7 +623,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
   {
     // Try to see if the buffer matches a description before we bail.
     // We'll receive a non-null pointer if there is a corresponding mailbox.
-    m = mutt_find_mailbox_desc(buf);
+    m = mutt_mailbox_find_desc(buf);
     if (m)
     {
       magic = m->magic;
@@ -2227,7 +2227,7 @@ int mutt_index_menu(void)
         {
           mutt_buffer_strcpy(folderbuf, mutt_b2s(Context->mailbox->pathbuf));
           mutt_buffer_pretty_mailbox(folderbuf);
-          mutt_buffer_mailbox(Context ? Context->mailbox : NULL, folderbuf);
+          mutt_mailbox_next_buffer(Context ? Context->mailbox : NULL, folderbuf);
           if (mutt_buffer_is_empty(folderbuf))
           {
             mutt_error(_("No mailboxes have new mail"));
@@ -2273,7 +2273,7 @@ int mutt_index_menu(void)
           {
             /* By default, fill buf with the next mailbox that contains unread
              * mail */
-            mutt_buffer_mailbox(Context ? Context->mailbox : NULL, folderbuf);
+            mutt_mailbox_next_buffer(Context ? Context->mailbox : NULL, folderbuf);
           }
 
           if (mutt_buffer_enter_fname(cp, folderbuf, true) == -1)
@@ -3663,9 +3663,9 @@ void mutt_set_header_color(struct Mailbox *m, struct Email *e)
 }
 
 /**
- * mutt_reply_listener - Listen for config changes to "reply_regex" - Implements ::cs_listener()
+ * mutt_reply_observer - Listen for config changes to "reply_regex" - Implements ::cs_observer()
  */
-bool mutt_reply_listener(const struct ConfigSet *cs, struct HashElem *he,
+bool mutt_reply_observer(const struct ConfigSet *cs, struct HashElem *he,
                          const char *name, enum ConfigEvent ev)
 {
   if (mutt_str_strcmp(name, "reply_regex") != 0)

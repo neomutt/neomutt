@@ -997,7 +997,7 @@ void smime_class_getkeys(struct Envelope *env)
   struct Address *t = NULL;
   bool found = false;
 
-  if (C_SmimeDecryptUseDefaultKey && C_SmimeDefaultKey && *C_SmimeDefaultKey)
+  if (C_SmimeDecryptUseDefaultKey && C_SmimeDefaultKey)
   {
     snprintf(SmimeKeyToUse, sizeof(SmimeKeyToUse), "%s/%s", NONULL(C_SmimeKeys),
              C_SmimeDefaultKey);
@@ -1348,7 +1348,8 @@ static char *smime_extract_signer_certificate(char *infile)
  */
 void smime_class_invoke_import(char *infile, char *mailbox)
 {
-  char *certfile = NULL, buf[256];
+  char *certfile = NULL;
+  char buf[256];
   FILE *fp_smime_in = NULL;
 
   FILE *fp_err = mutt_file_mkstemp();
@@ -1419,7 +1420,8 @@ void smime_class_invoke_import(char *infile, char *mailbox)
  */
 int smime_class_verify_sender(struct Email *e)
 {
-  char *mbox = NULL, *certfile = NULL, tempfname[PATH_MAX];
+  char *mbox = NULL, *certfile = NULL;
+  char tempfname[PATH_MAX];
   int rc = 1;
 
   mutt_mktemp(tempfname, sizeof(tempfname));
@@ -1582,7 +1584,7 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
     {
       off = mutt_str_strlen(certfile);
       snprintf(certfile + off, sizeof(certfile) - off, "%s%s/%s",
-               off ? " " : "", NONULL(C_SmimeCertificates), cert_start);
+               (off != 0) ? " " : "", NONULL(C_SmimeCertificates), cert_start);
     }
     if (cert_end)
       *cert_end++ = ' ';
@@ -1699,7 +1701,7 @@ struct Body *smime_class_sign_message(struct Body *a)
   pid_t pid;
   char *intermediates = NULL;
 
-  char *signas = (C_SmimeSignAs && *C_SmimeSignAs) ? C_SmimeSignAs : C_SmimeDefaultKey;
+  char *signas = C_SmimeSignAs ? C_SmimeSignAs : C_SmimeDefaultKey;
   if (!signas || !*signas)
   {
     mutt_error(_("Can't sign: No key specified. Use Sign As."));

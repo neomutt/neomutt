@@ -566,8 +566,8 @@ int nntp_add_group(char *line, void *data)
 {
   struct NntpAccountData *adata = data;
   struct NntpMboxData *mdata = NULL;
-  char group[1024] = "";
-  char desc[8192] = "";
+  char group[1024] = { 0 };
+  char desc[8192] = { 0 };
   char mod;
   anum_t first, last;
 
@@ -726,7 +726,7 @@ void nntp_hcache_update(struct NntpMboxData *mdata, header_cache_t *hc)
   if (!hc)
     return;
 
-  char buf[16];
+  char buf[32];
   bool old = false;
   anum_t first = 0, last = 0;
 
@@ -1056,7 +1056,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
 
   /* try to create cache directory and enable caching */
   adata->cacheable = false;
-  if ((rc >= 0) && C_NewsCacheDir && *C_NewsCacheDir)
+  if ((rc >= 0) && C_NewsCacheDir)
   {
     cache_expand(file, sizeof(file), &conn->account, NULL);
     if (mutt_file_mkdir(file, S_IRWXU) < 0)

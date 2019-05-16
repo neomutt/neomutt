@@ -1246,7 +1246,7 @@ enum CommandResult mutt_parse_mono(struct Buffer *buf, struct Buffer *s,
  */
 static void mutt_free_color_list(struct ColorLineHead *head)
 {
-  struct ColorLine *np, *tmp;
+  struct ColorLine *np = NULL, *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, head, entries, tmp)
   {
     STAILQ_REMOVE(head, np, ColorLine, entries);

@@ -802,7 +802,7 @@ static size_t convert_file_to(FILE *fp, const char *fromcode, int ncodes,
     const char *ib = bufi;
     char *ob = bufu;
     size_t obl = sizeof(bufu);
-    n = iconv(cd1, (ICONV_CONST char **) (ibl ? &ib : 0), &ibl, &ob, &obl);
+    n = iconv(cd1, (ICONV_CONST char **) ((ibl != 0) ? &ib : 0), &ibl, &ob, &obl);
     /* assert(n == (size_t)(-1) || !n); */
     if ((n == (size_t)(-1)) && (((errno != EINVAL) && (errno != E2BIG)) || (ib == bufi)))
     {
@@ -1034,9 +1034,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
   if (b && (b->type == TYPE_TEXT) && (!b->noconv && !b->force_charset))
   {
     char *chs = mutt_param_get(&b->parameter, "charset");
-    char *fchs = b->use_disp ?
-                     ((C_AttachCharset && *C_AttachCharset) ? C_AttachCharset : C_Charset) :
-                     C_Charset;
+    char *fchs = b->use_disp ? (C_AttachCharset ? C_AttachCharset : C_Charset) : C_Charset;
     if (C_Charset && (chs || C_SendCharset) &&
         (convert_file_from_to(fp, fchs, chs ? chs : C_SendCharset, &fromcode,
                               &tocode, info) != (size_t)(-1)))
@@ -1572,7 +1570,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool a
  */
 static void run_mime_type_query(struct Body *att)
 {
-  FILE *fp, *fp_err;
+  FILE *fp = NULL, *fp_err = NULL;
   char *buf = NULL;
   size_t buflen;
   int dummy = 0;
@@ -1614,7 +1612,7 @@ struct Body *mutt_make_file_attach(const char *path)
   struct Body *att = mutt_body_new();
   att->filename = mutt_str_strdup(path);
 
-  if (C_MimeTypeQueryCommand && *C_MimeTypeQueryCommand && C_MimeTypeQueryFirst)
+  if (C_MimeTypeQueryCommand && C_MimeTypeQueryFirst)
     run_mime_type_query(att);
 
   /* Attempt to determine the appropriate content-type based on the filename
@@ -1622,7 +1620,7 @@ struct Body *mutt_make_file_attach(const char *path)
   if (!att->subtype)
     mutt_lookup_mime_type(att, path);
 
-  if (!att->subtype && C_MimeTypeQueryCommand && *C_MimeTypeQueryCommand && !C_MimeTypeQueryFirst)
+  if (!att->subtype && C_MimeTypeQueryCommand && !C_MimeTypeQueryFirst)
   {
     run_mime_type_query(att);
   }
@@ -1850,7 +1848,7 @@ void mutt_write_references(const struct ListHead *r, FILE *fp, size_t trim)
 static int print_val(FILE *fp, const char *pfx, const char *value,
                      CopyHeaderFlags chflags, size_t col)
 {
-  while (value && *value)
+  while (value && (value[0] != '\0'))
   {
     if (fputc(*value, fp) == EOF)
       return -1;
@@ -1864,13 +1862,13 @@ static int print_val(FILE *fp, const char *pfx, const char *value,
     }
     if (*value == '\n')
     {
-      if (*(value + 1) && pfx && *pfx && (fputs(pfx, fp) == EOF))
+      if ((value[1] != '\0') && pfx && (pfx[0] != '\0') && (fputs(pfx, fp) == EOF))
         return -1;
       /* for display, turn folding spaces into folding tabs */
-      if ((chflags & CH_DISPLAY) && ((*(value + 1) == ' ') || (*(value + 1) == '\t')))
+      if ((chflags & CH_DISPLAY) && ((value[1] == ' ') || (value[1] == '\t')))
       {
         value++;
-        while (*value && ((*value == ' ') || (*value == '\t')))
+        while ((value[0] != '\0') && ((value[0] == ' ') || (value[0] == '\t')))
           value++;
         if (fputc('\t', fp) == EOF)
           return -1;
@@ -1897,7 +1895,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
                            const char *pfx, int wraplen, CopyHeaderFlags chflags)
 {
   const char *p = value;
-  char buf[8192] = "";
+  char buf[8192] = { 0 };
   int first = 1, col = 0, l = 0;
   const bool display = (chflags & CH_DISPLAY);
 
@@ -1906,9 +1904,9 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
 
   if (tag && *tag && (fprintf(fp, "%s%s: ", NONULL(pfx), tag) < 0))
     return -1;
-  col = mutt_str_strlen(tag) + ((tag && *tag) ? 2 : 0) + mutt_str_strlen(pfx);
+  col = mutt_str_strlen(tag) + ((tag && (tag[0] != '\0')) ? 2 : 0) + mutt_str_strlen(pfx);
 
-  while (p && *p)
+  while (p && (p[0] != '\0'))
   {
     int fold = 0;
 
@@ -1929,7 +1927,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
     /* insert a folding \n before the current word's lwsp except for
      * header name, first word on a line (word longer than wrap width)
      * and encoded words */
-    if (!first && !enc && col && (col + w >= wraplen))
+    if (!first && !enc && col && ((col + w) >= wraplen))
     {
       col = mutt_str_strlen(pfx);
       fold = 1;
@@ -1942,7 +1940,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
     if (display && fold)
     {
       char *pc = buf;
-      while (*pc && ((*pc == ' ') || (*pc == '\t')))
+      while ((pc[0] != '\0') && ((pc[0] == ' ') || (pc[0] == '\t')))
       {
         pc++;
         col--;
@@ -1964,9 +1962,9 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
      * XXX this covers ASCII space only, for display we probably
      * want something like iswspace() here */
     const char *sp = next;
-    while (*sp && ((*sp == ' ') || (*sp == '\t')))
+    while ((sp[0] != '\0') && ((sp[0] == ' ') || (sp[0] == '\t')))
       sp++;
-    if (*sp == '\n')
+    if (sp[0] == '\n')
     {
       next = sp;
       col = 0;
@@ -1994,20 +1992,21 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
  */
 static char *unfold_header(char *s)
 {
-  char *p = s, *q = s;
+  char *p = s;
+  char *q = s;
 
-  while (p && *p)
+  while (p && (p[0] != '\0'))
   {
     /* remove CRLF prior to FWSP, turn \t into ' ' */
-    if ((*p == '\r') && *(p + 1) && (*(p + 1) == '\n') && *(p + 2) &&
-        ((*(p + 2) == ' ') || (*(p + 2) == '\t')))
+    if ((p[0] == '\r') && (p[1] != '\0') && (p[1] == '\n') && (p[2] != '\0') &&
+        ((p[2] == ' ') || (p[2] == '\t')))
     {
       *q++ = ' ';
       p += 3;
       continue;
     }
     /* remove LF prior to FWSP, turn \t into ' ' */
-    else if ((*p == '\n') && *(p + 1) && ((*(p + 1) == ' ') || (*(p + 1) == '\t')))
+    else if ((p[0] == '\n') && (p[1] != '\0') && ((p[1] == ' ') || (p[1] == '\t')))
     {
       *q++ = ' ';
       p += 2;
@@ -2016,7 +2015,7 @@ static char *unfold_header(char *s)
     *q++ = *p++;
   }
   if (q)
-    *q = '\0';
+    q[0] = '\0';
 
   return s;
 }
@@ -2128,7 +2127,8 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
 int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
                           const char *pfx, int wraplen, CopyHeaderFlags chflags)
 {
-  char *p = (char *) value, *last = NULL, *line = NULL;
+  char *p = (char *) value;
+  char *last = NULL, *line = NULL;
   int max = 0, w, rc = -1;
   int pfxw = mutt_strwidth(pfx);
   char *v = mutt_str_strdup(value);
@@ -3244,7 +3244,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     if (e->security & SEC_SIGN)
     {
       fputc('S', msg->fp);
-      if (C_PgpSignAs && *C_PgpSignAs)
+      if (C_PgpSignAs)
         fprintf(msg->fp, "<%s>", C_PgpSignAs);
     }
     if (e->security & SEC_INLINE)
@@ -3259,7 +3259,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     if (e->security & SEC_ENCRYPT)
     {
       fputc('E', msg->fp);
-      if (C_SmimeEncryptWith && *C_SmimeEncryptWith)
+      if (C_SmimeEncryptWith)
         fprintf(msg->fp, "C<%s>", C_SmimeEncryptWith);
     }
     if (e->security & SEC_OPPENCRYPT)
@@ -3267,7 +3267,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     if (e->security & SEC_SIGN)
     {
       fputc('S', msg->fp);
-      if (C_SmimeSignAs && *C_SmimeSignAs)
+      if (C_SmimeSignAs)
         fprintf(msg->fp, "<%s>", C_SmimeSignAs);
     }
     if (e->security & SEC_INLINE)

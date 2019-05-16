@@ -194,9 +194,9 @@ static void mutt_pgp_command(char *buf, size_t buflen,
  * @param[out] fp_pgp_in       stdin  for the command, or NULL (OPTIONAL)
  * @param[out] fp_pgp_out      stdout for the command, or NULL (OPTIONAL)
  * @param[out] fp_pgp_err      stderr for the command, or NULL (OPTIONAL)
- * @param[in]  pgpinfd         stdin  for the command, or -1 (OPTIONAL)
- * @param[in]  pgpoutfd        stdout for the command, or -1 (OPTIONAL)
- * @param[in]  pgperrfd        stderr for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_in       stdin  for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_out      stdout for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_err      stderr for the command, or -1 (OPTIONAL)
  * @param[in]  need_passphrase Is a passphrase needed?
  * @param[in]  fname           Filename to pass to the command
  * @param[in]  sig_fname       Signature filename to pass to the command
@@ -205,11 +205,11 @@ static void mutt_pgp_command(char *buf, size_t buflen,
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
- * @note `fp_pgp_in` has priority over `pgpinfd`.
+ * @note `fp_pgp_in` has priority over `fd_pgp_in`.
  *       Likewise `fp_pgp_out` and `fp_pgp_err`.
  */
 static pid_t pgp_invoke(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
-                        int pgpinfd, int pgpoutfd, int pgperrfd,
+                        int fd_pgp_in, int fd_pgp_out, int fd_pgp_err,
                         bool need_passphrase, const char *fname,
                         const char *sig_fname, const char *ids, const char *format)
 {
@@ -222,7 +222,7 @@ static pid_t pgp_invoke(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
   cctx.need_passphrase = need_passphrase;
   cctx.fname = fname;
   cctx.sig_fname = sig_fname;
-  if (C_PgpSignAs && *C_PgpSignAs)
+  if (C_PgpSignAs)
     cctx.signas = C_PgpSignAs;
   else
     cctx.signas = C_PgpDefaultKey;
@@ -230,8 +230,8 @@ static pid_t pgp_invoke(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
 
   mutt_pgp_command(cmd, sizeof(cmd), &cctx, format);
 
-  return mutt_create_filter_fd(cmd, fp_pgp_in, fp_pgp_out, fp_pgp_err, pgpinfd,
-                               pgpoutfd, pgperrfd);
+  return mutt_create_filter_fd(cmd, fp_pgp_in, fp_pgp_out, fp_pgp_err,
+                               fd_pgp_in, fd_pgp_out, fd_pgp_err);
 }
 
 /*
@@ -245,22 +245,22 @@ static pid_t pgp_invoke(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
  * @param[out] fp_pgp_in       stdin  for the command, or NULL (OPTIONAL)
  * @param[out] fp_pgp_out      stdout for the command, or NULL (OPTIONAL)
  * @param[out] fp_pgp_err      stderr for the command, or NULL (OPTIONAL)
- * @param[in]  pgpinfd         stdin  for the command, or -1 (OPTIONAL)
- * @param[in]  pgpoutfd        stdout for the command, or -1 (OPTIONAL)
- * @param[in]  pgperrfd        stderr for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_in       stdin  for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_out      stdout for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_err      stderr for the command, or -1 (OPTIONAL)
  * @param[in]  fname           Filename to pass to the command
  * @param[in]  need_passphrase Is a passphrase needed?
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
- * @note `fp_pgp_in` has priority over `pgpinfd`.
+ * @note `fp_pgp_in` has priority over `fd_pgp_in`.
  *       Likewise `fp_pgp_out` and `fp_pgp_err`.
  */
 pid_t pgp_invoke_decode(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
-                        int pgpinfd, int pgpoutfd, int pgperrfd,
+                        int fd_pgp_in, int fd_pgp_out, int fd_pgp_err,
                         const char *fname, bool need_passphrase)
 {
-  return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, pgpinfd, pgpoutfd, pgperrfd,
+  return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out, fd_pgp_err,
                     need_passphrase, fname, NULL, NULL, C_PgpDecodeCommand);
 }
 
@@ -269,23 +269,23 @@ pid_t pgp_invoke_decode(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
  * @param[out] fp_pgp_in  stdin  for the command, or NULL (OPTIONAL)
  * @param[out] fp_pgp_out stdout for the command, or NULL (OPTIONAL)
  * @param[out] fp_pgp_err stderr for the command, or NULL (OPTIONAL)
- * @param[in]  pgpinfd    stdin  for the command, or -1 (OPTIONAL)
- * @param[in]  pgpoutfd   stdout for the command, or -1 (OPTIONAL)
- * @param[in]  pgperrfd   stderr for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_in  stdin  for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_out stdout for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_err stderr for the command, or -1 (OPTIONAL)
  * @param[in]  fname      Filename to pass to the command
  * @param[in]  sig_fname  Signature filename to pass to the command
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
- * @note `fp_pgp_in` has priority over `pgpinfd`.
+ * @note `fp_pgp_in` has priority over `fd_pgp_in`.
  *       Likewise `fp_pgp_out` and `fp_pgp_err`.
  */
 pid_t pgp_invoke_verify(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
-                        int pgpinfd, int pgpoutfd, int pgperrfd,
+                        int fd_pgp_in, int fd_pgp_out, int fd_pgp_err,
                         const char *fname, const char *sig_fname)
 {
-  return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, pgpinfd, pgpoutfd,
-                    pgperrfd, false, fname, sig_fname, NULL, C_PgpVerifyCommand);
+  return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
+                    fd_pgp_err, false, fname, sig_fname, NULL, C_PgpVerifyCommand);
 }
 
 /**
@@ -293,21 +293,21 @@ pid_t pgp_invoke_verify(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
  * @param[out] fp_pgp_in  stdin  for the command, or NULL (OPTIONAL)
  * @param[out] fp_pgp_out stdout for the command, or NULL (OPTIONAL)
  * @param[out] fp_pgp_err stderr for the command, or NULL (OPTIONAL)
- * @param[in]  pgpinfd    stdin  for the command, or -1 (OPTIONAL)
- * @param[in]  pgpoutfd   stdout for the command, or -1 (OPTIONAL)
- * @param[in]  pgperrfd   stderr for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_in  stdin  for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_out stdout for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_err stderr for the command, or -1 (OPTIONAL)
  * @param[in]  fname      Filename to pass to the command
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
- * @note `fp_pgp_in` has priority over `pgpinfd`.
+ * @note `fp_pgp_in` has priority over `fd_pgp_in`.
  *       Likewise `fp_pgp_out` and `fp_pgp_err`.
  */
 pid_t pgp_invoke_decrypt(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
-                         int pgpinfd, int pgpoutfd, int pgperrfd, const char *fname)
+                         int fd_pgp_in, int fd_pgp_out, int fd_pgp_err, const char *fname)
 {
-  return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, pgpinfd, pgpoutfd,
-                    pgperrfd, true, fname, NULL, NULL, C_PgpDecryptCommand);
+  return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
+                    fd_pgp_err, true, fname, NULL, NULL, C_PgpDecryptCommand);
 }
 
 /**
@@ -315,21 +315,21 @@ pid_t pgp_invoke_decrypt(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
  * @param[out] fp_pgp_in  stdin  for the command, or NULL (OPTIONAL)
  * @param[out] fp_pgp_out stdout for the command, or NULL (OPTIONAL)
  * @param[out] fp_pgp_err stderr for the command, or NULL (OPTIONAL)
- * @param[in]  pgpinfd    stdin  for the command, or -1 (OPTIONAL)
- * @param[in]  pgpoutfd   stdout for the command, or -1 (OPTIONAL)
- * @param[in]  pgperrfd   stderr for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_in  stdin  for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_out stdout for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_err stderr for the command, or -1 (OPTIONAL)
  * @param[in]  fname      Filename to pass to the command
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
- * @note `fp_pgp_in` has priority over `pgpinfd`.
+ * @note `fp_pgp_in` has priority over `fd_pgp_in`.
  *       Likewise `fp_pgp_out` and `fp_pgp_err`.
  */
 pid_t pgp_invoke_sign(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
-                      int pgpinfd, int pgpoutfd, int pgperrfd, const char *fname)
+                      int fd_pgp_in, int fd_pgp_out, int fd_pgp_err, const char *fname)
 {
-  return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, pgpinfd, pgpoutfd,
-                    pgperrfd, true, fname, NULL, NULL, C_PgpSignCommand);
+  return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
+                    fd_pgp_err, true, fname, NULL, NULL, C_PgpSignCommand);
 }
 
 /**
@@ -337,31 +337,31 @@ pid_t pgp_invoke_sign(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
  * @param[out] fp_pgp_in  stdin  for the command, or NULL (OPTIONAL)
  * @param[out] fp_pgp_out stdout for the command, or NULL (OPTIONAL)
  * @param[out] fp_pgp_err stderr for the command, or NULL (OPTIONAL)
- * @param[in]  pgpinfd    stdin  for the command, or -1 (OPTIONAL)
- * @param[in]  pgpoutfd   stdout for the command, or -1 (OPTIONAL)
- * @param[in]  pgperrfd   stderr for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_in  stdin  for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_out stdout for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_err stderr for the command, or -1 (OPTIONAL)
  * @param[in]  fname      Filename to pass to the command
  * @param[in]  uids       List of IDs/fingerprints, space separated
  * @param[in]  sign       If true, also sign the file
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
- * @note `fp_pgp_in` has priority over `pgpinfd`.
+ * @note `fp_pgp_in` has priority over `fd_pgp_in`.
  *       Likewise `fp_pgp_out` and `fp_pgp_err`.
  */
 pid_t pgp_invoke_encrypt(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
-                         int pgpinfd, int pgpoutfd, int pgperrfd,
+                         int fd_pgp_in, int fd_pgp_out, int fd_pgp_err,
                          const char *fname, const char *uids, bool sign)
 {
   if (sign)
   {
-    return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, pgpinfd, pgpoutfd,
-                      pgperrfd, true, fname, NULL, uids, C_PgpEncryptSignCommand);
+    return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
+                      fd_pgp_err, true, fname, NULL, uids, C_PgpEncryptSignCommand);
   }
   else
   {
-    return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, pgpinfd, pgpoutfd,
-                      pgperrfd, false, fname, NULL, uids, C_PgpEncryptOnlyCommand);
+    return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
+                      fd_pgp_err, false, fname, NULL, uids, C_PgpEncryptOnlyCommand);
   }
 }
 
@@ -370,32 +370,32 @@ pid_t pgp_invoke_encrypt(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
  * @param[out] fp_pgp_in  stdin  for the command, or NULL (OPTIONAL)
  * @param[out] fp_pgp_out stdout for the command, or NULL (OPTIONAL)
  * @param[out] fp_pgp_err stderr for the command, or NULL (OPTIONAL)
- * @param[in]  pgpinfd    stdin  for the command, or -1 (OPTIONAL)
- * @param[in]  pgpoutfd   stdout for the command, or -1 (OPTIONAL)
- * @param[in]  pgperrfd   stderr for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_in  stdin  for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_out stdout for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_err stderr for the command, or -1 (OPTIONAL)
  * @param[in]  fname      Filename to pass to the command
  * @param[in]  uids       List of IDs/fingerprints, space separated
  * @param[in]  flags      Flags, see #SecurityFlags
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
- * @note `fp_pgp_in` has priority over `pgpinfd`.
+ * @note `fp_pgp_in` has priority over `fd_pgp_in`.
  *       Likewise `fp_pgp_out` and `fp_pgp_err`.
  */
 pid_t pgp_invoke_traditional(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
-                             int pgpinfd, int pgpoutfd, int pgperrfd,
+                             int fd_pgp_in, int fd_pgp_out, int fd_pgp_err,
                              const char *fname, const char *uids, SecurityFlags flags)
 {
   if (flags & SEC_ENCRYPT)
   {
-    return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, pgpinfd, pgpoutfd,
-                      pgperrfd, (flags & SEC_SIGN), fname, NULL, uids,
+    return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
+                      fd_pgp_err, (flags & SEC_SIGN), fname, NULL, uids,
                       (flags & SEC_SIGN) ? C_PgpEncryptSignCommand : C_PgpEncryptOnlyCommand);
   }
   else
   {
-    return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, pgpinfd, pgpoutfd,
-                      pgperrfd, true, fname, NULL, NULL, C_PgpClearsignCommand);
+    return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
+                      fd_pgp_err, true, fname, NULL, NULL, C_PgpClearsignCommand);
   }
 }
 
@@ -411,7 +411,7 @@ void pgp_class_invoke_import(const char *fname)
 
   mutt_buffer_quote_filename(buf_fname, fname, true);
   cctx.fname = mutt_b2s(buf_fname);
-  if (C_PgpSignAs && *C_PgpSignAs)
+  if (C_PgpSignAs)
     cctx.signas = C_PgpSignAs;
   else
     cctx.signas = C_PgpDefaultKey;
@@ -475,21 +475,21 @@ void pgp_class_invoke_getkeys(struct Address *addr)
  * @param[out] fp_pgp_in  stdin  for the command, or NULL (OPTIONAL)
  * @param[out] fp_pgp_out stdout for the command, or NULL (OPTIONAL)
  * @param[out] fp_pgp_err stderr for the command, or NULL (OPTIONAL)
- * @param[in]  pgpinfd    stdin  for the command, or -1 (OPTIONAL)
- * @param[in]  pgpoutfd   stdout for the command, or -1 (OPTIONAL)
- * @param[in]  pgperrfd   stderr for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_in  stdin  for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_out stdout for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_err stderr for the command, or -1 (OPTIONAL)
  * @param[in]  uids       List of IDs/fingerprints, space separated
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
- * @note `fp_pgp_in` has priority over `pgpinfd`.
+ * @note `fp_pgp_in` has priority over `fd_pgp_in`.
  *       Likewise `fp_pgp_out` and `fp_pgp_err`.
  */
 pid_t pgp_invoke_export(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
-                        int pgpinfd, int pgpoutfd, int pgperrfd, const char *uids)
+                        int fd_pgp_in, int fd_pgp_out, int fd_pgp_err, const char *uids)
 {
-  return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, pgpinfd, pgpoutfd,
-                    pgperrfd, false, NULL, NULL, uids, C_PgpExportCommand);
+  return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
+                    fd_pgp_err, false, NULL, NULL, uids, C_PgpExportCommand);
 }
 
 /**
@@ -497,21 +497,21 @@ pid_t pgp_invoke_export(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
  * @param[out] fp_pgp_in  stdin  for the command, or NULL (OPTIONAL)
  * @param[out] fp_pgp_out stdout for the command, or NULL (OPTIONAL)
  * @param[out] fp_pgp_err stderr for the command, or NULL (OPTIONAL)
- * @param[in]  pgpinfd    stdin  for the command, or -1 (OPTIONAL)
- * @param[in]  pgpoutfd   stdout for the command, or -1 (OPTIONAL)
- * @param[in]  pgperrfd   stderr for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_in  stdin  for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_out stdout for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_err stderr for the command, or -1 (OPTIONAL)
  * @param[in]  uids       List of IDs/fingerprints, space separated
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
- * @note `fp_pgp_in` has priority over `pgpinfd`.
+ * @note `fp_pgp_in` has priority over `fd_pgp_in`.
  *       Likewise `fp_pgp_out` and `fp_pgp_err`.
  */
 pid_t pgp_invoke_verify_key(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
-                            int pgpinfd, int pgpoutfd, int pgperrfd, const char *uids)
+                            int fd_pgp_in, int fd_pgp_out, int fd_pgp_err, const char *uids)
 {
-  return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, pgpinfd, pgpoutfd,
-                    pgperrfd, false, NULL, NULL, uids, C_PgpVerifyKeyCommand);
+  return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
+                    fd_pgp_err, false, NULL, NULL, uids, C_PgpVerifyKeyCommand);
 }
 
 /**
@@ -519,19 +519,19 @@ pid_t pgp_invoke_verify_key(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_e
  * @param[out] fp_pgp_in  stdin  for the command, or NULL (OPTIONAL)
  * @param[out] fp_pgp_out stdout for the command, or NULL (OPTIONAL)
  * @param[out] fp_pgp_err stderr for the command, or NULL (OPTIONAL)
- * @param[in]  pgpinfd    stdin  for the command, or -1 (OPTIONAL)
- * @param[in]  pgpoutfd   stdout for the command, or -1 (OPTIONAL)
- * @param[in]  pgperrfd   stderr for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_in  stdin  for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_out stdout for the command, or -1 (OPTIONAL)
+ * @param[in]  fd_pgp_err stderr for the command, or -1 (OPTIONAL)
  * @param[in]  keyring    Keyring type, e.g. #PGP_SECRING
  * @param[in]  hints      Match keys to these strings
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
- * @note `fp_pgp_in` has priority over `pgpinfd`.
+ * @note `fp_pgp_in` has priority over `fd_pgp_in`.
  *       Likewise `fp_pgp_out` and `fp_pgp_err`.
  */
 pid_t pgp_invoke_list_keys(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
-                           int pgpinfd, int pgpoutfd, int pgperrfd,
+                           int fd_pgp_in, int fd_pgp_out, int fd_pgp_err,
                            enum PgpRing keyring, struct ListHead *hints)
 {
   struct Buffer *uids = mutt_buffer_pool_get();
@@ -546,8 +546,8 @@ pid_t pgp_invoke_list_keys(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_er
       mutt_buffer_addch(uids, ' ');
   }
 
-  pid_t rc = pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, pgpinfd, pgpoutfd,
-                        pgperrfd, 0, NULL, NULL, mutt_b2s(uids),
+  pid_t rc = pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in,
+                        fd_pgp_out, fd_pgp_err, 0, NULL, NULL, mutt_b2s(uids),
                         (keyring == PGP_SECRING) ? C_PgpListSecringCommand :
                                                    C_PgpListPubringCommand);
 

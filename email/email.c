@@ -112,3 +112,23 @@ size_t mutt_email_size(const struct Email *e)
     return 0;
   return e->content->length + e->content->offset - e->content->hdr_offset;
 }
+
+/**
+ * el_free - Drop a private list of Emails
+ * @param el EmailList to empty
+ *
+ * The Emails are not freed.
+ */
+void el_free(struct EmailList *el)
+{
+  if (!el)
+    return;
+
+  struct EmailNode *en = NULL, *tmp = NULL;
+  STAILQ_FOREACH_SAFE(en, el, entries, tmp)
+  {
+    STAILQ_REMOVE(el, en, EmailNode, entries);
+    FREE(&en);
+  }
+  STAILQ_INIT(el);
+}

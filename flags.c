@@ -375,7 +375,8 @@ void mutt_emails_set_flag(struct Mailbox *m, struct EmailList *el, int flag, boo
  */
 int mutt_thread_set_flag(struct Email *e, int flag, bool bf, bool subthread)
 {
-  struct MuttThread *start = NULL, *cur = e->thread;
+  struct MuttThread *start = NULL;
+  struct MuttThread *cur = e->thread;
 
   if ((C_Sort & SORT_MASK) != SORT_THREADS)
   {
@@ -430,13 +431,13 @@ done:
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_change_flag(struct Mailbox *m, struct EmailList *el, int bf)
+int mutt_change_flag(struct Mailbox *m, struct EmailList *el, bool bf)
 {
   if (!m || !el || STAILQ_EMPTY(el))
     return -1;
 
   int flag;
-  struct Event event;
+  struct KeyEvent event;
 
   mutt_window_mvprintw(MuttMessageWindow, 0, 0,
                        "%s? (D/N/O/r/*/!): ", bf ? _("Set flag") : _("Clear flag"));

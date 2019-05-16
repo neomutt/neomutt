@@ -372,7 +372,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
                                      const char *if_str, const char *else_str,
                                      unsigned long data, MuttFormatFlags flags)
 {
-  char fn[128], fmt[128], permission[11];
+  char fn[128], fmt[128];
   struct Folder *folder = (struct Folder *) data;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
@@ -437,6 +437,8 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
       break;
     }
     case 'F':
+    {
+      char permission[11];
       if (folder->ff->local)
       {
         snprintf(permission, sizeof(permission), "%c%c%c%c%c%c%c%c%c%c",
@@ -470,6 +472,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
       else
         mutt_format_s(buf, buflen, prec, "");
       break;
+    }
 
     case 'g':
       if (folder->ff->local)
@@ -1038,7 +1041,7 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
    * properly when the user is in examine_mailboxes-mode.  */
   if (mutt_str_startswith(mutt_b2s(LastDirBackup), mutt_b2s(LastDir), CASE_MATCH))
   {
-    char target_dir[PATH_MAX] = "";
+    char target_dir[PATH_MAX] = { 0 };
 
 #ifdef USE_IMAP
     /* Check what kind of dir LastDirBackup is. */
@@ -1139,7 +1142,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
   /* Keeps in memory the directory we were in when hitting '='
    * to go directly to $folder (#C_Folder) */
-  char goto_swapper[PATH_MAX] = "";
+  char goto_swapper[PATH_MAX] = { 0 };
 
   mailbox = mailbox && folder;
 
@@ -1336,7 +1339,6 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
   if (multiple)
     menu->menu_tag = file_tag;
 
-  menu->menu_make_entry = folder_make_entry;
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_FOLDER,
 #ifdef USE_NNTP
                                  OptNews ? FolderNewsHelp :

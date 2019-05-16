@@ -471,7 +471,8 @@ const char *mutt_get_func(const struct Binding *bindings, int op)
  */
 static void generic_tokenize_push_string(char *s, void (*generic_push)(int, int))
 {
-  char *pp = NULL, *p = s + mutt_str_strlen(s) - 1;
+  char *pp = NULL;
+  char *p = s + mutt_str_strlen(s) - 1;
   size_t l;
   int i, op = OP_NULL;
 
@@ -568,7 +569,7 @@ static int retry_generic(int menu, keycode_t *keys, int keyslen, int lastkey)
  */
 int km_dokey(int menu)
 {
-  struct Event tmp;
+  struct KeyEvent tmp;
   struct Keymap *map = Keymaps[menu];
   int pos = 0;
   int n = 0;
@@ -729,7 +730,7 @@ static void create_bindings(const struct Binding *map, int menu)
  */
 static const char *km_keyname(int c)
 {
-  static char buf[10];
+  static char buf[35];
 
   const char *p = mutt_map_get_name(c, KeyNames);
   if (p)

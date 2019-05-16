@@ -166,7 +166,8 @@ static struct Remailer **mix_type2_list(size_t *l)
   char line[8192];
   char *t = NULL;
 
-  struct Remailer **type2_list = NULL, *p = NULL;
+  struct Remailer **type2_list = NULL;
+  struct Remailer *p = NULL;
   size_t slots = 0, used = 0;
 
   int fd_null = open("/dev/null", O_RDWR);
@@ -833,7 +834,7 @@ int mix_send_message(struct ListHead *chain, const char *tempfile)
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, chain, entries)
   {
-    mutt_buffer_addstr(cmd, i ? "," : " -l ");
+    mutt_buffer_addstr(cmd, (i != 0) ? "," : " -l ");
     mutt_buffer_quote_filename(cd_quoted, (char *) np->data, true);
     mutt_buffer_addstr(cmd, mutt_b2s(cd_quoted));
     i = 1;

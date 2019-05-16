@@ -20,6 +20,9 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _TEST_MD5_COMMON_H
+#define _TEST_MD5_COMMON_H
+
 #define TEST_NO_MAIN
 #include "acutest.h"
 #include "mutt/mutt.h"
@@ -32,3 +35,4 @@ struct Md5TestData
 
 extern const struct Md5TestData md5_test_data[];
 
+#endif /* _TEST_MD5_COMMON_H */

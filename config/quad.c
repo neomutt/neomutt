@@ -242,6 +242,6 @@ int quad_he_toggle(struct ConfigSet *cs, struct HashElem *he, struct Buffer *err
 
   *(char *) var = quad_toggle(value);
 
-  cs_notify_listeners(cs, he, he->key.strkey, CE_SET);
+  cs_notify_observers(cs, he, he->key.strkey, CE_SET);
   return CSR_SUCCESS;
 }

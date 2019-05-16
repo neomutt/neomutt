@@ -129,7 +129,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
   if (!m)
     return src;
 
-  int c = Context && (mutt_str_strcmp(Context->mailbox->realpath, m->realpath) == 0);
+  bool c = Context && (mutt_str_strcmp(Context->mailbox->realpath, m->realpath) == 0);
 
   optional = flags & MUTT_FORMAT_OPTIONAL;
 
@@ -889,7 +889,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
 
     /* calculate depth of current folder and generate its display name with indented spaces */
     int sidebar_folder_depth = 0;
-    const char *sidebar_folder_name;
+    const char *sidebar_folder_name = NULL;
     struct Buffer *short_folder_name = NULL;
     if (C_SidebarShortPath)
     {

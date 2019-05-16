@@ -1309,9 +1309,11 @@ static int ssl_setup(struct Connection *conn)
 
 free_ssl:
   SSL_free(ssldata->ssl);
+  ssldata->ssl = NULL;
   ssldata->ssl = 0;
 free_ctx:
   SSL_CTX_free(ssldata->sctx);
+  ssldata->sctx = NULL;
   ssldata->sctx = 0;
 free_sasldata:
   FREE(&ssldata);
@@ -1392,7 +1394,9 @@ static int ssl_socket_close(struct Connection *conn)
     /* hold onto this for the life of neomutt, in case we want to reconnect.
      * The purist in me wants a mutt_exit hook. */
     SSL_free(data->ssl);
+    data->ssl = NULL;
     SSL_CTX_free(data->sctx);
+    data->sctx = NULL;
     FREE(&conn->sockdata);
   }
 

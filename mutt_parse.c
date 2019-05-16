@@ -190,7 +190,7 @@ static int count_body_parts(struct Body *body, int flags)
 
     if (shallcount)
       count++;
-    bp->attach_qualifies = shallcount ? true : false;
+    bp->attach_qualifies = shallcount;
 
     mutt_debug(LL_DEBUG3, "%p shallcount = %d\n", (void *) bp, shallcount);
 

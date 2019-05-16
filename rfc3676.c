@@ -56,7 +56,7 @@ struct FlowedState
 {
   size_t width;
   size_t spaces;
-  int delsp;
+  bool delsp;
 };
 
 /**
@@ -316,7 +316,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
 {
   char *buf = NULL;
   unsigned int quotelevel = 0;
-  int delsp = 0;
+  bool delsp = false;
   size_t sz = 0;
   struct FlowedState fst = { 0 };
 
@@ -324,9 +324,9 @@ int rfc3676_handler(struct Body *a, struct State *s)
   char *t = mutt_param_get(&a->parameter, "delsp");
   if (t)
   {
-    delsp = mutt_str_strcasecmp(t, "yes") == 0;
+    delsp = (mutt_str_strcasecmp(t, "yes") == 0);
     t = NULL;
-    fst.delsp = 1;
+    fst.delsp = true;
   }
 
   mutt_debug(LL_DEBUG3, "f=f: DelSp: %s\n", delsp ? "yes" : "no");

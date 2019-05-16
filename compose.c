@@ -341,7 +341,7 @@ static void redraw_crypt_lines(struct Email *msg)
   }
 
   if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME) &&
-      (msg->security & SEC_ENCRYPT) && C_SmimeEncryptWith && *C_SmimeEncryptWith)
+      (msg->security & SEC_ENCRYPT) && C_SmimeEncryptWith)
   {
     SET_COLOR(MT_COLOR_COMPOSE_HEADER);
     mutt_window_mvprintw(MuttIndexWindow, HDR_CRYPTINFO, 40, "%s", _("Encrypt with: "));
@@ -517,7 +517,7 @@ static void draw_envelope(struct Email *msg, char *fcc)
  */
 static void edit_address_list(int line, struct Address **addr)
 {
-  char buf[8192] = ""; /* needs to be large for alias expansion */
+  char buf[8192] = { 0 }; /* needs to be large for alias expansion */
   char *err = NULL;
 
   mutt_addrlist_to_local(*addr);

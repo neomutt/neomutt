@@ -548,7 +548,8 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *fp_out)
 static int inline_forward_attachments(struct Mailbox *m, struct Email *cur,
                                       struct Body ***plast, int *forwardq)
 {
-  struct Body **last = *plast, *body = NULL;
+  struct Body **last = *plast;
+  struct Body *body = NULL;
   struct Message *msg = NULL;
   struct AttachCtx *actx = NULL;
   int rc = 0, i;
@@ -624,7 +625,7 @@ cleanup:
 int mutt_inline_forward(struct Mailbox *m, struct Email *msg, struct Email *cur, FILE *out)
 {
   int i, forwardq = -1;
-  struct Body **last;
+  struct Body **last = NULL;
 
   if (cur)
     include_forward(m, cur, out);
@@ -1753,7 +1754,7 @@ static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, Sen
   char *encrypt_as = NULL;
   struct Body *clear_content = NULL;
 
-  if (!(C_Postponed && *C_Postponed))
+  if (!C_Postponed)
   {
     mutt_error(_("Can't postpone.  $postponed is unset"));
     return -1;
@@ -1846,7 +1847,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
                     struct Context *ctx, struct EmailList *el)
 {
   char buf[1024];
-  char fcc[PATH_MAX] = ""; /* where to copy this message */
+  char fcc[PATH_MAX] = { 0 }; /* where to copy this message */
   FILE *fp_tmp = NULL;
   struct Body *pbody = NULL;
   int i;

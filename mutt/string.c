@@ -154,7 +154,7 @@ typedef bool (*char_cmp)(char, char);
  */
 static char_cmp get_char_cmp(enum CaseSensitivity cs)
 {
-  return cs == CASE_IGNORE ? char_cmp_lower : char_cmp_identity;
+  return (cs == CASE_IGNORE) ? char_cmp_lower : char_cmp_identity;
 }
 
 /**
@@ -983,7 +983,7 @@ int mutt_str_word_casecmp(const char *a, const char *b)
       return 0;
   }
 
-  char tmp[128] = "";
+  char tmp[128] = { 0 };
 
   int i;
   for (i = 0; i < (sizeof(tmp) - 2); i++, b++)

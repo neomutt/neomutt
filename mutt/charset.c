@@ -425,7 +425,7 @@ char *mutt_ch_get_default_charset(void)
  */
 char *mutt_ch_get_langinfo_charset(void)
 {
-  char buf[1024] = "";
+  char buf[1024] = { 0 };
 
   mutt_ch_canonical_charset(buf, sizeof(buf), nl_langinfo(CODESET));
 

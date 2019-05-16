@@ -60,7 +60,7 @@ void mutt_envlist_init(char *envp[])
   if (!envp)
     return;
 
-  char **src, **dst;
+  char **src = NULL, **dst = NULL;
   int count = 0;
   for (src = envp; src && *src; src++)
     count++;
@@ -162,7 +162,7 @@ bool mutt_envlist_unset(const char *name)
  * mutt_envlist_getlist - Get the private environment
  * @retval ptr Array of strings
  *
- * @note: The caller must not free the strings
+ * @note The caller must not free the strings
  */
 char **mutt_envlist_getlist(void)
 {

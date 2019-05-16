@@ -558,22 +558,22 @@ static int get_limit(struct NmMboxData *mdata)
  */
 static void apply_exclude_tags(notmuch_query_t *query)
 {
-  if (!C_NmExcludeTags || !*C_NmExcludeTags)
+  if (!C_NmExcludeTags || !query)
     return;
 
   char *end = NULL, *tag = NULL;
 
   char *buf = mutt_str_strdup(C_NmExcludeTags);
 
-  for (char *p = buf; p && *p; p++)
+  for (char *p = buf; p && (p[0] != '\0'); p++)
   {
     if (!tag && isspace(*p))
       continue;
     if (!tag)
       tag = p; /* begin of the tag */
-    if ((*p == ',') || (*p == ' '))
+    if ((p[0] == ',') || (p[0] == ' '))
       end = p; /* terminate the tag */
-    else if (*(p + 1) == '\0')
+    else if (p[1] == '\0')
       end = p + 1; /* end of optstr */
     if (!tag || !end)
       continue;
@@ -1264,23 +1264,23 @@ static int update_tags(notmuch_message_t *msg, const char *tags)
       continue;
     if (!tag)
       tag = p; /* begin of the tag */
-    if ((*p == ',') || (*p == ' '))
+    if ((p[0] == ',') || (p[0] == ' '))
       end = p; /* terminate the tag */
-    else if (*(p + 1) == '\0')
+    else if (p[1] == '\0')
       end = p + 1; /* end of optstr */
     if (!tag || !end)
       continue;
     if (tag >= end)
       break;
 
-    *end = '\0';
+    end[0] = '\0';
 
-    if (*tag == '-')
+    if (tag[0] == '-')
     {
       mutt_debug(LL_DEBUG1, "nm: remove tag: '%s'\n", tag + 1);
       notmuch_message_remove_tag(msg, tag + 1);
     }
-    else if (*tag == '!')
+    else if (tag[0] == '!')
     {
       mutt_debug(LL_DEBUG1, "nm: toggle tag: '%s'\n", tag + 1);
       if (nm_message_has_tag(msg, tag + 1))
@@ -1294,8 +1294,8 @@ static int update_tags(notmuch_message_t *msg, const char *tags)
     }
     else
     {
-      mutt_debug(LL_DEBUG1, "nm: add tag: '%s'\n", (*tag == '+') ? tag + 1 : tag);
-      notmuch_message_add_tag(msg, (*tag == '+') ? tag + 1 : tag);
+      mutt_debug(LL_DEBUG1, "nm: add tag: '%s'\n", (tag[0] == '+') ? tag + 1 : tag);
+      notmuch_message_add_tag(msg, (tag[0] == '+') ? tag + 1 : tag);
     }
     end = NULL;
     tag = NULL;
@@ -1331,20 +1331,20 @@ static int update_email_flags(struct Mailbox *m, struct Email *e, const char *ta
       continue;
     if (!tag)
       tag = p; /* begin of the tag */
-    if ((*p == ',') || (*p == ' '))
+    if ((p[0] == ',') || (p[0] == ' '))
       end = p; /* terminate the tag */
-    else if (*(p + 1) == '\0')
+    else if (p[1] == '\0')
       end = p + 1; /* end of optstr */
     if (!tag || !end)
       continue;
     if (tag >= end)
       break;
 
-    *end = '\0';
+    end[0] = '\0';
 
-    if (*tag == '-')
+    if (tag[0] == '-')
     {
-      tag = tag + 1;
+      tag++;
       if (strcmp(tag, C_NmUnreadTag) == 0)
         mutt_set_flag(m, e, MUTT_READ, true);
       else if (strcmp(tag, C_NmRepliedTag) == 0)
@@ -1354,7 +1354,7 @@ static int update_email_flags(struct Mailbox *m, struct Email *e, const char *ta
     }
     else
     {
-      tag = (*tag == '+') ? tag + 1 : tag;
+      tag = (tag[0] == '+') ? tag + 1 : tag;
       if (strcmp(tag, C_NmUnreadTag) == 0)
         mutt_set_flag(m, e, MUTT_READ, false);
       else if (strcmp(tag, C_NmRepliedTag) == 0)
@@ -2161,12 +2161,12 @@ int nm_ac_add(struct Account *a, struct Mailbox *m)
   if (!a || !m || (m->magic != MUTT_NOTMUCH))
     return -1;
 
-  if (!a->adata)
-  {
-    struct NmAccountData *adata = nm_adata_new();
-    a->adata = adata;
-    a->free_adata = nm_adata_free;
-  }
+  if (a->adata)
+    return 0;
+
+  struct NmAccountData *adata = nm_adata_new();
+  a->adata = adata;
+  a->free_adata = nm_adata_free;
 
   return 0;
 }

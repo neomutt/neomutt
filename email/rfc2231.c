@@ -67,7 +67,7 @@ struct Rfc2231Parameter
  */
 static void purge_empty_parameters(struct ParameterList *p)
 {
-  struct Parameter *np, *tmp;
+  struct Parameter *np = NULL, *tmp = NULL;
   TAILQ_FOREACH_SAFE(np, p, entries, tmp)
   {
     if (!np->attribute || !np->value)
@@ -115,10 +115,10 @@ static void decode_one(char *dest, char *src)
 
   for (d = dest; *src; src++)
   {
-    if ((*src == '%') && isxdigit((unsigned char) *(src + 1)) &&
-        isxdigit((unsigned char) *(src + 2)))
+    if ((src[0] == '%') && isxdigit((unsigned char) src[1]) &&
+        isxdigit((unsigned char) src[2]))
     {
-      *d++ = (hexval(*(src + 1)) << 4) | (hexval(*(src + 2)));
+      *d++ = (hexval(src[1]) << 4) | hexval(src[2]);
       src += 2;
     }
     else
@@ -251,7 +251,7 @@ void rfc2231_decode_parameters(struct ParameterList *p)
 
   purge_empty_parameters(p);
 
-  struct Parameter *np, *tmp;
+  struct Parameter *np = NULL, *tmp = NULL;
   TAILQ_FOREACH_SAFE(np, p, entries, tmp)
   {
     s = strchr(np->attribute, '*');
@@ -264,12 +264,12 @@ void rfc2231_decode_parameters(struct ParameterList *p)
 
       if (C_Rfc2047Parameters && np->value && strstr(np->value, "=?"))
         rfc2047_decode(&np->value);
-      else if (C_AssumedCharset && *C_AssumedCharset)
+      else if (C_AssumedCharset)
         mutt_ch_convert_nonmime_string(&np->value);
     }
-    else if (*(s + 1) == '\0')
+    else if (s[1] == '\0')
     {
-      *s = '\0';
+      s[0] = '\0';
 
       s = get_charset(np->value, charset, sizeof(charset));
       decode_one(np->value, s);
@@ -279,12 +279,12 @@ void rfc2231_decode_parameters(struct ParameterList *p)
     }
     else
     {
-      *s = '\0';
+      s[0] = '\0';
       s++; /* let s point to the first character of index. */
-      for (t = s; *t && isdigit((unsigned char) *t); t++)
+      for (t = s; (t[0] != '\0') && isdigit((unsigned char) t[0]); t++)
         ;
-      encoded = (*t == '*');
-      *t = '\0';
+      encoded = (t[0] == '*');
+      t[0] = '\0';
 
       /* RFC2231 says that the index starts at 0 and increments by 1,
        * thus an overflow should never occur in a valid message, thus

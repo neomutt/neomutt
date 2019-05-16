@@ -500,7 +500,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
       rfc2047_encode(&temp_hdr, NULL, sizeof("X-Label:"), C_SendCharset);
     }
     if (mutt_write_one_header(
-            fp_out, "X-Label", temp_hdr, chflags & CH_PREFIX ? prefix : 0,
+            fp_out, "X-Label", temp_hdr, (chflags & CH_PREFIX) ? prefix : 0,
             mutt_window_wrap_cols(MuttIndexWindow, C_Wrap), chflags) == -1)
     {
       return -1;
@@ -520,7 +520,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
       rfc2047_encode(&temp_hdr, NULL, sizeof("Subject:"), C_SendCharset);
     }
     if (mutt_write_one_header(
-            fp_out, "Subject", temp_hdr, chflags & CH_PREFIX ? prefix : 0,
+            fp_out, "Subject", temp_hdr, (chflags & CH_PREFIX) ? prefix : 0,
             mutt_window_wrap_cols(MuttIndexWindow, C_Wrap), chflags) == -1)
       return -1;
     if (!(chflags & CH_DECODE))
@@ -844,7 +844,7 @@ static int append_message(struct Mailbox *dest, FILE *fp_in, struct Mailbox *src
     return -1;
   if ((dest->magic == MUTT_MBOX) || (dest->magic == MUTT_MMDF))
     chflags |= CH_FROM | CH_FORCE_FROM;
-  chflags |= (dest->magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
+  chflags |= ((dest->magic == MUTT_MAILDIR) ? CH_NOSTATUS : CH_UPDATE);
   rc = mutt_copy_message_fp(msg->fp, fp_in, e, cmflags, chflags);
   if (mx_msg_commit(dest, msg) != 0)
     rc = -1;

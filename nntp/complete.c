@@ -82,10 +82,7 @@ int nntp_complete(char *buf, size_t buflen)
         for (i = 0; filepart[i] && mdata->group[i]; i++)
         {
           if (filepart[i] != mdata->group[i])
-          {
-            filepart[i] = '\0';
             break;
-          }
         }
         filepart[i] = '\0';
       }

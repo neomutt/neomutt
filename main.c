@@ -824,10 +824,10 @@ int main(int argc, char *argv[], char *envp[])
     goto main_ok; // TEST22: neomutt -B
   }
 
-  cs_add_listener(Config, mutt_hist_listener);
-  cs_add_listener(Config, mutt_log_listener);
-  cs_add_listener(Config, mutt_menu_listener);
-  cs_add_listener(Config, mutt_reply_listener);
+  cs_add_observer(Config, mutt_hist_observer);
+  cs_add_observer(Config, mutt_log_observer);
+  cs_add_observer(Config, mutt_menu_observer);
+  cs_add_observer(Config, mutt_reply_observer);
 
   if (sendflags & SEND_POSTPONED)
   {
@@ -990,7 +990,7 @@ int main(int argc, char *argv[], char *envp[])
         }
 
         /* Scan for neomutt header to set C_ResumeDraftFiles */
-        struct ListNode *np, *tmp;
+        struct ListNode *np = NULL, *tmp = NULL;
         STAILQ_FOREACH_SAFE(np, &msg->env->userhdrs, entries, tmp)
         {
           if (mutt_str_startswith(np->data, "X-Mutt-Resume-Draft:", CASE_IGNORE))
@@ -1135,7 +1135,7 @@ int main(int argc, char *argv[], char *envp[])
         goto main_curses; // TEST37: neomutt -Z (no new mail)
       }
       mutt_buffer_reset(folder);
-      mutt_buffer_mailbox(Context ? Context->mailbox : NULL, folder);
+      mutt_mailbox_next_buffer(Context ? Context->mailbox : NULL, folder);
 #ifdef USE_IMAP
       C_ImapPassive = passive;
 #endif
@@ -1170,7 +1170,7 @@ int main(int argc, char *argv[], char *envp[])
       if (C_Spoolfile)
       {
         // Check if C_Spoolfile corresponds a mailboxes' description.
-        struct Mailbox *desc_m = mutt_find_mailbox_desc(C_Spoolfile);
+        struct Mailbox *desc_m = mutt_mailbox_find_desc(C_Spoolfile);
         if (desc_m)
           mutt_buffer_strcpy(folder, desc_m->realpath);
         else

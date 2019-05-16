@@ -68,7 +68,7 @@ static int bcache_path(struct ConnAccount *account, const char *mailbox, char *d
   struct Url url = { U_UNKNOWN };
   int len;
 
-  if (!account || !C_MessageCachedir || !*C_MessageCachedir || !dst || (dstlen == 0))
+  if (!account || !C_MessageCachedir || !dst || (dstlen == 0))
     return -1;
 
   /* make up a Url we can turn into a string */
@@ -106,8 +106,8 @@ static int bcache_path(struct ConnAccount *account, const char *mailbox, char *d
  */
 static int mutt_bcache_move(struct BodyCache *bcache, const char *id, const char *newid)
 {
-  char path[PATH_MAX];
-  char newpath[PATH_MAX];
+  char path[PATH_MAX + 16];
+  char newpath[PATH_MAX + 16];
 
   if (!bcache || !id || !*id || !newid || !*newid)
     return -1;
@@ -197,7 +197,7 @@ FILE *mutt_bcache_get(struct BodyCache *bcache, const char *id)
  */
 FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id)
 {
-  char path[PATH_MAX];
+  char path[PATH_MAX + 16];
   struct stat sb;
 
   if (!id || !*id || !bcache)

@@ -424,7 +424,7 @@ int mutt_date_check_month(const char *s)
  */
 bool mutt_date_is_day_name(const char *s)
 {
-  if (!s || (strlen(s) < 3) || !*(s + 3) || !IS_SPACE(*(s + 3)))
+  if (!s || (strlen(s) < 3) || (s[3] == '\0') || !IS_SPACE(s[3]))
     return false;
 
   for (int i = 0; i < mutt_array_size(Weekdays); i++)

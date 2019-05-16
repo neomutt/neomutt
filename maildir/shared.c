@@ -687,7 +687,7 @@ static struct Maildir *skip_duplicates(struct Maildir *p, struct Maildir **last)
  */
 void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Progress *progress)
 {
-  struct Maildir *p, *last = NULL;
+  struct Maildir *p = NULL, *last = NULL;
   char fn[PATH_MAX];
   int count;
   bool sort = false;
@@ -1497,7 +1497,7 @@ int mh_sync_mailbox_message(struct Mailbox *m, int msgno, header_cache_t *hc)
 bool maildir_update_flags(struct Mailbox *m, struct Email *o, struct Email *n)
 {
   if (!m)
-    return -1;
+    return false;
 
   /* save the global state here so we can reset it at the
    * end of list block if required.  */

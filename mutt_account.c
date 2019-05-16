@@ -70,7 +70,7 @@ bool mutt_account_match(const struct ConnAccount *a1, const struct ConnAccount *
 
 #ifdef USE_NNTP
   if (a1->type == MUTT_ACCT_TYPE_NNTP)
-    return (a1->flags & MUTT_ACCT_USER) && a1->user[0] ? false : true;
+    return (a1->flags & MUTT_ACCT_USER) && (a1->user[0] != '\0') ? false : true;
 #endif
 
   const char *user = NONULL(Username);
@@ -346,7 +346,7 @@ void mutt_account_unsetpass(struct ConnAccount *account)
  */
 char *mutt_account_getoauthbearer(struct ConnAccount *account)
 {
-  FILE *fp;
+  FILE *fp = NULL;
   char *cmd = NULL;
   char *token = NULL;
   size_t token_size = 0;

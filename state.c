@@ -86,7 +86,7 @@ void state_attach_puts(const char *t, struct State *s)
  */
 static int state_putwc(wchar_t wc, struct State *s)
 {
-  char mb[MB_LEN_MAX] = "";
+  char mb[MB_LEN_MAX] = { 0 };
   int rc;
 
   rc = wcrtomb(mb, wc, NULL);

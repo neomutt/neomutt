@@ -142,14 +142,14 @@ static char *parse_encoded_word(char *str, enum ContentEncoding *enc, char **cha
   regmatch_t match[4];
   size_t nmatch = 4;
   struct Regex *re = mutt_regex_compile("=\\?"
-                            "([^][()<>@,;:\\\"/?. =]+)" /* charset */
-                            "\\?"
-                            "([qQbB])" /* encoding */
-                            "\\?"
-                            "([^?]+)" /* encoded text - we accept whitespace
+                                        "([^][()<>@,;:\\\"/?. =]+)" /* charset */
+                                        "\\?"
+                                        "([qQbB])" /* encoding */
+                                        "\\?"
+                                        "([^?]+)" /* encoded text - we accept whitespace
                                          as some mailers do that, see #1189. */
-                            "\\?=",
-                            REG_EXTENDED);
+                                        "\\?=",
+                                        REG_EXTENDED);
   assert(re && "Something is wrong with your RE engine.");
 
   char *res = NULL;
@@ -326,7 +326,7 @@ static size_t choose_block(char *d, size_t dlen, int col, const char *fromcode,
     const size_t nn = try_block(d, n, fromcode, tocode, encoder, wlen);
     if ((nn == 0) && (((col + *wlen) <= (ENCWORD_LEN_MAX + 1)) || (n <= 1)))
       break;
-    n = (nn ? nn : n) - 1;
+    n = ((nn != 0) ? nn : n) - 1;
     assert(n > 0);
     if (utf8)
       while ((n > 1) && CONTINUATION_BYTE(d[n]))
@@ -690,7 +690,7 @@ void rfc2047_decode(char **pd)
 
       /* Add non-encoded part */
       {
-        if (C_AssumedCharset && *C_AssumedCharset)
+        if (C_AssumedCharset)
         {
           char *conv = mutt_str_substr_dup(s, s + holelen);
           mutt_ch_convert_nonmime_string(&conv);
@@ -768,7 +768,7 @@ void rfc2047_decode_addrlist(struct Address *a)
 {
   while (a)
   {
-    if (a->personal && ((strstr(a->personal, "=?")) || (C_AssumedCharset && *C_AssumedCharset)))
+    if (a->personal && ((strstr(a->personal, "=?")) || C_AssumedCharset))
     {
       rfc2047_decode(&a->personal);
     }

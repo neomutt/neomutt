@@ -156,7 +156,7 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
     {
       case '~':
       {
-        if ((*(s + 1) == '/') || (*(s + 1) == 0))
+        if ((s[1] == '/') || (s[1] == '\0'))
         {
           mutt_buffer_strcpy(p, HomeDir);
           tail = s + 1;
@@ -204,7 +204,7 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
         }
         else if (mb_type == MUTT_NOTMUCH)
           mutt_buffer_strcpy(p, NONULL(C_Folder));
-        else if (C_Folder && *C_Folder && (C_Folder[strlen(C_Folder) - 1] == '/'))
+        else if (C_Folder && (C_Folder[strlen(C_Folder) - 1] == '/'))
           mutt_buffer_strcpy(p, NONULL(C_Folder));
         else
           mutt_buffer_printf(p, "%s/", NONULL(C_Folder));
@@ -258,7 +258,7 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
 
       case '!':
       {
-        if (*(s + 1) == '!')
+        if (s[1] == '!')
         {
           mutt_buffer_strcpy(p, LastFolder);
           tail = s + 2;
@@ -836,7 +836,9 @@ void mutt_safe_path(char *buf, size_t buflen, struct Address *a)
 void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const char *src,
                          format_t *callback, unsigned long data, MuttFormatFlags flags)
 {
-  char prefix[128], tmp[1024], *cp = NULL, *wptr = buf, ch;
+  char prefix[128], tmp[1024];
+  char *cp = NULL, *wptr = buf;
+  char ch;
   char if_str[128], else_str[128];
   size_t wlen, count, len, wid;
   FILE *fp_filter = NULL;
@@ -1174,7 +1176,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
             /* try to consume as many columns as we can, if we don't have
              * memory for that, use as much memory as possible */
             if (wlen + (pad * pl) + len > buflen)
-              pad = (buflen > wlen + len) ? ((buflen - wlen - len) / pl) : 0;
+              pad = (buflen > (wlen + len)) ? ((buflen - wlen - len) / pl) : 0;
             else
             {
               /* Add pre-spacing to make multi-column pad characters and

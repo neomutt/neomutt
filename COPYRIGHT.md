@@ -32,7 +32,7 @@ The principal authors of NeoMutt are:
 - Copyright (C) 2014-2019 Kevin J. McCarthy `<kevin@8t8.us>`
 - Copyright (C) 2015-2019 Richard Russon `<rich@flatcap.org>`
 
-For a full list of contributors to NeoMutt, see the [README.md](README.md)
+For a full list of contributors to NeoMutt, see the [AUTHORS.md](CONTRIBUTORS.md)
 
 For the complete history of NeoMutt, see the source repository on GitHub:
 

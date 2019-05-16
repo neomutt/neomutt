@@ -82,14 +82,14 @@ bool C_MetaKey; ///< Config: Interpret 'ALT-x' as 'ESC-x'
  */
 static size_t MacroBufferCount = 0;
 static size_t MacroBufferLen = 0;
-static struct Event *MacroEvents;
+static struct KeyEvent *MacroEvents;
 
 /* These are used in all other "normal" situations, and are not
  * ignored when setting OptIgnoreMacroEvents
  */
 static size_t UngetCount = 0;
 static size_t UngetLen = 0;
-static struct Event *UngetKeyEvents;
+static struct KeyEvent *UngetKeyEvents;
 
 int MuttGetchTimeout = -1;
 
@@ -166,7 +166,7 @@ static int mutt_monitor_getch(void)
 
 /**
  * mutt_getch - Read a character from the input buffer
- * @retval obj Event to process
+ * @retval obj KeyEvent to process
  *
  * The priority for reading events is:
  * 1. UngetKeyEvents buffer
@@ -177,11 +177,11 @@ static int mutt_monitor_getch(void)
  * - Error `{ -1, OP_NULL }`
  * - Timeout `{ -2, OP_NULL }`
  */
-struct Event mutt_getch(void)
+struct KeyEvent mutt_getch(void)
 {
   int ch;
-  struct Event err = { -1, OP_NULL }, ret;
-  struct Event timeout = { -2, OP_NULL };
+  struct KeyEvent err = { -1, OP_NULL }, ret;
+  struct KeyEvent timeout = { -2, OP_NULL };
 
   if (UngetCount)
     return UngetKeyEvents[--UngetCount];
@@ -331,7 +331,7 @@ void mutt_edit_file(const char *editor, const char *file)
  */
 enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
 {
-  struct Event ch;
+  struct KeyEvent ch;
   char *yes = _("yes");
   char *no = _("no");
   char *answer_string = NULL;
@@ -637,7 +637,7 @@ int mutt_buffer_enter_fname_full(const char *prompt, struct Buffer *fname,
                                  bool mailbox, bool multiple, char ***files,
                                  int *numfiles, SelectFileFlags flags)
 {
-  struct Event ch;
+  struct KeyEvent ch;
 
   SET_COLOR(MT_COLOR_PROMPT);
   mutt_window_mvaddstr(MuttMessageWindow, 0, 0, (char *) prompt);
@@ -675,7 +675,10 @@ int mutt_buffer_enter_fname_full(const char *prompt, struct Buffer *fname,
     char *pc = mutt_mem_malloc(mutt_str_strlen(prompt) + 3);
 
     sprintf(pc, "%s: ", prompt);
-    mutt_unget_event(ch.op ? 0 : ch.ch, ch.op ? ch.op : 0);
+    if (ch.op == OP_NULL)
+      mutt_unget_event(ch.ch, 0);
+    else
+      mutt_unget_event(0, ch.op);
 
     mutt_buffer_increase_size(fname, 1024);
     if (mutt_get_field_full(pc, fname->data, fname->dsize,
@@ -699,13 +702,13 @@ int mutt_buffer_enter_fname_full(const char *prompt, struct Buffer *fname,
  */
 void mutt_unget_event(int ch, int op)
 {
-  struct Event tmp;
+  struct KeyEvent tmp;
 
   tmp.ch = ch;
   tmp.op = op;
 
   if (UngetCount >= UngetLen)
-    mutt_mem_realloc(&UngetKeyEvents, (UngetLen += 16) * sizeof(struct Event));
+    mutt_mem_realloc(&UngetKeyEvents, (UngetLen += 16) * sizeof(struct KeyEvent));
 
   UngetKeyEvents[UngetCount++] = tmp;
 }
@@ -736,13 +739,13 @@ void mutt_unget_string(const char *s)
  */
 void mutt_push_macro_event(int ch, int op)
 {
-  struct Event tmp;
+  struct KeyEvent tmp;
 
   tmp.ch = ch;
   tmp.op = op;
 
   if (MacroBufferCount >= MacroBufferLen)
-    mutt_mem_realloc(&MacroEvents, (MacroBufferLen += 128) * sizeof(struct Event));
+    mutt_mem_realloc(&MacroEvents, (MacroBufferLen += 128) * sizeof(struct KeyEvent));
 
   MacroEvents[MacroBufferCount++] = tmp;
 }
@@ -823,7 +826,7 @@ void mutt_curs_set(int cursor)
  */
 int mutt_multi_choice(const char *prompt, const char *letters)
 {
-  struct Event ch;
+  struct KeyEvent ch;
   int choice;
   bool redraw = true;
   int prompt_lines = 1;

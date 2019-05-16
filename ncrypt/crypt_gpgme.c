@@ -325,7 +325,7 @@ static int cmp_version_strings(const char *a, const char *b, int level)
 {
   int a_major, a_minor, a_micro;
   int b_major, b_minor, b_micro;
-  const char *a_plvl, *b_plvl;
+  const char *a_plvl = NULL, *b_plvl = NULL;
   int r;
   int ignore_plvl;
   int positive, negative;
@@ -1314,7 +1314,7 @@ static int get_micalg(gpgme_ctx_t ctx, int use_smime, char *buf, size_t buflen)
     }
   }
 
-  return (*buf != '\0') ? 0 : -1;
+  return (buf[0] != '\0') ? 0 : -1;
 }
 
 /**
@@ -2764,7 +2764,7 @@ void pgp_gpgme_invoke_import(const char *fname)
   impres = gpgme_op_import_result(ctx);
   if (!impres)
   {
-    fputs ("oops: no import result returned\n", stdout);
+    fputs("oops: no import result returned\n", stdout);
     goto leave;
   }
 
@@ -3474,7 +3474,6 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
       char buf2[128];
       bool do_locales = true;
       struct tm tm = { 0 };
-      size_t len;
 
       char *p = buf;
 
@@ -3485,7 +3484,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
         cp++;
       }
 
-      len = buflen - 1;
+      size_t len = buflen - 1;
       while ((len > 0) && (*cp != ']'))
       {
         if (*cp == '%')
@@ -3813,9 +3812,9 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
   char *p = NULL;
 
   /* parse attribute type */
-  for (s = str + 1; *s && *s != '='; s++)
+  for (s = str + 1; (s[0] != '\0') && (s[0] != '='); s++)
     ;
-  if (!*s)
+  if (s[0] == '\0')
     return NULL; /* error */
   n = s - str;
   if (n == 0)
@@ -3853,7 +3852,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
         {
           n++;
         }
-        else if (isxdigit(*s) && isxdigit(*(s + 1)))
+        else if (isxdigit(s[0]) && isxdigit(s[1]))
         {
           s++;
           n++;
@@ -3913,9 +3912,9 @@ static struct DnArray *parse_dn(const char *str)
   arrayidx = 0;
   while (*str)
   {
-    while (*str == ' ')
+    while (str[0] == ' ')
       str++;
-    if (!*str)
+    if (str[0] == '\0')
       break; /* ready */
     if (arrayidx >= arraysize)
     {
@@ -3936,11 +3935,11 @@ static struct DnArray *parse_dn(const char *str)
     arrayidx++;
     if (!str)
       goto failure;
-    while (*str == ' ')
+    while (str[0] == ' ')
       str++;
-    if (*str && (*str != ',') && (*str != ';') && (*str != '+'))
+    if ((str[0] != '\0') && (str[0] != ',') && (str[0] != ';') && (str[0] != '+'))
       goto failure; /* invalid delimiter */
-    if (*str)
+    if (str[0] != '\0')
       str++;
   }
   array[arrayidx].key = NULL;

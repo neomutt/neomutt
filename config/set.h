@@ -62,23 +62,23 @@ enum ConfigEvent
 #define CSR_RESULT(x) ((x) & CSR_RESULT_MASK)
 
 /**
- * enum CsListenerAction - Config Listener responses
+ * enum CsObserverAction - Config Observer responses
  */
-enum CsListenerAction
+enum CsObserverAction
 {
-  CSLA_CONTINUE = 1, ///< Continue notifying listeners
-  CSLA_STOP,         ///< Stop notifying listeners
+  CSOA_CONTINUE = 1, ///< Continue notifying observers
+  CSOA_STOP,         ///< Stop notifying observers
 };
 
 /**
- * typedef cs_listener - Listen for config changes
+ * typedef cs_observer - Listen for config changes
  * @param cs   Config items
  * @param he   HashElem representing config item
  * @param name Name of the config item
  * @param ev   Event type, e.g. #CE_SET
  * @retval true Continue notifying
  */
-typedef bool    (*cs_listener)   (const struct ConfigSet *cs, struct HashElem *he, const char *name, enum ConfigEvent ev);
+typedef bool    (*cs_observer)   (const struct ConfigSet *cs, struct HashElem *he, const char *name, enum ConfigEvent ev);
 /**
  * typedef cs_validator - Validate the "charset" config variable
  * @param cs    Config items
@@ -197,7 +197,7 @@ struct ConfigSet
 {
   struct Hash *hash;              /**< HashTable storing the config itesm */
   struct ConfigSetType types[18]; /**< All the defined config types */
-  cs_listener listeners[8];       /**< Listeners for notifications of changes to config items */
+  cs_observer observers[8];       /**< Observers for notifications of changes to config items */
 };
 
 struct ConfigSet *cs_new(size_t size);
@@ -211,9 +211,9 @@ bool             cs_register_type(struct ConfigSet *cs, unsigned int type, const
 bool             cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], int flags);
 struct HashElem *cs_inherit_variable(const struct ConfigSet *cs, struct HashElem *parent, const char *name);
 
-void cs_add_listener(struct ConfigSet *cs, cs_listener fn);
-void cs_remove_listener(struct ConfigSet *cs, cs_listener fn);
-void cs_notify_listeners(const struct ConfigSet *cs, struct HashElem *he, const char *name, enum ConfigEvent ev);
+void cs_add_observer(struct ConfigSet *cs, cs_observer fn);
+void cs_remove_observer(struct ConfigSet *cs, cs_observer fn);
+void cs_notify_observers(const struct ConfigSet *cs, struct HashElem *he, const char *name, enum ConfigEvent ev);
 
 int      cs_he_initial_get (const struct ConfigSet *cs, struct HashElem *he,                    struct Buffer *result);
 int      cs_he_initial_set (const struct ConfigSet *cs, struct HashElem *he, const char *value, struct Buffer *err);

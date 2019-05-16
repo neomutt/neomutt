@@ -103,9 +103,9 @@ void mutt_curs_set(int cursor);
 #endif
 
 /**
- * struct Event - An event such as a keypress
+ * struct KeyEvent - An event such as a keypress
  */
-struct Event
+struct KeyEvent
 {
   int ch; /**< raw key pressed */
   int op; /**< function op */

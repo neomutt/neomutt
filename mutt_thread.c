@@ -76,7 +76,8 @@ static bool is_visible(struct Email *e, struct Context *ctx)
  */
 static bool need_display_subject(struct Context *ctx, struct Email *e)
 {
-  struct MuttThread *tmp = NULL, *tree = e->thread;
+  struct MuttThread *tmp = NULL;
+  struct MuttThread *tree = e->thread;
 
   /* if the user disabled subject hiding, display it */
   if (!C_HideThreadSubject)
@@ -172,7 +173,8 @@ static void linearize_tree(struct Context *ctx)
  */
 static void calculate_visibility(struct Context *ctx, int *max_depth)
 {
-  struct MuttThread *tmp = NULL, *tree = ctx->tree;
+  struct MuttThread *tmp = NULL;
+  struct MuttThread *tree = ctx->tree;
   int hide_top_missing = C_HideTopMissing && !C_HideMissing;
   int hide_top_limited = C_HideTopLimited && !C_HideLimited;
   int depth = 0;
@@ -290,7 +292,8 @@ void mutt_draw_tree(struct Context *ctx)
   enum TreeChar corner = (C_Sort & SORT_REVERSE) ? MUTT_TREE_ULCORNER : MUTT_TREE_LLCORNER;
   enum TreeChar vtee = (C_Sort & SORT_REVERSE) ? MUTT_TREE_BTEE : MUTT_TREE_TTEE;
   int depth = 0, start_depth = 0, max_depth = 0, width = C_NarrowTree ? 1 : 2;
-  struct MuttThread *nextdisp = NULL, *pseudo = NULL, *parent = NULL, *tree = ctx->tree;
+  struct MuttThread *nextdisp = NULL, *pseudo = NULL, *parent = NULL;
+  struct MuttThread *tree = ctx->tree;
 
   /* Do the visibility calculations and free the old thread chars.
    * From now on we can simply ignore invisible subtrees */
@@ -301,7 +304,7 @@ void mutt_draw_tree(struct Context *ctx)
   {
     if (depth)
     {
-      myarrow = arrow + (depth - start_depth - (start_depth ? 0 : 1)) * width;
+      myarrow = arrow + (depth - start_depth - ((start_depth != 0) ? 0 : 1)) * width;
       if (depth && (start_depth == depth))
         myarrow[0] = nextdisp ? MUTT_TREE_LTEE : corner;
       else if (parent->message && !C_HideLimited)
@@ -533,7 +536,8 @@ static void pseudo_threads(struct Context *ctx)
 
   struct Mailbox *m = ctx->mailbox;
 
-  struct MuttThread *tree = ctx->tree, *top = tree;
+  struct MuttThread *tree = ctx->tree;
+  struct MuttThread *top = tree;
   struct MuttThread *tmp = NULL, *cur = NULL, *parent = NULL, *curchild = NULL,
                     *nextchild = NULL;
 

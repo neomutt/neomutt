@@ -689,8 +689,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
       if (clearsign)
       {
         rewind(fp_tmp);
-        if (fp_tmp)
-          pgp_copy_clearsigned(fp_tmp, s, body_charset);
+        pgp_copy_clearsigned(fp_tmp, s, body_charset);
       }
       else if (fp_pgp_out)
       {

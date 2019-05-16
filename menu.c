@@ -1166,7 +1166,8 @@ static int menu_search(struct Menu *menu, int op)
 
   if (!(search_buf && *search_buf) || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
-    mutt_str_strfcpy(buf, search_buf && *search_buf ? search_buf : "", sizeof(buf));
+    mutt_str_strfcpy(buf, search_buf && (search_buf[0] != '\0') ? search_buf : "",
+                     sizeof(buf));
     if ((mutt_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
                             _("Search for: ") :
                             _("Reverse search for: "),
@@ -1255,13 +1256,13 @@ static int menu_dialog_translate_op(int i)
 /**
  * menu_dialog_dokey - Check if there are any menu key events to process
  * @param menu Current Menu
- * @param ip   Event ID
+ * @param ip   KeyEvent ID
  * @retval  0 An event occurred for the menu, or a timeout
  * @retval -1 There was an event, but not for menu
  */
 static int menu_dialog_dokey(struct Menu *menu, int *ip)
 {
-  struct Event ch;
+  struct KeyEvent ch;
   char *p = NULL;
 
   do
@@ -1282,7 +1283,10 @@ static int menu_dialog_dokey(struct Menu *menu, int *ip)
   }
   else
   {
-    mutt_unget_event(ch.op ? 0 : ch.ch, ch.op ? ch.op : 0);
+    if (ch.op == OP_NULL)
+      mutt_unget_event(ch.ch, 0);
+    else
+      mutt_unget_event(0, ch.op);
     return -1;
   }
 }
@@ -1591,9 +1595,9 @@ int mutt_menu_loop(struct Menu *menu)
 }
 
 /**
- * mutt_menu_listener - Listen for config changes affecting the menu - Implements ::cs_listener()
+ * mutt_menu_observer - Listen for config changes affecting the menu - Implements ::cs_observer()
  */
-bool mutt_menu_listener(const struct ConfigSet *cs, struct HashElem *he,
+bool mutt_menu_observer(const struct ConfigSet *cs, struct HashElem *he,
                         const char *name, enum ConfigEvent ev)
 {
   const struct ConfigDef *cdef = he->data;

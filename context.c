@@ -313,26 +313,6 @@ bool message_is_tagged(struct Context *ctx, int index)
 }
 
 /**
- * el_free - Drop a private list of Emails
- * @param el EmailList to empty
- *
- * The Emails are not freed.
- */
-void el_free(struct EmailList *el)
-{
-  if (!el)
-    return;
-
-  struct EmailNode *en = NULL, *tmp = NULL;
-  STAILQ_FOREACH_SAFE(en, el, entries, tmp)
-  {
-    STAILQ_REMOVE(el, en, EmailNode, entries);
-    FREE(&en);
-  }
-  STAILQ_INIT(el);
-}
-
-/**
  * el_add_tagged - Get a list of the tagged Emails
  * @param el         Empty EmailList to populate
  * @param ctx        Current Mailbox

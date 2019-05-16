@@ -56,7 +56,7 @@ struct Progress;
 #define IMAP_CMD_RESPOND   2  ///< `+`
 #define IMAP_CMD_NEW       3  ///< ImapCommand.state additions
 
-#define SEQ_LEN 5
+#define SEQ_LEN 16
 #define IMAP_MAX_CMDLEN 1024 ///< Maximum length of command lines before they must be split (for lazy servers)
 
 typedef uint8_t ImapOpenFlags;         ///< Flags, e.g. #MUTT_THREAD_COLLAPSE

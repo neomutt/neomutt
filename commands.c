@@ -234,7 +234,7 @@ int mutt_display_message(struct Email *cur)
     return 0;
   }
 
-  if (C_DisplayFilter && *C_DisplayFilter)
+  if (C_DisplayFilter)
   {
     fp_filter_out = fp_out;
     fp_out = NULL;
@@ -679,7 +679,7 @@ void mutt_print_message(struct Mailbox *m, struct EmailList *el)
   if (!m || !el)
     return;
 
-  if (C_Print && (!C_PrintCommand || !*C_PrintCommand))
+  if (C_Print && !C_PrintCommand)
   {
     mutt_message(_("No printing command has been defined"));
     return;
@@ -1086,7 +1086,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete,
   struct Mailbox *m_comp = NULL;
   if (ctx_save->mailbox->compress_info)
   {
-    m_comp = mutt_find_mailbox(ctx_save->mailbox->realpath);
+    m_comp = mutt_mailbox_find(ctx_save->mailbox->realpath);
   }
   /* We probably haven't been opened yet */
   if (m_comp && (m_comp->msg_count == 0))

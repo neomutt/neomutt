@@ -1256,7 +1256,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
  */
 static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata, bool queue)
 {
-  char *uid_validity_flag;
+  char *uid_validity_flag = NULL;
   char cmd[2048];
 
   if (!adata || !mdata)
@@ -1391,21 +1391,20 @@ int imap_subscribe(char *path, bool subscribe)
   struct ImapAccountData *adata = NULL;
   struct ImapMboxData *mdata = NULL;
   char buf[2048];
-  char mbox[1024];
   char errstr[256];
   struct Buffer err, token;
-  size_t len = 0;
 
   if (imap_adata_find(path, &adata, &mdata) < 0)
     return -1;
 
   if (C_ImapCheckSubscribed)
   {
+    char mbox[1024];
     mutt_buffer_init(&token);
     mutt_buffer_init(&err);
     err.data = errstr;
     err.dsize = sizeof(errstr);
-    len = snprintf(mbox, sizeof(mbox), "%smailboxes ", subscribe ? "" : "un");
+    size_t len = snprintf(mbox, sizeof(mbox), "%smailboxes ", subscribe ? "" : "un");
     imap_quote_string(mbox + len, sizeof(mbox) - len, path, true);
     if (mutt_parse_rc_line(mbox, &token, &err))
       mutt_debug(LL_DEBUG1, "Error adding subscribed mailbox: %s\n", errstr);
@@ -1844,10 +1843,7 @@ struct Account *imap_ac_find(struct Account *a, const char *path)
  */
 int imap_ac_add(struct Account *a, struct Mailbox *m)
 {
-  if (!a || !m)
-    return -1;
-
-  if (m->magic != MUTT_IMAP)
+  if (!a || !m || (m->magic != MUTT_IMAP))
     return -1;
 
   struct ImapAccountData *adata = a->adata;
@@ -2337,7 +2333,7 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t
     }
 
     /* Skip duplicate space */
-    while ((*checker == ' ') && (*(checker + 1) == ' '))
+    while ((checker[0] == ' ') && (checker[1] == ' '))
       checker++;
 
     /* copy char to new and go the next one */
@@ -2459,17 +2455,18 @@ int imap_path_canon(char *buf, size_t buflen)
   if (!buf)
     return -1;
 
+  struct Url *url = url_parse(buf);
+  if (!url)
+    return 0;
+
   char tmp[PATH_MAX];
   char tmp2[PATH_MAX];
-  struct Url *url = url_parse(buf);
-  if (url)
-  {
-    imap_fix_path('\0', url->path, tmp, sizeof(tmp));
-    url->path = tmp;
-    url_tostring(url, tmp2, sizeof(tmp2), 0);
-    mutt_str_strfcpy(buf, tmp2, buflen);
-    url_free(&url);
-  }
+
+  imap_fix_path('\0', url->path, tmp, sizeof(tmp));
+  url->path = tmp;
+  url_tostring(url, tmp2, sizeof(tmp2), 0);
+  mutt_str_strfcpy(buf, tmp2, buflen);
+  url_free(&url);
 
   return 0;
 }

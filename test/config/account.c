@@ -60,7 +60,7 @@ void config_account(void)
 
   set_list(cs);
 
-  cs_add_listener(cs, log_listener);
+  cs_add_observer(cs, log_observer);
 
   const char *account = "damaged";
   const char *BrokenVarStr[] = {

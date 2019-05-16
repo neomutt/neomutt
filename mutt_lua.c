@@ -83,7 +83,7 @@ static int lua_mutt_call(lua_State *l)
   mutt_debug(LL_DEBUG2, " * lua_mutt_call()\n");
   struct Buffer *err = mutt_buffer_pool_get();
   struct Buffer *token = mutt_buffer_pool_get();
-  char buf[1024] = "";
+  char buf[1024] = { 0 };
   const struct Command *cmd = NULL;
   int rc = 0;
 
