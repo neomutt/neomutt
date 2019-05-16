@@ -1002,19 +1002,20 @@ const char *mutt_addr_for_display(const struct Address *a)
 }
 
 /**
- * mutt_addr_write_single - Write a single Address to a buffer
+ * mutt_addr_write - Write a single Address to a buffer
  * @param buf     Buffer for the Address
  * @param buflen  Length of the buffer
  * @param addr    Address to display
  * @param display This address will be displayed to the user
+ * @retval n      Number of characters written to buf
  *
  * If 'display' is set, then it doesn't matter if the transformation isn't
  * reversible.
  */
-void mutt_addr_write_single(char *buf, size_t buflen, struct Address *addr, bool display)
+size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool display)
 {
   if (!buf || !addr)
-    return;
+    return 0;
 
   size_t len;
   char *pbuf = buf;
@@ -1118,10 +1119,12 @@ done:
   /* no need to check for length here since we already save space at the
    * beginning of this routine */
   *pbuf = '\0';
+
+  return pbuf - buf;
 }
 
 /**
- * mutt_addr_write - Write an Address to a buffer
+ * mutt_addresslist_write - Write an Address to a buffer
  * @param buf     Buffer for the Address
  * @param buflen  Length of the buffer
  * @param al      AddressList to display
@@ -1169,7 +1172,7 @@ size_t mutt_addresslist_write(char *buf, size_t buflen,
 
     /* use buflen+1 here because we already saved space for the trailing
      * nul char, and the subroutine can make use of it */
-    mutt_addr_write_single(pbuf, buflen + 1, np->addr, display);
+    mutt_addr_write(pbuf, buflen + 1, np->addr, display);
 
     /* this should be safe since we always have at least 1 char passed into
      * the above call, which means 'pbuf' should always be nul terminated */
@@ -1196,15 +1199,6 @@ size_t mutt_addresslist_write(char *buf, size_t buflen,
 done:
   *pbuf = '\0';
   return pbuf - buf;
-}
-
-size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool display)
-{
-  struct AddressList *al = mutt_addr_to_addresslist(addr);
-  size_t ret = mutt_addresslist_write(buf, buflen, al, display);
-  mutt_addresslist_to_addr(al);
-  FREE(&al);
-  return ret;
 }
 
 /**

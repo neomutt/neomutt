@@ -71,6 +71,7 @@ bool            mutt_addr_cmp(const struct Address *a, const struct Address *b);
 struct Address *mutt_addr_copy(const struct Address *addr);
 const char *    mutt_addr_for_display(const struct Address *a);
 void            mutt_addr_free(struct Address **a);
+size_t          mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool display);
 
 bool            mutt_addr_is_intl(const struct Address *a);
 bool            mutt_addr_is_local(const struct Address *a);
@@ -81,8 +82,6 @@ void            mutt_addr_remove_xrefs(const struct AddressList *a, struct Addre
 void            mutt_addr_set_intl(struct Address *a, char *intl_mailbox);
 void            mutt_addr_set_local(struct Address *a, char *local_mailbox);
 bool            mutt_addr_valid_msgid(const char *msgid);
-size_t          mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool display);
-void            mutt_addr_write_single(char *buf, size_t buflen, struct Address *addr, bool display);
 struct Address *mutt_addrlist_dedupe(struct Address *addr);
 int             mutt_addrlist_to_intl(struct Address *a, char **err);
 int             mutt_addrlist_to_local(struct Address *a);

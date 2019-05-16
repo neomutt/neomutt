@@ -33,13 +33,13 @@ void test_mutt_addr_write_single(void)
 
   {
     struct Address addr = { 0 };
-    mutt_addr_write_single(NULL, 32, &addr, false);
+    mutt_addr_write(NULL, 32, &addr, false);
     TEST_CHECK_(1, "mutt_addr_write_single(NULL, 32, &addr, false)");
   }
 
   {
     char buf[32] = { 0 };
-    mutt_addr_write_single(buf, sizeof(buf), NULL, false);
+    mutt_addr_write(buf, sizeof(buf), NULL, false);
     TEST_CHECK_(1, "mutt_addr_write_single(buf, sizeof(buf), NULL, false)");
   }
 
@@ -57,10 +57,11 @@ void test_mutt_addr_write_single(void)
       .intl_checked = 0,
     };
 
-    mutt_addr_write_single(buf, sizeof(buf), &addr, false);
+    size_t len = mutt_addr_write(buf, sizeof(buf), &addr, false);
 
     const char *expected = "bobby bob <bob@bobsdomain>";
 
     TEST_CHECK_STR_EQ(expected, buf);
+    TEST_CHECK(len == strlen(expected));
   }
 }

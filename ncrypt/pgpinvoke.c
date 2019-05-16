@@ -447,7 +447,7 @@ void pgp_class_invoke_getkeys(struct Address *addr)
   mutt_addresslist_append(&alist, addr);
   mutt_addresslist_to_local(&alist);
   mutt_addresslist_clear(&alist);
-  mutt_addr_write_single(tmp, sizeof(tmp), addr, false);
+  mutt_addr_write(tmp, sizeof(tmp), addr, false);
   mutt_buffer_quote_filename(buf, tmp, true);
 
   addr->personal = personal;
