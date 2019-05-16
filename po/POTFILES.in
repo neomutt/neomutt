@@ -112,6 +112,7 @@ mutt/mbyte.c
 mutt/md5.c
 mutt/memory.c
 mutt/path.c
+mutt/pool.c
 mutt/regex.c
 mutt/sha1.c
 mutt/signal.c

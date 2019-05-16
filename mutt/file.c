@@ -47,6 +47,7 @@
 #include "memory.h"
 #include "message.h"
 #include "path.h"
+#include "pool.h"
 #include "string2.h"
 
 char *C_Tmpdir; ///< Config: Directory for temporary files
@@ -92,7 +93,7 @@ static int mkwrapdir(const char *path, struct Buffer *newfile, struct Buffer *ne
   const char *basename = NULL;
   int rc = 0;
 
-  struct Buffer *parent = mutt_buffer_pool_get();
+  struct Buffer *parent = mutt_buffer_alloc(PATH_MAX);
   mutt_buffer_strcpy(parent, NONULL(path));
 
   char *p = strrchr(parent->data, '/');
@@ -118,7 +119,7 @@ static int mkwrapdir(const char *path, struct Buffer *newfile, struct Buffer *ne
   mutt_buffer_printf(newfile, "%s/%s", mutt_b2s(newdir), NONULL(basename));
 
 cleanup:
-  mutt_buffer_pool_release(&parent);
+  mutt_buffer_free(&parent);
   return rc;
 }
 
@@ -304,11 +305,11 @@ int mutt_file_symlink(const char *oldpath, const char *newpath)
   }
   else
   {
-    struct Buffer *abs_oldpath = mutt_buffer_pool_get();
+    struct Buffer *abs_oldpath = mutt_buffer_alloc(PATH_MAX);
 
     if (!mutt_path_getcwd(abs_oldpath))
     {
-      mutt_buffer_pool_release(&abs_oldpath);
+      mutt_buffer_free(&abs_oldpath);
       return -1;
     }
 
@@ -316,11 +317,11 @@ int mutt_file_symlink(const char *oldpath, const char *newpath)
     mutt_buffer_addstr(abs_oldpath, oldpath);
     if (symlink(mutt_b2s(abs_oldpath), newpath) == -1)
     {
-      mutt_buffer_pool_release(&abs_oldpath);
+      mutt_buffer_free(&abs_oldpath);
       return -1;
     }
 
-    mutt_buffer_pool_release(&abs_oldpath);
+    mutt_buffer_free(&abs_oldpath);
   }
 
   if ((stat(oldpath, &osb) == -1) || (stat(newpath, &nsb) == -1) ||
@@ -521,8 +522,8 @@ int mutt_file_open(const char *path, int flags)
 
   if (flags & O_EXCL)
   {
-    safe_file = mutt_buffer_pool_get();
-    safe_dir = mutt_buffer_pool_get();
+    safe_file = mutt_buffer_alloc(PATH_MAX);
+    safe_dir = mutt_buffer_alloc(PATH_MAX);
 
     if (mkwrapdir(path, safe_file, safe_dir) == -1)
     {
@@ -559,8 +560,8 @@ int mutt_file_open(const char *path, int flags)
   }
 
 cleanup:
-  mutt_buffer_pool_release(&safe_file);
-  mutt_buffer_pool_release(&safe_dir);
+  mutt_buffer_free(&safe_file);
+  mutt_buffer_free(&safe_dir);
 
   return fd;
 }
@@ -1392,11 +1393,11 @@ int mutt_file_check_empty(const char *path)
  */
 void mutt_buffer_file_expand_fmt_quote(struct Buffer *dest, const char *fmt, const char *src)
 {
-  struct Buffer *tmp = mutt_buffer_pool_get();
+  struct Buffer *tmp = mutt_buffer_alloc(PATH_MAX);
 
   mutt_buffer_quote_filename(tmp, src, true);
   mutt_file_expand_fmt(dest, fmt, mutt_b2s(tmp));
-  mutt_buffer_pool_release(&tmp);
+  mutt_buffer_free(&tmp);
 }
 
 /**

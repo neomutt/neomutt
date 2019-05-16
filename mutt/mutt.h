@@ -43,6 +43,7 @@
  * | mutt/md5.c       | @subpage md5       |
  * | mutt/memory.c    | @subpage memory    |
  * | mutt/path.c      | @subpage path      |
+ * | mutt/pool.c      | @subpage pool      |
  * | mutt/regex.c     | @subpage regex     |
  * | mutt/sha1.c      | @subpage sha1      |
  * | mutt/signal.c    | @subpage signal    |
@@ -73,6 +74,7 @@
 #include "message.h"
 #include "queue.h"
 #include "path.h"
+#include "pool.h"
 #include "regex3.h"
 #include "sha1.h"
 #include "signal2.h"
