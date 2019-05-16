@@ -1729,6 +1729,39 @@ static bool match_reference(struct Pattern *pat, struct ListHead *refs)
 }
 
 /**
+ * typedef addr_predicate_t - Test an Address for some condition
+ * @param a Address to test
+ * @retval bool True if Address matches the test
+ */
+typedef bool (*addr_predicate_t)(const struct Address *a);
+
+/**
+ * mutt_is_predicate_recipient - Test an Envelopes Addresses using a predicate function
+ * @param alladdr If true, ALL Addresses must match
+ * @param e       Envelope
+ * @param p       Predicate function, e.g. mutt_is_subscribed_list()
+ * @retval true One Address matches (alladdr is false)
+ * @retval true All the Addresses match (alladdr is true)
+ *
+ * Test the 'To' and 'Cc' fields of an Address using a test function (the predicate).
+ */
+static int mutt_is_predicate_recipient(bool alladdr, struct Envelope *e, addr_predicate_t p)
+{
+  struct AddressList *als[] = { &e->to, &e->cc };
+  for (size_t i = 0; i < mutt_array_size(als); ++i)
+  {
+    struct AddressList *al = als[i];
+    struct AddressNode *an = NULL;
+    TAILQ_FOREACH(an, al, entries)
+    {
+      if (alladdr ^ p(an->addr))
+        return !alladdr;
+    }
+  }
+  return alladdr;
+}
+
+/**
  * mutt_is_subscribed_list_recipient - Matches subscribed mailing lists
  * @param alladdr If true, ALL Addresses must be on the subscribed list
  * @param e       Envelope
@@ -1737,17 +1770,7 @@ static bool match_reference(struct Pattern *pat, struct ListHead *refs)
  */
 int mutt_is_subscribed_list_recipient(bool alladdr, struct Envelope *e)
 {
-  struct AddressList *als[] = { &e->to, &e->cc, NULL };
-  struct AddressNode *an = NULL;
-  for (struct AddressList *al = *als; al; ++al)
-  {
-    TAILQ_FOREACH(an, al, entries)
-    {
-      if (alladdr ^ mutt_is_subscribed_list(an->addr))
-        return !alladdr;
-    }
-  }
-  return alladdr;
+  return mutt_is_predicate_recipient(alladdr, e, &mutt_is_subscribed_list);
 }
 
 /**
@@ -1759,17 +1782,7 @@ int mutt_is_subscribed_list_recipient(bool alladdr, struct Envelope *e)
  */
 int mutt_is_list_recipient(bool alladdr, struct Envelope *e)
 {
-  struct AddressList *als[] = { &e->to, &e->cc, NULL };
-  struct AddressNode *an = NULL;
-  for (struct AddressList *al = *als; al; ++al)
-  {
-    TAILQ_FOREACH(an, al, entries)
-    {
-      if (alladdr ^ mutt_is_mail_list(an->addr))
-        return !alladdr;
-    }
-  }
-  return alladdr;
+  return mutt_is_predicate_recipient(alladdr, e, &mutt_is_mail_list);
 }
 
 /**

@@ -110,7 +110,7 @@ bool mutt_is_mail_list(const struct Address *addr)
  * @param addr Address to test
  * @retval true If it's a subscribed mailing list
  */
-bool mutt_is_subscribed_list(struct Address *addr)
+bool mutt_is_subscribed_list(const struct Address *addr)
 {
   if (!mutt_regexlist_match(&UnMailLists, addr->mailbox) &&
       !mutt_regexlist_match(&UnSubscribedLists, addr->mailbox))
