@@ -17,8 +17,6 @@ ADDRESS_OBJS	= test/address/mutt_addr_append.o \
 		  test/address/mutt_addrlist_to_local.o \
 		  test/address/mutt_addr_new.o \
 		  test/address/mutt_addr_search.o \
-		  test/address/mutt_addr_set_intl.o \
-		  test/address/mutt_addr_set_local.o \
 		  test/address/mutt_addr_valid_msgid.o \
 		  test/address/mutt_addr_write.o \
 		  test/address/mutt_addr_write_single.o

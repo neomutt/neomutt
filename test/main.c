@@ -36,8 +36,6 @@
   NEOMUTT_TEST_ITEM(test_mutt_addr_has_recips)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_addr_new)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_addr_search)                                     \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_set_intl)                                   \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_set_local)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_addr_valid_msgid)                                \
   NEOMUTT_TEST_ITEM(test_mutt_addr_write)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_addr_write_single)                               \

@@ -938,7 +938,7 @@ static int mutt_addr_mbox_to_udomain(const char *mbox, char **user, char **domai
  * @param a            Address to modify
  * @param intl_mailbox Email address with IDN components
  */
-void mutt_addr_set_intl(struct Address *a, char *intl_mailbox)
+static void mutt_addr_set_intl(struct Address *a, char *intl_mailbox)
 {
   if (!a)
     return;
@@ -954,7 +954,7 @@ void mutt_addr_set_intl(struct Address *a, char *intl_mailbox)
  * @param a             Address
  * @param local_mailbox Email address with NO IDN components
  */
-void mutt_addr_set_local(struct Address *a, char *local_mailbox)
+static void mutt_addr_set_local(struct Address *a, char *local_mailbox)
 {
   if (!a)
     return;
