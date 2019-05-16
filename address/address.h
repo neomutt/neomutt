@@ -78,9 +78,6 @@ void            mutt_addr_free(struct Address **a);
 size_t          mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool display);
 struct Address *mutt_addr_new(void);
 
-int             mutt_addrlist_to_intl(struct Address *a, char **err);
-int             mutt_addrlist_to_local(struct Address *a);
-
 /* Functions that work on struct AddressList */
 struct AddressList *mutt_addr_to_addresslist(struct Address *a);
 struct AddressList *mutt_addresslist_new(void);

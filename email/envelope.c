@@ -217,7 +217,7 @@ bool mutt_env_cmp_strict(const struct Envelope *e1, const struct Envelope *e2)
  * mutt_env_to_local - Convert an Envelope's Address fields to local format
  * @param env Envelope to modify
  *
- * Run mutt_addrlist_to_local() on each of the Address fields in the Envelope.
+ * Run mutt_addresslist_to_local() on each of the Address fields in the Envelope.
  */
 void mutt_env_to_local(struct Envelope *env)
 {
@@ -255,7 +255,7 @@ void mutt_env_to_local(struct Envelope *env)
  * @retval 0 Success, all addresses converted
  * @retval 1 Error, tag and err will be set
  *
- * Run mutt_addrlist_to_intl() on each of the Address fields in the Envelope.
+ * Run mutt_addresslist_to_intl() on each of the Address fields in the Envelope.
  */
 int mutt_env_to_intl(struct Envelope *env, const char **tag, char **err)
 {

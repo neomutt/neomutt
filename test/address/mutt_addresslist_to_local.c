@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_addrlist_to_local()
+ * Test code for mutt_addresslist_to_local()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -26,11 +26,11 @@
 #include "mutt/mutt.h"
 #include "address/lib.h"
 
-void test_mutt_addrlist_to_local(void)
+void test_mutt_addresslist_to_local(void)
 {
-  // int mutt_addrlist_to_local(struct Address *a);
+  // int mutt_addresslist_to_local(struct AddressList *a);
 
   {
-    TEST_CHECK(mutt_addrlist_to_local(NULL) == 0);
+    TEST_CHECK(mutt_addresslist_to_local(NULL) == 0);
   }
 }

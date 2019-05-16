@@ -1202,7 +1202,7 @@ done:
 }
 
 /**
- * mutt_addrlist_to_intl - Convert an Address list to Punycode
+ * mutt_addresslist_to_intl - Convert an Address list to Punycode
  * @param[in]  a   Address list to modify
  * @param[out] err Pointer for failed addresses
  * @retval 0  Success, all addresses converted
@@ -1210,8 +1210,9 @@ done:
  */
 int mutt_addresslist_to_intl(struct AddressList *al, char **err)
 {
-  char *user = NULL, *domain = NULL;
-  char *intl_mailbox = NULL;
+  if (!al)
+    return 0;
+
   int rc = 0;
 
   if (err)
@@ -1223,10 +1224,12 @@ int mutt_addresslist_to_intl(struct AddressList *al, char **err)
     if (!an->addr->mailbox || mutt_addr_is_intl(an->addr))
       continue;
 
+    char *user = NULL;
+    char *domain = NULL;
     if (mutt_addr_mbox_to_udomain(an->addr->mailbox, &user, &domain) == -1)
       continue;
 
-    intl_mailbox = mutt_idna_local_to_intl(user, domain);
+    char *intl_mailbox = mutt_idna_local_to_intl(user, domain);
 
     FREE(&user);
     FREE(&domain);
@@ -1245,24 +1248,15 @@ int mutt_addresslist_to_intl(struct AddressList *al, char **err)
   return rc;
 }
 
-int mutt_addrlist_to_intl(struct Address *a, char **err)
-{
-  struct AddressList *al = mutt_addr_to_addresslist(a);
-  int rc = mutt_addresslist_to_intl(al, err);
-  a = mutt_addresslist_to_addr(al);
-  FREE(&al);
-  return rc;
-}
-
 /**
- * mutt_addrlist_to_local - Convert an Address list from Punycode
+ * mutt_addresslist_to_local - Convert an Address list from Punycode
  * @param a Address list to modify
  * @retval 0 Always
  */
 int mutt_addresslist_to_local(struct AddressList *al)
 {
-  char *user = NULL, *domain = NULL;
-  char *local_mailbox = NULL;
+  if (!al)
+    return 0;
 
   struct AddressNode *an = NULL;
   TAILQ_FOREACH(an, al, entries)
@@ -1270,10 +1264,12 @@ int mutt_addresslist_to_local(struct AddressList *al)
     if (!an->addr->mailbox || mutt_addr_is_local(an->addr))
       continue;
 
+    char *user = NULL;
+    char *domain = NULL;
     if (mutt_addr_mbox_to_udomain(an->addr->mailbox, &user, &domain) == -1)
       continue;
 
-    local_mailbox = mutt_idna_intl_to_local(user, domain, 0);
+    char *local_mailbox = mutt_idna_intl_to_local(user, domain, 0);
 
     FREE(&user);
     FREE(&domain);
@@ -1281,15 +1277,6 @@ int mutt_addresslist_to_local(struct AddressList *al)
     if (local_mailbox)
       mutt_addr_set_local(an->addr, local_mailbox);
   }
-  return 0;
-}
-
-int mutt_addrlist_to_local(struct Address *a)
-{
-  struct AddressList *al = mutt_addr_to_addresslist(a);
-  mutt_addresslist_to_local(al);
-  mutt_addresslist_to_addr(al);
-  FREE(&al);
   return 0;
 }
 
