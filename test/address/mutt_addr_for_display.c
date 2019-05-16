@@ -43,7 +43,6 @@ void test_mutt_addr_for_display(void)
       .personal = per,
       .mailbox = mbx,
       .group = 0,
-      .next = NULL,
       .is_intl = 0,
       .intl_checked = 0,
     };

@@ -965,14 +965,10 @@ static void format_address_header(char **h, struct AddressList *al)
   struct AddressNode *an = NULL;
   TAILQ_FOREACH(an, al, entries)
   {
-    struct Address *a = an->addr;
-    struct Address *tmp = a->next;
-    a->next = NULL;
     *buf = '\0';
     *cbuf = '\0';
     *c2buf = '\0';
-    const size_t l = mutt_addr_write(buf, sizeof(buf), a, false);
-    a->next = tmp;
+    const size_t l = mutt_addr_write(buf, sizeof(buf), an->addr, false);
 
     if (an != first && (linelen + l > 74))
     {
@@ -981,14 +977,15 @@ static void format_address_header(char **h, struct AddressList *al)
     }
     else
     {
-      if (a->mailbox)
+      if (an->addr->mailbox)
       {
         strcpy(cbuf, " ");
         linelen++;
       }
       linelen += l;
     }
-    if (!a->group && TAILQ_NEXT(an, entries) && TAILQ_NEXT(an, entries)->addr->mailbox)
+    if (!an->addr->group && TAILQ_NEXT(an, entries) &&
+        TAILQ_NEXT(an, entries)->addr->mailbox)
     {
       linelen++;
       buflen++;

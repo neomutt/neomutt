@@ -211,11 +211,9 @@ unsigned char *serial_dump_address(struct AddressList *al, unsigned char *d,
   struct AddressNode *an = NULL;
   TAILQ_FOREACH(an, al, entries)
   {
-    struct Address *a = an->addr;
-    d = serial_dump_char(a->personal, d, off, convert);
-    d = serial_dump_char(a->mailbox, d, off, false);
-    d = serial_dump_int(a->group, d, off);
-    a = a->next;
+    d = serial_dump_char(an->addr->personal, d, off, convert);
+    d = serial_dump_char(an->addr->mailbox, d, off, false);
+    d = serial_dump_int(an->addr->group, d, off);
     counter++;
   }
 

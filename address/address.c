@@ -1380,50 +1380,6 @@ void mutt_addresslist_prepend(struct AddressList *al, struct Address *a)
 }
 
 /**
- * mutt_addr_to_addresslist - Convert a raw list of Address into an AddressList
- * @param a Raw list of Address
- * @retval ptr AddressList
- *
- * The Address members are shared between the input argument and the return
- * value.
- */
-struct AddressList *mutt_addr_to_addresslist(struct Address *a)
-{
-  struct AddressList *al = mutt_addresslist_new();
-  while (a)
-  {
-    struct Address *next = a->next;
-    a->next = NULL; /* canary */
-    mutt_addresslist_append(al, a);
-    a = next;
-  }
-  return al;
-}
-
-/**
- * mutt_addresslist_to_addr - Convert an AddressList into a raw list of Address
- * @param a Reference list an AddressList 
- * @retval ptr Raw list of Address
- *
- * The Address members are shared between the input argument and the return
- * value.
- */
-struct Address *mutt_addresslist_to_addr(struct AddressList *al)
-{
-  struct Address *a = NULL;
-  struct AddressNode *an, *tmp;
-  TAILQ_FOREACH_REVERSE_SAFE(an, al, AddressList, entries, tmp)
-  {
-    assert(an->addr->next == NULL); /* canary */
-    an->addr->next = a;
-    a = an->addr;
-    TAILQ_REMOVE(al, an, entries);
-    FREE(&an);
-  }
-  return a;
-}
-
-/**
  * mutt_addresslist_free_one - Unlinks an AddressNode from an AddressList and
  * frees the referenced Address
  * @param al AddressList

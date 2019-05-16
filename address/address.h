@@ -37,7 +37,6 @@ struct Address
   bool group : 1; /**< group mailbox? */
   bool is_intl : 1;
   bool intl_checked : 1;
-  struct Address *next;
 };
 
 struct AddressNode
@@ -79,9 +78,7 @@ size_t          mutt_addr_write(char *buf, size_t buflen, struct Address *addr, 
 struct Address *mutt_addr_new(void);
 
 /* Functions that work on struct AddressList */
-struct AddressList *mutt_addr_to_addresslist(struct Address *a);
 struct AddressList *mutt_addresslist_new(void);
-struct Address     *mutt_addresslist_to_addr(struct AddressList *al);
 void                mutt_addresslist_append(struct AddressList *al, struct Address *a);
 void                mutt_addresslist_prepend(struct AddressList *al, struct Address *a);
 void                mutt_addresslist_copy(struct AddressList *dst, const struct AddressList *src, bool prune);

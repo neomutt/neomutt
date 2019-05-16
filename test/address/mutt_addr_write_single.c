@@ -52,7 +52,6 @@ void test_mutt_addr_write_single(void)
       .personal = per,
       .mailbox = mbx,
       .group = 0,
-      .next = NULL,
       .is_intl = 0,
       .intl_checked = 0,
     };
