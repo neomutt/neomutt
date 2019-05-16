@@ -91,11 +91,12 @@ static void expand_aliases_r(struct AddressList *al, struct ListHead *expn)
           mutt_addresslist_copy(&copy, alias, false);
           expand_aliases_r(&copy, expn);
           struct AddressNode *an2, *tmp;
-          an = TAILQ_LAST(&copy, AddressList);
-          TAILQ_FOREACH_REVERSE_SAFE(an2, &copy, AddressList, entries, tmp)
+          TAILQ_FOREACH_SAFE(an2, &copy, entries, tmp)
           {
-            TAILQ_INSERT_AFTER(al, an, an2, entries);
+            TAILQ_INSERT_BEFORE(an, an2, entries);
           }
+          an = TAILQ_PREV(an, AddressList, entries);
+          TAILQ_REMOVE(al, TAILQ_NEXT(an, entries), entries);
         }
       }
       else
@@ -111,7 +112,6 @@ static void expand_aliases_r(struct AddressList *al, struct ListHead *expn)
         }
       }
     }
-
     an = TAILQ_NEXT(an, entries);
   }
 
