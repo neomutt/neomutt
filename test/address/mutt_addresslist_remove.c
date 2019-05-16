@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_addr_remove_from_list()
+ * Test code for mutt_addresslist_remove()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -26,18 +26,18 @@
 #include "mutt/mutt.h"
 #include "address/lib.h"
 
-void test_mutt_addr_remove_from_list(void)
+void test_mutt_addresslist_remove(void)
 {
-  // int mutt_addr_remove_from_list(struct Address **a, const char *mailbox);
+  // int mutt_addresslist_remove(struct AddressList *al, const char *mailbox);
 
   {
-    int rc = mutt_addr_remove_from_list(NULL, "apple");
+    int rc = mutt_addresslist_remove(NULL, "apple");
     TEST_CHECK(rc == -1);
   }
 
   {
     struct AddressList a;
-    int rc = mutt_addr_remove_from_list(&a, NULL);
+    int rc = mutt_addresslist_remove(&a, NULL);
     TEST_CHECK(rc == 0);
   }
 }

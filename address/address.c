@@ -385,13 +385,13 @@ struct Address *mutt_addr_new(void)
 }
 
 /**
- * mutt_addr_remove_from_list - Remove an Address from a list
+ * mutt_addresslist_remove - Remove an Address from a list
  * @param[in, out] al AddressList
  * @param[in]  mailbox Email address to match
  * @retval  0 Success
  * @retval -1 Error, or email not found
  */
-int mutt_addr_remove_from_list(struct AddressList *al, const char *mailbox)
+int mutt_addresslist_remove(struct AddressList *al, const char *mailbox)
 {
   if (!al)
     return -1;

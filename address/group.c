@@ -189,25 +189,6 @@ static void group_add_addrlist(struct Group *g, const struct AddressList *al)
 }
 
 /**
- * group_remove_addrlist - Remove an Address List from a Group
- * @param g Group to modify
- * @param a Address List to remove
- * @retval  0 Success
- * @retval -1 Error
- */
-static int group_remove_addrlist(struct Group *g, struct AddressList *al)
-{
-  if (!g || !al)
-    return -1;
-
-  struct AddressNode *np = NULL;
-  TAILQ_FOREACH(np, al, entries)
-  mutt_addr_remove_from_list(&g->al, np->addr->mailbox);
-
-  return 0;
-}
-
-/**
  * group_add_regex - Add a Regex to a Group
  * @param g     Group to add to
  * @param s     Regex string to add
@@ -263,13 +244,17 @@ int mutt_grouplist_remove_addresslist(struct GroupList *head, struct AddressList
     return -1;
 
   int rc = 0;
-  struct GroupNode *np = NULL;
+  struct GroupNode *gnp = NULL;
 
-  STAILQ_FOREACH(np, head, entries)
+  STAILQ_FOREACH(gnp, head, entries)
   {
-    rc = group_remove_addrlist(np->group, al);
-    if (empty_group(np->group))
-      group_remove(np->group);
+    struct AddressNode *anp = NULL;
+    TAILQ_FOREACH(anp, al, entries)
+    {
+      mutt_addresslist_remove(&gnp->group->al, anp->addr->mailbox);
+    }
+    if (empty_group(gnp->group))
+      group_remove(gnp->group);
     if (rc)
       break;
   }
