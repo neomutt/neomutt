@@ -68,17 +68,14 @@ extern const char AddressSpecials[];
 
 void            mutt_addr_cat(char *buf, size_t buflen, const char *value, const char *specials);
 bool            mutt_addr_cmp(const struct Address *a, const struct Address *b);
-
-
-
 struct Address *mutt_addr_copy(const struct Address *addr);
 const char *    mutt_addr_for_display(const struct Address *a);
-void            mutt_addr_free(struct Address **p);
+void            mutt_addr_free(struct Address **a);
+
 bool            mutt_addr_is_intl(const struct Address *a);
 bool            mutt_addr_is_local(const struct Address *a);
 int             mutt_addr_mbox_to_udomain(const char *mbox, char **user, char **domain);
 struct Address *mutt_addr_new(void);
-struct Address *mutt_addr_parse_list2(struct Address *p, const char *s);
 void            mutt_addr_qualify(struct Address *addr, const char *host);
 int             mutt_addr_remove_from_list(struct AddressList *a, const char *mailbox);
 void            mutt_addr_remove_xrefs(const struct AddressList *a, struct AddressList *b);

@@ -38,8 +38,6 @@
   NEOMUTT_TEST_ITEM(test_mutt_addr_is_local)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_addr_mbox_to_udomain)                            \
   NEOMUTT_TEST_ITEM(test_mutt_addr_new)                                        \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_parse_list)                                 \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_parse_list2)                                \
   NEOMUTT_TEST_ITEM(test_mutt_addr_qualify)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_addr_remove_from_list)                           \
   NEOMUTT_TEST_ITEM(test_mutt_addr_remove_xrefs)                               \
@@ -50,6 +48,8 @@
   NEOMUTT_TEST_ITEM(test_mutt_addr_write)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_addr_write_single)                               \
   NEOMUTT_TEST_ITEM(test_mutt_addresslist_equal)                               \
+  NEOMUTT_TEST_ITEM(test_mutt_addresslist_parse)                               \
+  NEOMUTT_TEST_ITEM(test_mutt_addresslist_parse2)                              \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_to_intl)                                \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_to_local)                               \
   NEOMUTT_TEST_ITEM(test_mutt_actx_add_attach)                                 \

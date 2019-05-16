@@ -9,13 +9,13 @@ ADDRESS_OBJS	= test/address/mutt_addr_append.o \
 		  test/address/mutt_addr_is_intl.o \
 		  test/address/mutt_addr_is_local.o \
 		  test/address/mutt_addresslist_equal.o \
+		  test/address/mutt_addresslist_parse2.o \
+		  test/address/mutt_addresslist_parse.o \
 		  test/address/mutt_addrlist_dedupe.o \
 		  test/address/mutt_addrlist_to_intl.o \
 		  test/address/mutt_addrlist_to_local.o \
 		  test/address/mutt_addr_mbox_to_udomain.o \
 		  test/address/mutt_addr_new.o \
-		  test/address/mutt_addr_parse_list2.o \
-		  test/address/mutt_addr_parse_list.o \
 		  test/address/mutt_addr_qualify.o \
 		  test/address/mutt_addr_remove_from_list.o \
 		  test/address/mutt_addr_remove_xrefs.o \

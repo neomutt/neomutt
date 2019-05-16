@@ -66,21 +66,6 @@ const char *const AddressErrors[] = {
 };
 
 /**
- * free_address - Free a single Address
- * @param[out] a Address to free
- *
- * @note This doesn't alter the links if the Address is in a list.
- */
-static void free_address(struct Address **a)
-{
-  if (!a || !*a)
-    return;
-  FREE(&(*a)->personal);
-  FREE(&(*a)->mailbox);
-  FREE(a);
-}
-
-/**
  * parse_comment - Extract a comment (parenthesised string)
  * @param[in]  s          String, just after the opening parenthesis
  * @param[out] comment    Buffer to store parenthesised string
@@ -381,7 +366,7 @@ static void add_addrspec(struct AddressList *al, const char *phrase,
 
   if (!parse_addr_spec(phrase, comment, commentlen, commentmax, cur))
   {
-    free_address(&cur);
+    mutt_addr_free(&cur);
     return;
   }
 
@@ -392,7 +377,7 @@ static void add_addrspec(struct AddressList *al, const char *phrase,
  * mutt_addr_new - Create a new Address
  * @retval ptr Newly allocated Address
  *
- * Free the result with free_address() or mutt_addr_free()
+ * Free the result with mutt_addr_free()
  */
 struct Address *mutt_addr_new(void)
 {
@@ -429,16 +414,16 @@ int mutt_addr_remove_from_list(struct AddressList *al, const char *mailbox)
 }
 
 /**
- * mutt_addr_free - Free a list of Addresses
- * @param[out] p Top of the list
+ * mutt_addr_free - Free a single Addresses
+ * @param[out] a Address to free
  */
-void mutt_addr_free(struct Address **p)
+void mutt_addr_free(struct Address **a)
 {
-  if (!p)
+  if (!a || !*a)
     return;
-
-  struct AddressList *al = mutt_addr_to_addresslist(*p);
-  mutt_addresslist_free(&al);
+  FREE(&(*a)->personal);
+  FREE(&(*a)->mailbox);
+  FREE(a);
 }
 
 /**
@@ -565,7 +550,7 @@ int mutt_addresslist_parse(struct AddressList *al, const char *s)
         if (!s)
         {
           mutt_addresslist_free_all(al);
-          free_address(&a);
+          mutt_addr_free(&a);
           return 0;
         }
         mutt_addresslist_append(al, a);
@@ -611,10 +596,10 @@ int mutt_addresslist_parse(struct AddressList *al, const char *s)
 }
 
 /**
- * mutt_addr_parse_list2 - Parse a list of email addresses
- * @param p Add to this List of Addresses
+ * mutt_addresslist_parse - Parse a list of email addresses
+ * @param al Add to this List of Addresses
  * @param s String to parse
- * @retval ptr Head of the list of addresses
+ * @retval int Number of parsed addresses
  *
  * The email addresses can be separated by whitespace or commas.
  */
@@ -643,18 +628,6 @@ int mutt_addresslist_parse2(struct AddressList *al, const char *s)
     parsed = mutt_addresslist_parse(al, s);
 
   return parsed;
-}
-
-struct Address *mutt_addr_parse_list2(struct Address *p, const char *s)
-{
-  if (!s)
-    return NULL;
-
-  struct AddressList *al = mutt_addr_to_addresslist(p);
-  mutt_addresslist_parse2(al, s);
-  p = mutt_addresslist_to_addr(al);
-  FREE(&al);
-  return p;
 }
 
 /**
@@ -1497,7 +1470,7 @@ struct Address *mutt_addresslist_to_addr(struct AddressList *al)
 void mutt_addresslist_free_one(struct AddressList *al, struct AddressNode *an)
 {
   TAILQ_REMOVE(al, an, entries);
-  free_address(&an->addr);
+  mutt_addr_free(&an->addr);
   FREE(&an);
 }
 
@@ -1515,7 +1488,7 @@ void mutt_addresslist_free_all(struct AddressList *al)
   while (np)
   {
     next = TAILQ_NEXT(np, entries);
-    free_address(&np->addr);
+    mutt_addr_free(&np->addr);
     FREE(&np);
     np = next;
   }
