@@ -3056,8 +3056,7 @@ int mutt_bounce_message(FILE *fp, struct Email *e, struct AddressList *to)
   if (!from->personal)
     from->personal = mutt_str_strdup(C_Realname);
 
-  if (fqdn)
-    mutt_addr_qualify(from, fqdn);
+  mutt_addresslist_qualify(&from_list, fqdn);
 
   rfc2047_encode_addrlist(&from_list, "Resent-From");
   if (mutt_addresslist_to_intl(&from_list, &err))

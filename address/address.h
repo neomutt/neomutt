@@ -76,7 +76,6 @@ bool            mutt_addr_is_intl(const struct Address *a);
 bool            mutt_addr_is_local(const struct Address *a);
 int             mutt_addr_mbox_to_udomain(const char *mbox, char **user, char **domain);
 struct Address *mutt_addr_new(void);
-void            mutt_addr_qualify(struct Address *addr, const char *host);
 int             mutt_addr_remove_from_list(struct AddressList *a, const char *mailbox);
 void            mutt_addr_remove_xrefs(const struct AddressList *a, struct AddressList *b);
 void            mutt_addr_set_intl(struct Address *a, char *intl_mailbox);

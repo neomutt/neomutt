@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_addr_qualify()
+ * Test code for mutt_addresslist_qualify()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -26,18 +26,18 @@
 #include "mutt/mutt.h"
 #include "address/lib.h"
 
-void test_mutt_addr_qualify(void)
+void test_mutt_addresslist_qualify(void)
 {
-  // void mutt_addr_qualify(struct Address *addr, const char *host);
+  // void mutt_addresslist_qualify(struct Address *addr, const char *host);
 
   {
-    mutt_addr_qualify(NULL, "example.com");
-    TEST_CHECK_(1, "mutt_addr_qualify(NULL, \"example.com\")");
+    mutt_addresslist_qualify(NULL, "example.com");
+    TEST_CHECK_(1, "mutt_addresslist_qualify(NULL, \"example.com\")");
   }
 
   {
-    struct Address addr = { 0 };
-    mutt_addr_qualify(&addr, NULL);
-    TEST_CHECK_(1, "mutt_addr_qualify(&addr, NULL)");
+    struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+    mutt_addresslist_qualify(&al, NULL);
+    TEST_CHECK_(1, "mutt_addresslist_qualify(&addr, NULL)");
   }
 }

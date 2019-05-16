@@ -631,8 +631,8 @@ int mutt_addresslist_parse2(struct AddressList *al, const char *s)
 }
 
 /**
- * mutt_addr_qualify - Expand local names in an Address list using a hostname
- * @param addr Address list
+ * mutt_addresslist_qualify - Expand local names in an Address list using a hostname
+ * @param al Address list
  * @param host Hostname
  *
  * Any addresses containing a bare name will be expanded using the hostname.
@@ -641,7 +641,7 @@ int mutt_addresslist_parse2(struct AddressList *al, const char *s)
  */
 void mutt_addresslist_qualify(struct AddressList *al, const char *host)
 {
-  if (!host || !*host)
+  if (!al || !host || !*host)
     return;
 
   struct AddressNode *an = NULL;
@@ -656,14 +656,6 @@ void mutt_addresslist_qualify(struct AddressList *al, const char *host)
       addr->mailbox = p;
     }
   }
-}
-
-void mutt_addr_qualify(struct Address *addr, const char *host)
-{
-  struct AddressList *al = mutt_addr_to_addresslist(addr);
-  mutt_addresslist_qualify(al, host);
-  mutt_addresslist_to_addr(al); // addr does not change
-  FREE(&al);
 }
 
 /**
