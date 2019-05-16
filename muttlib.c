@@ -836,7 +836,9 @@ void mutt_safe_path(char *buf, size_t buflen, struct Address *a)
 void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const char *src,
                          format_t *callback, unsigned long data, MuttFormatFlags flags)
 {
-  char prefix[128], tmp[1024], *cp = NULL, *wptr = buf, ch;
+  char prefix[128], tmp[1024];
+  char *cp = NULL, *wptr = buf;
+  char ch;
   char if_str[128], else_str[128];
   size_t wlen, count, len, wid;
   FILE *fp_filter = NULL;

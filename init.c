@@ -1002,7 +1002,8 @@ bail:
 static enum CommandResult parse_attachments(struct Buffer *buf, struct Buffer *s,
                                             unsigned long data, struct Buffer *err)
 {
-  char op, *category = NULL;
+  char op;
+  char *category = NULL;
   struct ListHead *head = NULL;
 
   mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
@@ -2280,7 +2281,8 @@ static enum CommandResult parse_unalternates(struct Buffer *buf, struct Buffer *
 static enum CommandResult parse_unattachments(struct Buffer *buf, struct Buffer *s,
                                               unsigned long data, struct Buffer *err)
 {
-  char op, *p = NULL;
+  char op;
+  char *p = NULL;
   struct ListHead *head = NULL;
 
   mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);

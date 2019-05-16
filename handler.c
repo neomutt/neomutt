@@ -436,7 +436,8 @@ static bool is_mmnoask(const char *buf)
     return false;
 
   char *p = NULL;
-  char tmp[1024], *q = NULL;
+  char tmp[1024];
+  char *q = NULL;
 
   if (mutt_str_strcmp(val, "1") == 0)
     return true;

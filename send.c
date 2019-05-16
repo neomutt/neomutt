@@ -548,7 +548,8 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *fp_out)
 static int inline_forward_attachments(struct Mailbox *m, struct Email *cur,
                                       struct Body ***plast, int *forwardq)
 {
-  struct Body **last = *plast, *body = NULL;
+  struct Body **last = *plast;
+  struct Body *body = NULL;
   struct Message *msg = NULL;
   struct AttachCtx *actx = NULL;
   int rc = 0, i;

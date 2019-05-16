@@ -369,7 +369,8 @@ struct Address *mutt_get_address(struct Envelope *env, const char **pfxp)
 void mutt_alias_create(struct Envelope *cur, struct Address *iaddr)
 {
   struct Alias *new = NULL;
-  char buf[1024], tmp[1024], prompt[128], *pc = NULL;
+  char buf[1024], tmp[1024], prompt[128];
+  char *pc = NULL;
   char *err = NULL;
   char fixed[1024];
   struct Address *addr = NULL;

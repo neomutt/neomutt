@@ -471,7 +471,8 @@ const char *mutt_get_func(const struct Binding *bindings, int op)
  */
 static void generic_tokenize_push_string(char *s, void (*generic_push)(int, int))
 {
-  char *pp = NULL, *p = s + mutt_str_strlen(s) - 1;
+  char *pp = NULL;
+  char *p = s + mutt_str_strlen(s) - 1;
   size_t l;
   int i, op = OP_NULL;
 

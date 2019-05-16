@@ -119,7 +119,8 @@ void mutt_list_free(struct ListHead *h)
   if (!h)
     return;
 
-  struct ListNode *np = STAILQ_FIRST(h), *next = NULL;
+  struct ListNode *np = STAILQ_FIRST(h);
+  struct ListNode *next = NULL;
   while (np)
   {
     next = STAILQ_NEXT(np, entries);
@@ -140,7 +141,8 @@ void mutt_list_free_type(struct ListHead *h, list_free_t fn)
   if (!h || !fn)
     return;
 
-  struct ListNode *np = STAILQ_FIRST(h), *next = NULL;
+  struct ListNode *np = STAILQ_FIRST(h);
+  struct ListNode *next = NULL;
   while (np)
   {
     next = STAILQ_NEXT(np, entries);
@@ -162,7 +164,8 @@ void mutt_list_clear(struct ListHead *h)
   if (!h)
     return;
 
-  struct ListNode *np = STAILQ_FIRST(h), *next = NULL;
+  struct ListNode *np = STAILQ_FIRST(h);
+  struct ListNode *next = NULL;
   while (np)
   {
     next = STAILQ_NEXT(np, entries);

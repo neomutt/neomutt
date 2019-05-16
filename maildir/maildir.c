@@ -365,7 +365,8 @@ int maildir_mbox_check(struct Mailbox *m, int *index_hint)
   int num_new = 0;            /* number of new messages added to the mailbox */
   bool flags_changed = false; /* message flags were changed in the mailbox */
   struct Maildir *md = NULL;  /* list of messages in the mailbox */
-  struct Maildir **last = NULL, *p = NULL;
+  struct Maildir **last = NULL;
+  struct Maildir *p = NULL;
   int count = 0;
   struct Hash *fnames = NULL; /* hash table for quickly looking up the base filename
                                  for a maildir message */

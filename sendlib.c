@@ -1992,7 +1992,8 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
  */
 static char *unfold_header(char *s)
 {
-  char *p = s, *q = s;
+  char *p = s;
+  char *q = s;
 
   while (p && (p[0] != '\0'))
   {
@@ -2126,7 +2127,8 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
 int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
                           const char *pfx, int wraplen, CopyHeaderFlags chflags)
 {
-  char *p = (char *) value, *last = NULL, *line = NULL;
+  char *p = (char *) value;
+  char *last = NULL, *line = NULL;
   int max = 0, w, rc = -1;
   int pfxw = mutt_strwidth(pfx);
   char *v = mutt_str_strdup(value);

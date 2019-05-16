@@ -375,7 +375,8 @@ void mutt_emails_set_flag(struct Mailbox *m, struct EmailList *el, int flag, boo
  */
 int mutt_thread_set_flag(struct Email *e, int flag, bool bf, bool subthread)
 {
-  struct MuttThread *start = NULL, *cur = e->thread;
+  struct MuttThread *start = NULL;
+  struct MuttThread *cur = e->thread;
 
   if ((C_Sort & SORT_MASK) != SORT_THREADS)
   {

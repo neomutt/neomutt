@@ -291,7 +291,8 @@ void url_free(struct Url **u)
   if (!u || !*u)
     return;
 
-  struct UrlQueryString *np = STAILQ_FIRST(&(*u)->query_strings), *next = NULL;
+  struct UrlQueryString *np = STAILQ_FIRST(&(*u)->query_strings);
+  struct UrlQueryString *next = NULL;
   while (np)
   {
     next = STAILQ_NEXT(np, entries);

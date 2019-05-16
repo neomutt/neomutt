@@ -103,7 +103,8 @@ void mutt_grouplist_clear(struct GroupList *head)
   if (!head)
     return;
 
-  struct GroupNode *np = STAILQ_FIRST(head), *next = NULL;
+  struct GroupNode *np = STAILQ_FIRST(head);
+  struct GroupNode *next = NULL;
   while (np)
   {
     group_remove(np->group);
@@ -156,7 +157,8 @@ void mutt_grouplist_destroy(struct GroupList *head)
   if (!head)
     return;
 
-  struct GroupNode *np = STAILQ_FIRST(head), *next = NULL;
+  struct GroupNode *np = STAILQ_FIRST(head);
+  struct GroupNode *next = NULL;
   while (np)
   {
     next = STAILQ_NEXT(np, entries);
@@ -176,7 +178,8 @@ static void group_add_addrlist(struct Group *g, struct Address *a)
   if (!g || !a)
     return;
 
-  struct Address **p = NULL, *q = NULL;
+  struct Address **p = NULL;
+  struct Address *q = NULL;
 
   for (p = &g->as; *p; p = &((*p)->next))
     ;

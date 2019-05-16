@@ -2668,7 +2668,8 @@ static int nntp_mbox_close(struct Mailbox *m)
   if (!m)
     return -1;
 
-  struct NntpMboxData *mdata = m->mdata, *tmp_mdata = NULL;
+  struct NntpMboxData *mdata = m->mdata;
+  struct NntpMboxData *tmp_mdata = NULL;
   if (!mdata)
     return 0;
 

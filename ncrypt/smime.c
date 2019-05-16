@@ -1348,7 +1348,8 @@ static char *smime_extract_signer_certificate(char *infile)
  */
 void smime_class_invoke_import(char *infile, char *mailbox)
 {
-  char *certfile = NULL, buf[256];
+  char *certfile = NULL;
+  char buf[256];
   FILE *fp_smime_in = NULL;
 
   FILE *fp_err = mutt_file_mkstemp();
@@ -1419,7 +1420,8 @@ void smime_class_invoke_import(char *infile, char *mailbox)
  */
 int smime_class_verify_sender(struct Email *e)
 {
-  char *mbox = NULL, *certfile = NULL, tempfname[PATH_MAX];
+  char *mbox = NULL, *certfile = NULL;
+  char tempfname[PATH_MAX];
   int rc = 1;
 
   mutt_mktemp(tempfname, sizeof(tempfname));

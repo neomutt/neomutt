@@ -115,7 +115,8 @@ void driver_tags_free(struct TagHead *head)
   if (!head)
     return;
 
-  struct TagNode *np = STAILQ_FIRST(head), *next = NULL;
+  struct TagNode *np = STAILQ_FIRST(head);
+  struct TagNode *next = NULL;
   while (np)
   {
     next = STAILQ_NEXT(np, entries);

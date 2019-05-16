@@ -698,7 +698,8 @@ void mutt_addr_cat(char *buf, size_t buflen, const char *value, const char *spec
 
   if (strpbrk(value, specials))
   {
-    char tmp[256], *pc = tmp;
+    char tmp[256];
+    char *pc = tmp;
     size_t tmplen = sizeof(tmp) - 3;
 
     *pc++ = '"';
