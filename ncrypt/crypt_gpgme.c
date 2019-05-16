@@ -2736,7 +2736,7 @@ void pgp_gpgme_invoke_import(const char *fname)
   gpgme_data_t keydata = NULL;
   gpgme_import_result_t impres;
   gpgme_import_status_t st;
-  int any;
+  bool any;
 
   FILE *fp_in = mutt_file_fopen(fname, "r");
   if (!fp_in)
@@ -2756,7 +2756,7 @@ void pgp_gpgme_invoke_import(const char *fname)
   err = gpgme_op_import(ctx, keydata);
   if (err != 0)
   {
-    mutt_error(_("Error extracting key: %s"), gpgme_strerror(err));
+    mutt_error(_("Error importing key: %s"), gpgme_strerror(err));
     goto leave;
   }
 
@@ -2764,6 +2764,7 @@ void pgp_gpgme_invoke_import(const char *fname)
   impres = gpgme_op_import_result(ctx);
   if (!impres)
   {
+    fputs ("oops: no import result returned\n", stdout);
     goto leave;
   }
 
@@ -2774,31 +2775,31 @@ void pgp_gpgme_invoke_import(const char *fname)
     printf("key %s imported (", NONULL(st->fpr));
     /* Note that we use the singular even if it is possible that
      * several uids etc are new.  This simply looks better.  */
-    any = 0;
+    any = false;
     if (st->status & GPGME_IMPORT_SECRET)
     {
       printf("secret parts");
-      any = 1;
+      any = true;
     }
     if ((st->status & GPGME_IMPORT_NEW))
     {
       printf("%snew key", any ? ", " : "");
-      any = 1;
+      any = true;
     }
     if ((st->status & GPGME_IMPORT_UID))
     {
       printf("%snew uid", any ? ", " : "");
-      any = 1;
+      any = true;
     }
     if ((st->status & GPGME_IMPORT_SIG))
     {
       printf("%snew sig", any ? ", " : "");
-      any = 1;
+      any = true;
     }
     if ((st->status & GPGME_IMPORT_SUBKEY))
     {
       printf("%snew subkey", any ? ", " : "");
-      any = 1;
+      any = true;
     }
     printf("%s)\n", any ? "" : "not changed");
     /* Fixme: Should we lookup each imported key and print more infos? */

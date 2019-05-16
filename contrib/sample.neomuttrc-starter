@@ -37,8 +37,8 @@ mailboxes ! +neomutt +family +work
 set imap_user = ".....@gmail.com"
 
 # To avoid storing your password in the .neomuttrc:
-# echo -n "mypassword" | gpg --encrypt -r 0x1234567890ABCDEF > ~/.neomutt/account.gpg
-set imap_pass = `gpg --batch -q --decrypt ~/.neomutt/account.gpg`
+# echo -n 'mypassword' | gpg --encrypt -r 0x1234567890ABCDEF > ~/.neomutt/account.gpg
+set imap_pass = "`gpg --batch -q --decrypt ~/.neomutt/account.gpg`"
 
 set folder = imaps://imap.gmail.com/
 set spoolfile = "+INBOX"
