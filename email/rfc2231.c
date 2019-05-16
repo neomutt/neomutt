@@ -67,7 +67,7 @@ struct Rfc2231Parameter
  */
 static void purge_empty_parameters(struct ParameterList *p)
 {
-  struct Parameter *np, *tmp;
+  struct Parameter *np = NULL, *tmp = NULL;
   TAILQ_FOREACH_SAFE(np, p, entries, tmp)
   {
     if (!np->attribute || !np->value)
@@ -251,7 +251,7 @@ void rfc2231_decode_parameters(struct ParameterList *p)
 
   purge_empty_parameters(p);
 
-  struct Parameter *np, *tmp;
+  struct Parameter *np = NULL, *tmp = NULL;
   TAILQ_FOREACH_SAFE(np, p, entries, tmp)
   {
     s = strchr(np->attribute, '*');

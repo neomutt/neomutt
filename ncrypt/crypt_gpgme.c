@@ -325,7 +325,7 @@ static int cmp_version_strings(const char *a, const char *b, int level)
 {
   int a_major, a_minor, a_micro;
   int b_major, b_minor, b_micro;
-  const char *a_plvl, *b_plvl;
+  const char *a_plvl = NULL, *b_plvl = NULL;
   int r;
   int ignore_plvl;
   int positive, negative;

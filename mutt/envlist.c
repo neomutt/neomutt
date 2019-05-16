@@ -60,7 +60,7 @@ void mutt_envlist_init(char *envp[])
   if (!envp)
     return;
 
-  char **src, **dst;
+  char **src = NULL, **dst = NULL;
   int count = 0;
   for (src = envp; src && *src; src++)
     count++;

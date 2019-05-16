@@ -132,7 +132,7 @@ int imap_adata_find(const char *path, struct ImapAccountData **adata,
                     struct ImapMboxData **mdata)
 {
   struct ConnAccount conn_account;
-  struct ImapAccountData *tmp_adata;
+  struct ImapAccountData *tmp_adata = NULL;
   char tmp[1024];
 
   if (imap_parse_path(path, &conn_account, tmp, sizeof(tmp)) < 0)
@@ -1181,12 +1181,10 @@ bool imap_account_match(const struct ConnAccount *a1, const struct ConnAccount *
  */
 struct SeqsetIterator *mutt_seqset_iterator_new(const char *seqset)
 {
-  struct SeqsetIterator *iter;
-
   if (!seqset || !*seqset)
     return NULL;
 
-  iter = mutt_mem_calloc(1, sizeof(struct SeqsetIterator));
+  struct SeqsetIterator *iter = mutt_mem_calloc(1, sizeof(struct SeqsetIterator));
   iter->full_seqset = mutt_str_strdup(seqset);
   iter->eostr = strchr(iter->full_seqset, '\0');
   iter->substr_cur = iter->substr_end = iter->full_seqset;

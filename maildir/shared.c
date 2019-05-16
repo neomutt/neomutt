@@ -687,7 +687,7 @@ static struct Maildir *skip_duplicates(struct Maildir *p, struct Maildir **last)
  */
 void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Progress *progress)
 {
-  struct Maildir *p, *last = NULL;
+  struct Maildir *p = NULL, *last = NULL;
   char fn[PATH_MAX];
   int count;
   bool sort = false;

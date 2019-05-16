@@ -129,7 +129,7 @@ static int cmp_pattern(struct PatternHead *p1, struct PatternHead *p2)
 
   while (!SLIST_EMPTY(&p1_tmp))
   {
-    struct Pattern *l, *r;
+    struct Pattern *l = NULL, *r = NULL;
 
     l = SLIST_FIRST(&p1_tmp);
     r = SLIST_FIRST(&p2_tmp);

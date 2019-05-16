@@ -990,7 +990,7 @@ int main(int argc, char *argv[], char *envp[])
         }
 
         /* Scan for neomutt header to set C_ResumeDraftFiles */
-        struct ListNode *np, *tmp;
+        struct ListNode *np = NULL, *tmp = NULL;
         STAILQ_FOREACH_SAFE(np, &msg->env->userhdrs, entries, tmp)
         {
           if (mutt_str_startswith(np->data, "X-Mutt-Resume-Draft:", CASE_IGNORE))

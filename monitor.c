@@ -308,7 +308,6 @@ static int monitor_handle_ignore(int desc)
  */
 static int monitor_resolve(struct MonitorInfo *info, struct Mailbox *m)
 {
-  struct Monitor *iter;
   char *fmt = NULL;
   struct stat sb;
 
@@ -353,7 +352,7 @@ static int monitor_resolve(struct MonitorInfo *info, struct Mailbox *m)
   if (stat(info->path, &sb) != 0)
     return RESOLVERES_FAIL_STAT;
 
-  iter = Monitor;
+  struct Monitor *iter = Monitor;
   while (iter && ((iter->st_ino != sb.st_ino) || (iter->st_dev != sb.st_dev)))
     iter = iter->next;
 
@@ -414,7 +413,7 @@ int mutt_monitor_poll(void)
             MonitorFilesChanged = 1;
             mutt_debug(LL_DEBUG3, "file change(s) detected\n");
             char *ptr = buf;
-            const struct inotify_event *event;
+            const struct inotify_event *event = NULL;
 
             while (true)
             {

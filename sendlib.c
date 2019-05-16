@@ -1570,7 +1570,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool a
  */
 static void run_mime_type_query(struct Body *att)
 {
-  FILE *fp, *fp_err;
+  FILE *fp = NULL, *fp_err = NULL;
   char *buf = NULL;
   size_t buflen;
   int dummy = 0;

@@ -624,7 +624,7 @@ cleanup:
 int mutt_inline_forward(struct Mailbox *m, struct Email *msg, struct Email *cur, FILE *out)
 {
   int i, forwardq = -1;
-  struct Body **last;
+  struct Body **last = NULL;
 
   if (cur)
     include_forward(m, cur, out);

@@ -1256,7 +1256,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
  */
 static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata, bool queue)
 {
-  char *uid_validity_flag;
+  char *uid_validity_flag = NULL;
   char cmd[2048];
 
   if (!adata || !mdata)

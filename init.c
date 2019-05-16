@@ -642,7 +642,7 @@ static enum CommandResult parse_unattach_list(struct Buffer *buf, struct Buffer 
     }
     const int major = mutt_check_mime_type(tmp);
 
-    struct ListNode *np, *tmp2;
+    struct ListNode *np = NULL, *tmp2 = NULL;
     STAILQ_FOREACH_SAFE(np, head, entries, tmp2)
     {
       a = (struct AttachMatch *) np->data;
@@ -727,7 +727,7 @@ static void remove_from_stailq(struct ListHead *head, const char *str)
     mutt_list_free(head); /* "unCMD *" means delete all current entries */
   else
   {
-    struct ListNode *np, *tmp;
+    struct ListNode *np = NULL, *tmp = NULL;
     STAILQ_FOREACH_SAFE(np, head, entries, tmp)
     {
       if (mutt_str_strcasecmp(str, np->data) == 0)
@@ -2438,7 +2438,7 @@ static enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s
 static enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
                                          unsigned long data, struct Buffer *err)
 {
-  struct ListNode *np, *tmp;
+  struct ListNode *np = NULL, *tmp = NULL;
   size_t l;
 
   do

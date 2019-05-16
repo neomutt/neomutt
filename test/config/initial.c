@@ -45,7 +45,7 @@ static struct ConfigDef Vars[] = {
 static bool test_set_initial(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
-  const char *name;
+  const char *name = NULL;
 
   name = "Apple";
   struct HashElem *he_a = cs_get_elem(cs, name);

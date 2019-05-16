@@ -346,7 +346,7 @@ void mutt_account_unsetpass(struct ConnAccount *account)
  */
 char *mutt_account_getoauthbearer(struct ConnAccount *account)
 {
-  FILE *fp;
+  FILE *fp = NULL;
   char *cmd = NULL;
   char *token = NULL;
   size_t token_size = 0;

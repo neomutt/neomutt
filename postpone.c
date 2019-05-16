@@ -363,7 +363,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
     mx_mbox_close(&ctx_post);
   C_Delete = opt_delete;
 
-  struct ListNode *np, *tmp;
+  struct ListNode *np = NULL, *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, &hdr->env->userhdrs, entries, tmp)
   {
     size_t plen = mutt_str_startswith(np->data, "X-Mutt-References:", CASE_IGNORE);
