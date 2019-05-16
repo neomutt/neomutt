@@ -702,5 +702,4 @@ void config_regex(void)
 
   cs_free(&cs);
   FREE(&err.data);
-  mutt_buffer_pool_free();
 }

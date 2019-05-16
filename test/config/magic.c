@@ -591,5 +591,4 @@ void config_magic(void)
 
   cs_free(&cs);
   FREE(&err.data);
-  mutt_buffer_pool_free();
 }
