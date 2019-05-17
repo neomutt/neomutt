@@ -414,7 +414,7 @@ int mutt_addrlist_remove(struct AddressList *al, const char *mailbox)
 }
 
 /**
- * mutt_addr_free - Free a single Addresses
+ * mutt_addr_free - Free a single Address
  * @param[out] a Address to free
  */
 void mutt_addr_free(struct Address **a)
@@ -428,6 +428,7 @@ void mutt_addr_free(struct Address **a)
 
 /**
  * mutt_addrlist_free - Free an AddressList
+ * @param al AddressList to free
  */
 void mutt_addrlist_free(struct AddressList **al)
 {
@@ -441,7 +442,7 @@ void mutt_addrlist_free(struct AddressList **al)
  * mutt_addrlist_parse - Parse a list of email addresses
  * @param al AddressList to append addresses
  * @param s  String to parse
- * @retval Number of parsed addressess
+ * @retval num Number of parsed addressess
  */
 int mutt_addrlist_parse(struct AddressList *al, const char *s)
 {
@@ -599,7 +600,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
  * mutt_addrlist_parse2 - Parse a list of email addresses
  * @param al Add to this List of Addresses
  * @param s String to parse
- * @retval int Number of parsed addresses
+ * @retval num Number of parsed addresses
  *
  * The email addresses can be separated by whitespace or commas.
  */
@@ -1005,7 +1006,7 @@ const char *mutt_addr_for_display(const struct Address *a)
  * @param buflen  Length of the buffer
  * @param addr    Address to display
  * @param display This address will be displayed to the user
- * @retval n      Number of characters written to buf
+ * @retval num    Number of characters written to buf
  *
  * If 'display' is set, then it doesn't matter if the transformation isn't
  * reversible.
@@ -1362,6 +1363,7 @@ void mutt_addrlist_free_one(struct AddressList *al, struct Address *a)
 /**
  * mutt_addrlist_free_all - Unlink and free all Address in an AddressList
  * @param al AddressList
+ *
  * @note After this call, the AddressList is reinitialized and ready for reuse.
  */
 void mutt_addrlist_free_all(struct AddressList *al)
