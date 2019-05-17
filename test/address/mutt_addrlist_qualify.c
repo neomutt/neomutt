@@ -28,7 +28,7 @@
 
 void test_mutt_addrlist_qualify(void)
 {
-  // void mutt_addrlist_qualify(struct Address *addr, const char *host);
+  // void mutt_addrlist_qualify(struct AddressList *al, const char *host);
 
   {
     mutt_addrlist_qualify(NULL, "example.com");

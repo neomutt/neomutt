@@ -28,17 +28,18 @@
 
 void test_mutt_addrlist_parse2(void)
 {
-  // struct Address *mutt_addrlist_parse2(struct Address *p, const char *s);
+  // int mutt_addrlist_parse2(struct AddressList *al, const char *s);
+
   {
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
-    mutt_addrlist_parse(&alist, "apple");
+    mutt_addrlist_parse2(&alist, "apple");
     TEST_CHECK(TAILQ_FIRST(&alist) != NULL);
     mutt_addrlist_free_all(&alist);
   }
 
   {
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
-    mutt_addrlist_parse(&alist, NULL);
+    mutt_addrlist_parse2(&alist, NULL);
     TEST_CHECK(TAILQ_FIRST(&alist) == NULL);
   }
 

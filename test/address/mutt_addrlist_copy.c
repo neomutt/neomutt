@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_addrlist_dedupe()
+ * Test code for mutt_addrlist_copy()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -26,12 +26,19 @@
 #include "mutt/mutt.h"
 #include "address/lib.h"
 
-void test_mutt_addrlist_dedupe(void)
+void test_mutt_addrlist_copy(void)
 {
-  // void mutt_addrlist_dedupe(struct AddressList *al);
+  // void mutt_addrlist_copy(struct AddressList *dst, const struct AddressList *src, bool prune);
 
   {
-    mutt_addrlist_dedupe(NULL);
-    TEST_CHECK_(1, "mutt_addrlist_dedupe(NULL)");
+    struct AddressList al = { 0 };
+    mutt_addrlist_copy(NULL, &al, false);
+    TEST_CHECK_(1, "mutt_addrlist_copy(NULL, &al, false)");
+  }
+
+  {
+    struct AddressList al = { 0 };
+    mutt_addrlist_copy(&al, NULL, false);
+    TEST_CHECK_(1, "mutt_addrlist_copy(&al, NULL, false)");
   }
 }

@@ -28,7 +28,7 @@
 
 void test_mutt_addrlist_parse(void)
 {
-  // void mutt_addrlist_parse(struct AddressList *top, const char *s);
+  // int mutt_addrlist_parse(struct AddressList *al, const char *s);
 
   {
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);

@@ -1356,6 +1356,9 @@ struct AddressList *mutt_addrlist_new(void)
  */
 void mutt_addrlist_free_one(struct AddressList *al, struct Address *a)
 {
+  if (!al || !a)
+    return;
+
   TAILQ_REMOVE(al, a, entries);
   mutt_addr_free(&a);
 }

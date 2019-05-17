@@ -28,7 +28,7 @@
 
 void test_mutt_addrlist_to_intl(void)
 {
-  // int mutt_addrlist_to_intl(struct AddressList *a, char **err);
+  // int mutt_addrlist_to_intl(struct AddressList *al, char **err);
 
   {
     char *err = NULL;

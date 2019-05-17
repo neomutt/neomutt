@@ -28,7 +28,7 @@
 
 void test_mutt_addrlist_equal(void)
 {
-  // bool mutt_addrlist_equal(const struct AddressList *a, const struct AddressList *b);
+  // bool mutt_addrlist_equal(const struct AddressList *ala, const struct AddressList *alb);
 
   {
     struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
@@ -38,5 +38,9 @@ void test_mutt_addrlist_equal(void)
   {
     struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
     TEST_CHECK(!mutt_addrlist_equal(&al, NULL));
+  }
+
+  {
+    TEST_CHECK(mutt_addrlist_equal(NULL, NULL));
   }
 }

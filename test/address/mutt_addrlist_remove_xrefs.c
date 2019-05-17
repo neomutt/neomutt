@@ -28,5 +28,17 @@
 
 void test_mutt_addrlist_remove_xrefs(void)
 {
-  // TODO - check when either argument is NULL
+  // void mutt_addrlist_remove_xrefs(const struct AddressList *a, struct AddressList *b);
+
+  {
+    struct AddressList al = { 0 };
+    mutt_addrlist_remove_xrefs(NULL, &al);
+    TEST_CHECK_(1, "mutt_addrlist_remove_xrefs(NULL, &al)");
+  }
+
+  {
+    struct AddressList al = { 0 };
+    mutt_addrlist_remove_xrefs(&al, NULL);
+    TEST_CHECK_(1, "mutt_addrlist_remove_xrefs(&al, NULL)");
+  }
 }

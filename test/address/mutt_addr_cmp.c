@@ -28,7 +28,7 @@
 
 void test_mutt_addr_cmp(void)
 {
-  // bool mutt_addr_cmp(struct Address *a, struct Address *b);
+  // bool mutt_addr_cmp(const struct Address *a, const struct Address *b);
 
   {
     struct Address addr = { 0 };

@@ -25,6 +25,7 @@
 #include "config.h"
 #include "mutt/mutt.h"
 #include "address/lib.h"
+#include "common.h"
 
 void test_mutt_addr_write(void)
 {
@@ -32,11 +33,34 @@ void test_mutt_addr_write(void)
 
   {
     struct Address addr = { 0 };
-    TEST_CHECK(mutt_addr_write(NULL, 32, &addr, false) == 0);
+    mutt_addr_write(NULL, 32, &addr, false);
+    TEST_CHECK_(1, "mutt_addr_write(NULL, 32, &addr, false)");
   }
 
   {
     char buf[32] = { 0 };
-    TEST_CHECK(mutt_addr_write(buf, sizeof(buf), NULL, false) == 0);
+    mutt_addr_write(buf, sizeof(buf), NULL, false);
+    TEST_CHECK_(1, "mutt_addr_write(buf, sizeof(buf), NULL, false)");
+  }
+
+  { /* integration */
+    char buf[256] = { 0 };
+    char per[64] = "bobby bob";
+    char mbx[64] = "bob@bobsdomain";
+
+    struct Address addr = {
+      .personal = per,
+      .mailbox = mbx,
+      .group = 0,
+      .is_intl = 0,
+      .intl_checked = 0,
+    };
+
+    size_t len = mutt_addr_write(buf, sizeof(buf), &addr, false);
+
+    const char *expected = "bobby bob <bob@bobsdomain>";
+
+    TEST_CHECK_STR_EQ(expected, buf);
+    TEST_CHECK(len == strlen(expected));
   }
 }

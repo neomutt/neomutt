@@ -29,4 +29,12 @@
 void test_mutt_addr_new(void)
 {
   // struct Address *mutt_addr_new(void);
+
+  {
+    struct Address *a = NULL;
+
+    TEST_CHECK((a = mutt_addr_new()) != NULL);
+
+    mutt_addr_free(&a);
+  }
 }

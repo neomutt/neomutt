@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_addrlist_dedupe()
+ * Test code for mutt_addrlist_prepend()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -26,12 +26,19 @@
 #include "mutt/mutt.h"
 #include "address/lib.h"
 
-void test_mutt_addrlist_dedupe(void)
+void test_mutt_addrlist_prepend(void)
 {
-  // void mutt_addrlist_dedupe(struct AddressList *al);
+  // void mutt_addrlist_prepend(struct AddressList *al, struct Address *a);
 
   {
-    mutt_addrlist_dedupe(NULL);
-    TEST_CHECK_(1, "mutt_addrlist_dedupe(NULL)");
+    struct Address a = { 0 };
+    mutt_addrlist_prepend(NULL, &a);
+    TEST_CHECK_(1, "mutt_addrlist_prepend(NULL, &a)");
+  }
+
+  {
+    struct AddressList al = { 0 };
+    mutt_addrlist_prepend(&al, NULL);
+    TEST_CHECK_(1, "mutt_addrlist_prepend(&al, NULL)");
   }
 }

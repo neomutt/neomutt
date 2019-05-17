@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_addr_copy_list()
+ * Test code for mutt_addrlist_write()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -26,12 +26,19 @@
 #include "mutt/mutt.h"
 #include "address/lib.h"
 
-void test_mutt_addr_copy_list(void)
+void test_mutt_addrlist_write(void)
 {
-  // void mutt_addrlist_copy(struct AddressList *dst, const struct AddressList *src, bool prune);
+  // size_t mutt_addrlist_write(char *buf, size_t buflen, const struct AddressList *al, bool display);
 
   {
-    mutt_addrlist_copy(NULL, NULL, false);
-    TEST_CHECK(true); // no crash
+    struct AddressList al = { 0 };
+    mutt_addrlist_write(NULL, 32, &al, false);
+    TEST_CHECK_(1, "mutt_addrlist_write(NULL, 32, &al, false)");
+  }
+
+  {
+    char buf[32] = { 0 };
+    mutt_addrlist_write(buf, sizeof(buf), NULL, false);
+    TEST_CHECK_(1, "mutt_addrlist_write(buf, sizeof(buf), NULL, false)");
   }
 }

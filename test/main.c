@@ -29,23 +29,30 @@
   NEOMUTT_TEST_ITEM(test_mutt_addr_cat)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_addr_cmp)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_addr_copy)                                       \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_copy_list)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_addr_for_display)                                \
   NEOMUTT_TEST_ITEM(test_mutt_addr_free)                                       \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_has_recips)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_addr_new)                                        \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_search)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_addr_valid_msgid)                                \
   NEOMUTT_TEST_ITEM(test_mutt_addr_write)                                      \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_write_single)                               \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_append)                                 \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_copy)                                   \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_dedupe)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_equal)                                  \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_free)                                   \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_free_all)                               \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_free_one)                               \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_has_recips)                             \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_new)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_parse)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_parse2)                                 \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_prepend)                                \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_qualify)                                \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_remove)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_remove_xrefs)                           \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_search)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_to_intl)                                \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_to_local)                               \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_write)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_actx_add_attach)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_actx_add_body)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_actx_add_fp)                                     \

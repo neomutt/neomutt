@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_addr_search()
+ * Test code for mutt_addrlist_free_all()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -26,17 +26,12 @@
 #include "mutt/mutt.h"
 #include "address/lib.h"
 
-void test_mutt_addr_search(void)
+void test_mutt_addrlist_free_all(void)
 {
-  // bool mutt_addrlist_search(const struct Address *needle, const struct AddressList *haystack);
+  // void mutt_addrlist_free_all(struct AddressList *al);
 
   {
-    struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-    TEST_CHECK(!mutt_addrlist_search(NULL, &al));
-  }
-
-  {
-    struct Address a = { 0 };
-    TEST_CHECK(!mutt_addrlist_search(&a, NULL));
+    mutt_addrlist_free_all(NULL);
+    TEST_CHECK_(1, "mutt_addrlist_free_all(NULL)");
   }
 }
