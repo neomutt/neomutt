@@ -665,10 +665,10 @@ void mutt_default_save(char *path, size_t pathlen, struct Email *e)
     return;
 
   struct Envelope *env = e->env;
-  const struct Address *from = mutt_addresslist_first(&env->from);
-  const struct Address *reply_to = mutt_addresslist_first(&env->reply_to);
-  const struct Address *to = mutt_addresslist_first(&env->to);
-  const struct Address *cc = mutt_addresslist_first(&env->cc);
+  const struct Address *from = TAILQ_FIRST(&env->from);
+  const struct Address *reply_to = TAILQ_FIRST(&env->reply_to);
+  const struct Address *to = TAILQ_FIRST(&env->to);
+  const struct Address *cc = TAILQ_FIRST(&env->cc);
   const struct Address *addr = NULL;
   bool from_me = mutt_addr_is_user(from);
 
@@ -700,9 +700,9 @@ void mutt_select_fcc(char *path, size_t pathlen, struct Email *e)
 {
   if (addr_hook(path, pathlen, MUTT_FCC_HOOK, NULL, e) != 0)
   {
-    const struct Address *to = mutt_addresslist_first(&e->env->to);
-    const struct Address *cc = mutt_addresslist_first(&e->env->cc);
-    const struct Address *bcc = mutt_addresslist_first(&e->env->bcc);
+    const struct Address *to = TAILQ_FIRST(&e->env->to);
+    const struct Address *cc = TAILQ_FIRST(&e->env->cc);
+    const struct Address *bcc = TAILQ_FIRST(&e->env->bcc);
     if ((C_SaveName || C_ForceName) && (to || cc || bcc))
     {
       const struct Address *addr = to ? to : (cc ? cc : bcc);

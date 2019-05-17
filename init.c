@@ -946,16 +946,16 @@ static enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   if (C_DebugLevel > LL_DEBUG4)
   {
     /* A group is terminated with an empty address, so check a->mailbox */
-    struct AddressNode *an = NULL;
-    TAILQ_FOREACH(an, &tmp->addr, entries)
+    struct Address *a = NULL;
+    TAILQ_FOREACH(a, &tmp->addr, entries)
     {
-      if (!an->addr->mailbox)
+      if (!a->mailbox)
         break;
 
-      if (an->addr->group)
-        mutt_debug(5, "  Group %s\n", an->addr->mailbox);
+      if (a->group)
+        mutt_debug(5, "  Group %s\n", a->mailbox);
       else
-        mutt_debug(5, "  %s\n", an->addr->mailbox);
+        mutt_debug(5, "  %s\n", a->mailbox);
     }
   }
   mutt_grouplist_destroy(&gc);

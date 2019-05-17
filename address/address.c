@@ -370,7 +370,7 @@ static void add_addrspec(struct AddressList *al, const char *phrase,
     return;
   }
 
-  mutt_addresslist_append(al, cur);
+  TAILQ_INSERT_TAIL(al, cur, entries);
 }
 
 /**
@@ -400,12 +400,12 @@ int mutt_addresslist_remove(struct AddressList *al, const char *mailbox)
     return 0;
 
   int rc = -1;
-  struct AddressNode *an, *tmp;
-  TAILQ_FOREACH_SAFE(an, al, entries, tmp)
+  struct Address *a, *tmp;
+  TAILQ_FOREACH_SAFE(a, al, entries, tmp)
   {
-    if (mutt_str_strcasecmp(mailbox, an->addr->mailbox) == 0)
+    if (mutt_str_strcasecmp(mailbox, a->mailbox) == 0)
     {
-      mutt_addresslist_free_one(al, an);
+      mutt_addresslist_free_one(al, a);
       rc = 0;
     }
   }
@@ -468,11 +468,11 @@ int mutt_addresslist_parse(struct AddressList *al, const char *s)
         }
         else if (commentlen != 0)
         {
-          struct AddressNode *last = TAILQ_LAST(al, AddressList);
-          if (last && last->addr && !last->addr->personal)
+          struct Address *last = TAILQ_LAST(al, AddressList);
+          if (last && !last->personal)
           {
             terminate_buffer(comment, commentlen);
-            last->addr->personal = mutt_str_strdup(comment);
+            last->personal = mutt_str_strdup(comment);
           }
         }
 
@@ -509,7 +509,7 @@ int mutt_addresslist_parse(struct AddressList *al, const char *s)
         terminate_buffer(phrase, phraselen);
         a->mailbox = mutt_str_strdup(phrase);
         a->group = 1;
-        mutt_addresslist_append(al, a);
+        TAILQ_INSERT_TAIL(al, a, entries);
         phraselen = 0;
         commentlen = 0;
         s++;
@@ -525,16 +525,16 @@ int mutt_addresslist_parse(struct AddressList *al, const char *s)
         }
         else if (commentlen != 0)
         {
-          struct AddressNode *last = TAILQ_LAST(al, AddressList);
-          if (last && last->addr && !last->addr->personal)
+          struct Address *last = TAILQ_LAST(al, AddressList);
+          if (last && !last->personal)
           {
             terminate_buffer(comment, commentlen);
-            last->addr->personal = mutt_str_strdup(comment);
+            last->personal = mutt_str_strdup(comment);
           }
         }
 
         /* add group terminator */
-        mutt_addresslist_append(al, mutt_addr_new());
+        TAILQ_INSERT_TAIL(al, mutt_addr_new(), entries);
 
         phraselen = 0;
         commentlen = 0;
@@ -553,7 +553,7 @@ int mutt_addresslist_parse(struct AddressList *al, const char *s)
           mutt_addr_free(&a);
           return 0;
         }
-        mutt_addresslist_append(al, a);
+        TAILQ_INSERT_TAIL(al, a, entries);
         phraselen = 0;
         commentlen = 0;
         parsed++;
@@ -584,11 +584,11 @@ int mutt_addresslist_parse(struct AddressList *al, const char *s)
   }
   else if (commentlen != 0)
   {
-    struct AddressNode *last = TAILQ_LAST(al, AddressList);
-    if (last && last->addr && !last->addr->personal)
+    struct Address *last = TAILQ_LAST(al, AddressList);
+    if (last && !last->personal)
     {
       terminate_buffer(comment, commentlen);
-      last->addr->personal = mutt_str_strdup(comment);
+      last->personal = mutt_str_strdup(comment);
     }
   }
 
@@ -644,16 +644,15 @@ void mutt_addresslist_qualify(struct AddressList *al, const char *host)
   if (!al || !host || !*host)
     return;
 
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, al, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
-    struct Address *addr = an->addr;
-    if (!addr->group && addr->mailbox && !strchr(addr->mailbox, '@'))
+    if (!a->group && a->mailbox && !strchr(a->mailbox, '@'))
     {
-      char *p = mutt_mem_malloc(mutt_str_strlen(addr->mailbox) + mutt_str_strlen(host) + 2);
-      sprintf(p, "%s@%s", addr->mailbox, host);
-      FREE(&addr->mailbox);
-      addr->mailbox = p;
+      char *p = mutt_mem_malloc(mutt_str_strlen(a->mailbox) + mutt_str_strlen(host) + 2);
+      sprintf(p, "%s@%s", a->mailbox, host);
+      FREE(&a->mailbox);
+      a->mailbox = p;
     }
   }
 }
@@ -726,18 +725,17 @@ void mutt_addresslist_copy(struct AddressList *dst, const struct AddressList *sr
   if (!dst || !src)
     return;
 
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, src, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, src, entries)
   {
-    struct Address *addr = an->addr;
-    struct AddressNode *next = TAILQ_NEXT(an, entries);
-    if (prune && addr->group && (!next || !next->addr->mailbox))
+    struct Address *next = TAILQ_NEXT(a, entries);
+    if (prune && a->group && (!next || !next->mailbox))
     {
       /* ignore this element of the list */
     }
     else
     {
-      mutt_addresslist_append(dst, mutt_addr_copy(addr));
+      TAILQ_INSERT_TAIL(dst, mutt_addr_copy(a), entries);
     }
   }
 }
@@ -804,13 +802,13 @@ bool mutt_addresslist_equal(const struct AddressList *ala, const struct AddressL
     return !(ala || alb);
   }
 
-  struct AddressNode *ana = TAILQ_FIRST(ala);
-  struct AddressNode *anb = TAILQ_FIRST(alb);
+  struct Address *ana = TAILQ_FIRST(ala);
+  struct Address *anb = TAILQ_FIRST(alb);
 
   while (ana && anb)
   {
-    if ((mutt_str_strcmp(ana->addr->mailbox, anb->addr->mailbox) != 0) ||
-        (mutt_str_strcmp(ana->addr->personal, anb->addr->personal) != 0))
+    if ((mutt_str_strcmp(ana->mailbox, anb->mailbox) != 0) ||
+        (mutt_str_strcmp(ana->personal, anb->personal) != 0))
     {
       break;
     }
@@ -835,10 +833,10 @@ int mutt_addresslist_has_recips(const struct AddressList *al)
     return 0;
 
   int c = 0;
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, al, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
-    if (!an->addr->mailbox || an->addr->group)
+    if (!a->mailbox || a->group)
       continue;
     c++;
   }
@@ -873,10 +871,10 @@ bool mutt_addresslist_search(const struct Address *needle, const struct AddressL
   if (!needle || !haystack)
     return false;
 
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, haystack, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, haystack, entries)
   {
-    if (mutt_addr_cmp(needle, an->addr))
+    if (mutt_addr_cmp(needle, a))
       return true;
   }
   return false;
@@ -1164,15 +1162,15 @@ size_t mutt_addresslist_write(char *buf, size_t buflen,
     buflen--;
   }
 
-  struct AddressNode *np = NULL;
-  TAILQ_FOREACH(np, al, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
     if (buflen == 0)
       break;
 
     /* use buflen+1 here because we already saved space for the trailing
      * nul char, and the subroutine can make use of it */
-    mutt_addr_write(pbuf, buflen + 1, np->addr, display);
+    mutt_addr_write(pbuf, buflen + 1, a, display);
 
     /* this should be safe since we always have at least 1 char passed into
      * the above call, which means 'pbuf' should always be nul terminated */
@@ -1182,8 +1180,8 @@ size_t mutt_addresslist_write(char *buf, size_t buflen,
 
     /* if there is another address, and it's not a group mailbox name or
      * group terminator, add a comma to separate the addresses */
-    struct AddressNode *next = TAILQ_NEXT(np, entries);
-    if (next && next->addr->mailbox && !next->addr->group)
+    struct Address *next = TAILQ_NEXT(a, entries);
+    if (next && next->mailbox && !next->group)
     {
       if (buflen == 0)
         goto done;
@@ -1218,15 +1216,15 @@ int mutt_addresslist_to_intl(struct AddressList *al, char **err)
   if (err)
     *err = NULL;
 
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, al, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
-    if (!an->addr->mailbox || mutt_addr_is_intl(an->addr))
+    if (!a->mailbox || mutt_addr_is_intl(a))
       continue;
 
     char *user = NULL;
     char *domain = NULL;
-    if (mutt_addr_mbox_to_udomain(an->addr->mailbox, &user, &domain) == -1)
+    if (mutt_addr_mbox_to_udomain(a->mailbox, &user, &domain) == -1)
       continue;
 
     char *intl_mailbox = mutt_idna_local_to_intl(user, domain);
@@ -1238,11 +1236,11 @@ int mutt_addresslist_to_intl(struct AddressList *al, char **err)
     {
       rc = -1;
       if (err && !*err)
-        *err = mutt_str_strdup(an->addr->mailbox);
+        *err = mutt_str_strdup(a->mailbox);
       continue;
     }
 
-    mutt_addr_set_intl(an->addr, intl_mailbox);
+    mutt_addr_set_intl(a, intl_mailbox);
   }
 
   return rc;
@@ -1258,15 +1256,15 @@ int mutt_addresslist_to_local(struct AddressList *al)
   if (!al)
     return 0;
 
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, al, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
-    if (!an->addr->mailbox || mutt_addr_is_local(an->addr))
+    if (!a->mailbox || mutt_addr_is_local(a))
       continue;
 
     char *user = NULL;
     char *domain = NULL;
-    if (mutt_addr_mbox_to_udomain(an->addr->mailbox, &user, &domain) == -1)
+    if (mutt_addr_mbox_to_udomain(a->mailbox, &user, &domain) == -1)
       continue;
 
     char *local_mailbox = mutt_idna_intl_to_local(user, domain, 0);
@@ -1275,7 +1273,7 @@ int mutt_addresslist_to_local(struct AddressList *al)
     FREE(&domain);
 
     if (local_mailbox)
-      mutt_addr_set_local(an->addr, local_mailbox);
+      mutt_addr_set_local(a, local_mailbox);
   }
   return 0;
 }
@@ -1292,21 +1290,20 @@ void mutt_addresslist_dedupe(struct AddressList *al)
   if (!al)
     return;
 
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, al, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
-    if (an->addr->mailbox)
+    if (a->mailbox)
     {
-      struct AddressNode *an2 = TAILQ_NEXT(an, entries), *tmp;
-      if (an2)
+      struct Address *a2 = TAILQ_NEXT(a, entries), *tmp;
+      if (a2)
       {
-        TAILQ_FOREACH_FROM_SAFE(an2, al, entries, tmp)
+        TAILQ_FOREACH_FROM_SAFE(a2, al, entries, tmp)
         {
-          if (an2->addr->mailbox &&
-              (mutt_str_strcasecmp(an->addr->mailbox, an2->addr->mailbox) == 0))
+          if (a2->mailbox && (mutt_str_strcasecmp(a->mailbox, a2->mailbox) == 0))
           {
-            mutt_debug(LL_DEBUG2, "Removing %s\n", an2->addr->mailbox);
-            mutt_addresslist_free_one(al, an2);
+            mutt_debug(LL_DEBUG2, "Removing %s\n", a2->mailbox);
+            mutt_addresslist_free_one(al, a2);
           }
         }
       }
@@ -1326,15 +1323,15 @@ void mutt_addresslist_remove_xrefs(const struct AddressList *a, struct AddressLi
   if (!a || !b)
     return;
 
-  struct AddressNode *ana, *anb, *tmp;
+  struct Address *aa, *ab, *tmp;
 
-  TAILQ_FOREACH_SAFE(anb, b, entries, tmp)
+  TAILQ_FOREACH_SAFE(ab, b, entries, tmp)
   {
-    TAILQ_FOREACH(ana, a, entries)
+    TAILQ_FOREACH(aa, a, entries)
     {
-      if (mutt_addr_cmp(ana->addr, anb->addr))
+      if (mutt_addr_cmp(aa, ab))
       {
-        mutt_addresslist_free_one(b, anb);
+        mutt_addresslist_free_one(b, ab);
         break;
       }
     }
@@ -1353,84 +1350,32 @@ struct AddressList *mutt_addresslist_new(void)
 }
 
 /**
- * mutt_addresslist_append - Append an address to an AddressList
+ * mutt_addresslist_free_one - Unlink and free an Address from an AddressList
  * @param al AddressList
- * @param a  Address
+ * @param an Address
  */
-void mutt_addresslist_append(struct AddressList *al, struct Address *a)
+void mutt_addresslist_free_one(struct AddressList *al, struct Address *a)
 {
-  if (!al || !a)
-    return;
-
-  struct AddressNode *anode = mutt_mem_calloc(1, sizeof(struct AddressNode));
-  anode->addr = a;
-  TAILQ_INSERT_TAIL(al, anode, entries);
+  TAILQ_REMOVE(al, a, entries);
+  mutt_addr_free(&a);
 }
 
 /**
- * mutt_addresslist_prepend - Prepend an address to an AddressList
+ * mutt_addresslist_free_all - Unlink and free all Address in an AddressList
  * @param al AddressList
- * @param a  Address
- */
-void mutt_addresslist_prepend(struct AddressList *al, struct Address *a)
-{
-  struct AddressNode *anode = mutt_mem_calloc(1, sizeof(struct AddressNode));
-  anode->addr = a;
-  TAILQ_INSERT_HEAD(al, anode, entries);
-}
-
-/**
- * mutt_addresslist_free_one - Unlinks an AddressNode from an AddressList and
- * frees the referenced Address
- * @param al AddressList
- * @param an AddressNode
- */
-void mutt_addresslist_free_one(struct AddressList *al, struct AddressNode *an)
-{
-  TAILQ_REMOVE(al, an, entries);
-  mutt_addr_free(&an->addr);
-  FREE(&an);
-}
-
-/**
- * mutt_addresslist_free_one - Unlinks all AddressNodes from an AddressList,
- * frees the referenced Addresses and reinitialize the AddressList.
- * @param al AddressList
+ * @note After this call, the AddressList is reinitialized and ready for reuse.
  */
 void mutt_addresslist_free_all(struct AddressList *al)
 {
   if (!al)
     return;
 
-  struct AddressNode *np = TAILQ_FIRST(al), *next = NULL;
-  while (np)
+  struct Address *a = TAILQ_FIRST(al), *next = NULL;
+  while (a)
   {
-    next = TAILQ_NEXT(np, entries);
-    mutt_addr_free(&np->addr);
-    FREE(&np);
-    np = next;
+    next = TAILQ_NEXT(a, entries);
+    mutt_addr_free(&a);
+    a = next;
   }
   TAILQ_INIT(al);
-}
-
-/**
- * mutt_addresslist_clear - Unlinks all AddressNodes from an AddressList
- * and reinitialize the AddressList.
- * @param al AddressList
- */
-void mutt_addresslist_clear(struct AddressList *al)
-{
-  struct AddressNode *np = TAILQ_FIRST(al), *next = NULL;
-  while (np)
-  {
-    next = TAILQ_NEXT(np, entries);
-    FREE(&np);
-    np = next;
-  }
-  TAILQ_INIT(al);
-}
-
-struct Address *mutt_addresslist_first(const struct AddressList *al)
-{
-  return (al && TAILQ_FIRST(al)) ? TAILQ_FIRST(al)->addr : NULL;
 }

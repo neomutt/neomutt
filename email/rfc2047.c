@@ -751,13 +751,13 @@ void rfc2047_encode_addrlist(struct AddressList *al, const char *tag)
     return;
 
   int col = tag ? strlen(tag) + 2 : 32;
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, al, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
-    if (an->addr->personal)
-      rfc2047_encode(&an->addr->personal, AddressSpecials, col, C_SendCharset);
-    else if (an->addr->group && an->addr->mailbox)
-      rfc2047_encode(&an->addr->mailbox, AddressSpecials, col, C_SendCharset);
+    if (a->personal)
+      rfc2047_encode(&a->personal, AddressSpecials, col, C_SendCharset);
+    else if (a->group && a->mailbox)
+      rfc2047_encode(&a->mailbox, AddressSpecials, col, C_SendCharset);
   }
 }
 
@@ -770,15 +770,15 @@ void rfc2047_decode_addrlist(struct AddressList *al)
   if (!al)
     return;
 
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, al, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
-    if (an->addr->personal && ((strstr(an->addr->personal, "=?")) || C_AssumedCharset))
+    if (a->personal && ((strstr(a->personal, "=?")) || C_AssumedCharset))
     {
-      rfc2047_decode(&an->addr->personal);
+      rfc2047_decode(&a->personal);
     }
-    else if (an->addr->group && an->addr->mailbox && strstr(an->addr->mailbox, "=?"))
-      rfc2047_decode(&an->addr->mailbox);
+    else if (a->group && a->mailbox && strstr(a->mailbox, "=?"))
+      rfc2047_decode(&a->mailbox);
   }
 }
 

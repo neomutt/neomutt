@@ -788,10 +788,10 @@ int mix_check_message(struct Email *msg)
    * use_domain won't be respected at this point, hidden_host will.
    */
 
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, &msg->env->to, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, &msg->env->to, entries)
   {
-    if (!an->addr->group && !strchr(an->addr->mailbox, '@'))
+    if (!a->group && !strchr(a->mailbox, '@'))
     {
       need_hostname = true;
       break;

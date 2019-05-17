@@ -1005,21 +1005,21 @@ void smime_class_getkeys(struct Envelope *env)
     return;
   }
 
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, &env->to, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, &env->to, entries)
   {
-    if (mutt_addr_is_user(an->addr))
+    if (mutt_addr_is_user(a))
     {
-      getkeys(an->addr->mailbox);
+      getkeys(a->mailbox);
       return;
     }
   }
 
-  TAILQ_FOREACH(an, &env->cc, entries)
+  TAILQ_FOREACH(a, &env->cc, entries)
   {
-    if (mutt_addr_is_user(an->addr))
+    if (mutt_addr_is_user(a))
     {
-      getkeys(an->addr->mailbox);
+      getkeys(a->mailbox);
       return;
     }
   }
@@ -1039,20 +1039,20 @@ char *smime_class_find_keys(struct AddressList *al, bool oppenc_mode)
   size_t keylist_size = 0;
   size_t keylist_used = 0;
 
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, al, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
-    key = smime_get_key_by_addr(an->addr->mailbox, KEYFLAG_CANENCRYPT, true, !oppenc_mode);
+    key = smime_get_key_by_addr(a->mailbox, KEYFLAG_CANENCRYPT, true, !oppenc_mode);
     if (!key && !oppenc_mode)
     {
       char buf[1024];
-      snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), an->addr->mailbox);
+      snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), a->mailbox);
       key = smime_ask_for_key(buf, KEYFLAG_CANENCRYPT, true);
     }
     if (!key)
     {
       if (!oppenc_mode)
-        mutt_message(_("No (valid) certificate found for %s"), an->addr->mailbox);
+        mutt_message(_("No (valid) certificate found for %s"), a->mailbox);
       FREE(&keylist);
       return NULL;
     }
@@ -1442,12 +1442,12 @@ int smime_class_verify_sender(struct Email *e)
   if (!TAILQ_EMPTY(&e->env->from))
   {
     mutt_expand_aliases(&e->env->from);
-    mbox = mutt_addresslist_first(&e->env->from)->mailbox;
+    mbox = TAILQ_FIRST(&e->env->from)->mailbox;
   }
   else if (!TAILQ_EMPTY(&e->env->sender))
   {
     mutt_expand_aliases(&e->env->sender);
-    mbox = mutt_addresslist_first(&e->env->sender)->mailbox;
+    mbox = TAILQ_FIRST(&e->env->sender)->mailbox;
   }
 
   if (mbox)

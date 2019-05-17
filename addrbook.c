@@ -168,8 +168,8 @@ static int alias_sort_address(const void *a, const void *b)
     r = 1;
   else
   {
-    struct Address *pa = TAILQ_FIRST(pal)->addr;
-    struct Address *pb = TAILQ_FIRST(pbl)->addr;
+    struct Address *pa = TAILQ_FIRST(pal);
+    struct Address *pb = TAILQ_FIRST(pbl);
     if (pa->personal)
     {
       if (pb->personal)

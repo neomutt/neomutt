@@ -32,14 +32,14 @@ void test_mutt_addresslist_parse2(void)
   {
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
     mutt_addresslist_parse(&alist, "apple");
-    TEST_CHECK(mutt_addresslist_first(&alist) != NULL);
+    TEST_CHECK(TAILQ_FIRST(&alist) != NULL);
     mutt_addresslist_free_all(&alist);
   }
 
   {
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
     mutt_addresslist_parse(&alist, NULL);
-    TEST_CHECK(mutt_addresslist_first(&alist) == NULL);
+    TEST_CHECK(TAILQ_FIRST(&alist) == NULL);
   }
   
   mutt_buffer_pool_free();

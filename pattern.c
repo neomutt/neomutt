@@ -1694,10 +1694,9 @@ static int match_addrlist(struct Pattern *pat, bool match_personal, int n, ...)
   for (; n; n--)
   {
     struct AddressList *al = va_arg(ap, struct AddressList *);
-    struct AddressNode *an = NULL;
-    TAILQ_FOREACH(an, al, entries)
+    struct Address *a = NULL;
+    TAILQ_FOREACH(a, al, entries)
     {
-      struct Address *a = an->addr;
       if (pat->alladdr ^ ((!pat->isalias || mutt_alias_reverse_lookup(a)) &&
                           ((a->mailbox && patmatch(pat, a->mailbox)) ||
                            (match_personal && a->personal && patmatch(pat, a->personal)))))
@@ -1751,10 +1750,10 @@ static int mutt_is_predicate_recipient(bool alladdr, struct Envelope *e, addr_pr
   for (size_t i = 0; i < mutt_array_size(als); ++i)
   {
     struct AddressList *al = als[i];
-    struct AddressNode *an = NULL;
-    TAILQ_FOREACH(an, al, entries)
+    struct Address *a = NULL;
+    TAILQ_FOREACH(a, al, entries)
     {
-      if (alladdr ^ p(an->addr))
+      if (alladdr ^ p(a))
         return !alladdr;
     }
   }
@@ -1795,21 +1794,21 @@ int mutt_is_list_recipient(bool alladdr, struct Envelope *e)
  */
 static int match_user(int alladdr, struct AddressList *al1, struct AddressList *al2)
 {
-  struct AddressNode *an = NULL;
+  struct Address *a = NULL;
   if (al1)
   {
-    TAILQ_FOREACH(an, al1, entries)
+    TAILQ_FOREACH(a, al1, entries)
     {
-      if (alladdr ^ mutt_addr_is_user(an->addr))
+      if (alladdr ^ mutt_addr_is_user(a))
         return !alladdr;
     }
   }
 
   if (al2)
   {
-    TAILQ_FOREACH(an, al2, entries)
+    TAILQ_FOREACH(a, al2, entries)
     {
-      if (alladdr ^ mutt_addr_is_user(an->addr))
+      if (alladdr ^ mutt_addr_is_user(a))
         return !alladdr;
     }
   }

@@ -216,7 +216,7 @@ int mutt_display_message(struct Email *cur)
     if (cur->security & APPLICATION_PGP)
     {
       if (!TAILQ_EMPTY(&cur->env->from))
-        crypt_pgp_invoke_getkeys(mutt_addresslist_first(&cur->env->from));
+        crypt_pgp_invoke_getkeys(TAILQ_FIRST(&cur->env->from));
 
       crypt_invoke_message(APPLICATION_PGP);
     }

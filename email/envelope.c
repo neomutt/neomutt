@@ -129,7 +129,7 @@ void mutt_env_merge(struct Envelope *base, struct Envelope **extra)
 #define MOVE_ADDRESSLIST(member)                                               \
   if (TAILQ_EMPTY(&base->member))                                              \
   {                                                                            \
-    TAILQ_SWAP(&base->member, &((*extra))->member, AddressNode, entries);      \
+    TAILQ_SWAP(&base->member, &((*extra))->member, Address, entries);          \
   }
 
   MOVE_ADDRESSLIST(return_path);

@@ -73,7 +73,7 @@ void mutt_auto_subscribe(const char *mailto)
 
   if ((mutt_parse_mailto(lpenv, NULL, mailto) != -1) && !TAILQ_EMPTY(&lpenv->to))
   {
-    const char *mailbox = TAILQ_FIRST(&lpenv->to)->addr->mailbox;
+    const char *mailbox = TAILQ_FIRST(&lpenv->to)->mailbox;
     if (mailbox && !mutt_regexlist_match(&UnSubscribedLists, mailbox) &&
         !mutt_regexlist_match(&UnMailLists, mailbox) &&
         !mutt_regexlist_match(&UnSubscribedLists, mailbox))

@@ -1,5 +1,4 @@
-ADDRESS_OBJS	= test/address/mutt_addr_append.o \
-		  test/address/mutt_addr_cat.o \
+ADDRESS_OBJS	= test/address/mutt_addr_cat.o \
 		  test/address/mutt_addr_cmp.o \
 		  test/address/mutt_addr_copy.o \
 		  test/address/mutt_addr_copy_list.o \

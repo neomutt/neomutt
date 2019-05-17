@@ -182,10 +182,10 @@ static void group_add_addrlist(struct Group *g, const struct AddressList *al)
   struct AddressList new = TAILQ_HEAD_INITIALIZER(new);
   mutt_addresslist_copy(&new, al, false);
   mutt_addresslist_remove_xrefs(&g->al, &new);
-  struct AddressNode *np, *tmp;
-  TAILQ_FOREACH_SAFE(np, &new, entries, tmp)
+  struct Address *a, *tmp;
+  TAILQ_FOREACH_SAFE(a, &new, entries, tmp)
   {
-    TAILQ_INSERT_TAIL(&g->al, np, entries);
+    TAILQ_INSERT_TAIL(&g->al, a, entries);
   }
   assert(TAILQ_EMPTY(&new));
 }
@@ -250,10 +250,10 @@ int mutt_grouplist_remove_addresslist(struct GroupList *head, struct AddressList
 
   STAILQ_FOREACH(gnp, head, entries)
   {
-    struct AddressNode *anp = NULL;
-    TAILQ_FOREACH(anp, al, entries)
+    struct Address *a = NULL;
+    TAILQ_FOREACH(a, al, entries)
     {
-      mutt_addresslist_remove(&gnp->group->al, anp->addr->mailbox);
+      mutt_addresslist_remove(&gnp->group->al, a->mailbox);
     }
     if (empty_group(gnp->group))
       group_remove(gnp->group);
@@ -329,10 +329,10 @@ bool mutt_group_match(struct Group *g, const char *s)
 
   if (mutt_regexlist_match(&g->rs, s))
     return true;
-  struct AddressNode *np = NULL;
-  TAILQ_FOREACH(np, &g->al, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, &g->al, entries)
   {
-    if (np->addr->mailbox && (mutt_str_strcasecmp(s, np->addr->mailbox) == 0))
+    if (a->mailbox && (mutt_str_strcasecmp(s, a->mailbox) == 0))
       return true;
   }
 

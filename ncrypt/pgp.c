@@ -1422,15 +1422,15 @@ char *pgp_class_find_keys(struct AddressList *addrlist, bool oppenc_mode)
   bool key_selected;
   struct AddressList hookal = TAILQ_HEAD_INITIALIZER(hookal);
 
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, addrlist, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, addrlist, entries)
   {
     key_selected = false;
-    mutt_crypt_hook(&crypt_hook_list, an->addr);
+    mutt_crypt_hook(&crypt_hook_list, a);
     crypt_hook = STAILQ_FIRST(&crypt_hook_list);
     do
     {
-      p = an->addr;
+      p = a;
       k_info = NULL;
 
       if (crypt_hook)
@@ -1456,7 +1456,7 @@ char *pgp_class_find_keys(struct AddressList *addrlist, bool oppenc_mode)
           if (strchr(keyID, '@') && (mutt_addresslist_parse(&hookal, keyID) != 0))
           {
             mutt_addresslist_qualify(&hookal, fqdn);
-            p = mutt_addresslist_first(&hookal);
+            p = TAILQ_FIRST(&hookal);
           }
           else if (!oppenc_mode)
           {

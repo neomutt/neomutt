@@ -1758,12 +1758,11 @@ void mutt_write_addresslist(struct AddressList *al, FILE *fp, int linelen, bool 
   char buf[1024];
   int count = 0;
 
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, al, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
-    struct Address *addr = an->addr;
     buf[0] = '\0';
-    mutt_addr_write(buf, sizeof(buf), addr, display);
+    mutt_addr_write(buf, sizeof(buf), a, display);
     size_t len = mutt_str_strlen(buf);
     if (count && (linelen + len > 74))
     {
@@ -1772,7 +1771,7 @@ void mutt_write_addresslist(struct AddressList *al, FILE *fp, int linelen, bool 
     }
     else
     {
-      if (count && addr->mailbox)
+      if (count && a->mailbox)
       {
         fputc(' ', fp);
         linelen++;
@@ -1780,8 +1779,8 @@ void mutt_write_addresslist(struct AddressList *al, FILE *fp, int linelen, bool 
       linelen += len;
     }
     fputs(buf, fp);
-    struct AddressNode *next = TAILQ_NEXT(an, entries);
-    if (!addr->group && next && next->addr->mailbox)
+    struct Address *next = TAILQ_NEXT(a, entries);
+    if (!a->group && next && next->mailbox)
     {
       linelen++;
       fputc(',', fp);
@@ -2700,10 +2699,10 @@ static char **add_args_one(char **args, size_t *argslen, size_t *argsmax, struct
  */
 static char **add_args(char **args, size_t *argslen, size_t *argsmax, struct AddressList *al)
 {
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, al, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
-    args = add_args_one(args, argslen, argsmax, an->addr);
+    args = add_args_one(args, argslen, argsmax, a);
   }
   return args;
 }
@@ -2925,9 +2924,9 @@ void mutt_prepare_envelope(struct Envelope *env, bool final)
        * recipients if there is no To: or Cc: field, so attempt to suppress
        * it by using an empty To: field.  */
       struct Address *to = mutt_addr_new();
-      mutt_addresslist_append(&env->to, to);
-      mutt_addresslist_append(&env->to, mutt_addr_new());
       to->group = 1;
+      TAILQ_INSERT_TAIL(&env->to, to, entries);
+      TAILQ_INSERT_TAIL(&env->to, mutt_addr_new(), entries);
 
       char buf[1024];
       buf[0] = '\0';
@@ -3046,7 +3045,7 @@ int mutt_bounce_message(FILE *fp, struct Email *e, struct AddressList *to)
   resent_from[0] = '\0';
   struct Address *from = mutt_default_from();
   struct AddressList from_list = TAILQ_HEAD_INITIALIZER(from_list);
-  mutt_addresslist_append(&from_list, from);
+  TAILQ_INSERT_TAIL(&from_list, from, entries);
 
   /* mutt_default_from() does not use $realname if the real name is not set
    * in $from, so we add it here.  The reason it is not added in

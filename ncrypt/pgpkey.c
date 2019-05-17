@@ -1035,10 +1035,10 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
     {
       struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
       mutt_addresslist_parse(&al, NONULL(q->addr));
-      struct AddressNode *an = NULL;
-      TAILQ_FOREACH(an, &al, entries)
+      struct Address *qa = NULL;
+      TAILQ_FOREACH(qa, &al, entries)
       {
-        int validity = pgp_id_matches_addr(a, an->addr, q);
+        int validity = pgp_id_matches_addr(a, qa, q);
 
         if (validity & PGP_KV_MATCH) /* something matches */
           match = true;

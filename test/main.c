@@ -26,7 +26,6 @@
  * Add your test cases to this list.
  *****************************************************************************/
 #define NEOMUTT_TEST_LIST                                                      \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_append)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_addr_cat)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_addr_cmp)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_addr_copy)                                       \

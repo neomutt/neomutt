@@ -173,18 +173,18 @@ static int smtp_rcpt_to(struct Connection *conn, const struct AddressList *al)
   char buf[1024];
   int rc;
 
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, al, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
     /* weed out group mailboxes, since those are for display only */
-    if (!an->addr->mailbox || an->addr->group)
+    if (!a->mailbox || a->group)
     {
       continue;
     }
     if ((Capabilities & SMTP_CAP_DSN) && C_DsnNotify)
-      snprintf(buf, sizeof(buf), "RCPT TO:<%s> NOTIFY=%s\r\n", an->addr->mailbox, C_DsnNotify);
+      snprintf(buf, sizeof(buf), "RCPT TO:<%s> NOTIFY=%s\r\n", a->mailbox, C_DsnNotify);
     else
-      snprintf(buf, sizeof(buf), "RCPT TO:<%s>\r\n", an->addr->mailbox);
+      snprintf(buf, sizeof(buf), "RCPT TO:<%s>\r\n", a->mailbox);
     if (mutt_socket_send(conn, buf) == -1)
       return SMTP_ERR_WRITE;
     rc = smtp_get_resp(conn);
@@ -300,10 +300,10 @@ static bool address_uses_unicode(const char *a)
  */
 static bool addresses_use_unicode(const struct AddressList *al)
 {
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, al, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
-    if (an->addr->mailbox && !an->addr->group && address_uses_unicode(an->addr->mailbox))
+    if (a->mailbox && !a->group && address_uses_unicode(a->mailbox))
       return true;
   }
   return false;
@@ -750,8 +750,8 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
    * but this condition is most likely arrived at accidentally */
   if (C_EnvelopeFromAddress)
     envfrom = C_EnvelopeFromAddress->mailbox;
-  else if (!TAILQ_EMPTY(from))
-    envfrom = mutt_addresslist_first(from)->mailbox;
+  else if (from && !TAILQ_EMPTY(from))
+    envfrom = TAILQ_FIRST(from)->mailbox;
   else
   {
     mutt_error(_("No from address given"));

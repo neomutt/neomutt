@@ -245,7 +245,7 @@ int mutt_protect(struct Email *msg, char *keylist)
   {
     /* Set sender (necessary for e.g. PKA).  */
     const char *mailbox = NULL;
-    struct Address *from = mutt_addresslist_first(&msg->env->from);
+    struct Address *from = TAILQ_FIRST(&msg->env->from);
     bool free_from = false;
 
     if (!from)

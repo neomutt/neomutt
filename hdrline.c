@@ -135,13 +135,13 @@ bool mutt_is_subscribed_list(const struct Address *addr)
 static bool check_for_mailing_list(struct AddressList *al, const char *pfx,
                                    char *buf, int buflen)
 {
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, al, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
-    if (mutt_is_subscribed_list(an->addr))
+    if (mutt_is_subscribed_list(a))
     {
       if (pfx && buf && buflen)
-        snprintf(buf, buflen, "%s%s", pfx, mutt_get_name(an->addr));
+        snprintf(buf, buflen, "%s%s", pfx, mutt_get_name(a));
       return true;
     }
   }
@@ -159,13 +159,13 @@ static bool check_for_mailing_list(struct AddressList *al, const char *pfx,
  */
 static bool check_for_mailing_list_addr(struct AddressList *al, char *buf, int buflen)
 {
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, al, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
-    if (mutt_is_subscribed_list(an->addr))
+    if (mutt_is_subscribed_list(a))
     {
       if (buf && buflen)
-        snprintf(buf, buflen, "%s", an->addr->mailbox);
+        snprintf(buf, buflen, "%s", a->mailbox);
       return true;
     }
   }
@@ -181,12 +181,12 @@ static bool check_for_mailing_list_addr(struct AddressList *al, char *buf, int b
  */
 static bool first_mailing_list(char *buf, size_t buflen, struct AddressList *al)
 {
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, al, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
-    if (mutt_is_subscribed_list(an->addr))
+    if (mutt_is_subscribed_list(a))
     {
-      mutt_save_path(buf, buflen, an->addr);
+      mutt_save_path(buf, buflen, a);
       return true;
     }
   }
@@ -318,7 +318,7 @@ static void make_from(struct Envelope *env, char *buf, size_t buflen,
   enum FieldType disp;
   struct AddressList *name = NULL;
 
-  me = mutt_addr_is_user(mutt_addresslist_first(&env->from));
+  me = mutt_addr_is_user(TAILQ_FIRST(&env->from));
 
   if (do_lists || me)
   {
@@ -354,8 +354,7 @@ static void make_from(struct Envelope *env, char *buf, size_t buflen,
     return;
   }
 
-  snprintf(buf, buflen, "%s%s", make_from_prefix(disp),
-           mutt_get_name(mutt_addresslist_first(name)));
+  snprintf(buf, buflen, "%s%s", make_from_prefix(disp), mutt_get_name(TAILQ_FIRST(name)));
 }
 
 /**
@@ -370,7 +369,7 @@ static void make_from_addr(struct Envelope *env, char *buf, size_t buflen, bool 
   if (!env || !buf)
     return;
 
-  bool me = mutt_addr_is_user(mutt_addresslist_first(&env->from));
+  bool me = mutt_addr_is_user(TAILQ_FIRST(&env->from));
 
   if (do_lists || me)
   {
@@ -381,11 +380,11 @@ static void make_from_addr(struct Envelope *env, char *buf, size_t buflen, bool 
   }
 
   if (me && !TAILQ_EMPTY(&env->to))
-    snprintf(buf, buflen, "%s", mutt_addresslist_first(&env->to)->mailbox);
+    snprintf(buf, buflen, "%s", TAILQ_FIRST(&env->to)->mailbox);
   else if (me && !TAILQ_EMPTY(&env->cc))
-    snprintf(buf, buflen, "%s", mutt_addresslist_first(&env->cc)->mailbox);
+    snprintf(buf, buflen, "%s", TAILQ_FIRST(&env->cc)->mailbox);
   else if (!TAILQ_EMPTY(&env->from))
-    mutt_str_strfcpy(buf, mutt_addresslist_first(&env->from)->mailbox, buflen);
+    mutt_str_strfcpy(buf, TAILQ_FIRST(&env->from)->mailbox, buflen);
   else
     *buf = '\0';
 }
@@ -397,9 +396,9 @@ static void make_from_addr(struct Envelope *env, char *buf, size_t buflen, bool 
  */
 static bool user_in_addr(struct AddressList *al)
 {
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, al, entries)
-  if (mutt_addr_is_user(an->addr))
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
+  if (mutt_addr_is_user(a))
     return true;
   return false;
 }
@@ -426,7 +425,7 @@ static int user_is_recipient(struct Email *e)
   {
     e->recip_valid = true;
 
-    if (mutt_addr_is_user(mutt_addresslist_first(&env->from)))
+    if (mutt_addr_is_user(TAILQ_FIRST(&env->from)))
       e->recipient = 4;
     else if (user_in_addr(&env->to))
     {
@@ -570,10 +569,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
   struct Context *ctx = hfi->ctx;
   struct Mailbox *m = hfi->mailbox;
 
-  const struct Address *reply_to = mutt_addresslist_first(&e->env->reply_to);
-  const struct Address *from = mutt_addresslist_first(&e->env->from);
-  const struct Address *to = mutt_addresslist_first(&e->env->to);
-  const struct Address *cc = mutt_addresslist_first(&e->env->cc);
+  const struct Address *reply_to = TAILQ_FIRST(&e->env->reply_to);
+  const struct Address *from = TAILQ_FIRST(&e->env->from);
+  const struct Address *to = TAILQ_FIRST(&e->env->to);
+  const struct Address *cc = TAILQ_FIRST(&e->env->cc);
 
   if (!e || !e->env)
     return src;

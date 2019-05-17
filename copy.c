@@ -961,31 +961,30 @@ static void format_address_header(char **h, struct AddressList *al)
   buflen = linelen + 3;
 
   mutt_mem_realloc(h, buflen);
-  struct AddressNode *first = TAILQ_FIRST(al);
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, al, entries)
+  struct Address *first = TAILQ_FIRST(al);
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
     *buf = '\0';
     *cbuf = '\0';
     *c2buf = '\0';
-    const size_t l = mutt_addr_write(buf, sizeof(buf), an->addr, false);
+    const size_t l = mutt_addr_write(buf, sizeof(buf), a, false);
 
-    if (an != first && (linelen + l > 74))
+    if (a != first && (linelen + l > 74))
     {
       strcpy(cbuf, "\n\t");
       linelen = l + 8;
     }
     else
     {
-      if (an->addr->mailbox)
+      if (a->mailbox)
       {
         strcpy(cbuf, " ");
         linelen++;
       }
       linelen += l;
     }
-    if (!an->addr->group && TAILQ_NEXT(an, entries) &&
-        TAILQ_NEXT(an, entries)->addr->mailbox)
+    if (!a->group && TAILQ_NEXT(a, entries) && TAILQ_NEXT(a, entries)->mailbox)
     {
       linelen++;
       buflen++;
@@ -1083,12 +1082,12 @@ static int address_header_decode(char **h)
 
   mutt_addresslist_to_local(&al);
   rfc2047_decode_addrlist(&al);
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, &al, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, &al, entries)
   {
-    if (an->addr->personal)
+    if (a->personal)
     {
-      mutt_str_dequote_comment(an->addr->personal);
+      mutt_str_dequote_comment(a->personal);
     }
   }
 

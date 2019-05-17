@@ -63,10 +63,9 @@ static void expand_aliases_r(struct AddressList *al, struct ListHead *expn)
   bool i;
   const char *fqdn = NULL;
 
-  struct AddressNode *an = TAILQ_FIRST(al);
-  while (an)
+  struct Address *a = TAILQ_FIRST(al);
+  while (a)
   {
-    struct Address *a = an->addr;
     if (!a->group && !a->personal && a->mailbox && !strchr(a->mailbox, '@'))
     {
       struct AddressList *alias = mutt_alias_lookup(a->mailbox);
@@ -90,13 +89,13 @@ static void expand_aliases_r(struct AddressList *al, struct ListHead *expn)
           struct AddressList copy = TAILQ_HEAD_INITIALIZER(copy);
           mutt_addresslist_copy(&copy, alias, false);
           expand_aliases_r(&copy, expn);
-          struct AddressNode *an2, *tmp;
-          TAILQ_FOREACH_SAFE(an2, &copy, entries, tmp)
+          struct Address *a2, *tmp;
+          TAILQ_FOREACH_SAFE(a2, &copy, entries, tmp)
           {
-            TAILQ_INSERT_BEFORE(an, an2, entries);
+            TAILQ_INSERT_BEFORE(a, a2, entries);
           }
-          an = TAILQ_PREV(an, AddressList, entries);
-          TAILQ_REMOVE(al, TAILQ_NEXT(an, entries), entries);
+          a = TAILQ_PREV(a, AddressList, entries);
+          TAILQ_REMOVE(al, TAILQ_NEXT(a, entries), entries);
         }
       }
       else
@@ -112,7 +111,7 @@ static void expand_aliases_r(struct AddressList *al, struct ListHead *expn)
         }
       }
     }
-    an = TAILQ_NEXT(an, entries);
+    a = TAILQ_NEXT(a, entries);
   }
 
   if (C_UseDomain && (fqdn = mutt_fqdn(true)))
@@ -322,9 +321,9 @@ struct AddressList *mutt_get_address(struct Envelope *env, const char **pfxp)
   struct AddressList *al = NULL;
   const char *pfx = NULL;
 
-  if (mutt_addr_is_user(mutt_addresslist_first(&env->from)))
+  if (mutt_addr_is_user(TAILQ_FIRST(&env->from)))
   {
-    if (TAILQ_EMPTY(&env->to) && !mutt_is_mail_list(mutt_addresslist_first(&env->to)))
+    if (TAILQ_EMPTY(&env->to) && !mutt_is_mail_list(TAILQ_FIRST(&env->to)))
     {
       pfx = "To";
       al = &env->to;
@@ -335,8 +334,7 @@ struct AddressList *mutt_get_address(struct Envelope *env, const char **pfxp)
       al = &env->cc;
     }
   }
-  else if (!TAILQ_EMPTY(&env->reply_to) &&
-           !mutt_is_mail_list(mutt_addresslist_first(&env->reply_to)))
+  else if (!TAILQ_EMPTY(&env->reply_to) && !mutt_is_mail_list(TAILQ_FIRST(&env->reply_to)))
   {
     pfx = "Reply-To";
     al = &env->reply_to;
@@ -360,8 +358,9 @@ struct AddressList *mutt_get_address(struct Envelope *env, const char **pfxp)
  */
 void mutt_alias_create(struct Envelope *cur, struct AddressList *al)
 {
+  struct Address *addr = NULL;
   struct Alias *new = NULL;
-  char buf[1024], tmp[1024], prompt[128];
+  char buf[1024], tmp[1024] = { 0 }, prompt[128];
   char *pc = NULL;
   char *err = NULL;
   char fixed[1024];
@@ -371,16 +370,17 @@ void mutt_alias_create(struct Envelope *cur, struct AddressList *al)
     al = mutt_get_address(cur, NULL);
   }
 
-  struct Address *addr = mutt_addresslist_first(al);
-  if (addr && addr->mailbox)
+  if (al)
   {
-    mutt_str_strfcpy(tmp, addr->mailbox, sizeof(tmp));
-    pc = strchr(tmp, '@');
-    if (pc)
-      *pc = '\0';
+    addr = TAILQ_FIRST(al);
+    if (addr && addr->mailbox)
+    {
+      mutt_str_strfcpy(tmp, addr->mailbox, sizeof(tmp));
+      pc = strchr(tmp, '@');
+      if (pc)
+        *pc = '\0';
+    }
   }
-  else
-    tmp[0] = '\0';
 
   /* Don't suggest a bad alias name in the event of a strange local part. */
   check_alias_name(tmp, buf, sizeof(buf));
@@ -451,7 +451,7 @@ retry_name:
     mutt_alias_free(&new);
     return;
   }
-  mutt_str_replace(&TAILQ_FIRST(&new->addr)->addr->personal, buf);
+  mutt_str_replace(&TAILQ_FIRST(&new->addr)->personal, buf);
 
   buf[0] = '\0';
   mutt_addresslist_write(buf, sizeof(buf), &new->addr, true);
@@ -546,11 +546,11 @@ void mutt_alias_add_reverse(struct Alias *t)
    * by all callers, but added here mostly as documentation. */
   mutt_addresslist_to_intl(&t->addr, NULL);
 
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, &t->addr, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, &t->addr, entries)
   {
-    if (!an->addr->group && an->addr->mailbox)
-      mutt_hash_insert(ReverseAliases, an->addr->mailbox, an->addr);
+    if (!a->group && a->mailbox)
+      mutt_hash_insert(ReverseAliases, a->mailbox, a);
   }
 }
 
@@ -567,11 +567,11 @@ void mutt_alias_delete_reverse(struct Alias *t)
    * match the hash entries. */
   mutt_addresslist_to_intl(&t->addr, NULL);
 
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, &t->addr, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, &t->addr, entries)
   {
-    if (!an->addr->group && an->addr->mailbox)
-      mutt_hash_delete(ReverseAliases, an->addr->mailbox, an->addr);
+    if (!a->group && a->mailbox)
+      mutt_hash_delete(ReverseAliases, a->mailbox, a);
   }
 }
 

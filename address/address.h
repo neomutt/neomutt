@@ -37,14 +37,9 @@ struct Address
   bool group : 1; /**< group mailbox? */
   bool is_intl : 1;
   bool intl_checked : 1;
+  TAILQ_ENTRY(Address) entries;
 };
-
-struct AddressNode
-{
-  struct Address *addr;
-  TAILQ_ENTRY(AddressNode) entries;
-};
-TAILQ_HEAD(AddressList, AddressNode);
+TAILQ_HEAD(AddressList, Address);
 
 /**
  * enum AddressError - possible values for AddressError
@@ -82,9 +77,8 @@ struct AddressList *mutt_addresslist_new(void);
 void                mutt_addresslist_append(struct AddressList *al, struct Address *a);
 void                mutt_addresslist_prepend(struct AddressList *al, struct Address *a);
 void                mutt_addresslist_copy(struct AddressList *dst, const struct AddressList *src, bool prune);
-void                mutt_addresslist_clear(struct AddressList *al);
 void                mutt_addresslist_free(struct AddressList **al);
-void                mutt_addresslist_free_one(struct AddressList *al, struct AddressNode *anode);
+void                mutt_addresslist_free_one(struct AddressList *al, struct Address *anode);
 void                mutt_addresslist_free_all(struct AddressList *al);
 size_t              mutt_addresslist_write(char *buf, size_t buflen, const struct AddressList* addr, bool display);
 int                 mutt_addresslist_parse(struct AddressList *top, const char *s);
@@ -93,7 +87,6 @@ int                 mutt_addresslist_to_local(struct AddressList *al);
 int                 mutt_addresslist_to_intl(struct AddressList *al, char **err);
 void                mutt_addresslist_dedupe(struct AddressList *al);
 void                mutt_addresslist_qualify(struct AddressList *al, const char *host);
-struct Address*     mutt_addresslist_first(const struct AddressList *al);
 bool                mutt_addresslist_search(const struct Address *needle, const struct AddressList *haystack);
 int                 mutt_addresslist_has_recips(const struct AddressList *al);
 bool                mutt_addresslist_equal(const struct AddressList *ala, const struct AddressList *alb);

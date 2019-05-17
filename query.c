@@ -97,10 +97,10 @@ static struct AddressList *result_to_addr(struct Query *r)
   mutt_addresslist_copy(al, &r->addr, false);
   if (!TAILQ_EMPTY(al))
   {
-    struct AddressNode *first = TAILQ_FIRST(al);
-    struct AddressNode *second = TAILQ_NEXT(first, entries);
-    if (!second && !first->addr->personal)
-      first->addr->personal = mutt_str_strdup(r->name);
+    struct Address *first = TAILQ_FIRST(al);
+    struct Address *second = TAILQ_NEXT(first, entries);
+    if (!second && !first->personal)
+      first->personal = mutt_str_strdup(r->name);
 
     mutt_addresslist_to_intl(al, NULL);
   }
@@ -238,7 +238,7 @@ static int query_search(struct Menu *menu, regex_t *rx, int line)
     return 0;
   if (!TAILQ_EMPTY(&query->addr))
   {
-    struct Address *addr = mutt_addresslist_first(&query->addr);
+    struct Address *addr = TAILQ_FIRST(&query->addr);
     if (addr->personal && !regexec(rx, addr->personal, 0, NULL, 0))
     {
       return 0;

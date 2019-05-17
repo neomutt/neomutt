@@ -981,11 +981,11 @@ struct Message *mx_msg_open_new(struct Mailbox *m, struct Email *e, MsgOpenFlags
     {
       if (e)
       {
-        p = mutt_addresslist_first(&e->env->return_path);
+        p = TAILQ_FIRST(&e->env->return_path);
         if (!p)
-          p = mutt_addresslist_first(&e->env->sender);
+          p = TAILQ_FIRST(&e->env->sender);
         if (!p)
-          p = mutt_addresslist_first(&e->env->from);
+          p = TAILQ_FIRST(&e->env->from);
       }
 
       fprintf(msg->fp, "From %s %s", p ? p->mailbox : NONULL(Username),

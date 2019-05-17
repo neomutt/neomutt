@@ -208,12 +208,12 @@ unsigned char *serial_dump_address(struct AddressList *al, unsigned char *d,
 
   d = serial_dump_int(0xdeadbeef, d, off);
 
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, al, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
-    d = serial_dump_char(an->addr->personal, d, off, convert);
-    d = serial_dump_char(an->addr->mailbox, d, off, false);
-    d = serial_dump_int(an->addr->group, d, off);
+    d = serial_dump_char(a->personal, d, off, convert);
+    d = serial_dump_char(a->mailbox, d, off, false);
+    d = serial_dump_int(a->group, d, off);
     counter++;
   }
 
@@ -244,7 +244,7 @@ void serial_restore_address(struct AddressList *al, const unsigned char *d,
     serial_restore_char(&a->mailbox, d, off, false);
     serial_restore_int(&g, d, off);
     a->group = !!g;
-    mutt_addresslist_append(al, a);
+    TAILQ_INSERT_TAIL(al, a, entries);
     counter--;
   }
 }

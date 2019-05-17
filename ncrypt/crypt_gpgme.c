@@ -4918,10 +4918,10 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
 
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
     mutt_addresslist_parse(&alist, k->uid);
-    struct AddressNode *an = NULL;
-    TAILQ_FOREACH(an, &alist, entries)
+    struct Address *ka = NULL;
+    TAILQ_FOREACH(ka, &alist, entries)
     {
-      int validity = crypt_id_matches_addr(a, an->addr, k);
+      int validity = crypt_id_matches_addr(a, ka, k);
 
       if (validity & CRYPT_KV_MATCH) /* something matches */
       {
@@ -5153,15 +5153,15 @@ static char *find_keys(struct AddressList *addrlist, unsigned int app, bool oppe
   bool key_selected;
   struct AddressList hookal = TAILQ_HEAD_INITIALIZER(hookal);
 
-  struct AddressNode *an = NULL;
-  TAILQ_FOREACH(an, addrlist, entries)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, addrlist, entries)
   {
     key_selected = false;
-    mutt_crypt_hook(&crypt_hook_list, an->addr);
+    mutt_crypt_hook(&crypt_hook_list, a);
     crypt_hook = STAILQ_FIRST(&crypt_hook_list);
     do
     {
-      p = an->addr;
+      p = a;
       forced_valid = 0;
       k_info = NULL;
 
@@ -5188,7 +5188,7 @@ static char *find_keys(struct AddressList *addrlist, unsigned int app, bool oppe
           if (strchr(keyID, '@') && (mutt_addresslist_parse(&hookal, keyID) != 0))
           {
             mutt_addresslist_qualify(&hookal, fqdn);
-            p = mutt_addresslist_first(&hookal);
+            p = TAILQ_FIRST(&hookal);
           }
           else if (!oppenc_mode)
           {
@@ -5585,12 +5585,12 @@ static bool verify_sender(struct Email *e)
   if (!TAILQ_EMPTY(&e->env->from))
   {
     mutt_expand_aliases(&e->env->from);
-    sender = mutt_addresslist_first(&e->env->from);
+    sender = TAILQ_FIRST(&e->env->from);
   }
   else if (!TAILQ_EMPTY(&e->env->sender))
   {
     mutt_expand_aliases(&e->env->sender);
-    sender = mutt_addresslist_first(&e->env->sender);
+    sender = TAILQ_FIRST(&e->env->sender);
   }
 
   if (sender)
