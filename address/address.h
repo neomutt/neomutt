@@ -90,5 +90,7 @@ int                 mutt_addrlist_has_recips(const struct AddressList *al);
 bool                mutt_addrlist_equal(const struct AddressList *ala, const struct AddressList *alb);
 int                 mutt_addrlist_remove(struct AddressList *al, const char *mailbox);
 void                mutt_addrlist_remove_xrefs(const struct AddressList *a, struct AddressList *b);
+void                mutt_addrlist_append(struct AddressList *al, struct Address *a);
+void                mutt_addrlist_prepend(struct AddressList *al, struct Address *a);
 
 #endif /* MUTT_EMAIL_ADDRESS_H */

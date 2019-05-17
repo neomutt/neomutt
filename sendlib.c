@@ -2925,8 +2925,8 @@ void mutt_prepare_envelope(struct Envelope *env, bool final)
        * it by using an empty To: field.  */
       struct Address *to = mutt_addr_new();
       to->group = 1;
-      TAILQ_INSERT_TAIL(&env->to, to, entries);
-      TAILQ_INSERT_TAIL(&env->to, mutt_addr_new(), entries);
+      mutt_addrlist_append(&env->to, to);
+      mutt_addrlist_append(&env->to, mutt_addr_new());
 
       char buf[1024];
       buf[0] = '\0';
@@ -3045,7 +3045,7 @@ int mutt_bounce_message(FILE *fp, struct Email *e, struct AddressList *to)
   resent_from[0] = '\0';
   struct Address *from = mutt_default_from();
   struct AddressList from_list = TAILQ_HEAD_INITIALIZER(from_list);
-  TAILQ_INSERT_TAIL(&from_list, from, entries);
+  mutt_addrlist_append(&from_list, from);
 
   /* mutt_default_from() does not use $realname if the real name is not set
    * in $from, so we add it here.  The reason it is not added in

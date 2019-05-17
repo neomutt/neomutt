@@ -444,7 +444,7 @@ void pgp_class_invoke_getkeys(struct Address *addr)
 
   *tmp = '\0';
   struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
-  TAILQ_INSERT_TAIL(&alist, addr, entries);
+  mutt_addrlist_append(&alist, addr);
   mutt_addrlist_to_local(&alist);
   mutt_addr_write(tmp, sizeof(tmp), addr, false);
   mutt_buffer_quote_filename(buf, tmp, true);

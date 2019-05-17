@@ -244,7 +244,7 @@ void serial_restore_address(struct AddressList *al, const unsigned char *d,
     serial_restore_char(&a->mailbox, d, off, false);
     serial_restore_int(&g, d, off);
     a->group = !!g;
-    TAILQ_INSERT_TAIL(al, a, entries);
+    mutt_addrlist_append(al, a);
     counter--;
   }
 }

@@ -186,7 +186,7 @@ static void add_mailing_lists(struct AddressList *out, const struct AddressList 
     {
       if (!a->group && mutt_is_mail_list(a))
       {
-        TAILQ_INSERT_TAIL(out, a, entries);
+        mutt_addrlist_append(out, mutt_addr_copy(a));
       }
     }
   }
@@ -1223,12 +1223,12 @@ void mutt_set_followup_to(struct Envelope *env)
         struct Address *a = NULL;
         TAILQ_FOREACH_REVERSE(a, al, AddressList, entries)
         {
-          TAILQ_INSERT_HEAD(&env->mail_followup_to, mutt_addr_copy(a), entries);
+          mutt_addrlist_prepend(&env->mail_followup_to, mutt_addr_copy(a));
         }
       }
       else
       {
-        TAILQ_INSERT_HEAD(&env->mail_followup_to, mutt_default_from(), entries);
+        mutt_addrlist_prepend(&env->mail_followup_to, mutt_default_from());
       }
     }
 
@@ -1254,7 +1254,7 @@ static void set_reverse_name(struct AddressList *al, struct Envelope *env)
     {
       if (mutt_addr_is_user(a))
       {
-        TAILQ_INSERT_TAIL(al, mutt_addr_copy(a), entries);
+        mutt_addrlist_append(al, mutt_addr_copy(a));
         break;
       }
     }
@@ -1266,7 +1266,7 @@ static void set_reverse_name(struct AddressList *al, struct Envelope *env)
     {
       if (mutt_addr_is_user(a))
       {
-        TAILQ_INSERT_TAIL(al, mutt_addr_copy(a), entries);
+        mutt_addrlist_append(al, mutt_addr_copy(a));
         break;
       }
     }
@@ -1277,7 +1277,7 @@ static void set_reverse_name(struct AddressList *al, struct Envelope *env)
     struct Address *from = TAILQ_FIRST(&env->from);
     if (from && mutt_addr_is_user(from))
     {
-      TAILQ_INSERT_TAIL(al, mutt_addr_copy(from), entries);
+      mutt_addrlist_append(al, mutt_addr_copy(from));
     }
   }
 
@@ -2055,7 +2055,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
     const bool killfrom = TAILQ_EMPTY(&msg->env->from);
     if (killfrom)
     {
-      TAILQ_INSERT_TAIL(&msg->env->from, mutt_default_from(), entries);
+      mutt_addrlist_append(&msg->env->from, mutt_default_from());
     }
 
     if ((flags & SEND_REPLY) && cur)
@@ -2093,7 +2093,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
     {
       mutt_addrlist_free_all(&msg->env->from);
       if (C_UseFrom && !(flags & (SEND_POSTPONED | SEND_RESEND)))
-        TAILQ_INSERT_TAIL(&msg->env->from, mutt_default_from(), entries);
+        mutt_addrlist_append(&msg->env->from, mutt_default_from());
     }
 
     if (C_Hdrs)
@@ -2332,7 +2332,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
     const bool killfrom = TAILQ_EMPTY(&msg->env->from);
     if (killfrom)
     {
-      TAILQ_INSERT_TAIL(&msg->env->from, mutt_default_from(), entries);
+      mutt_addrlist_append(&msg->env->from, mutt_default_from());
     }
     mutt_select_fcc(fcc, sizeof(fcc), msg);
     if (killfrom)

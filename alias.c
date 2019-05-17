@@ -463,7 +463,6 @@ retry_name:
   }
 
   mutt_alias_add_reverse(new);
-
   TAILQ_INSERT_TAIL(&Aliases, new, entries);
 
   mutt_str_strfcpy(buf, C_AliasFile, sizeof(buf));

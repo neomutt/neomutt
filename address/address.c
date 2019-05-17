@@ -370,7 +370,7 @@ static void add_addrspec(struct AddressList *al, const char *phrase,
     return;
   }
 
-  TAILQ_INSERT_TAIL(al, cur, entries);
+  mutt_addrlist_append(al, cur);
 }
 
 /**
@@ -509,7 +509,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
         terminate_buffer(phrase, phraselen);
         a->mailbox = mutt_str_strdup(phrase);
         a->group = 1;
-        TAILQ_INSERT_TAIL(al, a, entries);
+        mutt_addrlist_append(al, a);
         phraselen = 0;
         commentlen = 0;
         s++;
@@ -534,7 +534,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
         }
 
         /* add group terminator */
-        TAILQ_INSERT_TAIL(al, mutt_addr_new(), entries);
+        mutt_addrlist_append(al, mutt_addr_new());
 
         phraselen = 0;
         commentlen = 0;
@@ -553,7 +553,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
           mutt_addr_free(&a);
           return 0;
         }
-        TAILQ_INSERT_TAIL(al, a, entries);
+        mutt_addrlist_append(al, a);
         phraselen = 0;
         commentlen = 0;
         parsed++;
@@ -735,7 +735,7 @@ void mutt_addrlist_copy(struct AddressList *dst, const struct AddressList *src, 
     }
     else
     {
-      TAILQ_INSERT_TAIL(dst, mutt_addr_copy(a), entries);
+      mutt_addrlist_append(dst, mutt_addr_copy(a));
     }
   }
 }
@@ -1377,4 +1377,26 @@ void mutt_addrlist_free_all(struct AddressList *al)
     a = next;
   }
   TAILQ_INIT(al);
+}
+
+/**
+ * mutt_addrlist_append - Append an Address to an AddressList
+ * @param al AddressList
+ * @param a  Address
+ */
+void mutt_addrlist_append(struct AddressList *al, struct Address *a)
+{
+  if (al && a)
+    TAILQ_INSERT_TAIL(al, a, entries);
+}
+
+/**
+ * mutt_addrlist_prepend - Prepend an Address to an AddressList
+ * @param al AddressList
+ * @param a  Address
+ */
+void mutt_addrlist_prepend(struct AddressList *al, struct Address *a)
+{
+  if (al && a)
+    TAILQ_INSERT_HEAD(al, a, entries);
 }

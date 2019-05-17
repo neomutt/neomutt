@@ -185,7 +185,7 @@ static void group_add_addrlist(struct Group *g, const struct AddressList *al)
   struct Address *a, *tmp;
   TAILQ_FOREACH_SAFE(a, &new, entries, tmp)
   {
-    TAILQ_INSERT_TAIL(&g->al, a, entries);
+    mutt_addrlist_append(&g->al, a);
   }
   assert(TAILQ_EMPTY(&new));
 }
