@@ -222,8 +222,8 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
         {
           struct Email *e = mutt_email_new();
           e->env = mutt_env_new();
-          mutt_addresslist_copy(&e->env->from, al, false);
-          mutt_addresslist_copy(&e->env->to, al, false);
+          mutt_addrlist_copy(&e->env->from, al, false);
+          mutt_addrlist_copy(&e->env->to, al, false);
 
           /* TODO: fix mutt_default_save() to use Buffer */
           mutt_buffer_increase_size(p, PATH_MAX);

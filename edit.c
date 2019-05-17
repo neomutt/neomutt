@@ -273,7 +273,7 @@ static void be_print_header(struct Envelope *env)
   {
     addstr("To: ");
     tmp[0] = '\0';
-    mutt_addresslist_write(tmp, sizeof(tmp), &env->to, true);
+    mutt_addrlist_write(tmp, sizeof(tmp), &env->to, true);
     addstr(tmp);
     addch('\n');
   }
@@ -281,7 +281,7 @@ static void be_print_header(struct Envelope *env)
   {
     addstr("Cc: ");
     tmp[0] = '\0';
-    mutt_addresslist_write(tmp, sizeof(tmp), &env->cc, true);
+    mutt_addrlist_write(tmp, sizeof(tmp), &env->cc, true);
     addstr(tmp);
     addch('\n');
   }
@@ -289,7 +289,7 @@ static void be_print_header(struct Envelope *env)
   {
     addstr("Bcc: ");
     tmp[0] = '\0';
-    mutt_addresslist_write(tmp, sizeof(tmp), &env->bcc, true);
+    mutt_addrlist_write(tmp, sizeof(tmp), &env->bcc, true);
     addstr(tmp);
     addch('\n');
   }
@@ -315,24 +315,24 @@ static void be_edit_header(struct Envelope *e, bool force)
 
   addstr("To: ");
   tmp[0] = '\0';
-  mutt_addresslist_to_local(&e->to);
-  mutt_addresslist_write(tmp, sizeof(tmp), &e->to, false);
+  mutt_addrlist_to_local(&e->to);
+  mutt_addrlist_write(tmp, sizeof(tmp), &e->to, false);
   if (TAILQ_EMPTY(&e->to) || force)
   {
     if (mutt_enter_string(tmp, sizeof(tmp), 4, MUTT_COMP_NO_FLAGS) == 0)
     {
-      mutt_addresslist_free_all(&e->to);
-      mutt_addresslist_parse2(&e->to, tmp);
+      mutt_addrlist_free_all(&e->to);
+      mutt_addrlist_parse2(&e->to, tmp);
       mutt_expand_aliases(&e->to);
-      mutt_addresslist_to_intl(&e->to, NULL); /* XXX - IDNA error reporting? */
+      mutt_addrlist_to_intl(&e->to, NULL); /* XXX - IDNA error reporting? */
       tmp[0] = '\0';
-      mutt_addresslist_write(tmp, sizeof(tmp), &e->to, true);
+      mutt_addrlist_write(tmp, sizeof(tmp), &e->to, true);
       mutt_window_mvaddstr(MuttMessageWindow, 0, 4, tmp);
     }
   }
   else
   {
-    mutt_addresslist_to_intl(&e->to, NULL); /* XXX - IDNA error reporting? */
+    mutt_addrlist_to_intl(&e->to, NULL); /* XXX - IDNA error reporting? */
     addstr(tmp);
   }
   addch('\n');
@@ -350,20 +350,20 @@ static void be_edit_header(struct Envelope *e, bool force)
   {
     addstr("Cc: ");
     tmp[0] = '\0';
-    mutt_addresslist_to_local(&e->cc);
-    mutt_addresslist_write(tmp, sizeof(tmp), &e->cc, false);
+    mutt_addrlist_to_local(&e->cc);
+    mutt_addrlist_write(tmp, sizeof(tmp), &e->cc, false);
     if (mutt_enter_string(tmp, sizeof(tmp), 4, MUTT_COMP_NO_FLAGS) == 0)
     {
-      mutt_addresslist_free_all(&e->cc);
-      mutt_addresslist_parse2(&e->cc, tmp);
+      mutt_addrlist_free_all(&e->cc);
+      mutt_addrlist_parse2(&e->cc, tmp);
       mutt_expand_aliases(&e->cc);
       tmp[0] = '\0';
-      mutt_addresslist_to_intl(&e->cc, NULL);
-      mutt_addresslist_write(tmp, sizeof(tmp), &e->cc, true);
+      mutt_addrlist_to_intl(&e->cc, NULL);
+      mutt_addrlist_write(tmp, sizeof(tmp), &e->cc, true);
       mutt_window_mvaddstr(MuttMessageWindow, 0, 4, tmp);
     }
     else
-      mutt_addresslist_to_intl(&e->cc, NULL);
+      mutt_addrlist_to_intl(&e->cc, NULL);
     addch('\n');
   }
 
@@ -371,20 +371,20 @@ static void be_edit_header(struct Envelope *e, bool force)
   {
     addstr("Bcc: ");
     tmp[0] = '\0';
-    mutt_addresslist_to_local(&e->bcc);
-    mutt_addresslist_write(tmp, sizeof(tmp), &e->bcc, false);
+    mutt_addrlist_to_local(&e->bcc);
+    mutt_addrlist_write(tmp, sizeof(tmp), &e->bcc, false);
     if (mutt_enter_string(tmp, sizeof(tmp), 5, MUTT_COMP_NO_FLAGS) == 0)
     {
-      mutt_addresslist_free_all(&e->bcc);
-      mutt_addresslist_parse2(&e->bcc, tmp);
+      mutt_addrlist_free_all(&e->bcc);
+      mutt_addrlist_parse2(&e->bcc, tmp);
       mutt_expand_aliases(&e->bcc);
-      mutt_addresslist_to_intl(&e->bcc, NULL);
+      mutt_addrlist_to_intl(&e->bcc, NULL);
       tmp[0] = '\0';
-      mutt_addresslist_write(tmp, sizeof(tmp), &e->bcc, true);
+      mutt_addrlist_write(tmp, sizeof(tmp), &e->bcc, true);
       mutt_window_mvaddstr(MuttMessageWindow, 0, 5, tmp);
     }
     else
-      mutt_addresslist_to_intl(&e->bcc, NULL);
+      mutt_addrlist_to_intl(&e->bcc, NULL);
     addch('\n');
   }
 }
@@ -441,11 +441,11 @@ int mutt_builtin_editor(const char *path, struct Email *msg, struct Email *cur)
           addstr(_(EditorHelp2));
           break;
         case 'b':
-          mutt_addresslist_parse2(&msg->env->bcc, p);
+          mutt_addrlist_parse2(&msg->env->bcc, p);
           mutt_expand_aliases(&msg->env->bcc);
           break;
         case 'c':
-          mutt_addresslist_parse2(&msg->env->cc, p);
+          mutt_addrlist_parse2(&msg->env->cc, p);
           mutt_expand_aliases(&msg->env->cc);
           break;
         case 'h':
@@ -499,7 +499,7 @@ int mutt_builtin_editor(const char *path, struct Email *msg, struct Email *cur)
           mutt_str_replace(&msg->env->subject, p);
           break;
         case 't':
-          mutt_addresslist_parse(&msg->env->to, p);
+          mutt_addrlist_parse(&msg->env->to, p);
           mutt_expand_aliases(&msg->env->to);
           break;
         case 'u':

@@ -69,9 +69,9 @@ static int address_string_set(const struct ConfigSet *cs, void *var, struct Conf
   {
     // TODO - config can only store one
     struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-    mutt_addresslist_parse(&al, value);
+    mutt_addrlist_parse(&al, value);
     addr = mutt_addr_copy(TAILQ_FIRST(&al));
-    mutt_addresslist_free_all(&al);
+    mutt_addrlist_free_all(&al);
   }
 
   int rc = CSR_SUCCESS;

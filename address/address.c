@@ -385,13 +385,13 @@ struct Address *mutt_addr_new(void)
 }
 
 /**
- * mutt_addresslist_remove - Remove an Address from a list
+ * mutt_addrlist_remove - Remove an Address from a list
  * @param[in, out] al AddressList
  * @param[in]  mailbox Email address to match
  * @retval  0 Success
  * @retval -1 Error, or email not found
  */
-int mutt_addresslist_remove(struct AddressList *al, const char *mailbox)
+int mutt_addrlist_remove(struct AddressList *al, const char *mailbox)
 {
   if (!al)
     return -1;
@@ -405,7 +405,7 @@ int mutt_addresslist_remove(struct AddressList *al, const char *mailbox)
   {
     if (mutt_str_strcasecmp(mailbox, a->mailbox) == 0)
     {
-      mutt_addresslist_free_one(al, a);
+      mutt_addrlist_free_one(al, a);
       rc = 0;
     }
   }
@@ -427,23 +427,23 @@ void mutt_addr_free(struct Address **a)
 }
 
 /**
- * mutt_addresslist_free - Free an AddressList
+ * mutt_addrlist_free - Free an AddressList
  */
-void mutt_addresslist_free(struct AddressList **al)
+void mutt_addrlist_free(struct AddressList **al)
 {
   if (!al)
     return;
-  mutt_addresslist_free_all(*al);
+  mutt_addrlist_free_all(*al);
   FREE(al);
 }
 
 /**
- * mutt_addresslist_parse - Parse a list of email addresses
+ * mutt_addrlist_parse - Parse a list of email addresses
  * @param al AddressList to append addresses
  * @param s  String to parse
  * @retval Number of parsed addressess
  */
-int mutt_addresslist_parse(struct AddressList *al, const char *s)
+int mutt_addrlist_parse(struct AddressList *al, const char *s)
 {
   if (!s)
     return 0;
@@ -487,7 +487,7 @@ int mutt_addresslist_parse(struct AddressList *al, const char *s)
         s = next_token(s, comment, &commentlen, sizeof(comment) - 1);
         if (!s)
         {
-          mutt_addresslist_free_all(al);
+          mutt_addrlist_free_all(al);
           return 0;
         }
         break;
@@ -498,7 +498,7 @@ int mutt_addresslist_parse(struct AddressList *al, const char *s)
         s = parse_quote(s + 1, phrase, &phraselen, sizeof(phrase) - 1);
         if (!s)
         {
-          mutt_addresslist_free_all(al);
+          mutt_addrlist_free_all(al);
           return 0;
         }
         break;
@@ -549,7 +549,7 @@ int mutt_addresslist_parse(struct AddressList *al, const char *s)
         s = parse_route_addr(s + 1, comment, &commentlen, sizeof(comment) - 1, a);
         if (!s)
         {
-          mutt_addresslist_free_all(al);
+          mutt_addrlist_free_all(al);
           mutt_addr_free(&a);
           return 0;
         }
@@ -566,7 +566,7 @@ int mutt_addresslist_parse(struct AddressList *al, const char *s)
         s = next_token(s, phrase, &phraselen, sizeof(phrase) - 1);
         if (!s)
         {
-          mutt_addresslist_free_all(al);
+          mutt_addrlist_free_all(al);
           return 0;
         }
         break;
@@ -596,14 +596,14 @@ int mutt_addresslist_parse(struct AddressList *al, const char *s)
 }
 
 /**
- * mutt_addresslist_parse - Parse a list of email addresses
+ * mutt_addrlist_parse2 - Parse a list of email addresses
  * @param al Add to this List of Addresses
  * @param s String to parse
  * @retval int Number of parsed addresses
  *
  * The email addresses can be separated by whitespace or commas.
  */
-int mutt_addresslist_parse2(struct AddressList *al, const char *s)
+int mutt_addrlist_parse2(struct AddressList *al, const char *s)
 {
   if (!s)
     return 0;
@@ -619,27 +619,27 @@ int mutt_addresslist_parse2(struct AddressList *al, const char *s)
     char *r = tmp->data;
     while ((r = strtok(r, " \t")))
     {
-      parsed += mutt_addresslist_parse(al, r);
+      parsed += mutt_addrlist_parse(al, r);
       r = NULL;
     }
     mutt_buffer_free(&tmp);
   }
   else
-    parsed = mutt_addresslist_parse(al, s);
+    parsed = mutt_addrlist_parse(al, s);
 
   return parsed;
 }
 
 /**
- * mutt_addresslist_qualify - Expand local names in an Address list using a hostname
- * @param al Address list
+ * mutt_addrlist_qualify - Expand local names in an Address list using a hostname
+ * @param al   Address list
  * @param host Hostname
  *
  * Any addresses containing a bare name will be expanded using the hostname.
  * e.g. "john", "example.com" -> 'john@example.com'. This function has no
  * effect if host is NULL or the empty string.
  */
-void mutt_addresslist_qualify(struct AddressList *al, const char *host)
+void mutt_addrlist_qualify(struct AddressList *al, const char *host)
 {
   if (!al || !host || !*host)
     return;
@@ -715,12 +715,12 @@ struct Address *mutt_addr_copy(const struct Address *addr)
 }
 
 /**
- * mutt_addresslist_copy - Copy a list of addresses into another list
+ * mutt_addrlist_copy - Copy a list of addresses into another list
  * @param dst   Destination Address list
  * @param src   Source Address list
  * @param prune Skip groups if there are more addresses
  */
-void mutt_addresslist_copy(struct AddressList *dst, const struct AddressList *src, bool prune)
+void mutt_addrlist_copy(struct AddressList *dst, const struct AddressList *src, bool prune)
 {
   if (!dst || !src)
     return;
@@ -790,12 +790,12 @@ bool mutt_addr_valid_msgid(const char *msgid)
 }
 
 /**
- * mutt_addresslist_equal - Compare two Address lists for equality
- * @param a First Address
- * @param b Second Address
+ * mutt_addrlist_equal - Compare two Address lists for equality
+ * @param ala First Address
+ * @param alb Second Address
  * @retval true Address lists are strictly identical
  */
-bool mutt_addresslist_equal(const struct AddressList *ala, const struct AddressList *alb)
+bool mutt_addrlist_equal(const struct AddressList *ala, const struct AddressList *alb)
 {
   if (!ala || !alb)
   {
@@ -821,13 +821,13 @@ bool mutt_addresslist_equal(const struct AddressList *ala, const struct AddressL
 }
 
 /**
- * mutt_addresslist_has_recips - Count the number of Addresses with valid recipients
+ * mutt_addrlist_has_recips - Count the number of Addresses with valid recipients
  * @param al Address list
  * @retval num Number of valid Addresses
  *
  * An Address has a recipient if the mailbox or group is set.
  */
-int mutt_addresslist_has_recips(const struct AddressList *al)
+int mutt_addrlist_has_recips(const struct AddressList *al)
 {
   if (!al)
     return 0;
@@ -861,12 +861,12 @@ bool mutt_addr_cmp(const struct Address *a, const struct Address *b)
 }
 
 /**
- * mutt_addresslist_search - Search for an e-mail address in a list
- * @param a   Address containing the search email
- * @param lst Address List
+ * mutt_addrlist_search - Search for an e-mail address in a list
+ * @param needle   Address containing the search email
+ * @param haystack Address List
  * @retval true If the Address is in the list
  */
-bool mutt_addresslist_search(const struct Address *needle, const struct AddressList *haystack)
+bool mutt_addrlist_search(const struct Address *needle, const struct AddressList *haystack)
 {
   if (!needle || !haystack)
     return false;
@@ -1122,7 +1122,7 @@ done:
 }
 
 /**
- * mutt_addresslist_write - Write an Address to a buffer
+ * mutt_addrlist_write - Write an Address to a buffer
  * @param buf     Buffer for the Address
  * @param buflen  Length of the buffer
  * @param al      AddressList to display
@@ -1134,8 +1134,7 @@ done:
  *
  * @note It is assumed that `buf` is nul terminated!
  */
-size_t mutt_addresslist_write(char *buf, size_t buflen,
-                              const struct AddressList *al, bool display)
+size_t mutt_addrlist_write(char *buf, size_t buflen, const struct AddressList *al, bool display)
 {
   if (!buf || !al)
     return 0;
@@ -1200,13 +1199,13 @@ done:
 }
 
 /**
- * mutt_addresslist_to_intl - Convert an Address list to Punycode
- * @param[in]  a   Address list to modify
+ * mutt_addrlist_to_intl - Convert an Address list to Punycode
+ * @param[in]  al  Address list to modify
  * @param[out] err Pointer for failed addresses
  * @retval 0  Success, all addresses converted
  * @retval -1 Error, err will be set to the failed address
  */
-int mutt_addresslist_to_intl(struct AddressList *al, char **err)
+int mutt_addrlist_to_intl(struct AddressList *al, char **err)
 {
   if (!al)
     return 0;
@@ -1247,11 +1246,11 @@ int mutt_addresslist_to_intl(struct AddressList *al, char **err)
 }
 
 /**
- * mutt_addresslist_to_local - Convert an Address list from Punycode
- * @param a Address list to modify
+ * mutt_addrlist_to_local - Convert an Address list from Punycode
+ * @param al Address list to modify
  * @retval 0 Always
  */
-int mutt_addresslist_to_local(struct AddressList *al)
+int mutt_addrlist_to_local(struct AddressList *al)
 {
   if (!al)
     return 0;
@@ -1279,13 +1278,13 @@ int mutt_addresslist_to_local(struct AddressList *al)
 }
 
 /**
- * mutt_addresslist_dedupe - Remove duplicate addresses
- * @param addr Address list to de-dupe
+ * mutt_addrlist_dedupe - Remove duplicate addresses
+ * @param al Address list to de-dupe
  * @retval ptr Updated Address list
  *
  * Given a list of addresses, return a list of unique addresses
  */
-void mutt_addresslist_dedupe(struct AddressList *al)
+void mutt_addrlist_dedupe(struct AddressList *al)
 {
   if (!al)
     return;
@@ -1303,7 +1302,7 @@ void mutt_addresslist_dedupe(struct AddressList *al)
           if (a2->mailbox && (mutt_str_strcasecmp(a->mailbox, a2->mailbox) == 0))
           {
             mutt_debug(LL_DEBUG2, "Removing %s\n", a2->mailbox);
-            mutt_addresslist_free_one(al, a2);
+            mutt_addrlist_free_one(al, a2);
           }
         }
       }
@@ -1312,13 +1311,13 @@ void mutt_addresslist_dedupe(struct AddressList *al)
 }
 
 /**
- * mutt_addresslist_remove_xrefs - Remove cross-references
+ * mutt_addrlist_remove_xrefs - Remove cross-references
  * @param a Reference AddressList
  * @param b AddressLis to trim
  *
  * Remove addresses from "b" which are contained in "a"
  */
-void mutt_addresslist_remove_xrefs(const struct AddressList *a, struct AddressList *b)
+void mutt_addrlist_remove_xrefs(const struct AddressList *a, struct AddressList *b)
 {
   if (!a || !b)
     return;
@@ -1331,7 +1330,7 @@ void mutt_addresslist_remove_xrefs(const struct AddressList *a, struct AddressLi
     {
       if (mutt_addr_cmp(aa, ab))
       {
-        mutt_addresslist_free_one(b, ab);
+        mutt_addrlist_free_one(b, ab);
         break;
       }
     }
@@ -1339,10 +1338,10 @@ void mutt_addresslist_remove_xrefs(const struct AddressList *a, struct AddressLi
 }
 
 /**
- * mutt_addresslist_new - Create a new AddressList
+ * mutt_addrlist_new - Create a new AddressList
  * @return a newly allocated AddressList
  */
-struct AddressList *mutt_addresslist_new(void)
+struct AddressList *mutt_addrlist_new(void)
 {
   struct AddressList *al = mutt_mem_calloc(1, sizeof(struct AddressList));
   TAILQ_INIT(al);
@@ -1350,22 +1349,22 @@ struct AddressList *mutt_addresslist_new(void)
 }
 
 /**
- * mutt_addresslist_free_one - Unlink and free an Address from an AddressList
+ * mutt_addrlist_free_one - Unlink and free an Address from an AddressList
  * @param al AddressList
- * @param an Address
+ * @param a  Address
  */
-void mutt_addresslist_free_one(struct AddressList *al, struct Address *a)
+void mutt_addrlist_free_one(struct AddressList *al, struct Address *a)
 {
   TAILQ_REMOVE(al, a, entries);
   mutt_addr_free(&a);
 }
 
 /**
- * mutt_addresslist_free_all - Unlink and free all Address in an AddressList
+ * mutt_addrlist_free_all - Unlink and free all Address in an AddressList
  * @param al AddressList
  * @note After this call, the AddressList is reinitialized and ready for reuse.
  */
-void mutt_addresslist_free_all(struct AddressList *al)
+void mutt_addrlist_free_all(struct AddressList *al)
 {
   if (!al)
     return;

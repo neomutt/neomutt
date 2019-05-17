@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_addresslist_dedupe()
+ * Test code for mutt_addrlist_remove_xrefs()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -26,12 +26,7 @@
 #include "mutt/mutt.h"
 #include "address/lib.h"
 
-void test_mutt_addresslist_dedupe(void)
+void test_mutt_addrlist_remove_xrefs(void)
 {
-  // void mutt_addresslist_dedupe(struct AddressList *al);
-
-  {
-    mutt_addresslist_dedupe(NULL);
-    TEST_CHECK(true); // no crash
-  }
+  // TODO - check when either argument is NULL
 }

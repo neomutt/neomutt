@@ -551,12 +551,12 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
     case 'a':
       if (mutt_str_strcasecmp(line + 1, "pparently-to") == 0)
       {
-        mutt_addresslist_parse(&env->to, p);
+        mutt_addrlist_parse(&env->to, p);
         matched = true;
       }
       else if (mutt_str_strcasecmp(line + 1, "pparently-from") == 0)
       {
-        mutt_addresslist_parse(&env->from, p);
+        mutt_addrlist_parse(&env->from, p);
         matched = true;
       }
       break;
@@ -564,7 +564,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
     case 'b':
       if (mutt_str_strcasecmp(line + 1, "cc") == 0)
       {
-        mutt_addresslist_parse(&env->bcc, p);
+        mutt_addrlist_parse(&env->bcc, p);
         matched = true;
       }
       break;
@@ -572,7 +572,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
     case 'c':
       if (mutt_str_strcasecmp(line + 1, "c") == 0)
       {
-        mutt_addresslist_parse(&env->cc, p);
+        mutt_addrlist_parse(&env->cc, p);
         matched = true;
       }
       else
@@ -659,7 +659,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
     case 'f':
       if (mutt_str_strcasecmp("rom", line + 1) == 0)
       {
-        mutt_addresslist_parse(&env->from, p);
+        mutt_addrlist_parse(&env->from, p);
         matched = true;
       }
 #ifdef USE_NNTP
@@ -748,13 +748,13 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
           if (mutt_str_strcasecmp(line + 1 + plen, "reply-to") == 0)
           {
             /* override the Reply-To: field */
-            mutt_addresslist_free_all(&env->reply_to);
-            mutt_addresslist_parse(&env->reply_to, p);
+            mutt_addrlist_free_all(&env->reply_to);
+            mutt_addrlist_parse(&env->reply_to, p);
             matched = true;
           }
           else if (mutt_str_strcasecmp(line + 1 + plen, "followup-to") == 0)
           {
-            mutt_addresslist_parse(&env->mail_followup_to, p);
+            mutt_addrlist_parse(&env->mail_followup_to, p);
             matched = true;
           }
         }
@@ -791,12 +791,12 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
       }
       else if (mutt_str_strcasecmp(line + 1, "eply-to") == 0)
       {
-        mutt_addresslist_parse(&env->reply_to, p);
+        mutt_addrlist_parse(&env->reply_to, p);
         matched = true;
       }
       else if (mutt_str_strcasecmp(line + 1, "eturn-path") == 0)
       {
-        mutt_addresslist_parse(&env->return_path, p);
+        mutt_addrlist_parse(&env->return_path, p);
         matched = true;
       }
       else if (mutt_str_strcasecmp(line + 1, "eceived") == 0)
@@ -820,7 +820,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
       }
       else if (mutt_str_strcasecmp(line + 1, "ender") == 0)
       {
-        mutt_addresslist_parse(&env->sender, p);
+        mutt_addrlist_parse(&env->sender, p);
         matched = true;
       }
       else if (mutt_str_strcasecmp(line + 1, "tatus") == 0)
@@ -858,7 +858,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
     case 't':
       if (mutt_str_strcasecmp(line + 1, "o") == 0)
       {
-        mutt_addresslist_parse(&env->to, p);
+        mutt_addrlist_parse(&env->to, p);
         matched = true;
       }
       break;
@@ -911,7 +911,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
 #endif
       else if (mutt_str_strcasecmp(line + 1, "-original-to") == 0)
       {
-        mutt_addresslist_parse(&env->x_original_to, p);
+        mutt_addrlist_parse(&env->x_original_to, p);
         matched = true;
       }
 
@@ -1497,7 +1497,7 @@ int mutt_parse_mailto(struct Envelope *e, char **body, const char *src)
   if (url_pct_decode(tmp) < 0)
     goto out;
 
-  mutt_addresslist_parse(&e->to, tmp);
+  mutt_addrlist_parse(&e->to, tmp);
 
   tag = headers ? strtok_r(headers, "&", &p) : NULL;
 

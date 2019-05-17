@@ -809,9 +809,9 @@ int mix_check_message(struct Email *msg)
     }
 
     /* Cc and Bcc are empty at this point. */
-    mutt_addresslist_qualify(&msg->env->to, fqdn);
-    mutt_addresslist_qualify(&msg->env->reply_to, fqdn);
-    mutt_addresslist_qualify(&msg->env->mail_followup_to, fqdn);
+    mutt_addrlist_qualify(&msg->env->to, fqdn);
+    mutt_addrlist_qualify(&msg->env->reply_to, fqdn);
+    mutt_addrlist_qualify(&msg->env->mail_followup_to, fqdn);
   }
 
   return 0;

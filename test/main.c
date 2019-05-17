@@ -38,14 +38,14 @@
   NEOMUTT_TEST_ITEM(test_mutt_addr_valid_msgid)                                \
   NEOMUTT_TEST_ITEM(test_mutt_addr_write)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_addr_write_single)                               \
-  NEOMUTT_TEST_ITEM(test_mutt_addresslist_equal)                               \
-  NEOMUTT_TEST_ITEM(test_mutt_addresslist_parse)                               \
-  NEOMUTT_TEST_ITEM(test_mutt_addresslist_parse2)                              \
-  NEOMUTT_TEST_ITEM(test_mutt_addresslist_qualify)                             \
-  NEOMUTT_TEST_ITEM(test_mutt_addresslist_remove)                              \
-  NEOMUTT_TEST_ITEM(test_mutt_addresslist_remove_xrefs)                        \
-  NEOMUTT_TEST_ITEM(test_mutt_addresslist_to_intl)                             \
-  NEOMUTT_TEST_ITEM(test_mutt_addresslist_to_local)                            \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_equal)                                  \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_parse)                                  \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_parse2)                                 \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_qualify)                                \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_remove)                                 \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_remove_xrefs)                           \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_to_intl)                                \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_to_local)                               \
   NEOMUTT_TEST_ITEM(test_mutt_actx_add_attach)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_actx_add_body)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_actx_add_fp)                                     \

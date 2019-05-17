@@ -93,8 +93,8 @@ static struct AddressList *result_to_addr(struct Query *r)
   if (!r)
     return NULL;
 
-  struct AddressList *al = mutt_addresslist_new();
-  mutt_addresslist_copy(al, &r->addr, false);
+  struct AddressList *al = mutt_addrlist_new();
+  mutt_addrlist_copy(al, &r->addr, false);
   if (!TAILQ_EMPTY(al))
   {
     struct Address *first = TAILQ_FIRST(al);
@@ -102,7 +102,7 @@ static struct AddressList *result_to_addr(struct Query *r)
     if (!second && !first->personal)
       first->personal = mutt_str_strdup(r->name);
 
-    mutt_addresslist_to_intl(al, NULL);
+    mutt_addrlist_to_intl(al, NULL);
   }
 
   return al;
@@ -135,7 +135,7 @@ static void free_query(struct Query **query)
     p = *query;
     *query = (*query)->next;
 
-    mutt_addresslist_free_all(&p->addr);
+    mutt_addrlist_free_all(&p->addr);
     FREE(&p->name);
     FREE(&p->other);
     FREE(&p);
@@ -194,7 +194,7 @@ static struct Query *run_query(char *s, int quiet)
         cur = cur->next;
       }
 
-      mutt_addresslist_parse(&cur->addr, p);
+      mutt_addrlist_parse(&cur->addr, p);
       p = strtok(NULL, "\t\n");
       if (p)
       {
@@ -277,7 +277,7 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
   switch (op)
   {
     case 'a':
-      mutt_addresslist_write(tmp, sizeof(tmp), &query->addr, true);
+      mutt_addrlist_write(tmp, sizeof(tmp), &query->addr, true);
       mutt_format_s(buf, buflen, prec, tmp);
       break;
     case 'c':
@@ -475,19 +475,19 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
               if (query_table[i].tagged)
               {
                 struct AddressList *al = result_to_addr(query_table[i].data);
-                mutt_addresslist_copy(&naddr, al, false);
-                mutt_addresslist_free(&al);
+                mutt_addrlist_copy(&naddr, al, false);
+                mutt_addrlist_free(&al);
               }
             }
 
             mutt_alias_create(NULL, &naddr);
-            mutt_addresslist_free_all(&naddr);
+            mutt_addrlist_free_all(&naddr);
           }
           else
           {
             struct AddressList *al = result_to_addr(query_table[menu->current].data);
             mutt_alias_create(NULL, al);
-            mutt_addresslist_free(&al);
+            mutt_addrlist_free(&al);
           }
           break;
 
@@ -505,8 +505,8 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
           if (!menu->tagprefix)
           {
             struct AddressList *al = result_to_addr(query_table[menu->current].data);
-            mutt_addresslist_copy(&msg->env->to, al, false);
-            mutt_addresslist_free(&al);
+            mutt_addrlist_copy(&msg->env->to, al, false);
+            mutt_addrlist_free(&al);
           }
           else
           {
@@ -515,8 +515,8 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
               if (query_table[i].tagged)
               {
                 struct AddressList *al = result_to_addr(query_table[i].data);
-                mutt_addresslist_copy(&msg->env->to, al, false);
-                mutt_addresslist_free(&al);
+                mutt_addrlist_copy(&msg->env->to, al, false);
+                mutt_addrlist_free(&al);
               }
             }
           }
@@ -547,20 +547,20 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
           if (curpos == 0)
           {
             struct AddressList *al = result_to_addr(query_table[i].data);
-            mutt_addresslist_to_local(al);
+            mutt_addrlist_to_local(al);
             tagged = true;
-            mutt_addresslist_write(buf, buflen, al, false);
+            mutt_addrlist_write(buf, buflen, al, false);
             curpos = mutt_str_strlen(buf);
-            mutt_addresslist_free(&al);
+            mutt_addrlist_free(&al);
           }
           else if (curpos + 2 < buflen)
           {
             struct AddressList *al = result_to_addr(query_table[i].data);
-            mutt_addresslist_to_local(al);
+            mutt_addrlist_to_local(al);
             strcat(buf, ", ");
-            mutt_addresslist_write(buf + curpos + 1, buflen - curpos - 1, al, false);
+            mutt_addrlist_write(buf + curpos + 1, buflen - curpos - 1, al, false);
             curpos = mutt_str_strlen(buf);
-            mutt_addresslist_free(&al);
+            mutt_addrlist_free(&al);
           }
         }
       }
@@ -568,9 +568,9 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
       if (!tagged)
       {
         struct AddressList *al = result_to_addr(query_table[menu->current].data);
-        mutt_addresslist_to_local(al);
-        mutt_addresslist_write(buf, buflen, al, false);
-        mutt_addresslist_free(&al);
+        mutt_addrlist_to_local(al);
+        mutt_addrlist_write(buf, buflen, al, false);
+        mutt_addrlist_free(&al);
       }
     }
 
@@ -602,10 +602,10 @@ int mutt_query_complete(char *buf, size_t buflen)
     if (!results->next)
     {
       struct AddressList *al = result_to_addr(results);
-      mutt_addresslist_to_local(al);
+      mutt_addrlist_to_local(al);
       buf[0] = '\0';
-      mutt_addresslist_write(buf, buflen, al, false);
-      mutt_addresslist_free(&al);
+      mutt_addrlist_write(buf, buflen, al, false);
+      mutt_addrlist_free(&al);
       free_query(&results);
       mutt_clear_error();
       return 0;

@@ -215,7 +215,7 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
     return;
 
   struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-  mutt_addresslist_parse(&al, buf);
+  mutt_addrlist_parse(&al, buf);
   if (TAILQ_EMPTY(&al))
   {
     mutt_error(_("Error parsing address"));
@@ -224,7 +224,7 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
 
   mutt_expand_aliases(&al);
 
-  if (mutt_addresslist_to_intl(&al, &err) < 0)
+  if (mutt_addrlist_to_intl(&al, &err) < 0)
   {
     mutt_error(_("Bad IDN: '%s'"), err);
     FREE(&err);
@@ -232,7 +232,7 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
   }
 
   buf[0] = '\0';
-  mutt_addresslist_write(buf, sizeof(buf), &al, true);
+  mutt_addrlist_write(buf, sizeof(buf), &al, true);
 
 #define EXTRA_SPACE (15 + 7 + 2)
   /* See commands.c.  */
@@ -275,7 +275,7 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
     mutt_error(ngettext("Error bouncing message", "Error bouncing messages", p));
 
 end:
-  mutt_addresslist_free_all(&al);
+  mutt_addrlist_free_all(&al);
 }
 
 /**

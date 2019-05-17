@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_addresslist_remove()
+ * Test code for mutt_addrlist_qualify()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -26,18 +26,18 @@
 #include "mutt/mutt.h"
 #include "address/lib.h"
 
-void test_mutt_addresslist_remove(void)
+void test_mutt_addrlist_qualify(void)
 {
-  // int mutt_addresslist_remove(struct AddressList *al, const char *mailbox);
+  // void mutt_addrlist_qualify(struct Address *addr, const char *host);
 
   {
-    int rc = mutt_addresslist_remove(NULL, "apple");
-    TEST_CHECK(rc == -1);
+    mutt_addrlist_qualify(NULL, "example.com");
+    TEST_CHECK_(1, "mutt_addrlist_qualify(NULL, \"example.com\")");
   }
 
   {
-    struct AddressList a;
-    int rc = mutt_addresslist_remove(&a, NULL);
-    TEST_CHECK(rc == 0);
+    struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+    mutt_addrlist_qualify(&al, NULL);
+    TEST_CHECK_(1, "mutt_addrlist_qualify(&addr, NULL)");
   }
 }

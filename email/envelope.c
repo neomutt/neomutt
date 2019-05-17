@@ -63,15 +63,15 @@ void mutt_env_free(struct Envelope **p)
 {
   if (!p || !*p)
     return;
-  mutt_addresslist_free_all(&(*p)->return_path);
-  mutt_addresslist_free_all(&(*p)->from);
-  mutt_addresslist_free_all(&(*p)->to);
-  mutt_addresslist_free_all(&(*p)->cc);
-  mutt_addresslist_free_all(&(*p)->bcc);
-  mutt_addresslist_free_all(&(*p)->sender);
-  mutt_addresslist_free_all(&(*p)->reply_to);
-  mutt_addresslist_free_all(&(*p)->mail_followup_to);
-  mutt_addresslist_free_all(&(*p)->x_original_to);
+  mutt_addrlist_free_all(&(*p)->return_path);
+  mutt_addrlist_free_all(&(*p)->from);
+  mutt_addrlist_free_all(&(*p)->to);
+  mutt_addrlist_free_all(&(*p)->cc);
+  mutt_addrlist_free_all(&(*p)->bcc);
+  mutt_addrlist_free_all(&(*p)->sender);
+  mutt_addrlist_free_all(&(*p)->reply_to);
+  mutt_addrlist_free_all(&(*p)->mail_followup_to);
+  mutt_addrlist_free_all(&(*p)->x_original_to);
 
   FREE(&(*p)->list_post);
   FREE(&(*p)->subject);
@@ -192,12 +192,11 @@ bool mutt_env_cmp_strict(const struct Envelope *e1, const struct Envelope *e2)
     if ((mutt_str_strcmp(e1->message_id, e2->message_id) != 0) ||
         (mutt_str_strcmp(e1->subject, e2->subject) != 0) ||
         !mutt_list_compare(&e1->references, &e2->references) ||
-        !mutt_addresslist_equal(&e1->from, &e2->from) ||
-        !mutt_addresslist_equal(&e1->sender, &e2->sender) ||
-        !mutt_addresslist_equal(&e1->reply_to, &e2->reply_to) ||
-        !mutt_addresslist_equal(&e1->to, &e2->to) ||
-        !mutt_addresslist_equal(&e1->cc, &e2->cc) ||
-        !mutt_addresslist_equal(&e1->return_path, &e2->return_path))
+        !mutt_addrlist_equal(&e1->from, &e2->from) ||
+        !mutt_addrlist_equal(&e1->sender, &e2->sender) ||
+        !mutt_addrlist_equal(&e1->reply_to, &e2->reply_to) ||
+        !mutt_addrlist_equal(&e1->to, &e2->to) || !mutt_addrlist_equal(&e1->cc, &e2->cc) ||
+        !mutt_addrlist_equal(&e1->return_path, &e2->return_path))
     {
       return false;
     }
@@ -217,20 +216,20 @@ bool mutt_env_cmp_strict(const struct Envelope *e1, const struct Envelope *e2)
  * mutt_env_to_local - Convert an Envelope's Address fields to local format
  * @param env Envelope to modify
  *
- * Run mutt_addresslist_to_local() on each of the Address fields in the Envelope.
+ * Run mutt_addrlist_to_local() on each of the Address fields in the Envelope.
  */
 void mutt_env_to_local(struct Envelope *env)
 {
   if (!env)
     return;
 
-  mutt_addresslist_to_local(&env->return_path);
-  mutt_addresslist_to_local(&env->from);
-  mutt_addresslist_to_local(&env->to);
-  mutt_addresslist_to_local(&env->cc);
-  mutt_addresslist_to_local(&env->bcc);
-  mutt_addresslist_to_local(&env->reply_to);
-  mutt_addresslist_to_local(&env->mail_followup_to);
+  mutt_addrlist_to_local(&env->return_path);
+  mutt_addrlist_to_local(&env->from);
+  mutt_addrlist_to_local(&env->to);
+  mutt_addrlist_to_local(&env->cc);
+  mutt_addrlist_to_local(&env->bcc);
+  mutt_addrlist_to_local(&env->reply_to);
+  mutt_addrlist_to_local(&env->mail_followup_to);
 }
 
 /* Note that 'member' in the 'env->member' expression is macro argument, not
@@ -239,7 +238,7 @@ void mutt_env_to_local(struct Envelope *env)
  * Note that #member escapes and double quotes the argument.
  */
 #define H_TO_INTL(member)                                                      \
-  if (mutt_addresslist_to_intl(&env->member, err) && !e)                       \
+  if (mutt_addrlist_to_intl(&env->member, err) && !e)                          \
   {                                                                            \
     if (tag)                                                                   \
       *tag = #member;                                                          \
@@ -255,7 +254,7 @@ void mutt_env_to_local(struct Envelope *env)
  * @retval 0 Success, all addresses converted
  * @retval 1 Error, tag and err will be set
  *
- * Run mutt_addresslist_to_intl() on each of the Address fields in the Envelope.
+ * Run mutt_addrlist_to_intl() on each of the Address fields in the Envelope.
  */
 int mutt_env_to_intl(struct Envelope *env, const char **tag, char **err)
 {

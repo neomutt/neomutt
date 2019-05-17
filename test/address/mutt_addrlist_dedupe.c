@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_addresslist_to_intl()
+ * Test code for mutt_addrlist_dedupe()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -26,17 +26,12 @@
 #include "mutt/mutt.h"
 #include "address/lib.h"
 
-void test_mutt_addresslist_to_intl(void)
+void test_mutt_addrlist_dedupe(void)
 {
-  // int mutt_addresslist_to_intl(struct AddressList *a, char **err);
+  // void mutt_addrlist_dedupe(struct AddressList *al);
 
   {
-    char *err = NULL;
-    TEST_CHECK(mutt_addresslist_to_intl(NULL, &err) == 0);
-  }
-
-  {
-    struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-    TEST_CHECK(mutt_addresslist_to_intl(&al, NULL) == 0);
+    mutt_addrlist_dedupe(NULL);
+    TEST_CHECK(true); // no crash
   }
 }

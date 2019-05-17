@@ -876,7 +876,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'f':
       tmp[0] = '\0';
-      mutt_addresslist_write(tmp, sizeof(tmp), &e->env->from, true);
+      mutt_addrlist_write(tmp, sizeof(tmp), &e->env->from, true);
       mutt_format_s(buf, buflen, prec, tmp);
       break;
 
@@ -1114,7 +1114,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'r':
       tmp[0] = '\0';
-      mutt_addresslist_write(tmp, sizeof(tmp), &e->env->to, true);
+      mutt_addrlist_write(tmp, sizeof(tmp), &e->env->to, true);
       if (optional && (tmp[0] == '\0'))
         optional = 0;
       mutt_format_s(buf, buflen, prec, tmp);
@@ -1122,7 +1122,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'R':
       tmp[0] = '\0';
-      mutt_addresslist_write(tmp, sizeof(tmp), &e->env->cc, true);
+      mutt_addrlist_write(tmp, sizeof(tmp), &e->env->cc, true);
       if (optional && (tmp[0] == '\0'))
         optional = 0;
       mutt_format_s(buf, buflen, prec, tmp);

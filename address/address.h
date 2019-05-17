@@ -73,24 +73,22 @@ size_t          mutt_addr_write(char *buf, size_t buflen, struct Address *addr, 
 struct Address *mutt_addr_new(void);
 
 /* Functions that work on struct AddressList */
-struct AddressList *mutt_addresslist_new(void);
-void                mutt_addresslist_append(struct AddressList *al, struct Address *a);
-void                mutt_addresslist_prepend(struct AddressList *al, struct Address *a);
-void                mutt_addresslist_copy(struct AddressList *dst, const struct AddressList *src, bool prune);
-void                mutt_addresslist_free(struct AddressList **al);
-void                mutt_addresslist_free_one(struct AddressList *al, struct Address *anode);
-void                mutt_addresslist_free_all(struct AddressList *al);
-size_t              mutt_addresslist_write(char *buf, size_t buflen, const struct AddressList* addr, bool display);
-int                 mutt_addresslist_parse(struct AddressList *top, const char *s);
-int                 mutt_addresslist_parse2(struct AddressList *top, const char *s);
-int                 mutt_addresslist_to_local(struct AddressList *al);
-int                 mutt_addresslist_to_intl(struct AddressList *al, char **err);
-void                mutt_addresslist_dedupe(struct AddressList *al);
-void                mutt_addresslist_qualify(struct AddressList *al, const char *host);
-bool                mutt_addresslist_search(const struct Address *needle, const struct AddressList *haystack);
-int                 mutt_addresslist_has_recips(const struct AddressList *al);
-bool                mutt_addresslist_equal(const struct AddressList *ala, const struct AddressList *alb);
-int                 mutt_addresslist_remove(struct AddressList *al, const char *mailbox);
-void                mutt_addresslist_remove_xrefs(const struct AddressList *a, struct AddressList *b);
+struct AddressList *mutt_addrlist_new(void);
+void                mutt_addrlist_copy(struct AddressList *dst, const struct AddressList *src, bool prune);
+void                mutt_addrlist_free(struct AddressList **al);
+void                mutt_addrlist_free_one(struct AddressList *al, struct Address *a);
+void                mutt_addrlist_free_all(struct AddressList *al);
+size_t              mutt_addrlist_write(char *buf, size_t buflen, const struct AddressList *al, bool display);
+int                 mutt_addrlist_parse(struct AddressList *al, const char *s);
+int                 mutt_addrlist_parse2(struct AddressList *al, const char *s);
+int                 mutt_addrlist_to_local(struct AddressList *al);
+int                 mutt_addrlist_to_intl(struct AddressList *al, char **err);
+void                mutt_addrlist_dedupe(struct AddressList *al);
+void                mutt_addrlist_qualify(struct AddressList *al, const char *host);
+bool                mutt_addrlist_search(const struct Address *needle, const struct AddressList *haystack);
+int                 mutt_addrlist_has_recips(const struct AddressList *al);
+bool                mutt_addrlist_equal(const struct AddressList *ala, const struct AddressList *alb);
+int                 mutt_addrlist_remove(struct AddressList *al, const char *mailbox);
+void                mutt_addrlist_remove_xrefs(const struct AddressList *a, struct AddressList *b);
 
 #endif /* MUTT_EMAIL_ADDRESS_H */

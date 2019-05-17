@@ -163,7 +163,7 @@ static void remove_user(struct AddressList *al, bool leave_only)
   {
     if (mutt_addr_is_user(a) && (!leave_only || TAILQ_NEXT(a, entries)))
     {
-      mutt_addresslist_free_one(al, a);
+      mutt_addrlist_free_one(al, a);
     }
   }
 }
@@ -208,14 +208,14 @@ static int edit_address(struct AddressList *al, const char *field)
   do
   {
     buf[0] = '\0';
-    mutt_addresslist_to_local(al);
-    mutt_addresslist_write(buf, sizeof(buf), al, false);
+    mutt_addrlist_to_local(al);
+    mutt_addrlist_write(buf, sizeof(buf), al, false);
     if (mutt_get_field(field, buf, sizeof(buf), MUTT_ALIAS) != 0)
       return -1;
-    mutt_addresslist_free_all(al);
-    mutt_addresslist_parse2(al, buf);
+    mutt_addrlist_free_all(al);
+    mutt_addrlist_parse2(al, buf);
     mutt_expand_aliases(al);
-    idna_ok = mutt_addresslist_to_intl(al, &err);
+    idna_ok = mutt_addrlist_to_intl(al, &err);
     if (idna_ok != 0)
     {
       mutt_error(_("Bad IDN: '%s'"), err);
@@ -349,11 +349,11 @@ static void process_user_recips(struct Envelope *env)
   {
     size_t plen;
     if ((plen = mutt_str_startswith(uh->data, "to:", CASE_IGNORE)))
-      mutt_addresslist_parse(&env->to, uh->data + plen);
+      mutt_addrlist_parse(&env->to, uh->data + plen);
     else if ((plen = mutt_str_startswith(uh->data, "cc:", CASE_IGNORE)))
-      mutt_addresslist_parse(&env->cc, uh->data + plen);
+      mutt_addrlist_parse(&env->cc, uh->data + plen);
     else if ((plen = mutt_str_startswith(uh->data, "bcc:", CASE_IGNORE)))
-      mutt_addresslist_parse(&env->bcc, uh->data + plen);
+      mutt_addrlist_parse(&env->bcc, uh->data + plen);
 #ifdef USE_NNTP
     else if ((plen = mutt_str_startswith(uh->data, "newsgroups:", CASE_IGNORE)))
       env->newsgroups = nntp_get_header(uh->data + plen);
@@ -378,13 +378,13 @@ static void process_user_header(struct Envelope *env)
     if ((plen = mutt_str_startswith(uh->data, "from:", CASE_IGNORE)))
     {
       /* User has specified a default From: address.  Remove default address */
-      mutt_addresslist_free_all(&env->from);
-      mutt_addresslist_parse(&env->from, uh->data + plen);
+      mutt_addrlist_free_all(&env->from);
+      mutt_addrlist_parse(&env->from, uh->data + plen);
     }
     else if ((plen = mutt_str_startswith(uh->data, "reply-to:", CASE_IGNORE)))
     {
-      mutt_addresslist_free_all(&env->reply_to);
-      mutt_addresslist_parse(&env->reply_to, uh->data + plen);
+      mutt_addrlist_free_all(&env->reply_to);
+      mutt_addrlist_parse(&env->reply_to, uh->data + plen);
     }
     else if ((plen = mutt_str_startswith(uh->data, "message-id:", CASE_IGNORE)))
     {
@@ -716,7 +716,7 @@ static int default_to(struct AddressList *to, struct Envelope *env, SendFlags fl
 
   if (flags && !TAILQ_EMPTY(&env->mail_followup_to) && (hmfupto == MUTT_YES))
   {
-    mutt_addresslist_copy(to, &env->mail_followup_to, true);
+    mutt_addrlist_copy(to, &env->mail_followup_to, true);
     return 0;
   }
 
@@ -728,7 +728,7 @@ static int default_to(struct AddressList *to, struct Envelope *env, SendFlags fl
   if (!C_ReplySelf && mutt_addr_is_user(from))
   {
     /* mail is from the user, assume replying to recipients */
-    mutt_addresslist_copy(to, &env->to, true);
+    mutt_addrlist_copy(to, &env->to, true);
   }
   else if (reply_to)
   {
@@ -737,8 +737,8 @@ static int default_to(struct AddressList *to, struct Envelope *env, SendFlags fl
         reply_to && TAILQ_NEXT(TAILQ_FIRST(&env->reply_to), entries);
     if ((from_is_reply_to && !multiple_reply_to && !reply_to->personal) ||
         (C_IgnoreListReplyTo && mutt_is_mail_list(reply_to) &&
-         (mutt_addresslist_search(reply_to, &env->to) ||
-          mutt_addresslist_search(reply_to, &env->cc))))
+         (mutt_addrlist_search(reply_to, &env->to) ||
+          mutt_addrlist_search(reply_to, &env->cc))))
     {
       /* If the Reply-To: address is a mailing list, assume that it was
        * put there by the mailing list, and use the From: address
@@ -746,7 +746,7 @@ static int default_to(struct AddressList *to, struct Envelope *env, SendFlags fl
        * We also take the from header if our correspondent has a reply-to
        * header which is identical to the electronic mail address given
        * in his From header, and the reply-to has no display-name.  */
-      mutt_addresslist_copy(to, &env->from, false);
+      mutt_addrlist_copy(to, &env->from, false);
     }
     else if (!(from_is_reply_to && !multiple_reply_to) && (C_ReplyTo != MUTT_YES))
     {
@@ -761,11 +761,11 @@ static int default_to(struct AddressList *to, struct Envelope *env, SendFlags fl
       switch (query_quadoption(C_ReplyTo, prompt))
       {
         case MUTT_YES:
-          mutt_addresslist_copy(to, &env->reply_to, false);
+          mutt_addrlist_copy(to, &env->reply_to, false);
           break;
 
         case MUTT_NO:
-          mutt_addresslist_copy(to, &env->from, false);
+          mutt_addrlist_copy(to, &env->from, false);
           break;
 
         default:
@@ -773,10 +773,10 @@ static int default_to(struct AddressList *to, struct Envelope *env, SendFlags fl
       }
     }
     else
-      mutt_addresslist_copy(to, &env->reply_to, false);
+      mutt_addrlist_copy(to, &env->reply_to, false);
   }
   else
-    mutt_addresslist_copy(to, &env->from, false);
+    mutt_addrlist_copy(to, &env->from, false);
 
   return 0;
 }
@@ -817,7 +817,7 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, SendFlags flags
   }
   else if (flags & SEND_TO_SENDER)
   {
-    mutt_addresslist_copy(&out->to, &in->from, false);
+    mutt_addrlist_copy(&out->to, &in->from, false);
   }
   else
   {
@@ -830,10 +830,10 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, SendFlags flags
     {
       /* if(!mutt_addr_is_user(in->to)) */
       if (flags & SEND_GROUP_REPLY)
-        mutt_addresslist_copy(&out->cc, &in->to, true);
+        mutt_addrlist_copy(&out->cc, &in->to, true);
       else
-        mutt_addresslist_copy(&out->to, &in->cc, true);
-      mutt_addresslist_copy(&out->cc, &in->cc, true);
+        mutt_addrlist_copy(&out->to, &in->cc, true);
+      mutt_addrlist_copy(&out->cc, &in->cc, true);
     }
   }
   return 0;
@@ -883,9 +883,9 @@ void mutt_fix_reply_recipients(struct Envelope *env)
   }
 
   /* the CC field can get cluttered, especially with lists */
-  mutt_addresslist_dedupe(&env->to);
-  mutt_addresslist_dedupe(&env->cc);
-  mutt_addresslist_remove_xrefs(&env->to, &env->cc);
+  mutt_addrlist_dedupe(&env->to);
+  mutt_addrlist_dedupe(&env->cc);
+  mutt_addrlist_remove_xrefs(&env->to, &env->cc);
 
   if (!TAILQ_EMPTY(&env->cc) && TAILQ_EMPTY(&env->to))
   {
@@ -1197,8 +1197,8 @@ void mutt_set_followup_to(struct Envelope *env)
       /* this message goes to known mailing lists, so create a proper
        * mail-followup-to header */
 
-      mutt_addresslist_copy(&env->mail_followup_to, &env->to, false);
-      mutt_addresslist_copy(&env->mail_followup_to, &env->cc, true);
+      mutt_addrlist_copy(&env->mail_followup_to, &env->to, false);
+      mutt_addrlist_copy(&env->mail_followup_to, &env->cc, true);
     }
 
     /* remove ourselves from the mail-followup-to header */
@@ -1232,7 +1232,7 @@ void mutt_set_followup_to(struct Envelope *env)
       }
     }
 
-    mutt_addresslist_dedupe(&env->mail_followup_to);
+    mutt_addrlist_dedupe(&env->mail_followup_to);
   }
 }
 
@@ -1932,7 +1932,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
     /* Use any list-post header as a template */
     mutt_parse_mailto(msg->env, NULL, cur->env->list_post);
     /* We don't let them set the sender's address. */
-    mutt_addresslist_free_all(&msg->env->from);
+    mutt_addrlist_free_all(&msg->env->from);
   }
 
   if (!(flags & (SEND_KEY | SEND_POSTPONED | SEND_RESEND)))
@@ -1991,7 +1991,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
     {
       mutt_debug(5, "msg->env->from before set_reverse_name: %s\n",
                  TAILQ_FIRST(&msg->env->from)->mailbox);
-      mutt_addresslist_free_all(&msg->env->from);
+      mutt_addrlist_free_all(&msg->env->from);
     }
     set_reverse_name(&msg->env->from, cur->env);
   }
@@ -2007,7 +2007,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
      * the 'X-Orig-To header'.  */
     if (!TAILQ_EMPTY(&cur->env->x_original_to) && TAILQ_EMPTY(&msg->env->from))
     {
-      mutt_addresslist_copy(&msg->env->from, &cur->env->x_original_to, false);
+      mutt_addrlist_copy(&msg->env->from, &cur->env->x_original_to, false);
       mutt_debug(5, "msg->env->from extracted from X-Original-To: header: %s\n",
                  TAILQ_FIRST(&msg->env->from)->mailbox);
     }
@@ -2091,7 +2091,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
     /* $use_from and/or $from might have changed in a send-hook */
     if (killfrom)
     {
-      mutt_addresslist_free_all(&msg->env->from);
+      mutt_addrlist_free_all(&msg->env->from);
       if (C_UseFrom && !(flags & (SEND_POSTPONED | SEND_RESEND)))
         TAILQ_INSERT_TAIL(&msg->env->from, mutt_default_from(), entries);
     }
@@ -2337,7 +2337,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
     mutt_select_fcc(fcc, sizeof(fcc), msg);
     if (killfrom)
     {
-      mutt_addresslist_free_all(&msg->env->from);
+      mutt_addrlist_free_all(&msg->env->from);
     }
   }
 
@@ -2374,9 +2374,9 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
 #ifdef USE_NNTP
   if (!(flags & SEND_NEWS))
 #endif
-    if ((mutt_addresslist_has_recips(&msg->env->to) == 0) &&
-        (mutt_addresslist_has_recips(&msg->env->cc) == 0) &&
-        (mutt_addresslist_has_recips(&msg->env->bcc) == 0))
+    if ((mutt_addrlist_has_recips(&msg->env->to) == 0) &&
+        (mutt_addrlist_has_recips(&msg->env->cc) == 0) &&
+        (mutt_addrlist_has_recips(&msg->env->bcc) == 0))
     {
       if (!(flags & SEND_BATCH))
       {

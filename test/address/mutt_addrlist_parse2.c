@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_addresslist_parse()
+ * Test code for mutt_addrlist_parse2()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -26,20 +26,21 @@
 #include "mutt/mutt.h"
 #include "address/lib.h"
 
-void test_mutt_addresslist_parse(void)
+void test_mutt_addrlist_parse2(void)
 {
-  // void mutt_addresslist_parse(struct AddressList *top, const char *s);
-
+  // struct Address *mutt_addrlist_parse2(struct Address *p, const char *s);
   {
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
-    mutt_addresslist_parse(&alist, "apple");
+    mutt_addrlist_parse(&alist, "apple");
     TEST_CHECK(TAILQ_FIRST(&alist) != NULL);
-    mutt_addresslist_free_all(&alist);
+    mutt_addrlist_free_all(&alist);
   }
 
   {
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
-    mutt_addresslist_parse(&alist, NULL);
+    mutt_addrlist_parse(&alist, NULL);
     TEST_CHECK(TAILQ_FIRST(&alist) == NULL);
   }
+
+  mutt_buffer_pool_free();
 }

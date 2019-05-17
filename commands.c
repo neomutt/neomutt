@@ -400,7 +400,7 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   if (rc || !buf[0])
     return;
 
-  mutt_addresslist_parse2(&al, buf);
+  mutt_addrlist_parse2(&al, buf);
   if (TAILQ_EMPTY(&al))
   {
     mutt_error(_("Error parsing address"));
@@ -409,16 +409,16 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
 
   mutt_expand_aliases(&al);
 
-  if (mutt_addresslist_to_intl(&al, &err) < 0)
+  if (mutt_addrlist_to_intl(&al, &err) < 0)
   {
     mutt_error(_("Bad IDN: '%s'"), err);
     FREE(&err);
-    mutt_addresslist_free_all(&al);
+    mutt_addrlist_free_all(&al);
     return;
   }
 
   buf[0] = '\0';
-  mutt_addresslist_write(buf, sizeof(buf), &al, true);
+  mutt_addrlist_write(buf, sizeof(buf), &al, true);
 
 #define EXTRA_SPACE (15 + 7 + 2)
   snprintf(scratch, sizeof(scratch),
@@ -435,7 +435,7 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
 
   if (query_quadoption(C_Bounce, prompt) != MUTT_YES)
   {
-    mutt_addresslist_free_all(&al);
+    mutt_addrlist_free_all(&al);
     mutt_window_clearline(MuttMessageWindow, 0);
     mutt_message(ngettext("Message not bounced", "Messages not bounced", msg_count));
     return;
@@ -460,7 +460,7 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
       break;
   }
 
-  mutt_addresslist_free_all(&al);
+  mutt_addrlist_free_all(&al);
   /* If no error, or background, display message. */
   if ((rc == 0) || (rc == S_BKG))
     mutt_message(ngettext("Message bounced", "Messages bounced", msg_count));
@@ -873,7 +873,7 @@ void mutt_display_address(struct Envelope *env)
    * paste the on-the-wire form of the address to other, IDN-unable
    * software.  */
   buf[0] = '\0';
-  mutt_addresslist_write(buf, sizeof(buf), al, false);
+  mutt_addrlist_write(buf, sizeof(buf), al, false);
   mutt_message("%s: %s", pfx, buf);
 }
 

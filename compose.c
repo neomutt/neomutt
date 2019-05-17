@@ -440,7 +440,7 @@ static void draw_envelope_addr(int line, struct AddressList *al)
   char buf[1024];
 
   buf[0] = '\0';
-  mutt_addresslist_write(buf, sizeof(buf), al, true);
+  mutt_addrlist_write(buf, sizeof(buf), al, true);
   SET_COLOR(MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw(MuttIndexWindow, line, 0, "%*s", HeaderPadding[line],
                        _(Prompts[line]));
@@ -520,16 +520,16 @@ static void edit_address_list(int line, struct AddressList *al)
   char buf[8192] = { 0 }; /* needs to be large for alias expansion */
   char *err = NULL;
 
-  mutt_addresslist_to_local(al);
-  mutt_addresslist_write(buf, sizeof(buf), al, false);
+  mutt_addrlist_to_local(al);
+  mutt_addrlist_write(buf, sizeof(buf), al, false);
   if (mutt_get_field(_(Prompts[line]), buf, sizeof(buf), MUTT_ALIAS) == 0)
   {
-    mutt_addresslist_free_all(al);
-    mutt_addresslist_parse2(al, buf);
+    mutt_addrlist_free_all(al);
+    mutt_addrlist_parse2(al, buf);
     mutt_expand_aliases(al);
   }
 
-  if (mutt_addresslist_to_intl(al, &err) != 0)
+  if (mutt_addrlist_to_intl(al, &err) != 0)
   {
     mutt_error(_("Bad IDN: '%s'"), err);
     mutt_refresh();
@@ -538,7 +538,7 @@ static void edit_address_list(int line, struct AddressList *al)
 
   /* redraw the expanded list so the user can see the result */
   buf[0] = '\0';
-  mutt_addresslist_write(buf, sizeof(buf), al, true);
+  mutt_addrlist_write(buf, sizeof(buf), al, true);
   mutt_window_move(MuttIndexWindow, line, HDR_XOFFSET);
   mutt_paddstr(W, buf);
 }

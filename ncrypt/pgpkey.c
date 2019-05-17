@@ -1034,7 +1034,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
     for (q = k->address; q; q = q->next)
     {
       struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-      mutt_addresslist_parse(&al, NONULL(q->addr));
+      mutt_addrlist_parse(&al, NONULL(q->addr));
       struct Address *qa = NULL;
       TAILQ_FOREACH(qa, &al, entries)
       {
@@ -1058,7 +1058,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
         }
       }
 
-      mutt_addresslist_free_all(&al);
+      mutt_addrlist_free_all(&al);
     }
 
     if (match)

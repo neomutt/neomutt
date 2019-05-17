@@ -1345,8 +1345,8 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder, enum MailboxType
 
       struct Email *e = mutt_email_new();
       e->env = mutt_env_new();
-      mutt_addresslist_copy(&e->env->from, al, false);
-      mutt_addresslist_copy(&e->env->to, al, false);
+      mutt_addrlist_copy(&e->env->from, al, false);
+      mutt_addrlist_copy(&e->env->to, al, false);
       mutt_default_save(buf, buflen, e);
       mutt_email_free(&e);
       break;

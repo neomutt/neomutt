@@ -649,12 +649,12 @@ int main(int argc, char *argv[], char *envp[])
     struct ListNode *np = NULL;
     STAILQ_FOREACH(np, &bcc_list, entries)
     {
-      mutt_addresslist_parse(&msg->env->bcc, np->data);
+      mutt_addrlist_parse(&msg->env->bcc, np->data);
     }
 
     STAILQ_FOREACH(np, &cc_list, entries)
     {
-      mutt_addresslist_parse(&msg->env->cc, np->data);
+      mutt_addrlist_parse(&msg->env->cc, np->data);
     }
 
     mutt_list_free(&bcc_list);
@@ -768,8 +768,8 @@ int main(int argc, char *argv[], char *envp[])
       if (al)
       {
         /* output in machine-readable form */
-        mutt_addresslist_to_intl(al, NULL);
-        mutt_write_addresslist(al, stdout, 0, 0);
+        mutt_addrlist_to_intl(al, NULL);
+        mutt_write_addrlist(al, stdout, 0, 0);
       }
       else
       {
@@ -869,7 +869,7 @@ int main(int argc, char *argv[], char *envp[])
         }
       }
       else
-        mutt_addresslist_parse(&msg->env->to, argv[i]);
+        mutt_addrlist_parse(&msg->env->to, argv[i]);
     }
 
     if (!draft_file && C_Autoedit && TAILQ_EMPTY(&msg->env->to) &&
@@ -1004,9 +1004,9 @@ int main(int argc, char *argv[], char *envp[])
           }
         }
 
-        mutt_addresslist_copy(&msg->env->to, &opts_env->to, false);
-        mutt_addresslist_copy(&msg->env->cc, &opts_env->cc, false);
-        mutt_addresslist_copy(&msg->env->bcc, &opts_env->bcc, false);
+        mutt_addrlist_copy(&msg->env->to, &opts_env->to, false);
+        mutt_addrlist_copy(&msg->env->cc, &opts_env->cc, false);
+        mutt_addrlist_copy(&msg->env->bcc, &opts_env->bcc, false);
         if (opts_env->subject)
           mutt_str_replace(&msg->env->subject, opts_env->subject);
 

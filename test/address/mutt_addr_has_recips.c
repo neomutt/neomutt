@@ -28,9 +28,9 @@
 
 void test_mutt_addr_has_recips(void)
 {
-  // int mutt_addresslist_has_recips(const struct AddressList *a);
+  // int mutt_addrlist_has_recips(const struct AddressList *a);
 
   {
-    TEST_CHECK(mutt_addresslist_has_recips(NULL) == 0);
+    TEST_CHECK(mutt_addrlist_has_recips(NULL) == 0);
   }
 }

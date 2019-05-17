@@ -89,7 +89,7 @@ static void group_remove(struct Group *g)
   if (!g)
     return;
   mutt_hash_delete(Groups, g->name, g);
-  mutt_addresslist_free_all(&g->al);
+  mutt_addrlist_free_all(&g->al);
   mutt_regexlist_free(&g->rs);
   FREE(&g->name);
   FREE(&g);
@@ -180,8 +180,8 @@ static void group_add_addrlist(struct Group *g, const struct AddressList *al)
     return;
 
   struct AddressList new = TAILQ_HEAD_INITIALIZER(new);
-  mutt_addresslist_copy(&new, al, false);
-  mutt_addresslist_remove_xrefs(&g->al, &new);
+  mutt_addrlist_copy(&new, al, false);
+  mutt_addrlist_remove_xrefs(&g->al, &new);
   struct Address *a, *tmp;
   TAILQ_FOREACH_SAFE(a, &new, entries, tmp)
   {
@@ -217,11 +217,11 @@ static int group_remove_regex(struct Group *g, const char *s)
 }
 
 /**
- * mutt_grouplist_add_addresslist - Add Address list to a GroupList
+ * mutt_grouplist_add_addrlist - Add Address list to a GroupList
  * @param head GroupList to add to
- * @param a    Address to add
+ * @param al   Address list to add
  */
-void mutt_grouplist_add_addresslist(struct GroupList *head, struct AddressList *al)
+void mutt_grouplist_add_addrlist(struct GroupList *head, struct AddressList *al)
 {
   if (!head || !al)
     return;
@@ -234,13 +234,13 @@ void mutt_grouplist_add_addresslist(struct GroupList *head, struct AddressList *
 }
 
 /**
- * mutt_grouplist_remove_addresslist - Remove an AddressList from a GroupList
+ * mutt_grouplist_remove_addrlist - Remove an AddressList from a GroupList
  * @param head GroupList to remove from
  * @param al   AddressList to remove
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_grouplist_remove_addresslist(struct GroupList *head, struct AddressList *al)
+int mutt_grouplist_remove_addrlist(struct GroupList *head, struct AddressList *al)
 {
   if (!head || !al)
     return -1;
@@ -253,7 +253,7 @@ int mutt_grouplist_remove_addresslist(struct GroupList *head, struct AddressList
     struct Address *a = NULL;
     TAILQ_FOREACH(a, al, entries)
     {
-      mutt_addresslist_remove(&gnp->group->al, a->mailbox);
+      mutt_addrlist_remove(&gnp->group->al, a->mailbox);
     }
     if (empty_group(gnp->group))
       group_remove(gnp->group);

@@ -923,7 +923,7 @@ static enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   {
     mutt_alias_delete_reverse(tmp);
     /* override the previous value */
-    mutt_addresslist_free_all(&tmp->addr);
+    mutt_addrlist_free_all(&tmp->addr);
     if (CurrentMenu == MENU_ALIAS)
       mutt_menu_set_current_redraw_full();
   }
@@ -931,16 +931,16 @@ static enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   mutt_extract_token(buf, s, MUTT_TOKEN_QUOTE | MUTT_TOKEN_SPACE | MUTT_TOKEN_SEMICOLON);
   mutt_debug(5, "Second token is '%s'\n", buf->data);
 
-  mutt_addresslist_parse2(&tmp->addr, buf->data);
+  mutt_addrlist_parse2(&tmp->addr, buf->data);
 
-  if (mutt_addresslist_to_intl(&tmp->addr, &estr))
+  if (mutt_addrlist_to_intl(&tmp->addr, &estr))
   {
     mutt_buffer_printf(err, _("Warning: Bad IDN '%s' in alias '%s'"), estr, tmp->name);
     FREE(&estr);
     goto bail;
   }
 
-  mutt_grouplist_add_addresslist(&gc, &tmp->addr);
+  mutt_grouplist_add_addrlist(&gc, &tmp->addr);
   mutt_alias_add_reverse(tmp);
 
   if (C_DebugLevel > LL_DEBUG4)
@@ -1151,22 +1151,22 @@ static enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
         {
           char *estr = NULL;
           struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-          mutt_addresslist_parse2(&al, buf->data);
+          mutt_addrlist_parse2(&al, buf->data);
           if (TAILQ_EMPTY(&al))
             goto bail;
-          if (mutt_addresslist_to_intl(&al, &estr))
+          if (mutt_addrlist_to_intl(&al, &estr))
           {
             mutt_buffer_printf(err, _("%sgroup: warning: bad IDN '%s'"),
                                (data == 1) ? "un" : "", estr);
-            mutt_addresslist_free_all(&al);
+            mutt_addrlist_free_all(&al);
             FREE(&estr);
             goto bail;
           }
           if (data == MUTT_GROUP)
-            mutt_grouplist_add_addresslist(&gc, &al);
+            mutt_grouplist_add_addrlist(&gc, &al);
           else if (data == MUTT_UNGROUP)
-            mutt_grouplist_remove_addresslist(&gc, &al);
-          mutt_addresslist_free_all(&al);
+            mutt_grouplist_remove_addrlist(&gc, &al);
+          mutt_addrlist_free_all(&al);
           break;
         }
       }

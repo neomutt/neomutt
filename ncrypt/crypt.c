@@ -925,11 +925,11 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
   if (WithCrypto & APPLICATION_PGP)
     OptPgpCheckTrust = true;
 
-  mutt_addresslist_copy(&addrlist, &msg->env->to, false);
-  mutt_addresslist_copy(&addrlist, &msg->env->cc, false);
-  mutt_addresslist_copy(&addrlist, &msg->env->bcc, false);
-  mutt_addresslist_qualify(&addrlist, fqdn);
-  mutt_addresslist_dedupe(&addrlist);
+  mutt_addrlist_copy(&addrlist, &msg->env->to, false);
+  mutt_addrlist_copy(&addrlist, &msg->env->cc, false);
+  mutt_addrlist_copy(&addrlist, &msg->env->bcc, false);
+  mutt_addrlist_qualify(&addrlist, fqdn);
+  mutt_addrlist_dedupe(&addrlist);
 
   *keylist = NULL;
 
@@ -940,7 +940,7 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
       *keylist = crypt_pgp_find_keys(&addrlist, oppenc_mode);
       if (!*keylist)
       {
-        mutt_addresslist_free_all(&addrlist);
+        mutt_addrlist_free_all(&addrlist);
         return -1;
       }
       OptPgpCheckTrust = false;
@@ -952,7 +952,7 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
       *keylist = crypt_smime_find_keys(&addrlist, oppenc_mode);
       if (!*keylist)
       {
-        mutt_addresslist_free_all(&addrlist);
+        mutt_addrlist_free_all(&addrlist);
         return -1;
       }
       if (C_SmimeSelfEncrypt || (C_SmimeEncryptSelf == MUTT_YES))
@@ -967,7 +967,7 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
     sprintf(*keylist + keylist_size, " %s", self_encrypt);
   }
 
-  mutt_addresslist_free_all(&addrlist);
+  mutt_addrlist_free_all(&addrlist);
 
   return 0;
 }

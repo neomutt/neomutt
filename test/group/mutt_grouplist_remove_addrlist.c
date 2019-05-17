@@ -32,11 +32,11 @@ void test_mutt_grouplist_remove_addrlist(void)
 
   {
     struct AddressList addr = TAILQ_HEAD_INITIALIZER(addr);
-    TEST_CHECK(mutt_grouplist_remove_addresslist(NULL, &addr) == -1);
+    TEST_CHECK(mutt_grouplist_remove_addrlist(NULL, &addr) == -1);
   }
 
   {
     struct GroupList head = { 0 };
-    TEST_CHECK(mutt_grouplist_remove_addresslist(&head, NULL) == -1);
+    TEST_CHECK(mutt_grouplist_remove_addrlist(&head, NULL) == -1);
   }
 }

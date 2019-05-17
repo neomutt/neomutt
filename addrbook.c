@@ -92,7 +92,7 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
       break;
     case 'r':
       addr[0] = '\0';
-      mutt_addresslist_write(addr, sizeof(addr), &alias->addr, true);
+      mutt_addrlist_write(addr, sizeof(addr), &alias->addr, true);
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, addr);
       break;
@@ -298,14 +298,14 @@ new_aliases:
   {
     if (alias_table[i]->tagged)
     {
-      mutt_addresslist_write(buf, buflen, &alias_table[i]->addr, true);
+      mutt_addrlist_write(buf, buflen, &alias_table[i]->addr, true);
       t = -1;
     }
   }
 
   if (t != -1)
   {
-    mutt_addresslist_write(buf, buflen, &alias_table[t]->addr, true);
+    mutt_addrlist_write(buf, buflen, &alias_table[t]->addr, true);
   }
 
   mutt_menu_pop_current(menu);

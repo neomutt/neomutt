@@ -28,15 +28,15 @@
 
 void test_mutt_addr_search(void)
 {
-  // bool mutt_addresslist_search(const struct Address *needle, const struct AddressList *haystack);
+  // bool mutt_addrlist_search(const struct Address *needle, const struct AddressList *haystack);
 
   {
     struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-    TEST_CHECK(!mutt_addresslist_search(NULL, &al));
+    TEST_CHECK(!mutt_addrlist_search(NULL, &al));
   }
 
   {
     struct Address a = { 0 };
-    TEST_CHECK(!mutt_addresslist_search(&a, NULL));
+    TEST_CHECK(!mutt_addrlist_search(&a, NULL));
   }
 }

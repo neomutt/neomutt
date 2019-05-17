@@ -942,8 +942,8 @@ static int copy_delete_attach(struct Body *b, FILE *fp_in, FILE *fp_out, char *d
  * @param[out] h  Array of header strings
  * @param[in]  al AddressList
  *
- * This function is the equivalent of mutt_write_addresslist(), but writes to
- * a buffer instead of writing to a stream.  mutt_write_addresslist could be
+ * This function is the equivalent of mutt_write_addrlist(), but writes to
+ * a buffer instead of writing to a stream.  mutt_write_addrlist could be
  * re-used if we wouldn't store all the decoded headers in a huge array, first.
  *
  * TODO fix that.
@@ -1076,11 +1076,11 @@ static int address_header_decode(char **h)
   }
 
   struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-  mutt_addresslist_parse(&al, s + l);
+  mutt_addrlist_parse(&al, s + l);
   if (TAILQ_EMPTY(&al))
     return 0;
 
-  mutt_addresslist_to_local(&al);
+  mutt_addrlist_to_local(&al);
   rfc2047_decode_addrlist(&al);
   struct Address *a = NULL;
   TAILQ_FOREACH(a, &al, entries)
@@ -1102,7 +1102,7 @@ static int address_header_decode(char **h)
     format_address_header(h, &al);
   }
 
-  mutt_addresslist_free_all(&al);
+  mutt_addrlist_free_all(&al);
 
   FREE(&s);
   return 1;

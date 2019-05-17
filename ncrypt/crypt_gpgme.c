@@ -4917,7 +4917,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
     match = false; /* any match */
 
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
-    mutt_addresslist_parse(&alist, k->uid);
+    mutt_addrlist_parse(&alist, k->uid);
     struct Address *ka = NULL;
     TAILQ_FOREACH(ka, &alist, entries)
     {
@@ -4940,7 +4940,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
         }
       }
     }
-    mutt_addresslist_free_all(&alist);
+    mutt_addrlist_free_all(&alist);
 
     if (match)
     {
@@ -5184,10 +5184,10 @@ static char *find_keys(struct AddressList *addrlist, unsigned int app, bool oppe
           }
 
           /* check for e-mail address */
-          mutt_addresslist_free_all(&hookal);
-          if (strchr(keyID, '@') && (mutt_addresslist_parse(&hookal, keyID) != 0))
+          mutt_addrlist_free_all(&hookal);
+          if (strchr(keyID, '@') && (mutt_addrlist_parse(&hookal, keyID) != 0))
           {
-            mutt_addresslist_qualify(&hookal, fqdn);
+            mutt_addrlist_qualify(&hookal, fqdn);
             p = TAILQ_FIRST(&hookal);
           }
           else if (!oppenc_mode)
@@ -5206,7 +5206,7 @@ static char *find_keys(struct AddressList *addrlist, unsigned int app, bool oppe
         else if (ans == MUTT_ABORT)
         {
           FREE(&keylist);
-          mutt_addresslist_free_all(&hookal);
+          mutt_addrlist_free_all(&hookal);
           mutt_list_free(&crypt_hook_list);
           return NULL;
         }
@@ -5227,7 +5227,7 @@ static char *find_keys(struct AddressList *addrlist, unsigned int app, bool oppe
       if (!k_info)
       {
         FREE(&keylist);
-        mutt_addresslist_free_all(&hookal);
+        mutt_addrlist_free_all(&hookal);
         mutt_list_free(&crypt_hook_list);
         return NULL;
       }
@@ -5244,7 +5244,7 @@ static char *find_keys(struct AddressList *addrlist, unsigned int app, bool oppe
       key_selected = true;
 
       crypt_free_key(&k_info);
-      mutt_addresslist_free_all(&hookal);
+      mutt_addrlist_free_all(&hookal);
 
       if (crypt_hook)
         crypt_hook = STAILQ_NEXT(crypt_hook, entries);
