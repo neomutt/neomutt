@@ -22,6 +22,7 @@
 
 #define TEST_NO_MAIN
 #include "acutest.h"
+#include "common.h"
 #include "config.h"
 #include "mutt/mutt.h"
 #include "address/lib.h"
@@ -40,5 +41,34 @@ void test_mutt_addrlist_copy(void)
     struct AddressList al = { 0 };
     mutt_addrlist_copy(&al, NULL, false);
     TEST_CHECK_(1, "mutt_addrlist_copy(&al, NULL, false)");
+  }
+
+  {
+    struct AddressList src = TAILQ_HEAD_INITIALIZER(src);
+    struct AddressList dst = TAILQ_HEAD_INITIALIZER(dst);
+    mutt_addrlist_copy(&dst, &src, false);
+    TEST_CHECK(TAILQ_EMPTY(&src));
+    TEST_CHECK(TAILQ_EMPTY(&dst));
+  }
+
+  {
+    struct AddressList src = TAILQ_HEAD_INITIALIZER(src);
+    struct AddressList dst = TAILQ_HEAD_INITIALIZER(dst);
+    struct Address a1 = { .mailbox = "test@example.com" };
+    struct Address a2 = { .mailbox = "john@doe.org" };
+    struct Address a3 = { .mailbox = "the-who@stage.co.uk" };
+    mutt_addrlist_append(&src, &a1);
+    mutt_addrlist_append(&src, &a2);
+    mutt_addrlist_append(&src, &a3);
+    mutt_addrlist_copy(&dst, &src, false);
+    TEST_CHECK(!TAILQ_EMPTY(&src));
+    TEST_CHECK(!TAILQ_EMPTY(&dst));
+    struct Address *adst = TAILQ_FIRST(&dst);
+    TEST_CHECK_STR_EQ(a1.mailbox, adst->mailbox);
+    adst = TAILQ_NEXT(adst, entries);
+    TEST_CHECK_STR_EQ(a2.mailbox, adst->mailbox);
+    adst = TAILQ_NEXT(adst, entries);
+    TEST_CHECK_STR_EQ(a3.mailbox, adst->mailbox);
+    mutt_addrlist_free_all(&dst);
   }
 }
