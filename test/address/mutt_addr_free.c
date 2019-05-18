@@ -34,4 +34,10 @@ void test_mutt_addr_free(void)
     mutt_addr_free(NULL);
     TEST_CHECK_(1, "mutt_addr_free(NULL)");
   }
+
+  {
+    struct Address *a = mutt_addr_new();
+    mutt_addr_free(&a);
+    TEST_CHECK(a == NULL);
+  }
 }
