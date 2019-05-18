@@ -882,11 +882,11 @@ bool mutt_addrlist_search(const struct Address *needle, const struct AddressList
 }
 
 /**
- * mutt_addr_is_intl - Does the Address have IDN components
+ * addr_is_intl - Does the Address have IDN components
  * @param a Address to check
  * @retval true Address contains IDN components
  */
-static bool mutt_addr_is_intl(const struct Address *a)
+static bool addr_is_intl(const struct Address *a)
 {
   if (!a)
     return false;
@@ -894,11 +894,11 @@ static bool mutt_addr_is_intl(const struct Address *a)
 }
 
 /**
- * mutt_addr_is_local - Does the Address have NO IDN components
+ * addr_is_local - Does the Address have NO IDN components
  * @param a Address to check
  * @retval true Address contains NO IDN components
  */
-static bool mutt_addr_is_local(const struct Address *a)
+static bool addr_is_local(const struct Address *a)
 {
   if (!a)
     return false;
@@ -906,7 +906,7 @@ static bool mutt_addr_is_local(const struct Address *a)
 }
 
 /**
- * mutt_addr_mbox_to_udomain - Split a mailbox name into user and domain
+ * addr_mbox_to_udomain - Split a mailbox name into user and domain
  * @param[in]  mbox   Mailbox name to split
  * @param[out] user   User
  * @param[out] domain Domain
@@ -915,7 +915,7 @@ static bool mutt_addr_is_local(const struct Address *a)
  *
  * @warning The caller must free user and domain
  */
-static int mutt_addr_mbox_to_udomain(const char *mbox, char **user, char **domain)
+static int addr_mbox_to_udomain(const char *mbox, char **user, char **domain)
 {
   if (!mbox || !user || !domain)
     return -1;
@@ -933,11 +933,11 @@ static int mutt_addr_mbox_to_udomain(const char *mbox, char **user, char **domai
 }
 
 /**
- * mutt_addr_set_intl - Mark an Address as having IDN components
+ * addr_set_intl - Mark an Address as having IDN components
  * @param a            Address to modify
  * @param intl_mailbox Email address with IDN components
  */
-static void mutt_addr_set_intl(struct Address *a, char *intl_mailbox)
+static void addr_set_intl(struct Address *a, char *intl_mailbox)
 {
   if (!a)
     return;
@@ -949,11 +949,11 @@ static void mutt_addr_set_intl(struct Address *a, char *intl_mailbox)
 }
 
 /**
- * mutt_addr_set_local - Mark an Address as having NO IDN components
+ * addr_set_local - Mark an Address as having NO IDN components
  * @param a             Address
  * @param local_mailbox Email address with NO IDN components
  */
-static void mutt_addr_set_local(struct Address *a, char *local_mailbox)
+static void addr_set_local(struct Address *a, char *local_mailbox)
 {
   if (!a)
     return;
@@ -980,10 +980,10 @@ const char *mutt_addr_for_display(const struct Address *a)
   char *user = NULL, *domain = NULL;
   static char *buf = NULL;
 
-  if (!a->mailbox || mutt_addr_is_local(a))
+  if (!a->mailbox || addr_is_local(a))
     return a->mailbox;
 
-  if (mutt_addr_mbox_to_udomain(a->mailbox, &user, &domain) == -1)
+  if (addr_mbox_to_udomain(a->mailbox, &user, &domain) == -1)
     return a->mailbox;
 
   char *local_mailbox = mutt_idna_intl_to_local(user, domain, MI_MAY_BE_IRREVERSIBLE);
@@ -1219,12 +1219,12 @@ int mutt_addrlist_to_intl(struct AddressList *al, char **err)
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
-    if (!a->mailbox || mutt_addr_is_intl(a))
+    if (!a->mailbox || addr_is_intl(a))
       continue;
 
     char *user = NULL;
     char *domain = NULL;
-    if (mutt_addr_mbox_to_udomain(a->mailbox, &user, &domain) == -1)
+    if (addr_mbox_to_udomain(a->mailbox, &user, &domain) == -1)
       continue;
 
     char *intl_mailbox = mutt_idna_local_to_intl(user, domain);
@@ -1240,7 +1240,7 @@ int mutt_addrlist_to_intl(struct AddressList *al, char **err)
       continue;
     }
 
-    mutt_addr_set_intl(a, intl_mailbox);
+    addr_set_intl(a, intl_mailbox);
   }
 
   return rc;
@@ -1259,12 +1259,12 @@ int mutt_addrlist_to_local(struct AddressList *al)
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
-    if (!a->mailbox || mutt_addr_is_local(a))
+    if (!a->mailbox || addr_is_local(a))
       continue;
 
     char *user = NULL;
     char *domain = NULL;
-    if (mutt_addr_mbox_to_udomain(a->mailbox, &user, &domain) == -1)
+    if (addr_mbox_to_udomain(a->mailbox, &user, &domain) == -1)
       continue;
 
     char *local_mailbox = mutt_idna_intl_to_local(user, domain, 0);
@@ -1273,7 +1273,7 @@ int mutt_addrlist_to_local(struct AddressList *al)
     FREE(&domain);
 
     if (local_mailbox)
-      mutt_addr_set_local(a, local_mailbox);
+      addr_set_local(a, local_mailbox);
   }
   return 0;
 }
