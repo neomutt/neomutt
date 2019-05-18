@@ -22,6 +22,7 @@
 
 #define TEST_NO_MAIN
 #include "acutest.h"
+#include "common.h"
 #include "config.h"
 #include "mutt/mutt.h"
 #include "address/lib.h"
@@ -48,4 +49,29 @@ void test_mutt_addr_cat(void)
     mutt_addr_cat(buf, sizeof(buf), "apple", NULL);
     TEST_CHECK_(1, "mutt_addr_cat(buf, sizeof(buf), \"apple\", NULL)");
   }
+
+  {
+    char buf[32];
+    mutt_addr_cat(buf, 0, "apple", MimeSpecials);
+    TEST_CHECK_(1, "mutt_addr_cat(buf, 0, \"apple\", MimeSpecials)");
+  }
+
+  {
+    char buf[32];
+    mutt_addr_cat(buf, sizeof(buf), "apple", MimeSpecials);
+    TEST_CHECK_STR_EQ("apple", buf);
+  }
+
+  {
+    char buf[32];
+    mutt_addr_cat(buf, sizeof(buf), "a(pp)le", MimeSpecials);
+    TEST_CHECK_STR_EQ("\"a(pp)le\"", buf);
+  }
+
+  {
+    char buf[32];
+    mutt_addr_cat(buf, sizeof(buf), "a(pp)l\"e", MimeSpecials);
+    TEST_CHECK_STR_EQ("\"a(pp)l\\\"e\"", buf);
+  }
+
 }

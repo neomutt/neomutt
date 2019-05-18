@@ -659,11 +659,17 @@ void mutt_addrlist_qualify(struct AddressList *al, const char *host)
 }
 
 /**
- * mutt_addr_cat - Copy a string and escape the specified characters
+ * mutt_addr_cat - Copy a string and wrap it in quotes if it contains special characters
  * @param buf      Buffer for the result
  * @param buflen   Length of the result buffer
  * @param value    String to copy
- * @param specials Characters to be escaped
+ * @param specials Characters to lookup
+ *
+ * This function copies the string in the "value" parameter in the buffer
+ * pointed to by "buf" parameter. If the input string contains any of the
+ * characters specified in the "specials" parameters, the output string is
+ * wrapped in double quoted. Additionally, any backslashes or quotes inside the
+ * input string are backslash-escaped.
  */
 void mutt_addr_cat(char *buf, size_t buflen, const char *value, const char *specials)
 {
