@@ -25,6 +25,7 @@
 #include "config.h"
 #include "mutt/mutt.h"
 #include "address/lib.h"
+#include "common.h"
 
 void test_mutt_addrlist_free(void)
 {
@@ -33,5 +34,16 @@ void test_mutt_addrlist_free(void)
   {
     mutt_addrlist_free(NULL);
     TEST_CHECK_(1, "mutt_addrlist_free(NULL)");
+  }
+
+  {
+    struct AddressList *al = mutt_addrlist_new();
+    int parsed =
+        mutt_addrlist_parse(al, "john@doe.org, foo@example.com, bar@baz.org");
+    TEST_CHECK(parsed == 3);
+    TEST_CHECK_STR_EQ(TAILQ_FIRST(al)->mailbox, "john@doe.org");
+    TEST_CHECK_STR_EQ(TAILQ_LAST(al, AddressList)->mailbox, "bar@baz.org");
+    mutt_addrlist_free(&al);
+    TEST_CHECK(al == NULL);
   }
 }
