@@ -2924,7 +2924,7 @@ void mutt_prepare_envelope(struct Envelope *env, bool final)
        * recipients if there is no To: or Cc: field, so attempt to suppress
        * it by using an empty To: field.  */
       struct Address *to = mutt_addr_new();
-      to->group = 1;
+      to->group = true;
       mutt_addrlist_append(&env->to, to);
       mutt_addrlist_append(&env->to, mutt_addr_new());
 

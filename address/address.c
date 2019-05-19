@@ -514,7 +514,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
         struct Address *a = mutt_addr_new();
         terminate_buffer(phrase, phraselen);
         a->mailbox = mutt_str_strdup(phrase);
-        a->group = 1;
+        a->group = true;
         mutt_addrlist_append(al, a);
         phraselen = 0;
         commentlen = 0;
