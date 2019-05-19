@@ -6,6 +6,7 @@
  * Copyright (C) 2001-2002 Oliver Ehli <elmy@acm.org>
  * Copyright (C) 2002 Mike Schiraldi <raldi@research.netsol.com>
  * Copyright (C) 2004 g10 Code GmbH
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -1035,7 +1036,7 @@ void smime_class_getkeys(struct Envelope *env)
 char *smime_class_find_keys(struct AddressList *al, bool oppenc_mode)
 {
   struct SmimeKey *key = NULL;
-  char *keyID = NULL, *keylist = NULL;
+  char *keyid = NULL, *keylist = NULL;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
 
@@ -1057,10 +1058,10 @@ char *smime_class_find_keys(struct AddressList *al, bool oppenc_mode)
       return NULL;
     }
 
-    keyID = key->hash;
-    keylist_size += mutt_str_strlen(keyID) + 2;
+    keyid = key->hash;
+    keylist_size += mutt_str_strlen(keyid) + 2;
     mutt_mem_realloc(&keylist, keylist_size);
-    sprintf(keylist + keylist_used, "%s%s", keylist_used ? " " : "", keyID);
+    sprintf(keylist + keylist_used, "%s%s", keylist_used ? " " : "", keyid);
     keylist_used = mutt_str_strlen(keylist);
 
     smime_free_key(&key);

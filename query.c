@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-2000,2003,2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -87,6 +88,7 @@ static const struct Mapping QueryHelp[] = {
 /**
  * result_to_addr - Turn a Query into an Address
  * @param r Query to use
+ * @retval ptr Newly allocated AddressList
  */
 static struct AddressList *result_to_addr(struct Query *r)
 {
@@ -109,10 +111,10 @@ static struct AddressList *result_to_addr(struct Query *r)
 }
 
 /**
- * new_query - Create a new query
+ * query_new - Create a new query
  * @retval A newly allocated query
  */
-static struct Query *new_query(void)
+static struct Query *query_new(void)
 {
   struct Query *query = mutt_mem_calloc(1, sizeof(struct Query));
   TAILQ_INIT(&query->addr);
@@ -185,12 +187,12 @@ static struct Query *run_query(char *s, int quiet)
     {
       if (!first)
       {
-        first = new_query();
+        first = query_new();
         cur = first;
       }
       else
       {
-        cur->next = new_query();
+        cur->next = query_new();
         cur = cur->next;
       }
 

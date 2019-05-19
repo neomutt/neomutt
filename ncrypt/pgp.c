@@ -6,6 +6,7 @@
  * Copyright (C) 1996-1997,2000,2010 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1998-2005 Thomas Roessler <roessler@does-not-exist.org>
  * Copyright (C) 2004 g10 Code GmbH
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -1411,7 +1412,7 @@ char *pgp_class_find_keys(struct AddressList *addrlist, bool oppenc_mode)
 {
   struct ListHead crypt_hook_list = STAILQ_HEAD_INITIALIZER(crypt_hook_list);
   struct ListNode *crypt_hook = NULL;
-  const char *keyID = NULL;
+  const char *keyid = NULL;
   char *keylist = NULL;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
@@ -1435,32 +1436,32 @@ char *pgp_class_find_keys(struct AddressList *addrlist, bool oppenc_mode)
 
       if (crypt_hook)
       {
-        keyID = crypt_hook->data;
+        keyid = crypt_hook->data;
         enum QuadOption ans = MUTT_YES;
         if (!oppenc_mode && C_CryptConfirmhook)
         {
-          snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"), keyID, p->mailbox);
+          snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"), keyid, p->mailbox);
           ans = mutt_yesorno(buf, MUTT_YES);
         }
         if (ans == MUTT_YES)
         {
-          if (crypt_is_numerical_keyid(keyID))
+          if (crypt_is_numerical_keyid(keyid))
           {
-            if (strncmp(keyID, "0x", 2) == 0)
-              keyID += 2;
+            if (strncmp(keyid, "0x", 2) == 0)
+              keyid += 2;
             goto bypass_selection; /* you don't see this. */
           }
 
           /* check for e-mail address */
           mutt_addrlist_free_all(&hookal);
-          if (strchr(keyID, '@') && (mutt_addrlist_parse(&hookal, keyID) != 0))
+          if (strchr(keyid, '@') && (mutt_addrlist_parse(&hookal, keyid) != 0))
           {
             mutt_addrlist_qualify(&hookal, fqdn);
             p = TAILQ_FIRST(&hookal);
           }
           else if (!oppenc_mode)
           {
-            k_info = pgp_getkeybystr(keyID, KEYFLAG_CANENCRYPT, PGP_PUBRING);
+            k_info = pgp_getkeybystr(keyid, KEYFLAG_CANENCRYPT, PGP_PUBRING);
           }
         }
         else if (ans == MUTT_NO)
@@ -1500,12 +1501,12 @@ char *pgp_class_find_keys(struct AddressList *addrlist, bool oppenc_mode)
         return NULL;
       }
 
-      keyID = pgp_fpr_or_lkeyid(k_info);
+      keyid = pgp_fpr_or_lkeyid(k_info);
 
     bypass_selection:
-      keylist_size += mutt_str_strlen(keyID) + 4;
+      keylist_size += mutt_str_strlen(keyid) + 4;
       mutt_mem_realloc(&keylist, keylist_size);
-      sprintf(keylist + keylist_used, "%s0x%s", keylist_used ? " " : "", keyID);
+      sprintf(keylist + keylist_used, "%s0x%s", keylist_used ? " " : "", keyid);
       keylist_used = mutt_str_strlen(keylist);
 
       key_selected = true;

@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 2006 Thomas Roessler <roessler@does-not-exist.org>
  * Copyright (C) 2009 Rocco Rutte <pdmef@gmx.net>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -182,7 +183,7 @@ static void group_add_addrlist(struct Group *g, const struct AddressList *al)
   struct AddressList new = TAILQ_HEAD_INITIALIZER(new);
   mutt_addrlist_copy(&new, al, false);
   mutt_addrlist_remove_xrefs(&g->al, &new);
-  struct Address *a, *tmp;
+  struct Address *a = NULL, *tmp = NULL;
   TAILQ_FOREACH_SAFE(a, &new, entries, tmp)
   {
     mutt_addrlist_append(&g->al, a);

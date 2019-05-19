@@ -9,6 +9,7 @@
  * Copyright (C) 2001 Oliver Ehli <elmy@acm.org>
  * Copyright (C) 2002-2004, 2018 g10 Code GmbH
  * Copyright (C) 2010,2012-2013 Michael R. Elkins <me@sigpipe.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -5141,7 +5142,7 @@ static char *find_keys(struct AddressList *addrlist, unsigned int app, bool oppe
 {
   struct ListHead crypt_hook_list = STAILQ_HEAD_INITIALIZER(crypt_hook_list);
   struct ListNode *crypt_hook = NULL;
-  const char *keyID = NULL;
+  const char *keyid = NULL;
   char *keylist = NULL;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
@@ -5167,32 +5168,32 @@ static char *find_keys(struct AddressList *addrlist, unsigned int app, bool oppe
 
       if (crypt_hook)
       {
-        keyID = crypt_hook->data;
+        keyid = crypt_hook->data;
         enum QuadOption ans = MUTT_YES;
         if (!oppenc_mode && C_CryptConfirmhook)
         {
-          snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"), keyID, p->mailbox);
+          snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"), keyid, p->mailbox);
           ans = mutt_yesorno(buf, MUTT_YES);
         }
         if (ans == MUTT_YES)
         {
-          if (crypt_is_numerical_keyid(keyID))
+          if (crypt_is_numerical_keyid(keyid))
           {
-            if (strncmp(keyID, "0x", 2) == 0)
-              keyID += 2;
+            if (strncmp(keyid, "0x", 2) == 0)
+              keyid += 2;
             goto bypass_selection; /* you don't see this. */
           }
 
           /* check for e-mail address */
           mutt_addrlist_free_all(&hookal);
-          if (strchr(keyID, '@') && (mutt_addrlist_parse(&hookal, keyID) != 0))
+          if (strchr(keyid, '@') && (mutt_addrlist_parse(&hookal, keyid) != 0))
           {
             mutt_addrlist_qualify(&hookal, fqdn);
             p = TAILQ_FIRST(&hookal);
           }
           else if (!oppenc_mode)
           {
-            k_info = crypt_getkeybystr(keyID, KEYFLAG_CANENCRYPT, app, &forced_valid);
+            k_info = crypt_getkeybystr(keyid, KEYFLAG_CANENCRYPT, app, &forced_valid);
           }
         }
         else if (ans == MUTT_NO)
@@ -5232,13 +5233,13 @@ static char *find_keys(struct AddressList *addrlist, unsigned int app, bool oppe
         return NULL;
       }
 
-      keyID = crypt_fpr_or_lkeyid(k_info);
+      keyid = crypt_fpr_or_lkeyid(k_info);
 
     bypass_selection:
-      keylist_size += mutt_str_strlen(keyID) + 4 + 1;
+      keylist_size += mutt_str_strlen(keyid) + 4 + 1;
       mutt_mem_realloc(&keylist, keylist_size);
       sprintf(keylist + keylist_used, "%s0x%s%s", keylist_used ? " " : "",
-              keyID, forced_valid ? "!" : "");
+              keyid, forced_valid ? "!" : "");
       keylist_used = mutt_str_strlen(keylist);
 
       key_selected = true;

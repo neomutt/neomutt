@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1999-2004 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

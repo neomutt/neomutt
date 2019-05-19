@@ -6,6 +6,7 @@
  * Copyright (C) 1996-2000,2002,2007 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2016 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2016 Ian Zimmerman <itz@primate.net>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

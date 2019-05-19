@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-2002,2004,2010,2012-2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -158,7 +159,7 @@ static void append_signature(FILE *fp)
  */
 static void remove_user(struct AddressList *al, bool leave_only)
 {
-  struct Address *a, *tmp;
+  struct Address *a = NULL, *tmp = NULL;
   TAILQ_FOREACH_SAFE(a, al, entries, tmp)
   {
     if (mutt_addr_is_user(a) && (!leave_only || TAILQ_NEXT(a, entries)))

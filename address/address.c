@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 1996-2000,2011-2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -402,7 +403,7 @@ int mutt_addrlist_remove(struct AddressList *al, const char *mailbox)
     return 0;
 
   int rc = -1;
-  struct Address *a, *tmp;
+  struct Address *a = NULL, *tmp = NULL;
   TAILQ_FOREACH_SAFE(a, al, entries, tmp)
   {
     if (mutt_str_strcasecmp(mailbox, a->mailbox) == 0)
@@ -1340,7 +1341,7 @@ void mutt_addrlist_remove_xrefs(const struct AddressList *a, struct AddressList 
   if (!a || !b)
     return;
 
-  struct Address *aa, *ab, *tmp;
+  struct Address *aa = NULL, *ab = NULL, *tmp = NULL;
 
   TAILQ_FOREACH_SAFE(ab, b, entries, tmp)
   {

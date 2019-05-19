@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -89,7 +90,7 @@ static void expand_aliases_r(struct AddressList *al, struct ListHead *expn)
           struct AddressList copy = TAILQ_HEAD_INITIALIZER(copy);
           mutt_addrlist_copy(&copy, alias, false);
           expand_aliases_r(&copy, expn);
-          struct Address *a2, *tmp;
+          struct Address *a2 = NULL, *tmp = NULL;
           TAILQ_FOREACH_SAFE(a2, &copy, entries, tmp)
           {
             TAILQ_INSERT_BEFORE(a, a2, entries);
@@ -315,6 +316,8 @@ void mutt_expand_aliases_env(struct Envelope *env)
  * @param[in]  env  Envelope to examine
  * @param[out] pfxp Prefix for the Address, e.g. "To:"
  * @retval ptr AddressList in the Envelope
+ *
+ * @note The caller must NOT free the returned AddressList
  */
 struct AddressList *mutt_get_address(struct Envelope *env, const char **pfxp)
 {
