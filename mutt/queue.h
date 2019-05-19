@@ -752,105 +752,105 @@ struct {								\
 	    (var) = (tvar))
 
 #define	TAILQ_FOREACH_REVERSE_FROM_SAFE(var, head, headname, field, tvar) \
-    for ((var) = ((var) ? (var) : TAILQ_LAST((head), headname));	\
-        (var) && ((tvar) = TAILQ_PREV((var), headname, field), 1);	\
-        (var) = (tvar))
+	for ((var) = ((var) ? (var) : TAILQ_LAST((head), headname));	\
+	    (var) && ((tvar) = TAILQ_PREV((var), headname, field), 1);	\
+	    (var) = (tvar))
 
 #define	TAILQ_INIT(head) do {						\
-    TAILQ_FIRST((head)) = NULL;					\
-    (head)->tqh_last = &TAILQ_FIRST((head));			\
-    QMD_TRACE_HEAD(head);						\
-  } while (0)
+	TAILQ_FIRST((head)) = NULL;					\
+	(head)->tqh_last = &TAILQ_FIRST((head));			\
+	QMD_TRACE_HEAD(head);						\
+} while (0)
 
 #define	TAILQ_INSERT_AFTER(head, listelm, elm, field) do {		\
-    QMD_TAILQ_CHECK_NEXT(listelm, field);				\
-    if ((TAILQ_NEXT((elm), field) = TAILQ_NEXT((listelm), field)) != NULL)\
-      TAILQ_NEXT((elm), field)->field.tqe_prev = 		\
-          &TAILQ_NEXT((elm), field);				\
-    else {								\
-      (head)->tqh_last = &TAILQ_NEXT((elm), field);		\
-      QMD_TRACE_HEAD(head);					\
-    }								\
-    TAILQ_NEXT((listelm), field) = (elm);				\
-    (elm)->field.tqe_prev = &TAILQ_NEXT((listelm), field);		\
-    QMD_TRACE_ELEM(&(elm)->field);					\
-    QMD_TRACE_ELEM(&(listelm)->field);				\
-  } while (0)
+	QMD_TAILQ_CHECK_NEXT(listelm, field);				\
+	if ((TAILQ_NEXT((elm), field) = TAILQ_NEXT((listelm), field)) != NULL)\
+		TAILQ_NEXT((elm), field)->field.tqe_prev = 		\
+		    &TAILQ_NEXT((elm), field);				\
+	else {								\
+		(head)->tqh_last = &TAILQ_NEXT((elm), field);		\
+		QMD_TRACE_HEAD(head);					\
+	}								\
+	TAILQ_NEXT((listelm), field) = (elm);				\
+	(elm)->field.tqe_prev = &TAILQ_NEXT((listelm), field);		\
+	QMD_TRACE_ELEM(&(elm)->field);					\
+	QMD_TRACE_ELEM(&(listelm)->field);				\
+} while (0)
 
 #define	TAILQ_INSERT_BEFORE(listelm, elm, field) do {			\
-    QMD_TAILQ_CHECK_PREV(listelm, field);				\
-    (elm)->field.tqe_prev = (listelm)->field.tqe_prev;		\
-    TAILQ_NEXT((elm), field) = (listelm);				\
-    *(listelm)->field.tqe_prev = (elm);				\
-    (listelm)->field.tqe_prev = &TAILQ_NEXT((elm), field);		\
-    QMD_TRACE_ELEM(&(elm)->field);					\
-    QMD_TRACE_ELEM(&(listelm)->field);				\
-  } while (0)
+	QMD_TAILQ_CHECK_PREV(listelm, field);				\
+	(elm)->field.tqe_prev = (listelm)->field.tqe_prev;		\
+	TAILQ_NEXT((elm), field) = (listelm);				\
+	*(listelm)->field.tqe_prev = (elm);				\
+	(listelm)->field.tqe_prev = &TAILQ_NEXT((elm), field);		\
+	QMD_TRACE_ELEM(&(elm)->field);					\
+	QMD_TRACE_ELEM(&(listelm)->field);				\
+} while (0)
 
 #define	TAILQ_INSERT_HEAD(head, elm, field) do {			\
-    QMD_TAILQ_CHECK_HEAD(head, field);				\
-    if ((TAILQ_NEXT((elm), field) = TAILQ_FIRST((head))) != NULL)	\
-      TAILQ_FIRST((head))->field.tqe_prev =			\
-          &TAILQ_NEXT((elm), field);				\
-    else								\
-      (head)->tqh_last = &TAILQ_NEXT((elm), field);		\
-    TAILQ_FIRST((head)) = (elm);					\
-    (elm)->field.tqe_prev = &TAILQ_FIRST((head));			\
-    QMD_TRACE_HEAD(head);						\
-    QMD_TRACE_ELEM(&(elm)->field);					\
-  } while (0)
+	QMD_TAILQ_CHECK_HEAD(head, field);				\
+	if ((TAILQ_NEXT((elm), field) = TAILQ_FIRST((head))) != NULL)	\
+		TAILQ_FIRST((head))->field.tqe_prev =			\
+		    &TAILQ_NEXT((elm), field);				\
+	else								\
+		(head)->tqh_last = &TAILQ_NEXT((elm), field);		\
+	TAILQ_FIRST((head)) = (elm);					\
+	(elm)->field.tqe_prev = &TAILQ_FIRST((head));			\
+	QMD_TRACE_HEAD(head);						\
+	QMD_TRACE_ELEM(&(elm)->field);					\
+} while (0)
 
 #define	TAILQ_INSERT_TAIL(head, elm, field) do {			\
-    QMD_TAILQ_CHECK_TAIL(head, field);				\
-    TAILQ_NEXT((elm), field) = NULL;				\
-    (elm)->field.tqe_prev = (head)->tqh_last;			\
-    *(head)->tqh_last = (elm);					\
-    (head)->tqh_last = &TAILQ_NEXT((elm), field);			\
-    QMD_TRACE_HEAD(head);						\
-    QMD_TRACE_ELEM(&(elm)->field);					\
-  } while (0)
+	QMD_TAILQ_CHECK_TAIL(head, field);				\
+	TAILQ_NEXT((elm), field) = NULL;				\
+	(elm)->field.tqe_prev = (head)->tqh_last;			\
+	*(head)->tqh_last = (elm);					\
+	(head)->tqh_last = &TAILQ_NEXT((elm), field);			\
+	QMD_TRACE_HEAD(head);						\
+	QMD_TRACE_ELEM(&(elm)->field);					\
+} while (0)
 
 #define	TAILQ_LAST(head, headname)					\
-    (*(((struct headname *)((head)->tqh_last))->tqh_last))
+	(*(((struct headname *)((head)->tqh_last))->tqh_last))
 
 #define	TAILQ_NEXT(elm, field) ((elm)->field.tqe_next)
 
 #define	TAILQ_PREV(elm, headname, field)				\
-    (*(((struct headname *)((elm)->field.tqe_prev))->tqh_last))
+	(*(((struct headname *)((elm)->field.tqe_prev))->tqh_last))
 
 #define	TAILQ_REMOVE(head, elm, field) do {				\
-    QMD_SAVELINK(oldnext, (elm)->field.tqe_next);			\
-    QMD_SAVELINK(oldprev, (elm)->field.tqe_prev);			\
-    QMD_TAILQ_CHECK_NEXT(elm, field);				\
-    QMD_TAILQ_CHECK_PREV(elm, field);				\
-    if ((TAILQ_NEXT((elm), field)) != NULL)				\
-      TAILQ_NEXT((elm), field)->field.tqe_prev = 		\
-          (elm)->field.tqe_prev;				\
-    else {								\
-      (head)->tqh_last = (elm)->field.tqe_prev;		\
-      QMD_TRACE_HEAD(head);					\
-    }								\
-    *(elm)->field.tqe_prev = TAILQ_NEXT((elm), field);		\
-    TRASHIT(*oldnext);						\
-    TRASHIT(*oldprev);						\
-    QMD_TRACE_ELEM(&(elm)->field);					\
-  } while (0)
+	QMD_SAVELINK(oldnext, (elm)->field.tqe_next);			\
+	QMD_SAVELINK(oldprev, (elm)->field.tqe_prev);			\
+	QMD_TAILQ_CHECK_NEXT(elm, field);				\
+	QMD_TAILQ_CHECK_PREV(elm, field);				\
+	if ((TAILQ_NEXT((elm), field)) != NULL)				\
+		TAILQ_NEXT((elm), field)->field.tqe_prev = 		\
+		    (elm)->field.tqe_prev;				\
+	else {								\
+		(head)->tqh_last = (elm)->field.tqe_prev;		\
+		QMD_TRACE_HEAD(head);					\
+	}								\
+	*(elm)->field.tqe_prev = TAILQ_NEXT((elm), field);		\
+	TRASHIT(*oldnext);						\
+	TRASHIT(*oldprev);						\
+	QMD_TRACE_ELEM(&(elm)->field);					\
+} while (0)
 
 #define TAILQ_SWAP(head1, head2, type, field) do {			\
-    QUEUE_TYPEOF(type) *swap_first = (head1)->tqh_first;		\
-    QUEUE_TYPEOF(type) **swap_last = (head1)->tqh_last;		\
-    (head1)->tqh_first = (head2)->tqh_first;			\
-    (head1)->tqh_last = (head2)->tqh_last;				\
-    (head2)->tqh_first = swap_first;				\
-    (head2)->tqh_last = swap_last;					\
-    if ((swap_first = (head1)->tqh_first) != NULL)			\
-      swap_first->field.tqe_prev = &(head1)->tqh_first;	\
-    else								\
-      (head1)->tqh_last = &(head1)->tqh_first;		\
-    if ((swap_first = (head2)->tqh_first) != NULL)			\
-      swap_first->field.tqe_prev = &(head2)->tqh_first;	\
-    else								\
-      (head2)->tqh_last = &(head2)->tqh_first;		\
-  } while (0)
+	QUEUE_TYPEOF(type) *swap_first = (head1)->tqh_first;		\
+	QUEUE_TYPEOF(type) **swap_last = (head1)->tqh_last;		\
+	(head1)->tqh_first = (head2)->tqh_first;			\
+	(head1)->tqh_last = (head2)->tqh_last;				\
+	(head2)->tqh_first = swap_first;				\
+	(head2)->tqh_last = swap_last;					\
+	if ((swap_first = (head1)->tqh_first) != NULL)			\
+		swap_first->field.tqe_prev = &(head1)->tqh_first;	\
+	else								\
+		(head1)->tqh_last = &(head1)->tqh_first;		\
+	if ((swap_first = (head2)->tqh_first) != NULL)			\
+		swap_first->field.tqe_prev = &(head2)->tqh_first;	\
+	else								\
+		(head2)->tqh_last = &(head2)->tqh_first;		\
+} while (0)
 
 #endif /* !_SYS_QUEUE_H_ */
