@@ -25,6 +25,7 @@
 #include "config.h"
 #include "mutt/mutt.h"
 #include "address/lib.h"
+#include "common.h"
 
 void test_mutt_addrlist_free_one(void)
 {
@@ -40,5 +41,48 @@ void test_mutt_addrlist_free_one(void)
     struct AddressList al = { 0 };
     mutt_addrlist_free_one(&al, NULL);
     TEST_CHECK_(1, "mutt_addrlist_free_one(&al, NULL)");
+  }
+
+  {
+    struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+    const char *some_addresses =
+        "john@doe.org, test@example.com, John Doe <john@doe.org>, "
+        "foo@bar.baz, Another <john@doe.org>, foo@baz.info";
+    int parsed = mutt_addrlist_parse(&al, some_addresses);
+    TEST_CHECK(parsed == 6);
+    struct Address *a = mutt_addr_new();
+    a->personal = mutt_str_strdup("Another");
+    a->mailbox = mutt_str_strdup("john@doe.org");
+    mutt_addrlist_append(&al, a);
+    TEST_CHECK(TAILQ_LAST(&al, AddressList) == a);
+    parsed = mutt_addrlist_parse(&al, some_addresses);
+    TEST_CHECK(parsed == 6);
+    mutt_addrlist_free_one(&al, a);
+    a = TAILQ_FIRST(&al);
+    TEST_CHECK_STR_EQ("john@doe.org", a->mailbox);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK_STR_EQ("test@example.com", a->mailbox);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK_STR_EQ("john@doe.org", a->mailbox);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK_STR_EQ("foo@bar.baz", a->mailbox);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK_STR_EQ("john@doe.org", a->mailbox);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK_STR_EQ("foo@baz.info", a->mailbox);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK_STR_EQ("john@doe.org", a->mailbox);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK_STR_EQ("test@example.com", a->mailbox);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK_STR_EQ("john@doe.org", a->mailbox);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK_STR_EQ("foo@bar.baz", a->mailbox);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK_STR_EQ("john@doe.org", a->mailbox);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK_STR_EQ("foo@baz.info", a->mailbox);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK(a == NULL);
   }
 }
