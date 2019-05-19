@@ -924,7 +924,7 @@ static enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   {
     mutt_alias_delete_reverse(tmp);
     /* override the previous value */
-    mutt_addrlist_free_all(&tmp->addr);
+    mutt_addrlist_clear(&tmp->addr);
     if (CurrentMenu == MENU_ALIAS)
       mutt_menu_set_current_redraw_full();
   }
@@ -1159,7 +1159,7 @@ static enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
           {
             mutt_buffer_printf(err, _("%sgroup: warning: bad IDN '%s'"),
                                (data == 1) ? "un" : "", estr);
-            mutt_addrlist_free_all(&al);
+            mutt_addrlist_clear(&al);
             FREE(&estr);
             goto bail;
           }
@@ -1167,7 +1167,7 @@ static enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
             mutt_grouplist_add_addrlist(&gc, &al);
           else if (data == MUTT_UNGROUP)
             mutt_grouplist_remove_addrlist(&gc, &al);
-          mutt_addrlist_free_all(&al);
+          mutt_addrlist_clear(&al);
           break;
         }
       }

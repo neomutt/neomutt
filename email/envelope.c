@@ -64,15 +64,15 @@ void mutt_env_free(struct Envelope **p)
 {
   if (!p || !*p)
     return;
-  mutt_addrlist_free_all(&(*p)->return_path);
-  mutt_addrlist_free_all(&(*p)->from);
-  mutt_addrlist_free_all(&(*p)->to);
-  mutt_addrlist_free_all(&(*p)->cc);
-  mutt_addrlist_free_all(&(*p)->bcc);
-  mutt_addrlist_free_all(&(*p)->sender);
-  mutt_addrlist_free_all(&(*p)->reply_to);
-  mutt_addrlist_free_all(&(*p)->mail_followup_to);
-  mutt_addrlist_free_all(&(*p)->x_original_to);
+  mutt_addrlist_clear(&(*p)->return_path);
+  mutt_addrlist_clear(&(*p)->from);
+  mutt_addrlist_clear(&(*p)->to);
+  mutt_addrlist_clear(&(*p)->cc);
+  mutt_addrlist_clear(&(*p)->bcc);
+  mutt_addrlist_clear(&(*p)->sender);
+  mutt_addrlist_clear(&(*p)->reply_to);
+  mutt_addrlist_clear(&(*p)->mail_followup_to);
+  mutt_addrlist_clear(&(*p)->x_original_to);
 
   FREE(&(*p)->list_post);
   FREE(&(*p)->subject);

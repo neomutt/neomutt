@@ -4941,7 +4941,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
         }
       }
     }
-    mutt_addrlist_free_all(&alist);
+    mutt_addrlist_clear(&alist);
 
     if (match)
     {
@@ -5185,7 +5185,7 @@ static char *find_keys(struct AddressList *addrlist, unsigned int app, bool oppe
           }
 
           /* check for e-mail address */
-          mutt_addrlist_free_all(&hookal);
+          mutt_addrlist_clear(&hookal);
           if (strchr(keyid, '@') && (mutt_addrlist_parse(&hookal, keyid) != 0))
           {
             mutt_addrlist_qualify(&hookal, fqdn);
@@ -5207,7 +5207,7 @@ static char *find_keys(struct AddressList *addrlist, unsigned int app, bool oppe
         else if (ans == MUTT_ABORT)
         {
           FREE(&keylist);
-          mutt_addrlist_free_all(&hookal);
+          mutt_addrlist_clear(&hookal);
           mutt_list_free(&crypt_hook_list);
           return NULL;
         }
@@ -5228,7 +5228,7 @@ static char *find_keys(struct AddressList *addrlist, unsigned int app, bool oppe
       if (!k_info)
       {
         FREE(&keylist);
-        mutt_addrlist_free_all(&hookal);
+        mutt_addrlist_clear(&hookal);
         mutt_list_free(&crypt_hook_list);
         return NULL;
       }
@@ -5245,7 +5245,7 @@ static char *find_keys(struct AddressList *addrlist, unsigned int app, bool oppe
       key_selected = true;
 
       crypt_free_key(&k_info);
-      mutt_addrlist_free_all(&hookal);
+      mutt_addrlist_clear(&hookal);
 
       if (crypt_hook)
         crypt_hook = STAILQ_NEXT(crypt_hook, entries);

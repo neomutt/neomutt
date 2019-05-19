@@ -164,7 +164,8 @@ static void remove_user(struct AddressList *al, bool leave_only)
   {
     if (mutt_addr_is_user(a) && (!leave_only || TAILQ_NEXT(a, entries)))
     {
-      mutt_addrlist_free_one(al, a);
+      TAILQ_REMOVE(al, a, entries);
+      mutt_addr_free(&a);
     }
   }
 }
@@ -213,7 +214,7 @@ static int edit_address(struct AddressList *al, const char *field)
     mutt_addrlist_write(buf, sizeof(buf), al, false);
     if (mutt_get_field(field, buf, sizeof(buf), MUTT_ALIAS) != 0)
       return -1;
-    mutt_addrlist_free_all(al);
+    mutt_addrlist_clear(al);
     mutt_addrlist_parse2(al, buf);
     mutt_expand_aliases(al);
     idna_ok = mutt_addrlist_to_intl(al, &err);
@@ -379,12 +380,12 @@ static void process_user_header(struct Envelope *env)
     if ((plen = mutt_str_startswith(uh->data, "from:", CASE_IGNORE)))
     {
       /* User has specified a default From: address.  Remove default address */
-      mutt_addrlist_free_all(&env->from);
+      mutt_addrlist_clear(&env->from);
       mutt_addrlist_parse(&env->from, uh->data + plen);
     }
     else if ((plen = mutt_str_startswith(uh->data, "reply-to:", CASE_IGNORE)))
     {
-      mutt_addrlist_free_all(&env->reply_to);
+      mutt_addrlist_clear(&env->reply_to);
       mutt_addrlist_parse(&env->reply_to, uh->data + plen);
     }
     else if ((plen = mutt_str_startswith(uh->data, "message-id:", CASE_IGNORE)))
@@ -1933,7 +1934,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
     /* Use any list-post header as a template */
     mutt_parse_mailto(msg->env, NULL, cur->env->list_post);
     /* We don't let them set the sender's address. */
-    mutt_addrlist_free_all(&msg->env->from);
+    mutt_addrlist_clear(&msg->env->from);
   }
 
   if (!(flags & (SEND_KEY | SEND_POSTPONED | SEND_RESEND)))
@@ -1992,7 +1993,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
     {
       mutt_debug(5, "msg->env->from before set_reverse_name: %s\n",
                  TAILQ_FIRST(&msg->env->from)->mailbox);
-      mutt_addrlist_free_all(&msg->env->from);
+      mutt_addrlist_clear(&msg->env->from);
     }
     set_reverse_name(&msg->env->from, cur->env);
   }
@@ -2092,7 +2093,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
     /* $use_from and/or $from might have changed in a send-hook */
     if (killfrom)
     {
-      mutt_addrlist_free_all(&msg->env->from);
+      mutt_addrlist_clear(&msg->env->from);
       if (C_UseFrom && !(flags & (SEND_POSTPONED | SEND_RESEND)))
         mutt_addrlist_append(&msg->env->from, mutt_default_from());
     }
@@ -2338,7 +2339,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
     mutt_select_fcc(fcc, sizeof(fcc), msg);
     if (killfrom)
     {
-      mutt_addrlist_free_all(&msg->env->from);
+      mutt_addrlist_clear(&msg->env->from);
     }
   }
 

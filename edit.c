@@ -322,7 +322,7 @@ static void be_edit_header(struct Envelope *e, bool force)
   {
     if (mutt_enter_string(tmp, sizeof(tmp), 4, MUTT_COMP_NO_FLAGS) == 0)
     {
-      mutt_addrlist_free_all(&e->to);
+      mutt_addrlist_clear(&e->to);
       mutt_addrlist_parse2(&e->to, tmp);
       mutt_expand_aliases(&e->to);
       mutt_addrlist_to_intl(&e->to, NULL); /* XXX - IDNA error reporting? */
@@ -355,7 +355,7 @@ static void be_edit_header(struct Envelope *e, bool force)
     mutt_addrlist_write(tmp, sizeof(tmp), &e->cc, false);
     if (mutt_enter_string(tmp, sizeof(tmp), 4, MUTT_COMP_NO_FLAGS) == 0)
     {
-      mutt_addrlist_free_all(&e->cc);
+      mutt_addrlist_clear(&e->cc);
       mutt_addrlist_parse2(&e->cc, tmp);
       mutt_expand_aliases(&e->cc);
       tmp[0] = '\0';
@@ -376,7 +376,7 @@ static void be_edit_header(struct Envelope *e, bool force)
     mutt_addrlist_write(tmp, sizeof(tmp), &e->bcc, false);
     if (mutt_enter_string(tmp, sizeof(tmp), 5, MUTT_COMP_NO_FLAGS) == 0)
     {
-      mutt_addrlist_free_all(&e->bcc);
+      mutt_addrlist_clear(&e->bcc);
       mutt_addrlist_parse2(&e->bcc, tmp);
       mutt_expand_aliases(&e->bcc);
       mutt_addrlist_to_intl(&e->bcc, NULL);

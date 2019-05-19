@@ -734,7 +734,7 @@ void mutt_alias_free(struct Alias **p)
 
   mutt_alias_delete_reverse(*p);
   FREE(&(*p)->name);
-  mutt_addrlist_free_all(&((*p)->addr));
+  mutt_addrlist_clear(&((*p)->addr));
   FREE(p);
 }
 

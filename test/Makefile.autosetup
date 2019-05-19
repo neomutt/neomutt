@@ -7,14 +7,11 @@ ADDRESS_OBJS	= test/address/mutt_addr_cat.o \
 		  test/address/mutt_addr_valid_msgid.o \
 		  test/address/mutt_addr_write.o \
 		  test/address/mutt_addrlist_append.o \
+		  test/address/mutt_addrlist_clear.o \
 		  test/address/mutt_addrlist_copy.o \
 		  test/address/mutt_addrlist_count_recips.o \
 		  test/address/mutt_addrlist_dedupe.o \
 		  test/address/mutt_addrlist_equal.o \
-		  test/address/mutt_addrlist_free.o \
-		  test/address/mutt_addrlist_free_all.o \
-		  test/address/mutt_addrlist_free_one.o \
-		  test/address/mutt_addrlist_new.o \
 		  test/address/mutt_addrlist_parse.o \
 		  test/address/mutt_addrlist_parse2.o \
 		  test/address/mutt_addrlist_prepend.o \

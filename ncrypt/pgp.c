@@ -1453,7 +1453,7 @@ char *pgp_class_find_keys(struct AddressList *addrlist, bool oppenc_mode)
           }
 
           /* check for e-mail address */
-          mutt_addrlist_free_all(&hookal);
+          mutt_addrlist_clear(&hookal);
           if (strchr(keyid, '@') && (mutt_addrlist_parse(&hookal, keyid) != 0))
           {
             mutt_addrlist_qualify(&hookal, fqdn);
@@ -1475,7 +1475,7 @@ char *pgp_class_find_keys(struct AddressList *addrlist, bool oppenc_mode)
         else if (ans == MUTT_ABORT)
         {
           FREE(&keylist);
-          mutt_addrlist_free_all(&hookal);
+          mutt_addrlist_clear(&hookal);
           mutt_list_free(&crypt_hook_list);
           return NULL;
         }
@@ -1496,7 +1496,7 @@ char *pgp_class_find_keys(struct AddressList *addrlist, bool oppenc_mode)
       if (!k_info)
       {
         FREE(&keylist);
-        mutt_addrlist_free_all(&hookal);
+        mutt_addrlist_clear(&hookal);
         mutt_list_free(&crypt_hook_list);
         return NULL;
       }
@@ -1512,7 +1512,7 @@ char *pgp_class_find_keys(struct AddressList *addrlist, bool oppenc_mode)
       key_selected = true;
 
       pgp_free_key(&k_info);
-      mutt_addrlist_free_all(&hookal);
+      mutt_addrlist_clear(&hookal);
 
       if (crypt_hook)
         crypt_hook = STAILQ_NEXT(crypt_hook, entries);

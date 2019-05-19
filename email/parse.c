@@ -749,7 +749,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
           if (mutt_str_strcasecmp(line + 1 + plen, "reply-to") == 0)
           {
             /* override the Reply-To: field */
-            mutt_addrlist_free_all(&env->reply_to);
+            mutt_addrlist_clear(&env->reply_to);
             mutt_addrlist_parse(&env->reply_to, p);
             matched = true;
           }

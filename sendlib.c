@@ -2962,7 +2962,7 @@ void mutt_unprepare_envelope(struct Envelope *env)
     rfc2047_decode(&item->data);
   }
 
-  mutt_addrlist_free_all(&env->mail_followup_to);
+  mutt_addrlist_clear(&env->mail_followup_to);
 
   /* back conversions */
   rfc2047_decode_envelope(env);
@@ -3063,7 +3063,7 @@ int mutt_bounce_message(FILE *fp, struct Email *e, struct AddressList *to)
   {
     mutt_error(_("Bad IDN %s while preparing resent-from"), err);
     FREE(&err);
-    mutt_addrlist_free_all(&from_list);
+    mutt_addrlist_clear(&from_list);
     return -1;
   }
   mutt_addrlist_write(resent_from, sizeof(resent_from), &from_list, false);
@@ -3079,8 +3079,8 @@ int mutt_bounce_message(FILE *fp, struct Email *e, struct AddressList *to)
   mutt_addrlist_copy(&resent_to, to, false);
   rfc2047_encode_addrlist(&resent_to, "Resent-To");
   int rc = bounce_message(fp, e, &resent_to, resent_from, &from_list);
-  mutt_addrlist_free_all(&resent_to);
-  mutt_addrlist_free_all(&from_list);
+  mutt_addrlist_clear(&resent_to);
+  mutt_addrlist_clear(&from_list);
 
   return rc;
 }

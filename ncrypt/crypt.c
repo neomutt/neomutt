@@ -941,7 +941,7 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
       *keylist = crypt_pgp_find_keys(&addrlist, oppenc_mode);
       if (!*keylist)
       {
-        mutt_addrlist_free_all(&addrlist);
+        mutt_addrlist_clear(&addrlist);
         return -1;
       }
       OptPgpCheckTrust = false;
@@ -953,7 +953,7 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
       *keylist = crypt_smime_find_keys(&addrlist, oppenc_mode);
       if (!*keylist)
       {
-        mutt_addrlist_free_all(&addrlist);
+        mutt_addrlist_clear(&addrlist);
         return -1;
       }
       if (C_SmimeSelfEncrypt || (C_SmimeEncryptSelf == MUTT_YES))
@@ -968,7 +968,7 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
     sprintf(*keylist + keylist_size, " %s", self_encrypt);
   }
 
-  mutt_addrlist_free_all(&addrlist);
+  mutt_addrlist_clear(&addrlist);
 
   return 0;
 }

@@ -86,16 +86,16 @@ static const struct Mapping QueryHelp[] = {
 };
 
 /**
- * result_to_addr - Turn a Query into an Address
+ * result_to_addr - Turn a Query into an AddressList
+ * @param al AddressList to fill (must be empty)
  * @param r Query to use
- * @retval ptr Newly allocated AddressList
+ * @retval bool True on success
  */
-static struct AddressList *result_to_addr(struct Query *r)
+static bool result_to_addr(struct AddressList *al, struct Query *r)
 {
-  if (!r)
-    return NULL;
+  if (!al || !TAILQ_EMPTY(al) || !r)
+    return false;
 
-  struct AddressList *al = mutt_addrlist_new();
   mutt_addrlist_copy(al, &r->addr, false);
   if (!TAILQ_EMPTY(al))
   {
@@ -107,7 +107,7 @@ static struct AddressList *result_to_addr(struct Query *r)
     mutt_addrlist_to_intl(al, NULL);
   }
 
-  return al;
+  return true;
 }
 
 /**
@@ -137,7 +137,7 @@ static void free_query(struct Query **query)
     p = *query;
     *query = (*query)->next;
 
-    mutt_addrlist_free_all(&p->addr);
+    mutt_addrlist_clear(&p->addr);
     FREE(&p->name);
     FREE(&p->other);
     FREE(&p);
@@ -476,20 +476,26 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
             {
               if (query_table[i].tagged)
               {
-                struct AddressList *al = result_to_addr(query_table[i].data);
-                mutt_addrlist_copy(&naddr, al, false);
-                mutt_addrlist_free(&al);
+                struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+                if (result_to_addr(&al, query_table[i].data))
+                {
+                  mutt_addrlist_copy(&naddr, &al, false);
+                  mutt_addrlist_clear(&al);
+                }
               }
             }
 
             mutt_alias_create(NULL, &naddr);
-            mutt_addrlist_free_all(&naddr);
+            mutt_addrlist_clear(&naddr);
           }
           else
           {
-            struct AddressList *al = result_to_addr(query_table[menu->current].data);
-            mutt_alias_create(NULL, al);
-            mutt_addrlist_free(&al);
+            struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+            if (result_to_addr(&al, query_table[menu->current].data))
+            {
+              mutt_alias_create(NULL, &al);
+              mutt_addrlist_clear(&al);
+            }
           }
           break;
 
@@ -506,9 +512,12 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
           msg->env = mutt_env_new();
           if (!menu->tagprefix)
           {
-            struct AddressList *al = result_to_addr(query_table[menu->current].data);
-            mutt_addrlist_copy(&msg->env->to, al, false);
-            mutt_addrlist_free(&al);
+            struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+            if (result_to_addr(&al, query_table[menu->current].data))
+            {
+              mutt_addrlist_copy(&msg->env->to, &al, false);
+              mutt_addrlist_clear(&al);
+            }
           }
           else
           {
@@ -516,9 +525,12 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
             {
               if (query_table[i].tagged)
               {
-                struct AddressList *al = result_to_addr(query_table[i].data);
-                mutt_addrlist_copy(&msg->env->to, al, false);
-                mutt_addrlist_free(&al);
+                struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+                if (result_to_addr(&al, query_table[i].data))
+                {
+                  mutt_addrlist_copy(&msg->env->to, &al, false);
+                  mutt_addrlist_clear(&al);
+                }
               }
             }
           }
@@ -548,31 +560,40 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
         {
           if (curpos == 0)
           {
-            struct AddressList *al = result_to_addr(query_table[i].data);
-            mutt_addrlist_to_local(al);
-            tagged = true;
-            mutt_addrlist_write(buf, buflen, al, false);
-            curpos = mutt_str_strlen(buf);
-            mutt_addrlist_free(&al);
+            struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+            if (result_to_addr(&al, query_table[i].data))
+            {
+              mutt_addrlist_to_local(&al);
+              tagged = true;
+              mutt_addrlist_write(buf, buflen, &al, false);
+              curpos = mutt_str_strlen(buf);
+              mutt_addrlist_clear(&al);
+            }
           }
           else if (curpos + 2 < buflen)
           {
-            struct AddressList *al = result_to_addr(query_table[i].data);
-            mutt_addrlist_to_local(al);
-            strcat(buf, ", ");
-            mutt_addrlist_write(buf + curpos + 1, buflen - curpos - 1, al, false);
-            curpos = mutt_str_strlen(buf);
-            mutt_addrlist_free(&al);
+            struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+            if (result_to_addr(&al, query_table[i].data))
+            {
+              mutt_addrlist_to_local(&al);
+              strcat(buf, ", ");
+              mutt_addrlist_write(buf + curpos + 1, buflen - curpos - 1, &al, false);
+              curpos = mutt_str_strlen(buf);
+              mutt_addrlist_clear(&al);
+            }
           }
         }
       }
       /* then enter current message */
       if (!tagged)
       {
-        struct AddressList *al = result_to_addr(query_table[menu->current].data);
-        mutt_addrlist_to_local(al);
-        mutt_addrlist_write(buf, buflen, al, false);
-        mutt_addrlist_free(&al);
+        struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+        if (result_to_addr(&al, query_table[menu->current].data))
+        {
+          mutt_addrlist_to_local(&al);
+          mutt_addrlist_write(buf, buflen, &al, false);
+          mutt_addrlist_clear(&al);
+        }
       }
     }
 
@@ -603,13 +624,16 @@ int mutt_query_complete(char *buf, size_t buflen)
     /* only one response? */
     if (!results->next)
     {
-      struct AddressList *al = result_to_addr(results);
-      mutt_addrlist_to_local(al);
-      buf[0] = '\0';
-      mutt_addrlist_write(buf, buflen, al, false);
-      mutt_addrlist_free(&al);
-      free_query(&results);
-      mutt_clear_error();
+      struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+      if (result_to_addr(&al, results))
+      {
+        mutt_addrlist_to_local(&al);
+        buf[0] = '\0';
+        mutt_addrlist_write(buf, buflen, &al, false);
+        mutt_addrlist_clear(&al);
+        free_query(&results);
+        mutt_clear_error();
+      }
       return 0;
     }
     /* multiple results, choose from query menu */

@@ -1103,7 +1103,7 @@ static int address_header_decode(char **h)
     format_address_header(h, &al);
   }
 
-  mutt_addrlist_free_all(&al);
+  mutt_addrlist_clear(&al);
 
   FREE(&s);
   return 1;

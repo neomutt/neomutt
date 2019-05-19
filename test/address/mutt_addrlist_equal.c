@@ -58,8 +58,8 @@ void test_mutt_addrlist_equal(void)
                                   "johbn@doe.org, foo@bar.baz, john@doe.org");
     TEST_CHECK(parsed2 == 5);
     TEST_CHECK(!mutt_addrlist_equal(&al1, &al2));
-    mutt_addrlist_free_all(&al1);
-    mutt_addrlist_free_all(&al2);
+    mutt_addrlist_clear(&al1);
+    mutt_addrlist_clear(&al2);
   }
 
   {
@@ -74,8 +74,8 @@ void test_mutt_addrlist_equal(void)
         &al1, "Name 2 <test@example.com>, foo@bar.baz, john@doe.org");
     TEST_CHECK(parsed2 == 3);
     TEST_CHECK(!mutt_addrlist_equal(&al1, &al2));
-    mutt_addrlist_free_all(&al1);
-    mutt_addrlist_free_all(&al2);
+    mutt_addrlist_clear(&al1);
+    mutt_addrlist_clear(&al2);
   }
 
   {
@@ -90,7 +90,7 @@ void test_mutt_addrlist_equal(void)
         &al1, "Same Name <test@example.com>, foo@bar.baz, john@doe.org");
     TEST_CHECK(parsed2 == 3);
     TEST_CHECK(!mutt_addrlist_equal(&al1, &al2));
-    mutt_addrlist_free_all(&al1);
-    mutt_addrlist_free_all(&al2);
+    mutt_addrlist_clear(&al1);
+    mutt_addrlist_clear(&al2);
   }
 }

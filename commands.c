@@ -414,7 +414,7 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   {
     mutt_error(_("Bad IDN: '%s'"), err);
     FREE(&err);
-    mutt_addrlist_free_all(&al);
+    mutt_addrlist_clear(&al);
     return;
   }
 
@@ -436,7 +436,7 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
 
   if (query_quadoption(C_Bounce, prompt) != MUTT_YES)
   {
-    mutt_addrlist_free_all(&al);
+    mutt_addrlist_clear(&al);
     mutt_window_clearline(MuttMessageWindow, 0);
     mutt_message(ngettext("Message not bounced", "Messages not bounced", msg_count));
     return;
@@ -461,7 +461,7 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
       break;
   }
 
-  mutt_addrlist_free_all(&al);
+  mutt_addrlist_clear(&al);
   /* If no error, or background, display message. */
   if ((rc == 0) || (rc == S_BKG))
     mutt_message(ngettext("Message bounced", "Messages bounced", msg_count));

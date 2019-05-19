@@ -74,11 +74,8 @@ size_t          mutt_addr_write(char *buf, size_t buflen, struct Address *addr, 
 struct Address *mutt_addr_new(void);
 
 /* Functions that work on struct AddressList */
-struct AddressList *mutt_addrlist_new(void);
+void                mutt_addrlist_clear(struct AddressList *al);
 void                mutt_addrlist_copy(struct AddressList *dst, const struct AddressList *src, bool prune);
-void                mutt_addrlist_free(struct AddressList **al);
-void                mutt_addrlist_free_one(struct AddressList *al, struct Address *a);
-void                mutt_addrlist_free_all(struct AddressList *al);
 size_t              mutt_addrlist_write(char *buf, size_t buflen, const struct AddressList *al, bool display);
 int                 mutt_addrlist_parse(struct AddressList *al, const char *s);
 int                 mutt_addrlist_parse2(struct AddressList *al, const char *s);

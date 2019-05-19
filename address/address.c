@@ -408,7 +408,8 @@ int mutt_addrlist_remove(struct AddressList *al, const char *mailbox)
   {
     if (mutt_str_strcasecmp(mailbox, a->mailbox) == 0)
     {
-      mutt_addrlist_free_one(al, a);
+      TAILQ_REMOVE(al, a, entries);
+      mutt_addr_free(&a);
       rc = 0;
     }
   }
@@ -427,18 +428,6 @@ void mutt_addr_free(struct Address **a)
   FREE(&(*a)->personal);
   FREE(&(*a)->mailbox);
   FREE(a);
-}
-
-/**
- * mutt_addrlist_free - Free an AddressList
- * @param al AddressList to free
- */
-void mutt_addrlist_free(struct AddressList **al)
-{
-  if (!al)
-    return;
-  mutt_addrlist_free_all(*al);
-  FREE(al);
 }
 
 /**
@@ -494,7 +483,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
         s = next_token(s, comment, &commentlen, sizeof(comment) - 1);
         if (!s)
         {
-          mutt_addrlist_free_all(al);
+          mutt_addrlist_clear(al);
           return 0;
         }
         break;
@@ -505,7 +494,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
         s = parse_quote(s + 1, phrase, &phraselen, sizeof(phrase) - 1);
         if (!s)
         {
-          mutt_addrlist_free_all(al);
+          mutt_addrlist_clear(al);
           return 0;
         }
         break;
@@ -559,7 +548,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
         s = parse_route_addr(s + 1, comment, &commentlen, sizeof(comment) - 1, a);
         if (!s)
         {
-          mutt_addrlist_free_all(al);
+          mutt_addrlist_clear(al);
           mutt_addr_free(&a);
           return 0;
         }
@@ -576,7 +565,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
         s = next_token(s, phrase, &phraselen, sizeof(phrase) - 1);
         if (!s)
         {
-          mutt_addrlist_free_all(al);
+          mutt_addrlist_clear(al);
           return 0;
         }
         break;
@@ -1319,7 +1308,8 @@ void mutt_addrlist_dedupe(struct AddressList *al)
           if (a2->mailbox && (mutt_str_strcasecmp(a->mailbox, a2->mailbox) == 0))
           {
             mutt_debug(LL_DEBUG2, "Removing %s\n", a2->mailbox);
-            mutt_addrlist_free_one(al, a2);
+            TAILQ_REMOVE(al, a2, entries);
+            mutt_addr_free(&a2);
           }
         }
       }
@@ -1347,7 +1337,8 @@ void mutt_addrlist_remove_xrefs(const struct AddressList *a, struct AddressList 
     {
       if (mutt_addr_cmp(aa, ab))
       {
-        mutt_addrlist_free_one(b, ab);
+        TAILQ_REMOVE(b, ab, entries);
+        mutt_addr_free(&ab);
         break;
       }
     }
@@ -1355,37 +1346,12 @@ void mutt_addrlist_remove_xrefs(const struct AddressList *a, struct AddressList 
 }
 
 /**
- * mutt_addrlist_new - Create a new AddressList
- * @return a newly allocated AddressList
- */
-struct AddressList *mutt_addrlist_new(void)
-{
-  struct AddressList *al = mutt_mem_calloc(1, sizeof(struct AddressList));
-  TAILQ_INIT(al);
-  return al;
-}
-
-/**
- * mutt_addrlist_free_one - Unlink and free an Address from an AddressList
- * @param al AddressList
- * @param a  Address
- */
-void mutt_addrlist_free_one(struct AddressList *al, struct Address *a)
-{
-  if (!al || !a)
-    return;
-
-  TAILQ_REMOVE(al, a, entries);
-  mutt_addr_free(&a);
-}
-
-/**
- * mutt_addrlist_free_all - Unlink and free all Address in an AddressList
+ * mutt_addrlist_clear - Unlink and free all Address in an AddressList
  * @param al AddressList
  *
  * @note After this call, the AddressList is reinitialized and ready for reuse.
  */
-void mutt_addrlist_free_all(struct AddressList *al)
+void mutt_addrlist_clear(struct AddressList *al)
 {
   if (!al)
     return;

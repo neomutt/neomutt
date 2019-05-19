@@ -71,6 +71,6 @@ void test_mutt_addrlist_copy(void)
     TEST_CHECK_STR_EQ(a2.mailbox, adst->mailbox);
     adst = TAILQ_NEXT(adst, entries);
     TEST_CHECK_STR_EQ(a3.mailbox, adst->mailbox);
-    mutt_addrlist_free_all(&dst);
+    mutt_addrlist_clear(&dst);
   }
 }

@@ -276,7 +276,7 @@ void mutt_attach_bounce(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, str
     mutt_error(ngettext("Error bouncing message", "Error bouncing messages", p));
 
 end:
-  mutt_addrlist_free_all(&al);
+  mutt_addrlist_clear(&al);
 }
 
 /**

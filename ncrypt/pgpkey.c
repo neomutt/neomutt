@@ -1059,7 +1059,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
         }
       }
 
-      mutt_addrlist_free_all(&al);
+      mutt_addrlist_clear(&al);
     }
 
     if (match)
