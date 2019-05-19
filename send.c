@@ -2375,9 +2375,9 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
 #ifdef USE_NNTP
   if (!(flags & SEND_NEWS))
 #endif
-    if ((mutt_addrlist_has_recips(&msg->env->to) == 0) &&
-        (mutt_addrlist_has_recips(&msg->env->cc) == 0) &&
-        (mutt_addrlist_has_recips(&msg->env->bcc) == 0))
+    if ((mutt_addrlist_count_recips(&msg->env->to) == 0) &&
+        (mutt_addrlist_count_recips(&msg->env->cc) == 0) &&
+        (mutt_addrlist_count_recips(&msg->env->bcc) == 0))
     {
       if (!(flags & SEND_BATCH))
       {

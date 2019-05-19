@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_addrlist_has_recips()
+ * Test code for mutt_addrlist_count_recips()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -27,11 +27,11 @@
 #include "mutt/mutt.h"
 #include "address/lib.h"
 
-void test_mutt_addrlist_has_recips(void)
+void test_mutt_addrlist_count_recips(void)
 {
-  // int mutt_addrlist_has_recips(const struct AddressList *al);
+  // int mutt_addrlist_count_recips(const struct AddressList *al);
 
   {
-    TEST_CHECK(mutt_addrlist_has_recips(NULL) == 0);
+    TEST_CHECK(mutt_addrlist_count_recips(NULL) == 0);
   }
 }

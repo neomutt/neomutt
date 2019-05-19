@@ -840,13 +840,13 @@ bool mutt_addrlist_equal(const struct AddressList *ala, const struct AddressList
 }
 
 /**
- * mutt_addrlist_has_recips - Count the number of Addresses with valid recipients
+ * mutt_addrlist_count_recips - Count the number of Addresses with valid recipients
  * @param al Address list
  * @retval num Number of valid Addresses
  *
- * An Address has a recipient if the mailbox or group is set.
+ * An Address has a recipient if the mailbox is set and is not a group
  */
-int mutt_addrlist_has_recips(const struct AddressList *al)
+int mutt_addrlist_count_recips(const struct AddressList *al)
 {
   if (!al)
     return 0;
@@ -855,9 +855,7 @@ int mutt_addrlist_has_recips(const struct AddressList *al)
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
-    if (!a->mailbox || a->group)
-      continue;
-    c++;
+    c += (a->mailbox && !a->group);
   }
   return c;
 }

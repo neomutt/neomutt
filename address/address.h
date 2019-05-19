@@ -87,7 +87,7 @@ int                 mutt_addrlist_to_intl(struct AddressList *al, char **err);
 void                mutt_addrlist_dedupe(struct AddressList *al);
 void                mutt_addrlist_qualify(struct AddressList *al, const char *host);
 bool                mutt_addrlist_search(const struct Address *needle, const struct AddressList *haystack);
-int                 mutt_addrlist_has_recips(const struct AddressList *al);
+int                 mutt_addrlist_count_recips(const struct AddressList *al);
 bool                mutt_addrlist_equal(const struct AddressList *ala, const struct AddressList *alb);
 int                 mutt_addrlist_remove(struct AddressList *al, const char *mailbox);
 void                mutt_addrlist_remove_xrefs(const struct AddressList *a, struct AddressList *b);

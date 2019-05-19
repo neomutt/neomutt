@@ -37,12 +37,12 @@
   NEOMUTT_TEST_ITEM(test_mutt_addr_write)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_append)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_copy)                                   \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_count_recips)                           \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_dedupe)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_equal)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_free)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_free_all)                               \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_free_one)                               \
-  NEOMUTT_TEST_ITEM(test_mutt_addrlist_has_recips)                             \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_new)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_parse)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_parse2)                                 \
