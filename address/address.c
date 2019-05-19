@@ -358,8 +358,9 @@ static const char *parse_addr_spec(const char *s, char *comment, size_t *comment
  * @param[out] comment    Buffer for any comments
  * @param[out] commentlen Length of any comments
  * @param[in]  commentmax Length of the comments buffer
+ * @retval bool True if an address was successfully parsed and added
  */
-static void add_addrspec(struct AddressList *al, const char *phrase,
+static bool add_addrspec(struct AddressList *al, const char *phrase,
                          char *comment, size_t *commentlen, size_t commentmax)
 {
   struct Address *cur = mutt_addr_new();
@@ -367,10 +368,11 @@ static void add_addrspec(struct AddressList *al, const char *phrase,
   if (!parse_addr_spec(phrase, comment, commentlen, commentmax, cur))
   {
     mutt_addr_free(&cur);
-    return;
+    return false;
   }
 
   mutt_addrlist_append(al, cur);
+  return true;
 }
 
 /**
@@ -465,7 +467,10 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
         if (phraselen != 0)
         {
           terminate_buffer(phrase, phraselen);
-          add_addrspec(al, phrase, comment, &commentlen, sizeof(comment) - 1);
+          if (add_addrspec(al, phrase, comment, &commentlen, sizeof(comment) - 1))
+          {
+            parsed++;
+          }
         }
         else if (commentlen != 0)
         {
@@ -522,7 +527,10 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
         if (phraselen != 0)
         {
           terminate_buffer(phrase, phraselen);
-          add_addrspec(al, phrase, comment, &commentlen, sizeof(comment) - 1);
+          if (add_addrspec(al, phrase, comment, &commentlen, sizeof(comment) - 1))
+          {
+            parsed++;
+          }
         }
         else if (commentlen != 0)
         {
@@ -581,7 +589,10 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
   {
     terminate_buffer(phrase, phraselen);
     terminate_buffer(comment, commentlen);
-    add_addrspec(al, phrase, comment, &commentlen, sizeof(comment) - 1);
+    if (add_addrspec(al, phrase, comment, &commentlen, sizeof(comment) - 1))
+    {
+      parsed++;
+    }
   }
   else if (commentlen != 0)
   {
