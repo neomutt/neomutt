@@ -22,10 +22,10 @@
 
 #define TEST_NO_MAIN
 #include "acutest.h"
-#include "common.h"
 #include "config.h"
 #include "mutt/mutt.h"
 #include "address/lib.h"
+#include "common.h"
 
 void test_mutt_addrlist_prepend(void)
 {

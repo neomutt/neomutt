@@ -22,10 +22,10 @@
 
 #define TEST_NO_MAIN
 #include "acutest.h"
-#include "common.h"
 #include "config.h"
 #include "mutt/mutt.h"
 #include "address/lib.h"
+#include "common.h"
 
 void test_mutt_addr_copy(void)
 {
@@ -36,13 +36,11 @@ void test_mutt_addr_copy(void)
   }
 
   {
-    struct Address a1 = {
-      .personal = "John Doe",
-      .mailbox = "john@doe.com",
-      .group = 0,
-      .is_intl = 0,
-      .intl_checked = false
-    };
+    struct Address a1 = { .personal = "John Doe",
+                          .mailbox = "john@doe.com",
+                          .group = 0,
+                          .is_intl = 0,
+                          .intl_checked = false };
     struct Address *a2 = mutt_addr_copy(&a1);
     TEST_CHECK(a2 != NULL);
     TEST_CHECK_STR_EQ(a1.personal, a2->personal);
@@ -55,11 +53,7 @@ void test_mutt_addr_copy(void)
 
   {
     struct Address a1 = {
-      .personal = NULL,
-      .mailbox = "john@doe.com",
-      .group = 0,
-      .is_intl = 0,
-      .intl_checked = false
+      .personal = NULL, .mailbox = "john@doe.com", .group = 0, .is_intl = 0, .intl_checked = false
     };
     struct Address *a2 = mutt_addr_copy(&a1);
     TEST_CHECK(a2 != NULL);

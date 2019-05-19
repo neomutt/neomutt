@@ -22,10 +22,10 @@
 
 #define TEST_NO_MAIN
 #include "acutest.h"
-#include "common.h"
 #include "config.h"
 #include "mutt/mutt.h"
 #include "address/lib.h"
+#include "common.h"
 
 void test_mutt_addr_cat(void)
 {
@@ -73,5 +73,4 @@ void test_mutt_addr_cat(void)
     mutt_addr_cat(buf, sizeof(buf), "a(pp)l\"e", MimeSpecials);
     TEST_CHECK_STR_EQ("\"a(pp)l\\\"e\"", buf);
   }
-
 }
