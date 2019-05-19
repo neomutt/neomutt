@@ -34,4 +34,15 @@ void test_mutt_addrlist_free_all(void)
     mutt_addrlist_free_all(NULL);
     TEST_CHECK_(1, "mutt_addrlist_free_all(NULL)");
   }
+
+  {
+    struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+    mutt_addrlist_append(&al, mutt_addr_new());
+    mutt_addrlist_append(&al, mutt_addr_new());
+    mutt_addrlist_append(&al, mutt_addr_new());
+    mutt_addrlist_append(&al, mutt_addr_new());
+    mutt_addrlist_append(&al, mutt_addr_new());
+    mutt_addrlist_free_all(&al);
+    TEST_CHECK(TAILQ_EMPTY(&al));
+  }
 }
