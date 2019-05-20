@@ -26,6 +26,7 @@
 #include "config.h"
 #include "mutt/mutt.h"
 #include "address/lib.h"
+#include "common.h"
 
 void test_mutt_addrlist_parse2(void)
 {
@@ -33,16 +34,48 @@ void test_mutt_addrlist_parse2(void)
 
   {
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
-    mutt_addrlist_parse2(&alist, "apple");
-    TEST_CHECK(TAILQ_FIRST(&alist) != NULL);
+    int parsed = mutt_addrlist_parse2(&alist, NULL);
+    TEST_CHECK(parsed == 0);
+    TEST_CHECK(TAILQ_EMPTY(&alist));
+  }
+
+  {
+    struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
+    int parsed = mutt_addrlist_parse2(&alist, "apple");
+    TEST_CHECK(parsed == 1);
+    TEST_CHECK(!TAILQ_EMPTY(&alist));
+    TEST_CHECK_STR_EQ(TAILQ_FIRST(&alist)->mailbox, "apple");
+    mutt_addrlist_clear(&alist);
+  }
+
+  {
+    /* Not extremely nice, but this is the way it works... */
+    struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
+    int parsed = mutt_addrlist_parse2(&alist, "test@example.com John Doe <john@doe.org>");
+    TEST_CHECK(parsed == 1);
+    TEST_CHECK(!TAILQ_EMPTY(&alist));
+    struct Address *a = TAILQ_FIRST(&alist);
+    TEST_CHECK_STR_EQ("test@example.com John Doe", a->personal);
+    TEST_CHECK_STR_EQ("john@doe.org", a->mailbox);
     mutt_addrlist_clear(&alist);
   }
 
   {
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
-    mutt_addrlist_parse2(&alist, NULL);
-    TEST_CHECK(TAILQ_FIRST(&alist) == NULL);
+    int parsed = mutt_addrlist_parse2(&alist, "test@example.com john@doe.org foo@bar.baz");
+    TEST_CHECK(parsed == 3);
+    TEST_CHECK(!TAILQ_EMPTY(&alist));
+    struct Address *a = TAILQ_FIRST(&alist);
+    TEST_CHECK(a->personal == NULL);
+    TEST_CHECK_STR_EQ("test@example.com", a->mailbox);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK(a->personal == NULL);
+    TEST_CHECK_STR_EQ("john@doe.org", a->mailbox);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK(a->personal == NULL);
+    TEST_CHECK_STR_EQ("foo@bar.baz", a->mailbox);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK(a == NULL);
+    mutt_addrlist_clear(&alist);
   }
-
-  mutt_buffer_pool_free();
 }
