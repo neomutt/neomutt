@@ -45,14 +45,13 @@ void test_mutt_addrlist_append(void)
   }
 
   {
-    struct Address a1 = { .mailbox = "test@example.com" };
-    struct Address a2 = { .mailbox = "john@doe.org" };
     struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-    mutt_addrlist_append(&al, &a1);
-    mutt_addrlist_append(&al, &a2);
+    mutt_addrlist_append(&al, mutt_addr_create(NULL, "test@example.com"));
+    mutt_addrlist_append(&al, mutt_addr_create(NULL, "john@doe.org"));
     struct Address *a = TAILQ_FIRST(&al);
     TEST_CHECK_STR_EQ("test@example.com", a->mailbox);
     a = TAILQ_NEXT(a, entries);
     TEST_CHECK_STR_EQ("john@doe.org", a->mailbox);
+    mutt_addrlist_clear(&al);
   }
 }

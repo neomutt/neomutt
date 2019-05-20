@@ -388,6 +388,23 @@ struct Address *mutt_addr_new(void)
 }
 
 /**
+ * mutt_addr_create - Create and populate a new Address
+ * @param[in] personal The personal name for the Address (can be NULL)
+ * @param[in] mailbox The mailbox for the Address (can be NULL)
+ * @retval ptr Newly allocated Address
+ * @note The personal and mailbox values, if not NULL, are going to be copied
+ * into the newly allocated Address.
+ */
+struct Address *mutt_addr_create(const char *personal, const char *mailbox)
+{
+  struct Address *a = mutt_addr_new();
+  a->personal = mutt_str_strdup(personal);
+  a->mailbox = mutt_str_strdup(mailbox);
+  return a;
+}
+
+
+/**
  * mutt_addrlist_remove - Remove an Address from a list
  * @param[in, out] al AddressList
  * @param[in]  mailbox Email address to match

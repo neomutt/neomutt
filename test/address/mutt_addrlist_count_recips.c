@@ -44,26 +44,26 @@ void test_mutt_addrlist_count_recips(void)
     struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
     mutt_addrlist_parse(&al, "test@example.com, john@doe.org");
     TEST_CHECK(mutt_addrlist_count_recips(&al) == 2);
+    mutt_addrlist_clear(&al);
   }
 
   {
     struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
     mutt_addrlist_parse(&al, "test@example.com, john@doe.org");
     mutt_addrlist_append(&al, mutt_addr_new());
-    struct Address *a = mutt_addr_new();
-    a->mailbox = mutt_str_strdup("foo@bar.baz");
-    mutt_addrlist_append(&al, a);
+    mutt_addrlist_append(&al, mutt_addr_create(NULL, "foo@bar.baz"));
     TEST_CHECK(mutt_addrlist_count_recips(&al) == 3);
+    mutt_addrlist_clear(&al);
   }
 
   {
     struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
     mutt_addrlist_parse(&al, "test@example.com, john@doe.org");
     mutt_addrlist_append(&al, mutt_addr_new());
-    struct Address *a = mutt_addr_new();
-    a->mailbox = mutt_str_strdup("foo@bar.baz");
+    struct Address *a = mutt_addr_create(NULL, "foo@bar.baz");
     a->group = 1;
     mutt_addrlist_append(&al, a);
     TEST_CHECK(mutt_addrlist_count_recips(&al) == 2);
+    mutt_addrlist_clear(&al);
   }
 }

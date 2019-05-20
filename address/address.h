@@ -68,6 +68,7 @@ bool            mutt_addr_valid_msgid(const char *msgid);
 /* Functions that work on a single struct Address */
 bool            mutt_addr_cmp(const struct Address *a, const struct Address *b);
 struct Address *mutt_addr_copy(const struct Address *addr);
+struct Address *mutt_addr_create(const char *personal, const char *mailbox);
 const char *    mutt_addr_for_display(const struct Address *a);
 void            mutt_addr_free(struct Address **a);
 struct Address *mutt_addr_new(void);

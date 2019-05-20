@@ -49,7 +49,7 @@ void test_mutt_addr_copy(void)
     TEST_CHECK(a1.group == a2->group);
     TEST_CHECK(a1.is_intl == a2->is_intl);
     TEST_CHECK(a1.intl_checked == a2->intl_checked);
-    FREE(&a2);
+    mutt_addr_free(&a2);
   }
 
   {
@@ -63,6 +63,6 @@ void test_mutt_addr_copy(void)
     TEST_CHECK(a1.group == a2->group);
     TEST_CHECK(a1.is_intl == a2->is_intl);
     TEST_CHECK(a1.intl_checked == a2->intl_checked);
-    FREE(&a2);
+    mutt_addr_free(&a2);
   }
 }
