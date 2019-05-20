@@ -582,7 +582,8 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
  * @param s String to parse
  * @retval num Number of parsed addresses
  *
- * The email addresses can be separated by whitespace or commas.
+ * Simple email addresses (without any personal name or grouping) can be
+ * separated by whitespace or commas.
  */
 int mutt_addrlist_parse2(struct AddressList *al, const char *s)
 {
@@ -592,18 +593,16 @@ int mutt_addrlist_parse2(struct AddressList *al, const char *s)
   int parsed = 0;
 
   /* check for a simple whitespace separated list of addresses */
-  const char *q = strpbrk(s, "\"<>():;,\\");
-  if (!q)
+  if (!strpbrk(s, "\"<>():;,\\"))
   {
-    struct Buffer *tmp = mutt_buffer_alloc(1024);
-    mutt_buffer_strcpy(tmp, s);
-    char *r = tmp->data;
+    char *copy = mutt_str_strdup(s);
+    char *r = copy;
     while ((r = strtok(r, " \t")))
     {
       parsed += mutt_addrlist_parse(al, r);
       r = NULL;
     }
-    mutt_buffer_free(&tmp);
+    FREE(&copy);
   }
   else
     parsed = mutt_addrlist_parse(al, s);
