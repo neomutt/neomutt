@@ -26,6 +26,7 @@
 #include "config.h"
 #include "mutt/mutt.h"
 #include "address/lib.h"
+#include "common.h"
 
 void test_mutt_addrlist_qualify(void)
 {
@@ -40,5 +41,22 @@ void test_mutt_addrlist_qualify(void)
     struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
     mutt_addrlist_qualify(&al, NULL);
     TEST_CHECK_(1, "mutt_addrlist_qualify(&addr, NULL)");
+  }
+
+  {
+    struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+    mutt_addrlist_parse(&al, "john@doe.org, user1, user2, test@example.com");
+    mutt_addrlist_qualify(&al, "local.domain");
+    struct Address *a = TAILQ_FIRST(&al);
+    TEST_CHECK_STR_EQ("john@doe.org", a->mailbox);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK_STR_EQ("user1@local.domain", a->mailbox);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK_STR_EQ("user2@local.domain", a->mailbox);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK_STR_EQ("test@example.com", a->mailbox);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK(a == NULL);
+    mutt_addrlist_clear(&al);
   }
 }
