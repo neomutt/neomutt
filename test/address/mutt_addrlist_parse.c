@@ -88,5 +88,6 @@ void test_mutt_addrlist_parse(void)
     TEST_CHECK_STR_EQ("foo@bar.baz", a->mailbox);
     a = TAILQ_NEXT(a, entries);
     TEST_CHECK(a == NULL);
+    mutt_addrlist_clear(&alist);
   }
 }
