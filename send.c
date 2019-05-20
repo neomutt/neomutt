@@ -1298,31 +1298,25 @@ static void set_reverse_name(struct AddressList *al, struct Envelope *env)
  */
 struct Address *mutt_default_from(void)
 {
-  struct Address *addr = NULL;
-
   /* Note: We let $from override $realname here.
    *       Is this the right thing to do?
    */
 
   if (C_From)
-    addr = mutt_addr_copy(C_From);
+  {
+    return mutt_addr_copy(C_From);
+  }
+  else if (C_UseDomain)
+  {
+    struct Address *addr = mutt_addr_new();
+    mutt_str_asprintf(&addr->mailbox, "%s@%s", NONULL(Username),
+        NONULL(mutt_fqdn(true)));
+    return addr;
+  }
   else
   {
-    addr = mutt_addr_new();
-    if (C_UseDomain)
-    {
-      const char *fqdn = mutt_fqdn(true);
-      addr->mailbox =
-          mutt_mem_malloc(mutt_str_strlen(Username) + mutt_str_strlen(fqdn) + 2);
-      sprintf(addr->mailbox, "%s@%s", NONULL(Username), NONULL(fqdn));
-    }
-    else
-    {
-      addr->mailbox = mutt_str_strdup(Username);
-    }
+    return mutt_addr_create(NULL, Username);
   }
-
-  return addr;
 }
 
 /**
