@@ -434,7 +434,7 @@ void mutt_addr_free(struct Address **a)
  * mutt_addrlist_parse - Parse a list of email addresses
  * @param al AddressList to append addresses
  * @param s  String to parse
- * @retval num Number of parsed addressess
+ * @retval num Number of parsed addresses
  */
 int mutt_addrlist_parse(struct AddressList *al, const char *s)
 {
@@ -453,6 +453,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
   {
     switch (*s)
     {
+      case ';':
       case ',':
         if (phraselen != 0)
         {
@@ -472,8 +473,14 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
           }
         }
 
-        commentlen = 0;
+        if (*s == ';')
+        {
+          /* add group terminator */
+          mutt_addrlist_append(al, mutt_addr_new());
+        }
+
         phraselen = 0;
+        commentlen = 0;
         s++;
         break;
 
@@ -509,36 +516,8 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
         phraselen = 0;
         commentlen = 0;
         s++;
-        parsed++;
         break;
       }
-
-      case ';':
-        if (phraselen != 0)
-        {
-          terminate_buffer(phrase, phraselen);
-          if (add_addrspec(al, phrase, comment, &commentlen, sizeof(comment) - 1))
-          {
-            parsed++;
-          }
-        }
-        else if (commentlen != 0)
-        {
-          struct Address *last = TAILQ_LAST(al, AddressList);
-          if (last && !last->personal)
-          {
-            terminate_buffer(comment, commentlen);
-            last->personal = mutt_str_strdup(comment);
-          }
-        }
-
-        /* add group terminator */
-        mutt_addrlist_append(al, mutt_addr_new());
-
-        phraselen = 0;
-        commentlen = 0;
-        s++;
-        break;
 
       case '<':
       {

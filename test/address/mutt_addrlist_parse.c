@@ -26,21 +26,67 @@
 #include "config.h"
 #include "mutt/mutt.h"
 #include "address/lib.h"
+#include "common.h"
 
 void test_mutt_addrlist_parse(void)
 {
   // int mutt_addrlist_parse(struct AddressList *al, const char *s);
+  {
+    struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
+    int parsed = mutt_addrlist_parse(&alist, NULL);
+    TEST_CHECK(parsed == 0);
+    TEST_CHECK(TAILQ_EMPTY(&alist));
+  }
 
   {
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
-    mutt_addrlist_parse(&alist, "apple");
-    TEST_CHECK(TAILQ_FIRST(&alist) != NULL);
+    int parsed = mutt_addrlist_parse(&alist, "apple");
+    TEST_CHECK(parsed == 1);
+    TEST_CHECK(!TAILQ_EMPTY(&alist));
+    TEST_CHECK_STR_EQ(TAILQ_FIRST(&alist)->mailbox, "apple");
     mutt_addrlist_clear(&alist);
   }
 
   {
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
-    mutt_addrlist_parse(&alist, NULL);
-    TEST_CHECK(TAILQ_FIRST(&alist) == NULL);
+    int parsed = mutt_addrlist_parse(&alist, "Incomplete <address");
+    TEST_CHECK(parsed == 0);
+    TEST_CHECK(TAILQ_EMPTY(&alist));
+  }
+
+  {
+    struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
+    int parsed = mutt_addrlist_parse(&alist,
+        "Complete <address@example.com>, Incomplete <address");
+    TEST_CHECK(parsed == 0);
+    TEST_CHECK(TAILQ_EMPTY(&alist));
+  }
+
+  {
+    struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
+    int parsed = mutt_addrlist_parse(&alist,
+        "Simple Address <test@example.com>,"
+        "My Group: member1@group.org, member2@group.org, "
+        "\"John M. Doe\" <john@doe.org>; Another One <foo@bar.baz>");
+    TEST_CHECK(parsed == 5);
+    TEST_CHECK(!TAILQ_EMPTY(&alist));
+    struct Address *a = TAILQ_FIRST(&alist);
+    TEST_CHECK_STR_EQ("test@example.com", a->mailbox);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK_STR_EQ("My Group", a->mailbox);
+    TEST_CHECK(a->group == 1);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK_STR_EQ("member1@group.org", a->mailbox);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK_STR_EQ("member2@group.org", a->mailbox);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK_STR_EQ("john@doe.org", a->mailbox);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK(a->mailbox == NULL);
+    TEST_CHECK(a->group == 0);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK_STR_EQ("foo@bar.baz", a->mailbox);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK(a == NULL);
   }
 }
