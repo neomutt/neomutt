@@ -69,6 +69,7 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
+#include "neomutt.h"
 #include "options.h"
 #include "protos.h"
 #include "send.h"
@@ -597,6 +598,8 @@ int main(int argc, char *argv[], char *envp[])
     OptNoCurses = true;
     goto main_ok; // TEST04: neomutt -v
   }
+
+  NeoMutt = neomutt_new();
 
   Config = init_config(500);
   if (!Config)
@@ -1262,5 +1265,6 @@ main_exit:
   mutt_free_opts();
   mutt_free_keys();
   cs_free(&Config);
+  neomutt_free(&NeoMutt);
   return rc;
 }
