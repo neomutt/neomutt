@@ -1869,7 +1869,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
   if (el)
     en = STAILQ_FIRST(el);
   if (en)
-    cur = STAILQ_NEXT(en, entries) ? en->email : NULL;
+    cur = STAILQ_NEXT(en, entries) ? NULL : en->email;
 
   int rc = -1;
 
