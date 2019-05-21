@@ -33,13 +33,13 @@ struct HashElem;
 struct ConfigDef;
 
 /**
- * enum ConfigEvent - Config notification types
+ * enum NotifyConfig - Config notification types
  */
-enum ConfigEvent
+enum NotifyConfig
 {
-  CE_SET = 1,     ///< Config item has been set
-  CE_RESET,       ///< Config item has been reset to initial, or parent, value
-  CE_INITIAL_SET, ///< Config item's initial value has been set
+  NT_CONFIG_SET = 1,     ///< Config item has been set
+  NT_CONFIG_RESET,       ///< Config item has been reset to initial, or parent, value
+  NT_CONFIG_INITIAL_SET, ///< Config item's initial value has been set
 };
 
 /* Config Set Results */
@@ -70,15 +70,6 @@ enum CsObserverAction
   CSOA_STOP,         ///< Stop notifying observers
 };
 
-/**
- * typedef cs_observer - Listen for config changes
- * @param cs   Config items
- * @param he   HashElem representing config item
- * @param name Name of the config item
- * @param ev   Event type, e.g. #CE_SET
- * @retval true Continue notifying
- */
-typedef bool    (*cs_observer)   (const struct ConfigSet *cs, struct HashElem *he, const char *name, enum ConfigEvent ev);
 /**
  * typedef cs_validator - Validate the "charset" config variable
  * @param cs    Config items
@@ -195,9 +186,21 @@ struct ConfigSetType
  */
 struct ConfigSet
 {
-  struct Hash *hash;              /**< HashTable storing the config itesm */
-  struct ConfigSetType types[18]; /**< All the defined config types */
-  cs_observer observers[8];       /**< Observers for notifications of changes to config items */
+  struct Hash *hash;              ///< HashTable storing the config items
+  struct ConfigSetType types[18]; ///< All the defined config types
+  struct Notify *notify;          ///< Notifications system
+};
+
+/**
+ * struct EventConfig - A config-change event
+ *
+ * Events such as #NT_CONFIG_SET
+ */
+struct EventConfig
+{
+  const struct ConfigSet *cs; ///< Config set
+  struct HashElem *he;        ///< Config item that changed
+  const char *name;           ///< Name of config item that changed
 };
 
 struct ConfigSet *cs_new(size_t size);
@@ -211,9 +214,7 @@ bool             cs_register_type(struct ConfigSet *cs, unsigned int type, const
 bool             cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], int flags);
 struct HashElem *cs_inherit_variable(const struct ConfigSet *cs, struct HashElem *parent, const char *name);
 
-void cs_add_observer(struct ConfigSet *cs, cs_observer fn);
-void cs_remove_observer(struct ConfigSet *cs, cs_observer fn);
-void cs_notify_observers(const struct ConfigSet *cs, struct HashElem *he, const char *name, enum ConfigEvent ev);
+void cs_notify_observers(const struct ConfigSet *cs, struct HashElem *he, const char *name, enum NotifyConfig ev);
 
 int      cs_he_initial_get (const struct ConfigSet *cs, struct HashElem *he,                    struct Buffer *result);
 int      cs_he_initial_set (const struct ConfigSet *cs, struct HashElem *he, const char *value, struct Buffer *err);

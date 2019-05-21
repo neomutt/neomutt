@@ -86,7 +86,6 @@ int mutt_is_quote_line(char *buf, regmatch_t *pmatch);
 int wcscasecmp(const wchar_t *a, const wchar_t *b);
 #endif
 
-bool mutt_reply_observer(const struct ConfigSet *cs, struct HashElem *he,
-                         const char *name, enum ConfigEvent ev);
+int mutt_reply_observer(struct NotifyCallback *nc);
 
 #endif /* MUTT_PROTOS_H */

@@ -27,6 +27,6 @@
 #include "mutt/mutt.h"
 
 void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass);
-bool mutt_hist_observer(const struct ConfigSet *cs, struct HashElem *he, const char *name, enum ConfigEvent ev);
+int mutt_hist_observer(struct NotifyCallback *nc);
 
 #endif /* MUTT_MUTT_HISTORY_H */
