@@ -32,13 +32,34 @@ void test_mutt_addrlist_remove(void)
   // int mutt_addrlist_remove(struct AddressList *al, const char *mailbox);
 
   {
-    int rc = mutt_addrlist_remove(NULL, "apple");
-    TEST_CHECK(rc == -1);
+    TEST_CHECK(mutt_addrlist_remove(NULL, "apple") == -1);
   }
 
   {
     struct AddressList a;
-    int rc = mutt_addrlist_remove(&a, NULL);
-    TEST_CHECK(rc == 0);
+    TEST_CHECK(mutt_addrlist_remove(&a, NULL) == 0);
+  }
+
+  {
+    struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+    mutt_addrlist_append(&al, mutt_addr_create("Foo", "foobar@example.com"));
+    TEST_CHECK(mutt_addrlist_remove(&al, "foobar@example.co.uk") == -1);
+    TEST_CHECK(!TAILQ_EMPTY(&al));
+    mutt_addrlist_clear(&al);
+  }
+
+  {
+    struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+    mutt_addrlist_append(&al, mutt_addr_create("Foo", "foobar@example.com"));
+    TEST_CHECK(mutt_addrlist_remove(&al, "foobar@example.com") == 0);
+    TEST_CHECK(TAILQ_EMPTY(&al));
+  }
+
+  {
+    struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+    mutt_addrlist_append(&al, mutt_addr_create("Upper", "UPPER@EXAMPLE.com"));
+    mutt_addrlist_append(&al, mutt_addr_create("lower", "upper@example.com"));
+    TEST_CHECK(mutt_addrlist_remove(&al, "uPPeR@ExAmple.com") == 0);
+    TEST_CHECK(TAILQ_EMPTY(&al));
   }
 }
