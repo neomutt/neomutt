@@ -1,6 +1,6 @@
 /**
  * @file
- * NeoMutt container for notifications
+ * Notification API
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -20,43 +20,22 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @page neomutt NeoMutt container for notifications
- *
- * NeoMutt container for notifications
- */
+#ifndef MUTT_LIB_NOTIFY_H
+#define MUTT_LIB_NOTIFY_H
 
-#include "config.h"
-#include "mutt/mutt.h"
-#include "neomutt.h"
+#include <stdbool.h>
+#include "observer.h"
+#include "notify_type.h"
 
-struct NeoMutt *NeoMutt; ///< Global NeoMutt object
+struct Notify;
 
-/**
- * neomutt_new - Create the master NeoMutt object
- * @retval ptr New NeoMutt
- */
-struct NeoMutt *neomutt_new(void)
-{
-  struct NeoMutt *n = mutt_mem_calloc(1, sizeof(*NeoMutt));
+struct Notify *notify_new(void *object, enum NotifyType type);
+void notify_free(struct Notify **ptr);
+void notify_set_parent(struct Notify *notify, struct Notify *parent);
 
-  n->notify = notify_new(n, NT_NEOMUTT);
+bool notify_send(struct Notify *notify, int type, int subtype, intptr_t data);
 
-  return n;
-}
+bool notify_observer_add(struct Notify *notify, enum NotifyType type, int subtype, observer_t callback, intptr_t data);
+bool notify_observer_remove(struct Notify *notify, observer_t callback);
 
-/**
- * neomutt_free - Free a NeoMutt
- * @param[out] ptr NeoMutt to free
- */
-void neomutt_free(struct NeoMutt **ptr)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  struct NeoMutt *n = *ptr;
-
-  notify_free(&n->notify);
-
-  FREE(ptr);
-}
+#endif /* MUTT_LIB_NOTIFY_H */

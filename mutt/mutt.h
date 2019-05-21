@@ -42,6 +42,8 @@
  * | mutt/mbyte.c     | @subpage mbyte     |
  * | mutt/md5.c       | @subpage md5       |
  * | mutt/memory.c    | @subpage memory    |
+ * | mutt/notify.c    | @subpage notify    |
+ * | mutt/observer.h  | @subpage observer  |
  * | mutt/path.c      | @subpage path      |
  * | mutt/pool.c      | @subpage pool      |
  * | mutt/regex.c     | @subpage regex     |
@@ -73,6 +75,9 @@
 #include "memory.h"
 #include "message.h"
 #include "queue.h"
+#include "notify.h"
+#include "notify_type.h"
+#include "observer.h"
 #include "path.h"
 #include "pool.h"
 #include "regex3.h"

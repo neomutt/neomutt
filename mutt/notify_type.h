@@ -1,6 +1,6 @@
 /**
  * @file
- * NeoMutt container for notifications
+ * Notification Types
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -20,43 +20,23 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @page neomutt NeoMutt container for notifications
- *
- * NeoMutt container for notifications
- */
-
-#include "config.h"
-#include "mutt/mutt.h"
-#include "neomutt.h"
-
-struct NeoMutt *NeoMutt; ///< Global NeoMutt object
+#ifndef MUTT_LIB_NOTIFY_TYPE_H
+#define MUTT_LIB_NOTIFY_TYPE_H
 
 /**
- * neomutt_new - Create the master NeoMutt object
- * @retval ptr New NeoMutt
+ * enum NotifyType - Notification Types
  */
-struct NeoMutt *neomutt_new(void)
+enum NotifyType
 {
-  struct NeoMutt *n = mutt_mem_calloc(1, sizeof(*NeoMutt));
+  NT_NEOMUTT, ///< Container for all notifications
+  NT_GLOBAL,  ///< Not object-related
+  NT_CONFIG,  ///< Config has changed
+  NT_ACCOUNT, ///< Account has changed
+  NT_MAILBOX, ///< Mailbox has changed
+  NT_EMAIL,   ///< Email has changed
+  NT_WINDOW,  ///< Window has changed
 
-  n->notify = notify_new(n, NT_NEOMUTT);
+  NT_MAX,
+};
 
-  return n;
-}
-
-/**
- * neomutt_free - Free a NeoMutt
- * @param[out] ptr NeoMutt to free
- */
-void neomutt_free(struct NeoMutt **ptr)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  struct NeoMutt *n = *ptr;
-
-  notify_free(&n->notify);
-
-  FREE(ptr);
-}
+#endif /* MUTT_LIB_NOTIFY_TYPE_H */
