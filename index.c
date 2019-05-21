@@ -1992,8 +1992,7 @@ int mutt_index_menu(void)
         }
         if (oldcount < Context->mailbox->msg_count)
         {
-          if ((C_Sort & SORT_MASK) == SORT_THREADS)
-            mutt_sort_headers(Context, false);
+          /* nm_read_entire_thread() triggers mutt_sort_headers() if necessary */
           menu->current = oldcur->virtual;
           menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
 
