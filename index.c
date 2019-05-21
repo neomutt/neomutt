@@ -1983,16 +1983,15 @@ int mutt_index_menu(void)
         }
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
-        int oc = Context->mailbox->msg_count;
+        oldcount = Context->mailbox->msg_count;
+        struct Email *oldcur = CUR_EMAIL;
         if (nm_read_entire_thread(Context->mailbox, CUR_EMAIL) < 0)
         {
           mutt_message(_("Failed to read thread, aborting"));
           break;
         }
-        if (oc < Context->mailbox->msg_count)
+        if (oldcount < Context->mailbox->msg_count)
         {
-          struct Email *oldcur = CUR_EMAIL;
-
           if ((C_Sort & SORT_MASK) == SORT_THREADS)
             mutt_sort_headers(Context, false);
           menu->current = oldcur->virtual;
