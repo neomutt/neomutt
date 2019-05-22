@@ -1006,14 +1006,14 @@ const char *mutt_addr_for_display(const struct Address *a)
  * @param buflen  Length of the buffer
  * @param addr    Address to display
  * @param display This address will be displayed to the user
- * @retval num    Number of characters written to buf
+ * @retval num    Length of the string written to buf
  *
  * If 'display' is set, then it doesn't matter if the transformation isn't
  * reversible.
  */
 size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool display)
 {
-  if (!buf || !addr)
+  if (!buf || buflen == 0 || !addr)
     return 0;
 
   size_t len;
@@ -1051,8 +1051,7 @@ size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool disp
     {
       if (buflen == 0)
         goto done;
-      mutt_str_strfcpy(pbuf, addr->personal, buflen);
-      len = mutt_str_strlen(pbuf);
+      len = mutt_str_strfcpy(pbuf, addr->personal, buflen + 1 /* strfcpy terminates */);
       pbuf += len;
       buflen -= len;
     }
@@ -1078,8 +1077,7 @@ size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool disp
     if (mutt_str_strcmp(addr->mailbox, "@") != 0)
     {
       const char *a = display ? mutt_addr_for_display(addr) : addr->mailbox;
-      mutt_str_strfcpy(pbuf, a, buflen);
-      len = mutt_str_strlen(pbuf);
+      len = mutt_str_strfcpy(pbuf, a, buflen + 1 /* strfcpy terminates */);
       pbuf += len;
       buflen -= len;
     }
@@ -1128,7 +1126,7 @@ done:
  * @param buflen  Length of the buffer
  * @param al      AddressList to display
  * @param display This address will be displayed to the user
- * @retval num Bytes written to the buffer
+ * @retval num    Length of the string written to buf
  *
  * If 'display' is set, then it doesn't matter if the transformation isn't
  * reversible.
@@ -1137,64 +1135,45 @@ done:
  */
 size_t mutt_addrlist_write(char *buf, size_t buflen, const struct AddressList *al, bool display)
 {
-  if (!buf || !al)
+  if (!buf || buflen == 0 || !al)
     return 0;
 
-  char *pbuf = buf;
   size_t len = mutt_str_strlen(buf);
-
-  buflen--; /* save room for the terminal nul */
-
-  if (len > 0)
+  if (len >= buflen)
   {
-    if (len > buflen)
-      return 0; /* safety check for bogus arguments */
-
-    pbuf += len;
-    buflen -= len;
-    if (buflen == 0)
-      goto done;
-    *pbuf++ = ',';
-    buflen--;
-    if (buflen == 0)
-      goto done;
-    *pbuf++ = ' ';
-    buflen--;
+    return 0;
   }
+
+  char *pbuf = buf + len;
+  buflen -= len;
 
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
-    if (buflen == 0)
+    if (len > 0)
+    {
+      if (buflen > 1)
+      {
+        *pbuf++ = ',';
+        buflen--;
+      }
+      if (buflen > 1)
+      {
+        *pbuf++ = ' ';
+        buflen--;
+      }
+    }
+
+    if (buflen == 1)
+    {
       break;
+    }
 
-    /* use buflen+1 here because we already saved space for the trailing
-     * nul char, and the subroutine can make use of it */
-    mutt_addr_write(pbuf, buflen + 1, a, display);
-
-    /* this should be safe since we always have at least 1 char passed into
-     * the above call, which means 'pbuf' should always be nul terminated */
-    len = mutt_str_strlen(pbuf);
+    len = mutt_addr_write(pbuf, buflen, a, display);
     pbuf += len;
     buflen -= len;
-
-    /* if there is another address, and it's not a group mailbox name or
-     * group terminator, add a comma to separate the addresses */
-    struct Address *next = TAILQ_NEXT(a, entries);
-    if (next && next->mailbox && !next->group)
-    {
-      if (buflen == 0)
-        goto done;
-      *pbuf++ = ',';
-      buflen--;
-      if (buflen == 0)
-        goto done;
-      *pbuf++ = ' ';
-      buflen--;
-    }
   }
 
-done:
   *pbuf = '\0';
   return pbuf - buf;
 }

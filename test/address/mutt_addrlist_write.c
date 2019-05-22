@@ -26,6 +26,7 @@
 #include "config.h"
 #include "mutt/mutt.h"
 #include "address/lib.h"
+#include "common.h"
 
 void test_mutt_addrlist_write(void)
 {
@@ -33,13 +34,48 @@ void test_mutt_addrlist_write(void)
 
   {
     struct AddressList al = { 0 };
-    mutt_addrlist_write(NULL, 32, &al, false);
-    TEST_CHECK_(1, "mutt_addrlist_write(NULL, 32, &al, false)");
+    TEST_CHECK(mutt_addrlist_write(NULL, 32, &al, false) == 0);
   }
 
   {
     char buf[32] = { 0 };
-    mutt_addrlist_write(buf, sizeof(buf), NULL, false);
-    TEST_CHECK_(1, "mutt_addrlist_write(buf, sizeof(buf), NULL, false)");
+    TEST_CHECK(mutt_addrlist_write(buf, sizeof(buf), NULL, false) == 0);
+  }
+
+  {
+    struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+    const char *in = "test@example.com, John Doe <john@doe.org>, \"Foo J. Bar\" <foo-j-bar@baz.com>";
+    const size_t inlen = strlen(in);
+    int parsed = mutt_addrlist_parse(&al, in);
+    TEST_CHECK(parsed == 3);
+
+    {
+      char buf[8] = { 0 };
+      size_t nbytes = mutt_addrlist_write(buf, sizeof(buf), &al, false);
+      TEST_CHECK(nbytes == sizeof(buf) - 1);
+      TEST_CHECK_STR_EQ("test@ex", buf);
+    }
+
+    {
+      char buf[24] = { 0 };
+      size_t nbytes = mutt_addrlist_write(buf, sizeof(buf), &al, false);
+      TEST_CHECK(nbytes == sizeof(buf) - 1);
+      TEST_CHECK_STR_EQ("test@example.com, John ", buf);
+    }
+
+    {
+      char buf[43] = { 0 };
+      size_t nbytes = mutt_addrlist_write(buf, sizeof(buf), &al, false);
+      TEST_CHECK(nbytes == sizeof(buf) - 1);
+      TEST_CHECK_STR_EQ("test@example.com, John Doe <john@doe.org>,", buf);
+    }
+
+    {
+      char buf[76] = { 0 };
+      size_t nbytes = mutt_addrlist_write(buf, sizeof(buf), &al, false);
+      TEST_CHECK(nbytes == sizeof(buf) - 1);
+      TEST_CHECK_STR_EQ("test@example.com, John Doe <john@doe.org>, \"Foo J. Bar\" <foo-j-bar@baz.com>", buf);
+      TEST_CHECK(buf[inlen] == '\0');
+    }
   }
 }
