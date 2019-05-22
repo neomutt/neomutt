@@ -39,5 +39,4 @@ void test_mutt_addrlist_to_local(void)
     // Back and forth tests (to_intl <-> to_local) are done in
     // test_mutt_addrlist_to_intl
   }
-
 }

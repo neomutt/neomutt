@@ -44,7 +44,8 @@ void test_mutt_addrlist_write(void)
 
   {
     struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-    const char in[] = "test@example.com, John Doe <john@doe.org>, \"Foo J. Bar\" <foo-j-bar@baz.com>";
+    const char in[] = "test@example.com, John Doe <john@doe.org>, \"Foo J. "
+                      "Bar\" <foo-j-bar@baz.com>";
     int parsed = mutt_addrlist_parse(&al, in);
     TEST_CHECK(parsed == 3);
 
@@ -73,8 +74,10 @@ void test_mutt_addrlist_write(void)
       char buf[76] = { 0 };
       size_t nbytes = mutt_addrlist_write(buf, sizeof(buf), &al, false);
       TEST_CHECK(nbytes == sizeof(buf) - 1);
-      TEST_CHECK_STR_EQ("test@example.com, John Doe <john@doe.org>, \"Foo J. Bar\" <foo-j-bar@baz.com>", buf);
-      TEST_CHECK(buf[sizeof(in)-1] == '\0');
+      TEST_CHECK_STR_EQ("test@example.com, John Doe <john@doe.org>, \"Foo J. "
+                        "Bar\" <foo-j-bar@baz.com>",
+                        buf);
+      TEST_CHECK(buf[sizeof(in) - 1] == '\0');
     }
 
     mutt_addrlist_clear(&al);

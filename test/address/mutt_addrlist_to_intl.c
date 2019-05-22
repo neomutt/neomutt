@@ -43,23 +43,14 @@ void test_mutt_addrlist_to_intl(void)
   }
 
   {
-    struct {
+    struct
+    {
       const char *local;
       const char *intl;
-    } local2intl[] = {
-        {
-          .local = "test@äöüss.com",
-          .intl  = "test@xn--ss-uia6e4a.com"
-        },
-        {
-          .local = "test@nixieröhre.nixieclock-tube.com",
-          .intl  = "test@xn--nixierhre-57a.nixieclock-tube.com"
-        },
-        {
-          .local = "test@வலைப்பூ.com",
-          .intl  = "test@xn--xlcawl2e7azb.com"
-        }
-    };
+    } local2intl[] = { { .local = "test@äöüss.com", .intl = "test@xn--ss-uia6e4a.com" },
+                       { .local = "test@nixieröhre.nixieclock-tube.com",
+                         .intl = "test@xn--nixierhre-57a.nixieclock-tube.com" },
+                       { .local = "test@வலைப்பூ.com", .intl = "test@xn--xlcawl2e7azb.com" } };
 
     C_Charset = "utf-8";
     C_IdnEncode = true;
