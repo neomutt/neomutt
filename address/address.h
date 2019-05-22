@@ -72,6 +72,7 @@ struct Address *mutt_addr_create(const char *personal, const char *mailbox);
 const char *    mutt_addr_for_display(const struct Address *a);
 void            mutt_addr_free(struct Address **a);
 struct Address *mutt_addr_new(void);
+bool            mutt_addr_to_local(struct Address *a);
 size_t          mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool display);
 
 /* Functions that work on struct AddressList */

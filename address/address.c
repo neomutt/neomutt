@@ -1226,6 +1226,43 @@ int mutt_addrlist_to_intl(struct AddressList *al, char **err)
 }
 
 /**
+ * mutt_addr_to_local - Convert an Address from Punycode
+ * @param a Address to convert
+ * @param bool True on success, false otherwise
+ */
+bool mutt_addr_to_local(struct Address *a)
+{
+  if (!a->mailbox)
+  {
+    return false;
+  }
+
+  if (addr_is_local(a))
+  {
+    return true;
+  }
+
+  char *user = NULL;
+  char *domain = NULL;
+  if (addr_mbox_to_udomain(a->mailbox, &user, &domain) == -1)
+  {
+    return false;
+  }
+
+  char *local_mailbox = mutt_idna_intl_to_local(user, domain, 0);
+  FREE(&user);
+  FREE(&domain);
+
+  if (!local_mailbox)
+  {
+    return false;
+  }
+
+  addr_set_local(a, local_mailbox);
+  return true;
+}
+
+/**
  * mutt_addrlist_to_local - Convert an Address list from Punycode
  * @param al Address list to modify
  * @retval 0 Always
@@ -1238,21 +1275,7 @@ int mutt_addrlist_to_local(struct AddressList *al)
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
-    if (!a->mailbox || addr_is_local(a))
-      continue;
-
-    char *user = NULL;
-    char *domain = NULL;
-    if (addr_mbox_to_udomain(a->mailbox, &user, &domain) == -1)
-      continue;
-
-    char *local_mailbox = mutt_idna_intl_to_local(user, domain, 0);
-
-    FREE(&user);
-    FREE(&domain);
-
-    if (local_mailbox)
-      addr_set_local(a, local_mailbox);
+    mutt_addr_to_local(a);
   }
   return 0;
 }
