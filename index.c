@@ -1959,6 +1959,8 @@ int mutt_index_menu(void)
 #ifdef USE_NOTMUCH
       case OP_MAIN_ENTIRE_THREAD:
       {
+        if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
+          break;
         if (!Context || (Context->mailbox->magic != MUTT_NOTMUCH))
         {
           if (!CUR_EMAIL || !CUR_EMAIL->env || !CUR_EMAIL->env->message_id)
@@ -1981,8 +1983,6 @@ int mutt_index_menu(void)
           else
             main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint);
         }
-        if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
-          break;
         oldcount = Context->mailbox->msg_count;
         struct Email *oldcur = CUR_EMAIL;
         if (nm_read_entire_thread(Context->mailbox, CUR_EMAIL) < 0)
