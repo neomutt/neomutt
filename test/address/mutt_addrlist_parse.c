@@ -67,8 +67,9 @@ void test_mutt_addrlist_parse(void)
     int parsed = mutt_addrlist_parse(&alist,
         "Simple Address <test@example.com>,"
         "My Group: member1@group.org, member2@group.org, "
-        "\"John M. Doe\" <john@doe.org>; Another One <foo@bar.baz>");
-    TEST_CHECK(parsed == 5);
+        "\"John M. Doe\" <john@doe.org>; Another One <foo@bar.baz>, "
+        "Elvis (The Pelvis) Presley <elvis@king.com>");
+    TEST_CHECK(parsed == 6);
     TEST_CHECK(!TAILQ_EMPTY(&alist));
     struct Address *a = TAILQ_FIRST(&alist);
     TEST_CHECK_STR_EQ("test@example.com", a->mailbox);
@@ -86,6 +87,9 @@ void test_mutt_addrlist_parse(void)
     TEST_CHECK(a->group == 0);
     a = TAILQ_NEXT(a, entries);
     TEST_CHECK_STR_EQ("foo@bar.baz", a->mailbox);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK_STR_EQ("elvis@king.com", a->mailbox);
+    TEST_CHECK_STR_EQ("Elvis Presley", a->personal);
     a = TAILQ_NEXT(a, entries);
     TEST_CHECK(a == NULL);
     mutt_addrlist_clear(&alist);
