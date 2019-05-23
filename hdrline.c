@@ -570,13 +570,14 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
   struct Context *ctx = hfi->ctx;
   struct Mailbox *m = hfi->mailbox;
 
+  if (!e || !e->env)
+    return src;
+
   const struct Address *reply_to = TAILQ_FIRST(&e->env->reply_to);
   const struct Address *from = TAILQ_FIRST(&e->env->from);
   const struct Address *to = TAILQ_FIRST(&e->env->to);
   const struct Address *cc = TAILQ_FIRST(&e->env->cc);
 
-  if (!e || !e->env)
-    return src;
   buf[0] = '\0';
   switch (op)
   {

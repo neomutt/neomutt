@@ -76,7 +76,7 @@ struct Buffer *mutt_buffer_init(struct Buffer *buf)
  */
 void mutt_buffer_reset(struct Buffer *buf)
 {
-  if (!buf)
+  if (!buf || !buf->data || (buf->dsize == 0))
     return;
   memset(buf->data, 0, buf->dsize);
   buf->dptr = buf->data;

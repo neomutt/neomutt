@@ -1228,7 +1228,7 @@ int mutt_addrlist_to_intl(struct AddressList *al, char **err)
 /**
  * mutt_addr_to_local - Convert an Address from Punycode
  * @param a Address to convert
- * @param bool True on success, false otherwise
+ * @retval bool True on success, false otherwise
  */
 bool mutt_addr_to_local(struct Address *a)
 {
