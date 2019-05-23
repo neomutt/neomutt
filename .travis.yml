@@ -5,52 +5,23 @@ dist: xenial
 
 language: c
 compiler: gcc
-cache: ccache
 
 addons:
   apt:
     packages:
-      - autopoint
-      - docbook-simple
-      - docbook-xsl
       - gettext
-      - libdb-dev
-      - libgdbm-dev
-      - libgnutls-dev
-      - libgpgme11-dev
-      - libgss-dev
-      - libidn2-0-dev
-      - libkyotocabinet-dev
-      - liblmdb-dev
-      - liblua5.2-dev
-      - libnotmuch-dev
-      - libqdbm-dev
-      - libsasl2-dev
-      - libslang2-dev
-      - libssl-dev
-      - libtokyocabinet-dev
-      - libxml2-utils
-      - lua5.2
-      - lynx
-      - xsltproc
 
 git:
   depth: 3
 
-install:
-  - git clone --depth 1 https://github.com/neomutt/travis-build.git ~/config
-
-before_script:
-  - ccache --zero-stats
-  - export ANSI_CLEAR
-  - export -f travis_fold
-  - export -f travis_nanoseconds
-  - export -f travis_time_finish
-  - export -f travis_time_start
+env:
+  global:
+  - DEPLOY_REPO="git@github.com:neomutt/neomutt.github.io.git"
+  - DEPLOY_DIR="~/website"
+  - DEPLOY_FILE="translate.html"
 
 script:
-  - ~/config/build
+- .travis/stats.sh
 
-after_script:
-  - ccache --show-stats
-
+after_success:
+- .travis/deploy.sh
