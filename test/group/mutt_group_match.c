@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -35,7 +36,7 @@ void test_mutt_group_match(void)
   }
 
   {
-    struct Group group = { 0 };
+    struct Group group;
     TEST_CHECK(!mutt_group_match(&group, NULL));
   }
 }

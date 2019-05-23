@@ -5,7 +5,7 @@
  * @authors
  * Copyright (C) 1996-2000,2010 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>
- * Copyright (C) 2018 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2018-2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -742,31 +742,36 @@ void rfc2047_decode(char **pd)
 
 /**
  * rfc2047_encode_addrlist - Encode any RFC2047 headers, where required, in an Address list
- * @param addr Address list
+ * @param al   AddressList
  * @param tag  Header tag (used for wrapping calculation)
  */
-void rfc2047_encode_addrlist(struct Address *addr, const char *tag)
+void rfc2047_encode_addrlist(struct AddressList *al, const char *tag)
 {
-  struct Address *ptr = addr;
-  int col = tag ? strlen(tag) + 2 : 32;
+  if (!al)
+    return;
 
-  while (ptr)
+  int col = tag ? strlen(tag) + 2 : 32;
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
-    if (ptr->personal)
-      rfc2047_encode(&ptr->personal, AddressSpecials, col, C_SendCharset);
-    else if (ptr->group && ptr->mailbox)
-      rfc2047_encode(&ptr->mailbox, AddressSpecials, col, C_SendCharset);
-    ptr = ptr->next;
+    if (a->personal)
+      rfc2047_encode(&a->personal, AddressSpecials, col, C_SendCharset);
+    else if (a->group && a->mailbox)
+      rfc2047_encode(&a->mailbox, AddressSpecials, col, C_SendCharset);
   }
 }
 
 /**
  * rfc2047_decode_addrlist - Decode any RFC2047 headers in an Address list
- * @param a Address list
+ * @param al AddressList
  */
-void rfc2047_decode_addrlist(struct Address *a)
+void rfc2047_decode_addrlist(struct AddressList *al)
 {
-  while (a)
+  if (!al)
+    return;
+
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
     if (a->personal && ((strstr(a->personal, "=?")) || C_AssumedCharset))
     {
@@ -774,7 +779,6 @@ void rfc2047_decode_addrlist(struct Address *a)
     }
     else if (a->group && a->mailbox && strstr(a->mailbox, "=?"))
       rfc2047_decode(&a->mailbox);
-    a = a->next;
   }
 }
 
@@ -786,14 +790,14 @@ void rfc2047_decode_envelope(struct Envelope *env)
 {
   if (!env)
     return;
-  rfc2047_decode_addrlist(env->from);
-  rfc2047_decode_addrlist(env->to);
-  rfc2047_decode_addrlist(env->cc);
-  rfc2047_decode_addrlist(env->bcc);
-  rfc2047_decode_addrlist(env->reply_to);
-  rfc2047_decode_addrlist(env->mail_followup_to);
-  rfc2047_decode_addrlist(env->return_path);
-  rfc2047_decode_addrlist(env->sender);
+  rfc2047_decode_addrlist(&env->from);
+  rfc2047_decode_addrlist(&env->to);
+  rfc2047_decode_addrlist(&env->cc);
+  rfc2047_decode_addrlist(&env->bcc);
+  rfc2047_decode_addrlist(&env->reply_to);
+  rfc2047_decode_addrlist(&env->mail_followup_to);
+  rfc2047_decode_addrlist(&env->return_path);
+  rfc2047_decode_addrlist(&env->sender);
   rfc2047_decode(&env->x_label);
   rfc2047_decode(&env->subject);
 }
@@ -806,13 +810,13 @@ void rfc2047_encode_envelope(struct Envelope *env)
 {
   if (!env)
     return;
-  rfc2047_encode_addrlist(env->from, "From");
-  rfc2047_encode_addrlist(env->to, "To");
-  rfc2047_encode_addrlist(env->cc, "Cc");
-  rfc2047_encode_addrlist(env->bcc, "Bcc");
-  rfc2047_encode_addrlist(env->reply_to, "Reply-To");
-  rfc2047_encode_addrlist(env->mail_followup_to, "Mail-Followup-To");
-  rfc2047_encode_addrlist(env->sender, "Sender");
+  rfc2047_encode_addrlist(&env->from, "From");
+  rfc2047_encode_addrlist(&env->to, "To");
+  rfc2047_encode_addrlist(&env->cc, "Cc");
+  rfc2047_encode_addrlist(&env->bcc, "Bcc");
+  rfc2047_encode_addrlist(&env->reply_to, "Reply-To");
+  rfc2047_encode_addrlist(&env->mail_followup_to, "Mail-Followup-To");
+  rfc2047_encode_addrlist(&env->sender, "Sender");
   rfc2047_encode(&env->x_label, NULL, sizeof("X-Label:"), C_SendCharset);
   rfc2047_encode(&env->subject, NULL, sizeof("Subject:"), C_SendCharset);
 }

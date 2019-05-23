@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-2002,2004,2007 Michael R. Elkins <me@mutt.org>, and others
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -664,18 +665,22 @@ void mutt_default_save(char *path, size_t pathlen, struct Email *e)
   if (addr_hook(path, pathlen, MUTT_SAVE_HOOK, Context, e) == 0)
     return;
 
-  struct Address *addr = NULL;
   struct Envelope *env = e->env;
-  bool from_me = mutt_addr_is_user(env->from);
+  const struct Address *from = TAILQ_FIRST(&env->from);
+  const struct Address *reply_to = TAILQ_FIRST(&env->reply_to);
+  const struct Address *to = TAILQ_FIRST(&env->to);
+  const struct Address *cc = TAILQ_FIRST(&env->cc);
+  const struct Address *addr = NULL;
+  bool from_me = mutt_addr_is_user(from);
 
-  if (!from_me && env->reply_to && env->reply_to->mailbox)
-    addr = env->reply_to;
-  else if (!from_me && env->from && env->from->mailbox)
-    addr = env->from;
-  else if (env->to && env->to->mailbox)
-    addr = env->to;
-  else if (env->cc && env->cc->mailbox)
-    addr = env->cc;
+  if (!from_me && reply_to && reply_to->mailbox)
+    addr = reply_to;
+  else if (!from_me && from && from->mailbox)
+    addr = from;
+  else if (to && to->mailbox)
+    addr = to;
+  else if (cc && cc->mailbox)
+    addr = cc;
   else
     addr = NULL;
   if (addr)
@@ -696,10 +701,12 @@ void mutt_select_fcc(char *path, size_t pathlen, struct Email *e)
 {
   if (addr_hook(path, pathlen, MUTT_FCC_HOOK, NULL, e) != 0)
   {
-    struct Envelope *env = e->env;
-    if ((C_SaveName || C_ForceName) && (env->to || env->cc || env->bcc))
+    const struct Address *to = TAILQ_FIRST(&e->env->to);
+    const struct Address *cc = TAILQ_FIRST(&e->env->cc);
+    const struct Address *bcc = TAILQ_FIRST(&e->env->bcc);
+    if ((C_SaveName || C_ForceName) && (to || cc || bcc))
     {
-      struct Address *addr = env->to ? env->to : (env->cc ? env->cc : env->bcc);
+      const struct Address *addr = to ? to : (cc ? cc : bcc);
       char buf[PATH_MAX];
       mutt_safe_path(buf, sizeof(buf), addr);
       mutt_path_concat(path, NONULL(C_Folder), buf, pathlen);

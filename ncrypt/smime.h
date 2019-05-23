@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 2001-2002 Oliver Ehli <elmy@acm.org>
  * Copyright (C) 2004 g10 Code GmbH
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,7 +29,7 @@
 #include <stdio.h>
 #include "ncrypt.h"
 
-struct Address;
+struct AddressList;
 struct Body;
 struct Envelope;
 struct Email;
@@ -51,7 +52,7 @@ struct SmimeKey
 int          smime_class_application_handler(struct Body *m, struct State *s);
 struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist);
 int          smime_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur);
-char *       smime_class_find_keys(struct Address *addrlist, bool oppenc_mode);
+char *       smime_class_find_keys(struct AddressList *addrlist, bool oppenc_mode);
 void         smime_class_getkeys(struct Envelope *env);
 void         smime_class_invoke_import(char *infile, char *mailbox);
 int          smime_class_send_menu(struct Email *msg);

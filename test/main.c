@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2018 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,32 +27,30 @@
  * Add your test cases to this list.
  *****************************************************************************/
 #define NEOMUTT_TEST_LIST                                                      \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_append)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_addr_cat)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_addr_cmp)                                        \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_cmp_strict)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_addr_copy)                                       \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_copy_list)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_addr_for_display)                                \
   NEOMUTT_TEST_ITEM(test_mutt_addr_free)                                       \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_has_recips)                                 \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_is_intl)                                    \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_is_local)                                   \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_mbox_to_udomain)                            \
   NEOMUTT_TEST_ITEM(test_mutt_addr_new)                                        \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_parse_list)                                 \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_parse_list2)                                \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_qualify)                                    \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_remove_from_list)                           \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_remove_xrefs)                               \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_search)                                     \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_set_intl)                                   \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_set_local)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_addr_valid_msgid)                                \
   NEOMUTT_TEST_ITEM(test_mutt_addr_write)                                      \
-  NEOMUTT_TEST_ITEM(test_mutt_addr_write_single)                               \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_append)                                 \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_clear)                                  \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_copy)                                   \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_count_recips)                           \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_dedupe)                                 \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_equal)                                  \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_parse)                                  \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_parse2)                                 \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_prepend)                                \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_qualify)                                \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_remove)                                 \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_remove_xrefs)                           \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_search)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_to_intl)                                \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_to_local)                               \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_write)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_actx_add_attach)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_actx_add_body)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_actx_add_fp)                                     \

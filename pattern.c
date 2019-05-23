@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-2000,2006-2007,2010 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -1693,7 +1694,9 @@ static int match_addrlist(struct Pattern *pat, bool match_personal, int n, ...)
   va_start(ap, n);
   for (; n; n--)
   {
-    for (struct Address *a = va_arg(ap, struct Address *); a; a = a->next)
+    struct AddressList *al = va_arg(ap, struct AddressList *);
+    struct Address *a = NULL;
+    TAILQ_FOREACH(a, al, entries)
     {
       if (pat->alladdr ^ ((!pat->isalias || mutt_alias_reverse_lookup(a)) &&
                           ((a->mailbox && patmatch(pat, a->mailbox)) ||
@@ -1726,62 +1729,90 @@ static bool match_reference(struct Pattern *pat, struct ListHead *refs)
 }
 
 /**
- * mutt_is_list_recipient - Matches subscribed mailing lists
- * @param alladdr If true, ALL Addresses must be on the subscribed list
- * @param a1      First Address list
- * @param a2      Second Address list
- * @retval true One Address is subscribed (alladdr is false)
- * @retval true All the Addresses are subscribed (alladdr is true)
+ * typedef addr_predicate_t - Test an Address for some condition
+ * @param a Address to test
+ * @retval bool True if Address matches the test
  */
-int mutt_is_list_recipient(bool alladdr, struct Address *a1, struct Address *a2)
+typedef bool (*addr_predicate_t)(const struct Address *a);
+
+/**
+ * mutt_is_predicate_recipient - Test an Envelopes Addresses using a predicate function
+ * @param alladdr If true, ALL Addresses must match
+ * @param e       Envelope
+ * @param p       Predicate function, e.g. mutt_is_subscribed_list()
+ * @retval true One Address matches (alladdr is false)
+ * @retval true All the Addresses match (alladdr is true)
+ *
+ * Test the 'To' and 'Cc' fields of an Address using a test function (the predicate).
+ */
+static int mutt_is_predicate_recipient(bool alladdr, struct Envelope *e, addr_predicate_t p)
 {
-  for (; a1; a1 = a1->next)
-    if (alladdr ^ mutt_is_subscribed_list(a1))
-      return !alladdr;
-  for (; a2; a2 = a2->next)
-    if (alladdr ^ mutt_is_subscribed_list(a2))
-      return !alladdr;
+  struct AddressList *als[] = { &e->to, &e->cc };
+  for (size_t i = 0; i < mutt_array_size(als); ++i)
+  {
+    struct AddressList *al = als[i];
+    struct Address *a = NULL;
+    TAILQ_FOREACH(a, al, entries)
+    {
+      if (alladdr ^ p(a))
+        return !alladdr;
+    }
+  }
   return alladdr;
 }
 
 /**
- * mutt_is_list_cc - Matches known mailing lists
+ * mutt_is_subscribed_list_recipient - Matches subscribed mailing lists
+ * @param alladdr If true, ALL Addresses must be on the subscribed list
+ * @param e       Envelope
+ * @retval true One Address is subscribed (alladdr is false)
+ * @retval true All the Addresses are subscribed (alladdr is true)
+ */
+int mutt_is_subscribed_list_recipient(bool alladdr, struct Envelope *e)
+{
+  return mutt_is_predicate_recipient(alladdr, e, &mutt_is_subscribed_list);
+}
+
+/**
+ * mutt_is_list_recipient - Matches known mailing lists
  * @param alladdr If true, ALL Addresses must be mailing lists
- * @param a1      First Address list
- * @param a2      Second Address list
+ * @param e       Envelope
  * @retval true One Address is a mailing list (alladdr is false)
  * @retval true All the Addresses are mailing lists (alladdr is true)
- *
- * The function name may seem a little bit misleading: It checks all
- * recipients in To and Cc for known mailing lists, subscribed or not.
  */
-int mutt_is_list_cc(int alladdr, struct Address *a1, struct Address *a2)
+int mutt_is_list_recipient(bool alladdr, struct Envelope *e)
 {
-  for (; a1; a1 = a1->next)
-    if (alladdr ^ mutt_is_mail_list(a1))
-      return !alladdr;
-  for (; a2; a2 = a2->next)
-    if (alladdr ^ mutt_is_mail_list(a2))
-      return !alladdr;
-  return alladdr;
+  return mutt_is_predicate_recipient(alladdr, e, &mutt_is_mail_list);
 }
 
 /**
  * match_user - Matches the user's email Address
  * @param alladdr If true, ALL Addresses must refer to the user
- * @param a1      First Address list
- * @param a2      Second Address list
+ * @param al1     First AddressList
+ * @param al2     Second AddressList
  * @retval true One Address refers to the user (alladdr is false)
  * @retval true All the Addresses refer to the user (alladdr is true)
  */
-static int match_user(int alladdr, struct Address *a1, struct Address *a2)
+static int match_user(int alladdr, struct AddressList *al1, struct AddressList *al2)
 {
-  for (; a1; a1 = a1->next)
-    if (alladdr ^ mutt_addr_is_user(a1))
-      return !alladdr;
-  for (; a2; a2 = a2->next)
-    if (alladdr ^ mutt_addr_is_user(a2))
-      return !alladdr;
+  struct Address *a = NULL;
+  if (al1)
+  {
+    TAILQ_FOREACH(a, al1, entries)
+    {
+      if (alladdr ^ mutt_addr_is_user(a))
+        return !alladdr;
+    }
+  }
+
+  if (al2)
+  {
+    TAILQ_FOREACH(a, al2, entries)
+    {
+      if (alladdr ^ mutt_addr_is_user(a))
+        return !alladdr;
+    }
+  }
   return alladdr;
 }
 
@@ -2053,22 +2084,22 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       if (!e->env)
         return 0;
       return pat->not^match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1,
-                                     e->env->sender);
+                                     &e->env->sender);
     case MUTT_PAT_FROM:
       if (!e->env)
         return 0;
       return pat->not^match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1,
-                                     e->env->from);
+                                     &e->env->from);
     case MUTT_PAT_TO:
       if (!e->env)
         return 0;
       return pat->not^match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1,
-                                     e->env->to);
+                                     &e->env->to);
     case MUTT_PAT_CC:
       if (!e->env)
         return 0;
       return pat->not^match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1,
-                                     e->env->cc);
+                                     &e->env->cc);
     case MUTT_PAT_SUBJECT:
       if (!e->env)
         return 0;
@@ -2093,13 +2124,13 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       if (!e->env)
         return 0;
       return pat->not^match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 4,
-                                     e->env->from, e->env->sender, e->env->to,
-                                     e->env->cc);
+                                     &e->env->from, &e->env->sender,
+                                     &e->env->to, &e->env->cc);
     case MUTT_PAT_RECIPIENT:
       if (!e->env)
         return 0;
       return pat->not^match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 2,
-                                     e->env->to, e->env->cc);
+                                     &e->env->to, &e->env->cc);
     case MUTT_PAT_LIST: /* known list, subscribed or not */
     {
       if (!e->env)
@@ -2111,13 +2142,13 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
         int *cache_entry = pat->alladdr ? &cache->list_all : &cache->list_one;
         if (!is_pattern_cache_set(*cache_entry))
         {
-          set_pattern_cache_value(
-              cache_entry, mutt_is_list_cc(pat->alladdr, e->env->to, e->env->cc));
+          set_pattern_cache_value(cache_entry,
+                                  mutt_is_list_recipient(pat->alladdr, e->env));
         }
         result = get_pattern_cache_value(*cache_entry);
       }
       else
-        result = mutt_is_list_cc(pat->alladdr, e->env->to, e->env->cc);
+        result = mutt_is_list_recipient(pat->alladdr, e->env);
       return pat->not^result;
     }
     case MUTT_PAT_SUBSCRIBED_LIST:
@@ -2132,13 +2163,12 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
         if (!is_pattern_cache_set(*cache_entry))
         {
           set_pattern_cache_value(
-              cache_entry,
-              mutt_is_list_recipient(pat->alladdr, e->env->to, e->env->cc));
+              cache_entry, mutt_is_subscribed_list_recipient(pat->alladdr, e->env));
         }
         result = get_pattern_cache_value(*cache_entry);
       }
       else
-        result = mutt_is_list_recipient(pat->alladdr, e->env->to, e->env->cc);
+        result = mutt_is_subscribed_list_recipient(pat->alladdr, e->env);
       return pat->not^result;
     }
     case MUTT_PAT_PERSONAL_RECIP:
@@ -2152,13 +2182,13 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
         int *cache_entry = pat->alladdr ? &cache->pers_recip_all : &cache->pers_recip_one;
         if (!is_pattern_cache_set(*cache_entry))
         {
-          set_pattern_cache_value(cache_entry,
-                                  match_user(pat->alladdr, e->env->to, e->env->cc));
+          set_pattern_cache_value(
+              cache_entry, match_user(pat->alladdr, &e->env->to, &e->env->cc));
         }
         result = get_pattern_cache_value(*cache_entry);
       }
       else
-        result = match_user(pat->alladdr, e->env->to, e->env->cc);
+        result = match_user(pat->alladdr, &e->env->to, &e->env->cc);
       return pat->not^result;
     }
     case MUTT_PAT_PERSONAL_FROM:
@@ -2171,11 +2201,12 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       {
         int *cache_entry = pat->alladdr ? &cache->pers_from_all : &cache->pers_from_one;
         if (!is_pattern_cache_set(*cache_entry))
-          set_pattern_cache_value(cache_entry, match_user(pat->alladdr, e->env->from, NULL));
+          set_pattern_cache_value(cache_entry,
+                                  match_user(pat->alladdr, &e->env->from, NULL));
         result = get_pattern_cache_value(*cache_entry);
       }
       else
-        result = match_user(pat->alladdr, e->env->from, NULL);
+        result = match_user(pat->alladdr, &e->env->from, NULL);
       return pat->not^result;
     }
     case MUTT_PAT_COLLAPSED:

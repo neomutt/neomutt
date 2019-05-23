@@ -6,6 +6,7 @@
  * Copyright (C) 1996-2007,2010,2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2007 Thomas Roessler <roessler@does-not-exist.org>
  * Copyright (C) 2004 g10 Code GmbH
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -649,12 +650,12 @@ int main(int argc, char *argv[], char *envp[])
     struct ListNode *np = NULL;
     STAILQ_FOREACH(np, &bcc_list, entries)
     {
-      msg->env->bcc = mutt_addr_parse_list(msg->env->bcc, np->data);
+      mutt_addrlist_parse(&msg->env->bcc, np->data);
     }
 
     STAILQ_FOREACH(np, &cc_list, entries)
     {
-      msg->env->cc = mutt_addr_parse_list(msg->env->cc, np->data);
+      mutt_addrlist_parse(&msg->env->cc, np->data);
     }
 
     mutt_list_free(&bcc_list);
@@ -759,18 +760,17 @@ int main(int argc, char *argv[], char *envp[])
   if (!STAILQ_EMPTY(&alias_queries))
   {
     rc = 0;
-    struct Address *a = NULL;
     for (; optind < argc; optind++)
       mutt_list_insert_tail(&alias_queries, mutt_str_strdup(argv[optind]));
     struct ListNode *np = NULL;
     STAILQ_FOREACH(np, &alias_queries, entries)
     {
-      a = mutt_alias_lookup(np->data);
-      if (a)
+      struct AddressList *al = mutt_alias_lookup(np->data);
+      if (al)
       {
         /* output in machine-readable form */
-        mutt_addrlist_to_intl(a, NULL);
-        mutt_write_address_list(a, stdout, 0, 0);
+        mutt_addrlist_to_intl(al, NULL);
+        mutt_write_addrlist(al, stdout, 0, 0);
       }
       else
       {
@@ -870,10 +870,11 @@ int main(int argc, char *argv[], char *envp[])
         }
       }
       else
-        msg->env->to = mutt_addr_parse_list(msg->env->to, argv[i]);
+        mutt_addrlist_parse(&msg->env->to, argv[i]);
     }
 
-    if (!draft_file && C_Autoedit && !msg->env->to && !msg->env->cc)
+    if (!draft_file && C_Autoedit && TAILQ_EMPTY(&msg->env->to) &&
+        TAILQ_EMPTY(&msg->env->cc))
     {
       mutt_error(_("No recipients specified"));
       goto main_curses; // TEST26: neomutt -s test (with autoedit=yes)
@@ -1004,9 +1005,9 @@ int main(int argc, char *argv[], char *envp[])
           }
         }
 
-        mutt_addr_append(&msg->env->to, opts_env->to, false);
-        mutt_addr_append(&msg->env->cc, opts_env->cc, false);
-        mutt_addr_append(&msg->env->bcc, opts_env->bcc, false);
+        mutt_addrlist_copy(&msg->env->to, &opts_env->to, false);
+        mutt_addrlist_copy(&msg->env->cc, &opts_env->cc, false);
+        mutt_addrlist_copy(&msg->env->bcc, &opts_env->bcc, false);
         if (opts_env->subject)
           mutt_str_replace(&msg->env->subject, opts_env->subject);
 

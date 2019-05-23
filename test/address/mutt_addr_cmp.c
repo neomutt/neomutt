@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,7 +29,7 @@
 
 void test_mutt_addr_cmp(void)
 {
-  // bool mutt_addr_cmp(struct Address *a, struct Address *b);
+  // bool mutt_addr_cmp(const struct Address *a, const struct Address *b);
 
   {
     struct Address addr = { 0 };
@@ -38,5 +39,23 @@ void test_mutt_addr_cmp(void)
   {
     struct Address addr = { 0 };
     TEST_CHECK(!mutt_addr_cmp(&addr, NULL));
+  }
+
+  {
+    struct Address a1 = { .mailbox = "test@example.com" };
+    struct Address a2 = { .mailbox = "test@example.com" };
+    TEST_CHECK(mutt_addr_cmp(&a1, &a2));
+  }
+
+  {
+    struct Address a1 = { .mailbox = "test@example.com" };
+    struct Address a2 = { .mailbox = "TEST@example.COM" };
+    TEST_CHECK(mutt_addr_cmp(&a1, &a2));
+  }
+
+  {
+    struct Address a1 = { .mailbox = "test@example.com" };
+    struct Address a2 = { .mailbox = "test@example.com.org" };
+    TEST_CHECK(!mutt_addr_cmp(&a1, &a2));
   }
 }

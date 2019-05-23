@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-2000,2002,2014 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -939,16 +940,16 @@ static int copy_delete_attach(struct Body *b, FILE *fp_in, FILE *fp_out, char *d
 
 /**
  * format_address_header - Write address headers to a buffer
- * @param[out] h Array of header strings
- * @param[in]  a Email Address
+ * @param[out] h  Array of header strings
+ * @param[in]  al AddressList
  *
- * This function is the equivalent of mutt_write_address_list(), but writes to
- * a buffer instead of writing to a stream.  mutt_write_address_list could be
+ * This function is the equivalent of mutt_write_addrlist(), but writes to
+ * a buffer instead of writing to a stream.  mutt_write_addrlist could be
  * re-used if we wouldn't store all the decoded headers in a huge array, first.
  *
  * TODO fix that.
  */
-static void format_address_header(char **h, struct Address *a)
+static void format_address_header(char **h, struct AddressList *al)
 {
   char buf[8192];
   char cbuf[256];
@@ -961,17 +962,16 @@ static void format_address_header(char **h, struct Address *a)
   buflen = linelen + 3;
 
   mutt_mem_realloc(h, buflen);
-  for (int count = 0; a; a = a->next, count++)
+  struct Address *first = TAILQ_FIRST(al);
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
-    struct Address *tmp = a->next;
-    a->next = NULL;
     *buf = '\0';
     *cbuf = '\0';
     *c2buf = '\0';
     const size_t l = mutt_addr_write(buf, sizeof(buf), a, false);
-    a->next = tmp;
 
-    if (count && (linelen + l > 74))
+    if (a != first && (linelen + l > 74))
     {
       strcpy(cbuf, "\n\t");
       linelen = l + 8;
@@ -985,7 +985,7 @@ static void format_address_header(char **h, struct Address *a)
       }
       linelen += l;
     }
-    if (!a->group && a->next && a->next->mailbox)
+    if (!a->group && TAILQ_NEXT(a, entries) && TAILQ_NEXT(a, entries)->mailbox)
     {
       linelen++;
       buflen++;
@@ -1020,9 +1020,6 @@ static int address_header_decode(char **h)
   char *s = *h;
   size_t l;
   bool rp = false;
-
-  struct Address *a = NULL;
-  struct Address *cur = NULL;
 
   switch (tolower((unsigned char) *s))
   {
@@ -1079,15 +1076,21 @@ static int address_header_decode(char **h)
       return 0;
   }
 
-  a = mutt_addr_parse_list(a, s + l);
-  if (!a)
+  struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+  mutt_addrlist_parse(&al, s + l);
+  if (TAILQ_EMPTY(&al))
     return 0;
 
-  mutt_addrlist_to_local(a);
-  rfc2047_decode_addrlist(a);
-  for (cur = a; cur; cur = cur->next)
-    if (cur->personal)
-      mutt_str_dequote_comment(cur->personal);
+  mutt_addrlist_to_local(&al);
+  rfc2047_decode_addrlist(&al);
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, &al, entries)
+  {
+    if (a->personal)
+    {
+      mutt_str_dequote_comment(a->personal);
+    }
+  }
 
   /* angle brackets for return path are mandated by RFC5322,
    * so leave Return-Path as-is */
@@ -1097,10 +1100,10 @@ static int address_header_decode(char **h)
   {
     *h = mutt_mem_calloc(1, l + 2);
     mutt_str_strfcpy(*h, s, l + 1);
-    format_address_header(h, a);
+    format_address_header(h, &al);
   }
 
-  mutt_addr_free(&a);
+  mutt_addrlist_clear(&al);
 
   FREE(&s);
   return 1;

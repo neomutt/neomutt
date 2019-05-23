@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_addrlist_dedupe()
+ * Test code for mutt_addrlist_qualify()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -28,33 +28,33 @@
 #include "address/lib.h"
 #include "common.h"
 
-void test_mutt_addrlist_dedupe(void)
+void test_mutt_addrlist_qualify(void)
 {
-  // void mutt_addrlist_dedupe(struct AddressList *al);
+  // void mutt_addrlist_qualify(struct AddressList *al, const char *host);
 
   {
-    mutt_addrlist_dedupe(NULL);
-    TEST_CHECK_(1, "mutt_addrlist_dedupe(NULL)");
+    mutt_addrlist_qualify(NULL, "example.com");
+    TEST_CHECK_(1, "mutt_addrlist_qualify(NULL, \"example.com\")");
   }
 
   {
     struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-    int parsed = mutt_addrlist_parse(
-        &al,
-        "Name 1 <test@example.com>, john@doe.org, toast@example.com,"
-        "Another <test@example.com>, toast@bar.org, foo@bar.baz, john@doe.org");
-    TEST_CHECK(parsed == 7);
-    mutt_addrlist_dedupe(&al);
+    mutt_addrlist_qualify(&al, NULL);
+    TEST_CHECK_(1, "mutt_addrlist_qualify(&addr, NULL)");
+  }
+
+  {
+    struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+    mutt_addrlist_parse(&al, "john@doe.org, user1, user2, test@example.com");
+    mutt_addrlist_qualify(&al, "local.domain");
     struct Address *a = TAILQ_FIRST(&al);
-    TEST_CHECK_STR_EQ("test@example.com", a->mailbox);
-    a = TAILQ_NEXT(a, entries);
     TEST_CHECK_STR_EQ("john@doe.org", a->mailbox);
     a = TAILQ_NEXT(a, entries);
-    TEST_CHECK_STR_EQ("toast@example.com", a->mailbox);
+    TEST_CHECK_STR_EQ("user1@local.domain", a->mailbox);
     a = TAILQ_NEXT(a, entries);
-    TEST_CHECK_STR_EQ("toast@bar.org", a->mailbox);
+    TEST_CHECK_STR_EQ("user2@local.domain", a->mailbox);
     a = TAILQ_NEXT(a, entries);
-    TEST_CHECK_STR_EQ("foo@bar.baz", a->mailbox);
+    TEST_CHECK_STR_EQ("test@example.com", a->mailbox);
     a = TAILQ_NEXT(a, entries);
     TEST_CHECK(a == NULL);
     mutt_addrlist_clear(&al);

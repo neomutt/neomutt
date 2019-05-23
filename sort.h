@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -52,7 +53,7 @@ sort_t *mutt_get_sort_func(enum SortType method);
 void mutt_sort_headers(struct Context *ctx, bool init);
 int perform_auxsort(int retval, const void *a, const void *b);
 
-const char *mutt_get_name(struct Address *a);
+const char *mutt_get_name(const struct Address *a);
 
 /* These variables are backing for config items */
 WHERE short C_Sort;    ///< Config: Sort method for the index

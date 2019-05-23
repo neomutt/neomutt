@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 1996-2000,2011-2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,6 +29,7 @@
  */
 
 #include "config.h"
+#include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -63,21 +65,6 @@ const char *const AddressErrors[] = {
   "out of memory",   "mismatched parentheses", "mismatched quotes",
   "bad route in <>", "bad address in <>",      "bad address spec",
 };
-
-/**
- * free_address - Free a single Address
- * @param[out] a Address to free
- *
- * @note This doesn't alter the links if the Address is in a list.
- */
-static void free_address(struct Address **a)
-{
-  if (!a || !*a)
-    return;
-  FREE(&(*a)->personal);
-  FREE(&(*a)->mailbox);
-  FREE(a);
-}
 
 /**
  * parse_comment - Extract a comment (parenthesised string)
@@ -367,14 +354,14 @@ static const char *parse_addr_spec(const char *s, char *comment, size_t *comment
 
 /**
  * add_addrspec - Parse an email address and add an Address to a list
- * @param[out] top        Top of Address list
- * @param[out] last       End of Address list
+ * @param[out] al         Address list
  * @param[in]  phrase     String to parse
  * @param[out] comment    Buffer for any comments
  * @param[out] commentlen Length of any comments
  * @param[in]  commentmax Length of the comments buffer
+ * @retval bool True if an address was successfully parsed and added
  */
-static void add_addrspec(struct Address **top, struct Address **last, const char *phrase,
+static bool add_addrspec(struct AddressList *al, const char *phrase,
                          char *comment, size_t *commentlen, size_t commentmax)
 {
   struct Address *cur = mutt_addr_new();
@@ -382,21 +369,18 @@ static void add_addrspec(struct Address **top, struct Address **last, const char
   if (!parse_addr_spec(phrase, comment, commentlen, commentmax, cur))
   {
     mutt_addr_free(&cur);
-    return;
+    return false;
   }
 
-  if (*last)
-    (*last)->next = cur;
-  else
-    *top = cur;
-  *last = cur;
+  mutt_addrlist_append(al, cur);
+  return true;
 }
 
 /**
  * mutt_addr_new - Create a new Address
  * @retval ptr Newly allocated Address
  *
- * Free the result with free_address() or mutt_addr_free()
+ * Free the result with mutt_addr_free()
  */
 struct Address *mutt_addr_new(void)
 {
@@ -404,40 +388,46 @@ struct Address *mutt_addr_new(void)
 }
 
 /**
- * mutt_addr_remove_from_list - Remove an Address from a list
- * @param[out] a       Address list
+ * mutt_addr_create - Create and populate a new Address
+ * @param[in] personal The personal name for the Address (can be NULL)
+ * @param[in] mailbox The mailbox for the Address (can be NULL)
+ * @retval ptr Newly allocated Address
+ * @note The personal and mailbox values, if not NULL, are going to be copied
+ * into the newly allocated Address.
+ */
+struct Address *mutt_addr_create(const char *personal, const char *mailbox)
+{
+  struct Address *a = mutt_addr_new();
+  a->personal = mutt_str_strdup(personal);
+  a->mailbox = mutt_str_strdup(mailbox);
+  return a;
+}
+
+
+/**
+ * mutt_addrlist_remove - Remove an Address from a list
+ * @param[in, out] al AddressList
  * @param[in]  mailbox Email address to match
  * @retval  0 Success
  * @retval -1 Error, or email not found
  */
-int mutt_addr_remove_from_list(struct Address **a, const char *mailbox)
+int mutt_addrlist_remove(struct AddressList *al, const char *mailbox)
 {
-  if (!a)
+  if (!al)
     return -1;
+
   if (!mailbox)
     return 0;
 
   int rc = -1;
-
-  struct Address *p = *a;
-  struct Address *last = NULL;
-  while (p)
+  struct Address *a = NULL, *tmp = NULL;
+  TAILQ_FOREACH_SAFE(a, al, entries, tmp)
   {
-    if (mutt_str_strcasecmp(mailbox, p->mailbox) == 0)
+    if (mutt_str_strcasecmp(mailbox, a->mailbox) == 0)
     {
-      if (last)
-        last->next = p->next;
-      else
-        (*a) = p->next;
-      struct Address *t = p;
-      p = p->next;
-      free_address(&t);
+      TAILQ_REMOVE(al, a, entries);
+      mutt_addr_free(&a);
       rc = 0;
-    }
-    else
-    {
-      last = p;
-      p = p->next;
     }
   }
 
@@ -445,251 +435,237 @@ int mutt_addr_remove_from_list(struct Address **a, const char *mailbox)
 }
 
 /**
- * mutt_addr_free - Free a list of Addresses
- * @param[out] p Top of the list
+ * mutt_addr_free - Free a single Address
+ * @param[out] a Address to free
  */
-void mutt_addr_free(struct Address **p)
+void mutt_addr_free(struct Address **a)
 {
-  if (!p)
+  if (!a || !*a)
     return;
-
-  struct Address *t = NULL;
-
-  while (*p)
-  {
-    t = *p;
-    *p = (*p)->next;
-    free_address(&t);
-  }
+  FREE(&(*a)->personal);
+  FREE(&(*a)->mailbox);
+  FREE(a);
 }
 
 /**
- * mutt_addr_parse_list - Parse a list of email addresses
- * @param top List to append addresses
- * @param s   String to parse
- * @retval ptr  Top of the address list
- * @retval NULL Error
+ * mutt_addrlist_parse - Parse a list of email addresses
+ * @param al AddressList to append addresses
+ * @param s  String to parse
+ * @retval num Number of parsed addresses
  */
-struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
+int mutt_addrlist_parse(struct AddressList *al, const char *s)
 {
   if (!s)
-    return NULL;
+    return 0;
 
-  const char *ps = NULL;
+  int parsed = 0;
   char comment[1024], phrase[1024];
   size_t phraselen = 0, commentlen = 0;
-  struct Address *cur = NULL;
-
   AddressError = 0;
-
-  struct Address *last = top;
-  while (last && last->next)
-    last = last->next;
 
   bool ws_pending = mutt_str_is_email_wsp(*s);
 
   s = mutt_str_skip_email_wsp(s);
   while (*s)
   {
-    if (*s == ',')
+    switch (*s)
     {
-      if (phraselen != 0)
+      case ';':
+      case ',':
+        if (phraselen != 0)
+        {
+          terminate_buffer(phrase, phraselen);
+          if (add_addrspec(al, phrase, comment, &commentlen, sizeof(comment) - 1))
+          {
+            parsed++;
+          }
+        }
+        else if (commentlen != 0)
+        {
+          struct Address *last = TAILQ_LAST(al, AddressList);
+          if (last && !last->personal)
+          {
+            terminate_buffer(comment, commentlen);
+            last->personal = mutt_str_strdup(comment);
+          }
+        }
+
+        if (*s == ';')
+        {
+          /* add group terminator */
+          mutt_addrlist_append(al, mutt_addr_new());
+        }
+
+        phraselen = 0;
+        commentlen = 0;
+        s++;
+        break;
+
+      case '(':
+        if ((commentlen != 0) && (commentlen < (sizeof(comment) - 1)))
+          comment[commentlen++] = ' ';
+        s = next_token(s, comment, &commentlen, sizeof(comment) - 1);
+        if (!s)
+        {
+          mutt_addrlist_clear(al);
+          return 0;
+        }
+        break;
+
+      case '"':
+        if ((phraselen != 0) && (phraselen < (sizeof(phrase) - 1)))
+          phrase[phraselen++] = ' ';
+        s = parse_quote(s + 1, phrase, &phraselen, sizeof(phrase) - 1);
+        if (!s)
+        {
+          mutt_addrlist_clear(al);
+          return 0;
+        }
+        break;
+
+      case ':':
       {
+        struct Address *a = mutt_addr_new();
         terminate_buffer(phrase, phraselen);
-        add_addrspec(&top, &last, phrase, comment, &commentlen, sizeof(comment) - 1);
-      }
-      else if ((commentlen != 0) && last && !last->personal)
-      {
-        terminate_buffer(comment, commentlen);
-        last->personal = mutt_str_strdup(comment);
+        a->mailbox = mutt_str_strdup(phrase);
+        a->group = true;
+        mutt_addrlist_append(al, a);
+        phraselen = 0;
+        commentlen = 0;
+        s++;
+        break;
       }
 
-      commentlen = 0;
-      phraselen = 0;
-      s++;
-    }
-    else if (*s == '(')
-    {
-      if ((commentlen != 0) && (commentlen < (sizeof(comment) - 1)))
-        comment[commentlen++] = ' ';
-      ps = next_token(s, comment, &commentlen, sizeof(comment) - 1);
-      if (!ps)
+      case '<':
       {
-        mutt_addr_free(&top);
-        return NULL;
-      }
-      s = ps;
-    }
-    else if (*s == '"')
-    {
-      if ((phraselen != 0) && (phraselen < (sizeof(phrase) - 1)))
-        phrase[phraselen++] = ' ';
-      ps = parse_quote(s + 1, phrase, &phraselen, sizeof(phrase) - 1);
-      if (!ps)
-      {
-        mutt_addr_free(&top);
-        return NULL;
-      }
-      s = ps;
-    }
-    else if (*s == ':')
-    {
-      cur = mutt_addr_new();
-      terminate_buffer(phrase, phraselen);
-      cur->mailbox = mutt_str_strdup(phrase);
-      cur->group = 1;
-
-      if (last)
-        last->next = cur;
-      else
-        top = cur;
-      last = cur;
-
-      phraselen = 0;
-      commentlen = 0;
-      s++;
-    }
-    else if (*s == ';')
-    {
-      if (phraselen != 0)
-      {
+        struct Address *a = mutt_addr_new();
         terminate_buffer(phrase, phraselen);
-        add_addrspec(&top, &last, phrase, comment, &commentlen, sizeof(comment) - 1);
-      }
-      else if ((commentlen != 0) && last && !last->personal)
-      {
-        terminate_buffer(comment, commentlen);
-        last->personal = mutt_str_strdup(comment);
-      }
-
-      /* add group terminator */
-      cur = mutt_addr_new();
-      if (last)
-        last->next = cur;
-      else
-        top = cur;
-      last = cur;
-
-      phraselen = 0;
-      commentlen = 0;
-      s++;
-    }
-    else if (*s == '<')
-    {
-      terminate_buffer(phrase, phraselen);
-      cur = mutt_addr_new();
-      if (phraselen != 0)
-        cur->personal = mutt_str_strdup(phrase);
-      ps = parse_route_addr(s + 1, comment, &commentlen, sizeof(comment) - 1, cur);
-      if (!ps)
-      {
-        mutt_addr_free(&top);
-        mutt_addr_free(&cur);
-        return NULL;
+        a->personal = mutt_str_strdup(phrase);
+        s = parse_route_addr(s + 1, comment, &commentlen, sizeof(comment) - 1, a);
+        if (!s)
+        {
+          mutt_addrlist_clear(al);
+          mutt_addr_free(&a);
+          return 0;
+        }
+        mutt_addrlist_append(al, a);
+        phraselen = 0;
+        commentlen = 0;
+        parsed++;
+        break;
       }
 
-      if (last)
-        last->next = cur;
-      else
-        top = cur;
-      last = cur;
+      default:
+        if ((phraselen != 0) && (phraselen < (sizeof(phrase) - 1)) && ws_pending)
+          phrase[phraselen++] = ' ';
+        s = next_token(s, phrase, &phraselen, sizeof(phrase) - 1);
+        if (!s)
+        {
+          mutt_addrlist_clear(al);
+          return 0;
+        }
+        break;
+    } // switch (*s)
 
-      phraselen = 0;
-      commentlen = 0;
-      s = ps;
-    }
-    else
-    {
-      if ((phraselen != 0) && (phraselen < (sizeof(phrase) - 1)) && ws_pending)
-        phrase[phraselen++] = ' ';
-      ps = next_token(s, phrase, &phraselen, sizeof(phrase) - 1);
-      if (!ps)
-      {
-        mutt_addr_free(&top);
-        return NULL;
-      }
-      s = ps;
-    }
     ws_pending = mutt_str_is_email_wsp(*s);
     s = mutt_str_skip_email_wsp(s);
-  }
+  } // while (*s)
 
   if (phraselen != 0)
   {
     terminate_buffer(phrase, phraselen);
     terminate_buffer(comment, commentlen);
-    add_addrspec(&top, &last, phrase, comment, &commentlen, sizeof(comment) - 1);
+    if (add_addrspec(al, phrase, comment, &commentlen, sizeof(comment) - 1))
+    {
+      parsed++;
+    }
   }
-  else if ((commentlen != 0) && last && !last->personal)
+  else if (commentlen != 0)
   {
-    terminate_buffer(comment, commentlen);
-    last->personal = mutt_str_strdup(comment);
+    struct Address *last = TAILQ_LAST(al, AddressList);
+    if (last && !last->personal)
+    {
+      terminate_buffer(comment, commentlen);
+      last->personal = mutt_str_strdup(comment);
+    }
   }
 
-  return top;
+  return parsed;
 }
 
 /**
- * mutt_addr_parse_list2 - Parse a list of email addresses
- * @param p Add to this List of Addresses
+ * mutt_addrlist_parse2 - Parse a list of email addresses
+ * @param al Add to this List of Addresses
  * @param s String to parse
- * @retval ptr Head of the list of addresses
+ * @retval num Number of parsed addresses
  *
- * The email addresses can be separated by whitespace or commas.
+ * Simple email addresses (without any personal name or grouping) can be
+ * separated by whitespace or commas.
  */
-struct Address *mutt_addr_parse_list2(struct Address *p, const char *s)
+int mutt_addrlist_parse2(struct AddressList *al, const char *s)
 {
   if (!s)
-    return NULL;
+    return 0;
+
+  int parsed = 0;
 
   /* check for a simple whitespace separated list of addresses */
-  const char *q = strpbrk(s, "\"<>():;,\\");
-  if (!q)
+  if (!strpbrk(s, "\"<>():;,\\"))
   {
-    struct Buffer *tmp = mutt_buffer_alloc(1024);
-    mutt_buffer_strcpy(tmp, s);
-    char *r = tmp->data;
+    char *copy = mutt_str_strdup(s);
+    char *r = copy;
     while ((r = strtok(r, " \t")))
     {
-      p = mutt_addr_parse_list(p, r);
+      parsed += mutt_addrlist_parse(al, r);
       r = NULL;
     }
-    mutt_buffer_free(&tmp);
+    FREE(&copy);
   }
   else
-    p = mutt_addr_parse_list(p, s);
+    parsed = mutt_addrlist_parse(al, s);
 
-  return p;
+  return parsed;
 }
 
 /**
- * mutt_addr_qualify - Expand local names in an Address list using a hostname
- * @param addr Address list
+ * mutt_addrlist_qualify - Expand local names in an Address list using a hostname
+ * @param al   Address list
  * @param host Hostname
  *
  * Any addresses containing a bare name will be expanded using the hostname.
- * e.g. "john", "example.com" -> 'john@example.com'.
+ * e.g. "john", "example.com" -> 'john@example.com'. This function has no
+ * effect if host is NULL or the empty string.
  */
-void mutt_addr_qualify(struct Address *addr, const char *host)
+void mutt_addrlist_qualify(struct AddressList *al, const char *host)
 {
-  for (; addr; addr = addr->next)
+  if (!al || !host || !*host)
+    return;
+
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
-    if (!addr->group && addr->mailbox && !strchr(addr->mailbox, '@'))
+    if (!a->group && a->mailbox && !strchr(a->mailbox, '@'))
     {
-      char *p = mutt_mem_malloc(mutt_str_strlen(addr->mailbox) + mutt_str_strlen(host) + 2);
-      sprintf(p, "%s@%s", addr->mailbox, host);
-      FREE(&addr->mailbox);
-      addr->mailbox = p;
+      char *p = mutt_mem_malloc(mutt_str_strlen(a->mailbox) + mutt_str_strlen(host) + 2);
+      sprintf(p, "%s@%s", a->mailbox, host);
+      FREE(&a->mailbox);
+      a->mailbox = p;
     }
   }
 }
 
 /**
- * mutt_addr_cat - Copy a string and escape the specified characters
+ * mutt_addr_cat - Copy a string and wrap it in quotes if it contains special characters
  * @param buf      Buffer for the result
  * @param buflen   Length of the result buffer
  * @param value    String to copy
- * @param specials Characters to be escaped
+ * @param specials Characters to lookup
+ *
+ * This function copies the string in the "value" parameter in the buffer
+ * pointed to by "buf" parameter. If the input string contains any of the
+ * characters specified in the "specials" parameters, the output string is
+ * wrapped in double quoted. Additionally, any backslashes or quotes inside the
+ * input string are backslash-escaped.
  */
 void mutt_addr_cat(char *buf, size_t buflen, const char *value, const char *specials)
 {
@@ -726,7 +702,7 @@ void mutt_addr_cat(char *buf, size_t buflen, const char *value, const char *spec
  * @param addr Address to copy
  * @retval ptr New Address
  */
-struct Address *mutt_addr_copy(struct Address *addr)
+struct Address *mutt_addr_copy(const struct Address *addr)
 {
   if (!addr)
     return NULL;
@@ -742,65 +718,29 @@ struct Address *mutt_addr_copy(struct Address *addr)
 }
 
 /**
- * mutt_addr_copy_list - Copy a list of addresses
- * @param addr  Address list
+ * mutt_addrlist_copy - Copy a list of addresses into another list
+ * @param dst   Destination Address list
+ * @param src   Source Address list
  * @param prune Skip groups if there are more addresses
- * @retval ptr New Address list
  */
-struct Address *mutt_addr_copy_list(struct Address *addr, bool prune)
+void mutt_addrlist_copy(struct AddressList *dst, const struct AddressList *src, bool prune)
 {
-  struct Address *top = NULL, *last = NULL;
+  if (!dst || !src)
+    return;
 
-  for (; addr; addr = addr->next)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, src, entries)
   {
-    if (prune && addr->group && (!addr->next || !addr->next->mailbox))
+    struct Address *next = TAILQ_NEXT(a, entries);
+    if (prune && a->group && (!next || !next->mailbox))
     {
       /* ignore this element of the list */
     }
-    else if (last)
-    {
-      last->next = mutt_addr_copy(addr);
-      last = last->next;
-    }
     else
     {
-      last = mutt_addr_copy(addr);
-      top = last;
+      mutt_addrlist_append(dst, mutt_addr_copy(a));
     }
   }
-  return top;
-}
-
-/**
- * mutt_addr_append - Append one list of addresses onto another
- * @param[out] a     Destination Address list
- * @param[in]  b     Source Address list
- * @param[in]  prune Skip groups if there are more addresses
- * @retval ptr Last Address in the combined list
- *
- * Append the Source onto the end of the Destination Address list.
- */
-struct Address *mutt_addr_append(struct Address **a, struct Address *b, bool prune)
-{
-  if (!a)
-    return NULL;
-
-  struct Address *tmp = *a;
-
-  while (tmp && tmp->next)
-    tmp = tmp->next;
-  if (!b)
-    return tmp;
-  if (tmp)
-    tmp->next = mutt_addr_copy_list(b, prune);
-  else
-  {
-    *a = mutt_addr_copy_list(b, prune);
-    tmp = *a;
-  }
-  while (tmp && tmp->next)
-    tmp = tmp->next;
-  return tmp;
 }
 
 /**
@@ -853,46 +793,53 @@ bool mutt_addr_valid_msgid(const char *msgid)
 }
 
 /**
- * mutt_addr_cmp_strict - Strictly compare two Address lists
- * @param a First Address
- * @param b Second Address
+ * mutt_addrlist_equal - Compare two Address lists for equality
+ * @param ala First Address
+ * @param alb Second Address
  * @retval true Address lists are strictly identical
  */
-bool mutt_addr_cmp_strict(const struct Address *a, const struct Address *b)
+bool mutt_addrlist_equal(const struct AddressList *ala, const struct AddressList *alb)
 {
-  while (a && b)
+  if (!ala || !alb)
   {
-    if ((mutt_str_strcmp(a->mailbox, b->mailbox) != 0) ||
-        (mutt_str_strcmp(a->personal, b->personal) != 0))
+    return !(ala || alb);
+  }
+
+  struct Address *ana = TAILQ_FIRST(ala);
+  struct Address *anb = TAILQ_FIRST(alb);
+
+  while (ana && anb)
+  {
+    if ((mutt_str_strcmp(ana->mailbox, anb->mailbox) != 0) ||
+        (mutt_str_strcmp(ana->personal, anb->personal) != 0))
     {
-      return false;
+      break;
     }
 
-    a = a->next;
-    b = b->next;
+    ana = TAILQ_NEXT(ana, entries);
+    anb = TAILQ_NEXT(anb, entries);
   }
-  if (a || b)
-    return false;
 
-  return true;
+  return !(ana || anb);
 }
 
 /**
- * mutt_addr_has_recips - Count the number of Addresses with valid recipients
- * @param a Address list
+ * mutt_addrlist_count_recips - Count the number of Addresses with valid recipients
+ * @param al Address list
  * @retval num Number of valid Addresses
  *
- * An Address has a recipient if the mailbox or group is set.
+ * An Address has a recipient if the mailbox is set and is not a group
  */
-int mutt_addr_has_recips(struct Address *a)
+int mutt_addrlist_count_recips(const struct AddressList *al)
 {
-  int c = 0;
+  if (!al)
+    return 0;
 
-  for (; a; a = a->next)
+  int c = 0;
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
-    if (!a->mailbox || a->group)
-      continue;
-    c++;
+    c += (a->mailbox && !a->group);
   }
   return c;
 }
@@ -903,7 +850,7 @@ int mutt_addr_has_recips(struct Address *a)
  * @param b Address 2
  * @retval true if they are equivalent
  */
-bool mutt_addr_cmp(struct Address *a, struct Address *b)
+bool mutt_addr_cmp(const struct Address *a, const struct Address *b)
 {
   if (!a || !b)
     return false;
@@ -915,27 +862,31 @@ bool mutt_addr_cmp(struct Address *a, struct Address *b)
 }
 
 /**
- * mutt_addr_search - Search for an e-mail address in a list
- * @param a   Address containing the search email
- * @param lst Address List
+ * mutt_addrlist_search - Search for an e-mail address in a list
+ * @param needle   Address containing the search email
+ * @param haystack Address List
  * @retval true If the Address is in the list
  */
-bool mutt_addr_search(struct Address *a, struct Address *lst)
+bool mutt_addrlist_search(const struct Address *needle, const struct AddressList *haystack)
 {
-  for (; lst; lst = lst->next)
+  if (!needle || !haystack)
+    return false;
+
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, haystack, entries)
   {
-    if (mutt_addr_cmp(a, lst))
+    if (mutt_addr_cmp(needle, a))
       return true;
   }
   return false;
 }
 
 /**
- * mutt_addr_is_intl - Does the Address have IDN components
+ * addr_is_intl - Does the Address have IDN components
  * @param a Address to check
  * @retval true Address contains IDN components
  */
-bool mutt_addr_is_intl(struct Address *a)
+static bool addr_is_intl(const struct Address *a)
 {
   if (!a)
     return false;
@@ -943,11 +894,11 @@ bool mutt_addr_is_intl(struct Address *a)
 }
 
 /**
- * mutt_addr_is_local - Does the Address have NO IDN components
+ * addr_is_local - Does the Address have NO IDN components
  * @param a Address to check
  * @retval true Address contains NO IDN components
  */
-bool mutt_addr_is_local(struct Address *a)
+static bool addr_is_local(const struct Address *a)
 {
   if (!a)
     return false;
@@ -955,7 +906,7 @@ bool mutt_addr_is_local(struct Address *a)
 }
 
 /**
- * mutt_addr_mbox_to_udomain - Split a mailbox name into user and domain
+ * addr_mbox_to_udomain - Split a mailbox name into user and domain
  * @param[in]  mbox   Mailbox name to split
  * @param[out] user   User
  * @param[out] domain Domain
@@ -964,7 +915,7 @@ bool mutt_addr_is_local(struct Address *a)
  *
  * @warning The caller must free user and domain
  */
-int mutt_addr_mbox_to_udomain(const char *mbox, char **user, char **domain)
+static int addr_mbox_to_udomain(const char *mbox, char **user, char **domain)
 {
   if (!mbox || !user || !domain)
     return -1;
@@ -982,11 +933,11 @@ int mutt_addr_mbox_to_udomain(const char *mbox, char **user, char **domain)
 }
 
 /**
- * mutt_addr_set_intl - Mark an Address as having IDN components
+ * addr_set_intl - Mark an Address as having IDN components
  * @param a            Address to modify
  * @param intl_mailbox Email address with IDN components
  */
-void mutt_addr_set_intl(struct Address *a, char *intl_mailbox)
+static void addr_set_intl(struct Address *a, char *intl_mailbox)
 {
   if (!a)
     return;
@@ -998,11 +949,11 @@ void mutt_addr_set_intl(struct Address *a, char *intl_mailbox)
 }
 
 /**
- * mutt_addr_set_local - Mark an Address as having NO IDN components
+ * addr_set_local - Mark an Address as having NO IDN components
  * @param a             Address
  * @param local_mailbox Email address with NO IDN components
  */
-void mutt_addr_set_local(struct Address *a, char *local_mailbox)
+static void addr_set_local(struct Address *a, char *local_mailbox)
 {
   if (!a)
     return;
@@ -1021,7 +972,7 @@ void mutt_addr_set_local(struct Address *a, char *local_mailbox)
  * @warning This function may return a static pointer.  It must not be freed by
  * the caller.  Later calls may overwrite the returned pointer.
  */
-const char *mutt_addr_for_display(struct Address *a)
+const char *mutt_addr_for_display(const struct Address *a)
 {
   if (!a)
     return NULL;
@@ -1029,10 +980,10 @@ const char *mutt_addr_for_display(struct Address *a)
   char *user = NULL, *domain = NULL;
   static char *buf = NULL;
 
-  if (!a->mailbox || mutt_addr_is_local(a))
+  if (!a->mailbox || addr_is_local(a))
     return a->mailbox;
 
-  if (mutt_addr_mbox_to_udomain(a->mailbox, &user, &domain) == -1)
+  if (addr_mbox_to_udomain(a->mailbox, &user, &domain) == -1)
     return a->mailbox;
 
   char *local_mailbox = mutt_idna_intl_to_local(user, domain, MI_MAY_BE_IRREVERSIBLE);
@@ -1050,19 +1001,20 @@ const char *mutt_addr_for_display(struct Address *a)
 }
 
 /**
- * mutt_addr_write_single - Write a single Address to a buffer
+ * mutt_addr_write - Write a single Address to a buffer
  * @param buf     Buffer for the Address
  * @param buflen  Length of the buffer
  * @param addr    Address to display
  * @param display This address will be displayed to the user
+ * @retval num    Length of the string written to buf
  *
  * If 'display' is set, then it doesn't matter if the transformation isn't
  * reversible.
  */
-void mutt_addr_write_single(char *buf, size_t buflen, struct Address *addr, bool display)
+size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool display)
 {
-  if (!buf || !addr)
-    return;
+  if (!buf || buflen == 0 || !addr)
+    return 0;
 
   size_t len;
   char *pbuf = buf;
@@ -1099,8 +1051,7 @@ void mutt_addr_write_single(char *buf, size_t buflen, struct Address *addr, bool
     {
       if (buflen == 0)
         goto done;
-      mutt_str_strfcpy(pbuf, addr->personal, buflen);
-      len = mutt_str_strlen(pbuf);
+      len = mutt_str_strfcpy(pbuf, addr->personal, buflen + 1 /* strfcpy terminates */);
       pbuf += len;
       buflen -= len;
     }
@@ -1126,8 +1077,7 @@ void mutt_addr_write_single(char *buf, size_t buflen, struct Address *addr, bool
     if (mutt_str_strcmp(addr->mailbox, "@") != 0)
     {
       const char *a = display ? mutt_addr_for_display(addr) : addr->mailbox;
-      mutt_str_strfcpy(pbuf, a, buflen);
-      len = mutt_str_strlen(pbuf);
+      len = mutt_str_strfcpy(pbuf, a, buflen + 1 /* strfcpy terminates */);
       pbuf += len;
       buflen -= len;
     }
@@ -1166,104 +1116,97 @@ done:
   /* no need to check for length here since we already save space at the
    * beginning of this routine */
   *pbuf = '\0';
+
+  return pbuf - buf;
 }
 
 /**
- * mutt_addr_write - Write an Address to a buffer
+ * mutt_addrlist_write - Write an Address to a buffer
  * @param buf     Buffer for the Address
  * @param buflen  Length of the buffer
- * @param addr    Address to display
+ * @param al      AddressList to display
  * @param display This address will be displayed to the user
- * @retval num Bytes written to the buffer
+ * @retval num    Length of the string written to buf
  *
  * If 'display' is set, then it doesn't matter if the transformation isn't
  * reversible.
  *
  * @note It is assumed that `buf` is nul terminated!
  */
-size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool display)
+size_t mutt_addrlist_write(char *buf, size_t buflen, const struct AddressList *al, bool display)
 {
-  if (!buf || !addr)
+  if (!buf || buflen == 0 || !al)
     return 0;
 
-  char *pbuf = buf;
   size_t len = mutt_str_strlen(buf);
-
-  buflen--; /* save room for the terminal nul */
-
-  if (len > 0)
+  if (len >= buflen)
   {
-    if (len > buflen)
-      return 0; /* safety check for bogus arguments */
-
-    pbuf += len;
-    buflen -= len;
-    if (buflen == 0)
-      goto done;
-    *pbuf++ = ',';
-    buflen--;
-    if (buflen == 0)
-      goto done;
-    *pbuf++ = ' ';
-    buflen--;
+    return 0;
   }
 
-  for (; addr && (buflen > 0); addr = addr->next)
+  char *pbuf = buf + len;
+  buflen -= len;
+
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
-    /* use buflen+1 here because we already saved space for the trailing
-     * nul char, and the subroutine can make use of it */
-    mutt_addr_write_single(pbuf, buflen + 1, addr, display);
-
-    /* this should be safe since we always have at least 1 char passed into
-     * the above call, which means 'pbuf' should always be nul terminated */
-    len = mutt_str_strlen(pbuf);
-    pbuf += len;
-    buflen -= len;
-
-    /* if there is another address, and it's not a group mailbox name or
-     * group terminator, add a comma to separate the addresses */
-    if (addr->next && addr->next->mailbox && !addr->group)
+    if (len > 0)
     {
-      if (buflen == 0)
-        goto done;
-      *pbuf++ = ',';
-      buflen--;
-      if (buflen == 0)
-        goto done;
-      *pbuf++ = ' ';
-      buflen--;
+      if (buflen > 1)
+      {
+        *pbuf++ = ',';
+        buflen--;
+      }
+      if (buflen > 1)
+      {
+        *pbuf++ = ' ';
+        buflen--;
+      }
     }
+
+    if (buflen == 1)
+    {
+      break;
+    }
+
+    len = mutt_addr_write(pbuf, buflen, a, display);
+    pbuf += len;
+    buflen -= len;
   }
-done:
+
   *pbuf = '\0';
   return pbuf - buf;
 }
 
 /**
  * mutt_addrlist_to_intl - Convert an Address list to Punycode
- * @param[in]  a   Address list to modify
+ * @param[in]  al  Address list to modify
  * @param[out] err Pointer for failed addresses
  * @retval 0  Success, all addresses converted
  * @retval -1 Error, err will be set to the failed address
  */
-int mutt_addrlist_to_intl(struct Address *a, char **err)
+int mutt_addrlist_to_intl(struct AddressList *al, char **err)
 {
-  char *user = NULL, *domain = NULL;
-  char *intl_mailbox = NULL;
+  if (!al)
+    return 0;
+
   int rc = 0;
 
   if (err)
     *err = NULL;
 
-  for (; a; a = a->next)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
-    if (!a->mailbox || mutt_addr_is_intl(a))
+    if (!a->mailbox || addr_is_intl(a))
       continue;
 
-    if (mutt_addr_mbox_to_udomain(a->mailbox, &user, &domain) == -1)
+    char *user = NULL;
+    char *domain = NULL;
+    if (addr_mbox_to_udomain(a->mailbox, &user, &domain) == -1)
       continue;
 
-    intl_mailbox = mutt_idna_local_to_intl(user, domain);
+    char *intl_mailbox = mutt_idna_local_to_intl(user, domain);
 
     FREE(&user);
     FREE(&domain);
@@ -1276,133 +1219,168 @@ int mutt_addrlist_to_intl(struct Address *a, char **err)
       continue;
     }
 
-    mutt_addr_set_intl(a, intl_mailbox);
+    addr_set_intl(a, intl_mailbox);
   }
 
   return rc;
 }
 
 /**
- * mutt_addrlist_to_local - Convert an Address list from Punycode
- * @param a Address list to modify
- * @retval 0 Always
+ * mutt_addr_to_local - Convert an Address from Punycode
+ * @param a Address to convert
+ * @param bool True on success, false otherwise
  */
-int mutt_addrlist_to_local(struct Address *a)
+bool mutt_addr_to_local(struct Address *a)
 {
-  char *user = NULL, *domain = NULL;
-  char *local_mailbox = NULL;
-
-  for (; a; a = a->next)
+  if (!a->mailbox)
   {
-    if (!a->mailbox || mutt_addr_is_local(a))
-      continue;
-
-    if (mutt_addr_mbox_to_udomain(a->mailbox, &user, &domain) == -1)
-      continue;
-
-    local_mailbox = mutt_idna_intl_to_local(user, domain, 0);
-
-    FREE(&user);
-    FREE(&domain);
-
-    if (local_mailbox)
-      mutt_addr_set_local(a, local_mailbox);
+    return false;
   }
 
+  if (addr_is_local(a))
+  {
+    return true;
+  }
+
+  char *user = NULL;
+  char *domain = NULL;
+  if (addr_mbox_to_udomain(a->mailbox, &user, &domain) == -1)
+  {
+    return false;
+  }
+
+  char *local_mailbox = mutt_idna_intl_to_local(user, domain, 0);
+  FREE(&user);
+  FREE(&domain);
+
+  if (!local_mailbox)
+  {
+    return false;
+  }
+
+  addr_set_local(a, local_mailbox);
+  return true;
+}
+
+/**
+ * mutt_addrlist_to_local - Convert an Address list from Punycode
+ * @param al Address list to modify
+ * @retval 0 Always
+ */
+int mutt_addrlist_to_local(struct AddressList *al)
+{
+  if (!al)
+    return 0;
+
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
+  {
+    mutt_addr_to_local(a);
+  }
   return 0;
 }
 
 /**
  * mutt_addrlist_dedupe - Remove duplicate addresses
- * @param addr Address list to de-dupe
+ * @param al Address list to de-dupe
  * @retval ptr Updated Address list
  *
  * Given a list of addresses, return a list of unique addresses
  */
-struct Address *mutt_addrlist_dedupe(struct Address *addr)
+void mutt_addrlist_dedupe(struct AddressList *al)
 {
-  struct Address *top = addr;
-  struct Address **last = &top;
-  struct Address *tmp = NULL;
-  bool dup;
+  if (!al)
+    return;
 
-  while (addr)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
-    for (tmp = top, dup = false; tmp && tmp != addr; tmp = tmp->next)
+    if (a->mailbox)
     {
-      if (tmp->mailbox && addr->mailbox &&
-          (mutt_str_strcasecmp(addr->mailbox, tmp->mailbox) == 0))
+      struct Address *a2 = TAILQ_NEXT(a, entries), *tmp;
+      if (a2)
       {
-        dup = true;
-        break;
+        TAILQ_FOREACH_FROM_SAFE(a2, al, entries, tmp)
+        {
+          if (a2->mailbox && (mutt_str_strcasecmp(a->mailbox, a2->mailbox) == 0))
+          {
+            mutt_debug(LL_DEBUG2, "Removing %s\n", a2->mailbox);
+            TAILQ_REMOVE(al, a2, entries);
+            mutt_addr_free(&a2);
+          }
+        }
       }
     }
-
-    if (dup)
-    {
-      mutt_debug(LL_DEBUG2, "Removing %s\n", addr->mailbox);
-
-      *last = addr->next;
-
-      addr->next = NULL;
-      mutt_addr_free(&addr);
-
-      addr = *last;
-    }
-    else
-    {
-      last = &addr->next;
-      addr = addr->next;
-    }
   }
-  return top;
 }
 
 /**
- * mutt_addr_remove_xrefs - Remove cross-references
- * @param a Reference list of Addresses
- * @param b Address list to trim
- * @retval ptr Updated Address list
+ * mutt_addrlist_remove_xrefs - Remove cross-references
+ * @param a Reference AddressList
+ * @param b AddressLis to trim
  *
  * Remove addresses from "b" which are contained in "a"
  */
-struct Address *mutt_addr_remove_xrefs(struct Address *a, struct Address *b)
+void mutt_addrlist_remove_xrefs(const struct AddressList *a, struct AddressList *b)
 {
   if (!a || !b)
-    return NULL;
+    return;
 
-  struct Address *p = NULL, *prev = NULL;
+  struct Address *aa = NULL, *ab = NULL, *tmp = NULL;
 
-  struct Address *top = b;
-  while (b)
+  TAILQ_FOREACH_SAFE(ab, b, entries, tmp)
   {
-    for (p = a; p; p = p->next)
+    TAILQ_FOREACH(aa, a, entries)
     {
-      if (mutt_addr_cmp(p, b))
+      if (mutt_addr_cmp(aa, ab))
+      {
+        TAILQ_REMOVE(b, ab, entries);
+        mutt_addr_free(&ab);
         break;
-    }
-    if (p)
-    {
-      if (prev)
-      {
-        prev->next = b->next;
-        b->next = NULL;
-        mutt_addr_free(&b);
-        b = prev;
       }
-      else
-      {
-        top = top->next;
-        b->next = NULL;
-        mutt_addr_free(&b);
-        b = top;
-      }
-    }
-    else
-    {
-      prev = b;
-      b = b->next;
     }
   }
-  return top;
+}
+
+/**
+ * mutt_addrlist_clear - Unlink and free all Address in an AddressList
+ * @param al AddressList
+ *
+ * @note After this call, the AddressList is reinitialized and ready for reuse.
+ */
+void mutt_addrlist_clear(struct AddressList *al)
+{
+  if (!al)
+    return;
+
+  struct Address *a = TAILQ_FIRST(al), *next = NULL;
+  while (a)
+  {
+    next = TAILQ_NEXT(a, entries);
+    mutt_addr_free(&a);
+    a = next;
+  }
+  TAILQ_INIT(al);
+}
+
+/**
+ * mutt_addrlist_append - Append an Address to an AddressList
+ * @param al AddressList
+ * @param a  Address
+ */
+void mutt_addrlist_append(struct AddressList *al, struct Address *a)
+{
+  if (al && a)
+    TAILQ_INSERT_TAIL(al, a, entries);
+}
+
+/**
+ * mutt_addrlist_prepend - Prepend an Address to an AddressList
+ * @param al AddressList
+ * @param a  Address
+ */
+void mutt_addrlist_prepend(struct AddressList *al, struct Address *a)
+{
+  if (al && a)
+    TAILQ_INSERT_HEAD(al, a, entries);
 }

@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 2006 Thomas Roessler <roessler@does-not-exist.org>
  * Copyright (C) 2009 Rocco Rutte <pdmef@gmx.net>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -37,7 +38,7 @@ struct Address;
  */
 struct Group
 {
-  struct Address *as;
+  struct AddressList al;
   struct RegexList rs;
   char *name;
 };
@@ -55,13 +56,13 @@ STAILQ_HEAD(GroupList, GroupNode);
 void mutt_grouplist_init(void);
 void mutt_grouplist_free(void);
 void mutt_grouplist_add(struct GroupList *head, struct Group *group);
-void mutt_grouplist_add_addrlist(struct GroupList *head, struct Address *a);
+void mutt_grouplist_add_addrlist(struct GroupList *head, struct AddressList *a);
 int  mutt_grouplist_add_regex(struct GroupList *head, const char *s,
                               int flags, struct Buffer *err);
 void mutt_grouplist_destroy(struct GroupList *head);
 void mutt_grouplist_clear(struct GroupList *head);
 int  mutt_grouplist_remove_regex(struct GroupList *head, const char *s);
-int  mutt_grouplist_remove_addrlist(struct GroupList *head, struct Address *a);
+int  mutt_grouplist_remove_addrlist(struct GroupList *head, struct AddressList *a);
 
 bool mutt_group_match(struct Group *g, const char *s);
 struct Group *mutt_pattern_group(const char *pat);

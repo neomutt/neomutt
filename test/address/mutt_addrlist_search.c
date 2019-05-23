@@ -1,9 +1,10 @@
 /**
  * @file
- * Test code for mutt_addr_set_local()
+ * Test code for mutt_addrlist_search()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,18 +27,17 @@
 #include "mutt/mutt.h"
 #include "address/lib.h"
 
-void test_mutt_addr_set_local(void)
+void test_mutt_addrlist_search(void)
 {
-  // void mutt_addr_set_local(struct Address *a, char *local_mailbox);
+  // bool mutt_addrlist_search(const struct Address *needle, const struct AddressList *haystack);
 
   {
-    mutt_addr_set_local(NULL, "apple");
-    TEST_CHECK_(1, "mutt_addr_set_local(NULL, \"apple\")");
+    struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+    TEST_CHECK(!mutt_addrlist_search(NULL, &al));
   }
 
   {
-    struct Address addr = { 0 };
-    mutt_addr_set_local(&addr, NULL);
-    TEST_CHECK_(1, "mutt_addr_set_local(&addr, NULL)");
+    struct Address a = { 0 };
+    TEST_CHECK(!mutt_addrlist_search(&a, NULL));
   }
 }

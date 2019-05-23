@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -25,6 +26,7 @@
 
 #include <stddef.h>
 #include <stdbool.h>
+#include "mutt/queue.h"
 
 /**
  * struct Address - An email address
@@ -36,8 +38,9 @@ struct Address
   bool group : 1; /**< group mailbox? */
   bool is_intl : 1;
   bool intl_checked : 1;
-  struct Address *next;
+  TAILQ_ENTRY(Address) entries;
 };
+TAILQ_HEAD(AddressList, Address);
 
 /**
  * enum AddressError - possible values for AddressError
@@ -58,32 +61,36 @@ extern const char AddressSpecials[];
 
 #define address_error(num) AddressErrors[num]
 
-struct Address *mutt_addr_append(struct Address **a, struct Address *b, bool prune);
+/* Utility functions that don't use struct Address or struct AddressList */
 void            mutt_addr_cat(char *buf, size_t buflen, const char *value, const char *specials);
-bool            mutt_addr_cmp(struct Address *a, struct Address *b);
-bool            mutt_addr_cmp_strict(const struct Address *a, const struct Address *b);
-struct Address *mutt_addr_copy(struct Address *addr);
-struct Address *mutt_addr_copy_list(struct Address *addr, bool prune);
-const char *    mutt_addr_for_display(struct Address *a);
-void            mutt_addr_free(struct Address **p);
-int             mutt_addr_has_recips(struct Address *a);
-bool            mutt_addr_is_intl(struct Address *a);
-bool            mutt_addr_is_local(struct Address *a);
-int             mutt_addr_mbox_to_udomain(const char *mbox, char **user, char **domain);
-struct Address *mutt_addr_new(void);
-struct Address *mutt_addr_parse_list(struct Address *top, const char *s);
-struct Address *mutt_addr_parse_list2(struct Address *p, const char *s);
-void            mutt_addr_qualify(struct Address *addr, const char *host);
-int             mutt_addr_remove_from_list(struct Address **a, const char *mailbox);
-struct Address *mutt_addr_remove_xrefs(struct Address *a, struct Address *b);
-bool            mutt_addr_search(struct Address *a, struct Address *lst);
-void            mutt_addr_set_intl(struct Address *a, char *intl_mailbox);
-void            mutt_addr_set_local(struct Address *a, char *local_mailbox);
 bool            mutt_addr_valid_msgid(const char *msgid);
+
+/* Functions that work on a single struct Address */
+bool            mutt_addr_cmp(const struct Address *a, const struct Address *b);
+struct Address *mutt_addr_copy(const struct Address *addr);
+struct Address *mutt_addr_create(const char *personal, const char *mailbox);
+const char *    mutt_addr_for_display(const struct Address *a);
+void            mutt_addr_free(struct Address **a);
+struct Address *mutt_addr_new(void);
+bool            mutt_addr_to_local(struct Address *a);
 size_t          mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool display);
-void            mutt_addr_write_single(char *buf, size_t buflen, struct Address *addr, bool display);
-struct Address *mutt_addrlist_dedupe(struct Address *addr);
-int             mutt_addrlist_to_intl(struct Address *a, char **err);
-int             mutt_addrlist_to_local(struct Address *a);
+
+/* Functions that work on struct AddressList */
+void                mutt_addrlist_append(struct AddressList *al, struct Address *a);
+void                mutt_addrlist_clear(struct AddressList *al);
+void                mutt_addrlist_copy(struct AddressList *dst, const struct AddressList *src, bool prune);
+int                 mutt_addrlist_count_recips(const struct AddressList *al);
+void                mutt_addrlist_dedupe(struct AddressList *al);
+bool                mutt_addrlist_equal(const struct AddressList *ala, const struct AddressList *alb);
+int                 mutt_addrlist_parse(struct AddressList *al, const char *s);
+int                 mutt_addrlist_parse2(struct AddressList *al, const char *s);
+void                mutt_addrlist_prepend(struct AddressList *al, struct Address *a);
+void                mutt_addrlist_qualify(struct AddressList *al, const char *host);
+int                 mutt_addrlist_remove(struct AddressList *al, const char *mailbox);
+void                mutt_addrlist_remove_xrefs(const struct AddressList *a, struct AddressList *b);
+bool                mutt_addrlist_search(const struct Address *needle, const struct AddressList *haystack);
+int                 mutt_addrlist_to_local(struct AddressList *al);
+int                 mutt_addrlist_to_intl(struct AddressList *al, char **err);
+size_t              mutt_addrlist_write(char *buf, size_t buflen, const struct AddressList *al, bool display);
 
 #endif /* MUTT_EMAIL_ADDRESS_H */

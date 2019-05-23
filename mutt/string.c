@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -720,12 +721,12 @@ const char *mutt_str_stristr(const char *haystack, const char *needle)
  * @retval ptr First non-whitespace character
  * @retval ptr Terminating NUL character, if the string was entirely whitespace
  */
-char *mutt_str_skip_whitespace(char *p)
+char *mutt_str_skip_whitespace(const char *p)
 {
   if (!p)
     return NULL;
   SKIPWS(p);
-  return p;
+  return (char *) p;
 }
 
 /**

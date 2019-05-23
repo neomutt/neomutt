@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -37,12 +38,14 @@ void test_mutt_parse_mailto(void)
   }
 
   {
-    struct Envelope envelope = { 0 };
+    struct Envelope envelope;
+    memset(&envelope, 0, sizeof(struct Envelope));
     TEST_CHECK(mutt_parse_mailto(&envelope, NULL, "apple") != 0);
   }
 
   {
-    struct Envelope envelope = { 0 };
+    struct Envelope envelope;
+    memset(&envelope, 0, sizeof(struct Envelope));
     char *body = NULL;
     TEST_CHECK(mutt_parse_mailto(&envelope, &body, NULL) != 0);
   }

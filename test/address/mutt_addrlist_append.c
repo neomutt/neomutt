@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_grouplist_remove_addrlist()
+ * Test code for mutt_addrlist_append()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -26,18 +26,32 @@
 #include "config.h"
 #include "mutt/mutt.h"
 #include "address/lib.h"
+#include "common.h"
 
-void test_mutt_grouplist_remove_addrlist(void)
+void test_mutt_addrlist_append(void)
 {
-  // int mutt_grouplist_remove_addrlist(struct GroupList *head, struct Address *a);
+  // void mutt_addrlist_append(struct AddressList *al, struct Address *a);
 
   {
-    struct AddressList addr = TAILQ_HEAD_INITIALIZER(addr);
-    TEST_CHECK(mutt_grouplist_remove_addrlist(NULL, &addr) == -1);
+    struct Address a = { 0 };
+    mutt_addrlist_append(NULL, &a);
+    TEST_CHECK_(1, "mutt_addrlist_append(NULL, &a)");
   }
 
   {
-    struct GroupList head = { 0 };
-    TEST_CHECK(mutt_grouplist_remove_addrlist(&head, NULL) == -1);
+    struct AddressList al = { 0 };
+    mutt_addrlist_append(&al, NULL);
+    TEST_CHECK_(1, "mutt_addrlist_append(&al, NULL)");
+  }
+
+  {
+    struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+    mutt_addrlist_append(&al, mutt_addr_create(NULL, "test@example.com"));
+    mutt_addrlist_append(&al, mutt_addr_create(NULL, "john@doe.org"));
+    struct Address *a = TAILQ_FIRST(&al);
+    TEST_CHECK_STR_EQ("test@example.com", a->mailbox);
+    a = TAILQ_NEXT(a, entries);
+    TEST_CHECK_STR_EQ("john@doe.org", a->mailbox);
+    mutt_addrlist_clear(&al);
   }
 }

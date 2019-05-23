@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -37,7 +38,7 @@ void test_rfc2047_encode_addrlist(void)
   }
 
   {
-    struct Address address = { 0 };
+    struct AddressList address = TAILQ_HEAD_INITIALIZER(address);
     rfc2047_encode_addrlist(&address, NULL);
     TEST_CHECK_(1, "rfc2047_encode_addrlist(&address, NULL)");
   }

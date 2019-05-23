@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,6 +29,7 @@
 #include "ncrypt.h"
 
 struct Address;
+struct AddressList;
 struct Body;
 struct Envelope;
 struct Email;
@@ -95,7 +97,7 @@ struct CryptModuleSpecs
    * If oppenc_mode is true, only keys that can be determined without prompting
    * will be used.
    */
-  char *       (*find_keys)(struct Address *addrlist, bool oppenc_mode);
+  char *       (*find_keys)(struct AddressList *addrlist, bool oppenc_mode);
   /**
    * sign_message - Cryptographically sign the Body of a message
    * @param a Body of the message

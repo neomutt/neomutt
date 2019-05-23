@@ -6,6 +6,7 @@
  * Copyright (C) 1996-1997,2000,2010 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1998-2005 Thomas Roessler <roessler@does-not-exist.org>
  * Copyright (C) 2004 g10 Code GmbH
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -1407,59 +1408,60 @@ struct Body *pgp_class_sign_message(struct Body *a)
 /**
  * pgp_class_find_keys - Implements CryptModuleSpecs::find_keys()
  */
-char *pgp_class_find_keys(struct Address *addrlist, bool oppenc_mode)
+char *pgp_class_find_keys(struct AddressList *addrlist, bool oppenc_mode)
 {
   struct ListHead crypt_hook_list = STAILQ_HEAD_INITIALIZER(crypt_hook_list);
   struct ListNode *crypt_hook = NULL;
-  char *keyID = NULL, *keylist = NULL;
+  const char *keyid = NULL;
+  char *keylist = NULL;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
-  struct Address *addr = NULL;
-  struct Address *p = NULL, *q = NULL;
+  struct Address *p = NULL;
   struct PgpKeyInfo *k_info = NULL;
+  const char *fqdn = mutt_fqdn(true);
   char buf[1024];
   bool key_selected;
+  struct AddressList hookal = TAILQ_HEAD_INITIALIZER(hookal);
 
-  const char *fqdn = mutt_fqdn(true);
-
-  for (p = addrlist; p; p = p->next)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, addrlist, entries)
   {
     key_selected = false;
-    mutt_crypt_hook(&crypt_hook_list, p);
+    mutt_crypt_hook(&crypt_hook_list, a);
     crypt_hook = STAILQ_FIRST(&crypt_hook_list);
     do
     {
-      q = p;
+      p = a;
       k_info = NULL;
 
       if (crypt_hook)
       {
-        keyID = crypt_hook->data;
+        keyid = crypt_hook->data;
         enum QuadOption ans = MUTT_YES;
         if (!oppenc_mode && C_CryptConfirmhook)
         {
-          snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"), keyID, p->mailbox);
+          snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"), keyid, p->mailbox);
           ans = mutt_yesorno(buf, MUTT_YES);
         }
         if (ans == MUTT_YES)
         {
-          if (crypt_is_numerical_keyid(keyID))
+          if (crypt_is_numerical_keyid(keyid))
           {
-            if (strncmp(keyID, "0x", 2) == 0)
-              keyID += 2;
+            if (strncmp(keyid, "0x", 2) == 0)
+              keyid += 2;
             goto bypass_selection; /* you don't see this. */
           }
 
           /* check for e-mail address */
-          if (strchr(keyID, '@') && (addr = mutt_addr_parse_list(NULL, keyID)))
+          mutt_addrlist_clear(&hookal);
+          if (strchr(keyid, '@') && (mutt_addrlist_parse(&hookal, keyid) != 0))
           {
-            if (fqdn)
-              mutt_addr_qualify(addr, fqdn);
-            q = addr;
+            mutt_addrlist_qualify(&hookal, fqdn);
+            p = TAILQ_FIRST(&hookal);
           }
           else if (!oppenc_mode)
           {
-            k_info = pgp_getkeybystr(keyID, KEYFLAG_CANENCRYPT, PGP_PUBRING);
+            k_info = pgp_getkeybystr(keyid, KEYFLAG_CANENCRYPT, PGP_PUBRING);
           }
         }
         else if (ans == MUTT_NO)
@@ -1473,7 +1475,7 @@ char *pgp_class_find_keys(struct Address *addrlist, bool oppenc_mode)
         else if (ans == MUTT_ABORT)
         {
           FREE(&keylist);
-          mutt_addr_free(&addr);
+          mutt_addrlist_clear(&hookal);
           mutt_list_free(&crypt_hook_list);
           return NULL;
         }
@@ -1481,36 +1483,36 @@ char *pgp_class_find_keys(struct Address *addrlist, bool oppenc_mode)
 
       if (!k_info)
       {
-        pgp_class_invoke_getkeys(q);
-        k_info = pgp_getkeybyaddr(q, KEYFLAG_CANENCRYPT, PGP_PUBRING, oppenc_mode);
+        pgp_class_invoke_getkeys(p);
+        k_info = pgp_getkeybyaddr(p, KEYFLAG_CANENCRYPT, PGP_PUBRING, oppenc_mode);
       }
 
       if (!k_info && !oppenc_mode)
       {
-        snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), q->mailbox);
-        k_info = pgp_ask_for_key(buf, q->mailbox, KEYFLAG_CANENCRYPT, PGP_PUBRING);
+        snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), p->mailbox);
+        k_info = pgp_ask_for_key(buf, p->mailbox, KEYFLAG_CANENCRYPT, PGP_PUBRING);
       }
 
       if (!k_info)
       {
         FREE(&keylist);
-        mutt_addr_free(&addr);
+        mutt_addrlist_clear(&hookal);
         mutt_list_free(&crypt_hook_list);
         return NULL;
       }
 
-      keyID = pgp_fpr_or_lkeyid(k_info);
+      keyid = pgp_fpr_or_lkeyid(k_info);
 
     bypass_selection:
-      keylist_size += mutt_str_strlen(keyID) + 4;
+      keylist_size += mutt_str_strlen(keyid) + 4;
       mutt_mem_realloc(&keylist, keylist_size);
-      sprintf(keylist + keylist_used, "%s0x%s", keylist_used ? " " : "", keyID);
+      sprintf(keylist + keylist_used, "%s0x%s", keylist_used ? " " : "", keyid);
       keylist_used = mutt_str_strlen(keylist);
 
       key_selected = true;
 
       pgp_free_key(&k_info);
-      mutt_addr_free(&addr);
+      mutt_addrlist_clear(&hookal);
 
       if (crypt_hook)
         crypt_hook = STAILQ_NEXT(crypt_hook, entries);

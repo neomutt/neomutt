@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -67,7 +68,11 @@ static int address_string_set(const struct ConfigSet *cs, void *var, struct Conf
   /* An empty address "" will be stored as NULL */
   if (var && value && (value[0] != '\0'))
   {
-    addr = mutt_addr_parse_list(NULL, value);
+    // TODO - config can only store one
+    struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+    mutt_addrlist_parse(&al, value);
+    addr = mutt_addr_copy(TAILQ_FIRST(&al));
+    mutt_addrlist_clear(&al);
   }
 
   int rc = CSR_SUCCESS;

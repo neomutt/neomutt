@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1997-2003 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -443,8 +444,8 @@ void pgp_class_invoke_getkeys(struct Address *addr)
   addr->personal = NULL;
 
   *tmp = '\0';
-  mutt_addrlist_to_local(addr);
-  mutt_addr_write_single(tmp, sizeof(tmp), addr, false);
+  mutt_addr_to_local(addr);
+  mutt_addr_write(tmp, sizeof(tmp), addr, false);
   mutt_buffer_quote_filename(buf, tmp, true);
 
   addr->personal = personal;

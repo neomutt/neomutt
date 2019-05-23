@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,10 +29,16 @@
 
 void test_mutt_addr_free(void)
 {
-  // void mutt_addr_free(struct Address **p);
+  // void mutt_addr_free(struct Address **a);
 
   {
     mutt_addr_free(NULL);
     TEST_CHECK_(1, "mutt_addr_free(NULL)");
+  }
+
+  {
+    struct Address *a = mutt_addr_new();
+    mutt_addr_free(&a);
+    TEST_CHECK(a == NULL);
   }
 }

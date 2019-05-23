@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -38,20 +39,23 @@ void test_mutt_rfc822_parse_line(void)
   }
 
   {
-    struct Envelope envelope = { 0 };
+    struct Envelope envelope;
+    memset(&envelope, 0, sizeof(struct Envelope));
     TEST_CHECK(mutt_rfc822_parse_line(&envelope, NULL, "apple", "banana", false,
                                       false, false) == 0);
   }
 
   {
-    struct Envelope envelope = { 0 };
+    struct Envelope envelope;
+    memset(&envelope, 0, sizeof(struct Envelope));
     struct Email email = { 0 };
     TEST_CHECK(mutt_rfc822_parse_line(&envelope, &email, NULL, "banana", false,
                                       false, false) == 0);
   }
 
   {
-    struct Envelope envelope = { 0 };
+    struct Envelope envelope;
+    memset(&envelope, 0, sizeof(struct Envelope));
     struct Email email = { 0 };
     TEST_CHECK(mutt_rfc822_parse_line(&envelope, &email, "apple", NULL, false,
                                       false, false) == 0);

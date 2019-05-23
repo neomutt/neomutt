@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1999-2001 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -776,7 +777,7 @@ int mix_check_message(struct Email *msg)
 {
   bool need_hostname = false;
 
-  if (msg->env->cc || msg->env->bcc)
+  if (!TAILQ_EMPTY(&msg->env->cc) || !TAILQ_EMPTY(&msg->env->bcc))
   {
     mutt_error(_("Mixmaster doesn't accept Cc or Bcc headers"));
     return -1;
@@ -788,7 +789,8 @@ int mix_check_message(struct Email *msg)
    * use_domain won't be respected at this point, hidden_host will.
    */
 
-  for (struct Address *a = msg->env->to; a; a = a->next)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, &msg->env->to, entries)
   {
     if (!a->group && !strchr(a->mailbox, '@'))
     {
@@ -808,9 +810,9 @@ int mix_check_message(struct Email *msg)
     }
 
     /* Cc and Bcc are empty at this point. */
-    mutt_addr_qualify(msg->env->to, fqdn);
-    mutt_addr_qualify(msg->env->reply_to, fqdn);
-    mutt_addr_qualify(msg->env->mail_followup_to, fqdn);
+    mutt_addrlist_qualify(&msg->env->to, fqdn);
+    mutt_addrlist_qualify(&msg->env->reply_to, fqdn);
+    mutt_addrlist_qualify(&msg->env->mail_followup_to, fqdn);
   }
 
   return 0;

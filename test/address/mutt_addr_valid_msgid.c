@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -30,7 +31,10 @@ void test_mutt_addr_valid_msgid(void)
 {
   // bool mutt_addr_valid_msgid(const char *msgid);
 
-  {
-    TEST_CHECK(!mutt_addr_valid_msgid(NULL));
-  }
+  TEST_CHECK(!mutt_addr_valid_msgid(NULL));
+  TEST_CHECK(!mutt_addr_valid_msgid("test@example.com"));
+  TEST_CHECK(!mutt_addr_valid_msgid("<ae>"));
+  TEST_CHECK(!mutt_addr_valid_msgid("<Ÿ@example.com"));
+  TEST_CHECK(!mutt_addr_valid_msgid("<king@gælic-republic.org>"));
+  TEST_CHECK(mutt_addr_valid_msgid("<a@e>")); // the bare minimum
 }

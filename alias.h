@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,8 +27,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "mutt/mutt.h"
+#include "address/address.h"
 
-struct Address;
 struct Envelope;
 
 /**
@@ -36,7 +37,7 @@ struct Envelope;
 struct Alias
 {
   char *name;
-  struct Address *addr;
+  struct AddressList addr;
   bool tagged;
   bool del;
   short num;
@@ -44,18 +45,19 @@ struct Alias
 };
 TAILQ_HEAD(AliasList, Alias);
 
-void            mutt_alias_create(struct Envelope *cur, struct Address *iaddr);
+struct Alias   *mutt_alias_new(void);
 void            mutt_alias_free(struct Alias **p);
+void            mutt_alias_create(struct Envelope *cur, struct AddressList *al);
 void            mutt_aliaslist_free(struct AliasList *a_list);
-struct Address *mutt_alias_lookup(const char *s);
+struct AddressList *mutt_alias_lookup(const char *s);
 void            mutt_expand_aliases_env(struct Envelope *env);
-struct Address *mutt_expand_aliases(struct Address *a);
-struct Address *mutt_get_address(struct Envelope *env, const char **pfxp);
+void            mutt_expand_aliases(struct AddressList *al);
+struct AddressList *mutt_get_address(struct Envelope *env, const char **pfxp);
 
-bool mutt_addr_is_user(struct Address *addr);
+bool mutt_addr_is_user(const struct Address *addr);
 int mutt_alias_complete(char *buf, size_t buflen);
 void mutt_alias_add_reverse(struct Alias *t);
 void mutt_alias_delete_reverse(struct Alias *t);
-struct Address *mutt_alias_reverse_lookup(struct Address *a);
+struct Address *mutt_alias_reverse_lookup(const struct Address *a);
 
 #endif /* MUTT_ALIAS_H */

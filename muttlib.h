@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -66,9 +67,9 @@ uint32_t    mutt_rand32(void);
 uint64_t    mutt_rand64(void);
 void        mutt_rand_base32(void *out, size_t len);
 int         mutt_randbuf(void *out, size_t len);
-void        mutt_safe_path(char *s, size_t l, struct Address *a);
+void        mutt_safe_path(char *s, size_t l, const struct Address *a);
 int         mutt_save_confirm(const char *s, struct stat *st);
-void        mutt_save_path(char *d, size_t dsize, struct Address *a);
+void        mutt_save_path(char *d, size_t dsize, const struct Address *a);
 void        mutt_sleep(short s);
 
 #define mutt_mktemp(buf, buflen)                         mutt_mktemp_pfx_sfx(buf, buflen, "neomutt", NULL)

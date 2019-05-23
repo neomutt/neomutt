@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -41,6 +42,6 @@ struct Body *pgp_class_make_key_attachment(void);
 
 struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, KeyFlags abilities, enum PgpRing keyring);
 struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities, enum PgpRing keyring, bool oppenc_mode);
-struct PgpKeyInfo *pgp_getkeybystr(char *p, KeyFlags abilities, enum PgpRing keyring);
+struct PgpKeyInfo *pgp_getkeybystr(const char *p, KeyFlags abilities, enum PgpRing keyring);
 
 #endif /* MUTT_NCRYPT_PGPKEY_H */

@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,9 +29,14 @@
 
 void test_mutt_addrlist_to_local(void)
 {
-  // int mutt_addrlist_to_local(struct Address *a);
+  // int mutt_addrlist_to_local(struct AddressList *al);
 
   {
     TEST_CHECK(mutt_addrlist_to_local(NULL) == 0);
+  }
+
+  {
+    // Back and forth tests (to_intl <-> to_local) are done in
+    // test_mutt_addrlist_to_intl
   }
 }

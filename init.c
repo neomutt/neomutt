@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-2002,2010,2013,2016 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -912,7 +913,7 @@ static enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   if (!tmp)
   {
     /* create a new alias */
-    tmp = mutt_mem_calloc(1, sizeof(struct Alias));
+    tmp = mutt_alias_new();
     tmp->name = mutt_str_strdup(buf->data);
     TAILQ_INSERT_TAIL(&Aliases, tmp, entries);
     /* give the main addressbook code a chance */
@@ -923,7 +924,7 @@ static enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   {
     mutt_alias_delete_reverse(tmp);
     /* override the previous value */
-    mutt_addr_free(&tmp->addr);
+    mutt_addrlist_clear(&tmp->addr);
     if (CurrentMenu == MENU_ALIAS)
       mutt_menu_set_current_redraw_full();
   }
@@ -931,23 +932,27 @@ static enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   mutt_extract_token(buf, s, MUTT_TOKEN_QUOTE | MUTT_TOKEN_SPACE | MUTT_TOKEN_SEMICOLON);
   mutt_debug(5, "Second token is '%s'\n", buf->data);
 
-  tmp->addr = mutt_addr_parse_list2(tmp->addr, buf->data);
+  mutt_addrlist_parse2(&tmp->addr, buf->data);
 
-  if (mutt_addrlist_to_intl(tmp->addr, &estr))
+  if (mutt_addrlist_to_intl(&tmp->addr, &estr))
   {
     mutt_buffer_printf(err, _("Warning: Bad IDN '%s' in alias '%s'"), estr, tmp->name);
     FREE(&estr);
     goto bail;
   }
 
-  mutt_grouplist_add_addrlist(&gc, tmp->addr);
+  mutt_grouplist_add_addrlist(&gc, &tmp->addr);
   mutt_alias_add_reverse(tmp);
 
   if (C_DebugLevel > LL_DEBUG4)
   {
     /* A group is terminated with an empty address, so check a->mailbox */
-    for (struct Address *a = tmp->addr; a && a->mailbox; a = a->next)
+    struct Address *a = NULL;
+    TAILQ_FOREACH(a, &tmp->addr, entries)
     {
+      if (!a->mailbox)
+        break;
+
       if (a->group)
         mutt_debug(5, "  Group %s\n", a->mailbox);
       else
@@ -1104,7 +1109,6 @@ static enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
 {
   struct GroupList gc = STAILQ_HEAD_INITIALIZER(gc);
   enum GroupState state = GS_NONE;
-  struct Address *addr = NULL;
 
   do
   {
@@ -1147,22 +1151,23 @@ static enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
         case GS_ADDR:
         {
           char *estr = NULL;
-          addr = mutt_addr_parse_list2(NULL, buf->data);
-          if (!addr)
+          struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+          mutt_addrlist_parse2(&al, buf->data);
+          if (TAILQ_EMPTY(&al))
             goto bail;
-          if (mutt_addrlist_to_intl(addr, &estr))
+          if (mutt_addrlist_to_intl(&al, &estr))
           {
             mutt_buffer_printf(err, _("%sgroup: warning: bad IDN '%s'"),
                                (data == 1) ? "un" : "", estr);
-            mutt_addr_free(&addr);
+            mutt_addrlist_clear(&al);
             FREE(&estr);
             goto bail;
           }
           if (data == MUTT_GROUP)
-            mutt_grouplist_add_addrlist(&gc, addr);
+            mutt_grouplist_add_addrlist(&gc, &al);
           else if (data == MUTT_UNGROUP)
-            mutt_grouplist_remove_addrlist(&gc, addr);
-          mutt_addr_free(&addr);
+            mutt_grouplist_remove_addrlist(&gc, &al);
+          mutt_addrlist_clear(&al);
           break;
         }
       }

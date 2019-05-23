@@ -1,9 +1,10 @@
 /**
  * @file
- * Test code for mutt_addr_remove_xrefs()
+ * Test code for mutt_addrlist_clear()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,17 +27,23 @@
 #include "mutt/mutt.h"
 #include "address/lib.h"
 
-void test_mutt_addr_remove_xrefs(void)
+void test_mutt_addrlist_clear(void)
 {
-  // struct Address *mutt_addr_remove_xrefs(struct Address *a, struct Address *b);
+  // void mutt_addrlist_clear(struct AddressList *al);
 
   {
-    struct Address addr = { 0 };
-    TEST_CHECK(mutt_addr_remove_xrefs(NULL, &addr) == NULL);
+    mutt_addrlist_clear(NULL);
+    TEST_CHECK_(1, "mutt_addrlist_clear(NULL)");
   }
 
   {
-    struct Address addr = { 0 };
-    TEST_CHECK(mutt_addr_remove_xrefs(&addr, NULL) == NULL);
+    struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+    mutt_addrlist_append(&al, mutt_addr_new());
+    mutt_addrlist_append(&al, mutt_addr_new());
+    mutt_addrlist_append(&al, mutt_addr_new());
+    mutt_addrlist_append(&al, mutt_addr_new());
+    mutt_addrlist_append(&al, mutt_addr_new());
+    mutt_addrlist_clear(&al);
+    TEST_CHECK(TAILQ_EMPTY(&al));
   }
 }

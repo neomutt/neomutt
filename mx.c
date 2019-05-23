@@ -6,6 +6,7 @@
  * Copyright (C) 1996-2002,2010,2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2003 Thomas Roessler <roessler@does-not-exist.org>
  * Copyright (C) 2016-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -981,12 +982,11 @@ struct Message *mx_msg_open_new(struct Mailbox *m, struct Email *e, MsgOpenFlags
     {
       if (e)
       {
-        if (e->env->return_path)
-          p = e->env->return_path;
-        else if (e->env->sender)
-          p = e->env->sender;
-        else
-          p = e->env->from;
+        p = TAILQ_FIRST(&e->env->return_path);
+        if (!p)
+          p = TAILQ_FIRST(&e->env->sender);
+        if (!p)
+          p = TAILQ_FIRST(&e->env->from);
       }
 
       fprintf(msg->fp, "From %s %s", p ? p->mailbox : NONULL(Username),
@@ -1340,17 +1340,15 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder, enum MailboxType
     else if (buf[0] == '@')
     {
       /* elm compatibility, @ expands alias to user name */
-      struct Address *alias = mutt_alias_lookup(buf + 1);
-      if (!alias)
+      struct AddressList *al = mutt_alias_lookup(buf + 1);
+      if (TAILQ_EMPTY(al))
         break;
 
       struct Email *e = mutt_email_new();
       e->env = mutt_env_new();
-      e->env->from = alias;
-      e->env->to = alias;
+      mutt_addrlist_copy(&e->env->from, al, false);
+      mutt_addrlist_copy(&e->env->to, al, false);
       mutt_default_save(buf, buflen, e);
-      e->env->from = NULL;
-      e->env->to = NULL;
       mutt_email_free(&e);
       break;
     }

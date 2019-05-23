@@ -5,7 +5,7 @@
  * @authors
  * Copyright (C) 1996-2000,2010 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>
- * Copyright (C) 2018 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2018-2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -25,14 +25,14 @@
 #ifndef MUTT_EMAIL_RFC2047_H
 #define MUTT_EMAIL_RFC2047_H
 
-struct Address;
+struct AddressList;
 struct Envelope;
 
 void rfc2047_decode(char **pd);
 void rfc2047_encode(char **pd, const char *specials, int col, const char *charsets);
 
-void rfc2047_decode_addrlist(struct Address *a);
-void rfc2047_encode_addrlist(struct Address *addr, const char *tag);
+void rfc2047_decode_addrlist(struct AddressList *al);
+void rfc2047_encode_addrlist(struct AddressList *al, const char *tag);
 void rfc2047_decode_envelope(struct Envelope *env);
 void rfc2047_encode_envelope(struct Envelope *env);
 

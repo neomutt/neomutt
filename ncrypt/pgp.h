@@ -6,6 +6,7 @@
  * Copyright (C) 1996-1997 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2003 Thomas Roessler <roessler@does-not-exist.org>
  * Copyright (C) 2004 g10 Code GmbH
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -29,7 +30,7 @@
 #include <stdio.h>
 #include "ncrypt.h"
 
-struct Address;
+struct AddressList;
 struct Body;
 struct Email;
 struct PgpKeyInfo;
@@ -47,7 +48,7 @@ char *pgp_fpr_or_lkeyid(struct PgpKeyInfo * k);
 
 int pgp_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur);
 
-char *pgp_class_find_keys(struct Address *addrlist, bool oppenc_mode);
+char *pgp_class_find_keys(struct AddressList *addrlist, bool oppenc_mode);
 
 int pgp_class_application_handler(struct Body *m, struct State *s);
 int pgp_class_encrypted_handler(struct Body *a, struct State *s);

@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -32,12 +33,14 @@ void test_mutt_env_cmp_strict(void)
   // bool mutt_env_cmp_strict(const struct Envelope *e1, const struct Envelope *e2);
 
   {
-    struct Envelope envelope = { 0 };
+    struct Envelope envelope;
+    memset(&envelope, 0, sizeof(struct Envelope));
     TEST_CHECK(!mutt_env_cmp_strict(NULL, &envelope));
   }
 
   {
-    struct Envelope envelope = { 0 };
+    struct Envelope envelope;
+    memset(&envelope, 0, sizeof(struct Envelope));
     TEST_CHECK(!mutt_env_cmp_strict(&envelope, NULL));
   }
 }

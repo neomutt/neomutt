@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -29,7 +30,7 @@
 
 void test_mutt_addr_for_display(void)
 {
-  // const char * mutt_addr_for_display(struct Address *a);
+  // const char *mutt_addr_for_display(const struct Address *a);
 
   {
     TEST_CHECK(!mutt_addr_for_display(NULL));
@@ -43,7 +44,6 @@ void test_mutt_addr_for_display(void)
       .personal = per,
       .mailbox = mbx,
       .group = 0,
-      .next = NULL,
       .is_intl = 0,
       .intl_checked = 0,
     };

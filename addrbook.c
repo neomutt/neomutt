@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-2000,2007 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -92,7 +93,7 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
       break;
     case 'r':
       addr[0] = '\0';
-      mutt_addr_write(addr, sizeof(addr), alias->addr, true);
+      mutt_addrlist_write(addr, sizeof(addr), &alias->addr, true);
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, addr);
       break;
@@ -156,27 +157,32 @@ static int alias_sort_alias(const void *a, const void *b)
  */
 static int alias_sort_address(const void *a, const void *b)
 {
-  struct Address *pa = (*(struct Alias **) a)->addr;
-  struct Address *pb = (*(struct Alias **) b)->addr;
+  struct AddressList *pal = &(*(struct Alias **) a)->addr;
+  struct AddressList *pbl = &(*(struct Alias **) b)->addr;
   int r;
 
-  if (pa == pb)
+  if (pal == pbl)
     r = 0;
-  else if (!pa)
+  else if (!pal)
     r = -1;
-  else if (!pb)
+  else if (!pbl)
     r = 1;
-  else if (pa->personal)
-  {
-    if (pb->personal)
-      r = mutt_str_strcasecmp(pa->personal, pb->personal);
-    else
-      r = 1;
-  }
-  else if (pb->personal)
-    r = -1;
   else
-    r = mutt_str_strcasecmp(pa->mailbox, pb->mailbox);
+  {
+    struct Address *pa = TAILQ_FIRST(pal);
+    struct Address *pb = TAILQ_FIRST(pbl);
+    if (pa->personal)
+    {
+      if (pb->personal)
+        r = mutt_str_strcasecmp(pa->personal, pb->personal);
+      else
+        r = 1;
+    }
+    else if (pb->personal)
+      r = -1;
+    else
+      r = mutt_str_strcasecmp(pa->mailbox, pb->mailbox);
+  }
   return RSORT(r);
 }
 
@@ -293,14 +299,14 @@ new_aliases:
   {
     if (alias_table[i]->tagged)
     {
-      mutt_addr_write(buf, buflen, alias_table[i]->addr, true);
+      mutt_addrlist_write(buf, buflen, &alias_table[i]->addr, true);
       t = -1;
     }
   }
 
   if (t != -1)
   {
-    mutt_addr_write(buf, buflen, alias_table[t]->addr, true);
+    mutt_addrlist_write(buf, buflen, &alias_table[t]->addr, true);
   }
 
   mutt_menu_pop_current(menu);

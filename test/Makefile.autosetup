@@ -1,30 +1,27 @@
-ADDRESS_OBJS	= test/address/mutt_addr_append.o \
-		  test/address/mutt_addr_cat.o \
+ADDRESS_OBJS	= test/address/mutt_addr_cat.o \
 		  test/address/mutt_addr_cmp.o \
-		  test/address/mutt_addr_cmp_strict.o \
 		  test/address/mutt_addr_copy.o \
-		  test/address/mutt_addr_copy_list.o \
 		  test/address/mutt_addr_for_display.o \
 		  test/address/mutt_addr_free.o \
-		  test/address/mutt_addr_has_recips.o \
-		  test/address/mutt_addr_is_intl.o \
-		  test/address/mutt_addr_is_local.o \
-		  test/address/mutt_addrlist_dedupe.o \
-		  test/address/mutt_addrlist_to_intl.o \
-		  test/address/mutt_addrlist_to_local.o \
-		  test/address/mutt_addr_mbox_to_udomain.o \
 		  test/address/mutt_addr_new.o \
-		  test/address/mutt_addr_parse_list2.o \
-		  test/address/mutt_addr_parse_list.o \
-		  test/address/mutt_addr_qualify.o \
-		  test/address/mutt_addr_remove_from_list.o \
-		  test/address/mutt_addr_remove_xrefs.o \
-		  test/address/mutt_addr_search.o \
-		  test/address/mutt_addr_set_intl.o \
-		  test/address/mutt_addr_set_local.o \
 		  test/address/mutt_addr_valid_msgid.o \
 		  test/address/mutt_addr_write.o \
-		  test/address/mutt_addr_write_single.o
+		  test/address/mutt_addrlist_append.o \
+		  test/address/mutt_addrlist_clear.o \
+		  test/address/mutt_addrlist_copy.o \
+		  test/address/mutt_addrlist_count_recips.o \
+		  test/address/mutt_addrlist_dedupe.o \
+		  test/address/mutt_addrlist_equal.o \
+		  test/address/mutt_addrlist_parse.o \
+		  test/address/mutt_addrlist_parse2.o \
+		  test/address/mutt_addrlist_prepend.o \
+		  test/address/mutt_addrlist_qualify.o \
+		  test/address/mutt_addrlist_remove.o \
+		  test/address/mutt_addrlist_remove_xrefs.o \
+		  test/address/mutt_addrlist_search.o \
+		  test/address/mutt_addrlist_to_intl.o \
+		  test/address/mutt_addrlist_to_local.o \
+		  test/address/mutt_addrlist_write.o
 
 ATTACH_OBJS	= test/attach/mutt_actx_add_fp.o \
 		  test/attach/mutt_actx_free_entries.o \

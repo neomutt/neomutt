@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 2002 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2005-2009 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -164,21 +165,21 @@ static int smtp_get_resp(struct Connection *conn)
 /**
  * smtp_rcpt_to - Set the recipient to an Address
  * @param conn Server Connection
- * @param a    Address to use
+ * @param al   AddressList to use
  * @retval  0 Success
  * @retval <0 Error, e.g. #SMTP_ERR_WRITE
  */
-static int smtp_rcpt_to(struct Connection *conn, const struct Address *a)
+static int smtp_rcpt_to(struct Connection *conn, const struct AddressList *al)
 {
   char buf[1024];
   int rc;
 
-  while (a)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
     /* weed out group mailboxes, since those are for display only */
     if (!a->mailbox || a->group)
     {
-      a = a->next;
       continue;
     }
     if ((Capabilities & SMTP_CAP_DSN) && C_DsnNotify)
@@ -190,7 +191,6 @@ static int smtp_rcpt_to(struct Connection *conn, const struct Address *a)
     rc = smtp_get_resp(conn);
     if (rc != 0)
       return rc;
-    a = a->next;
   }
 
   return 0;
@@ -296,16 +296,16 @@ static bool address_uses_unicode(const char *a)
 
 /**
  * addresses_use_unicode - Do any of a list of addresses use Unicode
- * @param a Address list to check
+ * @param al Address list to check
  * @retval true if any use 8-bit characters
  */
-static bool addresses_use_unicode(const struct Address *a)
+static bool addresses_use_unicode(const struct AddressList *al)
 {
-  while (a)
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, al, entries)
   {
     if (a->mailbox && !a->group && address_uses_unicode(a->mailbox))
       return true;
-    a = a->next;
   }
   return false;
 }
@@ -737,8 +737,8 @@ static int smtp_open(struct Connection *conn, bool esmtp)
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_smtp_send(const struct Address *from, const struct Address *to,
-                   const struct Address *cc, const struct Address *bcc,
+int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
+                   const struct AddressList *cc, const struct AddressList *bcc,
                    const char *msgfile, bool eightbit)
 {
   struct Connection *conn = NULL;
@@ -751,8 +751,8 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
    * but this condition is most likely arrived at accidentally */
   if (C_EnvelopeFromAddress)
     envfrom = C_EnvelopeFromAddress->mailbox;
-  else if (from)
-    envfrom = from->mailbox;
+  else if (from && !TAILQ_EMPTY(from))
+    envfrom = TAILQ_FIRST(from)->mailbox;
   else
   {
     mutt_error(_("No from address given"));

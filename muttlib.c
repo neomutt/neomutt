@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 1996-2000,2007,2010,2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2008 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -217,21 +218,19 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
 
       case '@':
       {
-        struct Address *alias = mutt_alias_lookup(s + 1);
-        if (alias)
+        struct AddressList *al = mutt_alias_lookup(s + 1);
+        if (!TAILQ_EMPTY(al))
         {
           struct Email *e = mutt_email_new();
           e->env = mutt_env_new();
-          e->env->from = alias;
-          e->env->to = alias;
+          mutt_addrlist_copy(&e->env->from, al, false);
+          mutt_addrlist_copy(&e->env->to, al, false);
 
           /* TODO: fix mutt_default_save() to use Buffer */
           mutt_buffer_increase_size(p, PATH_MAX);
           mutt_default_save(p->data, p->dsize, e);
           mutt_buffer_fix_dptr(p);
 
-          e->env->from = NULL;
-          e->env->to = NULL;
           mutt_email_free(&e);
           /* Avoid infinite recursion if the resulting folder starts with '@' */
           if (*(mutt_b2s(p)) != '@')
@@ -789,7 +788,7 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
  * If the user hasn't set `$save_address` the name will be truncated to the '@'
  * character.
  */
-void mutt_save_path(char *buf, size_t buflen, struct Address *addr)
+void mutt_save_path(char *buf, size_t buflen, const struct Address *addr)
 {
   if (addr && addr->mailbox)
   {
@@ -814,7 +813,7 @@ void mutt_save_path(char *buf, size_t buflen, struct Address *addr)
  *
  * The filename will be stripped of '/', space, etc to make it safe.
  */
-void mutt_safe_path(char *buf, size_t buflen, struct Address *a)
+void mutt_safe_path(char *buf, size_t buflen, const struct Address *a)
 {
   mutt_save_path(buf, buflen, a);
   for (char *p = buf; *p; p++)
