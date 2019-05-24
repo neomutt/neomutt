@@ -53,12 +53,6 @@ void *mutt_mem_calloc(size_t nmemb, size_t size)
   if ((nmemb == 0) || (size == 0))
     return NULL;
 
-  if (nmemb > (SIZE_MAX / size))
-  {
-    mutt_error(_("Out of memory"));
-    mutt_exit(1);
-  }
-
   void *p = calloc(nmemb, size);
   if (!p)
   {
