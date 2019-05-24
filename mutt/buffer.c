@@ -369,7 +369,7 @@ void mutt_buffer_increase_size(struct Buffer *buf, size_t new_size)
  */
 size_t mutt_buffer_len(const struct Buffer *buf)
 {
-  if (!buf)
+  if (!buf || !buf->data || !buf->dptr)
     return 0;
 
   return buf->dptr - buf->data;
