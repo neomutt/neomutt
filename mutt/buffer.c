@@ -232,6 +232,7 @@ void mutt_buffer_fix_dptr(struct Buffer *buf)
  * @param fmt printf-style format string
  * @param ... Arguments to be formatted
  * @retval num Characters written
+ * @retval -1  Error
  */
 int mutt_buffer_add_printf(struct Buffer *buf, const char *fmt, ...)
 {
