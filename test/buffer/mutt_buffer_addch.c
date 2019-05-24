@@ -32,4 +32,18 @@ void test_mutt_buffer_addch(void)
   {
     TEST_CHECK(mutt_buffer_addch(NULL, 'a') == 0);
   }
+
+  {
+    struct Buffer *buf = mutt_buffer_new();
+    TEST_CHECK(mutt_buffer_addch(buf, 'a') == 1);
+    TEST_CHECK(strcmp(mutt_b2s(buf), "a") == 0);
+    mutt_buffer_free(&buf);
+  }
+
+  {
+    struct Buffer *buf = mutt_buffer_from("test");
+    TEST_CHECK(mutt_buffer_addch(buf, 'a') == 1);
+    TEST_CHECK(strcmp(mutt_b2s(buf), "testa") == 0);
+    mutt_buffer_free(&buf);
+  }
 }
