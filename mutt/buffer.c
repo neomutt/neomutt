@@ -105,6 +105,7 @@ struct Buffer *mutt_buffer_from(const char *seed)
  * @param s   String to add
  * @param len Length of the string
  * @retval num Bytes written to Buffer
+ * @retval 0   Error
  *
  * Dynamically grow a Buffer to accommodate s, in increments of 128 bytes.
  * Always one byte bigger than necessary for the null terminator, and the
@@ -115,10 +116,9 @@ size_t mutt_buffer_addstr_n(struct Buffer *buf, const char *s, size_t len)
   if (!buf || !s)
     return 0;
 
-  if ((buf->dptr + len + 1) > (buf->data + buf->dsize))
-    mutt_buffer_increase_size(buf, buf->dsize + ((len < 128) ? 128 : len + 1));
-  if (!buf->dptr)
-    return 0;
+  if (!buf->data || !buf->dptr || ((buf->dptr + len + 1) > (buf->data + buf->dsize)))
+    mutt_buffer_increase_size(buf, buf->dsize + MAX(128, len + 1));
+
   memcpy(buf->dptr, s, len);
   buf->dptr += len;
   *(buf->dptr) = '\0';
