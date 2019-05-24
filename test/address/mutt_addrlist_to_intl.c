@@ -63,14 +63,11 @@ void test_mutt_addrlist_to_intl(void)
       mutt_addrlist_append(&al, mutt_addr_create(NULL, local2intl[i].local));
       mutt_addrlist_to_intl(&al, NULL);
       struct Address *a = TAILQ_FIRST(&al);
-      TEST_CHECK_STR_EQ(
 #ifdef HAVE_LIBIDN
-          local2intl[i].intl
+      TEST_CHECK_STR_EQ(local2intl[i].intl, a->mailbox);
 #else
-          local2intl[i].local
+      TEST_CHECK_STR_EQ(local2intl[i].local, a->mailbox);
 #endif
-          ,
-          a->mailbox);
       mutt_addrlist_to_local(&al);
       TEST_CHECK_STR_EQ(local2intl[i].local, a->mailbox);
       mutt_addrlist_clear(&al);
