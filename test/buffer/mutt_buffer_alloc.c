@@ -23,9 +23,21 @@
 #define TEST_NO_MAIN
 #include "acutest.h"
 #include "config.h"
+#include <stdbool.h>
 #include "mutt/mutt.h"
 
 void test_mutt_buffer_alloc(void)
 {
   // struct Buffer *mutt_buffer_alloc(size_t size);
+
+  size_t alloc_tests[] = { 0, 42, 1048576 };
+
+  for (size_t i = 0; i < mutt_array_size(alloc_tests); i++)
+  {
+    struct Buffer *buf = NULL;
+    TEST_CASE_("%lu", alloc_tests[i]);
+    buf = mutt_buffer_alloc(alloc_tests[i]);
+    TEST_CHECK(buf != NULL);
+    mutt_buffer_free(&buf);
+  }
 }

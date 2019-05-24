@@ -298,13 +298,13 @@ bool mutt_buffer_is_empty(const struct Buffer *buf)
  */
 struct Buffer *mutt_buffer_alloc(size_t size)
 {
-  struct Buffer *b = mutt_mem_calloc(1, sizeof(struct Buffer));
+  struct Buffer *buf = mutt_mem_calloc(1, sizeof(struct Buffer));
 
-  b->data = mutt_mem_calloc(1, size);
-  b->dptr = b->data;
-  b->dsize = size;
+  buf->data = mutt_mem_calloc(1, size);
+  buf->dptr = buf->data;
+  buf->dsize = size;
 
-  return b;
+  return buf;
 }
 
 /**
