@@ -38,5 +38,20 @@ void test_mutt_buffer_free(void)
     struct Buffer *buf = NULL;
     mutt_buffer_free(&buf);
     TEST_CHECK_(1, "mutt_buffer_free(&buf)");
+    TEST_CHECK(buf == NULL);
+  }
+
+  {
+    struct Buffer *buf = mutt_buffer_new();
+    mutt_buffer_free(&buf);
+    TEST_CHECK_(1, "mutt_buffer_free(&buf)");
+    TEST_CHECK(buf == NULL);
+  }
+
+  {
+    struct Buffer *buf = mutt_buffer_from("test");
+    mutt_buffer_free(&buf);
+    TEST_CHECK_(1, "mutt_buffer_free(&buf)");
+    TEST_CHECK(buf == NULL);
   }
 }
