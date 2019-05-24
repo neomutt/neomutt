@@ -822,7 +822,6 @@ void crypt_extract_keys_from_messages(struct EmailList *el)
     return;
 
   char tempfname[PATH_MAX];
-  struct Address *tmp = NULL;
 
   mutt_mktemp(tempfname, sizeof(tempfname));
   FILE *fp_out = mutt_file_fopen(tempfname, "w");
@@ -870,17 +869,22 @@ void crypt_extract_keys_from_messages(struct EmailList *el)
         mutt_copy_message_ctx(fp_out, Context->mailbox, e, MUTT_CM_NO_FLAGS, CH_NO_FLAGS);
       fflush(fp_out);
 
+      char *mbox = NULL;
       if (!TAILQ_EMPTY(&e->env->from))
+      {
         mutt_expand_aliases(&e->env->from);
+        mbox = TAILQ_FIRST(&e->env->from)->mailbox;
+      }
       else if (!TAILQ_EMPTY(&e->env->sender))
+      {
         mutt_expand_aliases(&e->env->sender);
-      char *mbox = tmp ? tmp->mailbox : NULL;
+        mbox = TAILQ_FIRST(&e->env->sender)->mailbox;
+      }
       if (mbox)
       {
         mutt_endwin();
         puts(_("Trying to extract S/MIME certificates..."));
         crypt_smime_invoke_import(tempfname, mbox);
-        tmp = NULL;
       }
     }
 
