@@ -288,10 +288,10 @@ size_t mutt_buffer_addch(struct Buffer *buf, char c)
  */
 bool mutt_buffer_is_empty(const struct Buffer *buf)
 {
-  if (!buf)
+  if (!buf || !buf->data)
     return true;
 
-  return buf->data && (buf->data[0] == '\0');
+  return (buf->data[0] == '\0');
 }
 
 /**
