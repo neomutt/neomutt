@@ -27,12 +27,6 @@
 #include "address/lib.h"
 #include "email/lib.h"
 
-int log_disp_null(time_t stamp, const char *file, int line,
-                  const char *function, int level, ...)
-{
-  return 0;
-}
-
 void test_mutt_parse_multipart(void)
 {
   // struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, off_t end_off, bool digest);

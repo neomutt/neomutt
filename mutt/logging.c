@@ -505,3 +505,12 @@ int log_disp_terminal(time_t stamp, const char *file, int line,
 
   return ret;
 }
+
+/**
+ * log_disp_null - Discard log lines - Implements ::log_dispatcher_t
+ */
+int log_disp_null(time_t stamp, const char *file, int line,
+                  const char *function, int level, ...)
+{
+  return 0;
+}
