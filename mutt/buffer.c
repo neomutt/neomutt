@@ -219,7 +219,7 @@ void mutt_buffer_fix_dptr(struct Buffer *buf)
 
   buf->dptr = buf->data;
 
-  if (buf->data)
+  if (buf->data && (buf->dsize > 0))
   {
     buf->data[buf->dsize - 1] = '\0';
     buf->dptr = strchr(buf->data, '\0');
