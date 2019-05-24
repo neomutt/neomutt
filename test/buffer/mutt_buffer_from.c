@@ -32,4 +32,28 @@ void test_mutt_buffer_from(void)
   {
     TEST_CHECK(!mutt_buffer_from(NULL));
   }
+
+  {
+    struct Buffer *buf = NULL;
+    const char *str = "";
+
+    TEST_CHECK((buf = mutt_buffer_from(str)) != NULL);
+    TEST_CHECK(buf->data == NULL);
+    TEST_CHECK(buf->dptr == NULL);
+    TEST_CHECK(buf->dsize == 0);
+
+    mutt_buffer_free(&buf);
+  }
+
+  {
+    struct Buffer *buf = NULL;
+    const char *str = "test";
+
+    TEST_CHECK((buf = mutt_buffer_from(str)) != NULL);
+    TEST_CHECK(buf->data != NULL);
+    TEST_CHECK(buf->dptr != NULL);
+    TEST_CHECK(buf->dsize != 0);
+
+    mutt_buffer_free(&buf);
+  }
 }

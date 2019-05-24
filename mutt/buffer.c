@@ -85,7 +85,10 @@ void mutt_buffer_reset(struct Buffer *buf)
 /**
  * mutt_buffer_from - Create Buffer from an existing string
  * @param seed String to put in the Buffer
- * @retval ptr New Buffer
+ * @retval ptr  New Buffer
+ * @retval NULL Error
+ *
+ * @note The write pointer is positioned at the end of the string
  */
 struct Buffer *mutt_buffer_from(const char *seed)
 {
@@ -95,7 +98,7 @@ struct Buffer *mutt_buffer_from(const char *seed)
   struct Buffer *b = mutt_buffer_new();
   b->data = mutt_str_strdup(seed);
   b->dsize = mutt_str_strlen(seed);
-  b->dptr = (char *) b->data + b->dsize;
+  b->dptr = b->data + b->dsize;
   return b;
 }
 
