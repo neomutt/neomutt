@@ -53,15 +53,24 @@ void test_mutt_addrlist_to_intl(void)
                        { .local = "test@வலைப்பூ.com", .intl = "test@xn--xlcawl2e7azb.com" } };
 
     C_Charset = "utf-8";
+#ifdef HAVE_LIBIDN
     C_IdnEncode = true;
     C_IdnDecode = true;
+#endif
     for (size_t i = 0; i < mutt_array_size(local2intl); ++i)
     {
       struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
       mutt_addrlist_append(&al, mutt_addr_create(NULL, local2intl[i].local));
       mutt_addrlist_to_intl(&al, NULL);
       struct Address *a = TAILQ_FIRST(&al);
-      TEST_CHECK_STR_EQ(local2intl[i].intl, a->mailbox);
+      TEST_CHECK_STR_EQ(
+#ifdef HAVE_LIBIDN
+          local2intl[i].intl
+#else
+          local2intl[i].local
+#endif
+          ,
+          a->mailbox);
       mutt_addrlist_to_local(&al);
       TEST_CHECK_STR_EQ(local2intl[i].local, a->mailbox);
       mutt_addrlist_clear(&al);
