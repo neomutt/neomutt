@@ -148,29 +148,23 @@ void mutt_buffer_free(struct Buffer **p)
  * @param fmt printf-style format string
  * @param ap  Arguments to be formatted
  * @retval num Characters written
+ * @retval 0   Error
  */
 static int buffer_printf(struct Buffer *buf, const char *fmt, va_list ap)
 {
-  if (!buf)
-    return 0;
+  if (!buf || !fmt)
+    return 0; /* LCOV_EXCL_LINE */
+
+  if (!buf->data || !buf->dptr || (buf->dsize < 128))
+    mutt_buffer_increase_size(buf, 128);
+
+  int doff = buf->dptr - buf->data;
+  int blen = buf->dsize - doff;
 
   va_list ap_retry;
-  int len, blen, doff;
-
   va_copy(ap_retry, ap);
 
-  if (!buf->dptr)
-    buf->dptr = buf->data;
-
-  doff = buf->dptr - buf->data;
-  blen = buf->dsize - doff;
-  /* solaris 9 vsnprintf barfs when blen is 0 */
-  if (blen == 0)
-  {
-    blen = 128;
-    mutt_buffer_increase_size(buf, buf->dsize + blen);
-  }
-  len = vsnprintf(buf->dptr, blen, fmt, ap);
+  int len = vsnprintf(buf->dptr, blen, fmt, ap);
   if (len >= blen)
   {
     blen = ++len - blen;
@@ -193,6 +187,7 @@ static int buffer_printf(struct Buffer *buf, const char *fmt, va_list ap)
  * @param fmt printf-style format string
  * @param ... Arguments to be formatted
  * @retval num Characters written
+ * @retval -1  Error
  */
 int mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...)
 {
