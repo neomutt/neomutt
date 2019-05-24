@@ -28,4 +28,11 @@
 void test_mutt_buffer_new(void)
 {
   // struct Buffer *mutt_buffer_new(void);
+
+  {
+    struct Buffer *buf = NULL;
+    TEST_CHECK((buf = mutt_buffer_new()) != NULL);
+
+    mutt_buffer_free(&buf);
+  }
 }
