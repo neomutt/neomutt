@@ -246,9 +246,7 @@ int mutt_grouplist_remove_addrlist(struct GroupList *head, struct AddressList *a
   if (!head || !al)
     return -1;
 
-  int rc = 0;
   struct GroupNode *gnp = NULL;
-
   STAILQ_FOREACH(gnp, head, entries)
   {
     struct Address *a = NULL;
@@ -257,12 +255,12 @@ int mutt_grouplist_remove_addrlist(struct GroupList *head, struct AddressList *a
       mutt_addrlist_remove(&gnp->group->al, a->mailbox);
     }
     if (empty_group(gnp->group))
+    {
       group_remove(gnp->group);
-    if (rc)
-      break;
+    }
   }
 
-  return rc;
+  return 0;
 }
 
 /**
