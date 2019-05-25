@@ -32,10 +32,10 @@
  */
 struct Buffer
 {
-  char *data;   /**< pointer to data */
-  char *dptr;   /**< current read/write position */
-  size_t dsize; /**< length of data */
-  int destroy;  /**< destroy 'data' when done? */
+  char *data;   ///< Pointer to data
+  char *dptr;   ///< Current read/write position
+  size_t dsize; ///< Length of data
+  int destroy;  ///< Destroy 'data' when done?
 };
 
 /* Convert a buffer to a const char * "string" */
@@ -43,12 +43,7 @@ struct Buffer
 
 #define MoreArgs(buf) (*buf->dptr && (*buf->dptr != ';') && (*buf->dptr != '#'))
 
-size_t         mutt_buffer_addch        (struct Buffer *buf, char c);
-size_t         mutt_buffer_addstr       (struct Buffer *buf, const char *s);
-size_t         mutt_buffer_addstr_n     (struct Buffer *buf, const char *s, size_t len);
-int            mutt_buffer_add_printf   (struct Buffer *buf, const char *fmt, ...);
 struct Buffer *mutt_buffer_alloc        (size_t size);
-void           mutt_buffer_concat_path  (struct Buffer *buf, const char *dir, const char *fname);
 void           mutt_buffer_fix_dptr     (struct Buffer *buf);
 void           mutt_buffer_free         (struct Buffer **p);
 struct Buffer *mutt_buffer_from         (const char *seed);
@@ -57,8 +52,17 @@ struct Buffer *mutt_buffer_init         (struct Buffer *buf);
 bool           mutt_buffer_is_empty     (const struct Buffer *buf);
 size_t         mutt_buffer_len          (const struct Buffer *buf);
 struct Buffer *mutt_buffer_new          (void);
-int            mutt_buffer_printf       (struct Buffer *buf, const char *fmt, ...);
 void           mutt_buffer_reset        (struct Buffer *buf);
+
+// Functions that APPEND to a Buffer
+size_t         mutt_buffer_addch        (struct Buffer *buf, char c);
+size_t         mutt_buffer_addstr       (struct Buffer *buf, const char *s);
+size_t         mutt_buffer_addstr_n     (struct Buffer *buf, const char *s, size_t len);
+int            mutt_buffer_add_printf   (struct Buffer *buf, const char *fmt, ...);
+
+// Functions that OVERWRITE a Buffer
+void           mutt_buffer_concat_path  (struct Buffer *buf, const char *dir, const char *fname);
+int            mutt_buffer_printf       (struct Buffer *buf, const char *fmt, ...);
 void           mutt_buffer_strcpy       (struct Buffer *buf, const char *s);
 void           mutt_buffer_strcpy_n     (struct Buffer *buf, const char *s, size_t len);
 
