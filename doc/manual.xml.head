@@ -9306,6 +9306,14 @@ subjectrx '\[[^]]*\]:? *' '%L%R'
             don't completely rely on this feature.
           </para>
         </note>
+        <note>
+          <para>
+            When using Maildir, you don't have to manually specify all your mailboxes. You can use this command instead:
+            <screen>
+              mailboxes `find ~/.mail/ -type d -name cur | sed 's:/cur/*$::' | tr '\n' ' '`
+            </screen>
+          </para>
+        </note>
       </sect2>
 
       <sect2 id="calc-mailbox-counts">
