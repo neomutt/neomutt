@@ -788,7 +788,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
           break;
       }
 
-      if (np && Context &&
+      if (np && Context && Context->mailbox &&
           (mutt_str_strcmp(np->mailbox->realpath, Context->mailbox->realpath) == 0))
       {
         np->mailbox->msg_count = Context->mailbox->msg_count;

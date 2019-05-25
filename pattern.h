@@ -150,7 +150,7 @@ enum PatternType
 
 int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
                       struct Mailbox *m, struct Email *e, struct PatternCache *cache);
-struct PatternHead *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer *err);
+struct PatternHead *mutt_pattern_comp(const char *s, int flags, struct Buffer *err);
 void mutt_check_simple(struct Buffer *s, const char *simple);
 void mutt_pattern_free(struct PatternHead **pat);
 

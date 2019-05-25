@@ -105,7 +105,7 @@ bool mutt_envlist_set(const char *name, const char *value, bool overwrite)
   }
 
   /* Format var=value string */
-  snprintf(work, sizeof(work), "%s=%s", NONULL(name), NONULL(value));
+  snprintf(work, sizeof(work), "%s=%s", name, NONULL(value));
 
   if (envp && *envp)
   {

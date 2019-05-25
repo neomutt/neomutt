@@ -1358,7 +1358,8 @@ static void km_unbind_all(struct Keymap **map, unsigned long mode)
     }
     else if (!first)
     {
-      first = last = cur;
+      first = cur;
+      last = cur;
     }
     else if (last)
     {

@@ -613,6 +613,9 @@ void mutt_mktemp_full(char *buf, size_t buflen, const char *prefix,
  */
 void mutt_pretty_mailbox(char *buf, size_t buflen)
 {
+  if (!buf)
+    return;
+
   char *p = buf, *q = buf;
   size_t len;
   enum UrlScheme scheme;
@@ -682,15 +685,16 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
 
 /**
  * mutt_buffer_pretty_mailbox - Shorten a mailbox path using '~' or '='
- * @param s Buffer containing Mailbox name
+ * @param buf Buffer containing Mailbox name
  */
-void mutt_buffer_pretty_mailbox(struct Buffer *s)
+void mutt_buffer_pretty_mailbox(struct Buffer *buf)
 {
+  if (!buf || !buf->data)
   /* This reduces the size of the Buffer, so we can pass it through.
-   * We adjust the size just to make sure s->data is not NULL though */
-  mutt_buffer_increase_size(s, PATH_MAX);
-  mutt_pretty_mailbox(s->data, s->dsize);
-  mutt_buffer_fix_dptr(s);
+   * We adjust the size just to make sure buf->data is not NULL though */
+  mutt_buffer_increase_size(buf, PATH_MAX);
+  mutt_pretty_mailbox(buf->data, buf->dsize);
+  mutt_buffer_fix_dptr(buf);
 }
 
 /**

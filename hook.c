@@ -428,7 +428,7 @@ int mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
    * used for date ranges, and they need to be evaluated relative to "now", not
    * the hook compilation time.  */
   struct PatternHead *pat =
-      mutt_pattern_comp(pattern->data, MUTT_FULL_MSG | MUTT_PATTERN_DYNAMIC, err);
+      mutt_pattern_comp(mutt_b2s(pattern), MUTT_FULL_MSG | MUTT_PATTERN_DYNAMIC, err);
   if (!pat)
     goto out;
 

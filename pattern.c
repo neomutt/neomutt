@@ -1386,7 +1386,7 @@ static struct PatternHead *mutt_pattern_node_new(void)
  * @param err   Buffer for error messages
  * @retval ptr Newly allocated Pattern
  */
-struct PatternHead *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer *err)
+struct PatternHead *mutt_pattern_comp(const char *s, int flags, struct Buffer *err)
 {
   /* curlist when assigned will always point to a list containing at least one node
    * with a Pattern value.  */
@@ -1405,7 +1405,7 @@ struct PatternHead *mutt_pattern_comp(/* const */ char *s, int flags, struct Buf
   struct Buffer ps;
 
   mutt_buffer_init(&ps);
-  ps.dptr = s;
+  ps.dptr = (char *) s;
   ps.dsize = mutt_str_strlen(s);
 
   while (*ps.dptr)

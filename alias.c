@@ -326,7 +326,7 @@ struct AddressList *mutt_get_address(struct Envelope *env, const char **pfxp)
 
   if (mutt_addr_is_user(TAILQ_FIRST(&env->from)))
   {
-    if (TAILQ_EMPTY(&env->to) && !mutt_is_mail_list(TAILQ_FIRST(&env->to)))
+    if (!TAILQ_EMPTY(&env->to) && !mutt_is_mail_list(TAILQ_FIRST(&env->to)))
     {
       pfx = "To";
       al = &env->to;

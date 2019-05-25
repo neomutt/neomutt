@@ -1164,6 +1164,9 @@ int mh_rewrite_message(struct Mailbox *m, int msgno)
  */
 void maildir_canon_filename(struct Buffer *dest, const char *src)
 {
+  if (!dest || !src)
+    return;
+
   char *t = strrchr(src, '/');
   if (t)
     src = t + 1;

@@ -1297,7 +1297,9 @@ void mutt_addrlist_dedupe(struct AddressList *al)
   {
     if (a->mailbox)
     {
-      struct Address *a2 = TAILQ_NEXT(a, entries), *tmp;
+      struct Address *a2 = TAILQ_NEXT(a, entries);
+      struct Address *tmp = NULL;
+
       if (a2)
       {
         TAILQ_FOREACH_FROM_SAFE(a2, al, entries, tmp)
