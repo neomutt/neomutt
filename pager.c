@@ -2573,8 +2573,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       case OP_HALF_UP:
         if (rd.topline)
         {
-          rd.topline = up_n_lines(rd.pager_window->rows / 2, rd.line_info,
-                                  rd.topline, rd.hide_quoted);
+          rd.topline = up_n_lines(rd.pager_window->rows / 2 + (rd.pager_window->rows % 2),
+                                  rd.line_info, rd.topline, rd.hide_quoted);
         }
         else
           mutt_error(_("Top of message is shown"));
