@@ -25,6 +25,12 @@
 #include "config.h"
 #include "mutt/mutt.h"
 
+struct TrailTest
+{
+  const char *str;
+  const char *expected;
+};
+
 void test_mutt_str_remove_trailing_ws(void)
 {
   // void mutt_str_remove_trailing_ws(char *s);
@@ -32,5 +38,43 @@ void test_mutt_str_remove_trailing_ws(void)
   {
     mutt_str_remove_trailing_ws(NULL);
     TEST_CHECK_(1, "mutt_str_remove_trailing_ws(NULL)");
+  }
+
+  // none
+  // trailing
+  // only whitespace
+
+  // clang-format off
+  struct TrailTest trail_tests[] =
+  {
+    { "",              ""         },
+
+    { "hello ",        "hello"    },
+    { "hello\t",       "hello"    },
+    { "hello\r",       "hello"    },
+    { "hello\n",       "hello"    },
+
+    { "hello \t",      "hello"    },
+    { "hello\t ",      "hello"    },
+    { "hello\r\t",     "hello"    },
+    { "hello\n\r",     "hello"    },
+
+    { " \n  \r \t\t ", ""         },
+  };
+  // clang-format on
+
+  {
+    char buf[64];
+
+    for (size_t i = 0; i < mutt_array_size(trail_tests); i++)
+    {
+      struct TrailTest *t = &trail_tests[i];
+      memset(buf, 0, sizeof(buf));
+      strncpy(buf, t->str, sizeof(buf));
+      TEST_CASE_("'%s'", buf);
+
+      mutt_str_remove_trailing_ws(buf);
+      TEST_CHECK(strcmp(buf, t->expected) == 0);
+    }
   }
 }

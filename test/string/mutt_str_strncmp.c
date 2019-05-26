@@ -29,15 +29,15 @@ void test_mutt_str_strncmp(void)
 {
   // int mutt_str_strncmp(const char *a, const char *b, size_t l);
 
-  {
-    TEST_CHECK(mutt_str_strncmp(NULL, "apple", 5) != 0);
-  }
+  TEST_CHECK(mutt_str_strncmp(NULL, "apple", 5) != 0);
+  TEST_CHECK(mutt_str_strncmp("apple", NULL, 5) != 0);
+  TEST_CHECK(mutt_str_strncmp(NULL, NULL, 5) == 0);
 
-  {
-    TEST_CHECK(mutt_str_strncmp("apple", NULL, 5) != 0);
-  }
-
-  {
-    TEST_CHECK(mutt_str_strncmp(NULL, NULL, 5) == 0);
-  }
+  TEST_CHECK(mutt_str_strncmp("", "", 1) == 0);
+  TEST_CHECK(mutt_str_strncmp("apple", "apple", 5) == 0);
+  TEST_CHECK(mutt_str_strncmp("apple", "APPLE", 5) != 0);
+  TEST_CHECK(mutt_str_strncmp("apple", "apple2", 6) != 0);
+  TEST_CHECK(mutt_str_strncmp("apple1", "apple", 6) != 0);
+  TEST_CHECK(mutt_str_strncmp("apple", "apple2", 5) == 0);
+  TEST_CHECK(mutt_str_strncmp("apple1", "apple", 5) == 0);
 }

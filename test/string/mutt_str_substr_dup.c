@@ -29,9 +29,46 @@ void test_mutt_str_substr_dup(void)
 {
   // char *mutt_str_substr_dup(const char *begin, const char *end);
 
-  const char *str = "apple banana";
+  const char *str = "apple banana\0xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
 
   {
     TEST_CHECK(mutt_str_substr_dup(NULL, str + 7) == NULL);
+  }
+
+  {
+    char *ptr = mutt_str_substr_dup(str, str + 7);
+    TEST_CHECK(ptr != NULL);
+    TEST_CHECK(strcmp(ptr, "apple b") == 0);
+    TEST_MSG(ptr);
+    FREE(&ptr);
+  }
+
+  {
+    char *ptr = mutt_str_substr_dup(str + 3, str + 7);
+    TEST_CHECK(ptr != NULL);
+    TEST_CHECK(strcmp(ptr, "le b") == 0);
+    TEST_MSG(ptr);
+    FREE(&ptr);
+  }
+
+  {
+    char *ptr = mutt_str_substr_dup(str + 3, str + 64);
+    TEST_CHECK(ptr != NULL);
+    TEST_CHECK(strcmp(ptr, "le banana") == 0);
+    TEST_MSG(ptr);
+    FREE(&ptr);
+  }
+
+  {
+    char *ptr = mutt_str_substr_dup(str + 3, NULL);
+    TEST_CHECK(ptr != NULL);
+    TEST_CHECK(strcmp(ptr, "le banana") == 0);
+    TEST_MSG(ptr);
+    FREE(&ptr);
+  }
+
+  {
+    char *ptr = mutt_str_substr_dup(str + 7, str + 3);
+    TEST_CHECK(ptr == NULL);
   }
 }

@@ -28,4 +28,16 @@
 void test_mutt_str_is_email_wsp(void)
 {
   // bool mutt_str_is_email_wsp(char c);
+
+  {
+    for (char c = 0; c <= 32; c++)
+    {
+      TEST_CASE_("%d", c);
+
+      bool result = mutt_str_is_email_wsp(c);
+      bool wsp = ((c == ' ') || (c == '\t') || (c == '\r') || (c == '\n'));
+
+      TEST_CHECK(result == wsp);
+    }
+  }
 }

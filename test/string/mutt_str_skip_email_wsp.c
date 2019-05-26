@@ -25,11 +25,43 @@
 #include "config.h"
 #include "mutt/mutt.h"
 
+struct SkipTest
+{
+  const char *str;
+  size_t offset;
+};
+
 void test_mutt_str_skip_email_wsp(void)
 {
   // char *mutt_str_skip_email_wsp(const char *s);
 
   {
     TEST_CHECK(mutt_str_skip_email_wsp(NULL) == NULL);
+  }
+
+  // clang-format off
+  struct SkipTest skip_tests[] =
+  {
+    { "",              0 },
+    { "apple",         0 },
+    { " apple",        1 },
+    { "\tapple",       1 },
+    { "\rapple",       1 },
+    { "\napple",       1 },
+
+    { "\t \t \napple", 5 },
+    { "\t \t \n",      5 },
+  };
+  // clang-format on
+
+  {
+    for (size_t i = 0; i < mutt_array_size(skip_tests); i++)
+    {
+      struct SkipTest *t = &skip_tests[i];
+      TEST_CASE_("'%s'", t->str);
+
+      const char *result = mutt_str_skip_email_wsp(t->str);
+      TEST_CHECK(result == (t->str + t->offset));
+    }
   }
 }

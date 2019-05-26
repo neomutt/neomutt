@@ -119,4 +119,9 @@ void test_mutt_str_strcasestr(void)
 
     TEST_CHECK_(retval == NULL, "Expected: %s, Actual: %s", NULL, retval);
   }
+  // null
+  // no match
+  // one match: start,middle,end
+  // multi-matches
+
 }

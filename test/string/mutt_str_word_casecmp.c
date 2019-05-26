@@ -40,4 +40,28 @@ void test_mutt_str_word_casecmp(void)
   {
     TEST_CHECK(mutt_str_word_casecmp(NULL, NULL) == 0);
   }
+
+  {
+    const char *str = "apple";
+    const char *find = "banana";
+    TEST_CHECK(mutt_str_word_casecmp(find, str) != 0);
+  }
+
+  {
+    const char *str = "apple";
+    const char *find = "apple";
+    TEST_CHECK(mutt_str_word_casecmp(find, str) == 0);
+  }
+
+  {
+    const char *str = "aPPLe banana";
+    const char *find = "apple";
+    TEST_CHECK(mutt_str_word_casecmp(find, str) == 0);
+  }
+
+  {
+    const char *str = "aPPLebanana";
+    const char *find = "apple";
+    TEST_CHECK(mutt_str_word_casecmp(find, str) != 0);
+  }
 }

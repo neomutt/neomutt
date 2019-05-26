@@ -168,15 +168,15 @@ static char_cmp get_char_cmp(enum CaseSensitivity cs)
  */
 size_t mutt_str_startswith(const char *str, const char *prefix, enum CaseSensitivity cs)
 {
-  if (!str || (str[0] == '\0') || !prefix || !prefix[0])
+  if (!str || (str[0] == '\0') || !prefix || (prefix[0] == '\0'))
   {
     return 0;
   }
 
   const char *saved_prefix = prefix;
-  for (char_cmp f = get_char_cmp(cs); *str && *prefix; str++, prefix++)
+  for (char_cmp fn = get_char_cmp(cs); *str && *prefix; str++, prefix++)
   {
-    if (!f(*str, *prefix))
+    if (!fn(*str, *prefix))
     {
       return 0;
     }
@@ -376,17 +376,14 @@ int mutt_str_atoull(const char *str, unsigned long long *dst)
  * mutt_str_strdup - Copy a string, safely
  * @param str String to copy
  * @retval ptr  Copy of the string
- * @retval NULL if str was NULL
+ * @retval NULL if str was NULL or empty
  */
 char *mutt_str_strdup(const char *str)
 {
   if (!str || !*str)
     return NULL;
 
-  const size_t len = strlen(str) + 1;
-  char *copy = mutt_mem_malloc(len);
-  memcpy(copy, str, len);
-  return copy;
+  return strdup(str);
 }
 
 /**
@@ -394,7 +391,7 @@ char *mutt_str_strdup(const char *str)
  * @param buf    Buffer containing source string
  * @param buflen Length of buffer
  * @param s      String to add
- * @retval ptr Start of joined string
+ * @retval ptr Start of the buffer
  */
 char *mutt_str_strcat(char *buf, size_t buflen, const char *s)
 {
@@ -552,7 +549,7 @@ const char *mutt_str_strchrnul(const char *s, char c)
 /**
  * mutt_str_substr_cpy - Copy a sub-string into a buffer
  * @param dest    Buffer for the result
- * @param begin     Start of the string to copy
+ * @param begin   Start of the string to copy
  * @param end     End of the string to copy
  * @param destlen Length of buffer
  * @retval ptr Destination buffer
@@ -694,12 +691,12 @@ int mutt_str_strcoll(const char *a, const char *b)
  */
 const char *mutt_str_stristr(const char *haystack, const char *needle)
 {
-  const char *p = NULL, *q = NULL;
-
   if (!haystack)
     return NULL;
   if (!needle)
     return haystack;
+
+  const char *p = NULL, *q = NULL;
 
   while (*(p = haystack))
   {
@@ -878,7 +875,7 @@ size_t mutt_str_lws_rlen(const char *s, size_t n)
 
 /**
  * mutt_str_dequote_comment - Un-escape characters in an email address comment
- * @param s String to the un-escaped
+ * @param s String to be un-escaped
  *
  * @note The string is changed in-place
  */
@@ -1003,26 +1000,26 @@ int mutt_str_word_casecmp(const char *a, const char *b)
 
 /**
  * mutt_str_is_ascii - Is a string ASCII (7-bit)?
- * @param p   String to examine
- * @param len Length of string
+ * @param str String to examine
+ * @param len Length of string to examine
  * @retval true There are no 8-bit chars
  */
-bool mutt_str_is_ascii(const char *p, size_t len)
+bool mutt_str_is_ascii(const char *str, size_t len)
 {
-  const char *s = p;
-  while (s && ((unsigned int) (s - p) < len))
-  {
-    if ((*s & 0x80) != 0)
+  if (!str)
+    return true;
+
+  for (; (*str != '\0') && (len > 0); str++, len--)
+    if ((*str & 0x80) != 0)
       return false;
-    s++;
-  }
+
   return true;
 }
 
 /**
- * mutt_str_find_word - Find the next word (non-space)
+ * mutt_str_find_word - Find the end of a word (non-space)
  * @param src String to search
- * @retval ptr Beginning of the next word
+ * @retval ptr End of the word
  *
  * Skip to the end of the current word.
  * Skip past any whitespace characters.
@@ -1032,13 +1029,14 @@ bool mutt_str_is_ascii(const char *p, size_t len)
  */
 const char *mutt_str_find_word(const char *src)
 {
-  const char *p = src;
+  if (!src)
+    return NULL;
 
-  while (p && *p && strchr(" \t\n", *p))
-    p++;
-  while (p && *p && !strchr(" \t\n", *p))
-    p++;
-  return p;
+  while (*src && strchr(" \t\n", *src))
+    src++;
+  while (*src && !strchr(" \t\n", *src))
+    src++;
+  return src;
 }
 
 /**
@@ -1049,7 +1047,7 @@ const char *mutt_str_find_word(const char *src)
  */
 void mutt_str_pretty_size(char *buf, size_t buflen, size_t num)
 {
-  if (!buf)
+  if (!buf || (buflen == 0))
     return;
 
   if (num < 1000)
@@ -1113,6 +1111,9 @@ bool mutt_str_inline_replace(char *buf, size_t buflen, size_t xlen, const char *
 
   size_t slen = mutt_str_strlen(buf + xlen);
   size_t rlen = mutt_str_strlen(rstr);
+
+  if ((slen + rlen) >= buflen)
+    return false;
 
   memmove(buf + rlen, buf + xlen, slen + 1);
   memmove(buf, rstr, rlen);
@@ -1240,8 +1241,8 @@ int mutt_str_asprintf(char **strp, const char *fmt, ...)
    * is undefined when the return code is -1.  */
   if (n < 0)
   {
-    mutt_error(_("Out of memory"));
-    mutt_exit(1);
+    mutt_error(_("Out of memory")); /* LCOV_EXCL_LINE */
+    mutt_exit(1); /* LCOV_EXCL_LINE */
   }
 
   if (n == 0)

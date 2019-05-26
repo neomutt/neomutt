@@ -32,4 +32,28 @@ void test_mutt_str_strchrnul(void)
   {
     TEST_CHECK(mutt_str_strchrnul(NULL, 'a') == NULL);
   }
+
+  {
+    const char *str = "aardvark";
+    const char *result = mutt_str_strchrnul(str, 'a');
+    TEST_CHECK(result == str);
+  }
+
+  {
+    const char *str = "cat";
+    const char *result = mutt_str_strchrnul(str, 'a');
+    TEST_CHECK(result == (str + 1));
+  }
+
+  {
+    const char *str = "zebra";
+    const char *result = mutt_str_strchrnul(str, 'a');
+    TEST_CHECK(result == (str + 4));
+  }
+
+  {
+    const char *str = "hippo";
+    const char *result = mutt_str_strchrnul(str, 'a');
+    TEST_CHECK(result == (str + 5));
+  }
 }

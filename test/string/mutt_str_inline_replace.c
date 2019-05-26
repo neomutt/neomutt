@@ -25,6 +25,15 @@
 #include "config.h"
 #include "mutt/mutt.h"
 
+struct InlineReplaceTest
+{
+  const char *initial;
+  int replace_len;
+  const char *replace;
+  const char *expected;
+  bool success;
+};
+
 void test_mutt_str_inline_replace(void)
 {
   // bool mutt_str_inline_replace(char *buf, size_t buflen, size_t xlen, const char *rstr);
@@ -36,5 +45,37 @@ void test_mutt_str_inline_replace(void)
   {
     char buf[32] = "banana";
     TEST_CHECK(mutt_str_inline_replace(buf, sizeof(buf), 2, NULL) == false);
+  }
+
+  // clang-format off
+  struct InlineReplaceTest replace_tests[] =
+  {
+    { "XXXXbanana", 4, "",          "banana",        true,  },
+    { "XXXXbanana", 4, "OO",        "OObanana",      true,  },
+    { "XXXXbanana", 4, "OOOO",      "OOOObanana",    true,  },
+    { "XXXXbanana", 4, "OOOOOO",    "OOOOOObanana",  true,  },
+    { "XXXXbanana", 4, "OOOOOOO",   "OOOOOOObanana", true,  },
+    { "XXXXbanana", 4, "OOOOOOOO",  "OOOOOOOObanan", false, },
+    { "XXXXbanana", 4, "OOOOOOOOO", "OOOOOOOOObana", false, },
+  };
+  // clang-format on
+
+  {
+    char buf[14];
+    for (size_t i = 0; i < mutt_array_size(replace_tests); i++)
+    {
+      struct InlineReplaceTest *t = &replace_tests[i];
+      TEST_CASE_("'%s', %d, '%s'", t->initial, t->replace_len, t->replace);
+
+      memset(buf, 0, sizeof(buf));
+
+      strncpy(buf, t->initial, sizeof(buf));
+      bool result = mutt_str_inline_replace(buf, sizeof(buf), t->replace_len, t->replace);
+      TEST_CHECK(result == t->success);
+      if (result)
+        TEST_CHECK(strcmp(buf, t->expected) == 0);
+      else
+        TEST_CHECK(strcmp(buf, t->initial) == 0);
+    }
   }
 }

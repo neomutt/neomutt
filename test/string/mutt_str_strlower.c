@@ -32,4 +32,22 @@ void test_mutt_str_strlower(void)
   {
     TEST_CHECK(mutt_str_strlower(NULL) == NULL);
   }
+
+  {
+    char buf[64] = "";
+    mutt_str_strlower(buf);
+    TEST_CHECK(strcmp(buf, "") == 0);
+  }
+
+  {
+    char buf[64] = "apple";
+    mutt_str_strlower(buf);
+    TEST_CHECK(strcmp(buf, "apple") == 0);
+  }
+
+  {
+    char buf[64] = "aPPLe";
+    mutt_str_strlower(buf);
+    TEST_CHECK(strcmp(buf, "apple") == 0);
+  }
 }

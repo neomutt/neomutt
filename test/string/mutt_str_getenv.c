@@ -32,4 +32,34 @@ void test_mutt_str_getenv(void)
   {
     TEST_CHECK(mutt_str_getenv(NULL) == NULL);
   }
+
+  {
+    const char *name = "NEOMUTT_TEST1";
+    const char *value = "hello";
+    setenv(name, value, 1);
+    TEST_CASE(name);
+
+    const char *result = mutt_str_getenv(name);
+    TEST_CHECK(strcmp(result, value) == 0);
+    unsetenv(name);
+  }
+
+  {
+    const char *name = "NEOMUTT_TEST2";
+    const char *value = "";
+    setenv(name, value, 1);
+    TEST_CASE(name);
+
+    const char *result = mutt_str_getenv(name);
+    TEST_CHECK(result == NULL);
+    unsetenv(name);
+  }
+
+  {
+    const char *name = "NEOMUTT_TEST3";
+    TEST_CASE(name);
+
+    const char *result = mutt_str_getenv(name);
+    TEST_CHECK(result == NULL);
+  }
 }

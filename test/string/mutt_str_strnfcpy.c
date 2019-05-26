@@ -101,4 +101,8 @@ void test_mutt_str_strnfcpy(void)
       TEST_MSG("Actual  : %s", big);
     }
   }
+  // buf: null empty normal
+  // str: null empty normal
+  // limit
+
 }

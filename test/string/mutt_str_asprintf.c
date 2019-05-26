@@ -37,4 +37,42 @@ void test_mutt_str_asprintf(void)
     char *ptr = NULL;
     TEST_CHECK(mutt_str_asprintf(&ptr, NULL) == -1);
   }
+
+  {
+    TEST_CASE("Empty");
+    char *result = NULL;
+    TEST_CHECK(mutt_str_asprintf(&result, "") == 0);
+    TEST_CHECK(result == NULL);
+  }
+
+  {
+    TEST_CASE("Static");
+    const char *str = "apple";
+    char *result = NULL;
+    TEST_CHECK(mutt_str_asprintf(&result, str) == 5);
+    TEST_CHECK(strcmp(result, str) == 0);
+    FREE(&result);
+  }
+
+  {
+    TEST_CASE("Static big");
+    const char *str =
+        "apple banana cherry damson elderberry fig guava hawthorn ilama "
+        "jackfruit kumquat lemon mango nectarine olive papaya quince raspberry "
+        "strawberry tangerine ugli vanilla wolfberry xigua yew ziziphus";
+    char *result = NULL;
+    TEST_CHECK(mutt_str_asprintf(&result, str) == 195);
+    TEST_CHECK(strcmp(result, str) == 0);
+    FREE(&result);
+  }
+
+  {
+    TEST_CASE("Varargs");
+    const char *str = "apple";
+    const char *expected = "app 1234567 3.1416";
+    char *result = NULL;
+    TEST_CHECK(mutt_str_asprintf(&result, "%.3s %ld %3.4f", str, 1234567, 3.141592654) == 18);
+    TEST_CHECK(strcmp(result, expected) == 0);
+    FREE(&result);
+  }
 }
