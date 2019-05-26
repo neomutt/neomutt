@@ -25,6 +25,15 @@
 #include "config.h"
 #include "mutt/mutt.h"
 
+struct AppendTest
+{
+  const char *first;
+  const char *second;
+  char sep;
+  const char *result;
+  size_t res_len;
+};
+
 void test_mutt_str_append_item(void)
 {
   // void mutt_str_append_item(char **str, const char *item, int sep);
@@ -38,5 +47,29 @@ void test_mutt_str_append_item(void)
     char *ptr = NULL;
     mutt_str_append_item(&ptr, NULL, ',');
     TEST_CHECK_(1, "mutt_str_append_item(&ptr, NULL, ',')");
+  }
+
+  // clang-format off
+  struct AppendTest append_tests[] =
+  {
+    { NULL,    "banana", '/',  "banana"       },
+    { "",      "banana", '/',  "banana"       },
+    { "apple", "banana", '/',  "apple/banana" },
+    { NULL,    "banana", '\0', "banana"       },
+    { "",      "banana", '\0', "banana"       },
+    { "apple", "banana", '\0', "applebanana"  },
+  };
+  // clang-format on
+
+  {
+    for (size_t i = 0; i < mutt_array_size(append_tests); i++)
+    {
+      struct AppendTest *t = &append_tests[i];
+      char *str = t->first ? strdup(t->first) : NULL;
+      TEST_CASE_("\"%s\", \"%s\", '%c'", NONULL(t->first), t->second, t->sep);
+      mutt_str_append_item(&str, t->second, t->sep);
+      TEST_CHECK(strcmp(str, t->result) == 0);
+      FREE(&str);
+    }
   }
 }
