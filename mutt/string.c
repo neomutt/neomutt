@@ -549,7 +549,7 @@ const char *mutt_str_strchrnul(const char *s, char c)
 /**
  * mutt_str_substr_cpy - Copy a sub-string into a buffer
  * @param dest    Buffer for the result
- * @param begin     Start of the string to copy
+ * @param begin   Start of the string to copy
  * @param end     End of the string to copy
  * @param destlen Length of buffer
  * @retval ptr Destination buffer

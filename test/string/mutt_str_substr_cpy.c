@@ -29,7 +29,7 @@ void test_mutt_str_substr_cpy(void)
 {
   // char *mutt_str_substr_cpy(char *dest, const char *begin, const char *end, size_t destlen);
 
-  const char *str = "apple banana";
+  const char *str = "apple banana\0xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
 
   {
     TEST_CHECK(mutt_str_substr_cpy(NULL, str + 3, str + 7, 32) == NULL);
@@ -43,5 +43,28 @@ void test_mutt_str_substr_cpy(void)
   {
     char buf[32] = { 0 };
     TEST_CHECK(mutt_str_substr_cpy(buf, str + 3, NULL, sizeof(buf)) == buf);
+  }
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(mutt_str_substr_cpy(buf, str + 3, str + 7, 0) == buf);
+  }
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(mutt_str_substr_cpy(buf, str + 3, str + 3, sizeof(buf)) == buf);
+    TEST_CHECK(strcmp(buf, "") == 0);
+  }
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(mutt_str_substr_cpy(buf, str + 3, str + 7, sizeof(buf)) == buf);
+    TEST_CHECK(strcmp(buf, "le b") == 0);
+  }
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(mutt_str_substr_cpy(buf, str + 3, str + 64, sizeof(buf)) == buf);
+    TEST_CHECK(strcmp(buf, "le banana") == 0);
   }
 }
