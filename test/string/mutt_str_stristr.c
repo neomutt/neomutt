@@ -25,6 +25,12 @@
 #include "config.h"
 #include "mutt/mutt.h"
 
+struct StriTest
+{
+  const char *str;
+  size_t offset;
+};
+
 void test_mutt_str_stristr(void)
 {
   // const char *mutt_str_stristr(const char *haystack, const char *needle);
@@ -39,6 +45,36 @@ void test_mutt_str_stristr(void)
   }
 
   {
-    TEST_CHECK(mutt_str_stristr(NULL, NULL) == NULL);
+    TEST_CHECK(mutt_str_stristr("apple", "banana") == NULL);
+  }
+
+  // clang-format off
+  struct StriTest stri_tests[] =
+  {
+    { "appleTEXT",      0 },
+    { "TEXTappleTEXT",  4 },
+    { "TEXTapple",      4 },
+
+    { "APpleTEXT",      0 },
+    { "TEXTapPLeTEXT",  4 },
+    { "TEXTAPPLE",      4 },
+
+    { "TEXTappleapple", 4 },
+    { "appleTEXTapple", 0 },
+    { "appleappleTEXT", 0 },
+  };
+  // clang-format on
+
+  {
+    const char *find = "apple";
+
+    for (size_t i = 0; i < mutt_array_size(stri_tests); i++)
+    {
+      struct StriTest *t = &stri_tests[i];
+      TEST_CASE_("'%s'", t->str);
+
+      const char *result = mutt_str_stristr(t->str, find);
+      TEST_CHECK(result == (t->str + t->offset));
+    }
   }
 }

@@ -691,12 +691,12 @@ int mutt_str_strcoll(const char *a, const char *b)
  */
 const char *mutt_str_stristr(const char *haystack, const char *needle)
 {
-  const char *p = NULL, *q = NULL;
-
   if (!haystack)
     return NULL;
   if (!needle)
     return haystack;
+
+  const char *p = NULL, *q = NULL;
 
   while (*(p = haystack))
   {
