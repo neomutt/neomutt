@@ -29,15 +29,13 @@ void test_mutt_str_strcoll(void)
 {
   // int mutt_str_strcoll(const char *a, const char *b);
 
-  {
-    TEST_CHECK(mutt_str_strcoll(NULL, "apple") != 0);
-  }
+  TEST_CHECK(mutt_str_strcoll(NULL, "apple") != 0);
+  TEST_CHECK(mutt_str_strcoll("apple", NULL) != 0);
+  TEST_CHECK(mutt_str_strcoll(NULL, NULL) == 0);
 
-  {
-    TEST_CHECK(mutt_str_strcoll("apple", NULL) != 0);
-  }
-
-  {
-    TEST_CHECK(mutt_str_strcoll(NULL, NULL) == 0);
-  }
+  TEST_CHECK(mutt_str_strcoll("", "") == 0);
+  TEST_CHECK(mutt_str_strcoll("apple", "apple") == 0);
+  TEST_CHECK(mutt_str_strcoll("apple", "APPLE") != 0);
+  TEST_CHECK(mutt_str_strcoll("apple", "apple2") != 0);
+  TEST_CHECK(mutt_str_strcoll("apple1", "apple") != 0);
 }
