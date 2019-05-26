@@ -35,10 +35,67 @@ void test_mutt_str_strncat(void)
 
   {
     char buf[32] = { 0 };
+    TEST_CHECK(mutt_str_strncat(buf, 0, "apple", 5) == buf);
+  }
+
+  {
+    char buf[32] = { 0 };
     TEST_CHECK(mutt_str_strncat(buf, sizeof(buf), NULL, 5) == buf);
   }
 
   {
     TEST_CHECK(mutt_str_strncat(NULL, 10, NULL, 5) == NULL);
+  }
+
+  // Buffer adequate
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(mutt_str_strncat(buf, sizeof(buf), "", 1) == buf);
+    TEST_CHECK(strcmp(buf, "") == 0);
+  }
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(mutt_str_strncat(buf, sizeof(buf), "banana", 6) == buf);
+    TEST_CHECK(strcmp(buf, "banana") == 0);
+  }
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(mutt_str_strncat(buf, sizeof(buf), "banana", 3) == buf);
+    TEST_CHECK(strcmp(buf, "ban") == 0);
+  }
+
+  {
+    char buf[32] = "apple";
+    TEST_CHECK(mutt_str_strncat(buf, sizeof(buf), "", 1) == buf);
+    TEST_CHECK(strcmp(buf, "apple") == 0);
+  }
+
+  {
+    char buf[32] = "apple";
+    TEST_CHECK(mutt_str_strncat(buf, sizeof(buf), "banana", 6) == buf);
+    TEST_CHECK(strcmp(buf, "applebanana") == 0);
+  }
+
+  {
+    char buf[32] = "apple";
+    TEST_CHECK(mutt_str_strncat(buf, sizeof(buf), "banana", 3) == buf);
+    TEST_CHECK(strcmp(buf, "appleban") == 0);
+  }
+
+  // Buffer too small
+
+  {
+    char buf[6] = { 0 };
+    TEST_CHECK(mutt_str_strncat(buf, sizeof(buf), "banana", 6) == buf);
+    TEST_CHECK(strcmp(buf, "banan") == 0);
+  }
+
+  {
+    char buf[8] = "apple";
+    TEST_CHECK(mutt_str_strncat(buf, sizeof(buf), "banana", 6) == buf);
+    TEST_CHECK(strcmp(buf, "appleba") == 0);
   }
 }
