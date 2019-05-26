@@ -394,7 +394,7 @@ char *mutt_str_strdup(const char *str)
  * @param buf    Buffer containing source string
  * @param buflen Length of buffer
  * @param s      String to add
- * @retval ptr Start of joined string
+ * @retval ptr Start of the buffer
  */
 char *mutt_str_strcat(char *buf, size_t buflen, const char *s)
 {

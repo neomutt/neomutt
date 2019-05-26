@@ -34,7 +34,37 @@ void test_mutt_str_strcat(void)
   }
 
   {
+    char buf[64] = { 0 };
+    TEST_CHECK(mutt_str_strcat(buf, 0, "apple") == buf);
+    TEST_CHECK(strcmp(buf, "") == 0);
+  }
+
+  {
     char buf[32] = { 0 };
     TEST_CHECK(mutt_str_strcat(buf, sizeof(buf), NULL) == buf);
+  }
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(mutt_str_strcat(buf, sizeof(buf), "") == buf);
+    TEST_CHECK(strcmp(buf, "") == 0);
+  }
+
+  {
+    char buf[32] = { 0 };
+    TEST_CHECK(mutt_str_strcat(buf, sizeof(buf), "banana") == buf);
+    TEST_CHECK(strcmp(buf, "banana") == 0);
+  }
+
+  {
+    char buf[32] = "apple";
+    TEST_CHECK(mutt_str_strcat(buf, sizeof(buf), "") == buf);
+    TEST_CHECK(strcmp(buf, "apple") == 0);
+  }
+
+  {
+    char buf[32] = "apple";
+    TEST_CHECK(mutt_str_strcat(buf, sizeof(buf), "banana") == buf);
+    TEST_CHECK(strcmp(buf, "applebanana") == 0);
   }
 }
