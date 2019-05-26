@@ -29,15 +29,15 @@ void test_mutt_str_strcasecmp(void)
 {
   // int mutt_str_strcasecmp(const char *a, const char *b);
 
-  {
-    TEST_CHECK(mutt_str_strcasecmp(NULL, "apple") != 0);
-  }
+  TEST_CHECK(mutt_str_strcasecmp(NULL, "apple") != 0);
+  TEST_CHECK(mutt_str_strcasecmp("apple", NULL) != 0);
+  TEST_CHECK(mutt_str_strcasecmp(NULL, NULL) == 0);
 
-  {
-    TEST_CHECK(mutt_str_strcasecmp("apple", NULL) != 0);
-  }
+  TEST_CHECK(mutt_str_strcasecmp("", "") == 0);
 
-  {
-    TEST_CHECK(mutt_str_strcasecmp(NULL, NULL) == 0);
-  }
+  TEST_CHECK(mutt_str_strcasecmp("apple", "apple") == 0);
+  TEST_CHECK(mutt_str_strcasecmp("apple", "APPLE") == 0);
+
+  TEST_CHECK(mutt_str_strcasecmp("apple", "apple2") != 0);
+  TEST_CHECK(mutt_str_strcasecmp("apple1", "apple") != 0);
 }
