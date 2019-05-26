@@ -37,4 +37,43 @@ void test_mutt_buffer_addstr_n(void)
     struct Buffer buf = { 0 };
     TEST_CHECK(mutt_buffer_addstr_n(&buf, NULL, 10) == 0);
   }
+
+  TEST_CASE("Adding to an empty Buffer");
+
+  {
+    const char *str = "a quick brown fox";
+    const size_t len = strlen(str);
+    size_t sizes[] = { 0, 5, len, 99 };
+
+    for (size_t i = 0; i < mutt_array_size(sizes); i++)
+    {
+      TEST_CASE_("%ld", sizes[i]);
+      struct Buffer *buf = mutt_buffer_new();
+      TEST_CHECK(mutt_buffer_addstr_n(buf, str, sizes[i]) == sizes[i]);
+      TEST_CHECK(strlen(mutt_b2s(buf)) == MIN(len, sizes[i]));
+      TEST_CHECK(strncmp(mutt_b2s(buf), str, sizes[i]) == 0);
+      mutt_buffer_free(&buf);
+    }
+  }
+
+  TEST_CASE("Adding to a non-empty Buffer");
+
+  {
+    const char *base = "test";
+    const size_t base_len = strlen(base);
+    const char *str = "a quick brown fox";
+    const size_t len = strlen(str);
+    const char *combined = "testa quick brown fox";
+    size_t sizes[] = { 0, 5, len, 99 };
+
+    for (size_t i = 0; i < mutt_array_size(sizes); i++)
+    {
+      TEST_CASE_("%ld", sizes[i]);
+      struct Buffer *buf = mutt_buffer_from(base);
+      TEST_CHECK(mutt_buffer_addstr_n(buf, str, sizes[i]) == sizes[i]);
+      TEST_CHECK(strlen(mutt_b2s(buf)) == (base_len + MIN(len, sizes[i])));
+      TEST_CHECK(strncmp(mutt_b2s(buf), combined, base_len + sizes[i]) == 0);
+      mutt_buffer_free(&buf);
+    }
+  }
 }

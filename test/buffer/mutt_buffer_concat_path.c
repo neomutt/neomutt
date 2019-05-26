@@ -34,22 +34,61 @@ void test_mutt_buffer_concat_path(void)
     TEST_CHECK_(1, "mutt_buffer_concat_path(NULL, \"apple\", \"banana\")");
   }
 
-  {
-    struct Buffer buf = { 0 };
-    mutt_buffer_concat_path(&buf, NULL, "banana");
-    TEST_CHECK_(1, "mutt_buffer_concat_path(&buf, NULL, \"banana\")");
-  }
+  // clang-format off
+  const char *dirs[] = { NULL, "", "dir", "dir/" };
+  const char *files[] = { NULL, "", "file" };
+  const char *concat_test[][3] = {
+    { dirs[0], files[0], NULL       },
+    { dirs[0], files[1], NULL       },
+    { dirs[0], files[2], "file"     },
+    { dirs[1], files[0], NULL       },
+    { dirs[1], files[1], NULL       },
+    { dirs[1], files[2], "file"     },
+    { dirs[2], files[0], "dir"      },
+    { dirs[2], files[1], "dir"      },
+    { dirs[2], files[2], "dir/file" },
+    { dirs[3], files[0], "dir/"     },
+    { dirs[3], files[1], "dir/"     },
+    { dirs[3], files[2], "dir/file" },
+  };
+  // clang-format on
 
   {
-    struct Buffer buf = { 0 };
-    mutt_buffer_concat_path(&buf, "apple", NULL);
-    TEST_CHECK_(1, "mutt_buffer_concat_path(&buf, \"apple\", NULL)");
-  }
+    for (size_t i = 0; i < mutt_array_size(concat_test); i++)
+    {
+      TEST_CASE_("DIR: '%s'  FILE: '%s'", NONULL(concat_test[i][0]), NONULL(concat_test[i][1]));
+      {
+        struct Buffer *buf = mutt_buffer_new();
+        mutt_buffer_concat_path(buf, concat_test[i][0], concat_test[i][1]);
+        if (concat_test[i][2])
+        {
+          TEST_CHECK(strcmp(mutt_b2s(buf), concat_test[i][2]) == 0);
+        }
+        else
+        {
+          if (!TEST_CHECK(strlen(mutt_b2s(buf)) == 0))
+          {
+            TEST_MSG("len = %ld", strlen(mutt_b2s(buf)));
+          }
+        }
+        mutt_buffer_free(&buf);
+      }
 
-  {
-    struct Buffer *buf = mutt_buffer_new();
-    mutt_buffer_concat_path(buf, "apple", "banana");
-    TEST_CHECK(strcmp(mutt_b2s(buf), "apple/banana") == 0);
-    mutt_buffer_free(&buf);
+      {
+        const char *str = "test";
+        struct Buffer *buf = mutt_buffer_from(str);
+        mutt_buffer_concat_path(buf, concat_test[i][0], concat_test[i][1]);
+        if (concat_test[i][2])
+        {
+          TEST_CHECK(strcmp(mutt_b2s(buf), concat_test[i][2]) == 0);
+        }
+        else
+        {
+          TEST_CHECK(strcmp(mutt_b2s(buf), str) == 0);
+        }
+        mutt_buffer_free(&buf);
+      }
+    }
   }
 }
+

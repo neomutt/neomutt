@@ -85,7 +85,10 @@ void mutt_buffer_reset(struct Buffer *buf)
 /**
  * mutt_buffer_from - Create Buffer from an existing string
  * @param seed String to put in the Buffer
- * @retval ptr New Buffer
+ * @retval ptr  New Buffer
+ * @retval NULL Error
+ *
+ * @note The write pointer is positioned at the end of the string
  */
 struct Buffer *mutt_buffer_from(const char *seed)
 {
@@ -95,7 +98,7 @@ struct Buffer *mutt_buffer_from(const char *seed)
   struct Buffer *b = mutt_buffer_new();
   b->data = mutt_str_strdup(seed);
   b->dsize = mutt_str_strlen(seed);
-  b->dptr = (char *) b->data + b->dsize;
+  b->dptr = b->data + b->dsize;
   return b;
 }
 
@@ -105,6 +108,7 @@ struct Buffer *mutt_buffer_from(const char *seed)
  * @param s   String to add
  * @param len Length of the string
  * @retval num Bytes written to Buffer
+ * @retval 0   Error
  *
  * Dynamically grow a Buffer to accommodate s, in increments of 128 bytes.
  * Always one byte bigger than necessary for the null terminator, and the
@@ -115,10 +119,9 @@ size_t mutt_buffer_addstr_n(struct Buffer *buf, const char *s, size_t len)
   if (!buf || !s)
     return 0;
 
-  if ((buf->dptr + len + 1) > (buf->data + buf->dsize))
-    mutt_buffer_increase_size(buf, buf->dsize + ((len < 128) ? 128 : len + 1));
-  if (!buf->dptr)
-    return 0;
+  if (!buf->data || !buf->dptr || ((buf->dptr + len + 1) > (buf->data + buf->dsize)))
+    mutt_buffer_increase_size(buf, buf->dsize + MAX(128, len + 1));
+
   memcpy(buf->dptr, s, len);
   buf->dptr += len;
   *(buf->dptr) = '\0';
@@ -145,29 +148,23 @@ void mutt_buffer_free(struct Buffer **p)
  * @param fmt printf-style format string
  * @param ap  Arguments to be formatted
  * @retval num Characters written
+ * @retval 0   Error
  */
 static int buffer_printf(struct Buffer *buf, const char *fmt, va_list ap)
 {
-  if (!buf)
-    return 0;
+  if (!buf || !fmt)
+    return 0; /* LCOV_EXCL_LINE */
+
+  if (!buf->data || !buf->dptr || (buf->dsize < 128))
+    mutt_buffer_increase_size(buf, 128);
+
+  int doff = buf->dptr - buf->data;
+  int blen = buf->dsize - doff;
 
   va_list ap_retry;
-  int len, blen, doff;
-
   va_copy(ap_retry, ap);
 
-  if (!buf->dptr)
-    buf->dptr = buf->data;
-
-  doff = buf->dptr - buf->data;
-  blen = buf->dsize - doff;
-  /* solaris 9 vsnprintf barfs when blen is 0 */
-  if (blen == 0)
-  {
-    blen = 128;
-    mutt_buffer_increase_size(buf, buf->dsize + blen);
-  }
-  len = vsnprintf(buf->dptr, blen, fmt, ap);
+  int len = vsnprintf(buf->dptr, blen, fmt, ap);
   if (len >= blen)
   {
     blen = ++len - blen;
@@ -190,6 +187,7 @@ static int buffer_printf(struct Buffer *buf, const char *fmt, va_list ap)
  * @param fmt printf-style format string
  * @param ... Arguments to be formatted
  * @retval num Characters written
+ * @retval -1  Error
  */
 int mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...)
 {
@@ -219,7 +217,7 @@ void mutt_buffer_fix_dptr(struct Buffer *buf)
 
   buf->dptr = buf->data;
 
-  if (buf->data)
+  if (buf->data && (buf->dsize > 0))
   {
     buf->data[buf->dsize - 1] = '\0';
     buf->dptr = strchr(buf->data, '\0');
@@ -232,6 +230,7 @@ void mutt_buffer_fix_dptr(struct Buffer *buf)
  * @param fmt printf-style format string
  * @param ... Arguments to be formatted
  * @retval num Characters written
+ * @retval -1  Error
  */
 int mutt_buffer_add_printf(struct Buffer *buf, const char *fmt, ...)
 {
@@ -284,10 +283,10 @@ size_t mutt_buffer_addch(struct Buffer *buf, char c)
  */
 bool mutt_buffer_is_empty(const struct Buffer *buf)
 {
-  if (!buf)
+  if (!buf || !buf->data)
     return true;
 
-  return buf->data && (buf->data[0] == '\0');
+  return (buf->data[0] == '\0');
 }
 
 /**
@@ -297,13 +296,13 @@ bool mutt_buffer_is_empty(const struct Buffer *buf)
  */
 struct Buffer *mutt_buffer_alloc(size_t size)
 {
-  struct Buffer *b = mutt_mem_calloc(1, sizeof(struct Buffer));
+  struct Buffer *buf = mutt_mem_calloc(1, sizeof(struct Buffer));
 
-  b->data = mutt_mem_calloc(1, size);
-  b->dptr = b->data;
-  b->dsize = size;
+  buf->data = mutt_mem_calloc(1, size);
+  buf->dptr = buf->data;
+  buf->dsize = size;
 
-  return b;
+  return buf;
 }
 
 /**
@@ -343,10 +342,14 @@ void mutt_buffer_increase_size(struct Buffer *buf, size_t new_size)
   if (!buf)
     return;
 
+  if (!buf->dptr)
+    buf->dptr = buf->data;
+
   if (new_size <= buf->dsize)
     return;
 
-  size_t offset = buf->dptr - buf->data;
+  size_t offset = (buf->dptr && buf->data) ?  buf->dptr - buf->data : 0;
+
   buf->dsize = new_size;
   mutt_mem_realloc(&buf->data, buf->dsize);
   buf->dptr = buf->data + offset;
@@ -361,7 +364,7 @@ void mutt_buffer_increase_size(struct Buffer *buf, size_t new_size)
  */
 size_t mutt_buffer_len(const struct Buffer *buf)
 {
-  if (!buf)
+  if (!buf || !buf->data || !buf->dptr)
     return 0;
 
   return buf->dptr - buf->data;
@@ -378,12 +381,24 @@ size_t mutt_buffer_len(const struct Buffer *buf)
  */
 void mutt_buffer_concat_path(struct Buffer *buf, const char *dir, const char *fname)
 {
-  if (!buf || !dir || !fname)
+  if (!buf)
     return;
 
-  const char *fmt = "%s/%s";
+  if (!dir)
+    dir = "";
+  if (!fname)
+    fname = "";
 
-  if ((fname[0] == '\0') || ((dir[0] != '\0') && (dir[strlen(dir) - 1] == '/')))
+  const bool d_set = (dir[0] != '\0');
+  const bool f_set = (fname[0] != '\0');
+  if (!d_set && !f_set)
+    return;
+
+  const int d_len = strlen(dir);
+  const bool slash = d_set && (dir[d_len - 1] == '/');
+
+  const char *fmt = "%s/%s";
+  if (!f_set || !d_set || slash)
     fmt = "%s%s";
 
   mutt_buffer_printf(buf, fmt, dir, fname);

@@ -32,4 +32,10 @@ void test_mutt_buffer_init(void)
   {
     TEST_CHECK(!mutt_buffer_init(NULL));
   }
+
+  {
+    struct Buffer *buf = mutt_buffer_new();
+    TEST_CHECK(mutt_buffer_init(buf) != NULL);
+    mutt_buffer_free(&buf);
+  }
 }
