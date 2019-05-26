@@ -1115,6 +1115,9 @@ bool mutt_str_inline_replace(char *buf, size_t buflen, size_t xlen, const char *
   size_t slen = mutt_str_strlen(buf + xlen);
   size_t rlen = mutt_str_strlen(rstr);
 
+  if ((slen + rlen) >= buflen)
+    return false;
+
   memmove(buf + rlen, buf + xlen, slen + 1);
   memmove(buf, rstr, rlen);
 
