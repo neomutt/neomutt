@@ -1050,7 +1050,7 @@ const char *mutt_str_find_word(const char *src)
  */
 void mutt_str_pretty_size(char *buf, size_t buflen, size_t num)
 {
-  if (!buf)
+  if (!buf || (buflen == 0))
     return;
 
   if (num < 1000)
