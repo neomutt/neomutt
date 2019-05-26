@@ -669,11 +669,10 @@ int mutt_alias_complete(char *buf, size_t buflen)
  */
 bool mutt_addr_is_user(const struct Address *addr)
 {
-  /* NULL address is assumed to be the user. */
   if (!addr)
   {
-    mutt_debug(5, "yes, NULL address\n");
-    return true;
+    mutt_debug(5, "no, NULL address\n");
+    return false;
   }
   if (!addr->mailbox)
   {
