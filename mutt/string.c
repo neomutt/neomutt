@@ -1020,9 +1020,9 @@ bool mutt_str_is_ascii(const char *p, size_t len)
 }
 
 /**
- * mutt_str_find_word - Find the next word (non-space)
+ * mutt_str_find_word - Find the end of a word (non-space)
  * @param src String to search
- * @retval ptr Beginning of the next word
+ * @retval ptr End of the word
  *
  * Skip to the end of the current word.
  * Skip past any whitespace characters.
@@ -1032,13 +1032,14 @@ bool mutt_str_is_ascii(const char *p, size_t len)
  */
 const char *mutt_str_find_word(const char *src)
 {
-  const char *p = src;
+  if (!src)
+    return NULL;
 
-  while (p && *p && strchr(" \t\n", *p))
-    p++;
-  while (p && *p && !strchr(" \t\n", *p))
-    p++;
-  return p;
+  while (*src && strchr(" \t\n", *src))
+    src++;
+  while (*src && !strchr(" \t\n", *src))
+    src++;
+  return src;
 }
 
 /**

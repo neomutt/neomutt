@@ -25,11 +25,47 @@
 #include "config.h"
 #include "mutt/mutt.h"
 
+struct FindWordTest
+{
+  const char *str;
+  size_t offset;
+};
+
 void test_mutt_str_find_word(void)
 {
   // const char *mutt_str_find_word(const char *src);
 
   {
     TEST_CHECK(mutt_str_find_word(NULL) == NULL);
+  }
+
+  // clang-format off
+  struct FindWordTest find_tests[] =
+  {
+    { "apple banana",    5 },
+    { "apple\tbanana",   5 },
+    { "apple\nbanana",   5 },
+
+    { "apple\t banana",  5 },
+    { "apple\n\nbanana", 5 },
+    { "apple   banana",  5 },
+
+    { "\t banana",       8 },
+    { "\n\nbanana",      8 },
+    { "   banana",       9 },
+
+    { " \t\n ",          4 },
+  };
+  // clang-format on
+
+  {
+    for (size_t i = 0; i < mutt_array_size(find_tests); i++)
+    {
+      struct FindWordTest *t = &find_tests[i];
+
+      TEST_CASE_("'%s'", t->str);
+      const char *result = mutt_str_find_word(t->str);
+      TEST_CHECK(result == (t->str + t->offset));
+    }
   }
 }
