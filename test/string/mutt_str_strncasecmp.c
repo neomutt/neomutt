@@ -29,15 +29,17 @@ void test_mutt_str_strncasecmp(void)
 {
   // int mutt_str_strncasecmp(const char *a, const char *b, size_t l);
 
-  {
-    TEST_CHECK(mutt_str_strncasecmp(NULL, "apple", 3) != 0);
-  }
+  TEST_CHECK(mutt_str_strncasecmp(NULL, "apple", 3) != 0);
+  TEST_CHECK(mutt_str_strncasecmp("apple", NULL, 3) != 0);
+  TEST_CHECK(mutt_str_strncasecmp(NULL, NULL, 3) == 0);
+  TEST_CHECK(mutt_str_strncasecmp("", "", 3) == 0);
 
-  {
-    TEST_CHECK(mutt_str_strncasecmp("apple", NULL, 3) != 0);
-  }
+  TEST_CHECK(mutt_str_strncasecmp("apple", "apple", 5) == 0);
+  TEST_CHECK(mutt_str_strncasecmp("apple", "APPLE", 5) == 0);
 
-  {
-    TEST_CHECK(mutt_str_strncasecmp(NULL, NULL, 3) == 0);
-  }
+  TEST_CHECK(mutt_str_strncasecmp("apple", "apple2", 10) != 0);
+  TEST_CHECK(mutt_str_strncasecmp("apple1", "apple", 10) != 0);
+
+  TEST_CHECK(mutt_str_strncasecmp("apple", "apple2", 5) == 0);
+  TEST_CHECK(mutt_str_strncasecmp("apple1", "apple", 5) == 0);
 }
