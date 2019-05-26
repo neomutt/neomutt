@@ -168,15 +168,15 @@ static char_cmp get_char_cmp(enum CaseSensitivity cs)
  */
 size_t mutt_str_startswith(const char *str, const char *prefix, enum CaseSensitivity cs)
 {
-  if (!str || (str[0] == '\0') || !prefix || !prefix[0])
+  if (!str || (str[0] == '\0') || !prefix || (prefix[0] == '\0'))
   {
     return 0;
   }
 
   const char *saved_prefix = prefix;
-  for (char_cmp f = get_char_cmp(cs); *str && *prefix; str++, prefix++)
+  for (char_cmp fn = get_char_cmp(cs); *str && *prefix; str++, prefix++)
   {
-    if (!f(*str, *prefix))
+    if (!fn(*str, *prefix))
     {
       return 0;
     }
