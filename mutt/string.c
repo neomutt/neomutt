@@ -878,7 +878,7 @@ size_t mutt_str_lws_rlen(const char *s, size_t n)
 
 /**
  * mutt_str_dequote_comment - Un-escape characters in an email address comment
- * @param s String to the un-escaped
+ * @param s String to be un-escaped
  *
  * @note The string is changed in-place
  */

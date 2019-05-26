@@ -33,4 +33,43 @@ void test_mutt_str_dequote_comment(void)
     mutt_str_dequote_comment(NULL);
     TEST_CHECK_(1, "mutt_str_dequote_comment(NULL)");
   }
+
+  {
+    const char *str = "hello";
+    char *dequote = strdup(str);
+    mutt_str_dequote_comment(dequote);
+    TEST_CHECK_(1, "mutt_str_dequote_comment(dequote)");
+    TEST_CHECK(strcmp(dequote, str) == 0);
+    FREE(&dequote);
+  }
+
+  {
+    const char *str = "he\"ll\"o";
+    const char *expected = "hello";
+    char *dequote = strdup(str);
+    mutt_str_dequote_comment(dequote);
+    TEST_CHECK_(1, "mutt_str_dequote_comment(dequote)");
+    TEST_CHECK(strcmp(dequote, expected) == 0);
+    FREE(&dequote);
+  }
+
+  {
+    const char *str = "he\\ll\\o";
+    const char *expected = "hello";
+    char *dequote = strdup(str);
+    mutt_str_dequote_comment(dequote);
+    TEST_CHECK_(1, "mutt_str_dequote_comment(dequote)");
+    TEST_CHECK(strcmp(dequote, expected) == 0);
+    FREE(&dequote);
+  }
+
+  {
+    const char *str = "he\\llo\\";
+    const char *expected = "hello";
+    char *dequote = strdup(str);
+    mutt_str_dequote_comment(dequote);
+    TEST_CHECK_(1, "mutt_str_dequote_comment(dequote)");
+    TEST_CHECK(strcmp(dequote, expected) == 0);
+    FREE(&dequote);
+  }
 }
