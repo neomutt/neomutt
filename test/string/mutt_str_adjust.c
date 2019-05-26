@@ -39,4 +39,21 @@ void test_mutt_str_adjust(void)
     mutt_str_adjust(&ptr);
     TEST_CHECK_(1, "mutt_str_adjust(&ptr)");
   }
+
+  {
+    char *ptr = strdup("");
+    mutt_str_adjust(&ptr);
+    TEST_CHECK_(1, "mutt_str_adjust(&ptr)");
+    FREE(&ptr);
+  }
+
+  {
+    const int len = 15;
+    char *ptr = strdup("the quick brown fox jumps over a lazy dog");
+    ptr[len] = 0;
+    mutt_str_adjust(&ptr);
+    TEST_CHECK_(1, "mutt_str_adjust(&ptr)");
+    TEST_CHECK(strlen(ptr) == len);
+    FREE(&ptr);
+  }
 }
