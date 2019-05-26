@@ -44,4 +44,52 @@ void test_mutt_str_replace(void)
     mutt_str_replace(&ptr, NULL);
     TEST_CHECK_(1, "mutt_str_replace(&ptr, NULL)");
   }
+
+  {
+    const char *str = "hello";
+    char *ptr = NULL;
+    mutt_str_replace(&ptr, str);
+    TEST_CHECK(ptr != NULL);
+    TEST_CHECK(ptr != str);
+    TEST_CHECK(strcmp(ptr, str) == 0);
+    FREE(&ptr);
+  }
+
+  {
+    const char *str = "hello";
+    char *ptr = strdup("bye");
+    mutt_str_replace(&ptr, str);
+    TEST_CHECK(ptr != NULL);
+    TEST_CHECK(ptr != str);
+    TEST_CHECK(strcmp(ptr, str) == 0);
+    FREE(&ptr);
+  }
+
+  {
+    const char *str = "";
+    char *ptr = NULL;
+    mutt_str_replace(&ptr, str);
+    TEST_CHECK(ptr == NULL);
+  }
+
+  {
+    const char *str = "";
+    char *ptr = strdup("bye");
+    mutt_str_replace(&ptr, str);
+    TEST_CHECK(ptr == NULL);
+  }
+
+  {
+    const char *str = NULL;
+    char *ptr = NULL;
+    mutt_str_replace(&ptr, str);
+    TEST_CHECK(ptr == NULL);
+  }
+
+  {
+    const char *str = NULL;
+    char *ptr = strdup("bye");
+    mutt_str_replace(&ptr, str);
+    TEST_CHECK(ptr == NULL);
+  }
 }
