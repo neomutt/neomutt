@@ -1003,19 +1003,19 @@ int mutt_str_word_casecmp(const char *a, const char *b)
 
 /**
  * mutt_str_is_ascii - Is a string ASCII (7-bit)?
- * @param p   String to examine
- * @param len Length of string
+ * @param str String to examine
+ * @param len Length of string to examine
  * @retval true There are no 8-bit chars
  */
-bool mutt_str_is_ascii(const char *p, size_t len)
+bool mutt_str_is_ascii(const char *str, size_t len)
 {
-  const char *s = p;
-  while (s && ((unsigned int) (s - p) < len))
-  {
-    if ((*s & 0x80) != 0)
+  if (!str)
+    return true;
+
+  for (; (*str != '\0') && (len > 0); str++, len--)
+    if ((*str & 0x80) != 0)
       return false;
-    s++;
-  }
+
   return true;
 }
 

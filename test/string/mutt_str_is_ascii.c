@@ -25,11 +25,37 @@
 #include "config.h"
 #include "mutt/mutt.h"
 
+struct IsAsciiTest
+{
+  const char *str;
+  int len;
+  bool result;
+};
+
 void test_mutt_str_is_ascii(void)
 {
   // bool mutt_str_is_ascii(const char *p, size_t len);
 
+  struct IsAsciiTest ascii_tests[] =
   {
-    TEST_CHECK(mutt_str_is_ascii(NULL, 10) == true);
+    { NULL,    10, true },
+    { "apple", 0,  true },
+    { "",      10, true },
+    { "apple", 5,  true },
+
+    { "\200apple", 6,  false },
+    { "ap\200ple", 6,  false },
+    { "apple\200", 6,  false },
+    { "apple\200", 5,  true },
+  };
+
+  {
+    for (size_t i = 0; i < mutt_array_size(ascii_tests); i++)
+    {
+      struct IsAsciiTest *t = &ascii_tests[i];
+      TEST_CASE_("%s", NONULL(t->str));
+      bool result = mutt_str_is_ascii(t->str, t->len);
+      TEST_CHECK(result == t->result);
+    }
   }
 }
