@@ -376,17 +376,14 @@ int mutt_str_atoull(const char *str, unsigned long long *dst)
  * mutt_str_strdup - Copy a string, safely
  * @param str String to copy
  * @retval ptr  Copy of the string
- * @retval NULL if str was NULL
+ * @retval NULL if str was NULL or empty
  */
 char *mutt_str_strdup(const char *str)
 {
   if (!str || !*str)
     return NULL;
 
-  const size_t len = strlen(str) + 1;
-  char *copy = mutt_mem_malloc(len);
-  memcpy(copy, str, len);
-  return copy;
+  return strdup(str);
 }
 
 /**

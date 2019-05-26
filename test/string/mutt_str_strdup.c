@@ -34,7 +34,16 @@ void test_mutt_str_strdup(void)
   }
 
   {
-    char *ptr = NULL;
-    TEST_CHECK(mutt_str_strdup(ptr) == NULL);
+    TEST_CHECK(mutt_str_strdup("") == NULL);
+  }
+
+  {
+    char *str = "apple";
+    char *result = mutt_str_strdup(str);
+    TEST_CHECK(result != NULL);
+    TEST_CHECK(result != str);
+    TEST_CHECK(strcmp(result, str) == 0);
+    FREE(&result);
   }
 }
+
