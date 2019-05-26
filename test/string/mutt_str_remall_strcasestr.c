@@ -25,6 +25,12 @@
 #include "config.h"
 #include "mutt/mutt.h"
 
+struct RemallTest
+{
+  const char *str;
+  const char *expected;
+};
+
 void test_mutt_str_remall_strcasestr(void)
 {
   // int mutt_str_remall_strcasestr(char *str, const char *target);
@@ -39,5 +45,47 @@ void test_mutt_str_remall_strcasestr(void)
 
   {
     TEST_CHECK(mutt_str_remall_strcasestr(NULL, NULL) == 1);
+  }
+
+  // clang-format off
+  struct RemallTest remall_tests[] =
+  {
+    { "",                        ""         },
+    { "hello",                   "hello"    },
+    { "apple",                   ""         },
+    { "aPpLE",                   ""         },
+
+    { "applebye",                "bye"      },
+    { "AppLEBye",                "Bye"      },
+    { "helloapplebye",           "hellobye" },
+    { "hellOAPplEBye",           "hellOBye" },
+    { "helloapple",              "hello"    },
+    { "hellOAPpLE",              "hellO"    },
+
+    { "appleApplebye",           "bye"      },
+    { "AppLEAppLEBye",           "Bye"      },
+    { "helloAppLEapplebye",      "hellobye" },
+    { "hellOAPplEAppLEBye",      "hellOBye" },
+    { "helloappleAppLE",         "hello"    },
+    { "hellOAPpLEAPPLE",         "hellO"    },
+
+    { "APpLEAPPLEApplEAPPle",    ""         },
+  };
+  // clang-format on
+
+  {
+    const char *remove = "apple";
+    char buf[64];
+
+    for (size_t i = 0; i < mutt_array_size(remall_tests); i++)
+    {
+      struct RemallTest *t = &remall_tests[i];
+      memset(buf, 0, sizeof(buf));
+      strncpy(buf, t->str, sizeof(buf));
+      TEST_CASE(buf);
+
+      mutt_str_remall_strcasestr(buf, remove);
+      TEST_CHECK(strcmp(buf, t->expected) == 0);
+    }
   }
 }
