@@ -179,10 +179,11 @@ static void remove_user(struct AddressList *al, bool leave_only)
 static void add_mailing_lists(struct AddressList *out, const struct AddressList *t,
                               const struct AddressList *c)
 {
-  const struct AddressList *const als[] = { t, c, NULL };
+  const struct AddressList *const als[] = { t, c };
 
-  for (const struct AddressList *al = *als; al; ++al)
+  for (size_t i = 0; i < mutt_array_size(als); ++i)
   {
+    const struct AddressList *al = als[i];
     struct Address *a = NULL;
     TAILQ_FOREACH(a, al, entries)
     {
@@ -1032,7 +1033,7 @@ static int envelope_defaults(struct Envelope *env, struct Mailbox *m,
     else if (mutt_fetch_recips(env, curenv, flags) == -1)
       return -1;
 
-    if ((flags & SEND_LIST_REPLY) && !TAILQ_EMPTY(&env->to))
+    if ((flags & SEND_LIST_REPLY) && TAILQ_EMPTY(&env->to))
     {
       mutt_error(_("No mailing lists found"));
       return -1;
