@@ -45,7 +45,7 @@ void test_mutt_buffer_strcpy_n(void)
   {
     const char *str = "a quick brown fox";
     const size_t len = strlen(str);
-    size_t sizes[] = { 0, 5, len, 99 };
+    size_t sizes[] = { 0, 5, len };
 
     for (size_t i = 0; i < mutt_array_size(sizes); i++)
     {
@@ -64,7 +64,7 @@ void test_mutt_buffer_strcpy_n(void)
     const char *base = "test";
     const char *str = "a quick brown fox";
     const size_t len = strlen(str);
-    size_t sizes[] = { 0, 5, len, 99 };
+    size_t sizes[] = { 0, 5, len };
 
     for (size_t i = 0; i < mutt_array_size(sizes); i++)
     {

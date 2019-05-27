@@ -191,6 +191,9 @@ int mutt_file_fsync_close(FILE **fp)
  */
 void mutt_file_unlink(const char *s)
 {
+  if (!s)
+    return;
+
   struct stat sb;
   /* Defend against symlink attacks */
 
@@ -515,6 +518,9 @@ int mutt_file_rmtree(const char *path)
  */
 int mutt_file_open(const char *path, int flags)
 {
+  if (!path)
+    return -1;
+
   struct stat osb, nsb;
   int fd;
   struct Buffer *safe_file = NULL;
@@ -987,6 +993,9 @@ time_t mutt_file_decrease_mtime(const char *fp, struct stat *st)
  */
 void mutt_file_set_mtime(const char *from, const char *to)
 {
+  if (!from || !to)
+    return;
+
   struct utimbuf utim;
   struct stat st;
 
@@ -1023,6 +1032,9 @@ void mutt_file_touch_atime(int fd)
  */
 int mutt_file_chmod(const char *path, mode_t mode)
 {
+  if (!path)
+    return -1;
+
   return chmod(path, mode);
 }
 
@@ -1066,6 +1078,9 @@ int mutt_file_chmod_add(const char *path, mode_t mode)
  */
 int mutt_file_chmod_add_stat(const char *path, mode_t mode, struct stat *st)
 {
+  if (!path)
+    return -1;
+
   struct stat st2;
 
   if (!st)
@@ -1117,6 +1132,9 @@ int mutt_file_chmod_rm(const char *path, mode_t mode)
  */
 int mutt_file_chmod_rm_stat(const char *path, mode_t mode, struct stat *st)
 {
+  if (!path)
+    return -1;
+
   struct stat st2;
 
   if (!st)
@@ -1279,6 +1297,9 @@ int mutt_file_unlock(int fd)
  */
 void mutt_file_unlink_empty(const char *path)
 {
+  if (!path)
+    return;
+
   struct stat sb;
 
   int fd = open(path, O_RDWR);
@@ -1312,6 +1333,8 @@ void mutt_file_unlink_empty(const char *path)
  */
 int mutt_file_rename(const char *oldfile, const char *newfile)
 {
+  if (!oldfile || !newfile)
+    return -1;
   if (access(oldfile, F_OK) != 0)
     return 1;
   if (access(newfile, F_OK) == 0)
@@ -1375,8 +1398,10 @@ char *mutt_file_read_keyword(const char *file, char *buf, size_t buflen)
  */
 int mutt_file_check_empty(const char *path)
 {
-  struct stat st;
+  if (!path)
+    return -1;
 
+  struct stat st;
   if (stat(path, &st) == -1)
     return -1;
 
