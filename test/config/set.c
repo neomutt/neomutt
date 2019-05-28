@@ -88,20 +88,12 @@ bool degenerate_tests(struct ConfigSet *cs)
   TEST_CHECK_(1, "cs_init(NULL, 100)");
   cs_free(NULL);
   TEST_CHECK_(1, "cs_free(NULL)");
-  cs_add_observer(cs, NULL);
-  TEST_CHECK_(1, "cs_add_observer(cs, NULL)");
-  cs_add_observer(NULL, log_observer);
-  TEST_CHECK_(1, "cs_add_observer(NULL, log_observer)");
-  cs_remove_observer(cs, NULL);
-  TEST_CHECK_(1, "cs_remove_observer(cs, NULL)");
-  cs_remove_observer(NULL, log_observer);
-  TEST_CHECK_(1, "cs_remove_observer(NULL, log_observer)");
-  cs_notify_observers(NULL, he, "apple", CE_SET);
-  TEST_CHECK_(1, "cs_notify_observers(NULL, he, \"apple\", CE_SET)");
-  cs_notify_observers(cs, NULL, "apple", CE_SET);
-  TEST_CHECK_(1, "cs_notify_observers(cs, NULL, \"apple\", CE_SET)");
-  cs_notify_observers(cs, he, NULL, CE_SET);
-  TEST_CHECK_(1, "cs_notify_observers(cs, he, NULL, CE_SET)");
+  cs_notify_observers(NULL, he, "apple", NT_CONFIG_SET);
+  TEST_CHECK_(1, "cs_notify_observers(NULL, he, \"apple\", NT_CONFIG_SET)");
+  cs_notify_observers(cs, NULL, "apple", NT_CONFIG_SET);
+  TEST_CHECK_(1, "cs_notify_observers(cs, NULL, \"apple\", NT_CONFIG_SET)");
+  cs_notify_observers(cs, he, NULL, NT_CONFIG_SET);
+  TEST_CHECK_(1, "cs_notify_observers(cs, he, NULL, NT_CONFIG_SET)");
 
   if (!TEST_CHECK(cs_register_type(NULL, DT_NUMBER, &cst_dummy) == false))
     return false;
@@ -228,11 +220,6 @@ void config_set(void)
   struct ConfigSet *cs = cs_new(30);
   if (!TEST_CHECK(cs != NULL))
     return;
-
-  cs_add_observer(cs, log_observer);
-  cs_add_observer(cs, log_observer); /* dupe */
-  cs_remove_observer(cs, log_observer);
-  cs_remove_observer(cs, log_observer); /* non-existant */
 
   const struct ConfigSetType cst_dummy = {
     "dummy", NULL, NULL, NULL, NULL, NULL, NULL,

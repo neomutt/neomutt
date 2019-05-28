@@ -177,6 +177,7 @@ void cs_free(struct ConfigSet **cs)
     return;
 
   mutt_hash_free(&(*cs)->hash);
+  notify_free(&(*cs)->notify);
   FREE(cs);
 }
 

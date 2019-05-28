@@ -703,7 +703,7 @@ void config_quad(void)
     return;
   dont_fail = false;
 
-  cs_add_observer(cs, log_observer);
+  notify_observer_add(cs->notify, NT_CONFIG, 0, log_observer, 0);
 
   set_list(cs);
 

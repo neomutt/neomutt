@@ -68,9 +68,10 @@ void notify_free(struct Notify **ptr)
   if (!ptr || !*ptr)
     return;
 
-  // struct Notify *notify = *ptr;
+  struct Notify *notify = *ptr;
   // NOTIFY observers
-  // FREE observers
+
+  notify_observer_remove(notify, NULL);
 
   FREE(ptr);
 }
@@ -181,16 +182,18 @@ bool notify_observer_add(struct Notify *notify, enum NotifyType type,
  * @param notify   Notification handler
  * @param callback Function to call on a matching event, see ::observer_t
  * @retval true If successful
+ *
+ * If callback is NULL, all the observers will be removed.
  */
 bool notify_observer_remove(struct Notify *notify, observer_t callback)
 {
-  if (!notify || !callback)
+  if (!notify)
     return false;
 
   struct ObserverNode *np = NULL;
   STAILQ_FOREACH(np, &notify->observers, entries)
   {
-    if (np->observer->callback == callback)
+    if (!callback || (np->observer->callback == callback))
     {
       STAILQ_REMOVE(&notify->observers, np, ObserverNode, entries);
       FREE(&np->observer);
