@@ -40,6 +40,8 @@
  * @param h Head of the List
  * @param s String to insert
  * @retval ptr Newly inserted ListNode containing the string
+ *
+ * @note The inserted string isn't strdup()d
  */
 struct ListNode *mutt_list_insert_head(struct ListHead *h, char *s)
 {
