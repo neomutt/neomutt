@@ -24,6 +24,7 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/mutt.h"
+#include "common.h"
 
 void test_mutt_list_clear(void)
 {
@@ -32,5 +33,12 @@ void test_mutt_list_clear(void)
   {
     mutt_list_clear(NULL);
     TEST_CHECK_(1, "mutt_list_clear(NULL)");
+  }
+
+  {
+    static const char *names[] = { "Amy", "Beth", "Cathy", NULL };
+    struct ListHead lh = test_list_create(names, false);
+    mutt_list_clear(&lh);
+    TEST_CHECK_(1, "mutt_list_clear(&lh)");
   }
 }

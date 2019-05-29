@@ -164,14 +164,13 @@ void mutt_list_clear(struct ListHead *h)
   if (!h)
     return;
 
-  struct ListNode *np = STAILQ_FIRST(h);
-  struct ListNode *next = NULL;
-  while (np)
+  struct ListNode *np = NULL, *tmp = NULL;
+  STAILQ_FOREACH_SAFE(np, h, entries, tmp)
   {
-    next = STAILQ_NEXT(np, entries);
+    STAILQ_REMOVE(h, np, ListNode, entries);
     FREE(&np);
-    np = next;
   }
+
   STAILQ_INIT(h);
 }
 
