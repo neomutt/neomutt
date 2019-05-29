@@ -24,6 +24,7 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/mutt.h"
+#include "common.h"
 
 void test_mutt_list_free(void)
 {
@@ -32,5 +33,18 @@ void test_mutt_list_free(void)
   {
     mutt_list_free(NULL);
     TEST_CHECK_(1, "mutt_list_free(NULL)");
+  }
+
+  {
+    struct ListHead lh = STAILQ_HEAD_INITIALIZER(lh);
+    mutt_list_free(&lh);
+    TEST_CHECK_(1, "mutt_list_free(&lh)");
+  }
+
+  {
+    static const char *names[] = { "Amy", "Beth", "Cathy", "Denise", NULL };
+    struct ListHead lh = test_list_create(names, true);
+    mutt_list_free(&lh);
+    TEST_CHECK_(1, "mutt_list_free(&lh)");
   }
 }
