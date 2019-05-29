@@ -75,6 +75,8 @@ struct ListNode *mutt_list_insert_tail(struct ListHead *h, char *s)
  * @param n ListNode after which the string will be inserted
  * @param s String to insert
  * @retval ptr Newly created ListNode containing the string
+ *
+ * @note The inserted string isn't strdup()d
  */
 struct ListNode *mutt_list_insert_after(struct ListHead *h, struct ListNode *n, char *s)
 {
