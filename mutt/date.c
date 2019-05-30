@@ -227,8 +227,6 @@ time_t mutt_date_make_time(struct tm *t, bool local)
   if (!t)
     return TIME_T_MIN;
 
-  time_t g;
-
   static const int AccumDaysPerMonth[mutt_array_size(Months)] = {
     0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334,
   };
@@ -250,7 +248,7 @@ time_t mutt_date_make_time(struct tm *t, bool local)
     return TIME_T_MAX;
 
   /* Compute the number of days since January 1 in the same year */
-  g = AccumDaysPerMonth[t->tm_mon % mutt_array_size(Months)];
+  time_t g = AccumDaysPerMonth[t->tm_mon % mutt_array_size(Months)];
 
   /* The leap years are 1972 and every 4. year until 2096,
    * but this algorithm will fail after year 2099 */
