@@ -25,11 +25,51 @@
 #include "config.h"
 #include "mutt/mutt.h"
 
+struct MakeTimeTest
+{
+  struct tm tm;
+  time_t expected;
+};
+
 void test_mutt_date_make_time(void)
 {
   // time_t mutt_date_make_time(struct tm *t, bool local);
 
   {
     TEST_CHECK(mutt_date_make_time(NULL, false) != 0);
+  }
+
+  // clang-format off
+  struct MakeTimeTest time_tests[] = {
+    { { 0,  0,  0,  1,  0,  100,   0 }, 946684800 },
+    { { -1, 0,  0,  1,  0,  100,   0 }, TIME_T_MIN },
+    { { 61, 0,  0,  1,  0,  100,   0 }, TIME_T_MIN },
+    { { 0,  -1, 0,  1,  0,  100,   0 }, TIME_T_MIN },
+    { { 0,  60, 0,  1,  0,  100,   0 }, TIME_T_MIN },
+    { { 0,  0,  -1, 1,  0,  100,   0 }, TIME_T_MIN },
+    { { 0,  0,  24, 1,  0,  100,   0 }, TIME_T_MIN },
+    { { 0,  0,  0,  0,  0,  100,   0 }, TIME_T_MIN },
+    { { 0,  0,  0,  32, 0,  100,   0 }, TIME_T_MIN },
+    { { 0,  0,  0,  1,  0,  10000, 0 }, TIME_T_MAX },
+  };
+  // clang-format on
+
+  {
+    for (size_t i = 0; i < mutt_array_size(time_tests); i++)
+    {
+      struct tm *tm = &time_tests[i].tm;
+
+      TEST_CASE_("{%d,%d,%d,%d,%d,%d,%d} = %ld", tm->tm_sec, tm->tm_min, tm->tm_hour,
+                tm->tm_mday, tm->tm_mon, tm->tm_year, tm->tm_wday, time_tests[i].expected);
+
+      time_t result = mutt_date_make_time(&time_tests[i].tm, false);
+      TEST_CHECK(result == time_tests[i].expected);
+    }
+  }
+
+  {
+    struct tm tm = { 0, 0, 0, 1, 0, 100, 0 };
+    time_t result = mutt_date_make_time(&tm, true);
+    TEST_CHECK(result == 946684800);
   }
 }

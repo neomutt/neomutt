@@ -29,7 +29,12 @@ void test_mutt_date_is_day_name(void)
 {
   // bool mutt_date_is_day_name(const char *s);
 
-  {
-    TEST_CHECK(!mutt_date_is_day_name(NULL));
-  }
+  TEST_CHECK(mutt_date_is_day_name(NULL) == false);
+  TEST_CHECK(mutt_date_is_day_name("mo") == false);
+  TEST_CHECK(mutt_date_is_day_name("Mon") == false);
+  TEST_CHECK(mutt_date_is_day_name("Dec ") == false);
+  TEST_CHECK(mutt_date_is_day_name("Tuesday") == false);
+
+  TEST_CHECK(mutt_date_is_day_name("Mon ") == true);
+  TEST_CHECK(mutt_date_is_day_name("TUE ") == true);
 }

@@ -32,4 +32,11 @@ void test_mutt_date_make_tls(void)
   {
     TEST_CHECK(mutt_date_make_tls(NULL, 10, 0) != 0);
   }
+
+  {
+    char buf[64] = { 0 };
+    time_t t = 961930800;
+    TEST_CHECK(mutt_date_make_tls(buf, sizeof(buf), t) > 0);
+    TEST_CHECK(strcmp(buf, "Sun, 25 Jun 2000 11:00:00 UTC") == 0);
+  }
 }

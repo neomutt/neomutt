@@ -38,15 +38,7 @@
 #include "memory.h"
 #include "string2.h"
 
-/* theoretically time_t can be float but it is integer on most (if not all) systems */
-#define TIME_T_MAX ((((time_t) 1 << (sizeof(time_t) * 8 - 2)) - 1) * 2 + 1)
-#define TIME_T_MIN (-TIME_T_MAX - 1)
-#define TM_YEAR_MAX                                                            \
-  (1970 + (((((TIME_T_MAX - 59) / 60) - 59) / 60) - 23) / 24 / 366)
-#define TM_YEAR_MIN (1970 - (TM_YEAR_MAX - 1970) - 1)
-
 // clang-format off
-
 /**
  * Weekdays - Day of the week (abbreviated)
  */
@@ -131,12 +123,10 @@ static const struct Tz TimeZones[] = {
 static time_t compute_tz(time_t g, struct tm *utc)
 {
   struct tm lt = mutt_date_localtime(g);
-  time_t t;
-  int yday;
 
-  t = (((lt.tm_hour - utc->tm_hour) * 60) + (lt.tm_min - utc->tm_min)) * 60;
+  time_t t = (((lt.tm_hour - utc->tm_hour) * 60) + (lt.tm_min - utc->tm_min)) * 60;
 
-  yday = (lt.tm_yday - utc->tm_yday);
+  int yday = (lt.tm_yday - utc->tm_yday);
   if (yday != 0)
   {
     /* This code is optimized to negative timezones (West of Greenwich) */
@@ -193,7 +183,7 @@ static const char *uncomment_timezone(char *buf, size_t buflen, const char *tz)
     return tz;
   len = p - tz;
   if (len > (buflen - 1))
-    len = buflen - 1;
+    len = buflen - 1; /* LCOV_EXCL_LINE */
   memcpy(buf, tz, len);
   buf[len] = '\0';
   return buf;
@@ -235,8 +225,6 @@ time_t mutt_date_make_time(struct tm *t, bool local)
   if (!t)
     return TIME_T_MIN;
 
-  time_t g;
-
   static const int AccumDaysPerMonth[mutt_array_size(Months)] = {
     0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334,
   };
@@ -258,7 +246,7 @@ time_t mutt_date_make_time(struct tm *t, bool local)
     return TIME_T_MAX;
 
   /* Compute the number of days since January 1 in the same year */
-  g = AccumDaysPerMonth[t->tm_mon % mutt_array_size(Months)];
+  time_t g = AccumDaysPerMonth[t->tm_mon % mutt_array_size(Months)];
 
   /* The leap years are 1972 and every 4. year until 2096,
    * but this algorithm will fail after year 2099 */
@@ -759,7 +747,7 @@ struct tm mutt_date_gmtime(time_t t)
  * @param t      Time to format
  * @retval num   Number of Bytes added to buffer, excluding null byte.
  */
-size_t mutt_date_localtime_format(char *buf, size_t buflen, char *format, time_t t)
+size_t mutt_date_localtime_format(char *buf, size_t buflen, const char *format, time_t t)
 {
   if (!buf || !format)
     return 0;

@@ -26,6 +26,13 @@
 #include <stdbool.h>
 #include <time.h>
 
+/* theoretically time_t can be float but it is integer on most (if not all) systems */
+#define TIME_T_MAX ((((time_t) 1 << (sizeof(time_t) * 8 - 2)) - 1) * 2 + 1)
+#define TIME_T_MIN (-TIME_T_MAX - 1)
+#define TM_YEAR_MAX                                                            \
+  (1970 + (((((TIME_T_MAX - 59) / 60) - 59) / 60) - 23) / 24 / 366)
+#define TM_YEAR_MIN (1970 - (TM_YEAR_MAX - 1970) - 1)
+
 #define MUTT_DATE_NOW -9999 ///< Constant representing the 'current time', see: mutt_date_gmtime(), mutt_date_localtime()
 
 /**
@@ -43,7 +50,7 @@ time_t    mutt_date_add_timeout(time_t now, long timeout);
 int       mutt_date_check_month(const char *s);
 struct tm mutt_date_gmtime(time_t t);
 bool      mutt_date_is_day_name(const char *s);
-size_t    mutt_date_localtime_format(char *buf, size_t buflen, char *format, time_t t);
+size_t    mutt_date_localtime_format(char *buf, size_t buflen, const char *format, time_t t);
 struct tm mutt_date_localtime(time_t t);
 time_t    mutt_date_local_tz(time_t t);
 char *    mutt_date_make_date(char *buf, size_t buflen);
