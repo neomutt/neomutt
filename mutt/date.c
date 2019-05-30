@@ -123,12 +123,10 @@ static const struct Tz TimeZones[] = {
 static time_t compute_tz(time_t g, struct tm *utc)
 {
   struct tm lt = mutt_date_localtime(g);
-  time_t t;
-  int yday;
 
-  t = (((lt.tm_hour - utc->tm_hour) * 60) + (lt.tm_min - utc->tm_min)) * 60;
+  time_t t = (((lt.tm_hour - utc->tm_hour) * 60) + (lt.tm_min - utc->tm_min)) * 60;
 
-  yday = (lt.tm_yday - utc->tm_yday);
+  int yday = (lt.tm_yday - utc->tm_yday);
   if (yday != 0)
   {
     /* This code is optimized to negative timezones (West of Greenwich) */
@@ -185,7 +183,7 @@ static const char *uncomment_timezone(char *buf, size_t buflen, const char *tz)
     return tz;
   len = p - tz;
   if (len > (buflen - 1))
-    len = buflen - 1;
+    len = buflen - 1; /* LCOV_EXCL_LINE */
   memcpy(buf, tz, len);
   buf[len] = '\0';
   return buf;
