@@ -1084,22 +1084,18 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
  * The longest match is used so that we can match 'ps.gz' when 'gz' also
  * exists.
  */
-int mutt_lookup_mime_type(struct Body *att, const char *path)
+enum ContentType mutt_lookup_mime_type(struct Body *att, const char *path)
 {
   FILE *fp = NULL;
   char *p = NULL, *q = NULL, *ct = NULL;
   char buf[PATH_MAX];
-  char subtype[256], xtype[256];
-  int szf, sze, cur_sze;
-  int type;
+  char subtype[256] = { 0 };
+  char xtype[256] = { 0 };
+  int sze, cur_sze = 0;
   bool found_mimetypes = false;
+  enum ContentType type = TYPE_OTHER;
 
-  *subtype = '\0';
-  *xtype = '\0';
-  type = TYPE_OTHER;
-  cur_sze = 0;
-
-  szf = mutt_str_strlen(path);
+  int szf = mutt_str_strlen(path);
 
   for (int count = 0; count < 4; count++)
   {

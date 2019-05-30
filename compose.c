@@ -1773,7 +1773,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
           continue;
         }
         *p++ = 0;
-        int itype = mutt_check_mime_type(type);
+        enum ContentType itype = mutt_check_mime_type(type);
         if (itype == TYPE_OTHER)
         {
           mutt_error(_("Unknown Content-Type %s"), type);

@@ -295,7 +295,7 @@ bool mutt_matches_ignore(const char *s)
  * @param s String to check
  * @retval num MIME type, e.g. #TYPE_TEXT
  */
-int mutt_check_mime_type(const char *s)
+enum ContentType mutt_check_mime_type(const char *s)
 {
   if (mutt_str_strcasecmp("text", s) == 0)
     return TYPE_TEXT;

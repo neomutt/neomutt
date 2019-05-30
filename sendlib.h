@@ -73,7 +73,7 @@ const char *    mutt_fqdn(bool may_hide_host);
 void            mutt_generate_boundary(struct ParameterList *parm);
 struct Content *mutt_get_content_info(const char *fname, struct Body *b);
 int             mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to, struct AddressList *cc, struct AddressList *bcc, const char *msg, int eightbit);
-int             mutt_lookup_mime_type(struct Body *att, const char *path);
+enum ContentType mutt_lookup_mime_type(struct Body *att, const char *path);
 struct Body *   mutt_make_file_attach(const char *path);
 struct Body *   mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool attach_msg);
 struct Body *   mutt_make_multipart(struct Body *b);
