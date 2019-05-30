@@ -25,11 +25,42 @@
 #include "config.h"
 #include "mutt/mutt.h"
 
+struct ParseImapTest
+{
+  const char *str;
+  time_t expected;
+};
+
 void test_mutt_date_parse_imap(void)
 {
   // time_t mutt_date_parse_imap(const char *s);
 
   {
     TEST_CHECK(mutt_date_parse_imap(NULL) == 0);
+  }
+
+  // clang-format off
+  static struct ParseImapTest imap_tests[] = {
+    // DD-MMM-YYYY HH:MM:SS +ZZzz
+    { "12-Jan-1999 12:34:56 +0100", 916140896 },
+    { " 2-Jan-1999 12:34:56 +0100", 915276896 },
+    { "02-Jan-1999 12:34:56 +0100", 915276896 },
+    { "12 Jan-1999 12:34:56 +0100", 0         },
+    { "12-Jan 1999 12:34:56 +0100", 0         },
+    { "12-Jan-1999-12:34:56 +0100", 0         },
+    { "12-Jan-1999 12.34:56 +0100", 0         },
+    { "12-Jan-1999 12:34.56 +0100", 0         },
+    { "12-Jan-1999 12:34:56-+0100", 0         },
+  };
+  // clang-format on
+
+  {
+    for (size_t i = 0; i < mutt_array_size(imap_tests); i++)
+    {
+      TEST_CASE(imap_tests[i]);
+      time_t result = mutt_date_parse_imap(imap_tests[i].str);
+      if (!TEST_CHECK(result == imap_tests[i].expected))
+        TEST_MSG("Expected: %ld, Got: %ld", imap_tests[i].expected, result);
+    }
   }
 }
