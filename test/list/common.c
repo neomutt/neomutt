@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for mutt_list_clear()
+ * Shared Testing Code
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,25 +20,23 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define TEST_NO_MAIN
-#include "acutest.h"
 #include "config.h"
+#include <stdbool.h>
 #include "mutt/mutt.h"
-#include "common.h"
 
-void test_mutt_list_clear(void)
+struct ListHead test_list_create(const char *items[], bool copy)
 {
-  // void mutt_list_clear(struct ListHead *h);
+  struct ListHead lh = STAILQ_HEAD_INITIALIZER(lh);
 
+  for (size_t i = 0; items[i]; i++)
   {
-    mutt_list_clear(NULL);
-    TEST_CHECK_(1, "mutt_list_clear(NULL)");
+    struct ListNode *np = mutt_mem_calloc(1, sizeof(struct ListNode));
+    if (copy)
+      np->data = mutt_str_strdup(items[i]);
+    else
+      np->data = (char *) items[i];
+    STAILQ_INSERT_TAIL(&lh, np, entries);
   }
 
-  {
-    static const char *names[] = { "Amy", "Beth", "Cathy", NULL };
-    struct ListHead lh = test_list_create(names, false);
-    mutt_list_clear(&lh);
-    TEST_CHECK_(1, "mutt_list_clear(&lh)");
-  }
+  return lh;
 }

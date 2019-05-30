@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for mutt_list_clear()
+ * Shared Testing Code
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,25 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define TEST_NO_MAIN
-#include "acutest.h"
-#include "config.h"
+#ifndef TEST_LIST_COMMON_H
+#define TEST_LIST_COMMON_H
+
+#include <stdbool.h>
 #include "mutt/mutt.h"
-#include "common.h"
 
-void test_mutt_list_clear(void)
-{
-  // void mutt_list_clear(struct ListHead *h);
+struct ListHead test_list_create(const char *items[], bool copy);
 
-  {
-    mutt_list_clear(NULL);
-    TEST_CHECK_(1, "mutt_list_clear(NULL)");
-  }
-
-  {
-    static const char *names[] = { "Amy", "Beth", "Cathy", NULL };
-    struct ListHead lh = test_list_create(names, false);
-    mutt_list_clear(&lh);
-    TEST_CHECK_(1, "mutt_list_clear(&lh)");
-  }
-}
+#endif /* TEST_LIST_COMMON_H */

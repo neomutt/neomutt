@@ -447,6 +447,7 @@ distclean: clean
 # coverage testing
 coverage: all test
 	$(RM) lcov
+	$(RM) mutt/exit.gc??
 	lcov -t "test" -o lcov.info -c --no-external -d address -d config -d email -d mutt
 	-genhtml -o lcov lcov.info -f
 	lcov -l lcov.info

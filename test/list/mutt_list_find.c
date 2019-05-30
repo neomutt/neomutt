@@ -24,6 +24,7 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/mutt.h"
+#include "common.h"
 
 void test_mutt_list_find(void)
 {
@@ -36,5 +37,59 @@ void test_mutt_list_find(void)
   {
     struct ListHead listhead = { 0 };
     TEST_CHECK(!mutt_list_find(&listhead, NULL));
+  }
+
+  {
+    static const char *names[] = { "Amy", "Beth", "Cathy", "Denise", NULL };
+    const char *needle = "Amy";
+    struct ListHead haystack = test_list_create(names, false);
+    TEST_CHECK(mutt_list_find(&haystack, needle) != NULL);
+    mutt_list_clear(&haystack);
+  }
+
+  {
+    static const char *names[] = { "Amy", "Beth", "Cathy", "Denise", NULL };
+    const char *needle = "Cathy";
+    struct ListHead haystack = test_list_create(names, false);
+    TEST_CHECK(mutt_list_find(&haystack, needle) != NULL);
+    mutt_list_clear(&haystack);
+  }
+
+  {
+    static const char *names[] = { "Amy", "Beth", "Cathy", "Denise", NULL };
+    const char *needle = "Denise";
+    struct ListHead haystack = test_list_create(names, false);
+    TEST_CHECK(mutt_list_find(&haystack, needle) != NULL);
+    mutt_list_clear(&haystack);
+  }
+
+  {
+    static const char *names[] = { "Amy", "Beth", "Cathy", "Denise", NULL };
+    const char *needle = "Erica";
+    struct ListHead haystack = test_list_create(names, false);
+    TEST_CHECK(mutt_list_find(&haystack, needle) == NULL);
+    mutt_list_clear(&haystack);
+  }
+
+  {
+    static const char *names[] = { "Amy", "Beth", "Cathy", "Denise", NULL };
+    const char *needle = "amy";
+    struct ListHead haystack = test_list_create(names, false);
+    TEST_CHECK(mutt_list_find(&haystack, needle) == NULL);
+    mutt_list_clear(&haystack);
+  }
+
+  {
+    const char *needle = "";
+    struct ListHead haystack = STAILQ_HEAD_INITIALIZER(haystack);
+    TEST_CHECK(mutt_list_find(&haystack, needle) == NULL);
+    mutt_list_clear(&haystack);
+  }
+
+  {
+    const char *needle = "Amy";
+    struct ListHead haystack = STAILQ_HEAD_INITIALIZER(haystack);
+    TEST_CHECK(mutt_list_find(&haystack, needle) == NULL);
+    mutt_list_clear(&haystack);
   }
 }

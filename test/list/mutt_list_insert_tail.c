@@ -24,6 +24,7 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/mutt.h"
+#include "common.h"
 
 void test_mutt_list_insert_tail(void)
 {
@@ -38,5 +39,28 @@ void test_mutt_list_insert_tail(void)
     struct ListNode *newnode = NULL;
     TEST_CHECK((newnode = mutt_list_insert_tail(&listhead, NULL)) != NULL);
     FREE(&newnode);
+  }
+
+  {
+    static const char *expected_names[] = { "Zelda", NULL };
+    char *insert = "Zelda";
+    struct ListHead start = STAILQ_HEAD_INITIALIZER(start);
+    struct ListHead expected = test_list_create(expected_names, false);
+    TEST_CHECK(mutt_list_insert_tail(&start, insert) != NULL);
+    TEST_CHECK(mutt_list_compare(&start, &expected) == true);
+    mutt_list_clear(&start);
+    mutt_list_clear(&expected);
+  }
+
+  {
+    static const char *start_names[] = { "Amy", "Beth", "Cathy", NULL };
+    static const char *expected_names[] = { "Amy", "Beth", "Cathy", "Zelda", NULL };
+    char *insert = "Zelda";
+    struct ListHead start = test_list_create(start_names, false);
+    struct ListHead expected = test_list_create(expected_names, false);
+    TEST_CHECK(mutt_list_insert_tail(&start, insert) != NULL);
+    TEST_CHECK(mutt_list_compare(&start, &expected) == true);
+    mutt_list_clear(&start);
+    mutt_list_clear(&expected);
   }
 }

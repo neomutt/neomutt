@@ -24,9 +24,14 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/mutt.h"
+#include "common.h"
 
-void dummy_list_free(void **ptr)
+void test_list_free(void **ptr)
 {
+  if (!ptr || !*ptr)
+    return;
+
+  FREE(ptr);
 }
 
 void test_mutt_list_free_type(void)
@@ -34,7 +39,7 @@ void test_mutt_list_free_type(void)
   // void mutt_list_free_type(struct ListHead *h, list_free_t fn);
 
   {
-    list_free_t fn = dummy_list_free;
+    list_free_t fn = test_list_free;
     mutt_list_free_type(NULL, fn);
     TEST_CHECK_(1, "mutt_list_free_type(NULL, fn)");
   }
@@ -43,5 +48,18 @@ void test_mutt_list_free_type(void)
     struct ListHead listhead = { 0 };
     mutt_list_free_type(&listhead, NULL);
     TEST_CHECK_(1, "mutt_list_free_type(&listhead, NULL)");
+  }
+
+  {
+    struct ListHead lh = STAILQ_HEAD_INITIALIZER(lh);
+    mutt_list_free_type(&lh, test_list_free);
+    TEST_CHECK_(1, "mutt_list_free_type(&lh)");
+  }
+
+  {
+    static const char *names[] = { "Amy", "Beth", "Cathy", "Denise", NULL };
+    struct ListHead lh = test_list_create(names, true);
+    mutt_list_free_type(&lh, test_list_free);
+    TEST_CHECK_(1, "mutt_list_free_type(&lh)");
   }
 }

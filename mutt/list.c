@@ -40,6 +40,8 @@
  * @param h Head of the List
  * @param s String to insert
  * @retval ptr Newly inserted ListNode containing the string
+ *
+ * @note The inserted string isn't strdup()d
  */
 struct ListNode *mutt_list_insert_head(struct ListHead *h, char *s)
 {
@@ -57,6 +59,8 @@ struct ListNode *mutt_list_insert_head(struct ListHead *h, char *s)
  * @param h Head of the List
  * @param s String to insert
  * @retval ptr Newly appended ListNode containing the string
+ *
+ * @note The inserted string isn't strdup()d
  */
 struct ListNode *mutt_list_insert_tail(struct ListHead *h, char *s)
 {
@@ -75,6 +79,8 @@ struct ListNode *mutt_list_insert_tail(struct ListHead *h, char *s)
  * @param n ListNode after which the string will be inserted
  * @param s String to insert
  * @retval ptr Newly created ListNode containing the string
+ *
+ * @note The inserted string isn't strdup()d
  */
 struct ListNode *mutt_list_insert_after(struct ListHead *h, struct ListNode *n, char *s)
 {
@@ -164,14 +170,13 @@ void mutt_list_clear(struct ListHead *h)
   if (!h)
     return;
 
-  struct ListNode *np = STAILQ_FIRST(h);
-  struct ListNode *next = NULL;
-  while (np)
+  struct ListNode *np = NULL, *tmp = NULL;
+  STAILQ_FOREACH_SAFE(np, h, entries, tmp)
   {
-    next = STAILQ_NEXT(np, entries);
+    STAILQ_REMOVE(h, np, ListNode, entries);
     FREE(&np);
-    np = next;
   }
+
   STAILQ_INIT(h);
 }
 

@@ -24,6 +24,7 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/mutt.h"
+#include "common.h"
 
 void test_mutt_list_compare(void)
 {
@@ -37,5 +38,79 @@ void test_mutt_list_compare(void)
   {
     struct ListHead listhead = { 0 };
     TEST_CHECK(!mutt_list_compare(&listhead, NULL));
+  }
+
+  {
+    struct ListHead first = STAILQ_HEAD_INITIALIZER(first);
+    struct ListHead second = STAILQ_HEAD_INITIALIZER(second);
+    TEST_CHECK(mutt_list_compare(&first, &second) == true);
+  }
+
+  {
+    static const char *names[] = { "Amy", "Beth", "Cathy", NULL };
+    struct ListHead first = test_list_create(names, false);
+    struct ListHead second = STAILQ_HEAD_INITIALIZER(second);
+    TEST_CHECK(mutt_list_compare(&first, &second) == false);
+    mutt_list_clear(&first);
+  }
+
+  {
+    static const char *first_names[] = { "Amy", "Beth", "Cathy", NULL };
+    static const char *second_names[] = { "Amy", "Beth", NULL };
+    struct ListHead first = test_list_create(first_names, false);
+    struct ListHead second = test_list_create(second_names, false);
+    TEST_CHECK(mutt_list_compare(&first, &second) == false);
+    mutt_list_clear(&first);
+    mutt_list_clear(&second);
+  }
+
+  {
+    static const char *first_names[] = { "Amy", "Beth", "Cathy", NULL };
+    static const char *second_names[] = { "Amy", "Beth", "Cathy", NULL };
+    struct ListHead first = test_list_create(first_names, false);
+    struct ListHead second = test_list_create(second_names, false);
+    TEST_CHECK(mutt_list_compare(&first, &second) == true);
+    mutt_list_clear(&first);
+    mutt_list_clear(&second);
+  }
+
+  {
+    static const char *first_names[] = { "Amy", "Beth", "Cathy", NULL };
+    static const char *second_names[] = { "Amy", "Beth", "Cathy", "Denise", NULL };
+    struct ListHead first = test_list_create(first_names, false);
+    struct ListHead second = test_list_create(second_names, false);
+    TEST_CHECK(mutt_list_compare(&first, &second) == false);
+    mutt_list_clear(&first);
+    mutt_list_clear(&second);
+  }
+
+  {
+    static const char *first_names[] = { "Amy", "Beth", "Cathy", NULL };
+    static const char *second_names[] = { "Anna", "Beth", "Cathy", NULL };
+    struct ListHead first = test_list_create(first_names, false);
+    struct ListHead second = test_list_create(second_names, false);
+    TEST_CHECK(mutt_list_compare(&first, &second) == false);
+    mutt_list_clear(&first);
+    mutt_list_clear(&second);
+  }
+
+  {
+    static const char *first_names[] = { "Amy", "Beth", "Cathy", NULL };
+    static const char *second_names[] = { "Amy", "Bella", "Cathy", NULL };
+    struct ListHead first = test_list_create(first_names, false);
+    struct ListHead second = test_list_create(second_names, false);
+    TEST_CHECK(mutt_list_compare(&first, &second) == false);
+    mutt_list_clear(&first);
+    mutt_list_clear(&second);
+  }
+
+  {
+    static const char *first_names[] = { "Amy", "Beth", "Cathy", NULL };
+    static const char *second_names[] = { "Anna", "Beth", "Carol", NULL };
+    struct ListHead first = test_list_create(first_names, false);
+    struct ListHead second = test_list_create(second_names, false);
+    TEST_CHECK(mutt_list_compare(&first, &second) == false);
+    mutt_list_clear(&first);
+    mutt_list_clear(&second);
   }
 }

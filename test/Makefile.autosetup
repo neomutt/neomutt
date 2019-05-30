@@ -220,7 +220,8 @@ IDNA_OBJS	= test/idna/mutt_idna_intl_to_local.o \
 		  test/idna/mutt_idna_print_version.o \
 		  test/idna/mutt_idna_to_ascii_lz.o
 
-LIST_OBJS	= test/list/mutt_list_clear.o \
+LIST_OBJS	= test/list/common.o \
+		  test/list/mutt_list_clear.o \
 		  test/list/mutt_list_compare.o \
 		  test/list/mutt_list_find.o \
 		  test/list/mutt_list_free.o \

@@ -24,6 +24,7 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/mutt.h"
+#include "common.h"
 
 void test_mutt_list_insert_after(void)
 {
@@ -45,5 +46,44 @@ void test_mutt_list_insert_after(void)
     struct ListNode *newnode = NULL;
     TEST_CHECK((newnode = mutt_list_insert_after(&listhead, &listnode, NULL)) != NULL);
     FREE(&newnode);
+  }
+
+  {
+    static const char *start_names[] = { "Amy", "Beth", "Cathy", NULL };
+    static const char *expected_names[] = { "Amy", "Zelda", "Beth", "Cathy", NULL };
+    char *insert = "Zelda";
+    struct ListHead start = test_list_create(start_names, false);
+    struct ListHead expected = test_list_create(expected_names, false);
+    struct ListNode *after = STAILQ_FIRST(&start);
+    TEST_CHECK(mutt_list_insert_after(&start, after, insert) != NULL);
+    TEST_CHECK(mutt_list_compare(&start, &expected) == true);
+    mutt_list_clear(&start);
+    mutt_list_clear(&expected);
+  }
+
+  {
+    static const char *start_names[] = { "Amy", "Beth", "Cathy", NULL };
+    static const char *expected_names[] = { "Amy", "Beth", "Zelda", "Cathy", NULL };
+    char *insert = "Zelda";
+    struct ListHead start = test_list_create(start_names, false);
+    struct ListHead expected = test_list_create(expected_names, false);
+    struct ListNode *after = STAILQ_NEXT(STAILQ_FIRST(&start), entries);
+    TEST_CHECK(mutt_list_insert_after(&start, after, insert) != NULL);
+    TEST_CHECK(mutt_list_compare(&start, &expected) == true);
+    mutt_list_clear(&start);
+    mutt_list_clear(&expected);
+  }
+
+  {
+    static const char *start_names[] = { "Amy", "Beth", "Cathy", NULL };
+    static const char *expected_names[] = { "Amy", "Beth", "Cathy", "Zelda", NULL };
+    char *insert = "Zelda";
+    struct ListHead start = test_list_create(start_names, false);
+    struct ListHead expected = test_list_create(expected_names, false);
+    struct ListNode *after = STAILQ_NEXT(STAILQ_NEXT(STAILQ_FIRST(&start), entries), entries);
+    TEST_CHECK(mutt_list_insert_after(&start, after, insert) != NULL);
+    TEST_CHECK(mutt_list_compare(&start, &expected) == true);
+    mutt_list_clear(&start);
+    mutt_list_clear(&expected);
   }
 }

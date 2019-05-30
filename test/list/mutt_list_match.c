@@ -24,6 +24,7 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/mutt.h"
+#include "common.h"
 
 void test_mutt_list_match(void)
 {
@@ -37,4 +38,53 @@ void test_mutt_list_match(void)
   {
     TEST_CHECK(!mutt_list_match("apple", NULL));
   }
+
+  {
+    static const char *names[] = { "Amy", "Beth", "Cathy", NULL };
+    struct ListHead lh = test_list_create(names, false);
+    const char *search = "AMY";
+    TEST_CHECK(mutt_list_match(search, &lh) == true);
+    mutt_list_clear(&lh);
+  }
+
+  {
+    static const char *names[] = { "Amy", "Beth", "Cathy", NULL };
+    struct ListHead lh = test_list_create(names, false);
+    const char *search = "CAthy";
+    TEST_CHECK(mutt_list_match(search, &lh) == true);
+    mutt_list_clear(&lh);
+  }
+
+  {
+    static const char *names[] = { "Amy", "Beth", "Cathy", NULL };
+    struct ListHead lh = test_list_create(names, false);
+    const char *search = "Bethany";
+    TEST_CHECK(mutt_list_match(search, &lh) == true);
+    mutt_list_clear(&lh);
+  }
+
+  {
+    static const char *names[] = { "Amy", "Beth", "Cathy", NULL };
+    struct ListHead lh = test_list_create(names, false);
+    const char *search = "Cath";
+    TEST_CHECK(mutt_list_match(search, &lh) == false);
+    mutt_list_clear(&lh);
+  }
+
+  {
+    static const char *names[] = { "Amy", "Beth", "Cathy", NULL };
+    struct ListHead lh = test_list_create(names, false);
+    const char *search = "Denise";
+    TEST_CHECK(mutt_list_match(search, &lh) == false);
+    mutt_list_clear(&lh);
+  }
+
+  {
+    static const char *names[] = { "Amy", "Beth", "*", NULL };
+    struct ListHead lh = test_list_create(names, false);
+    const char *search = "Anything";
+    TEST_CHECK(mutt_list_match(search, &lh) == true);
+    mutt_list_clear(&lh);
+  }
+
 }
