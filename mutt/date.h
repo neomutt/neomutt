@@ -26,6 +26,13 @@
 #include <stdbool.h>
 #include <time.h>
 
+/* theoretically time_t can be float but it is integer on most (if not all) systems */
+#define TIME_T_MAX ((((time_t) 1 << (sizeof(time_t) * 8 - 2)) - 1) * 2 + 1)
+#define TIME_T_MIN (-TIME_T_MAX - 1)
+#define TM_YEAR_MAX                                                            \
+  (1970 + (((((TIME_T_MAX - 59) / 60) - 59) / 60) - 23) / 24 / 366)
+#define TM_YEAR_MIN (1970 - (TM_YEAR_MAX - 1970) - 1)
+
 #define MUTT_DATE_NOW -9999 ///< Constant representing the 'current time', see: mutt_date_gmtime(), mutt_date_localtime()
 
 /**
