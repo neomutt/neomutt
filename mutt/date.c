@@ -751,7 +751,7 @@ struct tm mutt_date_gmtime(time_t t)
  * @param t      Time to format
  * @retval num   Number of Bytes added to buffer, excluding null byte.
  */
-size_t mutt_date_localtime_format(char *buf, size_t buflen, char *format, time_t t)
+size_t mutt_date_localtime_format(char *buf, size_t buflen, const char *format, time_t t)
 {
   if (!buf || !format)
     return 0;

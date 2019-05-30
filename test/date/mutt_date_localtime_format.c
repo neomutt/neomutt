@@ -37,4 +37,12 @@ void test_mutt_date_localtime_format(void)
     char buf[32] = { 0 };
     TEST_CHECK(mutt_date_localtime_format(buf, sizeof(buf), NULL, 0) == 0);
   }
+
+  {
+    char buf[64] = { 0 };
+    time_t t = 961930800;
+    const char *format = "%Y-%m-%d %H:%M:%S";
+    TEST_CHECK(mutt_date_localtime_format(buf, sizeof(buf), format, t) > 0);
+    TEST_CHECK(strcmp(buf, "2000-06-25 12:00:00") == 0);
+  }
 }
