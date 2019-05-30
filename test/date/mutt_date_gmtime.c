@@ -28,4 +28,34 @@
 void test_mutt_date_gmtime(void)
 {
   // struct tm mutt_date_gmtime(time_t t);
+
+  {
+    TEST_CASE("December, 2000");
+    struct tm tm = mutt_date_gmtime(977745600);
+    TEST_CHECK(tm.tm_sec == 0);
+    TEST_CHECK(tm.tm_hour == 12);
+    TEST_CHECK(tm.tm_mday == 25);
+    TEST_CHECK(tm.tm_mon == 11);
+    TEST_CHECK(tm.tm_year == 100);
+    TEST_CHECK(tm.tm_wday == 1);
+    TEST_CHECK(tm.tm_yday == 359);
+  }
+
+  {
+    TEST_CASE("June, 2000");
+    struct tm tm = mutt_date_gmtime(961930800);
+    TEST_CHECK(tm.tm_sec == 0);
+    TEST_CHECK(tm.tm_hour == 11);
+    TEST_CHECK(tm.tm_mday == 25);
+    TEST_CHECK(tm.tm_mon == 5);
+    TEST_CHECK(tm.tm_year == 100);
+    TEST_CHECK(tm.tm_wday == 0);
+    TEST_CHECK(tm.tm_yday == 176);
+  }
+
+  {
+    TEST_CASE("Today");
+    struct tm tm = mutt_date_gmtime(MUTT_DATE_NOW);
+    TEST_CHECK(tm.tm_yday >= 119);
+  }
 }
