@@ -32,4 +32,10 @@ void test_mutt_date_make_date(void)
   {
     TEST_CHECK(!mutt_date_make_date(NULL, 10));
   }
+
+  {
+    char buf[64] = { 0 };
+    TEST_CHECK(mutt_date_make_date(buf, sizeof(buf)) == buf);
+    TEST_MSG("%s", buf);
+  }
 }
