@@ -28,4 +28,17 @@
 void test_mutt_date_add_timeout(void)
 {
   // time_t mutt_date_add_timeout(time_t now, long timeout);
+
+  time_t now = time(NULL);
+
+  TEST_CHECK(mutt_date_add_timeout(now, -1000) == now);
+  TEST_CHECK(mutt_date_add_timeout(now, -1) == now);
+  TEST_CHECK(mutt_date_add_timeout(now, 0) == now);
+  TEST_CHECK(mutt_date_add_timeout(now, 1) == (now + 1));
+  TEST_CHECK(mutt_date_add_timeout(now, 1000) == (now + 1000));
+
+  TEST_CHECK(mutt_date_add_timeout(now, TIME_T_MAX) == TIME_T_MAX);
+  TEST_CHECK(mutt_date_add_timeout(TIME_T_MAX - 1, 0) == (TIME_T_MAX - 1));
+  TEST_CHECK(mutt_date_add_timeout(TIME_T_MAX - 1, 1) == TIME_T_MAX);
+  TEST_CHECK(mutt_date_add_timeout(TIME_T_MAX - 1, 2) == TIME_T_MAX);
 }
