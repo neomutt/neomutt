@@ -1666,7 +1666,7 @@ int mutt_inbox_cmp(const char *a, const char *b)
   const char *b_end = strrchr(b, '/');
 
   /* If one path contains a '/', but not the other */
-  if (!a_end ^ !b_end)
+  if ((!a_end) ^ (!b_end))
     return 0;
 
   /* If neither path contains a '/' */
