@@ -235,7 +235,7 @@ static void enriched_wrap(struct EnrichedState *stte)
  */
 static void enriched_flush(struct EnrichedState *stte, bool wrap)
 {
-  if (!stte)
+  if (!stte || !stte->buffer)
     return;
 
   if (!stte->tag_level[RICH_NOFILL] &&
