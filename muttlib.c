@@ -560,9 +560,10 @@ uint64_t mutt_rand64(void)
 void mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix,
                              const char *suffix, const char *src, int line)
 {
-  mutt_buffer_printf(buf, "%s/%s-%s-%d-%d-%ld%ld%s%s", NONULL(C_Tmpdir), NONULL(prefix),
-                     NONULL(C_Hostname), (int) getuid(), (int) getpid(),
-                     random(), random(), suffix ? "." : "", NONULL(suffix));
+  mutt_buffer_printf(buf, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(C_Tmpdir),
+                     NONULL(prefix), NONULL(ShortHostname), (int) getuid(),
+                     (int) getpid(), mutt_rand64(), suffix ? "." : "", NONULL(suffix));
+
   mutt_debug(LL_DEBUG3, "%s:%d: mutt_mktemp returns \"%s\"\n", src, line, mutt_b2s(buf));
   if (unlink(mutt_b2s(buf)) && (errno != ENOENT))
   {
