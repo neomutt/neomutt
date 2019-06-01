@@ -116,7 +116,7 @@ static int mkwrapdir(const char *path, struct Buffer *newfile, struct Buffer *ne
     goto cleanup;
   }
 
-  mutt_buffer_printf(newfile, "%s/%s", mutt_b2s(newdir), NONULL(basename));
+  mutt_buffer_printf(newfile, "%s/%s", newdir->data, NONULL(basename));
 
 cleanup:
   mutt_buffer_free(&parent);

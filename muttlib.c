@@ -110,7 +110,7 @@ void mutt_adv_mktemp(struct Buffer *buf)
       *suffix = '\0';
       suffix++;
     }
-    mutt_buffer_mktemp_pfx_sfx(buf, mutt_b2s(prefix), suffix);
+    mutt_buffer_mktemp_pfx_sfx(buf, prefix->data, suffix);
 
   out:
     mutt_buffer_pool_release(&prefix);
@@ -233,7 +233,7 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
 
           mutt_email_free(&e);
           /* Avoid infinite recursion if the resulting folder starts with '@' */
-          if (*(mutt_b2s(p)) != '@')
+          if (*p->data != '@')
             recurse = true;
 
           tail = "";
