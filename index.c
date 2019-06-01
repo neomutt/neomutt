@@ -167,25 +167,25 @@ static bool prereq(struct Context *ctx, struct Menu *menu, CheckFlags checks)
   if (checks & (CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
     checks |= CHECK_IN_MAILBOX;
 
-  if ((checks & CHECK_IN_MAILBOX) && !Context)
+  if ((checks & CHECK_IN_MAILBOX) && (!ctx || !ctx->mailbox))
   {
     mutt_error(_("No mailbox is open"));
     result = false;
   }
 
-  if (result && (checks & CHECK_MSGCOUNT) && (Context->mailbox->msg_count == 0))
+  if (result && (checks & CHECK_MSGCOUNT) && (ctx->mailbox->msg_count == 0))
   {
     mutt_error(_("There are no messages"));
     result = false;
   }
 
-  if (result && (checks & CHECK_VISIBLE) && (menu->current >= Context->mailbox->vcount))
+  if (result && (checks & CHECK_VISIBLE) && (menu->current >= ctx->mailbox->vcount))
   {
     mutt_error(_("No visible messages"));
     result = false;
   }
 
-  if (result && (checks & CHECK_READONLY) && Context->mailbox->readonly)
+  if (result && (checks & CHECK_READONLY) && ctx->mailbox->readonly)
   {
     mutt_error(_("Mailbox is read-only"));
     result = false;
