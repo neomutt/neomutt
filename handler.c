@@ -356,7 +356,7 @@ static void decode_quoted(struct State *s, long len, bool istext, iconv_t cd)
  */
 static unsigned char decode_byte(char ch)
 {
-  if (ch == 96)
+  if ((ch < 32) || (ch > 95))
     return 0;
   return ch - 32;
 }
