@@ -416,6 +416,9 @@ static int imap_hcache_namer(const char *path, char *dest, size_t dlen)
  */
 header_cache_t *imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata)
 {
+  if (!adata || !mdata)
+    return NULL;
+
   struct Url url;
   char cachepath[PATH_MAX];
   char mbox[PATH_MAX];

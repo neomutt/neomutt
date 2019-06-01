@@ -1259,6 +1259,9 @@ int mutt_str_asprintf(char **strp, const char *fmt, ...)
  */
 int mutt_str_asprintf(char **strp, const char *fmt, ...)
 {
+  if (!strp || !fmt)
+    return -1;
+
   int rlen = 256;
 
   *strp = mutt_mem_malloc(rlen);

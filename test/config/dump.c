@@ -362,27 +362,18 @@ bool test_dump_config(void)
 
     // Degenerate tests
 
-    if (!TEST_CHECK(dump_config(NULL, CS_DUMP_STYLE_NEO, CS_DUMP_NO_FLAGS, fp) == false))
-      return false;
-    if (!TEST_CHECK(dump_config(cs, CS_DUMP_STYLE_NEO, CS_DUMP_NO_FLAGS, NULL) == true))
-      return false;
+    TEST_CHECK(dump_config(NULL, CS_DUMP_STYLE_NEO, CS_DUMP_NO_FLAGS, fp));
+    TEST_CHECK(dump_config(cs, CS_DUMP_STYLE_NEO, CS_DUMP_NO_FLAGS, NULL));
 
     // Normal tests
 
-    if (!TEST_CHECK(dump_config(cs, CS_DUMP_STYLE_MUTT, CS_DUMP_NO_FLAGS, fp) == true))
-      return false;
-    if (!TEST_CHECK(dump_config(cs, CS_DUMP_STYLE_NEO, CS_DUMP_NO_FLAGS, fp) == true))
-      return false;
-    if (!TEST_CHECK(dump_config(cs, CS_DUMP_STYLE_NEO,
-                                CS_DUMP_ONLY_CHANGED | CS_DUMP_HIDE_SENSITIVE, fp) == true))
-      return false;
-    if (!TEST_CHECK(dump_config(cs, CS_DUMP_STYLE_NEO,
-                                CS_DUMP_HIDE_VALUE | CS_DUMP_SHOW_DEFAULTS, fp) == true))
-      return false;
+    TEST_CHECK(dump_config(cs, CS_DUMP_STYLE_MUTT, CS_DUMP_NO_FLAGS, fp));
+    TEST_CHECK(dump_config(cs, CS_DUMP_STYLE_NEO, CS_DUMP_NO_FLAGS, fp));
+    TEST_CHECK(dump_config(cs, CS_DUMP_STYLE_NEO, CS_DUMP_ONLY_CHANGED | CS_DUMP_HIDE_SENSITIVE, fp));
+    TEST_CHECK(dump_config(cs, CS_DUMP_STYLE_NEO, CS_DUMP_HIDE_VALUE | CS_DUMP_SHOW_DEFAULTS, fp));
 
     struct ConfigSet *cs_bad = cs_new(30);
-    if (!TEST_CHECK(dump_config(cs_bad, CS_DUMP_STYLE_NEO, CS_DUMP_NO_FLAGS, fp) == true))
-      return false;
+    TEST_CHECK(dump_config(cs_bad, CS_DUMP_STYLE_NEO, CS_DUMP_NO_FLAGS, fp));
 
     fclose(fp);
     cs_free(&cs_bad);

@@ -566,9 +566,6 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
   /* silent operations */
   m->quiet = true;
 
-  if (!m->quiet)
-    mutt_message(_("Reopening mailbox..."));
-
   /* our heuristics require the old mailbox to be unsorted */
   if (C_Sort != SORT_ORDER)
   {

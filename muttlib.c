@@ -691,9 +691,10 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
 void mutt_buffer_pretty_mailbox(struct Buffer *buf)
 {
   if (!buf || !buf->data)
-    /* This reduces the size of the Buffer, so we can pass it through.
+    return;
+  /* This reduces the size of the Buffer, so we can pass it through.
    * We adjust the size just to make sure buf->data is not NULL though */
-    mutt_buffer_increase_size(buf, PATH_MAX);
+  mutt_buffer_increase_size(buf, PATH_MAX);
   mutt_pretty_mailbox(buf->data, buf->dsize);
   mutt_buffer_fix_dptr(buf);
 }

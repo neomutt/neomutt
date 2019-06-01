@@ -357,6 +357,9 @@ static void encode_8bit(struct FgetConv *fc, FILE *fp_out)
  */
 int mutt_write_mime_header(struct Body *a, FILE *fp)
 {
+  if (!a || !fp)
+    return -1;
+
   int len;
   int tmplen;
   char buf[256] = { 0 };
@@ -1992,15 +1995,14 @@ static char *unfold_header(char *s)
   while (p && (p[0] != '\0'))
   {
     /* remove CRLF prior to FWSP, turn \t into ' ' */
-    if ((p[0] == '\r') && (p[1] != '\0') && (p[1] == '\n') && (p[2] != '\0') &&
-        ((p[2] == ' ') || (p[2] == '\t')))
+    if ((p[0] == '\r') && (p[1] == '\n') && ((p[2] == ' ') || (p[2] == '\t')))
     {
       *q++ = ' ';
       p += 3;
       continue;
     }
     /* remove LF prior to FWSP, turn \t into ' ' */
-    else if ((p[0] == '\n') && (p[1] != '\0') && ((p[1] == ' ') || (p[1] == '\t')))
+    else if ((p[0] == '\n') && ((p[1] == ' ') || (p[1] == '\t')))
     {
       *q++ = ' ';
       p += 2;
@@ -2696,6 +2698,9 @@ static char **add_args_one(char **args, size_t *argslen, size_t *argsmax, struct
  */
 static char **add_args(char **args, size_t *argslen, size_t *argsmax, struct AddressList *al)
 {
+  if (!al)
+    return args;
+
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
