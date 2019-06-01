@@ -1086,7 +1086,6 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, bool copy,
   char email[256];
   int rc = -1, count = 0;
   pid_t pid;
-  size_t len = 0;
 
   FILE *fp_err = mutt_file_mkstemp();
   if (!fp_err)
@@ -1122,7 +1121,7 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, bool copy,
 
   while ((fgets(email, sizeof(email), fp_out)))
   {
-    len = mutt_str_strlen(email);
+    size_t len = mutt_str_strlen(email);
     if (len && (email[len - 1] == '\n'))
       email[len - 1] = '\0';
     if (mutt_str_startswith(email, mailbox, CASE_IGNORE))
@@ -1153,7 +1152,7 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, bool copy,
     rewind(fp_out);
     while ((fgets(email, sizeof(email), fp_out)))
     {
-      len = mutt_str_strlen(email);
+      size_t len = mutt_str_strlen(email);
       if (len && (email[len - 1] == '\n'))
         email[len - 1] = '\0';
       (*buffer)[count] = mutt_mem_calloc(mutt_str_strlen(email) + 1, sizeof(char));

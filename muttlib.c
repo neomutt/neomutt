@@ -1257,15 +1257,15 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
       }
       else
       {
-        bool tolower = false;
-        bool nodots = false;
+        bool to_lower = false;
+        bool no_dots = false;
 
         while ((ch == '_') || (ch == ':'))
         {
           if (ch == '_')
-            tolower = true;
+            to_lower = true;
           else if (ch == ':')
-            nodots = true;
+            no_dots = true;
 
           ch = *src++;
         }
@@ -1274,9 +1274,9 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         src = callback(tmp, sizeof(tmp), col, cols, ch, src, prefix, if_str,
                        else_str, data, flags);
 
-        if (tolower)
+        if (to_lower)
           mutt_str_strlower(tmp);
-        if (nodots)
+        if (no_dots)
         {
           char *p = tmp;
           for (; *p; p++)

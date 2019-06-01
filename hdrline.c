@@ -678,7 +678,6 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       /* preprocess $date_format to handle %Z */
       {
         const char *cp = NULL;
-        struct tm tm = { 0 };
         time_t now;
         int j = 0;
 
@@ -686,7 +685,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         {
           char *is = NULL;
           now = time(NULL);
-          tm = mutt_date_localtime(now);
+          struct tm tm = mutt_date_localtime(now);
           now -= (op == '(') ? e->received : e->date_sent;
 
           is = (char *) prec;
@@ -827,6 +826,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         }
         *p = '\0';
 
+        struct tm tm;
         if ((op == '[') || (op == 'D'))
           tm = mutt_date_localtime(e->date_sent);
         else if (op == '(')

@@ -30,13 +30,13 @@ void test_mutt_sha1_transform(void)
   // void mutt_sha1_transform(uint32_t state[5], const unsigned char buffer[64]);
 
   {
-    unsigned char buf[32] = { 0 };
+    unsigned char buf[64] = { 0 };
     mutt_sha1_transform(NULL, buf);
     TEST_CHECK_(1, "mutt_sha1_transform(NULL, &buf)");
   }
 
   {
-    uint32_t buf[32] = { 0 };
+    uint32_t buf[64] = { 0 };
     mutt_sha1_transform(buf, NULL);
     TEST_CHECK_(1, "mutt_sha1_transform(&buf, NULL)");
   }

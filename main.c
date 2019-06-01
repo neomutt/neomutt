@@ -342,10 +342,8 @@ static void init_locale(void)
   textdomain(PACKAGE);
 #endif
 #ifndef LOCALES_HACK
-  const char *p = NULL;
   /* Do we have a locale definition? */
-  if ((p = mutt_str_getenv("LC_ALL")) || (p = mutt_str_getenv("LANG")) ||
-      (p = mutt_str_getenv("LC_CTYPE")))
+  if (mutt_str_getenv("LC_ALL") || mutt_str_getenv("LANG") || mutt_str_getenv("LC_CTYPE"))
   {
     OptLocales = true;
   }

@@ -536,7 +536,6 @@ static int autoview_handler(struct Body *a, struct State *s)
   FILE *fp_in = NULL;
   FILE *fp_out = NULL;
   FILE *fp_err = NULL;
-  int piped = false;
   pid_t pid;
   int rc = 0;
 
@@ -553,7 +552,7 @@ static int autoview_handler(struct Body *a, struct State *s)
     mutt_buffer_strcpy(cmd, entry->command);
 
     /* rfc1524_expand_command returns 0 if the file is required */
-    piped = mutt_buffer_rfc1524_expand_command(a, mutt_b2s(tempfile), type, cmd);
+    bool piped = mutt_buffer_rfc1524_expand_command(a, mutt_b2s(tempfile), type, cmd);
 
     if (s->flags & MUTT_DISPLAY)
     {
@@ -675,15 +674,15 @@ cleanup:
 static int text_plain_handler(struct Body *b, struct State *s)
 {
   char *buf = NULL;
-  size_t l = 0, sz = 0;
+  size_t sz = 0;
 
   while ((buf = mutt_file_read_line(buf, &sz, s->fp_in, NULL, 0)))
   {
     if ((mutt_str_strcmp(buf, "-- ") != 0) && C_TextFlowed)
     {
-      l = mutt_str_strlen(buf);
-      while ((l > 0) && (buf[l - 1] == ' '))
-        buf[--l] = '\0';
+      size_t len = mutt_str_strlen(buf);
+      while ((len > 0) && (buf[len - 1] == ' '))
+        buf[--len] = '\0';
     }
     if (s->prefix)
       state_puts(s->prefix, s);

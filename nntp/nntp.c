@@ -1594,11 +1594,10 @@ static int check_mailbox(struct Mailbox *m)
 
     /* update flags according to .newsrc */
     int j = 0;
-    anum_t anum;
     for (int i = 0; i < m->msg_count; i++)
     {
       bool flagged = false;
-      anum = nntp_edata_get(m->emails[i])->article_num;
+      anum_t anum = nntp_edata_get(m->emails[i])->article_num;
 
 #ifdef USE_HCACHE
       /* check hcache for flagged and deleted flags */
@@ -1648,7 +1647,7 @@ static int check_mailbox(struct Mailbox *m)
     m->msg_count = j;
 
     /* restore headers without "deleted" flag */
-    for (anum = first; anum <= mdata->last_loaded; anum++)
+    for (anum_t anum = first; anum <= mdata->last_loaded; anum++)
     {
       if (messages[anum - first])
         continue;
