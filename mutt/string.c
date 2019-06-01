@@ -1242,7 +1242,7 @@ int mutt_str_asprintf(char **strp, const char *fmt, ...)
   if (n < 0)
   {
     mutt_error(_("Out of memory")); /* LCOV_EXCL_LINE */
-    mutt_exit(1); /* LCOV_EXCL_LINE */
+    mutt_exit(1);                   /* LCOV_EXCL_LINE */
   }
 
   if (n == 0)

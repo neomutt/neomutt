@@ -403,7 +403,6 @@ struct Address *mutt_addr_create(const char *personal, const char *mailbox)
   return a;
 }
 
-
 /**
  * mutt_addrlist_remove - Remove an Address from a list
  * @param[in, out] al AddressList

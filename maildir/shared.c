@@ -941,9 +941,7 @@ int mh_commit_msg(struct Mailbox *m, struct Message *msg, struct Email *e, bool 
   closedir(dirp);
 
   /* Now try to rename the file to the proper name.
-   *
-   * Note: We may have to try multiple times, until we find a free slot.
-   */
+   * Note: We may have to try multiple times, until we find a free slot.  */
 
   while (true)
   {
