@@ -626,7 +626,6 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
     m = mutt_mailbox_find_desc(buf);
     if (m)
     {
-      magic = m->magic;
       mutt_str_strfcpy(buf, mutt_b2s(m->pathbuf), buflen);
     }
     else

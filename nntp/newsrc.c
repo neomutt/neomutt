@@ -606,7 +606,7 @@ int nntp_add_group(char *line, void *data)
 static int active_get_cache(struct NntpAccountData *adata)
 {
   char buf[8192];
-  char file[PATH_MAX];
+  char file[4096];
   time_t t;
 
   cache_expand(file, sizeof(file), &adata->conn->account, ".active");
@@ -615,7 +615,7 @@ static int active_get_cache(struct NntpAccountData *adata)
   if (!fp)
     return -1;
 
-  if (!fgets(buf, sizeof(buf), fp) || (sscanf(buf, "%ld%s", &t, file) != 1) || (t == 0))
+  if (!fgets(buf, sizeof(buf), fp) || (sscanf(buf, "%ld%4095s", &t, file) != 1) || (t == 0))
   {
     mutt_file_fclose(&fp);
     return -1;

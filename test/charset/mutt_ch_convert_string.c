@@ -30,9 +30,7 @@ void test_mutt_ch_convert_string(void)
   // int mutt_ch_convert_string(char **ps, const char *from, const char *to, int flags);
 
   {
-    char *ps = strdup("apple");
     TEST_CHECK(mutt_ch_convert_string(NULL, "apple", "banana", 0) != 0);
-    free(ps);
   }
 
   {

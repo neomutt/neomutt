@@ -2084,7 +2084,7 @@ int imap_msg_save_hcache(struct Mailbox *m, struct Email *e)
   if (mdata->hcache)
     close_hc = false;
   else
-    mdata->hcache = imap_hcache_open(adata, NULL);
+    mdata->hcache = imap_hcache_open(adata, mdata);
   rc = imap_hcache_put(mdata, e);
   if (close_hc)
     imap_hcache_close(mdata);
