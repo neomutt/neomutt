@@ -2079,10 +2079,12 @@ int imap_msg_save_hcache(struct Mailbox *m, struct Email *e)
   bool close_hc = true;
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
+  if (!mdata || !adata)
+    return -1;
   if (mdata->hcache)
     close_hc = false;
   else
-    mdata->hcache = imap_hcache_open(adata, NULL);
+    mdata->hcache = imap_hcache_open(adata, mdata);
   rc = imap_hcache_put(mdata, e);
   if (close_hc)
     imap_hcache_close(mdata);

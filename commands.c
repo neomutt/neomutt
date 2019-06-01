@@ -1204,6 +1204,12 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
     {
       mutt_addr_cat(tmp, sizeof(tmp), np->value, MimeSpecials);
       l += snprintf(buf + l, sizeof(buf) - l, "; %s=%s", np->attribute, tmp);
+      if (l >= sizeof(buf))
+      {
+        // L10N: e.g. "text/plain; charset=UTF-8; ..."
+        mutt_error(_("Content type is too long"));
+        return false;
+      }
     }
   }
 

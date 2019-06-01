@@ -397,7 +397,6 @@ int rfc3676_handler(struct Body *a, struct State *s)
 void rfc3676_space_stuff(struct Email *e)
 {
   int lc = 0;
-  size_t len = 0;
   unsigned char c = '\0';
   char buf[1024];
   char tmpfile[PATH_MAX];
@@ -425,7 +424,7 @@ void rfc3676_space_stuff(struct Email *e)
     {
       fputc(' ', fp_out);
       lc++;
-      len = mutt_str_strlen(buf);
+      size_t len = mutt_str_strlen(buf);
       if (len > 0)
       {
         c = buf[len - 1];

@@ -256,9 +256,8 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
   if (stat(C_CertificateFile, &filestat) == -1)
     return 0;
 
-  b64_data.size = filestat.st_size + 1;
-  b64_data_data = mutt_mem_calloc(1, b64_data.size);
-  b64_data_data[b64_data.size - 1] = '\0';
+  b64_data.size = filestat.st_size;
+  b64_data_data = mutt_mem_calloc(1, b64_data.size + 1);
   b64_data.data = b64_data_data;
 
   FILE *fp = fopen(C_CertificateFile, "r");

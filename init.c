@@ -641,7 +641,7 @@ static enum CommandResult parse_unattach_list(struct Buffer *buf, struct Buffer 
     {
       minor = "unknown";
     }
-    const int major = mutt_check_mime_type(tmp);
+    const enum ContentType major = mutt_check_mime_type(tmp);
 
     struct ListNode *np = NULL, *tmp2 = NULL;
     STAILQ_FOREACH_SAFE(np, head, entries, tmp2)

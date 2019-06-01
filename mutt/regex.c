@@ -314,7 +314,8 @@ int mutt_replacelist_add(struct ReplaceList *rl, const char *pat,
     if (*p == '%')
     {
       int n = 0;
-      mutt_str_atoi(++p, &n);
+      if (mutt_str_atoi(++p, &n) < 0)
+        mutt_debug(LL_DEBUG2, "Invalid match number in replacelist: '%s'\n", p);
       if (n > np->nmatch)
         np->nmatch = n;
       while (*p && isdigit((int) *p))

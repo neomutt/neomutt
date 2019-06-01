@@ -678,7 +678,6 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       /* preprocess $date_format to handle %Z */
       {
         const char *cp = NULL;
-        struct tm tm = { 0 };
         time_t now;
         int j = 0;
 
@@ -686,7 +685,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         {
           char *is = NULL;
           now = time(NULL);
-          tm = mutt_date_localtime(now);
+          struct tm tm = mutt_date_localtime(now);
           now -= (op == '(') ? e->received : e->date_sent;
 
           is = (char *) prec;
@@ -827,6 +826,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         }
         *p = '\0';
 
+        struct tm tm;
         if ((op == '[') || (op == 'D'))
           tm = mutt_date_localtime(e->date_sent);
         else if (op == '(')
@@ -1352,7 +1352,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       }
       else if (src[0] == 'c') /* crypto */
       {
-        const char *ch = NULL;
+        const char *ch = "";
         if ((WithCrypto != 0) && (e->security & SEC_GOODSIGN))
           ch = get_nth_wchar(C_CryptChars, FLAG_CHAR_CRYPT_GOOD_SIGN);
         else if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT))
@@ -1371,7 +1371,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       }
       else if (src[0] == 't') /* tagged, flagged, recipient */
       {
-        const char *ch = NULL;
+        const char *ch = "";
         if (e->tagged)
           ch = get_nth_wchar(C_FlagChars, FLAG_CHAR_TAGGED);
         else if (e->flagged)
@@ -1414,7 +1414,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       }
 
       /* Marked for deletion; deleted attachments; crypto */
-      const char *second = NULL;
+      const char *second = "";
       if (e->deleted)
         second = get_nth_wchar(C_FlagChars, FLAG_CHAR_DELETED);
       else if (e->attach_del)
@@ -1431,7 +1431,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         second = get_nth_wchar(C_CryptChars, FLAG_CHAR_CRYPT_NO_CRYPTO);
 
       /* Tagged, flagged and recipient flag */
-      const char *third = NULL;
+      const char *third = "";
       if (e->tagged)
         third = get_nth_wchar(C_FlagChars, FLAG_CHAR_TAGGED);
       else if (e->flagged)

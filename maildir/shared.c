@@ -933,7 +933,8 @@ int mh_commit_msg(struct Mailbox *m, struct Message *msg, struct Email *e, bool 
     }
     if (!*cp)
     {
-      mutt_str_atoui(dep, &n);
+      if (mutt_str_atoui(dep, &n) < 0)
+        mutt_debug(LL_DEBUG2, "Invalid MH message number '%s'\n", dep);
       if (n > hi)
         hi = n;
     }
@@ -941,9 +942,7 @@ int mh_commit_msg(struct Mailbox *m, struct Message *msg, struct Email *e, bool 
   closedir(dirp);
 
   /* Now try to rename the file to the proper name.
-   *
-   * Note: We may have to try multiple times, until we find a free slot.
-   */
+   * Note: We may have to try multiple times, until we find a free slot.  */
 
   while (true)
   {

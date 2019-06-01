@@ -989,8 +989,9 @@ struct Message *mx_msg_open_new(struct Mailbox *m, struct Email *e, MsgOpenFlags
           p = TAILQ_FIRST(&e->env->from);
       }
 
-      fprintf(msg->fp, "From %s %s", p ? p->mailbox : NONULL(Username),
-              ctime(&msg->received));
+      char buf[64] = { 0 };
+      mutt_date_localtime_format(buf, sizeof(buf), "%a %b %e %H:%M:%S %Y\n", msg->received);
+      fprintf(msg->fp, "From %s %s", p ? p->mailbox : NONULL(Username), buf);
     }
   }
   else

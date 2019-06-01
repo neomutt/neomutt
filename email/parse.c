@@ -65,7 +65,7 @@ void mutt_auto_subscribe(const char *mailto)
   if (!AutoSubscribeCache)
     AutoSubscribeCache = mutt_hash_new(200, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS);
 
-  if (!mailto || mutt_hash_find(AutoSubscribeCache, mailto))
+  if (mutt_hash_find(AutoSubscribeCache, mailto))
     return;
 
   mutt_hash_insert(AutoSubscribeCache, mailto, AutoSubscribeCache);
@@ -295,7 +295,7 @@ bool mutt_matches_ignore(const char *s)
  * @param s String to check
  * @retval num MIME type, e.g. #TYPE_TEXT
  */
-int mutt_check_mime_type(const char *s)
+enum ContentType mutt_check_mime_type(const char *s)
 {
   if (mutt_str_strcasecmp("text", s) == 0)
     return TYPE_TEXT;

@@ -438,9 +438,9 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
     }
     case 'F':
     {
-      char permission[11];
       if (folder->ff->local)
       {
+        char permission[11];
         snprintf(permission, sizeof(permission), "%c%c%c%c%c%c%c%c%c%c",
                  S_ISDIR(folder->ff->mode) ? 'd' : (S_ISLNK(folder->ff->mode) ? 'l' : '-'),
                  ((folder->ff->mode & S_IRUSR) != 0) ? 'r' : '-',
@@ -463,6 +463,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
 #ifdef USE_IMAP
       else if (folder->ff->imap)
       {
+        char permission[11];
         /* mark folders with subfolders AND mail */
         snprintf(permission, sizeof(permission), "IMAP %c",
                  (folder->ff->inferiors && folder->ff->selectable) ? '+' : ' ');

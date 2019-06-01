@@ -741,7 +741,9 @@ struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, bool init)
         if (!thread->sort_key || thread->sort_children)
         {
           /* make sort_key the first or last sibling, as appropriate */
-          sort_key = (!(C_Sort & SORT_LAST) ^ !(C_Sort & SORT_REVERSE)) ? thread->child : tmp;
+          sort_key = ((!(C_Sort & SORT_LAST)) ^ (!(C_Sort & SORT_REVERSE))) ?
+                         thread->child :
+                         tmp;
 
           /* we just sorted its children */
           thread->sort_children = false;

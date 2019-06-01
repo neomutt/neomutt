@@ -357,6 +357,9 @@ static void encode_8bit(struct FgetConv *fc, FILE *fp_out)
  */
 int mutt_write_mime_header(struct Body *a, FILE *fp)
 {
+  if (!a || !fp)
+    return -1;
+
   int len;
   int tmplen;
   char buf[256] = { 0 };
@@ -1084,22 +1087,18 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
  * The longest match is used so that we can match 'ps.gz' when 'gz' also
  * exists.
  */
-int mutt_lookup_mime_type(struct Body *att, const char *path)
+enum ContentType mutt_lookup_mime_type(struct Body *att, const char *path)
 {
   FILE *fp = NULL;
   char *p = NULL, *q = NULL, *ct = NULL;
   char buf[PATH_MAX];
-  char subtype[256], xtype[256];
-  int szf, sze, cur_sze;
-  int type;
+  char subtype[256] = { 0 };
+  char xtype[256] = { 0 };
+  int sze, cur_sze = 0;
   bool found_mimetypes = false;
+  enum ContentType type = TYPE_OTHER;
 
-  *subtype = '\0';
-  *xtype = '\0';
-  type = TYPE_OTHER;
-  cur_sze = 0;
-
-  szf = mutt_str_strlen(path);
+  int szf = mutt_str_strlen(path);
 
   for (int count = 0; count < 4; count++)
   {
@@ -1996,15 +1995,14 @@ static char *unfold_header(char *s)
   while (p && (p[0] != '\0'))
   {
     /* remove CRLF prior to FWSP, turn \t into ' ' */
-    if ((p[0] == '\r') && (p[1] != '\0') && (p[1] == '\n') && (p[2] != '\0') &&
-        ((p[2] == ' ') || (p[2] == '\t')))
+    if ((p[0] == '\r') && (p[1] == '\n') && ((p[2] == ' ') || (p[2] == '\t')))
     {
       *q++ = ' ';
       p += 3;
       continue;
     }
     /* remove LF prior to FWSP, turn \t into ' ' */
-    else if ((p[0] == '\n') && (p[1] != '\0') && ((p[1] == ' ') || (p[1] == '\t')))
+    else if ((p[0] == '\n') && ((p[1] == ' ') || (p[1] == '\t')))
     {
       *q++ = ' ';
       p += 2;
@@ -2700,6 +2698,9 @@ static char **add_args_one(char **args, size_t *argslen, size_t *argsmax, struct
  */
 static char **add_args(char **args, size_t *argslen, size_t *argsmax, struct AddressList *al)
 {
+  if (!al)
+    return args;
+
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {

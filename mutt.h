@@ -30,6 +30,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "config/lib.h"
+#include "email/lib.h"
 #include "hook.h"
 #include "mutt_commands.h"
 
@@ -128,7 +129,7 @@ struct ConfigSet *init_config(size_t size);
 struct AttachMatch
 {
   const char *major;
-  int major_int;
+  enum ContentType major_int;
   const char *minor;
   regex_t minor_regex;
 };

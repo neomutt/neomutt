@@ -110,7 +110,7 @@ void mutt_adv_mktemp(struct Buffer *buf)
       *suffix = '\0';
       suffix++;
     }
-    mutt_buffer_mktemp_pfx_sfx(buf, mutt_b2s(prefix), suffix);
+    mutt_buffer_mktemp_pfx_sfx(buf, prefix->data, suffix);
 
   out:
     mutt_buffer_pool_release(&prefix);
@@ -233,7 +233,7 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
 
           mutt_email_free(&e);
           /* Avoid infinite recursion if the resulting folder starts with '@' */
-          if (*(mutt_b2s(p)) != '@')
+          if (*p->data != '@')
             recurse = true;
 
           tail = "";
@@ -560,9 +560,10 @@ uint64_t mutt_rand64(void)
 void mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix,
                              const char *suffix, const char *src, int line)
 {
-  mutt_buffer_printf(buf, "%s/%s-%s-%d-%d-%ld%ld%s%s", NONULL(C_Tmpdir), NONULL(prefix),
-                     NONULL(C_Hostname), (int) getuid(), (int) getpid(),
-                     random(), random(), suffix ? "." : "", NONULL(suffix));
+  mutt_buffer_printf(buf, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(C_Tmpdir),
+                     NONULL(prefix), NONULL(ShortHostname), (int) getuid(),
+                     (int) getpid(), mutt_rand64(), suffix ? "." : "", NONULL(suffix));
+
   mutt_debug(LL_DEBUG3, "%s:%d: mutt_mktemp returns \"%s\"\n", src, line, mutt_b2s(buf));
   if (unlink(mutt_b2s(buf)) && (errno != ENOENT))
   {
@@ -690,6 +691,7 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
 void mutt_buffer_pretty_mailbox(struct Buffer *buf)
 {
   if (!buf || !buf->data)
+    return;
   /* This reduces the size of the Buffer, so we can pass it through.
    * We adjust the size just to make sure buf->data is not NULL though */
   mutt_buffer_increase_size(buf, PATH_MAX);
@@ -1256,15 +1258,15 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
       }
       else
       {
-        bool tolower = false;
-        bool nodots = false;
+        bool to_lower = false;
+        bool no_dots = false;
 
         while ((ch == '_') || (ch == ':'))
         {
           if (ch == '_')
-            tolower = true;
+            to_lower = true;
           else if (ch == ':')
-            nodots = true;
+            no_dots = true;
 
           ch = *src++;
         }
@@ -1273,9 +1275,9 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         src = callback(tmp, sizeof(tmp), col, cols, ch, src, prefix, if_str,
                        else_str, data, flags);
 
-        if (tolower)
+        if (to_lower)
           mutt_str_strlower(tmp);
-        if (nodots)
+        if (no_dots)
         {
           char *p = tmp;
           for (; *p; p++)
@@ -1664,7 +1666,7 @@ int mutt_inbox_cmp(const char *a, const char *b)
   const char *b_end = strrchr(b, '/');
 
   /* If one path contains a '/', but not the other */
-  if (!a_end ^ !b_end)
+  if ((!a_end) ^ (!b_end))
     return 0;
 
   /* If neither path contains a '/' */

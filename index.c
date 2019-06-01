@@ -167,25 +167,25 @@ static bool prereq(struct Context *ctx, struct Menu *menu, CheckFlags checks)
   if (checks & (CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
     checks |= CHECK_IN_MAILBOX;
 
-  if ((checks & CHECK_IN_MAILBOX) && !Context)
+  if ((checks & CHECK_IN_MAILBOX) && (!ctx || !ctx->mailbox))
   {
     mutt_error(_("No mailbox is open"));
     result = false;
   }
 
-  if (result && (checks & CHECK_MSGCOUNT) && (Context->mailbox->msg_count == 0))
+  if (result && (checks & CHECK_MSGCOUNT) && (ctx->mailbox->msg_count == 0))
   {
     mutt_error(_("There are no messages"));
     result = false;
   }
 
-  if (result && (checks & CHECK_VISIBLE) && (menu->current >= Context->mailbox->vcount))
+  if (result && (checks & CHECK_VISIBLE) && (menu->current >= ctx->mailbox->vcount))
   {
     mutt_error(_("No visible messages"));
     result = false;
   }
 
-  if (result && (checks & CHECK_READONLY) && Context->mailbox->readonly)
+  if (result && (checks & CHECK_READONLY) && ctx->mailbox->readonly)
   {
     mutt_error(_("Mailbox is read-only"));
     result = false;
@@ -626,7 +626,6 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
     m = mutt_mailbox_find_desc(buf);
     if (m)
     {
-      magic = m->magic;
       mutt_str_strfcpy(buf, mutt_b2s(m->pathbuf), buflen);
     }
     else
@@ -653,7 +652,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
     else
 #endif
       new_last_folder = mutt_str_strdup(mutt_b2s(Context->mailbox->pathbuf));
-    *oldcount = Context ? Context->mailbox->msg_count : 0;
+    *oldcount = Context->mailbox->msg_count;
 
     int check = mx_mbox_close(&Context);
     if (check != 0)
@@ -1961,7 +1960,7 @@ int mutt_index_menu(void)
       {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
-        if (!Context || (Context->mailbox->magic != MUTT_NOTMUCH))
+        if (Context->mailbox->magic != MUTT_NOTMUCH)
         {
           if (!CUR_EMAIL || !CUR_EMAIL->env || !CUR_EMAIL->env->message_id)
           {
@@ -2365,9 +2364,7 @@ int mutt_index_menu(void)
          * be cleaned up after this switch statement. */
         menu->menu = MENU_PAGER;
         menu->oldcurrent = menu->current;
-        if (Context)
-          update_index(menu, Context, MUTT_NEW_MAIL, Context->mailbox->msg_count, hint);
-
+        update_index(menu, Context, MUTT_NEW_MAIL, Context->mailbox->msg_count, hint);
         continue;
 
       case OP_EXIT:
@@ -3582,7 +3579,7 @@ int mutt_index_menu(void)
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
         mutt_view_attachments(CUR_EMAIL);
-        if (Context && CUR_EMAIL->attach_del)
+        if (CUR_EMAIL->attach_del)
           Context->mailbox->changed = true;
         menu->redraw = REDRAW_FULL;
         break;

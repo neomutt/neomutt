@@ -1310,8 +1310,7 @@ struct Address *mutt_default_from(void)
   else if (C_UseDomain)
   {
     struct Address *addr = mutt_addr_new();
-    mutt_str_asprintf(&addr->mailbox, "%s@%s", NONULL(Username),
-        NONULL(mutt_fqdn(true)));
+    mutt_str_asprintf(&addr->mailbox, "%s@%s", NONULL(Username), NONULL(mutt_fqdn(true)));
     return addr;
   }
   else

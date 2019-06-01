@@ -131,7 +131,7 @@ void test_url_parse(void)
     for (size_t i = 0; i < mutt_array_size(test); ++i)
     {
       struct Url *url = url_parse(test[i].source);
-      if (!TEST_CHECK(!(!!url ^ !!test[i].valid)))
+      if (!TEST_CHECK(!((!!url) ^ (!!test[i].valid))))
       {
         TEST_MSG("Expected: %sNULL", test[i].valid ? "not " : "");
         TEST_MSG("Actual  : %sNULL", url ? "not " : "");

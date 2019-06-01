@@ -2528,7 +2528,7 @@ int mutt_pattern_func(int op, char *prompt)
       mutt_error(_("No messages matched criteria"));
 
     /* record new limit pattern, unless match all */
-    const char *pbuf = mutt_b2s(buf);
+    const char *pbuf = buf->data;
     while (*pbuf == ' ')
       pbuf++;
     if (mutt_str_strcmp(pbuf, "~A") != 0)
