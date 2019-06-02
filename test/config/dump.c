@@ -362,7 +362,7 @@ bool test_dump_config(void)
 
     // Degenerate tests
 
-    TEST_CHECK(dump_config(NULL, CS_DUMP_STYLE_NEO, CS_DUMP_NO_FLAGS, fp));
+    TEST_CHECK(!dump_config(NULL, CS_DUMP_STYLE_NEO, CS_DUMP_NO_FLAGS, fp));
     TEST_CHECK(dump_config(cs, CS_DUMP_STYLE_NEO, CS_DUMP_NO_FLAGS, NULL));
 
     // Normal tests
