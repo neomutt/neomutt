@@ -28,6 +28,7 @@
 #include "mutt/mutt.h"
 #include "config/common.h"
 #include "config/lib.h"
+#include "account.h"
 
 static char *VarApple;
 static char *VarBanana;

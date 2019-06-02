@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for the CfgAccount object
+ * Test code for the Account object
  *
  * @authors
  * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
@@ -28,6 +28,7 @@
 #include "mutt/mutt.h"
 #include "config/common.h"
 #include "config/lib.h"
+#include "account.h"
 
 static short VarApple;
 static short VarBanana;
@@ -68,68 +69,78 @@ void config_account(void)
     NULL,
   };
 
-  struct CfgAccount *ac = ac_new(cs, account, BrokenVarStr);
-  if (TEST_CHECK(!ac))
+  struct Account *a = account_new();
+  bool result = account_add_config(a, cs, account, BrokenVarStr);
+  account_free(&a);
+
+  if (TEST_CHECK(!result))
   {
     TEST_MSG("Expected error:\n");
   }
   else
   {
-    ac_free(cs, &ac);
     TEST_MSG("This test should have failed\n");
     return;
   }
 
-  const char *CfgAccountVarStr2[] = {
+  const char *AccountVarStr2[] = {
     "Apple",
     "Apple",
     NULL,
   };
 
   TEST_MSG("Expect error for next test\n");
-  ac = ac_new(cs, account, CfgAccountVarStr2);
-  if (!TEST_CHECK(!ac))
+  a = account_new();
+  result = account_add_config(a, cs, account, AccountVarStr2);
+  account_free(&a);
+
+  if (!TEST_CHECK(!result))
   {
-    ac_free(cs, &ac);
     TEST_MSG("This test should have failed\n");
     return;
   }
 
   account = "fruit";
-  const char *CfgAccountVarStr[] = {
+  const char *AccountVarStr[] = {
     "Apple",
     "Cherry",
     NULL,
   };
 
-  ac = ac_new(NULL, account, CfgAccountVarStr);
-  if (!TEST_CHECK(ac == NULL))
+  a = account_new();
+
+  result = account_add_config(NULL, cs, account, AccountVarStr);
+  if (!TEST_CHECK(!result))
     return;
 
-  ac = ac_new(cs, NULL, CfgAccountVarStr);
-  if (!TEST_CHECK(ac == NULL))
+  result = account_add_config(a, NULL, account, AccountVarStr);
+  if (!TEST_CHECK(!result))
     return;
 
-  ac = ac_new(cs, account, NULL);
-  if (!TEST_CHECK(ac == NULL))
+  result = account_add_config(a, cs, NULL, AccountVarStr);
+  if (!TEST_CHECK(!result))
     return;
 
-  ac = ac_new(cs, account, CfgAccountVarStr);
-  if (!TEST_CHECK(ac != NULL))
+  result = account_add_config(a, cs, account, NULL);
+  if (!TEST_CHECK(!result))
+    return;
+
+  result = account_add_config(a, cs, account, AccountVarStr);
+  if (!TEST_CHECK(result))
     return;
 
   size_t index = 0;
   mutt_buffer_reset(&err);
-  int rc = ac_set_value(NULL, index, 33, &err);
+  int rc = account_set_value(NULL, index, 33, &err);
 
-  rc = ac_set_value(ac, index, 33, &err);
+  rc = account_set_value(a, index, 33, &err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s\n", err.data);
   }
 
   mutt_buffer_reset(&err);
-  rc = ac_set_value(ac, 99, 42, &err);
+  rc = account_set_value(a, 99, 42, &err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_UNKNOWN))
   {
     TEST_MSG("Expected error: %s\n", err.data);
@@ -141,36 +152,36 @@ void config_account(void)
   }
 
   mutt_buffer_reset(&err);
-  rc = ac_get_value(NULL, index, &err);
+  rc = account_get_value(NULL, index, &err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_CODE))
   {
     TEST_MSG("%s\n", err.data);
   }
 
-  rc = ac_get_value(ac, index, &err);
+  rc = account_get_value(a, index, &err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s\n", err.data);
   }
   else
   {
-    TEST_MSG("%s = %s\n", CfgAccountVarStr[index], err.data);
+    TEST_MSG("%s = %s\n", AccountVarStr[index], err.data);
   }
 
   index++;
   mutt_buffer_reset(&err);
-  rc = ac_get_value(ac, index, &err);
+  rc = account_get_value(a, index, &err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s\n", err.data);
   }
   else
   {
-    TEST_MSG("%s = %s\n", CfgAccountVarStr[index], err.data);
+    TEST_MSG("%s = %s\n", AccountVarStr[index], err.data);
   }
 
   mutt_buffer_reset(&err);
-  rc = ac_get_value(ac, 99, &err);
+  rc = account_get_value(a, 99, &err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_UNKNOWN))
   {
     TEST_MSG("Expected error\n");
@@ -251,10 +262,9 @@ void config_account(void)
     return;
   }
 
-  ac_free(NULL, &ac);
-  ac_free(cs, NULL);
+  account_free(NULL);
 
-  ac_free(cs, &ac);
+  account_free(&a);
   cs_free(&cs);
   FREE(&err.data);
   log_line(__func__);

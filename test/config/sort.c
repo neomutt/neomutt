@@ -29,6 +29,7 @@
 #include "mutt/mutt.h"
 #include "config/common.h"
 #include "config/lib.h"
+#include "account.h"
 
 static short VarApple;
 static short VarBanana;
@@ -636,7 +637,8 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
     NULL,
   };
 
-  struct CfgAccount *ac = ac_new(cs, account, AccountVarStr);
+  struct Account *a = account_new();
+  account_add_config(a, cs, account, AccountVarStr);
 
   // set parent
   VarStrawberry = SORT_SUBJECT;
@@ -682,7 +684,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   log_line(__func__);
   result = true;
 ti_out:
-  ac_free(cs, &ac);
+  account_free(&a);
   return result;
 }
 

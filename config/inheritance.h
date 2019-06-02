@@ -30,10 +30,9 @@
  */
 struct Inheritance
 {
-  struct HashElem *parent; /**< HashElem of parent config item */
-  const char *name;        /**< Name of this config item */
-  struct CfgAccount *ac;   /**< CfgAccount holding this config item */
-  intptr_t var;            /**< (Pointer to) value, of config item */
+  struct HashElem *parent; ///< HashElem of parent config item
+  const char *name;        ///< Name of this config item
+  intptr_t var;            ///< (Pointer to) value, of config item
 };
 
 #endif /* MUTT_CONFIG_INHERITANCE_H */

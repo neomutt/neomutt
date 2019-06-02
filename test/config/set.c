@@ -30,6 +30,7 @@
 #include "mutt/mutt.h"
 #include "config/common.h"
 #include "config/lib.h"
+#include "account.h"
 
 static short VarApple;
 static bool VarBanana;

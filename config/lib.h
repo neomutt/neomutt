@@ -29,7 +29,6 @@
  * | :------------------ | :------------------------- |
  * | config/address.c    | @subpage config_address    |
  * | config/bool.c       | @subpage config_bool       |
- * | config/cfgaccount.c | @subpage config_cfgaccount |
  * | config/command.c    | @subpage config_command    |
  * | config/dump.c       | @subpage config_dump       |
  * | config/long.c       | @subpage config_long       |
@@ -49,7 +48,6 @@
 
 #include "address.h"
 #include "bool.h"
-#include "cfgaccount.h"
 #include "command.h"
 #include "dump.h"
 #include "inheritance.h"

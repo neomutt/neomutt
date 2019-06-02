@@ -13,7 +13,6 @@ compose.c
 compress.c
 config/address.c
 config/bool.c
-config/cfgaccount.c
 config/command.c
 config/dump.c
 config/long.c
@@ -111,6 +110,7 @@ mutt/mapping.c
 mutt/mbyte.c
 mutt/md5.c
 mutt/memory.c
+mutt/notify.c
 mutt/path.c
 mutt/pool.c
 mutt/regex.c
@@ -148,6 +148,7 @@ ncrypt/pgplib.c
 ncrypt/pgpmicalg.c
 ncrypt/pgppacket.c
 ncrypt/smime.c
+neomutt.c
 nntp/browse.c
 nntp/complete.c
 nntp/newsrc.c

@@ -40,12 +40,23 @@ struct Account
   TAILQ_ENTRY(Account) entries;
   void *adata;
   void (*free_adata)(void **);
+
+  char *name;                 ///< Name of Account
+  const struct ConfigSet *cs; ///< Parent ConfigSet
+  const char **var_names;     ///< Array of the names of local config items
+  size_t num_vars;            ///< Number of local config items
+  struct HashElem **vars;     ///< Array of the HashElems of local config items
 };
 TAILQ_HEAD(AccountList, Account);
 
 extern struct AccountList AllAccounts; ///< List of all Accounts
 
+bool            account_add_config(struct Account *a, const struct ConfigSet *cs, const char *name, const char *var_names[]);
+void            account_free(struct Account **ptr);
+void            account_free_config(struct Account *a);
+int             account_get_value(const struct Account *a, size_t vid, struct Buffer *result);
 struct Account *account_new(void);
 void            account_remove_mailbox(struct Account *a, struct Mailbox *m);
+int             account_set_value(const struct Account *a, size_t vid, intptr_t value, struct Buffer *err);
 
 #endif /* MUTT_ACCOUNT_H */
