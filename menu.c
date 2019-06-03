@@ -1595,16 +1595,20 @@ int mutt_menu_loop(struct Menu *menu)
 }
 
 /**
- * mutt_menu_observer - Listen for config changes affecting the menu - Implements ::cs_observer()
+ * mutt_menu_observer - Listen for config changes affecting the menu - Implements ::observer_t()
  */
-bool mutt_menu_observer(const struct ConfigSet *cs, struct HashElem *he,
-                        const char *name, enum ConfigEvent ev)
+int mutt_menu_observer(struct NotifyCallback *nc)
 {
-  const struct ConfigDef *cdef = he->data;
+  if (!nc)
+    return -1;
+
+  struct EventConfig *ec = (struct EventConfig *) nc->event;
+
+  const struct ConfigDef *cdef = ec->he->data;
   ConfigRedrawFlags flags = cdef->flags;
 
   if (flags == 0)
-    return true;
+    return 0;
 
   if (flags & R_INDEX)
     mutt_menu_set_redraw_full(MENU_MAIN);
@@ -1634,5 +1638,5 @@ bool mutt_menu_observer(const struct ConfigSet *cs, struct HashElem *he,
   if (flags & R_MENU)
     mutt_menu_set_current_redraw_full();
 
-  return true;
+  return 0;
 }

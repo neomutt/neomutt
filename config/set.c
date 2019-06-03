@@ -164,6 +164,7 @@ void cs_init(struct ConfigSet *cs, size_t size)
   memset(cs, 0, sizeof(*cs));
   cs->hash = mutt_hash_new(size, MUTT_HASH_NO_FLAGS);
   mutt_hash_set_destructor(cs->hash, destroy, (intptr_t) cs);
+  cs->notify = notify_new(cs, NT_CONFIG);
 }
 
 /**
@@ -176,6 +177,7 @@ void cs_free(struct ConfigSet **cs)
     return;
 
   mutt_hash_free(&(*cs)->hash);
+  notify_free(&(*cs)->notify);
   FREE(cs);
 }
 
@@ -308,56 +310,6 @@ struct HashElem *cs_inherit_variable(const struct ConfigSet *cs,
 }
 
 /**
- * cs_add_observer - Add a observer (callback function)
- * @param cs Config items
- * @param fn Observer callback function
- */
-void cs_add_observer(struct ConfigSet *cs, cs_observer fn)
-{
-  if (!cs || !fn)
-    return;
-
-  for (size_t i = 0; i < mutt_array_size(cs->observers); i++)
-  {
-    if (cs->observers[i] == fn)
-    {
-      mutt_debug(LL_DEBUG1, "Observer was already registered\n");
-      return;
-    }
-  }
-
-  for (size_t i = 0; i < mutt_array_size(cs->observers); i++)
-  {
-    if (!cs->observers[i])
-    {
-      cs->observers[i] = fn;
-      return;
-    }
-  }
-}
-
-/**
- * cs_remove_observer - Remove a observer (callback function)
- * @param cs Config items
- * @param fn Observer callback function
- */
-void cs_remove_observer(struct ConfigSet *cs, cs_observer fn)
-{
-  if (!cs || !fn)
-    return;
-
-  for (size_t i = 0; i < mutt_array_size(cs->observers); i++)
-  {
-    if (cs->observers[i] == fn)
-    {
-      cs->observers[i] = NULL;
-      return;
-    }
-  }
-  mutt_debug(LL_DEBUG1, "Observer wasn't registered\n");
-}
-
-/**
  * cs_notify_observers - Notify all observers of an event
  * @param cs   Config items
  * @param he   HashElem representing config item
@@ -365,18 +317,13 @@ void cs_remove_observer(struct ConfigSet *cs, cs_observer fn)
  * @param ev   Type of event
  */
 void cs_notify_observers(const struct ConfigSet *cs, struct HashElem *he,
-                         const char *name, enum ConfigEvent ev)
+                         const char *name, enum NotifyConfig ev)
 {
   if (!cs || !he || !name)
     return;
 
-  for (size_t i = 0; i < mutt_array_size(cs->observers); i++)
-  {
-    if (!cs->observers[i])
-      return;
-
-    cs->observers[i](cs, he, name, ev);
-  }
+  struct EventConfig ec = { cs, he, name };
+  notify_send(cs->notify, NT_CONFIG, ev, IP & ec);
 }
 
 /**
@@ -422,7 +369,7 @@ int cs_he_reset(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *
   }
 
   if ((CSR_RESULT(rc) == CSR_SUCCESS) && !(rc & CSR_SUC_NO_CHANGE))
-    cs_notify_observers(cs, he, he->key.strkey, CE_RESET);
+    cs_notify_observers(cs, he, he->key.strkey, NT_CONFIG_RESET);
   return rc;
 }
 
@@ -485,7 +432,7 @@ int cs_he_initial_set(const struct ConfigSet *cs, struct HashElem *he,
   if (CSR_RESULT(rc) != CSR_SUCCESS)
     return rc;
 
-  cs_notify_observers(cs, he, he->key.strkey, CE_INITIAL_SET);
+  cs_notify_observers(cs, he, he->key.strkey, NT_CONFIG_INITIAL_SET);
   return CSR_SUCCESS;
 }
 
@@ -630,7 +577,7 @@ int cs_he_string_set(const struct ConfigSet *cs, struct HashElem *he,
     he->type = i->parent->type | DT_INHERITED;
   }
   if (!(rc & CSR_SUC_NO_CHANGE))
-    cs_notify_observers(cs, he, he->key.strkey, CE_SET);
+    cs_notify_observers(cs, he, he->key.strkey, NT_CONFIG_SET);
   return rc;
 }
 
@@ -772,7 +719,7 @@ int cs_he_native_set(const struct ConfigSet *cs, struct HashElem *he,
     if (he->type & DT_INHERITED)
       he->type = cdef->type | DT_INHERITED;
     if (!(rc & CSR_SUC_NO_CHANGE))
-      cs_notify_observers(cs, he, cdef->name, CE_SET);
+      cs_notify_observers(cs, he, cdef->name, NT_CONFIG_SET);
   }
 
   return rc;
@@ -826,7 +773,7 @@ int cs_str_native_set(const struct ConfigSet *cs, const char *name,
     if (he->type & DT_INHERITED)
       he->type = cdef->type | DT_INHERITED;
     if (!(rc & CSR_SUC_NO_CHANGE))
-      cs_notify_observers(cs, he, cdef->name, CE_SET);
+      cs_notify_observers(cs, he, cdef->name, NT_CONFIG_SET);
   }
 
   return rc;

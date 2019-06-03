@@ -69,6 +69,7 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
+#include "neomutt.h"
 #include "options.h"
 #include "protos.h"
 #include "send.h"
@@ -598,9 +599,12 @@ int main(int argc, char *argv[], char *envp[])
     goto main_ok; // TEST04: neomutt -v
   }
 
+  NeoMutt = neomutt_new();
+
   Config = init_config(500);
   if (!Config)
     goto main_curses;
+  notify_set_parent(Config->notify, NeoMutt->notify);
 
   if (!get_user_info(Config))
     goto main_exit;
@@ -822,10 +826,10 @@ int main(int argc, char *argv[], char *envp[])
     goto main_ok; // TEST22: neomutt -B
   }
 
-  cs_add_observer(Config, mutt_hist_observer);
-  cs_add_observer(Config, mutt_log_observer);
-  cs_add_observer(Config, mutt_menu_observer);
-  cs_add_observer(Config, mutt_reply_observer);
+  notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_hist_observer, 0);
+  notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_log_observer, 0);
+  notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_menu_observer, 0);
+  notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_reply_observer, 0);
 
   if (sendflags & SEND_POSTPONED)
   {
@@ -1262,5 +1266,6 @@ main_exit:
   mutt_free_opts();
   mutt_free_keys();
   cs_free(&Config);
+  neomutt_free(&NeoMutt);
   return rc;
 }

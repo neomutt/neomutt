@@ -42,7 +42,7 @@
 #include "queue.h"
 #include "string2.h"
 
-const char *LevelAbbr = "PEWM12345"; /**< Abbreviations of logging level names */
+const char *LevelAbbr = "PEWM12345N"; /**< Abbreviations of logging level names */
 
 /**
  * MuttLogger - The log dispatcher
@@ -486,6 +486,7 @@ int log_disp_terminal(time_t stamp, const char *file, int line,
       case LL_DEBUG3:
       case LL_DEBUG4:
       case LL_DEBUG5:
+      case LL_NOTIFY:
         break;
     }
   }

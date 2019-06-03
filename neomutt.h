@@ -1,9 +1,9 @@
 /**
  * @file
- * Read/write command history from/to a file
+ * NeoMutt container for notifications
  *
  * @authors
- * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,13 +20,22 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MUTT_HISTORY_H
-#define MUTT_MUTT_HISTORY_H
+#ifndef MUTT_NEOMUTT_H
+#define MUTT_NEOMUTT_H
 
-#include <stdio.h>
-#include "mutt/mutt.h"
+struct Notify;
 
-void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass);
-int mutt_hist_observer(struct NotifyCallback *nc);
+/**
+ * struct NeoMutt - Container for notifications
+ */
+struct NeoMutt
+{
+  struct Notify *notify;
+};
 
-#endif /* MUTT_MUTT_HISTORY_H */
+extern struct NeoMutt *NeoMutt;
+
+struct NeoMutt *neomutt_new(void);
+void neomutt_free(struct NeoMutt **ptr);
+
+#endif /* MUTT_NEOMUTT_H */

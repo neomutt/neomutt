@@ -58,6 +58,7 @@ enum LogLevel
   LL_DEBUG3  =  3, ///< Log at debug level 3
   LL_DEBUG4  =  4, ///< Log at debug level 4
   LL_DEBUG5  =  5, ///< Log at debug level 5
+  LL_NOTIFY  =  6, ///< Log of notifications
 
   LL_MAX,
 };

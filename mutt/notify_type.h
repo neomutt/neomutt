@@ -1,9 +1,9 @@
 /**
  * @file
- * Read/write command history from/to a file
+ * Notification Types
  *
  * @authors
- * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,13 +20,23 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MUTT_HISTORY_H
-#define MUTT_MUTT_HISTORY_H
+#ifndef MUTT_LIB_NOTIFY_TYPE_H
+#define MUTT_LIB_NOTIFY_TYPE_H
 
-#include <stdio.h>
-#include "mutt/mutt.h"
+/**
+ * enum NotifyType - Notification Types
+ */
+enum NotifyType
+{
+  NT_NEOMUTT, ///< Container for all notifications
+  NT_GLOBAL,  ///< Not object-related
+  NT_CONFIG,  ///< Config has changed
+  NT_ACCOUNT, ///< Account has changed
+  NT_MAILBOX, ///< Mailbox has changed
+  NT_EMAIL,   ///< Email has changed
+  NT_WINDOW,  ///< Window has changed
 
-void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass);
-int mutt_hist_observer(struct NotifyCallback *nc);
+  NT_MAX,
+};
 
-#endif /* MUTT_MUTT_HISTORY_H */
+#endif /* MUTT_LIB_NOTIFY_TYPE_H */

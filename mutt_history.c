@@ -144,14 +144,18 @@ void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass)
 }
 
 /**
- * mutt_hist_observer - Listen for config changes affecting the history - Implements ::cs_observer()
+ * mutt_hist_observer - Listen for config changes affecting the history - Implements ::observer_t()
  */
-bool mutt_hist_observer(const struct ConfigSet *cs, struct HashElem *he,
-                        const char *name, enum ConfigEvent ev)
+int mutt_hist_observer(struct NotifyCallback *nc)
 {
-  if (mutt_str_strcmp(name, "history") != 0)
-    return true;
+  if (!nc)
+    return -1;
+
+  struct EventConfig *ec = (struct EventConfig *) nc->event;
+
+  if (mutt_str_strcmp(ec->name, "history") != 0)
+    return 0;
 
   mutt_hist_init();
-  return true;
+  return 0;
 }

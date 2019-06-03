@@ -81,9 +81,13 @@ void short_line(void)
   TEST_MSG("%s\n", line + 40);
 }
 
-bool log_observer(const struct ConfigSet *cs, struct HashElem *he,
-                  const char *name, enum ConfigEvent ev)
+int log_observer(struct NotifyCallback *nc)
 {
+  if (!nc)
+    return -1;
+
+  struct EventConfig *ec = (struct EventConfig *) nc->event;
+
   struct Buffer result;
   mutt_buffer_init(&result);
   result.dsize = 256;
@@ -93,12 +97,12 @@ bool log_observer(const struct ConfigSet *cs, struct HashElem *he,
 
   mutt_buffer_reset(&result);
 
-  if (ev != CE_INITIAL_SET)
-    cs_he_string_get(cs, he, &result);
+  if (nc->event_type != NT_CONFIG_INITIAL_SET)
+    cs_he_string_get(ec->cs, ec->he, &result);
   else
-    cs_he_initial_get(cs, he, &result);
+    cs_he_initial_get(ec->cs, ec->he, &result);
 
-  TEST_MSG("Event: %s has been %s to '%s'\n", name, events[ev - 1], result.data);
+  TEST_MSG("Event: %s has been %s to '%s'\n", ec->name, events[nc->event_type - 1], result.data);
 
   FREE(&result.data);
   return true;

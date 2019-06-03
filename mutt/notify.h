@@ -1,9 +1,9 @@
 /**
  * @file
- * Read/write command history from/to a file
+ * Notification API
  *
  * @authors
- * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,13 +20,22 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MUTT_HISTORY_H
-#define MUTT_MUTT_HISTORY_H
+#ifndef MUTT_LIB_NOTIFY_H
+#define MUTT_LIB_NOTIFY_H
 
-#include <stdio.h>
-#include "mutt/mutt.h"
+#include <stdbool.h>
+#include "observer.h"
+#include "notify_type.h"
 
-void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass);
-int mutt_hist_observer(struct NotifyCallback *nc);
+struct Notify;
 
-#endif /* MUTT_MUTT_HISTORY_H */
+struct Notify *notify_new(void *object, enum NotifyType type);
+void notify_free(struct Notify **ptr);
+void notify_set_parent(struct Notify *notify, struct Notify *parent);
+
+bool notify_send(struct Notify *notify, int type, int subtype, intptr_t data);
+
+bool notify_observer_add(struct Notify *notify, enum NotifyType type, int subtype, observer_t callback, intptr_t data);
+bool notify_observer_remove(struct Notify *notify, observer_t callback);
+
+#endif /* MUTT_LIB_NOTIFY_H */
