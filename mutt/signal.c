@@ -33,8 +33,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "curs_lib.h"
 #include "message.h"
 #include "signal2.h"
+#ifdef HAVE_LIBUNWIND
+#include "mutt.h"
+#endif
 
 static sigset_t Sigset;
 static sigset_t SigsetSys;
@@ -45,6 +49,7 @@ static bool SysSignalsBlocked;
 
 static sig_handler_t sig_handler = mutt_sig_empty_handler;
 static sig_handler_t exit_handler = mutt_sig_exit_handler;
+static sig_handler_t segv_handler = mutt_sig_exit_handler;
 
 /**
  * mutt_sig_empty_handler - Dummy signal handler
@@ -79,11 +84,12 @@ void mutt_sig_exit_handler(int sig)
  * mutt_sig_init - Initialise the signal handling
  * @param sig_fn  Function to handle signals
  * @param exit_fn Function to call on uncaught signals
+ * @param segv_fn Function to call on a segfault (Segmentation Violation)
  *
  * Set up handlers to ignore or catch signals of interest.
  * We use three handlers for the signals we want to catch, ignore, or exit.
  */
-void mutt_sig_init(sig_handler_t sig_fn, sig_handler_t exit_fn)
+void mutt_sig_init(sig_handler_t sig_fn, sig_handler_t exit_fn, sig_handler_t segv_fn)
 {
   if (sig_fn)
     sig_handler = sig_fn;
@@ -91,12 +97,18 @@ void mutt_sig_init(sig_handler_t sig_fn, sig_handler_t exit_fn)
   if (exit_fn)
     exit_handler = exit_fn;
 
+  if (segv_fn)
+    segv_handler = segv_fn;
+
   struct sigaction act;
 
   sigemptyset(&act.sa_mask);
   act.sa_flags = 0;
   act.sa_handler = SIG_IGN;
   sigaction(SIGPIPE, &act, NULL);
+
+  act.sa_handler = segv_handler;
+  sigaction(SIGSEGV, &act, NULL);
 
   act.sa_handler = exit_handler;
   sigaction(SIGTERM, &act, NULL);

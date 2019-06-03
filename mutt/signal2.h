@@ -36,7 +36,7 @@ void mutt_sig_block(void);
 void mutt_sig_block_system(void);
 void mutt_sig_empty_handler(int sig);
 void mutt_sig_exit_handler(int sig);
-void mutt_sig_init(sig_handler_t sig_fn, sig_handler_t exit_fn);
+void mutt_sig_init(sig_handler_t sig_fn, sig_handler_t exit_fn, sig_handler_t segv_fn);
 void mutt_sig_unblock(void);
 void mutt_sig_unblock_system(bool catch);
 

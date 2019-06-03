@@ -87,6 +87,9 @@ options {
   with-qdbm:path            => "Location of QDBM"
   tokyocabinet=0            => "Use TokyoCabinet for the header cache"
   with-tokyocabinet:path    => "Location of TokyoCabinet"
+# libunwind
+  backtrace=0               => "Enable backtrace support with libunwind"
+  with-backtrace:path       => "Location of libunwind"
 # System
   with-sysroot:path         => "Target system root"
 # Testing
@@ -104,9 +107,9 @@ options {
 if {1} {
   # Keep sorted, please.
   foreach opt {
-    bdb coverage doc everything fmemopen full-doc gdbm gnutls gpgme gss
-    homespool idn idn2 inotify kyotocabinet lmdb locales-fix lua mixmaster nls
-    notmuch pgp qdbm sasl smime ssl testing tokyocabinet
+    bdb backtrace coverage doc everything fmemopen full-doc gdbm gnutls gpgme
+    gss homespool idn idn2 inotify kyotocabinet lmdb locales-fix lua mixmaster
+    nls notmuch pgp qdbm sasl smime ssl testing tokyocabinet
   } {
     define want-$opt [opt-bool $opt]
   }
@@ -632,6 +635,16 @@ if {[get-define want-homespool]} {
   define HOMESPOOL 1
 } else {
   define MAILPATH [opt-val with-mailpath /var/mail]
+}
+
+###############################################################################
+# Backtrace support with libunwind
+if {[get-define want-backtrace]} {
+  if {![check-inc-and-lib libunwind [opt-val with-backtrace $prefix] \
+                          libunwind.h unw_backtrace unwind]} {
+    user-error "Unable to find libunwind"
+  }
+  define LIBS "-lunwind-generic [get-define LIBS]"
 }
 
 ###############################################################################
