@@ -345,8 +345,9 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
         (mutt_str_strcasecmp(type, np->data) == 0))
     {
       struct Body tmp = { 0 };
-      enum ContentType n = mutt_lookup_mime_type(&tmp, b->filename);
-      if (n != TYPE_OTHER)
+      enum ContentType n;
+      if ((n = mutt_lookup_mime_type(&tmp, b->filename)) != TYPE_OTHER ||
+          (n = mutt_lookup_mime_type(&tmp, b->description)) != TYPE_OTHER)
       {
         snprintf(type, len, "%s/%s",
                  (n == TYPE_AUDIO) ?
