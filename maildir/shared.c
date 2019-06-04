@@ -1651,7 +1651,7 @@ int mh_check_empty(const char *path)
 }
 
 /**
- * maildir_ac_find - Find a Account that matches a Mailbox path
+ * maildir_ac_find - Find an Account that matches a Mailbox path
  */
 struct Account *maildir_ac_find(struct Account *a, const char *path)
 {
@@ -1662,7 +1662,7 @@ struct Account *maildir_ac_find(struct Account *a, const char *path)
 }
 
 /**
- * maildir_ac_add - Add a Mailbox to a Account
+ * maildir_ac_add - Add a Mailbox to an Account
  */
 int maildir_ac_add(struct Account *a, struct Mailbox *m)
 {

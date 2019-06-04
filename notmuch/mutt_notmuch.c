@@ -2143,7 +2143,7 @@ done:
 }
 
 /**
- * nm_ac_find - Find a Account that matches a Mailbox path
+ * nm_ac_find - Find an Account that matches a Mailbox path
  */
 struct Account *nm_ac_find(struct Account *a, const char *path)
 {
@@ -2154,7 +2154,7 @@ struct Account *nm_ac_find(struct Account *a, const char *path)
 }
 
 /**
- * nm_ac_add - Add a Mailbox to a Account
+ * nm_ac_add - Add a Mailbox to an Account
  */
 int nm_ac_add(struct Account *a, struct Mailbox *m)
 {

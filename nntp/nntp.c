@@ -2378,7 +2378,7 @@ int nntp_compare_order(const void *a, const void *b)
 }
 
 /**
- * nntp_ac_find - Find a Account that matches a Mailbox path
+ * nntp_ac_find - Find an Account that matches a Mailbox path
  */
 struct Account *nntp_ac_find(struct Account *a, const char *path)
 {
@@ -2407,7 +2407,7 @@ struct Account *nntp_ac_find(struct Account *a, const char *path)
 }
 
 /**
- * nntp_ac_add - Add a Mailbox to a Account
+ * nntp_ac_add - Add a Mailbox to an Account
  */
 int nntp_ac_add(struct Account *a, struct Mailbox *m)
 {

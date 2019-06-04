@@ -747,7 +747,7 @@ fail:
 }
 
 /**
- * pop_ac_find - Find a Account that matches a Mailbox path
+ * pop_ac_find - Find an Account that matches a Mailbox path
  */
 struct Account *pop_ac_find(struct Account *a, const char *path)
 {
@@ -772,7 +772,7 @@ struct Account *pop_ac_find(struct Account *a, const char *path)
 }
 
 /**
- * pop_ac_add - Add a Mailbox to a Account
+ * pop_ac_add - Add a Mailbox to an Account
  */
 int pop_ac_add(struct Account *a, struct Mailbox *m)
 {
