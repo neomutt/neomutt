@@ -15,7 +15,11 @@ MOFILES		= po/bg.mo po/ca.mo po/cs.mo po/da.mo po/de.mo po/el.mo \
 		  po/sk.mo po/sv.mo po/tr.mo po/uk.mo po/zh_CN.mo po/zh_TW.mo
 POTFILE		= po/$(PACKAGE).pot
 
-all-po:	$(MOFILES)
+all-po:	po $(MOFILES)
+
+.PHONY: po
+po:
+	$(MKDIR_P) po
 
 .SUFFIXES: .po .mo
 .po.mo:

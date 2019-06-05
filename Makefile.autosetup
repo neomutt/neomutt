@@ -16,7 +16,7 @@ PWD=		@PWD@
 AR=		@AR@
 CC=		@CC@
 CPP=		@CPP@
-CFLAGS=		@CPPFLAGS@ @CFLAGS@ -I. -I@top_srcdir@ -Wall $(EXTRA_CFLAGS)
+CFLAGS=		@CPPFLAGS@ @CFLAGS@ -I. -I@srcdir@ -Wall $(EXTRA_CFLAGS)
 LDFLAGS=	@LDFLAGS@ $(EXTRA_LDFLAGS)
 EXEEXT=		@EXEEXT@
 LIBS=		@LIBS@
@@ -54,7 +54,7 @@ CLEAN_TARGETS=		@CLEAN_TARGETS@
 INSTALL_TARGETS=	@INSTALL_TARGETS@
 UNINSTALL_TARGETS=	@UNINSTALL_TARGETS@
 
-VPATH=		$(SRCDIR)
+VPATH=		@VPATH@
 
 ALL_FILES!=	(cd $(SRCDIR) && git ls-files 2>/dev/null) || true
 
@@ -468,11 +468,11 @@ coverage: all test
 ##############################################################################
 # include special-purpose makefiles, each one of which MUST define the
 # dedicated all-, clean-, install-, and uninstall- targets.
-include po/Makefile
-include contrib/Makefile
-include doc/Makefile
+@include @srcdir@/po/Makefile.autosetup
+@include @srcdir@/contrib/Makefile.autosetup
+@include @srcdir@/doc/Makefile.autosetup
 @if ENABLE_UNIT_TESTS
-include test/Makefile
+@include @srcdir@/test/Makefile.autosetup
 @endif
 
 # vim: set ts=8 noexpandtab:
