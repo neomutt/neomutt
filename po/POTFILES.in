@@ -4,6 +4,7 @@ address/address.c
 address/group.c
 address/idna.c
 alias.c
+backtrace.c
 bcache.c
 browser.c
 color.c
