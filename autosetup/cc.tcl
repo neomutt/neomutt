@@ -466,7 +466,6 @@ proc cc-with {settings args} {
 # Any failures are recorded in 'config.log'
 #
 proc cctest {args} {
-	set src conftest__.c
 	set tmp conftest__
 
 	# Easiest way to merge in the settings
@@ -508,9 +507,11 @@ proc cctest {args} {
 	lappend cmdline {*}[get-define CCACHE]
 	switch -exact -- $opts(-lang) {
 		c++ {
+			set src conftest__.cpp
 			lappend cmdline {*}[get-define CXX] {*}[get-define CXXFLAGS]
 		}
 		c {
+			set src conftest__.c
 			lappend cmdline {*}[get-define CC] {*}[get-define CFLAGS]
 		}
 		default {

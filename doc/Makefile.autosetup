@@ -10,6 +10,10 @@ doc/neomuttrc: $(SRCDIR)/init.h doc/makedoc$(EXEEXT) $(SRCDIR)/doc/neomuttrc.hea
 	$(MAKEDOC_CPP) $(SRCDIR)/init.h | doc/makedoc$(EXEEXT) -c \
 	    >> doc/neomuttrc
 
+.PHONY: doc
+doc:
+	$(MKDIR_P) doc
+
 @if BUILD_DOC
 
 CHUNKED_DOCFILES = doc/advancedusage.html \
@@ -33,7 +37,8 @@ srcdir_DOCFILES = $(SRCDIR)/doc/smime-notes.txt \
 		  $(SRCDIR)/LICENSE.md \
 		  $(SRCDIR)/README.md
 
-all-doc:	$(CHUNKED_DOCFILES) \
+all-doc:	doc \
+		$(CHUNKED_DOCFILES) \
 		doc/index.html \
 		doc/manual.html \
 		doc/manual.txt \
@@ -159,7 +164,7 @@ sortcheck-doc: doc/manual.xml
 @else
 # Let's generate neomuttrc in all cases: it doesn't require any additional 3rd
 # party dependencies and distributions tend to rely on having it.
-all-doc: doc/neomuttrc
+all-doc: doc doc/neomuttrc
 
 clean-doc:
 	$(RM) doc/neomuttrc doc/makedoc$(EXEEXT)

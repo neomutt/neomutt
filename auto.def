@@ -964,6 +964,7 @@ set auto_rep {
   SUN_ATTACHMENT
   SYSCONFDIR
   USE_*
+  VPATH
   WORDS_BIGENDIAN
 }
 set bare_rep {
@@ -984,14 +985,17 @@ if {[get-define CCACHE] ne {none}} {
 }
 
 ###############################################################################
-# Generate targets and Makefiles for subdirectories
+# Generate targets and Makefile variables for subdirectories
+set vpath "\$(SRCDIR)"
 foreach dir $subdirs {
+  append vpath ":\$(SRCDIR)/$dir"
   define-append ALL_TARGETS all-$dir
   define-append CLEAN_TARGETS clean-$dir
   define-append INSTALL_TARGETS install-$dir
   define-append UNINSTALL_TARGETS uninstall-$dir
-  make-template $dir/Makefile.autosetup $dir/Makefile
+  define-append VPATH
 }
+define VPATH $vpath
 
 ###############################################################################
 # Define package timestamp (UTC) based on PACKAGE_VERSION for:
