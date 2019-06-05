@@ -956,7 +956,7 @@ static void cmd_parse_exists(struct ImapAccountData *adata, const char *pn)
   struct ImapMboxData *mdata = adata->mailbox->mdata;
 
   /* new mail arrived */
-  if (!(mdata->reopen & IMAP_EXPUNGE_PENDING) && (count < mdata->max_msn))
+  if (count < mdata->max_msn)
   {
     /* Notes 6.0.3 has a tendency to report fewer messages exist than
      * it should. */
@@ -1339,7 +1339,7 @@ void imap_cmd_finish(struct ImapAccountData *adata)
 
     if (mdata->reopen & IMAP_EXPUNGE_PENDING)
       mdata->reopen &=
-          ~(IMAP_EXPUNGE_PENDING | IMAP_NEWMAIL_PENDING | IMAP_EXPUNGE_EXPECTED);
+          ~(IMAP_EXPUNGE_PENDING | IMAP_EXPUNGE_EXPECTED);
   }
 
   adata->status = 0;
