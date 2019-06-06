@@ -1032,25 +1032,25 @@ int main(int argc, char *argv[], char *envp[])
 
     if (!STAILQ_EMPTY(&attach))
     {
-      struct Body *a = msg->content;
+      struct Body *b = msg->content;
 
-      while (a && a->next)
-        a = a->next;
+      while (b && b->next)
+        b = b->next;
 
       struct ListNode *np = NULL;
       STAILQ_FOREACH(np, &attach, entries)
       {
-        if (a)
+        if (b)
         {
-          a->next = mutt_make_file_attach(np->data);
-          a = a->next;
+          b->next = mutt_make_file_attach(np->data);
+          b = b->next;
         }
         else
         {
-          a = mutt_make_file_attach(np->data);
-          msg->content = a;
+          b = mutt_make_file_attach(np->data);
+          msg->content = b;
         }
-        if (!a)
+        if (!b)
         {
           mutt_error(_("%s: unable to attach file"), np->data);
           mutt_list_free(&attach);
