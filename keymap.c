@@ -596,12 +596,12 @@ int km_dokey(int menu)
           /* If a timeout was not received, or the window was resized, exit the
            * loop now.  Otherwise, continue to loop until reaching a total of
            * $timeout seconds.  */
-#ifdef USE_INOTIFY
-          if ((tmp.ch != -2) || SigWinch || MonitorFilesChanged)
-#else
           if ((tmp.ch != -2) || SigWinch)
-#endif
             goto gotkey;
+#ifdef USE_INOTIFY
+          if (MonitorFilesChanged)
+            goto gotkey;
+#endif
           i -= C_ImapKeepalive;
           imap_keepalive();
         }
