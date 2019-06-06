@@ -508,7 +508,7 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
       if (e->changed)
         mdata->reopen |= IMAP_EXPUNGE_PENDING;
       else
-        mdata->check_status = IMAP_FLAGS_PENDING;
+        mdata->check_status |= IMAP_FLAGS_PENDING;
     }
   }
 }
@@ -1326,7 +1326,7 @@ void imap_cmd_finish(struct ImapAccountData *adata)
     if (mdata->reopen & IMAP_NEWMAIL_PENDING && (mdata->new_mail_count > mdata->max_msn))
     {
       if (!(mdata->reopen & IMAP_EXPUNGE_PENDING))
-        mdata->check_status = IMAP_NEWMAIL_PENDING;
+        mdata->check_status |= IMAP_NEWMAIL_PENDING;
 
       mutt_debug(LL_DEBUG2, "Fetching new mails from %d to %d\n",
                  mdata->max_msn + 1, mdata->new_mail_count);
@@ -1335,7 +1335,7 @@ void imap_cmd_finish(struct ImapAccountData *adata)
 
     // And to finish inform about MUTT_REOPEN if needed
     if (mdata->reopen & IMAP_EXPUNGE_PENDING && !(mdata->reopen & IMAP_EXPUNGE_EXPECTED))
-      mdata->check_status = IMAP_EXPUNGE_PENDING;
+      mdata->check_status |= IMAP_EXPUNGE_PENDING;
 
     if (mdata->reopen & IMAP_EXPUNGE_PENDING)
       mdata->reopen &=
