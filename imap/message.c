@@ -495,11 +495,12 @@ static int msg_fetch_header(struct Mailbox *m, struct ImapHeader *ih, char *buf,
  * @param len  Length of buffer
  * @param conn Network connection
  */
-static void flush_buffer(char *buf, size_t *len, struct Connection *conn)
+static int flush_buffer(char *buf, size_t *len, struct Connection *conn)
 {
   buf[*len] = '\0';
-  mutt_socket_write_n(conn, buf, *len);
+  int rc = mutt_socket_write_n(conn, buf, *len);
   *len = 0;
+  return rc;
 }
 
 /**
@@ -1506,7 +1507,6 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
     SKIPWS(pc);
     pc = imap_next_word(pc);
     mutt_error("%s", pc);
-    mutt_file_fclose(&fp);
     goto fail;
   }
 
@@ -1520,22 +1520,25 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
     if (len > sizeof(buf) - 3)
     {
       sent += len;
-      flush_buffer(buf, &len, adata->conn);
+      if (flush_buffer(buf, &len, adata->conn) < 0)
+        goto fail;
       mutt_progress_update(&progress, sent, -1);
     }
   }
 
   if (len)
-    flush_buffer(buf, &len, adata->conn);
+    if (flush_buffer(buf, &len, adata->conn) < 0)
+      goto fail;
 
-  mutt_socket_send(adata->conn, "\r\n");
+  if (mutt_socket_send(adata->conn, "\r\n") <  0)
+    goto fail;
   mutt_file_fclose(&fp);
 
   do
     rc = imap_cmd_step(adata);
   while (rc == IMAP_CMD_CONTINUE);
 
-  if (!imap_code(adata->buf))
+  if (rc != IMAP_CMD_OK)
   {
     mutt_debug(LL_DEBUG1, "#2 command failed: %s\n", adata->buf);
     char *pc = adata->buf + SEQ_LEN;
@@ -1548,6 +1551,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   return 0;
 
 fail:
+  mutt_file_fclose(&fp);
   return -1;
 }
 
