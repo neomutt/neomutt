@@ -27,8 +27,7 @@
 
 #include <stdbool.h>
 #include "mutt/mutt.h"
-
-struct Address;
+#include "address.h"
 
 #define MUTT_GROUP   0
 #define MUTT_UNGROUP 1

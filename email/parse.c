@@ -30,8 +30,6 @@
 #include "config.h"
 #include <ctype.h>
 #include <regex.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #include "mutt/mutt.h"

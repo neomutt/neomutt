@@ -26,7 +26,7 @@
 
 #include <stddef.h>
 #include <stdbool.h>
-#include "mutt/queue.h"
+#include "mutt/mutt.h"
 
 /**
  * struct Address - An email address

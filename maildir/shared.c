@@ -38,7 +38,6 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/time.h>
@@ -53,6 +52,7 @@
 #include "context.h"
 #include "copy.h"
 #include "globals.h"
+#include "hcache/hcache.h"
 #include "lib.h"
 #include "mailbox.h"
 #include "mutt_thread.h"

@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include "crypt_gpgme.h"
 #include "crypt_mod.h"

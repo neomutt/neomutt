@@ -32,8 +32,8 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include "address/lib.h"
 #include "group.h"
+#include "address.h"
 
 static struct Hash *Groups = NULL;
 

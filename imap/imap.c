@@ -48,7 +48,6 @@
 #include "commands.h"
 #include "curs_lib.h"
 #include "globals.h"
-#include "hcache/hcache.h"
 #include "hook.h"
 #include "mailbox.h"
 #include "message.h"
