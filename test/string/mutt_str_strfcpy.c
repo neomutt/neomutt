@@ -76,7 +76,4 @@ void test_mutt_str_strfcpy(void)
       TEST_MSG("Actual  : %zu", len);
     }
   }
-  // buf: null empty normal
-  // str: null empty normal
-
 }

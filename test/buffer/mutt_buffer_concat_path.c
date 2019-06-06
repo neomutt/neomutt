@@ -56,7 +56,8 @@ void test_mutt_buffer_concat_path(void)
   {
     for (size_t i = 0; i < mutt_array_size(concat_test); i++)
     {
-      TEST_CASE_("DIR: '%s'  FILE: '%s'", NONULL(concat_test[i][0]), NONULL(concat_test[i][1]));
+      TEST_CASE_("DIR: '%s'  FILE: '%s'", NONULL(concat_test[i][0]),
+                 NONULL(concat_test[i][1]));
       {
         struct Buffer *buf = mutt_buffer_new();
         mutt_buffer_concat_path(buf, concat_test[i][0], concat_test[i][1]);
@@ -91,4 +92,3 @@ void test_mutt_buffer_concat_path(void)
     }
   }
 }
-

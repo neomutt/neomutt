@@ -53,8 +53,5 @@ void test_mutt_buffer_increase_size(void)
       TEST_CHECK(buf->dsize == MAX(orig_size, sizes[i]));
       mutt_buffer_free(&buf);
     }
-
   }
-
-
 }

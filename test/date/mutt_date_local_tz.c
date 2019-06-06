@@ -30,7 +30,6 @@ void test_mutt_date_local_tz(void)
 {
   // time_t mutt_date_local_tz(time_t t);
 
-
   TEST_CHECK(mutt_date_local_tz(TIME_T_MIN) == 0);
   TEST_CHECK(mutt_date_local_tz(TIME_T_MAX) == 0);
 

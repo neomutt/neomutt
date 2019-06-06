@@ -29,7 +29,9 @@ void test_mutt_str_substr_cpy(void)
 {
   // char *mutt_str_substr_cpy(char *dest, const char *begin, const char *end, size_t destlen);
 
+  // clang-format off
   const char *str = "apple banana\0xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+  // clang-format on
 
   {
     TEST_CHECK(mutt_str_substr_cpy(NULL, str + 3, str + 7, 32) == NULL);

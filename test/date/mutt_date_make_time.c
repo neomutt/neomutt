@@ -59,8 +59,9 @@ void test_mutt_date_make_time(void)
     {
       struct tm *tm = &time_tests[i].tm;
 
-      TEST_CASE_("{%d,%d,%d,%d,%d,%d,%d} = %ld", tm->tm_sec, tm->tm_min, tm->tm_hour,
-                tm->tm_mday, tm->tm_mon, tm->tm_year, tm->tm_wday, time_tests[i].expected);
+      TEST_CASE_("{%d,%d,%d,%d,%d,%d,%d} = %ld", tm->tm_sec, tm->tm_min,
+                 tm->tm_hour, tm->tm_mday, tm->tm_mon, tm->tm_year, tm->tm_wday,
+                 time_tests[i].expected);
 
       time_t result = mutt_date_make_time(&time_tests[i].tm, false);
       TEST_CHECK(result == time_tests[i].expected);
