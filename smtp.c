@@ -171,8 +171,8 @@ static int smtp_get_resp(struct Connection *conn)
  */
 static int smtp_rcpt_to(struct Connection *conn, const struct AddressList *al)
 {
-  char buf[1024];
-  int rc;
+  if (!al)
+    return 0;
 
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
@@ -182,13 +182,14 @@ static int smtp_rcpt_to(struct Connection *conn, const struct AddressList *al)
     {
       continue;
     }
+    char buf[1024];
     if ((Capabilities & SMTP_CAP_DSN) && C_DsnNotify)
       snprintf(buf, sizeof(buf), "RCPT TO:<%s> NOTIFY=%s\r\n", a->mailbox, C_DsnNotify);
     else
       snprintf(buf, sizeof(buf), "RCPT TO:<%s>\r\n", a->mailbox);
     if (mutt_socket_send(conn, buf) == -1)
       return SMTP_ERR_WRITE;
-    rc = smtp_get_resp(conn);
+    int rc = smtp_get_resp(conn);
     if (rc != 0)
       return rc;
   }
