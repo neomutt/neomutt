@@ -33,6 +33,7 @@ struct Email;
 
 /* These Config Variables are only used in recvattach.c */
 extern char *C_AttachSaveDir;
+extern char *C_AttachSaveWithoutPrompting;
 extern char *C_AttachSep;
 extern bool  C_AttachSplit;
 extern bool  C_DigestCollapse;

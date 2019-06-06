@@ -330,6 +330,13 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** The directory where attachments are saved.
   */
+  { "attach_save_without_prompting",  DT_BOOL, R_NONE, &C_AttachSaveWithoutPrompting, false },
+  /*
+  ** .pp
+  ** This variable, when set to true, will cause attachments to be saved to the
+  ** 'attach_save_dir' location without prompting the user for the filename.
+  ** .pp
+  */
   { "attach_sep",       DT_STRING,  R_NONE, &C_AttachSep, IP "\n" },
   /*
   ** .pp
