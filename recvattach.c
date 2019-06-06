@@ -71,6 +71,7 @@
 
 /* These Config Variables are only used in recvattach.c */
 char *C_AttachSaveDir; ///< Config: Default directory where attachments are saved
+char *C_AttachSaveWithoutPrompting; ///< Config: If true, then don't prompt to save
 char *C_AttachSep; ///< Config: Separator to add between saved/printed/piped attachments
 bool C_AttachSplit;    ///< Config: Save/print/pipe tagged messages individually
 bool C_DigestCollapse; ///< Config: Hide the subparts of a multipart/digest
@@ -488,6 +489,18 @@ static void prepend_savedir(char *buf, size_t bufsize)
 }
 
 /**
+ * has_a_message - Determine if the Body has a message (to save)
+ * @param[in]  body Body of the message
+ * @retval true if suitable for saving
+ */
+static bool has_a_message(struct Body *body)
+{
+  return (body->email && (body->encoding != ENC_BASE64) &&
+          (body->encoding != ENC_QUOTED_PRINTABLE) &&
+          mutt_is_message_type(body->type, body->subtype));
+}
+
+/**
  * query_save_attachment - Ask the user if we should save the attachment
  * @param[in]  fp        File handle to the attachment (OPTIONAL)
  * @param[in]  body      Attachment
@@ -512,9 +525,7 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
     else
       mutt_str_strfcpy(buf, body->filename, sizeof(buf));
   }
-  else if (body->email && (body->encoding != ENC_BASE64) &&
-           (body->encoding != ENC_QUOTED_PRINTABLE) &&
-           mutt_is_message_type(body->type, body->subtype))
+  else if (has_a_message(body))
   {
     mutt_default_save(buf, sizeof(buf), body->email);
   }
@@ -535,9 +546,7 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
     prompt = NULL;
     mutt_expand_path(buf, sizeof(buf));
 
-    bool is_message = (fp && body->email && (body->encoding != ENC_BASE64) &&
-                       (body->encoding != ENC_QUOTED_PRINTABLE) &&
-                       mutt_is_message_type(body->type, body->subtype));
+    bool is_message = (fp && has_a_message(body));
 
     if (is_message)
     {
@@ -582,6 +591,53 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
 }
 
 /**
+ * save_without_prompting - Save the attachment, without prompting each time.
+ * @param[in]  fp   File handle to the attachment (OPTIONAL)
+ * @param[in]  body Attachment
+ * @param[in]  e    Email
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
+static int save_without_prompting(FILE *fp, struct Body *body, struct Email *e)
+{
+  char buf[PATH_MAX], tfile[PATH_MAX];
+  enum SaveAttach opt = MUTT_SAVE_NO_FLAGS;
+  int rc;
+
+  if (body->filename)
+  {
+    mutt_str_strfcpy(buf, body->filename, sizeof(buf));
+  }
+  else if (has_a_message(body))
+  {
+    mutt_default_save(buf, sizeof(buf), body->email);
+  }
+  else
+  {
+    buf[0] = '\0';
+  }
+
+  prepend_savedir(buf, sizeof(buf));
+  mutt_expand_path(buf, sizeof(buf));
+
+  bool is_message = (fp && has_a_message(body));
+
+  if (is_message)
+  {
+    mutt_str_strfcpy(tfile, buf, sizeof(tfile));
+  }
+  else
+  {
+    rc = mutt_check_overwrite(body->filename, buf, tfile, sizeof(tfile), &opt, NULL);
+    if (rc == -1) // abort or cancel
+    {
+      return -1;
+    }
+  }
+
+  return mutt_save_attachment(fp, body, tfile, opt, (e || !is_message) ? e : body->email);
+}
+/**
  * mutt_save_attachment_list - Save a list of attachments
  * @param actx Attachment context
  * @param fp   File handle for the attachment (OPTIONAL)
@@ -598,6 +654,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
   int rc = 1;
   int last = menu ? menu->current : -1;
   FILE *fp_out = NULL;
+  int saved_attachments = 0;
 
   buf[0] = '\0';
 
@@ -655,8 +712,19 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 
           menu_redraw(menu);
         }
-        if (query_save_attachment(fp, top, e, &directory) == -1)
-          break;
+        if (C_AttachSaveWithoutPrompting)
+        {
+          // Save each file, with no prompting, using the configured 'AttachSaveDir'
+          rc = save_without_prompting(fp, top, e);
+          if (rc == 0)
+            saved_attachments++;
+        }
+        else
+        {
+          // Save each file, prompting the user for the location each time.
+          if (query_save_attachment(fp, top, e, &directory) == -1)
+            break;
+        }
       }
     }
     if (!tag)
@@ -675,6 +743,12 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 
   if (!C_AttachSplit && (rc == 0))
     mutt_message(_("Attachment saved"));
+
+  if (C_AttachSaveWithoutPrompting && (rc == 0))
+  {
+    mutt_message(ngettext("Attachment saved", "%d attachments saved", saved_attachments),
+                 saved_attachments);
+  }
 }
 
 /**
