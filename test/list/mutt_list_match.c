@@ -86,5 +86,4 @@ void test_mutt_list_match(void)
     TEST_CHECK(mutt_list_match(search, &lh) == true);
     mutt_list_clear(&lh);
   }
-
 }

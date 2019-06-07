@@ -33,7 +33,6 @@
 #include <stdio.h>
 #include <string.h>
 #include "buffer.h"
-#include "logging.h"
 #include "memory.h"
 #include "string2.h"
 

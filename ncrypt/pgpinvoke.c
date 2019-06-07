@@ -31,13 +31,11 @@
 
 #include "config.h"
 #include <fcntl.h>
-#include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "address/lib.h"
-#include "email/lib.h"
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"

@@ -44,6 +44,7 @@
 #include "ncrypt.h"
 
 struct Address;
+struct AddressList;
 struct Body;
 struct Envelope;
 struct Email;

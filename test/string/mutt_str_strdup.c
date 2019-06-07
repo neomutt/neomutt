@@ -46,4 +46,3 @@ void test_mutt_str_strdup(void)
     FREE(&result);
   }
 }
-

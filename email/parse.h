@@ -26,6 +26,7 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include "mime.h"
 
 struct Body;
 struct Envelope;

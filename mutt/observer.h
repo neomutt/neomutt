@@ -31,10 +31,8 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "mutt/mutt.h"
 #include "notify_type.h"
-
-struct Notify;
+#include "queue.h"
 
 /**
  * struct NotifyCallback - Data passed to a notification function

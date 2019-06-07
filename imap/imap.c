@@ -48,7 +48,6 @@
 #include "commands.h"
 #include "curs_lib.h"
 #include "globals.h"
-#include "hcache/hcache.h"
 #include "hook.h"
 #include "mailbox.h"
 #include "message.h"
@@ -1816,7 +1815,7 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
 }
 
 /**
- * imap_ac_find - Find a Account that matches a Mailbox path
+ * imap_ac_find - Find an Account that matches a Mailbox path
  */
 struct Account *imap_ac_find(struct Account *a, const char *path)
 {
@@ -1839,7 +1838,7 @@ struct Account *imap_ac_find(struct Account *a, const char *path)
 }
 
 /**
- * imap_ac_add - Add a Mailbox to a Account
+ * imap_ac_add - Add a Mailbox to an Account
  */
 int imap_ac_add(struct Account *a, struct Mailbox *m)
 {

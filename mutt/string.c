@@ -42,6 +42,7 @@
 #include "logging.h"
 #include "memory.h"
 #include "message.h"
+#include "queue.h"
 #include "string2.h"
 #ifdef HAVE_SYSEXITS_H
 #include <sysexits.h>

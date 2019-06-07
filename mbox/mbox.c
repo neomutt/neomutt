@@ -872,7 +872,7 @@ void mbox_reset_atime(struct Mailbox *m, struct stat *st)
 }
 
 /**
- * mbox_ac_find - Find a Account that matches a Mailbox path
+ * mbox_ac_find - Find an Account that matches a Mailbox path
  */
 struct Account *mbox_ac_find(struct Account *a, const char *path)
 {
@@ -890,7 +890,7 @@ struct Account *mbox_ac_find(struct Account *a, const char *path)
 }
 
 /**
- * mbox_ac_add - Add a Mailbox to a Account
+ * mbox_ac_add - Add a Mailbox to an Account
  */
 int mbox_ac_add(struct Account *a, struct Mailbox *m)
 {

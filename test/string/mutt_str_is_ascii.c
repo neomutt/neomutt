@@ -36,6 +36,7 @@ void test_mutt_str_is_ascii(void)
 {
   // bool mutt_str_is_ascii(const char *p, size_t len);
 
+  // clang-format off
   struct IsAsciiTest ascii_tests[] =
   {
     { NULL,    10, true },
@@ -48,6 +49,7 @@ void test_mutt_str_is_ascii(void)
     { "apple\200", 6,  false },
     { "apple\200", 5,  true },
   };
+  // clang-format on
 
   {
     for (size_t i = 0; i < mutt_array_size(ascii_tests); i++)

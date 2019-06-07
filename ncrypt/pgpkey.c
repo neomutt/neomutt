@@ -37,7 +37,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <time.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "address/lib.h"
@@ -59,6 +58,7 @@
 #include "ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
+#include "pager.h"
 #include "pgpinvoke.h"
 #include "protos.h"
 #include "recvattach.h"

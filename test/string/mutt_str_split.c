@@ -131,6 +131,4 @@ void test_mutt_str_split(void)
     mutt_list_clear(&expectedval5);
     mutt_list_clear(&expectedval6);
   }
-  // move to list?
-
 }

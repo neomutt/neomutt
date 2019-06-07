@@ -103,7 +103,8 @@ int log_observer(struct NotifyCallback *nc)
   else
     cs_he_initial_get(ec->cs, ec->he, &result);
 
-  TEST_MSG("Event: %s has been %s to '%s'\n", ec->name, events[nc->event_type - 1], result.data);
+  TEST_MSG("Event: %s has been %s to '%s'\n", ec->name,
+           events[nc->event_type - 1], result.data);
 
   FREE(&result.data);
   return true;

@@ -27,14 +27,10 @@
  */
 
 #include "config.h"
-#include <stdarg.h>
-#include <stdbool.h>
 #include <stdio.h>
-#include <string.h>
 #include "buffer.h"
 #include "logging.h"
 #include "memory.h"
-#include "string2.h"
 
 static size_t BufferPoolCount = 0;
 static size_t BufferPoolLen = 0;

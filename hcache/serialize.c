@@ -38,7 +38,6 @@
 #include "mutt/mutt.h"
 #include "address/lib.h"
 #include "email/lib.h"
-#include "globals.h"
 #include "hcache.h"
 
 /**

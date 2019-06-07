@@ -26,7 +26,6 @@
 
 #include <stddef.h>
 #include <time.h>
-#include "mutt/mutt.h"
 
 /**
  * enum ConnectionType - Type of connection

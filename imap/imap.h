@@ -54,12 +54,12 @@
 #include "mx.h"
 
 struct BrowserState;
+struct Buffer;
 struct ConnAccount;
 struct EmailList;
 struct Mailbox;
-struct Pattern;
-struct stat;
 struct PatternHead;
+struct stat;
 
 /* These Config Variables are only used in imap/auth.c */
 extern char *C_ImapAuthenticators;
