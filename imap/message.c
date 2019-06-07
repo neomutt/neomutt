@@ -1500,15 +1500,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   while (rc == IMAP_CMD_CONTINUE);
 
   if (rc != IMAP_CMD_RESPOND)
-  {
-    mutt_debug(LL_DEBUG1, "#1 command failed: %s\n", adata->buf);
-
-    char *pc = adata->buf + SEQ_LEN;
-    SKIPWS(pc);
-    pc = imap_next_word(pc);
-    mutt_error("%s", pc);
-    goto fail;
-  }
+    goto cmd_step_fail;
 
   for (last = EOF, sent = len = 0; (c = fgetc(fp)) != EOF; last = c)
   {
@@ -1539,16 +1531,19 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   while (rc == IMAP_CMD_CONTINUE);
 
   if (rc != IMAP_CMD_OK)
-  {
-    mutt_debug(LL_DEBUG1, "#2 command failed: %s\n", adata->buf);
-    char *pc = adata->buf + SEQ_LEN;
-    SKIPWS(pc);
-    pc = imap_next_word(pc);
-    mutt_error("%s", pc);
-    goto fail;
-  }
+    goto cmd_step_fail;
 
   return 0;
+
+cmd_step_fail:
+  mutt_debug(LL_DEBUG1, "imap_append_message(): command failed: %s\n", adata->buf);
+  if (rc != IMAP_CMD_BAD)
+  {
+    char *pc = imap_next_word(adata->buf); /* skip sequence number or token */
+    pc = imap_next_word(pc);               /* skip response code */
+    if (*pc != '\0')
+      mutt_error("%s", pc);
+  }
 
 fail:
   mutt_file_fclose(&fp);
