@@ -9544,9 +9544,8 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
         </listitem>
         <listitem>
           <para>
-            Fcc saving. Note: prior to version 1.12, the Fcc was saved before
-            sending the message. It is now saved afterwards, but the if saving
-            fails, the user is prompted.
+            Fcc saving. Note: The Fcc used to be saved before sending the message.
+            It is now saved afterwards, but if the saving fails, the user is prompted.
           </para>
         </listitem>
       </itemizedlist>
