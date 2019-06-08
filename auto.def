@@ -59,6 +59,9 @@ options {
   # SASL (IMAP and POP auth)
   sasl=0                    => "Use the SASL network security library"
   with-sasl:path            => "Location of the SASL network security library"
+  # agentcrypt (use ssh agent to encrypt/decrypt passwords)
+  agentcrypt=0              => "Use the agentcrypt library (https://github.com/ndilieto/libagentcrypt)"
+  with-agentcrypt:path      => "Location of the agentcrypt library"
 # Lua
   lua=0                     => "Enable Lua scripting support"
   with-lua:path             => "Location of Lua"
@@ -107,9 +110,9 @@ options {
 if {1} {
   # Keep sorted, please.
   foreach opt {
-    bdb backtrace coverage doc everything fmemopen full-doc gdbm gnutls gpgme
-    gss homespool idn idn2 inotify kyotocabinet lmdb locales-fix lua mixmaster
-    nls notmuch pgp qdbm sasl smime ssl testing tokyocabinet
+    agentcrypt bdb backtrace coverage doc everything fmemopen full-doc gdbm
+    gnutls gpgme gss homespool idn idn2 inotify kyotocabinet lmdb locales-fix
+    lua mixmaster nls notmuch pgp qdbm sasl smime ssl testing tokyocabinet
   } {
     define want-$opt [opt-bool $opt]
   }
@@ -118,8 +121,8 @@ if {1} {
   # relative --enable-opt to true. This allows "--with-opt=/usr" to be used as
   # a shortcut for "--opt --with-opt=/usr".
   foreach opt {
-    bdb gdbm gnutls gpgme gss homespool idn idn2 kyotocabinet lmdb lua mixmaster
-    ncurses nls notmuch qdbm sasl slang ssl tokyocabinet
+    agentcrypt bdb gdbm gnutls gpgme gss homespool idn idn2 kyotocabinet lmdb
+    lua mixmaster ncurses nls notmuch qdbm sasl slang ssl tokyocabinet
   } {
     if {[opt-val with-$opt] ne {}} {
       define want-$opt 1
@@ -450,6 +453,17 @@ if {[get-define want-sasl]} {
   }
   if {![get-define USE_SASL]} {
     user-error "Unable to find SASL"
+  }
+}
+
+# AGENTCRYPT
+if {[get-define want-agentcrypt]} {
+  if {[check-inc-and-lib agentcrypt [opt-val with-agentcrypt $prefix] \
+                         libagentcrypt.h agc_encrypt agentcrypt]} {
+     define USE_AGENTCRYPT
+  }
+  if {![get-define USE_AGENTCRYPT]} {
+    user-error "Unable to find AGENTCRYPT"
   }
 }
 

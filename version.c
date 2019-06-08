@@ -146,6 +146,11 @@ static struct CompileOptions comp_opts_default[] = {
 };
 
 static struct CompileOptions comp_opts[] = {
+#ifdef USE_AGENTCRYPT
+  { "agentcrypt", 1 },
+#else
+  { "agentcrypt", 0 },
+#endif
 #ifdef HAVE_BKGDSET
   { "bkgdset", 1 },
 #else

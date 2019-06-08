@@ -38,6 +38,12 @@
 #include "globals.h"
 #include "options.h"
 #include "pop/pop.h"
+#ifdef USE_AGENTCRYPT
+#include <errno.h>
+#include <libagentcrypt.h>
+#include "muttlib.h"
+#include "mutt_logging.h"
+#endif
 
 /* These Config Variables are only used in mutt_account.c */
 char *C_ImapLogin; ///< Config: (imap) Login name for the IMAP server (defaults to #C_ImapUser)
@@ -287,6 +293,9 @@ int mutt_account_getlogin(struct ConnAccount *account)
  */
 int mutt_account_getpass(struct ConnAccount *account)
 {
+#ifdef USE_AGENTCRYPT
+  bool interactive = false;
+#endif
   char prompt[256];
 
   if (account->flags & MUTT_ACCT_PASS)
@@ -311,6 +320,37 @@ int mutt_account_getpass(struct ConnAccount *account)
     return -1;
   else
   {
+#ifdef USE_AGENTCRYPT
+    interactive = true;
+  }
+  if (!interactive && mutt_str_startswith(account->pass, "act:", CASE_IGNORE))
+  {
+    uint8_t *buf = NULL;
+    size_t buf_size = 0;
+    char *out = NULL;
+    size_t out_size = 0;
+    if (agc_from_b64(account->pass + strlen("act:"), &buf, &buf_size) ||
+        agc_decrypt(NULL, buf, buf_size, (uint8_t **)&out, &out_size))
+    {
+      account->pass[0] = '\0';
+      interactive = true;
+      if (errno == ENOKEY)
+        mutt_error("agentcrypt: no key available for password decryption");
+      else
+        mutt_error("agentcrypt: failed to decrypt password");
+    }
+    else
+    {
+      mutt_message("agentcrypt: successfully decrypted password");
+      mutt_str_strnfcpy(account->pass, out, out_size, sizeof(account->pass));
+    }
+    agc_free(out, out_size);
+    agc_free(buf, buf_size);
+    mutt_sleep(0);
+  }
+  if (interactive)
+  {
+#endif
     snprintf(prompt, sizeof(prompt), _("Password for %s@%s: "),
              (account->flags & MUTT_ACCT_LOGIN) ? account->login : account->user,
              account->host);

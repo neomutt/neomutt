@@ -1660,9 +1660,18 @@ struct ConfigDef MuttVars[] = {
   ** prompt you for your password when you invoke the \fC<imap-fetch-mail>\fP function
   ** or try to open an IMAP folder.
   ** .pp
+  ** If NeoMutt was compiled with agentcrypt support and the string begins with the
+  ** \fBACT:\fP or \fBact:\fP prefix, an attempt to decrypt it is made.
+  ** The encrypted password can be obtained by launching the command
+  ** \fBagentcrypt -t\fP and typing the password followed by a newline.
+  ** If decryption fails for any reason, NeoMutt will prompt you for the password
+  ** instead.
+  ** .pp
   ** \fBWarning\fP: you should only use this option when you are on a
   ** fairly secure machine, because the superuser can read your neomuttrc even
-  ** if you are the only one who can read the file.
+  ** if you are the only one who can read the file. If you use agentcrypt, note
+  ** that the superuser can also decrypt the password, but only when you are
+  ** logged in and have your key loaded or forwarded by ssh-agent.
   */
   { "imap_passive",             DT_BOOL, R_NONE, &C_ImapPassive, true },
   /*
@@ -3021,9 +3030,18 @@ struct ConfigDef MuttVars[] = {
   ** Specifies the password for your POP account.  If \fIunset\fP, NeoMutt will
   ** prompt you for your password when you open a POP mailbox.
   ** .pp
+  ** If NeoMutt was compiled with agentcrypt support and the string begins with the
+  ** \fBACT:\fP or \fBact:\fP prefix, an attempt to decrypt it is made.
+  ** The encrypted password can be obtained by launching the command
+  ** \fBagentcrypt -t\fP and typing the password followed by a newline.
+  ** If decryption fails for any reason, NeoMutt will prompt you for the password
+  ** instead.
+  ** .pp
   ** \fBWarning\fP: you should only use this option when you are on a
-  ** fairly secure machine, because the superuser can read your neomuttrc
-  ** even if you are the only one who can read the file.
+  ** fairly secure machine, because the superuser can read your neomuttrc even
+  ** if you are the only one who can read the file. If you use agentcrypt, note
+  ** that the superuser can also decrypt the password, but only when you are
+  ** logged in and have your key loaded or forwarded by ssh-agent.
   */
   { "pop_reconnect",    DT_QUAD, R_NONE, &C_PopReconnect, MUTT_ASKYES },
   /*
@@ -4087,9 +4105,18 @@ struct ConfigDef MuttVars[] = {
   ** prompt you for your password when you first send mail via SMTP.
   ** See $$smtp_url to configure NeoMutt to send mail via SMTP.
   ** .pp
+  ** If NeoMutt was compiled with agentcrypt support and the string begins with the
+  ** \fBACT:\fP or \fBact:\fP prefix, an attempt to decrypt it is made.
+  ** The encrypted password can be obtained by launching the command
+  ** \fBagentcrypt -t\fP and typing the password followed by a newline.
+  ** If decryption fails for any reason, NeoMutt will prompt you for the password
+  ** instead.
+  ** .pp
   ** \fBWarning\fP: you should only use this option when you are on a
   ** fairly secure machine, because the superuser can read your neomuttrc even
-  ** if you are the only one who can read the file.
+  ** if you are the only one who can read the file. If you use agentcrypt, note
+  ** that the superuser can also decrypt the password, but only when you are
+  ** logged in and have your key loaded or forwarded by ssh-agent.
   */
   { "smtp_url",         DT_STRING, R_NONE|F_SENSITIVE, &C_SmtpUrl, 0 },
   /*
