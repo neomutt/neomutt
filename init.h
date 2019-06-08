@@ -1638,14 +1638,14 @@ struct ConfigDef MuttVars[] = {
   ** only subscribed folders or all folders.  This can be toggled in the
   ** IMAP browser with the \fC<toggle-subscribed>\fP function.
   */
-  { "imap_login",       DT_STRING,  R_NONE|F_SENSITIVE, &C_ImapLogin, 0 },
+  { "imap_login",       DT_STRING|DT_SENSITIVE,  R_NONE, &C_ImapLogin, 0 },
   /*
   ** .pp
   ** Your login name on the IMAP server.
   ** .pp
   ** This variable defaults to the value of $$imap_user.
   */
-  { "imap_oauth_refresh_command", DT_STRING, R_NONE|F_SENSITIVE, &C_ImapOauthRefreshCommand, 0 },
+  { "imap_oauth_refresh_command", DT_STRING|DT_SENSITIVE, R_NONE, &C_ImapOauthRefreshCommand, 0 },
   /*
   ** .pp
   ** The command to run to generate an OAUTH refresh token for
@@ -1653,7 +1653,7 @@ struct ConfigDef MuttVars[] = {
   ** run on every connection attempt that uses the OAUTHBEARER authentication
   ** mechanism.  See "$oauth" for details.
   */
-  { "imap_pass",        DT_STRING,  R_NONE|F_SENSITIVE, &C_ImapPass, 0 },
+  { "imap_pass",        DT_STRING|DT_SENSITIVE,  R_NONE, &C_ImapPass, 0 },
   /*
   ** .pp
   ** Specifies the password for your IMAP account.  If \fIunset\fP, NeoMutt will
@@ -1729,7 +1729,7 @@ struct ConfigDef MuttVars[] = {
   ** server which are out of the users' hands, you may wish to suppress
   ** them at some point.
   */
-  { "imap_user",        DT_STRING,  R_NONE|F_SENSITIVE, &C_ImapUser, 0 },
+  { "imap_user",        DT_STRING|DT_SENSITIVE,  R_NONE, &C_ImapUser, 0 },
   /*
   ** .pp
   ** The name of the user whose mail you intend to access on the IMAP
@@ -2426,7 +2426,7 @@ struct ConfigDef MuttVars[] = {
   ** must be loaded when newsgroup is added to list (first time list
   ** loading or new newsgroup adding).
   */
-  { "nntp_pass",        DT_STRING, R_NONE|F_SENSITIVE, &C_NntpPass, 0 },
+  { "nntp_pass",        DT_STRING|DT_SENSITIVE, R_NONE, &C_NntpPass, 0 },
   /*
   ** .pp
   ** Your password for NNTP account.
@@ -2439,7 +2439,7 @@ struct ConfigDef MuttVars[] = {
   ** recheck newsgroup on each operation in index (stepping, read article,
   ** etc.).
   */
-  { "nntp_user",        DT_STRING, R_NONE|F_SENSITIVE, &C_NntpUser, 0 },
+  { "nntp_user",        DT_STRING|DT_SENSITIVE, R_NONE, &C_NntpUser, 0 },
   /*
   ** .pp
   ** Your login name on the NNTP server.  If \fIunset\fP and NNTP server requires
@@ -3007,7 +3007,7 @@ struct ConfigDef MuttVars[] = {
   ** for retrieving only unread messages from the POP server when using
   ** the \fC$<fetch-mail>\fP function.
   */
-  { "pop_oauth_refresh_command", DT_STRING, R_NONE|F_SENSITIVE, &C_PopOauthRefreshCommand, 0 },
+  { "pop_oauth_refresh_command", DT_STRING|DT_SENSITIVE, R_NONE, &C_PopOauthRefreshCommand, 0 },
   /*
   ** .pp
   ** The command to run to generate an OAUTH refresh token for
@@ -3015,7 +3015,7 @@ struct ConfigDef MuttVars[] = {
   ** run on every connection attempt that uses the OAUTHBEARER authentication
   ** mechanism.  See "$oauth" for details.
   */
-  { "pop_pass",         DT_STRING,  R_NONE|F_SENSITIVE, &C_PopPass, 0 },
+  { "pop_pass",         DT_STRING|DT_SENSITIVE,  R_NONE, &C_PopPass, 0 },
   /*
   ** .pp
   ** Specifies the password for your POP account.  If \fIunset\fP, NeoMutt will
@@ -3031,7 +3031,7 @@ struct ConfigDef MuttVars[] = {
   ** Controls whether or not NeoMutt will try to reconnect to the POP server if
   ** the connection is lost.
   */
-  { "pop_user",         DT_STRING,  R_NONE|F_SENSITIVE, &C_PopUser, 0 },
+  { "pop_user",         DT_STRING|DT_SENSITIVE,  R_NONE, &C_PopUser, 0 },
   /*
   ** .pp
   ** Your login name on the POP server.
@@ -4072,7 +4072,7 @@ struct ConfigDef MuttVars[] = {
   ** set smtp_authenticators="digest-md5:cram-md5"
   ** .te
   */
-  { "smtp_oauth_refresh_command", DT_STRING, R_NONE|F_SENSITIVE, &C_SmtpOauthRefreshCommand, 0 },
+  { "smtp_oauth_refresh_command", DT_STRING|DT_SENSITIVE, R_NONE, &C_SmtpOauthRefreshCommand, 0 },
   /*
   ** .pp
   ** The command to run to generate an OAUTH refresh token for
@@ -4080,7 +4080,7 @@ struct ConfigDef MuttVars[] = {
   ** run on every connection attempt that uses the OAUTHBEARER authentication
   ** mechanism.  See "$oauth" for details.
   */
-  { "smtp_pass",        DT_STRING,  R_NONE|F_SENSITIVE, &C_SmtpPass, 0 },
+  { "smtp_pass",        DT_STRING|DT_SENSITIVE,  R_NONE, &C_SmtpPass, 0 },
   /*
   ** .pp
   ** Specifies the password for your SMTP account.  If \fIunset\fP, NeoMutt will
@@ -4091,7 +4091,7 @@ struct ConfigDef MuttVars[] = {
   ** fairly secure machine, because the superuser can read your neomuttrc even
   ** if you are the only one who can read the file.
   */
-  { "smtp_url",         DT_STRING, R_NONE|F_SENSITIVE, &C_SmtpUrl, 0 },
+  { "smtp_url",         DT_STRING|DT_SENSITIVE, R_NONE, &C_SmtpUrl, 0 },
   /*
   ** .pp
   ** Defines the SMTP smarthost where sent messages should relayed for

@@ -57,7 +57,7 @@ static struct ConfigDef Vars[] = {
   { "Kumquat",    DT_QUAD,                 0, &VarKumquat,    0,                           NULL },
   { "Lemon",      DT_REGEX,                0, &VarLemon,      0,                           NULL },
   { "Mango",      DT_SORT,                 0, &VarMango,      1,                           NULL },
-  { "Nectarine",  DT_STRING,     F_SENSITIVE, &VarNectarine,  IP "nectarine",              NULL },
+  { "Nectarine",  DT_STRING|DT_SENSITIVE,  0, &VarNectarine,  IP "nectarine",              NULL },
   { NULL },
 };
 // clang-format on

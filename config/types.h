@@ -48,6 +48,9 @@
 #define DT_NOT_EMPTY     (1 << 6)  ///< Empty strings are not allowed
 #define DT_NOT_NEGATIVE  (1 << 7)  ///< Negative numbers are not allowed
 #define DT_MAILBOX       (1 << 8)  ///< DT_PATH: Don't perform path expansions
+#define DT_SENSITIVE     (1 << 9)  ///< Contains sensitive value, e.g. password
+
+#define IS_SENSITIVE(x) (((x).type & DT_SENSITIVE) == DT_SENSITIVE)
 
 /* subtypes for... */
 #define DT_SUBTYPE_MASK  0x0FE0  ///< Mask for the Data Subtype
@@ -64,9 +67,6 @@ typedef uint16_t ConfigRedrawFlags; ///< Flags for redraw/resort, e.g. #R_INDEX
 #define R_REFLOW       (1 << 7)     ///< Reflow window layout and full redraw
 #define R_SIDEBAR      (1 << 8)     ///< Redraw the sidebar
 #define R_MENU         (1 << 9)     ///< Redraw all menus
-#define F_SENSITIVE    (1 << 10)    ///< Config item contains sensitive value (will be OR'd with R_ flags above)
-
-#define IS_SENSITIVE(x) (((x).flags & F_SENSITIVE) == F_SENSITIVE)
 
 /* Private config item flags */
 #define DT_INHERITED    (1 << 28)  ///< Config item is inherited

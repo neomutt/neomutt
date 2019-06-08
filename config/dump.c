@@ -276,8 +276,8 @@ bool dump_config(struct ConfigSet *cs, enum CsDumpStyle style,
         }
 
         const struct ConfigDef *cdef = he->data;
-        if (IS_SENSITIVE(*cdef) && (flags & CS_DUMP_HIDE_SENSITIVE) &&
-            !mutt_buffer_is_empty(value))
+        if ((type == DT_STRING) && IS_SENSITIVE(*cdef) &&
+            (flags & CS_DUMP_HIDE_SENSITIVE) && !mutt_buffer_is_empty(value))
         {
           mutt_buffer_reset(value);
           mutt_buffer_addstr(value, "***");
