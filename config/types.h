@@ -52,12 +52,6 @@
 /* subtypes for... */
 #define DT_SUBTYPE_MASK  0x0FE0  ///< Mask for the Data Subtype
 
-/* Private config item flags */
-#define DT_INHERITED    (1 << 12)  ///< Config item is inherited
-#define DT_INITIAL_SET  (1 << 13)  ///< Config item must have its initial value freed
-#define DT_DISABLED     (1 << 14)  ///< Config item is disabled
-#define DT_MY_CONFIG    (1 << 15)  ///< Config item is a "my_" variable
-
 typedef uint16_t ConfigRedrawFlags; ///< Flags for redraw/resort, e.g. #R_INDEX
 #define R_NONE               0      ///< No refresh/resort flags
 #define R_INDEX        (1 << 0)     ///< Redraw the index menu (MENU_MAIN)
@@ -73,5 +67,11 @@ typedef uint16_t ConfigRedrawFlags; ///< Flags for redraw/resort, e.g. #R_INDEX
 #define F_SENSITIVE    (1 << 10)    ///< Config item contains sensitive value (will be OR'd with R_ flags above)
 
 #define IS_SENSITIVE(x) (((x).flags & F_SENSITIVE) == F_SENSITIVE)
+
+/* Private config item flags */
+#define DT_INHERITED    (1 << 28)  ///< Config item is inherited
+#define DT_INITIAL_SET  (1 << 29)  ///< Config item must have its initial value freed
+#define DT_DISABLED     (1 << 30)  ///< Config item is disabled
+#define DT_MY_CONFIG    (1 << 31)  ///< Config item is a "my_" variable
 
 #endif /* MUTT_CONFIG_TYPES_H */
