@@ -1338,8 +1338,7 @@ void imap_cmd_finish(struct ImapAccountData *adata)
       mdata->check_status |= IMAP_EXPUNGE_PENDING;
 
     if (mdata->reopen & IMAP_EXPUNGE_PENDING)
-      mdata->reopen &=
-          ~(IMAP_EXPUNGE_PENDING | IMAP_EXPUNGE_EXPECTED);
+      mdata->reopen &= ~(IMAP_EXPUNGE_PENDING | IMAP_EXPUNGE_EXPECTED);
   }
 
   adata->status = 0;
