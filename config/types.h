@@ -56,17 +56,19 @@
 #define DT_SUBTYPE_MASK  0x0FE0  ///< Mask for the Data Subtype
 
 typedef uint16_t ConfigRedrawFlags; ///< Flags for redraw/resort, e.g. #R_INDEX
-#define R_NONE               0      ///< No refresh/resort flags
-#define R_INDEX        (1 << 0)     ///< Redraw the index menu (MENU_MAIN)
-#define R_PAGER        (1 << 1)     ///< Redraw the pager menu
-#define R_PAGER_FLOW   (1 << 2)     ///< Reflow line_info and redraw the pager menu
-#define R_RESORT       (1 << 3)     ///< Resort the mailbox
-#define R_RESORT_SUB   (1 << 4)     ///< Resort subthreads
-#define R_RESORT_INIT  (1 << 5)     ///< Resort from scratch
-#define R_TREE         (1 << 6)     ///< Redraw the thread tree
-#define R_REFLOW       (1 << 7)     ///< Reflow window layout and full redraw
-#define R_SIDEBAR      (1 << 8)     ///< Redraw the sidebar
-#define R_MENU         (1 << 9)     ///< Redraw all menus
+#define R_REDRAW_NO_FLAGS        0  ///< No refresh/resort flags
+#define R_INDEX           (1 << 17) ///< Redraw the index menu (MENU_MAIN)
+#define R_PAGER           (1 << 18) ///< Redraw the pager menu
+#define R_PAGER_FLOW      (1 << 19) ///< Reflow line_info and redraw the pager menu
+#define R_RESORT          (1 << 20) ///< Resort the mailbox
+#define R_RESORT_SUB      (1 << 21) ///< Resort subthreads
+#define R_RESORT_INIT     (1 << 22) ///< Resort from scratch
+#define R_TREE            (1 << 23) ///< Redraw the thread tree
+#define R_REFLOW          (1 << 24) ///< Reflow window layout and full redraw
+#define R_SIDEBAR         (1 << 25) ///< Redraw the sidebar
+#define R_MENU            (1 << 26) ///< Redraw all menus
+
+#define R_REDRAW_MASK  0x07FE0000   ///< Mask for the Redraw Flags
 
 /* Private config item flags */
 #define DT_INHERITED    (1 << 28)  ///< Config item is inherited

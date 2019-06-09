@@ -1605,9 +1605,9 @@ int mutt_menu_observer(struct NotifyCallback *nc)
   struct EventConfig *ec = (struct EventConfig *) nc->event;
 
   const struct ConfigDef *cdef = ec->he->data;
-  ConfigRedrawFlags flags = cdef->flags;
+  ConfigRedrawFlags flags = cdef->type & R_REDRAW_MASK;
 
-  if (flags == 0)
+  if (flags == R_REDRAW_NO_FLAGS)
     return 0;
 
   if (flags & R_INDEX)
