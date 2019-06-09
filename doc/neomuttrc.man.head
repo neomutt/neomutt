@@ -1001,11 +1001,11 @@ old messages
 T}
 _
 \0~P|T{
-messages from you (consults \fBalternates\fP)
+messages from you (consults $from, \fBalternates\fP, and local account/hostname information)
 T}
 _
 \0~p|T{
-messages addressed to you (consults \fBalternates\fP)
+messages addressed to you (consults $from, \fBalternates\fP, and local account/hostname information)
 T}
 _
 \0~Q|T{

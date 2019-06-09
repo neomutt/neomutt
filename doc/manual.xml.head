@@ -7762,14 +7762,15 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               <row>
                 <entry>~p</entry>
                 <entry>
-                  messages addressed to you (consults
-                  <command>alternates</command>)
+                  messages addressed to you (consults <link linkend="from">$from</link>,
+                  <command>alternates</command>, and local account/hostname information)
                 </entry>
               </row>
               <row>
                 <entry>~P</entry>
                 <entry>
-                  messages from you (consults <command>alternates</command>)
+                  messages from you (consults <link linkend="from">$from</link>,
+                  <command>alternates</command>, and local account/hostname information)
                 </entry>
               </row>
               <row>
