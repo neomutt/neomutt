@@ -35,7 +35,6 @@
 #define DT_MAGIC     7  ///< mailbox type
 #define DT_MBTABLE   8  ///< multibyte char table
 #define DT_NUMBER    9  ///< a number
-#define DT_PATH     10  ///< a pathname
 #define DT_QUAD     11  ///< quad-option (no/yes/ask-no/ask-yes)
 #define DT_REGEX    12  ///< regular expressions
 #define DT_SLIST    13  ///< a list of strings
@@ -47,10 +46,12 @@
 
 #define DT_NOT_EMPTY     (1 << 6)  ///< Empty strings are not allowed
 #define DT_NOT_NEGATIVE  (1 << 7)  ///< Negative numbers are not allowed
-#define DT_MAILBOX       (1 << 8)  ///< DT_PATH: Don't perform path expansions
+#define DT_MAILBOX       (1 << 8)  ///< Don't perform path expansions
 #define DT_SENSITIVE     (1 << 9)  ///< Contains sensitive value, e.g. password
+#define DT_PATH          (1 << 10) ///< A pathname
 
 #define IS_SENSITIVE(x) (((x).type & DT_SENSITIVE) == DT_SENSITIVE)
+#define IS_PATH(x)      (((x)->type & (DT_STRING | DT_PATH)) == (DT_STRING | DT_PATH))
 
 /* subtypes for... */
 #define DT_SUBTYPE_MASK  0x0FE0  ///< Mask for the Data Subtype

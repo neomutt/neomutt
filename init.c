@@ -1701,7 +1701,7 @@ static enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
         }
         else
         {
-          if (DTYPE(he->type) == DT_PATH)
+          if (IS_PATH(he))
           {
             mutt_expand_path(buf->data, buf->dsize);
             char scratch[PATH_MAX];
@@ -3346,7 +3346,7 @@ int mutt_query_variables(struct ListHead *queries)
     }
 
     int type = DTYPE(he->type);
-    if ((type == DT_PATH) && !(he->type & DT_MAILBOX))
+    if (IS_PATH(he) && !(he->type & DT_MAILBOX))
       mutt_pretty_mailbox(value->data, value->dsize);
 
     if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) && (type != DT_QUAD))
@@ -3820,7 +3820,6 @@ struct ConfigSet *init_config(size_t size)
   magic_init(cs);
   mbtable_init(cs);
   number_init(cs);
-  path_init(cs);
   quad_init(cs);
   regex_init(cs);
   sort_init(cs);

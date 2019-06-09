@@ -165,7 +165,6 @@ static int lua_mutt_set(lua_State *l)
     case DT_ADDRESS:
     case DT_MBTABLE:
     case DT_REGEX:
-    case DT_PATH:
     case DT_COMMAND:
     case DT_SORT:
     case DT_STRING:
@@ -244,7 +243,6 @@ static int lua_mutt_get(lua_State *l)
     case DT_COMMAND:
     case DT_MAGIC:
     case DT_MBTABLE:
-    case DT_PATH:
     case DT_REGEX:
     case DT_SORT:
     case DT_STRING:

@@ -115,7 +115,6 @@
   NEOMUTT_TEST_ITEM(config_magic)                                              \
   NEOMUTT_TEST_ITEM(config_mbtable)                                            \
   NEOMUTT_TEST_ITEM(config_number)                                             \
-  NEOMUTT_TEST_ITEM(config_path)                                               \
   NEOMUTT_TEST_ITEM(config_quad)                                               \
   NEOMUTT_TEST_ITEM(config_regex)                                              \
   NEOMUTT_TEST_ITEM(config_sort)                                               \

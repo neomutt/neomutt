@@ -283,7 +283,7 @@ bool dump_config(struct ConfigSet *cs, enum CsDumpStyle style,
           mutt_buffer_addstr(value, "***");
         }
 
-        if ((type == DT_PATH) && (value->data[0] == '/'))
+        if (IS_PATH(he) && (value->data[0] == '/'))
           mutt_pretty_mailbox(value->data, value->dsize);
 
         if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) &&
@@ -305,7 +305,7 @@ bool dump_config(struct ConfigSet *cs, enum CsDumpStyle style,
           break;          /* LCOV_EXCL_LINE */
         }
 
-        if ((type == DT_PATH) && !(he->type & DT_MAILBOX))
+        if (IS_PATH(he) && !(he->type & DT_MAILBOX))
           mutt_pretty_mailbox(initial->data, initial->dsize);
 
         if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) &&

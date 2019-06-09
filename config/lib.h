@@ -35,7 +35,6 @@
  * | config/magic.c      | @subpage config_magic      |
  * | config/mbtable.c    | @subpage config_mbtable    |
  * | config/number.c     | @subpage config_number     |
- * | config/path.c       | @subpage config_path       |
  * | config/quad.c       | @subpage config_quad       |
  * | config/regex.c      | @subpage config_regex      |
  * | config/set.c        | @subpage config_set        |
@@ -55,7 +54,6 @@
 #include "magic.h"
 #include "mbtable.h"
 #include "number.h"
-#include "path.h"
 #include "quad.h"
 #include "regex2.h"
 #include "set.h"
