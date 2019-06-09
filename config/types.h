@@ -28,7 +28,6 @@
 /* Data Types */
 #define DT_ADDRESS   1  ///< e-mail address
 #define DT_BOOL      2  ///< boolean option
-#define DT_COMMAND   3  ///< a command
 #define DT_ENUM      4  ///< an enumeration
 #define DT_HCACHE    5  ///< header cache backend
 #define DT_LONG      6  ///< a number (long)
@@ -49,9 +48,11 @@
 #define DT_MAILBOX       (1 << 8)  ///< Don't perform path expansions
 #define DT_SENSITIVE     (1 << 9)  ///< Contains sensitive value, e.g. password
 #define DT_PATH          (1 << 10) ///< A pathname
+#define DT_COMMAND       (1 << 11) ///< A command
 
 #define IS_SENSITIVE(x) (((x).type & DT_SENSITIVE) == DT_SENSITIVE)
 #define IS_PATH(x)      (((x)->type & (DT_STRING | DT_PATH)) == (DT_STRING | DT_PATH))
+#define IS_COMMAND(x)   (((x)->type & (DT_STRING | DT_COMMAND)) == (DT_STRING | DT_COMMAND))
 
 /* subtypes for... */
 #define DT_SUBTYPE_MASK  0x0FE0  ///< Mask for the Data Subtype

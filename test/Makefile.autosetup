@@ -84,7 +84,6 @@ CHARSET_OBJS	= test/charset/mutt_ch_canonical_charset.o \
 CONFIG_OBJS	= test/config/account.o \
 		  test/config/address.o \
 		  test/config/bool.o \
-		  test/config/command.o \
 		  test/config/common.o \
 		  test/config/dump.o \
 		  test/config/initial.o \

@@ -14,7 +14,6 @@ compose.c
 compress.c
 config/address.c
 config/bool.c
-config/command.c
 config/dump.c
 config/long.c
 config/magic.c

@@ -1725,7 +1725,7 @@ static enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
               }
             }
           }
-          else if (DTYPE(he->type) == DT_COMMAND)
+          else if (IS_COMMAND(he))
           {
             char scratch[PATH_MAX];
             mutt_str_strfcpy(scratch, buf->data, sizeof(scratch));
@@ -3815,7 +3815,6 @@ struct ConfigSet *init_config(size_t size)
 
   address_init(cs);
   bool_init(cs);
-  command_init(cs);
   long_init(cs);
   magic_init(cs);
   mbtable_init(cs);
