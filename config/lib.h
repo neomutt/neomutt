@@ -30,6 +30,7 @@
  * | config/address.c    | @subpage config_address    |
  * | config/bool.c       | @subpage config_bool       |
  * | config/dump.c       | @subpage config_dump       |
+ * | config/enum.c       | @subpage config_enum       |
  * | config/long.c       | @subpage config_long       |
  * | config/magic.c      | @subpage config_magic      |
  * | config/mbtable.c    | @subpage config_mbtable    |
@@ -47,6 +48,7 @@
 #include "address.h"
 #include "bool.h"
 #include "dump.h"
+#include "enum.h"
 #include "inheritance.h"
 #include "long.h"
 #include "magic.h"

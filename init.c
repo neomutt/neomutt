@@ -3815,6 +3815,7 @@ struct ConfigSet *init_config(size_t size)
 
   address_init(cs);
   bool_init(cs);
+  enum_init(cs);
   long_init(cs);
   magic_init(cs);
   mbtable_init(cs);

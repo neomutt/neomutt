@@ -110,6 +110,7 @@
   NEOMUTT_TEST_ITEM(config_synonym)                                            \
   NEOMUTT_TEST_ITEM(config_address)                                            \
   NEOMUTT_TEST_ITEM(config_bool)                                               \
+  NEOMUTT_TEST_ITEM(config_enum)                                               \
   NEOMUTT_TEST_ITEM(config_long)                                               \
   NEOMUTT_TEST_ITEM(config_magic)                                              \
   NEOMUTT_TEST_ITEM(config_mbtable)                                            \
