@@ -955,7 +955,6 @@ enum DataType
   DT_QUAD,
   DT_SORT,
   DT_REGEX,
-  DT_MAGIC,
   DT_SYNONYM,
   DT_ADDRESS,
   DT_MBTABLE,
@@ -976,7 +975,6 @@ struct VariableTypes
   { "DT_QUAD", "quadoption" },
   { "DT_SORT", "sort order" },
   { "DT_REGEX", "regular expression" },
-  { "DT_MAGIC", "folder magic" },
   { "DT_SYNONYM", NULL },
   { "DT_ADDRESS", "e-mail address" },
   { "DT_MBTABLE", "string" },
@@ -1029,18 +1027,6 @@ static void pretty_default(char *t, size_t l, const char *s, int type)
       /* heuristic! */
       if (strncmp(s, "SORT_", 5) != 0)
         fprintf(stderr, "WARNING: expected prefix of SORT_ for type DT_SORT "
-                        "instead of %s\n",
-                s);
-      strncpy(t, s + 5, l);
-      for (; *t; t++)
-        *t = tolower((unsigned char) *t);
-      break;
-    }
-    case DT_MAGIC:
-    {
-      /* heuristic! */
-      if (strncmp(s, "MUTT_", 5) != 0)
-        fprintf(stderr, "WARNING: expected prefix of MUTT_ for type DT_MAGIC "
                         "instead of %s\n",
                 s);
       strncpy(t, s + 5, l);

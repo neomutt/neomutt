@@ -30,6 +30,7 @@
 #include <time.h>
 #include "config/lib.h"
 #include "hcache/hcache.h"
+#include "mailbox.h"
 
 struct Email;
 struct Context;
@@ -43,7 +44,7 @@ extern unsigned char C_MboxType;
 extern unsigned char C_Move;
 extern char *        C_Trash;
 
-struct EnumDef MagicDef;
+extern struct EnumDef MagicDef;
 
 /* flags for mutt_open_mailbox() */
 typedef uint8_t OpenMailboxFlags;   ///< Flags for mutt_open_mailbox(), e.g. #MUTT_NOSORT

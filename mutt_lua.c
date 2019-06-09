@@ -163,11 +163,12 @@ static int lua_mutt_set(lua_State *l)
   switch (DTYPE(cdef->type))
   {
     case DT_ADDRESS:
+    case DT_ENUM:
     case DT_MBTABLE:
     case DT_REGEX:
+    case DT_SLIST:
     case DT_SORT:
     case DT_STRING:
-    case DT_MAGIC:
     {
       const char *value = lua_tostring(l, -1);
       int rv = cs_he_string_set(Config, he, value, err);
@@ -239,9 +240,10 @@ static int lua_mutt_get(lua_State *l)
   switch (DTYPE(cdef->type))
   {
     case DT_ADDRESS:
-    case DT_MAGIC:
+    case DT_ENUM:
     case DT_MBTABLE:
     case DT_REGEX:
+    case DT_SLIST:
     case DT_SORT:
     case DT_STRING:
     {

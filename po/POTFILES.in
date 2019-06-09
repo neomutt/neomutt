@@ -17,7 +17,6 @@ config/bool.c
 config/dump.c
 config/enum.c
 config/long.c
-config/magic.c
 config/mbtable.c
 config/number.c
 config/quad.c

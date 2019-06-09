@@ -31,7 +31,6 @@
 #define DT_ENUM      4  ///< an enumeration
 #define DT_HCACHE    5  ///< header cache backend
 #define DT_LONG      6  ///< a number (long)
-#define DT_MAGIC     7  ///< mailbox type
 #define DT_MBTABLE   8  ///< multibyte char table
 #define DT_NUMBER    9  ///< a number
 #define DT_QUAD     11  ///< quad-option (no/yes/ask-no/ask-yes)
