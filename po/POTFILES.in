@@ -23,6 +23,7 @@ config/number.c
 config/quad.c
 config/regex.c
 config/set.c
+config/slist.c
 config/sort.c
 config/string.c
 conn/conn_globals.c
@@ -116,6 +117,7 @@ mutt/pool.c
 mutt/regex.c
 mutt/sha1.c
 mutt/signal.c
+mutt/slist.c
 mutt/string.c
 muttlib.c
 mutt_account.c

@@ -57,7 +57,7 @@
 /* subtypes for... */
 #define DT_SUBTYPE_MASK  0x0FE0  ///< Mask for the Data Subtype
 
-typedef uint16_t ConfigRedrawFlags; ///< Flags for redraw/resort, e.g. #R_INDEX
+typedef uint32_t ConfigRedrawFlags; ///< Flags for redraw/resort, e.g. #R_INDEX
 #define R_REDRAW_NO_FLAGS        0  ///< No refresh/resort flags
 #define R_INDEX           (1 << 17) ///< Redraw the index menu (MENU_MAIN)
 #define R_PAGER           (1 << 18) ///< Redraw the pager menu

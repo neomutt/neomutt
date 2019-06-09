@@ -3822,6 +3822,7 @@ struct ConfigSet *init_config(size_t size)
   number_init(cs);
   quad_init(cs);
   regex_init(cs);
+  slist_init(cs);
   sort_init(cs);
   string_init(cs);
 

@@ -48,6 +48,7 @@
  * | mutt/pool.c      | @subpage pool      |
  * | mutt/regex.c     | @subpage regex     |
  * | mutt/sha1.c      | @subpage sha1      |
+ * | mutt/slist.c     | @subpage slist     |
  * | mutt/signal.c    | @subpage signal    |
  * | mutt/string.c    | @subpage string    |
  *
@@ -83,6 +84,7 @@
 #include "regex3.h"
 #include "sha1.h"
 #include "signal2.h"
+#include "slist.h"
 #include "string2.h"
 
 #endif /* MUTT_LIB_MUTT_H */

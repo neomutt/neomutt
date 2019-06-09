@@ -38,6 +38,7 @@
  * | config/quad.c       | @subpage config_quad       |
  * | config/regex.c      | @subpage config_regex      |
  * | config/set.c        | @subpage config_set        |
+ * | config/slist.c      | @subpage config_slist      |
  * | config/sort.c       | @subpage config_sort       |
  * | config/string.c     | @subpage config_string     |
  */
@@ -57,6 +58,7 @@
 #include "quad.h"
 #include "regex2.h"
 #include "set.h"
+#include "slist.h"
 #include "sort.h"
 #include "string3.h"
 #include "types.h"

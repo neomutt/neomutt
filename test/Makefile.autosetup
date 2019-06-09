@@ -95,6 +95,7 @@ CONFIG_OBJS	= test/config/account.o \
 		  test/config/quad.o \
 		  test/config/regex.o \
 		  test/config/set.o \
+		  test/config/slist.o \
 		  test/config/sort.o \
 		  test/config/string.o \
 		  test/config/synonym.o \
