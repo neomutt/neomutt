@@ -91,9 +91,25 @@
 /* These Config Variables are only used in mx.c */
 unsigned char C_CatchupNewsgroup; ///< Config: (nntp) Mark all articles as read when leaving a newsgroup
 bool C_KeepFlagged; ///< Config: Don't move flagged messages from #C_Spoolfile to #C_Mbox
-short C_MboxType; ///< Config: Default type for creating new mailboxes
+unsigned char C_MboxType; ///< Config: Default type for creating new mailboxes
 unsigned char C_Move; ///< Config: Move emails from #C_Spoolfile to #C_Mbox when read
 char *C_Trash;        ///< Config: Folder to put deleted emails
+
+// clang-format off
+static struct Mapping MagicMap[] = {
+  { "mbox",    MUTT_MBOX,    },
+  { "MMDF",    MUTT_MMDF,    },
+  { "MH",      MUTT_MH,      },
+  { "Maildir", MUTT_MAILDIR, },
+  { NULL,      0,            },
+};
+// clang-format on
+
+struct EnumDef MagicDef = {
+  "mbox_type",
+  4,
+  (struct Mapping *) &MagicMap,
+};
 
 /**
  * mx_ops - All the Mailbox backends

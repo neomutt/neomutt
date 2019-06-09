@@ -2042,7 +2042,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** Also see the $$move variable.
   */
-  { "mbox_type", DT_MAGIC, &C_MboxType, MUTT_MBOX },
+  { "mbox_type", DT_ENUM, &C_MboxType, MUTT_MBOX, IP &MagicDef },
   /*
   ** .pp
   ** The default mailbox type used when creating new folders. May be any of
