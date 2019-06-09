@@ -53,25 +53,25 @@ static char *VarStrawberry;
 
 // clang-format off
 static struct ConfigDef Vars[] = {
-  { "Apple",      DT_STRING,              0, &VarApple,      IP "apple",      NULL              }, /* test_initial_values */
-  { "Banana",     DT_STRING,              0, &VarBanana,     IP "banana",     NULL              },
-  { "Cherry",     DT_STRING,              0, &VarCherry,     IP "cherry",     NULL              },
-  { "Damson",     DT_STRING,              0, &VarDamson,     0,               NULL              }, /* test_string_set */
-  { "Elderberry", DT_STRING,              0, &VarElderberry, IP "elderberry", NULL              },
-  { "Fig",        DT_STRING|DT_NOT_EMPTY, 0, &VarFig,        IP "fig",        NULL              },
-  { "Guava",      DT_STRING,              0, &VarGuava,      0,               NULL              }, /* test_string_get */
-  { "Hawthorn",   DT_STRING,              0, &VarHawthorn,   IP "hawthorn",   NULL              },
-  { "Ilama",      DT_STRING,              0, &VarIlama,      0,               NULL              },
-  { "Jackfruit",  DT_STRING,              0, &VarJackfruit,  0,               NULL              }, /* test_native_set */
-  { "Kumquat",    DT_STRING,              0, &VarKumquat,    IP "kumquat",    NULL              },
-  { "Lemon",      DT_STRING|DT_NOT_EMPTY, 0, &VarLemon,      IP "lemon",      NULL              },
-  { "Mango",      DT_STRING,              0, &VarMango,      0,               NULL              }, /* test_native_get */
-  { "Nectarine",  DT_STRING,              0, &VarNectarine,  IP "nectarine",  NULL              }, /* test_reset */
-  { "Olive",      DT_STRING,              0, &VarOlive,      IP "olive",      validator_fail    },
-  { "Papaya",     DT_STRING,              0, &VarPapaya,     IP "papaya",     validator_succeed }, /* test_validator */
-  { "Quince",     DT_STRING,              0, &VarQuince,     IP "quince",     validator_warn    },
-  { "Raspberry",  DT_STRING,              0, &VarRaspberry,  IP "raspberry",  validator_fail    },
-  { "Strawberry", DT_STRING,              0, &VarStrawberry, 0,               NULL              }, /* test_inherit */
+  { "Apple",      DT_STRING,              &VarApple,      IP "apple",      0, NULL              }, /* test_initial_values */
+  { "Banana",     DT_STRING,              &VarBanana,     IP "banana",     0, NULL              },
+  { "Cherry",     DT_STRING,              &VarCherry,     IP "cherry",     0, NULL              },
+  { "Damson",     DT_STRING,              &VarDamson,     0,               0, NULL              }, /* test_string_set */
+  { "Elderberry", DT_STRING,              &VarElderberry, IP "elderberry", 0, NULL              },
+  { "Fig",        DT_STRING|DT_NOT_EMPTY, &VarFig,        IP "fig",        0, NULL              },
+  { "Guava",      DT_STRING,              &VarGuava,      0,               0, NULL              }, /* test_string_get */
+  { "Hawthorn",   DT_STRING,              &VarHawthorn,   IP "hawthorn",   0, NULL              },
+  { "Ilama",      DT_STRING,              &VarIlama,      0,               0, NULL              },
+  { "Jackfruit",  DT_STRING,              &VarJackfruit,  0,               0, NULL              }, /* test_native_set */
+  { "Kumquat",    DT_STRING,              &VarKumquat,    IP "kumquat",    0, NULL              },
+  { "Lemon",      DT_STRING|DT_NOT_EMPTY, &VarLemon,      IP "lemon",      0, NULL              },
+  { "Mango",      DT_STRING,              &VarMango,      0,               0, NULL              }, /* test_native_get */
+  { "Nectarine",  DT_STRING,              &VarNectarine,  IP "nectarine",  0, NULL              }, /* test_reset */
+  { "Olive",      DT_STRING,              &VarOlive,      IP "olive",      0, validator_fail    },
+  { "Papaya",     DT_STRING,              &VarPapaya,     IP "papaya",     0, validator_succeed }, /* test_validator */
+  { "Quince",     DT_STRING,              &VarQuince,     IP "quince",     0, validator_warn    },
+  { "Raspberry",  DT_STRING,              &VarRaspberry,  IP "raspberry",  0, validator_fail    },
+  { "Strawberry", DT_STRING,              &VarStrawberry, 0,               0, NULL              }, /* test_inherit */
   { NULL },
 };
 // clang-format on

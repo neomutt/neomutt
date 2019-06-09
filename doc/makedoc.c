@@ -1303,17 +1303,6 @@ static void handle_confline(char *s, FILE *out)
       return;
   }
 
-  /* redraw, comma */
-
-  while (true)
-  {
-    s = get_token(buf, sizeof(buf), s);
-    if (!s)
-      return;
-    if (strcmp(buf, ",") == 0)
-      break;
-  }
-
   /* option name or IP &address */
   s = get_token(buf, sizeof(buf), s);
   if (!s)

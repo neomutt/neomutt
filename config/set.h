@@ -152,12 +152,12 @@ typedef void    (*cst_destroy)   (const struct ConfigSet *cs, void *var, const s
  */
 struct ConfigDef
 {
-  const char   *name;      /**< User-visible name */
-  unsigned int  type;      /**< Variable type, e.g. #DT_STRING */
-  intptr_t      flags;     /**< Notification flags, see #ConfigRedrawFlags */
-  void         *var;       /**< Pointer to the global variable */
-  intptr_t      initial;   /**< Initial value */
-  cs_validator  validator; /**< Validator callback function */
+  const char   *name;      ///< User-visible name
+  unsigned int  type;      ///< Variable type, e.g. #DT_STRING
+  void         *var;       ///< Pointer to the global variable
+  intptr_t      initial;   ///< Initial value
+  intptr_t      data;      ///< Extra variable data
+  cs_validator  validator; ///< Validator callback function
 };
 
 /**

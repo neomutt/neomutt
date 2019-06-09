@@ -53,29 +53,29 @@ static short VarStrawberry;
 
 // clang-format off
 static struct ConfigDef Vars[] = {
-  { "Apple",      DT_SORT,                 0, &VarApple,      1,  NULL              }, /* test_initial_values */
-  { "Banana",     DT_SORT,                 0, &VarBanana,     2,  NULL              },
-  { "Cherry",     DT_SORT,                 0, &VarCherry,     1,  NULL              },
-  { "Damson",     DT_SORT|DT_SORT_INDEX,   0, &VarDamson,     1,  NULL              }, /* test_string_set */
-  { "Elderberry", DT_SORT|DT_SORT_ALIAS,   0, &VarElderberry, 11, NULL              },
-  { "Fig",        DT_SORT|DT_SORT_BROWSER, 0, &VarFig,        1,  NULL              },
-  { "Guava",      DT_SORT|DT_SORT_KEYS,    0, &VarGuava,      1,  NULL              },
-  { "Hawthorn",   DT_SORT|DT_SORT_AUX,     0, &VarHawthorn,   1,  NULL              },
-  { "Ilama",      DT_SORT|DT_SORT_SIDEBAR, 0, &VarIlama,      17, NULL              },
-  { "Jackfruit",  DT_SORT,                 0, &VarJackfruit,  1,  NULL              }, /* test_string_get */
-  { "Kumquat",    DT_SORT,                 0, &VarKumquat,    1,  NULL              }, /* test_native_set */
-  { "Lemon",      DT_SORT,                 0, &VarLemon,      1,  NULL              }, /* test_native_get */
-  { "Mango",      DT_SORT,                 0, &VarMango,      1,  NULL              }, /* test_reset */
-  { "Nectarine",  DT_SORT,                 0, &VarNectarine,  1,  validator_fail    },
-  { "Olive",      DT_SORT,                 0, &VarOlive,      1,  validator_succeed }, /* test_validator */
-  { "Papaya",     DT_SORT,                 0, &VarPapaya,     1,  validator_warn    },
-  { "Quince",     DT_SORT,                 0, &VarQuince,     1,  validator_fail    },
-  { "Strawberry", DT_SORT,                 0, &VarStrawberry, 1,  NULL              }, /* test_inherit */
+  { "Apple",      DT_SORT,                 &VarApple,      1,  0, NULL              }, /* test_initial_values */
+  { "Banana",     DT_SORT,                 &VarBanana,     2,  0, NULL              },
+  { "Cherry",     DT_SORT,                 &VarCherry,     1,  0, NULL              },
+  { "Damson",     DT_SORT|DT_SORT_INDEX,   &VarDamson,     1,  0, NULL              }, /* test_string_set */
+  { "Elderberry", DT_SORT|DT_SORT_ALIAS,   &VarElderberry, 11, 0, NULL              },
+  { "Fig",        DT_SORT|DT_SORT_BROWSER, &VarFig,        1,  0, NULL              },
+  { "Guava",      DT_SORT|DT_SORT_KEYS,    &VarGuava,      1,  0, NULL              },
+  { "Hawthorn",   DT_SORT|DT_SORT_AUX,     &VarHawthorn,   1,  0, NULL              },
+  { "Ilama",      DT_SORT|DT_SORT_SIDEBAR, &VarIlama,      17, 0, NULL              },
+  { "Jackfruit",  DT_SORT,                 &VarJackfruit,  1,  0, NULL              }, /* test_string_get */
+  { "Kumquat",    DT_SORT,                 &VarKumquat,    1,  0, NULL              }, /* test_native_set */
+  { "Lemon",      DT_SORT,                 &VarLemon,      1,  0, NULL              }, /* test_native_get */
+  { "Mango",      DT_SORT,                 &VarMango,      1,  0, NULL              }, /* test_reset */
+  { "Nectarine",  DT_SORT,                 &VarNectarine,  1,  0, validator_fail    },
+  { "Olive",      DT_SORT,                 &VarOlive,      1,  0, validator_succeed }, /* test_validator */
+  { "Papaya",     DT_SORT,                 &VarPapaya,     1,  0, validator_warn    },
+  { "Quince",     DT_SORT,                 &VarQuince,     1,  0, validator_fail    },
+  { "Strawberry", DT_SORT,                 &VarStrawberry, 1,  0, NULL              }, /* test_inherit */
   { NULL },
 };
 
 static struct ConfigDef Vars2[] = {
-  { "Raspberry", DT_SORT|DT_SORT_AUX|DT_SORT_ALIAS, 0, &VarRaspberry, 1, NULL }, /* test_sort_type */
+  { "Raspberry", DT_SORT|DT_SORT_AUX|DT_SORT_ALIAS, &VarRaspberry, 1, 0, NULL }, /* test_sort_type */
   { NULL },
 };
 // clang-format on
