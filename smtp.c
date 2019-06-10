@@ -56,7 +56,7 @@
 #endif
 
 /* These Config Variables are only used in smtp.c */
-char *C_SmtpAuthenticators; ///< Config: (smtp) List of allowed authentication methods
+struct Slist *C_SmtpAuthenticators; ///< Config: (smtp) List of allowed authentication methods
 
 #define smtp_success(x) ((x) / 100 == 2)
 #define SMTP_READY 334
@@ -589,47 +589,36 @@ static int smtp_auth(struct Connection *conn)
 
   if (C_SmtpAuthenticators)
   {
-    char *methods = mutt_str_strdup(C_SmtpAuthenticators);
-    char *method = NULL;
-    char *delim = NULL;
-
-    for (method = methods; method; method = delim)
+    struct ListNode *np = NULL;
+    STAILQ_FOREACH(np, &C_SmtpAuthenticators->head, entries)
     {
-      delim = strchr(method, ':');
-      if (delim)
-        *delim++ = '\0';
-      if (method[0] == '\0')
-        continue;
+      mutt_debug(LL_DEBUG2, "Trying method %s\n", np->data);
 
-      mutt_debug(LL_DEBUG2, "Trying method %s\n", method);
-
-      if (strcmp(method, "oauthbearer") == 0)
+      if (strcmp(np->data, "oauthbearer") == 0)
       {
         r = smtp_auth_oauth(conn);
       }
-      else if (strcmp(method, "plain") == 0)
+      else if (strcmp(np->data, "plain") == 0)
       {
         r = smtp_auth_plain(conn);
       }
       else
       {
 #ifdef USE_SASL
-        r = smtp_auth_sasl(conn, method);
+        r = smtp_auth_sasl(conn, np->data);
 #else
-        mutt_error(_("SMTP authentication method %s requires SASL"), method);
+        mutt_error(_("SMTP authentication method %s requires SASL"), np->data);
         continue;
 #endif
       }
 
-      if ((r == SMTP_AUTH_FAIL) && delim)
+      if ((r == SMTP_AUTH_FAIL) && (C_SmtpAuthenticators->count > 1))
       {
-        mutt_error(_("%s authentication failed, trying next method"), method);
+        mutt_error(_("%s authentication failed, trying next method"), np->data);
       }
       else if (r != SMTP_AUTH_UNAVAIL)
         break;
     }
-
-    FREE(&methods);
   }
   else
   {

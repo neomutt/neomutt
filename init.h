@@ -4054,7 +4054,7 @@ struct ConfigDef MuttVars[] = {
   */
 #endif
 #ifdef USE_SMTP
-  { "smtp_authenticators", DT_STRING, &C_SmtpAuthenticators, 0 },
+  { "smtp_authenticators", DT_SLIST|SLIST_SEP_COLON, &C_SmtpAuthenticators, 0 },
   /*
   ** .pp
   ** This is a colon-delimited list of authentication methods NeoMutt may
