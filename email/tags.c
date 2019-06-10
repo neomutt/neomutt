@@ -31,10 +31,11 @@
 #include <stdbool.h>
 #include <string.h>
 #include "mutt/mutt.h"
+#include "config/lib.h"
 #include "tags.h"
 
 /* These Config Variables are only used in email/tags.c */
-char *C_HiddenTags; ///< Config: Tags that shouldn't be displayed on screen
+struct Slist *C_HiddenTags; ///< Config: Tags that shouldn't be displayed on screen
 
 struct Hash *TagTransforms; /**< Lookup table of alternative tag names */
 
@@ -82,26 +83,17 @@ static void driver_tags_add(struct TagHead *head, char *new_tag)
 {
   char *new_tag_transformed = mutt_hash_find(TagTransforms, new_tag);
 
-  struct TagNode *np = mutt_mem_calloc(1, sizeof(struct TagNode));
-  np->name = mutt_str_strdup(new_tag);
-  np->hidden = false;
+  struct TagNode *tn = mutt_mem_calloc(1, sizeof(struct TagNode));
+  tn->name = mutt_str_strdup(new_tag);
+  tn->hidden = false;
   if (new_tag_transformed)
-    np->transformed = mutt_str_strdup(new_tag_transformed);
+    tn->transformed = mutt_str_strdup(new_tag_transformed);
 
   /* filter out hidden tags */
-  if (C_HiddenTags)
-  {
-    char *p = strstr(C_HiddenTags, new_tag);
-    size_t xsz = p ? mutt_str_strlen(new_tag) : 0;
+  if (mutt_list_find(&C_HiddenTags->head, new_tag))
+    tn->hidden = true;
 
-    if (p && ((p == C_HiddenTags) || (p[-1] == ',') || (p[-1] == ' ')) &&
-        ((p[xsz] == '\0') || (p[xsz] == ',') || (p[xsz] == ' ')))
-    {
-      np->hidden = true;
-    }
-  }
-
-  STAILQ_INSERT_TAIL(head, np, entries);
+  STAILQ_INSERT_TAIL(head, tn, entries);
 }
 
 /**

@@ -1420,7 +1420,7 @@ struct ConfigDef MuttVars[] = {
   ** affect the generation of Message-IDs, and it will not lead to the
   ** cut-off of first-level domains.
   */
-  { "hidden_tags", DT_STRING, &C_HiddenTags, IP "unread,draft,flagged,passed,replied,attachment,signed,encrypted" },
+  { "hidden_tags", DT_SLIST|SLIST_SEP_COMMA, &C_HiddenTags, IP "unread,draft,flagged,passed,replied,attachment,signed,encrypted" },
   /*
   ** .pp
   ** This variable specifies private notmuch/imap tags which should not be printed
