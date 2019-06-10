@@ -3111,7 +3111,7 @@ struct ConfigDef MuttVars[] = {
   ** remote machine without having to enter a password.
   */
 #endif /* USE_SOCKET */
-  { "preferred_languages", DT_STRING, &C_PreferredLanguages, 0 },
+  { "preferred_languages", DT_SLIST|SLIST_SEP_COMMA, &C_PreferredLanguages, 0 },
   /*
   ** .pp
   ** RFC8255 : user preferred languages to be search in parts and display
