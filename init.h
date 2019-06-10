@@ -2960,7 +2960,7 @@ struct ConfigDef MuttVars[] = {
   ** methods if the previous methods are unavailable. If a method is
   ** available but authentication fails, NeoMutt will not connect to the POP server.
   */
-  { "pop_authenticators", DT_STRING, &C_PopAuthenticators, 0 },
+  { "pop_authenticators", DT_SLIST|SLIST_SEP_COLON, &C_PopAuthenticators, 0 },
   /*
   ** .pp
   ** This is a colon-delimited list of authentication methods NeoMutt may
