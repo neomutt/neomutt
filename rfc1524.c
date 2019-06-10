@@ -468,16 +468,12 @@ void rfc1524_free_entry(struct Rfc1524MailcapEntry **entry)
 bool rfc1524_mailcap_lookup(struct Body *a, char *type,
                             struct Rfc1524MailcapEntry *entry, enum MailcapLookup opt)
 {
-  char path[PATH_MAX];
-  int found = false;
-  char *curr = C_MailcapPath;
-
   /* rfc1524 specifies that a path of mailcap files should be searched.
    * joy.  They say
    * $HOME/.mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap, etc
    * and overridden by the MAILCAPS environment variable, and, just to be nice,
    * we'll make it specifiable in .neomuttrc */
-  if (!curr || !*curr)
+  if (!C_MailcapPath || (C_MailcapPath->count == 0))
   {
     mutt_error(_("No mailcap path specified"));
     return false;
@@ -485,25 +481,19 @@ bool rfc1524_mailcap_lookup(struct Body *a, char *type,
 
   mutt_check_lookup_list(a, type, 128);
 
-  while (!found && *curr)
+  char path[PATH_MAX];
+  bool found = false;
+
+  struct ListNode *np = NULL;
+  STAILQ_FOREACH(np, &C_MailcapPath->head, entries)
   {
-    int x = 0;
-    while (*curr && (*curr != ':') && (x < sizeof(path) - 1))
-    {
-      path[x++] = *curr;
-      curr++;
-    }
-    if (*curr)
-      curr++;
-
-    if (x == 0)
-      continue;
-
-    path[x] = '\0';
+    mutt_str_strfcpy(path, np->data, sizeof(path));
     mutt_expand_path(path, sizeof(path));
 
     mutt_debug(LL_DEBUG2, "Checking mailcap file: %s\n", path);
     found = rfc1524_mailcap_parse(a, path, type, entry, opt);
+    if (found)
+      break;
   }
 
   if (entry && !found)
