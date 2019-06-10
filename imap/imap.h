@@ -62,7 +62,7 @@ struct PatternHead;
 struct stat;
 
 /* These Config Variables are only used in imap/auth.c */
-extern char *C_ImapAuthenticators;
+extern struct Slist *C_ImapAuthenticators;
 
 /* These Config Variables are only used in imap/imap.c */
 extern bool C_ImapIdle;
