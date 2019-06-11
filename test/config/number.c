@@ -498,6 +498,22 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
   TEST_MSG("String: %s = %d\n", name, VarNectarine);
   short_line();
 
+  struct HashElem *he = cs_get_elem(cs, name);
+  VarNectarine = 123;
+  mutt_buffer_reset(err);
+  rc = cs_he_native_set(cs, he, 456, err);
+  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
+  {
+    TEST_MSG("Expected error: %s\n", err->data);
+  }
+  else
+  {
+    TEST_MSG("%s\n", err->data);
+    return false;
+  }
+  TEST_MSG("String: %s = %d\n", name, VarNectarine);
+  short_line();
+
   VarNectarine = 456;
   mutt_buffer_reset(err);
   rc = cs_str_native_set(cs, name, 123, err);
