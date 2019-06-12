@@ -947,40 +947,42 @@ static int handle_docline(char *l, FILE *out, int docstat)
 enum DataType
 {
   DT_NONE = 0,
-  DT_BOOL,
-  DT_NUMBER,
-  DT_LONG,
-  DT_STRING,
-  DT_PATH,
-  DT_QUAD,
-  DT_SORT,
-  DT_REGEX,
-  DT_SYNONYM,
   DT_ADDRESS,
+  DT_BOOL,
+  DT_ENUM,
+  DT_LONG,
   DT_MBTABLE,
-  DT_COMMAND,
+  DT_NUMBER,
+  DT_QUAD,
+  DT_REGEX,
+  DT_SLIST,
+  DT_SORT,
+  DT_STRING,
+  DT_SYNONYM,
 };
 
+// clang-format off
 struct VariableTypes
 {
   char *machine;
   char *human;
 } types[] = {
-  { "DT_NONE", "-none-" },
-  { "DT_BOOL", "boolean" },
-  { "DT_NUMBER", "number" },
-  { "DT_LONG",  "number (long)" },
-  { "DT_STRING", "string" },
-  { "DT_PATH", "path" },
-  { "DT_QUAD", "quadoption" },
-  { "DT_SORT", "sort order" },
-  { "DT_REGEX", "regular expression" },
-  { "DT_SYNONYM", NULL },
-  { "DT_ADDRESS", "e-mail address" },
-  { "DT_MBTABLE", "string" },
-  { "DT_COMMAND", "command" },
-  { NULL, NULL },
+  { "DT_NONE",    "-none-"             },
+  { "DT_ADDRESS", "e-mail address"     },
+  { "DT_BOOL",    "boolean"            },
+  { "DT_ENUM",    "enumeration"        },
+  { "DT_LONG",    "number (long)"      },
+  { "DT_MBTABLE", "character string"   },
+  { "DT_NUMBER",  "number"             },
+  { "DT_QUAD",    "quadoption"         },
+  { "DT_REGEX",   "regular expression" },
+  { "DT_SLIST",   "string list"        },
+  { "DT_SORT",    "sort order"         },
+  { "DT_STRING",  "string"             },
+  { "DT_SYNONYM", NULL                 },
+  { NULL,         NULL                 },
 };
+// clang-format on
 
 static int buf_to_type(const char *s)
 {
@@ -1022,6 +1024,18 @@ static void pretty_default(char *t, size_t l, const char *s, int type)
         strncpy(t, "no", l);
       break;
     }
+    case DT_ENUM:
+    {
+      if (strcasecmp(s, "MUTT_MBOX") == 0)
+        strncpy(t, "mbox", l);
+      else if (strcasecmp(s, "MUTT_MMDF") == 0)
+        strncpy(t, "MMDF", l);
+      else if (strcasecmp(s, "MUTT_MH") == 0)
+        strncpy(t, "MH", l);
+      else if (strcasecmp(s, "MUTT_MAILDIR") == 0)
+        strncpy(t, "Maildir", l);
+      break;
+    }
     case DT_SORT:
     {
       /* heuristic! */
@@ -1035,10 +1049,9 @@ static void pretty_default(char *t, size_t l, const char *s, int type)
       break;
     }
     case DT_STRING:
+    case DT_SLIST:
     case DT_REGEX:
     case DT_ADDRESS:
-    case DT_PATH:
-    case DT_COMMAND:
     case DT_MBTABLE:
     {
       if (strcmp(s, "0") == 0)
@@ -1159,7 +1172,7 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
     case F_CONF:
     {
       if (type == DT_STRING || type == DT_REGEX || type == DT_ADDRESS ||
-          type == DT_PATH || type == DT_MBTABLE || type == DT_COMMAND)
+          type == DT_MBTABLE || type == DT_SLIST)
       {
         fprintf(out, "\n# set %s=\"", varname);
         conf_print_strval(val, out);
@@ -1171,7 +1184,7 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
       fprintf(out, "\n#\n# Name: %s", varname);
       fprintf(out, "\n# Type: %s", type2human(type));
       if (type == DT_STRING || type == DT_REGEX || type == DT_ADDRESS ||
-          type == DT_PATH || type == DT_MBTABLE || type == DT_COMMAND)
+          type == DT_MBTABLE || type == DT_SLIST)
       {
         fputs("\n# Default: \"", out);
         conf_print_strval(val, out);
@@ -1191,7 +1204,7 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
       fputs(".nf\n", out);
       fprintf(out, "Type: %s\n", type2human(type));
       if (type == DT_STRING || type == DT_REGEX || type == DT_ADDRESS ||
-          type == DT_PATH || type == DT_MBTABLE || type == DT_COMMAND)
+          type == DT_MBTABLE || type == DT_SLIST)
       {
         fputs("Default: \"", out);
         man_print_strval(val, out);
@@ -1219,7 +1232,7 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
       fprintf(out, "</title>\n<literallayout>Type: %s", type2human(type));
 
       if (type == DT_STRING || type == DT_REGEX || type == DT_ADDRESS ||
-          type == DT_PATH || type == DT_MBTABLE || type == DT_COMMAND)
+          type == DT_MBTABLE || type == DT_SLIST)
       {
         if (val && *val)
         {
@@ -1271,22 +1284,14 @@ static void handle_confline(char *s, FILE *out)
 
   type = buf_to_type(buf);
 
-  /* possibly a "|" or comma */
-  s = get_token(buf, sizeof(buf), s);
-  if (!s)
-    return;
-
-  if (strcmp(buf, "|") == 0)
+  while (true)
   {
-    if (Debug)
-      fprintf(stderr, "%s: Expecting <subtype> <comma>.\n", Progname);
-    /* ignore subtype and comma */
+    /* possibly a "|" or comma */
     s = get_token(buf, sizeof(buf), s);
     if (!s)
       return;
-    s = get_token(buf, sizeof(buf), s);
-    if (!s)
-      return;
+    if (strcmp(buf, ",") == 0)
+      break;
   }
 
   /* option name or IP &address */
@@ -1326,6 +1331,8 @@ static void handle_confline(char *s, FILE *out)
   do
   {
     if (strcmp(buf, "}") == 0)
+      break;
+    if (strcmp(buf, ",") == 0)
       break;
 
     strncpy(tmp + strlen(tmp), buf, sizeof(tmp) - strlen(tmp));
