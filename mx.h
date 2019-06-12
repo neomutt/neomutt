@@ -30,6 +30,7 @@
 #include <time.h>
 #include "config/lib.h"
 #include "hcache/hcache.h"
+#include "mailbox.h"
 
 struct Email;
 struct Context;
@@ -39,9 +40,11 @@ struct stat;
 /* These Config Variables are only used in mx.c */
 extern unsigned char C_CatchupNewsgroup;
 extern bool          C_KeepFlagged;
-extern short         C_MboxType;
+extern unsigned char C_MboxType;
 extern unsigned char C_Move;
 extern char *        C_Trash;
+
+extern struct EnumDef MagicDef;
 
 /* flags for mutt_open_mailbox() */
 typedef uint8_t OpenMailboxFlags;   ///< Flags for mutt_open_mailbox(), e.g. #MUTT_NOSORT

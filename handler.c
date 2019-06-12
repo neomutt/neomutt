@@ -65,7 +65,7 @@ bool C_HonorDisposition; ///< Config: Don't display MIME parts inline if they ha
 bool C_ImplicitAutoview; ///< Config: Display MIME attachments inline if a 'copiousoutput' mailcap entry exists
 bool C_IncludeEncrypted; ///< Config: Whether to include encrypted content when replying
 bool C_IncludeOnlyfirst; ///< Config: Only include the first attachment when replying
-char *C_PreferredLanguages; ///< Config: Preferred languages for multilingual MIME
+struct Slist *C_PreferredLanguages; ///< Config: Preferred languages for multilingual MIME
 bool C_ReflowText; ///< Config: Reformat paragraphs of 'format=flowed' text
 char *C_ShowMultipartAlternative; ///< Config: How to display 'multipart/alternative' MIME parts
 
@@ -1106,13 +1106,9 @@ static int alternative_handler(struct Body *a, struct State *s)
  */
 static int multilingual_handler(struct Body *a, struct State *s)
 {
-  struct Body *choice = NULL;
   struct Body *b = NULL;
   bool mustfree = false;
   int rc = 0;
-  struct Body *first_part = NULL;
-  struct Body *zxx_part = NULL;
-  char *lang = NULL;
 
   mutt_debug(LL_DEBUG2,
              "RFC8255 >> entering in handler multilingual handler\n");
@@ -1138,16 +1134,21 @@ static int multilingual_handler(struct Body *a, struct State *s)
   else
     b = a;
 
-  char *preferred_languages = NULL;
   if (C_PreferredLanguages)
   {
+    struct Buffer *langs = mutt_buffer_pool_get();
+    cs_str_string_get(Config, "preferred_languages", langs);
     mutt_debug(LL_DEBUG2, "RFC8255 >> preferred_languages set in config to '%s'\n",
-               C_PreferredLanguages);
-    preferred_languages = mutt_str_strdup(C_PreferredLanguages);
-    lang = strtok(preferred_languages, ",");
+               mutt_b2s(langs));
+    mutt_buffer_pool_release(&langs);
   }
 
-  while (lang)
+  struct Body *choice = NULL;
+  struct Body *first_part = NULL;
+  struct Body *zxx_part = NULL;
+  struct ListNode *np = NULL;
+
+  STAILQ_FOREACH(np, &C_PreferredLanguages->head, entries)
   {
     while (b)
     {
@@ -1160,11 +1161,11 @@ static int multilingual_handler(struct Body *a, struct State *s)
           zxx_part = b;
 
         mutt_debug(LL_DEBUG2, "RFC8255 >> comparing configuration preferred_language='%s' to mail part content-language='%s'\n",
-                   lang, b->language);
-        if (lang && b->language && (mutt_str_strcmp(lang, b->language) == 0))
+                   np->data, b->language);
+        if (b->language && (mutt_str_strcmp(np->data, b->language) == 0))
         {
           mutt_debug(LL_DEBUG2, "RFC8255 >> preferred_language='%s' matches content-language='%s' >> part selected to be displayed\n",
-                     lang, b->language);
+                     np->data, b->language);
           choice = b;
           break;
         }
@@ -1175,8 +1176,6 @@ static int multilingual_handler(struct Body *a, struct State *s)
 
     if (choice)
       break;
-
-    lang = strtok(NULL, ",");
 
     if (a->parts)
       b = a->parts;
@@ -1197,7 +1196,6 @@ static int multilingual_handler(struct Body *a, struct State *s)
   if (mustfree)
     mutt_body_free(&a);
 
-  FREE(&preferred_languages);
   return rc;
 }
 

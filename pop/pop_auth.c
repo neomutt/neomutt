@@ -44,7 +44,7 @@
 #endif
 
 /* These Config Variables are only used in pop/pop_auth.c */
-char *C_PopAuthenticators; ///< Config: (pop) List of allowed authentication methods
+struct Slist *C_PopAuthenticators; ///< Config: (pop) List of allowed authentication methods
 bool C_PopAuthTryAll; ///< Config: (pop) Try all available authentication methods
 
 #ifdef USE_SASL
@@ -409,9 +409,6 @@ int pop_authenticate(struct PopAccountData *adata)
 {
   struct ConnAccount *acct = &adata->conn->account;
   const struct PopAuth *authenticator = NULL;
-  char *methods = NULL;
-  char *comma = NULL;
-  char *method = NULL;
   int attempts = 0;
   int ret = POP_A_UNAVAIL;
 
@@ -423,30 +420,25 @@ int pop_authenticate(struct PopAccountData *adata)
   if (C_PopAuthenticators)
   {
     /* Try user-specified list of authentication methods */
-    methods = mutt_str_strdup(C_PopAuthenticators);
-    method = methods;
-
-    while (method)
+    struct ListNode *np = NULL;
+    STAILQ_FOREACH(np, &C_PopAuthenticators->head, entries)
     {
-      comma = strchr(method, ':');
-      if (comma)
-        *comma++ = '\0';
-      mutt_debug(LL_DEBUG2, "Trying method %s\n", method);
+      mutt_debug(LL_DEBUG2, "Trying method %s\n", np->data);
       authenticator = pop_authenticators;
 
       while (authenticator->authenticate)
       {
         if (!authenticator->method ||
-            (mutt_str_strcasecmp(authenticator->method, method) == 0))
+            (mutt_str_strcasecmp(authenticator->method, np->data) == 0))
         {
-          ret = authenticator->authenticate(adata, method);
+          ret = authenticator->authenticate(adata, np->data);
           if (ret == POP_A_SOCKET)
           {
             switch (pop_connect(adata))
             {
               case 0:
               {
-                ret = authenticator->authenticate(adata, method);
+                ret = authenticator->authenticate(adata, np->data);
                 break;
               }
               case -2:
@@ -459,17 +451,12 @@ int pop_authenticate(struct PopAccountData *adata)
           if ((ret == POP_A_SUCCESS) || (ret == POP_A_SOCKET) ||
               ((ret == POP_A_FAILURE) && !C_PopAuthTryAll))
           {
-            comma = NULL;
             break;
           }
         }
         authenticator++;
       }
-
-      method = comma;
     }
-
-    FREE(&methods);
   }
   else
   {

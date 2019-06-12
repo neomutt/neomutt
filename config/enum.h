@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for the Path object
+ * Type representing an enumeration
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,11 +20,21 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TEST_PATH_H
-#define _TEST_PATH_H
+#ifndef MUTT_CONFIG_ENUM_H
+#define MUTT_CONFIG_ENUM_H
 
-#include <stdbool.h>
+struct ConfigSet;
 
-void config_path(void);
+/**
+ * struct EnumDef - XXX
+ */
+struct EnumDef
+{
+  const char *name;
+  int count;
+  struct Mapping *lookup;
+};
 
-#endif /* _TEST_PATH_H */
+void enum_init(struct ConfigSet *cs);
+
+#endif /* MUTT_CONFIG_ENUM_H */

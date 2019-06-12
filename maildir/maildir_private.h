@@ -29,6 +29,7 @@
 #include <sys/types.h>
 #include <time.h>
 #include "config/lib.h"
+#include "mailbox.h"
 
 struct Account;
 struct Buffer;

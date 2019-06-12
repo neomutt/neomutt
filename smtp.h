@@ -27,7 +27,7 @@
 struct AddressList;
 
 /* These Config Variables are only used in smtp.c */
-extern char *C_SmtpAuthenticators;
+extern struct Slist *C_SmtpAuthenticators;
 
 #ifdef USE_SMTP
 int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,

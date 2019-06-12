@@ -64,10 +64,6 @@ describe('lua API', function()
       test_config_type("alias_file", "contrib/lua/test_lua-api_runner.neomuttrc", "/dev/null")
     end)
 
-    it('works with DT_MAGIC', function()
-      test_config_type("mbox_type", "mbox", "Maildir")
-    end)
-
     it('works with DT_SORT', function()
       test_config_type("sort", "from", "date")
     end)

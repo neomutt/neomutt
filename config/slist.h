@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for the Command object
+ * Type representing a list of strings
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2019 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,11 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TEST_COMMAND_H
-#define _TEST_COMMAND_H
+#ifndef MUTT_CONFIG_SLIST_H
+#define MUTT_CONFIG_SLIST_H
 
-#include <stdbool.h>
+struct ConfigSet;
 
-void config_command(void);
+void slist_init(struct ConfigSet *cs);
 
-#endif /* _TEST_COMMAND_H */
+#endif /* MUTT_CONFIG_SLIST_H */

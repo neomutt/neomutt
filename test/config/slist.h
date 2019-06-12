@@ -1,9 +1,9 @@
 /**
  * @file
- * Type representing a path
+ * Test code for the Slist object
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2019 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,11 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_CONFIG_PATH_H
-#define MUTT_CONFIG_PATH_H
+#ifndef _TEST_SLIST_H
+#define _TEST_SLIST_H
 
-struct ConfigSet;
+#include <stdbool.h>
 
-void path_init(struct ConfigSet *cs);
+void config_slist(void);
 
-#endif /* MUTT_CONFIG_PATH_H */
+#endif /* _TEST_SLIST_H */

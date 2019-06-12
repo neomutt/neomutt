@@ -43,21 +43,37 @@ static short VarMango;
 static char *VarNectarine;
 
 // clang-format off
+static struct Mapping MagicMap[] = {
+  { "mbox",    MUTT_MBOX,    },
+  { "MMDF",    MUTT_MMDF,    },
+  { "MH",      MUTT_MH,      },
+  { "Maildir", MUTT_MAILDIR, },
+  { NULL,      0,            },
+};
+// clang-format on
+
+struct EnumDef MagicDef = {
+  "mbox_type",
+  4,
+  (struct Mapping *) &MagicMap,
+};
+
+// clang-format off
 static struct ConfigDef Vars[] = {
-  { "Apple",      DT_BOOL,                 0, &VarApple,      false,                       NULL },
-  { "Banana",     DT_BOOL,                 0, &VarBanana,     true,                        NULL },
-  { "Cherry",     DT_NUMBER,               0, &VarCherry,     0,                           NULL },
-  { "Damson",     DT_SYNONYM,              0, NULL,           IP "Cherry",                 NULL },
-  { "Elderberry", DT_ADDRESS,              0, &VarElderberry, IP "elderberry@example.com", NULL },
-  { "Fig",        DT_COMMAND|DT_NOT_EMPTY, 0, &VarFig,        IP "fig",                    NULL },
-  { "Guava",      DT_LONG,                 0, &VarGuava,      0,                           NULL },
-  { "Hawthorn",   DT_MAGIC,                0, &VarHawthorn,   1,                           NULL },
-  { "Ilama",      DT_MBTABLE,              0, &VarIlama,      0,                           NULL },
-  { "Jackfruit",  DT_PATH,                 0, &VarJackfruit,  IP "/etc/passwd",            NULL },
-  { "Kumquat",    DT_QUAD,                 0, &VarKumquat,    0,                           NULL },
-  { "Lemon",      DT_REGEX,                0, &VarLemon,      0,                           NULL },
-  { "Mango",      DT_SORT,                 0, &VarMango,      1,                           NULL },
-  { "Nectarine",  DT_STRING,     F_SENSITIVE, &VarNectarine,  IP "nectarine",              NULL },
+  { "Apple",      DT_BOOL,                           &VarApple,      false,                       0,            NULL },
+  { "Banana",     DT_BOOL,                           &VarBanana,     true,                        0,            NULL },
+  { "Cherry",     DT_NUMBER,                         &VarCherry,     0,                           0,            NULL },
+  { "Damson",     DT_SYNONYM,                        NULL,           IP "Cherry",                 0,            NULL },
+  { "Elderberry", DT_ADDRESS,                        &VarElderberry, IP "elderberry@example.com", 0,            NULL },
+  { "Fig",        DT_STRING|DT_COMMAND|DT_NOT_EMPTY, &VarFig,        IP "fig",                    0,            NULL },
+  { "Guava",      DT_LONG,                           &VarGuava,      0,                           0,            NULL },
+  { "Hawthorn",   DT_ENUM,                           &VarHawthorn,   1,                           IP &MagicDef, NULL },
+  { "Ilama",      DT_MBTABLE,                        &VarIlama,      0,                           0,            NULL },
+  { "Jackfruit",  DT_STRING|DT_PATH,                 &VarJackfruit,  IP "/etc/passwd",            0,            NULL },
+  { "Kumquat",    DT_QUAD,                           &VarKumquat,    0,                           0,            NULL },
+  { "Lemon",      DT_REGEX,                          &VarLemon,      0,                           0,            NULL },
+  { "Mango",      DT_SORT,                           &VarMango,      1,                           0,            NULL },
+  { "Nectarine",  DT_STRING|DT_SENSITIVE,            &VarNectarine,  IP "nectarine",              0,            NULL },
   { NULL },
 };
 // clang-format on
@@ -166,12 +182,10 @@ struct ConfigSet *create_sample_data(void)
 
   address_init(cs);
   bool_init(cs);
-  command_init(cs);
+  enum_init(cs);
   long_init(cs);
-  magic_init(cs);
   mbtable_init(cs);
   number_init(cs);
-  path_init(cs);
   quad_init(cs);
   regex_init(cs);
   sort_init(cs);
@@ -205,75 +219,6 @@ bool test_get_elem_list(void)
     }
 
     FREE(&list);
-    cs_free(&cs);
-  }
-
-  return true;
-}
-
-bool test_dump_config_mutt(void)
-{
-  // void dump_config_mutt(struct ConfigSet *cs, struct HashElem *he, struct Buffer *value, struct Buffer *initial, ConfigDumpFlags flags, FILE *fp);
-
-  {
-    struct ConfigSet *cs = create_sample_data();
-    if (!cs)
-      return false;
-
-    struct HashElem *he = cs_get_elem(cs, "Apple");
-
-    struct Buffer *buf_val = mutt_buffer_from("yes");
-    struct Buffer *buf_init = mutt_buffer_from("initial");
-
-    FILE *fp = fopen("/dev/null", "w");
-    if (!fp)
-      return false;
-
-    // Degenerate tests
-
-    dump_config_mutt(NULL, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(
-        1,
-        "dump_config_mutt(NULL, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
-    dump_config_mutt(cs, NULL, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(
-        1,
-        "dump_config_mutt(cs, NULL, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
-    dump_config_mutt(cs, he, NULL, buf_init, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(
-        1, "dump_config_mutt(cs, he, NULL, buf_init, CS_DUMP_NO_FLAGS, fp)");
-    dump_config_mutt(cs, he, buf_val, NULL, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(
-        1, "dump_config_mutt(cs, he, buf_val, NULL, CS_DUMP_NO_FLAGS, fp)");
-    dump_config_mutt(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, NULL);
-    TEST_CHECK_(
-        1,
-        "dump_config_mutt(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, NULL)");
-
-    // Normal tests
-
-    dump_config_mutt(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(
-        1, "dump_config_mutt(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
-
-    mutt_buffer_reset(buf_val);
-    mutt_buffer_addstr(buf_val, "no");
-
-    dump_config_mutt(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(
-        1,
-        "dump_config_mutt(NULL, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
-
-    he = cs_get_elem(cs, "Cherry");
-
-    dump_config_mutt(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(
-        1,
-        "dump_config_mutt(NULL, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
-
-    fclose(fp);
-    mutt_buffer_free(&buf_val);
-    mutt_buffer_free(&buf_init);
     cs_free(&cs);
   }
 
@@ -350,7 +295,7 @@ bool test_dump_config_neo(void)
 
 bool test_dump_config(void)
 {
-  // bool dump_config(struct ConfigSet *cs, enum CsDumpStyle style, ConfigDumpFlags flags, FILE *fp);
+  // bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp);
 
   {
     struct ConfigSet *cs = create_sample_data();
@@ -363,20 +308,17 @@ bool test_dump_config(void)
 
     // Degenerate tests
 
-    TEST_CHECK(!dump_config(NULL, CS_DUMP_STYLE_NEO, CS_DUMP_NO_FLAGS, fp));
-    TEST_CHECK(dump_config(cs, CS_DUMP_STYLE_NEO, CS_DUMP_NO_FLAGS, NULL));
+    TEST_CHECK(!dump_config(NULL, CS_DUMP_NO_FLAGS, fp));
+    TEST_CHECK(dump_config(cs, CS_DUMP_NO_FLAGS, NULL));
 
     // Normal tests
 
-    TEST_CHECK(dump_config(cs, CS_DUMP_STYLE_MUTT, CS_DUMP_NO_FLAGS, fp));
-    TEST_CHECK(dump_config(cs, CS_DUMP_STYLE_NEO, CS_DUMP_NO_FLAGS, fp));
-    TEST_CHECK(dump_config(cs, CS_DUMP_STYLE_NEO,
-                           CS_DUMP_ONLY_CHANGED | CS_DUMP_HIDE_SENSITIVE, fp));
-    TEST_CHECK(dump_config(cs, CS_DUMP_STYLE_NEO,
-                           CS_DUMP_HIDE_VALUE | CS_DUMP_SHOW_DEFAULTS, fp));
+    TEST_CHECK(dump_config(cs, CS_DUMP_NO_FLAGS, fp));
+    TEST_CHECK(dump_config(cs, CS_DUMP_ONLY_CHANGED | CS_DUMP_HIDE_SENSITIVE, fp));
+    TEST_CHECK(dump_config(cs, CS_DUMP_HIDE_VALUE | CS_DUMP_SHOW_DEFAULTS, fp));
 
     struct ConfigSet *cs_bad = cs_new(30);
-    TEST_CHECK(dump_config(cs_bad, CS_DUMP_STYLE_NEO, CS_DUMP_NO_FLAGS, fp));
+    TEST_CHECK(dump_config(cs_bad, CS_DUMP_NO_FLAGS, fp));
 
     fclose(fp);
     cs_free(&cs_bad);
@@ -388,18 +330,10 @@ bool test_dump_config(void)
 
 void config_dump(void)
 {
-  if (!test_pretty_var())
-    return;
-  if (!test_escape_string())
-    return;
-  if (!test_elem_list_sort())
-    return;
-  if (!test_get_elem_list())
-    return;
-  if (!test_dump_config_mutt())
-    return;
-  if (!test_dump_config_neo())
-    return;
-  if (!test_dump_config())
-    return;
+  TEST_CHECK(test_pretty_var());
+  TEST_CHECK(test_escape_string());
+  TEST_CHECK(test_elem_list_sort());
+  TEST_CHECK(test_get_elem_list());
+  TEST_CHECK(test_dump_config_neo());
+  TEST_CHECK(test_dump_config());
 }

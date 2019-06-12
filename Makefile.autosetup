@@ -227,10 +227,10 @@ ALLOBJS+=	$(PGPEWRAPOBJS)
 ###############################################################################
 # libconfig
 LIBCONFIG=	libconfig.a
-LIBCONFIGOBJS=	config/address.o config/bool.o config/command.o config/dump.o \
-		config/long.o config/magic.o config/mbtable.o config/number.o \
-		config/path.o config/quad.o config/regex.o config/set.o \
-		config/sort.o config/string.o
+LIBCONFIGOBJS=	config/address.o config/bool.o config/dump.o config/enum.o \
+		config/long.o config/mbtable.o config/number.o \
+		config/quad.o config/regex.o config/set.o \
+		config/slist.o config/sort.o config/string.o
 
 CLEANFILES+=	$(LIBCONFIG) $(LIBCONFIGOBJS)
 MUTTLIBS+=	$(LIBCONFIG)
@@ -265,7 +265,7 @@ LIBMUTTOBJS=	mutt/base64.o mutt/buffer.o mutt/charset.o mutt/date.o \
 		mutt/history.o mutt/list.o mutt/logging.o mutt/mapping.o \
 		mutt/mbyte.o mutt/md5.o mutt/memory.o mutt/notify.o \
 		mutt/path.o mutt/pool.o \
-		mutt/regex.o mutt/sha1.o mutt/signal.o mutt/string.o
+		mutt/regex.o mutt/sha1.o mutt/slist.o mutt/signal.o mutt/string.o
 CLEANFILES+=	$(LIBMUTT) $(LIBMUTTOBJS)
 MUTTLIBS+=	$(LIBMUTT)
 ALLOBJS+=	$(LIBMUTTOBJS)

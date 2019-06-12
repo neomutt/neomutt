@@ -1530,7 +1530,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
     if (flush_buffer(buf, &len, adata->conn) < 0)
       goto fail;
 
-  if (mutt_socket_send(adata->conn, "\r\n") <  0)
+  if (mutt_socket_send(adata->conn, "\r\n") < 0)
     goto fail;
   mutt_file_fclose(&fp);
 

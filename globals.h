@@ -110,7 +110,7 @@ WHERE char *C_IndexFormat;                   ///< Config: printf-like format str
 WHERE char *C_ImapUser;                      ///< Config: (imap) Username for the IMAP server
 #endif
 WHERE char *C_Mbox;                          ///< Config: Folder that receives read emails (see Move)
-WHERE char *C_MailcapPath;                   ///< Config: Colon-separated list of mailcap files
+WHERE struct Slist *C_MailcapPath;           ///< Config: Colon-separated list of mailcap files
 WHERE char *C_Folder;                        ///< Config: Base folder for a set of mailboxes
 #ifdef USE_HCACHE
 WHERE char *C_HeaderCache;                   ///< Config: (hcache) Directory/file for the header cache database

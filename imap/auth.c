@@ -34,7 +34,7 @@
 #include "auth.h"
 
 /* These Config Variables are only used in imap/auth.c */
-char *C_ImapAuthenticators; ///< Config: (imap) List of allowed IMAP authentication methods
+struct Slist *C_ImapAuthenticators; ///< Config: (imap) List of allowed IMAP authentication methods
 
 /**
  * imap_authenticators - Accepted authentication methods
@@ -68,40 +68,29 @@ int imap_authenticate(struct ImapAccountData *adata)
 {
   int rc = IMAP_AUTH_FAILURE;
 
-  if (C_ImapAuthenticators)
+  if (C_ImapAuthenticators && (C_ImapAuthenticators->count > 0))
   {
     mutt_debug(LL_DEBUG2, "Trying user-defined imap_authenticators\n");
 
     /* Try user-specified list of authentication methods */
-    char *methods = mutt_str_strdup(C_ImapAuthenticators);
-    char *delim = NULL;
-
-    for (const char *method = methods; method; method = delim)
+    struct ListNode *np = NULL;
+    STAILQ_FOREACH(np, &C_ImapAuthenticators->head, entries)
     {
-      delim = strchr(method, ':');
-      if (delim)
-        *delim++ = '\0';
-      if (!method[0])
-        continue;
-
-      mutt_debug(LL_DEBUG2, "Trying method %s\n", method);
+      mutt_debug(LL_DEBUG2, "Trying method %s\n", np->data);
 
       for (size_t i = 0; i < mutt_array_size(imap_authenticators); i++)
       {
         const struct ImapAuth *auth = &imap_authenticators[i];
-        if (!auth->method || (mutt_str_strcasecmp(auth->method, method) == 0))
+        if (!auth->method || (mutt_str_strcasecmp(auth->method, np->data) == 0))
         {
-          rc = auth->authenticate(adata, method);
+          rc = auth->authenticate(adata, np->data);
           if (rc == IMAP_AUTH_SUCCESS)
           {
-            FREE(&methods);
             return rc;
           }
         }
       }
     }
-
-    FREE(&methods);
   }
   else
   {

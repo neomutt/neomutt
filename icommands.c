@@ -323,11 +323,11 @@ static enum CommandResult icmd_set(struct Buffer *buf, struct Buffer *s,
 
   if (mutt_str_strcmp(s->data, "set all") == 0)
   {
-    dump_config(Config, CS_DUMP_STYLE_NEO, CS_DUMP_NO_FLAGS, fp_out);
+    dump_config(Config, CS_DUMP_NO_FLAGS, fp_out);
   }
   else if (mutt_str_strcmp(s->data, "set") == 0)
   {
-    dump_config(Config, CS_DUMP_STYLE_NEO, CS_DUMP_ONLY_CHANGED, fp_out);
+    dump_config(Config, CS_DUMP_ONLY_CHANGED, fp_out);
   }
   else
   {

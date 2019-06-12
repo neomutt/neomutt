@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for the Magic object
+ * Test code for the Enum object
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,11 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TEST_MAGIC_H
-#define _TEST_MAGIC_H
+#ifndef _TEST_ENUM_H
+#define _TEST_ENUM_H
 
 #include <stdbool.h>
 
-void config_magic(void);
+void config_enum(void);
 
-#endif /* _TEST_MAGIC_H */
+#endif /* _TEST_ENUM_H */

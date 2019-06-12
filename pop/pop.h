@@ -47,7 +47,7 @@ extern char *        C_PopHost;
 extern bool          C_PopLast;
 
 /* These Config Variables are only used in pop/pop_auth.c */
-extern char *C_PopAuthenticators;
+extern struct Slist *C_PopAuthenticators;
 extern bool  C_PopAuthTryAll;
 
 /* These Config Variables are only used in pop/pop_lib.c */
