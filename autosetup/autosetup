@@ -213,6 +213,7 @@ proc main {argv} {
 
 	# Log how we were invoked
 	configlog "Invoked as: [getenv WRAPPER $::argv0] [quote-argv $autosetup(argv)]"
+	configlog "Tclsh: [info nameofexecutable]"
 
 	# Note that auto.def is *not* loaded in the global scope
 	source $autosetup(autodef)
