@@ -131,11 +131,11 @@ enum EatRangeError
  */
 struct RangeRegex
 {
-  const char *raw; /**< regex as string */
-  int lgrp;        /**< paren group matching the left side */
-  int rgrp;        /**< paren group matching the right side */
-  int ready;       /**< compiled yet? */
-  regex_t cooked;  /**< compiled form */
+  const char *raw; ///< Regex as string
+  int lgrp;        ///< Paren group matching the left side
+  int rgrp;        ///< Paren group matching the right side
+  bool ready;      ///< Compiled yet?
+  regex_t cooked;  ///< Compiled form
 };
 
 /**
@@ -940,7 +940,7 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
     regerr = regcomp(&pspec->cooked, pspec->raw, REG_EXTENDED);
     if (regerr != 0)
       return report_regerror(regerr, &pspec->cooked, err);
-    pspec->ready = 1;
+    pspec->ready = true;
   }
 
   /* Match the pattern buffer against the compiled regex.
