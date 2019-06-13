@@ -4819,7 +4819,7 @@ struct ConfigDef MuttVars[] = {
   { "xterm_set_titles",       DT_SYNONYM, NULL, IP "ts_enabled",               },
   { "xterm_title",            DT_SYNONYM, NULL, IP "ts_status_format",         },
 
-  { NULL, 0, 0, 0, 0 },
+  { NULL, 0, NULL, 0, 0, NULL },
 };
 
 /* functions used to parse commands in a rc file */
