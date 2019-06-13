@@ -25,7 +25,7 @@
 
 #include <stddef.h>
 #include <stdbool.h>
-#include "mutt/list.h"
+#include "list.h"
 
 #define SLIST_SEP_SPACE (1 << 13)
 #define SLIST_SEP_COMMA (1 << 14)

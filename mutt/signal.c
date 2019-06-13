@@ -35,9 +35,6 @@
 #include <string.h>
 #include "message.h"
 #include "signal2.h"
-#ifdef HAVE_LIBUNWIND
-#include "mutt.h"
-#endif
 
 static sigset_t Sigset;
 static sigset_t SigsetSys;
