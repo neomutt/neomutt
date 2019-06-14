@@ -108,6 +108,13 @@ enum GroupState
   GS_ADDR, ///< Entry is an address
 };
 
+typedef bool (*init_component_t)(struct ConfigSet *cs);
+
+init_component_t InitComponents[] =
+{
+  init_sidebar,
+};
+
 /**
  * add_to_stailq - Add a string to a list
  * @param head String list
@@ -3435,8 +3442,12 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
       mutt_str_strfcpy(UserTyped, pt, sizeof(UserTyped));
       memset(Matches, 0, MatchesListsize);
       memset(Completed, 0, sizeof(Completed));
-      for (num = 0; MuttVars[num].name; num++)
-        candidate(UserTyped, MuttVars[num].name, Completed, sizeof(Completed));
+
+      struct HashElem **config = get_elem_list(Config);
+      for (size_t i = 0; config[i]; i++)
+        candidate(UserTyped, config[i]->key.strkey, Completed, sizeof(Completed));
+      FREE(&config);
+
       TAILQ_FOREACH(myv, &MyVars, entries)
       {
         candidate(UserTyped, myv->name, Completed, sizeof(Completed));
@@ -3793,6 +3804,21 @@ struct ConfigSet *init_config(size_t size)
   }
 
   return cs;
+}
+
+/**
+ * init_components - Initialise the components
+ * @param cs Config Set
+ * @retval bool True, if successful
+ */
+bool init_components(struct ConfigSet *cs)
+{
+  for (size_t i = 0; i < mutt_array_size(InitComponents); i++)
+  {
+    if (!InitComponents[i](cs))
+      return false;
+  }
+  return true;
 }
 
 /**

@@ -4,11 +4,12 @@ doc/makedoc$(EXEEXT): $(SRCDIR)/doc/makedoc.c
 	$(CC_FOR_BUILD) -I. $(CFLAGS_FOR_BUILD) $(LDFLAGS_FOR_BUILD) \
 	    -o $@ $(SRCDIR)/doc/makedoc.c
 
-doc/neomuttrc: $(SRCDIR)/init.h doc/makedoc$(EXEEXT) $(SRCDIR)/doc/neomuttrc.head
-	sed -e 's,@docdir@,$(docdir),' $(SRCDIR)/doc/neomuttrc.head \
-	    > doc/neomuttrc
-	$(MAKEDOC_CPP) $(SRCDIR)/init.h | doc/makedoc$(EXEEXT) -c \
-	    >> doc/neomuttrc
+doc/neomuttrc: $(SRCDIR)/init.h $(SRCDIR)/sidebar.c doc/makedoc$(EXEEXT) $(SRCDIR)/doc/neomuttrc.head
+	( \
+	sed -e 's,@docdir@,$(docdir),' $(SRCDIR)/doc/neomuttrc.head; \
+	$(MAKEDOC_CPP) $(SRCDIR)/init.h | doc/makedoc$(EXEEXT) -c; \
+	sed -n -e '/\/\*++\*\//,\/\*--\*\//p' $(SRCDIR)/sidebar.c | doc/makedoc$(EXEEXT) -c \
+	) > doc/neomuttrc
 
 .PHONY: doc
 doc:
@@ -69,13 +70,13 @@ doc/index.html: $(SRCDIR)/doc/chunk.xsl \
 
 doc/neomuttrc.5:	doc/makedoc$(EXEEXT) \
 		$(SRCDIR)/init.h \
+		$(SRCDIR)/sidebar.c \
 		$(SRCDIR)/doc/neomuttrc.man.head \
 		$(SRCDIR)/doc/neomuttrc.man.tail
-	( sed -e "/^\.TH/s|@MAN_DATE@|$(PACKAGE_DATE)|" \
-	    $(SRCDIR)/doc/neomuttrc.man.head && \
+	( sed -e "/^\.TH/s|@MAN_DATE@|$(PACKAGE_DATE)|" $(SRCDIR)/doc/neomuttrc.man.head && \
 	    $(MAKEDOC_CPP) $(SRCDIR)/init.h | doc/makedoc$(EXEEXT) -m && \
-	    sed -e "s|@MAN_DOCDIR@|$(docdir)|g" \
-	      $(SRCDIR)/doc/neomuttrc.man.tail \
+	    sed -n -e '/\/\*++\*\//,\/\*--\*\//p' $(SRCDIR)/sidebar.c | doc/makedoc$(EXEEXT) -m && \
+	    sed -e "s|@MAN_DOCDIR@|$(docdir)|g" $(SRCDIR)/doc/neomuttrc.man.tail \
 	) > $@
 
 doc/neomutt.1:
@@ -87,15 +88,13 @@ doc/neomutt.1:
 	    $(SRCDIR)/doc/neomutt.man \
 	) > $@
 
-doc/manual.xml:	doc/makedoc$(EXEEXT) $(SRCDIR)/init.h $(SRCDIR)/opcodes.h \
+doc/manual.xml:	doc/makedoc$(EXEEXT) $(SRCDIR)/init.h $(SRCDIR)/sidebar.c $(SRCDIR)/opcodes.h \
 		$(SRCDIR)/doc/manual.xml.head $(SRCDIR)/functions.h \
 		$(SRCDIR)/doc/manual.xml.tail $(SRCDIR)/doc/gen-map-doc
-	( sed -e "s/@VERSION@/$(PACKAGE_VERSION)/; s!/usr/libexec!$(libexecdir)!g" \
-	    $(SRCDIR)/doc/manual.xml.head && \
+	( sed -e "s/@VERSION@/$(PACKAGE_VERSION)/; s!/usr/libexec!$(libexecdir)!g" $(SRCDIR)/doc/manual.xml.head && \
 	    $(MAKEDOC_CPP) $(SRCDIR)/init.h | doc/makedoc$(EXEEXT) -s && \
-	    $(MAKEDOC_CPP) $(SRCDIR)/functions.h | \
-	    perl $(SRCDIR)/doc/gen-map-doc $(SRCDIR)/doc/manual.xml.tail \
-	    $(SRCDIR)/opcodes.h \
+	    sed -n -e '/\/\*++\*\//,\/\*--\*\//p' $(SRCDIR)/sidebar.c | doc/makedoc$(EXEEXT) -s && \
+	    $(MAKEDOC_CPP) $(SRCDIR)/functions.h | perl $(SRCDIR)/doc/gen-map-doc $(SRCDIR)/doc/manual.xml.tail $(SRCDIR)/opcodes.h \
 	) > $@
 
 install-doc: all-doc

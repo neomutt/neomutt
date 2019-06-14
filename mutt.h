@@ -120,6 +120,7 @@ enum MessageType
 
 int mutt_init(bool skip_sys_rc, struct ListHead *commands);
 struct ConfigSet *init_config(size_t size);
+bool init_components(struct ConfigSet *cs);
 
 /**
  * struct AttachMatch - An attachment matching a regex

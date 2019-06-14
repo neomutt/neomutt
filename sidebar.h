@@ -27,25 +27,14 @@
 
 #include <stdbool.h>
 
+struct ConfigSet;
 struct Mailbox;
-
-/* These Config Variables are only used in sidebar.c */
-extern short C_SidebarComponentDepth;
-extern char *C_SidebarDelimChars;
-extern char *C_SidebarDividerChar;
-extern bool  C_SidebarFolderIndent;
-extern char *C_SidebarFormat;
-extern char *C_SidebarIndentString;
-extern bool  C_SidebarNewMailOnly;
-extern bool  C_SidebarNonEmptyMailboxOnly;
-extern bool  C_SidebarNextNewWrap;
-extern bool  C_SidebarShortPath;
-extern short C_SidebarSortMethod;
 
 void mutt_sb_change_mailbox(int op);
 void mutt_sb_draw(void);
 struct Mailbox *mutt_sb_get_highlight(void);
 void mutt_sb_notify_mailbox(struct Mailbox *m, bool created);
 void mutt_sb_set_open_mailbox(void);
+bool init_sidebar(struct ConfigSet *cs);
 
 #endif /* MUTT_SIDEBAR_H */

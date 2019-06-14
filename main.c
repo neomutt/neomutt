@@ -604,6 +604,10 @@ int main(int argc, char *argv[], char *envp[])
   Config = init_config(500);
   if (!Config)
     goto main_curses;
+
+  if (!init_components(Config))
+    goto main_curses;
+
   notify_set_parent(Config->notify, NeoMutt->notify);
 
   if (!get_user_info(Config))
