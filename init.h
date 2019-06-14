@@ -3400,15 +3400,22 @@ struct ConfigDef MuttVars[] = {
   ** used doesn't match your "$alternates", the \fIFrom:\fP line will use
   ** your address on the current machine.
   ** .pp
-  ** Also see the "$alternates" command.
+  ** Also see the "$alternates" command and $$reverse_realname.
   */
   { "reverse_realname", DT_BOOL|R_INDEX|R_PAGER, &C_ReverseRealname, true },
   /*
   ** .pp
   ** This variable fine-tunes the behavior of the $$reverse_name feature.
-  ** When it is \fIset\fP, NeoMutt will use the address from incoming messages as-is,
-  ** possibly including eventual real names.  When it is \fIunset\fP, NeoMutt will
-  ** override any such real names with the setting of the $$realname variable.
+  ** .pp
+  ** When it is \fIunset\fP, Mutt will remove the real name part of a
+  ** matching address.  This allows the use of the email address
+  ** without having to also use what the sender put in the real name
+  ** field.
+  ** .pp
+  ** When it is \fIset\fP, Mutt will use the matching address as-is.
+  ** .pp
+  ** In either case, a missing real name will be filled in afterwards
+  ** using the value of $$realname.
   */
   { "rfc2047_parameters", DT_BOOL, &C_Rfc2047Parameters, false },
   /*
