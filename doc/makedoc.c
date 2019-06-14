@@ -949,10 +949,12 @@ enum DataType
   DT_NONE = 0,
   DT_ADDRESS,
   DT_BOOL,
+  DT_COMMAND,
   DT_ENUM,
   DT_LONG,
   DT_MBTABLE,
   DT_NUMBER,
+  DT_PATH,
   DT_QUAD,
   DT_REGEX,
   DT_SLIST,
@@ -970,10 +972,12 @@ struct VariableTypes
   { "DT_NONE",    "-none-"             },
   { "DT_ADDRESS", "e-mail address"     },
   { "DT_BOOL",    "boolean"            },
+  { "DT_COMMAND", "command"            },
   { "DT_ENUM",    "enumeration"        },
   { "DT_LONG",    "number (long)"      },
   { "DT_MBTABLE", "character string"   },
   { "DT_NUMBER",  "number"             },
+  { "DT_PATH",    "path"               },
   { "DT_QUAD",    "quadoption"         },
   { "DT_REGEX",   "regular expression" },
   { "DT_SLIST",   "string list"        },
@@ -1048,11 +1052,13 @@ static void pretty_default(char *t, size_t l, const char *s, int type)
         *t = tolower((unsigned char) *t);
       break;
     }
-    case DT_STRING:
-    case DT_SLIST:
-    case DT_REGEX:
     case DT_ADDRESS:
+    case DT_COMMAND:
     case DT_MBTABLE:
+    case DT_PATH:
+    case DT_REGEX:
+    case DT_SLIST:
+    case DT_STRING:
     {
       if (strcmp(s, "0") == 0)
         break;
@@ -1171,8 +1177,8 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
     /* configuration file */
     case F_CONF:
     {
-      if (type == DT_STRING || type == DT_REGEX || type == DT_ADDRESS ||
-          type == DT_MBTABLE || type == DT_SLIST)
+      if ((type == DT_STRING) || (type == DT_REGEX) || (type == DT_ADDRESS) ||
+          (type == DT_MBTABLE) || (type == DT_SLIST) || (type == DT_PATH) || (type == DT_COMMAND))
       {
         fprintf(out, "\n# set %s=\"", varname);
         conf_print_strval(val, out);
@@ -1183,8 +1189,8 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
 
       fprintf(out, "\n#\n# Name: %s", varname);
       fprintf(out, "\n# Type: %s", type2human(type));
-      if (type == DT_STRING || type == DT_REGEX || type == DT_ADDRESS ||
-          type == DT_MBTABLE || type == DT_SLIST)
+      if ((type == DT_STRING) || (type == DT_REGEX) || (type == DT_ADDRESS) ||
+          (type == DT_MBTABLE) || (type == DT_SLIST) || (type == DT_PATH) || (type == DT_COMMAND))
       {
         fputs("\n# Default: \"", out);
         conf_print_strval(val, out);
@@ -1203,8 +1209,8 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
       fprintf(out, "\n.TP\n.B %s\n", varname);
       fputs(".nf\n", out);
       fprintf(out, "Type: %s\n", type2human(type));
-      if (type == DT_STRING || type == DT_REGEX || type == DT_ADDRESS ||
-          type == DT_MBTABLE || type == DT_SLIST)
+      if ((type == DT_STRING) || (type == DT_REGEX) || (type == DT_ADDRESS) ||
+          (type == DT_MBTABLE) || (type == DT_SLIST) || (type == DT_PATH) || (type == DT_COMMAND))
       {
         fputs("Default: \"", out);
         man_print_strval(val, out);
@@ -1231,8 +1237,8 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
       sgml_fputs(varname, out);
       fprintf(out, "</title>\n<literallayout>Type: %s", type2human(type));
 
-      if (type == DT_STRING || type == DT_REGEX || type == DT_ADDRESS ||
-          type == DT_MBTABLE || type == DT_SLIST)
+      if ((type == DT_STRING) || (type == DT_REGEX) || (type == DT_ADDRESS) ||
+          (type == DT_MBTABLE) || (type == DT_SLIST) || (type == DT_PATH) || (type == DT_COMMAND))
       {
         if (val && *val)
         {
@@ -1292,9 +1298,12 @@ static void handle_confline(char *s, FILE *out)
       return;
     if (strcmp(buf, ",") == 0)
       break;
+    int subtype = buf_to_type(buf);
+    if (subtype != DT_NONE)
+      type = subtype;
   }
 
-  /* option name or IP &address */
+  /* variable name */
   s = get_token(buf, sizeof(buf), s);
   if (!s)
     return;
@@ -1327,16 +1336,14 @@ static void handle_confline(char *s, FILE *out)
   }
 
   memset(tmp, 0, sizeof(tmp));
+  strncpy(tmp + strlen(tmp), buf, sizeof(tmp) - strlen(tmp));
 
-  do
+  // Look for unjoined strings (pre-processor artifacts)
+  while ((s[0] == ' ') && (s[1] == '"'))
   {
-    if (strcmp(buf, "}") == 0)
-      break;
-    if (strcmp(buf, ",") == 0)
-      break;
-
+    s = get_token(buf, sizeof(buf), s);
     strncpy(tmp + strlen(tmp), buf, sizeof(tmp) - strlen(tmp));
-  } while ((s = get_token(buf, sizeof(buf), s)));
+  }
 
   pretty_default(val, sizeof(val), tmp, type);
   print_confline(varname, type, val, out);
