@@ -236,6 +236,7 @@
   NEOMUTT_TEST_ITEM(test_mutt_list_insert_head)                                \
   NEOMUTT_TEST_ITEM(test_mutt_list_insert_tail)                                \
   NEOMUTT_TEST_ITEM(test_mutt_list_match)                                      \
+  NEOMUTT_TEST_ITEM(test_mutt_list_str_split)                                  \
   NEOMUTT_TEST_ITEM(test_log_disp_file)                                        \
   NEOMUTT_TEST_ITEM(test_log_disp_queue)                                       \
   NEOMUTT_TEST_ITEM(test_log_disp_terminal)                                    \
@@ -372,7 +373,6 @@
   NEOMUTT_TEST_ITEM(test_mutt_str_rstrnstr)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_str_skip_email_wsp)                              \
   NEOMUTT_TEST_ITEM(test_mutt_str_skip_whitespace)                             \
-  NEOMUTT_TEST_ITEM(test_mutt_str_split)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_str_startswith)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_str_strcasecmp)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_str_strcasestr)                                  \
@@ -389,7 +389,7 @@
   NEOMUTT_TEST_ITEM(test_mutt_str_strncat)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_str_strncmp)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_str_strnfcpy)                                    \
-  NEOMUTT_TEST_ITEM(test_mutt_str_substr_cpy)                                  \
+  NEOMUTT_TEST_ITEM(test_mutt_str_substr_copy)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_str_substr_dup)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_str_sysexit)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_str_word_casecmp)                                \

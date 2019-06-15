@@ -229,7 +229,8 @@ LIST_OBJS	= test/list/common.o \
 		  test/list/mutt_list_insert_after.o \
 		  test/list/mutt_list_insert_head.o \
 		  test/list/mutt_list_insert_tail.o \
-		  test/list/mutt_list_match.o
+		  test/list/mutt_list_match.o \
+		  test/list/mutt_list_str_split.o
 
 LOGGING_OBJS	= test/logging/log_disp_file.o \
 		  test/logging/log_disp_queue.o \
@@ -386,7 +387,6 @@ STRING_OBJS	= test/string/mutt_str_adjust.o \
 		  test/string/mutt_str_rstrnstr.o \
 		  test/string/mutt_str_skip_email_wsp.o \
 		  test/string/mutt_str_skip_whitespace.o \
-		  test/string/mutt_str_split.o \
 		  test/string/mutt_str_startswith.o \
 		  test/string/mutt_str_strcasecmp.o \
 		  test/string/mutt_str_strcasestr.o \
@@ -403,7 +403,7 @@ STRING_OBJS	= test/string/mutt_str_adjust.o \
 		  test/string/mutt_str_strncat.o \
 		  test/string/mutt_str_strncmp.o \
 		  test/string/mutt_str_strnfcpy.o \
-		  test/string/mutt_str_substr_cpy.o \
+		  test/string/mutt_str_substr_copy.o \
 		  test/string/mutt_str_substr_dup.o \
 		  test/string/mutt_str_sysexit.o \
 		  test/string/mutt_str_word_casecmp.o

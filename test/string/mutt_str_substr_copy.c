@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_str_substr_cpy()
+ * Test code for mutt_str_substr_copy()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -25,48 +25,48 @@
 #include "config.h"
 #include "mutt/mutt.h"
 
-void test_mutt_str_substr_cpy(void)
+void test_mutt_str_substr_copy(void)
 {
-  // char *mutt_str_substr_cpy(char *dest, const char *begin, const char *end, size_t destlen);
+  // char *mutt_str_substr_copy(const char *begin, const char *end, char *buf, size_t buflen);
 
   // clang-format off
   const char *str = "apple banana\0xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
   // clang-format on
 
   {
-    TEST_CHECK(mutt_str_substr_cpy(NULL, str + 3, str + 7, 32) == NULL);
+    TEST_CHECK(mutt_str_substr_copy(str + 3, str + 7, NULL, 32) == NULL);
   }
 
   {
     char buf[32] = { 0 };
-    TEST_CHECK(mutt_str_substr_cpy(buf, NULL, str + 7, sizeof(buf)) == buf);
+    TEST_CHECK(mutt_str_substr_copy(NULL, str + 7, buf, sizeof(buf)) == buf);
   }
 
   {
     char buf[32] = { 0 };
-    TEST_CHECK(mutt_str_substr_cpy(buf, str + 3, NULL, sizeof(buf)) == buf);
+    TEST_CHECK(mutt_str_substr_copy(str + 3, NULL, buf, sizeof(buf)) == buf);
   }
 
   {
     char buf[32] = { 0 };
-    TEST_CHECK(mutt_str_substr_cpy(buf, str + 3, str + 7, 0) == buf);
+    TEST_CHECK(mutt_str_substr_copy(str + 3, str + 7, buf, 0) == buf);
   }
 
   {
     char buf[32] = { 0 };
-    TEST_CHECK(mutt_str_substr_cpy(buf, str + 3, str + 3, sizeof(buf)) == buf);
+    TEST_CHECK(mutt_str_substr_copy(str + 3, str + 3, buf, sizeof(buf)) == buf);
     TEST_CHECK(strcmp(buf, "") == 0);
   }
 
   {
     char buf[32] = { 0 };
-    TEST_CHECK(mutt_str_substr_cpy(buf, str + 3, str + 7, sizeof(buf)) == buf);
+    TEST_CHECK(mutt_str_substr_copy(str + 3, str + 7, buf, sizeof(buf)) == buf);
     TEST_CHECK(strcmp(buf, "le b") == 0);
   }
 
   {
     char buf[32] = { 0 };
-    TEST_CHECK(mutt_str_substr_cpy(buf, str + 3, str + 64, sizeof(buf)) == buf);
+    TEST_CHECK(mutt_str_substr_copy(str + 3, str + 64, buf, sizeof(buf)) == buf);
     TEST_CHECK(strcmp(buf, "le banana") == 0);
   }
 }

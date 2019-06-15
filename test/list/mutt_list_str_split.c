@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_str_split()
+ * Test code for mutt_list_str_split()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -42,12 +42,12 @@ void print_compared_list(struct ListHead expected, struct ListHead actual)
   }
 }
 
-void test_mutt_str_split(void)
+void test_mutt_list_str_split(void)
 {
-  // struct ListHead mutt_str_split(const char *src, char sep);
+  // struct ListHead mutt_list_str_split(const char *src, char sep);
 
   {
-    struct ListHead head = mutt_str_split(NULL, ',');
+    struct ListHead head = mutt_list_str_split(NULL, ',');
     TEST_CHECK(STAILQ_EMPTY(&head));
   }
 
@@ -60,8 +60,8 @@ void test_mutt_str_split(void)
   char *empty = "";
 
   { // Check NULL conditions
-    struct ListHead retval1 = mutt_str_split(NULL, ' ');
-    struct ListHead retval2 = mutt_str_split(empty, ' ');
+    struct ListHead retval1 = mutt_list_str_split(NULL, ' ');
+    struct ListHead retval2 = mutt_list_str_split(empty, ' ');
 
     if (!TEST_CHECK(STAILQ_EMPTY(&retval1)))
       TEST_MSG("Expected: empty");
@@ -70,12 +70,12 @@ void test_mutt_str_split(void)
   }
 
   { // Check different words
-    struct ListHead retval1 = mutt_str_split(one_word, ' ');
-    struct ListHead retval2 = mutt_str_split(two_words, ' ');
-    struct ListHead retval3 = mutt_str_split(words, ' ');
-    struct ListHead retval4 = mutt_str_split(ending_sep, ' ');
-    struct ListHead retval5 = mutt_str_split(starting_sep, ' ');
-    struct ListHead retval6 = mutt_str_split(other_sep, ',');
+    struct ListHead retval1 = mutt_list_str_split(one_word, ' ');
+    struct ListHead retval2 = mutt_list_str_split(two_words, ' ');
+    struct ListHead retval3 = mutt_list_str_split(words, ' ');
+    struct ListHead retval4 = mutt_list_str_split(ending_sep, ' ');
+    struct ListHead retval5 = mutt_list_str_split(starting_sep, ' ');
+    struct ListHead retval6 = mutt_list_str_split(other_sep, ',');
 
     struct ListHead expectedval1 = STAILQ_HEAD_INITIALIZER(expectedval1);
     mutt_list_insert_tail(&expectedval1, "hello");
