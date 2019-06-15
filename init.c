@@ -2613,46 +2613,6 @@ void mutt_commands_apply(void *data, void (*application)(void *, const struct Co
 #endif
 
 /**
- * mutt_dump_variables - Print a list of all variables with their values
- * @param hide_sensitive Don't display the values of private config items
- * @retval 0 Success
- * @retval 1 Error
- */
-int mutt_dump_variables(bool hide_sensitive)
-{
-  char cmd[256];
-  struct Buffer *err = mutt_buffer_pool_get();
-  struct Buffer *token = mutt_buffer_pool_get();
-
-  for (int i = 0; MuttVars[i].name; i++)
-  {
-    if (MuttVars[i].type == DT_SYNONYM)
-      continue;
-
-    if (hide_sensitive && IS_SENSITIVE(MuttVars[i]))
-    {
-      mutt_message("%s='***'", MuttVars[i].name);
-      continue;
-    }
-    snprintf(cmd, sizeof(cmd), "set ?%s\n", MuttVars[i].name);
-    if (mutt_parse_rc_line(cmd, token, err) == MUTT_CMD_ERROR)
-    {
-      mutt_message("%s", mutt_b2s(err));
-      mutt_buffer_pool_release(&token);
-      mutt_buffer_pool_release(&err);
-
-      return 1; // TEST17: can't test
-    }
-    mutt_message("%s", mutt_b2s(err));
-  }
-
-  mutt_buffer_pool_release(&token);
-  mutt_buffer_pool_release(&err);
-
-  return 0;
-}
-
-/**
  * mutt_extract_token - Extract one token from a string
  * @param dest  Buffer for the result
  * @param tok   Buffer containing tokens

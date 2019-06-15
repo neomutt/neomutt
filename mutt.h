@@ -147,7 +147,6 @@ int mutt_var_value_complete(char *buf, size_t buflen, int pos);
 void myvar_set(const char *var, const char *val);
 bool mutt_nm_query_complete(char *buf, size_t buflen, int pos, int numtabs);
 bool mutt_nm_tag_complete(char *buf, size_t buflen, int numtabs);
-int mutt_dump_variables(bool hide_sensitive);
 HookFlags mutt_get_hook_type(const char *name);
 enum CommandResult mutt_parse_rc_line(/* const */ char *line, struct Buffer *token, struct Buffer *err);
 int mutt_query_variables(struct ListHead *queries);
