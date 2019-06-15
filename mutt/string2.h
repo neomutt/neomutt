@@ -109,7 +109,7 @@ int         mutt_str_strncasecmp(const char *a, const char *b, size_t l);
 char *      mutt_str_strncat(char *d, size_t l, const char *s, size_t sl);
 int         mutt_str_strncmp(const char *a, const char *b, size_t l);
 size_t      mutt_str_strnfcpy(char *dest, const char *src, size_t n, size_t dsize);
-char *      mutt_str_substr_cpy(char *dest, const char *begin, const char *end, size_t destlen);
+char *      mutt_str_substr_copy(const char *begin, const char *end, char *buf, size_t buflen);
 char *      mutt_str_substr_dup(const char *begin, const char *end);
 const char *mutt_str_sysexit(int e);
 int         mutt_str_word_casecmp(const char *a, const char *b);

@@ -110,7 +110,7 @@ int mutt_complete(char *buf, size_t buflen)
         return -1;
       }
       mutt_str_strfcpy(exp_dirpart, tmp, sizeof(exp_dirpart));
-      mutt_str_substr_cpy(dirpart, buf, p + 1, sizeof(dirpart));
+      mutt_str_substr_copy(buf, p + 1, dirpart, sizeof(dirpart));
       mutt_str_strfcpy(filepart, p + 1, sizeof(filepart));
     }
     else
@@ -132,7 +132,7 @@ int mutt_complete(char *buf, size_t buflen)
       }
       else
       {
-        mutt_str_substr_cpy(dirpart, buf, p, sizeof(dirpart));
+        mutt_str_substr_copy(buf, p, dirpart, sizeof(dirpart));
         mutt_str_strfcpy(filepart, p + 1, sizeof(filepart));
         mutt_str_strfcpy(exp_dirpart, dirpart, sizeof(exp_dirpart));
         mutt_expand_path(exp_dirpart, sizeof(exp_dirpart));
