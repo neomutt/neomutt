@@ -2953,7 +2953,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           el_add_email(&el, extra->email);
           ci_bounce_message(m, &el);
-          el_free(&el);
+          mutt_emaillist_free(&el);
         }
         break;
       }
@@ -2978,7 +2978,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           el_add_email(&el, extra->email);
           ci_send_message(SEND_TO_SENDER, NULL, NULL, extra->ctx, &el);
-          el_free(&el);
+          mutt_emaillist_free(&el);
         }
         pager_menu->redraw = REDRAW_FULL;
         break;
@@ -3037,7 +3037,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           ch = -1;
           rc = OP_MAIN_NEXT_UNDELETED;
         }
-        el_free(&el);
+        mutt_emaillist_free(&el);
         break;
       }
 
@@ -3143,7 +3143,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           el_add_tagged(&el, extra->ctx, extra->email, false);
           mutt_pipe_message(extra->ctx->mailbox, &el);
-          el_free(&el);
+          mutt_emaillist_free(&el);
         }
         break;
 
@@ -3156,7 +3156,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           el_add_tagged(&el, extra->ctx, extra->email, false);
           mutt_print_message(extra->ctx->mailbox, &el);
-          el_free(&el);
+          mutt_emaillist_free(&el);
         }
         break;
 
@@ -3195,7 +3195,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           el_add_email(&el, extra->email);
           ci_send_message(SEND_NEWS | SEND_FORWARD, NULL, NULL, extra->ctx, &el);
-          el_free(&el);
+          mutt_emaillist_free(&el);
         }
         pager_menu->redraw = REDRAW_FULL;
         break;
@@ -3228,7 +3228,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
             struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
             el_add_email(&el, extra->email);
             ci_send_message(SEND_NEWS | SEND_REPLY, NULL, NULL, extra->ctx, &el);
-            el_free(&el);
+            mutt_emaillist_free(&el);
           }
           pager_menu->redraw = REDRAW_FULL;
           break;
@@ -3258,7 +3258,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           el_add_email(&el, extra->email);
           ci_send_message(replyflags, NULL, NULL, extra->ctx, &el);
-          el_free(&el);
+          mutt_emaillist_free(&el);
         }
         pager_menu->redraw = REDRAW_FULL;
         break;
@@ -3271,7 +3271,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_email(&el, extra->email);
         ci_send_message(SEND_POSTPONED, NULL, NULL, extra->ctx, &el);
-        el_free(&el);
+        mutt_emaillist_free(&el);
         pager_menu->redraw = REDRAW_FULL;
         break;
       }
@@ -3286,7 +3286,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           el_add_email(&el, extra->email);
           ci_send_message(SEND_FORWARD, NULL, NULL, extra->ctx, &el);
-          el_free(&el);
+          mutt_emaillist_free(&el);
         }
         pager_menu->redraw = REDRAW_FULL;
         break;
@@ -3333,7 +3333,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           else
             pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         }
-        el_free(&el);
+        mutt_emaillist_free(&el);
         break;
       }
 
@@ -3467,7 +3467,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_email(&el, extra->email);
         ci_send_message(SEND_KEY, NULL, NULL, extra->ctx, &el);
-        el_free(&el);
+        mutt_emaillist_free(&el);
         pager_menu->redraw = REDRAW_FULL;
         break;
       }
@@ -3479,7 +3479,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_email(&el, extra->email);
         rc = mutt_label_message(Context->mailbox, &el);
-        el_free(&el);
+        mutt_emaillist_free(&el);
 
         if (rc > 0)
         {
@@ -3509,7 +3509,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_email(&el, extra->email);
         crypt_extract_keys_from_messages(&el);
-        el_free(&el);
+        mutt_emaillist_free(&el);
         pager_menu->redraw = REDRAW_FULL;
         break;
       }
