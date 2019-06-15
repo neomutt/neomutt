@@ -237,3 +237,32 @@ bool mutt_list_compare(const struct ListHead *ah, const struct ListHead *bh)
 
   return true;
 }
+
+/**
+ * mutt_list_str_split - Split a string into a list using a separator char
+ * @param src String to split
+ * @param sep Word separator
+ */
+struct ListHead mutt_list_str_split(const char *src, char sep)
+{
+  struct ListHead head = STAILQ_HEAD_INITIALIZER(head);
+
+  if (!src || !*src)
+    return head;
+
+  while (true)
+  {
+    const char *start = src;
+    while (*src && (*src != sep))
+      src++;
+
+    mutt_list_insert_tail(&head, mutt_str_substr_dup(start, src));
+
+    if (!*src)
+      break;
+
+    src++;
+  }
+
+  return head;
+}
