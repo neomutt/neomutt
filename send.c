@@ -1492,7 +1492,7 @@ int mutt_resend_message(FILE *fp, struct Context *ctx, struct Email *cur)
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   el_add_email(&el, cur);
   int rc = ci_send_message(SEND_RESEND, msg, NULL, ctx, &el);
-  el_free(&el);
+  mutt_emaillist_free(&el);
 
   return rc;
 }

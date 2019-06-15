@@ -98,14 +98,14 @@ static void group_remove(struct Group *g)
 
 /**
  * mutt_grouplist_clear - Clear a GroupList
- * @param head GroupList to clear
+ * @param gl GroupList to clear
  */
-void mutt_grouplist_clear(struct GroupList *head)
+void mutt_grouplist_clear(struct GroupList *gl)
 {
-  if (!head)
+  if (!gl)
     return;
 
-  struct GroupNode *np = STAILQ_FIRST(head);
+  struct GroupNode *np = STAILQ_FIRST(gl);
   struct GroupNode *next = NULL;
   while (np)
   {
@@ -114,7 +114,7 @@ void mutt_grouplist_clear(struct GroupList *head)
     FREE(&np);
     np = next;
   }
-  STAILQ_INIT(head);
+  STAILQ_INIT(gl);
 }
 
 /**
@@ -131,35 +131,35 @@ static bool empty_group(struct Group *g)
 
 /**
  * mutt_grouplist_add - Add a Group to a GroupList
- * @param head  GroupList to add to
+ * @param gl    GroupList to add to
  * @param group Group to add
  */
-void mutt_grouplist_add(struct GroupList *head, struct Group *group)
+void mutt_grouplist_add(struct GroupList *gl, struct Group *group)
 {
-  if (!head || !group)
+  if (!gl || !group)
     return;
 
   struct GroupNode *np = NULL;
-  STAILQ_FOREACH(np, head, entries)
+  STAILQ_FOREACH(np, gl, entries)
   {
     if (np->group == group)
       return;
   }
   np = mutt_mem_calloc(1, sizeof(struct GroupNode));
   np->group = group;
-  STAILQ_INSERT_TAIL(head, np, entries);
+  STAILQ_INSERT_TAIL(gl, np, entries);
 }
 
 /**
  * mutt_grouplist_destroy - Free a GroupList
- * @param head GroupList to free
+ * @param gl GroupList to free
  */
-void mutt_grouplist_destroy(struct GroupList *head)
+void mutt_grouplist_destroy(struct GroupList *gl)
 {
-  if (!head)
+  if (!gl)
     return;
 
-  struct GroupNode *np = STAILQ_FIRST(head);
+  struct GroupNode *np = STAILQ_FIRST(gl);
   struct GroupNode *next = NULL;
   while (np)
   {
@@ -167,7 +167,7 @@ void mutt_grouplist_destroy(struct GroupList *head)
     FREE(&np);
     np = next;
   }
-  STAILQ_INIT(head);
+  STAILQ_INIT(gl);
 }
 
 /**
@@ -219,16 +219,16 @@ static int group_remove_regex(struct Group *g, const char *s)
 
 /**
  * mutt_grouplist_add_addrlist - Add Address list to a GroupList
- * @param head GroupList to add to
- * @param al   Address list to add
+ * @param gl GroupList to add to
+ * @param al Address list to add
  */
-void mutt_grouplist_add_addrlist(struct GroupList *head, struct AddressList *al)
+void mutt_grouplist_add_addrlist(struct GroupList *gl, struct AddressList *al)
 {
-  if (!head || !al)
+  if (!gl || !al)
     return;
 
   struct GroupNode *np = NULL;
-  STAILQ_FOREACH(np, head, entries)
+  STAILQ_FOREACH(np, gl, entries)
   {
     group_add_addrlist(np->group, al);
   }
@@ -236,18 +236,18 @@ void mutt_grouplist_add_addrlist(struct GroupList *head, struct AddressList *al)
 
 /**
  * mutt_grouplist_remove_addrlist - Remove an AddressList from a GroupList
- * @param head GroupList to remove from
- * @param al   AddressList to remove
+ * @param gl GroupList to remove from
+ * @param al AddressList to remove
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_grouplist_remove_addrlist(struct GroupList *head, struct AddressList *al)
+int mutt_grouplist_remove_addrlist(struct GroupList *gl, struct AddressList *al)
 {
-  if (!head || !al)
+  if (!gl || !al)
     return -1;
 
   struct GroupNode *gnp = NULL;
-  STAILQ_FOREACH(gnp, head, entries)
+  STAILQ_FOREACH(gnp, gl, entries)
   {
     struct Address *a = NULL;
     TAILQ_FOREACH(a, al, entries)
@@ -265,23 +265,22 @@ int mutt_grouplist_remove_addrlist(struct GroupList *head, struct AddressList *a
 
 /**
  * mutt_grouplist_add_regex - Add matching Addresses to a GroupList
- * @param head  GroupList to add to
+ * @param gl    GroupList to add to
  * @param s     Address to match
  * @param flags Flags, e.g. REG_ICASE
  * @param err   Buffer for error message
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_grouplist_add_regex(struct GroupList *head, const char *s, int flags,
-                             struct Buffer *err)
+int mutt_grouplist_add_regex(struct GroupList *gl, const char *s, int flags, struct Buffer *err)
 {
-  if (!head || !s)
+  if (!gl || !s)
     return -1;
 
   int rc = 0;
 
   struct GroupNode *np = NULL;
-  STAILQ_FOREACH(np, head, entries)
+  STAILQ_FOREACH(np, gl, entries)
   {
     rc = group_add_regex(np->group, s, flags, err);
     if (rc)
@@ -292,19 +291,19 @@ int mutt_grouplist_add_regex(struct GroupList *head, const char *s, int flags,
 
 /**
  * mutt_grouplist_remove_regex - Remove matching addresses from a GroupList
- * @param head GroupList to remove from
- * @param s    Address to match
+ * @param gl GroupList to remove from
+ * @param s  Address to match
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_grouplist_remove_regex(struct GroupList *head, const char *s)
+int mutt_grouplist_remove_regex(struct GroupList *gl, const char *s)
 {
-  if (!head || !s)
+  if (!gl || !s)
     return -1;
 
   int rc = 0;
   struct GroupNode *np = NULL;
-  STAILQ_FOREACH(np, head, entries)
+  STAILQ_FOREACH(np, gl, entries)
   {
     rc = group_remove_regex(np->group, s);
     if (empty_group(np->group))

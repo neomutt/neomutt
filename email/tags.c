@@ -190,7 +190,7 @@ bool driver_tags_replace(struct TagHead *head, char *tags)
 
   if (tags)
   {
-    struct ListHead hsplit = mutt_str_split(tags, ' ');
+    struct ListHead hsplit = mutt_list_str_split(tags, ' ');
     struct ListNode *np = NULL;
     STAILQ_FOREACH(np, &hsplit, entries)
     {
