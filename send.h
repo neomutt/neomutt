@@ -53,6 +53,7 @@ extern bool          C_CryptReplysignencrypted;
 extern char *        C_EmptySubject;
 extern bool          C_FastReply;
 extern unsigned char C_FccAttach;
+extern bool          C_FccBeforeSend;
 extern bool          C_FccClear;
 extern bool          C_FollowupTo;
 extern char *        C_ForwardAttributionIntro;

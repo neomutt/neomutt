@@ -103,6 +103,7 @@ bool C_CryptReplysignencrypted; ///< Config: Sign replies to encrypted messages
 char *C_EmptySubject; ///< Config: Subject to use when replying to an email with none
 bool C_FastReply; ///< Config: Don't prompt for the recipients and subject when replying/forwarding
 unsigned char C_FccAttach; ///< Config: Save send message with all their attachments
+bool C_FccBeforeSend;      ///< Config: Save FCCs before sending the message
 bool C_FccClear; ///< Config: Save sent messages unencrypted and unsigned
 bool C_FollowupTo; ///< Config: Add the 'Mail-Followup-To' header is generated when sending mail
 char *C_ForwardAttributionIntro; ///< Config: Prefix message for forwarded messages
@@ -1596,49 +1597,55 @@ static int save_fcc(struct Email *msg, char *fcc, size_t fcc_len, struct Body *c
   struct Body *save_sig = NULL;
   struct Body *save_parts = NULL;
 
-  if ((WithCrypto != 0) && (msg->security & (SEC_ENCRYPT | SEC_SIGN)) && C_FccClear)
+  /* Before sending, we don't allow message manipulation because it
+   * will break message signatures.  This is especially complicated by
+   * Protected Headers. */
+  if (!C_FccBeforeSend)
   {
-    msg->content = clear_content;
-    msg->security &= ~(SEC_ENCRYPT | SEC_SIGN);
-    mutt_env_free(&msg->content->mime_headers);
-  }
-
-  /* check to see if the user wants copies of all attachments */
-  if (msg->content->type == TYPE_MULTIPART)
-  {
-    if ((WithCrypto != 0) && (msg->security & (SEC_ENCRYPT | SEC_SIGN)) &&
-        ((mutt_str_strcmp(msg->content->subtype, "encrypted") == 0) ||
-         (mutt_str_strcmp(msg->content->subtype, "signed") == 0)))
+    if ((WithCrypto != 0) && (msg->security & (SEC_ENCRYPT | SEC_SIGN)) && C_FccClear)
     {
-      if ((clear_content->type == TYPE_MULTIPART) &&
-          (query_quadoption(C_FccAttach, _("Save attachments in Fcc?")) == MUTT_NO))
-      {
-        if (!(msg->security & SEC_ENCRYPT) && (msg->security & SEC_SIGN))
-        {
-          /* save initial signature and attachments */
-          save_sig = msg->content->parts->next;
-          save_parts = clear_content->parts->next;
-        }
-
-        /* this means writing only the main part */
-        msg->content = clear_content->parts;
-
-        if (mutt_protect(msg, pgpkeylist) == -1)
-        {
-          /* we can't do much about it at this point, so
-           * fallback to saving the whole thing to fcc */
-          msg->content = tmpbody;
-          save_sig = NULL;
-          goto full_fcc;
-        }
-
-        save_content = msg->content;
-      }
+      msg->content = clear_content;
+      msg->security &= ~(SEC_ENCRYPT | SEC_SIGN);
+      mutt_env_free(&msg->content->mime_headers);
     }
-    else
+
+    /* check to see if the user wants copies of all attachments */
+    if (msg->content->type == TYPE_MULTIPART)
     {
-      if (query_quadoption(C_FccAttach, _("Save attachments in Fcc?")) == MUTT_NO)
-        msg->content = msg->content->parts;
+      if ((WithCrypto != 0) && (msg->security & (SEC_ENCRYPT | SEC_SIGN)) &&
+          ((mutt_str_strcmp(msg->content->subtype, "encrypted") == 0) ||
+           (mutt_str_strcmp(msg->content->subtype, "signed") == 0)))
+      {
+        if ((clear_content->type == TYPE_MULTIPART) &&
+            (query_quadoption(C_FccAttach, _("Save attachments in Fcc?")) == MUTT_NO))
+        {
+          if (!(msg->security & SEC_ENCRYPT) && (msg->security & SEC_SIGN))
+          {
+            /* save initial signature and attachments */
+            save_sig = msg->content->parts->next;
+            save_parts = clear_content->parts->next;
+          }
+
+          /* this means writing only the main part */
+          msg->content = clear_content->parts;
+
+          if (mutt_protect(msg, pgpkeylist) == -1)
+          {
+            /* we can't do much about it at this point, so
+           * fallback to saving the whole thing to fcc */
+            msg->content = tmpbody;
+            save_sig = NULL;
+            goto full_fcc;
+          }
+
+          save_content = msg->content;
+        }
+      }
+      else
+      {
+        if (query_quadoption(C_FccAttach, _("Save attachments in Fcc?")) == MUTT_NO)
+          msg->content = msg->content->parts;
+      }
     }
   }
 
@@ -1688,26 +1695,29 @@ full_fcc:
     }
   }
 
-  msg->content = tmpbody;
-
-  if ((WithCrypto != 0) && save_sig)
+  if (!C_FccBeforeSend)
   {
-    /* cleanup the second signature structures */
-    if (save_content->parts)
+    msg->content = tmpbody;
+
+    if ((WithCrypto != 0) && save_sig)
     {
-      mutt_body_free(&save_content->parts->next);
-      save_content->parts = NULL;
-    }
-    mutt_body_free(&save_content);
+      /* cleanup the second signature structures */
+      if (save_content->parts)
+      {
+        mutt_body_free(&save_content->parts->next);
+        save_content->parts = NULL;
+      }
+      mutt_body_free(&save_content);
 
-    /* restore old signature and attachments */
-    msg->content->parts->next = save_sig;
-    msg->content->parts->parts->next = save_parts;
-  }
-  else if ((WithCrypto != 0) && save_content)
-  {
-    /* destroy the new encrypted body. */
-    mutt_body_free(&save_content);
+      /* restore old signature and attachments */
+      msg->content->parts->next = save_sig;
+      msg->content->parts->parts->next = save_parts;
+    }
+    else if ((WithCrypto != 0) && save_content)
+    {
+      /* destroy the new encrypted body. */
+      mutt_body_free(&save_content);
+    }
   }
 
   return 0;
@@ -2489,6 +2499,9 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
 
   mutt_prepare_envelope(msg->env, true);
 
+  if (C_FccBeforeSend)
+    save_fcc(msg, fcc, sizeof(fcc), clear_content, pgpkeylist, flags, &finalpath);
+
   i = send_message(msg);
   if (i < 0)
   {
@@ -2523,7 +2536,8 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
     }
   }
 
-  save_fcc(msg, fcc, sizeof(fcc), clear_content, pgpkeylist, flags, &finalpath);
+  if (!C_FccBeforeSend)
+    save_fcc(msg, fcc, sizeof(fcc), clear_content, pgpkeylist, flags, &finalpath);
 
   if (!OptNoCurses && !(flags & SEND_MAILX))
   {

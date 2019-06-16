@@ -1286,10 +1286,11 @@ int imap_exec(struct ImapAccountData *adata, const char *cmdstr, ImapCmdFlags fl
  * imap_cmd_finish - Attempt to perform cleanup
  * @param adata Imap Account data
  *
- * Attempts to perform cleanup (eg fetch new mail if detected, do expunge).
- * Called automatically by imap_cmd_step(), but may be called at any time.
- * Called by imap_check_mailbox() just before the index is refreshed, for
- * instance.
+ * If a reopen is allowed, it attempts to perform cleanup (eg fetch new mail if
+ * detected, do expunge). Called automatically by imap_cmd_step(), but may be
+ * called at any time.
+ *
+ * mdata->check_status is set and will be used later by imap_check_mailbox().
  */
 void imap_cmd_finish(struct ImapAccountData *adata)
 {
@@ -1320,6 +1321,10 @@ void imap_cmd_finish(struct ImapAccountData *adata)
     {
       mutt_debug(LL_DEBUG2, "Expunging mailbox\n");
       imap_expunge_mailbox(adata->mailbox);
+      /* Detect whether we've gotten unexpected EXPUNGE messages */
+      if (!(mdata->reopen & IMAP_EXPUNGE_EXPECTED))
+        mdata->check_status |= IMAP_EXPUNGE_PENDING;
+      mdata->reopen &= ~(IMAP_EXPUNGE_PENDING | IMAP_EXPUNGE_EXPECTED);
     }
 
     // Then add new emails to it

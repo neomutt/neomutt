@@ -7762,14 +7762,15 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               <row>
                 <entry>~p</entry>
                 <entry>
-                  messages addressed to you (consults
-                  <command>alternates</command>)
+                  messages addressed to you (consults <link linkend="from">$from</link>,
+                  <command>alternates</command>, and local account/hostname information)
                 </entry>
               </row>
               <row>
                 <entry>~P</entry>
                 <entry>
-                  messages from you (consults <command>alternates</command>)
+                  messages from you (consults <link linkend="from">$from</link>,
+                  <command>alternates</command>, and local account/hostname information)
                 </entry>
               </row>
               <row>
@@ -9540,12 +9541,21 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
           <para>Message encryption and signing. Key selection.</para>
         </listitem>
         <listitem>
+          <para>
+            Fcc saving if <link
+            linkend="fcc-before-send">$fcc_before_send</link> is set.  (Note the
+            variable documentation for caveats of Fcc'ing before sending.)
+          </para>
+        </listitem>
+        <listitem>
           <para>Message sending.</para>
         </listitem>
         <listitem>
           <para>
-            Fcc saving. Note: The Fcc used to be saved before sending the message.
-            It is now saved afterwards, but if the saving fails, the user is prompted.
+            Fcc saving if <link linkend="fcc-before-send">$fcc_before_send</link>
+            is unset (the default).  The Fcc used to be saved before sending the
+            message.  It is now by default saved afterwards, but if the saving
+            fails, the user is prompted.
           </para>
         </listitem>
       </itemizedlist>
