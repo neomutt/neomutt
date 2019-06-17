@@ -465,7 +465,7 @@ if {[get-define want-gpgme]} {
       user-error "Could not derive --cflags from $gpg_error_config"
     }
     define-append CFLAGS $res
-    
+
     # LIBS
     if {[catch {exec-with-stderr $gpg_error_config --libs} res err]} {
       user-error "Could not derive --libs from $gpg_error_config"
