@@ -458,7 +458,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
 
     if (mutt_rfc1524_expand_filename(entry->nametemplate, fname, tmpfile))
     {
-      if (!fp && (mutt_str_strcmp(mutt_b2s(tmpfile), a->filename) != 0))
+      if (!fp)
       {
         /* send case: the file is already there */
         if (mutt_file_symlink(a->filename, mutt_b2s(tmpfile)) == -1)
