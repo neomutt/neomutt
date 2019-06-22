@@ -652,8 +652,7 @@ return_error:
     }
   }
 
-  if (entry)
-    rfc1524_free_entry(&entry);
+  rfc1524_free_entry(&entry);
 
   if (mutt_b2s(pagerfile)[0] != '\0')
     mutt_file_unlink(mutt_b2s(pagerfile));
