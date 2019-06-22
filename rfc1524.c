@@ -499,8 +499,6 @@ bool rfc1524_mailcap_lookup(struct Body *a, char *type,
  * @param nametemplate Template
  * @param oldfile      Original filename
  * @param newfile      Buffer for new filename
- * @retval 0 if the left and right components of the oldfile and newfile match
- * @retval 1 otherwise
  *
  * If there is no nametemplate, the stripped oldfile name is used as the
  * template for newfile.
@@ -512,8 +510,8 @@ bool rfc1524_mailcap_lookup(struct Body *a, char *type,
  * for a "%s". If none is found, the nametemplate is used as the template for
  * newfile.  The first path component of the nametemplate and oldfile are ignored.
  */
-int mutt_rfc1524_expand_filename(const char *nametemplate, const char *oldfile,
-                                 struct Buffer *newfile)
+void mutt_rfc1524_expand_filename(const char *nametemplate, const char *oldfile,
+                                  struct Buffer *newfile)
 {
   int i, j, k;
   char *s = NULL;
@@ -612,9 +610,4 @@ int mutt_rfc1524_expand_filename(const char *nametemplate, const char *oldfile,
   }
 
   mutt_adv_mktemp(newfile);
-
-  if (rmatch && lmatch)
-    return 0;
-  else
-    return 1;
 }

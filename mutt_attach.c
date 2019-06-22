@@ -134,20 +134,16 @@ int mutt_compose_attachment(struct Body *a)
       else
         mutt_buffer_strcpy(cmd, entry->composecommand);
 
-      if (mutt_rfc1524_expand_filename(entry->nametemplate, a->filename, newfile))
+      mutt_rfc1524_expand_filename(entry->nametemplate, a->filename, newfile);
+      mutt_debug(LL_DEBUG1, "oldfile: %s\t newfile: %s\n", a->filename, mutt_b2s(newfile));
+      if (mutt_file_symlink(a->filename, mutt_b2s(newfile)) == -1)
       {
-        mutt_debug(LL_DEBUG1, "oldfile: %s\t newfile: %s\n", a->filename, mutt_b2s(newfile));
-        if (mutt_file_symlink(a->filename, mutt_b2s(newfile)) == -1)
-        {
-          if (mutt_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) != MUTT_YES)
-            goto bailout;
-          mutt_buffer_strcpy(newfile, a->filename);
-        }
-        else
-          unlink_newfile = true;
+        if (mutt_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) != MUTT_YES)
+          goto bailout;
+        mutt_buffer_strcpy(newfile, a->filename);
       }
       else
-        mutt_buffer_strcpy(newfile, a->filename);
+        unlink_newfile = true;
 
       if (mutt_rfc1524_expand_command(a, mutt_b2s(newfile), type, cmd))
       {
@@ -272,20 +268,16 @@ int mutt_edit_attachment(struct Body *a)
     if (entry->editcommand)
     {
       mutt_buffer_strcpy(cmd, entry->editcommand);
-      if (mutt_rfc1524_expand_filename(entry->nametemplate, a->filename, newfile))
+      mutt_rfc1524_expand_filename(entry->nametemplate, a->filename, newfile);
+      mutt_debug(LL_DEBUG1, "oldfile: %s\t newfile: %s\n", a->filename, mutt_b2s(newfile));
+      if (mutt_file_symlink(a->filename, mutt_b2s(newfile)) == -1)
       {
-        mutt_debug(LL_DEBUG1, "oldfile: %s\t newfile: %s\n", a->filename, mutt_b2s(newfile));
-        if (mutt_file_symlink(a->filename, mutt_b2s(newfile)) == -1)
-        {
-          if (mutt_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) != MUTT_YES)
-            goto bailout;
-          mutt_buffer_strcpy(newfile, a->filename);
-        }
-        else
-          unlink_newfile = true;
+        if (mutt_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) != MUTT_YES)
+          goto bailout;
+        mutt_buffer_strcpy(newfile, a->filename);
       }
       else
-        mutt_buffer_strcpy(newfile, a->filename);
+        unlink_newfile = true;
 
       if (mutt_rfc1524_expand_command(a, mutt_b2s(newfile), type, cmd))
       {
@@ -456,27 +448,22 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
     else
       fname = a->filename;
 
-    if (mutt_rfc1524_expand_filename(entry->nametemplate, fname, tmpfile))
+    mutt_rfc1524_expand_filename(entry->nametemplate, fname, tmpfile);
+    /* send case: the file is already there; symlink to it */
+    if (!fp)
     {
-      if (!fp)
+      if (mutt_file_symlink(a->filename, mutt_b2s(tmpfile)) == -1)
       {
-        /* send case: the file is already there */
-        if (mutt_file_symlink(a->filename, mutt_b2s(tmpfile)) == -1)
-        {
-          if (mutt_yesorno(_("Can't match nametemplate, continue?"), MUTT_YES) != MUTT_YES)
-            goto return_error;
-          mutt_buffer_strcpy(tmpfile, a->filename);
-        }
-        else
-          unlink_tempfile = true;
+        if (mutt_yesorno(_("Can't match nametemplate, continue?"), MUTT_YES) != MUTT_YES)
+          goto return_error;
+        mutt_buffer_strcpy(tmpfile, a->filename);
       }
+      else
+        unlink_tempfile = true;
     }
-    else if (!fp) /* send case */
-      mutt_buffer_strcpy(tmpfile, a->filename);
-
-    if (fp)
+    /* recv case: we need to save the attachment to a file */
+    else
     {
-      /* recv case: we need to save the attachment to a file */
       FREE(&fname);
       if (mutt_save_attachment(fp, a, mutt_b2s(tmpfile), MUTT_SAVE_NO_FLAGS, NULL) == -1)
         goto return_error;
@@ -1055,29 +1042,25 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
 
     struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
     rfc1524_mailcap_lookup(a, type, entry, MUTT_MC_PRINT);
-    if (mutt_rfc1524_expand_filename(entry->nametemplate, a->filename, newfile))
+    mutt_rfc1524_expand_filename(entry->nametemplate, a->filename, newfile);
+    /* send mode: symlink from existing file to the newfile */
+    if (!fp)
     {
-      if (!fp)
+      if (mutt_file_symlink(a->filename, mutt_b2s(newfile)) == -1)
       {
-        if (mutt_file_symlink(a->filename, mutt_b2s(newfile)) == -1)
+        if (mutt_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) != MUTT_YES)
         {
-          if (mutt_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) != MUTT_YES)
-          {
-            rfc1524_free_entry(&entry);
-            goto out;
-          }
-          mutt_buffer_strcpy(newfile, a->filename);
+          rfc1524_free_entry(&entry);
+          goto out;
         }
-        else
-          unlink_newfile = true;
+        mutt_buffer_strcpy(newfile, a->filename);
       }
+      else
+        unlink_newfile = true;
     }
-    else if (!fp) /* send case */
-      mutt_buffer_strcpy(newfile, a->filename);
-
     /* in recv mode, save file to newfile first */
-    if (fp && (mutt_save_attachment(fp, a, mutt_b2s(newfile), MUTT_SAVE_NO_FLAGS, NULL) != 0))
-      return 0;
+    else
+      mutt_save_attachment(fp, a, mutt_b2s(newfile), 0, NULL);
 
     mutt_buffer_strcpy(cmd, entry->printcommand);
     piped = mutt_rfc1524_expand_command(a, mutt_b2s(newfile), type, cmd);

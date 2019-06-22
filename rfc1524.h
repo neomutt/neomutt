@@ -63,7 +63,7 @@ enum MailcapLookup
 
 struct Rfc1524MailcapEntry *rfc1524_new_entry(void);
 void rfc1524_free_entry(struct Rfc1524MailcapEntry **entry);
-int mutt_rfc1524_expand_filename(const char *nametemplate, const char *oldfile, struct Buffer *newfile);
+void mutt_rfc1524_expand_filename(const char *nametemplate, const char *oldfile, struct Buffer *newfile);
 bool rfc1524_mailcap_lookup(struct Body *a, char *type, struct Rfc1524MailcapEntry *entry, enum MailcapLookup opt);
 
 int mutt_rfc1524_expand_command(struct Body *a, const char *filename, const char *type, struct Buffer *command);
