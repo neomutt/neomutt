@@ -1071,6 +1071,8 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
           unlink_newfile = true;
       }
     }
+    else if (!fp) /* send case */
+      mutt_buffer_strcpy(newfile, a->filename);
 
     /* in recv mode, save file to newfile first */
     if (fp && (mutt_save_attachment(fp, a, mutt_b2s(newfile), MUTT_SAVE_NO_FLAGS, NULL) != 0))
