@@ -1049,10 +1049,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       if (mutt_file_symlink(a->filename, mutt_b2s(newfile)) == -1)
       {
         if (mutt_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) != MUTT_YES)
-        {
-          rfc1524_free_entry(&entry);
-          goto out;
-        }
+          goto mailcap_cleanup;
         mutt_buffer_strcpy(newfile, a->filename);
       }
       else
@@ -1060,7 +1057,10 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     }
     /* in recv mode, save file to newfile first */
     else
-      mutt_save_attachment(fp, a, mutt_b2s(newfile), 0, NULL);
+    {
+      if (mutt_save_attachment(fp, a, mutt_b2s(newfile), 0, NULL) == -1)
+        goto mailcap_cleanup;
+    }
 
     mutt_buffer_strcpy(cmd, entry->printcommand);
     piped = mutt_rfc1524_expand_command(a, mutt_b2s(newfile), type, cmd);
@@ -1075,7 +1075,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       {
         mutt_perror("fopen");
         rfc1524_free_entry(&entry);
-        goto out;
+        goto mailcap_cleanup;
       }
 
       pid = mutt_create_filter(mutt_b2s(cmd), &fp_out, NULL, NULL);
@@ -1084,7 +1084,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
         mutt_perror(_("Can't create filter"));
         rfc1524_free_entry(&entry);
         mutt_file_fclose(&fp_in);
-        goto out;
+        goto mailcap_cleanup;
       }
       mutt_file_copy_stream(fp_in, fp_out);
       mutt_file_fclose(&fp_out);
@@ -1102,13 +1102,15 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
         mutt_any_key_to_continue(NULL);
     }
 
+    rc = 1;
+
+  mailcap_cleanup:
     if (fp)
       mutt_file_unlink(mutt_b2s(newfile));
     else if (unlink_newfile)
       unlink(mutt_b2s(newfile));
 
     rfc1524_free_entry(&entry);
-    rc = 1;
     goto out;
   }
 
@@ -1135,7 +1137,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       if (!fp_in)
       {
         mutt_perror("fopen");
-        goto bail0;
+        goto decode_cleanup;
       }
 
       mutt_debug(LL_DEBUG2, "successfully opened %s read-only\n", mutt_b2s(newfile));
@@ -1145,7 +1147,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       if (pid < 0)
       {
         mutt_perror(_("Can't create filter"));
-        goto bail0;
+        goto decode_cleanup;
       }
 
       mutt_debug(LL_DEBUG2, "Filter created\n");
@@ -1159,7 +1161,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
         mutt_any_key_to_continue(NULL);
       rc = 1;
     }
-  bail0:
+  decode_cleanup:
     mutt_file_fclose(&fp_in);
     mutt_file_fclose(&fp_out);
     mutt_file_unlink(mutt_b2s(newfile));
