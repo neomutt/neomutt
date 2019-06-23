@@ -3636,9 +3636,9 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2760
-#, fuzzy, c-format
+#, c-format
 msgid "Error importing key: %s"
-msgstr "Klaida eksportuojant raktą: %s"
+msgstr "Klaida importuojant raktą: %s"
 
 #: ncrypt/crypt_gpgme.c:3001
 #, c-format
