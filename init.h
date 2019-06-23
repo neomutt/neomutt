@@ -1832,8 +1832,8 @@ struct ConfigDef MuttVars[] = {
   ** .dt %L .dd If an address in the "To:" or "Cc:" header field matches an address
   **            Defined by the users "$subscribe" command, this displays
   **            "To <list-name>", otherwise the same as %F
-  ** .dt %l .dd Number of lines in the message (does not work with maildir,
-  **            Mh, and possibly IMAP folders)
+  ** .dt %l .dd number of lines in the unprocessed message (may not work with
+  **            maildir, mh, and IMAP folders)
   ** .dt %M .dd Number of hidden messages if the thread is collapsed
   ** .dt %m .dd Total number of message in the mailbox
   ** .dt %N .dd Message score
@@ -1887,6 +1887,13 @@ struct ConfigDef MuttVars[] = {
   ** the date formatting operators along with nested conditionals, the date
   ** format can be modified based on how old a message is.  See the section on
   ** "Conditional Dates" for an explanation and examples
+  ** .pp
+  ** Note that for mbox/mmdf, ``%l'' applies to the unprocessed message, and
+  ** for maildir/mh, the value comes from the ``Lines:'' header field when
+  ** present (the meaning is normally the same). Thus the value depends on
+  ** the encodings used in the different parts of the message and has little
+  ** meaning in practice.
+  ** .pp
   ** "Soft-fill" deserves some explanation: Normal right-justification
   ** will print everything to the left of the "%>", displaying padding and
   ** whatever lies to the right only if there's room. By contrast,
