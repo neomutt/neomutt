@@ -104,7 +104,7 @@ void mutt_adv_mktemp(struct Buffer *buf)
     if ((lstat(mutt_b2s(buf), &sb) == -1) && (errno == ENOENT))
       goto out;
 
-    char *suffix = strrchr(prefix->data, '.');
+    char *suffix = strchr(prefix->data, '.');
     if (suffix)
     {
       *suffix = '\0';
