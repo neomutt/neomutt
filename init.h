@@ -1365,11 +1365,12 @@ struct ConfigDef MuttVars[] = {
   { "header_cache", DT_STRING|DT_PATH, &C_HeaderCache, 0 },
   /*
   ** .pp
-  ** This variable points to the header cache database.
-  ** If pointing to a directory NeoMutt will contain a header cache
-  ** database file per folder, if pointing to a file that file will
-  ** be a single global header cache. By default it is \fIunset\fP so no header
-  ** caching will be used.
+  ** This variable points to the header cache database. If the path points to
+  ** an existing directory, NeoMutt will create a dedicated header cache
+  ** database per folder. Otherwise, the path points to a regular file, which
+  ** will be created as needed and used as a shared global header cache for
+  ** all folders.
+  ** By default it is \fIunset\fP so no header caching will be used.
   ** .pp
   ** Header caching can greatly improve speed when opening POP, IMAP
   ** MH or Maildir folders, see "$caching" for details.
