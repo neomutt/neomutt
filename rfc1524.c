@@ -50,12 +50,11 @@
 bool C_MailcapSanitize; ///< Config: Restrict the possible characters in mailcap expandos
 
 /**
- * rfc1524_expand_command - Expand expandos in a command
+ * mutt_rfc1524_expand_command - Expand expandos in a command
  * @param a        Email Body
  * @param filename File containing the email text
  * @param type     Type, e.g. "text/plain"
  * @param command  Buffer containing command
- * @param clen     Length of buffer
  * @retval 0 Command works on a file
  * @retval 1 Command works on a pipe
  *
@@ -69,97 +68,92 @@ bool C_MailcapSanitize; ///< Config: Restrict the possible characters in mailcap
  * %n is the integer number of sub-parts in the multipart
  * %F is "content-type filename" repeated for each sub-part
  */
-int rfc1524_expand_command(struct Body *a, const char *filename,
-                           const char *type, char *command, int clen)
+int mutt_rfc1524_expand_command(struct Body *a, const char *filename,
+                                const char *type, struct Buffer *command)
 {
-  int x = 0;
   int needspipe = true;
-  char type2[1024];
   struct Buffer *buf = mutt_buffer_pool_get();
   struct Buffer *quoted = mutt_buffer_pool_get();
+  struct Buffer *param = NULL;
+  struct Buffer *type2 = NULL;
 
-  mutt_str_strfcpy(type2, type, sizeof(type2));
-
-  if (C_MailcapSanitize)
-    mutt_file_sanitize_filename(type2, false);
-
-  while ((x < clen - 1) && command[x])
+  const char *cptr = mutt_b2s(command);
+  while (*cptr)
   {
-    if (command[x] == '\\')
+    if (*cptr == '\\')
     {
-      x++;
-      mutt_buffer_addch(buf, command[x++]);
+      cptr++;
+      if (*cptr)
+        mutt_buffer_addch(buf, *cptr++);
     }
-    else if (command[x] == '%')
+    else if (*cptr == '%')
     {
-      x++;
-      if (command[x] == '{')
+      cptr++;
+      if (*cptr == '{')
       {
-        char param[256];
-        char pvalue[256];
-        char *pvalue2 = NULL;
-        int z = 0;
+        const char *pvalue2 = NULL;
 
-        x++;
-        while (command[x] && (command[x] != '}') && (z < sizeof(param) - 1))
-          param[z++] = command[x++];
-        param[z] = '\0';
+        if (!param)
+          param = mutt_buffer_pool_get();
+        else
+          mutt_buffer_reset(param);
+
+        /* Copy parameter name into param buffer */
+        cptr++;
+        while (*cptr && (*cptr != '}'))
+          mutt_buffer_addch(param, *cptr++);
 
         /* In send mode, use the current charset, since the message hasn't
          * been converted yet.   If noconv is set, then we assume the
          * charset parameter has the correct value instead. */
-        if ((mutt_str_strcasecmp(param, "charset") == 0) && a->charset && !a->noconv)
+        if ((mutt_str_strcasecmp(mutt_b2s(param), "charset") == 0) && a->charset && !a->noconv)
           pvalue2 = a->charset;
         else
-          pvalue2 = mutt_param_get(&a->parameter, param);
-        mutt_str_strfcpy(pvalue, pvalue2, sizeof(pvalue));
-        if (C_MailcapSanitize)
-          mutt_file_sanitize_filename(pvalue, false);
+          pvalue2 = mutt_param_get(&a->parameter, mutt_b2s(param));
 
-        mutt_buffer_quote_filename(quoted, pvalue, true);
+        /* Now copy the parameter value into param buffer */
+        if (C_MailcapSanitize)
+          mutt_buffer_sanitize_filename(param, NONULL(pvalue2), false);
+        else
+          mutt_buffer_strcpy(param, NONULL(pvalue2));
+
+        mutt_buffer_quote_filename(quoted, mutt_b2s(param), true);
         mutt_buffer_addstr(buf, mutt_b2s(quoted));
       }
-      else if ((command[x] == 's') && filename)
+      else if ((*cptr == 's') && filename)
       {
         mutt_buffer_quote_filename(quoted, filename, true);
         mutt_buffer_addstr(buf, mutt_b2s(quoted));
         needspipe = false;
       }
-      else if (command[x] == 't')
+      else if (*cptr == 't')
       {
-        mutt_buffer_quote_filename(quoted, type, true);
+        if (!type2)
+        {
+          type2 = mutt_buffer_pool_get();
+          if (C_MailcapSanitize)
+            mutt_buffer_sanitize_filename(type2, type, false);
+          else
+            mutt_buffer_strcpy(type2, type);
+        }
+        mutt_buffer_quote_filename(quoted, mutt_b2s(type2), true);
         mutt_buffer_addstr(buf, mutt_b2s(quoted));
       }
-      x++;
+
+      if (*cptr)
+        cptr++;
     }
     else
-      mutt_buffer_addch(buf, command[x++]);
+      mutt_buffer_addch(buf, *cptr++);
   }
-  mutt_str_strfcpy(command, mutt_b2s(buf), clen);
+  mutt_buffer_strcpy(command, mutt_b2s(buf));
 
   mutt_buffer_pool_release(&buf);
   mutt_buffer_pool_release(&quoted);
+  mutt_buffer_pool_release(&param);
+  mutt_buffer_pool_release(&type2);
 
   return needspipe;
-}
-
-/**
- * mutt_buffer_rfc1524_expand_command - Expand expandos in a command
- * @param a        Email Body
- * @param filename File containing the email text
- * @param type     Type, e.g. "text/plain"
- * @param command  Buffer containing command
- * @retval 0 Command works on a file
- * @retval 1 Command works on a pipe
- */
-int mutt_buffer_rfc1524_expand_command(struct Body *a, const char *filename,
-                                       const char *type, struct Buffer *command)
-{
-  mutt_buffer_increase_size(command, PATH_MAX);
-  int rc = rfc1524_expand_command(a, filename, type, command->data, command->dsize);
-  mutt_buffer_fix_dptr(command);
-
-  return rc;
 }
 
 /**
@@ -358,18 +352,22 @@ static bool rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
 
           if (get_field_text(field + plen, &test_command, type, filename, line) && test_command)
           {
-            const size_t len = mutt_str_strlen(test_command) + 256;
-            mutt_mem_realloc(&test_command, len);
-            if (rfc1524_expand_command(a, a->filename, type, test_command, len) == 1)
-            {
-              mutt_debug(LL_DEBUG1, "Command is expecting to be piped\n");
-            }
-            if (mutt_system(test_command) != 0)
+            struct Buffer *command = mutt_buffer_pool_get();
+            struct Buffer *afilename = mutt_buffer_pool_get();
+            mutt_buffer_strcpy(command, test_command);
+            if (C_MailcapSanitize)
+              mutt_buffer_sanitize_filename(afilename, NONULL(a->filename), true);
+            else
+              mutt_buffer_strcpy(afilename, NONULL(a->filename));
+            mutt_rfc1524_expand_command(a, mutt_b2s(afilename), type, command);
+            if (mutt_system(mutt_b2s(command)))
             {
               /* a non-zero exit code means test failed */
               found = false;
             }
             FREE(&test_command);
+            mutt_buffer_pool_release(&command);
+            mutt_buffer_pool_release(&afilename);
           }
         }
         else if (mutt_str_startswith(field, "x-neomutt-keep", CASE_IGNORE))
@@ -507,8 +505,6 @@ bool rfc1524_mailcap_lookup(struct Body *a, char *type,
  * @param nametemplate Template
  * @param oldfile      Original filename
  * @param newfile      Buffer for new filename
- * @retval 0 if the left and right components of the oldfile and newfile match
- * @retval 1 otherwise
  *
  * If there is no nametemplate, the stripped oldfile name is used as the
  * template for newfile.
@@ -520,8 +516,8 @@ bool rfc1524_mailcap_lookup(struct Body *a, char *type,
  * for a "%s". If none is found, the nametemplate is used as the template for
  * newfile.  The first path component of the nametemplate and oldfile are ignored.
  */
-int mutt_rfc1524_expand_filename(const char *nametemplate, const char *oldfile,
-                                 struct Buffer *newfile)
+void mutt_rfc1524_expand_filename(const char *nametemplate, const char *oldfile,
+                                  struct Buffer *newfile)
 {
   int i, j, k;
   char *s = NULL;
@@ -620,9 +616,4 @@ int mutt_rfc1524_expand_filename(const char *nametemplate, const char *oldfile,
   }
 
   mutt_adv_mktemp(newfile);
-
-  if (rmatch && lmatch)
-    return 0;
-  else
-    return 1;
 }

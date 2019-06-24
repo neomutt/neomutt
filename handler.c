@@ -554,8 +554,8 @@ static int autoview_handler(struct Body *a, struct State *s)
     else
       mutt_buffer_strcpy(cmd, entry->command);
 
-    /* rfc1524_expand_command returns 0 if the file is required */
-    bool piped = mutt_buffer_rfc1524_expand_command(a, mutt_b2s(tempfile), type, cmd);
+    /* mutt_rfc1524_expand_command returns 0 if the file is required */
+    bool piped = mutt_rfc1524_expand_command(a, mutt_b2s(tempfile), type, cmd);
 
     if (s->flags & MUTT_DISPLAY)
     {

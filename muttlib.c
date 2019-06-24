@@ -97,7 +97,7 @@ void mutt_adv_mktemp(struct Buffer *buf)
   {
     struct Buffer *prefix = mutt_buffer_pool_get();
     mutt_buffer_strcpy(prefix, buf->data);
-    mutt_file_sanitize_filename(prefix->data, 1);
+    mutt_file_sanitize_filename(prefix->data, true);
     mutt_buffer_printf(buf, "%s/%s", NONULL(C_Tmpdir), mutt_b2s(prefix));
 
     struct stat sb;
@@ -1690,4 +1690,26 @@ int mutt_inbox_cmp(const char *a, const char *b)
     return 1;
 
   return 0;
+}
+
+/**
+ * mutt_buffer_sanitize_filename - Replace unsafe characters in a filename
+ * @param buf   Buffer for the result
+ * @param path  Filename to make safe
+ * @param slash Replace '/' characters too
+ */
+void mutt_buffer_sanitize_filename(struct Buffer *buf, const char *path, short slash)
+{
+  if (!buf || !path)
+    return;
+
+  mutt_buffer_reset(buf);
+
+  for (; *path; path++)
+  {
+    if ((slash && (*path == '/')) || !strchr(filename_safe_chars, *path))
+      mutt_buffer_addch(buf, '_');
+    else
+      mutt_buffer_addch(buf, *path);
+  }
 }
