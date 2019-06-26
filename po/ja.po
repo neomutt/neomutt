@@ -1401,7 +1401,7 @@ msgstr "メッセージは変更されていない"
 
 #: editmsg.c:159
 msgid "Message of read-only mailbox modified! Ignoring changes."
-msgstr ""
+msgstr "読み取り専用メールボックス内のメッセージが変更された! 変更を無視する."
 
 #: editmsg.c:175
 #, c-format
@@ -1609,7 +1609,7 @@ msgstr "一時ファイルをオープンできない"
 
 #: handler.c:1377
 msgid "failed to re-open 'memory stream'"
-msgstr ""
+msgstr "'memory stream' をリオープンするのに失敗"
 
 #: handler.c:1614
 msgid "Error: multipart/signed has no protocol"
@@ -1847,7 +1847,7 @@ msgstr "検索するヘッダ名の指定がない: %s"
 #: imap/imap.c:468
 #, c-format
 msgid "Server-side custom search not supported: %s"
-msgstr ""
+msgstr "サーバサイドカスタム検索はサポートされていない: %s"
 
 #: imap/imap.c:582
 #, c-format
@@ -1958,7 +1958,7 @@ msgstr "不正      "
 #. L10N: This prompt is made if the user hits Ctrl-C when opening an IMAP mailbox
 #: imap/message.c:519
 msgid "Abort download and close mailbox?"
-msgstr ""
+msgstr "ダウンロードを中止してメールボックスを閉じるか?"
 
 #: imap/message.c:549 mutt/memory.c:58 mutt/memory.c:65 mutt/memory.c:105
 #: mutt/memory.c:141 mutt/string.c:1243 mx.c:1109
@@ -2122,11 +2122,11 @@ msgstr "サーバからメッセージを削除中..."
 #: index.c:1416
 #, c-format
 msgid "Article %s not found on the server"
-msgstr ""
+msgstr "記事 %s はこのサーバ上で見つからなかった"
 
 #: index.c:1436
 msgid "No Message-Id. Unable to perform operation."
-msgstr ""
+msgstr "Message-Idがないので操作を実行できない."
 
 #: index.c:1514
 #, fuzzy
@@ -2221,11 +2221,11 @@ msgstr "無題で中止する。"
 
 #: index.c:1978 index.c:2133 index.c:2155 index.c:2176
 msgid "Failed to create query, aborting"
-msgstr ""
+msgstr "クエリの作成に失敗. 中止する."
 
 #: index.c:1990
 msgid "Failed to read thread, aborting"
-msgstr ""
+msgstr "スレッドの読み込みに失敗. 中止する."
 
 #: index.c:2019 mx.c:1186 mx.c:1206
 #, fuzzy
@@ -2240,11 +2240,11 @@ msgstr "無題で中止する。"
 #: index.c:2044
 #, c-format
 msgid "Update tags..."
-msgstr ""
+msgstr "タグを更新中..."
 
 #: index.c:2083
 msgid "Failed to modify tags, aborting"
-msgstr ""
+msgstr "タグの変更に失敗した. 中止する."
 
 #: index.c:2129
 #, fuzzy
@@ -2257,7 +2257,7 @@ msgstr ""
 
 #: index.c:2149 index.c:2170
 msgid "No notmuch vfolder currently loaded"
-msgstr ""
+msgstr "notmuchのバーチャルフォルダを読み込んでいない"
 
 #: index.c:2219
 msgid "Open mailbox in read-only mode"
@@ -2277,7 +2277,7 @@ msgstr "読み出し専用モードでニュースグループをオープン"
 
 #: index.c:2266
 msgid "Open newsgroup"
-msgstr ""
+msgstr "ニュースグループを開く"
 
 #: index.c:2382
 #, fuzzy
@@ -2446,7 +2446,7 @@ msgstr ""
 
 #: index.c:3438 pager.c:3175 pager.c:3187 pager.c:3217
 msgid "Posting to this group not allowed, may be moderated. Continue?"
-msgstr ""
+msgstr "このニュースグループはモデレートであり、投稿は許可されていない。続ける?"
 
 #. L10N: CHECK_ACL
 #: index.c:3509 pager.c:3390
@@ -2473,12 +2473,12 @@ msgstr "引数が少なすぎる"
 #: init.c:776 init.c:1723
 #, c-format
 msgid "Error: Can't build path of '%s'"
-msgstr ""
+msgstr "エラー: このパスはビルドできない. '%s'"
 
 #: init.c:793
 #, c-format
 msgid "Error: Cyclic sourcing of configuration file '%s'"
-msgstr ""
+msgstr "エラー: 設定ファイルが巡回している'%s'"
 
 #: init.c:824
 #, c-format
@@ -2541,7 +2541,7 @@ msgstr "%sgroup: 警告: 不正な IDN '%s'。"
 #: init.c:1252
 #, c-format
 msgid "Error: %s"
-msgstr ""
+msgstr "エラー: '%s'"
 
 #: init.c:1416
 msgid "invalid header field"
@@ -2605,7 +2605,7 @@ msgstr "%s: 不明なコマンド"
 
 #: init.c:3853
 msgid "'charset' must contain exactly one character set name"
-msgstr ""
+msgstr "'charset'はただ1つの文字セットでなければならない"
 
 #: init.c:3869 init.c:3893 init.c:3928
 #, fuzzy, c-format
@@ -2615,7 +2615,7 @@ msgstr "変数 %s には不正な値: \"%s\""
 #: init.c:3906
 #, c-format
 msgid "Option %s may not be set or reset from the pager"
-msgstr ""
+msgstr "オプション %s はセットできない, もしくはpagerによりリセットされた"
 
 #: init.c:3944
 #, fuzzy, c-format
@@ -2652,7 +2652,7 @@ msgstr "%s: キーシーケンスがない"
 #: keymap.c:1194
 #, c-format
 msgid "Function '%s' not available for menu '%s'"
-msgstr ""
+msgstr "関数 '%s' は メニュー '%s' で利用できない"
 
 #: keymap.c:1471
 msgid "macro: empty key sequence"
@@ -3098,11 +3098,11 @@ msgstr "問い合わせコマンドは定義されていない。"
 
 #: mutt_account.c:389
 msgid "Unable to run refresh command"
-msgstr ""
+msgstr "refreshコマンドが実行できない"
 
 #: mutt_account.c:399
 msgid "Command returned empty string"
-msgstr ""
+msgstr "コマンドの戻り値が空文字列(empty string)"
 
 #: mutt_attach.c:142 mutt_attach.c:279 mutt_attach.c:464 mutt_attach.c:1063
 msgid "Can't match 'nametemplate', continue?"
@@ -3241,7 +3241,7 @@ msgstr "ごみ箱をオープンできない"
 
 #: mx.c:579
 msgid "Mark all articles read?"
-msgstr ""
+msgstr "全ての記事を既読にするか?"
 
 #. L10N: The first argument is the number of read messages to be
 #. moved, the second argument is the target mailbox.
@@ -3943,7 +3943,7 @@ msgstr "\"%s\" に一致する鍵を検索中..."
 #: ncrypt/crypt_gpgme.c:5125 ncrypt/pgpkey.c:865 ncrypt/smime.c:925
 #, c-format
 msgid "No matching keys found for \"%s\""
-msgstr ""
+msgstr "\"%s\" と一致する鍵が見つからない"
 
 #: ncrypt/crypt_gpgme.c:5175 ncrypt/pgp.c:1443
 #, c-format
@@ -4419,11 +4419,11 @@ msgstr "(1) AES128, (2) AES192, (3) AES256?"
 
 #: nntp/newsrc.c:625
 msgid "Loading list of groups from cache..."
-msgstr ""
+msgstr "グループの一覧をキャッシュから読み込み中..."
 
 #: nntp/newsrc.c:992
 msgid "No news server defined"
-msgstr ""
+msgstr "ニュースサーバが指定されていない"
 
 #: nntp/newsrc.c:1007
 #, fuzzy, c-format
@@ -4504,7 +4504,7 @@ msgstr "新着メッセージ検出中..."
 
 #: nntp/nntp.c:2335
 msgid "Unable to find child articles because server does not support XPAT command"
-msgstr ""
+msgstr "サーバがXPATコマンドに対応していないため、子記事を見つけることができない"
 
 #: nntp/nntp.c:2440
 #, fuzzy, c-format
@@ -4524,12 +4524,12 @@ msgstr ""
 #: nntp/nntp.c:2767
 #, c-format
 msgid "Article %d not found on the server"
-msgstr ""
+msgstr "サーバ上で記事 %d は見つからなかった"
 
 #: notmuch/mutt_notmuch.c:125
 #, c-format
 msgid "failed to parse notmuch query type: %s"
-msgstr ""
+msgstr "notmuch クエリをパースするのに失敗: %s"
 
 #: notmuch/mutt_notmuch.c:220 notmuch/mutt_notmuch.c:1932
 #, fuzzy, c-format
@@ -4538,7 +4538,7 @@ msgstr "\"mailto:\" リンクの解析に失敗\n"
 
 #: notmuch/mutt_notmuch.c:451
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year)"
-msgstr ""
+msgstr "不正な nm_query_window_timebase 値 (有効な値は: 時 (hour), 日 (day), 週 (week), 月 (month), または 年 (year)"
 
 #: notmuch/mutt_notmuch.c:511
 #, fuzzy, c-format
@@ -4573,7 +4573,7 @@ msgstr "fcntl ロック待ち... %d"
 #: notmuch/nm_db.c:132
 #, c-format
 msgid "Can't open notmuch database: %s: %s"
-msgstr ""
+msgstr "notmuch データベースを開けない: %s: %s"
 
 #: notmuch/nm_db.c:133
 #, fuzzy
@@ -4636,7 +4636,7 @@ msgstr "ファイルを閲覧"
 
 #: opcodes.h:41
 msgid "mark all articles in newsgroup as read"
-msgstr ""
+msgstr "ニュースグループ内の記事を全て既読にする"
 
 #: opcodes.h:42
 msgid "change directories"
@@ -4976,7 +4976,7 @@ msgstr "メッセージのラベルを追加、編集、削除"
 
 #: opcodes.h:122
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
-msgstr ""
+msgstr "元のメッセージを編集、読み取り専用の場合は閲覧のみ"
 
 #: opcodes.h:123
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
@@ -5025,7 +5025,7 @@ msgstr "コメント付きでメッセージを転送"
 
 #: opcodes.h:134
 msgid "forward to newsgroup"
-msgstr ""
+msgstr "ニュースグループへ転送"
 
 #: opcodes.h:135
 msgid "select the current entry"
@@ -5033,7 +5033,7 @@ msgstr "現在のエントリを選択"
 
 #: opcodes.h:136
 msgid "get all children of the current message"
-msgstr ""
+msgstr "全ての子メッセージを取得"
 
 #: opcodes.h:137
 #, fuzzy
@@ -5042,7 +5042,7 @@ msgstr "メッセージをヘッダごと編集"
 
 #: opcodes.h:138
 msgid "get parent of the current message"
-msgstr ""
+msgstr "親メッセージを取得"
 
 #: opcodes.h:139
 #, fuzzy
@@ -5089,7 +5089,7 @@ msgstr "指定済みメーリングリスト宛てに返信"
 
 #: opcodes.h:149
 msgid "load list of all newsgroups from NNTP server"
-msgstr ""
+msgstr "NNTPサーバから全てのニュースグループ一覧を取得"
 
 #: opcodes.h:150
 msgid "execute a macro"
@@ -5161,7 +5161,7 @@ msgstr "タグ付きメッセージを現在位置につなぐ"
 
 #: opcodes.h:167
 msgid "modify (notmuch/imap) tags"
-msgstr ""
+msgstr "(notmuch/imap) タグを変更"
 
 #: opcodes.h:168
 #, fuzzy
@@ -5226,7 +5226,7 @@ msgstr "前の未読メッセージに移動"
 
 #: opcodes.h:183
 msgid "delete from NeoMutt, don't touch on disk"
-msgstr ""
+msgstr "NeoMuttから削除, ディスク上のデータは変更しない"
 
 #: opcodes.h:184
 msgid "mark the current subthread as read"
@@ -5464,7 +5464,7 @@ msgstr "ページの一番上に移動"
 
 #: opcodes.h:241
 msgid "mark all articles in newsgroup as unread"
-msgstr ""
+msgstr "ニュースグループ内の全ての記事を未読にする"
 
 #: opcodes.h:242
 msgid "undelete the current entry"
@@ -5557,15 +5557,15 @@ msgstr "別のフォルダをオープン"
 
 #: opcodes.h:274
 msgid "read entire thread of the current message"
-msgstr ""
+msgstr "メッセージに関連したスレッド全体を読む"
 
 #: opcodes.h:275
 msgid "generate virtual folder from query"
-msgstr ""
+msgstr "クエリからバーチャルフォルダを作成"
 
 #: opcodes.h:276
 msgid "generate a read-only virtual folder from query"
-msgstr ""
+msgstr "クエリから読み取り専用のバーチャルフォルダを作成"
 
 #: opcodes.h:277
 msgid "shifts virtual folder time window backwards"
@@ -5785,7 +5785,7 @@ msgstr "パターンが空"
 
 #: pattern.c:2077 pattern.c:2080
 msgid "error: server custom search only supported with IMAP"
-msgstr ""
+msgstr "エラー: サーバカスタム検索はIMAPのみで有効"
 
 #: pattern.c:2271
 #, c-format
@@ -6278,7 +6278,7 @@ msgstr "Fcc に添付ファイルも保存?"
 #. (s)kip aborts saving.
 #: send.c:1661
 msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
-msgstr ""
+msgstr "Fccに失敗. (r)etry 再試行, alternate (m)ailbox 別のメールボックス, (s)kip スキップ "
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt
 #. (r)etry, alternate (m)ailbox, or (s)kip.
@@ -6316,7 +6316,7 @@ msgstr "未変更のメッセージを中止した。"
 
 #: send.c:2318
 msgid "No crypto backend configured.  Disabling message security setting."
-msgstr ""
+msgstr "暗号バックエンドの設定がない. メッセージのセキュリティ設定を無効化した."
 
 #: send.c:2354
 msgid "Article not posted"
@@ -6345,7 +6345,7 @@ msgstr "添付ファイルの content-trasfer-encoding を編集"
 
 #: send.c:2431
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
-msgstr ""
+msgstr "メッセージは \"$abort_noattach_regex\" を含んでいる.送信しない."
 
 #: send.c:2488 smtp.c:222
 msgid "Sending message..."
@@ -6427,7 +6427,7 @@ msgstr "不正な SMTP URL: %s"
 #: smtp.c:618
 #, c-format
 msgid "SMTP authentication method %s requires SASL"
-msgstr ""
+msgstr "SMTP認証の方法 %s はSASLが必要"
 
 #: smtp.c:625
 #, c-format
