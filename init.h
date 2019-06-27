@@ -1395,7 +1395,7 @@ struct ConfigDef MuttVars[] = {
   */
 #endif /* HAVE_QDBM */
 #if defined(HAVE_GDBM) || defined(HAVE_BDB)
-  { "header_cache_pagesize", DT_STRING, &C_HeaderCachePagesize, IP "16384" },
+  { "header_cache_pagesize", DT_LONG|DT_NOT_NEGATIVE, &C_HeaderCachePagesize, 16384 },
   /*
   ** .pp
   ** When NeoMutt is compiled with either gdbm or bdb4 as the header cache backend,
@@ -1604,7 +1604,7 @@ struct ConfigDef MuttVars[] = {
   ** as folder separators for displaying IMAP paths. In particular it
   ** helps in using the "=" shortcut for your \fIfolder\fP variable.
   */
-  { "imap_fetch_chunk_size", DT_LONG, &C_ImapFetchChunkSize, 0 },
+  { "imap_fetch_chunk_size", DT_LONG|DT_NOT_NEGATIVE, &C_ImapFetchChunkSize, 0 },
   /*
   ** .pp
   ** When set to a value greater than 0, new headers will be downloaded

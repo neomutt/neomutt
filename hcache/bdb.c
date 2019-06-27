@@ -92,11 +92,11 @@ static void *hcache_bdb_open(const char *path)
   struct stat sb;
   int ret;
   u_int32_t createflags = DB_CREATE;
-  int pagesize;
 
   struct HcacheDbCtx *ctx = mutt_mem_malloc(sizeof(struct HcacheDbCtx));
 
-  if ((mutt_str_atoi(C_HeaderCachePagesize, &pagesize) < 0) || (pagesize <= 0))
+  int pagesize = C_HeaderCachePagesize;
+  if (pagesize <= 0)
     pagesize = 16384;
 
   snprintf(ctx->lockfile, sizeof(ctx->lockfile), "%s-lock-hack", path);
