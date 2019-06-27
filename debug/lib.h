@@ -28,6 +28,7 @@
  * | File                | Description                |
  * | :------------------ | :------------------------- |
  * | debug/backtrace.c   | @subpage debug_backtrace   |
+ * | debug/graphviz.c    | @subpage debug_graphviz    |
  * | debug/parse_test.c  | @subpage debug_parse       |
  */
 
@@ -36,6 +37,9 @@
 
 // Backtrace
 void show_backtrace(void);
+
+// Graphviz
+void dump_graphviz(const char *title);
 
 // Parse Set
 void test_parse_set(void);

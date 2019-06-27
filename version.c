@@ -207,6 +207,9 @@ static struct CompileOptions comp_opts[] = {
 #else
   { "gpgme", 0 },
 #endif
+#ifdef USE_DEBUG_GRAPHVIZ
+  { "graphviz", 2 },
+#endif
 #ifdef USE_GSS
   { "gss", 1 },
 #else

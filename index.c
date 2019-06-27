@@ -42,6 +42,7 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "debug/lib.h"
 #include "index.h"
 #include "alias.h"
 #include "browser.h"
@@ -1713,6 +1714,9 @@ int mutt_index_menu(struct MuttWindow *dlg)
 
       case OP_SHOW_LOG_MESSAGES:
       {
+#ifdef USE_DEBUG_GRAPHVIZ
+        dump_graphviz("index");
+#endif
         char tempfile[PATH_MAX];
         mutt_mktemp(tempfile, sizeof(tempfile));
 

@@ -143,6 +143,9 @@ LIBDEBUG=	libdebug.a
 @if HAVE_LIBUNWIND
 LIBDEBUGOBJS+=	debug/backtrace.o
 @endif
+@if USE_DEBUG_GRAPHVIZ
+LIBDEBUGOBJS+=	debug/graphviz.o
+@endif
 @if USE_DEBUG_PARSE_TEST
 LIBDEBUGOBJS+=	debug/parse_test.o
 @endif
