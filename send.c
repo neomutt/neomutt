@@ -1755,10 +1755,10 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur, char *fcc
       encrypt_as = C_PgpDefaultKey;
     else if (((WithCrypto & APPLICATION_SMIME) != 0) && (e_post->security & APPLICATION_SMIME))
       encrypt_as = C_SmimeDefaultKey;
-    if (!(encrypt_as && *encrypt_as))
+    if (!encrypt_as)
       encrypt_as = C_PostponeEncryptAs;
 
-    if (encrypt_as && *encrypt_as)
+    if (encrypt_as)
     {
       bool is_signed = (e_post->security & SEC_SIGN);
       if (is_signed)

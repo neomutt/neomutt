@@ -407,7 +407,7 @@ char *mutt_ch_get_default_charset(void)
   const char *c = C_AssumedCharset;
   const char *c1 = NULL;
 
-  if (c && *c)
+  if (c)
   {
     c1 = strchr(c, ':');
     mutt_str_strfcpy(fcharset, c, c1 ? (c1 - c + 1) : sizeof(fcharset));
