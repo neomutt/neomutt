@@ -156,11 +156,13 @@ ALLOBJS+=	$(LIBNCRYPTOBJS)
 
 ###############################################################################
 # libhelp
+@if USE_DEVEL_HELP
 LIBHELP=	libhelp.a
 LIBHELPOBJS=	help/help.o
 CLEANFILES+=	$(LIBHELP) $(LIBHELPOBJS)
 MUTTLIBS+=	$(LIBHELP)
 ALLOBJS+=	$(LIBHELPOBJS)
+@endif
 
 ###############################################################################
 # libimap

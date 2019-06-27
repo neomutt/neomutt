@@ -50,7 +50,6 @@
 #include "context.h"
 #include "copy.h"
 #include "globals.h"
-#include "help/help.h"
 #include "hook.h"
 #include "keymap.h"
 #include "mailbox.h"
@@ -87,6 +86,9 @@
 #endif
 #ifdef ENABLE_NLS
 #include <libintl.h>
+#endif
+#ifdef USE_DEVEL_HELP
+#include "help/help.h"
 #endif
 
 /* These Config Variables are only used in mx.c */
@@ -129,7 +131,9 @@ static const struct MxOps *mx_ops[] = {
 #ifdef USE_NNTP
   &MxNntpOps,
 #endif
+#ifdef USE_DEVEL_HELP
   &mx_help_ops,
+#endif
 
   /* Local mailboxes */
   &MxMaildirOps,
@@ -1160,7 +1164,9 @@ int mx_check_empty(const char *path)
   {
     case MUTT_MBOX:
     case MUTT_MMDF:
+#ifdef USE_DEVEL_HELP
     case MUTT_HELP:
+#endif
       return mutt_file_check_empty(path);
     case MUTT_MH:
       return mh_check_empty(path);
@@ -1261,7 +1267,9 @@ enum MailboxType mx_path_probe(const char *path, struct stat *st)
 #ifdef USE_NNTP
     &MxNntpOps,
 #endif
+#ifdef USE_DEVEL_HELP
     &mx_help_ops,
+#endif
   };
 
   static const struct MxOps *with_stat[] = {

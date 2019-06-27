@@ -95,6 +95,8 @@ options {
 # Testing
   testing=0                 => "Enable Unit Testing"
   coverage=0                => "Enable Coverage Testing"
+# Development
+  devel-help                => "Enable Help Backend (DEVEL)"
 # Configure with pkg-config
   pkgconf=0                 => "Use pkg-config during configure"
 # Enable all options
@@ -109,7 +111,7 @@ options {
 if {1} {
   # Keep sorted, please.
   foreach opt {
-    bdb backtrace coverage doc everything fmemopen full-doc gdbm gnutls gpgme
+    bdb backtrace coverage devel-help doc everything fmemopen full-doc gdbm gnutls gpgme
     gss homespool idn idn2 inotify kyotocabinet lmdb locales-fix lua mixmaster
     nls notmuch pkgconf pgp qdbm sasl smime ssl testing tokyocabinet
   } {
@@ -374,6 +376,10 @@ switch [opt-val with-lock fcntl] {
 ###############################################################################
 # Locales fix
 if {[get-define want-locales-fix]} {define LOCALES_HACK}
+
+###############################################################################
+# (DEVEL) Help Backend
+if {[get-define want-devel-help]} {define USE_DEVEL_HELP}
 
 ###############################################################################
 # Documentation
