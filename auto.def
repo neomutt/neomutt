@@ -835,6 +835,10 @@ if {[get-define want-idn]} {
 } elseif {[get-define want-idn2]} {
   if {[get-define want-pkgconf]} {
     pkgconf true libidn2
+    # These are used to figure which header to include
+    if {!([cc-check-includes idn2.h] || [cc-check-includes idn/idn2.h])} {
+      user-error "Unable to find GNU libidn2"
+    }
   } else {
     set idn_prefix [opt-val with-idn2 $prefix]
     cc-with [list -cflags -I$idn_prefix/include -libs -L$idn_prefix/lib] {
