@@ -161,6 +161,9 @@ static struct CompileOptions comp_opts[] = {
 #else
   { "curs_set", 0 },
 #endif
+#ifdef USE_DEVEL_GRAPHVIZ
+  { "graphviz", 2 },
+#endif
 #ifdef USE_FCNTL
   { "fcntl", 1 },
 #else

@@ -96,6 +96,7 @@ options {
   testing=0                 => "Enable Unit Testing"
   coverage=0                => "Enable Coverage Testing"
 # Development
+  devel-graphviz            => "Enable Graphviz dump (DEVEL)"
   devel-help                => "Enable Help Backend (DEVEL)"
 # Configure with pkg-config
   pkgconf=0                 => "Use pkg-config during configure"
@@ -111,7 +112,7 @@ options {
 if {1} {
   # Keep sorted, please.
   foreach opt {
-    bdb backtrace coverage devel-help doc everything fmemopen full-doc gdbm gnutls gpgme
+    bdb backtrace coverage devel-graphviz devel-help doc everything fmemopen full-doc gdbm gnutls gpgme
     gss homespool idn idn2 inotify kyotocabinet lmdb locales-fix lua mixmaster
     nls notmuch pkgconf pgp qdbm sasl smime ssl testing tokyocabinet
   } {
@@ -378,6 +379,9 @@ switch [opt-val with-lock fcntl] {
 if {[get-define want-locales-fix]} {define LOCALES_HACK}
 
 ###############################################################################
+# (DEVEL) Graphviz dump
+if {[get-define want-devel-graphviz]} {define USE_DEVEL_GRAPHVIZ}
+
 # (DEVEL) Help Backend
 if {[get-define want-devel-help]} {define USE_DEVEL_HELP}
 

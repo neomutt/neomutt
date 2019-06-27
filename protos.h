@@ -88,4 +88,8 @@ int wcscasecmp(const wchar_t *a, const wchar_t *b);
 
 int mutt_reply_observer(struct NotifyCallback *nc);
 
+#ifdef USE_DEVEL_GRAPHVIZ
+void dump_graphviz(const char *title);
+#endif
+
 #endif /* MUTT_PROTOS_H */
