@@ -807,20 +807,20 @@ if {[get-define want-idn] && [get-define want-idn2]} {
   user-error "Cannot specify both --idn and --idn2"
 }
 if {[get-define want-idn]} {
-  if {[get-define want-pkgconf]} {
-    pkgconf true libidn
+  proc find-idn1-includes {} {
     # These are used to figure which header to include
     if {!([cc-check-includes stringprep.h] || [cc-check-includes idn/stringprep.h]) ||
         !([cc-check-includes idna.h] || [cc-check-includes idn/idna.h])} {
       user-error "Unable to find GNU libidn"
     }
+  }
+  if {[get-define want-pkgconf]} {
+    pkgconf true libidn
+    find-idn1-includes
   } else {
     set idn_prefix [opt-val with-idn $prefix]
     cc-with [list -cflags -I$idn_prefix/include -libs -L$idn_prefix/lib] {
-      if {!([cc-check-includes stringprep.h] || [cc-check-includes idn/stringprep.h]) ||
-          !([cc-check-includes idna.h] || [cc-check-includes idn/idna.h])} {
-        user-error "Unable to find GNU libidn"
-      }
+      find-idn1-includes
       define-append CFLAGS -I$idn_prefix/include
       define-append LDFLAGS -L$idn_prefix/lib
     }
@@ -833,18 +833,19 @@ if {[get-define want-idn]} {
   cc-check-functions idna_to_ascii_lz idna_to_ascii_from_locale
   define-feature libidn
 } elseif {[get-define want-idn2]} {
-  if {[get-define want-pkgconf]} {
-    pkgconf true libidn2
+  proc find-idn2-includes {} {
     # These are used to figure which header to include
     if {!([cc-check-includes idn2.h] || [cc-check-includes idn/idn2.h])} {
       user-error "Unable to find GNU libidn2"
     }
+  }
+  if {[get-define want-pkgconf]} {
+    pkgconf true libidn2
+    find-idn2-includes
   } else {
     set idn_prefix [opt-val with-idn2 $prefix]
     cc-with [list -cflags -I$idn_prefix/include -libs -L$idn_prefix/lib] {
-      if {!([cc-check-includes idn2.h] || [cc-check-includes idn/idn2.h])} {
-        user-error "Unable to find GNU libidn2"
-      }
+      find-idn2-includes
       define-append CFLAGS -I$idn_prefix/include
       define-append LDFLAGS -L$idn_prefix/lib
     }
