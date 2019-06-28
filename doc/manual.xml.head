@@ -6997,6 +6997,52 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
 </screen>
 
       </sect2>
+
+      <sect2 id="formatstrings-size">
+        <title>Bytes size display</title>
+
+        <para>
+          Various format strings contain expandos that display the size of
+          messages in bytes.  This includes
+          <literal>%s</literal> in <link linkend="attach-format">$attach_format</link>,
+          <literal>%l</literal> in <link linkend="compose-format">$compose_format</link>,
+          <literal>%s</literal> in <link linkend="folder-format">$folder_format</link>,
+          <literal>%c</literal> in <link linkend="index-format">$index_format</link>,
+          and %l and %L in <link linkend="status-format">$status_format</link>.
+          There are four configuration variables that can be used to customize
+          how the numbers are displayed.
+        </para>
+
+        <para>
+          <link linkend="size-show-bytes">$size_show_bytes</link>
+          will display the number of bytes when the size is &lt; 1
+          kilobyte.  When unset, kilobytes will be displayed instead.
+        </para>
+
+        <para>
+          <link linkend="size-show-mb">$size_show_mb</link> will display the
+          number of megabytes when the size is &gt;= 1 megabyte.  When
+          unset, kilobytes will be displayed instead (which could be a large
+          number).
+        </para>
+
+        <para>
+          <link linkend="size-show-fractions">$size_show_fractions</link>,
+          will display numbers with a single decimal place for values from
+          0 to 10 kilobytes, and 1 to 10 megabytes.
+        </para>
+
+        <para>
+          <link linkend="size-units-on-left">$size_units_on_left</link> will
+          display the unit (<quote>K</quote> or <quote>M</quote> to the left
+          of the number, instead of the right if unset.
+        </para>
+
+        <para>
+          These variables also affect size display in a few other places, such
+          as progress indicators and attachment delimeters in the pager.
+        </para>
+      </sect2>
     </sect1>
 
     <sect1 id="mailto-allow">

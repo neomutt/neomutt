@@ -71,6 +71,7 @@ void        mutt_safe_path(char *s, size_t l, const struct Address *a);
 int         mutt_save_confirm(const char *s, struct stat *st);
 void        mutt_save_path(char *d, size_t dsize, const struct Address *a);
 void        mutt_sleep(short s);
+void        mutt_str_pretty_size(char *buf, size_t buflen, size_t num);
 
 #define mutt_mktemp(buf, buflen)                         mutt_mktemp_pfx_sfx(buf, buflen, "neomutt", NULL)
 #define mutt_mktemp_pfx_sfx(buf, buflen, prefix, suffix) mutt_mktemp_full(buf, buflen, prefix, suffix, __FILE__, __LINE__)

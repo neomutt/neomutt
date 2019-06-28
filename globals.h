@@ -250,6 +250,10 @@ WHERE bool C_Score;                          ///< Config: Use message scoring
 WHERE bool C_SidebarVisible;                 ///< Config: (sidebar) Show the sidebar
 WHERE bool C_SidebarOnRight;                 ///< Config: (sidebar) Display the sidebar on the right
 #endif
+WHERE bool C_SizeShowBytes;                  ///< Config: Show smaller sizes in bytes
+WHERE bool C_SizeShowFractions;              ///< Config: Show size fractions with a single decimal place
+WHERE bool C_SizeShowMb;                     ///< Config: Show sizes in megabytes for sizes greater than 1 megabyte
+WHERE bool C_SizeUnitsOnLeft;                ///< Config: Show the units as a prefix to the size
 WHERE bool C_StatusOnTop;                    ///< Config: Display the status bar at the top
 WHERE bool C_Suspend;                        ///< Config: Allow the user to suspend NeoMutt using '^Z'
 WHERE bool C_TextFlowed;                     ///< Config: Generate 'format=flowed' messages

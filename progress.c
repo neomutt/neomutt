@@ -37,6 +37,7 @@
 #include "curs_lib.h"
 #include "mutt_curses.h"
 #include "mutt_logging.h"
+#include "muttlib.h"
 #include "options.h"
 
 /* These Config Variables are only used in progress.c */
