@@ -106,7 +106,7 @@ static const char *Notice =
 struct CompileOptions
 {
   const char *name;
-  bool enabled;
+  int enabled;  // 0 Disabled, 1 Enabled, 2 Devel only
 };
 
 /* These are sorted by the display string */
@@ -317,20 +317,29 @@ static void print_compile_options(struct CompileOptions *co, FILE *fp)
       fprintf(fp, "\n  ");
     }
     used += len;
-    if (co[i].enabled)
+    const char *fmt = "?%s ";
+    switch (co[i].enabled)
     {
-      if (tty)
-        fprintf(fp, "\033[1;32m+%s\033[0m ", co[i].name); // Escape
-      else
-        fprintf(fp, "+%s ", co[i].name);
+      case 0: // Disabled
+        if (tty)
+          fmt = "\033[1;31m-%s\033[0m "; // Escape, red
+        else
+          fmt = "-%s ";
+        break;
+      case 1: // Enabled
+        if (tty)
+          fmt = "\033[1;32m+%s\033[0m "; // Escape, green
+        else
+          fmt = "+%s ";
+        break;
+      case 2: // Devel only
+        if (tty)
+          fmt = "\033[1;36m!%s\033[0m "; // Escape, cyan
+        else
+          fmt = "+%s ";
+        break;
     }
-    else
-    {
-      if (tty)
-        fprintf(fp, "\033[1;31m-%s\033[0m ", co[i].name); // Escape
-      else
-        fprintf(fp, "-%s ", co[i].name);
-    }
+    fprintf(fp, fmt, co[i].name);
   }
   fprintf(fp, "\n");
 }
