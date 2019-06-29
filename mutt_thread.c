@@ -65,7 +65,7 @@ bool C_ThreadReceived; ///< Config: Sort threaded messages by their received dat
  */
 static bool is_visible(struct Email *e, struct Context *ctx)
 {
-  return e->virtual >= 0 || (e->collapsed && (!ctx->pattern || e->limited));
+  return e->vnum >= 0 || (e->collapsed && (!ctx->pattern || e->limited));
 }
 
 /**
@@ -1082,7 +1082,7 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
   if ((C_Sort & SORT_MASK) != SORT_THREADS)
   {
     mutt_error(_("Threading is not enabled"));
-    return e->virtual;
+    return e->vnum;
   }
 
   cur = e->thread;
@@ -1127,7 +1127,7 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
     } while (!tmp);
   }
 
-  return tmp->virtual;
+  return tmp->vnum;
 }
 
 /**
@@ -1146,7 +1146,7 @@ int mutt_parent_message(struct Context *ctx, struct Email *e, bool find_root)
   if ((C_Sort & SORT_MASK) != SORT_THREADS)
   {
     mutt_error(_("Threading is not enabled"));
-    return e->virtual;
+    return e->vnum;
   }
 
   /* Root may be the current message */
@@ -1177,14 +1177,14 @@ int mutt_parent_message(struct Context *ctx, struct Email *e, bool find_root)
       mutt_error(_("Parent message is not visible in this limited view"));
     return -1;
   }
-  return parent->virtual;
+  return parent->vnum;
 }
 
 /**
- * mutt_set_virtual - Set the virtual index number of all the messages in a mailbox
+ * mutt_set_vnum - Set the virtual index number of all the messages in a mailbox
  * @param ctx Mailbox
  */
-void mutt_set_virtual(struct Context *ctx)
+void mutt_set_vnum(struct Context *ctx)
 {
   if (!ctx || !ctx->mailbox)
     return;
@@ -1200,9 +1200,9 @@ void mutt_set_virtual(struct Context *ctx)
   for (int i = 0; i < m->msg_count; i++)
   {
     cur = m->emails[i];
-    if (cur->virtual >= 0)
+    if (cur->vnum >= 0)
     {
-      cur->virtual = m->vcount;
+      cur->vnum = m->vcount;
       m->v2r[m->vcount] = i;
       m->vcount++;
       ctx->vsize += cur->content->length + cur->content->offset -
@@ -1226,16 +1226,16 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *cur, MuttThreadFlags
   int final, reverse = (C_Sort & SORT_REVERSE), minmsgno;
   int num_hidden = 0, new = 0, old = 0;
   bool flagged = false;
-  int min_unread_msgno = INT_MAX, min_unread = cur->virtual;
+  int min_unread_msgno = INT_MAX, min_unread = cur->vnum;
 #define CHECK_LIMIT (!ctx->pattern || cur->limited)
 
   if (((C_Sort & SORT_MASK) != SORT_THREADS) && !(flag & MUTT_THREAD_GET_HIDDEN))
   {
     mutt_error(_("Threading is not enabled"));
-    return cur->virtual;
+    return cur->vnum;
   }
 
-  final = cur->virtual;
+  final = cur->vnum;
   thread = cur->thread;
   while (thread->parent)
     thread = thread->parent;
@@ -1253,7 +1253,7 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *cur, MuttThreadFlags
       new = 1;
     if (cur->msgno < min_unread_msgno)
     {
-      min_unread = cur->virtual;
+      min_unread = cur->vnum;
       min_unread_msgno = cur->msgno;
     }
   }
@@ -1261,18 +1261,18 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *cur, MuttThreadFlags
   if (cur->flagged && CHECK_LIMIT)
     flagged = true;
 
-  if ((cur->virtual == -1) && CHECK_LIMIT)
+  if ((cur->vnum == -1) && CHECK_LIMIT)
     num_hidden++;
 
   if (flag & (MUTT_THREAD_COLLAPSE | MUTT_THREAD_UNCOLLAPSE))
   {
     cur->pair = 0; /* force index entry's color to be re-evaluated */
     cur->collapsed = flag & MUTT_THREAD_COLLAPSE;
-    if (cur->virtual != -1)
+    if (cur->vnum != -1)
     {
       roothdr = cur;
       if (flag & MUTT_THREAD_COLLAPSE)
-        final = roothdr->virtual;
+        final = roothdr->vnum;
     }
   }
 
@@ -1305,24 +1305,24 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *cur, MuttThreadFlags
         {
           roothdr = cur;
           if (flag & MUTT_THREAD_COLLAPSE)
-            final = roothdr->virtual;
+            final = roothdr->vnum;
         }
 
         if (reverse && (flag & MUTT_THREAD_COLLAPSE) && (cur->msgno < minmsgno) && CHECK_LIMIT)
         {
           minmsgno = cur->msgno;
-          final = cur->virtual;
+          final = cur->vnum;
         }
 
         if (flag & MUTT_THREAD_COLLAPSE)
         {
           if (cur != roothdr)
-            cur->virtual = -1;
+            cur->vnum = -1;
         }
         else
         {
           if (CHECK_LIMIT)
-            cur->virtual = cur->msgno;
+            cur->vnum = cur->msgno;
         }
       }
 
@@ -1334,7 +1334,7 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *cur, MuttThreadFlags
           new = 1;
         if (cur->msgno < min_unread_msgno)
         {
-          min_unread = cur->virtual;
+          min_unread = cur->vnum;
           min_unread_msgno = cur->msgno;
         }
       }
@@ -1342,7 +1342,7 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *cur, MuttThreadFlags
       if (cur->flagged && CHECK_LIMIT)
         flagged = true;
 
-      if ((cur->virtual == -1) && CHECK_LIMIT)
+      if ((cur->vnum == -1) && CHECK_LIMIT)
         num_hidden++;
     }
 

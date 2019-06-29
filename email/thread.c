@@ -127,7 +127,7 @@ struct Email *find_virtual(struct MuttThread *cur, int reverse)
 
   struct MuttThread *top = NULL;
 
-  if (cur->message && (cur->message->virtual >= 0))
+  if (cur->message && (cur->message->vnum >= 0))
     return cur->message;
 
   top = cur;
@@ -140,7 +140,7 @@ struct Email *find_virtual(struct MuttThread *cur, int reverse)
 
   while (true)
   {
-    if (cur->message && (cur->message->virtual >= 0))
+    if (cur->message && (cur->message->vnum >= 0))
       return cur->message;
 
     if (cur->child)

@@ -87,7 +87,7 @@ struct Email
   int lines;          /**< how many lines in the body of this message? */
   int index;          /**< the absolute (unsorted) message number */
   int msgno;          /**< number displayed to the user */
-  int virtual;        /**< virtual message number */
+  int vnum;           /**< virtual message number */
   int score;
   struct Envelope *env;      /**< envelope information */
   struct Body *content;      /**< list of MIME parts */

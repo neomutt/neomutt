@@ -2029,7 +2029,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
         rd->index->menu_make_entry = index_make_entry;
         rd->index->menu_color = index_color;
         rd->index->max = Context ? Context->mailbox->vcount : 0;
-        rd->index->current = rd->extra->email->virtual;
+        rd->index->current = rd->extra->email->vnum;
         rd->index->indexwin = rd->index_window;
         rd->index->statuswin = rd->index_status_window;
       }

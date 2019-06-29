@@ -252,7 +252,7 @@ static void collapse_all(struct Menu *menu, int toggle)
   else if (CAN_COLLAPSE(CUR_EMAIL))
     final = mutt_collapse_thread(Context, CUR_EMAIL);
   else
-    final = CUR_EMAIL->virtual;
+    final = CUR_EMAIL->vnum;
 
   if (final == -1)
     return;
@@ -279,7 +279,7 @@ static void collapse_all(struct Menu *menu, int toggle)
   }
 
   /* Restore the cursor */
-  mutt_set_virtual(Context);
+  mutt_set_vnum(Context);
   for (int j = 0; j < Context->mailbox->vcount; j++)
   {
     if (Context->mailbox->emails[Context->mailbox->v2r[j]]->index == base->index)
@@ -464,9 +464,9 @@ static void update_index_threaded(struct Context *ctx, int check, int oldcount)
       if (mutt_pattern_exec(SLIST_FIRST(ctx->limit_pattern),
                             MUTT_MATCH_FULL_ADDRESS, ctx->mailbox, e, NULL))
       {
-        /* virtual will get properly set by mutt_set_virtual(), which
+        /* vnum will get properly set by mutt_set_vnum(), which
          * is called by mutt_sort_headers() just below. */
-        e->virtual = 1;
+        e->vnum = 1;
         e->limited = true;
       }
     }
@@ -488,7 +488,7 @@ static void update_index_threaded(struct Context *ctx, int check, int oldcount)
           ;
         mutt_uncollapse_thread(ctx, j->message);
       }
-      mutt_set_virtual(ctx);
+      mutt_set_vnum(ctx);
     }
     else if (oldcount)
     {
@@ -499,7 +499,7 @@ static void update_index_threaded(struct Context *ctx, int check, int oldcount)
           mutt_uncollapse_thread(ctx, save_new[j]);
         }
       }
-      mutt_set_virtual(ctx);
+      mutt_set_vnum(ctx);
     }
   }
 
@@ -532,7 +532,7 @@ static void update_index_unthreaded(struct Context *ctx, int check, int oldcount
                             ctx->mailbox, ctx->mailbox->emails[i], NULL))
       {
         assert(ctx->mailbox->vcount < ctx->mailbox->msg_count);
-        ctx->mailbox->emails[i]->virtual = ctx->mailbox->vcount;
+        ctx->mailbox->emails[i]->vnum = ctx->mailbox->vcount;
         ctx->mailbox->v2r[ctx->mailbox->vcount] = i;
         ctx->mailbox->emails[i]->limited = true;
         ctx->mailbox->vcount++;
@@ -776,7 +776,7 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
           flags |= MUTT_FORMAT_FORCESUBJ;
           break;
         }
-        else if (tmp->message->virtual >= 0)
+        else if (tmp->message->vnum >= 0)
           break;
       }
       if (flags & MUTT_FORMAT_FORCESUBJ)
@@ -789,7 +789,7 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
           /* ...but if a previous sibling is available, don't force it */
           if (reverse ? (tmp->message->msgno > edgemsgno) : (tmp->message->msgno < edgemsgno))
             break;
-          else if (tmp->message->virtual >= 0)
+          else if (tmp->message->vnum >= 0)
           {
             flags &= ~MUTT_FORMAT_FORCESUBJ;
             break;
@@ -1385,16 +1385,16 @@ int mutt_index_menu(void)
           e = mutt_hash_find(Context->mailbox->id_hash, buf);
           if (e)
           {
-            if (e->virtual != -1)
+            if (e->vnum != -1)
             {
-              menu->current = e->virtual;
+              menu->current = e->vnum;
               menu->redraw = REDRAW_MOTION_RESYNC;
             }
             else if (e->collapsed)
             {
               mutt_uncollapse_thread(Context, e);
-              mutt_set_virtual(Context);
-              menu->current = e->virtual;
+              mutt_set_vnum(Context);
+              menu->current = e->vnum;
               menu->redraw = REDRAW_MOTION_RESYNC;
             }
             else
@@ -1408,7 +1408,7 @@ int mutt_index_menu(void)
             {
               e = Context->mailbox->emails[Context->mailbox->msg_count - 1];
               mutt_sort_headers(Context, false);
-              menu->current = e->virtual;
+              menu->current = e->vnum;
               menu->redraw = REDRAW_FULL;
             }
             else if (rc > 0)
@@ -1480,7 +1480,7 @@ int mutt_index_menu(void)
              * update the index */
             if (menu->menu == MENU_PAGER)
             {
-              menu->current = oldcur->virtual;
+              menu->current = oldcur->vnum;
               menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
               op = OP_DISPLAY_MESSAGE;
               continue;
@@ -1489,7 +1489,7 @@ int mutt_index_menu(void)
             /* if the root message was retrieved, move to it */
             e = mutt_hash_find(Context->mailbox->id_hash, buf);
             if (e)
-              menu->current = e->virtual;
+              menu->current = e->vnum;
 
             /* try to restore old position */
             else
@@ -1498,7 +1498,7 @@ int mutt_index_menu(void)
               {
                 if (Context->mailbox->emails[i]->index == oldindex)
                 {
-                  menu->current = Context->mailbox->emails[i]->virtual;
+                  menu->current = Context->mailbox->emails[i]->vnum;
                   /* as an added courtesy, recenter the menu
                    * with the current entry at the middle of the screen */
                   menu_check_recenter(menu);
@@ -1549,9 +1549,9 @@ int mutt_index_menu(void)
           if (mutt_messages_in_thread(Context->mailbox, e, 1) > 1)
           {
             mutt_uncollapse_thread(Context, e);
-            mutt_set_virtual(Context);
+            mutt_set_vnum(Context);
           }
-          menu->current = e->virtual;
+          menu->current = e->vnum;
         }
 
         if (menu->menu == MENU_PAGER)
@@ -1992,13 +1992,13 @@ int mutt_index_menu(void)
         if (oldcount < Context->mailbox->msg_count)
         {
           /* nm_read_entire_thread() triggers mutt_sort_headers() if necessary */
-          menu->current = oldcur->virtual;
+          menu->current = oldcur->vnum;
           menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
 
           if (oldcur->collapsed || Context->collapsed)
           {
             menu->current = mutt_uncollapse_thread(Context, CUR_EMAIL);
-            mutt_set_virtual(Context);
+            mutt_set_vnum(Context);
           }
         }
         if (menu->menu == MENU_PAGER)
@@ -2332,7 +2332,7 @@ int mutt_index_menu(void)
         if (((C_Sort & SORT_MASK) == SORT_THREADS) && CUR_EMAIL->collapsed)
         {
           mutt_uncollapse_thread(Context, CUR_EMAIL);
-          mutt_set_virtual(Context);
+          mutt_set_vnum(Context);
           if (C_UncollapseJump)
             menu->current = mutt_thread_next_unread(Context, CUR_EMAIL);
         }
@@ -2404,7 +2404,7 @@ int mutt_index_menu(void)
 
             mutt_break_thread(CUR_EMAIL);
             mutt_sort_headers(Context, true);
-            menu->current = oldcur->virtual;
+            menu->current = oldcur->vnum;
           }
 
           Context->mailbox->changed = true;
@@ -2448,7 +2448,7 @@ int mutt_index_menu(void)
           if (mutt_link_threads(CUR_EMAIL, &el, Context->mailbox))
           {
             mutt_sort_headers(Context, true);
-            menu->current = oldcur->virtual;
+            menu->current = oldcur->vnum;
 
             Context->mailbox->changed = true;
             mutt_message(_("Threads linked"));
@@ -2936,14 +2936,14 @@ int mutt_index_menu(void)
         if (CUR_EMAIL->collapsed)
         {
           menu->current = mutt_uncollapse_thread(Context, CUR_EMAIL);
-          mutt_set_virtual(Context);
+          mutt_set_vnum(Context);
           if (C_UncollapseJump)
             menu->current = mutt_thread_next_unread(Context, CUR_EMAIL);
         }
         else if (CAN_COLLAPSE(CUR_EMAIL))
         {
           menu->current = mutt_collapse_thread(Context, CUR_EMAIL);
-          mutt_set_virtual(Context);
+          mutt_set_vnum(Context);
         }
         else
         {

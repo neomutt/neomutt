@@ -2388,7 +2388,7 @@ bool mutt_limit_current_thread(struct Email *e)
 
   for (int i = 0; i < Context->mailbox->msg_count; i++)
   {
-    Context->mailbox->emails[i]->virtual = -1;
+    Context->mailbox->emails[i]->vnum = -1;
     Context->mailbox->emails[i]->limited = false;
     Context->mailbox->emails[i]->collapsed = false;
     Context->mailbox->emails[i]->num_hidden = 0;
@@ -2397,7 +2397,7 @@ bool mutt_limit_current_thread(struct Email *e)
     {
       struct Body *body = Context->mailbox->emails[i]->content;
 
-      Context->mailbox->emails[i]->virtual = Context->mailbox->vcount;
+      Context->mailbox->emails[i]->vnum = Context->mailbox->vcount;
       Context->mailbox->emails[i]->limited = true;
       Context->mailbox->v2r[Context->mailbox->vcount] = i;
       Context->mailbox->vcount++;
@@ -2469,14 +2469,14 @@ int mutt_pattern_func(int op, char *prompt)
     {
       mutt_progress_update(&progress, i, -1);
       /* new limit pattern implicitly uncollapses all threads */
-      Context->mailbox->emails[i]->virtual = -1;
+      Context->mailbox->emails[i]->vnum = -1;
       Context->mailbox->emails[i]->limited = false;
       Context->mailbox->emails[i]->collapsed = false;
       Context->mailbox->emails[i]->num_hidden = 0;
       if (mutt_pattern_exec(SLIST_FIRST(pat), MUTT_MATCH_FULL_ADDRESS,
                             Context->mailbox, Context->mailbox->emails[i], NULL))
       {
-        Context->mailbox->emails[i]->virtual = Context->mailbox->vcount;
+        Context->mailbox->emails[i]->vnum = Context->mailbox->vcount;
         Context->mailbox->emails[i]->limited = true;
         Context->mailbox->v2r[Context->mailbox->vcount] = i;
         Context->mailbox->vcount++;
