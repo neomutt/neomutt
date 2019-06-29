@@ -145,10 +145,10 @@ struct NntpMboxData
   anum_t last_loaded;
   anum_t last_cached;
   anum_t unread;
-  bool subscribed : 1;
-  bool new        : 1;
-  bool allowed    : 1;
-  bool deleted    : 1;
+  bool subscribed   : 1;
+  bool has_new_mail : 1;
+  bool allowed      : 1;
+  bool deleted      : 1;
   unsigned int newsrc_len;
   struct NewsrcEntry *newsrc_ent;
   struct NntpAccountData *adata;

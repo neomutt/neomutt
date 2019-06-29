@@ -125,7 +125,7 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
   if (np)
   {
     (state->entry)[state->entrylen].has_mailbox = true;
-    (state->entry)[state->entrylen].new = np->mailbox->has_new;
+    (state->entry)[state->entrylen].has_new_mail = np->mailbox->has_new;
     (state->entry)[state->entrylen].msg_count = np->mailbox->msg_count;
     (state->entry)[state->entrylen].msg_unread = np->mailbox->msg_unread;
   }

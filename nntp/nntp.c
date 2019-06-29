@@ -2077,7 +2077,7 @@ int nntp_active_fetch(struct NntpAccountData *adata, bool new)
     for (; i < adata->groups_num; i++)
     {
       struct NntpMboxData *mdata = adata->groups_list[i];
-      mdata->new = true;
+      mdata->has_new_mail = true;
     }
   }
 
@@ -2184,7 +2184,7 @@ int nntp_check_new_groups(struct Mailbox *m, struct NntpAccountData *adata)
     for (; i < adata->groups_num; i++)
     {
       struct NntpMboxData *mdata = adata->groups_list[i];
-      mdata->new = true;
+      mdata->has_new_mail = true;
     }
 
     /* loading descriptions */

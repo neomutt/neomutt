@@ -67,9 +67,9 @@ struct FolderFile
   char *name;
   char *desc;
 
-  bool new;       /**< true if mailbox has "new mail" */
-  int msg_count;  /**< total number of messages */
-  int msg_unread; /**< number of unread messages */
+  bool has_new_mail; /**< true if mailbox has "new mail" */
+  int msg_count;     /**< total number of messages */
+  int msg_unread;    /**< number of unread messages */
 
 #ifdef USE_IMAP
   char delim;
