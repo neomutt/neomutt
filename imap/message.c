@@ -1398,7 +1398,7 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
                             sizeof(mdata->modseq));
     }
     else
-      mutt_hcache_delete(mdata->hcache, "/MODSEQ", 7);
+      mutt_hcache_delete_header(mdata->hcache, "/MODSEQ", 7);
 
     if (has_qresync)
       imap_hcache_store_uid_seqset(mdata);

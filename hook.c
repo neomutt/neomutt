@@ -359,8 +359,8 @@ static void delete_idxfmt_hooks(void)
 /**
  * mutt_parse_idxfmt_hook - Parse the 'index-format-hook' command - Implements ::command_t
  */
-int mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
-                           unsigned long data, struct Buffer *err)
+enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
+                                          unsigned long data, struct Buffer *err)
 {
   enum CommandResult rc = MUTT_CMD_ERROR;
   bool not = false;
