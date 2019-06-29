@@ -281,7 +281,7 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
     STAILQ_FOREACH(sp, &SpamList, entries)
     {
       mutt_md5_process(sp->regex->pattern, &md5ctx);
-      mutt_md5_process(sp->template, &md5ctx);
+      mutt_md5_process(sp->tmpl, &md5ctx);
     }
 
     /* Mix in user's nospam list */
