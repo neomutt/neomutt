@@ -1395,7 +1395,7 @@ struct PatternHead *mutt_pattern_comp(const char *s, int flags, struct Buffer *e
   struct PatternHead *last = NULL;
   bool pat_not = false;
   bool alladdr = false;
-  bool or = false;
+  bool pat_or = false;
   bool implicit = true; /* used to detect logical AND operator */
   bool isalias = false;
   short thread_op;
@@ -1426,7 +1426,7 @@ struct PatternHead *mutt_pattern_comp(const char *s, int flags, struct Buffer *e
         isalias = !isalias;
         break;
       case '|':
-        if (! or)
+        if (!pat_or)
         {
           if (!curlist)
           {
@@ -1448,7 +1448,7 @@ struct PatternHead *mutt_pattern_comp(const char *s, int flags, struct Buffer *e
             last = curlist;
           }
 
-          or = true;
+          pat_or = true;
         }
         ps.dptr++;
         implicit = false;
@@ -1511,7 +1511,7 @@ struct PatternHead *mutt_pattern_comp(const char *s, int flags, struct Buffer *e
           ps.dptr = p + 1; /* restore location */
           break;
         }
-        if (implicit && or)
+        if (implicit && pat_or)
         {
           /* A | B & C == (A | B) & C */
           tmp = mutt_pattern_node_new();
@@ -1520,7 +1520,7 @@ struct PatternHead *mutt_pattern_comp(const char *s, int flags, struct Buffer *e
           pat->child = curlist;
           curlist = tmp;
           last = tmp;
-          or = false;
+          pat_or = false;
         }
 
         tmp = mutt_pattern_node_new();
@@ -1622,7 +1622,7 @@ struct PatternHead *mutt_pattern_comp(const char *s, int flags, struct Buffer *e
   {
     tmp = mutt_pattern_node_new();
     struct Pattern *pat = SLIST_FIRST(tmp);
-    pat->op = or ? MUTT_PAT_OR : MUTT_PAT_AND;
+    pat->op = pat_or ? MUTT_PAT_OR : MUTT_PAT_AND;
     pat->child = curlist;
     curlist = tmp;
   }
