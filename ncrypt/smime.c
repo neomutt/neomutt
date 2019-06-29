@@ -450,9 +450,9 @@ static char *smime_key_flags(KeyFlags flags)
 static void smime_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
   struct SmimeKey **table = menu->data;
-  struct SmimeKey *this = table[line];
+  struct SmimeKey *key = table[line];
   char *truststate = NULL;
-  switch (this->trust)
+  switch (key->trust)
   {
     case 'e':
       /* L10N: Describes the trust state of a S/MIME key.
@@ -510,8 +510,8 @@ static void smime_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
          Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.  */
       truststate = _("Unknown   ");
   }
-  snprintf(buf, buflen, " 0x%s %s %s %-35.35s %s", this->hash,
-           smime_key_flags(this->flags), truststate, this->email, this->label);
+  snprintf(buf, buflen, " 0x%s %s %s %-35.35s %s", key->hash,
+           smime_key_flags(key->flags), truststate, key->email, key->label);
 }
 
 /**
