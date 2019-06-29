@@ -90,7 +90,7 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
    * than at scan, since it's so expensive to scan. But that's big changes
    * to browser.c */
   if (C_Mask && C_Mask->regex &&
-      !((regexec(C_Mask->regex, relpath, 0, NULL, 0) == 0) ^ C_Mask->not))
+      !((regexec(C_Mask->regex, relpath, 0, NULL, 0) == 0) ^ C_Mask->pat_not))
   {
     return;
   }

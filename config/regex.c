@@ -166,7 +166,7 @@ static int regex_native_set(const struct ConfigSet *cs, void *var,
 
   if (orig && orig->pattern)
   {
-    const int flags = orig->not? DT_REGEX_ALLOW_NOT : 0;
+    const int flags = orig->pat_not ? DT_REGEX_ALLOW_NOT : 0;
     r = regex_new(orig->pattern, flags, err);
     if (!r)
       rc = CSR_ERR_INVALID;
@@ -290,7 +290,7 @@ struct Regex *regex_new(const char *str, int flags, struct Buffer *err)
   /* Is a prefix of '!' allowed? */
   if (((flags & DT_REGEX_ALLOW_NOT) != 0) && (str[0] == '!'))
   {
-    reg->not = true;
+    reg->pat_not = true;
     str++;
   }
 

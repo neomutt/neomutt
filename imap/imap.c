@@ -387,7 +387,7 @@ static int compile_search(struct Mailbox *m, const struct PatternHead *pat, stru
   if (do_search(pat, false) == 0)
     return 0;
 
-  if (firstpat->not)
+  if (firstpat->pat_not)
     mutt_buffer_addstr(buf, "NOT ");
 
   if (firstpat->child)

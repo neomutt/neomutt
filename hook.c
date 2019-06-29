@@ -89,7 +89,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
   struct Hook *ptr = NULL;
   struct Buffer cmd, pattern;
   int rc;
-  bool not = false, warning = false;
+  bool pat_not = false, warning = false;
   regex_t *rx = NULL;
   struct PatternHead *pat = NULL;
   char path[PATH_MAX];
@@ -103,7 +103,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     {
       s->dptr++;
       SKIPWS(s->dptr);
-      not = true;
+      pat_not = true;
     }
 
     mutt_extract_token(&pattern, s, MUTT_TOKEN_NO_FLAGS);
@@ -206,7 +206,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
         return MUTT_CMD_SUCCESS;
       }
     }
-    else if ((ptr->type == data) && (ptr->regex.not == not) &&
+    else if ((ptr->type == data) && (ptr->regex.pat_not == pat_not) &&
              (mutt_str_strcmp(pattern.data, ptr->regex.pattern) == 0))
     {
       if (data & (MUTT_FOLDER_HOOK | MUTT_SEND_HOOK | MUTT_SEND2_HOOK | MUTT_MESSAGE_HOOK |
@@ -276,7 +276,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
   ptr->pattern = pat;
   ptr->regex.pattern = pattern.data;
   ptr->regex.regex = rx;
-  ptr->regex.not = not;
+  ptr->regex.pat_not = pat_not;
   TAILQ_INSERT_TAIL(&Hooks, ptr, entries);
   return MUTT_CMD_SUCCESS;
 
@@ -363,7 +363,7 @@ enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
                                           unsigned long data, struct Buffer *err)
 {
   enum CommandResult rc = MUTT_CMD_ERROR;
-  bool not = false;
+  bool pat_not = false;
 
   struct Buffer *name = mutt_buffer_pool_get();
   struct Buffer *pattern = mutt_buffer_pool_get();
@@ -387,7 +387,7 @@ enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
   {
     s->dptr++;
     SKIPWS(s->dptr);
-    not = true;
+    pat_not = true;
   }
   mutt_extract_token(pattern, s, MUTT_TOKEN_NO_FLAGS);
 
@@ -413,7 +413,7 @@ enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
   {
     TAILQ_FOREACH(hook, hl, entries)
     {
-      if ((hook->regex.not == not) &&
+      if ((hook->regex.pat_not == pat_not) &&
           (mutt_str_strcmp(mutt_b2s(pattern), hook->regex.pattern) == 0))
       {
         mutt_str_replace(&hook->command, mutt_b2s(fmtstring));
@@ -438,7 +438,7 @@ enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
   hook->pattern = pat;
   hook->regex.pattern = mutt_str_strdup(mutt_b2s(pattern));
   hook->regex.regex = NULL;
-  hook->regex.not = not;
+  hook->regex.pat_not = pat_not;
 
   if (!hl)
   {
@@ -531,8 +531,8 @@ void mutt_folder_hook(const char *path, const char *desc)
     if (!(tmp->type & MUTT_FOLDER_HOOK))
       continue;
 
-    if ((path && (regexec(tmp->regex.regex, path, 0, NULL, 0) == 0) ^ tmp->regex.not) ||
-        (desc && (regexec(tmp->regex.regex, desc, 0, NULL, 0) == 0) ^ tmp->regex.not))
+    if ((path && (regexec(tmp->regex.regex, path, 0, NULL, 0) == 0) ^ tmp->regex.pat_not) ||
+        (desc && (regexec(tmp->regex.regex, desc, 0, NULL, 0) == 0) ^ tmp->regex.pat_not))
     {
       if (mutt_parse_rc_line(tmp->command, token, err) == MUTT_CMD_ERROR)
       {
@@ -593,7 +593,7 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type)
     if (hook->type & type)
     {
       if ((mutt_pattern_exec(SLIST_FIRST(hook->pattern), 0, m, e, &cache) > 0) ^
-          hook->regex.not)
+          hook->regex.pat_not)
       {
         if (mutt_parse_rc_line(hook->command, token, err) == MUTT_CMD_ERROR)
         {
@@ -642,7 +642,7 @@ static int addr_hook(char *path, size_t pathlen, HookFlags type,
     {
       struct Mailbox *m = ctx ? ctx->mailbox : NULL;
       if ((mutt_pattern_exec(SLIST_FIRST(hook->pattern), 0, m, e, &cache) > 0) ^
-          hook->regex.not)
+          hook->regex.pat_not)
       {
         mutt_make_string_flags(path, pathlen, hook->command, ctx, m, e, MUTT_FORMAT_PLAIN);
         return 0;
@@ -733,7 +733,7 @@ static void list_hook(struct ListHead *matches, const char *match, HookFlags hoo
   {
     if ((tmp->type & hook) &&
         ((match && (regexec(tmp->regex.regex, match, 0, NULL, 0) == 0)) ^
-         tmp->regex.not))
+         tmp->regex.pat_not))
     {
       mutt_list_insert_tail(matches, mutt_str_strdup(tmp->command));
     }
@@ -776,7 +776,7 @@ void mutt_account_hook(const char *url)
     if (!(hook->command && (hook->type & MUTT_ACCOUNT_HOOK)))
       continue;
 
-    if ((regexec(hook->regex.regex, url, 0, NULL, 0) == 0) ^ hook->regex.not)
+    if ((regexec(hook->regex.regex, url, 0, NULL, 0) == 0) ^ hook->regex.pat_not)
     {
       inhook = true;
 
@@ -895,7 +895,7 @@ const char *mutt_idxfmt_hook(const char *name, struct Mailbox *m, struct Email *
   TAILQ_FOREACH(hook, hl, entries)
   {
     struct Pattern *pat = SLIST_FIRST(hook->pattern);
-    if ((mutt_pattern_exec(pat, 0, m, e, &cache) > 0) ^ hook->regex.not)
+    if ((mutt_pattern_exec(pat, 0, m, e, &cache) > 0) ^ hook->regex.pat_not)
     {
       fmtstring = hook->command;
       break;

@@ -529,12 +529,11 @@ void mutt_perror_debug(const char *s)
 void mutt_flush_stdin(void)
 {
   int c;
-  do 
+  do
   {
     c = fgetc(stdin);
   } while ((c != '\n') && (c != EOF));
 }
-
 
 /**
  * mutt_any_key_to_continue - Prompt the user to 'press any key' and wait

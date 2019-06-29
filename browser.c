@@ -708,7 +708,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       if (prefix && *prefix && !mutt_str_startswith(mdata->group, prefix, CASE_MATCH))
         continue;
       if (C_Mask && C_Mask->regex &&
-          !((regexec(C_Mask->regex, mdata->group, 0, NULL, 0) == 0) ^ C_Mask->not))
+          !((regexec(C_Mask->regex, mdata->group, 0, NULL, 0) == 0) ^ C_Mask->pat_not))
       {
         continue;
       }
@@ -767,7 +767,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
         continue;
       }
       if (C_Mask && C_Mask->regex &&
-          !((regexec(C_Mask->regex, de->d_name, 0, NULL, 0) == 0) ^ C_Mask->not))
+          !((regexec(C_Mask->regex, de->d_name, 0, NULL, 0) == 0) ^ C_Mask->pat_not))
       {
         continue;
       }

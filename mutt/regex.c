@@ -88,7 +88,7 @@ struct Regex *mutt_regex_new(const char *str, int flags, struct Buffer *err)
   /* Is a prefix of '!' allowed? */
   if (((flags & DT_REGEX_ALLOW_NOT) != 0) && (str[0] == '!'))
   {
-    reg->not = true;
+    reg->pat_not = true;
     str++;
   }
 

@@ -47,7 +47,7 @@ extern bool C_ThoroughSearch;
 struct Pattern
 {
   short op;
-  bool not : 1;
+  bool pat_not : 1;
   bool alladdr : 1;
   bool stringmatch : 1;
   bool groupmatch : 1;
