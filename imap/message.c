@@ -1555,12 +1555,12 @@ fail:
  * @param m      Mailbox
  * @param el     List of Emails to copy
  * @param dest   Destination folder
- * @param delete Delete the original?
+ * @param delete_original Delete the original?
  * @retval -1 Error
  * @retval  0 Success
  * @retval  1 Non-fatal error - try fetch/append
  */
-int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool delete)
+int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool delete_original)
 {
   if (!m || !el || !dest)
     return -1;
@@ -1706,7 +1706,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool
   }
 
   /* cleanup */
-  if (delete)
+  if (delete_original)
   {
     STAILQ_FOREACH(en, el, entries)
     {

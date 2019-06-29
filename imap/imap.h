@@ -101,7 +101,7 @@ int imap_mailbox_create(const char *folder);
 int imap_mailbox_rename(const char *path);
 
 /* message.c */
-int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool delete);
+int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool delete_original);
 
 /* socket.c */
 void imap_logout_all(void);
