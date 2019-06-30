@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 2018-2019 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2018 Floyd Anderson <f.a@31c0.net>
+ * Copyright (C) 2019 Tran Manh Tu <xxlaguna93@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -58,7 +59,6 @@
 static bool __Backup_HTS; ///< used to restore $hide_thread_subject on help_mbox_close()
 static char DocDirID[33]; ///< MD5 checksum of current $help_doc_dir DT_PATH option
 static struct HelpList *DocList; ///< all valid help documents within $help_doc_dir folder
-static size_t UpLink = 0; ///< DocList index, used to uplink a parent thread target
 
 /**
  * help_list_free - Free a list of Help documents
@@ -202,16 +202,18 @@ static void help_list_sort(struct HelpList *list, int (*compare)(const void *, c
 }
 
 /**
- * help_doc_type_cmp - Compare two help documents by their type - Implements ::sort_t
+ * help_doc_type_cmp - Compare two help documents by their name - Implements ::sort_t
  */
 static int help_doc_type_cmp(const void *a, const void *b)
 {
   const struct Email *e1 = *(const struct Email **) a;
   const struct Email *e2 = *(const struct Email **) b;
-  const HelpDocFlags t1 = ((const struct HelpDocMeta *) e1->edata)->type;
-  const HelpDocFlags t2 = ((const struct HelpDocMeta *) e2->edata)->type;
+  if (mutt_str_strcasecmp(e1->path, "index.md") == 0)
+    return -1;
+  else if (mutt_str_strcasecmp(e2->path, "index.md") == 0)
+    return 1;
 
-  return ((t1 < t2) - (t1 > t2));
+  return mutt_str_strcmp(e1->path, e2->path);
 }
 
 /**
@@ -264,7 +266,6 @@ void help_doclist_free(void)
 {
   help_list_free(&DocList, help_doc_free);
   mutt_str_strfcpy(DocDirID, "", sizeof(DocDirID));
-  UpLink = 0;
 }
 
 /**
@@ -309,32 +310,6 @@ static bool help_docdir_changed(void)
 }
 
 /**
- * help_dirent_type - Get the type of a given dirent entry or its file path
- * @param item    dirent struct that probably holds the wanted entry type
- * @param path    alternatively used with stat() to determine its type
- * @param as_flag return type as d_type value or its representing flag
- * @retval type obtained type or DT_UNKNOWN (0) otherwise
- *
- * @note On systems that define macro _DIRENT_HAVE_D_TYPE and supports a d_type
- *       field, this function may be less costly than an extra call of stat().
- */
-static DEType help_dirent_type(const struct dirent *item, const char *path, bool as_flag)
-{
-  unsigned char type = 0;
-
-#ifdef _DIRENT_HAVE_D_TYPE
-  type = item->d_type;
-#else
-  struct stat sb;
-
-  if (stat(path, &sb) == 0)
-    type = ((sb.st_mode & 0170000) >> 12);
-#endif
-
-  return (as_flag ? DT2DET(type) : type);
-}
-
-/**
  * help_file_type - Determine the type of a help file (relative to #C_HelpDocDir)
  * @param  file as full qualified file path of the document to test
  * @retval num Type of the file/document, see #HelpDocFlags
@@ -373,6 +348,7 @@ static HelpDocFlags help_file_type(const char *file)
   else /* handle all remaining (deeper nested) help documents as a section */
     type |= HELP_DOC_SECTION;
 
+  mutt_debug(1, "File '%s' has type %d\n", file, type);
   return type;
 }
 
@@ -614,91 +590,6 @@ static char *help_path_transpose(const char *path, bool validate)
 }
 
 /**
- * help_dir_scan - Traverse a directory for specific entry types, filter/gather
- *                 the found result(s)
- * @param path      directory in which to start the investigation
- * @param recursive Whether or not to iterate the given path recursively
- * @param mask      a bit mask that defines which entry type(s) to filter
- * @param filter    (optional) preselection filter callback function
- * @param gather    handler callback function for a single result that prior
- *                  passed the bit mask and preselection filter
- * @param items     list that can be used to interchange all results between
- *                  caller and handler function
- * @retval  0 Success, execution ended normally
- * @retval -1 Failure, when path cannot be opened for reading
- *
- * @note Function only aborts an iteration when the end of directory stream has
- *       been reached or the callback filter function returns with N < 0, but
- *       not on failures, to grab as much as possible entries from the stream.
- *       An entry named "", "." or "..", will always be skipped (and thus never
- *       delegated to callback functions), but will be solved/expanded for the
- *       initial path parameter.
- */
-static int help_dir_scan(const char *path, bool recursive, const DETMask mask,
-                         int (*filter)(const struct dirent *, const char *, DEType),
-                         int (*gather)(struct HelpList **, const char *),
-                         struct HelpList **items)
-{
-  char curpath[PATH_MAX];
-
-  errno = 0;
-  DIR *dp = opendir(NONULL(realpath(path, curpath)));
-
-  if (!dp)
-  {
-    //mutt_debug(1, "unable to open dir '%s': %s (errno %d).\n", path, strerror(errno), errno);
-    /* XXX: Fake a localised error message by extending an existing one */
-    mutt_error("%s '%s': %s (errno %d).", _("Error opening mailbox"), path,
-               strerror(errno), errno);
-    return -1;
-  }
-
-  while (1)
-  {
-    errno = 0; /* reset errno to distinguish between end-of-(dir)stream and an error */
-    const struct dirent *ep = readdir(dp);
-
-    if (!ep)
-    {
-      if (!errno)
-        break; /* we reached the end-of-stream */
-
-      mutt_debug(1, "unable to read dir: %s (errno %d).\n", strerror(errno), errno);
-      continue; /* this isn't the end-of-stream */
-    }
-
-    const char *np = ep->d_name;
-    if (!np[0] || ((np[0] == '.') && (!np[1] || ((np[1] == '.') && !np[2]))))
-    {
-      continue; /* to skip "", ".", ".." entries */
-    }
-
-    char abspath[mutt_str_strlen(curpath) + mutt_str_strlen(np) + 2];
-    mutt_path_concat(abspath, curpath, np, sizeof(abspath));
-
-    const DEType flag = help_dirent_type(ep, abspath, true);
-    if (mask & flag)
-    { /* delegate preselection processing */
-      int rc = filter ? filter(ep, abspath, flag) : 0;
-      if (rc < 0)
-        break; /* handler wants to abort */
-      else if (0 < rc)
-        continue; /* but skip a recursion */
-      else
-        gather(items, abspath);
-    }
-
-    if ((flag == DET_DIR) && recursive)
-    { /* descend this directory recursive */
-      help_dir_scan(abspath, recursive, mask, filter, gather, items);
-    }
-  }
-  closedir(dp);
-
-  return 0;
-}
-
-/**
  * help_file_hdr_clone - Callback to clone a file header object (struct HelpFileHeader)
  * @param item list element pointer to the object to copy
  * @retval ptr  Success, the duplicated object
@@ -803,6 +694,7 @@ static void *help_doc_clone(const void *item)
  */
 static struct Email *help_doc_from(const char *file)
 {
+  mutt_debug(1, "entering help_doc_from: '%s'\n", file);
   HelpDocFlags type = HELP_DOC_UNKNOWN;
 
   type = help_file_type(file);
@@ -872,6 +764,7 @@ static struct Email *help_doc_from(const char *file)
  */
 static int help_doc_gather(struct HelpList **list, const char *path)
 {
+  mutt_debug(1, "entering help_doc_gather: '%s'\n", path);
   help_list_new_append(list, sizeof(struct Email *), help_doc_from(path));
 
   return 0;
@@ -895,69 +788,89 @@ static void help_doc_uplink(const struct Email *target, const struct Email *sour
 }
 
 /**
- * help_read_dir - Read a directory and process its entries (not recursively) to
+ * help_add_to_list - Callback for nftw whenever a file is read
+ * @param fpath  Filename
+ * @param sb     Timestamp for the file
+ * @param tflag  File type
+ * @param ftwbuf Private nftw data
+ *
+ * @sa https://linux.die.net/man/3/nftw
+ *
+ * @note Only act on file
+ */
+static int help_add_to_list(const char *fpath, const struct stat *sb, int tflag,
+                            struct FTW *ftwbuf)
+{
+  mutt_debug(1, "entering add_to_list: '%s'\n", fpath);
+  if (tflag == FTW_F)
+    help_doc_gather(&DocList, fpath);
+
+  return 0; /* To tell nftw() to continue */
+}
+
+/**
+ * help_read_dir - Read a directory and process its entries recursively using nftw to
  *                 find and link all help documents
  * @param path absolute path of a directory
  *
  * @note All sections are linked to their parent chapter regardless how deeply
  *       they're nested on the filesystem. Empty directories are ignored.
  */
-static void help_read_dir(const char *path)
+static int help_read_dir(const char *path)
 {
-  struct HelpList *list = NULL;
+  mutt_debug(1, "entering help_read_dir: '%s'\n", path);
 
-  if ((help_dir_scan(path, false, DET_REG, NULL, help_doc_gather, &list) != 0) ||
-      (list == NULL))
-    return; /* skip errors and empty folder */
-
-  /* sort any 'index.md' in list to the top */
-  help_list_sort(list, help_doc_type_cmp);
-
-  struct Email *help_msg_top = help_list_get(list, 0, NULL), *help_msg_cur = NULL;
-  HelpDocFlags help_msg_top_type = ((struct HelpDocMeta *) help_msg_top->edata)->type;
-
-  /* uplink a help chapter/section top node */
-  if (help_msg_top_type & HELP_DOC_CHAPTER)
+  // Max of 20 open file handles, 0 flags
+  if (nftw(path, help_add_to_list, 20, 0) == -1)
   {
-    if (HELP_LINK_CHAPTERS != 0)
-      help_doc_uplink(help_list_get(DocList, 0, NULL), help_msg_top);
-
-    UpLink = DocList->size;
+    perror("nftw");
+    return 1;
   }
-  else if (help_msg_top_type & HELP_DOC_SECTION)
-    help_doc_uplink(help_list_get(DocList, UpLink, NULL), help_msg_top);
-  else
-    UpLink = 0;
+  /* Sort 'index.md' in list to the top */
+  help_list_sort(DocList, help_doc_type_cmp);
 
-  help_msg_top->index = DocList->size;
-  help_list_append(DocList, help_msg_top);
+  struct Email *help_msg_cur = NULL;
+  // All email at level 1 (directly under root will use uplinks[0] => index.md, at level n will use uplinks[n-1])
+  int list_size = 16;
+  int *uplinks = mutt_mem_calloc(list_size, sizeof(size_t));
+  struct Email *help_msg_index = NULL;
 
-  /* link remaining docs to first list item */
-  for (size_t i = 1; i < list->size; i++)
+  if (DocList->size > 0)
+    help_msg_index = help_list_get(DocList, 0, NULL);
+
+  /* link all docs except the index.md (top element) */
+  for (size_t i = 1; i < DocList->size; i++)
   {
-    help_msg_cur = help_list_get(list, i, NULL);
-    help_doc_uplink(help_msg_top, help_msg_cur);
+    help_msg_cur = help_list_get(DocList, i, NULL);
 
-    help_msg_cur->index = DocList->size;
-    help_list_append(DocList, help_msg_cur);
+    int level = 1;
+    char *msg_path = help_msg_cur->path;
+    int c = 0;
+    while (msg_path[c] != '\0')
+    {
+      if (msg_path[c] == '/')
+        level++;
+      c++;
+    }
+
+    size_t uplink_index = uplinks[level - 1];
+    if (level >= list_size)
+    {
+      list_size *= 2;
+      mutt_mem_realloc(uplinks, list_size * sizeof(size_t));
+    }
+
+    struct Email *help_msg_uplink = help_list_get(DocList, uplink_index, NULL);
+    mutt_debug(5, "Uplinking '%s' to '%s'\n", path, help_msg_uplink->path);
+    help_doc_uplink(help_msg_uplink, help_msg_cur);
+    help_msg_cur->index = i;
+    uplinks[level] = i;
+
+    // Flatten the top chapters in index
+    if ((level == 2) && (uplink_index == (i - 1)))
+      if (mutt_list_match(help_msg_index->env->message_id, &help_msg_uplink->env->references))
+        mutt_list_free(&help_msg_uplink->env->references);
   }
-}
-
-/**
- * help_dir_gather - Handler callback function for help_dir_scan()
- *                   Simple invoke help_read_dir() to search for help documents
- * @param list generic list, for successfully processed item paths (not used)
- * @param path absolute path of a dir entry that pass preselection
- * @retval     0   Success,
- * @retval (N!=0)  Failure, (not used currently, failures are externally
- *                 checked and silently suppressed herein)
- *
- * @note The list parameter isn't used herein, because every single result from
- *       help_scan_dir() will be processed directly.
- */
-static int help_dir_gather(struct HelpList **list, const char *path)
-{
-  help_read_dir(path);
 
   return 0;
 }
@@ -979,8 +892,7 @@ int help_doclist_init(void)
   DocList = help_list_new(sizeof(struct Email));
   help_read_dir(C_HelpDocDir);
   help_docdir_id(C_HelpDocDir);
-
-  return help_dir_scan(C_HelpDocDir, true, DET_DIR, NULL, help_dir_gather, NULL);
+  return 0;
 }
 
 /**
