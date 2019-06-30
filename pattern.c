@@ -179,7 +179,7 @@ struct PatternFlags
 {
   int tag;                ///< character used to represent this op
   int op;                 ///< operation to perform
-  int class;              ///< Pattern class, e.g. #MUTT_FULL_MSG
+  int flags;              ///< Pattern flags, e.g. #MUTT_FULL_MSG
   pattern_eat_t *eat_arg; ///< Callback function to parse the argument
 };
 
@@ -1549,7 +1549,7 @@ struct PatternHead *mutt_pattern_comp(const char *s, int flags, struct Buffer *e
           mutt_buffer_printf(err, _("%c: invalid pattern modifier"), *ps.dptr);
           goto cleanup;
         }
-        if (entry->class && ((flags & entry->class) == 0))
+        if (entry->flags && ((flags & entry->flags) == 0))
         {
           mutt_buffer_printf(err, _("%c: not supported in this mode"), *ps.dptr);
           goto cleanup;
