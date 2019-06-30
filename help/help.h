@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 2018-2019 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2018 Floyd Anderson <f.a@31c0.net>
+ * Copyright (C) 2019 Tran Manh Tu <xxlaguna93@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -25,28 +26,9 @@
 #define MUTT_HELP_HELP_H
 
 #include "mx.h"
+#include <ftw.h>
 
 extern struct MxOps MxHelpOps;
-
-/**
- * enum dirent_type - Constants for d_type field values of the dirent structure
- *                    and used for bitwise filter mask matching, even the macro
- *                    _DIRENT_HAVE_D_TYPE for the d_type field is not defined
- */
-typedef enum dirent_type
-{
-  DET_UNKNOWN = (1 << 0), /* flag for DT_UNKNOWN field value (0) */
-  DET_FIFO    = (1 << 1), /* flag for DT_FIFO field value (1) */
-  DET_CHR     = (1 << 2), /* flag for DT_CHR field value (2) */
-  DET_DIR     = (1 << 3), /* flag for DT_DIR field value (4) */
-  DET_BLK     = (1 << 4), /* flag for DT_BLK field value (6) */
-  DET_REG     = (1 << 5), /* flag for DT_REG field value (8) */
-  DET_LNK     = (1 << 6), /* flag for DT_LNK field value (10) */
-  DET_SOCK    = (1 << 7), /* flag for DT_SOCK field value (12) */
-  DET_WHT     = (1 << 8)  /* flag for DT_WHT (dummy, whiteout inode) field value (14) */
-} DEType;
-#define DT2DET(type) (((type) ? 2 : 1) << ((type) >> 1))
-typedef unsigned int DETMask;
 
 typedef uint8_t HelpDocFlags;     ///< Types of Help Documents, e.g. #HELP_DOC_INDEX
 #define HELP_DOC_NO_FLAGS      0  ///< No flags are set
