@@ -1072,7 +1072,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete,
 #endif
 
   struct Mailbox *m_save = mx_path_resolve(buf);
-  struct Context *ctx_save = mx_mbox_open(m_save, MUTT_OPEN_NO_FLAGS);
+  struct Context *ctx_save = mx_mbox_open(m_save, MUTT_NEWFOLDER);
   if (!ctx_save)
   {
     mailbox_free(&m_save);
