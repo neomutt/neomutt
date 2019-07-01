@@ -29,6 +29,7 @@
 #include "config.h"
 #include "mutt/mutt.h"
 #include "neomutt.h"
+#include "account.h"
 
 struct NeoMutt *NeoMutt; ///< Global NeoMutt object
 
@@ -40,6 +41,7 @@ struct NeoMutt *neomutt_new(void)
 {
   struct NeoMutt *n = mutt_mem_calloc(1, sizeof(*NeoMutt));
 
+  TAILQ_INIT(&n->accounts);
   n->notify = notify_new(n, NT_NEOMUTT);
 
   return n;
@@ -56,7 +58,55 @@ void neomutt_free(struct NeoMutt **ptr)
 
   struct NeoMutt *n = *ptr;
 
+  neomutt_account_remove(n, NULL);
   notify_free(&n->notify);
 
   FREE(ptr);
+}
+
+/**
+ * neomutt_account_add - Add an Account to the global list
+ * @param n NeoMutt
+ * @param a Account to add
+ * @retval true If Account was added
+ */
+bool neomutt_account_add(struct NeoMutt *n, struct Account *a)
+{
+  if (!n || !a)
+    return false;
+
+  TAILQ_INSERT_TAIL(&n->accounts, a, entries);
+  notify_set_parent(a->notify, n->notify);
+
+  return true;
+}
+
+/**
+ * neomutt_account_remove - Remove an Account from the global list
+ * @param n NeoMutt
+ * @param a Account to remove
+ * @retval true If Account was removed
+ *
+ * @note If a is NULL, all the Accounts will be removed
+ */
+bool neomutt_account_remove(struct NeoMutt *n, struct Account *a)
+{
+  if (!n)
+    return false;
+
+  bool result = false;
+  struct Account *np = NULL;
+  struct Account *tmp = NULL;
+  TAILQ_FOREACH_SAFE(np, &n->accounts, entries, tmp)
+  {
+    if (!a || (np == a))
+    {
+      TAILQ_REMOVE(&n->accounts, np, entries);
+      account_free(&np);
+      result = true;
+      if (a)
+        break;
+    }
+  }
+  return result;
 }

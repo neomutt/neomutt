@@ -1,6 +1,6 @@
 /**
  * @file
- * Representation of a mailbox
+ * A group of associated Mailboxes
  *
  * @authors
  * Copyright (C) 1996-2000,2010,2013 Michael R. Elkins <me@mutt.org>
@@ -30,17 +30,19 @@
 #include "mailbox.h"
 
 struct ConnAccount;
+struct Notify;
 
 /**
- * struct Account - XXX
+ * struct Account - A group of associated Mailboxes
  */
 struct Account
 {
-  enum MailboxType magic;
-  struct MailboxList mailboxes;
-  TAILQ_ENTRY(Account) entries;
-  void *adata;
-  void (*free_adata)(void **);
+  enum MailboxType magic;       ///< Type of Mailboxes this Account contains
+  struct MailboxList mailboxes; ///< List of Mailboxes
+  TAILQ_ENTRY(Account) entries; ///< Linked list of Accounts
+  struct Notify *notify;        ///< Notifications handler
+  void *adata;                  ///< Private data (for Mailbox backends)
+  void (*free_adata)(void **);  ///< Callback function to free private data
 
   char *name;                 ///< Name of Account
   const struct ConfigSet *cs; ///< Parent ConfigSet
@@ -49,8 +51,6 @@ struct Account
   struct HashElem **vars;     ///< Array of the HashElems of local config items
 };
 TAILQ_HEAD(AccountList, Account);
-
-extern struct AccountList AllAccounts; ///< List of all Accounts
 
 bool            account_add_config(struct Account *a, const struct ConfigSet *cs, const char *name, const char *var_names[]);
 void            account_free(struct Account **ptr);

@@ -1,7 +1,7 @@
 /**
  * @file
- * Representation of an account
- *
+ * A group of associated Mailboxes
+ 
  * @authors
  * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
@@ -21,16 +21,15 @@
  */
 
 /**
- * @page account Representation of an account
+ * @page account A group of associated Mailboxes
  *
- * Representation of an account
+ * A group of associated Mailboxes
  */
 
 #include "config.h"
 #include "mutt/mutt.h"
 #include "account.h"
-
-struct AccountList AllAccounts = TAILQ_HEAD_INITIALIZER(AllAccounts);
+#include "neomutt.h"
 
 /**
  * account_new - Create a new Account
@@ -122,6 +121,8 @@ void account_free_config(struct Account *a)
  * account_mailbox_remove - Remove a Mailbox from an Account
  * @param a Account
  * @param m Mailbox to remove
+ *
+ * @note If m is NULL, all the mailboxes will be removed.
  */
 bool account_mailbox_remove(struct Account *a, struct Mailbox *m)
 {
@@ -130,19 +131,23 @@ bool account_mailbox_remove(struct Account *a, struct Mailbox *m)
 
   bool result = false;
   struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &a->mailboxes, entries)
+  struct MailboxNode *tmp = NULL;
+  STAILQ_FOREACH_SAFE(np, &a->mailboxes, entries, tmp)
   {
-    if (np->mailbox == m)
+    if (!m || (np->mailbox == m))
     {
       STAILQ_REMOVE(&a->mailboxes, np, MailboxNode, entries);
+      mailbox_free(&np->mailbox);
+      FREE(&np);
       result = true;
-      break;
+      if (m)
+        break;
     }
   }
 
   if (STAILQ_EMPTY(&a->mailboxes))
   {
-    account_free(&a);
+    neomutt_account_remove(NeoMutt, a);
   }
   return result;
 }
@@ -157,8 +162,8 @@ void account_free(struct Account **ptr)
     return;
 
   struct Account *a = *ptr;
-  if (!TAILQ_EMPTY(&AllAccounts))
-    TAILQ_REMOVE(&AllAccounts, a, entries);
+  account_mailbox_remove(a, NULL);
+
   if (a->free_adata)
     a->free_adata(&a->adata);
 

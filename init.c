@@ -60,6 +60,7 @@
 #include "mx.h"
 #include "myvar.h"
 #include "ncrypt/ncrypt.h"
+#include "neomutt.h"
 #include "options.h"
 #include "protos.h"
 #include "sidebar.h"
@@ -1383,7 +1384,7 @@ static enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
     }
     if (new_account)
     {
-      TAILQ_INSERT_TAIL(&AllAccounts, a, entries);
+      neomutt_account_add(NeoMutt, a);
     }
 
     struct MailboxNode *mn = mutt_mem_calloc(1, sizeof(*mn));

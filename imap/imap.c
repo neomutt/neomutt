@@ -56,6 +56,7 @@
 #include "mutt_socket.h"
 #include "muttlib.h"
 #include "mx.h"
+#include "neomutt.h"
 #include "pattern.h"
 #include "progress.h"
 #include "sort.h"
@@ -686,7 +687,7 @@ static void imap_logout(struct ImapAccountData *adata)
 void imap_logout_all(void)
 {
   struct Account *np = NULL;
-  TAILQ_FOREACH(np, &AllAccounts, entries)
+  TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
   {
     if (np->magic != MUTT_IMAP)
       continue;

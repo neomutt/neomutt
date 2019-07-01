@@ -1265,7 +1265,7 @@ main_exit:
   mutt_browser_cleanup();
   mutt_free_opts();
   mutt_free_keys();
-  cs_free(&Config);
   neomutt_free(&NeoMutt);
+  cs_free(&Config);
   return rc;
 }

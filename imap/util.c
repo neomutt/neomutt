@@ -56,6 +56,7 @@
 #include "mailbox.h"
 #include "message.h"
 #include "mutt_account.h"
+#include "neomutt.h"
 #include "options.h"
 
 /* These Config Variables are only used in imap/util.c */
@@ -139,7 +140,7 @@ int imap_adata_find(const char *path, struct ImapAccountData **adata,
     return -1;
 
   struct Account *np = NULL;
-  TAILQ_FOREACH(np, &AllAccounts, entries)
+  TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
   {
     if (np->magic != MUTT_IMAP)
       continue;
@@ -1056,7 +1057,7 @@ void imap_keepalive(void)
 {
   time_t now = time(NULL);
   struct Account *np = NULL;
-  TAILQ_FOREACH(np, &AllAccounts, entries)
+  TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
   {
     if (np->magic != MUTT_IMAP)
       continue;

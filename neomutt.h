@@ -23,6 +23,9 @@
 #ifndef MUTT_NEOMUTT_H
 #define MUTT_NEOMUTT_H
 
+#include <stdbool.h>
+#include "account.h"
+
 struct Notify;
 
 /**
@@ -31,6 +34,7 @@ struct Notify;
 struct NeoMutt
 {
   struct Notify *notify;       ///< Notifications handler
+  struct AccountList accounts; ///< List of all Accounts
 };
 
 extern struct NeoMutt *NeoMutt;
@@ -45,6 +49,8 @@ enum NotifyGlobal
   NT_GLOBAL_TIMEOUT,     ///< A timer has elapsed
 };
 
+bool            neomutt_account_add(struct NeoMutt *n, struct Account *a);
+bool            neomutt_account_remove(struct NeoMutt *n, struct Account *a);
 void            neomutt_free(struct NeoMutt **ptr);
 struct NeoMutt *neomutt_new(void);
 

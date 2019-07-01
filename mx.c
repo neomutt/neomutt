@@ -61,6 +61,7 @@
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "ncrypt/ncrypt.h"
+#include "neomutt.h"
 #include "opcodes.h"
 #include "options.h"
 #include "pattern.h"
@@ -297,7 +298,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
     }
     if (new_account)
     {
-      TAILQ_INSERT_TAIL(&AllAccounts, a, entries);
+      neomutt_account_add(NeoMutt, a);
     }
   }
 
@@ -1484,7 +1485,7 @@ struct Account *mx_ac_find(struct Mailbox *m)
     return NULL;
 
   struct Account *np = NULL;
-  TAILQ_FOREACH(np, &AllAccounts, entries)
+  TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
   {
     if (np->magic != m->magic)
       continue;
@@ -1531,7 +1532,7 @@ struct Mailbox *mx_mbox_find2(const char *path)
   mx_path_canon(buf, sizeof(buf), C_Folder, NULL);
 
   struct Account *np = NULL;
-  TAILQ_FOREACH(np, &AllAccounts, entries)
+  TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
   {
     struct Mailbox *m = mx_mbox_find(np, buf);
     if (m)
