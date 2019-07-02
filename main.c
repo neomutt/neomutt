@@ -1237,7 +1237,6 @@ int main(int argc, char *argv[], char *envp[])
 #endif
     log_queue_empty();
     mutt_log_stop();
-    cs_free(&Config);
     // TEST43: neomutt (no change to mailbox)
     // TEST44: neomutt (change mailbox)
   }
