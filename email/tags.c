@@ -196,7 +196,7 @@ bool driver_tags_replace(struct TagHead *head, char *tags)
     {
       driver_tags_add(head, np->data);
     }
-    mutt_list_clear(&hsplit);
+    mutt_list_free(&hsplit);
   }
   return true;
 }
