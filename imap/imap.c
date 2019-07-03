@@ -2272,7 +2272,7 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t
   if (!mdata)
     return -1;
 
-  char *new = NULL;
+  char *new_tag = NULL;
   char *checker = NULL;
 
   /* Check for \* flags capability */
@@ -2302,7 +2302,7 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t
    * And must be separated by one space.
    */
 
-  new = buf;
+  new_tag = buf;
   checker = buf;
   SKIPWS(checker);
   while (*checker != '\0')
@@ -2330,12 +2330,12 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t
     while ((checker[0] == ' ') && (checker[1] == ' '))
       checker++;
 
-    /* copy char to new and go the next one */
-    *new ++ = *checker++;
+    /* copy char to new_tag and go the next one */
+    *new_tag++ = *checker++;
   }
-  *new = '\0';
-  new = buf; /* rewind */
-  mutt_str_remove_trailing_ws(new);
+  *new_tag = '\0';
+  new_tag = buf; /* rewind */
+  mutt_str_remove_trailing_ws(new_tag);
 
   if (mutt_str_strcmp(tags, buf) == 0)
     return 0;
