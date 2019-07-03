@@ -1350,7 +1350,7 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
   }
 
   char buf[1024];
-  struct Body *head = NULL, *last = NULL, *new = NULL;
+  struct Body *head = NULL, *last = NULL, *new_body = NULL;
   bool final = false; /* did we see the ending boundary? */
 
   const size_t blen = mutt_str_strlen(boundary);
@@ -1387,13 +1387,14 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
       }
       else if (buf[2 + blen] == '\0')
       {
-        new = mutt_read_mime_header(fp, digest);
+        new_body = mutt_read_mime_header(fp, digest);
 
 #ifdef SUN_ATTACHMENT
-        if (mutt_param_get(&new->parameter, "content-lines"))
+        if (mutt_param_get(&new_body->parameter, "content-lines"))
         {
           int lines = 0;
-          if (mutt_str_atoi(mutt_param_get(&new->parameter, "content-lines"), &lines) < 0)
+          if (mutt_str_atoi(
+                  mutt_param_get(&new_body->parameter, "content-lines"), &lines) < 0)
             lines = 0;
           for (; lines > 0; lines--)
             if ((ftello(fp) >= end_off) || !fgets(buf, sizeof(buf), fp))
@@ -1401,20 +1402,20 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
         }
 #endif
         /* Consistency checking - catch bad attachment end boundaries */
-        if (new->offset > end_off)
+        if (new_body->offset > end_off)
         {
-          mutt_body_free(&new);
+          mutt_body_free(&new_body);
           break;
         }
         if (head)
         {
-          last->next = new;
-          last = new;
+          last->next = new_body;
+          last = new_body;
         }
         else
         {
-          last = new;
-          head = new;
+          last = new_body;
+          head = new_body;
         }
       }
     }
