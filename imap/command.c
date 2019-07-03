@@ -794,7 +794,7 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
   char *value = NULL;
   unsigned int olduv, oldun;
   unsigned int litlen;
-  short new = 0;
+  short new_mail = 0;
 
   char *mailbox = imap_next_word(s);
 
@@ -889,26 +889,26 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
     if (olduv && (olduv == mdata->uid_validity))
     {
       if (oldun < mdata->uid_next)
-        new = (mdata->unseen > 0);
+        new_mail = (mdata->unseen > 0);
     }
     else if (!olduv && !oldun)
     {
       /* first check per session, use recent. might need a flag for this. */
-      new = (mdata->recent > 0);
+      new_mail = (mdata->recent > 0);
     }
     else
-      new = (mdata->unseen > 0);
+      new_mail = (mdata->unseen > 0);
   }
   else
-    new = (mdata->unseen > 0);
+    new_mail = (mdata->unseen > 0);
 
 #ifdef USE_SIDEBAR
-  if ((m->has_new != new) || (m->msg_count != mdata->messages) ||
+  if ((m->has_new != new_mail) || (m->msg_count != mdata->messages) ||
       (m->msg_unread != mdata->unseen))
     mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
 #endif
 
-  m->has_new = new;
+  m->has_new = new_mail;
   m->msg_count = mdata->messages;
   m->msg_unread = mdata->unseen;
 
