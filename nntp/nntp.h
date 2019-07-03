@@ -161,7 +161,7 @@ struct NntpMboxData *mutt_newsgroup_subscribe(struct NntpAccountData *adata, cha
 struct NntpMboxData *mutt_newsgroup_unsubscribe(struct NntpAccountData *adata, char *group);
 struct NntpMboxData *mutt_newsgroup_catchup(struct Mailbox *m, struct NntpAccountData *adata, char *group);
 struct NntpMboxData *mutt_newsgroup_uncatchup(struct Mailbox *m, struct NntpAccountData *adata, char *group);
-int nntp_active_fetch(struct NntpAccountData *adata, bool new);
+int nntp_active_fetch(struct NntpAccountData *adata, bool mark_new);
 int nntp_newsrc_update(struct NntpAccountData *adata);
 int nntp_post(struct Mailbox *m, const char *msg);
 int nntp_check_msgid(struct Context *ctx, const char *msgid);

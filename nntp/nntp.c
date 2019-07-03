@@ -2039,12 +2039,12 @@ int nntp_post(struct Mailbox *m, const char *msg)
 
 /**
  * nntp_active_fetch - Fetch list of all newsgroups from server
- * @param adata NNTP server
- * @param new   Mark the groups as new
+ * @param adata    NNTP server
+ * @param mark_new Mark the groups as new
  * @retval  0 Success
  * @retval -1 Failure
  */
-int nntp_active_fetch(struct NntpAccountData *adata, bool new)
+int nntp_active_fetch(struct NntpAccountData *adata, bool mark_new)
 {
   struct NntpMboxData tmp_mdata;
   char msg[256];
@@ -2072,7 +2072,7 @@ int nntp_active_fetch(struct NntpAccountData *adata, bool new)
     return -1;
   }
 
-  if (new)
+  if (mark_new)
   {
     for (; i < adata->groups_num; i++)
     {
