@@ -362,7 +362,6 @@ struct AddressList *mutt_get_address(struct Envelope *env, const char **pfxp)
 void mutt_alias_create(struct Envelope *cur, struct AddressList *al)
 {
   struct Address *addr = NULL;
-  struct Alias *new = NULL;
   char buf[1024], tmp[1024] = { 0 }, prompt[128];
   char *pc = NULL;
   char *err = NULL;
@@ -413,8 +412,8 @@ retry_name:
     }
   }
 
-  new = mutt_alias_new();
-  new->name = mutt_str_strdup(buf);
+  struct Alias *alias = mutt_alias_new();
+  alias->name = mutt_str_strdup(buf);
 
   mutt_addrlist_to_local(al);
 
@@ -429,20 +428,20 @@ retry_name:
   {
     if ((mutt_get_field(_("Address: "), buf, sizeof(buf), 0) != 0) || !buf[0])
     {
-      mutt_alias_free(&new);
+      mutt_alias_free(&alias);
       return;
     }
 
-    mutt_addrlist_parse(&new->addr, buf);
-    if (TAILQ_EMPTY(&new->addr))
+    mutt_addrlist_parse(&alias->addr, buf);
+    if (TAILQ_EMPTY(&alias->addr))
       BEEP();
-    if (mutt_addrlist_to_intl(&new->addr, &err))
+    if (mutt_addrlist_to_intl(&alias->addr, &err))
     {
       mutt_error(_("Bad IDN: '%s'"), err);
       FREE(&err);
       continue;
     }
-  } while (TAILQ_EMPTY(&new->addr));
+  } while (TAILQ_EMPTY(&alias->addr));
 
   if (addr && addr->personal && !mutt_is_mail_list(addr))
     mutt_str_strfcpy(buf, addr->personal, sizeof(buf));
@@ -451,22 +450,22 @@ retry_name:
 
   if (mutt_get_field(_("Personal name: "), buf, sizeof(buf), 0) != 0)
   {
-    mutt_alias_free(&new);
+    mutt_alias_free(&alias);
     return;
   }
-  mutt_str_replace(&TAILQ_FIRST(&new->addr)->personal, buf);
+  mutt_str_replace(&TAILQ_FIRST(&alias->addr)->personal, buf);
 
   buf[0] = '\0';
-  mutt_addrlist_write(buf, sizeof(buf), &new->addr, true);
-  snprintf(prompt, sizeof(prompt), _("[%s = %s] Accept?"), new->name, buf);
+  mutt_addrlist_write(buf, sizeof(buf), &alias->addr, true);
+  snprintf(prompt, sizeof(prompt), _("[%s = %s] Accept?"), alias->name, buf);
   if (mutt_yesorno(prompt, MUTT_YES) != MUTT_YES)
   {
-    mutt_alias_free(&new);
+    mutt_alias_free(&alias);
     return;
   }
 
-  mutt_alias_add_reverse(new);
-  TAILQ_INSERT_TAIL(&Aliases, new, entries);
+  mutt_alias_add_reverse(alias);
+  TAILQ_INSERT_TAIL(&Aliases, alias, entries);
 
   mutt_str_strfcpy(buf, C_AliasFile, sizeof(buf));
   if (mutt_get_field(_("Save to file: "), buf, sizeof(buf), MUTT_FILE) != 0)
@@ -498,14 +497,14 @@ retry_name:
       fputc('\n', fp_alias);
   }
 
-  if (check_alias_name(new->name, NULL, 0))
-    mutt_file_quote_filename(new->name, buf, sizeof(buf));
+  if (check_alias_name(alias->name, NULL, 0))
+    mutt_file_quote_filename(alias->name, buf, sizeof(buf));
   else
-    mutt_str_strfcpy(buf, new->name, sizeof(buf));
+    mutt_str_strfcpy(buf, alias->name, sizeof(buf));
   recode_buf(buf, sizeof(buf));
   fprintf(fp_alias, "alias %s ", buf);
   buf[0] = '\0';
-  mutt_addrlist_write(buf, sizeof(buf), &new->addr, false);
+  mutt_addrlist_write(buf, sizeof(buf), &alias->addr, false);
   recode_buf(buf, sizeof(buf));
   write_safe_address(fp_alias, buf);
   fputc('\n', fp_alias);
