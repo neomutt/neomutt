@@ -52,6 +52,23 @@ struct Account
 };
 TAILQ_HEAD(AccountList, Account);
 
+/**
+ * struct EventAccount - An Event that happened to an Account
+ */
+struct EventAccount
+{
+  struct Account *account; ///< The Account this Event relates to
+};
+
+/**
+ * enum NotifyAccount - Types of Account Event
+ */
+enum NotifyAccount
+{
+  NT_ACCOUNT_ADD = 1, ///< A new Account has been created
+  NT_ACCOUNT_REMOVE,  ///< An Account is about to be destroyed
+};
+
 bool            account_add_config(struct Account *a, const struct ConfigSet *cs, const char *name, const char *var_names[]);
 void            account_free(struct Account **ptr);
 void            account_free_config(struct Account *a);

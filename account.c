@@ -39,6 +39,7 @@ struct Account *account_new(void)
 {
   struct Account *a = mutt_mem_calloc(1, sizeof(struct Account));
   STAILQ_INIT(&a->mailboxes);
+  a->notify = notify_new(a, NT_ACCOUNT);
 
   return a;
 }
@@ -167,6 +168,7 @@ void account_free(struct Account **ptr)
   if (a->free_adata)
     a->free_adata(&a->adata);
 
+  notify_free(&a->notify);
   account_free_config(a);
 
   FREE(ptr);

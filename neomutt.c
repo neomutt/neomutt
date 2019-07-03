@@ -78,6 +78,8 @@ bool neomutt_account_add(struct NeoMutt *n, struct Account *a)
   TAILQ_INSERT_TAIL(&n->accounts, a, entries);
   notify_set_parent(a->notify, n->notify);
 
+  struct EventAccount ev_a = { a };
+  notify_send(n->notify, NT_ACCOUNT, NT_ACCOUNT_ADD, IP & ev_a);
   return true;
 }
 
@@ -101,6 +103,8 @@ bool neomutt_account_remove(struct NeoMutt *n, struct Account *a)
   {
     if (!a || (np == a))
     {
+      struct EventAccount ev_a = { np };
+      notify_send(n->notify, NT_ACCOUNT, NT_ACCOUNT_REMOVE, IP & ev_a);
       TAILQ_REMOVE(&n->accounts, np, entries);
       account_free(&np);
       result = true;
