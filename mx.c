@@ -1587,7 +1587,7 @@ int mx_ac_remove(struct Mailbox *m)
   if (!m || !m->account)
     return -1;
 
-  account_remove_mailbox(m->account, m);
+  account_mailbox_remove(m->account, m);
   return 0;
 }
 

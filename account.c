@@ -119,6 +119,35 @@ void account_free_config(struct Account *a)
 }
 
 /**
+ * account_mailbox_remove - Remove a Mailbox from an Account
+ * @param a Account
+ * @param m Mailbox to remove
+ */
+bool account_mailbox_remove(struct Account *a, struct Mailbox *m)
+{
+  if (!a)
+    return false;
+
+  bool result = false;
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &a->mailboxes, entries)
+  {
+    if (np->mailbox == m)
+    {
+      STAILQ_REMOVE(&a->mailboxes, np, MailboxNode, entries);
+      result = true;
+      break;
+    }
+  }
+
+  if (STAILQ_EMPTY(&a->mailboxes))
+  {
+    account_free(&a);
+  }
+  return result;
+}
+
+/**
  * account_free - Free an Account
  * @param[out] ptr Account to free
  */
@@ -136,29 +165,6 @@ void account_free(struct Account **ptr)
   account_free_config(a);
 
   FREE(ptr);
-}
-
-/**
- * account_remove_mailbox - Remove a Mailbox from an Account
- * @param a Account
- * @param m Mailbox to remove
- */
-void account_remove_mailbox(struct Account *a, struct Mailbox *m)
-{
-  struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &a->mailboxes, entries)
-  {
-    if (np->mailbox == m)
-    {
-      STAILQ_REMOVE(&a->mailboxes, np, MailboxNode, entries);
-      break;
-    }
-  }
-
-  if (STAILQ_EMPTY(&a->mailboxes))
-  {
-    account_free(&a);
-  }
 }
 
 /**
