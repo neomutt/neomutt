@@ -840,7 +840,7 @@ void mutt_sort_threads(struct Context *ctx, bool init)
 
   struct Email *cur = NULL;
   int i, oldsort, using_refs = 0;
-  struct MuttThread *thread = NULL, *new = NULL, *tmp = NULL;
+  struct MuttThread *thread = NULL, *tnew = NULL, *tmp = NULL;
   struct MuttThread top = { 0 };
   struct ListNode *ref = NULL;
 
@@ -923,7 +923,7 @@ void mutt_sort_threads(struct Context *ctx, bool init)
       }
       else
       {
-        new = (C_DuplicateThreads ? thread : NULL);
+        tnew = (C_DuplicateThreads ? thread : NULL);
 
         thread = mutt_mem_calloc(1, sizeof(struct MuttThread));
         thread->message = cur;
@@ -932,14 +932,14 @@ void mutt_sort_threads(struct Context *ctx, bool init)
         mutt_hash_insert(ctx->thread_hash,
                          cur->env->message_id ? cur->env->message_id : "", thread);
 
-        if (new)
+        if (tnew)
         {
-          if (new->duplicate_thread)
-            new = new->parent;
+          if (tnew->duplicate_thread)
+            tnew = tnew->parent;
 
           thread = cur->thread;
 
-          insert_message(&new->child, new, thread);
+          insert_message(&tnew->child, tnew, thread);
           thread->duplicate_thread = true;
           thread->message->threaded = true;
         }
@@ -950,16 +950,16 @@ void mutt_sort_threads(struct Context *ctx, bool init)
       /* unlink pseudo-threads because they might be children of newly
        * arrived messages */
       thread = cur->thread;
-      for (new = thread->child; new;)
+      for (tnew = thread->child; tnew;)
       {
-        tmp = new->next;
-        if (new->fake_thread)
+        tmp = tnew->next;
+        if (tnew->fake_thread)
         {
-          unlink_message(&thread->child, new);
-          insert_message(&top.child, &top, new);
-          new->fake_thread = false;
+          unlink_message(&thread->child, tnew);
+          insert_message(&top.child, &top, tnew);
+          tnew->fake_thread = false;
         }
-        new = tmp;
+        tnew = tmp;
       }
     }
   }
@@ -1014,24 +1014,24 @@ void mutt_sort_threads(struct Context *ctx, bool init)
       if (!ref)
         break;
 
-      new = mutt_hash_find(ctx->thread_hash, ref->data);
-      if (!new)
+      tnew = mutt_hash_find(ctx->thread_hash, ref->data);
+      if (!tnew)
       {
-        new = mutt_mem_calloc(1, sizeof(struct MuttThread));
-        mutt_hash_insert(ctx->thread_hash, ref->data, new);
+        tnew = mutt_mem_calloc(1, sizeof(struct MuttThread));
+        mutt_hash_insert(ctx->thread_hash, ref->data, tnew);
       }
       else
       {
-        if (new->duplicate_thread)
-          new = new->parent;
-        if (is_descendant(new, thread)) /* no loops! */
+        if (tnew->duplicate_thread)
+          tnew = tnew->parent;
+        if (is_descendant(tnew, thread)) /* no loops! */
           continue;
       }
 
       if (thread->parent)
         unlink_message(&top.child, thread);
-      insert_message(&new->child, new, thread);
-      thread = new;
+      insert_message(&tnew->child, tnew, thread);
+      thread = tnew;
       if (thread->message || (thread->parent && (thread->parent != &top)))
         break;
     }
