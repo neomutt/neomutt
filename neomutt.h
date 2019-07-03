@@ -1,6 +1,6 @@
 /**
  * @file
- * NeoMutt container for notifications
+ * Container for Accounts, Notifications
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -26,16 +26,26 @@
 struct Notify;
 
 /**
- * struct NeoMutt - Container for notifications
+ * struct NeoMutt - Container for Accounts, Notifications
  */
 struct NeoMutt
 {
-  struct Notify *notify;
+  struct Notify *notify;       ///< Notifications handler
 };
 
 extern struct NeoMutt *NeoMutt;
 
+/**
+ * NotifyGlobal - Events not associated with an object
+ */
+enum NotifyGlobal
+{
+  NT_GLOBAL_STARTUP = 1, ///< NeoMutt is initialised
+  NT_GLOBAL_SHUTDOWN,    ///< NeoMutt is about to close
+  NT_GLOBAL_TIMEOUT,     ///< A timer has elapsed
+};
+
+void            neomutt_free(struct NeoMutt **ptr);
 struct NeoMutt *neomutt_new(void);
-void neomutt_free(struct NeoMutt **ptr);
 
 #endif /* MUTT_NEOMUTT_H */

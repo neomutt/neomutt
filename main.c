@@ -1214,6 +1214,7 @@ int main(int argc, char *argv[], char *envp[])
 
     mutt_folder_hook(mutt_b2s(folder), NULL);
     mutt_startup_shutdown_hook(MUTT_STARTUP_HOOK);
+    notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_STARTUP, 0);
 
     repeat_error = true;
     struct Mailbox *m = mx_path_resolve(mutt_b2s(folder));

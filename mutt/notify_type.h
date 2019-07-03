@@ -35,8 +35,6 @@ enum NotifyType
   NT_MAILBOX, ///< Mailbox has changed
   NT_EMAIL,   ///< Email has changed
   NT_WINDOW,  ///< Window has changed
-
-  NT_MAX,
 };
 
 #endif /* MUTT_LIB_NOTIFY_TYPE_H */

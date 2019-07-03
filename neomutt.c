@@ -1,6 +1,6 @@
 /**
  * @file
- * NeoMutt container for notifications
+ * Container for Accounts, Notifications
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -21,9 +21,9 @@
  */
 
 /**
- * @page neomutt NeoMutt container for notifications
+ * @page neomutt Container for Accounts, Notifications
  *
- * NeoMutt container for notifications
+ * Container for Accounts, Notifications
  */
 
 #include "config.h"
