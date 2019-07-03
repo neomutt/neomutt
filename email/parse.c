@@ -96,7 +96,7 @@ void mutt_auto_subscribe(const char *mailto)
  */
 static void parse_parameters(struct ParameterList *param, const char *s)
 {
-  struct Parameter *new = NULL;
+  struct Parameter *pnew = NULL;
   char buf[1024];
   const char *p = NULL;
   size_t i;
@@ -125,12 +125,12 @@ static void parse_parameters(struct ParameterList *param, const char *s)
       if (i == 0)
       {
         mutt_debug(LL_DEBUG1, "missing attribute: %s\n", s);
-        new = NULL;
+        pnew = NULL;
       }
       else
       {
-        new = mutt_param_new();
-        new->attribute = mutt_str_substr_dup(s, s + i);
+        pnew = mutt_param_new();
+        pnew->attribute = mutt_str_substr_dup(s, s + i);
       }
 
       s = mutt_str_skip_email_wsp(p + 1); /* skip over the = */
@@ -177,15 +177,15 @@ static void parse_parameters(struct ParameterList *param, const char *s)
       }
 
       /* if the attribute token was missing, 'new' will be NULL */
-      if (new)
+      if (pnew)
       {
-        new->value = mutt_str_strdup(buf);
+        pnew->value = mutt_str_strdup(buf);
 
         mutt_debug(LL_DEBUG2, "parse_parameter: '%s' = '%s'\n",
-                   new->attribute ? new->attribute : "", new->value ? new->value : "");
+                   pnew->attribute ? pnew->attribute : "", pnew->value ? pnew->value : "");
 
         /* Add this parameter to the list */
-        TAILQ_INSERT_HEAD(param, new, entries);
+        TAILQ_INSERT_HEAD(param, pnew, entries);
       }
     }
     else
