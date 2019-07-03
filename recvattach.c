@@ -1215,7 +1215,6 @@ void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *e,
                                    struct Body *parts, FILE *fp,
                                    int parent_type, int level, bool decrypted)
 {
-  struct AttachPtr *new = NULL;
   struct Body *m = NULL;
   struct Body *new_body = NULL;
   FILE *fp_new = NULL;
@@ -1293,15 +1292,15 @@ void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *e,
     }
     else
     {
-      new = mutt_mem_calloc(1, sizeof(struct AttachPtr));
-      mutt_actx_add_attach(actx, new);
+      struct AttachPtr *ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));
+      mutt_actx_add_attach(actx, ap);
 
-      new->content = m;
-      new->fp = fp;
-      m->aptr = new;
-      new->parent_type = parent_type;
-      new->level = level;
-      new->decrypted = decrypted;
+      ap->content = m;
+      ap->fp = fp;
+      m->aptr = ap;
+      ap->parent_type = parent_type;
+      ap->level = level;
+      ap->decrypted = decrypted;
 
       if (m->type == TYPE_MULTIPART)
         mutt_generate_recvattach_list(actx, e, m->parts, fp, m->type, level + 1, decrypted);
