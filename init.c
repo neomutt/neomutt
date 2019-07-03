@@ -3194,15 +3194,11 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   if (C_VirtualSpoolfile)
   {
     /* Find the first virtual folder and open it */
-    struct MailboxNode *mp = NULL;
-    STAILQ_FOREACH(mp, &AllMailboxes, entries)
-    {
-      if (mp->mailbox->magic == MUTT_NOTMUCH)
-      {
-        cs_str_string_set(Config, "spoolfile", mutt_b2s(mp->mailbox->pathbuf), NULL);
-        break;
-      }
-    }
+    struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_NOTMUCH);
+    struct MailboxNode *mp = STAILQ_FIRST(&ml);
+    if (mp)
+      cs_str_string_set(Config, "spoolfile", mutt_b2s(mp->mailbox->pathbuf), NULL);
+    neomutt_mailboxlist_clear(&ml);
   }
 #endif
 

@@ -11,6 +11,7 @@
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "mx.h"
+#include "neomutt.h"
 #include "protos.h"
 
 static time_t MailboxTime = 0; /**< last time we started checking for mail */
@@ -111,7 +112,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
 }
 
 /**
- * mutt_mailbox_check - Check all AllMailboxes for new mail
+ * mutt_mailbox_check - Check all all Mailboxes for new mail
  * @param m_cur Current Mailbox
  * @param force Force flags, see below
  * @retval num Number of mailboxes with new mail
@@ -120,7 +121,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
  * - MUTT_MAILBOX_CHECK_FORCE        ignore MailboxTime and check for new mail
  * - MUTT_MAILBOX_CHECK_FORCE_STATS  ignore MailboxTime and calculate statistics
  *
- * Check all AllMailboxes for new mail and total/new/flagged messages
+ * Check all all Mailboxes for new mail and total/new/flagged messages
  */
 int mutt_mailbox_check(struct Mailbox *m_cur, int force)
 {
@@ -137,7 +138,7 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
 #endif
 
   /* fastest return if there are no mailboxes */
-  if (STAILQ_EMPTY(&AllMailboxes))
+  if (TAILQ_EMPTY(&NeoMutt->accounts))
     return 0;
 
   t = time(NULL);
@@ -166,13 +167,15 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
     contex_sb.st_ino = 0;
   }
 
+  struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
   struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &AllMailboxes, entries)
+  STAILQ_FOREACH(np, &ml, entries)
   {
     mailbox_check(m_cur, np->mailbox, &contex_sb,
                   check_stats || (!np->mailbox->first_check_stats_done && C_MailCheckStats));
     np->mailbox->first_check_stats_done = true;
   }
+  neomutt_mailboxlist_clear(&ml);
 
   return MailboxCount;
 }
@@ -207,8 +210,9 @@ bool mutt_mailbox_list(void)
 
   mailboxlist[0] = '\0';
   pos += strlen(strncat(mailboxlist, _("New mail in "), sizeof(mailboxlist) - 1 - pos));
+  struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
   struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &AllMailboxes, entries)
+  STAILQ_FOREACH(np, &ml, entries)
   {
     /* Is there new mail in this mailbox? */
     if (!np->mailbox->has_new || (have_unnotified && np->mailbox->notified))
@@ -236,6 +240,7 @@ bool mutt_mailbox_list(void)
     pos += strlen(strncat(mailboxlist + pos, mutt_b2s(path), sizeof(mailboxlist) - 1 - pos));
     first = 0;
   }
+  neomutt_mailboxlist_clear(&ml);
 
   if (!first && np)
   {
@@ -292,8 +297,9 @@ void mutt_mailbox_next_buffer(struct Mailbox *m_cur, struct Buffer *s)
     bool found = false;
     for (int pass = 0; pass < 2; pass++)
     {
+      struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
       struct MailboxNode *np = NULL;
-      STAILQ_FOREACH(np, &AllMailboxes, entries)
+      STAILQ_FOREACH(np, &ml, entries)
       {
         if (np->mailbox->magic == MUTT_NOTMUCH) /* only match real mailboxes */
           continue;
@@ -307,6 +313,7 @@ void mutt_mailbox_next_buffer(struct Mailbox *m_cur, struct Buffer *s)
         if (mutt_str_strcmp(mutt_b2s(s), mutt_b2s(np->mailbox->pathbuf)) == 0)
           found = true;
       }
+      neomutt_mailboxlist_clear(&ml);
     }
 
     mutt_mailbox_check(m_cur, MUTT_MAILBOX_CHECK_FORCE); /* mailbox was wrong - resync things */

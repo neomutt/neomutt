@@ -47,6 +47,7 @@
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "mx.h"
+#include "neomutt.h"
 #include "opcodes.h"
 #include "sort.h"
 
@@ -409,8 +410,9 @@ static void unsort_entries(void)
 {
   int i = 0;
 
+  struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
   struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &AllMailboxes, entries)
+  STAILQ_FOREACH(np, &ml, entries)
   {
     if (i >= EntryCount)
       break;
@@ -429,6 +431,7 @@ static void unsort_entries(void)
       i++;
     }
   }
+  neomutt_mailboxlist_clear(&ml);
 }
 
 /**
@@ -804,8 +807,7 @@ static void fill_empty_space(int first_row, int num_rows, int div_width, int num
  *
  * Display a list of mailboxes in a panel on the left.  What's displayed will
  * depend on our index markers: TopMailbox, OpnMailbox, HilMailbox, BotMailbox.
- * On the first run they'll be NULL, so we display the top of NeoMutt's list
- * (AllMailboxes).
+ * On the first run they'll be NULL, so we display the top of NeoMutt's list.
  *
  * * TopMailbox - first visible mailbox
  * * BotMailbox - last  visible mailbox
@@ -983,11 +985,13 @@ void mutt_sb_draw(void)
 
   if (!Entries)
   {
+    struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
     struct MailboxNode *np = NULL;
-    STAILQ_FOREACH(np, &AllMailboxes, entries)
+    STAILQ_FOREACH(np, &ml, entries)
     {
       mutt_sb_notify_mailbox(np->mailbox, true);
     }
+    neomutt_mailboxlist_clear(&ml);
   }
 
   if (!prepare_sidebar(num_rows))

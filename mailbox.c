@@ -142,17 +142,21 @@ struct Mailbox *mutt_mailbox_find(const char *path)
   if (stat(path, &sb) != 0)
     return NULL;
 
+  struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
   struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &AllMailboxes, entries)
+  struct Mailbox *m = NULL;
+  STAILQ_FOREACH(np, &ml, entries)
   {
     if ((stat(mutt_b2s(np->mailbox->pathbuf), &tmp_sb) == 0) &&
         (sb.st_dev == tmp_sb.st_dev) && (sb.st_ino == tmp_sb.st_ino))
     {
-      return np->mailbox;
+      m = np->mailbox;
+      break;
     }
   }
+  neomutt_mailboxlist_clear(&ml);
 
-  return NULL;
+  return m;
 }
 
 /**
@@ -166,14 +170,20 @@ struct Mailbox *mutt_mailbox_find_desc(const char *desc)
   if (!desc)
     return NULL;
 
+  struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
   struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &AllMailboxes, entries)
+  struct Mailbox *m = NULL;
+  STAILQ_FOREACH(np, &ml, entries)
   {
     if (np->mailbox->desc && (mutt_str_strcmp(np->mailbox->desc, desc) == 0))
-      return np->mailbox;
+    {
+      m = np->mailbox;
+      break;
+    }
   }
+  neomutt_mailboxlist_clear(&ml);
 
-  return NULL;
+  return m;
 }
 
 /**

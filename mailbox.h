@@ -42,7 +42,8 @@ struct stat;
  */
 enum MailboxType
 {
-  MUTT_MAILBOX_ERROR = -1, ///< Error occurred examining mailbox
+  MUTT_MAILBOX_ANY = -2,   ///< Match any Mailbox type
+  MUTT_MAILBOX_ERROR = -1, ///< Error occurred examining Mailbox
   MUTT_UNKNOWN = 0,        ///< Mailbox wasn't recognised
   MUTT_MBOX,               ///< 'mbox' Mailbox type
   MUTT_MMDF,               ///< 'mmdf' Mailbox type

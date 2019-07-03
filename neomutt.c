@@ -114,3 +114,54 @@ bool neomutt_account_remove(struct NeoMutt *n, struct Account *a)
   }
   return result;
 }
+
+/**
+ * neomutt_mailboxlist_clear - Free a Mailbox List
+ * @param ml Mailbox List to free
+ */
+void neomutt_mailboxlist_clear(struct MailboxList *ml)
+{
+  if (!ml)
+    return;
+
+  struct MailboxNode *mn = NULL;
+  struct MailboxNode *tmp = NULL;
+  STAILQ_FOREACH_SAFE(mn, ml, entries, tmp)
+  {
+    STAILQ_REMOVE(ml, mn, MailboxNode, entries);
+    FREE(&mn);
+  }
+}
+
+/**
+ * neomutt_mailboxlist_get_all - Get a List of all Mailboxes
+ * @param n    NeoMutt
+ * @param type Type of Account to match, see #MailboxType
+ * @retval obj List of Mailboxes
+ *
+ * @note If type is #MUTT_MAILBOX_ANY then all Mailbox types will be matched
+ */
+struct MailboxList neomutt_mailboxlist_get_all(struct NeoMutt *n, enum MailboxType magic)
+{
+  struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
+  if (!n)
+    return ml;
+
+  struct Account *a = NULL;
+  struct MailboxNode *mn = NULL;
+
+  TAILQ_FOREACH(a, &n->accounts, entries)
+  {
+    if ((magic > MUTT_UNKNOWN) && (a->magic != magic))
+      continue;
+
+    STAILQ_FOREACH(mn, &a->mailboxes, entries)
+    {
+      struct MailboxNode *mn2 = mutt_mem_calloc(1, sizeof(*mn2));
+      mn2->mailbox = mn->mailbox;
+      STAILQ_INSERT_TAIL(&ml, mn2, entries);
+    }
+  }
+
+  return ml;
+}

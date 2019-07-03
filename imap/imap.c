@@ -518,8 +518,9 @@ static int complete_hosts(char *buf, size_t buflen)
   size_t matchlen;
 
   matchlen = mutt_str_strlen(buf);
+  struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
   struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &AllMailboxes, entries)
+  STAILQ_FOREACH(np, &ml, entries)
   {
     if (!mutt_str_startswith(mutt_b2s(np->mailbox->pathbuf), buf, CASE_MATCH))
       continue;
@@ -532,6 +533,7 @@ static int complete_hosts(char *buf, size_t buflen)
     else
       longest_common_prefix(buf, mutt_b2s(np->mailbox->pathbuf), matchlen, buflen);
   }
+  neomutt_mailboxlist_clear(&ml);
 
 #if 0
   TAILQ_FOREACH(conn, mutt_socket_head(), entries)

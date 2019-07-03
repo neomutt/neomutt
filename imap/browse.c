@@ -46,6 +46,7 @@
 #include "mailbox.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
+#include "neomutt.h"
 
 /**
  * add_folder - Format and add an IMAP folder to the browser
@@ -115,12 +116,14 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
   (state->entry)[state->entrylen].selectable = !noselect;
   (state->entry)[state->entrylen].inferiors = !noinferiors;
 
+  struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
   struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &AllMailboxes, entries)
+  STAILQ_FOREACH(np, &ml, entries)
   {
     if (mutt_str_strcmp(tmp, mutt_b2s(np->mailbox->pathbuf)) == 0)
       break;
   }
+  neomutt_mailboxlist_clear(&ml);
 
   if (np)
   {
@@ -207,18 +210,17 @@ int imap_browse(const char *path, struct BrowserState *state)
   C_ImapCheckSubscribed = false;
 
   // Pick first mailbox connected to the same server
+  struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_IMAP);
   struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &AllMailboxes, entries)
+  STAILQ_FOREACH(np, &ml, entries)
   {
-    if (np->mailbox->magic != MUTT_IMAP)
-      continue;
-
     adata = imap_adata_get(np->mailbox);
     // Pick first mailbox connected on the same server
     if (imap_account_match(&adata->conn_account, &conn_account))
       break;
     adata = NULL;
   }
+  neomutt_mailboxlist_clear(&ml);
   if (!adata)
     goto fail;
 

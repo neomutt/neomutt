@@ -54,4 +54,7 @@ bool            neomutt_account_remove(struct NeoMutt *n, struct Account *a);
 void            neomutt_free(struct NeoMutt **ptr);
 struct NeoMutt *neomutt_new(void);
 
+void               neomutt_mailboxlist_clear(struct MailboxList *ml);
+struct MailboxList neomutt_mailboxlist_get_all(struct NeoMutt *n, enum MailboxType magic);
+
 #endif /* MUTT_NEOMUTT_H */

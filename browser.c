@@ -60,6 +60,7 @@
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "mx.h"
+#include "neomutt.h"
 #include "opcodes.h"
 #include "options.h"
 #include "sendlib.h"
@@ -783,12 +784,14 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       else if (!S_ISREG(s.st_mode))
         continue;
 
+      struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
       struct MailboxNode *np = NULL;
-      STAILQ_FOREACH(np, &AllMailboxes, entries)
+      STAILQ_FOREACH(np, &ml, entries)
       {
         if (mutt_str_strcmp(mutt_b2s(buf), mutt_b2s(np->mailbox->pathbuf)) != 0)
           break;
       }
+      neomutt_mailboxlist_clear(&ml);
 
       if (np && Context && Context->mailbox &&
           (mutt_str_strcmp(np->mailbox->realpath, Context->mailbox->realpath) == 0))
@@ -842,14 +845,15 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
   {
     init_state(state, menu);
 
-    if (STAILQ_EMPTY(&AllMailboxes))
+    if (TAILQ_EMPTY(&NeoMutt->accounts))
       return -1;
     mailbox = mutt_buffer_pool_get();
     md = mutt_buffer_pool_get();
     mutt_mailbox_check(Context ? Context->mailbox : NULL, 0);
 
+    struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
     struct MailboxNode *np = NULL;
-    STAILQ_FOREACH(np, &AllMailboxes, entries)
+    STAILQ_FOREACH(np, &ml, entries)
     {
       if (Context && (mutt_str_strcmp(np->mailbox->realpath, Context->mailbox->realpath) == 0))
       {
@@ -899,6 +903,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
 
       add_folder(menu, state, mutt_b2s(mailbox), np->mailbox->desc, &s, np->mailbox, NULL);
     }
+    neomutt_mailboxlist_clear(&ml);
   }
   browser_sort(state);
 
@@ -1618,7 +1623,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           int nentry = menu->current;
 
           // TODO(sileht): It could be better to select INBOX instead. But I
-          // don't want to manipulate Context/AllMailboxes/mailbox->account here for now.
+          // don't want to manipulate Context/Mailboxes/mailbox->account here for now.
           // Let's just protect neomutt against crash for now. #1417
           if (mutt_str_strcmp(mutt_b2s(Context->mailbox->pathbuf),
                               state.entry[nentry].name) == 0)
