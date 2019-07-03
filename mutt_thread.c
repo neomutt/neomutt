@@ -1224,7 +1224,7 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *cur, MuttThreadFlags
   struct MuttThread *thread = NULL, *top = NULL;
   struct Email *roothdr = NULL;
   int final, reverse = (C_Sort & SORT_REVERSE), minmsgno;
-  int num_hidden = 0, new = 0, old = 0;
+  int num_hidden = 0, new_mail = 0, old_mail = 0;
   bool flagged = false;
   int min_unread_msgno = INT_MAX, min_unread = cur->vnum;
 #define CHECK_LIMIT (!ctx->pattern || cur->limited)
@@ -1248,9 +1248,9 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *cur, MuttThreadFlags
   if (!cur->read && CHECK_LIMIT)
   {
     if (cur->old)
-      old = 2;
+      old_mail = 2;
     else
-      new = 1;
+      new_mail = 1;
     if (cur->msgno < min_unread_msgno)
     {
       min_unread = cur->vnum;
@@ -1282,7 +1282,7 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *cur, MuttThreadFlags
     if (flag & (MUTT_THREAD_COLLAPSE | MUTT_THREAD_UNCOLLAPSE))
       return final;
     else if (flag & MUTT_THREAD_UNREAD)
-      return (old && new) ? new : (old ? old : new);
+      return (old_mail && new_mail) ? new_mail : (old_mail ? old_mail : new_mail);
     else if (flag & MUTT_THREAD_GET_HIDDEN)
       return num_hidden;
     else if (flag & MUTT_THREAD_NEXT_UNREAD)
@@ -1329,9 +1329,9 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *cur, MuttThreadFlags
       if (!cur->read && CHECK_LIMIT)
       {
         if (cur->old)
-          old = 2;
+          old_mail = 2;
         else
-          new = 1;
+          new_mail = 1;
         if (cur->msgno < min_unread_msgno)
         {
           min_unread = cur->vnum;
@@ -1372,7 +1372,7 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *cur, MuttThreadFlags
   if (flag & (MUTT_THREAD_COLLAPSE | MUTT_THREAD_UNCOLLAPSE))
     return final;
   else if (flag & MUTT_THREAD_UNREAD)
-    return (old && new) ? new : (old ? old : new);
+    return (old_mail && new_mail) ? new_mail : (old_mail ? old_mail : new_mail);
   else if (flag & MUTT_THREAD_GET_HIDDEN)
     return num_hidden + 1;
   else if (flag & MUTT_THREAD_NEXT_UNREAD)
