@@ -1172,9 +1172,9 @@ int main(int argc, char *argv[], char *envp[])
       if (C_Spoolfile)
       {
         // Check if C_Spoolfile corresponds a mailboxes' description.
-        struct Mailbox *desc_m = mutt_mailbox_find_desc(C_Spoolfile);
-        if (desc_m)
-          mutt_buffer_strcpy(folder, desc_m->realpath);
+        struct Mailbox *m_desc = mutt_mailbox_find_desc(C_Spoolfile);
+        if (m_desc)
+          mutt_buffer_strcpy(folder, m_desc->realpath);
         else
           mutt_buffer_strcpy(folder, C_Spoolfile);
       }

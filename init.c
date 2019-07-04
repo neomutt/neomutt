@@ -1355,15 +1355,15 @@ static enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
 
     if (!new_account)
     {
-      struct Mailbox *old_m = mx_mbox_find(a, m->realpath);
-      if (old_m)
+      struct Mailbox *m_old = mx_mbox_find(a, m->realpath);
+      if (m_old)
       {
-        if (old_m->flags == MB_HIDDEN)
+        if (m_old->flags == MB_HIDDEN)
         {
-          old_m->flags = MB_NORMAL;
-          mutt_sb_notify_mailbox(old_m, true);
+          m_old->flags = MB_NORMAL;
+          mutt_sb_notify_mailbox(m_old, true);
           struct MailboxNode *mn = mutt_mem_calloc(1, sizeof(*mn));
-          mn->mailbox = old_m;
+          mn->mailbox = m_old;
           STAILQ_INSERT_TAIL(&AllMailboxes, mn, entries);
         }
         mailbox_free(&m);
