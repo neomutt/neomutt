@@ -160,8 +160,6 @@ struct MailboxNode
 };
 STAILQ_HEAD(MailboxList, MailboxNode);
 
-extern struct MailboxList AllMailboxes; ///< List of all Mailboxes
-
 void            mailbox_free             (struct Mailbox **ptr);
 struct Mailbox *mailbox_new              (void);
 void            mutt_mailbox_changed     (struct Mailbox *m, enum MailboxNotification action);

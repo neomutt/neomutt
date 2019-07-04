@@ -37,8 +37,6 @@
 #include "maildir/lib.h"
 #include "neomutt.h"
 
-struct MailboxList AllMailboxes = STAILQ_HEAD_INITIALIZER(AllMailboxes);
-
 /**
  * mailbox_new - Create a new Mailbox
  * @retval ptr New Mailbox

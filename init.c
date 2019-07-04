@@ -1363,9 +1363,6 @@ static enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
         {
           m_old->flags = MB_NORMAL;
           mutt_sb_notify_mailbox(m_old, true);
-          struct MailboxNode *mn = mutt_mem_calloc(1, sizeof(*mn));
-          mn->mailbox = m_old;
-          STAILQ_INSERT_TAIL(&AllMailboxes, mn, entries);
         }
         mailbox_free(&m);
         continue;
@@ -1386,10 +1383,6 @@ static enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
     {
       neomutt_account_add(NeoMutt, a);
     }
-
-    struct MailboxNode *mn = mutt_mem_calloc(1, sizeof(*mn));
-    mn->mailbox = m;
-    STAILQ_INSERT_TAIL(&AllMailboxes, mn, entries);
 
 #ifdef USE_SIDEBAR
     mutt_sb_notify_mailbox(m, true);
@@ -2397,9 +2390,10 @@ static enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s
       tmp_valid = true;
     }
 
+    struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
     struct MailboxNode *np = NULL;
     struct MailboxNode *nptmp = NULL;
-    STAILQ_FOREACH_SAFE(np, &AllMailboxes, entries, nptmp)
+    STAILQ_FOREACH_SAFE(np, &ml, entries, nptmp)
     {
       /* Decide whether to delete all normal mailboxes or all virtual */
       bool virt = ((np->mailbox->magic == MUTT_NOTMUCH) && (data & MUTT_VIRTUAL));
@@ -2428,14 +2422,11 @@ static enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s
         }
         else
         {
-          mx_ac_remove(np->mailbox);
-          mailbox_free(&np->mailbox);
+          account_mailbox_remove(np->mailbox->account, np->mailbox);
         }
-        STAILQ_REMOVE(&AllMailboxes, np, MailboxNode, entries);
-        FREE(&np);
-        continue;
       }
     }
+    neomutt_mailboxlist_clear(&ml);
   }
   return MUTT_CMD_SUCCESS;
 }
