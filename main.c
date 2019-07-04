@@ -90,6 +90,9 @@
 #ifdef USE_NNTP
 #include "nntp/nntp.h"
 #endif
+#ifdef USE_AUTOCRYPT
+#include "autocrypt/autocrypt.h"
+#endif
 
 /* These Config Variables are only used in main.c */
 bool C_ResumeEditedDraftFiles; ///< Config: Resume editing previously saved draft files
@@ -733,6 +736,9 @@ int main(int argc, char *argv[], char *envp[])
 
   /* Initialize crypto backends.  */
   crypt_init();
+#ifdef USE_AUTOCRYPT
+  mutt_autocrypt_init();
+#endif
 
   if (new_magic)
   {
@@ -1238,6 +1244,9 @@ int main(int argc, char *argv[], char *envp[])
 #endif
 #ifdef USE_SASL
     mutt_sasl_done();
+#endif
+#ifdef USE_AUTOCRYPT
+    mutt_autocrypt_cleanup();
 #endif
     log_queue_empty();
     mutt_log_stop();

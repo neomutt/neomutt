@@ -20,17 +20,10 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "config.h"
+#ifndef MUTT_AUTOCRYPT_AUTOCRYPT_H
+#define MUTT_AUTOCRYPT_AUTOCRYPT_H
 
-#include "mutt.h"
-#include "autocrypt.h"
+void mutt_autocrypt_init (void);
+void mutt_autocrypt_cleanup (void);
 
-void mutt_autocrypt_init(void)
-{
-  mutt_debug(LL_DEBUG1, "In mutt_autocrypt_init()\n");
-}
-
-void mutt_autocrypt_cleanup(void)
-{
-  mutt_debug(LL_DEBUG1, "In mutt_autocrypt_cleanup()\n");
-}
+#endif /* MUTT_AUTOCRYPT_AUTOCRYPT_H */
