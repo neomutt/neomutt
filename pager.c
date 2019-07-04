@@ -326,16 +326,16 @@ static void resolve_color(struct Line *line_info, int n, int cnt,
 
   if ((flags & MUTT_SHOWCOLOR) && (line_info[m].type == MT_COLOR_QUOTED))
   {
-    struct QClass *class = line_info[m].quote;
+    struct QClass *qc = line_info[m].quote;
 
-    if (class)
+    if (qc)
     {
-      def_color = class->color;
+      def_color = qc->color;
 
-      while (class && (class->length > cnt))
+      while (qc && (qc->length > cnt))
       {
-        def_color = class->color;
-        class = class->up;
+        def_color = qc->color;
+        qc = qc->up;
       }
     }
   }
@@ -439,13 +439,13 @@ static void append_line(struct Line *line_info, int n, int cnt)
 
 /**
  * new_class_color - Create a new quoting colour
- * @param[in]     class   Class of quoted text
+ * @param[in]     qc      Class of quoted text
  * @param[in,out] q_level Quote level
  */
-static void new_class_color(struct QClass *class, int *q_level)
+static void new_class_color(struct QClass *qc, int *q_level)
 {
-  class->index = (*q_level)++;
-  class->color = ColorQuote[class->index % ColorQuoteUsed];
+  qc->index = (*q_level)++;
+  qc->color = ColorQuote[qc->index % ColorQuoteUsed];
 }
 
 /**
@@ -523,7 +523,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
                                      size_t length, bool *force_redraw, int *q_level)
 {
   struct QClass *q_list = *quote_list;
-  struct QClass *class = NULL, *tmp = NULL, *ptr = NULL, *save = NULL;
+  struct QClass *qc = NULL, *tmp = NULL, *ptr = NULL, *save = NULL;
   char *tail_qptr = NULL;
   int offset, tail_lng;
   int index = -1;
@@ -534,9 +534,9 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
 
     if (!*quote_list)
     {
-      class = mutt_mem_calloc(1, sizeof(struct QClass));
-      class->color = ColorQuote[0];
-      *quote_list = class;
+      qc = mutt_mem_calloc(1, sizeof(struct QClass));
+      qc->color = ColorQuote[0];
+      *quote_list = qc;
     }
     return *quote_list;
   }
@@ -589,7 +589,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
           index = q_list->index;
 
           /* tmp should be the return class too */
-          class = tmp;
+          qc = tmp;
 
           /* next class to test; if tmp is a shorter prefix for another
            * node, that node can only be in the top level list, so don't
@@ -697,7 +697,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
                 index = q_list->index;
 
                 /* tmp should be the return class too */
-                class = tmp;
+                qc = tmp;
 
                 /* next class to test */
                 q_list = tmp->next;
@@ -766,7 +766,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
         }
 
         /* still not found so far: add it as a sibling to the current node */
-        if (!class)
+        if (!qc)
         {
           tmp = mutt_mem_calloc(1, sizeof(struct QClass));
           tmp->prefix = mutt_mem_calloc(1, length + 1);
@@ -790,7 +790,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
           if (index != -1)
             shift_class_colors(*quote_list, tmp, index, q_level);
 
-          return class;
+          return qc;
         }
       }
       else
@@ -802,27 +802,27 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
     }
   }
 
-  if (!class)
+  if (!qc)
   {
     /* not found so far: add it as a top level class */
-    class = mutt_mem_calloc(1, sizeof(struct QClass));
-    class->prefix = mutt_mem_calloc(1, length + 1);
-    strncpy(class->prefix, qptr, length);
-    class->length = length;
-    new_class_color(class, q_level);
+    qc = mutt_mem_calloc(1, sizeof(struct QClass));
+    qc->prefix = mutt_mem_calloc(1, length + 1);
+    strncpy(qc->prefix, qptr, length);
+    qc->length = length;
+    new_class_color(qc, q_level);
 
     if (*quote_list)
     {
-      class->next = *quote_list;
-      (*quote_list)->prev = class;
+      qc->next = *quote_list;
+      (*quote_list)->prev = qc;
     }
-    *quote_list = class;
+    *quote_list = qc;
   }
 
   if (index != -1)
     shift_class_colors(*quote_list, tmp, index, q_level);
 
-  return class;
+  return qc;
 }
 
 static int braille_line = -1;
