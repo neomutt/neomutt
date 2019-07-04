@@ -1224,7 +1224,7 @@ int main(int argc, char *argv[], char *envp[])
     if (Context || !explicit_folder)
     {
 #ifdef USE_SIDEBAR
-      mutt_sb_set_open_mailbox();
+      mutt_sb_set_open_mailbox(Context ? Context->mailbox : NULL);
 #endif
       mutt_index_menu();
       ctx_free(&Context);

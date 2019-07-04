@@ -719,7 +719,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
     collapse_all(menu, 0);
 
 #ifdef USE_SIDEBAR
-  mutt_sb_set_open_mailbox();
+  mutt_sb_set_open_mailbox(Context ? Context->mailbox : NULL);
 #endif
 
   mutt_clear_error();
@@ -2306,7 +2306,7 @@ int mutt_index_menu(void)
 #endif
         mutt_buffer_expand_path(folderbuf);
 #ifdef USE_SIDEBAR
-        mutt_sb_set_open_mailbox();
+        mutt_sb_set_open_mailbox(Context ? Context->mailbox : NULL);
 #endif
         goto changefoldercleanup;
 
