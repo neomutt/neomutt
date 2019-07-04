@@ -1462,7 +1462,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
           break;
         }
 
-        struct Context *this = Context; /* remember current folder and sort methods */
+        struct Context *ctx_cur = Context; /* remember current folder and sort methods */
         int old_sort = C_Sort; /* C_Sort, SortAux could be changed in mutt_index_menu() */
         int old_sort_aux = C_SortAux;
 
@@ -1475,7 +1475,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         if (!Context)
         {
           /* go back to the folder we started from */
-          Context = this;
+          Context = ctx_cur;
           /* Restore old $sort and $sort_aux */
           C_Sort = old_sort;
           C_SortAux = old_sort_aux;
@@ -1510,7 +1510,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         }
 
         /* go back to the folder we started from */
-        Context = this;
+        Context = ctx_cur;
         /* Restore old $sort and $sort_aux */
         C_Sort = old_sort;
         C_SortAux = old_sort_aux;
