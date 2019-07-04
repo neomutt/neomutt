@@ -56,6 +56,6 @@ extern unsigned char C_PopReconnect;
 extern struct MxOps MxPopOps;
 
 void pop_fetch_mail(void);
-int pop_path_probe(const char *path, const struct stat *st);
+enum MailboxType pop_path_probe(const char *path, const struct stat *st);
 
 #endif /* MUTT_POP_POP_H */

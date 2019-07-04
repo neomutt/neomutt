@@ -90,7 +90,7 @@ int imap_search(struct Mailbox *m, const struct PatternHead *pat);
 int imap_subscribe(char *path, bool subscribe);
 int imap_complete(char *buf, size_t buflen, char *path);
 int imap_fast_trash(struct Mailbox *m, char *dest);
-int imap_path_probe(const char *path, const struct stat *st);
+enum MailboxType imap_path_probe(const char *path, const struct stat *st);
 int imap_path_canon(char *buf, size_t buflen);
 
 extern struct MxOps MxImapOps;

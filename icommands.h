@@ -48,6 +48,6 @@ struct ICommand
   unsigned long data; ///< Private data to pass to the command
 };
 
-int mutt_parse_icommand(/* const */ char *line, struct Buffer *err);
+enum CommandResult mutt_parse_icommand(/* const */ char *line, struct Buffer *err);
 
 #endif /* MUTT_ICOMMANDS_H */
