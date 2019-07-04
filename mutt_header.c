@@ -94,21 +94,21 @@ static void label_ref_inc(struct Mailbox *m, char *label)
 
 /**
  * label_message - add an X-Label: field
- * @param[in]  m   Mailbox
- * @param[in]  e   Email
- * @param[out] new Set to true if this is a new label
+ * @param[in]  m         Mailbox
+ * @param[in]  e         Email
+ * @param[out] new_label Set to true if this is a new label
  * @retval true If the label was added
  */
-static bool label_message(struct Mailbox *m, struct Email *e, char *new)
+static bool label_message(struct Mailbox *m, struct Email *e, char *new_label)
 {
   if (!e)
     return false;
-  if (mutt_str_strcmp(e->env->x_label, new) == 0)
+  if (mutt_str_strcmp(e->env->x_label, new_label) == 0)
     return false;
 
   if (e->env->x_label)
     label_ref_dec(m, e->env->x_label);
-  mutt_str_replace(&e->env->x_label, new);
+  mutt_str_replace(&e->env->x_label, new_label);
   if (e->env->x_label)
     label_ref_inc(m, e->env->x_label);
 
