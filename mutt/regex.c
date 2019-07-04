@@ -198,7 +198,7 @@ bool mutt_regexlist_match(struct RegexList *rl, const char *str)
       continue;
     if (regexec(np->regex->regex, str, 0, NULL, 0) == 0)
     {
-      mutt_debug(5, "%s matches %s\n", str, np->regex->pattern);
+      mutt_debug(LL_DEBUG5, "%s matches %s\n", str, np->regex->pattern);
       return true;
     }
   }
@@ -389,7 +389,7 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
       switcher ^= 1;
       dst = twinbuf[switcher];
 
-      mutt_debug(5, "%s matches %s\n", src, np->regex->pattern);
+      mutt_debug(LL_DEBUG5, "%s matches %s\n", src, np->regex->pattern);
 
       /* Copy into other twinbuf with substitutions */
       if (np->tmpl)
@@ -429,7 +429,7 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
         }
       }
       dst[tlen] = '\0';
-      mutt_debug(5, "subst %s\n", dst);
+      mutt_debug(LL_DEBUG5, "subst %s\n", dst);
     }
     src = dst;
   }
@@ -496,8 +496,8 @@ bool mutt_replacelist_match(struct ReplaceList *rl, char *buf, size_t buflen, co
     /* Does this pattern match? */
     if (regexec(np->regex->regex, str, (size_t) np->nmatch, pmatch, 0) == 0)
     {
-      mutt_debug(5, "%s matches %s\n", str, np->regex->pattern);
-      mutt_debug(5, "%d subs\n", (int) np->regex->regex->re_nsub);
+      mutt_debug(LL_DEBUG5, "%s matches %s\n", str, np->regex->pattern);
+      mutt_debug(LL_DEBUG5, "%d subs\n", (int) np->regex->regex->re_nsub);
 
       /* Copy template into buf, with substitutions. */
       for (p = np->tmpl; *p && tlen < buflen - 1;)
@@ -538,7 +538,7 @@ bool mutt_replacelist_match(struct ReplaceList *rl, char *buf, size_t buflen, co
       if (tlen < buflen)
       {
         buf[tlen] = '\0';
-        mutt_debug(5, "\"%s\"\n", buf);
+        mutt_debug(LL_DEBUG5, "\"%s\"\n", buf);
       }
       return true;
     }

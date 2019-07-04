@@ -60,8 +60,7 @@ static void increase_buffer_pool(void)
  */
 void mutt_buffer_pool_free(void)
 {
-  mutt_debug(LL_DEBUG1, "mutt_buffer_pool_free: %zu of %zu returned to pool\n",
-             BufferPoolCount, BufferPoolLen);
+  mutt_debug(LL_DEBUG1, "%zu of %zu returned to pool\n", BufferPoolCount, BufferPoolLen);
 
   while (BufferPoolCount)
     mutt_buffer_free(&BufferPool[--BufferPoolCount]);

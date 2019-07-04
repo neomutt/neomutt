@@ -239,12 +239,13 @@ static void print_flowed_line(char *line, struct State *s, int ql,
   width = quote_width(s, ql);
   last = line[mutt_str_strlen(line) - 1];
 
-  mutt_debug(5, "f=f: line [%s], width = %ld, spaces = %lu\n", line,
+  mutt_debug(LL_DEBUG5, "f=f: line [%s], width = %ld, spaces = %lu\n", line,
              (long) width, fst->spaces);
 
   for (words = 0; (p = strsep(&line, " "));)
   {
-    mutt_debug(5, "f=f: word [%s], width: %lu, remaining = [%s]\n", p, fst->width, line);
+    mutt_debug(LL_DEBUG5, "f=f: word [%s], width: %lu, remaining = [%s]\n", p,
+               fst->width, line);
 
     /* remember number of spaces */
     if (!*p)
@@ -430,7 +431,7 @@ void rfc3676_space_stuff(struct Email *e)
         c = buf[len - 1];
         buf[len - 1] = '\0';
       }
-      mutt_debug(5, "f=f: line %d needs space-stuffing: '%s'\n", lc, buf);
+      mutt_debug(LL_DEBUG5, "f=f: line %d needs space-stuffing: '%s'\n", lc, buf);
       if (len > 0)
         buf[len - 1] = c;
     }

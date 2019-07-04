@@ -1995,7 +1995,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
 
     if (!TAILQ_EMPTY(&msg->env->from))
     {
-      mutt_debug(5, "msg->env->from before set_reverse_name: %s\n",
+      mutt_debug(LL_DEBUG5, "msg->env->from before set_reverse_name: %s\n",
                  TAILQ_FIRST(&msg->env->from)->mailbox);
       mutt_addrlist_clear(&msg->env->from);
     }
@@ -2014,7 +2014,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
     if (!TAILQ_EMPTY(&cur->env->x_original_to) && TAILQ_EMPTY(&msg->env->from))
     {
       mutt_addrlist_copy(&msg->env->from, &cur->env->x_original_to, false);
-      mutt_debug(5, "msg->env->from extracted from X-Original-To: header: %s\n",
+      mutt_debug(LL_DEBUG5, "msg->env->from extracted from X-Original-To: header: %s\n",
                  TAILQ_FIRST(&msg->env->from)->mailbox);
     }
   }

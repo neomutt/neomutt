@@ -61,7 +61,7 @@ bool is_from(const char *s, char *path, size_t pathlen, time_t *tp)
   if (!*s)
     return false;
 
-  mutt_debug(5, "\nis_from(): parsing: %s\n", s);
+  mutt_debug(LL_DEBUG5, "\nis_from(): parsing: %s\n", s);
 
   if (!mutt_date_is_day_name(s))
   {
@@ -106,7 +106,7 @@ bool is_from(const char *s, char *path, size_t pathlen, time_t *tp)
         len = pathlen - 1;
       memcpy(path, s, len);
       path[len] = '\0';
-      mutt_debug(5, "got return path: %s\n", path);
+      mutt_debug(LL_DEBUG5, "got return path: %s\n", path);
     }
 
     s = p + 1;

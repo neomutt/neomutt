@@ -4902,11 +4902,11 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
   if (!keys)
     return NULL;
 
-  mutt_debug(5, "looking for %s <%s>\n", a ? a->personal : "", a ? a->mailbox : "");
+  mutt_debug(LL_DEBUG5, "looking for %s <%s>\n", a ? a->personal : "", a ? a->mailbox : "");
 
   for (k = keys; k; k = k->next)
   {
-    mutt_debug(5, "  looking at key: %s '%.15s'\n", crypt_keyid(k), k->uid);
+    mutt_debug(LL_DEBUG5, "  looking at key: %s '%.15s'\n", crypt_keyid(k), k->uid);
 
     if (abilities && !(k->flags & abilities))
     {
@@ -5027,7 +5027,7 @@ static struct CryptKeyInfo *crypt_getkeybystr(const char *p, KeyFlags abilities,
     if (abilities && !(k->flags & abilities))
       continue;
 
-    mutt_debug(5, "matching \"%s\" against key %s, \"%s\": ", p,
+    mutt_debug(LL_DEBUG5, "matching \"%s\" against key %s, \"%s\": ", p,
                crypt_long_keyid(k), k->uid);
 
     if (!*p || (pfcopy && (mutt_str_strcasecmp(pfcopy, crypt_fpr(k)) == 0)) ||
@@ -5035,7 +5035,7 @@ static struct CryptKeyInfo *crypt_getkeybystr(const char *p, KeyFlags abilities,
         (ps && (mutt_str_strcasecmp(ps, crypt_short_keyid(k)) == 0)) ||
         mutt_str_stristr(k->uid, p))
     {
-      mutt_debug(5, "match\n");
+      mutt_debug(LL_DEBUG5, "match\n");
 
       struct CryptKeyInfo *tmp = crypt_copy_key(k);
       *matches_endp = tmp;
@@ -5043,7 +5043,7 @@ static struct CryptKeyInfo *crypt_getkeybystr(const char *p, KeyFlags abilities,
     }
     else
     {
-      mutt_debug(5, "no match\n");
+      mutt_debug(LL_DEBUG5, "no match\n");
     }
   }
 

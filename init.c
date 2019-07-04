@@ -930,7 +930,7 @@ static enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   }
 
   mutt_extract_token(buf, s, MUTT_TOKEN_QUOTE | MUTT_TOKEN_SPACE | MUTT_TOKEN_SEMICOLON);
-  mutt_debug(5, "Second token is '%s'\n", buf->data);
+  mutt_debug(LL_DEBUG5, "Second token is '%s'\n", buf->data);
 
   mutt_addrlist_parse2(&tmp->addr, buf->data);
 
@@ -954,9 +954,9 @@ static enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
         break;
 
       if (a->group)
-        mutt_debug(5, "  Group %s\n", a->mailbox);
+        mutt_debug(LL_DEBUG5, "  Group %s\n", a->mailbox);
       else
-        mutt_debug(5, "  %s\n", a->mailbox);
+        mutt_debug(LL_DEBUG5, "  %s\n", a->mailbox);
     }
   }
   mutt_grouplist_destroy(&gl);

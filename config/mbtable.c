@@ -67,7 +67,7 @@ struct MbTable *mbtable_parse(const char *s)
     if ((k == (size_t)(-1)) || (k == (size_t)(-2)))
     {
       /* XXX put message in err buffer; fail? warning? */
-      mutt_debug(LL_DEBUG1, "mbtable_parse: mbrtowc returned %d converting %s in %s\n",
+      mutt_debug(LL_DEBUG1, "mbrtowc returned %d converting %s in %s\n",
                  (k == (size_t)(-1)) ? -1 : -2, s, t->orig_str);
       if (k == (size_t)(-1))
         memset(&mbstate, 0, sizeof(mbstate));

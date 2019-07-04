@@ -1536,7 +1536,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   return 0;
 
 cmd_step_fail:
-  mutt_debug(LL_DEBUG1, "imap_append_message(): command failed: %s\n", adata->buf);
+  mutt_debug(LL_DEBUG1, "command failed: %s\n", adata->buf);
   if (rc != IMAP_CMD_BAD)
   {
     char *pc = imap_next_word(adata->buf); /* skip sequence number or token */
