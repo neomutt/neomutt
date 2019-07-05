@@ -98,7 +98,7 @@ static int canonical_pattern(char *s, struct PatternHead *pat, int indent)
   {
     p += sprintf(p, "{");
     p += sprintf(p, "%d,", e->op);
-    p += sprintf(p, "%d,", e->not);
+    p += sprintf(p, "%d,", e->pat_not);
     p += sprintf(p, "%d,", e->alladdr);
     p += sprintf(p, "%d,", e->stringmatch);
     p += sprintf(p, "%d,", e->groupmatch);
@@ -141,7 +141,7 @@ static int cmp_pattern(struct PatternHead *p1, struct PatternHead *p2)
 
     if (l->op != r->op)
       return 1;
-    if (l->not != r->not)
+    if (l->pat_not != r->pat_not)
       return 1;
     if (l->alladdr != r->alladdr)
       return 1;
@@ -269,7 +269,7 @@ void test_mutt_pattern_comp(void)
     struct PatternHead expected;
     SLIST_INIT(&expected);
     struct Pattern e = { .op = MUTT_PAT_SUBJECT,
-                         .not = false,
+                         .pat_not = false,
                          .alladdr = false,
                          .stringmatch = true,
                          .groupmatch = false,
@@ -315,7 +315,7 @@ void test_mutt_pattern_comp(void)
     struct PatternHead expected;
     SLIST_INIT(&expected);
     struct Pattern e = { .op = MUTT_PAT_SUBJECT,
-                         .not = true,
+                         .pat_not = true,
                          .alladdr = false,
                          .stringmatch = true,
                          .groupmatch = false,
@@ -363,7 +363,7 @@ void test_mutt_pattern_comp(void)
 
     struct Pattern e[3] = { /* root */
                             { .op = MUTT_PAT_AND,
-                              .not = false,
+                              .pat_not = false,
                               .alladdr = false,
                               .stringmatch = false,
                               .groupmatch = false,
@@ -375,7 +375,7 @@ void test_mutt_pattern_comp(void)
                               .p.str = NULL },
                             /* root->child */
                             { .op = MUTT_PAT_SUBJECT,
-                              .not = false,
+                              .pat_not = false,
                               .alladdr = false,
                               .stringmatch = true,
                               .groupmatch = false,
@@ -387,7 +387,7 @@ void test_mutt_pattern_comp(void)
                               .p.str = "foo" },
                             /* root->child->next */
                             { .op = MUTT_PAT_SUBJECT,
-                              .not = false,
+                              .pat_not = false,
                               .alladdr = false,
                               .stringmatch = true,
                               .groupmatch = false,
@@ -442,7 +442,7 @@ void test_mutt_pattern_comp(void)
 
     struct Pattern e[3] = { /* root */
                             { .op = MUTT_PAT_AND,
-                              .not = false,
+                              .pat_not = false,
                               .alladdr = false,
                               .stringmatch = false,
                               .groupmatch = false,
@@ -454,7 +454,7 @@ void test_mutt_pattern_comp(void)
                               .p.str = NULL },
                             /* root->child */
                             { .op = MUTT_PAT_SUBJECT,
-                              .not = false,
+                              .pat_not = false,
                               .alladdr = false,
                               .stringmatch = true,
                               .groupmatch = false,
@@ -466,7 +466,7 @@ void test_mutt_pattern_comp(void)
                               .p.str = "foo" },
                             /* root->child->next */
                             { .op = MUTT_PAT_SUBJECT,
-                              .not = false,
+                              .pat_not = false,
                               .alladdr = false,
                               .stringmatch = true,
                               .groupmatch = false,
@@ -521,7 +521,7 @@ void test_mutt_pattern_comp(void)
 
     struct Pattern e[3] = { /* root */
                             { .op = MUTT_PAT_AND,
-                              .not = true,
+                              .pat_not = true,
                               .alladdr = false,
                               .stringmatch = false,
                               .groupmatch = false,
@@ -533,7 +533,7 @@ void test_mutt_pattern_comp(void)
                               .p.str = NULL },
                             /* root->child */
                             { .op = MUTT_PAT_SUBJECT,
-                              .not = false,
+                              .pat_not = false,
                               .alladdr = false,
                               .stringmatch = true,
                               .groupmatch = false,
@@ -545,7 +545,7 @@ void test_mutt_pattern_comp(void)
                               .p.str = "foo" },
                             /* root->child->next */
                             { .op = MUTT_PAT_SUBJECT,
-                              .not = false,
+                              .pat_not = false,
                               .alladdr = false,
                               .stringmatch = true,
                               .groupmatch = false,
@@ -600,7 +600,7 @@ void test_mutt_pattern_comp(void)
 
     struct Pattern e[4] = { /* root */
                             { .op = MUTT_PAT_AND,
-                              .not = false,
+                              .pat_not = false,
                               .alladdr = false,
                               .stringmatch = false,
                               .groupmatch = false,
@@ -612,7 +612,7 @@ void test_mutt_pattern_comp(void)
                               .p.str = NULL },
                             /* root->child */
                             { .op = MUTT_PAT_SUBJECT,
-                              .not = false,
+                              .pat_not = false,
                               .alladdr = false,
                               .stringmatch = true,
                               .groupmatch = false,
@@ -624,7 +624,7 @@ void test_mutt_pattern_comp(void)
                               .p.str = "foo" },
                             /* root->child->next */
                             { .op = MUTT_PAT_SUBJECT,
-                              .not = false,
+                              .pat_not = false,
                               .alladdr = false,
                               .stringmatch = true,
                               .groupmatch = false,
@@ -636,7 +636,7 @@ void test_mutt_pattern_comp(void)
                               .p.str = "bar" },
                             /* root->child->next->next */
                             { .op = MUTT_PAT_SUBJECT,
-                              .not = false,
+                              .pat_not = false,
                               .alladdr = false,
                               .stringmatch = true,
                               .groupmatch = false,
@@ -691,7 +691,7 @@ void test_mutt_pattern_comp(void)
 
     struct Pattern e[5] = { /* root */
                             { .op = MUTT_PAT_AND,
-                              .not = false,
+                              .pat_not = false,
                               .alladdr = false,
                               .stringmatch = false,
                               .groupmatch = false,
@@ -703,7 +703,7 @@ void test_mutt_pattern_comp(void)
                               .p.str = NULL },
                             /* root->child */
                             { .op = MUTT_PAT_OR,
-                              .not = true,
+                              .pat_not = true,
                               .alladdr = false,
                               .stringmatch = false,
                               .groupmatch = false,
@@ -715,7 +715,7 @@ void test_mutt_pattern_comp(void)
                               .p.str = NULL },
                             /* root->child->child */
                             { .op = MUTT_PAT_SUBJECT,
-                              .not = false,
+                              .pat_not = false,
                               .alladdr = false,
                               .stringmatch = true,
                               .groupmatch = false,
@@ -727,7 +727,7 @@ void test_mutt_pattern_comp(void)
                               .p.str = "foo" },
                             /* root->child->child->next */
                             { .op = MUTT_PAT_SUBJECT,
-                              .not = false,
+                              .pat_not = false,
                               .alladdr = false,
                               .stringmatch = true,
                               .groupmatch = false,
@@ -739,7 +739,7 @@ void test_mutt_pattern_comp(void)
                               .p.str = "bar" },
                             /* root->child->next */
                             { .op = MUTT_PAT_SUBJECT,
-                              .not = false,
+                              .pat_not = false,
                               .alladdr = false,
                               .stringmatch = true,
                               .groupmatch = false,

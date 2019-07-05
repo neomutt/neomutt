@@ -1307,8 +1307,8 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
 #ifdef USE_HCACHE
         if (fc.hc)
         {
-          mutt_debug(LL_DEBUG2, "mutt_hcache_delete %s\n", buf);
-          mutt_hcache_delete(fc.hc, buf, strlen(buf));
+          mutt_debug(LL_DEBUG2, "mutt_hcache_delete_header %s\n", buf);
+          mutt_hcache_delete_header(fc.hc, buf, strlen(buf));
         }
 #endif
       }
@@ -2039,12 +2039,12 @@ int nntp_post(struct Mailbox *m, const char *msg)
 
 /**
  * nntp_active_fetch - Fetch list of all newsgroups from server
- * @param adata NNTP server
- * @param new   Mark the groups as new
+ * @param adata    NNTP server
+ * @param mark_new Mark the groups as new
  * @retval  0 Success
  * @retval -1 Failure
  */
-int nntp_active_fetch(struct NntpAccountData *adata, bool new)
+int nntp_active_fetch(struct NntpAccountData *adata, bool mark_new)
 {
   struct NntpMboxData tmp_mdata;
   char msg[256];
@@ -2072,12 +2072,12 @@ int nntp_active_fetch(struct NntpAccountData *adata, bool new)
     return -1;
   }
 
-  if (new)
+  if (mark_new)
   {
     for (; i < adata->groups_num; i++)
     {
       struct NntpMboxData *mdata = adata->groups_list[i];
-      mdata->new = true;
+      mdata->has_new_mail = true;
     }
   }
 
@@ -2184,7 +2184,7 @@ int nntp_check_new_groups(struct Mailbox *m, struct NntpAccountData *adata)
     for (; i < adata->groups_num; i++)
     {
       struct NntpMboxData *mdata = adata->groups_list[i];
-      mdata->new = true;
+      mdata->has_new_mail = true;
     }
 
     /* loading descriptions */

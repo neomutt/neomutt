@@ -932,15 +932,15 @@ static void set_copy_flags(struct Email *e, bool decode, bool decrypt,
 
 /**
  * mutt_save_message_ctx - Save a message to a given mailbox
- * @param e       Email
- * @param delete  If true, delete the original
- * @param decode  If true, decode the message
- * @param decrypt If true, decrypt the message
- * @param m       Mailbox to save to
+ * @param e                Email
+ * @param delete_original  If true, delete the original
+ * @param decode           If true, decode the message
+ * @param decrypt          If true, decrypt the message
+ * @param m                Mailbox to save to
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_save_message_ctx(struct Email *e, bool delete, bool decode,
+int mutt_save_message_ctx(struct Email *e, bool delete_original, bool decode,
                           bool decrypt, struct Mailbox *m)
 {
   CopyMessageFlags cmflags = MUTT_CM_NO_FLAGS;
@@ -956,7 +956,7 @@ int mutt_save_message_ctx(struct Email *e, bool delete, bool decode,
   if (rc != 0)
     return rc;
 
-  if (delete)
+  if (delete_original)
   {
     mutt_set_flag(Context->mailbox, e, MUTT_DELETE, true);
     mutt_set_flag(Context->mailbox, e, MUTT_PURGE, true);
@@ -969,16 +969,16 @@ int mutt_save_message_ctx(struct Email *e, bool delete, bool decode,
 
 /**
  * mutt_save_message - Save an email
- * @param m       Mailbox
- * @param el      List of Emails to save
- * @param delete  If true, delete the original (save)
- * @param decode  If true, decode the message
- * @param decrypt If true, decrypt the message
+ * @param m                Mailbox
+ * @param el               List of Emails to save
+ * @param delete_original  If true, delete the original (save)
+ * @param decode           If true, decode the message
+ * @param decrypt          If true, decrypt the message
  * @retval  0 Copy/save was successful
  * @retval -1 Error/abort
  */
-int mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete,
-                      bool decode, bool decrypt)
+int mutt_save_message(struct Mailbox *m, struct EmailList *el,
+                      bool delete_original, bool decode, bool decrypt)
 {
   if (!el || STAILQ_EMPTY(el))
     return -1;
@@ -991,7 +991,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete,
   struct EmailNode *en = STAILQ_FIRST(el);
   bool single = !STAILQ_NEXT(en, entries);
 
-  if (delete)
+  if (delete_original)
   {
     if (decode)
       prompt = single ? _("Decode-save to mailbox") : _("Decode-save tagged to mailbox");
@@ -1055,7 +1055,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete,
   if ((m->magic == MUTT_IMAP) && !(decode || decrypt) &&
       (imap_path_probe(buf, NULL) == MUTT_IMAP))
   {
-    switch (imap_copy_messages(m, el, buf, delete))
+    switch (imap_copy_messages(m, el, buf, delete_original))
     {
       /* success */
       case 0:
@@ -1095,7 +1095,8 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete,
 #endif
   if (single)
   {
-    if (mutt_save_message_ctx(en->email, delete, decode, decrypt, ctx_save->mailbox) != 0)
+    if (mutt_save_message_ctx(en->email, delete_original, decode, decrypt,
+                              ctx_save->mailbox) != 0)
     {
       m_save->append = old_append;
       mx_mbox_close(&ctx_save);
@@ -1127,7 +1128,8 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el, bool delete,
     STAILQ_FOREACH(en, el, entries)
     {
       mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
-      rc = mutt_save_message_ctx(en->email, delete, decode, decrypt, ctx_save->mailbox);
+      rc = mutt_save_message_ctx(en->email, delete_original, decode, decrypt,
+                                 ctx_save->mailbox);
       if (rc != 0)
         break;
 #ifdef USE_COMPRESSED

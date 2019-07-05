@@ -99,9 +99,9 @@ static int hcache_tokyocabinet_store(void *ctx, const char *key, size_t keylen,
 }
 
 /**
- * hcache_tokyocabinet_delete - Implements HcacheOps::delete()
+ * hcache_tokyocabinet_delete_header - Implements HcacheOps::delete_header()
  */
-static int hcache_tokyocabinet_delete(void *ctx, const char *key, size_t keylen)
+static int hcache_tokyocabinet_delete_header(void *ctx, const char *key, size_t keylen)
 {
   if (!ctx)
     return -1;

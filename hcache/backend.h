@@ -77,14 +77,14 @@ struct HcacheOps
    */
   int (*store)(void *ctx, const char *key, size_t keylen, void *data, size_t datalen);
   /**
-   * delete - backend-specific routine to delete a message's headers
+   * delete_header - backend-specific routine to delete a message's headers
    * @param ctx    The backend-specific context retrieved via open()
    * @param key    A message identification string
    * @param keylen The length of the string pointed to by key
    * @retval 0   Success
    * @retval num Error, a backend-specific error code
    */
-  int (*delete)(void *ctx, const char *key, size_t keylen);
+  int (*delete_header)(void *ctx, const char *key, size_t keylen);
   /**
    * close - backend-specific routine to close a context
    * @param[out] ctx The backend-specific context retrieved via open()
@@ -108,7 +108,7 @@ struct HcacheOps
     .fetch   = hcache_##_name##_fetch,                                         \
     .free    = hcache_##_name##_free,                                          \
     .store   = hcache_##_name##_store,                                         \
-    .delete  = hcache_##_name##_delete,                                        \
+    .delete_header  = hcache_##_name##_delete_header,                          \
     .close   = hcache_##_name##_close,                                         \
     .backend = hcache_##_name##_backend,                                       \
   };

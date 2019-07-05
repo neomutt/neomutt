@@ -104,9 +104,9 @@ static int hcache_gdbm_store(void *ctx, const char *key, size_t keylen, void *da
 }
 
 /**
- * hcache_gdbm_delete - Implements HcacheOps::delete()
+ * hcache_gdbm_delete_header - Implements HcacheOps::delete_header()
  */
-static int hcache_gdbm_delete(void *ctx, const char *key, size_t keylen)
+static int hcache_gdbm_delete_header(void *ctx, const char *key, size_t keylen)
 {
   if (!ctx)
     return -1;

@@ -94,21 +94,21 @@ static void label_ref_inc(struct Mailbox *m, char *label)
 
 /**
  * label_message - add an X-Label: field
- * @param[in]  m   Mailbox
- * @param[in]  e   Email
- * @param[out] new Set to true if this is a new label
+ * @param[in]  m         Mailbox
+ * @param[in]  e         Email
+ * @param[out] new_label Set to true if this is a new label
  * @retval true If the label was added
  */
-static bool label_message(struct Mailbox *m, struct Email *e, char *new)
+static bool label_message(struct Mailbox *m, struct Email *e, char *new_label)
 {
   if (!e)
     return false;
-  if (mutt_str_strcmp(e->env->x_label, new) == 0)
+  if (mutt_str_strcmp(e->env->x_label, new_label) == 0)
     return false;
 
   if (e->env->x_label)
     label_ref_dec(m, e->env->x_label);
-  mutt_str_replace(&e->env->x_label, new);
+  mutt_str_replace(&e->env->x_label, new_label);
   if (e->env->x_label)
     label_ref_inc(m, e->env->x_label);
 
@@ -129,7 +129,6 @@ int mutt_label_message(struct Mailbox *m, struct EmailList *el)
     return 0;
 
   char buf[1024] = { 0 };
-  char *new = NULL;
 
   struct EmailNode *en = STAILQ_FIRST(el);
   if (!STAILQ_NEXT(en, entries))
@@ -142,15 +141,15 @@ int mutt_label_message(struct Mailbox *m, struct EmailList *el)
   if (mutt_get_field("Label: ", buf, sizeof(buf), MUTT_LABEL /* | MUTT_CLEAR */) != 0)
     return 0;
 
-  new = buf;
-  SKIPWS(new);
-  if (*new == '\0')
-    new = NULL;
+  char *new_label = buf;
+  SKIPWS(new_label);
+  if (*new_label == '\0')
+    new_label = NULL;
 
   int changed = 0;
   STAILQ_FOREACH(en, el, entries)
   {
-    if (label_message(m, en->email, new))
+    if (label_message(m, en->email, new_label))
     {
       changed++;
       mutt_set_header_color(m, en->email);

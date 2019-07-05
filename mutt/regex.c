@@ -88,7 +88,7 @@ struct Regex *mutt_regex_new(const char *str, int flags, struct Buffer *err)
   /* Is a prefix of '!' allowed? */
   if (((flags & DT_REGEX_ALLOW_NOT) != 0) && (str[0] == '!'))
   {
-    reg->not = true;
+    reg->pat_not = true;
     str++;
   }
 
@@ -285,7 +285,7 @@ int mutt_replacelist_add(struct ReplaceList *rl, const char *pat,
        * re-adds conceptually. So we probably want this to imply a
        * removal, then do an add. We can achieve the removal by freeing
        * the template, and leaving t pointed at the current item.  */
-      FREE(&np->template);
+      FREE(&np->tmpl);
       break;
     }
   }
@@ -305,7 +305,7 @@ int mutt_replacelist_add(struct ReplaceList *rl, const char *pat,
   }
 
   /* Now np is the ReplaceListNode that we want to modify. It is prepared. */
-  np->template = mutt_str_strdup(templ);
+  np->tmpl = mutt_str_strdup(templ);
 
   /* Find highest match number in template string */
   np->nmatch = 0;
@@ -392,9 +392,9 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
       mutt_debug(5, "%s matches %s\n", src, np->regex->pattern);
 
       /* Copy into other twinbuf with substitutions */
-      if (np->template)
+      if (np->tmpl)
       {
-        for (p = np->template; *p && (tlen < 1023);)
+        for (p = np->tmpl; *p && (tlen < 1023);)
         {
           if (*p == '%')
           {
@@ -455,7 +455,7 @@ void mutt_replacelist_free(struct ReplaceList *rl)
   {
     STAILQ_REMOVE(rl, np, ReplaceListNode, entries);
     mutt_regex_free(&np->regex);
-    FREE(&np->template);
+    FREE(&np->tmpl);
     FREE(&np);
   }
 }
@@ -500,7 +500,7 @@ bool mutt_replacelist_match(struct ReplaceList *rl, char *buf, size_t buflen, co
       mutt_debug(5, "%d subs\n", (int) np->regex->regex->re_nsub);
 
       /* Copy template into buf, with substitutions. */
-      for (p = np->template; *p && tlen < buflen - 1;)
+      for (p = np->tmpl; *p && tlen < buflen - 1;)
       {
         /* backreference to pattern match substring, eg. %1, %2, etc) */
         if (*p == '%')
@@ -575,7 +575,7 @@ int mutt_replacelist_remove(struct ReplaceList *rl, const char *pat)
     {
       STAILQ_REMOVE(rl, np, ReplaceListNode, entries);
       mutt_regex_free(&np->regex);
-      FREE(&np->template);
+      FREE(&np->tmpl);
       FREE(&np);
       nremoved++;
     }

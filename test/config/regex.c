@@ -342,7 +342,7 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
     TEST_MSG("%s\n", err->data);
     goto tns_out;
   }
-  TEST_MSG("'%s', not flag set to %d\n", VarIlama->pattern, VarIlama->not);
+  TEST_MSG("'%s', not flag set to %d\n", VarIlama->pattern, VarIlama->pat_not);
 
   name = "Jackfruit";
   mutt_buffer_reset(err);

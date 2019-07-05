@@ -145,10 +145,10 @@ struct NntpMboxData
   anum_t last_loaded;
   anum_t last_cached;
   anum_t unread;
-  bool subscribed : 1;
-  bool new        : 1;
-  bool allowed    : 1;
-  bool deleted    : 1;
+  bool subscribed   : 1;
+  bool has_new_mail : 1;
+  bool allowed      : 1;
+  bool deleted      : 1;
   unsigned int newsrc_len;
   struct NewsrcEntry *newsrc_ent;
   struct NntpAccountData *adata;
@@ -161,7 +161,7 @@ struct NntpMboxData *mutt_newsgroup_subscribe(struct NntpAccountData *adata, cha
 struct NntpMboxData *mutt_newsgroup_unsubscribe(struct NntpAccountData *adata, char *group);
 struct NntpMboxData *mutt_newsgroup_catchup(struct Mailbox *m, struct NntpAccountData *adata, char *group);
 struct NntpMboxData *mutt_newsgroup_uncatchup(struct Mailbox *m, struct NntpAccountData *adata, char *group);
-int nntp_active_fetch(struct NntpAccountData *adata, bool new);
+int nntp_active_fetch(struct NntpAccountData *adata, bool mark_new);
 int nntp_newsrc_update(struct NntpAccountData *adata);
 int nntp_post(struct Mailbox *m, const char *msg);
 int nntp_check_msgid(struct Context *ctx, const char *msgid);
@@ -173,7 +173,7 @@ void nntp_expand_path(char *buf, size_t buflen, struct ConnAccount *acct);
 void nntp_clear_cache(struct NntpAccountData *adata);
 const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char op, const char *src, const char *prec, const char *if_str, const char *else_str, unsigned long data, MuttFormatFlags flags);
 int nntp_compare_order(const void *a, const void *b);
-int nntp_path_probe(const char *path, const struct stat *st);
+enum MailboxType nntp_path_probe(const char *path, const struct stat *st);
 const char *group_index_format_str(char *buf, size_t buflen, size_t col, int cols, char op, const char *src, const char *prec, const char *if_str, const char *else_str, unsigned long data, MuttFormatFlags flags);
 int nntp_complete(char *buf, size_t buflen);
 

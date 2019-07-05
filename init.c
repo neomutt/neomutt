@@ -177,19 +177,19 @@ static void matches_ensure_morespace(int current)
 
 /**
  * candidate - helper function for completion
- * @param try  User entered data for completion
+ * @param user User entered data for completion
  * @param src  Candidate for completion
  * @param dest Completion result gets here
  * @param dlen Length of dest buffer
  *
  * Changes the dest buffer if necessary/possible to aid completion.
  */
-static void candidate(char *try, const char *src, char *dest, size_t dlen)
+static void candidate(char *user, const char *src, char *dest, size_t dlen)
 {
-  if (!dest || !try || !src)
+  if (!dest || !user || !src)
     return;
 
-  if (strstr(src, try) != src)
+  if (strstr(src, user) != src)
     return;
 
   matches_ensure_morespace(NumMatched);

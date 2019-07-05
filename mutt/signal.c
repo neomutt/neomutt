@@ -202,15 +202,15 @@ void mutt_sig_block_system(void)
 
 /**
  * mutt_sig_unblock_system - Restore previously blocked signals
- * @param catch If true, restore previous SIGINT, SIGQUIT behaviour
+ * @param restore If true, restore previous SIGINT, SIGQUIT behaviour
  */
-void mutt_sig_unblock_system(bool catch)
+void mutt_sig_unblock_system(bool restore)
 {
   if (!SysSignalsBlocked)
     return;
 
   sigprocmask(SIG_UNBLOCK, &SigsetSys, NULL);
-  if (catch)
+  if (restore)
   {
     sigaction(SIGQUIT, &SysOldQuit, NULL);
     sigaction(SIGINT, &SysOldInt, NULL);

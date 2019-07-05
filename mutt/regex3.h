@@ -58,7 +58,7 @@ struct Regex
 {
   char *pattern;  /**< printable version */
   regex_t *regex; /**< compiled expression */
-  bool not;       /**< do not match */
+  bool pat_not;       /**< do not match */
 };
 
 /**
@@ -78,7 +78,7 @@ struct ReplaceListNode
 {
   struct Regex *regex;      /**< Regex containing a regular expression */
   size_t nmatch;            /**< Match the 'nth' occurrence (0 means the whole expression) */
-  char *template;           /**< Template to match */
+  char *tmpl;               /**< Template to match */
   STAILQ_ENTRY(ReplaceListNode) entries; /**< Next item in list */
 };
 STAILQ_HEAD(ReplaceList, ReplaceListNode);

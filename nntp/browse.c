@@ -104,7 +104,7 @@ const char *group_index_format_str(char *buf, size_t buflen, size_t col, int col
       if (folder->ff->nd->subscribed)
         snprintf(buf, buflen, fmt, ' ');
       else
-        snprintf(buf, buflen, fmt, folder->ff->new ? 'N' : 'u');
+        snprintf(buf, buflen, fmt, folder->ff->has_new_mail ? 'N' : 'u');
       break;
 
     case 'n':

@@ -90,7 +90,7 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
    * than at scan, since it's so expensive to scan. But that's big changes
    * to browser.c */
   if (C_Mask && C_Mask->regex &&
-      !((regexec(C_Mask->regex, relpath, 0, NULL, 0) == 0) ^ C_Mask->not))
+      !((regexec(C_Mask->regex, relpath, 0, NULL, 0) == 0) ^ C_Mask->pat_not))
   {
     return;
   }
@@ -125,7 +125,7 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
   if (np)
   {
     (state->entry)[state->entrylen].has_mailbox = true;
-    (state->entry)[state->entrylen].new = np->mailbox->has_new;
+    (state->entry)[state->entrylen].has_new_mail = np->mailbox->has_new;
     (state->entry)[state->entrylen].msg_count = np->mailbox->msg_count;
     (state->entry)[state->entrylen].msg_unread = np->mailbox->msg_unread;
   }

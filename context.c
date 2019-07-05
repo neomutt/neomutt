@@ -104,10 +104,10 @@ void ctx_update(struct Context *ctx)
     if (!ctx->pattern)
     {
       m->v2r[m->vcount] = msgno;
-      e->virtual = m->vcount++;
+      e->vnum = m->vcount++;
     }
     else
-      e->virtual = -1;
+      e->vnum = -1;
     e->msgno = msgno;
 
     if (e->env->supersedes)
@@ -189,10 +189,10 @@ void ctx_update_tables(struct Context *ctx, bool committing)
         m->emails[i] = NULL;
       }
       m->emails[j]->msgno = j;
-      if (m->emails[j]->virtual != -1)
+      if (m->emails[j]->vnum != -1)
       {
         m->v2r[m->vcount] = j;
-        m->emails[j]->virtual = m->vcount++;
+        m->emails[j]->vnum = m->vcount++;
         struct Body *b = m->emails[j]->content;
         ctx->vsize += b->length + b->offset - b->hdr_offset + padding;
       }

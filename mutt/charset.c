@@ -466,7 +466,7 @@ bool mutt_ch_lookup_add(enum LookupType type, const char *pat,
   l->replacement = mutt_str_strdup(replace);
   l->regex.pattern = mutt_str_strdup(pat);
   l->regex.regex = rx;
-  l->regex.not = false;
+  l->regex.pat_not = false;
 
   TAILQ_INSERT_TAIL(&Lookups, l, entries);
 

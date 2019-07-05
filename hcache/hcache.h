@@ -154,14 +154,14 @@ int mutt_hcache_store_raw(header_cache_t *hc, const char *key, size_t keylen,
                           void *data, size_t dlen);
 
 /**
- * mutt_hcache_delete - delete a key / data pair
+ * mutt_hcache_delete_header - delete a key / data pair
  * @param hc     Pointer to the header_cache_t structure got by mutt_hcache_open
  * @param key    Message identification string
  * @param keylen Length of the string pointed to by key
  * @retval 0   Success
  * @retval num Generic or backend-specific error code otherwise
  */
-int mutt_hcache_delete(header_cache_t *hc, const char *key, size_t keylen);
+int mutt_hcache_delete_header(header_cache_t *hc, const char *key, size_t keylen);
 
 /**
  * mutt_hcache_backend_list - get a list of backend identification strings
