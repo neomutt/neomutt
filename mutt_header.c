@@ -163,11 +163,11 @@ int mutt_label_message(struct Mailbox *m, struct EmailList *el)
  * mutt_edit_headers - Let the user edit the message header and body
  * @param editor Editor command
  * @param body   File containing message body
- * @param msg    Header of the message
+ * @param e      Email
  * @param fcc    Buffer for the fcc field
  * @param fcclen Length of buffer
  */
-void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
+void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
                        char *fcc, size_t fcclen)
 {
   char path[PATH_MAX]; /* tempfile used to edit headers + body */
@@ -186,8 +186,8 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
     return;
   }
 
-  mutt_env_to_local(msg->env);
-  mutt_rfc822_write_header(fp_out, msg->env, NULL, MUTT_WRITE_HEADER_EDITHDRS, false, false);
+  mutt_env_to_local(e->env);
+  mutt_rfc822_write_header(fp_out, e->env, NULL, MUTT_WRITE_HEADER_EDITHDRS, false, false);
   fputc('\n', fp_out); /* tie off the header. */
 
   /* now copy the body of the message. */
@@ -223,7 +223,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
   }
 
   mutt_file_unlink(body);
-  mutt_list_free(&msg->env->userhdrs);
+  mutt_list_free(&e->env->userhdrs);
 
   /* Read the temp file back in */
   fp_in = fopen(path, "r");
@@ -257,30 +257,30 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
   if (!OptNewsSend)
 #endif
   {
-    if (!STAILQ_EMPTY(&msg->env->in_reply_to) &&
+    if (!STAILQ_EMPTY(&e->env->in_reply_to) &&
         (STAILQ_EMPTY(&n->in_reply_to) ||
          (mutt_str_strcmp(STAILQ_FIRST(&n->in_reply_to)->data,
-                          STAILQ_FIRST(&msg->env->in_reply_to)->data) != 0)))
+                          STAILQ_FIRST(&e->env->in_reply_to)->data) != 0)))
     {
-      mutt_list_free(&msg->env->references);
+      mutt_list_free(&e->env->references);
     }
   }
 
   /* restore old info. */
   mutt_list_free(&n->references);
-  STAILQ_SWAP(&n->references, &msg->env->references, ListNode);
+  STAILQ_SWAP(&n->references, &e->env->references, ListNode);
 
-  mutt_env_free(&msg->env);
-  msg->env = n;
+  mutt_env_free(&e->env);
+  e->env = n;
   n = NULL;
 
-  mutt_expand_aliases_env(msg->env);
+  mutt_expand_aliases_env(e->env);
 
   /* search through the user defined headers added to see if
    * fcc: or attach: or pgp: was specified */
 
   struct ListNode *np = NULL, *tmp = NULL;
-  STAILQ_FOREACH_SAFE(np, &msg->env->userhdrs, entries, tmp)
+  STAILQ_FOREACH_SAFE(np, &e->env->userhdrs, entries, tmp)
   {
     bool keep = true;
     size_t plen;
@@ -323,7 +323,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
         if (body2)
         {
           body2->description = mutt_str_strdup(p);
-          for (parts = msg->content; parts->next; parts = parts->next)
+          for (parts = e->content; parts->next; parts = parts->next)
             ;
           parts->next = body2;
         }
@@ -338,15 +338,15 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
     else if (((WithCrypto & APPLICATION_PGP) != 0) &&
              (plen = mutt_str_startswith(np->data, "pgp:", CASE_IGNORE)))
     {
-      msg->security = mutt_parse_crypt_hdr(np->data + plen, false, APPLICATION_PGP);
-      if (msg->security)
-        msg->security |= APPLICATION_PGP;
+      e->security = mutt_parse_crypt_hdr(np->data + plen, false, APPLICATION_PGP);
+      if (e->security)
+        e->security |= APPLICATION_PGP;
       keep = false;
     }
 
     if (!keep)
     {
-      STAILQ_REMOVE(&msg->env->userhdrs, np, ListNode, entries);
+      STAILQ_REMOVE(&e->env->userhdrs, np, ListNode, entries);
       FREE(&np->data);
       FREE(&np);
     }

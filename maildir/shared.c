@@ -1180,9 +1180,9 @@ void maildir_canon_filename(struct Buffer *dest, const char *src)
 }
 
 /**
- * maildir_update_tables - Update the Header tables
+ * maildir_update_tables - Update the Email tables
  * @param ctx        Mailbox
- * @param index_hint Current email in index
+ * @param index_hint Current Email in index
  */
 void maildir_update_tables(struct Context *ctx, int *index_hint)
 {
@@ -1491,8 +1491,8 @@ int mh_sync_mailbox_message(struct Mailbox *m, int msgno, header_cache_t *hc)
 /**
  * maildir_update_flags - Update the mailbox flags
  * @param m   Mailbox
- * @param o   Old email Header
- * @param n   New email Header
+ * @param o   Old Email
+ * @param n   New Email
  * @retval true  If the flags changed
  * @retval false Otherwise
  */

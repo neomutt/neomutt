@@ -1059,14 +1059,14 @@ static int envelope_defaults(struct Envelope *env, struct Mailbox *m,
 /**
  * generate_body - Create a new email body
  * @param fp_tmp Stream for outgoing message
- * @param msg    Header for outgoing message
+ * @param e      Email for outgoing message
  * @param flags  Compose mode, see #SendFlags
  * @param m      Mailbox
  * @param el     List of Emails to use
  * @retval  0 Success
  * @retval -1 Error
  */
-static int generate_body(FILE *fp_tmp, struct Email *msg, SendFlags flags,
+static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
                          struct Mailbox *m, struct EmailList *el)
 {
   struct Body *tmp = NULL;
@@ -1114,7 +1114,7 @@ static int generate_body(FILE *fp_tmp, struct Email *msg, SendFlags flags,
         query_quadoption(C_MimeForward, _("Forward as attachment?"));
     if (ans == MUTT_YES)
     {
-      struct Body *last = msg->content;
+      struct Body *last = e->content;
 
       mutt_message(_("Preparing forwarded message..."));
 
@@ -1127,7 +1127,7 @@ static int generate_body(FILE *fp_tmp, struct Email *msg, SendFlags flags,
         if (last)
           last->next = tmp;
         else
-          msg->content = tmp;
+          e->content = tmp;
       }
       else
       {
@@ -1142,14 +1142,14 @@ static int generate_body(FILE *fp_tmp, struct Email *msg, SendFlags flags,
           else
           {
             last = tmp;
-            msg->content = tmp;
+            e->content = tmp;
           }
         }
       }
     }
     else if (ans != MUTT_ABORT)
     {
-      if (mutt_inline_forward(m, msg, en->email, fp_tmp) != 0)
+      if (mutt_inline_forward(m, e, en->email, fp_tmp) != 0)
         return -1;
     }
     else
@@ -1165,8 +1165,8 @@ static int generate_body(FILE *fp_tmp, struct Email *msg, SendFlags flags,
       return -1;
     }
 
-    b->next = msg->content;
-    msg->content = b;
+    b->next = e->content;
+    e->content = b;
   }
 
   mutt_clear_error();

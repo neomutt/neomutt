@@ -210,7 +210,7 @@ static void post_make_entry(char *buf, size_t buflen, struct Menu *menu, int lin
 
 /**
  * select_msg - Create a Menu to select a postponed message
- * @retval ptr Email Header
+ * @retval ptr Email
  */
 static struct Email *select_msg(struct Context *ctx)
 {

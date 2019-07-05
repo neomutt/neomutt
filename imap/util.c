@@ -455,7 +455,7 @@ void imap_hcache_close(struct ImapMboxData *mdata)
  * imap_hcache_get - Get a header cache entry by its UID
  * @param mdata Imap Mailbox data
  * @param uid   UID to find
- * @retval ptr Email Header
+ * @retval ptr Email
  * @retval NULL Failure
  */
 struct Email *imap_hcache_get(struct ImapMboxData *mdata, unsigned int uid)

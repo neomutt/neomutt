@@ -170,7 +170,7 @@ static void update_protected_headers(struct Email *cur)
 
 /**
  * mutt_display_message - Display a message in the pager
- * @param cur Header of current message
+ * @param cur Current Email
  * @retval  0 Success
  * @retval -1 Error
  */
@@ -1287,7 +1287,7 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
 
 /**
  * check_traditional_pgp - Check for an inline PGP content
- * @param[in]  e      Header of message to check
+ * @param[in]  e      Email to check
  * @param[out] redraw Flags if the screen needs redrawing, see #MuttRedrawFlags
  * @retval true If message contains inline PGP content
  */

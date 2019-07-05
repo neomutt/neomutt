@@ -265,9 +265,9 @@ static void snd_make_entry(char *buf, size_t buflen, struct Menu *menu, int line
 
 /**
  * redraw_crypt_lines - Update the encryption info in the compose window
- * @param msg Header of message
+ * @param e Email
  */
-static void redraw_crypt_lines(struct Email *msg)
+static void redraw_crypt_lines(struct Email *e)
 {
   SET_COLOR(MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw(MuttIndexWindow, HDR_CRYPT, 0, "%*s",
@@ -280,17 +280,17 @@ static void redraw_crypt_lines(struct Email *msg)
     return;
   }
 
-  if ((msg->security & (SEC_ENCRYPT | SEC_SIGN)) == (SEC_ENCRYPT | SEC_SIGN))
+  if ((e->security & (SEC_ENCRYPT | SEC_SIGN)) == (SEC_ENCRYPT | SEC_SIGN))
   {
     SET_COLOR(MT_COLOR_COMPOSE_SECURITY_BOTH);
     addstr(_("Sign, Encrypt"));
   }
-  else if (msg->security & SEC_ENCRYPT)
+  else if (e->security & SEC_ENCRYPT)
   {
     SET_COLOR(MT_COLOR_COMPOSE_SECURITY_ENCRYPT);
     addstr(_("Encrypt"));
   }
-  else if (msg->security & SEC_SIGN)
+  else if (e->security & SEC_SIGN)
   {
     SET_COLOR(MT_COLOR_COMPOSE_SECURITY_SIGN);
     addstr(_("Sign"));
@@ -303,20 +303,20 @@ static void redraw_crypt_lines(struct Email *msg)
   }
   NORMAL_COLOR;
 
-  if ((msg->security & (SEC_ENCRYPT | SEC_SIGN)))
+  if ((e->security & (SEC_ENCRYPT | SEC_SIGN)))
   {
-    if (((WithCrypto & APPLICATION_PGP) != 0) && (msg->security & APPLICATION_PGP))
+    if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & APPLICATION_PGP))
     {
-      if ((msg->security & SEC_INLINE))
+      if ((e->security & SEC_INLINE))
         addstr(_(" (inline PGP)"));
       else
         addstr(_(" (PGP/MIME)"));
     }
-    else if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME))
+    else if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME))
       addstr(_(" (S/MIME)"));
   }
 
-  if (C_CryptOpportunisticEncrypt && (msg->security & SEC_OPPENCRYPT))
+  if (C_CryptOpportunisticEncrypt && (e->security & SEC_OPPENCRYPT))
     addstr(_(" (OppEnc mode)"));
 
   mutt_window_clrtoeol(MuttIndexWindow);
@@ -324,7 +324,7 @@ static void redraw_crypt_lines(struct Email *msg)
   mutt_window_clrtoeol(MuttIndexWindow);
 
   if (((WithCrypto & APPLICATION_PGP) != 0) &&
-      (msg->security & APPLICATION_PGP) && (msg->security & SEC_SIGN))
+      (e->security & APPLICATION_PGP) && (e->security & SEC_SIGN))
   {
     SET_COLOR(MT_COLOR_COMPOSE_HEADER);
     printw("%*s", HeaderPadding[HDR_CRYPTINFO], _(Prompts[HDR_CRYPTINFO]));
@@ -333,7 +333,7 @@ static void redraw_crypt_lines(struct Email *msg)
   }
 
   if (((WithCrypto & APPLICATION_SMIME) != 0) &&
-      (msg->security & APPLICATION_SMIME) && (msg->security & SEC_SIGN))
+      (e->security & APPLICATION_SMIME) && (e->security & SEC_SIGN))
   {
     SET_COLOR(MT_COLOR_COMPOSE_HEADER);
     printw("%*s", HeaderPadding[HDR_CRYPTINFO], _(Prompts[HDR_CRYPTINFO]));
@@ -341,8 +341,8 @@ static void redraw_crypt_lines(struct Email *msg)
     printw("%s", C_SmimeSignAs ? C_SmimeSignAs : _("<default>"));
   }
 
-  if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME) &&
-      (msg->security & SEC_ENCRYPT) && C_SmimeEncryptWith)
+  if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME) &&
+      (e->security & SEC_ENCRYPT) && C_SmimeEncryptWith)
   {
     SET_COLOR(MT_COLOR_COMPOSE_HEADER);
     mutt_window_mvprintw(MuttIndexWindow, HDR_CRYPTINFO, 40, "%s", _("Encrypt with: "));
@@ -451,34 +451,34 @@ static void draw_envelope_addr(int line, struct AddressList *al)
 
 /**
  * draw_envelope - Write the email headers to the compose window
- * @param msg Header of the message
+ * @param e Email
  * @param fcc Fcc field
  */
-static void draw_envelope(struct Email *msg, char *fcc)
+static void draw_envelope(struct Email *e, char *fcc)
 {
-  draw_envelope_addr(HDR_FROM, &msg->env->from);
+  draw_envelope_addr(HDR_FROM, &e->env->from);
 #ifdef USE_NNTP
   if (!OptNewsSend)
   {
 #endif
-    draw_envelope_addr(HDR_TO, &msg->env->to);
-    draw_envelope_addr(HDR_CC, &msg->env->cc);
-    draw_envelope_addr(HDR_BCC, &msg->env->bcc);
+    draw_envelope_addr(HDR_TO, &e->env->to);
+    draw_envelope_addr(HDR_CC, &e->env->cc);
+    draw_envelope_addr(HDR_BCC, &e->env->bcc);
 #ifdef USE_NNTP
   }
   else
   {
     mutt_window_mvprintw(MuttIndexWindow, HDR_TO, 0, "%*s",
                          HeaderPadding[HDR_NEWSGROUPS], Prompts[HDR_NEWSGROUPS]);
-    mutt_paddstr(W, NONULL(msg->env->newsgroups));
+    mutt_paddstr(W, NONULL(e->env->newsgroups));
     mutt_window_mvprintw(MuttIndexWindow, HDR_CC, 0, "%*s",
                          HeaderPadding[HDR_FOLLOWUPTO], Prompts[HDR_FOLLOWUPTO]);
-    mutt_paddstr(W, NONULL(msg->env->followup_to));
+    mutt_paddstr(W, NONULL(e->env->followup_to));
     if (C_XCommentTo)
     {
       mutt_window_mvprintw(MuttIndexWindow, HDR_BCC, 0, "%*s",
                            HeaderPadding[HDR_XCOMMENTTO], Prompts[HDR_XCOMMENTTO]);
-      mutt_paddstr(W, NONULL(msg->env->x_comment_to));
+      mutt_paddstr(W, NONULL(e->env->x_comment_to));
     }
   }
 #endif
@@ -487,9 +487,9 @@ static void draw_envelope(struct Email *msg, char *fcc)
   mutt_window_mvprintw(MuttIndexWindow, HDR_SUBJECT, 0, "%*s",
                        HeaderPadding[HDR_SUBJECT], _(Prompts[HDR_SUBJECT]));
   NORMAL_COLOR;
-  mutt_paddstr(W, NONULL(msg->env->subject));
+  mutt_paddstr(W, NONULL(e->env->subject));
 
-  draw_envelope_addr(HDR_REPLYTO, &msg->env->reply_to);
+  draw_envelope_addr(HDR_REPLYTO, &e->env->reply_to);
 
   SET_COLOR(MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw(MuttIndexWindow, HDR_FCC, 0, "%*s",
@@ -498,10 +498,10 @@ static void draw_envelope(struct Email *msg, char *fcc)
   mutt_paddstr(W, fcc);
 
   if (WithCrypto)
-    redraw_crypt_lines(msg);
+    redraw_crypt_lines(e);
 
 #ifdef MIXMASTER
-  redraw_mix_line(&msg->chain);
+  redraw_mix_line(&e->chain);
 #endif
 
   SET_COLOR(MT_COLOR_STATUS);

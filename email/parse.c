@@ -526,8 +526,8 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
  * mutt_rfc822_parse_line - Parse an email header
  * @param env       Envelope of the email
  * @param e         Email
- * @param line      Header field, env.g. 'to'
- * @param p         Header value, env.g. 'john@example.com'
+ * @param line      Header field, e.g. 'to'
+ * @param p         Header value, e.g. 'john@example.com'
  * @param user_hdrs If true, save into the Envelope's userhdrs
  * @param weed      If true, perform header weeding (filtering)
  * @param do_2047   If true, perform RFC2047 decoding of the field

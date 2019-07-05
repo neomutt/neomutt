@@ -1215,7 +1215,7 @@ void mutt_set_vnum(struct Context *ctx)
 /**
  * mutt_traverse_thread - Recurse through an email thread, matching messages
  * @param ctx  Mailbox
- * @param cur  Header of current message
+ * @param cur  Current Email
  * @param flag Flag to set, see #MuttThreadFlags
  * @retval num Number of matches
  */

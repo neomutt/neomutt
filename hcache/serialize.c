@@ -571,12 +571,12 @@ void serial_restore_envelope(struct Envelope *env, const unsigned char *d, int *
 }
 
 /**
- * mutt_hcache_dump - Serialise a Header object
+ * mutt_hcache_dump - Serialise an Email object
  * @param hc          Header cache handle
  * @param e           Email to serialise
  * @param off         Size of the binary blob
  * @param uidvalidity IMAP server identifier
- * @retval ptr Binary blob representing the Header
+ * @retval ptr Binary blob representing the Email
  *
  * This function transforms a e into a char so that it is usable by
  * db_store.
@@ -637,11 +637,11 @@ void *mutt_hcache_dump(header_cache_t *hc, const struct Email *e, int *off, unsi
 }
 
 /**
- * mutt_hcache_restore - restore a Header from data retrieved from the cache
+ * mutt_hcache_restore - restore an Email from data retrieved from the cache
  * @param d Data retrieved using mutt_hcache_fetch or mutt_hcache_fetch_raw
  * @retval ptr Success, the restored header (can't be NULL)
  *
- * @note The returned Header must be free'd by caller code with
+ * @note The returned Email must be free'd by caller code with
  *       mutt_email_free().
  */
 struct Email *mutt_hcache_restore(const unsigned char *d)

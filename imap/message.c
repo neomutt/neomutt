@@ -1464,7 +1464,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
    * already rereading the whole file for length it isn't any more
    * expensive (it'd be nice if we had the file size passed in already
    * by the code that writes the file, but that's a lot of changes.
-   * Ideally we'd have a Header structure with flag info here... */
+   * Ideally we'd have an Email structure with flag info here... */
   for (last = EOF, len = 0; (c = fgetc(fp)) != EOF; last = c)
   {
     if ((c == '\n') && (last != '\r'))
@@ -1608,8 +1608,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool
     mutt_buffer_init(&sync_cmd);
     mutt_buffer_init(&cmd);
 
-    /* Null Header* means copy tagged messages */
-    if (!single)
+    if (!single) /* copy tagged messages */
     {
       /* if any messages have attachments to delete, fall through to FETCH
        * and APPEND. TODO: Copy what we can with COPY, fall through for the

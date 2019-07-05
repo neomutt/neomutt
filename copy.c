@@ -68,7 +68,7 @@ static int copy_delete_attach(struct Body *b, FILE *fp_in, FILE *fp_out, char *d
  * @retval -1 Failure
  *
  * Ok, the only reason for not merging this with mutt_copy_header() below is to
- * avoid creating a Header structure in message_handler().  Also, this one will
+ * avoid creating a Email structure in message_handler().  Also, this one will
  * wrap headers much more aggressively than the other one.
  */
 int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,

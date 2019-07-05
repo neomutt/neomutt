@@ -159,31 +159,31 @@ bool crypt_valid_passphrase(SecurityFlags flags)
 
 /**
  * mutt_protect - Encrypt and/or sign a message
- * @param msg     Header of the message
+ * @param e       Email
  * @param keylist List of keys to encrypt to (space-separated)
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_protect(struct Email *msg, char *keylist)
+int mutt_protect(struct Email *e, char *keylist)
 {
   struct Body *pbody = NULL, *tmp_pbody = NULL;
   struct Body *tmp_smime_pbody = NULL;
   struct Body *tmp_pgp_pbody = NULL;
-  int flags = (WithCrypto & APPLICATION_PGP) ? msg->security : 0;
+  int flags = (WithCrypto & APPLICATION_PGP) ? e->security : 0;
 
   if (!WithCrypto)
     return -1;
 
-  if (!(msg->security & (SEC_ENCRYPT | SEC_SIGN)))
+  if (!(e->security & (SEC_ENCRYPT | SEC_SIGN)))
     return 0;
 
-  if ((msg->security & SEC_SIGN) && !crypt_valid_passphrase(msg->security))
+  if ((e->security & SEC_SIGN) && !crypt_valid_passphrase(e->security))
     return -1;
 
-  if (((WithCrypto & APPLICATION_PGP) != 0) && ((msg->security & PGP_INLINE) == PGP_INLINE))
+  if (((WithCrypto & APPLICATION_PGP) != 0) && ((e->security & PGP_INLINE) == PGP_INLINE))
   {
-    if ((msg->content->type != TYPE_TEXT) ||
-        (mutt_str_strcasecmp(msg->content->subtype, "plain") != 0))
+    if ((e->content->type != TYPE_TEXT) ||
+        (mutt_str_strcasecmp(e->content->subtype, "plain") != 0))
     {
       if (query_quadoption(C_PgpMimeAuto,
                            _("Inline PGP can't be used with attachments.  "
@@ -194,7 +194,7 @@ int mutt_protect(struct Email *msg, char *keylist)
         return -1;
       }
     }
-    else if (mutt_str_strcasecmp("flowed", mutt_param_get(&msg->content->parameter, "format")) == 0)
+    else if (mutt_str_strcasecmp("flowed", mutt_param_get(&e->content->parameter, "format")) == 0)
     {
       if ((query_quadoption(C_PgpMimeAuto,
                             _("Inline PGP can't be used with format=flowed.  "
@@ -213,10 +213,10 @@ int mutt_protect(struct Email *msg, char *keylist)
         mutt_endwin();
         puts(_("Invoking PGP..."));
       }
-      pbody = crypt_pgp_traditional_encryptsign(msg->content, flags, keylist);
+      pbody = crypt_pgp_traditional_encryptsign(e->content, flags, keylist);
       if (pbody)
       {
-        msg->content = pbody;
+        e->content = pbody;
         return 0;
       }
 
@@ -237,15 +237,15 @@ int mutt_protect(struct Email *msg, char *keylist)
     mutt_endwin();
 
   if (WithCrypto & APPLICATION_SMIME)
-    tmp_smime_pbody = msg->content;
+    tmp_smime_pbody = e->content;
   if (WithCrypto & APPLICATION_PGP)
-    tmp_pgp_pbody = msg->content;
+    tmp_pgp_pbody = e->content;
 
-  if (C_CryptUsePka && (msg->security & SEC_SIGN))
+  if (C_CryptUsePka && (e->security & SEC_SIGN))
   {
     /* Set sender (necessary for e.g. PKA).  */
     const char *mailbox = NULL;
-    struct Address *from = TAILQ_FIRST(&msg->env->from);
+    struct Address *from = TAILQ_FIRST(&e->env->from);
     bool free_from = false;
 
     if (!from)
@@ -258,9 +258,9 @@ int mutt_protect(struct Email *msg, char *keylist)
     if (!mailbox && C_EnvelopeFromAddress)
       mailbox = C_EnvelopeFromAddress->mailbox;
 
-    if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME))
+    if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME))
       crypt_smime_set_sender(mailbox);
-    else if (((WithCrypto & APPLICATION_PGP) != 0) && (msg->security & APPLICATION_PGP))
+    else if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & APPLICATION_PGP))
       crypt_pgp_set_sender(mailbox);
 
     if (free_from)
@@ -270,30 +270,30 @@ int mutt_protect(struct Email *msg, char *keylist)
   if (C_CryptProtectedHeadersWrite)
   {
     struct Envelope *protected_headers = mutt_env_new();
-    mutt_str_replace(&protected_headers->subject, msg->env->subject);
+    mutt_str_replace(&protected_headers->subject, e->env->subject);
     /* Note: if other headers get added, such as to, cc, then a call to
      * mutt_env_to_intl() will need to be added here too. */
     mutt_prepare_envelope(protected_headers, 0);
 
-    mutt_env_free(&msg->content->mime_headers);
-    msg->content->mime_headers = protected_headers;
+    mutt_env_free(&e->content->mime_headers);
+    e->content->mime_headers = protected_headers;
   }
 
-  if (msg->security & SEC_SIGN)
+  if (e->security & SEC_SIGN)
   {
-    if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME))
+    if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME))
     {
-      tmp_pbody = crypt_smime_sign_message(msg->content);
+      tmp_pbody = crypt_smime_sign_message(e->content);
       if (!tmp_pbody)
         goto bail;
       pbody = tmp_pbody;
       tmp_smime_pbody = tmp_pbody;
     }
 
-    if (((WithCrypto & APPLICATION_PGP) != 0) && (msg->security & APPLICATION_PGP) &&
+    if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & APPLICATION_PGP) &&
         (!(flags & SEC_ENCRYPT) || C_PgpRetainableSigs))
     {
-      tmp_pbody = crypt_pgp_sign_message(msg->content);
+      tmp_pbody = crypt_pgp_sign_message(e->content);
       if (!tmp_pbody)
         goto bail;
 
@@ -302,16 +302,15 @@ int mutt_protect(struct Email *msg, char *keylist)
       tmp_pgp_pbody = tmp_pbody;
     }
 
-    if ((WithCrypto != 0) && (msg->security & APPLICATION_SMIME) &&
-        (msg->security & APPLICATION_PGP))
+    if ((WithCrypto != 0) && (e->security & APPLICATION_SMIME) && (e->security & APPLICATION_PGP))
     {
       /* here comes the draft ;-) */
     }
   }
 
-  if (msg->security & SEC_ENCRYPT)
+  if (e->security & SEC_ENCRYPT)
   {
-    if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME))
+    if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME))
     {
       tmp_pbody = crypt_smime_build_smime_entity(tmp_smime_pbody, keylist);
       if (!tmp_pbody)
@@ -320,24 +319,24 @@ int mutt_protect(struct Email *msg, char *keylist)
         goto bail;
       }
       /* free tmp_body if messages was signed AND encrypted ... */
-      if ((tmp_smime_pbody != msg->content) && (tmp_smime_pbody != tmp_pbody))
+      if ((tmp_smime_pbody != e->content) && (tmp_smime_pbody != tmp_pbody))
       {
-        /* detach and don't delete msg->content,
+        /* detach and don't delete e->content,
          * which tmp_smime_pbody->parts after signing. */
         tmp_smime_pbody->parts = tmp_smime_pbody->parts->next;
-        msg->content->next = NULL;
+        e->content->next = NULL;
         mutt_body_free(&tmp_smime_pbody);
       }
       pbody = tmp_pbody;
     }
 
-    if (((WithCrypto & APPLICATION_PGP) != 0) && (msg->security & APPLICATION_PGP))
+    if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & APPLICATION_PGP))
     {
       pbody = crypt_pgp_encrypt_message(tmp_pgp_pbody, keylist, (flags & SEC_SIGN));
       if (!pbody)
       {
         /* did we perform a retainable signature? */
-        if (flags != msg->security)
+        if (flags != e->security)
         {
           /* remove the outer multipart layer */
           tmp_pgp_pbody = mutt_remove_multipart(tmp_pgp_pbody);
@@ -352,7 +351,7 @@ int mutt_protect(struct Email *msg, char *keylist)
        * signatures.
 
        */
-      if (flags != msg->security)
+      if (flags != e->security)
       {
         tmp_pgp_pbody = mutt_remove_multipart(tmp_pgp_pbody);
         mutt_body_free(&tmp_pgp_pbody->next);
@@ -362,12 +361,12 @@ int mutt_protect(struct Email *msg, char *keylist)
 
   if (pbody)
   {
-    msg->content = pbody;
+    e->content = pbody;
     return 0;
   }
 
 bail:
-  mutt_env_free(&msg->content->mime_headers);
+  mutt_env_free(&e->content->mime_headers);
   return -1;
 }
 

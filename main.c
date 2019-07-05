@@ -961,7 +961,7 @@ int main(int argc, char *argv[], char *envp[])
       else
         sendflags |= SEND_NO_FREE_HEADER;
 
-      /* Parse the draft_file into the full Header/Body structure.
+      /* Parse the draft_file into the full Email/Body structure.
        * Set SEND_DRAFT_FILE so ci_send_message doesn't overwrite
        * our msg->content.  */
       if (draft_file)
