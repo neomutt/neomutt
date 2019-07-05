@@ -2274,6 +2274,22 @@ static enum CommandResult parse_unalternates(struct Buffer *buf, struct Buffer *
 }
 
 /**
+ * mutt_free_attachmatch - Free an AttachMatch - Implements ::list_free_t
+ *
+ * @note We don't free minor because it is either a pointer into major,
+ *       or a static string.
+ */
+void mutt_free_attachmatch(struct AttachMatch **am)
+{
+  if (!am || !*am)
+    return;
+
+  regfree(&(*am)->minor_regex);
+  FREE(&(*am)->major);
+  FREE(am);
+}
+
+/**
  * parse_unattachments - Parse the 'unattachments' command - Implements ::command_t
  */
 static enum CommandResult parse_unattachments(struct Buffer *buf, struct Buffer *s,
@@ -2292,6 +2308,17 @@ static enum CommandResult parse_unattachments(struct Buffer *buf, struct Buffer 
 
   p = buf->data;
   op = *p++;
+
+  if (op == '*')
+  {
+    mutt_list_free_type(&AttachAllow, (list_free_t) mutt_free_attachmatch);
+    mutt_list_free_type(&AttachExclude, (list_free_t) mutt_free_attachmatch);
+    mutt_list_free_type(&InlineAllow, (list_free_t) mutt_free_attachmatch);
+    mutt_list_free_type(&InlineExclude, (list_free_t) mutt_free_attachmatch);
+    attachments_clean();
+    return 0;
+  }
+
   if ((op != '+') && (op != '-'))
   {
     op = '+';
@@ -2843,22 +2870,6 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
   mutt_buffer_addch(dest, 0); /* terminate the string */
   SKIPWS(tok->dptr);
   return 0;
-}
-
-/**
- * mutt_free_attachmatch - Free an AttachMatch - Implements ::list_free_t
- *
- * @note We don't free minor because it is either a pointer into major,
- *       or a static string.
- */
-void mutt_free_attachmatch(struct AttachMatch **am)
-{
-  if (!am || !*am)
-    return;
-
-  regfree(&(*am)->minor_regex);
-  FREE(&(*am)->major);
-  FREE(am);
 }
 
 /**

@@ -10854,7 +10854,13 @@ set preferred_languages="fr,en,de"
           <replaceable>mime-type</replaceable>
         </arg>
         <command>attachments</command>
-        <arg choice="plain">?</arg>
+        <arg choice="plain">
+          <option>?</option>
+        </arg>
+        <command>unattachments</command>
+        <arg choice="plain">
+          <option>*</option>
+        </arg>
       </cmdsynopsis>
       <para>
         <emphasis>disposition</emphasis> is the attachment's
@@ -10945,6 +10951,11 @@ attachments  -I message/external-body
         Entering the command <quote><command>attachments</command> ?</quote> as
         a command will list your current settings in neomuttrc format, so that
         it can be pasted elsewhere.
+      </para>
+
+      <para>
+        Entering the command <quote><command>unattachments</command> *</quote>
+        as a command will Clear all attachment settings.
       </para>
     </sect1>
 
@@ -18064,6 +18075,18 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             </arg>
             <arg choice="plain">
               <replaceable>mime-type</replaceable>
+            </arg>
+            <command>
+              <link linkend="attachments">attachments</link>
+            </command>
+            <arg choice="plain">
+              <option>?</option>
+            </arg>
+            <command>
+              <link linkend="attachments">unattachments</link>
+            </command>
+            <arg choice="plain">
+              <option>*</option>
             </arg>
           </cmdsynopsis>
         </listitem>
