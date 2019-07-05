@@ -498,7 +498,7 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *fp_out)
    * rather than send action */
   chflags |= CH_DISPLAY;
 
-  mutt_copy_message_ctx(fp_out, m, e, cmflags, chflags);
+  mutt_copy_message(fp_out, m, e, cmflags, chflags);
   mutt_forward_trailer(m, e, fp_out);
   return 0;
 }
@@ -697,7 +697,7 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out)
     cmflags |= MUTT_CM_WEED;
   }
 
-  mutt_copy_message_ctx(fp_out, m, e, cmflags, chflags);
+  mutt_copy_message(fp_out, m, e, cmflags, chflags);
 
   mutt_make_post_indent(m, e, fp_out);
 

@@ -1099,7 +1099,7 @@ int mh_rewrite_message(struct Mailbox *m, int msgno)
   if (!dest)
     return -1;
 
-  int rc = mutt_copy_message_ctx(dest->fp, m, e, MUTT_CM_UPDATE, CH_UPDATE | CH_UPDATE_LEN);
+  int rc = mutt_copy_message(dest->fp, m, e, MUTT_CM_UPDATE, CH_UPDATE | CH_UPDATE_LEN);
   if (rc == 0)
   {
     char oldpath[PATH_MAX];

@@ -75,8 +75,8 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end, C
 
 int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out, CopyHeaderFlags chflags, const char *prefix);
 
-int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in,          struct Email *e, CopyMessageFlags cmflags, CopyHeaderFlags chflags);
-int mutt_copy_message_ctx(FILE *fp_out, struct Mailbox *src, struct Email *e, CopyMessageFlags cmflags, CopyHeaderFlags chflags);
+int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in,       struct Email *e, CopyMessageFlags cmflags, CopyHeaderFlags chflags);
+int mutt_copy_message   (FILE *fp_out, struct Mailbox *m, struct Email *e, CopyMessageFlags cmflags, CopyHeaderFlags chflags);
 
 int mutt_append_message(struct Mailbox *dest, struct Mailbox *src, struct Email *e, CopyMessageFlags cmflags, CopyHeaderFlags chflags);
 

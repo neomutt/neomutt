@@ -1430,11 +1430,11 @@ int smime_class_verify_sender(struct Email *e)
 
   if (e->security & SEC_ENCRYPT)
   {
-    mutt_copy_message_ctx(fp_out, Context->mailbox, e, MUTT_CM_DECODE_CRYPT & MUTT_CM_DECODE_SMIME,
-                          CH_MIME | CH_WEED | CH_NONEWLINE);
+    mutt_copy_message(fp_out, Context->mailbox, e, MUTT_CM_DECODE_CRYPT & MUTT_CM_DECODE_SMIME,
+                      CH_MIME | CH_WEED | CH_NONEWLINE);
   }
   else
-    mutt_copy_message_ctx(fp_out, Context->mailbox, e, MUTT_CM_NO_FLAGS, CH_NO_FLAGS);
+    mutt_copy_message(fp_out, Context->mailbox, e, MUTT_CM_NO_FLAGS, CH_NO_FLAGS);
 
   fflush(fp_out);
   mutt_file_fclose(&fp_out);

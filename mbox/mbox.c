@@ -1260,8 +1260,8 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
        * 'offset' in the real mailbox */
       new_offset[i - first].hdr = ftello(fp) + offset;
 
-      if (mutt_copy_message_ctx(fp, m, m->emails[i], MUTT_CM_UPDATE,
-                                CH_FROM | CH_UPDATE | CH_UPDATE_LEN) != 0)
+      if (mutt_copy_message(fp, m, m->emails[i], MUTT_CM_UPDATE,
+                            CH_FROM | CH_UPDATE | CH_UPDATE_LEN) != 0)
       {
         mutt_perror(tempfile);
         unlink(tempfile);
@@ -1422,9 +1422,9 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
 
   if (C_CheckMboxSize)
   {
-    struct Mailbox *tmp = mutt_mailbox_find(mutt_b2s(m->pathbuf));
-    if (tmp && !tmp->has_new)
-      mutt_mailbox_update(tmp);
+    struct Mailbox *m_tmp = mutt_mailbox_find(mutt_b2s(m->pathbuf));
+    if (m_tmp && !m_tmp->has_new)
+      mutt_mailbox_update(m_tmp);
   }
 
   return 0; /* signal success */

@@ -787,9 +787,9 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
 }
 
 /**
- * mutt_copy_message_ctx - Copy a message from a Context
- * @param fp_out   FILE pointer to write to
- * @param src     Source mailbox
+ * mutt_copy_message - Copy a message from a Mailbox
+ * @param fp_out  FILE pointer to write to
+ * @param m       Source mailbox
  * @param e       Email
  * @param cmflags Flags, see #CopyMessageFlags
  * @param chflags Flags, see #CopyHeaderFlags
@@ -799,10 +799,10 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
  * should be made to return -1 on fatal errors, and 1 on non-fatal errors
  * like partial decode, where it is worth displaying as much as possible
  */
-int mutt_copy_message_ctx(FILE *fp_out, struct Mailbox *src, struct Email *e,
-                          CopyMessageFlags cmflags, CopyHeaderFlags chflags)
+int mutt_copy_message(FILE *fp_out, struct Mailbox *m, struct Email *e,
+                      CopyMessageFlags cmflags, CopyHeaderFlags chflags)
 {
-  struct Message *msg = mx_msg_open(src, e->msgno);
+  struct Message *msg = mx_msg_open(m, e->msgno);
   if (!msg)
     return -1;
   if (!e->content)
@@ -813,7 +813,7 @@ int mutt_copy_message_ctx(FILE *fp_out, struct Mailbox *src, struct Email *e,
     mutt_debug(LL_DEBUG1, "failed to detect EOF!\n");
     rc = -1;
   }
-  mx_msg_close(src, &msg);
+  mx_msg_close(m, &msg);
   return rc;
 }
 
