@@ -872,7 +872,7 @@ void mbox_reset_atime(struct Mailbox *m, struct stat *st)
 }
 
 /**
- * mbox_ac_find - Find an Account that matches a Mailbox path
+ * mbox_ac_find - Find an Account that matches a Mailbox path - Implements MxOps::ac_find()
  */
 struct Account *mbox_ac_find(struct Account *a, const char *path)
 {
@@ -890,7 +890,7 @@ struct Account *mbox_ac_find(struct Account *a, const char *path)
 }
 
 /**
- * mbox_ac_add - Add a Mailbox to an Account
+ * mbox_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
  */
 int mbox_ac_add(struct Account *a, struct Mailbox *m)
 {
@@ -900,7 +900,7 @@ int mbox_ac_add(struct Account *a, struct Mailbox *m)
 }
 
 /**
- * mbox_mbox_open - Implements MxOps::mbox_open()
+ * mbox_mbox_open - Open a Mailbox - Implements MxOps::mbox_open()
  */
 static int mbox_mbox_open(struct Mailbox *m)
 {
@@ -939,7 +939,7 @@ static int mbox_mbox_open(struct Mailbox *m)
 }
 
 /**
- * mbox_mbox_open_append - Implements MxOps::mbox_open_append()
+ * mbox_mbox_open_append - Open a Mailbox for appending - Implements MxOps::mbox_open_append()
  */
 static int mbox_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
@@ -973,7 +973,7 @@ static int mbox_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 }
 
 /**
- * mbox_mbox_check - Implements MxOps::mbox_check()
+ * mbox_mbox_check - Check for new mail - Implements MxOps::mbox_check()
  * @param[in]  m          Mailbox
  * @param[out] index_hint Keep track of current index selection
  * @retval #MUTT_REOPENED  Mailbox has been reopened
@@ -1106,7 +1106,7 @@ static int mbox_mbox_check(struct Mailbox *m, int *index_hint)
 }
 
 /**
- * mbox_mbox_sync - Implements MxOps::mbox_sync()
+ * mbox_mbox_sync - Save changes to the Mailbox - Implements MxOps::mbox_sync()
  */
 static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
 {
@@ -1472,7 +1472,7 @@ bail: /* Come here in case of disaster */
 }
 
 /**
- * mbox_mbox_close - Implements MxOps::mbox_close()
+ * mbox_mbox_close - Close a Mailbox - Implements MxOps::mbox_close()
  */
 static int mbox_mbox_close(struct Mailbox *m)
 {
@@ -1515,7 +1515,7 @@ static int mbox_mbox_close(struct Mailbox *m)
 }
 
 /**
- * mbox_msg_open - Implements MxOps::msg_open()
+ * mbox_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open()
  */
 static int mbox_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
@@ -1532,7 +1532,7 @@ static int mbox_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 }
 
 /**
- * mbox_msg_open_new - Implements MxOps::msg_open_new()
+ * mbox_msg_open_new - Open a new message in a Mailbox - Implements MxOps::msg_open_new()
  */
 static int mbox_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e)
 {
@@ -1548,7 +1548,7 @@ static int mbox_msg_open_new(struct Mailbox *m, struct Message *msg, struct Emai
 }
 
 /**
- * mbox_msg_commit - Implements MxOps::msg_commit()
+ * mbox_msg_commit - Save changes to an email - Implements MxOps::msg_commit()
  */
 static int mbox_msg_commit(struct Mailbox *m, struct Message *msg)
 {
@@ -1568,7 +1568,7 @@ static int mbox_msg_commit(struct Mailbox *m, struct Message *msg)
 }
 
 /**
- * mbox_msg_close - Implements MxOps::msg_close()
+ * mbox_msg_close - Close an email - Implements MxOps::msg_close()
  */
 static int mbox_msg_close(struct Mailbox *m, struct Message *msg)
 {
@@ -1591,7 +1591,7 @@ static int mbox_msg_padding_size(struct Mailbox *m)
 }
 
 /**
- * mbox_path_probe - Is this an mbox mailbox? - Implements MxOps::path_probe()
+ * mbox_path_probe - Is this an mbox Mailbox? - Implements MxOps::path_probe()
  */
 enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
 {
@@ -1654,7 +1654,7 @@ enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
 }
 
 /**
- * mbox_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon()
+ * mbox_path_canon - Canonicalise a Mailbox path - Implements MxOps::path_canon()
  */
 int mbox_path_canon(char *buf, size_t buflen)
 {
@@ -1666,7 +1666,7 @@ int mbox_path_canon(char *buf, size_t buflen)
 }
 
 /**
- * mbox_path_pretty - Implements MxOps::path_pretty()
+ * mbox_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty()
  */
 int mbox_path_pretty(char *buf, size_t buflen, const char *folder)
 {
@@ -1683,7 +1683,7 @@ int mbox_path_pretty(char *buf, size_t buflen, const char *folder)
 }
 
 /**
- * mbox_path_parent - Implements MxOps::path_parent()
+ * mbox_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent()
  */
 int mbox_path_parent(char *buf, size_t buflen)
 {
@@ -1703,7 +1703,7 @@ int mbox_path_parent(char *buf, size_t buflen)
 }
 
 /**
- * mmdf_msg_commit - Implements MxOps::msg_commit()
+ * mmdf_msg_commit - Save changes to an email - Implements MxOps::msg_commit()
  */
 static int mmdf_msg_commit(struct Mailbox *m, struct Message *msg)
 {
@@ -1730,7 +1730,7 @@ static int mmdf_msg_padding_size(struct Mailbox *m)
 }
 
 /**
- * mbox_mbox_check_stats - Implements MxOps::mbox_check_stats()
+ * mbox_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats()
  */
 static int mbox_mbox_check_stats(struct Mailbox *m, int flags)
 {
@@ -1786,7 +1786,7 @@ static int mbox_mbox_check_stats(struct Mailbox *m, int flags)
 
 // clang-format off
 /**
- * MxMboxOps - Mbox mailbox - Implements ::MxOps
+ * MxMboxOps - Mbox Mailbox - Implements ::MxOps
  */
 struct MxOps MxMboxOps = {
   .magic            = MUTT_MBOX,
@@ -1814,7 +1814,7 @@ struct MxOps MxMboxOps = {
 };
 
 /**
- * MxMmdfOps - MMDF mailbox - Implements ::MxOps
+ * MxMmdfOps - MMDF Mailbox - Implements ::MxOps
  */
 struct MxOps MxMmdfOps = {
   .magic            = MUTT_MMDF,

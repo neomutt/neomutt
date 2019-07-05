@@ -1289,7 +1289,7 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
 }
 
 /**
- * imap_mbox_check_stats - Implements MxOps::mbox_check_stats()
+ * imap_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats()
  */
 int imap_mbox_check_stats(struct Mailbox *m, int flags)
 {
@@ -1810,7 +1810,7 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
 }
 
 /**
- * imap_ac_find - Find an Account that matches a Mailbox path
+ * imap_ac_find - Find an Account that matches a Mailbox path - Implements MxOps::ac_find()
  */
 struct Account *imap_ac_find(struct Account *a, const char *path)
 {
@@ -1833,7 +1833,7 @@ struct Account *imap_ac_find(struct Account *a, const char *path)
 }
 
 /**
- * imap_ac_add - Add a Mailbox to an Account
+ * imap_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
  */
 int imap_ac_add(struct Account *a, struct Mailbox *m)
 {
@@ -1944,7 +1944,7 @@ int imap_login(struct ImapAccountData *adata)
 }
 
 /**
- * imap_mbox_open - Implements MxOps::mbox_open()
+ * imap_mbox_open - Open a mailbox - Implements MxOps::mbox_open()
  */
 static int imap_mbox_open(struct Mailbox *m)
 {
@@ -2153,7 +2153,7 @@ fail:
 }
 
 /**
- * imap_mbox_open_append - Implements MxOps::mbox_open_append()
+ * imap_mbox_open_append - Open a Mailbox for appending - Implements MxOps::mbox_open_append()
  */
 static int imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
@@ -2183,7 +2183,7 @@ static int imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 }
 
 /**
- * imap_mbox_check - Implements MxOps::mbox_check()
+ * imap_mbox_check - Check for new mail - Implements MxOps::mbox_check()
  * @param m          Mailbox
  * @param index_hint Remember our place in the index
  * @retval >0 Success, e.g. #MUTT_REOPENED
@@ -2204,7 +2204,7 @@ static int imap_mbox_check(struct Mailbox *m, int *index_hint)
 }
 
 /**
- * imap_mbox_close - Implements MxOps::mbox_close()
+ * imap_mbox_close - Close a Mailbox - Implements MxOps::mbox_close()
  */
 static int imap_mbox_close(struct Mailbox *m)
 {
@@ -2246,7 +2246,7 @@ static int imap_mbox_close(struct Mailbox *m)
 }
 
 /**
- * imap_msg_open_new - Implements MxOps::msg_open_new()
+ * imap_msg_open_new - Open a new message in a Mailbox - Implements MxOps::msg_open_new()
  */
 static int imap_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e)
 {
@@ -2264,7 +2264,7 @@ static int imap_msg_open_new(struct Mailbox *m, struct Message *msg, struct Emai
 }
 
 /**
- * imap_tags_edit - Implements MxOps::tags_edit()
+ * imap_tags_edit - Prompt and validate new messages tags - Implements MxOps::tags_edit()
  */
 static int imap_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t buflen)
 {
@@ -2343,7 +2343,7 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t
 }
 
 /**
- * imap_tags_commit - Implements MxOps::tags_commit()
+ * imap_tags_commit - Save the tags to a message - Implements MxOps::tags_commit()
  *
  * This method update the server flags on the server by
  * removing the last know custom flags of a header
@@ -2425,7 +2425,7 @@ static int imap_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
 }
 
 /**
- * imap_path_probe - Is this an IMAP mailbox? - Implements MxOps::path_probe()
+ * imap_path_probe - Is this an IMAP Mailbox? - Implements MxOps::path_probe()
  */
 enum MailboxType imap_path_probe(const char *path, const struct stat *st)
 {
@@ -2442,7 +2442,7 @@ enum MailboxType imap_path_probe(const char *path, const struct stat *st)
 }
 
 /**
- * imap_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon()
+ * imap_path_canon - Canonicalise a Mailbox path - Implements MxOps::path_canon()
  */
 int imap_path_canon(char *buf, size_t buflen)
 {
@@ -2480,7 +2480,7 @@ int imap_expand_path(struct Buffer *buf)
 }
 
 /**
- * imap_path_pretty - Implements MxOps::path_pretty()
+ * imap_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty()
  */
 int imap_path_pretty(char *buf, size_t buflen, const char *folder)
 {
@@ -2492,7 +2492,7 @@ int imap_path_pretty(char *buf, size_t buflen, const char *folder)
 }
 
 /**
- * imap_path_parent - Implements MxOps::path_parent()
+ * imap_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent()
  */
 int imap_path_parent(char *buf, size_t buflen)
 {
@@ -2505,7 +2505,7 @@ int imap_path_parent(char *buf, size_t buflen)
 
 // clang-format off
 /**
- * MxImapOps - IMAP mailbox - Implements ::MxOps
+ * MxImapOps - IMAP Mailbox - Implements ::MxOps
  */
 struct MxOps MxImapOps = {
   .magic            = MUTT_IMAP,

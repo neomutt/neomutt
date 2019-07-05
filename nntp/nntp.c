@@ -2378,7 +2378,7 @@ int nntp_compare_order(const void *a, const void *b)
 }
 
 /**
- * nntp_ac_find - Find an Account that matches a Mailbox path
+ * nntp_ac_find - Find an Account that matches a Mailbox path - Implements MxOps::ac_find()
  */
 struct Account *nntp_ac_find(struct Account *a, const char *path)
 {
@@ -2407,7 +2407,7 @@ struct Account *nntp_ac_find(struct Account *a, const char *path)
 }
 
 /**
- * nntp_ac_add - Add a Mailbox to an Account
+ * nntp_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
  */
 int nntp_ac_add(struct Account *a, struct Mailbox *m)
 {
@@ -2417,7 +2417,7 @@ int nntp_ac_add(struct Account *a, struct Mailbox *m)
 }
 
 /**
- * nntp_mbox_open - Implements MxOps::mbox_open()
+ * nntp_mbox_open - Open a Mailbox - Implements MxOps::mbox_open()
  */
 static int nntp_mbox_open(struct Mailbox *m)
 {
@@ -2573,7 +2573,7 @@ static int nntp_mbox_open(struct Mailbox *m)
 }
 
 /**
- * nntp_mbox_check - Implements MxOps::mbox_check()
+ * nntp_mbox_check - Check for new mail - Implements MxOps::mbox_check()
  * @param m          Mailbox
  * @param index_hint Current message (UNUSED)
  * @retval #MUTT_REOPENED Articles have been renumbered or removed from server
@@ -2597,7 +2597,7 @@ static int nntp_mbox_check(struct Mailbox *m, int *index_hint)
 }
 
 /**
- * nntp_mbox_sync - Implements MxOps::mbox_sync()
+ * nntp_mbox_sync - Save changes to the Mailbox - Implements MxOps::mbox_sync()
  *
  * @note May also return values from check_mailbox()
  */
@@ -2659,7 +2659,7 @@ static int nntp_mbox_sync(struct Mailbox *m, int *index_hint)
 }
 
 /**
- * nntp_mbox_close - Implements MxOps::mbox_close()
+ * nntp_mbox_close - Close a Mailbox - Implements MxOps::mbox_close()
  * @retval 0 Always
  */
 static int nntp_mbox_close(struct Mailbox *m)
@@ -2685,7 +2685,7 @@ static int nntp_mbox_close(struct Mailbox *m)
 }
 
 /**
- * nntp_msg_open - Implements MxOps::msg_open()
+ * nntp_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open()
  */
 static int nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
@@ -2813,7 +2813,7 @@ static int nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 }
 
 /**
- * nntp_msg_close - Implements MxOps::msg_close()
+ * nntp_msg_close - Close an email - Implements MxOps::msg_close()
  *
  * @note May also return EOF Failure, see errno
  */
@@ -2823,7 +2823,7 @@ static int nntp_msg_close(struct Mailbox *m, struct Message *msg)
 }
 
 /**
- * nntp_path_probe - Is this an NNTP mailbox? - Implements MxOps::path_probe()
+ * nntp_path_probe - Is this an NNTP Mailbox? - Implements MxOps::path_probe()
  */
 enum MailboxType nntp_path_probe(const char *path, const struct stat *st)
 {
@@ -2840,7 +2840,7 @@ enum MailboxType nntp_path_probe(const char *path, const struct stat *st)
 }
 
 /**
- * nntp_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon()
+ * nntp_path_canon - Canonicalise a Mailbox path - Implements MxOps::path_canon()
  */
 int nntp_path_canon(char *buf, size_t buflen)
 {
@@ -2851,7 +2851,7 @@ int nntp_path_canon(char *buf, size_t buflen)
 }
 
 /**
- * nntp_path_pretty - Implements MxOps::path_pretty()
+ * nntp_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty()
  */
 int nntp_path_pretty(char *buf, size_t buflen, const char *folder)
 {
@@ -2860,7 +2860,7 @@ int nntp_path_pretty(char *buf, size_t buflen, const char *folder)
 }
 
 /**
- * nntp_path_parent - Implements MxOps::path_parent()
+ * nntp_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent()
  */
 int nntp_path_parent(char *buf, size_t buflen)
 {
@@ -2870,7 +2870,7 @@ int nntp_path_parent(char *buf, size_t buflen)
 
 // clang-format off
 /**
- * MxNntpOps - NNTP mailbox - Implements ::MxOps
+ * MxNntpOps - NNTP Mailbox - Implements ::MxOps
  */
 struct MxOps MxNntpOps = {
   .magic            = MUTT_NNTP,

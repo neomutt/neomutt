@@ -1840,7 +1840,7 @@ char *imap_set_flags(struct Mailbox *m, struct Email *e, char *s, bool *server_c
 }
 
 /**
- * imap_msg_open - Implements MxOps::msg_open()
+ * imap_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open()
  */
 int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
@@ -2044,7 +2044,7 @@ bail:
 }
 
 /**
- * imap_msg_commit - Implements MxOps::msg_commit()
+ * imap_msg_commit - Save changes to an email - Implements MxOps::msg_commit()
  *
  * @note May also return EOF Failure, see errno
  */
@@ -2058,7 +2058,7 @@ int imap_msg_commit(struct Mailbox *m, struct Message *msg)
 }
 
 /**
- * imap_msg_close - Implements MxOps::msg_close()
+ * imap_msg_close - Close an email - Implements MxOps::msg_close()
  *
  * @note May also return EOF Failure, see errno
  */

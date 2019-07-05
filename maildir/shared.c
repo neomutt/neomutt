@@ -1651,7 +1651,7 @@ int mh_check_empty(const char *path)
 }
 
 /**
- * maildir_ac_find - Find an Account that matches a Mailbox path
+ * maildir_ac_find - Find an Account that matches a Mailbox path - Implements MxOps::ac_find()
  */
 struct Account *maildir_ac_find(struct Account *a, const char *path)
 {
@@ -1662,7 +1662,7 @@ struct Account *maildir_ac_find(struct Account *a, const char *path)
 }
 
 /**
- * maildir_ac_add - Add a Mailbox to an Account
+ * maildir_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
  */
 int maildir_ac_add(struct Account *a, struct Mailbox *m)
 {
@@ -1672,7 +1672,7 @@ int maildir_ac_add(struct Account *a, struct Mailbox *m)
 }
 
 /**
- * maildir_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon()
+ * maildir_path_canon - Canonicalise a Mailbox path - Implements MxOps::path_canon()
  */
 int maildir_path_canon(char *buf, size_t buflen)
 {
@@ -1684,7 +1684,7 @@ int maildir_path_canon(char *buf, size_t buflen)
 }
 
 /**
- * maildir_path_pretty - Implements MxOps::path_pretty()
+ * maildir_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty()
  */
 int maildir_path_pretty(char *buf, size_t buflen, const char *folder)
 {
@@ -1701,7 +1701,7 @@ int maildir_path_pretty(char *buf, size_t buflen, const char *folder)
 }
 
 /**
- * maildir_path_parent - Implements MxOps::path_parent()
+ * maildir_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent()
  */
 int maildir_path_parent(char *buf, size_t buflen)
 {
@@ -1721,7 +1721,7 @@ int maildir_path_parent(char *buf, size_t buflen)
 }
 
 /**
- * mh_mbox_sync - Implements MxOps::mbox_sync()
+ * mh_mbox_sync - Save changes to the Mailbox - Implements MxOps::mbox_sync()
  */
 int mh_mbox_sync(struct Mailbox *m, int *index_hint)
 {
@@ -1795,7 +1795,7 @@ err:
 }
 
 /**
- * mh_mbox_close - Implements MxOps::mbox_close()
+ * mh_mbox_close - Close a Mailbox - Implements MxOps::mbox_close()
  * @retval 0 Always
  */
 int mh_mbox_close(struct Mailbox *m)
@@ -1804,7 +1804,7 @@ int mh_mbox_close(struct Mailbox *m)
 }
 
 /**
- * mh_msg_close - Implements MxOps::msg_close()
+ * mh_msg_close - Close an email - Implements MxOps::msg_close()
  *
  * @note May also return EOF Failure, see errno
  */

@@ -1915,7 +1915,7 @@ int nm_update_filename(struct Mailbox *m, const char *old_file,
 }
 
 /**
- * nm_mbox_check_stats - Implements MxOps::check_stats()
+ * nm_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::check_stats()
  */
 static int nm_mbox_check_stats(struct Mailbox *m, int flags)
 {
@@ -2116,7 +2116,7 @@ done:
 }
 
 /**
- * nm_ac_find - Find an Account that matches a Mailbox path
+ * nm_ac_find - Find an Account that matches a Mailbox path - Implements MxOps::ac_find()
  */
 struct Account *nm_ac_find(struct Account *a, const char *path)
 {
@@ -2127,7 +2127,7 @@ struct Account *nm_ac_find(struct Account *a, const char *path)
 }
 
 /**
- * nm_ac_add - Add a Mailbox to an Account
+ * nm_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
  */
 int nm_ac_add(struct Account *a, struct Mailbox *m)
 {
@@ -2145,7 +2145,7 @@ int nm_ac_add(struct Account *a, struct Mailbox *m)
 }
 
 /**
- * nm_mbox_open - Implements MxOps::mbox_open()
+ * nm_mbox_open - Open a Mailbox - Implements MxOps::mbox_open()
  */
 static int nm_mbox_open(struct Mailbox *m)
 {
@@ -2202,7 +2202,7 @@ static int nm_mbox_open(struct Mailbox *m)
 }
 
 /**
- * nm_mbox_check - Implements MxOps::mbox_check()
+ * nm_mbox_check - Check for new mail - Implements MxOps::mbox_check()
  * @param m           Mailbox
  * @param index_hint  Remember our place in the index
  * @retval -1 Error
@@ -2330,7 +2330,7 @@ done:
 }
 
 /**
- * nm_mbox_sync - Implements MxOps::mbox_sync()
+ * nm_mbox_sync - Save changes to the Mailbox - Implements MxOps::mbox_sync()
  */
 static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
 {
@@ -2421,7 +2421,7 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
 }
 
 /**
- * nm_mbox_close - Implements MxOps::mbox_close()
+ * nm_mbox_close - Close a Mailbox - Implements MxOps::mbox_close()
  *
  * Nothing to do.
  */
@@ -2431,7 +2431,7 @@ static int nm_mbox_close(struct Mailbox *m)
 }
 
 /**
- * nm_msg_open - Implements MxOps::msg_open()
+ * nm_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open()
  */
 static int nm_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
@@ -2458,7 +2458,7 @@ static int nm_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 }
 
 /**
- * nm_msg_commit - Implements MxOps::msg_commit()
+ * nm_msg_commit - Save changes to an email - Implements MxOps::msg_commit()
  * @retval -1 Always
  */
 static int nm_msg_commit(struct Mailbox *m, struct Message *msg)
@@ -2468,7 +2468,7 @@ static int nm_msg_commit(struct Mailbox *m, struct Message *msg)
 }
 
 /**
- * nm_msg_close - Implements MxOps::msg_close()
+ * nm_msg_close - Close an email - Implements MxOps::msg_close()
  */
 static int nm_msg_close(struct Mailbox *m, struct Message *msg)
 {
@@ -2479,7 +2479,7 @@ static int nm_msg_close(struct Mailbox *m, struct Message *msg)
 }
 
 /**
- * nm_tags_edit - Implements MxOps::tags_edit()
+ * nm_tags_edit - Prompt and validate new messages tags - Implements MxOps::tags_edit()
  */
 static int nm_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t buflen)
 {
@@ -2490,7 +2490,7 @@ static int nm_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t b
 }
 
 /**
- * nm_tags_commit - Implements MxOps::tags_commit()
+ * nm_tags_commit - Save the tags to a message - Implements MxOps::tags_commit()
  */
 static int nm_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
 {
@@ -2529,7 +2529,7 @@ done:
 }
 
 /**
- * nm_path_probe - Is this a Notmuch mailbox? - Implements MxOps::path_probe()
+ * nm_path_probe - Is this a Notmuch Mailbox? - Implements MxOps::path_probe()
  */
 enum MailboxType nm_path_probe(const char *path, const struct stat *st)
 {
@@ -2540,7 +2540,7 @@ enum MailboxType nm_path_probe(const char *path, const struct stat *st)
 }
 
 /**
- * nm_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon()
+ * nm_path_canon - Canonicalise a Mailbox path - Implements MxOps::path_canon()
  */
 int nm_path_canon(char *buf, size_t buflen)
 {
@@ -2551,7 +2551,7 @@ int nm_path_canon(char *buf, size_t buflen)
 }
 
 /**
- * nm_path_pretty - Implements MxOps::path_pretty()
+ * nm_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty()
  */
 int nm_path_pretty(char *buf, size_t buflen, const char *folder)
 {
@@ -2560,7 +2560,7 @@ int nm_path_pretty(char *buf, size_t buflen, const char *folder)
 }
 
 /**
- * nm_path_parent - Implements MxOps::path_parent()
+ * nm_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent()
  */
 int nm_path_parent(char *buf, size_t buflen)
 {
@@ -2570,7 +2570,7 @@ int nm_path_parent(char *buf, size_t buflen)
 
 // clang-format off
 /**
- * MxNotmuchOps - Notmuch mailbox - Implements ::MxOps
+ * MxNotmuchOps - Notmuch Mailbox - Implements ::MxOps
  */
 struct MxOps MxNotmuchOps = {
   .magic            = MUTT_NOTMUCH,
