@@ -508,14 +508,14 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
         /* fallthrough */
         case OP_MAIL:
         {
-          struct Email *msg = mutt_email_new();
-          msg->env = mutt_env_new();
+          struct Email *e = mutt_email_new();
+          e->env = mutt_env_new();
           if (!menu->tagprefix)
           {
             struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
             if (result_to_addr(&al, query_table[menu->current].data))
             {
-              mutt_addrlist_copy(&msg->env->to, &al, false);
+              mutt_addrlist_copy(&e->env->to, &al, false);
               mutt_addrlist_clear(&al);
             }
           }
@@ -528,13 +528,13 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
                 struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
                 if (result_to_addr(&al, query_table[i].data))
                 {
-                  mutt_addrlist_copy(&msg->env->to, &al, false);
+                  mutt_addrlist_copy(&e->env->to, &al, false);
                   mutt_addrlist_clear(&al);
                 }
               }
             }
           }
-          ci_send_message(SEND_NO_FLAGS, msg, NULL, Context, NULL);
+          ci_send_message(SEND_NO_FLAGS, e, NULL, Context, NULL);
           menu->redraw = REDRAW_FULL;
           break;
         }

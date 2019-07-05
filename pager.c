@@ -109,7 +109,7 @@ static const char *Function_not_permitted_in_attach_message_mode =
 
 /* hack to return to position when returning from index to same message */
 static int TopLine = 0;
-static struct Email *OldHdr = NULL;
+static struct Email *OldEmail = NULL;
 
 #define CHECK_MODE(test)                                                       \
   if (!(test))                                                                 \
@@ -1882,7 +1882,7 @@ static struct Mapping PagerNewsHelpExtra[] = {
 void mutt_clear_pager_position(void)
 {
   TopLine = 0;
-  OldHdr = NULL;
+  OldEmail = NULL;
 }
 
 /**
@@ -2348,7 +2348,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
     mutt_refresh();
 
-    if (IsEmail(extra) && (OldHdr == extra->email) && (TopLine != rd.topline) &&
+    if (IsEmail(extra) && (OldEmail == extra->email) && (TopLine != rd.topline) &&
         (rd.line_info[rd.curline].offset < (rd.sb.st_size - 1)))
     {
       if ((TopLine - rd.topline) > rd.lines)
@@ -2358,7 +2358,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       continue;
     }
     else
-      OldHdr = NULL;
+      OldEmail = NULL;
 
     ch = km_dokey(MENU_PAGER);
     if (ch >= 0)
@@ -3557,7 +3557,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
       default:
         TopLine = rd.topline;
-        OldHdr = extra->email;
+        OldEmail = extra->email;
         break;
     }
   }

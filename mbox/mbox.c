@@ -558,7 +558,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
     return -1;
 
   bool (*cmp_headers)(const struct Email *, const struct Email *) = NULL;
-  struct Email **old_hdrs = NULL;
+  struct Email **e_old = NULL;
   int old_msg_count;
   bool msg_mod = false;
   int rc = -1;
@@ -575,7 +575,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
     C_Sort = old_sort;
   }
 
-  old_hdrs = NULL;
+  e_old = NULL;
   old_msg_count = 0;
 
   /* simulate a close */
@@ -594,7 +594,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
   {
     /* save the old headers */
     old_msg_count = m->msg_count;
-    old_hdrs = m->emails;
+    e_old = m->emails;
     m->emails = NULL;
   }
 
@@ -635,8 +635,8 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
   {
     /* free the old headers */
     for (int i = 0; i < old_msg_count; i++)
-      mutt_email_free(&(old_hdrs[i]));
-    FREE(&old_hdrs);
+      mutt_email_free(&(e_old[i]));
+    FREE(&e_old);
 
     m->quiet = false;
     return -1;
@@ -659,9 +659,9 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
       int j;
       for (j = i; j < old_msg_count; j++)
       {
-        if (!old_hdrs[j])
+        if (!e_old[j])
           continue;
-        if (cmp_headers(m->emails[i], old_hdrs[j]))
+        if (cmp_headers(m->emails[i], e_old[j]))
         {
           found = true;
           break;
@@ -671,9 +671,9 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
       {
         for (j = 0; (j < i) && (j < old_msg_count); j++)
         {
-          if (!old_hdrs[j])
+          if (!e_old[j])
             continue;
-          if (cmp_headers(m->emails[i], old_hdrs[j]))
+          if (cmp_headers(m->emails[i], e_old[j]))
           {
             found = true;
             break;
@@ -687,35 +687,35 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
         if (index_hint && (*index_hint == j))
           *index_hint = i;
 
-        if (old_hdrs[j]->changed)
+        if (e_old[j]->changed)
         {
           /* Only update the flags if the old header was changed;
            * otherwise, the header may have been modified externally,
            * and we don't want to lose _those_ changes */
-          mutt_set_flag(m, m->emails[i], MUTT_FLAG, old_hdrs[j]->flagged);
-          mutt_set_flag(m, m->emails[i], MUTT_REPLIED, old_hdrs[j]->replied);
-          mutt_set_flag(m, m->emails[i], MUTT_OLD, old_hdrs[j]->old);
-          mutt_set_flag(m, m->emails[i], MUTT_READ, old_hdrs[j]->read);
+          mutt_set_flag(m, m->emails[i], MUTT_FLAG, e_old[j]->flagged);
+          mutt_set_flag(m, m->emails[i], MUTT_REPLIED, e_old[j]->replied);
+          mutt_set_flag(m, m->emails[i], MUTT_OLD, e_old[j]->old);
+          mutt_set_flag(m, m->emails[i], MUTT_READ, e_old[j]->read);
         }
-        mutt_set_flag(m, m->emails[i], MUTT_DELETE, old_hdrs[j]->deleted);
-        mutt_set_flag(m, m->emails[i], MUTT_PURGE, old_hdrs[j]->purge);
-        mutt_set_flag(m, m->emails[i], MUTT_TAG, old_hdrs[j]->tagged);
+        mutt_set_flag(m, m->emails[i], MUTT_DELETE, e_old[j]->deleted);
+        mutt_set_flag(m, m->emails[i], MUTT_PURGE, e_old[j]->purge);
+        mutt_set_flag(m, m->emails[i], MUTT_TAG, e_old[j]->tagged);
 
         /* we don't need this header any more */
-        mutt_email_free(&(old_hdrs[j]));
+        mutt_email_free(&(e_old[j]));
       }
     }
 
     /* free the remaining old headers */
     for (int j = 0; j < old_msg_count; j++)
     {
-      if (old_hdrs[j])
+      if (e_old[j])
       {
-        mutt_email_free(&(old_hdrs[j]));
+        mutt_email_free(&(e_old[j]));
         msg_mod = true;
       }
     }
-    FREE(&old_hdrs);
+    FREE(&e_old);
   }
 
   m->quiet = false;

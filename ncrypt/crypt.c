@@ -901,7 +901,7 @@ void crypt_extract_keys_from_messages(struct EmailList *el)
 
 /**
  * crypt_get_keys - Check we have all the keys we need
- * @param[in]  msg         Message with addresses to match
+ * @param[in]  e           Email with addresses to match
  * @param[out] keylist     Keys needed
  * @param[in]  oppenc_mode If true, use opportunistic encryption
  * @retval  0 Success
@@ -913,7 +913,7 @@ void crypt_extract_keys_from_messages(struct EmailList *el)
  * If oppenc_mode is true, only keys that can be determined without
  * prompting will be used.
  */
-int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
+int crypt_get_keys(struct Email *e, char **keylist, bool oppenc_mode)
 {
   if (!WithCrypto)
     return 0;
@@ -928,17 +928,17 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
   if (WithCrypto & APPLICATION_PGP)
     OptPgpCheckTrust = true;
 
-  mutt_addrlist_copy(&addrlist, &msg->env->to, false);
-  mutt_addrlist_copy(&addrlist, &msg->env->cc, false);
-  mutt_addrlist_copy(&addrlist, &msg->env->bcc, false);
+  mutt_addrlist_copy(&addrlist, &e->env->to, false);
+  mutt_addrlist_copy(&addrlist, &e->env->cc, false);
+  mutt_addrlist_copy(&addrlist, &e->env->bcc, false);
   mutt_addrlist_qualify(&addrlist, fqdn);
   mutt_addrlist_dedupe(&addrlist);
 
   *keylist = NULL;
 
-  if (oppenc_mode || (msg->security & SEC_ENCRYPT))
+  if (oppenc_mode || (e->security & SEC_ENCRYPT))
   {
-    if (((WithCrypto & APPLICATION_PGP) != 0) && (msg->security & APPLICATION_PGP))
+    if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & APPLICATION_PGP))
     {
       *keylist = crypt_pgp_find_keys(&addrlist, oppenc_mode);
       if (!*keylist)
@@ -950,7 +950,7 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
       if (C_PgpSelfEncrypt || (C_PgpEncryptSelf == MUTT_YES))
         self_encrypt = C_PgpDefaultKey;
     }
-    if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME))
+    if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME))
     {
       *keylist = crypt_smime_find_keys(&addrlist, oppenc_mode);
       if (!*keylist)
@@ -977,30 +977,30 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
 
 /**
  * crypt_opportunistic_encrypt - Can all recipients be determined
- * @param msg Email
+ * @param e Email
  *
  * Check if all recipients keys can be automatically determined.
  * Enable encryption if they can, otherwise disable encryption.
  */
-void crypt_opportunistic_encrypt(struct Email *msg)
+void crypt_opportunistic_encrypt(struct Email *e)
 {
   if (!WithCrypto)
     return;
 
-  if (!(C_CryptOpportunisticEncrypt && (msg->security & SEC_OPPENCRYPT)))
+  if (!(C_CryptOpportunisticEncrypt && (e->security & SEC_OPPENCRYPT)))
     return;
 
   char *pgpkeylist = NULL;
 
-  crypt_get_keys(msg, &pgpkeylist, 1);
+  crypt_get_keys(e, &pgpkeylist, 1);
   if (pgpkeylist)
   {
-    msg->security |= SEC_ENCRYPT;
+    e->security |= SEC_ENCRYPT;
     FREE(&pgpkeylist);
   }
   else
   {
-    msg->security &= ~SEC_ENCRYPT;
+    e->security &= ~SEC_ENCRYPT;
   }
 }
 

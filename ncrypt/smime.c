@@ -2307,7 +2307,7 @@ int smime_class_application_handler(struct Body *m, struct State *s)
 /**
  * smime_class_send_menu - Implements CryptModuleSpecs::send_menu()
  */
-int smime_class_send_menu(struct Email *msg)
+int smime_class_send_menu(struct Email *e)
 {
   struct SmimeKey *key = NULL;
   const char *prompt = NULL;
@@ -2316,14 +2316,14 @@ int smime_class_send_menu(struct Email *msg)
   int choice;
 
   if (!(WithCrypto & APPLICATION_SMIME))
-    return msg->security;
+    return e->security;
 
-  msg->security |= APPLICATION_SMIME;
+  e->security |= APPLICATION_SMIME;
 
   /* Opportunistic encrypt is controlling encryption.
    * NOTE: "Signing" and "Clearing" only adjust the sign bit, so we have different
    *       letter choices for those.  */
-  if (C_CryptOpportunisticEncrypt && (msg->security & SEC_OPPENCRYPT))
+  if (C_CryptOpportunisticEncrypt && (e->security & SEC_OPPENCRYPT))
   {
     /* L10N: S/MIME options (opportunistic encryption is on) */
     prompt = _("S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc "
@@ -2366,7 +2366,7 @@ int smime_class_send_menu(struct Email *msg)
           mutt_str_replace(&C_SmimeSignAs, key->hash);
           smime_free_key(&key);
 
-          msg->security |= SEC_SIGN;
+          e->security |= SEC_SIGN;
 
           /* probably need a different passphrase */
           crypt_smime_void_passphrase();
@@ -2375,43 +2375,43 @@ int smime_class_send_menu(struct Email *msg)
         break;
 
       case 'b': /* (b)oth */
-        msg->security |= (SEC_ENCRYPT | SEC_SIGN);
+        e->security |= (SEC_ENCRYPT | SEC_SIGN);
         break;
 
       case 'c': /* (c)lear */
-        msg->security &= ~(SEC_ENCRYPT | SEC_SIGN);
+        e->security &= ~(SEC_ENCRYPT | SEC_SIGN);
         break;
 
       case 'C':
-        msg->security &= ~SEC_SIGN;
+        e->security &= ~SEC_SIGN;
         break;
 
       case 'e': /* (e)ncrypt */
-        msg->security |= SEC_ENCRYPT;
-        msg->security &= ~SEC_SIGN;
+        e->security |= SEC_ENCRYPT;
+        e->security &= ~SEC_SIGN;
         break;
 
       case 'O': /* oppenc mode on */
-        msg->security |= SEC_OPPENCRYPT;
-        crypt_opportunistic_encrypt(msg);
+        e->security |= SEC_OPPENCRYPT;
+        crypt_opportunistic_encrypt(e);
         break;
 
       case 'o': /* oppenc mode off */
-        msg->security &= ~SEC_OPPENCRYPT;
+        e->security &= ~SEC_OPPENCRYPT;
         break;
 
       case 'S': /* (s)ign in oppenc mode */
-        msg->security |= SEC_SIGN;
+        e->security |= SEC_SIGN;
         break;
 
       case 's': /* (s)ign */
-        msg->security &= ~SEC_ENCRYPT;
-        msg->security |= SEC_SIGN;
+        e->security &= ~SEC_ENCRYPT;
+        e->security |= SEC_SIGN;
         break;
 
       case 'w': /* encrypt (w)ith */
       {
-        msg->security |= SEC_ENCRYPT;
+        e->security |= SEC_ENCRYPT;
         do
         {
           switch (mutt_multi_choice(_("Choose algorithm family: (1) DES, (2) "
@@ -2483,5 +2483,5 @@ int smime_class_send_menu(struct Email *msg)
     }
   }
 
-  return msg->security;
+  return e->security;
 }

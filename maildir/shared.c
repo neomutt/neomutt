@@ -869,14 +869,14 @@ int mh_read_dir(struct Mailbox *m, const char *subdir)
  */
 int maildir_mh_open_message(struct Mailbox *m, struct Message *msg, int msgno, bool is_maildir)
 {
-  struct Email *cur = m->emails[msgno];
+  struct Email *e = m->emails[msgno];
   char path[PATH_MAX];
 
-  snprintf(path, sizeof(path), "%s/%s", mutt_b2s(m->pathbuf), cur->path);
+  snprintf(path, sizeof(path), "%s/%s", mutt_b2s(m->pathbuf), e->path);
 
   msg->fp = fopen(path, "r");
   if (!msg->fp && (errno == ENOENT) && is_maildir)
-    msg->fp = maildir_open_find_message(mutt_b2s(m->pathbuf), cur->path, NULL);
+    msg->fp = maildir_open_find_message(mutt_b2s(m->pathbuf), e->path, NULL);
 
   if (!msg->fp)
   {
@@ -1490,13 +1490,13 @@ int mh_sync_mailbox_message(struct Mailbox *m, int msgno, header_cache_t *hc)
 
 /**
  * maildir_update_flags - Update the mailbox flags
- * @param m   Mailbox
- * @param o   Old Email
- * @param n   New Email
+ * @param m     Mailbox
+ * @param e_old Old Email
+ * @param e_new New Email
  * @retval true  If the flags changed
  * @retval false Otherwise
  */
-bool maildir_update_flags(struct Mailbox *m, struct Email *o, struct Email *n)
+bool maildir_update_flags(struct Mailbox *m, struct Email *e_old, struct Email *e_new)
 {
   if (!m)
     return false;
@@ -1510,21 +1510,21 @@ bool maildir_update_flags(struct Mailbox *m, struct Email *o, struct Email *n)
    * anything. mutt_set_flag() will just ignore the call if the status
    * bits are already properly set, but it is still faster not to pass
    * through it */
-  if (o->flagged != n->flagged)
-    mutt_set_flag(m, o, MUTT_FLAG, n->flagged);
-  if (o->replied != n->replied)
-    mutt_set_flag(m, o, MUTT_REPLIED, n->replied);
-  if (o->read != n->read)
-    mutt_set_flag(m, o, MUTT_READ, n->read);
-  if (o->old != n->old)
-    mutt_set_flag(m, o, MUTT_OLD, n->old);
+  if (e_old->flagged != e_new->flagged)
+    mutt_set_flag(m, e_old, MUTT_FLAG, e_new->flagged);
+  if (e_old->replied != e_new->replied)
+    mutt_set_flag(m, e_old, MUTT_REPLIED, e_new->replied);
+  if (e_old->read != e_new->read)
+    mutt_set_flag(m, e_old, MUTT_READ, e_new->read);
+  if (e_old->old != e_new->old)
+    mutt_set_flag(m, e_old, MUTT_OLD, e_new->old);
 
   /* mutt_set_flag() will set this, but we don't need to
    * sync the changes we made because we just updated the
    * context to match the current on-disk state of the
    * message.  */
-  bool header_changed = o->changed;
-  o->changed = false;
+  bool header_changed = e_old->changed;
+  e_old->changed = false;
 
   /* if the mailbox was not modified before we made these
    * changes, unset the changed flag since nothing needs to

@@ -43,7 +43,7 @@ char *       pgp_gpgme_find_keys(struct AddressList *addrlist, bool oppenc_mode)
 void         pgp_gpgme_init(void);
 void         pgp_gpgme_invoke_import(const char *fname);
 struct Body *pgp_gpgme_make_key_attachment(void);
-int          pgp_gpgme_send_menu(struct Email *msg);
+int          pgp_gpgme_send_menu(struct Email *e);
 struct Body *pgp_gpgme_sign_message(struct Body *a);
 int          pgp_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile);
 
@@ -52,7 +52,7 @@ struct Body *smime_gpgme_build_smime_entity(struct Body *a, char *keylist);
 int          smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur);
 char *       smime_gpgme_find_keys(struct AddressList *addrlist, bool oppenc_mode);
 void         smime_gpgme_init(void);
-int          smime_gpgme_send_menu(struct Email *msg);
+int          smime_gpgme_send_menu(struct Email *e);
 struct Body *smime_gpgme_sign_message(struct Body *a);
 int          smime_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile);
 int          smime_gpgme_verify_sender(struct Email *e);

@@ -2288,9 +2288,9 @@ static int nm_mbox_check(struct Mailbox *m, int *index_hint)
     {
       /* if the user hasn't modified the flags on this message, update the
        * flags we just detected.  */
-      struct Email tmp = { 0 };
-      maildir_parse_flags(&tmp, new_file);
-      maildir_update_flags(m, e, &tmp);
+      struct Email e_tmp = { 0 };
+      maildir_parse_flags(&e_tmp, new_file);
+      maildir_update_flags(m, e, &e_tmp);
     }
 
     if (update_email_tags(e, msg) == 0)

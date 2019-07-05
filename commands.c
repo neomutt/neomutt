@@ -94,9 +94,9 @@ static char LastSaveFolder[PATH_MAX] = "";
 
 /**
  * update_protected_headers - Get the protected header and update the index
- * @param cur Email to update
+ * @param e Email to update
  */
-static void update_protected_headers(struct Email *cur)
+static void update_protected_headers(struct Email *e)
 {
   struct Envelope *prot_headers = NULL;
   regmatch_t pmatch[1];
@@ -105,7 +105,7 @@ static void update_protected_headers(struct Email *cur)
     return;
 
   /* Grab protected headers to update in the index */
-  if (cur->security & SEC_SIGN)
+  if (e->security & SEC_SIGN)
   {
     /* Don't update on a bad signature.
      *
@@ -113,56 +113,56 @@ static void update_protected_headers(struct Email *cur)
      * encrypted part of a nested encrypt/signed.  But properly handling that
      * case would require more complexity in the decryption handlers, which
      * I'm not sure is worth it. */
-    if (!(cur->security & SEC_GOODSIGN))
+    if (!(e->security & SEC_GOODSIGN))
       return;
 
-    if (mutt_is_multipart_signed(cur->content) && cur->content->parts)
+    if (mutt_is_multipart_signed(e->content) && e->content->parts)
     {
-      prot_headers = cur->content->parts->mime_headers;
+      prot_headers = e->content->parts->mime_headers;
     }
-    else if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(cur->content))
+    else if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(e->content))
     {
-      prot_headers = cur->content->mime_headers;
+      prot_headers = e->content->mime_headers;
     }
   }
-  if (!prot_headers && (cur->security & SEC_ENCRYPT))
+  if (!prot_headers && (e->security & SEC_ENCRYPT))
   {
     if (((WithCrypto & APPLICATION_PGP) != 0) &&
-        (mutt_is_valid_multipart_pgp_encrypted(cur->content) ||
-         mutt_is_malformed_multipart_pgp_encrypted(cur->content)))
+        (mutt_is_valid_multipart_pgp_encrypted(e->content) ||
+         mutt_is_malformed_multipart_pgp_encrypted(e->content)))
     {
-      prot_headers = cur->content->mime_headers;
+      prot_headers = e->content->mime_headers;
     }
-    else if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(cur->content))
+    else if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(e->content))
     {
-      prot_headers = cur->content->mime_headers;
+      prot_headers = e->content->mime_headers;
     }
   }
 
   /* Update protected headers in the index and header cache. */
   if (prot_headers && prot_headers->subject &&
-      mutt_str_strcmp(cur->env->subject, prot_headers->subject))
+      mutt_str_strcmp(e->env->subject, prot_headers->subject))
   {
-    if (Context->mailbox->subj_hash && cur->env->real_subj)
-      mutt_hash_delete(Context->mailbox->subj_hash, cur->env->real_subj, cur);
+    if (Context->mailbox->subj_hash && e->env->real_subj)
+      mutt_hash_delete(Context->mailbox->subj_hash, e->env->real_subj, e);
 
-    mutt_str_replace(&cur->env->subject, prot_headers->subject);
-    FREE(&cur->env->disp_subj);
-    if (regexec(C_ReplyRegex->regex, cur->env->subject, 1, pmatch, 0) == 0)
-      cur->env->real_subj = cur->env->subject + pmatch[0].rm_eo;
+    mutt_str_replace(&e->env->subject, prot_headers->subject);
+    FREE(&e->env->disp_subj);
+    if (regexec(C_ReplyRegex->regex, e->env->subject, 1, pmatch, 0) == 0)
+      e->env->real_subj = e->env->subject + pmatch[0].rm_eo;
     else
-      cur->env->real_subj = cur->env->subject;
+      e->env->real_subj = e->env->subject;
 
     if (Context->mailbox->subj_hash)
-      mutt_hash_insert(Context->mailbox->subj_hash, cur->env->real_subj, cur);
+      mutt_hash_insert(Context->mailbox->subj_hash, e->env->real_subj, e);
 
-    mx_save_hcache(Context->mailbox, cur);
+    mx_save_hcache(Context->mailbox, e);
 
     /* Also persist back to the message headers if this is set */
     if (C_CryptProtectedHeadersSave)
     {
-      cur->env->changed |= MUTT_ENV_CHANGED_SUBJECT;
-      cur->changed = 1;
+      e->env->changed |= MUTT_ENV_CHANGED_SUBJECT;
+      e->changed = 1;
       Context->mailbox->changed = 1;
     }
   }
@@ -170,11 +170,11 @@ static void update_protected_headers(struct Email *cur)
 
 /**
  * mutt_display_message - Display a message in the pager
- * @param cur Current Email
+ * @param e Email to display
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_display_message(struct Email *cur)
+int mutt_display_message(struct Email *e)
 {
   char tempfile[PATH_MAX], buf[1024];
   int rc = 0;
@@ -184,24 +184,24 @@ int mutt_display_message(struct Email *cur)
   pid_t filterpid = -1;
   int res;
 
-  snprintf(buf, sizeof(buf), "%s/%s", TYPE(cur->content), cur->content->subtype);
+  snprintf(buf, sizeof(buf), "%s/%s", TYPE(e->content), e->content->subtype);
 
-  mutt_parse_mime_message(Context->mailbox, cur);
-  mutt_message_hook(Context->mailbox, cur, MUTT_MESSAGE_HOOK);
+  mutt_parse_mime_message(Context->mailbox, e);
+  mutt_message_hook(Context->mailbox, e, MUTT_MESSAGE_HOOK);
 
   /* see if crypto is needed for this message.  if so, we should exit curses */
-  if ((WithCrypto != 0) && cur->security)
+  if ((WithCrypto != 0) && e->security)
   {
-    if (cur->security & SEC_ENCRYPT)
+    if (e->security & SEC_ENCRYPT)
     {
-      if (cur->security & APPLICATION_SMIME)
-        crypt_smime_getkeys(cur->env);
-      if (!crypt_valid_passphrase(cur->security))
+      if (e->security & APPLICATION_SMIME)
+        crypt_smime_getkeys(e->env);
+      if (!crypt_valid_passphrase(e->security))
         return 0;
 
       cmflags |= MUTT_CM_VERIFY;
     }
-    else if (cur->security & SEC_SIGN)
+    else if (e->security & SEC_SIGN)
     {
       /* find out whether or not the verify signature */
       /* L10N: Used for the $crypt_verify_sig prompt */
@@ -212,17 +212,17 @@ int mutt_display_message(struct Email *cur)
     }
   }
 
-  if (cmflags & MUTT_CM_VERIFY || cur->security & SEC_ENCRYPT)
+  if (cmflags & MUTT_CM_VERIFY || e->security & SEC_ENCRYPT)
   {
-    if (cur->security & APPLICATION_PGP)
+    if (e->security & APPLICATION_PGP)
     {
-      if (!TAILQ_EMPTY(&cur->env->from))
-        crypt_pgp_invoke_getkeys(TAILQ_FIRST(&cur->env->from));
+      if (!TAILQ_EMPTY(&e->env->from))
+        crypt_pgp_invoke_getkeys(TAILQ_FIRST(&e->env->from));
 
       crypt_invoke_message(APPLICATION_PGP);
     }
 
-    if (cur->security & APPLICATION_SMIME)
+    if (e->security & APPLICATION_SMIME)
       crypt_invoke_message(APPLICATION_SMIME);
   }
 
@@ -258,7 +258,7 @@ int mutt_display_message(struct Email *cur)
     hfi.ctx = Context;
     hfi.mailbox = Context->mailbox;
     hfi.pager_progress = ExtPagerProgress;
-    hfi.email = cur;
+    hfi.email = e;
     mutt_make_string_info(buf, sizeof(buf), MuttIndexWindow->cols,
                           NONULL(C_PagerFormat), &hfi, MUTT_FORMAT_NO_FLAGS);
     fputs(buf, fp_out);
@@ -270,7 +270,7 @@ int mutt_display_message(struct Email *cur)
   if (Context->mailbox->magic == MUTT_NOTMUCH)
     chflags |= CH_VIRTUAL;
 #endif
-  res = mutt_copy_message_ctx(fp_out, Context->mailbox, cur, cmflags, chflags);
+  res = mutt_copy_message_ctx(fp_out, Context->mailbox, e, cmflags, chflags);
 
   if (((mutt_file_fclose(&fp_out) != 0) && (errno != EPIPE)) || (res < 0))
   {
@@ -292,47 +292,47 @@ int mutt_display_message(struct Email *cur)
   if (WithCrypto)
   {
     /* update crypto information for this message */
-    cur->security &= ~(SEC_GOODSIGN | SEC_BADSIGN);
-    cur->security |= crypt_query(cur->content);
+    e->security &= ~(SEC_GOODSIGN | SEC_BADSIGN);
+    e->security |= crypt_query(e->content);
 
     /* Remove color cache for this message, in case there
      * are color patterns for both ~g and ~V */
-    cur->pair = 0;
+    e->pair = 0;
 
     /* Grab protected headers and update the header and index */
-    update_protected_headers(cur);
+    update_protected_headers(e);
   }
 
   if (builtin)
   {
-    if ((WithCrypto != 0) && (cur->security & APPLICATION_SMIME) && (cmflags & MUTT_CM_VERIFY))
+    if ((WithCrypto != 0) && (e->security & APPLICATION_SMIME) && (cmflags & MUTT_CM_VERIFY))
     {
-      if (cur->security & SEC_GOODSIGN)
+      if (e->security & SEC_GOODSIGN)
       {
-        if (crypt_smime_verify_sender(cur) == 0)
+        if (crypt_smime_verify_sender(e) == 0)
           mutt_message(_("S/MIME signature successfully verified"));
         else
           mutt_error(_("S/MIME certificate owner does not match sender"));
       }
-      else if (cur->security & SEC_PARTSIGN)
+      else if (e->security & SEC_PARTSIGN)
         mutt_message(_("Warning: Part of this message has not been signed"));
-      else if (cur->security & SEC_SIGN || cur->security & SEC_BADSIGN)
+      else if (e->security & SEC_SIGN || e->security & SEC_BADSIGN)
         mutt_error(_("S/MIME signature could NOT be verified"));
     }
 
-    if ((WithCrypto != 0) && (cur->security & APPLICATION_PGP) && (cmflags & MUTT_CM_VERIFY))
+    if ((WithCrypto != 0) && (e->security & APPLICATION_PGP) && (cmflags & MUTT_CM_VERIFY))
     {
-      if (cur->security & SEC_GOODSIGN)
+      if (e->security & SEC_GOODSIGN)
         mutt_message(_("PGP signature successfully verified"));
-      else if (cur->security & SEC_PARTSIGN)
+      else if (e->security & SEC_PARTSIGN)
         mutt_message(_("Warning: Part of this message has not been signed"));
-      else if (cur->security & SEC_SIGN)
+      else if (e->security & SEC_SIGN)
         mutt_message(_("PGP signature could NOT be verified"));
     }
 
     struct Pager info = { 0 };
     /* Invoke the builtin pager */
-    info.email = cur;
+    info.email = e;
     info.ctx = Context;
     rc = mutt_pager(NULL, tempfile, MUTT_PAGER_MESSAGE, &info);
   }
@@ -350,7 +350,7 @@ int mutt_display_message(struct Email *cur)
     if (!OptNoCurses)
       keypad(stdscr, true);
     if (r != -1)
-      mutt_set_flag(Context->mailbox, cur, MUTT_READ, true);
+      mutt_set_flag(Context->mailbox, e, MUTT_READ, true);
     if ((r != -1) && C_PromptAfter)
     {
       mutt_unget_event(mutt_any_key_to_continue(_("Command: ")), 0);

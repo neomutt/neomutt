@@ -100,7 +100,7 @@ typedef uint16_t SendFlags;             ///< Flags for ci_send_message(), e.g. #
 #define SEND_GROUP_CHAT_REPLY (1 << 13) ///< Reply to all recipients preserving To/Cc
 #define SEND_NEWS             (1 << 14) ///< Reply to a news article
 
-int             ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile, struct Context *ctx, struct EmailList *el);
+int             ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile, struct Context *ctx, struct EmailList *el);
 void            mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv);
 struct Address *mutt_default_from(void);
 void            mutt_encode_descriptions(struct Body *b, bool recurse);
@@ -113,7 +113,7 @@ void            mutt_make_forward_subject(struct Envelope *env, struct Mailbox *
 void            mutt_make_misc_reply_headers(struct Envelope *env, struct Envelope *curenv);
 void            mutt_make_post_indent(struct Mailbox *m, struct Email *e, FILE *fp_out);
 struct Address *mutt_remove_xrefs(struct Address *a, struct Address *b);
-int             mutt_resend_message(FILE *fp, struct Context *ctx, struct Email *cur);
+int             mutt_resend_message(FILE *fp, struct Context *ctx, struct Email *e_cur);
 void            mutt_set_followup_to(struct Envelope *e);
 
 #endif /* MUTT_SEND_H */

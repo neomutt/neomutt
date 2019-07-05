@@ -28,6 +28,6 @@ struct Email;
 struct Mailbox;
 
 int  mutt_count_body_parts(struct Mailbox *m, struct Email *e);
-void mutt_parse_mime_message(struct Mailbox *m, struct Email *cur);
+void mutt_parse_mime_message(struct Mailbox *m, struct Email *e);
 
 #endif /* MUTT_MUTT_PARSE_H */

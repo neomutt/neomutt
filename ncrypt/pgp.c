@@ -1832,7 +1832,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
 /**
  * pgp_class_send_menu - Implements CryptModuleSpecs::send_menu()
  */
-int pgp_class_send_menu(struct Email *msg)
+int pgp_class_send_menu(struct Email *e)
 {
   struct PgpKeyInfo *p = NULL;
   const char *prompt = NULL;
@@ -1842,19 +1842,19 @@ int pgp_class_send_menu(struct Email *msg)
   int choice;
 
   if (!(WithCrypto & APPLICATION_PGP))
-    return msg->security;
+    return e->security;
 
   /* If autoinline and no crypto options set, then set inline. */
-  if (C_PgpAutoinline && !((msg->security & APPLICATION_PGP) &&
-                           (msg->security & (SEC_SIGN | SEC_ENCRYPT))))
+  if (C_PgpAutoinline &&
+      !((e->security & APPLICATION_PGP) && (e->security & (SEC_SIGN | SEC_ENCRYPT))))
   {
-    msg->security |= SEC_INLINE;
+    e->security |= SEC_INLINE;
   }
 
-  msg->security |= APPLICATION_PGP;
+  e->security |= APPLICATION_PGP;
 
   char *mime_inline = NULL;
-  if (msg->security & SEC_INLINE)
+  if (e->security & SEC_INLINE)
   {
     /* L10N: The next string MUST have the same highlighted letter
        One of them will appear in each of the three strings marked "(inline"), below. */
@@ -1870,9 +1870,9 @@ int pgp_class_send_menu(struct Email *msg)
    * between inline and mime, but not turn encryption on or off.
    * NOTE: "Signing" and "Clearing" only adjust the sign bit, so we have different
    *       letter choices for those.  */
-  if (C_CryptOpportunisticEncrypt && (msg->security & SEC_OPPENCRYPT))
+  if (C_CryptOpportunisticEncrypt && (e->security & SEC_OPPENCRYPT))
   {
-    if (msg->security & (SEC_ENCRYPT | SEC_SIGN))
+    if (e->security & (SEC_ENCRYPT | SEC_SIGN))
     {
       snprintf(promptbuf, sizeof(promptbuf),
                /* L10N: PGP options (inline) (opportunistic encryption is on) */
@@ -1900,7 +1900,7 @@ int pgp_class_send_menu(struct Email *msg)
   {
     /* When the message is not selected for signing or encryption, the toggle
      * between PGP/MIME and Traditional doesn't make sense.  */
-    if (msg->security & (SEC_ENCRYPT | SEC_SIGN))
+    if (e->security & (SEC_ENCRYPT | SEC_SIGN))
     {
       snprintf(promptbuf, sizeof(promptbuf),
                /* L10N: PGP options (inline) (opportunistic encryption is off) */
@@ -1926,7 +1926,7 @@ int pgp_class_send_menu(struct Email *msg)
   /* Opportunistic encryption is unset */
   else
   {
-    if (msg->security & (SEC_ENCRYPT | SEC_SIGN))
+    if (e->security & (SEC_ENCRYPT | SEC_SIGN))
     {
       snprintf(promptbuf, sizeof(promptbuf),
                /* L10N: PGP options (inline) */
@@ -1965,52 +1965,52 @@ int pgp_class_send_menu(struct Email *msg)
           mutt_str_replace(&C_PgpSignAs, input_signas);
           pgp_free_key(&p);
 
-          msg->security |= SEC_SIGN;
+          e->security |= SEC_SIGN;
 
           crypt_pgp_void_passphrase(); /* probably need a different passphrase */
         }
         break;
 
       case 'b': /* (b)oth */
-        msg->security |= (SEC_ENCRYPT | SEC_SIGN);
+        e->security |= (SEC_ENCRYPT | SEC_SIGN);
         break;
 
       case 'C':
-        msg->security &= ~SEC_SIGN;
+        e->security &= ~SEC_SIGN;
         break;
 
       case 'c': /* (c)lear     */
-        msg->security &= ~(SEC_ENCRYPT | SEC_SIGN);
+        e->security &= ~(SEC_ENCRYPT | SEC_SIGN);
         break;
 
       case 'e': /* (e)ncrypt */
-        msg->security |= SEC_ENCRYPT;
-        msg->security &= ~SEC_SIGN;
+        e->security |= SEC_ENCRYPT;
+        e->security &= ~SEC_SIGN;
         break;
 
       case 'i': /* toggle (i)nline */
-        msg->security ^= SEC_INLINE;
+        e->security ^= SEC_INLINE;
         break;
 
       case 'O': /* oppenc mode on */
-        msg->security |= SEC_OPPENCRYPT;
-        crypt_opportunistic_encrypt(msg);
+        e->security |= SEC_OPPENCRYPT;
+        crypt_opportunistic_encrypt(e);
         break;
 
       case 'o': /* oppenc mode off */
-        msg->security &= ~SEC_OPPENCRYPT;
+        e->security &= ~SEC_OPPENCRYPT;
         break;
 
       case 'S': /* (s)ign in oppenc mode */
-        msg->security |= SEC_SIGN;
+        e->security |= SEC_SIGN;
         break;
 
       case 's': /* (s)ign */
-        msg->security &= ~SEC_ENCRYPT;
-        msg->security |= SEC_SIGN;
+        e->security &= ~SEC_ENCRYPT;
+        e->security |= SEC_SIGN;
         break;
     }
   }
 
-  return msg->security;
+  return e->security;
 }
