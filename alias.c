@@ -670,54 +670,54 @@ bool mutt_addr_is_user(const struct Address *addr)
 {
   if (!addr)
   {
-    mutt_debug(5, "no, NULL address\n");
+    mutt_debug(LL_DEBUG5, "no, NULL address\n");
     return false;
   }
   if (!addr->mailbox)
   {
-    mutt_debug(5, "no, no mailbox\n");
+    mutt_debug(LL_DEBUG5, "no, no mailbox\n");
     return false;
   }
 
   if (mutt_str_strcasecmp(addr->mailbox, Username) == 0)
   {
-    mutt_debug(5, "#1 yes, %s = %s\n", addr->mailbox, Username);
+    mutt_debug(LL_DEBUG5, "#1 yes, %s = %s\n", addr->mailbox, Username);
     return true;
   }
   if (string_is_address(addr->mailbox, Username, ShortHostname))
   {
-    mutt_debug(5, "#2 yes, %s = %s @ %s\n", addr->mailbox, Username, ShortHostname);
+    mutt_debug(LL_DEBUG5, "#2 yes, %s = %s @ %s\n", addr->mailbox, Username, ShortHostname);
     return true;
   }
   const char *fqdn = mutt_fqdn(false);
   if (string_is_address(addr->mailbox, Username, fqdn))
   {
-    mutt_debug(5, "#3 yes, %s = %s @ %s\n", addr->mailbox, Username, NONULL(fqdn));
+    mutt_debug(LL_DEBUG5, "#3 yes, %s = %s @ %s\n", addr->mailbox, Username, NONULL(fqdn));
     return true;
   }
   fqdn = mutt_fqdn(true);
   if (string_is_address(addr->mailbox, Username, fqdn))
   {
-    mutt_debug(5, "#4 yes, %s = %s @ %s\n", addr->mailbox, Username, NONULL(fqdn));
+    mutt_debug(LL_DEBUG5, "#4 yes, %s = %s @ %s\n", addr->mailbox, Username, NONULL(fqdn));
     return true;
   }
 
   if (C_From && (mutt_str_strcasecmp(C_From->mailbox, addr->mailbox) == 0))
   {
-    mutt_debug(5, "#5 yes, %s = %s\n", addr->mailbox, C_From->mailbox);
+    mutt_debug(LL_DEBUG5, "#5 yes, %s = %s\n", addr->mailbox, C_From->mailbox);
     return true;
   }
 
   if (mutt_regexlist_match(&Alternates, addr->mailbox))
   {
-    mutt_debug(5, "yes, %s matched by alternates\n", addr->mailbox);
+    mutt_debug(LL_DEBUG5, "yes, %s matched by alternates\n", addr->mailbox);
     if (mutt_regexlist_match(&UnAlternates, addr->mailbox))
-      mutt_debug(5, "but, %s matched by unalternates\n", addr->mailbox);
+      mutt_debug(LL_DEBUG5, "but, %s matched by unalternates\n", addr->mailbox);
     else
       return true;
   }
 
-  mutt_debug(5, "no, all failed\n");
+  mutt_debug(LL_DEBUG5, "no, all failed\n");
   return false;
 }
 

@@ -468,6 +468,8 @@ static int comp_mbox_open(struct Mailbox *m)
   if (!ci)
     return -1;
 
+  int rc;
+
   /* If there's no close-hook, or the file isn't writable */
   if (!ci->cmd_close || (access(mutt_b2s(m->pathbuf), W_OK) != 0))
     m->readonly = true;
@@ -482,7 +484,7 @@ static int comp_mbox_open(struct Mailbox *m)
     goto cmo_fail;
   }
 
-  int rc = execute_command(m, ci->cmd_open, _("Decompressing %s"));
+  rc = execute_command(m, ci->cmd_open, _("Decompressing %s"));
   if (rc == 0)
     goto cmo_fail;
 

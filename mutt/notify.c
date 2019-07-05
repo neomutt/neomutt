@@ -193,6 +193,7 @@ bool notify_observer_remove(struct Notify *notify, observer_t callback)
   if (!notify)
     return false;
 
+  bool result = false;
   struct ObserverNode *np = NULL;
   struct ObserverNode *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, &notify->observers, entries, tmp)
@@ -202,10 +203,11 @@ bool notify_observer_remove(struct Notify *notify, observer_t callback)
       STAILQ_REMOVE(&notify->observers, np, ObserverNode, entries);
       FREE(&np->observer);
       FREE(&np);
+      result = true;
       if (callback)
-        return true;
+        break;
     }
   }
 
-  return false;
+  return result;
 }

@@ -1172,9 +1172,9 @@ int main(int argc, char *argv[], char *envp[])
       if (C_Spoolfile)
       {
         // Check if C_Spoolfile corresponds a mailboxes' description.
-        struct Mailbox *desc_m = mutt_mailbox_find_desc(C_Spoolfile);
-        if (desc_m)
-          mutt_buffer_strcpy(folder, desc_m->realpath);
+        struct Mailbox *m_desc = mutt_mailbox_find_desc(C_Spoolfile);
+        if (m_desc)
+          mutt_buffer_strcpy(folder, m_desc->realpath);
         else
           mutt_buffer_strcpy(folder, C_Spoolfile);
       }
@@ -1216,7 +1216,7 @@ int main(int argc, char *argv[], char *envp[])
 
     repeat_error = true;
     struct Mailbox *m = mx_path_resolve(mutt_b2s(folder));
-    Context = mx_mbox_open(m, ((flags & MUTT_CLI_RO) || C_ReadOnly) ? MUTT_READONLY : 0);
+    Context = mx_mbox_open(m, ((flags & MUTT_CLI_RO) || C_ReadOnly) ? MUTT_READONLY : MUTT_OPEN_NO_FLAGS);
     if (!Context)
     {
       mailbox_free(&m);
@@ -1224,7 +1224,7 @@ int main(int argc, char *argv[], char *envp[])
     if (Context || !explicit_folder)
     {
 #ifdef USE_SIDEBAR
-      mutt_sb_set_open_mailbox();
+      mutt_sb_set_open_mailbox(Context ? Context->mailbox : NULL);
 #endif
       mutt_index_menu();
       ctx_free(&Context);

@@ -62,11 +62,17 @@ static int MonitorContextDescriptor = -1;
 
 #define EVENT_BUFLEN MAX(4096, sizeof(struct inotify_event) + NAME_MAX + 1)
 
-#define RESOLVERES_FAIL_NOMAILBOX -3
-#define RESOLVERES_FAIL_NOMAGIC -2
-#define RESOLVERES_FAIL_STAT -1
-#define RESOLVERES_OK_NOTEXISTING 0
-#define RESOLVERES_OK_EXISTING 1
+/**
+ * enum ResolveResult - Results for the Monitor functions
+ */
+enum ResolveResult
+{
+  RESOLVE_RES_FAIL_NOMAILBOX = -3, ///< No Mailbox to work on
+  RESOLVE_RES_FAIL_NOMAGIC = -2,   ///< Can't identify Mailbox type
+  RESOLVE_RES_FAIL_STAT = -1,      ///< Can't stat() the Mailbox file
+  RESOLVE_RES_OK_NOTEXISTING = 0,  ///< File exists, no monitor is attached
+  RESOLVE_RES_OK_EXISTING = 1,     ///< File exists, monitor is already attached
+};
 
 /**
  * struct Monitor - A watch on a file
@@ -306,7 +312,7 @@ static int monitor_handle_ignore(int desc)
  *
  * If m is NULL, the current mailbox (Context) is used.
  */
-static int monitor_resolve(struct MonitorInfo *info, struct Mailbox *m)
+static enum ResolveResult monitor_resolve(struct MonitorInfo *info, struct Mailbox *m)
 {
   char *fmt = NULL;
   struct stat sb;
@@ -323,12 +329,12 @@ static int monitor_resolve(struct MonitorInfo *info, struct Mailbox *m)
   }
   else
   {
-    return RESOLVERES_FAIL_NOMAILBOX;
+    return RESOLVE_RES_FAIL_NOMAILBOX;
   }
 
   if (info->magic == MUTT_UNKNOWN)
   {
-    return RESOLVERES_FAIL_NOMAGIC;
+    return RESOLVE_RES_FAIL_NOMAGIC;
   }
   else if (info->magic == MUTT_MAILDIR)
   {
@@ -350,7 +356,7 @@ static int monitor_resolve(struct MonitorInfo *info, struct Mailbox *m)
     info->path = mutt_b2s(info->path_buf);
   }
   if (stat(info->path, &sb) != 0)
-    return RESOLVERES_FAIL_STAT;
+    return RESOLVE_RES_FAIL_STAT;
 
   struct Monitor *iter = Monitor;
   while (iter && ((iter->st_ino != sb.st_ino) || (iter->st_dev != sb.st_dev)))
@@ -360,7 +366,7 @@ static int monitor_resolve(struct MonitorInfo *info, struct Mailbox *m)
   info->st_ino = sb.st_ino;
   info->monitor = iter;
 
-  return iter ? RESOLVERES_OK_EXISTING : RESOLVERES_OK_NOTEXISTING;
+  return iter ? RESOLVE_RES_OK_EXISTING : RESOLVE_RES_OK_NOTEXISTING;
 }
 
 /**
@@ -463,12 +469,12 @@ int mutt_monitor_add(struct Mailbox *m)
   monitor_info_init(&info);
 
   int rc = 0;
-  int desc = monitor_resolve(&info, m);
-  if (desc != RESOLVERES_OK_NOTEXISTING)
+  enum ResolveResult desc = monitor_resolve(&info, m);
+  if (desc != RESOLVE_RES_OK_NOTEXISTING)
   {
-    if (!m && (desc == RESOLVERES_OK_EXISTING))
+    if (!m && (desc == RESOLVE_RES_OK_EXISTING))
       MonitorContextDescriptor = info.monitor->desc;
-    rc = (desc == RESOLVERES_OK_EXISTING) ? 0 : -1;
+    rc = (desc == RESOLVE_RES_OK_EXISTING) ? 0 : -1;
     goto cleanup;
   }
 
@@ -516,7 +522,7 @@ int mutt_monitor_remove(struct Mailbox *m)
     MonitorContextChanged = 0;
   }
 
-  if (monitor_resolve(&info, m) != RESOLVERES_OK_EXISTING)
+  if (monitor_resolve(&info, m) != RESOLVE_RES_OK_EXISTING)
   {
     rc = 2;
     goto cleanup;
@@ -526,7 +532,7 @@ int mutt_monitor_remove(struct Mailbox *m)
   {
     if (m)
     {
-      if ((monitor_resolve(&info2, NULL) == RESOLVERES_OK_EXISTING) &&
+      if ((monitor_resolve(&info2, NULL) == RESOLVE_RES_OK_EXISTING) &&
           (info.st_ino == info2.st_ino) && (info.st_dev == info2.st_dev))
       {
         rc = 1;

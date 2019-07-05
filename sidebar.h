@@ -46,6 +46,6 @@ void mutt_sb_change_mailbox(int op);
 void mutt_sb_draw(void);
 struct Mailbox *mutt_sb_get_highlight(void);
 void mutt_sb_notify_mailbox(struct Mailbox *m, bool created);
-void mutt_sb_set_open_mailbox(void);
+void mutt_sb_set_open_mailbox(struct Mailbox *m);
 
 #endif /* MUTT_SIDEBAR_H */

@@ -58,12 +58,11 @@ extern char *C_NmRepliedTag;
 
 extern struct MxOps MxNotmuchOps;
 
-void  nm_db_debug_check             (struct Mailbox *m);
-int   nm_description_to_path     (const char *desc, char *buf, size_t buflen);
-int   nm_get_all_tags            (struct Mailbox *m, char **tag_list, int *tag_count);
+void  nm_db_debug_check          (struct Mailbox *m);
+void  nm_db_longrun_done         (struct Mailbox *m);
+void  nm_db_longrun_init         (struct Mailbox *m, bool writable);
 char *nm_email_get_folder        (struct Email *e);
-void  nm_db_longrun_done            (struct Mailbox *m);
-void  nm_db_longrun_init            (struct Mailbox *m, bool writable);
+int   nm_get_all_tags            (struct Mailbox *m, char **tag_list, int *tag_count);
 bool  nm_message_is_still_queried(struct Mailbox *m, struct Email *e);
 void  nm_parse_type_from_query   (struct NmMboxData *mdata, char *buf);
 int   nm_path_probe              (const char *path, const struct stat *st);

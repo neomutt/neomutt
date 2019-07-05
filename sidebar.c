@@ -1070,21 +1070,22 @@ struct Mailbox *mutt_sb_get_highlight(void)
 }
 
 /**
- * mutt_sb_set_open_mailbox - Set the OpnMailbox based on the global Context
+ * mutt_sb_set_open_mailbox - Set the 'open' Mailbox
+ * @param m Mailbox
  *
- * Search through the list of mailboxes.  If a Mailbox has a matching path, set
- * OpnMailbox to it.
+ * Search through the list of mailboxes.
+ * If a Mailbox has a matching path, set OpnMailbox to it.
  */
-void mutt_sb_set_open_mailbox(void)
+void mutt_sb_set_open_mailbox(struct Mailbox *m)
 {
   OpnIndex = -1;
 
-  if (!Context)
+  if (!m)
     return;
 
   for (int entry = 0; entry < EntryCount; entry++)
   {
-    if (mutt_str_strcmp(Entries[entry]->mailbox->realpath, Context->mailbox->realpath) == 0)
+    if (mutt_str_strcmp(Entries[entry]->mailbox->realpath, m->realpath) == 0)
     {
       OpnIndex = entry;
       HilIndex = entry;

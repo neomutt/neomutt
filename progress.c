@@ -212,7 +212,7 @@ void mutt_progress_update(struct Progress *progress, long pos, int percent)
     else
       snprintf(posstr, sizeof(posstr), "%ld", pos);
 
-    mutt_debug(4, "updating progress: %s\n", posstr);
+    mutt_debug(LL_DEBUG4, "updating progress: %s\n", posstr);
 
     progress->pos = pos;
     if (now)

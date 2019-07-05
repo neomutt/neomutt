@@ -940,7 +940,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
           buf[n] = '\0';
           while ((n > 0) && ((buf[n - 1] == '\n') || (buf[n - 1] == '\r')))
             buf[--n] = '\0';
-          mutt_debug(5, "fmtpipe < %s\n", buf);
+          mutt_debug(LL_DEBUG5, "fmtpipe < %s\n", buf);
 
           /* If the result ends with '%', this indicates that the filter
            * generated %-tokens that neomutt can expand.  Eliminate the '%'

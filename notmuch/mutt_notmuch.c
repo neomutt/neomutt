@@ -2002,34 +2002,6 @@ done:
 }
 
 /**
- * nm_description_to_path - Find a path from a folder's description
- * @param desc   Description
- * @param buf    Buffer for path
- * @param buflen Length of buffer
- * @retval  0 Success
- * @retval <0 Failure
- */
-int nm_description_to_path(const char *desc, char *buf, size_t buflen)
-{
-  if (!desc || !buf || (buflen == 0))
-    return -EINVAL;
-
-  struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &AllMailboxes, entries)
-  {
-    if ((np->mailbox->magic == MUTT_NOTMUCH) && np->mailbox->desc &&
-        (strcmp(desc, np->mailbox->desc) == 0))
-    {
-      mutt_str_strfcpy(buf, mutt_b2s(np->mailbox->pathbuf), buflen);
-      buf[buflen - 1] = '\0';
-      return 0;
-    }
-  }
-
-  return -1;
-}
-
-/**
  * nm_record_message - Add a message to the Notmuch database
  * @param m    Mailbox
  * @param path Path of the email

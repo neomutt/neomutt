@@ -2436,7 +2436,6 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
      * part can then point into this file and there won't ever be a need to
      * decrypt again.  This needs a partial rewrite of the MIME engine. */
     struct Body *bb = *cur;
-    struct Body *tmp_b = NULL;
 
     saved_b_type = bb->type;
     saved_b_offset = bb->offset;
@@ -2469,16 +2468,16 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
       return -1;
     }
 
-    tmp_b = decrypt_part(bb, &s, *fp_out, true, &is_signed);
-    if (tmp_b)
-      tmp_b->goodsig = is_signed > 0;
+    struct Body *b_tmp = decrypt_part(bb, &s, *fp_out, true, &is_signed);
+    if (b_tmp)
+      b_tmp->goodsig = is_signed > 0;
     bb->type = saved_b_type;
     bb->length = saved_b_length;
     bb->offset = saved_b_offset;
     mutt_file_fclose(&fp_tmp2);
     rewind(*fp_out);
     mutt_body_free(cur);
-    *cur = tmp_b;
+    *cur = b_tmp;
   }
   return *cur ? 0 : -1;
 }
@@ -4902,11 +4901,11 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
   if (!keys)
     return NULL;
 
-  mutt_debug(5, "looking for %s <%s>\n", a ? a->personal : "", a ? a->mailbox : "");
+  mutt_debug(LL_DEBUG5, "looking for %s <%s>\n", a ? a->personal : "", a ? a->mailbox : "");
 
   for (k = keys; k; k = k->next)
   {
-    mutt_debug(5, "  looking at key: %s '%.15s'\n", crypt_keyid(k), k->uid);
+    mutt_debug(LL_DEBUG5, "  looking at key: %s '%.15s'\n", crypt_keyid(k), k->uid);
 
     if (abilities && !(k->flags & abilities))
     {
@@ -5027,7 +5026,7 @@ static struct CryptKeyInfo *crypt_getkeybystr(const char *p, KeyFlags abilities,
     if (abilities && !(k->flags & abilities))
       continue;
 
-    mutt_debug(5, "matching \"%s\" against key %s, \"%s\": ", p,
+    mutt_debug(LL_DEBUG5, "matching \"%s\" against key %s, \"%s\": ", p,
                crypt_long_keyid(k), k->uid);
 
     if (!*p || (pfcopy && (mutt_str_strcasecmp(pfcopy, crypt_fpr(k)) == 0)) ||
@@ -5035,7 +5034,7 @@ static struct CryptKeyInfo *crypt_getkeybystr(const char *p, KeyFlags abilities,
         (ps && (mutt_str_strcasecmp(ps, crypt_short_keyid(k)) == 0)) ||
         mutt_str_stristr(k->uid, p))
     {
-      mutt_debug(5, "match\n");
+      mutt_debug(LL_DEBUG5, "match\n");
 
       struct CryptKeyInfo *tmp = crypt_copy_key(k);
       *matches_endp = tmp;
@@ -5043,7 +5042,7 @@ static struct CryptKeyInfo *crypt_getkeybystr(const char *p, KeyFlags abilities,
     }
     else
     {
-      mutt_debug(5, "no match\n");
+      mutt_debug(LL_DEBUG5, "no match\n");
     }
   }
 

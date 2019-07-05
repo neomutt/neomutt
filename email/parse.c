@@ -1110,7 +1110,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
         }
 
         if (env->spam && env->spam->data)
-          mutt_debug(5, "spam = %s\n", env->spam->data);
+          mutt_debug(LL_DEBUG5, "spam = %s\n", env->spam->data);
       }
     }
 

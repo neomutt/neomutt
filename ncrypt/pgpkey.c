@@ -1016,13 +1016,13 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
   if (!keys)
     return NULL;
 
-  mutt_debug(5, "looking for %s <%s>\n", a->personal, a->mailbox);
+  mutt_debug(LL_DEBUG5, "looking for %s <%s>\n", a->personal, a->mailbox);
 
   for (k = keys; k; k = kn)
   {
     kn = k->next;
 
-    mutt_debug(5, "  looking at key: %s\n", pgp_keyid(k));
+    mutt_debug(LL_DEBUG5, "  looking at key: %s\n", pgp_keyid(k));
 
     if (abilities && !(k->flags & abilities))
     {
@@ -1155,24 +1155,24 @@ struct PgpKeyInfo *pgp_getkeybystr(const char *cp, KeyFlags abilities, enum PgpR
 
     bool match = false;
 
-    mutt_debug(5, "matching \"%s\" against key %s:\n", p, pgp_long_keyid(k));
+    mutt_debug(LL_DEBUG5, "matching \"%s\" against key %s:\n", p, pgp_long_keyid(k));
 
     if (!*p || (pfcopy && (mutt_str_strcasecmp(pfcopy, k->fingerprint) == 0)) ||
         (pl && (mutt_str_strcasecmp(pl, pgp_long_keyid(k)) == 0)) ||
         (ps && (mutt_str_strcasecmp(ps, pgp_short_keyid(k)) == 0)))
     {
-      mutt_debug(5, "\t\tmatch #1\n");
+      mutt_debug(LL_DEBUG5, "\t\tmatch #1\n");
       match = true;
     }
     else
     {
       for (a = k->address; a; a = a->next)
       {
-        mutt_debug(5, "matching \"%s\" against key %s, \"%s\":\n", p,
+        mutt_debug(LL_DEBUG5, "matching \"%s\" against key %s, \"%s\":\n", p,
                    pgp_long_keyid(k), NONULL(a->addr));
         if (mutt_str_stristr(a->addr, p))
         {
-          mutt_debug(5, "\t\tmatch #2\n");
+          mutt_debug(LL_DEBUG5, "\t\tmatch #2\n");
           match = true;
           break;
         }
