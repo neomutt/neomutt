@@ -98,7 +98,7 @@ bool C_ThoroughSearch; ///< Config: Decode headers and messages before searching
 
 #define MUTT_MAXRANGE -1
 
-typedef uint16_t PatternFlags;     ///< Flags for parse_date_range(), e.g. #MUTT_PDR_MINUS
+typedef uint16_t ParseDateRangeFlags; ///< Flags for parse_date_range(), e.g. #MUTT_PDR_MINUS
 #define MUTT_PDR_NO_FLAGS       0  ///< No flags are set
 #define MUTT_PDR_MINUS    (1 << 0) ///< Pattern contains a range
 #define MUTT_PDR_PLUS     (1 << 1) ///< Extend the range using '+'
@@ -454,7 +454,7 @@ static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
 static const char *parse_date_range(const char *pc, struct tm *min, struct tm *max,
                                     bool have_min, struct tm *base_min, struct Buffer *err)
 {
-  PatternFlags flags = MUTT_PDR_NO_FLAGS;
+  ParseDateRangeFlags flags = MUTT_PDR_NO_FLAGS;
   while (*pc && ((flags & MUTT_PDR_DONE) == 0))
   {
     const char *pt = NULL;
