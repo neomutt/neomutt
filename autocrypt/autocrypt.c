@@ -21,16 +21,74 @@
  */
 
 #include "config.h"
-
+#include <errno.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include "autocrypt_private.h"
 #include "mutt.h"
 #include "autocrypt.h"
+#include "curs_lib.h"
+#include "globals.h"
 
-void mutt_autocrypt_init(void)
+static int autocrypt_dir_init(int can_create)
 {
+  int rv = 0;
+  struct stat sb;
+  struct Buffer *prompt = NULL;
+
+  if (!stat(C_AutocryptDir, &sb))
+    return 0;
+
+  if (!can_create)
+    return -1;
+
+  prompt = mutt_buffer_pool_get();
+  mutt_buffer_printf(prompt, _("%s does not exist. Create it?"), C_AutocryptDir);
+  if (mutt_yesorno(mutt_b2s(prompt), MUTT_YES) == MUTT_YES)
+  {
+    if (mutt_file_mkdir(C_AutocryptDir, S_IRWXU) < 0)
+    {
+      mutt_error(_("Can't create %s: %s."), C_AutocryptDir, strerror(errno));
+      rv = -1;
+    }
+  }
+
+  mutt_buffer_pool_release(&prompt);
+  return rv;
+}
+
+int mutt_autocrypt_init(int can_create)
+{
+  if (AutocryptDB)
+    return 0;
+
+  if (!C_Autocrypt || !C_AutocryptDir)
+    return -1;
+
+  if (autocrypt_dir_init(can_create))
+    goto bail;
+
+  if (mutt_autocrypt_db_init(can_create))
+    goto bail;
+
+  /* mutt_autocrypt_gpgme_init()
+   *   - init gpgme
+   *   - create key if doesn't exist
+   *     - perhaps should query account table and if empty do that?
+   */
   mutt_debug(LL_DEBUG1, "In mutt_autocrypt_init()\n");
+  return 0;
+
+bail:
+  C_Autocrypt = false;
+  mutt_autocrypt_db_close();
+  return -1;
 }
 
 void mutt_autocrypt_cleanup(void)
 {
+  mutt_autocrypt_db_close();
   mutt_debug(LL_DEBUG1, "In mutt_autocrypt_cleanup()\n");
 }

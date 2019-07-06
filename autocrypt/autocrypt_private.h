@@ -20,15 +20,13 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_AUTOCRYPT_AUTOCRYPT_H
-#define MUTT_AUTOCRYPT_AUTOCRYPT_H
+#ifndef MUTT_AUTOCRYPT_AUTOCRYPT_PRIVATE_H
+#define MUTT_AUTOCRYPT_AUTOCRYPT_PRIVATE_H
 
-#include <sqlite3.h>
-#include "where.h"
+int mutt_autocrypt_db_init(int can_create);
+void mutt_autocrypt_db_close(void);
 
-WHERE sqlite3 *AutocryptDB;
+int mutt_autocrypt_schema_init(void);
+int mutt_autocrypt_schema_update(void);
 
-int mutt_autocrypt_init (int);
-void mutt_autocrypt_cleanup (void);
-
-#endif /* MUTT_AUTOCRYPT_AUTOCRYPT_H */
+#endif /* MUTT_AUTOCRYPT_AUTOCRYPT_PRIVATE_H */

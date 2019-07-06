@@ -737,7 +737,8 @@ int main(int argc, char *argv[], char *envp[])
   /* Initialize crypto backends.  */
   crypt_init();
 #ifdef USE_AUTOCRYPT
-  mutt_autocrypt_init();
+  if (C_Autocrypt)
+    mutt_autocrypt_init(!(sendflags & SEND_BATCH));
 #endif
 
   if (new_magic)
