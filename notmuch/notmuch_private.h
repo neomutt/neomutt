@@ -41,7 +41,7 @@
    (LIBNOTMUCH_MAJOR_VERSION == (major) &&                                        \
     LIBNOTMUCH_MINOR_VERSION == (minor) && LIBNOTMUCH_MICRO_VERSION >= (micro)))
 
-const int NmUriProtocolLen;
+extern const int NmUriProtocolLen;
 
 struct Mailbox;
 
