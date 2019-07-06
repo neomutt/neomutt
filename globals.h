@@ -96,6 +96,9 @@ WHERE char *C_AliasFile;                     ///< Config: Save new aliases to th
 WHERE char *C_Attribution;                   ///< Config: Message to start a reply, "On DATE, PERSON wrote:"
 WHERE char *C_AttributionLocale;             ///< Config: Locale for dates in the attribution message
 WHERE char *C_AttachFormat;                  ///< Config: printf-like format string for the attachment menu
+#ifdef USE_AUTOCRYPT
+WHERE char *C_AutocryptDir;
+#endif
 WHERE char *C_ConfigCharset;                 ///< Config: Character set that the config files are in
 WHERE char *C_CryptProtectedHeadersSubject;  ///< Config: Use this as the subject for encrypted emails
 WHERE char *C_DateFormat;                    ///< Config: strftime format string for the `%d` expando
@@ -196,6 +199,9 @@ WHERE bool C_ArrowCursor;                    ///< Config: Use an arrow '->' inst
 WHERE bool C_AsciiChars;                     ///< Config: Use plain ASCII characters, when drawing email threads
 WHERE bool C_Askbcc;                         ///< Config: Ask the user for the blind-carbon-copy recipients
 WHERE bool C_Askcc;                          ///< Config: Ask the user for the carbon-copy recipients
+#ifdef USE_AUTOCRYPT
+WHERE bool C_Autocrypt;
+#endif
 WHERE bool C_Autoedit;                       ///< Config: Skip the initial compose menu and edit the email
 WHERE bool C_AutoTag;                        ///< Config: Automatically apply actions to all tagged messages
 WHERE bool C_Beep;                           ///< Config: Make a noise when an error occurs
