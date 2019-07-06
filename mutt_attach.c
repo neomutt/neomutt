@@ -810,9 +810,9 @@ int mutt_save_attachment(FILE *fp, struct Body *m, const char *path,
       CopyHeaderFlags chflags = CH_NO_FLAGS;
       int rc = -1;
 
-      struct Email *en = m->email;
-      en->msgno = e->msgno; /* required for MH/maildir */
-      en->read = true;
+      struct Email *e_new = m->email;
+      e_new->msgno = e->msgno; /* required for MH/maildir */
+      e_new->read = true;
 
       if (fseeko(fp, m->offset, SEEK_SET) < 0)
         return -1;
@@ -825,7 +825,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, const char *path,
         mailbox_free(&m_att);
         return -1;
       }
-      msg = mx_msg_open_new(ctx->mailbox, en,
+      msg = mx_msg_open_new(ctx->mailbox, e_new,
                             is_from(buf, NULL, 0, NULL) ? MUTT_MSG_NO_FLAGS : MUTT_ADD_FROM);
       if (!msg)
       {
@@ -835,7 +835,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, const char *path,
       if ((ctx->mailbox->magic == MUTT_MBOX) || (ctx->mailbox->magic == MUTT_MMDF))
         chflags = CH_FROM | CH_UPDATE_LEN;
       chflags |= ((ctx->mailbox->magic == MUTT_MAILDIR) ? CH_NOSTATUS : CH_UPDATE);
-      if ((mutt_copy_message_fp(msg->fp, fp, en, MUTT_CM_NO_FLAGS, chflags) == 0) &&
+      if ((mutt_copy_message_fp(msg->fp, fp, e_new, MUTT_CM_NO_FLAGS, chflags) == 0) &&
           (mx_msg_commit(ctx->mailbox, msg) == 0))
       {
         rc = 0;
@@ -927,7 +927,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, const char *path,
   struct State s = { 0 };
   unsigned int saved_encoding = 0;
   struct Body *saved_parts = NULL;
-  struct Email *saved_hdr = NULL;
+  struct Email *e_saved = NULL;
   int rc = 0;
 
   s.flags = displaying;
@@ -972,7 +972,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, const char *path,
     m->length = st.st_size;
     m->offset = 0;
     saved_parts = m->parts;
-    saved_hdr = m->email;
+    e_saved = m->email;
     mutt_parse_part(s.fp_in, m);
 
     if (m->noconv || is_multipart(m))
@@ -999,7 +999,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, const char *path,
     {
       mutt_email_free(&m->email);
       m->parts = saved_parts;
-      m->email = saved_hdr;
+      m->email = e_saved;
     }
     mutt_file_fclose(&s.fp_in);
   }

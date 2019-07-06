@@ -358,8 +358,8 @@ static void imap_msn_index_to_uid_seqset(struct Buffer *b, struct ImapMboxData *
     bool match = false;
     if (msn <= mdata->max_msn)
     {
-      struct Email *cur_header = mdata->msn_index[msn - 1];
-      cur_uid = cur_header ? imap_edata_get(cur_header)->uid : 0;
+      struct Email *e_cur = mdata->msn_index[msn - 1];
+      cur_uid = e_cur ? imap_edata_get(e_cur)->uid : 0;
       if (!state || (cur_uid && ((cur_uid - 1) == last_uid)))
         match = true;
       last_uid = cur_uid;
@@ -455,7 +455,7 @@ void imap_hcache_close(struct ImapMboxData *mdata)
  * imap_hcache_get - Get a header cache entry by its UID
  * @param mdata Imap Mailbox data
  * @param uid   UID to find
- * @retval ptr Email Header
+ * @retval ptr Email
  * @retval NULL Failure
  */
 struct Email *imap_hcache_get(struct ImapMboxData *mdata, unsigned int uid)

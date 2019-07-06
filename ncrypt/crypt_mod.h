@@ -116,10 +116,10 @@ struct CryptModuleSpecs
   int          (*verify_one)(struct Body *sigbdy, struct State *s, const char *tempf);
   /**
    * send_menu - Ask the user whether to sign and/or encrypt the email
-   * @param msg Email
+   * @param e Email
    * @retval num Flags, e.g. #APPLICATION_PGP | #SEC_ENCRYPT
    */
-  int          (*send_menu)(struct Email *msg);
+  int          (*send_menu)(struct Email *e);
   /**
    * set_sender - Set the sender of the email
    * @param sender Email address

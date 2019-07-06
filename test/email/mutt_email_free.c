@@ -37,8 +37,8 @@ void test_mutt_email_free(void)
   }
 
   {
-    struct Email *email = NULL;
-    mutt_email_free(&email);
-    TEST_CHECK_(1, "mutt_email_free(&email)");
+    struct Email *e = NULL;
+    mutt_email_free(&e);
+    TEST_CHECK_(1, "mutt_email_free(&e)");
   }
 }

@@ -863,14 +863,14 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
  * attach_include_reply - This is _very_ similar to send.c's include_reply()
  * @param fp     File handle to attachment
  * @param fp_tmp File handle to temporary file
- * @param cur   Email
+ * @param e   Email
  */
-static void attach_include_reply(FILE *fp, FILE *fp_tmp, struct Email *cur)
+static void attach_include_reply(FILE *fp, FILE *fp_tmp, struct Email *e)
 {
   CopyMessageFlags cmflags = MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV;
   CopyHeaderFlags chflags = CH_DECODE;
 
-  mutt_make_attribution(Context->mailbox, cur, fp_tmp);
+  mutt_make_attribution(Context->mailbox, e, fp_tmp);
 
   if (!C_Header)
     cmflags |= MUTT_CM_NOHEADER;
@@ -880,8 +880,8 @@ static void attach_include_reply(FILE *fp, FILE *fp_tmp, struct Email *cur)
     cmflags |= MUTT_CM_WEED;
   }
 
-  mutt_copy_message_fp(fp_tmp, fp, cur, cmflags, chflags);
-  mutt_make_post_indent(Context->mailbox, cur, fp_tmp);
+  mutt_copy_message_fp(fp_tmp, fp, e, cmflags, chflags);
+  mutt_make_post_indent(Context->mailbox, e, fp_tmp);
 }
 
 /**
@@ -889,11 +889,11 @@ static void attach_include_reply(FILE *fp, FILE *fp_tmp, struct Email *cur)
  * @param fp    File handle to reply
  * @param e     Email
  * @param actx  Attachment Context
- * @param cur   Current message
+ * @param e_cur   Current message
  * @param flags Send mode, see #SendFlags
  */
 void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
-                       struct Body *cur, SendFlags flags)
+                       struct Body *e_cur, SendFlags flags)
 {
   bool mime_reply_any = false;
 
@@ -916,10 +916,10 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
     OptNewsSend = false;
 #endif
 
-  if (!check_all_msg(actx, cur, false))
+  if (!check_all_msg(actx, e_cur, false))
   {
     nattach = count_tagged(actx);
-    parent = find_parent(actx, cur, nattach);
+    parent = find_parent(actx, e_cur, nattach);
     if (parent)
     {
       e_parent = parent->content->email;
@@ -932,7 +932,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
     }
   }
 
-  if ((nattach > 1) && !check_can_decode(actx, cur))
+  if ((nattach > 1) && !check_can_decode(actx, e_cur))
   {
     const enum QuadOption ans = query_quadoption(
         C_MimeForwardRest, _("Can't decode all tagged attachments.  "
@@ -949,7 +949,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
   e_tmp->env = mutt_env_new();
 
   if (attach_reply_envelope_defaults(
-          e_tmp->env, actx, e_parent ? e_parent : (cur ? cur->email : NULL), flags) == -1)
+          e_tmp->env, actx, e_parent ? e_parent : (e_cur ? e_cur->email : NULL), flags) == -1)
   {
     mutt_email_free(&e_tmp);
     return;
@@ -966,8 +966,8 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
 
   if (!e_parent)
   {
-    if (cur)
-      attach_include_reply(fp, fp_tmp, cur->email);
+    if (e_cur)
+      attach_include_reply(fp, fp_tmp, e_cur->email);
     else
     {
       for (short i = 0; i < actx->idxlen; i++)
@@ -1001,16 +1001,16 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
     if (C_Header)
       include_header(true, fp_parent, e_parent, fp_tmp, prefix);
 
-    if (cur)
+    if (e_cur)
     {
-      if (mutt_can_decode(cur))
+      if (mutt_can_decode(e_cur))
       {
         st.fp_in = fp;
-        mutt_body_handler(cur, &st);
+        mutt_body_handler(e_cur, &st);
         state_putc('\n', &st);
       }
       else
-        mutt_body_copy(fp, &e_tmp->content, cur);
+        mutt_body_copy(fp, &e_tmp->content, e_cur);
     }
     else
     {
@@ -1027,7 +1027,8 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
 
     mutt_make_post_indent(Context->mailbox, e_parent, fp_tmp);
 
-    if (mime_reply_any && !cur && !copy_problematic_attachments(&e_tmp->content, actx, false))
+    if (mime_reply_any && !e_cur &&
+        !copy_problematic_attachments(&e_tmp->content, actx, false))
     {
       mutt_email_free(&e_tmp);
       mutt_file_fclose(&fp_tmp);
@@ -1038,7 +1039,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
   mutt_file_fclose(&fp_tmp);
 
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-  el_add_email(&el, e_parent ? e_parent : (cur ? cur->email : NULL));
+  el_add_email(&el, e_parent ? e_parent : (e_cur ? e_cur->email : NULL));
   if (ci_send_message(flags, e_tmp, tmpbody, NULL, &el) == 0)
   {
     mutt_set_flag(Context->mailbox, e, MUTT_REPLIED, true);

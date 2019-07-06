@@ -558,7 +558,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
     return -1;
 
   bool (*cmp_headers)(const struct Email *, const struct Email *) = NULL;
-  struct Email **old_hdrs = NULL;
+  struct Email **e_old = NULL;
   int old_msg_count;
   bool msg_mod = false;
   int rc = -1;
@@ -575,7 +575,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
     C_Sort = old_sort;
   }
 
-  old_hdrs = NULL;
+  e_old = NULL;
   old_msg_count = 0;
 
   /* simulate a close */
@@ -594,7 +594,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
   {
     /* save the old headers */
     old_msg_count = m->msg_count;
-    old_hdrs = m->emails;
+    e_old = m->emails;
     m->emails = NULL;
   }
 
@@ -635,8 +635,8 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
   {
     /* free the old headers */
     for (int i = 0; i < old_msg_count; i++)
-      mutt_email_free(&(old_hdrs[i]));
-    FREE(&old_hdrs);
+      mutt_email_free(&(e_old[i]));
+    FREE(&e_old);
 
     m->quiet = false;
     return -1;
@@ -659,9 +659,9 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
       int j;
       for (j = i; j < old_msg_count; j++)
       {
-        if (!old_hdrs[j])
+        if (!e_old[j])
           continue;
-        if (cmp_headers(m->emails[i], old_hdrs[j]))
+        if (cmp_headers(m->emails[i], e_old[j]))
         {
           found = true;
           break;
@@ -671,9 +671,9 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
       {
         for (j = 0; (j < i) && (j < old_msg_count); j++)
         {
-          if (!old_hdrs[j])
+          if (!e_old[j])
             continue;
-          if (cmp_headers(m->emails[i], old_hdrs[j]))
+          if (cmp_headers(m->emails[i], e_old[j]))
           {
             found = true;
             break;
@@ -687,35 +687,35 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
         if (index_hint && (*index_hint == j))
           *index_hint = i;
 
-        if (old_hdrs[j]->changed)
+        if (e_old[j]->changed)
         {
           /* Only update the flags if the old header was changed;
            * otherwise, the header may have been modified externally,
            * and we don't want to lose _those_ changes */
-          mutt_set_flag(m, m->emails[i], MUTT_FLAG, old_hdrs[j]->flagged);
-          mutt_set_flag(m, m->emails[i], MUTT_REPLIED, old_hdrs[j]->replied);
-          mutt_set_flag(m, m->emails[i], MUTT_OLD, old_hdrs[j]->old);
-          mutt_set_flag(m, m->emails[i], MUTT_READ, old_hdrs[j]->read);
+          mutt_set_flag(m, m->emails[i], MUTT_FLAG, e_old[j]->flagged);
+          mutt_set_flag(m, m->emails[i], MUTT_REPLIED, e_old[j]->replied);
+          mutt_set_flag(m, m->emails[i], MUTT_OLD, e_old[j]->old);
+          mutt_set_flag(m, m->emails[i], MUTT_READ, e_old[j]->read);
         }
-        mutt_set_flag(m, m->emails[i], MUTT_DELETE, old_hdrs[j]->deleted);
-        mutt_set_flag(m, m->emails[i], MUTT_PURGE, old_hdrs[j]->purge);
-        mutt_set_flag(m, m->emails[i], MUTT_TAG, old_hdrs[j]->tagged);
+        mutt_set_flag(m, m->emails[i], MUTT_DELETE, e_old[j]->deleted);
+        mutt_set_flag(m, m->emails[i], MUTT_PURGE, e_old[j]->purge);
+        mutt_set_flag(m, m->emails[i], MUTT_TAG, e_old[j]->tagged);
 
         /* we don't need this header any more */
-        mutt_email_free(&(old_hdrs[j]));
+        mutt_email_free(&(e_old[j]));
       }
     }
 
     /* free the remaining old headers */
     for (int j = 0; j < old_msg_count; j++)
     {
-      if (old_hdrs[j])
+      if (e_old[j])
       {
-        mutt_email_free(&(old_hdrs[j]));
+        mutt_email_free(&(e_old[j]));
         msg_mod = true;
       }
     }
-    FREE(&old_hdrs);
+    FREE(&e_old);
   }
 
   m->quiet = false;
@@ -872,7 +872,7 @@ void mbox_reset_atime(struct Mailbox *m, struct stat *st)
 }
 
 /**
- * mbox_ac_find - Find an Account that matches a Mailbox path
+ * mbox_ac_find - Find an Account that matches a Mailbox path - Implements MxOps::ac_find()
  */
 struct Account *mbox_ac_find(struct Account *a, const char *path)
 {
@@ -890,7 +890,7 @@ struct Account *mbox_ac_find(struct Account *a, const char *path)
 }
 
 /**
- * mbox_ac_add - Add a Mailbox to an Account
+ * mbox_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
  */
 int mbox_ac_add(struct Account *a, struct Mailbox *m)
 {
@@ -900,7 +900,7 @@ int mbox_ac_add(struct Account *a, struct Mailbox *m)
 }
 
 /**
- * mbox_mbox_open - Implements MxOps::mbox_open()
+ * mbox_mbox_open - Open a Mailbox - Implements MxOps::mbox_open()
  */
 static int mbox_mbox_open(struct Mailbox *m)
 {
@@ -939,7 +939,7 @@ static int mbox_mbox_open(struct Mailbox *m)
 }
 
 /**
- * mbox_mbox_open_append - Implements MxOps::mbox_open_append()
+ * mbox_mbox_open_append - Open a Mailbox for appending - Implements MxOps::mbox_open_append()
  */
 static int mbox_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
@@ -973,7 +973,7 @@ static int mbox_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 }
 
 /**
- * mbox_mbox_check - Implements MxOps::mbox_check()
+ * mbox_mbox_check - Check for new mail - Implements MxOps::mbox_check()
  * @param[in]  m          Mailbox
  * @param[out] index_hint Keep track of current index selection
  * @retval #MUTT_REOPENED  Mailbox has been reopened
@@ -1106,7 +1106,7 @@ static int mbox_mbox_check(struct Mailbox *m, int *index_hint)
 }
 
 /**
- * mbox_mbox_sync - Implements MxOps::mbox_sync()
+ * mbox_mbox_sync - Save changes to the Mailbox - Implements MxOps::mbox_sync()
  */
 static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
 {
@@ -1260,8 +1260,8 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
        * 'offset' in the real mailbox */
       new_offset[i - first].hdr = ftello(fp) + offset;
 
-      if (mutt_copy_message_ctx(fp, m, m->emails[i], MUTT_CM_UPDATE,
-                                CH_FROM | CH_UPDATE | CH_UPDATE_LEN) != 0)
+      if (mutt_copy_message(fp, m, m->emails[i], MUTT_CM_UPDATE,
+                            CH_FROM | CH_UPDATE | CH_UPDATE_LEN) != 0)
       {
         mutt_perror(tempfile);
         unlink(tempfile);
@@ -1422,9 +1422,9 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
 
   if (C_CheckMboxSize)
   {
-    struct Mailbox *tmp = mutt_mailbox_find(mutt_b2s(m->pathbuf));
-    if (tmp && !tmp->has_new)
-      mutt_mailbox_update(tmp);
+    struct Mailbox *m_tmp = mutt_mailbox_find(mutt_b2s(m->pathbuf));
+    if (m_tmp && !m_tmp->has_new)
+      mutt_mailbox_update(m_tmp);
   }
 
   return 0; /* signal success */
@@ -1472,7 +1472,7 @@ bail: /* Come here in case of disaster */
 }
 
 /**
- * mbox_mbox_close - Implements MxOps::mbox_close()
+ * mbox_mbox_close - Close a Mailbox - Implements MxOps::mbox_close()
  */
 static int mbox_mbox_close(struct Mailbox *m)
 {
@@ -1515,7 +1515,7 @@ static int mbox_mbox_close(struct Mailbox *m)
 }
 
 /**
- * mbox_msg_open - Implements MxOps::msg_open()
+ * mbox_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open()
  */
 static int mbox_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
@@ -1532,7 +1532,7 @@ static int mbox_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 }
 
 /**
- * mbox_msg_open_new - Implements MxOps::msg_open_new()
+ * mbox_msg_open_new - Open a new message in a Mailbox - Implements MxOps::msg_open_new()
  */
 static int mbox_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e)
 {
@@ -1548,7 +1548,7 @@ static int mbox_msg_open_new(struct Mailbox *m, struct Message *msg, struct Emai
 }
 
 /**
- * mbox_msg_commit - Implements MxOps::msg_commit()
+ * mbox_msg_commit - Save changes to an email - Implements MxOps::msg_commit()
  */
 static int mbox_msg_commit(struct Mailbox *m, struct Message *msg)
 {
@@ -1568,7 +1568,7 @@ static int mbox_msg_commit(struct Mailbox *m, struct Message *msg)
 }
 
 /**
- * mbox_msg_close - Implements MxOps::msg_close()
+ * mbox_msg_close - Close an email - Implements MxOps::msg_close()
  */
 static int mbox_msg_close(struct Mailbox *m, struct Message *msg)
 {
@@ -1591,7 +1591,7 @@ static int mbox_msg_padding_size(struct Mailbox *m)
 }
 
 /**
- * mbox_path_probe - Is this an mbox mailbox? - Implements MxOps::path_probe()
+ * mbox_path_probe - Is this an mbox Mailbox? - Implements MxOps::path_probe()
  */
 enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
 {
@@ -1654,7 +1654,7 @@ enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
 }
 
 /**
- * mbox_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon()
+ * mbox_path_canon - Canonicalise a Mailbox path - Implements MxOps::path_canon()
  */
 int mbox_path_canon(char *buf, size_t buflen)
 {
@@ -1666,7 +1666,7 @@ int mbox_path_canon(char *buf, size_t buflen)
 }
 
 /**
- * mbox_path_pretty - Implements MxOps::path_pretty()
+ * mbox_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty()
  */
 int mbox_path_pretty(char *buf, size_t buflen, const char *folder)
 {
@@ -1683,7 +1683,7 @@ int mbox_path_pretty(char *buf, size_t buflen, const char *folder)
 }
 
 /**
- * mbox_path_parent - Implements MxOps::path_parent()
+ * mbox_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent()
  */
 int mbox_path_parent(char *buf, size_t buflen)
 {
@@ -1703,7 +1703,7 @@ int mbox_path_parent(char *buf, size_t buflen)
 }
 
 /**
- * mmdf_msg_commit - Implements MxOps::msg_commit()
+ * mmdf_msg_commit - Save changes to an email - Implements MxOps::msg_commit()
  */
 static int mmdf_msg_commit(struct Mailbox *m, struct Message *msg)
 {
@@ -1730,7 +1730,7 @@ static int mmdf_msg_padding_size(struct Mailbox *m)
 }
 
 /**
- * mbox_mbox_check_stats - Implements MxOps::mbox_check_stats()
+ * mbox_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats()
  */
 static int mbox_mbox_check_stats(struct Mailbox *m, int flags)
 {
@@ -1786,7 +1786,7 @@ static int mbox_mbox_check_stats(struct Mailbox *m, int flags)
 
 // clang-format off
 /**
- * MxMboxOps - Mbox mailbox - Implements ::MxOps
+ * MxMboxOps - Mbox Mailbox - Implements ::MxOps
  */
 struct MxOps MxMboxOps = {
   .magic            = MUTT_MBOX,
@@ -1814,7 +1814,7 @@ struct MxOps MxMboxOps = {
 };
 
 /**
- * MxMmdfOps - MMDF mailbox - Implements ::MxOps
+ * MxMmdfOps - MMDF Mailbox - Implements ::MxOps
  */
 struct MxOps MxMmdfOps = {
   .magic            = MUTT_MMDF,

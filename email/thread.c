@@ -117,7 +117,7 @@ void thread_hash_destructor(int type, void *obj, intptr_t data)
  * find_virtual - Find an email with a Virtual message number
  * @param cur     Thread to search
  * @param reverse If true, reverse the direction of the search
- * @retval ptr Matching Header
+ * @retval ptr Matching Email
  */
 struct Email *find_virtual(struct MuttThread *cur, int reverse)
 {

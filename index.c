@@ -402,7 +402,7 @@ static int mx_toggle_write(struct Mailbox *m)
  */
 static void resort_index(struct Menu *menu)
 {
-  struct Email *current = CUR_EMAIL;
+  struct Email *e = CUR_EMAIL;
 
   menu->current = -1;
   mutt_sort_headers(Context, false);
@@ -410,7 +410,7 @@ static void resort_index(struct Menu *menu)
 
   for (int i = 0; i < Context->mailbox->vcount; i++)
   {
-    if (Context->mailbox->emails[Context->mailbox->v2r[i]] == current)
+    if (Context->mailbox->emails[Context->mailbox->v2r[i]] == e)
     {
       menu->current = i;
       break;
@@ -418,7 +418,7 @@ static void resort_index(struct Menu *menu)
   }
 
   if (((C_Sort & SORT_MASK) == SORT_THREADS) && (menu->current < 0))
-    menu->current = mutt_parent_message(Context, current, false);
+    menu->current = mutt_parent_message(Context, e, false);
 
   if (menu->current < 0)
     menu->current = ci_first_message();
@@ -1467,7 +1467,7 @@ int mutt_index_menu(void)
           /* at least one message has been loaded */
           if (Context->mailbox->msg_count > oldmsgcount)
           {
-            struct Email *oldcur = CUR_EMAIL;
+            struct Email *e_oldcur = CUR_EMAIL;
             struct Email *e = NULL;
             bool quiet = Context->mailbox->quiet;
 
@@ -1480,7 +1480,7 @@ int mutt_index_menu(void)
              * update the index */
             if (menu->menu == MENU_PAGER)
             {
-              menu->current = oldcur->vnum;
+              menu->current = e_oldcur->vnum;
               menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
               op = OP_DISPLAY_MESSAGE;
               continue;
@@ -1983,7 +1983,7 @@ int mutt_index_menu(void)
             main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint);
         }
         oldcount = Context->mailbox->msg_count;
-        struct Email *oldcur = CUR_EMAIL;
+        struct Email *e_oldcur = CUR_EMAIL;
         if (nm_read_entire_thread(Context->mailbox, CUR_EMAIL) < 0)
         {
           mutt_message(_("Failed to read thread, aborting"));
@@ -1992,10 +1992,10 @@ int mutt_index_menu(void)
         if (oldcount < Context->mailbox->msg_count)
         {
           /* nm_read_entire_thread() triggers mutt_sort_headers() if necessary */
-          menu->current = oldcur->vnum;
+          menu->current = e_oldcur->vnum;
           menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
 
-          if (oldcur->collapsed || Context->collapsed)
+          if (e_oldcur->collapsed || Context->collapsed)
           {
             menu->current = mutt_uncollapse_thread(Context, CUR_EMAIL);
             mutt_set_vnum(Context);
@@ -2400,11 +2400,11 @@ int mutt_index_menu(void)
                  !STAILQ_EMPTY(&CUR_EMAIL->env->references))
         {
           {
-            struct Email *oldcur = CUR_EMAIL;
+            struct Email *e_oldcur = CUR_EMAIL;
 
             mutt_break_thread(CUR_EMAIL);
             mutt_sort_headers(Context, true);
-            menu->current = oldcur->vnum;
+            menu->current = e_oldcur->vnum;
           }
 
           Context->mailbox->changed = true;
@@ -2441,14 +2441,14 @@ int mutt_index_menu(void)
           mutt_error(_("First, please tag a message to be linked here"));
         else
         {
-          struct Email *oldcur = CUR_EMAIL;
+          struct Email *e_oldcur = CUR_EMAIL;
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           el_add_tagged(&el, Context, Context->last_tag, tag);
 
           if (mutt_link_threads(CUR_EMAIL, &el, Context->mailbox))
           {
             mutt_sort_headers(Context, true);
-            menu->current = oldcur->vnum;
+            menu->current = e_oldcur->vnum;
 
             Context->mailbox->changed = true;
             mutt_message(_("Threads linked"));

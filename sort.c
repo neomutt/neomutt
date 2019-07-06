@@ -430,14 +430,14 @@ void mutt_sort_headers(struct Context *ctx, bool init)
   ctx->mailbox->vcount = 0;
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
-    struct Email *cur = ctx->mailbox->emails[i];
-    if ((cur->vnum != -1) || (cur->collapsed && (!ctx->pattern || cur->limited)))
+    struct Email *e_cur = ctx->mailbox->emails[i];
+    if ((e_cur->vnum != -1) || (e_cur->collapsed && (!ctx->pattern || e_cur->limited)))
     {
-      cur->vnum = ctx->mailbox->vcount;
+      e_cur->vnum = ctx->mailbox->vcount;
       ctx->mailbox->v2r[ctx->mailbox->vcount] = i;
       ctx->mailbox->vcount++;
     }
-    cur->msgno = i;
+    e_cur->msgno = i;
   }
 
   /* re-collapse threads marked as collapsed */

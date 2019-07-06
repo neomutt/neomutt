@@ -278,7 +278,7 @@ cleanup:
 }
 
 /**
- * maildir_mbox_open - Implements MxOps::mbox_open()
+ * maildir_mbox_open - Open a Mailbox - Implements MxOps::mbox_open()
  */
 static int maildir_mbox_open(struct Mailbox *m)
 {
@@ -291,7 +291,7 @@ static int maildir_mbox_open(struct Mailbox *m)
 }
 
 /**
- * maildir_mbox_open_append - Implements MxOps::mbox_open_append()
+ * maildir_mbox_open_append - Open a Mailbox for appending - Implements MxOps::mbox_open_append()
  */
 static int maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
@@ -344,7 +344,7 @@ static int maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 }
 
 /**
- * maildir_mbox_check - Implements MxOps::mbox_check()
+ * maildir_mbox_check - Check for new mail - Implements MxOps::mbox_check()
  *
  * This function handles arrival of new mail and reopening of maildir folders.
  * The basic idea here is we check to see if either the new or cur
@@ -527,7 +527,7 @@ int maildir_mbox_check(struct Mailbox *m, int *index_hint)
 }
 
 /**
- * maildir_mbox_check_stats - Implements MxOps::mbox_check_stats
+ * maildir_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats
  */
 static int maildir_mbox_check_stats(struct Mailbox *m, int flags)
 {
@@ -552,7 +552,7 @@ static int maildir_mbox_check_stats(struct Mailbox *m, int flags)
 }
 
 /**
- * maildir_msg_open - Implements MxOps::msg_open()
+ * maildir_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open()
  */
 static int maildir_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
@@ -562,7 +562,7 @@ static int maildir_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 }
 
 /**
- * maildir_msg_open_new - Implements MxOps::msg_open_new()
+ * maildir_msg_open_new - Open a new message in a Mailbox - Implements MxOps::msg_open_new()
  *
  * Open a new (temporary) message in a maildir folder.
  *
@@ -637,7 +637,7 @@ int maildir_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e
 }
 
 /**
- * maildir_msg_commit - Implements MxOps::msg_commit()
+ * maildir_msg_commit - Save changes to an email - Implements MxOps::msg_commit()
  */
 static int maildir_msg_commit(struct Mailbox *m, struct Message *msg)
 {
@@ -664,7 +664,7 @@ static int maildir_msg_save_hcache(struct Mailbox *m, struct Email *e)
 }
 
 /**
- * maildir_path_probe - Is this a Maildir mailbox? - Implements MxOps::path_probe()
+ * maildir_path_probe - Is this a Maildir Mailbox? - Implements MxOps::path_probe()
  */
 enum MailboxType maildir_path_probe(const char *path, const struct stat *st)
 {
@@ -686,7 +686,7 @@ enum MailboxType maildir_path_probe(const char *path, const struct stat *st)
 
 // clang-format off
 /**
- * MxMaildirOps - Maildir mailbox - Implements ::MxOps
+ * MxMaildirOps - Maildir Mailbox - Implements ::MxOps
  */
 struct MxOps MxMaildirOps = {
   .magic            = MUTT_MAILDIR,

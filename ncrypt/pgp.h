@@ -61,6 +61,6 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
 struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign);
 struct Body *pgp_class_sign_message(struct Body *a);
 
-int pgp_class_send_menu(struct Email *msg);
+int pgp_class_send_menu(struct Email *e);
 
 #endif /* MUTT_NCRYPT_PGP_H */

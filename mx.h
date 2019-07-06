@@ -107,7 +107,7 @@ struct MxOps
   const char *name;       ///< Mailbox name, e.g. "imap"
 
   /**
-   * ac_find - Find an Account for a Mailbox path
+   * ac_find - Find an Account that matches a Mailbox path
    * @param a    Account to search
    * @param path Path to search for
    * @retval  0 Success
@@ -123,7 +123,7 @@ struct MxOps
    */
   int             (*ac_add)   (struct Account *a, struct Mailbox *m);
   /**
-   * mbox_open - Open a mailbox
+   * mbox_open - Open a Mailbox
    * @param m Mailbox to open
    * @retval  0 Success
    * @retval -1 Error
@@ -170,7 +170,7 @@ struct MxOps
    */
   int (*mbox_close)      (struct Mailbox *m);
   /**
-   * msg_open - Open an email message in Mailbox
+   * msg_open - Open an email message in a Mailbox
    * @param m     Mailbox
    * @param msg   Message to open
    * @param msgno Index of message to open

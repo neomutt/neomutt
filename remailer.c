@@ -769,15 +769,15 @@ void mix_make_chain(struct ListHead *chainhead)
 
 /**
  * mix_check_message - Safety-check the message before passing it to mixmaster
- * @param msg Email
+ * @param e Email
  * @retval  0 Success
  * @retval -1 Error
  */
-int mix_check_message(struct Email *msg)
+int mix_check_message(struct Email *e)
 {
   bool need_hostname = false;
 
-  if (!TAILQ_EMPTY(&msg->env->cc) || !TAILQ_EMPTY(&msg->env->bcc))
+  if (!TAILQ_EMPTY(&e->env->cc) || !TAILQ_EMPTY(&e->env->bcc))
   {
     mutt_error(_("Mixmaster doesn't accept Cc or Bcc headers"));
     return -1;
@@ -790,7 +790,7 @@ int mix_check_message(struct Email *msg)
    */
 
   struct Address *a = NULL;
-  TAILQ_FOREACH(a, &msg->env->to, entries)
+  TAILQ_FOREACH(a, &e->env->to, entries)
   {
     if (!a->group && !strchr(a->mailbox, '@'))
     {
@@ -810,9 +810,9 @@ int mix_check_message(struct Email *msg)
     }
 
     /* Cc and Bcc are empty at this point. */
-    mutt_addrlist_qualify(&msg->env->to, fqdn);
-    mutt_addrlist_qualify(&msg->env->reply_to, fqdn);
-    mutt_addrlist_qualify(&msg->env->mail_followup_to, fqdn);
+    mutt_addrlist_qualify(&e->env->to, fqdn);
+    mutt_addrlist_qualify(&e->env->reply_to, fqdn);
+    mutt_addrlist_qualify(&e->env->mail_followup_to, fqdn);
   }
 
   return 0;

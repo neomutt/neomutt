@@ -414,7 +414,7 @@ int main(int argc, char *argv[], char *envp[])
 #ifdef USE_NNTP
   char *cli_nntp = NULL;
 #endif
-  struct Email *msg = NULL;
+  struct Email *e = NULL;
   struct ListHead attach = STAILQ_HEAD_INITIALIZER(attach);
   struct ListHead commands = STAILQ_HEAD_INITIALIZER(commands);
   struct ListHead queries = STAILQ_HEAD_INITIALIZER(queries);
@@ -646,18 +646,18 @@ int main(int argc, char *argv[], char *envp[])
 
   if (!STAILQ_EMPTY(&cc_list) || !STAILQ_EMPTY(&bcc_list))
   {
-    msg = mutt_email_new();
-    msg->env = mutt_env_new();
+    e = mutt_email_new();
+    e->env = mutt_env_new();
 
     struct ListNode *np = NULL;
     STAILQ_FOREACH(np, &bcc_list, entries)
     {
-      mutt_addrlist_parse(&msg->env->bcc, np->data);
+      mutt_addrlist_parse(&e->env->bcc, np->data);
     }
 
     STAILQ_FOREACH(np, &cc_list, entries)
     {
-      mutt_addrlist_parse(&msg->env->cc, np->data);
+      mutt_addrlist_parse(&e->env->cc, np->data);
     }
 
     mutt_list_free(&bcc_list);
@@ -842,7 +842,7 @@ int main(int argc, char *argv[], char *envp[])
     repeat_error = true;
     goto main_curses;
   }
-  else if (subject || msg || sendflags || draft_file || include_file ||
+  else if (subject || e || sendflags || draft_file || include_file ||
            !STAILQ_EMPTY(&attach) || (optind < argc))
   {
     FILE *fp_in = NULL;
@@ -855,34 +855,34 @@ int main(int argc, char *argv[], char *envp[])
     if (!OptNoCurses)
       mutt_flushinp();
 
-    if (!msg)
-      msg = mutt_email_new();
-    if (!msg->env)
-      msg->env = mutt_env_new();
+    if (!e)
+      e = mutt_email_new();
+    if (!e->env)
+      e->env = mutt_env_new();
 
     for (i = optind; i < argc; i++)
     {
       if (url_check_scheme(argv[i]) == U_MAILTO)
       {
-        if (mutt_parse_mailto(msg->env, &bodytext, argv[i]) < 0)
+        if (mutt_parse_mailto(e->env, &bodytext, argv[i]) < 0)
         {
           mutt_error(_("Failed to parse mailto: link"));
           goto main_curses; // TEST25: neomutt mailto:
         }
       }
       else
-        mutt_addrlist_parse(&msg->env->to, argv[i]);
+        mutt_addrlist_parse(&e->env->to, argv[i]);
     }
 
-    if (!draft_file && C_Autoedit && TAILQ_EMPTY(&msg->env->to) &&
-        TAILQ_EMPTY(&msg->env->cc))
+    if (!draft_file && C_Autoedit && TAILQ_EMPTY(&e->env->to) &&
+        TAILQ_EMPTY(&e->env->cc))
     {
       mutt_error(_("No recipients specified"));
       goto main_curses; // TEST26: neomutt -s test (with autoedit=yes)
     }
 
     if (subject)
-      msg->env->subject = mutt_str_strdup(subject);
+      e->env->subject = mutt_str_strdup(subject);
 
     if (draft_file)
     {
@@ -961,59 +961,59 @@ int main(int argc, char *argv[], char *envp[])
       else
         sendflags |= SEND_NO_FREE_HEADER;
 
-      /* Parse the draft_file into the full Header/Body structure.
+      /* Parse the draft_file into the full Email/Body structure.
        * Set SEND_DRAFT_FILE so ci_send_message doesn't overwrite
-       * our msg->content.  */
+       * our e->content.  */
       if (draft_file)
       {
-        struct Envelope *opts_env = msg->env;
+        struct Envelope *opts_env = e->env;
         struct stat st;
 
         sendflags |= SEND_DRAFT_FILE;
 
-        /* Set up a "context" header with just enough information so that
+        /* Set up a tmp Email with just enough information so that
          * mutt_prepare_template() can parse the message in fp_in.  */
-        struct Email *context_hdr = mutt_email_new();
-        context_hdr->offset = 0;
-        context_hdr->content = mutt_body_new();
+        struct Email *e_tmp = mutt_email_new();
+        e_tmp->offset = 0;
+        e_tmp->content = mutt_body_new();
         if (fstat(fileno(fp_in), &st) != 0)
         {
           mutt_perror(draft_file);
           goto main_curses; // TEST31: can't test
         }
-        context_hdr->content->length = st.st_size;
+        e_tmp->content->length = st.st_size;
 
-        if (mutt_prepare_template(fp_in, NULL, msg, context_hdr, false) < 0)
+        if (mutt_prepare_template(fp_in, NULL, e, e_tmp, false) < 0)
         {
           mutt_error(_("Can't parse message template: %s"), draft_file);
           mutt_env_free(&opts_env);
-          mutt_email_free(&context_hdr);
+          mutt_email_free(&e_tmp);
           goto main_curses;
         }
 
         /* Scan for neomutt header to set C_ResumeDraftFiles */
         struct ListNode *np = NULL, *tmp = NULL;
-        STAILQ_FOREACH_SAFE(np, &msg->env->userhdrs, entries, tmp)
+        STAILQ_FOREACH_SAFE(np, &e->env->userhdrs, entries, tmp)
         {
           if (mutt_str_startswith(np->data, "X-Mutt-Resume-Draft:", CASE_IGNORE))
           {
             if (C_ResumeEditedDraftFiles)
               cs_str_native_set(Config, "resume_draft_files", true, NULL);
 
-            STAILQ_REMOVE(&msg->env->userhdrs, np, ListNode, entries);
+            STAILQ_REMOVE(&e->env->userhdrs, np, ListNode, entries);
             FREE(&np->data);
             FREE(&np);
           }
         }
 
-        mutt_addrlist_copy(&msg->env->to, &opts_env->to, false);
-        mutt_addrlist_copy(&msg->env->cc, &opts_env->cc, false);
-        mutt_addrlist_copy(&msg->env->bcc, &opts_env->bcc, false);
+        mutt_addrlist_copy(&e->env->to, &opts_env->to, false);
+        mutt_addrlist_copy(&e->env->cc, &opts_env->cc, false);
+        mutt_addrlist_copy(&e->env->bcc, &opts_env->bcc, false);
         if (opts_env->subject)
-          mutt_str_replace(&msg->env->subject, opts_env->subject);
+          mutt_str_replace(&e->env->subject, opts_env->subject);
 
         mutt_env_free(&opts_env);
-        mutt_email_free(&context_hdr);
+        mutt_email_free(&e_tmp);
       }
       /* Editing the include_file: pass it directly in.
        * Note that SEND_NO_FREE_HEADER is set above so it isn't unlinked.  */
@@ -1031,7 +1031,7 @@ int main(int argc, char *argv[], char *envp[])
 
     if (!STAILQ_EMPTY(&attach))
     {
-      struct Body *b = msg->content;
+      struct Body *b = e->content;
 
       while (b && b->next)
         b = b->next;
@@ -1047,7 +1047,7 @@ int main(int argc, char *argv[], char *envp[])
         else
         {
           b = mutt_make_file_attach(np->data);
-          msg->content = b;
+          e->content = b;
         }
         if (!b)
         {
@@ -1059,7 +1059,7 @@ int main(int argc, char *argv[], char *envp[])
       mutt_list_free(&attach);
     }
 
-    rv = ci_send_message(sendflags, msg, bodyfile, NULL, NULL);
+    rv = ci_send_message(sendflags, e, bodyfile, NULL, NULL);
     /* We WANT the "Mail sent." and any possible, later error */
     log_queue_empty();
     if (ErrorBufMessage)
@@ -1068,7 +1068,7 @@ int main(int argc, char *argv[], char *envp[])
     if (edit_infile)
     {
       if (include_file)
-        msg->content->unlink = false;
+        e->content->unlink = false;
       else if (draft_file)
       {
         if (truncate(expanded_infile, 0) == -1)
@@ -1087,20 +1087,20 @@ int main(int argc, char *argv[], char *envp[])
          * have been done.  */
         if (rv < 0)
         {
-          if (msg->content->next)
-            msg->content = mutt_make_multipart(msg->content);
-          mutt_encode_descriptions(msg->content, true);
-          mutt_prepare_envelope(msg->env, false);
-          mutt_env_to_intl(msg->env, NULL, NULL);
+          if (e->content->next)
+            e->content = mutt_make_multipart(e->content);
+          mutt_encode_descriptions(e->content, true);
+          mutt_prepare_envelope(e->env, false);
+          mutt_env_to_intl(e->env, NULL, NULL);
         }
 
         mutt_rfc822_write_header(
-            fp_out, msg->env, msg->content, MUTT_WRITE_HEADER_POSTPONE, false,
-            C_CryptProtectedHeadersRead && mutt_should_hide_protected_subject(msg));
+            fp_out, e->env, e->content, MUTT_WRITE_HEADER_POSTPONE, false,
+            C_CryptProtectedHeadersRead && mutt_should_hide_protected_subject(e));
         if (C_ResumeEditedDraftFiles)
           fprintf(fp_out, "X-Mutt-Resume-Draft: 1\n");
         fputc('\n', fp_out);
-        if ((mutt_write_mime_body(msg->content, fp_out) == -1))
+        if ((mutt_write_mime_body(e->content, fp_out) == -1))
         {
           mutt_file_fclose(&fp_out);
           goto main_curses; // TEST35: can't test
@@ -1108,7 +1108,7 @@ int main(int argc, char *argv[], char *envp[])
         mutt_file_fclose(&fp_out);
       }
 
-      mutt_email_free(&msg);
+      mutt_email_free(&e);
     }
 
     /* !edit_infile && draft_file will leave the tempfile around */

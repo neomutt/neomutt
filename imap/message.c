@@ -1464,7 +1464,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
    * already rereading the whole file for length it isn't any more
    * expensive (it'd be nice if we had the file size passed in already
    * by the code that writes the file, but that's a lot of changes.
-   * Ideally we'd have a Header structure with flag info here... */
+   * Ideally we'd have an Email structure with flag info here... */
   for (last = EOF, len = 0; (c = fgetc(fp)) != EOF; last = c)
   {
     if ((c == '\n') && (last != '\r'))
@@ -1608,8 +1608,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool
     mutt_buffer_init(&sync_cmd);
     mutt_buffer_init(&cmd);
 
-    /* Null Header* means copy tagged messages */
-    if (!single)
+    if (!single) /* copy tagged messages */
     {
       /* if any messages have attachments to delete, fall through to FETCH
        * and APPEND. TODO: Copy what we can with COPY, fall through for the
@@ -1841,7 +1840,7 @@ char *imap_set_flags(struct Mailbox *m, struct Email *e, char *s, bool *server_c
 }
 
 /**
- * imap_msg_open - Implements MxOps::msg_open()
+ * imap_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open()
  */
 int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
@@ -2045,7 +2044,7 @@ bail:
 }
 
 /**
- * imap_msg_commit - Implements MxOps::msg_commit()
+ * imap_msg_commit - Save changes to an email - Implements MxOps::msg_commit()
  *
  * @note May also return EOF Failure, see errno
  */
@@ -2059,7 +2058,7 @@ int imap_msg_commit(struct Mailbox *m, struct Message *msg)
 }
 
 /**
- * imap_msg_close - Implements MxOps::msg_close()
+ * imap_msg_close - Close an email - Implements MxOps::msg_close()
  *
  * @note May also return EOF Failure, see errno
  */

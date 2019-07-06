@@ -747,7 +747,7 @@ fail:
 }
 
 /**
- * pop_ac_find - Find an Account that matches a Mailbox path
+ * pop_ac_find - Find an Account that matches a Mailbox path - Implements MxOps::ac_find()
  */
 struct Account *pop_ac_find(struct Account *a, const char *path)
 {
@@ -772,7 +772,7 @@ struct Account *pop_ac_find(struct Account *a, const char *path)
 }
 
 /**
- * pop_ac_add - Add a Mailbox to an Account
+ * pop_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
  */
 int pop_ac_add(struct Account *a, struct Mailbox *m)
 {
@@ -809,7 +809,7 @@ int pop_ac_add(struct Account *a, struct Mailbox *m)
 }
 
 /**
- * pop_mbox_open - Implements MxOps::mbox_open()
+ * pop_mbox_open - Open a Mailbox - Implements MxOps::mbox_open()
  *
  * Fetch only headers
  */
@@ -888,7 +888,7 @@ static int pop_mbox_open(struct Mailbox *m)
 }
 
 /**
- * pop_mbox_check - Implements MxOps::mbox_check()
+ * pop_mbox_check - Check for new mail - Implements MxOps::mbox_check()
  */
 static int pop_mbox_check(struct Mailbox *m, int *index_hint)
 {
@@ -927,7 +927,7 @@ static int pop_mbox_check(struct Mailbox *m, int *index_hint)
 }
 
 /**
- * pop_mbox_sync - Implements MxOps::mbox_sync()
+ * pop_mbox_sync - Save changes to the Mailbox - Implements MxOps::mbox_sync()
  *
  * Update POP mailbox, delete messages from server
  */
@@ -1019,7 +1019,7 @@ static int pop_mbox_sync(struct Mailbox *m, int *index_hint)
 }
 
 /**
- * pop_mbox_close - Implements MxOps::mbox_close()
+ * pop_mbox_close - Close a Mailbox - Implements MxOps::mbox_close()
  */
 static int pop_mbox_close(struct Mailbox *m)
 {
@@ -1049,7 +1049,7 @@ static int pop_mbox_close(struct Mailbox *m)
 }
 
 /**
- * pop_msg_open - Implements MxOps::msg_open()
+ * pop_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open()
  */
 static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
@@ -1200,7 +1200,7 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 }
 
 /**
- * pop_msg_close - Implements MxOps::msg_close()
+ * pop_msg_close - Close an email - Implements MxOps::msg_close()
  * @retval 0   Success
  * @retval EOF Error, see errno
  */
@@ -1227,7 +1227,7 @@ static int pop_msg_save_hcache(struct Mailbox *m, struct Email *e)
 }
 
 /**
- * pop_path_probe - Is this a POP mailbox? - Implements MxOps::path_probe()
+ * pop_path_probe - Is this a POP Mailbox? - Implements MxOps::path_probe()
  */
 enum MailboxType pop_path_probe(const char *path, const struct stat *st)
 {
@@ -1244,7 +1244,7 @@ enum MailboxType pop_path_probe(const char *path, const struct stat *st)
 }
 
 /**
- * pop_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon()
+ * pop_path_canon - Canonicalise a Mailbox path - Implements MxOps::path_canon()
  */
 int pop_path_canon(char *buf, size_t buflen)
 {
@@ -1255,7 +1255,7 @@ int pop_path_canon(char *buf, size_t buflen)
 }
 
 /**
- * pop_path_pretty - Implements MxOps::path_pretty()
+ * pop_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty()
  */
 int pop_path_pretty(char *buf, size_t buflen, const char *folder)
 {
@@ -1264,7 +1264,7 @@ int pop_path_pretty(char *buf, size_t buflen, const char *folder)
 }
 
 /**
- * pop_path_parent - Implements MxOps::path_parent()
+ * pop_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent()
  */
 int pop_path_parent(char *buf, size_t buflen)
 {
@@ -1274,7 +1274,7 @@ int pop_path_parent(char *buf, size_t buflen)
 
 // clang-format off
 /**
- * MxPopOps - POP mailbox - Implements ::MxOps
+ * MxPopOps - POP Mailbox - Implements ::MxOps
  */
 struct MxOps MxPopOps = {
   .magic            = MUTT_POP,

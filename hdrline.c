@@ -1290,19 +1290,19 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       bool label = true;
       if (e->env->x_label)
       {
-        struct Email *etmp = NULL;
+        struct Email *e_tmp = NULL;
         if (flags & MUTT_FORMAT_TREE && (e->thread->prev && e->thread->prev->message &&
                                          e->thread->prev->message->env->x_label))
         {
-          etmp = e->thread->prev->message;
+          e_tmp = e->thread->prev->message;
         }
         else if (flags & MUTT_FORMAT_TREE &&
                  (e->thread->parent && e->thread->parent->message &&
                   e->thread->parent->message->env->x_label))
         {
-          etmp = e->thread->parent->message;
+          e_tmp = e->thread->parent->message;
         }
-        if (etmp && (mutt_str_strcasecmp(e->env->x_label, etmp->env->x_label) == 0))
+        if (e_tmp && (mutt_str_strcasecmp(e->env->x_label, e_tmp->env->x_label) == 0))
           label = false;
       }
       else

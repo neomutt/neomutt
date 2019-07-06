@@ -414,7 +414,7 @@ bool mh_valid_message(const char *s)
 }
 
 /**
- * mh_mbox_check_stats - Implements MxOps::check_stats
+ * mh_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::check_stats
  */
 static int mh_mbox_check_stats(struct Mailbox *m, int flags)
 {
@@ -539,7 +539,7 @@ int mh_sync_message(struct Mailbox *m, int msgno)
 }
 
 /**
- * mh_mbox_open - Implements MxOps::mbox_open()
+ * mh_mbox_open - Open a Mailbox - Implements MxOps::mbox_open()
  */
 static int mh_mbox_open(struct Mailbox *m)
 {
@@ -547,7 +547,7 @@ static int mh_mbox_open(struct Mailbox *m)
 }
 
 /**
- * mh_mbox_open_append - Implements MxOps::mbox_open_append()
+ * mh_mbox_open_append - Open a Mailbox for appending - Implements MxOps::mbox_open_append()
  */
 static int mh_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
@@ -580,7 +580,7 @@ static int mh_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 }
 
 /**
- * mh_mbox_check - Implements MxOps::mbox_check()
+ * mh_mbox_check - Check for new mail - Implements MxOps::mbox_check()
  *
  * This function handles arrival of new mail and reopening of mh/maildir
  * folders. Things are getting rather complex because we don't have a
@@ -723,7 +723,7 @@ int mh_mbox_check(struct Mailbox *m, int *index_hint)
 }
 
 /**
- * mh_msg_open - Implements MxOps::msg_open()
+ * mh_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open()
  */
 static int mh_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
@@ -733,7 +733,7 @@ static int mh_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 }
 
 /**
- * mh_msg_open_new - Implements MxOps::msg_open_new()
+ * mh_msg_open_new - Open a new message in a Mailbox - Implements MxOps::msg_open_new()
  *
  * Open a new (temporary) message in an MH folder.
  */
@@ -745,7 +745,7 @@ static int mh_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email 
 }
 
 /**
- * mh_msg_commit - Implements MxOps::msg_commit()
+ * mh_msg_commit - Save changes to an email - Implements MxOps::msg_commit()
  */
 static int mh_msg_commit(struct Mailbox *m, struct Message *msg)
 {
@@ -756,7 +756,7 @@ static int mh_msg_commit(struct Mailbox *m, struct Message *msg)
 }
 
 /**
- * mh_path_probe - Is this an mh mailbox? - Implements MxOps::path_probe()
+ * mh_path_probe - Is this an mh Mailbox? - Implements MxOps::path_probe()
  */
 enum MailboxType mh_path_probe(const char *path, const struct stat *st)
 {
@@ -800,7 +800,7 @@ enum MailboxType mh_path_probe(const char *path, const struct stat *st)
 
 // clang-format off
 /**
- * MxMhOps - MH mailbox - Implements ::MxOps
+ * MxMhOps - MH Mailbox - Implements ::MxOps
  */
 struct MxOps MxMhOps = {
   .magic            = MUTT_MH,

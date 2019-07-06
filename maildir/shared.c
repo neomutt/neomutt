@@ -869,14 +869,14 @@ int mh_read_dir(struct Mailbox *m, const char *subdir)
  */
 int maildir_mh_open_message(struct Mailbox *m, struct Message *msg, int msgno, bool is_maildir)
 {
-  struct Email *cur = m->emails[msgno];
+  struct Email *e = m->emails[msgno];
   char path[PATH_MAX];
 
-  snprintf(path, sizeof(path), "%s/%s", mutt_b2s(m->pathbuf), cur->path);
+  snprintf(path, sizeof(path), "%s/%s", mutt_b2s(m->pathbuf), e->path);
 
   msg->fp = fopen(path, "r");
   if (!msg->fp && (errno == ENOENT) && is_maildir)
-    msg->fp = maildir_open_find_message(mutt_b2s(m->pathbuf), cur->path, NULL);
+    msg->fp = maildir_open_find_message(mutt_b2s(m->pathbuf), e->path, NULL);
 
   if (!msg->fp)
   {
@@ -1099,7 +1099,7 @@ int mh_rewrite_message(struct Mailbox *m, int msgno)
   if (!dest)
     return -1;
 
-  int rc = mutt_copy_message_ctx(dest->fp, m, e, MUTT_CM_UPDATE, CH_UPDATE | CH_UPDATE_LEN);
+  int rc = mutt_copy_message(dest->fp, m, e, MUTT_CM_UPDATE, CH_UPDATE | CH_UPDATE_LEN);
   if (rc == 0)
   {
     char oldpath[PATH_MAX];
@@ -1180,9 +1180,9 @@ void maildir_canon_filename(struct Buffer *dest, const char *src)
 }
 
 /**
- * maildir_update_tables - Update the Header tables
+ * maildir_update_tables - Update the Email tables
  * @param ctx        Mailbox
- * @param index_hint Current email in index
+ * @param index_hint Current Email in index
  */
 void maildir_update_tables(struct Context *ctx, int *index_hint)
 {
@@ -1490,13 +1490,13 @@ int mh_sync_mailbox_message(struct Mailbox *m, int msgno, header_cache_t *hc)
 
 /**
  * maildir_update_flags - Update the mailbox flags
- * @param m   Mailbox
- * @param o   Old email Header
- * @param n   New email Header
+ * @param m     Mailbox
+ * @param e_old Old Email
+ * @param e_new New Email
  * @retval true  If the flags changed
  * @retval false Otherwise
  */
-bool maildir_update_flags(struct Mailbox *m, struct Email *o, struct Email *n)
+bool maildir_update_flags(struct Mailbox *m, struct Email *e_old, struct Email *e_new)
 {
   if (!m)
     return false;
@@ -1510,21 +1510,21 @@ bool maildir_update_flags(struct Mailbox *m, struct Email *o, struct Email *n)
    * anything. mutt_set_flag() will just ignore the call if the status
    * bits are already properly set, but it is still faster not to pass
    * through it */
-  if (o->flagged != n->flagged)
-    mutt_set_flag(m, o, MUTT_FLAG, n->flagged);
-  if (o->replied != n->replied)
-    mutt_set_flag(m, o, MUTT_REPLIED, n->replied);
-  if (o->read != n->read)
-    mutt_set_flag(m, o, MUTT_READ, n->read);
-  if (o->old != n->old)
-    mutt_set_flag(m, o, MUTT_OLD, n->old);
+  if (e_old->flagged != e_new->flagged)
+    mutt_set_flag(m, e_old, MUTT_FLAG, e_new->flagged);
+  if (e_old->replied != e_new->replied)
+    mutt_set_flag(m, e_old, MUTT_REPLIED, e_new->replied);
+  if (e_old->read != e_new->read)
+    mutt_set_flag(m, e_old, MUTT_READ, e_new->read);
+  if (e_old->old != e_new->old)
+    mutt_set_flag(m, e_old, MUTT_OLD, e_new->old);
 
   /* mutt_set_flag() will set this, but we don't need to
    * sync the changes we made because we just updated the
    * context to match the current on-disk state of the
    * message.  */
-  bool header_changed = o->changed;
-  o->changed = false;
+  bool header_changed = e_old->changed;
+  e_old->changed = false;
 
   /* if the mailbox was not modified before we made these
    * changes, unset the changed flag since nothing needs to
@@ -1651,7 +1651,7 @@ int mh_check_empty(const char *path)
 }
 
 /**
- * maildir_ac_find - Find an Account that matches a Mailbox path
+ * maildir_ac_find - Find an Account that matches a Mailbox path - Implements MxOps::ac_find()
  */
 struct Account *maildir_ac_find(struct Account *a, const char *path)
 {
@@ -1662,7 +1662,7 @@ struct Account *maildir_ac_find(struct Account *a, const char *path)
 }
 
 /**
- * maildir_ac_add - Add a Mailbox to an Account
+ * maildir_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
  */
 int maildir_ac_add(struct Account *a, struct Mailbox *m)
 {
@@ -1672,7 +1672,7 @@ int maildir_ac_add(struct Account *a, struct Mailbox *m)
 }
 
 /**
- * maildir_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon()
+ * maildir_path_canon - Canonicalise a Mailbox path - Implements MxOps::path_canon()
  */
 int maildir_path_canon(char *buf, size_t buflen)
 {
@@ -1684,7 +1684,7 @@ int maildir_path_canon(char *buf, size_t buflen)
 }
 
 /**
- * maildir_path_pretty - Implements MxOps::path_pretty()
+ * maildir_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty()
  */
 int maildir_path_pretty(char *buf, size_t buflen, const char *folder)
 {
@@ -1701,7 +1701,7 @@ int maildir_path_pretty(char *buf, size_t buflen, const char *folder)
 }
 
 /**
- * maildir_path_parent - Implements MxOps::path_parent()
+ * maildir_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent()
  */
 int maildir_path_parent(char *buf, size_t buflen)
 {
@@ -1721,7 +1721,7 @@ int maildir_path_parent(char *buf, size_t buflen)
 }
 
 /**
- * mh_mbox_sync - Implements MxOps::mbox_sync()
+ * mh_mbox_sync - Save changes to the Mailbox - Implements MxOps::mbox_sync()
  */
 int mh_mbox_sync(struct Mailbox *m, int *index_hint)
 {
@@ -1795,7 +1795,7 @@ err:
 }
 
 /**
- * mh_mbox_close - Implements MxOps::mbox_close()
+ * mh_mbox_close - Close a Mailbox - Implements MxOps::mbox_close()
  * @retval 0 Always
  */
 int mh_mbox_close(struct Mailbox *m)
@@ -1804,7 +1804,7 @@ int mh_mbox_close(struct Mailbox *m)
 }
 
 /**
- * mh_msg_close - Implements MxOps::msg_close()
+ * mh_msg_close - Close an email - Implements MxOps::msg_close()
  *
  * @note May also return EOF Failure, see errno
  */

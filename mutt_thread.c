@@ -795,33 +795,33 @@ static void check_subjects(struct Mailbox *m, bool init)
   if (!m)
     return;
 
-  struct Email *cur = NULL;
+  struct Email *e = NULL;
   struct MuttThread *tmp = NULL;
   for (int i = 0; i < m->msg_count; i++)
   {
-    cur = m->emails[i];
-    if (cur->thread->check_subject)
-      cur->thread->check_subject = false;
+    e = m->emails[i];
+    if (e->thread->check_subject)
+      e->thread->check_subject = false;
     else if (!init)
       continue;
 
     /* figure out which messages have subjects different than their parents' */
-    tmp = cur->thread->parent;
+    tmp = e->thread->parent;
     while (tmp && !tmp->message)
     {
       tmp = tmp->parent;
     }
 
     if (!tmp)
-      cur->subject_changed = true;
-    else if (cur->env->real_subj && tmp->message->env->real_subj)
+      e->subject_changed = true;
+    else if (e->env->real_subj && tmp->message->env->real_subj)
     {
-      cur->subject_changed =
-          (mutt_str_strcmp(cur->env->real_subj, tmp->message->env->real_subj) != 0);
+      e->subject_changed =
+          (mutt_str_strcmp(e->env->real_subj, tmp->message->env->real_subj) != 0);
     }
     else
     {
-      cur->subject_changed = (cur->env->real_subj || tmp->message->env->real_subj);
+      e->subject_changed = (e->env->real_subj || tmp->message->env->real_subj);
     }
   }
 }
@@ -838,7 +838,7 @@ void mutt_sort_threads(struct Context *ctx, bool init)
 
   struct Mailbox *m = ctx->mailbox;
 
-  struct Email *cur = NULL;
+  struct Email *e = NULL;
   int i, oldsort, using_refs = 0;
   struct MuttThread *thread = NULL, *tnew = NULL, *tmp = NULL;
   struct MuttThread top = { 0 };
@@ -875,20 +875,20 @@ void mutt_sort_threads(struct Context *ctx, bool init)
    * MuttThread, make a new one for it. */
   for (i = 0; i < m->msg_count; i++)
   {
-    cur = m->emails[i];
+    e = m->emails[i];
 
-    if (!cur->thread)
+    if (!e->thread)
     {
-      if ((!init || C_DuplicateThreads) && cur->env->message_id)
-        thread = mutt_hash_find(ctx->thread_hash, cur->env->message_id);
+      if ((!init || C_DuplicateThreads) && e->env->message_id)
+        thread = mutt_hash_find(ctx->thread_hash, e->env->message_id);
       else
         thread = NULL;
 
       if (thread && !thread->message)
       {
         /* this is a message which was missing before */
-        thread->message = cur;
-        cur->thread = thread;
+        thread->message = e;
+        e->thread = thread;
         thread->check_subject = true;
 
         /* mark descendants as needing subject_changed checked */
@@ -926,18 +926,18 @@ void mutt_sort_threads(struct Context *ctx, bool init)
         tnew = (C_DuplicateThreads ? thread : NULL);
 
         thread = mutt_mem_calloc(1, sizeof(struct MuttThread));
-        thread->message = cur;
+        thread->message = e;
         thread->check_subject = true;
-        cur->thread = thread;
+        e->thread = thread;
         mutt_hash_insert(ctx->thread_hash,
-                         cur->env->message_id ? cur->env->message_id : "", thread);
+                         e->env->message_id ? e->env->message_id : "", thread);
 
         if (tnew)
         {
           if (tnew->duplicate_thread)
             tnew = tnew->parent;
 
-          thread = cur->thread;
+          thread = e->thread;
 
           insert_message(&tnew->child, tnew, thread);
           thread->duplicate_thread = true;
@@ -949,7 +949,7 @@ void mutt_sort_threads(struct Context *ctx, bool init)
     {
       /* unlink pseudo-threads because they might be children of newly
        * arrived messages */
-      thread = cur->thread;
+      thread = e->thread;
       for (tnew = thread->child; tnew;)
       {
         tmp = tnew->next;
@@ -967,12 +967,12 @@ void mutt_sort_threads(struct Context *ctx, bool init)
   /* thread by references */
   for (i = 0; i < m->msg_count; i++)
   {
-    cur = m->emails[i];
-    if (cur->threaded)
+    e = m->emails[i];
+    if (e->threaded)
       continue;
-    cur->threaded = true;
+    e->threaded = true;
 
-    thread = cur->thread;
+    thread = e->thread;
     using_refs = 0;
 
     while (true)
@@ -980,12 +980,12 @@ void mutt_sort_threads(struct Context *ctx, bool init)
       if (using_refs == 0)
       {
         /* look at the beginning of in-reply-to: */
-        ref = STAILQ_FIRST(&cur->env->in_reply_to);
+        ref = STAILQ_FIRST(&e->env->in_reply_to);
         if (ref)
           using_refs = 1;
         else
         {
-          ref = STAILQ_FIRST(&cur->env->references);
+          ref = STAILQ_FIRST(&e->env->references);
           using_refs = 2;
         }
       }
@@ -996,14 +996,14 @@ void mutt_sort_threads(struct Context *ctx, bool init)
          * if it's different than the first in-reply-to, otherwise use
          * the second reference (since at least eudora puts the most
          * recent reference in in-reply-to and the rest in references) */
-        if (STAILQ_EMPTY(&cur->env->references))
+        if (STAILQ_EMPTY(&e->env->references))
           ref = STAILQ_NEXT(ref, entries);
         else
         {
-          if (mutt_str_strcmp(ref->data, STAILQ_FIRST(&cur->env->references)->data) != 0)
-            ref = STAILQ_FIRST(&cur->env->references);
+          if (mutt_str_strcmp(ref->data, STAILQ_FIRST(&e->env->references)->data) != 0)
+            ref = STAILQ_FIRST(&e->env->references);
           else
-            ref = STAILQ_NEXT(STAILQ_FIRST(&cur->env->references), entries);
+            ref = STAILQ_NEXT(STAILQ_FIRST(&e->env->references), entries);
 
           using_refs = 2;
         }
@@ -1077,7 +1077,7 @@ void mutt_sort_threads(struct Context *ctx, bool init)
 int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
 {
   struct MuttThread *cur = NULL;
-  struct Email *tmp = NULL;
+  struct Email *e_tmp = NULL;
 
   if ((C_Sort & SORT_MASK) != SORT_THREADS)
   {
@@ -1113,8 +1113,8 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
       cur = cur->next;
       if (!cur)
         return -1;
-      tmp = find_virtual(cur, 0);
-    } while (!tmp);
+      e_tmp = find_virtual(cur, 0);
+    } while (!e_tmp);
   }
   else
   {
@@ -1123,11 +1123,11 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
       cur = cur->prev;
       if (!cur)
         return -1;
-      tmp = find_virtual(cur, 1);
-    } while (!tmp);
+      e_tmp = find_virtual(cur, 1);
+    } while (!e_tmp);
   }
 
-  return tmp->vnum;
+  return e_tmp->vnum;
 }
 
 /**
@@ -1141,7 +1141,7 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
 int mutt_parent_message(struct Context *ctx, struct Email *e, bool find_root)
 {
   struct MuttThread *thread = NULL;
-  struct Email *parent = NULL;
+  struct Email *e_parent = NULL;
 
   if ((C_Sort & SORT_MASK) != SORT_THREADS)
   {
@@ -1151,25 +1151,25 @@ int mutt_parent_message(struct Context *ctx, struct Email *e, bool find_root)
 
   /* Root may be the current message */
   if (find_root)
-    parent = e;
+    e_parent = e;
 
   for (thread = e->thread->parent; thread; thread = thread->parent)
   {
     e = thread->message;
     if (e)
     {
-      parent = e;
+      e_parent = e;
       if (!find_root)
         break;
     }
   }
 
-  if (!parent)
+  if (!e_parent)
   {
     mutt_error(_("Parent message is not available"));
     return -1;
   }
-  if (!is_visible(parent, ctx))
+  if (!is_visible(e_parent, ctx))
   {
     if (find_root)
       mutt_error(_("Root message is not visible in this limited view"));
@@ -1177,7 +1177,7 @@ int mutt_parent_message(struct Context *ctx, struct Email *e, bool find_root)
       mutt_error(_("Parent message is not visible in this limited view"));
     return -1;
   }
-  return parent->vnum;
+  return e_parent->vnum;
 }
 
 /**
@@ -1191,7 +1191,7 @@ void mutt_set_vnum(struct Context *ctx)
 
   struct Mailbox *m = ctx->mailbox;
 
-  struct Email *cur = NULL;
+  struct Email *e = NULL;
 
   m->vcount = 0;
   ctx->vsize = 0;
@@ -1199,80 +1199,79 @@ void mutt_set_vnum(struct Context *ctx)
 
   for (int i = 0; i < m->msg_count; i++)
   {
-    cur = m->emails[i];
-    if (cur->vnum >= 0)
+    e = m->emails[i];
+    if (e->vnum >= 0)
     {
-      cur->vnum = m->vcount;
+      e->vnum = m->vcount;
       m->v2r[m->vcount] = i;
       m->vcount++;
-      ctx->vsize += cur->content->length + cur->content->offset -
-                    cur->content->hdr_offset + padding;
-      cur->num_hidden = mutt_get_hidden(ctx, cur);
+      ctx->vsize += e->content->length + e->content->offset - e->content->hdr_offset + padding;
+      e->num_hidden = mutt_get_hidden(ctx, e);
     }
   }
 }
 
 /**
  * mutt_traverse_thread - Recurse through an email thread, matching messages
- * @param ctx  Mailbox
- * @param cur  Header of current message
- * @param flag Flag to set, see #MuttThreadFlags
+ * @param ctx   Mailbox
+ * @param e_cur Current Email
+ * @param flag  Flag to set, see #MuttThreadFlags
  * @retval num Number of matches
  */
-int mutt_traverse_thread(struct Context *ctx, struct Email *cur, MuttThreadFlags flag)
+int mutt_traverse_thread(struct Context *ctx, struct Email *e_cur, MuttThreadFlags flag)
 {
   struct MuttThread *thread = NULL, *top = NULL;
-  struct Email *roothdr = NULL;
+  struct Email *e_root = NULL;
   int final, reverse = (C_Sort & SORT_REVERSE), minmsgno;
   int num_hidden = 0, new_mail = 0, old_mail = 0;
   bool flagged = false;
-  int min_unread_msgno = INT_MAX, min_unread = cur->vnum;
-#define CHECK_LIMIT (!ctx->pattern || cur->limited)
+  int min_unread_msgno = INT_MAX, min_unread = e_cur->vnum;
+#define CHECK_LIMIT (!ctx->pattern || e_cur->limited)
 
   if (((C_Sort & SORT_MASK) != SORT_THREADS) && !(flag & MUTT_THREAD_GET_HIDDEN))
   {
     mutt_error(_("Threading is not enabled"));
-    return cur->vnum;
+    return e_cur->vnum;
   }
 
-  final = cur->vnum;
-  thread = cur->thread;
+  final = e_cur->vnum;
+  thread = e_cur->thread;
   while (thread->parent)
     thread = thread->parent;
   top = thread;
   while (!thread->message)
     thread = thread->child;
-  cur = thread->message;
-  minmsgno = cur->msgno;
+  e_cur = thread->message;
+  minmsgno = e_cur->msgno;
 
-  if (!cur->read && CHECK_LIMIT)
+  if (!e_cur->read && CHECK_LIMIT)
   {
-    if (cur->old)
+    if (e_cur->old)
       old_mail = 2;
     else
       new_mail = 1;
-    if (cur->msgno < min_unread_msgno)
+    if (e_cur->msgno < min_unread_msgno)
     {
-      min_unread = cur->vnum;
-      min_unread_msgno = cur->msgno;
+      min_unread = e_cur->vnum;
+      min_unread_msgno = e_cur->msgno;
     }
   }
 
-  if (cur->flagged && CHECK_LIMIT)
+  if (e_cur->flagged && CHECK_LIMIT)
     flagged = true;
 
-  if ((cur->vnum == -1) && CHECK_LIMIT)
+  if ((e_cur->vnum == -1) && CHECK_LIMIT)
     num_hidden++;
 
   if (flag & (MUTT_THREAD_COLLAPSE | MUTT_THREAD_UNCOLLAPSE))
   {
-    cur->pair = 0; /* force index entry's color to be re-evaluated */
-    cur->collapsed = flag & MUTT_THREAD_COLLAPSE;
-    if (cur->vnum != -1)
+    e_cur->pair = 0; /* force index entry's color to be re-evaluated */
+    e_cur->collapsed = flag & MUTT_THREAD_COLLAPSE;
+    if (e_cur->vnum != -1)
     {
-      roothdr = cur;
+      e_root = e_cur;
       if (flag & MUTT_THREAD_COLLAPSE)
-        final = roothdr->vnum;
+        final = e_root->vnum;
     }
   }
 
@@ -1293,56 +1292,56 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *cur, MuttThreadFlags
 
   while (true)
   {
-    cur = thread->message;
+    e_cur = thread->message;
 
-    if (cur)
+    if (e_cur)
     {
       if (flag & (MUTT_THREAD_COLLAPSE | MUTT_THREAD_UNCOLLAPSE))
       {
-        cur->pair = 0; /* force index entry's color to be re-evaluated */
-        cur->collapsed = flag & MUTT_THREAD_COLLAPSE;
-        if (!roothdr && CHECK_LIMIT)
+        e_cur->pair = 0; /* force index entry's color to be re-evaluated */
+        e_cur->collapsed = flag & MUTT_THREAD_COLLAPSE;
+        if (!e_root && CHECK_LIMIT)
         {
-          roothdr = cur;
+          e_root = e_cur;
           if (flag & MUTT_THREAD_COLLAPSE)
-            final = roothdr->vnum;
+            final = e_root->vnum;
         }
 
-        if (reverse && (flag & MUTT_THREAD_COLLAPSE) && (cur->msgno < minmsgno) && CHECK_LIMIT)
+        if (reverse && (flag & MUTT_THREAD_COLLAPSE) && (e_cur->msgno < minmsgno) && CHECK_LIMIT)
         {
-          minmsgno = cur->msgno;
-          final = cur->vnum;
+          minmsgno = e_cur->msgno;
+          final = e_cur->vnum;
         }
 
         if (flag & MUTT_THREAD_COLLAPSE)
         {
-          if (cur != roothdr)
-            cur->vnum = -1;
+          if (e_cur != e_root)
+            e_cur->vnum = -1;
         }
         else
         {
           if (CHECK_LIMIT)
-            cur->vnum = cur->msgno;
+            e_cur->vnum = e_cur->msgno;
         }
       }
 
-      if (!cur->read && CHECK_LIMIT)
+      if (!e_cur->read && CHECK_LIMIT)
       {
-        if (cur->old)
+        if (e_cur->old)
           old_mail = 2;
         else
           new_mail = 1;
-        if (cur->msgno < min_unread_msgno)
+        if (e_cur->msgno < min_unread_msgno)
         {
-          min_unread = cur->vnum;
-          min_unread_msgno = cur->msgno;
+          min_unread = e_cur->vnum;
+          min_unread_msgno = e_cur->msgno;
         }
       }
 
-      if (cur->flagged && CHECK_LIMIT)
+      if (e_cur->flagged && CHECK_LIMIT)
         flagged = true;
 
-      if ((cur->vnum == -1) && CHECK_LIMIT)
+      if ((e_cur->vnum == -1) && CHECK_LIMIT)
         num_hidden++;
     }
 
