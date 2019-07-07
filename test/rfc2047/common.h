@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TEST_RFC2047_COMMON_H
-#define _TEST_RFC2047_COMMON_H
+#ifndef TEST_RFC2047_COMMON_H
+#define TEST_RFC2047_COMMON_H
 
 #define TEST_NO_MAIN
 #include "acutest.h"
@@ -38,4 +38,4 @@ struct Rfc2047TestData
 
 extern const struct Rfc2047TestData rfc2047_test_data[];
 
-#endif /* _TEST_RFC2047_COMMON_H */
+#endif /* TEST_RFC2047_COMMON_H */

@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TEST_FILE_COMMON_H
-#define _TEST_FILE_COMMON_H
+#ifndef TEST_FILE_COMMON_H
+#define TEST_FILE_COMMON_H
 
 #include "acutest.h"
 #include "config.h"
@@ -37,4 +37,4 @@ size_t file_num_test_lines(void);
 #define SET_UP() (file_set_up(__func__))
 #define TEAR_DOWN(fp) (file_tear_down((fp), __func__))
 
-#endif /* _TEST_FILE_COMMON_H */
+#endif /* TEST_FILE_COMMON_H */
