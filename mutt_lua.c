@@ -194,9 +194,11 @@ static int lua_mutt_set(lua_State *l)
       break;
     }
     default:
+    {
       luaL_error(l, "Unsupported NeoMutt parameter type %d for %s", DTYPE(cdef->type), param);
       rc = -1;
       break;
+    }
   }
 
   mutt_buffer_free(&err);
@@ -263,14 +265,20 @@ static int lua_mutt_get(lua_State *l)
       return 1;
     }
     case DT_QUAD:
+    {
       lua_pushinteger(l, *(unsigned char *) cdef->var);
       return 1;
+    }
     case DT_NUMBER:
+    {
       lua_pushinteger(l, (signed short) *((unsigned long *) cdef->var));
       return 1;
+    }
     case DT_BOOL:
+    {
       lua_pushboolean(l, *((bool *) cdef->var));
       return 1;
+    }
     default:
       luaL_error(l, "NeoMutt parameter type %d unknown for %s", cdef->type, param);
       return -1;

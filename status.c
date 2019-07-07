@@ -100,6 +100,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
   switch (op)
   {
     case 'b':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -109,8 +110,10 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       else if (mutt_mailbox_check(Context ? Context->mailbox : NULL, 0) == 0)
         optional = 0;
       break;
+    }
 
     case 'd':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -119,6 +122,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       else if (!Context || (Context->mailbox->msg_deleted == 0))
         optional = 0;
       break;
+    }
 
     case 'D':
     {
@@ -162,6 +166,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       break;
     }
     case 'F':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -170,13 +175,17 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       else if (!Context || (Context->mailbox->msg_flagged == 0))
         optional = 0;
       break;
+    }
 
     case 'h':
+    {
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, NONULL(ShortHostname));
       break;
+    }
 
     case 'l':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
@@ -186,8 +195,10 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       else if (!Context || !Context->mailbox->size)
         optional = 0;
       break;
+    }
 
     case 'L':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
@@ -197,8 +208,10 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       else if (!Context || !Context->pattern)
         optional = 0;
       break;
+    }
 
     case 'm':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -207,8 +220,10 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       else if (!Context || (Context->mailbox->msg_count == 0))
         optional = 0;
       break;
+    }
 
     case 'M':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -217,8 +232,10 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       else if (!Context || !Context->pattern)
         optional = 0;
       break;
+    }
 
     case 'n':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -227,8 +244,10 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       else if (!Context || (Context->mailbox->msg_new == 0))
         optional = 0;
       break;
+    }
 
     case 'o':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -238,6 +257,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       else if (!Context || ((Context->mailbox->msg_unread - Context->mailbox->msg_new) == 0))
         optional = 0;
       break;
+    }
 
     case 'p':
     {
@@ -317,16 +337,21 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
     }
 
     case 's':
+    {
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, get_sort_str(tmp, sizeof(tmp), C_Sort));
       break;
+    }
 
     case 'S':
+    {
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, get_sort_str(tmp, sizeof(tmp), C_SortAux));
       break;
+    }
 
     case 't':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -335,8 +360,10 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       else if (!Context || !Context->mailbox || (Context->mailbox->msg_tagged == 0))
         optional = 0;
       break;
+    }
 
     case 'u':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -345,12 +372,16 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       else if (!Context || (Context->mailbox->msg_unread == 0))
         optional = 0;
       break;
+    }
 
     case 'v':
+    {
       snprintf(buf, buflen, "%s", mutt_make_version());
       break;
+    }
 
     case 'V':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
@@ -359,14 +390,18 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       else if (!Context || !Context->pattern)
         optional = 0;
       break;
+    }
 
     case 0:
+    {
       *buf = '\0';
       return src;
-
+    }
     default:
+    {
       snprintf(buf, buflen, "%%%s%c", prec, op);
       break;
+    }
   }
 
   if (optional)

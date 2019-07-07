@@ -145,11 +145,14 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
     case MUTT_NNTP:
     case MUTT_NOTMUCH:
     case MUTT_IMAP:
+    {
       if (mb_magic != MUTT_IMAP)
         m_check->has_new = false;
       m_check->magic = mb_magic;
       break;
+    }
     default:
+    {
       m_check->has_new = false;
 
       if ((stat(mutt_b2s(m_check->pathbuf), &sb) != 0) ||
@@ -165,6 +168,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
         return;
       }
       break; // kept for consistency.
+    }
   }
 
   /* check to see if the folder is the currently selected folder before polling */
@@ -182,9 +186,11 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
       case MUTT_MAILDIR:
       case MUTT_MH:
       case MUTT_NOTMUCH:
+      {
         if (mx_mbox_check_stats(m_check, 0) == 0)
           MailboxCount++;
         break;
+      }
       default:; /* do nothing */
     }
   }

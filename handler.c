@@ -251,16 +251,22 @@ static void qp_decode_line(char *dest, char *src, size_t *l, int last)
     switch ((kind = qp_decode_triple(s, &c)))
     {
       case 0:
+      {
         *d++ = c;
         s += 3;
         break; /* qp triple */
+      }
       case -1:
+      {
         *d++ = *s++;
         break; /* single character */
+      }
       case 1:
+      {
         soft = true;
         s++;
         break; /* soft line break */
+      }
     }
   }
 
@@ -1806,29 +1812,37 @@ void mutt_decode_attachment(struct Body *b, struct State *s)
   switch (b->encoding)
   {
     case ENC_QUOTED_PRINTABLE:
+    {
       decode_quoted(s, b->length,
                     istext || (((WithCrypto & APPLICATION_PGP) != 0) &&
                                mutt_is_application_pgp(b)),
                     cd);
       break;
+    }
     case ENC_BASE64:
+    {
       mutt_decode_base64(s, b->length,
                          istext || (((WithCrypto & APPLICATION_PGP) != 0) &&
                                     mutt_is_application_pgp(b)),
                          cd);
       break;
+    }
     case ENC_UUENCODED:
+    {
       decode_uuencoded(s, b->length,
                        istext || (((WithCrypto & APPLICATION_PGP) != 0) &&
                                   mutt_is_application_pgp(b)),
                        cd);
       break;
+    }
     default:
+    {
       decode_xbit(s, b->length,
                   istext || (((WithCrypto & APPLICATION_PGP) != 0) &&
                              mutt_is_application_pgp(b)),
                   cd);
       break;
+    }
   }
 
   if (cd != (iconv_t)(-1))

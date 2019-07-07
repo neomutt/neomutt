@@ -239,6 +239,7 @@ static struct Email *select_msg(struct Context *ctx)
     {
       case OP_DELETE:
       case OP_UNDELETE:
+      {
         /* should deleted draft messages be saved in the trash folder? */
         mutt_set_flag(ctx->mailbox, ctx->mailbox->emails[menu->current],
                       MUTT_DELETE, (op == OP_DELETE));
@@ -258,15 +259,20 @@ static struct Email *select_msg(struct Context *ctx)
         else
           menu->redraw |= REDRAW_CURRENT;
         break;
+      }
 
       case OP_GENERIC_SELECT_ENTRY:
+      {
         r = menu->current;
         done = true;
         break;
+      }
 
       case OP_EXIT:
+      {
         done = true;
         break;
+      }
     }
   }
 
@@ -463,6 +469,7 @@ SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, Securit
     {
       case 'c':
       case 'C':
+      {
         q = smime_cryptalg;
 
         if (p[1] == '<')
@@ -482,16 +489,21 @@ SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, Securit
 
         *q = '\0';
         break;
+      }
 
       case 'e':
       case 'E':
+      {
         flags |= SEC_ENCRYPT;
         break;
+      }
 
       case 'i':
       case 'I':
+      {
         flags |= SEC_INLINE;
         break;
+      }
 
       /* This used to be the micalg parameter.
        *
@@ -499,6 +511,7 @@ SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, Securit
        * to be able to recall old messages.  */
       case 'm':
       case 'M':
+      {
         if (p[1] == '<')
         {
           for (p += 2; (p[0] != '\0') && (p[0] != '>'); p++)
@@ -511,14 +524,18 @@ SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, Securit
         }
 
         break;
+      }
 
       case 'o':
       case 'O':
+      {
         flags |= SEC_OPPENCRYPT;
         break;
+      }
 
       case 's':
       case 'S':
+      {
         flags |= SEC_SIGN;
         q = sign_as;
 
@@ -539,6 +556,7 @@ SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, Securit
 
         q[0] = '\0';
         break;
+      }
 
       default:
         mutt_error(_("Illegal crypto header"));

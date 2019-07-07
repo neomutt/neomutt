@@ -261,13 +261,19 @@ static void ssl_err(struct SslSockData *data, int err)
   switch (e)
   {
     case SSL_ERROR_NONE:
+    {
       return;
+    }
     case SSL_ERROR_ZERO_RETURN:
+    {
       data->isopen = 0;
       break;
+    }
     case SSL_ERROR_SYSCALL:
+    {
       data->isopen = 0;
       break;
+    }
   }
 
   const char *errmsg = NULL;
@@ -276,44 +282,64 @@ static void ssl_err(struct SslSockData *data, int err)
   switch (e)
   {
     case SSL_ERROR_SYSCALL:
+    {
       errmsg = "I/O error";
       break;
+    }
     case SSL_ERROR_WANT_ACCEPT:
+    {
       errmsg = "retry accept";
       break;
+    }
     case SSL_ERROR_WANT_CONNECT:
+    {
       errmsg = "retry connect";
       break;
+    }
     case SSL_ERROR_WANT_READ:
+    {
       errmsg = "retry read";
       break;
+    }
     case SSL_ERROR_WANT_WRITE:
+    {
       errmsg = "retry write";
       break;
+    }
     case SSL_ERROR_WANT_X509_LOOKUP:
+    {
       errmsg = "retry x509 lookup";
       break;
+    }
     case SSL_ERROR_ZERO_RETURN:
+    {
       errmsg = "SSL connection closed";
       break;
+    }
     case SSL_ERROR_SSL:
+    {
       sslerr = ERR_get_error();
       switch (sslerr)
       {
         case 0:
+        {
           switch (err)
           {
             case 0:
+            {
               errmsg = "EOF";
               break;
+            }
             default:
               errmsg = strerror(errno);
           }
           break;
+        }
         default:
           errmsg = ERR_error_string(sslerr, NULL);
       }
       break;
+    }
     default:
       errmsg = "unknown error";
   }
@@ -986,9 +1012,12 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
       case -1:         /* abort */
       case OP_MAX + 1: /* reject */
       case OP_EXIT:
+      {
         done = 1;
         break;
-      case OP_MAX + 3: /* accept always */
+      }
+      case OP_MAX + 3:
+      { /* accept always */
         if (!allow_always)
           break;
         done = 0;
@@ -1008,18 +1037,23 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
           mutt_message(_("Certificate saved"));
           mutt_sleep(0);
         }
-      /* fallthrough */
-      case OP_MAX + 2: /* accept once */
+        /* fallthrough */
+      }
+      case OP_MAX + 2:
+      { /* accept once */
         done = 2;
         SSL_set_ex_data(ssl, SkipModeExDataIndex, NULL);
         ssl_cache_trusted_cert(cert);
         break;
-      case OP_MAX + 4: /* skip */
+      }
+      case OP_MAX + 4:
+      { /* skip */
         if (!ALLOW_SKIP)
           break;
         done = 2;
         SSL_set_ex_data(ssl, SkipModeExDataIndex, &SkipModeExDataIndex);
         break;
+      }
     }
   }
   OptIgnoreMacroEvents = false;
@@ -1208,11 +1242,15 @@ static int ssl_negotiate(struct Connection *conn, struct SslSockData *ssldata)
     switch (SSL_get_error(ssldata->ssl, err))
     {
       case SSL_ERROR_SYSCALL:
+      {
         errmsg = _("I/O error");
         break;
+      }
       case SSL_ERROR_SSL:
+      {
         errmsg = ERR_error_string(ERR_get_error(), NULL);
         break;
+      }
       default:
         errmsg = _("unknown error");
     }

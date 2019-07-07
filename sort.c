@@ -324,30 +324,50 @@ sort_t *mutt_get_sort_func(enum SortType method)
   switch (method)
   {
     case SORT_DATE:
+    {
       return compare_date_sent;
+    }
     case SORT_FROM:
+    {
       return compare_from;
+    }
     case SORT_LABEL:
+    {
       return compare_label;
+    }
     case SORT_ORDER:
+    {
 #ifdef USE_NNTP
       if (Context && (Context->mailbox->magic == MUTT_NNTP))
         return nntp_compare_order;
       else
 #endif
         return compare_order;
+    }
     case SORT_RECEIVED:
+    {
       return compare_date_received;
+    }
     case SORT_SCORE:
+    {
       return compare_score;
+    }
     case SORT_SIZE:
+    {
       return compare_size;
+    }
     case SORT_SPAM:
+    {
       return compare_spam;
+    }
     case SORT_SUBJECT:
+    {
       return compare_subject;
+    }
     case SORT_TO:
+    {
       return compare_to;
+    }
     default:
       return NULL;
   }

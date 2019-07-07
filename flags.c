@@ -70,7 +70,7 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
   switch (flag)
   {
     case MUTT_DELETE:
-
+    {
       if (!(m->rights & MUTT_ACL_DELETE))
         return;
 
@@ -119,9 +119,10 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
           m->changed = true;
       }
       break;
+    }
 
     case MUTT_PURGE:
-
+    {
       if (!(m->rights & MUTT_ACL_DELETE))
         return;
 
@@ -133,9 +134,10 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
       else if (e->purge)
         e->purge = false;
       break;
+    }
 
     case MUTT_NEW:
-
+    {
       if (!(m->rights & MUTT_ACL_SEEN))
         return;
 
@@ -172,9 +174,10 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
           m->changed = true;
       }
       break;
+    }
 
     case MUTT_OLD:
-
+    {
       if (!(m->rights & MUTT_ACL_SEEN))
         return;
 
@@ -204,9 +207,10 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
           m->changed = true;
       }
       break;
+    }
 
     case MUTT_READ:
-
+    {
       if (!(m->rights & MUTT_ACL_SEEN))
         return;
 
@@ -240,9 +244,10 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
           m->changed = true;
       }
       break;
+    }
 
     case MUTT_REPLIED:
-
+    {
       if (!(m->rights & MUTT_ACL_WRITE))
         return;
 
@@ -275,9 +280,10 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
           m->changed = true;
       }
       break;
+    }
 
     case MUTT_FLAG:
-
+    {
       if (!(m->rights & MUTT_ACL_WRITE))
         return;
 
@@ -305,8 +311,10 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
           m->changed = true;
       }
       break;
+    }
 
     case MUTT_TAG:
+    {
       if (bf)
       {
         if (!e->tagged)
@@ -325,6 +333,7 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
           m->msg_tagged--;
       }
       break;
+    }
   }
 
   if (update)
@@ -461,34 +470,46 @@ int mutt_change_flag(struct Mailbox *m, struct EmailList *el, bool bf)
   {
     case 'd':
     case 'D':
+    {
       if (!bf)
         mutt_emails_set_flag(m, el, MUTT_PURGE, bf);
       flag = MUTT_DELETE;
       break;
+    }
 
     case 'N':
     case 'n':
+    {
       flag = MUTT_NEW;
       break;
+    }
 
     case 'o':
     case 'O':
+    {
       mutt_emails_set_flag(m, el, MUTT_READ, !bf);
       flag = MUTT_OLD;
       break;
+    }
 
     case 'r':
     case 'R':
+    {
       flag = MUTT_REPLIED;
       break;
+    }
 
     case '*':
+    {
       flag = MUTT_TAG;
       break;
+    }
 
     case '!':
+    {
       flag = MUTT_FLAG;
       break;
+    }
 
     default:
       BEEP();

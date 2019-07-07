@@ -1131,11 +1131,13 @@ static enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
       switch (state)
       {
         case GS_NONE:
+        {
           mutt_buffer_printf(err, _("%sgroup: missing -rx or -addr"),
                              (data == MUTT_UNGROUP) ? "un" : "");
           goto warn;
-
+        }
         case GS_RX:
+        {
           if ((data == MUTT_GROUP) &&
               (mutt_grouplist_add_regex(&gl, buf->data, REG_ICASE, err) != 0))
           {
@@ -1147,6 +1149,7 @@ static enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
             goto bail;
           }
           break;
+        }
 
         case GS_ADDR:
         {
@@ -2661,26 +2664,38 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
       {
         case 'c':
         case 'C':
+        {
           if (tok->dptr[0] == '\0')
             return -1; /* premature end of token */
           mutt_buffer_addch(dest, (toupper((unsigned char) tok->dptr[0]) - '@') & 0x7f);
           tok->dptr++;
           break;
+        }
         case 'e':
+        {
           mutt_buffer_addch(dest, '\033'); // Escape
           break;
+        }
         case 'f':
+        {
           mutt_buffer_addch(dest, '\f');
           break;
+        }
         case 'n':
+        {
           mutt_buffer_addch(dest, '\n');
           break;
+        }
         case 'r':
+        {
           mutt_buffer_addch(dest, '\r');
           break;
+        }
         case 't':
+        {
           mutt_buffer_addch(dest, '\t');
           break;
+        }
         default:
           if (isdigit((unsigned char) ch) && isdigit((unsigned char) tok->dptr[0]) &&
               isdigit((unsigned char) tok->dptr[1]))
@@ -3337,8 +3352,9 @@ enum QuadOption query_quadoption(enum QuadOption opt, const char *prompt)
   {
     case MUTT_YES:
     case MUTT_NO:
+    {
       return opt;
-
+    }
     default:
       opt = mutt_yesorno(prompt, (opt == MUTT_ASKYES));
       mutt_window_clearline(MuttMessageWindow, 0);

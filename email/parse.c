@@ -548,6 +548,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
   switch (tolower(line[0]))
   {
     case 'a':
+    {
       if (mutt_str_strcasecmp(line + 1, "pparently-to") == 0)
       {
         mutt_addrlist_parse(&env->to, p);
@@ -559,16 +560,20 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
         matched = true;
       }
       break;
+    }
 
     case 'b':
+    {
       if (mutt_str_strcasecmp(line + 1, "cc") == 0)
       {
         mutt_addrlist_parse(&env->bcc, p);
         matched = true;
       }
       break;
+    }
 
     case 'c':
+    {
       if (mutt_str_strcasecmp(line + 1, "c") == 0)
       {
         mutt_addrlist_parse(&env->cc, p);
@@ -627,8 +632,10 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
         }
       }
       break;
+    }
 
     case 'd':
+    {
       if (mutt_str_strcasecmp("ate", line + 1) == 0)
       {
         mutt_str_replace(&env->date, p);
@@ -646,16 +653,20 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
         matched = true;
       }
       break;
+    }
 
     case 'e':
+    {
       if ((mutt_str_strcasecmp("xpires", line + 1) == 0) && e &&
           (mutt_date_parse_date(p, NULL) < time(NULL)))
       {
         e->expired = true;
       }
       break;
+    }
 
     case 'f':
+    {
       if (mutt_str_strcasecmp("rom", line + 1) == 0)
       {
         mutt_addrlist_parse(&env->from, p);
@@ -673,8 +684,10 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
       }
 #endif
       break;
+    }
 
     case 'i':
+    {
       if (mutt_str_strcasecmp(line + 1, "n-reply-to") == 0)
       {
         mutt_list_free(&env->in_reply_to);
@@ -682,8 +695,10 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
         matched = true;
       }
       break;
+    }
 
     case 'l':
+    {
       if (mutt_str_strcasecmp(line + 1, "ines") == 0)
       {
         if (e)
@@ -724,8 +739,10 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
         matched = true;
       }
       break;
+    }
 
     case 'm':
+    {
       if (mutt_str_strcasecmp(line + 1, "ime-version") == 0)
       {
         if (e)
@@ -759,9 +776,11 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
         }
       }
       break;
+    }
 
 #ifdef USE_NNTP
     case 'n':
+    {
       if (mutt_str_strcasecmp(line + 1, "ewsgroups") == 0)
       {
         FREE(&env->newsgroups);
@@ -770,9 +789,11 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
         matched = true;
       }
       break;
+    }
 #endif
 
     case 'o':
+    {
       /* field 'Organization:' saves only for pager! */
       if (mutt_str_strcasecmp(line + 1, "rganization") == 0)
       {
@@ -780,8 +801,10 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
           env->organization = mutt_str_strdup(p);
       }
       break;
+    }
 
     case 'r':
+    {
       if (mutt_str_strcasecmp(line + 1, "eferences") == 0)
       {
         mutt_list_free(&env->references);
@@ -809,8 +832,10 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
         }
       }
       break;
+    }
 
     case 's':
+    {
       if (mutt_str_strcasecmp(line + 1, "ubject") == 0)
       {
         if (!env->subject)
@@ -831,14 +856,20 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
             switch (*p)
             {
               case 'O':
+              {
                 e->old = C_MarkOld;
                 break;
+              }
               case 'R':
+              {
                 e->read = true;
                 break;
+              }
               case 'r':
+              {
                 e->replied = true;
                 break;
+              }
             }
             p++;
           }
@@ -853,16 +884,20 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
         env->supersedes = mutt_str_strdup(p);
       }
       break;
+    }
 
     case 't':
+    {
       if (mutt_str_strcasecmp(line + 1, "o") == 0)
       {
         mutt_addrlist_parse(&env->to, p);
         matched = true;
       }
       break;
+    }
 
     case 'x':
+    {
       if (mutt_str_strcasecmp(line + 1, "-status") == 0)
       {
         if (e)
@@ -872,16 +907,24 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
             switch (*p)
             {
               case 'A':
+              {
                 e->replied = true;
                 break;
+              }
               case 'D':
+              {
                 e->deleted = true;
                 break;
+              }
               case 'F':
+              {
                 e->flagged = true;
                 break;
+              }
               default:
+              {
                 break;
+              }
             }
             p++;
           }
@@ -913,9 +956,11 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
         mutt_addrlist_parse(&env->x_original_to, p);
         matched = true;
       }
-
+    }
     default:
+    {
       break;
+    }
   }
 
   /* Keep track of the user-defined headers */
@@ -1292,6 +1337,7 @@ void mutt_parse_part(FILE *fp, struct Body *b)
   switch (b->type)
   {
     case TYPE_MULTIPART:
+    {
 #ifdef SUN_ATTACHMENT
       if (mutt_str_strcasecmp(b->subtype, "x-sun-attachment") == 0)
         bound = "--------";
@@ -1303,8 +1349,10 @@ void mutt_parse_part(FILE *fp, struct Body *b)
       b->parts = mutt_parse_multipart(fp, bound, b->offset + b->length,
                                       (mutt_str_strcasecmp("digest", b->subtype) == 0));
       break;
+    }
 
     case TYPE_MESSAGE:
+    {
       if (b->subtype)
       {
         fseeko(fp, b->offset, SEEK_SET);
@@ -1316,6 +1364,7 @@ void mutt_parse_part(FILE *fp, struct Body *b)
           return;
       }
       break;
+    }
 
     default:
       return;

@@ -1447,16 +1447,22 @@ void mutt_file_expand_fmt(struct Buffer *dest, const char *fmt, const char *src)
       switch (p[1])
       {
         case '%':
+        {
           mutt_buffer_addch(dest, *p++);
           break;
+        }
         case 's':
+        {
           found = true;
           mutt_buffer_addstr(dest, src);
           p++;
           break;
+        }
         default:
+        {
           mutt_buffer_addch(dest, *p);
           break;
+        }
       }
     }
     else
@@ -1531,23 +1537,29 @@ void mutt_file_get_stat_timespec(struct timespec *dest, struct stat *sb, enum Mu
   switch (type)
   {
     case MUTT_STAT_ATIME:
+    {
       dest->tv_sec = sb->st_atime;
 #ifdef HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC
       dest->tv_nsec = sb->st_atim.tv_nsec;
 #endif
       break;
+    }
     case MUTT_STAT_MTIME:
+    {
       dest->tv_sec = sb->st_mtime;
 #ifdef HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC
       dest->tv_nsec = sb->st_mtim.tv_nsec;
 #endif
       break;
+    }
     case MUTT_STAT_CTIME:
+    {
       dest->tv_sec = sb->st_ctime;
 #ifdef HAVE_STRUCT_STAT_ST_CTIM_TV_NSEC
       dest->tv_nsec = sb->st_ctim.tv_nsec;
 #endif
       break;
+    }
   }
 }
 

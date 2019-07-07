@@ -438,24 +438,33 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
       switch (tmp[1])
       {
         case '?':
+        {
           addstr(_(EditorHelp1));
           addstr(_(EditorHelp2));
           break;
+        }
         case 'b':
+        {
           mutt_addrlist_parse2(&e_new->env->bcc, p);
           mutt_expand_aliases(&e_new->env->bcc);
           break;
+        }
         case 'c':
+        {
           mutt_addrlist_parse2(&e_new->env->cc, p);
           mutt_expand_aliases(&e_new->env->cc);
           break;
+        }
         case 'h':
+        {
           be_edit_header(e_new->env, true);
           break;
+        }
         case 'F':
         case 'f':
         case 'm':
         case 'M':
+        {
           if (Context)
           {
             if (!*p && e_cur)
@@ -471,7 +480,9 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
           else
             addstr(_("No mailbox.\n"));
           break;
+        }
         case 'p':
+        {
           addstr("-----\n");
           addstr(_("Message contains:\n"));
           be_print_header(e_new->env);
@@ -483,10 +494,14 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
              but means "(press any key to continue using neomutt)". */
           addstr(_("(continue)\n"));
           break;
+        }
         case 'q':
+        {
           done = true;
           break;
+        }
         case 'r':
+        {
           if (*p)
           {
             mutt_str_strfcpy(tmp, p, sizeof(tmp));
@@ -496,14 +511,20 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
           else
             addstr(_("missing filename.\n"));
           break;
+        }
         case 's':
+        {
           mutt_str_replace(&e_new->env->subject, p);
           break;
+        }
         case 't':
+        {
           mutt_addrlist_parse(&e_new->env->to, p);
           mutt_expand_aliases(&e_new->env->to);
           break;
+        }
         case 'u':
+        {
           if (buflen)
           {
             buflen--;
@@ -516,9 +537,11 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
           else
             addstr(_("No lines in message.\n"));
           break;
+        }
 
         case 'e':
         case 'v':
+        {
           if (be_barf_file(path, buf, buflen) == 0)
           {
             const char *tag = NULL;
@@ -545,16 +568,23 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
             addstr(_("(continue)\n"));
           }
           break;
+        }
         case 'w':
+        {
           be_barf_file((p[0] != '\0') ? p : path, buf, buflen);
           break;
+        }
         case 'x':
+        {
           abort = true;
           done = true;
           break;
+        }
         default:
+        {
           printw(_("%s: unknown editor command (~? for help)\n"), tmp);
           break;
+        }
       }
     }
     else if (mutt_str_strcmp(".", tmp) == 0)

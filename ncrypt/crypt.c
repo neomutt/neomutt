@@ -1101,20 +1101,25 @@ int mutt_signed_handler(struct Body *a, struct State *s)
     switch (signed_type)
     {
       case SEC_SIGN:
+      {
         if ((a->next->type != TYPE_MULTIPART) ||
             (mutt_str_strcasecmp(a->next->subtype, "mixed") != 0))
         {
           inconsistent = true;
         }
         break;
+      }
       case PGP_SIGN:
+      {
         if ((a->next->type != TYPE_APPLICATION) ||
             (mutt_str_strcasecmp(a->next->subtype, "pgp-signature") != 0))
         {
           inconsistent = true;
         }
         break;
+      }
       case SMIME_SIGN:
+      {
         if ((a->next->type != TYPE_APPLICATION) ||
             ((mutt_str_strcasecmp(a->next->subtype, "x-pkcs7-signature") != 0) &&
              (mutt_str_strcasecmp(a->next->subtype, "pkcs7-signature") != 0)))
@@ -1122,6 +1127,7 @@ int mutt_signed_handler(struct Body *a, struct State *s)
           inconsistent = true;
         }
         break;
+      }
       default:
         inconsistent = true;
     }

@@ -277,15 +277,19 @@ static const char *compress_format_str(char *buf, size_t buflen, size_t col, int
   switch (op)
   {
     case 'f':
+    {
       /* Compressed file */
       mutt_buffer_quote_filename(quoted, m->realpath, false);
       snprintf(buf, buflen, "%s", mutt_b2s(quoted));
       break;
+    }
     case 't':
+    {
       /* Plaintext, temporary file */
       mutt_buffer_quote_filename(quoted, mutt_b2s(m->pathbuf), false);
       snprintf(buf, buflen, "%s", mutt_b2s(quoted));
       break;
+    }
   }
 
   mutt_buffer_pool_release(&quoted);

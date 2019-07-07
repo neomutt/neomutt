@@ -410,15 +410,19 @@ bool mutt_needs_mailcap(struct Body *m)
   switch (m->type)
   {
     case TYPE_TEXT:
+    {
       if (mutt_str_strcasecmp("plain", m->subtype) == 0)
         return false;
       break;
+    }
     case TYPE_APPLICATION:
+    {
       if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(m))
         return false;
       if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(m))
         return false;
       break;
+    }
 
     case TYPE_MULTIPART:
     case TYPE_MESSAGE:
@@ -732,15 +736,21 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
                  These three letters correspond to the choices in the string.  */
               (_("File is a directory, save under it: (y)es, (n)o, (a)ll?"), _("yna")))
       {
-        case 3: /* all */
+        case 3:
+        { /* all */
           mutt_str_replace(directory, fname);
           break;
-        case 1: /* yes */
+        }
+        case 1:
+        { /* yes */
           FREE(directory);
           break;
-        case -1: /* abort */
+        }
+        case -1:
+        { /* abort */
           FREE(directory);
           return -1;
+        }
         case 2: /* no */
           FREE(directory);
           return 1;
@@ -769,17 +779,24 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
                           // L10N: Options for: File exists, (o)verwrite, (a)ppend, or (c)ancel?
                           _("oac")))
     {
-      case -1: /* abort */
+      case -1:
+      { /* abort */
         return -1;
-      case 3: /* cancel */
+      }
+      case 3:
+      { /* cancel */
         return 1;
-
-      case 2: /* append */
+      }
+      case 2:
+      { /* append */
         *opt = MUTT_SAVE_APPEND;
         break;
-      case 1: /* overwrite */
+      }
+      case 1:
+      { /* overwrite */
         *opt = MUTT_SAVE_OVERWRITE;
         break;
+      }
     }
   }
   return 0;
@@ -1302,23 +1319,35 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
       switch (*src)
       {
         case 'f':
+        {
           *wptr = '\f';
           break;
+        }
         case 'n':
+        {
           *wptr = '\n';
           break;
+        }
         case 'r':
+        {
           *wptr = '\r';
           break;
+        }
         case 't':
+        {
           *wptr = '\t';
           break;
+        }
         case 'v':
+        {
           *wptr = '\v';
           break;
+        }
         default:
+        {
           *wptr = *src;
           break;
+        }
       }
       src++;
       wptr++;

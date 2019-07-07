@@ -220,6 +220,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
   switch (op)
   {
     case 'C':
+    {
       if (!optional)
       {
         if (mutt_is_text_part(aptr->content) &&
@@ -236,7 +237,9 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
         optional = 0;
       }
       break;
+    }
     case 'c':
+    {
       /* XXX */
       if (!optional)
       {
@@ -247,7 +250,9 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
       else if ((aptr->content->type != TYPE_TEXT) || aptr->content->noconv)
         optional = 0;
       break;
+    }
     case 'd':
+    {
       if (!optional)
       {
         if (aptr->content->description)
@@ -280,8 +285,10 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
       {
         break;
       }
-    /* fallthrough */
+      /* fallthrough */
+    }
     case 'F':
+    {
       if (!optional)
       {
         if (aptr->content->d_filename)
@@ -295,8 +302,10 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
         optional = 0;
         break;
       }
-    /* fallthrough */
+      /* fallthrough */
+    }
     case 'f':
+    {
       if (!optional)
       {
         if (aptr->content->filename && (*aptr->content->filename == '/'))
@@ -313,17 +322,23 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
       else if (!aptr->content->filename)
         optional = 0;
       break;
+    }
     case 'D':
+    {
       if (!optional)
         snprintf(buf, buflen, "%c", aptr->content->deleted ? 'D' : ' ');
       else if (!aptr->content->deleted)
         optional = 0;
       break;
+    }
     case 'e':
+    {
       if (!optional)
         mutt_format_s(buf, buflen, prec, ENCODING(aptr->content->encoding));
       break;
+    }
     case 'I':
+    {
       if (!optional)
       {
         const char dispchar[] = { 'I', 'A', 'F', '-' };
@@ -340,24 +355,32 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
         snprintf(buf, buflen, "%c", ch);
       }
       break;
+    }
     case 'm':
+    {
       if (!optional)
         mutt_format_s(buf, buflen, prec, TYPE(aptr->content));
       break;
+    }
     case 'M':
+    {
       if (!optional)
         mutt_format_s(buf, buflen, prec, aptr->content->subtype);
       else if (!aptr->content->subtype)
         optional = 0;
       break;
+    }
     case 'n':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, aptr->num + 1);
       }
       break;
+    }
     case 'Q':
+    {
       if (optional)
         optional = aptr->content->attach_qualifies;
       else
@@ -366,6 +389,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
         mutt_format_s(buf, buflen, fmt, "Q");
       }
       break;
+    }
     case 's':
     {
       size_t l;
@@ -390,24 +414,31 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
       break;
     }
     case 't':
+    {
       if (!optional)
         snprintf(buf, buflen, "%c", aptr->content->tagged ? '*' : ' ');
       else if (!aptr->content->tagged)
         optional = 0;
       break;
+    }
     case 'T':
+    {
       if (!optional)
         mutt_format_s_tree(buf, buflen, prec, NONULL(aptr->tree));
       else if (!aptr->tree)
         optional = 0;
       break;
+    }
     case 'u':
+    {
       if (!optional)
         snprintf(buf, buflen, "%c", aptr->content->unlink ? '-' : ' ');
       else if (!aptr->content->unlink)
         optional = 0;
       break;
+    }
     case 'X':
+    {
       if (optional)
         optional = (aptr->content->attach_count + aptr->content->attach_qualifies) != 0;
       else
@@ -416,6 +447,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
         snprintf(buf, buflen, fmt, aptr->content->attach_count + aptr->content->attach_qualifies);
       }
       break;
+    }
     default:
       *buf = '\0';
   }
@@ -1141,16 +1173,20 @@ int mutt_attach_display_loop(struct Menu *menu, int op, struct Email *e,
     switch (op)
     {
       case OP_DISPLAY_HEADERS:
+      {
         bool_str_toggle(Config, "weed", NULL);
         /* fallthrough */
-
+      }
       case OP_VIEW_ATTACH:
+      {
         op = mutt_view_attachment(CUR_ATTACH->fp, CUR_ATTACH->content,
                                   MUTT_VA_REGULAR, e, actx);
         break;
+      }
 
       case OP_NEXT_ENTRY:
-      case OP_MAIN_NEXT_UNDELETED: /* hack */
+      case OP_MAIN_NEXT_UNDELETED:
+      { /* hack */
         if (menu->current < menu->max - 1)
         {
           menu->current++;
@@ -1159,8 +1195,10 @@ int mutt_attach_display_loop(struct Menu *menu, int op, struct Email *e,
         else
           op = OP_NULL;
         break;
+      }
       case OP_PREV_ENTRY:
-      case OP_MAIN_PREV_UNDELETED: /* hack */
+      case OP_MAIN_PREV_UNDELETED:
+      { /* hack */
         if (menu->current > 0)
         {
           menu->current--;
@@ -1169,7 +1207,9 @@ int mutt_attach_display_loop(struct Menu *menu, int op, struct Email *e,
         else
           op = OP_NULL;
         break;
+      }
       case OP_EDIT_TYPE:
+      {
         /* when we edit the content-type, we should redisplay the attachment
          * immediately */
         mutt_edit_content_type(e, CUR_ATTACH->content, CUR_ATTACH->fp);
@@ -1181,18 +1221,23 @@ int mutt_attach_display_loop(struct Menu *menu, int op, struct Email *e,
         menu->redraw |= REDRAW_INDEX;
         op = OP_VIEW_ATTACH;
         break;
+      }
       /* functions which are passed through from the pager */
       case OP_CHECK_TRADITIONAL:
+      {
         if (!(WithCrypto & APPLICATION_PGP) || (e && e->security & PGP_TRADITIONAL_CHECKED))
         {
           op = OP_NULL;
           break;
         }
-      /* fallthrough */
+        /* fallthrough */
+      }
       case OP_ATTACH_COLLAPSE:
+      {
         if (recv)
           return op;
-      /* fallthrough */
+        /* fallthrough */
+      }
       default:
         op = OP_NULL;
     }
@@ -1436,22 +1481,28 @@ void mutt_view_attachments(struct Email *e)
     switch (op)
     {
       case OP_ATTACH_VIEW_MAILCAP:
+      {
         mutt_view_attachment(CUR_ATTACH->fp, CUR_ATTACH->content, MUTT_VA_MAILCAP, e, actx);
         menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_ATTACH_VIEW_TEXT:
+      {
         mutt_view_attachment(CUR_ATTACH->fp, CUR_ATTACH->content, MUTT_VA_AS_TEXT, e, actx);
         menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_DISPLAY_HEADERS:
       case OP_VIEW_ATTACH:
+      {
         op = mutt_attach_display_loop(menu, op, e, actx, true);
         menu->redraw = REDRAW_FULL;
         continue;
-
+      }
       case OP_ATTACH_COLLAPSE:
+      {
         if (!CUR_ATTACH->content->parts)
         {
           mutt_error(_("There are no subparts to show"));
@@ -1460,20 +1511,26 @@ void mutt_view_attachments(struct Email *e)
         attach_collapse(actx, menu);
         mutt_update_recvattach_menu(actx, menu, false);
         break;
+      }
 
       case OP_FORGET_PASSPHRASE:
+      {
         crypt_forget_passphrase();
         break;
+      }
 
       case OP_EXTRACT_KEYS:
+      {
         if (WithCrypto & APPLICATION_PGP)
         {
           recvattach_extract_pgp_keys(actx, menu);
           menu->redraw = REDRAW_FULL;
         }
         break;
+      }
 
       case OP_CHECK_TRADITIONAL:
+      {
         if (((WithCrypto & APPLICATION_PGP) != 0) &&
             recvattach_pgp_check_traditional(actx, menu))
         {
@@ -1481,18 +1538,24 @@ void mutt_view_attachments(struct Email *e)
           menu->redraw = REDRAW_FULL;
         }
         break;
+      }
 
       case OP_PRINT:
+      {
         mutt_print_attachment_list(actx, CUR_ATTACH->fp, menu->tagprefix,
                                    CUR_ATTACH->content);
         break;
+      }
 
       case OP_PIPE:
+      {
         mutt_pipe_attachment_list(actx, CUR_ATTACH->fp, menu->tagprefix,
                                   CUR_ATTACH->content, false);
         break;
+      }
 
       case OP_SAVE:
+      {
         mutt_save_attachment_list(actx, CUR_ATTACH->fp, menu->tagprefix,
                                   CUR_ATTACH->content, e, menu);
 
@@ -1501,8 +1564,10 @@ void mutt_view_attachments(struct Email *e)
 
         menu->redraw = REDRAW_MOTION_RESYNC | REDRAW_FULL;
         break;
+      }
 
       case OP_DELETE:
+      {
         CHECK_READONLY;
 
 #ifdef USE_POP
@@ -1573,8 +1638,10 @@ void mutt_view_attachments(struct Email *e)
           }
         }
         break;
+      }
 
       case OP_UNDELETE:
+      {
         CHECK_READONLY;
         if (!menu->tagprefix)
         {
@@ -1599,37 +1666,47 @@ void mutt_view_attachments(struct Email *e)
           }
         }
         break;
+      }
 
       case OP_RESEND:
+      {
         CHECK_ATTACH;
         mutt_attach_resend(CUR_ATTACH->fp, actx,
                            menu->tagprefix ? NULL : CUR_ATTACH->content);
         menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_BOUNCE_MESSAGE:
+      {
         CHECK_ATTACH;
         mutt_attach_bounce(m, CUR_ATTACH->fp, actx,
                            menu->tagprefix ? NULL : CUR_ATTACH->content);
         menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_FORWARD_MESSAGE:
+      {
         CHECK_ATTACH;
         mutt_attach_forward(CUR_ATTACH->fp, e, actx,
                             menu->tagprefix ? NULL : CUR_ATTACH->content, SEND_NO_FLAGS);
         menu->redraw = REDRAW_FULL;
         break;
+      }
 
 #ifdef USE_NNTP
       case OP_FORWARD_TO_GROUP:
+      {
         CHECK_ATTACH;
         mutt_attach_forward(CUR_ATTACH->fp, e, actx,
                             menu->tagprefix ? NULL : CUR_ATTACH->content, SEND_NEWS);
         menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_FOLLOWUP:
+      {
         CHECK_ATTACH;
 
         if (!CUR_ATTACH->content->email->env->followup_to ||
@@ -1644,7 +1721,8 @@ void mutt_view_attachments(struct Email *e)
           break;
         }
 #endif
-      /* fallthrough */
+        /* fallthrough */
+      }
       case OP_REPLY:
       case OP_GROUP_REPLY:
       case OP_GROUP_CHAT_REPLY:
@@ -1667,16 +1745,20 @@ void mutt_view_attachments(struct Email *e)
       }
 
       case OP_COMPOSE_TO_SENDER:
+      {
         CHECK_ATTACH;
         mutt_attach_mail_sender(CUR_ATTACH->fp, e, actx,
                                 menu->tagprefix ? NULL : CUR_ATTACH->content);
         menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_EDIT_TYPE:
+      {
         recvattach_edit_content_type(actx, menu, e);
         menu->redraw |= REDRAW_INDEX;
         break;
+      }
 
       case OP_EXIT:
         mx_msg_close(m, &msg);

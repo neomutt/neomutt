@@ -631,16 +631,22 @@ static unsigned int imap_fetch_msn_seqset(struct Buffer *b, struct ImapAccountDa
 
       switch (state)
       {
-        case 1: /* single: convert to a range */
+        case 1:
+        { /* single: convert to a range */
           state = 2;
-        /* fallthrough */
-        case 2: /* extend range ending */
+          /* fallthrough */
+        }
+        case 2:
+        { /* extend range ending */
           range_end = msn;
           break;
+        }
         default:
+        {
           state = 1;
           range_begin = msn;
           break;
+        }
       }
     }
     else if (state)

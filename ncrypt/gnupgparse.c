@@ -198,26 +198,40 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
         switch (*p)
         { /* look only at the first letter */
           case 'd':
+          {
             flags |= KEYFLAG_DISABLED;
             break;
+          }
           case 'e':
+          {
             flags |= KEYFLAG_EXPIRED;
             break;
+          }
           case 'f':
+          {
             trust = 3;
             break;
+          }
           case 'm':
+          {
             trust = 2;
             break;
+          }
           case 'n':
+          {
             trust = 1;
             break;
+          }
           case 'r':
+          {
             flags |= KEYFLAG_REVOKED;
             break;
+          }
           case 'u':
+          {
             trust = 3;
             break;
+          }
         }
 
         if (!is_uid && !(*is_subkey && C_PgpIgnoreSubkeys))
@@ -300,12 +314,18 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
         }
         break;
       }
-      case 7: /* valid for n days */
+      case 7:
+      { /* valid for n days */
         break;
-      case 8: /* Local id         */
+      }
+      case 8:
+      { /* Local id         */
         break;
-      case 9: /* ownertrust       */
+      }
+      case 9:
+      { /* ownertrust       */
         break;
+      }
       case 10: /* name             */
       {
         /* Empty field or no trailing colon.
@@ -345,9 +365,12 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
 
         break;
       }
-      case 11: /* signature class  */
+      case 11:
+      { /* signature class  */
         break;
-      case 12: /* key capabilities */
+      }
+      case 12:
+      { /* key capabilities */
         mutt_debug(LL_DEBUG2, "capabilities info: %s\n", p);
 
         while (*p)
@@ -355,16 +378,22 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
           switch (*p++)
           {
             case 'D':
+            {
               flags |= KEYFLAG_DISABLED;
               break;
+            }
 
             case 'e':
+            {
               flags |= KEYFLAG_CANENCRYPT;
               break;
+            }
 
             case 's':
+            {
               flags |= KEYFLAG_CANSIGN;
               break;
+            }
           }
         }
 
@@ -376,9 +405,12 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
         }
 
         break;
+      }
 
       default:
+      {
         break;
+      }
     }
   }
 

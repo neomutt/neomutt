@@ -62,11 +62,14 @@ const char *group_index_format_str(char *buf, size_t buflen, size_t col, int col
   switch (op)
   {
     case 'C':
+    {
       snprintf(fmt, sizeof(fmt), "%%%sd", prec);
       snprintf(buf, buflen, fmt, folder->num + 1);
       break;
+    }
 
     case 'd':
+    {
       if (folder->ff->nd->desc)
       {
         char *desc = mutt_str_strdup(folder->ff->nd->desc);
@@ -84,30 +87,38 @@ const char *group_index_format_str(char *buf, size_t buflen, size_t col, int col
         snprintf(buf, buflen, fmt, "");
       }
       break;
+    }
 
     case 'f':
+    {
       mutt_str_strfcpy(fn, folder->ff->name, sizeof(fn));
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, fn);
       break;
+    }
 
     case 'M':
+    {
       snprintf(fmt, sizeof(fmt), "%%%sc", prec);
       if (folder->ff->nd->deleted)
         snprintf(buf, buflen, fmt, 'D');
       else
         snprintf(buf, buflen, fmt, folder->ff->nd->allowed ? ' ' : '-');
       break;
+    }
 
     case 'N':
+    {
       snprintf(fmt, sizeof(fmt), "%%%sc", prec);
       if (folder->ff->nd->subscribed)
         snprintf(buf, buflen, fmt, ' ');
       else
         snprintf(buf, buflen, fmt, folder->ff->has_new_mail ? 'N' : 'u');
       break;
+    }
 
     case 'n':
+    {
       if (Context && (Context->mailbox->mdata == folder->ff->nd))
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -125,8 +136,10 @@ const char *group_index_format_str(char *buf, size_t buflen, size_t col, int col
         snprintf(buf, buflen, fmt, folder->ff->nd->unread);
       }
       break;
+    }
 
     case 's':
+    {
       if (flags & MUTT_FORMAT_OPTIONAL)
       {
         if (folder->ff->nd->unread != 0)
@@ -151,6 +164,7 @@ const char *group_index_format_str(char *buf, size_t buflen, size_t col, int col
         snprintf(buf, buflen, fmt, folder->ff->nd->unread);
       }
       break;
+    }
   }
   return src;
 }

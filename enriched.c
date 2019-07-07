@@ -507,13 +507,17 @@ int text_enriched_handler(struct Body *a, struct State *s)
     switch (state)
     {
       case TEXT:
+      {
         switch (wc)
         {
           case '<':
+          {
             state = LANGLE;
             break;
+          }
 
           case '\n':
+          {
             if (stte.tag_level[RICH_NOFILL])
             {
               enriched_flush(&stte, true);
@@ -524,13 +528,16 @@ int text_enriched_handler(struct Body *a, struct State *s)
               state = NEWLINE;
             }
             break;
+          }
 
           default:
             enriched_putwc(wc, &stte);
         }
         break;
+      }
 
       case LANGLE:
+      {
         if (wc == (wchar_t) '<')
         {
           enriched_putwc(wc, &stte);
@@ -542,9 +549,11 @@ int text_enriched_handler(struct Body *a, struct State *s)
           tag_len = 0;
           state = TAG;
         }
-      /* Yes, (it wasn't a <<, so this char is first in TAG) */
-      /* fallthrough */
+        /* Yes, (it wasn't a <<, so this char is first in TAG) */
+        /* fallthrough */
+      }
       case TAG:
+      {
         if (wc == (wchar_t) '>')
         {
           tag[tag_len] = (wchar_t) '\0';
@@ -556,13 +565,17 @@ int text_enriched_handler(struct Body *a, struct State *s)
         else
           state = BOGUS_TAG;
         break;
+      }
 
       case BOGUS_TAG:
+      {
         if (wc == (wchar_t) '>')
           state = TEXT;
         break;
+      }
 
       case NEWLINE:
+      {
         if (wc == (wchar_t) '\n')
           enriched_flush(&stte, true);
         else
@@ -572,16 +585,21 @@ int text_enriched_handler(struct Body *a, struct State *s)
           state = TEXT;
         }
         break;
+      }
 
       case ST_EOF:
+      {
         enriched_putwc((wchar_t) '\0', &stte);
         enriched_flush(&stte, true);
         state = DONE;
         break;
+      }
 
       case DONE:
+      {
         /* not reached */
         break;
+      }
     }
   }
 

@@ -1300,28 +1300,38 @@ void maildir_parse_flags(struct Email *e, const char *path)
       switch (*p)
       {
         case 'F':
+        {
           e->flagged = true;
           break;
+        }
 
-        case 'R': /* replied */
+        case 'R':
+        { /* replied */
           e->replied = true;
           break;
+        }
 
-        case 'S': /* seen */
+        case 'S':
+        { /* seen */
           e->read = true;
           break;
+        }
 
-        case 'T': /* trashed */
+        case 'T':
+        { /* trashed */
           if (!e->flagged || !C_FlagSafe)
           {
             e->trash = true;
             e->deleted = true;
           }
           break;
+        }
 
         default:
+        {
           *q++ = *p;
           break;
+        }
       }
       p++;
     }

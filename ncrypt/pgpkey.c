@@ -197,13 +197,16 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
   switch (tolower(op))
   {
     case 'a':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
         snprintf(buf, buflen, fmt, key->algorithm);
       }
       break;
+    }
     case 'c':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
@@ -212,7 +215,9 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
       else if (!(kflags & KEYFLAG_ABILITIES))
         optional = 0;
       break;
+    }
     case 'f':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sc", prec);
@@ -221,28 +226,36 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
       else if (!(kflags & KEYFLAG_RESTRICTIONS))
         optional = 0;
       break;
+    }
     case 'k':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
         snprintf(buf, buflen, fmt, pgp_this_keyid(key));
       }
       break;
+    }
     case 'l':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, key->keylen);
       }
       break;
+    }
     case 'n':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, entry->num);
       }
       break;
+    }
     case 't':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sc", prec);
@@ -254,13 +267,16 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
         optional = 0;
       }
       break;
+    }
     case 'u':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
         snprintf(buf, buflen, fmt, NONULL(uid->addr));
       }
       break;
+    }
     case '[':
 
     {
@@ -643,18 +659,26 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
   switch (C_PgpSortKeys & SORT_MASK)
   {
     case SORT_ADDRESS:
+    {
       f = pgp_compare_address;
       break;
+    }
     case SORT_DATE:
+    {
       f = pgp_compare_date;
       break;
+    }
     case SORT_KEYID:
+    {
       f = pgp_compare_keyid;
       break;
+    }
     case SORT_TRUST:
     default:
+    {
       f = pgp_compare_trust;
       break;
+    }
   }
   qsort(key_table, i, sizeof(struct PgpUid *), f);
 
@@ -691,7 +715,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
     switch (mutt_menu_loop(menu))
     {
       case OP_VERIFY_KEY:
-
+      {
         mutt_mktemp(tempfile, sizeof(tempfile));
         FILE *fp_null = fopen("/dev/null", "w");
         if (!fp_null)
@@ -732,14 +756,16 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
         menu->redraw = REDRAW_FULL;
 
         break;
+      }
 
       case OP_VIEW_ID:
-
+      {
         mutt_message("%s", NONULL(key_table[menu->current]->addr));
         break;
+      }
 
       case OP_GENERIC_SELECT_ENTRY:
-
+      {
         /* XXX make error reporting more verbose */
 
         if (OptPgpCheckTrust)
@@ -767,16 +793,22 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
             switch (key_table[menu->current]->trust & 0x03)
             {
               case 0:
+              {
                 str = _("ID has undefined validity. Do you really want to use "
                         "the key?");
                 break;
+              }
               case 1:
+              {
                 str = _("ID is not valid. Do you really want to use the key?");
                 break;
+              }
               case 2:
+              {
                 str = _("ID is only marginally valid. Do you really want to "
                         "use the key?");
                 break;
+              }
             }
           }
 
@@ -792,12 +824,14 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
         kp = key_table[menu->current]->parent;
         done = true;
         break;
+      }
 
       case OP_EXIT:
-
+      {
         kp = NULL;
         done = true;
         break;
+      }
     }
   }
 

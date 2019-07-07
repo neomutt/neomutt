@@ -77,47 +77,63 @@ static int getnameinfo_err(int ret)
   switch (ret)
   {
     case EAI_AGAIN:
+    {
       mutt_debug(LL_DEBUG1,
                  "The name could not be resolved at this time.  Future "
                  "attempts may succeed\n");
       err = SASL_TRYAGAIN;
       break;
+    }
     case EAI_BADFLAGS:
+    {
       mutt_debug(LL_DEBUG1, "The flags had an invalid value\n");
       err = SASL_BADPARAM;
       break;
+    }
     case EAI_FAIL:
+    {
       mutt_debug(LL_DEBUG1, "A non-recoverable error occurred\n");
       err = SASL_FAIL;
       break;
+    }
     case EAI_FAMILY:
+    {
       mutt_debug(LL_DEBUG1,
                  "The address family was not recognized or the address "
                  "length was invalid for the specified family\n");
       err = SASL_BADPROT;
       break;
+    }
     case EAI_MEMORY:
+    {
       mutt_debug(LL_DEBUG1, "There was a memory allocation failure\n");
       err = SASL_NOMEM;
       break;
+    }
     case EAI_NONAME:
+    {
       mutt_debug(LL_DEBUG1,
                  "The name does not resolve for the supplied parameters.  "
                  "NI_NAMEREQD is set and the host's name can't be located, "
                  "or both nodename and servname were null.\n");
       err = SASL_FAIL; /* no real equivalent */
       break;
+    }
     case EAI_SYSTEM:
+    {
       mutt_debug(LL_DEBUG1,
                  "A system error occurred.  The error code can be found in "
                  "errno(%d,%s))\n",
                  errno, strerror(errno));
       err = SASL_FAIL; /* no real equivalent */
       break;
+    }
     default:
+    {
       mutt_debug(LL_DEBUG1, "Unknown error %d\n", ret);
       err = SASL_FAIL; /* no real equivalent */
       break;
+    }
   }
   return err;
 }
@@ -175,19 +191,27 @@ static int mutt_sasl_cb_log(void *context, int priority, const char *message)
   {
     case SASL_LOG_TRACE:
     case SASL_LOG_PASS:
+    {
       mutt_priority = 5;
       break;
+    }
     case SASL_LOG_DEBUG:
     case SASL_LOG_NOTE:
+    {
       mutt_priority = 3;
       break;
+    }
     case SASL_LOG_FAIL:
     case SASL_LOG_WARN:
+    {
       mutt_priority = 2;
       break;
+    }
     case SASL_LOG_ERR:
+    {
       mutt_priority = 1;
       break;
+    }
     default:
       mutt_debug(LL_DEBUG1, "SASL unknown log priority: %s\n", message);
       return SASL_OK;
@@ -548,18 +572,26 @@ int mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn)
   switch (conn->account.type)
   {
     case MUTT_ACCT_TYPE_IMAP:
+    {
       service = "imap";
       break;
+    }
     case MUTT_ACCT_TYPE_POP:
+    {
       service = "pop";
       break;
+    }
     case MUTT_ACCT_TYPE_SMTP:
+    {
       service = "smtp";
       break;
+    }
 #ifdef USE_NNTP
     case MUTT_ACCT_TYPE_NNTP:
+    {
       service = "nntp";
       break;
+    }
 #endif
     default:
       mutt_error(_("Unknown SASL profile"));

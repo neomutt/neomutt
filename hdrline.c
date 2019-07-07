@@ -583,6 +583,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
   {
     case 'A':
     case 'I':
+    {
       if (op == 'A')
       {
         if (reply_to && reply_to->mailbox)
@@ -605,8 +606,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         }
       }
       /* fallthrough */
-
+    }
     case 'a':
+    {
       colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_AUTHOR);
       if (from && from->mailbox)
       {
@@ -616,9 +618,11 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         mutt_format_s(buf + colorlen, buflen - colorlen, prec, "");
       add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       break;
+    }
 
     case 'B':
     case 'K':
+    {
       if (!first_mailing_list(buf, buflen, &e->env->to) &&
           !first_mailing_list(buf, buflen, &e->env->cc))
       {
@@ -639,8 +643,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       }
       /* if 'B' returns nothing */
       /* fallthrough */
-
+    }
     case 'b':
+    {
       if (m)
       {
         p = strrchr(mutt_b2s(m->pathbuf), '/');
@@ -654,20 +659,25 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       mutt_str_strfcpy(tmp, buf, sizeof(tmp));
       mutt_format_s(buf, buflen, prec, tmp);
       break;
+    }
 
     case 'c':
+    {
       colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_SIZE);
       mutt_str_pretty_size(tmp, sizeof(tmp), mutt_email_size(e));
       mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
       add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       break;
+    }
 
     case 'C':
+    {
       colorlen = add_index_color(fmt, sizeof(fmt), flags, MT_COLOR_INDEX_NUMBER);
       snprintf(fmt + colorlen, sizeof(fmt) - colorlen, "%%%sd", prec);
       add_index_color(fmt + colorlen, sizeof(fmt) - colorlen, flags, MT_COLOR_INDEX);
       snprintf(buf, buflen, fmt, e->msgno + 1);
       break;
+    }
 
     case 'd':
     case 'D':
@@ -703,6 +713,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
             switch (*(is++))
             {
               case 'y':
+              {
                 if (t > 1)
                 {
                   t--;
@@ -711,8 +722,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
                 t += ((tm.tm_mon * 60 * 60 * 24 * 30) + (tm.tm_mday * 60 * 60 * 24) +
                       (tm.tm_hour * 60 * 60) + (tm.tm_min * 60) + tm.tm_sec);
                 break;
+              }
 
               case 'm':
+              {
                 if (t > 1)
                 {
                   t--;
@@ -721,8 +734,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
                 t += ((tm.tm_mday * 60 * 60 * 24) + (tm.tm_hour * 60 * 60) +
                       (tm.tm_min * 60) + tm.tm_sec);
                 break;
+              }
 
               case 'w':
+              {
                 if (t > 1)
                 {
                   t--;
@@ -731,8 +746,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
                 t += ((tm.tm_wday * 60 * 60 * 24) + (tm.tm_hour * 60 * 60) +
                       (tm.tm_min * 60) + tm.tm_sec);
                 break;
+              }
 
               case 'd':
+              {
                 if (t > 1)
                 {
                   t--;
@@ -740,8 +757,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
                 }
                 t += ((tm.tm_hour * 60 * 60) + (tm.tm_min * 60) + tm.tm_sec);
                 break;
+              }
 
               case 'H':
+              {
                 if (t > 1)
                 {
                   t--;
@@ -749,8 +768,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
                 }
                 t += ((tm.tm_min * 60) + tm.tm_sec);
                 break;
+              }
 
               case 'M':
+              {
                 if (t > 1)
                 {
                   t--;
@@ -758,9 +779,12 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
                 }
                 t += (tm.tm_sec);
                 break;
+              }
 
               default:
+              {
                 break;
+              }
             }
             j += t;
           }
@@ -862,11 +886,14 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       }
 
     case 'e':
+    {
       snprintf(fmt, sizeof(fmt), "%%%sd", prec);
       snprintf(buf, buflen, fmt, mutt_messages_in_thread(m, e, 1));
       break;
+    }
 
     case 'E':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -875,14 +902,18 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       else if (mutt_messages_in_thread(m, e, 0) <= 1)
         optional = 0;
       break;
+    }
 
     case 'f':
+    {
       tmp[0] = '\0';
       mutt_addrlist_write(tmp, sizeof(tmp), &e->env->from, true);
       mutt_format_s(buf, buflen, prec, tmp);
       break;
+    }
 
     case 'F':
+    {
       if (!optional)
       {
         const bool is_plain = (src[0] == 'p');
@@ -900,8 +931,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         optional = 0;
       }
       break;
+    }
 
     case 'g':
+    {
       tags = driver_tags_get_transformed(&e->tags);
       if (!optional)
       {
@@ -913,6 +946,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         optional = 0;
       FREE(&tags);
       break;
+    }
 
     case 'G':
     {
@@ -955,6 +989,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     }
 
     case 'H':
+    {
       /* (Hormel) spam score */
       if (optional)
         optional = e->env->spam ? 1 : 0;
@@ -964,10 +999,13 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       else
         mutt_format_s(buf, buflen, prec, "");
       break;
+    }
 
     case 'i':
+    {
       mutt_format_s(buf, buflen, prec, e->env->message_id ? e->env->message_id : "<no.id>");
       break;
+    }
 
     case 'J':
     {
@@ -1009,6 +1047,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     }
 
     case 'l':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -1019,8 +1058,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       else if (e->lines <= 0)
         optional = 0;
       break;
+    }
 
     case 'L':
+    {
       if (!optional)
       {
         colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_AUTHOR);
@@ -1034,8 +1075,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         optional = 0;
       }
       break;
+    }
 
     case 'm':
+    {
       if (m)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -1044,14 +1087,18 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       else
         mutt_str_strfcpy(buf, "(null)", buflen);
       break;
+    }
 
     case 'n':
+    {
       colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_AUTHOR);
       mutt_format_s(buf + colorlen, buflen - colorlen, prec, mutt_get_name(from));
       add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       break;
+    }
 
     case 'M':
+    {
       snprintf(fmt, sizeof(fmt), "%%%sd", prec);
       if (!optional)
       {
@@ -1075,8 +1122,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           optional = 0;
       }
       break;
+    }
 
     case 'N':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -1088,8 +1137,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           optional = 0;
       }
       break;
+    }
 
     case 'O':
+    {
       if (!optional)
       {
         make_from_addr(e->env, tmp, sizeof(tmp), true);
@@ -1103,32 +1154,41 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         optional = 0;
       }
       break;
+    }
 
     case 'P':
+    {
       mutt_str_strfcpy(buf, hfi->pager_progress, buflen);
       break;
+    }
 
 #ifdef USE_NNTP
     case 'q':
+    {
       mutt_format_s(buf, buflen, prec, e->env->newsgroups ? e->env->newsgroups : "");
       break;
+    }
 #endif
 
     case 'r':
+    {
       tmp[0] = '\0';
       mutt_addrlist_write(tmp, sizeof(tmp), &e->env->to, true);
       if (optional && (tmp[0] == '\0'))
         optional = 0;
       mutt_format_s(buf, buflen, prec, tmp);
       break;
+    }
 
     case 'R':
+    {
       tmp[0] = '\0';
       mutt_addrlist_write(tmp, sizeof(tmp), &e->env->cc, true);
       if (optional && (tmp[0] == '\0'))
         optional = 0;
       mutt_format_s(buf, buflen, prec, tmp);
       break;
+    }
 
     case 's':
     {
@@ -1189,6 +1249,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     }
 
     case 't':
+    {
       tmp[0] = '\0';
       if (!check_for_mailing_list(&e->env->to, "To ", tmp, sizeof(tmp)) &&
           !check_for_mailing_list(&e->env->cc, "Cc ", tmp, sizeof(tmp)))
@@ -1200,6 +1261,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       }
       mutt_format_s(buf, buflen, prec, tmp);
       break;
+    }
 
     case 'T':
     {
@@ -1213,6 +1275,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     }
 
     case 'u':
+    {
       if (from && from->mailbox)
       {
         mutt_str_strfcpy(tmp, mutt_addr_for_display(from), sizeof(tmp));
@@ -1224,8 +1287,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         tmp[0] = '\0';
       mutt_format_s(buf, buflen, prec, tmp);
       break;
+    }
 
     case 'v':
+    {
       if (mutt_addr_is_user(from))
       {
         if (to)
@@ -1242,8 +1307,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         *p = '\0';
       mutt_format_s(buf, buflen, prec, tmp);
       break;
+    }
 
     case 'W':
+    {
       if (!optional)
       {
         mutt_format_s(buf, buflen, prec, e->env->organization ? e->env->organization : "");
@@ -1251,9 +1318,11 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       else if (!e->env->organization)
         optional = 0;
       break;
+    }
 
 #ifdef USE_NNTP
     case 'x':
+    {
       if (!optional)
       {
         mutt_format_s(buf, buflen, prec, e->env->x_comment_to ? e->env->x_comment_to : "");
@@ -1261,6 +1330,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       else if (!e->env->x_comment_to)
         optional = 0;
       break;
+    }
 #endif
 
     case 'X':
@@ -1277,6 +1347,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     }
 
     case 'y':
+    {
       if (optional)
         optional = e->env->x_label ? 1 : 0;
 
@@ -1284,6 +1355,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       mutt_format_s(buf + colorlen, buflen - colorlen, prec, NONULL(e->env->x_label));
       add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       break;
+    }
 
     case 'Y':
     {
@@ -1321,6 +1393,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     }
 
     case 'z':
+    {
       if (src[0] == 's') /* status: deleted/new/old/replied */
       {
         const char *ch = NULL;
@@ -1389,6 +1462,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
       add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       break;
+    }
 
     case 'Z':
     {
@@ -1471,8 +1545,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       /* fallthrough */
 
     default:
+    {
       snprintf(buf, buflen, "%%%s%c", prec, op);
       break;
+    }
   }
 
   if (optional)

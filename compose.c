@@ -781,14 +781,20 @@ static unsigned long cum_attachs_size(struct Menu *menu)
       switch (b->encoding)
       {
         case ENC_QUOTED_PRINTABLE:
+        {
           s += 3 * (info->lobin + info->hibin) + info->ascii + info->crlf;
           break;
+        }
         case ENC_BASE64:
+        {
           s += (4 * (info->lobin + info->hibin + info->ascii + info->crlf)) / 3;
           break;
+        }
         default:
+        {
           s += info->lobin + info->hibin + info->ascii + info->crlf;
           break;
+        }
       }
     }
   }
@@ -818,33 +824,44 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
   *buf = '\0';
   switch (op)
   {
-    case 'a': /* total number of attachments */
+    case 'a':
+    { /* total number of attachments */
       snprintf(fmt, sizeof(fmt), "%%%sd", prec);
       snprintf(buf, buflen, fmt, menu->max);
       break;
+    }
 
-    case 'h': /* hostname */
+    case 'h':
+    { /* hostname */
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, NONULL(ShortHostname));
       break;
+    }
 
-    case 'l': /* approx length of current message in bytes */
+    case 'l':
+    { /* approx length of current message in bytes */
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       mutt_str_pretty_size(tmp, sizeof(tmp), menu ? cum_attachs_size(menu) : 0);
       snprintf(buf, buflen, fmt, tmp);
       break;
+    }
 
     case 'v':
+    {
       snprintf(buf, buflen, "%s", mutt_make_version());
       break;
+    }
 
     case 0:
+    {
       *buf = '\0';
       return src;
-
+    }
     default:
+    {
       snprintf(buf, buflen, "%%%s%c", prec, op);
       break;
+    }
   }
 
   if (optional)
@@ -927,11 +944,14 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
     switch (op)
     {
       case OP_COMPOSE_EDIT_FROM:
+      {
         edit_address_list(HDR_FROM, &e->env->from);
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+      }
 
       case OP_COMPOSE_EDIT_TO:
+      {
 #ifdef USE_NNTP
         if (news)
           break;
@@ -944,8 +964,10 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         }
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+      }
 
       case OP_COMPOSE_EDIT_BCC:
+      {
 #ifdef USE_NNTP
         if (news)
           break;
@@ -958,8 +980,10 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         }
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+      }
 
       case OP_COMPOSE_EDIT_CC:
+      {
 #ifdef USE_NNTP
         if (news)
           break;
@@ -972,8 +996,10 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         }
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+      }
 #ifdef USE_NNTP
       case OP_COMPOSE_EDIT_NEWSGROUPS:
+      {
         if (!news)
           break;
         if (e->env->newsgroups)
@@ -990,8 +1016,10 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
             clrtoeol();
         }
         break;
+      }
 
       case OP_COMPOSE_EDIT_FOLLOWUP_TO:
+      {
         if (!news)
           break;
         if (e->env->followup_to)
@@ -1008,8 +1036,10 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
             clrtoeol();
         }
         break;
+      }
 
       case OP_COMPOSE_EDIT_X_COMMENT_TO:
+      {
         if (!(news && C_XCommentTo))
           break;
         if (e->env->x_comment_to)
@@ -1026,9 +1056,11 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
             clrtoeol();
         }
         break;
+      }
 #endif
 
       case OP_COMPOSE_EDIT_SUBJECT:
+      {
         if (e->env->subject)
           mutt_str_strfcpy(buf, e->env->subject, sizeof(buf));
         else
@@ -1044,13 +1076,17 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         }
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+      }
 
       case OP_COMPOSE_EDIT_REPLY_TO:
+      {
         edit_address_list(HDR_REPLYTO, &e->env->reply_to);
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+      }
 
       case OP_COMPOSE_EDIT_FCC:
+      {
         mutt_str_strfcpy(buf, fcc, sizeof(buf));
         if (mutt_get_field(_("Fcc: "), buf, sizeof(buf), MUTT_FILE | MUTT_CLEAR) == 0)
         {
@@ -1062,8 +1098,10 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         }
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+      }
 
       case OP_COMPOSE_EDIT_MESSAGE:
+      {
         if (C_Editor && (mutt_str_strcmp("builtin", C_Editor) != 0) && !C_EditHeaders)
         {
           mutt_edit_file(C_Editor, e->content->filename);
@@ -1073,8 +1111,9 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
           break;
         }
         /* fallthrough */
-
+      }
       case OP_COMPOSE_EDIT_HEADERS:
+      {
         if ((mutt_str_strcmp("builtin", C_Editor) != 0) &&
             ((op == OP_COMPOSE_EDIT_HEADERS) || ((op == OP_COMPOSE_EDIT_MESSAGE) && C_EditHeaders)))
         {
@@ -1110,6 +1149,7 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         menu->redraw = REDRAW_FULL;
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+      }
 
       case OP_COMPOSE_ATTACH_KEY:
       {
@@ -1132,6 +1172,7 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
       }
 
       case OP_COMPOSE_MOVE_UP:
+      {
         if (menu->current == 0)
         {
           mutt_error(_("Attachment is already at top"));
@@ -1146,8 +1187,10 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         menu->redraw = REDRAW_INDEX;
         menu->current--;
         break;
+      }
 
       case OP_COMPOSE_MOVE_DOWN:
+      {
         if (menu->current == (actx->idxlen - 1))
         {
           mutt_error(_("Attachment is already at bottom"));
@@ -1162,6 +1205,7 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         menu->redraw = REDRAW_INDEX;
         menu->current++;
         break;
+      }
 
       case OP_COMPOSE_GROUP_ALTS:
       {
@@ -1519,6 +1563,7 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
       }
 
       case OP_DELETE:
+      {
         CHECK_COUNT;
         if (CUR_ATTACH->unowned)
           CUR_ATTACH->content->unlink = false;
@@ -1530,6 +1575,7 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
 
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+      }
 
       case OP_COMPOSE_TOGGLE_RECODE:
       {
@@ -1550,6 +1596,7 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
       }
 
       case OP_COMPOSE_EDIT_DESCRIPTION:
+      {
         CHECK_COUNT;
         mutt_str_strfcpy(
             buf, CUR_ATTACH->content->description ? CUR_ATTACH->content->description : "",
@@ -1562,8 +1609,10 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         }
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+      }
 
       case OP_COMPOSE_UPDATE_ENCODING:
+      {
         CHECK_COUNT;
         if (menu->tagprefix)
         {
@@ -1582,15 +1631,19 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         }
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+      }
 
       case OP_COMPOSE_TOGGLE_DISPOSITION:
+      {
         /* toggle the content-disposition between inline/attachment */
         CUR_ATTACH->content->disposition =
             (CUR_ATTACH->content->disposition == DISP_INLINE) ? DISP_ATTACH : DISP_INLINE;
         menu->redraw = REDRAW_CURRENT;
         break;
+      }
 
       case OP_EDIT_TYPE:
+      {
         CHECK_COUNT;
         {
           mutt_edit_content_type(NULL, CUR_ATTACH->content, NULL);
@@ -1602,8 +1655,10 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         }
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+      }
 
       case OP_COMPOSE_EDIT_LANGUAGE:
+      {
         CHECK_COUNT;
         buf[0] = '\0'; /* clear buffer first */
         if (CUR_ATTACH->content->language)
@@ -1618,8 +1673,10 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
           mutt_warning(_("Empty 'Content-Language'"));
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+      }
 
       case OP_COMPOSE_EDIT_ENCODING:
+      {
         CHECK_COUNT;
         mutt_str_strfcpy(buf, ENCODING(CUR_ATTACH->content->encoding), sizeof(buf));
         if ((mutt_get_field("Content-Transfer-Encoding: ", buf, sizeof(buf), 0) == 0) &&
@@ -1637,8 +1694,10 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         }
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+      }
 
       case OP_COMPOSE_SEND_MESSAGE:
+      {
         /* Note: We don't invoke send2-hook here, since we want to leave
          * users an opportunity to change settings from the ":" prompt.  */
         if (check_attachments(actx) != 0)
@@ -1665,24 +1724,30 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         loop = false;
         rc = 0;
         break;
+      }
 
       case OP_COMPOSE_EDIT_FILE:
+      {
         CHECK_COUNT;
         mutt_edit_file(NONULL(C_Editor), CUR_ATTACH->content->filename);
         mutt_update_encoding(CUR_ATTACH->content);
         menu->redraw = REDRAW_CURRENT | REDRAW_STATUS;
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+      }
 
       case OP_COMPOSE_TOGGLE_UNLINK:
+      {
         CHECK_COUNT;
         CUR_ATTACH->content->unlink = !CUR_ATTACH->content->unlink;
 
         menu->redraw = REDRAW_INDEX;
         /* No send2hook since this doesn't change the message. */
         break;
+      }
 
       case OP_COMPOSE_GET_ATTACHMENT:
+      {
         CHECK_COUNT;
         if (menu->tagprefix)
         {
@@ -1698,6 +1763,7 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
 
         /* No send2hook since this doesn't change the message. */
         break;
+      }
 
       case OP_COMPOSE_RENAME_ATTACHMENT:
       {
@@ -1720,6 +1786,7 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
       }
 
       case OP_COMPOSE_RENAME_FILE:
+      {
         CHECK_COUNT;
         mutt_str_strfcpy(buf, CUR_ATTACH->content->filename, sizeof(buf));
         mutt_pretty_mailbox(buf, sizeof(buf));
@@ -1746,6 +1813,7 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         }
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+      }
 
       case OP_COMPOSE_NEW_MIME:
       {
@@ -1814,6 +1882,7 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
       }
 
       case OP_COMPOSE_EDIT_MIME:
+      {
         CHECK_COUNT;
         if (mutt_edit_attachment(CUR_ATTACH->content))
         {
@@ -1822,30 +1891,38 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         }
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+      }
 
       case OP_VIEW_ATTACH:
       case OP_DISPLAY_HEADERS:
+      {
         CHECK_COUNT;
         mutt_attach_display_loop(menu, op, NULL, actx, false);
         menu->redraw = REDRAW_FULL;
         /* no send2hook, since this doesn't modify the message */
         break;
+      }
 
       case OP_SAVE:
+      {
         CHECK_COUNT;
         mutt_save_attachment_list(actx, NULL, menu->tagprefix,
                                   CUR_ATTACH->content, NULL, menu);
         /* no send2hook, since this doesn't modify the message */
         break;
+      }
 
       case OP_PRINT:
+      {
         CHECK_COUNT;
         mutt_print_attachment_list(actx, NULL, menu->tagprefix, CUR_ATTACH->content);
         /* no send2hook, since this doesn't modify the message */
         break;
+      }
 
       case OP_PIPE:
       case OP_FILTER:
+      {
         CHECK_COUNT;
         mutt_pipe_attachment_list(actx, NULL, menu->tagprefix,
                                   CUR_ATTACH->content, (op == OP_FILTER));
@@ -1854,6 +1931,7 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         menu->redraw |= REDRAW_STATUS;
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+      }
 
       case OP_EXIT:
       {
@@ -1885,6 +1963,7 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         /* fallthrough */
 
       case OP_COMPOSE_POSTPONE_MESSAGE:
+      {
         if (check_attachments(actx) != 0)
         {
           menu->redraw = REDRAW_FULL;
@@ -1894,8 +1973,10 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         loop = false;
         rc = 1;
         break;
+      }
 
       case OP_COMPOSE_ISPELL:
+      {
         endwin();
         snprintf(buf, sizeof(buf), "%s -x %s", NONULL(C_Ispell), e->content->filename);
         if (mutt_system(buf) == -1)
@@ -1906,8 +1987,10 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
           menu->redraw |= REDRAW_STATUS;
         }
         break;
+      }
 
       case OP_COMPOSE_WRITE_MESSAGE:
+      {
         buf[0] = '\0';
         if (Context)
         {
@@ -1931,8 +2014,10 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
             mutt_message(_("Message written"));
         }
         break;
+      }
 
       case OP_COMPOSE_PGP_MENU:
+      {
         if (!(WithCrypto & APPLICATION_PGP))
           break;
         if (!crypt_has_module_backend(APPLICATION_PGP))
@@ -1960,12 +2045,16 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         redraw_crypt_lines(e);
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+      }
 
       case OP_FORGET_PASSPHRASE:
+      {
         crypt_forget_passphrase();
         break;
+      }
 
       case OP_COMPOSE_SMIME_MENU:
+      {
         if (!(WithCrypto & APPLICATION_SMIME))
           break;
         if (!crypt_has_module_backend(APPLICATION_SMIME))
@@ -1994,12 +2083,15 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         redraw_crypt_lines(e);
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+      }
 
 #ifdef MIXMASTER
       case OP_COMPOSE_MIX:
+      {
         mix_make_chain(&e->chain);
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
+      }
 #endif
     }
   }

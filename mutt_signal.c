@@ -46,7 +46,8 @@ static void curses_signal_handler(int sig)
 
   switch (sig)
   {
-    case SIGTSTP: /* user requested a suspend */
+    case SIGTSTP:
+    { /* user requested a suspend */
       if (!C_Suspend)
         break;
       IsEndwin = isendwin();
@@ -55,8 +56,9 @@ static void curses_signal_handler(int sig)
         endwin();
       kill(0, SIGSTOP);
       /* fallthrough */
-
+    }
     case SIGCONT:
+    {
       if (!IsEndwin)
         refresh();
       mutt_curs_set(-1);
@@ -64,14 +66,19 @@ static void curses_signal_handler(int sig)
        * just assuming we received one, and triggering the 'resize' anyway. */
       SigWinch = 1;
       break;
+    }
 
     case SIGWINCH:
+    {
       SigWinch = 1;
       break;
+    }
 
     case SIGINT:
+    {
       SigInt = 1;
       break;
+    }
   }
   errno = save_errno;
 }

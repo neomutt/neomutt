@@ -929,10 +929,13 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
       break;
     }
     case 'p':
+    {
       snprintf(fmt, sizeof(fmt), "%%%su", prec);
       snprintf(buf, buflen, fmt, acct->port);
       break;
+    }
     case 'P':
+    {
       *buf = '\0';
       if (acct->flags & MUTT_ACCT_PORT)
       {
@@ -940,12 +943,15 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
         snprintf(buf, buflen, fmt, acct->port);
       }
       break;
+    }
     case 's':
+    {
       mutt_str_strfcpy(fn, acct->host, sizeof(fn));
       mutt_str_strlower(fn);
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, fn);
       break;
+    }
     case 'S':
     {
       struct Url url;
@@ -959,9 +965,11 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
       break;
     }
     case 'u':
+    {
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, acct->user);
       break;
+    }
   }
   return src;
 }

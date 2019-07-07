@@ -91,15 +91,22 @@ static int get_color(int index, unsigned char *s)
   switch (type)
   {
     case MT_COLOR_INDEX_AUTHOR:
+    {
       color = &ColorIndexAuthorList;
       break;
+    }
     case MT_COLOR_INDEX_FLAGS:
+    {
       color = &ColorIndexFlagsList;
       break;
+    }
     case MT_COLOR_INDEX_SUBJECT:
+    {
       color = &ColorIndexSubjectList;
       break;
+    }
     case MT_COLOR_INDEX_TAG:
+    {
       STAILQ_FOREACH(np, &ColorIndexTagList, entries)
       {
         if (strncmp((const char *) (s + 1), np->pattern, strlen(np->pattern)) == 0)
@@ -112,6 +119,7 @@ static int get_color(int index, unsigned char *s)
         }
       }
       return 0;
+    }
     default:
       return ColorDefs[type];
   }
@@ -163,6 +171,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
         switch (*s)
         {
           case MUTT_TREE_LLCORNER:
+          {
             if (C_AsciiChars)
               addch('`');
 #ifdef WACS_LLCORNER
@@ -175,7 +184,9 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
               addch(ACS_LLCORNER);
 #endif
             break;
+          }
           case MUTT_TREE_ULCORNER:
+          {
             if (C_AsciiChars)
               addch(',');
 #ifdef WACS_ULCORNER
@@ -188,7 +199,9 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
               addch(ACS_ULCORNER);
 #endif
             break;
+          }
           case MUTT_TREE_LTEE:
+          {
             if (C_AsciiChars)
               addch('|');
 #ifdef WACS_LTEE
@@ -201,7 +214,9 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
               addch(ACS_LTEE);
 #endif
             break;
+          }
           case MUTT_TREE_HLINE:
+          {
             if (C_AsciiChars)
               addch('-');
 #ifdef WACS_HLINE
@@ -214,7 +229,9 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
               addch(ACS_HLINE);
 #endif
             break;
+          }
           case MUTT_TREE_VLINE:
+          {
             if (C_AsciiChars)
               addch('|');
 #ifdef WACS_VLINE
@@ -227,7 +244,9 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
               addch(ACS_VLINE);
 #endif
             break;
+          }
           case MUTT_TREE_TTEE:
+          {
             if (C_AsciiChars)
               addch('-');
 #ifdef WACS_TTEE
@@ -240,7 +259,9 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
               addch(ACS_TTEE);
 #endif
             break;
+          }
           case MUTT_TREE_BTEE:
+          {
             if (C_AsciiChars)
               addch('-');
 #ifdef WACS_BTEE
@@ -253,24 +274,37 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
               addch(ACS_BTEE);
 #endif
             break;
+          }
           case MUTT_TREE_SPACE:
+          {
             addch(' ');
             break;
+          }
           case MUTT_TREE_RARROW:
+          {
             addch('>');
             break;
+          }
           case MUTT_TREE_STAR:
+          {
             addch('*'); /* fake thread indicator */
             break;
+          }
           case MUTT_TREE_HIDDEN:
+          {
             addch('&');
             break;
+          }
           case MUTT_TREE_EQUALS:
+          {
             addch('=');
             break;
+          }
           case MUTT_TREE_MISSING:
+          {
             addch('?');
             break;
+          }
         }
         s++;
         n--;
@@ -1237,15 +1271,23 @@ static int menu_dialog_translate_op(int i)
   switch (i)
   {
     case OP_NEXT_ENTRY:
+    {
       return OP_NEXT_LINE;
+    }
     case OP_PREV_ENTRY:
+    {
       return OP_PREV_LINE;
+    }
     case OP_CURRENT_TOP:
     case OP_FIRST_ENTRY:
+    {
       return OP_TOP_PAGE;
+    }
     case OP_CURRENT_BOTTOM:
     case OP_LAST_ENTRY:
+    {
       return OP_BOTTOM_PAGE;
+    }
     case OP_CURRENT_MIDDLE:
       return OP_MIDDLE_PAGE;
   }
@@ -1453,57 +1495,90 @@ int mutt_menu_loop(struct Menu *menu)
     switch (i)
     {
       case OP_NEXT_ENTRY:
+      {
         menu_next_entry(menu);
         break;
+      }
       case OP_PREV_ENTRY:
+      {
         menu_prev_entry(menu);
         break;
+      }
       case OP_HALF_DOWN:
+      {
         menu_half_down(menu);
         break;
+      }
       case OP_HALF_UP:
+      {
         menu_half_up(menu);
         break;
+      }
       case OP_NEXT_PAGE:
+      {
         menu_next_page(menu);
         break;
+      }
       case OP_PREV_PAGE:
+      {
         menu_prev_page(menu);
         break;
+      }
       case OP_NEXT_LINE:
+      {
         menu_next_line(menu);
         break;
+      }
       case OP_PREV_LINE:
+      {
         menu_prev_line(menu);
         break;
+      }
       case OP_FIRST_ENTRY:
+      {
         menu_first_entry(menu);
         break;
+      }
       case OP_LAST_ENTRY:
+      {
         menu_last_entry(menu);
         break;
+      }
       case OP_TOP_PAGE:
+      {
         menu_top_page(menu);
         break;
+      }
       case OP_MIDDLE_PAGE:
+      {
         menu_middle_page(menu);
         break;
+      }
       case OP_BOTTOM_PAGE:
+      {
         menu_bottom_page(menu);
         break;
+      }
       case OP_CURRENT_TOP:
+      {
         menu_current_top(menu);
         break;
+      }
       case OP_CURRENT_MIDDLE:
+      {
         menu_current_middle(menu);
         break;
+      }
       case OP_CURRENT_BOTTOM:
+      {
         menu_current_bottom(menu);
         break;
+      }
       case OP_SEARCH:
       case OP_SEARCH_REVERSE:
       case OP_SEARCH_NEXT:
       case OP_SEARCH_OPPOSITE:
+      {
         if (menu->menu_search && !menu->dialog) /* Searching dialogs won't work */
         {
           menu->oldcurrent = menu->current;
@@ -1516,19 +1591,25 @@ int mutt_menu_loop(struct Menu *menu)
         else
           mutt_error(_("Search is not implemented for this menu"));
         break;
+      }
 
       case OP_JUMP:
+      {
         if (menu->dialog)
           mutt_error(_("Jumping is not implemented for dialogs"));
         else
           menu_jump(menu);
         break;
+      }
 
       case OP_ENTER_COMMAND:
+      {
         mutt_enter_command();
         break;
+      }
 
       case OP_TAG:
+      {
         if (menu->menu_tag && !menu->dialog)
         {
           if (menu->tagprefix && !C_AutoTag)
@@ -1555,35 +1636,50 @@ int mutt_menu_loop(struct Menu *menu)
         else
           mutt_error(_("Tagging is not supported"));
         break;
+      }
 
       case OP_SHELL_ESCAPE:
+      {
         mutt_shell_escape();
         break;
+      }
 
       case OP_WHAT_KEY:
+      {
         mutt_what_key();
         break;
+      }
 
       case OP_CHECK_STATS:
+      {
         mutt_check_stats();
         break;
+      }
 
       case OP_REDRAW:
+      {
         clearok(stdscr, true);
         menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_HELP:
+      {
         mutt_help(menu->menu);
         menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_NULL:
+      {
         km_error_key(menu->menu);
         break;
+      }
 
       case OP_END_COND:
+      {
         break;
+      }
 
       default:
         if (menu->is_mailbox_list)

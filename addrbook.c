@@ -81,26 +81,36 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
   switch (op)
   {
     case 'a':
+    {
       mutt_format_s(buf, buflen, prec, alias->name);
       break;
+    }
     case 'f':
+    {
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, alias->del ? "D" : " ");
       break;
+    }
     case 'n':
+    {
       snprintf(fmt, sizeof(fmt), "%%%sd", prec);
       snprintf(buf, buflen, fmt, alias->num + 1);
       break;
+    }
     case 'r':
+    {
       addr[0] = '\0';
       mutt_addrlist_write(addr, sizeof(addr), &alias->addr, true);
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, addr);
       break;
+    }
     case 't':
+    {
       buf[0] = alias->tagged ? '*' : ' ';
       buf[1] = '\0';
       break;
+    }
   }
 
   return src;
@@ -267,6 +277,7 @@ new_aliases:
     {
       case OP_DELETE:
       case OP_UNDELETE:
+      {
         if (menu->tagprefix)
         {
           for (i = 0; i < menu->max; i++)
@@ -285,13 +296,18 @@ new_aliases:
           }
         }
         break;
+      }
       case OP_GENERIC_SELECT_ENTRY:
+      {
         t = menu->current;
         done = true;
         break;
+      }
       case OP_EXIT:
+      {
         done = true;
         break;
+      }
     }
   }
 

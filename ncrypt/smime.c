@@ -337,8 +337,10 @@ static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int c
     }
 
     default:
+    {
       *buf = '\0';
       break;
+    }
   }
 
   if (optional)
@@ -455,6 +457,7 @@ static void smime_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
   switch (key->trust)
   {
     case 'e':
+    {
       /* L10N: Describes the trust state of a S/MIME key.
          This translation must be padded with spaces to the right such that it
          has the same length as the other translations.
@@ -462,7 +465,9 @@ static void smime_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
          Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.  */
       truststate = _("Expired   ");
       break;
+    }
     case 'i':
+    {
       /* L10N: Describes the trust state of a S/MIME key.
          This translation must be padded with spaces to the right such that it
          has the same length as the other translations.
@@ -470,7 +475,9 @@ static void smime_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
          Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.  */
       truststate = _("Invalid   ");
       break;
+    }
     case 'r':
+    {
       /* L10N: Describes the trust state of a S/MIME key.
          This translation must be padded with spaces to the right such that it
          has the same length as the other translations.
@@ -478,7 +485,9 @@ static void smime_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
          Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.  */
       truststate = _("Revoked   ");
       break;
+    }
     case 't':
+    {
       /* L10N: Describes the trust state of a S/MIME key.
          This translation must be padded with spaces to the right such that it
          has the same length as the other translations.
@@ -486,7 +495,9 @@ static void smime_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
          Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.  */
       truststate = _("Trusted   ");
       break;
+    }
     case 'u':
+    {
       /* L10N: Describes the trust state of a S/MIME key.
          This translation must be padded with spaces to the right such that it
          has the same length as the other translations.
@@ -494,7 +505,9 @@ static void smime_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
          Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.  */
       truststate = _("Unverified");
       break;
+    }
     case 'v':
+    {
       /* L10N: Describes the trust state of a S/MIME key.
          This translation must be padded with spaces to the right such that it
          has the same length as the other translations.
@@ -502,6 +515,7 @@ static void smime_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
          Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.  */
       truststate = _("Verified  ");
       break;
+    }
     default:
       /* L10N: Describes the trust state of a S/MIME key.
          This translation must be padded with spaces to the right such that it
@@ -574,6 +588,7 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
     switch (mutt_menu_loop(menu))
     {
       case OP_GENERIC_SELECT_ENTRY:
+      {
         if (table[menu->current]->trust != 't')
         {
           switch (table[menu->current]->trust)
@@ -581,16 +596,22 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
             case 'e':
             case 'i':
             case 'r':
+            {
               s = _("ID is expired/disabled/revoked. Do you really want to use "
                     "the key?");
               break;
+            }
             case 'u':
+            {
               s = _("ID has undefined validity. Do you really want to use the "
                     "key?");
               break;
+            }
             case 'v':
+            {
               s = _("ID is not trusted. Do you really want to use the key?");
               break;
+            }
           }
 
           snprintf(buf, sizeof(buf), "%s", s);
@@ -605,9 +626,12 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
         selected_key = table[menu->current];
         done = true;
         break;
+      }
       case OP_EXIT:
+      {
         done = true;
         break;
+      }
     }
   }
 
@@ -648,36 +672,52 @@ static struct SmimeKey *smime_parse_key(char *buf)
 
     switch (field)
     {
-      case 1: /* mailbox */
+      case 1:
+      { /* mailbox */
         key->email = mutt_str_strdup(p);
         break;
-      case 2: /* hash */
+      }
+      case 2:
+      { /* hash */
         key->hash = mutt_str_strdup(p);
         break;
-      case 3: /* label */
+      }
+      case 3:
+      { /* label */
         key->label = mutt_str_strdup(p);
         break;
-      case 4: /* issuer */
+      }
+      case 4:
+      { /* issuer */
         key->issuer = mutt_str_strdup(p);
         break;
-      case 5: /* trust */
+      }
+      case 5:
+      { /* trust */
         key->trust = *p;
         break;
-      case 6: /* purpose */
+      }
+      case 6:
+      { /* purpose */
         while (*p)
         {
           switch (*p++)
           {
             case 'e':
+            {
               key->flags |= KEYFLAG_CANENCRYPT;
               break;
+            }
 
             case 's':
+            {
               key->flags |= KEYFLAG_CANSIGN;
               break;
+            }
           }
         }
         break;
+      }
     }
   }
 
@@ -2359,7 +2399,8 @@ int smime_class_send_menu(struct Email *e)
   {
     switch (choices[choice - 1])
     {
-      case 'a': /* sign (a)s */
+      case 'a':
+      { /* sign (a)s */
         key = smime_ask_for_key(_("Sign as: "), KEYFLAG_CANSIGN, false);
         if (key)
         {
@@ -2373,41 +2414,58 @@ int smime_class_send_menu(struct Email *e)
         }
 
         break;
+      }
 
-      case 'b': /* (b)oth */
+      case 'b':
+      { /* (b)oth */
         e->security |= (SEC_ENCRYPT | SEC_SIGN);
         break;
+      }
 
-      case 'c': /* (c)lear */
+      case 'c':
+      { /* (c)lear */
         e->security &= ~(SEC_ENCRYPT | SEC_SIGN);
         break;
+      }
 
       case 'C':
+      {
         e->security &= ~SEC_SIGN;
         break;
+      }
 
-      case 'e': /* (e)ncrypt */
+      case 'e':
+      { /* (e)ncrypt */
         e->security |= SEC_ENCRYPT;
         e->security &= ~SEC_SIGN;
         break;
+      }
 
-      case 'O': /* oppenc mode on */
+      case 'O':
+      { /* oppenc mode on */
         e->security |= SEC_OPPENCRYPT;
         crypt_opportunistic_encrypt(e);
         break;
+      }
 
-      case 'o': /* oppenc mode off */
+      case 'o':
+      { /* oppenc mode off */
         e->security &= ~SEC_OPPENCRYPT;
         break;
+      }
 
-      case 'S': /* (s)ign in oppenc mode */
+      case 'S':
+      { /* (s)ign in oppenc mode */
         e->security |= SEC_SIGN;
         break;
+      }
 
-      case 's': /* (s)ign */
+      case 's':
+      { /* (s)ign */
         e->security &= ~SEC_ENCRYPT;
         e->security |= SEC_SIGN;
         break;
+      }
 
       case 'w': /* encrypt (w)ith */
       {
@@ -2420,62 +2478,88 @@ int smime_class_send_menu(struct Email *e)
                                     _("123c")))
           {
             case 1:
+            {
               switch (choice = mutt_multi_choice(_("(1) DES, (2) Triple-DES?"),
                                                  // L10N: Options for: (1) DES, (2) Triple-DES
                                                  _("12")))
               {
                 case 1:
+                {
                   mutt_str_replace(&C_SmimeEncryptWith, "des");
                   break;
+                }
                 case 2:
+                {
                   mutt_str_replace(&C_SmimeEncryptWith, "des3");
                   break;
+                }
               }
               break;
+            }
 
             case 2:
+            {
               switch (choice = mutt_multi_choice(
                           _("(1) RC2-40, (2) RC2-64, (3) RC2-128?"),
                           // L10N: Options for: (1) RC2-40, (2) RC2-64, (3) RC2-128
                           _("123")))
               {
                 case 1:
+                {
                   mutt_str_replace(&C_SmimeEncryptWith, "rc2-40");
                   break;
+                }
                 case 2:
+                {
                   mutt_str_replace(&C_SmimeEncryptWith, "rc2-64");
                   break;
+                }
                 case 3:
+                {
                   mutt_str_replace(&C_SmimeEncryptWith, "rc2-128");
                   break;
+                }
               }
               break;
+            }
 
             case 3:
+            {
               switch (choice = mutt_multi_choice(
                           _("(1) AES128, (2) AES192, (3) AES256?"),
                           // L10N: Options for: (1) AES128, (2) AES192, (3) AES256
                           _("123")))
               {
                 case 1:
+                {
                   mutt_str_replace(&C_SmimeEncryptWith, "aes128");
                   break;
+                }
                 case 2:
+                {
                   mutt_str_replace(&C_SmimeEncryptWith, "aes192");
                   break;
+                }
                 case 3:
+                {
                   mutt_str_replace(&C_SmimeEncryptWith, "aes256");
                   break;
+                }
               }
               break;
+            }
 
             case 4:
+            {
               FREE(&C_SmimeEncryptWith);
-            /* (c)lear */
-            /* fallthrough */
-            case -1: /* Ctrl-G or Enter */
+              /* (c)lear */
+              /* fallthrough */
+            }
+            case -1:
+            { /* Ctrl-G or Enter */
               choice = 0;
               break;
+            }
           }
         } while (choice == -1);
         break;

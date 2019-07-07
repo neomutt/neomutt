@@ -467,21 +467,26 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
   {
     switch (count)
     {
-      case 0: /* day of the month */
+      case 0:
+      { /* day of the month */
         if ((mutt_str_atoi(t, &tm.tm_mday) < 0) || (tm.tm_mday < 0))
           return -1;
         if (tm.tm_mday > 31)
           return -1;
         break;
+      }
 
-      case 1: /* month of the year */
+      case 1:
+      { /* month of the year */
         i = mutt_date_check_month(t);
         if ((i < 0) || (i > 11))
           return -1;
         tm.tm_mon = i;
         break;
+      }
 
-      case 2: /* year */
+      case 2:
+      { /* year */
         if ((mutt_str_atoi(t, &tm.tm_year) < 0) || (tm.tm_year < 0))
           return -1;
         if ((tm.tm_year < 0) || (tm.tm_year > 9999))
@@ -491,8 +496,10 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
         else if (tm.tm_year >= 1900)
           tm.tm_year -= 1900;
         break;
+      }
 
-      case 3: /* time of day */
+      case 3:
+      { /* time of day */
         if (sscanf(t, "%d:%d:%d", &hour, &min, &sec) == 3)
           ;
         else if (sscanf(t, "%d:%d", &hour, &min) == 2)
@@ -508,8 +515,10 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
         tm.tm_min = min;
         tm.tm_sec = sec;
         break;
+      }
 
-      case 4: /* timezone */
+      case 4:
+      { /* timezone */
         /* sometimes we see things like (MST) or (-0700) so attempt to
          * compensate by uncommenting the string if non-RFC822 compliant */
         ptz = uncomment_timezone(tzstr, sizeof(tzstr), t);
@@ -556,6 +565,7 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
         if (!zoccident)
           tz_offset = -tz_offset;
         break;
+      }
     }
     count++;
     t = 0;

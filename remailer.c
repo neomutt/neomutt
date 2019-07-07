@@ -81,24 +81,32 @@ static MixCapFlags mix_get_caps(const char *capstr)
     switch (*capstr)
     {
       case 'C':
+      {
         caps |= MIX_CAP_COMPRESS;
         break;
+      }
 
       case 'M':
+      {
         caps |= MIX_CAP_MIDDLEMAN;
         break;
+      }
 
       case 'N':
       {
         switch (*++capstr)
         {
           case 'm':
+          {
             caps |= MIX_CAP_NEWSMAIL;
             break;
+          }
 
           case 'p':
+          {
             caps |= MIX_CAP_NEWSPOST;
             break;
+          }
         }
       }
     }
@@ -443,6 +451,7 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
   switch (op)
   {
     case 'a':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
@@ -451,24 +460,30 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
       else if (!remailer->addr)
         optional = 0;
       break;
+    }
 
     case 'c':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
         snprintf(buf, buflen, fmt, mix_format_caps(remailer));
       }
       break;
+    }
 
     case 'n':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, remailer->num);
       }
       break;
+    }
 
     case 's':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
@@ -477,6 +492,7 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
       else if (!remailer->shortname)
         optional = 0;
       break;
+    }
 
     default:
       *buf = '\0';

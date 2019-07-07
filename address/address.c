@@ -470,6 +470,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
     {
       case ';':
       case ',':
+      {
         if (phraselen != 0)
         {
           terminate_buffer(phrase, phraselen);
@@ -498,8 +499,10 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
         commentlen = 0;
         s++;
         break;
+      }
 
       case '(':
+      {
         if ((commentlen != 0) && (commentlen < (sizeof(comment) - 1)))
           comment[commentlen++] = ' ';
         s = next_token(s, comment, &commentlen, sizeof(comment) - 1);
@@ -509,8 +512,10 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
           return 0;
         }
         break;
+      }
 
       case '"':
+      {
         if ((phraselen != 0) && (phraselen < (sizeof(phrase) - 1)))
           phrase[phraselen++] = ' ';
         s = parse_quote(s + 1, phrase, &phraselen, sizeof(phrase) - 1);
@@ -520,6 +525,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
           return 0;
         }
         break;
+      }
 
       case ':':
       {
@@ -554,6 +560,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
       }
 
       default:
+      {
         if ((phraselen != 0) && (phraselen < (sizeof(phrase) - 1)) && ws_pending)
           phrase[phraselen++] = ' ';
         s = next_token(s, phrase, &phraselen, sizeof(phrase) - 1);
@@ -563,6 +570,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
           return 0;
         }
         break;
+      }
     } // switch (*s)
 
     ws_pending = mutt_str_is_email_wsp(*s);

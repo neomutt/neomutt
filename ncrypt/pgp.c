@@ -1954,7 +1954,8 @@ int pgp_class_send_menu(struct Email *e)
   {
     switch (choices[choice - 1])
     {
-      case 'a': /* sign (a)s */
+      case 'a':
+      { /* sign (a)s */
         OptPgpCheckTrust = false;
 
         p = pgp_ask_for_key(_("Sign as: "), NULL, KEYFLAG_NO_FLAGS, PGP_SECRING);
@@ -1970,45 +1971,64 @@ int pgp_class_send_menu(struct Email *e)
           crypt_pgp_void_passphrase(); /* probably need a different passphrase */
         }
         break;
+      }
 
-      case 'b': /* (b)oth */
+      case 'b':
+      { /* (b)oth */
         e->security |= (SEC_ENCRYPT | SEC_SIGN);
         break;
+      }
 
       case 'C':
+      {
         e->security &= ~SEC_SIGN;
         break;
+      }
 
-      case 'c': /* (c)lear     */
+      case 'c':
+      { /* (c)lear     */
         e->security &= ~(SEC_ENCRYPT | SEC_SIGN);
         break;
+      }
 
-      case 'e': /* (e)ncrypt */
+      case 'e':
+      { /* (e)ncrypt */
         e->security |= SEC_ENCRYPT;
         e->security &= ~SEC_SIGN;
         break;
+      }
 
-      case 'i': /* toggle (i)nline */
+      case 'i':
+      { /* toggle (i)nline */
         e->security ^= SEC_INLINE;
         break;
+      }
 
-      case 'O': /* oppenc mode on */
+      case 'O':
+      { /* oppenc mode on */
         e->security |= SEC_OPPENCRYPT;
         crypt_opportunistic_encrypt(e);
         break;
+      }
 
-      case 'o': /* oppenc mode off */
+      case 'o':
+      { /* oppenc mode off */
         e->security &= ~SEC_OPPENCRYPT;
         break;
+      }
 
-      case 'S': /* (s)ign in oppenc mode */
+      case 'S':
+      { /* (s)ign in oppenc mode */
         e->security |= SEC_SIGN;
         break;
+      }
 
-      case 's': /* (s)ign */
+      case 's':
+      { /* (s)ign */
         e->security &= ~SEC_ENCRYPT;
         e->security |= SEC_SIGN;
         break;
+      }
     }
   }
 

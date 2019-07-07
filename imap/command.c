@@ -711,46 +711,72 @@ static void cmd_parse_myrights(struct ImapAccountData *adata, const char *s)
     switch (*s)
     {
       case 'a':
+      {
         adata->mailbox->rights |= MUTT_ACL_ADMIN;
         break;
+      }
       case 'e':
+      {
         adata->mailbox->rights |= MUTT_ACL_EXPUNGE;
         break;
+      }
       case 'i':
+      {
         adata->mailbox->rights |= MUTT_ACL_INSERT;
         break;
+      }
       case 'k':
+      {
         adata->mailbox->rights |= MUTT_ACL_CREATE;
         break;
+      }
       case 'l':
+      {
         adata->mailbox->rights |= MUTT_ACL_LOOKUP;
         break;
+      }
       case 'p':
+      {
         adata->mailbox->rights |= MUTT_ACL_POST;
         break;
+      }
       case 'r':
+      {
         adata->mailbox->rights |= MUTT_ACL_READ;
         break;
+      }
       case 's':
+      {
         adata->mailbox->rights |= MUTT_ACL_SEEN;
         break;
+      }
       case 't':
+      {
         adata->mailbox->rights |= MUTT_ACL_DELETE;
         break;
+      }
       case 'w':
+      {
         adata->mailbox->rights |= MUTT_ACL_WRITE;
         break;
+      }
       case 'x':
+      {
         adata->mailbox->rights |= MUTT_ACL_DELMX;
         break;
+      }
 
       /* obsolete rights */
       case 'c':
+      {
         adata->mailbox->rights |= MUTT_ACL_CREATE | MUTT_ACL_DELMX;
         break;
+      }
       case 'd':
+      {
         adata->mailbox->rights |= MUTT_ACL_DELETE | MUTT_ACL_EXPUNGE;
         break;
+      }
       default:
         mutt_debug(LL_DEBUG1, "Unknown right: %c\n", *s);
     }

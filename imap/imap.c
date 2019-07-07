@@ -204,33 +204,47 @@ static int make_msg_set(struct Mailbox *m, struct Buffer *buf, int flag,
       switch (flag)
       {
         case MUTT_DELETED:
+        {
           if (emails[n]->deleted != imap_edata_get(emails[n])->deleted)
             match = invert ^ emails[n]->deleted;
           break;
+        }
         case MUTT_FLAG:
+        {
           if (emails[n]->flagged != imap_edata_get(emails[n])->flagged)
             match = invert ^ emails[n]->flagged;
           break;
+        }
         case MUTT_OLD:
+        {
           if (emails[n]->old != imap_edata_get(emails[n])->old)
             match = invert ^ emails[n]->old;
           break;
+        }
         case MUTT_READ:
+        {
           if (emails[n]->read != imap_edata_get(emails[n])->read)
             match = invert ^ emails[n]->read;
           break;
+        }
         case MUTT_REPLIED:
+        {
           if (emails[n]->replied != imap_edata_get(emails[n])->replied)
             match = invert ^ emails[n]->replied;
           break;
+        }
         case MUTT_TAG:
+        {
           if (emails[n]->tagged)
             match = true;
           break;
+        }
         case MUTT_TRASH:
+        {
           if (emails[n]->deleted && !emails[n]->purge)
             match = true;
           break;
+        }
       }
     }
 
@@ -350,12 +364,16 @@ static int do_search(const struct PatternHead *search, bool allpats)
       case MUTT_PAT_BODY:
       case MUTT_PAT_HEADER:
       case MUTT_PAT_WHOLE_MSG:
+      {
         if (pat->stringmatch)
           rc++;
         break;
+      }
       case MUTT_PAT_SERVERSEARCH:
+      {
         rc++;
         break;
+      }
       default:
         if (pat->child && do_search(pat->child, true))
           rc++;
@@ -428,6 +446,7 @@ static int compile_search(struct Mailbox *m, const struct PatternHead *pat, stru
     switch (firstpat->op)
     {
       case MUTT_PAT_HEADER:
+      {
         mutt_buffer_addstr(buf, "HEADER ");
 
         /* extract header name */
@@ -449,16 +468,21 @@ static int compile_search(struct Mailbox *m, const struct PatternHead *pat, stru
         imap_quote_string(term, sizeof(term), delim, false);
         mutt_buffer_addstr(buf, term);
         break;
+      }
       case MUTT_PAT_BODY:
+      {
         mutt_buffer_addstr(buf, "BODY ");
         imap_quote_string(term, sizeof(term), firstpat->p.str, false);
         mutt_buffer_addstr(buf, term);
         break;
+      }
       case MUTT_PAT_WHOLE_MSG:
+      {
         mutt_buffer_addstr(buf, "TEXT ");
         imap_quote_string(term, sizeof(term), firstpat->p.str, false);
         mutt_buffer_addstr(buf, term);
         break;
+      }
       case MUTT_PAT_SERVERSEARCH:
       {
         struct ImapAccountData *adata = imap_adata_get(m);
@@ -1020,8 +1044,8 @@ int imap_exec_msgset(struct Mailbox *m, const char *pre, const char *post,
   struct Buffer *cmd = mutt_buffer_new();
 
   /* We make a copy of the headers just in case resorting doesn't give
-   exactly the original order (duplicate messages?), because other parts of
-   the ctx are tied to the header order. This may be overkill. */
+   * exactly the original order (duplicate messages?), because other parts of
+   * the ctx are tied to the header order. This may be overkill. */
   oldsort = C_Sort;
   if (C_Sort != SORT_ORDER)
   {

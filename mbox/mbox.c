@@ -615,6 +615,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
   {
     case MUTT_MBOX:
     case MUTT_MMDF:
+    {
       cmp_headers = mutt_email_cmp_strict;
       mutt_file_fclose(&adata->fp);
       adata->fp = mutt_file_fopen(mutt_b2s(m->pathbuf), "r");
@@ -625,10 +626,13 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
       else
         rc = mmdf_parse_mailbox(m);
       break;
+    }
 
     default:
+    {
       rc = -1;
       break;
+    }
   }
 
   if (rc == -1)
@@ -1279,6 +1283,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
       switch (m->magic)
       {
         case MUTT_MMDF:
+        {
           if (fputs(MMDF_SEP, fp) == EOF)
           {
             mutt_perror(tempfile);
@@ -1286,6 +1291,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
             goto bail;
           }
           break;
+        }
         default:
           if (fputs("\n", fp) == EOF)
           {

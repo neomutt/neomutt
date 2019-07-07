@@ -261,7 +261,9 @@ static enum PopAuthRes pop_auth_apop(struct PopAccountData *adata, const char *m
   switch (pop_query(adata, buf, sizeof(buf)))
   {
     case 0:
+    {
       return POP_A_SUCCESS;
+    }
     case -1:
       return POP_A_SOCKET;
   }
@@ -321,7 +323,9 @@ static enum PopAuthRes pop_auth_user(struct PopAccountData *adata, const char *m
   switch (ret)
   {
     case 0:
+    {
       return POP_A_SUCCESS;
+    }
     case -1:
       return POP_A_SOCKET;
   }
@@ -366,7 +370,9 @@ static enum PopAuthRes pop_auth_oauth(struct PopAccountData *adata, const char *
   switch (ret)
   {
     case 0:
+    {
       return POP_A_SUCCESS;
+    }
     case -1:
       return POP_A_SOCKET;
   }
@@ -496,9 +502,13 @@ int pop_authenticate(struct PopAccountData *adata)
   switch (ret)
   {
     case POP_A_SUCCESS:
+    {
       return 0;
+    }
     case POP_A_SOCKET:
+    {
       return -1;
+    }
     case POP_A_UNAVAIL:
       if (attempts == 0)
         mutt_error(_("No authenticators available"));

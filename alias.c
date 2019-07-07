@@ -404,10 +404,14 @@ retry_name:
     switch (mutt_yesorno(_("Warning: This alias name may not work.  Fix it?"), MUTT_YES))
     {
       case MUTT_YES:
+      {
         mutt_str_strfcpy(buf, fixed, sizeof(buf));
         goto retry_name;
+      }
       case MUTT_ABORT:
+      {
         return;
+      }
       default:; // do nothing
     }
   }

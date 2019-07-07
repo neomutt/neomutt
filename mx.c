@@ -1158,12 +1158,18 @@ int mx_check_empty(const char *path)
   {
     case MUTT_MBOX:
     case MUTT_MMDF:
+    {
       return mutt_file_check_empty(path);
+    }
     case MUTT_MH:
+    {
       return mh_check_empty(path);
+    }
     case MUTT_MAILDIR:
+    {
       return maildir_check_empty(path);
 #ifdef USE_IMAP
+    }
     case MUTT_IMAP:
     {
       int rc = imap_path_status(path, false);

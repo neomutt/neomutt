@@ -1306,55 +1306,85 @@ int mutt_index_menu(void)
          */
 
       case OP_BOTTOM_PAGE:
+      {
         menu_bottom_page(menu);
         break;
+      }
       case OP_CURRENT_BOTTOM:
+      {
         menu_current_bottom(menu);
         break;
+      }
       case OP_CURRENT_MIDDLE:
+      {
         menu_current_middle(menu);
         break;
+      }
       case OP_CURRENT_TOP:
+      {
         menu_current_top(menu);
         break;
+      }
       case OP_FIRST_ENTRY:
+      {
         menu_first_entry(menu);
         break;
+      }
       case OP_HALF_DOWN:
+      {
         menu_half_down(menu);
         break;
+      }
       case OP_HALF_UP:
+      {
         menu_half_up(menu);
         break;
+      }
       case OP_LAST_ENTRY:
+      {
         menu_last_entry(menu);
         break;
+      }
       case OP_MIDDLE_PAGE:
+      {
         menu_middle_page(menu);
         break;
+      }
       case OP_NEXT_LINE:
+      {
         menu_next_line(menu);
         break;
+      }
       case OP_NEXT_PAGE:
+      {
         menu_next_page(menu);
         break;
+      }
       case OP_PREV_LINE:
+      {
         menu_prev_line(menu);
         break;
+      }
       case OP_PREV_PAGE:
+      {
         menu_prev_page(menu);
         break;
+      }
       case OP_TOP_PAGE:
+      {
         menu_top_page(menu);
         break;
+      }
 
 #ifdef USE_NNTP
       case OP_GET_PARENT:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
         /* fallthrough */
-
+      }
       case OP_GET_MESSAGE:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_READONLY | CHECK_ATTACH))
           break;
         if (Context->mailbox->magic == MUTT_NNTP)
@@ -1416,9 +1446,11 @@ int mutt_index_menu(void)
           }
         }
         break;
+      }
 
       case OP_GET_CHILDREN:
       case OP_RECONSTRUCT_THREAD:
+      {
         if (!prereq(Context, menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY | CHECK_ATTACH))
         {
@@ -1521,6 +1553,7 @@ int mutt_index_menu(void)
           }
         }
         break;
+      }
 #endif
 
       case OP_JUMP:
@@ -1570,6 +1603,7 @@ int mutt_index_menu(void)
          */
 
       case OP_MAIN_DELETE_PATTERN:
+      {
         if (!prereq(Context, menu,
                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY | CHECK_ATTACH))
         {
@@ -1585,14 +1619,17 @@ int mutt_index_menu(void)
         mutt_pattern_func(MUTT_DELETE, _("Delete messages matching: "));
         menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
         break;
+      }
 
 #ifdef USE_POP
       case OP_MAIN_FETCH_MAIL:
+      {
         if (!prereq(Context, menu, CHECK_ATTACH))
           break;
         pop_fetch_mail();
         menu->redraw = REDRAW_FULL;
         break;
+      }
 #endif /* USE_POP */
 
       case OP_SHOW_LOG_MESSAGES:
@@ -1615,11 +1652,14 @@ int mutt_index_menu(void)
       }
 
       case OP_HELP:
+      {
         mutt_help(MENU_MAIN);
         menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_MAIN_SHOW_LIMIT:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX))
           break;
         if (!Context->pattern)
@@ -1632,10 +1672,12 @@ int mutt_index_menu(void)
           mutt_message("%s", buf2);
         }
         break;
+      }
 
       case OP_LIMIT_CURRENT_THREAD:
       case OP_MAIN_LIMIT:
       case OP_TOGGLE_READ:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX))
           break;
         menu->oldcurrent = ((Context->mailbox->vcount != 0) && (menu->current >= 0) &&
@@ -1696,8 +1738,10 @@ int mutt_index_menu(void)
         if (Context->pattern)
           mutt_message(_("To view all messages, limit to \"all\""));
         break;
+      }
 
       case OP_QUIT:
+      {
         close = op;
         if (attach_msg)
         {
@@ -1725,16 +1769,20 @@ int mutt_index_menu(void)
           }
         }
         break;
+      }
 
       case OP_REDRAW:
+      {
         clearok(stdscr, true);
         menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_SEARCH:
       case OP_SEARCH_REVERSE:
       case OP_SEARCH_NEXT:
       case OP_SEARCH_OPPOSITE:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
         menu->current = mutt_search_command(menu->current, op);
@@ -1743,9 +1791,11 @@ int mutt_index_menu(void)
         else
           menu->redraw = REDRAW_MOTION;
         break;
+      }
 
       case OP_SORT:
       case OP_SORT_REVERSE:
+      {
         if (mutt_select_sort((op == OP_SORT_REVERSE)) == 0)
         {
           if (Context && (Context->mailbox->msg_count != 0))
@@ -1761,8 +1811,10 @@ int mutt_index_menu(void)
           menu->redraw |= REDRAW_STATUS;
         }
         break;
+      }
 
       case OP_TAG:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
         if (tag && !C_AutoTag)
@@ -1793,15 +1845,19 @@ int mutt_index_menu(void)
             menu->redraw |= REDRAW_CURRENT;
         }
         break;
+      }
 
       case OP_MAIN_TAG_PATTERN:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
         mutt_pattern_func(MUTT_TAG, _("Tag messages matching: "));
         menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
         break;
+      }
 
       case OP_MAIN_UNDELETE_PATTERN:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
           break;
         /* L10N: CHECK_ACL */
@@ -1817,13 +1873,16 @@ int mutt_index_menu(void)
           menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
         }
         break;
+      }
 
       case OP_MAIN_UNTAG_PATTERN:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
         if (mutt_pattern_func(MUTT_UNTAG, _("Untag messages matching: ")) == 0)
           menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
         break;
+      }
 
       case OP_COMPOSE_TO_SENDER:
       {
@@ -1843,11 +1902,14 @@ int mutt_index_menu(void)
 
 #ifdef USE_IMAP
       case OP_MAIN_IMAP_FETCH:
+      {
         if (Context && (Context->mailbox->magic == MUTT_IMAP))
           imap_check_mailbox(Context->mailbox, true);
         break;
+      }
 
       case OP_MAIN_IMAP_LOGOUT_ALL:
+      {
         if (Context && (Context->mailbox->magic == MUTT_IMAP))
         {
           int check = mx_mbox_close(&Context);
@@ -1865,9 +1927,11 @@ int mutt_index_menu(void)
         OptSearchInvalid = true;
         menu->redraw = REDRAW_FULL;
         break;
+      }
 #endif
 
       case OP_MAIN_SYNC_FOLDER:
+      {
         if (Context && (Context->mailbox->msg_count == 0))
           break;
 
@@ -1933,8 +1997,10 @@ int mutt_index_menu(void)
         else
           menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_MAIN_QUASI_DELETE:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
         if (tag)
@@ -1954,6 +2020,7 @@ int mutt_index_menu(void)
           Context->mailbox->changed = true;
         }
         break;
+      }
 
 #ifdef USE_NOTMUCH
       case OP_MAIN_ENTIRE_THREAD:
@@ -2116,12 +2183,15 @@ int mutt_index_menu(void)
       }
 
       case OP_CHECK_STATS:
+      {
         mutt_check_stats();
         break;
+      }
 
 #ifdef USE_NOTMUCH
       case OP_MAIN_VFOLDER_FROM_QUERY:
       case OP_MAIN_VFOLDER_FROM_QUERY_READONLY:
+      {
         buf[0] = '\0';
         if ((mutt_get_field("Query: ", buf, sizeof(buf), MUTT_NM_QUERY) != 0) || !buf[0])
         {
@@ -2133,8 +2203,10 @@ int mutt_index_menu(void)
         else
           main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint);
         break;
+      }
 
       case OP_MAIN_WINDOWED_VFOLDER_BACKWARD:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX))
           break;
         mutt_debug(LL_DEBUG2, "OP_MAIN_WINDOWED_VFOLDER_BACKWARD\n");
@@ -2155,8 +2227,10 @@ int mutt_index_menu(void)
         else
           main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint);
         break;
+      }
 
       case OP_MAIN_WINDOWED_VFOLDER_FORWARD:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX))
           break;
         if (C_NmQueryWindowDuration <= 0)
@@ -2179,6 +2253,7 @@ int mutt_index_menu(void)
           main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint);
         }
         break;
+      }
 
       case OP_MAIN_CHANGE_VFOLDER:
 #endif
@@ -2320,6 +2395,7 @@ int mutt_index_menu(void)
 
       case OP_DISPLAY_MESSAGE:
       case OP_DISPLAY_HEADERS: /* don't weed the headers */
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
         /* toggle the weeding of headers so that a user can press the key
@@ -2366,8 +2442,9 @@ int mutt_index_menu(void)
         menu->oldcurrent = menu->current;
         update_index(menu, Context, MUTT_NEW_MAIL, Context->mailbox->msg_count, hint);
         continue;
-
+      }
       case OP_EXIT:
+      {
         close = op;
         if ((menu->menu == MENU_MAIN) && attach_msg)
         {
@@ -2386,8 +2463,10 @@ int mutt_index_menu(void)
           done = true;
         }
         break;
+      }
 
       case OP_MAIN_BREAK_THREAD:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
           break;
         /* L10N: CHECK_ACL */
@@ -2425,8 +2504,10 @@ int mutt_index_menu(void)
         }
 
         break;
+      }
 
       case OP_MAIN_LINK_THREADS:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
           break;
         /* L10N: CHECK_ACL */
@@ -2468,8 +2549,10 @@ int mutt_index_menu(void)
           menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
 
         break;
+      }
 
       case OP_EDIT_TYPE:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_ATTACH))
           break;
         mutt_edit_content_type(CUR_EMAIL, CUR_EMAIL->content, NULL);
@@ -2482,8 +2565,10 @@ int mutt_index_menu(void)
         else
           menu->redraw = REDRAW_CURRENT;
         break;
+      }
 
       case OP_MAIN_NEXT_UNDELETED:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
         if (menu->current >= (Context->mailbox->vcount - 1))
@@ -2507,8 +2592,10 @@ int mutt_index_menu(void)
         else
           menu->redraw = REDRAW_MOTION;
         break;
+      }
 
       case OP_NEXT_ENTRY:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
         if (menu->current >= (Context->mailbox->vcount - 1))
@@ -2526,8 +2613,10 @@ int mutt_index_menu(void)
         else
           menu->redraw = REDRAW_MOTION;
         break;
+      }
 
       case OP_MAIN_PREV_UNDELETED:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
         if (menu->current < 1)
@@ -2550,8 +2639,10 @@ int mutt_index_menu(void)
         else
           menu->redraw = REDRAW_MOTION;
         break;
+      }
 
       case OP_PREV_ENTRY:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
         if (menu->current < 1)
@@ -2569,12 +2660,15 @@ int mutt_index_menu(void)
         else
           menu->redraw = REDRAW_MOTION;
         break;
+      }
 
       case OP_DECRYPT_COPY:
       case OP_DECRYPT_SAVE:
+      {
         if (!WithCrypto)
           break;
-      /* fallthrough */
+        /* fallthrough */
+      }
       case OP_COPY_MESSAGE:
       case OP_SAVE:
       case OP_DECODE_COPY:
@@ -2729,6 +2823,7 @@ int mutt_index_menu(void)
         break;
       }
       case OP_FLAG_MESSAGE:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
           break;
         /* L10N: CHECK_ACL */
@@ -2767,8 +2862,10 @@ int mutt_index_menu(void)
         }
         menu->redraw |= REDRAW_STATUS;
         break;
+      }
 
       case OP_TOGGLE_NEW:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
           break;
         /* L10N: CHECK_ACL */
@@ -2812,8 +2909,10 @@ int mutt_index_menu(void)
           menu->redraw |= REDRAW_STATUS;
         }
         break;
+      }
 
       case OP_TOGGLE_WRITE:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX))
           break;
         if (mx_toggle_write(Context->mailbox) == 0)
@@ -2827,31 +2926,41 @@ int mutt_index_menu(void)
             menu->redraw |= REDRAW_STATUS;
         }
         break;
+      }
 
       case OP_MAIN_NEXT_THREAD:
       case OP_MAIN_NEXT_SUBTHREAD:
       case OP_MAIN_PREV_THREAD:
       case OP_MAIN_PREV_SUBTHREAD:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
 
         switch (op)
         {
           case OP_MAIN_NEXT_THREAD:
+          {
             menu->current = mutt_next_thread(CUR_EMAIL);
             break;
+          }
 
           case OP_MAIN_NEXT_SUBTHREAD:
+          {
             menu->current = mutt_next_subthread(CUR_EMAIL);
             break;
+          }
 
           case OP_MAIN_PREV_THREAD:
+          {
             menu->current = mutt_previous_thread(CUR_EMAIL);
             break;
+          }
 
           case OP_MAIN_PREV_SUBTHREAD:
+          {
             menu->current = mutt_previous_subthread(CUR_EMAIL);
             break;
+          }
         }
 
         if (menu->current < 0)
@@ -2870,9 +2979,11 @@ int mutt_index_menu(void)
         else
           menu->redraw = REDRAW_MOTION;
         break;
+      }
 
       case OP_MAIN_ROOT_MESSAGE:
       case OP_MAIN_PARENT_MESSAGE:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
 
@@ -2889,6 +3000,7 @@ int mutt_index_menu(void)
         else
           menu->redraw = REDRAW_MOTION;
         break;
+      }
 
       case OP_MAIN_SET_FLAG:
       case OP_MAIN_CLEAR_FLAG:
@@ -2924,6 +3036,7 @@ int mutt_index_menu(void)
       }
 
       case OP_MAIN_COLLAPSE_THREAD:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
 
@@ -2954,8 +3067,10 @@ int mutt_index_menu(void)
         menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 
         break;
+      }
 
       case OP_MAIN_COLLAPSE_ALL:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
 
@@ -2966,6 +3081,7 @@ int mutt_index_menu(void)
         }
         collapse_all(menu, 1);
         break;
+      }
 
         /* --------------------------------------------------------------------
          * These functions are invoked directly from the internal-pager
@@ -2984,15 +3100,19 @@ int mutt_index_menu(void)
       }
 
       case OP_CREATE_ALIAS:
+      {
         mutt_alias_create(Context && Context->mailbox->vcount ? CUR_EMAIL->env : NULL, NULL);
         menu->redraw |= REDRAW_CURRENT;
         break;
+      }
 
       case OP_QUERY:
+      {
         if (!prereq(Context, menu, CHECK_ATTACH))
           break;
         mutt_query_menu(NULL, 0);
         break;
+      }
 
       case OP_PURGE_MESSAGE:
       case OP_DELETE:
@@ -3079,6 +3199,7 @@ int mutt_index_menu(void)
 
 #ifdef USE_NNTP
       case OP_CATCHUP:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_ATTACH))
           break;
         if (Context && (Context->mailbox->magic == MUTT_NNTP))
@@ -3088,19 +3209,24 @@ int mutt_index_menu(void)
             menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
         }
         break;
+      }
 #endif
 
       case OP_DISPLAY_ADDRESS:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
         mutt_display_address(CUR_EMAIL->env);
         break;
+      }
 
       case OP_ENTER_COMMAND:
+      {
         mutt_enter_command();
         if (Context)
           mutt_check_rescore(Context->mailbox);
         break;
+      }
 
       case OP_EDIT_OR_VIEW_RAW_MESSAGE:
       case OP_EDIT_RAW_MESSAGE:
@@ -3157,8 +3283,10 @@ int mutt_index_menu(void)
       }
 
       case OP_FORGET_PASSPHRASE:
+      {
         crypt_forget_passphrase();
         break;
+      }
 
       case OP_GROUP_REPLY:
       case OP_GROUP_CHAT_REPLY:
@@ -3228,13 +3356,16 @@ int mutt_index_menu(void)
       }
 
       case OP_MAIL:
+      {
         if (!prereq(Context, menu, CHECK_ATTACH))
           break;
         ci_send_message(SEND_NO_FLAGS, NULL, NULL, Context, NULL);
         menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_MAIL_KEY:
+      {
         if (!(WithCrypto & APPLICATION_PGP))
           break;
         if (!prereq(Context, menu, CHECK_ATTACH))
@@ -3242,6 +3373,7 @@ int mutt_index_menu(void)
         ci_send_message(SEND_KEY, NULL, NULL, NULL, NULL);
         menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_EXTRACT_KEYS:
       {
@@ -3355,6 +3487,7 @@ int mutt_index_menu(void)
       }
 
       case OP_MARK_MSG:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
         if (CUR_EMAIL->env->message_id)
@@ -3390,15 +3523,19 @@ int mutt_index_menu(void)
           mutt_error(_("No message ID to macro"));
         }
         break;
+      }
 
       case OP_RECALL_MESSAGE:
+      {
         if (!prereq(Context, menu, CHECK_ATTACH))
           break;
         ci_send_message(SEND_POSTPONED, NULL, NULL, Context, NULL);
         menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_RESEND:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_ATTACH))
           break;
 
@@ -3415,15 +3552,18 @@ int mutt_index_menu(void)
 
         menu->redraw = REDRAW_FULL;
         break;
+      }
 
 #ifdef USE_NNTP
       case OP_FOLLOWUP:
       case OP_FORWARD_TO_GROUP:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
         /* fallthrough */
-
+      }
       case OP_POST:
+      {
         if (!prereq(Context, menu, CHECK_ATTACH))
           break;
         if ((op != OP_FOLLOWUP) || !CUR_EMAIL->env->followup_to ||
@@ -3452,7 +3592,8 @@ int mutt_index_menu(void)
           break;
         }
 #endif
-      /* fallthrough */
+        /* fallthrough */
+      }
       case OP_REPLY:
       {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_ATTACH))
@@ -3470,8 +3611,10 @@ int mutt_index_menu(void)
       }
 
       case OP_SHELL_ESCAPE:
+      {
         mutt_shell_escape();
         break;
+      }
 
       case OP_TAG_THREAD:
       case OP_TAG_SUBTHREAD:
@@ -3568,14 +3711,19 @@ int mutt_index_menu(void)
       }
 
       case OP_VERSION:
+      {
         mutt_message(mutt_make_version());
         break;
+      }
 
       case OP_MAILBOX_LIST:
+      {
         mutt_mailbox_list();
         break;
+      }
 
       case OP_VIEW_ATTACHMENTS:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE))
           break;
         mutt_view_attachments(CUR_EMAIL);
@@ -3583,13 +3731,18 @@ int mutt_index_menu(void)
           Context->mailbox->changed = true;
         menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_END_COND:
+      {
         break;
+      }
 
       case OP_WHAT_KEY:
+      {
         mutt_what_key();
         break;
+      }
 
 #ifdef USE_SIDEBAR
       case OP_SIDEBAR_NEXT:
@@ -3598,13 +3751,17 @@ int mutt_index_menu(void)
       case OP_SIDEBAR_PAGE_UP:
       case OP_SIDEBAR_PREV:
       case OP_SIDEBAR_PREV_NEW:
+      {
         mutt_sb_change_mailbox(op);
         break;
+      }
 
       case OP_SIDEBAR_TOGGLE_VISIBLE:
+      {
         bool_str_toggle(Config, "sidebar_visible", NULL);
         mutt_window_reflow();
         break;
+      }
 #endif
       default:
         if (menu->menu == MENU_MAIN)

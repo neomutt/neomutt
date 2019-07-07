@@ -43,17 +43,29 @@ const char *pgp_pkalgbytype(unsigned char type)
   switch (type)
   {
     case 1:
+    {
       return "RSA";
+    }
     case 2:
+    {
       return "RSA";
+    }
     case 3:
+    {
       return "RSA";
+    }
     case 16:
+    {
       return "ElG";
+    }
     case 17:
+    {
       return "DSA";
+    }
     case 20:
+    {
       return "ElG";
+    }
     default:
       return "unk";
   }
@@ -72,7 +84,9 @@ bool pgp_canencrypt(unsigned char type)
     case 2:
     case 16:
     case 20:
+    {
       return true;
+    }
     default:
       return false;
   }
@@ -91,7 +105,9 @@ bool pgp_cansign(unsigned char type)
     case 3:
     case 17:
     case 20:
+    {
       return true;
+    }
     default:
       return false;
   }

@@ -766,12 +766,16 @@ static int default_to(struct AddressList *to, struct Envelope *env, SendFlags fl
       switch (query_quadoption(C_ReplyTo, prompt))
       {
         case MUTT_YES:
+        {
           mutt_addrlist_copy(to, &env->reply_to, false);
           break;
+        }
 
         case MUTT_NO:
+        {
           mutt_addrlist_copy(to, &env->from, false);
           break;
+        }
 
         default:
           return -1; /* abort */
@@ -1632,7 +1636,7 @@ static int save_fcc(struct Email *e, char *fcc, size_t fcc_len, struct Body *cle
           if (mutt_protect(e, pgpkeylist) == -1)
           {
             /* we can't do much about it at this point, so
-           * fallback to saving the whole thing to fcc */
+             * fallback to saving the whole thing to fcc */
             e->content = tmpbody;
             save_sig = NULL;
             goto full_fcc;
@@ -1672,7 +1676,8 @@ full_fcc:
           _("rms"));
       switch (choice)
       {
-        case 2: /* alternate (m)ailbox */
+        case 2:
+        { /* alternate (m)ailbox */
           /* L10N: This is the prompt to enter an "alternate (m)ailbox" when the
              initial Fcc fails.  */
           rc = mutt_enter_fname(_("Fcc mailbox"), fcc, fcc_len, true);
@@ -1682,15 +1687,19 @@ full_fcc:
             break;
           }
           /* fall through */
-
-        case 1: /* (r)etry */
+        }
+        case 1:
+        { /* (r)etry */
           rc = mutt_write_multiple_fcc(fcc, e, NULL, false, NULL, finalpath);
           break;
+        }
 
         case -1: /* abort */
-        case 3:  /* (s)kip */
+        case 3:
+        { /* (s)kip */
           rc = 0;
           break;
+        }
       }
     }
   }

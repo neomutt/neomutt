@@ -642,13 +642,17 @@ static bool crypt_id_is_strong(struct CryptKeyInfo *key)
     case GPGME_VALIDITY_NEVER:
     case GPGME_VALIDITY_UNDEFINED:
     case GPGME_VALIDITY_UNKNOWN:
+    {
       is_strong = false;
       break;
+    }
 
     case GPGME_VALIDITY_FULL:
     case GPGME_VALIDITY_ULTIMATE:
+    {
       is_strong = true;
       break;
+    }
   }
 
   return is_strong;
@@ -1511,8 +1515,7 @@ struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, bool sign)
   t->parts->next->use_disp = true;
   t->parts->next->disposition = DISP_ATTACH;
   t->parts->next->unlink = true; /* delete after sending the message */
-  t->parts->next->d_filename = mutt_str_strdup("msg.asc"); /* non pgp/mime
-                                                           can save */
+  t->parts->next->d_filename = mutt_str_strdup("msg.asc"); /* non pgp/mime can save */
 
   return t;
 }
@@ -1764,24 +1767,34 @@ static void show_one_sig_validity(gpgme_ctx_t ctx, int idx, struct State *s)
   switch (sig ? sig->validity : 0)
   {
     case GPGME_VALIDITY_UNKNOWN:
+    {
       txt = _("WARNING: We have NO indication whether "
               "the key belongs to the person named "
               "as shown above\n");
       break;
+    }
     case GPGME_VALIDITY_UNDEFINED:
+    {
       break;
+    }
     case GPGME_VALIDITY_NEVER:
+    {
       txt = _("WARNING: The key does NOT BELONG to "
               "the person named as shown above\n");
       break;
+    }
     case GPGME_VALIDITY_MARGINAL:
+    {
       txt = _("WARNING: It is NOT certain that the key "
               "belongs to the person named as shown above\n");
       break;
+    }
     case GPGME_VALIDITY_FULL:
     case GPGME_VALIDITY_ULTIMATE:
+    {
       txt = NULL;
       break;
+    }
   }
   if (txt)
     state_puts(txt, s);
@@ -3359,6 +3372,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
   switch (tolower(op))
   {
     case 'a':
+    {
       if (!optional)
       {
         const char *s = NULL;
@@ -3370,8 +3384,10 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
         snprintf(buf, buflen, fmt, s);
       }
       break;
+    }
 
     case 'c':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
@@ -3380,8 +3396,10 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
       else if (!(kflags & KEYFLAG_ABILITIES))
         optional = 0;
       break;
+    }
 
     case 'f':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sc", prec);
@@ -3390,8 +3408,10 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
       else if (!(kflags & KEYFLAG_RESTRICTIONS))
         optional = 0;
       break;
+    }
 
     case 'k':
+    {
       if (!optional)
       {
         /* fixme: we need a way to distinguish between main and subkeys.
@@ -3400,8 +3420,10 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
         snprintf(buf, buflen, fmt, crypt_keyid(key));
       }
       break;
+    }
 
     case 'l':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%slu", prec);
@@ -3413,19 +3435,24 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
         snprintf(buf, buflen, fmt, val);
       }
       break;
+    }
 
     case 'n':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, entry->num);
       }
       break;
+    }
 
     case 'p':
+    {
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, gpgme_get_protocol_name(key->kobj->protocol));
       break;
+    }
 
     case 't':
     {
@@ -3437,24 +3464,36 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
         switch (key->validity)
         {
           case GPGME_VALIDITY_FULL:
+          {
             s = "f";
             break;
+          }
           case GPGME_VALIDITY_MARGINAL:
+          {
             s = "m";
             break;
+          }
           case GPGME_VALIDITY_NEVER:
+          {
             s = "n";
             break;
+          }
           case GPGME_VALIDITY_ULTIMATE:
+          {
             s = "u";
             break;
+          }
           case GPGME_VALIDITY_UNDEFINED:
+          {
             s = "q";
             break;
+          }
           case GPGME_VALIDITY_UNKNOWN:
           default:
+          {
             s = "?";
             break;
+          }
         }
       }
       snprintf(fmt, sizeof(fmt), "%%%sc", prec);
@@ -3463,12 +3502,14 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
     }
 
     case 'u':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
         snprintf(buf, buflen, fmt, key->uid);
       }
       break;
+    }
 
     case '[':
     {
@@ -4020,6 +4061,7 @@ static unsigned int key_check_cap(gpgme_key_t key, enum KeyCap cap)
   switch (cap)
   {
     case KEY_CAP_CAN_ENCRYPT:
+    {
       ret = key->can_encrypt;
       if (ret == 0)
       {
@@ -4031,7 +4073,9 @@ static unsigned int key_check_cap(gpgme_key_t key, enum KeyCap cap)
         }
       }
       break;
+    }
     case KEY_CAP_CAN_SIGN:
+    {
       ret = key->can_sign;
       if (ret == 0)
       {
@@ -4043,7 +4087,9 @@ static unsigned int key_check_cap(gpgme_key_t key, enum KeyCap cap)
         }
       }
       break;
+    }
     case KEY_CAP_CAN_CERTIFY:
+    {
       ret = key->can_certify;
       if (ret == 0)
       {
@@ -4055,6 +4101,7 @@ static unsigned int key_check_cap(gpgme_key_t key, enum KeyCap cap)
         }
       }
       break;
+    }
   }
 
   return ret;
@@ -4690,18 +4737,26 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
   switch (C_PgpSortKeys & SORT_MASK)
   {
     case SORT_ADDRESS:
+    {
       f = crypt_compare_address;
       break;
+    }
     case SORT_DATE:
+    {
       f = crypt_compare_date;
       break;
+    }
     case SORT_KEYID:
+    {
       f = crypt_compare_keyid;
       break;
+    }
     case SORT_TRUST:
     default:
+    {
       f = crypt_compare_trust;
       break;
+    }
   }
   qsort(key_table, i, sizeof(struct CryptKeyInfo *), f);
 
@@ -4763,15 +4818,20 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
     switch (mutt_menu_loop(menu))
     {
       case OP_VERIFY_KEY:
+      {
         verify_key(key_table[menu->current]);
         menu->redraw = REDRAW_FULL;
         break;
+      }
 
       case OP_VIEW_ID:
+      {
         mutt_message("%s", key_table[menu->current]->uid);
         break;
+      }
 
       case OP_GENERIC_SELECT_ENTRY:
+      {
         /* FIXME make error reporting more verbose - this should be
          * easy because gpgme provides more information */
         if (OptPgpCheckTrust)
@@ -4801,21 +4861,29 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
             switch (key_table[menu->current]->validity)
             {
               case GPGME_VALIDITY_NEVER:
+              {
                 warn_s =
                     _("ID is not valid. Do you really want to use the key?");
                 break;
+              }
               case GPGME_VALIDITY_MARGINAL:
+              {
                 warn_s = _("ID is only marginally valid. Do you really want to "
                            "use the key?");
                 break;
+              }
               case GPGME_VALIDITY_FULL:
               case GPGME_VALIDITY_ULTIMATE:
+              {
                 break;
+              }
               case GPGME_VALIDITY_UNKNOWN:
               case GPGME_VALIDITY_UNDEFINED:
+              {
                 warn_s = _("ID has undefined validity. Do you really want to "
                            "use the key?");
                 break;
+              }
             }
           }
 
@@ -4844,11 +4912,14 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
         k = crypt_copy_key(key_table[menu->current]);
         done = true;
         break;
+      }
 
       case OP_EXIT:
+      {
         k = NULL;
         done = true;
         break;
+      }
     }
   }
 
@@ -5487,7 +5558,8 @@ static int gpgme_send_menu(struct Email *e, int is_smime)
   {
     switch (choices[choice - 1])
     {
-      case 'a': /* sign (a)s */
+      case 'a':
+      { /* sign (a)s */
         p = crypt_ask_for_key(_("Sign as: "), NULL, KEYFLAG_CANSIGN,
                               is_smime ? APPLICATION_SMIME : APPLICATION_PGP, NULL);
         if (p)
@@ -5500,26 +5572,36 @@ static int gpgme_send_menu(struct Email *e, int is_smime)
           e->security |= SEC_SIGN;
         }
         break;
+      }
 
-      case 'b': /* (b)oth */
+      case 'b':
+      { /* (b)oth */
         e->security |= (SEC_ENCRYPT | SEC_SIGN);
         break;
+      }
 
       case 'C':
+      {
         e->security &= ~SEC_SIGN;
         break;
+      }
 
-      case 'c': /* (c)lear */
+      case 'c':
+      { /* (c)lear */
         e->security &= ~(SEC_ENCRYPT | SEC_SIGN);
         break;
+      }
 
-      case 'e': /* (e)ncrypt */
+      case 'e':
+      { /* (e)ncrypt */
         e->security |= SEC_ENCRYPT;
         e->security &= ~SEC_SIGN;
         break;
+      }
 
       case 'm': /* (p)gp or s/(m)ime */
       case 'p':
+      {
         is_smime = !is_smime;
         if (is_smime)
         {
@@ -5533,24 +5615,33 @@ static int gpgme_send_menu(struct Email *e, int is_smime)
         }
         crypt_opportunistic_encrypt(e);
         break;
+      }
 
-      case 'O': /* oppenc mode on */
+      case 'O':
+      { /* oppenc mode on */
         e->security |= SEC_OPPENCRYPT;
         crypt_opportunistic_encrypt(e);
         break;
+      }
 
-      case 'o': /* oppenc mode off */
+      case 'o':
+      { /* oppenc mode off */
         e->security &= ~SEC_OPPENCRYPT;
         break;
+      }
 
-      case 'S': /* (s)ign in oppenc mode */
+      case 'S':
+      { /* (s)ign in oppenc mode */
         e->security |= SEC_SIGN;
         break;
+      }
 
-      case 's': /* (s)ign */
+      case 's':
+      { /* (s)ign */
         e->security &= ~SEC_ENCRYPT;
         e->security |= SEC_SIGN;
         break;
+      }
     }
   }
 

@@ -136,10 +136,13 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
   switch (op)
   {
     case 'B':
+    {
       mutt_format_s(buf, buflen, prec, sbe->box);
       break;
+    }
 
     case 'd':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -148,15 +151,19 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
       else if ((c && (Context->mailbox->msg_deleted == 0)) || !c)
         optional = 0;
       break;
+    }
 
     case 'D':
+    {
       if (sbe->mailbox->desc)
         mutt_format_s(buf, buflen, prec, sbe->mailbox->desc);
       else
         mutt_format_s(buf, buflen, prec, sbe->box);
       break;
+    }
 
     case 'F':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -165,8 +172,10 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
       else if (m->msg_flagged == 0)
         optional = 0;
       break;
+    }
 
     case 'L':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -175,8 +184,10 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
       else if ((c && (Context->mailbox->vcount == m->msg_count)) || !c)
         optional = 0;
       break;
+    }
 
     case 'N':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -185,8 +196,10 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
       else if (m->msg_unread == 0)
         optional = 0;
       break;
+    }
 
     case 'n':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sc", prec);
@@ -195,8 +208,10 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
       else if (m->has_new == false)
         optional = 0;
       break;
+    }
 
     case 'S':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -205,8 +220,10 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
       else if (m->msg_count == 0)
         optional = 0;
       break;
+    }
 
     case 't':
+    {
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -215,8 +232,10 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
       else if ((c && (Context->mailbox->msg_tagged == 0)) || !c)
         optional = 0;
       break;
+    }
 
     case '!':
+    {
       if (m->msg_flagged == 0)
         mutt_format_s(buf, buflen, prec, "");
       else if (m->msg_flagged == 1)
@@ -229,6 +248,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
         mutt_format_s(buf, buflen, prec, fmt);
       }
       break;
+    }
   }
 
   if (optional)
@@ -307,26 +327,34 @@ static int cb_qsort_sbe(const void *a, const void *b)
   switch ((C_SidebarSortMethod & SORT_MASK))
   {
     case SORT_COUNT:
+    {
       if (m2->msg_count == m1->msg_count)
         rc = mutt_str_strcoll(mutt_b2s(m1->pathbuf), mutt_b2s(m2->pathbuf));
       else
         rc = (m2->msg_count - m1->msg_count);
       break;
+    }
     case SORT_UNREAD:
+    {
       if (m2->msg_unread == m1->msg_unread)
         rc = mutt_str_strcoll(mutt_b2s(m1->pathbuf), mutt_b2s(m2->pathbuf));
       else
         rc = (m2->msg_unread - m1->msg_unread);
       break;
+    }
     case SORT_DESC:
+    {
       rc = mutt_str_strcmp(m1->desc, m2->desc);
       break;
+    }
     case SORT_FLAGGED:
+    {
       if (m2->msg_flagged == m1->msg_flagged)
         rc = mutt_str_strcoll(mutt_b2s(m1->pathbuf), mutt_b2s(m2->pathbuf));
       else
         rc = (m2->msg_flagged - m1->msg_flagged);
       break;
+    }
     case SORT_PATH:
     {
       rc = mutt_inbox_cmp(mutt_b2s(m1->pathbuf), mutt_b2s(m2->pathbuf));
@@ -757,14 +785,20 @@ static int draw_divider(int num_rows, int num_cols)
     switch (altchar)
     {
       case SB_DIV_USER:
+      {
         addstr(NONULL(C_SidebarDividerChar));
         break;
+      }
       case SB_DIV_ASCII:
+      {
         addch('|');
         break;
+      }
       case SB_DIV_UTF8:
+      {
         addch(ACS_VLINE);
         break;
+      }
     }
   }
 
@@ -1025,29 +1059,41 @@ void mutt_sb_change_mailbox(int op)
   switch (op)
   {
     case OP_SIDEBAR_NEXT:
+    {
       if (!select_next())
         return;
       break;
+    }
     case OP_SIDEBAR_NEXT_NEW:
+    {
       if (!select_next_new())
         return;
       break;
+    }
     case OP_SIDEBAR_PAGE_DOWN:
+    {
       if (!select_page_down())
         return;
       break;
+    }
     case OP_SIDEBAR_PAGE_UP:
+    {
       if (!select_page_up())
         return;
       break;
+    }
     case OP_SIDEBAR_PREV:
+    {
       if (!select_prev())
         return;
       break;
+    }
     case OP_SIDEBAR_PREV_NEW:
+    {
       if (!select_prev_new())
         return;
       break;
+    }
     default:
       return;
   }

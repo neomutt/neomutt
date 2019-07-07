@@ -279,30 +279,42 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
   switch (op)
   {
     case 'a':
+    {
       mutt_addrlist_write(tmp, sizeof(tmp), &query->addr, true);
       mutt_format_s(buf, buflen, prec, tmp);
       break;
+    }
     case 'c':
+    {
       snprintf(fmt, sizeof(fmt), "%%%sd", prec);
       snprintf(buf, buflen, fmt, query->num + 1);
       break;
+    }
     case 'e':
+    {
       if (!optional)
         mutt_format_s(buf, buflen, prec, NONULL(query->other));
       else if (!query->other || !*query->other)
         optional = 0;
       break;
+    }
     case 'n':
+    {
       mutt_format_s(buf, buflen, prec, NONULL(query->name));
       break;
+    }
     case 't':
+    {
       snprintf(fmt, sizeof(fmt), "%%%sc", prec);
       snprintf(buf, buflen, fmt, entry->tagged ? '*' : ' ');
       break;
+    }
     default:
+    {
       snprintf(fmt, sizeof(fmt), "%%%sc", prec);
       snprintf(buf, buflen, fmt, op);
       break;
+    }
   }
 
   if (optional)
@@ -394,6 +406,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
       {
         case OP_QUERY_APPEND:
         case OP_QUERY:
+        {
           if ((mutt_get_field(_("Query: "), buf, buflen, 0) == 0) && (buf[0] != '\0'))
           {
             struct Query *newresults = run_query(buf, 0);
@@ -466,8 +479,10 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
             }
           }
           break;
+        }
 
         case OP_CREATE_ALIAS:
+        {
           if (menu->tagprefix)
           {
             struct AddressList naddr = TAILQ_HEAD_INITIALIZER(naddr);
@@ -498,14 +513,17 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
             }
           }
           break;
+        }
 
         case OP_GENERIC_SELECT_ENTRY:
+        {
           if (retbuf)
           {
             done = 2;
             break;
           }
-        /* fallthrough */
+          /* fallthrough */
+        }
         case OP_MAIL:
         {
           struct Email *e = mutt_email_new();
@@ -540,8 +558,10 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
         }
 
         case OP_EXIT:
+        {
           done = 1;
           break;
+        }
       }
     }
 

@@ -1108,18 +1108,26 @@ enum ContentType mutt_lookup_mime_type(struct Body *att, const char *path)
     {
       /* last file with last entry to match wins type/xtype */
       case 0:
+      {
         /* check default unix mimetypes location first */
         mutt_str_strfcpy(buf, "/etc/mime.types", sizeof(buf));
         break;
+      }
       case 1:
+      {
         mutt_str_strfcpy(buf, SYSCONFDIR "/mime.types", sizeof(buf));
         break;
+      }
       case 2:
+      {
         mutt_str_strfcpy(buf, PKGDATADIR "/mime.types", sizeof(buf));
         break;
+      }
       case 3:
+      {
         snprintf(buf, sizeof(buf), "%s/.mime.types", NONULL(HomeDir));
         break;
+      }
       default:
         mutt_debug(LL_DEBUG1, "Internal error, count = %d\n", count);
         goto bye; /* shouldn't happen */

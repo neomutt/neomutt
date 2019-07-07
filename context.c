@@ -264,22 +264,32 @@ void ctx_mailbox_changed(struct Mailbox *m, enum MailboxNotification action)
   switch (action)
   {
     case MBN_CLOSED:
+    {
       mutt_clear_threads(ctx);
       ctx_cleanup(ctx);
       break;
+    }
     case MBN_INVALID:
+    {
       ctx_update(ctx);
       break;
+    }
     case MBN_UPDATE:
+    {
       ctx_update_tables(ctx, true);
       break;
+    }
     case MBN_RESORT:
+    {
       mutt_sort_headers(ctx, true);
       break;
+    }
     case MBN_UNTAG:
+    {
       if (ctx->last_tag && ctx->last_tag->deleted)
         ctx->last_tag = NULL;
       break;
+    }
   }
 }
 

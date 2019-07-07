@@ -685,9 +685,12 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
       case -1:         /* abort */
       case OP_MAX + 1: /* reject */
       case OP_EXIT:
+      {
         done = 1;
         break;
-      case OP_MAX + 3: /* accept always */
+      }
+      case OP_MAX + 3:
+      { /* accept always */
         done = 0;
         fp = mutt_file_fopen(C_CertificateFile, "a");
         if (fp)
@@ -725,10 +728,13 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
           mutt_message(_("Certificate saved"));
           mutt_sleep(0);
         }
-      /* fallthrough */
-      case OP_MAX + 2: /* accept once */
+        /* fallthrough */
+      }
+      case OP_MAX + 2:
+      { /* accept once */
         done = 2;
         break;
+      }
     }
   }
   OptIgnoreMacroEvents = false;

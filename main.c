@@ -485,95 +485,153 @@ int main(int argc, char *argv[], char *envp[])
       switch (i)
       {
         case 'A':
+        {
           mutt_list_insert_tail(&alias_queries, mutt_str_strdup(optarg));
           break;
+        }
         case 'a':
+        {
           mutt_list_insert_tail(&attach, mutt_str_strdup(optarg));
           break;
+        }
         case 'B':
+        {
           batch_mode = true;
           break;
+        }
         case 'b':
+        {
           mutt_list_insert_tail(&bcc_list, mutt_str_strdup(optarg));
           break;
+        }
         case 'c':
+        {
           mutt_list_insert_tail(&cc_list, mutt_str_strdup(optarg));
           break;
+        }
         case 'D':
+        {
           dump_variables = true;
           break;
+        }
         case 'd':
+        {
           dlevel = optarg;
           break;
+        }
         case 'E':
+        {
           edit_infile = true;
           break;
+        }
         case 'e':
+        {
           mutt_list_insert_tail(&commands, mutt_str_strdup(optarg));
           break;
+        }
         case 'F':
+        {
           mutt_list_insert_tail(&Muttrc, mutt_str_strdup(optarg));
           break;
+        }
         case 'f':
+        {
           mutt_buffer_strcpy(folder, optarg);
           explicit_folder = true;
           break;
+        }
 #ifdef USE_NNTP
-        case 'g': /* Specify a news server */
+        case 'g':
+        { /* Specify a news server */
           cli_nntp = optarg;
           /* fallthrough */
-        case 'G': /* List of newsgroups */
+        }
+        case 'G':
+        { /* List of newsgroups */
           flags |= MUTT_CLI_SELECT | MUTT_CLI_NEWS;
           break;
+        }
 #endif
         case 'H':
+        {
           draft_file = optarg;
           break;
+        }
         case 'i':
+        {
           include_file = optarg;
           break;
+        }
         case 'l':
+        {
           dfile = optarg;
           break;
+        }
         case 'm':
+        {
           new_magic = optarg;
           break;
+        }
         case 'n':
+        {
           flags |= MUTT_CLI_NOSYSRC;
           break;
+        }
         case 'p':
+        {
           sendflags |= SEND_POSTPONED;
           break;
+        }
         case 'Q':
+        {
           mutt_list_insert_tail(&queries, mutt_str_strdup(optarg));
           break;
+        }
         case 'R':
+        {
           flags |= MUTT_CLI_RO; /* read-only mode */
           break;
+        }
         case 'S':
+        {
           hide_sensitive = true;
           break;
+        }
         case 's':
+        {
           subject = optarg;
           break;
+        }
         case 'T':
+        {
           test_config = true;
           break;
+        }
         case 'v':
+        {
           version++;
           break;
-        case 'x': /* mailx compatible send mode */
+        }
+        case 'x':
+        { /* mailx compatible send mode */
           sendflags |= SEND_MAILX;
           break;
-        case 'y': /* My special hack mode */
+        }
+        case 'y':
+        { /* My special hack mode */
           flags |= MUTT_CLI_SELECT;
           break;
+        }
         case 'Z':
+        {
           flags |= MUTT_CLI_MAILBOX | MUTT_CLI_IGNORE;
           break;
+        }
         case 'z':
+        {
           flags |= MUTT_CLI_IGNORE;
           break;
+        }
         default:
           usage();
           OptNoCurses = true;
@@ -1203,8 +1261,10 @@ int main(int argc, char *argv[], char *envp[])
       switch (mx_check_empty(mutt_b2s(folder)))
       {
         case -1:
+        {
           mutt_perror(mutt_b2s(folder));
           goto main_curses; // TEST41: neomutt -z -f missing
+        }
         case 1:
           mutt_error(_("Mailbox is empty"));
           goto main_curses; // TEST42: neomutt -z -f /dev/null

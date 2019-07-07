@@ -1461,10 +1461,13 @@ static int remove_filename(struct Mailbox *m, const char *path)
   switch (st)
   {
     case NOTMUCH_STATUS_SUCCESS:
+    {
       mutt_debug(LL_DEBUG2, "nm: remove success, call unlink\n");
       unlink(path);
       break;
+    }
     case NOTMUCH_STATUS_DUPLICATE_MESSAGE_ID:
+    {
       mutt_debug(LL_DEBUG2, "nm: remove success (duplicate), call unlink\n");
       unlink(path);
       for (ls = notmuch_message_get_filenames(msg);
@@ -1477,9 +1480,12 @@ static int remove_filename(struct Mailbox *m, const char *path)
         notmuch_database_remove_message(db, path);
       }
       break;
+    }
     default:
+    {
       mutt_debug(LL_DEBUG1, "nm: failed to remove '%s' [st=%d]\n", path, (int) st);
       break;
+    }
   }
 
   notmuch_message_destroy(msg);
@@ -1536,8 +1542,11 @@ static int rename_filename(struct Mailbox *m, const char *old_file,
   switch (st)
   {
     case NOTMUCH_STATUS_SUCCESS:
+    {
       break;
+    }
     case NOTMUCH_STATUS_DUPLICATE_MESSAGE_ID:
+    {
       mutt_debug(LL_DEBUG2, "nm: rename: syncing duplicate filename\n");
       notmuch_message_destroy(msg);
       msg = NULL;
@@ -1570,9 +1579,12 @@ static int rename_filename(struct Mailbox *m, const char *old_file,
       notmuch_database_find_message_by_filename(db, new_file, &msg);
       st = NOTMUCH_STATUS_SUCCESS;
       break;
+    }
     default:
+    {
       mutt_debug(LL_DEBUG1, "nm: failed to remove '%s' [st=%d]\n", old_file, (int) st);
       break;
+    }
   }
 
   if ((st == NOTMUCH_STATUS_SUCCESS) && e && msg)
@@ -2179,13 +2191,17 @@ static int nm_mbox_open(struct Mailbox *m)
     switch (mdata->query_type)
     {
       case NM_QUERY_TYPE_MESGS:
+      {
         if (!read_mesgs_query(m, q, false))
           rc = -2;
         break;
+      }
       case NM_QUERY_TYPE_THREADS:
+      {
         if (!read_threads_query(m, q, false, get_limit(mdata)))
           rc = -2;
         break;
+      }
     }
     notmuch_query_destroy(q);
   }

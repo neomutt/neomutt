@@ -55,14 +55,20 @@ size_t escape_string(struct Buffer *buf, const char *src)
     switch (*src)
     {
       case '\n':
+      {
         len += mutt_buffer_addstr(buf, "\\n");
         break;
+      }
       case '\r':
+      {
         len += mutt_buffer_addstr(buf, "\\r");
         break;
+      }
       case '\t':
+      {
         len += mutt_buffer_addstr(buf, "\\t");
         break;
+      }
       default:
         if ((*src == '\\') || (*src == '"'))
           len += mutt_buffer_addch(buf, '\\');

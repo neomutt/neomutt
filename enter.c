@@ -270,6 +270,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
       switch (ch)
       {
         case OP_EDITOR_HISTORY_UP:
+        {
           state->curpos = state->lastchar;
           if (mutt_hist_at_scratch(hclass))
           {
@@ -279,8 +280,10 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
           replace_part(state, 0, mutt_hist_prev(hclass));
           redraw = MUTT_REDRAW_INIT;
           break;
+        }
 
         case OP_EDITOR_HISTORY_DOWN:
+        {
           state->curpos = state->lastchar;
           if (mutt_hist_at_scratch(hclass))
           {
@@ -290,8 +293,10 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
           replace_part(state, 0, mutt_hist_next(hclass));
           redraw = MUTT_REDRAW_INIT;
           break;
+        }
 
         case OP_EDITOR_HISTORY_SEARCH:
+        {
           state->curpos = state->lastchar;
           mutt_mb_wcstombs(buf, buflen, state->wbuf, state->curpos);
           mutt_hist_complete(buf, buflen, hclass);
@@ -299,8 +304,10 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
           rc = 1;
           goto bye;
           break;
+        }
 
         case OP_EDITOR_BACKSPACE:
+        {
           if (state->curpos == 0)
           {
             // Pressing backspace when no text is in the command prompt shold exit the prompt
@@ -322,25 +329,35 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
             state->curpos = i;
           }
           break;
+        }
 
         case OP_EDITOR_BOL:
+        {
           state->curpos = 0;
           break;
+        }
 
         case OP_EDITOR_EOL:
+        {
           redraw = MUTT_REDRAW_INIT;
           break;
+        }
 
         case OP_EDITOR_KILL_LINE:
+        {
           state->curpos = 0;
           state->lastchar = 0;
           break;
+        }
 
         case OP_EDITOR_KILL_EOL:
+        {
           state->lastchar = state->curpos;
           break;
+        }
 
         case OP_EDITOR_BACKWARD_CHAR:
+        {
           if (state->curpos == 0)
             BEEP();
           else
@@ -351,8 +368,10 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
               state->curpos--;
           }
           break;
+        }
 
         case OP_EDITOR_FORWARD_CHAR:
+        {
           if (state->curpos == state->lastchar)
             BEEP();
           else
@@ -365,8 +384,10 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
             }
           }
           break;
+        }
 
         case OP_EDITOR_BACKWARD_WORD:
+        {
           if (state->curpos == 0)
             BEEP();
           else
@@ -377,8 +398,10 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
               state->curpos--;
           }
           break;
+        }
 
         case OP_EDITOR_FORWARD_WORD:
+        {
           if (state->curpos == state->lastchar)
             BEEP();
           else
@@ -395,10 +418,12 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
             }
           }
           break;
+        }
 
         case OP_EDITOR_CAPITALIZE_WORD:
         case OP_EDITOR_UPCASE_WORD:
         case OP_EDITOR_DOWNCASE_WORD:
+        {
           if (state->curpos == state->lastchar)
           {
             BEEP();
@@ -422,8 +447,10 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
             state->curpos++;
           }
           break;
+        }
 
         case OP_EDITOR_DELETE_CHAR:
+        {
           if (state->curpos == state->lastchar)
             BEEP();
           else
@@ -440,8 +467,10 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
             state->lastchar -= i - state->curpos;
           }
           break;
+        }
 
         case OP_EDITOR_KILL_WORD:
+        {
           /* delete to beginning of word */
           if (state->curpos != 0)
           {
@@ -464,6 +493,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
             state->curpos = i;
           }
           break;
+        }
 
         case OP_EDITOR_KILL_EOW:
         {
@@ -498,6 +528,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
         }
 
         case OP_EDITOR_MAILBOX_CYCLE:
+        {
           if (flags & MUTT_EFILE)
           {
             first = true; /* clear input if user types a real key later */
@@ -512,9 +543,10 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
             goto self_insert;
           }
           /* fallthrough */
-
+        }
         case OP_EDITOR_COMPLETE:
         case OP_EDITOR_COMPLETE_QUERY:
+        {
           state->tabs++;
           if (flags & MUTT_CMD)
           {
@@ -696,6 +728,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
           else
             goto self_insert;
           break;
+        }
 
         case OP_EDITOR_QUOTE_CHAR:
         {
@@ -713,6 +746,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
         }
 
         case OP_EDITOR_TRANSPOSE_CHARS:
+        {
           if (state->lastchar < 2)
             BEEP();
           else
@@ -729,6 +763,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
             state->wbuf[state->curpos - 1] = t;
           }
           break;
+        }
 
         default:
           BEEP();

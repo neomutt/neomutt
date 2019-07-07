@@ -63,8 +63,10 @@ static const char *history_format_str(char *buf, size_t buflen, size_t col, int 
   switch (op)
   {
     case 's':
+    {
       mutt_format_s(buf, buflen, prec, match);
       break;
+    }
   }
 
   return src;
@@ -110,12 +112,15 @@ static void history_menu(char *buf, size_t buflen, char **matches, int match_cou
     switch (mutt_menu_loop(menu))
     {
       case OP_GENERIC_SELECT_ENTRY:
+      {
         mutt_str_strfcpy(buf, matches[menu->current], buflen);
         /* fall through */
-
+      }
       case OP_EXIT:
+      {
         done = true;
         break;
+      }
     }
   }
 

@@ -731,52 +731,75 @@ int mutt_select_sort(bool reverse)
                             /* L10N: These must match the highlighted letters from "Sort" and "Rev-Sort" */
                             _("dfrsotuzcpl")))
   {
-    case -1: /* abort - don't resort */
+    case -1:
+    { /* abort - don't resort */
       return -1;
-
-    case 1: /* (d)ate */
+    }
+    case 1:
+    { /* (d)ate */
       new_sort = SORT_DATE;
       break;
+    }
 
-    case 2: /* (f)rm */
+    case 2:
+    { /* (f)rm */
       new_sort = SORT_FROM;
       break;
+    }
 
-    case 3: /* (r)ecv */
+    case 3:
+    { /* (r)ecv */
       new_sort = SORT_RECEIVED;
       break;
+    }
 
-    case 4: /* (s)ubj */
+    case 4:
+    { /* (s)ubj */
       new_sort = SORT_SUBJECT;
       break;
+    }
 
-    case 5: /* t(o) */
+    case 5:
+    { /* t(o) */
       new_sort = SORT_TO;
       break;
+    }
 
-    case 6: /* (t)hread */
+    case 6:
+    { /* (t)hread */
       new_sort = SORT_THREADS;
       break;
+    }
 
-    case 7: /* (u)nsort */
+    case 7:
+    { /* (u)nsort */
       new_sort = SORT_ORDER;
       break;
+    }
 
-    case 8: /* si(z)e */
+    case 8:
+    { /* si(z)e */
       new_sort = SORT_SIZE;
       break;
+    }
 
-    case 9: /* s(c)ore */
+    case 9:
+    { /* s(c)ore */
       new_sort = SORT_SCORE;
       break;
+    }
 
-    case 10: /* s(p)am */
+    case 10:
+    { /* s(p)am */
       new_sort = SORT_SPAM;
       break;
+    }
 
-    case 11: /* (l)abel */
+    case 11:
+    { /* (l)abel */
       new_sort = SORT_LABEL;
       break;
+    }
   }
   if (reverse)
     new_sort |= SORT_REVERSE;
@@ -1059,11 +1082,15 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
     {
       /* success */
       case 0:
+      {
         mutt_clear_error();
         return 0;
-      /* non-fatal error: continue to fetch/append */
+        /* non-fatal error: continue to fetch/append */
+      }
       case 1:
+      {
         break;
+      }
       /* fatal error, abort */
       case -1:
         return -1;
