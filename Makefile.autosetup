@@ -98,6 +98,7 @@ ALLOBJS+=	$(NEOMUTTOBJS)
 LIBAUTOCRYPT=	libautocrypt.a
 LIBAUTOCRYPTOBJS=	autocrypt/autocrypt.o \
 			autocrypt/autocrypt_db.o \
+			autocrypt/autocrypt_gpgme.o \
 			autocrypt/autocrypt_schema.o
 CLEANFILES+=	$(LIBAUTOCRYPT) $(LIBAUTOCRYPTOBJS)
 MUTTLIBS+=	$(LIBAUTOCRYPT)

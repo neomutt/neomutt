@@ -70,15 +70,12 @@ int mutt_autocrypt_init(int can_create)
   if (autocrypt_dir_init(can_create))
     goto bail;
 
+  if (mutt_autocrypt_gpgme_init())
+    goto bail;
+
   if (mutt_autocrypt_db_init(can_create))
     goto bail;
 
-  /* mutt_autocrypt_gpgme_init()
-   *   - init gpgme
-   *   - create key if doesn't exist
-   *     - perhaps should query account table and if empty do that?
-   */
-  mutt_debug(LL_DEBUG1, "In mutt_autocrypt_init()\n");
   return 0;
 
 bail:
@@ -90,5 +87,4 @@ bail:
 void mutt_autocrypt_cleanup(void)
 {
   mutt_autocrypt_db_close();
-  mutt_debug(LL_DEBUG1, "In mutt_autocrypt_cleanup()\n");
 }
