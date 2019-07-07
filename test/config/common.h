@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TEST_COMMON_H
-#define _TEST_COMMON_H
+#ifndef TEST_COMMON_H
+#define TEST_COMMON_H
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -45,4 +45,4 @@ int log_observer(struct NotifyCallback *nc);
 void set_list(const struct ConfigSet *cs);
 void cs_dump_set(const struct ConfigSet *cs);
 
-#endif /* _TEST_COMMON_H */
+#endif /* TEST_COMMON_H */

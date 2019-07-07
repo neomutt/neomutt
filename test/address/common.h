@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TEST_ADDRESS_COMMON_H
-#define _TEST_ADDRESS_COMMON_H
+#ifndef TEST_ADDRESS_COMMON_H
+#define TEST_ADDRESS_COMMON_H
 
 #define TEST_NO_MAIN
 #include "acutest.h"
@@ -39,4 +39,4 @@
     }                                                                          \
   } while (false)
 
-#endif /* _TEST_ADDRESS_COMMON_H */
+#endif /* TEST_ADDRESS_COMMON_H */
