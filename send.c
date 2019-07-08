@@ -197,13 +197,13 @@ static void add_mailing_lists(struct AddressList *out, const struct AddressList 
 }
 
 /**
- * edit_address - Edit an email address
+ * mutt_edit_address - Edit an email address
  * @param[in,out] al    AddressList to edit
  * @param[in]  field Prompt for user
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int edit_address(struct AddressList *al, const char *field)
+int mutt_edit_address(struct AddressList *al, const char *field, int expand_aliases)
 {
   char buf[8192];
   char *err = NULL;
@@ -218,7 +218,8 @@ static int edit_address(struct AddressList *al, const char *field)
       return -1;
     mutt_addrlist_clear(al);
     mutt_addrlist_parse2(al, buf);
-    mutt_expand_aliases(al);
+    if (expand_aliases)
+      mutt_expand_aliases(al);
     idna_ok = mutt_addrlist_to_intl(al, &err);
     if (idna_ok != 0)
     {
@@ -278,14 +279,14 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
   else
 #endif
   {
-    if ((edit_address(&en->to, _("To: ")) == -1) || TAILQ_EMPTY(&en->to))
+    if ((mutt_edit_address(&en->to, _("To: "), 1) == -1) || TAILQ_EMPTY(&en->to))
       return -1;
-    if (C_Askcc && (edit_address(&en->cc, _("Cc: ")) == -1))
+    if (C_Askcc && (mutt_edit_address(&en->cc, _("Cc: "), 1) == -1))
       return -1;
-    if (C_Askbcc && (edit_address(&en->bcc, _("Bcc: ")) == -1))
+    if (C_Askbcc && (mutt_edit_address(&en->bcc, _("Bcc: "), 1) == -1))
       return -1;
     if (C_ReplyWithXorig && (flags & (SEND_REPLY | SEND_LIST_REPLY | SEND_GROUP_REPLY)) &&
-        (edit_address(&en->from, "From: ") == -1))
+        (mutt_edit_address(&en->from, "From: ", 1) == -1))
     {
       return -1;
     }

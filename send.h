@@ -103,6 +103,7 @@ typedef uint16_t SendFlags;             ///< Flags for ci_send_message(), e.g. #
 int             ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile, struct Context *ctx, struct EmailList *el);
 void            mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv);
 struct Address *mutt_default_from(void);
+int             mutt_edit_address(struct AddressList *al, const char *field, int expand_aliases);
 void            mutt_encode_descriptions(struct Body *b, bool recurse);
 int             mutt_fetch_recips(struct Envelope *out, struct Envelope *in, SendFlags flags);
 void            mutt_fix_reply_recipients(struct Envelope *env);
