@@ -25,8 +25,9 @@
 #ifndef MUTT_HELP_HELP_H
 #define MUTT_HELP_HELP_H
 
+#include <stddef.h>
+#include <stdint.h>
 #include "mx.h"
-#include <ftw.h>
 
 extern struct MxOps MxHelpOps;
 
