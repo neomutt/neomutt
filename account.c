@@ -133,7 +133,10 @@ bool account_mailbox_add(struct Account *a, struct Mailbox *m)
   struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
   np->mailbox = m;
   STAILQ_INSERT_TAIL(&a->mailboxes, np, entries);
+  notify_set_parent(m->notify, a->notify);
 
+  struct EventMailbox ev_m = { m };
+  notify_send(a->notify, NT_MAILBOX, NT_MAILBOX_ADD, IP & ev_m);
   return true;
 }
 
@@ -156,6 +159,8 @@ bool account_mailbox_remove(struct Account *a, struct Mailbox *m)
   {
     if (!m || (np->mailbox == m))
     {
+      struct EventMailbox ev_m = { m };
+      notify_send(a->notify, NT_MAILBOX, NT_MAILBOX_REMOVE, IP & ev_m);
       STAILQ_REMOVE(&a->mailboxes, np, MailboxNode, entries);
       mailbox_free(&np->mailbox);
       FREE(&np);

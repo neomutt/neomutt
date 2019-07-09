@@ -146,6 +146,7 @@ struct Mailbox
   void *mdata;                 /**< driver specific data */
   void (*free_mdata)(void **); /**< driver-specific data free function */
 
+  struct Notify *notify;        ///< Notifications handler
   void (*notify2)(struct Mailbox *m, enum MailboxNotification action); ///< Notification callback
   void *ndata; ///< Notification callback private data
 };
@@ -159,6 +160,23 @@ struct MailboxNode
   STAILQ_ENTRY(MailboxNode) entries;
 };
 STAILQ_HEAD(MailboxList, MailboxNode);
+
+/**
+ * struct EventMailbox - An Event that happened to a Mailbox
+ */
+struct EventMailbox
+{
+  struct Mailbox *mailbox; ///< The Mailbox this Event relates to
+};
+
+/**
+ * enum NotifyMailbox - Types of Mailbox Event
+ */
+enum NotifyMailbox
+{
+  NT_MAILBOX_ADD = 1, ///< A new Mailbox has been created
+  NT_MAILBOX_REMOVE,  ///< A Mailbox is about to be destroyed
+};
 
 void            mailbox_free             (struct Mailbox **ptr);
 struct Mailbox *mailbox_new              (void);
