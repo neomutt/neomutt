@@ -23,12 +23,30 @@
 #ifndef MUTT_AUTOCRYPT_AUTOCRYPT_PRIVATE_H
 #define MUTT_AUTOCRYPT_AUTOCRYPT_PRIVATE_H
 
-int mutt_autocrypt_db_init(int can_create);
-void mutt_autocrypt_db_close(void);
+#include <sqlite3.h>
 
-int mutt_autocrypt_schema_init(void);
-int mutt_autocrypt_schema_update(void);
+struct Address;
+struct Buffer;
 
-int mutt_autocrypt_gpgme_init(void);
+int mutt_autocrypt_account_init (void);
+
+int mutt_autocrypt_db_init (int can_create);
+void mutt_autocrypt_db_close (void);
+
+struct AutocryptAccount *mutt_autocrypt_db_account_new (void);
+void mutt_autocrypt_db_account_free (struct AutocryptAccount **account);
+int mutt_autocrypt_db_account_get (struct Address *addr, struct AutocryptAccount **account);
+int mutt_autocrypt_db_account_insert (struct Address *addr, const char *keyid,
+                                      const char *keydata, int prefer_encrypt);
+
+int mutt_autocrypt_schema_init (void);
+int mutt_autocrypt_schema_update (void);
+
+int mutt_autocrypt_gpgme_init (void);
+int mutt_autocrypt_gpgme_create_key (struct Address *addr, struct Buffer *keyid, struct Buffer *keydata);
+
+/* Prepared statements */
+sqlite3_stmt *AccountGetStmt;
+sqlite3_stmt *AccountInsertStmt;
 
 #endif /* MUTT_AUTOCRYPT_AUTOCRYPT_PRIVATE_H */

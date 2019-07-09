@@ -25,6 +25,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include "autocrypt_private.h"
+#include "address/lib.h"
 #include "mutt.h"
 #include "autocrypt.h"
 #include "globals.h"
@@ -54,10 +55,15 @@ int mutt_autocrypt_db_init(int can_create)
 
   db_path = mutt_buffer_pool_get();
   mutt_buffer_concat_path(db_path, C_AutocryptDir, "autocrypt.db");
+
   if (stat(mutt_b2s(db_path), &sb))
   {
-    if (!can_create || autocrypt_db_create(mutt_b2s(db_path)))
+    if (!can_create)
       goto cleanup;
+    if (autocrypt_db_create(mutt_b2s(db_path)))
+      goto cleanup;
+    /* Don't abort the whole init process because account creation failed */
+    mutt_autocrypt_account_init();
   }
   else
   {
@@ -66,10 +72,10 @@ int mutt_autocrypt_db_init(int can_create)
       mutt_error(_("Unable to open autocrypt database %s"), mutt_b2s(db_path));
       goto cleanup;
     }
-  }
 
-  if (mutt_autocrypt_schema_update())
-    goto cleanup;
+    if (mutt_autocrypt_schema_update())
+      goto cleanup;
+  }
 
   rv = 0;
 
@@ -83,10 +89,150 @@ void mutt_autocrypt_db_close(void)
   if (!AutocryptDB)
     return;
 
-  /* TODO:
-   * call sqlite3_finalize () for each prepared statement
-   */
+  sqlite3_finalize(AccountGetStmt);
+  AccountGetStmt = NULL;
+  sqlite3_finalize(AccountInsertStmt);
+  AccountInsertStmt = NULL;
 
   sqlite3_close_v2(AutocryptDB);
   AutocryptDB = NULL;
+}
+
+/* The autocrypt spec says email addresses should be
+ * normalized to lower case and stored in idna form.
+ *
+ * In order to avoid visible changes to addresses in the index,
+ * we make a copy of the address before lowercasing it.
+ *
+ * The return value must be freed.
+ */
+static char *normalize_email_addr(struct Address *addr)
+{
+  struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
+  struct Address *norm_addr = mutt_addr_copy(addr);
+  mutt_addrlist_append(&al, norm_addr);
+
+  mutt_addrlist_to_local(&al);
+  mutt_str_strlower(norm_addr->mailbox);
+  mutt_addrlist_to_intl(&al, NULL);
+
+  char *email = mutt_str_strdup(TAILQ_FIRST(&al)->mailbox);
+  mutt_addrlist_clear(&al);
+
+  return email;
+}
+
+/* Helper that converts to char * and mutt_str_strdups the result */
+static char *strdup_column_text(sqlite3_stmt *stmt, int index)
+{
+  const char *val = (const char *) sqlite3_column_text(stmt, index);
+  return mutt_str_strdup(val);
+}
+
+struct AutocryptAccount *mutt_autocrypt_db_account_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct AutocryptAccount));
+}
+
+void mutt_autocrypt_db_account_free(struct AutocryptAccount **account)
+{
+  if (!account || !*account)
+    return;
+  FREE(&(*account)->email_addr);
+  FREE(&(*account)->keyid);
+  FREE(&(*account)->keydata);
+  FREE(account);
+}
+
+int mutt_autocrypt_db_account_get(struct Address *addr, struct AutocryptAccount **account)
+{
+  int rv = -1, result;
+  char *email = NULL;
+
+  email = normalize_email_addr(addr);
+  *account = NULL;
+
+  if (!AccountGetStmt)
+  {
+    if (sqlite3_prepare_v2(AutocryptDB,
+                           "SELECT "
+                           "email_addr, "
+                           "keyid, "
+                           "keydata, "
+                           "prefer_encrypt, "
+                           "enabled "
+                           "FROM account "
+                           "WHERE email_addr = ?",
+                           -1, &AccountGetStmt, NULL) != SQLITE_OK)
+      goto cleanup;
+  }
+
+  if (sqlite3_bind_text(AccountGetStmt, 1, email, -1, SQLITE_STATIC) != SQLITE_OK)
+    goto cleanup;
+
+  result = sqlite3_step(AccountGetStmt);
+  if (result != SQLITE_ROW)
+  {
+    if (result == SQLITE_DONE)
+      rv = 0;
+    goto cleanup;
+  }
+
+  *account = mutt_autocrypt_db_account_new();
+  (*account)->email_addr = strdup_column_text(AccountGetStmt, 0);
+  (*account)->keyid = strdup_column_text(AccountGetStmt, 1);
+  (*account)->keydata = strdup_column_text(AccountGetStmt, 2);
+  (*account)->prefer_encrypt = sqlite3_column_int(AccountGetStmt, 3);
+  (*account)->enabled = sqlite3_column_int(AccountGetStmt, 4);
+
+  rv = 1;
+
+cleanup:
+  FREE(&email);
+  sqlite3_reset(AccountGetStmt);
+  return rv;
+}
+
+int mutt_autocrypt_db_account_insert(struct Address *addr, const char *keyid,
+                                     const char *keydata, int prefer_encrypt)
+{
+  int rv = -1;
+  char *email = NULL;
+
+  email = normalize_email_addr(addr);
+
+  if (!AccountInsertStmt)
+  {
+    if (sqlite3_prepare_v2(AutocryptDB,
+                           "INSERT INTO account "
+                           "(email_addr, "
+                           "keyid, "
+                           "keydata, "
+                           "prefer_encrypt, "
+                           "enabled) "
+                           "VALUES (?, ?, ?, ?, ?);",
+                           -1, &AccountInsertStmt, NULL) != SQLITE_OK)
+      goto cleanup;
+  }
+
+  if (sqlite3_bind_text(AccountInsertStmt, 1, email, -1, SQLITE_STATIC) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_text(AccountInsertStmt, 2, keyid, -1, SQLITE_STATIC) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_text(AccountInsertStmt, 3, keydata, -1, SQLITE_STATIC) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_int(AccountInsertStmt, 4, prefer_encrypt) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_int(AccountInsertStmt, 5, 1) != SQLITE_OK)
+    goto cleanup;
+
+  if (sqlite3_step(AccountInsertStmt) != SQLITE_DONE)
+    goto cleanup;
+
+  rv = 0;
+
+cleanup:
+  FREE(&email);
+  sqlite3_reset(AccountInsertStmt);
+  return rv;
 }

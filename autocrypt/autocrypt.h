@@ -28,6 +28,15 @@
 
 WHERE sqlite3 *AutocryptDB;
 
+struct AutocryptAccount
+{
+  char *email_addr;
+  char *keyid;
+  char *keydata;
+  int prefer_encrypt;    /* 0 = nopref, 1 = mutual */
+  int enabled;
+};
+
 int mutt_autocrypt_init (int);
 void mutt_autocrypt_cleanup (void);
 

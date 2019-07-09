@@ -736,10 +736,6 @@ int main(int argc, char *argv[], char *envp[])
 
   /* Initialize crypto backends.  */
   crypt_init();
-#ifdef USE_AUTOCRYPT
-  if (C_Autocrypt)
-    mutt_autocrypt_init(!(sendflags & SEND_BATCH));
-#endif
 
   if (new_magic)
   {
@@ -800,6 +796,13 @@ int main(int argc, char *argv[], char *envp[])
     log_queue_flush(log_disp_curses);
     log_queue_set_max_size(100);
   }
+
+  /* Initialize autocrypt after curses messages are working,
+   * because of the initial account setup screens. */
+#ifdef USE_AUTOCRYPT
+  if (C_Autocrypt)
+    mutt_autocrypt_init(!(sendflags & SEND_BATCH));
+#endif
 
   /* Create the C_Folder directory if it doesn't exist. */
   if (!OptNoCurses && C_Folder)
