@@ -442,12 +442,6 @@ int comp_ac_add(struct Account *a, struct Mailbox *m)
 {
   if (!a || !m || (m->magic != MUTT_COMPRESSED))
     return -1;
-
-  m->account = a;
-
-  struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
-  np->mailbox = m;
-  STAILQ_INSERT_TAIL(&a->mailboxes, np, entries);
   return 0;
 }
 

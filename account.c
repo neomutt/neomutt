@@ -119,6 +119,25 @@ void account_free_config(struct Account *a)
 }
 
 /**
+ * account_mailbox_add - Add a Mailbox to an Account
+ * @param a Account
+ * @param m Mailbox to add
+ * @retval true If Mailbox was added
+ */
+bool account_mailbox_add(struct Account *a, struct Mailbox *m)
+{
+  if (!a || !m)
+    return false;
+
+  m->account = a;
+  struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
+  np->mailbox = m;
+  STAILQ_INSERT_TAIL(&a->mailboxes, np, entries);
+
+  return true;
+}
+
+/**
  * account_mailbox_remove - Remove a Mailbox from an Account
  * @param a Account
  * @param m Mailbox to remove
@@ -146,10 +165,6 @@ bool account_mailbox_remove(struct Account *a, struct Mailbox *m)
     }
   }
 
-  if (STAILQ_EMPTY(&a->mailboxes))
-  {
-    neomutt_account_remove(NeoMutt, a);
-  }
   return result;
 }
 

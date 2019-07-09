@@ -1573,10 +1573,7 @@ int mx_ac_add(struct Account *a, struct Mailbox *m)
   if (m->mx_ops->ac_add(a, m) < 0)
     return -1;
 
-  m->account = a;
-  struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
-  np->mailbox = m;
-  STAILQ_INSERT_TAIL(&a->mailboxes, np, entries);
+  account_mailbox_add(a, m);
   return 0;
 }
 
@@ -1590,6 +1587,10 @@ int mx_ac_remove(struct Mailbox *m)
     return -1;
 
   account_mailbox_remove(m->account, m);
+  if (STAILQ_EMPTY(&m->account->mailboxes))
+  {
+    neomutt_account_remove(NeoMutt, m->account);
+  }
   return 0;
 }
 

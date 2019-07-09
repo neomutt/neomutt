@@ -73,6 +73,7 @@ bool            account_add_config(struct Account *a, const struct ConfigSet *cs
 void            account_free(struct Account **ptr);
 void            account_free_config(struct Account *a);
 int             account_get_value(const struct Account *a, size_t vid, struct Buffer *result);
+bool            account_mailbox_add(struct Account *a, struct Mailbox *m);
 bool            account_mailbox_remove(struct Account *a, struct Mailbox *m);
 struct Account *account_new(void);
 int             account_set_value(const struct Account *a, size_t vid, intptr_t value, struct Buffer *err);
