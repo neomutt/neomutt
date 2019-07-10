@@ -129,7 +129,7 @@ void pop_apop_timestamp(struct PopAccountData *adata, char *buf);
  * @retval  0 Success
  * @retval -1 Failure
  */
-typedef int (*pop_fetch_t)(char *str, void *data);
+typedef int (*pop_fetch_t)(const char *str, void *data);
 
 /* pop_lib.c */
 #define pop_query(adata, buf, buflen) pop_query_d(adata, buf, buflen, NULL)
