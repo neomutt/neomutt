@@ -984,9 +984,10 @@ bool imap_has_flag(struct ListHead *flag_list, const char *flag)
  */
 static int compare_uid(const void *a, const void *b)
 {
-  struct Email **ea = (struct Email **) a;
-  struct Email **eb = (struct Email **) b;
-  return imap_edata_get(*ea)->uid - imap_edata_get(*eb)->uid;
+  const struct Email *ea = *(struct Email const *const *) a;
+  const struct Email *eb = *(struct Email const *const *) b;
+  return imap_edata_get((struct Email *) ea)->uid -
+         imap_edata_get((struct Email *) eb)->uid;
 }
 
 /**
