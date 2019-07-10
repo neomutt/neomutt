@@ -353,8 +353,8 @@ static int compare_key_address(const void *a, const void *b)
 {
   int r;
 
-  struct PgpUid **s = (struct PgpUid **) a;
-  struct PgpUid **t = (struct PgpUid **) b;
+  struct PgpUid const *const *s = (struct PgpUid const *const *) a;
+  struct PgpUid const *const *t = (struct PgpUid const *const *) b;
 
   r = mutt_str_strcasecmp((*s)->addr, (*t)->addr);
   if (r != 0)
@@ -392,8 +392,8 @@ static int compare_keyid(const void *a, const void *b)
 {
   int r;
 
-  struct PgpUid **s = (struct PgpUid **) a;
-  struct PgpUid **t = (struct PgpUid **) b;
+  struct PgpUid const *const *s = (struct PgpUid const *const *) a;
+  struct PgpUid const *const *t = (struct PgpUid const *const *) b;
 
   r = mutt_str_strcasecmp(pgp_fpr_or_lkeyid((*s)->parent), pgp_fpr_or_lkeyid((*t)->parent));
   if (r != 0)
@@ -426,8 +426,8 @@ static int pgp_compare_keyid(const void *a, const void *b)
 static int compare_key_date(const void *a, const void *b)
 {
   int r;
-  struct PgpUid **s = (struct PgpUid **) a;
-  struct PgpUid **t = (struct PgpUid **) b;
+  struct PgpUid const *const *s = (struct PgpUid const *const *) a;
+  struct PgpUid const *const *t = (struct PgpUid const *const *) b;
 
   r = ((*s)->parent->gen_time - (*t)->parent->gen_time);
   if (r != 0)
@@ -464,8 +464,8 @@ static int compare_key_trust(const void *a, const void *b)
 {
   int r;
 
-  struct PgpUid **s = (struct PgpUid **) a;
-  struct PgpUid **t = (struct PgpUid **) b;
+  struct PgpUid const *const *s = (struct PgpUid const *const *) a;
+  struct PgpUid const *const *t = (struct PgpUid const *const *) b;
 
   r = (((*s)->parent->flags & KEYFLAG_RESTRICTIONS) -
        ((*t)->parent->flags & KEYFLAG_RESTRICTIONS));

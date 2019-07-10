@@ -145,8 +145,8 @@ static void destroy_state(struct BrowserState *state)
  */
 static int browser_compare_subject(const void *a, const void *b)
 {
-  struct FolderFile *pa = (struct FolderFile *) a;
-  struct FolderFile *pb = (struct FolderFile *) b;
+  const struct FolderFile *pa = (const struct FolderFile *) a;
+  const struct FolderFile *pb = (const struct FolderFile *) b;
 
   /* inbox should be sorted ahead of its siblings */
   int r = mutt_inbox_cmp(pa->name, pb->name);
@@ -165,8 +165,8 @@ static int browser_compare_subject(const void *a, const void *b)
  */
 static int browser_compare_desc(const void *a, const void *b)
 {
-  struct FolderFile *pa = (struct FolderFile *) a;
-  struct FolderFile *pb = (struct FolderFile *) b;
+  const struct FolderFile *pa = (const struct FolderFile *) a;
+  const struct FolderFile *pb = (const struct FolderFile *) b;
 
   int r = mutt_str_strcoll(pa->desc, pb->desc);
 
@@ -183,8 +183,8 @@ static int browser_compare_desc(const void *a, const void *b)
  */
 static int browser_compare_date(const void *a, const void *b)
 {
-  struct FolderFile *pa = (struct FolderFile *) a;
-  struct FolderFile *pb = (struct FolderFile *) b;
+  const struct FolderFile *pa = (const struct FolderFile *) a;
+  const struct FolderFile *pb = (const struct FolderFile *) b;
 
   int r = pa->mtime - pb->mtime;
 
@@ -201,8 +201,8 @@ static int browser_compare_date(const void *a, const void *b)
  */
 static int browser_compare_size(const void *a, const void *b)
 {
-  struct FolderFile *pa = (struct FolderFile *) a;
-  struct FolderFile *pb = (struct FolderFile *) b;
+  const struct FolderFile *pa = (const struct FolderFile *) a;
+  const struct FolderFile *pb = (const struct FolderFile *) b;
 
   int r = pa->size - pb->size;
 
@@ -219,8 +219,8 @@ static int browser_compare_size(const void *a, const void *b)
  */
 static int browser_compare_count(const void *a, const void *b)
 {
-  struct FolderFile *pa = (struct FolderFile *) a;
-  struct FolderFile *pb = (struct FolderFile *) b;
+  const struct FolderFile *pa = (const struct FolderFile *) a;
+  const struct FolderFile *pb = (const struct FolderFile *) b;
 
   int r = 0;
   if (pa->has_mailbox && pb->has_mailbox)
@@ -243,8 +243,8 @@ static int browser_compare_count(const void *a, const void *b)
  */
 static int browser_compare_count_new(const void *a, const void *b)
 {
-  struct FolderFile *pa = (struct FolderFile *) a;
-  struct FolderFile *pb = (struct FolderFile *) b;
+  const struct FolderFile *pa = (const struct FolderFile *) a;
+  const struct FolderFile *pb = (const struct FolderFile *) b;
 
   int r = 0;
   if (pa->has_mailbox && pb->has_mailbox)
@@ -271,8 +271,8 @@ static int browser_compare_count_new(const void *a, const void *b)
  */
 static int browser_compare(const void *a, const void *b)
 {
-  struct FolderFile *pa = (struct FolderFile *) a;
-  struct FolderFile *pb = (struct FolderFile *) b;
+  const struct FolderFile *pa = (const struct FolderFile *) a;
+  const struct FolderFile *pb = (const struct FolderFile *) b;
 
   if ((mutt_str_strcoll(pa->desc, "../") == 0) || (mutt_str_strcoll(pa->desc, "..") == 0))
     return -1;
