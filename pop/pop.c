@@ -153,7 +153,7 @@ static struct PopEmailData *pop_edata_new(const char *uid)
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int fetch_message(char *line, void *data)
+static int fetch_message(const char *line, void *data)
 {
   FILE *fp = data;
 
@@ -253,7 +253,7 @@ static int pop_read_header(struct PopAccountData *adata, struct Email *e)
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int fetch_uidl(char *line, void *data)
+static int fetch_uidl(const char *line, void *data)
 {
   struct Mailbox *m = data;
   struct PopAccountData *adata = pop_adata_get(m);
@@ -265,7 +265,7 @@ static int fetch_uidl(char *line, void *data)
     return -1;
   while (*endp == ' ')
     endp++;
-  memmove(line, endp, strlen(endp) + 1);
+  line = endp;
 
   /* uid must be at least be 1 byte */
   if (strlen(line) == 0)

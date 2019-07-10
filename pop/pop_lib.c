@@ -123,15 +123,14 @@ static void pop_error(struct PopAccountData *adata, char *msg)
  * @param data POP data
  * @retval 0 (always)
  */
-static int fetch_capa(char *line, void *data)
+static int fetch_capa(const char *line, void *data)
 {
   struct PopAccountData *adata = data;
-  char *c = NULL;
 
   if (mutt_str_startswith(line, "SASL", CASE_IGNORE))
   {
     FREE(&adata->auth_list);
-    c = mutt_str_skip_email_wsp(line + 4);
+    const char* c = mutt_str_skip_email_wsp(line + 4);
     adata->auth_list = mutt_str_strdup(c);
   }
 
@@ -156,7 +155,7 @@ static int fetch_capa(char *line, void *data)
  * @param data POP data
  * @retval 0 (always)
  */
-static int fetch_auth(char *line, void *data)
+static int fetch_auth(const char *line, void *data)
 {
   struct PopAccountData *adata = data;
 
@@ -552,7 +551,7 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
  * @retval  0 Success
  * @retval -1 Error
  */
-static int check_uidl(char *line, void *data)
+static int check_uidl(const char *line, void *data)
 {
   if (!line || !data)
     return -1;
@@ -565,13 +564,12 @@ static int check_uidl(char *line, void *data)
     return -1;
   while (*endp == ' ')
     endp++;
-  memmove(line, endp, strlen(endp) + 1);
 
   struct Mailbox *m = data;
   for (int i = 0; i < m->msg_count; i++)
   {
     struct PopEmailData *edata = m->emails[i]->edata;
-    if (mutt_str_strcmp(edata->uid, line) == 0)
+    if (mutt_str_strcmp(edata->uid, endp) == 0)
     {
       m->emails[i]->refno = index;
       break;
