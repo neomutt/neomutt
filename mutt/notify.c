@@ -116,7 +116,9 @@ static bool send(struct Notify *source, struct Notify *current, int type,
 
   // mutt_debug(LL_NOTIFY, "send: %d, %ld\n", type, data);
   struct ObserverNode *np = NULL;
-  STAILQ_FOREACH(np, &current->observers, entries)
+  struct ObserverNode *tmp = NULL;
+  // We use the `_SAFE` version in case an event causes an observer to be deleted
+  STAILQ_FOREACH_SAFE(np, &current->observers, entries, tmp)
   {
     struct Observer *o = np->observer;
 

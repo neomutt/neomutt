@@ -31,6 +31,7 @@
 #include "pattern.h"
 
 struct EmailList;
+struct NotifyCallback;
 
 /**
  * struct Context - The "current" mailbox
@@ -52,8 +53,8 @@ struct Context
   struct Mailbox *mailbox;
 };
 
-void ctx_free(struct Context **ctx);
-void ctx_mailbox_changed(struct Mailbox *m, enum MailboxNotification action);
+void ctx_free(struct Context **ptr);
+int  ctx_mailbox_observer(struct NotifyCallback *nc);
 void ctx_update(struct Context *ctx);
 void ctx_update_tables(struct Context *ctx, bool committing);
 

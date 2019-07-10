@@ -147,8 +147,6 @@ struct Mailbox
   void (*free_mdata)(void **); /**< driver-specific data free function */
 
   struct Notify *notify;        ///< Notifications handler
-  void (*notify2)(struct Mailbox *m, enum MailboxNotification action); ///< Notification callback
-  void *ndata; ///< Notification callback private data
 };
 
 /**

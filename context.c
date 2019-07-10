@@ -44,12 +44,16 @@
  * ctx_free - Free a Context
  * @param[out] ctx Context to free
  */
-void ctx_free(struct Context **ctx)
+void ctx_free(struct Context **ptr)
 {
-  if (!ctx || !*ctx)
+  if (!ptr || !*ptr)
     return;
 
-  FREE(ctx);
+  struct Context *ctx = *ptr;
+  if (ctx->mailbox)
+    notify_observer_remove(ctx->mailbox->notify, ctx_mailbox_observer);
+
+  FREE(ptr);
 }
 
 /**
@@ -60,6 +64,8 @@ void ctx_cleanup(struct Context *ctx)
 {
   FREE(&ctx->pattern);
   mutt_pattern_free(&ctx->limit_pattern);
+  if (ctx->mailbox)
+    notify_observer_remove(ctx->mailbox->notify, ctx_mailbox_observer);
   memset(ctx, 0, sizeof(struct Context));
 }
 
@@ -250,18 +256,19 @@ void ctx_update_tables(struct Context *ctx, bool committing)
 }
 
 /**
- * ctx_mailbox_changed - Act on a Mailbox change notification
- * @param m      Mailbox
- * @param action Event occurring
+ * ctx_mailbox_observer - Watch for changes affecting the Context - Implements ::observer_t
  */
-void ctx_mailbox_changed(struct Mailbox *m, enum MailboxNotification action)
+int ctx_mailbox_observer(struct NotifyCallback *nc)
 {
-  if (!m || !m->ndata)
-    return;
+  if (!nc)
+    return -1;
+  if ((nc->obj_type != NT_MAILBOX) || (nc->event_type != NT_MAILBOX))
+    return 0;
+  struct Context *ctx = (struct Context *) nc->data;
+  if (!ctx)
+    return -1;
 
-  struct Context *ctx = m->ndata;
-
-  switch (action)
+  switch (nc->event_subtype)
   {
     case MBN_CLOSED:
       mutt_clear_threads(ctx);
@@ -281,6 +288,8 @@ void ctx_mailbox_changed(struct Mailbox *m, enum MailboxNotification action)
         ctx->last_tag = NULL;
       break;
   }
+
+  return 0;
 }
 
 /**

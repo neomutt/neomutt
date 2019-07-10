@@ -270,6 +270,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
 
   struct Context *ctx = mutt_mem_calloc(1, sizeof(*ctx));
   ctx->mailbox = m;
+  notify_observer_add(m->notify, NT_MAILBOX, 0, ctx_mailbox_observer, IP ctx);
 
   if ((m->magic == MUTT_UNKNOWN) && (flags & (MUTT_NEWFOLDER | MUTT_APPEND)))
   {
@@ -385,8 +386,6 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   }
 
   OptForceRefresh = false;
-  m->notify2 = ctx_mailbox_changed;
-  m->ndata = ctx;
 
   return ctx;
 }
@@ -413,7 +412,6 @@ void mx_fastclose_mailbox(struct Mailbox *m)
     m->mx_ops->mbox_close(m);
 
   mutt_mailbox_changed(m, MBN_CLOSED);
-  m->notify2 = NULL;
 
   mutt_hash_free(&m->subj_hash);
   mutt_hash_free(&m->id_hash);
@@ -741,7 +739,7 @@ int mx_mbox_close(struct Context **ptr)
     if ((m->magic == MUTT_MBOX) || (m->magic == MUTT_MMDF))
       mbox_reset_atime(m, NULL);
     mx_fastclose_mailbox(m);
-    FREE(ptr);
+    ctx_free(ptr);
     return 0;
   }
 
