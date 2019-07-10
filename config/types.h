@@ -48,6 +48,8 @@
 #define DT_SENSITIVE     (1 << 9)  ///< Contains sensitive value, e.g. password
 #define DT_PATH          (1 << 10) ///< A pathname
 #define DT_COMMAND       (1 << 11) ///< A command
+#define DT_INHERIT_ACC   (1 << 12) ///< Config item can be Account-specific
+#define DT_INHERIT_MBOX  (1 << 13) ///< Config item can be Mailbox-specific
 
 #define IS_SENSITIVE(x) (((x).type & DT_SENSITIVE) == DT_SENSITIVE)
 #define IS_PATH(x)      (((x)->type & (DT_STRING | DT_PATH)) == (DT_STRING | DT_PATH))

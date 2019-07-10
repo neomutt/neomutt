@@ -40,6 +40,7 @@
  * | config/slist.c      | @subpage config_slist      |
  * | config/sort.c       | @subpage config_sort       |
  * | config/string.c     | @subpage config_string     |
+ * | config/subset.c     | @subpage config_subset     |
  */
 
 #ifndef MUTT_CONFIG_LIB_H
@@ -59,6 +60,7 @@
 #include "slist.h"
 #include "sort.h"
 #include "string3.h"
+#include "subset.h"
 #include "types.h"
 
 #endif /* MUTT_CONFIG_LIB_H */
