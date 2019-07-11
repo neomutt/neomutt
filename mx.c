@@ -284,7 +284,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
     bool new_account = false;
     if (!a)
     {
-      a = account_new();
+      a = account_new(NULL, NeoMutt->sub);
       a->magic = m->magic;
       new_account = true;
     }

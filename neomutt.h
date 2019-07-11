@@ -34,6 +34,7 @@ struct Notify;
 struct NeoMutt
 {
   struct Notify *notify;       ///< Notifications handler
+  struct ConfigSubset *sub;    ///< Inherited config items
   struct AccountList accounts; ///< List of all Accounts
 };
 
@@ -52,7 +53,7 @@ enum NotifyGlobal
 bool            neomutt_account_add(struct NeoMutt *n, struct Account *a);
 bool            neomutt_account_remove(struct NeoMutt *n, struct Account *a);
 void            neomutt_free(struct NeoMutt **ptr);
-struct NeoMutt *neomutt_new(void);
+struct NeoMutt *neomutt_new(struct ConfigSet *cs);
 
 void               neomutt_mailboxlist_clear(struct MailboxList *ml);
 struct MailboxList neomutt_mailboxlist_get_all(struct NeoMutt *n, enum MailboxType magic);

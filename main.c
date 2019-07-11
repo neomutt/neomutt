@@ -600,11 +600,11 @@ int main(int argc, char *argv[], char *envp[])
     goto main_ok; // TEST04: neomutt -v
   }
 
-  NeoMutt = neomutt_new();
-
   Config = init_config(500);
   if (!Config)
     goto main_curses;
+  NeoMutt = neomutt_new(Config);
+
   notify_set_parent(Config->notify, NeoMutt->notify);
 
   if (!get_user_info(Config))

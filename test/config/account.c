@@ -54,6 +54,7 @@ void config_account(void)
   mutt_buffer_reset(&err);
 
   struct ConfigSet *cs = cs_new(30);
+  int rc = 0;
 
   number_init(cs);
   if (!TEST_CHECK(cs_register_variables(cs, Vars, 0)))
@@ -64,84 +65,62 @@ void config_account(void)
   notify_observer_add(cs->notify, NT_CONFIG, 0, log_observer, 0);
 
   const char *account = "damaged";
-  const char *BrokenVarStr[] = {
-    "Pineapple",
-    NULL,
-  };
+  const char *parent = "Pineapple";
 
-  struct Account *a = account_new();
-  bool result = account_add_config(a, cs, account, BrokenVarStr);
+  struct ConfigSubset *sub = cs_subset_new(NULL, NULL);
+  sub->cs = cs;
+  struct Account *a = account_new(account, sub);
+
+  struct HashElem *he = cs_subset_create_var(a->sub, parent, &err);
+
   account_free(&a);
 
-  if (TEST_CHECK(!result))
+  if (he)
   {
-    TEST_MSG("Expected error:\n");
+    TEST_MSG("This test should have failed\n");
+    return;
   }
   else
   {
-    TEST_MSG("This test should have failed\n");
-    return;
+    TEST_MSG("Expected error:\n");
   }
-
-  const char *AccountVarStr2[] = {
-    "Apple",
-    "Apple",
-    NULL,
-  };
-
-  TEST_MSG("Expect error for next test\n");
-  a = account_new();
-  result = account_add_config(a, cs, account, AccountVarStr2);
   account_free(&a);
 
-  if (!TEST_CHECK(!result))
-  {
-    TEST_MSG("This test should have failed\n");
-    return;
-  }
-
   account = "fruit";
-  const char *AccountVarStr[] = {
-    "Apple",
-    "Cherry",
-    NULL,
-  };
+  a = account_new(account, sub);
 
-  a = account_new();
-
-  result = account_add_config(NULL, cs, account, AccountVarStr);
-  if (!TEST_CHECK(!result))
-    return;
-
-  result = account_add_config(a, NULL, account, AccountVarStr);
-  if (!TEST_CHECK(!result))
-    return;
-
-  result = account_add_config(a, cs, NULL, AccountVarStr);
-  if (!TEST_CHECK(!result))
-    return;
-
-  result = account_add_config(a, cs, account, NULL);
-  if (!TEST_CHECK(!result))
-    return;
-
-  result = account_add_config(a, cs, account, AccountVarStr);
-  if (!TEST_CHECK(result))
-    return;
-
-  size_t index = 0;
-  mutt_buffer_reset(&err);
-  int rc = account_set_value(NULL, index, 33, &err);
-
-  rc = account_set_value(a, index, 33, &err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  struct HashElem *he1 = cs_subset_create_var(a->sub, "Apple", &err);
+  struct HashElem *he2 = cs_subset_create_var(a->sub, "Apple", &err);
+  if (!he1 || !he2 || (he1 != he2))
   {
     TEST_MSG("%s\n", err.data);
+    return;
   }
 
+  account_free(&a);
+
+  a = account_new(account, sub);
+
+  he = cs_subset_create_var(NULL, "Apple", &err);
+  if (he)
+    return;
+  he = cs_subset_create_var(a->sub, NULL, &err);
+  if (he)
+    return;
+
+  he = cs_subset_create_var(a->sub, "Apple", &err);
+  if (!he)
+    return;
+
+  he = cs_subset_create_var(a->sub, "Cherry", &err);
+  if (!he)
+    return;
+
+  he = cs_subset_lookup(a->sub, "Apple");
   mutt_buffer_reset(&err);
-  rc = account_set_value(a, 99, 42, &err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_UNKNOWN))
+
+  rc = cs_subset_native_set(NULL, he, 33, &err);
+  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("Expected error: %s\n", err.data);
   }
@@ -151,45 +130,44 @@ void config_account(void)
     return;
   }
 
-  mutt_buffer_reset(&err);
-  rc = account_get_value(NULL, index, &err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_CODE))
+  rc = cs_subset_native_set(a->sub, NULL, 33, &err);
+  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", err.data);
-  }
-
-  rc = account_get_value(a, index, &err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
-  {
-    TEST_MSG("%s\n", err.data);
-  }
-  else
-  {
-    TEST_MSG("%s = %s\n", AccountVarStr[index], err.data);
-  }
-
-  index++;
-  mutt_buffer_reset(&err);
-  rc = account_get_value(a, index, &err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
-  {
-    TEST_MSG("%s\n", err.data);
-  }
-  else
-  {
-    TEST_MSG("%s = %s\n", AccountVarStr[index], err.data);
-  }
-
-  mutt_buffer_reset(&err);
-  rc = account_get_value(a, 99, &err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_UNKNOWN))
-  {
-    TEST_MSG("Expected error\n");
+    TEST_MSG("Expected error: %s\n", err.data);
   }
   else
   {
     TEST_MSG("This test should have failed\n");
     return;
+  }
+
+  rc = cs_subset_native_set(a->sub, he, 33, &err);
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+    TEST_MSG("%s\n", err.data);
+  }
+
+  mutt_buffer_reset(&err);
+  rc = cs_subset_string_get(a->sub, he, &err);
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+    TEST_MSG("%s\n", err.data);
+  }
+  else
+  {
+    TEST_MSG("%s = %s\n", he->key.strkey, err.data);
+  }
+
+  he = cs_subset_lookup(a->sub, "Cherry");
+  mutt_buffer_reset(&err);
+  rc = cs_subset_string_get(a->sub, he, &err);
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+    TEST_MSG("%s\n", err.data);
+  }
+  else
+  {
+    TEST_MSG("%s = %s\n", he->key.strkey, err.data);
   }
 
   const char *name = "fruit:Apple";
@@ -217,7 +195,7 @@ void config_account(void)
     return;
   }
 
-  struct HashElem *he = cs_get_elem(cs, name);
+  he = cs_get_elem(cs, name);
   if (!TEST_CHECK(he != NULL))
     return;
 
@@ -265,6 +243,7 @@ void config_account(void)
   account_free(NULL);
 
   account_free(&a);
+  cs_subset_free(&sub);
   cs_free(&cs);
   FREE(&err.data);
   log_line(__func__);

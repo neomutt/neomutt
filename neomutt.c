@@ -37,12 +37,14 @@ struct NeoMutt *NeoMutt; ///< Global NeoMutt object
  * neomutt_new - Create the master NeoMutt object
  * @retval ptr New NeoMutt
  */
-struct NeoMutt *neomutt_new(void)
+struct NeoMutt *neomutt_new(struct ConfigSet *cs)
 {
   struct NeoMutt *n = mutt_mem_calloc(1, sizeof(*NeoMutt));
 
   TAILQ_INIT(&n->accounts);
   n->notify = notify_new(n, NT_NEOMUTT);
+  n->sub = cs_subset_new(NULL, NULL);
+  n->sub->cs = cs;
 
   return n;
 }
@@ -60,6 +62,7 @@ void neomutt_free(struct NeoMutt **ptr)
 
   neomutt_account_remove(n, NULL);
   notify_free(&n->notify);
+  cs_subset_free(&n->sub);
 
   FREE(ptr);
 }

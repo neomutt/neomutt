@@ -1349,7 +1349,7 @@ static enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
     struct Account *a = mx_ac_find(m);
     if (!a)
     {
-      a = account_new();
+      a = account_new(NULL, NeoMutt->sub);
       a->magic = m->magic;
       new_account = true;
     }
