@@ -45,6 +45,7 @@
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
+#include "vector.h"
 
 struct stat;
 
@@ -57,148 +58,7 @@ struct stat;
 
 static bool __Backup_HTS; ///< used to restore $hide_thread_subject on help_mbox_close()
 static char DocDirID[33]; ///< MD5 checksum of current $help_doc_dir DT_PATH option
-static struct HelpList *DocList; ///< all valid help documents within $help_doc_dir folder
-
-/**
- * help_list_free - Free a list of Help documents
- * @param list      List to free
- * @param item_free Function to free the list contents
- */
-static void help_list_free(struct HelpList **list, void (*item_free)(void **))
-{
-  if (!list || !*list)
-    return;
-
-  for (size_t i = 0; i < (*list)->size; i++)
-  {
-    item_free(&((*list)->data[i]));
-  }
-  FREE(&(*list)->data);
-  FREE(list);
-}
-
-/**
- * help_list_shrink - Resize a List of Help documents to save space
- * @param list List to resize
- */
-static void help_list_shrink(struct HelpList *list)
-{
-  if (!list)
-    return;
-
-  mutt_mem_realloc(list->data, list->size * list->item_size);
-  list->capa = list->size;
-}
-
-/**
- * help_list_new - Create a new list of Help documents
- * @param item_size Size of items in list
- * @retval ptr New Help list
- */
-static struct HelpList *help_list_new(size_t item_size)
-{
-  struct HelpList *list = NULL;
-  if (item_size == 0)
-    return NULL;
-
-  list = mutt_mem_malloc(sizeof(struct HelpList));
-  list->item_size = item_size;
-  list->size = 0;
-  list->capa = HELPLIST_INIT_CAPACITY;
-  list->data = mutt_mem_calloc(list->capa, sizeof(void *) * list->item_size);
-
-  return list;
-}
-
-/**
- * help_list_append - Add an item to the Help document list
- * @param list List to add to
- * @param item Item to add
- */
-static void help_list_append(struct HelpList *list, void *item)
-{
-  if (!list || !item)
-    return;
-
-  if (list->size >= list->capa)
-  {
-    list->capa = (list->capa == 0) ? HELPLIST_INIT_CAPACITY : (list->capa * 2);
-    mutt_mem_realloc(list->data, list->capa * list->item_size);
-  }
-
-  list->data[list->size] = mutt_mem_calloc(1, list->item_size);
-  list->data[list->size] = item;
-  list->size++;
-}
-
-/**
- * help_list_new_append - Append a new item to a Help document list
- * @param list      List to append to
- * @param item_size Size of item to add
- * @param item      Item to add to list
- */
-static void help_list_new_append(struct HelpList **list, size_t item_size, void *item)
-{
-  if ((item_size == 0) || !item)
-    return;
-
-  if (!list || !*list)
-    *list = help_list_new(item_size);
-
-  help_list_append(*list, item);
-}
-
-/**
- * help_list_get - Get an item from a Help document list
- * @param list  List to use
- * @param index Index in list
- * @param copy  Function to copy item (may be NULL)
- * @retval ptr  Item selected
- * @retval NULL Invalid index
- */
-static void *help_list_get(struct HelpList *list, size_t index, void *(*copy)(const void *) )
-{
-  if (!list || (index >= list->size))
-    return NULL;
-
-  return ((copy) ? copy(list->data[index]) : list->data[index]);
-}
-
-/**
- * help_list_clone - Copy a list of Help documents
- * @param list   List to copy
- * @param shrink true if the list should be minimised
- * @param copy   Function to copy a list item
- * @retval ptr Duplicated list of Help documents
- */
-static struct HelpList *help_list_clone(struct HelpList *list, bool shrink,
-                                        void *(*copy)(const void *) )
-{
-  if (!list)
-    return NULL;
-
-  struct HelpList *clone = help_list_new(list->item_size);
-  for (size_t i = 0; i < list->size; i++)
-    help_list_append(clone, help_list_get(list, i, copy));
-
-  if (shrink)
-    help_list_shrink(clone);
-
-  return clone;
-}
-
-/**
- * help_list_sort - Sort a list of Help documents
- * @param list    List to sort
- * @param compare Function to compare two items
- */
-static void help_list_sort(struct HelpList *list, int (*compare)(const void *, const void *))
-{
-  if (!list)
-    return;
-
-  qsort(list->data, list->size, sizeof(void *), compare);
-}
+static struct Vector *DocList; ///< all valid help documents within $help_doc_dir folder
 
 /**
  * help_doc_type_cmp - Compare two help documents by their name - Implements ::sort_t
@@ -242,7 +102,7 @@ static void help_doc_meta_free(void **data)
   struct HelpDocMeta *meta = *data;
 
   FREE(&meta->name);
-  help_list_free(&meta->fhdr, help_file_hdr_free);
+  vector_free(&meta->fhdr, help_file_hdr_free);
   *data = NULL;
 }
 
@@ -263,7 +123,7 @@ static void help_doc_free(void **item)
  */
 void help_doclist_free(void)
 {
-  help_list_free(&DocList, help_doc_free);
+  vector_free(&DocList, help_doc_free);
   mutt_str_strfcpy(DocDirID, "", sizeof(DocDirID));
 }
 
@@ -362,7 +222,7 @@ static HelpDocFlags help_file_type(const char *file)
  * @retval -3     found invalid header: no triple-dashed start mark
  * @retval -4     found invalid header: no triple-dashed end mark
  */
-static int help_file_header(struct HelpList **fhdr, const char *file, int max)
+static int help_file_header(struct Vector **fhdr, const char *file, int max)
 {
   const char *bfn = mutt_path_basename(NONULL(file));
   const char *ext = strrchr(bfn, '.');
@@ -384,7 +244,7 @@ static int help_file_header(struct HelpList **fhdr, const char *file, int max)
     return -3;
   }
 
-  struct HelpList *list = NULL;
+  struct Vector *list = NULL;
   char *q = NULL;
   bool endmark = false;
   int count = 0;
@@ -402,7 +262,7 @@ static int help_file_header(struct HelpList **fhdr, const char *file, int max)
     struct HelpFileHeader *item = mutt_mem_calloc(1, sizeof(struct HelpFileHeader));
     item->key = mutt_str_substr_dup(p, q);
     item->val = mutt_str_strdup(mutt_str_skip_whitespace(NONULL(++q)));
-    help_list_new_append(&list, sizeof(struct HelpFileHeader), item);
+    vector_new_append(&list, sizeof(struct HelpFileHeader), item);
 
     count++;
     limit--;
@@ -412,12 +272,12 @@ static int help_file_header(struct HelpList **fhdr, const char *file, int max)
 
   if (!endmark)
   {
-    help_list_free(&list, help_file_hdr_free);
+    vector_free(&list, help_file_hdr_free);
     count = -4;
   }
   else
   {
-    help_list_shrink(list);
+    vector_shrink(list);
     *fhdr = list;
   }
 
@@ -431,7 +291,7 @@ static int help_file_header(struct HelpList **fhdr, const char *file, int max)
  * @retval ptr  Success, struct containing the found key
  * @retval NULL Failure, or when key could not be found
  */
-static struct HelpFileHeader *help_file_hdr_find(const char *key, const struct HelpList *fhdr)
+static struct HelpFileHeader *help_file_hdr_find(const char *key, const struct Vector *fhdr)
 {
   if (!fhdr || !key || !*key)
     return NULL;
@@ -489,7 +349,7 @@ static char *help_doc_msg_id(const struct tm *tm)
  *        parameter MUST be NULL currently or weird things happens when count of
  *        placeholder in strfmt and specified keys differs.
  */
-static char *help_doc_subject(struct HelpList *fhdr, const char *defsubj,
+static char *help_doc_subject(struct Vector *fhdr, const char *defsubj,
                               const char *strfmt, const char *key, ...)
 {
   va_list ap;
@@ -622,7 +482,7 @@ static void *help_doc_meta_clone(const void *item)
   struct HelpDocMeta *src = (struct HelpDocMeta *) item;
   struct HelpDocMeta *dup = mutt_mem_calloc(1, sizeof(struct HelpDocMeta));
 
-  dup->fhdr = help_list_clone(src->fhdr, true, help_file_hdr_clone);
+  dup->fhdr = vector_clone(src->fhdr, true, help_file_hdr_clone);
   dup->name = mutt_str_strdup(src->name);
   dup->type = src->type;
 
@@ -700,7 +560,7 @@ static struct Email *help_doc_from(const char *file)
   if (type == HELP_DOC_UNKNOWN)
     return NULL; /* file is not a valid help doc */
 
-  struct HelpList *fhdr = NULL;
+  struct Vector *fhdr = NULL;
   int len = help_file_header(&fhdr, file, HELP_FHDR_MAXLINES);
   if (!fhdr || (len < 1))
     return NULL; /* invalid or empty file header */
@@ -761,10 +621,10 @@ static struct Email *help_doc_from(const char *file)
  * @retval  (N!=0) Failure, (not used currently, failures are externally
  *                 checked and silently suppressed herein)
  */
-static int help_doc_gather(struct HelpList **list, const char *path)
+static int help_doc_gather(struct Vector **list, const char *path)
 {
   mutt_debug(1, "entering help_doc_gather: '%s'\n", path);
-  help_list_new_append(list, sizeof(struct Email *), help_doc_from(path));
+  vector_new_append(list, sizeof(struct Email *), help_doc_from(path));
 
   return 0;
 }
@@ -826,7 +686,7 @@ static int help_read_dir(const char *path)
     return 1;
   }
   /* Sort 'index.md' in list to the top */
-  help_list_sort(DocList, help_doc_type_cmp);
+  vector_sort(DocList, help_doc_type_cmp);
 
   struct Email *help_msg_cur = NULL;
   // All email at level 1 (directly under root will use uplinks[0] => index.md, at level n will use uplinks[n-1])
@@ -835,12 +695,12 @@ static int help_read_dir(const char *path)
   struct Email *help_msg_index = NULL;
 
   if (DocList->size > 0)
-    help_msg_index = help_list_get(DocList, 0, NULL);
+    help_msg_index = vector_get(DocList, 0, NULL);
 
   /* link all docs except the index.md (top element) */
   for (size_t i = 1; i < DocList->size; i++)
   {
-    help_msg_cur = help_list_get(DocList, i, NULL);
+    help_msg_cur = vector_get(DocList, i, NULL);
 
     int level = 1;
     char *msg_path = help_msg_cur->path;
@@ -859,7 +719,7 @@ static int help_read_dir(const char *path)
       mutt_mem_realloc(uplinks, list_size * sizeof(size_t));
     }
 
-    struct Email *help_msg_uplink = help_list_get(DocList, uplink_index, NULL);
+    struct Email *help_msg_uplink = vector_get(DocList, uplink_index, NULL);
     mutt_debug(5, "Uplinking '%s' to '%s'\n", path, help_msg_uplink->path);
     help_doc_uplink(help_msg_uplink, help_msg_cur);
     help_msg_cur->index = i;
@@ -888,7 +748,7 @@ int help_doclist_init(void)
     return 0;
 
   help_doclist_free();
-  DocList = help_list_new(sizeof(struct Email));
+  DocList = vector_new(sizeof(struct Email));
   help_read_dir(C_HelpDocDir);
   help_docdir_id(C_HelpDocDir);
   return 0;
@@ -910,7 +770,7 @@ static int help_doclist_parse(struct Mailbox *m)
   if ((help_doclist_init() != 0) || (DocList->size == 0))
     return -1;
 
-  m->emails = (struct Email **) (help_list_clone(DocList, true, help_doc_clone))->data;
+  m->emails = (struct Email **) (vector_clone(DocList, true, help_doc_clone))->data;
   m->msg_count = m->email_max = DocList->size;
   mutt_mem_realloc(&m->v2r, sizeof(int) * m->email_max);
 

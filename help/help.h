@@ -28,6 +28,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "mx.h"
+#include "vector.h"
 
 extern struct MxOps MxHelpOps;
 
@@ -38,18 +39,6 @@ typedef uint8_t HelpDocFlags;     ///< Types of Help Documents, e.g. #HELP_DOC_I
 #define HELP_DOC_ROOTDOC (1 << 2) ///< Document lives directly in root of #C_HelpDocDir
 #define HELP_DOC_CHAPTER (1 << 3) ///< Document is treated as help chapter
 #define HELP_DOC_SECTION (1 << 4) ///< Document is treated as help section
-
-/**
- * struct HelpList - Generic list to hold several help elements
- */
-struct HelpList
-{
-  size_t item_size; ///< Size of a single element
-  size_t size;      ///< List length
-  size_t capa;      ///< List capacity
-  void **data;      ///< Internal list data pointers
-};
-#define HELPLIST_INIT_CAPACITY 10
 
 /**
  * struct helpfile_header - Describes the header of a help file
@@ -65,7 +54,7 @@ struct HelpFileHeader
  */
 struct HelpDocMeta
 {
-  struct HelpList *fhdr; ///< File header lines (list of key/value pairs)
+  struct Vector *fhdr;   ///< File header lines (list of key/value pairs)
   char *name;            ///< Base file name
   HelpDocFlags type;     ///< Type of the help document
 };
