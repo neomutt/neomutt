@@ -98,7 +98,9 @@ CONFIG_OBJS	= test/config/account.o \
 		  test/config/sort.o \
 		  test/config/string.o \
 		  test/config/synonym.o \
-		  account.o
+		  account.o \
+		  mailbox.o \
+		  neomutt.o
 
 DATE_OBJS	= test/date/mutt_date_add_timeout.o \
 		  test/date/mutt_date_check_month.o \

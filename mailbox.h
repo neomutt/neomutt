@@ -24,24 +24,15 @@
 #ifndef MUTT_MAILBOX_H
 #define MUTT_MAILBOX_H
 
-#include <limits.h>
 #include <stdbool.h>
 #include <sys/types.h>
 #include <time.h>
 #include "mutt/mutt.h"
-#include "config/lib.h"
-#include "mutt_commands.h"
-#include "where.h"
+#include "config.h"
+#include <stdint.h>
 
-struct Buffer;
-struct Account;
+struct Email;
 struct stat;
-
-/* These Config Variables are only used in mailbox.c */
-extern short C_MailCheck;
-extern bool  C_MailCheckStats;
-extern short C_MailCheckStatsInterval;
-extern bool  C_MaildirCheckCur;
 
 #define MB_NORMAL 0
 #define MB_HIDDEN 1
@@ -94,10 +85,6 @@ typedef uint16_t AclFlags;          ///< Flags, e.g. #MUTT_ACL_ADMIN
 #define MUTT_ACL_WRITE   (1 << 10)  ///< Write to a message (for flagging or linking threads)
 
 #define MUTT_ACL_ALL    ((1 << 11) - 1)
-
-/* force flags passed to mutt_mailbox_check() */
-#define MUTT_MAILBOX_CHECK_FORCE       (1 << 0)
-#define MUTT_MAILBOX_CHECK_FORCE_STATS (1 << 1)
 
 /**
  * struct Mailbox - A mailbox
@@ -177,15 +164,9 @@ extern struct MailboxList AllMailboxes; ///< List of all Mailboxes
 void            mailbox_free             (struct Mailbox **ptr);
 struct Mailbox *mailbox_new              (void);
 void            mutt_mailbox_changed     (struct Mailbox *m, enum MailboxNotification action);
-int             mutt_mailbox_check       (struct Mailbox *m_cur, int force);
 void            mutt_mailbox_cleanup     (const char *path, struct stat *st);
 struct Mailbox *mutt_mailbox_find        (const char *path);
 struct Mailbox *mutt_mailbox_find_desc   (const char *desc);
-bool            mutt_mailbox_list        (void);
-void            mutt_mailbox_next_buffer (struct Mailbox *m_cur, struct Buffer *s);
-void            mutt_mailbox_next        (struct Mailbox *m_cur, char *s, size_t slen);
-bool            mutt_mailbox_notify      (struct Mailbox *m_cur);
-void            mutt_mailbox_set_notified(struct Mailbox *m);
 void            mutt_mailbox_size_add    (struct Mailbox *m, const struct Email *e);
 void            mutt_mailbox_size_sub    (struct Mailbox *m, const struct Email *e);
 void            mutt_mailbox_update      (struct Mailbox *m);

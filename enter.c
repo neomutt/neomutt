@@ -45,6 +45,7 @@
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_history.h"
+#include "mutt_mailbox.h"
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "opcodes.h"

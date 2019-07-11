@@ -57,6 +57,7 @@
 #include "mbox/mbox.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
+#include "mutt_mailbox.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "ncrypt/ncrypt.h"

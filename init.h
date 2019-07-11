@@ -31,11 +31,11 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "mutt/mutt.h"
+#include "address/lib.h"
 #include "config/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "addrbook.h"
-#include "address/lib.h"
 #include "bcache.h"
 #include "browser.h"
 #include "color.h"
@@ -57,6 +57,7 @@
 #include "mutt_commands.h"
 #include "mutt_history.h"
 #include "mutt_logging.h"
+#include "mutt_mailbox.h"
 #include "mutt_menu.h"
 #include "mutt_thread.h"
 #include "muttlib.h"

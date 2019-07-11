@@ -45,6 +45,9 @@
 struct Mailbox;
 struct Email;
 
+/* These Config Variables are only used in maildir/maildir.c */
+extern bool  C_MaildirCheckCur;
+
 /* These Config Variables are only used in maildir/mh.c */
 extern bool  C_CheckNew;
 extern bool  C_MaildirHeaderCacheVerify;
