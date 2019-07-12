@@ -94,7 +94,7 @@ struct Mailbox
 {
   struct Buffer *pathbuf;
   char *realpath; ///< used for duplicate detection, context comparison, and the sidebar
-  char *desc;
+  char *name;
   struct ConfigSubset *sub; ///< Inherited config items
   off_t size;
   bool has_new; /**< mailbox has new mail */
@@ -182,7 +182,7 @@ struct Mailbox *mailbox_new              (void);
 void            mutt_mailbox_changed     (struct Mailbox *m, enum MailboxNotification action);
 void            mutt_mailbox_cleanup     (const char *path, struct stat *st);
 struct Mailbox *mutt_mailbox_find        (const char *path);
-struct Mailbox *mutt_mailbox_find_desc   (const char *desc);
+struct Mailbox *mutt_mailbox_find_name   (const char *name);
 void            mutt_mailbox_size_add    (struct Mailbox *m, const struct Email *e);
 void            mutt_mailbox_size_sub    (struct Mailbox *m, const struct Email *e);
 void            mutt_mailbox_update      (struct Mailbox *m);

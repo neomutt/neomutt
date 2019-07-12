@@ -1325,7 +1325,7 @@ static enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
       mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
       if (buf->data && (*buf->data != '\0'))
       {
-        m->desc = mutt_str_strdup(buf->data);
+        m->name = mutt_str_strdup(buf->data);
       }
       else
       {
@@ -2405,7 +2405,7 @@ static enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s
       {
         clear_this =
             (mutt_str_strcasecmp(mutt_b2s(buf), mutt_b2s(np->mailbox->pathbuf)) == 0) ||
-            (mutt_str_strcasecmp(mutt_b2s(buf), np->mailbox->desc) == 0);
+            (mutt_str_strcasecmp(mutt_b2s(buf), np->mailbox->name) == 0);
       }
 
       if (clear_this)

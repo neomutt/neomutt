@@ -869,13 +869,13 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
       {
         case MUTT_IMAP:
         case MUTT_POP:
-          add_folder(menu, state, mutt_b2s(mailbox), np->mailbox->desc, NULL,
+          add_folder(menu, state, mutt_b2s(mailbox), np->mailbox->name, NULL,
                      np->mailbox, NULL);
           continue;
         case MUTT_NOTMUCH:
         case MUTT_NNTP:
           add_folder(menu, state, mutt_b2s(np->mailbox->pathbuf),
-                     np->mailbox->desc, NULL, np->mailbox, NULL);
+                     np->mailbox->name, NULL, np->mailbox, NULL);
           continue;
         default: /* Continue */
           break;
@@ -901,7 +901,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
           s.st_mtime = st2.st_mtime;
       }
 
-      add_folder(menu, state, mutt_b2s(mailbox), np->mailbox->desc, &s, np->mailbox, NULL);
+      add_folder(menu, state, mutt_b2s(mailbox), np->mailbox->name, &s, np->mailbox, NULL);
     }
     neomutt_mailboxlist_clear(&ml);
   }

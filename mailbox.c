@@ -65,7 +65,7 @@ void mailbox_free(struct Mailbox **ptr)
   notify_free(&m->notify);
 
   mutt_buffer_free(&m->pathbuf);
-  FREE(&m->desc);
+  FREE(&m->name);
   if (m->mdata && m->free_mdata)
     m->free_mdata(&m->mdata);
   FREE(&m->realpath);
@@ -160,14 +160,16 @@ struct Mailbox *mutt_mailbox_find(const char *path)
 }
 
 /**
- * mutt_mailbox_find_desc - Find the mailbox with a given description
- * @param desc Description to match
+ * mutt_mailbox_find_name - Find the mailbox with a given name
+ * @param name Name to match
  * @retval ptr Matching Mailbox
  * @retval NULL No matching mailbox found
+ *
+ * @note This searches across all Accounts
  */
-struct Mailbox *mutt_mailbox_find_desc(const char *desc)
+struct Mailbox *mutt_mailbox_find_name(const char *name)
 {
-  if (!desc)
+  if (!name)
     return NULL;
 
   struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
@@ -175,7 +177,7 @@ struct Mailbox *mutt_mailbox_find_desc(const char *desc)
   struct Mailbox *m = NULL;
   STAILQ_FOREACH(np, &ml, entries)
   {
-    if (np->mailbox->desc && (mutt_str_strcmp(np->mailbox->desc, desc) == 0))
+    if (mutt_str_strcmp(np->mailbox->name, name) == 0)
     {
       m = np->mailbox;
       break;

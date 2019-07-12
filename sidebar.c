@@ -151,8 +151,8 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
       break;
 
     case 'D':
-      if (sbe->mailbox->desc)
-        mutt_format_s(buf, buflen, prec, sbe->mailbox->desc);
+      if (sbe->mailbox->name)
+        mutt_format_s(buf, buflen, prec, sbe->mailbox->name);
       else
         mutt_format_s(buf, buflen, prec, sbe->box);
       break;
@@ -320,7 +320,7 @@ static int cb_qsort_sbe(const void *a, const void *b)
         rc = (m2->msg_unread - m1->msg_unread);
       break;
     case SORT_DESC:
-      rc = mutt_str_strcmp(m1->desc, m2->desc);
+      rc = mutt_str_strcmp(m1->name, m2->name);
       break;
     case SORT_FLAGGED:
       if (m2->msg_flagged == m1->msg_flagged)
@@ -384,7 +384,7 @@ static void update_entries_visibility(void)
     }
 
     if (mutt_list_find(&SidebarWhitelist, mutt_b2s(sbe->mailbox->pathbuf)) ||
-        mutt_list_find(&SidebarWhitelist, sbe->mailbox->desc))
+        mutt_list_find(&SidebarWhitelist, sbe->mailbox->name))
     {
       /* Explicitly asked to be visible */
       continue;
@@ -921,9 +921,9 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     else
       sidebar_folder_name = mutt_b2s(m->pathbuf) + maildir_is_prefix * (maildirlen + 1);
 
-    if (m->desc)
+    if (m->name)
     {
-      sidebar_folder_name = m->desc;
+      sidebar_folder_name = m->name;
     }
     else if (maildir_is_prefix && C_SidebarFolderIndent)
     {

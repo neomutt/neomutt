@@ -625,7 +625,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
   {
     // Try to see if the buffer matches a description before we bail.
     // We'll receive a non-null pointer if there is a corresponding mailbox.
-    m = mutt_mailbox_find_desc(buf);
+    m = mutt_mailbox_find_name(buf);
     if (m)
     {
       mutt_str_strfcpy(buf, mutt_b2s(m->pathbuf), buflen);
@@ -686,7 +686,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
    * mutt_push/pop_current_menu() functions.  If that changes, the menu
    * would need to be reset here, and the pager cleanup code after the
    * switch statement would need to be run. */
-  mutt_folder_hook(buf, m ? m->desc : NULL);
+  mutt_folder_hook(buf, m ? m->name : NULL);
 
   const int flags = (C_ReadOnly || (op == OP_MAIN_CHANGE_FOLDER_READONLY)
 #ifdef USE_NOTMUCH
