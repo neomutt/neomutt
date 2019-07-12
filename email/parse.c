@@ -93,18 +93,32 @@ void mutt_auto_subscribe(const char *mailto)
  * parse_parameters - Parse a list of Parameters
  * @param param Parameter list for the results
  * @param s String to parse
+ *
+ * Autocrypt defines an irregular parameter format that doesn't follow the
+ * rfc.  It splits keydata across multiple lines without parameter continuations.
+ * The allow_value_spaces parameter allows parsing those values which
+ * are split by spaces when unfolded.
  */
-static void parse_parameters(struct ParameterList *param, const char *s)
+static void parse_parameters(struct ParameterList *param, const char *s, int allow_value_spaces)
 {
   struct Parameter *pnew = NULL;
-  char buf[1024];
+  struct Buffer *buf = NULL;
   const char *p = NULL;
   size_t i;
+
+  buf = mutt_buffer_pool_get();
+  /* allow_value_spaces, especially with autocrypt keydata, can result
+   * in quite large parameter values.  avoid frequent reallocs by
+   * pre-sizing */
+  if (allow_value_spaces)
+    mutt_buffer_increase_size(buf, mutt_str_strlen(s));
 
   mutt_debug(LL_DEBUG2, "'%s'\n", s);
 
   while (*s)
   {
+    mutt_buffer_reset(buf);
+
     p = strpbrk(s, "=;");
     if (!p)
     {
@@ -133,53 +147,58 @@ static void parse_parameters(struct ParameterList *param, const char *s)
         pnew->attribute = mutt_str_substr_dup(s, s + i);
       }
 
-      s = mutt_str_skip_email_wsp(p + 1); /* skip over the = */
+      do
+      {
+        s = mutt_str_skip_email_wsp(p + 1); /* skip over the =, or space if we loop */
 
-      if (*s == '"')
-      {
-        bool state_ascii = true;
-        s++;
-        for (i = 0; *s && (i < (sizeof(buf) - 1)); i++, s++)
+        if (*s == '"')
         {
-          if (C_AssumedCharset)
+          bool state_ascii = true;
+          s++;
+          for (; *s; s++)
           {
-            /* As iso-2022-* has a character of '"' with non-ascii state,
-             * ignore it. */
-            if ((*s == 0x1b) && (i < (sizeof(buf) - 2)))
+            if (C_AssumedCharset)
             {
-              if ((s[1] == '(') && ((s[2] == 'B') || (s[2] == 'J')))
-                state_ascii = true;
-              else
-                state_ascii = false;
+              /* As iso-2022-* has a character of '"' with non-ascii state,
+               * ignore it. */
+              if (*s == 0x1b)
+              {
+                if ((s[1] == '(') && ((s[2] == 'B') || (s[2] == 'J')))
+                  state_ascii = true;
+                else
+                  state_ascii = false;
+              }
             }
-          }
-          if (state_ascii && (*s == '"'))
-            break;
-          if (*s == '\\')
-          {
-            /* Quote the next character */
-            buf[i] = s[1];
-            if (!*++s)
+            if (state_ascii && (*s == '"'))
               break;
+            if (*s == '\\')
+            {
+              if (s[1])
+              {
+                s++;
+                /* Quote the next character */
+                mutt_buffer_addch(buf, *s);
+              }
+            }
+            else
+              mutt_buffer_addch(buf, *s);
           }
-          else
-            buf[i] = *s;
+          if (*s)
+            s++; /* skip over the " */
         }
-        buf[i] = '\0';
-        if (*s)
-          s++; /* skip over the " */
-      }
-      else
-      {
-        for (i = 0; *s && (*s != ' ') && (*s != ';') && (i < (sizeof(buf) - 1)); i++, s++)
-          buf[i] = *s;
-        buf[i] = '\0';
-      }
+        else
+        {
+          for (; *s && *s != ' ' && *s != ';'; s++)
+            mutt_buffer_addch(buf, *s);
+        }
+
+        p = s;
+      } while (allow_value_spaces && (*s == ' '));
 
       /* if the attribute token was missing, 'new' will be NULL */
       if (pnew)
       {
-        pnew->value = mutt_str_strdup(buf);
+        pnew->value = mutt_str_strdup(mutt_b2s(buf));
 
         mutt_debug(LL_DEBUG2, "parse_parameter: '%s' = '%s'\n",
                    pnew->attribute ? pnew->attribute : "", pnew->value ? pnew->value : "");
@@ -208,6 +227,7 @@ static void parse_parameters(struct ParameterList *param, const char *s)
 bail:
 
   rfc2231_decode_parameters(param);
+  mutt_buffer_pool_release(&buf);
 }
 
 /**
@@ -234,7 +254,7 @@ static void parse_content_disposition(const char *s, struct Body *ct)
   if (s)
   {
     s = mutt_str_skip_email_wsp(s + 1);
-    parse_parameters(&parms, s);
+    parse_parameters(&parms, s, 0);
     s = mutt_param_get(&parms, "filename");
     if (s)
       mutt_str_replace(&ct->filename, s);
@@ -446,7 +466,7 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
     *pc++ = 0;
     while (*pc && IS_SPACE(*pc))
       pc++;
-    parse_parameters(&ct->parameter, pc);
+    parse_parameters(&ct->parameter, pc, 0);
 
     /* Some pre-RFC1521 gateways still use the "name=filename" convention,
      * but if a filename has already been set in the content-disposition,
@@ -521,6 +541,66 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
     }
   }
 }
+
+#ifdef USE_AUTOCRYPT
+static struct AutocryptHeader *parse_autocrypt(struct AutocryptHeader *head, const char *s)
+{
+  struct AutocryptHeader *autocrypt = mutt_new_autocrypthdr();
+  autocrypt->next = head;
+
+  struct ParameterList pl = TAILQ_HEAD_INITIALIZER(pl);
+  parse_parameters(&pl, s, 1);
+  if (TAILQ_EMPTY(&pl))
+  {
+    autocrypt->invalid = 1;
+    goto cleanup;
+  }
+
+  struct Parameter *p = NULL;
+  TAILQ_FOREACH(p, &pl, entries)
+  {
+    if (!mutt_str_strcasecmp(p->attribute, "addr"))
+    {
+      if (autocrypt->addr)
+      {
+        autocrypt->invalid = 1;
+        goto cleanup;
+      }
+      autocrypt->addr = p->value;
+      p->value = NULL;
+    }
+    else if (!mutt_str_strcasecmp(p->attribute, "prefer-encrypt"))
+    {
+      if (!mutt_str_strcasecmp(p->value, "mutual"))
+        autocrypt->prefer_encrypt = 1;
+    }
+    else if (!mutt_str_strcasecmp(p->attribute, "keydata"))
+    {
+      if (autocrypt->keydata)
+      {
+        autocrypt->invalid = 1;
+        goto cleanup;
+      }
+      autocrypt->keydata = p->value;
+      p->value = NULL;
+    }
+    else if (p->attribute && (p->attribute[0] != '_'))
+    {
+      autocrypt->invalid = 1;
+      goto cleanup;
+    }
+  }
+
+  /* Checking the addr against From, and for multiple valid headers
+   * occurs later, after all the headers are parsed. */
+  if (!autocrypt->addr || !autocrypt->keydata)
+    autocrypt->invalid = 1;
+
+cleanup:
+  mutt_param_free(&pl);
+  return autocrypt;
+}
+#endif
 
 /**
  * mutt_rfc822_parse_line - Parse an email header
@@ -860,6 +940,13 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
         mutt_addrlist_parse(&env->to, p);
         matched = true;
       }
+#ifdef USE_AUTOCRYPT
+      else if (mutt_str_strcasecmp(line + 1, "utocrypt") == 0)
+      {
+        env->autocrypt = parse_autocrypt(env->autocrypt, p);
+        matched = 1;
+      }
+#endif
       break;
 
     case 'x':
