@@ -20,13 +20,14 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_NEOMUTT_H
-#define MUTT_NEOMUTT_H
+#ifndef MUTT_CORE_NEOMUTT_H
+#define MUTT_CORE_NEOMUTT_H
 
 #include <stdbool.h>
 #include "account.h"
+#include "mailbox.h"
 
-struct Notify;
+struct ConfigSet;
 
 /**
  * struct NeoMutt - Container for Accounts, Notifications
@@ -50,12 +51,12 @@ enum NotifyGlobal
   NT_GLOBAL_TIMEOUT,     ///< A timer has elapsed
 };
 
-bool            neomutt_account_add(struct NeoMutt *n, struct Account *a);
+bool            neomutt_account_add   (struct NeoMutt *n, struct Account *a);
 bool            neomutt_account_remove(struct NeoMutt *n, struct Account *a);
-void            neomutt_free(struct NeoMutt **ptr);
-struct NeoMutt *neomutt_new(struct ConfigSet *cs);
+void            neomutt_free          (struct NeoMutt **ptr);
+struct NeoMutt *neomutt_new           (struct ConfigSet *cs);
 
-void               neomutt_mailboxlist_clear(struct MailboxList *ml);
+void               neomutt_mailboxlist_clear  (struct MailboxList *ml);
 struct MailboxList neomutt_mailboxlist_get_all(struct NeoMutt *n, enum MailboxType magic);
 
-#endif /* MUTT_NEOMUTT_H */
+#endif /* MUTT_CORE_NEOMUTT_H */

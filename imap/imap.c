@@ -43,20 +43,18 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "imap.h"
-#include "account.h"
 #include "auth.h"
 #include "commands.h"
+#include "core/lib.h"
 #include "curs_lib.h"
 #include "globals.h"
 #include "hook.h"
-#include "mailbox.h"
 #include "message.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "neomutt.h"
 #include "pattern.h"
 #include "progress.h"
 #include "sort.h"
@@ -839,8 +837,8 @@ void imap_expunge_mailbox(struct Mailbox *m)
   imap_hcache_close(mdata);
 #endif
 
-  mutt_mailbox_changed(m, MBN_UPDATE);
-  mutt_mailbox_changed(m, MBN_RESORT);
+  mailbox_changed(m, MBN_UPDATE);
+  mailbox_changed(m, MBN_RESORT);
 }
 
 /**

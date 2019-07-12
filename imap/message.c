@@ -43,11 +43,11 @@
 #include "mutt.h"
 #include "message.h"
 #include "bcache.h"
+#include "core/lib.h"
 #include "curs_lib.h"
 #include "globals.h"
 #include "hcache/hcache.h"
 #include "imap/imap.h"
-#include "mailbox.h"
 #include "mutt_account.h"
 #include "mutt_curses.h"
 #include "mutt_logging.h"
@@ -828,7 +828,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
         FREE(&tags_copy);
 
         m->msg_count++;
-        mutt_mailbox_size_add(m, m->emails[idx]);
+        mailbox_size_add(m, m->emails[idx]);
 
         /* If this is the first time we are fetching, we need to
          * store the current state of flags back into the header cache */
@@ -908,7 +908,7 @@ static int read_headers_qresync_eval_cache(struct ImapAccountData *adata, char *
       edata->uid = uid;
       mutt_hash_int_insert(mdata->uid_hash, uid, e);
 
-      mutt_mailbox_size_add(m, e);
+      mailbox_size_add(m, e);
       m->emails[m->msg_count++] = e;
 
       msn++;
@@ -1184,7 +1184,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
         m->emails[idx]->env = mutt_rfc822_read_header(fp, m->emails[idx], false, false);
         /* content built as a side-effect of mutt_rfc822_read_header */
         m->emails[idx]->content->length = h.content_length;
-        mutt_mailbox_size_add(m, m->emails[idx]);
+        mailbox_size_add(m, m->emails[idx]);
 
 #ifdef USE_HCACHE
         imap_hcache_put(mdata, m->emails[idx]);

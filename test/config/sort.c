@@ -29,7 +29,7 @@
 #include "mutt/mutt.h"
 #include "config/common.h"
 #include "config/lib.h"
-#include "account.h"
+#include "core/lib.h"
 
 static short VarApple;
 static short VarBanana;

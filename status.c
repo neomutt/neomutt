@@ -30,9 +30,9 @@
 #include <stdio.h>
 #include "mutt/mutt.h"
 #include "context.h"
+#include "core/lib.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "mailbox.h"
 #include "mutt_mailbox.h"
 #include "mutt_menu.h"
 #include "mutt_window.h"

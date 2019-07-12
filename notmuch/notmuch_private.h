@@ -25,7 +25,7 @@
 #include <time.h>
 #include "config/lib.h"
 #include "progress.h"
-#include "mailbox.h"
+#include "core/lib.h"
 
 #ifndef MUTT_NOTMUCH_NOTMUCH_PRIVATE_H
 #define MUTT_NOTMUCH_NOTMUCH_PRIVATE_H

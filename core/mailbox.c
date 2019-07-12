@@ -5,7 +5,7 @@
  * @authors
  * Copyright (C) 1996-2000,2010,2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2016-2017 Kevin J. McCarthy <kevin@8t8.us>
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2019 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,22 +23,21 @@
  */
 
 /**
- * @page mailbox Representation of a mailbox
+ * @page core_mailbox Representation of a Mailbox
  *
- * Representation of a mailbox
+ * Representation of a Mailbox
  */
 
 #include "config.h"
 #include <sys/stat.h>
-#include <utime.h>
+#include "config/lib.h"
 #include "email/lib.h"
 #include "mailbox.h"
-#include "globals.h"
-#include "maildir/lib.h"
 #include "neomutt.h"
 
 /**
  * mailbox_new - Create a new Mailbox
+ * @param name Name for the Mailbox
  * @retval ptr New Mailbox
  */
 struct Mailbox *mailbox_new(void)
@@ -61,7 +60,7 @@ void mailbox_free(struct Mailbox **ptr)
     return;
 
   struct Mailbox *m = *ptr;
-  mutt_mailbox_changed(m, MBN_CLOSED);
+  mailbox_changed(m, MBN_CLOSED);
   notify_free(&m->notify);
 
   mutt_buffer_free(&m->pathbuf);
@@ -73,65 +72,11 @@ void mailbox_free(struct Mailbox **ptr)
 }
 
 /**
- * mutt_mailbox_cleanup - Restore the timestamp of a mailbox
- * @param path Path to the mailbox
- * @param st   Timestamp info from stat()
- *
- * Fix up the atime and mtime after mbox/mmdf mailbox was modified according to
- * stat() info taken before a modification.
- */
-void mutt_mailbox_cleanup(const char *path, struct stat *st)
-{
-#ifdef HAVE_UTIMENSAT
-  struct timespec ts[2];
-#else
-  struct utimbuf ut;
-#endif
-
-  if (C_CheckMboxSize)
-  {
-    struct Mailbox *m = mutt_mailbox_find(path);
-    if (m && !m->has_new)
-      mutt_mailbox_update(m);
-  }
-  else
-  {
-    /* fix up the times so mailbox won't get confused */
-    if (st->st_mtime > st->st_atime)
-    {
-#ifdef HAVE_UTIMENSAT
-      ts[0].tv_sec = 0;
-      ts[0].tv_nsec = UTIME_OMIT;
-      ts[1].tv_sec = 0;
-      ts[1].tv_nsec = UTIME_NOW;
-      utimensat(0, buf, ts, 0);
-#else
-      ut.actime = st->st_atime;
-      ut.modtime = time(NULL);
-      utime(path, &ut);
-#endif
-    }
-    else
-    {
-#ifdef HAVE_UTIMENSAT
-      ts[0].tv_sec = 0;
-      ts[0].tv_nsec = UTIME_NOW;
-      ts[1].tv_sec = 0;
-      ts[1].tv_nsec = UTIME_NOW;
-      utimensat(0, buf, ts, 0);
-#else
-      utime(path, NULL);
-#endif
-    }
-  }
-}
-
-/**
- * mutt_mailbox_find - Find the mailbox with a given path
+ * mailbox_find - Find the mailbox with a given path
  * @param path Path to match
  * @retval ptr Matching Mailbox
  */
-struct Mailbox *mutt_mailbox_find(const char *path)
+struct Mailbox *mailbox_find(const char *path)
 {
   if (!path)
     return NULL;
@@ -160,14 +105,14 @@ struct Mailbox *mutt_mailbox_find(const char *path)
 }
 
 /**
- * mutt_mailbox_find_name - Find the mailbox with a given name
+ * mailbox_find_name - Find the mailbox with a given name
  * @param name Name to match
  * @retval ptr Matching Mailbox
  * @retval NULL No matching mailbox found
  *
  * @note This searches across all Accounts
  */
-struct Mailbox *mutt_mailbox_find_name(const char *name)
+struct Mailbox *mailbox_find_name(const char *name)
 {
   if (!name)
     return NULL;
@@ -189,10 +134,12 @@ struct Mailbox *mutt_mailbox_find_name(const char *name)
 }
 
 /**
- * mutt_mailbox_update - Get the mailbox's current size
+ * mailbox_update - Get the mailbox's current size
  * @param m Mailbox to check
+ *
+ * @note Only applies to local Mailboxes
  */
-void mutt_mailbox_update(struct Mailbox *m)
+void mailbox_update(struct Mailbox *m)
 {
   struct stat sb;
 
@@ -206,11 +153,11 @@ void mutt_mailbox_update(struct Mailbox *m)
 }
 
 /**
- * mutt_mailbox_changed - Notify observers of a change to a Mailbox
+ * mailbox_changed - Notify observers of a change to a Mailbox
  * @param m      Mailbox
  * @param action Change to Mailbox
  */
-void mutt_mailbox_changed(struct Mailbox *m, enum MailboxNotification action)
+void mailbox_changed(struct Mailbox *m, enum MailboxNotification action)
 {
   if (!m)
     return;
@@ -219,21 +166,21 @@ void mutt_mailbox_changed(struct Mailbox *m, enum MailboxNotification action)
 }
 
 /**
- * mutt_mailbox_size_add - Add an email's size to the total size of a Mailbox
+ * mailbox_size_add - Add an email's size to the total size of a Mailbox
  * @param m Mailbox
  * @param e Email
  */
-void mutt_mailbox_size_add(struct Mailbox *m, const struct Email *e)
+void mailbox_size_add(struct Mailbox *m, const struct Email *e)
 {
   m->size += mutt_email_size(e);
 }
 
 /**
- * mutt_mailbox_size_sub - Subtract an email's size from the total size of a Mailbox
+ * mailbox_size_sub - Subtract an email's size from the total size of a Mailbox
  * @param m Mailbox
  * @param e Email
  */
-void mutt_mailbox_size_sub(struct Mailbox *m, const struct Email *e)
+void mailbox_size_sub(struct Mailbox *m, const struct Email *e)
 {
   m->size -= mutt_email_size(e);
 }

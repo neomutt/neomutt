@@ -40,9 +40,9 @@
 #include "mutt/mutt.h"
 #include "monitor.h"
 #include "context.h"
+#include "core/lib.h"
 #include "curs_lib.h"
 #include "globals.h"
-#include "mailbox.h"
 #include "mutt_curses.h"
 #include "mx.h"
 
@@ -541,7 +541,7 @@ int mutt_monitor_remove(struct Mailbox *m)
     }
     else
     {
-      if (mutt_mailbox_find(Context->mailbox->realpath))
+      if (mailbox_find(Context->mailbox->realpath))
       {
         rc = 1;
         goto cleanup;

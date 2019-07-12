@@ -45,14 +45,13 @@
 #include "email/lib.h"
 #include "mutt.h"
 #include "mx.h"
-#include "account.h"
 #include "alias.h"
 #include "context.h"
 #include "copy.h"
+#include "core/lib.h"
 #include "globals.h"
 #include "hook.h"
 #include "keymap.h"
-#include "mailbox.h"
 #include "maildir/lib.h"
 #include "mbox/mbox.h"
 #include "mutt_header.h"
@@ -61,7 +60,6 @@
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "ncrypt/ncrypt.h"
-#include "neomutt.h"
 #include "opcodes.h"
 #include "options.h"
 #include "pattern.h"
@@ -411,7 +409,7 @@ void mx_fastclose_mailbox(struct Mailbox *m)
   if (m->mx_ops)
     m->mx_ops->mbox_close(m);
 
-  mutt_mailbox_changed(m, MBN_CLOSED);
+  mailbox_changed(m, MBN_CLOSED);
 
   mutt_hash_free(&m->subj_hash);
   mutt_hash_free(&m->id_hash);
@@ -886,7 +884,7 @@ int mx_mbox_sync(struct Mailbox *m, int *index_hint)
         m->msg_deleted = 0;
       }
     }
-    mutt_mailbox_changed(m, MBN_UNTAG);
+    mailbox_changed(m, MBN_UNTAG);
   }
 
   /* really only for IMAP - imap_sync_mailbox results in a call to
@@ -944,8 +942,8 @@ int mx_mbox_sync(struct Mailbox *m, int *index_hint)
       /* IMAP does this automatically after handling EXPUNGE */
       if (m->magic != MUTT_IMAP)
       {
-        mutt_mailbox_changed(m, MBN_UPDATE);
-        mutt_mailbox_changed(m, MBN_RESORT);
+        mailbox_changed(m, MBN_UPDATE);
+        mailbox_changed(m, MBN_RESORT);
       }
     }
   }
@@ -1031,7 +1029,7 @@ int mx_mbox_check(struct Mailbox *m, int *index_hint)
 
   int rc = m->mx_ops->mbox_check(m, index_hint);
   if ((rc == MUTT_NEW_MAIL) || (rc == MUTT_REOPENED))
-    mutt_mailbox_changed(m, MBN_INVALID);
+    mailbox_changed(m, MBN_INVALID);
 
   return rc;
 }

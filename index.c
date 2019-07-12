@@ -40,18 +40,17 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "index.h"
-#include "account.h"
 #include "alias.h"
 #include "browser.h"
 #include "commands.h"
 #include "context.h"
+#include "core/lib.h"
 #include "curs_lib.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "hdrline.h"
 #include "hook.h"
 #include "keymap.h"
-#include "mailbox.h"
 #include "mutt_account.h"
 #include "mutt_curses.h"
 #include "mutt_header.h"
@@ -63,7 +62,6 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
-#include "neomutt.h"
 #include "opcodes.h"
 #include "options.h"
 #include "pager.h"
@@ -625,7 +623,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
   {
     // Try to see if the buffer matches a description before we bail.
     // We'll receive a non-null pointer if there is a corresponding mailbox.
-    m = mutt_mailbox_find_name(buf);
+    m = mailbox_find_name(buf);
     if (m)
     {
       mutt_str_strfcpy(buf, mutt_b2s(m->pathbuf), buflen);

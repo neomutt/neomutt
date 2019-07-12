@@ -32,9 +32,9 @@
 #include "email/lib.h"
 #include "browser.h"
 #include "context.h"
+#include "core/lib.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "mailbox.h"
 #include "muttlib.h"
 #include "nntp.h"
 

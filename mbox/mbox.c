@@ -46,11 +46,10 @@
 #include "email/lib.h"
 #include "mutt.h"
 #include "mbox.h"
-#include "account.h"
 #include "context.h"
 #include "copy.h"
+#include "core/lib.h"
 #include "globals.h"
-#include "mailbox.h"
 #include "mutt_header.h"
 #include "muttlib.h"
 #include "mx.h"
@@ -571,7 +570,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
   {
     short old_sort = C_Sort;
     C_Sort = SORT_ORDER;
-    mutt_mailbox_changed(m, MBN_RESORT);
+    mailbox_changed(m, MBN_RESORT);
     C_Sort = old_sort;
   }
 
@@ -579,7 +578,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
   old_msg_count = 0;
 
   /* simulate a close */
-  mutt_mailbox_changed(m, MBN_CLOSED);
+  mailbox_changed(m, MBN_CLOSED);
   mutt_hash_free(&m->id_hash);
   mutt_hash_free(&m->subj_hash);
   mutt_hash_free(&m->label_hash);
@@ -995,7 +994,7 @@ static int mbox_mbox_check(struct Mailbox *m, int *index_hint)
   {
     if (mbox_mbox_open(m) < 0)
       return -1;
-    mutt_mailbox_changed(m, MBN_INVALID);
+    mailbox_changed(m, MBN_INVALID);
   }
 
   struct stat st;
@@ -1056,7 +1055,7 @@ static int mbox_mbox_check(struct Mailbox *m, int *index_hint)
             mmdf_parse_mailbox(m);
 
           if (m->msg_count > old_msg_count)
-            mutt_mailbox_changed(m, MBN_INVALID);
+            mailbox_changed(m, MBN_INVALID);
 
           /* Only unlock the folder if it was locked inside of this routine.
            * It may have been locked elsewhere, like in
@@ -1086,7 +1085,7 @@ static int mbox_mbox_check(struct Mailbox *m, int *index_hint)
   {
     if (reopen_mailbox(m, index_hint) != -1)
     {
-      mutt_mailbox_changed(m, MBN_INVALID);
+      mailbox_changed(m, MBN_INVALID);
       if (unlock)
       {
         mbox_unlock_mailbox(m);
@@ -1137,7 +1136,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
   {
     save_sort = C_Sort;
     C_Sort = SORT_ORDER;
-    mutt_mailbox_changed(m, MBN_RESORT);
+    mailbox_changed(m, MBN_RESORT);
     C_Sort = save_sort;
     need_sort = 1;
   }
@@ -1422,9 +1421,9 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
 
   if (C_CheckMboxSize)
   {
-    struct Mailbox *m_tmp = mutt_mailbox_find(mutt_b2s(m->pathbuf));
+    struct Mailbox *m_tmp = mailbox_find(mutt_b2s(m->pathbuf));
     if (m_tmp && !m_tmp->has_new)
-      mutt_mailbox_update(m_tmp);
+      mailbox_update(m_tmp);
   }
 
   return 0; /* signal success */
@@ -1465,7 +1464,7 @@ bail: /* Come here in case of disaster */
   {
     /* if the mailbox was reopened, the thread tree will be invalid so make
      * sure to start threading from scratch.  */
-    mutt_mailbox_changed(m, MBN_RESORT);
+    mailbox_changed(m, MBN_RESORT);
   }
 
   return rc;

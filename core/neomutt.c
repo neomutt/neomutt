@@ -21,24 +21,31 @@
  */
 
 /**
- * @page neomutt Container for Accounts, Notifications
+ * @page core_neomutt Container for Accounts, Notifications
  *
  * Container for Accounts, Notifications
  */
 
 #include "config.h"
+#include <stddef.h>
 #include "mutt/mutt.h"
+#include "config/lib.h"
 #include "neomutt.h"
 #include "account.h"
+#include "mailbox.h"
 
 struct NeoMutt *NeoMutt; ///< Global NeoMutt object
 
 /**
  * neomutt_new - Create the master NeoMutt object
+ * @param cs Config Set
  * @retval ptr New NeoMutt
  */
 struct NeoMutt *neomutt_new(struct ConfigSet *cs)
 {
+  if (!cs)
+    return NULL;
+
   struct NeoMutt *n = mutt_mem_calloc(1, sizeof(*NeoMutt));
 
   TAILQ_INIT(&n->accounts);
@@ -121,6 +128,8 @@ bool neomutt_account_remove(struct NeoMutt *n, struct Account *a)
 /**
  * neomutt_mailboxlist_clear - Free a Mailbox List
  * @param ml Mailbox List to free
+ *
+ * @note The Mailboxes aren't freed
  */
 void neomutt_mailboxlist_clear(struct MailboxList *ml)
 {
@@ -138,11 +147,11 @@ void neomutt_mailboxlist_clear(struct MailboxList *ml)
 
 /**
  * neomutt_mailboxlist_get_all - Get a List of all Mailboxes
- * @param n    NeoMutt
- * @param type Type of Account to match, see #MailboxType
+ * @param n     NeoMutt
+ * @param magic Type of Account to match, see #MailboxType
  * @retval obj List of Mailboxes
  *
- * @note If type is #MUTT_MAILBOX_ANY then all Mailbox types will be matched
+ * @note If magic is #MUTT_MAILBOX_ANY then all Mailbox types will be matched
  */
 struct MailboxList neomutt_mailboxlist_get_all(struct NeoMutt *n, enum MailboxType magic)
 {

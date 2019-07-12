@@ -27,7 +27,7 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <time.h>
-#include "mailbox.h"
+#include "core/lib.h"
 #include "pattern.h"
 
 struct EmailList;

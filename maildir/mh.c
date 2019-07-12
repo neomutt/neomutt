@@ -44,10 +44,10 @@
 #include "mutt/mutt.h"
 #include "config/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "errno.h"
 #include "globals.h"
 #include "lib.h"
-#include "mailbox.h"
 #include "monitor.h"
 #include "mx.h"
 
@@ -703,13 +703,13 @@ int mh_mbox_check(struct Mailbox *m, int *index_hint)
 
   /* If we didn't just get new mail, update the tables. */
   if (occult)
-    mutt_mailbox_changed(m, MBN_RESORT);
+    mailbox_changed(m, MBN_RESORT);
 
   /* Incorporate new messages */
   num_new = maildir_move_to_mailbox(m, &md);
   if (num_new > 0)
   {
-    mutt_mailbox_changed(m, MBN_INVALID);
+    mailbox_changed(m, MBN_INVALID);
     m->changed = true;
   }
 

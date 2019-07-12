@@ -31,7 +31,7 @@
 #include "mutt/mutt.h"
 #include "config/common.h"
 #include "config/lib.h"
-#include "account.h"
+#include "core/lib.h"
 
 static struct Slist *VarApple;
 static struct Slist *VarBanana;

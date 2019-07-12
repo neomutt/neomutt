@@ -51,10 +51,10 @@
 #include "mutt.h"
 #include "context.h"
 #include "copy.h"
+#include "core/lib.h"
 #include "globals.h"
 #include "hcache/hcache.h"
 #include "lib.h"
-#include "mailbox.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
@@ -450,7 +450,7 @@ int maildir_move_to_mailbox(struct Mailbox *m, struct Maildir **ptr)
 
     m->emails[m->msg_count] = md->email;
     m->emails[m->msg_count]->index = m->msg_count;
-    mutt_mailbox_size_add(m, md->email);
+    mailbox_size_add(m, md->email);
 
     md->email = NULL;
     m->msg_count++;

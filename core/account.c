@@ -3,7 +3,7 @@
  * A group of associated Mailboxes
  
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2019 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -21,29 +21,33 @@
  */
 
 /**
- * @page account A group of associated Mailboxes
+ * @page core_account A group of associated Mailboxes
  *
  * A group of associated Mailboxes
  */
 
 #include "config.h"
+#include <stddef.h>
 #include "mutt/mutt.h"
+#include "config/lib.h"
 #include "account.h"
+#include "mailbox.h"
 #include "neomutt.h"
 
 /**
  * account_new - Create a new Account
- * @param name   Name for the Account
- * @param parent Parent Config Subset
+ * @param name Name for the Account
+ * @param sub  Parent Config Subset
  * @retval ptr New Account
  */
-struct Account *account_new(const char *name, struct ConfigSubset *parent)
+struct Account *account_new(const char *name, struct ConfigSubset *sub)
 {
   struct Account *a = mutt_mem_calloc(1, sizeof(struct Account));
+
   STAILQ_INIT(&a->mailboxes);
   a->notify = notify_new(a, NT_ACCOUNT);
   a->name = mutt_str_strdup(name);
-  a->sub = cs_subset_new(name, parent);
+  a->sub = cs_subset_new(name, sub);
 
   return a;
 }
@@ -75,7 +79,7 @@ bool account_mailbox_add(struct Account *a, struct Mailbox *m)
  * @param a Account
  * @param m Mailbox to remove
  *
- * @note If m is NULL, all the mailboxes will be removed.
+ * @note If m is NULL, all the mailboxes will be removed
  */
 bool account_mailbox_remove(struct Account *a, struct Mailbox *m)
 {

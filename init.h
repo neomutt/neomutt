@@ -50,7 +50,7 @@
 #include "imap/imap.h"
 #include "index.h"
 #include "keymap.h"
-#include "mailbox.h"
+#include "core/lib.h"
 #include "maildir/lib.h"
 #include "main.h"
 #include "mutt_account.h"

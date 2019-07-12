@@ -47,16 +47,14 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "conn/conn.h"
-#include "account.h"
 #include "bcache.h"
+#include "core/lib.h"
 #include "curs_lib.h"
 #include "globals.h"
 #include "hcache/hcache.h"
 #include "imap/imap.h"
-#include "mailbox.h"
 #include "message.h"
 #include "mutt_account.h"
-#include "neomutt.h"
 #include "options.h"
 
 /* These Config Variables are only used in imap/util.c */

@@ -31,7 +31,7 @@
 #include "address/lib.h"
 #include "config/common.h"
 #include "config/lib.h"
-#include "account.h"
+#include "core/lib.h"
 
 static struct Address *VarApple;
 static struct Address *VarBanana;

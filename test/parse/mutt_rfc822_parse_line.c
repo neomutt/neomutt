@@ -34,8 +34,7 @@ void test_mutt_rfc822_parse_line(void)
 
   {
     struct Email e = { 0 };
-    TEST_CHECK(mutt_rfc822_parse_line(NULL, &e, "apple", "banana", false,
-                                      false, false) == 0);
+    TEST_CHECK(mutt_rfc822_parse_line(NULL, &e, "apple", "banana", false, false, false) == 0);
   }
 
   {
@@ -57,7 +56,6 @@ void test_mutt_rfc822_parse_line(void)
     struct Envelope envelope;
     memset(&envelope, 0, sizeof(struct Envelope));
     struct Email e = { 0 };
-    TEST_CHECK(mutt_rfc822_parse_line(&envelope, &e, "apple", NULL, false,
-                                      false, false) == 0);
+    TEST_CHECK(mutt_rfc822_parse_line(&envelope, &e, "apple", NULL, false, false, false) == 0);
   }
 }

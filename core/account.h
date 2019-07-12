@@ -21,16 +21,14 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_ACCOUNT_H
-#define MUTT_ACCOUNT_H
+#ifndef MUTT_CORE_ACCOUNT_H
+#define MUTT_CORE_ACCOUNT_H
 
 #include <stdbool.h>
 #include "mutt/mutt.h"
-#include "config/lib.h"
 #include "mailbox.h"
 
-struct ConnAccount;
-struct Notify;
+struct ConfigSubset;
 
 /**
  * struct Account - A group of associated Mailboxes
@@ -38,14 +36,13 @@ struct Notify;
 struct Account
 {
   enum MailboxType magic;       ///< Type of Mailboxes this Account contains
+  char *name;                   ///< Name of Account
+  struct ConfigSubset *sub;     ///< Inherited config items
   struct MailboxList mailboxes; ///< List of Mailboxes
-  TAILQ_ENTRY(Account) entries; ///< Linked list of Accounts
   struct Notify *notify;        ///< Notifications handler
   void *adata;                  ///< Private data (for Mailbox backends)
   void (*free_adata)(void **);  ///< Callback function to free private data
-
-  char *name;               ///< Name of Account
-  struct ConfigSubset *sub; ///< Inherited config items
+  TAILQ_ENTRY(Account) entries; ///< Linked list of Accounts
 };
 TAILQ_HEAD(AccountList, Account);
 
@@ -66,9 +63,9 @@ enum NotifyAccount
   NT_ACCOUNT_REMOVE,  ///< An Account is about to be destroyed
 };
 
-void            account_free(struct Account **ptr);
-bool            account_mailbox_add(struct Account *a, struct Mailbox *m);
+void            account_free          (struct Account **ptr);
+bool            account_mailbox_add   (struct Account *a, struct Mailbox *m);
 bool            account_mailbox_remove(struct Account *a, struct Mailbox *m);
-struct Account *account_new(const char *name, struct ConfigSubset *parent);
+struct Account *account_new           (const char *name, struct ConfigSubset *sub);
 
-#endif /* MUTT_ACCOUNT_H */
+#endif /* MUTT_CORE_ACCOUNT_H */

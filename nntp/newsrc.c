@@ -45,10 +45,10 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "bcache.h"
+#include "core/lib.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "hcache/hcache.h"
-#include "mailbox.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
@@ -307,7 +307,7 @@ void nntp_newsrc_gen_entries(struct Mailbox *m)
   {
     save_sort = C_Sort;
     C_Sort = SORT_ORDER;
-    mutt_mailbox_changed(m, MBN_RESORT);
+    mailbox_changed(m, MBN_RESORT);
   }
 
   entries = mdata->newsrc_len;
@@ -372,7 +372,7 @@ void nntp_newsrc_gen_entries(struct Mailbox *m)
   if (save_sort != C_Sort)
   {
     C_Sort = save_sort;
-    mutt_mailbox_changed(m, MBN_RESORT);
+    mailbox_changed(m, MBN_RESORT);
   }
 }
 

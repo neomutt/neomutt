@@ -3,15 +3,15 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <time.h>
+#include <utime.h>
 #include "mutt/mutt.h"
 #include "mutt_mailbox.h"
+#include "core/lib.h"
 #include "globals.h"
-#include "mailbox.h"
 #include "mutt_menu.h"
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "neomutt.h"
 #include "protos.h"
 
 static time_t MailboxTime = 0; /**< last time we started checking for mail */
@@ -340,4 +340,58 @@ void mutt_mailbox_next(struct Mailbox *m_cur, char *s, size_t slen)
   mutt_str_strfcpy(s, mutt_b2s(s_buf), slen);
 
   mutt_buffer_pool_release(&s_buf);
+}
+
+/**
+ * mutt_mailbox_cleanup - Restore the timestamp of a mailbox
+ * @param path Path to the mailbox
+ * @param st   Timestamp info from stat()
+ *
+ * Fix up the atime and mtime after mbox/mmdf mailbox was modified according to
+ * stat() info taken before a modification.
+ */
+void mutt_mailbox_cleanup(const char *path, struct stat *st)
+{
+#ifdef HAVE_UTIMENSAT
+  struct timespec ts[2];
+#else
+  struct utimbuf ut;
+#endif
+
+  if (C_CheckMboxSize)
+  {
+    struct Mailbox *m = mailbox_find(path);
+    if (m && !m->has_new)
+      mailbox_update(m);
+  }
+  else
+  {
+    /* fix up the times so mailbox won't get confused */
+    if (st->st_mtime > st->st_atime)
+    {
+#ifdef HAVE_UTIMENSAT
+      ts[0].tv_sec = 0;
+      ts[0].tv_nsec = UTIME_OMIT;
+      ts[1].tv_sec = 0;
+      ts[1].tv_nsec = UTIME_NOW;
+      utimensat(0, buf, ts, 0);
+#else
+      ut.actime = st->st_atime;
+      ut.modtime = time(NULL);
+      utime(path, &ut);
+#endif
+    }
+    else
+    {
+#ifdef HAVE_UTIMENSAT
+      ts[0].tv_sec = 0;
+      ts[0].tv_nsec = UTIME_NOW;
+      ts[1].tv_sec = 0;
+      ts[1].tv_nsec = UTIME_NOW;
+      utimensat(0, buf, ts, 0);
+#else
+      utime(path, NULL);
+#endif
+    }
+  }
 }

@@ -44,13 +44,12 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "pop.h"
-#include "account.h"
 #include "bcache.h"
 #include "context.h"
+#include "core/lib.h"
 #include "globals.h"
 #include "hcache/hcache.h"
 #include "hook.h"
-#include "mailbox.h"
 #include "mutt_account.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
@@ -915,7 +914,7 @@ static int pop_mbox_check(struct Mailbox *m, int *index_hint)
   int rc = pop_fetch_headers(m);
   pop_clear_cache(adata);
   if (m->msg_count > old_msg_count)
-    mutt_mailbox_changed(m, MBN_INVALID);
+    mailbox_changed(m, MBN_INVALID);
 
   if (rc < 0)
     return -1;

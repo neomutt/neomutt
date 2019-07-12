@@ -235,7 +235,7 @@ void ctx_update_tables(struct Context *ctx, bool committing)
       if ((m->magic == MUTT_NOTMUCH) || (m->magic == MUTT_MH) ||
           (m->magic == MUTT_MAILDIR) || (m->magic == MUTT_IMAP))
       {
-        mutt_mailbox_size_sub(m, m->emails[i]);
+        mailbox_size_sub(m, m->emails[i]);
       }
       /* remove message from the hash tables */
       if (m->subj_hash && m->emails[i]->env->real_subj)

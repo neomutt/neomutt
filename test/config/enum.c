@@ -30,7 +30,7 @@
 #include "mutt/mutt.h"
 #include "config/common.h"
 #include "config/lib.h"
-#include "account.h"
+#include "core/lib.h"
 
 static unsigned char VarApple;
 static unsigned char VarBanana;
