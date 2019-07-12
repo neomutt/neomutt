@@ -41,11 +41,15 @@
 #include "email_globals.h"
 #include "envelope.h"
 #include "from.h"
+#include "globals.h"
 #include "mime.h"
 #include "parameter.h"
 #include "rfc2047.h"
 #include "rfc2231.h"
 #include "url.h"
+#ifdef USE_AUTOCRYPT
+#include "autocrypt/autocrypt.h"
+#endif
 
 /* If the 'Content-Length' is bigger than 1GiB, then it's clearly wrong.
  * Cap the value to prevent overflow of Body.length */
@@ -943,8 +947,11 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
 #ifdef USE_AUTOCRYPT
       else if (mutt_str_strcasecmp(line + 1, "utocrypt") == 0)
       {
-        env->autocrypt = parse_autocrypt(env->autocrypt, p);
-        matched = 1;
+        if (C_Autocrypt)
+        {
+          env->autocrypt = parse_autocrypt(env->autocrypt, p);
+          matched = 1;
+        }
       }
 #endif
       break;
@@ -1243,6 +1250,15 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
                  "no date found, using received time from msg separator\n");
       e->date_sent = e->received;
     }
+
+#ifdef USE_AUTOCRYPT
+    if (C_Autocrypt)
+    {
+      mutt_autocrypt_process_autocrypt_header(e, env);
+      /* No sense in taking up memory after the header is processed */
+      mutt_free_autocrypthdr(&env->autocrypt);
+    }
+#endif
   }
 
   return env;

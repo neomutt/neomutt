@@ -37,7 +37,29 @@ struct AutocryptAccount
   int enabled;
 };
 
+struct AutocryptPeer
+{
+  char *email_addr;
+  sqlite3_int64 last_seen;
+  sqlite3_int64 autocrypt_timestamp;
+  char *keyid;
+  char *keydata;
+  int prefer_encrypt;    /* 0 = nopref, 1 = mutual */
+  sqlite3_int64 gossip_timestamp;
+  char *gossip_keyid;
+  char *gossip_keydata;
+};
+
+struct AutocryptPeerHistory
+{
+  char *peer_email_addr;
+  char *email_msgid;
+  sqlite3_int64 timestamp;
+  char *keydata;
+};
+
 int mutt_autocrypt_init (int);
 void mutt_autocrypt_cleanup (void);
+int mutt_autocrypt_process_autocrypt_header (struct Email *hdr, struct Envelope *env);
 
 #endif /* MUTT_AUTOCRYPT_AUTOCRYPT_H */

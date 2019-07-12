@@ -39,14 +39,21 @@ int mutt_autocrypt_db_account_get (struct Address *addr, struct AutocryptAccount
 int mutt_autocrypt_db_account_insert (struct Address *addr, const char *keyid,
                                       const char *keydata, int prefer_encrypt);
 
+struct AutocryptPeer *mutt_autocrypt_db_peer_new (void);
+void mutt_autocrypt_db_peer_free (struct AutocryptPeer **peer);
+int mutt_autocrypt_db_peer_get (struct Address *addr, struct AutocryptPeer **peer);
+int mutt_autocrypt_db_peer_insert (struct Address *addr, struct AutocryptPeer *peer);
+int mutt_autocrypt_db_peer_update (struct Address *addr, struct AutocryptPeer *peer);
+
+struct AutocryptPeerHistory *mutt_autocrypt_db_peer_history_new (void);
+void mutt_autocrypt_db_peer_history_free (struct AutocryptPeerHistory **peerhist);
+int mutt_autocrypt_db_peer_history_insert (struct Address *addr, struct AutocryptPeerHistory *peerhist);
+
 int mutt_autocrypt_schema_init (void);
 int mutt_autocrypt_schema_update (void);
 
 int mutt_autocrypt_gpgme_init (void);
 int mutt_autocrypt_gpgme_create_key (struct Address *addr, struct Buffer *keyid, struct Buffer *keydata);
-
-/* Prepared statements */
-sqlite3_stmt *AccountGetStmt;
-sqlite3_stmt *AccountInsertStmt;
+int mutt_autocrypt_gpgme_import_key (const char *keydata, struct Buffer *keyid);
 
 #endif /* MUTT_AUTOCRYPT_AUTOCRYPT_PRIVATE_H */

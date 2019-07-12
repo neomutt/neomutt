@@ -170,3 +170,38 @@ cleanup:
   gpgme_release(ctx);
   return rv;
 }
+
+int mutt_autocrypt_gpgme_import_key(const char *keydata, struct Buffer *keyid)
+{
+  int rv = -1;
+  gpgme_ctx_t ctx = NULL;
+  struct Buffer *raw_keydata = NULL;
+  gpgme_data_t dh = NULL;
+  gpgme_import_result_t result;
+
+  if (create_gpgme_context(&ctx))
+    goto cleanup;
+
+  raw_keydata = mutt_buffer_pool_get();
+  if (!mutt_b64_buffer_decode(raw_keydata, keydata))
+    goto cleanup;
+
+  if (gpgme_data_new_from_mem(&dh, mutt_b2s(raw_keydata), mutt_buffer_len(raw_keydata), 0))
+    goto cleanup;
+
+  if (gpgme_op_import(ctx, dh))
+    goto cleanup;
+
+  result = gpgme_op_import_result(ctx);
+  if (!result->imports || !result->imports->fpr)
+    goto cleanup;
+  mutt_buffer_strcpy(keyid, result->imports->fpr);
+
+  rv = 0;
+
+cleanup:
+  gpgme_data_release(dh);
+  gpgme_release(ctx);
+  mutt_buffer_pool_release(&raw_keydata);
+  return rv;
+}

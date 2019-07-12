@@ -41,7 +41,7 @@ struct AutocryptHeader
   char *keydata;
   unsigned int prefer_encrypt : 1;
   unsigned int invalid : 1;
-  struct AutocryptHeader *next;           /* used by gossip headers */
+  struct AutocryptHeader *next;
 };
 #endif
 
@@ -93,6 +93,7 @@ void             mutt_env_to_local  (struct Envelope *e);
 
 #ifdef USE_AUTOCRYPT
 #define mutt_new_autocrypthdr() mutt_mem_calloc(1, sizeof(struct AutocryptHeader))
+void mutt_free_autocrypthdr (struct AutocryptHeader **p);
 #endif
 
 #endif /* MUTT_EMAIL_ENVELOPE_H */

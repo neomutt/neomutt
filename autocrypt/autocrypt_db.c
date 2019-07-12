@@ -30,6 +30,14 @@
 #include "autocrypt.h"
 #include "globals.h"
 
+/* Prepared statements */
+static sqlite3_stmt *AccountGetStmt;
+static sqlite3_stmt *AccountInsertStmt;
+static sqlite3_stmt *PeerGetStmt;
+static sqlite3_stmt *PeerInsertStmt;
+static sqlite3_stmt *PeerUpdateStmt;
+static sqlite3_stmt *PeerHistoryInsertStmt;
+
 static int autocrypt_db_create(const char *db_path)
 {
   if (sqlite3_open_v2(db_path, &AutocryptDB,
@@ -93,6 +101,16 @@ void mutt_autocrypt_db_close(void)
   AccountGetStmt = NULL;
   sqlite3_finalize(AccountInsertStmt);
   AccountInsertStmt = NULL;
+
+  sqlite3_finalize(PeerGetStmt);
+  PeerGetStmt = NULL;
+  sqlite3_finalize(PeerInsertStmt);
+  PeerInsertStmt = NULL;
+  sqlite3_finalize(PeerUpdateStmt);
+  PeerUpdateStmt = NULL;
+
+  sqlite3_finalize(PeerHistoryInsertStmt);
+  PeerHistoryInsertStmt = NULL;
 
   sqlite3_close_v2(AutocryptDB);
   AutocryptDB = NULL;
@@ -234,5 +252,245 @@ int mutt_autocrypt_db_account_insert(struct Address *addr, const char *keyid,
 cleanup:
   FREE(&email);
   sqlite3_reset(AccountInsertStmt);
+  return rv;
+}
+
+struct AutocryptPeer *mutt_autocrypt_db_peer_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct AutocryptPeer));
+}
+
+void mutt_autocrypt_db_peer_free(struct AutocryptPeer **peer)
+{
+  if (!peer || !*peer)
+    return;
+  FREE(&(*peer)->email_addr);
+  FREE(&(*peer)->keyid);
+  FREE(&(*peer)->keydata);
+  FREE(&(*peer)->gossip_keyid);
+  FREE(&(*peer)->gossip_keydata);
+  FREE(peer);
+}
+
+int mutt_autocrypt_db_peer_get(struct Address *addr, struct AutocryptPeer **peer)
+{
+  int rv = -1, result;
+  char *email = NULL;
+
+  email = normalize_email_addr(addr);
+  *peer = NULL;
+
+  if (!PeerGetStmt)
+  {
+    if (sqlite3_prepare_v2(AutocryptDB,
+                           "SELECT "
+                           "email_addr, "
+                           "last_seen, "
+                           "autocrypt_timestamp, "
+                           "keyid, "
+                           "keydata, "
+                           "prefer_encrypt, "
+                           "gossip_timestamp, "
+                           "gossip_keyid, "
+                           "gossip_keydata "
+                           "FROM peer "
+                           "WHERE email_addr = ?",
+                           -1, &PeerGetStmt, NULL) != SQLITE_OK)
+      goto cleanup;
+  }
+
+  if (sqlite3_bind_text(PeerGetStmt, 1, email, -1, SQLITE_STATIC) != SQLITE_OK)
+    goto cleanup;
+
+  result = sqlite3_step(PeerGetStmt);
+  if (result != SQLITE_ROW)
+  {
+    if (result == SQLITE_DONE)
+      rv = 0;
+    goto cleanup;
+  }
+
+  *peer = mutt_autocrypt_db_peer_new();
+  (*peer)->email_addr = strdup_column_text(PeerGetStmt, 0);
+  (*peer)->last_seen = sqlite3_column_int64(PeerGetStmt, 1);
+  (*peer)->autocrypt_timestamp = sqlite3_column_int64(PeerGetStmt, 2);
+  (*peer)->keyid = strdup_column_text(PeerGetStmt, 3);
+  (*peer)->keydata = strdup_column_text(PeerGetStmt, 4);
+  (*peer)->prefer_encrypt = sqlite3_column_int(PeerGetStmt, 5);
+  (*peer)->gossip_timestamp = sqlite3_column_int64(PeerGetStmt, 6);
+  (*peer)->gossip_keyid = strdup_column_text(PeerGetStmt, 7);
+  (*peer)->gossip_keydata = strdup_column_text(PeerGetStmt, 8);
+
+  rv = 1;
+
+cleanup:
+  FREE(&email);
+  sqlite3_reset(PeerGetStmt);
+  return rv;
+}
+
+int mutt_autocrypt_db_peer_insert(struct Address *addr, struct AutocryptPeer *peer)
+{
+  int rv = -1;
+  char *email = NULL;
+
+  email = normalize_email_addr(addr);
+
+  if (!PeerInsertStmt)
+  {
+    if (sqlite3_prepare_v2(AutocryptDB,
+                           "INSERT INTO peer "
+                           "(email_addr, "
+                           "last_seen, "
+                           "autocrypt_timestamp, "
+                           "keyid, "
+                           "keydata, "
+                           "prefer_encrypt, "
+                           "gossip_timestamp, "
+                           "gossip_keyid, "
+                           "gossip_keydata) "
+                           "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);",
+                           -1, &PeerInsertStmt, NULL) != SQLITE_OK)
+      goto cleanup;
+  }
+
+  if (sqlite3_bind_text(PeerInsertStmt, 1, email, -1, SQLITE_STATIC) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_int64(PeerInsertStmt, 2, peer->last_seen) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_int64(PeerInsertStmt, 3, peer->autocrypt_timestamp) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_text(PeerInsertStmt, 4, peer->keyid, -1, SQLITE_STATIC) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_text(PeerInsertStmt, 5, peer->keydata, -1, SQLITE_STATIC) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_int(PeerInsertStmt, 6, peer->prefer_encrypt) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_int64(PeerInsertStmt, 7, peer->gossip_timestamp) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_text(PeerInsertStmt, 8, peer->gossip_keyid, -1, SQLITE_STATIC) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_text(PeerInsertStmt, 9, peer->gossip_keydata, -1, SQLITE_STATIC) != SQLITE_OK)
+    goto cleanup;
+
+  if (sqlite3_step(PeerInsertStmt) != SQLITE_DONE)
+    goto cleanup;
+
+  rv = 0;
+
+cleanup:
+  FREE(&email);
+  sqlite3_reset(PeerInsertStmt);
+  return rv;
+}
+
+int mutt_autocrypt_db_peer_update(struct Address *addr, struct AutocryptPeer *peer)
+{
+  int rv = -1;
+  char *email = NULL;
+
+  email = normalize_email_addr(addr);
+
+  if (!PeerUpdateStmt)
+  {
+    if (sqlite3_prepare_v2(AutocryptDB,
+                           "UPDATE peer SET "
+                           "last_seen = ?, "
+                           "autocrypt_timestamp = ?, "
+                           "keyid = ?, "
+                           "keydata = ?, "
+                           "prefer_encrypt = ?, "
+                           "gossip_timestamp = ?, "
+                           "gossip_keyid = ?, "
+                           "gossip_keydata = ? "
+                           "WHERE email_addr = ?;",
+                           -1, &PeerUpdateStmt, NULL) != SQLITE_OK)
+      goto cleanup;
+  }
+
+  if (sqlite3_bind_int64(PeerUpdateStmt, 1, peer->last_seen) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_int64(PeerUpdateStmt, 2, peer->autocrypt_timestamp) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_text(PeerUpdateStmt, 3, peer->keyid, -1, SQLITE_STATIC) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_text(PeerUpdateStmt, 4, peer->keydata, -1, SQLITE_STATIC) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_int(PeerUpdateStmt, 5, peer->prefer_encrypt) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_int64(PeerUpdateStmt, 6, peer->gossip_timestamp) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_text(PeerUpdateStmt, 7, peer->gossip_keyid, -1, SQLITE_STATIC) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_text(PeerUpdateStmt, 8, peer->gossip_keydata, -1, SQLITE_STATIC) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_text(PeerUpdateStmt, 9, email, -1, SQLITE_STATIC) != SQLITE_OK)
+    goto cleanup;
+
+  if (sqlite3_step(PeerUpdateStmt) != SQLITE_DONE)
+    goto cleanup;
+
+  rv = 0;
+
+cleanup:
+  FREE(&email);
+  sqlite3_reset(PeerUpdateStmt);
+  return rv;
+}
+
+struct AutocryptPeerHistory *mutt_autocrypt_db_peer_history_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct AutocryptPeerHistory));
+}
+
+void mutt_autocrypt_db_peer_history_free(struct AutocryptPeerHistory **peerhist)
+{
+  if (!peerhist || !*peerhist)
+    return;
+  FREE(&(*peerhist)->peer_email_addr);
+  FREE(&(*peerhist)->email_msgid);
+  FREE(&(*peerhist)->keydata);
+  FREE(peerhist);
+}
+
+int mutt_autocrypt_db_peer_history_insert(struct Address *addr,
+                                          struct AutocryptPeerHistory *peerhist)
+{
+  int rv = -1;
+  char *email = NULL;
+
+  email = normalize_email_addr(addr);
+
+  if (!PeerHistoryInsertStmt)
+  {
+    if (sqlite3_prepare_v2(AutocryptDB,
+                           "INSERT INTO peer_history "
+                           "(peer_email_addr, "
+                           "email_msgid, "
+                           "timestamp, "
+                           "keydata) "
+                           "VALUES (?, ?, ?, ?);",
+                           -1, &PeerHistoryInsertStmt, NULL) != SQLITE_OK)
+      goto cleanup;
+  }
+
+  if (sqlite3_bind_text(PeerHistoryInsertStmt, 1, email, -1, SQLITE_STATIC) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_text(PeerHistoryInsertStmt, 2, peerhist->email_msgid, -1,
+                        SQLITE_STATIC) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_int64(PeerHistoryInsertStmt, 3, peerhist->timestamp) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_text(PeerHistoryInsertStmt, 4, peerhist->keydata, -1, SQLITE_STATIC) != SQLITE_OK)
+    goto cleanup;
+
+  if (sqlite3_step(PeerHistoryInsertStmt) != SQLITE_DONE)
+    goto cleanup;
+
+  rv = 0;
+
+cleanup:
+  FREE(&email);
+  sqlite3_reset(PeerHistoryInsertStmt);
   return rv;
 }
