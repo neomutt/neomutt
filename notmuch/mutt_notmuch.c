@@ -57,12 +57,11 @@
 #include "email/lib.h"
 #include "mutt.h"
 #include "mutt_notmuch.h"
-#include "account.h"
+#include "core/lib.h"
 #include "curs_lib.h"
 #include "globals.h"
 #include "hcache/hcache.h"
 #include "index.h"
-#include "mailbox.h"
 #include "maildir/lib.h"
 #include "mutt_thread.h"
 #include "mx.h"
@@ -991,7 +990,7 @@ static void append_message(header_cache_t *h, struct Mailbox *m,
 
   e->active = true;
   e->index = m->msg_count;
-  mutt_mailbox_size_add(m, e);
+  mailbox_size_add(m, e);
   m->emails[m->msg_count] = e;
   m->msg_count++;
 
@@ -1688,7 +1687,7 @@ int nm_read_entire_thread(struct Mailbox *m, struct Email *e)
   rc = 0;
 
   if (m->msg_count > mdata->oldmsgcount)
-    mutt_mailbox_changed(m, MBN_INVALID);
+    mailbox_changed(m, MBN_INVALID);
 done:
   if (q)
     notmuch_query_destroy(q);
@@ -2311,7 +2310,7 @@ static int nm_mbox_check(struct Mailbox *m, int *index_hint)
   }
 
   if (m->msg_count > mdata->oldmsgcount)
-    mutt_mailbox_changed(m, MBN_INVALID);
+    mailbox_changed(m, MBN_INVALID);
 done:
   if (q)
     notmuch_query_destroy(q);

@@ -38,10 +38,10 @@
 #include "config/lib.h"
 #include "sidebar.h"
 #include "context.h"
+#include "core/lib.h"
 #include "curs_lib.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mutt_window.h"
@@ -150,8 +150,8 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
       break;
 
     case 'D':
-      if (sbe->mailbox->desc)
-        mutt_format_s(buf, buflen, prec, sbe->mailbox->desc);
+      if (sbe->mailbox->name)
+        mutt_format_s(buf, buflen, prec, sbe->mailbox->name);
       else
         mutt_format_s(buf, buflen, prec, sbe->box);
       break;
@@ -319,7 +319,7 @@ static int cb_qsort_sbe(const void *a, const void *b)
         rc = (m2->msg_unread - m1->msg_unread);
       break;
     case SORT_DESC:
-      rc = mutt_str_strcmp(m1->desc, m2->desc);
+      rc = mutt_str_strcmp(m1->name, m2->name);
       break;
     case SORT_FLAGGED:
       if (m2->msg_flagged == m1->msg_flagged)
@@ -383,7 +383,7 @@ static void update_entries_visibility(void)
     }
 
     if (mutt_list_find(&SidebarWhitelist, mutt_b2s(sbe->mailbox->pathbuf)) ||
-        mutt_list_find(&SidebarWhitelist, sbe->mailbox->desc))
+        mutt_list_find(&SidebarWhitelist, sbe->mailbox->name))
     {
       /* Explicitly asked to be visible */
       continue;
@@ -409,8 +409,9 @@ static void unsort_entries(void)
 {
   int i = 0;
 
+  struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
   struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &AllMailboxes, entries)
+  STAILQ_FOREACH(np, &ml, entries)
   {
     if (i >= EntryCount)
       break;
@@ -429,6 +430,7 @@ static void unsort_entries(void)
       i++;
     }
   }
+  neomutt_mailboxlist_clear(&ml);
 }
 
 /**
@@ -804,8 +806,7 @@ static void fill_empty_space(int first_row, int num_rows, int div_width, int num
  *
  * Display a list of mailboxes in a panel on the left.  What's displayed will
  * depend on our index markers: TopMailbox, OpnMailbox, HilMailbox, BotMailbox.
- * On the first run they'll be NULL, so we display the top of NeoMutt's list
- * (AllMailboxes).
+ * On the first run they'll be NULL, so we display the top of NeoMutt's list.
  *
  * * TopMailbox - first visible mailbox
  * * BotMailbox - last  visible mailbox
@@ -919,9 +920,9 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     else
       sidebar_folder_name = mutt_b2s(m->pathbuf) + maildir_is_prefix * (maildirlen + 1);
 
-    if (m->desc)
+    if (m->name)
     {
-      sidebar_folder_name = m->desc;
+      sidebar_folder_name = m->name;
     }
     else if (maildir_is_prefix && C_SidebarFolderIndent)
     {
@@ -983,11 +984,13 @@ void mutt_sb_draw(void)
 
   if (!Entries)
   {
+    struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
     struct MailboxNode *np = NULL;
-    STAILQ_FOREACH(np, &AllMailboxes, entries)
+    STAILQ_FOREACH(np, &ml, entries)
     {
       mutt_sb_notify_mailbox(np->mailbox, true);
     }
+    neomutt_mailboxlist_clear(&ml);
   }
 
   if (!prepare_sidebar(num_rows))

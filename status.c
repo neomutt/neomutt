@@ -30,9 +30,10 @@
 #include <stdio.h>
 #include "mutt/mutt.h"
 #include "context.h"
+#include "core/lib.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "mailbox.h"
+#include "mutt_mailbox.h"
 #include "mutt_menu.h"
 #include "mutt_window.h"
 #include "muttlib.h"
@@ -123,10 +124,10 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
     case 'D':
     {
       struct Mailbox *m = Context ? Context->mailbox : NULL;
-      // If there's a description, use it. Otherwise, fall-through
-      if (m && m->desc)
+      // If there's a descriptive name, use it. Otherwise, fall-through
+      if (m && m->name)
       {
-        mutt_str_strfcpy(tmp, m->desc, sizeof(tmp));
+        mutt_str_strfcpy(tmp, m->name, sizeof(tmp));
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
         snprintf(buf, buflen, fmt, tmp);
         break;
@@ -145,9 +146,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       }
       else
 #endif
-          if (m && (m->magic == MUTT_NOTMUCH) && m->desc)
+          if (m && (m->magic == MUTT_NOTMUCH) && m->name)
       {
-        mutt_str_strfcpy(tmp, m->desc, sizeof(tmp));
+        mutt_str_strfcpy(tmp, m->name, sizeof(tmp));
       }
       else if (m && !mutt_buffer_is_empty(m->pathbuf))
       {

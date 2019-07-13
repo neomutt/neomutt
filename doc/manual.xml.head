@@ -760,7 +760,7 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
                     <entry>%D</entry>
                     <entry></entry>
                     <entry>
-                      Description of the mailbox
+                      Descriptive name of the mailbox
                     </entry>
                   </row>
                   <row>

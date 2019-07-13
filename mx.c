@@ -45,18 +45,18 @@
 #include "email/lib.h"
 #include "mutt.h"
 #include "mx.h"
-#include "account.h"
 #include "alias.h"
 #include "context.h"
 #include "copy.h"
+#include "core/lib.h"
 #include "globals.h"
 #include "hook.h"
 #include "keymap.h"
-#include "mailbox.h"
 #include "maildir/lib.h"
 #include "mbox/mbox.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
+#include "mutt_mailbox.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "ncrypt/ncrypt.h"
@@ -268,6 +268,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
 
   struct Context *ctx = mutt_mem_calloc(1, sizeof(*ctx));
   ctx->mailbox = m;
+  notify_observer_add(m->notify, NT_MAILBOX, 0, ctx_mailbox_observer, IP ctx);
 
   if ((m->magic == MUTT_UNKNOWN) && (flags & (MUTT_NEWFOLDER | MUTT_APPEND)))
   {
@@ -281,7 +282,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
     bool new_account = false;
     if (!a)
     {
-      a = account_new();
+      a = account_new(NULL, NeoMutt->sub);
       a->magic = m->magic;
       new_account = true;
     }
@@ -296,7 +297,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
     }
     if (new_account)
     {
-      TAILQ_INSERT_TAIL(&AllAccounts, a, entries);
+      neomutt_account_add(NeoMutt, a);
     }
   }
 
@@ -383,8 +384,6 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   }
 
   OptForceRefresh = false;
-  m->notify2 = ctx_mailbox_changed;
-  m->ndata = ctx;
 
   return ctx;
 }
@@ -410,8 +409,7 @@ void mx_fastclose_mailbox(struct Mailbox *m)
   if (m->mx_ops)
     m->mx_ops->mbox_close(m);
 
-  mutt_mailbox_changed(m, MBN_CLOSED);
-  m->notify2 = NULL;
+  mailbox_changed(m, MBN_CLOSED);
 
   mutt_hash_free(&m->subj_hash);
   mutt_hash_free(&m->id_hash);
@@ -739,7 +737,7 @@ int mx_mbox_close(struct Context **ptr)
     if ((m->magic == MUTT_MBOX) || (m->magic == MUTT_MMDF))
       mbox_reset_atime(m, NULL);
     mx_fastclose_mailbox(m);
-    FREE(ptr);
+    ctx_free(ptr);
     return 0;
   }
 
@@ -886,7 +884,7 @@ int mx_mbox_sync(struct Mailbox *m, int *index_hint)
         m->msg_deleted = 0;
       }
     }
-    mutt_mailbox_changed(m, MBN_UNTAG);
+    mailbox_changed(m, MBN_UNTAG);
   }
 
   /* really only for IMAP - imap_sync_mailbox results in a call to
@@ -944,8 +942,8 @@ int mx_mbox_sync(struct Mailbox *m, int *index_hint)
       /* IMAP does this automatically after handling EXPUNGE */
       if (m->magic != MUTT_IMAP)
       {
-        mutt_mailbox_changed(m, MBN_UPDATE);
-        mutt_mailbox_changed(m, MBN_RESORT);
+        mailbox_changed(m, MBN_UPDATE);
+        mailbox_changed(m, MBN_RESORT);
       }
     }
   }
@@ -1031,7 +1029,7 @@ int mx_mbox_check(struct Mailbox *m, int *index_hint)
 
   int rc = m->mx_ops->mbox_check(m, index_hint);
   if ((rc == MUTT_NEW_MAIL) || (rc == MUTT_REOPENED))
-    mutt_mailbox_changed(m, MBN_INVALID);
+    mailbox_changed(m, MBN_INVALID);
 
   return rc;
 }
@@ -1483,7 +1481,7 @@ struct Account *mx_ac_find(struct Mailbox *m)
     return NULL;
 
   struct Account *np = NULL;
-  TAILQ_FOREACH(np, &AllAccounts, entries)
+  TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
   {
     if (np->magic != m->magic)
       continue;
@@ -1530,7 +1528,7 @@ struct Mailbox *mx_mbox_find2(const char *path)
   mx_path_canon(buf, sizeof(buf), C_Folder, NULL);
 
   struct Account *np = NULL;
-  TAILQ_FOREACH(np, &AllAccounts, entries)
+  TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
   {
     struct Mailbox *m = mx_mbox_find(np, buf);
     if (m)
@@ -1571,10 +1569,7 @@ int mx_ac_add(struct Account *a, struct Mailbox *m)
   if (m->mx_ops->ac_add(a, m) < 0)
     return -1;
 
-  m->account = a;
-  struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
-  np->mailbox = m;
-  STAILQ_INSERT_TAIL(&a->mailboxes, np, entries);
+  account_mailbox_add(a, m);
   return 0;
 }
 
@@ -1588,6 +1583,10 @@ int mx_ac_remove(struct Mailbox *m)
     return -1;
 
   account_mailbox_remove(m->account, m);
+  if (STAILQ_EMPTY(&m->account->mailboxes))
+  {
+    neomutt_account_remove(NeoMutt, m->account);
+  }
   return 0;
 }
 

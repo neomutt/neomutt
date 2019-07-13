@@ -47,13 +47,12 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "conn/conn.h"
-#include "account.h"
 #include "bcache.h"
+#include "core/lib.h"
 #include "curs_lib.h"
 #include "globals.h"
 #include "hcache/hcache.h"
 #include "imap/imap.h"
-#include "mailbox.h"
 #include "message.h"
 #include "mutt_account.h"
 #include "options.h"
@@ -139,7 +138,7 @@ int imap_adata_find(const char *path, struct ImapAccountData **adata,
     return -1;
 
   struct Account *np = NULL;
-  TAILQ_FOREACH(np, &AllAccounts, entries)
+  TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
   {
     if (np->magic != MUTT_IMAP)
       continue;
@@ -1056,7 +1055,7 @@ void imap_keepalive(void)
 {
   time_t now = time(NULL);
   struct Account *np = NULL;
-  TAILQ_FOREACH(np, &AllAccounts, entries)
+  TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
   {
     if (np->magic != MUTT_IMAP)
       continue;

@@ -49,27 +49,26 @@
 #include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
-#include "account.h"
 #include "alias.h"
 #include "browser.h"
 #include "color.h"
 #include "context.h"
+#include "core/lib.h"
 #include "curs_lib.h"
 #include "globals.h"
 #include "hook.h"
 #include "index.h"
 #include "keymap.h"
-#include "mailbox.h"
 #include "mutt_attach.h"
 #include "mutt_curses.h"
 #include "mutt_history.h"
 #include "mutt_logging.h"
+#include "mutt_mailbox.h"
 #include "mutt_menu.h"
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
-#include "neomutt.h"
 #include "options.h"
 #include "protos.h"
 #include "send.h"
@@ -599,11 +598,11 @@ int main(int argc, char *argv[], char *envp[])
     goto main_ok; // TEST04: neomutt -v
   }
 
-  NeoMutt = neomutt_new();
-
   Config = init_config(500);
   if (!Config)
     goto main_curses;
+  NeoMutt = neomutt_new(Config);
+
   notify_set_parent(Config->notify, NeoMutt->notify);
 
   if (!get_user_info(Config))
@@ -1154,7 +1153,7 @@ int main(int argc, char *argv[], char *envp[])
       }
       else
 #endif
-          if (STAILQ_EMPTY(&AllMailboxes))
+          if (TAILQ_EMPTY(&NeoMutt->accounts))
       {
         mutt_error(_("No incoming mailboxes defined"));
         goto main_curses; // TEST39: neomutt -n -F /dev/null -y
@@ -1172,7 +1171,7 @@ int main(int argc, char *argv[], char *envp[])
       if (C_Spoolfile)
       {
         // Check if C_Spoolfile corresponds a mailboxes' description.
-        struct Mailbox *m_desc = mutt_mailbox_find_desc(C_Spoolfile);
+        struct Mailbox *m_desc = mailbox_find_name(C_Spoolfile);
         if (m_desc)
           mutt_buffer_strcpy(folder, m_desc->realpath);
         else
@@ -1213,6 +1212,7 @@ int main(int argc, char *argv[], char *envp[])
 
     mutt_folder_hook(mutt_b2s(folder), NULL);
     mutt_startup_shutdown_hook(MUTT_STARTUP_HOOK);
+    notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_STARTUP, 0);
 
     repeat_error = true;
     struct Mailbox *m = mx_path_resolve(mutt_b2s(folder));
@@ -1263,7 +1263,7 @@ main_exit:
   mutt_browser_cleanup();
   mutt_free_opts();
   mutt_free_keys();
-  cs_free(&Config);
   neomutt_free(&NeoMutt);
+  cs_free(&Config);
   return rc;
 }

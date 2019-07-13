@@ -335,6 +335,19 @@ struct HashElem *cs_inherit_variable(const struct ConfigSet *cs,
 }
 
 /**
+ * cs_uninherit_variable - Remove an inherited config item
+ * @param cs   Config items
+ * @param name Name of config item to remove
+ */
+void cs_uninherit_variable(const struct ConfigSet *cs, const char *name)
+{
+  if (!cs || !name)
+    return;
+
+  mutt_hash_delete(cs->hash, name, NULL);
+}
+
+/**
  * cs_notify_observers - Notify all observers of an event
  * @param cs   Config items
  * @param he   HashElem representing config item
@@ -574,14 +587,14 @@ int cs_he_string_set(const struct ConfigSet *cs, struct HashElem *he,
     struct Inheritance *i = he->data;
     struct HashElem *he_base = get_base(he);
     cdef = he_base->data;
-    var = &i->var;
     cst = cs_get_type_def(cs, he_base->type);
+    var = &i->var;
   }
   else
   {
     cdef = he->data;
-    var = cdef->var;
     cst = cs_get_type_def(cs, he->type);
+    var = cdef->var;
   }
 
   if (!cst)
@@ -651,8 +664,9 @@ int cs_he_string_get(const struct ConfigSet *cs, struct HashElem *he, struct Buf
       return cs_he_string_get(cs, i->parent, result);
 
     // inherited, value set
-    cdef = i->parent->data;
-    cst = cs_get_type_def(cs, i->parent->type);
+    struct HashElem *he_base = get_base(he);
+    cdef = he_base->data;
+    cst = cs_get_type_def(cs, he_base->type);
     var = &i->var;
   }
   else
@@ -718,14 +732,14 @@ int cs_he_native_set(const struct ConfigSet *cs, struct HashElem *he,
     struct Inheritance *i = he->data;
     struct HashElem *he_base = get_base(he);
     cdef = he_base->data;
-    var = &i->var;
     cst = cs_get_type_def(cs, he_base->type);
+    var = &i->var;
   }
   else
   {
     cdef = he->data;
-    var = cdef->var;
     cst = cs_get_type_def(cs, he->type);
+    var = cdef->var;
   }
 
   if (!cst)
@@ -776,14 +790,14 @@ int cs_str_native_set(const struct ConfigSet *cs, const char *name,
     struct Inheritance *i = he->data;
     struct HashElem *he_base = get_base(he);
     cdef = he_base->data;
-    var = &i->var;
     cst = cs_get_type_def(cs, he_base->type);
+    var = &i->var;
   }
   else
   {
     cdef = he->data;
-    var = cdef->var;
     cst = cs_get_type_def(cs, he->type);
+    var = cdef->var;
   }
 
   if (!cst)

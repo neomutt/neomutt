@@ -31,7 +31,7 @@
 #include "address/lib.h"
 #include "config/common.h"
 #include "config/lib.h"
-#include "account.h"
+#include "core/lib.h"
 
 static struct Address *VarApple;
 static struct Address *VarBanana;
@@ -542,13 +542,16 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   char child[128];
   snprintf(child, sizeof(child), "%s:%s", account, parent);
 
-  const char *AccountVarAddr[] = {
-    parent,
-    NULL,
-  };
+  struct ConfigSubset *sub = cs_subset_new(NULL, NULL);
+  sub->cs = cs;
+  struct Account *a = account_new(account, sub);
 
-  struct Account *a = account_new();
-  account_add_config(a, cs, account, AccountVarAddr);
+  struct HashElem *he = cs_subset_create_var(a->sub, parent, err);
+  if (!he)
+  {
+    TEST_MSG("Error: %s\n", err->data);
+    goto ti_out;
+  }
 
   // set parent
   mutt_buffer_reset(err);
@@ -594,6 +597,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   result = true;
 ti_out:
   account_free(&a);
+  cs_subset_free(&sub);
   return result;
 }
 

@@ -40,22 +40,22 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "index.h"
-#include "account.h"
 #include "alias.h"
 #include "browser.h"
 #include "commands.h"
 #include "context.h"
+#include "core/lib.h"
 #include "curs_lib.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "hdrline.h"
 #include "hook.h"
 #include "keymap.h"
-#include "mailbox.h"
 #include "mutt_account.h"
 #include "mutt_curses.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
+#include "mutt_mailbox.h"
 #include "mutt_menu.h"
 #include "mutt_thread.h"
 #include "mutt_window.h"
@@ -623,7 +623,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
   {
     // Try to see if the buffer matches a description before we bail.
     // We'll receive a non-null pointer if there is a corresponding mailbox.
-    m = mutt_mailbox_find_desc(buf);
+    m = mailbox_find_name(buf);
     if (m)
     {
       mutt_str_strfcpy(buf, mutt_b2s(m->pathbuf), buflen);
@@ -684,7 +684,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
    * mutt_push/pop_current_menu() functions.  If that changes, the menu
    * would need to be reset here, and the pager cleanup code after the
    * switch statement would need to be run. */
-  mutt_folder_hook(buf, m ? m->desc : NULL);
+  mutt_folder_hook(buf, m ? m->name : NULL);
 
   const int flags = (C_ReadOnly || (op == OP_MAIN_CHANGE_FOLDER_READONLY)
 #ifdef USE_NOTMUCH
@@ -1712,6 +1712,7 @@ int mutt_index_menu(void)
           oldcount = Context ? Context->mailbox->msg_count : 0;
 
           mutt_startup_shutdown_hook(MUTT_SHUTDOWN_HOOK);
+          notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_SHUTDOWN, 0);
 
           if (!Context || ((check = mx_mbox_close(&Context)) == 0))
             done = true;

@@ -1,6 +1,6 @@
 /**
  * @file
- * NeoMutt container for notifications
+ * Convenience wrapper for the core headers
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -21,42 +21,22 @@
  */
 
 /**
- * @page neomutt NeoMutt container for notifications
+ * @page core CORE: Backbone objects of NeoMutt
  *
- * NeoMutt container for notifications
+ * Backbone objects of NeoMutt
+ *
+ * | File                | Description                |
+ * | :------------------ | :------------------------- |
+ * | core/account.c      | @subpage core_account      |
+ * | core/mailbox.c      | @subpage core_mailbox      |
+ * | core/neomutt.c      | @subpage core_neomutt      |
  */
 
-#include "config.h"
-#include "mutt/mutt.h"
+#ifndef MUTT_CORE_LIB_H
+#define MUTT_CORE_LIB_H
+
+#include "account.h"
+#include "mailbox.h"
 #include "neomutt.h"
 
-struct NeoMutt *NeoMutt; ///< Global NeoMutt object
-
-/**
- * neomutt_new - Create the master NeoMutt object
- * @retval ptr New NeoMutt
- */
-struct NeoMutt *neomutt_new(void)
-{
-  struct NeoMutt *n = mutt_mem_calloc(1, sizeof(*NeoMutt));
-
-  n->notify = notify_new(n, NT_NEOMUTT);
-
-  return n;
-}
-
-/**
- * neomutt_free - Free a NeoMutt
- * @param[out] ptr NeoMutt to free
- */
-void neomutt_free(struct NeoMutt **ptr)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  struct NeoMutt *n = *ptr;
-
-  notify_free(&n->notify);
-
-  FREE(ptr);
-}
+#endif /* MUTT_CORE_LIB_H */

@@ -42,13 +42,12 @@
 #include "mutt/mutt.h"
 #include "config/lib.h"
 #include "compress.h"
-#include "account.h"
 #include "context.h"
+#include "core/lib.h"
 #include "curs_lib.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "hook.h"
-#include "mailbox.h"
 #include "mutt_curses.h"
 #include "muttlib.h"
 #include "mx.h"
@@ -442,12 +441,6 @@ int comp_ac_add(struct Account *a, struct Mailbox *m)
 {
   if (!a || !m || (m->magic != MUTT_COMPRESSED))
     return -1;
-
-  m->account = a;
-
-  struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
-  np->mailbox = m;
-  STAILQ_INSERT_TAIL(&a->mailboxes, np, entries);
   return 0;
 }
 

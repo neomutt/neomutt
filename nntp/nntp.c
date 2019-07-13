@@ -43,14 +43,13 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "nntp.h"
-#include "account.h"
 #include "bcache.h"
 #include "context.h"
+#include "core/lib.h"
 #include "curs_lib.h"
 #include "globals.h"
 #include "hcache/hcache.h"
 #include "hook.h"
-#include "mailbox.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mutt_parse.h"
@@ -1695,7 +1694,7 @@ static int check_mailbox(struct Mailbox *m)
 
   /* some headers were removed, context must be updated */
   if (rc == MUTT_REOPENED)
-    mutt_mailbox_changed(m, MBN_INVALID);
+    mailbox_changed(m, MBN_INVALID);
 
   /* fetch headers of new articles */
   if (mdata->last_message > mdata->last_loaded)
@@ -1716,7 +1715,7 @@ static int check_mailbox(struct Mailbox *m)
     if (rc2 == 0)
     {
       if (m->msg_count > old_msg_count)
-        mutt_mailbox_changed(m, MBN_INVALID);
+        mailbox_changed(m, MBN_INVALID);
       mdata->last_loaded = mdata->last_message;
     }
     if ((rc == 0) && (m->msg_count > oldmsgcount))

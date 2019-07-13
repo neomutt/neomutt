@@ -43,13 +43,12 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "imap.h"
-#include "account.h"
 #include "auth.h"
 #include "commands.h"
+#include "core/lib.h"
 #include "curs_lib.h"
 #include "globals.h"
 #include "hook.h"
-#include "mailbox.h"
 #include "message.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
@@ -517,8 +516,9 @@ static int complete_hosts(char *buf, size_t buflen)
   size_t matchlen;
 
   matchlen = mutt_str_strlen(buf);
+  struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
   struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &AllMailboxes, entries)
+  STAILQ_FOREACH(np, &ml, entries)
   {
     if (!mutt_str_startswith(mutt_b2s(np->mailbox->pathbuf), buf, CASE_MATCH))
       continue;
@@ -531,6 +531,7 @@ static int complete_hosts(char *buf, size_t buflen)
     else
       longest_common_prefix(buf, mutt_b2s(np->mailbox->pathbuf), matchlen, buflen);
   }
+  neomutt_mailboxlist_clear(&ml);
 
 #if 0
   TAILQ_FOREACH(conn, mutt_socket_head(), entries)
@@ -686,7 +687,7 @@ static void imap_logout(struct ImapAccountData *adata)
 void imap_logout_all(void)
 {
   struct Account *np = NULL;
-  TAILQ_FOREACH(np, &AllAccounts, entries)
+  TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
   {
     if (np->magic != MUTT_IMAP)
       continue;
@@ -836,8 +837,8 @@ void imap_expunge_mailbox(struct Mailbox *m)
   imap_hcache_close(mdata);
 #endif
 
-  mutt_mailbox_changed(m, MBN_UPDATE);
-  mutt_mailbox_changed(m, MBN_RESORT);
+  mailbox_changed(m, MBN_UPDATE);
+  mailbox_changed(m, MBN_RESORT);
 }
 
 /**

@@ -45,6 +45,7 @@
 #include "alias.h"
 #include "context.h"
 #include "copy.h"
+#include "core/lib.h"
 #include "curs_lib.h"
 #include "filter.h"
 #include "format_flags.h"
@@ -53,9 +54,9 @@
 #include "hook.h"
 #include "icommands.h"
 #include "keymap.h"
-#include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_logging.h"
+#include "mutt_mailbox.h"
 #include "mutt_menu.h"
 #include "mutt_parse.h"
 #include "mutt_window.h"
@@ -1087,7 +1088,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   struct Mailbox *m_comp = NULL;
   if (ctx_save->mailbox->compress_info)
   {
-    m_comp = mutt_mailbox_find(ctx_save->mailbox->realpath);
+    m_comp = mailbox_find(ctx_save->mailbox->realpath);
   }
   /* We probably haven't been opened yet */
   if (m_comp && (m_comp->msg_count == 0))

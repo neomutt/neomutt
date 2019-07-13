@@ -31,7 +31,7 @@
 #include "mutt/mutt.h"
 #include "config/lib.h"
 #include "common.h"
-#include "account.h"
+#include "core/lib.h"
 
 const char *line = "----------------------------------------"
                    "----------------------------------------";

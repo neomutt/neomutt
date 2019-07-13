@@ -61,15 +61,15 @@ ALL_FILES!=	(cd $(SRCDIR) && git ls-files 2>/dev/null) || true
 ###############################################################################
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
-NEOMUTTOBJS=	account.o addrbook.o alias.o bcache.o browser.o color.o commands.o \
+NEOMUTTOBJS=	addrbook.o alias.o bcache.o browser.o color.o commands.o \
 		complete.o compose.o compress.o conststrings.o context.o copy.o \
 		curs_lib.o edit.o editmsg.o enriched.o enter.o \
 		filter.o flags.o git_ver.o handler.o hdrline.o help.o hook.o \
-		index.o init.o keymap.o mailbox.o main.o menu.o muttlib.o \
+		index.o init.o keymap.o main.o menu.o muttlib.o \
 		mutt_account.o mutt_attach.o mutt_body.o mutt_header.o \
-		mutt_history.o mutt_logging.o mutt_parse.o mutt_signal.o \
+		mutt_history.o mutt_logging.o mutt_mailbox.o mutt_parse.o mutt_signal.o \
 		mutt_socket.o mutt_thread.o mutt_window.o mx.o myvar.o \
-		neomutt.o pager.o pattern.o postpone.o progress.o query.o recvattach.o \
+		pager.o pattern.o postpone.o progress.o query.o recvattach.o \
 		recvcmd.o resize.o rfc1524.o rfc3676.o \
 		score.o send.o sendlib.o sidebar.o smtp.o sort.o state.o \
 		status.o system.o terminal.o version.o icommands.o
@@ -225,12 +225,21 @@ CLEANFILES+=	$(PGPEWRAP) $(PGPEWRAPOBJS)
 ALLOBJS+=	$(PGPEWRAPOBJS)
 
 ###############################################################################
+# libcore
+LIBCORE=	libcore.a
+LIBCOREOBJS=	core/account.o core/mailbox.o core/neomutt.o
+
+CLEANFILES+=	$(LIBCORE) $(LIBCOREOBJS)
+MUTTLIBS+=	$(LIBCORE)
+ALLOBJS+=	$(LIBCOREOBJS)
+
+###############################################################################
 # libconfig
 LIBCONFIG=	libconfig.a
 LIBCONFIGOBJS=	config/address.o config/bool.o config/dump.o config/enum.o \
 		config/long.o config/mbtable.o config/number.o \
 		config/quad.o config/regex.o config/set.o \
-		config/slist.o config/sort.o config/string.o
+		config/slist.o config/sort.o config/string.o config/subset.o
 
 CLEANFILES+=	$(LIBCONFIG) $(LIBCONFIGOBJS)
 MUTTLIBS+=	$(LIBCONFIG)
@@ -366,6 +375,13 @@ $(LIBCONN): $(PWD)/conn $(LIBCONNOBJS)
 	$(RANLIB) $@
 $(PWD)/conn:
 	$(MKDIR_P) $(PWD)/conn
+
+# libcore
+$(LIBCORE): $(PWD)/core $(LIBCOREOBJS)
+	$(AR) cr $@ $(LIBCOREOBJS)
+	$(RANLIB) $@
+$(PWD)/core:
+	$(MKDIR_P) $(PWD)/core
 
 # libconfig
 $(LIBCONFIG): $(PWD)/config $(LIBCONFIGOBJS)

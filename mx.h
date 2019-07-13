@@ -30,7 +30,7 @@
 #include <time.h>
 #include "config/lib.h"
 #include "hcache/hcache.h"
-#include "mailbox.h"
+#include "core/lib.h"
 
 struct Email;
 struct Context;

@@ -213,6 +213,7 @@ const struct ConfigSetType *cs_get_type_def(const struct ConfigSet *cs, unsigned
 bool             cs_register_type(struct ConfigSet *cs, unsigned int type, const struct ConfigSetType *cst);
 bool             cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], int flags);
 struct HashElem *cs_inherit_variable(const struct ConfigSet *cs, struct HashElem *parent, const char *name);
+void             cs_uninherit_variable(const struct ConfigSet *cs, const char *name);
 
 void cs_notify_observers(const struct ConfigSet *cs, struct HashElem *he, const char *name, enum NotifyConfig ev);
 

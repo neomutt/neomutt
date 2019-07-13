@@ -46,9 +46,9 @@
 #include "mutt/mutt.h"
 #include "config/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "globals.h"
 #include "hcache/hcache.h"
-#include "mailbox.h"
 #include "maildir/lib.h"
 #include "monitor.h"
 #include "muttlib.h"
@@ -58,6 +58,9 @@
 #define MMC_NO_DIRS 0        ///< No directories changed
 #define MMC_NEW_DIR (1 << 0) ///< 'new' directory changed
 #define MMC_CUR_DIR (1 << 1) ///< 'cur' directory changed
+
+/* These Config Variables are only used in maildir/maildir.c */
+bool C_MaildirCheckCur; ///< Config: Check both 'new' and 'cur' directories for new mail
 
 /**
  * maildir_check_dir - Check for new mail / mail counts
@@ -502,7 +505,7 @@ int maildir_mbox_check(struct Mailbox *m, int *index_hint)
 
   /* If we didn't just get new mail, update the tables. */
   if (occult)
-    mutt_mailbox_changed(m, MBN_RESORT);
+    mailbox_changed(m, MBN_RESORT);
 
   /* do any delayed parsing we need to do. */
   maildir_delayed_parsing(m, &md, NULL);
@@ -511,7 +514,7 @@ int maildir_mbox_check(struct Mailbox *m, int *index_hint)
   num_new = maildir_move_to_mailbox(m, &md);
   if (num_new > 0)
   {
-    mutt_mailbox_changed(m, MBN_INVALID);
+    mailbox_changed(m, MBN_INVALID);
     m->changed = true;
   }
 

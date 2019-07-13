@@ -47,9 +47,9 @@
 #include "email/lib.h"
 #include "mutt.h"
 #include "init.h"
-#include "account.h"
 #include "alias.h"
 #include "context.h"
+#include "core/lib.h"
 #include "filter.h"
 #include "hcache/hcache.h"
 #include "keymap.h"
@@ -1324,7 +1324,7 @@ static enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
       mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
       if (buf->data && (*buf->data != '\0'))
       {
-        m->desc = mutt_str_strdup(buf->data);
+        m->name = mutt_str_strdup(buf->data);
       }
       else
       {
@@ -1348,7 +1348,7 @@ static enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
     struct Account *a = mx_ac_find(m);
     if (!a)
     {
-      a = account_new();
+      a = account_new(NULL, NeoMutt->sub);
       a->magic = m->magic;
       new_account = true;
     }
@@ -1362,9 +1362,6 @@ static enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
         {
           m_old->flags = MB_NORMAL;
           mutt_sb_notify_mailbox(m_old, true);
-          struct MailboxNode *mn = mutt_mem_calloc(1, sizeof(*mn));
-          mn->mailbox = m_old;
-          STAILQ_INSERT_TAIL(&AllMailboxes, mn, entries);
         }
         mailbox_free(&m);
         continue;
@@ -1383,12 +1380,8 @@ static enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
     }
     if (new_account)
     {
-      TAILQ_INSERT_TAIL(&AllAccounts, a, entries);
+      neomutt_account_add(NeoMutt, a);
     }
-
-    struct MailboxNode *mn = mutt_mem_calloc(1, sizeof(*mn));
-    mn->mailbox = m;
-    STAILQ_INSERT_TAIL(&AllMailboxes, mn, entries);
 
 #ifdef USE_SIDEBAR
     mutt_sb_notify_mailbox(m, true);
@@ -2396,9 +2389,10 @@ static enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s
       tmp_valid = true;
     }
 
+    struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
     struct MailboxNode *np = NULL;
     struct MailboxNode *nptmp = NULL;
-    STAILQ_FOREACH_SAFE(np, &AllMailboxes, entries, nptmp)
+    STAILQ_FOREACH_SAFE(np, &ml, entries, nptmp)
     {
       /* Decide whether to delete all normal mailboxes or all virtual */
       bool virt = ((np->mailbox->magic == MUTT_NOTMUCH) && (data & MUTT_VIRTUAL));
@@ -2410,7 +2404,7 @@ static enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s
       {
         clear_this =
             (mutt_str_strcasecmp(mutt_b2s(buf), mutt_b2s(np->mailbox->pathbuf)) == 0) ||
-            (mutt_str_strcasecmp(mutt_b2s(buf), np->mailbox->desc) == 0);
+            (mutt_str_strcasecmp(mutt_b2s(buf), np->mailbox->name) == 0);
       }
 
       if (clear_this)
@@ -2427,14 +2421,11 @@ static enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s
         }
         else
         {
-          mx_ac_remove(np->mailbox);
-          mailbox_free(&np->mailbox);
+          account_mailbox_remove(np->mailbox->account, np->mailbox);
         }
-        STAILQ_REMOVE(&AllMailboxes, np, MailboxNode, entries);
-        FREE(&np);
-        continue;
       }
     }
+    neomutt_mailboxlist_clear(&ml);
   }
   return MUTT_CMD_SUCCESS;
 }
@@ -3193,15 +3184,11 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   if (C_VirtualSpoolfile)
   {
     /* Find the first virtual folder and open it */
-    struct MailboxNode *mp = NULL;
-    STAILQ_FOREACH(mp, &AllMailboxes, entries)
-    {
-      if (mp->mailbox->magic == MUTT_NOTMUCH)
-      {
-        cs_str_string_set(Config, "spoolfile", mutt_b2s(mp->mailbox->pathbuf), NULL);
-        break;
-      }
-    }
+    struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_NOTMUCH);
+    struct MailboxNode *mp = STAILQ_FIRST(&ml);
+    if (mp)
+      cs_str_string_set(Config, "spoolfile", mutt_b2s(mp->mailbox->pathbuf), NULL);
+    neomutt_mailboxlist_clear(&ml);
   }
 #endif
 
