@@ -657,8 +657,9 @@ int mutt_sasl_interact(sasl_interact_t *interaction)
       return SASL_FAIL;
 
     interaction->len = mutt_str_strlen(resp) + 1;
-    interaction->result = mutt_mem_malloc(interaction->len);
-    memcpy((char *) interaction->result, resp, interaction->len);
+    char *result = mutt_mem_malloc(interaction->len);
+    memcpy(result, resp, interaction->len);
+    interaction->result = result;
 
     interaction++;
   }

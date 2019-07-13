@@ -119,8 +119,8 @@ void set_list(const struct ConfigSet *cs)
 
 int sort_list_cb(const void *a, const void *b)
 {
-  const char *stra = *(char **) a;
-  const char *strb = *(char **) b;
+  const char *stra = *(char const *const *) a;
+  const char *strb = *(char const *const *) b;
   return strcmp(stra, strb);
 }
 

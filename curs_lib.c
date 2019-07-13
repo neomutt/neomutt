@@ -652,7 +652,7 @@ int mutt_buffer_enter_fname_full(const char *prompt, struct Buffer *fname,
   struct KeyEvent ch;
 
   SET_COLOR(MT_COLOR_PROMPT);
-  mutt_window_mvaddstr(MuttMessageWindow, 0, 0, (char *) prompt);
+  mutt_window_mvaddstr(MuttMessageWindow, 0, 0, prompt);
   addstr(_(" ('?' for list): "));
   NORMAL_COLOR;
   if (mutt_buffer_len(fname))

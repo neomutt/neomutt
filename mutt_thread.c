@@ -635,8 +635,8 @@ static int compare_threads(const void *a, const void *b)
 
   if (a && b)
   {
-    return (*sort_func)(&(*((struct MuttThread **) a))->sort_key,
-                        &(*((struct MuttThread **) b))->sort_key);
+    return (*sort_func)(&(*((struct MuttThread const *const *) a))->sort_key,
+                        &(*((struct MuttThread const *const *) b))->sort_key);
   }
   /* a hack to let us reset sort_func even though we can't
    * have extra arguments because of qsort */

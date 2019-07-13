@@ -45,7 +45,7 @@
 static size_t gen_string_hash(union HashKey key, size_t n)
 {
   size_t h = 0;
-  unsigned char *s = (unsigned char *) key.strkey;
+  const unsigned char *s = (const unsigned char *) key.strkey;
 
   while (*s)
     h += ((h << 7) + *s++);
@@ -76,7 +76,7 @@ static int cmp_string_key(union HashKey a, union HashKey b)
 static size_t gen_case_string_hash(union HashKey key, size_t n)
 {
   size_t h = 0;
-  unsigned char *s = (unsigned char *) key.strkey;
+  const unsigned char *s = (const unsigned char *) key.strkey;
 
   while (*s)
     h += ((h << 7) + tolower(*s++));

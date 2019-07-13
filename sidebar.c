@@ -297,10 +297,10 @@ static void make_sidebar_entry(char *buf, size_t buflen, int width,
  */
 static int cb_qsort_sbe(const void *a, const void *b)
 {
-  const struct SbEntry *sbe1 = *(const struct SbEntry **) a;
-  const struct SbEntry *sbe2 = *(const struct SbEntry **) b;
-  struct Mailbox *m1 = sbe1->mailbox;
-  struct Mailbox *m2 = sbe2->mailbox;
+  const struct SbEntry *sbe1 = *(struct SbEntry const *const *) a;
+  const struct SbEntry *sbe2 = *(struct SbEntry const *const *) b;
+  const struct Mailbox *m1 = sbe1->mailbox;
+  const struct Mailbox *m2 = sbe2->mailbox;
 
   int rc = 0;
 

@@ -140,8 +140,8 @@ static int alias_tag(struct Menu *menu, int sel, int act)
  */
 static int alias_sort_alias(const void *a, const void *b)
 {
-  struct Alias *pa = *(struct Alias **) a;
-  struct Alias *pb = *(struct Alias **) b;
+  const struct Alias *pa = *(struct Alias const *const *) a;
+  const struct Alias *pb = *(struct Alias const *const *) b;
   int r = mutt_str_strcasecmp(pa->name, pb->name);
 
   return RSORT(r);
@@ -157,8 +157,8 @@ static int alias_sort_alias(const void *a, const void *b)
  */
 static int alias_sort_address(const void *a, const void *b)
 {
-  struct AddressList *pal = &(*(struct Alias **) a)->addr;
-  struct AddressList *pbl = &(*(struct Alias **) b)->addr;
+  const struct AddressList *pal = &(*(struct Alias const *const *) a)->addr;
+  const struct AddressList *pbl = &(*(struct Alias const *const *) b)->addr;
   int r;
 
   if (pal == pbl)
@@ -169,8 +169,8 @@ static int alias_sort_address(const void *a, const void *b)
     r = 1;
   else
   {
-    struct Address *pa = TAILQ_FIRST(pal);
-    struct Address *pb = TAILQ_FIRST(pbl);
+    const struct Address *pa = TAILQ_FIRST(pal);
+    const struct Address *pb = TAILQ_FIRST(pbl);
     if (pa->personal)
     {
       if (pb->personal)

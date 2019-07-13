@@ -105,8 +105,8 @@ int elem_list_sort(const void *a, const void *b)
   if (!a || !b)
     return 0;
 
-  const struct HashElem *hea = *(struct HashElem **) a;
-  const struct HashElem *heb = *(struct HashElem **) b;
+  const struct HashElem *hea = *(struct HashElem const *const *) a;
+  const struct HashElem *heb = *(struct HashElem const *const *) b;
 
   return mutt_str_strcasecmp(hea->key.strkey, heb->key.strkey);
 }

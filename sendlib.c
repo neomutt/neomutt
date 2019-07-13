@@ -768,7 +768,7 @@ static void update_content_info(struct Content *info, struct ContentState *s,
  * in.
  */
 static size_t convert_file_to(FILE *fp, const char *fromcode, int ncodes,
-                              const char **tocodes, int *tocode, struct Content *info)
+                              char const *const *tocodes, int *tocode, struct Content *info)
 {
   char bufi[256], bufu[512], bufo[4 * sizeof(bufi)];
   size_t ret;
@@ -960,7 +960,7 @@ static size_t convert_file_from_to(FILE *fp, const char *fromcodes, const char *
         continue;
       fcode = mutt_str_substr_dup(c, c1);
 
-      ret = convert_file_to(fp, fcode, ncodes, (const char **) tcode, &cn, info);
+      ret = convert_file_to(fp, fcode, ncodes, (char const *const *) tcode, &cn, info);
       if (ret != (size_t)(-1))
       {
         *fromcode = fcode;
@@ -974,7 +974,7 @@ static size_t convert_file_from_to(FILE *fp, const char *fromcodes, const char *
   else
   {
     /* There is only one fromcode */
-    ret = convert_file_to(fp, fromcodes, ncodes, (const char **) tcode, &cn, info);
+    ret = convert_file_to(fp, fromcodes, ncodes, (char const *const *) tcode, &cn, info);
     if (ret != (size_t)(-1))
     {
       *tocode = tcode[cn];
@@ -2123,7 +2123,6 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
 int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
                           const char *pfx, int wraplen, CopyHeaderFlags chflags)
 {
-  char *p = (char *) value;
   char *last = NULL, *line = NULL;
   int max = 0, w, rc = -1;
   int pfxw = mutt_strwidth(pfx);
@@ -2162,7 +2161,7 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
     }
   }
 
-  p = v;
+  char *p = v;
   last = v;
   line = v;
   while (p && *p)

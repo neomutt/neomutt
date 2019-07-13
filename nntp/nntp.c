@@ -2367,11 +2367,11 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
  */
 int nntp_compare_order(const void *a, const void *b)
 {
-  struct Email **ea = (struct Email **) a;
-  struct Email **eb = (struct Email **) b;
+  const struct Email *ea = *(struct Email const *const *) a;
+  const struct Email *eb = *(struct Email const *const *) b;
 
-  anum_t na = nntp_edata_get(*ea)->article_num;
-  anum_t nb = nntp_edata_get(*eb)->article_num;
+  anum_t na = nntp_edata_get((struct Email *) ea)->article_num;
+  anum_t nb = nntp_edata_get((struct Email *) eb)->article_num;
   int result = (na == nb) ? 0 : (na > nb) ? 1 : -1;
   result = perform_auxsort(result, a, b);
   return SORT_CODE(result);

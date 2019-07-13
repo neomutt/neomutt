@@ -524,7 +524,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
 {
   struct QClass *q_list = *quote_list;
   struct QClass *qc = NULL, *tmp = NULL, *ptr = NULL, *save = NULL;
-  char *tail_qptr = NULL;
+  const char *tail_qptr = NULL;
   int offset, tail_lng;
   int index = -1;
 
@@ -650,7 +650,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
 
         q_list = q_list->down;
         tail_lng = length - offset;
-        tail_qptr = (char *) qptr + offset;
+        tail_qptr = qptr + offset;
 
         while (q_list)
         {
@@ -752,7 +752,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
 
               q_list = q_list->down;
               tail_lng = length - offset;
-              tail_qptr = (char *) qptr + offset;
+              tail_qptr = qptr + offset;
 
               continue;
             }
