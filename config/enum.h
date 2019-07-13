@@ -26,7 +26,7 @@
 struct ConfigSet;
 
 /**
- * struct EnumDef - XXX
+ * struct EnumDef - An enumeration
  */
 struct EnumDef
 {

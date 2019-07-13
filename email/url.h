@@ -54,9 +54,9 @@ enum UrlScheme
  */
 struct UrlQueryString
 {
-  char *name;
-  char *value;
-  STAILQ_ENTRY(UrlQueryString) entries;
+  char *name;                           ///< Query name
+  char *value;                          ///< Query value
+  STAILQ_ENTRY(UrlQueryString) entries; ///< Linked list
 };
 STAILQ_HEAD(UrlQueryStringHead, UrlQueryString);
 
@@ -65,22 +65,22 @@ STAILQ_HEAD(UrlQueryStringHead, UrlQueryString);
  */
 struct Url
 {
-  enum UrlScheme scheme;
-  char *user;
-  char *pass;
-  char *host;
-  unsigned short port;
-  char *path;
-  struct UrlQueryStringHead query_strings;
-  char *src;
+  enum UrlScheme scheme;                   ///< Scheme, e.g. #U_SMTPS
+  char *user;                              ///< Username
+  char *pass;                              ///< Password
+  char *host;                              ///< Host
+  unsigned short port;                     ///< Port
+  char *path;                              ///< Path
+  struct UrlQueryStringHead query_strings; ///< List of query strings
+  char *src;                               ///< Raw URL string
 };
 
 enum UrlScheme url_check_scheme(const char *s);
-void           url_free(struct Url **u);
-struct Url    *url_parse(const char *src);
-int            url_pct_decode(char *s);
-void           url_pct_encode(char *buf, size_t buflen, const char *src);
-int            url_tobuffer(struct Url *u, struct Buffer *dest, int flags);
-int            url_tostring(struct Url *u, char *buf, size_t buflen, int flags);
+void           url_free        (struct Url **u);
+struct Url    *url_parse       (const char *src);
+int            url_pct_decode  (char *s);
+void           url_pct_encode  (char *buf, size_t buflen, const char *src);
+int            url_tobuffer    (struct Url *u, struct Buffer *dest, int flags);
+int            url_tostring    (struct Url *u, char *buf, size_t buflen, int flags);
 
 #endif /* MUTT_EMAIL_URL_H */

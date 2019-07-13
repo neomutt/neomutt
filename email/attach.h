@@ -33,14 +33,14 @@ struct Body;
  */
 struct AttachPtr
 {
-  struct Body *content;
-  FILE *fp; /**< used in the recvattach menu. */
-  int parent_type;
-  char *tree;
-  int level;
-  int num;
-  bool unowned : 1;   /**< don't unlink on detach */
-  bool decrypted : 1; /**< not part of message as stored in the email->content. */
+  struct Body *content; ///< Attachment
+  FILE *fp;             ///< Used in the recvattach menu
+  int parent_type;      ///< Type of parent attachment, e.g. #TYPE_MULTIPART
+  char *tree;           ///< Tree characters to display
+  int level;            ///< Nesting depth of attachment
+  int num;              ///< Attachment index number
+  bool unowned : 1;     ///< Don't unlink on detach
+  bool decrypted : 1;   ///< Not part of message as stored in the email->content
 };
 
 /**
@@ -48,29 +48,29 @@ struct AttachPtr
  */
 struct AttachCtx
 {
-  struct Email *email; /**< used by recvattach for updating */
-  FILE *fp_root;       /**< used by recvattach for updating */
+  struct Email *email;    ///< Used by recvattach for updating
+  FILE *fp_root;          ///< Used by recvattach for updating
 
-  struct AttachPtr **idx;
-  short idxlen;
-  short idxmax;
+  struct AttachPtr **idx; ///< Array of attachments
+  short idxlen;           ///< Number of attachmentes
+  short idxmax;           ///< Size of attachment array
 
-  short *v2r;   /**< mapping from virtual to real attachment */
-  short vcount; /**< the number of virtual attachments */
+  short *v2r;             ///< Mapping from virtual to real attachment
+  short vcount;           ///< The number of virtual attachments
 
-  FILE **fp_idx; /**< Extra FILE* used for decryption */
-  short fp_len;
-  short fp_max;
+  FILE **fp_idx;          ///< Extra FILE* used for decryption
+  short fp_len;           ///< Number of FILE handles
+  short fp_max;           ///< Size of FILE array
 
-  struct Body **body_idx; /**< Extra struct Body* used for decryption */
-  short body_len;
-  short body_max;
+  struct Body **body_idx; ///< Extra struct Body* used for decryption
+  short body_len;         ///< Number of Body parts
+  short body_max;         ///< Size of Body array
 };
 
-void mutt_actx_add_attach(struct AttachCtx *actx, struct AttachPtr *attach);
-void mutt_actx_add_body(struct AttachCtx *actx, struct Body *new_body);
-void mutt_actx_add_fp(struct AttachCtx *actx, FILE *fp_new);
-void mutt_actx_free(struct AttachCtx **pactx);
+void mutt_actx_add_attach  (struct AttachCtx *actx, struct AttachPtr *attach);
+void mutt_actx_add_body    (struct AttachCtx *actx, struct Body *new_body);
+void mutt_actx_add_fp      (struct AttachCtx *actx, FILE *fp_new);
+void mutt_actx_free        (struct AttachCtx **pactx);
 void mutt_actx_free_entries(struct AttachCtx *actx);
 
 #endif /* MUTT_EMAIL_ATTACH_H */

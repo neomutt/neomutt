@@ -32,20 +32,20 @@ struct Body;
 struct Envelope;
 struct Email;
 
-void             mutt_auto_subscribe(const char *mailto);
-int              mutt_check_encoding(const char *c);
-enum ContentType mutt_check_mime_type(const char *s);
-char *           mutt_extract_message_id(const char *s, const char **saveptr);
-bool             mutt_is_message_type(int type, const char *subtype);
-bool             mutt_matches_ignore(const char *s);
-void             mutt_parse_content_type(const char *s, struct Body *ct);
-int              mutt_parse_mailto(struct Envelope *e, char **body, const char *src);
-struct Body *    mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off, bool digest);
-void             mutt_parse_part(FILE *fp, struct Body *b);
-struct Body *    mutt_read_mime_header(FILE *fp, bool digest);
-int              mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line, char *p, bool user_hdrs, bool weed, bool do_2047);
+void             mutt_auto_subscribe      (const char *mailto);
+int              mutt_check_encoding      (const char *c);
+enum ContentType mutt_check_mime_type     (const char *s);
+char *           mutt_extract_message_id  (const char *s, const char **saveptr);
+bool             mutt_is_message_type     (int type, const char *subtype);
+bool             mutt_matches_ignore      (const char *s);
+void             mutt_parse_content_type  (const char *s, struct Body *ct);
+int              mutt_parse_mailto        (struct Envelope *e, char **body, const char *src);
+struct Body *    mutt_parse_multipart     (FILE *fp, const char *boundary, LOFF_T end_off, bool digest);
+void             mutt_parse_part          (FILE *fp, struct Body *b);
+struct Body *    mutt_read_mime_header    (FILE *fp, bool digest);
+int              mutt_rfc822_parse_line   (struct Envelope *env, struct Email *e, char *line, char *p, bool user_hdrs, bool weed, bool do_2047);
 struct Body *    mutt_rfc822_parse_message(FILE *fp, struct Body *parent);
-struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hdrs, bool weed);
-char *           mutt_rfc822_read_line(FILE *fp, char *line, size_t *linelen);
+struct Envelope *mutt_rfc822_read_header  (FILE *fp, struct Email *e, bool user_hdrs, bool weed);
+char *           mutt_rfc822_read_line    (FILE *fp, char *line, size_t *linelen);
 
 #endif /* MUTT_EMAIL_PARSE_H */

@@ -27,12 +27,12 @@
 #include "mutt/mutt.h"
 
 /* Config items */
-extern bool                C_AutoSubscribe;
-extern bool                C_MarkOld;
-extern struct Regex *      C_ReplyRegex;
-extern char *              C_SendCharset;
-extern char *              C_SpamSeparator;
-extern bool                C_Weed;
+extern bool          C_AutoSubscribe;
+extern bool          C_MarkOld;
+extern struct Regex *C_ReplyRegex;
+extern char *        C_SendCharset;
+extern char *        C_SpamSeparator;
+extern bool          C_Weed;
 
 /* Global variables */
 extern struct ListHead Ignore;              ///< List of header patterns to ignore

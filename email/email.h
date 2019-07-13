@@ -36,83 +36,79 @@
  */
 struct Email
 {
-  SecurityFlags security;   /**< bit 0-8: flags, bit 9,10: application.
-                                 see: ncrypt/ncrypt.h pgplib.h, smime.h */
+  SecurityFlags security;      ///< bit 0-8: flags, bit 9,10: application.
+                               ///< See: ncrypt/ncrypt.h pgplib.h, smime.h
 
-  bool mime            : 1; /**< has a MIME-Version header? */
-  bool flagged         : 1; /**< marked important? */
-  bool tagged          : 1;
-  bool deleted         : 1;
-  bool purge           : 1; /**< skip trash folder when deleting */
-  bool quasi_deleted   : 1; /**< deleted from neomutt, but not modified on disk */
-  bool changed         : 1;
-  bool attach_del      : 1; /**< has an attachment marked for deletion */
-  bool old             : 1;
-  bool read            : 1;
-  bool expired         : 1; /**< already expired? */
-  bool superseded      : 1; /**< got superseded? */
-  bool replied         : 1;
-  bool subject_changed : 1; /**< used for threading */
-  bool threaded        : 1; /**< used for threading */
-  bool display_subject : 1; /**< used for threading */
-  bool recip_valid     : 1; /**< is_recipient is valid */
-  bool active          : 1; /**< message is not to be removed */
-  bool trash           : 1; /**< message is marked as trashed on disk.
-                             * This flag is used by the maildir_trash option. */
+  bool mime            : 1;    ///< Has a MIME-Version header?
+  bool flagged         : 1;    ///< Marked important?
+  bool tagged          : 1;    ///< Email is tagged
+  bool deleted         : 1;    ///< Email is deleted
+  bool purge           : 1;    ///< Skip trash folder when deleting
+  bool quasi_deleted   : 1;    ///< Deleted from neomutt, but not modified on disk
+  bool changed         : 1;    ///< Email has been edited
+  bool attach_del      : 1;    ///< Has an attachment marked for deletion
+  bool old             : 1;    ///< Email is seen, but unread
+  bool read            : 1;    ///< Email is read
+  bool expired         : 1;    ///< Already expired?
+  bool superseded      : 1;    ///< Got superseded?
+  bool replied         : 1;    ///< Email has been replied to
+  bool subject_changed : 1;    ///< Used for threading
+  bool threaded        : 1;    ///< Used for threading
+  bool display_subject : 1;    ///< Used for threading
+  bool recip_valid     : 1;    ///< Is_recipient is valid
+  bool active          : 1;    ///< Message is not to be removed
+  bool trash           : 1;    ///< Message is marked as trashed on disk (used by the maildir_trash option)
 
-  /* timezone of the sender of this message */
-  unsigned int zhours : 5;
-  unsigned int zminutes : 6;
-  bool zoccident : 1;
+  // timezone of the sender of this message
+  unsigned int zhours   : 5;   ///< Hours away from UTC
+  unsigned int zminutes : 6;   ///< Minutes away from UTC
+  bool zoccident        : 1;   ///< True, if west of UTC, False if east
 
-  /* bits used for caching when searching */
-  bool searched : 1;
-  bool matched : 1;
+  bool searched : 1;           ///< Email has been searched
+  bool matched  : 1;           ///< Search matches this Email
 
-  /* tells whether the attachment count is valid */
-  bool attach_valid : 1;
+  bool attach_valid : 1;       ///< true when the attachment count is valid
 
-  /* the following are used to support collapsing threads  */
-  bool collapsed : 1; /**< is this message part of a collapsed thread? */
-  bool limited : 1;   /**< is this message in a limited view?  */
-  size_t num_hidden;  /**< number of hidden messages in this view */
+  // the following are used to support collapsing threads
+  bool collapsed : 1;          ///< Is this message part of a collapsed thread?
+  bool limited   : 1;          ///< Is this message in a limited view? 
+  size_t num_hidden;           ///< Number of hidden messages in this view
 
-  short recipient;    /**< user_is_recipient()'s return value, cached */
+  short recipient;             ///< User_is_recipient()'s return value, cached
 
-  int pair;           /**< color-pair to use when displaying in the index */
+  int pair;                    ///< Color-pair to use when displaying in the index
 
-  time_t date_sent;   /**< time when the message was sent (UTC) */
-  time_t received;    /**< time when the message was placed in the mailbox */
-  LOFF_T offset;      /**< where in the stream does this message begin? */
-  int lines;          /**< how many lines in the body of this message? */
-  int index;          /**< the absolute (unsorted) message number */
-  int msgno;          /**< number displayed to the user */
-  int vnum;           /**< virtual message number */
-  int score;
-  struct Envelope *env;      /**< envelope information */
-  struct Body *content;      /**< list of MIME parts */
-  char *path;
+  time_t date_sent;            ///< Time when the message was sent (UTC)
+  time_t received;             ///< Time when the message was placed in the mailbox
+  LOFF_T offset;               ///< Where in the stream does this message begin?
+  int lines;                   ///< How many lines in the body of this message?
+  int index;                   ///< The absolute (unsorted) message number
+  int msgno;                   ///< Number displayed to the user
+  int vnum;                    ///< Virtual message number
+  int score;                   ///< Message score
+  struct Envelope *env;        ///< Envelope information
+  struct Body *content;        ///< List of MIME parts
+  char *path;                  ///< Path of Email (for local Mailboxes)
 
-  char *tree; /**< character string to print thread tree */
-  struct MuttThread *thread;
+  char *tree;                  ///< Character string to print thread tree
+  struct MuttThread *thread;   ///< Thread of Emails
 
-  /* Number of qualifying attachments in message, if attach_valid */
-  short attach_total;
+  short attach_total;          ///< Number of qualifying attachments in message, if attach_valid
 
 #ifdef MIXMASTER
-  struct ListHead chain;
+  struct ListHead chain;       ///< Mixmaster chain
 #endif
 
 #ifdef USE_POP
-  int refno; /**< message number on server */
+  int refno;                   ///< Message number on server
 #endif
 
-  struct TagHead tags; /**< for drivers that support server tagging */
+  struct TagHead tags;         ///< For drivers that support server tagging
 
-  char *maildir_flags; /**< unknown maildir flags */
+  char *maildir_flags;         ///< Unknown maildir flags
 
-  void *edata;                 /**< driver-specific data */
-  void (*free_edata)(void **); /**< driver-specific data free function */
+  void *edata;                 ///< Driver-specific data
+  void (*free_edata)(void **); ///< Driver-specific data free function
 };
 
 /**
@@ -120,15 +116,15 @@ struct Email
  */
 struct EmailNode
 {
-  struct Email *email;
-  STAILQ_ENTRY(EmailNode) entries;
+  struct Email *email;             ///< Email in the list
+  STAILQ_ENTRY(EmailNode) entries; ///< Linked list
 };
 STAILQ_HEAD(EmailList, EmailNode);
 
 bool          mutt_email_cmp_strict(const struct Email *e1, const struct Email *e2);
-void          mutt_email_free(struct Email **e);
-struct Email *mutt_email_new(void);
-size_t        mutt_email_size(const struct Email *e);
+void          mutt_email_free      (struct Email **e);
+struct Email *mutt_email_new       (void);
+size_t        mutt_email_size      (const struct Email *e);
 
 void mutt_emaillist_free(struct EmailList *el);
 

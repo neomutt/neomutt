@@ -33,28 +33,29 @@ struct Email;
  */
 struct MuttThread
 {
-  bool fake_thread : 1;
-  bool duplicate_thread : 1;
-  bool sort_children : 1;
-  bool check_subject : 1;
-  bool visible : 1;
-  bool deep : 1;
-  unsigned int subtree_visible : 2;
-  bool next_subtree_visible : 1;
-  struct MuttThread *parent;
-  struct MuttThread *child;
-  struct MuttThread *next;
-  struct MuttThread *prev;
-  struct Email *message;
-  struct Email *sort_key;
+  bool fake_thread             : 1; ///< Emails grouped by Subject
+  bool duplicate_thread        : 1; ///< Duplicated Email in Thread
+  bool sort_children           : 1; ///< Sort the children
+  bool check_subject           : 1; ///< Should the Subject be checked?
+  bool visible                 : 1; ///< Is this Thread visible?
+  bool deep                    : 1; ///< Is the Thread deeply nested?
+  unsigned int subtree_visible : 2; ///< Is this Thread subtree visible?
+  bool next_subtree_visible    : 1; ///< Is the next Thread subtree visible?
+
+  struct MuttThread *parent;        ///< Parent of this Thread
+  struct MuttThread *child;         ///< Child of this Thread
+  struct MuttThread *next;          ///< Next sibling Thread
+  struct MuttThread *prev;          ///< Previous sibling Thread
+  struct Email *message;            ///< Email this Thread refers to
+  struct Email *sort_key;           ///< Email that this Thread is sorted against
 };
 
-void           clean_references(struct MuttThread *brk, struct MuttThread *cur);
-struct Email * find_virtual(struct MuttThread *cur, int reverse);
-void           insert_message(struct MuttThread **add, struct MuttThread *parent, struct MuttThread *cur);
-bool           is_descendant(struct MuttThread *a, struct MuttThread *b);
-void           mutt_break_thread(struct Email *e);
-void           thread_hash_destructor(int type, void *obj, intptr_t data);
-void           unlink_message(struct MuttThread **old, struct MuttThread *cur);
+void          clean_references      (struct MuttThread *brk, struct MuttThread *cur);
+struct Email *find_virtual          (struct MuttThread *cur, int reverse);
+void          insert_message        (struct MuttThread **add, struct MuttThread *parent, struct MuttThread *cur);
+bool          is_descendant         (struct MuttThread *a, struct MuttThread *b);
+void          mutt_break_thread     (struct Email *e);
+void          thread_hash_destructor(int type, void *obj, intptr_t data);
+void          unlink_message        (struct MuttThread **old, struct MuttThread *cur);
 
 #endif /* MUTT_EMAIL_THREAD_H */

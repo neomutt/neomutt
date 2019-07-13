@@ -32,17 +32,17 @@
  */
 struct Content
 {
-  long hibin;      /**< 8-bit characters */
-  long lobin;      /**< unprintable 7-bit chars (eg., control chars) */
-  long nulbin;     /**< null characters (0x0) */
-  long crlf;       /**< `\r` and `\n` characters */
-  long ascii;      /**< number of ascii chars */
-  long linemax;    /**< length of the longest line in the file */
-  bool space : 1;  /**< whitespace at the end of lines? */
-  bool binary : 1; /**< long lines, or CR not in CRLF pair */
-  bool from : 1;   /**< has a line beginning with "From "? */
-  bool dot : 1;    /**< has a line consisting of a single dot? */
-  bool cr : 1;     /**< has CR, even when in a CRLF pair */
+  long hibin;      ///< 8-bit characters
+  long lobin;      ///< Unprintable 7-bit chars (eg., control chars)
+  long nulbin;     ///< Null characters (0x0)
+  long crlf;       ///< `\r` and `\n` characters
+  long ascii;      ///< Number of ascii chars
+  long linemax;    ///< Length of the longest line in the file
+  bool space  : 1; ///< Whitespace at the end of lines?
+  bool binary : 1; ///< Long lines, or CR not in CRLF pair
+  bool from   : 1; ///< Has a line beginning with "From "?
+  bool dot    : 1; ///< Has a line consisting of a single dot?
+  bool cr     : 1; ///< Has CR, even when in a CRLF pair
 };
 
 #endif /* MUTT_EMAIL_CONTENT_H */
