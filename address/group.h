@@ -29,17 +29,17 @@
 #include "mutt/mutt.h"
 #include "address.h"
 
-#define MUTT_GROUP   0
-#define MUTT_UNGROUP 1
+#define MUTT_GROUP   0  ///< 'group' config command
+#define MUTT_UNGROUP 1  ///< 'ungroup' config command
 
 /**
  * struct Group - A set of email addresses
  */
 struct Group
 {
-  struct AddressList al;
-  struct RegexList rs;
-  char *name;
+  struct AddressList al; ///< List of Addresses
+  struct RegexList rs;   ///< Group Regex patterns
+  char *name;            ///< Name of Group
 };
 
 /**
@@ -47,23 +47,22 @@ struct Group
  */
 struct GroupNode
 {
-  struct Group *group;
-  STAILQ_ENTRY(GroupNode) entries;
+  struct Group *group;             ///< Address Group
+  STAILQ_ENTRY(GroupNode) entries; ///< Linked list
 };
 STAILQ_HEAD(GroupList, GroupNode);
 
-void mutt_grouplist_init(void);
-void mutt_grouplist_free(void);
-void mutt_grouplist_add(struct GroupList *gl, struct Group *group);
-void mutt_grouplist_add_addrlist(struct GroupList *gl, struct AddressList *a);
-int  mutt_grouplist_add_regex(struct GroupList *gl, const char *s,
-                              int flags, struct Buffer *err);
-void mutt_grouplist_destroy(struct GroupList *gl);
-void mutt_grouplist_clear(struct GroupList *gl);
-int  mutt_grouplist_remove_regex(struct GroupList *gl, const char *s);
+void mutt_grouplist_add            (struct GroupList *gl, struct Group *group);
+void mutt_grouplist_add_addrlist   (struct GroupList *gl, struct AddressList *a);
+int  mutt_grouplist_add_regex      (struct GroupList *gl, const char *s, int flags, struct Buffer *err);
+void mutt_grouplist_clear          (struct GroupList *gl);
+void mutt_grouplist_destroy        (struct GroupList *gl);
+void mutt_grouplist_free           (void);
+void mutt_grouplist_init           (void);
 int  mutt_grouplist_remove_addrlist(struct GroupList *gl, struct AddressList *a);
+int  mutt_grouplist_remove_regex   (struct GroupList *gl, const char *s);
 
-bool mutt_group_match(struct Group *g, const char *s);
+bool          mutt_group_match  (struct Group *g, const char *s);
 struct Group *mutt_pattern_group(const char *pat);
 
 #endif /* MUTT_GROUP_H */
