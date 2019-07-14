@@ -3327,7 +3327,7 @@ enum QuadOption query_quadoption(enum QuadOption opt, const char *prompt)
       return opt;
 
     default:
-      opt = mutt_yesorno(prompt, (opt == MUTT_ASKYES));
+      opt = mutt_yesorno(prompt, (opt == MUTT_ASKYES) ? MUTT_YES : MUTT_NO);
       mutt_window_clearline(MuttMessageWindow, 0);
       return opt;
   }
