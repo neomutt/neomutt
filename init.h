@@ -4702,7 +4702,7 @@ struct ConfigDef MuttVars[] = {
   ** Normally, the default should work.
   */
 #endif /* HAVE_GETADDRINFO */
-  { "user_agent", DT_BOOL, &C_UserAgent, true },
+  { "user_agent", DT_BOOL, &C_UserAgent, false },
   /*
   ** .pp
   ** When \fIset\fP, NeoMutt will add a "User-Agent:" header to outgoing
