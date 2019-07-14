@@ -42,7 +42,7 @@
 
 /**
  * ctx_free - Free a Context
- * @param[out] ctx Context to free
+ * @param[out] ptr Context to free
  */
 void ctx_free(struct Context **ptr)
 {

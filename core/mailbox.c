@@ -37,7 +37,6 @@
 
 /**
  * mailbox_new - Create a new Mailbox
- * @param name Name for the Mailbox
  * @retval ptr New Mailbox
  */
 struct Mailbox *mailbox_new(void)
