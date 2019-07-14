@@ -1026,7 +1026,7 @@ int mutt_index_menu(void)
   bool tag = false;  /* has the tag-prefix command been pressed? */
   int newcount = -1;
   int oldcount = -1;
-  int index_hint; /* used to restore cursor position */
+  int index_hint = 0; /* used to restore cursor position */
   bool do_mailbox_notify = true;
   int close = 0; /* did we OP_QUIT or OP_EXIT out of this menu? */
   int attach_msg = OptAttachMsg;
