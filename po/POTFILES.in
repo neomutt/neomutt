@@ -1,4 +1,3 @@
-account.c
 addrbook.c
 address/address.c
 address/group.c
@@ -25,6 +24,7 @@ config/set.c
 config/slist.c
 config/sort.c
 config/string.c
+config/subset.c
 conn/conn_globals.c
 conn/conn_raw.c
 conn/getdomain.c
@@ -36,6 +36,9 @@ conn/ssl_gnutls.c
 conn/tunnel.c
 context.c
 copy.c
+core/account.c
+core/mailbox.c
+core/neomutt.c
 curs_lib.c
 edit.c
 editmsg.c
@@ -87,7 +90,6 @@ imap/util.c
 index.c
 init.c
 keymap.c
-mailbox.c
 maildir/maildir.c
 maildir/mh.c
 maildir/shared.c
@@ -126,6 +128,7 @@ mutt_header.c
 mutt_history.c
 mutt_logging.c
 mutt_lua.c
+mutt_mailbox.c
 mutt_parse.c
 mutt_signal.c
 mutt_socket.c
@@ -149,7 +152,6 @@ ncrypt/pgplib.c
 ncrypt/pgpmicalg.c
 ncrypt/pgppacket.c
 ncrypt/smime.c
-neomutt.c
 nntp/browse.c
 nntp/complete.c
 nntp/newsrc.c
