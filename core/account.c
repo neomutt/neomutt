@@ -1,7 +1,7 @@
 /**
  * @file
  * A group of associated Mailboxes
- 
+ *
  * @authors
  * Copyright (C) 2018-2019 Richard Russon <rich@flatcap.org>
  *

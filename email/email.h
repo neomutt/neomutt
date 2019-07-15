@@ -71,7 +71,7 @@ struct Email
 
   // the following are used to support collapsing threads
   bool collapsed : 1;          ///< Is this message part of a collapsed thread?
-  bool limited   : 1;          ///< Is this message in a limited view? 
+  bool limited   : 1;          ///< Is this message in a limited view?
   size_t num_hidden;           ///< Number of hidden messages in this view
 
   short recipient;             ///< User_is_recipient()'s return value, cached
