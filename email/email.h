@@ -31,6 +31,8 @@
 #include "ncrypt/ncrypt.h"
 #include "tags.h"
 
+struct Notify;
+
 /**
  * struct Email - The envelope/body of an email
  */
@@ -109,6 +111,7 @@ struct Email
 
   void *edata;                 ///< Driver-specific data
   void (*free_edata)(void **); ///< Driver-specific data free function
+  struct Notify *notify;       ///< Notifications handler
 };
 
 /**
@@ -120,6 +123,25 @@ struct EmailNode
   STAILQ_ENTRY(EmailNode) entries; ///< Linked list
 };
 STAILQ_HEAD(EmailList, EmailNode);
+
+/**
+ * struct EventEmail - An Event that happened to an Email
+ */
+struct EventEmail
+{
+  int num_emails;
+  struct Email **emails;
+};
+
+/**
+ * enum NotifyEmail - Types of Email Event
+ */
+enum NotifyEmail
+{
+  NT_EMAIL_ADD = 1,
+  NT_EMAIL_REMOVE,
+  NT_EMAIL_NEW,
+};
 
 bool          email_cmp_strict(const struct Email *e1, const struct Email *e2);
 void          email_free      (struct Email **ptr);
