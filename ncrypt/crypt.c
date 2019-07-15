@@ -963,7 +963,7 @@ int crypt_get_keys(struct Email *e, char **keylist, bool oppenc_mode)
     }
   }
 
-  if (!oppenc_mode && self_encrypt && *self_encrypt)
+  if (!oppenc_mode && self_encrypt)
   {
     const size_t keylist_size = mutt_str_strlen(*keylist);
     mutt_mem_realloc(keylist, keylist_size + mutt_str_strlen(self_encrypt) + 2);

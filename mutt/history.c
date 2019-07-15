@@ -496,7 +496,7 @@ void mutt_hist_add(enum HistoryClass hclass, const char *str, bool save)
     {
       if (C_HistoryRemoveDups)
         remove_history_dups(hclass, str);
-      if (save && (C_SaveHistory != 0))
+      if (save && (C_SaveHistory != 0) && C_HistoryFile)
         save_history(hclass, str);
       mutt_str_replace(&h->hist[h->last++], str);
       if (h->last > C_History)
@@ -586,6 +586,9 @@ void mutt_hist_read_file(void)
   int line = 0, hclass, read;
   char *linebuf = NULL, *p = NULL;
   size_t buflen;
+
+  if (!C_HistoryFile)
+    return;
 
   FILE *fp = fopen(C_HistoryFile, "r");
   if (!fp)

@@ -627,7 +627,7 @@ void rfc2047_encode(char **pd, const char *specials, int col, const char *charse
   if (!C_Charset || !pd || !*pd)
     return;
 
-  if (!charsets || !*charsets)
+  if (!charsets)
     charsets = "utf-8";
 
   char *e = NULL;

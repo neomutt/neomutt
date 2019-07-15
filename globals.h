@@ -115,7 +115,7 @@ WHERE char *C_Folder;                        ///< Config: Base folder for a set 
 #ifdef USE_HCACHE
 WHERE char *C_HeaderCache;                   ///< Config: (hcache) Directory/file for the header cache database
 #if defined(HAVE_GDBM) || defined(HAVE_BDB)
-WHERE char *C_HeaderCachePagesize;           ///< Config: (hcache) Database page size (gdbm,bdb4)
+WHERE long C_HeaderCachePagesize;            ///< Config: (hcache) Database page size (gdbm,bdb4)
 #endif /* HAVE_GDBM || HAVE_BDB */
 #endif /* USE_HCACHE */
 
