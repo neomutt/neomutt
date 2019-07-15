@@ -51,9 +51,9 @@ typedef enum CommandResult (*command_t)(struct Buffer *buf, struct Buffer *s, un
  */
 struct Command
 {
-  const char *name;   /**< Name of the command */
-  command_t func;     /**< Function to parse the command */
-  unsigned long data; /**< Data or flags to pass to the command */
+  const char *name; ///< Name of the command
+  command_t func;   ///< Function to parse the command
+  intptr_t data;    ///< Data or flags to pass to the command
 };
 
 const struct Command *mutt_command_get(const char *s);
