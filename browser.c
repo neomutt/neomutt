@@ -758,6 +758,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
 
     init_state(state, menu);
 
+    struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
     while ((de = readdir(dp)))
     {
       if (mutt_str_strcmp(de->d_name, ".") == 0)
@@ -783,14 +784,12 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       else if (!S_ISREG(s.st_mode))
         continue;
 
-      struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_MAILBOX_ANY);
       struct MailboxNode *np = NULL;
       STAILQ_FOREACH(np, &ml, entries)
       {
         if (mutt_str_strcmp(mutt_b2s(buf), mutt_b2s(np->mailbox->pathbuf)) != 0)
           break;
       }
-      neomutt_mailboxlist_clear(&ml);
 
       if (np && Context && Context->mailbox &&
           (mutt_str_strcmp(np->mailbox->realpath, Context->mailbox->realpath) == 0))
@@ -800,6 +799,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       }
       add_folder(menu, state, de->d_name, NULL, &s, np ? np->mailbox : NULL, NULL);
     }
+    neomutt_mailboxlist_clear(&ml);
     closedir(dp);
   }
   browser_sort(state);
