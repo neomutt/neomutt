@@ -126,6 +126,6 @@ void          mutt_email_free      (struct Email **e);
 struct Email *mutt_email_new       (void);
 size_t        mutt_email_size      (const struct Email *e);
 
-void mutt_emaillist_free(struct EmailList *el);
+void mutt_emaillist_clear(struct EmailList *el);
 
 #endif /* MUTT_EMAIL_EMAIL_H */

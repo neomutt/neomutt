@@ -597,7 +597,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   el_add_email(&el, e_parent);
   ci_send_message(SEND_NO_FLAGS, e_tmp, tmpbody, NULL, &el);
-  mutt_emaillist_free(&el);
+  mutt_emaillist_clear(&el);
   return;
 
 bail:
@@ -733,7 +733,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   el_add_email(&el, e_cur);
   ci_send_message(flags, e_tmp, (tmpbody[0] != '\0') ? tmpbody : NULL, NULL, &el);
-  mutt_emaillist_free(&el);
+  mutt_emaillist_clear(&el);
 }
 
 /**
@@ -1044,7 +1044,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
   {
     mutt_set_flag(Context->mailbox, e, MUTT_REPLIED, true);
   }
-  mutt_emaillist_free(&el);
+  mutt_emaillist_clear(&el);
 }
 
 /**

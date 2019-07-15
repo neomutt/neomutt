@@ -114,12 +114,12 @@ size_t mutt_email_size(const struct Email *e)
 }
 
 /**
- * mutt_emaillist_free - Drop a private list of Emails
+ * mutt_emaillist_clear - Drop a private list of Emails
  * @param el EmailList to empty
  *
  * The Emails are not freed.
  */
-void mutt_emaillist_free(struct EmailList *el)
+void mutt_emaillist_clear(struct EmailList *el)
 {
   if (!el)
     return;
