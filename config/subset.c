@@ -27,14 +27,13 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <limits.h>
 #include <stdint.h>
+#include <stdio.h>
 #include "mutt/mutt.h"
-#include "config/lib.h"
 #include "subset.h"
+#include "dump.h"
 #include "set.h"
-#include "types.h"
 
 /**
  * cs_subset_free - Free a Config Subset

@@ -30,7 +30,6 @@
 
 #include "config.h"
 #include <sys/stat.h>
-#include "config/lib.h"
 #include "email/lib.h"
 #include "mailbox.h"
 #include "neomutt.h"

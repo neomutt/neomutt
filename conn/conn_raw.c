@@ -45,7 +45,6 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "address/lib.h"
-#include "email/lib.h"
 #include "conn/connaccount.h"
 #include "conn_globals.h"
 #include "connection.h"

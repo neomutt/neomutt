@@ -32,7 +32,6 @@
 #include "config/lib.h"
 #include "account.h"
 #include "mailbox.h"
-#include "neomutt.h"
 
 /**
  * account_new - Create a new Account

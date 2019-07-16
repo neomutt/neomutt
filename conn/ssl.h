@@ -23,6 +23,8 @@
 #ifndef MUTT_CONN_SSL_H
 #define MUTT_CONN_SSL_H
 
+#include "config.h"
+
 struct Connection;
 
 #ifdef USE_SSL
