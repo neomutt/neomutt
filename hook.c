@@ -86,7 +86,7 @@ static HookFlags current_hook_type = MUTT_HOOK_NO_FLAGS;
 enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
                                    unsigned long data, struct Buffer *err)
 {
-  struct Hook *ptr = NULL;
+  struct Hook *hook = NULL;
   struct Buffer cmd, pattern;
   int rc;
   bool pat_not = false, warning = false;
@@ -195,19 +195,19 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
   }
 
   /* check to make sure that a matching hook doesn't already exist */
-  TAILQ_FOREACH(ptr, &Hooks, entries)
+  TAILQ_FOREACH(hook, &Hooks, entries)
   {
     if (data & MUTT_GLOBAL_HOOK)
     {
       /* Ignore duplicate global hooks */
-      if (mutt_str_strcmp(ptr->command, cmd.data) == 0)
+      if (mutt_str_strcmp(hook->command, cmd.data) == 0)
       {
         FREE(&cmd.data);
         return MUTT_CMD_SUCCESS;
       }
     }
-    else if ((ptr->type == data) && (ptr->regex.pat_not == pat_not) &&
-             (mutt_str_strcmp(pattern.data, ptr->regex.pattern) == 0))
+    else if ((hook->type == data) && (hook->regex.pat_not == pat_not) &&
+             (mutt_str_strcmp(pattern.data, hook->regex.pattern) == 0))
     {
       if (data & (MUTT_FOLDER_HOOK | MUTT_SEND_HOOK | MUTT_SEND2_HOOK | MUTT_MESSAGE_HOOK |
                   MUTT_ACCOUNT_HOOK | MUTT_REPLY_HOOK | MUTT_CRYPT_HOOK |
@@ -216,7 +216,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
         /* these hooks allow multiple commands with the same
          * pattern, so if we've already seen this pattern/command pair, just
          * ignore it instead of creating a duplicate */
-        if (mutt_str_strcmp(ptr->command, cmd.data) == 0)
+        if (mutt_str_strcmp(hook->command, cmd.data) == 0)
         {
           FREE(&cmd.data);
           FREE(&pattern.data);
@@ -230,8 +230,8 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
          * order of execution of the hooks, which i think is desirable since
          * a common action to perform is to change the default (.) entry
          * based upon some other information. */
-        FREE(&ptr->command);
-        ptr->command = cmd.data;
+        FREE(&hook->command);
+        hook->command = cmd.data;
         FREE(&pattern.data);
         return MUTT_CMD_SUCCESS;
       }
@@ -270,14 +270,14 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     }
   }
 
-  ptr = mutt_mem_calloc(1, sizeof(struct Hook));
-  ptr->type = data;
-  ptr->command = cmd.data;
-  ptr->pattern = pat;
-  ptr->regex.pattern = pattern.data;
-  ptr->regex.regex = rx;
-  ptr->regex.pat_not = pat_not;
-  TAILQ_INSERT_TAIL(&Hooks, ptr, entries);
+  hook = mutt_mem_calloc(1, sizeof(struct Hook));
+  hook->type = data;
+  hook->command = cmd.data;
+  hook->pattern = pat;
+  hook->regex.pattern = pattern.data;
+  hook->regex.regex = rx;
+  hook->regex.pat_not = pat_not;
+  TAILQ_INSERT_TAIL(&Hooks, hook, entries);
   return MUTT_CMD_SUCCESS;
 
 warn:
