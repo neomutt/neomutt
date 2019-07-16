@@ -418,7 +418,7 @@ void mx_fastclose_mailbox(struct Mailbox *m)
   if (m->emails)
   {
     for (int i = 0; i < m->msg_count; i++)
-      mutt_email_free(&m->emails[i]);
+      email_free(&m->emails[i]);
     FREE(&m->emails);
   }
   FREE(&m->v2r);
@@ -1359,12 +1359,12 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder, enum MailboxType
       if (TAILQ_EMPTY(al))
         break;
 
-      struct Email *e = mutt_email_new();
+      struct Email *e = email_new();
       e->env = mutt_env_new();
       mutt_addrlist_copy(&e->env->from, al, false);
       mutt_addrlist_copy(&e->env->to, al, false);
       mutt_default_save(buf, buflen, e);
-      mutt_email_free(&e);
+      email_free(&e);
       break;
     }
     else

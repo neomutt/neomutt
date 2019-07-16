@@ -23,8 +23,10 @@
 #ifndef MUTT_CONFIG_SUBSET_H
 #define MUTT_CONFIG_SUBSET_H
 
-#include <stdio.h>
-#include "set.h"
+#include <stdint.h>
+
+struct Buffer;
+struct HashElem;
 
 /**
  * struct ConfigSubset - A set of inherited config items

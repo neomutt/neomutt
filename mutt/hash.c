@@ -158,16 +158,16 @@ static struct HashElem *union_hash_insert(struct Hash *table, union HashKey key,
   if (!table)
     return NULL;
 
-  struct HashElem *ptr = mutt_mem_malloc(sizeof(struct HashElem));
+  struct HashElem *he = mutt_mem_malloc(sizeof(struct HashElem));
   unsigned int h = table->gen_hash(key, table->nelem);
-  ptr->key = key;
-  ptr->data = data;
-  ptr->type = type;
+  he->key = key;
+  he->data = data;
+  he->type = type;
 
   if (table->allow_dups)
   {
-    ptr->next = table->table[h];
-    table->table[h] = ptr;
+    he->next = table->table[h];
+    table->table[h] = he;
   }
   else
   {
@@ -178,19 +178,19 @@ static struct HashElem *union_hash_insert(struct Hash *table, union HashKey key,
       const int r = table->cmp_key(tmp->key, key);
       if (r == 0)
       {
-        FREE(&ptr);
+        FREE(&he);
         return NULL;
       }
       if (r > 0)
         break;
     }
     if (last)
-      last->next = ptr;
+      last->next = he;
     else
-      table->table[h] = ptr;
-    ptr->next = tmp;
+      table->table[h] = he;
+    he->next = tmp;
   }
-  return ptr;
+  return he;
 }
 
 /**
@@ -205,11 +205,11 @@ static struct HashElem *union_hash_find_elem(const struct Hash *table, union Has
     return NULL;
 
   int hash = table->gen_hash(key, table->nelem);
-  struct HashElem *ptr = table->table[hash];
-  for (; ptr; ptr = ptr->next)
+  struct HashElem *he = table->table[hash];
+  for (; he; he = he->next)
   {
-    if (table->cmp_key(key, ptr->key) == 0)
-      return ptr;
+    if (table->cmp_key(key, he->key) == 0)
+      return he;
   }
   return NULL;
 }
@@ -224,9 +224,9 @@ static void *union_hash_find(const struct Hash *table, union HashKey key)
 {
   if (!table)
     return NULL;
-  struct HashElem *ptr = union_hash_find_elem(table, key);
-  if (ptr)
-    return ptr->data;
+  struct HashElem *he = union_hash_find_elem(table, key);
+  if (he)
+    return he->data;
   else
     return NULL;
 }
@@ -243,26 +243,26 @@ static void union_hash_delete(struct Hash *table, union HashKey key, const void 
     return;
 
   int hash = table->gen_hash(key, table->nelem);
-  struct HashElem *ptr = table->table[hash];
+  struct HashElem *he = table->table[hash];
   struct HashElem **last = &table->table[hash];
 
-  while (ptr)
+  while (he)
   {
-    if (((data == ptr->data) || !data) && (table->cmp_key(ptr->key, key) == 0))
+    if (((data == he->data) || !data) && (table->cmp_key(he->key, key) == 0))
     {
-      *last = ptr->next;
-      if (table->elem_free)
-        table->elem_free(ptr->type, ptr->data, table->hash_data);
+      *last = he->next;
+      if (table->free_hdata)
+        table->free_hdata(he->type, he->data, table->hdata);
       if (table->strdup_keys)
-        FREE(&ptr->key.strkey);
-      FREE(&ptr);
+        FREE(&he->key.strkey);
+      FREE(&he);
 
-      ptr = *last;
+      he = *last;
     }
     else
     {
-      last = &ptr->next;
-      ptr = ptr->next;
+      last = &he->next;
+      he = he->next;
     }
   }
 }
@@ -319,8 +319,8 @@ void mutt_hash_set_destructor(struct Hash *table, hashelem_free_t fn, intptr_t f
 {
   if (!table)
     return;
-  table->elem_free = fn;
-  table->hash_data = fn_data;
+  table->free_hdata = fn;
+  table->hdata = fn_data;
 }
 
 /**
@@ -466,7 +466,7 @@ void mutt_hash_int_delete(struct Hash *table, unsigned int intkey, const void *d
 }
 
 /**
- * mutt_hash_free - elem_free a hash table
+ * mutt_hash_free - free_hdata a hash table
  * @param[out] ptr Hash Table to be freed
  */
 void mutt_hash_free(struct Hash **ptr)
@@ -474,23 +474,23 @@ void mutt_hash_free(struct Hash **ptr)
   if (!ptr || !*ptr)
     return;
 
-  struct Hash *pptr = *ptr;
+  struct Hash *hash = *ptr;
   struct HashElem *elem = NULL, *tmp = NULL;
 
-  for (size_t i = 0; i < pptr->nelem; i++)
+  for (size_t i = 0; i < hash->nelem; i++)
   {
-    for (elem = pptr->table[i]; elem;)
+    for (elem = hash->table[i]; elem;)
     {
       tmp = elem;
       elem = elem->next;
-      if (pptr->elem_free)
-        pptr->elem_free(tmp->type, tmp->data, pptr->hash_data);
-      if (pptr->strdup_keys)
+      if (hash->free_hdata)
+        hash->free_hdata(tmp->type, tmp->data, hash->hdata);
+      if (hash->strdup_keys)
         FREE(&tmp->key.strkey);
       FREE(&tmp);
     }
   }
-  FREE(&pptr->table);
+  FREE(&hash->table);
   FREE(ptr);
 }
 

@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_email_size()
+ * Test code for email_free()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -27,11 +27,18 @@
 #include "address/lib.h"
 #include "email/lib.h"
 
-void test_mutt_email_size(void)
+void test_email_free(void)
 {
-  // size_t mutt_email_size(const struct Email *e);
+  // void email_free(struct Email **e);
 
   {
-    TEST_CHECK(mutt_email_size(NULL) == 0);
+    email_free(NULL);
+    TEST_CHECK_(1, "email_free(NULL)");
+  }
+
+  {
+    struct Email *e = NULL;
+    email_free(&e);
+    TEST_CHECK_(1, "email_free(&e)");
   }
 }

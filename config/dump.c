@@ -30,7 +30,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "mutt/mutt.h"
 #include "dump.h"
 #include "set.h"

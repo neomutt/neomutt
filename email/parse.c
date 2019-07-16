@@ -1445,7 +1445,7 @@ struct Body *mutt_rfc822_parse_message(FILE *fp, struct Body *parent)
   if (!fp || !parent)
     return NULL;
 
-  parent->email = mutt_email_new();
+  parent->email = email_new();
   parent->email->offset = ftello(fp);
   parent->email->env = mutt_rfc822_read_header(fp, parent->email, false, false);
   struct Body *msg = parent->email->content;

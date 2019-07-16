@@ -30,14 +30,12 @@
 
 #include "config.h"
 #include <sys/stat.h>
-#include "config/lib.h"
 #include "email/lib.h"
 #include "mailbox.h"
 #include "neomutt.h"
 
 /**
  * mailbox_new - Create a new Mailbox
- * @param name Name for the Mailbox
  * @retval ptr New Mailbox
  */
 struct Mailbox *mailbox_new(void)
@@ -63,11 +61,13 @@ void mailbox_free(struct Mailbox **ptr)
   mailbox_changed(m, MBN_CLOSED);
   notify_free(&m->notify);
 
-  mutt_buffer_free(&m->pathbuf);
-  FREE(&m->name);
   if (m->mdata && m->free_mdata)
     m->free_mdata(&m->mdata);
+
+  mutt_buffer_free(&m->pathbuf);
+  FREE(&m->name);
   FREE(&m->realpath);
+
   FREE(ptr);
 }
 
@@ -172,7 +172,7 @@ void mailbox_changed(struct Mailbox *m, enum MailboxNotification action)
  */
 void mailbox_size_add(struct Mailbox *m, const struct Email *e)
 {
-  m->size += mutt_email_size(e);
+  m->size += email_size(e);
 }
 
 /**
@@ -182,5 +182,5 @@ void mailbox_size_add(struct Mailbox *m, const struct Email *e)
  */
 void mailbox_size_sub(struct Mailbox *m, const struct Email *e)
 {
-  m->size -= mutt_email_size(e);
+  m->size -= email_size(e);
 }

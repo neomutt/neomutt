@@ -1266,7 +1266,7 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
   {
     structure_changed = true;
     b->email->content = NULL;
-    mutt_email_free(&b->email);
+    email_free(&b->email);
   }
 
   if (fp && !b->parts && (is_multipart(b) || mutt_is_message_type(b->type, b->subtype)))

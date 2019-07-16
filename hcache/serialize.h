@@ -45,7 +45,7 @@ unsigned char *serial_dump_char(char *c, unsigned char *d, int *off, bool conver
 unsigned char *serial_dump_char_size(char *c, unsigned char *d, int *off, ssize_t size, bool convert);
 unsigned char *serial_dump_envelope(struct Envelope *e, unsigned char *d, int *off, bool convert);
 unsigned char *serial_dump_int(unsigned int i, unsigned char *d, int *off);
-unsigned char *serial_dump_parameter(struct ParameterList *p, unsigned char *d, int *off, bool convert);
+unsigned char *serial_dump_parameter(struct ParameterList *pl, unsigned char *d, int *off, bool convert);
 unsigned char *serial_dump_stailq(struct ListHead *l, unsigned char *d, int *off, bool convert);
 
 void           serial_restore_address(struct Address **a, const unsigned char *d, int *off, bool convert);
@@ -54,7 +54,7 @@ void           serial_restore_buffer(struct Buffer **b, const unsigned char *d, 
 void           serial_restore_char(char **c, const unsigned char *d, int *off, bool convert);
 void           serial_restore_envelope(struct Envelope *e, const unsigned char *d, int *off, bool convert);
 void           serial_restore_int(unsigned int *i, const unsigned char *d, int *off);
-void           serial_restore_parameter(struct ParameterList *p, const unsigned char *d, int *off, bool convert);
+void           serial_restore_parameter(struct ParameterList *pl, const unsigned char *d, int *off, bool convert);
 void           serial_restore_stailq(struct ListHead *l, const unsigned char *d, int *off, bool convert);
 
 void *        mutt_hcache_dump(header_cache_t *hc, const struct Email *e, int *off, unsigned int uidvalidity);

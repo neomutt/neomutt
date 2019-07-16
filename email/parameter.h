@@ -37,12 +37,12 @@ struct Parameter
 };
 TAILQ_HEAD(ParameterList, Parameter);
 
-bool              mutt_param_cmp_strict(const struct ParameterList *p1, const struct ParameterList *p2);
-void              mutt_param_delete    (struct ParameterList *p, const char *attribute);
-void              mutt_param_free      (struct ParameterList *p);
-void              mutt_param_free_one  (struct Parameter **p);
-char *            mutt_param_get       (const struct ParameterList *p, const char *s);
+bool              mutt_param_cmp_strict(const struct ParameterList *pl1, const struct ParameterList *pl2);
+void              mutt_param_delete    (struct ParameterList *pl, const char *attribute);
+void              mutt_param_free      (struct ParameterList *pl);
+void              mutt_param_free_one  (struct Parameter **pl);
+char *            mutt_param_get       (const struct ParameterList *pl, const char *s);
 struct Parameter *mutt_param_new       (void);
-void              mutt_param_set       (struct ParameterList *p, const char *attribute, const char *value);
+void              mutt_param_set       (struct ParameterList *pl, const char *attribute, const char *value);
 
 #endif /* MUTT_EMAIL_PARAMETER_H */

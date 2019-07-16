@@ -236,7 +236,7 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
 
       if (m->msg_count == m->email_max)
         mx_alloc_memory(m);
-      e = mutt_email_new();
+      e = email_new();
       m->emails[m->msg_count] = e;
       e->offset = loc;
       e->index = m->msg_count;
@@ -422,7 +422,7 @@ static int mbox_parse_mailbox(struct Mailbox *m)
       if (m->msg_count == m->email_max)
         mx_alloc_memory(m);
 
-      m->emails[m->msg_count] = mutt_email_new();
+      m->emails[m->msg_count] = email_new();
       e_cur = m->emails[m->msg_count];
       e_cur->received = t - mutt_date_local_tz(t);
       e_cur->offset = loc;
@@ -586,7 +586,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
   if (m->readonly)
   {
     for (int i = 0; i < m->msg_count; i++)
-      mutt_email_free(&(m->emails[i])); /* nothing to do! */
+      email_free(&(m->emails[i])); /* nothing to do! */
     FREE(&m->emails);
   }
   else
@@ -614,7 +614,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
   {
     case MUTT_MBOX:
     case MUTT_MMDF:
-      cmp_headers = mutt_email_cmp_strict;
+      cmp_headers = email_cmp_strict;
       mutt_file_fclose(&adata->fp);
       adata->fp = mutt_file_fopen(mutt_b2s(m->pathbuf), "r");
       if (!adata->fp)
@@ -634,7 +634,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
   {
     /* free the old headers */
     for (int i = 0; i < old_msg_count; i++)
-      mutt_email_free(&(e_old[i]));
+      email_free(&(e_old[i]));
     FREE(&e_old);
 
     m->quiet = false;
@@ -701,7 +701,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
         mutt_set_flag(m, m->emails[i], MUTT_TAG, e_old[j]->tagged);
 
         /* we don't need this header any more */
-        mutt_email_free(&(e_old[j]));
+        email_free(&(e_old[j]));
       }
     }
 
@@ -710,7 +710,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
     {
       if (e_old[j])
       {
-        mutt_email_free(&(e_old[j]));
+        email_free(&(e_old[j]));
         msg_mod = true;
       }
     }
@@ -802,13 +802,13 @@ static bool test_last_status_new(FILE *fp)
   if (fseek_last_message(fp) == -1)
     return false;
 
-  e = mutt_email_new();
+  e = email_new();
   tmp_envelope = mutt_rfc822_read_header(fp, e, false, false);
   if (!(e->read || e->old))
     rc = true;
 
   mutt_env_free(&tmp_envelope);
-  mutt_email_free(&e);
+  email_free(&e);
 
   return rc;
 }

@@ -897,7 +897,7 @@ char *imap_get_qualifier(char *buf)
  */
 char *imap_next_word(char *s)
 {
-  int quoted = 0;
+  bool quoted = false;
 
   while (*s)
   {
@@ -909,7 +909,7 @@ char *imap_next_word(char *s)
       continue;
     }
     if (*s == '\"')
-      quoted = quoted ? 0 : 1;
+      quoted = !quoted;
     if (!quoted && IS_SPACE(*s))
       break;
     s++;

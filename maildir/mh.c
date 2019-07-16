@@ -683,7 +683,7 @@ int mh_mbox_check(struct Mailbox *m, int *index_hint)
     m->emails[i]->active = false;
 
     p = mutt_hash_find(fnames, m->emails[i]->path);
-    if (p && p->email && mutt_email_cmp_strict(m->emails[i], p->email))
+    if (p && p->email && email_cmp_strict(m->emails[i], p->email))
     {
       m->emails[i]->active = true;
       /* found the right message */
@@ -691,7 +691,7 @@ int mh_mbox_check(struct Mailbox *m, int *index_hint)
         if (maildir_update_flags(m, m->emails[i], p->email))
           flags_changed = true;
 
-      mutt_email_free(&p->email);
+      email_free(&p->email);
     }
     else /* message has disappeared */
       occult = true;

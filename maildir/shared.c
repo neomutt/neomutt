@@ -269,7 +269,7 @@ static void maildir_free_entry(struct Maildir **md)
 
   FREE(&(*md)->canon_fname);
   if ((*md)->email)
-    mutt_email_free(&(*md)->email);
+    email_free(&(*md)->email);
 
   FREE(md);
 }
@@ -370,7 +370,7 @@ int maildir_parse_dir(struct Mailbox *m, struct Maildir ***last,
     /* FOO - really ignore the return value? */
     mutt_debug(LL_DEBUG2, "queueing %s\n", de->d_name);
 
-    e = mutt_email_new();
+    e = email_new();
     e->old = is_old;
     if (m->magic == MUTT_MAILDIR)
       maildir_parse_flags(e, de->d_name);
@@ -750,7 +750,7 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
       struct Email *e = mutt_hcache_restore((unsigned char *) data);
       e->old = p->email->old;
       e->path = mutt_str_strdup(p->email->path);
-      mutt_email_free(&p->email);
+      email_free(&p->email);
       p->email = e;
       if (m->magic == MUTT_MAILDIR)
         maildir_parse_flags(p->email, fn);
@@ -777,7 +777,7 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
 #endif
       }
       else
-        mutt_email_free(&p->email);
+        email_free(&p->email);
 #ifdef USE_HCACHE
     }
     mutt_hcache_free(hc, &data);
@@ -1180,40 +1180,6 @@ void maildir_canon_filename(struct Buffer *dest, const char *src)
 }
 
 /**
- * maildir_update_tables - Update the Email tables
- * @param ctx        Mailbox
- * @param index_hint Current Email in index
- */
-void maildir_update_tables(struct Context *ctx, int *index_hint)
-{
-  if (!ctx || !ctx->mailbox)
-    return;
-
-  struct Mailbox *m = ctx->mailbox;
-
-  if (C_Sort != SORT_ORDER)
-  {
-    const enum SortType old_sort = C_Sort;
-    C_Sort = SORT_ORDER;
-    mutt_sort_headers(ctx, true);
-    C_Sort = old_sort;
-  }
-
-  const int old_count = m->msg_count;
-  for (int i = 0, j = 0; i < old_count; i++)
-  {
-    if (m->emails[i]->active && index_hint && (*index_hint == i))
-      *index_hint = j;
-
-    if (m->emails[i]->active)
-      m->emails[i]->index = j++;
-  }
-
-  ctx_update_tables(ctx, false);
-  mutt_clear_threads(ctx);
-}
-
-/**
  * md_open_find_message - Find a message in a maildir folder
  * @param[in]  folder    Base folder
  * @param[in]  unique    Unique part of filename
@@ -1349,7 +1315,7 @@ struct Email *maildir_parse_stream(enum MailboxType magic, FILE *fp,
                                    const char *fname, bool is_old, struct Email *e)
 {
   if (!e)
-    e = mutt_email_new();
+    e = email_new();
   e->env = mutt_rfc822_read_header(fp, e, false, false);
 
   struct stat st;

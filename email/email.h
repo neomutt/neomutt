@@ -71,7 +71,7 @@ struct Email
 
   // the following are used to support collapsing threads
   bool collapsed : 1;          ///< Is this message part of a collapsed thread?
-  bool limited   : 1;          ///< Is this message in a limited view? 
+  bool limited   : 1;          ///< Is this message in a limited view?
   size_t num_hidden;           ///< Number of hidden messages in this view
 
   short recipient;             ///< User_is_recipient()'s return value, cached
@@ -121,11 +121,11 @@ struct EmailNode
 };
 STAILQ_HEAD(EmailList, EmailNode);
 
-bool          mutt_email_cmp_strict(const struct Email *e1, const struct Email *e2);
-void          mutt_email_free      (struct Email **e);
-struct Email *mutt_email_new       (void);
-size_t        mutt_email_size      (const struct Email *e);
+bool          email_cmp_strict(const struct Email *e1, const struct Email *e2);
+void          email_free      (struct Email **ptr);
+struct Email *email_new       (void);
+size_t        email_size      (const struct Email *e);
 
-void mutt_emaillist_free(struct EmailList *el);
+void emaillist_clear(struct EmailList *el);
 
 #endif /* MUTT_EMAIL_EMAIL_H */

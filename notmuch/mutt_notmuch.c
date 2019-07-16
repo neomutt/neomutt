@@ -983,7 +983,7 @@ static void append_message(header_cache_t *h, struct Mailbox *m,
 #endif
   if (init_email(e, newpath ? newpath : path, msg) != 0)
   {
-    mutt_email_free(&e);
+    email_free(&e);
     mutt_debug(LL_DEBUG1, "nm: failed to append email!\n");
     goto done;
   }

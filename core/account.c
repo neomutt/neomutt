@@ -1,7 +1,7 @@
 /**
  * @file
  * A group of associated Mailboxes
- 
+ *
  * @authors
  * Copyright (C) 2018-2019 Richard Russon <rich@flatcap.org>
  *
@@ -32,7 +32,6 @@
 #include "config/lib.h"
 #include "account.h"
 #include "mailbox.h"
-#include "neomutt.h"
 
 /**
  * account_new - Create a new Account
@@ -117,13 +116,12 @@ void account_free(struct Account **ptr)
     return;
 
   struct Account *a = *ptr;
-  account_mailbox_remove(a, NULL);
+  notify_free(&a->notify);
 
   if (a->free_adata)
     a->free_adata(&a->adata);
 
-  notify_free(&a->notify);
-  // account_free_config(a);
+  account_mailbox_remove(a, NULL);
   cs_subset_free(&a->sub);
   FREE(&a->name);
 

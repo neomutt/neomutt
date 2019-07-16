@@ -63,6 +63,6 @@ bool message_is_visible(struct Context *ctx, int index);
 
 int  el_add_email(struct EmailList *el, struct Email *e);
 int  el_add_tagged(struct EmailList *el, struct Context *ctx, struct Email *e, bool use_tagged);
-void mutt_emaillist_free(struct EmailList *el);
+void emaillist_clear(struct EmailList *el);
 
 #endif /* MUTT_CONTEXT_H */

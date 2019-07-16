@@ -33,9 +33,24 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "mutt/mutt.h"
-#include "regex2.h"
 #include "set.h"
 #include "types.h"
+
+/**
+ * regex_free - Free a Regex object
+ * @param[out] r Regex to free
+ */
+void regex_free(struct Regex **r)
+{
+  if (!r || !*r)
+    return;
+
+  FREE(&(*r)->pattern);
+  if ((*r)->regex)
+    regfree((*r)->regex);
+  FREE(&(*r)->regex);
+  FREE(r);
+}
 
 /**
  * regex_destroy - Destroy a Regex object - Implements ::cst_destroy()
@@ -50,6 +65,50 @@ static void regex_destroy(const struct ConfigSet *cs, void *var, const struct Co
     return;
 
   regex_free(r);
+}
+
+/**
+ * regex_new - Create an Regex from a string
+ * @param str   Regular expression
+ * @param flags Type flags, e.g. #DT_REGEX_MATCH_CASE
+ * @param err   Buffer for error messages
+ * @retval ptr New Regex object
+ * @retval NULL Error
+ */
+struct Regex *regex_new(const char *str, int flags, struct Buffer *err)
+{
+  if (!str)
+    return NULL;
+
+  int rflags = 0;
+  struct Regex *reg = mutt_mem_calloc(1, sizeof(struct Regex));
+
+  reg->regex = mutt_mem_calloc(1, sizeof(regex_t));
+  reg->pattern = mutt_str_strdup(str);
+
+  /* Should we use smart case matching? */
+  if (((flags & DT_REGEX_MATCH_CASE) == 0) && mutt_mb_is_lower(str))
+    rflags |= REG_ICASE;
+
+  if ((flags & DT_REGEX_NOSUB))
+    rflags |= REG_NOSUB;
+
+  /* Is a prefix of '!' allowed? */
+  if (((flags & DT_REGEX_ALLOW_NOT) != 0) && (str[0] == '!'))
+  {
+    reg->pat_not = true;
+    str++;
+  }
+
+  int rc = REG_COMP(reg->regex, str, rflags);
+  if ((rc != 0) && err)
+  {
+    regerror(rc, reg->regex, err->data, err->dsize);
+    regex_free(&reg);
+    return NULL;
+  }
+
+  return reg;
 }
 
 /**
@@ -259,64 +318,4 @@ void regex_init(struct ConfigSet *cs)
     regex_native_get, regex_reset,      regex_destroy,
   };
   cs_register_type(cs, DT_REGEX, &cst_regex);
-}
-
-/**
- * regex_new - Create an Regex from a string
- * @param str   Regular expression
- * @param flags Type flags, e.g. #DT_REGEX_MATCH_CASE
- * @param err   Buffer for error messages
- * @retval ptr New Regex object
- * @retval NULL Error
- */
-struct Regex *regex_new(const char *str, int flags, struct Buffer *err)
-{
-  if (!str)
-    return NULL;
-
-  int rflags = 0;
-  struct Regex *reg = mutt_mem_calloc(1, sizeof(struct Regex));
-
-  reg->regex = mutt_mem_calloc(1, sizeof(regex_t));
-  reg->pattern = mutt_str_strdup(str);
-
-  /* Should we use smart case matching? */
-  if (((flags & DT_REGEX_MATCH_CASE) == 0) && mutt_mb_is_lower(str))
-    rflags |= REG_ICASE;
-
-  if ((flags & DT_REGEX_NOSUB))
-    rflags |= REG_NOSUB;
-
-  /* Is a prefix of '!' allowed? */
-  if (((flags & DT_REGEX_ALLOW_NOT) != 0) && (str[0] == '!'))
-  {
-    reg->pat_not = true;
-    str++;
-  }
-
-  int rc = REG_COMP(reg->regex, str, rflags);
-  if ((rc != 0) && err)
-  {
-    regerror(rc, reg->regex, err->data, err->dsize);
-    regex_free(&reg);
-    return NULL;
-  }
-
-  return reg;
-}
-
-/**
- * regex_free - Free a Regex object
- * @param[out] r Regex to free
- */
-void regex_free(struct Regex **r)
-{
-  if (!r || !*r)
-    return;
-
-  FREE(&(*r)->pattern);
-  if ((*r)->regex)
-    regfree((*r)->regex);
-  FREE(&(*r)->regex);
-  FREE(r);
 }

@@ -508,7 +508,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
         /* fallthrough */
         case OP_MAIL:
         {
-          struct Email *e = mutt_email_new();
+          struct Email *e = email_new();
           e->env = mutt_env_new();
           if (!menu->tagprefix)
           {

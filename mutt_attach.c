@@ -997,7 +997,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, const char *path,
     m->encoding = saved_encoding;
     if (saved_parts)
     {
-      mutt_email_free(&m->email);
+      email_free(&m->email);
       m->parts = saved_parts;
       m->email = e_saved;
     }

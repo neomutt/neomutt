@@ -35,32 +35,37 @@
 #include "tags.h"
 
 /**
- * mutt_email_free - Free an Email
- * @param[out] e Email to free
+ * email_free - Free an Email
+ * @param[out] ptr Email to free
  */
-void mutt_email_free(struct Email **e)
+void email_free(struct Email **ptr)
 {
-  if (!e || !*e)
+  if (!ptr || !*ptr)
     return;
-  mutt_env_free(&(*e)->env);
-  mutt_body_free(&(*e)->content);
-  FREE(&(*e)->maildir_flags);
-  FREE(&(*e)->tree);
-  FREE(&(*e)->path);
+
+  struct Email *e = *ptr;
+
+  if (e->edata && e->free_edata)
+    e->free_edata(&e->edata);
+
+  mutt_env_free(&e->env);
+  mutt_body_free(&e->content);
+  FREE(&e->maildir_flags);
+  FREE(&e->tree);
+  FREE(&e->path);
 #ifdef MIXMASTER
-  mutt_list_free(&(*e)->chain);
+  mutt_list_free(&e->chain);
 #endif
-  driver_tags_free(&(*e)->tags);
-  if ((*e)->edata && (*e)->free_edata)
-    (*e)->free_edata(&(*e)->edata);
-  FREE(e);
+  driver_tags_free(&e->tags);
+
+  FREE(ptr);
 }
 
 /**
- * mutt_email_new - Create a new Email
+ * email_new - Create a new Email
  * @retval ptr Newly created Email
  */
-struct Email *mutt_email_new(void)
+struct Email *email_new(void)
 {
   struct Email *e = mutt_mem_calloc(1, sizeof(struct Email));
 #ifdef MIXMASTER
@@ -71,12 +76,12 @@ struct Email *mutt_email_new(void)
 }
 
 /**
- * mutt_email_cmp_strict - Strictly compare message emails
+ * email_cmp_strict - Strictly compare message emails
  * @param e1 First Email
  * @param e2 Second Email
  * @retval true Emails are strictly identical
  */
-bool mutt_email_cmp_strict(const struct Email *e1, const struct Email *e2)
+bool email_cmp_strict(const struct Email *e1, const struct Email *e2)
 {
   if (e1 && e2)
   {
@@ -102,11 +107,11 @@ bool mutt_email_cmp_strict(const struct Email *e1, const struct Email *e2)
 }
 
 /**
- * mutt_email_size - compute the size of an email
+ * email_size - compute the size of an email
  * @param e Email
  * @retval num Size of the email, in bytes
  */
-size_t mutt_email_size(const struct Email *e)
+size_t email_size(const struct Email *e)
 {
   if (!e || !e->content)
     return 0;
@@ -114,12 +119,12 @@ size_t mutt_email_size(const struct Email *e)
 }
 
 /**
- * mutt_emaillist_free - Drop a private list of Emails
+ * emaillist_clear - Drop a private list of Emails
  * @param el EmailList to empty
  *
  * The Emails are not freed.
  */
-void mutt_emaillist_free(struct EmailList *el)
+void emaillist_clear(struct EmailList *el)
 {
   if (!el)
     return;

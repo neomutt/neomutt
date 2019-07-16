@@ -29,9 +29,7 @@
 #include "config.h"
 #include <stddef.h>
 #include <stdbool.h>
-#include <string.h>
 #include "mutt/mutt.h"
-#include "config/lib.h"
 #include "tags.h"
 
 /* These Config Variables are only used in email/tags.c */

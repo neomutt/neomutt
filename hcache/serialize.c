@@ -353,13 +353,13 @@ void serial_restore_buffer(struct Buffer **b, const unsigned char *d, int *off, 
 
 /**
  * serial_dump_parameter - Pack a Parameter into a binary blob
- * @param p       Parameter to pack
+ * @param pl      Parameter to pack
  * @param d       Binary blob to add to
  * @param off     Offset into the blob
  * @param convert If true, the strings will be converted to utf-8
  * @retval ptr End of the newly packed binary
  */
-unsigned char *serial_dump_parameter(struct ParameterList *p, unsigned char *d,
+unsigned char *serial_dump_parameter(struct ParameterList *pl, unsigned char *d,
                                      int *off, bool convert)
 {
   unsigned int counter = 0;
@@ -368,7 +368,7 @@ unsigned char *serial_dump_parameter(struct ParameterList *p, unsigned char *d,
   d = serial_dump_int(0xdeadbeef, d, off);
 
   struct Parameter *np = NULL;
-  TAILQ_FOREACH(np, p, entries)
+  TAILQ_FOREACH(np, pl, entries)
   {
     d = serial_dump_char(np->attribute, d, off, false);
     d = serial_dump_char(np->value, d, off, convert);
@@ -382,12 +382,12 @@ unsigned char *serial_dump_parameter(struct ParameterList *p, unsigned char *d,
 
 /**
  * serial_restore_parameter - Unpack a Parameter from a binary blob
- * @param p       Store the unpacked Parameter here
+ * @param pl      Store the unpacked Parameter here
  * @param d       Binary blob to read from
  * @param off     Offset into the blob
  * @param convert If true, the strings will be converted from utf-8
  */
-void serial_restore_parameter(struct ParameterList *p, const unsigned char *d,
+void serial_restore_parameter(struct ParameterList *pl, const unsigned char *d,
                               int *off, bool convert)
 {
   unsigned int counter;
@@ -400,7 +400,7 @@ void serial_restore_parameter(struct ParameterList *p, const unsigned char *d,
     np = mutt_param_new();
     serial_restore_char(&np->attribute, d, off, false);
     serial_restore_char(&np->value, d, off, convert);
-    TAILQ_INSERT_TAIL(p, np, entries);
+    TAILQ_INSERT_TAIL(pl, np, entries);
     counter--;
   }
 }
@@ -642,12 +642,12 @@ void *mutt_hcache_dump(header_cache_t *hc, const struct Email *e, int *off, unsi
  * @retval ptr Success, the restored header (can't be NULL)
  *
  * @note The returned Email must be free'd by caller code with
- *       mutt_email_free().
+ *       email_free().
  */
 struct Email *mutt_hcache_restore(const unsigned char *d)
 {
   int off = 0;
-  struct Email *e = mutt_email_new();
+  struct Email *e = email_new();
   bool convert = !CharsetIsUtf8;
 
   /* skip validate */

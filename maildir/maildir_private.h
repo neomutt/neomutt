@@ -98,7 +98,6 @@ int                     maildir_move_to_mailbox(struct Mailbox *m, struct Maildi
 int                     maildir_parse_dir      (struct Mailbox *m, struct Maildir ***last, const char *subdir, int *count, struct Progress *progress);
 void                    maildir_parse_flags    (struct Email *e, const char *path);
 struct Email *          maildir_parse_message  (enum MailboxType magic, const char *fname, bool is_old, struct Email *e);
-void                    maildir_update_tables  (struct Context *ctx, int *index_hint);
 int                     md_commit_message      (struct Mailbox *m, struct Message *msg, struct Email *e);
 int                     mh_commit_msg          (struct Mailbox *m, struct Message *msg, struct Email *e, bool updseq);
 int                     mh_mkstemp             (struct Mailbox *m, FILE **fp, char **tgt);

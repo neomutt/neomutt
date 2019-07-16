@@ -42,7 +42,7 @@
 
 /**
  * ctx_free - Free a Context
- * @param[out] ctx Context to free
+ * @param[out] ptr Context to free
  */
 void ctx_free(struct Context **ptr)
 {
@@ -249,7 +249,7 @@ void ctx_update_tables(struct Context *ctx, bool committing)
        * last_tag being stale if it's not reset here.  */
       if (ctx->last_tag == m->emails[i])
         ctx->last_tag = NULL;
-      mutt_email_free(&m->emails[i]);
+      email_free(&m->emails[i]);
     }
   }
   m->msg_count = j;

@@ -62,16 +62,16 @@ struct Rfc2231Parameter
 
 /**
  * purge_empty_parameters - Remove any ill-formed Parameters from a list
- * @param p Parameter List to check
+ * @param pl Parameter List to check
  */
-static void purge_empty_parameters(struct ParameterList *p)
+static void purge_empty_parameters(struct ParameterList *pl)
 {
   struct Parameter *np = NULL, *tmp = NULL;
-  TAILQ_FOREACH_SAFE(np, p, entries, tmp)
+  TAILQ_FOREACH_SAFE(np, pl, entries, tmp)
   {
     if (!np->attribute || !np->value)
     {
-      TAILQ_REMOVE(p, np, entries);
+      TAILQ_REMOVE(pl, np, entries);
       mutt_param_free_one(&np);
     }
   }
@@ -179,10 +179,10 @@ static void free_parameter(struct Rfc2231Parameter **p)
 
 /**
  * join_continuations - Process continuation parameters
- * @param p   Parameter List for the results
+ * @param pl  Parameter List for the results
  * @param par Continuation Parameter
  */
-static void join_continuations(struct ParameterList *p, struct Rfc2231Parameter *par)
+static void join_continuations(struct ParameterList *pl, struct Rfc2231Parameter *par)
 {
   char attribute[256];
   char charset[256];
@@ -225,17 +225,17 @@ static void join_continuations(struct ParameterList *p, struct Rfc2231Parameter 
     struct Parameter *np = mutt_param_new();
     np->attribute = mutt_str_strdup(attribute);
     np->value = value;
-    TAILQ_INSERT_HEAD(p, np, entries);
+    TAILQ_INSERT_HEAD(pl, np, entries);
   }
 }
 
 /**
  * rfc2231_decode_parameters - Decode a Parameter list
- * @param p List to decode
+ * @param pl List to decode
  */
-void rfc2231_decode_parameters(struct ParameterList *p)
+void rfc2231_decode_parameters(struct ParameterList *pl)
 {
-  if (!p)
+  if (!pl)
     return;
 
   struct Rfc2231Parameter *conthead = NULL;
@@ -248,10 +248,10 @@ void rfc2231_decode_parameters(struct ParameterList *p)
   int index;
   bool dirty = false; /* set when we may have created empty parameters. */
 
-  purge_empty_parameters(p);
+  purge_empty_parameters(pl);
 
   struct Parameter *np = NULL, *tmp = NULL;
-  TAILQ_FOREACH_SAFE(np, p, entries, tmp)
+  TAILQ_FOREACH_SAFE(np, pl, entries, tmp)
   {
     s = strchr(np->attribute, '*');
     if (!s)
@@ -300,7 +300,7 @@ void rfc2231_decode_parameters(struct ParameterList *p)
 
       np->attribute = NULL;
       np->value = NULL;
-      TAILQ_REMOVE(p, np, entries);
+      TAILQ_REMOVE(pl, np, entries);
       FREE(&np);
 
       list_insert(&conthead, conttmp);
@@ -309,12 +309,12 @@ void rfc2231_decode_parameters(struct ParameterList *p)
 
   if (conthead)
   {
-    join_continuations(p, conthead);
+    join_continuations(pl, conthead);
     dirty = true;
   }
 
   if (dirty)
-    purge_empty_parameters(p);
+    purge_empty_parameters(pl);
 }
 
 /**
