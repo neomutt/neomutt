@@ -2285,17 +2285,15 @@ int nntp_check_msgid(struct Mailbox *m, const char *msgid)
 
 /**
  * nntp_check_children - Fetch children of article with the Message-ID
- * @param ctx   Mailbox
+ * @param m     Mailbox
  * @param msgid Message ID to find
  * @retval  0 Success
  * @retval -1 Failure
  */
-int nntp_check_children(struct Context *ctx, const char *msgid)
+int nntp_check_children(struct Mailbox *m, const char *msgid)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct NntpMboxData *mdata = m->mdata;
   struct ChildCtx cc;
@@ -2349,7 +2347,7 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
       break;
   }
   if (m->msg_count > old_msg_count)
-    ctx_update(ctx);
+    mailbox_changed(m, MBN_INVALID);
 
 #ifdef USE_HCACHE
   mutt_hcache_close(hc);

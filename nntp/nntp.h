@@ -165,7 +165,7 @@ int nntp_active_fetch(struct NntpAccountData *adata, bool mark_new);
 int nntp_newsrc_update(struct NntpAccountData *adata);
 int nntp_post(struct Mailbox *m, const char *msg);
 int nntp_check_msgid(struct Mailbox *m, const char *msgid);
-int nntp_check_children(struct Context *ctx, const char *msgid);
+int nntp_check_children(struct Mailbox *m, const char *msgid);
 int nntp_newsrc_parse(struct NntpAccountData *adata);
 void nntp_newsrc_close(struct NntpAccountData *adata);
 void nntp_mailbox(struct Mailbox *m, char *buf, size_t buflen);

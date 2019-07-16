@@ -1462,7 +1462,7 @@ int mutt_index_menu(void)
 
           /* fetching all child messages */
           if (rc >= 0)
-            rc = nntp_check_children(Context, buf);
+            rc = nntp_check_children(Context->mailbox, buf);
 
           /* at least one message has been loaded */
           if (Context->mailbox->msg_count > oldmsgcount)
