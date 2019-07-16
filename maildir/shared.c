@@ -1180,40 +1180,6 @@ void maildir_canon_filename(struct Buffer *dest, const char *src)
 }
 
 /**
- * maildir_update_tables - Update the Email tables
- * @param ctx        Mailbox
- * @param index_hint Current Email in index
- */
-void maildir_update_tables(struct Context *ctx, int *index_hint)
-{
-  if (!ctx || !ctx->mailbox)
-    return;
-
-  struct Mailbox *m = ctx->mailbox;
-
-  if (C_Sort != SORT_ORDER)
-  {
-    const enum SortType old_sort = C_Sort;
-    C_Sort = SORT_ORDER;
-    mutt_sort_headers(ctx, true);
-    C_Sort = old_sort;
-  }
-
-  const int old_count = m->msg_count;
-  for (int i = 0, j = 0; i < old_count; i++)
-  {
-    if (m->emails[i]->active && index_hint && (*index_hint == i))
-      *index_hint = j;
-
-    if (m->emails[i]->active)
-      m->emails[i]->index = j++;
-  }
-
-  ctx_update_tables(ctx, false);
-  mutt_clear_threads(ctx);
-}
-
-/**
  * md_open_find_message - Find a message in a maildir folder
  * @param[in]  folder    Base folder
  * @param[in]  unique    Unique part of filename
