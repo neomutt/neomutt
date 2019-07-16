@@ -2214,18 +2214,16 @@ int nntp_check_new_groups(struct Mailbox *m, struct NntpAccountData *adata)
 
 /**
  * nntp_check_msgid - Fetch article by Message-ID
- * @param ctx   Mailbox
+ * @param m     Mailbox
  * @param msgid Message ID
  * @retval  0 Success
  * @retval  1 No such article
  * @retval -1 Error
  */
-int nntp_check_msgid(struct Context *ctx, const char *msgid)
+int nntp_check_msgid(struct Mailbox *m, const char *msgid)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct NntpMboxData *mdata = m->mdata;
   char buf[1024];
@@ -2281,7 +2279,7 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
   e->changed = true;
   e->received = e->date_sent;
   e->index = m->msg_count++;
-  ctx_update(ctx);
+  mailbox_changed(m, MBN_INVALID);
   return 0;
 }
 

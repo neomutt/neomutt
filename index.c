@@ -1403,7 +1403,7 @@ int mutt_index_menu(void)
           else
           {
             mutt_message(_("Fetching %s from server..."), buf);
-            int rc = nntp_check_msgid(Context, buf);
+            int rc = nntp_check_msgid(Context->mailbox, buf);
             if (rc == 0)
             {
               e = Context->mailbox->emails[Context->mailbox->msg_count - 1];
@@ -1449,7 +1449,7 @@ int mutt_index_menu(void)
             {
               if (!mutt_hash_find(Context->mailbox->id_hash, ref->data))
               {
-                rc = nntp_check_msgid(Context, ref->data);
+                rc = nntp_check_msgid(Context->mailbox, ref->data);
                 if (rc < 0)
                   break;
               }
