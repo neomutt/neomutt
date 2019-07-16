@@ -117,6 +117,7 @@ void mutt_env_free(struct Envelope **p)
 
 #ifdef USE_AUTOCRYPT
   mutt_free_autocrypthdr(&(*p)->autocrypt);
+  mutt_free_autocrypthdr(&(*p)->autocrypt_gossip);
 #endif
 
   FREE(p);

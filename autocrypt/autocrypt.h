@@ -58,8 +58,18 @@ struct AutocryptPeerHistory
   char *keydata;
 };
 
+struct AutocryptGossipHistory
+{
+  char *peer_email_addr;
+  char *sender_email_addr;
+  char *email_msgid;
+  sqlite3_int64 timestamp;
+  char *gossip_keydata;
+};
+
 int mutt_autocrypt_init (int);
 void mutt_autocrypt_cleanup (void);
 int mutt_autocrypt_process_autocrypt_header (struct Email *hdr, struct Envelope *env);
+int mutt_autocrypt_process_gossip_header (struct Email *hdr, struct Envelope *env);
 
 #endif /* MUTT_AUTOCRYPT_AUTOCRYPT_H */

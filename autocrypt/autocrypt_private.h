@@ -49,6 +49,10 @@ struct AutocryptPeerHistory *mutt_autocrypt_db_peer_history_new (void);
 void mutt_autocrypt_db_peer_history_free (struct AutocryptPeerHistory **peerhist);
 int mutt_autocrypt_db_peer_history_insert (struct Address *addr, struct AutocryptPeerHistory *peerhist);
 
+struct AutocryptGossipHistory *mutt_autocrypt_db_gossip_history_new (void);
+void mutt_autocrypt_db_gossip_history_free (struct AutocryptGossipHistory **gossip_hist);
+int mutt_autocrypt_db_gossip_history_insert (struct Address *addr, struct AutocryptGossipHistory *gossip_hist);
+
 int mutt_autocrypt_schema_init (void);
 int mutt_autocrypt_schema_update (void);
 

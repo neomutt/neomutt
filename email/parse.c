@@ -953,6 +953,14 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
           matched = 1;
         }
       }
+      else if (mutt_str_strcasecmp(line + 1, "utocrypt-gossip") == 0)
+      {
+        if (C_Autocrypt)
+        {
+          env->autocrypt_gossip = parse_autocrypt(env->autocrypt_gossip, p);
+          matched = 1;
+        }
+      }
 #endif
       break;
 

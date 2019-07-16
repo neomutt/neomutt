@@ -309,3 +309,146 @@ cleanup:
 
   return rv;
 }
+
+static struct Address *matching_gossip_address(struct Envelope *env, const char *addr)
+{
+  struct Address *np = NULL;
+
+  TAILQ_FOREACH(np, &env->to, entries)
+  {
+    if (!mutt_str_strcasecmp(np->mailbox, addr))
+      return np;
+  }
+
+  TAILQ_FOREACH(np, &env->cc, entries)
+  {
+    if (!mutt_str_strcasecmp(np->mailbox, addr))
+      return np;
+  }
+
+  TAILQ_FOREACH(np, &env->reply_to, entries)
+  {
+    if (!mutt_str_strcasecmp(np->mailbox, addr))
+      return np;
+  }
+
+  return NULL;
+}
+
+int mutt_autocrypt_process_gossip_header(struct Email *hdr, struct Envelope *env)
+{
+  struct AutocryptHeader *ac_hdr;
+  struct timeval now;
+  struct AutocryptPeer *peer = NULL;
+  struct AutocryptGossipHistory *gossip_hist = NULL;
+  struct Address *peer_addr;
+  struct Buffer *keyid = NULL;
+  int update_db = 0, insert_db = 0, insert_db_history = 0, import_gpg = 0;
+  int rv = -1;
+
+  if (!C_Autocrypt)
+    return 0;
+
+  if (mutt_autocrypt_init(0))
+    return -1;
+
+  if (!hdr || !hdr->content || !env)
+    return 0;
+
+  struct Address *from = TAILQ_FIRST(&env->from);
+  if (!from)
+    return 0;
+
+  /* Ignore emails that appear to be more than a week in the future,
+   * since they can block all future updates during that time. */
+  gettimeofday(&now, NULL);
+  if (hdr->date_sent > (now.tv_sec + 7 * 24 * 60 * 60))
+    return 0;
+
+  keyid = mutt_buffer_pool_get();
+
+  /* To ensure the address headers match the gossip header format */
+  mutt_env_to_intl(env, NULL, NULL);
+
+  for (ac_hdr = env->autocrypt_gossip; ac_hdr; ac_hdr = ac_hdr->next)
+  {
+    if (ac_hdr->invalid)
+      continue;
+
+    peer_addr = matching_gossip_address(env, ac_hdr->addr);
+    if (!peer_addr)
+      continue;
+
+    if (mutt_autocrypt_db_peer_get(from, &peer) < 0)
+      goto cleanup;
+
+    if (peer)
+    {
+      if (hdr->date_sent <= peer->gossip_timestamp)
+      {
+        mutt_autocrypt_db_peer_free(&peer);
+        continue;
+      }
+
+      update_db = 1;
+      peer->gossip_timestamp = hdr->date_sent;
+      if (mutt_str_strcmp(peer->gossip_keydata, ac_hdr->keydata))
+      {
+        import_gpg = 1;
+        insert_db_history = 1;
+        mutt_str_replace(&peer->gossip_keydata, ac_hdr->keydata);
+      }
+    }
+    else
+    {
+      import_gpg = 1;
+      insert_db = 1;
+      insert_db_history = 1;
+    }
+
+    if (!peer)
+    {
+      peer = mutt_autocrypt_db_peer_new();
+      peer->gossip_timestamp = hdr->date_sent;
+      peer->gossip_keydata = mutt_str_strdup(ac_hdr->keydata);
+    }
+
+    if (import_gpg)
+    {
+      if (mutt_autocrypt_gpgme_import_key(peer->gossip_keydata, keyid))
+        goto cleanup;
+      mutt_str_replace(&peer->gossip_keyid, mutt_b2s(keyid));
+    }
+
+    if (insert_db && mutt_autocrypt_db_peer_insert(peer_addr, peer))
+      goto cleanup;
+
+    if (update_db && mutt_autocrypt_db_peer_update(peer_addr, peer))
+      goto cleanup;
+
+    if (insert_db_history)
+    {
+      gossip_hist = mutt_autocrypt_db_gossip_history_new();
+      gossip_hist->sender_email_addr = mutt_str_strdup(from->mailbox);
+      gossip_hist->email_msgid = mutt_str_strdup(env->message_id);
+      gossip_hist->timestamp = hdr->date_sent;
+      gossip_hist->gossip_keydata = mutt_str_strdup(peer->gossip_keydata);
+      if (mutt_autocrypt_db_gossip_history_insert(peer_addr, gossip_hist))
+        goto cleanup;
+    }
+
+    mutt_autocrypt_db_peer_free(&peer);
+    mutt_autocrypt_db_gossip_history_free(&gossip_hist);
+    mutt_buffer_reset(keyid);
+    update_db = insert_db = insert_db_history = import_gpg = 0;
+  }
+
+  rv = 0;
+
+cleanup:
+  mutt_autocrypt_db_peer_free(&peer);
+  mutt_autocrypt_db_gossip_history_free(&gossip_hist);
+  mutt_buffer_pool_release(&keyid);
+
+  return rv;
+}

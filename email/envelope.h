@@ -80,6 +80,7 @@ struct Envelope
   struct ListHead userhdrs;            ///< user defined headers
 #ifdef USE_AUTOCRYPT
   struct AutocryptHeader *autocrypt;
+  struct AutocryptHeader *autocrypt_gossip;
 #endif
   unsigned char changed;               ///< Changed fields, e.g. #MUTT_ENV_CHANGED_SUBJECT
 };

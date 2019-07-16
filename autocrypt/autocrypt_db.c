@@ -37,6 +37,7 @@ static sqlite3_stmt *PeerGetStmt;
 static sqlite3_stmt *PeerInsertStmt;
 static sqlite3_stmt *PeerUpdateStmt;
 static sqlite3_stmt *PeerHistoryInsertStmt;
+static sqlite3_stmt *GossipHistoryInsertStmt;
 
 static int autocrypt_db_create(const char *db_path)
 {
@@ -111,6 +112,9 @@ void mutt_autocrypt_db_close(void)
 
   sqlite3_finalize(PeerHistoryInsertStmt);
   PeerHistoryInsertStmt = NULL;
+
+  sqlite3_finalize(GossipHistoryInsertStmt);
+  GossipHistoryInsertStmt = NULL;
 
   sqlite3_close_v2(AutocryptDB);
   AutocryptDB = NULL;
@@ -493,5 +497,68 @@ int mutt_autocrypt_db_peer_history_insert(struct Address *addr,
 cleanup:
   FREE(&email);
   sqlite3_reset(PeerHistoryInsertStmt);
+  return rv;
+}
+
+struct AutocryptGossipHistory *mutt_autocrypt_db_gossip_history_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct AutocryptGossipHistory));
+}
+
+void mutt_autocrypt_db_gossip_history_free(struct AutocryptGossipHistory **gossip_hist)
+{
+  if (!gossip_hist || !*gossip_hist)
+    return;
+  FREE(&(*gossip_hist)->peer_email_addr);
+  FREE(&(*gossip_hist)->sender_email_addr);
+  FREE(&(*gossip_hist)->email_msgid);
+  FREE(&(*gossip_hist)->gossip_keydata);
+  FREE(gossip_hist);
+}
+
+int mutt_autocrypt_db_gossip_history_insert(struct Address *addr,
+                                            struct AutocryptGossipHistory *gossip_hist)
+{
+  int rv = -1;
+  char *email = NULL;
+
+  email = normalize_email_addr(addr);
+
+  if (!GossipHistoryInsertStmt)
+  {
+    if (sqlite3_prepare_v3(AutocryptDB,
+                           "INSERT INTO gossip_history "
+                           "(peer_email_addr, "
+                           "sender_email_addr, "
+                           "email_msgid, "
+                           "timestamp, "
+                           "gossip_keydata) "
+                           "VALUES (?, ?, ?, ?, ?);",
+                           -1, SQLITE_PREPARE_PERSISTENT,
+                           &GossipHistoryInsertStmt, NULL) != SQLITE_OK)
+      goto cleanup;
+  }
+
+  if (sqlite3_bind_text(GossipHistoryInsertStmt, 1, email, -1, SQLITE_STATIC) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_text(GossipHistoryInsertStmt, 2, gossip_hist->sender_email_addr,
+                        -1, SQLITE_STATIC) != SQLITE_OK)
+    if (sqlite3_bind_text(GossipHistoryInsertStmt, 3, gossip_hist->email_msgid,
+                          -1, SQLITE_STATIC) != SQLITE_OK)
+      goto cleanup;
+  if (sqlite3_bind_int64(GossipHistoryInsertStmt, 4, gossip_hist->timestamp) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_text(GossipHistoryInsertStmt, 5, gossip_hist->gossip_keydata,
+                        -1, SQLITE_STATIC) != SQLITE_OK)
+    goto cleanup;
+
+  if (sqlite3_step(GossipHistoryInsertStmt) != SQLITE_DONE)
+    goto cleanup;
+
+  rv = 0;
+
+cleanup:
+  FREE(&email);
+  sqlite3_reset(GossipHistoryInsertStmt);
   return rv;
 }
