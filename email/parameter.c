@@ -56,14 +56,14 @@ void mutt_param_free_one(struct Parameter **p)
 
 /**
  * mutt_param_free - Free a ParameterList
- * @param p ParameterList to free
+ * @param pl ParameterList to free
  */
-void mutt_param_free(struct ParameterList *p)
+void mutt_param_free(struct ParameterList *pl)
 {
-  if (!p)
+  if (!pl)
     return;
 
-  struct Parameter *np = TAILQ_FIRST(p);
+  struct Parameter *np = TAILQ_FIRST(pl);
   struct Parameter *next = NULL;
   while (np)
   {
@@ -71,23 +71,23 @@ void mutt_param_free(struct ParameterList *p)
     mutt_param_free_one(&np);
     np = next;
   }
-  TAILQ_INIT(p);
+  TAILQ_INIT(pl);
 }
 
 /**
  * mutt_param_get - Find a matching Parameter
- * @param p ParameterList
- * @param s String to match
+ * @param pl ParameterList
+ * @param s  String to match
  * @retval ptr Matching Parameter
  * @retval NULL No match
  */
-char *mutt_param_get(const struct ParameterList *p, const char *s)
+char *mutt_param_get(const struct ParameterList *pl, const char *s)
 {
-  if (!p)
+  if (!pl)
     return NULL;
 
   struct Parameter *np = NULL;
-  TAILQ_FOREACH(np, p, entries)
+  TAILQ_FOREACH(np, pl, entries)
   {
     if (mutt_str_strcasecmp(s, np->attribute) == 0)
       return np->value;
@@ -98,7 +98,7 @@ char *mutt_param_get(const struct ParameterList *p, const char *s)
 
 /**
  * mutt_param_set - Set a Parameter
- * @param[in]  p         ParameterList
+ * @param[in]  pl        ParameterList
  * @param[in]  attribute Attribute to match
  * @param[in]  value     Value to set
  *
@@ -107,19 +107,19 @@ char *mutt_param_get(const struct ParameterList *p, const char *s)
  * @note If a matching Parameter isn't found a new one will be allocated.
  *       The new Parameter will be inserted at the front of the list.
  */
-void mutt_param_set(struct ParameterList *p, const char *attribute, const char *value)
+void mutt_param_set(struct ParameterList *pl, const char *attribute, const char *value)
 {
-  if (!p)
+  if (!pl)
     return;
 
   if (!value)
   {
-    mutt_param_delete(p, attribute);
+    mutt_param_delete(pl, attribute);
     return;
   }
 
   struct Parameter *np = NULL;
-  TAILQ_FOREACH(np, p, entries)
+  TAILQ_FOREACH(np, pl, entries)
   {
     if (mutt_str_strcasecmp(attribute, np->attribute) == 0)
     {
@@ -131,25 +131,25 @@ void mutt_param_set(struct ParameterList *p, const char *attribute, const char *
   np = mutt_param_new();
   np->attribute = mutt_str_strdup(attribute);
   np->value = mutt_str_strdup(value);
-  TAILQ_INSERT_HEAD(p, np, entries);
+  TAILQ_INSERT_HEAD(pl, np, entries);
 }
 
 /**
  * mutt_param_delete - Delete a matching Parameter
- * @param[in]  p         ParameterList
- * @param[in]  attribute Attribute to match
+ * @param[in] pl        ParameterList
+ * @param[in] attribute Attribute to match
  */
-void mutt_param_delete(struct ParameterList *p, const char *attribute)
+void mutt_param_delete(struct ParameterList *pl, const char *attribute)
 {
-  if (!p)
+  if (!pl)
     return;
 
   struct Parameter *np = NULL;
-  TAILQ_FOREACH(np, p, entries)
+  TAILQ_FOREACH(np, pl, entries)
   {
     if (mutt_str_strcasecmp(attribute, np->attribute) == 0)
     {
-      TAILQ_REMOVE(p, np, entries);
+      TAILQ_REMOVE(pl, np, entries);
       mutt_param_free_one(&np);
       return;
     }
@@ -158,20 +158,20 @@ void mutt_param_delete(struct ParameterList *p, const char *attribute)
 
 /**
  * mutt_param_cmp_strict - Strictly compare two ParameterLists
- * @param p1 First parameter
- * @param p2 Second parameter
+ * @param pl1 First parameter
+ * @param pl2 Second parameter
  * @retval true Parameters are strictly identical
  */
-bool mutt_param_cmp_strict(const struct ParameterList *p1, const struct ParameterList *p2)
+bool mutt_param_cmp_strict(const struct ParameterList *pl1, const struct ParameterList *pl2)
 {
-  if (!p1 && !p2)
+  if (!pl1 && !pl2)
     return false;
 
-  if ((p1 == NULL) ^ (p2 == NULL))
+  if ((pl1 == NULL) ^ (pl2 == NULL))
     return true;
 
-  struct Parameter *np1 = TAILQ_FIRST(p1);
-  struct Parameter *np2 = TAILQ_FIRST(p2);
+  struct Parameter *np1 = TAILQ_FIRST(pl1);
+  struct Parameter *np2 = TAILQ_FIRST(pl2);
 
   while (np1 && np2)
   {
