@@ -251,8 +251,8 @@ static void union_hash_delete(struct Hash *table, union HashKey key, const void 
     if (((data == ptr->data) || !data) && (table->cmp_key(ptr->key, key) == 0))
     {
       *last = ptr->next;
-      if (table->elem_free)
-        table->elem_free(ptr->type, ptr->data, table->hash_data);
+      if (table->free_hdata)
+        table->free_hdata(ptr->type, ptr->data, table->hdata);
       if (table->strdup_keys)
         FREE(&ptr->key.strkey);
       FREE(&ptr);
@@ -319,8 +319,8 @@ void mutt_hash_set_destructor(struct Hash *table, hashelem_free_t fn, intptr_t f
 {
   if (!table)
     return;
-  table->elem_free = fn;
-  table->hash_data = fn_data;
+  table->free_hdata = fn;
+  table->hdata = fn_data;
 }
 
 /**
@@ -466,7 +466,7 @@ void mutt_hash_int_delete(struct Hash *table, unsigned int intkey, const void *d
 }
 
 /**
- * mutt_hash_free - elem_free a hash table
+ * mutt_hash_free - free_hdata a hash table
  * @param[out] ptr Hash Table to be freed
  */
 void mutt_hash_free(struct Hash **ptr)
@@ -483,8 +483,8 @@ void mutt_hash_free(struct Hash **ptr)
     {
       tmp = elem;
       elem = elem->next;
-      if (pptr->elem_free)
-        pptr->elem_free(tmp->type, tmp->data, pptr->hash_data);
+      if (pptr->free_hdata)
+        pptr->free_hdata(tmp->type, tmp->data, pptr->hdata);
       if (pptr->strdup_keys)
         FREE(&tmp->key.strkey);
       FREE(&tmp);

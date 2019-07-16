@@ -60,14 +60,14 @@ typedef void (*hashelem_free_t)(int type, void *obj, intptr_t data);
  */
 struct Hash
 {
-  size_t nelem;            ///< Number of elements in the Hash table
-  bool strdup_keys : 1;    ///< if set, the key->strkey is strdup'ed
-  bool allow_dups  : 1;    ///< if set, duplicate keys are allowed
-  struct HashElem **table; ///< Array of Hash keys
+  size_t nelem;                                 ///< Number of elements in the Hash table
+  bool strdup_keys : 1;                         ///< if set, the key->strkey is strdup'ed
+  bool allow_dups  : 1;                         ///< if set, duplicate keys are allowed
+  struct HashElem **table;                      ///< Array of Hash keys
   size_t (*gen_hash)(union HashKey, size_t);    ///< Function to generate hash id from the key
   int (*cmp_key)(union HashKey, union HashKey); ///< Function to compare two Hash keys
-  hashelem_free_t elem_free; ///< Function to free a Hash element
-  intptr_t hash_data;        ///< Data to pass to the elem_free() function
+  intptr_t hdata;                               ///< Data to pass to the free_hdata() function
+  hashelem_free_t free_hdata;                   ///< Function to free a Hash element
 };
 
 typedef uint8_t HashFlags;             ///< Flags for mutt_hash_new(), e.g. #MUTT_HASH_STRCASECMP

@@ -117,13 +117,12 @@ void account_free(struct Account **ptr)
     return;
 
   struct Account *a = *ptr;
-  account_mailbox_remove(a, NULL);
+  notify_free(&a->notify);
 
   if (a->free_adata)
     a->free_adata(&a->adata);
 
-  notify_free(&a->notify);
-  // account_free_config(a);
+  account_mailbox_remove(a, NULL);
   cs_subset_free(&a->sub);
   FREE(&a->name);
 

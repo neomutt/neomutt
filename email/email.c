@@ -36,24 +36,29 @@
 
 /**
  * email_free - Free an Email
- * @param[out] e Email to free
+ * @param[out] ptr Email to free
  */
-void email_free(struct Email **e)
+void email_free(struct Email **ptr)
 {
-  if (!e || !*e)
+  if (!ptr || !*ptr)
     return;
-  mutt_env_free(&(*e)->env);
-  mutt_body_free(&(*e)->content);
-  FREE(&(*e)->maildir_flags);
-  FREE(&(*e)->tree);
-  FREE(&(*e)->path);
+
+  struct Email *e = *ptr;
+
+  if (e->edata && e->free_edata)
+    e->free_edata(&e->edata);
+
+  mutt_env_free(&e->env);
+  mutt_body_free(&e->content);
+  FREE(&e->maildir_flags);
+  FREE(&e->tree);
+  FREE(&e->path);
 #ifdef MIXMASTER
-  mutt_list_free(&(*e)->chain);
+  mutt_list_free(&e->chain);
 #endif
-  driver_tags_free(&(*e)->tags);
-  if ((*e)->edata && (*e)->free_edata)
-    (*e)->free_edata(&(*e)->edata);
-  FREE(e);
+  driver_tags_free(&e->tags);
+
+  FREE(ptr);
 }
 
 /**

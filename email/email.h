@@ -122,7 +122,7 @@ struct EmailNode
 STAILQ_HEAD(EmailList, EmailNode);
 
 bool          email_cmp_strict(const struct Email *e1, const struct Email *e2);
-void          email_free      (struct Email **e);
+void          email_free      (struct Email **ptr);
 struct Email *email_new       (void);
 size_t        email_size      (const struct Email *e);
 
