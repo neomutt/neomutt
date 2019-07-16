@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_email_cmp_strict()
+ * Test code for email_new()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -27,17 +27,7 @@
 #include "address/lib.h"
 #include "email/lib.h"
 
-void test_mutt_email_cmp_strict(void)
+void test_email_new(void)
 {
-  // bool mutt_email_cmp_strict(const struct Email *e1, const struct Email *e2);
-
-  {
-    struct Email e = { 0 };
-    TEST_CHECK(!mutt_email_cmp_strict(NULL, &e));
-  }
-
-  {
-    struct Email e = { 0 };
-    TEST_CHECK(!mutt_email_cmp_strict(&e, NULL));
-  }
+  // struct Email *email_new(void);
 }

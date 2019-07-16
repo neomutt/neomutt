@@ -134,10 +134,10 @@
   NEOMUTT_TEST_ITEM(test_mutt_date_normalize_time)                             \
   NEOMUTT_TEST_ITEM(test_mutt_date_parse_date)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_date_parse_imap)                                 \
-  NEOMUTT_TEST_ITEM(test_mutt_email_cmp_strict)                                \
-  NEOMUTT_TEST_ITEM(test_mutt_email_free)                                      \
-  NEOMUTT_TEST_ITEM(test_mutt_email_new)                                       \
-  NEOMUTT_TEST_ITEM(test_mutt_email_size)                                      \
+  NEOMUTT_TEST_ITEM(test_email_cmp_strict)                                     \
+  NEOMUTT_TEST_ITEM(test_email_free)                                           \
+  NEOMUTT_TEST_ITEM(test_email_new)                                            \
+  NEOMUTT_TEST_ITEM(test_email_size)                                           \
   NEOMUTT_TEST_ITEM(test_mutt_env_cmp_strict)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_env_free)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_env_merge)                                       \

@@ -1149,7 +1149,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
           continue;
         }
 
-        m->emails[idx] = mutt_email_new();
+        m->emails[idx] = email_new();
 
         mdata->max_msn = MAX(mdata->max_msn, h.edata->msn);
         mdata->msn_index[h.edata->msn - 1] = m->emails[idx];

@@ -1549,7 +1549,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool a
   fflush(fp);
   rewind(fp);
 
-  body->email = mutt_email_new();
+  body->email = email_new();
   body->email->offset = 0;
   /* we don't need the user headers here */
   body->email->env = mutt_rfc822_read_header(fp, body->email, false, false);

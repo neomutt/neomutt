@@ -287,7 +287,7 @@ static int fetch_uidl(const char *line, void *data)
       mx_alloc_memory(m);
 
     m->msg_count++;
-    m->emails[i] = mutt_email_new();
+    m->emails[i] = email_new();
 
     m->emails[i]->edata = pop_edata_new(line);
     m->emails[i]->free_edata = pop_edata_free;
@@ -472,7 +472,7 @@ static int pop_fetch_headers(struct Mailbox *m)
          *   hcache so there shouldn't be a memleak here) */
         struct Email *e = mutt_hcache_restore((unsigned char *) data);
         mutt_hcache_free(hc, &data);
-        mutt_email_free(&m->emails[i]);
+        email_free(&m->emails[i]);
         m->emails[i] = e;
         m->emails[i]->refno = refno;
         m->emails[i]->index = index;
@@ -532,7 +532,7 @@ static int pop_fetch_headers(struct Mailbox *m)
   if (rc < 0)
   {
     for (int i = m->msg_count; i < new_count; i++)
-      mutt_email_free(&m->emails[i]);
+      email_free(&m->emails[i]);
     return rc;
   }
 

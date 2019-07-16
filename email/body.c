@@ -88,7 +88,7 @@ void mutt_body_free(struct Body **p)
     {
       /* Don't free twice (b->email->content = b->parts) */
       b->email->content = NULL;
-      mutt_email_free(&b->email);
+      email_free(&b->email);
     }
 
     mutt_env_free(&b->mime_headers);

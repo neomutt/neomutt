@@ -1461,11 +1461,11 @@ static void fix_end_of_file(const char *data)
  */
 int mutt_resend_message(FILE *fp, struct Context *ctx, struct Email *e_cur)
 {
-  struct Email *e_new = mutt_email_new();
+  struct Email *e_new = email_new();
 
   if (mutt_prepare_template(fp, ctx->mailbox, e_new, e_cur, true) < 0)
   {
-    mutt_email_free(&e_new);
+    email_free(&e_new);
     return -1;
   }
 
@@ -1493,7 +1493,7 @@ int mutt_resend_message(FILE *fp, struct Context *ctx, struct Email *e_cur)
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   el_add_email(&el, e_cur);
   int rc = ci_send_message(SEND_RESEND, e_new, NULL, ctx, &el);
-  mutt_emaillist_clear(&el);
+  emaillist_clear(&el);
 
   return rc;
 }
@@ -1891,7 +1891,7 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
 
   if (!e_templ)
   {
-    e_templ = mutt_email_new();
+    e_templ = email_new();
 
     if (flags == SEND_POSTPONED)
     {
@@ -2591,7 +2591,7 @@ cleanup:
 
   mutt_file_fclose(&fp_tmp);
   if (!(flags & SEND_NO_FREE_HEADER))
-    mutt_email_free(&e_templ);
+    email_free(&e_templ);
 
   FREE(&finalpath);
   return rc;

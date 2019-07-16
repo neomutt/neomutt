@@ -269,7 +269,7 @@ static void maildir_free_entry(struct Maildir **md)
 
   FREE(&(*md)->canon_fname);
   if ((*md)->email)
-    mutt_email_free(&(*md)->email);
+    email_free(&(*md)->email);
 
   FREE(md);
 }
@@ -370,7 +370,7 @@ int maildir_parse_dir(struct Mailbox *m, struct Maildir ***last,
     /* FOO - really ignore the return value? */
     mutt_debug(LL_DEBUG2, "queueing %s\n", de->d_name);
 
-    e = mutt_email_new();
+    e = email_new();
     e->old = is_old;
     if (m->magic == MUTT_MAILDIR)
       maildir_parse_flags(e, de->d_name);
@@ -750,7 +750,7 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
       struct Email *e = mutt_hcache_restore((unsigned char *) data);
       e->old = p->email->old;
       e->path = mutt_str_strdup(p->email->path);
-      mutt_email_free(&p->email);
+      email_free(&p->email);
       p->email = e;
       if (m->magic == MUTT_MAILDIR)
         maildir_parse_flags(p->email, fn);
@@ -777,7 +777,7 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
 #endif
       }
       else
-        mutt_email_free(&p->email);
+        email_free(&p->email);
 #ifdef USE_HCACHE
     }
     mutt_hcache_free(hc, &data);
@@ -1315,7 +1315,7 @@ struct Email *maildir_parse_stream(enum MailboxType magic, FILE *fp,
                                    const char *fname, bool is_old, struct Email *e)
 {
   if (!e)
-    e = mutt_email_new();
+    e = email_new();
   e->env = mutt_rfc822_read_header(fp, e, false, false);
 
   struct stat st;

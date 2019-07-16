@@ -130,7 +130,7 @@ static int fetch_capa(const char *line, void *data)
   if (mutt_str_startswith(line, "SASL", CASE_IGNORE))
   {
     FREE(&adata->auth_list);
-    const char* c = mutt_str_skip_email_wsp(line + 4);
+    const char *c = mutt_str_skip_email_wsp(line + 4);
     adata->auth_list = mutt_str_strdup(c);
   }
 

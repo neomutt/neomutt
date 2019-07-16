@@ -221,7 +221,7 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
         struct AddressList *al = mutt_alias_lookup(s + 1);
         if (!TAILQ_EMPTY(al))
         {
-          struct Email *e = mutt_email_new();
+          struct Email *e = email_new();
           e->env = mutt_env_new();
           mutt_addrlist_copy(&e->env->from, al, false);
           mutt_addrlist_copy(&e->env->to, al, false);
@@ -231,7 +231,7 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
           mutt_default_save(p->data, p->dsize, e);
           mutt_buffer_fix_dptr(p);
 
-          mutt_email_free(&e);
+          email_free(&e);
           /* Avoid infinite recursion if the resulting folder starts with '@' */
           if (*p->data != '@')
             recurse = true;

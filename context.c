@@ -249,7 +249,7 @@ void ctx_update_tables(struct Context *ctx, bool committing)
        * last_tag being stale if it's not reset here.  */
       if (ctx->last_tag == m->emails[i])
         ctx->last_tag = NULL;
-      mutt_email_free(&m->emails[i]);
+      email_free(&m->emails[i]);
     }
   }
   m->msg_count = j;

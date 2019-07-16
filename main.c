@@ -645,7 +645,7 @@ int main(int argc, char *argv[], char *envp[])
 
   if (!STAILQ_EMPTY(&cc_list) || !STAILQ_EMPTY(&bcc_list))
   {
-    e = mutt_email_new();
+    e = email_new();
     e->env = mutt_env_new();
 
     struct ListNode *np = NULL;
@@ -855,7 +855,7 @@ int main(int argc, char *argv[], char *envp[])
       mutt_flushinp();
 
     if (!e)
-      e = mutt_email_new();
+      e = email_new();
     if (!e->env)
       e->env = mutt_env_new();
 
@@ -972,7 +972,7 @@ int main(int argc, char *argv[], char *envp[])
 
         /* Set up a tmp Email with just enough information so that
          * mutt_prepare_template() can parse the message in fp_in.  */
-        struct Email *e_tmp = mutt_email_new();
+        struct Email *e_tmp = email_new();
         e_tmp->offset = 0;
         e_tmp->content = mutt_body_new();
         if (fstat(fileno(fp_in), &st) != 0)
@@ -986,7 +986,7 @@ int main(int argc, char *argv[], char *envp[])
         {
           mutt_error(_("Can't parse message template: %s"), draft_file);
           mutt_env_free(&opts_env);
-          mutt_email_free(&e_tmp);
+          email_free(&e_tmp);
           goto main_curses;
         }
 
@@ -1012,7 +1012,7 @@ int main(int argc, char *argv[], char *envp[])
           mutt_str_replace(&e->env->subject, opts_env->subject);
 
         mutt_env_free(&opts_env);
-        mutt_email_free(&e_tmp);
+        email_free(&e_tmp);
       }
       /* Editing the include_file: pass it directly in.
        * Note that SEND_NO_FREE_HEADER is set above so it isn't unlinked.  */
@@ -1107,7 +1107,7 @@ int main(int argc, char *argv[], char *envp[])
         mutt_file_fclose(&fp_out);
       }
 
-      mutt_email_free(&e);
+      email_free(&e);
     }
 
     /* !edit_infile && draft_file will leave the tempfile around */

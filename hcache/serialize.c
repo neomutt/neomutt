@@ -642,12 +642,12 @@ void *mutt_hcache_dump(header_cache_t *hc, const struct Email *e, int *off, unsi
  * @retval ptr Success, the restored header (can't be NULL)
  *
  * @note The returned Email must be free'd by caller code with
- *       mutt_email_free().
+ *       email_free().
  */
 struct Email *mutt_hcache_restore(const unsigned char *d)
 {
   int off = 0;
-  struct Email *e = mutt_email_new();
+  struct Email *e = email_new();
   bool convert = !CharsetIsUtf8;
 
   /* skip validate */

@@ -121,11 +121,11 @@ struct EmailNode
 };
 STAILQ_HEAD(EmailList, EmailNode);
 
-bool          mutt_email_cmp_strict(const struct Email *e1, const struct Email *e2);
-void          mutt_email_free      (struct Email **e);
-struct Email *mutt_email_new       (void);
-size_t        mutt_email_size      (const struct Email *e);
+bool          email_cmp_strict(const struct Email *e1, const struct Email *e2);
+void          email_free      (struct Email **e);
+struct Email *email_new       (void);
+size_t        email_size      (const struct Email *e);
 
-void mutt_emaillist_clear(struct EmailList *el);
+void emaillist_clear(struct EmailList *el);
 
 #endif /* MUTT_EMAIL_EMAIL_H */

@@ -1833,7 +1833,7 @@ int mutt_index_menu(void)
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_tagged(&el, Context, CUR_EMAIL, tag);
         ci_send_message(SEND_TO_SENDER, NULL, NULL, Context, &el);
-        mutt_emaillist_clear(&el);
+        emaillist_clear(&el);
         menu->redraw = REDRAW_FULL;
         break;
       }
@@ -2343,7 +2343,7 @@ int mutt_index_menu(void)
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           el_add_tagged(&el, Context, CUR_EMAIL, tag);
           mutt_check_traditional_pgp(&el, &menu->redraw);
-          mutt_emaillist_clear(&el);
+          emaillist_clear(&el);
         }
         int hint =
             Context->mailbox->emails[Context->mailbox->v2r[menu->current]]->index;
@@ -2457,7 +2457,7 @@ int mutt_index_menu(void)
           else
             mutt_error(_("No thread linked"));
 
-          mutt_emaillist_clear(&el);
+          emaillist_clear(&el);
         }
 
         if (menu->menu == MENU_PAGER)
@@ -2608,7 +2608,7 @@ int mutt_index_menu(void)
           else
             menu->redraw |= REDRAW_CURRENT;
         }
-        mutt_emaillist_clear(&el);
+        emaillist_clear(&el);
         break;
       }
 
@@ -2920,7 +2920,7 @@ int mutt_index_menu(void)
           else
             menu->redraw |= REDRAW_CURRENT;
         }
-        mutt_emaillist_clear(&el);
+        emaillist_clear(&el);
         break;
       }
 
@@ -2980,7 +2980,7 @@ int mutt_index_menu(void)
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_tagged(&el, Context, CUR_EMAIL, tag);
         ci_bounce_message(Context->mailbox, &el);
-        mutt_emaillist_clear(&el);
+        emaillist_clear(&el);
         break;
       }
 
@@ -3011,7 +3011,7 @@ int mutt_index_menu(void)
         mutt_emails_set_flag(Context->mailbox, &el, MUTT_PURGE, (op == OP_PURGE_MESSAGE));
         if (C_DeleteUntag)
           mutt_emails_set_flag(Context->mailbox, &el, MUTT_TAG, 0);
-        mutt_emaillist_clear(&el);
+        emaillist_clear(&el);
 
         if (tag)
         {
@@ -3130,12 +3130,12 @@ int mutt_index_menu(void)
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           el_add_tagged(&el, Context, CUR_EMAIL, tag);
           mutt_check_traditional_pgp(&el, &menu->redraw);
-          mutt_emaillist_clear(&el);
+          emaillist_clear(&el);
         }
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_tagged(&el, Context, CUR_EMAIL, tag);
         mutt_ev_message(Context->mailbox, &el, edit ? EVM_EDIT : EVM_VIEW);
-        mutt_emaillist_clear(&el);
+        emaillist_clear(&el);
         menu->redraw = REDRAW_FULL;
 
         break;
@@ -3152,7 +3152,7 @@ int mutt_index_menu(void)
           mutt_check_traditional_pgp(&el, &menu->redraw);
         }
         ci_send_message(SEND_FORWARD, NULL, NULL, Context, &el);
-        mutt_emaillist_clear(&el);
+        emaillist_clear(&el);
         menu->redraw = REDRAW_FULL;
         break;
       }
@@ -3178,7 +3178,7 @@ int mutt_index_menu(void)
           mutt_check_traditional_pgp(&el, &menu->redraw);
         }
         ci_send_message(replyflags, NULL, NULL, Context, &el);
-        mutt_emaillist_clear(&el);
+        emaillist_clear(&el);
         menu->redraw = REDRAW_FULL;
         break;
       }
@@ -3191,7 +3191,7 @@ int mutt_index_menu(void)
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_tagged(&el, Context, CUR_EMAIL, tag);
         int num_changed = mutt_label_message(Context->mailbox, &el);
-        mutt_emaillist_clear(&el);
+        emaillist_clear(&el);
 
         if (num_changed > 0)
         {
@@ -3223,7 +3223,7 @@ int mutt_index_menu(void)
           mutt_check_traditional_pgp(&el, &menu->redraw);
         }
         ci_send_message(SEND_REPLY | SEND_LIST_REPLY, NULL, NULL, Context, &el);
-        mutt_emaillist_clear(&el);
+        emaillist_clear(&el);
         menu->redraw = REDRAW_FULL;
         break;
       }
@@ -3253,7 +3253,7 @@ int mutt_index_menu(void)
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_tagged(&el, Context, CUR_EMAIL, tag);
         crypt_extract_keys_from_messages(&el);
-        mutt_emaillist_clear(&el);
+        emaillist_clear(&el);
         menu->redraw = REDRAW_FULL;
         break;
       }
@@ -3269,7 +3269,7 @@ int mutt_index_menu(void)
           struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
           el_add_tagged(&el, Context, CUR_EMAIL, tag);
           mutt_check_traditional_pgp(&el, &menu->redraw);
-          mutt_emaillist_clear(&el);
+          emaillist_clear(&el);
         }
 
         if (menu->menu == MENU_PAGER)
@@ -3287,7 +3287,7 @@ int mutt_index_menu(void)
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_tagged(&el, Context, CUR_EMAIL, tag);
         mutt_pipe_message(Context->mailbox, &el);
-        mutt_emaillist_clear(&el);
+        emaillist_clear(&el);
 
 #ifdef USE_IMAP
         /* in an IMAP folder index with imap_peek=no, piping could change
@@ -3307,7 +3307,7 @@ int mutt_index_menu(void)
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_tagged(&el, Context, CUR_EMAIL, tag);
         mutt_print_message(Context->mailbox, &el);
-        mutt_emaillist_clear(&el);
+        emaillist_clear(&el);
 
 #ifdef USE_IMAP
         /* in an IMAP folder index with imap_peek=no, printing could change
@@ -3447,7 +3447,7 @@ int mutt_index_menu(void)
             el_add_tagged(&el, Context, CUR_EMAIL, tag);
             ci_send_message(((op == OP_FOLLOWUP) ? SEND_REPLY : SEND_FORWARD) | SEND_NEWS,
                             NULL, NULL, Context, &el);
-            mutt_emaillist_clear(&el);
+            emaillist_clear(&el);
           }
           menu->redraw = REDRAW_FULL;
           break;
@@ -3465,7 +3465,7 @@ int mutt_index_menu(void)
           mutt_check_traditional_pgp(&el, &menu->redraw);
         }
         ci_send_message(SEND_REPLY, NULL, NULL, Context, &el);
-        mutt_emaillist_clear(&el);
+        emaillist_clear(&el);
         menu->redraw = REDRAW_FULL;
         break;
       }
@@ -3512,7 +3512,7 @@ int mutt_index_menu(void)
 
         mutt_emails_set_flag(Context->mailbox, &el, MUTT_DELETE, 0);
         mutt_emails_set_flag(Context->mailbox, &el, MUTT_PURGE, 0);
-        mutt_emaillist_clear(&el);
+        emaillist_clear(&el);
 
         if (tag)
         {
