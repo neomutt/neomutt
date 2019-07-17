@@ -2256,15 +2256,16 @@ int mutt_index_menu(void)
           if ((op == OP_MAIN_CHANGE_GROUP) || (op == OP_MAIN_CHANGE_GROUP_READONLY))
           {
             OptNews = true;
-            m = Context ? Context->mailbox : NULL;
-            CurrentNewsSrv = nntp_select_server(m, C_NewsServer, false);
+            CurrentNewsSrv = nntp_select_server(Context ? Context->mailbox : NULL,
+                                                C_NewsServer, false);
             if (!CurrentNewsSrv)
               break;
             if (flags)
               cp = _("Open newsgroup in read-only mode");
             else
               cp = _("Open newsgroup");
-            nntp_mailbox(m, folderbuf->data, folderbuf->dsize);
+            nntp_mailbox(Context ? Context->mailbox : NULL, folderbuf->data,
+                         folderbuf->dsize);
           }
           else
 #endif
