@@ -414,7 +414,7 @@ int maildir_mbox_check(struct Mailbox *m, int *index_hint)
    * the problem, don't update the stat times for a monitor caused check. */
 #ifdef USE_INOTIFY
   if (MonitorContextChanged)
-    MonitorContextChanged = 0;
+    MonitorContextChanged = false;
   else
 #endif
   {

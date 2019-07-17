@@ -44,8 +44,8 @@
 #include "curs_lib.h"
 #include "globals.h"
 
-int MonitorFilesChanged = 0;
-int MonitorContextChanged = 0;
+bool MonitorFilesChanged = false;
+bool MonitorContextChanged = false;
 
 static int INotifyFd = -1;
 static struct Monitor *Monitor = NULL;
@@ -91,7 +91,7 @@ struct Monitor
 struct MonitorInfo
 {
   enum MailboxType magic;
-  short isdir;
+  bool is_dir;
   const char *path;
   dev_t st_dev;
   ino_t st_ino;
@@ -176,7 +176,7 @@ static void monitor_check_free(void)
     mutt_poll_fd_remove(INotifyFd);
     close(INotifyFd);
     INotifyFd = -1;
-    MonitorFilesChanged = 0;
+    MonitorFilesChanged = false;
   }
 }
 
@@ -306,7 +306,7 @@ static int monitor_handle_ignore(int desc)
  *               0: no monitor / 1: preexisting monitor
  * @retval  -3 no mailbox (MonitorInfo: no fields set)
  * @retval  -2 magic not set
- * @retval  -1 stat() failed (see errno; MonitorInfo fields: magic, isdir, path)
+ * @retval  -1 stat() failed (see errno; MonitorInfo fields: magic, is_dir, path)
  *
  * If m is NULL, the current mailbox (Context) is used.
  */
@@ -336,16 +336,15 @@ static enum ResolveResult monitor_resolve(struct MonitorInfo *info, struct Mailb
   }
   else if (info->magic == MUTT_MAILDIR)
   {
-    info->isdir = 1;
+    info->is_dir = true;
     fmt = "%s/new";
   }
   else
   {
-    info->isdir = 0;
+    info->is_dir = false;
     if (info->magic == MUTT_MH)
       fmt = "%s/.mh_sequences";
   }
-
   if (fmt)
   {
     if (!info->path_buf)
@@ -386,7 +385,7 @@ int mutt_monitor_poll(void)
   int rc = 0;
   char buf[EVENT_BUFLEN] __attribute__((aligned(__alignof__(struct inotify_event))));
 
-  MonitorFilesChanged = 0;
+  MonitorFilesChanged = false;
 
   if (INotifyFd != -1)
   {
@@ -414,7 +413,7 @@ int mutt_monitor_poll(void)
           }
           else if (PollFds[i].fd == INotifyFd)
           {
-            MonitorFilesChanged = 1;
+            MonitorFilesChanged = true;
             mutt_debug(LL_DEBUG3, "file change(s) detected\n");
             char *ptr = buf;
             const struct inotify_event *event = NULL;
@@ -438,7 +437,7 @@ int mutt_monitor_poll(void)
                 if (event->mask & IN_IGNORED)
                   monitor_handle_ignore(event->wd);
                 else if (event->wd == MonitorContextDescriptor)
-                  MonitorContextChanged = 1;
+                  MonitorContextChanged = true;
                 ptr += sizeof(struct inotify_event) + event->len;
               }
             }
@@ -476,7 +475,7 @@ int mutt_monitor_add(struct Mailbox *m)
     goto cleanup;
   }
 
-  uint32_t mask = info.isdir ? INOTIFY_MASK_DIR : INOTIFY_MASK_FILE;
+  uint32_t mask = info.is_dir ? INOTIFY_MASK_DIR : INOTIFY_MASK_FILE;
   if (((INotifyFd == -1) && (monitor_init() == -1)) ||
       ((desc = inotify_add_watch(INotifyFd, info.path, mask)) == -1))
   {
@@ -517,7 +516,7 @@ int mutt_monitor_remove(struct Mailbox *m)
   if (!m)
   {
     MonitorContextDescriptor = -1;
-    MonitorContextChanged = 0;
+    MonitorContextChanged = false;
   }
 
   if (monitor_resolve(&info, m) != RESOLVE_RES_OK_EXISTING)

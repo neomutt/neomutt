@@ -23,8 +23,8 @@
 #ifndef MUTT_MONITOR_H
 #define MUTT_MONITOR_H
 
-extern int MonitorFilesChanged;   ///< true after a monitored file has changed
-extern int MonitorContextChanged; ///< true after the current mailbox has changed
+extern bool MonitorFilesChanged;   ///< true after a monitored file has changed
+extern bool MonitorContextChanged; ///< true after the current mailbox has changed
 
 struct Mailbox;
 
