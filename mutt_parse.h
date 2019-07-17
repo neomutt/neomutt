@@ -23,7 +23,6 @@
 #ifndef MUTT_MUTT_PARSE_H
 #define MUTT_MUTT_PARSE_H
 
-struct Context;
 struct Email;
 struct Mailbox;
 

@@ -26,9 +26,11 @@
 
 #include <stddef.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include "format_flags.h"
 
 struct AttachCtx;
+struct Body;
 struct Email;
 
 /* These Config Variables are only used in recvattach.c */

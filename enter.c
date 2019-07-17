@@ -38,7 +38,6 @@
 #include "alias.h"
 #include "browser.h"
 #include "context.h"
-#include "core/lib.h"
 #include "curs_lib.h"
 #include "enter_state.h"
 #include "globals.h"

@@ -34,7 +34,6 @@
 #include "mutt/mutt.h"
 #include "address/lib.h"
 #include "config/lib.h"
-#include "email/lib.h"
 #include "mutt.h"
 #include "alias.h"
 #include "curs_lib.h"
@@ -45,7 +44,6 @@
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "opcodes.h"
-#include "sort.h"
 
 /* These Config Variables are only used in addrbook.c */
 char *C_AliasFormat; ///< Config: printf-like format string for the alias menu

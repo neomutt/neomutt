@@ -29,15 +29,16 @@
 #include "config.h"
 #include <stdio.h>
 #include <string.h>
+#include <sys/types.h>
 #include "mutt/mutt.h"
 #include "email/lib.h"
 #include "conn/conn.h"
+#include "mutt.h"
 #include "mutt_account.h"
 #include "curs_lib.h"
 #include "filter.h"
 #include "globals.h"
 #include "options.h"
-#include "pop/pop.h"
 
 /* These Config Variables are only used in mutt_account.c */
 char *C_ImapLogin; ///< Config: (imap) Login name for the IMAP server (defaults to #C_ImapUser)

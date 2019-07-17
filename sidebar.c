@@ -36,9 +36,9 @@
 #include <string.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
+#include "core/lib.h"
 #include "sidebar.h"
 #include "context.h"
-#include "core/lib.h"
 #include "curs_lib.h"
 #include "format_flags.h"
 #include "globals.h"
@@ -46,9 +46,7 @@
 #include "mutt_menu.h"
 #include "mutt_window.h"
 #include "muttlib.h"
-#include "mx.h"
 #include "opcodes.h"
-#include "sort.h"
 
 /* These Config Variables are only used in sidebar.c */
 short C_SidebarComponentDepth; ///< Config: (sidebar) Strip leading path components from sidebar folders

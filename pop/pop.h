@@ -24,6 +24,7 @@
 #define MUTT_POP_POP_H
 
 #include <stdbool.h>
+#include "core/lib.h"
 #include "mx.h"
 
 struct stat;

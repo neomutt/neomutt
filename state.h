@@ -23,9 +23,9 @@
 #ifndef MUTT_STATE_H
 #define MUTT_STATE_H
 
-#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <wchar.h>
 
 typedef uint8_t StateFlags;          ///< Flags for State->flags, e.g. #MUTT_DISPLAY
 #define MUTT_STATE_NO_FLAGS       0  ///< No flags are set

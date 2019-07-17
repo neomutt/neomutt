@@ -25,9 +25,9 @@
 
 #include <stddef.h>
 
-struct Context;
 struct Email;
 struct EmailList;
+struct Mailbox;
 
 void mutt_edit_headers(const char *editor, const char *body, struct Email *e, char *fcc, size_t fcclen);
 void mutt_label_hash_add(struct Mailbox *m, struct Email *e);

@@ -28,6 +28,7 @@
 
 #include "config.h"
 #include <libunwind.h>
+#include <stdio.h>
 #include "mutt/mutt.h"
 
 /**

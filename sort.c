@@ -34,17 +34,16 @@
 #include "mutt/mutt.h"
 #include "address/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "sort.h"
 #include "alias.h"
 #include "context.h"
-#include "core/lib.h"
 #include "globals.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "options.h"
 #include "score.h"
 #ifdef USE_NNTP
-#include "mx.h"
 #include "nntp/nntp.h"
 #endif
 

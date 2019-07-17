@@ -27,7 +27,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -35,10 +34,10 @@
 #include <string.h>
 #include "mutt/mutt.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "mutt.h"
 #include "color.h"
 #include "context.h"
-#include "core/lib.h"
 #include "globals.h"
 #include "keymap.h"
 #include "mutt_commands.h"
@@ -46,6 +45,9 @@
 #include "mutt_menu.h"
 #include "options.h"
 #include "pattern.h"
+#ifdef USE_SLANG_CURSES
+#include <assert.h>
+#endif
 
 /* globals */
 int *ColorQuote = NULL;

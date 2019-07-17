@@ -43,12 +43,11 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <time.h>
+#include "core/lib.h"
 #include "format_flags.h"
 #include "mx.h"
 
 struct ConnAccount;
-struct Context;
-struct Mailbox;
 struct stat;
 
 /* These Config Variables are only used in nntp/nntp.c */

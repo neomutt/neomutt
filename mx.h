@@ -26,15 +26,14 @@
 #define MUTT_MX_H
 
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <time.h>
 #include "config/lib.h"
-#include "hcache/hcache.h"
 #include "core/lib.h"
 
 struct Email;
 struct Context;
-struct Mailbox;
 struct stat;
 
 /* These Config Variables are only used in mx.c */

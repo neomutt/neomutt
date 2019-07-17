@@ -24,6 +24,7 @@
 #ifndef MUTT_MUTT_H
 #define MUTT_MUTT_H
 
+#include "config.h"
 #include <stddef.h>
 #include <limits.h>
 #include <regex.h>

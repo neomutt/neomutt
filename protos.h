@@ -24,20 +24,20 @@
 #ifndef MUTT_PROTOS_H
 #define MUTT_PROTOS_H
 
+#include "config.h"
 #include <stddef.h>
+#include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <time.h>
-#include "config/lib.h"
 #include "mutt.h"
 #include "ncrypt/ncrypt.h"
 
 struct Context;
-struct EnterState;
-struct Envelope;
 struct Email;
 struct EmailList;
+struct EnterState;
 struct Mailbox;
+struct NotifyCallback;
 
 /**
  * enum XdgType - XDG variable types

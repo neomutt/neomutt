@@ -26,12 +26,12 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include "config/lib.h"
 #include "mutt.h"
 #include "browser.h"
 #include "pager.h"
 
-struct Context;
-struct Pager;
+struct Buffer;
 
 /* These Config Variables are only used in curs_lib.c */
 extern bool C_MetaKey; /**< interpret ALT-x as ESC-x */

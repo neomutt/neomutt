@@ -24,7 +24,6 @@
 #define MUTT_PROGRESS_H
 
 #include <stdio.h>
-#include "mutt/mutt.h"
 
 /* These Config Variables are only used in progress.c */
 extern short C_TimeInc;

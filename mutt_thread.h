@@ -28,6 +28,7 @@
 
 struct Context;
 struct Email;
+struct EmailList;
 struct Mailbox;
 struct MuttThread;
 

@@ -33,17 +33,15 @@
 #include <lua.h>
 #include <lualib.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/lib.h"
 #include "mutt.h"
 #include "mutt_lua.h"
 #include "globals.h"
 #include "mutt_commands.h"
-#include "mutt_options.h"
 #include "muttlib.h"
-#include "mx.h"
 #include "myvar.h"
 
 /**

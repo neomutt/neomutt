@@ -39,7 +39,6 @@
 #include <string.h>
 #include "mutt/mutt.h"
 #include "email/lib.h"
-#include "mutt.h"
 #include "rfc1524.h"
 #include "globals.h"
 #include "mutt_attach.h"

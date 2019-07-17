@@ -24,12 +24,9 @@
 #define MUTT_CONTEXT_H
 
 #include <stdbool.h>
-#include <stdio.h>
 #include <sys/types.h>
-#include <time.h>
-#include "core/lib.h"
-#include "pattern.h"
 
+struct Email;
 struct EmailList;
 struct NotifyCallback;
 

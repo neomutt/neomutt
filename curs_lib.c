@@ -44,24 +44,19 @@
 #include <wchar.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/lib.h"
 #include "mutt.h"
 #include "curs_lib.h"
 #include "browser.h"
-#include "context.h"
-#include "core/lib.h"
 #include "enter_state.h"
 #include "globals.h"
 #include "mutt_curses.h"
 #include "mutt_logging.h"
 #include "mutt_menu.h"
 #include "mutt_window.h"
-#include "muttlib.h"
 #include "opcodes.h"
 #include "options.h"
 #include "pager.h"
 #include "protos.h"
-#include "sidebar.h"
 #ifdef HAVE_ISWBLANK
 #include <wctype.h>
 #endif

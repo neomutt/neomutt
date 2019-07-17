@@ -23,10 +23,13 @@
 #ifndef MUTT_BROWSER_H
 #define MUTT_BROWSER_H
 
+#include "config.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <sys/types.h>
 #include <time.h>
+
+struct Buffer;
 
 /* These Config Variables are only used in browser.c */
 extern bool  C_BrowserAbbreviateMailboxes;

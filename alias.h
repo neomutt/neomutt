@@ -27,7 +27,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "mutt/mutt.h"
-#include "address/address.h"
+#include "address/lib.h"
 
 struct Envelope;
 

@@ -51,13 +51,13 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <sys/types.h>
+#include "core/lib.h"
 #include "mx.h"
 
 struct BrowserState;
 struct Buffer;
 struct ConnAccount;
 struct EmailList;
-struct Mailbox;
 struct PatternHead;
 struct stat;
 

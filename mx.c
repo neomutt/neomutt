@@ -32,23 +32,20 @@
 #include "config.h"
 #include <errno.h>
 #include <limits.h>
-#include <pwd.h>
 #include <stdbool.h>
-#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
-#include <utime.h>
 #include "mutt/mutt.h"
 #include "address/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "mutt.h"
 #include "mx.h"
 #include "alias.h"
 #include "context.h"
 #include "copy.h"
-#include "core/lib.h"
 #include "globals.h"
 #include "hook.h"
 #include "keymap.h"
@@ -57,18 +54,11 @@
 #include "mutt_header.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
-#include "mutt_thread.h"
 #include "muttlib.h"
-#include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
-#include "pattern.h"
 #include "protos.h"
-#include "score.h"
 #include "sort.h"
-#ifdef USE_SIDEBAR
-#include "sidebar.h"
-#endif
 #ifdef USE_COMPRESSED
 #include "compress.h"
 #endif

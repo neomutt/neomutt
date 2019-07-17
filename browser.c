@@ -40,20 +40,18 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <time.h>
-#include <unistd.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "browser.h"
 #include "context.h"
-#include "core/lib.h"
 #include "curs_lib.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "keymap.h"
-#include "maildir/lib.h"
 #include "mutt_attach.h"
 #include "mutt_mailbox.h"
 #include "mutt_menu.h"
@@ -63,15 +61,11 @@
 #include "opcodes.h"
 #include "options.h"
 #include "sendlib.h"
-#include "sort.h"
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif
 #ifdef USE_NNTP
 #include "nntp/nntp.h"
-#endif
-#ifdef USE_POP
-#include "pop/pop.h"
 #endif
 
 /* These Config Variables are only used in browser.c */

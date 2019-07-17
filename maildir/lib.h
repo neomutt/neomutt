@@ -38,11 +38,10 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
-#include "config/lib.h"
-#include "mx.h"
+#include "core/lib.h"
 #include "hcache/hcache.h"
+#include "mx.h"
 
-struct Mailbox;
 struct Email;
 
 /* These Config Variables are only used in maildir/maildir.c */

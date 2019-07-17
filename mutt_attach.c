@@ -30,7 +30,6 @@
 #include "config.h"
 #include <errno.h>
 #include <fcntl.h>
-#include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -39,11 +38,10 @@
 #include "mutt/mutt.h"
 #include "config/lib.h"
 #include "email/lib.h"
-#include "mutt.h"
+#include "core/lib.h"
 #include "mutt_attach.h"
 #include "context.h"
 #include "copy.h"
-#include "core/lib.h"
 #include "curs_lib.h"
 #include "filter.h"
 #include "globals.h"

@@ -24,9 +24,9 @@
 #define MUTT_RFC1524_H
 
 #include <stdbool.h>
-#include <stddef.h>
 
 struct Body;
+struct Buffer;
 
 /* These Config Variables are only used in rfc1524.c */
 extern bool C_MailcapSanitize;

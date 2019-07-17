@@ -35,12 +35,10 @@
 #include <time.h>
 #include "mutt/mutt.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "mutt.h"
 #include "alias.h"
-#include "context.h"
-#include "core/lib.h"
 #include "curs_lib.h"
-#include "globals.h"
 #include "index.h"
 #include "muttlib.h"
 #include "ncrypt/ncrypt.h"

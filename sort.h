@@ -25,7 +25,6 @@
 #define MUTT_SORT_H
 
 #include <stdbool.h>
-#include "mutt/mutt.h"
 #include "config/lib.h"
 #include "options.h"
 #include "where.h"

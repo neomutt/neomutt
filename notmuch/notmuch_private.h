@@ -23,9 +23,8 @@
 #include <notmuch.h>
 #include <stdbool.h>
 #include <time.h>
-#include "config/lib.h"
-#include "progress.h"
 #include "core/lib.h"
+#include "progress.h"
 
 #ifndef MUTT_NOTMUCH_NOTMUCH_PRIVATE_H
 #define MUTT_NOTMUCH_NOTMUCH_PRIVATE_H
@@ -42,8 +41,6 @@
     LIBNOTMUCH_MINOR_VERSION == (minor) && LIBNOTMUCH_MICRO_VERSION >= (micro)))
 
 extern const int NmUriProtocolLen;
-
-struct Mailbox;
 
 /**
  * struct NmAccountData - Notmuch-specific Account data - @extends Account

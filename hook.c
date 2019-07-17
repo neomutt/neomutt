@@ -41,6 +41,7 @@
 #include "hook.h"
 #include "alias.h"
 #include "context.h"
+#include "format_flags.h"
 #include "globals.h"
 #include "hdrline.h"
 #include "mutt_attach.h"
@@ -52,8 +53,6 @@
 #ifdef USE_COMPRESSED
 #include "compress.h"
 #endif
-
-struct Context;
 
 /* These Config Variables are only used in hook.c */
 char *C_DefaultHook; ///< Config: Pattern to use for hooks that only have a simple regex

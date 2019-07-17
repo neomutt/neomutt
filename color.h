@@ -23,6 +23,9 @@
 #ifndef MUTT_COLOR_H
 #define MUTT_COLOR_H
 
+#include <stdint.h>
+#include "mutt_commands.h"
+
 struct Buffer;
 
 void ci_start_color(void);

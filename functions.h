@@ -23,6 +23,8 @@
 #ifndef MUTT_FUNCTIONS_H
 #define MUTT_FUNCTIONS_H
 
+#include "config.h"
+
 /*
  * This file contains the structures needed to parse "bind" commands, as
  * well as the default bindings for each menu.

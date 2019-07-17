@@ -36,10 +36,10 @@
 
 #include <stddef.h>
 #include <stdbool.h>
+#include "core/lib.h"
 #include "mx.h"
 
 struct Email;
-struct Mailbox;
 struct NmMboxData;
 struct stat;
 

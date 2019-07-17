@@ -35,12 +35,11 @@
 #include <string.h>
 #include "imap/imap_private.h"
 #include "mutt/mutt.h"
-#include "config/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "browser.h"
-#include "core/lib.h"
 #include "curs_lib.h"
 #include "globals.h"
 #include "imap/imap.h"

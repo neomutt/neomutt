@@ -24,8 +24,13 @@
 #define MUTT_MUTT_LOGGING_H
 
 #include <stdbool.h>
+#include <stdint.h>
 #include <time.h>
-#include "config/lib.h"
+
+struct Buffer;
+struct ConfigDef;
+struct ConfigSet;
+struct NotifyCallback;
 
 extern short C_DebugLevel;
 extern char *C_DebugFile;

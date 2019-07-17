@@ -28,6 +28,7 @@
 struct AttachCtx;
 struct Body;
 struct Email;
+struct Mailbox;
 
 /* These Config Variables are only used in recvcmd.c */
 extern unsigned char C_MimeForwardRest;

@@ -31,6 +31,7 @@
 struct Address;
 struct Context;
 struct Email;
+struct Mailbox;
 
 /* These Config Variables are only used in hdrline.c */
 extern struct MbTable *C_CryptChars;

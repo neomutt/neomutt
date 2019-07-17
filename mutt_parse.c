@@ -38,8 +38,6 @@
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 
-struct Context;
-
 #define MUTT_PARTS_TOPLEVEL (1 << 0) /* is the top-level part */
 
 /**

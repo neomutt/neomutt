@@ -24,12 +24,13 @@
 #ifndef MUTT_PATTERN_H
 #define MUTT_PATTERN_H
 
+#include "config.h"
 #include <regex.h>
 #include <stdbool.h>
-#include <stddef.h>
+#include <stdint.h>
+#include "mutt/mutt.h"
 #include "mutt.h"
 
-struct Buffer;
 struct Email;
 struct Envelope;
 struct Mailbox;

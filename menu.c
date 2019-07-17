@@ -33,12 +33,13 @@
 #include <string.h>
 #include <wchar.h>
 #include "mutt/mutt.h"
+#include "config/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "mutt.h"
 #include "color.h"
 #include "commands.h"
 #include "context.h"
-#include "core/lib.h"
 #include "curs_lib.h"
 #include "globals.h"
 #include "keymap.h"

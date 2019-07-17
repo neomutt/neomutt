@@ -11,20 +11,22 @@ IncludeCategories:
   - Regex:      '"acutest\.h"'
     Priority:   -12
   - Regex:      '"config\.h"'
-    Priority:   -10
+    Priority:   -11
   - Regex:      '<stddef\.h>'
-    Priority:   -9
+    Priority:   -10
   - Regex:      '<.*>'
-    Priority:   -8
+    Priority:   -9
   - Regex:      '".*_private\.h"'
-    Priority:   -7
+    Priority:   -8
   - Regex:      '"mutt/.*\.h"'
-    Priority:   -6
+    Priority:   -7
   - Regex:      '"address/.*\.h"'
-    Priority:   -5
+    Priority:   -6
   - Regex:      '"config/.*\.h"'
-    Priority:   -4
+    Priority:   -5
   - Regex:      '"email/.*\.h"'
+    Priority:   -4
+  - Regex:      '"core/.*\.h"'
     Priority:   -3
   - Regex:      '"conn/.*\.h"'
     Priority:   -2

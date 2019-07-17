@@ -28,13 +28,12 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include "mutt.h"
 #include "format_flags.h"
 #include "mutt_attach.h"
 
 struct Address;
 struct Body;
-
+struct Buffer;
 struct passwd;
 struct stat;
 

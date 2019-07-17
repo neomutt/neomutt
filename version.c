@@ -36,12 +36,8 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "address/lib.h"
-#include "email/lib.h"
 #include "mutt_curses.h"
 #include "ncrypt/crypt_gpgme.h"
-#ifdef USE_INOTIFY
-#include "monitor.h"
-#endif
 
 /* #include "protos.h" */
 const char *mutt_make_version(void);

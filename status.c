@@ -27,17 +27,18 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include "mutt/mutt.h"
-#include "context.h"
+#include "config/lib.h"
 #include "core/lib.h"
+#include "context.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "mutt_mailbox.h"
 #include "mutt_menu.h"
 #include "mutt_window.h"
 #include "muttlib.h"
-#include "mx.h"
 #include "options.h"
 #include "protos.h"
 #include "sort.h"

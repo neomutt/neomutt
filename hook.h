@@ -23,6 +23,7 @@
 #ifndef MUTT_HOOK_H
 #define MUTT_HOOK_H
 
+#include "config.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>

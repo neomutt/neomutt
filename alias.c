@@ -29,7 +29,6 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <errno.h>
 #include <pwd.h>
 #include <stdbool.h>
 #include <stdio.h>

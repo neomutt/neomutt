@@ -36,12 +36,11 @@
 #include <time.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
-#include "config/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "mutt.h"
 #include "context.h"
 #include "copy.h"
-#include "core/lib.h"
 #include "curs_lib.h"
 #include "globals.h"
 #include "muttlib.h"

@@ -40,10 +40,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
-#include "config/lib.h"
-#include "compress.h"
-#include "context.h"
 #include "core/lib.h"
+#include "compress.h"
 #include "curs_lib.h"
 #include "format_flags.h"
 #include "globals.h"

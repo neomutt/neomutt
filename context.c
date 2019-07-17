@@ -30,6 +30,7 @@
 #include <string.h>
 #include "mutt/mutt.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "context.h"
 #include "globals.h"
 #include "mutt_header.h"

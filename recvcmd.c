@@ -57,6 +57,8 @@
 #include <libintl.h>
 #endif
 
+struct Mailbox;
+
 /* These Config Variables are only used in recvcmd.c */
 unsigned char C_MimeForwardRest; ///< Config: Forward all attachments, even if they can't be decoded
 

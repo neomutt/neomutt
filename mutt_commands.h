@@ -23,6 +23,8 @@
 #ifndef MUTT_MUTT_COMMANDS_H
 #define MUTT_MUTT_COMMANDS_H
 
+#include <stdint.h>
+
 struct Buffer;
 
 /**

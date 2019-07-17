@@ -5,8 +5,8 @@
 #include <time.h>
 #include <utime.h>
 #include "mutt/mutt.h"
-#include "mutt_mailbox.h"
 #include "core/lib.h"
+#include "mutt_mailbox.h"
 #include "globals.h"
 #include "mutt_menu.h"
 #include "mutt_window.h"

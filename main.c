@@ -34,10 +34,12 @@
 
 #include "config.h"
 #include <errno.h>
+#include <getopt.h>
 #include <limits.h>
 #include <locale.h>
 #include <pwd.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -47,19 +49,20 @@
 #include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "alias.h"
 #include "browser.h"
 #include "color.h"
 #include "context.h"
-#include "core/lib.h"
 #include "curs_lib.h"
 #include "globals.h"
 #include "hook.h"
 #include "index.h"
 #include "keymap.h"
 #include "mutt_attach.h"
+#include "mutt_commands.h"
 #include "mutt_curses.h"
 #include "mutt_history.h"
 #include "mutt_logging.h"

@@ -25,9 +25,10 @@
 #define MUTT_COMPRESS_H
 
 #include <stdbool.h>
+#include <stdio.h>
 #include "mx.h"
 
-struct Context;
+struct Mailbox;
 
 /**
  * struct CompressInfo - Private data for compress

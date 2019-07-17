@@ -23,19 +23,19 @@
 #ifndef MUTT_MENU_H
 #define MUTT_MENU_H
 
+#include "config.h"
 #include <regex.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
-#include "config/lib.h"
 #include "keymap.h"
+
+struct NotifyCallback;
 
 /* These Config Variables are only used in menu.c */
 extern short C_MenuContext;
 extern bool  C_MenuMoveOff;
 extern bool  C_MenuScroll;
-
-struct ConfigSet;
-struct HashElem;
 
 typedef uint16_t MuttRedrawFlags;      ///< Flags, e.g. #REDRAW_INDEX
 #define REDRAW_NO_FLAGS             0  ///< No flags are set

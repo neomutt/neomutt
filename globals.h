@@ -23,10 +23,10 @@
 #ifndef MUTT_GLOBALS_H
 #define MUTT_GLOBALS_H
 
+#include "config.h"
 #include <signal.h>
 #include <stdbool.h>
 #include "mutt/mutt.h"
-#include "config/lib.h"
 #include "where.h"
 
 #ifdef MAIN_C

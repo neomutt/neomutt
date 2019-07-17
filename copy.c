@@ -34,12 +34,11 @@
 #include <string.h>
 #include "mutt/mutt.h"
 #include "address/lib.h"
-#include "config/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "mutt.h"
 #include "copy.h"
 #include "context.h"
-#include "core/lib.h"
 #include "globals.h"
 #include "handler.h"
 #include "hdrline.h"
@@ -51,6 +50,9 @@
 #include "state.h"
 #ifdef USE_NOTMUCH
 #include "notmuch/mutt_notmuch.h"
+#endif
+#ifdef ENABLE_NLS
+#include <libintl.h>
 #endif
 
 static int address_header_decode(char **h);

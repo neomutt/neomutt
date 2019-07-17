@@ -40,16 +40,17 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/utsname.h>
+#include <time.h>
 #include <unistd.h>
 #include <wchar.h>
 #include "mutt/mutt.h"
 #include "address/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "mutt.h"
 #include "init.h"
 #include "alias.h"
 #include "context.h"
-#include "core/lib.h"
 #include "filter.h"
 #include "hcache/hcache.h"
 #include "keymap.h"
@@ -59,7 +60,6 @@
 #include "mutt_window.h"
 #include "mx.h"
 #include "myvar.h"
-#include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"
 #include "sidebar.h"

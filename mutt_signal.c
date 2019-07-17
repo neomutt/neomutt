@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <stddef.h>
 #include <errno.h>
 #include <signal.h>
 #include "mutt/mutt.h"

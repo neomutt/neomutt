@@ -37,10 +37,9 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <time.h>
-#include "config/lib.h"
+#include "core/lib.h"
 #include "mx.h"
 
-struct Mailbox;
 struct stat;
 
 /**

@@ -27,8 +27,10 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include "mutt/mutt.h"
+#include "config/lib.h"
 #include "mutt.h"
 #include "curs_lib.h"
 #include "format_flags.h"

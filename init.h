@@ -24,15 +24,19 @@
 #ifndef MUTT_INIT_H
 #define MUTT_INIT_H
 
+#include "config.h"
 #ifdef _MAKEDOC
 #include "config.h"
 #include "doc/makedoc_defs.h"
 #else
 #include <stddef.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include "mutt/mutt.h"
 #include "address/lib.h"
 #include "config/lib.h"
+#include "email/lib.h"
+#include "core/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "addrbook.h"
@@ -45,17 +49,16 @@
 #include "edit.h"
 #include "globals.h"
 #include "handler.h"
+#include "hcache/hcache.h"
 #include "hdrline.h"
 #include "hook.h"
 #include "imap/imap.h"
 #include "index.h"
 #include "keymap.h"
-#include "core/lib.h"
 #include "maildir/lib.h"
 #include "main.h"
 #include "mutt_account.h"
 #include "mutt_commands.h"
-#include "mutt_history.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "mutt_menu.h"
@@ -65,12 +68,10 @@
 #include "ncrypt/ncrypt.h"
 #include "nntp/nntp.h"
 #include "notmuch/mutt_notmuch.h"
-#include "options.h"
 #include "pager.h"
 #include "pattern.h"
 #include "pop/pop.h"
 #include "progress.h"
-#include "protos.h"
 #include "query.h"
 #include "recvattach.h"
 #include "recvcmd.h"

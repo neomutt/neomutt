@@ -28,14 +28,10 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <time.h>
-#include "config/lib.h"
 #include "core/lib.h"
 
-struct Account;
 struct Buffer;
-struct Context;
 struct Email;
-struct Mailbox;
 struct Message;
 struct Progress;
 

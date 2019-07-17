@@ -33,12 +33,12 @@
 #include <string.h>
 #include <sys/stat.h>
 #include "mutt/mutt.h"
+#include "core/lib.h"
 #include "globals.h"
 #include "muttlib.h"
 #include "options.h"
 #ifdef USE_IMAP
 #include "imap/imap.h"
-#include "mx.h"
 #endif
 #ifdef USE_NNTP
 #include "nntp/nntp.h"

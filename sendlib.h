@@ -26,16 +26,12 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include "email/lib.h"
 #include "copy.h"
 
-struct Address;
 struct AddressList;
-struct Body;
-struct Email;
-struct Envelope;
 struct ListHead;
 struct Mailbox;
-struct ParameterList;
 
 /* These Config Variables are only used in sendlib.c */
 extern bool  C_Allow8bit;

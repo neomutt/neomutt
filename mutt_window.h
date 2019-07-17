@@ -23,6 +23,7 @@
 #ifndef MUTT_MUTT_WINDOW_H
 #define MUTT_MUTT_WINDOW_H
 
+#include "config.h"
 #include "mutt_curses.h"
 
 /**

@@ -48,14 +48,11 @@
 #include "mutt/mutt.h"
 #include "config/lib.h"
 #include "email/lib.h"
-#include "mutt.h"
-#include "context.h"
-#include "copy.h"
 #include "core/lib.h"
+#include "mutt.h"
+#include "copy.h"
 #include "globals.h"
 #include "hcache/hcache.h"
-#include "lib.h"
-#include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "progress.h"
@@ -64,8 +61,6 @@
 #ifdef USE_NOTMUCH
 #include "notmuch/mutt_notmuch.h"
 #endif
-
-struct Account;
 
 /* These Config Variables are only used in maildir/mh.c */
 bool C_CheckNew; ///< Config: (maildir,mh) Check for new mail while the mailbox is open
@@ -859,36 +854,6 @@ int mh_read_dir(struct Mailbox *m, const char *subdir)
 }
 
 /**
- * maildir_mh_open_message - Open a Maildir or MH message
- * @param m          Mailbox
- * @param msg        Message to open
- * @param msgno      Index number
- * @param is_maildir true, if a Maildir
- * @retval  0 Success
- * @retval -1 Failure
- */
-int maildir_mh_open_message(struct Mailbox *m, struct Message *msg, int msgno, bool is_maildir)
-{
-  struct Email *e = m->emails[msgno];
-  char path[PATH_MAX];
-
-  snprintf(path, sizeof(path), "%s/%s", mutt_b2s(m->pathbuf), e->path);
-
-  msg->fp = fopen(path, "r");
-  if (!msg->fp && (errno == ENOENT) && is_maildir)
-    msg->fp = maildir_open_find_message(mutt_b2s(m->pathbuf), e->path, NULL);
-
-  if (!msg->fp)
-  {
-    mutt_perror(path);
-    mutt_debug(LL_DEBUG1, "fopen: %s: %s (errno %d)\n", path, strerror(errno), errno);
-    return -1;
-  }
-
-  return 0;
-}
-
-/**
  * mh_commit_msg - Commit a message to an MH folder
  * @param m   Mailbox
  * @param msg Message to commit
@@ -1546,6 +1511,36 @@ cleanup:
   mutt_buffer_pool_release(&unique);
 
   return fp;
+}
+
+/**
+ * maildir_mh_open_message - Open a Maildir or MH message
+ * @param m          Mailbox
+ * @param msg        Message to open
+ * @param msgno      Index number
+ * @param is_maildir true, if a Maildir
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
+int maildir_mh_open_message(struct Mailbox *m, struct Message *msg, int msgno, bool is_maildir)
+{
+  struct Email *e = m->emails[msgno];
+  char path[PATH_MAX];
+
+  snprintf(path, sizeof(path), "%s/%s", mutt_b2s(m->pathbuf), e->path);
+
+  msg->fp = fopen(path, "r");
+  if (!msg->fp && (errno == ENOENT) && is_maildir)
+    msg->fp = maildir_open_find_message(mutt_b2s(m->pathbuf), e->path, NULL);
+
+  if (!msg->fp)
+  {
+    mutt_perror(path);
+    mutt_debug(LL_DEBUG1, "fopen: %s: %s (errno %d)\n", path, strerror(errno), errno);
+    return -1;
+  }
+
+  return 0;
 }
 
 /**

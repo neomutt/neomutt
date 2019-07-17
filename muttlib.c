@@ -46,7 +46,7 @@
 #include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
-#include "conn/conn.h"
+#include "core/lib.h"
 #include "mutt.h"
 #include "muttlib.h"
 #include "alias.h"

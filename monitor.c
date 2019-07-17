@@ -38,13 +38,11 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "core/lib.h"
 #include "monitor.h"
 #include "context.h"
-#include "core/lib.h"
 #include "curs_lib.h"
 #include "globals.h"
-#include "mutt_curses.h"
-#include "mx.h"
 
 int MonitorFilesChanged = 0;
 int MonitorContextChanged = 0;

@@ -31,6 +31,7 @@
 #include "config.h"
 #include <errno.h>
 #include <limits.h>
+#include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -40,12 +41,11 @@
 #include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
-#include "conn/conn.h"
+#include "core/lib.h"
 #include "mutt.h"
 #include "alias.h"
 #include "context.h"
 #include "copy.h"
-#include "core/lib.h"
 #include "curs_lib.h"
 #include "filter.h"
 #include "format_flags.h"
@@ -54,6 +54,7 @@
 #include "hook.h"
 #include "icommands.h"
 #include "keymap.h"
+#include "mutt_commands.h"
 #include "mutt_curses.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
