@@ -3253,7 +3253,7 @@ int mutt_index_menu(void)
           break;
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_tagged(&el, Context, CUR_EMAIL, tag);
-        crypt_extract_keys_from_messages(&el);
+        crypt_extract_keys_from_messages(Context->mailbox, &el);
         emaillist_clear(&el);
         menu->redraw = REDRAW_FULL;
         break;

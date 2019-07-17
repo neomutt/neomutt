@@ -3509,7 +3509,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         CHECK_MODE(IsEmail(extra));
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_email(&el, extra->email);
-        crypt_extract_keys_from_messages(&el);
+        crypt_extract_keys_from_messages(Context->mailbox, &el);
         emaillist_clear(&el);
         pager_menu->redraw = REDRAW_FULL;
         break;

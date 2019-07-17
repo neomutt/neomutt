@@ -59,6 +59,7 @@ struct Body;
 struct Envelope;
 struct Email;
 struct EmailList;
+struct Mailbox;
 struct State;
 
 /* These Config Variables are only used in ncrypt/crypt.c */
@@ -182,7 +183,7 @@ typedef uint16_t KeyFlags;                  ///< Flags describing PGP/SMIME keys
 #define KEYFLAG_ABILITIES (KEYFLAG_CANSIGN | KEYFLAG_CANENCRYPT | KEYFLAG_PREFER_ENCRYPTION | KEYFLAG_PREFER_SIGNING)
 
 /* crypt.c */
-void         crypt_extract_keys_from_messages(struct EmailList *el);
+void         crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailList *el);
 void         crypt_forget_passphrase(void);
 int          crypt_get_keys(struct Email *e, char **keylist, bool oppenc_mode);
 void         crypt_opportunistic_encrypt(struct Email *e);

@@ -810,11 +810,12 @@ void crypt_convert_to_7bit(struct Body *a)
 
 /**
  * crypt_extract_keys_from_messages - Extract keys from a message
+ * @param m  Mailbox
  * @param el List of Emails to process
  *
  * The extracted keys will be added to the user's keyring.
  */
-void crypt_extract_keys_from_messages(struct EmailList *el)
+void crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailList *el)
 {
   if (!WithCrypto)
     return;
@@ -837,7 +838,7 @@ void crypt_extract_keys_from_messages(struct EmailList *el)
   {
     struct Email *e = en->email;
 
-    mutt_parse_mime_message(Context->mailbox, e);
+    mutt_parse_mime_message(m, e);
     if (e->security & SEC_ENCRYPT && !crypt_valid_passphrase(e->security))
     {
       mutt_file_fclose(&fp_out);
@@ -846,8 +847,7 @@ void crypt_extract_keys_from_messages(struct EmailList *el)
 
     if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & APPLICATION_PGP))
     {
-      mutt_copy_message(fp_out, Context->mailbox, e,
-                        MUTT_CM_DECODE | MUTT_CM_CHARCONV, CH_NO_FLAGS);
+      mutt_copy_message(fp_out, m, e, MUTT_CM_DECODE | MUTT_CM_CHARCONV, CH_NO_FLAGS);
       fflush(fp_out);
 
       mutt_endwin();
@@ -859,12 +859,11 @@ void crypt_extract_keys_from_messages(struct EmailList *el)
     {
       if (e->security & SEC_ENCRYPT)
       {
-        mutt_copy_message(fp_out, Context->mailbox, e,
-                          MUTT_CM_NOHEADER | MUTT_CM_DECODE_CRYPT | MUTT_CM_DECODE_SMIME,
+        mutt_copy_message(fp_out, m, e, MUTT_CM_NOHEADER | MUTT_CM_DECODE_CRYPT | MUTT_CM_DECODE_SMIME,
                           CH_NO_FLAGS);
       }
       else
-        mutt_copy_message(fp_out, Context->mailbox, e, MUTT_CM_NO_FLAGS, CH_NO_FLAGS);
+        mutt_copy_message(fp_out, m, e, MUTT_CM_NO_FLAGS, CH_NO_FLAGS);
       fflush(fp_out);
 
       char *mbox = NULL;
