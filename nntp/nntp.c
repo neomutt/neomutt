@@ -45,7 +45,6 @@
 #include "mutt.h"
 #include "nntp.h"
 #include "bcache.h"
-#include "context.h"
 #include "curs_lib.h"
 #include "globals.h"
 #include "hcache/hcache.h"
@@ -2139,13 +2138,6 @@ int nntp_check_new_groups(struct Mailbox *m, struct NntpAccountData *adata)
           update_active = true;
       }
     }
-    /* select current newsgroup */
-    if (Context && (Context->mailbox->magic == MUTT_NNTP))
-    {
-      buf[0] = '\0';
-      if (nntp_query(Context->mailbox->mdata, buf, sizeof(buf)) < 0)
-        return -1;
-    }
   }
   else if (adata->newgroups_time)
     return 0;
@@ -2155,8 +2147,8 @@ int nntp_check_new_groups(struct Mailbox *m, struct NntpAccountData *adata)
   if (nntp_date(adata, &now) < 0)
     return -1;
   tmp_mdata.adata = adata;
-  if (Context && (Context->mailbox->magic == MUTT_NNTP))
-    tmp_mdata.group = ((struct NntpMboxData *) Context->mailbox->mdata)->group;
+  if (m && m->mdata)
+    tmp_mdata.group = ((struct NntpMboxData *) m->mdata)->group;
   else
     tmp_mdata.group = NULL;
   i = adata->groups_num;

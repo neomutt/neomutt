@@ -30,11 +30,8 @@
 #include <stdio.h>
 #include "mutt/mutt.h"
 #include "email/lib.h"
-#include "core/lib.h"
 #include "browser.h"
-#include "context.h"
 #include "format_flags.h"
-#include "globals.h"
 #include "muttlib.h"
 #include "nntp.h"
 
@@ -108,12 +105,7 @@ const char *group_index_format_str(char *buf, size_t buflen, size_t col, int col
       break;
 
     case 'n':
-      if (Context && (Context->mailbox->mdata == folder->ff->nd))
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, Context->mailbox->msg_new);
-      }
-      else if (C_MarkOld && (folder->ff->nd->last_cached >= folder->ff->nd->first_message) &&
+      if (C_MarkOld && (folder->ff->nd->last_cached >= folder->ff->nd->first_message) &&
                (folder->ff->nd->last_cached <= folder->ff->nd->last_message))
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -139,11 +131,6 @@ const char *group_index_format_str(char *buf, size_t buflen, size_t col, int col
           mutt_expando_format(buf, buflen, col, cols, else_str,
                               group_index_format_str, data, flags);
         }
-      }
-      else if (Context && (Context->mailbox->mdata == folder->ff->nd))
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, Context->mailbox->msg_unread);
       }
       else
       {
