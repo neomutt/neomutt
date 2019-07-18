@@ -59,7 +59,6 @@ void mailbox_free(struct Mailbox **ptr)
 
   struct Mailbox *m = *ptr;
   mailbox_changed(m, MBN_CLOSED);
-  notify_free(&m->notify);
 
   if (m->mdata && m->free_mdata)
     m->free_mdata(&m->mdata);
@@ -67,6 +66,7 @@ void mailbox_free(struct Mailbox **ptr)
   mutt_buffer_free(&m->pathbuf);
   FREE(&m->name);
   FREE(&m->realpath);
+  notify_free(&m->notify);
 
   FREE(ptr);
 }

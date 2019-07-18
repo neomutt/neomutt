@@ -116,7 +116,6 @@ void account_free(struct Account **ptr)
     return;
 
   struct Account *a = *ptr;
-  notify_free(&a->notify);
 
   if (a->free_adata)
     a->free_adata(&a->adata);
@@ -124,6 +123,7 @@ void account_free(struct Account **ptr)
   account_mailbox_remove(a, NULL);
   cs_subset_free(&a->sub);
   FREE(&a->name);
+  notify_free(&a->notify);
 
   FREE(ptr);
 }
