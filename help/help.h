@@ -25,10 +25,8 @@
 #ifndef MUTT_HELP_HELP_H
 #define MUTT_HELP_HELP_H
 
-#include <stddef.h>
 #include <stdint.h>
 #include "mx.h"
-#include "vector.h"
 
 extern struct MxOps MxHelpOps;
 
@@ -41,12 +39,12 @@ typedef uint8_t HelpDocFlags;     ///< Types of Help Documents, e.g. #HELP_DOC_I
 #define HELP_DOC_SECTION (1 << 4) ///< Document is treated as help section
 
 /**
- * struct helpfile_header - Describes the header of a help file
+ * struct HelpFileHeader - Describes the header of a help file
  */
 struct HelpFileHeader
 {
-  char *key;
-  char *val;
+  char *key; ///< Name of header
+  char *val; ///< Value of header
 };
 
 /**
@@ -60,6 +58,6 @@ struct HelpDocMeta
 };
 
 void help_doclist_free(void);
-int help_doclist_init(void);
+int  help_doclist_init(void);
 
 #endif /* MUTT_HELP_HELP_H */
