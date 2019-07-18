@@ -42,7 +42,6 @@
 #include "email/lib.h"
 #include "mutt.h"
 #include "alias.h"
-#include "context.h"
 #include "copy.h"
 #include "crypt.h"
 #include "cryptglue.h"
@@ -1414,7 +1413,7 @@ void smime_class_invoke_import(char *infile, char *mailbox)
 /**
  * smime_class_verify_sender - Implements CryptModuleSpecs::smime_verify_sender()
  */
-int smime_class_verify_sender(struct Email *e)
+int smime_class_verify_sender(struct Mailbox *m, struct Email *e)
 {
   char *mbox = NULL, *certfile = NULL;
   char tempfname[PATH_MAX];
@@ -1430,11 +1429,11 @@ int smime_class_verify_sender(struct Email *e)
 
   if (e->security & SEC_ENCRYPT)
   {
-    mutt_copy_message(fp_out, Context->mailbox, e, MUTT_CM_DECODE_CRYPT & MUTT_CM_DECODE_SMIME,
+    mutt_copy_message(fp_out, m, e, MUTT_CM_DECODE_CRYPT & MUTT_CM_DECODE_SMIME,
                       CH_MIME | CH_WEED | CH_NONEWLINE);
   }
   else
-    mutt_copy_message(fp_out, Context->mailbox, e, MUTT_CM_NO_FLAGS, CH_NO_FLAGS);
+    mutt_copy_message(fp_out, m, e, MUTT_CM_NO_FLAGS, CH_NO_FLAGS);
 
   fflush(fp_out);
   mutt_file_fclose(&fp_out);

@@ -31,8 +31,9 @@
 
 struct AddressList;
 struct Body;
-struct Envelope;
 struct Email;
+struct Envelope;
+struct Mailbox;
 struct State;
 
 /**
@@ -59,7 +60,7 @@ int          smime_class_send_menu(struct Email *e);
 struct Body *smime_class_sign_message(struct Body *a);
 bool         smime_class_valid_passphrase(void);
 int          smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile);
-int          smime_class_verify_sender(struct Email *e);
+int          smime_class_verify_sender(struct Mailbox *m, struct Email *e);
 void         smime_class_void_passphrase(void);
 
 #endif /* MUTT_NCRYPT_SMIME_H */

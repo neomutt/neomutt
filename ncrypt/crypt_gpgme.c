@@ -5654,7 +5654,7 @@ static bool verify_sender(struct Email *e)
 /**
  * smime_gpgme_verify_sender - Implements CryptModuleSpecs::smime_verify_sender()
  */
-int smime_gpgme_verify_sender(struct Email *e)
+int smime_gpgme_verify_sender(struct Mailbox *m, struct Email *e)
 {
   return verify_sender(e);
 }

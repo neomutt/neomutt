@@ -185,11 +185,12 @@ struct CryptModuleSpecs
   void         (*smime_getkeys)(struct Envelope *env);
   /**
    * smime_verify_sender - Does the sender match the certificate?
+   * @param m Mailbox
    * @param e Email
    * @retval 0 Success
    * @retval 1 Failure
    */
-  int          (*smime_verify_sender)(struct Email *e);
+  int          (*smime_verify_sender)(struct Mailbox *m, struct Email *e);
   /**
    * smime_build_smime_entity - Encrypt the email body to all recipients
    * @param a        Body of email

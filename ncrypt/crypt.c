@@ -44,7 +44,6 @@
 #include "email/lib.h"
 #include "mutt.h"
 #include "alias.h"
-#include "context.h"
 #include "copy.h"
 #include "cryptglue.h"
 #include "curs_lib.h"
@@ -59,6 +58,8 @@
 #include "send.h"
 #include "sendlib.h"
 #include "state.h"
+
+struct Mailbox;
 
 /* These Config Variables are only used in ncrypt/crypt.c */
 bool C_CryptTimestamp; ///< Config: Add a timestamp to PGP or SMIME output to prevent spoofing

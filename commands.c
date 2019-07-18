@@ -311,7 +311,7 @@ int mutt_display_message(struct Email *e)
     {
       if (e->security & SEC_GOODSIGN)
       {
-        if (crypt_smime_verify_sender(e) == 0)
+        if (crypt_smime_verify_sender(Context->mailbox, e) == 0)
           mutt_message(_("S/MIME signature successfully verified"));
         else
           mutt_error(_("S/MIME certificate owner does not match sender"));

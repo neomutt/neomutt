@@ -30,6 +30,7 @@
 struct AddressList;
 struct Body;
 struct Email;
+struct Mailbox;
 struct State;
 
 void         pgp_gpgme_set_sender(const char *sender);
@@ -55,7 +56,7 @@ void         smime_gpgme_init(void);
 int          smime_gpgme_send_menu(struct Email *e);
 struct Body *smime_gpgme_sign_message(struct Body *a);
 int          smime_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile);
-int          smime_gpgme_verify_sender(struct Email *e);
+int          smime_gpgme_verify_sender(struct Mailbox *m, struct Email *e);
 
 const char  *mutt_gpgme_print_version(void);
 
