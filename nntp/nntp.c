@@ -122,7 +122,14 @@ static void nntp_adata_free(void **ptr)
     return;
 
   struct NntpAccountData *adata = *ptr;
+
+  mutt_file_fclose(&adata->fp_newsrc);
+  FREE(&adata->newsrc_file);
+  FREE(&adata->authenticators);
+  FREE(&adata->overview_fmt);
   FREE(&adata->conn);
+  FREE(&adata->groups_list);
+  mutt_hash_free(&adata->groups_hash);
   FREE(ptr);
 }
 
@@ -1741,7 +1748,7 @@ static int nntp_date(struct NntpAccountData *adata, time_t *now)
 {
   if (adata->hasDATE)
   {
-    struct NntpMboxData mdata;
+    struct NntpMboxData mdata = { 0 };
     char buf[1024];
     struct tm tm = { 0 };
 
@@ -2044,7 +2051,7 @@ int nntp_post(struct Mailbox *m, const char *msg)
  */
 int nntp_active_fetch(struct NntpAccountData *adata, bool mark_new)
 {
-  struct NntpMboxData tmp_mdata;
+  struct NntpMboxData tmp_mdata = { 0 };
   char msg[256];
   char buf[1024];
   unsigned int i;
@@ -2111,7 +2118,7 @@ int nntp_active_fetch(struct NntpAccountData *adata, bool mark_new)
  */
 int nntp_check_new_groups(struct Mailbox *m, struct NntpAccountData *adata)
 {
-  struct NntpMboxData tmp_mdata;
+  struct NntpMboxData tmp_mdata = { 0 };
   time_t now;
   char buf[1024];
   char *msg = _("Checking for new newsgroups...");
@@ -2527,7 +2534,9 @@ static int nntp_mbox_open(struct Mailbox *m)
 
   time(&adata->check_time);
   m->mdata = mdata;
-  m->free_mdata = nntp_mdata_free;
+  // Every known newsgroup has an mdata which is stored in adata->groups_list.
+  // Currently we don't let the Mailbox free the mdata.
+  // m->free_mdata = nntp_mdata_free;
   if (!mdata->bcache && (mdata->newsrc_ent || mdata->subscribed || C_SaveUnsubscribed))
     mdata->bcache = mutt_bcache_open(&adata->conn->account, mdata->group);
 
