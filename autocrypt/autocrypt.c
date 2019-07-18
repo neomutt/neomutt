@@ -310,31 +310,6 @@ cleanup:
   return rv;
 }
 
-static struct Address *matching_gossip_address(struct Envelope *env, const char *addr)
-{
-  struct Address *np = NULL;
-
-  TAILQ_FOREACH(np, &env->to, entries)
-  {
-    if (!mutt_str_strcasecmp(np->mailbox, addr))
-      return np;
-  }
-
-  TAILQ_FOREACH(np, &env->cc, entries)
-  {
-    if (!mutt_str_strcasecmp(np->mailbox, addr))
-      return np;
-  }
-
-  TAILQ_FOREACH(np, &env->reply_to, entries)
-  {
-    if (!mutt_str_strcasecmp(np->mailbox, addr))
-      return np;
-  }
-
-  return NULL;
-}
-
 int mutt_autocrypt_process_gossip_header(struct Email *hdr, struct Envelope *env)
 {
   struct AutocryptHeader *ac_hdr;
@@ -342,6 +317,7 @@ int mutt_autocrypt_process_gossip_header(struct Email *hdr, struct Envelope *env
   struct AutocryptPeer *peer = NULL;
   struct AutocryptGossipHistory *gossip_hist = NULL;
   struct Address *peer_addr;
+  struct Address ac_hdr_addr = { 0 };
   struct Buffer *keyid = NULL;
   int update_db = 0, insert_db = 0, insert_db_history = 0, import_gpg = 0;
   int rv = -1;
@@ -367,19 +343,37 @@ int mutt_autocrypt_process_gossip_header(struct Email *hdr, struct Envelope *env
 
   keyid = mutt_buffer_pool_get();
 
-  /* To ensure the address headers match the gossip header format */
-  mutt_env_to_intl(env, NULL, NULL);
+  struct AddressList recips = TAILQ_HEAD_INITIALIZER(recips);
+
+  /* Normalize the recipient list for comparison */
+  mutt_addrlist_copy(&recips, &env->to, false);
+  mutt_addrlist_copy(&recips, &env->cc, false);
+  mutt_addrlist_copy(&recips, &env->reply_to, false);
+  mutt_autocrypt_db_normalize_addrlist(&recips);
 
   for (ac_hdr = env->autocrypt_gossip; ac_hdr; ac_hdr = ac_hdr->next)
   {
     if (ac_hdr->invalid)
       continue;
 
-    peer_addr = matching_gossip_address(env, ac_hdr->addr);
+    /* normalize for comparison against recipient list */
+    mutt_str_replace(&ac_hdr_addr.mailbox, ac_hdr->addr);
+    ac_hdr_addr.is_intl = 1;
+    ac_hdr_addr.intl_checked = 1;
+    mutt_autocrypt_db_normalize_addr(&ac_hdr_addr);
+
+    /* Check to make sure the address is in the recipient list.  Since the
+     * addresses are normalized we use strcmp, not mutt_str_strcasecmp. */
+    TAILQ_FOREACH(peer_addr, &recips, entries)
+    {
+      if (!mutt_str_strcmp(peer_addr->mailbox, ac_hdr_addr.mailbox))
+        break;
+    }
+
     if (!peer_addr)
       continue;
 
-    if (mutt_autocrypt_db_peer_get(from, &peer) < 0)
+    if (mutt_autocrypt_db_peer_get(peer_addr, &peer) < 0)
       goto cleanup;
 
     if (peer)
@@ -446,6 +440,8 @@ int mutt_autocrypt_process_gossip_header(struct Email *hdr, struct Envelope *env
   rv = 0;
 
 cleanup:
+  FREE(&ac_hdr_addr.mailbox);
+  mutt_addrlist_clear(&recips);
   mutt_autocrypt_db_peer_free(&peer);
   mutt_autocrypt_db_gossip_history_free(&gossip_hist);
   mutt_buffer_pool_release(&keyid);

@@ -120,15 +120,24 @@ void mutt_autocrypt_db_close(void)
   AutocryptDB = NULL;
 }
 
-void mutt_autocrypt_db_normalize_addrlist(struct Address *addrlist)
+void mutt_autocrypt_db_normalize_addr(struct Address *a)
 {
-  struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-  mutt_addrlist_append(&al, addrlist);
+  mutt_addr_to_local(a);
+  mutt_str_strlower(a->mailbox);
+  mutt_addr_to_intl(a);
+}
 
-  mutt_addrlist_to_local(&al);
-  mutt_addrlist_to_intl(&al, NULL);
+void mutt_autocrypt_db_normalize_addrlist(struct AddressList *al)
+{
+  mutt_addrlist_to_local(al);
 
-  TAILQ_REMOVE(&al, addrlist, entries);
+  struct Address *np = NULL;
+  TAILQ_FOREACH(np, al, entries)
+  {
+    mutt_str_strlower(np->mailbox);
+  }
+
+  mutt_addrlist_to_intl(al, NULL);
 }
 
 /* The autocrypt spec says email addresses should be
@@ -155,7 +164,7 @@ static struct Address *copy_normalize_addr(struct Address *addr)
   norm_addr->is_intl = addr->is_intl;
   norm_addr->intl_checked = addr->intl_checked;
 
-  mutt_autocrypt_db_normalize_addrlist(norm_addr);
+  mutt_autocrypt_db_normalize_addr(norm_addr);
   return norm_addr;
 }
 

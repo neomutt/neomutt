@@ -26,6 +26,7 @@
 #include <sqlite3.h>
 
 struct Address;
+struct AddressList;
 struct Buffer;
 
 int mutt_autocrypt_account_init (void);
@@ -33,7 +34,8 @@ int mutt_autocrypt_account_init (void);
 int mutt_autocrypt_db_init (int can_create);
 void mutt_autocrypt_db_close (void);
 
-void mutt_autocrypt_db_normalize_addrlist (struct Address *addrlist);
+void mutt_autocrypt_db_normalize_addr(struct Address *a);
+void mutt_autocrypt_db_normalize_addrlist(struct AddressList *al);
 
 struct AutocryptAccount *mutt_autocrypt_db_account_new (void);
 void mutt_autocrypt_db_account_free (struct AutocryptAccount **account);
