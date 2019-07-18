@@ -25,7 +25,6 @@
 #include "config.h"
 #include <stddef.h>
 #include <errno.h>
-#include <ftw.h>
 #include <limits.h>
 #include <stdarg.h>
 #include <stdbool.h>
@@ -36,15 +35,15 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "address/lib.h"
-#include "config/lib.h"
-#include "core/lib.h"
 #include "email/lib.h"
 #include "help.h"
+#include "core/lib.h"
 #include "globals.h"
 #include "mutt_header.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
+#include "scan.h"
 #include "vector.h"
 
 struct stat;
@@ -647,27 +646,6 @@ static void help_doc_uplink(const struct Email *target, const struct Email *sour
 }
 
 /**
- * help_add_to_list - Callback for nftw whenever a file is read
- * @param fpath  Filename
- * @param sb     Timestamp for the file
- * @param tflag  File type
- * @param ftwbuf Private nftw data
- *
- * @sa https://linux.die.net/man/3/nftw
- *
- * @note Only act on file
- */
-static int help_add_to_list(const char *fpath, const struct stat *sb, int tflag,
-                            struct FTW *ftwbuf)
-{
-  mutt_debug(1, "entering add_to_list: '%s'\n", fpath);
-  if (tflag == FTW_F)
-    help_doc_gather(&DocList, fpath);
-
-  return 0; /* To tell nftw() to continue */
-}
-
-/**
  * help_read_dir - Read a directory and process its entries recursively using nftw to
  *                 find and link all help documents
  * @param path absolute path of a directory
@@ -679,11 +657,12 @@ static int help_read_dir(const char *path)
 {
   mutt_debug(1, "entering help_read_dir: '%s'\n", path);
 
-  // Max of 20 open file handles, 0 flags
-  if (nftw(path, help_add_to_list, 20, 0) == -1)
+  struct Vector *file_paths = scan_dir(path);
+
+  for (size_t i = 0; i < file_paths->size; i++)
   {
-    perror("nftw");
-    return 1;
+    char *path2 = vector_get(file_paths, i, NULL);
+    help_doc_gather(&DocList, path2);
   }
   /* Sort 'index.md' in list to the top */
   vector_sort(DocList, help_doc_type_cmp);
@@ -790,10 +769,9 @@ static int help_doclist_parse(struct Mailbox *m)
   }
 
   /* mark all but the first email as read */
-  m->emails[0]->read = false;
-  for (size_t i = 1; i < m->msg_count; i++)
+  for (size_t i = 0; i < m->msg_count; i++)
   {
-    m->emails[i]->read = true;
+    m->emails[i]->read = false;
   }
   m->msg_unread = m->msg_count;
 
@@ -816,17 +794,8 @@ struct Account *help_ac_find(struct Account *a, const char *path)
  */
 int help_ac_add(struct Account *a, struct Mailbox *m)
 {
-  if (!a || !m)
+  if (!a || !m || (m->magic != MUTT_HELP))
     return -1;
-
-  if (m->magic != MUTT_HELP)
-    return -1;
-
-  m->account = a;
-
-  struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
-  np->mailbox = m;
-  STAILQ_INSERT_TAIL(&a->mailboxes, np, entries);
   return 0;
 }
 

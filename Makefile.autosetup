@@ -173,7 +173,7 @@ ALLOBJS+=	$(LIBNCRYPTOBJS)
 # libhelp
 @if USE_DEVEL_HELP
 LIBHELP=	libhelp.a
-LIBHELPOBJS=	help/help.o help/vector.o
+LIBHELPOBJS=	help/help.o help/scan.o help/vector.o
 CLEANFILES+=	$(LIBHELP) $(LIBHELPOBJS)
 MUTTLIBS+=	$(LIBHELP)
 ALLOBJS+=	$(LIBHELPOBJS)

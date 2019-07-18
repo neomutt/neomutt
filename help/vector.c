@@ -22,129 +22,130 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "vector.h"
 #include "mutt/mutt.h"
+#include "vector.h"
+
+#define VECTOR_INIT_CAPACITY 16
 
 /**
- * vector_free - Free a list of Help documents
- * @param list      List to free
- * @param item_free Function to free the list contents
+ * vector_free - Free a Vector
+ * @param v         Vector to free
+ * @param item_free Function to free the Vector's contents
  */
-void vector_free(struct Vector **list, void (*item_free)(void **))
+void vector_free(struct Vector **v, vector_item_free_t item_free)
 {
-  if (!list || !*list)
+  if (!v || !*v)
     return;
 
-  for (size_t i = 0; i < (*list)->size; i++)
+  for (size_t i = 0; i < (*v)->size; i++)
   {
-    item_free(&((*list)->data[i]));
+    item_free(&((*v)->data[i]));
   }
-  FREE(&(*list)->data);
-  FREE(list);
+  FREE(&(*v)->data);
+  FREE(v);
 }
 
 /**
- * vector_shrink - Resize a List of Help documents to save space
- * @param list List to resize
+ * vector_shrink - Resize a Vector to save space
+ * @param v Vector to resize
  */
-void vector_shrink(struct Vector *list)
+void vector_shrink(struct Vector *v)
 {
-  if (!list)
+  if (!v)
     return;
 
-  mutt_mem_realloc(list->data, list->size * list->item_size);
-  list->capa = list->size;
+  mutt_mem_realloc(v->data, v->size * v->item_size);
+  v->capa = v->size;
 }
 
 /**
- * vector_new - Create a new list of Help documents
- * @param item_size Size of items in list
- * @retval ptr New Help list
+ * vector_new - Create a new Vector
+ * @param item_size Size of items in Vector
+ * @retval ptr      New Vector
  */
 struct Vector *vector_new(size_t item_size)
 {
-  struct Vector *list = NULL;
+  struct Vector *v = NULL;
   if (item_size == 0)
     return NULL;
 
-  list = mutt_mem_malloc(sizeof(struct Vector));
-  list->item_size = item_size;
-  list->size = 0;
-  list->capa = VECTOR_INIT_CAPACITY;
-  list->data = mutt_mem_calloc(list->capa, sizeof(void *) * list->item_size);
+  v = mutt_mem_malloc(sizeof(struct Vector));
+  v->item_size = item_size;
+  v->size = 0;
+  v->capa = VECTOR_INIT_CAPACITY;
+  v->data = mutt_mem_calloc(v->capa, sizeof(void *) * v->item_size);
 
-  return list;
+  return v;
 }
 
 /**
- * vector_append - Add an item to the Help document list
- * @param list List to add to
+ * vector_append - Add an item to the Vector
+ * @param v    Vector to add to
  * @param item Item to add
  */
-void vector_append(struct Vector *list, void *item)
+void vector_append(struct Vector *v, void *item)
 {
-  if (!list || !item)
+  if (!v || !item)
     return;
 
-  if (list->size >= list->capa)
+  if (v->size >= v->capa)
   {
-    list->capa = (list->capa == 0) ? VECTOR_INIT_CAPACITY : (list->capa * 2);
-    mutt_mem_realloc(list->data, list->capa * list->item_size);
+    v->capa = (v->capa == 0) ? VECTOR_INIT_CAPACITY : (v->capa * 2);
+    mutt_mem_realloc(v->data, v->capa * v->item_size);
   }
 
-  list->data[list->size] = mutt_mem_calloc(1, list->item_size);
-  list->data[list->size] = item;
-  list->size++;
+  v->data[v->size] = mutt_mem_calloc(1, v->item_size);
+  v->data[v->size] = item;
+  v->size++;
 }
 
 /**
- * vector_new_append - Append a new item to a Help document list
- * @param list      List to append to
+ * vector_new_append - Append a new item to a Vector
+ * @param v         Vector to append to
  * @param item_size Size of item to add
- * @param item      Item to add to list
+ * @param item      Item to add to Vector
  */
-void vector_new_append(struct Vector **list, size_t item_size, void *item)
+void vector_new_append(struct Vector **v, size_t item_size, void *item)
 {
   if ((item_size == 0) || !item)
     return;
 
-  if (!list || !*list)
-    *list = vector_new(item_size);
+  if (!v || !*v)
+    *v = vector_new(item_size);
 
-  vector_append(*list, item);
+  vector_append(*v, item);
 }
-
 /**
- * vector_get - Get an item from a Help document list
- * @param list  List to use
- * @param index Index in list
+ * vector_get - Get an item from a Vector
+ * @param v     Vector to use
+ * @param index Index in Vector
  * @param copy  Function to copy item (may be NULL)
  * @retval ptr  Item selected
  * @retval NULL Invalid index
  */
-void *vector_get(struct Vector *list, size_t index, void *(*copy)(const void *) )
+void *vector_get(struct Vector *v, size_t index, vector_item_copy_t copy)
 {
-  if (!list || (index >= list->size))
+  if (!v || (index >= v->size))
     return NULL;
 
-  return ((copy) ? copy(list->data[index]) : list->data[index]);
+  return ((copy) ? copy(v->data[index]) : v->data[index]);
 }
 
 /**
- * vector_clone - Copy a list of Help documents
- * @param list   List to copy
- * @param shrink true if the list should be minimised
- * @param copy   Function to copy a list item
- * @retval ptr Duplicated list of Help documents
+ * vector_clone - Copy a Vector
+ * @param v      Vector to copy
+ * @param shrink true if the Vector should be minimised
+ * @param copy   Function to copy a Vector item
+ * @retval ptr   Duplicated Vector
  */
-struct Vector *vector_clone(struct Vector *list, bool shrink, void *(*copy)(const void *) )
+struct Vector *vector_clone(struct Vector *v, bool shrink, vector_item_copy_t copy)
 {
-  if (!list)
+  if (!v)
     return NULL;
 
-  struct Vector *clone = vector_new(list->item_size);
-  for (size_t i = 0; i < list->size; i++)
-    vector_append(clone, vector_get(list, i, copy));
+  struct Vector *clone = vector_new(v->item_size);
+  for (size_t i = 0; i < v->size; i++)
+    vector_append(clone, vector_get(v, i, copy));
 
   if (shrink)
     vector_shrink(clone);
@@ -153,14 +154,14 @@ struct Vector *vector_clone(struct Vector *list, bool shrink, void *(*copy)(cons
 }
 
 /**
- * vector_sort - Sort a list of Help documents
- * @param list    List to sort
+ * vector_sort - Sort a Vector
+ * @param v       Vector to sort
  * @param compare Function to compare two items
  */
-void vector_sort(struct Vector *list, int (*compare)(const void *, const void *))
+void vector_sort(struct Vector *v, int (*compare)(const void *, const void *))
 {
-  if (!list)
+  if (!v)
     return;
 
-  qsort(list->data, list->size, sizeof(void *), compare);
+  qsort(v->data, v->size, sizeof(void *), compare);
 }
