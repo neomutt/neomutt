@@ -33,6 +33,8 @@ int mutt_autocrypt_account_init (void);
 int mutt_autocrypt_db_init (int can_create);
 void mutt_autocrypt_db_close (void);
 
+void mutt_autocrypt_db_normalize_addrlist (struct Address *addrlist);
+
 struct AutocryptAccount *mutt_autocrypt_db_account_new (void);
 void mutt_autocrypt_db_account_free (struct AutocryptAccount **account);
 int mutt_autocrypt_db_account_get (struct Address *addr, struct AutocryptAccount **account);
