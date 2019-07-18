@@ -41,6 +41,13 @@ void test_mutt_addrlist_parse2(void)
 
   {
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
+    int parsed = mutt_addrlist_parse2(&alist, "");
+    TEST_CHECK(parsed == 0);
+    TEST_CHECK(TAILQ_EMPTY(&alist));
+  }
+
+  {
+    struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
     int parsed = mutt_addrlist_parse2(&alist, "apple");
     TEST_CHECK(parsed == 1);
     TEST_CHECK(!TAILQ_EMPTY(&alist));

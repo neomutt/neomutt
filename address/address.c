@@ -602,7 +602,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
  */
 int mutt_addrlist_parse2(struct AddressList *al, const char *s)
 {
-  if (!s)
+  if (!s || !*s)
     return 0;
 
   int parsed = 0;
