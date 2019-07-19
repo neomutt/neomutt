@@ -172,11 +172,12 @@ static void update_protected_headers(struct Email *e)
 
 /**
  * mutt_display_message - Display a message in the pager
+ * @param m Mailbox
  * @param e Email to display
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_display_message(struct Email *e)
+int mutt_display_message(struct Mailbox *m, struct Email *e)
 {
   char tempfile[PATH_MAX], buf[1024];
   int rc = 0;
@@ -188,8 +189,8 @@ int mutt_display_message(struct Email *e)
 
   snprintf(buf, sizeof(buf), "%s/%s", TYPE(e->content), e->content->subtype);
 
-  mutt_parse_mime_message(Context->mailbox, e);
-  mutt_message_hook(Context->mailbox, e, MUTT_MESSAGE_HOOK);
+  mutt_parse_mime_message(m, e);
+  mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
   /* see if crypto is needed for this message.  if so, we should exit curses */
   if ((WithCrypto != 0) && e->security)
@@ -258,7 +259,7 @@ int mutt_display_message(struct Email *e)
   {
     struct HdrFormatInfo hfi;
     hfi.ctx = Context;
-    hfi.mailbox = Context->mailbox;
+    hfi.mailbox = m;
     hfi.pager_progress = ExtPagerProgress;
     hfi.email = e;
     mutt_make_string_info(buf, sizeof(buf), MuttIndexWindow->cols,
@@ -269,10 +270,10 @@ int mutt_display_message(struct Email *e)
 
   chflags = (C_Weed ? (CH_WEED | CH_REORDER) : CH_NO_FLAGS) | CH_DECODE | CH_FROM | CH_DISPLAY;
 #ifdef USE_NOTMUCH
-  if (Context->mailbox->magic == MUTT_NOTMUCH)
+  if (m->magic == MUTT_NOTMUCH)
     chflags |= CH_VIRTUAL;
 #endif
-  res = mutt_copy_message(fp_out, Context->mailbox, e, cmflags, chflags);
+  res = mutt_copy_message(fp_out, m, e, cmflags, chflags);
 
   if (((mutt_file_fclose(&fp_out) != 0) && (errno != EPIPE)) || (res < 0))
   {
@@ -311,7 +312,7 @@ int mutt_display_message(struct Email *e)
     {
       if (e->security & SEC_GOODSIGN)
       {
-        if (crypt_smime_verify_sender(Context->mailbox, e) == 0)
+        if (crypt_smime_verify_sender(m, e) == 0)
           mutt_message(_("S/MIME signature successfully verified"));
         else
           mutt_error(_("S/MIME certificate owner does not match sender"));
@@ -352,7 +353,7 @@ int mutt_display_message(struct Email *e)
     if (!OptNoCurses)
       keypad(stdscr, true);
     if (r != -1)
-      mutt_set_flag(Context->mailbox, e, MUTT_READ, true);
+      mutt_set_flag(m, e, MUTT_READ, true);
     if ((r != -1) && C_PromptAfter)
     {
       mutt_unget_event(mutt_any_key_to_continue(_("Command: ")), 0);
