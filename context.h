@@ -48,10 +48,29 @@ struct Context
   bool collapsed : 1;                ///< Are all threads collapsed?
 
   struct Mailbox *mailbox;
+  struct Notify *notify;             ///< Notifications handler
+};
+
+/**
+ * struct EventContext - An Event that happened to an Context
+ */
+struct EventContext
+{
+  struct Context *context; ///< The Context this Event relates to
+};
+
+/**
+ * enum NotifyContext - Types of Context Event
+ */
+enum NotifyContext
+{
+  NT_CONTEXT_OPEN = 1, ///< The Context has been opened
+  NT_CONTEXT_CLOSE,    ///< The Context is about to be destroyed
 };
 
 void            ctx_free            (struct Context **ptr);
 int             ctx_mailbox_observer(struct NotifyCallback *nc);
+struct Context *ctx_new             (void);
 void            ctx_update          (struct Context *ctx);
 void            ctx_update_tables   (struct Context *ctx, bool committing);
 
