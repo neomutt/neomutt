@@ -291,7 +291,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
     }
   }
 
-  ctx->msgnotreadyet = -1;
+  ctx->msg_not_read_yet = -1;
   ctx->collapsed = false;
 
   m->size = 0;
