@@ -191,11 +191,8 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
         ptr = mutt_mem_malloc(tok->dsize);
         memcpy(ptr, expn.data, expnlen);
         strcpy(ptr + expnlen, tok->dptr);
-        if (tok->destroy)
-          FREE(&tok->data);
-        tok->data = ptr;
-        tok->dptr = ptr;
-        tok->destroy = 1; /* mark that the caller should destroy this data */
+        tok->data = mutt_str_strdup(ptr);
+        tok->dptr = tok->data;
         ptr = NULL;
         FREE(&expn.data);
       }

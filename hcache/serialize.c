@@ -318,7 +318,6 @@ unsigned char *serial_dump_buffer(struct Buffer *b, unsigned char *d, int *off, 
   d = serial_dump_char_size(b->data, d, off, b->dsize + 1, convert);
   d = serial_dump_int(b->dptr - b->data, d, off);
   d = serial_dump_int(b->dsize, d, off);
-  d = serial_dump_int(b->destroy, d, off);
 
   return d;
 }
@@ -347,8 +346,6 @@ void serial_restore_buffer(struct Buffer **b, const unsigned char *d, int *off, 
   (*b)->dptr = (*b)->data + offset;
   serial_restore_int(&used, d, off);
   (*b)->dsize = used;
-  serial_restore_int(&used, d, off);
-  (*b)->destroy = used;
 }
 
 /**
