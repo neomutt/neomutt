@@ -35,6 +35,7 @@
 #include "curs_lib.h"
 #include "globals.h"
 #include "mutt_curses.h"
+#include "ncrypt/ncrypt.h"
 #include "send.h"
 
 static int autocrypt_dir_init(int can_create)
@@ -446,5 +447,78 @@ cleanup:
   mutt_autocrypt_db_gossip_history_free(&gossip_hist);
   mutt_buffer_pool_release(&keyid);
 
+  return rv;
+}
+
+enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *hdr)
+{
+  enum AutocryptRec rv = AUTOCRYPT_REC_OFF;
+  struct AutocryptAccount *account = NULL;
+  struct AutocryptPeer *peer = NULL;
+  struct Address *recip = NULL;
+  int all_encrypt = 1, has_discourage = 0;
+
+  if (!C_Autocrypt || mutt_autocrypt_init(0) || !hdr)
+    return AUTOCRYPT_REC_OFF;
+
+  struct Address *from = TAILQ_FIRST(&hdr->env->from);
+  if (!from || TAILQ_NEXT(from, entries))
+    return AUTOCRYPT_REC_OFF;
+
+  if (hdr->security & APPLICATION_SMIME)
+    return AUTOCRYPT_REC_OFF;
+
+  if (mutt_autocrypt_db_account_get(from, &account) <= 0)
+    goto cleanup;
+
+  struct AddressList recips = TAILQ_HEAD_INITIALIZER(recips);
+
+  mutt_addrlist_copy(&recips, &hdr->env->to, false);
+  mutt_addrlist_copy(&recips, &hdr->env->cc, false);
+  mutt_addrlist_copy(&recips, &hdr->env->bcc, false);
+
+  rv = AUTOCRYPT_REC_NO;
+  if (TAILQ_EMPTY(&recips))
+    goto cleanup;
+
+  TAILQ_FOREACH(recip, &recips, entries)
+  {
+    if (mutt_autocrypt_db_peer_get(recip, &peer) <= 0)
+      goto cleanup;
+
+    if (mutt_autocrypt_gpgme_is_valid_key(peer->keyid))
+    {
+      if (!(peer->last_seen && peer->autocrypt_timestamp) ||
+          (peer->last_seen - peer->autocrypt_timestamp > 35 * 24 * 60 * 60))
+      {
+        has_discourage = 1;
+        all_encrypt = 0;
+      }
+
+      if (!account->prefer_encrypt || !peer->prefer_encrypt)
+        all_encrypt = 0;
+    }
+    else if (mutt_autocrypt_gpgme_is_valid_key(peer->gossip_keyid))
+    {
+      has_discourage = 1;
+      all_encrypt = 0;
+    }
+    else
+      goto cleanup;
+
+    mutt_autocrypt_db_peer_free(&peer);
+  }
+
+  if (all_encrypt)
+    rv = AUTOCRYPT_REC_YES;
+  else if (has_discourage)
+    rv = AUTOCRYPT_REC_DISCOURAGE;
+  else
+    rv = AUTOCRYPT_REC_AVAILABLE;
+
+cleanup:
+  mutt_autocrypt_db_account_free(&account);
+  mutt_addrlist_clear(&recips);
+  mutt_autocrypt_db_peer_free(&peer);
   return rv;
 }

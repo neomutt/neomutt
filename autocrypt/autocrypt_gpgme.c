@@ -205,3 +205,28 @@ cleanup:
   mutt_buffer_pool_release(&raw_keydata);
   return rv;
 }
+
+int mutt_autocrypt_gpgme_is_valid_key(const char *keyid)
+{
+  int rv = 0;
+  gpgme_ctx_t ctx = NULL;
+  gpgme_key_t key = NULL;
+
+  if (!keyid)
+    return 0;
+
+  if (create_gpgme_context(&ctx))
+    goto cleanup;
+
+  if (gpgme_get_key(ctx, keyid, &key, 0))
+    goto cleanup;
+
+  rv = 1;
+  if (key->revoked || key->expired || key->disabled || key->invalid || !key->can_encrypt)
+    rv = 0;
+
+cleanup:
+  gpgme_key_unref(key);
+  gpgme_release(ctx);
+  return rv;
+}

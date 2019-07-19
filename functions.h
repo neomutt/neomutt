@@ -452,6 +452,9 @@ const struct Binding OpCompose[] = { /* map: compose */
 #ifdef USE_NNTP
   { "attach-news-message",   OP_COMPOSE_ATTACH_NEWS_MESSAGE, NULL },
 #endif
+#ifdef USE_AUTOCRYPT
+  { "autocrypt-menu",        OP_COMPOSE_AUTOCRYPT_MENU,      "o" },
+#endif
   { "copy-file",             OP_SAVE,                        "C" },
   { "detach-file",           OP_DELETE,                      "D" },
   { "display-toggle-weed",   OP_DISPLAY_HEADERS,             "h" },

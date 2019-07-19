@@ -67,9 +67,19 @@ struct AutocryptGossipHistory
   char *gossip_keydata;
 };
 
+enum AutocryptRec
+{
+  AUTOCRYPT_REC_OFF,
+  AUTOCRYPT_REC_NO,
+  AUTOCRYPT_REC_DISCOURAGE,
+  AUTOCRYPT_REC_AVAILABLE,
+  AUTOCRYPT_REC_YES
+};
+
 int mutt_autocrypt_init (int);
 void mutt_autocrypt_cleanup (void);
 int mutt_autocrypt_process_autocrypt_header (struct Email *hdr, struct Envelope *env);
 int mutt_autocrypt_process_gossip_header (struct Email *hdr, struct Envelope *env);
+enum AutocryptRec mutt_autocrypt_ui_recommendation (struct Email *hdr);
 
 #endif /* MUTT_AUTOCRYPT_AUTOCRYPT_H */

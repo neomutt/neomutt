@@ -44,6 +44,7 @@
   _fmt(OP_CHECK_STATS,                    N_("calculate message statistics for all mailboxes")) \
   _fmt(OP_COMPOSE_ATTACH_FILE,            N_("attach files to this message")) \
   _fmt(OP_COMPOSE_ATTACH_MESSAGE,         N_("attach messages to this message")) \
+  _fmt(OP_COMPOSE_AUTOCRYPT_MENU,         N_("show autocrypt compose menu options")) \
   _fmt(OP_COMPOSE_ATTACH_NEWS_MESSAGE,    N_("attach news articles to this message")) \
   _fmt(OP_COMPOSE_EDIT_BCC,               N_("edit the BCC list")) \
   _fmt(OP_COMPOSE_EDIT_CC,                N_("edit the CC list")) \
