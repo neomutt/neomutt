@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Simon Symeonidis <lethaljellybean@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -194,9 +195,7 @@ bool mutt_regexlist_match(struct RegexList *rl, const char *str)
   struct RegexListNode *np = NULL;
   STAILQ_FOREACH(np, rl, entries)
   {
-    if (!np->regex || !np->regex->regex)
-      continue;
-    if (regexec(np->regex->regex, str, 0, NULL, 0) == 0)
+    if (mutt_regex_match(np->regex, str))
     {
       mutt_debug(LL_DEBUG5, "%s matches %s\n", str, np->regex->pattern);
       return true;
@@ -383,7 +382,7 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
       nmatch = np->nmatch;
     }
 
-    if (regexec(np->regex->regex, src, np->nmatch, pmatch, 0) == 0)
+    if (mutt_regex_capture(np->regex, src, np->nmatch, pmatch))
     {
       tlen = 0;
       switcher ^= 1;
@@ -494,7 +493,7 @@ bool mutt_replacelist_match(struct ReplaceList *rl, char *buf, size_t buflen, co
     }
 
     /* Does this pattern match? */
-    if (regexec(np->regex->regex, str, (size_t) np->nmatch, pmatch, 0) == 0)
+    if (mutt_regex_capture(np->regex, str, (size_t) np->nmatch, pmatch))
     {
       mutt_debug(LL_DEBUG5, "%s matches %s\n", str, np->regex->pattern);
       mutt_debug(LL_DEBUG5, "%d subs\n", (int) np->regex->regex->re_nsub);
@@ -582,4 +581,34 @@ int mutt_replacelist_remove(struct ReplaceList *rl, const char *pat)
   }
 
   return nremoved;
+}
+
+/**
+ * mutt_regex_capture - match a regex against a string, with provided options
+ * @param regex   Regex to execute
+ * @param str     String to apply regex on
+ * @param nmatch  Length of matches
+ * @param matches regmatch_t to hold match indices
+ * @param flags   Type flags, e.g. #DT_REGEX_MATCH_CASE
+ * @retval bool true if str match, false if str does not match
+ */
+bool mutt_regex_capture(const struct Regex *regex, const char *str,
+                        size_t nmatch, regmatch_t matches[])
+{
+  if (!regex || !str || !regex->regex)
+    return false;
+
+  int rc = regexec(regex->regex, str, nmatch, matches, 0);
+  return ((rc == 0) ^ regex->pat_not);
+}
+
+/**
+ * mutt_regex_match - Shorthand to mutt_regex_capture()
+ * @param regex Regex which is desired to match against
+ * @param str   String to search with given regex
+ * @retval bool true if str match, false if str does not match
+ */
+bool mutt_regex_match(const struct Regex *regex, const char *str)
+{
+  return mutt_regex_capture(regex, str, 0, NULL);
 }

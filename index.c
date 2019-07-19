@@ -3683,8 +3683,7 @@ int mutt_reply_observer(struct NotifyCallback *nc)
     if (!e || !e->subject)
       continue;
 
-    if (C_ReplyRegex && C_ReplyRegex->regex &&
-        (regexec(C_ReplyRegex->regex, e->subject, 1, pmatch, 0) == 0))
+    if (mutt_regex_capture(C_ReplyRegex, e->subject, 1, pmatch))
     {
       e->real_subj = e->subject + pmatch[0].rm_eo;
       continue;

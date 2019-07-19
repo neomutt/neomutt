@@ -316,6 +316,7 @@
   NEOMUTT_TEST_ITEM(test_mutt_pattern_comp)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_regex_compile)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_regex_free)                                      \
+  NEOMUTT_TEST_ITEM(test_mutt_regex_match)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_regexlist_add)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_regexlist_free)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_regexlist_match)                                 \

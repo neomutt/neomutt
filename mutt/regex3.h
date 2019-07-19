@@ -100,4 +100,7 @@ bool                    mutt_replacelist_match(struct ReplaceList *rl, char *buf
 struct ReplaceListNode *mutt_replacelist_new(void);
 int                     mutt_replacelist_remove(struct ReplaceList *rl, const char *pat);
 
+bool mutt_regex_match  (const struct Regex *regex, const char *str);
+bool mutt_regex_capture(const struct Regex *regex, const char *str, size_t num, regmatch_t matches[]);
+
 #endif /* MUTT_LIB_REGEX_H */

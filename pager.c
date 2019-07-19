@@ -951,18 +951,16 @@ int mutt_is_quote_line(char *line, regmatch_t *pmatch)
   if (!pmatch)
     pmatch = pmatch_internal;
 
-  if (C_QuoteRegex && C_QuoteRegex->regex &&
-      (regexec(C_QuoteRegex->regex, line, 1, pmatch, 0) == 0))
+  if (mutt_regex_capture(C_QuoteRegex, line, 1, pmatch))
   {
-    if (C_Smileys && C_Smileys->regex &&
-        (regexec(C_Smileys->regex, line, 1, smatch, 0) == 0))
+    if (mutt_regex_capture(C_Smileys, line, 1, smatch))
     {
       if (smatch[0].rm_so > 0)
       {
         char c = line[smatch[0].rm_so];
         line[smatch[0].rm_so] = 0;
 
-        if (regexec(C_QuoteRegex->regex, line, 1, pmatch, 0) == 0)
+        if (mutt_regex_capture(C_QuoteRegex, line, 1, pmatch))
           is_quote = true;
 
         line[smatch[0].rm_so] = c;
@@ -1730,8 +1728,8 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
         (*last)--;
       goto out;
     }
-    if (C_QuoteRegex && C_QuoteRegex->regex &&
-        (regexec(C_QuoteRegex->regex, (char *) fmt, 1, pmatch, 0) == 0))
+
+    if (mutt_regex_capture(C_QuoteRegex, (char *) fmt, 1, pmatch))
     {
       (*line_info)[n].quote =
           classify_quote(quote_list, (char *) fmt + pmatch[0].rm_so,

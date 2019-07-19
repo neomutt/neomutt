@@ -106,7 +106,7 @@ const char *group_index_format_str(char *buf, size_t buflen, size_t col, int col
 
     case 'n':
       if (C_MarkOld && (folder->ff->nd->last_cached >= folder->ff->nd->first_message) &&
-               (folder->ff->nd->last_cached <= folder->ff->nd->last_message))
+          (folder->ff->nd->last_cached <= folder->ff->nd->last_message))
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, folder->ff->nd->last_message - folder->ff->nd->last_cached);

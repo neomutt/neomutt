@@ -252,7 +252,7 @@ static const char *lookup_charset(enum LookupType type, const char *cs)
   {
     if (l->type != type)
       continue;
-    if (regexec(l->regex.regex, cs, 0, NULL, 0) == 0)
+    if (mutt_regex_match(&l->regex, cs))
       return l->replacement;
   }
   return NULL;

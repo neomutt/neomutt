@@ -150,7 +150,7 @@ static void update_protected_headers(struct Email *e)
 
     mutt_str_replace(&e->env->subject, prot_headers->subject);
     FREE(&e->env->disp_subj);
-    if (regexec(C_ReplyRegex->regex, e->env->subject, 1, pmatch, 0) == 0)
+    if (mutt_regex_capture(C_ReplyRegex, e->env->subject, 1, pmatch))
       e->env->real_subj = e->env->subject + pmatch[0].rm_eo;
     else
       e->env->real_subj = e->env->subject;

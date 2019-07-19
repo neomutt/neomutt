@@ -1135,8 +1135,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
     {
       regmatch_t pmatch[1];
 
-      if (C_ReplyRegex && C_ReplyRegex->regex &&
-          (regexec(C_ReplyRegex->regex, env->subject, 1, pmatch, 0) == 0))
+      if (mutt_regex_capture(C_ReplyRegex, env->subject, 1, pmatch))
       {
         env->real_subj = env->subject + pmatch[0].rm_eo;
       }

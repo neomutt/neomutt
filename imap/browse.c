@@ -88,8 +88,7 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
   /* apply filemask filter. This should really be done at menu setup rather
    * than at scan, since it's so expensive to scan. But that's big changes
    * to browser.c */
-  if (C_Mask && C_Mask->regex &&
-      !((regexec(C_Mask->regex, relpath, 0, NULL, 0) == 0) ^ C_Mask->pat_not))
+  if (!mutt_regex_match(C_Mask, relpath))
   {
     return;
   }

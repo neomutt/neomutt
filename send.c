@@ -1542,7 +1542,7 @@ static bool search_attach_keyword(char *filename)
   {
     fgets(inputline, 1024, fp_att);
     if (!mutt_is_quote_line(inputline, NULL) &&
-        (regexec(C_AbortNoattachRegex->regex, inputline, 0, NULL, 0) == 0))
+        mutt_regex_match(C_AbortNoattachRegex, inputline))
     {
       found = true;
       break;

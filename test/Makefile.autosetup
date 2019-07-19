@@ -323,6 +323,7 @@ PATTERN_OBJS	= test/pattern/comp.o \
 
 REGEX_OBJS	= test/regex/mutt_regex_compile.o \
 		  test/regex/mutt_regex_free.o \
+		  test/regex/mutt_regex_match.o \
 		  test/regex/mutt_regexlist_add.o \
 		  test/regex/mutt_regexlist_free.o \
 		  test/regex/mutt_regexlist_match.o \

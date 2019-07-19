@@ -153,8 +153,8 @@ static char *parse_encoded_word(char *str, enum ContentEncoding *enc, char **cha
   assert(re && "Something is wrong with your RE engine.");
 
   char *res = NULL;
-  int rc = regexec(re->regex, str, nmatch, match, 0);
-  if (rc == 0)
+
+  if (mutt_regex_capture(re, str, nmatch, match))
   {
     /* Charset */
     *charset = str + match[1].rm_so;

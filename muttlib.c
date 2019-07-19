@@ -370,13 +370,10 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
 
   memset(dest, 0, destlen);
 
-  if (C_GecosMask && C_GecosMask->regex)
+  if (mutt_regex_capture(C_GecosMask, pw->pw_gecos, 1, pat_match))
   {
-    if (regexec(C_GecosMask->regex, pw->pw_gecos, 1, pat_match, 0) == 0)
-    {
-      mutt_str_strfcpy(dest, pw->pw_gecos + pat_match[0].rm_so,
-                       MIN(pat_match[0].rm_eo - pat_match[0].rm_so + 1, destlen));
-    }
+    mutt_str_strfcpy(dest, pw->pw_gecos + pat_match[0].rm_so,
+                     MIN(pat_match[0].rm_eo - pat_match[0].rm_so + 1, destlen));
   }
   else if ((p = strchr(pw->pw_gecos, ',')))
     mutt_str_strfcpy(dest, pw->pw_gecos, MIN(destlen, p - pw->pw_gecos + 1));

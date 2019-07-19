@@ -530,8 +530,7 @@ void mutt_folder_hook(const char *path, const char *desc)
     if (!(tmp->type & MUTT_FOLDER_HOOK))
       continue;
 
-    if ((path && (regexec(tmp->regex.regex, path, 0, NULL, 0) == 0) ^ tmp->regex.pat_not) ||
-        (desc && (regexec(tmp->regex.regex, desc, 0, NULL, 0) == 0) ^ tmp->regex.pat_not))
+    if (mutt_regex_match(&tmp->regex, path) || mutt_regex_match(&tmp->regex, desc))
     {
       if (mutt_parse_rc_line(tmp->command, token, err) == MUTT_CMD_ERROR)
       {
@@ -562,7 +561,7 @@ char *mutt_find_hook(HookFlags type, const char *pat)
   {
     if (tmp->type & type)
     {
-      if (regexec(tmp->regex.regex, pat, 0, NULL, 0) == 0)
+      if (mutt_regex_match(&tmp->regex, pat))
         return tmp->command;
     }
   }
@@ -730,9 +729,7 @@ static void list_hook(struct ListHead *matches, const char *match, HookFlags hoo
 
   TAILQ_FOREACH(tmp, &Hooks, entries)
   {
-    if ((tmp->type & hook) &&
-        ((match && (regexec(tmp->regex.regex, match, 0, NULL, 0) == 0)) ^
-         tmp->regex.pat_not))
+    if ((tmp->type & hook) && mutt_regex_match(&tmp->regex, match))
     {
       mutt_list_insert_tail(matches, mutt_str_strdup(tmp->command));
     }
@@ -775,7 +772,7 @@ void mutt_account_hook(const char *url)
     if (!(hook->command && (hook->type & MUTT_ACCOUNT_HOOK)))
       continue;
 
-    if ((regexec(hook->regex.regex, url, 0, NULL, 0) == 0) ^ hook->regex.pat_not)
+    if (mutt_regex_match(&hook->regex, url))
     {
       inhook = true;
 

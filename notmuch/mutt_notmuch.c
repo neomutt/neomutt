@@ -2225,7 +2225,8 @@ static int nm_mbox_check(struct Mailbox *m, int *index_hint)
 
   if (m->mtime.tv_sec >= mtime)
   {
-    mutt_debug(LL_DEBUG2, "nm: check unnecessary (db=%lu mailbox=%lu)\n", mtime, m->mtime.tv_sec);
+    mutt_debug(LL_DEBUG2, "nm: check unnecessary (db=%lu mailbox=%lu)\n", mtime,
+               m->mtime.tv_sec);
     return 0;
   }
 
