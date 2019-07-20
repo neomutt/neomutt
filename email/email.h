@@ -38,7 +38,7 @@ struct Notify;
  */
 struct Email
 {
-  SecurityFlags security;      ///< bit 0-8: flags, bit 9,10: application.
+  SecurityFlags security;      ///< bit 0-9: flags, bit 10,11: application, bit 12 traditional pgp
                                ///< See: ncrypt/ncrypt.h pgplib.h, smime.h
 
   bool mime            : 1;    ///< Has a MIME-Version header?

@@ -128,11 +128,12 @@ typedef uint16_t SecurityFlags;           ///< Flags, e.g. #SEC_ENCRYPT
 #define SEC_KEYBLOCK            (1 << 6)  ///< Email has a key attached
 #define SEC_INLINE              (1 << 7)  ///< Email has an inline signature
 #define SEC_OPPENCRYPT          (1 << 8)  ///< Opportunistic encrypt mode
-#define APPLICATION_PGP         (1 << 9)  ///< Use PGP to encrypt/sign
-#define APPLICATION_SMIME       (1 << 10) ///< Use SMIME to encrypt/sign
-#define PGP_TRADITIONAL_CHECKED (1 << 11) ///< Email has a traditional (inline) signature
+#define SEC_AUTOCRYPT           (1 << 9)  ///< TODO: should this include the SEC_ENCRYPT and SEC_SIGN flags
+#define APPLICATION_PGP         (1 << 10) ///< Use PGP to encrypt/sign
+#define APPLICATION_SMIME       (1 << 11) ///< Use SMIME to encrypt/sign
+#define PGP_TRADITIONAL_CHECKED (1 << 12) ///< Email has a traditional (inline) signature
 
-#define SEC_ALL_FLAGS          ((1 << 12) - 1)
+#define SEC_ALL_FLAGS          ((1 << 13) - 1)
 
 #define PGP_ENCRYPT  (APPLICATION_PGP | SEC_ENCRYPT)
 #define PGP_SIGN     (APPLICATION_PGP | SEC_SIGN)
