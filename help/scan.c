@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page help_scan Scan a directory with nftw
+ *
+ * Scan a directory with nftw
+ */
+
 #include <ftw.h>
 #include <string.h>
 #include <stdio.h>

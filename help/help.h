@@ -1,6 +1,6 @@
 /**
  * @file
- * Help system
+ * Help Viewer
  *
  * @authors
  * Copyright (C) 2018-2019 Richard Russon <rich@flatcap.org>
@@ -20,6 +20,18 @@
  *
  * You should have received a copy of the GNU General Public License along with
  * this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * @page help HELP: Help Viewer
+ *
+ * Help Viewer
+ *
+ * | File              | Description              |
+ * | :---------------- | :----------------------- |
+ * | help/help.c       | @subpage help_help       |
+ * | help/scan.c       | @subpage help_scan       |
+ * | help/vector.c     | @subpage help_vector     |
  */
 
 #ifndef MUTT_HELP_HELP_H

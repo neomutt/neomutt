@@ -21,7 +21,7 @@
  */
 
 /**
- * @page help Generate the help-line and help-page and GUI display them
+ * @page help_page Generate the help-line and help-page and GUI display them
  *
  * Generate the help-line and help-page and GUI display them
  */

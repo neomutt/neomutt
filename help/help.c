@@ -22,6 +22,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page help_help Help system
+ *
+ * Help system
+ */
+
 #include "config.h"
 #include <stddef.h>
 #include <errno.h>
