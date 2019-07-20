@@ -51,10 +51,30 @@ void ctx_free(struct Context **ptr)
     return;
 
   struct Context *ctx = *ptr;
+
+  struct EventContext ev_ctx = { ctx };
+  notify_send(ctx->notify, NT_CONTEXT, NT_CONTEXT_CLOSE, IP & ev_ctx);
+
   if (ctx->mailbox)
-    notify_observer_remove(ctx->mailbox->notify, ctx_mailbox_observer);
+    notify_observer_remove(ctx->mailbox->notify, ctx_mailbox_observer, IP ctx);
+
+  notify_free(&ctx->notify);
 
   FREE(ptr);
+}
+
+/**
+ * ctx_new - Create a new Context
+ * @retval ptr New Context
+ */
+struct Context *ctx_new(void)
+{
+  struct Context *ctx = mutt_mem_calloc(1, sizeof(struct Context));
+
+  ctx->notify = notify_new(ctx, NT_CONTEXT);
+  notify_set_parent(ctx->notify, NeoMutt->notify);
+
+  return ctx;
 }
 
 /**
@@ -66,8 +86,11 @@ void ctx_cleanup(struct Context *ctx)
   FREE(&ctx->pattern);
   mutt_pattern_free(&ctx->limit_pattern);
   if (ctx->mailbox)
-    notify_observer_remove(ctx->mailbox->notify, ctx_mailbox_observer);
+    notify_observer_remove(ctx->mailbox->notify, ctx_mailbox_observer, IP ctx);
+
+  struct Notify *notify = ctx->notify;
   memset(ctx, 0, sizeof(struct Context));
+  ctx->notify = notify;
 }
 
 /**

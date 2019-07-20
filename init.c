@@ -2773,11 +2773,8 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
         ptr = mutt_mem_malloc(tok->dsize);
         memcpy(ptr, expn.data, expnlen);
         strcpy(ptr + expnlen, tok->dptr);
-        if (tok->destroy)
-          FREE(&tok->data);
-        tok->data = ptr;
-        tok->dptr = ptr;
-        tok->destroy = 1; /* mark that the caller should destroy this data */
+        tok->data = mutt_str_strdup(ptr);
+        tok->dptr = tok->data;
         ptr = NULL;
         FREE(&expn.data);
       }
@@ -3211,36 +3208,33 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
 enum CommandResult mutt_parse_rc_line(/* const */ char *line,
                                       struct Buffer *token, struct Buffer *err)
 {
-  int i;
-  enum CommandResult rc = MUTT_CMD_SUCCESS;
-  struct Buffer expn;
-
   if (!line || !*line)
     return 0;
 
-  mutt_buffer_init(&expn);
-  expn.data = line;
-  expn.dptr = line;
-  expn.dsize = mutt_str_strlen(line);
+  int i;
+  enum CommandResult rc = MUTT_CMD_SUCCESS;
+
+  struct Buffer *expn = mutt_buffer_from(line);
+  expn->dptr = expn->data;
 
   *err->data = 0;
 
-  SKIPWS(expn.dptr);
-  while (*expn.dptr)
+  SKIPWS(expn->dptr);
+  while (*expn->dptr != '\0')
   {
-    if (*expn.dptr == '#')
+    if (*expn->dptr == '#')
       break; /* rest of line is a comment */
-    if (*expn.dptr == ';')
+    if (*expn->dptr == ';')
     {
-      expn.dptr++;
+      expn->dptr++;
       continue;
     }
-    mutt_extract_token(token, &expn, MUTT_TOKEN_NO_FLAGS);
+    mutt_extract_token(token, expn, MUTT_TOKEN_NO_FLAGS);
     for (i = 0; Commands[i].name; i++)
     {
       if (mutt_str_strcmp(token->data, Commands[i].name) == 0)
       {
-        rc = Commands[i].func(token, &expn, Commands[i].data, err);
+        rc = Commands[i].func(token, expn, Commands[i].data, err);
         if (rc != MUTT_CMD_SUCCESS)
         {              /* -1 Error, +1 Finish */
           goto finish; /* Propagate return code */
@@ -3256,8 +3250,7 @@ enum CommandResult mutt_parse_rc_line(/* const */ char *line,
     }
   }
 finish:
-  if (expn.destroy)
-    FREE(&expn.data);
+  mutt_buffer_free(&expn);
   return rc;
 }
 

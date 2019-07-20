@@ -35,7 +35,6 @@ struct Buffer
   char *data;   ///< Pointer to data
   char *dptr;   ///< Current read/write position
   size_t dsize; ///< Length of data
-  int destroy;  ///< Destroy 'data' when done?
 };
 
 /* Convert a buffer to a const char * "string" */

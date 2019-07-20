@@ -256,8 +256,13 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   if (!m)
     return NULL;
 
-  struct Context *ctx = mutt_mem_calloc(1, sizeof(*ctx));
+  struct Context *ctx = ctx_new();
   ctx->mailbox = m;
+
+  struct EventContext ev_ctx = { ctx };
+  notify_send(ctx->notify, NT_CONTEXT, NT_CONTEXT_OPEN, IP & ev_ctx);
+
+  // If the Mailbox is closed, Context->mailbox must be set to NULL
   notify_observer_add(m->notify, NT_MAILBOX, 0, ctx_mailbox_observer, IP ctx);
 
   if ((m->magic == MUTT_UNKNOWN) && (flags & (MUTT_NEWFOLDER | MUTT_APPEND)))
@@ -291,7 +296,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
     }
   }
 
-  ctx->msgnotreadyet = -1;
+  ctx->msg_not_read_yet = -1;
   ctx->collapsed = false;
 
   m->size = 0;

@@ -83,67 +83,30 @@
 #include <libintl.h>
 #endif
 
+// clang-format off
 /* These Config Variables are only used in pager.c */
-bool C_AllowAnsi; ///< Config: Allow ANSI colour codes in rich text messages
-bool C_HeaderColorPartial; ///< Config: Only colour the part of the header matching the regex
-short C_PagerContext; ///< Config: Number of lines of overlap when changing pages in the pager
-short C_PagerIndexLines; ///< Config: Number of index lines to display above the pager
-bool C_PagerStop; ///< Config: Don't automatically open the next message when at the end of a message
-short C_SearchContext; ///< Config: Context to display around search matches
-short C_SkipQuotedOffset; ///< Config: Lines of context to show when skipping quoted text
-bool C_SmartWrap; ///< Config: Wrap text at word boundaries
-struct Regex *C_Smileys; ///< Config: Regex to match smileys to prevent mistakes when quoting text
-bool C_Tilde; ///< Config: Character to pad blank lines in the pager
+bool          C_AllowAnsi;          ///< Config: Allow ANSI colour codes in rich text messages
+bool          C_HeaderColorPartial; ///< Config: Only colour the part of the header matching the regex
+short         C_PagerContext;       ///< Config: Number of lines of overlap when changing pages in the pager
+short         C_PagerIndexLines;    ///< Config: Number of index lines to display above the pager
+bool          C_PagerStop;          ///< Config: Don't automatically open the next message when at the end of a message
+short         C_SearchContext;      ///< Config: Context to display around search matches
+short         C_SkipQuotedOffset;   ///< Config: Lines of context to show when skipping quoted text
+bool          C_SmartWrap;          ///< Config: Wrap text at word boundaries
+struct Regex *C_Smileys;            ///< Config: Regex to match smileys to prevent mistakes when quoting text
+bool          C_Tilde;              ///< Config: Character to pad blank lines in the pager
+// clang-format on
 
-#define IS_HEADER(x) ((x) == MT_COLOR_HEADER || (x) == MT_COLOR_HDEFAULT)
-
-#define IsAttach(pager) (pager && (pager)->body)
-#define IsMsgAttach(pager)                                                     \
-  (pager && (pager)->fp && (pager)->body && (pager)->body->email)
-#define IsEmail(pager) (pager && (pager)->email && !(pager)->body)
-
-static const char *Not_available_in_this_menu =
-    N_("Not available in this menu");
-static const char *Mailbox_is_read_only = N_("Mailbox is read-only");
-static const char *Function_not_permitted_in_attach_message_mode =
-    N_("Function not permitted in attach-message mode");
-
-/* hack to return to position when returning from index to same message */
-static int TopLine = 0;
-static struct Email *OldEmail = NULL;
-
-#define CHECK_MODE(test)                                                       \
-  if (!(test))                                                                 \
-  {                                                                            \
-    mutt_flushinp();                                                           \
-    mutt_error(_(Not_available_in_this_menu));                                 \
-    break;                                                                     \
-  }
-
-#define CHECK_READONLY                                                         \
-  if (!Context || Context->mailbox->readonly)                                  \
-  {                                                                            \
-    mutt_flushinp();                                                           \
-    mutt_error(_(Mailbox_is_read_only));                                       \
-    break;                                                                     \
-  }
-
-#define CHECK_ATTACH                                                           \
-  if (OptAttachMsg)                                                            \
-  {                                                                            \
-    mutt_flushinp();                                                           \
-    mutt_error(_(Function_not_permitted_in_attach_message_mode));              \
-    break;                                                                     \
-  }
-
-#define CHECK_ACL(aclbit, action)                                              \
-  if (!Context || !(Context->mailbox->rights & aclbit))                        \
-  {                                                                            \
-    mutt_flushinp();                                                           \
-    /* L10N: %s is one of the CHECK_ACL entries below. */                      \
-    mutt_error(_("%s: Operation not permitted by ACL"), action);               \
-    break;                                                                     \
-  }
+// clang-format off
+typedef uint8_t AnsiFlags;      ///< Flags, e.g. #ANSI_OFF
+#define ANSI_NO_FLAGS        0  ///< No flags are set
+#define ANSI_OFF       (1 << 0) ///< Turn off colours and attributes
+#define ANSI_BLINK     (1 << 1) ///< Blinking text
+#define ANSI_BOLD      (1 << 2) ///< Bold text
+#define ANSI_UNDERLINE (1 << 3) ///< Underlined text
+#define ANSI_REVERSE   (1 << 4) ///< Reverse video
+#define ANSI_COLOR     (1 << 5) ///< Use colours
+// clang-format on
 
 /**
  * struct QClass - Style of quoted text
@@ -184,17 +147,6 @@ struct Line
   unsigned int is_cont_hdr; /**< this line is a continuation of the previous header line */
 };
 
-// clang-format off
-typedef uint8_t AnsiFlags;      ///< Flags, e.g. #ANSI_OFF
-#define ANSI_NO_FLAGS        0  ///< No flags are set
-#define ANSI_OFF       (1 << 0) ///< Turn off colours and attributes
-#define ANSI_BLINK     (1 << 1) ///< Blinking text
-#define ANSI_BOLD      (1 << 2) ///< Bold text
-#define ANSI_UNDERLINE (1 << 3) ///< Underlined text
-#define ANSI_REVERSE   (1 << 4) ///< Reverse video
-#define ANSI_COLOR     (1 << 5) ///< Use colours
-// clang-format on
-
 /**
  * struct AnsiAttr - An ANSI escape sequence
  */
@@ -206,19 +158,138 @@ struct AnsiAttr
   int pair;       ///< Curses colour pair
 };
 
-static short InHelp = 0;
-
 /**
  * struct Resize - Keep track of screen resizing
  */
-static struct Resize
+struct Resize
 {
   int line;
   bool search_compiled;
   bool search_back;
-} *Resize = NULL;
+};
+
+/**
+ * struct PagerRedrawData - Keep track when the pager needs redrawing
+ */
+struct PagerRedrawData
+{
+  PagerFlags flags;
+  struct Pager *extra;
+  int indexlen;
+  int indicator; /**< the indicator line of the PI */
+  int oldtopline;
+  int lines;
+  int max_line;
+  int last_line;
+  int curline;
+  int topline;
+  bool force_redraw;
+  int has_types;
+  PagerFlags hide_quoted;
+  int q_level;
+  struct QClass *quote_list;
+  LOFF_T last_pos;
+  LOFF_T last_offset;
+  struct MuttWindow *index_status_window;
+  struct MuttWindow *index_window;
+  struct MuttWindow *pager_status_window;
+  struct MuttWindow *pager_window;
+  struct Menu *index; /**< the Pager Index (PI) */
+  regex_t search_re;
+  bool search_compiled;
+  PagerFlags search_flag;
+  bool search_back;
+  const char *banner;
+  const char *helpstr;
+  char *searchbuf;
+  struct Line *line_info;
+  FILE *fp;
+  struct stat sb;
+};
+
+/* hack to return to position when returning from index to same message */
+static int TopLine = 0;
+static struct Email *OldEmail = NULL;
+
+static short InHelp = 0;
+
+static int braille_line = -1;
+static int braille_col = -1;
+
+static struct Resize *Resize = NULL;
+
+static const char *Not_available_in_this_menu =
+    N_("Not available in this menu");
+static const char *Mailbox_is_read_only = N_("Mailbox is read-only");
+static const char *Function_not_permitted_in_attach_message_mode =
+    N_("Function not permitted in attach-message mode");
+
+static const struct Mapping PagerHelp[] = {
+  { N_("Exit"), OP_EXIT },
+  { N_("PrevPg"), OP_PREV_PAGE },
+  { N_("NextPg"), OP_NEXT_PAGE },
+  { NULL, 0 },
+};
+
+static const struct Mapping PagerHelpExtra[] = {
+  { N_("View Attachm."), OP_VIEW_ATTACHMENTS },
+  { N_("Del"), OP_DELETE },
+  { N_("Reply"), OP_REPLY },
+  { N_("Next"), OP_MAIN_NEXT_UNDELETED },
+  { NULL, 0 },
+};
+
+#ifdef USE_NNTP
+static struct Mapping PagerNewsHelpExtra[] = {
+  { N_("Post"), OP_POST },
+  { N_("Followup"), OP_FOLLOWUP },
+  { N_("Del"), OP_DELETE },
+  { N_("Next"), OP_MAIN_NEXT_UNDELETED },
+  { NULL, 0 },
+};
+#endif
+
+#define IS_HEADER(x) ((x) == MT_COLOR_HEADER || (x) == MT_COLOR_HDEFAULT)
+
+#define IsAttach(pager) (pager && (pager)->body)
+#define IsMsgAttach(pager)                                                     \
+  (pager && (pager)->fp && (pager)->body && (pager)->body->email)
+#define IsEmail(pager) (pager && (pager)->email && !(pager)->body)
 
 #define NUM_SIG_LINES 4
+
+#define CHECK_MODE(test)                                                       \
+  if (!(test))                                                                 \
+  {                                                                            \
+    mutt_flushinp();                                                           \
+    mutt_error(_(Not_available_in_this_menu));                                 \
+    break;                                                                     \
+  }
+
+#define CHECK_READONLY                                                         \
+  if (!Context || Context->mailbox->readonly)                                  \
+  {                                                                            \
+    mutt_flushinp();                                                           \
+    mutt_error(_(Mailbox_is_read_only));                                       \
+    break;                                                                     \
+  }
+
+#define CHECK_ATTACH                                                           \
+  if (OptAttachMsg)                                                            \
+  {                                                                            \
+    mutt_flushinp();                                                           \
+    mutt_error(_(Function_not_permitted_in_attach_message_mode));              \
+    break;                                                                     \
+  }
+
+#define CHECK_ACL(aclbit, action)                                              \
+  if (!Context || !(Context->mailbox->rights & aclbit))                        \
+  {                                                                            \
+    mutt_flushinp();                                                           \
+    /* L10N: %s is one of the CHECK_ACL entries below. */                      \
+    mutt_error(_("%s: Operation not permitted by ACL"), action);               \
+    break;                                                                     \
+  }
 
 /**
  * check_sig - Check for an email signature
@@ -825,9 +896,6 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
 
   return qc;
 }
-
-static int braille_line = -1;
-static int braille_col = -1;
 
 /**
  * check_marker - Check that the unique marker is present
@@ -1852,31 +1920,6 @@ static int up_n_lines(int nlines, struct Line *info, int cur, bool hiding)
   return cur;
 }
 
-static const struct Mapping PagerHelp[] = {
-  { N_("Exit"), OP_EXIT },
-  { N_("PrevPg"), OP_PREV_PAGE },
-  { N_("NextPg"), OP_NEXT_PAGE },
-  { NULL, 0 },
-};
-
-static const struct Mapping PagerHelpExtra[] = {
-  { N_("View Attachm."), OP_VIEW_ATTACHMENTS },
-  { N_("Del"), OP_DELETE },
-  { N_("Reply"), OP_REPLY },
-  { N_("Next"), OP_MAIN_NEXT_UNDELETED },
-  { NULL, 0 },
-};
-
-#ifdef USE_NNTP
-static struct Mapping PagerNewsHelpExtra[] = {
-  { N_("Post"), OP_POST },
-  { N_("Followup"), OP_FOLLOWUP },
-  { N_("Del"), OP_DELETE },
-  { N_("Next"), OP_MAIN_NEXT_UNDELETED },
-  { NULL, 0 },
-};
-#endif
-
 /**
  * mutt_clear_pager_position - Reset the pager's viewing position
  */
@@ -1885,45 +1928,6 @@ void mutt_clear_pager_position(void)
   TopLine = 0;
   OldEmail = NULL;
 }
-
-/**
- * struct PagerRedrawData - Keep track when the pager needs redrawing
- */
-struct PagerRedrawData
-{
-  PagerFlags flags;
-  struct Pager *extra;
-  int indexlen;
-  int indicator; /**< the indicator line of the PI */
-  int oldtopline;
-  int lines;
-  int max_line;
-  int last_line;
-  int curline;
-  int topline;
-  bool force_redraw;
-  int has_types;
-  PagerFlags hide_quoted;
-  int q_level;
-  struct QClass *quote_list;
-  LOFF_T last_pos;
-  LOFF_T last_offset;
-  struct MuttWindow *index_status_window;
-  struct MuttWindow *index_window;
-  struct MuttWindow *pager_status_window;
-  struct MuttWindow *pager_window;
-  struct Menu *index; /**< the Pager Index (PI) */
-  regex_t search_re;
-  bool search_compiled;
-  PagerFlags search_flag;
-  bool search_back;
-  const char *banner;
-  const char *helpstr;
-  char *searchbuf;
-  struct Line *line_info;
-  FILE *fp;
-  struct stat sb;
-};
 
 /**
  * pager_custom_redraw - Redraw the pager window - Implements Menu::menu_custom_redraw()
@@ -2283,7 +2287,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
   if (Context && IsEmail(extra) && !extra->email->read)
   {
-    Context->msgnotreadyet = extra->email->msgno;
+    Context->msg_not_read_yet = extra->email->msgno;
     mutt_set_flag(Context->mailbox, extra->email, MUTT_READ, true);
   }
 
@@ -3375,7 +3379,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         else if (!first)
           mutt_set_flag(Context->mailbox, extra->email, MUTT_READ, true);
         first = false;
-        Context->msgnotreadyet = -1;
+        Context->msg_not_read_yet = -1;
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         if (C_Resolve)
         {
@@ -3549,7 +3553,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   if (IsEmail(extra))
   {
     if (Context)
-      Context->msgnotreadyet = -1;
+      Context->msg_not_read_yet = -1;
     switch (rc)
     {
       case -1:

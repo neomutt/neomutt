@@ -36,30 +36,49 @@ struct NotifyCallback;
 struct Context
 {
   off_t vsize;
-  char *pattern;                 /**< limit pattern string */
-  struct PatternHead *limit_pattern; /**< compiled limit pattern */
-  struct Email *last_tag;  /**< last tagged msg. used to link threads */
-  struct MuttThread *tree;  /**< top of thread tree */
-  struct Hash *thread_hash; /**< hash table for threading */
-  int msgnotreadyet;        /**< which msg "new" in pager, -1 if none */
+  char *pattern;                     ///< Limit pattern string
+  struct PatternHead *limit_pattern; ///< Compiled limit pattern
+  struct Email *last_tag;            ///< Last tagged msg (used to link threads)
+  struct MuttThread *tree;           ///< Top of thread tree
+  struct Hash *thread_hash;          ///< Hash table for threading
+  int msg_not_read_yet;              ///< Which msg "new" in pager, -1 if none
 
-  struct Menu *menu; /**< needed for pattern compilation */
+  struct Menu *menu;                 ///< Needed for pattern compilation
 
-  bool collapsed : 1; /**< are all threads collapsed? */
+  bool collapsed : 1;                ///< Are all threads collapsed?
 
   struct Mailbox *mailbox;
+  struct Notify *notify;             ///< Notifications handler
 };
 
-void ctx_free(struct Context **ptr);
-int  ctx_mailbox_observer(struct NotifyCallback *nc);
-void ctx_update(struct Context *ctx);
-void ctx_update_tables(struct Context *ctx, bool committing);
+/**
+ * struct EventContext - An Event that happened to an Context
+ */
+struct EventContext
+{
+  struct Context *context; ///< The Context this Event relates to
+};
 
-bool message_is_tagged(struct Context *ctx, int index);
+/**
+ * enum NotifyContext - Types of Context Event
+ */
+enum NotifyContext
+{
+  NT_CONTEXT_OPEN = 1, ///< The Context has been opened
+  NT_CONTEXT_CLOSE,    ///< The Context is about to be destroyed
+};
+
+void            ctx_free            (struct Context **ptr);
+int             ctx_mailbox_observer(struct NotifyCallback *nc);
+struct Context *ctx_new             (void);
+void            ctx_update          (struct Context *ctx);
+void            ctx_update_tables   (struct Context *ctx, bool committing);
+
+bool message_is_tagged (struct Context *ctx, int index);
 bool message_is_visible(struct Context *ctx, int index);
 
-int  el_add_email(struct EmailList *el, struct Email *e);
-int  el_add_tagged(struct EmailList *el, struct Context *ctx, struct Email *e, bool use_tagged);
+int  el_add_email   (struct EmailList *el, struct Email *e);
+int  el_add_tagged  (struct EmailList *el, struct Context *ctx, struct Email *e, bool use_tagged);
 void emaillist_clear(struct EmailList *el);
 
 #endif /* MUTT_CONTEXT_H */

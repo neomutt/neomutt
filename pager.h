@@ -64,11 +64,11 @@ typedef uint16_t PagerFlags;              ///< Flags for mutt_pager(), e.g. #MUT
  */
 struct Pager
 {
-  struct Context *ctx;    /**< current mailbox */
-  struct Email *email;    /**< current message */
-  struct Body *body;      /**< current attachment */
-  FILE *fp;               /**< source stream */
-  struct AttachCtx *actx; /**< attachment information */
+  struct Context *ctx;    ///< Current mailbox
+  struct Email *email;    ///< Current message
+  struct Body *body;      ///< Current attachment
+  FILE *fp;               ///< Source stream
+  struct AttachCtx *actx; ///< Attachment information
 };
 
 int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct Pager *extra);

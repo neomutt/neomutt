@@ -47,7 +47,7 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el);
 void mutt_check_stats(void);
 bool mutt_check_traditional_pgp(struct EmailList *el, MuttRedrawFlags *redraw);
 void mutt_display_address(struct Envelope *env);
-int  mutt_display_message(struct Email *e);
+int  mutt_display_message(struct Mailbox *m, struct Email *e);
 bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp);
 void mutt_enter_command(void);
 void mutt_pipe_message(struct Mailbox *m, struct EmailList *el);

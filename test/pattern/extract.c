@@ -35,16 +35,15 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
     return -1;
 
   char ch;
-  char qc = 0; /* quote char */
+  char qc = '\0'; /* quote char */
   char *pc = NULL;
 
-  /* reset the destination pointer to the beginning of the buffer */
-  dest->dptr = dest->data;
+  mutt_buffer_reset(dest);
 
   SKIPWS(tok->dptr);
   while ((ch = *tok->dptr))
   {
-    if (!qc)
+    if (qc == '\0')
     {
       if ((IS_SPACE(ch) && !(flags & MUTT_TOKEN_SPACE)) ||
           ((ch == '#') && !(flags & MUTT_TOKEN_COMMENT)) ||
@@ -65,19 +64,19 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
       qc = ch;
     else if ((ch == '\\') && (qc != '\''))
     {
-      if (!*tok->dptr)
+      if (tok->dptr[0] == '\0')
         return -1; /* premature end of token */
       switch (ch = *tok->dptr++)
       {
         case 'c':
         case 'C':
-          if (!*tok->dptr)
+          if (tok->dptr[0] == '\0')
             return -1; /* premature end of token */
-          mutt_buffer_addch(dest, (toupper((unsigned char) *tok->dptr) - '@') & 0x7f);
+          mutt_buffer_addch(dest, (toupper((unsigned char) tok->dptr[0]) - '@') & 0x7f);
           tok->dptr++;
           break;
         case 'e':
-          mutt_buffer_addch(dest, '\033');
+          mutt_buffer_addch(dest, '\033'); // Escape
           break;
         case 'f':
           mutt_buffer_addch(dest, '\f');
@@ -92,10 +91,10 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
           mutt_buffer_addch(dest, '\t');
           break;
         default:
-          if (isdigit((unsigned char) ch) && isdigit((unsigned char) *tok->dptr) &&
-              isdigit((unsigned char) *(tok->dptr + 1)))
+          if (isdigit((unsigned char) ch) && isdigit((unsigned char) tok->dptr[0]) &&
+              isdigit((unsigned char) tok->dptr[1]))
           {
-            mutt_buffer_addch(dest, (ch << 6) + (*tok->dptr << 3) + *(tok->dptr + 1) - 3504);
+            mutt_buffer_addch(dest, (ch << 6) + (tok->dptr[0] << 3) + tok->dptr[1] - 3504);
             tok->dptr += 2;
           }
           else
@@ -104,13 +103,13 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
     }
     else if ((ch == '^') && (flags & MUTT_TOKEN_CONDENSE))
     {
-      if (!*tok->dptr)
+      if (tok->dptr[0] == '\0')
         return -1; /* premature end of token */
       ch = *tok->dptr++;
       if (ch == '^')
         mutt_buffer_addch(dest, ch);
       else if (ch == '[')
-        mutt_buffer_addch(dest, '\033');
+        mutt_buffer_addch(dest, '\033'); // Escape
       else if (isalpha((unsigned char) ch))
         mutt_buffer_addch(dest, toupper((unsigned char) ch) - '@');
       else
@@ -138,7 +137,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
           if (*pc == '\\')
             pc += 2;
         }
-      } while (pc && *pc != '`');
+      } while (pc && (pc[0] != '`'));
       if (!pc)
       {
         mutt_debug(LL_DEBUG1, "mismatched backticks\n");
@@ -192,22 +191,19 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
         ptr = mutt_mem_malloc(tok->dsize);
         memcpy(ptr, expn.data, expnlen);
         strcpy(ptr + expnlen, tok->dptr);
-        if (tok->destroy)
-          FREE(&tok->data);
-        tok->data = ptr;
-        tok->dptr = ptr;
-        tok->destroy = 1; /* mark that the caller should destroy this data */
+        tok->data = mutt_str_strdup(ptr);
+        tok->dptr = tok->data;
         ptr = NULL;
         FREE(&expn.data);
       }
     }
     else if ((ch == '$') && (!qc || (qc == '"')) &&
-             ((*tok->dptr == '{') || isalpha((unsigned char) *tok->dptr)))
+             ((tok->dptr[0] == '{') || isalpha((unsigned char) tok->dptr[0])))
     {
       const char *env = NULL;
       char *var = NULL;
 
-      if (*tok->dptr == '{')
+      if (tok->dptr[0] == '{')
       {
         pc = strchr(tok->dptr, '}');
         if (pc)
@@ -227,7 +223,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
       }
       else
       {
-        for (pc = tok->dptr; isalnum((unsigned char) *pc) || *pc == '_'; pc++)
+        for (pc = tok->dptr; isalnum((unsigned char) *pc) || (pc[0] == '_'); pc++)
           ;
         var = mutt_str_substr_dup(tok->dptr, pc);
         tok->dptr = pc;

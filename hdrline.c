@@ -1172,7 +1172,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         wch = get_nth_wchar(C_FlagChars, FLAG_CHAR_IMPORTANT);
       else if (e->replied)
         wch = get_nth_wchar(C_FlagChars, FLAG_CHAR_REPLIED);
-      else if (e->read && (ctx && (ctx->msgnotreadyet != e->msgno)))
+      else if (e->read && (ctx && (ctx->msg_not_read_yet != e->msgno)))
         wch = get_nth_wchar(C_FlagChars, FLAG_CHAR_SEMPTY);
       else if (e->old)
         wch = get_nth_wchar(C_FlagChars, FLAG_CHAR_OLD);
@@ -1330,7 +1330,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           ch = get_nth_wchar(C_FlagChars, FLAG_CHAR_NEW_THREAD);
         else if (threads && thread_is_old(ctx, e))
           ch = get_nth_wchar(C_FlagChars, FLAG_CHAR_OLD_THREAD);
-        else if (e->read && (ctx && (ctx->msgnotreadyet != e->msgno)))
+        else if (e->read && (ctx && (ctx->msg_not_read_yet != e->msgno)))
         {
           if (e->replied)
             ch = get_nth_wchar(C_FlagChars, FLAG_CHAR_REPLIED);
@@ -1396,7 +1396,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         first = get_nth_wchar(C_FlagChars, FLAG_CHAR_NEW_THREAD);
       else if (threads && thread_is_old(ctx, e))
         first = get_nth_wchar(C_FlagChars, FLAG_CHAR_OLD_THREAD);
-      else if (e->read && (ctx && (ctx->msgnotreadyet != e->msgno)))
+      else if (e->read && (ctx && (ctx->msg_not_read_yet != e->msgno)))
       {
         if (e->replied)
           first = get_nth_wchar(C_FlagChars, FLAG_CHAR_REPLIED);
