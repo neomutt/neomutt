@@ -74,7 +74,7 @@ void notify_free(struct Notify **ptr)
   struct Notify *notify = *ptr;
   // NOTIFY observers
 
-  notify_observer_remove(notify, NULL);
+  notify_observer_remove(notify, NULL, 0);
 
   FREE(ptr);
 }
@@ -186,11 +186,12 @@ bool notify_observer_add(struct Notify *notify, enum NotifyType type,
  * notify_observer_remove - Remove an observer from an object
  * @param notify   Notification handler
  * @param callback Function to call on a matching event, see ::observer_t
+ * @param data     Private data to match specific callback
  * @retval true If successful
  *
  * If callback is NULL, all the observers will be removed.
  */
-bool notify_observer_remove(struct Notify *notify, observer_t callback)
+bool notify_observer_remove(struct Notify *notify, observer_t callback, intptr_t data)
 {
   if (!notify)
     return false;
@@ -200,7 +201,7 @@ bool notify_observer_remove(struct Notify *notify, observer_t callback)
   struct ObserverNode *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, &notify->observers, entries, tmp)
   {
-    if (!callback || (np->observer->callback == callback))
+    if (!callback || ((np->observer->callback == callback) && (np->observer->data == data)))
     {
       STAILQ_REMOVE(&notify->observers, np, ObserverNode, entries);
       FREE(&np->observer);

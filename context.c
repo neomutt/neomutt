@@ -56,7 +56,7 @@ void ctx_free(struct Context **ptr)
   notify_send(ctx->notify, NT_CONTEXT, NT_CONTEXT_CLOSE, IP & ev_ctx);
 
   if (ctx->mailbox)
-    notify_observer_remove(ctx->mailbox->notify, ctx_mailbox_observer);
+    notify_observer_remove(ctx->mailbox->notify, ctx_mailbox_observer, IP ctx);
 
   notify_free(&ctx->notify);
 
@@ -86,7 +86,7 @@ void ctx_cleanup(struct Context *ctx)
   FREE(&ctx->pattern);
   mutt_pattern_free(&ctx->limit_pattern);
   if (ctx->mailbox)
-    notify_observer_remove(ctx->mailbox->notify, ctx_mailbox_observer);
+    notify_observer_remove(ctx->mailbox->notify, ctx_mailbox_observer, IP ctx);
 
   struct Notify *notify = ctx->notify;
   memset(ctx, 0, sizeof(struct Context));
