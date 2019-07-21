@@ -98,6 +98,8 @@ WHERE char *C_AttributionLocale;             ///< Config: Locale for dates in th
 WHERE char *C_AttachFormat;                  ///< Config: printf-like format string for the attachment menu
 #ifdef USE_AUTOCRYPT
 WHERE char *C_AutocryptDir;
+WHERE char *AutocryptSignAs;  /* This is used in ncrypt/crypt_gpgme.c */
+WHERE char *AutocryptDefaultKey;  /* Used for postponing messages */
 #endif
 WHERE char *C_ConfigCharset;                 ///< Config: Character set that the config files are in
 WHERE char *C_CryptProtectedHeadersSubject;  ///< Config: Use this as the subject for encrypted emails

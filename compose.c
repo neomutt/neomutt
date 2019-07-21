@@ -337,7 +337,7 @@ static void autocrypt_compose_menu(struct Email *e)
   {
     case 1:
       e->security |= (SEC_AUTOCRYPT | SEC_AUTOCRYPT_OVERRIDE);
-      e->security &= ~(SEC_ENCRYPT | SEC_SIGN | SEC_OPPENCRYPT);
+      e->security &= ~(SEC_ENCRYPT | SEC_SIGN | SEC_OPPENCRYPT | SEC_INLINE);
       break;
     case 2:
       e->security &= ~SEC_AUTOCRYPT;
@@ -444,24 +444,27 @@ static void redraw_crypt_lines(struct ComposeRedrawData *rd)
 #ifdef USE_AUTOCRYPT
   mutt_window_move(MuttIndexWindow, HDR_AUTOCRYPT, 0);
   mutt_window_clrtoeol(MuttIndexWindow);
-  SET_COLOR(MT_COLOR_COMPOSE_HEADER);
-  printw("%*s", HeaderPadding[HDR_AUTOCRYPT], _(Prompts[HDR_AUTOCRYPT]));
-  NORMAL_COLOR;
-  if (C_Autocrypt && (e->security & SEC_AUTOCRYPT))
+  if (C_Autocrypt)
   {
-    SET_COLOR(MT_COLOR_COMPOSE_SECURITY_ENCRYPT);
-    addstr(_("Encrypt"));
-  }
-  else
-  {
-    SET_COLOR(MT_COLOR_COMPOSE_SECURITY_NONE);
-    addstr(_("Off"));
-  }
+    SET_COLOR(MT_COLOR_COMPOSE_HEADER);
+    printw("%*s", HeaderPadding[HDR_AUTOCRYPT], _(Prompts[HDR_AUTOCRYPT]));
+    NORMAL_COLOR;
+    if (e->security & SEC_AUTOCRYPT)
+    {
+      SET_COLOR(MT_COLOR_COMPOSE_SECURITY_ENCRYPT);
+      addstr(_("Encrypt"));
+    }
+    else
+    {
+      SET_COLOR(MT_COLOR_COMPOSE_SECURITY_NONE);
+      addstr(_("Off"));
+    }
 
-  SET_COLOR(MT_COLOR_COMPOSE_HEADER);
-  mutt_window_mvprintw(MuttIndexWindow, HDR_AUTOCRYPT, 40, "%s", _("Recommendation: "));
-  NORMAL_COLOR;
-  printw("%s", _(AutocryptRecUiFlags[rd->autocrypt_rec]));
+    SET_COLOR(MT_COLOR_COMPOSE_HEADER);
+    mutt_window_mvprintw(MuttIndexWindow, HDR_AUTOCRYPT, 40, "%s", _("Recommendation: "));
+    NORMAL_COLOR;
+    printw("%s", _(AutocryptRecUiFlags[rd->autocrypt_rec]));
+  }
 #endif
 }
 
@@ -473,28 +476,29 @@ static void update_crypt_info(struct ComposeRedrawData *rd)
     crypt_opportunistic_encrypt(e);
 
 #ifdef USE_AUTOCRYPT
-  rd->autocrypt_rec = mutt_autocrypt_ui_recommendation(e);
-
-  /* Anything that enables SEC_ENCRYPT or SEC_SIGN, or turns on SMIME
-   * overrides autocrypt, be it oppenc or the user having turned on
-   * those flags manually. */
-  if (e->security & (SEC_ENCRYPT | SEC_SIGN | APPLICATION_SMIME))
-    e->security &= ~(SEC_AUTOCRYPT | SEC_AUTOCRYPT_OVERRIDE);
-  else
+  if (C_Autocrypt)
   {
-    if (!(e->security & SEC_AUTOCRYPT_OVERRIDE))
+    rd->autocrypt_rec = mutt_autocrypt_ui_recommendation(e, NULL);
+
+    /* Anything that enables SEC_ENCRYPT or SEC_SIGN, or turns on SMIME
+    * overrides autocrypt, be it oppenc or the user having turned on
+    * those flags manually. */
+    if (e->security & (SEC_ENCRYPT | SEC_SIGN | APPLICATION_SMIME))
+      e->security &= ~(SEC_AUTOCRYPT | SEC_AUTOCRYPT_OVERRIDE);
+    else
     {
-      if (rd->autocrypt_rec == AUTOCRYPT_REC_YES)
-        e->security |= SEC_AUTOCRYPT;
-      else
-        e->security &= ~SEC_AUTOCRYPT;
+      if (!(e->security & SEC_AUTOCRYPT_OVERRIDE))
+      {
+        if (rd->autocrypt_rec == AUTOCRYPT_REC_YES)
+        {
+          e->security |= SEC_AUTOCRYPT;
+          e->security &= ~SEC_INLINE;
+        }
+        else
+          e->security &= ~SEC_AUTOCRYPT;
+      }
     }
   }
-  /* TODO:
-   * - autocrypt menu for manually enabling/disabling (turns on override)
-   * - deal with pgp and smime menu and their effects on security->SEC_AUTOCRYPT
-   *   when encryption or signing is enabled or if switch to smime mode
-   */
 #endif
 
   redraw_crypt_lines(rd);
@@ -2134,6 +2138,9 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
 #endif
 #ifdef USE_AUTOCRYPT
       case OP_COMPOSE_AUTOCRYPT_MENU:
+        if (!C_Autocrypt)
+          break;
+
         if ((WithCrypto & APPLICATION_SMIME) && (e->security & APPLICATION_SMIME))
         {
           if (e->security & (SEC_ENCRYPT | SEC_SIGN))
@@ -2156,6 +2163,15 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
 #endif
     }
   }
+
+#ifdef USE_AUTOCRYPT
+  /* This is a fail-safe to make sure the bit isn't somehow turned
+   * on.  The user could have disabled the option after setting SEC_AUTOCRYPT,
+   * or perhaps resuming or replying to an autocrypt message.
+   */
+  if (!C_Autocrypt)
+    e->security &= ~SEC_AUTOCRYPT;
+#endif
 
   mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);

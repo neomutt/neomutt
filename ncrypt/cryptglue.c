@@ -42,6 +42,10 @@
 #include "crypt_mod.h"
 #include "curs_lib.h"
 #include "ncrypt.h"
+#include "options.h"
+#ifdef USE_AUTOCRYPT
+#include "autocrypt/autocrypt.h"
+#endif
 
 struct Address;
 struct AddressList;
@@ -62,6 +66,7 @@ extern struct CryptModuleSpecs CryptModSmimeClassic;
 #endif
 
 #ifdef CRYPT_BACKEND_GPGME
+#include "ncrypt/crypt_gpgme.h"
 extern struct CryptModuleSpecs CryptModPgpGpgme;
 extern struct CryptModuleSpecs CryptModSmimeGpgme;
 #endif
@@ -291,8 +296,25 @@ struct Body *crypt_pgp_sign_message(struct Body *a)
 /**
  * crypt_pgp_encrypt_message - Wrapper for CryptModuleSpecs::pgp_encrypt_message()
  */
-struct Body *crypt_pgp_encrypt_message(struct Body *a, char *keylist, bool sign)
+struct Body *crypt_pgp_encrypt_message(struct Email *msg, struct Body *a,
+                                       char *keylist, int sign)
 {
+#ifdef USE_AUTOCRYPT
+  struct Body *result;
+
+  if (msg->security & SEC_AUTOCRYPT)
+  {
+    if (mutt_autocrypt_set_sign_as_default_key(msg))
+      return NULL;
+
+    OptAutocryptGpgme = true;
+    result = pgp_gpgme_encrypt_message(a, keylist, sign);
+    OptAutocryptGpgme = false;
+
+    return result;
+  }
+#endif
+
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_encrypt_message))
     return CRYPT_MOD_CALL(PGP, pgp_encrypt_message)(a, keylist, sign);
 

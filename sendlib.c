@@ -74,6 +74,9 @@
 #else
 #define EX_OK 0
 #endif
+#ifdef USE_AUTOCRYPT
+#include "autocrypt/autocrypt.h"
+#endif
 
 /* These Config Variables are only used in sendlib.c */
 bool C_Allow8bit; ///< Config: Allow 8-bit messages, don't use quoted-printable or base64
@@ -483,8 +486,15 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
   if (a->encoding != ENC_7BIT)
     fprintf(fp, "Content-Transfer-Encoding: %s\n", ENCODING(a->encoding));
 
-  if (C_CryptProtectedHeadersWrite && a->mime_headers)
+  if ((C_CryptProtectedHeadersWrite
+#ifdef USE_AUTOCRYPT
+       || C_Autocrypt
+#endif
+       ) &&
+      a->mime_headers)
+  {
     mutt_rfc822_write_header(fp, a->mime_headers, NULL, MUTT_WRITE_HEADER_MIME, false, false);
+  }
 
   /* Do NOT add the terminator here!!! */
   return ferror(fp) ? -1 : 0;
@@ -2359,6 +2369,16 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
     fputc('\n', fp);
   }
 
+#ifdef USE_AUTOCRYPT
+  if (C_Autocrypt)
+  {
+    if (mode == MUTT_WRITE_HEADER_NORMAL)
+      mutt_autocrypt_write_autocrypt_header(env, fp);
+    if (mode == MUTT_WRITE_HEADER_MIME)
+      mutt_autocrypt_write_gossip_headers(env, fp);
+  }
+#endif
+
   /* Add any user defined headers */
   struct ListNode *tmp = NULL;
   STAILQ_FOREACH(tmp, &env->userhdrs, entries)
@@ -3264,6 +3284,12 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     }
     if (e->security & SEC_INLINE)
       fputc('I', msg->fp);
+#ifdef USE_AUTOCRYPT
+    if (e->security & SEC_AUTOCRYPT)
+      fputc('A', msg->fp);
+    if (e->security & SEC_AUTOCRYPT_OVERRIDE)
+      fputc('Z', msg->fp);
+#endif
     fputc('\n', msg->fp);
   }
 

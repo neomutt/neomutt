@@ -84,6 +84,9 @@
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif
+#ifdef USE_AUTOCRYPT
+#include "autocrypt/autocrypt.h"
+#endif
 
 /* These Config Variables are only used in send.c */
 unsigned char C_AbortNoattach; ///< Config: Abort sending the email if attachments are missing
@@ -1603,17 +1606,17 @@ static int save_fcc(struct Email *e, char *fcc, size_t fcc_len, struct Body *cle
    * Protected Headers. */
   if (!C_FccBeforeSend)
   {
-    if ((WithCrypto != 0) && (e->security & (SEC_ENCRYPT | SEC_SIGN)) && C_FccClear)
+    if (WithCrypto && (e->security & (SEC_ENCRYPT | SEC_SIGN | SEC_AUTOCRYPT)) && C_FccClear)
     {
       e->content = clear_content;
-      e->security &= ~(SEC_ENCRYPT | SEC_SIGN);
+      e->security &= ~(SEC_ENCRYPT | SEC_SIGN | SEC_AUTOCRYPT);
       mutt_env_free(&e->content->mime_headers);
     }
 
     /* check to see if the user wants copies of all attachments */
     if (e->content->type == TYPE_MULTIPART)
     {
-      if ((WithCrypto != 0) && (e->security & (SEC_ENCRYPT | SEC_SIGN)) &&
+      if ((WithCrypto != 0) && (e->security & (SEC_ENCRYPT | SEC_SIGN | SEC_AUTOCRYPT)) &&
           ((mutt_str_strcmp(e->content->subtype, "encrypted") == 0) ||
            (mutt_str_strcmp(e->content->subtype, "signed") == 0)))
       {
@@ -1630,7 +1633,7 @@ static int save_fcc(struct Email *e, char *fcc, size_t fcc_len, struct Body *cle
           /* this means writing only the main part */
           e->content = clear_content->parts;
 
-          if (mutt_protect(e, pgpkeylist) == -1)
+          if (mutt_protect(e, pgpkeylist, 0) == -1)
           {
             /* we can't do much about it at this point, so
            * fallback to saving the whole thing to fcc */
@@ -1750,7 +1753,7 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur, char *fcc
 
   mutt_encode_descriptions(e_post->content, true);
 
-  if ((WithCrypto != 0) && C_PostponeEncrypt && (e_post->security & SEC_ENCRYPT))
+  if (WithCrypto && C_PostponeEncrypt && (e_post->security & (SEC_ENCRYPT | SEC_AUTOCRYPT)))
   {
     if (((WithCrypto & APPLICATION_PGP) != 0) && (e_post->security & APPLICATION_PGP))
       encrypt_as = C_PgpDefaultKey;
@@ -1759,26 +1762,27 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur, char *fcc
     if (!encrypt_as)
       encrypt_as = C_PostponeEncryptAs;
 
+#ifdef USE_AUTOCRYPT
+    if (e_post->security & SEC_AUTOCRYPT)
+    {
+      if (mutt_autocrypt_set_sign_as_default_key(e_post))
+        return -1;
+      encrypt_as = AutocryptDefaultKey;
+    }
+#endif
+
     if (encrypt_as)
     {
-      bool is_signed = (e_post->security & SEC_SIGN);
-      if (is_signed)
-        e_post->security &= ~SEC_SIGN;
-
       pgpkeylist = mutt_str_strdup(encrypt_as);
       clear_content = e_post->content;
-      if (mutt_protect(e_post, pgpkeylist) == -1)
+      if (mutt_protect(e_post, pgpkeylist, 1) == -1)
       {
-        if (is_signed)
-          e_post->security |= SEC_SIGN;
         FREE(&pgpkeylist);
         e_post->content = mutt_remove_multipart(e_post->content);
         decode_descriptions(e_post->content);
         return -1;
       }
 
-      if (is_signed)
-        e_post->security |= SEC_SIGN;
       FREE(&pgpkeylist);
 
       mutt_encode_descriptions(e_post->content, false);
@@ -2241,23 +2245,36 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
   if ((WithCrypto != 0) && (e_templ->security == 0) &&
       !(flags & (SEND_BATCH | SEND_MAILX | SEND_POSTPONED | SEND_RESEND)))
   {
-    if (C_CryptAutosign)
-      e_templ->security |= SEC_SIGN;
-    if (C_CryptAutoencrypt)
-      e_templ->security |= SEC_ENCRYPT;
-    if (C_CryptReplyencrypt && e_cur && (e_cur->security & SEC_ENCRYPT))
-      e_templ->security |= SEC_ENCRYPT;
-    if (C_CryptReplysign && e_cur && (e_cur->security & SEC_SIGN))
-      e_templ->security |= SEC_SIGN;
-    if (C_CryptReplysignencrypted && e_cur && (e_cur->security & SEC_ENCRYPT))
-      e_templ->security |= SEC_SIGN;
-    if (((WithCrypto & APPLICATION_PGP) != 0) &&
-        ((e_templ->security & (SEC_ENCRYPT | SEC_SIGN)) || C_CryptOpportunisticEncrypt))
+    if (
+#ifdef USE_AUTOCRYPT
+        C_Autocrypt
+#else
+        0
+#endif
+        && e_cur && (e_cur->security & SEC_AUTOCRYPT))
     {
-      if (C_PgpAutoinline)
-        e_templ->security |= SEC_INLINE;
-      if (C_PgpReplyinline && e_cur && (e_cur->security & SEC_INLINE))
-        e_templ->security |= SEC_INLINE;
+      e_templ->security |= (SEC_AUTOCRYPT | SEC_AUTOCRYPT_OVERRIDE);
+    }
+    else
+    {
+      if (C_CryptAutosign)
+        e_templ->security |= SEC_SIGN;
+      if (C_CryptAutoencrypt)
+        e_templ->security |= SEC_ENCRYPT;
+      if (C_CryptReplyencrypt && e_cur && (e_cur->security & SEC_ENCRYPT))
+        e_templ->security |= SEC_ENCRYPT;
+      if (C_CryptReplysign && e_cur && (e_cur->security & SEC_SIGN))
+        e_templ->security |= SEC_SIGN;
+      if (C_CryptReplysignencrypted && e_cur && (e_cur->security & SEC_ENCRYPT))
+        e_templ->security |= SEC_SIGN;
+      if ((WithCrypto & APPLICATION_PGP) &&
+          ((e_templ->security & (SEC_ENCRYPT | SEC_SIGN)) || C_CryptOpportunisticEncrypt))
+      {
+        if (C_PgpAutoinline)
+          e_templ->security |= SEC_INLINE;
+        if (C_PgpReplyinline && e_cur && (e_cur->security & SEC_INLINE))
+          e_templ->security |= SEC_INLINE;
+      }
     }
 
     if (e_templ->security || C_CryptOpportunisticEncrypt)
@@ -2308,7 +2325,7 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
       /* If something has already enabled encryption, e.g. C_CryptAutoencrypt
        * or C_CryptReplyencrypt, then don't enable opportunistic encrypt for
        * the message.  */
-      if (!(e_templ->security & SEC_ENCRYPT))
+      if (!(e_templ->security & (SEC_ENCRYPT | SEC_AUTOCRYPT)))
       {
         e_templ->security |= SEC_OPPENCRYPT;
         crypt_opportunistic_encrypt(e_templ);
@@ -2464,13 +2481,13 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
 
   if (WithCrypto)
   {
-    if (e_templ->security & (SEC_ENCRYPT | SEC_SIGN))
+    if (e_templ->security & (SEC_ENCRYPT | SEC_SIGN | SEC_AUTOCRYPT))
     {
       /* save the decrypted attachments */
       clear_content = e_templ->content;
 
       if ((crypt_get_keys(e_templ, &pgpkeylist, 0) == -1) ||
-          (mutt_protect(e_templ, pgpkeylist) == -1))
+          (mutt_protect(e_templ, pgpkeylist, 0) == -1))
       {
         e_templ->content = mutt_remove_multipart(e_templ->content);
 
@@ -2511,7 +2528,7 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
     {
       if (!WithCrypto)
         ;
-      else if ((e_templ->security & SEC_ENCRYPT) ||
+      else if ((e_templ->security & (SEC_ENCRYPT | SEC_AUTOCRYPT)) ||
                ((e_templ->security & SEC_SIGN) && (e_templ->content->type == TYPE_APPLICATION)))
       {
         mutt_body_free(&e_templ->content); /* destroy PGP data */

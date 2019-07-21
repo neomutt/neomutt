@@ -58,6 +58,9 @@
 #include "send.h"
 #include "sendlib.h"
 #include "state.h"
+#ifdef USE_AUTOCRYPT
+#include "autocrypt/autocrypt.h"
+#endif
 
 struct Mailbox;
 
@@ -164,24 +167,35 @@ bool crypt_valid_passphrase(SecurityFlags flags)
  * @param keylist List of keys to encrypt to (space-separated)
  * @retval  0 Success
  * @retval -1 Error
+ *
+ * In postpone mode, signing is automatically disabled.
  */
-int mutt_protect(struct Email *e, char *keylist)
+int mutt_protect(struct Email *e, char *keylist, int postpone)
 {
   struct Body *pbody = NULL, *tmp_pbody = NULL;
   struct Body *tmp_smime_pbody = NULL;
   struct Body *tmp_pgp_pbody = NULL;
-  int flags = (WithCrypto & APPLICATION_PGP) ? e->security : 0;
+  int security, sign, has_retainable_sig = 0;
 
   if (!WithCrypto)
     return -1;
 
-  if (!(e->security & (SEC_ENCRYPT | SEC_SIGN)))
+  security = e->security;
+  sign = security & (SEC_AUTOCRYPT | SEC_SIGN);
+  if (postpone)
+  {
+    sign = 0;
+    security &= ~SEC_SIGN;
+  }
+
+  if (!(security & (SEC_ENCRYPT | SEC_AUTOCRYPT)) && !sign)
     return 0;
 
-  if ((e->security & SEC_SIGN) && !crypt_valid_passphrase(e->security))
+  if (sign && !(security & SEC_AUTOCRYPT) && !crypt_valid_passphrase(security))
     return -1;
 
-  if (((WithCrypto & APPLICATION_PGP) != 0) && ((e->security & PGP_INLINE) == PGP_INLINE))
+  if ((WithCrypto & APPLICATION_PGP) && !(security & SEC_AUTOCRYPT) &&
+      ((security & PGP_INLINE) == PGP_INLINE))
   {
     if ((e->content->type != TYPE_TEXT) ||
         (mutt_str_strcasecmp(e->content->subtype, "plain") != 0))
@@ -214,7 +228,7 @@ int mutt_protect(struct Email *e, char *keylist)
         mutt_endwin();
         puts(_("Invoking PGP..."));
       }
-      pbody = crypt_pgp_traditional_encryptsign(e->content, flags, keylist);
+      pbody = crypt_pgp_traditional_encryptsign(e->content, security, keylist);
       if (pbody)
       {
         e->content = pbody;
@@ -242,7 +256,7 @@ int mutt_protect(struct Email *e, char *keylist)
   if (WithCrypto & APPLICATION_PGP)
     tmp_pgp_pbody = e->content;
 
-  if (C_CryptUsePka && (e->security & SEC_SIGN))
+  if (C_CryptUsePka && sign)
   {
     /* Set sender (necessary for e.g. PKA).  */
     const char *mailbox = NULL;
@@ -259,9 +273,9 @@ int mutt_protect(struct Email *e, char *keylist)
     if (!mailbox && C_EnvelopeFromAddress)
       mailbox = C_EnvelopeFromAddress->mailbox;
 
-    if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME))
+    if (((WithCrypto & APPLICATION_SMIME) != 0) && (security & APPLICATION_SMIME))
       crypt_smime_set_sender(mailbox);
-    else if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & APPLICATION_PGP))
+    else if (((WithCrypto & APPLICATION_PGP) != 0) && (security & APPLICATION_PGP))
       crypt_pgp_set_sender(mailbox);
 
     if (free_from)
@@ -280,9 +294,27 @@ int mutt_protect(struct Email *e, char *keylist)
     e->content->mime_headers = protected_headers;
   }
 
-  if (e->security & SEC_SIGN)
+  /* A note about e->content->mime_headers.  If postpone or send
+   * fails, the mime_headers is cleared out before returning to the
+   * compose menu.  So despite the "robustness" code above and in the
+   * gen_gossip_list function below, mime_headers will not be set when
+   * entering mutt_protect().
+   *
+   * This is important to note because the user could toggle
+   * $crypt_protected_headers_write or $autocrypt off back in the
+   * compose menu.  We don't want mutt_write_rfc822_header() to write
+   * stale data from one option if the other is set.
+   */
+#ifdef USE_AUTOCRYPT
+  if (C_Autocrypt && !postpone && (security & SEC_AUTOCRYPT))
   {
-    if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME))
+    mutt_autocrypt_generate_gossip_list(e);
+  }
+#endif
+
+  if (sign)
+  {
+    if (((WithCrypto & APPLICATION_SMIME) != 0) && (security & APPLICATION_SMIME))
     {
       tmp_pbody = crypt_smime_sign_message(e->content);
       if (!tmp_pbody)
@@ -291,27 +323,28 @@ int mutt_protect(struct Email *e, char *keylist)
       tmp_smime_pbody = tmp_pbody;
     }
 
-    if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & APPLICATION_PGP) &&
-        (!(flags & SEC_ENCRYPT) || C_PgpRetainableSigs))
+    if (((WithCrypto & APPLICATION_PGP) != 0) && (security & APPLICATION_PGP) &&
+        (!(security & (SEC_ENCRYPT | SEC_AUTOCRYPT)) || C_PgpRetainableSigs))
     {
       tmp_pbody = crypt_pgp_sign_message(e->content);
       if (!tmp_pbody)
         goto bail;
 
-      flags &= ~SEC_SIGN;
+      has_retainable_sig = 1;
+      sign = 0;
       pbody = tmp_pbody;
       tmp_pgp_pbody = tmp_pbody;
     }
 
-    if ((WithCrypto != 0) && (e->security & APPLICATION_SMIME) && (e->security & APPLICATION_PGP))
+    if ((WithCrypto != 0) && (security & APPLICATION_SMIME) && (security & APPLICATION_PGP))
     {
       /* here comes the draft ;-) */
     }
   }
 
-  if (e->security & SEC_ENCRYPT)
+  if (security & (SEC_ENCRYPT | SEC_AUTOCRYPT))
   {
-    if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME))
+    if (((WithCrypto & APPLICATION_SMIME) != 0) && (security & APPLICATION_SMIME))
     {
       tmp_pbody = crypt_smime_build_smime_entity(tmp_smime_pbody, keylist);
       if (!tmp_pbody)
@@ -331,13 +364,13 @@ int mutt_protect(struct Email *e, char *keylist)
       pbody = tmp_pbody;
     }
 
-    if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & APPLICATION_PGP))
+    if (((WithCrypto & APPLICATION_PGP) != 0) && (security & APPLICATION_PGP))
     {
-      pbody = crypt_pgp_encrypt_message(tmp_pgp_pbody, keylist, (flags & SEC_SIGN));
+      pbody = crypt_pgp_encrypt_message(e, tmp_pgp_pbody, keylist, sign);
       if (!pbody)
       {
         /* did we perform a retainable signature? */
-        if (flags != e->security)
+        if (has_retainable_sig)
         {
           /* remove the outer multipart layer */
           tmp_pgp_pbody = mutt_remove_multipart(tmp_pgp_pbody);
@@ -352,7 +385,7 @@ int mutt_protect(struct Email *e, char *keylist)
        * signatures.
 
        */
-      if (flags != e->security)
+      if (has_retainable_sig)
       {
         tmp_pgp_pbody = mutt_remove_multipart(tmp_pgp_pbody);
         mutt_body_free(&tmp_pgp_pbody->next);
@@ -925,6 +958,17 @@ int crypt_get_keys(struct Email *e, char **keylist, bool oppenc_mode)
   /* Do a quick check to make sure that we can find all of the encryption
    * keys if the user has requested this service.  */
 
+  *keylist = NULL;
+
+#ifdef USE_AUTOCRYPT
+  if (!oppenc_mode && (e->security & SEC_AUTOCRYPT))
+  {
+    if (mutt_autocrypt_ui_recommendation(e, keylist) <= AUTOCRYPT_REC_NO)
+      return (-1);
+    return (0);
+  }
+#endif
+
   if (WithCrypto & APPLICATION_PGP)
     OptPgpCheckTrust = true;
 
@@ -933,8 +977,6 @@ int crypt_get_keys(struct Email *e, char **keylist, bool oppenc_mode)
   mutt_addrlist_copy(&addrlist, &e->env->bcc, false);
   mutt_addrlist_qualify(&addrlist, fqdn);
   mutt_addrlist_dedupe(&addrlist);
-
-  *keylist = NULL;
 
   if (oppenc_mode || (e->security & SEC_ENCRYPT))
   {

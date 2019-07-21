@@ -719,6 +719,12 @@ static gpgme_ctx_t create_gpgme_context(bool for_smime)
   gpgme_ctx_t ctx;
 
   err = gpgme_new(&ctx);
+
+#ifdef USE_AUTOCRYPT
+  if (!err && OptAutocryptGpgme)
+    err = gpgme_ctx_set_engine_info(ctx, GPGME_PROTOCOL_OpenPGP, NULL, C_AutocryptDir);
+#endif
+
   if (err != 0)
   {
     mutt_error(_("error creating gpgme context: %s"), gpgme_strerror(err));
@@ -1116,13 +1122,22 @@ static gpgme_key_t *create_recipient_set(const char *keylist, bool use_smime)
  */
 static int set_signer(gpgme_ctx_t ctx, bool for_smime)
 {
-  char *signid = for_smime ? C_SmimeDefaultKey : C_PgpSignAs;
+  char *signid = NULL;
   gpgme_error_t err;
   gpgme_ctx_t listctx;
   gpgme_key_t key, key2;
   char *fpr = NULL, *fpr2 = NULL;
 
-  if (!signid || !*signid)
+  if (for_smime)
+    signid = C_SmimeSignAs ? C_SmimeSignAs : C_SmimeDefaultKey;
+#ifdef USE_AUTOCRYPT
+  else if (OptAutocryptGpgme)
+    signid = AutocryptSignAs;
+#endif
+  else
+    signid = C_PgpSignAs ? C_PgpSignAs : C_PgpDefaultKey;
+
+  if (!signid)
     return 0;
 
   listctx = create_gpgme_context(for_smime);
