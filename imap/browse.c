@@ -121,7 +121,6 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
     if (mutt_str_strcmp(tmp, mutt_b2s(np->mailbox->pathbuf)) == 0)
       break;
   }
-  neomutt_mailboxlist_clear(&ml);
 
   if (np)
   {
@@ -130,6 +129,7 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
     (state->entry)[state->entrylen].msg_count = np->mailbox->msg_count;
     (state->entry)[state->entrylen].msg_unread = np->mailbox->msg_unread;
   }
+  neomutt_mailboxlist_clear(&ml);
 
   (state->entrylen)++;
 }
