@@ -659,15 +659,6 @@ const struct Binding OpMix[] = { /* map: mixmaster */
 };
 #endif /* MIXMASTER */
 
-/**
- * OpSummary - Key bindings for the summary menu
- */
-const struct Binding OpSummary[] = { /* map: summary */
-  { "quit",                  OP_QUIT,                        "q" },
-  { "help",                  OP_HELP,                        "?" },
-  { NULL,                    0,                              NULL },
-};
-
 // clang-format on
 
 #endif /* MUTT_FUNCTIONS_H */

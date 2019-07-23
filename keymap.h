@@ -87,7 +87,6 @@ enum MenuType
 #ifdef MIXMASTER
   MENU_MIX,              ///< Create/edit a Mixmaster chain
 #endif
-  MENU_SUMMARY,          ///< Summary pages
   MENU_MAX,
 };
 
