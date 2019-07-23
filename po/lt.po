@@ -516,9 +516,8 @@ msgstr "Kopijuoju į %s..."
 
 #. L10N: e.g. "text/plain; charset=UTF-8; ..."
 #: commands.c:1213
-#, fuzzy
 msgid "Content type is too long"
-msgstr "Content-Type pakeistas į %s"
+msgstr "Content-Type per ilgas"
 
 #: commands.c:1237
 #, c-format
@@ -3153,7 +3152,6 @@ msgid "MIME type not defined.  Can't view attachment."
 msgstr "MIME tipas neapibrėžtas.  Negaliu parodyti priedo."
 
 #: mutt_attach.c:457
-#, fuzzy
 msgid "Can't match nametemplate, continue?"
 msgstr "Negaliu rasti tinkančio vardo, tęsti?"
 
@@ -5947,12 +5945,12 @@ msgid "Saving..."
 msgstr "Išsaugau..."
 
 #: recvattach.c:581 recvattach.c:745 recvattach.c:749
-#, fuzzy, c-format
+#, c-format
 msgid "Attachment saved"
 msgid_plural "%d attachments saved"
-msgstr[0] "Priedas išsaugotas"
-msgstr[1] "Priedas išsaugotas"
-msgstr[2] "Priedas išsaugotas"
+msgstr[0] "%d priedas išsaugotas"
+msgstr[1] "%d priedai išsaugoti"
+msgstr[2] "%d priedų išsaugota"
 
 #: recvattach.c:769
 #, c-format
