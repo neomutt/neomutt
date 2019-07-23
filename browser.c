@@ -614,6 +614,11 @@ static void add_folder(struct Menu *menu, struct BrowserState *state,
                        const char *name, const char *desc, const struct stat *s,
                        struct Mailbox *m, void *data)
 {
+  if (m && (m->flags & MB_HIDDEN))
+  {
+    return;
+  }
+
   if (state->entrylen == state->entrymax)
   {
     /* need to allocate more space */
