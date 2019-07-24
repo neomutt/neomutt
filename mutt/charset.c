@@ -345,8 +345,7 @@ void mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name)
 
   for (size_t i = 0; PreferredMimeNames[i].key; i++)
   {
-    if ((mutt_str_strcasecmp(scratch, PreferredMimeNames[i].key) == 0) ||
-        (mutt_str_strcasecmp(scratch, PreferredMimeNames[i].key) == 0))
+    if (mutt_str_strcasecmp(scratch, PreferredMimeNames[i].key) == 0)
     {
       mutt_str_strfcpy(buf, PreferredMimeNames[i].pref, buflen);
       goto out;

@@ -1154,8 +1154,7 @@ enum ContentType mutt_lookup_mime_type(struct Body *att, const char *path)
         {
           sze = mutt_str_strlen(p);
           if ((sze > cur_sze) && (szf >= sze) &&
-              ((mutt_str_strcasecmp(path + szf - sze, p) == 0) ||
-               (mutt_str_strcasecmp(path + szf - sze, p) == 0)) &&
+              (mutt_str_strcasecmp(path + szf - sze, p) == 0) &&
               ((szf == sze) || (path[szf - sze - 1] == '.')))
           {
             /* get the content-type */
