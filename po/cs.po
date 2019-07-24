@@ -4535,11 +4535,6 @@ msgstr "Diskusní skupina %s nenalezena na serveru"
 msgid "Newsgroup %s has been removed from the server"
 msgstr "Diskusní skupina %s byla odstraněna ze serveru"
 
-#: nntp/nntp.c:2765
-#, c-format
-msgid "Article %d not found on the server"
-msgstr "Článek %d nebyl nalezen na serveru"
-
 #: notmuch/mutt_notmuch.c:124
 #, c-format
 msgid "failed to parse notmuch query type: %s"

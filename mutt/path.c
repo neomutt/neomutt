@@ -263,7 +263,7 @@ bool mutt_path_canon(char *buf, size_t buflen, const char *homedir)
     size_t dirlen = mutt_str_strlen(dir);
     if ((len + dirlen) >= buflen)
     {
-      mutt_debug(LL_DEBUG3, "result too big for the buffer %d >= %d\n", len + dirlen, buflen);
+      mutt_debug(LL_DEBUG3, "result too big for the buffer %ld >= %ld\n", len + dirlen, buflen);
       return false;
     }
 
@@ -282,7 +282,7 @@ bool mutt_path_canon(char *buf, size_t buflen, const char *homedir)
     size_t dirlen = mutt_str_strlen(buf);
     if ((cwdlen + dirlen + 1) >= buflen)
     {
-      mutt_debug(LL_DEBUG3, "result too big for the buffer %d >= %d\n",
+      mutt_debug(LL_DEBUG3, "result too big for the buffer %ld >= %ld\n",
                  cwdlen + dirlen + 1, buflen);
       return false;
     }

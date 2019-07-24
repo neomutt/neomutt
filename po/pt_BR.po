@@ -4502,11 +4502,6 @@ msgstr "Grupo de notícias %s não encontrado no servidor"
 msgid "Newsgroup %s has been removed from the server"
 msgstr "Grupo de notícias %s foi removido do servidor"
 
-#: nntp/nntp.c:2765
-#, c-format
-msgid "Article %d not found on the server"
-msgstr "Artigo %d não encontrado no servidor"
-
 #: notmuch/mutt_notmuch.c:124
 #, c-format
 msgid "failed to parse notmuch query type: %s"

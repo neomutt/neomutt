@@ -2759,7 +2759,7 @@ static int nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
       {
         if (mutt_str_startswith(buf, nntp_edata_get(e)->article_num ? "423" : "430", CASE_MATCH))
         {
-          mutt_error(_("Article %d not found on the server"),
+          mutt_error(_("Article %s not found on the server"),
                      nntp_edata_get(e)->article_num ? article : e->env->message_id);
         }
         else

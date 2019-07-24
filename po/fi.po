@@ -4507,11 +4507,6 @@ msgstr "Uutisryhmää %s ei ole palvelimella"
 msgid "Newsgroup %s has been removed from the server"
 msgstr "Uutisryhmä %s on poistettu palvelimelta"
 
-#: nntp/nntp.c:2765
-#, c-format
-msgid "Article %d not found on the server"
-msgstr "Artikkelia %d ei ole palvelimella"
-
 #: notmuch/mutt_notmuch.c:124
 #, c-format
 msgid "failed to parse notmuch query type: %s"

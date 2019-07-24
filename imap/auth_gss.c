@@ -135,7 +135,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method
   maj_stat = gss_import_name(&min_stat, &request_buf, gss_nt_service_name, &target_name);
   if (maj_stat != GSS_S_COMPLETE)
   {
-    mutt_debug(LL_DEBUG2, "Couldn't get service name for [%s]\n", buf1);
+    mutt_debug(LL_DEBUG2, "Couldn't get service name for [%s]\n", buf1->data);
     retval = IMAP_AUTH_UNAVAIL;
     goto cleanup;
   }
@@ -176,7 +176,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method
 
   if (rc != IMAP_CMD_RESPOND)
   {
-    mutt_debug(LL_DEBUG2, "Invalid response from server: %s\n", buf1);
+    mutt_debug(LL_DEBUG2, "Invalid response from server: %s\n", buf1->data);
     gss_release_name(&min_stat, &target_name);
     goto bail;
   }

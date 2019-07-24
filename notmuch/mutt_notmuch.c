@@ -186,9 +186,9 @@ void nm_mdata_free(void **ptr)
   if (!ptr || !*ptr)
     return;
 
-  mutt_debug(LL_DEBUG1, "nm: freeing context data %p\n", ptr);
-
   struct NmMboxData *mdata = *ptr;
+
+  mutt_debug(LL_DEBUG1, "nm: freeing context data %p\n", mdata);
 
   url_free(&mdata->db_url);
   FREE(&mdata->db_query);
@@ -1942,7 +1942,7 @@ static int nm_mbox_check_stats(struct Mailbox *m, int flags)
       // Try to parse the limit
       if (mutt_str_atoi(item->value, &limit) != 0)
       {
-        mutt_error(_("failed to parse limit: %s"), limit);
+        mutt_error(_("failed to parse limit: %s"), item->value);
         goto done;
       }
     }
@@ -2225,11 +2225,11 @@ static int nm_mbox_check(struct Mailbox *m, int *index_hint)
 
   if (m->mtime.tv_sec >= mtime)
   {
-    mutt_debug(LL_DEBUG2, "nm: check unnecessary (db=%lu mailbox=%lu)\n", mtime, m->mtime);
+    mutt_debug(LL_DEBUG2, "nm: check unnecessary (db=%lu mailbox=%lu)\n", mtime, m->mtime.tv_sec);
     return 0;
   }
 
-  mutt_debug(LL_DEBUG1, "nm: checking (db=%lu mailbox=%lu)\n", mtime, m->mtime);
+  mutt_debug(LL_DEBUG1, "nm: checking (db=%lu mailbox=%lu)\n", mtime, m->mtime.tv_sec);
 
   notmuch_query_t *q = get_query(m, false);
   if (!q)

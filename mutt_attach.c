@@ -550,7 +550,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
       /* interactive cmd */
       int rv = mutt_system(mutt_b2s(cmd));
       if (rv == -1)
-        mutt_debug(LL_DEBUG1, "Error running \"%s\"", cmd);
+        mutt_debug(LL_DEBUG1, "Error running \"%s\"", cmd->data);
 
       if ((rv != 0) || (entry->needsterminal && C_WaitKey))
         mutt_any_key_to_continue(NULL);
@@ -1093,7 +1093,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     {
       int rc2 = mutt_system(mutt_b2s(cmd));
       if (rc2 == -1)
-        mutt_debug(LL_DEBUG1, "Error running \"%s\"", cmd);
+        mutt_debug(LL_DEBUG1, "Error running \"%s\"", cmd->data);
 
       if ((rc2 != 0) || C_WaitKey)
         mutt_any_key_to_continue(NULL);

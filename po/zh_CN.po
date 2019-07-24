@@ -4481,11 +4481,6 @@ msgstr "新闻组 %s 没有在服务器上找到"
 msgid "Newsgroup %s has been removed from the server"
 msgstr "新闻组 %s 已经从服务器上被移除"
 
-#: nntp/nntp.c:2765
-#, c-format
-msgid "Article %d not found on the server"
-msgstr "帖子 %d 没有在服务器上找到"
-
 #: notmuch/mutt_notmuch.c:124
 #, c-format
 msgid "failed to parse notmuch query type: %s"
