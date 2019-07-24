@@ -36,22 +36,34 @@
 #include "mutt_menu.h"
 #include "options.h"
 
-struct MuttWindow *MuttHelpWindow = NULL;    ///< Help Window
-struct MuttWindow *MuttIndexWindow = NULL;   ///< Index Window
-struct MuttWindow *MuttStatusWindow = NULL;  ///< Status Window
-struct MuttWindow *MuttMessageWindow = NULL; ///< Message Window
+struct MuttWindow *RootWindow = NULL;         ///< Parent of all Windows
+struct MuttWindow *MuttHelpWindow = NULL;     ///< Help Window
+struct MuttWindow *MuttIndexWindow = NULL;    ///< Index Window
+struct MuttWindow *MuttMessageWindow = NULL;  ///< Message Window
+struct MuttWindow *MuttPagerBarWindow = NULL; ///< Pager Status Window
+struct MuttWindow *MuttPagerWindow = NULL;    ///< Pager Window
 #ifdef USE_SIDEBAR
 struct MuttWindow *MuttSidebarWindow = NULL; ///< Sidebar Window
 #endif
+struct MuttWindow *MuttStatusWindow = NULL; ///< Status Window
 
 /**
  * mutt_window_new - Create a new Window
+ * @param orient Window orientation, e.g. #MUTT_WIN_ORIENT_VERTICAL
+ * @param size   Window size, e.g. #MUTT_WIN_SIZE_MAXIMISE
+ * @param rows   Initial number of rows to allocate, can be #MUTT_WIN_SIZE_UNLIMITED
+ * @param cols   Initial number of columns to allocate, can be #MUTT_WIN_SIZE_UNLIMITED
  * @retval ptr New Window
  */
-struct MuttWindow *mutt_window_new(void)
+struct MuttWindow *mutt_window_new(enum MuttWindowOrientation orient,
+                                   enum MuttWindowSize size, int rows, int cols)
 {
   struct MuttWindow *win = mutt_mem_calloc(1, sizeof(struct MuttWindow));
 
+  win->orient = orient;
+  win->size = size;
+  win->req_rows = rows;
+  win->req_cols = cols;
   TAILQ_INIT(&win->children);
   return win;
 }
@@ -147,13 +159,16 @@ void mutt_window_clrtoeol(struct MuttWindow *win)
  */
 void mutt_window_free_all(void)
 {
-  FREE(&MuttHelpWindow);
-  FREE(&MuttIndexWindow);
-  FREE(&MuttStatusWindow);
-  FREE(&MuttMessageWindow);
+  MuttHelpWindow = NULL;
+  MuttIndexWindow = NULL;
+  MuttMessageWindow = NULL;
+  MuttPagerBarWindow = NULL;
+  MuttPagerWindow = NULL;
 #ifdef USE_SIDEBAR
-  FREE(&MuttSidebarWindow);
+  MuttSidebarWindow = NULL;
 #endif
+  MuttStatusWindow = NULL;
+  mutt_window_free(&RootWindow);
 }
 
 /**
@@ -184,13 +199,62 @@ void mutt_window_get_coords(struct MuttWindow *win, int *row, int *col)
  */
 void mutt_window_init(void)
 {
-  MuttHelpWindow = mutt_window_new();
-  MuttIndexWindow = mutt_window_new();
-  MuttStatusWindow = mutt_window_new();
-  MuttMessageWindow = mutt_window_new();
-#ifdef USE_SIDEBAR
-  MuttSidebarWindow = mutt_window_new();
-#endif
+  if (RootWindow)
+    return;
+
+  struct MuttWindow *w1 =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  struct MuttWindow *w2 =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  struct MuttWindow *w3 =
+      mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  struct MuttWindow *w4 =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  struct MuttWindow *w5 =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  struct MuttWindow *w6 =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  w6->state.visible = false; // The Pager and Pager Bar are initially hidden
+
+  MuttHelpWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
+                                   1, MUTT_WIN_SIZE_UNLIMITED);
+  MuttIndexWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                                    MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  MuttMessageWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
+                                      1, MUTT_WIN_SIZE_UNLIMITED);
+  MuttPagerBarWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
+                                       1, MUTT_WIN_SIZE_UNLIMITED);
+  MuttPagerWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                                    MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  MuttSidebarWindow = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
+                                      MUTT_WIN_SIZE_UNLIMITED, 20);
+  MuttStatusWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
+                                     1, MUTT_WIN_SIZE_UNLIMITED);
+
+  RootWindow = w1;
+
+  mutt_window_add_child(w1, w2);
+  mutt_window_add_child(w1, MuttMessageWindow);
+
+  mutt_window_add_child(w2, MuttHelpWindow);
+  mutt_window_add_child(w2, w3);
+
+  mutt_window_add_child(w3, MuttSidebarWindow);
+  mutt_window_add_child(w3, w4);
+
+  mutt_window_add_child(w4, w5);
+  mutt_window_add_child(w5, MuttIndexWindow);
+  mutt_window_add_child(w5, MuttStatusWindow);
+
+  mutt_window_add_child(w4, w6);
+  mutt_window_add_child(w6, MuttPagerWindow);
+  mutt_window_add_child(w6, MuttPagerBarWindow);
 }
 
 /**
@@ -439,6 +503,20 @@ int mutt_window_printf(const char *fmt, ...)
   va_end(ap);
 
   return rc;
+}
+
+/**
+ * mutt_window_add_child - Add a child to Window
+ * @param parent Window to add to
+ * @param child  Window to add
+ */
+void mutt_window_add_child(struct MuttWindow *parent, struct MuttWindow *child)
+{
+  if (!parent || !child)
+    return;
+
+  TAILQ_INSERT_TAIL(&parent->children, child, entries);
+  child->parent = parent;
 }
 
 /**

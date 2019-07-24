@@ -2329,10 +2329,10 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   }
   rd.helpstr = mutt_b2s(&helpstr);
 
-  rd.win_ibar = mutt_window_new();
-  rd.win_index = mutt_window_new();
-  rd.win_pbar = mutt_window_new();
-  rd.win_pager = mutt_window_new();
+  rd.win_ibar = MuttStatusWindow;
+  rd.win_index = MuttIndexWindow;
+  rd.win_pbar = MuttPagerBarWindow;
+  rd.win_pager = MuttPagerWindow;
 
   pager_menu = mutt_menu_new(MENU_PAGER);
   pager_menu->menu_custom_redraw = pager_custom_redraw;
@@ -3590,10 +3590,6 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   mutt_menu_free(&rd.menu);
 
   mutt_buffer_dealloc(&helpstr);
-  mutt_window_free(&rd.win_ibar);
-  mutt_window_free(&rd.win_index);
-  mutt_window_free(&rd.win_pbar);
-  mutt_window_free(&rd.win_pager);
 
   return (rc != -1) ? rc : 0;
 }
