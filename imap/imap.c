@@ -849,8 +849,6 @@ void imap_expunge_mailbox(struct Mailbox *m)
  */
 int imap_open_connection(struct ImapAccountData *adata)
 {
-  char buf[1024];
-
   if (mutt_socket_open(adata->conn) < 0)
     return -1;
 
@@ -920,7 +918,7 @@ int imap_open_connection(struct ImapAccountData *adata)
   }
   else
   {
-    imap_error("imap_open_connection()", buf);
+    imap_error("imap_open_connection()", adata->buf);
     goto bail;
   }
 
