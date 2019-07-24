@@ -2743,7 +2743,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
       pid = mutt_create_filter(cmd.data, NULL, &fp, NULL);
       if (pid < 0)
       {
-        mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", cmd);
+        mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", cmd.data);
         FREE(&cmd.data);
         return -1;
       }
