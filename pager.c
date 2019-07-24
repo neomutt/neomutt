@@ -2323,10 +2323,10 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   }
   rd.helpstr = mutt_b2s(helpstr);
 
-  rd.index_status_window = mutt_mem_calloc(1, sizeof(struct MuttWindow));
-  rd.index_window = mutt_mem_calloc(1, sizeof(struct MuttWindow));
-  rd.pager_status_window = mutt_mem_calloc(1, sizeof(struct MuttWindow));
-  rd.pager_window = mutt_mem_calloc(1, sizeof(struct MuttWindow));
+  rd.index_status_window = mutt_window_new();
+  rd.index_window = mutt_window_new();
+  rd.pager_status_window = mutt_window_new();
+  rd.pager_window = mutt_window_new();
 
   pager_menu = mutt_menu_new(MENU_PAGER);
   pager_menu->menu_custom_redraw = pager_custom_redraw;
@@ -3586,10 +3586,10 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
     mutt_menu_destroy(&rd.index);
 
   mutt_buffer_free(&helpstr);
-  FREE(&rd.index_status_window);
-  FREE(&rd.index_window);
-  FREE(&rd.pager_status_window);
-  FREE(&rd.pager_window);
+  mutt_window_free(&rd.index_status_window);
+  mutt_window_free(&rd.index_window);
+  mutt_window_free(&rd.pager_status_window);
+  mutt_window_free(&rd.pager_window);
 
   return (rc != -1) ? rc : 0;
 }

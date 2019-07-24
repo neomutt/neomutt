@@ -44,6 +44,31 @@ struct MuttWindow *MuttMessageWindow = NULL; /**< Message Window */
 struct MuttWindow *MuttSidebarWindow = NULL; /**< Sidebar Window */
 #endif
 
+/**
+ * mutt_window_new - Create a new Window
+ * @retval ptr New Window
+ */
+struct MuttWindow *mutt_window_new(void)
+{
+  struct MuttWindow *win = mutt_mem_calloc(1, sizeof(struct MuttWindow));
+
+  return win;
+}
+
+/**
+ * mutt_window_free - Free a Window
+ * @param ptr Window to free
+ */
+void mutt_window_free(struct MuttWindow **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  // struct MuttWindow *win = *ptr;
+
+  FREE(ptr);
+}
+
 #ifdef USE_SLANG_CURSES
 /**
  * vw_printw - Write a formatted string to a Window (function missing from Slang)
@@ -102,9 +127,9 @@ void mutt_window_clrtoeol(struct MuttWindow *win)
 }
 
 /**
- * mutt_window_free - Free the default Windows
+ * mutt_window_free_all - Free all the default Windows
  */
-void mutt_window_free(void)
+void mutt_window_free_all(void)
 {
   FREE(&MuttHelpWindow);
   FREE(&MuttIndexWindow);
@@ -143,12 +168,12 @@ void mutt_window_getxy(struct MuttWindow *win, int *x, int *y)
  */
 void mutt_window_init(void)
 {
-  MuttHelpWindow = mutt_mem_calloc(1, sizeof(struct MuttWindow));
-  MuttIndexWindow = mutt_mem_calloc(1, sizeof(struct MuttWindow));
-  MuttStatusWindow = mutt_mem_calloc(1, sizeof(struct MuttWindow));
-  MuttMessageWindow = mutt_mem_calloc(1, sizeof(struct MuttWindow));
+  MuttHelpWindow = mutt_window_new();
+  MuttIndexWindow = mutt_window_new();
+  MuttStatusWindow = mutt_window_new();
+  MuttMessageWindow = mutt_window_new();
 #ifdef USE_SIDEBAR
-  MuttSidebarWindow = mutt_mem_calloc(1, sizeof(struct MuttWindow));
+  MuttSidebarWindow = mutt_window_new();
 #endif
 }
 
