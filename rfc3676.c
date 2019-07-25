@@ -191,7 +191,7 @@ static void flush_par(struct State *s, struct FlowedState *fst)
  */
 static int quote_width(struct State *s, int ql)
 {
-  int width = mutt_window_wrap_cols(MuttIndexWindow, C_ReflowWrap);
+  int width = mutt_window_wrap_cols(MuttIndexWindow->cols, C_ReflowWrap);
   if (C_TextFlowed && (s->flags & MUTT_REPLYING))
   {
     /* When replying, force a wrap at FLOWED_MAX to comply with RFC3676

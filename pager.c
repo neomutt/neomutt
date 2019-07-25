@@ -1425,22 +1425,22 @@ static int fill_buffer(FILE *fp, LOFF_T *last_pos, LOFF_T offset, unsigned char 
 
 /**
  * format_line - Display a line of text in the pager
- * @param[out] line_info    Line info
- * @param[in]  n            Line number (index into line_info)
- * @param[in]  buf          Text to display
- * @param[in]  flags        Flags, see #PagerFlags
- * @param[out] pa           ANSI attributes used
- * @param[in]  cnt          Length of text buffer
- * @param[out] pspace       Index of last whitespace character
- * @param[out] pvch         Number of bytes read
- * @param[out] pcol         Number of columns used
- * @param[out] pspecial     Attribute flags, e.g. A_UNDERLINE
- * @param[in]  pager_window Window to write to
+ * @param[out] line_info Line info
+ * @param[in]  n         Line number (index into line_info)
+ * @param[in]  buf       Text to display
+ * @param[in]  flags     Flags, see #PagerFlags
+ * @param[out] pa        ANSI attributes used
+ * @param[in]  cnt       Length of text buffer
+ * @param[out] pspace    Index of last whitespace character
+ * @param[out] pvch      Number of bytes read
+ * @param[out] pcol      Number of columns used
+ * @param[out] pspecial  Attribute flags, e.g. A_UNDERLINE
+ * @param[in]  width     Width of screen (to wrap to)
  * @retval num Number of characters displayed
  */
 static int format_line(struct Line **line_info, int n, unsigned char *buf,
-                       PagerFlags flags, struct AnsiAttr *pa, int cnt, int *pspace,
-                       int *pvch, int *pcol, int *pspecial, struct MuttWindow *pager_window)
+                       PagerFlags flags, struct AnsiAttr *pa, int cnt,
+                       int *pspace, int *pvch, int *pcol, int *pspecial, int width)
 {
   int space = -1; /* index of the last space or TAB */
   int col = C_Markers ? (*line_info)[n].continuation : 0;
@@ -1448,11 +1448,10 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
   int ch, vch, last_special = -1, special = 0, t;
   wchar_t wc;
   mbstate_t mbstate;
-  int wrap_cols =
-      mutt_window_wrap_cols(pager_window, (flags & MUTT_PAGER_NOWRAP) ? 0 : C_Wrap);
+  int wrap_cols = mutt_window_wrap_cols(width, (flags & MUTT_PAGER_NOWRAP) ? 0 : C_Wrap);
 
   if (check_attachment_marker((char *) buf) == 0)
-    wrap_cols = pager_window->cols;
+    wrap_cols = width;
 
   /* FIXME: this should come from line_info */
   memset(&mbstate, 0, sizeof(mbstate));
@@ -1802,7 +1801,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
 
   /* now chose a good place to break the line */
   cnt = format_line(line_info, n, buf, flags, NULL, b_read, &ch, &vch, &col,
-                    &special, pager_window);
+                    &special, pager_window->cols);
   buf_ptr = buf + cnt;
 
   /* move the break point only if smart_wrap is set */
@@ -1850,7 +1849,8 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
   }
 
   /* display the line */
-  format_line(line_info, n, buf, flags, &a, cnt, &ch, &vch, &col, &special, pager_window);
+  format_line(line_info, n, buf, flags, &a, cnt, &ch, &vch, &col, &special,
+              pager_window->cols);
 
 /* avoid a bug in ncurses... */
 #ifndef USE_SLANG_CURSES

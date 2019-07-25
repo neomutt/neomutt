@@ -58,6 +58,6 @@ int  mutt_window_mvaddstr(struct MuttWindow *win, int row, int col, const char *
 int  mutt_window_mvprintw(struct MuttWindow *win, int row, int col, const char *fmt, ...);
 void mutt_window_reflow_message_rows(int mw_rows);
 void mutt_window_reflow(void);
-int  mutt_window_wrap_cols(struct MuttWindow *win, short wrap);
+int  mutt_window_wrap_cols(int width, short wrap);
 
 #endif /* MUTT_MUTT_WINDOW_H */

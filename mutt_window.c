@@ -286,19 +286,19 @@ void mutt_window_reflow_message_rows(int mw_rows)
 }
 
 /**
- * mutt_window_wrap_cols - Calculate the wrap column for a Window
- * @param win  Window
- * @param wrap Wrap config
+ * mutt_window_wrap_cols - Calculate the wrap column for a given screen width
+ * @param width Screen width
+ * @param wrap  Wrap config
  * @retval num Column that text should be wrapped at
  *
  * The wrap variable can be negative, meaning there should be a right margin.
  */
-int mutt_window_wrap_cols(struct MuttWindow *win, short wrap)
+int mutt_window_wrap_cols(int width, short wrap)
 {
   if (wrap < 0)
-    return (win->cols > -wrap) ? (win->cols + wrap) : win->cols;
+    return (width > -wrap) ? (width + wrap) : width;
   else if (wrap)
-    return (wrap < win->cols) ? wrap : win->cols;
+    return (wrap < width) ? wrap : width;
   else
-    return win->cols;
+    return width;
 }
