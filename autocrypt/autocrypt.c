@@ -311,8 +311,9 @@ cleanup:
   return rv;
 }
 
-int mutt_autocrypt_process_gossip_header(struct Email *hdr, struct Envelope *env)
+int mutt_autocrypt_process_gossip_header(struct Email *hdr, struct Envelope *prot_headers)
 {
+  struct Envelope *env;
   struct AutocryptHeader *ac_hdr;
   struct timeval now;
   struct AutocryptPeer *peer = NULL;
@@ -329,8 +330,10 @@ int mutt_autocrypt_process_gossip_header(struct Email *hdr, struct Envelope *env
   if (mutt_autocrypt_init(0))
     return -1;
 
-  if (!hdr || !hdr->content || !env)
+  if (!hdr || !hdr->env || !prot_headers)
     return 0;
+
+  env = hdr->env;
 
   struct Address *from = TAILQ_FIRST(&env->from);
   if (!from)
@@ -352,7 +355,7 @@ int mutt_autocrypt_process_gossip_header(struct Email *hdr, struct Envelope *env
   mutt_addrlist_copy(&recips, &env->reply_to, false);
   mutt_autocrypt_db_normalize_addrlist(&recips);
 
-  for (ac_hdr = env->autocrypt_gossip; ac_hdr; ac_hdr = ac_hdr->next)
+  for (ac_hdr = prot_headers->autocrypt_gossip; ac_hdr; ac_hdr = ac_hdr->next)
   {
     if (ac_hdr->invalid)
       continue;
