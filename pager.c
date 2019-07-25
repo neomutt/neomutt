@@ -1462,7 +1462,9 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
     /* Handle ANSI sequences */
     while ((cnt - ch >= 2) && (buf[ch] == '\033') && (buf[ch + 1] == '[') && // Escape
            is_ansi(buf + ch + 2))
+    {
       ch = grok_ansi(buf, ch + 2, pa) + 1;
+    }
 
     while ((cnt - ch >= 2) && (buf[ch] == '\033') && (buf[ch + 1] == ']') && // Escape
            ((check_attachment_marker((char *) buf + ch) == 0) ||
@@ -1957,7 +1959,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     rd->index_status_window->rows = 0;
     rd->index_window->rows = 0;
 
-    if (IsEmail(rd->extra) && C_PagerIndexLines)
+    if (IsEmail(rd->extra) && (C_PagerIndexLines != 0))
     {
       memcpy(rd->index_window, MuttIndexWindow, sizeof(struct MuttWindow));
       rd->index_window->rows = (rd->indexlen > 0) ? rd->indexlen - 1 : 0;
@@ -2021,7 +2023,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       FREE(&Resize);
     }
 
-    if (IsEmail(rd->extra) && C_PagerIndexLines)
+    if (IsEmail(rd->extra) && (C_PagerIndexLines != 0))
     {
       if (!rd->index)
       {
@@ -3075,7 +3077,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           ch = -1;
         }
 
-        if (!C_Resolve && C_PagerIndexLines)
+        if (!C_Resolve && (C_PagerIndexLines != 0))
           pager_menu->redraw = REDRAW_FULL;
         else
           pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
@@ -3427,7 +3429,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
             ch = -1;
           }
 
-          if (!C_Resolve && C_PagerIndexLines)
+          if (!C_Resolve && (C_PagerIndexLines != 0))
             pager_menu->redraw = REDRAW_FULL;
           else
             pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
