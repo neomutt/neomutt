@@ -364,7 +364,6 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
        * to begin with */
       OptSortSubthreads = false;
       OptNeedRescore = false;
-      mutt_sort_headers(ctx, true);
     }
     if (!m->quiet)
       mutt_clear_error();
