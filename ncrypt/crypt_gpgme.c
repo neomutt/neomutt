@@ -3640,8 +3640,9 @@ static void crypt_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
   entry.key = key_table[line];
   entry.num = line + 1;
 
-  mutt_expando_format(buf, buflen, 0, menu->win_index->cols, NONULL(C_PgpEntryFormat),
-                      crypt_format_str, (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);
+  mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
+                      NONULL(C_PgpEntryFormat), crypt_format_str,
+                      (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**

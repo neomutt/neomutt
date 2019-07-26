@@ -80,7 +80,7 @@ static void history_make_entry(char *buf, size_t buflen, struct Menu *menu, int 
 {
   char *entry = ((char **) menu->data)[line];
 
-  mutt_expando_format(buf, buflen, 0, menu->win_index->cols, "%s", history_format_str,
+  mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols, "%s", history_format_str,
                       (unsigned long) entry, MUTT_FORMAT_ARROWCURSOR);
 }
 

@@ -208,7 +208,7 @@ int mutt_display_message(struct MuttWindow *win, struct Mailbox *m, struct Email
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
   char columns[16];
-  snprintf(columns, sizeof(columns), "%d", win->cols);
+  snprintf(columns, sizeof(columns), "%d", win->state.cols);
   mutt_envlist_set("COLUMNS", columns, true);
 
   /* see if crypto is needed for this message.  if so, we should exit curses */
@@ -284,8 +284,8 @@ int mutt_display_message(struct MuttWindow *win, struct Mailbox *m, struct Email
     hfi.mailbox = m;
     hfi.pager_progress = ExtPagerProgress;
     hfi.email = e;
-    mutt_make_string_info(buf, sizeof(buf), win->cols, NONULL(C_PagerFormat),
-                          &hfi, MUTT_FORMAT_NO_FLAGS);
+    mutt_make_string_info(buf, sizeof(buf), win->state.cols,
+                          NONULL(C_PagerFormat), &hfi, MUTT_FORMAT_NO_FLAGS);
     fputs(buf, fp_out);
     fputs("\n\n", fp_out);
   }
@@ -295,7 +295,7 @@ int mutt_display_message(struct MuttWindow *win, struct Mailbox *m, struct Email
   if (m->magic == MUTT_NOTMUCH)
     chflags |= CH_VIRTUAL;
 #endif
-  res = mutt_copy_message(fp_out, m, e, cmflags, chflags, win->cols);
+  res = mutt_copy_message(fp_out, m, e, cmflags, chflags, win->state.cols);
 
   if (((mutt_file_fclose(&fp_out) != 0) && (errno != EPIPE)) || (res < 0))
   {
@@ -454,9 +454,9 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   snprintf(scratch, sizeof(scratch),
            ngettext("Bounce message to %s?", "Bounce messages to %s?", msg_count), buf);
 
-  if (mutt_strwidth(scratch) > MuttMessageWindow->cols - EXTRA_SPACE)
+  if (mutt_strwidth(scratch) > MuttMessageWindow->state.cols - EXTRA_SPACE)
   {
-    mutt_simple_format(prompt, sizeof(prompt), 0, MuttMessageWindow->cols - EXTRA_SPACE,
+    mutt_simple_format(prompt, sizeof(prompt), 0, MuttMessageWindow->state.cols - EXTRA_SPACE,
                        JUSTIFY_LEFT, 0, scratch, sizeof(scratch), false);
     mutt_str_strcat(prompt, sizeof(prompt), "...?");
   }

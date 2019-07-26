@@ -957,14 +957,14 @@ static void folder_make_entry(char *buf, size_t buflen, struct Menu *menu, int l
 #ifdef USE_NNTP
   if (OptNews)
   {
-    mutt_expando_format(buf, buflen, 0, menu->win_index->cols,
+    mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
                         NONULL(C_GroupIndexFormat), group_index_format_str,
                         (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
   }
   else
 #endif
   {
-    mutt_expando_format(buf, buflen, 0, menu->win_index->cols,
+    mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
                         NONULL(C_FolderFormat), folder_format_str,
                         (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
   }

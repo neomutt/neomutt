@@ -159,7 +159,7 @@ static void account_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct AccountEntry *entry = &((struct AccountEntry *) menu->data)[num];
 
-  mutt_expando_format(buf, buflen, 0, menu->win_index->cols,
+  mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
                       NONULL(C_AutocryptAcctFormat), account_format_str,
                       (unsigned long) entry, MUTT_FORMAT_ARROWCURSOR);
 }

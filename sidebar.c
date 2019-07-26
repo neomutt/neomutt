@@ -979,8 +979,8 @@ void mutt_sb_draw(void)
   int row = 0, col = 0;
   mutt_window_get_coords(win, &row, &col);
 
-  int num_rows = win->rows;
-  int num_cols = win->cols;
+  int num_rows = win->state.rows;
+  int num_cols = win->state.cols;
 
   int div_width = draw_divider(win, num_rows, num_cols);
 

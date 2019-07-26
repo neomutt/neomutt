@@ -60,8 +60,8 @@ char *C_MixEntryFormat; ///< Config: (mixmaster) printf-like format string for t
 char *C_Mixmaster; ///< Config: (mixmaster) External command to route a mixmaster message
 
 #define MIX_HOFFSET 2
-#define MIX_VOFFSET (win->rows - 4)
-#define MIX_MAXROW (win->rows - 1)
+#define MIX_VOFFSET (win->state.rows - 4)
+#define MIX_MAXROW (win->state.rows - 1)
 
 /**
  * struct Coord - Screen coordinates
@@ -309,7 +309,7 @@ static void mix_screen_coordinates(struct MuttWindow *win, struct Remailer **typ
     short oc = c;
     c += strlen(type2_list[chain->ch[i]]->shortname) + 2;
 
-    if (c >= win->cols)
+    if (c >= win->state.cols)
     {
       oc = MIX_HOFFSET;
       c = MIX_HOFFSET;
@@ -515,7 +515,7 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
 static void mix_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct Remailer **type2_list = menu->data;
-  mutt_expando_format(buf, buflen, 0, menu->win_index->cols,
+  mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
                       NONULL(C_MixEntryFormat), mix_format_str,
                       (unsigned long) type2_list[num], MUTT_FORMAT_ARROWCURSOR);
 }

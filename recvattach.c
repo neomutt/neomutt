@@ -436,9 +436,9 @@ static void attach_make_entry(char *buf, size_t buflen, struct Menu *menu, int l
 {
   struct AttachCtx *actx = menu->data;
 
-  mutt_expando_format(buf, buflen, 0, menu->win_index->cols, NONULL(C_AttachFormat),
-                      attach_format_str, (unsigned long) (actx->idx[actx->v2r[line]]),
-                      MUTT_FORMAT_ARROWCURSOR);
+  mutt_expando_format(buf, buflen, 0, menu->win_index->state.cols,
+                      NONULL(C_AttachFormat), attach_format_str,
+                      (unsigned long) (actx->idx[actx->v2r[line]]), MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**
