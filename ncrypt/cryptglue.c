@@ -197,6 +197,19 @@ bool crypt_pgp_valid_passphrase(void)
  */
 int crypt_pgp_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur)
 {
+#ifdef USE_AUTOCRYPT
+  int result;
+
+  OptAutocryptGpgme = true;
+  result = pgp_gpgme_decrypt_mime(fp_in, fp_out, b, cur);
+  OptAutocryptGpgme = false;
+  if (result == 0)
+  {
+    b->is_autocrypt = 1;
+    return result;
+  }
+#endif
+
   if (CRYPT_MOD_CALL_CHECK(PGP, decrypt_mime))
     return CRYPT_MOD_CALL(PGP, decrypt_mime)(fp_in, fp_out, b, cur);
 
@@ -223,6 +236,19 @@ int crypt_pgp_application_handler(struct Body *m, struct State *s)
  */
 int crypt_pgp_encrypted_handler(struct Body *a, struct State *s)
 {
+#ifdef USE_AUTOCRYPT
+  int result;
+
+  OptAutocryptGpgme = true;
+  result = pgp_gpgme_encrypted_handler(a, s);
+  OptAutocryptGpgme = false;
+  if (result == 0)
+  {
+    a->is_autocrypt = 1;
+    return result;
+  }
+#endif
+
   if (CRYPT_MOD_CALL_CHECK(PGP, encrypted_handler))
     return CRYPT_MOD_CALL(PGP, encrypted_handler)(a, s);
 

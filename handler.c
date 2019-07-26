@@ -1457,6 +1457,9 @@ static int malformed_pgp_encrypted_handler(struct Body *b, struct State *s)
   /* exchange encodes the octet-stream, so re-run it through the decoder */
   int rc = run_decode_and_handler(octetstream, s, crypt_pgp_encrypted_handler, false);
   b->goodsig |= octetstream->goodsig;
+#ifdef USE_AUTOCRYPT
+  b->is_autocrypt |= octetstream->is_autocrypt;
+#endif
 
   /* Relocate protected headers onto the multipart/encrypted part */
   if (!rc && octetstream->mime_headers)

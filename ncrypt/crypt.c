@@ -730,6 +730,10 @@ SecurityFlags crypt_query(struct Body *m)
 
     if (rc && m->goodsig)
       rc |= SEC_GOODSIGN;
+#ifdef USE_AUTOCRYPT
+    if (rc && m->is_autocrypt)
+      rc |= SEC_AUTOCRYPT;
+#endif
   }
 
   if ((m->type == TYPE_MULTIPART) || (m->type == TYPE_MESSAGE))

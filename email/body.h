@@ -81,6 +81,10 @@ struct Body
   bool goodsig : 1;               ///< Good cryptographic signature
   bool warnsig : 1;               ///< Maybe good signature
   bool badsig : 1;                ///< Bad cryptographic signature (needed to check encrypted s/mime-signatures)
+#ifdef USE_AUTOCRYPT
+  unsigned int is_autocrypt : 1;  /* used to flag autocrypt-decrypted messages
+                                   * for replying */
+#endif
 
   bool collapsed : 1;             ///< Used by recvattach
   bool attach_qualifies : 1;      ///< This attachment should be counted

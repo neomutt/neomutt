@@ -2155,8 +2155,8 @@ static struct Body *decrypt_part(struct Body *a, struct State *s, FILE *fp_out,
   struct stat info;
   struct Body *tattach = NULL;
   int err = 0;
-  gpgme_ctx_t ctx;
-  gpgme_data_t ciphertext, plaintext;
+  gpgme_ctx_t ctx = NULL;
+  gpgme_data_t ciphertext = NULL, plaintext = NULL;
   bool maybe_signed = false;
   bool anywarn = false;
   int sig_stat = 0;
@@ -2172,7 +2172,7 @@ restart:
   /* Make a data object from the body, create context etc. */
   ciphertext = file_to_data_object(s->fp_in, a->offset, a->length);
   if (!ciphertext)
-    return NULL;
+    goto cleanup;
   plaintext = create_gpgme_data();
 
   /* Do the decryption or the verification in case of the S/MIME hack. */
@@ -2194,8 +2194,13 @@ restart:
   else
     err = gpgme_op_decrypt(ctx, ciphertext, plaintext);
   gpgme_data_release(ciphertext);
+  ciphertext = NULL;
   if (err != 0)
   {
+    /* Abort right away and silently.  Autocrypt will retry on the
+       * normal keyring. */
+    if (OptAutocryptGpgme)
+      goto cleanup;
     if (is_smime && !maybe_signed && (gpg_err_code(err) == GPG_ERR_NO_DATA))
     {
       /* Check whether this might be a signed message despite what the mime
@@ -2209,9 +2214,10 @@ restart:
       {
         maybe_signed = true;
         gpgme_data_release(plaintext);
+        plaintext = NULL;
         /* gpgsm ends the session after an error; restart it */
         gpgme_release(ctx);
-        ctx = create_gpgme_context(is_smime);
+        ctx = NULL;
         goto restart;
       }
     }
@@ -2224,9 +2230,7 @@ restart:
                _("[-- Error: decryption failed: %s --]\n\n"), gpgme_strerror(err));
       state_attach_puts(buf, s);
     }
-    gpgme_data_release(plaintext);
-    gpgme_release(ctx);
-    return NULL;
+    goto cleanup;
   }
   redraw_if_needed(ctx);
 
@@ -2234,11 +2238,10 @@ restart:
    * otherwise read_mime_header has a hard time parsing the message.  */
   if (data_object_to_stream(plaintext, fp_out))
   {
-    gpgme_data_release(plaintext);
-    gpgme_release(ctx);
-    return NULL;
+    goto cleanup;
   }
   gpgme_data_release(plaintext);
+  plaintext = NULL;
 
   a->is_signed_data = false;
   if (sig_stat)
@@ -2291,6 +2294,11 @@ restart:
     /* See if we need to recurse on this MIME part.  */
     mutt_parse_part(fp_out, tattach);
   }
+
+cleanup:
+  gpgme_data_release(ciphertext);
+  gpgme_data_release(plaintext);
+  gpgme_release(ctx);
 
   return tattach;
 }
@@ -2366,10 +2374,16 @@ int pgp_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
 
   *cur = decrypt_part(b, &s, *fp_out, false, &is_signed);
   if (!*cur)
+  {
     rc = -1;
-  rewind(*fp_out);
-  if (is_signed > 0)
-    first_part->goodsig = true;
+    mutt_file_fclose(fp_out);
+  }
+  else
+  {
+    rewind(*fp_out);
+    if (is_signed > 0)
+      first_part->goodsig = true;
+  }
 
 bail:
   if (need_decode)
@@ -3225,7 +3239,10 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
   }
   else
   {
-    mutt_error(_("Could not decrypt PGP message"));
+    if (!OptAutocryptGpgme)
+    {
+      mutt_error(_("Could not decrypt PGP message"));
+    }
     rc = -1;
   }
 
