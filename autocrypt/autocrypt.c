@@ -390,7 +390,11 @@ int mutt_autocrypt_process_gossip_header(struct Email *hdr, struct Envelope *pro
 
       update_db = 1;
       peer->gossip_timestamp = hdr->date_sent;
-      if (mutt_str_strcmp(peer->gossip_keydata, ac_hdr->keydata))
+      /* This is slightly different from the autocrypt 1.1 spec.
+       * Avoid setting an empty peer.gossip_keydata with a value that matches
+       * the current peer.keydata. */
+      if ((peer->gossip_keydata && mutt_str_strcmp(peer->gossip_keydata, ac_hdr->keydata)) ||
+          (!peer->gossip_keydata && mutt_str_strcmp(peer->keydata, ac_hdr->keydata)))
       {
         import_gpg = 1;
         insert_db_history = 1;
