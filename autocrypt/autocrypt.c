@@ -500,7 +500,16 @@ enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *hdr, char **key
   TAILQ_FOREACH(recip, &recips, entries)
   {
     if (mutt_autocrypt_db_peer_get(recip, &peer) <= 0)
+    {
+      if (keylist)
+        /* L10N:
+           %s is an email address.  Autocrypt is scanning for the keyids
+           to use to encrypt, but it can't find a valid keyid for this address.
+           The message is printed and they are returned to the compose menu.
+         */
+        mutt_message(_("No (valid) autocrypt key found for %s."), recip->mailbox);
       goto cleanup;
+    }
 
     if (mutt_autocrypt_gpgme_is_valid_key(peer->keyid))
     {
@@ -524,7 +533,11 @@ enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *hdr, char **key
       all_encrypt = 0;
     }
     else
+    {
+      if (keylist)
+        mutt_message(_("No (valid) autocrypt key found for %s."), recip->mailbox);
       goto cleanup;
+    }
 
     if (mutt_buffer_len(keylist_buf))
       mutt_buffer_addch(keylist_buf, ' ');
