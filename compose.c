@@ -330,7 +330,7 @@ static void autocrypt_compose_menu(struct Email *e)
      The letter corresponding to the compose menu autocrypt prompt
      (e)ncrypt, (c)lear, (a)utomatic
    */
-  const char *letters = "eca";
+  const char *letters = _("eca");
 
   int choice = mutt_multi_choice(prompt, letters);
   switch (choice)

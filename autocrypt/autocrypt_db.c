@@ -44,6 +44,10 @@ static int autocrypt_db_create(const char *db_path)
   if (sqlite3_open_v2(db_path, &AutocryptDB,
                       SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL) != SQLITE_OK)
   {
+    /* L10N:
+       %s is the path to the database.  For some reason sqlite3 failed
+       to open that database file.
+    */
     mutt_error(_("Unable to open autocrypt database %s"), db_path);
     return -1;
   }
