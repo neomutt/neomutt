@@ -35,6 +35,8 @@
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "options.h"
+#include "pager.h"
+#include "reflow.h"
 
 struct MuttWindow *RootWindow = NULL;         ///< Parent of all Windows
 struct MuttWindow *MuttHelpWindow = NULL;     ///< Help Window
@@ -64,6 +66,7 @@ struct MuttWindow *mutt_window_new(enum MuttWindowOrientation orient,
   win->size = size;
   win->req_rows = rows;
   win->req_cols = cols;
+  win->state.visible = true;
   TAILQ_INIT(&win->children);
   return win;
 }
@@ -203,8 +206,7 @@ void mutt_window_init(void)
     return;
 
   struct MuttWindow *w1 =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 0, 0);
   struct MuttWindow *w2 =
       mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
@@ -329,54 +331,16 @@ void mutt_window_copy_size(const struct MuttWindow *win_src, struct MuttWindow *
 }
 
 /**
- * mutt_window_reflow - Resize the Windows to fit the screen
+ * mutt_window_reflow - Resize a Window and its children
+ * @param win Window to resize
  */
-void mutt_window_reflow(void)
+void mutt_window_reflow(struct MuttWindow *win)
 {
   if (OptNoCurses)
     return;
 
   mutt_debug(LL_DEBUG2, "entering\n");
-
-  MuttStatusWindow->state.rows = 1;
-  MuttStatusWindow->state.cols = COLS;
-  MuttStatusWindow->state.row_offset = C_StatusOnTop ? 0 : LINES - 2;
-  MuttStatusWindow->state.col_offset = 0;
-
-  mutt_window_copy_size(MuttStatusWindow, MuttHelpWindow);
-  if (C_Help)
-    MuttHelpWindow->state.row_offset = C_StatusOnTop ? LINES - 2 : 0;
-  else
-    MuttHelpWindow->state.rows = 0;
-
-  mutt_window_copy_size(MuttStatusWindow, MuttMessageWindow);
-  MuttMessageWindow->state.row_offset = LINES - 1;
-
-  mutt_window_copy_size(MuttStatusWindow, MuttIndexWindow);
-  MuttIndexWindow->state.rows =
-      MAX(LINES - MuttStatusWindow->state.rows - MuttHelpWindow->state.rows -
-              MuttMessageWindow->state.rows,
-          0);
-  MuttIndexWindow->state.row_offset =
-      C_StatusOnTop ? MuttStatusWindow->state.rows : MuttHelpWindow->state.rows;
-
-#ifdef USE_SIDEBAR
-  if (C_SidebarVisible)
-  {
-    mutt_window_copy_size(MuttIndexWindow, MuttSidebarWindow);
-    MuttSidebarWindow->state.cols = C_SidebarWidth;
-    MuttIndexWindow->state.cols -= C_SidebarWidth;
-
-    if (C_SidebarOnRight)
-    {
-      MuttSidebarWindow->state.col_offset = COLS - C_SidebarWidth;
-    }
-    else
-    {
-      MuttIndexWindow->state.col_offset += C_SidebarWidth;
-    }
-  }
-#endif
+  window_reflow(win ? win : RootWindow);
 
   mutt_menu_set_current_redraw_full();
   /* the pager menu needs this flag set to recalc line_info */
@@ -391,23 +355,8 @@ void mutt_window_reflow(void)
  */
 void mutt_window_reflow_message_rows(int mw_rows)
 {
-  MuttMessageWindow->state.rows = mw_rows;
-  MuttMessageWindow->state.row_offset = LINES - mw_rows;
-
-  MuttStatusWindow->state.row_offset = C_StatusOnTop ? 0 : LINES - mw_rows - 1;
-
-  if (C_Help)
-    MuttHelpWindow->state.row_offset = C_StatusOnTop ? LINES - mw_rows - 1 : 0;
-
-  MuttIndexWindow->state.rows =
-      MAX(LINES - MuttStatusWindow->state.rows - MuttHelpWindow->state.rows -
-              MuttMessageWindow->state.rows,
-          0);
-
-#ifdef USE_SIDEBAR
-  if (C_SidebarVisible)
-    MuttSidebarWindow->state.rows = MuttIndexWindow->state.rows;
-#endif
+  MuttMessageWindow->req_rows = mw_rows;
+  mutt_window_reflow(MuttMessageWindow->parent);
 
   /* We don't also set REDRAW_FLOW because this function only
    * changes rows and is a temporary adjustment. */
@@ -535,6 +484,36 @@ void mutt_winlist_free(struct MuttWindowList *head)
     TAILQ_REMOVE(head, np, entries);
     mutt_winlist_free(&np->children);
     FREE(&np);
+  }
+}
+
+/**
+ * mutt_window_set_root - Set the dimensions of the Root Window
+ * @param rows
+ * @param cols
+ */
+void mutt_window_set_root(int rows, int cols)
+{
+  if (!RootWindow)
+    return;
+
+  bool changed = false;
+
+  if (RootWindow->state.rows != rows)
+  {
+    RootWindow->state.rows = rows;
+    changed = true;
+  }
+
+  if (RootWindow->state.cols != cols)
+  {
+    RootWindow->state.cols = cols;
+    changed = true;
+  }
+
+  if (changed)
+  {
+    mutt_window_reflow(RootWindow);
   }
 }
 

@@ -1961,42 +1961,6 @@ static void pager_custom_redraw(struct Menu *pager_menu)
 
     rd->indicator = rd->indexlen / 3;
 
-    mutt_window_copy_size(MuttIndexWindow, rd->win_pager);
-    mutt_window_copy_size(MuttStatusWindow, rd->win_pbar);
-    rd->win_ibar->state.rows = 0;
-    rd->win_index->state.rows = 0;
-
-    if (IsEmail(rd->extra) && (C_PagerIndexLines != 0))
-    {
-      mutt_window_copy_size(MuttIndexWindow, rd->win_index);
-      rd->win_index->state.rows = (rd->indexlen > 0) ? rd->indexlen - 1 : 0;
-
-      if (C_StatusOnTop)
-      {
-        mutt_window_copy_size(MuttStatusWindow, rd->win_ibar);
-
-        mutt_window_copy_size(MuttIndexWindow, rd->win_pbar);
-        rd->win_pbar->state.rows = 1;
-        rd->win_pbar->state.row_offset += rd->win_index->state.rows;
-
-        rd->win_pager->state.rows -=
-            rd->win_index->state.rows + rd->win_pbar->state.rows;
-        rd->win_pager->state.row_offset +=
-            rd->win_index->state.rows + rd->win_pbar->state.rows;
-      }
-      else
-      {
-        mutt_window_copy_size(MuttIndexWindow, rd->win_ibar);
-        rd->win_ibar->state.rows = 1;
-        rd->win_ibar->state.row_offset += rd->win_index->state.rows;
-
-        rd->win_pager->state.rows -=
-            rd->win_index->state.rows + rd->win_ibar->state.rows;
-        rd->win_pager->state.row_offset +=
-            rd->win_index->state.rows + rd->win_ibar->state.rows;
-      }
-    }
-
     if (C_Help)
     {
       mutt_curses_set_color(MT_COLOR_STATUS);
@@ -2287,6 +2251,9 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
     return -1;
   }
   unlink(fname);
+
+  MuttPagerWindow->parent->state.visible = true;
+  mutt_window_reflow(NULL);
 
   /* Initialize variables */
 
@@ -3543,7 +3510,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
       case OP_SIDEBAR_TOGGLE_VISIBLE:
         bool_str_toggle(Config, "sidebar_visible", NULL);
-        mutt_window_reflow();
+        mutt_window_reflow(NULL);
         break;
 #endif
 
@@ -3590,6 +3557,9 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   mutt_menu_free(&rd.menu);
 
   mutt_buffer_dealloc(&helpstr);
+
+  MuttPagerWindow->parent->state.visible = false;
+  mutt_window_reflow(NULL);
 
   return (rc != -1) ? rc : 0;
 }

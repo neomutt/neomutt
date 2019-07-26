@@ -121,8 +121,9 @@ void               mutt_window_free_all           (void);
 void               mutt_window_get_coords         (struct MuttWindow *win, int *col, int *row);
 void               mutt_window_init               (void);
 struct MuttWindow *mutt_window_new                (enum MuttWindowOrientation orient, enum MuttWindowSize size, int rows, int cols);
-void               mutt_window_reflow             (void);
+void               mutt_window_reflow             (struct MuttWindow *win);
 void               mutt_window_reflow_message_rows(int mw_rows);
+void               mutt_window_set_root           (int rows, int cols);
 int                mutt_window_wrap_cols          (int width, short wrap);
 
 // Functions for drawing on the Window

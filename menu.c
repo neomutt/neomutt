@@ -1672,7 +1672,7 @@ int mutt_menu_config_observer(struct NotifyCallback *nc)
     OptRedrawTree = true;
 
   if (flags & R_REFLOW)
-    mutt_window_reflow();
+    mutt_window_reflow(NULL);
 #ifdef USE_SIDEBAR
   if (flags & R_SIDEBAR)
     mutt_menu_set_current_redraw(REDRAW_SIDEBAR);

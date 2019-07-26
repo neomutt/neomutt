@@ -689,13 +689,12 @@ int main(int argc, char *argv[], char *envp[])
   if (!OptNoCurses)
   {
     int crc = start_curses();
-
     if (crc != 0)
       goto main_curses; // TEST08: can't test -- fake term?
 
     /* check whether terminal status is supported (must follow curses init) */
     TsSupported = mutt_ts_capability();
-    mutt_window_reflow();
+    mutt_window_set_root(LINES, COLS);
   }
 
   /* set defaults and read init files */
