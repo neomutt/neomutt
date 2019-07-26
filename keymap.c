@@ -687,10 +687,19 @@ int km_dokey(int menu)
       if (map->op != OP_MACRO)
         return map->op;
 
+      /* OptIgnoreMacroEvents turns off processing the MacroEvents buffer
+       * in mutt_getch().  Generating new macro events during that time would
+       * result in undesired behavior once the option is turned off.
+       *
+       * Originally this returned -1, however that results in an unbuffered
+       * username or password prompt being aborted.  Returning OP_NULL allows
+       * mutt_enter_string_full() to display the keybinding pressed instead.
+       *
+       * It may be unexpected for a macro's keybinding to be returned,
+       * but less so than aborting the prompt.  */
       if (OptIgnoreMacroEvents)
       {
-        mutt_error(_("Macros are currently disabled"));
-        return -1;
+        return OP_NULL;
       }
 
       if (n++ == 10)
