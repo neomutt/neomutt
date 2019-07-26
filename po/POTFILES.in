@@ -3,6 +3,10 @@ address/address.c
 address/group.c
 address/idna.c
 alias.c
+autocrypt/autocrypt.c
+autocrypt/autocrypt_db.c
+autocrypt/autocrypt_gpgme.c
+autocrypt/autocrypt_schema.c
 backtrace.c
 bcache.c
 browser.c
