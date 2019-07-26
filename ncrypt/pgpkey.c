@@ -676,6 +676,9 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
   struct MuttWindow *dlg =
       mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
                       MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+#ifdef USE_DEBUG_WINDOW
+  dlg->name = "pgp";
+#endif
   dlg->type = WT_DIALOG;
   struct MuttWindow *index =
       mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,

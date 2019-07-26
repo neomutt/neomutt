@@ -116,6 +116,7 @@ options {
   debug-graphviz=0          => "DEBUG: Enable Graphviz dump"
   debug-notify=0            => "DEBUG: Enable Notifications dump"
   debug-parse-test=0        => "DEBUG: Enable 'neomutt -T' for config testing"
+  debug-window=0            => "DEBUG: Enable windows dump"
 }
 ###############################################################################
 
@@ -127,10 +128,10 @@ if {1} {
   # Keep sorted, please.
   foreach opt {
     autocrypt bdb coverage debug-backtrace debug-graphviz debug-notify
-    debug-parse-test doc everything fmemopen full-doc gdbm gnutls gpgme gss
-    homespool idn idn2 inotify kyotocabinet lmdb locales-fix lua lz4 mixmaster
-    nls notmuch pgp pkgconf qdbm sasl smime sqlite ssl testing tokyocabinet
-    zlib zstd
+    debug-parse-test debug-window doc everything fmemopen full-doc gdbm gnutls
+    gpgme gss homespool idn idn2 inotify kyotocabinet lmdb locales-fix lua lz4
+    mixmaster nls notmuch pgp pkgconf qdbm sasl smime sqlite ssl testing
+    tokyocabinet zlib zstd
   } {
     define want-$opt [opt-bool $opt]
   }
@@ -1146,6 +1147,11 @@ if {[get-define want-debug-notify]} {
 # Parse Test
 if {[get-define want-debug-parse-test]} {
   define USE_DEBUG_PARSE_TEST 1
+}
+
+# Windows dump
+if {[get-define want-debug-window]} {
+  define USE_DEBUG_WINDOW 1
 }
 
 ###############################################################################

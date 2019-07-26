@@ -31,6 +31,7 @@
  * | debug/graphviz.c    | @subpage debug_graphviz    |
  * | debug/notify.c      | @subpage debug_notify      |
  * | debug/parse_test.c  | @subpage debug_parse       |
+ * | debug/window.c      | @subpage debug_window      |
  */
 
 #ifndef MUTT_DEBUG_LIB_H
@@ -49,5 +50,8 @@ int debug_notify_observer(struct NotifyCallback *nc);
 
 // Parse Set
 void test_parse_set(void);
+
+// Window
+void debug_win_dump(void);
 
 #endif /* MUTT_DEBUG_LIB_H */
