@@ -1036,7 +1036,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
   char tempfile[_POSIX_PATH_MAX];
   FILE *fp = NULL;
   struct ImapHeader h;
-  struct Buffer *b = NULL;
+  struct Buffer *b = NULL, *hdr_list = NULL;
   static const char *const want_headers =
       "DATE FROM SENDER SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE "
       "CONTENT-DESCRIPTION IN-REPLY-TO REPLY-TO LINES LIST-POST X-LABEL "
@@ -1049,21 +1049,36 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
   if (!adata || (adata->mailbox != m))
     return -1;
 
+  hdr_list = mutt_buffer_pool_get();
+  mutt_buffer_strcpy(hdr_list, want_headers);
+  if (C_ImapHeaders)
+  {
+    mutt_buffer_addch(hdr_list, ' ');
+    mutt_buffer_addstr(hdr_list, C_ImapHeaders);
+  }
+#ifdef USE_AUTOCRYPT
+  if (C_Autocrypt)
+  {
+    mutt_buffer_addch(hdr_list, ' ');
+    mutt_buffer_addstr(hdr_list, "AUTOCRYPT");
+  }
+#endif
+
   if (adata->capabilities & IMAP_CAP_IMAP4REV1)
   {
-    mutt_str_asprintf(&hdrreq, "BODY.PEEK[HEADER.FIELDS (%s%s%s)]", want_headers,
-                      C_ImapHeaders ? " " : "", NONULL(C_ImapHeaders));
+    mutt_str_asprintf(&hdrreq, "BODY.PEEK[HEADER.FIELDS (%s)]", mutt_b2s(hdr_list));
   }
   else if (adata->capabilities & IMAP_CAP_IMAP4)
   {
-    mutt_str_asprintf(&hdrreq, "RFC822.HEADER.LINES (%s%s%s)", want_headers,
-                      C_ImapHeaders ? " " : "", NONULL(C_ImapHeaders));
+    mutt_str_asprintf(&hdrreq, "RFC822.HEADER.LINES (%s)", mutt_b2s(hdr_list));
   }
   else
   { /* Unable to fetch headers for lower versions */
     mutt_error(_("Unable to fetch headers from this IMAP server version"));
     goto bail;
   }
+
+  mutt_buffer_pool_release(&hdr_list);
 
   /* instead of downloading all headers and then parsing them, we parse them
    * as they come in. */
@@ -1229,6 +1244,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
   retval = 0;
 
 bail:
+  mutt_buffer_pool_release(&hdr_list);
   mutt_buffer_pool_release(&b);
   mutt_file_fclose(&fp);
   FREE(&hdrreq);
