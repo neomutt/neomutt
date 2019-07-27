@@ -32,6 +32,7 @@
 #include "mutt/mutt.h"
 #include "mutt_window.h"
 #include "globals.h"
+#include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "options.h"
 
@@ -165,20 +166,6 @@ int mutt_window_move(struct MuttWindow *win, int row, int col)
 }
 
 /**
- * mutt_window_mvaddch - Move the cursor and write a character to a Window
- * @param win Window to write to
- * @param row Row to move to
- * @param col Column to move to
- * @param ch  Character to write
- * @retval OK  Success
- * @retval ERR Error
- */
-int mutt_window_mvaddch(struct MuttWindow *win, int row, int col, const chtype ch)
-{
-  return mvaddch(win->row_offset + row, win->col_offset + col, ch);
-}
-
-/**
  * mutt_window_mvaddstr - Move the cursor and write a fixed string to a Window
  * @param win Window to write to
  * @param row Row to move to
@@ -190,21 +177,6 @@ int mutt_window_mvaddch(struct MuttWindow *win, int row, int col, const chtype c
 int mutt_window_mvaddstr(struct MuttWindow *win, int row, int col, const char *str)
 {
   return mvaddstr(win->row_offset + row, win->col_offset + col, str);
-}
-
-/**
- * mutt_window_mvaddnstr - Move the cursor and write a fixed string to a Window with string length
- * @param win Window to write to
- * @param row Row to move to
- * @param col Column to move to
- * @param str String to write
- * @param n   Length of string
- * @retval OK  Success
- * @retval ERR Error
- */
-int mutt_window_mvaddnstr(struct MuttWindow *win, int row, int col, const char *str, int n)
-{
-  return mvaddnstr(win->row_offset + row, win->col_offset + col, str, n);
 }
 
 /**

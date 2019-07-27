@@ -24,7 +24,8 @@
 #define MUTT_MUTT_WINDOW_H
 
 #include "config.h"
-#include "mutt_curses.h"
+#include <stdbool.h>
+#include "mutt/mutt.h"
 
 /**
  * struct MuttWindow - A division of the screen
@@ -53,8 +54,6 @@ void mutt_window_free(void);
 void mutt_window_getxy(struct MuttWindow *win, int *x, int *y);
 void mutt_window_init(void);
 int  mutt_window_move(struct MuttWindow *win, int row, int col);
-int  mutt_window_mvaddch(struct MuttWindow *win, int row, int col, const chtype ch);
-int  mutt_window_mvaddnstr(struct MuttWindow *win, int row, int col, const char *str, int n);
 int  mutt_window_mvaddstr(struct MuttWindow *win, int row, int col, const char *str);
 int  mutt_window_mvprintw(struct MuttWindow *win, int row, int col, const char *fmt, ...);
 void mutt_window_reflow_message_rows(int mw_rows);
