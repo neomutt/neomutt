@@ -111,6 +111,7 @@ static int tls_starttls_close(struct Connection *conn)
   conn->conn_read = raw_socket_read;
   conn->conn_write = raw_socket_write;
   conn->conn_close = raw_socket_close;
+  conn->conn_poll = raw_socket_poll;
 
   return rc;
 }
@@ -1115,6 +1116,19 @@ fail:
 }
 
 /**
+ * tls_socket_poll - Check whether a socket read would block - Implements Connection::conn_poll()
+ */
+static int tls_socket_poll(struct Connection *conn, time_t wait_secs)
+{
+  struct TlsSockData *data = conn->sockdata;
+
+  if (gnutls_record_check_pending(data->state))
+    return 1;
+  else
+    return raw_socket_poll(conn, wait_secs);
+}
+
+/**
  * tls_socket_open - Open a TLS socket - Implements Connection::conn_open()
  */
 static int tls_socket_open(struct Connection *conn)
@@ -1232,7 +1246,7 @@ int mutt_ssl_socket_setup(struct Connection *conn)
   conn->conn_read = tls_socket_read;
   conn->conn_write = tls_socket_write;
   conn->conn_close = tls_socket_close;
-  conn->conn_poll = raw_socket_poll;
+  conn->conn_poll = tls_socket_poll;
 
   return 0;
 }
@@ -1254,6 +1268,7 @@ int mutt_ssl_starttls(struct Connection *conn)
   conn->conn_read = tls_socket_read;
   conn->conn_write = tls_socket_write;
   conn->conn_close = tls_starttls_close;
+  conn->conn_poll = tls_socket_poll;
 
   return 0;
 }
