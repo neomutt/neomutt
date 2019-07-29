@@ -33,6 +33,8 @@
 /* Prepared statements */
 static sqlite3_stmt *AccountGetStmt;
 static sqlite3_stmt *AccountInsertStmt;
+static sqlite3_stmt *AccountUpdateStmt;
+static sqlite3_stmt *AccountDeleteStmt;
 static sqlite3_stmt *PeerGetStmt;
 static sqlite3_stmt *PeerInsertStmt;
 static sqlite3_stmt *PeerUpdateStmt;
@@ -76,7 +78,7 @@ int mutt_autocrypt_db_init(int can_create)
     if (autocrypt_db_create(mutt_b2s(db_path)))
       goto cleanup;
     /* Don't abort the whole init process because account creation failed */
-    mutt_autocrypt_account_init();
+    mutt_autocrypt_account_init(1);
   }
   else
   {
@@ -106,6 +108,10 @@ void mutt_autocrypt_db_close(void)
   AccountGetStmt = NULL;
   sqlite3_finalize(AccountInsertStmt);
   AccountInsertStmt = NULL;
+  sqlite3_finalize(AccountUpdateStmt);
+  AccountUpdateStmt = NULL;
+  sqlite3_finalize(AccountDeleteStmt);
+  AccountDeleteStmt = NULL;
 
   sqlite3_finalize(PeerGetStmt);
   PeerGetStmt = NULL;
@@ -284,6 +290,128 @@ int mutt_autocrypt_db_account_insert(struct Address *addr, const char *keyid,
 cleanup:
   mutt_addr_free(&norm_addr);
   sqlite3_reset(AccountInsertStmt);
+  return rv;
+}
+
+int mutt_autocrypt_db_account_update(struct AutocryptAccount *acct)
+{
+  int rv = -1;
+
+  if (!AccountUpdateStmt)
+  {
+    if (sqlite3_prepare_v3(AutocryptDB,
+                           "UPDATE account SET "
+                           "keyid = ?, "
+                           "keydata = ?, "
+                           "prefer_encrypt = ?, "
+                           "enabled = ? "
+                           "WHERE email_addr = ?;",
+                           -1, SQLITE_PREPARE_PERSISTENT, &AccountUpdateStmt, NULL) != SQLITE_OK)
+      goto cleanup;
+  }
+
+  if (sqlite3_bind_text(AccountUpdateStmt, 1, acct->keyid, -1, SQLITE_STATIC) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_text(AccountUpdateStmt, 2, acct->keydata, -1, SQLITE_STATIC) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_int(AccountUpdateStmt, 3, acct->prefer_encrypt) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_int(AccountUpdateStmt, 4, acct->enabled) != SQLITE_OK)
+    goto cleanup;
+  if (sqlite3_bind_text(AccountUpdateStmt, 5, acct->email_addr, -1, SQLITE_STATIC) != SQLITE_OK)
+    goto cleanup;
+
+  if (sqlite3_step(AccountUpdateStmt) != SQLITE_DONE)
+    goto cleanup;
+
+  rv = 0;
+
+cleanup:
+  sqlite3_reset(AccountUpdateStmt);
+  return rv;
+}
+
+int mutt_autocrypt_db_account_delete(struct AutocryptAccount *acct)
+{
+  int rv = -1;
+
+  if (!AccountDeleteStmt)
+  {
+    if (sqlite3_prepare_v3(AutocryptDB,
+                           "DELETE from account "
+                           "WHERE email_addr = ?;",
+                           -1, SQLITE_PREPARE_PERSISTENT, &AccountDeleteStmt, NULL) != SQLITE_OK)
+      goto cleanup;
+  }
+
+  if (sqlite3_bind_text(AccountDeleteStmt, 1, acct->email_addr, -1, SQLITE_STATIC) != SQLITE_OK)
+    goto cleanup;
+
+  if (sqlite3_step(AccountDeleteStmt) != SQLITE_DONE)
+    goto cleanup;
+
+  rv = 0;
+
+cleanup:
+  sqlite3_reset(AccountDeleteStmt);
+  return rv;
+}
+
+int mutt_autocrypt_db_account_get_all(struct AutocryptAccount ***accounts, int *num_accounts)
+{
+  int rv = -1, result;
+  sqlite3_stmt *stmt = NULL;
+  struct AutocryptAccount **results = NULL, *account;
+  int results_len = 0, results_count = 0;
+
+  *accounts = NULL;
+  *num_accounts = 0;
+
+  /* Note, speed is not of the essence for the account management screen,
+   * so we don't bother with a persistent prepared statement */
+  if (sqlite3_prepare_v2(AutocryptDB,
+                         "SELECT "
+                         "email_addr, "
+                         "keyid, "
+                         "keydata, "
+                         "prefer_encrypt, "
+                         "enabled "
+                         "FROM account "
+                         "ORDER BY email_addr",
+                         -1, &stmt, NULL) != SQLITE_OK)
+    goto cleanup;
+
+  while ((result = sqlite3_step(stmt)) == SQLITE_ROW)
+  {
+    if (results_count == results_len)
+    {
+      results_len += 5;
+      mutt_mem_realloc(&results, results_len * sizeof(struct AutocryptAccount *));
+    }
+
+    results[results_count++] = account = mutt_autocrypt_db_account_new();
+
+    account->email_addr = strdup_column_text(stmt, 0);
+    account->keyid = strdup_column_text(stmt, 1);
+    account->keydata = strdup_column_text(stmt, 2);
+    account->prefer_encrypt = sqlite3_column_int(stmt, 3);
+    account->enabled = sqlite3_column_int(stmt, 4);
+  }
+
+  if (result == SQLITE_DONE)
+  {
+    *accounts = results;
+    rv = *num_accounts = results_count;
+  }
+  else
+  {
+    while (results_count > 0)
+      mutt_autocrypt_db_account_free(&results[--results_count]);
+    FREE(&results);
+  }
+
+cleanup:
+  sqlite3_finalize(stmt);
   return rv;
 }
 

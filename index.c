@@ -96,6 +96,9 @@
 #ifdef USE_INOTIFY
 #include "monitor.h"
 #endif
+#ifdef USE_AUTOCRYPT
+#include "autocrypt/autocrypt.h"
+#endif
 
 /* These Config Variables are only used in index.c */
 bool C_ChangeFolderNext; ///< Config: Suggest the next folder, rather than the first when using '<change-folder>'
@@ -3609,6 +3612,13 @@ int mutt_index_menu(void)
         mutt_window_reflow();
         break;
 #endif
+
+#ifdef USE_AUTOCRYPT
+      case OP_AUTOCRYPT_ACCT_MENU:
+        mutt_autocrypt_account_menu();
+        break;
+#endif
+
       default:
         if (menu->menu == MENU_MAIN)
           km_error_key(MENU_MAIN);

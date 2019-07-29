@@ -85,5 +85,6 @@ int mutt_autocrypt_set_sign_as_default_key (struct Email *hdr);
 int mutt_autocrypt_write_autocrypt_header (struct Envelope *env, FILE *fp);
 int mutt_autocrypt_write_gossip_headers (struct Envelope *env, FILE *fp);
 int mutt_autocrypt_generate_gossip_list (struct Email *hdr);
+void mutt_autocrypt_account_menu (void);
 
 #endif /* MUTT_AUTOCRYPT_AUTOCRYPT_H */

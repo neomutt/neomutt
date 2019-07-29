@@ -29,7 +29,7 @@ struct Address;
 struct AddressList;
 struct Buffer;
 
-int mutt_autocrypt_account_init (void);
+int mutt_autocrypt_account_init (int prompt);
 
 int mutt_autocrypt_db_init (int can_create);
 void mutt_autocrypt_db_close (void);
@@ -42,6 +42,9 @@ void mutt_autocrypt_db_account_free (struct AutocryptAccount **account);
 int mutt_autocrypt_db_account_get (struct Address *addr, struct AutocryptAccount **account);
 int mutt_autocrypt_db_account_insert (struct Address *addr, const char *keyid,
                                       const char *keydata, int prefer_encrypt);
+int mutt_autocrypt_db_account_update (struct AutocryptAccount *acct);
+int mutt_autocrypt_db_account_delete (struct AutocryptAccount *acct);
+int mutt_autocrypt_db_account_get_all (struct AutocryptAccount ***accounts, int *num_accounts);
 
 struct AutocryptPeer *mutt_autocrypt_db_peer_new (void);
 void mutt_autocrypt_db_peer_free (struct AutocryptPeer **peer);

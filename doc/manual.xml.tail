@@ -24,6 +24,7 @@ __print_map(smime)
 __print_map(summary)
 __print_map(mixmaster)
 __print_map(editor)
+__print_map(autocrypt account)
 
     </sect1>
   </chapter>

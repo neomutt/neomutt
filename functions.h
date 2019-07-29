@@ -101,6 +101,9 @@ const struct Binding OpGeneric[] = { /* map: generic */
  * OpMain - Key bindings for the index menu
  */
 const struct Binding OpMain[] = { /* map: index */
+#ifdef USE_AUTOCRYPT
+  { "autocrypt-acct-menu",        OP_AUTOCRYPT_ACCT_MENU,                "A" },
+#endif
   { "bounce-message",            OP_BOUNCE_MESSAGE,                 "b" },
   { "break-thread",              OP_MAIN_BREAK_THREAD,              "#" },
 #ifdef USE_NNTP
@@ -661,6 +664,16 @@ const struct Binding OpMix[] = { /* map: mixmaster */
   { NULL,                    0,                              NULL },
 };
 #endif /* MIXMASTER */
+
+#ifdef USE_AUTOCRYPT
+const struct Binding OpAutocryptAcct[] = { /* map: autocrypt account */
+  { "create-account",        OP_AUTOCRYPT_CREATE_ACCT,       "c" },
+  { "delete-account",        OP_AUTOCRYPT_DELETE_ACCT,       "D" },
+  { "toggle-active",         OP_AUTOCRYPT_TOGGLE_ACTIVE,     "a" },
+  { "toggle-prefer-encrypt", OP_AUTOCRYPT_TOGGLE_PREFER,     "p" },
+  { NULL,                    0,                              NULL }
+};
+#endif
 
 // clang-format on
 

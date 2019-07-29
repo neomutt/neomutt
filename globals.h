@@ -97,6 +97,7 @@ WHERE char *C_Attribution;                   ///< Config: Message to start a rep
 WHERE char *C_AttributionLocale;             ///< Config: Locale for dates in the attribution message
 WHERE char *C_AttachFormat;                  ///< Config: printf-like format string for the attachment menu
 #ifdef USE_AUTOCRYPT
+WHERE char *C_AutocryptAcctFormat;
 WHERE char *C_AutocryptDir;
 WHERE char *AutocryptSignAs;  /* This is used in ncrypt/crypt_gpgme.c */
 WHERE char *AutocryptDefaultKey;  /* Used for postponing messages */

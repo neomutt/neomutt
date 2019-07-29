@@ -104,8 +104,10 @@ void mutt_autocrypt_cleanup(void)
   mutt_autocrypt_db_close();
 }
 
-/* Creates a brand new account the first time autocrypt is initialized */
-int mutt_autocrypt_account_init(void)
+/* Creates a brand new account.
+ * This is used the first time autocrypt is initialized, and
+ * in the account menu. */
+int mutt_autocrypt_account_init(int prompt)
 {
   struct Address *addr = NULL;
   struct AutocryptAccount *account = NULL;
@@ -113,9 +115,11 @@ int mutt_autocrypt_account_init(void)
   int rc = -1;
   int prefer_encrypt = 0;
 
-  mutt_debug(LL_DEBUG1, "In mutt_autocrypt_account_init\n");
-  if (mutt_yesorno(_("Create an initial autocrypt account?"), MUTT_YES) != MUTT_YES)
-    return 0;
+  if (prompt)
+  {
+    if (mutt_yesorno(_("Create an initial autocrypt account?"), MUTT_YES) != MUTT_YES)
+      return 0;
+  }
 
   struct Buffer *keyid = mutt_buffer_pool_get();
   struct Buffer *keydata = mutt_buffer_pool_get();
