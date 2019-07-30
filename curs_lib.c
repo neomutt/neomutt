@@ -838,6 +838,9 @@ int mutt_multi_choice(const char *prompt, const char *letters)
   bool redraw = true;
   int prompt_lines = 1;
 
+  bool opt_cols = ((ColorDefs[MT_COLOR_OPTIONS] != 0) &&
+                   (ColorDefs[MT_COLOR_OPTIONS] != ColorDefs[MT_COLOR_PROMPT]));
+
   while (true)
   {
     if (redraw || SigWinch)
@@ -852,8 +855,13 @@ int mutt_multi_choice(const char *prompt, const char *letters)
       }
       if (MuttMessageWindow->cols)
       {
-        prompt_lines = (mutt_strwidth(prompt) + MuttMessageWindow->cols - 1) /
-                       MuttMessageWindow->cols;
+        int width = mutt_strwidth(prompt) + 2; // + '?' + space
+        /* If we're going to colour the options,
+         * make an assumption about the modified prompt size. */
+        if (opt_cols)
+          width -= 2 * mutt_str_strlen(letters);
+
+        prompt_lines = (width + MuttMessageWindow->cols - 1) / MuttMessageWindow->cols;
         prompt_lines = MAX(1, MIN(3, prompt_lines));
       }
       if (prompt_lines != MuttMessageWindow->rows)

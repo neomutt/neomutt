@@ -358,7 +358,6 @@ static void menu_pad_string(struct Menu *menu, char *buf, size_t buflen)
  */
 void menu_redraw_full(struct Menu *menu)
 {
-  mutt_window_reflow();
   NORMAL_COLOR;
   /* clear() doesn't optimize screen redraws */
   move(0, 0);

@@ -1940,7 +1940,6 @@ static void pager_custom_redraw(struct Menu *pager_menu)
 
   if (pager_menu->redraw & REDRAW_FULL)
   {
-    mutt_window_reflow();
     NORMAL_COLOR;
     /* clear() doesn't optimize screen redraws */
     move(0, 0);
