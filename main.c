@@ -1120,7 +1120,7 @@ int main(int argc, char *argv[], char *envp[])
       FREE(&tempfile);
     }
 
-    mutt_window_free();
+    mutt_window_free_all();
 
     if (rv != 0)
       goto main_curses; // TEST36: neomutt -H existing -s test john@example.com -E (cancel sending)
@@ -1261,7 +1261,7 @@ main_exit:
   mutt_buffer_free(&folder);
   mutt_list_free(&queries);
   crypto_module_free();
-  mutt_window_free();
+  mutt_window_free_all();
   mutt_buffer_pool_free();
   mutt_envlist_free();
   mutt_browser_cleanup();

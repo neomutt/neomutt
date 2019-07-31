@@ -348,7 +348,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
       if (chflags & (CH_DECODE | CH_PREFIX))
       {
         const char *pre = (chflags & CH_PREFIX) ? prefix : NULL;
-        const int wraplen = mutt_window_wrap_cols(MuttIndexWindow, C_Wrap);
+        const int wraplen = mutt_window_wrap_cols(MuttIndexWindow->cols, C_Wrap);
 
         if (mutt_write_one_header(fp_out, 0, headers[x], pre, wraplen, chflags) == -1)
         {
@@ -504,7 +504,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
     }
     if (mutt_write_one_header(
             fp_out, "X-Label", temp_hdr, (chflags & CH_PREFIX) ? prefix : 0,
-            mutt_window_wrap_cols(MuttIndexWindow, C_Wrap), chflags) == -1)
+            mutt_window_wrap_cols(MuttIndexWindow->cols, C_Wrap), chflags) == -1)
     {
       return -1;
     }
@@ -524,8 +524,10 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
     }
     if (mutt_write_one_header(
             fp_out, "Subject", temp_hdr, (chflags & CH_PREFIX) ? prefix : 0,
-            mutt_window_wrap_cols(MuttIndexWindow, C_Wrap), chflags) == -1)
+            mutt_window_wrap_cols(MuttIndexWindow->cols, C_Wrap), chflags) == -1)
+    {
       return -1;
+    }
     if (!(chflags & CH_DECODE))
       FREE(&temp_hdr);
   }

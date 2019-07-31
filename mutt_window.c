@@ -32,6 +32,7 @@
 #include "mutt/mutt.h"
 #include "mutt_window.h"
 #include "globals.h"
+#include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "options.h"
 
@@ -42,6 +43,31 @@ struct MuttWindow *MuttMessageWindow = NULL; /**< Message Window */
 #ifdef USE_SIDEBAR
 struct MuttWindow *MuttSidebarWindow = NULL; /**< Sidebar Window */
 #endif
+
+/**
+ * mutt_window_new - Create a new Window
+ * @retval ptr New Window
+ */
+struct MuttWindow *mutt_window_new(void)
+{
+  struct MuttWindow *win = mutt_mem_calloc(1, sizeof(struct MuttWindow));
+
+  return win;
+}
+
+/**
+ * mutt_window_free - Free a Window
+ * @param ptr Window to free
+ */
+void mutt_window_free(struct MuttWindow **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  // struct MuttWindow *win = *ptr;
+
+  FREE(ptr);
+}
 
 #ifdef USE_SLANG_CURSES
 /**
@@ -101,9 +127,9 @@ void mutt_window_clrtoeol(struct MuttWindow *win)
 }
 
 /**
- * mutt_window_free - Free the default Windows
+ * mutt_window_free_all - Free all the default Windows
  */
-void mutt_window_free(void)
+void mutt_window_free_all(void)
 {
   FREE(&MuttHelpWindow);
   FREE(&MuttIndexWindow);
@@ -142,12 +168,12 @@ void mutt_window_getxy(struct MuttWindow *win, int *x, int *y)
  */
 void mutt_window_init(void)
 {
-  MuttHelpWindow = mutt_mem_calloc(1, sizeof(struct MuttWindow));
-  MuttIndexWindow = mutt_mem_calloc(1, sizeof(struct MuttWindow));
-  MuttStatusWindow = mutt_mem_calloc(1, sizeof(struct MuttWindow));
-  MuttMessageWindow = mutt_mem_calloc(1, sizeof(struct MuttWindow));
+  MuttHelpWindow = mutt_window_new();
+  MuttIndexWindow = mutt_window_new();
+  MuttStatusWindow = mutt_window_new();
+  MuttMessageWindow = mutt_window_new();
 #ifdef USE_SIDEBAR
-  MuttSidebarWindow = mutt_mem_calloc(1, sizeof(struct MuttWindow));
+  MuttSidebarWindow = mutt_window_new();
 #endif
 }
 
@@ -165,20 +191,6 @@ int mutt_window_move(struct MuttWindow *win, int row, int col)
 }
 
 /**
- * mutt_window_mvaddch - Move the cursor and write a character to a Window
- * @param win Window to write to
- * @param row Row to move to
- * @param col Column to move to
- * @param ch  Character to write
- * @retval OK  Success
- * @retval ERR Error
- */
-int mutt_window_mvaddch(struct MuttWindow *win, int row, int col, const chtype ch)
-{
-  return mvaddch(win->row_offset + row, win->col_offset + col, ch);
-}
-
-/**
  * mutt_window_mvaddstr - Move the cursor and write a fixed string to a Window
  * @param win Window to write to
  * @param row Row to move to
@@ -190,21 +202,6 @@ int mutt_window_mvaddch(struct MuttWindow *win, int row, int col, const chtype c
 int mutt_window_mvaddstr(struct MuttWindow *win, int row, int col, const char *str)
 {
   return mvaddstr(win->row_offset + row, win->col_offset + col, str);
-}
-
-/**
- * mutt_window_mvaddnstr - Move the cursor and write a fixed string to a Window with string length
- * @param win Window to write to
- * @param row Row to move to
- * @param col Column to move to
- * @param str String to write
- * @param n   Length of string
- * @retval OK  Success
- * @retval ERR Error
- */
-int mutt_window_mvaddnstr(struct MuttWindow *win, int row, int col, const char *str, int n)
-{
-  return mvaddnstr(win->row_offset + row, win->col_offset + col, str, n);
 }
 
 /**
@@ -314,19 +311,19 @@ void mutt_window_reflow_message_rows(int mw_rows)
 }
 
 /**
- * mutt_window_wrap_cols - Calculate the wrap column for a Window
- * @param win  Window
- * @param wrap Wrap config
+ * mutt_window_wrap_cols - Calculate the wrap column for a given screen width
+ * @param width Screen width
+ * @param wrap  Wrap config
  * @retval num Column that text should be wrapped at
  *
  * The wrap variable can be negative, meaning there should be a right margin.
  */
-int mutt_window_wrap_cols(struct MuttWindow *win, short wrap)
+int mutt_window_wrap_cols(int width, short wrap)
 {
   if (wrap < 0)
-    return (win->cols > -wrap) ? (win->cols + wrap) : win->cols;
+    return (width > -wrap) ? (width + wrap) : width;
   else if (wrap)
-    return (wrap < win->cols) ? wrap : win->cols;
+    return (wrap < width) ? wrap : width;
   else
-    return win->cols;
+    return width;
 }

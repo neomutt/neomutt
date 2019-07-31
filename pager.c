@@ -1425,22 +1425,22 @@ static int fill_buffer(FILE *fp, LOFF_T *last_pos, LOFF_T offset, unsigned char 
 
 /**
  * format_line - Display a line of text in the pager
- * @param[out] line_info    Line info
- * @param[in]  n            Line number (index into line_info)
- * @param[in]  buf          Text to display
- * @param[in]  flags        Flags, see #PagerFlags
- * @param[out] pa           ANSI attributes used
- * @param[in]  cnt          Length of text buffer
- * @param[out] pspace       Index of last whitespace character
- * @param[out] pvch         Number of bytes read
- * @param[out] pcol         Number of columns used
- * @param[out] pspecial     Attribute flags, e.g. A_UNDERLINE
- * @param[in]  pager_window Window to write to
+ * @param[out] line_info Line info
+ * @param[in]  n         Line number (index into line_info)
+ * @param[in]  buf       Text to display
+ * @param[in]  flags     Flags, see #PagerFlags
+ * @param[out] pa        ANSI attributes used
+ * @param[in]  cnt       Length of text buffer
+ * @param[out] pspace    Index of last whitespace character
+ * @param[out] pvch      Number of bytes read
+ * @param[out] pcol      Number of columns used
+ * @param[out] pspecial  Attribute flags, e.g. A_UNDERLINE
+ * @param[in]  width     Width of screen (to wrap to)
  * @retval num Number of characters displayed
  */
 static int format_line(struct Line **line_info, int n, unsigned char *buf,
-                       PagerFlags flags, struct AnsiAttr *pa, int cnt, int *pspace,
-                       int *pvch, int *pcol, int *pspecial, struct MuttWindow *pager_window)
+                       PagerFlags flags, struct AnsiAttr *pa, int cnt,
+                       int *pspace, int *pvch, int *pcol, int *pspecial, int width)
 {
   int space = -1; /* index of the last space or TAB */
   int col = C_Markers ? (*line_info)[n].continuation : 0;
@@ -1448,11 +1448,10 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
   int ch, vch, last_special = -1, special = 0, t;
   wchar_t wc;
   mbstate_t mbstate;
-  int wrap_cols =
-      mutt_window_wrap_cols(pager_window, (flags & MUTT_PAGER_NOWRAP) ? 0 : C_Wrap);
+  int wrap_cols = mutt_window_wrap_cols(width, (flags & MUTT_PAGER_NOWRAP) ? 0 : C_Wrap);
 
   if (check_attachment_marker((char *) buf) == 0)
-    wrap_cols = pager_window->cols;
+    wrap_cols = width;
 
   /* FIXME: this should come from line_info */
   memset(&mbstate, 0, sizeof(mbstate));
@@ -1462,7 +1461,9 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
     /* Handle ANSI sequences */
     while ((cnt - ch >= 2) && (buf[ch] == '\033') && (buf[ch + 1] == '[') && // Escape
            is_ansi(buf + ch + 2))
+    {
       ch = grok_ansi(buf, ch + 2, pa) + 1;
+    }
 
     while ((cnt - ch >= 2) && (buf[ch] == '\033') && (buf[ch + 1] == ']') && // Escape
            ((check_attachment_marker((char *) buf + ch) == 0) ||
@@ -1800,7 +1801,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
 
   /* now chose a good place to break the line */
   cnt = format_line(line_info, n, buf, flags, NULL, b_read, &ch, &vch, &col,
-                    &special, pager_window);
+                    &special, pager_window->cols);
   buf_ptr = buf + cnt;
 
   /* move the break point only if smart_wrap is set */
@@ -1848,7 +1849,8 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
   }
 
   /* display the line */
-  format_line(line_info, n, buf, flags, &a, cnt, &ch, &vch, &col, &special, pager_window);
+  format_line(line_info, n, buf, flags, &a, cnt, &ch, &vch, &col, &special,
+              pager_window->cols);
 
 /* avoid a bug in ncurses... */
 #ifndef USE_SLANG_CURSES
@@ -1957,7 +1959,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     rd->index_status_window->rows = 0;
     rd->index_window->rows = 0;
 
-    if (IsEmail(rd->extra) && C_PagerIndexLines)
+    if (IsEmail(rd->extra) && (C_PagerIndexLines != 0))
     {
       memcpy(rd->index_window, MuttIndexWindow, sizeof(struct MuttWindow));
       rd->index_window->rows = (rd->indexlen > 0) ? rd->indexlen - 1 : 0;
@@ -2021,7 +2023,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       FREE(&Resize);
     }
 
-    if (IsEmail(rd->extra) && C_PagerIndexLines)
+    if (IsEmail(rd->extra) && (C_PagerIndexLines != 0))
     {
       if (!rd->index)
       {
@@ -2321,10 +2323,10 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   }
   rd.helpstr = mutt_b2s(helpstr);
 
-  rd.index_status_window = mutt_mem_calloc(1, sizeof(struct MuttWindow));
-  rd.index_window = mutt_mem_calloc(1, sizeof(struct MuttWindow));
-  rd.pager_status_window = mutt_mem_calloc(1, sizeof(struct MuttWindow));
-  rd.pager_window = mutt_mem_calloc(1, sizeof(struct MuttWindow));
+  rd.index_status_window = mutt_window_new();
+  rd.index_window = mutt_window_new();
+  rd.pager_status_window = mutt_window_new();
+  rd.pager_window = mutt_window_new();
 
   pager_menu = mutt_menu_new(MENU_PAGER);
   pager_menu->menu_custom_redraw = pager_custom_redraw;
@@ -3075,7 +3077,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           ch = -1;
         }
 
-        if (!C_Resolve && C_PagerIndexLines)
+        if (!C_Resolve && (C_PagerIndexLines != 0))
           pager_menu->redraw = REDRAW_FULL;
         else
           pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
@@ -3427,7 +3429,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
             ch = -1;
           }
 
-          if (!C_Resolve && C_PagerIndexLines)
+          if (!C_Resolve && (C_PagerIndexLines != 0))
             pager_menu->redraw = REDRAW_FULL;
           else
             pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
@@ -3584,10 +3586,10 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
     mutt_menu_destroy(&rd.index);
 
   mutt_buffer_free(&helpstr);
-  FREE(&rd.index_status_window);
-  FREE(&rd.index_window);
-  FREE(&rd.pager_status_window);
-  FREE(&rd.pager_window);
+  mutt_window_free(&rd.index_status_window);
+  mutt_window_free(&rd.index_window);
+  mutt_window_free(&rd.pager_status_window);
+  mutt_window_free(&rd.pager_window);
 
   return (rc != -1) ? rc : 0;
 }
