@@ -84,6 +84,10 @@ int mutt_autocrypt_db_init(int can_create)
   {
     if (sqlite3_open_v2(mutt_b2s(db_path), &AutocryptDB, SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK)
     {
+      /* L10N:
+         Error message if autocrypt couldn't open the sqlite database
+         for some reason.  The %s is the full path of the database file.
+      */
       mutt_error(_("Unable to open autocrypt database %s"), mutt_b2s(db_path));
       goto cleanup;
     }

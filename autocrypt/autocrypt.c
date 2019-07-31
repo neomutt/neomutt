@@ -117,6 +117,11 @@ int mutt_autocrypt_account_init(int prompt)
 
   if (prompt)
   {
+    /* L10N:
+       The first time mutt is started with $autocrypt set, it will
+       create $autocrypt_dir and then prompt to create an autocrypt
+       account with this message.
+    */
     if (mutt_yesorno(_("Create an initial autocrypt account?"), MUTT_YES) != MUTT_YES)
       return 0;
   }
@@ -164,6 +169,11 @@ int mutt_autocrypt_account_init(int prompt)
     goto cleanup;
   if (account)
   {
+    /* L10N:
+       When creating an autocrypt account, this message will be displayed
+       if there is already an account in the database with the email address
+       they just entered.
+    */
     mutt_error(_("That email address already has an autocrypt account"));
     goto cleanup;
   }
@@ -189,8 +199,15 @@ int mutt_autocrypt_account_init(int prompt)
 
 cleanup:
   if (rc == 0)
+    /* L10N:
+       Message displayed after an autocrypt account is successfully created.
+    */
     mutt_message(_("Autocrypt account creation succeeded"));
   else
+    /* L10N:
+       Error message displayed if creating an autocrypt account failed
+       or was aborted by the user.
+    */
     mutt_error(_("Autocrypt account creation aborted"));
 
   mutt_autocrypt_db_account_free(&account);

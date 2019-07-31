@@ -194,6 +194,10 @@ static void toggle_active(struct Entry *entry)
   if (mutt_autocrypt_db_account_update(entry->account) != 0)
   {
     entry->account->enabled = !entry->account->enabled;
+    /* L10N:
+       This error message is displayed if a database update of an
+       account record fails for some odd reason.
+    */
     mutt_error(_("Error updating account record"));
   }
 }
@@ -247,7 +251,7 @@ void mutt_autocrypt_account_menu(void)
           entry = (struct Entry *) (menu->data) + menu->current;
           snprintf(msg, sizeof(msg),
                    /* L10N:
-                       Confirms deleting an autocrypt account
+                       Confirmation message when deleting an autocrypt account
                     */
                    _("Really delete account \"%s\"?"), entry->addr->mailbox);
           if (mutt_yesorno(msg, MUTT_NO) != MUTT_YES)
