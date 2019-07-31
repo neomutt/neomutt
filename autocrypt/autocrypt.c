@@ -314,7 +314,7 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
   if (insert_db && mutt_autocrypt_db_peer_insert(from, peer))
     goto cleanup;
 
-  if (update_db && mutt_autocrypt_db_peer_update(from, peer))
+  if (update_db && mutt_autocrypt_db_peer_update(peer))
     goto cleanup;
 
   if (insert_db_history)
@@ -451,7 +451,7 @@ int mutt_autocrypt_process_gossip_header(struct Email *hdr, struct Envelope *pro
     if (insert_db && mutt_autocrypt_db_peer_insert(peer_addr, peer))
       goto cleanup;
 
-    if (update_db && mutt_autocrypt_db_peer_update(peer_addr, peer))
+    if (update_db && mutt_autocrypt_db_peer_update(peer))
       goto cleanup;
 
     if (insert_db_history)

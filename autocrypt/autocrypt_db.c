@@ -416,12 +416,9 @@ cleanup:
   return rv;
 }
 
-int mutt_autocrypt_db_peer_update(struct Address *addr, struct AutocryptPeer *peer)
+int mutt_autocrypt_db_peer_update(struct AutocryptPeer *peer)
 {
   int rv = -1;
-  struct Address *norm_addr = NULL;
-
-  norm_addr = copy_normalize_addr(addr);
 
   if (!PeerUpdateStmt)
   {
@@ -456,7 +453,7 @@ int mutt_autocrypt_db_peer_update(struct Address *addr, struct AutocryptPeer *pe
     goto cleanup;
   if (sqlite3_bind_text(PeerUpdateStmt, 8, peer->gossip_keydata, -1, SQLITE_STATIC) != SQLITE_OK)
     goto cleanup;
-  if (sqlite3_bind_text(PeerUpdateStmt, 9, norm_addr->mailbox, -1, SQLITE_STATIC) != SQLITE_OK)
+  if (sqlite3_bind_text(PeerUpdateStmt, 9, peer->email_addr, -1, SQLITE_STATIC) != SQLITE_OK)
     goto cleanup;
 
   if (sqlite3_step(PeerUpdateStmt) != SQLITE_DONE)
@@ -465,7 +462,6 @@ int mutt_autocrypt_db_peer_update(struct Address *addr, struct AutocryptPeer *pe
   rv = 0;
 
 cleanup:
-  mutt_addr_free(&norm_addr);
   sqlite3_reset(PeerUpdateStmt);
   return rv;
 }

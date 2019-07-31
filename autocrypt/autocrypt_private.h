@@ -47,7 +47,7 @@ struct AutocryptPeer *mutt_autocrypt_db_peer_new (void);
 void mutt_autocrypt_db_peer_free (struct AutocryptPeer **peer);
 int mutt_autocrypt_db_peer_get (struct Address *addr, struct AutocryptPeer **peer);
 int mutt_autocrypt_db_peer_insert (struct Address *addr, struct AutocryptPeer *peer);
-int mutt_autocrypt_db_peer_update (struct Address *addr, struct AutocryptPeer *peer);
+int mutt_autocrypt_db_peer_update (struct AutocryptPeer *peer);
 
 struct AutocryptPeerHistory *mutt_autocrypt_db_peer_history_new (void);
 void mutt_autocrypt_db_peer_history_free (struct AutocryptPeerHistory **peerhist);
