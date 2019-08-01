@@ -79,6 +79,7 @@ int mutt_autocrypt_db_init(int can_create)
       goto cleanup;
     /* Don't abort the whole init process because account creation failed */
     mutt_autocrypt_account_init(1);
+    mutt_autocrypt_scan_mailboxes();
   }
   else
   {

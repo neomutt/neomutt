@@ -30,6 +30,7 @@ struct AddressList;
 struct Buffer;
 
 int mutt_autocrypt_account_init (int prompt);
+void mutt_autocrypt_scan_mailboxes (void);
 
 int mutt_autocrypt_db_init (int can_create);
 void mutt_autocrypt_db_close (void);
