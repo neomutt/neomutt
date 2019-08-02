@@ -394,9 +394,10 @@ struct ConfigDef MuttVars[] = {
   { "autocrypt", DT_BOOL, &C_Autocrypt, false },
   /*
   ** .pp
-  ** When \fIset\fP, enables autocrypt, https://autocrypt.org/, which provides
+  ** When \fIset\fP, enables autocrypt, which provides
   ** passive encryption protection with keys exchanged via headers.
-  ** TODO: add a section in the manual describing this is more detail.
+  ** See ``$autocryptdoc'' for more details.
+  ** (Autocrypt only)
   */
   { "autocrypt_acct_format", DT_STRING|R_MENU, &C_AutocryptAcctFormat, IP "%4n %-30a %20p %10s" },
   /*
@@ -411,12 +412,14 @@ struct ConfigDef MuttVars[] = {
   ** .dt %s  .dd status flag (active/inactive)
   ** .de
   ** .pp
+  ** (Autocrypt only)
   */
   { "autocrypt_dir", DT_STRING|DT_PATH, &C_AutocryptDir, IP "~/.mutt/autocrypt" },
   /*
   ** .pp
   ** This variable sets where autocrypt files are stored, including the GPG
-  ** keyring and sqlite database.
+  ** keyring and sqlite database.  See ``$autocryptdoc'' for more details.
+  ** (Autocrypt only)
   */
 #endif
   { "autoedit", DT_BOOL, &C_Autoedit, false },
