@@ -778,8 +778,20 @@ static int init_email(struct Email *e, const char *path, notmuch_message_t *msg)
 
   mutt_debug(LL_DEBUG2, "nm: [e=%p, edata=%p] (%s)\n", (void *) e, (void *) e->edata, id);
 
+  char *nm_msg_id = nm2mutt_message_id(id);
   if (!e->env->message_id)
-    e->env->message_id = nm2mutt_message_id(id);
+  {
+    e->env->message_id = nm_msg_id;
+  }
+  else if (mutt_str_strcmp(e->env->message_id, nm_msg_id) != 0)
+  {
+    FREE(&e->env->message_id);
+    e->env->message_id = nm_msg_id;
+  }
+  else
+  {
+    FREE(&nm_msg_id);
+  }
 
   if (update_message_path(e, path) != 0)
     return -1;
