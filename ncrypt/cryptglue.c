@@ -41,6 +41,7 @@
 #include "mutt/mutt.h"
 #include "crypt_mod.h"
 #include "curs_lib.h"
+#include "globals.h"
 #include "ncrypt.h"
 #include "options.h"
 #ifdef USE_AUTOCRYPT
@@ -200,13 +201,16 @@ int crypt_pgp_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
 #ifdef USE_AUTOCRYPT
   int result;
 
-  OptAutocryptGpgme = true;
-  result = pgp_gpgme_decrypt_mime(fp_in, fp_out, b, cur);
-  OptAutocryptGpgme = false;
-  if (result == 0)
+  if (C_Autocrypt)
   {
-    b->is_autocrypt = 1;
-    return result;
+    OptAutocryptGpgme = true;
+    result = pgp_gpgme_decrypt_mime(fp_in, fp_out, b, cur);
+    OptAutocryptGpgme = false;
+    if (result == 0)
+    {
+      b->is_autocrypt = 1;
+      return result;
+    }
   }
 #endif
 
@@ -239,13 +243,16 @@ int crypt_pgp_encrypted_handler(struct Body *a, struct State *s)
 #ifdef USE_AUTOCRYPT
   int result;
 
-  OptAutocryptGpgme = true;
-  result = pgp_gpgme_encrypted_handler(a, s);
-  OptAutocryptGpgme = false;
-  if (result == 0)
+  if (C_Autocrypt)
   {
-    a->is_autocrypt = 1;
-    return result;
+    OptAutocryptGpgme = true;
+    result = pgp_gpgme_encrypted_handler(a, s);
+    OptAutocryptGpgme = false;
+    if (result == 0)
+    {
+      a->is_autocrypt = 1;
+      return result;
+    }
   }
 #endif
 
