@@ -3,9 +3,9 @@
 # Copyright (c) 2000 NeoMutt project.
 # This file is distributed under the same license as the NeoMutt package.
 #
+# Thiago Costa de Paiva <t@cpaiva.me>, 2018
 # Marcus Brito <marcus@visaotec.com.br>, 2000
-# Thiago Costa de Paiva <tecepe@tecepe.eng.br>, 2018
-#
+
 msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
@@ -47,7 +47,7 @@ msgstr "Ajuda"
 
 #: addrbook.c:209
 msgid "You have no aliases"
-msgstr "Sua lista de contatos está vazia"
+msgstr "Lista de contatos vazia"
 
 #: addrbook.c:216
 msgid "Aliases"
@@ -60,11 +60,11 @@ msgstr "Apelidar como: "
 
 #: alias.c:398
 msgid "You already have an alias defined with that name"
-msgstr "Já existe um apelido definido com aquele nome"
+msgstr "Já existe um apelido definido com este nome"
 
 #: alias.c:404
 msgid "Warning: This alias name may not work.  Fix it?"
-msgstr "Aviso: Este apelido pode não funcionar. Consertar?"
+msgstr "Aviso: Este apelido não é válido. Consertar?"
 
 #: alias.c:429
 msgid "Address: "
@@ -95,9 +95,8 @@ msgid "Error reading alias file"
 msgstr "Erro ao ler o arquivo de contatos"
 
 #: alias.c:512
-#, fuzzy
 msgid "Trouble adding alias"
-msgstr "Erro ao ler o arquivo de contatos"
+msgstr "Erro ao acidionar contato"
 
 #: alias.c:514
 msgid "Alias added"
@@ -120,7 +119,7 @@ msgstr "Cachê de mensagens não é um diretório: %s"
 #: bcache.c:224 hcache/hcache.c:160 main.c:817 nntp/newsrc.c:1064
 #, c-format
 msgid "Can't create %s: %s"
-msgstr "Não é possível criar %s: %s"
+msgstr "Não foi possível criar %s: %s"
 
 #: browser.c:88
 msgid "Chdir"
@@ -158,7 +157,7 @@ msgstr "%s não é um diretório"
 #: browser.c:1007
 #, c-format
 msgid "Subscribed newsgroups"
-msgstr "Grupo de notícias inscrito"
+msgstr "Grupo de notícias inscritos"
 
 #: browser.c:1010
 #, c-format
@@ -201,9 +200,8 @@ msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Remoção de caixa de mensagens somente em IMAP"
 
 #: browser.c:1630
-#, fuzzy
 msgid "Can't delete currently selected mailbox"
-msgstr "mostra o nome do arquivo atualmente selecionado"
+msgstr "Impossível de remover caixa selecionada"
 
 #: browser.c:1634
 #, c-format
@@ -512,9 +510,8 @@ msgstr "Copiando para %s..."
 
 #. L10N: e.g. "text/plain; charset=UTF-8; ..."
 #: commands.c:1213
-#, fuzzy
 msgid "Content type is too long"
-msgstr "Tipo de conteúdo (Content-Type) alterado para %s"
+msgstr "Tipo de conteúdo muito comprido"
 
 #: commands.c:1237
 #, c-format
@@ -843,9 +840,8 @@ msgid "What we have here is a failure to make an attachment"
 msgstr "O que temos aqui é uma falha ao criar um anexo"
 
 #: compose.c:1861
-#, fuzzy
 msgid "Save (postpone) draft message?"
-msgstr "Editar mensagem adiada?"
+msgstr "Salvar (adiar) mensagem não terminada?"
 
 #: compose.c:1919
 msgid "Write message to mailbox"
@@ -1070,9 +1066,8 @@ msgid "SHA1 Fingerprint: %s"
 msgstr "Impressão digital SHA1: %s"
 
 #: conn/ssl.c:930 conn/ssl.c:933 conn/ssl_gnutls.c:607 conn/ssl_gnutls.c:609
-#, fuzzy
 msgid "SHA256 Fingerprint: "
-msgstr "Impressão digital SHA256: %s"
+msgstr "Impressão digital SHA256: "
 
 #: conn/ssl.c:937 conn/ssl_gnutls.c:648
 #, c-format
@@ -1245,8 +1240,8 @@ msgstr "Tunel para %s retornou erro %d (%s)"
 #, c-format
 msgid "The length calculation was wrong by %ld byte"
 msgid_plural "The length calculation was wrong by %ld bytes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Cálculo de comprimento estava errado por %ld byte"
+msgstr[1] "Cálculo de comprimento estava errado por %ld bytes"
 
 #: copy.c:737
 msgid "No decryption engine available for message"
@@ -1676,14 +1671,14 @@ msgstr "%s: não existe tal menu"
 #. L10N: '%s' is the name of the menu, e.g. 'index' or 'pager', it might
 #. L10N: also be 'all' when all menus are affected.
 #: icommands.c:276
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no binds for this menu"
-msgstr "%s: não existe tal menu"
+msgstr "%s: sem vínculos para este menu"
 
 #: icommands.c:276
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no macros for this menu"
-msgstr "%s: não existe tal menu"
+msgstr "%s: sem macros para este menu"
 
 #. L10N: '%s' is the file name of the temporary file
 #: icommands.c:287 icommands.c:300 icommands.c:320 icommands.c:344
@@ -1733,12 +1728,10 @@ msgid "Login failed"
 msgstr "Login falhou"
 
 #: imap/auth_oauth.c:64 pop/pop_auth.c:346 smtp.c:516
-#, fuzzy
 msgid "Authenticating (OAUTHBEARER)..."
-msgstr "Autenticando (SASL)..."
+msgstr "Autenticando (OAUTHBEARER)..."
 
 #: imap/auth_oauth.c:96
-#, fuzzy
 msgid "OAUTHBEARER authentication failed"
 msgstr "Autenticação OAUTHBEARER falhou."
 
@@ -1927,7 +1920,7 @@ msgstr "Sinalizações IMAP inválidas"
 #. L10N: This prompt is made if the user hits Ctrl-C when opening an IMAP mailbox
 #: imap/message.c:520
 msgid "Abort download and close mailbox?"
-msgstr ""
+msgstr "Interromper download e fechar caixa?"
 
 #: imap/message.c:550 mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134
 #: mutt/string.c:1214 mx.c:1124
@@ -1941,14 +1934,12 @@ msgstr "Analisando cache..."
 
 #. L10N: Fetching IMAP flag changes, using the CONDSTORE extension
 #: imap/message.c:947
-#, fuzzy
 msgid "Fetching flag updates..."
-msgstr "Obtendo cabeçalhos das mensagens..."
+msgstr "Baixando mudanças nas sinalizações..."
 
 #: imap/message.c:1064
-#, fuzzy
 msgid "Unable to fetch headers from this IMAP server version"
-msgstr "Não foi possível obter cabeçalhos da versão deste servidor IMAP"
+msgstr "Incapaz de obter cabeçalhos nesta versão de servidor IMAP"
 
 #: imap/message.c:1079 index.c:1439 nntp/nntp.c:1325 pop/pop.c:428
 msgid "Fetching message headers..."
@@ -2176,9 +2167,8 @@ msgid "Logged out of IMAP servers"
 msgstr "Conexões com os servidores IMAP encerradas"
 
 #: index.c:1968
-#, fuzzy
 msgid "No virtual folder and no Message-Id, aborting"
-msgstr "Não há pasta virtual, cancelado"
+msgstr "Sem pasta virtual e sem ID de mensagem, cancelado"
 
 #: index.c:1980 index.c:2133 index.c:2155 index.c:2176
 msgid "Failed to create query, aborting"
@@ -2427,12 +2417,12 @@ msgstr "argumentos insuficientes"
 #: init.c:776 init.c:1716
 #, c-format
 msgid "Error: Can't build path of '%s'"
-msgstr ""
+msgstr "Erro: incapaz de montar caminho para '%s'"
 
 #: init.c:793
 #, c-format
 msgid "Error: Cyclic sourcing of configuration file '%s'"
-msgstr ""
+msgstr "Erro: inclusão cíclica do arquivo de configuração '%s'"
 
 #: init.c:824
 #, c-format
@@ -2495,7 +2485,7 @@ msgstr "%sgroup: aviso: IDN '%s' inválida"
 #: init.c:1252
 #, c-format
 msgid "Error: %s"
-msgstr ""
+msgstr "Erro: %s"
 
 #: init.c:1409
 msgid "invalid header field"
@@ -2558,22 +2548,22 @@ msgstr "%s: comando desconhecido"
 
 #: init.c:3799
 msgid "'charset' must contain exactly one character set name"
-msgstr ""
+msgstr "'charset' deve conter apenas um nome de conjunto de caracteres"
 
 #: init.c:3815 init.c:3839 init.c:3874
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: %s"
-msgstr "Valor inválido para opção %s: \"%s\""
+msgstr "Valor inválido para opção %s: %s"
 
 #: init.c:3852
 #, c-format
 msgid "Option %s may not be set or reset from the pager"
-msgstr ""
+msgstr "Opção %s não pode ser alterada no paginador"
 
 #: init.c:3890
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s may not be set when in attach-message mode"
-msgstr "Função não permitida no modo de anexar mensagem (attach-message)."
+msgstr "Função %s não permitida no modo de anexar mensagem (attach-message)"
 
 #: keymap.c:325 keymap.c:333
 #, c-format
@@ -2988,9 +2978,8 @@ msgid "Logging at level %d to file '%s'"
 msgstr "Realizando log no nível %d para o arquivo '%s'"
 
 #: mutt/path.c:456
-#, fuzzy
 msgid "Error: converting path to absolute"
-msgstr "Erro ao conectar com servidor: %s"
+msgstr "Erro: conversão de caminho relativo para completo"
 
 #: mutt/regex.c:273
 #, c-format
@@ -3085,17 +3074,16 @@ msgstr "Senha para %s@%s: "
 #. $*_oauth_refresh_command defined. So the message does not mean "None of
 #. your $*_oauth_refresh_command's are defined."
 #: mutt_account.c:382
-#, fuzzy
 msgid "No OAUTH refresh command defined"
-msgstr "Comando de consulta não definido"
+msgstr "Comando de atualizaçao OAUTH não definido"
 
 #: mutt_account.c:389
 msgid "Unable to run refresh command"
-msgstr ""
+msgstr "Incapaz de executar comando de atualização"
 
 #: mutt_account.c:399
 msgid "Command returned empty string"
-msgstr ""
+msgstr "Comando respondeu com mensagem vazia"
 
 #: mutt_attach.c:141 mutt_attach.c:275 mutt_attach.c:1050
 msgid "Can't match 'nametemplate', continue?"
@@ -3142,9 +3130,8 @@ msgid "MIME type not defined.  Can't view attachment."
 msgstr "Tipo MIME não definido. Não foi possível exibir o anexo."
 
 #: mutt_attach.c:457
-#, fuzzy
 msgid "Can't match nametemplate, continue?"
-msgstr "Não pude associar o modelo de nomeação, continuo?"
+msgstr "Incapaz de associar o modelo de nomeação, continuar?"
 
 #: mutt_attach.c:532
 #, c-format
@@ -3184,18 +3171,18 @@ msgid "History '%s'"
 msgstr "Histórico '%s'"
 
 #: mutt_logging.c:330
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: %ld"
-msgstr "Valor inválido para opção %s: \"%s\""
+msgstr "Valor inválido para opção %s: %ld"
 
 #: mutt_lua.c:415
 msgid "Error: Couldn't load the lua interpreter"
-msgstr ""
+msgstr "Erro: Não foi possível carregar o interpretador lua"
 
 #: mutt_lua.c:481
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't source lua source: %s"
-msgstr "Incapaz de travar %s\n"
+msgstr "Incapaz de importar código lua: %s"
 
 #: mutt_mailbox.c:212
 msgid "New mail in "
@@ -3225,9 +3212,9 @@ msgstr "Aquisição de %s interrompida..."
 
 #. L10N: Displayed if a mailbox sync fails
 #: mx.c:449
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to write %s"
-msgstr "Não foi possível anexar %s"
+msgstr "Incapaz de gravar %s"
 
 #. L10N: Although we know the precise number of messages, we do not show it to the user.
 #. So feel free to use a "generic plural" as plural translation if your language has one.
@@ -3451,7 +3438,7 @@ msgid "error reading data object: %s"
 msgstr "erro ao acessar objeto de dados: %s"
 
 #: ncrypt/crypt_gpgme.c:1090
-#, fuzzy, c-format
+#, c-format
 msgid "error adding recipient '%s': %s"
 msgstr "erro ao adicionar destinatário '%s': %s"
 
@@ -3461,9 +3448,9 @@ msgid "secret key '%s' not found: %s"
 msgstr "chave secreta '%s' não encontrada: %s"
 
 #: ncrypt/crypt_gpgme.c:1151
-#, fuzzy, c-format
+#, c-format
 msgid "ambiguous specification of secret key '%s'\n"
-msgstr "especificação ambígua da chave secreta '%s'"
+msgstr "especificação ambígua da chave secreta '%s'\n"
 
 #: ncrypt/crypt_gpgme.c:1167
 #, c-format
@@ -3562,7 +3549,7 @@ msgstr "KeyID "
 #. if the S/MIME key has no ID. This is quite an error.
 #: ncrypt/crypt_gpgme.c:1838
 msgid "no signature fingerprint available"
-msgstr ""
+msgstr "Não há assinatura digital disponível"
 
 #: ncrypt/crypt_gpgme.c:1847 ncrypt/crypt_gpgme.c:1852
 msgid "created: "
@@ -3629,9 +3616,9 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2760
-#, fuzzy, c-format
+#, c-format
 msgid "Error importing key: %s"
-msgstr "Erro ao exportar chave: %s"
+msgstr "Erro ao importar chave: %s"
 
 #: ncrypt/crypt_gpgme.c:3001
 #, c-format
@@ -4059,9 +4046,8 @@ msgstr ""
 #. (not encrypting) something and (2) it is a plaintext. So the
 #. message does not mean "You failed to encrypt the message."
 #: ncrypt/pgp.c:732
-#, fuzzy
 msgid "PGP message is not encrypted"
-msgstr "Mensagem PGP decriptada com sucesso"
+msgstr "Mensagem PGP não criptografada"
 
 #: ncrypt/pgp.c:973
 msgid "Internal error.  Please submit a bug report."
@@ -4531,9 +4517,9 @@ msgid "No more messages in the thread"
 msgstr "Não há mais mensagens nessa thread"
 
 #: notmuch/mutt_notmuch.c:1945
-#, fuzzy, c-format
+#, c-format
 msgid "failed to parse limit: %s"
-msgstr "Falha ao interpretar limite do notmuch: %s"
+msgstr "falhou ao interpretar limite: %s"
 
 #: notmuch/mutt_notmuch.c:2465
 msgid "Can't write to virtual folder"
@@ -4618,9 +4604,8 @@ msgid "check mailboxes for new mail"
 msgstr "verifica se há novas mensagens na caixa"
 
 #: opcodes.h:44
-#, fuzzy
 msgid "calculate message statistics for all mailboxes"
-msgstr "salva mensagem/anexo em um mailbox/arquivo"
+msgstr "calcula estatisticas de mensagens para todas as caixas"
 
 #: opcodes.h:45
 msgid "attach files to this message"
@@ -4759,9 +4744,8 @@ msgid "toggle whether to delete file after sending it"
 msgstr "troca entre apagar o arquivo após enviá-lo ou não"
 
 #: opcodes.h:79
-#, fuzzy
 msgid "compose new message to the current message sender"
-msgstr "compõe nova mensagem para o signatário"
+msgstr "compõe nova mensagem para o signatário da mensagem atual"
 
 #: opcodes.h:80
 msgid "update an attachment's encoding info"
@@ -4820,9 +4804,8 @@ msgid "delete all messages in thread"
 msgstr "apaga todas as mensagens na discussão"
 
 #: opcodes.h:94
-#, fuzzy
 msgid "descend into a directory"
-msgstr "%s não é um diretório"
+msgstr "acessando um diretório"
 
 #: opcodes.h:95
 msgid "display full address of sender"
@@ -5005,9 +4988,8 @@ msgid "go to parent directory"
 msgstr "ir para diretório acima"
 
 #: opcodes.h:140
-#, fuzzy
 msgid "reply to all recipients preserving To/Cc"
-msgstr "responde a todos os destinatários"
+msgstr "responde a todos os destinatários mantendo Para/Cc"
 
 #: opcodes.h:141
 msgid "reply to all recipients"
@@ -5506,9 +5488,8 @@ msgid "generate virtual folder from query"
 msgstr "gera pasta virtual a partir de consulta"
 
 #: opcodes.h:276
-#, fuzzy
 msgid "generate a read-only virtual folder from query"
-msgstr "gera pasta virtual a partir de consulta"
+msgstr "gera pasta virtual somente leitura usando consulta"
 
 #: opcodes.h:277
 msgid "shifts virtual folder time window backwards"
@@ -5644,14 +5625,13 @@ msgid "Empty expression"
 msgstr "Expressão vazia"
 
 #: pattern.c:284
-#, fuzzy
 msgid "No search command defined"
-msgstr "Comando de consulta não definido"
+msgstr "Nenhum comando de busca definido"
 
 #: pattern.c:322
-#, fuzzy, c-format
+#, c-format
 msgid "Running search command: %s ..."
-msgstr "Executando comando de autovisualização: %s"
+msgstr "Executando comando de busca: %s ..."
 
 #: pattern.c:413
 #, c-format
@@ -5847,9 +5827,8 @@ msgid "Command USER is not supported by server"
 msgstr "Não há suporte para o comando USER neste servidor"
 
 #: pop/pop_auth.c:386
-#, fuzzy
 msgid "Authentication failed"
-msgstr "Autenticação SASL falhou."
+msgstr "Autenticação falhou."
 
 #: pop/pop_lib.c:76
 #, c-format
@@ -5935,11 +5914,11 @@ msgid "Saving..."
 msgstr "Salvando..."
 
 #: recvattach.c:581 recvattach.c:745 recvattach.c:749
-#, fuzzy, c-format
+#, c-format
 msgid "Attachment saved"
 msgid_plural "%d attachments saved"
 msgstr[0] "Anexo salvo"
-msgstr[1] "Anexo salvo"
+msgstr[1] "%d anexos salvos"
 
 #: recvattach.c:769
 #, c-format
@@ -6067,9 +6046,8 @@ msgstr ""
 #. L10N: You will see this error message if you invoke <compose-to-sender>
 #. when you are on a normal attachment.
 #: recvcmd.c:1064
-#, fuzzy
 msgid "You may only compose to sender with message/rfc822 parts"
-msgstr "Você só pode repetir partes message/rfc822"
+msgstr "Somente possível redigir para um signatário com partes message/rfc822"
 
 #: remailer.c:195
 msgid "<random>"
@@ -6176,9 +6154,8 @@ msgstr "Sem assunto, cancelado"
 #. be added as attachments to the new mail, if this is answered yes.
 #.
 #: send.c:559
-#, fuzzy
 msgid "Forward attachments?"
-msgstr "Encaminhar como anexo?"
+msgstr "Encaminhar anexos?"
 
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
@@ -6213,9 +6190,8 @@ msgid "Preparing forwarded message..."
 msgstr "Preparando mensagem encaminhada..."
 
 #: send.c:1588
-#, fuzzy
 msgid "Fcc to an IMAP mailbox is not supported in batch mode"
-msgstr "%c: não há suporte neste modo"
+msgstr "Não há suporte par Fcc para uma caixa IMAP em modo lote"
 
 #: send.c:1620 send.c:1646
 msgid "Save attachments in Fcc?"
@@ -6227,25 +6203,24 @@ msgstr "Salvar anexos em Fcc?"
 #. (s)kip aborts saving.
 #: send.c:1668
 msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
-msgstr ""
+msgstr "Falha em Fcc. (r)repetir, (m)caixa alternativa, (s)ignorar?"
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt
 #. (r)etry, alternate (m)ailbox, or (s)kip.
 #. Any similarity to famous leaders of the FSF is coincidental.
 #: send.c:1672
 msgid "rms"
-msgstr ""
+msgstr "rms"
 
 #. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
 #. initial Fcc fails.
 #: send.c:1678
-#, fuzzy
 msgid "Fcc mailbox"
-msgstr "Nenhuma caixa de mensagens.\n"
+msgstr "Caixa para Fcc"
 
 #: send.c:1743
 msgid "Can't postpone.  $postponed is unset"
-msgstr ""
+msgstr "Incapaz de adiar mensagem.  $postponed desconfigurado"
 
 #: send.c:1872
 msgid "Recall postponed message?"
@@ -6374,7 +6349,7 @@ msgstr "URL SMTP inválida: %s"
 #: smtp.c:610
 #, c-format
 msgid "SMTP authentication method %s requires SASL"
-msgstr ""
+msgstr "Método %s de autenticação SMTP requer SASL"
 
 #: smtp.c:617
 #, c-format
@@ -6382,9 +6357,8 @@ msgid "%s authentication failed, trying next method"
 msgstr "Autenticação %s falhou, tentando próximo método"
 
 #: smtp.c:628
-#, fuzzy
 msgid "SMTP authentication requires SASL"
-msgstr "Autenticação GSSAPI falhou"
+msgstr "Autenticação SMTP requer SASL"
 
 #: smtp.c:709
 msgid "SMTP server does not support authentication"
@@ -6491,6 +6465,5 @@ msgstr "Opções de compilação:"
 #~ msgid "Reopening mailbox..."
 #~ msgstr "Reabrindo caixa de mensagens..."
 
-#, fuzzy
 #~ msgid "Error extracting key: %s"
 #~ msgstr "Erro ao exportar chave: %s"
