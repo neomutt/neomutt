@@ -142,6 +142,11 @@ static struct CompileOptions comp_opts_default[] = {
 };
 
 static struct CompileOptions comp_opts[] = {
+#ifdef USE_AUTOCRYPT
+  { "autocrypt", 1 },
+#else
+  { "autocrypt", 0 },
+#endif
 #ifdef HAVE_BKGDSET
   { "bkgdset", 1 },
 #else
@@ -266,6 +271,11 @@ static struct CompileOptions comp_opts[] = {
   { "smime", 1 },
 #else
   { "smime", 0 },
+#endif
+#ifdef USE_SQLITE
+  { "sqlite", 1 },
+#else
+  { "sqlite", 0 },
 #endif
 #ifdef HAVE_START_COLOR
   { "start_color", 1 },
