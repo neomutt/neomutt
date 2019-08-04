@@ -3,7 +3,7 @@
 # Copyright (c) 2000 NeoMutt project.
 # This file is distributed under the same license as the NeoMutt package.
 #
-# Thiago Costa de Paiva <t@cpaiva.me>, 2018
+# Thiago Costa de Paiva - tcpaiva @github - 2018-2019
 # Marcus Brito <marcus@visaotec.com.br>, 2000
 
 msgid ""
