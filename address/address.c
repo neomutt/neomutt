@@ -1177,6 +1177,33 @@ size_t mutt_addrlist_write(char *buf, size_t buflen, const struct AddressList *a
 }
 
 /**
+ * mutt_addr_to_intl - Convert an Address to Punycode
+ * @param a Address to convert
+ * @retval bool True on success, false otherwise
+ */
+bool mutt_addr_to_intl(struct Address *a)
+{
+  if (!a || !a->mailbox || addr_is_intl(a))
+    return true;
+
+  char *user = NULL;
+  char *domain = NULL;
+  if (addr_mbox_to_udomain(a->mailbox, &user, &domain) == -1)
+    return true;
+
+  char *intl_mailbox = mutt_idna_local_to_intl(user, domain);
+
+  FREE(&user);
+  FREE(&domain);
+
+  if (!intl_mailbox)
+    return false;
+
+  addr_set_intl(a, intl_mailbox);
+  return true;
+}
+
+/**
  * mutt_addrlist_to_intl - Convert an Address list to Punycode
  * @param[in]  al  Address list to modify
  * @param[out] err Pointer for failed addresses
