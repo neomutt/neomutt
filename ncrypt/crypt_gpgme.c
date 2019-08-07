@@ -5306,6 +5306,97 @@ char *smime_gpgme_find_keys(struct AddressList *addrlist, bool oppenc_mode)
 }
 
 /**
+ * mutt_gpgme_select_secret_key - Select a private Autocrypt key for a new account
+ * @param keyid Autocrypt Key id
+ * @retval  0 Success
+ * @retval -1 Error
+ *
+ * Unfortunately, the internal ncrypt/crypt_gpgme.c functions use CryptKeyInfo,
+ * and so aren't exportable.
+ *
+ * This function queries all private keys, provides the crypt_select_keys()
+ * menu, and returns the selected key fingerprint in keyid.
+ */
+int mutt_gpgme_select_secret_key(struct Buffer *keyid)
+{
+  int rc = -1, junk;
+  gpgme_error_t err;
+  gpgme_key_t key;
+  gpgme_user_id_t uid;
+  struct CryptKeyInfo *results = NULL, *k = NULL;
+  struct CryptKeyInfo **kend = NULL;
+  struct CryptKeyInfo *choice = NULL;
+
+  gpgme_ctx_t ctx = create_gpgme_context(false);
+
+  /* list all secret keys */
+  if (gpgme_op_keylist_start(ctx, NULL, 1))
+    goto cleanup;
+
+  kend = &results;
+
+  while (!(err = gpgme_op_keylist_next(ctx, &key)))
+  {
+    KeyFlags flags = KEYFLAG_NO_FLAGS;
+
+    if (key_check_cap(key, KEY_CAP_CAN_ENCRYPT))
+      flags |= KEYFLAG_CANENCRYPT;
+    if (key_check_cap(key, KEY_CAP_CAN_SIGN))
+      flags |= KEYFLAG_CANSIGN;
+
+    if (key->revoked)
+      flags |= KEYFLAG_REVOKED;
+    if (key->expired)
+      flags |= KEYFLAG_EXPIRED;
+    if (key->disabled)
+      flags |= KEYFLAG_DISABLED;
+
+    int idx;
+    for (idx = 0, uid = key->uids; uid; idx++, uid = uid->next)
+    {
+      k = mutt_mem_calloc(1, sizeof(*k));
+      k->kobj = key;
+      gpgme_key_ref(k->kobj);
+      k->idx = idx;
+      k->uid = uid->uid;
+      k->flags = flags;
+      if (uid->revoked)
+        k->flags |= KEYFLAG_REVOKED;
+      k->validity = uid->validity;
+      *kend = k;
+      kend = &k->next;
+    }
+    gpgme_key_unref(key);
+  }
+  if (gpg_err_code(err) != GPG_ERR_EOF)
+    mutt_error(_("gpgme_op_keylist_next failed: %s"), gpgme_strerror(err));
+  gpgme_op_keylist_end(ctx);
+
+  if (!results)
+  {
+    /* L10N:
+       mutt_gpgme_select_secret_key() tries to list all secret keys to choose
+       from.  This error is displayed if no results were found.
+    */
+    mutt_error(_("No secret keys found"));
+    goto cleanup;
+  }
+
+  choice = crypt_select_key(results, NULL, "*", APPLICATION_PGP, &junk);
+  if (!(choice && choice->kobj && choice->kobj->subkeys && choice->kobj->subkeys->fpr))
+    goto cleanup;
+  mutt_buffer_strcpy(keyid, choice->kobj->subkeys->fpr);
+
+  rc = 0;
+
+cleanup:
+  crypt_free_key(&choice);
+  crypt_free_key(&results);
+  gpgme_release(ctx);
+  return rc;
+}
+
+/**
  * pgp_gpgme_make_key_attachment - Implements CryptModuleSpecs::pgp_make_key_attachment()
  */
 struct Body *pgp_gpgme_make_key_attachment(void)

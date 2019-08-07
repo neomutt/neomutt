@@ -69,5 +69,7 @@ int                            mutt_autocrypt_gpgme_create_key(struct Address *a
 int                            mutt_autocrypt_gpgme_import_key(const char *keydata, struct Buffer *keyid);
 int                            mutt_autocrypt_gpgme_init(void);
 bool                           mutt_autocrypt_gpgme_is_valid_key(const char *keyid);
+int                            mutt_autocrypt_gpgme_select_key(struct Buffer *keyid, struct Buffer *keydata);
+int                            mutt_autocrypt_gpgme_select_or_create_key(struct Address *addr, struct Buffer *keyid, struct Buffer *keydata);
 
 #endif /* MUTT_AUTOCRYPT_AUTOCRYPT_PRIVATE_H */

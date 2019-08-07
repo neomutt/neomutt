@@ -199,7 +199,7 @@ int mutt_autocrypt_account_init(bool prompt)
     goto cleanup;
   }
 
-  if (mutt_autocrypt_gpgme_create_key(addr, keyid, keydata))
+  if (mutt_autocrypt_gpgme_select_or_create_key(addr, keyid, keydata))
     goto cleanup;
 
   /* L10N:
@@ -475,7 +475,8 @@ int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_
       /* This is slightly different from the autocrypt 1.1 spec.
        * Avoid setting an empty peer.gossip_keydata with a value that matches
        * the current peer.keydata. */
-      if ((peer->gossip_keydata && (mutt_str_strcmp(peer->gossip_keydata, ac_hdr->keydata) != 0)) ||
+      if ((peer->gossip_keydata &&
+           (mutt_str_strcmp(peer->gossip_keydata, ac_hdr->keydata) != 0)) ||
           (!peer->gossip_keydata && (mutt_str_strcmp(peer->keydata, ac_hdr->keydata) != 0)))
       {
         import_gpg = true;
