@@ -31,10 +31,9 @@
  */
 int mutt_autocrypt_schema_init(void)
 {
-  const char *schema;
   char *errmsg = NULL;
 
-  schema = "BEGIN TRANSACTION; "
+  const char *schema = "BEGIN TRANSACTION; "
 
                        "CREATE TABLE account ("
                        "email_addr text primary key not null, "
@@ -99,7 +98,7 @@ int mutt_autocrypt_schema_init(void)
 int mutt_autocrypt_schema_update(void)
 {
   sqlite3_stmt *stmt = NULL;
-  int rc = -1, version;
+  int rc = -1;
 
   if (sqlite3_prepare_v2(AutocryptDB, "SELECT version FROM schema;", -1, &stmt, NULL) != SQLITE_OK)
     goto cleanup;
@@ -107,7 +106,7 @@ int mutt_autocrypt_schema_update(void)
   if (sqlite3_step(stmt) != SQLITE_ROW)
     goto cleanup;
 
-  version = sqlite3_column_int(stmt, 0);
+  int version = sqlite3_column_int(stmt, 0);
 
   if (version > 1)
   {

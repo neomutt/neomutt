@@ -45,11 +45,10 @@
  * @retval  0 Success
  * @retval -1 Error
  */
-static int autocrypt_dir_init(int can_create)
+static int autocrypt_dir_init(bool can_create)
 {
   int rc = 0;
   struct stat sb;
-  struct Buffer *prompt = NULL;
 
   if (!stat(C_AutocryptDir, &sb))
     return 0;
@@ -57,7 +56,7 @@ static int autocrypt_dir_init(int can_create)
   if (!can_create)
     return -1;
 
-  prompt = mutt_buffer_pool_get();
+  struct Buffer *prompt = mutt_buffer_pool_get();
   /* L10N:
      %s is a directory.  Mutt is looking for a directory it needs
      for some reason (e.g. autocrypt, header cache, bcache), but it
@@ -87,7 +86,7 @@ static int autocrypt_dir_init(int can_create)
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_autocrypt_init(int can_create)
+int mutt_autocrypt_init(bool can_create)
 {
   if (AutocryptDB)
     return 0;
@@ -129,13 +128,13 @@ void mutt_autocrypt_cleanup(void)
  * This is used the first time autocrypt is initialized,
  * and in the account menu.
  */
-int mutt_autocrypt_account_init(int prompt)
+int mutt_autocrypt_account_init(bool prompt)
 {
   struct Address *addr = NULL;
   struct AutocryptAccount *account = NULL;
   bool done = false;
   int rc = -1;
-  int prefer_encrypt = 0;
+  bool prefer_encrypt = false;
 
   if (prompt)
   {
@@ -168,7 +167,7 @@ int mutt_autocrypt_account_init(int prompt)
        autocrypt account.  This will generate a key and add a record
        to the database for use in autocrypt operations.
     */
-    if (mutt_edit_address(&al, _("Autocrypt account address: "), 0) != 0)
+    if (mutt_edit_address(&al, _("Autocrypt account address: "), false) != 0)
       goto cleanup;
 
     addr = TAILQ_FIRST(&al);
@@ -212,7 +211,7 @@ int mutt_autocrypt_account_init(int prompt)
      will be required to enable encryption manually.
   */
   if (mutt_yesorno(_("Prefer encryption?"), MUTT_NO) == MUTT_YES)
-    prefer_encrypt = 1;
+    prefer_encrypt = true;
 
   if (mutt_autocrypt_db_account_insert(addr, mutt_b2s(keyid), mutt_b2s(keydata), prefer_encrypt))
     goto cleanup;
@@ -248,18 +247,18 @@ cleanup:
  */
 int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *env)
 {
-  struct AutocryptHeader *ac_hdr, *valid_ac_hdr = NULL;
+  struct AutocryptHeader *valid_ac_hdr = NULL;
   struct timeval now;
   struct AutocryptPeer *peer = NULL;
   struct AutocryptPeerHistory *peerhist = NULL;
   struct Buffer *keyid = NULL;
-  int update_db = 0, insert_db = 0, insert_db_history = 0, import_gpg = 0;
+  bool update_db = false, insert_db = false, insert_db_history = false, import_gpg = false;
   int rc = -1;
 
   if (!C_Autocrypt)
     return 0;
 
-  if (mutt_autocrypt_init(0))
+  if (mutt_autocrypt_init(false))
     return -1;
 
   if (!e || !e->content || !env)
@@ -283,7 +282,7 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
   if (e->date_sent > (now.tv_sec + 7 * 24 * 60 * 60))
     return 0;
 
-  for (ac_hdr = env->autocrypt; ac_hdr; ac_hdr = ac_hdr->next)
+  for (struct AutocryptHeader *ac_hdr = env->autocrypt; ac_hdr; ac_hdr = ac_hdr->next)
   {
     if (ac_hdr->invalid)
       continue;
@@ -316,28 +315,28 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
 
     if (e->date_sent > peer->last_seen)
     {
-      update_db = 1;
+      update_db = true;
       peer->last_seen = e->date_sent;
     }
 
     if (valid_ac_hdr)
     {
-      update_db = 1;
+      update_db = true;
       peer->autocrypt_timestamp = e->date_sent;
       peer->prefer_encrypt = valid_ac_hdr->prefer_encrypt;
       if (mutt_str_strcmp(peer->keydata, valid_ac_hdr->keydata) != 0)
       {
-        import_gpg = 1;
-        insert_db_history = 1;
+        import_gpg = true;
+        insert_db_history = true;
         mutt_str_replace(&peer->keydata, valid_ac_hdr->keydata);
       }
     }
   }
   else if (valid_ac_hdr)
   {
-    import_gpg = 1;
-    insert_db = 1;
-    insert_db_history = 1;
+    import_gpg = true;
+    insert_db = true;
+    insert_db_history = true;
   }
 
   if (!(import_gpg || insert_db || update_db))
@@ -398,27 +397,24 @@ cleanup:
  */
 int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_headers)
 {
-  struct Envelope *env;
-  struct AutocryptHeader *ac_hdr;
   struct timeval now;
   struct AutocryptPeer *peer = NULL;
   struct AutocryptGossipHistory *gossip_hist = NULL;
-  struct Address *peer_addr;
+  struct Address *peer_addr = NULL;
   struct Address ac_hdr_addr = { 0 };
-  struct Buffer *keyid = NULL;
-  int update_db = 0, insert_db = 0, insert_db_history = 0, import_gpg = 0;
+  bool update_db = false, insert_db = false, insert_db_history = false, import_gpg = false;
   int rc = -1;
 
   if (!C_Autocrypt)
     return 0;
 
-  if (mutt_autocrypt_init(0))
+  if (mutt_autocrypt_init(false))
     return -1;
 
   if (!e || !e->env || !prot_headers)
     return 0;
 
-  env = e->env;
+  struct Envelope *env = e->env;
 
   struct Address *from = TAILQ_FIRST(&env->from);
   if (!from)
@@ -427,10 +423,10 @@ int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_
   /* Ignore emails that appear to be more than a week in the future,
    * since they can block all future updates during that time. */
   gettimeofday(&now, NULL);
-  if (e->date_sent > (now.tv_sec + 7 * 24 * 60 * 60))
+  if (e->date_sent > (now.tv_sec + (7 * 24 * 60 * 60)))
     return 0;
 
-  keyid = mutt_buffer_pool_get();
+  struct Buffer *keyid = mutt_buffer_pool_get();
 
   struct AddressList recips = TAILQ_HEAD_INITIALIZER(recips);
 
@@ -440,15 +436,16 @@ int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_
   mutt_addrlist_copy(&recips, &env->reply_to, false);
   mutt_autocrypt_db_normalize_addrlist(&recips);
 
-  for (ac_hdr = prot_headers->autocrypt_gossip; ac_hdr; ac_hdr = ac_hdr->next)
+  for (struct AutocryptHeader *ac_hdr = prot_headers->autocrypt_gossip; ac_hdr;
+       ac_hdr = ac_hdr->next)
   {
     if (ac_hdr->invalid)
       continue;
 
     /* normalize for comparison against recipient list */
     mutt_str_replace(&ac_hdr_addr.mailbox, ac_hdr->addr);
-    ac_hdr_addr.is_intl = 1;
-    ac_hdr_addr.intl_checked = 1;
+    ac_hdr_addr.is_intl = true;
+    ac_hdr_addr.intl_checked = true;
     mutt_autocrypt_db_normalize_addr(&ac_hdr_addr);
 
     /* Check to make sure the address is in the recipient list.  Since the
@@ -473,7 +470,7 @@ int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_
         continue;
       }
 
-      update_db = 1;
+      update_db = true;
       peer->gossip_timestamp = e->date_sent;
       /* This is slightly different from the autocrypt 1.1 spec.
        * Avoid setting an empty peer.gossip_keydata with a value that matches
@@ -481,16 +478,16 @@ int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_
       if ((peer->gossip_keydata && (mutt_str_strcmp(peer->gossip_keydata, ac_hdr->keydata) != 0)) ||
           (!peer->gossip_keydata && (mutt_str_strcmp(peer->keydata, ac_hdr->keydata) != 0)))
       {
-        import_gpg = 1;
-        insert_db_history = 1;
+        import_gpg = true;
+        insert_db_history = true;
         mutt_str_replace(&peer->gossip_keydata, ac_hdr->keydata);
       }
     }
     else
     {
-      import_gpg = 1;
-      insert_db = 1;
-      insert_db_history = 1;
+      import_gpg = true;
+      insert_db = true;
+      insert_db_history = true;
     }
 
     if (!peer)
@@ -527,7 +524,10 @@ int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_
     mutt_autocrypt_db_peer_free(&peer);
     mutt_autocrypt_db_gossip_history_free(&gossip_hist);
     mutt_buffer_reset(keyid);
-    update_db = insert_db = insert_db_history = import_gpg = 0;
+    update_db = false;
+    insert_db = false;
+    insert_db_history = false;
+    import_gpg = false;
   }
 
   rc = 0;
@@ -557,11 +557,10 @@ enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *e, char **keyli
   struct AutocryptAccount *account = NULL;
   struct AutocryptPeer *peer = NULL;
   struct Address *recip = NULL;
-  int all_encrypt = 1, has_discourage = 0;
-  struct Buffer *keylist_buf = NULL;
-  const char *matching_key;
+  bool all_encrypt = true, has_discourage = false;
+  const char *matching_key = NULL;
 
-  if (!C_Autocrypt || mutt_autocrypt_init(0) || !e)
+  if (!C_Autocrypt || mutt_autocrypt_init(false) || !e)
     return AUTOCRYPT_REC_OFF;
 
   struct Address *from = TAILQ_FIRST(&e->env->from);
@@ -577,7 +576,7 @@ enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *e, char **keyli
   if (!account->enabled)
     goto cleanup;
 
-  keylist_buf = mutt_buffer_pool_get();
+  struct Buffer *keylist_buf = mutt_buffer_pool_get();
   mutt_buffer_addstr(keylist_buf, account->keyid);
 
   struct AddressList recips = TAILQ_HEAD_INITIALIZER(recips);
@@ -611,21 +610,21 @@ enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *e, char **keyli
       matching_key = peer->keyid;
 
       if (!(peer->last_seen && peer->autocrypt_timestamp) ||
-          (peer->last_seen - peer->autocrypt_timestamp > 35 * 24 * 60 * 60))
+          (peer->last_seen - peer->autocrypt_timestamp > (35 * 24 * 60 * 60)))
       {
-        has_discourage = 1;
-        all_encrypt = 0;
+        has_discourage = true;
+        all_encrypt = false;
       }
 
       if (!account->prefer_encrypt || !peer->prefer_encrypt)
-        all_encrypt = 0;
+        all_encrypt = false;
     }
     else if (mutt_autocrypt_gpgme_is_valid_key(peer->gossip_keyid))
     {
       matching_key = peer->gossip_keyid;
 
-      has_discourage = 1;
-      all_encrypt = 0;
+      has_discourage = true;
+      all_encrypt = false;
     }
     else
     {
@@ -670,7 +669,7 @@ int mutt_autocrypt_set_sign_as_default_key(struct Email *e)
   int rc = -1;
   struct AutocryptAccount *account = NULL;
 
-  if (!C_Autocrypt || mutt_autocrypt_init(0) || !e)
+  if (!C_Autocrypt || mutt_autocrypt_init(false) || !e)
     return -1;
 
   struct Address *from = TAILQ_FIRST(&e->env->from);
@@ -702,10 +701,8 @@ cleanup:
  * @param keydata        Raw Autocrypt data
  */
 static void write_autocrypt_header_line(FILE *fp, const char *addr,
-                                        int prefer_encrypt, const char *keydata)
+                                        bool prefer_encrypt, const char *keydata)
 {
-  int count = 0;
-
   fprintf(fp, "addr=%s; ", addr);
   if (prefer_encrypt)
     fputs("prefer-encrypt=mutual; ", fp);
@@ -713,7 +710,7 @@ static void write_autocrypt_header_line(FILE *fp, const char *addr,
 
   while (*keydata)
   {
-    count = 0;
+    int count = 0;
     fputs("\t", fp);
     while (*keydata && count < 75)
     {
@@ -737,7 +734,7 @@ int mutt_autocrypt_write_autocrypt_header(struct Envelope *env, FILE *fp)
   int rc = -1;
   struct AutocryptAccount *account = NULL;
 
-  if (!C_Autocrypt || mutt_autocrypt_init(0) || !env)
+  if (!C_Autocrypt || mutt_autocrypt_init(false) || !env)
     return -1;
 
   struct Address *from = TAILQ_FIRST(&env->from);
@@ -771,12 +768,11 @@ cleanup:
  */
 int mutt_autocrypt_write_gossip_headers(struct Envelope *env, FILE *fp)
 {
-  struct AutocryptHeader *gossip;
-
-  if (!C_Autocrypt || mutt_autocrypt_init(0) || !env)
+  if (!C_Autocrypt || mutt_autocrypt_init(false) || !env)
     return -1;
 
-  for (gossip = env->autocrypt_gossip; gossip; gossip = gossip->next)
+  for (struct AutocryptHeader *gossip = env->autocrypt_gossip; gossip;
+       gossip = gossip->next)
   {
     fputs("Autocrypt-Gossip: ", fp);
     write_autocrypt_header_line(fp, gossip->addr, 0, gossip->keydata);
@@ -797,14 +793,11 @@ int mutt_autocrypt_generate_gossip_list(struct Email *e)
   struct AutocryptPeer *peer = NULL;
   struct AutocryptAccount *account = NULL;
   struct Address *recip = NULL;
-  struct AutocryptHeader *gossip;
-  const char *keydata, *addr;
-  struct Envelope *mime_headers;
 
-  if (!C_Autocrypt || mutt_autocrypt_init(0) || !e)
+  if (!C_Autocrypt || mutt_autocrypt_init(false) || !e)
     return -1;
 
-  mime_headers = e->content->mime_headers;
+  struct Envelope *mime_headers = e->content->mime_headers;
   if (!mime_headers)
     mime_headers = e->content->mime_headers = mutt_env_new();
   mutt_free_autocrypthdr(&mime_headers->autocrypt_gossip);
@@ -820,7 +813,7 @@ int mutt_autocrypt_generate_gossip_list(struct Email *e)
     if (mutt_autocrypt_db_peer_get(recip, &peer) <= 0)
       continue;
 
-    keydata = NULL;
+    const char *keydata = NULL;
     if (mutt_autocrypt_gpgme_is_valid_key(peer->keyid))
       keydata = peer->keydata;
     else if (mutt_autocrypt_gpgme_is_valid_key(peer->gossip_keyid))
@@ -828,7 +821,7 @@ int mutt_autocrypt_generate_gossip_list(struct Email *e)
 
     if (keydata)
     {
-      gossip = mutt_new_autocrypthdr();
+      struct AutocryptHeader *gossip = mutt_new_autocrypthdr();
       gossip->addr = mutt_str_strdup(peer->email_addr);
       gossip->keydata = mutt_str_strdup(keydata);
       gossip->next = mime_headers->autocrypt_gossip;
@@ -840,7 +833,8 @@ int mutt_autocrypt_generate_gossip_list(struct Email *e)
 
   TAILQ_FOREACH(recip, &e->env->reply_to, entries)
   {
-    addr = keydata = NULL;
+    const char *addr = NULL;
+    const char *keydata = NULL;
     if (mutt_autocrypt_db_account_get(recip, &account) > 0)
     {
       addr = account->email_addr;
@@ -857,7 +851,7 @@ int mutt_autocrypt_generate_gossip_list(struct Email *e)
 
     if (keydata)
     {
-      gossip = mutt_new_autocrypthdr();
+      struct AutocryptHeader *gossip = mutt_new_autocrypthdr();
       gossip->addr = mutt_str_strdup(addr);
       gossip->keydata = mutt_str_strdup(keydata);
       gossip->next = mime_headers->autocrypt_gossip;
@@ -885,16 +879,12 @@ int mutt_autocrypt_generate_gossip_list(struct Email *e)
  */
 void mutt_autocrypt_scan_mailboxes(void)
 {
-  int scan;
-  struct Buffer *folderbuf = NULL;
-  struct Context *ctx = NULL;
-
 #ifdef USE_HCACHE
   char *old_hdrcache = C_HeaderCache;
   C_HeaderCache = NULL;
 #endif
 
-  folderbuf = mutt_buffer_pool_get();
+  struct Buffer *folderbuf = mutt_buffer_pool_get();
 
   /* L10N:
      The first time autocrypt is enabled, Mutt will ask to scan
@@ -903,11 +893,11 @@ void mutt_autocrypt_scan_mailboxes(void)
      and used for encryption.
      If this is answered yes, they will be prompted for a mailbox.
   */
-  scan = mutt_yesorno(_("Scan a mailbox for autocrypt headers?"), MUTT_YES);
+  int scan = mutt_yesorno(_("Scan a mailbox for autocrypt headers?"), MUTT_YES);
   while (scan == MUTT_YES)
   {
     // L10N: The prompt for a mailbox to scan for Autocrypt: headers
-    if ((!mutt_buffer_enter_fname(_("Scan mailbox"), folderbuf, 1)) &&
+    if ((!mutt_buffer_enter_fname(_("Scan mailbox"), folderbuf, true)) &&
         (mutt_buffer_len(folderbuf) > 0))
     {
       mutt_buffer_expand_path_regex(folderbuf, false);
@@ -915,7 +905,7 @@ void mutt_autocrypt_scan_mailboxes(void)
       /* NOTE: I am purposely *not* executing folder hooks here,
        * as they can do all sorts of things like push into the getch() buffer.
        * Authentication should be in account-hooks. */
-      ctx = mx_mbox_open(m, MUTT_READONLY);
+      struct Context *ctx = mx_mbox_open(m, MUTT_READONLY);
       mx_mbox_close(&ctx);
       mutt_buffer_reset(folderbuf);
     }

@@ -63,10 +63,10 @@ struct Envelope *mutt_env_new(void)
  */
 void mutt_free_autocrypthdr(struct AutocryptHeader **p)
 {
-  struct AutocryptHeader *cur;
-
   if (!p)
     return;
+
+  struct AutocryptHeader *cur = NULL;
 
   while (*p)
   {

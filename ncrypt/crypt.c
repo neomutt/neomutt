@@ -169,21 +169,21 @@ bool crypt_valid_passphrase(SecurityFlags flags)
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_protect(struct Email *e, char *keylist, int postpone)
+int mutt_protect(struct Email *e, char *keylist, bool postpone)
 {
   struct Body *pbody = NULL, *tmp_pbody = NULL;
   struct Body *tmp_smime_pbody = NULL;
   struct Body *tmp_pgp_pbody = NULL;
-  int security, sign, has_retainable_sig = 0;
+  bool has_retainable_sig = false;
 
   if (!WithCrypto)
     return -1;
 
-  security = e->security;
-  sign = security & (SEC_AUTOCRYPT | SEC_SIGN);
+  int security = e->security;
+  int sign = security & (SEC_AUTOCRYPT | SEC_SIGN);
   if (postpone)
   {
-    sign = 0;
+    sign = SEC_NO_FLAGS;
     security &= ~SEC_SIGN;
   }
 
@@ -329,8 +329,8 @@ int mutt_protect(struct Email *e, char *keylist, int postpone)
       if (!tmp_pbody)
         goto bail;
 
-      has_retainable_sig = 1;
-      sign = 0;
+      has_retainable_sig = true;
+      sign = SEC_NO_FLAGS;
       pbody = tmp_pbody;
       tmp_pgp_pbody = tmp_pbody;
     }
@@ -967,8 +967,8 @@ int crypt_get_keys(struct Email *e, char **keylist, bool oppenc_mode)
   if (!oppenc_mode && (e->security & SEC_AUTOCRYPT))
   {
     if (mutt_autocrypt_ui_recommendation(e, keylist) <= AUTOCRYPT_REC_NO)
-      return (-1);
-    return (0);
+      return -1;
+    return 0;
   }
 #endif
 

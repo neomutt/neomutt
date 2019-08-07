@@ -29,7 +29,6 @@
 
 struct Email;
 struct Envelope;
-WHERE sqlite3 *AutocryptDB;
 
 /**
  * struct AutocryptAccount - Autocrypt account
@@ -39,8 +38,8 @@ struct AutocryptAccount
   char *email_addr;
   char *keyid;
   char *keydata;
-  int prefer_encrypt;    /* 0 = nopref, 1 = mutual */
-  int enabled;
+  bool prefer_encrypt;    /* false = nopref, true = mutual */
+  bool enabled;
 };
 
 /**
@@ -53,7 +52,7 @@ struct AutocryptPeer
   sqlite3_int64 autocrypt_timestamp;
   char *keyid;
   char *keydata;
-  int prefer_encrypt;    /* 0 = nopref, 1 = mutual */
+  bool prefer_encrypt;    /* false = nopref, true = mutual */
   sqlite3_int64 gossip_timestamp;
   char *gossip_keyid;
   char *gossip_keydata;
@@ -97,7 +96,7 @@ enum AutocryptRec
 void              mutt_autocrypt_account_menu            (void);
 void              mutt_autocrypt_cleanup                 (void);
 int               mutt_autocrypt_generate_gossip_list    (struct Email *e);
-int               mutt_autocrypt_init                    (int);
+int               mutt_autocrypt_init                    (bool can_create);
 int               mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *env);
 int               mutt_autocrypt_process_gossip_header   (struct Email *e, struct Envelope *prot_headers);
 int               mutt_autocrypt_set_sign_as_default_key (struct Email *e);

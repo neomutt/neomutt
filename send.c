@@ -207,7 +207,7 @@ static void add_mailing_lists(struct AddressList *out, const struct AddressList 
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_edit_address(struct AddressList *al, const char *field, int expand_aliases)
+int mutt_edit_address(struct AddressList *al, const char *field, bool expand_aliases)
 {
   char buf[8192];
   char *err = NULL;
@@ -283,14 +283,14 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
   else
 #endif
   {
-    if ((mutt_edit_address(&en->to, _("To: "), 1) == -1) || TAILQ_EMPTY(&en->to))
+    if ((mutt_edit_address(&en->to, _("To: "), true) == -1) || TAILQ_EMPTY(&en->to))
       return -1;
-    if (C_Askcc && (mutt_edit_address(&en->cc, _("Cc: "), 1) == -1))
+    if (C_Askcc && (mutt_edit_address(&en->cc, _("Cc: "), true) == -1))
       return -1;
-    if (C_Askbcc && (mutt_edit_address(&en->bcc, _("Bcc: "), 1) == -1))
+    if (C_Askbcc && (mutt_edit_address(&en->bcc, _("Bcc: "), true) == -1))
       return -1;
     if (C_ReplyWithXorig && (flags & (SEND_REPLY | SEND_LIST_REPLY | SEND_GROUP_REPLY)) &&
-        (mutt_edit_address(&en->from, "From: ", 1) == -1))
+        (mutt_edit_address(&en->from, "From: ", true) == -1))
     {
       return -1;
     }
@@ -1634,7 +1634,7 @@ static int save_fcc(struct Email *e, char *fcc, size_t fcc_len, struct Body *cle
           /* this means writing only the main part */
           e->content = clear_content->parts;
 
-          if (mutt_protect(e, pgpkeylist, 0) == -1)
+          if (mutt_protect(e, pgpkeylist, false) == -1)
           {
             /* we can't do much about it at this point, so
            * fallback to saving the whole thing to fcc */
@@ -1776,7 +1776,7 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur, char *fcc
     {
       pgpkeylist = mutt_str_strdup(encrypt_as);
       clear_content = e_post->content;
-      if (mutt_protect(e_post, pgpkeylist, 1) == -1)
+      if (mutt_protect(e_post, pgpkeylist, true) == -1)
       {
         FREE(&pgpkeylist);
         e_post->content = mutt_remove_multipart(e_post->content);
@@ -2488,7 +2488,7 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
       clear_content = e_templ->content;
 
       if ((crypt_get_keys(e_templ, &pgpkeylist, 0) == -1) ||
-          (mutt_protect(e_templ, pgpkeylist, 0) == -1))
+          (mutt_protect(e_templ, pgpkeylist, false) == -1))
       {
         e_templ->content = mutt_remove_multipart(e_templ->content);
 

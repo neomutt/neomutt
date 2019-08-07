@@ -42,6 +42,8 @@ static sqlite3_stmt *PeerUpdateStmt;
 static sqlite3_stmt *PeerHistoryInsertStmt;
 static sqlite3_stmt *GossipHistoryInsertStmt;
 
+sqlite3 *AutocryptDB = NULL;
+
 /**
  * autocrypt_db_create - Create an Autocrypt sqlite database
  * @param db_path Path to database file
@@ -69,11 +71,9 @@ static int autocrypt_db_create(const char *db_path)
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_autocrypt_db_init(int can_create)
+int mutt_autocrypt_db_init(bool can_create)
 {
   int rc = -1;
-  struct Buffer *db_path = NULL;
-  struct stat sb;
 
   if (AutocryptDB)
     return 0;
@@ -81,9 +81,10 @@ int mutt_autocrypt_db_init(int can_create)
   if (!C_Autocrypt || !C_AutocryptDir)
     return -1;
 
-  db_path = mutt_buffer_pool_get();
+  struct Buffer *db_path = mutt_buffer_pool_get();
   mutt_buffer_concat_path(db_path, C_AutocryptDir, "autocrypt.db");
 
+  struct stat sb;
   if (stat(mutt_b2s(db_path), &sb))
   {
     if (!can_create)
@@ -91,7 +92,7 @@ int mutt_autocrypt_db_init(int can_create)
     if (autocrypt_db_create(mutt_b2s(db_path)))
       goto cleanup;
     /* Don't abort the whole init process because account creation failed */
-    mutt_autocrypt_account_init(1);
+    mutt_autocrypt_account_init(true);
     mutt_autocrypt_scan_mailboxes();
   }
   else
@@ -194,15 +195,13 @@ void mutt_autocrypt_db_normalize_addrlist(struct AddressList *al)
  */
 static struct Address *copy_normalize_addr(struct Address *addr)
 {
-  struct Address *norm_addr = NULL;
-
   /* NOTE: the db functions expect a single address, so in
    * this function we copy only the address passed in.
    *
    * The normalize_addrlist above is extended to work on a list
    * because of requirements in autocrypt.c */
 
-  norm_addr = mutt_addr_new();
+  struct Address *norm_addr = mutt_addr_new();
   norm_addr->mailbox = mutt_str_strdup(addr->mailbox);
   norm_addr->is_intl = addr->is_intl;
   norm_addr->intl_checked = addr->intl_checked;
@@ -255,10 +254,9 @@ void mutt_autocrypt_db_account_free(struct AutocryptAccount **account)
  */
 int mutt_autocrypt_db_account_get(struct Address *addr, struct AutocryptAccount **account)
 {
-  int rc = -1, result;
-  struct Address *norm_addr = NULL;
+  int rc = -1;
 
-  norm_addr = copy_normalize_addr(addr);
+  struct Address *norm_addr = copy_normalize_addr(addr);
   *account = NULL;
 
   if (!AccountGetStmt)
@@ -281,7 +279,7 @@ int mutt_autocrypt_db_account_get(struct Address *addr, struct AutocryptAccount 
   if (sqlite3_bind_text(AccountGetStmt, 1, norm_addr->mailbox, -1, SQLITE_STATIC) != SQLITE_OK)
     goto cleanup;
 
-  result = sqlite3_step(AccountGetStmt);
+  int result = sqlite3_step(AccountGetStmt);
   if (result != SQLITE_ROW)
   {
     if (result == SQLITE_DONE)
@@ -314,12 +312,11 @@ cleanup:
  * @retval -1 Error
  */
 int mutt_autocrypt_db_account_insert(struct Address *addr, const char *keyid,
-                                     const char *keydata, int prefer_encrypt)
+                                     const char *keydata, bool prefer_encrypt)
 {
   int rc = -1;
-  struct Address *norm_addr = NULL;
 
-  norm_addr = copy_normalize_addr(addr);
+  struct Address *norm_addr = copy_normalize_addr(addr);
 
   if (!AccountInsertStmt)
   {
@@ -450,7 +447,7 @@ int mutt_autocrypt_db_account_get_all(struct AutocryptAccount ***accounts, int *
 {
   int rc = -1, result;
   sqlite3_stmt *stmt = NULL;
-  struct AutocryptAccount **results = NULL, *account;
+  struct AutocryptAccount **results = NULL;
   int results_len = 0, results_count = 0;
 
   *accounts = NULL;
@@ -480,7 +477,8 @@ int mutt_autocrypt_db_account_get_all(struct AutocryptAccount ***accounts, int *
       mutt_mem_realloc(&results, results_len * sizeof(struct AutocryptAccount *));
     }
 
-    results[results_count++] = account = mutt_autocrypt_db_account_new();
+    struct AutocryptAccount *account = mutt_autocrypt_db_account_new();
+    results[results_count++] = account;
 
     account->email_addr = strdup_column_text(stmt, 0);
     account->keyid = strdup_column_text(stmt, 1);
@@ -541,10 +539,9 @@ void mutt_autocrypt_db_peer_free(struct AutocryptPeer **peer)
  */
 int mutt_autocrypt_db_peer_get(struct Address *addr, struct AutocryptPeer **peer)
 {
-  int rc = -1, result;
-  struct Address *norm_addr = NULL;
+  int rc = -1;
 
-  norm_addr = copy_normalize_addr(addr);
+  struct Address *norm_addr = copy_normalize_addr(addr);
   *peer = NULL;
 
   if (!PeerGetStmt)
@@ -571,7 +568,7 @@ int mutt_autocrypt_db_peer_get(struct Address *addr, struct AutocryptPeer **peer
   if (sqlite3_bind_text(PeerGetStmt, 1, norm_addr->mailbox, -1, SQLITE_STATIC) != SQLITE_OK)
     goto cleanup;
 
-  result = sqlite3_step(PeerGetStmt);
+  int result = sqlite3_step(PeerGetStmt);
   if (result != SQLITE_ROW)
   {
     if (result == SQLITE_DONE)
@@ -754,9 +751,8 @@ int mutt_autocrypt_db_peer_history_insert(struct Address *addr,
                                           struct AutocryptPeerHistory *peerhist)
 {
   int rc = -1;
-  struct Address *norm_addr = NULL;
 
-  norm_addr = copy_normalize_addr(addr);
+  struct Address *norm_addr = copy_normalize_addr(addr);
 
   if (!PeerHistoryInsertStmt)
   {
@@ -830,9 +826,8 @@ int mutt_autocrypt_db_gossip_history_insert(struct Address *addr,
                                             struct AutocryptGossipHistory *gossip_hist)
 {
   int rc = -1;
-  struct Address *norm_addr = NULL;
 
-  norm_addr = copy_normalize_addr(addr);
+  struct Address *norm_addr = copy_normalize_addr(addr);
 
   if (!GossipHistoryInsertStmt)
   {

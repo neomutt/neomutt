@@ -104,14 +104,13 @@ void mutt_auto_subscribe(const char *mailto)
  * The allow_value_spaces parameter allows parsing those values which
  * are split by spaces when unfolded.
  */
-static void parse_parameters(struct ParameterList *param, const char *s, int allow_value_spaces)
+static void parse_parameters(struct ParameterList *param, const char *s, bool allow_value_spaces)
 {
   struct Parameter *pnew = NULL;
-  struct Buffer *buf = NULL;
   const char *p = NULL;
   size_t i;
 
-  buf = mutt_buffer_pool_get();
+  struct Buffer *buf = mutt_buffer_pool_get();
   /* allow_value_spaces, especially with autocrypt keydata, can result
    * in quite large parameter values.  avoid frequent reallocs by
    * pre-sizing */
@@ -258,7 +257,7 @@ static void parse_content_disposition(const char *s, struct Body *ct)
   if (s)
   {
     s = mutt_str_skip_email_wsp(s + 1);
-    parse_parameters(&parms, s, 0);
+    parse_parameters(&parms, s, false);
     s = mutt_param_get(&parms, "filename");
     if (s)
       mutt_str_replace(&ct->filename, s);
@@ -470,7 +469,7 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
     *pc++ = 0;
     while (*pc && IS_SPACE(*pc))
       pc++;
-    parse_parameters(&ct->parameter, pc, 0);
+    parse_parameters(&ct->parameter, pc, false);
 
     /* Some pre-RFC1521 gateways still use the "name=filename" convention,
      * but if a filename has already been set in the content-disposition,
@@ -559,10 +558,10 @@ static struct AutocryptHeader *parse_autocrypt(struct AutocryptHeader *head, con
   autocrypt->next = head;
 
   struct ParameterList pl = TAILQ_HEAD_INITIALIZER(pl);
-  parse_parameters(&pl, s, 1);
+  parse_parameters(&pl, s, true);
   if (TAILQ_EMPTY(&pl))
   {
-    autocrypt->invalid = 1;
+    autocrypt->invalid = true;
     goto cleanup;
   }
 
@@ -573,7 +572,7 @@ static struct AutocryptHeader *parse_autocrypt(struct AutocryptHeader *head, con
     {
       if (autocrypt->addr)
       {
-        autocrypt->invalid = 1;
+        autocrypt->invalid = true;
         goto cleanup;
       }
       autocrypt->addr = p->value;
@@ -582,13 +581,13 @@ static struct AutocryptHeader *parse_autocrypt(struct AutocryptHeader *head, con
     else if (mutt_str_strcasecmp(p->attribute, "prefer-encrypt") == 0)
     {
       if (mutt_str_strcasecmp(p->value, "mutual") == 0)
-        autocrypt->prefer_encrypt = 1;
+        autocrypt->prefer_encrypt = true;
     }
     else if (mutt_str_strcasecmp(p->attribute, "keydata") == 0)
     {
       if (autocrypt->keydata)
       {
-        autocrypt->invalid = 1;
+        autocrypt->invalid = true;
         goto cleanup;
       }
       autocrypt->keydata = p->value;
@@ -596,7 +595,7 @@ static struct AutocryptHeader *parse_autocrypt(struct AutocryptHeader *head, con
     }
     else if (p->attribute && (p->attribute[0] != '_'))
     {
-      autocrypt->invalid = 1;
+      autocrypt->invalid = true;
       goto cleanup;
     }
   }
@@ -604,7 +603,7 @@ static struct AutocryptHeader *parse_autocrypt(struct AutocryptHeader *head, con
   /* Checking the addr against From, and for multiple valid headers
    * occurs later, after all the headers are parsed. */
   if (!autocrypt->addr || !autocrypt->keydata)
-    autocrypt->invalid = 1;
+    autocrypt->invalid = true;
 
 cleanup:
   mutt_param_free(&pl);
@@ -956,7 +955,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
         if (C_Autocrypt)
         {
           env->autocrypt = parse_autocrypt(env->autocrypt, p);
-          matched = 1;
+          matched = true;
         }
       }
       else if (mutt_str_strcasecmp(line + 1, "utocrypt-gossip") == 0)
@@ -964,7 +963,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
         if (C_Autocrypt)
         {
           env->autocrypt_gossip = parse_autocrypt(env->autocrypt_gossip, p);
-          matched = 1;
+          matched = true;
         }
       }
 #endif

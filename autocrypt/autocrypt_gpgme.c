@@ -37,9 +37,7 @@
  */
 static int create_gpgme_context(gpgme_ctx_t *ctx)
 {
-  gpgme_error_t err;
-
-  err = gpgme_new(ctx);
+  gpgme_error_t err = gpgme_new(ctx);
   if (!err)
     err = gpgme_ctx_set_engine_info(*ctx, GPGME_PROTOCOL_OpenPGP, NULL, C_AutocryptDir);
   if (err)
@@ -145,7 +143,6 @@ int mutt_autocrypt_gpgme_create_key(struct Address *addr, struct Buffer *keyid,
 {
   int rc = -1;
   gpgme_ctx_t ctx = NULL;
-  gpgme_error_t err;
   gpgme_genkey_result_t keyresult;
   gpgme_key_t primary_key = NULL;
   char buf[1024] = { 0 };
@@ -166,8 +163,9 @@ int mutt_autocrypt_gpgme_create_key(struct Address *addr, struct Buffer *keyid,
   mutt_message(_("Generating autocrypt key..."));
 
   /* Primary key */
-  err = gpgme_op_createkey(ctx, buf, "ed25519", 0, 0, NULL,
-                           GPGME_CREATE_NOPASSWD | GPGME_CREATE_FORCE | GPGME_CREATE_NOEXPIRE);
+  gpgme_error_t err = gpgme_op_createkey(ctx, buf, "ed25519", 0, 0, NULL,
+                                         GPGME_CREATE_NOPASSWD | GPGME_CREATE_FORCE |
+                                             GPGME_CREATE_NOEXPIRE);
   if (err)
   {
     /* L10N:
@@ -221,14 +219,12 @@ int mutt_autocrypt_gpgme_import_key(const char *keydata, struct Buffer *keyid)
 {
   int rc = -1;
   gpgme_ctx_t ctx = NULL;
-  struct Buffer *raw_keydata = NULL;
   gpgme_data_t dh = NULL;
-  gpgme_import_result_t result;
 
   if (create_gpgme_context(&ctx))
     goto cleanup;
 
-  raw_keydata = mutt_buffer_pool_get();
+  struct Buffer *raw_keydata = mutt_buffer_pool_get();
   if (!mutt_b64_buffer_decode(raw_keydata, keydata))
     goto cleanup;
 
@@ -238,7 +234,7 @@ int mutt_autocrypt_gpgme_import_key(const char *keydata, struct Buffer *keyid)
   if (gpgme_op_import(ctx, dh))
     goto cleanup;
 
-  result = gpgme_op_import_result(ctx);
+  gpgme_import_result_t result = gpgme_op_import_result(ctx);
   if (!result->imports || !result->imports->fpr)
     goto cleanup;
   mutt_buffer_strcpy(keyid, result->imports->fpr);
@@ -257,14 +253,14 @@ cleanup:
  * @param keyid Key id to check
  * @retval true If key id is valid
  */
-int mutt_autocrypt_gpgme_is_valid_key(const char *keyid)
+bool mutt_autocrypt_gpgme_is_valid_key(const char *keyid)
 {
-  int rc = 0;
+  bool rc = false;
   gpgme_ctx_t ctx = NULL;
   gpgme_key_t key = NULL;
 
   if (!keyid)
-    return 0;
+    return false;
 
   if (create_gpgme_context(&ctx))
     goto cleanup;
@@ -272,9 +268,9 @@ int mutt_autocrypt_gpgme_is_valid_key(const char *keyid)
   if (gpgme_get_key(ctx, keyid, &key, 0))
     goto cleanup;
 
-  rc = 1;
+  rc = true;
   if (key->revoked || key->expired || key->disabled || key->invalid || !key->can_encrypt)
-    rc = 0;
+    rc = false;
 
 cleanup:
   gpgme_key_unref(key);

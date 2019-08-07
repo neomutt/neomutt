@@ -1036,7 +1036,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
   char tempfile[_POSIX_PATH_MAX];
   FILE *fp = NULL;
   struct ImapHeader h;
-  struct Buffer *b = NULL, *hdr_list = NULL;
+  struct Buffer *b = NULL;
   static const char *const want_headers =
       "DATE FROM SENDER SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE "
       "CONTENT-DESCRIPTION IN-REPLY-TO REPLY-TO LINES LIST-POST X-LABEL "
@@ -1049,7 +1049,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
   if (!adata || (adata->mailbox != m))
     return -1;
 
-  hdr_list = mutt_buffer_pool_get();
+  struct Buffer *hdr_list = mutt_buffer_pool_get();
   mutt_buffer_strcpy(hdr_list, want_headers);
   if (C_ImapHeaders)
   {

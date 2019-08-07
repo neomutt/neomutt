@@ -106,14 +106,13 @@ static void process_protected_headers(struct Email *e)
   struct Envelope *prot_headers = NULL;
   regmatch_t pmatch[1];
 
-  if (!C_CryptProtectedHeadersRead
 #ifdef USE_AUTOCRYPT
-      && !C_Autocrypt
-#endif
-  )
-  {
+  if (!C_CryptProtectedHeadersRead && !C_Autocrypt)
     return;
-  }
+#else
+  if (!C_CryptProtectedHeadersRead)
+    return;
+#endif
 
   /* Grab protected headers to update in the index */
   if (e->security & SEC_SIGN)

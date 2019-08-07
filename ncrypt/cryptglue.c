@@ -199,16 +199,14 @@ bool crypt_pgp_valid_passphrase(void)
 int crypt_pgp_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur)
 {
 #ifdef USE_AUTOCRYPT
-  int result;
-
   if (C_Autocrypt)
   {
     OptAutocryptGpgme = true;
-    result = pgp_gpgme_decrypt_mime(fp_in, fp_out, b, cur);
+    int result = pgp_gpgme_decrypt_mime(fp_in, fp_out, b, cur);
     OptAutocryptGpgme = false;
     if (result == 0)
     {
-      b->is_autocrypt = 1;
+      b->is_autocrypt = true;
       return result;
     }
   }
@@ -241,16 +239,14 @@ int crypt_pgp_application_handler(struct Body *m, struct State *s)
 int crypt_pgp_encrypted_handler(struct Body *a, struct State *s)
 {
 #ifdef USE_AUTOCRYPT
-  int result;
-
   if (C_Autocrypt)
   {
     OptAutocryptGpgme = true;
-    result = pgp_gpgme_encrypted_handler(a, s);
+    int result = pgp_gpgme_encrypted_handler(a, s);
     OptAutocryptGpgme = false;
     if (result == 0)
     {
-      a->is_autocrypt = 1;
+      a->is_autocrypt = true;
       return result;
     }
   }
@@ -329,19 +325,16 @@ struct Body *crypt_pgp_sign_message(struct Body *a)
 /**
  * crypt_pgp_encrypt_message - Wrapper for CryptModuleSpecs::pgp_encrypt_message()
  */
-struct Body *crypt_pgp_encrypt_message(struct Email *e, struct Body *a,
-                                       char *keylist, int sign)
+struct Body *crypt_pgp_encrypt_message(struct Email *e, struct Body *a, char *keylist, int sign)
 {
 #ifdef USE_AUTOCRYPT
-  struct Body *result;
-
   if (e->security & SEC_AUTOCRYPT)
   {
     if (mutt_autocrypt_set_sign_as_default_key(e))
       return NULL;
 
     OptAutocryptGpgme = true;
-    result = pgp_gpgme_encrypt_message(a, keylist, sign);
+    struct Body *result = pgp_gpgme_encrypt_message(a, keylist, sign);
     OptAutocryptGpgme = false;
 
     return result;
