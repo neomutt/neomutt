@@ -91,7 +91,7 @@ int mutt_autocrypt_schema_init(void)
 int mutt_autocrypt_schema_update(void)
 {
   sqlite3_stmt *stmt = NULL;
-  int rv = -1, version;
+  int rc = -1, version;
 
   if (sqlite3_prepare_v2(AutocryptDB, "SELECT version FROM schema;", -1, &stmt, NULL) != SQLITE_OK)
     goto cleanup;
@@ -116,9 +116,9 @@ int mutt_autocrypt_schema_update(void)
   /* TODO: schema version upgrades go here.
    * Bump one by one, each update inside a transaction. */
 
-  rv = 0;
+  rc = 0;
 
 cleanup:
   sqlite3_finalize(stmt);
-  return rv;
+  return rc;
 }

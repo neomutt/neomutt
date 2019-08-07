@@ -53,7 +53,7 @@ int mutt_autocrypt_gpgme_init(void)
 
 static int export_keydata(gpgme_ctx_t ctx, gpgme_key_t key, struct Buffer *keydata)
 {
-  int rv = -1;
+  int rc = -1;
   gpgme_data_t dh = NULL;
   gpgme_key_t export_keys[2];
   size_t export_data_len;
@@ -79,17 +79,17 @@ static int export_keydata(gpgme_ctx_t ctx, gpgme_key_t key, struct Buffer *keyda
   gpgme_free(export_data);
   export_data = NULL;
 
-  rv = 0;
+  rc = 0;
 
 cleanup:
   gpgme_data_release(dh);
-  return rv;
+  return rc;
 }
 
 /* TODO: not sure if this function will be useful in the future. */
 int mutt_autocrypt_gpgme_export_key(const char *keyid, struct Buffer *keydata)
 {
-  int rv = -1;
+  int rc = -1;
   gpgme_ctx_t ctx = NULL;
   gpgme_key_t key = NULL;
 
@@ -102,17 +102,17 @@ int mutt_autocrypt_gpgme_export_key(const char *keyid, struct Buffer *keydata)
   if (export_keydata(ctx, key, keydata))
     goto cleanup;
 
-  rv = 0;
+  rc = 0;
 cleanup:
   gpgme_key_unref(key);
   gpgme_release(ctx);
-  return rv;
+  return rc;
 }
 
 int mutt_autocrypt_gpgme_create_key(struct Address *addr, struct Buffer *keyid,
                                     struct Buffer *keydata)
 {
-  int rv = -1;
+  int rc = -1;
   gpgme_ctx_t ctx = NULL;
   gpgme_error_t err;
   gpgme_genkey_result_t keyresult;
@@ -171,17 +171,17 @@ int mutt_autocrypt_gpgme_create_key(struct Address *addr, struct Buffer *keyid,
     goto cleanup;
   mutt_debug(LL_DEBUG1, "key has keydata *%s*\n", mutt_b2s(keydata));
 
-  rv = 0;
+  rc = 0;
 
 cleanup:
   gpgme_key_unref(primary_key);
   gpgme_release(ctx);
-  return rv;
+  return rc;
 }
 
 int mutt_autocrypt_gpgme_import_key(const char *keydata, struct Buffer *keyid)
 {
-  int rv = -1;
+  int rc = -1;
   gpgme_ctx_t ctx = NULL;
   struct Buffer *raw_keydata = NULL;
   gpgme_data_t dh = NULL;
@@ -205,18 +205,18 @@ int mutt_autocrypt_gpgme_import_key(const char *keydata, struct Buffer *keyid)
     goto cleanup;
   mutt_buffer_strcpy(keyid, result->imports->fpr);
 
-  rv = 0;
+  rc = 0;
 
 cleanup:
   gpgme_data_release(dh);
   gpgme_release(ctx);
   mutt_buffer_pool_release(&raw_keydata);
-  return rv;
+  return rc;
 }
 
 int mutt_autocrypt_gpgme_is_valid_key(const char *keyid)
 {
-  int rv = 0;
+  int rc = 0;
   gpgme_ctx_t ctx = NULL;
   gpgme_key_t key = NULL;
 
@@ -229,12 +229,12 @@ int mutt_autocrypt_gpgme_is_valid_key(const char *keyid)
   if (gpgme_get_key(ctx, keyid, &key, 0))
     goto cleanup;
 
-  rv = 1;
+  rc = 1;
   if (key->revoked || key->expired || key->disabled || key->invalid || !key->can_encrypt)
-    rv = 0;
+    rc = 0;
 
 cleanup:
   gpgme_key_unref(key);
   gpgme_release(ctx);
-  return rv;
+  return rc;
 }

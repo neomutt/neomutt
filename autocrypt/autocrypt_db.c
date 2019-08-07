@@ -59,7 +59,7 @@ static int autocrypt_db_create(const char *db_path)
 
 int mutt_autocrypt_db_init(int can_create)
 {
-  int rv = -1;
+  int rc = -1;
   struct Buffer *db_path = NULL;
   struct stat sb;
 
@@ -98,11 +98,11 @@ int mutt_autocrypt_db_init(int can_create)
       goto cleanup;
   }
 
-  rv = 0;
+  rc = 0;
 
 cleanup:
   mutt_buffer_pool_release(&db_path);
-  return rv;
+  return rc;
 }
 
 void mutt_autocrypt_db_close(void)
@@ -208,7 +208,7 @@ void mutt_autocrypt_db_account_free(struct AutocryptAccount **account)
 
 int mutt_autocrypt_db_account_get(struct Address *addr, struct AutocryptAccount **account)
 {
-  int rv = -1, result;
+  int rc = -1, result;
   struct Address *norm_addr = NULL;
 
   norm_addr = copy_normalize_addr(addr);
@@ -236,7 +236,7 @@ int mutt_autocrypt_db_account_get(struct Address *addr, struct AutocryptAccount 
   if (result != SQLITE_ROW)
   {
     if (result == SQLITE_DONE)
-      rv = 0;
+      rc = 0;
     goto cleanup;
   }
 
@@ -247,18 +247,18 @@ int mutt_autocrypt_db_account_get(struct Address *addr, struct AutocryptAccount 
   (*account)->prefer_encrypt = sqlite3_column_int(AccountGetStmt, 3);
   (*account)->enabled = sqlite3_column_int(AccountGetStmt, 4);
 
-  rv = 1;
+  rc = 1;
 
 cleanup:
   mutt_addr_free(&norm_addr);
   sqlite3_reset(AccountGetStmt);
-  return rv;
+  return rc;
 }
 
 int mutt_autocrypt_db_account_insert(struct Address *addr, const char *keyid,
                                      const char *keydata, int prefer_encrypt)
 {
-  int rv = -1;
+  int rc = -1;
   struct Address *norm_addr = NULL;
 
   norm_addr = copy_normalize_addr(addr);
@@ -291,17 +291,17 @@ int mutt_autocrypt_db_account_insert(struct Address *addr, const char *keyid,
   if (sqlite3_step(AccountInsertStmt) != SQLITE_DONE)
     goto cleanup;
 
-  rv = 0;
+  rc = 0;
 
 cleanup:
   mutt_addr_free(&norm_addr);
   sqlite3_reset(AccountInsertStmt);
-  return rv;
+  return rc;
 }
 
 int mutt_autocrypt_db_account_update(struct AutocryptAccount *acct)
 {
-  int rv = -1;
+  int rc = -1;
 
   if (!AccountUpdateStmt)
   {
@@ -330,16 +330,16 @@ int mutt_autocrypt_db_account_update(struct AutocryptAccount *acct)
   if (sqlite3_step(AccountUpdateStmt) != SQLITE_DONE)
     goto cleanup;
 
-  rv = 0;
+  rc = 0;
 
 cleanup:
   sqlite3_reset(AccountUpdateStmt);
-  return rv;
+  return rc;
 }
 
 int mutt_autocrypt_db_account_delete(struct AutocryptAccount *acct)
 {
-  int rv = -1;
+  int rc = -1;
 
   if (!AccountDeleteStmt)
   {
@@ -356,16 +356,16 @@ int mutt_autocrypt_db_account_delete(struct AutocryptAccount *acct)
   if (sqlite3_step(AccountDeleteStmt) != SQLITE_DONE)
     goto cleanup;
 
-  rv = 0;
+  rc = 0;
 
 cleanup:
   sqlite3_reset(AccountDeleteStmt);
-  return rv;
+  return rc;
 }
 
 int mutt_autocrypt_db_account_get_all(struct AutocryptAccount ***accounts, int *num_accounts)
 {
-  int rv = -1, result;
+  int rc = -1, result;
   sqlite3_stmt *stmt = NULL;
   struct AutocryptAccount **results = NULL, *account;
   int results_len = 0, results_count = 0;
@@ -407,7 +407,7 @@ int mutt_autocrypt_db_account_get_all(struct AutocryptAccount ***accounts, int *
   if (result == SQLITE_DONE)
   {
     *accounts = results;
-    rv = *num_accounts = results_count;
+    rc = *num_accounts = results_count;
   }
   else
   {
@@ -418,7 +418,7 @@ int mutt_autocrypt_db_account_get_all(struct AutocryptAccount ***accounts, int *
 
 cleanup:
   sqlite3_finalize(stmt);
-  return rv;
+  return rc;
 }
 
 struct AutocryptPeer *mutt_autocrypt_db_peer_new(void)
@@ -440,7 +440,7 @@ void mutt_autocrypt_db_peer_free(struct AutocryptPeer **peer)
 
 int mutt_autocrypt_db_peer_get(struct Address *addr, struct AutocryptPeer **peer)
 {
-  int rv = -1, result;
+  int rc = -1, result;
   struct Address *norm_addr = NULL;
 
   norm_addr = copy_normalize_addr(addr);
@@ -472,7 +472,7 @@ int mutt_autocrypt_db_peer_get(struct Address *addr, struct AutocryptPeer **peer
   if (result != SQLITE_ROW)
   {
     if (result == SQLITE_DONE)
-      rv = 0;
+      rc = 0;
     goto cleanup;
   }
 
@@ -487,17 +487,17 @@ int mutt_autocrypt_db_peer_get(struct Address *addr, struct AutocryptPeer **peer
   (*peer)->gossip_keyid = strdup_column_text(PeerGetStmt, 7);
   (*peer)->gossip_keydata = strdup_column_text(PeerGetStmt, 8);
 
-  rv = 1;
+  rc = 1;
 
 cleanup:
   mutt_addr_free(&norm_addr);
   sqlite3_reset(PeerGetStmt);
-  return rv;
+  return rc;
 }
 
 int mutt_autocrypt_db_peer_insert(struct Address *addr, struct AutocryptPeer *peer)
 {
-  int rv = -1;
+  int rc = -1;
   struct Address *norm_addr = NULL;
 
   norm_addr = copy_normalize_addr(addr);
@@ -542,17 +542,17 @@ int mutt_autocrypt_db_peer_insert(struct Address *addr, struct AutocryptPeer *pe
   if (sqlite3_step(PeerInsertStmt) != SQLITE_DONE)
     goto cleanup;
 
-  rv = 0;
+  rc = 0;
 
 cleanup:
   mutt_addr_free(&norm_addr);
   sqlite3_reset(PeerInsertStmt);
-  return rv;
+  return rc;
 }
 
 int mutt_autocrypt_db_peer_update(struct AutocryptPeer *peer)
 {
-  int rv = -1;
+  int rc = -1;
 
   if (!PeerUpdateStmt)
   {
@@ -593,11 +593,11 @@ int mutt_autocrypt_db_peer_update(struct AutocryptPeer *peer)
   if (sqlite3_step(PeerUpdateStmt) != SQLITE_DONE)
     goto cleanup;
 
-  rv = 0;
+  rc = 0;
 
 cleanup:
   sqlite3_reset(PeerUpdateStmt);
-  return rv;
+  return rc;
 }
 
 struct AutocryptPeerHistory *mutt_autocrypt_db_peer_history_new(void)
@@ -618,7 +618,7 @@ void mutt_autocrypt_db_peer_history_free(struct AutocryptPeerHistory **peerhist)
 int mutt_autocrypt_db_peer_history_insert(struct Address *addr,
                                           struct AutocryptPeerHistory *peerhist)
 {
-  int rv = -1;
+  int rc = -1;
   struct Address *norm_addr = NULL;
 
   norm_addr = copy_normalize_addr(addr);
@@ -650,12 +650,12 @@ int mutt_autocrypt_db_peer_history_insert(struct Address *addr,
   if (sqlite3_step(PeerHistoryInsertStmt) != SQLITE_DONE)
     goto cleanup;
 
-  rv = 0;
+  rc = 0;
 
 cleanup:
   mutt_addr_free(&norm_addr);
   sqlite3_reset(PeerHistoryInsertStmt);
-  return rv;
+  return rc;
 }
 
 struct AutocryptGossipHistory *mutt_autocrypt_db_gossip_history_new(void)
@@ -677,7 +677,7 @@ void mutt_autocrypt_db_gossip_history_free(struct AutocryptGossipHistory **gossi
 int mutt_autocrypt_db_gossip_history_insert(struct Address *addr,
                                             struct AutocryptGossipHistory *gossip_hist)
 {
-  int rv = -1;
+  int rc = -1;
   struct Address *norm_addr = NULL;
 
   norm_addr = copy_normalize_addr(addr);
@@ -714,10 +714,10 @@ int mutt_autocrypt_db_gossip_history_insert(struct Address *addr,
   if (sqlite3_step(GossipHistoryInsertStmt) != SQLITE_DONE)
     goto cleanup;
 
-  rv = 0;
+  rc = 0;
 
 cleanup:
   mutt_addr_free(&norm_addr);
   sqlite3_reset(GossipHistoryInsertStmt);
-  return rv;
+  return rc;
 }

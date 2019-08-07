@@ -41,7 +41,7 @@
 
 static int autocrypt_dir_init(int can_create)
 {
-  int rv = 0;
+  int rc = 0;
   struct stat sb;
   struct Buffer *prompt = NULL;
 
@@ -67,12 +67,12 @@ static int autocrypt_dir_init(int can_create)
          error message returned by libc
       */
       mutt_error(_("Can't create %s: %s."), C_AutocryptDir, strerror(errno));
-      rv = -1;
+      rc = -1;
     }
   }
 
   mutt_buffer_pool_release(&prompt);
-  return rv;
+  return rc;
 }
 
 int mutt_autocrypt_init(int can_create)
@@ -226,7 +226,7 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
   struct AutocryptPeerHistory *peerhist = NULL;
   struct Buffer *keyid = NULL;
   int update_db = 0, insert_db = 0, insert_db_history = 0, import_gpg = 0;
-  int rv = -1;
+  int rc = -1;
 
   if (!C_Autocrypt)
     return 0;
@@ -280,7 +280,7 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
   {
     if (e->date_sent <= peer->autocrypt_timestamp)
     {
-      rv = 0;
+      rc = 0;
       goto cleanup;
     }
 
@@ -312,7 +312,7 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
 
   if (!(import_gpg || insert_db || update_db))
   {
-    rv = 0;
+    rc = 0;
     goto cleanup;
   }
 
@@ -349,14 +349,14 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
       goto cleanup;
   }
 
-  rv = 0;
+  rc = 0;
 
 cleanup:
   mutt_autocrypt_db_peer_free(&peer);
   mutt_autocrypt_db_peer_history_free(&peerhist);
   mutt_buffer_pool_release(&keyid);
 
-  return rv;
+  return rc;
 }
 
 int mutt_autocrypt_process_gossip_header(struct Email *hdr, struct Envelope *prot_headers)
@@ -370,7 +370,7 @@ int mutt_autocrypt_process_gossip_header(struct Email *hdr, struct Envelope *pro
   struct Address ac_hdr_addr = { 0 };
   struct Buffer *keyid = NULL;
   int update_db = 0, insert_db = 0, insert_db_history = 0, import_gpg = 0;
-  int rv = -1;
+  int rc = -1;
 
   if (!C_Autocrypt)
     return 0;
@@ -493,7 +493,7 @@ int mutt_autocrypt_process_gossip_header(struct Email *hdr, struct Envelope *pro
     update_db = insert_db = insert_db_history = import_gpg = 0;
   }
 
-  rv = 0;
+  rc = 0;
 
 cleanup:
   FREE(&ac_hdr_addr.mailbox);
@@ -502,7 +502,7 @@ cleanup:
   mutt_autocrypt_db_gossip_history_free(&gossip_hist);
   mutt_buffer_pool_release(&keyid);
 
-  return rv;
+  return rc;
 }
 
 /* Returns the recommendation.  If the recommendataion is > NO and
@@ -511,7 +511,7 @@ cleanup:
  */
 enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *hdr, char **keylist)
 {
-  enum AutocryptRec rv = AUTOCRYPT_REC_OFF;
+  enum AutocryptRec rc = AUTOCRYPT_REC_OFF;
   struct AutocryptAccount *account = NULL;
   struct AutocryptPeer *peer = NULL;
   struct Address *recip = NULL;
@@ -544,7 +544,7 @@ enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *hdr, char **key
   mutt_addrlist_copy(&recips, &hdr->env->cc, false);
   mutt_addrlist_copy(&recips, &hdr->env->bcc, false);
 
-  rv = AUTOCRYPT_REC_NO;
+  rc = AUTOCRYPT_REC_NO;
   if (TAILQ_EMPTY(&recips))
     goto cleanup;
 
@@ -598,11 +598,11 @@ enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *hdr, char **key
   }
 
   if (all_encrypt)
-    rv = AUTOCRYPT_REC_YES;
+    rc = AUTOCRYPT_REC_YES;
   else if (has_discourage)
-    rv = AUTOCRYPT_REC_DISCOURAGE;
+    rc = AUTOCRYPT_REC_DISCOURAGE;
   else
-    rv = AUTOCRYPT_REC_AVAILABLE;
+    rc = AUTOCRYPT_REC_AVAILABLE;
 
   if (keylist)
     mutt_str_replace(keylist, mutt_b2s(keylist_buf));
@@ -612,12 +612,12 @@ cleanup:
   mutt_addrlist_clear(&recips);
   mutt_autocrypt_db_peer_free(&peer);
   mutt_buffer_pool_release(&keylist_buf);
-  return rv;
+  return rc;
 }
 
 int mutt_autocrypt_set_sign_as_default_key(struct Email *hdr)
 {
-  int rv = -1;
+  int rc = -1;
   struct AutocryptAccount *account = NULL;
 
   if (!C_Autocrypt || mutt_autocrypt_init(0) || !hdr)
@@ -637,11 +637,11 @@ int mutt_autocrypt_set_sign_as_default_key(struct Email *hdr)
   mutt_str_replace(&AutocryptSignAs, account->keyid);
   mutt_str_replace(&AutocryptDefaultKey, account->keyid);
 
-  rv = 0;
+  rc = 0;
 
 cleanup:
   mutt_autocrypt_db_account_free(&account);
-  return rv;
+  return rc;
 }
 
 static void write_autocrypt_header_line(FILE *fp, const char *addr,
@@ -670,7 +670,7 @@ static void write_autocrypt_header_line(FILE *fp, const char *addr,
 
 int mutt_autocrypt_write_autocrypt_header(struct Envelope *env, FILE *fp)
 {
-  int rv = -1;
+  int rc = -1;
   struct AutocryptAccount *account = NULL;
 
   if (!C_Autocrypt || mutt_autocrypt_init(0) || !env)
@@ -691,11 +691,11 @@ int mutt_autocrypt_write_autocrypt_header(struct Envelope *env, FILE *fp)
   write_autocrypt_header_line(fp, account->email_addr, account->prefer_encrypt,
                               account->keydata);
 
-  rv = 0;
+  rc = 0;
 
 cleanup:
   mutt_autocrypt_db_account_free(&account);
-  return rv;
+  return rc;
 }
 
 int mutt_autocrypt_write_gossip_headers(struct Envelope *env, FILE *fp)
@@ -716,7 +716,7 @@ int mutt_autocrypt_write_gossip_headers(struct Envelope *env, FILE *fp)
 
 int mutt_autocrypt_generate_gossip_list(struct Email *hdr)
 {
-  int rv = -1;
+  int rc = -1;
   struct AutocryptPeer *peer = NULL;
   struct AutocryptAccount *account = NULL;
   struct Address *recip = NULL;
@@ -794,7 +794,7 @@ int mutt_autocrypt_generate_gossip_list(struct Email *hdr)
   mutt_addrlist_clear(&recips);
   mutt_autocrypt_db_account_free(&account);
   mutt_autocrypt_db_peer_free(&peer);
-  return rv;
+  return rc;
 }
 
 /* This is invoked during the first autocrypt initialization,
