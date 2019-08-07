@@ -273,7 +273,9 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
   /* 1.1 spec also says to skip multipart/report emails */
   if ((e->content->type == TYPE_MULTIPART) &&
       !(mutt_str_strcasecmp(e->content->subtype, "report")))
+  {
     return 0;
+  }
 
   /* Ignore emails that appear to be more than a week in the future,
    * since they can block all future updates during that time. */
@@ -593,12 +595,14 @@ enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *e, char **keyli
     if (mutt_autocrypt_db_peer_get(recip, &peer) <= 0)
     {
       if (keylist)
+      {
         /* L10N:
            %s is an email address.  Autocrypt is scanning for the keyids
            to use to encrypt, but it can't find a valid keyid for this address.
            The message is printed and they are returned to the compose menu.
          */
         mutt_message(_("No (valid) autocrypt key found for %s."), recip->mailbox);
+      }
       goto cleanup;
     }
 

@@ -273,7 +273,9 @@ int mutt_autocrypt_db_account_get(struct Address *addr, struct AutocryptAccount 
                            "FROM account "
                            "WHERE email_addr = ?",
                            -1, SQLITE_PREPARE_PERSISTENT, &AccountGetStmt, NULL) != SQLITE_OK)
+    {
       goto cleanup;
+    }
   }
 
   if (sqlite3_bind_text(AccountGetStmt, 1, norm_addr->mailbox, -1, SQLITE_STATIC) != SQLITE_OK)
@@ -330,7 +332,9 @@ int mutt_autocrypt_db_account_insert(struct Address *addr, const char *keyid,
                            "enabled) "
                            "VALUES (?, ?, ?, ?, ?);",
                            -1, SQLITE_PREPARE_PERSISTENT, &AccountInsertStmt, NULL) != SQLITE_OK)
+    {
       goto cleanup;
+    }
   }
 
   if (sqlite3_bind_text(AccountInsertStmt, 1, norm_addr->mailbox, -1, SQLITE_STATIC) != SQLITE_OK)
@@ -375,7 +379,9 @@ int mutt_autocrypt_db_account_update(struct AutocryptAccount *acct)
                            "enabled = ? "
                            "WHERE email_addr = ?;",
                            -1, SQLITE_PREPARE_PERSISTENT, &AccountUpdateStmt, NULL) != SQLITE_OK)
+    {
       goto cleanup;
+    }
   }
 
   if (sqlite3_bind_text(AccountUpdateStmt, 1, acct->keyid, -1, SQLITE_STATIC) != SQLITE_OK)
@@ -415,7 +421,9 @@ int mutt_autocrypt_db_account_delete(struct AutocryptAccount *acct)
                            "DELETE from account "
                            "WHERE email_addr = ?;",
                            -1, SQLITE_PREPARE_PERSISTENT, &AccountDeleteStmt, NULL) != SQLITE_OK)
+    {
       goto cleanup;
+    }
   }
 
   if (sqlite3_bind_text(AccountDeleteStmt, 1, acct->email_addr, -1, SQLITE_STATIC) != SQLITE_OK)
@@ -460,7 +468,9 @@ int mutt_autocrypt_db_account_get_all(struct AutocryptAccount ***accounts, int *
                          "FROM account "
                          "ORDER BY email_addr",
                          -1, &stmt, NULL) != SQLITE_OK)
+  {
     goto cleanup;
+  }
 
   while ((result = sqlite3_step(stmt)) == SQLITE_ROW)
   {
@@ -553,7 +563,9 @@ int mutt_autocrypt_db_peer_get(struct Address *addr, struct AutocryptPeer **peer
                            "FROM peer "
                            "WHERE email_addr = ?",
                            -1, SQLITE_PREPARE_PERSISTENT, &PeerGetStmt, NULL) != SQLITE_OK)
+    {
       goto cleanup;
+    }
   }
 
   if (sqlite3_bind_text(PeerGetStmt, 1, norm_addr->mailbox, -1, SQLITE_STATIC) != SQLITE_OK)
@@ -615,7 +627,9 @@ int mutt_autocrypt_db_peer_insert(struct Address *addr, struct AutocryptPeer *pe
                            "gossip_keydata) "
                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);",
                            -1, SQLITE_PREPARE_PERSISTENT, &PeerInsertStmt, NULL) != SQLITE_OK)
+    {
       goto cleanup;
+    }
   }
 
   if (sqlite3_bind_text(PeerInsertStmt, 1, norm_addr->mailbox, -1, SQLITE_STATIC) != SQLITE_OK)
@@ -672,7 +686,9 @@ int mutt_autocrypt_db_peer_update(struct AutocryptPeer *peer)
                            "gossip_keydata = ? "
                            "WHERE email_addr = ?;",
                            -1, SQLITE_PREPARE_PERSISTENT, &PeerUpdateStmt, NULL) != SQLITE_OK)
+    {
       goto cleanup;
+    }
   }
 
   if (sqlite3_bind_int64(PeerUpdateStmt, 1, peer->last_seen) != SQLITE_OK)
@@ -753,7 +769,9 @@ int mutt_autocrypt_db_peer_history_insert(struct Address *addr,
                            "VALUES (?, ?, ?, ?);",
                            -1, SQLITE_PREPARE_PERSISTENT,
                            &PeerHistoryInsertStmt, NULL) != SQLITE_OK)
+    {
       goto cleanup;
+    }
   }
 
   if (sqlite3_bind_text(PeerHistoryInsertStmt, 1, norm_addr->mailbox, -1, SQLITE_STATIC) != SQLITE_OK)
@@ -828,22 +846,32 @@ int mutt_autocrypt_db_gossip_history_insert(struct Address *addr,
                            "VALUES (?, ?, ?, ?, ?);",
                            -1, SQLITE_PREPARE_PERSISTENT,
                            &GossipHistoryInsertStmt, NULL) != SQLITE_OK)
+    {
       goto cleanup;
+    }
   }
 
   if (sqlite3_bind_text(GossipHistoryInsertStmt, 1, norm_addr->mailbox, -1,
                         SQLITE_STATIC) != SQLITE_OK)
+  {
     goto cleanup;
+  }
   if (sqlite3_bind_text(GossipHistoryInsertStmt, 2, gossip_hist->sender_email_addr,
                         -1, SQLITE_STATIC) != SQLITE_OK)
+  {
     if (sqlite3_bind_text(GossipHistoryInsertStmt, 3, gossip_hist->email_msgid,
                           -1, SQLITE_STATIC) != SQLITE_OK)
+    {
       goto cleanup;
+    }
+  }
   if (sqlite3_bind_int64(GossipHistoryInsertStmt, 4, gossip_hist->timestamp) != SQLITE_OK)
     goto cleanup;
   if (sqlite3_bind_text(GossipHistoryInsertStmt, 5, gossip_hist->gossip_keydata,
                         -1, SQLITE_STATIC) != SQLITE_OK)
+  {
     goto cleanup;
+  }
 
   if (sqlite3_step(GossipHistoryInsertStmt) != SQLITE_DONE)
     goto cleanup;
