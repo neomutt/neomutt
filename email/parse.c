@@ -569,7 +569,7 @@ static struct AutocryptHeader *parse_autocrypt(struct AutocryptHeader *head, con
   struct Parameter *p = NULL;
   TAILQ_FOREACH(p, &pl, entries)
   {
-    if (!mutt_str_strcasecmp(p->attribute, "addr"))
+    if (mutt_str_strcasecmp(p->attribute, "addr") == 0)
     {
       if (autocrypt->addr)
       {
@@ -579,12 +579,12 @@ static struct AutocryptHeader *parse_autocrypt(struct AutocryptHeader *head, con
       autocrypt->addr = p->value;
       p->value = NULL;
     }
-    else if (!mutt_str_strcasecmp(p->attribute, "prefer-encrypt"))
+    else if (mutt_str_strcasecmp(p->attribute, "prefer-encrypt") == 0)
     {
-      if (!mutt_str_strcasecmp(p->value, "mutual"))
+      if (mutt_str_strcasecmp(p->value, "mutual") == 0)
         autocrypt->prefer_encrypt = 1;
     }
-    else if (!mutt_str_strcasecmp(p->attribute, "keydata"))
+    else if (mutt_str_strcasecmp(p->attribute, "keydata") == 0)
     {
       if (autocrypt->keydata)
       {

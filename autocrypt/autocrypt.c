@@ -272,7 +272,7 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
 
   /* 1.1 spec also says to skip multipart/report emails */
   if ((e->content->type == TYPE_MULTIPART) &&
-      !(mutt_str_strcasecmp(e->content->subtype, "report")))
+      (mutt_str_strcasecmp(e->content->subtype, "report") == 0))
   {
     return 0;
   }
@@ -291,7 +291,7 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
     /* NOTE: this assumes the processing is occurring right after
      * mutt_parse_rfc822_line() and the from ADDR is still in the same
      * form (intl) as the autocrypt header addr field */
-    if (mutt_str_strcasecmp(from->mailbox, ac_hdr->addr))
+    if (mutt_str_strcasecmp(from->mailbox, ac_hdr->addr) != 0)
       continue;
 
     /* 1.1 spec says ignore all, if more than one valid header is found. */
@@ -325,7 +325,7 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
       update_db = 1;
       peer->autocrypt_timestamp = e->date_sent;
       peer->prefer_encrypt = valid_ac_hdr->prefer_encrypt;
-      if (mutt_str_strcmp(peer->keydata, valid_ac_hdr->keydata))
+      if (mutt_str_strcmp(peer->keydata, valid_ac_hdr->keydata) != 0)
       {
         import_gpg = 1;
         insert_db_history = 1;
@@ -455,7 +455,7 @@ int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_
      * addresses are normalized we use strcmp, not mutt_str_strcasecmp. */
     TAILQ_FOREACH(peer_addr, &recips, entries)
     {
-      if (!mutt_str_strcmp(peer_addr->mailbox, ac_hdr_addr.mailbox))
+      if (mutt_str_strcmp(peer_addr->mailbox, ac_hdr_addr.mailbox) == 0)
         break;
     }
 
@@ -478,8 +478,8 @@ int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_
       /* This is slightly different from the autocrypt 1.1 spec.
        * Avoid setting an empty peer.gossip_keydata with a value that matches
        * the current peer.keydata. */
-      if ((peer->gossip_keydata && mutt_str_strcmp(peer->gossip_keydata, ac_hdr->keydata)) ||
-          (!peer->gossip_keydata && mutt_str_strcmp(peer->keydata, ac_hdr->keydata)))
+      if ((peer->gossip_keydata && (mutt_str_strcmp(peer->gossip_keydata, ac_hdr->keydata) != 0)) ||
+          (!peer->gossip_keydata && (mutt_str_strcmp(peer->keydata, ac_hdr->keydata) != 0)))
       {
         import_gpg = 1;
         insert_db_history = 1;
@@ -634,7 +634,7 @@ enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *e, char **keyli
       goto cleanup;
     }
 
-    if (mutt_buffer_len(keylist_buf))
+    if (mutt_buffer_len(keylist_buf) > 0)
       mutt_buffer_addch(keylist_buf, ' ');
     mutt_buffer_addstr(keylist_buf, matching_key);
 
@@ -908,7 +908,7 @@ void mutt_autocrypt_scan_mailboxes(void)
   {
     // L10N: The prompt for a mailbox to scan for Autocrypt: headers
     if ((!mutt_buffer_enter_fname(_("Scan mailbox"), folderbuf, 1)) &&
-        mutt_buffer_len(folderbuf))
+        (mutt_buffer_len(folderbuf) > 0))
     {
       mutt_buffer_expand_path_regex(folderbuf, false);
       struct Mailbox *m = mx_path_resolve(mutt_b2s(folderbuf));
