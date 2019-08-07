@@ -1081,6 +1081,8 @@ void mutt_menu_pop_current(struct Menu *menu)
   else
   {
     CurrentMenu = MENU_MAIN;
+    move(0, 0);
+    clrtobot();
   }
 }
 
