@@ -35,6 +35,9 @@
 #define MUTT_ENV_CHANGED_SUBJECT (1 << 3)  ///< Protected header update
 
 #ifdef USE_AUTOCRYPT
+/**
+ * struct AutocryptHeader - Parse Autocrypt header info
+ */
 struct AutocryptHeader
 {
   char *addr;

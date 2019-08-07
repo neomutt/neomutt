@@ -1,6 +1,6 @@
 /**
  * @file
- * XXX
+ * Autocrypt account menu
  *
  * @authors
  * Copyright (C) 2019 Kevin J. McCarthy <kevin@8t8.us>
@@ -38,6 +38,9 @@
 #include "muttlib.h"
 #include "opcodes.h"
 
+/**
+ * struct Entry - An entry in the Autocrypt account Menu
+ */
 struct Entry
 {
   int tagged; /* TODO */
@@ -68,6 +71,17 @@ static const struct Mapping AutocryptAcctHelp[] = {
   { NULL, 0 }
 };
 
+/**
+ * account_format_str - Format a string for the Autocrypt account list - Implements ::format_t
+ *
+ * | Expando | Description
+ * |:--------|:-----------------------------------------------------------------
+ * | \%a     | Email address                 
+ * | \%k     | Gpg keyid                     
+ * | \%n     | Current entry number          
+ * | \%p     | Prefer-encrypt flag           
+ * | \%s     | Status flag (active/inactive) 
+ */
 static const char *account_format_str(char *dest, size_t destlen, size_t col, int cols,
                                       char op, const char *src, const char *fmt,
                                       const char *ifstring, const char *elsestring,
@@ -122,6 +136,13 @@ static const char *account_format_str(char *dest, size_t destlen, size_t col, in
   return (src);
 }
 
+/**
+ * account_entry - Create a line for the Autocrypt account menu
+ * @param buf    Buffer to save the string
+ * @param buflen Length of the buffer
+ * @param menu   Menu to use
+ * @param num    Line in the Menu
+ */
 static void account_entry(char *s, size_t slen, struct Menu *m, int num)
 {
   struct Entry *entry = &((struct Entry *) m->data)[num];
@@ -131,6 +152,10 @@ static void account_entry(char *s, size_t slen, struct Menu *m, int num)
                       (unsigned long) entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
+/**
+ * create_menu - Create the Autocrypt account Menu
+ * @retval ptr New Menu
+ */
 static struct Menu *create_menu(void)
 {
   struct Menu *menu = NULL;
@@ -145,9 +170,7 @@ static struct Menu *create_menu(void)
   menu = mutt_menu_new(MENU_AUTOCRYPT_ACCT);
   menu->menu_make_entry = account_entry;
   /* menu->tag = account_tag; */
-  /* L10N:
-     Autocrypt Account Management Menu title
-  */
+  // L10N: Autocrypt Account Management Menu title
   menu->title = _("Autocrypt Accounts");
   helpstr = mutt_mem_malloc(256);
   menu->help = mutt_compile_help(helpstr, 256, MENU_AUTOCRYPT_ACCT, AutocryptAcctHelp);
@@ -160,8 +183,7 @@ static struct Menu *create_menu(void)
     entries[i].num = i + 1;
     /* note: we are transfering the account pointer to the entries
      * array, and freeing the accounts array below.  the account
-     * will be freed in free_menu().
-     */
+     * will be freed in free_menu().  */
     entries[i].account = accounts[i];
 
     entries[i].addr = mutt_addr_new();
@@ -175,6 +197,10 @@ static struct Menu *create_menu(void)
   return menu;
 }
 
+/**
+ * free_menu - Free the Autocrypt account Menu
+ * @param menu Menu to free
+ */
 static void free_menu(struct Menu **menu)
 {
   int i;
@@ -193,6 +219,10 @@ static void free_menu(struct Menu **menu)
   mutt_menu_destroy(menu);
 }
 
+/**
+ * toggle_active - Toggle whether an Autocrypt account is active
+ * @param entry Menu Entry for the account
+ */
 static void toggle_active(struct Entry *entry)
 {
   entry->account->enabled = !entry->account->enabled;
@@ -207,6 +237,10 @@ static void toggle_active(struct Entry *entry)
   }
 }
 
+/**
+ * toggle_prefer_encrypt - Toggle whether an Autocrypt account prefers encryption
+ * @param entry Menu Entry for the account
+ */
 static void toggle_prefer_encrypt(struct Entry *entry)
 {
   entry->account->prefer_encrypt = !entry->account->prefer_encrypt;
@@ -217,6 +251,9 @@ static void toggle_prefer_encrypt(struct Entry *entry)
   }
 }
 
+/**
+ * mutt_autocrypt_account_menu - Display the Autocrypt account Menu
+ */
 void mutt_autocrypt_account_menu(void)
 {
   struct Menu *menu;
@@ -255,9 +292,7 @@ void mutt_autocrypt_account_menu(void)
         {
           entry = (struct Entry *) (menu->data) + menu->current;
           snprintf(msg, sizeof(msg),
-                   /* L10N:
-                       Confirmation message when deleting an autocrypt account
-                    */
+                   // L10N: Confirmation message when deleting an autocrypt account
                    _("Really delete account \"%s\"?"), entry->addr->mailbox);
           if (mutt_yesorno(msg, MUTT_NO) != MUTT_YES)
             break;

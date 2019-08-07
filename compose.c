@@ -132,8 +132,8 @@ enum HeaderField
   HDR_FOLLOWUPTO, ///< "Followup-To:" field
   HDR_XCOMMENTTO, ///< "X-Comment-To:" field
 #endif
-  HDR_ATTACH_TITLE, /* the "-- Attachments" line */
-  HDR_ATTACH        /* where to start printing the attachments */
+  HDR_ATTACH_TITLE, ///< The "-- Attachments" line
+  HDR_ATTACH        ///< Where to start printing the attachments
 };
 
 int HeaderPadding[HDR_ATTACH_TITLE] = { 0 };
@@ -172,9 +172,7 @@ static const char *const Prompts[] = {
      than 15-20 character cells.  */
   N_("Sign as: "),
 #ifdef USE_AUTOCRYPT
-  /* L10N:
-     The compose menu autocrypt line
-   */
+  // L10N: The compose menu autocrypt line
   N_("Autocrypt: "),
 #endif
 #ifdef USE_NNTP
@@ -240,6 +238,9 @@ static const char *AutocryptRecUiFlags[] = {
 };
 #endif
 
+/**
+ * struct ComposeRedrawData - Keep track when the compose screen needs redrawing
+ */
 struct ComposeRedrawData
 {
   struct Email *email;
@@ -316,6 +317,10 @@ static void snd_make_entry(char *buf, size_t buflen, struct Menu *menu, int line
 }
 
 #ifdef USE_AUTOCRYPT
+/**
+ * autocrypt_compose_menu - Autocrypt compose settings
+ * @param e Email
+ */
 static void autocrypt_compose_menu(struct Email *e)
 {
   /* L10N:
@@ -354,7 +359,7 @@ static void autocrypt_compose_menu(struct Email *e)
 
 /**
  * redraw_crypt_lines - Update the encryption info in the compose window
- * @param e Email
+ * @param rd Email and other compose data
  */
 static void redraw_crypt_lines(struct ComposeRedrawData *rd)
 {
@@ -474,6 +479,10 @@ static void redraw_crypt_lines(struct ComposeRedrawData *rd)
 #endif
 }
 
+/**
+ * update_crypt_info - Update the crypto info
+ * @param rd Email and other compose data
+ */
 static void update_crypt_info(struct ComposeRedrawData *rd)
 {
   struct Email *e = rd->email;
@@ -487,8 +496,8 @@ static void update_crypt_info(struct ComposeRedrawData *rd)
     rd->autocrypt_rec = mutt_autocrypt_ui_recommendation(e, NULL);
 
     /* Anything that enables SEC_ENCRYPT or SEC_SIGN, or turns on SMIME
-    * overrides autocrypt, be it oppenc or the user having turned on
-    * those flags manually. */
+     * overrides autocrypt, be it oppenc or the user having turned on
+     * those flags manually. */
     if (e->security & (SEC_ENCRYPT | SEC_SIGN | APPLICATION_SMIME))
       e->security &= ~(SEC_AUTOCRYPT | SEC_AUTOCRYPT_OVERRIDE);
     else
@@ -610,8 +619,7 @@ static void draw_envelope_addr(int line, struct AddressList *al)
 
 /**
  * draw_envelope - Write the email headers to the compose window
- * @param e Email
- * @param fcc Fcc field
+ * @param rd  Email and other compose data
  */
 static void draw_envelope(struct ComposeRedrawData *rd)
 {
@@ -2173,8 +2181,7 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
 #ifdef USE_AUTOCRYPT
   /* This is a fail-safe to make sure the bit isn't somehow turned
    * on.  The user could have disabled the option after setting SEC_AUTOCRYPT,
-   * or perhaps resuming or replying to an autocrypt message.
-   */
+   * or perhaps resuming or replying to an autocrypt message.  */
   if (!C_Autocrypt)
     e->security &= ~SEC_AUTOCRYPT;
 #endif

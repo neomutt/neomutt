@@ -1,6 +1,6 @@
 /**
  * @file
- * XXX
+ * Shared constants/structs that are private to Autocrypt
  *
  * @authors
  * Copyright (C) 2019 Kevin J. McCarthy <kevin@8t8.us>

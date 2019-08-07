@@ -97,8 +97,8 @@ WHERE char *C_Attribution;                   ///< Config: Message to start a rep
 WHERE char *C_AttributionLocale;             ///< Config: Locale for dates in the attribution message
 WHERE char *C_AttachFormat;                  ///< Config: printf-like format string for the attachment menu
 #ifdef USE_AUTOCRYPT
-WHERE char *C_AutocryptAcctFormat;
-WHERE char *C_AutocryptDir;
+WHERE char *C_AutocryptAcctFormat;           ///< Config: Format of the autocrypt account menu
+WHERE char *C_AutocryptDir;                  ///< Config: Location of autocrypt files, including the GPG keyring and sqlite database
 WHERE char *AutocryptSignAs;  /* This is used in ncrypt/crypt_gpgme.c */
 WHERE char *AutocryptDefaultKey;  /* Used for postponing messages */
 #endif
@@ -203,7 +203,7 @@ WHERE bool C_AsciiChars;                     ///< Config: Use plain ASCII charac
 WHERE bool C_Askbcc;                         ///< Config: Ask the user for the blind-carbon-copy recipients
 WHERE bool C_Askcc;                          ///< Config: Ask the user for the carbon-copy recipients
 #ifdef USE_AUTOCRYPT
-WHERE bool C_Autocrypt;
+WHERE bool C_Autocrypt;                      ///< Config: Enables the Autocrypt feature
 #endif
 WHERE bool C_Autoedit;                       ///< Config: Skip the initial compose menu and edit the email
 WHERE bool C_AutoTag;                        ///< Config: Automatically apply actions to all tagged messages

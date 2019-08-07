@@ -57,6 +57,10 @@ struct Envelope *mutt_env_new(void)
 }
 
 #ifdef USE_AUTOCRYPT
+/**
+ * mutt_free_autocrypthdr - Free an AutocryptHeader
+ * @param p AutocryptHeader to free
+ */
 void mutt_free_autocrypthdr(struct AutocryptHeader **p)
 {
   struct AutocryptHeader *cur;

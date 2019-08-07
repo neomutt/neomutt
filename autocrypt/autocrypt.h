@@ -1,6 +1,6 @@
 /**
  * @file
- * XXX
+ * Autocrypt feature
  *
  * @authors
  * Copyright (C) 2019 Kevin J. McCarthy <kevin@8t8.us>
@@ -31,6 +31,9 @@ struct Email;
 struct Envelope;
 WHERE sqlite3 *AutocryptDB;
 
+/**
+ * struct AutocryptAccount - Autocrypt account
+ */
 struct AutocryptAccount
 {
   char *email_addr;
@@ -40,6 +43,9 @@ struct AutocryptAccount
   int enabled;
 };
 
+/**
+ * struct AutocryptPeer - Autocrypt peer
+ */
 struct AutocryptPeer
 {
   char *email_addr;
@@ -53,6 +59,9 @@ struct AutocryptPeer
   char *gossip_keydata;
 };
 
+/**
+ * struct AutocryptPeerHistory - Autocrypt peer history
+ */
 struct AutocryptPeerHistory
 {
   char *peer_email_addr;
@@ -61,6 +70,9 @@ struct AutocryptPeerHistory
   char *keydata;
 };
 
+/**
+ * struct AutocryptGossipHistory - Autocrypt gossip history
+ */
 struct AutocryptGossipHistory
 {
   char *peer_email_addr;
@@ -70,13 +82,16 @@ struct AutocryptGossipHistory
   char *gossip_keydata;
 };
 
+/**
+ * enum AutocryptRec - Recommendation
+ */
 enum AutocryptRec
 {
-  AUTOCRYPT_REC_OFF,
-  AUTOCRYPT_REC_NO,
-  AUTOCRYPT_REC_DISCOURAGE,
-  AUTOCRYPT_REC_AVAILABLE,
-  AUTOCRYPT_REC_YES
+  AUTOCRYPT_REC_OFF,        ///< No recommendations
+  AUTOCRYPT_REC_NO,         ///< Do no use Autocrypt
+  AUTOCRYPT_REC_DISCOURAGE, ///< Prefer not to use Autocrypt
+  AUTOCRYPT_REC_AVAILABLE,  ///< Autocrypt is available
+  AUTOCRYPT_REC_YES,        ///< Autocrypt should be used
 };
 
 int mutt_autocrypt_init (int);

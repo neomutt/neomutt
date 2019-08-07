@@ -201,8 +201,9 @@ static void add_mailing_lists(struct AddressList *out, const struct AddressList 
 
 /**
  * mutt_edit_address - Edit an email address
- * @param[in,out] al    AddressList to edit
- * @param[in]  field Prompt for user
+ * @param[in,out] al          AddressList to edit
+ * @param[in]  field          Prompt for user
+ * @param[in]  expand_aliases If true, expand Address aliases
  * @retval  0 Success
  * @retval -1 Failure
  */

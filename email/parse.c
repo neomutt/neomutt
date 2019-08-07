@@ -95,8 +95,9 @@ void mutt_auto_subscribe(const char *mailto)
 
 /**
  * parse_parameters - Parse a list of Parameters
- * @param param Parameter list for the results
- * @param s String to parse
+ * @param param              Parameter list for the results
+ * @param s                  String to parse
+ * @param allow_value_spaces Allow values with spaces
  *
  * Autocrypt defines an irregular parameter format that doesn't follow the
  * rfc.  It splits keydata across multiple lines without parameter continuations.
@@ -163,8 +164,7 @@ static void parse_parameters(struct ParameterList *param, const char *s, int all
           {
             if (C_AssumedCharset)
             {
-              /* As iso-2022-* has a character of '"' with non-ascii state,
-               * ignore it. */
+              // As iso-2022-* has a character of '"' with non-ascii state, ignore it
               if (*s == 0x1b)
               {
                 if ((s[1] == '(') && ((s[2] == 'B') || (s[2] == 'J')))
@@ -547,6 +547,12 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
 }
 
 #ifdef USE_AUTOCRYPT
+/**
+ * parse_autocrypt - Parse an Autocrypt header line
+ * @param head Autocrypt header to insert before
+ * @param s    Header string to parse
+ * @retval ptr New AutocryptHeader inserted before head
+ */
 static struct AutocryptHeader *parse_autocrypt(struct AutocryptHeader *head, const char *s)
 {
   struct AutocryptHeader *autocrypt = mutt_new_autocrypthdr();

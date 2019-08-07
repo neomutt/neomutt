@@ -2197,8 +2197,8 @@ restart:
   ciphertext = NULL;
   if (err != 0)
   {
-    /* Abort right away and silently.  Autocrypt will retry on the
-       * normal keyring. */
+    /* Abort right away and silently.
+     * Autocrypt will retry on the normal keyring. */
     if (OptAutocryptGpgme)
       goto cleanup;
     if (is_smime && !maybe_signed && (gpg_err_code(err) == GPG_ERR_NO_DATA))

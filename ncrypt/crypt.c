@@ -163,12 +163,11 @@ bool crypt_valid_passphrase(SecurityFlags flags)
 
 /**
  * mutt_protect - Encrypt and/or sign a message
- * @param e       Email
- * @param keylist List of keys to encrypt to (space-separated)
+ * @param e        Email
+ * @param keylist  List of keys to encrypt to (space-separated)
+ * @param postpone When true, signing is automatically disabled
  * @retval  0 Success
  * @retval -1 Error
- *
- * In postpone mode, signing is automatically disabled.
  */
 int mutt_protect(struct Email *e, char *keylist, int postpone)
 {

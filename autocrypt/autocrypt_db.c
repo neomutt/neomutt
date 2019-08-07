@@ -1,6 +1,6 @@
 /**
  * @file
- * XXX
+ * Autocrypt database handling
  *
  * @authors
  * Copyright (C) 2019 Kevin J. McCarthy <kevin@8t8.us>
@@ -42,14 +42,20 @@ static sqlite3_stmt *PeerUpdateStmt;
 static sqlite3_stmt *PeerHistoryInsertStmt;
 static sqlite3_stmt *GossipHistoryInsertStmt;
 
+/**
+ * autocrypt_db_create - Create an Autocrypt sqlite database
+ * @param db_path Path to database file
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int autocrypt_db_create(const char *db_path)
 {
   if (sqlite3_open_v2(db_path, &AutocryptDB,
                       SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL) != SQLITE_OK)
   {
     /* L10N:
-       %s is the path to the database.  For some reason sqlite3 failed
-       to open that database file.
+       %s is the path to the database.
+       For some reason sqlite3 failed to open that database file.
     */
     mutt_error(_("Unable to open autocrypt database %s"), db_path);
     return -1;
@@ -57,6 +63,12 @@ static int autocrypt_db_create(const char *db_path)
   return mutt_autocrypt_schema_init();
 }
 
+/**
+ * mutt_autocrypt_db_init - Initialise the Autocrypt sqlite database
+ * @param can_create If true, the directory may be created
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_autocrypt_db_init(int can_create)
 {
   int rc = -1;
@@ -105,6 +117,9 @@ cleanup:
   return rc;
 }
 
+/**
+ * mutt_autocrypt_db_close - Close the Autocrypt sqlite database connection
+ */
 void mutt_autocrypt_db_close(void)
 {
   if (!AutocryptDB)
@@ -136,6 +151,10 @@ void mutt_autocrypt_db_close(void)
   AutocryptDB = NULL;
 }
 
+/**
+ * mutt_autocrypt_db_normalize_addr - Normalise an Email Address
+ * @param a Address to normalise
+ */
 void mutt_autocrypt_db_normalize_addr(struct Address *a)
 {
   mutt_addr_to_local(a);
@@ -143,6 +162,10 @@ void mutt_autocrypt_db_normalize_addr(struct Address *a)
   mutt_addr_to_intl(a);
 }
 
+/**
+ * mutt_autocrypt_db_normalize_addrlist - Normalise a list of Email Addresses
+ * @param al List of Addresses to normalise
+ */
 void mutt_autocrypt_db_normalize_addrlist(struct AddressList *al)
 {
   mutt_addrlist_to_local(al);
@@ -156,13 +179,18 @@ void mutt_autocrypt_db_normalize_addrlist(struct AddressList *al)
   mutt_addrlist_to_intl(al, NULL);
 }
 
-/* The autocrypt spec says email addresses should be
+/**
+ * copy_normalize_addr - Copy a normalised Email Address
+ * @param addr Address to normalise and copy
+ * @retval ptr Copy of the Address
+ *
+ * The autocrypt spec says email addresses should be
  * normalized to lower case and stored in idna form.
  *
  * In order to avoid visible changes to addresses in the index,
  * we make a copy of the address before lowercasing it.
  *
- * The return value must be freed.
+ * @note The return value must be freed
  */
 static struct Address *copy_normalize_addr(struct Address *addr)
 {
@@ -172,8 +200,7 @@ static struct Address *copy_normalize_addr(struct Address *addr)
    * this function we copy only the address passed in.
    *
    * The normalize_addrlist above is extended to work on a list
-   * because of requirements in autocrypt.c
-   */
+   * because of requirements in autocrypt.c */
 
   norm_addr = mutt_addr_new();
   norm_addr->mailbox = mutt_str_strdup(addr->mailbox);
@@ -184,18 +211,31 @@ static struct Address *copy_normalize_addr(struct Address *addr)
   return norm_addr;
 }
 
-/* Helper that converts to char * and mutt_str_strdups the result */
+/**
+ * strdup_column_text - Copy a string from the database
+ * @param stmt  Sqlite database statement
+ * @param index Database row
+ * @retval ptr Copy of string
+ */
 static char *strdup_column_text(sqlite3_stmt *stmt, int index)
 {
   const char *val = (const char *) sqlite3_column_text(stmt, index);
   return mutt_str_strdup(val);
 }
 
+/**
+ * mutt_autocrypt_db_account_new - Create a new AutocryptAccount
+ * @retval ptr New AutocryptAccount
+ */
 struct AutocryptAccount *mutt_autocrypt_db_account_new(void)
 {
   return mutt_mem_calloc(1, sizeof(struct AutocryptAccount));
 }
 
+/**
+ * mutt_autocrypt_db_account_free - Free an AutocryptAccount
+ * @param account Account to free
+ */
 void mutt_autocrypt_db_account_free(struct AutocryptAccount **account)
 {
   if (!account || !*account)
@@ -206,6 +246,13 @@ void mutt_autocrypt_db_account_free(struct AutocryptAccount **account)
   FREE(account);
 }
 
+/**
+ * mutt_autocrypt_db_account_get - Get Autocrypt Account data from the database
+ * @param[in]  addr    Email Address to lookup
+ * @param[out] account Matched account
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_autocrypt_db_account_get(struct Address *addr, struct AutocryptAccount **account)
 {
   int rc = -1, result;
@@ -255,6 +302,15 @@ cleanup:
   return rc;
 }
 
+/**
+ * mutt_autocrypt_db_account_insert - Insert an Account into the Autocrypt database
+ * @param addr           Email Address for the account
+ * @param keyid          Autocrypt KeyID
+ * @param keydata        Autocrypt key data
+ * @param prefer_encrypt Whether the account prefers encryption
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_autocrypt_db_account_insert(struct Address *addr, const char *keyid,
                                      const char *keydata, int prefer_encrypt)
 {
@@ -299,6 +355,12 @@ cleanup:
   return rc;
 }
 
+/**
+ * mutt_autocrypt_db_account_update - Update Account info in the Autocrypt database
+ * @param acct Autocrypt Account data
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_autocrypt_db_account_update(struct AutocryptAccount *acct)
 {
   int rc = -1;
@@ -337,6 +399,12 @@ cleanup:
   return rc;
 }
 
+/**
+ * mutt_autocrypt_db_account_delete - Delete an Account from the Autocrypt database
+ * @param acct Account to delete
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_autocrypt_db_account_delete(struct AutocryptAccount *acct)
 {
   int rc = -1;
@@ -363,6 +431,13 @@ cleanup:
   return rc;
 }
 
+/**
+ * mutt_autocrypt_db_account_get_all - Get all accounts from an Autocrypt database
+ * @param[out] accounts     List of accounts
+ * @param[out] num_accounts Number of accounts
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_autocrypt_db_account_get_all(struct AutocryptAccount ***accounts, int *num_accounts)
 {
   int rc = -1, result;
@@ -421,11 +496,19 @@ cleanup:
   return rc;
 }
 
+/**
+ * mutt_autocrypt_db_peer_new - Create a new AutocryptPeer
+ * @retval ptr New AutocryptPeer
+ */
 struct AutocryptPeer *mutt_autocrypt_db_peer_new(void)
 {
   return mutt_mem_calloc(1, sizeof(struct AutocryptPeer));
 }
 
+/**
+ * mutt_autocrypt_db_peer_free - Free an AutocryptPeer
+ * @param peer AutocryptPeer to free
+ */
 void mutt_autocrypt_db_peer_free(struct AutocryptPeer **peer)
 {
   if (!peer || !*peer)
@@ -438,6 +521,14 @@ void mutt_autocrypt_db_peer_free(struct AutocryptPeer **peer)
   FREE(peer);
 }
 
+/**
+ * mutt_autocrypt_db_peer_get - Get peer info from the Autocrypt database
+ * @param[in]  addr Email Address to look up
+ * @param[out] peer Matching Autocrypt Peer
+ * @retval  0 Success, no matches
+ * @retval  1 Success, a match
+ * @retval -1 Error
+ */
 int mutt_autocrypt_db_peer_get(struct Address *addr, struct AutocryptPeer **peer)
 {
   int rc = -1, result;
@@ -495,6 +586,13 @@ cleanup:
   return rc;
 }
 
+/**
+ * mutt_autocrypt_db_peer_insert - Insert a peer into the Autocrypt database
+ * @param addr Email Address
+ * @param peer AutocryptPeer to insert
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_autocrypt_db_peer_insert(struct Address *addr, struct AutocryptPeer *peer)
 {
   int rc = -1;
@@ -550,6 +648,12 @@ cleanup:
   return rc;
 }
 
+/**
+ * mutt_autocrypt_db_peer_update - Update the peer info in an Autocrypt database
+ * @param peer AutocryptPeer to update
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_autocrypt_db_peer_update(struct AutocryptPeer *peer)
 {
   int rc = -1;
@@ -600,11 +704,19 @@ cleanup:
   return rc;
 }
 
+/**
+ * mutt_autocrypt_db_peer_history_new - Create a new AutocryptPeerHistory
+ * @retval ptr New AutocryptPeerHistory
+ */
 struct AutocryptPeerHistory *mutt_autocrypt_db_peer_history_new(void)
 {
   return mutt_mem_calloc(1, sizeof(struct AutocryptPeerHistory));
 }
 
+/**
+ * mutt_autocrypt_db_peer_history_free - Free an AutocryptPeerHistory
+ * @param peerhist AutocryptPeerHistory to free
+ */
 void mutt_autocrypt_db_peer_history_free(struct AutocryptPeerHistory **peerhist)
 {
   if (!peerhist || !*peerhist)
@@ -615,6 +727,13 @@ void mutt_autocrypt_db_peer_history_free(struct AutocryptPeerHistory **peerhist)
   FREE(peerhist);
 }
 
+/**
+ * mutt_autocrypt_db_peer_history_insert - Insert peer history into the Autocrypt database
+ * @param addr     Email Address
+ * @param peerhist Peer history to insert
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_autocrypt_db_peer_history_insert(struct Address *addr,
                                           struct AutocryptPeerHistory *peerhist)
 {
@@ -658,11 +777,19 @@ cleanup:
   return rc;
 }
 
+/**
+ * mutt_autocrypt_db_gossip_history_new - Create a new AutocryptGossipHistory
+ * @retval ptr New AutocryptGossipHistory
+ */
 struct AutocryptGossipHistory *mutt_autocrypt_db_gossip_history_new(void)
 {
   return mutt_mem_calloc(1, sizeof(struct AutocryptGossipHistory));
 }
 
+/**
+ * mutt_autocrypt_db_gossip_history_free - Free an AutocryptGossipHistory
+ * @param gossip_hist AutocryptGossipHistory to free
+ */
 void mutt_autocrypt_db_gossip_history_free(struct AutocryptGossipHistory **gossip_hist)
 {
   if (!gossip_hist || !*gossip_hist)
@@ -674,6 +801,13 @@ void mutt_autocrypt_db_gossip_history_free(struct AutocryptGossipHistory **gossi
   FREE(gossip_hist);
 }
 
+/**
+ * mutt_autocrypt_db_gossip_history_insert - Insert a gossip history into the Autocrypt database
+ * @param addr        Email Address
+ * @param gossip_hist Gossip history to insert
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_autocrypt_db_gossip_history_insert(struct Address *addr,
                                             struct AutocryptGossipHistory *gossip_hist)
 {

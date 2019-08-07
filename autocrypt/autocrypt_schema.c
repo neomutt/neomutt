@@ -1,6 +1,6 @@
 /**
  * @file
- * XXX
+ * Autocrypt database schema
  *
  * @authors
  * Copyright (C) 2019 Kevin J. McCarthy <kevin@8t8.us>
@@ -26,6 +26,9 @@
 #include "autocrypt_private.h"
 #include "mutt/mutt.h"
 
+/**
+ * mutt_autocrypt_schema_init - Set up an Autocrypt database
+ */
 int mutt_autocrypt_schema_init(void)
 {
   const char *schema;
@@ -88,6 +91,11 @@ int mutt_autocrypt_schema_init(void)
   return 0;
 }
 
+/**
+ * mutt_autocrypt_schema_update - Update the version number of the Autocrypt database schema
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_autocrypt_schema_update(void)
 {
   sqlite3_stmt *stmt = NULL;

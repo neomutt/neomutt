@@ -666,6 +666,9 @@ const struct Binding OpMix[] = { /* map: mixmaster */
 #endif /* MIXMASTER */
 
 #ifdef USE_AUTOCRYPT
+/**
+ * OpAutocryptAcct - Key bindings for the autocrypt account
+ */
 const struct Binding OpAutocryptAcct[] = { /* map: autocrypt account */
   { "create-account",        OP_AUTOCRYPT_CREATE_ACCT,       "c" },
   { "delete-account",        OP_AUTOCRYPT_DELETE_ACCT,       "D" },

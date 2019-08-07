@@ -1,6 +1,6 @@
 /**
  * @file
- * XXX
+ * Autocrypt feature
  *
  * @authors
  * Copyright (C) 2019 Kevin J. McCarthy <kevin@8t8.us>
@@ -39,6 +39,12 @@
 #include "ncrypt/ncrypt.h"
 #include "send.h"
 
+/**
+ * autocrypt_dir_init - Initialise an Autocrypt directory
+ * @param can_create If true, the directory may be created
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int autocrypt_dir_init(int can_create)
 {
   int rc = 0;
@@ -75,6 +81,12 @@ static int autocrypt_dir_init(int can_create)
   return rc;
 }
 
+/**
+ * mutt_autocrypt_init - Initialise Autocrypt
+ * @param can_create If true, directories may be created
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_autocrypt_init(int can_create)
 {
   if (AutocryptDB)
@@ -100,14 +112,23 @@ bail:
   return -1;
 }
 
+/**
+ * mutt_autocrypt_cleanup - Shutdown Autocrypt
+ */
 void mutt_autocrypt_cleanup(void)
 {
   mutt_autocrypt_db_close();
 }
 
-/* Creates a brand new account.
- * This is used the first time autocrypt is initialized, and
- * in the account menu. */
+/**
+ * mutt_autocrypt_account_init - Create a new Autocrypt account
+ * @param prompt Prompt the user
+ * @retval  0 Success
+ * @retval -1 Error
+ *
+ * This is used the first time autocrypt is initialized,
+ * and in the account menu.
+ */
 int mutt_autocrypt_account_init(int prompt)
 {
   struct Address *addr = NULL;
@@ -218,6 +239,13 @@ cleanup:
   return rc;
 }
 
+/**
+ * mutt_autocrypt_process_autocrypt_header - Parse an Autocrypt email header
+ * @param e   Email
+ * @param env Envelope
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *env)
 {
   struct AutocryptHeader *ac_hdr, *valid_ac_hdr = NULL;
@@ -359,6 +387,13 @@ cleanup:
   return rc;
 }
 
+/**
+ * mutt_autocrypt_process_gossip_header - Parse an Autocrypt email gossip header
+ * @param e            Email
+ * @param prot_headers Envelope with protected headers
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_autocrypt_process_gossip_header(struct Email *hdr, struct Envelope *prot_headers)
 {
   struct Envelope *env;
@@ -505,9 +540,14 @@ cleanup:
   return rc;
 }
 
-/* Returns the recommendation.  If the recommendataion is > NO and
- * keylist is not NULL, keylist will be populated with the autocrypt
- * keyids
+/**
+ * mutt_autocrypt_ui_recommendation - Get the recommended action for an Email
+ * @param[in]  e       Email
+ * @param[out] keylist List of Autocrypt key ids
+ * @retval num Recommendation, e.g. #AUTOCRYPT_REC_AVAILABLE
+ *
+ * If the recommendataion is > NO and keylist is not NULL, keylist will be
+ * populated with the autocrypt keyids.
  */
 enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *hdr, char **keylist)
 {
@@ -615,6 +655,12 @@ cleanup:
   return rc;
 }
 
+/**
+ * mutt_autocrypt_set_sign_as_default_key - Set the Autocrypt default key for signing
+ * @param e Email
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_autocrypt_set_sign_as_default_key(struct Email *hdr)
 {
   int rc = -1;
@@ -644,6 +690,13 @@ cleanup:
   return rc;
 }
 
+/**
+ * write_autocrypt_header_line - Write an Autocrypt header to a file
+ * @param fp             File to write to
+ * @param addr           Email address
+ * @param prefer_encrypt Whether encryption is preferred
+ * @param keydata        Raw Autocrypt data
+ */
 static void write_autocrypt_header_line(FILE *fp, const char *addr,
                                         int prefer_encrypt, const char *keydata)
 {
@@ -668,6 +721,13 @@ static void write_autocrypt_header_line(FILE *fp, const char *addr,
   }
 }
 
+/**
+ * mutt_autocrypt_write_autocrypt_header - Write the Autocrypt header to a file
+ * @param env Envelope
+ * @param fp  File to write to
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_autocrypt_write_autocrypt_header(struct Envelope *env, FILE *fp)
 {
   int rc = -1;
@@ -698,6 +758,13 @@ cleanup:
   return rc;
 }
 
+/**
+ * mutt_autocrypt_write_gossip_headers - Write the Autocrypt gossip headers to a file
+ * @param env Envelope
+ * @param fp  File to write to
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_autocrypt_write_gossip_headers(struct Envelope *env, FILE *fp)
 {
   struct AutocryptHeader *gossip;
@@ -714,6 +781,12 @@ int mutt_autocrypt_write_gossip_headers(struct Envelope *env, FILE *fp)
   return 0;
 }
 
+/**
+ * mutt_autocrypt_generate_gossip_list - Create the gossip list headers
+ * @param e Email
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_autocrypt_generate_gossip_list(struct Email *hdr)
 {
   int rc = -1;
@@ -739,8 +812,7 @@ int mutt_autocrypt_generate_gossip_list(struct Email *hdr)
 
   TAILQ_FOREACH(recip, &recips, entries)
   {
-    /* At this point, we just accept missing keys and include what
-     * we can. */
+    /* At this point, we just accept missing keys and include what we can. */
     if (mutt_autocrypt_db_peer_get(recip, &peer) <= 0)
       continue;
 
@@ -797,7 +869,10 @@ int mutt_autocrypt_generate_gossip_list(struct Email *hdr)
   return rc;
 }
 
-/* This is invoked during the first autocrypt initialization,
+/**
+ * mutt_autocrypt_scan_mailboxes - Scan mailboxes for Autocrypt headers
+ *
+ * This is invoked during the first autocrypt initialization,
  * to scan one or more mailboxes for autocrypt headers.
  *
  * Due to the implementation, header-cached headers are not scanned,
@@ -827,9 +902,7 @@ void mutt_autocrypt_scan_mailboxes(void)
   scan = mutt_yesorno(_("Scan a mailbox for autocrypt headers?"), MUTT_YES);
   while (scan == MUTT_YES)
   {
-    /* L10N:
-       The prompt for a mailbox to scan for Autocrypt: headers
-    */
+    // L10N: The prompt for a mailbox to scan for Autocrypt: headers
     if ((!mutt_buffer_enter_fname(_("Scan mailbox"), folderbuf, 1)) &&
         mutt_buffer_len(folderbuf))
     {

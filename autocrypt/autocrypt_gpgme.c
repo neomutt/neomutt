@@ -1,6 +1,6 @@
 /**
  * @file
- * XXX
+ * Autocrypt GPGME handler
  *
  * @authors
  * Copyright (C) 2019 Kevin J. McCarthy <kevin@8t8.us>
@@ -29,6 +29,12 @@
 #include "globals.h"
 #include "ncrypt/crypt_gpgme.h"
 
+/**
+ * create_gpgme_context - Create a GPGME context
+ * @param ctx GPGME context to initialise
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int create_gpgme_context(gpgme_ctx_t *ctx)
 {
   gpgme_error_t err;
@@ -45,12 +51,23 @@ static int create_gpgme_context(gpgme_ctx_t *ctx)
   return 0;
 }
 
+/**
+ * mutt_autocrypt_gpgme_init - Initialise GPGME
+ */
 int mutt_autocrypt_gpgme_init(void)
 {
   pgp_gpgme_init();
   return 0;
 }
 
+/**
+ * export_keydata - Export Key data from GPGME into a Buffer
+ * @param ctx     GPGME context
+ * @param key     GPGME key
+ * @param keydata Buffer for results
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int export_keydata(gpgme_ctx_t ctx, gpgme_key_t key, struct Buffer *keydata)
 {
   int rc = -1;
@@ -86,7 +103,13 @@ cleanup:
   return rc;
 }
 
-/* TODO: not sure if this function will be useful in the future. */
+/**
+ * mutt_autocrypt_gpgme_export_key - Export a GPGME key
+ * @param keyid   GPGME Key id
+ * @param keydata Buffer for results
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_autocrypt_gpgme_export_key(const char *keyid, struct Buffer *keydata)
 {
   int rc = -1;
@@ -109,6 +132,14 @@ cleanup:
   return rc;
 }
 
+/**
+ * mutt_autocrypt_gpgme_create_key - Create a GPGME key
+ * @param addr    Email Address
+ * @param keyid   Key id
+ * @param keydata Key data
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_autocrypt_gpgme_create_key(struct Address *addr, struct Buffer *keyid,
                                     struct Buffer *keydata)
 {
@@ -179,6 +210,13 @@ cleanup:
   return rc;
 }
 
+/**
+ * mutt_autocrypt_gpgme_import_key - Read a key from GPGME
+ * @param keydata Buffer for key data
+ * @param keyid   Buffer for key id
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_autocrypt_gpgme_import_key(const char *keydata, struct Buffer *keyid)
 {
   int rc = -1;
@@ -214,6 +252,11 @@ cleanup:
   return rc;
 }
 
+/**
+ * mutt_autocrypt_gpgme_is_valid_key - Is a key id valid?
+ * @param keyid Key id to check
+ * @retval true If key id is valid
+ */
 int mutt_autocrypt_gpgme_is_valid_key(const char *keyid)
 {
   int rc = 0;
