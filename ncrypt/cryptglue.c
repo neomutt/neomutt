@@ -329,15 +329,15 @@ struct Body *crypt_pgp_sign_message(struct Body *a)
 /**
  * crypt_pgp_encrypt_message - Wrapper for CryptModuleSpecs::pgp_encrypt_message()
  */
-struct Body *crypt_pgp_encrypt_message(struct Email *msg, struct Body *a,
+struct Body *crypt_pgp_encrypt_message(struct Email *e, struct Body *a,
                                        char *keylist, int sign)
 {
 #ifdef USE_AUTOCRYPT
   struct Body *result;
 
-  if (msg->security & SEC_AUTOCRYPT)
+  if (e->security & SEC_AUTOCRYPT)
   {
-    if (mutt_autocrypt_set_sign_as_default_key(msg))
+    if (mutt_autocrypt_set_sign_as_default_key(e))
       return NULL;
 
     OptAutocryptGpgme = true;
