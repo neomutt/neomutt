@@ -421,6 +421,15 @@ struct ConfigDef MuttVars[] = {
   ** keyring and sqlite database.  See ``$autocryptdoc'' for more details.
   ** (Autocrypt only)
   */
+  { "autocrypt_reply", DT_BOOL, &C_AutocryptReply, true },
+  /*
+  ** .pp
+  ** When \fIset\fP, replying to an autocrypt email automatically
+  ** enables autocrypt in the reply.  You may want to unset this if you're using
+  ** the same key for autocrypt as normal web-of-trust, so that autocrypt
+  ** isn't forced on for all encrypted replies.
+  ** (Autocrypt only)
+  */
 #endif
   { "autoedit", DT_BOOL, &C_Autoedit, false },
   /*

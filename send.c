@@ -2248,7 +2248,7 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
   {
     if (
 #ifdef USE_AUTOCRYPT
-        C_Autocrypt
+        C_Autocrypt && C_AutocryptReply
 #else
         0
 #endif

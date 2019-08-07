@@ -207,6 +207,7 @@ WHERE bool C_Askbcc;                         ///< Config: Ask the user for the b
 WHERE bool C_Askcc;                          ///< Config: Ask the user for the carbon-copy recipients
 #ifdef USE_AUTOCRYPT
 WHERE bool C_Autocrypt;                      ///< Config: Enables the Autocrypt feature
+WHERE bool C_AutocryptReply;                 ///< Config: Replying to an autocrypt email automatically enables autocrypt in the reply
 #endif
 WHERE bool C_Autoedit;                       ///< Config: Skip the initial compose menu and edit the email
 WHERE bool C_AutoTag;                        ///< Config: Automatically apply actions to all tagged messages
