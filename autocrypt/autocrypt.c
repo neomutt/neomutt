@@ -394,7 +394,7 @@ cleanup:
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_autocrypt_process_gossip_header(struct Email *hdr, struct Envelope *prot_headers)
+int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_headers)
 {
   struct Envelope *env;
   struct AutocryptHeader *ac_hdr;
@@ -413,10 +413,10 @@ int mutt_autocrypt_process_gossip_header(struct Email *hdr, struct Envelope *pro
   if (mutt_autocrypt_init(0))
     return -1;
 
-  if (!hdr || !hdr->env || !prot_headers)
+  if (!e || !e->env || !prot_headers)
     return 0;
 
-  env = hdr->env;
+  env = e->env;
 
   struct Address *from = TAILQ_FIRST(&env->from);
   if (!from)
@@ -425,7 +425,7 @@ int mutt_autocrypt_process_gossip_header(struct Email *hdr, struct Envelope *pro
   /* Ignore emails that appear to be more than a week in the future,
    * since they can block all future updates during that time. */
   gettimeofday(&now, NULL);
-  if (hdr->date_sent > (now.tv_sec + 7 * 24 * 60 * 60))
+  if (e->date_sent > (now.tv_sec + 7 * 24 * 60 * 60))
     return 0;
 
   keyid = mutt_buffer_pool_get();
@@ -465,14 +465,14 @@ int mutt_autocrypt_process_gossip_header(struct Email *hdr, struct Envelope *pro
 
     if (peer)
     {
-      if (hdr->date_sent <= peer->gossip_timestamp)
+      if (e->date_sent <= peer->gossip_timestamp)
       {
         mutt_autocrypt_db_peer_free(&peer);
         continue;
       }
 
       update_db = 1;
-      peer->gossip_timestamp = hdr->date_sent;
+      peer->gossip_timestamp = e->date_sent;
       /* This is slightly different from the autocrypt 1.1 spec.
        * Avoid setting an empty peer.gossip_keydata with a value that matches
        * the current peer.keydata. */
@@ -494,7 +494,7 @@ int mutt_autocrypt_process_gossip_header(struct Email *hdr, struct Envelope *pro
     if (!peer)
     {
       peer = mutt_autocrypt_db_peer_new();
-      peer->gossip_timestamp = hdr->date_sent;
+      peer->gossip_timestamp = e->date_sent;
       peer->gossip_keydata = mutt_str_strdup(ac_hdr->keydata);
     }
 
@@ -516,7 +516,7 @@ int mutt_autocrypt_process_gossip_header(struct Email *hdr, struct Envelope *pro
       gossip_hist = mutt_autocrypt_db_gossip_history_new();
       gossip_hist->sender_email_addr = mutt_str_strdup(from->mailbox);
       gossip_hist->email_msgid = mutt_str_strdup(env->message_id);
-      gossip_hist->timestamp = hdr->date_sent;
+      gossip_hist->timestamp = e->date_sent;
       gossip_hist->gossip_keydata = mutt_str_strdup(peer->gossip_keydata);
       if (mutt_autocrypt_db_gossip_history_insert(peer_addr, gossip_hist))
         goto cleanup;
@@ -549,7 +549,7 @@ cleanup:
  * If the recommendataion is > NO and keylist is not NULL, keylist will be
  * populated with the autocrypt keyids.
  */
-enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *hdr, char **keylist)
+enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *e, char **keylist)
 {
   enum AutocryptRec rc = AUTOCRYPT_REC_OFF;
   struct AutocryptAccount *account = NULL;
@@ -559,14 +559,14 @@ enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *hdr, char **key
   struct Buffer *keylist_buf = NULL;
   const char *matching_key;
 
-  if (!C_Autocrypt || mutt_autocrypt_init(0) || !hdr)
+  if (!C_Autocrypt || mutt_autocrypt_init(0) || !e)
     return AUTOCRYPT_REC_OFF;
 
-  struct Address *from = TAILQ_FIRST(&hdr->env->from);
+  struct Address *from = TAILQ_FIRST(&e->env->from);
   if (!from || TAILQ_NEXT(from, entries))
     return AUTOCRYPT_REC_OFF;
 
-  if (hdr->security & APPLICATION_SMIME)
+  if (e->security & APPLICATION_SMIME)
     return AUTOCRYPT_REC_OFF;
 
   if (mutt_autocrypt_db_account_get(from, &account) <= 0)
@@ -580,9 +580,9 @@ enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *hdr, char **key
 
   struct AddressList recips = TAILQ_HEAD_INITIALIZER(recips);
 
-  mutt_addrlist_copy(&recips, &hdr->env->to, false);
-  mutt_addrlist_copy(&recips, &hdr->env->cc, false);
-  mutt_addrlist_copy(&recips, &hdr->env->bcc, false);
+  mutt_addrlist_copy(&recips, &e->env->to, false);
+  mutt_addrlist_copy(&recips, &e->env->cc, false);
+  mutt_addrlist_copy(&recips, &e->env->bcc, false);
 
   rc = AUTOCRYPT_REC_NO;
   if (TAILQ_EMPTY(&recips))
@@ -661,15 +661,15 @@ cleanup:
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_autocrypt_set_sign_as_default_key(struct Email *hdr)
+int mutt_autocrypt_set_sign_as_default_key(struct Email *e)
 {
   int rc = -1;
   struct AutocryptAccount *account = NULL;
 
-  if (!C_Autocrypt || mutt_autocrypt_init(0) || !hdr)
+  if (!C_Autocrypt || mutt_autocrypt_init(0) || !e)
     return -1;
 
-  struct Address *from = TAILQ_FIRST(&hdr->env->from);
+  struct Address *from = TAILQ_FIRST(&e->env->from);
   if (!from || TAILQ_NEXT(from, entries))
     return -1;
 
@@ -787,7 +787,7 @@ int mutt_autocrypt_write_gossip_headers(struct Envelope *env, FILE *fp)
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_autocrypt_generate_gossip_list(struct Email *hdr)
+int mutt_autocrypt_generate_gossip_list(struct Email *e)
 {
   int rc = -1;
   struct AutocryptPeer *peer = NULL;
@@ -797,18 +797,18 @@ int mutt_autocrypt_generate_gossip_list(struct Email *hdr)
   const char *keydata, *addr;
   struct Envelope *mime_headers;
 
-  if (!C_Autocrypt || mutt_autocrypt_init(0) || !hdr)
+  if (!C_Autocrypt || mutt_autocrypt_init(0) || !e)
     return -1;
 
-  mime_headers = hdr->content->mime_headers;
+  mime_headers = e->content->mime_headers;
   if (!mime_headers)
-    mime_headers = hdr->content->mime_headers = mutt_env_new();
+    mime_headers = e->content->mime_headers = mutt_env_new();
   mutt_free_autocrypthdr(&mime_headers->autocrypt_gossip);
 
   struct AddressList recips = TAILQ_HEAD_INITIALIZER(recips);
 
-  mutt_addrlist_copy(&recips, &hdr->env->to, false);
-  mutt_addrlist_copy(&recips, &hdr->env->cc, false);
+  mutt_addrlist_copy(&recips, &e->env->to, false);
+  mutt_addrlist_copy(&recips, &e->env->cc, false);
 
   TAILQ_FOREACH(recip, &recips, entries)
   {
@@ -834,7 +834,7 @@ int mutt_autocrypt_generate_gossip_list(struct Email *hdr)
     mutt_autocrypt_db_peer_free(&peer);
   }
 
-  TAILQ_FOREACH(recip, &hdr->env->reply_to, entries)
+  TAILQ_FOREACH(recip, &e->env->reply_to, entries)
   {
     addr = keydata = NULL;
     if (mutt_autocrypt_db_account_get(recip, &account) > 0)

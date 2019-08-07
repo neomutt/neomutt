@@ -96,13 +96,13 @@ enum AutocryptRec
 
 int mutt_autocrypt_init (int);
 void mutt_autocrypt_cleanup (void);
-int mutt_autocrypt_process_autocrypt_header (struct Email *hdr, struct Envelope *env);
-int mutt_autocrypt_process_gossip_header (struct Email *hdr, struct Envelope *prot_headers);
-enum AutocryptRec mutt_autocrypt_ui_recommendation (struct Email *hdr, char **keylist);
-int mutt_autocrypt_set_sign_as_default_key (struct Email *hdr);
+int mutt_autocrypt_process_autocrypt_header (struct Email *e, struct Envelope *env);
+int mutt_autocrypt_process_gossip_header (struct Email *e, struct Envelope *prot_headers);
+enum AutocryptRec mutt_autocrypt_ui_recommendation (struct Email *e, char **keylist);
+int mutt_autocrypt_set_sign_as_default_key (struct Email *e);
 int mutt_autocrypt_write_autocrypt_header (struct Envelope *env, FILE *fp);
 int mutt_autocrypt_write_gossip_headers (struct Envelope *env, FILE *fp);
-int mutt_autocrypt_generate_gossip_list (struct Email *hdr);
+int mutt_autocrypt_generate_gossip_list (struct Email *e);
 void mutt_autocrypt_account_menu (void);
 
 #endif /* MUTT_AUTOCRYPT_AUTOCRYPT_H */
