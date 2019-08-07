@@ -21,11 +21,11 @@
  */
 
 #include "config.h"
+#include <stddef.h>
 #include <gpgme.h>
-#include "autocrypt_private.h"
+#include <stdbool.h>
+#include "mutt/mutt.h"
 #include "address/lib.h"
-#include "mutt.h"
-#include "autocrypt.h"
 #include "globals.h"
 #include "ncrypt/crypt_gpgme.h"
 

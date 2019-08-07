@@ -21,12 +21,13 @@
  */
 
 #include "config.h"
+#include <stddef.h>
+#include <sqlite3.h>
+#include <stdbool.h>
 #include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
 #include "autocrypt_private.h"
+#include "mutt/mutt.h"
 #include "address/lib.h"
-#include "mutt.h"
 #include "autocrypt.h"
 #include "globals.h"
 

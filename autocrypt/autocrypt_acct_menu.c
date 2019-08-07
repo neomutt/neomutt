@@ -21,13 +21,18 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
+#include <stdio.h>
 #include "autocrypt_private.h"
+#include "mutt/mutt.h"
 #include "address/lib.h"
+#include "config/lib.h"
 #include "mutt.h"
 #include "autocrypt.h"
 #include "curs_lib.h"
 #include "format_flags.h"
 #include "globals.h"
+#include "keymap.h"
 #include "mutt_menu.h"
 #include "mutt_window.h"
 #include "muttlib.h"

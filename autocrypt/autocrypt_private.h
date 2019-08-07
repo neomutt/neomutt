@@ -24,6 +24,7 @@
 #define MUTT_AUTOCRYPT_AUTOCRYPT_PRIVATE_H
 
 #include <sqlite3.h>
+#include <stdbool.h>
 
 struct Address;
 struct AddressList;

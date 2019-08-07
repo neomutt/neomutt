@@ -21,9 +21,10 @@
  */
 
 #include "config.h"
+#include <stddef.h>
+#include <sqlite3.h>
 #include "autocrypt_private.h"
-#include "mutt.h"
-#include "autocrypt.h"
+#include "mutt/mutt.h"
 
 int mutt_autocrypt_schema_init(void)
 {

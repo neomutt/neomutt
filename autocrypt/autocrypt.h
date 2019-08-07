@@ -24,8 +24,11 @@
 #define MUTT_AUTOCRYPT_AUTOCRYPT_H
 
 #include <sqlite3.h>
-#include "where.h"
+#include <stdbool.h>
+#include <stdio.h>
 
+struct Email;
+struct Envelope;
 WHERE sqlite3 *AutocryptDB;
 
 struct AutocryptAccount
