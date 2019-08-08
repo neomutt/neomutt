@@ -37,6 +37,7 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
+#include "options.h"
 #include "send.h"
 
 /**
@@ -94,6 +95,8 @@ int mutt_autocrypt_init(bool can_create)
   if (!C_Autocrypt || !C_AutocryptDir)
     return -1;
 
+  OptIgnoreMacroEvents = true;
+
   if (autocrypt_dir_init(can_create))
     goto bail;
 
@@ -103,9 +106,12 @@ int mutt_autocrypt_init(bool can_create)
   if (mutt_autocrypt_db_init(can_create))
     goto bail;
 
+  OptIgnoreMacroEvents = false;
+
   return 0;
 
 bail:
+  OptIgnoreMacroEvents = false;
   C_Autocrypt = false;
   mutt_autocrypt_db_close();
   return -1;
