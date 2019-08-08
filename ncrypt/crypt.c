@@ -1081,7 +1081,7 @@ static void crypt_fetch_signatures(struct Body ***signatures, struct Body *a, in
  */
 bool mutt_should_hide_protected_subject(struct Email *e)
 {
-  if (C_CryptProtectedHeadersWrite && (e->security & SEC_ENCRYPT) &&
+  if (C_CryptProtectedHeadersWrite && (e->security & (SEC_ENCRYPT | SEC_AUTOCRYPT)) &&
       !(e->security & SEC_INLINE) && C_CryptProtectedHeadersSubject)
   {
     return true;
