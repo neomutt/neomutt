@@ -896,6 +896,7 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   int done;
   FILE *fp = NULL;
   int ALLOW_SKIP = 0; /* All caps tells Coverity that this is effectively a preproc condition */
+  bool reset_ignoremacro = false;
 
   mutt_menu_push_current(menu);
 
@@ -984,8 +985,13 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   mutt_str_strcat(helpstr, sizeof(helpstr), buf);
   menu->help = helpstr;
 
+  if (!OptIgnoreMacroEvents)
+  {
+    OptIgnoreMacroEvents = true;
+    reset_ignoremacro = true;
+  }
+
   done = 0;
-  OptIgnoreMacroEvents = true;
   while (done == 0)
   {
     switch (mutt_menu_loop(menu))
@@ -1029,7 +1035,8 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
         break;
     }
   }
-  OptIgnoreMacroEvents = false;
+  if (reset_ignoremacro)
+    OptIgnoreMacroEvents = false;
 
   mutt_buffer_pool_release(&drow);
   mutt_menu_pop_current(menu);

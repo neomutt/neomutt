@@ -286,11 +286,16 @@ int mutt_get_field_full(const char *field, char *buf, size_t buflen, CompletionF
  */
 int mutt_get_field_unbuffered(const char *msg, char *buf, size_t buflen, CompletionFlags flags)
 {
-  int rc;
+  bool reset_ignoremacro = false;
 
-  OptIgnoreMacroEvents = true;
-  rc = mutt_get_field(msg, buf, buflen, flags);
-  OptIgnoreMacroEvents = false;
+  if (!OptIgnoreMacroEvents)
+  {
+    OptIgnoreMacroEvents = true;
+    reset_ignoremacro = true;
+  }
+  int rc = mutt_get_field(msg, buf, buflen, flags);
+  if (reset_ignoremacro)
+    OptIgnoreMacroEvents = false;
 
   return rc;
 }

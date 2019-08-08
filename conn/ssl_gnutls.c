@@ -458,6 +458,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   FILE *fp = NULL;
   gnutls_datum_t pemdata;
   int done, ret;
+  bool reset_ignoremacro = false;
 
   if (tls_check_preauth(certdata, certstat, hostname, idx, &certerr, &savedcert) == 0)
     return 1;
@@ -677,8 +678,13 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   mutt_str_strcat(helpstr, sizeof(helpstr), buf);
   menu->help = helpstr;
 
+  if (!OptIgnoreMacroEvents)
+  {
+    OptIgnoreMacroEvents = true;
+    reset_ignoremacro = true;
+  }
+
   done = 0;
-  OptIgnoreMacroEvents = true;
   while (done == 0)
   {
     switch (mutt_menu_loop(menu))
@@ -732,7 +738,8 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
         break;
     }
   }
-  OptIgnoreMacroEvents = false;
+  if (reset_ignoremacro)
+    OptIgnoreMacroEvents = false;
 
   mutt_buffer_pool_release(&drow);
   mutt_menu_pop_current(menu);
