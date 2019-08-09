@@ -3418,7 +3418,7 @@ set crypt_use_gpgme
       </para>
       <para>
         NeoMutt searches for several different file names when looking for
-        config. It looks for NeoMutt config files before Mutt config files and
+        config. It looks for NeoMutt config files before NeoMutt config files and
         versioned config before plain config. For example:
       </para>
 
@@ -3436,7 +3436,7 @@ set crypt_use_gpgme
         </tgroup>
       </table>
       <para>
-        This allows the user to create separate NeoMutt and Mutt config files
+        This allows the user to create separate NeoMutt and NeoMutt config files
         on the same system.
       </para>
 
@@ -17370,11 +17370,11 @@ bind index D purge-message
 
     <sect1 id="autocryptdoc">
       <title>Autocrypt</title>
-    
+
       <para>
-        Mutt can be compiled with Autocrypt support by running
-        <emphasis>configure</emphasis> with the
-        <emphasis>--enable-autocrypt</emphasis> flag.  Autocrypt provides
+        NeoMutt can be compiled with Autocrypt support by running
+        <literal>configure</literal> with the
+        <literal>--enable-autocrypt</literal> flag.  Autocrypt provides
         easy to use, passive protection against data collection.  Keys are
         distributed via an <literal>Autocrypt:</literal> header added to
         emails.  It does <emphasis>not</emphasis> protect against active
@@ -17386,28 +17386,28 @@ bind index D purge-message
         having to explicitly exchange keys.  More information can be found
         at <ulink url="https://autocrypt.org/">https://autocrypt.org/</ulink>.
       </para>
-    
+
       <sect2 id="autocryptdoc-requirements">
         <title>Requirements</title>
         <para>
-          Autocrypt requires support for ECC cryptography, and Mutt by
+          Autocrypt requires support for ECC cryptography, and NeoMutt by
           default will generate ECC keys.  Therefore GnuPG 2.1 or greater
-          is required.  Additionally, Mutt's Autocrypt implementation uses
+          is required.  Additionally, NeoMutt's Autocrypt implementation uses
           GPGME and requires at least version 1.8.0.
         </para>
         <para>
           Account and peer information is stored in a sqlite3 database, and
-          so Mutt must be configured with the <literal>--with-sqlite3</literal>
+          so NeoMutt must be configured with the <literal>--with-sqlite3</literal>
           flag when autocrypt is enabled.
         </para>
         <para>
-          It is highly recommended Mutt be configured
-          <emphasis>--with-idn</emphasis> or
-          <emphasis>--with-idn2</emphasis> so that Autocrypt can properly
+          It is highly recommended that NeoMutt be configured
+          <literal>--with-idn</literal> or
+          <literal>--with-idn2</literal> so that Autocrypt can properly
           deal with international domain names.
         </para>
         <para>
-          While Mutt uses GPGME for Autocrypt, normal keyring operations
+          While NeoMutt uses GPGME for Autocrypt, normal keyring operations
           can still be performed via classic mode (i.e. with
           <link linkend="crypt-use-gpgme">$crypt_use_gpgme</link> unset).
           However, to avoid unnecessary prompts, it is recommended gpg not
@@ -17416,46 +17416,46 @@ bind index D purge-message
           remain set (the default).
         </para>
       </sect2>
-    
+
       <sect2 id="autocryptdoc-init">
         <title>First Run</title>
         <para>
           To enable Autocrypt, set <link
           linkend="autocrypt">$autocrypt</link>, and if desired change the
           value of <link linkend="autocrypt-dir">$autocrypt_dir</link> in
-          your muttrc.  The first time Mutt is run after that, you will be
+          your muttrc.  The first time NeoMutt is run after that, you will be
           prompted to create
-          <link linkend="autocrypt-dir">$autocrypt_dir</link>.  Mutt will then
+          <link linkend="autocrypt-dir">$autocrypt_dir</link>.  NeoMutt will then
           automatically create an sqlite3 database and gpg keyring in that
           directory.  Note since these files should be considered private,
-          Mutt will create this directory with mode
+          NeoMutt will create this directory with mode
           <literal>700</literal>.  If you create the directory manually,
           you should do the same.
         </para>
         <para>
-          Mutt recommends keeping the <link
+          NeoMutt recommends keeping the <link
           linkend="autocrypt-dir">$autocrypt_dir</link> directory set
           differently from your GnuPG keyring directory
           (e.g. <literal>~/.gnupg</literal>).  Keys are automatically
           imported into the keyring from <literal>Autocrypt:</literal>
-          headers.  Compared to standard WOT keys, Autocrypt keys are
-          somewhat ephemeral, and the autocrypt database is used to track
-          when keys change or fall out of use.  Having these keys mixed in
-          with your normal keyring will make it more difficult to use
-          features such as
+          headers.  Compared to standard <quote>web of trust</quote> keys,
+          Autocrypt keys are somewhat ephemeral, and the autocrypt
+          database is used to track when keys change or fall out of use.
+          Having these keys mixed in with your normal keyring will make it
+          more difficult to use features such as
           <link linkend="crypt-opportunistic-encrypt">$crypt_opportunistic_encrypt</link>
           and Autocrypt at the same time.
         </para>
         <para>
           The <link linkend="autocrypt-dir">$autocrypt_dir</link> variable
-          is not designed to be changed while Mutt is running.  The
+          is not designed to be changed while NeoMutt is running.  The
           database is created (if necessary) and connected to during
           startup.  Changing the variable can result in a situation where
-          Mutt is looking in one place for the database and a different
+          NeoMutt is looking in one place for the database and a different
           place for the GPG keyring, resulting in strange behavior.
         </para>
         <para>
-          Once the directory, keyring, and database are created, Mutt will
+          Once the directory, keyring, and database are created, NeoMutt will
           ask whether you would like to create an account.  In order to
           use Autocrypt, each sending address needs an account.  As a
           convenience you can create an account during the first run.  If
@@ -17464,16 +17464,20 @@ bind index D purge-message
           function in the index, by default bound to <literal>A</literal>.
         </para>
         <para>
-          Creating an account requires specifying an email address, and
-          then deciding whether this address should prefer encryption or
-          not.  Autocrypt 1.1 allows automatically enabling encryption if
+          Account creation will first ask you for an email address.  Next,
+          it will ask whether you want to create a new key or select an
+          existing key.  (Note key selection takes place from the <link
+          linkend="autocrypt-dir">$autocrypt_dir</link> keyring, which
+          will normally be empty during first run).  Finally, it will ask
+          whether this address should prefer encryption or not.  Autocrypt
+          1.1 allows automatically enabling encryption if
           <emphasis>both</emphasis> sender and receiver have set
           <quote>prefer encryption</quote>.  Otherwise, you will need to
           manually enable autocrypt encryption in the compose menu.  For
           more details, see the compose menu section below.
         </para>
         <para>
-          After optionally creating an account, Mutt will prompt you to
+          After optionally creating an account, NeoMutt will prompt you to
           scan mailboxes for Autocrypt headers.  This step occurs because
           header cached messages are not re-scanned for Autocrypt headers.
           Scanning during this step will temporarily disable the header
@@ -17483,7 +17487,7 @@ bind index D purge-message
           mailbox.
         </para>
       </sect2>
-    
+
       <sect2 id="autocryptdoc-compose">
         <title>Compose Menu</title>
         <para>
@@ -17569,14 +17573,18 @@ bind index D purge-message
           either of these are chosen, the field will remain in that state
           despite what the <literal>Recommendation:</literal> field shows.
           Lastly, <literal>(a)utomatic</literal> will set the value based
-          on the recommendataion engine's output.
+          on the recommendation engine's output.
         </para>
         <para>
           Autocrypt encryption defers to normal encryption or signing.
           <emphasis>Anything</emphasis> that enables normal encryption or
-          signing will cause autocrypt encryption to turn off.  The only exception is
-          when replying to an autocrypt-encrypted email.  In those cases, autocrypt
-          will override settings
+          signing will cause autocrypt encryption to turn off.  The only
+          exception is when replying to an autocrypt-encrypted email
+          (i.e. an email decrypted from the <link
+          linkend="autocrypt-dir">$autocrypt_dir</link> keyring).  Then,
+          if <link linkend="autocrypt-reply">$autocrypt_reply</link> is
+          <emphasis>set</emphasis>, autocrypt mode will be forced on,
+          overriding the settings
           <link linkend="crypt-autosign">$crypt_autosign</link>,
           <link linkend="crypt-autoencrypt">$crypt_autoencrypt</link>,
           <link linkend="crypt-replyencrypt">$crypt_replyencrypt</link>,
@@ -17593,7 +17601,7 @@ bind index D purge-message
           encrypted.
         </para>
       </sect2>
-    
+
       <sect2 id="autocryptdoc-acctmgmt">
         <title>Account Management</title>
         <para>
