@@ -17486,6 +17486,14 @@ bind index D purge-message
           <link linkend="header-cache">$header_cache</link> and opening a
           mailbox.
         </para>
+        <para>
+          A final technical note: the first run process takes place
+          between reading the muttrc and opening the initial mailbox.
+          Some muttrc files will <link linkend="push">push</link> macros
+          to be run after opening the mailbox.  To prevent this from
+          interfering with the first run prompts, NeoMutt disables all macros
+          during the first run.
+        </para>
       </sect2>
 
       <sect2 id="autocryptdoc-compose">
