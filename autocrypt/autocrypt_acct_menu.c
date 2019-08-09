@@ -61,10 +61,16 @@ static const struct Mapping AutocryptAcctHelp[] = {
   { N_("Delete"), OP_AUTOCRYPT_DELETE_ACCT },
   /* L10N: Autocrypt Account Menu Help line:
      toggle an account active/inactive
+     The words here are abbreviated to keep the help line compact.
+     It currently has the content:
+     q:Exit  c:Create  D:Delete  a:Tgl Active  p:Prf Enc  ?:Help
   */
   { N_("Tgl Active"), OP_AUTOCRYPT_TOGGLE_ACTIVE },
   /* L10N: Autocrypt Account Menu Help line:
      toggle "prefer-encrypt" on an account
+     The words here are abbreviated to keep the help line compact.
+     It currently has the content:
+     q:Exit  c:Create  D:Delete  a:Tgl Active  p:Prf Enc  ?:Help
   */
   { N_("Prf Enc"), OP_AUTOCRYPT_TOGGLE_PREFER },
   { N_("Help"), OP_HELP },
