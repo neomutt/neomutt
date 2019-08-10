@@ -5,14 +5,14 @@
 #
 # Pawel Dziekonski <dzieko@pwr.wroc.pl>, 1998-2006
 # Sergiusz Pawłowicz, 1998-2002
-# Marcin Rajner <mrajner@pw.edu.pl>, 2018
+# Marcin Rajner <marcin.rajner@pw.edu.pl>, 2018
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2019-07-15 16:30+0100\n"
-"PO-Revision-Date: 2019-04-10 15:11+0200\n"
+"PO-Revision-Date: 2019-08-10 21:56+0200\n"
 "Last-Translator: Marcin Rajner <marcin.rajner@pw.edu.pl>\n"
 "Language-Team: none\n"
 "Language: pl\n"
@@ -516,9 +516,8 @@ msgstr "Kopiowanie do %s..."
 
 #. L10N: e.g. "text/plain; charset=UTF-8; ..."
 #: commands.c:1213
-#, fuzzy
 msgid "Content type is too long"
-msgstr "Typ \"Content-Type\" zmieniono na %s"
+msgstr "Content-Type za długi"
 
 #: commands.c:1237
 #, c-format
@@ -1684,14 +1683,14 @@ msgstr "%s: nie ma takiego menu"
 #. L10N: '%s' is the name of the menu, e.g. 'index' or 'pager', it might
 #. L10N: also be 'all' when all menus are affected.
 #: icommands.c:276
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no binds for this menu"
-msgstr "%s: nie ma takiego menu"
+msgstr "%s: brak skrótów klawiszowych dla tego menu"
 
 #: icommands.c:276
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no macros for this menu"
-msgstr "%s: nie ma takiego menu"
+msgstr "%s: nie ma makr w tym menu"
 
 #. L10N: '%s' is the file name of the temporary file
 #: icommands.c:287 icommands.c:300 icommands.c:320 icommands.c:344
@@ -3095,7 +3094,6 @@ msgid "MIME type not defined.  Can't view attachment."
 msgstr "Typ MIME nie został zdefiniowany. Nie można wyświetlić załącznika."
 
 #: mutt_attach.c:457
-#, fuzzy
 msgid "Can't match nametemplate, continue?"
 msgstr "Nie pasujący szablon nazwy, kontynuować?"
 
@@ -3417,9 +3415,9 @@ msgid "secret key '%s' not found: %s"
 msgstr "Klucz tajny '%s' nie został odnaleziony: %s"
 
 #: ncrypt/crypt_gpgme.c:1151
-#, fuzzy, c-format
+#, c-format
 msgid "ambiguous specification of secret key '%s'\n"
-msgstr "Niejednoznaczne określenie klucza tajnego '%s'"
+msgstr "niejednoznaczne określenie klucza tajnego '%s'\n"
 
 #: ncrypt/crypt_gpgme.c:1167
 #, c-format
@@ -3585,9 +3583,9 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2760
-#, fuzzy, c-format
+#, c-format
 msgid "Error importing key: %s"
-msgstr "Błąd eksportowania klucza: %s"
+msgstr "Błąd importowania klucza: %s"
 
 #: ncrypt/crypt_gpgme.c:3001
 #, c-format
@@ -5889,12 +5887,12 @@ msgid "Saving..."
 msgstr "Zapisywanie..."
 
 #: recvattach.c:581 recvattach.c:745 recvattach.c:749
-#, fuzzy, c-format
+#, c-format
 msgid "Attachment saved"
 msgid_plural "%d attachments saved"
 msgstr[0] "Załącznik został zapisany"
-msgstr[1] "Załącznik został zapisany"
-msgstr[2] "Załącznik został zapisany"
+msgstr[1] "%d załączniki zostały zapisane"
+msgstr[2] "%d załączników zostało zapisanych"
 
 #: recvattach.c:769
 #, c-format
@@ -6126,9 +6124,8 @@ msgstr "Brak tematu, zaniechano wysłania listy"
 #. be added as attachments to the new mail, if this is answered yes.
 #.
 #: send.c:559
-#, fuzzy
 msgid "Forward attachments?"
-msgstr "Przesłać dalej jako załączniki?"
+msgstr "Przesłać dalej załączniki?"
 
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
