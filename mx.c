@@ -368,7 +368,10 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
     if (!m->quiet)
       mutt_clear_error();
     if (rc == -2)
+    {
       mutt_error(_("Reading from %s interrupted..."), mutt_b2s(m->pathbuf));
+      mutt_sort_headers(ctx, true);
+    }
   }
   else
   {
