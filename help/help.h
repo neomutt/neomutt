@@ -42,11 +42,13 @@
 
 extern struct MxOps MxHelpOps;
 
-typedef uint8_t HelpDocFlags;     ///< Types of Help Documents, e.g. #HELP_DOC_INDEX
-#define HELP_DOC_NO_FLAGS      0  ///< No flags are set
+typedef uint8_t HelpDocFlags; ///< Types of Help Documents, e.g. #HELP_DOC_INDEX
+#define HELP_DOC_NO_FLAGS 0   ///< No flags are set
 #define HELP_DOC_UNKNOWN (1 << 0) ///< File isn't a help document
-#define HELP_DOC_INDEX   (1 << 1) ///< Document is treated as help index (index.md)
-#define HELP_DOC_ROOTDOC (1 << 2) ///< Document lives directly in root of #C_HelpDocDir
+#define HELP_DOC_INDEX                                                         \
+  (1 << 1) ///< Document is treated as help index (index.md)
+#define HELP_DOC_ROOTDOC                                                       \
+  (1 << 2) ///< Document lives directly in root of #C_HelpDocDir
 #define HELP_DOC_CHAPTER (1 << 3) ///< Document is treated as help chapter
 #define HELP_DOC_SECTION (1 << 4) ///< Document is treated as help section
 
@@ -64,12 +66,11 @@ struct HelpFileHeader
  */
 struct HelpDocMeta
 {
-  struct Vector *fhdr;   ///< File header lines (list of key/value pairs)
-  char *name;            ///< Base file name
-  HelpDocFlags type;     ///< Type of the help document
+  struct Vector *fhdr; ///< File header lines (list of key/value pairs)
+  char *name;          ///< Base file name
+  HelpDocFlags type;   ///< Type of the help document
 };
 
-void help_doclist_free(void);
-int  help_doclist_init(void);
+int help_doclist_init(struct Vector *DocList);
 
 #endif /* MUTT_HELP_HELP_H */

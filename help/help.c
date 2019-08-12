@@ -42,8 +42,8 @@
 #include "mutt/mutt.h"
 #include "address/lib.h"
 #include "email/lib.h"
-#include "help.h"
 #include "core/lib.h"
+#include "help.h"
 #include "globals.h"
 #include "mutt_header.h"
 #include "mutt_thread.h"
@@ -54,16 +54,12 @@
 
 struct stat;
 
-#define HELP_CACHE_DOCLIST                                                     \
-  1 ///< whether to cache the DocList between help_mbox_open calls
 #define HELP_FHDR_MAXLINES                                                     \
   -1 ///< max help file header lines to read (N < 0 means all)
 #define HELP_LINK_CHAPTERS                                                     \
   0 ///< whether to link all help chapter upwards to root box
 
 static bool __Backup_HTS; ///< used to restore $hide_thread_subject on help_mbox_close()
-static char DocDirID[33]; ///< MD5 checksum of current $help_doc_dir DT_PATH option
-static struct Vector *DocList; ///< all valid help documents within $help_doc_dir folder
 
 /**
  * help_doc_type_cmp - Compare two help documents by their name - Implements ::sort_t
@@ -108,69 +104,7 @@ static void help_doc_meta_free(void **data)
 
   FREE(&meta->name);
   vector_free(&meta->fhdr, help_file_hdr_free);
-  *data = NULL;
-}
-
-/**
- * help_doc_free - Free a DocList element
- * @param item DocList element
- */
-static void help_doc_free(void **item)
-{
-  struct Email *hdoc = ((struct Email *) *item);
-
-  mutt_email_free(&hdoc);
-  FREE(hdoc);
-}
-
-/**
- * help_doclist_free - Free the global DocList
- */
-void help_doclist_free(void)
-{
-  vector_free(&DocList, help_doc_free);
-  mutt_str_strfcpy(DocDirID, "", sizeof(DocDirID));
-}
-
-/**
- * help_checksum_md5 - Calculate a string MD5 checksum and store it in a buffer
- * @param string String to hash
- * @param digest Buffer for storing the calculated hash
- *
- * @note The digest buffer _must_ be at least 33 bytes long
- */
-static void help_checksum_md5(const char *string, char *digest)
-{
-  unsigned char md5[16];
-
-  mutt_md5(NONULL(string), md5);
-  mutt_md5_toascii(md5, digest);
-}
-
-/**
- * help_docdir_id - Get current DocDirID
- * @param docdir Path to set the DocDirID from (optional)
- * @retval ptr Current DocDirID MD5 checksum string
- */
-static char *help_docdir_id(const char *docdir)
-{
-  if (docdir && DocList) /* only set ID if DocList != NULL */
-    help_checksum_md5(docdir, DocDirID);
-
-  return DocDirID;
-}
-
-/**
- * help_docdir_changed - Determine if $help_doc_dir differs from previous run
- * @retval true  `$help_doc_dir` path differs (DocList rebuilt recommended)
- * @retval false same $help_doc_dir path where DocList was built from
- */
-static bool help_docdir_changed(void)
-{
-  char digest[33];
-  help_checksum_md5(C_HelpDocDir, digest);
-
-  return (mutt_str_strcmp(DocDirID, digest) != 0);
+  FREE(data);
 }
 
 /**
@@ -389,6 +323,7 @@ static char *help_doc_subject(struct Vector *fhdr, const char *defsubj,
     p += mutt_str_strlen(f);
     l += size;
     key = va_arg(ap, const char *);
+    FREE(&f);
   }
   va_end(ap);
 
@@ -454,98 +389,6 @@ static char *help_path_transpose(const char *path, bool validate)
 }
 
 /**
- * help_file_hdr_clone - Callback to clone a file header object (struct HelpFileHeader)
- * @param item list element pointer to the object to copy
- * @retval ptr  Success, the duplicated object
- * @retval NULL Failure, otherwise
- */
-static void *help_file_hdr_clone(const void *item)
-{
-  if (!item)
-    return NULL;
-
-  struct HelpFileHeader *src = (struct HelpFileHeader *) item;
-  struct HelpFileHeader *dup = mutt_mem_calloc(1, sizeof(struct HelpFileHeader));
-
-  dup->key = mutt_str_strdup(src->key);
-  dup->val = mutt_str_strdup(src->val);
-
-  return dup;
-}
-
-/**
- * help_doc_meta_clone - Callback to clone a help metadata object (struct HelpDocMeta)
- * @param item list element pointer to the object to copy
- * @retval ptr  Success, the duplicated object
- * @retval NULL Failure, otherwise
- */
-static void *help_doc_meta_clone(const void *item)
-{
-  if (!item)
-    return NULL;
-
-  struct HelpDocMeta *src = (struct HelpDocMeta *) item;
-  struct HelpDocMeta *dup = mutt_mem_calloc(1, sizeof(struct HelpDocMeta));
-
-  dup->fhdr = vector_clone(src->fhdr, true, help_file_hdr_clone);
-  dup->name = mutt_str_strdup(src->name);
-  dup->type = src->type;
-
-  return dup;
-}
-
-/**
- * help_doc_clone - Callback to clone a help document object (Email)
- * @param item list element pointer to the object to copy
- * @retval ptr  Success, the duplicated object
- * @retval NULL Failure, otherwise
- *
- * @note This function should only duplicate statically defined attributes from
- *       an Email object that help_doc_from() build and return.
- */
-static void *help_doc_clone(const void *item)
-{
-  if (!item)
-    return NULL;
-
-  struct Email *src = (struct Email *) item;
-  struct Email *dup = mutt_email_new();
-  /* struct Email */
-  dup->date_sent = src->date_sent;
-  dup->display_subject = src->display_subject;
-  dup->index = src->index;
-  dup->path = mutt_str_strdup(src->path);
-  dup->read = src->read;
-  dup->received = src->received;
-  /* struct Email::data (custom metadata) */
-  dup->edata = help_doc_meta_clone(src->edata);
-  dup->free_edata = help_doc_meta_free;
-  /* struct Body */
-  dup->content = mutt_body_new();
-  dup->content->disposition = src->content->disposition;
-  dup->content->encoding = src->content->encoding;
-  dup->content->length = src->content->length;
-  dup->content->subtype = mutt_str_strdup(src->content->subtype);
-  dup->content->type = src->content->type;
-  /* struct Envelope */
-  dup->env = mutt_env_new();
-  mutt_addrlist_copy(&dup->env->from, &src->env->from, false);
-  dup->env->message_id = mutt_str_strdup(src->env->message_id);
-  dup->env->organization = mutt_str_strdup(src->env->organization);
-  dup->env->subject = mutt_str_strdup(src->env->subject);
-  /* struct Envelope::references */
-  struct ListNode *src_np = NULL, *dup_np = NULL;
-  STAILQ_FOREACH(src_np, &src->env->references, entries)
-  {
-    dup_np = mutt_mem_calloc(1, sizeof(struct ListNode));
-    dup_np->data = mutt_str_strdup(src_np->data);
-    STAILQ_INSERT_TAIL(&dup->env->references, dup_np, entries);
-  }
-
-  return dup;
-}
-
-/**
  * help_doc_from - Provides a validated/newly created help document (Email) from
  *                 a full qualified file path
  * @param file that is related to be a help document
@@ -572,22 +415,25 @@ static struct Email *help_doc_from(const char *file)
 
   /* from here, it should be safe to treat file as a valid help document */
   const char *bfn = mutt_path_basename(file);
-  const char *pdn = mutt_path_basename(mutt_path_dirname(file));
+  char *dir = mutt_path_dirname(file);
+  const char *pdn = mutt_path_basename(dir);
   const char *rfp = (file + mutt_str_strlen(C_HelpDocDir) + 1);
   /* default timestamp, based on PACKAGE_VERSION */
-  struct tm *tm = mutt_mem_calloc(1, sizeof(struct tm));
-  strptime(PACKAGE_VERSION, "%Y%m%d", tm);
-  time_t epoch = mutt_date_make_time(tm, 0);
+  struct tm tm = { 0 };
+  strptime(PACKAGE_VERSION, "%Y%m%d", &tm);
+  time_t epoch = mutt_date_make_time(&tm, 0);
   /* default subject, final may come from file header, e.g. "[title]: description" */
   char sbj[256];
   snprintf(sbj, sizeof(sbj), "[%s]: %s", pdn, bfn);
+  pdn = NULL;
+  FREE(&dir);
   /* bundle metadata */
   struct HelpDocMeta *meta = mutt_mem_calloc(1, sizeof(struct HelpDocMeta));
   meta->fhdr = fhdr;
   meta->name = mutt_str_strdup(bfn);
   meta->type = type;
 
-  struct Email *hdoc = mutt_email_new();
+  struct Email *hdoc = email_new();
   /* struct Email */
   hdoc->date_sent = epoch;
   hdoc->display_subject = true;
@@ -608,8 +454,7 @@ static struct Email *help_doc_from(const char *file)
   /* struct Envelope */
   hdoc->env = mutt_env_new();
   mutt_addrlist_parse(&hdoc->env->from, "Richard Russon <rich@flatcap.org>");
-  hdoc->env->message_id = help_doc_msg_id(tm);
-  FREE(tm);
+  hdoc->env->message_id = help_doc_msg_id(&tm);
   hdoc->env->organization = mutt_str_strdup("NeoMutt");
   hdoc->env->subject =
       help_doc_subject(fhdr, sbj, "[%s]: %s", "title", "description", NULL);
@@ -659,7 +504,7 @@ static void help_doc_uplink(const struct Email *target, const struct Email *sour
  * @note All sections are linked to their parent chapter regardless how deeply
  *       they're nested on the filesystem. Empty directories are ignored.
  */
-static int help_read_dir(const char *path)
+static int help_read_dir(const char *path, struct Vector *DocList)
 {
   mutt_debug(1, "entering help_read_dir: '%s'\n", path);
 
@@ -670,6 +515,8 @@ static int help_read_dir(const char *path)
     char *path2 = vector_get(file_paths, i, NULL);
     help_doc_gather(&DocList, path2);
   }
+  vector_free(&file_paths, NULL);
+
   /* Sort 'index.md' in list to the top */
   vector_sort(DocList, help_doc_type_cmp);
 
@@ -716,6 +563,7 @@ static int help_read_dir(const char *path)
         mutt_list_free(&help_msg_uplink->env->references);
   }
 
+  FREE(&uplinks);
   return 0;
 }
 
@@ -727,15 +575,9 @@ static int help_read_dir(const char *path)
  * @note Initialisation depends on several things, like $help_doc_dir changed,
  *       DocList isn't (and should not) be cached, DocList is empty.
  */
-int help_doclist_init(void)
+int help_doclist_init(struct Vector *DocList)
 {
-  if ((HELP_CACHE_DOCLIST != 0) && DocList && !help_docdir_changed())
-    return 0;
-
-  help_doclist_free();
-  DocList = vector_new(sizeof(struct Email));
-  help_read_dir(C_HelpDocDir);
-  help_docdir_id(C_HelpDocDir);
+  help_read_dir(C_HelpDocDir, DocList);
   return 0;
 }
 
@@ -752,14 +594,17 @@ int help_doclist_init(void)
  */
 static int help_doclist_parse(struct Mailbox *m)
 {
-  if ((help_doclist_init() != 0) || (DocList->size == 0))
+  // all valid help documents within $help_doc_dir folder
+  // Local variable to be saved in Mailbox
+  struct Vector *DocList = vector_new(sizeof(struct Email *));
+
+  if ((help_doclist_init(DocList) != 0) || (DocList->size == 0))
     return -1;
 
-  m->emails = (struct Email **) (vector_clone(DocList, true, help_doc_clone))->data;
+  m->emails = (struct Email **) DocList->data;
   m->msg_count = m->email_max = DocList->size;
   mutt_mem_realloc(&m->v2r, sizeof(int) * m->email_max);
-
-  mutt_make_label_hash(m);
+  FREE(&DocList);
 
   m->readonly = true;
   /* all document paths are relative to C_HelpDocDir, so no transpose of ctx->path */
@@ -770,8 +615,10 @@ static int help_doclist_parse(struct Mailbox *m)
   if (request)
   {
     mutt_buffer_increase_size(m->pathbuf, PATH_MAX);
-    mutt_str_strfcpy(m->pathbuf->data, help_path_transpose(request, false),
-                     m->pathbuf->dsize); /* just sanitise */
+    const char *request2 = help_path_transpose(request, false);
+    mutt_str_strfcpy(m->pathbuf->data, request2, m->pathbuf->dsize); /* just sanitise */
+    FREE(&request);
+    FREE(&request2);
   }
 
   /* mark all but the first email as read */
@@ -818,20 +665,18 @@ static int help_mbox_open(struct Mailbox *m)
   /* TODO: ensure either mutt_option_set()/mutt_expand_path() sanitise a DT_PATH
    * option or let help_docdir_changed() treat "/path" and "/path///" as equally
    * to avoid a useless re-caching of the same directory */
-  if (help_docdir_changed())
-  {
-    if (access(C_HelpDocDir, F_OK) == 0)
-    { /* ensure a proper path, especially without any trailing slashes */
-      mutt_str_replace(&C_HelpDocDir, NONULL(realpath(C_HelpDocDir, NULL)));
-    }
-    else
-    {
-      mutt_debug(1, "unable to access help mailbox '%s': %s (errno %d).\n",
-                 C_HelpDocDir, strerror(errno), errno);
-      return -1;
-    }
+  if (access(C_HelpDocDir, F_OK) == 0)
+  { /* ensure a proper path, especially without any trailing slashes */
+    char *real = realpath(NONULL(C_HelpDocDir), NULL);
+    FREE(&C_HelpDocDir);
+    C_HelpDocDir = real;
   }
-
+  else
+  {
+    mutt_debug(1, "unable to access help mailbox '%s': %s (errno %d).\n",
+               C_HelpDocDir, strerror(errno), errno);
+    return -1;
+  }
   __Backup_HTS = C_HideThreadSubject; /* backup the current global setting */
   C_HideThreadSubject = false; /* temporarily ensure subject is shown in thread view */
 

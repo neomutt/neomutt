@@ -581,7 +581,7 @@ int mx_mbox_close(struct Context **ptr)
   if (m->readonly || m->dontwrite || m->append)
   {
     mx_fastclose_mailbox(m);
-    FREE(ptr);
+    ctx_free(ptr);
     return 0;
   }
 

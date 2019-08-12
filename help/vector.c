@@ -45,7 +45,10 @@ void vector_free(struct Vector **v, vector_item_free_t item_free)
 
   for (size_t i = 0; i < (*v)->size; i++)
   {
-    item_free(&((*v)->data[i]));
+    if (item_free)
+      item_free(&((*v)->data[i]));
+    else
+      FREE(&((*v)->data[i]));
   }
   FREE(&(*v)->data);
   FREE(v);
@@ -100,7 +103,6 @@ void vector_append(struct Vector *v, void *item)
     mutt_mem_realloc(v->data, v->capa * v->item_size);
   }
 
-  v->data[v->size] = mutt_mem_calloc(1, v->item_size);
   v->data[v->size] = item;
   v->size++;
 }

@@ -53,10 +53,9 @@ static int add_file(const char *fpath, const struct stat *sb, int tflag, struct 
   if (tflag == FTW_F)
   {
     char *ext = strrchr(fpath, '.');
-    char *path = mutt_str_strdup(fpath);
     if (ext && !mutt_str_strcmp(ext, ".md"))
     {
-      vector_new_append(&DocPaths, sizeof(char *), path);
+      vector_new_append(&DocPaths, sizeof(char *), mutt_str_strdup(fpath));
     }
   }
   return 0; /* To tell nftw() to continue */
@@ -69,7 +68,6 @@ static int add_file(const char *fpath, const struct stat *sb, int tflag, struct 
  */
 struct Vector *scan_dir(const char *path)
 {
-  vector_free(&DocPaths, NULL);
   DocPaths = vector_new(sizeof(char *));
   // Max of 20 open file handles, 0 flags
   if (nftw(path, add_file, 20, 0) == -1)
@@ -77,5 +75,8 @@ struct Vector *scan_dir(const char *path)
     perror("nftw");
   }
 
-  return DocPaths;
+  struct Vector *paths = DocPaths;
+  DocPaths = NULL;
+
+  return paths;
 }
