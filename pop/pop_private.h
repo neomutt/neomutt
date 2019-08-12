@@ -27,6 +27,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include "conn/conn.h"
+#include "mutt/buffer.h"
 
 struct Mailbox;
 struct Progress;
@@ -91,7 +92,7 @@ struct PopAccountData
   size_t size;
   time_t check_time;
   time_t login_delay; /**< minimal login delay  capability */
-  char *auth_list;    /**< list of auth mechanisms */
+  struct Buffer auth_list; /**< list of auth mechanisms */
   char *timestamp;
   struct BodyCache *bcache; /**< body cache */
   char err_msg[POP_CMD_RESPONSE];

@@ -129,9 +129,8 @@ static int fetch_capa(const char *line, void *data)
 
   if (mutt_str_startswith(line, "SASL", CASE_IGNORE))
   {
-    FREE(&adata->auth_list);
     const char *c = mutt_str_skip_email_wsp(line + 4);
-    adata->auth_list = mutt_str_strdup(c);
+    mutt_buffer_strcpy(&adata->auth_list, c);
   }
 
   else if (mutt_str_startswith(line, "STLS", CASE_IGNORE))
@@ -159,17 +158,11 @@ static int fetch_auth(const char *line, void *data)
 {
   struct PopAccountData *adata = data;
 
-  if (!adata->auth_list)
+  if (mutt_buffer_len(&adata->auth_list) != 0)
   {
-    adata->auth_list = mutt_mem_malloc(strlen(line) + 1);
-    *adata->auth_list = '\0';
+    mutt_buffer_addstr(&adata->auth_list, " ");
   }
-  else
-  {
-    mutt_mem_realloc(&adata->auth_list, strlen(adata->auth_list) + strlen(line) + 2);
-    strcat(adata->auth_list, " ");
-  }
-  strcat(adata->auth_list, line);
+  mutt_buffer_addstr(&adata->auth_list, line);
 
   return 0;
 }
@@ -201,7 +194,7 @@ static int pop_capabilities(struct PopAccountData *adata, int mode)
     adata->resp_codes = false;
     adata->expire = true;
     adata->login_delay = 0;
-    FREE(&adata->auth_list);
+    mutt_buffer_init(&adata->auth_list);
   }
 
   /* Execute CAPA command */

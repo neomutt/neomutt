@@ -103,8 +103,8 @@ static void pop_adata_free(void **ptr)
   if (!ptr || !*ptr)
     return;
 
-  // struct PopAccountData *adata = *ptr;
-  // FREE(&adata->conn);
+  struct PopAccountData *adata = *ptr;
+  FREE(&adata->auth_list.data);
   FREE(ptr);
 }
 

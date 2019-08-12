@@ -74,7 +74,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
   }
 
   if (!method)
-    method = adata->auth_list;
+    method = adata->auth_list.data;
 
   while (true)
   {
