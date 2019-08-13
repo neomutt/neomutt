@@ -17683,15 +17683,35 @@ bind index D purge-message
           an appropriate signature message for verified messages.
         </para>
         <para>
-          Both methods have one additional caveat: replying to an
-          Autocrypt decrypted message by default forces Autocrypt mode on.
-          By sharing the same key, all replies will then start in
-          Autocrypt mode, even if the message wasn't sent by one of your
-          Autocrypt peers.  <link
-          linkend="autocrypt-reply">$autocrypt_reply</link> can be
-          <emphasis>unset</emphasis> to allow manual control of the mode
-          when replying.
+          Both methods have a couple additional caveats:
         </para>
+        <itemizedlist>
+          <listitem>
+            <para>
+              First, replying to an Autocrypt decrypted message by default
+              forces Autocrypt mode on.  By sharing the same key, all
+              replies will then start in Autocrypt mode, even if a message
+              wasn't sent by one of your Autocrypt peers.  <link
+              linkend="autocrypt-reply">$autocrypt_reply</link> can be
+              <emphasis>unset</emphasis> to allow manual control of the
+              mode when replying.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Second, when Mutt creates an account from a gpg key, it
+              exports the public key, base64 encodes it, and stores that
+              value in the sqlite3 database.  The value is then used in
+              the Autocrypt header added to outgoing emails.  The ECC keys
+              Mutt creates don't change, but if you use external keys that
+              expire, when you resign to extend the expiration you will
+              need to recreate the Autocrypt account using the <link
+              linkend="autocryptdoc-acctmgmt">account menu</link>.
+              Otherwise the Autocrypt header will contain the old expired
+              exported keydata.
+            </para>
+          </listitem>
+        </itemizedlist>
       </sect2>
     </sect1>
   </chapter>
