@@ -155,6 +155,9 @@ bool notify_send(struct Notify *notify, int type, int subtype, intptr_t data)
  * @param callback Function to call on a matching event, see ::observer_t
  * @param data     Private data associated with the event type
  * @retval true If successful
+ *
+ * New observers are added to the front of the list, giving them higher
+ * priority than existing observers.
  */
 bool notify_observer_add(struct Notify *notify, enum NotifyType type,
                          int subtype, observer_t callback, intptr_t data)
@@ -177,7 +180,7 @@ bool notify_observer_add(struct Notify *notify, enum NotifyType type,
 
   np = mutt_mem_calloc(1, sizeof(*np));
   np->observer = o;
-  STAILQ_INSERT_TAIL(&notify->observers, np, entries);
+  STAILQ_INSERT_HEAD(&notify->observers, np, entries);
 
   return true;
 }

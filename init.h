@@ -2552,7 +2552,7 @@ struct ConfigDef MuttVars[] = {
   ** pager.  The valid sequences are listed in the $$index_format
   ** section.
   */
-  { "pager_index_lines", DT_NUMBER|DT_NOT_NEGATIVE|R_PAGER, &C_PagerIndexLines, 0 },
+  { "pager_index_lines", DT_NUMBER|DT_NOT_NEGATIVE|R_PAGER|R_REFLOW, &C_PagerIndexLines, 0 },
   /*
   ** .pp
   ** Determines the number of lines of a mini-index which is shown when in

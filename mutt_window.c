@@ -30,7 +30,10 @@
 #include <stdarg.h>
 #include <string.h>
 #include "mutt/mutt.h"
+#include "config/lib.h"
+#include "core/lib.h"
 #include "mutt_window.h"
+#include "context.h"
 #include "globals.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
@@ -38,16 +41,13 @@
 #include "pager.h"
 #include "reflow.h"
 
-struct MuttWindow *RootWindow = NULL;         ///< Parent of all Windows
-struct MuttWindow *MuttHelpWindow = NULL;     ///< Help Window
-struct MuttWindow *MuttIndexWindow = NULL;    ///< Index Window
-struct MuttWindow *MuttMessageWindow = NULL;  ///< Message Window
-struct MuttWindow *MuttPagerBarWindow = NULL; ///< Pager Status Window
-struct MuttWindow *MuttPagerWindow = NULL;    ///< Pager Window
+struct MuttWindow *RootWindow = NULL;        ///< Parent of all Windows
+struct MuttWindow *MuttDialogWindow = NULL;  ///< Parent of all Dialogs
+struct MuttWindow *MuttHelpWindow = NULL;    ///< Help Window
+struct MuttWindow *MuttMessageWindow = NULL; ///< Message Window
 #ifdef USE_SIDEBAR
 struct MuttWindow *MuttSidebarWindow = NULL; ///< Sidebar Window
 #endif
-struct MuttWindow *MuttStatusWindow = NULL; ///< Status Window
 
 /**
  * mutt_window_new - Create a new Window
@@ -158,19 +158,63 @@ void mutt_window_clrtoeol(struct MuttWindow *win)
 }
 
 /**
+ * mutt_dlg_rootwin_observer - Listen for config changes affecting the Root Window - Implements ::observer_t()
+ */
+int mutt_dlg_rootwin_observer(struct NotifyCallback *nc)
+{
+  if (!nc)
+    return -1;
+
+  struct EventConfig *ec = (struct EventConfig *) nc->event;
+  if (!ec)
+    return -1;
+
+  struct MuttWindow *root_win = (struct MuttWindow *) nc->data;
+  if (!root_win)
+    return -1;
+
+  if (mutt_str_strcmp(ec->name, "help") == 0)
+  {
+    MuttHelpWindow->state.visible = C_Help;
+    goto reflow;
+  }
+
+  if (mutt_str_strcmp(ec->name, "status_on_top") == 0)
+  {
+    struct MuttWindow *first = TAILQ_FIRST(&root_win->children);
+    if (!first)
+      return -1;
+
+    if ((C_StatusOnTop && (first->type == WT_HELP_BAR)) ||
+        (!C_StatusOnTop && (first->type != WT_HELP_BAR)))
+    {
+      // Swap the HelpLine and the Dialogs Container
+      struct MuttWindow *next = TAILQ_NEXT(first, entries);
+      if (!next)
+        return -1;
+      TAILQ_REMOVE(&root_win->children, next, entries);
+      TAILQ_INSERT_HEAD(&root_win->children, next, entries);
+    }
+  }
+
+reflow:
+  mutt_window_reflow(root_win);
+  return 0;
+}
+
+/**
  * mutt_window_free_all - Free all the default Windows
  */
 void mutt_window_free_all(void)
 {
+  if (Config)
+    notify_observer_remove(Config->notify, mutt_dlg_rootwin_observer, (intptr_t) RootWindow);
+  MuttDialogWindow = NULL;
   MuttHelpWindow = NULL;
-  MuttIndexWindow = NULL;
   MuttMessageWindow = NULL;
-  MuttPagerBarWindow = NULL;
-  MuttPagerWindow = NULL;
 #ifdef USE_SIDEBAR
   MuttSidebarWindow = NULL;
 #endif
-  MuttStatusWindow = NULL;
   mutt_window_free(&RootWindow);
 }
 
@@ -205,58 +249,33 @@ void mutt_window_init(void)
   if (RootWindow)
     return;
 
-  struct MuttWindow *w1 =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 0, 0);
-  struct MuttWindow *w2 =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  struct MuttWindow *w3 =
-      mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  struct MuttWindow *w4 =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  struct MuttWindow *w5 =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  struct MuttWindow *w6 =
-      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  w6->state.visible = false; // The Pager and Pager Bar are initially hidden
-
+  RootWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 0, 0);
+  RootWindow->type = WT_ROOT;
   MuttHelpWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
                                    1, MUTT_WIN_SIZE_UNLIMITED);
-  MuttIndexWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                                    MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  MuttHelpWindow->type = WT_HELP_BAR;
+  MuttHelpWindow->state.visible = C_Help;
+  MuttDialogWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                                     MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  MuttDialogWindow->type = WT_ALL_DIALOGS;
   MuttMessageWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
                                       1, MUTT_WIN_SIZE_UNLIMITED);
-  MuttPagerBarWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                       1, MUTT_WIN_SIZE_UNLIMITED);
-  MuttPagerWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
-                                    MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
-  MuttSidebarWindow = mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
-                                      MUTT_WIN_SIZE_UNLIMITED, 20);
-  MuttStatusWindow = mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
-                                     1, MUTT_WIN_SIZE_UNLIMITED);
+  MuttMessageWindow->type = WT_MESSAGE;
 
-  RootWindow = w1;
+  if (C_StatusOnTop)
+  {
+    mutt_window_add_child(RootWindow, MuttDialogWindow);
+    mutt_window_add_child(RootWindow, MuttHelpWindow);
+  }
+  else
+  {
+    mutt_window_add_child(RootWindow, MuttHelpWindow);
+    mutt_window_add_child(RootWindow, MuttDialogWindow);
+  }
 
-  mutt_window_add_child(w1, w2);
-  mutt_window_add_child(w1, MuttMessageWindow);
-
-  mutt_window_add_child(w2, MuttHelpWindow);
-  mutt_window_add_child(w2, w3);
-
-  mutt_window_add_child(w3, MuttSidebarWindow);
-  mutt_window_add_child(w3, w4);
-
-  mutt_window_add_child(w4, w5);
-  mutt_window_add_child(w5, MuttIndexWindow);
-  mutt_window_add_child(w5, MuttStatusWindow);
-
-  mutt_window_add_child(w4, w6);
-  mutt_window_add_child(w6, MuttPagerWindow);
-  mutt_window_add_child(w6, MuttPagerBarWindow);
+  mutt_window_add_child(RootWindow, MuttMessageWindow);
+  notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_dlg_rootwin_observer,
+                      (intptr_t) RootWindow);
 }
 
 /**
@@ -580,4 +599,53 @@ struct MuttWindow *mutt_window_find(struct MuttWindow *root, enum WindowType typ
   }
 
   return NULL;
+}
+
+/**
+ * dialog_push - Display a Window to the user
+ * @param dlg Window to display
+ *
+ * The Dialog Windows are kept in a stack.
+ * The topmost is visible to the user, whilst the others are hidden.
+ *
+ * When a Window is pushed, the old Window is marked as not visible.
+ */
+void dialog_push(struct MuttWindow *dlg)
+{
+  if (!dlg || !MuttDialogWindow)
+    return;
+
+  struct MuttWindow *last = TAILQ_LAST(&MuttDialogWindow->children, MuttWindowList);
+  if (last)
+    last->state.visible = false;
+
+  TAILQ_INSERT_TAIL(&MuttDialogWindow->children, dlg, entries);
+  dlg->state.visible = true;
+  mutt_window_reflow(MuttDialogWindow);
+}
+
+/**
+ * dialog_pop - Hide a Window from the user
+ *
+ * The topmost (visible) Window is removed from the stack and the next Window
+ * is marked as visible.
+ */
+void dialog_pop(void)
+{
+  if (!MuttDialogWindow)
+    return;
+
+  struct MuttWindow *last = TAILQ_LAST(&MuttDialogWindow->children, MuttWindowList);
+  if (!last)
+    return;
+
+  last->state.visible = false;
+  TAILQ_REMOVE(&MuttDialogWindow->children, last, entries);
+
+  last = TAILQ_LAST(&MuttDialogWindow->children, MuttWindowList);
+  if (last)
+  {
+    last->state.visible = true;
+    mutt_window_reflow(MuttDialogWindow);
+  }
 }

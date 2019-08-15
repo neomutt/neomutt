@@ -25,7 +25,11 @@
 
 #include <stdbool.h>
 
+struct NotifyCallback;
+
 /* These Config Variables are only used in main.c */
 extern bool C_ResumeEditedDraftFiles;
+
+int mutt_dlg_index_observer(struct NotifyCallback *nc);
 
 #endif /* MUTT_MAIN_H */

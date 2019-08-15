@@ -974,17 +974,11 @@ struct Menu *mutt_menu_new(enum MenuType type)
 {
   struct Menu *menu = mutt_mem_calloc(1, sizeof(struct Menu));
 
-  if (type >= MENU_MAX)
-    type = MENU_GENERIC;
-
   menu->type = type;
   menu->current = 0;
   menu->top = 0;
   menu->offset = 0;
   menu->redraw = REDRAW_FULL;
-  menu->pagelen = MuttIndexWindow->state.rows;
-  menu->win_index = MuttIndexWindow;
-  menu->win_ibar = MuttStatusWindow;
   menu->menu_color = default_color;
   menu->menu_search = generic_search;
 

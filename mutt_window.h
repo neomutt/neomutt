@@ -103,15 +103,12 @@ struct MuttWindow
   void (*free_wdata)(struct MuttWindow *win, void **); ///< Callback function to free private data
 };
 
+extern struct MuttWindow *MuttDialogWindow;
 extern struct MuttWindow *MuttHelpWindow;
-extern struct MuttWindow *MuttIndexWindow;
 extern struct MuttWindow *MuttMessageWindow;
-extern struct MuttWindow *MuttPagerBarWindow;
-extern struct MuttWindow *MuttPagerWindow;
 #ifdef USE_SIDEBAR
 extern struct MuttWindow *MuttSidebarWindow;
 #endif
-extern struct MuttWindow *MuttStatusWindow;
 
 // Functions that deal with the Window
 void               mutt_window_add_child          (struct MuttWindow *parent, struct MuttWindow *child);
@@ -145,5 +142,7 @@ struct MuttWindow *mutt_window_find(struct MuttWindow *root, enum WindowType typ
 struct MuttWindow *mutt_window_dialog(struct MuttWindow *win);
 
 void mutt_winlist_free       (struct MuttWindowList *head);
+void dialog_pop(void);
+void dialog_push(struct MuttWindow *dlg);
 
 #endif /* MUTT_MUTT_WINDOW_H */

@@ -56,6 +56,7 @@
 #include "hook.h"
 #include "index.h"
 #include "keymap.h"
+#include "main.h"
 #include "mutt_attach.h"
 #include "mutt_curses.h"
 #include "mutt_header.h"
@@ -1111,7 +1112,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 
   rd->email = e;
   rd->fcc = fcc;
-  rd->win = MuttIndexWindow;
+  rd->win = NULL; // MuttIndexWindow;
 
   struct Menu *menu = mutt_menu_new(MENU_COMPOSE);
   menu->offset = HDR_ATTACH;
@@ -1685,7 +1686,12 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         Context = ctx;
         OptAttachMsg = true;
         mutt_message(_("Tag the messages you want to attach"));
-        mutt_index_menu();
+        struct MuttWindow *dlg = index_pager_init();
+        dialog_push(dlg);
+        mutt_index_menu(dlg);
+        dialog_pop();
+        index_pager_shutdown(dlg);
+        mutt_window_free(&dlg);
         OptAttachMsg = false;
 
         if (!Context)
