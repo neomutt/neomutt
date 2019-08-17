@@ -4368,6 +4368,12 @@ struct ConfigDef MuttVars[] = {
   ** If \fIset\fP , NeoMutt will use TLSv1.2 when communicating with servers that
   ** request it.
   */
+  { "ssl_use_tlsv1_3", DT_BOOL, &C_SslUseTlsv13, true },
+  /*
+  ** .pp
+  ** If \fIset\fP , NeoMutt will use TLSv1.3 when communicating with servers that
+  ** request it.
+  */
 #ifdef USE_SSL_OPENSSL
   { "ssl_usesystemcerts", DT_BOOL, &C_SslUsesystemcerts, true },
   /*

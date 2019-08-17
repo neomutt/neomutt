@@ -1254,10 +1254,15 @@ static int ssl_setup(struct Connection *conn)
        error condition.  */
     mutt_error(_("Unable to create SSL context"));
     ssl_dprint_err_stack();
-    goto free_sasldata;
+    goto free_ssldata;
   }
 
   /* disable SSL protocols as needed */
+#ifdef SSL_OP_NO_TLSv1_3
+  if (!C_SslUseTlsv13)
+    SSL_CTX_set_options(ssldata->sctx, SSL_OP_NO_TLSv1_3);
+#endif
+
 #ifdef SSL_OP_NO_TLSv1_2
   if (!C_SslUseTlsv12)
     SSL_CTX_set_options(ssldata->sctx, SSL_OP_NO_TLSv1_2);
@@ -1322,7 +1327,7 @@ free_ctx:
   SSL_CTX_free(ssldata->sctx);
   ssldata->sctx = NULL;
   ssldata->sctx = 0;
-free_sasldata:
+free_ssldata:
   FREE(&ssldata);
 
   return -1;
