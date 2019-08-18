@@ -871,7 +871,7 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
                                struct Body *top, bool filter)
 {
   struct State state = { 0 };
-  char buf[128];
+  char buf[PATH_MAX];
 
   if (fp)
     filter = false; /* sanity check: we can't filter in the recv case yet */
