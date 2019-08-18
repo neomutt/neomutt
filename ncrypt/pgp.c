@@ -363,7 +363,7 @@ static int pgp_check_decryption_okay(FILE *fp_in)
 
   while ((line = mutt_file_read_line(line, &linelen, fp_in, &lineno, 0)))
   {
-    size_t plen = mutt_str_startswith(line, "[GNUPG:]", CASE_MATCH);
+    size_t plen = mutt_str_startswith(line, "[GNUPG:] ", CASE_MATCH);
     if (plen == 0)
       continue;
     s = line + plen;
