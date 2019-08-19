@@ -87,6 +87,9 @@ enum MenuType
 #ifdef MIXMASTER
   MENU_MIX,              ///< Create/edit a Mixmaster chain
 #endif
+#ifdef USE_AUTOCRYPT
+  MENU_AUTOCRYPT_ACCT,
+#endif
   MENU_MAX,
 };
 
@@ -126,6 +129,10 @@ extern const struct Binding OpSmime[];
 
 #ifdef MIXMASTER
 extern const struct Binding OpMix[];
+#endif
+
+#ifdef USE_AUTOCRYPT
+extern const struct Binding OpAutocryptAcct[];
 #endif
 
 void mutt_free_keys(void);

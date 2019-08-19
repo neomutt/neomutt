@@ -59,6 +59,8 @@ options {
   # SASL (IMAP and POP auth)
   sasl=0                    => "Use the SASL network security library"
   with-sasl:path            => "Location of the SASL network security library"
+  # AutoCrypt
+  autocrypt=0               => "Enable AutoCrypt support (requires gpgme and sqlite)"
 # Lua
   lua=0                     => "Enable Lua scripting support"
   with-lua:path             => "Location of Lua"
@@ -90,6 +92,9 @@ options {
 # libunwind
   backtrace=0               => "Enable backtrace support with libunwind"
   with-backtrace:path       => "Location of libunwind"
+# sqlite
+  sqlite=0                  => "Enable SQLite support"
+  with-sqlite:path          => "Location of sqlite"
 # System
   with-sysroot:path         => "Target system root"
 # Testing
@@ -109,9 +114,9 @@ options {
 if {1} {
   # Keep sorted, please.
   foreach opt {
-    bdb backtrace coverage doc everything fmemopen full-doc gdbm gnutls gpgme
+    autocrypt bdb backtrace coverage doc everything fmemopen full-doc gdbm gnutls gpgme
     gss homespool idn idn2 inotify kyotocabinet lmdb locales-fix lua mixmaster
-    nls notmuch pkgconf pgp qdbm sasl smime ssl testing tokyocabinet
+    nls notmuch pkgconf pgp qdbm sasl smime sqlite ssl testing tokyocabinet
   } {
     define want-$opt [opt-bool $opt]
   }
@@ -121,7 +126,7 @@ if {1} {
   # a shortcut for "--opt --with-opt=/usr".
   foreach opt {
     bdb gdbm gnutls gpgme gss homespool idn idn2 kyotocabinet lmdb lua mixmaster
-    ncurses nls notmuch qdbm sasl slang ssl tokyocabinet
+    ncurses nls notmuch qdbm sasl slang sqlite ssl tokyocabinet
   } {
     if {[opt-val with-$opt] ne {}} {
       define want-$opt 1
@@ -395,6 +400,14 @@ if {[get-define want-doc]} {
 if {[get-define want-full-doc]} {define MAKEDOC_FULL}
 
 ###############################################################################
+# AutoCrypt
+if {[get-define want-autocrypt]} {
+  define USE_AUTOCRYPT
+  define want-sqlite 1
+  define want-gpgme 1
+}
+
+###############################################################################
 # GPGME
 if {[get-define want-gpgme]} {
   if {[is-defined _FILE_OFFSET_BITS]} {
@@ -422,8 +435,14 @@ if {[get-define want-gpgme]} {
     if {[scan $gpgme_version "%d.%d.%d" gpgme_maj gpgme_min gpgme_patch] != 3} {
       user-error "Could not parse GPGMe version $gpgme_version"
     }
-    if {$gpgme_maj < 1 || $gpgme_min < 4} {
-      user-error "Found GPGME version $gpgme_version, need 1.4.0"
+    if {[get-define want-autocrypt]} {
+      if {$gpgme_maj < 1 || $gpgme_min < 8} {
+        user-error "Found GPGME version $gpgme_version, need 1.8.0 for AutoCrypt"
+      }
+    } else {
+      if {$gpgme_maj < 1 || $gpgme_min < 4} {
+        user-error "Found GPGME version $gpgme_version, need 1.4.0"
+      }
     }
     define GPGME_VERSION_NUMBER [format "0x%02x%02x%02x" $gpgme_maj $gpgme_min $gpgme_patch]
 
@@ -609,6 +628,16 @@ if {[get-define want-nls]} {
    user-error "Unable to find gettext tools (msgfmt, msgmerge, xgettext).\
                Consider --disable-nls"
  }
+}
+
+###############################################################################
+# SQLite Support
+if {[get-define want-sqlite]} {
+  if {![check-inc-and-lib sqlite [opt-val with-sqlite $prefix] \
+                          sqlite3.h sqlite3_open sqlite3]} {
+    user-error "Unable to find SQLite"
+  }
+  define USE_SQLITE
 }
 
 ###############################################################################

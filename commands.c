@@ -78,6 +78,9 @@
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
+#ifdef USE_AUTOCRYPT
+#include "autocrypt/autocrypt.h"
+#endif
 
 /* These Config Variables are only used in commands.c */
 unsigned char C_CryptVerifySig; ///< Config: Verify PGP or SMIME signatures
@@ -95,16 +98,21 @@ static const char *ExtPagerProgress = "all";
 static char LastSaveFolder[PATH_MAX] = "";
 
 /**
- * update_protected_headers - Get the protected header and update the index
+ * process_protected_headers - Get the protected header and update the index
  * @param e Email to update
  */
-static void update_protected_headers(struct Email *e)
+static void process_protected_headers(struct Email *e)
 {
   struct Envelope *prot_headers = NULL;
   regmatch_t pmatch[1];
 
+#ifdef USE_AUTOCRYPT
+  if (!C_CryptProtectedHeadersRead && !C_Autocrypt)
+    return;
+#else
   if (!C_CryptProtectedHeadersRead)
     return;
+#endif
 
   /* Grab protected headers to update in the index */
   if (e->security & SEC_SIGN)
@@ -142,7 +150,7 @@ static void update_protected_headers(struct Email *e)
   }
 
   /* Update protected headers in the index and header cache. */
-  if (prot_headers && prot_headers->subject &&
+  if (C_CryptProtectedHeadersRead && prot_headers && prot_headers->subject &&
       mutt_str_strcmp(e->env->subject, prot_headers->subject))
   {
     if (Context->mailbox->subj_hash && e->env->real_subj)
@@ -168,6 +176,13 @@ static void update_protected_headers(struct Email *e)
       Context->mailbox->changed = 1;
     }
   }
+
+#ifdef USE_AUTOCRYPT
+  if (C_Autocrypt && (e->security & SEC_ENCRYPT) && prot_headers && prot_headers->autocrypt_gossip)
+  {
+    mutt_autocrypt_process_gossip_header(e, prot_headers);
+  }
+#endif
 }
 
 /**
@@ -302,8 +317,8 @@ int mutt_display_message(struct Mailbox *m, struct Email *e)
      * are color patterns for both ~g and ~V */
     e->pair = 0;
 
-    /* Grab protected headers and update the header and index */
-    update_protected_headers(e);
+    /* Process protected headers and autocrypt gossip headers */
+    process_protected_headers(e);
   }
 
   if (builtin)

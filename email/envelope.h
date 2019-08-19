@@ -34,6 +34,20 @@
 #define MUTT_ENV_CHANGED_XLABEL  (1 << 2)  ///< X-Label edited
 #define MUTT_ENV_CHANGED_SUBJECT (1 << 3)  ///< Protected header update
 
+#ifdef USE_AUTOCRYPT
+/**
+ * struct AutocryptHeader - Parse Autocrypt header info
+ */
+struct AutocryptHeader
+{
+  char *addr;
+  char *keydata;
+  bool prefer_encrypt : 1;
+  bool invalid : 1;
+  struct AutocryptHeader *next;
+};
+#endif
+
 /**
  * struct Envelope - The header of an Email
  */
@@ -67,7 +81,10 @@ struct Envelope
   struct ListHead references;          ///< message references (in reverse order)
   struct ListHead in_reply_to;         ///< in-reply-to header content
   struct ListHead userhdrs;            ///< user defined headers
-
+#ifdef USE_AUTOCRYPT
+  struct AutocryptHeader *autocrypt;
+  struct AutocryptHeader *autocrypt_gossip;
+#endif
   unsigned char changed;               ///< Changed fields, e.g. #MUTT_ENV_CHANGED_SUBJECT
 };
 
@@ -77,5 +94,10 @@ void             mutt_env_merge     (struct Envelope *base, struct Envelope **ex
 struct Envelope *mutt_env_new       (void);
 int              mutt_env_to_intl   (struct Envelope *env, const char **tag, char **err);
 void             mutt_env_to_local  (struct Envelope *e);
+
+#ifdef USE_AUTOCRYPT
+#define mutt_new_autocrypthdr() mutt_mem_calloc(1, sizeof(struct AutocryptHeader))
+void mutt_free_autocrypthdr(struct AutocryptHeader **p);
+#endif
 
 #endif /* MUTT_EMAIL_ENVELOPE_H */

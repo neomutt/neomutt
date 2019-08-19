@@ -29,6 +29,7 @@
 
 struct AddressList;
 struct Body;
+struct Buffer;
 struct Email;
 struct Mailbox;
 struct State;
@@ -59,5 +60,6 @@ int          smime_gpgme_verify_one(struct Body *sigbdy, struct State *s, const 
 int          smime_gpgme_verify_sender(struct Mailbox *m, struct Email *e);
 
 const char  *mutt_gpgme_print_version(void);
+int          mutt_gpgme_select_secret_key (struct Buffer *keyid);
 
 #endif /* MUTT_NCRYPT_CRYPT_GPGME_H */

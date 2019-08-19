@@ -390,6 +390,47 @@ struct ConfigDef MuttVars[] = {
   ** unset, you must first use the \fC<tag-prefix>\fP function (bound to ";"
   ** by default) to make the next function apply to all tagged messages.
   */
+#ifdef USE_AUTOCRYPT
+  { "autocrypt", DT_BOOL, &C_Autocrypt, false },
+  /*
+  ** .pp
+  ** When \fIset\fP, enables autocrypt, which provides
+  ** passive encryption protection with keys exchanged via headers.
+  ** See ``$autocryptdoc'' for more details.
+  ** (Autocrypt only)
+  */
+  { "autocrypt_acct_format", DT_STRING|R_MENU, &C_AutocryptAcctFormat, IP "%4n %-30a %20p %10s" },
+  /*
+  ** .pp
+  ** This variable describes the format of the ``autocrypt account'' menu.
+  ** The following \fCprintf(3)\fP-style sequences are understood
+  ** .dl
+  ** .dt %a  .dd email address
+  ** .dt %k  .dd gpg keyid
+  ** .dt %n  .dd current entry number
+  ** .dt %p  .dd prefer-encrypt flag
+  ** .dt %s  .dd status flag (active/inactive)
+  ** .de
+  ** .pp
+  ** (Autocrypt only)
+  */
+  { "autocrypt_dir", DT_STRING|DT_PATH, &C_AutocryptDir, IP "~/.mutt/autocrypt" },
+  /*
+  ** .pp
+  ** This variable sets where autocrypt files are stored, including the GPG
+  ** keyring and sqlite database.  See ``$autocryptdoc'' for more details.
+  ** (Autocrypt only)
+  */
+  { "autocrypt_reply", DT_BOOL, &C_AutocryptReply, true },
+  /*
+  ** .pp
+  ** When \fIset\fP, replying to an autocrypt email automatically
+  ** enables autocrypt in the reply.  You may want to unset this if you're using
+  ** the same key for autocrypt as normal web-of-trust, so that autocrypt
+  ** isn't forced on for all encrypted replies.
+  ** (Autocrypt only)
+  */
+#endif
   { "autoedit", DT_BOOL, &C_Autoedit, false },
   /*
   ** .pp

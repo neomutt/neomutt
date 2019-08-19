@@ -589,7 +589,6 @@ int mutt_replacelist_remove(struct ReplaceList *rl, const char *pat)
  * @param str     String to apply regex on
  * @param nmatch  Length of matches
  * @param matches regmatch_t to hold match indices
- * @param flags   Type flags, e.g. #DT_REGEX_MATCH_CASE
  * @retval bool true if str match, false if str does not match
  */
 bool mutt_regex_capture(const struct Regex *regex, const char *str,

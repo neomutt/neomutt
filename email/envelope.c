@@ -56,6 +56,29 @@ struct Envelope *mutt_env_new(void)
   return e;
 }
 
+#ifdef USE_AUTOCRYPT
+/**
+ * mutt_free_autocrypthdr - Free an AutocryptHeader
+ * @param p AutocryptHeader to free
+ */
+void mutt_free_autocrypthdr(struct AutocryptHeader **p)
+{
+  if (!p)
+    return;
+
+  struct AutocryptHeader *cur = NULL;
+
+  while (*p)
+  {
+    cur = *p;
+    *p = (*p)->next;
+    FREE(&cur->addr);
+    FREE(&cur->keydata);
+    FREE(&cur);
+  }
+}
+#endif
+
 /**
  * mutt_env_free - Free an Envelope
  * @param[out] p Envelope to free
@@ -95,6 +118,12 @@ void mutt_env_free(struct Envelope **p)
   mutt_list_free(&(*p)->references);
   mutt_list_free(&(*p)->in_reply_to);
   mutt_list_free(&(*p)->userhdrs);
+
+#ifdef USE_AUTOCRYPT
+  mutt_free_autocrypthdr(&(*p)->autocrypt);
+  mutt_free_autocrypthdr(&(*p)->autocrypt_gossip);
+#endif
+
   FREE(p);
 }
 

@@ -952,6 +952,10 @@ void km_init(void)
   km_bindkey("l", MENU_MIX, OP_MIX_CHAIN_NEXT);
 #endif
 
+#ifdef USE_AUTOCRYPT
+  create_bindings(OpAutocryptAcct, MENU_AUTOCRYPT_ACCT);
+#endif
+
   /* bindings for the line editor */
   create_bindings(OpEditor, MENU_EDITOR);
 
@@ -1219,6 +1223,10 @@ const struct Binding *km_get_table(int menu)
       return OpAlias;
     case MENU_ATTACH:
       return OpAttach;
+#ifdef USE_AUTOCRYPT
+    case MENU_AUTOCRYPT_ACCT:
+      return OpAutocryptAcct;
+#endif
     case MENU_COMPOSE:
       return OpCompose;
     case MENU_EDITOR:

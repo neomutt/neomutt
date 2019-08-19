@@ -719,6 +719,12 @@ static gpgme_ctx_t create_gpgme_context(bool for_smime)
   gpgme_ctx_t ctx;
 
   err = gpgme_new(&ctx);
+
+#ifdef USE_AUTOCRYPT
+  if (!err && OptAutocryptGpgme)
+    err = gpgme_ctx_set_engine_info(ctx, GPGME_PROTOCOL_OpenPGP, NULL, C_AutocryptDir);
+#endif
+
   if (err != 0)
   {
     mutt_error(_("error creating gpgme context: %s"), gpgme_strerror(err));
@@ -1116,13 +1122,22 @@ static gpgme_key_t *create_recipient_set(const char *keylist, bool use_smime)
  */
 static int set_signer(gpgme_ctx_t ctx, bool for_smime)
 {
-  char *signid = for_smime ? C_SmimeDefaultKey : C_PgpSignAs;
+  char *signid = NULL;
   gpgme_error_t err;
   gpgme_ctx_t listctx;
   gpgme_key_t key, key2;
   char *fpr = NULL, *fpr2 = NULL;
 
-  if (!signid || !*signid)
+  if (for_smime)
+    signid = C_SmimeSignAs ? C_SmimeSignAs : C_SmimeDefaultKey;
+#ifdef USE_AUTOCRYPT
+  else if (OptAutocryptGpgme)
+    signid = AutocryptSignAs;
+#endif
+  else
+    signid = C_PgpSignAs ? C_PgpSignAs : C_PgpDefaultKey;
+
+  if (!signid)
     return 0;
 
   listctx = create_gpgme_context(for_smime);
@@ -2140,8 +2155,8 @@ static struct Body *decrypt_part(struct Body *a, struct State *s, FILE *fp_out,
   struct stat info;
   struct Body *tattach = NULL;
   int err = 0;
-  gpgme_ctx_t ctx;
-  gpgme_data_t ciphertext, plaintext;
+  gpgme_ctx_t ctx = NULL;
+  gpgme_data_t ciphertext = NULL, plaintext = NULL;
   bool maybe_signed = false;
   bool anywarn = false;
   int sig_stat = 0;
@@ -2157,7 +2172,7 @@ restart:
   /* Make a data object from the body, create context etc. */
   ciphertext = file_to_data_object(s->fp_in, a->offset, a->length);
   if (!ciphertext)
-    return NULL;
+    goto cleanup;
   plaintext = create_gpgme_data();
 
   /* Do the decryption or the verification in case of the S/MIME hack. */
@@ -2179,8 +2194,13 @@ restart:
   else
     err = gpgme_op_decrypt(ctx, ciphertext, plaintext);
   gpgme_data_release(ciphertext);
+  ciphertext = NULL;
   if (err != 0)
   {
+    /* Abort right away and silently.
+     * Autocrypt will retry on the normal keyring. */
+    if (OptAutocryptGpgme)
+      goto cleanup;
     if (is_smime && !maybe_signed && (gpg_err_code(err) == GPG_ERR_NO_DATA))
     {
       /* Check whether this might be a signed message despite what the mime
@@ -2194,9 +2214,10 @@ restart:
       {
         maybe_signed = true;
         gpgme_data_release(plaintext);
+        plaintext = NULL;
         /* gpgsm ends the session after an error; restart it */
         gpgme_release(ctx);
-        ctx = create_gpgme_context(is_smime);
+        ctx = NULL;
         goto restart;
       }
     }
@@ -2209,9 +2230,7 @@ restart:
                _("[-- Error: decryption failed: %s --]\n\n"), gpgme_strerror(err));
       state_attach_puts(buf, s);
     }
-    gpgme_data_release(plaintext);
-    gpgme_release(ctx);
-    return NULL;
+    goto cleanup;
   }
   redraw_if_needed(ctx);
 
@@ -2219,11 +2238,10 @@ restart:
    * otherwise read_mime_header has a hard time parsing the message.  */
   if (data_object_to_stream(plaintext, fp_out))
   {
-    gpgme_data_release(plaintext);
-    gpgme_release(ctx);
-    return NULL;
+    goto cleanup;
   }
   gpgme_data_release(plaintext);
+  plaintext = NULL;
 
   a->is_signed_data = false;
   if (sig_stat)
@@ -2276,6 +2294,11 @@ restart:
     /* See if we need to recurse on this MIME part.  */
     mutt_parse_part(fp_out, tattach);
   }
+
+cleanup:
+  gpgme_data_release(ciphertext);
+  gpgme_data_release(plaintext);
+  gpgme_release(ctx);
 
   return tattach;
 }
@@ -2351,10 +2374,16 @@ int pgp_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
 
   *cur = decrypt_part(b, &s, *fp_out, false, &is_signed);
   if (!*cur)
+  {
     rc = -1;
-  rewind(*fp_out);
-  if (is_signed > 0)
-    first_part->goodsig = true;
+    mutt_file_fclose(fp_out);
+  }
+  else
+  {
+    rewind(*fp_out);
+    if (is_signed > 0)
+      first_part->goodsig = true;
+  }
 
 bail:
   if (need_decode)
@@ -3210,7 +3239,10 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
   }
   else
   {
-    mutt_error(_("Could not decrypt PGP message"));
+    if (!OptAutocryptGpgme)
+    {
+      mutt_error(_("Could not decrypt PGP message"));
+    }
     rc = -1;
   }
 
@@ -5271,6 +5303,97 @@ char *pgp_gpgme_find_keys(struct AddressList *addrlist, bool oppenc_mode)
 char *smime_gpgme_find_keys(struct AddressList *addrlist, bool oppenc_mode)
 {
   return find_keys(addrlist, APPLICATION_SMIME, oppenc_mode);
+}
+
+/**
+ * mutt_gpgme_select_secret_key - Select a private Autocrypt key for a new account
+ * @param keyid Autocrypt Key id
+ * @retval  0 Success
+ * @retval -1 Error
+ *
+ * Unfortunately, the internal ncrypt/crypt_gpgme.c functions use CryptKeyInfo,
+ * and so aren't exportable.
+ *
+ * This function queries all private keys, provides the crypt_select_keys()
+ * menu, and returns the selected key fingerprint in keyid.
+ */
+int mutt_gpgme_select_secret_key(struct Buffer *keyid)
+{
+  int rc = -1, junk;
+  gpgme_error_t err;
+  gpgme_key_t key;
+  gpgme_user_id_t uid;
+  struct CryptKeyInfo *results = NULL, *k = NULL;
+  struct CryptKeyInfo **kend = NULL;
+  struct CryptKeyInfo *choice = NULL;
+
+  gpgme_ctx_t ctx = create_gpgme_context(false);
+
+  /* list all secret keys */
+  if (gpgme_op_keylist_start(ctx, NULL, 1))
+    goto cleanup;
+
+  kend = &results;
+
+  while (!(err = gpgme_op_keylist_next(ctx, &key)))
+  {
+    KeyFlags flags = KEYFLAG_NO_FLAGS;
+
+    if (key_check_cap(key, KEY_CAP_CAN_ENCRYPT))
+      flags |= KEYFLAG_CANENCRYPT;
+    if (key_check_cap(key, KEY_CAP_CAN_SIGN))
+      flags |= KEYFLAG_CANSIGN;
+
+    if (key->revoked)
+      flags |= KEYFLAG_REVOKED;
+    if (key->expired)
+      flags |= KEYFLAG_EXPIRED;
+    if (key->disabled)
+      flags |= KEYFLAG_DISABLED;
+
+    int idx;
+    for (idx = 0, uid = key->uids; uid; idx++, uid = uid->next)
+    {
+      k = mutt_mem_calloc(1, sizeof(*k));
+      k->kobj = key;
+      gpgme_key_ref(k->kobj);
+      k->idx = idx;
+      k->uid = uid->uid;
+      k->flags = flags;
+      if (uid->revoked)
+        k->flags |= KEYFLAG_REVOKED;
+      k->validity = uid->validity;
+      *kend = k;
+      kend = &k->next;
+    }
+    gpgme_key_unref(key);
+  }
+  if (gpg_err_code(err) != GPG_ERR_EOF)
+    mutt_error(_("gpgme_op_keylist_next failed: %s"), gpgme_strerror(err));
+  gpgme_op_keylist_end(ctx);
+
+  if (!results)
+  {
+    /* L10N:
+       mutt_gpgme_select_secret_key() tries to list all secret keys to choose
+       from.  This error is displayed if no results were found.
+    */
+    mutt_error(_("No secret keys found"));
+    goto cleanup;
+  }
+
+  choice = crypt_select_key(results, NULL, "*", APPLICATION_PGP, &junk);
+  if (!(choice && choice->kobj && choice->kobj->subkeys && choice->kobj->subkeys->fpr))
+    goto cleanup;
+  mutt_buffer_strcpy(keyid, choice->kobj->subkeys->fpr);
+
+  rc = 0;
+
+cleanup:
+  crypt_free_key(&choice);
+  crypt_free_key(&results);
+  gpgme_release(ctx);
+  return rc;
 }
 
 /**

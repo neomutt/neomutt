@@ -56,21 +56,21 @@ open XML, $xml or die "$xml: $!";
 while (<XML>) {
   if (/__print_map\((.*)\)/) {
     my $map = $1;
+    my $mapid = $1;
     my $maptitle = $1;
-    $maptitle =~ s/^(.)/\U$1\E/;
+    $mapid =~ s/\s+/-/g;
+    $maptitle =~ s/\b(\w)/\u$1/g;
     unless ($MAP{$map}) {
       warn "map $map undefined";
       next;
     }
-    my $title = $map;
-    $title =~ s/(.)(.+)/\U$1\E$2/;
     print <<EOT;
-<sect2 id="${map}-map">
+<sect2 id="${mapid}-map">
 <title>$maptitle Menu</title>
 $DOC{$map}
 
-<table id="tab-${map}-bindings">
-<title>Default $title Menu Bindings</title>
+<table id="tab-${mapid}-bindings">
+<title>Default $maptitle Menu Bindings</title>
 <tgroup cols="3">
 <thead>
 <row><entry>Function</entry><entry>Default key</entry><entry>Description</entry></row>

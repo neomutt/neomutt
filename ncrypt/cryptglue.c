@@ -41,7 +41,12 @@
 #include "mutt/mutt.h"
 #include "crypt_mod.h"
 #include "curs_lib.h"
+#include "globals.h"
 #include "ncrypt.h"
+#include "options.h"
+#ifdef USE_AUTOCRYPT
+#include "autocrypt/autocrypt.h"
+#endif
 
 struct Address;
 struct AddressList;
@@ -62,6 +67,7 @@ extern struct CryptModuleSpecs CryptModSmimeClassic;
 #endif
 
 #ifdef CRYPT_BACKEND_GPGME
+#include "ncrypt/crypt_gpgme.h"
 extern struct CryptModuleSpecs CryptModPgpGpgme;
 extern struct CryptModuleSpecs CryptModSmimeGpgme;
 #endif
@@ -192,6 +198,20 @@ bool crypt_pgp_valid_passphrase(void)
  */
 int crypt_pgp_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur)
 {
+#ifdef USE_AUTOCRYPT
+  if (C_Autocrypt)
+  {
+    OptAutocryptGpgme = true;
+    int result = pgp_gpgme_decrypt_mime(fp_in, fp_out, b, cur);
+    OptAutocryptGpgme = false;
+    if (result == 0)
+    {
+      b->is_autocrypt = true;
+      return result;
+    }
+  }
+#endif
+
   if (CRYPT_MOD_CALL_CHECK(PGP, decrypt_mime))
     return CRYPT_MOD_CALL(PGP, decrypt_mime)(fp_in, fp_out, b, cur);
 
@@ -218,6 +238,20 @@ int crypt_pgp_application_handler(struct Body *m, struct State *s)
  */
 int crypt_pgp_encrypted_handler(struct Body *a, struct State *s)
 {
+#ifdef USE_AUTOCRYPT
+  if (C_Autocrypt)
+  {
+    OptAutocryptGpgme = true;
+    int result = pgp_gpgme_encrypted_handler(a, s);
+    OptAutocryptGpgme = false;
+    if (result == 0)
+    {
+      a->is_autocrypt = true;
+      return result;
+    }
+  }
+#endif
+
   if (CRYPT_MOD_CALL_CHECK(PGP, encrypted_handler))
     return CRYPT_MOD_CALL(PGP, encrypted_handler)(a, s);
 
@@ -291,8 +325,22 @@ struct Body *crypt_pgp_sign_message(struct Body *a)
 /**
  * crypt_pgp_encrypt_message - Wrapper for CryptModuleSpecs::pgp_encrypt_message()
  */
-struct Body *crypt_pgp_encrypt_message(struct Body *a, char *keylist, bool sign)
+struct Body *crypt_pgp_encrypt_message(struct Email *e, struct Body *a, char *keylist, int sign)
 {
+#ifdef USE_AUTOCRYPT
+  if (e->security & SEC_AUTOCRYPT)
+  {
+    if (mutt_autocrypt_set_sign_as_default_key(e))
+      return NULL;
+
+    OptAutocryptGpgme = true;
+    struct Body *result = pgp_gpgme_encrypt_message(a, keylist, sign);
+    OptAutocryptGpgme = false;
+
+    return result;
+  }
+#endif
+
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_encrypt_message))
     return CRYPT_MOD_CALL(PGP, pgp_encrypt_message)(a, keylist, sign);
 

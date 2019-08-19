@@ -93,6 +93,21 @@ CLEANFILES+=	$(NEOMUTT) $(NEOMUTTOBJS)
 ALLOBJS+=	$(NEOMUTTOBJS)
 
 ###############################################################################
+# libautocrypt
+@if USE_AUTOCRYPT
+LIBAUTOCRYPT=	libautocrypt.a
+LIBAUTOCRYPTOBJS=	autocrypt/autocrypt.o \
+			autocrypt/autocrypt_acct_menu.o \
+			autocrypt/autocrypt_db.o \
+			autocrypt/autocrypt_gpgme.o \
+			autocrypt/autocrypt_schema.o
+
+CLEANFILES+=	$(LIBAUTOCRYPT) $(LIBAUTOCRYPTOBJS)
+MUTTLIBS+=	$(LIBAUTOCRYPT)
+ALLOBJS+=	$(LIBAUTOCRYPTOBJS)
+@endif
+
+###############################################################################
 # libpop
 LIBPOP=	libpop.a
 LIBPOPOBJS=	pop/pop_auth.o pop/pop.o pop/pop_lib.o
@@ -312,6 +327,13 @@ $(LIBADDRESS): $(PWD)/address $(LIBADDRESSOBJS)
 	$(RANLIB) $@
 $(PWD)/address:
 	$(MKDIR_P) $(PWD)/address
+
+# libautocrypt
+$(LIBAUTOCRYPT): $(PWD)/autocrypt $(LIBAUTOCRYPTOBJS)
+	$(AR) cr $@ $(LIBAUTOCRYPTOBJS)
+	$(RANLIB) $@
+$(PWD)/autocrypt:
+	$(MKDIR_P) $(PWD)/autocrypt
 
 # libemail
 $(LIBEMAIL): $(PWD)/email $(LIBEMAILOBJS)

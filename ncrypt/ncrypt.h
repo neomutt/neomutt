@@ -128,11 +128,14 @@ typedef uint16_t SecurityFlags;           ///< Flags, e.g. #SEC_ENCRYPT
 #define SEC_KEYBLOCK            (1 << 6)  ///< Email has a key attached
 #define SEC_INLINE              (1 << 7)  ///< Email has an inline signature
 #define SEC_OPPENCRYPT          (1 << 8)  ///< Opportunistic encrypt mode
-#define APPLICATION_PGP         (1 << 9)  ///< Use PGP to encrypt/sign
-#define APPLICATION_SMIME       (1 << 10) ///< Use SMIME to encrypt/sign
-#define PGP_TRADITIONAL_CHECKED (1 << 11) ///< Email has a traditional (inline) signature
+#define SEC_AUTOCRYPT           (1 << 9)  ///< Message will be, or was Autocrypt encrypt+signed
+#define SEC_AUTOCRYPT_OVERRIDE  (1 << 10) ///< Indicates manual set/unset of encryption
 
-#define SEC_ALL_FLAGS          ((1 << 12) - 1)
+#define APPLICATION_PGP         (1 << 11) ///< Use PGP to encrypt/sign
+#define APPLICATION_SMIME       (1 << 12) ///< Use SMIME to encrypt/sign
+#define PGP_TRADITIONAL_CHECKED (1 << 13) ///< Email has a traditional (inline) signature
+
+#define SEC_ALL_FLAGS          ((1 << 14) - 1)
 
 #define PGP_ENCRYPT  (APPLICATION_PGP | SEC_ENCRYPT)
 #define PGP_SIGN     (APPLICATION_PGP | SEC_SIGN)
@@ -195,7 +198,7 @@ SecurityFlags mutt_is_malformed_multipart_pgp_encrypted(struct Body *b);
 SecurityFlags mutt_is_multipart_encrypted(struct Body *b);
 SecurityFlags mutt_is_multipart_signed(struct Body *b);
 int          mutt_is_valid_multipart_pgp_encrypted(struct Body *b);
-int          mutt_protect(struct Email *e, char *keylist);
+int          mutt_protect(struct Email *e, char *keylist, bool postpone);
 int          mutt_protected_headers_handler(struct Body *m, struct State *s);
 bool         mutt_should_hide_protected_subject(struct Email *e);
 int          mutt_signed_handler(struct Body *a, struct State *s);

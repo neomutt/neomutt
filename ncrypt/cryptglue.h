@@ -30,7 +30,7 @@ struct AddressList;
 struct Body;
 struct State;
 
-struct Body *crypt_pgp_encrypt_message(struct Body *a, char *keylist, bool sign);
+struct Body *crypt_pgp_encrypt_message(struct Email *e, struct Body *a, char *keylist, int sign);
 char *       crypt_pgp_find_keys(struct AddressList *al, bool oppenc_mode);
 void         crypt_pgp_invoke_import(const char *fname);
 void         crypt_pgp_set_sender(const char *sender);

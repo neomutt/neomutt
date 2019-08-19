@@ -87,6 +87,9 @@
 #ifndef USE_NOTMUCH
 #define USE_NOTMUCH
 #endif
+#ifndef USE_AUTOCRYPT
+#define USE_AUTOCRYPT
+#endif
 #endif
 
 #endif /* _MUTT_MAKEDOC_DEFS_H */

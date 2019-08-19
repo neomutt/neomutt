@@ -1,0 +1,57 @@
+This is an implementation of Autocrypt Level 1.1. <https://autocrypt.org/>
+
+
+Still Todo
+==========
+* Setup message creation
+* Setup message import
+  These can both be added to the account menu, and perhaps the first-run too.
+
+
+Developer Notes
+===============
+
+* header->security | SEC_AUTOCRYPT
+
+  During message composition, SEC_AUTOCRYPT is mutually exclusive from
+  SEC_ENCRYPT and SEC_SIGN.  The former means that autocrypt will sign and
+  encrypt the email upon send, the latter means the normal keyring
+  will do so.
+
+  We keep these separate so that autocrypt can detect the normal
+  keyring has been turned on (manually, or by oppenc or something) and
+  disable itself.
+
+  Outside message composition the flags are not exclusive.  We can't
+  tell a message is an autocrypt message until we try to decrypt it.
+  Once we do so, the flag is added to the existing flags.  The only
+  relevance for decrypted messages is when replying - in which case
+  we want to force using autocrypt in the reply.
+
+* header->security | SEC_AUTOCRYPT_OVERRIDE
+
+  I was loathe to use another bit for this, but unlike SEC_OPPENCRYPT,
+  SEC_AUTOCRYPT means the message *will* be encrypted, not that the option
+  is on.
+
+  We need a way to distinguish between the user manually enabling
+  autocrypt and the recommendation engine doing so.  If this is not
+  set, the engine can turn SEC_AUTOCRYPT back off when the recipients
+  change.  But if the user manually set it, we don't want to do that.
+
+* mutt_autocrypt_init()
+
+  All public functions (in autocrypt.h) should call this function to
+  make sure everything is set up.  Nothing prevents the user from manually
+  flipping the option at runtime, but in that case the directory and such
+  may not even exist.
+
+  Right now, I only allow "first run" initialization during startup.
+  Not all calls are interactive, and we don't want to prompt the user
+  while opening a mailbox, for instance.
+
+* Database schema version
+
+  There is a "schema" table in the database, which records database
+  version.  Any changes to the database should bump the schema version
+  by adding a call in mutt_autocrypt_schema_update().

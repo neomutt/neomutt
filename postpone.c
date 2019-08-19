@@ -517,6 +517,20 @@ SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, Securit
         flags |= SEC_OPPENCRYPT;
         break;
 
+      case 'a':
+      case 'A':
+#ifdef USE_AUTOCRYPT
+        flags |= SEC_AUTOCRYPT;
+#endif
+        break;
+
+      case 'z':
+      case 'Z':
+#ifdef USE_AUTOCRYPT
+        flags |= SEC_AUTOCRYPT_OVERRIDE;
+#endif
+        break;
+
       case 's':
       case 'S':
         flags |= SEC_SIGN;

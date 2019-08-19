@@ -101,6 +101,9 @@ const struct Binding OpGeneric[] = { /* map: generic */
  * OpMain - Key bindings for the index menu
  */
 const struct Binding OpMain[] = { /* map: index */
+#ifdef USE_AUTOCRYPT
+  { "autocrypt-acct-menu",        OP_AUTOCRYPT_ACCT_MENU,           "A" },
+#endif
   { "bounce-message",            OP_BOUNCE_MESSAGE,                 "b" },
   { "break-thread",              OP_MAIN_BREAK_THREAD,              "#" },
 #ifdef USE_NNTP
@@ -452,6 +455,9 @@ const struct Binding OpCompose[] = { /* map: compose */
 #ifdef USE_NNTP
   { "attach-news-message",   OP_COMPOSE_ATTACH_NEWS_MESSAGE, NULL },
 #endif
+#ifdef USE_AUTOCRYPT
+  { "autocrypt-menu",        OP_COMPOSE_AUTOCRYPT_MENU,      "o" },
+#endif
   { "copy-file",             OP_SAVE,                        "C" },
   { "detach-file",           OP_DELETE,                      "D" },
   { "display-toggle-weed",   OP_DISPLAY_HEADERS,             "h" },
@@ -658,6 +664,19 @@ const struct Binding OpMix[] = { /* map: mixmaster */
   { NULL,                    0,                              NULL },
 };
 #endif /* MIXMASTER */
+
+#ifdef USE_AUTOCRYPT
+/**
+ * OpAutocryptAcct - Key bindings for the autocrypt account
+ */
+const struct Binding OpAutocryptAcct[] = { /* map: autocrypt account */
+  { "create-account",        OP_AUTOCRYPT_CREATE_ACCT,       "c" },
+  { "delete-account",        OP_AUTOCRYPT_DELETE_ACCT,       "D" },
+  { "toggle-active",         OP_AUTOCRYPT_TOGGLE_ACTIVE,     "a" },
+  { "toggle-prefer-encrypt", OP_AUTOCRYPT_TOGGLE_PREFER,     "p" },
+  { NULL,                    0,                              NULL }
+};
+#endif
 
 // clang-format on
 
