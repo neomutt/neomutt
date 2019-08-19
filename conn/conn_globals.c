@@ -53,6 +53,7 @@ bool C_SslUseSslv3;  ///< Config: (ssl) INSECURE: Use SSLv3 for authentication
 bool C_SslUseTlsv1;  ///< Config: (ssl) Use TLSv1 for authentication
 bool C_SslUseTlsv11; ///< Config: (ssl) Use TLSv1.1 for authentication
 bool C_SslUseTlsv12; ///< Config: (ssl) Use TLSv1.2 for authentication
+bool C_SslUseTlsv13; ///< Config: (ssl) Use TLSv1.3 for authentication
 bool C_SslVerifyDates; ///< Config: (ssl) Verify the dates on the server certificate
 bool C_SslVerifyHost; ///< Config: (ssl) Verify the server's hostname against the certificate
 #endif

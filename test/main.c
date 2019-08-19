@@ -367,7 +367,6 @@
   NEOMUTT_TEST_ITEM(test_mutt_str_lws_len)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_str_lws_rlen)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_str_next_word)                                   \
-  NEOMUTT_TEST_ITEM(test_mutt_str_pretty_size)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_str_remall_strcasestr)                           \
   NEOMUTT_TEST_ITEM(test_mutt_str_remove_trailing_ws)                          \
   NEOMUTT_TEST_ITEM(test_mutt_str_replace)                                     \

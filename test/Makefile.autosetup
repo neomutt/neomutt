@@ -380,7 +380,6 @@ STRING_OBJS	= test/string/mutt_str_adjust.o \
 		  test/string/mutt_str_lws_len.o \
 		  test/string/mutt_str_lws_rlen.o \
 		  test/string/mutt_str_next_word.o \
-		  test/string/mutt_str_pretty_size.o \
 		  test/string/mutt_str_remall_strcasestr.o \
 		  test/string/mutt_str_remove_trailing_ws.o \
 		  test/string/mutt_str_replace.o \

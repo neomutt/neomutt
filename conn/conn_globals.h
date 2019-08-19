@@ -54,6 +54,7 @@ extern bool C_SslUseSslv3;
 extern bool C_SslUseTlsv1;
 extern bool C_SslUseTlsv11;
 extern bool C_SslUseTlsv12;
+extern bool C_SslUseTlsv13;
 extern bool C_SslVerifyDates;
 extern bool C_SslVerifyHost;
 #endif

@@ -111,6 +111,7 @@ static int tls_starttls_close(struct Connection *conn)
   conn->conn_read = raw_socket_read;
   conn->conn_write = raw_socket_write;
   conn->conn_close = raw_socket_close;
+  conn->conn_poll = raw_socket_poll;
 
   return rc;
 }
@@ -888,61 +889,70 @@ err_crt:
  */
 static int tls_set_priority(struct TlsSockData *data)
 {
-  size_t nproto = 4;
-  size_t priority_size;
+  size_t nproto = 5;
+  int rv = -1;
 
-  priority_size = mutt_str_strlen(C_SslCiphers) + 128;
-  char *priority = mutt_mem_malloc(priority_size);
+  struct Buffer *priority = mutt_buffer_pool_get();
 
-  priority[0] = '\0';
   if (C_SslCiphers)
-    mutt_str_strcat(priority, priority_size, C_SslCiphers);
+    mutt_buffer_strcpy(priority, C_SslCiphers);
   else
-    mutt_str_strcat(priority, priority_size, "NORMAL");
+    mutt_buffer_strcpy(priority, "NORMAL");
 
+  if (!C_SslUseTlsv13)
+  {
+    nproto--;
+    mutt_buffer_addstr(priority, ":-VERS-TLS1.3");
+  }
   if (!C_SslUseTlsv12)
   {
     nproto--;
-    mutt_str_strcat(priority, priority_size, ":-VERS-TLS1.2");
+    mutt_buffer_addstr(priority, ":-VERS-TLS1.2");
   }
   if (!C_SslUseTlsv11)
   {
     nproto--;
-    mutt_str_strcat(priority, priority_size, ":-VERS-TLS1.1");
+    mutt_buffer_addstr(priority, ":-VERS-TLS1.1");
   }
   if (!C_SslUseTlsv1)
   {
     nproto--;
-    mutt_str_strcat(priority, priority_size, ":-VERS-TLS1.0");
+    mutt_buffer_addstr(priority, ":-VERS-TLS1.0");
   }
   if (!C_SslUseSslv3)
   {
     nproto--;
-    mutt_str_strcat(priority, priority_size, ":-VERS-SSL3.0");
+    mutt_buffer_addstr(priority, ":-VERS-SSL3.0");
   }
 
   if (nproto == 0)
   {
     mutt_error(_("All available protocols for TLS/SSL connection disabled"));
-    FREE(&priority);
-    return -1;
+    goto cleanup;
   }
 
-  int err = gnutls_priority_set_direct(data->state, priority, NULL);
+  int err = gnutls_priority_set_direct(data->state, mutt_b2s(priority), NULL);
   if (err < 0)
   {
-    mutt_error("gnutls_priority_set_direct(%s): %s", priority, gnutls_strerror(err));
-    FREE(&priority);
-    return -1;
+    mutt_error("gnutls_priority_set_direct(%s): %s", mutt_b2s(priority),
+               gnutls_strerror(err));
+    goto cleanup;
   }
 
-  FREE(&priority);
-  return 0;
+  rv = 0;
+
+cleanup:
+  mutt_buffer_pool_release(&priority);
+  return rv;
 }
 #else
 /* This array needs to be large enough to hold all the possible values support
  * by NeoMutt.  The initialized values are just placeholders--the array gets
- * overwritten in tls_negotiate() depending on the $ssl_use_* options.
+ * overwrriten in tls_negotiate() depending on the $ssl_use_* options.
+ *
+ * Note: gnutls_protocol_set_priority() was removed in GnuTLS version
+ * 3.4 (2015-04).  TLS 1.3 support wasn't added until version 3.6.5.
+ * Therefore, no attempt is made to support $ssl_use_tlsv1_3 in this code.
  */
 static int protocol_priority[] = { GNUTLS_TLS1_2, GNUTLS_TLS1_1, GNUTLS_TLS1,
                                    GNUTLS_SSL3, 0 };
@@ -1115,6 +1125,19 @@ fail:
 }
 
 /**
+ * tls_socket_poll - Check whether a socket read would block - Implements Connection::conn_poll()
+ */
+static int tls_socket_poll(struct Connection *conn, time_t wait_secs)
+{
+  struct TlsSockData *data = conn->sockdata;
+
+  if (gnutls_record_check_pending(data->state))
+    return 1;
+  else
+    return raw_socket_poll(conn, wait_secs);
+}
+
+/**
  * tls_socket_open - Open a TLS socket - Implements Connection::conn_open()
  */
 static int tls_socket_open(struct Connection *conn)
@@ -1232,7 +1255,7 @@ int mutt_ssl_socket_setup(struct Connection *conn)
   conn->conn_read = tls_socket_read;
   conn->conn_write = tls_socket_write;
   conn->conn_close = tls_socket_close;
-  conn->conn_poll = raw_socket_poll;
+  conn->conn_poll = tls_socket_poll;
 
   return 0;
 }
@@ -1254,6 +1277,7 @@ int mutt_ssl_starttls(struct Connection *conn)
   conn->conn_read = tls_socket_read;
   conn->conn_write = tls_socket_write;
   conn->conn_close = tls_starttls_close;
+  conn->conn_poll = tls_socket_poll;
 
   return 0;
 }

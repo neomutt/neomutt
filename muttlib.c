@@ -1710,3 +1710,43 @@ void mutt_buffer_sanitize_filename(struct Buffer *buf, const char *path, short s
       mutt_buffer_addch(buf, *path);
   }
 }
+
+/**
+ * mutt_str_pretty_size - Display an abbreviated size, like 3.4K
+ * @param buf    Buffer for the result
+ * @param buflen Length of the buffer
+ * @param num    Number to abbreviate
+ */
+void mutt_str_pretty_size(char *buf, size_t buflen, size_t num)
+{
+  if (!buf || (buflen == 0))
+    return;
+
+  if (C_SizeShowBytes && (num < 1024))
+  {
+    snprintf(buf, buflen, "%d", (int) num);
+  }
+  else if (num == 0)
+  {
+    mutt_str_strfcpy(buf, C_SizeUnitsOnLeft ? "K0" : "0K", buflen);
+  }
+  else if (C_SizeShowFractions && (num < 10189)) /* 0.1K - 9.9K */
+  {
+    snprintf(buf, buflen, C_SizeUnitsOnLeft ? "K%3.1f" : "%3.1fK",
+             (num < 103) ? 0.1 : (num / 1024.0));
+  }
+  else if (!C_SizeShowMb || (num < 1023949)) /* 10K - 999K */
+  {
+    /* 51 is magic which causes 10189/10240 to be rounded up to 10 */
+    snprintf(buf, buflen, C_SizeUnitsOnLeft ? ("K%zu") : ("%zuK"), (num + 51) / 1024);
+  }
+  else if (C_SizeShowFractions && (num < 10433332)) /* 1.0M - 9.9M */
+  {
+    snprintf(buf, buflen, C_SizeUnitsOnLeft ? "M%3.1f" : "%3.1fM", num / 1048576.0);
+  }
+  else /* 10M+ */
+  {
+    /* (10433332 + 52428) / 1048576 = 10 */
+    snprintf(buf, buflen, C_SizeUnitsOnLeft ? ("M%zu") : ("%zuM"), (num + 52428) / 1048576);
+  }
+}

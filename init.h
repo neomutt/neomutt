@@ -314,7 +314,7 @@ struct ConfigDef MuttVars[] = {
   ** .dt %M  .dd MIME subtype
   ** .dt %n  .dd Attachment number
   ** .dt %Q  .dd "Q", if MIME part qualifies for attachment counting
-  ** .dt %s  .dd Size
+  ** .dt %s  .dd Size (see $formatstrings-size)
   ** .dt %T  .dd Graphic tree characters
   ** .dt %t  .dd Tagged flag
   ** .dt %u  .dd Unlink (=to delete) flag
@@ -376,7 +376,7 @@ struct ConfigDef MuttVars[] = {
   { "auto_subscribe", DT_BOOL, &C_AutoSubscribe, false },
   /*
   ** .pp
-  ** When \fIset\fP, Mutt assumes the presence of a List-Post header
+  ** When \fIset\fP, NeoMutt assumes the presence of a List-Post header
   ** means the recipient is subscribed to the list.  Unless the mailing list
   ** is in the "unsubscribe" or "unlist" lists, it will be added
   ** to the "$subscribe" list.  Parsing and checking these things slows
@@ -443,7 +443,7 @@ struct ConfigDef MuttVars[] = {
   { "browser_abbreviate_mailboxes", DT_BOOL, &C_BrowserAbbreviateMailboxes, true },
   /*
   ** .pp
-  ** When this variable is \fIset\fP, mutt will abbreviate mailbox
+  ** When this variable is \fIset\fP, NeoMutt will abbreviate mailbox
   ** names in the browser mailbox list, using '~' and '='
   ** shortcuts.
   ** .pp
@@ -554,7 +554,7 @@ struct ConfigDef MuttVars[] = {
   ** .dl
   ** .dt %a .dd Total number of attachments
   ** .dt %h .dd Local hostname
-  ** .dt %l .dd Approximate size (in bytes) of the current message
+  ** .dt %l .dd Approximate size (in bytes) of the current message (see $formatstrings-size)
   ** .dt %v .dd NeoMutt version string
   ** .de
   ** .pp
@@ -690,19 +690,19 @@ struct ConfigDef MuttVars[] = {
   { "crypt_protected_headers_read", DT_BOOL, &C_CryptProtectedHeadersRead, true },
   /*
   ** .pp
-  ** When set, Mutt will display protected headers ("Memory Hole") in the pager,
+  ** When set, NeoMutt will display protected headers ("Memory Hole") in the pager,
   ** and will update the index and header cache with revised headers.
   **
   ** Protected headers are stored inside the encrypted or signed part of an
   ** an email, to prevent disclosure or tampering.
   ** For more information see https://github.com/autocrypt/memoryhole.
-  ** Currently Mutt only supports the Subject header.
+  ** Currently NeoMutt only supports the Subject header.
   ** .pp
   ** Encrypted messages using protected headers often substitute the exposed
   ** Subject header with a dummy value (see $$crypt_protected_headers_subject).
-  ** Mutt will update its concept of the correct subject \fBafter\fP the
+  ** NeoMutt will update its concept of the correct subject \fBafter\fP the
   ** message is opened, i.e. via the \fC<display-message>\fP function.
-  ** If you reply to a message before opening it, Mutt will end up using
+  ** If you reply to a message before opening it, NeoMutt will end up using
   ** the dummy Subject header, so be sure to open such a message first.
   ** (Crypto only)
   */
@@ -710,7 +710,7 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** When $$crypt_protected_headers_read is set, and a message with a
-  ** protected Subject is opened, Mutt will save the updated Subject
+  ** protected Subject is opened, NeoMutt will save the updated Subject
   ** into the header cache by default.  This allows searching/limiting
   ** based on the protected Subject header if the mailbox is
   ** re-opened, without having to re-open the message each time.
@@ -719,12 +719,12 @@ struct ConfigDef MuttVars[] = {
   ** mailbox was reopened before you could see or search/limit on the
   ** protected subject again.
   ** .pp
-  ** When this variable is set, Mutt additionally saves the protected
+  ** When this variable is set, NeoMutt additionally saves the protected
   ** Subject back \fBin the clear-text message headers\fP.  This
   ** provides better usability, but with the tradeoff of reduced
   ** security.  The protected Subject header, which may have
   ** previously been encrypted, is now stored in clear-text in the
-  ** message headers.  Copying the message elsewhere, via Mutt or
+  ** message headers.  Copying the message elsewhere, via NeoMutt or
   ** external tools, could expose this previously encrypted data.
   ** Please make sure you understand the consequences of this before
   ** you enable this variable.
@@ -744,14 +744,14 @@ struct ConfigDef MuttVars[] = {
   { "crypt_protected_headers_write", DT_BOOL, &C_CryptProtectedHeadersWrite, false },
   /*
   ** .pp
-  ** When set, Mutt will generate protected headers ("Memory Hole") for
+  ** When set, NeoMutt will generate protected headers ("Memory Hole") for
   ** signed and encrypted emails.
   **
   ** Protected headers are stored inside the encrypted or signed part of an
   ** an email, to prevent disclosure or tampering.
   ** For more information see https://github.com/autocrypt/memoryhole.
   **
-  ** Currently Mutt only supports the Subject header.
+  ** Currently NeoMutt only supports the Subject header.
   ** (Crypto only)
   */
   { "crypt_replyencrypt", DT_BOOL, &C_CryptReplyencrypt, true },
@@ -1154,7 +1154,7 @@ struct ConfigDef MuttVars[] = {
   ** .dt %m  .dd Number of messages in the mailbox *
   ** .dt %n  .dd Number of unread messages in the mailbox *
   ** .dt %N  .dd "N" if mailbox has new mail, blank otherwise
-  ** .dt %s  .dd Size in bytes
+  ** .dt %s  .dd Size in bytes (see $formatstrings-size)
   ** .dt %t  .dd "*" if the file is tagged, blank otherwise
   ** .dt %u  .dd Owner name (or numeric uid, if missing)
   ** .dt %>X .dd Right justify the rest of the string and pad with character "X"
@@ -1589,8 +1589,8 @@ struct ConfigDef MuttVars[] = {
   { "imap_condstore", DT_BOOL, &C_ImapCondstore, false },
   /*
   ** .pp
-  ** When \fIset\fP, mutt will use the CONDSTORE extension (RFC 7162)
-  ** if advertised by the server.  Mutt's current implementation is basic,
+  ** When \fIset\fP, NeoMutt will use the CONDSTORE extension (RFC 7162)
+  ** if advertised by the server.  NeoMutt's current implementation is basic,
   ** used only for initial message fetching and flag updates.
   ** .pp
   ** For some IMAP servers, enabling this will slightly speed up
@@ -1720,8 +1720,8 @@ struct ConfigDef MuttVars[] = {
   { "imap_qresync", DT_BOOL, &C_ImapQresync, false },
   /*
   ** .pp
-  ** When \fIset\fP, mutt will use the QRESYNC extension (RFC 7162)
-  ** if advertised by the server.  Mutt's current implementation is basic,
+  ** When \fIset\fP, NeoMutt will use the QRESYNC extension (RFC 7162)
+  ** if advertised by the server.  NeoMutt's current implementation is basic,
   ** used only for initial message fetching and flag updates.
   ** .pp
   ** Note: this feature is currently experimental.  If you experience
@@ -1773,7 +1773,7 @@ struct ConfigDef MuttVars[] = {
   { "include_encrypted", DT_BOOL, &C_IncludeEncrypted, false },
   /*
   ** .pp
-  ** Controls whether or not Mutt includes separately encrypted attachment
+  ** Controls whether or not NeoMutt includes separately encrypted attachment
   ** contents when replying.
   ** .pp
   ** This variable was added to prevent accidental exposure of encrypted
@@ -1816,7 +1816,7 @@ struct ConfigDef MuttVars[] = {
   ** .dt %b .dd Filename of the original message folder (think mailbox)
   ** .dt %B .dd The list to which the letter was sent, or else the folder name (%b).
   ** .dt %C .dd Current message number
-  ** .dt %c .dd Number of characters (bytes) in the message
+  ** .dt %c .dd Number of characters (bytes) in the message (see $formatstrings-size)
   ** .dt %D .dd Date and time of message using $date_format and local timezone
   ** .dt %d .dd Date and time of message using $date_format and sender's timezone
   ** .dt %e .dd Current message number in thread
@@ -2568,14 +2568,14 @@ struct ConfigDef MuttVars[] = {
   { "pgp_check_gpg_decrypt_status_fd", DT_BOOL, &C_PgpCheckGpgDecryptStatusFd, true },
   /*
   ** .pp
-  ** If \fIset\fP, mutt will check the status file descriptor output
+  ** If \fIset\fP, NeoMutt will check the status file descriptor output
   ** of $$pgp_decrypt_command and $$pgp_decode_command for GnuPG status codes
   ** indicating successful decryption.  This will check for the presence of
   ** DECRYPTION_OKAY, absence of DECRYPTION_FAILED, and that all
   ** PLAINTEXT occurs between the BEGIN_DECRYPTION and END_DECRYPTION
   ** status codes.
   ** .pp
-  ** If \fIunset\fP, mutt will instead match the status fd output
+  ** If \fIunset\fP, NeoMutt will instead match the status fd output
   ** against $$pgp_decryption_okay.
   ** (PGP only)
   */
@@ -3431,12 +3431,12 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** This variable fine-tunes the behavior of the $$reverse_name feature.
   ** .pp
-  ** When it is \fIunset\fP, Mutt will remove the real name part of a
+  ** When it is \fIunset\fP, NeoMutt will remove the real name part of a
   ** matching address.  This allows the use of the email address
   ** without having to also use what the sender put in the real name
   ** field.
   ** .pp
-  ** When it is \fIset\fP, Mutt will use the matching address as-is.
+  ** When it is \fIset\fP, NeoMutt will use the matching address as-is.
   ** .pp
   ** In either case, a missing real name will be filled in afterwards
   ** using the value of $$realname.
@@ -3813,6 +3813,31 @@ struct ConfigDef MuttVars[] = {
   ** will automatically expand it to the value specified by this variable by
   ** replacing "%s" with the supplied string.
   ** For the default value, "joe" would be expanded to: "~f joe | ~s joe".
+  */
+  { "size_show_bytes", DT_BOOL|R_MENU, &C_SizeShowBytes, false },
+  /*
+  ** .pp
+  ** If \fIset\fP, message sizes will display bytes for values less than
+  ** 1 kilobyte.  See $formatstrings-size.
+  */
+  { "size_show_fractions", DT_BOOL|R_MENU, &C_SizeShowFractions, true },
+  /*
+  ** .pp
+  ** If \fIset\fP, message sizes will be displayed with a single decimal value
+  ** for sizes from 0 to 10 kilobytes and 1 to 10 megabytes.
+  ** See $formatstrings-size.
+  */
+  { "size_show_mb", DT_BOOL|R_MENU, &C_SizeShowMb, true },
+  /*
+  ** .pp
+  ** If \fIset\fP, message sizes will display megabytes for values greater than
+  ** or equal to 1 megabyte.  See $formatstrings-size.
+  */
+  { "size_units_on_left", DT_BOOL|R_MENU, &C_SizeUnitsOnLeft, false },
+  /*
+  ** .pp
+  ** If \fIset\fP, message sizes units will be displayed to the left of the number.
+  ** See $formatstrings-size.
   */
   { "skip_quoted_offset", DT_NUMBER|DT_NOT_NEGATIVE, &C_SkipQuotedOffset, 0 },
   /*
@@ -4310,7 +4335,7 @@ struct ConfigDef MuttVars[] = {
   { "ssl_use_sslv2", DT_BOOL, &C_SslUseSslv2, false },
   /*
   ** .pp
-  ** If \fIset\fP , Mutt will use SSLv2 when communicating with servers that
+  ** If \fIset\fP , NeoMutt will use SSLv2 when communicating with servers that
   ** request it. \fBN.B. As of 2011, SSLv2 is considered insecure, and using
   ** is inadvisable. See https://tools.ietf.org/html/rfc6176 .\fP
   ** (OpenSSL only)
@@ -4319,28 +4344,34 @@ struct ConfigDef MuttVars[] = {
   { "ssl_use_sslv3", DT_BOOL, &C_SslUseSslv3, false },
   /*
   ** .pp
-  ** If \fIset\fP , Mutt will use SSLv3 when communicating with servers that
+  ** If \fIset\fP , NeoMutt will use SSLv3 when communicating with servers that
   ** request it. \fBN.B. As of 2015, SSLv3 is considered insecure, and using
   ** it is inadvisable. See https://tools.ietf.org/html/rfc7525 .\fP
   */
   { "ssl_use_tlsv1", DT_BOOL, &C_SslUseTlsv1, false },
   /*
   ** .pp
-  ** If \fIset\fP , Mutt will use TLSv1.0 when communicating with servers that
+  ** If \fIset\fP , NeoMutt will use TLSv1.0 when communicating with servers that
   ** request it. \fBN.B. As of 2015, TLSv1.0 is considered insecure, and using
   ** it is inadvisable. See https://tools.ietf.org/html/rfc7525 .\fP
   */
   { "ssl_use_tlsv1_1", DT_BOOL, &C_SslUseTlsv11, false },
   /*
   ** .pp
-  ** If \fIset\fP , Mutt will use TLSv1.1 when communicating with servers that
+  ** If \fIset\fP , NeoMutt will use TLSv1.1 when communicating with servers that
   ** request it. \fBN.B. As of 2015, TLSv1.1 is considered insecure, and using
   ** it is inadvisable. See https://tools.ietf.org/html/rfc7525 .\fP
   */
   { "ssl_use_tlsv1_2", DT_BOOL, &C_SslUseTlsv12, true },
   /*
   ** .pp
-  ** If \fIset\fP , Mutt will use TLSv1.2 when communicating with servers that
+  ** If \fIset\fP , NeoMutt will use TLSv1.2 when communicating with servers that
+  ** request it.
+  */
+  { "ssl_use_tlsv1_3", DT_BOOL, &C_SslUseTlsv13, true },
+  /*
+  ** .pp
+  ** If \fIset\fP , NeoMutt will use TLSv1.3 when communicating with servers that
   ** request it.
   */
 #ifdef USE_SSL_OPENSSL
@@ -4417,9 +4448,9 @@ struct ConfigDef MuttVars[] = {
   ** .dt %f  .dd The full pathname of the current mailbox
   ** .dt %F  .dd Number of flagged messages *
   ** .dt %h  .dd Local hostname
-  ** .dt %l  .dd Size (in bytes) of the current mailbox *
+  ** .dt %l  .dd Size (in bytes) of the current mailbox (see $formatstrings-size) *
   ** .dt %L  .dd Size (in bytes) of the messages shown
-  **             (i.e., which match the current limit) *
+  **             (i.e., which match the current limit) (see $formatstrings-size) *
   ** .dt %m  .dd The number of messages in the mailbox *
   ** .dt %M  .dd The number of messages shown (i.e., which match the current limit) *
   ** .dt %n  .dd Number of new messages in the mailbox *

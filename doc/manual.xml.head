@@ -345,7 +345,7 @@ vim: ts=2 sw=2 sts=2 expandtab:
         </para>
         <para>
           Some mail systems can nest mail folders inside other mail folders.
-          The normal open entry commands in mutt will open the mail folder and
+          The normal open entry commands in NeoMutt will open the mail folder and
           you can't see the sub-folders.  If you instead use the
           <literal>&lt;descend-directory&gt;</literal> function it will go into
           the directory and not open it as a mail directory.
@@ -3178,7 +3178,7 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
         which, for example, can be set to <quote>ask-no</quote>.
       </para>
       <para>
-        Mutt's default (<link linkend="mime-forward">$mime_forward</link>=<quote>no</quote> and
+        NeoMutt's default (<link linkend="mime-forward">$mime_forward</link>=<quote>no</quote> and
         <link linkend="forward-decode">$forward_decode</link>=<quote>yes</quote>) is
         to use standard inline forwarding.  In that mode all text-decodable
         parts are included in the new message body.  Other attachments from
@@ -3317,19 +3317,19 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
       <para>
         To enable <quote>classic mode</quote>, ensure GPGME is disabled and use
         the <literal>gpg.rc</literal> or <literal>smime.rc</literal> files that
-        come with mutt.  These are typically installed under
-        <literal>/usr/local/share/doc/mutt/samples/</literal>.  Source them, either
+        come with NeoMutt.  These are typically installed under
+        <literal>/usr/local/share/doc/neomutt/samples/</literal>.  Source them, either
         directly or by copying them to your .mutt directory and sourcing them.
         Sourcing them directly from
-        <literal>/usr/local/share/doc/mutt/samples/</literal> has the benefit of
+        <literal>/usr/local/share/doc/neomutt/samples/</literal> has the benefit of
         automatically using fixes and security improvements to the command
         invocations, and is recommended.
       </para>
 
 <screen>
 unset crypt_use_gpgme
-source /usr/local/share/doc/mutt/samples/gpg.rc
-source /usr/local/share/doc/mutt/samples/smime.rc
+source /usr/local/share/doc/neomutt/samples/gpg.rc
+source /usr/local/share/doc/neomutt/samples/smime.rc
 </screen>
 
       <para>
@@ -3358,11 +3358,11 @@ set crypt_use_gpgme
           <literal>agent</literal> to prompt for your passphrase.  If you are
           using a version older than that, you'll need to ensure an agent is
           running (alternatively, you can unset
-          <link linkend="pgp-use-gpg-agent">$pgp_use_gpg_agent</link> and Mutt
+          <link linkend="pgp-use-gpg-agent">$pgp_use_gpg_agent</link> and NeoMutt
           will prompt you for your passphrase).  The agent in turn uses a
           <literal>pinentry</literal> program to display the prompt.  There are
           many different kinds of pinentry programs that can be used: qt, gtk2,
-          gnome3, fltk, and curses.  However, Mutt does
+          gnome3, fltk, and curses.  However, NeoMutt does
           <emphasis>not</emphasis> work properly with the tty pinentry program.
           Please ensure you have one of the GUI or curses pinentry programs
           installed and configured to be the default for your system.
@@ -3384,7 +3384,7 @@ set crypt_use_gpgme
 
         <para>
           In <quote>classic mode</quote>, keys and certificates are managed by
-          the <literal>smime_keys</literal> program that comes with Mutt.  By
+          the <literal>smime_keys</literal> program that comes with NeoMutt.  By
           default they are stored under <literal>~/.smime/</literal>. (This is
           set by the <literal>smime.rc</literal> file with
           <link linkend="smime-certificates">$smime_certificates</link> and
@@ -5435,7 +5435,7 @@ unignore posted-to:
         <link linkend="list-reply"><literal>&lt;list-reply&gt;</literal></link>
         function will work for all known lists. Additionally, when you send a
         message to a known list and <link linkend="followup-to">$followup_to</link>
-        is set, Mutt will add a Mail-Followup-To header.  For unsubscribed
+        is set, NeoMutt will add a Mail-Followup-To header.  For unsubscribed
         lists, this will include your personal address, ensuring you receive a
         copy of replies.  For subscribed mailing lists, the header will not,
         telling other users' mail user agents not to send copies of replies to
@@ -6170,7 +6170,7 @@ folder-hook . 'push "&lt;enter-command&gt;score ~= 10&lt;enter&gt;"'
       <para>
         Note: the value displayed by <literal>%H</literal>and searched by
         <literal>~H</literal>is stored in the
-        <link linkend="caching">header cache</link>. Mutt isn't smart enough to
+        <link linkend="caching">header cache</link>. NeoMutt isn't smart enough to
         invalidate a header cache entry based on changing <literal>spam</literal>
         rules, so if you aren't seeing correct <literal>%H</literal>values, try
         temporarily turning off the header cache. If that fixes the problem,
@@ -6996,6 +6996,52 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
    3     12:17 Rhys Lee        (   42) The Lord Of The Rings
 </screen>
 
+      </sect2>
+
+      <sect2 id="formatstrings-size">
+        <title>Bytes size display</title>
+
+        <para>
+          Various format strings contain expandos that display the size of
+          messages in bytes.  This includes
+          <literal>%s</literal> in <link linkend="attach-format">$attach_format</link>,
+          <literal>%l</literal> in <link linkend="compose-format">$compose_format</link>,
+          <literal>%s</literal> in <link linkend="folder-format">$folder_format</link>,
+          <literal>%c</literal> in <link linkend="index-format">$index_format</link>,
+          and %l and %L in <link linkend="status-format">$status_format</link>.
+          There are four configuration variables that can be used to customize
+          how the numbers are displayed.
+        </para>
+
+        <para>
+          <link linkend="size-show-bytes">$size_show_bytes</link>
+          will display the number of bytes when the size is &lt; 1
+          kilobyte.  When unset, kilobytes will be displayed instead.
+        </para>
+
+        <para>
+          <link linkend="size-show-mb">$size_show_mb</link> will display the
+          number of megabytes when the size is &gt;= 1 megabyte.  When
+          unset, kilobytes will be displayed instead (which could be a large
+          number).
+        </para>
+
+        <para>
+          <link linkend="size-show-fractions">$size_show_fractions</link>,
+          will display numbers with a single decimal place for values from
+          0 to 10 kilobytes, and 1 to 10 megabytes.
+        </para>
+
+        <para>
+          <link linkend="size-units-on-left">$size_units_on_left</link> will
+          display the unit (<quote>K</quote> or <quote>M</quote> to the left
+          of the number, instead of the right if unset.
+        </para>
+
+        <para>
+          These variables also affect size display in a few other places, such
+          as progress indicators and attachment delimeters in the pager.
+        </para>
       </sect2>
     </sect1>
 
@@ -9285,7 +9331,7 @@ subjectrx '\[[^]]*\]:? *' '%L%R'
         <para>
           When the <emphasis>Inotify</emphasis>mechanism for monitoring of
           files is supported (Linux only) and not disabled at compilation time,
-          Mutt immediately notifies about new mail for all folders configured
+          NeoMutt immediately notifies about new mail for all folders configured
           via the <link linkend="mailboxes"><command>mailboxes</command></link>
           command.  Dependent on <link linkend="mailbox-formats">mailbox format</link>
           also added <emphasis>old</emphasis>mails are tracked (not for Maildir).
@@ -9301,7 +9347,7 @@ subjectrx '\[[^]]*\]:? *' '%L%R'
             Getting events about new mail is limited to the capabilities of the
             underlying mechanism.  <emphasis>inotify</emphasis>only reports
             local changes, i. e. new mail notification works for mails
-            delivered by an agent on the same machine as mutt, but not when
+            delivered by an agent on the same machine as NeoMutt, but not when
             delivered remotely on a network file system as nfs. also the
             monitoring handles might fail in rare conditions, so you better
             don't completely rely on this feature.
@@ -9451,7 +9497,7 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
     <sect1 id="compose-flow">
       <title>Message Composition Flow</title>
         <para>
-          This is a brief overview of the steps Mutt takes during message
+          This is a brief overview of the steps NeoMutt takes during message
           composition. It also shows the order and timing of hook execution.
         </para>
       <itemizedlist>
@@ -11356,7 +11402,7 @@ set timeout=15
       <para>
         Then, you'd use <literal>oauth2.py</literal> with
         <literal>--generate_oauth2_token</literal> to get a refresh token, and
-        configure mutt with:
+        configure NeoMutt with:
       </para>
 
 <screen>

@@ -1039,41 +1039,6 @@ const char *mutt_str_find_word(const char *src)
 }
 
 /**
- * mutt_str_pretty_size - Display an abbreviated size, like 3.4K
- * @param buf    Buffer for the result
- * @param buflen Length of the buffer
- * @param num    Number to abbreviate
- */
-void mutt_str_pretty_size(char *buf, size_t buflen, size_t num)
-{
-  if (!buf || (buflen == 0))
-    return;
-
-  if (num < 1000)
-  {
-    snprintf(buf, buflen, "%dB", (int) num);
-  }
-  else if (num < 10189) /* 0.1K - 9.9K */
-  {
-    snprintf(buf, buflen, "%3.1fK", num / 1024.0);
-  }
-  else if (num < 1023949) /* 10K - 999K */
-  {
-    /* 51 is magic which causes 10189/10240 to be rounded up to 10 */
-    snprintf(buf, buflen, "%zuK", (num + 51) / 1024);
-  }
-  else if (num < 10433332) /* 1.0M - 9.9M */
-  {
-    snprintf(buf, buflen, "%3.1fM", num / 1048576.0);
-  }
-  else /* 10M+ */
-  {
-    /* (10433332 + 52428) / 1048576 = 10 */
-    snprintf(buf, buflen, "%zuM", (num + 52428) / 1048576);
-  }
-}
-
-/**
  * mutt_str_getenv - Get an environment variable
  * @param name Environment variable to get
  * @retval ptr Value of variable

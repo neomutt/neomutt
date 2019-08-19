@@ -83,6 +83,12 @@ const int dialog_row_len = 128;
 #define X509_getm_notBefore X509_get_notBefore
 #define X509_getm_notAfter X509_get_notAfter
 #define X509_STORE_CTX_get0_chain X509_STORE_CTX_get_chain
+#define SSL_has_pending SSL_pending
+#endif
+
+/* Unimplemented OpenSSL 1.1 api calls */
+#if (defined(LIBRESSL_VERSION_NUMBER) && (LIBRESSL_VERSION_NUMBER >= 0x2070000fL))
+#define SSL_has_pending SSL_pending
 #endif
 
 /* This is ugly, but as RAND_status came in on OpenSSL version 0.9.5
@@ -645,6 +651,7 @@ static int ssl_socket_close_and_restore(struct Connection *conn)
   conn->conn_read = raw_socket_read;
   conn->conn_write = raw_socket_write;
   conn->conn_close = raw_socket_close;
+  conn->conn_poll = raw_socket_poll;
 
   return rc;
 }
@@ -1247,10 +1254,15 @@ static int ssl_setup(struct Connection *conn)
        error condition.  */
     mutt_error(_("Unable to create SSL context"));
     ssl_dprint_err_stack();
-    goto free_sasldata;
+    goto free_ssldata;
   }
 
   /* disable SSL protocols as needed */
+#ifdef SSL_OP_NO_TLSv1_3
+  if (!C_SslUseTlsv13)
+    SSL_CTX_set_options(ssldata->sctx, SSL_OP_NO_TLSv1_3);
+#endif
+
 #ifdef SSL_OP_NO_TLSv1_2
   if (!C_SslUseTlsv12)
     SSL_CTX_set_options(ssldata->sctx, SSL_OP_NO_TLSv1_2);
@@ -1315,10 +1327,23 @@ free_ctx:
   SSL_CTX_free(ssldata->sctx);
   ssldata->sctx = NULL;
   ssldata->sctx = 0;
-free_sasldata:
+free_ssldata:
   FREE(&ssldata);
 
   return -1;
+}
+
+/**
+ * ssl_socket_poll - Check whether a socket read would block - Implements Connection::conn_poll()
+ */
+static int ssl_socket_poll(struct Connection *conn, time_t wait_secs)
+{
+  struct SslSockData *data = conn->sockdata;
+
+  if (SSL_has_pending(data->ssl))
+    return 1;
+  else
+    return raw_socket_poll(conn, wait_secs);
 }
 
 /**
@@ -1420,6 +1445,7 @@ int mutt_ssl_starttls(struct Connection *conn)
   conn->conn_read = ssl_socket_read;
   conn->conn_write = ssl_socket_write;
   conn->conn_close = ssl_socket_close_and_restore;
+  conn->conn_poll = ssl_socket_poll;
 
   return rc;
 }
@@ -1441,7 +1467,7 @@ int mutt_ssl_socket_setup(struct Connection *conn)
   conn->conn_open = ssl_socket_open;
   conn->conn_read = ssl_socket_read;
   conn->conn_write = ssl_socket_write;
-  conn->conn_poll = raw_socket_poll;
+  conn->conn_poll = ssl_socket_poll;
   conn->conn_close = ssl_socket_close;
 
   return 0;
