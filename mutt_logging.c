@@ -1,6 +1,6 @@
 /**
  * @file
- * Mutt Logging
+ * NeoMutt Logging
  *
  * @authors
  * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
@@ -21,9 +21,9 @@
  */
 
 /**
- * @page mutt_logging Mutt Logging
+ * @page mutt_logging NeoMutt Logging
  *
- * Mutt Logging
+ * NeoMutt Logging
  */
 
 #include "config.h"

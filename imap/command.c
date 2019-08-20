@@ -504,7 +504,7 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
     imap_set_flags(adata->mailbox, e, flags, &server_changes);
     if (server_changes)
     {
-      /* If server flags could conflict with mutt's flags, reopen the mailbox. */
+      /* If server flags could conflict with NeoMutt's flags, reopen the mailbox. */
       if (e->changed)
         mdata->reopen |= IMAP_EXPUNGE_PENDING;
       else

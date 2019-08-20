@@ -267,7 +267,7 @@ static const char *compress_format_str(char *buf, size_t buflen, size_t col, int
   struct Mailbox *m = (struct Mailbox *) data;
 
   /* NOTE the compressed file config vars expect %f and %t to be
-   * surrounded by '' (unlike other Mutt config vars, which add the
+   * surrounded by '' (unlike other NeoMutt config vars, which add the
    * outer quotes for the user).  This is why we use the
    * mutt_buffer_quote_filename() form with add_outer of false. */
   struct Buffer *quoted = mutt_buffer_pool_get();

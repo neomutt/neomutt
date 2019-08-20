@@ -294,7 +294,7 @@ static bool compare_flags_for_copy(struct Email *e)
  * sync_helper - Sync flag changes to the server
  * @param m     Selected Imap Mailbox
  * @param right ACL, see #AclFlags
- * @param flag  Mutt flag, e.g. #MUTT_DELETED
+ * @param flag  NeoMutt flag, e.g. #MUTT_DELETED
  * @param name  Name of server flag
  * @retval >=0 Success, number of messages
  * @retval  -1 Failure

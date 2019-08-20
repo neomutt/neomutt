@@ -1319,7 +1319,7 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
       if ((adata->capabilities & IMAP_CAP_CONDSTORE) && C_ImapCondstore)
         has_condstore = true;
 
-      /* If IMAP_CAP_QRESYNC and ImapQResync then Mutt sends ENABLE QRESYNC.
+      /* If IMAP_CAP_QRESYNC and ImapQResync then NeoMutt sends ENABLE QRESYNC.
        * If we receive an ENABLED response back, then adata->qresync is set.  */
       if (adata->qresync)
         has_qresync = true;

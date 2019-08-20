@@ -51,7 +51,7 @@ static enum CommandResult icmd_version(struct Buffer *buf, struct Buffer *s, uns
 /**
  * ICommandList - All available informational commands
  *
- * @note These commands take precedence over conventional mutt rc-lines
+ * @note These commands take precedence over conventional NeoMutt rc-lines
  */
 const struct ICommand ICommandList[] = {
   { "bind",     icmd_bind,     0 },
