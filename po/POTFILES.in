@@ -4,8 +4,8 @@ address/group.c
 address/idna.c
 alias.c
 autocrypt/autocrypt.c
-autocrypt/autocrypt_db.c
 autocrypt/autocrypt_acct_menu.c
+autocrypt/autocrypt_db.c
 autocrypt/autocrypt_gpgme.c
 autocrypt/autocrypt_schema.c
 backtrace.c
