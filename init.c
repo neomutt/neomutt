@@ -547,7 +547,7 @@ static int parse_grouplist(struct GroupList *gl, struct Buffer *buf,
     if (!MoreArgs(s))
     {
       mutt_buffer_strcpy(err, _("-group: no group name"));
-      goto bail;
+      return -1;
     }
 
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
@@ -557,16 +557,13 @@ static int parse_grouplist(struct GroupList *gl, struct Buffer *buf,
     if (!MoreArgs(s))
     {
       mutt_buffer_strcpy(err, _("out of arguments"));
-      goto bail;
+      return -1;
     }
 
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
   }
 
   return 0;
-
-bail:
-  return -1;
 }
 
 /**
