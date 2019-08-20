@@ -72,7 +72,7 @@ static int autocrypt_dir_init(bool can_create)
          mkdir() on the directory %s failed.  The second %s is the
          error message returned by libc
       */
-      mutt_error(_("Can't create %s: %s."), C_AutocryptDir, strerror(errno));
+      mutt_error(_("Can't create %s: %s"), C_AutocryptDir, strerror(errno));
       rc = -1;
     }
   }
@@ -607,7 +607,7 @@ enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *e, char **keyli
            to use to encrypt, but it can't find a valid keyid for this address.
            The message is printed and they are returned to the compose menu.
          */
-        mutt_message(_("No (valid) autocrypt key found for %s."), recip->mailbox);
+        mutt_message(_("No (valid) autocrypt key found for %s"), recip->mailbox);
       }
       goto cleanup;
     }
@@ -636,7 +636,7 @@ enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *e, char **keyli
     else
     {
       if (keylist)
-        mutt_message(_("No (valid) autocrypt key found for %s."), recip->mailbox);
+        mutt_message(_("No (valid) autocrypt key found for %s"), recip->mailbox);
       goto cleanup;
     }
 

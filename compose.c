@@ -329,7 +329,7 @@ static void autocrypt_compose_menu(struct Email *e)
      (c)lear sets cleartext.
      (a)utomatic defers to the recommendation.
   */
-  const char *prompt = _("Autocrypt: (e)ncrypt, (c)lear, (a)utomatic? ");
+  const char *prompt = _("Autocrypt: (e)ncrypt, (c)lear, (a)utomatic?");
 
   /* L10N:
      The letter corresponding to the compose menu autocrypt prompt
@@ -2159,7 +2159,7 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         {
           if (e->security & (SEC_ENCRYPT | SEC_SIGN))
           {
-            if (mutt_yesorno(_("S/MIME already selected. Clear & continue ? "), MUTT_YES) != MUTT_YES)
+            if (mutt_yesorno(_("S/MIME already selected. Clear and continue?"), MUTT_YES) != MUTT_YES)
             {
               mutt_clear_error();
               break;

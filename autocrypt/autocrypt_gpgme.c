@@ -45,7 +45,7 @@ static int create_gpgme_context(gpgme_ctx_t *ctx)
     err = gpgme_ctx_set_engine_info(*ctx, GPGME_PROTOCOL_OpenPGP, NULL, C_AutocryptDir);
   if (err)
   {
-    mutt_error(_("error creating gpgme context: %s\n"), gpgme_strerror(err));
+    mutt_error(_("error creating gpgme context: %s"), gpgme_strerror(err));
     return -1;
   }
 
@@ -175,7 +175,7 @@ int mutt_autocrypt_gpgme_create_key(struct Address *addr, struct Buffer *keyid,
        GPGME was unable to generate a key for some reason.
        %s is the error message returned by GPGME.
     */
-    mutt_error(_("Error creating autocrypt key: %s\n"), gpgme_strerror(err));
+    mutt_error(_("Error creating autocrypt key: %s"), gpgme_strerror(err));
     goto cleanup;
   }
   keyresult = gpgme_op_genkey_result(ctx);
@@ -194,7 +194,7 @@ int mutt_autocrypt_gpgme_create_key(struct Address *addr, struct Buffer *keyid,
                               GPGME_CREATE_NOPASSWD | GPGME_CREATE_NOEXPIRE);
   if (err)
   {
-    mutt_error(_("Error creating autocrypt key: %s\n"), gpgme_strerror(err));
+    mutt_error(_("Error creating autocrypt key: %s"), gpgme_strerror(err));
     goto cleanup;
   }
 
@@ -277,7 +277,7 @@ int mutt_autocrypt_gpgme_select_or_create_key(struct Address *addr, struct Buffe
      user whether they want to create a new GPG key for the account,
      or select an existing account from the keyring.
   */
-  const char *prompt = _("(c)reate new, or (s)elect existing GPG key? ");
+  const char *prompt = _("(c)reate new, or (s)elect existing GPG key?");
   /* L10N:
      The letters corresponding to the
      "(c)reate new, or (s)elect existing GPG key?" prompt.
