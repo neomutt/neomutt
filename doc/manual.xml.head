@@ -17654,21 +17654,21 @@ bind index D purge-message
         <para>
           Still, some users may want to use an existing key from their
           normal keyring for Autocrypt too.  There are two ways this can
-          be accomplished: by copying the key over to the Autocrypt
-          keyring, or by pointing <link
-          linkend="autocrypt-dir">$autocrypt_dir</link> at your normal
-          keyring directory (e.g. <literal>~/.gnupg</literal>).  The first
-          can be done using gpg from the command line, along the lines of
-          <literal>gpg --export [keyid] | gpg --homedir=~/.mutt/autocrypt
-          --import</literal> followed by <literal>gpg --export-secret-keys
-          [keyid] | gpg --homedir=~/.mutt/autocrypt --import</literal>.
-          Once this is done, choosing <quote>(s)elect existing GPG
-          key</quote> during account creation will list and allow
-          selecting that key for the account.
+          be accomplished.  The <emphasis>recommended</emphasis> way is to
+          set <link linkend="autocrypt-dir">$autocrypt_dir</link> to your
+          normal keyring directory (e.g. <literal>~/.gnupg</literal>).
+          Alternatively you can copy the key over to the Autocrypt keyring
+          (using something along the lines of <literal>gpg --export
+          [keyid] | gpg --homedir=~/.mutt/autocrypt --import</literal>
+          followed by <literal>gpg --export-secret-keys [keyid] | gpg
+          --homedir=~/.mutt/autocrypt --import</literal>).  During account
+          creation, choosing <quote>(s)elect existing GPG key</quote> will
+          then list and allow selecting your existing key for the new
+          account.
         </para>
         <para>
-        Copying your key over has the advantage of keeping Autocrypt keys
-        out of your normal keyring, but there is a downside.  Mutt
+        Copying your key over keeps Autocrypt keys out of your normal
+        keyring, but there is a severe downside.  NeoMutt
         <emphasis>first</emphasis> tries to decrypt messages using the
         Autocrypt keyring, and if that fails tries the normal keyring
         second.  This means all encrypted emails to that key will be
@@ -17677,10 +17677,15 @@ bind index D purge-message
         keyring will no longer show up in signatures when decrypting.
         </para>
         <para>
-          Pointing <link linkend="autocrypt-dir">$autocrypt_dir</link> to
-          <literal>~/.gnupg</literal> allows Autocrypt header keys to be
-          imported there, but also allows <quote>web of trust</quote> to show
-          an appropriate signature message for verified messages.
+          For that reason, if you want to use an existing key from your
+          normal keyring, it is recommended to just set <link
+          linkend="autocrypt-dir">$autocrypt_dir</link> to
+          <literal>~/.gnupg</literal>.  This allows <quote>web of
+          trust</quote> to show an appropriate signature message for
+          verified messages.  Autocrypt header keys will be imported into
+          your keyring, but if you don't want them mixed you should
+          strongly consider using a separate autocrypt key and keyring
+          instead.
         </para>
         <para>
           Both methods have a couple additional caveats:
