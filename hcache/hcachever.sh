@@ -1,6 +1,7 @@
 #!/bin/sh
 
 BASEVERSION=2
+STRUCTURES="Address Body Buffer Email Envelope ListNode Parameter"
 
 cleanstruct () {
   echo "$1" | sed -e 's/.* //'
@@ -45,12 +46,12 @@ getstruct () {
     esac
   done
 
-  case $STRUCT in
-    Address|Body|Buffer|Email|Envelope|ListNode|Parameter)
+  for s in ${STRUCTURES}; do
+    if [ ${STRUCT} = $s ]; then
       BODY=`cleanbody "$BODY"`
       echo "$STRUCT: $BODY"
-    ;;
-  esac
+    fi
+  done
   return
 }
 
