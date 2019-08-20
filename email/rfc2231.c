@@ -328,11 +328,11 @@ void rfc2231_decode_parameters(struct ParameterList *pl)
  */
 struct ParameterList rfc2231_encode_string(const char *attribute, char *value)
 {
-  struct ParameterList result;
-  TAILQ_INIT(&result);
+  struct ParameterList pl;
+  TAILQ_INIT(&pl);
 
   if (!attribute || !value)
-    return result;
+    return pl;
 
   bool encode = false;
   bool add_quotes = false;
@@ -429,7 +429,7 @@ struct ParameterList rfc2231_encode_string(const char *attribute, char *value)
   while (*cur)
   {
     current = mutt_param_new();
-    TAILQ_INSERT_TAIL(&result, current, entries);
+    TAILQ_INSERT_TAIL(&pl, current, entries);
 
     mutt_buffer_strcpy(cur_attribute, attribute);
     if (split)
@@ -478,5 +478,5 @@ struct ParameterList rfc2231_encode_string(const char *attribute, char *value)
   if (free_src_value)
     FREE(&src_value);
 
-  return result;
+  return pl;
 }

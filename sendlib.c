@@ -380,9 +380,9 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
       if (!np->attribute || !np->value)
         continue;
 
-      struct ParameterList param_conts = rfc2231_encode_string(np->attribute, np->value);
+      struct ParameterList pl_conts = rfc2231_encode_string(np->attribute, np->value);
       struct Parameter *cont = NULL;
-      TAILQ_FOREACH(cont, &param_conts, entries)
+      TAILQ_FOREACH(cont, &pl_conts, entries)
       {
         fputc(';', fp);
 
@@ -412,7 +412,7 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
         fprintf(fp, "%s=%s", cont->attribute, buf);
       }
 
-      mutt_param_free(&param_conts);
+      mutt_param_free(&pl_conts);
     }
   }
 
@@ -448,9 +448,9 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
           else
             t = fn;
 
-          struct ParameterList param_conts = rfc2231_encode_string("filename", t);
+          struct ParameterList pl_conts = rfc2231_encode_string("filename", t);
           struct Parameter *cont = NULL;
-          TAILQ_FOREACH(cont, &param_conts, entries)
+          TAILQ_FOREACH(cont, &pl_conts, entries)
           {
             fputc(';', fp);
             buf[0] = 0;
@@ -471,7 +471,7 @@ int mutt_write_mime_header(struct Body *a, FILE *fp)
             fprintf(fp, "%s=%s", cont->attribute, buf);
           }
 
-          mutt_param_free(&param_conts);
+          mutt_param_free(&pl_conts);
         }
       }
 
@@ -599,15 +599,15 @@ int mutt_write_mime_body(struct Body *a, FILE *fp)
 
 /**
  * mutt_generate_boundary - Create a unique boundary id for a MIME part
- * @param parm MIME part
+ * @param pl MIME part
  */
-void mutt_generate_boundary(struct ParameterList *parm)
+void mutt_generate_boundary(struct ParameterList *pl)
 {
   char rs[MUTT_RANDTAG_LEN + 1];
 
   mutt_rand_base32(rs, sizeof(rs) - 1);
   rs[MUTT_RANDTAG_LEN] = 0;
-  mutt_param_set(parm, "boundary", rs);
+  mutt_param_set(pl, "boundary", rs);
 }
 
 /**
