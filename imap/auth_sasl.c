@@ -144,19 +144,19 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
     olen = 0;
   }
   imap_cmd_start(adata, buf);
-  irc = IMAP_CMD_CONTINUE;
+  irc = IMAP_RES_CONTINUE;
 
   /* looping protocol */
   while ((rc == SASL_CONTINUE) || (olen > 0))
   {
     do
       irc = imap_cmd_step(adata);
-    while (irc == IMAP_CMD_CONTINUE);
+    while (irc == IMAP_RES_CONTINUE);
 
-    if ((irc == IMAP_CMD_BAD) || (irc == IMAP_CMD_NO))
+    if ((irc == IMAP_RES_BAD) || (irc == IMAP_RES_NO))
       goto bail;
 
-    if (irc == IMAP_CMD_RESPOND)
+    if (irc == IMAP_RES_RESPOND)
     {
       /* Exchange incorrectly returns +\r\n instead of + \r\n */
       if (adata->buf[1] == '\0')
@@ -212,7 +212,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
       }
     }
 
-    if (irc == IMAP_CMD_RESPOND)
+    if (irc == IMAP_RES_RESPOND)
     {
       mutt_str_strfcpy(buf + olen, "\r\n", bufsize - olen);
       mutt_socket_send(adata->conn, buf);
@@ -228,10 +228,10 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
     olen = 0;
   }
 
-  while (irc != IMAP_CMD_OK)
+  while (irc != IMAP_RES_OK)
   {
     irc = imap_cmd_step(adata);
-    if (irc != IMAP_CMD_CONTINUE)
+    if (irc != IMAP_RES_CONTINUE)
       break;
   }
 

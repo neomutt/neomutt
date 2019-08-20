@@ -49,12 +49,12 @@ struct Progress;
 #define IMAP_LOG_PASS 5
 
 /* IMAP command responses. Used in ImapCommand.state too */
-#define IMAP_CMD_NO       -2  ///< `<tag> NO ...`
-#define IMAP_CMD_BAD      -1  ///< `<tag> BAD ...`
-#define IMAP_CMD_OK        0  ///< `<tag> OK ...`
-#define IMAP_CMD_CONTINUE  1  ///< `* ...`
-#define IMAP_CMD_RESPOND   2  ///< `+`
-#define IMAP_CMD_NEW       3  ///< ImapCommand.state additions
+#define IMAP_RES_NO       -2  ///< `<tag> NO ...`
+#define IMAP_RES_BAD      -1  ///< `<tag> BAD ...`
+#define IMAP_RES_OK        0  ///< `<tag> OK ...`
+#define IMAP_RES_CONTINUE  1  ///< `* ...`
+#define IMAP_RES_RESPOND   2  ///< `+`
+#define IMAP_RES_NEW       3  ///< ImapCommand.state additions
 
 #define SEQ_LEN 16
 #define IMAP_MAX_CMDLEN 1024 ///< Maximum length of command lines before they must be split (for lazy servers)
@@ -155,7 +155,7 @@ struct ImapList
 struct ImapCommand
 {
   char seq[SEQ_LEN + 1]; ///< Command tag, e.g. 'a0001'
-  int state;            ///< Command state, e.g. #IMAP_CMD_NEW
+  int state;            ///< Command state, e.g. #IMAP_RES_NEW
 };
 
 /**
