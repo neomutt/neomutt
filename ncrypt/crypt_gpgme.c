@@ -1036,8 +1036,7 @@ static char *data_object_to_tempfile(gpgme_data_t data, FILE **fp_ret)
   return mutt_str_strdup(tempf);
 }
 
-#if GPGME_VERSION_NUMBER >= 0x010b00 /* gpgme >= 1.11.0 */
-
+#if (GPGME_VERSION_NUMBER >= 0x010b00) /* gpgme >= 1.11.0 */
 /**
  * create_recipient_string - Create a string of recipients
  * @param keylist    Keys, space-separated
@@ -1158,7 +1157,6 @@ static gpgme_key_t *create_recipient_set(const char *keylist, bool use_smime)
 
   return rset;
 }
-
 #endif /* GPGME_VERSION_NUMBER >= 0x010b00 */
 
 /**
@@ -1300,7 +1298,7 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist,
         goto cleanup;
     }
 
-#if GPGME_VERSION_NUMBER >= 0x010b00 /* gpgme >= 1.11.0 */
+#if (GPGME_VERSION_NUMBER >= 0x010b00) /* gpgme >= 1.11.0 */
     err = gpgme_op_encrypt_sign_ext(ctx, NULL, mutt_b2s(recpstring),
                                     GPGME_ENCRYPT_ALWAYS_TRUST, plaintext, ciphertext);
 #else
@@ -1309,7 +1307,7 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist,
   }
   else
   {
-#if GPGME_VERSION_NUMBER >= 0x010b00 /* gpgme >= 1.11.0 */
+#if (GPGME_VERSION_NUMBER >= 0x010b00) /* gpgme >= 1.11.0 */
     err = gpgme_op_encrypt_ext(ctx, NULL, mutt_b2s(recpstring),
                                GPGME_ENCRYPT_ALWAYS_TRUST, plaintext, ciphertext);
 #else
