@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page autocrypt_account Autocrypt account menu
+ *
+ * Autocrypt account menu
+ */
+
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
@@ -82,11 +88,11 @@ static const struct Mapping AutocryptAcctHelp[] = {
  *
  * | Expando | Description
  * |:--------|:-----------------------------------------------------------------
- * | \%a     | Email address                 
- * | \%k     | Gpg keyid                     
- * | \%n     | Current entry number          
- * | \%p     | Prefer-encrypt flag           
- * | \%s     | Status flag (active/inactive) 
+ * | \%a     | Email address
+ * | \%k     | Gpg keyid
+ * | \%n     | Current entry number
+ * | \%p     | Prefer-encrypt flag
+ * | \%s     | Status flag (active/inactive)
  */
 static const char *account_format_str(char *dest, size_t destlen, size_t col, int cols,
                                       char op, const char *src, const char *fmt,

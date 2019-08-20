@@ -1,6 +1,6 @@
 /**
  * @file
- * Autocrypt feature
+ * Autocrypt end-to-end encryption
  *
  * @authors
  * Copyright (C) 2019 Kevin J. McCarthy <kevin@8t8.us>
@@ -18,6 +18,12 @@
  *
  * You should have received a copy of the GNU General Public License along with
  * this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * @page autocrypt_autocrypt Autocrypt end-to-end encryption
+ *
+ * Autocrypt end-to-end encryption
  */
 
 #include "config.h"

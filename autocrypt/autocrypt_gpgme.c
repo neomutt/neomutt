@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page autocrypt_gpgme Autocrypt GPGME handler
+ *
+ * Autocrypt GPGME handler
+ */
+
 #include "config.h"
 #include <stddef.h>
 #include <gpgme.h>

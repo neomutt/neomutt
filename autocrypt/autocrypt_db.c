@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page autocrypt_db Autocrypt database handling
+ *
+ * Autocrypt database handling
+ */
+
 #include "config.h"
 #include <stddef.h>
 #include <sqlite3.h>

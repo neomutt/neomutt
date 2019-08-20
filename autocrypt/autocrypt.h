@@ -1,6 +1,6 @@
 /**
  * @file
- * Autocrypt feature
+ * Autocrypt end-to-end encryption
  *
  * @authors
  * Copyright (C) 2019 Kevin J. McCarthy <kevin@8t8.us>
@@ -18,6 +18,20 @@
  *
  * You should have received a copy of the GNU General Public License along with
  * this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * @page autocrypt AUTOCRYPT: End-to-end encryption
+ *
+ * Autocrypt end-to-end encryption
+ *
+ * | File                            | Description                  |
+ * | :------------------------------ | :--------------------------- |
+ * | autocrypt/autocrypt.c           | @subpage autocrypt_autocrypt |
+ * | autocrypt/autocrypt_acct_menu.c | @subpage autocrypt_account   |
+ * | autocrypt/autocrypt_db.c        | @subpage autocrypt_db        |
+ * | autocrypt/autocrypt_gpgme.c     | @subpage autocrypt_gpgme     |
+ * | autocrypt/autocrypt_schema.c    | @subpage autocrypt_schema    |
  */
 
 #ifndef MUTT_AUTOCRYPT_AUTOCRYPT_H
