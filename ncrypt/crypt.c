@@ -193,7 +193,7 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
   if (sign && !(security & SEC_AUTOCRYPT) && !crypt_valid_passphrase(security))
     return -1;
 
-  if ((WithCrypto & APPLICATION_PGP) && !(security & SEC_AUTOCRYPT) &&
+  if (((WithCrypto & APPLICATION_PGP) != 0) && !(security & SEC_AUTOCRYPT) &&
       ((security & PGP_INLINE) == PGP_INLINE))
   {
     if ((e->content->type != TYPE_TEXT) ||

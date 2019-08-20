@@ -1607,7 +1607,7 @@ static int save_fcc(struct Email *e, char *fcc, size_t fcc_len, struct Body *cle
    * Protected Headers. */
   if (!C_FccBeforeSend)
   {
-    if (WithCrypto && (e->security & (SEC_ENCRYPT | SEC_SIGN | SEC_AUTOCRYPT)) && C_FccClear)
+    if ((WithCrypto != 0) && (e->security & (SEC_ENCRYPT | SEC_SIGN | SEC_AUTOCRYPT)) && C_FccClear)
     {
       e->content = clear_content;
       e->security &= ~(SEC_ENCRYPT | SEC_SIGN | SEC_AUTOCRYPT);
@@ -1754,7 +1754,7 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur, char *fcc
 
   mutt_encode_descriptions(e_post->content, true);
 
-  if (WithCrypto && C_PostponeEncrypt && (e_post->security & (SEC_ENCRYPT | SEC_AUTOCRYPT)))
+  if ((WithCrypto != 0) && C_PostponeEncrypt && (e_post->security & (SEC_ENCRYPT | SEC_AUTOCRYPT)))
   {
     if (((WithCrypto & APPLICATION_PGP) != 0) && (e_post->security & APPLICATION_PGP))
       encrypt_as = C_PgpDefaultKey;
@@ -2268,7 +2268,7 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
         e_templ->security |= SEC_SIGN;
       if (C_CryptReplysignencrypted && e_cur && (e_cur->security & SEC_ENCRYPT))
         e_templ->security |= SEC_SIGN;
-      if ((WithCrypto & APPLICATION_PGP) &&
+      if (((WithCrypto & APPLICATION_PGP) != 0) &&
           ((e_templ->security & (SEC_ENCRYPT | SEC_SIGN)) || C_CryptOpportunisticEncrypt))
       {
         if (C_PgpAutoinline)
@@ -2532,8 +2532,11 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
       else if ((e_templ->security & (SEC_ENCRYPT | SEC_AUTOCRYPT)) ||
                ((e_templ->security & SEC_SIGN) && (e_templ->content->type == TYPE_APPLICATION)))
       {
-        mutt_body_free(&e_templ->content); /* destroy PGP data */
-        e_templ->content = clear_content;  /* restore clear text. */
+        if (e_templ->content != clear_content)
+        {
+          mutt_body_free(&e_templ->content); /* destroy PGP data */
+          e_templ->content = clear_content;  /* restore clear text. */
+        }
       }
       else if ((e_templ->security & SEC_SIGN) && (e_templ->content->type == TYPE_MULTIPART))
       {
