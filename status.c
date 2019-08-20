@@ -73,7 +73,7 @@ static char *get_sort_str(char *buf, size_t buflen, enum SortType method)
  * | \%F     | Number of flagged messages
  * | \%h     | Hostname
  * | \%l     | Length of mailbox (in bytes)
- * | \%L     | Size (in bytes) of the messages shown
+ * | \%L     | Size (in bytes) of the messages shown (or limited)
  * | \%M     | Number of messages shown (virtual message count when limiting)
  * | \%m     | Total number of messages
  * | \%n     | Number of new messages

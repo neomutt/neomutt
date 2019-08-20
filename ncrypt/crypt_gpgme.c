@@ -462,10 +462,6 @@ static int cmp_version_strings(const char *a, const char *b, int level)
 }
 #endif                                 /* gpgme >= 1.9.0 */
 
-/*
- * Key management.
- */
-
 /**
  * crypt_keyid - Find the ID for the key
  * @param k Key to use
