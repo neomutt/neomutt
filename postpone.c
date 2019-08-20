@@ -218,12 +218,12 @@ static struct Email *select_msg(struct Context *ctx)
   bool done = false;
   char helpstr[1024];
 
-  struct Menu *menu = mutt_menu_new(MENU_POST);
+  struct Menu *menu = mutt_menu_new(MENU_POSTPONE);
   menu->menu_make_entry = post_make_entry;
   menu->max = ctx->mailbox->msg_count;
   menu->title = _("Postponed Messages");
   menu->data = ctx;
-  menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_POST, PostponeHelp);
+  menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_POSTPONE, PostponeHelp);
   mutt_menu_push_current(menu);
 
   /* The postponed mailbox is setup to have sorting disabled, but the global
