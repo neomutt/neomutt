@@ -211,7 +211,7 @@ struct PagerRedrawData
 static int TopLine = 0;
 static struct Email *OldEmail = NULL;
 
-static short InHelp = 0;
+static bool InHelp = false;
 
 static int braille_line = -1;
 static int braille_col = -1;
@@ -2462,7 +2462,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
     {
       SigWinch = 0;
       mutt_resize_screen();
-      clearok(stdscr, TRUE); /* force complete redraw */
+      clearok(stdscr, true); /* force complete redraw */
 
       if (flags & MUTT_PAGER_RETWINCH)
       {
@@ -2833,10 +2833,10 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         /* don't let the user enter the help-menu from the help screen! */
         if (!InHelp)
         {
-          InHelp = 1;
+          InHelp = true;
           mutt_help(MENU_PAGER);
           pager_menu->redraw = REDRAW_FULL;
-          InHelp = 0;
+          InHelp = false;
         }
         else
           mutt_error(_("Help is currently being shown"));

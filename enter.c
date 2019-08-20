@@ -152,7 +152,7 @@ int mutt_enter_string(char *buf, size_t buflen, int col, CompletionFlags flags)
     {
       SigWinch = 0;
       mutt_resize_screen();
-      clearok(stdscr, TRUE);
+      clearok(stdscr, true);
     }
     rc = mutt_enter_string_full(buf, buflen, col, flags, false, NULL, NULL, es);
   } while (rc == 1);
