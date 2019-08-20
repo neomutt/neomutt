@@ -122,7 +122,7 @@ static void history_menu(char *buf, size_t buflen, char **matches, int match_cou
   }
 
   mutt_menu_pop_current(menu);
-  mutt_menu_destroy(&menu);
+  mutt_menu_free(&menu);
 }
 
 /**

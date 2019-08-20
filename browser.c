@@ -2161,7 +2161,7 @@ bail:
   if (menu)
   {
     mutt_menu_pop_current(menu);
-    mutt_menu_destroy(&menu);
+    mutt_menu_free(&menu);
   }
 
   if (goto_swapper[0] != '\0')

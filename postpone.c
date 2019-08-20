@@ -272,7 +272,7 @@ static struct Email *select_msg(struct Context *ctx)
 
   C_Sort = orig_sort;
   mutt_menu_pop_current(menu);
-  mutt_menu_destroy(&menu);
+  mutt_menu_free(&menu);
   return (r > -1) ? ctx->mailbox->emails[r] : NULL;
 }
 

@@ -420,7 +420,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
 
               menu->current = 0;
               mutt_menu_pop_current(menu);
-              mutt_menu_destroy(&menu);
+              mutt_menu_free(&menu);
               menu = mutt_menu_new(MENU_QUERY);
               menu->menu_make_entry = query_make_entry;
               menu->menu_search = query_search;
@@ -600,7 +600,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
     free_query(&results);
     FREE(&query_table);
     mutt_menu_pop_current(menu);
-    mutt_menu_destroy(&menu);
+    mutt_menu_free(&menu);
   }
 }
 

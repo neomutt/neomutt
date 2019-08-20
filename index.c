@@ -3660,7 +3660,7 @@ int mutt_index_menu(void)
   }
 
   mutt_menu_pop_current(menu);
-  mutt_menu_destroy(&menu);
+  mutt_menu_free(&menu);
   return close;
 }
 

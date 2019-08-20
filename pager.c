@@ -3109,7 +3109,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         if (old_PagerIndexLines != C_PagerIndexLines)
         {
           if (rd.index)
-            mutt_menu_destroy(&rd.index);
+            mutt_menu_free(&rd.index);
           rd.index = NULL;
         }
 
@@ -3581,9 +3581,9 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   }
   FREE(&rd.line_info);
   mutt_menu_pop_current(pager_menu);
-  mutt_menu_destroy(&pager_menu);
+  mutt_menu_free(&pager_menu);
   if (rd.index)
-    mutt_menu_destroy(&rd.index);
+    mutt_menu_free(&rd.index);
 
   mutt_buffer_free(&helpstr);
   mutt_window_free(&rd.index_status_window);

@@ -744,7 +744,7 @@ void mix_make_chain(struct ListHead *chainhead)
   }
 
   mutt_menu_pop_current(menu);
-  mutt_menu_destroy(&menu);
+  mutt_menu_free(&menu);
 
   /* construct the remailer list */
 

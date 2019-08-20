@@ -1040,7 +1040,7 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
 
   mutt_buffer_pool_release(&drow);
   mutt_menu_pop_current(menu);
-  mutt_menu_destroy(&menu);
+  mutt_menu_free(&menu);
   mutt_debug(LL_DEBUG2, "done=%d\n", done);
   return done == 2;
 }

@@ -1696,7 +1696,7 @@ void mutt_view_attachments(struct Email *e)
         mutt_actx_free(&actx);
 
         mutt_menu_pop_current(menu);
-        mutt_menu_destroy(&menu);
+        mutt_menu_free(&menu);
         return;
     }
 

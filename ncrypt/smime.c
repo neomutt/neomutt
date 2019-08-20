@@ -611,7 +611,7 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
   }
 
   mutt_menu_pop_current(menu);
-  mutt_menu_destroy(&menu);
+  mutt_menu_free(&menu);
   FREE(&table);
 
   return selected_key;
