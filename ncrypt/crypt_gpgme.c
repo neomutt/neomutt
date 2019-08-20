@@ -81,12 +81,14 @@
 #include <libintl.h>
 #endif
 
+// clang-format off
 /* Values used for comparing addresses. */
-#define CRYPT_KV_VALID 1
-#define CRYPT_KV_ADDR 2
-#define CRYPT_KV_STRING 4
-#define CRYPT_KV_STRONGID 8
-#define CRYPT_KV_MATCH (CRYPT_KV_ADDR | CRYPT_KV_STRING)
+#define CRYPT_KV_VALID    (1 << 0)
+#define CRYPT_KV_ADDR     (1 << 1)
+#define CRYPT_KV_STRING   (1 << 2)
+#define CRYPT_KV_STRONGID (1 << 3)
+#define CRYPT_KV_MATCH    (CRYPT_KV_ADDR | CRYPT_KV_STRING)
+// clang-format on
 
 /**
  * struct CryptCache - Internal cache for GPGME
@@ -136,6 +138,52 @@ static gpgme_key_t signature_key = NULL;
 static char *current_sender = NULL;
 
 #define PKA_NOTATION_NAME "pka-address@gnupg.org"
+
+#define _LINE_COMPARE(_x, _y) line_compare(_x, sizeof(_x) - 1, _y)
+#define MESSAGE(_y) _LINE_COMPARE("MESSAGE-----", _y)
+#define SIGNED_MESSAGE(_y) _LINE_COMPARE("SIGNED MESSAGE-----", _y)
+#define PUBLIC_KEY_BLOCK(_y) _LINE_COMPARE("PUBLIC KEY BLOCK-----", _y)
+#define BEGIN_PGP_SIGNATURE(_y)                                                \
+  _LINE_COMPARE("-----BEGIN PGP SIGNATURE-----", _y)
+
+/**
+ * enum KeyCap - PGP/SMIME Key Capabilities
+ */
+enum KeyCap
+{
+  KEY_CAP_CAN_ENCRYPT, ///< Key can be used for encryption
+  KEY_CAP_CAN_SIGN,    ///< Key can be used for signing
+  KEY_CAP_CAN_CERTIFY, ///< Key can be used to certify
+};
+
+/**
+ * enum KeyInfo - PGP Key info
+ */
+enum KeyInfo
+{
+  KIP_NAME = 0,    ///< PGP Key field: Name
+  KIP_AKA,         ///< PGP Key field: aka (Also Known As)
+  KIP_VALID_FROM,  ///< PGP Key field: Valid From date
+  KIP_VALID_TO,    ///< PGP Key field: Valid To date
+  KIP_KEY_TYPE,    ///< PGP Key field: Key Type
+  KIP_KEY_USAGE,   ///< PGP Key field: Key Usage
+  KIP_FINGERPRINT, ///< PGP Key field: Fingerprint
+  KIP_SERIAL_NO,   ///< PGP Key field: Serial number
+  KIP_ISSUED_BY,   ///< PGP Key field: Issued By
+  KIP_SUBKEY,      ///< PGP Key field: Subkey
+  KIP_MAX,
+};
+
+static const char *const KeyInfoPrompts[] = {
+  /* L10N: The following are the headers for the "verify key" output from the
+     GPGME key selection menu (bound to "c" in the key selection menu).
+     They will be automatically aligned. */
+  N_("Name: "),      N_("aka: "),       N_("Valid From: "),  N_("Valid To: "),
+  N_("Key Type: "),  N_("Key Usage: "), N_("Fingerprint: "), N_("Serial-No: "),
+  N_("Issued By: "), N_("Subkey: ")
+};
+
+int KeyInfoPadding[KIP_MAX] = { 0 };
 
 /**
  * is_pka_notation - Is this the standard pka email address
@@ -2662,13 +2710,6 @@ static int line_compare(const char *a, size_t n, const char *b)
   return false;
 }
 
-#define _LINE_COMPARE(_x, _y) line_compare(_x, sizeof(_x) - 1, _y)
-#define MESSAGE(_y) _LINE_COMPARE("MESSAGE-----", _y)
-#define SIGNED_MESSAGE(_y) _LINE_COMPARE("SIGNED MESSAGE-----", _y)
-#define PUBLIC_KEY_BLOCK(_y) _LINE_COMPARE("PUBLIC KEY BLOCK-----", _y)
-#define BEGIN_PGP_SIGNATURE(_y)                                                \
-  _LINE_COMPARE("-----BEGIN PGP SIGNATURE-----", _y)
-
 /**
  * pgp_check_traditional_one_body - Check one inline PGP body part
  * @param fp File to read from
@@ -4030,16 +4071,6 @@ static void parse_and_print_user_id(FILE *fp, const char *userid)
 }
 
 /**
- * enum KeyCap - PGP/SMIME Key Capabilities
- */
-enum KeyCap
-{
-  KEY_CAP_CAN_ENCRYPT, ///< Key can be used for encryption
-  KEY_CAP_CAN_SIGN,    ///< Key can be used for signing
-  KEY_CAP_CAN_CERTIFY, ///< Key can be used to certify
-};
-
-/**
  * key_check_cap - Check the capabilities of a key
  * @param key GPGME key
  * @param cap Flags, e.g. #KEY_CAP_CAN_ENCRYPT
@@ -4091,35 +4122,6 @@ static unsigned int key_check_cap(gpgme_key_t key, enum KeyCap cap)
 
   return ret;
 }
-
-/**
- * enum KeyInfo - PGP Key info
- */
-enum KeyInfo
-{
-  KIP_NAME = 0,    ///< PGP Key field: Name
-  KIP_AKA,         ///< PGP Key field: aka (Also Known As)
-  KIP_VALID_FROM,  ///< PGP Key field: Valid From date
-  KIP_VALID_TO,    ///< PGP Key field: Valid To date
-  KIP_KEY_TYPE,    ///< PGP Key field: Key Type
-  KIP_KEY_USAGE,   ///< PGP Key field: Key Usage
-  KIP_FINGERPRINT, ///< PGP Key field: Fingerprint
-  KIP_SERIAL_NO,   ///< PGP Key field: Serial number
-  KIP_ISSUED_BY,   ///< PGP Key field: Issued By
-  KIP_SUBKEY,      ///< PGP Key field: Subkey
-  KIP_MAX,
-};
-
-static const char *const KeyInfoPrompts[] = {
-  /* L10N: The following are the headers for the "verify key" output from the
-     GPGME key selection menu (bound to "c" in the key selection menu).
-     They will be automatically aligned. */
-  N_("Name: "),      N_("aka: "),       N_("Valid From: "),  N_("Valid To: "),
-  N_("Key Type: "),  N_("Key Usage: "), N_("Fingerprint: "), N_("Serial-No: "),
-  N_("Issued By: "), N_("Subkey: ")
-};
-
-int KeyInfoPadding[KIP_MAX] = { 0 };
 
 /**
  * print_key_info - Verbose information about a key or certificate to a file
