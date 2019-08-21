@@ -1,6 +1,6 @@
 /**
  * @file
- * Mutt Logging
+ * NeoMutt Logging
  *
  * @authors
  * Copyright (C) 2018 Richard Russon <rich@flatcap.org>

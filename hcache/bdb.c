@@ -222,19 +222,19 @@ static int hcache_bdb_delete_header(void *vctx, const char *key, size_t keylen)
 /**
  * hcache_bdb_close - Implements HcacheOps::close()
  */
-static void hcache_bdb_close(void **vctx)
+static void hcache_bdb_close(void **ptr)
 {
-  if (!vctx || !*vctx)
+  if (!ptr || !*ptr)
     return;
 
-  struct HcacheDbCtx *ctx = *vctx;
+  struct HcacheDbCtx *db = *ptr;
 
-  ctx->db->close(ctx->db, 0);
-  ctx->env->close(ctx->env, 0);
-  mutt_file_unlock(ctx->fd);
-  close(ctx->fd);
-  unlink(ctx->lockfile);
-  FREE(vctx);
+  db->db->close(db->db, 0);
+  db->env->close(db->env, 0);
+  mutt_file_unlock(db->fd);
+  close(db->fd);
+  unlink(db->lockfile);
+  FREE(ptr);
 }
 
 /**

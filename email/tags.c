@@ -158,14 +158,14 @@ char *driver_tags_get_with_hidden(struct TagHead *head)
 
 /**
  * driver_tags_get_transformed_for - Get transformed tag for a tag name from a header
- * @param[in] name Tag to transform
  * @param[in] head List of tags
+ * @param[in] name Tag to transform
  * @retval ptr String tag
  *
  * Return a new allocated string containing all tags separated by space even
  * the hiddens.
  */
-char *driver_tags_get_transformed_for(const char *name, struct TagHead *head)
+char *driver_tags_get_transformed_for(struct TagHead *head, const char *name)
 {
   return driver_tags_getter(head, true, true, name);
 }

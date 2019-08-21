@@ -118,18 +118,19 @@ static int hcache_tokyocabinet_delete_header(void *ctx, const char *key, size_t 
 /**
  * hcache_tokyocabinet_close - Implements HcacheOps::close()
  */
-static void hcache_tokyocabinet_close(void **ctx)
+static void hcache_tokyocabinet_close(void **ptr)
 {
-  if (!ctx || !*ctx)
+  if (!ptr || !*ptr)
     return;
 
-  TCBDB *db = *ctx;
+  TCBDB *db = *ptr;
   if (!tcbdbclose(db))
   {
     int ecode = tcbdbecode(db);
     mutt_debug(LL_DEBUG2, "tcbdbclose failed: %s (ecode %d)\n", tcbdberrmsg(ecode), ecode);
   }
   tcbdbdel(db);
+  *ptr = NULL;
 }
 
 /**

@@ -161,7 +161,7 @@ enum RangeSide
 /**
  * typedef pattern_eat_t - Parse a pattern
  * @param pat   Pattern to store the results in
- * @param flags Flags, e.g. #MUTT_PATTERN_DYNAMIC
+ * @param flags Flags, e.g. #MUTT_PC_PATTERN_DYNAMIC
  * @param s     String to parse
  * @param err   Buffer for error messages
  * @retval true If the pattern was read successfully
@@ -176,7 +176,7 @@ struct PatternFlags
 {
   int tag;                ///< character used to represent this op
   int op;                 ///< operation to perform
-  int flags;              ///< Pattern flags, e.g. #MUTT_FULL_MSG
+  int flags;              ///< Pattern flags, e.g. #MUTT_PC_FULL_MSG
   pattern_eat_t *eat_arg; ///< Callback function to parse the argument
 };
 
@@ -1039,7 +1039,7 @@ static bool eat_date(struct Pattern *pat, int flags, struct Buffer *s, struct Bu
     goto out;
   }
 
-  if (flags & MUTT_PATTERN_DYNAMIC)
+  if (flags & MUTT_PC_PATTERN_DYNAMIC)
   {
     pat->dynamic = true;
     pat->p.str = mutt_str_strdup(tmp->data);
@@ -1237,8 +1237,8 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
  */
 static const struct PatternFlags Flags[] = {
   { 'A', MUTT_ALL,                 0,             NULL },
-  { 'b', MUTT_PAT_BODY,            MUTT_FULL_MSG, eat_regex },
-  { 'B', MUTT_PAT_WHOLE_MSG,       MUTT_FULL_MSG, eat_regex },
+  { 'b', MUTT_PAT_BODY,            MUTT_PC_FULL_MSG, eat_regex },
+  { 'B', MUTT_PAT_WHOLE_MSG,       MUTT_PC_FULL_MSG, eat_regex },
   { 'c', MUTT_PAT_CC,              0,             eat_regex },
   { 'C', MUTT_PAT_RECIPIENT,       0,             eat_regex },
   { 'd', MUTT_PAT_DATE,            0,             eat_date },
@@ -1249,7 +1249,7 @@ static const struct PatternFlags Flags[] = {
   { 'F', MUTT_FLAG,                0,             NULL },
   { 'g', MUTT_PAT_CRYPT_SIGN,      0,             NULL },
   { 'G', MUTT_PAT_CRYPT_ENCRYPT,   0,             NULL },
-  { 'h', MUTT_PAT_HEADER,          MUTT_FULL_MSG, eat_regex },
+  { 'h', MUTT_PAT_HEADER,          MUTT_PC_FULL_MSG, eat_regex },
   { 'H', MUTT_PAT_HORMEL,          0,             eat_regex },
   { 'i', MUTT_PAT_ID,              0,             eat_regex },
   { 'I', MUTT_PAT_ID_EXTERNAL,     0,             eat_query },
@@ -1257,7 +1257,7 @@ static const struct PatternFlags Flags[] = {
   { 'l', MUTT_PAT_LIST,            0,             NULL },
   { 'L', MUTT_PAT_ADDRESS,         0,             eat_regex },
   { 'm', MUTT_PAT_MESSAGE,         0,             eat_message_range },
-  { 'M', MUTT_PAT_MIMETYPE,        MUTT_FULL_MSG, eat_regex },
+  { 'M', MUTT_PAT_MIMETYPE,        MUTT_PC_FULL_MSG, eat_regex },
   { 'n', MUTT_PAT_SCORE,           0,             eat_range },
   { 'N', MUTT_NEW,                 0,             NULL },
   { 'O', MUTT_OLD,                 0,             NULL },
@@ -1379,11 +1379,11 @@ static struct PatternHead *mutt_pattern_node_new(void)
 /**
  * mutt_pattern_comp - Create a Pattern
  * @param s     Pattern string
- * @param flags Flags, e.g. #MUTT_FULL_MSG
+ * @param flags Flags, e.g. #MUTT_PC_FULL_MSG
  * @param err   Buffer for error messages
  * @retval ptr Newly allocated Pattern
  */
-struct PatternHead *mutt_pattern_comp(const char *s, int flags, struct Buffer *err)
+struct PatternHead *mutt_pattern_comp(const char *s, PatternCompFlags flags, struct Buffer *err)
 {
   /* curlist when assigned will always point to a list containing at least one node
    * with a Pattern value.  */
@@ -2440,7 +2440,7 @@ int mutt_pattern_func(int op, char *prompt)
   mutt_buffer_init(&err);
   err.dsize = 256;
   err.data = mutt_mem_malloc(err.dsize);
-  struct PatternHead *pat = mutt_pattern_comp(buf->data, MUTT_FULL_MSG, &err);
+  struct PatternHead *pat = mutt_pattern_comp(buf->data, MUTT_PC_FULL_MSG, &err);
   if (!pat)
   {
     mutt_error("%s", err.data);
@@ -2534,7 +2534,7 @@ int mutt_pattern_func(int op, char *prompt)
     {
       Context->pattern = simple;
       simple = NULL; /* don't clobber it */
-      Context->limit_pattern = mutt_pattern_comp(buf->data, MUTT_FULL_MSG, &err);
+      Context->limit_pattern = mutt_pattern_comp(buf->data, MUTT_PC_FULL_MSG, &err);
     }
   }
 
@@ -2595,7 +2595,7 @@ int mutt_search_command(int cur, int op)
       mutt_pattern_free(&SearchPattern);
       err.dsize = 256;
       err.data = mutt_mem_malloc(err.dsize);
-      SearchPattern = mutt_pattern_comp(tmp->data, MUTT_FULL_MSG, &err);
+      SearchPattern = mutt_pattern_comp(tmp->data, MUTT_PC_FULL_MSG, &err);
       if (!SearchPattern)
       {
         mutt_buffer_pool_release(&tmp);

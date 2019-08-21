@@ -621,13 +621,13 @@ if {[get-define want-notmuch]} {
 ###############################################################################
 # Native Language Support (NLS)
 if {[get-define want-nls]} {
- if {![check-gettext [opt-val with-nls $prefix]]} {
-   user-error "Unable to find gettext. Consider --disable-nls"
- }
- if {![cc-check-progs msgfmt msgmerge xgettext]} {
-   user-error "Unable to find gettext tools (msgfmt, msgmerge, xgettext).\
-               Consider --disable-nls"
- }
+  if {![check-gettext [opt-val with-nls $prefix]]} {
+    user-error "Unable to find gettext. Consider --disable-nls"
+  }
+  if {![cc-check-progs msgfmt msgmerge xgettext]} {
+    user-error "Unable to find gettext tools (msgfmt, msgmerge, xgettext).\
+                Consider --disable-nls"
+  }
 }
 
 ###############################################################################

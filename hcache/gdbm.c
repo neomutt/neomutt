@@ -123,13 +123,14 @@ static int hcache_gdbm_delete_header(void *ctx, const char *key, size_t keylen)
 /**
  * hcache_gdbm_close - Implements HcacheOps::close()
  */
-static void hcache_gdbm_close(void **ctx)
+static void hcache_gdbm_close(void **ptr)
 {
-  if (!ctx)
+  if (!ptr || !*ptr)
     return;
 
-  GDBM_FILE db = *ctx;
+  GDBM_FILE db = *ptr;
   gdbm_close(db);
+  *ptr = NULL;
 }
 
 /**

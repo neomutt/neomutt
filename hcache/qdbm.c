@@ -104,13 +104,14 @@ static int hcache_qdbm_delete_header(void *ctx, const char *key, size_t keylen)
 /**
  * hcache_qdbm_close - Implements HcacheOps::close()
  */
-static void hcache_qdbm_close(void **ctx)
+static void hcache_qdbm_close(void **ptr)
 {
-  if (!ctx || !*ctx)
+  if (!ptr || !*ptr)
     return;
 
-  VILLA *db = *ctx;
+  VILLA *db = *ptr;
   vlclose(db);
+  *ptr = NULL;
 }
 
 /**

@@ -66,7 +66,7 @@ enum MuttWriteHeaderMode
 char *          mutt_body_get_charset(struct Body *b, char *buf, size_t buflen);
 int             mutt_bounce_message(FILE *fp, struct Email *e, struct AddressList *to);
 const char *    mutt_fqdn(bool may_hide_host);
-void            mutt_generate_boundary(struct ParameterList *parm);
+void            mutt_generate_boundary(struct ParameterList *pl);
 struct Content *mutt_get_content_info(const char *fname, struct Body *b);
 int             mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to, struct AddressList *cc, struct AddressList *bcc, const char *msg, int eightbit);
 enum ContentType mutt_lookup_mime_type(struct Body *att, const char *path);

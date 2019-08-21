@@ -129,18 +129,19 @@ static int hcache_kyotocabinet_delete_header(void *ctx, const char *key, size_t 
 /**
  * hcache_kyotocabinet_close - Implements HcacheOps::close()
  */
-static void hcache_kyotocabinet_close(void **ctx)
+static void hcache_kyotocabinet_close(void **ptr)
 {
-  if (!ctx || !*ctx)
+  if (!ptr || !*ptr)
     return;
 
-  KCDB *db = *ctx;
+  KCDB *db = *ptr;
   if (!kcdbclose(db))
   {
     int ecode = kcdbecode(db);
     mutt_debug(LL_DEBUG2, "kcdbclose failed: %s (ecode %d)\n", kcdbemsg(db), ecode);
   }
   kcdbdel(db);
+  *ptr = NULL;
 }
 
 /**

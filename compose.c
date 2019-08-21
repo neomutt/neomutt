@@ -2187,7 +2187,7 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
 #endif
 
   mutt_menu_pop_current(menu);
-  mutt_menu_destroy(&menu);
+  mutt_menu_free(&menu);
 
   if (actx->idxlen)
     e->content = actx->idx[0]->content;

@@ -76,7 +76,7 @@ enum MenuType
   MENU_GENERIC,          ///< Generic selection list
   MENU_MAIN,             ///< Index panel (list of emails)
   MENU_PAGER,            ///< Pager pager (email viewer)
-  MENU_POST,             ///< Select a postponed email
+  MENU_POSTPONE,         ///< Select a postponed email
   MENU_QUERY,            ///< Select from results of external query
   MENU_PGP,              ///< PGP encryption menu
   MENU_SMIME,            ///< SMIME encryption menu

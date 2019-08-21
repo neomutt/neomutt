@@ -257,7 +257,7 @@ int mutt_get_field_full(const char *field, char *buf, size_t buflen, CompletionF
     {
       SigWinch = 0;
       mutt_resize_screen();
-      clearok(stdscr, TRUE);
+      clearok(stdscr, true);
       mutt_menu_current_redraw();
     }
     mutt_window_clearline(MuttMessageWindow, 0);
@@ -370,7 +370,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
       {
         SigWinch = 0;
         mutt_resize_screen();
-        clearok(stdscr, TRUE);
+        clearok(stdscr, true);
         mutt_menu_current_redraw();
       }
       if (MuttMessageWindow->cols)
@@ -855,7 +855,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
       {
         SigWinch = 0;
         mutt_resize_screen();
-        clearok(stdscr, TRUE);
+        clearok(stdscr, true);
         mutt_menu_current_redraw();
       }
       if (MuttMessageWindow->cols)

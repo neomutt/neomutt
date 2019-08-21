@@ -406,6 +406,8 @@ char *mutt_path_concatn(char *dst, size_t dstlen, const char *dir,
  * Unlike the IEEE Std 1003.1-2001 specification of dirname(3), this
  * implementation does not modify its parameter, so callers need not manually
  * copy their paths into a modifiable buffer prior to calling this function.
+ *
+ * @note The caller must free the returned string
  */
 char *mutt_path_dirname(const char *path)
 {

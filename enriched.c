@@ -482,8 +482,8 @@ int text_enriched_handler(struct Body *a, struct State *s)
            (MuttIndexWindow->cols - 4) :
            ((MuttIndexWindow->cols - 4) < 72) ? (MuttIndexWindow->cols - 4) : 72);
   stte.line_max = stte.wrap_margin * 4;
-  stte.line = mutt_mem_calloc(1, (stte.line_max + 1) * sizeof(wchar_t));
-  stte.param = mutt_mem_calloc(1, 256 * sizeof(wchar_t));
+  stte.line = mutt_mem_calloc((stte.line_max + 1), sizeof(wchar_t));
+  stte.param = mutt_mem_calloc(256, sizeof(wchar_t));
 
   stte.param_len = 256;
   stte.param_used = 0;

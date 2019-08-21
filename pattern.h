@@ -38,9 +38,10 @@ struct Mailbox;
 /* These Config Variables are only used in pattern.c */
 extern bool C_ThoroughSearch;
 
-/* flag to mutt_pattern_comp() */
-#define MUTT_FULL_MSG           (1<<0)  ///< enable body and header matching
-#define MUTT_PATTERN_DYNAMIC    (1<<1)  ///< enable runtime date range evaluation
+typedef uint8_t PatternCompFlags;       ///< Flags for mutt_pattern_comp(), e.g. #MUTT_PC_FULL_MSG
+#define MUTT_PC_NO_FLAGS            0   ///< No flags are set
+#define MUTT_PC_FULL_MSG        (1<<0)  ///< Enable body and header matching
+#define MUTT_PC_PATTERN_DYNAMIC (1<<1)  ///< Enable runtime date range evaluation
 
 /**
  * struct Pattern - A simple (non-regex) pattern
@@ -151,7 +152,7 @@ enum PatternType
 
 int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
                       struct Mailbox *m, struct Email *e, struct PatternCache *cache);
-struct PatternHead *mutt_pattern_comp(const char *s, int flags, struct Buffer *err);
+struct PatternHead *mutt_pattern_comp(const char *s, PatternCompFlags flags, struct Buffer *err);
 void mutt_check_simple(struct Buffer *s, const char *simple);
 void mutt_pattern_free(struct PatternHead **pat);
 

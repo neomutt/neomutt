@@ -1754,7 +1754,8 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur, char *fcc
 
   mutt_encode_descriptions(e_post->content, true);
 
-  if ((WithCrypto != 0) && C_PostponeEncrypt && (e_post->security & (SEC_ENCRYPT | SEC_AUTOCRYPT)))
+  if ((WithCrypto != 0) && C_PostponeEncrypt &&
+      (e_post->security & (SEC_ENCRYPT | SEC_AUTOCRYPT)))
   {
     if (((WithCrypto & APPLICATION_PGP) != 0) && (e_post->security & APPLICATION_PGP))
       encrypt_as = C_PgpDefaultKey;

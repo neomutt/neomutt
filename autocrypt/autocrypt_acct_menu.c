@@ -224,7 +224,7 @@ static void free_menu(struct Menu **menu)
 
   mutt_menu_pop_current(*menu);
   FREE(&(*menu)->help);
-  mutt_menu_destroy(menu);
+  mutt_menu_free(menu);
 }
 
 /**

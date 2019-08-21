@@ -926,7 +926,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         tag = mutt_hash_find(TagFormats, format);
         if (tag)
         {
-          tags = driver_tags_get_transformed_for(tag, &e->tags);
+          tags = driver_tags_get_transformed_for(&e->tags, tag);
           colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_TAG);
           mutt_format_s(buf + colorlen, buflen - colorlen, prec, NONULL(tags));
           add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
@@ -943,7 +943,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         tag = mutt_hash_find(TagFormats, format);
         if (tag)
         {
-          tags = driver_tags_get_transformed_for(tag, &e->tags);
+          tags = driver_tags_get_transformed_for(&e->tags, tag);
           if (!tags)
             optional = 0;
           FREE(&tags);

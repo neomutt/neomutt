@@ -802,7 +802,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
   }
 
   mutt_menu_pop_current(menu);
-  mutt_menu_destroy(&menu);
+  mutt_menu_free(&menu);
   FREE(&key_table);
 
   return kp;

@@ -178,7 +178,7 @@ int          menu_redraw(struct Menu *menu);
 void         menu_top_page(struct Menu *menu);
 void         mutt_menu_add_dialog_row(struct Menu *menu, const char *row);
 void         mutt_menu_current_redraw(void);
-void         mutt_menu_destroy(struct Menu **p);
+void         mutt_menu_free(struct Menu **ptr);
 void         mutt_menu_init(void);
 int          mutt_menu_loop(struct Menu *menu);
 struct Menu *mutt_menu_new(enum MenuType type);

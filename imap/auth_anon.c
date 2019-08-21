@@ -61,9 +61,9 @@ enum ImapAuthRes imap_auth_anon(struct ImapAccountData *adata, const char *metho
 
   do
     rc = imap_cmd_step(adata);
-  while (rc == IMAP_CMD_CONTINUE);
+  while (rc == IMAP_RES_CONTINUE);
 
-  if (rc != IMAP_CMD_RESPOND)
+  if (rc != IMAP_RES_RESPOND)
   {
     mutt_debug(LL_DEBUG1, "Invalid response from server\n");
     goto bail;
@@ -73,9 +73,9 @@ enum ImapAuthRes imap_auth_anon(struct ImapAccountData *adata, const char *metho
 
   do
     rc = imap_cmd_step(adata);
-  while (rc == IMAP_CMD_CONTINUE);
+  while (rc == IMAP_RES_CONTINUE);
 
-  if (rc != IMAP_CMD_OK)
+  if (rc != IMAP_RES_OK)
   {
     mutt_debug(LL_DEBUG1, "Error receiving server response\n");
     goto bail;

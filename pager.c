@@ -211,7 +211,7 @@ struct PagerRedrawData
 static int TopLine = 0;
 static struct Email *OldEmail = NULL;
 
-static short InHelp = 0;
+static bool InHelp = false;
 
 static int braille_line = -1;
 static int braille_col = -1;
@@ -2462,7 +2462,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
     {
       SigWinch = 0;
       mutt_resize_screen();
-      clearok(stdscr, TRUE); /* force complete redraw */
+      clearok(stdscr, true); /* force complete redraw */
 
       if (flags & MUTT_PAGER_RETWINCH)
       {
@@ -2833,10 +2833,10 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         /* don't let the user enter the help-menu from the help screen! */
         if (!InHelp)
         {
-          InHelp = 1;
+          InHelp = true;
           mutt_help(MENU_PAGER);
           pager_menu->redraw = REDRAW_FULL;
-          InHelp = 0;
+          InHelp = false;
         }
         else
           mutt_error(_("Help is currently being shown"));
@@ -3109,7 +3109,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         if (old_PagerIndexLines != C_PagerIndexLines)
         {
           if (rd.index)
-            mutt_menu_destroy(&rd.index);
+            mutt_menu_free(&rd.index);
           rd.index = NULL;
         }
 
@@ -3581,9 +3581,9 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   }
   FREE(&rd.line_info);
   mutt_menu_pop_current(pager_menu);
-  mutt_menu_destroy(&pager_menu);
+  mutt_menu_free(&pager_menu);
   if (rd.index)
-    mutt_menu_destroy(&rd.index);
+    mutt_menu_free(&rd.index);
 
   mutt_buffer_free(&helpstr);
   mutt_window_free(&rd.index_status_window);

@@ -294,7 +294,7 @@ static bool compare_flags_for_copy(struct Email *e)
  * sync_helper - Sync flag changes to the server
  * @param m     Selected Imap Mailbox
  * @param right ACL, see #AclFlags
- * @param flag  Mutt flag, e.g. #MUTT_DELETED
+ * @param flag  NeoMutt flag, e.g. #MUTT_DELETED
  * @param name  Name of server flag
  * @retval >=0 Success, number of messages
  * @retval  -1 Failure
@@ -672,7 +672,7 @@ static void imap_logout(struct ImapAccountData *adata)
   imap_cmd_start(adata, "LOGOUT");
   if ((C_ImapPollTimeout <= 0) || (mutt_socket_poll(adata->conn, C_ImapPollTimeout) != 0))
   {
-    while (imap_cmd_step(adata) == IMAP_CMD_CONTINUE)
+    while (imap_cmd_step(adata) == IMAP_RES_CONTINUE)
       ;
   }
   mutt_socket_close(adata->conn);
@@ -854,7 +854,7 @@ int imap_open_connection(struct ImapAccountData *adata)
 
   adata->state = IMAP_CONNECTED;
 
-  if (imap_cmd_step(adata) != IMAP_CMD_OK)
+  if (imap_cmd_step(adata) != IMAP_RES_OK)
   {
     imap_close_connection(adata);
     return -1;
@@ -1206,7 +1206,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
   {
     while ((rc = mutt_socket_poll(adata->conn, 0)) > 0)
     {
-      if (imap_cmd_step(adata) != IMAP_CMD_CONTINUE)
+      if (imap_cmd_step(adata) != IMAP_RES_CONTINUE)
       {
         mutt_debug(LL_DEBUG1, "Error reading IDLE response\n");
         return -1;
@@ -1471,7 +1471,7 @@ int imap_complete(char *buf, size_t buflen, char *path)
     listresp.name = NULL;
     rc = imap_cmd_step(adata);
 
-    if ((rc == IMAP_CMD_CONTINUE) && listresp.name)
+    if ((rc == IMAP_RES_CONTINUE) && listresp.name)
     {
       /* if the folder isn't selectable, append delimiter to force browse
        * to enter it on second tab. */
@@ -1493,7 +1493,7 @@ int imap_complete(char *buf, size_t buflen, char *path)
       matchlen = longest_common_prefix(completion, listresp.name, 0, matchlen);
       completions++;
     }
-  } while (rc == IMAP_CMD_CONTINUE);
+  } while (rc == IMAP_RES_CONTINUE);
   adata->cmdresult = NULL;
 
   if (completions)
@@ -2010,7 +2010,7 @@ static int imap_mbox_open(struct Mailbox *m)
     char *pc = NULL;
 
     rc = imap_cmd_step(adata);
-    if (rc != IMAP_CMD_CONTINUE)
+    if (rc != IMAP_RES_CONTINUE)
       break;
 
     pc = adata->buf + 2;
@@ -2079,9 +2079,9 @@ static int imap_mbox_open(struct Mailbox *m)
         mdata->new_mail_count = 0;
       }
     }
-  } while (rc == IMAP_CMD_CONTINUE);
+  } while (rc == IMAP_RES_CONTINUE);
 
-  if (rc == IMAP_CMD_NO)
+  if (rc == IMAP_RES_NO)
   {
     char *s = imap_next_word(adata->buf); /* skip seq */
     s = imap_next_word(s);                /* Skip response */
@@ -2089,7 +2089,7 @@ static int imap_mbox_open(struct Mailbox *m)
     goto fail;
   }
 
-  if (rc != IMAP_CMD_OK)
+  if (rc != IMAP_RES_OK)
     goto fail;
 
   /* check for READ-ONLY notification */

@@ -997,20 +997,24 @@ struct Menu *mutt_menu_new(enum MenuType type)
 }
 
 /**
- * mutt_menu_destroy - Destroy a menu
+ * mutt_menu_free - Destroy a menu
  * @param[out] p Menu to destroy
  */
-void mutt_menu_destroy(struct Menu **p)
+void mutt_menu_free(struct Menu **ptr)
 {
-  if ((*p)->dialog)
-  {
-    for (int i = 0; i < (*p)->max; i++)
-      FREE(&(*p)->dialog[i]);
+  if (!ptr || !*ptr)
+    return;
 
-    FREE(&(*p)->dialog);
+  struct Menu *m = *ptr;
+  if (m->dialog)
+  {
+    for (int i = 0; i < m->max; i++)
+      FREE(&m->dialog[i]);
+
+    FREE(&m->dialog);
   }
 
-  FREE(p);
+  FREE(ptr);
 }
 
 /**

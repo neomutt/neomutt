@@ -65,7 +65,7 @@ const struct Mapping Menus[] = {
   { "editor", MENU_EDITOR },
   { "index", MENU_MAIN },
   { "pager", MENU_PAGER },
-  { "postpone", MENU_POST },
+  { "postpone", MENU_POSTPONE },
   { "pgp", MENU_PGP },
   { "smime", MENU_SMIME },
 #ifdef CRYPT_BACKEND_GPGME
@@ -929,7 +929,7 @@ void km_init(void)
   create_bindings(OpCompose, MENU_COMPOSE);
   create_bindings(OpMain, MENU_MAIN);
   create_bindings(OpPager, MENU_PAGER);
-  create_bindings(OpPost, MENU_POST);
+  create_bindings(OpPost, MENU_POSTPONE);
   create_bindings(OpQuery, MENU_QUERY);
   create_bindings(OpAlias, MENU_ALIAS);
 
@@ -1251,7 +1251,7 @@ const struct Binding *km_get_table(int menu)
       return OpPager;
     case MENU_PGP:
       return (WithCrypto & APPLICATION_PGP) ? OpPgp : NULL;
-    case MENU_POST:
+    case MENU_POSTPONE:
       return OpPost;
     case MENU_QUERY:
       return OpQuery;

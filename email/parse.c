@@ -95,7 +95,7 @@ void mutt_auto_subscribe(const char *mailto)
 
 /**
  * parse_parameters - Parse a list of Parameters
- * @param param              Parameter list for the results
+ * @param pl                 Parameter list for the results
  * @param s                  String to parse
  * @param allow_value_spaces Allow values with spaces
  *
@@ -104,7 +104,7 @@ void mutt_auto_subscribe(const char *mailto)
  * The allow_value_spaces parameter allows parsing those values which
  * are split by spaces when unfolded.
  */
-static void parse_parameters(struct ParameterList *param, const char *s, bool allow_value_spaces)
+static void parse_parameters(struct ParameterList *pl, const char *s, bool allow_value_spaces)
 {
   struct Parameter *pnew = NULL;
   const char *p = NULL;
@@ -207,7 +207,7 @@ static void parse_parameters(struct ParameterList *param, const char *s, bool al
                    pnew->attribute ? pnew->attribute : "", pnew->value ? pnew->value : "");
 
         /* Add this parameter to the list */
-        TAILQ_INSERT_HEAD(param, pnew, entries);
+        TAILQ_INSERT_HEAD(pl, pnew, entries);
       }
     }
     else
@@ -229,7 +229,7 @@ static void parse_parameters(struct ParameterList *param, const char *s, bool al
 
 bail:
 
-  rfc2231_decode_parameters(param);
+  rfc2231_decode_parameters(pl);
   mutt_buffer_pool_release(&buf);
 }
 
@@ -242,8 +242,8 @@ bail:
  */
 static void parse_content_disposition(const char *s, struct Body *ct)
 {
-  struct ParameterList parms;
-  TAILQ_INIT(&parms);
+  struct ParameterList pl;
+  TAILQ_INIT(&pl);
 
   if (mutt_str_startswith(s, "inline", CASE_IGNORE))
     ct->disposition = DISP_INLINE;
@@ -257,14 +257,14 @@ static void parse_content_disposition(const char *s, struct Body *ct)
   if (s)
   {
     s = mutt_str_skip_email_wsp(s + 1);
-    parse_parameters(&parms, s, false);
-    s = mutt_param_get(&parms, "filename");
+    parse_parameters(&pl, s, false);
+    s = mutt_param_get(&pl, "filename");
     if (s)
       mutt_str_replace(&ct->filename, s);
-    s = mutt_param_get(&parms, "name");
+    s = mutt_param_get(&pl, "name");
     if (s)
       ct->form_name = mutt_str_strdup(s);
-    mutt_param_free(&parms);
+    mutt_param_free(&pl);
   }
 }
 

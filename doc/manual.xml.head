@@ -17638,7 +17638,7 @@ bind index D purge-message
       <sect2 id="autocryptdoc-keyrings">
         <title>Alternative Key and Keyring Strategies</title>
         <para>
-          Mutt by default partitions Autocrypt from normal keyring
+          NeoMutt by default partitions Autocrypt from normal keyring
           encryption/signing.  It does this by using a separate GPG
           keyring (in <link linkend="autocrypt-dir">$autocrypt_dir</link>)
           and creating a new ECC key in that keyring for accounts.  There
@@ -17647,40 +17647,40 @@ bind index D purge-message
           keys are compact and better suited for email headers.  Autocrypt
           key selection is completely different from <quote>web of
           trust</quote> key selection, based on last-seen rules as opposed
-          to trust and validity.  It also allows Mutt to distinguish
+          to trust and validity.  It also allows NeoMutt to distinguish
           Autocrypt encrypted emails from regular encrypted emails, and
           set the mode appropriately when replying to each type of email.
         </para>
         <para>
           Still, some users may want to use an existing key from their
           normal keyring for Autocrypt too.  There are two ways this can
-          be accomplished: by copying the key over to the Autocrypt
-          keyring, or by pointing <link
-          linkend="autocrypt-dir">$autocrypt_dir</link> at your normal
-          keyring directory (e.g. <literal>~/.gnupg</literal>).  The first
-          can be done using gpg from the command line, along the lines of
-          <literal>gpg --export [keyid] | gpg --homedir=~/.mutt/autocrypt
-          --import</literal> followed by <literal>gpg --export-secret-keys
-          [keyid] | gpg --homedir=~/.mutt/autocrypt --import</literal>.
-          Once this is done, choosing <quote>(s)elect existing GPG
-          key</quote> during account creation will list and allow
-          selecting that key for the account.
+          be accomplished.  The <emphasis>recommended</emphasis> way is to
+          set <link linkend="autocrypt-dir">$autocrypt_dir</link> to your
+          normal keyring directory (e.g. <literal>~/.gnupg</literal>).
+          During account creation, choosing <quote>(s)elect existing GPG
+          key</quote> will then list and allow selecting your existing key
+          for the new account.
         </para>
         <para>
-        Copying your key over has the advantage of keeping Autocrypt keys
-        out of your normal keyring, but there is a downside.  Mutt
-        <emphasis>first</emphasis> tries to decrypt messages using the
-        Autocrypt keyring, and if that fails tries the normal keyring
-        second.  This means all encrypted emails to that key will be
-        decrypted, and have signatures verified from, the Autocrypt
-        keyring.  Keys signatures and web of trust from your normal
-        keyring will no longer show up in signatures when decrypting.
+          An alternative is to copy your key over to the Autocrypt keyring,
+          but there is a severe downside.  NeoMutt <emphasis>first</emphasis>
+          tries to decrypt messages using the Autocrypt keyring, and if
+          that fails tries the normal keyring second.  This means all
+          encrypted emails to that key will be decrypted, and have
+          signatures verified from, the Autocrypt keyring.  Keys signatures
+          and web of trust from your normal keyring will no longer show up
+          in signatures when decrypting.
         </para>
         <para>
-          Pointing <link linkend="autocrypt-dir">$autocrypt_dir</link> to
-          <literal>~/.gnupg</literal> allows Autocrypt header keys to be
-          imported there, but also allows <quote>web of trust</quote> to show
-          an appropriate signature message for verified messages.
+          For that reason, if you want to use an existing key from your
+          normal keyring, it is recommended to just set <link
+          linkend="autocrypt-dir">$autocrypt_dir</link> to
+          <literal>~/.gnupg</literal>.  This allows <quote>web of
+          trust</quote> to show an appropriate signature message for
+          verified messages.  Autocrypt header keys will be imported into
+          your keyring, but if you don't want them mixed you should
+          strongly consider using a separate autocrypt key and keyring
+          instead.
         </para>
         <para>
           Both methods have a couple additional caveats:
@@ -17688,10 +17688,10 @@ bind index D purge-message
         <itemizedlist>
           <listitem>
             <para>
-              First, replying to an Autocrypt decrypted message by default
-              forces Autocrypt mode on.  By sharing the same key, all
-              replies will then start in Autocrypt mode, even if a message
-              wasn't sent by one of your Autocrypt peers.  <link
+              Replying to an Autocrypt decrypted message by default forces
+              Autocrypt mode on.  By sharing the same key, all replies
+              will then start in Autocrypt mode, even if a message wasn't
+              sent by one of your Autocrypt peers.  <link
               linkend="autocrypt-reply">$autocrypt_reply</link> can be
               <emphasis>unset</emphasis> to allow manual control of the
               mode when replying.
@@ -17699,13 +17699,13 @@ bind index D purge-message
           </listitem>
           <listitem>
             <para>
-              Second, when Mutt creates an account from a gpg key, it
-              exports the public key, base64 encodes it, and stores that
-              value in the sqlite3 database.  The value is then used in
-              the Autocrypt header added to outgoing emails.  The ECC keys
-              Mutt creates don't change, but if you use external keys that
-              expire, when you resign to extend the expiration you will
-              need to recreate the Autocrypt account using the <link
+              When NeoMutt creates an account from a gpg key, it exports the
+              public key, base64 encodes it, and stores that value in the
+              sqlite3 database.  The value is then used in the Autocrypt
+              header added to outgoing emails.  The ECC keys NeoMutt creates
+              don't change, but if you use external keys that expire, when
+              you resign to extend the expiration you will need to
+              recreate the Autocrypt account using the <link
               linkend="autocryptdoc-acctmgmt">account menu</link>.
               Otherwise the Autocrypt header will contain the old expired
               exported keydata.

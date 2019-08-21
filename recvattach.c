@@ -1422,7 +1422,7 @@ void mutt_view_attachments(struct Email *e)
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_ATTACH, AttachHelp);
   mutt_menu_push_current(menu);
 
-  struct AttachCtx *actx = mutt_mem_calloc(sizeof(struct AttachCtx), 1);
+  struct AttachCtx *actx = mutt_mem_calloc(1, sizeof(struct AttachCtx));
   actx->email = e;
   actx->fp_root = msg->fp;
   mutt_update_recvattach_menu(actx, menu, true);
@@ -1696,7 +1696,7 @@ void mutt_view_attachments(struct Email *e)
         mutt_actx_free(&actx);
 
         mutt_menu_pop_current(menu);
-        mutt_menu_destroy(&menu);
+        mutt_menu_free(&menu);
         return;
     }
 

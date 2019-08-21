@@ -65,7 +65,7 @@ static int autocrypt_dir_init(bool can_create)
 
   struct Buffer *prompt = mutt_buffer_pool_get();
   /* L10N:
-     %s is a directory.  Mutt is looking for a directory it needs
+     %s is a directory.  NeoMutt is looking for a directory it needs
      for some reason (e.g. autocrypt, header cache, bcache), but it
      doesn't exist.  The prompt is asking whether to create the directory
   */
@@ -151,7 +151,7 @@ int mutt_autocrypt_account_init(bool prompt)
   if (prompt)
   {
     /* L10N:
-       The first time mutt is started with $autocrypt set, it will
+       The first time NeoMutt is started with $autocrypt set, it will
        create $autocrypt_dir and then prompt to create an autocrypt
        account with this message.
     */
@@ -900,7 +900,7 @@ void mutt_autocrypt_scan_mailboxes(void)
   struct Buffer *folderbuf = mutt_buffer_pool_get();
 
   /* L10N:
-     The first time autocrypt is enabled, Mutt will ask to scan
+     The first time autocrypt is enabled, NeoMutt will ask to scan
      through one or more mailboxes for Autocrypt: headers.
      Those headers are then captured in the database as peer records
      and used for encryption.
