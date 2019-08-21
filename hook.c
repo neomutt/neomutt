@@ -250,9 +250,11 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
   else if (data & (MUTT_SEND_HOOK | MUTT_SEND2_HOOK | MUTT_SAVE_HOOK |
                    MUTT_FCC_HOOK | MUTT_MESSAGE_HOOK | MUTT_REPLY_HOOK))
   {
-    pat = mutt_pattern_comp(
-        pattern.data,
-        (data & (MUTT_SEND_HOOK | MUTT_SEND2_HOOK | MUTT_FCC_HOOK)) ? 0 : MUTT_FULL_MSG, err);
+    pat = mutt_pattern_comp(pattern.data,
+                            (data & (MUTT_SEND_HOOK | MUTT_SEND2_HOOK | MUTT_FCC_HOOK)) ?
+                                MUTT_PC_NO_FLAGS :
+                                MUTT_PC_FULL_MSG,
+                            err);
     if (!pat)
       goto error;
   }
@@ -422,12 +424,12 @@ enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
     }
   }
 
-  /* MUTT_PATTERN_DYNAMIC sets so that date ranges are regenerated during
+  /* MUTT_PC_PATTERN_DYNAMIC sets so that date ranges are regenerated during
    * matching.  This of course is slower, but index-format-hook is commonly
    * used for date ranges, and they need to be evaluated relative to "now", not
    * the hook compilation time.  */
-  struct PatternHead *pat =
-      mutt_pattern_comp(mutt_b2s(pattern), MUTT_FULL_MSG | MUTT_PATTERN_DYNAMIC, err);
+  struct PatternHead *pat = mutt_pattern_comp(
+      mutt_b2s(pattern), MUTT_PC_FULL_MSG | MUTT_PC_PATTERN_DYNAMIC, err);
   if (!pat)
     goto out;
 
