@@ -1114,9 +1114,9 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
 
 /**
  * pgp_getkeybystr - Find a PGP key by string
- * @param cp         String to match
- * @param abilities   Abilities to match, see #KeyFlags
- * @param keyring     PGP keyring to use
+ * @param cp         String to match, can be empty but cannot be NULL
+ * @param abilities  Abilities to match, see #KeyFlags
+ * @param keyring    PGP keyring to use
  * @retval ptr Matching PGP key
  */
 struct PgpKeyInfo *pgp_getkeybystr(const char *cp, KeyFlags abilities, enum PgpRing keyring)
@@ -1130,7 +1130,7 @@ struct PgpKeyInfo *pgp_getkeybystr(const char *cp, KeyFlags abilities, enum PgpR
   size_t l;
   const char *ps = NULL, *pl = NULL, *pfcopy = NULL, *phint = NULL;
 
-  char *p = mutt_str_strdup(cp);
+  char *p = strdup(cp); // mutt_str_strdup converts "" into NULL, see #1809
   l = mutt_str_strlen(p);
   if ((l > 0) && (p[l - 1] == '!'))
     p[l - 1] = 0;
