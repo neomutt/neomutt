@@ -998,7 +998,7 @@ struct Menu *mutt_menu_new(enum MenuType type)
 
 /**
  * mutt_menu_free - Destroy a menu
- * @param[out] p Menu to destroy
+ * @param[out] ptr Menu to destroy
  */
 void mutt_menu_free(struct Menu **ptr)
 {
