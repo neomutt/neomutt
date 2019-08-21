@@ -285,22 +285,22 @@ static int hcache_lmdb_delete_header(void *vctx, const char *key, size_t keylen)
 /**
  * hcache_lmdb_close - Implements HcacheOps::close()
  */
-static void hcache_lmdb_close(void **vctx)
+static void hcache_lmdb_close(void **ptr)
 {
-  if (!vctx || !*vctx)
+  if (!ptr || !*ptr)
     return;
 
-  struct HcacheLmdbCtx *ctx = *vctx;
+  struct HcacheLmdbCtx *db = *ptr;
 
-  if (ctx->txn && (ctx->txn_mode == TXN_WRITE))
+  if (db->txn && (db->txn_mode == TXN_WRITE))
   {
-    mdb_txn_commit(ctx->txn);
-    ctx->txn_mode = TXN_UNINITIALIZED;
-    ctx->txn = NULL;
+    mdb_txn_commit(db->txn);
+    db->txn_mode = TXN_UNINITIALIZED;
+    db->txn = NULL;
   }
 
-  mdb_env_close(ctx->env);
-  FREE(vctx);
+  mdb_env_close(db->env);
+  FREE(ptr);
 }
 
 /**
