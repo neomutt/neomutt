@@ -60,9 +60,6 @@
  */
 static void expand_aliases_r(struct AddressList *al, struct ListHead *expn)
 {
-  bool i;
-  const char *fqdn = NULL;
-
   struct Address *a = TAILQ_FIRST(al);
   while (a)
   {
@@ -71,37 +68,54 @@ static void expand_aliases_r(struct AddressList *al, struct ListHead *expn)
       struct AddressList *alias = mutt_alias_lookup(a->mailbox);
       if (alias)
       {
-        i = false;
+        bool duplicate = false;
         struct ListNode *np = NULL;
         STAILQ_FOREACH(np, expn, entries)
         {
           if (mutt_str_strcmp(a->mailbox, np->data) == 0) /* alias already found */
           {
             mutt_debug(LL_DEBUG1, "loop in alias found for '%s'\n", a->mailbox);
-            i = true;
+            duplicate = true;
             break;
           }
         }
 
-        if (!i)
+        if (duplicate)
         {
-          mutt_list_insert_head(expn, mutt_str_strdup(a->mailbox));
-          struct AddressList copy = TAILQ_HEAD_INITIALIZER(copy);
-          mutt_addrlist_copy(&copy, alias, false);
-          expand_aliases_r(&copy, expn);
-          struct Address *a2 = NULL, *tmp = NULL;
-          TAILQ_FOREACH_SAFE(a2, &copy, entries, tmp)
-          {
-            TAILQ_INSERT_BEFORE(a, a2, entries);
-          }
-          a = TAILQ_PREV(a, AddressList, entries);
-          TAILQ_REMOVE(al, TAILQ_NEXT(a, entries), entries);
+          // We've already seen this alias, so drop it
+          struct Address *next = TAILQ_NEXT(a, entries);
+          TAILQ_REMOVE(al, a, entries);
+          mutt_addr_free(&a);
+          a = next;
+          continue;
         }
+
+        // Keep a list of aliases that we've already seen
+        mutt_list_insert_head(expn, mutt_str_strdup(a->mailbox));
+
+        /* The alias may expand to several addresses,
+         * some of which may themselves be aliases.
+         * Create a copy and recursively expand any aliases within. */
+        struct AddressList copy = TAILQ_HEAD_INITIALIZER(copy);
+        mutt_addrlist_copy(&copy, alias, false);
+        expand_aliases_r(&copy, expn);
+
+        /* Next, move the expanded addresses
+         * from the copy into the original list (before the alias) */
+        struct Address *a2 = NULL, *tmp = NULL;
+        TAILQ_FOREACH_SAFE(a2, &copy, entries, tmp)
+        {
+          TAILQ_INSERT_BEFORE(a, a2, entries);
+        }
+        a = TAILQ_PREV(a, AddressList, entries);
+        // Finally, remove the alias itself
+        struct Address *next = TAILQ_NEXT(a, entries);
+        TAILQ_REMOVE(al, next, entries);
+        mutt_addr_free(&next);
       }
       else
       {
         struct passwd *pw = getpwnam(a->mailbox);
-
         if (pw)
         {
           char namebuf[256];
@@ -114,6 +128,7 @@ static void expand_aliases_r(struct AddressList *al, struct ListHead *expn)
     a = TAILQ_NEXT(a, entries);
   }
 
+  const char *fqdn = NULL;
   if (C_UseDomain && (fqdn = mutt_fqdn(true)))
   {
     /* now qualify all local addresses */
