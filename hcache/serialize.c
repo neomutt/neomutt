@@ -500,6 +500,7 @@ unsigned char *serial_dump_envelope(struct Envelope *env, unsigned char *d,
   d = serial_dump_char(env->supersedes, d, off, false);
   d = serial_dump_char(env->date, d, off, false);
   d = serial_dump_char(env->x_label, d, off, convert);
+  d = serial_dump_char(env->organization, d, off, convert);
 
   d = serial_dump_buffer(env->spam, d, off, convert);
 
@@ -553,6 +554,7 @@ void serial_restore_envelope(struct Envelope *env, const unsigned char *d, int *
   serial_restore_char(&env->supersedes, d, off, false);
   serial_restore_char(&env->date, d, off, false);
   serial_restore_char(&env->x_label, d, off, convert);
+  serial_restore_char(&env->organization, d, off, convert);
 
   serial_restore_buffer(&env->spam, d, off, convert);
 
