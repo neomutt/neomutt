@@ -30,11 +30,11 @@
 #include "config/lib.h"
 #include "mutt.h"
 #include "icommands.h"
+#include "curs_lib.h"
 #include "globals.h"
 #include "keymap.h"
 #include "muttlib.h"
 #include "opcodes.h"
-#include "pager.h"
 #include "version.h"
 
 /**
@@ -291,7 +291,7 @@ static enum CommandResult icmd_bind(struct Buffer *buf, struct Buffer *s,
   mutt_buffer_free(&filebuf);
 
   struct Pager info = { 0 };
-  if (mutt_pager((bind) ? "bind" : "macro", tempfile, MUTT_PAGER_NO_FLAGS, &info) == -1)
+  if (mutt_do_pager((bind) ? "bind" : "macro", tempfile, MUTT_PAGER_NO_FLAGS, &info) == -1)
   {
     // L10N: '%s' is the file name of the temporary file
     mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
@@ -335,7 +335,7 @@ static enum CommandResult icmd_set(struct Buffer *buf, struct Buffer *s,
   mutt_file_fclose(&fp_out);
 
   struct Pager info = { 0 };
-  if (mutt_pager("set", tempfile, MUTT_PAGER_NO_FLAGS, &info) == -1)
+  if (mutt_do_pager("set", tempfile, MUTT_PAGER_NO_FLAGS, &info) == -1)
   {
     // L10N: '%s' is the file name of the temporary file
     mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
@@ -366,7 +366,7 @@ static enum CommandResult icmd_version(struct Buffer *buf, struct Buffer *s,
   mutt_file_fclose(&fp_out);
 
   struct Pager info = { 0 };
-  if (mutt_pager("version", tempfile, MUTT_PAGER_NO_FLAGS, &info) == -1)
+  if (mutt_do_pager("version", tempfile, MUTT_PAGER_NO_FLAGS, &info) == -1)
   {
     // L10N: '%s' is the file name of the temporary file
     mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
