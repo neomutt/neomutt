@@ -501,7 +501,7 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
 static void mix_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct Remailer **type2_list = menu->data;
-  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols,
+  mutt_expando_format(buf, buflen, 0, menu->indexwin->cols,
                       NONULL(C_MixEntryFormat), mix_format_str,
                       (unsigned long) type2_list[num], MUTT_FORMAT_ARROWCURSOR);
 }

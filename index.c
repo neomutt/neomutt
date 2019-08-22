@@ -1007,9 +1007,9 @@ static void index_custom_redraw(struct Menu *menu)
   {
     char buf[1024];
     menu_status_line(buf, sizeof(buf), menu, NONULL(C_StatusFormat));
-    mutt_window_move(MuttStatusWindow, 0, 0);
+    mutt_window_move(menu->statuswin, 0, 0);
     SET_COLOR(MT_COLOR_STATUS);
-    mutt_draw_statusline(MuttStatusWindow->cols, buf, sizeof(buf));
+    mutt_draw_statusline(menu->statuswin->cols, buf, sizeof(buf));
     NORMAL_COLOR;
     menu->redraw &= ~REDRAW_STATUS;
     if (C_TsEnabled && TsSupported)
@@ -1220,13 +1220,13 @@ int mutt_index_menu(void)
         menu->oldcurrent = -1;
 
       if (C_ArrowCursor)
-        mutt_window_move(MuttIndexWindow, menu->current - menu->top + menu->offset, 2);
+        mutt_window_move(menu->indexwin, menu->current - menu->top + menu->offset, 2);
       else if (C_BrailleFriendly)
-        mutt_window_move(MuttIndexWindow, menu->current - menu->top + menu->offset, 0);
+        mutt_window_move(menu->indexwin, menu->current - menu->top + menu->offset, 0);
       else
       {
-        mutt_window_move(MuttIndexWindow, menu->current - menu->top + menu->offset,
-                         MuttIndexWindow->cols - 1);
+        mutt_window_move(menu->indexwin, menu->current - menu->top + menu->offset,
+                         menu->indexwin->cols - 1);
       }
       mutt_refresh();
 

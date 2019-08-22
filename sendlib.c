@@ -2831,8 +2831,8 @@ int mutt_invoke_sendmail(struct AddressList *from, struct AddressList *to,
   {
     char cmd[1024];
 
-    mutt_expando_format(cmd, sizeof(cmd), 0, MuttIndexWindow->cols,
-                        NONULL(C_Inews), nntp_format_str, 0, MUTT_FORMAT_NO_FLAGS);
+    mutt_expando_format(cmd, sizeof(cmd), 0, sizeof(cmd), NONULL(C_Inews),
+                        nntp_format_str, 0, MUTT_FORMAT_NO_FLAGS);
     if (!*cmd)
     {
       i = nntp_post(Context->mailbox, msg);

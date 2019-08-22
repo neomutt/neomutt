@@ -183,8 +183,8 @@ static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int col
 static void mutt_pgp_command(char *buf, size_t buflen,
                              struct PgpCommandContext *cctx, const char *fmt)
 {
-  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(fmt),
-                      fmt_pgp_command, (unsigned long) cctx, MUTT_FORMAT_NO_FLAGS);
+  mutt_expando_format(buf, buflen, 0, buflen, NONULL(fmt), fmt_pgp_command,
+                      (unsigned long) cctx, MUTT_FORMAT_NO_FLAGS);
   mutt_debug(LL_DEBUG2, "%s\n", buf);
 }
 
