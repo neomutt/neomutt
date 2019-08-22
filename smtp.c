@@ -303,6 +303,11 @@ static bool address_uses_unicode(const char *a)
  */
 static bool addresses_use_unicode(const struct AddressList *al)
 {
+  if (!al)
+  {
+    return false;
+  }
+
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
