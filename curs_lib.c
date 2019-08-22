@@ -631,6 +631,13 @@ int mutt_any_key_to_continue(const char *s)
 int mutt_do_pager(const char *banner, const char *tempfile, PagerFlags do_color,
                   struct Pager *info)
 {
+  struct Pager info2 = { 0 };
+  if (!info)
+    info = &info2;
+
+  info->win_pbar = MuttPagerBarWindow;
+  info->win_pager = MuttPagerWindow;
+
   int rc;
 
   if (!C_Pager || (mutt_str_strcmp(C_Pager, "builtin") == 0))

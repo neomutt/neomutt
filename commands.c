@@ -359,6 +359,10 @@ int mutt_display_message(struct MuttWindow *win, struct Mailbox *m, struct Email
     /* Invoke the builtin pager */
     info.email = e;
     info.ctx = Context;
+    info.win_ibar = MuttStatusWindow;
+    info.win_index = MuttIndexWindow;
+    info.win_pbar = MuttPagerBarWindow;
+    info.win_pager = MuttPagerWindow;
     rc = mutt_pager(NULL, mutt_b2s(tempfile), MUTT_PAGER_MESSAGE, &info);
   }
   else
