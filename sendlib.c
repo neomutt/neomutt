@@ -2212,6 +2212,92 @@ out:
 }
 
 /**
+ * The next array/enum pair is used to to keep track of user headers that
+ * override pre-defined headers NeoMutt would emit. Keep the array sorted and
+ * in sync with the enum.
+ */
+static const char *const userhdrs_override_headers[] = {
+  "content-type:",
+  "user-agent:",
+};
+
+enum UserHdrsOverrideIdx
+{
+  USERHDRS_OVERRIDE_CONTENT_TYPE,
+  USERHDRS_OVERRIDE_USER_AGENT,
+};
+
+struct UserHdrsOverride
+{
+  bool is_overridden[mutt_array_size(userhdrs_override_headers)];
+};
+
+/**
+ * userhdrs_override_cmp - Compare a user-defined header with an element of the userhdrs_override_headers list
+ * @param a Pointer to the string containing the user-defined header
+ * @param b Pointer to an element of the userhdrs_override_headers list
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
+static int userhdrs_override_cmp(const void *a, const void *b)
+{
+  const char *ca = a;
+  const char *cb = *(const char **) b;
+  return mutt_str_strncasecmp(ca, cb, strlen(cb));
+}
+
+/**
+ * write_userhdrs - Write user-defined headers and keep track of the interesting ones
+ * @param fp       FILE pointer where to write the headers
+ * @param userhdrs List of headers to write
+ * @param privacy  Omit headers that could identify the user
+ * @retval obj UserHdrsOverride struct containing a bitmask of which unique headers were written
+ */
+static struct UserHdrsOverride write_userhdrs(FILE *fp, const struct ListHead *userhdrs, bool privacy)
+{
+  struct UserHdrsOverride overrides = { { 0 } };
+
+  struct ListNode *tmp = NULL;
+  STAILQ_FOREACH(tmp, userhdrs, entries)
+  {
+    char *const colon = strchr(tmp->data, ':');
+    if (!colon)
+    {
+      continue;
+    }
+
+    const char *const value = mutt_str_skip_email_wsp(colon + 1);
+    if (*value == '\0')
+    {
+      continue; /* don't emit empty fields. */
+    }
+
+    /* check whether the current user-header is an override */
+    size_t curr_override = (size_t) -1;
+    const char *const *idx = bsearch(tmp->data, userhdrs_override_headers,
+                                     mutt_array_size(userhdrs_override_headers),
+                                     sizeof(char *), userhdrs_override_cmp);
+    if (idx != NULL)
+    {
+      curr_override = idx - userhdrs_override_headers;
+      overrides.is_overridden[curr_override] = true;
+    }
+
+    if (privacy && (curr_override == USERHDRS_OVERRIDE_USER_AGENT))
+    {
+      continue;
+    }
+
+    *colon = '\0';
+    mutt_write_one_header(fp, tmp->data, value, NULL, 0, CH_NO_FLAGS);
+    *colon = ':';
+  }
+
+  return overrides;
+}
+
+/**
  * mutt_rfc822_write_header - Write out one RFC822 header line
  * @param fp      File to write to
  * @param env     Envelope of email
@@ -2240,8 +2326,6 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
                              bool privacy, bool hide_protected_subject)
 {
   char buf[1024];
-  char *p = NULL, *q = NULL;
-  bool has_agent = false; /* user defined user-agent header field exists */
 
   if ((mode == MUTT_WRITE_HEADER_NORMAL) && !privacy)
     fputs(mutt_date_make_date(buf, sizeof(buf)), fp);
@@ -2340,6 +2424,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
     fputs("Reply-To:\n", fp);
 
   if (!TAILQ_EMPTY(&env->mail_followup_to))
+  {
 #ifdef USE_NNTP
     if (!OptNewsSend)
 #endif
@@ -2347,6 +2432,10 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
       fputs("Mail-Followup-To: ", fp);
       mutt_write_addrlist(&env->mail_followup_to, fp, 18, 0);
     }
+  }
+
+  /* Add any user defined headers */
+  struct UserHdrsOverride userhdrs_overrides = write_userhdrs(fp, &env->userhdrs, privacy);
 
   if ((mode == MUTT_WRITE_HEADER_NORMAL) || (mode == MUTT_WRITE_HEADER_POSTPONE))
   {
@@ -2358,8 +2447,11 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
     }
 
     /* Add the MIME headers */
-    fputs("MIME-Version: 1.0\n", fp);
-    mutt_write_mime_header(attach, fp);
+    if (!userhdrs_overrides.is_overridden[USERHDRS_OVERRIDE_CONTENT_TYPE])
+    {
+      fputs("MIME-Version: 1.0\n", fp);
+      mutt_write_mime_header(attach, fp);
+    }
   }
 
   if (!STAILQ_EMPTY(&env->in_reply_to))
@@ -2379,41 +2471,8 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
   }
 #endif
 
-  /* Add any user defined headers */
-  struct ListNode *tmp = NULL;
-  STAILQ_FOREACH(tmp, &env->userhdrs, entries)
-  {
-    p = strchr(tmp->data, ':');
-    if (p)
-    {
-      q = p;
-
-      *p = '\0';
-
-      p = mutt_str_skip_email_wsp(p + 1);
-      if (!*p)
-      {
-        *q = ':';
-        continue; /* don't emit empty fields. */
-      }
-
-      /* check to see if the user has overridden the user-agent field */
-      if (mutt_str_startswith(tmp->data, "user-agent", CASE_IGNORE))
-      {
-        has_agent = true;
-        if (privacy)
-        {
-          *q = ':';
-          continue;
-        }
-      }
-
-      mutt_write_one_header(fp, tmp->data, p, NULL, 0, CH_NO_FLAGS);
-      *q = ':';
-    }
-  }
-
-  if ((mode == MUTT_WRITE_HEADER_NORMAL) && !privacy && C_UserAgent && !has_agent)
+  if ((mode == MUTT_WRITE_HEADER_NORMAL) && !privacy && C_UserAgent &&
+      !userhdrs_overrides.is_overridden[USERHDRS_OVERRIDE_USER_AGENT])
   {
     /* Add a vanity header */
     fprintf(fp, "User-Agent: NeoMutt/%s%s\n", PACKAGE_VERSION, GitVer);
