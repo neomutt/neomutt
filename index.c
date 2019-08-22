@@ -1938,7 +1938,7 @@ int mutt_index_menu(void)
         }
 
         /* check for a fatal error, or all messages deleted */
-        if (mutt_buffer_is_empty(Context->mailbox->pathbuf))
+        if (Context && Context->mailbox && mutt_buffer_is_empty(Context->mailbox->pathbuf))
           ctx_free(&Context);
 
         /* if we were in the pager, redisplay the message */
