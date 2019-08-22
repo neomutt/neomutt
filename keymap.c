@@ -1328,16 +1328,16 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
 static void *parse_menu(int *menu, char *s, struct Buffer *err)
 {
   char *menu_names_dup = mutt_str_strdup(s);
+  char *marker = menu_names_dup;
   char *menu_name = NULL;
 
-  while ((menu_name = strsep(&menu_names_dup, ",")))
+  while ((menu_name = strsep(&marker, ",")))
   {
     int value = mutt_map_get_value(menu_name, Menus);
     if (value == -1)
     {
       mutt_buffer_printf(err, _("%s: no such menu"), menu_name);
-      FREE(&menu_names_dup);
-      return NULL;
+      break;
     }
     else
       menu[value] = true;
