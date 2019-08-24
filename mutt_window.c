@@ -229,6 +229,22 @@ int mutt_window_mvprintw(struct MuttWindow *win, int row, int col, const char *f
 }
 
 /**
+ * mutt_window_copy_size - Copy the size of one Window to another
+ * @param win_src Window to copy
+ * @param win_dst Window to resize
+ */
+void mutt_window_copy_size(const struct MuttWindow *win_src, struct MuttWindow *win_dst)
+{
+  if (!win_src || !win_dst)
+    return;
+
+  win_dst->rows = win_src->rows;
+  win_dst->cols = win_src->cols;
+  win_dst->row_offset = win_src->row_offset;
+  win_dst->col_offset = win_src->col_offset;
+}
+
+/**
  * mutt_window_reflow - Resize the Windows to fit the screen
  */
 void mutt_window_reflow(void)
@@ -243,16 +259,16 @@ void mutt_window_reflow(void)
   MuttStatusWindow->row_offset = C_StatusOnTop ? 0 : LINES - 2;
   MuttStatusWindow->col_offset = 0;
 
-  memcpy(MuttHelpWindow, MuttStatusWindow, sizeof(struct MuttWindow));
+  mutt_window_copy_size(MuttStatusWindow, MuttHelpWindow);
   if (C_Help)
     MuttHelpWindow->row_offset = C_StatusOnTop ? LINES - 2 : 0;
   else
     MuttHelpWindow->rows = 0;
 
-  memcpy(MuttMessageWindow, MuttStatusWindow, sizeof(struct MuttWindow));
+  mutt_window_copy_size(MuttStatusWindow, MuttMessageWindow);
   MuttMessageWindow->row_offset = LINES - 1;
 
-  memcpy(MuttIndexWindow, MuttStatusWindow, sizeof(struct MuttWindow));
+  mutt_window_copy_size(MuttStatusWindow, MuttIndexWindow);
   MuttIndexWindow->rows = MAX(
       LINES - MuttStatusWindow->rows - MuttHelpWindow->rows - MuttMessageWindow->rows, 0);
   MuttIndexWindow->row_offset =
@@ -261,7 +277,7 @@ void mutt_window_reflow(void)
 #ifdef USE_SIDEBAR
   if (C_SidebarVisible)
   {
-    memcpy(MuttSidebarWindow, MuttIndexWindow, sizeof(struct MuttWindow));
+    mutt_window_copy_size(MuttIndexWindow, MuttSidebarWindow);
     MuttSidebarWindow->cols = C_SidebarWidth;
     MuttIndexWindow->cols -= C_SidebarWidth;
 

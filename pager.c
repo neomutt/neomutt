@@ -1954,21 +1954,21 @@ static void pager_custom_redraw(struct Menu *pager_menu)
 
     rd->indicator = rd->indexlen / 3;
 
-    memcpy(rd->pager_window, MuttIndexWindow, sizeof(struct MuttWindow));
-    memcpy(rd->pager_status_window, MuttStatusWindow, sizeof(struct MuttWindow));
+    mutt_window_copy_size(MuttIndexWindow, rd->pager_window);
+    mutt_window_copy_size(MuttStatusWindow, rd->pager_status_window);
     rd->index_status_window->rows = 0;
     rd->index_window->rows = 0;
 
     if (IsEmail(rd->extra) && (C_PagerIndexLines != 0))
     {
-      memcpy(rd->index_window, MuttIndexWindow, sizeof(struct MuttWindow));
+      mutt_window_copy_size(MuttIndexWindow, rd->index_window);
       rd->index_window->rows = (rd->indexlen > 0) ? rd->indexlen - 1 : 0;
 
       if (C_StatusOnTop)
       {
-        memcpy(rd->index_status_window, MuttStatusWindow, sizeof(struct MuttWindow));
+        mutt_window_copy_size(MuttStatusWindow, rd->index_status_window);
 
-        memcpy(rd->pager_status_window, MuttIndexWindow, sizeof(struct MuttWindow));
+        mutt_window_copy_size(MuttIndexWindow, rd->pager_status_window);
         rd->pager_status_window->rows = 1;
         rd->pager_status_window->row_offset += rd->index_window->rows;
 
@@ -1979,7 +1979,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       }
       else
       {
-        memcpy(rd->index_status_window, MuttIndexWindow, sizeof(struct MuttWindow));
+        mutt_window_copy_size(MuttIndexWindow, rd->index_status_window);
         rd->index_status_window->rows = 1;
         rd->index_status_window->row_offset += rd->index_window->rows;
 
