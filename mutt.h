@@ -33,6 +33,7 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "hook.h"
+#include "keymap.h"
 #include "mutt_commands.h"
 
 struct Buffer;
@@ -137,7 +138,7 @@ struct AttachMatch
 
 #define EXEC_SHELL "/bin/sh"
 
-char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping *items);
+char *mutt_compile_help(char *buf, size_t buflen, enum MenuType menu, const struct Mapping *items);
 
 int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags);
 void mutt_free_opts(void);

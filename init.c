@@ -1192,7 +1192,7 @@ warn:
  */
 static bool is_function(const char *name)
 {
-  for (int i = 0; i < MENU_MAX; i++)
+  for (enum MenuType i = 0; i < MENU_MAX; i++)
   {
     const struct Binding *b = km_get_table(Menus[i].value);
     if (!b)

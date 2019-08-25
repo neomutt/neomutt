@@ -284,7 +284,7 @@ static size_t parsekeys(const char *str, keycode_t *d, size_t max)
  * Insert a key sequence into the specified map.
  * The map is sorted by ASCII value (lowest to highest)
  */
-static enum CommandResult km_bind_err(const char *s, int menu, int op,
+static enum CommandResult km_bind_err(const char *s, enum MenuType menu, int op,
                                       char *macro, char *desc, struct Buffer *err)
 {
   enum CommandResult rc = MUTT_CMD_SUCCESS;
@@ -389,7 +389,7 @@ static enum CommandResult km_bind_err(const char *s, int menu, int op,
  * @param desc Description of macro (OPTIONAL)
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
-enum CommandResult km_bind(char *s, int menu, int op, char *macro, char *desc)
+enum CommandResult km_bind(char *s, enum MenuType menu, int op, char *macro, char *desc)
 {
   return km_bind_err(s, menu, op, macro, desc, NULL);
 }
@@ -402,7 +402,8 @@ enum CommandResult km_bind(char *s, int menu, int op, char *macro, char *desc)
  * @param err  Buffer for error message
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
-static enum CommandResult km_bindkey_err(const char *s, int menu, int op, struct Buffer *err)
+static enum CommandResult km_bindkey_err(const char *s, enum MenuType menu,
+                                         int op, struct Buffer *err)
 {
   return km_bind_err(s, menu, op, NULL, NULL, err);
 }
@@ -414,7 +415,7 @@ static enum CommandResult km_bindkey_err(const char *s, int menu, int op, struct
  * @param op   Operation, e.g. OP_DELETE
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
-static enum CommandResult km_bindkey(const char *s, int menu, int op)
+static enum CommandResult km_bindkey(const char *s, enum MenuType menu, int op)
 {
   return km_bindkey_err(s, menu, op, NULL);
 }
@@ -510,9 +511,9 @@ static void generic_tokenize_push_string(char *s, void (*generic_push)(int, int)
 
         /* See if it is a valid command
          * skip the '<' and the '>' when comparing */
-        for (i = 0; Menus[i].name; i++)
+        for (enum MenuType j = 0; Menus[j].name; j++)
         {
-          const struct Binding *binding = km_get_table(Menus[i].value);
+          const struct Binding *binding = km_get_table(Menus[j].value);
           if (binding)
           {
             op = get_op(binding, pp + 1, l - 2);
@@ -541,7 +542,7 @@ static void generic_tokenize_push_string(char *s, void (*generic_push)(int, int)
  * @param lastkey Last key pressed (to return to input queue)
  * @retval num Operation, e.g. OP_DELETE
  */
-static int retry_generic(int menu, keycode_t *keys, int keyslen, int lastkey)
+static int retry_generic(enum MenuType menu, keycode_t *keys, int keyslen, int lastkey)
 {
   if ((menu != MENU_EDITOR) && (menu != MENU_GENERIC) && (menu != MENU_PAGER))
   {
@@ -567,7 +568,7 @@ static int retry_generic(int menu, keycode_t *keys, int keyslen, int lastkey)
  * @retval -1      Error occurred while reading input
  * @retval -2      A timeout or sigwinch occurred
  */
-int km_dokey(int menu)
+int km_dokey(enum MenuType menu)
 {
   struct KeyEvent tmp;
   struct Keymap *map = Keymaps[menu];
@@ -723,7 +724,7 @@ int km_dokey(int menu)
  * @param map  Key bindings
  * @param menu Menu id, e.g. #MENU_PAGER
  */
-static void create_bindings(const struct Binding *map, int menu)
+static void create_bindings(const struct Binding *map, enum MenuType menu)
 {
   for (int i = 0; map[i].name; i++)
     if (map[i].seq)
@@ -804,7 +805,7 @@ int km_expand_key(char *s, size_t len, struct Keymap *map)
  * @param func Function, e.g. OP_DELETE
  * @retval ptr Keymap for the function
  */
-struct Keymap *km_find_func(int menu, int func)
+struct Keymap *km_find_func(enum MenuType menu, int func)
 {
   struct Keymap *map = Keymaps[menu];
 
@@ -1047,7 +1048,7 @@ void km_init(void)
  * km_error_key - Handle an unbound key sequence
  * @param menu Menu id, e.g. #MENU_PAGER
  */
-void km_error_key(int menu)
+void km_error_key(enum MenuType menu)
 {
   char buf[128];
   int p, op;
@@ -1119,20 +1120,20 @@ enum CommandResult mutt_parse_push(struct Buffer *buf, struct Buffer *s,
 
 /**
  * parse_keymap - Parse a user-config key binding
- * @param menu     Array for results
- * @param s        Buffer containing config string
- * @param maxmenus Total number of menus
- * @param nummenus Number of menus this config applies to
- * @param err      Buffer for error messages
- * @param bind     If true 'bind', otherwise 'macro'
+ * @param menu      Array for results
+ * @param s         Buffer containing config string
+ * @param max_menus Total number of menus
+ * @param num_menus Number of menus this config applies to
+ * @param err       Buffer for error messages
+ * @param bind      If true 'bind', otherwise 'macro'
  * @retval ptr Key string for the binding
  *
  * Expects to see: <menu-string>,<menu-string>,... <key-string>
  *
  * @note Caller needs to free the returned string
  */
-static char *parse_keymap(int *menu, struct Buffer *s, int maxmenus,
-                          int *nummenus, struct Buffer *err, bool bind)
+static char *parse_keymap(enum MenuType *menu, struct Buffer *s, int max_menus,
+                          int *num_menus, struct Buffer *err, bool bind)
 {
   struct Buffer buf;
   int i = 0;
@@ -1145,7 +1146,7 @@ static char *parse_keymap(int *menu, struct Buffer *s, int maxmenus,
   char *p = buf.data;
   if (MoreArgs(s))
   {
-    while (i < maxmenus)
+    while (i < max_menus)
     {
       q = strchr(p, ',');
       if (q)
@@ -1163,7 +1164,7 @@ static char *parse_keymap(int *menu, struct Buffer *s, int maxmenus,
       else
         break;
     }
-    *nummenus = i;
+    *num_menus = i;
     /* key sequence */
     mutt_extract_token(&buf, s, MUTT_TOKEN_NO_FLAGS);
 
@@ -1192,7 +1193,7 @@ error:
  * @param err      Buffer for error message
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
-static enum CommandResult try_bind(char *key, int menu, char *func,
+static enum CommandResult try_bind(char *key, enum MenuType menu, char *func,
                                    const struct Binding *bindings, struct Buffer *err)
 {
   for (int i = 0; bindings[i].name; i++)
@@ -1215,7 +1216,7 @@ static enum CommandResult try_bind(char *key, int menu, char *func,
  * @param menu Menu id, e.g. #MENU_EDITOR
  * @retval ptr Array of keybindings
  */
-const struct Binding *km_get_table(int menu)
+const struct Binding *km_get_table(enum MenuType menu)
 {
   switch (menu)
   {
@@ -1255,8 +1256,9 @@ const struct Binding *km_get_table(int menu)
       return OpPost;
     case MENU_QUERY:
       return OpQuery;
+    default:
+      return NULL;
   }
-  return NULL;
 }
 
 /**
@@ -1268,10 +1270,11 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
                                    unsigned long data, struct Buffer *err)
 {
   const struct Binding *bindings = NULL;
-  int menu[sizeof(Menus) / sizeof(struct Mapping) - 1], nummenus;
+  enum MenuType menu[sizeof(Menus) / sizeof(struct Mapping) - 1];
+  int num_menus = 0;
   enum CommandResult rc = MUTT_CMD_SUCCESS;
 
-  char *key = parse_keymap(menu, s, mutt_array_size(menu), &nummenus, err, true);
+  char *key = parse_keymap(menu, s, mutt_array_size(menu), &num_menus, err, true);
   if (!key)
     return MUTT_CMD_ERROR;
 
@@ -1284,14 +1287,14 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
   }
   else if (mutt_str_strcasecmp("noop", buf->data) == 0)
   {
-    for (int i = 0; i < nummenus; i++)
+    for (int i = 0; i < num_menus; i++)
     {
       km_bindkey(key, menu[i], OP_NULL); /* the 'unbind' command */
     }
   }
   else
   {
-    for (int i = 0; i < nummenus; i++)
+    for (int i = 0; i < num_menus; i++)
     {
       /* The pager and editor menus don't use the generic map,
        * however for other menus try generic first. */
@@ -1325,7 +1328,7 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
  *
  * Expects to see: <menu-string>[,<menu-string>]
  */
-static void *parse_menu(int *menu, char *s, struct Buffer *err)
+static void *parse_menu(bool *menu, char *s, struct Buffer *err)
 {
   char *menu_names_dup = mutt_str_strdup(s);
   char *marker = menu_names_dup;
@@ -1407,15 +1410,15 @@ static void km_unbind_all(struct Keymap **map, unsigned long mode)
 enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
                                      unsigned long data, struct Buffer *err)
 {
-  int menu[MENU_MAX] = { 0 };
+  bool menu[MENU_MAX] = { 0 };
   bool all_keys = false;
   char *key = NULL;
 
   mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
   if (mutt_str_strcmp(buf->data, "*") == 0)
   {
-    for (int i = 0; i < MENU_MAX; i++)
-      menu[i] = 1;
+    for (enum MenuType i = 0; i < MENU_MAX; i++)
+      menu[i] = true;
   }
   else
     parse_menu(menu, buf->data, err);
@@ -1436,9 +1439,9 @@ enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_ERROR;
   }
 
-  for (int i = 0; i < MENU_MAX; i++)
+  for (enum MenuType i = 0; i < MENU_MAX; i++)
   {
-    if (menu[i] != 1)
+    if (!menu[i])
       continue;
     if (all_keys)
     {
@@ -1472,11 +1475,12 @@ enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
 enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
                                     unsigned long data, struct Buffer *err)
 {
-  int menu[sizeof(Menus) / sizeof(struct Mapping) - 1], nummenus;
+  enum MenuType menu[sizeof(Menus) / sizeof(struct Mapping) - 1];
+  int num_menus = 0;
   enum CommandResult rc = MUTT_CMD_ERROR;
   char *seq = NULL;
 
-  char *key = parse_keymap(menu, s, mutt_array_size(menu), &nummenus, err, false);
+  char *key = parse_keymap(menu, s, mutt_array_size(menu), &num_menus, err, false);
   if (!key)
     return MUTT_CMD_ERROR;
 
@@ -1499,7 +1503,7 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
       }
       else
       {
-        for (int i = 0; i < nummenus; i++)
+        for (int i = 0; i < num_menus; i++)
         {
           rc = km_bind(key, menu[i], OP_MACRO, seq, buf->data);
         }
@@ -1509,7 +1513,7 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
     }
     else
     {
-      for (int i = 0; i < nummenus; i++)
+      for (int i = 0; i < num_menus; i++)
       {
         rc = km_bind(key, menu[i], OP_MACRO, buf->data, NULL);
       }

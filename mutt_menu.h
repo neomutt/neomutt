@@ -81,15 +81,15 @@ enum TreeChar
  */
 struct Menu
 {
-  char *title; /**< the title of this menu */
-  char *help;  /**< quickref for the current menu */
-  void *data;  /**< extra data for the current menu */
-  int current; /**< current entry */
-  int max;     /**< the number of entries in the menu */
-  MuttRedrawFlags redraw;  /**< when to redraw the screen */
-  int menu;    /**< menu definition for keymap entries. */
-  int offset;  /**< row offset within the window to start the index */
-  int pagelen; /**< number of entries per screen */
+  char *title;            ///< Title of this menu
+  char *help;             ///< Quickref for the current menu
+  void *data;             ///< Extra data for the current menu
+  int current;            ///< Current entry
+  int max;                ///< Number of entries in the menu
+  MuttRedrawFlags redraw; ///< When to redraw the screen
+  enum MenuType type;     ///< Menu definition for keymap entries
+  int offset;             ///< Row offset within the window to start the index
+  int pagelen;            ///< Number of entries per screen
   bool tagprefix : 1;
   bool is_mailbox_list : 1;
   struct MuttWindow *indexwin;
@@ -101,16 +101,16 @@ struct Menu
    * In dialog mode menubar is hidden and prompt keys are checked before
    * normal menu movement keys. This can cause problems with scrolling, if
    * prompt keys override movement keys.  */
-  char **dialog; /**< dialog lines themselves */
-  int dsize;     /**< number of allocated dialog lines */
-  char *prompt;  /**< prompt for user, similar to mutt_multi_choice */
-  char *keys;    /**< keys used in the prompt */
+  char **dialog;          ///< Dialog lines themselves
+  int dsize;              ///< Number of allocated dialog lines
+  char *prompt;           ///< Prompt for user, similar to mutt_multi_choice
+  char *keys;             ///< Keys used in the prompt
 
   /* the following are used only by mutt_menu_loop() */
-  int top;        /**< entry that is the top of the current page */
-  int oldcurrent; /**< for driver use only */
-  int search_dir; /**< direction of search */
-  int tagged;     /**< number of tagged entries */
+  int top;                ///< Entry that is the top of the current page
+  int oldcurrent;         ///< For driver use only
+  int search_dir;         ///< Direction of search
+  int tagged;             ///< Number of tagged entries
 
   /**
    * menu_make_entry - Format a item for a menu
@@ -119,7 +119,7 @@ struct Menu
    * @param[in]  menu   Menu containing items
    * @param[in]  line   Menu line number
    */
-  void (*menu_make_entry)   (char *buf, size_t buflen, struct Menu *menu, int line);
+  void (*menu_make_entry)(char *buf, size_t buflen, struct Menu *menu, int line);
   /**
    * menu_search - Search a menu for a item matching a regex
    * @param menu Menu to search
@@ -128,7 +128,7 @@ struct Menu
    * @retval  0 Success
    * @retval >0 Error, e.g. REG_NOMATCH
    */
-  int  (*menu_search)       (struct Menu *menu, regex_t *rx, int line);
+  int (*menu_search)(struct Menu *menu, regex_t *rx, int line);
   /**
    * menu_tag - Tag some menu items
    * @param menu Menu to tag
@@ -136,14 +136,14 @@ struct Menu
    * @param act  Action: 0 untag, 1 tag, -1 toggle
    * @retval num Net change in number of tagged attachments
    */
-  int  (*menu_tag)          (struct Menu *menu, int sel, int act);
+  int (*menu_tag)(struct Menu *menu, int sel, int act);
   /**
    * menu_color - Calculate the colour for a line of the menu
    * @param line Menu line number
    * @retval >0 Colour pair in an integer
    * @retval  0 No colour
    */
-  int  (*menu_color)        (int line);
+  int (*menu_color)(int line);
   /**
    * menu_custom_redraw - Redraw the menu
    * @param menu Menu to redraw
@@ -186,8 +186,8 @@ void         mutt_menu_pop_current(struct Menu *menu);
 void         mutt_menu_push_current(struct Menu *menu);
 void         mutt_menu_set_current_redraw_full(void);
 void         mutt_menu_set_current_redraw(MuttRedrawFlags redraw);
-void         mutt_menu_set_redraw_full(int menu_type);
-void         mutt_menu_set_redraw(int menu_type, MuttRedrawFlags redraw);
+void         mutt_menu_set_redraw_full(enum MenuType menu);
+void         mutt_menu_set_redraw(enum MenuType menu, MuttRedrawFlags redraw);
 
 int mutt_menu_observer(struct NotifyCallback *nc);
 

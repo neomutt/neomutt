@@ -27,6 +27,7 @@
 #include <signal.h>
 #include <stdbool.h>
 #include "mutt/mutt.h"
+#include "keymap.h"
 #include "where.h"
 
 #ifdef MAIN_C
@@ -83,7 +84,7 @@ WHERE SIG_ATOMIC_VOLATILE_T SigAlrm;  ///< true after SIGALRM is received
 WHERE SIG_ATOMIC_VOLATILE_T SigInt;   ///< true after SIGINT is received
 WHERE SIG_ATOMIC_VOLATILE_T SigWinch; ///< true after SIGWINCH is received
 
-WHERE int CurrentMenu; ///< Current Menu, e.g. #MENU_PAGER
+WHERE enum MenuType CurrentMenu; ///< Current Menu, e.g. #MENU_PAGER
 
 WHERE struct AliasList Aliases INITVAL(TAILQ_HEAD_INITIALIZER(Aliases)); ///< List of all the user's email aliases
 

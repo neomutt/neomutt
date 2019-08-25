@@ -36,9 +36,6 @@
 /* type for key storage, the rest of neomutt works fine with int type */
 typedef short keycode_t;
 
-enum CommandResult km_bind(char *s, int menu, int op, char *macro, char *desc);
-int km_dokey(int menu);
-
 void init_extended_keys(void);
 
 /**
@@ -56,12 +53,6 @@ struct Keymap
   short len;           /**< length of key sequence (unit: sizeof (keycode_t)) */
   keycode_t *keys;     /**< key sequence */
 };
-
-int km_expand_key(char *s, size_t len, struct Keymap *map);
-struct Keymap *km_find_func(int menu, int func);
-void km_init(void);
-void km_error_key(int menu);
-void mutt_what_key(void);
 
 /**
  * enum MenuType - Types of GUI selections
@@ -93,6 +84,15 @@ enum MenuType
   MENU_MAX,
 };
 
+int km_expand_key(char *s, size_t len, struct Keymap *map);
+struct Keymap *km_find_func(enum MenuType menu, int func);
+void km_init(void);
+void km_error_key(enum MenuType menu);
+void mutt_what_key(void);
+
+enum CommandResult km_bind(char *s, enum MenuType menu, int op, char *macro, char *desc);
+int km_dokey(enum MenuType menu);
+
 extern struct Keymap *Keymaps[]; ///< Array of Keymap keybindings, one for each Menu
 
 extern int LastKey; ///< Last real key pressed, recorded by dokey()
@@ -109,7 +109,7 @@ struct Binding
   const char *seq;  /**< default key binding */
 };
 
-const struct Binding *km_get_table(int menu);
+const struct Binding *km_get_table(enum MenuType menu);
 const char *mutt_get_func(const struct Binding *bindings, int op);
 
 extern const struct Binding OpGeneric[];

@@ -980,7 +980,7 @@ struct Menu *mutt_menu_new(enum MenuType type)
   if (type >= MENU_MAX)
     type = MENU_GENERIC;
 
-  menu->menu = type;
+  menu->type = type;
   menu->current = 0;
   menu->top = 0;
   menu->offset = 0;
@@ -1056,7 +1056,7 @@ void mutt_menu_push_current(struct Menu *menu)
   }
 
   MenuStack[MenuStackCount++] = menu;
-  CurrentMenu = menu->menu;
+  CurrentMenu = menu->type;
 }
 
 /**
@@ -1079,7 +1079,7 @@ void mutt_menu_pop_current(struct Menu *menu)
   prev_menu = get_current_menu();
   if (prev_menu)
   {
-    CurrentMenu = prev_menu->menu;
+    CurrentMenu = prev_menu->type;
     prev_menu->redraw = REDRAW_FULL;
   }
   else
@@ -1113,26 +1113,26 @@ void mutt_menu_set_current_redraw_full(void)
 
 /**
  * mutt_menu_set_redraw - Set redraw flags on a menu
- * @param menu_type Menu type, e.g. #MENU_ALIAS
- * @param redraw    Flags, e.g. #REDRAW_INDEX
+ * @param menu   Menu type, e.g. #MENU_ALIAS
+ * @param redraw Flags, e.g. #REDRAW_INDEX
  *
  * This is ignored if it's not the current menu.
  */
-void mutt_menu_set_redraw(int menu_type, MuttRedrawFlags redraw)
+void mutt_menu_set_redraw(enum MenuType menu, MuttRedrawFlags redraw)
 {
-  if (CurrentMenu == menu_type)
+  if (CurrentMenu == menu)
     mutt_menu_set_current_redraw(redraw);
 }
 
 /**
  * mutt_menu_set_redraw_full - Flag a menu to be fully redrawn
- * @param menu_type Menu type, e.g. #MENU_ALIAS
+ * @param menu Menu type, e.g. #MENU_ALIAS
  *
  * This is ignored if it's not the current menu.
  */
-void mutt_menu_set_redraw_full(int menu_type)
+void mutt_menu_set_redraw_full(enum MenuType menu)
 {
-  if (CurrentMenu == menu_type)
+  if (CurrentMenu == menu)
     mutt_menu_set_current_redraw_full();
 }
 
@@ -1168,7 +1168,7 @@ static int menu_search(struct Menu *menu, int op)
   regex_t re;
   char buf[128];
   char *search_buf =
-      ((menu->menu >= 0) && (menu->menu < MENU_MAX)) ? SearchBuffers[menu->menu] : NULL;
+      ((menu->type >= 0) && (menu->type < MENU_MAX)) ? SearchBuffers[menu->type] : NULL;
 
   if (!(search_buf && *search_buf) || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
@@ -1182,10 +1182,10 @@ static int menu_search(struct Menu *menu, int op)
     {
       return -1;
     }
-    if ((menu->menu >= 0) && (menu->menu < MENU_MAX))
+    if ((menu->type >= 0) && (menu->type < MENU_MAX))
     {
-      mutt_str_replace(&SearchBuffers[menu->menu], buf);
-      search_buf = SearchBuffers[menu->menu];
+      mutt_str_replace(&SearchBuffers[menu->type], buf);
+      search_buf = SearchBuffers[menu->type];
     }
     menu->search_dir =
         ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? MUTT_SEARCH_DOWN : MUTT_SEARCH_UP;
@@ -1403,7 +1403,7 @@ int mutt_menu_loop(struct Menu *menu)
     if (menu->dialog && (menu_dialog_dokey(menu, &i) == 0))
       return i;
 
-    i = km_dokey(menu->menu);
+    i = km_dokey(menu->type);
     if ((i == OP_TAG_PREFIX) || (i == OP_TAG_PREFIX_COND))
     {
       if (menu->tagprefix)
@@ -1580,12 +1580,12 @@ int mutt_menu_loop(struct Menu *menu)
         break;
 
       case OP_HELP:
-        mutt_help(menu->menu);
+        mutt_help(menu->type);
         menu->redraw = REDRAW_FULL;
         break;
 
       case OP_NULL:
-        km_error_key(menu->menu);
+        km_error_key(menu->type);
         break;
 
       case OP_END_COND:

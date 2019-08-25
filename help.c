@@ -52,11 +52,11 @@ static const char *HelpStrings[] = {
 /**
  * help_lookup_function - Find a keybinding for an operation
  * @param op   Operation, e.g. OP_DELETE
- * @param menu Current Menu
+ * @param menu Current Menu, e.g. #MENU_PAGER
  * @retval ptr  Key binding
  * @retval NULL If none
  */
-static const struct Binding *help_lookup_function(int op, int menu)
+static const struct Binding *help_lookup_function(int op, enum MenuType menu)
 {
   const struct Binding *map = NULL;
 
@@ -84,12 +84,12 @@ static const struct Binding *help_lookup_function(int op, int menu)
  * @param buf    Buffer for the result
  * @param buflen Length of buffer
  * @param txt    Text part, e.g. "delete"
- * @param menu   Current Menu
+ * @param menu   Current Menu, e.g. #MENU_PAGER
  * @param op     Operation, e.g. OP_DELETE
  *
  * This will return something like: "d:delete"
  */
-void mutt_make_help(char *buf, size_t buflen, const char *txt, int menu, int op)
+void mutt_make_help(char *buf, size_t buflen, const char *txt, enum MenuType menu, int op)
 {
   char tmp[128];
 
@@ -108,11 +108,12 @@ void mutt_make_help(char *buf, size_t buflen, const char *txt, int menu, int op)
  * mutt_compile_help - Create the text for the help menu
  * @param buf    Buffer for the result
  * @param buflen Length of buffer
- * @param menu   Current Menu
+ * @param menu   Current Menu, e.g. #MENU_PAGER
  * @param items  Map of functions to display in the help bar
  * @retval ptr Buffer containing result
  */
-char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping *items)
+char *mutt_compile_help(char *buf, size_t buflen, enum MenuType menu,
+                        const struct Mapping *items)
 {
   char *pbuf = buf;
 
@@ -368,9 +369,9 @@ static void format_line(FILE *fp, int ismacro, const char *t1, const char *t2, c
 /**
  * dump_menu - Write all the key bindings to a file
  * @param fp   File to write to
- * @param menu Current Menu
+ * @param menu Current Menu, e.g. #MENU_PAGER
  */
-static void dump_menu(FILE *fp, int menu)
+static void dump_menu(FILE *fp, enum MenuType menu)
 {
   struct Keymap *map = NULL;
   const struct Binding *b = NULL;
@@ -435,7 +436,7 @@ static void dump_unbound(FILE *fp, const struct Binding *funcs,
  * mutt_help - Display the help menu
  * @param menu Current Menu
  */
-void mutt_help(int menu)
+void mutt_help(enum MenuType menu)
 {
   char t[PATH_MAX];
   char buf[128];
