@@ -127,7 +127,8 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
   if (!m)
     return src;
 
-  bool c = Context && (mutt_str_strcmp(Context->mailbox->realpath, m->realpath) == 0);
+  bool c = Context && Context->mailbox &&
+           (mutt_str_strcmp(Context->mailbox->realpath, m->realpath) == 0);
 
   optional = flags & MUTT_FORMAT_OPTIONAL;
 
@@ -863,7 +864,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
       col = div_width;
 
     mutt_window_move(MuttSidebarWindow, row, col);
-    if (Context && (Context->mailbox->realpath[0] != '\0') &&
+    if (Context && Context->mailbox && (Context->mailbox->realpath[0] != '\0') &&
         (mutt_str_strcmp(m->realpath, Context->mailbox->realpath) == 0))
     {
       m->msg_unread = Context->mailbox->msg_unread;
