@@ -2221,7 +2221,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     NORMAL_COLOR;
   }
 
-  pager_menu->redraw = 0;
+  pager_menu->redraw = REDRAW_NO_FLAGS;
 }
 
 /**

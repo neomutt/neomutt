@@ -52,12 +52,13 @@
 #include "query.h"
 
 /**
- * enum RedrawFlags - redraw flags for mutt_enter_string_full()
+ * enum EnterRedrawFlags - redraw flags for mutt_enter_string_full()
  */
-enum RedrawFlags
+enum EnterRedrawFlags
 {
-  MUTT_REDRAW_INIT = 1, ///< go to end of line and redraw
-  MUTT_REDRAW_LINE,     ///< redraw entire line
+  ENTER_REDRAW_NONE = 0, ///< Nothing to redraw
+  ENTER_REDRAW_INIT,     ///< Go to end of line and redraw
+  ENTER_REDRAW_LINE,     ///< Redraw entire line
 };
 
 /* combining mark / non-spacing character */
@@ -179,7 +180,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
                            int *numfiles, struct EnterState *state)
 {
   int width = MuttMessageWindow->cols - col - 1;
-  int redraw;
+  enum EnterRedrawFlags redraw = ENTER_REDRAW_NONE;
   bool pass = (flags & MUTT_PASS);
   bool first = true;
   int ch;
@@ -193,7 +194,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
   if (state->wbuf)
   {
     /* Coming back after return 1 */
-    redraw = MUTT_REDRAW_LINE;
+    redraw = ENTER_REDRAW_LINE;
     first = false;
   }
   else
@@ -201,7 +202,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
     /* Initialise wbuf from buf */
     state->wbuflen = 0;
     state->lastchar = mutt_mb_mbstowcs(&state->wbuf, &state->wbuflen, 0, buf);
-    redraw = MUTT_REDRAW_INIT;
+    redraw = ENTER_REDRAW_INIT;
   }
 
   if (flags & MUTT_FILE)
@@ -221,9 +222,9 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
 
   while (true)
   {
-    if (redraw && !pass)
+    if (!pass)
     {
-      if (redraw == MUTT_REDRAW_INIT)
+      if (redraw == ENTER_REDRAW_INIT)
       {
         /* Go to end of line */
         state->curpos = state->lastchar;
@@ -266,7 +267,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
       first = false;
       if ((ch != OP_EDITOR_COMPLETE) && (ch != OP_EDITOR_COMPLETE_QUERY))
         state->tabs = 0;
-      redraw = MUTT_REDRAW_LINE;
+      redraw = ENTER_REDRAW_LINE;
       switch (ch)
       {
         case OP_EDITOR_HISTORY_UP:
@@ -277,7 +278,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
             mutt_hist_save_scratch(hclass, buf);
           }
           replace_part(state, 0, mutt_hist_prev(hclass));
-          redraw = MUTT_REDRAW_INIT;
+          redraw = ENTER_REDRAW_INIT;
           break;
 
         case OP_EDITOR_HISTORY_DOWN:
@@ -288,7 +289,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
             mutt_hist_save_scratch(hclass, buf);
           }
           replace_part(state, 0, mutt_hist_next(hclass));
-          redraw = MUTT_REDRAW_INIT;
+          redraw = ENTER_REDRAW_INIT;
           break;
 
         case OP_EDITOR_HISTORY_SEARCH:
@@ -328,7 +329,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
           break;
 
         case OP_EDITOR_EOL:
-          redraw = MUTT_REDRAW_INIT;
+          redraw = ENTER_REDRAW_INIT;
           break;
 
         case OP_EDITOR_KILL_LINE:

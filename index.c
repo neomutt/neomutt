@@ -1021,7 +1021,7 @@ static void index_custom_redraw(struct Menu *menu)
     }
   }
 
-  menu->redraw = 0;
+  menu->redraw = REDRAW_NO_FLAGS;
 }
 
 /**
