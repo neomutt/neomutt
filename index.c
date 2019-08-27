@@ -638,7 +638,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
     m = mailbox_find_name(buf);
     if (m)
     {
-      mutt_str_strfcpy(buf, mutt_b2s(m->pathbuf), buflen);
+      mutt_str_strfcpy(buf, mailbox_path(m), buflen);
     }
     else
     {
@@ -663,7 +663,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
       new_last_folder = mutt_str_strdup(Context->mailbox->realpath);
     else
 #endif
-      new_last_folder = mutt_str_strdup(mutt_b2s(Context->mailbox->pathbuf));
+      new_last_folder = mutt_str_strdup(mailbox_path(Context->mailbox));
     *oldcount = Context->mailbox->msg_count;
 
     int check = mx_mbox_close(&Context);
@@ -2241,7 +2241,7 @@ int mutt_index_menu(void)
         if ((op == OP_MAIN_NEXT_UNREAD_MAILBOX) && Context &&
             Context->mailbox && !mutt_buffer_is_empty(Context->mailbox->pathbuf))
         {
-          mutt_buffer_strcpy(folderbuf, mutt_b2s(Context->mailbox->pathbuf));
+          mutt_buffer_strcpy(folderbuf, mailbox_path(Context->mailbox));
           mutt_buffer_pretty_mailbox(folderbuf);
           mutt_mailbox_next_buffer(Context ? Context->mailbox : NULL, folderbuf);
           if (mutt_buffer_is_empty(folderbuf))
@@ -2256,10 +2256,10 @@ int mutt_index_menu(void)
           m = mutt_sb_get_highlight();
           if (!m)
             goto changefoldercleanup;
-          mutt_buffer_strcpy(folderbuf, mutt_b2s(m->pathbuf));
+          mutt_buffer_strcpy(folderbuf, mailbox_path(m));
 
           /* Mark the selected dir for the neomutt browser */
-          mutt_browser_select_dir(mutt_b2s(m->pathbuf));
+          mutt_browser_select_dir(mailbox_path(m));
         }
 #endif
         else
@@ -2267,7 +2267,7 @@ int mutt_index_menu(void)
           if (C_ChangeFolderNext && Context && Context->mailbox &&
               mutt_buffer_is_empty(Context->mailbox->pathbuf))
           {
-            mutt_buffer_strcpy(folderbuf, mutt_b2s(Context->mailbox->pathbuf));
+            mutt_buffer_strcpy(folderbuf, mailbox_path(Context->mailbox));
             mutt_buffer_pretty_mailbox(folderbuf);
           }
 #ifdef USE_NNTP

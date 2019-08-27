@@ -43,7 +43,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
   int orig_flagged = m_check->msg_flagged;
 #endif
 
-  enum MailboxType mb_magic = mx_path_probe(mutt_b2s(m_check->pathbuf), NULL);
+  enum MailboxType mb_magic = mx_path_probe(mailbox_path(m_check), NULL);
 
   switch (mb_magic)
   {
@@ -58,10 +58,10 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
     default:
       m_check->has_new = false;
 
-      if ((stat(mutt_b2s(m_check->pathbuf), &sb) != 0) ||
+      if ((stat(mailbox_path(m_check), &sb) != 0) ||
           (S_ISREG(sb.st_mode) && (sb.st_size == 0)) ||
           ((m_check->magic == MUTT_UNKNOWN) &&
-           ((m_check->magic = mx_path_probe(mutt_b2s(m_check->pathbuf), NULL)) <= 0)))
+           ((m_check->magic = mx_path_probe(mailbox_path(m_check), NULL)) <= 0)))
       {
         /* if the mailbox still doesn't exist, set the newly created flag to be
          * ready for when it does. */
@@ -77,7 +77,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
   if (!m_cur || mutt_buffer_is_empty(m_cur->pathbuf) ||
       (((m_check->magic == MUTT_IMAP) || (m_check->magic == MUTT_NNTP) ||
         (m_check->magic == MUTT_NOTMUCH) || (m_check->magic == MUTT_POP)) ?
-           (mutt_str_strcmp(mutt_b2s(m_check->pathbuf), mutt_b2s(m_cur->pathbuf)) != 0) :
+           (mutt_str_strcmp(mailbox_path(m_check), mailbox_path(m_cur)) != 0) :
            ((sb.st_dev != ctx_sb->st_dev) || (sb.st_ino != ctx_sb->st_ino))))
   {
     switch (m_check->magic)
@@ -161,7 +161,7 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
 #ifdef USE_NNTP
       || (m_cur->magic == MUTT_NNTP)
 #endif
-      || stat(mutt_b2s(m_cur->pathbuf), &contex_sb) != 0)
+      || stat(mailbox_path(m_cur), &contex_sb) != 0)
   {
     contex_sb.st_dev = 0;
     contex_sb.st_ino = 0;
@@ -218,7 +218,7 @@ bool mutt_mailbox_list(void)
     if (!np->mailbox->has_new || (have_unnotified && np->mailbox->notified))
       continue;
 
-    mutt_buffer_strcpy(path, mutt_b2s(np->mailbox->pathbuf));
+    mutt_buffer_strcpy(path, mailbox_path(np->mailbox));
     mutt_buffer_pretty_mailbox(path);
 
     if (!first && (MuttMessageWindow->cols >= 7) &&
@@ -306,11 +306,11 @@ void mutt_mailbox_next_buffer(struct Mailbox *m_cur, struct Buffer *s)
         mutt_buffer_expand_path(np->mailbox->pathbuf);
         if ((found || (pass > 0)) && np->mailbox->has_new)
         {
-          mutt_buffer_strcpy(s, mutt_b2s(np->mailbox->pathbuf));
+          mutt_buffer_strcpy(s, mailbox_path(np->mailbox));
           mutt_buffer_pretty_mailbox(s);
           return;
         }
-        if (mutt_str_strcmp(mutt_b2s(s), mutt_b2s(np->mailbox->pathbuf)) == 0)
+        if (mutt_str_strcmp(mutt_b2s(s), mailbox_path(np->mailbox)) == 0)
           found = true;
       }
       neomutt_mailboxlist_clear(&ml);

@@ -186,4 +186,9 @@ void            mailbox_size_add  (struct Mailbox *m, const struct Email *e);
 void            mailbox_size_sub  (struct Mailbox *m, const struct Email *e);
 void            mailbox_update    (struct Mailbox *m);
 
+static inline const char *mailbox_path(const struct Mailbox *m)
+{
+  return mutt_b2s(m->pathbuf);
+}
+
 #endif /* MUTT_CORE_MAILBOX_H */

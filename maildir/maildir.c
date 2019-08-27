@@ -81,7 +81,7 @@ static void maildir_check_dir(struct Mailbox *m, const char *dir_name,
 
   struct Buffer *path = mutt_buffer_pool_get();
   struct Buffer *msgpath = mutt_buffer_pool_get();
-  mutt_buffer_printf(path, "%s/%s", mutt_b2s(m->pathbuf), dir_name);
+  mutt_buffer_printf(path, "%s/%s", mailbox_path(m), dir_name);
 
   /* when $mail_check_recent is set, if the new/ directory hasn't been modified since
    * the user last exited the m, then we know there is no recent mail.  */
@@ -250,8 +250,8 @@ int maildir_sync_message(struct Mailbox *m, int msgno)
 
     mutt_buffer_printf(partpath, "%s/%s%s", (e->read || e->old) ? "cur" : "new",
                        mutt_b2s(newpath), suffix);
-    mutt_buffer_printf(fullpath, "%s/%s", mutt_b2s(m->pathbuf), mutt_b2s(partpath));
-    mutt_buffer_printf(oldpath, "%s/%s", mutt_b2s(m->pathbuf), e->path);
+    mutt_buffer_printf(fullpath, "%s/%s", mailbox_path(m), mutt_b2s(partpath));
+    mutt_buffer_printf(oldpath, "%s/%s", mailbox_path(m), e->path);
 
     if (mutt_str_strcmp(mutt_b2s(fullpath), mutt_b2s(oldpath)) == 0)
     {
@@ -306,40 +306,40 @@ static int maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
     return 0;
   }
 
-  if (mkdir(mutt_b2s(m->pathbuf), S_IRWXU))
+  if (mkdir(mailbox_path(m), S_IRWXU))
   {
-    mutt_perror(mutt_b2s(m->pathbuf));
+    mutt_perror(mailbox_path(m));
     return -1;
   }
 
   char tmp[PATH_MAX];
-  snprintf(tmp, sizeof(tmp), "%s/cur", mutt_b2s(m->pathbuf));
+  snprintf(tmp, sizeof(tmp), "%s/cur", mailbox_path(m));
   if (mkdir(tmp, S_IRWXU))
   {
     mutt_perror(tmp);
-    rmdir(mutt_b2s(m->pathbuf));
+    rmdir(mailbox_path(m));
     return -1;
   }
 
-  snprintf(tmp, sizeof(tmp), "%s/new", mutt_b2s(m->pathbuf));
+  snprintf(tmp, sizeof(tmp), "%s/new", mailbox_path(m));
   if (mkdir(tmp, S_IRWXU))
   {
     mutt_perror(tmp);
-    snprintf(tmp, sizeof(tmp), "%s/cur", mutt_b2s(m->pathbuf));
+    snprintf(tmp, sizeof(tmp), "%s/cur", mailbox_path(m));
     rmdir(tmp);
-    rmdir(mutt_b2s(m->pathbuf));
+    rmdir(mailbox_path(m));
     return -1;
   }
 
-  snprintf(tmp, sizeof(tmp), "%s/tmp", mutt_b2s(m->pathbuf));
+  snprintf(tmp, sizeof(tmp), "%s/tmp", mailbox_path(m));
   if (mkdir(tmp, S_IRWXU))
   {
     mutt_perror(tmp);
-    snprintf(tmp, sizeof(tmp), "%s/cur", mutt_b2s(m->pathbuf));
+    snprintf(tmp, sizeof(tmp), "%s/cur", mailbox_path(m));
     rmdir(tmp);
-    snprintf(tmp, sizeof(tmp), "%s/new", mutt_b2s(m->pathbuf));
+    snprintf(tmp, sizeof(tmp), "%s/new", mailbox_path(m));
     rmdir(tmp);
-    rmdir(mutt_b2s(m->pathbuf));
+    rmdir(mailbox_path(m));
     return -1;
   }
 
@@ -380,14 +380,14 @@ int maildir_mbox_check(struct Mailbox *m, int *index_hint)
     return 0;
 
   struct Buffer *buf = mutt_buffer_pool_get();
-  mutt_buffer_printf(buf, "%s/new", mutt_b2s(m->pathbuf));
+  mutt_buffer_printf(buf, "%s/new", mailbox_path(m));
   if (stat(mutt_b2s(buf), &st_new) == -1)
   {
     mutt_buffer_pool_release(&buf);
     return -1;
   }
 
-  mutt_buffer_printf(buf, "%s/cur", mutt_b2s(m->pathbuf));
+  mutt_buffer_printf(buf, "%s/cur", mailbox_path(m));
   if (stat(mutt_b2s(buf), &st_cur) == -1)
   {
     mutt_buffer_pool_release(&buf);
@@ -603,7 +603,7 @@ int maildir_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e
   while (true)
   {
     snprintf(path, sizeof(path), "%s/tmp/%s.%lld.R%" PRIu64 ".%s%s",
-             mutt_b2s(m->pathbuf), subdir, (long long) time(NULL),
+             mailbox_path(m), subdir, (long long) time(NULL),
              mutt_rand64(), NONULL(ShortHostname), suffix);
 
     mutt_debug(LL_DEBUG2, "Trying %s\n", path);
@@ -657,7 +657,7 @@ static int maildir_msg_save_hcache(struct Mailbox *m, struct Email *e)
 {
   int rc = 0;
 #ifdef USE_HCACHE
-  header_cache_t *hc = mutt_hcache_open(C_HeaderCache, mutt_b2s(m->pathbuf), NULL);
+  header_cache_t *hc = mutt_hcache_open(C_HeaderCache, mailbox_path(m), NULL);
   char *key = e->path + 3;
   int keylen = maildir_hcache_keylen(key);
   rc = mutt_hcache_store(hc, key, keylen, e, 0);

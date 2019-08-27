@@ -520,16 +520,16 @@ static int complete_hosts(char *buf, size_t buflen)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &ml, entries)
   {
-    if (!mutt_str_startswith(mutt_b2s(np->mailbox->pathbuf), buf, CASE_MATCH))
+    if (!mutt_str_startswith(mailbox_path(np->mailbox), buf, CASE_MATCH))
       continue;
 
     if (rc)
     {
-      mutt_str_strfcpy(buf, mutt_b2s(np->mailbox->pathbuf), buflen);
+      mutt_str_strfcpy(buf, mailbox_path(np->mailbox), buflen);
       rc = 0;
     }
     else
-      longest_common_prefix(buf, mutt_b2s(np->mailbox->pathbuf), matchlen, buflen);
+      longest_common_prefix(buf, mailbox_path(np->mailbox), matchlen, buflen);
   }
   neomutt_mailboxlist_clear(&ml);
 
@@ -1535,7 +1535,7 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
   /* check that the save-to folder is in the same account */
   if (!mutt_account_match(&(adata->conn->account), &(dest_adata->conn->account)))
   {
-    mutt_debug(LL_DEBUG3, "%s not same server as %s\n", dest, mutt_b2s(m->pathbuf));
+    mutt_debug(LL_DEBUG3, "%s not same server as %s\n", dest, mailbox_path(m));
     goto out;
   }
 
@@ -1847,7 +1847,7 @@ int imap_ac_add(struct Account *a, struct Mailbox *m)
     struct ConnAccount conn_account;
     char mailbox[PATH_MAX];
 
-    if (imap_parse_path(mutt_b2s(m->pathbuf), &conn_account, mailbox, sizeof(mailbox)) < 0)
+    if (imap_parse_path(mailbox_path(m), &conn_account, mailbox, sizeof(mailbox)) < 0)
       return -1;
 
     adata = imap_adata_new();
@@ -1867,14 +1867,14 @@ int imap_ac_add(struct Account *a, struct Mailbox *m)
 
   if (!m->mdata)
   {
-    struct Url *url = url_parse(mutt_b2s(m->pathbuf));
+    struct Url *url = url_parse(mailbox_path(m));
     struct ImapMboxData *mdata = imap_mdata_new(adata, url->path);
 
     /* fixup path and realpath, mainly to replace / by /INBOX */
     char buf[1024];
     imap_qualify_path(buf, sizeof(buf), &adata->conn_account, mdata->name);
     mutt_buffer_strcpy(m->pathbuf, buf);
-    mutt_str_replace(&m->realpath, mutt_b2s(m->pathbuf));
+    mutt_str_replace(&m->realpath, mailbox_path(m));
 
     m->mdata = mdata;
     m->free_mdata = imap_mdata_free;

@@ -2427,7 +2427,7 @@ static enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s
       if (!clear_this && tmp_valid)
       {
         clear_this =
-            (mutt_str_strcasecmp(mutt_b2s(buf), mutt_b2s(np->mailbox->pathbuf)) == 0) ||
+            (mutt_str_strcasecmp(mutt_b2s(buf), mailbox_path(np->mailbox)) == 0) ||
             (mutt_str_strcasecmp(mutt_b2s(buf), np->mailbox->name) == 0);
       }
 
@@ -3192,7 +3192,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
     struct MailboxList ml = neomutt_mailboxlist_get_all(NeoMutt, MUTT_NOTMUCH);
     struct MailboxNode *mp = STAILQ_FIRST(&ml);
     if (mp)
-      cs_str_string_set(Config, "spoolfile", mutt_b2s(mp->mailbox->pathbuf), NULL);
+      cs_str_string_set(Config, "spoolfile", mailbox_path(mp->mailbox), NULL);
     neomutt_mailboxlist_clear(&ml);
   }
 #endif

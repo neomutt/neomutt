@@ -194,7 +194,7 @@ void mh_update_sequences(struct Mailbox *m)
     return;
   }
 
-  snprintf(sequences, sizeof(sequences), "%s/.mh_sequences", mutt_b2s(m->pathbuf));
+  snprintf(sequences, sizeof(sequences), "%s/.mh_sequences", mailbox_path(m));
 
   /* first, copy unknown sequences */
   FILE *fp_old = fopen(sequences, "r");
@@ -364,7 +364,7 @@ static int mh_sequences_changed(struct Mailbox *m)
   char path[PATH_MAX];
   struct stat sb;
 
-  if ((snprintf(path, sizeof(path), "%s/.mh_sequences", mutt_b2s(m->pathbuf)) < sizeof(path)) &&
+  if ((snprintf(path, sizeof(path), "%s/.mh_sequences", mailbox_path(m)) < sizeof(path)) &&
       (stat(path, &sb) == 0))
   {
     return (mutt_file_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->last_visited) > 0);
@@ -385,7 +385,7 @@ static int mh_already_notified(struct Mailbox *m, int msgno)
   char path[PATH_MAX];
   struct stat sb;
 
-  if ((snprintf(path, sizeof(path), "%s/%d", mutt_b2s(m->pathbuf), msgno) < sizeof(path)) &&
+  if ((snprintf(path, sizeof(path), "%s/%d", mailbox_path(m), msgno) < sizeof(path)) &&
       (stat(path, &sb) == 0))
   {
     return (mutt_file_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->last_visited) <= 0);
@@ -435,7 +435,7 @@ static int mh_mbox_check_stats(struct Mailbox *m, int flags)
   if (!check_new)
     return 0;
 
-  if (mh_read_sequences(&mhs, mutt_b2s(m->pathbuf)) < 0)
+  if (mh_read_sequences(&mhs, mailbox_path(m)) < 0)
     return false;
 
   m->msg_count = 0;
@@ -468,7 +468,7 @@ static int mh_mbox_check_stats(struct Mailbox *m, int flags)
 
   mhs_free_sequences(&mhs);
 
-  dirp = opendir(mutt_b2s(m->pathbuf));
+  dirp = opendir(mailbox_path(m));
   if (dirp)
   {
     while ((de = readdir(dirp)))
@@ -559,19 +559,19 @@ static int mh_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
     return 0;
   }
 
-  if (mkdir(mutt_b2s(m->pathbuf), S_IRWXU))
+  if (mkdir(mailbox_path(m), S_IRWXU))
   {
-    mutt_perror(mutt_b2s(m->pathbuf));
+    mutt_perror(mailbox_path(m));
     return -1;
   }
 
   char tmp[PATH_MAX];
-  snprintf(tmp, sizeof(tmp), "%s/.mh_sequences", mutt_b2s(m->pathbuf));
+  snprintf(tmp, sizeof(tmp), "%s/.mh_sequences", mailbox_path(m));
   const int i = creat(tmp, S_IRWXU);
   if (i == -1)
   {
     mutt_perror(tmp);
-    rmdir(mutt_b2s(m->pathbuf));
+    rmdir(mailbox_path(m));
     return -1;
   }
   close(i);
@@ -608,12 +608,12 @@ int mh_mbox_check(struct Mailbox *m, int *index_hint)
   if (!C_CheckNew)
     return 0;
 
-  mutt_str_strfcpy(buf, mutt_b2s(m->pathbuf), sizeof(buf));
+  mutt_str_strfcpy(buf, mailbox_path(m), sizeof(buf));
   if (stat(buf, &st) == -1)
     return -1;
 
   /* create .mh_sequences when there isn't one. */
-  snprintf(buf, sizeof(buf), "%s/.mh_sequences", mutt_b2s(m->pathbuf));
+  snprintf(buf, sizeof(buf), "%s/.mh_sequences", mailbox_path(m));
   int i = stat(buf, &st_cur);
   if ((i == -1) && (errno == ENOENT))
   {
@@ -663,7 +663,7 @@ int mh_mbox_check(struct Mailbox *m, int *index_hint)
   maildir_parse_dir(m, &last, NULL, &count, NULL);
   maildir_delayed_parsing(m, &md, NULL);
 
-  if (mh_read_sequences(&mhs, mutt_b2s(m->pathbuf)) < 0)
+  if (mh_read_sequences(&mhs, mailbox_path(m)) < 0)
     return -1;
   mh_update_maildir(md, &mhs);
   mhs_free_sequences(&mhs);

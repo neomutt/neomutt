@@ -92,7 +92,7 @@ char *C_NmRepliedTag; ///< Config: (notmuch) Tag to use for replied messages
 static header_cache_t *nm_hcache_open(struct Mailbox *m)
 {
 #ifdef USE_HCACHE
-  return mutt_hcache_open(C_HeaderCache, mutt_b2s(m->pathbuf), NULL);
+  return mutt_hcache_open(C_HeaderCache, mailbox_path(m), NULL);
 #else
   return NULL;
 #endif
@@ -306,7 +306,7 @@ static int init_mailbox(struct Mailbox *m)
   if (m->mdata)
     return 0;
 
-  m->mdata = nm_mdata_new(mutt_b2s(m->pathbuf));
+  m->mdata = nm_mdata_new(mailbox_path(m));
   if (!m->mdata)
     return -1;
 
@@ -1938,10 +1938,10 @@ static int nm_mbox_check_stats(struct Mailbox *m, int flags)
   int limit = C_NmDbLimit;
   mutt_debug(LL_DEBUG1, "nm: count\n");
 
-  url = url_parse(mutt_b2s(m->pathbuf));
+  url = url_parse(mailbox_path(m));
   if (!url)
   {
-    mutt_error(_("failed to parse notmuch uri: %s"), mutt_b2s(m->pathbuf));
+    mutt_error(_("failed to parse notmuch uri: %s"), mailbox_path(m));
     goto done;
   }
 
@@ -2355,7 +2355,7 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
 
   int rc = 0;
   struct Progress progress;
-  char *uri = mutt_str_strdup(mutt_b2s(m->pathbuf));
+  char *uri = mutt_str_strdup(mailbox_path(m));
   bool changed = false;
 
   mutt_debug(LL_DEBUG1, "nm: sync start\n");
@@ -2364,7 +2364,7 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
   {
     char msgbuf[PATH_MAX + 64];
     /* all is in this function so we don't use data->progress here */
-    snprintf(msgbuf, sizeof(msgbuf), _("Writing %s..."), mutt_b2s(m->pathbuf));
+    snprintf(msgbuf, sizeof(msgbuf), _("Writing %s..."), mailbox_path(m));
     mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, C_WriteInc, m->msg_count);
   }
 

@@ -92,7 +92,7 @@ struct Mailbox *mailbox_find(const char *path)
   struct Mailbox *m = NULL;
   STAILQ_FOREACH(np, &ml, entries)
   {
-    if ((stat(mutt_b2s(np->mailbox->pathbuf), &tmp_sb) == 0) &&
+    if ((stat(mailbox_path(np->mailbox), &tmp_sb) == 0) &&
         (sb.st_dev == tmp_sb.st_dev) && (sb.st_ino == tmp_sb.st_ino))
     {
       m = np->mailbox;
@@ -146,7 +146,7 @@ void mailbox_update(struct Mailbox *m)
   if (!m)
     return;
 
-  if (stat(mutt_b2s(m->pathbuf), &sb) == 0)
+  if (stat(mailbox_path(m), &sb) == 0)
     m->size = (off_t) sb.st_size;
   else
     m->size = 0;

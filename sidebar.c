@@ -307,13 +307,13 @@ static int cb_qsort_sbe(const void *a, const void *b)
   {
     case SORT_COUNT:
       if (m2->msg_count == m1->msg_count)
-        rc = mutt_str_strcoll(mutt_b2s(m1->pathbuf), mutt_b2s(m2->pathbuf));
+        rc = mutt_str_strcoll(mailbox_path(m1), mailbox_path(m2));
       else
         rc = (m2->msg_count - m1->msg_count);
       break;
     case SORT_UNREAD:
       if (m2->msg_unread == m1->msg_unread)
-        rc = mutt_str_strcoll(mutt_b2s(m1->pathbuf), mutt_b2s(m2->pathbuf));
+        rc = mutt_str_strcoll(mailbox_path(m1), mailbox_path(m2));
       else
         rc = (m2->msg_unread - m1->msg_unread);
       break;
@@ -322,15 +322,15 @@ static int cb_qsort_sbe(const void *a, const void *b)
       break;
     case SORT_FLAGGED:
       if (m2->msg_flagged == m1->msg_flagged)
-        rc = mutt_str_strcoll(mutt_b2s(m1->pathbuf), mutt_b2s(m2->pathbuf));
+        rc = mutt_str_strcoll(mailbox_path(m1), mailbox_path(m2));
       else
         rc = (m2->msg_flagged - m1->msg_flagged);
       break;
     case SORT_PATH:
     {
-      rc = mutt_inbox_cmp(mutt_b2s(m1->pathbuf), mutt_b2s(m2->pathbuf));
+      rc = mutt_inbox_cmp(mailbox_path(m1), mailbox_path(m2));
       if (rc == 0)
-        rc = mutt_str_strcoll(mutt_b2s(m1->pathbuf), mutt_b2s(m2->pathbuf));
+        rc = mutt_str_strcoll(mailbox_path(m1), mailbox_path(m2));
       break;
     }
   }
@@ -381,7 +381,7 @@ static void update_entries_visibility(void)
       continue;
     }
 
-    if (mutt_list_find(&SidebarWhitelist, mutt_b2s(sbe->mailbox->pathbuf)) ||
+    if (mutt_list_find(&SidebarWhitelist, mailbox_path(sbe->mailbox)) ||
         mutt_list_find(&SidebarWhitelist, sbe->mailbox->name))
     {
       /* Explicitly asked to be visible */
@@ -847,7 +847,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     else if (m->msg_flagged > 0)
       SET_COLOR(MT_COLOR_FLAGGED);
     else if ((ColorDefs[MT_COLOR_SB_SPOOLFILE] != 0) &&
-             (mutt_str_strcmp(mutt_b2s(m->pathbuf), C_Spoolfile) == 0))
+             (mutt_str_strcmp(mailbox_path(m), C_Spoolfile) == 0))
     {
       SET_COLOR(MT_COLOR_SB_SPOOLFILE);
     }
@@ -881,8 +881,8 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     /* check whether C_Folder is a prefix of the current folder's path */
     bool maildir_is_prefix = false;
     if ((mutt_buffer_len(m->pathbuf) > maildirlen) &&
-        (mutt_str_strncmp(C_Folder, mutt_b2s(m->pathbuf), maildirlen) == 0) && C_SidebarDelimChars &&
-        strchr(C_SidebarDelimChars, mutt_b2s(m->pathbuf)[maildirlen]))
+        (mutt_str_strncmp(C_Folder, mailbox_path(m), maildirlen) == 0) && C_SidebarDelimChars &&
+        strchr(C_SidebarDelimChars, mailbox_path(m)[maildirlen]))
     {
       maildir_is_prefix = true;
     }
@@ -894,7 +894,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     if (C_SidebarShortPath)
     {
       /* disregard a trailing separator, so strlen() - 2 */
-      sidebar_folder_name = mutt_b2s(m->pathbuf);
+      sidebar_folder_name = mailbox_path(m);
       for (int i = mutt_str_strlen(sidebar_folder_name) - 2; i >= 0; i--)
       {
         if (C_SidebarDelimChars && strchr(C_SidebarDelimChars, sidebar_folder_name[i]))
@@ -906,7 +906,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     }
     else if ((C_SidebarComponentDepth > 0) && C_SidebarDelimChars)
     {
-      sidebar_folder_name = mutt_b2s(m->pathbuf) + maildir_is_prefix * (maildirlen + 1);
+      sidebar_folder_name = mailbox_path(m) + maildir_is_prefix * (maildirlen + 1);
       for (int i = 0; i < C_SidebarComponentDepth; i++)
       {
         char *chars_after_delim = strpbrk(sidebar_folder_name, C_SidebarDelimChars);
@@ -917,7 +917,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
       }
     }
     else
-      sidebar_folder_name = mutt_b2s(m->pathbuf) + maildir_is_prefix * (maildirlen + 1);
+      sidebar_folder_name = mailbox_path(m) + maildir_is_prefix * (maildirlen + 1);
 
     if (m->name)
     {
@@ -926,7 +926,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     else if (maildir_is_prefix && C_SidebarFolderIndent)
     {
       int lastsep = 0;
-      const char *tmp_folder_name = mutt_b2s(m->pathbuf) + maildirlen + 1;
+      const char *tmp_folder_name = mailbox_path(m) + maildirlen + 1;
       int tmplen = (int) mutt_str_strlen(tmp_folder_name) - 1;
       for (int i = 0; i < tmplen; i++)
       {
