@@ -98,20 +98,21 @@ bool test_pretty_var(void)
   }
 
   {
-    struct Buffer *buf = mutt_buffer_alloc(64);
-    if (!TEST_CHECK(pretty_var("apple", buf) > 0))
+    struct Buffer buf = { 0 };
+    mutt_buffer_alloc(&buf, 64);
+    if (!TEST_CHECK(pretty_var("apple", &buf) > 0))
     {
-      mutt_buffer_free(&buf);
+      mutt_buffer_dealloc(&buf);
       return false;
     }
 
-    if (!TEST_CHECK(mutt_str_strcmp("\"apple\"", mutt_b2s(buf)) == 0))
+    if (!TEST_CHECK(mutt_str_strcmp("\"apple\"", mutt_b2s(&buf)) == 0))
     {
-      mutt_buffer_free(&buf);
+      mutt_buffer_dealloc(&buf);
       return false;
     }
 
-    mutt_buffer_free(&buf);
+    mutt_buffer_dealloc(&buf);
   }
 
   return true;
@@ -136,20 +137,21 @@ bool test_escape_string(void)
     const char *before = "apple\nbanana\rcherry\tdamson\\endive\"fig'grape";
     const char *after =
         "apple\\nbanana\\rcherry\\tdamson\\\\endive\\\"fig'grape";
-    struct Buffer *buf = mutt_buffer_alloc(256);
-    if (!TEST_CHECK(escape_string(buf, before) > 0))
+    struct Buffer buf = { 0 };
+    mutt_buffer_alloc(&buf, 256);
+    if (!TEST_CHECK(escape_string(&buf, before) > 0))
     {
-      mutt_buffer_free(&buf);
+      mutt_buffer_dealloc(&buf);
       return false;
     }
 
-    if (!TEST_CHECK(mutt_str_strcmp(mutt_b2s(buf), after) == 0))
+    if (!TEST_CHECK(mutt_str_strcmp(mutt_b2s(&buf), after) == 0))
     {
-      mutt_buffer_free(&buf);
+      mutt_buffer_dealloc(&buf);
       return false;
     }
 
-    mutt_buffer_free(&buf);
+    mutt_buffer_dealloc(&buf);
   }
 
   return true;

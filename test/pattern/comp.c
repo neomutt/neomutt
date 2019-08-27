@@ -172,13 +172,14 @@ static int cmp_pattern(struct PatternList *p1, struct PatternList *p2)
 
 void test_mutt_pattern_comp(void)
 {
-  struct Buffer *err = mutt_buffer_alloc(1024);
+  struct Buffer err = { 0 };
+  mutt_buffer_alloc(&err, 1024);
 
   { /* empty */
     char *s = "";
 
-    mutt_buffer_reset(err);
-    struct PatternList *pat = mutt_pattern_comp(s, 0, err);
+    mutt_buffer_reset(&err);
+    struct PatternList *pat = mutt_pattern_comp(s, 0, &err);
 
     if (!TEST_CHECK(!pat))
     {
@@ -187,18 +188,18 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "empty pattern";
-    if (!TEST_CHECK(!strcmp(err->data, msg)))
+    if (!TEST_CHECK(!strcmp(err.data, msg)))
     {
       TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err->data);
+      TEST_MSG("Actual  : %s", err.data);
     }
   }
 
   { /* invalid */
     char *s = "x";
 
-    mutt_buffer_reset(err);
-    struct PatternList *pat = mutt_pattern_comp(s, 0, err);
+    mutt_buffer_reset(&err);
+    struct PatternList *pat = mutt_pattern_comp(s, 0, &err);
 
     if (!TEST_CHECK(!pat))
     {
@@ -207,18 +208,18 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "error in pattern at: x";
-    if (!TEST_CHECK(!strcmp(err->data, msg)))
+    if (!TEST_CHECK(!strcmp(err.data, msg)))
     {
       TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err->data);
+      TEST_MSG("Actual  : %s", err.data);
     }
   }
 
   { /* missing parameter */
     char *s = "=s";
 
-    mutt_buffer_reset(err);
-    struct PatternList *pat = mutt_pattern_comp(s, 0, err);
+    mutt_buffer_reset(&err);
+    struct PatternList *pat = mutt_pattern_comp(s, 0, &err);
 
     if (!TEST_CHECK(!pat))
     {
@@ -227,18 +228,18 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "missing parameter";
-    if (!TEST_CHECK(!strcmp(err->data, msg)))
+    if (!TEST_CHECK(!strcmp(err.data, msg)))
     {
       TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err->data);
+      TEST_MSG("Actual  : %s", err.data);
     }
   }
 
   { /* error in pattern */
     char *s = "| =s foo";
 
-    mutt_buffer_reset(err);
-    struct PatternList *pat = mutt_pattern_comp(s, 0, err);
+    mutt_buffer_reset(&err);
+    struct PatternList *pat = mutt_pattern_comp(s, 0, &err);
 
     if (!TEST_CHECK(!pat))
     {
@@ -247,18 +248,18 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "error in pattern at: | =s foo";
-    if (!TEST_CHECK(!strcmp(err->data, msg)))
+    if (!TEST_CHECK(!strcmp(err.data, msg)))
     {
       TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err->data);
+      TEST_MSG("Actual  : %s", err.data);
     }
   }
 
   {
     char *s = "=s foobar";
 
-    mutt_buffer_reset(err);
-    struct PatternList *pat = mutt_pattern_comp(s, 0, err);
+    mutt_buffer_reset(&err);
+    struct PatternList *pat = mutt_pattern_comp(s, 0, &err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -291,10 +292,10 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "";
-    if (!TEST_CHECK(!strcmp(err->data, msg)))
+    if (!TEST_CHECK(!strcmp(err.data, msg)))
     {
       TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err->data);
+      TEST_MSG("Actual  : %s", err.data);
     }
 
     mutt_pattern_free(&pat);
@@ -303,8 +304,8 @@ void test_mutt_pattern_comp(void)
   {
     char *s = "! =s foobar";
 
-    mutt_buffer_reset(err);
-    struct PatternList *pat = mutt_pattern_comp(s, 0, err);
+    mutt_buffer_reset(&err);
+    struct PatternList *pat = mutt_pattern_comp(s, 0, &err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -338,10 +339,10 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "";
-    if (!TEST_CHECK(!strcmp(err->data, msg)))
+    if (!TEST_CHECK(!strcmp(err.data, msg)))
     {
       TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err->data);
+      TEST_MSG("Actual  : %s", err.data);
     }
 
     mutt_pattern_free(&pat);
@@ -350,8 +351,8 @@ void test_mutt_pattern_comp(void)
   {
     char *s = "=s foo =s bar";
 
-    mutt_buffer_reset(err);
-    struct PatternList *pat = mutt_pattern_comp(s, 0, err);
+    mutt_buffer_reset(&err);
+    struct PatternList *pat = mutt_pattern_comp(s, 0, &err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -417,10 +418,10 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "";
-    if (!TEST_CHECK(!strcmp(err->data, msg)))
+    if (!TEST_CHECK(!strcmp(err.data, msg)))
     {
       TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err->data);
+      TEST_MSG("Actual  : %s", err.data);
     }
 
     mutt_pattern_free(&pat);
@@ -429,8 +430,8 @@ void test_mutt_pattern_comp(void)
   {
     char *s = "(=s foo =s bar)";
 
-    mutt_buffer_reset(err);
-    struct PatternList *pat = mutt_pattern_comp(s, 0, err);
+    mutt_buffer_reset(&err);
+    struct PatternList *pat = mutt_pattern_comp(s, 0, &err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -496,10 +497,10 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "";
-    if (!TEST_CHECK(!strcmp(err->data, msg)))
+    if (!TEST_CHECK(!strcmp(err.data, msg)))
     {
       TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err->data);
+      TEST_MSG("Actual  : %s", err.data);
     }
 
     mutt_pattern_free(&pat);
@@ -508,8 +509,8 @@ void test_mutt_pattern_comp(void)
   {
     char *s = "! (=s foo =s bar)";
 
-    mutt_buffer_reset(err);
-    struct PatternList *pat = mutt_pattern_comp(s, 0, err);
+    mutt_buffer_reset(&err);
+    struct PatternList *pat = mutt_pattern_comp(s, 0, &err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -575,10 +576,10 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "";
-    if (!TEST_CHECK(!strcmp(err->data, msg)))
+    if (!TEST_CHECK(!strcmp(err.data, msg)))
     {
       TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err->data);
+      TEST_MSG("Actual  : %s", err.data);
     }
 
     mutt_pattern_free(&pat);
@@ -587,8 +588,8 @@ void test_mutt_pattern_comp(void)
   {
     char *s = "=s foo =s bar =s quux";
 
-    mutt_buffer_reset(err);
-    struct PatternList *pat = mutt_pattern_comp(s, 0, err);
+    mutt_buffer_reset(&err);
+    struct PatternList *pat = mutt_pattern_comp(s, 0, &err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -666,10 +667,10 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "";
-    if (!TEST_CHECK(!strcmp(err->data, msg)))
+    if (!TEST_CHECK(!strcmp(err.data, msg)))
     {
       TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err->data);
+      TEST_MSG("Actual  : %s", err.data);
     }
 
     mutt_pattern_free(&pat);
@@ -678,8 +679,8 @@ void test_mutt_pattern_comp(void)
   {
     char *s = "!(=s foo|=s bar) =s quux";
 
-    mutt_buffer_reset(err);
-    struct PatternList *pat = mutt_pattern_comp(s, 0, err);
+    mutt_buffer_reset(&err);
+    struct PatternList *pat = mutt_pattern_comp(s, 0, &err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -773,14 +774,14 @@ void test_mutt_pattern_comp(void)
     }
 
     char *msg = "";
-    if (!TEST_CHECK(!strcmp(err->data, msg)))
+    if (!TEST_CHECK(!strcmp(err.data, msg)))
     {
       TEST_MSG("Expected: %s", msg);
-      TEST_MSG("Actual  : %s", err->data);
+      TEST_MSG("Actual  : %s", err.data);
     }
 
     mutt_pattern_free(&pat);
   }
 
-  mutt_buffer_free(&err);
+  mutt_buffer_dealloc(&err);
 }

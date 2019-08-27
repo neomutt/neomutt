@@ -208,14 +208,17 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
 
   bool result = true;
 
-  struct Buffer *value = mutt_buffer_alloc(256);
-  struct Buffer *initial = mutt_buffer_alloc(256);
-  struct Buffer *tmp = mutt_buffer_alloc(256);
+  struct Buffer value = { 0 };
+  mutt_buffer_alloc(&value, 256);
+  struct Buffer initial = { 0 };
+  mutt_buffer_alloc(&initial, 256);
+  struct Buffer tmp = { 0 };
+  mutt_buffer_alloc(&tmp, 256);
 
   for (size_t i = 0; list[i]; i++)
   {
-    mutt_buffer_reset(value);
-    mutt_buffer_reset(initial);
+    mutt_buffer_reset(&value);
+    mutt_buffer_reset(&initial);
     he = list[i];
     const int type = DTYPE(he->type);
 
@@ -231,7 +234,7 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
       if ((flags & CS_DUMP_ONLY_CHANGED) || !(flags & CS_DUMP_HIDE_VALUE) ||
           (flags & CS_DUMP_SHOW_DEFAULTS))
       {
-        int rc = cs_he_string_get(cs, he, value);
+        int rc = cs_he_string_get(cs, he, &value);
         if (CSR_RESULT(rc) != CSR_SUCCESS)
         {
           result = false; /* LCOV_EXCL_LINE */
@@ -240,28 +243,28 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
 
         const struct ConfigDef *cdef = he->data;
         if ((type == DT_STRING) && IS_SENSITIVE(*cdef) &&
-            (flags & CS_DUMP_HIDE_SENSITIVE) && !mutt_buffer_is_empty(value))
+            (flags & CS_DUMP_HIDE_SENSITIVE) && !mutt_buffer_is_empty(&value))
         {
-          mutt_buffer_reset(value);
-          mutt_buffer_addstr(value, "***");
+          mutt_buffer_reset(&value);
+          mutt_buffer_addstr(&value, "***");
         }
 
-        if (IS_PATH(he) && (value->data[0] == '/'))
-          mutt_pretty_mailbox(value->data, value->dsize);
+        if (IS_PATH(he) && (value.data[0] == '/'))
+          mutt_pretty_mailbox(value.data, value.dsize);
 
         if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) &&
             (type != DT_QUAD) && !(flags & CS_DUMP_NO_ESCAPING))
         {
-          mutt_buffer_reset(tmp);
-          pretty_var(value->data, tmp);
-          mutt_buffer_strcpy(value, tmp->data);
+          mutt_buffer_reset(&tmp);
+          pretty_var(value.data, &tmp);
+          mutt_buffer_strcpy(&value, tmp.data);
         }
       }
 
       /* If necessary, get the default value */
       if (flags & (CS_DUMP_ONLY_CHANGED | CS_DUMP_SHOW_DEFAULTS))
       {
-        int rc = cs_he_initial_get(cs, he, initial);
+        int rc = cs_he_initial_get(cs, he, &initial);
         if (CSR_RESULT(rc) != CSR_SUCCESS)
         {
           result = false; /* LCOV_EXCL_LINE */
@@ -269,25 +272,25 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
         }
 
         if (IS_PATH(he) && !(he->type & DT_MAILBOX))
-          mutt_pretty_mailbox(initial->data, initial->dsize);
+          mutt_pretty_mailbox(initial.data, initial.dsize);
 
         if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) &&
             (type != DT_QUAD) && !(flags & CS_DUMP_NO_ESCAPING))
         {
-          mutt_buffer_reset(tmp);
-          pretty_var(initial->data, tmp);
-          mutt_buffer_strcpy(initial, tmp->data);
+          mutt_buffer_reset(&tmp);
+          pretty_var(initial.data, &tmp);
+          mutt_buffer_strcpy(&initial, tmp.data);
         }
       }
     }
 
-    dump_config_neo(cs, he, value, initial, flags, fp);
+    dump_config_neo(cs, he, &value, &initial, flags, fp);
   }
 
   FREE(&list);
-  mutt_buffer_free(&value);
-  mutt_buffer_free(&initial);
-  mutt_buffer_free(&tmp);
+  mutt_buffer_dealloc(&value);
+  mutt_buffer_dealloc(&initial);
+  mutt_buffer_dealloc(&tmp);
 
   return result;
 }

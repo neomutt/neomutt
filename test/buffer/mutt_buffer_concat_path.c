@@ -59,20 +59,20 @@ void test_mutt_buffer_concat_path(void)
       TEST_CASE_("DIR: '%s'  FILE: '%s'", NONULL(concat_test[i][0]),
                  NONULL(concat_test[i][1]));
       {
-        struct Buffer *buf = mutt_buffer_new();
-        mutt_buffer_concat_path(buf, concat_test[i][0], concat_test[i][1]);
+        struct Buffer buf = { 0 };
+        mutt_buffer_concat_path(&buf, concat_test[i][0], concat_test[i][1]);
         if (concat_test[i][2])
         {
-          TEST_CHECK(strcmp(mutt_b2s(buf), concat_test[i][2]) == 0);
+          TEST_CHECK(strcmp(mutt_b2s(&buf), concat_test[i][2]) == 0);
         }
         else
         {
-          if (!TEST_CHECK(strlen(mutt_b2s(buf)) == 0))
+          if (!TEST_CHECK(strlen(mutt_b2s(&buf)) == 0))
           {
-            TEST_MSG("len = %ld", strlen(mutt_b2s(buf)));
+            TEST_MSG("len = %ld", strlen(mutt_b2s(&buf)));
           }
         }
-        mutt_buffer_free(&buf);
+        mutt_buffer_dealloc(&buf);
       }
 
       {

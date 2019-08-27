@@ -42,7 +42,7 @@ struct Mailbox *mailbox_new(void)
 {
   struct Mailbox *m = mutt_mem_calloc(1, sizeof(struct Mailbox));
 
-  m->pathbuf = mutt_buffer_new();
+  mutt_buffer_init(&m->pathbuf);
   m->notify = notify_new(m, NT_MAILBOX);
 
   return m;
@@ -63,7 +63,7 @@ void mailbox_free(struct Mailbox **ptr)
   if (m->mdata && m->free_mdata)
     m->free_mdata(&m->mdata);
 
-  mutt_buffer_free(&m->pathbuf);
+  mutt_buffer_dealloc(&m->pathbuf);
   FREE(&m->name);
   FREE(&m->realpath);
   notify_free(&m->notify);

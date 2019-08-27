@@ -289,20 +289,20 @@ bool cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], 
   if (!cs || !vars)
     return false;
 
-  struct Buffer *err = mutt_buffer_new();
+  struct Buffer err = { 0 };
 
   bool rc = true;
 
   for (size_t i = 0; vars[i].name; i++)
   {
-    if (!reg_one_var(cs, &vars[i], err))
+    if (!reg_one_var(cs, &vars[i], &err))
     {
-      mutt_debug(LL_DEBUG1, "%s\n", mutt_b2s(err));
+      mutt_debug(LL_DEBUG1, "%s\n", mutt_b2s(&err));
       rc = false;
     }
   }
 
-  mutt_buffer_free(&err);
+  mutt_buffer_dealloc(&err);
   return rc;
 }
 

@@ -725,10 +725,10 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
 {
   char c;
   bool r = false;
-  struct Buffer *buf = NULL;
+  struct Buffer buf = { 0 };
 
   if (C_DebugLevel >= IMAP_LOG_LTRL)
-    buf = mutt_buffer_alloc(bytes + 10);
+    mutt_buffer_alloc(&buf, bytes + 10);
 
   mutt_debug(LL_DEBUG2, "reading %ld bytes\n", bytes);
 
@@ -739,7 +739,7 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
       mutt_debug(LL_DEBUG1, "error during read, %ld bytes read\n", pos);
       adata->status = IMAP_FATAL;
 
-      mutt_buffer_free(&buf);
+      mutt_buffer_dealloc(&buf);
       return -1;
     }
 
@@ -759,13 +759,13 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
     if (pbar && !(pos % 1024))
       mutt_progress_update(pbar, pos, -1);
     if (C_DebugLevel >= IMAP_LOG_LTRL)
-      mutt_buffer_addch(buf, c);
+      mutt_buffer_addch(&buf, c);
   }
 
   if (C_DebugLevel >= IMAP_LOG_LTRL)
   {
-    mutt_debug(IMAP_LOG_LTRL, "\n%s", buf->data);
-    mutt_buffer_free(&buf);
+    mutt_debug(IMAP_LOG_LTRL, "\n%s", buf.data);
+    mutt_buffer_dealloc(&buf);
   }
   return 0;
 }
@@ -1017,7 +1017,7 @@ int imap_exec_msgset(struct Mailbox *m, const char *pre, const char *post,
   int rc;
   int count = 0;
 
-  struct Buffer *cmd = mutt_buffer_new();
+  struct Buffer cmd = { 0 };
 
   /* We make a copy of the headers just in case resorting doesn't give
    exactly the original order (duplicate messages?), because other parts of
@@ -1037,13 +1037,13 @@ int imap_exec_msgset(struct Mailbox *m, const char *pre, const char *post,
 
   do
   {
-    mutt_buffer_reset(cmd);
-    mutt_buffer_add_printf(cmd, "%s ", pre);
-    rc = make_msg_set(m, cmd, flag, changed, invert, &pos);
+    mutt_buffer_reset(&cmd);
+    mutt_buffer_add_printf(&cmd, "%s ", pre);
+    rc = make_msg_set(m, &cmd, flag, changed, invert, &pos);
     if (rc > 0)
     {
-      mutt_buffer_add_printf(cmd, " %s", post);
-      if (imap_exec(adata, cmd->data, IMAP_CMD_QUEUE) != IMAP_EXEC_SUCCESS)
+      mutt_buffer_add_printf(&cmd, " %s", post);
+      if (imap_exec(adata, cmd.data, IMAP_CMD_QUEUE) != IMAP_EXEC_SUCCESS)
       {
         rc = -1;
         goto out;
@@ -1055,7 +1055,7 @@ int imap_exec_msgset(struct Mailbox *m, const char *pre, const char *post,
   rc = count;
 
 out:
-  mutt_buffer_free(&cmd);
+  mutt_buffer_dealloc(&cmd);
   if (oldsort != C_Sort)
   {
     C_Sort = oldsort;
@@ -1520,7 +1520,6 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
   char prompt[1024];
   int rc = -1;
   bool triedcreate = false;
-  struct Buffer *sync_cmd = NULL;
   enum QuadOption err_continue = MUTT_NO;
 
   struct ImapAccountData *adata = imap_adata_get(m);
@@ -1530,7 +1529,7 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
   if (imap_adata_find(dest, &dest_adata, &dest_mdata) < 0)
     return -1;
 
-  sync_cmd = mutt_buffer_new();
+  struct Buffer sync_cmd = { 0 };
 
   /* check that the save-to folder is in the same account */
   if (!mutt_account_match(&(adata->conn->account), &(dest_adata->conn->account)))
@@ -1544,7 +1543,7 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
     if (m->emails[i]->active && m->emails[i]->changed &&
         m->emails[i]->deleted && !m->emails[i]->purge)
     {
-      rc = imap_sync_message_for_copy(m, m->emails[i], sync_cmd, &err_continue);
+      rc = imap_sync_message_for_copy(m, m->emails[i], &sync_cmd, &err_continue);
       if (rc < 0)
       {
         mutt_debug(LL_DEBUG1, "could not sync\n");
@@ -1608,7 +1607,7 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
   rc = IMAP_EXEC_SUCCESS;
 
 out:
-  mutt_buffer_free(&sync_cmd);
+  mutt_buffer_dealloc(&sync_cmd);
   imap_mdata_free((void *) &dest_mdata);
 
   return ((rc == IMAP_EXEC_SUCCESS) ? 0 : -1);
@@ -1873,7 +1872,7 @@ int imap_ac_add(struct Account *a, struct Mailbox *m)
     /* fixup path and realpath, mainly to replace / by /INBOX */
     char buf[1024];
     imap_qualify_path(buf, sizeof(buf), &adata->conn_account, mdata->name);
-    mutt_buffer_strcpy(m->pathbuf, buf);
+    mutt_buffer_strcpy(&m->pathbuf, buf);
     mutt_str_replace(&m->realpath, mailbox_path(m));
 
     m->mdata = mdata;
@@ -2360,7 +2359,6 @@ static int imap_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
   if (!m)
     return -1;
 
-  struct Buffer *cmd = NULL;
   char uid[11];
 
   struct ImapAccountData *adata = imap_adata_get(m);
@@ -2376,44 +2374,40 @@ static int imap_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
   /* Remove old custom flags */
   if (imap_edata_get(e)->flags_remote)
   {
-    cmd = mutt_buffer_new();
-    cmd->dptr = cmd->data;
-    mutt_buffer_addstr(cmd, "UID STORE ");
-    mutt_buffer_addstr(cmd, uid);
-    mutt_buffer_addstr(cmd, " -FLAGS.SILENT (");
-    mutt_buffer_addstr(cmd, imap_edata_get(e)->flags_remote);
-    mutt_buffer_addstr(cmd, ")");
+    struct Buffer cmd = { 0 };
+    mutt_buffer_addstr(&cmd, "UID STORE ");
+    mutt_buffer_addstr(&cmd, uid);
+    mutt_buffer_addstr(&cmd, " -FLAGS.SILENT (");
+    mutt_buffer_addstr(&cmd, imap_edata_get(e)->flags_remote);
+    mutt_buffer_addstr(&cmd, ")");
 
     /* Should we return here, or we are fine and we could
      * continue to add new flags */
-    if (imap_exec(adata, cmd->data, IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS)
+    int rc = imap_exec(adata, cmd.data, IMAP_CMD_NO_FLAGS);
+    mutt_buffer_dealloc(&cmd);
+    if (rc != IMAP_EXEC_SUCCESS)
     {
-      mutt_buffer_free(&cmd);
       return -1;
     }
-
-    mutt_buffer_free(&cmd);
   }
 
   /* Add new custom flags */
   if (buf)
   {
-    cmd = mutt_buffer_new();
-    cmd->dptr = cmd->data;
-    mutt_buffer_addstr(cmd, "UID STORE ");
-    mutt_buffer_addstr(cmd, uid);
-    mutt_buffer_addstr(cmd, " +FLAGS.SILENT (");
-    mutt_buffer_addstr(cmd, buf);
-    mutt_buffer_addstr(cmd, ")");
+    struct Buffer cmd = { 0 };
+    mutt_buffer_addstr(&cmd, "UID STORE ");
+    mutt_buffer_addstr(&cmd, uid);
+    mutt_buffer_addstr(&cmd, " +FLAGS.SILENT (");
+    mutt_buffer_addstr(&cmd, buf);
+    mutt_buffer_addstr(&cmd, ")");
 
-    if (imap_exec(adata, cmd->data, IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS)
+    int rc = imap_exec(adata, cmd.data, IMAP_CMD_NO_FLAGS);
+    mutt_buffer_dealloc(&cmd);
+    if (rc != IMAP_EXEC_SUCCESS)
     {
       mutt_debug(LL_DEBUG1, "fail to add new flags\n");
-      mutt_buffer_free(&cmd);
       return -1;
     }
-
-    mutt_buffer_free(&cmd);
   }
 
   /* We are good sync them */
@@ -2475,7 +2469,7 @@ int imap_path_canon(char *buf, size_t buflen)
  */
 int imap_expand_path(struct Buffer *buf)
 {
-  mutt_buffer_increase_size(buf, PATH_MAX);
+  mutt_buffer_alloc(buf, PATH_MAX);
   return imap_path_canon(buf->data, PATH_MAX);
 }
 

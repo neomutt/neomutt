@@ -73,7 +73,7 @@ void imap_adata_free(void **ptr)
   struct ImapAccountData *adata = *ptr;
 
   FREE(&adata->capstr);
-  mutt_buffer_free(&adata->cmdbuf);
+  mutt_buffer_dealloc(&adata->cmdbuf);
   FREE(&adata->buf);
   FREE(&adata->cmds);
 
@@ -97,7 +97,6 @@ struct ImapAccountData *imap_adata_new(void)
   static unsigned char new_seqid = 'a';
 
   adata->seqid = new_seqid;
-  adata->cmdbuf = mutt_buffer_new();
   adata->cmdslots = C_ImapPipelineDepth + 2;
   adata->cmds = mutt_mem_calloc(adata->cmdslots, sizeof(*adata->cmds));
 
@@ -527,15 +526,15 @@ int imap_hcache_store_uid_seqset(struct ImapMboxData *mdata)
   if (!mdata->hcache)
     return -1;
 
-  struct Buffer *b = mutt_buffer_new();
   /* The seqset is likely large.  Preallocate to reduce reallocs */
-  mutt_buffer_increase_size(b, 8192);
-  imap_msn_index_to_uid_seqset(b, mdata);
+  struct Buffer b = { 0 };
+  mutt_buffer_alloc(&b, 8192);
+  imap_msn_index_to_uid_seqset(&b, mdata);
 
-  int rc = mutt_hcache_store_raw(mdata->hcache, "/UIDSEQSET", 10, b->data,
-                                 mutt_buffer_len(b) + 1);
-  mutt_debug(LL_DEBUG3, "Stored /UIDSEQSET %s\n", b->data);
-  mutt_buffer_free(&b);
+  int rc = mutt_hcache_store_raw(mdata->hcache, "/UIDSEQSET", 10, b.data,
+                                 mutt_buffer_len(&b) + 1);
+  mutt_debug(LL_DEBUG3, "Stored /UIDSEQSET %s\n", b.data);
+  mutt_buffer_dealloc(&b);
   return rc;
 }
 

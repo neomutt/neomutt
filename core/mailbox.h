@@ -91,7 +91,7 @@ typedef uint16_t AclFlags;          ///< Flags, e.g. #MUTT_ACL_ADMIN
  */
 struct Mailbox
 {
-  struct Buffer *pathbuf;
+  struct Buffer pathbuf;
   char *realpath;                     ///< Used for duplicate detection, context comparison, and the sidebar
   char *name;                         ///< A short name for the Mailbox
   struct ConfigSubset *sub;           ///< Inherited config items
@@ -186,9 +186,14 @@ void            mailbox_size_add  (struct Mailbox *m, const struct Email *e);
 void            mailbox_size_sub  (struct Mailbox *m, const struct Email *e);
 void            mailbox_update    (struct Mailbox *m);
 
+/**
+ * mailbox_path - Get the Mailbox's path string
+ * @param m Mailbox
+ * @retval ptr Path string
+ */
 static inline const char *mailbox_path(const struct Mailbox *m)
 {
-  return mutt_b2s(m->pathbuf);
+  return mutt_b2s(&m->pathbuf);
 }
 
 #endif /* MUTT_CORE_MAILBOX_H */

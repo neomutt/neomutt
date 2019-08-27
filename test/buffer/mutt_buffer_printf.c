@@ -42,29 +42,29 @@ void test_mutt_buffer_printf(void)
 
   {
     TEST_CASE("Empty");
-    struct Buffer *buf = mutt_buffer_new();
-    TEST_CHECK(mutt_buffer_printf(buf, "") == 0);
-    TEST_CHECK(strlen(mutt_b2s(buf)) == 0);
-    mutt_buffer_free(&buf);
+    struct Buffer buf = { 0 };
+    TEST_CHECK(mutt_buffer_printf(&buf, "") == 0);
+    TEST_CHECK(strlen(mutt_b2s(&buf)) == 0);
+    mutt_buffer_dealloc(&buf);
   }
 
   {
     TEST_CASE("Static");
     const char *str = "apple";
-    struct Buffer *buf = mutt_buffer_new();
-    TEST_CHECK(mutt_buffer_printf(buf, str) == 5);
-    TEST_CHECK(strcmp(mutt_b2s(buf), str) == 0);
-    mutt_buffer_free(&buf);
+    struct Buffer buf = { 0 };
+    TEST_CHECK(mutt_buffer_printf(&buf, str) == 5);
+    TEST_CHECK(strcmp(mutt_b2s(&buf), str) == 0);
+    mutt_buffer_dealloc(&buf);
   }
 
   {
     TEST_CASE("Varargs");
     const char *str = "apple";
     const char *result = "app 1234567 3.1416";
-    struct Buffer *buf = mutt_buffer_new();
-    TEST_CHECK(mutt_buffer_printf(buf, "%.3s %ld %3.4f", str, 1234567, 3.141592654) == 18);
-    TEST_CHECK(strcmp(mutt_b2s(buf), result) == 0);
-    mutt_buffer_free(&buf);
+    struct Buffer buf = { 0 };
+    TEST_CHECK(mutt_buffer_printf(&buf, "%.3s %ld %3.4f", str, 1234567, 3.141592654) == 18);
+    TEST_CHECK(strcmp(mutt_b2s(&buf), result) == 0);
+    mutt_buffer_dealloc(&buf);
   }
 
   TEST_CASE("printf to a non-empty Buffer");

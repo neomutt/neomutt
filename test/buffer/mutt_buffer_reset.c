@@ -35,10 +35,9 @@ void test_mutt_buffer_reset(void)
   }
 
   {
-    struct Buffer *buf = mutt_buffer_new();
-    mutt_buffer_reset(buf);
+    struct Buffer buf = { 0 };
+    mutt_buffer_reset(&buf);
     TEST_CHECK_(1, "mutt_buffer_reset(buf)");
-    mutt_buffer_free(&buf);
   }
 
   {

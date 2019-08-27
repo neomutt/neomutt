@@ -35,10 +35,9 @@ void test_mutt_buffer_fix_dptr(void)
   }
 
   {
-    struct Buffer *buf = mutt_buffer_new();
-    mutt_buffer_fix_dptr(buf);
-    TEST_CHECK(mutt_buffer_len(buf) == 0);
-    mutt_buffer_free(&buf);
+    struct Buffer buf = { 0 };
+    mutt_buffer_fix_dptr(&buf);
+    TEST_CHECK(mutt_buffer_len(&buf) == 0);
   }
 
   {

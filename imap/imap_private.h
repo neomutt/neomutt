@@ -199,7 +199,7 @@ struct ImapAccountData
   int cmdslots;
   int nextcmd;
   int lastcmd;
-  struct Buffer *cmdbuf;
+  struct Buffer cmdbuf;
 
   char delim;
   struct Mailbox *mailbox;     /* Current selected mailbox */

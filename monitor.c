@@ -96,7 +96,7 @@ struct MonitorInfo
   dev_t st_dev;
   ino_t st_ino;
   struct Monitor *monitor;
-  struct Buffer *path_buf; /* access via path only (maybe not initialized) */
+  struct Buffer path_buf; /* access via path only (maybe not initialized) */
 };
 
 /**
@@ -217,7 +217,7 @@ static void monitor_info_init(struct MonitorInfo *info)
  */
 static void monitor_info_free(struct MonitorInfo *info)
 {
-  mutt_buffer_free(&info->path_buf);
+  mutt_buffer_dealloc(&info->path_buf);
 }
 
 /**
@@ -347,10 +347,8 @@ static enum ResolveResult monitor_resolve(struct MonitorInfo *info, struct Mailb
   }
   if (fmt)
   {
-    if (!info->path_buf)
-      info->path_buf = mutt_buffer_new();
-    mutt_buffer_printf(info->path_buf, fmt, info->path);
-    info->path = mutt_b2s(info->path_buf);
+    mutt_buffer_printf(&info->path_buf, fmt, info->path);
+    info->path = mutt_b2s(&info->path_buf);
   }
   if (stat(info->path, &sb) != 0)
     return RESOLVE_RES_FAIL_STAT;

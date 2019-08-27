@@ -50,11 +50,11 @@ void test_mutt_buffer_strcpy_n(void)
     for (size_t i = 0; i < mutt_array_size(sizes); i++)
     {
       TEST_CASE_("%ld", sizes[i]);
-      struct Buffer *buf = mutt_buffer_new();
-      mutt_buffer_strcpy_n(buf, str, sizes[i]);
-      TEST_CHECK(strlen(mutt_b2s(buf)) == MIN(len, sizes[i]));
-      TEST_CHECK(strncmp(mutt_b2s(buf), str, sizes[i]) == 0);
-      mutt_buffer_free(&buf);
+      struct Buffer buf = { 0 };
+      mutt_buffer_strcpy_n(&buf, str, sizes[i]);
+      TEST_CHECK(strlen(mutt_b2s(&buf)) == MIN(len, sizes[i]));
+      TEST_CHECK(strncmp(mutt_b2s(&buf), str, sizes[i]) == 0);
+      mutt_buffer_dealloc(&buf);
     }
   }
 

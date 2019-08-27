@@ -81,12 +81,10 @@ void mutt_auto_subscribe(const char *mailto)
         !mutt_regexlist_match(&UnMailLists, mailbox) &&
         !mutt_regexlist_match(&UnSubscribedLists, mailbox))
     {
-      struct Buffer *err = mutt_buffer_new();
       /* mutt_regexlist_add() detects duplicates, so it is safe to
        * try to add here without any checks. */
-      mutt_regexlist_add(&MailLists, mailbox, REG_ICASE, err);
-      mutt_regexlist_add(&SubscribedLists, mailbox, REG_ICASE, err);
-      mutt_buffer_free(&err);
+      mutt_regexlist_add(&MailLists, mailbox, REG_ICASE, NULL);
+      mutt_regexlist_add(&SubscribedLists, mailbox, REG_ICASE, NULL);
     }
   }
 
@@ -115,7 +113,7 @@ static void parse_parameters(struct ParameterList *pl, const char *s, bool allow
    * in quite large parameter values.  avoid frequent reallocs by
    * pre-sizing */
   if (allow_value_spaces)
-    mutt_buffer_increase_size(buf, mutt_str_strlen(s));
+    mutt_buffer_alloc(buf, mutt_str_strlen(s));
 
   mutt_debug(LL_DEBUG2, "'%s'\n", s);
 

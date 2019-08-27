@@ -601,11 +601,11 @@ const char *mutt_path_getcwd(struct Buffer *cwd)
   if (!cwd)
     return NULL;
 
-  mutt_buffer_increase_size(cwd, PATH_MAX);
+  mutt_buffer_alloc(cwd, PATH_MAX);
   char *retval = getcwd(cwd->data, cwd->dsize);
   while (!retval && (errno == ERANGE))
   {
-    mutt_buffer_increase_size(cwd, cwd->dsize + 256);
+    mutt_buffer_alloc(cwd, cwd->dsize + 256);
     retval = getcwd(cwd->data, cwd->dsize);
   }
   if (retval)

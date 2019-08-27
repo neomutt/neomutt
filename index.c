@@ -649,7 +649,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
   }
 
   /* keepalive failure in mutt_enter_fname may kill connection. #3028 */
-  if (Context && Context->mailbox && (mutt_buffer_is_empty(Context->mailbox->pathbuf)))
+  if (Context && Context->mailbox && (mutt_buffer_is_empty(&Context->mailbox->pathbuf)))
     ctx_free(&Context);
 
   if (Context && Context->mailbox)
@@ -1118,7 +1118,7 @@ int mutt_index_menu(void)
       check = mx_mbox_check(Context->mailbox, &index_hint);
       if (check < 0)
       {
-        if (!Context->mailbox || (mutt_buffer_is_empty(Context->mailbox->pathbuf)))
+        if (!Context->mailbox || (mutt_buffer_is_empty(&Context->mailbox->pathbuf)))
         {
           /* fatal error occurred */
           ctx_free(&Context);
@@ -1938,7 +1938,8 @@ int mutt_index_menu(void)
         }
 
         /* check for a fatal error, or all messages deleted */
-        if (Context && Context->mailbox && mutt_buffer_is_empty(Context->mailbox->pathbuf))
+        if (Context && Context->mailbox &&
+            mutt_buffer_is_empty(&Context->mailbox->pathbuf))
           ctx_free(&Context);
 
         /* if we were in the pager, redisplay the message */
@@ -2213,8 +2214,7 @@ int mutt_index_menu(void)
       {
         bool cont = false; /* Set if we want to continue instead of break */
 
-        struct Buffer *folderbuf = mutt_buffer_pool_get();
-        mutt_buffer_increase_size(folderbuf, PATH_MAX);
+        struct Buffer *folderbuf = mutt_buffer_alloc(mutt_buffer_pool_get(), PATH_MAX);
         struct Mailbox *m = NULL;
         char *cp = NULL;
 #ifdef USE_NNTP
@@ -2236,8 +2236,8 @@ int mutt_index_menu(void)
         else
           cp = _("Open mailbox");
 
-        if ((op == OP_MAIN_NEXT_UNREAD_MAILBOX) && Context &&
-            Context->mailbox && !mutt_buffer_is_empty(Context->mailbox->pathbuf))
+        if ((op == OP_MAIN_NEXT_UNREAD_MAILBOX) && Context && Context->mailbox &&
+            !mutt_buffer_is_empty(&Context->mailbox->pathbuf))
         {
           mutt_buffer_strcpy(folderbuf, mailbox_path(Context->mailbox));
           mutt_buffer_pretty_mailbox(folderbuf);
@@ -2263,7 +2263,7 @@ int mutt_index_menu(void)
         else
         {
           if (C_ChangeFolderNext && Context && Context->mailbox &&
-              mutt_buffer_is_empty(Context->mailbox->pathbuf))
+              mutt_buffer_is_empty(&Context->mailbox->pathbuf))
           {
             mutt_buffer_strcpy(folderbuf, mailbox_path(Context->mailbox));
             mutt_buffer_pretty_mailbox(folderbuf);

@@ -34,9 +34,8 @@ void test_mutt_buffer_is_empty(void)
   }
 
   {
-    struct Buffer *buf = mutt_buffer_new();
-    TEST_CHECK(mutt_buffer_is_empty(buf));
-    mutt_buffer_free(&buf);
+    struct Buffer buf = { 0 };
+    TEST_CHECK(mutt_buffer_is_empty(&buf));
   }
 
   {

@@ -44,19 +44,19 @@ void test_mutt_buffer_strcpy(void)
 
   {
     TEST_CASE("Empty");
-    struct Buffer *buf = mutt_buffer_new();
-    mutt_buffer_strcpy(buf, "");
-    TEST_CHECK(strcmp(mutt_b2s(buf), "") == 0);
-    mutt_buffer_free(&buf);
+    struct Buffer buf = { 0 };
+    mutt_buffer_strcpy(&buf, "");
+    TEST_CHECK(strcmp(mutt_b2s(&buf), "") == 0);
+    mutt_buffer_dealloc(&buf);
   }
 
   {
     TEST_CASE("String");
     const char *str = "test";
-    struct Buffer *buf = mutt_buffer_new();
-    mutt_buffer_strcpy(buf, str);
-    TEST_CHECK(strcmp(mutt_b2s(buf), str) == 0);
-    mutt_buffer_free(&buf);
+    struct Buffer buf = { 0 };
+    mutt_buffer_strcpy(&buf, str);
+    TEST_CHECK(strcmp(mutt_b2s(&buf), str) == 0);
+    mutt_buffer_dealloc(&buf);
   }
 
   TEST_CASE("Overwrite a non-empty Buffer");

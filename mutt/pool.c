@@ -43,14 +43,14 @@ static struct Buffer **BufferPool = NULL;
  */
 static void increase_buffer_pool(void)
 {
-  struct Buffer *newbuf;
   BufferPoolLen += BufferPoolIncrement;
   mutt_debug(LL_DEBUG1, "%zu\n", BufferPoolLen);
 
   mutt_mem_realloc(&BufferPool, BufferPoolLen * sizeof(struct Buffer *));
   while (BufferPoolCount < BufferPoolIncrement)
   {
-    newbuf = mutt_buffer_alloc(BufferPoolInitialBufferSize);
+    struct Buffer *newbuf =
+        mutt_buffer_alloc(mutt_buffer_new(), BufferPoolInitialBufferSize);
     BufferPool[BufferPoolCount++] = newbuf;
   }
 }
