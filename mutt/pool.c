@@ -49,8 +49,8 @@ static void increase_buffer_pool(void)
   mutt_mem_realloc(&BufferPool, BufferPoolLen * sizeof(struct Buffer *));
   while (BufferPoolCount < BufferPoolIncrement)
   {
-    struct Buffer *newbuf =
-        mutt_buffer_alloc(mutt_buffer_new(), BufferPoolInitialBufferSize);
+    struct Buffer *newbuf = mutt_buffer_new();
+    mutt_buffer_alloc(newbuf, BufferPoolInitialBufferSize);
     BufferPool[BufferPoolCount++] = newbuf;
   }
 }

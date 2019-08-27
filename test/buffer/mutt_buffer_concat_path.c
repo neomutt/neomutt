@@ -77,17 +77,18 @@ void test_mutt_buffer_concat_path(void)
 
       {
         const char *str = "test";
-        struct Buffer *buf = mutt_buffer_from(str);
-        mutt_buffer_concat_path(buf, concat_test[i][0], concat_test[i][1]);
+        struct Buffer buf = { 0 };
+        mutt_buffer_addstr(&buf, str);
+        mutt_buffer_concat_path(&buf, concat_test[i][0], concat_test[i][1]);
         if (concat_test[i][2])
         {
-          TEST_CHECK(strcmp(mutt_b2s(buf), concat_test[i][2]) == 0);
+          TEST_CHECK(strcmp(mutt_b2s(&buf), concat_test[i][2]) == 0);
         }
         else
         {
-          TEST_CHECK(strcmp(mutt_b2s(buf), str) == 0);
+          TEST_CHECK(strcmp(mutt_b2s(&buf), str) == 0);
         }
-        mutt_buffer_free(&buf);
+        mutt_buffer_dealloc(&buf);
       }
     }
   }

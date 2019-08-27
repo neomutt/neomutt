@@ -3221,27 +3221,28 @@ enum CommandResult mutt_parse_rc_line(/* const */ char *line,
   int i;
   enum CommandResult rc = MUTT_CMD_SUCCESS;
 
-  struct Buffer *expn = mutt_buffer_from(line);
-  expn->dptr = expn->data;
+  struct Buffer expn = { 0 };
+  mutt_buffer_addstr(&expn, line);
+  expn.dptr = expn.data;
 
   *err->data = 0;
 
-  SKIPWS(expn->dptr);
-  while (*expn->dptr != '\0')
+  SKIPWS(expn.dptr);
+  while (*expn.dptr != '\0')
   {
-    if (*expn->dptr == '#')
+    if (*expn.dptr == '#')
       break; /* rest of line is a comment */
-    if (*expn->dptr == ';')
+    if (*expn.dptr == ';')
     {
-      expn->dptr++;
+      expn.dptr++;
       continue;
     }
-    mutt_extract_token(token, expn, MUTT_TOKEN_NO_FLAGS);
+    mutt_extract_token(token, &expn, MUTT_TOKEN_NO_FLAGS);
     for (i = 0; Commands[i].name; i++)
     {
       if (mutt_str_strcmp(token->data, Commands[i].name) == 0)
       {
-        rc = Commands[i].func(token, expn, Commands[i].data, err);
+        rc = Commands[i].func(token, &expn, Commands[i].data, err);
         if (rc != MUTT_CMD_SUCCESS)
         {              /* -1 Error, +1 Finish */
           goto finish; /* Propagate return code */
@@ -3257,7 +3258,7 @@ enum CommandResult mutt_parse_rc_line(/* const */ char *line,
     }
   }
 finish:
-  mutt_buffer_free(&expn);
+  mutt_buffer_dealloc(&expn);
   return rc;
 }
 

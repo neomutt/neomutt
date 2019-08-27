@@ -42,9 +42,10 @@ void test_mutt_buffer_fix_dptr(void)
 
   {
     const char *str = "a quick brown fox";
-    struct Buffer *buf = mutt_buffer_from(str);
-    mutt_buffer_fix_dptr(buf);
-    TEST_CHECK(mutt_buffer_len(buf) == (strlen(str) - 1));
-    mutt_buffer_free(&buf);
+    struct Buffer buf ={ 0 };
+    mutt_buffer_addstr(&buf, str);
+    mutt_buffer_fix_dptr(&buf);
+    TEST_CHECK(mutt_buffer_len(&buf) == (strlen(str)));
+    mutt_buffer_dealloc(&buf);
   }
 }

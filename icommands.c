@@ -79,21 +79,22 @@ enum CommandResult mutt_parse_icommand(/* const */ char *line, struct Buffer *er
   enum CommandResult rc = MUTT_CMD_ERROR;
 
   struct Buffer *token = mutt_buffer_pool_get();
-  struct Buffer *expn = mutt_buffer_from(line);
-  expn->dptr = expn->data;
+  struct Buffer expn = { 0 };
+  mutt_buffer_addstr(&expn, line);
+  expn.dptr = expn.data;
 
   mutt_buffer_reset(err);
 
-  SKIPWS(expn->dptr);
-  while (*expn->dptr != '\0')
+  SKIPWS(expn.dptr);
+  while (*expn.dptr != '\0')
   {
-    mutt_extract_token(token, expn, MUTT_TOKEN_NO_FLAGS);
+    mutt_extract_token(token, &expn, MUTT_TOKEN_NO_FLAGS);
     for (size_t i = 0; ICommandList[i].name; i++)
     {
       if (mutt_str_strcmp(token->data, ICommandList[i].name) != 0)
         continue;
 
-      rc = ICommandList[i].func(token, expn, ICommandList[i].data, err);
+      rc = ICommandList[i].func(token, &expn, ICommandList[i].data, err);
       if (rc != 0)
         goto finish;
 
@@ -103,7 +104,7 @@ enum CommandResult mutt_parse_icommand(/* const */ char *line, struct Buffer *er
 
 finish:
   mutt_buffer_pool_release(&token);
-  mutt_buffer_free(&expn);
+  mutt_buffer_dealloc(&expn);
   return rc;
 }
 

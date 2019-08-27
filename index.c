@@ -2214,7 +2214,8 @@ int mutt_index_menu(void)
       {
         bool cont = false; /* Set if we want to continue instead of break */
 
-        struct Buffer *folderbuf = mutt_buffer_alloc(mutt_buffer_pool_get(), PATH_MAX);
+        struct Buffer *folderbuf = mutt_buffer_pool_get();
+        mutt_buffer_alloc(folderbuf, PATH_MAX);
         struct Mailbox *m = NULL;
         char *cp = NULL;
 #ifdef USE_NNTP

@@ -46,9 +46,10 @@ void test_mutt_buffer_addstr(void)
   }
 
   {
-    struct Buffer *buf = mutt_buffer_from("test");
-    TEST_CHECK(mutt_buffer_addstr(buf, "apple") == 5);
-    TEST_CHECK(strcmp(mutt_b2s(buf), "testapple") == 0);
-    mutt_buffer_free(&buf);
+    struct Buffer buf = { 0 };
+    mutt_buffer_addstr(&buf, "test");
+    TEST_CHECK(mutt_buffer_addstr(&buf, "apple") == 5);
+    TEST_CHECK(strcmp(mutt_b2s(&buf), "testapple") == 0);
+    mutt_buffer_dealloc(&buf);
   }
 }

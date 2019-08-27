@@ -82,26 +82,6 @@ void mutt_buffer_reset(struct Buffer *buf)
 }
 
 /**
- * mutt_buffer_from - Create Buffer from an existing string
- * @param seed String to put in the Buffer
- * @retval ptr  New Buffer
- * @retval NULL Error
- *
- * @note The write pointer is positioned at the end of the string
- */
-struct Buffer *mutt_buffer_from(const char *seed)
-{
-  if (!seed)
-    return NULL;
-
-  struct Buffer *b = mutt_buffer_new();
-  b->data = mutt_str_strdup(seed);
-  b->dsize = mutt_str_strlen(seed);
-  b->dptr = b->data + b->dsize;
-  return b;
-}
-
-/**
  * mutt_buffer_addstr_n - Add a string to a Buffer, expanding it if necessary
  * @param buf Buffer to add to
  * @param s   String to add
@@ -292,29 +272,29 @@ bool mutt_buffer_is_empty(const struct Buffer *buf)
  * mutt_buffer_alloc - Make sure a buffer can store at least new_size bytes
  * @param buf      Buffer to change
  * @param new_size New size
- * @retval buf The buf argument, useful in
- *     struct Buffer *buf = mutt_buffer_alloc(mutt_buffer_new(), 1024);
  */
-struct Buffer *mutt_buffer_alloc(struct Buffer *buf, size_t new_size)
+void mutt_buffer_alloc(struct Buffer *buf, size_t new_size)
 {
-  if (buf)
+  if (!buf)
   {
-    if (!buf->dptr)
-      buf->dptr = buf->data;
-
-    if (new_size > buf->dsize)
-    {
-      size_t offset = (buf->dptr && buf->data) ? buf->dptr - buf->data : 0;
-
-      buf->dsize = new_size;
-      mutt_mem_realloc(&buf->data, buf->dsize);
-      buf->dptr = buf->data + offset;
-      /* This ensures an initially NULL buf->data is now properly terminated. */
-      *buf->dptr = '\0';
-    }
+    return;
   }
 
-  return buf;
+  if (!buf->dptr)
+  {
+    buf->dptr = buf->data;
+  }
+
+  if (new_size > buf->dsize)
+  {
+    size_t offset = (buf->dptr && buf->data) ? buf->dptr - buf->data : 0;
+
+    buf->dsize = new_size;
+    mutt_mem_realloc(&buf->data, buf->dsize);
+    buf->dptr = buf->data + offset;
+    /* This ensures an initially NULL buf->data is now properly terminated. */
+    *buf->dptr = '\0';
+  }
 }
 
 /**

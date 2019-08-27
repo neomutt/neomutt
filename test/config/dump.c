@@ -238,8 +238,10 @@ bool test_dump_config_neo(void)
 
     struct HashElem *he = cs_get_elem(cs, "Banana");
 
-    struct Buffer *buf_val = mutt_buffer_from("yes");
-    struct Buffer *buf_init = mutt_buffer_from("yes");
+    struct Buffer buf_val = { 0 };
+    mutt_buffer_addstr(&buf_val, "yes");
+    struct Buffer buf_init = { 0 };
+    mutt_buffer_addstr(&buf_init, "yes");
 
     FILE *fp = fopen("/dev/null", "w");
     if (!fp)
@@ -247,48 +249,48 @@ bool test_dump_config_neo(void)
 
     // Degenerate tests
 
-    dump_config_neo(NULL, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
+    dump_config_neo(NULL, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp);
     TEST_CHECK_(
         1,
-        "dump_config_neo(NULL, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
-    dump_config_neo(cs, NULL, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
+        "dump_config_neo(NULL, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp)");
+    dump_config_neo(cs, NULL, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp);
     TEST_CHECK_(
         1,
-        "dump_config_neo(cs, NULL, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
-    dump_config_neo(cs, he, NULL, buf_init, CS_DUMP_NO_FLAGS, fp);
+        "dump_config_neo(cs, NULL, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp)");
+    dump_config_neo(cs, he, NULL, &buf_init, CS_DUMP_NO_FLAGS, fp);
     TEST_CHECK_(
-        1, "dump_config_neo(cs, he, NULL, buf_init, CS_DUMP_NO_FLAGS, fp)");
-    dump_config_neo(cs, he, buf_val, NULL, CS_DUMP_NO_FLAGS, fp);
+        1, "dump_config_neo(cs, he, NULL, &buf_init, CS_DUMP_NO_FLAGS, fp)");
+    dump_config_neo(cs, he, &buf_val, NULL, CS_DUMP_NO_FLAGS, fp);
     TEST_CHECK_(1,
-                "dump_config_neo(cs, he, buf_val, NULL, CS_DUMP_NO_FLAGS, fp)");
-    dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, NULL);
+                "dump_config_neo(cs, he, &buf_val, NULL, CS_DUMP_NO_FLAGS, fp)");
+    dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, NULL);
     TEST_CHECK_(
         1,
-        "dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, NULL)");
+        "dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, NULL)");
 
     // Normal tests
 
-    dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
+    dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp);
     TEST_CHECK_(
-        1, "dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
+        1, "dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp)");
 
-    dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_ONLY_CHANGED, fp);
+    dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_ONLY_CHANGED, fp);
     TEST_CHECK_(
         1,
-        "dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_ONLY_CHANGED, fp)");
+        "dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_ONLY_CHANGED, fp)");
 
-    dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_SHOW_DEFAULTS, fp);
-    TEST_CHECK_(1, "dump_config_neo(cs, he, buf_val, buf_init, "
+    dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_SHOW_DEFAULTS, fp);
+    TEST_CHECK_(1, "dump_config_neo(cs, he, &buf_val, &buf_init, "
                    "CS_DUMP_SHOW_DEFAULTS, fp)");
 
     he = mutt_hash_find_elem(cs->hash, "Damson");
-    dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
+    dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp);
     TEST_CHECK_(
-        1, "dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp)");
+        1, "dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp)");
 
     fclose(fp);
-    mutt_buffer_free(&buf_val);
-    mutt_buffer_free(&buf_init);
+    mutt_buffer_dealloc(&buf_val);
+    mutt_buffer_dealloc(&buf_init);
     cs_free(&cs);
   }
 
