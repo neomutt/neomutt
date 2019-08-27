@@ -239,8 +239,8 @@ static int compare_spam(const void *a, const void *b)
 
   /* Firstly, require spam attributes for both msgs */
   /* to compare. Determine which msgs have one.     */
-  ahas = (*ppa)->env && (*ppa)->env->spam;
-  bhas = (*ppb)->env && (*ppb)->env->spam;
+  ahas = (*ppa)->env && mutt_buffer_len(&(*ppa)->env->spam) != 0;
+  bhas = (*ppb)->env && mutt_buffer_len(&(*ppb)->env->spam) != 0;
 
   /* If one msg has spam attr but other does not, sort the one with first. */
   if (ahas && !bhas)
@@ -259,14 +259,14 @@ static int compare_spam(const void *a, const void *b)
 
   /* preliminary numeric examination */
   difference =
-      (strtod((*ppa)->env->spam->data, &aptr) - strtod((*ppb)->env->spam->data, &bptr));
+      (strtod((*ppa)->env->spam.data, &aptr) - strtod((*ppb)->env->spam.data, &bptr));
 
   /* map double into comparison (-1, 0, or 1) */
   result = ((difference < 0.0) ? -1 : (difference > 0.0) ? 1 : 0);
 
   /* If either aptr or bptr is equal to data, there is no numeric    */
   /* value for that spam attribute. In this case, compare lexically. */
-  if ((aptr == (*ppa)->env->spam->data) || (bptr == (*ppb)->env->spam->data))
+  if ((aptr == (*ppa)->env->spam.data) || (bptr == (*ppb)->env->spam.data))
     return SORT_CODE(strcmp(aptr, bptr));
 
   /* Otherwise, we have numeric value for both attrs. If these values */

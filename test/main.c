@@ -71,7 +71,6 @@
   NEOMUTT_TEST_ITEM(test_mutt_buffer_concat_path)                              \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_fix_dptr)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_free)                                     \
-  NEOMUTT_TEST_ITEM(test_mutt_buffer_from)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_init)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_is_empty)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_len)                                      \

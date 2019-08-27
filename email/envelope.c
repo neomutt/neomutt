@@ -30,6 +30,7 @@
 #include "config.h"
 #include <stddef.h>
 #include <stdbool.h>
+#include <string.h>
 #include "mutt/mutt.h"
 #include "address/lib.h"
 #include "envelope.h"
@@ -113,7 +114,7 @@ void mutt_env_free(struct Envelope **p)
   FREE(&(*p)->x_comment_to);
 #endif
 
-  mutt_buffer_free(&(*p)->spam);
+  mutt_buffer_dealloc(&(*p)->spam);
 
   mutt_list_free(&(*p)->references);
   mutt_list_free(&(*p)->in_reply_to);
@@ -153,13 +154,20 @@ void mutt_env_merge(struct Envelope *base, struct Envelope **extra)
 #define MOVE_STAILQ(member)                                                    \
   if (STAILQ_EMPTY(&base->member))                                             \
   {                                                                            \
-    STAILQ_SWAP(&base->member, &((*extra))->member, ListNode);                 \
+    STAILQ_SWAP(&base->member, &(*extra)->member, ListNode);                   \
   }
 
 #define MOVE_ADDRESSLIST(member)                                               \
   if (TAILQ_EMPTY(&base->member))                                              \
   {                                                                            \
-    TAILQ_SWAP(&base->member, &((*extra))->member, Address, entries);          \
+    TAILQ_SWAP(&base->member, &(*extra)->member, Address, entries);            \
+  }
+
+#define MOVE_BUFFER(member)                                                    \
+  if (mutt_buffer_len(&base->member) == 0)                                     \
+  {                                                                            \
+    memcpy(&base->member, &(*extra)->member, sizeof(struct Buffer));           \
+    mutt_buffer_init(&(*extra)->member);                                       \
   }
 
   MOVE_ADDRESSLIST(return_path);
@@ -200,11 +208,14 @@ void mutt_env_merge(struct Envelope *base, struct Envelope **extra)
   }
   /* spam and user headers should never be hashed, and the new envelope may
    * have better values. Use new versions regardless. */
-  mutt_buffer_free(&base->spam);
+  mutt_buffer_dealloc(&base->spam);
   mutt_list_free(&base->userhdrs);
-  MOVE_ELEM(spam);
+  MOVE_BUFFER(spam);
   MOVE_STAILQ(userhdrs);
 #undef MOVE_ELEM
+#undef MOVE_STAILQ
+#undef MOVE_ADDRESSLIST
+#undef MOVE_BUFFER
 
   mutt_env_free(extra);
 }
