@@ -35,7 +35,7 @@ void test_mutt_buffer_strcpy(void)
   }
 
   {
-    struct Buffer buf = { 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     mutt_buffer_strcpy(&buf, NULL);
     TEST_CHECK_(1, "mutt_buffer_strcpy(&buf, NULL)");
   }
@@ -44,7 +44,7 @@ void test_mutt_buffer_strcpy(void)
 
   {
     TEST_CASE("Empty");
-    struct Buffer buf = { 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     mutt_buffer_strcpy(&buf, "");
     TEST_CHECK(strcmp(mutt_b2s(&buf), "") == 0);
     mutt_buffer_dealloc(&buf);
@@ -53,7 +53,7 @@ void test_mutt_buffer_strcpy(void)
   {
     TEST_CASE("String");
     const char *str = "test";
-    struct Buffer buf = { 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     mutt_buffer_strcpy(&buf, str);
     TEST_CHECK(strcmp(mutt_b2s(&buf), str) == 0);
     mutt_buffer_dealloc(&buf);
@@ -63,7 +63,7 @@ void test_mutt_buffer_strcpy(void)
 
   {
     TEST_CASE("Empty");
-    struct Buffer buf = { 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     mutt_buffer_addstr(&buf, "test");
     mutt_buffer_strcpy(&buf, "");
     TEST_CHECK(strcmp(mutt_b2s(&buf), "") == 0);
@@ -73,7 +73,7 @@ void test_mutt_buffer_strcpy(void)
   {
     TEST_CASE("String");
     const char *str = "apple";
-    struct Buffer buf = { 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     mutt_buffer_addstr(&buf, "test");
     mutt_buffer_strcpy(&buf, str);
     TEST_CHECK(strcmp(mutt_b2s(&buf), str) == 0);

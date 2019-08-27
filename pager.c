@@ -2300,7 +2300,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
     (rd.line_info[i].syntax)[0].last = -1;
   }
 
-  struct Buffer helpstr = { 0 };
+  struct Buffer helpstr = mutt_buffer_make(0);
   mutt_compile_help(buf, sizeof(buf), MENU_PAGER, PagerHelp);
   mutt_buffer_strcpy(&helpstr, buf);
   if (IsEmail(extra))

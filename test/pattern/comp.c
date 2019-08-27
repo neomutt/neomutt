@@ -172,8 +172,7 @@ static int cmp_pattern(struct PatternList *p1, struct PatternList *p2)
 
 void test_mutt_pattern_comp(void)
 {
-  struct Buffer err = { 0 };
-  mutt_buffer_alloc(&err, 1024);
+  struct Buffer err = mutt_buffer_make(1024);
 
   { /* empty */
     char *s = "";

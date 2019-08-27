@@ -35,14 +35,14 @@ void test_mutt_buffer_fix_dptr(void)
   }
 
   {
-    struct Buffer buf = { 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     mutt_buffer_fix_dptr(&buf);
     TEST_CHECK(mutt_buffer_len(&buf) == 0);
   }
 
   {
     const char *str = "a quick brown fox";
-    struct Buffer buf ={ 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     mutt_buffer_addstr(&buf, str);
     mutt_buffer_fix_dptr(&buf);
     TEST_CHECK(mutt_buffer_len(&buf) == (strlen(str)));

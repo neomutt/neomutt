@@ -105,7 +105,7 @@ static int lua_mutt_call(lua_State *l)
     mutt_str_strncat(buf, sizeof(buf), " ", 1);
   }
 
-  struct Buffer expn = { 0 };
+  struct Buffer expn = mutt_buffer_make(0);
   expn.data = buf;
   expn.dptr = buf;
   expn.dsize = mutt_str_strlen(buf);
@@ -156,8 +156,7 @@ static int lua_mutt_set(lua_State *l)
   struct ConfigDef *cdef = he->data;
 
   int rc = 0;
-  struct Buffer err = { 0 };
-  mutt_buffer_alloc(&err, 256);
+  struct Buffer err = mutt_buffer_make(256);
 
   switch (DTYPE(cdef->type))
   {
@@ -246,8 +245,7 @@ static int lua_mutt_get(lua_State *l)
     case DT_SORT:
     case DT_STRING:
     {
-      struct Buffer value = { 0 };
-      mutt_buffer_alloc(&value, 256);
+      struct Buffer value = mutt_buffer_make(256);
       int rc = cs_he_string_get(Config, he, &value);
       if (CSR_RESULT(rc) != CSR_SUCCESS)
       {
@@ -255,8 +253,7 @@ static int lua_mutt_get(lua_State *l)
         return -1;
       }
 
-      struct Buffer escaped = { 0 };
-      mutt_buffer_alloc(&escaped, 256);
+      struct Buffer escaped = mutt_buffer_make(256);
       escape_string(&escaped, value.data);
       lua_pushstring(l, escaped.data);
       mutt_buffer_dealloc(&value);

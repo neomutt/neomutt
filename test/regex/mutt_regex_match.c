@@ -9,7 +9,7 @@ static bool test_simple_cases(void)
 {
   log_line(__func__);
 
-  struct Buffer buf = { 0 };
+  struct Buffer buf = mutt_buffer_make(0);
   { /* handle edge cases */
     struct Regex *rx = regex_new("hello bob", 0, &buf);
 
@@ -71,7 +71,7 @@ static bool test_old_implementation(void)
   const char *bob_line = "definitely bob haha";
   const char *not_bob_line = "john dave marty nothing else here";
 
-  struct Buffer buf = { 0 };
+  struct Buffer buf = mutt_buffer_make(0);
   {
     // from: if (regexec(C_PgpGoodSign->regex, bob_line, 0, NULL, 0) == 0)
     //   to: if (mutt_regex_match(C_PgpGoodSign, bob_line))

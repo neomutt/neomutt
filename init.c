@@ -573,7 +573,7 @@ static enum CommandResult parse_replace_list(struct Buffer *buf, struct Buffer *
                                              unsigned long data, struct Buffer *err)
 {
   struct ReplaceList *list = (struct ReplaceList *) data;
-  struct Buffer templ = { 0 };
+  struct Buffer templ = mutt_buffer_make(0);
 
   /* First token is a regex. */
   if (!MoreArgs(s))
@@ -1221,7 +1221,7 @@ static bool is_function(const char *name)
 static enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
                                       unsigned long data, struct Buffer *err)
 {
-  struct Buffer token = { 0 };
+  struct Buffer token = mutt_buffer_make(0);
 
   mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
@@ -2963,9 +2963,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
 {
   char buf[1024];
   int need_pause = 0;
-  struct Buffer err = { 0 };
-
-  mutt_buffer_alloc(&err, 256);
+  struct Buffer err = mutt_buffer_make(256);
 
   mutt_grouplist_init();
   /* reverse alias keys need to be strdup'ed because of idna conversions */
@@ -3221,7 +3219,7 @@ enum CommandResult mutt_parse_rc_line(/* const */ char *line,
   int i;
   enum CommandResult rc = MUTT_CMD_SUCCESS;
 
-  struct Buffer expn = { 0 };
+  struct Buffer expn = mutt_buffer_make(0);
   mutt_buffer_addstr(&expn, line);
   expn.dptr = expn.data;
 
@@ -3270,10 +3268,8 @@ finish:
  */
 int mutt_query_variables(struct ListHead *queries)
 {
-  struct Buffer value = { 0 };
-  mutt_buffer_alloc(&value, 256);
-  struct Buffer tmp = { 0 };
-  mutt_buffer_alloc(&tmp, 256);
+  struct Buffer value = mutt_buffer_make(256);
+  struct Buffer tmp = mutt_buffer_make(256);
   int rc = 0;
 
   struct ListNode *np = NULL;
@@ -3726,8 +3722,7 @@ int mutt_var_value_complete(char *buf, size_t buflen, int pos)
       myvarval = myvar_get(var);
       if (myvarval)
       {
-        struct Buffer pretty = { 0 };
-        mutt_buffer_alloc(&pretty, 256);
+        struct Buffer pretty = mutt_buffer_make(256);
         pretty_var(myvarval, &pretty);
         snprintf(pt, buflen - (pt - buf), "%s=%s", var, pretty.data);
         mutt_buffer_dealloc(&pretty);
@@ -3737,10 +3732,8 @@ int mutt_var_value_complete(char *buf, size_t buflen, int pos)
     }
     else
     {
-      struct Buffer value = { 0 };
-      mutt_buffer_alloc(&value, 256);
-      struct Buffer pretty = { 0 };
-      mutt_buffer_alloc(&pretty, 256);
+      struct Buffer value = mutt_buffer_make(256);
+      struct Buffer pretty = mutt_buffer_make(256);
       int rc = cs_he_string_get(Config, he, &value);
       if (CSR_RESULT(rc) == CSR_SUCCESS)
       {

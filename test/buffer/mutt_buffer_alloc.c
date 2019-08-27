@@ -35,7 +35,7 @@ void test_mutt_buffer_alloc(void)
   }
 
   {
-    struct Buffer buf = { 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     mutt_buffer_alloc(&buf, 10);
     TEST_CHECK_(1, "mutt_buffer_alloc(buf, 10)");
     mutt_buffer_dealloc(&buf);
@@ -47,7 +47,7 @@ void test_mutt_buffer_alloc(void)
 
     for (size_t i = 0; i < mutt_array_size(sizes); i++)
     {
-      struct Buffer buf = { 0 };
+      struct Buffer buf = mutt_buffer_make(0);
       mutt_buffer_alloc(&buf, orig_size);
       TEST_CASE_("%d", sizes[i]);
       mutt_buffer_alloc(&buf, sizes[i]);

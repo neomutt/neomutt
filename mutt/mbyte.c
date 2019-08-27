@@ -432,7 +432,7 @@ int mutt_mb_filter_unprintable(char **s)
   char *p = *s;
   mbstate_t mbstate1, mbstate2;
 
-  struct Buffer buf = { 0 };
+  struct Buffer buf = mutt_buffer_make(0);
   memset(&mbstate1, 0, sizeof(mbstate1));
   memset(&mbstate2, 0, sizeof(mbstate2));
   for (; (k = mbrtowc(&wc, p, MB_LEN_MAX, &mbstate1)); p += k)

@@ -34,7 +34,7 @@ void test_mutt_buffer_add_printf(void)
   }
 
   {
-    struct Buffer buf = { 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     TEST_CHECK(mutt_buffer_add_printf(&buf, NULL) != 0);
   }
 
@@ -42,7 +42,7 @@ void test_mutt_buffer_add_printf(void)
 
   {
     TEST_CASE("Empty");
-    struct Buffer buf = { 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     TEST_CHECK(mutt_buffer_add_printf(&buf, "") == 0);
     TEST_CHECK(strlen(mutt_b2s(&buf)) == 0);
     mutt_buffer_dealloc(&buf);
@@ -51,7 +51,7 @@ void test_mutt_buffer_add_printf(void)
   {
     TEST_CASE("Static");
     const char *str = "apple";
-    struct Buffer buf = { 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     TEST_CHECK(mutt_buffer_add_printf(&buf, str) == 5);
     TEST_CHECK(strcmp(mutt_b2s(&buf), str) == 0);
     mutt_buffer_dealloc(&buf);
@@ -63,7 +63,7 @@ void test_mutt_buffer_add_printf(void)
         "apple banana cherry damson elderberry fig guava hawthorn ilama "
         "jackfruit kumquat lemon mango nectarine olive papaya quince raspberry "
         "strawberry tangerine ugli vanilla wolfberry xigua yew ziziphus";
-    struct Buffer buf = { 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     TEST_CHECK(mutt_buffer_add_printf(&buf, str) == 195);
     TEST_CHECK(strcmp(mutt_b2s(&buf), str) == 0);
     mutt_buffer_dealloc(&buf);
@@ -73,7 +73,7 @@ void test_mutt_buffer_add_printf(void)
     TEST_CASE("Varargs");
     const char *str = "apple";
     const char *result = "app 1234567 3.1416";
-    struct Buffer buf = { 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     TEST_CHECK(mutt_buffer_add_printf(&buf, "%.3s %ld %3.4f", str, 1234567, 3.141592654) == 18);
     TEST_CHECK(strcmp(mutt_b2s(&buf), result) == 0);
     mutt_buffer_dealloc(&buf);
@@ -84,7 +84,7 @@ void test_mutt_buffer_add_printf(void)
   {
     TEST_CASE("Empty");
     const char *str = "test";
-    struct Buffer buf = { 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     mutt_buffer_addstr(&buf, str);
     TEST_CHECK(mutt_buffer_add_printf(&buf, "") == 0);
     TEST_CHECK(strcmp(mutt_b2s(&buf), str) == 0);
@@ -95,7 +95,7 @@ void test_mutt_buffer_add_printf(void)
     TEST_CASE("Static");
     const char *str = "apple";
     const char *result = "testapple";
-    struct Buffer buf = { 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     mutt_buffer_addstr(&buf, "test");
     TEST_CHECK(mutt_buffer_add_printf(&buf, str) == 5);
     TEST_CHECK(strcmp(mutt_b2s(&buf), result) == 0);
@@ -112,7 +112,7 @@ void test_mutt_buffer_add_printf(void)
         "testapple banana cherry damson elderberry fig guava hawthorn ilama "
         "jackfruit kumquat lemon mango nectarine olive papaya quince raspberry "
         "strawberry tangerine ugli vanilla wolfberry xigua yew ziziphus";
-    struct Buffer buf = { 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     mutt_buffer_addstr(&buf, "test");
     TEST_CHECK(mutt_buffer_add_printf(&buf, str) == 195);
     TEST_CHECK(strcmp(mutt_b2s(&buf), result) == 0);
@@ -123,7 +123,7 @@ void test_mutt_buffer_add_printf(void)
     TEST_CASE("Varargs");
     const char *str = "apple";
     const char *result = "testapp 1234567 3.1416";
-    struct Buffer buf = { 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     mutt_buffer_addstr(&buf, "test");
     TEST_CHECK(mutt_buffer_add_printf(&buf, "%.3s %ld %3.4f", str, 1234567, 3.141592654) == 18);
     TEST_CHECK(strcmp(mutt_b2s(&buf), result) == 0);

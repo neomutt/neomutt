@@ -59,7 +59,7 @@ void test_mutt_buffer_concat_path(void)
       TEST_CASE_("DIR: '%s'  FILE: '%s'", NONULL(concat_test[i][0]),
                  NONULL(concat_test[i][1]));
       {
-        struct Buffer buf = { 0 };
+        struct Buffer buf = mutt_buffer_make(0);
         mutt_buffer_concat_path(&buf, concat_test[i][0], concat_test[i][1]);
         if (concat_test[i][2])
         {
@@ -77,7 +77,7 @@ void test_mutt_buffer_concat_path(void)
 
       {
         const char *str = "test";
-        struct Buffer buf = { 0 };
+        struct Buffer buf = mutt_buffer_make(0);
         mutt_buffer_addstr(&buf, str);
         mutt_buffer_concat_path(&buf, concat_test[i][0], concat_test[i][1]);
         if (concat_test[i][2])

@@ -34,14 +34,14 @@ void test_mutt_buffer_addch(void)
   }
 
   {
-    struct Buffer buf = { 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     TEST_CHECK(mutt_buffer_addch(&buf, 'a') == 1);
     TEST_CHECK(strcmp(mutt_b2s(&buf), "a") == 0);
     mutt_buffer_dealloc(&buf);
   }
 
   {
-    struct Buffer buf = { 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     mutt_buffer_addstr(&buf, "test");
     TEST_CHECK(mutt_buffer_addch(&buf, 'a') == 1);
     TEST_CHECK(strcmp(mutt_b2s(&buf), "testa") == 0);

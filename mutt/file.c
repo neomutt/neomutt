@@ -92,8 +92,7 @@ static int mkwrapdir(const char *path, struct Buffer *newfile, struct Buffer *ne
   const char *basename = NULL;
   int rc = 0;
 
-  struct Buffer parent = { 0 };
-  mutt_buffer_alloc(&parent, PATH_MAX);
+  struct Buffer parent = mutt_buffer_make(PATH_MAX);
   mutt_buffer_strcpy(&parent, NONULL(path));
 
   char *p = strrchr(parent.data, '/');
@@ -308,8 +307,7 @@ int mutt_file_symlink(const char *oldpath, const char *newpath)
   }
   else
   {
-    struct Buffer abs_oldpath = { 0 };
-    mutt_buffer_alloc(&abs_oldpath, PATH_MAX);
+    struct Buffer abs_oldpath = mutt_buffer_make(PATH_MAX);
 
     if (!mutt_path_getcwd(&abs_oldpath))
     {
@@ -479,8 +477,7 @@ int mutt_file_rmtree(const char *path)
 
   /* We avoid using the buffer pool for this function, because it
    * invokes recursively to an unknown depth. */
-  struct Buffer cur = { 0 };
-  mutt_buffer_alloc(&cur, PATH_MAX);
+  struct Buffer cur = mutt_buffer_make(PATH_MAX);
 
   while ((de = readdir(dirp)))
   {
@@ -523,8 +520,8 @@ int mutt_file_open(const char *path, int flags)
 
   struct stat osb, nsb;
   int fd;
-  struct Buffer safe_file = { 0 };
-  struct Buffer safe_dir = { 0 };
+  struct Buffer safe_file = mutt_buffer_make(0);
+  struct Buffer safe_dir = mutt_buffer_make(0);
 
   if (flags & O_EXCL)
   {
@@ -1418,8 +1415,7 @@ int mutt_file_check_empty(const char *path)
  */
 void mutt_buffer_file_expand_fmt_quote(struct Buffer *dest, const char *fmt, const char *src)
 {
-  struct Buffer tmp = { 0 };
-  mutt_buffer_alloc(&tmp, PATH_MAX);
+  struct Buffer tmp = mutt_buffer_make(PATH_MAX);
 
   mutt_buffer_quote_filename(&tmp, src, true);
   mutt_file_expand_fmt(dest, fmt, mutt_b2s(&tmp));

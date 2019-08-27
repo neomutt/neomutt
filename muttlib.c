@@ -882,13 +882,13 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
       srccopy[n - 1] = '\0';
 
       /* prepare Buffers */
-      struct Buffer srcbuf = { 0 };
+      struct Buffer srcbuf = mutt_buffer_make(0);
       mutt_buffer_addstr(&srcbuf, srccopy);
       /* note: we are resetting dptr and *reading* from the buffer, so we don't
        * want to use mutt_buffer_reset(). */
       srcbuf.dptr = srcbuf.data;
-      struct Buffer word = { 0 };
-      struct Buffer cmd = { 0 };
+      struct Buffer word = mutt_buffer_make(0);
+      struct Buffer cmd = mutt_buffer_make(0);
 
       /* Iterate expansions across successive arguments */
       do

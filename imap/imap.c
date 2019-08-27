@@ -725,7 +725,7 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
 {
   char c;
   bool r = false;
-  struct Buffer buf = { 0 };
+  struct Buffer buf = { 0 }; // Do not allocate, maybe it won't be used
 
   if (C_DebugLevel >= IMAP_LOG_LTRL)
     mutt_buffer_alloc(&buf, bytes + 10);
@@ -1017,7 +1017,7 @@ int imap_exec_msgset(struct Mailbox *m, const char *pre, const char *post,
   int rc;
   int count = 0;
 
-  struct Buffer cmd = { 0 };
+  struct Buffer cmd = mutt_buffer_make(0);
 
   /* We make a copy of the headers just in case resorting doesn't give
    exactly the original order (duplicate messages?), because other parts of
@@ -1529,7 +1529,7 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
   if (imap_adata_find(dest, &dest_adata, &dest_mdata) < 0)
     return -1;
 
-  struct Buffer sync_cmd = { 0 };
+  struct Buffer sync_cmd = mutt_buffer_make(0);
 
   /* check that the save-to folder is in the same account */
   if (!mutt_account_match(&(adata->conn->account), &(dest_adata->conn->account)))
@@ -2374,7 +2374,7 @@ static int imap_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
   /* Remove old custom flags */
   if (imap_edata_get(e)->flags_remote)
   {
-    struct Buffer cmd = { 0 };
+    struct Buffer cmd = mutt_buffer_make(128); // just a guess
     mutt_buffer_addstr(&cmd, "UID STORE ");
     mutt_buffer_addstr(&cmd, uid);
     mutt_buffer_addstr(&cmd, " -FLAGS.SILENT (");
@@ -2394,7 +2394,7 @@ static int imap_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
   /* Add new custom flags */
   if (buf)
   {
-    struct Buffer cmd = { 0 };
+    struct Buffer cmd = mutt_buffer_make(128); // just a guess
     mutt_buffer_addstr(&cmd, "UID STORE ");
     mutt_buffer_addstr(&cmd, uid);
     mutt_buffer_addstr(&cmd, " +FLAGS.SILENT (");

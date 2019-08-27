@@ -52,6 +52,24 @@ struct Buffer *mutt_buffer_init(struct Buffer *buf)
 }
 
 /**
+ * mutt_buffer_make - Make a new buffer on the stack
+ * @param size Initial size
+ * @retval buf Initialized buffer
+ *
+ * The buffer must be released using mutt_buffer_dealloc
+ */
+struct Buffer mutt_buffer_make(size_t size)
+{
+  struct Buffer buf = { 0 };
+  if (size != 0)
+  {
+    buf.dptr = buf.data = mutt_mem_calloc(1, size);
+    buf.dsize = size;
+  }
+  return buf;
+}
+
+/**
  * mutt_buffer_reset - Reset an existing Buffer
  * @param buf Buffer to reset
  *
@@ -277,6 +295,8 @@ void mutt_buffer_dealloc(struct Buffer *buf)
   if (!buf || !buf->data)
     return;
 
+  buf->dptr = NULL;
+  buf->dsize = 0;
   FREE(&buf->data);
 }
 

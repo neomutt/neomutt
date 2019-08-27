@@ -527,8 +527,7 @@ int imap_hcache_store_uid_seqset(struct ImapMboxData *mdata)
     return -1;
 
   /* The seqset is likely large.  Preallocate to reduce reallocs */
-  struct Buffer b = { 0 };
-  mutt_buffer_alloc(&b, 8192);
+  struct Buffer b = mutt_buffer_make(8192);
   imap_msn_index_to_uid_seqset(&b, mdata);
 
   int rc = mutt_hcache_store_raw(mdata->hcache, "/UIDSEQSET", 10, b.data,

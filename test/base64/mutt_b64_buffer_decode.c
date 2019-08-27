@@ -34,7 +34,7 @@ void test_mutt_b64_buffer_decode(void)
   }
 
   {
-    struct Buffer buf = { 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     TEST_CHECK(mutt_b64_buffer_decode(&buf, NULL) != 0);
   }
 }

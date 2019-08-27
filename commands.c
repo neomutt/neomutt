@@ -842,10 +842,8 @@ void mutt_enter_command(void)
   if ((mutt_get_field(":", buf, sizeof(buf), MUTT_COMMAND) != 0) || !buf[0])
     return;
 
-  struct Buffer err = { 0 };
-  mutt_buffer_alloc(&err, 256);
-  struct Buffer token = { 0 };
-  mutt_buffer_alloc(&token, 256);
+  struct Buffer err = mutt_buffer_make(256);
+  struct Buffer token = mutt_buffer_make(256);
 
   /* check if buf is a valid icommand, else fall back quietly to parse_rc_lines */
   enum CommandResult rc = mutt_parse_icommand(buf, &err);

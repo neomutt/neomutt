@@ -289,7 +289,7 @@ bool cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], 
   if (!cs || !vars)
     return false;
 
-  struct Buffer err = { 0 };
+  struct Buffer err = mutt_buffer_make(0);
 
   bool rc = true;
 

@@ -144,10 +144,8 @@ static void test_parse_set(void)
     "%s inv%s=42", "%s inv%s?", "%s &%s",     "%s &%s=42", "%s &%s?",
   };
 
-  struct Buffer tmp = { 0 };
-  mutt_buffer_alloc(&tmp, 256);
-  struct Buffer err = { 0 };
-  mutt_buffer_alloc(&err, 256);
+  struct Buffer tmp = mutt_buffer_make(256);
+  struct Buffer err = mutt_buffer_make(256);
   char line[64];
 
   for (size_t v = 0; v < mutt_array_size(vars); v++)
@@ -189,8 +187,7 @@ static void reset_tilde(struct ConfigSet *cs)
     "record",     "signature",
   };
 
-  struct Buffer value = { 0 };
-  mutt_buffer_alloc(&value, 256);
+  struct Buffer value = mutt_buffer_make(256);
   for (size_t i = 0; i < mutt_array_size(names); i++)
   {
     struct HashElem *he = cs_get_elem(cs, names[i]);
@@ -444,7 +441,7 @@ int main(int argc, char *argv[], char *envp[])
   int double_dash = argc, nargc = 1;
   int rc = 1;
   bool repeat_error = false;
-  struct Buffer folder = { 0 };
+  struct Buffer folder = mutt_buffer_make(0);
 
   MuttLogger = log_disp_terminal;
 
@@ -742,7 +739,7 @@ int main(int argc, char *argv[], char *envp[])
 
   if (new_magic)
   {
-    struct Buffer err = { 0 };
+    struct Buffer err = mutt_buffer_make(0);
     int r = cs_str_initial_set(Config, "mbox_type", new_magic, &err);
     if (CSR_RESULT(r) != CSR_SUCCESS)
     {

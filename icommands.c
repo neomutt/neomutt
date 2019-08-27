@@ -79,7 +79,7 @@ enum CommandResult mutt_parse_icommand(/* const */ char *line, struct Buffer *er
   enum CommandResult rc = MUTT_CMD_ERROR;
 
   struct Buffer *token = mutt_buffer_pool_get();
-  struct Buffer expn = { 0 };
+  struct Buffer expn = mutt_buffer_make(0);
   mutt_buffer_addstr(&expn, line);
   expn.dptr = expn.data;
 
@@ -158,7 +158,7 @@ static void dump_macro(struct Buffer *buf, struct Mapping *menu, struct Keymap *
   char key_binding[MAX_SEQ];
   km_expand_key(key_binding, MAX_SEQ, map);
 
-  struct Buffer tmp = { 0 };
+  struct Buffer tmp = mutt_buffer_make(0);
   escape_string(&tmp, map->macro);
 
   if (map->desc)
@@ -247,8 +247,7 @@ static enum CommandResult icmd_bind(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_ERROR;
   }
 
-  struct Buffer filebuf = { 0 };
-  mutt_buffer_alloc(&filebuf, 4096);
+  struct Buffer filebuf = mutt_buffer_make(4096);
   if (dump_all || (mutt_str_strcasecmp(buf->data, "all") == 0))
   {
     dump_all_menus(&filebuf, bind);

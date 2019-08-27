@@ -48,6 +48,7 @@ void           mutt_buffer_fix_dptr     (struct Buffer *buf);
 struct Buffer *mutt_buffer_init         (struct Buffer *buf);
 bool           mutt_buffer_is_empty     (const struct Buffer *buf);
 size_t         mutt_buffer_len          (const struct Buffer *buf);
+struct Buffer  mutt_buffer_make         (size_t size);
 void           mutt_buffer_reset        (struct Buffer *buf);
 
 // Functions that APPEND to a Buffer

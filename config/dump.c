@@ -208,12 +208,9 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
 
   bool result = true;
 
-  struct Buffer value = { 0 };
-  mutt_buffer_alloc(&value, 256);
-  struct Buffer initial = { 0 };
-  mutt_buffer_alloc(&initial, 256);
-  struct Buffer tmp = { 0 };
-  mutt_buffer_alloc(&tmp, 256);
+  struct Buffer value = mutt_buffer_make(256);
+  struct Buffer initial = mutt_buffer_make(256);
+  struct Buffer tmp = mutt_buffer_make(256);
 
   for (size_t i = 0; list[i]; i++)
   {

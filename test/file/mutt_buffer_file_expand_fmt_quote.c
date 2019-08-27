@@ -36,14 +36,13 @@ void test_mutt_buffer_file_expand_fmt_quote(void)
   }
 
   {
-    struct Buffer buf = { 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     mutt_buffer_file_expand_fmt_quote(&buf, NULL, "banana");
     TEST_CHECK_(1, "mutt_buffer_file_expand_fmt_quote(&buf, NULL, \"banana\")");
   }
 
   {
-    struct Buffer buf = { 0 };
-    mutt_buffer_alloc(&buf, 32);
+    struct Buffer buf = mutt_buffer_make(32);
     mutt_buffer_file_expand_fmt_quote(&buf, "apple", NULL);
     TEST_CHECK_(1, "mutt_buffer_file_expand_fmt_quote(&buf, \"apple\", NULL)");
     mutt_buffer_dealloc(&buf);
