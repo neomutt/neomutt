@@ -70,11 +70,9 @@
   NEOMUTT_TEST_ITEM(test_mutt_buffer_alloc)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_concat_path)                              \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_fix_dptr)                                 \
-  NEOMUTT_TEST_ITEM(test_mutt_buffer_free)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_init)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_is_empty)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_len)                                      \
-  NEOMUTT_TEST_ITEM(test_mutt_buffer_new)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_pool_free)                                \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_pool_get)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_buffer_pool_release)                             \

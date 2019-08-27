@@ -37,21 +37,6 @@
 #include "string2.h"
 
 /**
- * mutt_buffer_new - Create and initialise a Buffer
- * @retval ptr New Buffer
- *
- * Call mutt_buffer_free() to release the Buffer.
- */
-struct Buffer *mutt_buffer_new(void)
-{
-  struct Buffer *b = mutt_mem_malloc(sizeof(struct Buffer));
-
-  mutt_buffer_init(b);
-
-  return b;
-}
-
-/**
  * mutt_buffer_init - Initialise a new Buffer
  * @param buf Buffer to initialise
  * @retval ptr Initialised Buffer
@@ -105,20 +90,6 @@ size_t mutt_buffer_addstr_n(struct Buffer *buf, const char *s, size_t len)
   buf->dptr += len;
   *(buf->dptr) = '\0';
   return len;
-}
-
-/**
- * mutt_buffer_free - Release a Buffer and its contents
- * @param[out] p Buffer pointer to free and NULL
- */
-void mutt_buffer_free(struct Buffer **p)
-{
-  if (!p || !*p)
-    return;
-
-  FREE(&(*p)->data);
-  /* dptr is just an offset to data and shouldn't be freed */
-  FREE(p);
 }
 
 /**

@@ -45,11 +45,9 @@ BUFFER_OBJS	= test/buffer/mutt_buffer_addch.o \
 		  test/buffer/mutt_buffer_alloc.o \
 		  test/buffer/mutt_buffer_concat_path.o \
 		  test/buffer/mutt_buffer_fix_dptr.o \
-		  test/buffer/mutt_buffer_free.o \
 		  test/buffer/mutt_buffer_init.o \
 		  test/buffer/mutt_buffer_is_empty.o \
 		  test/buffer/mutt_buffer_len.o \
-		  test/buffer/mutt_buffer_new.o \
 		  test/buffer/mutt_buffer_pool_free.o \
 		  test/buffer/mutt_buffer_pool_get.o \
 		  test/buffer/mutt_buffer_pool_release.o \
