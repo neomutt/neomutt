@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2019-08-20 11:00+0100\n"
-"PO-Revision-Date: 2018-10-12 16:29+0200\n"
+"PO-Revision-Date: 2019-08-27 15:16+0200\n"
 "Last-Translator: André Berger <andre.berger@web.de>\n"
 "Language-Team: none\n"
 "Language: de\n"
@@ -5461,11 +5461,11 @@ msgstr "Entferne einen Statusindikator"
 
 #: opcodes.h:165
 msgid "collapse/uncollapse all threads"
-msgstr "Kollabiere/Expandiere alle Diskussionsfäden"
+msgstr "Auf- und Zuklappen aller Diskussionsfäden"
 
 #: opcodes.h:166
 msgid "collapse/uncollapse current thread"
-msgstr "Kollabiere/Expandiere aktuellen Diskussionsfaden"
+msgstr "Auf- und Zuklappen des aktuellen Diskussionsfadens"
 
 #: opcodes.h:167
 msgid "delete messages matching a pattern"
