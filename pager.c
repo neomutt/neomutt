@@ -194,7 +194,7 @@ struct PagerRedrawData
   struct MuttWindow *index_window;
   struct MuttWindow *pager_status_window;
   struct MuttWindow *pager_window;
-  struct Menu *index; /**< the Pager Index (PI) */
+  struct Menu *menu; /**< the Pager Index (PI) */
   regex_t search_re;
   bool search_compiled;
   PagerFlags search_flag;
@@ -2025,31 +2025,31 @@ static void pager_custom_redraw(struct Menu *pager_menu)
 
     if (IsEmail(rd->extra) && (C_PagerIndexLines != 0))
     {
-      if (!rd->index)
+      if (!rd->menu)
       {
         /* only allocate the space if/when we need the index.
          * Initialise the menu as per the main index */
-        rd->index = mutt_menu_new(MENU_MAIN);
-        rd->index->menu_make_entry = index_make_entry;
-        rd->index->menu_color = index_color;
-        rd->index->max = Context ? Context->mailbox->vcount : 0;
-        rd->index->current = rd->extra->email->vnum;
-        rd->index->indexwin = rd->index_window;
-        rd->index->statuswin = rd->index_status_window;
+        rd->menu = mutt_menu_new(MENU_MAIN);
+        rd->menu->menu_make_entry = index_make_entry;
+        rd->menu->menu_color = index_color;
+        rd->menu->max = Context ? Context->mailbox->vcount : 0;
+        rd->menu->current = rd->extra->email->vnum;
+        rd->menu->indexwin = rd->index_window;
+        rd->menu->statuswin = rd->index_status_window;
       }
 
       NORMAL_COLOR;
-      rd->index->pagelen = rd->index_window->rows;
+      rd->menu->pagelen = rd->index_window->rows;
 
       /* some fudge to work out whereabouts the indicator should go */
-      if (rd->index->current - rd->indicator < 0)
-        rd->index->top = 0;
-      else if (rd->index->max - rd->index->current < rd->index->pagelen - rd->indicator)
-        rd->index->top = rd->index->max - rd->index->pagelen;
+      if (rd->menu->current - rd->indicator < 0)
+        rd->menu->top = 0;
+      else if (rd->menu->max - rd->menu->current < rd->menu->pagelen - rd->indicator)
+        rd->menu->top = rd->menu->max - rd->menu->pagelen;
       else
-        rd->index->top = rd->index->current - rd->indicator;
+        rd->menu->top = rd->menu->current - rd->indicator;
 
-      menu_redraw_index(rd->index);
+      menu_redraw_index(rd->menu);
     }
 
     pager_menu->redraw |= REDRAW_BODY | REDRAW_INDEX | REDRAW_STATUS;
@@ -2196,24 +2196,24 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       mutt_draw_statusline(rd->pager_status_window->cols, bn, sizeof(bn));
     }
     NORMAL_COLOR;
-    if (C_TsEnabled && TsSupported && rd->index)
+    if (C_TsEnabled && TsSupported && rd->menu)
     {
-      menu_status_line(buf, sizeof(buf), rd->index, NONULL(C_TsStatusFormat));
+      menu_status_line(buf, sizeof(buf), rd->menu, NONULL(C_TsStatusFormat));
       mutt_ts_status(buf);
-      menu_status_line(buf, sizeof(buf), rd->index, NONULL(C_TsIconFormat));
+      menu_status_line(buf, sizeof(buf), rd->menu, NONULL(C_TsIconFormat));
       mutt_ts_icon(buf);
     }
   }
 
-  if ((pager_menu->redraw & REDRAW_INDEX) && rd->index)
+  if ((pager_menu->redraw & REDRAW_INDEX) && rd->menu)
   {
     /* redraw the pager_index indicator, because the
      * flags for this message might have changed. */
     if (rd->index_window->rows > 0)
-      menu_redraw_current(rd->index);
+      menu_redraw_current(rd->menu);
 
     /* print out the index status bar */
-    menu_status_line(buf, sizeof(buf), rd->index, NONULL(C_StatusFormat));
+    menu_status_line(buf, sizeof(buf), rd->menu, NONULL(C_StatusFormat));
 
     mutt_window_move(rd->index_status_window, 0, 0);
     SET_COLOR(MT_COLOR_STATUS);
@@ -2409,32 +2409,32 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
         if ((check == MUTT_NEW_MAIL) || (check == MUTT_REOPENED))
         {
-          if (rd.index && Context)
+          if (rd.menu && Context)
           {
             /* After the mailbox has been updated,
-             * rd.index->current might be invalid */
-            rd.index->current =
-                MIN(rd.index->current, MAX(Context->mailbox->msg_count - 1, 0));
+             * rd.menu->current might be invalid */
+            rd.menu->current =
+                MIN(rd.menu->current, MAX(Context->mailbox->msg_count - 1, 0));
             index_hint = Context->mailbox
-                             ->emails[Context->mailbox->v2r[rd.index->current]]
+                             ->emails[Context->mailbox->v2r[rd.menu->current]]
                              ->index;
 
             bool q = Context->mailbox->quiet;
             Context->mailbox->quiet = true;
-            update_index(rd.index, Context, check, oldcount, index_hint);
+            update_index(rd.menu, Context, check, oldcount, index_hint);
             Context->mailbox->quiet = q;
 
-            rd.index->max = Context->mailbox->vcount;
+            rd.menu->max = Context->mailbox->vcount;
 
             /* If these header pointers don't match, then our email may have
              * been deleted.  Make the pointer safe, then leave the pager.
              * This have a unpleasant behaviour to close the pager even the
              * deleted message is not the opened one, but at least it's safe. */
             if (extra->email !=
-                Context->mailbox->emails[Context->mailbox->v2r[rd.index->current]])
+                Context->mailbox->emails[Context->mailbox->v2r[rd.menu->current]])
             {
               extra->email =
-                  Context->mailbox->emails[Context->mailbox->v2r[rd.index->current]];
+                  Context->mailbox->emails[Context->mailbox->v2r[rd.menu->current]];
               break;
             }
           }
@@ -2451,7 +2451,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         if (C_NewMailCommand)
         {
           char cmd[1024];
-          menu_status_line(cmd, sizeof(cmd), rd.index, NONULL(C_NewMailCommand));
+          menu_status_line(cmd, sizeof(cmd), rd.menu, NONULL(C_NewMailCommand));
           if (mutt_system(cmd) != 0)
             mutt_error(_("Error running \"%s\""), cmd);
         }
@@ -3108,9 +3108,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
         if (old_PagerIndexLines != C_PagerIndexLines)
         {
-          if (rd.index)
-            mutt_menu_free(&rd.index);
-          rd.index = NULL;
+          mutt_menu_free(&rd.menu);
         }
 
         if ((pager_menu->redraw & REDRAW_FLOW) && (flags & MUTT_PAGER_RETWINCH))
@@ -3582,8 +3580,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   FREE(&rd.line_info);
   mutt_menu_pop_current(pager_menu);
   mutt_menu_free(&pager_menu);
-  if (rd.index)
-    mutt_menu_free(&rd.index);
+  mutt_menu_free(&rd.menu);
 
   mutt_buffer_free(&helpstr);
   mutt_window_free(&rd.index_status_window);
