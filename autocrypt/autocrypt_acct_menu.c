@@ -45,9 +45,9 @@
 #include "opcodes.h"
 
 /**
- * struct Entry - An entry in the Autocrypt account Menu
+ * struct AccountEntry - An entry in the Autocrypt account Menu
  */
-struct Entry
+struct AccountEntry
 {
   int tagged; /* TODO */
   int num;
@@ -99,7 +99,7 @@ static const char *account_format_str(char *dest, size_t destlen, size_t col, in
                                       const char *ifstring, const char *elsestring,
                                       unsigned long data, MuttFormatFlags flags)
 {
-  struct Entry *entry = (struct Entry *) data;
+  struct AccountEntry *entry = (struct AccountEntry *) data;
   char tmp[128];
 
   switch (op)
@@ -157,7 +157,7 @@ static const char *account_format_str(char *dest, size_t destlen, size_t col, in
  */
 static void account_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
-  struct Entry *entry = &((struct Entry *) menu->data)[num];
+  struct AccountEntry *entry = &((struct AccountEntry *) menu->data)[num];
 
   mutt_expando_format(buf, buflen, 0, menu->indexwin->cols,
                       NONULL(C_AutocryptAcctFormat), account_format_str,
@@ -184,7 +184,8 @@ static struct Menu *create_menu(void)
   char *helpstr = mutt_mem_malloc(256);
   menu->help = mutt_compile_help(helpstr, 256, MENU_AUTOCRYPT_ACCT, AutocryptAcctHelp);
 
-  struct Entry *entries = mutt_mem_calloc(num_accounts, sizeof(struct Entry));
+  struct AccountEntry *entries =
+      mutt_mem_calloc(num_accounts, sizeof(struct AccountEntry));
   menu->data = entries;
   menu->max = num_accounts;
 
@@ -213,7 +214,7 @@ static struct Menu *create_menu(void)
  */
 static void free_menu(struct Menu **menu)
 {
-  struct Entry *entries = (struct Entry *) (*menu)->data;
+  struct AccountEntry *entries = (struct AccountEntry *) (*menu)->data;
 
   for (int i = 0; i < (*menu)->max; i++)
   {
@@ -231,7 +232,7 @@ static void free_menu(struct Menu **menu)
  * toggle_active - Toggle whether an Autocrypt account is active
  * @param entry Menu Entry for the account
  */
-static void toggle_active(struct Entry *entry)
+static void toggle_active(struct AccountEntry *entry)
 {
   entry->account->enabled = !entry->account->enabled;
   if (mutt_autocrypt_db_account_update(entry->account) != 0)
@@ -249,7 +250,7 @@ static void toggle_active(struct Entry *entry)
  * toggle_prefer_encrypt - Toggle whether an Autocrypt account prefers encryption
  * @param entry Menu Entry for the account
  */
-static void toggle_prefer_encrypt(struct Entry *entry)
+static void toggle_prefer_encrypt(struct AccountEntry *entry)
 {
   entry->account->prefer_encrypt = !entry->account->prefer_encrypt;
   if (mutt_autocrypt_db_account_update(entry->account))
@@ -294,7 +295,7 @@ void mutt_autocrypt_account_menu(void)
       case OP_AUTOCRYPT_DELETE_ACCT:
         if (menu->data)
         {
-          struct Entry *entry = (struct Entry *) (menu->data) + menu->current;
+          struct AccountEntry *entry = (struct AccountEntry *) (menu->data) + menu->current;
           char msg[128];
           snprintf(msg, sizeof(msg),
                    // L10N: Confirmation message when deleting an autocrypt account
@@ -313,7 +314,7 @@ void mutt_autocrypt_account_menu(void)
       case OP_AUTOCRYPT_TOGGLE_ACTIVE:
         if (menu->data)
         {
-          struct Entry *entry = (struct Entry *) (menu->data) + menu->current;
+          struct AccountEntry *entry = (struct AccountEntry *) (menu->data) + menu->current;
           toggle_active(entry);
           menu->redraw |= REDRAW_FULL;
         }
@@ -322,7 +323,7 @@ void mutt_autocrypt_account_menu(void)
       case OP_AUTOCRYPT_TOGGLE_PREFER:
         if (menu->data)
         {
-          struct Entry *entry = (struct Entry *) (menu->data) + menu->current;
+          struct AccountEntry *entry = (struct AccountEntry *) (menu->data) + menu->current;
           toggle_prefer_encrypt(entry);
           menu->redraw |= REDRAW_FULL;
         }

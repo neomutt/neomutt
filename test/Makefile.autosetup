@@ -349,11 +349,6 @@ RFC2047_OBJS	= test/rfc2047/common.o \
 RFC2231_OBJS	= test/rfc2231/rfc2231_encode_string.o \
 		  test/rfc2231/rfc2231_decode_parameters.o
 
-SHA1_OBJS	= test/sha1/mutt_sha1_final.o \
-		  test/sha1/mutt_sha1_init.o \
-		  test/sha1/mutt_sha1_transform.o \
-		  test/sha1/mutt_sha1_update.o
-
 SIGNAL_OBJS	= test/signal/mutt_sig_allow_interrupt.o \
 		  test/signal/mutt_sig_block.o \
 		  test/signal/mutt_sig_block_system.o \
@@ -441,8 +436,8 @@ BUILD_DIRS	= $(PWD)/test/address $(PWD)/test/attach $(PWD)/test/base64 \
 		  $(PWD)/test/md5 $(PWD)/test/memory $(PWD)/test/parameter \
 		  $(PWD)/test/parse $(PWD)/test/path $(PWD)/test/pattern \
 		  $(PWD)/test/regex $(PWD)/test/rfc2047 $(PWD)/test/rfc2231 \
-		  $(PWD)/test/sha1 $(PWD)/test/signal $(PWD)/test/string \
-		  $(PWD)/test/tags $(PWD)/test/thread $(PWD)/test/url
+		  $(PWD)/test/signal $(PWD)/test/string $(PWD)/test/tags \
+		  $(PWD)/test/thread $(PWD)/test/url
 
 TEST_OBJS	= test/main.o \
 		  $(ADDRESS_OBJS) \
@@ -475,7 +470,6 @@ TEST_OBJS	= test/main.o \
 		  $(REGEX_OBJS) \
 		  $(RFC2047_OBJS) \
 		  $(RFC2231_OBJS) \
-		  $(SHA1_OBJS) \
 		  $(SIGNAL_OBJS) \
 		  $(STRING_OBJS) \
 		  $(TAGS_OBJS) \

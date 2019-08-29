@@ -47,7 +47,6 @@
  * | mutt/path.c      | @subpage path      |
  * | mutt/pool.c      | @subpage pool      |
  * | mutt/regex.c     | @subpage regex     |
- * | mutt/sha1.c      | @subpage sha1      |
  * | mutt/slist.c     | @subpage slist     |
  * | mutt/signal.c    | @subpage signal    |
  * | mutt/string.c    | @subpage string    |
@@ -82,7 +81,6 @@
 #include "path.h"
 #include "pool.h"
 #include "regex3.h"
-#include "sha1.h"
 #include "signal2.h"
 #include "slist.h"
 #include "string2.h"

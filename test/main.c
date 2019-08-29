@@ -337,10 +337,6 @@
   NEOMUTT_TEST_ITEM(test_rfc2047_encode_envelope)                              \
   NEOMUTT_TEST_ITEM(test_rfc2231_decode_parameters)                            \
   NEOMUTT_TEST_ITEM(test_rfc2231_encode_string)                                \
-  NEOMUTT_TEST_ITEM(test_mutt_sha1_final)                                      \
-  NEOMUTT_TEST_ITEM(test_mutt_sha1_init)                                       \
-  NEOMUTT_TEST_ITEM(test_mutt_sha1_transform)                                  \
-  NEOMUTT_TEST_ITEM(test_mutt_sha1_update)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_sig_allow_interrupt)                             \
   NEOMUTT_TEST_ITEM(test_mutt_sig_block)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_sig_block_system)                                \

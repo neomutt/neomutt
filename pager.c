@@ -122,9 +122,9 @@ struct QClass
 };
 
 /**
- * struct Syntax - Highlighting for a line of text
+ * struct TextSyntax - Highlighting for a line of text
  */
-struct Syntax
+struct TextSyntax
 {
   int color;
   int first;
@@ -141,8 +141,8 @@ struct Line
   short continuation;
   short chunks;
   short search_cnt;
-  struct Syntax *syntax;
-  struct Syntax *search;
+  struct TextSyntax *syntax;
+  struct TextSyntax *search;
   struct QClass *quote;
   unsigned int is_cont_hdr; /**< this line is a continuation of the previous header line */
 };
@@ -194,7 +194,7 @@ struct PagerRedrawData
   struct MuttWindow *index_window;
   struct MuttWindow *pager_status_window;
   struct MuttWindow *pager_window;
-  struct Menu *index; /**< the Pager Index (PI) */
+  struct Menu *menu; /**< the Pager Index (PI) */
   regex_t search_re;
   bool search_compiled;
   PagerFlags search_flag;
@@ -341,7 +341,7 @@ static int check_sig(const char *s, struct Line *info, int n)
 static int comp_syntax_t(const void *m1, const void *m2)
 {
   const int *cnt = (const int *) m1;
-  const struct Syntax *stx = (const struct Syntax *) m2;
+  const struct TextSyntax *stx = (const struct TextSyntax *) m2;
 
   if (*cnt < stx->first)
     return -1;
@@ -367,7 +367,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt,
   static int last_color; /* last color set */
   bool search = false;
   int m;
-  struct Syntax *matching_chunk = NULL;
+  struct TextSyntax *matching_chunk = NULL;
 
   if (cnt == 0)
     last_color = -1; /* force attrset() */
@@ -416,7 +416,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt,
   if ((flags & MUTT_SHOWCOLOR) && line_info[m].chunks)
   {
     matching_chunk = bsearch(&cnt, line_info[m].syntax, line_info[m].chunks,
-                             sizeof(struct Syntax), comp_syntax_t);
+                             sizeof(struct TextSyntax), comp_syntax_t);
     if (matching_chunk && (cnt >= matching_chunk->first) &&
         (cnt < matching_chunk->last))
     {
@@ -427,7 +427,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt,
   if ((flags & MUTT_SEARCH) && line_info[m].search_cnt)
   {
     matching_chunk = bsearch(&cnt, line_info[m].search, line_info[m].search_cnt,
-                             sizeof(struct Syntax), comp_syntax_t);
+                             sizeof(struct TextSyntax), comp_syntax_t);
     if (matching_chunk && (cnt >= matching_chunk->first) &&
         (cnt < matching_chunk->last))
     {
@@ -1073,7 +1073,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
       if (line_info[i].chunks)
       {
         line_info[i].chunks = 0;
-        mutt_mem_realloc(&(line_info[n].syntax), sizeof(struct Syntax));
+        mutt_mem_realloc(&(line_info[n].syntax), sizeof(struct TextSyntax));
       }
       line_info[i++].type = MT_COLOR_SIGNATURE;
     }
@@ -1144,7 +1144,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
               if (++(line_info[n].chunks) > 1)
               {
                 mutt_mem_realloc(&(line_info[n].syntax),
-                                 (line_info[n].chunks) * sizeof(struct Syntax));
+                                 (line_info[n].chunks) * sizeof(struct TextSyntax));
               }
             }
             i = line_info[n].chunks - 1;
@@ -1214,7 +1214,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
               if (++(line_info[n].chunks) > 1)
               {
                 mutt_mem_realloc(&(line_info[n].syntax),
-                                 (line_info[n].chunks) * sizeof(struct Syntax));
+                                 (line_info[n].chunks) * sizeof(struct TextSyntax));
               }
             }
             i = line_info[n].chunks - 1;
@@ -1664,7 +1664,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
       memset(&((*line_info)[ch]), 0, sizeof(struct Line));
       (*line_info)[ch].type = -1;
       (*line_info)[ch].search_cnt = -1;
-      (*line_info)[ch].syntax = mutt_mem_malloc(sizeof(struct Syntax));
+      (*line_info)[ch].syntax = mutt_mem_malloc(sizeof(struct TextSyntax));
       ((*line_info)[ch].syntax)[0].first = -1;
       ((*line_info)[ch].syntax)[0].last = -1;
     }
@@ -1760,10 +1760,10 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
       if (++((*line_info)[n].search_cnt) > 1)
       {
         mutt_mem_realloc(&((*line_info)[n].search),
-                         ((*line_info)[n].search_cnt) * sizeof(struct Syntax));
+                         ((*line_info)[n].search_cnt) * sizeof(struct TextSyntax));
       }
       else
-        (*line_info)[n].search = mutt_mem_malloc(sizeof(struct Syntax));
+        (*line_info)[n].search = mutt_mem_malloc(sizeof(struct TextSyntax));
       pmatch[0].rm_so += offset;
       pmatch[0].rm_eo += offset;
       ((*line_info)[n].search)[(*line_info)[n].search_cnt - 1].first = pmatch[0].rm_so;
@@ -2025,31 +2025,31 @@ static void pager_custom_redraw(struct Menu *pager_menu)
 
     if (IsEmail(rd->extra) && (C_PagerIndexLines != 0))
     {
-      if (!rd->index)
+      if (!rd->menu)
       {
         /* only allocate the space if/when we need the index.
          * Initialise the menu as per the main index */
-        rd->index = mutt_menu_new(MENU_MAIN);
-        rd->index->menu_make_entry = index_make_entry;
-        rd->index->menu_color = index_color;
-        rd->index->max = Context ? Context->mailbox->vcount : 0;
-        rd->index->current = rd->extra->email->vnum;
-        rd->index->indexwin = rd->index_window;
-        rd->index->statuswin = rd->index_status_window;
+        rd->menu = mutt_menu_new(MENU_MAIN);
+        rd->menu->menu_make_entry = index_make_entry;
+        rd->menu->menu_color = index_color;
+        rd->menu->max = Context ? Context->mailbox->vcount : 0;
+        rd->menu->current = rd->extra->email->vnum;
+        rd->menu->indexwin = rd->index_window;
+        rd->menu->statuswin = rd->index_status_window;
       }
 
       NORMAL_COLOR;
-      rd->index->pagelen = rd->index_window->rows;
+      rd->menu->pagelen = rd->index_window->rows;
 
       /* some fudge to work out whereabouts the indicator should go */
-      if (rd->index->current - rd->indicator < 0)
-        rd->index->top = 0;
-      else if (rd->index->max - rd->index->current < rd->index->pagelen - rd->indicator)
-        rd->index->top = rd->index->max - rd->index->pagelen;
+      if (rd->menu->current - rd->indicator < 0)
+        rd->menu->top = 0;
+      else if (rd->menu->max - rd->menu->current < rd->menu->pagelen - rd->indicator)
+        rd->menu->top = rd->menu->max - rd->menu->pagelen;
       else
-        rd->index->top = rd->index->current - rd->indicator;
+        rd->menu->top = rd->menu->current - rd->indicator;
 
-      menu_redraw_index(rd->index);
+      menu_redraw_index(rd->menu);
     }
 
     pager_menu->redraw |= REDRAW_BODY | REDRAW_INDEX | REDRAW_STATUS;
@@ -2076,7 +2076,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
         rd->line_info[i].search_cnt = -1;
         rd->line_info[i].quote = NULL;
 
-        mutt_mem_realloc(&(rd->line_info[i].syntax), sizeof(struct Syntax));
+        mutt_mem_realloc(&(rd->line_info[i].syntax), sizeof(struct TextSyntax));
         if (rd->search_compiled && rd->line_info[i].search)
           FREE(&(rd->line_info[i].search));
       }
@@ -2196,24 +2196,24 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       mutt_draw_statusline(rd->pager_status_window->cols, bn, sizeof(bn));
     }
     NORMAL_COLOR;
-    if (C_TsEnabled && TsSupported && rd->index)
+    if (C_TsEnabled && TsSupported && rd->menu)
     {
-      menu_status_line(buf, sizeof(buf), rd->index, NONULL(C_TsStatusFormat));
+      menu_status_line(buf, sizeof(buf), rd->menu, NONULL(C_TsStatusFormat));
       mutt_ts_status(buf);
-      menu_status_line(buf, sizeof(buf), rd->index, NONULL(C_TsIconFormat));
+      menu_status_line(buf, sizeof(buf), rd->menu, NONULL(C_TsIconFormat));
       mutt_ts_icon(buf);
     }
   }
 
-  if ((pager_menu->redraw & REDRAW_INDEX) && rd->index)
+  if ((pager_menu->redraw & REDRAW_INDEX) && rd->menu)
   {
     /* redraw the pager_index indicator, because the
      * flags for this message might have changed. */
     if (rd->index_window->rows > 0)
-      menu_redraw_current(rd->index);
+      menu_redraw_current(rd->menu);
 
     /* print out the index status bar */
-    menu_status_line(buf, sizeof(buf), rd->index, NONULL(C_StatusFormat));
+    menu_status_line(buf, sizeof(buf), rd->menu, NONULL(C_StatusFormat));
 
     mutt_window_move(rd->index_status_window, 0, 0);
     SET_COLOR(MT_COLOR_STATUS);
@@ -2296,7 +2296,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   {
     rd.line_info[i].type = -1;
     rd.line_info[i].search_cnt = -1;
-    rd.line_info[i].syntax = mutt_mem_malloc(sizeof(struct Syntax));
+    rd.line_info[i].syntax = mutt_mem_malloc(sizeof(struct TextSyntax));
     (rd.line_info[i].syntax)[0].first = -1;
     (rd.line_info[i].syntax)[0].last = -1;
   }
@@ -2409,32 +2409,32 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
         if ((check == MUTT_NEW_MAIL) || (check == MUTT_REOPENED))
         {
-          if (rd.index && Context)
+          if (rd.menu && Context)
           {
             /* After the mailbox has been updated,
-             * rd.index->current might be invalid */
-            rd.index->current =
-                MIN(rd.index->current, MAX(Context->mailbox->msg_count - 1, 0));
+             * rd.menu->current might be invalid */
+            rd.menu->current =
+                MIN(rd.menu->current, MAX(Context->mailbox->msg_count - 1, 0));
             index_hint = Context->mailbox
-                             ->emails[Context->mailbox->v2r[rd.index->current]]
+                             ->emails[Context->mailbox->v2r[rd.menu->current]]
                              ->index;
 
             bool q = Context->mailbox->quiet;
             Context->mailbox->quiet = true;
-            update_index(rd.index, Context, check, oldcount, index_hint);
+            update_index(rd.menu, Context, check, oldcount, index_hint);
             Context->mailbox->quiet = q;
 
-            rd.index->max = Context->mailbox->vcount;
+            rd.menu->max = Context->mailbox->vcount;
 
             /* If these header pointers don't match, then our email may have
              * been deleted.  Make the pointer safe, then leave the pager.
              * This have a unpleasant behaviour to close the pager even the
              * deleted message is not the opened one, but at least it's safe. */
             if (extra->email !=
-                Context->mailbox->emails[Context->mailbox->v2r[rd.index->current]])
+                Context->mailbox->emails[Context->mailbox->v2r[rd.menu->current]])
             {
               extra->email =
-                  Context->mailbox->emails[Context->mailbox->v2r[rd.index->current]];
+                  Context->mailbox->emails[Context->mailbox->v2r[rd.menu->current]];
               break;
             }
           }
@@ -2451,7 +2451,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         if (C_NewMailCommand)
         {
           char cmd[1024];
-          menu_status_line(cmd, sizeof(cmd), rd.index, NONULL(C_NewMailCommand));
+          menu_status_line(cmd, sizeof(cmd), rd.menu, NONULL(C_NewMailCommand));
           if (mutt_system(cmd) != 0)
             mutt_error(_("Error running \"%s\""), cmd);
         }
@@ -3108,9 +3108,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
         if (old_PagerIndexLines != C_PagerIndexLines)
         {
-          if (rd.index)
-            mutt_menu_free(&rd.index);
-          rd.index = NULL;
+          mutt_menu_free(&rd.menu);
         }
 
         if ((pager_menu->redraw & REDRAW_FLOW) && (flags & MUTT_PAGER_RETWINCH))
@@ -3582,8 +3580,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   FREE(&rd.line_info);
   mutt_menu_pop_current(pager_menu);
   mutt_menu_free(&pager_menu);
-  if (rd.index)
-    mutt_menu_free(&rd.index);
+  mutt_menu_free(&rd.menu);
 
   mutt_buffer_free(&helpstr);
   mutt_window_free(&rd.index_status_window);
