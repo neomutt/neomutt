@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,26 +28,35 @@
 
 /* These Config Variables are only used in progress.c */
 extern short C_TimeInc;
+extern short C_ReadInc;
+extern short C_WriteInc;
+extern short C_NetInc;
 
-#define MUTT_PROGRESS_SIZE (1 << 0) /**< traffic-based progress */
-#define MUTT_PROGRESS_MSG  (1 << 1) /**< message-based progress */
+/**
+ * Enum ProgressType - What kind of operation is this progress tracking?
+ */
+enum ProgressType
+{
+  MUTT_PROGRESS_READ,  ///< Progress tracks elements, according to C_ReadInc
+  MUTT_PROGRESS_WRITE, ///< Progress tracks elements, according to C_WriteInc
+  MUTT_PROGRESS_NET    ///< Progress tracks bytes, according to C_NetInc
+};
 
 /**
  * struct Progress - A progress bar
  */
 struct Progress
 {
-  unsigned short inc;
-  unsigned short flags;
   char msg[1024];
-  long pos;
-  size_t size;
-  unsigned int timestamp;
   char sizestr[128];
+  size_t pos;
+  size_t size;
+  size_t inc;
+  long timestamp;
+  bool is_bytes;
 };
 
-void mutt_progress_init(struct Progress *progress, const char *msg,
-                        unsigned short flags, unsigned short inc, size_t size);
-void mutt_progress_update(struct Progress *progress, long pos, int percent);
+void mutt_progress_init(struct Progress *progress, const char *msg, enum ProgressType type, size_t size);
+void mutt_progress_update(struct Progress *progress, size_t pos, int percent);
 
 #endif /* MUTT_PROGRESS_H */

@@ -129,9 +129,6 @@ WHERE long C_HeaderCachePagesize;            ///< Config: (hcache) Database page
 #endif /* HAVE_GDBM || HAVE_BDB */
 #endif /* USE_HCACHE */
 
-#ifdef USE_SOCKET
-WHERE short C_NetInc;                        ///< Config: (socket) Update the progress bar after this many KB sent/received (0 to disable)
-#endif /* USE_SOCKET */
 
 #ifdef USE_NNTP
 WHERE char *C_NewsServer;                    ///< Config: (nntp) Url of the news server
@@ -155,11 +152,9 @@ WHERE char *C_TsStatusFormat;                ///< Config: printf-like format str
 WHERE char *C_TsIconFormat;                  ///< Config: printf-like format string for the terminal's icon title
 WHERE char *C_Visual;                        ///< Config: Editor to use when '~v' is given in the built-in editor
 
-WHERE short C_ReadInc;                       ///< Config: Update the progress bar after this many records read (0 to disable)
 WHERE short C_SleepTime;                     ///< Config: Time to pause after certain info messages
 WHERE short C_Timeout;                       ///< Config: Time to wait for user input in menus
 WHERE short C_Wrap;                          ///< Config: Width to wrap text in the pager
-WHERE short C_WriteInc;                      ///< Config: Update the progress bar after this many records written (0 to disable)
 
 #ifdef USE_SIDEBAR
 WHERE short C_SidebarWidth;                  ///< Config: (sidebar) Width of the sidebar

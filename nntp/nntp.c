@@ -876,7 +876,7 @@ static int nntp_fetch_lines(struct NntpMboxData *mdata, char *query, size_t qlen
     struct Progress progress;
 
     if (msg)
-      mutt_progress_init(&progress, msg, MUTT_PROGRESS_MSG, C_ReadInc, 0);
+      mutt_progress_init(&progress, msg, MUTT_PROGRESS_READ, 0);
 
     mutt_str_strfcpy(buf, query, sizeof(buf));
     if (nntp_query(mdata, buf, sizeof(buf)) < 0)
@@ -1330,7 +1330,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
   if (!m->quiet)
   {
     mutt_progress_init(&fc.progress, _("Fetching message headers..."),
-                       MUTT_PROGRESS_MSG, C_ReadInc, last - first + 1);
+                       MUTT_PROGRESS_READ, last - first + 1);
   }
   for (current = first; current <= last && rc == 0; current++)
   {
@@ -2193,7 +2193,7 @@ int nntp_check_new_groups(struct Mailbox *m, struct NntpAccountData *adata)
       struct Progress progress;
 
       mutt_progress_init(&progress, _("Loading descriptions..."),
-                         MUTT_PROGRESS_MSG, C_ReadInc, adata->groups_num - i);
+                         MUTT_PROGRESS_READ, adata->groups_num - i);
       for (i = groups_num; i < adata->groups_num; i++)
       {
         struct NntpMboxData *mdata = adata->groups_list[i];

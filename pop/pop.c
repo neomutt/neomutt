@@ -426,7 +426,7 @@ static int pop_fetch_headers(struct Mailbox *m)
   if (!m->quiet)
   {
     mutt_progress_init(&progress, _("Fetching message headers..."),
-                       MUTT_PROGRESS_MSG, C_ReadInc, new_count - old_count);
+                       MUTT_PROGRESS_READ, new_count - old_count);
   }
 
   if (rc == 0)
@@ -958,7 +958,7 @@ static int pop_mbox_sync(struct Mailbox *m, int *index_hint)
       return -1;
 
     mutt_progress_init(&progress, _("Marking messages deleted..."),
-                       MUTT_PROGRESS_MSG, C_WriteInc, num_deleted);
+                       MUTT_PROGRESS_WRITE, num_deleted);
 
 #ifdef USE_HCACHE
     hc = pop_hcache_open(adata, mailbox_path(m));
@@ -1105,8 +1105,8 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
       return -1;
     }
 
-    mutt_progress_init(&progress, _("Fetching message..."), MUTT_PROGRESS_SIZE,
-                       C_NetInc, e->content->length + e->content->offset - 1);
+    mutt_progress_init(&progress, _("Fetching message..."), MUTT_PROGRESS_NET,
+                       e->content->length + e->content->offset - 1);
 
     /* see if we can put in body cache; use our cache as fallback */
     msg->fp = mutt_bcache_put(adata->bcache, cache_id(edata->uid));

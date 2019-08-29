@@ -2059,8 +2059,8 @@ int mutt_index_menu(void)
 
           if (!Context->mailbox->quiet)
           {
-            mutt_progress_init(&progress, _("Update tags..."), MUTT_PROGRESS_MSG,
-                               1, Context->mailbox->msg_tagged);
+            mutt_progress_init(&progress, _("Update tags..."),
+                               MUTT_PROGRESS_WRITE, Context->mailbox->msg_tagged);
           }
 
 #ifdef USE_NOTMUCH

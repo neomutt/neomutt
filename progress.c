@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -42,6 +43,9 @@
 
 /* These Config Variables are only used in progress.c */
 short C_TimeInc; ///< Config: Frequency of progress bar updates (milliseconds)
+short C_ReadInc; ///< Config: Update the progress bar after this many records read (0 to disable)
+short C_WriteInc; ///< Config: Update the progress bar after this many records written (0 to disable)
+short C_NetInc; ///< Config: (socket) Update the progress bar after this many KB sent/received (0 to disable)
 
 /**
  * message_bar - Draw a colourful progress bar
@@ -105,31 +109,75 @@ static void message_bar(int percent, const char *fmt, ...)
 }
 
 /**
+ * progress_choose_increment - Choose the right increment given a ProgressType
+ * @param type ProgressType
+ * @retval Increment value
+ */
+static size_t progress_choose_increment(enum ProgressType type)
+{
+  static short zero = 0;
+  static short *incs[] = { &zero, &C_ReadInc, &C_WriteInc, &C_NetInc };
+  return (type < 0 || type > mutt_array_size(incs) - 1) ? 0 : *incs[type];
+}
+
+/**
+ * progress_pos_needs_update - Do we need to update, given the current pos?
+ * @param progress Progress
+ * @param pos      Current pos
+ * @retval bool Progress needs an update.
+ */
+static bool progress_pos_needs_update(const struct Progress *progress, long pos)
+{
+  const unsigned shift = progress->is_bytes ? 10 : 0;
+  return pos >= (progress->pos + (progress->inc << shift));
+}
+
+/**
+ * progress_time_needs_update - Do we need to update, given the current time?
+ * @param progress Progress
+ * @param now      Current time
+ * @retval bool Progress needs an update.
+ */
+static bool progress_time_needs_update(const struct Progress *progress, size_t now)
+{
+  const size_t elapsed = (now - progress->timestamp);
+  return (C_TimeInc == 0) || (now < progress->timestamp) || (C_TimeInc < elapsed);
+}
+
+/**
+ * progress_timestamp - Return the number of milliseconds since the Unix epoch
+ * @retval ms Milliseconds since the Unix epoch
+ */
+static size_t progress_timestamp(void)
+{
+  struct timeval tv = { 0, 0 };
+  gettimeofday(&tv, NULL);
+  return tv.tv_sec * 1000 + tv.tv_usec / 1000;
+}
+
+/**
  * mutt_progress_init - Set up a progress bar
  * @param progress Progress bar
  * @param msg      Message to display; this is copied into the Progress object
- * @param flags    Flags, e.g. #MUTT_PROGRESS_SIZE
- * @param inc      Increments to display (0 disables updates)
+ * @param type     Type, e.g. #MUTT_PROGRESS_READ
  * @param size     Total size of expected file / traffic
  */
 void mutt_progress_init(struct Progress *progress, const char *msg,
-                        unsigned short flags, unsigned short inc, size_t size)
+                        enum ProgressType type, size_t size)
 {
   if (!progress)
     return;
   if (OptNoCurses)
     return;
 
-  struct timeval tv = { 0, 0 };
-
   memset(progress, 0, sizeof(struct Progress));
-  progress->inc = inc;
-  progress->flags = flags;
   mutt_str_strfcpy(progress->msg, msg, sizeof(progress->msg));
+  progress->inc = progress_choose_increment(type);
+  progress->is_bytes = (type == MUTT_PROGRESS_NET);
   progress->size = size;
   if (progress->size != 0)
   {
-    if (progress->flags & MUTT_PROGRESS_SIZE)
+    if (progress->is_bytes)
     {
       mutt_str_pretty_size(progress->sizestr, sizeof(progress->sizestr),
                            progress->size);
@@ -137,22 +185,15 @@ void mutt_progress_init(struct Progress *progress, const char *msg,
     else
       snprintf(progress->sizestr, sizeof(progress->sizestr), "%zu", progress->size);
   }
-  if (inc == 0)
+  if (progress->inc == 0)
   {
     if (size != 0)
-      mutt_message("%s (%s)", msg, progress->sizestr);
+      mutt_message("%s (%s)", progress->msg, progress->sizestr);
     else
-      mutt_message(msg);
+      mutt_message(progress->msg);
     return;
   }
-  if (gettimeofday(&tv, NULL) < 0)
-    mutt_debug(LL_DEBUG1, "gettimeofday failed: %d\n", errno);
-  /* if timestamp is 0 no time-based suppression is done */
-  if (C_TimeInc != 0)
-  {
-    progress->timestamp =
-        ((unsigned int) tv.tv_sec * 1000) + (unsigned int) (tv.tv_usec / 1000);
-  }
+
   mutt_progress_update(progress, 0, 0);
 }
 
@@ -169,64 +210,43 @@ void mutt_progress_init(struct Progress *progress, const char *msg,
  * percentage is calculated from progress->size and pos if progress
  * was initialized with positive size, otherwise no percentage is shown
  */
-void mutt_progress_update(struct Progress *progress, long pos, int percent)
+void mutt_progress_update(struct Progress *progress, size_t pos, int percent)
 {
-  char posstr[128];
-  bool update = false;
-  struct timeval tv = { 0, 0 };
-  unsigned int now = 0;
-
   if (OptNoCurses)
     return;
 
-  if (progress->inc == 0)
-    goto out;
+  const size_t now = progress_timestamp();
 
-  /* refresh if size > inc */
-  if ((progress->flags & MUTT_PROGRESS_SIZE) &&
-      (pos >= (progress->pos + (progress->inc << 10))))
+  const bool update = (pos == 0) /* always show the first update */ ||
+                      (progress_pos_needs_update(progress, pos) &&
+                       progress_time_needs_update(progress, now));
+
+  if (progress->inc != 0 && update)
   {
-    update = true;
-  }
-  else if (pos >= (progress->pos + progress->inc))
-    update = true;
+    progress->pos = pos;
+    progress->timestamp = now;
 
-  /* skip refresh if not enough time has passed */
-  if (update && progress->timestamp && (gettimeofday(&tv, NULL) == 0))
-  {
-    now = ((unsigned int) tv.tv_sec * 1000) + (unsigned int) (tv.tv_usec / 1000);
-    if (now && ((now - progress->timestamp) < C_TimeInc))
-      update = false;
-  }
-
-  /* always show the first update */
-  if (pos == 0)
-    update = true;
-
-  if (update)
-  {
-    if (progress->flags & MUTT_PROGRESS_SIZE)
+    char posstr[128];
+    if (progress->is_bytes)
     {
-      pos = pos / (progress->inc << 10) * (progress->inc << 10);
-      mutt_str_pretty_size(posstr, sizeof(posstr), pos);
+      progress->pos /= (progress->inc << 10) * (progress->inc << 10);
+      mutt_str_pretty_size(posstr, sizeof(posstr), progress->pos);
     }
     else
-      snprintf(posstr, sizeof(posstr), "%ld", pos);
+    {
+      snprintf(posstr, sizeof(posstr), "%zu", progress->pos);
+    }
 
     mutt_debug(LL_DEBUG4, "updating progress: %s\n", posstr);
 
-    progress->pos = pos;
-    if (now)
-      progress->timestamp = now;
-
-    if (progress->size > 0)
+    if (progress->size != 0)
     {
-      message_bar(
-          (percent > 0) ? percent :
-                          (int) (100.0 * (double) progress->pos / progress->size),
-          "%s %s/%s (%d%%)", progress->msg, posstr, progress->sizestr,
-          (percent > 0) ? percent :
-                          (int) (100.0 * (double) progress->pos / progress->size));
+      if (percent < 0)
+      {
+        percent = 100.0 * progress->pos / progress->size;
+      }
+      message_bar(percent, "%s %s/%s (%d%%)", progress->msg, posstr,
+                  progress->sizestr, percent);
     }
     else
     {
@@ -237,7 +257,6 @@ void mutt_progress_update(struct Progress *progress, long pos, int percent)
     }
   }
 
-out:
-  if (pos >= progress->size)
+  if (progress->pos >= progress->size)
     mutt_clear_error();
 }
