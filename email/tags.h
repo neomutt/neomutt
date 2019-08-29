@@ -39,9 +39,9 @@ extern struct Hash *TagTransforms;
  */
 struct Tag
 {
-  char *name;                    ///< Tag name
-  char *transformed;             ///< Transformed name
-  bool hidden;                   ///< Tag should be hidden
+  char *name;                ///< Tag name
+  char *transformed;         ///< Transformed name
+  bool hidden;               ///< Tag should be hidden
   STAILQ_ENTRY(Tag) entries; ///< Linked list
 };
 STAILQ_HEAD(TagList, Tag);

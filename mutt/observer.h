@@ -76,8 +76,8 @@ struct Observer
  */
 struct ObserverNode
 {
-  struct Observer *observer;
-  STAILQ_ENTRY(ObserverNode) entries;
+  struct Observer *observer;          ///< An Observer
+  STAILQ_ENTRY(ObserverNode) entries; ///< Linked list
 };
 STAILQ_HEAD(ObserverList, ObserverNode);
 

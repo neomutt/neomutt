@@ -37,8 +37,8 @@
  */
 struct CryptModule
 {
-  struct CryptModuleSpecs *specs;
-  STAILQ_ENTRY(CryptModule) entries;
+  struct CryptModuleSpecs *specs;    ///< Crypto module definition
+  STAILQ_ENTRY(CryptModule) entries; ///< Linked list
 };
 STAILQ_HEAD(CryptModuleList, CryptModule);
 

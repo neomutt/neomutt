@@ -30,9 +30,9 @@
  */
 struct MyVar
 {
-  char *name;
-  char *value;
-  TAILQ_ENTRY(MyVar) entries;
+  char *name;                 ///< Name of user variable
+  char *value;                ///< Value of user variable
+  TAILQ_ENTRY(MyVar) entries; ///< Linked list
 };
 TAILQ_HEAD(MyVarList, MyVar);
 

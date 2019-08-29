@@ -66,8 +66,8 @@ struct Regex
  */
 struct RegexNode
 {
-  struct Regex *regex; /**< Regex containing a regular expression */
-  STAILQ_ENTRY(RegexNode) entries; /**< Next item in list */
+  struct Regex *regex;             ///< Regex containing a regular expression
+  STAILQ_ENTRY(RegexNode) entries; ///< Linked list
 };
 STAILQ_HEAD(RegexList, RegexNode);
 
@@ -76,10 +76,10 @@ STAILQ_HEAD(RegexList, RegexNode);
  */
 struct Replace
 {
-  struct Regex *regex;      /**< Regex containing a regular expression */
-  size_t nmatch;            /**< Match the 'nth' occurrence (0 means the whole expression) */
-  char *templ;              /**< Template to match */
-  STAILQ_ENTRY(Replace) entries; /**< Next item in list */
+  struct Regex *regex;           ///< Regex containing a regular expression
+  size_t nmatch;                 ///< Match the 'nth' occurrence (0 means the whole expression)
+  char *templ;                   ///< Template to match
+  STAILQ_ENTRY(Replace) entries; ///< Linked list
 };
 STAILQ_HEAD(ReplaceList, Replace);
 

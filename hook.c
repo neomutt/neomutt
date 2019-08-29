@@ -68,7 +68,7 @@ struct Hook
   struct Regex regex;          ///< Regular expression
   char *command;               ///< Filename, command or pattern to execute
   struct PatternList *pattern; ///< Used for fcc,save,send-hook
-  TAILQ_ENTRY(Hook) entries;
+  TAILQ_ENTRY(Hook) entries;   ///< Linked list
 };
 TAILQ_HEAD(HookList, Hook);
 

@@ -48,25 +48,25 @@ typedef uint8_t PatternCompFlags;       ///< Flags for mutt_pattern_comp(), e.g.
  */
 struct Pattern
 {
-  short op;
-  bool pat_not : 1;
-  bool alladdr : 1;
-  bool stringmatch : 1;
-  bool groupmatch : 1;
-  bool ign_case : 1; /**< ignore case for local stringmatch searches */
-  bool isalias : 1;
-  bool dynamic : 1;  ///< evaluate date ranges at run time
-  bool ismulti : 1; /**< multiple case (only for I pattern now) */
-  int min;
-  int max;
-  struct PatternList *child; /**< arguments to logical op */
+  short op;                      ///< Operation, e.g. MUTT_PAT_SCORE
+  bool pat_not     : 1;          ///< Pattern should be inverted (not)
+  bool alladdr     : 1;          ///< All Addresses in the list must match
+  bool stringmatch : 1;          ///< Check a string for a match
+  bool groupmatch  : 1;          ///< Check a group of Addresses
+  bool ign_case    : 1;          ///< Ignore case for local stringmatch searches
+  bool isalias     : 1;          ///< Is there an alias for this Address?
+  bool dynamic     : 1;          ///< Evaluate date ranges at run time
+  bool ismulti     : 1;          ///< Multiple case (only for ~I pattern now)
+  int min;                       ///< Minimum for range checks
+  int max;                       ///< Maximum for range checks
+  struct PatternList *child;     ///< Arguments to logical operation
   union {
-    regex_t *regex;
-    struct Group *group;
-    char *str;
-    struct ListHead multi_cases;
+    regex_t *regex;              ///< Compiled regex, for non-pattern matching
+    struct Group *group;         ///< Address group if groupmatch is set
+    char *str;                   ///< String, if stringmatch is set
+    struct ListHead multi_cases; ///< Multiple strings for ~I pattern
   } p;
-  SLIST_ENTRY(Pattern) entries;
+  SLIST_ENTRY(Pattern) entries;  ///< Linked list
 };
 SLIST_HEAD(PatternList, Pattern);
 

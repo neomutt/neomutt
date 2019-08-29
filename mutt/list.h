@@ -32,8 +32,8 @@
  */
 struct ListNode
 {
-  char *data;
-  STAILQ_ENTRY(ListNode) entries;
+  char *data;                     ///< String
+  STAILQ_ENTRY(ListNode) entries; ///< Linked list
 };
 STAILQ_HEAD(ListHead, ListNode);
 

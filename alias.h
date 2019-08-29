@@ -36,12 +36,12 @@ struct Envelope;
  */
 struct Alias
 {
-  char *name;
-  struct AddressList addr;
-  bool tagged;
-  bool del;
-  short num;
-  TAILQ_ENTRY(Alias) entries;
+  char *name;                 ///< Short name
+  struct AddressList addr;    ///< List of Addresses the Alias expands to
+  bool tagged;                ///< Is it tagged?
+  bool del;                   ///< Is it deleted?
+  short num;                  ///< Index number in list
+  TAILQ_ENTRY(Alias) entries; ///< Linked list
 };
 TAILQ_HEAD(AliasList, Alias);
 

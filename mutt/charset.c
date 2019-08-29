@@ -70,10 +70,10 @@ bool CharsetIsUtf8 = false;
  */
 struct Lookup
 {
-  enum LookupType type; /**< Lookup type */
-  struct Regex regex;   /**< Regular expression */
-  char *replacement;    /**< Alternative charset to use */
-  TAILQ_ENTRY(Lookup) entries;
+  enum LookupType type;        ///< Lookup type
+  struct Regex regex;          ///< Regular expression
+  char *replacement;           ///< Alternative charset to use
+  TAILQ_ENTRY(Lookup) entries; ///< Linked list
 };
 TAILQ_HEAD(LookupList, Lookup);
 

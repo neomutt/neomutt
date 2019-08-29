@@ -68,13 +68,13 @@ enum LogLevel
  */
 struct LogLine
 {
-  time_t time;
-  const char *file;
-  int line;
-  const char *function;
-  int level;
-  char *message;
-  STAILQ_ENTRY(LogLine) entries;
+  time_t time;                   ///< Timestamp of the message
+  const char *file;              ///< Source file
+  int line;                      ///< Line number in source file
+  const char *function;          ///< C function
+  int level;                     ///< Log level, e.g. #LL_DEBUG1
+  char *message;                 ///< Message to be logged
+  STAILQ_ENTRY(LogLine) entries; ///< Linked list
 };
 STAILQ_HEAD(LogLineList, LogLine);
 
