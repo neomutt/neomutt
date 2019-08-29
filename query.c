@@ -67,9 +67,9 @@ struct Query
 };
 
 /**
- * struct Entry - An entry in a selectable list of Query's
+ * struct QueryEntry - An entry in a selectable list of Query's
  */
-struct Entry
+struct QueryEntry
 {
   bool tagged;
   struct Query *data;
@@ -231,7 +231,7 @@ static struct Query *run_query(char *s, int quiet)
  */
 static int query_search(struct Menu *menu, regex_t *rx, int line)
 {
-  struct Entry *table = menu->data;
+  struct QueryEntry *table = menu->data;
   struct Query *query = table[line].data;
 
   if (query->name && !regexec(rx, query->name, 0, NULL, 0))
@@ -270,7 +270,7 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
                                     const char *if_str, const char *else_str,
                                     unsigned long data, MuttFormatFlags flags)
 {
-  struct Entry *entry = (struct Entry *) data;
+  struct QueryEntry *entry = (struct QueryEntry *) data;
   struct Query *query = entry->data;
   char fmt[128];
   char tmp[256] = { 0 };
@@ -320,7 +320,7 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
  */
 static void query_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
-  struct Entry *entry = &((struct Entry *) menu->data)[line];
+  struct QueryEntry *entry = &((struct QueryEntry *) menu->data)[line];
 
   entry->data->num = line;
   mutt_expando_format(buf, buflen, 0, menu->indexwin->cols, NONULL(C_QueryFormat),
@@ -332,7 +332,7 @@ static void query_make_entry(char *buf, size_t buflen, struct Menu *menu, int li
  */
 static int query_tag(struct Menu *menu, int sel, int act)
 {
-  struct Entry *cur = &((struct Entry *) menu->data)[sel];
+  struct QueryEntry *cur = &((struct QueryEntry *) menu->data)[sel];
   bool ot = cur->tagged;
 
   cur->tagged = ((act >= 0) ? act : !cur->tagged);
@@ -349,7 +349,7 @@ static int query_tag(struct Menu *menu, int sel, int act)
 static void query_menu(char *buf, size_t buflen, struct Query *results, bool retbuf)
 {
   struct Menu *menu = NULL;
-  struct Entry *query_table = NULL;
+  struct QueryEntry *query_table = NULL;
   struct Query *queryp = NULL;
   char title[256];
 
@@ -379,7 +379,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
     for (queryp = results; queryp; queryp = queryp->next)
       menu->max++;
 
-    query_table = mutt_mem_calloc(menu->max, sizeof(struct Entry));
+    query_table = mutt_mem_calloc(menu->max, sizeof(struct QueryEntry));
     menu->data = query_table;
 
     queryp = results;
@@ -436,7 +436,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
               if (op == OP_QUERY)
               {
                 menu->data = query_table =
-                    mutt_mem_calloc(menu->max, sizeof(struct Entry));
+                    mutt_mem_calloc(menu->max, sizeof(struct QueryEntry));
 
                 queryp = results;
                 for (int i = 0; queryp; queryp = queryp->next, i++)
@@ -447,7 +447,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
                 bool clear = false;
 
                 /* append */
-                mutt_mem_realloc(&query_table, menu->max * sizeof(struct Entry));
+                mutt_mem_realloc(&query_table, menu->max * sizeof(struct QueryEntry));
 
                 menu->data = query_table;
 
