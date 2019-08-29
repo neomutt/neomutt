@@ -870,8 +870,8 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
           continue;
         case MUTT_NOTMUCH:
         case MUTT_NNTP:
-          add_folder(menu, state, mailbox_path(np->mailbox),
-                     np->mailbox->name, NULL, np->mailbox, NULL);
+          add_folder(menu, state, mailbox_path(np->mailbox), np->mailbox->name,
+                     NULL, np->mailbox, NULL);
           continue;
         default: /* Continue */
           break;

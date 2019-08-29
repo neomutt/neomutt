@@ -370,8 +370,8 @@ static void redraw_crypt_lines(struct ComposeRedrawData *rd)
   struct Email *e = rd->email;
 
   SET_COLOR(MT_COLOR_COMPOSE_HEADER);
-  mutt_window_mvprintw(rd->win, HDR_CRYPT, 0, "%*s",
-                       HeaderPadding[HDR_CRYPT], _(Prompts[HDR_CRYPT]));
+  mutt_window_mvprintw(rd->win, HDR_CRYPT, 0, "%*s", HeaderPadding[HDR_CRYPT],
+                       _(Prompts[HDR_CRYPT]));
   NORMAL_COLOR;
 
   if ((WithCrypto & (APPLICATION_PGP | APPLICATION_SMIME)) == 0)
@@ -533,8 +533,8 @@ static void redraw_mix_line(struct ListHead *chain, struct ComposeRedrawData *rd
   char *t = NULL;
 
   SET_COLOR(MT_COLOR_COMPOSE_HEADER);
-  mutt_window_mvprintw(rd->win, HDR_MIX, 0, "%*s",
-                       HeaderPadding[HDR_MIX], _(Prompts[HDR_MIX]));
+  mutt_window_mvprintw(rd->win, HDR_MIX, 0, "%*s", HeaderPadding[HDR_MIX],
+                       _(Prompts[HDR_MIX]));
   NORMAL_COLOR;
 
   if (STAILQ_EMPTY(chain))
@@ -666,8 +666,8 @@ static void draw_envelope(struct ComposeRedrawData *rd)
   draw_envelope_addr(HDR_REPLYTO, &e->env->reply_to, rd);
 
   SET_COLOR(MT_COLOR_COMPOSE_HEADER);
-  mutt_window_mvprintw(rd->win, HDR_FCC, 0, "%*s",
-                       HeaderPadding[HDR_FCC], _(Prompts[HDR_FCC]));
+  mutt_window_mvprintw(rd->win, HDR_FCC, 0, "%*s", HeaderPadding[HDR_FCC],
+                       _(Prompts[HDR_FCC]));
   NORMAL_COLOR;
   mutt_paddstr(W, fcc);
 

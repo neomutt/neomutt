@@ -381,8 +381,7 @@ bool mutt_comp_can_append(struct Mailbox *m)
   if (ci->cmd_append || ci->cmd_close)
     return true;
 
-  mutt_error(_("Can't append without an append-hook or close-hook : %s"),
-             mailbox_path(m));
+  mutt_error(_("Can't append without an append-hook or close-hook : %s"), mailbox_path(m));
   return false;
 }
 

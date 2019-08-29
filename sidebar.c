@@ -881,8 +881,8 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     /* check whether C_Folder is a prefix of the current folder's path */
     bool maildir_is_prefix = false;
     if ((mutt_buffer_len(m->pathbuf) > maildirlen) &&
-        (mutt_str_strncmp(C_Folder, mailbox_path(m), maildirlen) == 0) && C_SidebarDelimChars &&
-        strchr(C_SidebarDelimChars, mailbox_path(m)[maildirlen]))
+        (mutt_str_strncmp(C_Folder, mailbox_path(m), maildirlen) == 0) &&
+        C_SidebarDelimChars && strchr(C_SidebarDelimChars, mailbox_path(m)[maildirlen]))
     {
       maildir_is_prefix = true;
     }
