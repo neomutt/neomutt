@@ -2058,10 +2058,8 @@ int mutt_index_menu(void)
 
           if (!Context->mailbox->quiet)
           {
-            char msgbuf[256];
-            snprintf(msgbuf, sizeof(msgbuf), _("Update tags..."));
-            mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, 1,
-                               Context->mailbox->msg_tagged);
+            mutt_progress_init(&progress, _("Update tags..."), MUTT_PROGRESS_MSG,
+                               1, Context->mailbox->msg_tagged);
           }
 
 #ifdef USE_NOTMUCH

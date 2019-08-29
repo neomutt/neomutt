@@ -38,7 +38,7 @@ struct Progress
 {
   unsigned short inc;
   unsigned short flags;
-  const char *msg;
+  char msg[1024];
   long pos;
   size_t size;
   unsigned int timestamp;

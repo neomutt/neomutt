@@ -802,13 +802,13 @@ int mh_read_dir(struct Mailbox *m, const char *subdir)
   struct Maildir *md = NULL;
   struct MhSequences mhs = { 0 };
   struct Maildir **last = NULL;
-  char msgbuf[256];
   struct Progress progress;
 
   if (!m->quiet)
   {
-    snprintf(msgbuf, sizeof(msgbuf), _("Scanning %s..."), mailbox_path(m));
-    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, C_ReadInc, 0);
+    char msg[PATH_MAX];
+    snprintf(msg, sizeof(msg), _("Scanning %s..."), mailbox_path(m));
+    mutt_progress_init(&progress, msg, MUTT_PROGRESS_MSG, C_ReadInc, 0);
   }
 
   struct MaildirMboxData *mdata = maildir_mdata_get(m);
@@ -829,8 +829,9 @@ int mh_read_dir(struct Mailbox *m, const char *subdir)
 
   if (!m->quiet)
   {
-    snprintf(msgbuf, sizeof(msgbuf), _("Reading %s..."), mailbox_path(m));
-    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, C_ReadInc, count);
+    char msg[PATH_MAX];
+    snprintf(msg, sizeof(msg), _("Reading %s..."), mailbox_path(m));
+    mutt_progress_init(&progress, msg, MUTT_PROGRESS_MSG, C_ReadInc, count);
   }
   maildir_delayed_parsing(m, &md, &progress);
 
@@ -1691,7 +1692,6 @@ int mh_mbox_sync(struct Mailbox *m, int *index_hint)
 
   int i, j;
   header_cache_t *hc = NULL;
-  char msgbuf[PATH_MAX + 64];
   struct Progress progress;
 
   if (m->magic == MUTT_MH)
@@ -1709,8 +1709,9 @@ int mh_mbox_sync(struct Mailbox *m, int *index_hint)
 
   if (!m->quiet)
   {
-    snprintf(msgbuf, sizeof(msgbuf), _("Writing %s..."), mailbox_path(m));
-    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, C_WriteInc, m->msg_count);
+    char msg[PATH_MAX];
+    snprintf(msg, sizeof(msg), _("Writing %s..."), mailbox_path(m));
+    mutt_progress_init(&progress, msg, MUTT_PROGRESS_MSG, C_WriteInc, m->msg_count);
   }
 
   for (i = 0; i < m->msg_count; i++)

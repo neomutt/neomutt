@@ -107,7 +107,7 @@ static void message_bar(int percent, const char *fmt, ...)
 /**
  * mutt_progress_init - Set up a progress bar
  * @param progress Progress bar
- * @param msg      Message to display
+ * @param msg      Message to display; this is copied into the Progress object
  * @param flags    Flags, e.g. #MUTT_PROGRESS_SIZE
  * @param inc      Increments to display (0 disables updates)
  * @param size     Total size of expected file / traffic
@@ -125,7 +125,7 @@ void mutt_progress_init(struct Progress *progress, const char *msg,
   memset(progress, 0, sizeof(struct Progress));
   progress->inc = inc;
   progress->flags = flags;
-  progress->msg = msg;
+  mutt_str_strfcpy(progress->msg, msg, sizeof(progress->msg));
   progress->size = size;
   if (progress->size != 0)
   {

@@ -854,12 +854,9 @@ static void progress_update(struct Mailbox *m, notmuch_query_t *q)
 
   if (!mdata->progress_ready && q)
   {
-    static char msg[256];
-    snprintf(msg, sizeof(msg), _("Reading messages..."));
-
     // The total mail count is in oldmsgcount, so use that instead of recounting.
-    mutt_progress_init(&mdata->progress, msg, MUTT_PROGRESS_MSG, C_ReadInc,
-                       mdata->oldmsgcount);
+    mutt_progress_init(&mdata->progress, _("Reading messages..."),
+                       MUTT_PROGRESS_MSG, C_ReadInc, mdata->oldmsgcount);
     mdata->progress_ready = true;
   }
 
@@ -2362,10 +2359,10 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
 
   if (!m->quiet)
   {
-    char msgbuf[PATH_MAX + 64];
     /* all is in this function so we don't use data->progress here */
-    snprintf(msgbuf, sizeof(msgbuf), _("Writing %s..."), mailbox_path(m));
-    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, C_WriteInc, m->msg_count);
+    char msg[PATH_MAX];
+    snprintf(msg, sizeof(msg), _("Writing %s..."), mailbox_path(m));
+    mutt_progress_init(&progress, msg, MUTT_PROGRESS_MSG, C_WriteInc, m->msg_count);
   }
 
   header_cache_t *h = nm_hcache_open(m);
