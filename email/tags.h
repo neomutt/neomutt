@@ -32,25 +32,25 @@ extern struct Slist *C_HiddenTags;
 extern struct Hash *TagTransforms;
 
 /**
- * struct TagNode - LinkedList Tag Element
+ * struct Tag - LinkedList Tag Element
  *
  * Keep a linked list of header tags and their transformed values.
  * Textual tags can be transformed to symbols to save space.
  */
-struct TagNode
+struct Tag
 {
   char *name;                    ///< Tag name
   char *transformed;             ///< Transformed name
   bool hidden;                   ///< Tag should be hidden
-  STAILQ_ENTRY(TagNode) entries; ///< Linked list
+  STAILQ_ENTRY(Tag) entries; ///< Linked list
 };
-STAILQ_HEAD(TagHead, TagNode);
+STAILQ_HEAD(TagList, Tag);
 
-void  driver_tags_free               (struct TagHead *head);
-char *driver_tags_get                (struct TagHead *head);
-char *driver_tags_get_transformed    (struct TagHead *head);
-char *driver_tags_get_transformed_for(struct TagHead *head, const char *name);
-char *driver_tags_get_with_hidden    (struct TagHead *head);
-bool  driver_tags_replace            (struct TagHead *head, char *tags);
+void  driver_tags_free               (struct TagList *list);
+char *driver_tags_get                (struct TagList *list);
+char *driver_tags_get_transformed    (struct TagList *list);
+char *driver_tags_get_transformed_for(struct TagList *list, const char *name);
+char *driver_tags_get_with_hidden    (struct TagList *list);
+bool  driver_tags_replace            (struct TagList *list, char *tags);
 
 #endif /* MUTT_EMAIL_TAGS_H */

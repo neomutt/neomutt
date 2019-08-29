@@ -53,15 +53,15 @@
 int *ColorQuote = NULL;
 int ColorQuoteUsed;
 int ColorDefs[MT_COLOR_MAX];
-struct ColorLineHead ColorAttachList = STAILQ_HEAD_INITIALIZER(ColorAttachList);
-struct ColorLineHead ColorBodyList = STAILQ_HEAD_INITIALIZER(ColorBodyList);
-struct ColorLineHead ColorHdrList = STAILQ_HEAD_INITIALIZER(ColorHdrList);
-struct ColorLineHead ColorIndexAuthorList = STAILQ_HEAD_INITIALIZER(ColorIndexAuthorList);
-struct ColorLineHead ColorIndexFlagsList = STAILQ_HEAD_INITIALIZER(ColorIndexFlagsList);
-struct ColorLineHead ColorIndexList = STAILQ_HEAD_INITIALIZER(ColorIndexList);
-struct ColorLineHead ColorIndexSubjectList = STAILQ_HEAD_INITIALIZER(ColorIndexSubjectList);
-struct ColorLineHead ColorIndexTagList = STAILQ_HEAD_INITIALIZER(ColorIndexTagList);
-struct ColorLineHead ColorStatusList = STAILQ_HEAD_INITIALIZER(ColorStatusList);
+struct ColorLineList ColorAttachList = STAILQ_HEAD_INITIALIZER(ColorAttachList);
+struct ColorLineList ColorBodyList = STAILQ_HEAD_INITIALIZER(ColorBodyList);
+struct ColorLineList ColorHdrList = STAILQ_HEAD_INITIALIZER(ColorHdrList);
+struct ColorLineList ColorIndexAuthorList = STAILQ_HEAD_INITIALIZER(ColorIndexAuthorList);
+struct ColorLineList ColorIndexFlagsList = STAILQ_HEAD_INITIALIZER(ColorIndexFlagsList);
+struct ColorLineList ColorIndexList = STAILQ_HEAD_INITIALIZER(ColorIndexList);
+struct ColorLineList ColorIndexSubjectList = STAILQ_HEAD_INITIALIZER(ColorIndexSubjectList);
+struct ColorLineList ColorIndexTagList = STAILQ_HEAD_INITIALIZER(ColorIndexTagList);
+struct ColorLineList ColorStatusList = STAILQ_HEAD_INITIALIZER(ColorStatusList);
 
 /* local to this file */
 static int ColorQuoteSize;
@@ -572,7 +572,7 @@ static int parse_color_name(const char *s, uint32_t *col, int *attr, bool is_fg,
  * @param[in]     parse_uncolor If true, 'uncolor', else 'unmono'
  */
 static void do_uncolor(struct Buffer *buf, struct Buffer *s,
-                       struct ColorLineHead *cl, bool *do_cache, bool parse_uncolor)
+                       struct ColorLineList *cl, bool *do_cache, bool parse_uncolor)
 {
   struct ColorLine *np = NULL, *tmp = NULL;
   do
@@ -756,7 +756,7 @@ enum CommandResult mutt_parse_unmono(struct Buffer *buf, struct Buffer *s,
  * @param match     Number of regex subexpression to match (0 for entire pattern)
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
-static enum CommandResult add_pattern(struct ColorLineHead *top, const char *s,
+static enum CommandResult add_pattern(struct ColorLineList *top, const char *s,
                                       bool sensitive, uint32_t fg, uint32_t bg, int attr,
                                       struct Buffer *err, bool is_index, int match)
 {
@@ -1244,14 +1244,14 @@ enum CommandResult mutt_parse_mono(struct Buffer *buf, struct Buffer *s,
 
 /**
  * mutt_free_color_list - Free a list of colours
- * @param head ColorLine List
+ * @param list ColorLine List
  */
-static void mutt_free_color_list(struct ColorLineHead *head)
+static void mutt_free_color_list(struct ColorLineList *list)
 {
   struct ColorLine *np = NULL, *tmp = NULL;
-  STAILQ_FOREACH_SAFE(np, head, entries, tmp)
+  STAILQ_FOREACH_SAFE(np, list, entries, tmp)
   {
-    STAILQ_REMOVE(head, np, ColorLine, entries);
+    STAILQ_REMOVE(list, np, ColorLine, entries);
     free_color_line(np, true);
   }
 }

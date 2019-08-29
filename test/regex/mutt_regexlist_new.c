@@ -27,5 +27,5 @@
 
 void test_mutt_regexlist_new(void)
 {
-  // struct RegexListNode *mutt_regexlist_new(void);
+  // struct RegexNode *mutt_regexlist_new(void);
 }

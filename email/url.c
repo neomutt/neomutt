@@ -45,19 +45,19 @@ static const struct Mapping UrlMap[] = {
 
 /**
  * parse_query_string - Parse a URL query string
- * @param l List to store the results
- * @param src String to parse
+ * @param list List to store the results
+ * @param src  String to parse
  * @retval  0 Success
  * @retval -1 Error
  */
-static int parse_query_string(struct UrlQueryStringHead *l, char *src)
+static int parse_query_string(struct UrlQueryList *list, char *src)
 {
-  struct UrlQueryString *qs = NULL;
+  struct UrlQuery *qs = NULL;
   char *k = NULL, *v = NULL;
 
   while (src && *src)
   {
-    qs = mutt_mem_calloc(1, sizeof(struct UrlQueryString));
+    qs = mutt_mem_calloc(1, sizeof(struct UrlQuery));
     k = strchr(src, '&');
     if (k)
       *k = '\0';
@@ -79,7 +79,7 @@ static int parse_query_string(struct UrlQueryStringHead *l, char *src)
       FREE(&qs);
       return -1;
     }
-    STAILQ_INSERT_TAIL(l, qs, entries);
+    STAILQ_INSERT_TAIL(list, qs, entries);
 
     if (!k)
       break;
@@ -290,8 +290,8 @@ void url_free(struct Url **u)
   if (!u || !*u)
     return;
 
-  struct UrlQueryString *np = STAILQ_FIRST(&(*u)->query_strings);
-  struct UrlQueryString *next = NULL;
+  struct UrlQuery *np = STAILQ_FIRST(&(*u)->query_strings);
+  struct UrlQuery *next = NULL;
   while (np)
   {
     next = STAILQ_NEXT(np, entries);

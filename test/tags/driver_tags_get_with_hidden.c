@@ -29,7 +29,7 @@
 
 void test_driver_tags_get_with_hidden(void)
 {
-  // char *driver_tags_get_with_hidden(struct TagHead *head);
+  // char *driver_tags_get_with_hidden(struct TagList *list);
 
   {
     TEST_CHECK(!driver_tags_get_with_hidden(NULL));

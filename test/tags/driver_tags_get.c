@@ -29,7 +29,7 @@
 
 void test_driver_tags_get(void)
 {
-  // char *driver_tags_get(struct TagHead *head);
+  // char *driver_tags_get(struct TagList *list);
 
   {
     TEST_CHECK(!driver_tags_get(NULL));

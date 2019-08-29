@@ -59,7 +59,7 @@ char *LogFileVersion = NULL; /**< Program version */
 /**
  * LogQueue - In-memory list of log lines
  */
-static struct LogList LogQueue = STAILQ_HEAD_INITIALIZER(LogQueue);
+static struct LogLineList LogQueue = STAILQ_HEAD_INITIALIZER(LogQueue);
 
 int LogQueueCount = 0; /**< Number of entries currently in the log queue */
 int LogQueueMax = 0;   /**< Maximum number of entries in the log queue */

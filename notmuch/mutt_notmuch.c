@@ -498,7 +498,7 @@ static char *get_query_string(struct NmMboxData *mdata, bool window)
 
   mdata->query_type = string_to_query_type(C_NmQueryType); /* user's default */
 
-  struct UrlQueryString *item = NULL;
+  struct UrlQuery *item = NULL;
   STAILQ_FOREACH(item, &mdata->db_url->query_strings, entries)
   {
     if (!item->value || !item->name)
@@ -1927,7 +1927,7 @@ int nm_update_filename(struct Mailbox *m, const char *old_file,
  */
 static int nm_mbox_check_stats(struct Mailbox *m, int flags)
 {
-  struct UrlQueryString *item = NULL;
+  struct UrlQuery *item = NULL;
   struct Url *url = NULL;
   char *db_filename = NULL, *db_query = NULL;
   notmuch_database_t *db = NULL;

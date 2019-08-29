@@ -67,7 +67,7 @@ struct Hook
   HookFlags type;              ///< Hook type
   struct Regex regex;          ///< Regular expression
   char *command;               ///< Filename, command or pattern to execute
-  struct PatternHead *pattern; ///< Used for fcc,save,send-hook
+  struct PatternList *pattern; ///< Used for fcc,save,send-hook
   TAILQ_ENTRY(Hook) entries;
 };
 TAILQ_HEAD(HookList, Hook);
@@ -90,7 +90,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
   int rc;
   bool pat_not = false, warning = false;
   regex_t *rx = NULL;
-  struct PatternHead *pat = NULL;
+  struct PatternList *pat = NULL;
   char path[PATH_MAX];
 
   mutt_buffer_init(&pattern);
@@ -428,7 +428,7 @@ enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
    * matching.  This of course is slower, but index-format-hook is commonly
    * used for date ranges, and they need to be evaluated relative to "now", not
    * the hook compilation time.  */
-  struct PatternHead *pat = mutt_pattern_comp(
+  struct PatternList *pat = mutt_pattern_comp(
       mutt_b2s(pattern), MUTT_PC_FULL_MSG | MUTT_PC_PATTERN_DYNAMIC, err);
   if (!pat)
     goto out;

@@ -990,7 +990,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
                           bool *force_redraw, bool q_classify)
 {
   struct ColorLine *color_line = NULL;
-  struct ColorLineHead *head = NULL;
+  struct ColorLineList *head = NULL;
   regmatch_t pmatch[1];
   bool found;
   bool null_rx;

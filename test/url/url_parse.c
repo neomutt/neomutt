@@ -84,11 +84,11 @@ static struct UrlTest test[] = {
 };
 // clang-format on
 
-void check_query_string(const char *exp, const struct UrlQueryStringHead *act)
+void check_query_string(const char *exp, const struct UrlQueryList *act)
 {
   char *next = NULL;
   char tmp[64] = { 0 };
-  const struct UrlQueryString *np = STAILQ_FIRST(act);
+  const struct UrlQuery *np = STAILQ_FIRST(act);
   while (exp && *exp)
   {
     next = strchr(exp, '|');

@@ -42,7 +42,7 @@ struct Notify
   void *obj;
   enum NotifyType obj_type;
   struct Notify *parent;
-  struct ObserverHead observers;
+  struct ObserverList observers;
 };
 
 /**

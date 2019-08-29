@@ -13,10 +13,9 @@ static bool test_simple_cases(void)
   { /* handle edge cases */
     struct Regex *rx = regex_new("hello bob", 0, buf);
 
-    const bool failed =
-        !TEST_CHECK(mutt_regex_match(NULL, NULL) == false) ||
-        !TEST_CHECK(mutt_regex_match(NULL, "bob the string") == false) ||
-        !TEST_CHECK(mutt_regex_match(rx, NULL) == false);
+    const bool failed = !TEST_CHECK(mutt_regex_match(NULL, NULL) == false) ||
+                        !TEST_CHECK(mutt_regex_match(NULL, "bob the string") == false) ||
+                        !TEST_CHECK(mutt_regex_match(rx, NULL) == false);
     regex_free(&rx);
 
     if (failed)
@@ -171,8 +170,8 @@ static bool test_old_implementation(void)
     //          !((regexec(C_Mask->regex, mdata->group, 0, NULL, 0) == 0) ^ C_Mask->pat_not))
     //   to: if (!mutt_regex_match(C_Mask, mdata->group))
     struct Regex *rx = regex_new("!bob", DT_REGEX_ALLOW_NOT, buf);
-    const bool old =
-      (rx && rx->regex) && !((regexec(rx->regex, line, 0, NULL, 0) == 0) ^ rx->pat_not);
+    const bool old = (rx && rx->regex) &&
+                     !((regexec(rx->regex, line, 0, NULL, 0) == 0) ^ rx->pat_not);
     const bool new = !mutt_regex_match(rx, line);
     regex_free(&rx);
 

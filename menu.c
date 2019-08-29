@@ -84,7 +84,7 @@ static struct Menu **MenuStack = NULL;
  */
 static int get_color(int index, unsigned char *s)
 {
-  struct ColorLineHead *color = NULL;
+  struct ColorLineList *color = NULL;
   struct ColorLine *np = NULL;
   struct Email *e = Context->mailbox->emails[Context->mailbox->v2r[index]];
   int type = *s;

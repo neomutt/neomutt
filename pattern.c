@@ -195,7 +195,7 @@ static struct RangeRegex range_regexes[] = {
 };
 // clang-format on
 
-static struct PatternHead *SearchPattern = NULL; /**< current search pattern */
+static struct PatternList *SearchPattern = NULL; /**< current search pattern */
 static char LastSearch[256] = { 0 };      /**< last pattern searched for */
 static char LastSearchExpn[1024] = { 0 }; /**< expanded version of LastSearch */
 
@@ -1331,7 +1331,7 @@ static /* const */ char *find_matching_paren(/* const */ char *s)
  * mutt_pattern_free - Free a Pattern
  * @param[out] pat Pattern to free
  */
-void mutt_pattern_free(struct PatternHead **pat)
+void mutt_pattern_free(struct PatternList **pat)
 {
   if (!pat || !*pat)
     return;
@@ -1367,9 +1367,9 @@ void mutt_pattern_free(struct PatternHead **pat)
  * mutt_pattern_node_new - Create a new list containing a Pattern
  * @retval ptr Newly created list containing a single node with a Pattern
  */
-static struct PatternHead *mutt_pattern_node_new(void)
+static struct PatternList *mutt_pattern_node_new(void)
 {
-  struct PatternHead *h = mutt_mem_calloc(1, sizeof(struct PatternHead));
+  struct PatternList *h = mutt_mem_calloc(1, sizeof(struct PatternList));
   SLIST_INIT(h);
   struct Pattern *p = mutt_mem_calloc(1, sizeof(struct Pattern));
   SLIST_INSERT_HEAD(h, p, entries);
@@ -1383,13 +1383,13 @@ static struct PatternHead *mutt_pattern_node_new(void)
  * @param err   Buffer for error messages
  * @retval ptr Newly allocated Pattern
  */
-struct PatternHead *mutt_pattern_comp(const char *s, PatternCompFlags flags, struct Buffer *err)
+struct PatternList *mutt_pattern_comp(const char *s, PatternCompFlags flags, struct Buffer *err)
 {
   /* curlist when assigned will always point to a list containing at least one node
    * with a Pattern value.  */
-  struct PatternHead *curlist = NULL;
-  struct PatternHead *tmp = NULL, *tmp2 = NULL;
-  struct PatternHead *last = NULL;
+  struct PatternList *curlist = NULL;
+  struct PatternList *tmp = NULL, *tmp2 = NULL;
+  struct PatternList *last = NULL;
   bool pat_not = false;
   bool alladdr = false;
   bool pat_or = false;
@@ -1640,7 +1640,7 @@ cleanup:
  * @param cache Cached Patterns
  * @retval true If ALL of the Patterns evaluates to true
  */
-static bool perform_and(struct PatternHead *pat, PatternExecFlags flags,
+static bool perform_and(struct PatternList *pat, PatternExecFlags flags,
                         struct Mailbox *m, struct Email *e, struct PatternCache *cache)
 {
   struct Pattern *p = NULL;
@@ -1662,7 +1662,7 @@ static bool perform_and(struct PatternHead *pat, PatternExecFlags flags,
  * @param cache Cached Patterns
  * @retval true If ONE (or more) of the Patterns evaluates to true
  */
-static int perform_or(struct PatternHead *pat, PatternExecFlags flags,
+static int perform_or(struct PatternList *pat, PatternExecFlags flags,
                       struct Mailbox *m, struct Email *e, struct PatternCache *cache)
 {
   struct Pattern *p = NULL;
@@ -1826,7 +1826,7 @@ static int match_user(int alladdr, struct AddressList *al1, struct AddressList *
  * @retval 1  Success, match found
  * @retval 0  No match
  */
-static int match_threadcomplete(struct PatternHead *pat, PatternExecFlags flags,
+static int match_threadcomplete(struct PatternList *pat, PatternExecFlags flags,
                                 struct Mailbox *m, struct MuttThread *t,
                                 int left, int up, int right, int down)
 {
@@ -1864,7 +1864,7 @@ static int match_threadcomplete(struct PatternHead *pat, PatternExecFlags flags,
  * @retval  0 Pattern did not match
  * @retval -1 Error
  */
-static int match_threadparent(struct PatternHead *pat, PatternExecFlags flags,
+static int match_threadparent(struct PatternList *pat, PatternExecFlags flags,
                               struct Mailbox *m, struct MuttThread *t)
 {
   if (!t || !t->parent || !t->parent->message)
@@ -1883,7 +1883,7 @@ static int match_threadparent(struct PatternHead *pat, PatternExecFlags flags,
  * @retval  0 Pattern did not match
  * @retval -1 Error
  */
-static int match_threadchildren(struct PatternHead *pat, PatternExecFlags flags,
+static int match_threadchildren(struct PatternList *pat, PatternExecFlags flags,
                                 struct Mailbox *m, struct MuttThread *t)
 {
   if (!t || !t->child)
@@ -2440,7 +2440,7 @@ int mutt_pattern_func(int op, char *prompt)
   mutt_buffer_init(&err);
   err.dsize = 256;
   err.data = mutt_mem_malloc(err.dsize);
-  struct PatternHead *pat = mutt_pattern_comp(buf->data, MUTT_PC_FULL_MSG, &err);
+  struct PatternList *pat = mutt_pattern_comp(buf->data, MUTT_PC_FULL_MSG, &err);
   if (!pat)
   {
     mutt_error("%s", err.data);

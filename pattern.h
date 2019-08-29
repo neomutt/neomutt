@@ -59,16 +59,16 @@ struct Pattern
   bool ismulti : 1; /**< multiple case (only for I pattern now) */
   int min;
   int max;
-  SLIST_ENTRY(Pattern) entries;
-  struct PatternHead *child; /**< arguments to logical op */
+  struct PatternList *child; /**< arguments to logical op */
   union {
     regex_t *regex;
     struct Group *group;
     char *str;
     struct ListHead multi_cases;
   } p;
+  SLIST_ENTRY(Pattern) entries;
 };
-SLIST_HEAD(PatternHead, Pattern);
+SLIST_HEAD(PatternList, Pattern);
 
 typedef uint8_t PatternExecFlags;         ///< Flags for mutt_pattern_exec(), e.g. #MUTT_MATCH_FULL_ADDRESS
 #define MUTT_PAT_EXEC_NO_FLAGS         0  ///< No flags are set
@@ -152,9 +152,9 @@ enum PatternType
 
 int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
                       struct Mailbox *m, struct Email *e, struct PatternCache *cache);
-struct PatternHead *mutt_pattern_comp(const char *s, PatternCompFlags flags, struct Buffer *err);
+struct PatternList *mutt_pattern_comp(const char *s, PatternCompFlags flags, struct Buffer *err);
 void mutt_check_simple(struct Buffer *s, const char *simple);
-void mutt_pattern_free(struct PatternHead **pat);
+void mutt_pattern_free(struct PatternList **pat);
 
 int mutt_which_case(const char *s);
 int mutt_is_list_recipient(bool alladdr, struct Envelope *e);

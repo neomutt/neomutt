@@ -37,7 +37,7 @@ struct Context
 {
   off_t vsize;
   char *pattern;                     ///< Limit pattern string
-  struct PatternHead *limit_pattern; ///< Compiled limit pattern
+  struct PatternList *limit_pattern; ///< Compiled limit pattern
   struct Email *last_tag;            ///< Last tagged msg (used to link threads)
   struct MuttThread *tree;           ///< Top of thread tree
   struct Hash *thread_hash;          ///< Hash table for threading
