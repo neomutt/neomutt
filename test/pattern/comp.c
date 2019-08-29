@@ -33,7 +33,7 @@
 
 bool ResumeEditedDraftFiles;
 
-/* All tests are limited to patterns that are stringmatch type only,
+/* All tests are limited to patterns that are string_match type only,
  * such as =s, =b, =f, etc.
  *
  * Rationale: (1) there is no way to compare regex types as "equal",
@@ -99,12 +99,12 @@ static int canonical_pattern(char *s, struct PatternList *pat, int indent)
     p += sprintf(p, "{");
     p += sprintf(p, "%d,", e->op);
     p += sprintf(p, "%d,", e->pat_not);
-    p += sprintf(p, "%d,", e->alladdr);
-    p += sprintf(p, "%d,", e->stringmatch);
-    p += sprintf(p, "%d,", e->groupmatch);
+    p += sprintf(p, "%d,", e->all_addr);
+    p += sprintf(p, "%d,", e->string_match);
+    p += sprintf(p, "%d,", e->group_match);
     p += sprintf(p, "%d,", e->ign_case);
-    p += sprintf(p, "%d,", e->isalias);
-    p += sprintf(p, "%d,", e->ismulti);
+    p += sprintf(p, "%d,", e->is_alias);
+    p += sprintf(p, "%d,", e->is_multi);
     p += sprintf(p, "%d,", e->min);
     p += sprintf(p, "%d,", e->max);
     p += sprintf(p, "\"%s\",", e->p.str ? e->p.str : "");
@@ -143,24 +143,24 @@ static int cmp_pattern(struct PatternList *p1, struct PatternList *p2)
       return 1;
     if (l->pat_not != r->pat_not)
       return 1;
-    if (l->alladdr != r->alladdr)
+    if (l->all_addr != r->all_addr)
       return 1;
-    if (l->stringmatch != r->stringmatch)
+    if (l->string_match != r->string_match)
       return 1;
-    if (l->groupmatch != r->groupmatch)
+    if (l->group_match != r->group_match)
       return 1;
     if (l->ign_case != r->ign_case)
       return 1;
-    if (l->isalias != r->isalias)
+    if (l->is_alias != r->is_alias)
       return 1;
-    if (l->ismulti != r->ismulti)
+    if (l->is_multi != r->is_multi)
       return 1;
     if (l->min != r->min)
       return 1;
     if (l->max != r->max)
       return 1;
 
-    if (l->stringmatch && strcmp(l->p.str, r->p.str))
+    if (l->string_match && strcmp(l->p.str, r->p.str))
       return 1;
 
     if (cmp_pattern(l->child, r->child))
@@ -270,12 +270,12 @@ void test_mutt_pattern_comp(void)
     SLIST_INIT(&expected);
     struct Pattern e = { .op = MUTT_PAT_SUBJECT,
                          .pat_not = false,
-                         .alladdr = false,
-                         .stringmatch = true,
-                         .groupmatch = false,
+                         .all_addr = false,
+                         .string_match = true,
+                         .group_match = false,
                          .ign_case = true,
-                         .isalias = false,
-                         .ismulti = false,
+                         .is_alias = false,
+                         .is_multi = false,
                          .min = 0,
                          .max = 0,
                          .p.str = "foobar" };
@@ -316,12 +316,12 @@ void test_mutt_pattern_comp(void)
     SLIST_INIT(&expected);
     struct Pattern e = { .op = MUTT_PAT_SUBJECT,
                          .pat_not = true,
-                         .alladdr = false,
-                         .stringmatch = true,
-                         .groupmatch = false,
+                         .all_addr = false,
+                         .string_match = true,
+                         .group_match = false,
                          .ign_case = true,
-                         .isalias = false,
-                         .ismulti = false,
+                         .is_alias = false,
+                         .is_multi = false,
                          .min = 0,
                          .max = 0,
                          .p.str = "foobar" };
@@ -364,36 +364,36 @@ void test_mutt_pattern_comp(void)
     struct Pattern e[3] = { /* root */
                             { .op = MUTT_PAT_AND,
                               .pat_not = false,
-                              .alladdr = false,
-                              .stringmatch = false,
-                              .groupmatch = false,
+                              .all_addr = false,
+                              .string_match = false,
+                              .group_match = false,
                               .ign_case = false,
-                              .isalias = false,
-                              .ismulti = false,
+                              .is_alias = false,
+                              .is_multi = false,
                               .min = 0,
                               .max = 0,
                               .p.str = NULL },
                             /* root->child */
                             { .op = MUTT_PAT_SUBJECT,
                               .pat_not = false,
-                              .alladdr = false,
-                              .stringmatch = true,
-                              .groupmatch = false,
+                              .all_addr = false,
+                              .string_match = true,
+                              .group_match = false,
                               .ign_case = true,
-                              .isalias = false,
-                              .ismulti = false,
+                              .is_alias = false,
+                              .is_multi = false,
                               .min = 0,
                               .max = 0,
                               .p.str = "foo" },
                             /* root->child->next */
                             { .op = MUTT_PAT_SUBJECT,
                               .pat_not = false,
-                              .alladdr = false,
-                              .stringmatch = true,
-                              .groupmatch = false,
+                              .all_addr = false,
+                              .string_match = true,
+                              .group_match = false,
                               .ign_case = true,
-                              .isalias = false,
-                              .ismulti = false,
+                              .is_alias = false,
+                              .is_multi = false,
                               .min = 0,
                               .max = 0,
                               .p.str = "bar" }
@@ -443,36 +443,36 @@ void test_mutt_pattern_comp(void)
     struct Pattern e[3] = { /* root */
                             { .op = MUTT_PAT_AND,
                               .pat_not = false,
-                              .alladdr = false,
-                              .stringmatch = false,
-                              .groupmatch = false,
+                              .all_addr = false,
+                              .string_match = false,
+                              .group_match = false,
                               .ign_case = false,
-                              .isalias = false,
-                              .ismulti = false,
+                              .is_alias = false,
+                              .is_multi = false,
                               .min = 0,
                               .max = 0,
                               .p.str = NULL },
                             /* root->child */
                             { .op = MUTT_PAT_SUBJECT,
                               .pat_not = false,
-                              .alladdr = false,
-                              .stringmatch = true,
-                              .groupmatch = false,
+                              .all_addr = false,
+                              .string_match = true,
+                              .group_match = false,
                               .ign_case = true,
-                              .isalias = false,
-                              .ismulti = false,
+                              .is_alias = false,
+                              .is_multi = false,
                               .min = 0,
                               .max = 0,
                               .p.str = "foo" },
                             /* root->child->next */
                             { .op = MUTT_PAT_SUBJECT,
                               .pat_not = false,
-                              .alladdr = false,
-                              .stringmatch = true,
-                              .groupmatch = false,
+                              .all_addr = false,
+                              .string_match = true,
+                              .group_match = false,
                               .ign_case = true,
-                              .isalias = false,
-                              .ismulti = false,
+                              .is_alias = false,
+                              .is_multi = false,
                               .min = 0,
                               .max = 0,
                               .p.str = "bar" }
@@ -522,36 +522,36 @@ void test_mutt_pattern_comp(void)
     struct Pattern e[3] = { /* root */
                             { .op = MUTT_PAT_AND,
                               .pat_not = true,
-                              .alladdr = false,
-                              .stringmatch = false,
-                              .groupmatch = false,
+                              .all_addr = false,
+                              .string_match = false,
+                              .group_match = false,
                               .ign_case = false,
-                              .isalias = false,
-                              .ismulti = false,
+                              .is_alias = false,
+                              .is_multi = false,
                               .min = 0,
                               .max = 0,
                               .p.str = NULL },
                             /* root->child */
                             { .op = MUTT_PAT_SUBJECT,
                               .pat_not = false,
-                              .alladdr = false,
-                              .stringmatch = true,
-                              .groupmatch = false,
+                              .all_addr = false,
+                              .string_match = true,
+                              .group_match = false,
                               .ign_case = true,
-                              .isalias = false,
-                              .ismulti = false,
+                              .is_alias = false,
+                              .is_multi = false,
                               .min = 0,
                               .max = 0,
                               .p.str = "foo" },
                             /* root->child->next */
                             { .op = MUTT_PAT_SUBJECT,
                               .pat_not = false,
-                              .alladdr = false,
-                              .stringmatch = true,
-                              .groupmatch = false,
+                              .all_addr = false,
+                              .string_match = true,
+                              .group_match = false,
                               .ign_case = true,
-                              .isalias = false,
-                              .ismulti = false,
+                              .is_alias = false,
+                              .is_multi = false,
                               .min = 0,
                               .max = 0,
                               .p.str = "bar" }
@@ -601,48 +601,48 @@ void test_mutt_pattern_comp(void)
     struct Pattern e[4] = { /* root */
                             { .op = MUTT_PAT_AND,
                               .pat_not = false,
-                              .alladdr = false,
-                              .stringmatch = false,
-                              .groupmatch = false,
+                              .all_addr = false,
+                              .string_match = false,
+                              .group_match = false,
                               .ign_case = false,
-                              .isalias = false,
-                              .ismulti = false,
+                              .is_alias = false,
+                              .is_multi = false,
                               .min = 0,
                               .max = 0,
                               .p.str = NULL },
                             /* root->child */
                             { .op = MUTT_PAT_SUBJECT,
                               .pat_not = false,
-                              .alladdr = false,
-                              .stringmatch = true,
-                              .groupmatch = false,
+                              .all_addr = false,
+                              .string_match = true,
+                              .group_match = false,
                               .ign_case = true,
-                              .isalias = false,
-                              .ismulti = false,
+                              .is_alias = false,
+                              .is_multi = false,
                               .min = 0,
                               .max = 0,
                               .p.str = "foo" },
                             /* root->child->next */
                             { .op = MUTT_PAT_SUBJECT,
                               .pat_not = false,
-                              .alladdr = false,
-                              .stringmatch = true,
-                              .groupmatch = false,
+                              .all_addr = false,
+                              .string_match = true,
+                              .group_match = false,
                               .ign_case = true,
-                              .isalias = false,
-                              .ismulti = false,
+                              .is_alias = false,
+                              .is_multi = false,
                               .min = 0,
                               .max = 0,
                               .p.str = "bar" },
                             /* root->child->next->next */
                             { .op = MUTT_PAT_SUBJECT,
                               .pat_not = false,
-                              .alladdr = false,
-                              .stringmatch = true,
-                              .groupmatch = false,
+                              .all_addr = false,
+                              .string_match = true,
+                              .group_match = false,
                               .ign_case = true,
-                              .isalias = false,
-                              .ismulti = false,
+                              .is_alias = false,
+                              .is_multi = false,
                               .min = 0,
                               .max = 0,
                               .p.str = "quux" }
@@ -692,60 +692,60 @@ void test_mutt_pattern_comp(void)
     struct Pattern e[5] = { /* root */
                             { .op = MUTT_PAT_AND,
                               .pat_not = false,
-                              .alladdr = false,
-                              .stringmatch = false,
-                              .groupmatch = false,
+                              .all_addr = false,
+                              .string_match = false,
+                              .group_match = false,
                               .ign_case = false,
-                              .isalias = false,
-                              .ismulti = false,
+                              .is_alias = false,
+                              .is_multi = false,
                               .min = 0,
                               .max = 0,
                               .p.str = NULL },
                             /* root->child */
                             { .op = MUTT_PAT_OR,
                               .pat_not = true,
-                              .alladdr = false,
-                              .stringmatch = false,
-                              .groupmatch = false,
+                              .all_addr = false,
+                              .string_match = false,
+                              .group_match = false,
                               .ign_case = false,
-                              .isalias = false,
-                              .ismulti = false,
+                              .is_alias = false,
+                              .is_multi = false,
                               .min = 0,
                               .max = 0,
                               .p.str = NULL },
                             /* root->child->child */
                             { .op = MUTT_PAT_SUBJECT,
                               .pat_not = false,
-                              .alladdr = false,
-                              .stringmatch = true,
-                              .groupmatch = false,
+                              .all_addr = false,
+                              .string_match = true,
+                              .group_match = false,
                               .ign_case = true,
-                              .isalias = false,
-                              .ismulti = false,
+                              .is_alias = false,
+                              .is_multi = false,
                               .min = 0,
                               .max = 0,
                               .p.str = "foo" },
                             /* root->child->child->next */
                             { .op = MUTT_PAT_SUBJECT,
                               .pat_not = false,
-                              .alladdr = false,
-                              .stringmatch = true,
-                              .groupmatch = false,
+                              .all_addr = false,
+                              .string_match = true,
+                              .group_match = false,
                               .ign_case = true,
-                              .isalias = false,
-                              .ismulti = false,
+                              .is_alias = false,
+                              .is_multi = false,
                               .min = 0,
                               .max = 0,
                               .p.str = "bar" },
                             /* root->child->next */
                             { .op = MUTT_PAT_SUBJECT,
                               .pat_not = false,
-                              .alladdr = false,
-                              .stringmatch = true,
-                              .groupmatch = false,
+                              .all_addr = false,
+                              .string_match = true,
+                              .group_match = false,
                               .ign_case = true,
-                              .isalias = false,
-                              .ismulti = false,
+                              .is_alias = false,
+                              .is_multi = false,
                               .min = 0,
                               .max = 0,
                               .p.str = "quux" }

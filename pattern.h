@@ -49,21 +49,21 @@ typedef uint8_t PatternCompFlags;       ///< Flags for mutt_pattern_comp(), e.g.
 struct Pattern
 {
   short op;                      ///< Operation, e.g. MUTT_PAT_SCORE
-  bool pat_not     : 1;          ///< Pattern should be inverted (not)
-  bool alladdr     : 1;          ///< All Addresses in the list must match
-  bool stringmatch : 1;          ///< Check a string for a match
-  bool groupmatch  : 1;          ///< Check a group of Addresses
-  bool ign_case    : 1;          ///< Ignore case for local stringmatch searches
-  bool isalias     : 1;          ///< Is there an alias for this Address?
-  bool dynamic     : 1;          ///< Evaluate date ranges at run time
-  bool ismulti     : 1;          ///< Multiple case (only for ~I pattern now)
+  bool pat_not      : 1;         ///< Pattern should be inverted (not)
+  bool all_addr     : 1;         ///< All Addresses in the list must match
+  bool string_match : 1;         ///< Check a string for a match
+  bool group_match  : 1;         ///< Check a group of Addresses
+  bool ign_case     : 1;         ///< Ignore case for local string_match searches
+  bool is_alias     : 1;         ///< Is there an alias for this Address?
+  bool dynamic      : 1;         ///< Evaluate date ranges at run time
+  bool is_multi     : 1;         ///< Multiple case (only for ~I pattern now)
   int min;                       ///< Minimum for range checks
   int max;                       ///< Maximum for range checks
   struct PatternList *child;     ///< Arguments to logical operation
   union {
     regex_t *regex;              ///< Compiled regex, for non-pattern matching
-    struct Group *group;         ///< Address group if groupmatch is set
-    char *str;                   ///< String, if stringmatch is set
+    struct Group *group;         ///< Address group if group_match is set
+    char *str;                   ///< String, if string_match is set
     struct ListHead multi_cases; ///< Multiple strings for ~I pattern
   } p;
   SLIST_ENTRY(Pattern) entries;  ///< Linked list
@@ -157,8 +157,8 @@ void mutt_check_simple(struct Buffer *s, const char *simple);
 void mutt_pattern_free(struct PatternList **pat);
 
 int mutt_which_case(const char *s);
-int mutt_is_list_recipient(bool alladdr, struct Envelope *e);
-int mutt_is_subscribed_list_recipient(bool alladdr, struct Envelope *e);
+int mutt_is_list_recipient(bool all_addr, struct Envelope *e);
+int mutt_is_subscribed_list_recipient(bool all_addr, struct Envelope *e);
 int mutt_pattern_func(int op, char *prompt);
 int mutt_search_command(int cur, int op);
 

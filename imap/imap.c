@@ -349,7 +349,7 @@ static int do_search(const struct PatternList *search, bool allpats)
       case MUTT_PAT_BODY:
       case MUTT_PAT_HEADER:
       case MUTT_PAT_WHOLE_MSG:
-        if (pat->stringmatch)
+        if (pat->string_match)
           rc++;
         break;
       case MUTT_PAT_SERVERSEARCH:
