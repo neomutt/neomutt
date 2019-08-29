@@ -856,7 +856,7 @@ void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
   size_t chunks = 0;
   size_t len = 0;
 
-  struct Syntax
+  struct StatusSyntax
   {
     int color;
     int first;
@@ -891,7 +891,7 @@ void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
       if (!found)
       {
         chunks++;
-        mutt_mem_realloc(&syntax, chunks * sizeof(struct Syntax));
+        mutt_mem_realloc(&syntax, chunks * sizeof(struct StatusSyntax));
       }
 
       i = chunks - 1;

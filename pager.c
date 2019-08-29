@@ -122,9 +122,9 @@ struct QClass
 };
 
 /**
- * struct Syntax - Highlighting for a line of text
+ * struct TextSyntax - Highlighting for a line of text
  */
-struct Syntax
+struct TextSyntax
 {
   int color;
   int first;
@@ -141,8 +141,8 @@ struct Line
   short continuation;
   short chunks;
   short search_cnt;
-  struct Syntax *syntax;
-  struct Syntax *search;
+  struct TextSyntax *syntax;
+  struct TextSyntax *search;
   struct QClass *quote;
   unsigned int is_cont_hdr; /**< this line is a continuation of the previous header line */
 };
@@ -341,7 +341,7 @@ static int check_sig(const char *s, struct Line *info, int n)
 static int comp_syntax_t(const void *m1, const void *m2)
 {
   const int *cnt = (const int *) m1;
-  const struct Syntax *stx = (const struct Syntax *) m2;
+  const struct TextSyntax *stx = (const struct TextSyntax *) m2;
 
   if (*cnt < stx->first)
     return -1;
@@ -367,7 +367,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt,
   static int last_color; /* last color set */
   bool search = false;
   int m;
-  struct Syntax *matching_chunk = NULL;
+  struct TextSyntax *matching_chunk = NULL;
 
   if (cnt == 0)
     last_color = -1; /* force attrset() */
@@ -416,7 +416,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt,
   if ((flags & MUTT_SHOWCOLOR) && line_info[m].chunks)
   {
     matching_chunk = bsearch(&cnt, line_info[m].syntax, line_info[m].chunks,
-                             sizeof(struct Syntax), comp_syntax_t);
+                             sizeof(struct TextSyntax), comp_syntax_t);
     if (matching_chunk && (cnt >= matching_chunk->first) &&
         (cnt < matching_chunk->last))
     {
@@ -427,7 +427,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt,
   if ((flags & MUTT_SEARCH) && line_info[m].search_cnt)
   {
     matching_chunk = bsearch(&cnt, line_info[m].search, line_info[m].search_cnt,
-                             sizeof(struct Syntax), comp_syntax_t);
+                             sizeof(struct TextSyntax), comp_syntax_t);
     if (matching_chunk && (cnt >= matching_chunk->first) &&
         (cnt < matching_chunk->last))
     {
@@ -1073,7 +1073,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
       if (line_info[i].chunks)
       {
         line_info[i].chunks = 0;
-        mutt_mem_realloc(&(line_info[n].syntax), sizeof(struct Syntax));
+        mutt_mem_realloc(&(line_info[n].syntax), sizeof(struct TextSyntax));
       }
       line_info[i++].type = MT_COLOR_SIGNATURE;
     }
@@ -1144,7 +1144,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
               if (++(line_info[n].chunks) > 1)
               {
                 mutt_mem_realloc(&(line_info[n].syntax),
-                                 (line_info[n].chunks) * sizeof(struct Syntax));
+                                 (line_info[n].chunks) * sizeof(struct TextSyntax));
               }
             }
             i = line_info[n].chunks - 1;
@@ -1214,7 +1214,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
               if (++(line_info[n].chunks) > 1)
               {
                 mutt_mem_realloc(&(line_info[n].syntax),
-                                 (line_info[n].chunks) * sizeof(struct Syntax));
+                                 (line_info[n].chunks) * sizeof(struct TextSyntax));
               }
             }
             i = line_info[n].chunks - 1;
@@ -1664,7 +1664,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
       memset(&((*line_info)[ch]), 0, sizeof(struct Line));
       (*line_info)[ch].type = -1;
       (*line_info)[ch].search_cnt = -1;
-      (*line_info)[ch].syntax = mutt_mem_malloc(sizeof(struct Syntax));
+      (*line_info)[ch].syntax = mutt_mem_malloc(sizeof(struct TextSyntax));
       ((*line_info)[ch].syntax)[0].first = -1;
       ((*line_info)[ch].syntax)[0].last = -1;
     }
@@ -1760,10 +1760,10 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
       if (++((*line_info)[n].search_cnt) > 1)
       {
         mutt_mem_realloc(&((*line_info)[n].search),
-                         ((*line_info)[n].search_cnt) * sizeof(struct Syntax));
+                         ((*line_info)[n].search_cnt) * sizeof(struct TextSyntax));
       }
       else
-        (*line_info)[n].search = mutt_mem_malloc(sizeof(struct Syntax));
+        (*line_info)[n].search = mutt_mem_malloc(sizeof(struct TextSyntax));
       pmatch[0].rm_so += offset;
       pmatch[0].rm_eo += offset;
       ((*line_info)[n].search)[(*line_info)[n].search_cnt - 1].first = pmatch[0].rm_so;
@@ -2076,7 +2076,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
         rd->line_info[i].search_cnt = -1;
         rd->line_info[i].quote = NULL;
 
-        mutt_mem_realloc(&(rd->line_info[i].syntax), sizeof(struct Syntax));
+        mutt_mem_realloc(&(rd->line_info[i].syntax), sizeof(struct TextSyntax));
         if (rd->search_compiled && rd->line_info[i].search)
           FREE(&(rd->line_info[i].search));
       }
@@ -2296,7 +2296,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   {
     rd.line_info[i].type = -1;
     rd.line_info[i].search_cnt = -1;
-    rd.line_info[i].syntax = mutt_mem_malloc(sizeof(struct Syntax));
+    rd.line_info[i].syntax = mutt_mem_malloc(sizeof(struct TextSyntax));
     (rd.line_info[i].syntax)[0].first = -1;
     (rd.line_info[i].syntax)[0].last = -1;
   }
