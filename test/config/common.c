@@ -30,8 +30,8 @@
 #include <string.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "common.h"
 #include "core/lib.h"
+#include "common.h"
 
 const char *line = "----------------------------------------"
                    "----------------------------------------";

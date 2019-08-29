@@ -48,31 +48,31 @@ enum UrlScheme
 #define U_PATH          (1 << 1)
 
 /**
- * struct UrlQueryString - Parsed Query String
+ * struct UrlQuery - Parsed Query String
  *
  * The arguments in a URL are saved in a linked list.
  */
-struct UrlQueryString
+struct UrlQuery
 {
-  char *name;                           ///< Query name
-  char *value;                          ///< Query value
-  STAILQ_ENTRY(UrlQueryString) entries; ///< Linked list
+  char *name;                     ///< Query name
+  char *value;                    ///< Query value
+  STAILQ_ENTRY(UrlQuery) entries; ///< Linked list
 };
-STAILQ_HEAD(UrlQueryStringHead, UrlQueryString);
+STAILQ_HEAD(UrlQueryList, UrlQuery);
 
 /**
  * struct Url - A parsed URL `proto://user:password@host:port/path?a=1&b=2`
  */
 struct Url
 {
-  enum UrlScheme scheme;                   ///< Scheme, e.g. #U_SMTPS
-  char *user;                              ///< Username
-  char *pass;                              ///< Password
-  char *host;                              ///< Host
-  unsigned short port;                     ///< Port
-  char *path;                              ///< Path
-  struct UrlQueryStringHead query_strings; ///< List of query strings
-  char *src;                               ///< Raw URL string
+  enum UrlScheme scheme;             ///< Scheme, e.g. #U_SMTPS
+  char *user;                        ///< Username
+  char *pass;                        ///< Password
+  char *host;                        ///< Host
+  unsigned short port;               ///< Port
+  char *path;                        ///< Path
+  struct UrlQueryList query_strings; ///< List of query strings
+  char *src;                         ///< Raw URL string
 };
 
 enum UrlScheme url_check_scheme(const char *s);

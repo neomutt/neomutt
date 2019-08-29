@@ -29,10 +29,10 @@
 
 void test_driver_tags_get_transformed_for(void)
 {
-  // char *driver_tags_get_transformed_for(struct TagHead *head, const char *name);
+  // char *driver_tags_get_transformed_for(struct TagList *list, const char *name);
 
   {
-    struct TagHead taghead = { 0 };
+    struct TagList taghead = { 0 };
     TEST_CHECK(!driver_tags_get_transformed_for(&taghead, NULL));
   }
 

@@ -79,7 +79,7 @@ bool ResumeEditedDraftFiles;
  *
  *  In the representation {a} is expanded to all the pattern fields.
  */
-static int canonical_pattern(char *s, struct PatternHead *pat, int indent)
+static int canonical_pattern(char *s, struct PatternList *pat, int indent)
 {
   if (!pat || !s)
     return 0;
@@ -119,13 +119,13 @@ static int canonical_pattern(char *s, struct PatternHead *pat, int indent)
 }
 
 /* best-effort pattern tree compare, returns 0 if equal otherwise 1 */
-static int cmp_pattern(struct PatternHead *p1, struct PatternHead *p2)
+static int cmp_pattern(struct PatternList *p1, struct PatternList *p2)
 {
   if (!p1 || !p2)
     return !(!p1 && !p2);
 
-  struct PatternHead p1_tmp = *p1;
-  struct PatternHead p2_tmp = *p2;
+  struct PatternList p1_tmp = *p1;
+  struct PatternList p2_tmp = *p2;
 
   while (!SLIST_EMPTY(&p1_tmp))
   {
@@ -178,7 +178,7 @@ void test_mutt_pattern_comp(void)
     char *s = "";
 
     mutt_buffer_reset(err);
-    struct PatternHead *pat = mutt_pattern_comp(s, 0, err);
+    struct PatternList *pat = mutt_pattern_comp(s, 0, err);
 
     if (!TEST_CHECK(!pat))
     {
@@ -198,7 +198,7 @@ void test_mutt_pattern_comp(void)
     char *s = "x";
 
     mutt_buffer_reset(err);
-    struct PatternHead *pat = mutt_pattern_comp(s, 0, err);
+    struct PatternList *pat = mutt_pattern_comp(s, 0, err);
 
     if (!TEST_CHECK(!pat))
     {
@@ -218,7 +218,7 @@ void test_mutt_pattern_comp(void)
     char *s = "=s";
 
     mutt_buffer_reset(err);
-    struct PatternHead *pat = mutt_pattern_comp(s, 0, err);
+    struct PatternList *pat = mutt_pattern_comp(s, 0, err);
 
     if (!TEST_CHECK(!pat))
     {
@@ -238,7 +238,7 @@ void test_mutt_pattern_comp(void)
     char *s = "| =s foo";
 
     mutt_buffer_reset(err);
-    struct PatternHead *pat = mutt_pattern_comp(s, 0, err);
+    struct PatternList *pat = mutt_pattern_comp(s, 0, err);
 
     if (!TEST_CHECK(!pat))
     {
@@ -258,7 +258,7 @@ void test_mutt_pattern_comp(void)
     char *s = "=s foobar";
 
     mutt_buffer_reset(err);
-    struct PatternHead *pat = mutt_pattern_comp(s, 0, err);
+    struct PatternList *pat = mutt_pattern_comp(s, 0, err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -266,7 +266,7 @@ void test_mutt_pattern_comp(void)
       TEST_MSG("Actual  : pat == NULL");
     }
 
-    struct PatternHead expected;
+    struct PatternList expected;
     SLIST_INIT(&expected);
     struct Pattern e = { .op = MUTT_PAT_SUBJECT,
                          .pat_not = false,
@@ -304,7 +304,7 @@ void test_mutt_pattern_comp(void)
     char *s = "! =s foobar";
 
     mutt_buffer_reset(err);
-    struct PatternHead *pat = mutt_pattern_comp(s, 0, err);
+    struct PatternList *pat = mutt_pattern_comp(s, 0, err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -312,7 +312,7 @@ void test_mutt_pattern_comp(void)
       TEST_MSG("Actual  : pat == NULL");
     }
 
-    struct PatternHead expected;
+    struct PatternList expected;
     SLIST_INIT(&expected);
     struct Pattern e = { .op = MUTT_PAT_SUBJECT,
                          .pat_not = true,
@@ -351,7 +351,7 @@ void test_mutt_pattern_comp(void)
     char *s = "=s foo =s bar";
 
     mutt_buffer_reset(err);
-    struct PatternHead *pat = mutt_pattern_comp(s, 0, err);
+    struct PatternList *pat = mutt_pattern_comp(s, 0, err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -359,7 +359,7 @@ void test_mutt_pattern_comp(void)
       TEST_MSG("Actual  : pat == NULL");
     }
 
-    struct PatternHead expected;
+    struct PatternList expected;
 
     struct Pattern e[3] = { /* root */
                             { .op = MUTT_PAT_AND,
@@ -401,7 +401,7 @@ void test_mutt_pattern_comp(void)
 
     SLIST_INIT(&expected);
     SLIST_INSERT_HEAD(&expected, &e[0], entries);
-    struct PatternHead child;
+    struct PatternList child;
     SLIST_INIT(&child);
     e[0].child = &child;
     SLIST_INSERT_HEAD(e[0].child, &e[1], entries);
@@ -430,7 +430,7 @@ void test_mutt_pattern_comp(void)
     char *s = "(=s foo =s bar)";
 
     mutt_buffer_reset(err);
-    struct PatternHead *pat = mutt_pattern_comp(s, 0, err);
+    struct PatternList *pat = mutt_pattern_comp(s, 0, err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -438,7 +438,7 @@ void test_mutt_pattern_comp(void)
       TEST_MSG("Actual  : pat == NULL");
     }
 
-    struct PatternHead expected;
+    struct PatternList expected;
 
     struct Pattern e[3] = { /* root */
                             { .op = MUTT_PAT_AND,
@@ -480,7 +480,7 @@ void test_mutt_pattern_comp(void)
 
     SLIST_INIT(&expected);
     SLIST_INSERT_HEAD(&expected, &e[0], entries);
-    struct PatternHead child;
+    struct PatternList child;
     SLIST_INIT(&child);
     e[0].child = &child;
     SLIST_INSERT_HEAD(e[0].child, &e[1], entries);
@@ -509,7 +509,7 @@ void test_mutt_pattern_comp(void)
     char *s = "! (=s foo =s bar)";
 
     mutt_buffer_reset(err);
-    struct PatternHead *pat = mutt_pattern_comp(s, 0, err);
+    struct PatternList *pat = mutt_pattern_comp(s, 0, err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -517,7 +517,7 @@ void test_mutt_pattern_comp(void)
       TEST_MSG("Actual  : pat == NULL");
     }
 
-    struct PatternHead expected;
+    struct PatternList expected;
 
     struct Pattern e[3] = { /* root */
                             { .op = MUTT_PAT_AND,
@@ -559,7 +559,7 @@ void test_mutt_pattern_comp(void)
 
     SLIST_INIT(&expected);
     SLIST_INSERT_HEAD(&expected, &e[0], entries);
-    struct PatternHead child;
+    struct PatternList child;
     SLIST_INIT(&child);
     e[0].child = &child;
     SLIST_INSERT_HEAD(e[0].child, &e[1], entries);
@@ -588,7 +588,7 @@ void test_mutt_pattern_comp(void)
     char *s = "=s foo =s bar =s quux";
 
     mutt_buffer_reset(err);
-    struct PatternHead *pat = mutt_pattern_comp(s, 0, err);
+    struct PatternList *pat = mutt_pattern_comp(s, 0, err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -596,7 +596,7 @@ void test_mutt_pattern_comp(void)
       TEST_MSG("Actual  : pat == NULL");
     }
 
-    struct PatternHead expected;
+    struct PatternList expected;
 
     struct Pattern e[4] = { /* root */
                             { .op = MUTT_PAT_AND,
@@ -650,7 +650,7 @@ void test_mutt_pattern_comp(void)
 
     SLIST_INIT(&expected);
     SLIST_INSERT_HEAD(&expected, &e[0], entries);
-    struct PatternHead child;
+    struct PatternList child;
     e[0].child = &child;
     SLIST_INSERT_HEAD(e[0].child, &e[1], entries);
     SLIST_INSERT_AFTER(&e[1], &e[2], entries);
@@ -679,7 +679,7 @@ void test_mutt_pattern_comp(void)
     char *s = "!(=s foo|=s bar) =s quux";
 
     mutt_buffer_reset(err);
-    struct PatternHead *pat = mutt_pattern_comp(s, 0, err);
+    struct PatternList *pat = mutt_pattern_comp(s, 0, err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -687,7 +687,7 @@ void test_mutt_pattern_comp(void)
       TEST_MSG("Actual  : pat == NULL");
     }
 
-    struct PatternHead expected;
+    struct PatternList expected;
 
     struct Pattern e[5] = { /* root */
                             { .op = MUTT_PAT_AND,
@@ -753,7 +753,7 @@ void test_mutt_pattern_comp(void)
 
     SLIST_INIT(&expected);
     SLIST_INSERT_HEAD(&expected, &e[0], entries);
-    struct PatternHead child1, child2;
+    struct PatternList child1, child2;
     SLIST_INIT(&child1);
     e[0].child = &child1;
     SLIST_INSERT_HEAD(e[0].child, &e[1], entries);

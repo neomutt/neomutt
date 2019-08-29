@@ -31,7 +31,7 @@
 #include "mutt/mutt.h"
 #include "myvar.h"
 
-struct MyVarHead MyVars = TAILQ_HEAD_INITIALIZER(MyVars);
+struct MyVarList MyVars = TAILQ_HEAD_INITIALIZER(MyVars);
 
 /**
  * myvar_get - Get the value of a "my_" variable

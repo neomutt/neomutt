@@ -76,7 +76,7 @@ struct LogLine
   char *message;
   STAILQ_ENTRY(LogLine) entries;
 };
-STAILQ_HEAD(LogList, LogLine);
+STAILQ_HEAD(LogLineList, LogLine);
 
 #define mutt_debug(LEVEL, ...) MuttLogger(0, __FILE__, __LINE__, __func__, LEVEL,      __VA_ARGS__)
 #define mutt_warning(...)      MuttLogger(0, __FILE__, __LINE__, __func__, LL_WARNING, __VA_ARGS__)

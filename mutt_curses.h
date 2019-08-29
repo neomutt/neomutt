@@ -182,29 +182,30 @@ struct ColorLine
   regex_t regex;
   int match; /**< which substringmap 0 for old behaviour */
   char *pattern;
-  struct PatternHead *color_pattern; /**< compiled pattern to speed up index color
+  struct PatternList *color_pattern; /**< compiled pattern to speed up index color
                                           calculation */
   uint32_t fg;
   uint32_t bg;
   int pair;
-  STAILQ_ENTRY(ColorLine) entries;
 
   bool stop_matching : 1; ///< used by the pager for body patterns, to prevent the color from being retried once it fails
+
+  STAILQ_ENTRY(ColorLine) entries;
 };
-STAILQ_HEAD(ColorLineHead, ColorLine);
+STAILQ_HEAD(ColorLineList, ColorLine);
 
 extern int *ColorQuote;                            ///< Array of colours for quoted email text
 extern int ColorQuoteUsed;                         ///< Number of colours for quoted email text
 extern int ColorDefs[];                            ///< Array of all fixed colours, see enum ColorId
-extern struct ColorLineHead ColorHdrList;          ///< List of colours applied to the email headers
-extern struct ColorLineHead ColorBodyList;         ///< List of colours applied to the email body
-extern struct ColorLineHead ColorAttachList;       ///< List of colours applied to the attachment headers
-extern struct ColorLineHead ColorStatusList;       ///< List of colours applied to the status bar
-extern struct ColorLineHead ColorIndexList;        ///< List of default colours applied to the index
-extern struct ColorLineHead ColorIndexAuthorList;  ///< List of colours applied to the author in the index
-extern struct ColorLineHead ColorIndexFlagsList;   ///< List of colours applied to the flags in the index
-extern struct ColorLineHead ColorIndexSubjectList; ///< List of colours applied to the subject in the index
-extern struct ColorLineHead ColorIndexTagList;     ///< List of colours applied to tags in the index
+extern struct ColorLineList ColorHdrList;          ///< List of colours applied to the email headers
+extern struct ColorLineList ColorBodyList;         ///< List of colours applied to the email body
+extern struct ColorLineList ColorAttachList;       ///< List of colours applied to the attachment headers
+extern struct ColorLineList ColorStatusList;       ///< List of colours applied to the status bar
+extern struct ColorLineList ColorIndexList;        ///< List of default colours applied to the index
+extern struct ColorLineList ColorIndexAuthorList;  ///< List of colours applied to the author in the index
+extern struct ColorLineList ColorIndexFlagsList;   ///< List of colours applied to the flags in the index
+extern struct ColorLineList ColorIndexSubjectList; ///< List of colours applied to the subject in the index
+extern struct ColorLineList ColorIndexTagList;     ///< List of colours applied to tags in the index
 
 /* If the system has bkgdset() use it rather than attrset() so that the clr*()
  * functions will properly set the background attributes all the way to the

@@ -337,7 +337,7 @@ static int sync_helper(struct Mailbox *m, AclFlags right, int flag, const char *
  *
  * Count the number of patterns that can be done by the server (are full-text).
  */
-static int do_search(const struct PatternHead *search, bool allpats)
+static int do_search(const struct PatternList *search, bool allpats)
 {
   int rc = 0;
   const struct Pattern *pat = NULL;
@@ -379,7 +379,7 @@ static int do_search(const struct PatternHead *search, bool allpats)
  * that require full-text search (neomutt already has what it needs for most
  * match types, and does a better job (eg server doesn't support regexes).
  */
-static int compile_search(struct Mailbox *m, const struct PatternHead *pat, struct Buffer *buf)
+static int compile_search(struct Mailbox *m, const struct PatternList *pat, struct Buffer *buf)
 {
   struct Pattern *firstpat = SLIST_FIRST(pat);
 
@@ -1346,7 +1346,7 @@ int imap_mailbox_status(struct Mailbox *m, bool queue)
  * @retval  0 Success
  * @retval -1 Failure
  */
-int imap_search(struct Mailbox *m, const struct PatternHead *pat)
+int imap_search(struct Mailbox *m, const struct PatternList *pat)
 {
   struct Buffer buf;
   struct ImapAccountData *adata = imap_adata_get(m);

@@ -35,13 +35,14 @@
  *
  * A type of a variable to keep track of registered crypto modules.
  */
-static STAILQ_HEAD(CryptModuleHead,
-                   CryptModule) CryptModules = STAILQ_HEAD_INITIALIZER(CryptModules);
 struct CryptModule
 {
   struct CryptModuleSpecs *specs;
   STAILQ_ENTRY(CryptModule) entries;
 };
+STAILQ_HEAD(CryptModuleList, CryptModule);
+
+static struct CryptModuleList CryptModules = STAILQ_HEAD_INITIALIZER(CryptModules);
 
 /**
  * crypto_module_register - Register a new crypto module

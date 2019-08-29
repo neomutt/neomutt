@@ -79,6 +79,6 @@ struct ObserverNode
   struct Observer *observer;
   STAILQ_ENTRY(ObserverNode) entries;
 };
-STAILQ_HEAD(ObserverHead, ObserverNode);
+STAILQ_HEAD(ObserverList, ObserverNode);
 
 #endif /* MUTT_LIB_OBSERVER_H */

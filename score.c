@@ -55,7 +55,7 @@ short C_ScoreThresholdRead; ///< Config: Messages with a lower score will be aut
 struct Score
 {
   char *str;
-  struct PatternHead *pat;
+  struct PatternList *pat;
   int val;
   bool exact; /**< if this rule matches, don't evaluate any more */
   struct Score *next;
@@ -123,7 +123,7 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
       break;
   if (!ptr)
   {
-    struct PatternHead *pat = mutt_pattern_comp(pattern, MUTT_PC_NO_FLAGS, err);
+    struct PatternList *pat = mutt_pattern_comp(pattern, MUTT_PC_NO_FLAGS, err);
     if (!pat)
     {
       FREE(&pattern);

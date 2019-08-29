@@ -105,7 +105,7 @@ struct Email
   int refno;                   ///< Message number on server
 #endif
 
-  struct TagHead tags;         ///< For drivers that support server tagging
+  struct TagList tags;         ///< For drivers that support server tagging
 
   char *maildir_flags;         ///< Unknown maildir flags
 

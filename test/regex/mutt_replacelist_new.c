@@ -27,5 +27,5 @@
 
 void test_mutt_replacelist_new(void)
 {
-  // struct ReplaceListNode *mutt_replacelist_new(void);
+  // struct Replace *mutt_replacelist_new(void);
 }
