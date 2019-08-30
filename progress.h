@@ -48,7 +48,7 @@ enum ProgressType
 struct Progress
 {
   char msg[1024];
-  char sizestr[128];
+  char sizestr[24];
   size_t pos;
   size_t size;
   size_t inc;
