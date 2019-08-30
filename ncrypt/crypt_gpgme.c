@@ -3412,7 +3412,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
                                     unsigned long data, MuttFormatFlags flags)
 {
   char fmt[128];
-  int optional = (flags & MUTT_FORMAT_OPTIONAL);
+  bool optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   struct CryptEntry *entry = (struct CryptEntry *) data;
   struct CryptKeyInfo *key = entry->key;
@@ -3445,7 +3445,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
         snprintf(buf, buflen, fmt, crypt_key_abilities(kflags));
       }
       else if (!(kflags & KEYFLAG_ABILITIES))
-        optional = 0;
+        optional = false;
       break;
 
     case 'f':
@@ -3455,7 +3455,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
         snprintf(buf, buflen, fmt, crypt_flags(kflags));
       }
       else if (!(kflags & KEYFLAG_RESTRICTIONS))
-        optional = 0;
+        optional = false;
       break;
 
     case 'k':

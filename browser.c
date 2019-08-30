@@ -369,7 +369,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
 {
   char fn[128], fmt[128];
   struct Folder *folder = (struct Folder *) data;
-  int optional = (flags & MUTT_FORMAT_OPTIONAL);
+  bool optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   switch (op)
   {
@@ -529,7 +529,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
           mutt_format_s(buf, buflen, prec, "");
       }
       else if (folder->ff->msg_count == 0)
-        optional = 0;
+        optional = false;
       break;
 
     case 'N':
@@ -549,7 +549,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
           mutt_format_s(buf, buflen, prec, "");
       }
       else if (folder->ff->msg_unread == 0)
-        optional = 0;
+        optional = false;
       break;
 
     case 's':

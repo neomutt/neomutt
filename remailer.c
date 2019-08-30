@@ -438,7 +438,7 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
 {
   char fmt[128];
   struct Remailer *remailer = (struct Remailer *) data;
-  int optional = (flags & MUTT_FORMAT_OPTIONAL);
+  bool optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   switch (op)
   {
@@ -449,7 +449,7 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
         snprintf(buf, buflen, fmt, NONULL(remailer->addr));
       }
       else if (!remailer->addr)
-        optional = 0;
+        optional = false;
       break;
 
     case 'c':
@@ -475,7 +475,7 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
         snprintf(buf, buflen, fmt, NONULL(remailer->shortname));
       }
       else if (!remailer->shortname)
-        optional = 0;
+        optional = false;
       break;
 
     default:

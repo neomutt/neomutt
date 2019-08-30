@@ -560,7 +560,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
   struct HdrFormatInfo *hfi = (struct HdrFormatInfo *) data;
   char fmt[128], tmp[1024];
   char *p = NULL, *tags = NULL;
-  int optional = (flags & MUTT_FORMAT_OPTIONAL);
+  bool optional = (flags & MUTT_FORMAT_OPTIONAL);
   int threads = ((C_Sort & SORT_MASK) == SORT_THREADS);
   int is_index = (flags & MUTT_FORMAT_INDEX);
   size_t colorlen;
@@ -632,7 +632,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       if (op == 'K')
       {
         if (optional)
-          optional = 0;
+          optional = false;
         /* break if 'K' returns nothing */
         break;
       }
@@ -767,7 +767,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
             j *= -1;
 
           if (((now > j) || (now < (-1 * j))) ^ invert)
-            optional = 0;
+            optional = false;
           break;
         }
 
@@ -871,7 +871,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         snprintf(buf, buflen, fmt, mutt_messages_in_thread(m, e, 0));
       }
       else if (mutt_messages_in_thread(m, e, 0) <= 1)
-        optional = 0;
+        optional = false;
       break;
 
     case 'f':
@@ -895,7 +895,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       }
       else if (mutt_addr_is_user(from))
       {
-        optional = 0;
+        optional = false;
       }
       break;
 
@@ -908,7 +908,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       }
       else if (!tags)
-        optional = 0;
+        optional = false;
       FREE(&tags);
       break;
 
@@ -945,7 +945,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         {
           tags = driver_tags_get_transformed_for(&e->tags, tag);
           if (!tags)
-            optional = 0;
+            optional = false;
           FREE(&tags);
         }
       }
@@ -955,7 +955,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     case 'H':
       /* (Hormel) spam score */
       if (optional)
-        optional = e->env->spam ? 1 : 0;
+        optional = e->env->spam;
 
       if (e->env->spam)
         mutt_format_s(buf, buflen, prec, NONULL(e->env->spam->data));
@@ -1015,7 +1015,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       }
       else if (e->lines <= 0)
-        optional = 0;
+        optional = false;
       break;
 
     case 'L':
@@ -1029,7 +1029,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       else if (!check_for_mailing_list(&e->env->to, NULL, NULL, 0) &&
                !check_for_mailing_list(&e->env->cc, NULL, NULL, 0))
       {
-        optional = 0;
+        optional = false;
       }
       break;
 
@@ -1070,7 +1070,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       else
       {
         if (!(threads && is_index && e->collapsed && (e->num_hidden > 1)))
-          optional = 0;
+          optional = false;
       }
       break;
 
@@ -1083,7 +1083,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       else
       {
         if (e->score == 0)
-          optional = 0;
+          optional = false;
       }
       break;
 
@@ -1098,7 +1098,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       else if (!check_for_mailing_list_addr(&e->env->to, NULL, 0) &&
                !check_for_mailing_list_addr(&e->env->cc, NULL, 0))
       {
-        optional = 0;
+        optional = false;
       }
       break;
 
@@ -1116,7 +1116,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       tmp[0] = '\0';
       mutt_addrlist_write(tmp, sizeof(tmp), &e->env->to, true);
       if (optional && (tmp[0] == '\0'))
-        optional = 0;
+        optional = false;
       mutt_format_s(buf, buflen, prec, tmp);
       break;
 
@@ -1124,7 +1124,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       tmp[0] = '\0';
       mutt_addrlist_write(tmp, sizeof(tmp), &e->env->cc, true);
       if (optional && (tmp[0] == '\0'))
-        optional = 0;
+        optional = false;
       mutt_format_s(buf, buflen, prec, tmp);
       break;
 
@@ -1247,7 +1247,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         mutt_format_s(buf, buflen, prec, e->env->organization ? e->env->organization : "");
       }
       else if (!e->env->organization)
-        optional = 0;
+        optional = false;
       break;
 
 #ifdef USE_NNTP
@@ -1257,7 +1257,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         mutt_format_s(buf, buflen, prec, e->env->x_comment_to ? e->env->x_comment_to : "");
       }
       else if (!e->env->x_comment_to)
-        optional = 0;
+        optional = false;
       break;
 #endif
 
@@ -1267,7 +1267,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
       /* The recursion allows messages without depth to return 0. */
       if (optional)
-        optional = count != 0;
+        optional = (count != 0);
 
       snprintf(fmt, sizeof(fmt), "%%%sd", prec);
       snprintf(buf, buflen, fmt, count);
@@ -1276,7 +1276,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'y':
       if (optional)
-        optional = e->env->x_label ? 1 : 0;
+        optional = e->env->x_label;
 
       colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_LABEL);
       mutt_format_s(buf + colorlen, buflen - colorlen, prec, NONULL(e->env->x_label));

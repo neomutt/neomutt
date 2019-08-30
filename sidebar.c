@@ -115,7 +115,6 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
                                       unsigned long data, MuttFormatFlags flags)
 {
   struct SbEntry *sbe = (struct SbEntry *) data;
-  unsigned int optional;
   char fmt[256];
 
   if (!sbe || !buf)
@@ -130,7 +129,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
   bool c = Context && Context->mailbox &&
            (mutt_str_strcmp(Context->mailbox->realpath, m->realpath) == 0);
 
-  optional = flags & MUTT_FORMAT_OPTIONAL;
+  bool optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   switch (op)
   {
@@ -145,7 +144,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
         snprintf(buf, buflen, fmt, c ? Context->mailbox->msg_deleted : 0);
       }
       else if ((c && (Context->mailbox->msg_deleted == 0)) || !c)
-        optional = 0;
+        optional = false;
       break;
 
     case 'D':
@@ -162,7 +161,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
         snprintf(buf, buflen, fmt, m->msg_flagged);
       }
       else if (m->msg_flagged == 0)
-        optional = 0;
+        optional = false;
       break;
 
     case 'L':
@@ -172,7 +171,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
         snprintf(buf, buflen, fmt, c ? Context->mailbox->vcount : m->msg_count);
       }
       else if ((c && (Context->mailbox->vcount == m->msg_count)) || !c)
-        optional = 0;
+        optional = false;
       break;
 
     case 'N':
@@ -182,7 +181,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
         snprintf(buf, buflen, fmt, m->msg_unread);
       }
       else if (m->msg_unread == 0)
-        optional = 0;
+        optional = false;
       break;
 
     case 'n':
@@ -192,7 +191,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
         snprintf(buf, buflen, fmt, m->has_new ? 'N' : ' ');
       }
       else if (m->has_new == false)
-        optional = 0;
+        optional = false;
       break;
 
     case 'S':
@@ -202,7 +201,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
         snprintf(buf, buflen, fmt, m->msg_count);
       }
       else if (m->msg_count == 0)
-        optional = 0;
+        optional = false;
       break;
 
     case 't':
@@ -212,7 +211,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
         snprintf(buf, buflen, fmt, c ? Context->mailbox->msg_tagged : 0);
       }
       else if ((c && (Context->mailbox->msg_tagged == 0)) || !c)
-        optional = 0;
+        optional = false;
       break;
 
     case '!':

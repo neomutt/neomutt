@@ -95,7 +95,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
                                      unsigned long data, MuttFormatFlags flags)
 {
   char fmt[128], tmp[128];
-  int optional = (flags & MUTT_FORMAT_OPTIONAL);
+  bool optional = (flags & MUTT_FORMAT_OPTIONAL);
   struct Menu *menu = (struct Menu *) data;
 
   *buf = '\0';
@@ -109,7 +109,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
                  mutt_mailbox_check(Context ? Context->mailbox : NULL, 0));
       }
       else if (mutt_mailbox_check(Context ? Context->mailbox : NULL, 0) == 0)
-        optional = 0;
+        optional = false;
       break;
 
     case 'd':
@@ -120,7 +120,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
                  (Context && Context->mailbox) ? Context->mailbox->msg_deleted : 0);
       }
       else if (!Context || !Context->mailbox || (Context->mailbox->msg_deleted == 0))
-        optional = 0;
+        optional = false;
       break;
 
     case 'D':
@@ -172,7 +172,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
                  (Context && Context->mailbox) ? Context->mailbox->msg_flagged : 0);
       }
       else if (!Context || !Context->mailbox || (Context->mailbox->msg_flagged == 0))
-        optional = 0;
+        optional = false;
       break;
 
     case 'h':
@@ -189,7 +189,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, tmp);
       }
       else if (!Context || !Context->mailbox || !Context->mailbox->size)
-        optional = 0;
+        optional = false;
       break;
 
     case 'L':
@@ -200,7 +200,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, tmp);
       }
       else if (!Context || !Context->pattern)
-        optional = 0;
+        optional = false;
       break;
 
     case 'm':
@@ -211,7 +211,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
                  (Context && Context->mailbox) ? Context->mailbox->msg_count : 0);
       }
       else if (!Context || !Context->mailbox || (Context->mailbox->msg_count == 0))
-        optional = 0;
+        optional = false;
       break;
 
     case 'M':
@@ -222,7 +222,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
                  (Context && Context->mailbox) ? Context->mailbox->vcount : 0);
       }
       else if (!Context || !Context->pattern)
-        optional = 0;
+        optional = false;
       break;
 
     case 'n':
@@ -233,7 +233,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
                  (Context && Context->mailbox) ? Context->mailbox->msg_new : 0);
       }
       else if (!Context || !Context->mailbox || (Context->mailbox->msg_new == 0))
-        optional = 0;
+        optional = false;
       break;
 
     case 'o':
@@ -247,7 +247,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       }
       else if (!Context || !Context->mailbox ||
                ((Context->mailbox->msg_unread - Context->mailbox->msg_new) == 0))
-        optional = 0;
+        optional = false;
       break;
 
     case 'p':
@@ -259,7 +259,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, count);
       }
       else if (count == 0)
-        optional = 0;
+        optional = false;
       break;
     }
 
@@ -325,7 +325,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, read);
       }
       else if (read == 0)
-        optional = 0;
+        optional = false;
       break;
     }
 
@@ -347,7 +347,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
                  (Context && Context->mailbox) ? Context->mailbox->msg_tagged : 0);
       }
       else if (!Context || !Context->mailbox || (Context->mailbox->msg_tagged == 0))
-        optional = 0;
+        optional = false;
       break;
 
     case 'u':
@@ -358,7 +358,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
                  (Context && Context->mailbox) ? Context->mailbox->msg_unread : 0);
       }
       else if (!Context || !Context->mailbox || (Context->mailbox->msg_unread == 0))
-        optional = 0;
+        optional = false;
       break;
 
     case 'v':
@@ -372,7 +372,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, (Context && Context->pattern) ? Context->pattern : "");
       }
       else if (!Context || !Context->pattern)
-        optional = 0;
+        optional = false;
       break;
 
     case 0:

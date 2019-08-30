@@ -217,7 +217,7 @@ static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int c
 {
   char fmt[128];
   struct SmimeCommandContext *cctx = (struct SmimeCommandContext *) data;
-  int optional = (flags & MUTT_FORMAT_OPTIONAL);
+  bool optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   switch (op)
   {
@@ -247,7 +247,7 @@ static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int c
         mutt_buffer_pool_release(&buf2);
       }
       else if (!C_SmimeCaLocation)
-        optional = 0;
+        optional = false;
       break;
     }
 
@@ -259,7 +259,7 @@ static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, NONULL(cctx->certificates));
       }
       else if (!cctx->certificates)
-        optional = 0;
+        optional = false;
       break;
     }
 
@@ -271,7 +271,7 @@ static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, NONULL(cctx->intermediates));
       }
       else if (!cctx->intermediates)
-        optional = 0;
+        optional = false;
       break;
     }
 
@@ -283,7 +283,7 @@ static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, NONULL(cctx->sig_fname));
       }
       else if (!cctx->sig_fname)
-        optional = 0;
+        optional = false;
       break;
     }
 
@@ -295,7 +295,7 @@ static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, NONULL(cctx->key));
       }
       else if (!cctx->key)
-        optional = 0;
+        optional = false;
       break;
     }
 
@@ -307,7 +307,7 @@ static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, NONULL(cctx->cryptalg));
       }
       else if (!cctx->key)
-        optional = 0;
+        optional = false;
       break;
     }
 
@@ -319,7 +319,7 @@ static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, NONULL(cctx->fname));
       }
       else if (!cctx->fname)
-        optional = 0;
+        optional = false;
       break;
     }
 
@@ -331,7 +331,7 @@ static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, NONULL(cctx->digestalg));
       }
       else if (!cctx->key)
-        optional = 0;
+        optional = false;
       break;
     }
 

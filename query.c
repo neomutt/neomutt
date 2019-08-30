@@ -274,7 +274,7 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
   struct Query *query = entry->data;
   char fmt[128];
   char tmp[256] = { 0 };
-  int optional = (flags & MUTT_FORMAT_OPTIONAL);
+  bool optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   switch (op)
   {
@@ -290,7 +290,7 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
       if (!optional)
         mutt_format_s(buf, buflen, prec, NONULL(query->other));
       else if (!query->other || !*query->other)
-        optional = 0;
+        optional = false;
       break;
     case 'n':
       mutt_format_s(buf, buflen, prec, NONULL(query->name));

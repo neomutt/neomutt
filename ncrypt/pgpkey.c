@@ -182,7 +182,7 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
                                  unsigned long data, MuttFormatFlags flags)
 {
   char fmt[128];
-  int optional = (flags & MUTT_FORMAT_OPTIONAL);
+  bool optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   struct PgpEntry *entry = (struct PgpEntry *) data;
   struct PgpUid *uid = entry->uid;
@@ -210,7 +210,7 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
         snprintf(buf, buflen, fmt, pgp_key_abilities(kflags));
       }
       else if (!(kflags & KEYFLAG_ABILITIES))
-        optional = 0;
+        optional = false;
       break;
     case 'f':
       if (!optional)
@@ -219,7 +219,7 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
         snprintf(buf, buflen, fmt, pgp_flags(kflags));
       }
       else if (!(kflags & KEYFLAG_RESTRICTIONS))
-        optional = 0;
+        optional = false;
       break;
     case 'k':
       if (!optional)
@@ -251,7 +251,7 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
       else if (!(uid->trust & 0x03))
       {
         /* undefined trust */
-        optional = 0;
+        optional = false;
       }
       break;
     case 'u':

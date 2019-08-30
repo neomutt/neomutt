@@ -97,7 +97,7 @@ static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int col
 {
   char fmt[128];
   struct PgpCommandContext *cctx = (struct PgpCommandContext *) data;
-  int optional = (flags & MUTT_FORMAT_OPTIONAL);
+  bool optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   switch (op)
   {
@@ -109,7 +109,7 @@ static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int col
         snprintf(buf, buflen, fmt, NONULL(cctx->signas));
       }
       else if (!cctx->signas)
-        optional = 0;
+        optional = false;
       break;
     }
     case 'f':
@@ -120,7 +120,7 @@ static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int col
         snprintf(buf, buflen, fmt, NONULL(cctx->fname));
       }
       else if (!cctx->fname)
-        optional = 0;
+        optional = false;
       break;
     }
     case 'p':
@@ -131,7 +131,7 @@ static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int col
         snprintf(buf, buflen, fmt, cctx->need_passphrase ? "PGPPASSFD=0" : "");
       }
       else if (!cctx->need_passphrase || pgp_use_gpg_agent())
-        optional = 0;
+        optional = false;
       break;
     }
     case 'r':
@@ -142,7 +142,7 @@ static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int col
         snprintf(buf, buflen, fmt, NONULL(cctx->ids));
       }
       else if (!cctx->ids)
-        optional = 0;
+        optional = false;
       break;
     }
     case 's':
@@ -153,7 +153,7 @@ static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int col
         snprintf(buf, buflen, fmt, NONULL(cctx->sig_fname));
       }
       else if (!cctx->sig_fname)
-        optional = 0;
+        optional = false;
       break;
     }
     default:

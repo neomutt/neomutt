@@ -975,7 +975,7 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
                                       unsigned long data, MuttFormatFlags flags)
 {
   char fmt[128], tmp[128];
-  int optional = (flags & MUTT_FORMAT_OPTIONAL);
+  bool optional = (flags & MUTT_FORMAT_OPTIONAL);
   struct Menu *menu = (struct Menu *) data;
 
   *buf = '\0';

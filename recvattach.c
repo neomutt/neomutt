@@ -215,7 +215,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
   char fmt[128];
   char charset[128];
   struct AttachPtr *aptr = (struct AttachPtr *) data;
-  int optional = (flags & MUTT_FORMAT_OPTIONAL);
+  bool optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   switch (op)
   {
@@ -233,7 +233,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
       else if (!mutt_is_text_part(aptr->content) ||
                !mutt_body_get_charset(aptr->content, charset, sizeof(charset)))
       {
-        optional = 0;
+        optional = false;
       }
       break;
     case 'c':
@@ -245,7 +245,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
                  ((aptr->content->type != TYPE_TEXT) || aptr->content->noconv) ? 'n' : 'c');
       }
       else if ((aptr->content->type != TYPE_TEXT) || aptr->content->noconv)
-        optional = 0;
+        optional = false;
       break;
     case 'd':
       if (!optional)
@@ -292,7 +292,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
       }
       else if (!aptr->content->d_filename && !aptr->content->filename)
       {
-        optional = 0;
+        optional = false;
         break;
       }
     /* fallthrough */
@@ -311,13 +311,13 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
           mutt_format_s(buf, buflen, prec, NONULL(aptr->content->filename));
       }
       else if (!aptr->content->filename)
-        optional = 0;
+        optional = false;
       break;
     case 'D':
       if (!optional)
         snprintf(buf, buflen, "%c", aptr->content->deleted ? 'D' : ' ');
       else if (!aptr->content->deleted)
-        optional = 0;
+        optional = false;
       break;
     case 'e':
       if (!optional)
@@ -348,7 +348,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
       if (!optional)
         mutt_format_s(buf, buflen, prec, aptr->content->subtype);
       else if (!aptr->content->subtype)
-        optional = 0;
+        optional = false;
       break;
     case 'n':
       if (!optional)
@@ -385,7 +385,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
         mutt_format_s(buf, buflen, prec, tmp);
       }
       else if (l == 0)
-        optional = 0;
+        optional = false;
 
       break;
     }
@@ -393,23 +393,23 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
       if (!optional)
         snprintf(buf, buflen, "%c", aptr->content->tagged ? '*' : ' ');
       else if (!aptr->content->tagged)
-        optional = 0;
+        optional = false;
       break;
     case 'T':
       if (!optional)
         mutt_format_s_tree(buf, buflen, prec, NONULL(aptr->tree));
       else if (!aptr->tree)
-        optional = 0;
+        optional = false;
       break;
     case 'u':
       if (!optional)
         snprintf(buf, buflen, "%c", aptr->content->unlink ? '-' : ' ');
       else if (!aptr->content->unlink)
-        optional = 0;
+        optional = false;
       break;
     case 'X':
       if (optional)
-        optional = (aptr->content->attach_count + aptr->content->attach_qualifies) != 0;
+        optional = ((aptr->content->attach_count + aptr->content->attach_qualifies) != 0);
       else
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
