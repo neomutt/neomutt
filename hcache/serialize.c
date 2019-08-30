@@ -41,22 +41,6 @@
 #include "hcache.h"
 
 /**
- * lazy_malloc - Allocate some memory
- * @param size Minimum size to allocate
- * @retval ptr Allocated memory
- *
- * This block is likely to be lazy_realloc()'d repeatedly.
- * It starts off with a minimum size of 4KiB.
- */
-static void *lazy_malloc(size_t size)
-{
-  if (size < 4096)
-    size = 4096;
-
-  return mutt_mem_malloc(size);
-}
-
-/**
  * lazy_realloc - Reallocate some memory
  * @param ptr Pointer to resize
  * @param size Minimum size
@@ -586,7 +570,7 @@ void *mutt_hcache_dump(header_cache_t *hc, const struct Email *e, int *off, unsi
   bool convert = !CharsetIsUtf8;
 
   *off = 0;
-  unsigned char *d = lazy_malloc(sizeof(union Validate));
+  unsigned char *d = mutt_mem_malloc(4096);
 
   if (uidvalidity == 0)
   {
