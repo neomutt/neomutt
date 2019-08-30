@@ -239,7 +239,6 @@ void mutt_progress_update(struct Progress *progress, size_t pos, int percent)
     char posstr[128];
     if (progress->is_bytes)
     {
-      progress->pos /= (progress->inc << 10) * (progress->inc << 10);
       mutt_str_pretty_size(posstr, sizeof(posstr), progress->pos);
     }
     else
