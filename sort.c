@@ -239,8 +239,8 @@ static int compare_spam(const void *a, const void *b)
 
   /* Firstly, require spam attributes for both msgs */
   /* to compare. Determine which msgs have one.     */
-  ahas = (*ppa)->env && mutt_buffer_len(&(*ppa)->env->spam) != 0;
-  bhas = (*ppb)->env && mutt_buffer_len(&(*ppb)->env->spam) != 0;
+  ahas = (*ppa)->env && !mutt_buffer_is_empty(&(*ppa)->env->spam);
+  bhas = (*ppb)->env && !mutt_buffer_is_empty(&(*ppb)->env->spam);
 
   /* If one msg has spam attr but other does not, sort the one with first. */
   if (ahas && !bhas)

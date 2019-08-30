@@ -201,7 +201,7 @@ static int cmd_start(struct ImapAccountData *adata, const char *cmdstr, ImapCmdF
   if (flags & IMAP_CMD_QUEUE)
     return 0;
 
-  if (mutt_buffer_len(&adata->cmdbuf) == 0)
+  if (mutt_buffer_is_empty(&adata->cmdbuf))
     return IMAP_RES_BAD;
 
   rc = mutt_socket_send_d(adata->conn, adata->cmdbuf.data,

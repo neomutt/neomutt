@@ -655,7 +655,7 @@ int mutt_buffer_enter_fname_full(const char *prompt, struct Buffer *fname,
   mutt_window_mvaddstr(MuttMessageWindow, 0, 0, prompt);
   addstr(_(" ('?' for list): "));
   NORMAL_COLOR;
-  if (mutt_buffer_len(fname))
+  if (!mutt_buffer_is_empty(fname))
     addstr(mutt_b2s(fname));
   mutt_window_clrtoeol(MuttMessageWindow);
   mutt_refresh();

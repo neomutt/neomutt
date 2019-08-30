@@ -1187,7 +1187,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
       if (!mutt_regexlist_match(&NoSpamList, line))
       {
         /* if spam tag already exists, figure out how to amend it */
-        if ((mutt_buffer_len(&env->spam) != 0) && (*buf != '\0'))
+        if ((!mutt_buffer_is_empty(&env->spam)) && (*buf != '\0'))
         {
           /* If C_SpamSeparator defined, append with separator */
           if (C_SpamSeparator)
@@ -1203,18 +1203,18 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
         }
 
         /* spam tag is new, and match expr is non-empty; copy */
-        else if ((mutt_buffer_len(&env->spam) == 0) && (*buf != '\0'))
+        else if (mutt_buffer_is_empty(&env->spam) && (*buf != '\0'))
         {
           mutt_buffer_addstr(&env->spam, buf);
         }
 
         /* match expr is empty; plug in null string if no existing tag */
-        else if (mutt_buffer_len(&env->spam) == 0)
+        else if (mutt_buffer_is_empty(&env->spam))
         {
           mutt_buffer_addstr(&env->spam, "");
         }
 
-        if (mutt_buffer_len(&env->spam) != 0)
+        if (!mutt_buffer_is_empty(&env->spam))
           mutt_debug(LL_DEBUG5, "spam = %s\n", env->spam.data);
       }
     }

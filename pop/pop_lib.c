@@ -158,7 +158,7 @@ static int fetch_auth(const char *line, void *data)
 {
   struct PopAccountData *adata = data;
 
-  if (mutt_buffer_len(&adata->auth_list) != 0)
+  if (!mutt_buffer_is_empty(&adata->auth_list))
   {
     mutt_buffer_addstr(&adata->auth_list, " ");
   }

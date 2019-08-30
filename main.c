@@ -1173,13 +1173,13 @@ int main(int argc, char *argv[], char *envp[])
       }
       mutt_buffer_reset(&folder);
       mutt_buffer_select_file(&folder, MUTT_SEL_FOLDER | MUTT_SEL_MAILBOX, NULL, NULL);
-      if (mutt_buffer_len(&folder) == 0)
+      if (mutt_buffer_is_empty(&folder))
       {
         goto main_ok; // TEST40: neomutt -y (quit selection)
       }
     }
 
-    if (mutt_buffer_len(&folder) == 0)
+    if (mutt_buffer_is_empty(&folder))
     {
       if (C_Spoolfile)
       {

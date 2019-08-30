@@ -164,7 +164,7 @@ void mutt_env_merge(struct Envelope *base, struct Envelope **extra)
   }
 
 #define MOVE_BUFFER(member)                                                    \
-  if (mutt_buffer_len(&base->member) == 0)                                     \
+  if (mutt_buffer_is_empty(&base->member))                                     \
   {                                                                            \
     memcpy(&base->member, &(*extra)->member, sizeof(struct Buffer));           \
     mutt_buffer_init(&(*extra)->member);                                       \
