@@ -206,15 +206,6 @@ bool mutt_regexlist_match(struct RegexList *rl, const char *str)
 }
 
 /**
- * mutt_regexlist_new - Create a new RegexList
- * @retval ptr New RegexList object
- */
-struct RegexNode *mutt_regexlist_new(void)
-{
-  return mutt_mem_calloc(1, sizeof(struct RegexNode));
-}
-
-/**
  * mutt_regexlist_remove - Remove a Regex from a list
  * @param rl  RegexList to alter
  * @param str Pattern to remove from the list

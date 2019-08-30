@@ -328,7 +328,6 @@ REGEX_OBJS	= test/regex/mutt_regex_compile.o \
 		  test/regex/mutt_regexlist_add.o \
 		  test/regex/mutt_regexlist_free.o \
 		  test/regex/mutt_regexlist_match.o \
-		  test/regex/mutt_regexlist_new.o \
 		  test/regex/mutt_regexlist_remove.o \
 		  test/regex/mutt_regex_new.o \
 		  test/regex/mutt_replacelist_add.o \

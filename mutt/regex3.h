@@ -90,7 +90,6 @@ void          mutt_regex_free(struct Regex **r);
 int               mutt_regexlist_add   (struct RegexList *rl, const char *str, int flags, struct Buffer *err);
 void              mutt_regexlist_free  (struct RegexList *rl);
 bool              mutt_regexlist_match (struct RegexList *rl, const char *str);
-struct RegexNode *mutt_regexlist_new   (void);
 int               mutt_regexlist_remove(struct RegexList *rl, const char *str);
 
 int             mutt_replacelist_add   (struct ReplaceList *rl, const char *pat, const char *templ, struct Buffer *err);
