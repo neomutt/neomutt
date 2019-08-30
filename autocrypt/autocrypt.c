@@ -30,7 +30,6 @@
 #include <errno.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <sys/time.h>
 #include "autocrypt_private.h"
 #include "mutt/mutt.h"
 #include "address/lib.h"
@@ -260,7 +259,6 @@ cleanup:
 int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *env)
 {
   struct AutocryptHeader *valid_ac_hdr = NULL;
-  struct timeval now;
   struct AutocryptPeer *peer = NULL;
   struct AutocryptPeerHistory *peerhist = NULL;
   struct Buffer *keyid = NULL;
@@ -290,8 +288,7 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
 
   /* Ignore emails that appear to be more than a week in the future,
    * since they can block all future updates during that time. */
-  gettimeofday(&now, NULL);
-  if (e->date_sent > (now.tv_sec + 7 * 24 * 60 * 60))
+  if (e->date_sent > (mutt_date_epoch_ms() / 1000 + (7 * 24 * 60 * 60)))
     return 0;
 
   for (struct AutocryptHeader *ac_hdr = env->autocrypt; ac_hdr; ac_hdr = ac_hdr->next)
@@ -409,7 +406,6 @@ cleanup:
  */
 int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_headers)
 {
-  struct timeval now;
   struct AutocryptPeer *peer = NULL;
   struct AutocryptGossipHistory *gossip_hist = NULL;
   struct Address *peer_addr = NULL;
@@ -434,8 +430,7 @@ int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_
 
   /* Ignore emails that appear to be more than a week in the future,
    * since they can block all future updates during that time. */
-  gettimeofday(&now, NULL);
-  if (e->date_sent > (now.tv_sec + (7 * 24 * 60 * 60)))
+  if (e->date_sent > (mutt_date_epoch_ms() / 1000 + (7 * 24 * 60 * 60)))
     return 0;
 
   struct Buffer *keyid = mutt_buffer_pool_get();

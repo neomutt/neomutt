@@ -32,6 +32,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/time.h>
 #include <time.h>
 #include "date.h"
 #include "logging.h"
@@ -403,6 +404,19 @@ int mutt_date_check_month(const char *s)
 }
 
 /**
+ * mutt_date_epoch_ms - Return the number of milliseconds since the Unix epoch
+ * @retval ms The number of ms since the Unix epoch, or 0 on failure
+ */
+size_t mutt_date_epoch_ms(void)
+{
+  struct timeval tv = { 0, 0 };
+  gettimeofday(&tv, NULL);
+  /* We assume that gettimeofday doesn't modify its first argument on failure.
+   * We also kind of assume that gettimeofday does not fail. */
+  return tv.tv_sec * 1000 + tv.tv_usec / 1000;
+}
+
+/**
  * mutt_date_is_day_name - Is the string a valid day name
  * @param s String to check
  * @retval true It's a valid day name
@@ -754,4 +768,17 @@ size_t mutt_date_localtime_format(char *buf, size_t buflen, const char *format, 
 
   struct tm tm = mutt_date_localtime(t);
   return strftime(buf, buflen, format, &tm);
+}
+
+/**
+ * mutt_date_sleep_ms - Sleep for milliseconds
+ * @param ms Number of milliseconds to sleep
+ */
+void mutt_date_sleep_ms(size_t ms)
+{
+  const struct timespec sleep = {
+    .tv_sec = ms / 1000,
+    .tv_nsec = (ms % 1000) * 1000000UL,
+  };
+  nanosleep(&sleep, NULL);
 }

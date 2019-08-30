@@ -82,14 +82,6 @@ typedef struct EmailCache header_cache_t;
  */
 typedef int (*hcache_namer_t)(const char *path, char *dest, size_t dlen);
 
-/**
- * union Validate - Header cache validity
- */
-union Validate {
-  struct timeval timeval;
-  unsigned int uidvalidity;
-};
-
 /* These Config Variables are only used in hcache/hcache.c */
 extern char *C_HeaderCacheBackend;
 

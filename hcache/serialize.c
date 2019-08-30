@@ -33,7 +33,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/time.h>
 #include <sys/types.h>
 #include "mutt/mutt.h"
 #include "address/lib.h"
@@ -69,6 +68,22 @@ unsigned char *serial_dump_int(unsigned int i, unsigned char *d, int *off)
   lazy_realloc(&d, *off + sizeof(int));
   memcpy(d + *off, &i, sizeof(int));
   (*off) += sizeof(int);
+
+  return d;
+}
+
+/**
+ * serial_dump_size_t - Pack a size_t into a binary blob
+ * @param s   Size_t to save
+ * @param d   Binary blob to add to
+ * @param off Offset into the blob
+ * @retval ptr End of the newly packed binary
+ */
+unsigned char *serial_dump_size_t(size_t s, unsigned char *d, int *off)
+{
+  lazy_realloc(&d, *off + sizeof(size_t));
+  memcpy(d + *off, &s, sizeof(size_t));
+  (*off) += sizeof(size_t);
 
   return d;
 }
@@ -564,7 +579,7 @@ void serial_restore_envelope(struct Envelope *env, const unsigned char *d, int *
  * This function transforms a e into a char so that it is usable by
  * db_store.
  */
-void *mutt_hcache_dump(header_cache_t *hc, const struct Email *e, int *off, unsigned int uidvalidity)
+void *mutt_hcache_dump(header_cache_t *hc, const struct Email *e, int *off, size_t uidvalidity)
 {
   struct Email nh;
   bool convert = !CharsetIsUtf8;
@@ -572,16 +587,7 @@ void *mutt_hcache_dump(header_cache_t *hc, const struct Email *e, int *off, unsi
   *off = 0;
   unsigned char *d = mutt_mem_malloc(4096);
 
-  if (uidvalidity == 0)
-  {
-    struct timeval now;
-    gettimeofday(&now, NULL);
-    memcpy(d, &now, sizeof(struct timeval));
-  }
-  else
-    memcpy(d, &uidvalidity, sizeof(uidvalidity));
-  *off += sizeof(union Validate);
-
+  d = serial_dump_size_t((uidvalidity != 0) ? uidvalidity : mutt_date_epoch_ms(), d, off);
   d = serial_dump_int(hc->crc, d, off);
 
   lazy_realloc(&d, *off + sizeof(struct Email));
@@ -634,7 +640,7 @@ struct Email *mutt_hcache_restore(const unsigned char *d)
   bool convert = !CharsetIsUtf8;
 
   /* skip validate */
-  off += sizeof(union Validate);
+  off += sizeof(size_t);
 
   /* skip crc */
   off += sizeof(unsigned int);

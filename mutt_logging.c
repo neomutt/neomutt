@@ -34,8 +34,6 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-#include <sys/time.h>
-#include <time.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
 #include "curs_lib.h"
@@ -45,31 +43,14 @@
 #include "muttlib.h"
 #include "options.h"
 
-struct timeval LastError = { 0 };
+size_t LastError = 0; ///< Time of the last error message (in milliseconds since the Unix epoch)
 
 short C_DebugLevel = 0;   ///< Config: Logging level for debug logs
 char *C_DebugFile = NULL; ///< Config: File to save debug logs
 char *CurrentFile = NULL; /**< The previous log file name */
 const int NumOfLogs = 5;  /**< How many log files to rotate */
 
-#define S_TO_NS 1000000000UL
-#define S_TO_US 1000000UL
-#define US_TO_NS 1000UL
-
-/**
- * micro_elapsed - Number of microseconds between two timevals
- * @param begin Begin time
- * @param end   End time
- * @retval num      Microseconds elapsed
- * @retval LONG_MAX Begin time was zero
- */
-static long micro_elapsed(const struct timeval *begin, const struct timeval *end)
-{
-  if ((begin->tv_sec == 0) && (end->tv_sec != 0))
-    return LONG_MAX;
-
-  return (end->tv_sec - begin->tv_sec) * S_TO_US + (end->tv_usec - begin->tv_usec);
-}
+#define S_TO_MS 1000L
 
 /**
  * error_pause - Wait for an error message to be read
@@ -78,28 +59,13 @@ static long micro_elapsed(const struct timeval *begin, const struct timeval *end
  */
 static void error_pause(void)
 {
-  struct timeval now = { 0 };
-
-  if (gettimeofday(&now, NULL) < 0)
-  {
-    mutt_debug(LL_DEBUG1, "gettimeofday failed: %d\n", errno);
+  const size_t elapsed = mutt_date_epoch_ms() - LastError;
+  const size_t sleep = C_SleepTime * S_TO_MS;
+  if ((LastError == 0) || (elapsed >= sleep))
     return;
-  }
-
-  unsigned long sleep = C_SleepTime * S_TO_NS;
-  long micro = micro_elapsed(&LastError, &now);
-  if ((micro * US_TO_NS) >= sleep)
-    return;
-
-  sleep -= (micro * US_TO_NS);
-
-  struct timespec wait = {
-    .tv_sec = (sleep / S_TO_NS),
-    .tv_nsec = (sleep % S_TO_NS),
-  };
 
   mutt_refresh();
-  nanosleep(&wait, NULL);
+  mutt_date_sleep_ms(sleep - elapsed);
 }
 
 /**
@@ -214,13 +180,12 @@ int log_disp_curses(time_t stamp, const char *file, int line,
   if ((level <= LL_ERROR) && !dupe)
   {
     OptMsgErr = true;
-    if (gettimeofday(&LastError, NULL) < 0)
-      mutt_debug(LL_DEBUG1, "gettimeofday failed: %d\n", errno);
+    LastError = mutt_date_epoch_ms();
   }
   else
   {
     OptMsgErr = false;
-    LastError.tv_sec = 0;
+    LastError = 0;
   }
 
   return ret;

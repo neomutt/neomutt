@@ -45,6 +45,7 @@ unsigned char *serial_dump_char(char *c, unsigned char *d, int *off, bool conver
 unsigned char *serial_dump_char_size(char *c, unsigned char *d, int *off, ssize_t size, bool convert);
 unsigned char *serial_dump_envelope(struct Envelope *e, unsigned char *d, int *off, bool convert);
 unsigned char *serial_dump_int(unsigned int i, unsigned char *d, int *off);
+unsigned char *serial_dump_size_t(size_t s, unsigned char *d, int *off);
 unsigned char *serial_dump_parameter(struct ParameterList *pl, unsigned char *d, int *off, bool convert);
 unsigned char *serial_dump_stailq(struct ListHead *l, unsigned char *d, int *off, bool convert);
 
@@ -57,7 +58,7 @@ void           serial_restore_int(unsigned int *i, const unsigned char *d, int *
 void           serial_restore_parameter(struct ParameterList *pl, const unsigned char *d, int *off, bool convert);
 void           serial_restore_stailq(struct ListHead *l, const unsigned char *d, int *off, bool convert);
 
-void *        mutt_hcache_dump(header_cache_t *hc, const struct Email *e, int *off, unsigned int uidvalidity);
+void *        mutt_hcache_dump(header_cache_t *hc, const struct Email *e, int *off, size_t uidvalidity);
 struct Email *mutt_hcache_restore(const unsigned char *d);
 
 #endif /* MUTT_HCACHE_SERIALIZE_H */

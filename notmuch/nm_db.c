@@ -32,7 +32,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <sys/stat.h>
-#include <time.h>
 #include "notmuch_private.h"
 #include "mutt/mutt.h"
 #include "email/lib.h"
@@ -92,10 +91,6 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
   const notmuch_database_mode_t mode =
       writable ? NOTMUCH_DATABASE_MODE_READ_WRITE : NOTMUCH_DATABASE_MODE_READ_ONLY;
 
-  const struct timespec wait = {
-    .tv_sec = 0, .tv_nsec = 500000000, /* Half a second */
-  };
-
   do
   {
 #if LIBNOTMUCH_CHECK_VERSION(4, 2, 0)
@@ -110,7 +105,7 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
 
     if (verbose && ct && ((ct % 2) == 0))
       mutt_error(_("Waiting for notmuch DB... (%d sec)"), ct / 2);
-    nanosleep(&wait, NULL);
+    mutt_date_sleep_ms(500000); /* Half a second */
     ct++;
   } while (true);
 

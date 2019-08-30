@@ -48,6 +48,7 @@ struct Tz
 
 time_t    mutt_date_add_timeout(time_t now, long timeout);
 int       mutt_date_check_month(const char *s);
+size_t    mutt_date_epoch_ms(void);
 struct tm mutt_date_gmtime(time_t t);
 bool      mutt_date_is_day_name(const char *s);
 size_t    mutt_date_localtime_format(char *buf, size_t buflen, const char *format, time_t t);
@@ -60,5 +61,6 @@ int       mutt_date_make_tls(char *buf, size_t buflen, time_t timestamp);
 void      mutt_date_normalize_time(struct tm *tm);
 time_t    mutt_date_parse_date(const char *s, struct Tz *tz_out);
 time_t    mutt_date_parse_imap(const char *s);
+void      mutt_date_sleep_ms(size_t ms);
 
 #endif /* MUTT_LIB_DATE_H */

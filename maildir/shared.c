@@ -738,9 +738,9 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
       keylen = maildir_hcache_keylen(key);
     }
     void *data = mutt_hcache_fetch(hc, key, keylen);
-    struct timeval *when = data;
+    size_t *when = data;
 
-    if (data && !ret && (lastchanged.st_mtime <= when->tv_sec))
+    if (data && !ret && (lastchanged.st_mtime <= (*when / 1000)))
     {
       struct Email *e = mutt_hcache_restore((unsigned char *) data);
       e->old = p->email->old;

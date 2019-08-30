@@ -40,7 +40,6 @@
 #include <string.h>
 #include <sys/select.h>
 #include <sys/socket.h>
-#include <sys/time.h>
 #include <time.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
@@ -326,7 +325,8 @@ int raw_socket_poll(struct Connection *conn, time_t wait_secs)
 {
   fd_set rfds;
   unsigned long wait_millis;
-  struct timeval tv, pre_t, post_t;
+  struct timeval tv;
+  size_t pre_t, post_t;
 
   if (conn->fd < 0)
     return -1;
@@ -341,9 +341,9 @@ int raw_socket_poll(struct Connection *conn, time_t wait_secs)
     FD_ZERO(&rfds);
     FD_SET(conn->fd, &rfds);
 
-    gettimeofday(&pre_t, NULL);
+    pre_t = mutt_date_epoch_ms();
     const int rc = select(conn->fd + 1, &rfds, NULL, NULL, &tv);
-    gettimeofday(&post_t, NULL);
+    post_t = mutt_date_epoch_ms();
 
     if ((rc > 0) || ((rc < 0) && (errno != EINTR)))
       return rc;
@@ -351,11 +351,10 @@ int raw_socket_poll(struct Connection *conn, time_t wait_secs)
     if (SigInt)
       mutt_query_exit();
 
-    wait_millis += (pre_t.tv_sec * 1000UL) + (pre_t.tv_usec / 1000);
-    const unsigned long post_t_millis = (post_t.tv_sec * 1000UL) + (post_t.tv_usec / 1000);
-    if (wait_millis <= post_t_millis)
+    wait_millis += pre_t;
+    if (wait_millis <= post_t)
       return 0;
-    wait_millis -= post_t_millis;
+    wait_millis -= post_t;
   }
 }
 

@@ -469,10 +469,11 @@ struct Email *imap_hcache_get(struct ImapMboxData *mdata, unsigned int uid)
   void *uv = mutt_hcache_fetch(mdata->hcache, key, mutt_str_strlen(key));
   if (uv)
   {
-    if (*(unsigned int *) uv == mdata->uid_validity)
+    const size_t *const uid_validity = uv;
+    if (*uid_validity == mdata->uid_validity)
       e = mutt_hcache_restore(uv);
     else
-      mutt_debug(LL_DEBUG3, "hcache uidvalidity mismatch: %u\n", *(unsigned int *) uv);
+      mutt_debug(LL_DEBUG3, "hcache uidvalidity mismatch: %zu\n", *uid_validity);
     mutt_hcache_free(mdata->hcache, &uv);
   }
 
