@@ -243,7 +243,9 @@ void mutt_progress_update(struct Progress *progress, size_t pos, int percent)
     }
     else
     {
-      snprintf(posstr, sizeof(posstr), "%zu", progress->pos);
+      const size_t round_pos =
+          (progress->pos / (progress->inc << 10)) * (progress->inc << 10);
+      snprintf(posstr, sizeof(posstr), "%zu", round_pos);
     }
 
     mutt_debug(LL_DEBUG4, "updating progress: %s\n", posstr);
