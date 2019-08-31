@@ -372,7 +372,7 @@ static char *decode_word(const char *s, size_t len, enum ContentEncoding enc)
 
   if (enc == ENC_QUOTED_PRINTABLE)
   {
-    struct Buffer buf = { 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     for (; it < end; it++)
     {
       if (*it == '_')
@@ -651,19 +651,19 @@ void rfc2047_decode(char **pd)
   if (!pd || !*pd)
     return;
 
-  struct Buffer buf = { 0 }; /* Output buffer                          */
-  char *s = *pd;             /* Read pointer                           */
-  char *beg = NULL;          /* Begin of encoded word                  */
-  enum ContentEncoding enc;  /* ENC_BASE64 or ENC_QUOTED_PRINTABLE     */
-  char *charset = NULL;      /* Which charset                          */
-  size_t charsetlen;         /* Length of the charset                  */
-  char *text = NULL;         /* Encoded text                           */
-  size_t textlen;            /* Length of encoded text                 */
+  struct Buffer buf = mutt_buffer_make(0); /* Output buffer            */
+  char *s = *pd;            /* Read pointer                           */
+  char *beg = NULL;         /* Begin of encoded word                  */
+  enum ContentEncoding enc; /* ENC_BASE64 or ENC_QUOTED_PRINTABLE     */
+  char *charset = NULL;     /* Which charset                          */
+  size_t charsetlen;        /* Length of the charset                  */
+  char *text = NULL;        /* Encoded text                           */
+  size_t textlen;           /* Length of encoded text                 */
 
   /* Keep some state in case the next decoded word is using the same charset
    * and it happens to be split in the middle of a multibyte character.
    * See https://github.com/neomutt/neomutt/issues/1015 */
-  struct Buffer prev = { 0 }; /* Previously decoded word                */
+  struct Buffer prev = mutt_buffer_make(0); /* Previously decoded word  */
   char *prev_charset = NULL;  /* Previously used charset                */
   size_t prev_charsetlen = 0; /* Length of the previously used charset  */
 

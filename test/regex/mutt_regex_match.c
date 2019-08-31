@@ -9,9 +9,9 @@ static bool test_simple_cases(void)
 {
   log_line(__func__);
 
-  struct Buffer *buf = mutt_buffer_new();
+  struct Buffer buf = mutt_buffer_make(0);
   { /* handle edge cases */
-    struct Regex *rx = regex_new("hello bob", 0, buf);
+    struct Regex *rx = regex_new("hello bob", 0, &buf);
 
     const bool failed = !TEST_CHECK(mutt_regex_match(NULL, NULL) == false) ||
                         !TEST_CHECK(mutt_regex_match(NULL, "bob the string") == false) ||
@@ -23,7 +23,7 @@ static bool test_simple_cases(void)
   }
 
   { /* handle normal cases */
-    struct Regex *rx = regex_new("hell", 0, buf);
+    struct Regex *rx = regex_new("hell", 0, &buf);
 
     const bool failed =
         !TEST_CHECK(mutt_regex_match(rx, "hello there")) ||
@@ -37,7 +37,7 @@ static bool test_simple_cases(void)
 
   { /* test more elaborate regex */
     const char *input = "bob bob bob mary bob jonny bob jon jon joe bob";
-    struct Regex *rx = regex_new("bob", 0, buf);
+    struct Regex *rx = regex_new("bob", 0, &buf);
 
     const bool result = mutt_regex_capture(rx, input, 0, NULL);
     const bool failed = !TEST_CHECK(result);
@@ -49,7 +49,7 @@ static bool test_simple_cases(void)
 
   { /* test passing simple flags */
     const char *input = "BOB";
-    struct Regex *rx = regex_new("bob", 0, buf);
+    struct Regex *rx = regex_new("bob", 0, &buf);
     const bool failed = !TEST_CHECK(mutt_regex_capture(rx, input, 0, 0));
     regex_free(&rx);
 
@@ -57,7 +57,7 @@ static bool test_simple_cases(void)
       return false;
   }
 
-  mutt_buffer_free(&buf);
+  mutt_buffer_dealloc(&buf);
   return true;
 }
 
@@ -71,12 +71,12 @@ static bool test_old_implementation(void)
   const char *bob_line = "definitely bob haha";
   const char *not_bob_line = "john dave marty nothing else here";
 
-  struct Buffer *buf = mutt_buffer_new();
+  struct Buffer buf = mutt_buffer_make(0);
   {
     // from: if (regexec(C_PgpGoodSign->regex, bob_line, 0, NULL, 0) == 0)
     //   to: if (mutt_regex_match(C_PgpGoodSign, bob_line))
 
-    struct Regex *rx = regex_new("bob", 0, buf);
+    struct Regex *rx = regex_new("bob", 0, &buf);
     const bool old = regexec(rx->regex, bob_line, 0, NULL, 0) == 0;
     const bool new = mutt_regex_match(rx, bob_line);
     const bool failed = !TEST_CHECK(old == new);
@@ -92,7 +92,7 @@ static bool test_old_implementation(void)
 
     const int nmatch = 1;
     regmatch_t pmatch_1[nmatch], pmatch_2[nmatch];
-    struct Regex *rx = regex_new("bob", 0, buf);
+    struct Regex *rx = regex_new("bob", 0, &buf);
     const bool old = regexec(rx->regex, bob_line, nmatch, pmatch_1, 0) == 0;
     const bool new = mutt_regex_capture(rx, bob_line, 1, pmatch_2);
     const bool failed_common_behavior = !TEST_CHECK(old == new);
@@ -110,7 +110,7 @@ static bool test_old_implementation(void)
     const int nmatch = 1;
     regmatch_t pmatch_1[nmatch], pmatch_2[nmatch];
 
-    struct Regex *rx = regex_new("bob", 0, buf);
+    struct Regex *rx = regex_new("bob", 0, &buf);
     const bool old = rx && rx->regex &&
                      (regexec(rx->regex, bob_line, nmatch, pmatch_1, 0) == 0);
     const bool new = mutt_regex_capture(rx, bob_line, 1, pmatch_2);
@@ -132,7 +132,7 @@ static bool test_old_implementation(void)
     //          tmp->regex.pat_not))
     //   to: if ((tmp->type & hook) && mutt_regex_match(&tmp->regex, match))
 
-    struct Regex *rx = regex_new("!bob", DT_REGEX_ALLOW_NOT, buf);
+    struct Regex *rx = regex_new("!bob", DT_REGEX_ALLOW_NOT, &buf);
     const bool old =
         (regexec(rx->regex, not_bob_line, 0, NULL, DT_REGEX_ALLOW_NOT) == 0) ^ rx->pat_not;
     const bool new = mutt_regex_match(rx, not_bob_line);
@@ -154,7 +154,7 @@ static bool test_old_implementation(void)
     //       ^ C_Mask->pat_not))
     // to: if(mutt_regex_match(C_Mask, de->d_name))
 
-    struct Regex *rx = regex_new("!bob", DT_REGEX_ALLOW_NOT, buf);
+    struct Regex *rx = regex_new("!bob", DT_REGEX_ALLOW_NOT, &buf);
     const bool old = rx && rx->regex &&
                      !((regexec(rx->regex, not_bob_line, 0, NULL, 0) == 0) ^ rx->pat_not);
     const bool new = mutt_regex_match(rx, bob_line);
@@ -169,7 +169,7 @@ static bool test_old_implementation(void)
     // from: if (C_Mask && C_Mask->regex &&
     //          !((regexec(C_Mask->regex, mdata->group, 0, NULL, 0) == 0) ^ C_Mask->pat_not))
     //   to: if (!mutt_regex_match(C_Mask, mdata->group))
-    struct Regex *rx = regex_new("!bob", DT_REGEX_ALLOW_NOT, buf);
+    struct Regex *rx = regex_new("!bob", DT_REGEX_ALLOW_NOT, &buf);
     const bool old = (rx && rx->regex) &&
                      !((regexec(rx->regex, line, 0, NULL, 0) == 0) ^ rx->pat_not);
     const bool new = !mutt_regex_match(rx, line);
@@ -184,7 +184,7 @@ static bool test_old_implementation(void)
     // if ((regexec(hook->regex.regex, url, 0, NULL, 0) == 0) ^ hook->regex.pat_not)
     // if (mutt_regex_match(&hook->regex, url))
 
-    struct Regex *rx = regex_new("bob", 0, buf);
+    struct Regex *rx = regex_new("bob", 0, &buf);
     const bool old = (regexec(rx->regex, bob_line, 0, NULL, 0) == 0) ^ rx->pat_not;
     const bool new = mutt_regex_match(rx, bob_line);
     regex_free(&rx);
@@ -194,7 +194,7 @@ static bool test_old_implementation(void)
       return false;
   }
 
-  mutt_buffer_free(&buf);
+  mutt_buffer_dealloc(&buf);
   return true;
 }
 

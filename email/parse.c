@@ -81,12 +81,10 @@ void mutt_auto_subscribe(const char *mailto)
         !mutt_regexlist_match(&UnMailLists, mailbox) &&
         !mutt_regexlist_match(&UnSubscribedLists, mailbox))
     {
-      struct Buffer *err = mutt_buffer_new();
       /* mutt_regexlist_add() detects duplicates, so it is safe to
        * try to add here without any checks. */
-      mutt_regexlist_add(&MailLists, mailbox, REG_ICASE, err);
-      mutt_regexlist_add(&SubscribedLists, mailbox, REG_ICASE, err);
-      mutt_buffer_free(&err);
+      mutt_regexlist_add(&MailLists, mailbox, REG_ICASE, NULL);
+      mutt_regexlist_add(&SubscribedLists, mailbox, REG_ICASE, NULL);
     }
   }
 
@@ -115,7 +113,7 @@ static void parse_parameters(struct ParameterList *pl, const char *s, bool allow
    * in quite large parameter values.  avoid frequent reallocs by
    * pre-sizing */
   if (allow_value_spaces)
-    mutt_buffer_increase_size(buf, mutt_str_strlen(s));
+    mutt_buffer_alloc(buf, mutt_str_strlen(s));
 
   mutt_debug(LL_DEBUG2, "'%s'\n", s);
 
@@ -1189,35 +1187,35 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
       if (!mutt_regexlist_match(&NoSpamList, line))
       {
         /* if spam tag already exists, figure out how to amend it */
-        if (env->spam && (*buf != '\0'))
+        if ((!mutt_buffer_is_empty(&env->spam)) && (*buf != '\0'))
         {
           /* If C_SpamSeparator defined, append with separator */
           if (C_SpamSeparator)
           {
-            mutt_buffer_addstr(env->spam, C_SpamSeparator);
-            mutt_buffer_addstr(env->spam, buf);
+            mutt_buffer_addstr(&env->spam, C_SpamSeparator);
+            mutt_buffer_addstr(&env->spam, buf);
           }
           else /* overwrite */
           {
-            mutt_buffer_reset(env->spam);
-            mutt_buffer_addstr(env->spam, buf);
+            mutt_buffer_reset(&env->spam);
+            mutt_buffer_addstr(&env->spam, buf);
           }
         }
 
         /* spam tag is new, and match expr is non-empty; copy */
-        else if (!env->spam && (*buf != '\0'))
+        else if (mutt_buffer_is_empty(&env->spam) && (*buf != '\0'))
         {
-          env->spam = mutt_buffer_from(buf);
+          mutt_buffer_addstr(&env->spam, buf);
         }
 
         /* match expr is empty; plug in null string if no existing tag */
-        else if (!env->spam)
+        else if (mutt_buffer_is_empty(&env->spam))
         {
-          env->spam = mutt_buffer_from("");
+          mutt_buffer_addstr(&env->spam, "");
         }
 
-        if (env->spam && env->spam->data)
-          mutt_debug(LL_DEBUG5, "spam = %s\n", env->spam->data);
+        if (!mutt_buffer_is_empty(&env->spam))
+          mutt_debug(LL_DEBUG5, "spam = %s\n", env->spam.data);
       }
     }
 

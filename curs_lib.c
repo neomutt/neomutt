@@ -655,7 +655,7 @@ int mutt_buffer_enter_fname_full(const char *prompt, struct Buffer *fname,
   mutt_window_mvaddstr(MuttMessageWindow, 0, 0, prompt);
   addstr(_(" ('?' for list): "));
   NORMAL_COLOR;
-  if (mutt_buffer_len(fname))
+  if (!mutt_buffer_is_empty(fname))
     addstr(mutt_b2s(fname));
   mutt_window_clrtoeol(MuttMessageWindow);
   mutt_refresh();
@@ -692,7 +692,7 @@ int mutt_buffer_enter_fname_full(const char *prompt, struct Buffer *fname,
     else
       mutt_unget_event(0, ch.op);
 
-    mutt_buffer_increase_size(fname, 1024);
+    mutt_buffer_alloc(fname, 1024);
     if (mutt_get_field_full(pc, fname->data, fname->dsize,
                             (mailbox ? MUTT_EFILE : MUTT_FILE) | MUTT_CLEAR,
                             multiple, files, numfiles) != 0)

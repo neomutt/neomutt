@@ -77,7 +77,7 @@ struct Envelope
   char *followup_to;                   ///< List of 'followup-to' fields
   char *x_comment_to;                  ///< List of 'X-comment-to' fields
 #endif
-  struct Buffer *spam;                 ///< Spam header
+  struct Buffer spam;                  ///< Spam header
   struct ListHead references;          ///< message references (in reverse order)
   struct ListHead in_reply_to;         ///< in-reply-to header content
   struct ListHead userhdrs;            ///< user defined headers

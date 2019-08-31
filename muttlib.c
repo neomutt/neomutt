@@ -227,7 +227,7 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
           mutt_addrlist_copy(&e->env->to, al, false);
 
           /* TODO: fix mutt_default_save() to use Buffer */
-          mutt_buffer_increase_size(p, PATH_MAX);
+          mutt_buffer_alloc(p, PATH_MAX);
           mutt_default_save(p->data, p->dsize, e);
           mutt_buffer_fix_dptr(p);
 
@@ -691,7 +691,7 @@ void mutt_buffer_pretty_mailbox(struct Buffer *buf)
     return;
   /* This reduces the size of the Buffer, so we can pass it through.
    * We adjust the size just to make sure buf->data is not NULL though */
-  mutt_buffer_increase_size(buf, PATH_MAX);
+  mutt_buffer_alloc(buf, PATH_MAX);
   mutt_pretty_mailbox(buf->data, buf->dsize);
   mutt_buffer_fix_dptr(buf);
 }
@@ -882,24 +882,25 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
       srccopy[n - 1] = '\0';
 
       /* prepare Buffers */
-      struct Buffer *srcbuf = mutt_buffer_from(srccopy);
+      struct Buffer srcbuf = mutt_buffer_make(0);
+      mutt_buffer_addstr(&srcbuf, srccopy);
       /* note: we are resetting dptr and *reading* from the buffer, so we don't
        * want to use mutt_buffer_reset(). */
-      srcbuf->dptr = srcbuf->data;
-      struct Buffer *word = mutt_buffer_new();
-      struct Buffer *cmd = mutt_buffer_new();
+      srcbuf.dptr = srcbuf.data;
+      struct Buffer word = mutt_buffer_make(0);
+      struct Buffer cmd = mutt_buffer_make(0);
 
       /* Iterate expansions across successive arguments */
       do
       {
         /* Extract the command name and copy to command line */
-        mutt_debug(LL_DEBUG3, "fmtpipe +++: %s\n", srcbuf->dptr);
-        if (word->data)
-          *word->data = '\0';
-        mutt_extract_token(word, srcbuf, MUTT_TOKEN_NO_FLAGS);
-        mutt_debug(LL_DEBUG3, "fmtpipe %2d: %s\n", i++, word->data);
-        mutt_buffer_addch(cmd, '\'');
-        mutt_expando_format(tmp, sizeof(tmp), 0, cols, word->data, callback,
+        mutt_debug(LL_DEBUG3, "fmtpipe +++: %s\n", srcbuf.dptr);
+        if (word.data)
+          *word.data = '\0';
+        mutt_extract_token(&word, &srcbuf, MUTT_TOKEN_NO_FLAGS);
+        mutt_debug(LL_DEBUG3, "fmtpipe %2d: %s\n", i++, word.data);
+        mutt_buffer_addch(&cmd, '\'');
+        mutt_expando_format(tmp, sizeof(tmp), 0, cols, word.data, callback,
                             data, flags | MUTT_FORMAT_NOFILTER);
         for (char *p = tmp; p && *p; p++)
         {
@@ -909,20 +910,20 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
              * single-quoted material.  double-quoting instead will lead
              * shell variable expansions, so break out of the single-quoted
              * span, insert a double-quoted single quote, and resume. */
-            mutt_buffer_addstr(cmd, "'\"'\"'");
+            mutt_buffer_addstr(&cmd, "'\"'\"'");
           }
           else
-            mutt_buffer_addch(cmd, *p);
+            mutt_buffer_addch(&cmd, *p);
         }
-        mutt_buffer_addch(cmd, '\'');
-        mutt_buffer_addch(cmd, ' ');
-      } while (MoreArgs(srcbuf));
+        mutt_buffer_addch(&cmd, '\'');
+        mutt_buffer_addch(&cmd, ' ');
+      } while (MoreArgs(&srcbuf));
 
-      mutt_debug(LL_DEBUG3, "fmtpipe > %s\n", cmd->data);
+      mutt_debug(LL_DEBUG3, "fmtpipe > %s\n", cmd.data);
 
       col -= wlen; /* reset to passed in value */
       wptr = buf;  /* reset write ptr */
-      pid_t pid = mutt_create_filter(cmd->data, NULL, &fp_filter, NULL);
+      pid_t pid = mutt_create_filter(cmd.data, NULL, &fp_filter, NULL);
       if (pid != -1)
       {
         int rc;
@@ -977,9 +978,9 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         *wptr = '\0';
       }
 
-      mutt_buffer_free(&cmd);
-      mutt_buffer_free(&srcbuf);
-      mutt_buffer_free(&word);
+      mutt_buffer_dealloc(&cmd);
+      mutt_buffer_dealloc(&srcbuf);
+      mutt_buffer_dealloc(&word);
       return;
     }
   }

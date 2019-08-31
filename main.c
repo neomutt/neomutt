@@ -144,8 +144,8 @@ static void test_parse_set(void)
     "%s inv%s=42", "%s inv%s?", "%s &%s",     "%s &%s=42", "%s &%s?",
   };
 
-  struct Buffer *tmp = mutt_buffer_alloc(256);
-  struct Buffer *err = mutt_buffer_alloc(256);
+  struct Buffer tmp = mutt_buffer_make(256);
+  struct Buffer err = mutt_buffer_make(256);
   char line[64];
 
   for (size_t v = 0; v < mutt_array_size(vars); v++)
@@ -158,21 +158,21 @@ static void test_parse_set(void)
       // printf("COMMAND %s\n", commands[c]);
       for (size_t t = 0; t < mutt_array_size(tests); t++)
       {
-        mutt_buffer_reset(tmp);
-        mutt_buffer_reset(err);
+        mutt_buffer_reset(&tmp);
+        mutt_buffer_reset(&err);
 
         snprintf(line, sizeof(line), tests[t], commands[c], vars[v]);
         printf("%-26s", line);
-        enum CommandResult rc = mutt_parse_rc_line(line, tmp, err);
-        printf("%2d %s\n", rc, err->data);
+        enum CommandResult rc = mutt_parse_rc_line(line, &tmp, &err);
+        printf("%2d %s\n", rc, err.data);
       }
       printf("\n");
     }
     // printf("\n");
   }
 
-  mutt_buffer_free(&tmp);
-  mutt_buffer_free(&err);
+  mutt_buffer_dealloc(&tmp);
+  mutt_buffer_dealloc(&err);
 }
 
 /**
@@ -187,19 +187,19 @@ static void reset_tilde(struct ConfigSet *cs)
     "record",     "signature",
   };
 
-  struct Buffer *value = mutt_buffer_alloc(256);
+  struct Buffer value = mutt_buffer_make(256);
   for (size_t i = 0; i < mutt_array_size(names); i++)
   {
     struct HashElem *he = cs_get_elem(cs, names[i]);
     if (!he)
       continue;
-    mutt_buffer_reset(value);
-    cs_he_initial_get(cs, he, value);
-    mutt_expand_path(value->data, value->dsize);
-    cs_he_initial_set(cs, he, value->data, NULL);
+    mutt_buffer_reset(&value);
+    cs_he_initial_get(cs, he, &value);
+    mutt_expand_path(value.data, value.dsize);
+    cs_he_initial_set(cs, he, value.data, NULL);
     cs_he_reset(cs, he, NULL);
   }
-  mutt_buffer_free(&value);
+  mutt_buffer_dealloc(&value);
 }
 
 /**
@@ -441,7 +441,7 @@ int main(int argc, char *argv[], char *envp[])
   int double_dash = argc, nargc = 1;
   int rc = 1;
   bool repeat_error = false;
-  struct Buffer *folder = mutt_buffer_new();
+  struct Buffer folder = mutt_buffer_make(0);
 
   MuttLogger = log_disp_terminal;
 
@@ -520,7 +520,7 @@ int main(int argc, char *argv[], char *envp[])
           mutt_list_insert_tail(&Muttrc, mutt_str_strdup(optarg));
           break;
         case 'f':
-          mutt_buffer_strcpy(folder, optarg);
+          mutt_buffer_strcpy(&folder, optarg);
           explicit_folder = true;
           break;
 #ifdef USE_NNTP
@@ -739,15 +739,14 @@ int main(int argc, char *argv[], char *envp[])
 
   if (new_magic)
   {
-    struct Buffer *err = mutt_buffer_new();
-    int r = cs_str_initial_set(Config, "mbox_type", new_magic, err);
+    struct Buffer err = mutt_buffer_make(0);
+    int r = cs_str_initial_set(Config, "mbox_type", new_magic, &err);
     if (CSR_RESULT(r) != CSR_SUCCESS)
     {
-      mutt_error(err->data);
-      mutt_buffer_free(&err);
+      mutt_error(err.data);
+      mutt_buffer_dealloc(&err);
       goto main_curses;
     }
-    mutt_buffer_free(&err);
     cs_str_reset(Config, "mbox_type", NULL);
   }
 
@@ -1148,8 +1147,8 @@ int main(int argc, char *argv[], char *envp[])
         mutt_message(_("No mailbox with new mail"));
         goto main_curses; // TEST37: neomutt -Z (no new mail)
       }
-      mutt_buffer_reset(folder);
-      mutt_mailbox_next_buffer(Context ? Context->mailbox : NULL, folder);
+      mutt_buffer_reset(&folder);
+      mutt_mailbox_next_buffer(Context ? Context->mailbox : NULL, &folder);
 #ifdef USE_IMAP
       C_ImapPassive = passive;
 #endif
@@ -1172,27 +1171,27 @@ int main(int argc, char *argv[], char *envp[])
         mutt_error(_("No incoming mailboxes defined"));
         goto main_curses; // TEST39: neomutt -n -F /dev/null -y
       }
-      mutt_buffer_reset(folder);
-      mutt_buffer_select_file(folder, MUTT_SEL_FOLDER | MUTT_SEL_MAILBOX, NULL, NULL);
-      if (mutt_buffer_len(folder) == 0)
+      mutt_buffer_reset(&folder);
+      mutt_buffer_select_file(&folder, MUTT_SEL_FOLDER | MUTT_SEL_MAILBOX, NULL, NULL);
+      if (mutt_buffer_is_empty(&folder))
       {
         goto main_ok; // TEST40: neomutt -y (quit selection)
       }
     }
 
-    if (mutt_buffer_len(folder) == 0)
+    if (mutt_buffer_is_empty(&folder))
     {
       if (C_Spoolfile)
       {
         // Check if C_Spoolfile corresponds a mailboxes' description.
         struct Mailbox *m_desc = mailbox_find_name(C_Spoolfile);
         if (m_desc)
-          mutt_buffer_strcpy(folder, m_desc->realpath);
+          mutt_buffer_strcpy(&folder, m_desc->realpath);
         else
-          mutt_buffer_strcpy(folder, C_Spoolfile);
+          mutt_buffer_strcpy(&folder, C_Spoolfile);
       }
       else if (C_Folder)
-        mutt_buffer_strcpy(folder, C_Folder);
+        mutt_buffer_strcpy(&folder, C_Folder);
       /* else no folder */
     }
 
@@ -1200,23 +1199,23 @@ int main(int argc, char *argv[], char *envp[])
     if (OptNews)
     {
       OptNews = false;
-      mutt_buffer_increase_size(folder, PATH_MAX);
-      nntp_expand_path(folder->data, folder->dsize, &CurrentNewsSrv->conn->account);
+      mutt_buffer_alloc(&folder, PATH_MAX);
+      nntp_expand_path(folder.data, folder.dsize, &CurrentNewsSrv->conn->account);
     }
     else
 #endif
-      mutt_buffer_expand_path(folder);
+      mutt_buffer_expand_path(&folder);
 
-    mutt_str_replace(&CurrentFolder, mutt_b2s(folder));
-    mutt_str_replace(&LastFolder, mutt_b2s(folder));
+    mutt_str_replace(&CurrentFolder, mutt_b2s(&folder));
+    mutt_str_replace(&LastFolder, mutt_b2s(&folder));
 
     if (flags & MUTT_CLI_IGNORE)
     {
       /* check to see if there are any messages in the folder */
-      switch (mx_check_empty(mutt_b2s(folder)))
+      switch (mx_check_empty(mutt_b2s(&folder)))
       {
         case -1:
-          mutt_perror(mutt_b2s(folder));
+          mutt_perror(mutt_b2s(&folder));
           goto main_curses; // TEST41: neomutt -z -f missing
         case 1:
           mutt_error(_("Mailbox is empty"));
@@ -1224,12 +1223,12 @@ int main(int argc, char *argv[], char *envp[])
       }
     }
 
-    mutt_folder_hook(mutt_b2s(folder), NULL);
+    mutt_folder_hook(mutt_b2s(&folder), NULL);
     mutt_startup_shutdown_hook(MUTT_STARTUP_HOOK);
     notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_STARTUP, 0);
 
     repeat_error = true;
-    struct Mailbox *m = mx_path_resolve(mutt_b2s(folder));
+    struct Mailbox *m = mx_path_resolve(mutt_b2s(&folder));
     Context = mx_mbox_open(m, ((flags & MUTT_CLI_RO) || C_ReadOnly) ? MUTT_READONLY : MUTT_OPEN_NO_FLAGS);
     if (!Context)
     {
@@ -1271,7 +1270,7 @@ main_curses:
   if (repeat_error && ErrorBufMessage)
     puts(ErrorBuf);
 main_exit:
-  mutt_buffer_free(&folder);
+  mutt_buffer_dealloc(&folder);
   mutt_list_free(&queries);
   crypto_module_free();
   mutt_window_free_all();

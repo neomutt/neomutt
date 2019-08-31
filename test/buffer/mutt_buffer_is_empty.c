@@ -34,14 +34,14 @@ void test_mutt_buffer_is_empty(void)
   }
 
   {
-    struct Buffer *buf = mutt_buffer_new();
-    TEST_CHECK(mutt_buffer_is_empty(buf));
-    mutt_buffer_free(&buf);
+    struct Buffer buf = mutt_buffer_make(0);
+    TEST_CHECK(mutt_buffer_is_empty(&buf));
   }
 
   {
-    struct Buffer *buf = mutt_buffer_from("test");
-    TEST_CHECK(!mutt_buffer_is_empty(buf));
-    mutt_buffer_free(&buf);
+    struct Buffer buf = mutt_buffer_make(0);
+    mutt_buffer_addstr(&buf, "test");
+    TEST_CHECK(!mutt_buffer_is_empty(&buf));
+    mutt_buffer_dealloc(&buf);
   }
 }

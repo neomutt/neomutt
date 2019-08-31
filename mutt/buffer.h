@@ -38,19 +38,17 @@ struct Buffer
 };
 
 /* Convert a buffer to a const char * "string" */
-#define mutt_b2s(buf) (buf->data ? (const char *) buf->data : "")
+#define mutt_b2s(buf) ((buf)->data ? (const char *) (buf)->data : "")
 
-#define MoreArgs(buf) (*buf->dptr && (*buf->dptr != ';') && (*buf->dptr != '#'))
+#define MoreArgs(buf) (*(buf)->dptr && (*(buf)->dptr != ';') && (*(buf)->dptr != '#'))
 
-struct Buffer *mutt_buffer_alloc        (size_t size);
+void           mutt_buffer_alloc        (struct Buffer *buf, size_t size);
+void           mutt_buffer_dealloc      (struct Buffer *buf);
 void           mutt_buffer_fix_dptr     (struct Buffer *buf);
-void           mutt_buffer_free         (struct Buffer **p);
-struct Buffer *mutt_buffer_from         (const char *seed);
-void           mutt_buffer_increase_size(struct Buffer *buf, size_t new_size);
 struct Buffer *mutt_buffer_init         (struct Buffer *buf);
 bool           mutt_buffer_is_empty     (const struct Buffer *buf);
 size_t         mutt_buffer_len          (const struct Buffer *buf);
-struct Buffer *mutt_buffer_new          (void);
+struct Buffer  mutt_buffer_make         (size_t size);
 void           mutt_buffer_reset        (struct Buffer *buf);
 
 // Functions that APPEND to a Buffer

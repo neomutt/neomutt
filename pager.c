@@ -2243,7 +2243,6 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 {
   static char searchbuf[256] = { 0 };
   char buf[1024];
-  struct Buffer *helpstr = NULL;
   int ch = 0, rc = -1;
   bool first = true;
   int searchctx = 0;
@@ -2301,9 +2300,9 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
     (rd.line_info[i].syntax)[0].last = -1;
   }
 
-  helpstr = mutt_buffer_new();
+  struct Buffer helpstr = mutt_buffer_make(0);
   mutt_compile_help(buf, sizeof(buf), MENU_PAGER, PagerHelp);
-  mutt_buffer_strcpy(helpstr, buf);
+  mutt_buffer_strcpy(&helpstr, buf);
   if (IsEmail(extra))
   {
     mutt_compile_help(buf, sizeof(buf), MENU_PAGER,
@@ -2312,16 +2311,16 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
                           PagerNewsHelpExtra :
 #endif
                           PagerHelpExtra);
-    mutt_buffer_addch(helpstr, ' ');
-    mutt_buffer_addstr(helpstr, buf);
+    mutt_buffer_addch(&helpstr, ' ');
+    mutt_buffer_addstr(&helpstr, buf);
   }
   if (!InHelp)
   {
     mutt_make_help(buf, sizeof(buf), _("Help"), MENU_PAGER, OP_HELP);
-    mutt_buffer_addch(helpstr, ' ');
-    mutt_buffer_addstr(helpstr, buf);
+    mutt_buffer_addch(&helpstr, ' ');
+    mutt_buffer_addstr(&helpstr, buf);
   }
-  rd.helpstr = mutt_b2s(helpstr);
+  rd.helpstr = mutt_b2s(&helpstr);
 
   rd.index_status_window = mutt_window_new();
   rd.index_window = mutt_window_new();
@@ -2381,7 +2380,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       int check = mx_mbox_check(Context->mailbox, &index_hint);
       if (check < 0)
       {
-        if (!Context->mailbox || mutt_buffer_is_empty(Context->mailbox->pathbuf))
+        if (!Context->mailbox || mutt_buffer_is_empty(&Context->mailbox->pathbuf))
         {
           /* fatal error occurred */
           ctx_free(&Context);
@@ -3582,7 +3581,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
   mutt_menu_free(&pager_menu);
   mutt_menu_free(&rd.menu);
 
-  mutt_buffer_free(&helpstr);
+  mutt_buffer_dealloc(&helpstr);
   mutt_window_free(&rd.index_status_window);
   mutt_window_free(&rd.index_window);
   mutt_window_free(&rd.pager_status_window);

@@ -37,21 +37,6 @@
 #include "string2.h"
 
 /**
- * mutt_buffer_new - Create and initialise a Buffer
- * @retval ptr New Buffer
- *
- * Call mutt_buffer_free() to release the Buffer.
- */
-struct Buffer *mutt_buffer_new(void)
-{
-  struct Buffer *b = mutt_mem_malloc(sizeof(struct Buffer));
-
-  mutt_buffer_init(b);
-
-  return b;
-}
-
-/**
  * mutt_buffer_init - Initialise a new Buffer
  * @param buf Buffer to initialise
  * @retval ptr Initialised Buffer
@@ -63,6 +48,24 @@ struct Buffer *mutt_buffer_init(struct Buffer *buf)
   if (!buf)
     return NULL;
   memset(buf, 0, sizeof(struct Buffer));
+  return buf;
+}
+
+/**
+ * mutt_buffer_make - Make a new buffer on the stack
+ * @param size Initial size
+ * @retval buf Initialized buffer
+ *
+ * The buffer must be released using mutt_buffer_dealloc
+ */
+struct Buffer mutt_buffer_make(size_t size)
+{
+  struct Buffer buf = { 0 };
+  if (size != 0)
+  {
+    buf.dptr = buf.data = mutt_mem_calloc(1, size);
+    buf.dsize = size;
+  }
   return buf;
 }
 
@@ -79,26 +82,6 @@ void mutt_buffer_reset(struct Buffer *buf)
     return;
   memset(buf->data, 0, buf->dsize);
   buf->dptr = buf->data;
-}
-
-/**
- * mutt_buffer_from - Create Buffer from an existing string
- * @param seed String to put in the Buffer
- * @retval ptr  New Buffer
- * @retval NULL Error
- *
- * @note The write pointer is positioned at the end of the string
- */
-struct Buffer *mutt_buffer_from(const char *seed)
-{
-  if (!seed)
-    return NULL;
-
-  struct Buffer *b = mutt_buffer_new();
-  b->data = mutt_str_strdup(seed);
-  b->dsize = mutt_str_strlen(seed);
-  b->dptr = b->data + b->dsize;
-  return b;
 }
 
 /**
@@ -119,26 +102,12 @@ size_t mutt_buffer_addstr_n(struct Buffer *buf, const char *s, size_t len)
     return 0;
 
   if (!buf->data || !buf->dptr || ((buf->dptr + len + 1) > (buf->data + buf->dsize)))
-    mutt_buffer_increase_size(buf, buf->dsize + MAX(128, len + 1));
+    mutt_buffer_alloc(buf, buf->dsize + MAX(128, len + 1));
 
   memcpy(buf->dptr, s, len);
   buf->dptr += len;
   *(buf->dptr) = '\0';
   return len;
-}
-
-/**
- * mutt_buffer_free - Release a Buffer and its contents
- * @param[out] p Buffer pointer to free and NULL
- */
-void mutt_buffer_free(struct Buffer **p)
-{
-  if (!p || !*p)
-    return;
-
-  FREE(&(*p)->data);
-  /* dptr is just an offset to data and shouldn't be freed */
-  FREE(p);
 }
 
 /**
@@ -155,7 +124,7 @@ static int buffer_printf(struct Buffer *buf, const char *fmt, va_list ap)
     return 0; /* LCOV_EXCL_LINE */
 
   if (!buf->data || !buf->dptr || (buf->dsize < 128))
-    mutt_buffer_increase_size(buf, 128);
+    mutt_buffer_alloc(buf, 128);
 
   int doff = buf->dptr - buf->data;
   int blen = buf->dsize - doff;
@@ -169,7 +138,7 @@ static int buffer_printf(struct Buffer *buf, const char *fmt, va_list ap)
     blen = ++len - blen;
     if (blen < 128)
       blen = 128;
-    mutt_buffer_increase_size(buf, buf->dsize + blen);
+    mutt_buffer_alloc(buf, buf->dsize + blen);
     len = vsnprintf(buf->dptr, len, fmt, ap_retry);
   }
   if (len > 0)
@@ -289,19 +258,46 @@ bool mutt_buffer_is_empty(const struct Buffer *buf)
 }
 
 /**
- * mutt_buffer_alloc - Create a new Buffer
- * @param size Size of Buffer to create
- * @retval ptr Newly allocated Buffer
+ * mutt_buffer_alloc - Make sure a buffer can store at least new_size bytes
+ * @param buf      Buffer to change
+ * @param new_size New size
  */
-struct Buffer *mutt_buffer_alloc(size_t size)
+void mutt_buffer_alloc(struct Buffer *buf, size_t new_size)
 {
-  struct Buffer *buf = mutt_mem_calloc(1, sizeof(struct Buffer));
+  if (!buf)
+  {
+    return;
+  }
 
-  buf->data = mutt_mem_calloc(1, size);
-  buf->dptr = buf->data;
-  buf->dsize = size;
+  if (!buf->dptr)
+  {
+    buf->dptr = buf->data;
+  }
 
-  return buf;
+  if (new_size > buf->dsize)
+  {
+    size_t offset = (buf->dptr && buf->data) ? buf->dptr - buf->data : 0;
+
+    buf->dsize = new_size;
+    mutt_mem_realloc(&buf->data, buf->dsize);
+    buf->dptr = buf->data + offset;
+    /* This ensures an initially NULL buf->data is now properly terminated. */
+    *buf->dptr = '\0';
+  }
+}
+
+/**
+ * mutt_buffer_dealloc - Release the memory allocated by a buffer
+ * @param buf Buffer to change
+ */
+void mutt_buffer_dealloc(struct Buffer *buf)
+{
+  if (!buf || !buf->data)
+    return;
+
+  buf->dptr = NULL;
+  buf->dsize = 0;
+  FREE(&buf->data);
 }
 
 /**
@@ -329,31 +325,6 @@ void mutt_buffer_strcpy_n(struct Buffer *buf, const char *s, size_t len)
 {
   mutt_buffer_reset(buf);
   mutt_buffer_addstr_n(buf, s, len);
-}
-
-/**
- * mutt_buffer_increase_size - Increase the allocated size of a buffer
- * @param buf      Buffer to change
- * @param new_size New size
- */
-void mutt_buffer_increase_size(struct Buffer *buf, size_t new_size)
-{
-  if (!buf)
-    return;
-
-  if (!buf->dptr)
-    buf->dptr = buf->data;
-
-  if (new_size <= buf->dsize)
-    return;
-
-  size_t offset = (buf->dptr && buf->data) ? buf->dptr - buf->data : 0;
-
-  buf->dsize = new_size;
-  mutt_mem_realloc(&buf->data, buf->dsize);
-  buf->dptr = buf->data + offset;
-  /* This ensures an initially NULL buf->data is now properly terminated. */
-  *buf->dptr = '\0';
 }
 
 /**

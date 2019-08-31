@@ -34,7 +34,7 @@ void test_mutt_buffer_addstr_n(void)
   }
 
   {
-    struct Buffer buf = { 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     TEST_CHECK(mutt_buffer_addstr_n(&buf, NULL, 10) == 0);
   }
 
@@ -48,11 +48,11 @@ void test_mutt_buffer_addstr_n(void)
     for (size_t i = 0; i < mutt_array_size(sizes); i++)
     {
       TEST_CASE_("%ld", sizes[i]);
-      struct Buffer *buf = mutt_buffer_new();
-      TEST_CHECK(mutt_buffer_addstr_n(buf, str, sizes[i]) == sizes[i]);
-      TEST_CHECK(strlen(mutt_b2s(buf)) == MIN(len, sizes[i]));
-      TEST_CHECK(strncmp(mutt_b2s(buf), str, sizes[i]) == 0);
-      mutt_buffer_free(&buf);
+      struct Buffer buf = mutt_buffer_make(0);
+      TEST_CHECK(mutt_buffer_addstr_n(&buf, str, sizes[i]) == sizes[i]);
+      TEST_CHECK(strlen(mutt_b2s(&buf)) == MIN(len, sizes[i]));
+      TEST_CHECK(strncmp(mutt_b2s(&buf), str, sizes[i]) == 0);
+      mutt_buffer_dealloc(&buf);
     }
   }
 
@@ -69,11 +69,12 @@ void test_mutt_buffer_addstr_n(void)
     for (size_t i = 0; i < mutt_array_size(sizes); i++)
     {
       TEST_CASE_("%ld", sizes[i]);
-      struct Buffer *buf = mutt_buffer_from(base);
-      TEST_CHECK(mutt_buffer_addstr_n(buf, str, sizes[i]) == sizes[i]);
-      TEST_CHECK(strlen(mutt_b2s(buf)) == (base_len + MIN(len, sizes[i])));
-      TEST_CHECK(strncmp(mutt_b2s(buf), combined, base_len + sizes[i]) == 0);
-      mutt_buffer_free(&buf);
+      struct Buffer buf = mutt_buffer_make(0);
+      mutt_buffer_addstr(&buf, base);
+      TEST_CHECK(mutt_buffer_addstr_n(&buf, str, sizes[i]) == sizes[i]);
+      TEST_CHECK(strlen(mutt_b2s(&buf)) == (base_len + MIN(len, sizes[i])));
+      TEST_CHECK(strncmp(mutt_b2s(&buf), combined, base_len + sizes[i]) == 0);
+      mutt_buffer_dealloc(&buf);
     }
   }
 }

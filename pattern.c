@@ -2240,8 +2240,7 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
     case MUTT_PAT_HORMEL:
       if (!e->env)
         return 0;
-      return pat->pat_not ^ (e->env->spam && e->env->spam->data &&
-                             patmatch(pat, e->env->spam->data));
+      return pat->pat_not ^ (e->env->spam.data && patmatch(pat, e->env->spam.data));
     case MUTT_PAT_DUPLICATED:
       return pat->pat_not ^ (e->thread && e->thread->duplicate_thread);
     case MUTT_PAT_MIMEATTACH:

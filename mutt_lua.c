@@ -105,7 +105,7 @@ static int lua_mutt_call(lua_State *l)
     mutt_str_strncat(buf, sizeof(buf), " ", 1);
   }
 
-  struct Buffer expn = { 0 };
+  struct Buffer expn = mutt_buffer_make(0);
   expn.data = buf;
   expn.dptr = buf;
   expn.dsize = mutt_str_strlen(buf);
@@ -156,7 +156,7 @@ static int lua_mutt_set(lua_State *l)
   struct ConfigDef *cdef = he->data;
 
   int rc = 0;
-  struct Buffer *err = mutt_buffer_alloc(256);
+  struct Buffer err = mutt_buffer_make(256);
 
   switch (DTYPE(cdef->type))
   {
@@ -169,7 +169,7 @@ static int lua_mutt_set(lua_State *l)
     case DT_STRING:
     {
       const char *value = lua_tostring(l, -1);
-      int rv = cs_he_string_set(Config, he, value, err);
+      int rv = cs_he_string_set(Config, he, value, &err);
       if (CSR_RESULT(rv) != CSR_SUCCESS)
         rc = -1;
       break;
@@ -178,7 +178,7 @@ static int lua_mutt_set(lua_State *l)
     case DT_QUAD:
     {
       const intptr_t value = lua_tointeger(l, -1);
-      int rv = cs_he_native_set(Config, he, value, err);
+      int rv = cs_he_native_set(Config, he, value, &err);
       if (CSR_RESULT(rv) != CSR_SUCCESS)
         rc = -1;
       break;
@@ -186,7 +186,7 @@ static int lua_mutt_set(lua_State *l)
     case DT_BOOL:
     {
       const intptr_t value = lua_toboolean(l, -1);
-      int rv = cs_he_native_set(Config, he, value, err);
+      int rv = cs_he_native_set(Config, he, value, &err);
       if (CSR_RESULT(rv) != CSR_SUCCESS)
         rc = -1;
       break;
@@ -197,7 +197,7 @@ static int lua_mutt_set(lua_State *l)
       break;
   }
 
-  mutt_buffer_free(&err);
+  mutt_buffer_dealloc(&err);
   return rc;
 }
 
@@ -245,19 +245,19 @@ static int lua_mutt_get(lua_State *l)
     case DT_SORT:
     case DT_STRING:
     {
-      struct Buffer *value = mutt_buffer_alloc(256);
-      int rc = cs_he_string_get(Config, he, value);
+      struct Buffer value = mutt_buffer_make(256);
+      int rc = cs_he_string_get(Config, he, &value);
       if (CSR_RESULT(rc) != CSR_SUCCESS)
       {
-        mutt_buffer_free(&value);
+        mutt_buffer_dealloc(&value);
         return -1;
       }
 
-      struct Buffer *escaped = mutt_buffer_alloc(256);
-      escape_string(escaped, value->data);
-      lua_pushstring(l, escaped->data);
-      mutt_buffer_free(&value);
-      mutt_buffer_free(&escaped);
+      struct Buffer escaped = mutt_buffer_make(256);
+      escape_string(&escaped, value.data);
+      lua_pushstring(l, escaped.data);
+      mutt_buffer_dealloc(&value);
+      mutt_buffer_dealloc(&escaped);
       return 1;
     }
     case DT_QUAD:

@@ -35,13 +35,13 @@ void test_mutt_file_expand_fmt(void)
   }
 
   {
-    struct Buffer buf = { 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     mutt_file_expand_fmt(&buf, NULL, "banana");
     TEST_CHECK_(1, "mutt_file_expand_fmt(&buf, NULL, \"banana\")");
   }
 
   {
-    struct Buffer buf = { 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     mutt_file_expand_fmt(&buf, "apple", NULL);
     TEST_CHECK_(1, "mutt_file_expand_fmt(&buf, \"apple\", NULL)");
   }

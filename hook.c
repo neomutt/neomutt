@@ -845,8 +845,8 @@ void mutt_timeout_hook(void)
 void mutt_startup_shutdown_hook(HookFlags type)
 {
   struct Hook *hook = NULL;
-  struct Buffer token = { 0 };
-  struct Buffer err = { 0 };
+  struct Buffer token = mutt_buffer_make(0);
+  struct Buffer err = mutt_buffer_make(0);
   char buf[256];
 
   err.data = buf;

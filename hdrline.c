@@ -955,12 +955,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     case 'H':
       /* (Hormel) spam score */
       if (optional)
-        optional = e->env->spam;
+        optional = !mutt_buffer_is_empty(&e->env->spam);
 
-      if (e->env->spam)
-        mutt_format_s(buf, buflen, prec, NONULL(e->env->spam->data));
-      else
-        mutt_format_s(buf, buflen, prec, "");
+      mutt_format_s(buf, buflen, prec, mutt_b2s(&e->env->spam));
       break;
 
     case 'i':
@@ -1276,7 +1273,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'y':
       if (optional)
-        optional = e->env->x_label;
+        optional = (e->env->x_label != NULL);
 
       colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_LABEL);
       mutt_format_s(buf + colorlen, buflen - colorlen, prec, NONULL(e->env->x_label));

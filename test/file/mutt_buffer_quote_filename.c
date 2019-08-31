@@ -35,7 +35,7 @@ void test_mutt_buffer_quote_filename(void)
   }
 
   {
-    struct Buffer buf = { 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     mutt_buffer_quote_filename(&buf, NULL, false);
     TEST_CHECK_(1, "mutt_buffer_quote_filename(&buf, NULL, false)");
   }

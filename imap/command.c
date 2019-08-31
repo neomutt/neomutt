@@ -139,7 +139,7 @@ static int cmd_queue(struct ImapAccountData *adata, const char *cmdstr, ImapCmdF
   if (!cmd)
     return IMAP_RES_BAD;
 
-  if (mutt_buffer_add_printf(adata->cmdbuf, "%s %s\r\n", cmd->seq, cmdstr) < 0)
+  if (mutt_buffer_add_printf(&adata->cmdbuf, "%s %s\r\n", cmd->seq, cmdstr) < 0)
     return IMAP_RES_BAD;
 
   return 0;
@@ -201,12 +201,12 @@ static int cmd_start(struct ImapAccountData *adata, const char *cmdstr, ImapCmdF
   if (flags & IMAP_CMD_QUEUE)
     return 0;
 
-  if (mutt_buffer_len(adata->cmdbuf) == 0)
+  if (mutt_buffer_is_empty(&adata->cmdbuf))
     return IMAP_RES_BAD;
 
-  rc = mutt_socket_send_d(adata->conn, adata->cmdbuf->data,
+  rc = mutt_socket_send_d(adata->conn, adata->cmdbuf.data,
                           (flags & IMAP_CMD_PASS) ? IMAP_LOG_PASS : IMAP_LOG_CMD);
-  mutt_buffer_reset(adata->cmdbuf);
+  mutt_buffer_reset(&adata->cmdbuf);
 
   /* unidle when command queue is flushed */
   if (adata->state == IMAP_IDLE)
@@ -1381,7 +1381,7 @@ int imap_cmd_idle(struct ImapAccountData *adata)
     /* successfully entered IDLE state */
     adata->state = IMAP_IDLE;
     /* queue automatic exit when next command is issued */
-    mutt_buffer_addstr(adata->cmdbuf, "DONE\r\n");
+    mutt_buffer_addstr(&adata->cmdbuf, "DONE\r\n");
     rc = IMAP_RES_OK;
   }
   if (rc != IMAP_RES_OK)

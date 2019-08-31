@@ -2388,10 +2388,10 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
     else
       email_get_fullpath(e, old_file, sizeof(old_file));
 
-    mutt_buffer_strcpy(m->pathbuf, edata->folder);
+    mutt_buffer_strcpy(&m->pathbuf, edata->folder);
     m->magic = edata->magic;
     rc = mh_sync_mailbox_message(m, i, h);
-    mutt_buffer_strcpy(m->pathbuf, uri);
+    mutt_buffer_strcpy(&m->pathbuf, uri);
     m->magic = MUTT_NOTMUCH;
 
     if (rc)
@@ -2411,7 +2411,7 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
     FREE(&edata->oldpath);
   }
 
-  mutt_buffer_strcpy(m->pathbuf, uri);
+  mutt_buffer_strcpy(&m->pathbuf, uri);
   m->magic = MUTT_NOTMUCH;
 
   nm_db_release(m);

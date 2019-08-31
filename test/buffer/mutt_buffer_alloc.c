@@ -23,21 +23,36 @@
 #define TEST_NO_MAIN
 #include "acutest.h"
 #include "config.h"
-#include <stdbool.h>
 #include "mutt/mutt.h"
 
 void test_mutt_buffer_alloc(void)
 {
-  // struct Buffer *mutt_buffer_alloc(size_t size);
+  // void mutt_buffer_alloc(struct Buffer *buf, size_t new_size);
 
-  size_t alloc_tests[] = { 0, 42, 1048576 };
-
-  for (size_t i = 0; i < mutt_array_size(alloc_tests); i++)
   {
-    struct Buffer *buf = NULL;
-    TEST_CASE_("%lu", alloc_tests[i]);
-    buf = mutt_buffer_alloc(alloc_tests[i]);
-    TEST_CHECK(buf != NULL);
-    mutt_buffer_free(&buf);
+    mutt_buffer_alloc(NULL, 10);
+    TEST_CHECK_(1, "mutt_buffer_alloc(NULL, 10)");
+  }
+
+  {
+    struct Buffer buf = mutt_buffer_make(0);
+    mutt_buffer_alloc(&buf, 10);
+    TEST_CHECK_(1, "mutt_buffer_alloc(buf, 10)");
+    mutt_buffer_dealloc(&buf);
+  }
+
+  {
+    const int orig_size = 64;
+    static int sizes[] = { 0, 32, 64, 128 };
+
+    for (size_t i = 0; i < mutt_array_size(sizes); i++)
+    {
+      struct Buffer buf = mutt_buffer_make(0);
+      mutt_buffer_alloc(&buf, orig_size);
+      TEST_CASE_("%d", sizes[i]);
+      mutt_buffer_alloc(&buf, sizes[i]);
+      TEST_CHECK(buf.dsize == MAX(orig_size, sizes[i]));
+      mutt_buffer_dealloc(&buf);
+    }
   }
 }

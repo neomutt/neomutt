@@ -1409,7 +1409,7 @@ int mx_path_canon2(struct Mailbox *m, const char *folder)
   if (rc >= 0)
   {
     m->mx_ops = mx_get_ops(m->magic);
-    mutt_buffer_strcpy(m->pathbuf, m->realpath);
+    mutt_buffer_strcpy(&m->pathbuf, m->realpath);
   }
 
   return rc;
@@ -1547,7 +1547,7 @@ struct Mailbox *mx_path_resolve(const char *path)
 
   m = mailbox_new();
   m->flags = MB_HIDDEN;
-  mutt_buffer_strcpy(m->pathbuf, path);
+  mutt_buffer_strcpy(&m->pathbuf, path);
   mx_path_canon2(m, C_Folder);
 
   return m;

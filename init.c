@@ -573,7 +573,7 @@ static enum CommandResult parse_replace_list(struct Buffer *buf, struct Buffer *
                                              unsigned long data, struct Buffer *err)
 {
   struct ReplaceList *list = (struct ReplaceList *) data;
-  struct Buffer templ = { 0 };
+  struct Buffer templ = mutt_buffer_make(0);
 
   /* First token is a regex. */
   if (!MoreArgs(s))
@@ -1221,7 +1221,7 @@ static bool is_function(const char *name)
 static enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
                                       unsigned long data, struct Buffer *err)
 {
-  struct Buffer token = { 0 };
+  struct Buffer token = mutt_buffer_make(0);
 
   mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
@@ -1338,7 +1338,7 @@ static enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
       continue;
     }
 
-    mutt_buffer_strcpy(m->pathbuf, buf->data);
+    mutt_buffer_strcpy(&m->pathbuf, buf->data);
     /* int rc = */ mx_path_canon2(m, C_Folder);
 
     bool new_account = false;
@@ -2963,10 +2963,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
 {
   char buf[1024];
   int need_pause = 0;
-  struct Buffer err;
-
-  mutt_buffer_init(&err);
-  mutt_buffer_increase_size(&err, 256);
+  struct Buffer err = mutt_buffer_make(256);
 
   mutt_grouplist_init();
   /* reverse alias keys need to be strdup'ed because of idna conversions */
@@ -3222,27 +3219,28 @@ enum CommandResult mutt_parse_rc_line(/* const */ char *line,
   int i;
   enum CommandResult rc = MUTT_CMD_SUCCESS;
 
-  struct Buffer *expn = mutt_buffer_from(line);
-  expn->dptr = expn->data;
+  struct Buffer expn = mutt_buffer_make(0);
+  mutt_buffer_addstr(&expn, line);
+  expn.dptr = expn.data;
 
   *err->data = 0;
 
-  SKIPWS(expn->dptr);
-  while (*expn->dptr != '\0')
+  SKIPWS(expn.dptr);
+  while (*expn.dptr != '\0')
   {
-    if (*expn->dptr == '#')
+    if (*expn.dptr == '#')
       break; /* rest of line is a comment */
-    if (*expn->dptr == ';')
+    if (*expn.dptr == ';')
     {
-      expn->dptr++;
+      expn.dptr++;
       continue;
     }
-    mutt_extract_token(token, expn, MUTT_TOKEN_NO_FLAGS);
+    mutt_extract_token(token, &expn, MUTT_TOKEN_NO_FLAGS);
     for (i = 0; Commands[i].name; i++)
     {
       if (mutt_str_strcmp(token->data, Commands[i].name) == 0)
       {
-        rc = Commands[i].func(token, expn, Commands[i].data, err);
+        rc = Commands[i].func(token, &expn, Commands[i].data, err);
         if (rc != MUTT_CMD_SUCCESS)
         {              /* -1 Error, +1 Finish */
           goto finish; /* Propagate return code */
@@ -3258,7 +3256,7 @@ enum CommandResult mutt_parse_rc_line(/* const */ char *line,
     }
   }
 finish:
-  mutt_buffer_free(&expn);
+  mutt_buffer_dealloc(&expn);
   return rc;
 }
 
@@ -3270,14 +3268,14 @@ finish:
  */
 int mutt_query_variables(struct ListHead *queries)
 {
-  struct Buffer *value = mutt_buffer_alloc(256);
-  struct Buffer *tmp = mutt_buffer_alloc(256);
+  struct Buffer value = mutt_buffer_make(256);
+  struct Buffer tmp = mutt_buffer_make(256);
   int rc = 0;
 
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, queries, entries)
   {
-    mutt_buffer_reset(value);
+    mutt_buffer_reset(&value);
 
     struct HashElem *he = cs_get_elem(Config, np->data);
     if (!he)
@@ -3286,7 +3284,7 @@ int mutt_query_variables(struct ListHead *queries)
       continue;
     }
 
-    int rv = cs_he_string_get(Config, he, value);
+    int rv = cs_he_string_get(Config, he, &value);
     if (CSR_RESULT(rv) != CSR_SUCCESS)
     {
       rc = 1;
@@ -3295,20 +3293,20 @@ int mutt_query_variables(struct ListHead *queries)
 
     int type = DTYPE(he->type);
     if (IS_PATH(he) && !(he->type & DT_MAILBOX))
-      mutt_pretty_mailbox(value->data, value->dsize);
+      mutt_pretty_mailbox(value.data, value.dsize);
 
     if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) && (type != DT_QUAD))
     {
-      mutt_buffer_reset(tmp);
-      pretty_var(value->data, tmp);
-      mutt_buffer_strcpy(value, tmp->data);
+      mutt_buffer_reset(&tmp);
+      pretty_var(value.data, &tmp);
+      mutt_buffer_strcpy(&value, tmp.data);
     }
 
-    dump_config_neo(Config, he, value, NULL, CS_DUMP_NO_FLAGS, stdout);
+    dump_config_neo(Config, he, &value, NULL, CS_DUMP_NO_FLAGS, stdout);
   }
 
-  mutt_buffer_free(&value);
-  mutt_buffer_free(&tmp);
+  mutt_buffer_dealloc(&value);
+  mutt_buffer_dealloc(&tmp);
 
   return rc; // TEST16: neomutt -Q charset
 }
@@ -3724,29 +3722,29 @@ int mutt_var_value_complete(char *buf, size_t buflen, int pos)
       myvarval = myvar_get(var);
       if (myvarval)
       {
-        struct Buffer *pretty = mutt_buffer_alloc(256);
-        pretty_var(myvarval, pretty);
-        snprintf(pt, buflen - (pt - buf), "%s=%s", var, pretty->data);
-        mutt_buffer_free(&pretty);
+        struct Buffer pretty = mutt_buffer_make(256);
+        pretty_var(myvarval, &pretty);
+        snprintf(pt, buflen - (pt - buf), "%s=%s", var, pretty.data);
+        mutt_buffer_dealloc(&pretty);
         return 1;
       }
       return 0; /* no such variable. */
     }
     else
     {
-      struct Buffer *value = mutt_buffer_alloc(256);
-      struct Buffer *pretty = mutt_buffer_alloc(256);
-      int rc = cs_he_string_get(Config, he, value);
+      struct Buffer value = mutt_buffer_make(256);
+      struct Buffer pretty = mutt_buffer_make(256);
+      int rc = cs_he_string_get(Config, he, &value);
       if (CSR_RESULT(rc) == CSR_SUCCESS)
       {
-        pretty_var(value->data, pretty);
-        snprintf(pt, buflen - (pt - buf), "%s=%s", var, pretty->data);
-        mutt_buffer_free(&value);
-        mutt_buffer_free(&pretty);
+        pretty_var(value.data, &pretty);
+        snprintf(pt, buflen - (pt - buf), "%s=%s", var, pretty.data);
+        mutt_buffer_dealloc(&value);
+        mutt_buffer_dealloc(&pretty);
         return 0;
       }
-      mutt_buffer_free(&value);
-      mutt_buffer_free(&pretty);
+      mutt_buffer_dealloc(&value);
+      mutt_buffer_dealloc(&pretty);
       return 1;
     }
   }

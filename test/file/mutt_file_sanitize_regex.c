@@ -34,7 +34,7 @@ void test_mutt_file_sanitize_regex(void)
   }
 
   {
-    struct Buffer buf = { 0 };
+    struct Buffer buf = mutt_buffer_make(0);
     TEST_CHECK(mutt_file_sanitize_regex(&buf, NULL) != 0);
   }
 }

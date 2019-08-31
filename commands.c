@@ -842,36 +842,36 @@ void mutt_enter_command(void)
   if ((mutt_get_field(":", buf, sizeof(buf), MUTT_COMMAND) != 0) || !buf[0])
     return;
 
-  struct Buffer *err = mutt_buffer_alloc(256);
-  struct Buffer *token = mutt_buffer_alloc(256);
+  struct Buffer err = mutt_buffer_make(256);
+  struct Buffer token = mutt_buffer_make(256);
 
   /* check if buf is a valid icommand, else fall back quietly to parse_rc_lines */
-  enum CommandResult rc = mutt_parse_icommand(buf, err);
-  if (!mutt_buffer_is_empty(err))
+  enum CommandResult rc = mutt_parse_icommand(buf, &err);
+  if (!mutt_buffer_is_empty(&err))
   {
     /* since errbuf could potentially contain printf() sequences in it,
      * we must call mutt_error() in this fashion so that vsprintf()
      * doesn't expect more arguments that we passed */
     if (rc == MUTT_CMD_ERROR)
-      mutt_error("%s", err->data);
+      mutt_error("%s", err.data);
     else
-      mutt_warning("%s", err->data);
+      mutt_warning("%s", err.data);
   }
   else if (rc != MUTT_CMD_SUCCESS)
   {
-    rc = mutt_parse_rc_line(buf, token, err);
-    if (!mutt_buffer_is_empty(err))
+    rc = mutt_parse_rc_line(buf, &token, &err);
+    if (!mutt_buffer_is_empty(&err))
     {
       if (rc == MUTT_CMD_SUCCESS) /* command succeeded with message */
-        mutt_message("%s", err->data);
+        mutt_message("%s", err.data);
       else /* error executing command */
-        mutt_error("%s", err->data);
+        mutt_error("%s", err.data);
     }
   }
   /* else successful command */
 
-  mutt_buffer_free(&token);
-  mutt_buffer_free(&err);
+  mutt_buffer_dealloc(&token);
+  mutt_buffer_dealloc(&err);
 }
 
 /**

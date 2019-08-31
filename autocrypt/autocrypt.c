@@ -641,7 +641,7 @@ enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *e, char **keyli
       goto cleanup;
     }
 
-    if (mutt_buffer_len(keylist_buf) > 0)
+    if (!mutt_buffer_is_empty(keylist_buf))
       mutt_buffer_addch(keylist_buf, ' ');
     mutt_buffer_addstr(keylist_buf, matching_key);
 
@@ -906,7 +906,7 @@ void mutt_autocrypt_scan_mailboxes(void)
   {
     // L10N: The prompt for a mailbox to scan for Autocrypt: headers
     if ((!mutt_buffer_enter_fname(_("Scan mailbox"), folderbuf, true)) &&
-        (mutt_buffer_len(folderbuf) > 0))
+        (!mutt_buffer_is_empty(folderbuf)))
     {
       mutt_buffer_expand_path_regex(folderbuf, false);
       struct Mailbox *m = mx_path_resolve(mutt_b2s(folderbuf));

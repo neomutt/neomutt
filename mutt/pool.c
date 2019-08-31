@@ -39,18 +39,43 @@ static size_t BufferPoolInitialBufferSize = 1024;
 static struct Buffer **BufferPool = NULL;
 
 /**
+ * buffer_new - Allocate a new Buffer on the heap
+ * @retval buf A newly allocated Buffer
+ * @note call buffer_free to release the memory
+ */
+static struct Buffer *buffer_new(void)
+{
+  struct Buffer *b = mutt_mem_malloc(sizeof(struct Buffer));
+  mutt_buffer_init(b);
+  return b;
+}
+
+/**
+ * buffer_free - Release a Buffer and its contents
+ * @param[out] p Buffer pointer to free and NULL
+ */
+static void buffer_free(struct Buffer **p)
+{
+  if (!p || !*p)
+    return;
+
+  mutt_buffer_dealloc(*p);
+  FREE(p);
+}
+
+/**
  * increase_buffer_pool - Increase the size of the Buffer pool
  */
 static void increase_buffer_pool(void)
 {
-  struct Buffer *newbuf;
   BufferPoolLen += BufferPoolIncrement;
   mutt_debug(LL_DEBUG1, "%zu\n", BufferPoolLen);
 
   mutt_mem_realloc(&BufferPool, BufferPoolLen * sizeof(struct Buffer *));
   while (BufferPoolCount < BufferPoolIncrement)
   {
-    newbuf = mutt_buffer_alloc(BufferPoolInitialBufferSize);
+    struct Buffer *newbuf = buffer_new();
+    mutt_buffer_alloc(newbuf, BufferPoolInitialBufferSize);
     BufferPool[BufferPoolCount++] = newbuf;
   }
 }
@@ -63,7 +88,7 @@ void mutt_buffer_pool_free(void)
   mutt_debug(LL_DEBUG1, "%zu of %zu returned to pool\n", BufferPoolCount, BufferPoolLen);
 
   while (BufferPoolCount)
-    mutt_buffer_free(&BufferPool[--BufferPoolCount]);
+    buffer_free(&BufferPool[--BufferPoolCount]);
   FREE(&BufferPool);
   BufferPoolLen = 0;
 }
@@ -91,7 +116,7 @@ void mutt_buffer_pool_release(struct Buffer **pbuf)
   if (BufferPoolCount >= BufferPoolLen)
   {
     mutt_debug(LL_DEBUG1, "Internal buffer pool error\n");
-    mutt_buffer_free(pbuf);
+    buffer_free(pbuf);
     return;
   }
 

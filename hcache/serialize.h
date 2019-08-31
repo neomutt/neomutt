@@ -51,7 +51,7 @@ unsigned char *serial_dump_stailq(struct ListHead *l, unsigned char *d, int *off
 
 void           serial_restore_address(struct Address **a, const unsigned char *d, int *off, bool convert);
 void           serial_restore_body(struct Body *c, const unsigned char *d, int *off, bool convert);
-void           serial_restore_buffer(struct Buffer **b, const unsigned char *d, int *off, bool convert);
+void           serial_restore_buffer(struct Buffer *b, const unsigned char *d, int *off, bool convert);
 void           serial_restore_char(char **c, const unsigned char *d, int *off, bool convert);
 void           serial_restore_envelope(struct Envelope *e, const unsigned char *d, int *off, bool convert);
 void           serial_restore_int(unsigned int *i, const unsigned char *d, int *off);

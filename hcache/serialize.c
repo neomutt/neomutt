@@ -328,7 +328,7 @@ unsigned char *serial_dump_buffer(struct Buffer *b, unsigned char *d, int *off, 
  * @param[out] off     Offset into the blob
  * @param[in]  convert If true, the strings will be converted from utf-8
  */
-void serial_restore_buffer(struct Buffer **b, const unsigned char *d, int *off, bool convert)
+void serial_restore_buffer(struct Buffer *b, const unsigned char *d, int *off, bool convert)
 {
   unsigned int used;
   unsigned int offset;
@@ -338,13 +338,11 @@ void serial_restore_buffer(struct Buffer **b, const unsigned char *d, int *off, 
     return;
   }
 
-  *b = mutt_mem_malloc(sizeof(struct Buffer));
-
-  serial_restore_char(&(*b)->data, d, off, convert);
+  serial_restore_char(&b->data, d, off, convert);
   serial_restore_int(&offset, d, off);
-  (*b)->dptr = (*b)->data + offset;
+  b->dptr = b->data + offset;
   serial_restore_int(&used, d, off);
-  (*b)->dsize = used;
+  b->dsize = used;
 }
 
 /**
@@ -501,7 +499,7 @@ unsigned char *serial_dump_envelope(struct Envelope *env, unsigned char *d,
   d = serial_dump_char(env->x_label, d, off, convert);
   d = serial_dump_char(env->organization, d, off, convert);
 
-  d = serial_dump_buffer(env->spam, d, off, convert);
+  d = serial_dump_buffer(&env->spam, d, off, convert);
 
   d = serial_dump_stailq(&env->references, d, off, false);
   d = serial_dump_stailq(&env->in_reply_to, d, off, false);

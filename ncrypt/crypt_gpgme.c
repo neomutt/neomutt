@@ -1265,7 +1265,7 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist,
 #if GPGME_VERSION_NUMBER >= 0x010b00 /* gpgme >= 1.11.0 */
   struct Buffer *recpstring = mutt_buffer_pool_get();
   create_recipient_string(keylist, recpstring, use_smime);
-  if (mutt_buffer_len(recpstring) == 0)
+  if (mutt_buffer_is_empty(recpstring))
   {
     mutt_buffer_pool_release(&recpstring);
     return NULL;

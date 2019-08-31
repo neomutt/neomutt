@@ -79,21 +79,22 @@ enum CommandResult mutt_parse_icommand(/* const */ char *line, struct Buffer *er
   enum CommandResult rc = MUTT_CMD_ERROR;
 
   struct Buffer *token = mutt_buffer_pool_get();
-  struct Buffer *expn = mutt_buffer_from(line);
-  expn->dptr = expn->data;
+  struct Buffer expn = mutt_buffer_make(0);
+  mutt_buffer_addstr(&expn, line);
+  expn.dptr = expn.data;
 
   mutt_buffer_reset(err);
 
-  SKIPWS(expn->dptr);
-  while (*expn->dptr != '\0')
+  SKIPWS(expn.dptr);
+  while (*expn.dptr != '\0')
   {
-    mutt_extract_token(token, expn, MUTT_TOKEN_NO_FLAGS);
+    mutt_extract_token(token, &expn, MUTT_TOKEN_NO_FLAGS);
     for (size_t i = 0; ICommandList[i].name; i++)
     {
       if (mutt_str_strcmp(token->data, ICommandList[i].name) != 0)
         continue;
 
-      rc = ICommandList[i].func(token, expn, ICommandList[i].data, err);
+      rc = ICommandList[i].func(token, &expn, ICommandList[i].data, err);
       if (rc != 0)
         goto finish;
 
@@ -103,7 +104,7 @@ enum CommandResult mutt_parse_icommand(/* const */ char *line, struct Buffer *er
 
 finish:
   mutt_buffer_pool_release(&token);
-  mutt_buffer_free(&expn);
+  mutt_buffer_dealloc(&expn);
   return rc;
 }
 
@@ -157,20 +158,20 @@ static void dump_macro(struct Buffer *buf, struct Mapping *menu, struct Keymap *
   char key_binding[MAX_SEQ];
   km_expand_key(key_binding, MAX_SEQ, map);
 
-  struct Buffer *tmp = mutt_buffer_new();
-  escape_string(tmp, map->macro);
+  struct Buffer tmp = mutt_buffer_make(0);
+  escape_string(&tmp, map->macro);
 
   if (map->desc)
   {
     mutt_buffer_add_printf(buf, "macro %s %s \"%s\" \"%s\"\n", menu->name,
-                           key_binding, tmp->data, map->desc);
+                           key_binding, tmp.data, map->desc);
   }
   else
   {
-    mutt_buffer_add_printf(buf, "macro %s %s \"%s\"\n", menu->name, key_binding, tmp->data);
+    mutt_buffer_add_printf(buf, "macro %s %s \"%s\"\n", menu->name, key_binding, tmp.data);
   }
 
-  mutt_buffer_free(&tmp);
+  mutt_buffer_dealloc(&tmp);
 }
 
 /**
@@ -246,10 +247,10 @@ static enum CommandResult icmd_bind(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_ERROR;
   }
 
-  struct Buffer *filebuf = mutt_buffer_alloc(4096);
+  struct Buffer filebuf = mutt_buffer_make(4096);
   if (dump_all || (mutt_str_strcasecmp(buf->data, "all") == 0))
   {
-    dump_all_menus(filebuf, bind);
+    dump_all_menus(&filebuf, bind);
   }
   else
   {
@@ -258,21 +259,21 @@ static enum CommandResult icmd_bind(struct Buffer *buf, struct Buffer *s,
     {
       // L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
       mutt_buffer_printf(err, _("%s: no such menu"), buf->data);
-      mutt_buffer_free(&filebuf);
+      mutt_buffer_dealloc(&filebuf);
       return MUTT_CMD_ERROR;
     }
 
     struct Mapping menu = { buf->data, menu_index };
-    dump_menu(filebuf, &menu, bind);
+    dump_menu(&filebuf, &menu, bind);
   }
 
-  if (mutt_buffer_is_empty(filebuf))
+  if (mutt_buffer_is_empty(&filebuf))
   {
     // L10N: '%s' is the name of the menu, e.g. 'index' or 'pager', it might
     // L10N: also be 'all' when all menus are affected.
     mutt_buffer_printf(err, bind ? _("%s: no binds for this menu") : _("%s: no macros for this menu"),
                        dump_all ? "all" : buf->data);
-    mutt_buffer_free(&filebuf);
+    mutt_buffer_dealloc(&filebuf);
     return MUTT_CMD_ERROR;
   }
 
@@ -282,13 +283,13 @@ static enum CommandResult icmd_bind(struct Buffer *buf, struct Buffer *s,
   {
     // L10N: '%s' is the file name of the temporary file
     mutt_buffer_printf(err, _("Could not create temporary file %s"), tempfile);
-    mutt_buffer_free(&filebuf);
+    mutt_buffer_dealloc(&filebuf);
     return MUTT_CMD_ERROR;
   }
-  fputs(filebuf->data, fp_out);
+  fputs(filebuf.data, fp_out);
 
   mutt_file_fclose(&fp_out);
-  mutt_buffer_free(&filebuf);
+  mutt_buffer_dealloc(&filebuf);
 
   struct Pager info = { 0 };
   if (mutt_do_pager((bind) ? "bind" : "macro", tempfile, MUTT_PAGER_NO_FLAGS, &info) == -1)
