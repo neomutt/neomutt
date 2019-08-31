@@ -2095,15 +2095,6 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
      * a maildir-style mailbox.  */
     e_templ->replied = false;
 
-    if (!(flags & SEND_KEY))
-    {
-      if (C_TextFlowed && (e_templ->content->type == TYPE_TEXT) &&
-          (mutt_str_strcasecmp(e_templ->content->subtype, "plain") == 0))
-      {
-        mutt_param_set(&e_templ->content->parameter, "format", "flowed");
-      }
-    }
-
     /* $use_from and/or $from might have changed in a send-hook */
     if (killfrom)
     {
@@ -2135,6 +2126,19 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
         C_Editor && (mutt_str_strcmp(C_Editor, "builtin") != 0))
     {
       append_signature(fp_tmp);
+    }
+  }
+
+  /* Only set format=flowed for new messages.  postponed/resent/draftfiles
+   * should respect the original email.
+   *
+   * This is set here so that send-hook can be used to turn the option on.  */
+  if (!(flags & (SEND_KEY | SEND_POSTPONED | SEND_RESEND | SEND_DRAFT_FILE)))
+  {
+    if (C_TextFlowed && (e_templ->content->type == TYPE_TEXT) &&
+        (mutt_str_strcasecmp(e_templ->content->subtype, "plain") == 0))
+    {
+      mutt_param_set(&e_templ->content->parameter, "format", "flowed");
     }
   }
 
@@ -2202,18 +2206,6 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
         }
         else
           mutt_perror(e_templ->content->filename);
-      }
-
-      /* If using format=flowed, perform space stuffing.  Avoid stuffing when
-       * recalling a postponed message where the stuffing was already
-       * performed.  If it has already been performed, the format=flowed
-       * parameter will be present.  */
-      if (C_TextFlowed && (e_templ->content->type == TYPE_TEXT) &&
-          (mutt_str_strcasecmp("plain", e_templ->content->subtype) == 0))
-      {
-        char *p = mutt_param_get(&e_templ->content->parameter, "format");
-        if (mutt_str_strcasecmp("flowed", p) != 0)
-          rfc3676_space_stuff(e_templ);
       }
 
       mutt_message_hook(NULL, e_templ, MUTT_SEND2_HOOK);
@@ -2369,6 +2361,8 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
       mutt_addrlist_clear(&e_templ->env->from);
     }
   }
+
+  mutt_rfc3676_space_stuff(e_templ);
 
   mutt_update_encoding(e_templ->content);
 

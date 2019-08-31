@@ -69,6 +69,7 @@
 #include "options.h"
 #include "protos.h"
 #include "recvattach.h"
+#include "rfc3676.h"
 #include "sendlib.h"
 #include "sort.h"
 #ifdef ENABLE_NLS
@@ -1271,7 +1272,9 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
       case OP_COMPOSE_EDIT_MESSAGE:
         if (C_Editor && (mutt_str_strcmp("builtin", C_Editor) != 0) && !C_EditHeaders)
         {
+          mutt_rfc3676_space_unstuff(e);
           mutt_edit_file(C_Editor, e->content->filename);
+          mutt_rfc3676_space_stuff(e);
           mutt_update_encoding(e->content);
           menu->redraw = REDRAW_FULL;
           mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
@@ -1280,6 +1283,7 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         /* fallthrough */
 
       case OP_COMPOSE_EDIT_HEADERS:
+        mutt_rfc3676_space_unstuff(e);
         if ((mutt_str_strcmp("builtin", C_Editor) != 0) &&
             ((op == OP_COMPOSE_EDIT_HEADERS) || ((op == OP_COMPOSE_EDIT_MESSAGE) && C_EditHeaders)))
         {
@@ -1302,6 +1306,8 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
            * code below to regenerate the index array */
           mutt_builtin_editor(e->content->filename, e, e_cur);
         }
+
+        mutt_rfc3676_space_stuff(e);
         mutt_update_encoding(e->content);
 
         /* attachments may have been added */
