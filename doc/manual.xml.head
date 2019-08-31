@@ -3074,9 +3074,8 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
             <para>
               NeoMutt only supports space-stuffing for the first two types of
               lines but not for the third: It is impossible to safely detect
-              whether a leading <literal>&gt;</literal> character starts
-              a quote or not. Furthermore, NeoMutt only applies space-stuffing
-              <emphasis>once</emphasis> after the initial edit is finished.
+              whether a leading <literal>&gt;</literal> character starts a quote
+              or not.
             </para>
           </note>
           <para>
