@@ -575,8 +575,7 @@ static void cleanup_quote(struct QClass **quote_list)
     if ((*quote_list)->down)
       cleanup_quote(&((*quote_list)->down));
     ptr = (*quote_list)->next;
-    if ((*quote_list)->prefix)
-      FREE(&(*quote_list)->prefix);
+    FREE(&(*quote_list)->prefix);
     FREE(quote_list);
     *quote_list = ptr;
   }
@@ -2720,8 +2719,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           regfree(&rd.search_re);
           for (size_t i = 0; i < rd.last_line; i++)
           {
-            if (rd.line_info[i].search)
-              FREE(&(rd.line_info[i].search));
+            FREE(&(rd.line_info[i].search));
             rd.line_info[i].search_cnt = -1;
           }
         }
@@ -2735,8 +2733,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           for (size_t i = 0; i < rd.max_line; i++)
           {
             /* cleanup */
-            if (rd.line_info[i].search)
-              FREE(&(rd.line_info[i].search));
+            FREE(&(rd.line_info[i].search));
             rd.line_info[i].search_cnt = -1;
           }
           rd.search_flag = 0;

@@ -527,6 +527,7 @@ static void update_crypt_info(struct ComposeRedrawData *rd)
 /**
  * redraw_mix_line - Redraw the Mixmaster chain
  * @param chain List of chain links
+ * @param rd    Email and other compose data
  */
 static void redraw_mix_line(struct ListHead *chain, struct ComposeRedrawData *rd)
 {

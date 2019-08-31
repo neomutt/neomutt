@@ -339,13 +339,13 @@ void imap_clean_path(char *path, size_t plen)
 #ifdef USE_HCACHE
 /**
  * imap_msn_index_to_uid_seqset - Convert MSN index of UIDs to Seqset
- * @param b     Buffer for the result
+ * @param buf   Buffer for the result
  * @param mdata Imap Mailbox data
  *
  * Generates a seqseq of the UIDs in msn_index to persist in the header cache.
  * Empty spots are stored as 0.
  */
-static void imap_msn_index_to_uid_seqset(struct Buffer *b, struct ImapMboxData *mdata)
+static void imap_msn_index_to_uid_seqset(struct Buffer *buf, struct ImapMboxData *mdata)
 {
   int first = 1, state = 0;
   unsigned int cur_uid = 0, last_uid = 0;
@@ -384,12 +384,12 @@ static void imap_msn_index_to_uid_seqset(struct Buffer *b, struct ImapMboxData *
       if (first)
         first = 0;
       else
-        mutt_buffer_addch(b, ',');
+        mutt_buffer_addch(buf, ',');
 
       if (state == 1)
-        mutt_buffer_add_printf(b, "%u", range_begin);
+        mutt_buffer_add_printf(buf, "%u", range_begin);
       else if (state == 2)
-        mutt_buffer_add_printf(b, "%u:%u", range_begin, range_end);
+        mutt_buffer_add_printf(buf, "%u:%u", range_begin, range_end);
 
       state = 1;
       range_begin = cur_uid;
@@ -527,13 +527,13 @@ int imap_hcache_store_uid_seqset(struct ImapMboxData *mdata)
     return -1;
 
   /* The seqset is likely large.  Preallocate to reduce reallocs */
-  struct Buffer b = mutt_buffer_make(8192);
-  imap_msn_index_to_uid_seqset(&b, mdata);
+  struct Buffer buf = mutt_buffer_make(8192);
+  imap_msn_index_to_uid_seqset(&buf, mdata);
 
-  int rc = mutt_hcache_store_raw(mdata->hcache, "/UIDSEQSET", 10, b.data,
-                                 mutt_buffer_len(&b) + 1);
-  mutt_debug(LL_DEBUG3, "Stored /UIDSEQSET %s\n", b.data);
-  mutt_buffer_dealloc(&b);
+  int rc = mutt_hcache_store_raw(mdata->hcache, "/UIDSEQSET", 10, buf.data,
+                                 mutt_buffer_len(&buf) + 1);
+  mutt_debug(LL_DEBUG3, "Stored /UIDSEQSET %s\n", buf.data);
+  mutt_buffer_dealloc(&buf);
   return rc;
 }
 

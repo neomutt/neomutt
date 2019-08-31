@@ -358,10 +358,8 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
                  tmp.subtype);
         mutt_debug(LL_DEBUG1, "\"%s\" -> %s\n", b->filename, type);
       }
-      if (tmp.subtype)
-        FREE(&tmp.subtype);
-      if (tmp.xtype)
-        FREE(&tmp.xtype);
+      FREE(&tmp.subtype);
+      FREE(&tmp.xtype);
     }
   }
 }

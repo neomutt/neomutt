@@ -298,15 +298,15 @@ void serial_restore_stailq(struct ListHead *l, const unsigned char *d, int *off,
 
 /**
  * serial_dump_buffer - Pack a Buffer into a binary blob
- * @param b       Buffer to pack
+ * @param buf     Buffer to pack
  * @param d       Binary blob to add to
  * @param off     Offset into the blob
  * @param convert If true, the strings will be converted to utf-8
  * @retval ptr End of the newly packed binary
  */
-unsigned char *serial_dump_buffer(struct Buffer *b, unsigned char *d, int *off, bool convert)
+unsigned char *serial_dump_buffer(struct Buffer *buf, unsigned char *d, int *off, bool convert)
 {
-  if (!b)
+  if (!buf)
   {
     d = serial_dump_int(0, d, off);
     return d;
@@ -314,21 +314,21 @@ unsigned char *serial_dump_buffer(struct Buffer *b, unsigned char *d, int *off, 
   else
     d = serial_dump_int(1, d, off);
 
-  d = serial_dump_char_size(b->data, d, off, b->dsize + 1, convert);
-  d = serial_dump_int(b->dptr - b->data, d, off);
-  d = serial_dump_int(b->dsize, d, off);
+  d = serial_dump_char_size(buf->data, d, off, buf->dsize + 1, convert);
+  d = serial_dump_int(buf->dptr - buf->data, d, off);
+  d = serial_dump_int(buf->dsize, d, off);
 
   return d;
 }
 
 /**
  * serial_restore_buffer - Unpack a Buffer from a binary blob
- * @param[out] b       Store the unpacked Buffer here
+ * @param[out] buf     Store the unpacked Buffer here
  * @param[in]  d       Binary blob to read from
  * @param[out] off     Offset into the blob
  * @param[in]  convert If true, the strings will be converted from utf-8
  */
-void serial_restore_buffer(struct Buffer *b, const unsigned char *d, int *off, bool convert)
+void serial_restore_buffer(struct Buffer *buf, const unsigned char *d, int *off, bool convert)
 {
   unsigned int used;
   unsigned int offset;
@@ -338,11 +338,11 @@ void serial_restore_buffer(struct Buffer *b, const unsigned char *d, int *off, b
     return;
   }
 
-  serial_restore_char(&b->data, d, off, convert);
+  serial_restore_char(&buf->data, d, off, convert);
   serial_restore_int(&offset, d, off);
-  b->dptr = b->data + offset;
+  buf->dptr = buf->data + offset;
   serial_restore_int(&used, d, off);
-  b->dsize = used;
+  buf->dsize = used;
 }
 
 /**

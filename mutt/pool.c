@@ -45,9 +45,9 @@ static struct Buffer **BufferPool = NULL;
  */
 static struct Buffer *buffer_new(void)
 {
-  struct Buffer *b = mutt_mem_malloc(sizeof(struct Buffer));
-  mutt_buffer_init(b);
-  return b;
+  struct Buffer *buf = mutt_mem_malloc(sizeof(struct Buffer));
+  mutt_buffer_init(buf);
+  return buf;
 }
 
 /**

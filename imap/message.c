@@ -583,7 +583,7 @@ static void imap_alloc_uid_hash(struct ImapAccountData *adata, unsigned int msn_
 
 /**
  * imap_fetch_msn_seqset - Generate a sequence set
- * @param[in]  b             Buffer for the result
+ * @param[in]  buf           Buffer for the result
  * @param[in]  adata         Imap Account data
  * @param[in]  evalhc        If true, check the Header Cache
  * @param[in]  msn_begin     First Message Sequence Number
@@ -593,7 +593,7 @@ static void imap_alloc_uid_hash(struct ImapAccountData *adata, unsigned int msn_
  * Generates a more complicated sequence set after using the header cache,
  * in case there are missing MSNs in the middle.
  */
-static unsigned int imap_fetch_msn_seqset(struct Buffer *b, struct ImapAccountData *adata,
+static unsigned int imap_fetch_msn_seqset(struct Buffer *buf, struct ImapAccountData *adata,
                                           bool evalhc, unsigned int msn_begin,
                                           unsigned int msn_end, unsigned int *fetch_msn_end)
 {
@@ -606,7 +606,7 @@ static unsigned int imap_fetch_msn_seqset(struct Buffer *b, struct ImapAccountDa
   unsigned int range_end = 0;
   unsigned int msn_count = 0;
 
-  mutt_buffer_reset(b);
+  mutt_buffer_reset(buf);
   if (msn_end < msn_begin)
     return 0;
 
@@ -619,7 +619,7 @@ static unsigned int imap_fetch_msn_seqset(struct Buffer *b, struct ImapAccountDa
       *fetch_msn_end = msn_end;
     else
       *fetch_msn_end = msn_begin + max_headers_per_fetch - 1;
-    mutt_buffer_printf(b, "%u:%u", msn_begin, *fetch_msn_end);
+    mutt_buffer_printf(buf, "%u:%u", msn_begin, *fetch_msn_end);
     return (*fetch_msn_end - msn_begin + 1);
   }
 
@@ -648,15 +648,15 @@ static unsigned int imap_fetch_msn_seqset(struct Buffer *b, struct ImapAccountDa
       if (first_chunk)
         first_chunk = false;
       else
-        mutt_buffer_addch(b, ',');
+        mutt_buffer_addch(buf, ',');
 
       if (state == 1)
-        mutt_buffer_add_printf(b, "%u", range_begin);
+        mutt_buffer_add_printf(buf, "%u", range_begin);
       else if (state == 2)
-        mutt_buffer_add_printf(b, "%u:%u", range_begin, range_end);
+        mutt_buffer_add_printf(buf, "%u:%u", range_begin, range_end);
       state = 0;
 
-      if ((mutt_buffer_len(b) > 500) || (msn_count >= max_headers_per_fetch))
+      if ((mutt_buffer_len(buf) > 500) || (msn_count >= max_headers_per_fetch))
         break;
     }
   }
@@ -1036,7 +1036,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
   char tempfile[_POSIX_PATH_MAX];
   FILE *fp = NULL;
   struct ImapHeader h;
-  struct Buffer *b = NULL;
+  struct Buffer *buf = NULL;
   static const char *const want_headers =
       "DATE FROM SENDER SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE "
       "CONTENT-DESCRIPTION IN-REPLY-TO REPLY-TO LINES LIST-POST X-LABEL "
@@ -1094,7 +1094,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
   mutt_progress_init(&progress, _("Fetching message headers..."),
                      MUTT_PROGRESS_MSG, C_ReadInc, msn_end);
 
-  b = mutt_buffer_pool_get();
+  buf = mutt_buffer_pool_get();
 
   /* NOTE:
    *   The (fetch_msn_end < msn_end) used to be important to prevent
@@ -1107,11 +1107,11 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
    *   cautious I'm keeping it.
    */
   while ((fetch_msn_end < msn_end) &&
-         imap_fetch_msn_seqset(b, adata, evalhc, msn_begin, msn_end, &fetch_msn_end))
+         imap_fetch_msn_seqset(buf, adata, evalhc, msn_begin, msn_end, &fetch_msn_end))
   {
     char *cmd = NULL;
     mutt_str_asprintf(&cmd, "FETCH %s (UID FLAGS INTERNALDATE RFC822.SIZE %s)",
-                      mutt_b2s(b), hdrreq);
+                      mutt_b2s(buf), hdrreq);
     imap_cmd_start(adata, cmd);
     FREE(&cmd);
 
@@ -1245,7 +1245,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
 
 bail:
   mutt_buffer_pool_release(&hdr_list);
-  mutt_buffer_pool_release(&b);
+  mutt_buffer_pool_release(&buf);
   mutt_file_fclose(&fp);
   FREE(&hdrreq);
 
@@ -1735,10 +1735,8 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool
   rc = 0;
 
 out:
-  if (cmd.data)
-    FREE(&cmd.data);
-  if (sync_cmd.data)
-    FREE(&sync_cmd.data);
+  FREE(&cmd.data);
+  FREE(&sync_cmd.data);
 
   return (rc < 0) ? -1 : rc;
 }
