@@ -6519,16 +6519,16 @@ msgstr "Klaida siunčiant laišką, klaidos kodas %d.\n"
 msgid "Error sending message"
 msgstr "Klaida siunčiant laišką"
 
-#: rfc1524.c:215
+#: mailcap.c:215
 #, c-format
 msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Blogai suformuotas tipo %s įrašas \"%s\" %d eilutėje"
 
-#: rfc1524.c:475
+#: mailcap.c:475
 msgid "No mailcap path specified"
 msgstr "Nenurodytas mailcap kelias!"
 
-#: rfc1524.c:497
+#: mailcap.c:497
 #, c-format
 msgid "mailcap entry for type %s not found"
 msgstr "mailcap įrašas tipui %s nerastas"

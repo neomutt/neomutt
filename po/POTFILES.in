@@ -95,6 +95,7 @@ imap/util.c
 index.c
 init.c
 keymap.c
+mailcap.c
 maildir/maildir.c
 maildir/mh.c
 maildir/shared.c
@@ -177,7 +178,6 @@ recvattach.c
 recvcmd.c
 remailer.c
 resize.c
-rfc1524.c
 rfc3676.c
 score.c
 send.c

@@ -6473,16 +6473,16 @@ msgstr "发送信件出错，子进程已退出 %d。\n"
 msgid "Error sending message"
 msgstr "发送信件出错"
 
-#: rfc1524.c:215
+#: mailcap.c:215
 #, c-format
 msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "在 \"%2$s\" 的第 %3$d 行发现类型 %1$s 为错误的格式纪录"
 
-#: rfc1524.c:475
+#: mailcap.c:475
 msgid "No mailcap path specified"
 msgstr "没有指定 mailcap 路径"
 
-#: rfc1524.c:497
+#: mailcap.c:497
 #, c-format
 msgid "mailcap entry for type %s not found"
 msgstr "没有发现类型 %s 的 mailcap 纪录"

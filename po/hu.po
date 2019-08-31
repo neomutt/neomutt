@@ -6715,16 +6715,16 @@ msgstr "Hiba a levél elküldésekor, a gyermek folyamat kilépett: %d.\n"
 msgid "Error sending message"
 msgstr "Hiba a levél elküldésekor"
 
-#: rfc1524.c:215
+#: mailcap.c:215
 #, c-format
 msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Nem megfelelően formázott bejegyzés a(z) %s típushoz a(z) \"%s\" fájl %d. sorában"
 
-#: rfc1524.c:475
+#: mailcap.c:475
 msgid "No mailcap path specified"
 msgstr "Nincs mailcap útvonal megadva"
 
-#: rfc1524.c:497
+#: mailcap.c:497
 #, c-format
 msgid "mailcap entry for type %s not found"
 msgstr "mailcap bejegyzés a(z) %s típushoz nem található"

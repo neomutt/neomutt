@@ -6639,16 +6639,16 @@ msgstr "Error mengirimkan surat, proses keluar dengan kode %d.\n"
 msgid "Error sending message"
 msgstr "Gagal mengirim surat"
 
-#: rfc1524.c:215
+#: mailcap.c:215
 #, c-format
 msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Entry utk jenis %s di '%s' baris %d tidak diformat dengan benar"
 
-#: rfc1524.c:475
+#: mailcap.c:475
 msgid "No mailcap path specified"
 msgstr "Path untuk mailcap tidak diketahui"
 
-#: rfc1524.c:497
+#: mailcap.c:497
 #, c-format
 msgid "mailcap entry for type %s not found"
 msgstr "entry mailcap untuk jenis %s tidak ditemukan"

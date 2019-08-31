@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_RFC1524_H
-#define MUTT_RFC1524_H
+#ifndef MUTT_MAILCAP_H
+#define MUTT_MAILCAP_H
 
 #include <stdbool.h>
 
@@ -68,4 +68,4 @@ bool rfc1524_mailcap_lookup(struct Body *a, char *type, struct Rfc1524MailcapEnt
 
 int mutt_rfc1524_expand_command(struct Body *a, const char *filename, const char *type, struct Buffer *command);
 
-#endif /* MUTT_RFC1524_H */
+#endif /* MUTT_MAILCAP_H */

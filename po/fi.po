@@ -6508,16 +6508,16 @@ msgstr "Virhe viestin lähetyksessä, lapsiprosessi palautti arvon %d.\n"
 msgid "Error sending message"
 msgstr "Virhe viestin lähetyksessä"
 
-#: rfc1524.c:215
+#: mailcap.c:215
 #, c-format
 msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Väärin muodostettu tietue tyypille %s kohteessa %s rivillä %d"
 
-#: rfc1524.c:475
+#: mailcap.c:475
 msgid "No mailcap path specified"
 msgstr "Mailcap-polkua ei ole määritelty"
 
-#: rfc1524.c:497
+#: mailcap.c:497
 #, c-format
 msgid "mailcap entry for type %s not found"
 msgstr "Mailcap-tietue tyypille %s puuttuu"

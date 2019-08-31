@@ -6715,16 +6715,16 @@ msgstr "Chyba pri posielaní správy, dcérsky proces vrátil %d (%s).\n"
 msgid "Error sending message"
 msgstr "Chyba pri posielaní správy"
 
-#: rfc1524.c:215
+#: mailcap.c:215
 #, c-format
 msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Nesprávne formátovaná položka pre typ %s v \"%s\", riadok %d"
 
-#: rfc1524.c:475
+#: mailcap.c:475
 msgid "No mailcap path specified"
 msgstr "Nešpecifikovaná cesta k mailcap"
 
-#: rfc1524.c:497
+#: mailcap.c:497
 #, c-format
 msgid "mailcap entry for type %s not found"
 msgstr "položka mailcap-u pre typ %s nenájdená"

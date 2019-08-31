@@ -6570,16 +6570,16 @@ msgstr "Fejl ved afsendelse af brev, afslutningskode fra barneproces: %d.\n"
 msgid "Error sending message"
 msgstr "Fejl ved afsendelse af brev"
 
-#: rfc1524.c:215
+#: mailcap.c:215
 #, c-format
 msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Ugyldig angivelse for type %s i \"%s\" linje %d"
 
-#: rfc1524.c:475
+#: mailcap.c:475
 msgid "No mailcap path specified"
 msgstr "Ingen mailcap-sti er defineret"
 
-#: rfc1524.c:497
+#: mailcap.c:497
 #, c-format
 msgid "mailcap entry for type %s not found"
 msgstr "ingen mailcap-angivelse for type %s"

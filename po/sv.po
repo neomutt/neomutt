@@ -6666,16 +6666,16 @@ msgstr "Fel vid sändning av meddelande, barn returnerade %d.\n"
 msgid "Error sending message"
 msgstr "Fel vid sändning av meddelande"
 
-#: rfc1524.c:215
+#: mailcap.c:215
 #, c-format
 msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Felaktigt formatterad post för typ %s i \"%s\", rad %d"
 
-#: rfc1524.c:475
+#: mailcap.c:475
 msgid "No mailcap path specified"
 msgstr "Ingen \"mailcap\"-sökväg angiven"
 
-#: rfc1524.c:497
+#: mailcap.c:497
 #, c-format
 msgid "mailcap entry for type %s not found"
 msgstr "\"mailcap\"-post för typ %s hittades inte"

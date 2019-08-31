@@ -6641,16 +6641,16 @@ msgstr "Errore nell'invio del messaggio, il figlio è uscito con %d.\n"
 msgid "Error sending message"
 msgstr "Errore durante l'invio del messaggio"
 
-#: rfc1524.c:215
+#: mailcap.c:215
 #, c-format
 msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Voce impropriamente formattata per il tipo %s in \"%s\", linea %d"
 
-#: rfc1524.c:475
+#: mailcap.c:475
 msgid "No mailcap path specified"
 msgstr "Il percorso di mailcap non è stato specificato"
 
-#: rfc1524.c:497
+#: mailcap.c:497
 #, c-format
 msgid "mailcap entry for type %s not found"
 msgstr "La voce di mailcap per il tipo %s non è stata trovata"

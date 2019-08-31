@@ -6507,16 +6507,16 @@ msgstr "Fehler %d beim Versand der Nachricht.\n"
 msgid "Error sending message"
 msgstr "Fehler beim Versand der Nachricht"
 
-#: rfc1524.c:215
+#: mailcap.c:215
 #, c-format
 msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Ungültiger Eintrag für Typ %s in \"%s\", Zeile %d"
 
-#: rfc1524.c:475
+#: mailcap.c:475
 msgid "No mailcap path specified"
 msgstr "Kein Mailcap-Pfad definiert"
 
-#: rfc1524.c:497
+#: mailcap.c:497
 #, c-format
 msgid "mailcap entry for type %s not found"
 msgstr "Kann keinen Mailcap-Eintrag für %s finden"

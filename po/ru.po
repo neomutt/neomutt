@@ -6609,16 +6609,16 @@ msgstr "Сообщение отправить не удалось, процес�
 msgid "Error sending message"
 msgstr "Ошибка отправки сообщения"
 
-#: rfc1524.c:215
+#: mailcap.c:215
 #, c-format
 msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Некорректно отформатированная запись для типа %s в \"%s\", строка %d"
 
-#: rfc1524.c:475
+#: mailcap.c:475
 msgid "No mailcap path specified"
 msgstr "Путь к файлу mailcap не указан"
 
-#: rfc1524.c:497
+#: mailcap.c:497
 #, c-format
 msgid "mailcap entry for type %s not found"
 msgstr "для типа %s не найдено записи в файле mailcap"
