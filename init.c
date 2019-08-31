@@ -455,6 +455,15 @@ static bool get_hostname(void)
 }
 
 /**
+ * mutt_attachmatch_new - Create a new AttachMatch
+ * @retval ptr New AttachMatch
+ */
+static struct AttachMatch *mutt_attachmatch_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct AttachMatch));
+}
+
+/**
  * parse_attach_list - Parse the "attachments" command
  * @param buf  Buffer for temporary storage
  * @param s    Buffer containing the attachments command
@@ -478,7 +487,7 @@ static enum CommandResult parse_attach_list(struct Buffer *buf, struct Buffer *s
     if (!buf->data || (*buf->data == '\0'))
       continue;
 
-    a = mutt_mem_malloc(sizeof(struct AttachMatch));
+    a = mutt_attachmatch_new();
 
     /* some cheap hacks that I expect to remove */
     if (mutt_str_strcasecmp(buf->data, "any") == 0)
@@ -2271,12 +2280,12 @@ static enum CommandResult parse_unalternates(struct Buffer *buf, struct Buffer *
 }
 
 /**
- * mutt_free_attachmatch - Free an AttachMatch - Implements ::list_free_t
+ * mutt_attachmatch_free - Free an AttachMatch - Implements ::list_free_t
  *
  * @note We don't free minor because it is either a pointer into major,
  *       or a static string.
  */
-void mutt_free_attachmatch(struct AttachMatch **am)
+void mutt_attachmatch_free(struct AttachMatch **am)
 {
   if (!am || !*am)
     return;
@@ -2308,10 +2317,10 @@ static enum CommandResult parse_unattachments(struct Buffer *buf, struct Buffer 
 
   if (op == '*')
   {
-    mutt_list_free_type(&AttachAllow, (list_free_t) mutt_free_attachmatch);
-    mutt_list_free_type(&AttachExclude, (list_free_t) mutt_free_attachmatch);
-    mutt_list_free_type(&InlineAllow, (list_free_t) mutt_free_attachmatch);
-    mutt_list_free_type(&InlineExclude, (list_free_t) mutt_free_attachmatch);
+    mutt_list_free_type(&AttachAllow, (list_free_t) mutt_attachmatch_free);
+    mutt_list_free_type(&AttachExclude, (list_free_t) mutt_attachmatch_free);
+    mutt_list_free_type(&InlineAllow, (list_free_t) mutt_attachmatch_free);
+    mutt_list_free_type(&InlineExclude, (list_free_t) mutt_attachmatch_free);
     attachments_clean();
     return 0;
   }
@@ -2909,10 +2918,10 @@ void mutt_free_opts(void)
   mutt_list_free(&UserHeader);
 
   /* Lists of AttachMatch */
-  mutt_list_free_type(&AttachAllow, (list_free_t) mutt_free_attachmatch);
-  mutt_list_free_type(&AttachExclude, (list_free_t) mutt_free_attachmatch);
-  mutt_list_free_type(&InlineAllow, (list_free_t) mutt_free_attachmatch);
-  mutt_list_free_type(&InlineExclude, (list_free_t) mutt_free_attachmatch);
+  mutt_list_free_type(&AttachAllow, (list_free_t) mutt_attachmatch_free);
+  mutt_list_free_type(&AttachExclude, (list_free_t) mutt_attachmatch_free);
+  mutt_list_free_type(&InlineAllow, (list_free_t) mutt_attachmatch_free);
+  mutt_list_free_type(&InlineExclude, (list_free_t) mutt_attachmatch_free);
 
   mutt_free_colors();
 

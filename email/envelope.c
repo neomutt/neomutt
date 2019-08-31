@@ -59,10 +59,19 @@ struct Envelope *mutt_env_new(void)
 
 #ifdef USE_AUTOCRYPT
 /**
- * mutt_free_autocrypthdr - Free an AutocryptHeader
+ * mutt_autocrypthdr_new - Create a new AutocryptHeader
+ * @retval ptr New AutocryptHeader
+ */
+void mutt_autocrypthdr_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct AutocryptHeader));
+}
+
+/**
+ * mutt_autocrypthdr_free - Free an AutocryptHeader
  * @param p AutocryptHeader to free
  */
-void mutt_free_autocrypthdr(struct AutocryptHeader **p)
+void mutt_autocrypthdr_free(struct AutocryptHeader **p)
 {
   if (!p)
     return;
@@ -124,8 +133,8 @@ void mutt_env_free(struct Envelope **ptr)
   mutt_list_free(&env->userhdrs);
 
 #ifdef USE_AUTOCRYPT
-  mutt_free_autocrypthdr(&env->autocrypt);
-  mutt_free_autocrypthdr(&env->autocrypt_gossip);
+  mutt_autocrypthdr_free(&env->autocrypt);
+  mutt_autocrypthdr_free(&env->autocrypt_gossip);
 #endif
 
   FREE(ptr);

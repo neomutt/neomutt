@@ -552,7 +552,7 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
  */
 static struct AutocryptHeader *parse_autocrypt(struct AutocryptHeader *head, const char *s)
 {
-  struct AutocryptHeader *autocrypt = mutt_new_autocrypthdr();
+  struct AutocryptHeader *autocrypt = mutt_autocrypthdr_new();
   autocrypt->next = head;
 
   struct ParameterList pl = TAILQ_HEAD_INITIALIZER(pl);
@@ -1267,7 +1267,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
     {
       mutt_autocrypt_process_autocrypt_header(e, env);
       /* No sense in taking up memory after the header is processed */
-      mutt_free_autocrypthdr(&env->autocrypt);
+      mutt_autocrypthdr_free(&env->autocrypt);
     }
 #endif
   }

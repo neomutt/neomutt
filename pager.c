@@ -510,11 +510,11 @@ static void append_line(struct Line *line_info, int n, int cnt)
 }
 
 /**
- * new_class_color - Create a new quoting colour
+ * class_color_new - Create a new quoting colour
  * @param[in]     qc      Class of quoted text
  * @param[in,out] q_level Quote level
  */
-static void new_class_color(struct QClass *qc, int *q_level)
+static void class_color_new(struct QClass *qc, int *q_level)
 {
   qc->index = (*q_level)++;
   qc->color = ColorQuote[qc->index % ColorQuoteUsed];
@@ -852,7 +852,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
           ptr->down = tmp;
           tmp->up = ptr;
 
-          new_class_color(tmp, q_level);
+          class_color_new(tmp, q_level);
 
           return tmp;
         }
@@ -880,7 +880,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
     qc->prefix = mutt_mem_calloc(1, length + 1);
     strncpy(qc->prefix, qptr, length);
     qc->length = length;
-    new_class_color(qc, q_level);
+    class_color_new(qc, q_level);
 
     if (*quote_list)
     {

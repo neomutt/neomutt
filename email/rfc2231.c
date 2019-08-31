@@ -128,10 +128,10 @@ static void decode_one(char *dest, char *src)
 }
 
 /**
- * new_parameter - Create a new Rfc2231Parameter
+ * parameter_new - Create a new Rfc2231Parameter
  * @retval ptr Newly allocated Rfc2231Parameter
  */
-static struct Rfc2231Parameter *new_parameter(void)
+static struct Rfc2231Parameter *parameter_new(void)
 {
   return mutt_mem_calloc(1, sizeof(struct Rfc2231Parameter));
 }
@@ -292,7 +292,7 @@ void rfc2231_decode_parameters(struct ParameterList *pl)
       if (mutt_str_atoi(s, &index) != 0)
         index = INT_MAX;
 
-      conttmp = new_parameter();
+      conttmp = parameter_new();
       conttmp->attribute = np->attribute;
       conttmp->value = np->value;
       conttmp->encoded = encoded;

@@ -808,7 +808,7 @@ int mutt_autocrypt_generate_gossip_list(struct Email *e)
   struct Envelope *mime_headers = e->content->mime_headers;
   if (!mime_headers)
     mime_headers = e->content->mime_headers = mutt_env_new();
-  mutt_free_autocrypthdr(&mime_headers->autocrypt_gossip);
+  mutt_autocrypthdr_free(&mime_headers->autocrypt_gossip);
 
   struct AddressList recips = TAILQ_HEAD_INITIALIZER(recips);
 
@@ -829,7 +829,7 @@ int mutt_autocrypt_generate_gossip_list(struct Email *e)
 
     if (keydata)
     {
-      struct AutocryptHeader *gossip = mutt_new_autocrypthdr();
+      struct AutocryptHeader *gossip = mutt_autocrypthdr_new();
       gossip->addr = mutt_str_strdup(peer->email_addr);
       gossip->keydata = mutt_str_strdup(keydata);
       gossip->next = mime_headers->autocrypt_gossip;
@@ -859,7 +859,7 @@ int mutt_autocrypt_generate_gossip_list(struct Email *e)
 
     if (keydata)
     {
-      struct AutocryptHeader *gossip = mutt_new_autocrypthdr();
+      struct AutocryptHeader *gossip = mutt_autocrypthdr_new();
       gossip->addr = mutt_str_strdup(addr);
       gossip->keydata = mutt_str_strdup(keydata);
       gossip->next = mime_headers->autocrypt_gossip;

@@ -1080,7 +1080,7 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
   menu->redraw_data = rd;
   mutt_menu_push_current(menu);
 
-  struct AttachCtx *actx = mutt_mem_calloc(sizeof(struct AttachCtx), 1);
+  struct AttachCtx *actx = mutt_actx_new();
   actx->email = e;
   mutt_update_compose_menu(actx, menu, true);
 

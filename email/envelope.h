@@ -96,8 +96,8 @@ int              mutt_env_to_intl   (struct Envelope *env, const char **tag, cha
 void             mutt_env_to_local  (struct Envelope *e);
 
 #ifdef USE_AUTOCRYPT
-#define mutt_new_autocrypthdr() mutt_mem_calloc(1, sizeof(struct AutocryptHeader))
-void mutt_free_autocrypthdr(struct AutocryptHeader **p);
+struct AutocryptHeader *mutt_autocrypthdr_new(void);
+void                    mutt_autocrypthdr_free(struct AutocryptHeader **p);
 #endif
 
 #endif /* MUTT_EMAIL_ENVELOPE_H */

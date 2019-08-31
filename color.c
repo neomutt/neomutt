@@ -169,10 +169,10 @@ static const struct Mapping ComposeFields[] = {
 #define COLOR_QUOTE_INIT 8
 
 /**
- * new_color_line - Create a new ColorLine
+ * color_line_new - Create a new ColorLine
  * @retval ptr Newly allocated ColorLine
  */
-static struct ColorLine *new_color_line(void)
+static struct ColorLine *color_line_new(void)
 {
   struct ColorLine *p = mutt_mem_calloc(1, sizeof(struct ColorLine));
 
@@ -183,25 +183,26 @@ static struct ColorLine *new_color_line(void)
 }
 
 /**
- * free_color_line - Free a ColorLine
- * @param tmp         ColorLine to free
+ * color_line_free - Free a ColorLine
+ * @param ptr         ColorLine to free
  * @param free_colors If true, free its colours too
  */
-static void free_color_line(struct ColorLine *tmp, bool free_colors)
+static void color_line_free(struct ColorLine **ptr, bool free_colors)
 {
-  if (!tmp)
+  if (!ptr || !*ptr)
     return;
 
+  struct ColorLine *cl = *ptr;
+
 #ifdef HAVE_COLOR
-  if (free_colors && (tmp->fg != COLOR_UNSET) && (tmp->bg != COLOR_UNSET))
-    mutt_free_color(tmp->fg, tmp->bg);
+  if (free_colors && (cl->fg != COLOR_UNSET) && (cl->bg != COLOR_UNSET))
+    mutt_free_color(cl->fg, cl->bg);
 #endif
 
-  /* we should really introduce a container type for regular expressions.  */
-  regfree(&tmp->regex);
-  mutt_pattern_free(&tmp->color_pattern);
-  FREE(&tmp->pattern);
-  FREE(&tmp);
+  regfree(&cl->regex);
+  mutt_pattern_free(&cl->color_pattern);
+  FREE(&cl->pattern);
+  FREE(ptr);
 }
 
 /**
@@ -588,7 +589,7 @@ static void do_uncolor(struct Buffer *buf, struct Buffer *s,
         {
           *do_cache = true;
         }
-        free_color_line(np, parse_uncolor);
+        color_line_free(&np, parse_uncolor);
         np = tmp;
       }
       STAILQ_INIT(cl);
@@ -610,7 +611,7 @@ static void do_uncolor(struct Buffer *buf, struct Buffer *s,
             STAILQ_REMOVE_AFTER(cl, tmp, entries);
           else
             STAILQ_REMOVE_HEAD(cl, entries);
-          free_color_line(np, parse_uncolor);
+          color_line_free(&np, parse_uncolor);
           break;
         }
         tmp = np;
@@ -800,7 +801,7 @@ static enum CommandResult add_pattern(struct ColorLineList *top, const char *s,
   }
   else
   {
-    tmp = new_color_line();
+    tmp = color_line_new();
     if (is_index)
     {
       struct Buffer *buf = mutt_buffer_pool_get();
@@ -810,7 +811,7 @@ static enum CommandResult add_pattern(struct ColorLineList *top, const char *s,
       mutt_buffer_pool_release(&buf);
       if (!tmp->color_pattern)
       {
-        free_color_line(tmp, true);
+        color_line_free(&tmp, true);
         return MUTT_CMD_ERROR;
       }
     }
@@ -826,7 +827,7 @@ static enum CommandResult add_pattern(struct ColorLineList *top, const char *s,
       if (r != 0)
       {
         regerror(r, &tmp->regex, err->data, err->dsize);
-        free_color_line(tmp, true);
+        color_line_free(&tmp, true);
         return MUTT_CMD_ERROR;
       }
     }
@@ -1252,7 +1253,7 @@ static void mutt_free_color_list(struct ColorLineList *list)
   STAILQ_FOREACH_SAFE(np, list, entries, tmp)
   {
     STAILQ_REMOVE(list, np, ColorLine, entries);
-    free_color_line(np, true);
+    color_line_free(&np, true);
   }
 }
 

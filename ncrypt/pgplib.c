@@ -243,10 +243,10 @@ void pgp_free_key(struct PgpKeyInfo **kpp)
 }
 
 /**
- * pgp_new_keyinfo - Create a new PgpKeyInfo
+ * pgp_keyinfo_new - Create a new PgpKeyInfo
  * @retval ptr New PgpKeyInfo
  */
-struct PgpKeyInfo *pgp_new_keyinfo(void)
+struct PgpKeyInfo *pgp_keyinfo_new(void)
 {
   return mutt_mem_calloc(1, sizeof(struct PgpKeyInfo));
 }
