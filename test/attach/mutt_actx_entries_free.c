@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_actx_free_entries()
+ * Test code for mutt_actx_entries_free()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -27,12 +27,12 @@
 #include "address/lib.h"
 #include "email/lib.h"
 
-void test_mutt_actx_free_entries(void)
+void test_mutt_actx_entries_free(void)
 {
-  // void mutt_actx_free_entries(struct AttachCtx *actx);
+  // void mutt_actx_entries_free(struct AttachCtx *actx);
 
   {
-    mutt_actx_free_entries(NULL);
-    TEST_CHECK_(1, "mutt_actx_free_entries(NULL)");
+    mutt_actx_entries_free(NULL);
+    TEST_CHECK_(1, "mutt_actx_entries_free(NULL)");
   }
 }

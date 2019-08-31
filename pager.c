@@ -1278,7 +1278,7 @@ static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
     {
 #ifdef HAVE_COLOR
       if (a->pair != -1)
-        mutt_free_color(a->fg, a->bg);
+        mutt_color_free(a->fg, a->bg);
 #endif
       a->attr = ANSI_OFF;
       a->pair = -1;
@@ -1309,7 +1309,7 @@ static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
       {
 #ifdef HAVE_COLOR
         if (a->pair != -1)
-          mutt_free_color(a->fg, a->bg);
+          mutt_color_free(a->fg, a->bg);
 #endif
         a->attr = ANSI_OFF;
         a->pair = -1;
@@ -1319,7 +1319,7 @@ static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
       {
 #ifdef HAVE_COLOR
         if (a->pair != -1)
-          mutt_free_color(a->fg, a->bg);
+          mutt_color_free(a->fg, a->bg);
 #endif
         a->pair = -1;
         a->attr |= ANSI_COLOR;
@@ -1330,7 +1330,7 @@ static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
       {
 #ifdef HAVE_COLOR
         if (a->pair != -1)
-          mutt_free_color(a->fg, a->bg);
+          mutt_color_free(a->fg, a->bg);
 #endif
         a->pair = -1;
         a->attr |= ANSI_COLOR;

@@ -100,7 +100,7 @@ int                     mh_mkstemp             (struct Mailbox *m, FILE **fp, ch
 int                     mh_read_dir            (struct Mailbox *m, const char *subdir);
 int                     mh_read_sequences      (struct MhSequences *mhs, const char *path);
 MhSeqFlags              mhs_check              (struct MhSequences *mhs, int i);
-void                    mhs_free_sequences     (struct MhSequences *mhs);
+void                    mhs_sequences_free     (struct MhSequences *mhs);
 MhSeqFlags              mhs_set                (struct MhSequences *mhs, int i, MhSeqFlags f);
 mode_t                  mh_umask               (struct Mailbox *m);
 void                    mh_update_maildir      (struct Maildir *md, struct MhSequences *mhs);

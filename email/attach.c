@@ -97,10 +97,10 @@ void mutt_actx_add_body(struct AttachCtx *actx, struct Body *new_body)
 }
 
 /**
- * mutt_actx_free_entries - Free entries in an Attachment Context
+ * mutt_actx_entries_free - Free entries in an Attachment Context
  * @param actx Attachment context
  */
-void mutt_actx_free_entries(struct AttachCtx *actx)
+void mutt_actx_entries_free(struct AttachCtx *actx)
 {
   if (!actx)
     return;
@@ -144,7 +144,7 @@ void mutt_actx_free(struct AttachCtx **ptr)
 
   struct AttachCtx *actx = *ptr;
 
-  mutt_actx_free_entries(actx);
+  mutt_actx_entries_free(actx);
   FREE(&actx->idx);
   FREE(&actx->v2r);
   FREE(&actx->fp_idx);

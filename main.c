@@ -1277,8 +1277,8 @@ main_exit:
   mutt_buffer_pool_free();
   mutt_envlist_free();
   mutt_browser_cleanup();
-  mutt_free_opts();
-  mutt_free_keys();
+  mutt_opts_free();
+  mutt_keys_free();
   neomutt_free(&NeoMutt);
   cs_free(&Config);
   return rc;

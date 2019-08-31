@@ -886,7 +886,7 @@ struct Body *pgp_class_make_key_attachment(void)
     return NULL;
 
   snprintf(tmp, sizeof(tmp), "0x%s", pgp_fpr_or_lkeyid(pgp_principal_key(key)));
-  pgp_free_key(&key);
+  pgp_key_free(&key);
 
   mutt_mktemp(tempf, sizeof(tempf));
 
@@ -1070,7 +1070,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
     }
   }
 
-  pgp_free_key(&keys);
+  pgp_key_free(&keys);
 
   if (matches)
   {
@@ -1104,7 +1104,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
         pgp_remove_key(&matches, k);
     }
 
-    pgp_free_key(&matches);
+    pgp_key_free(&matches);
 
     return k;
   }
@@ -1187,14 +1187,14 @@ struct PgpKeyInfo *pgp_getkeybystr(const char *cp, KeyFlags abilities, enum PgpR
     }
   }
 
-  pgp_free_key(&keys);
+  pgp_key_free(&keys);
 
   if (matches)
   {
     k = pgp_select_key(matches, NULL, p);
     if (k)
       pgp_remove_key(&matches, k);
-    pgp_free_key(&matches);
+    pgp_key_free(&matches);
   }
   else
   {

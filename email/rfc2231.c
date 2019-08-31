@@ -164,10 +164,10 @@ static void list_insert(struct Rfc2231Parameter **list, struct Rfc2231Parameter 
 }
 
 /**
- * free_parameter - Free an Rfc2231Parameter
+ * parameter_free - Free an Rfc2231Parameter
  * @param[out] p Rfc2231Parameter to free
  */
-static void free_parameter(struct Rfc2231Parameter **p)
+static void parameter_free(struct Rfc2231Parameter **p)
 {
   if (!p || !*p)
     return;
@@ -213,7 +213,7 @@ static void join_continuations(struct ParameterList *pl, struct Rfc2231Parameter
       l += vl;
 
       struct Rfc2231Parameter *q = par->next;
-      free_parameter(&par);
+      parameter_free(&par);
       par = q;
       if (par)
         valp = par->value;

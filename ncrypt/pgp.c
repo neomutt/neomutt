@@ -1511,7 +1511,7 @@ char *pgp_class_find_keys(struct AddressList *addrlist, bool oppenc_mode)
 
       key_selected = true;
 
-      pgp_free_key(&k_info);
+      pgp_key_free(&k_info);
       mutt_addrlist_clear(&hookal);
 
       if (crypt_hook)
@@ -1963,7 +1963,7 @@ int pgp_class_send_menu(struct Email *e)
           char input_signas[128];
           snprintf(input_signas, sizeof(input_signas), "0x%s", pgp_fpr_or_lkeyid(p));
           mutt_str_replace(&C_PgpSignAs, input_signas);
-          pgp_free_key(&p);
+          pgp_key_free(&p);
 
           e->security |= SEC_SIGN;
 

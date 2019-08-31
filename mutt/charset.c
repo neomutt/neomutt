@@ -79,6 +79,35 @@ TAILQ_HEAD(LookupList, Lookup);
 
 static struct LookupList Lookups = TAILQ_HEAD_INITIALIZER(Lookups);
 
+/**
+ * lookup_new - Create a new Lookup
+ * @retval ptr New Lookup
+ */
+struct Lookup *lookup_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct Lookup));
+}
+
+/**
+ * lookup_free - Free a Lookup
+ * @param ptr Lookup to free
+ */
+void lookup_free(struct Lookup **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct Lookup *l = *ptr;
+  FREE(&l->replacement);
+  FREE(&l->regex.pattern);
+  if (l->regex.regex)
+    regfree(l->regex.regex);
+  FREE(&l->regex.regex);
+  FREE(&l->regex);
+
+  FREE(ptr);
+}
+
 // clang-format off
 /**
  * PreferredMimeNames - Lookup table of preferred charsets
@@ -462,7 +491,7 @@ bool mutt_ch_lookup_add(enum LookupType type, const char *pat,
     return false;
   }
 
-  struct Lookup *l = mutt_mem_calloc(1, sizeof(struct Lookup));
+  struct Lookup *l = lookup_new();
   l->type = type;
   l->replacement = mutt_str_strdup(replace);
   l->regex.pattern = mutt_str_strdup(pat);
@@ -487,13 +516,7 @@ void mutt_ch_lookup_remove(void)
   TAILQ_FOREACH_SAFE(l, &Lookups, entries, tmp)
   {
     TAILQ_REMOVE(&Lookups, l, entries);
-    FREE(&l->replacement);
-    FREE(&l->regex.pattern);
-    if (l->regex.regex)
-      regfree(l->regex.regex);
-    FREE(&l->regex.regex);
-    FREE(&l->regex);
-    FREE(&l);
+    lookup_free(&l);
   }
 }
 

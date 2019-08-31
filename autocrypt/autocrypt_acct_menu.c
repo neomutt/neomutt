@@ -194,7 +194,7 @@ static struct Menu *create_menu(void)
     entries[i].num = i + 1;
     /* note: we are transfering the account pointer to the entries
      * array, and freeing the accounts array below.  the account
-     * will be freed in free_menu().  */
+     * will be freed in menu_free().  */
     entries[i].account = accounts[i];
 
     entries[i].addr = mutt_addr_new();
@@ -209,10 +209,10 @@ static struct Menu *create_menu(void)
 }
 
 /**
- * free_menu - Free the Autocrypt account Menu
+ * menu_free - Free the Autocrypt account Menu
  * @param menu Menu to free
  */
-static void free_menu(struct Menu **menu)
+static void menu_free(struct Menu **menu)
 {
   struct AccountEntry *entries = (struct AccountEntry *) (*menu)->data;
 
@@ -287,7 +287,7 @@ void mutt_autocrypt_account_menu(void)
       case OP_AUTOCRYPT_CREATE_ACCT:
         if (!mutt_autocrypt_account_init(false))
         {
-          free_menu(&menu);
+          menu_free(&menu);
           menu = create_menu();
         }
         break;
@@ -305,7 +305,7 @@ void mutt_autocrypt_account_menu(void)
 
           if (!mutt_autocrypt_db_account_delete(entry->account))
           {
-            free_menu(&menu);
+            menu_free(&menu);
             menu = create_menu();
           }
         }
@@ -331,5 +331,5 @@ void mutt_autocrypt_account_menu(void)
     }
   }
 
-  free_menu(&menu);
+  menu_free(&menu);
 }

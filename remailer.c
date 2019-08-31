@@ -249,10 +249,10 @@ static struct Remailer **mix_type2_list(size_t *l)
 }
 
 /**
- * mix_free_type2_list - Free a Remailer List
+ * mix_type2_list_free - Free a Remailer List
  * @param[out] ttlp Remailer List to free
  */
-static void mix_free_type2_list(struct Remailer ***ttlp)
+static void mix_type2_list_free(struct Remailer ***ttlp)
 {
   struct Remailer **type2_list = *ttlp;
 
@@ -766,7 +766,7 @@ void mix_make_chain(struct ListHead *chainhead)
     }
   }
 
-  mix_free_type2_list(&type2_list);
+  mix_type2_list_free(&type2_list);
   FREE(&coords);
   FREE(&chain);
 }

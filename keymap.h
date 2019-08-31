@@ -135,7 +135,7 @@ extern const struct Binding OpMix[];
 extern const struct Binding OpAutocryptAcct[];
 #endif
 
-void mutt_free_keys(void);
+void mutt_keys_free(void);
 
 enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 enum CommandResult mutt_parse_exec(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);

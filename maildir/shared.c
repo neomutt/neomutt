@@ -254,26 +254,35 @@ static void mh_sequences_add_one(struct Mailbox *m, int n, bool unseen, bool fla
 }
 
 /**
- * maildir_free_entry - Free a Maildir object
- * @param[out] md Maildir to free
+ * maildir_entry_new - Create a new Maildir entry
+ * @retval ptr New Maildir entry
  */
-static void maildir_free_entry(struct Maildir **md)
+static struct Maildir *maildir_entry_new(void)
 {
-  if (!md || !*md)
-    return;
-
-  FREE(&(*md)->canon_fname);
-  if ((*md)->email)
-    email_free(&(*md)->email);
-
-  FREE(md);
+  return mutt_mem_calloc(1, sizeof(struct Maildir));
 }
 
 /**
- * maildir_free_maildir - Free a Maildir list
+ * maildir_entry_free - Free a Maildir object
+ * @param[out] ptr Maildir to free
+ */
+static void maildir_entry_free(struct Maildir **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct Maildir *md = *ptr;
+  FREE(&md->canon_fname);
+  email_free(&md->email);
+
+  FREE(ptr);
+}
+
+/**
+ * maildir_free - Free a Maildir list
  * @param[out] md Maildir list to free
  */
-static void maildir_free_maildir(struct Maildir **md)
+static void maildir_free(struct Maildir **md)
 {
   if (!md || !*md)
     return;
@@ -283,7 +292,7 @@ static void maildir_free_maildir(struct Maildir **md)
   for (p = *md; p; p = q)
   {
     q = p->next;
-    maildir_free_entry(&p);
+    maildir_entry_free(&p);
   }
 }
 
@@ -385,7 +394,7 @@ int maildir_parse_dir(struct Mailbox *m, struct Maildir ***last,
     else
       e->path = mutt_str_strdup(de->d_name);
 
-    entry = mutt_mem_calloc(1, sizeof(struct Maildir));
+    entry = maildir_entry_new();
     entry->email = e;
     entry->inode = de->d_ino;
     **last = entry;
@@ -455,7 +464,7 @@ int maildir_move_to_mailbox(struct Mailbox *m, struct Maildir **ptr)
   if (m->msg_count > oldmsgcount)
     num = m->msg_count - oldmsgcount;
 
-  maildir_free_maildir(ptr);
+  maildir_free(ptr);
   return num;
 }
 
@@ -839,11 +848,11 @@ int mh_read_dir(struct Mailbox *m, const char *subdir)
   {
     if (mh_read_sequences(&mhs, mailbox_path(m)) < 0)
     {
-      maildir_free_maildir(&md);
+      maildir_free(&md);
       return -1;
     }
     mh_update_maildir(md, &mhs);
-    mhs_free_sequences(&mhs);
+    mhs_sequences_free(&mhs);
   }
 
   maildir_move_to_mailbox(m, &md);

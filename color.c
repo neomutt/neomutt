@@ -196,7 +196,7 @@ static void color_line_free(struct ColorLine **ptr, bool free_colors)
 
 #ifdef HAVE_COLOR
   if (free_colors && (cl->fg != COLOR_UNSET) && (cl->bg != COLOR_UNSET))
-    mutt_free_color(cl->fg, cl->bg);
+    mutt_color_free(cl->fg, cl->bg);
 #endif
 
   regfree(&cl->regex);
@@ -409,13 +409,13 @@ int mutt_combine_color(uint32_t fg_attr, uint32_t bg_attr)
 }
 
 /**
- * mutt_free_color - Free a colour
+ * mutt_color_free - Free a colour
  * @param fg Foreground colour ID
  * @param bg Background colour ID
  *
  * If there are no more users, the resource will be freed.
  */
-void mutt_free_color(uint32_t fg, uint32_t bg)
+void mutt_color_free(uint32_t fg, uint32_t bg)
 {
   struct ColorList *q = NULL;
 
@@ -788,7 +788,7 @@ static enum CommandResult add_pattern(struct ColorLineList *top, const char *s,
     {
       if ((tmp->fg != fg) || (tmp->bg != bg))
       {
-        mutt_free_color(tmp->fg, tmp->bg);
+        mutt_color_free(tmp->fg, tmp->bg);
         tmp->fg = fg;
         tmp->bg = bg;
         attr |= mutt_alloc_color(fg, bg);
@@ -1244,10 +1244,10 @@ enum CommandResult mutt_parse_mono(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * mutt_free_color_list - Free a list of colours
+ * mutt_color_list_free - Free a list of colours
  * @param list ColorLine List
  */
-static void mutt_free_color_list(struct ColorLineList *list)
+static void mutt_color_list_free(struct ColorLineList *list)
 {
   struct ColorLine *np = NULL, *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, list, entries, tmp)
@@ -1258,19 +1258,19 @@ static void mutt_free_color_list(struct ColorLineList *list)
 }
 
 /**
- * mutt_free_colors - Free all the colours (on shutdown)
+ * mutt_colors_free - Free all the colours (on shutdown)
  */
-void mutt_free_colors(void)
+void mutt_colors_free(void)
 {
-  mutt_free_color_list(&ColorAttachList);
-  mutt_free_color_list(&ColorBodyList);
-  mutt_free_color_list(&ColorHdrList);
-  mutt_free_color_list(&ColorIndexAuthorList);
-  mutt_free_color_list(&ColorIndexFlagsList);
-  mutt_free_color_list(&ColorIndexList);
-  mutt_free_color_list(&ColorIndexSubjectList);
-  mutt_free_color_list(&ColorIndexTagList);
-  mutt_free_color_list(&ColorStatusList);
+  mutt_color_list_free(&ColorAttachList);
+  mutt_color_list_free(&ColorBodyList);
+  mutt_color_list_free(&ColorHdrList);
+  mutt_color_list_free(&ColorIndexAuthorList);
+  mutt_color_list_free(&ColorIndexFlagsList);
+  mutt_color_list_free(&ColorIndexList);
+  mutt_color_list_free(&ColorIndexSubjectList);
+  mutt_color_list_free(&ColorIndexTagList);
+  mutt_color_list_free(&ColorStatusList);
 
   struct ColorList *cl = ColorList;
   struct ColorList *next = NULL;

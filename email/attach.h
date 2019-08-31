@@ -71,7 +71,7 @@ void              mutt_actx_add_attach  (struct AttachCtx *actx, struct AttachPt
 void              mutt_actx_add_body    (struct AttachCtx *actx, struct Body *new_body);
 void              mutt_actx_add_fp      (struct AttachCtx *actx, FILE *fp_new);
 void              mutt_actx_free        (struct AttachCtx **ptr);
-void              mutt_actx_free_entries(struct AttachCtx *actx);
+void              mutt_actx_entries_free(struct AttachCtx *actx);
 struct AttachCtx *mutt_actx_new         (void);
 
 #endif /* MUTT_EMAIL_ATTACH_H */

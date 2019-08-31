@@ -112,10 +112,10 @@ short pgp_get_abilities(unsigned char type)
 }
 
 /**
- * pgp_free_uid - Free a PGP UID
+ * pgp_uid_free - Free a PGP UID
  * @param[out] upp PGP UID to free
  */
-static void pgp_free_uid(struct PgpUid **upp)
+static void pgp_uid_free(struct PgpUid **upp)
 {
   struct PgpUid *up = NULL, *q = NULL;
 
@@ -156,17 +156,17 @@ struct PgpUid *pgp_copy_uids(struct PgpUid *up, struct PgpKeyInfo *parent)
 }
 
 /**
- * free_key - Free a PGP Key info
+ * key_free - Free a PGP Key info
  * @param[out] kpp PGP Key info to free
  */
-static void free_key(struct PgpKeyInfo **kpp)
+static void key_free(struct PgpKeyInfo **kpp)
 {
   if (!kpp || !*kpp)
     return;
 
   struct PgpKeyInfo *kp = *kpp;
 
-  pgp_free_uid(&kp->address);
+  pgp_uid_free(&kp->address);
   FREE(&kp->keyid);
   FREE(&kp->fingerprint);
   FREE(kpp);
@@ -207,10 +207,10 @@ struct PgpKeyInfo *pgp_remove_key(struct PgpKeyInfo **klist, struct PgpKeyInfo *
 }
 
 /**
- * pgp_free_key - Free a PGP key info
+ * pgp_key_free - Free a PGP key info
  * @param[out] kpp PGP key info to free
  */
-void pgp_free_key(struct PgpKeyInfo **kpp)
+void pgp_key_free(struct PgpKeyInfo **kpp)
 {
   if (!kpp || !*kpp)
     return;
@@ -232,11 +232,11 @@ void pgp_free_key(struct PgpKeyInfo **kpp)
     for (q = p->next; q && q->parent == p; q = r)
     {
       r = q->next;
-      free_key(&q);
+      key_free(&q);
     }
 
-    free_key(&p->parent);
-    free_key(&p);
+    key_free(&p->parent);
+    key_free(&p);
   }
 
   *kpp = NULL;

@@ -1120,7 +1120,7 @@ static void recvattach_edit_content_type(struct AttachCtx *actx,
   /* Editing the content type can rewrite the body structure. */
   for (int i = 0; i < actx->idxlen; i++)
     actx->idx[i]->content = NULL;
-  mutt_actx_free_entries(actx);
+  mutt_actx_entries_free(actx);
   mutt_update_recvattach_menu(actx, menu, true);
 }
 
