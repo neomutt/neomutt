@@ -123,3 +123,21 @@ void myvar_del(const char *var)
     }
   }
 }
+
+/**
+ * myvarlist_free - Free a List of MyVars
+ * @param list List of MyVars
+ */
+void myvarlist_free(struct MyVarList *list)
+{
+  if (!list)
+    return;
+
+  struct MyVar *myv = NULL;
+  struct MyVar *tmp = NULL;
+  TAILQ_FOREACH_SAFE(myv, list, entries, tmp)
+  {
+    TAILQ_REMOVE(list, myv, entries);
+    myvar_free(&myv);
+  }
+}

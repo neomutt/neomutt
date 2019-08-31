@@ -71,6 +71,7 @@
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "mx.h"
+#include "myvar.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"
@@ -1279,6 +1280,7 @@ main_exit:
   mutt_browser_cleanup();
   mutt_opts_free();
   mutt_keys_free();
+  myvarlist_free(&MyVars);
   neomutt_free(&NeoMutt);
   cs_free(&Config);
   return rc;
