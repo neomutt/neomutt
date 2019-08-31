@@ -920,7 +920,7 @@ static bool can_print(struct AttachCtx *actx, struct Body *top, bool tag)
     snprintf(type, sizeof(type), "%s/%s", TYPE(top), top->subtype);
     if (!tag || top->tagged)
     {
-      if (!rfc1524_mailcap_lookup(top, type, NULL, MUTT_MC_PRINT))
+      if (!mailcap_lookup(top, type, NULL, MUTT_MC_PRINT))
       {
         if ((mutt_str_strcasecmp("text/plain", top->subtype) != 0) &&
             (mutt_str_strcasecmp("application/postscript", top->subtype) != 0))
@@ -964,7 +964,7 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
     if (!tag || top->tagged)
     {
       snprintf(type, sizeof(type), "%s/%s", TYPE(top), top->subtype);
-      if (!C_AttachSplit && !rfc1524_mailcap_lookup(top, type, NULL, MUTT_MC_PRINT))
+      if (!C_AttachSplit && !mailcap_lookup(top, type, NULL, MUTT_MC_PRINT))
       {
         if ((mutt_str_strcasecmp("text/plain", top->subtype) == 0) ||
             (mutt_str_strcasecmp("application/postscript", top->subtype) == 0))

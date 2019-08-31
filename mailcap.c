@@ -21,7 +21,7 @@
  */
 
 /**
- * @page rfc1524 RFC1524 Mailcap routines
+ * @page mailcap RFC1524 Mailcap routines
  *
  * RFC1524 defines a format for the Multimedia Mail Configuration, which is the
  * standard mailcap file format under Unix which specifies what external
@@ -49,7 +49,7 @@
 bool C_MailcapSanitize; ///< Config: Restrict the possible characters in mailcap expandos
 
 /**
- * mutt_rfc1524_expand_command - Expand expandos in a command
+ * mailcap_expand_command - Expand expandos in a command
  * @param a        Email Body
  * @param filename File containing the email text
  * @param type     Type, e.g. "text/plain"
@@ -67,8 +67,8 @@ bool C_MailcapSanitize; ///< Config: Restrict the possible characters in mailcap
  * %n is the integer number of sub-parts in the multipart
  * %F is "content-type filename" repeated for each sub-part
  */
-int mutt_rfc1524_expand_command(struct Body *a, const char *filename,
-                                const char *type, struct Buffer *command)
+int mailcap_expand_command(struct Body *a, const char *filename,
+                           const char *type, struct Buffer *command)
 {
   int needspipe = true;
   struct Buffer *buf = mutt_buffer_pool_get();
@@ -229,7 +229,7 @@ static int get_field_text(char *field, char **entry, char *type, char *filename,
  * @retval false Failure
  */
 static bool rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
-                                  struct Rfc1524MailcapEntry *entry, enum MailcapLookup opt)
+                                  struct MailcapEntry *entry, enum MailcapLookup opt)
 {
   char *buf = NULL;
   bool found = false;
@@ -358,7 +358,7 @@ static bool rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
               mutt_buffer_sanitize_filename(afilename, NONULL(a->filename), true);
             else
               mutt_buffer_strcpy(afilename, NONULL(a->filename));
-            mutt_rfc1524_expand_command(a, mutt_b2s(afilename), type, command);
+            mailcap_expand_command(a, mutt_b2s(afilename), type, command);
             if (mutt_system(mutt_b2s(command)))
             {
               /* a non-zero exit code means test failed */
@@ -422,24 +422,24 @@ static bool rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
 }
 
 /**
- * rfc1524_new_entry - Allocate memory for a new rfc1524 entry
- * @retval ptr An un-initialized struct Rfc1524MailcapEntry
+ * mailcap_entry_new - Allocate memory for a new rfc1524 entry
+ * @retval ptr An un-initialized struct MailcapEntry
  */
-struct Rfc1524MailcapEntry *rfc1524_new_entry(void)
+struct MailcapEntry *mailcap_entry_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct Rfc1524MailcapEntry));
+  return mutt_mem_calloc(1, sizeof(struct MailcapEntry));
 }
 
 /**
- * rfc1524_free_entry - Deallocate an struct Rfc1524MailcapEntry
- * @param[out] entry Rfc1524MailcapEntry to deallocate
+ * mailcap_entry_free - Deallocate an struct MailcapEntry
+ * @param[out] entry MailcapEntry to deallocate
  */
-void rfc1524_free_entry(struct Rfc1524MailcapEntry **entry)
+void mailcap_entry_free(struct MailcapEntry **entry)
 {
   if (!entry || !*entry)
     return;
 
-  struct Rfc1524MailcapEntry *p = *entry;
+  struct MailcapEntry *p = *entry;
 
   FREE(&p->command);
   FREE(&p->testcommand);
@@ -452,18 +452,17 @@ void rfc1524_free_entry(struct Rfc1524MailcapEntry **entry)
 }
 
 /**
- * rfc1524_mailcap_lookup - Find given type in the list of mailcap files
+ * mailcap_lookup - Find given type in the list of mailcap files
  * @param a      Message body
  * @param type   Text type in "type/subtype" format
- * @param entry  struct Rfc1524MailcapEntry to populate with results
+ * @param entry  struct MailcapEntry to populate with results
  * @param opt    Type of mailcap entry to lookup, see #MailcapLookup
  * @retval true  If *entry is not NULL it populates it with the mailcap entry
  * @retval false No matching entry is found
  *
  * Find the given type in the list of mailcap files.
  */
-bool rfc1524_mailcap_lookup(struct Body *a, char *type,
-                            struct Rfc1524MailcapEntry *entry, enum MailcapLookup opt)
+bool mailcap_lookup(struct Body *a, char *type, struct MailcapEntry *entry, enum MailcapLookup opt)
 {
   /* rfc1524 specifies that a path of mailcap files should be searched.
    * joy.  They say
@@ -500,7 +499,7 @@ bool rfc1524_mailcap_lookup(struct Body *a, char *type,
 }
 
 /**
- * mutt_rfc1524_expand_filename - Expand a new filename from a template or existing filename
+ * mailcap_expand_filename - Expand a new filename from a template or existing filename
  * @param nametemplate Template
  * @param oldfile      Original filename
  * @param newfile      Buffer for new filename
@@ -515,8 +514,8 @@ bool rfc1524_mailcap_lookup(struct Body *a, char *type,
  * for a "%s". If none is found, the nametemplate is used as the template for
  * newfile.  The first path component of the nametemplate and oldfile are ignored.
  */
-void mutt_rfc1524_expand_filename(const char *nametemplate, const char *oldfile,
-                                  struct Buffer *newfile)
+void mailcap_expand_filename(const char *nametemplate, const char *oldfile,
+                             struct Buffer *newfile)
 {
   int i, j, k;
   char *s = NULL;
