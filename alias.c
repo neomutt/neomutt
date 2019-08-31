@@ -142,7 +142,7 @@ static void expand_aliases_r(struct AddressList *al, struct ListHead *expn)
  *
  * Free the result with mutt_alias_free()
  */
-struct Alias *mutt_alias_new()
+struct Alias *mutt_alias_new(void)
 {
   struct Alias *a = mutt_mem_calloc(1, sizeof(struct Alias));
   TAILQ_INIT(&a->addr);
@@ -737,17 +737,19 @@ bool mutt_addr_is_user(const struct Address *addr)
 
 /**
  * mutt_alias_free - Free an Alias
- * @param[out] p Alias to free
+ * @param[out] ptr Alias to free
  */
-void mutt_alias_free(struct Alias **p)
+void mutt_alias_free(struct Alias **ptr)
 {
-  if (!p || !*p)
+  if (!ptr || !*ptr)
     return;
 
-  mutt_alias_delete_reverse(*p);
-  FREE(&(*p)->name);
-  mutt_addrlist_clear(&((*p)->addr));
-  FREE(p);
+  struct Alias *a = *ptr;
+
+  mutt_alias_delete_reverse(a);
+  FREE(&a->name);
+  mutt_addrlist_clear(&(a->addr));
+  FREE(ptr);
 }
 
 /**

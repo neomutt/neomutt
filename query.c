@@ -122,15 +122,15 @@ static struct Query *query_new(void)
 }
 
 /**
- * free_query - Free a Query
+ * query_free - Free a Query
  * @param[out] query Query to free
  */
-static void free_query(struct Query **query)
+static void query_free(struct Query **query)
 {
-  struct Query *p = NULL;
-
   if (!query)
     return;
+
+  struct Query *p = NULL;
 
   while (*query)
   {
@@ -405,7 +405,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
 
               if (op == OP_QUERY)
               {
-                free_query(&results);
+                query_free(&results);
                 results = newresults;
                 FREE(&query_table);
               }
@@ -597,7 +597,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
       }
     }
 
-    free_query(&results);
+    query_free(&results);
     FREE(&query_table);
     mutt_menu_pop_current(menu);
     mutt_menu_free(&menu);
@@ -631,7 +631,7 @@ int mutt_query_complete(char *buf, size_t buflen)
         buf[0] = '\0';
         mutt_addrlist_write(buf, buflen, &al, false);
         mutt_addrlist_clear(&al);
-        free_query(&results);
+        query_free(&results);
         mutt_clear_error();
       }
       return 0;

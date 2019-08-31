@@ -434,15 +434,18 @@ int mutt_addrlist_remove(struct AddressList *al, const char *mailbox)
 
 /**
  * mutt_addr_free - Free a single Address
- * @param[out] a Address to free
+ * @param[out] ptr Address to free
  */
-void mutt_addr_free(struct Address **a)
+void mutt_addr_free(struct Address **ptr)
 {
-  if (!a || !*a)
+  if (!ptr || !*ptr)
     return;
-  FREE(&(*a)->personal);
-  FREE(&(*a)->mailbox);
-  FREE(a);
+
+  struct Address *a = *ptr;
+
+  FREE(&a->personal);
+  FREE(&a->mailbox);
+  FREE(ptr);
 }
 
 /**

@@ -193,16 +193,18 @@ void cs_init(struct ConfigSet *cs, size_t size)
 
 /**
  * cs_free - Free a Config Set
- * @param[out] cs Config items
+ * @param[out] ptr Config items
  */
-void cs_free(struct ConfigSet **cs)
+void cs_free(struct ConfigSet **ptr)
 {
-  if (!cs || !*cs)
+  if (!ptr || !*ptr)
     return;
 
-  mutt_hash_free(&(*cs)->hash);
-  notify_free(&(*cs)->notify);
-  FREE(cs);
+  struct ConfigSet *cs = *ptr;
+
+  mutt_hash_free(&cs->hash);
+  notify_free(&cs->notify);
+  FREE(ptr);
 }
 
 /**

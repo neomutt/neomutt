@@ -818,13 +818,15 @@ bye:
 
 /**
  * mutt_enter_state_free - Free an EnterState
- * @param[out] esp EnterState to free
+ * @param[out] ptr EnterState to free
  */
-void mutt_enter_state_free(struct EnterState **esp)
+void mutt_enter_state_free(struct EnterState **ptr)
 {
-  if (!esp || !*esp)
+  if (!ptr || !*ptr)
     return;
 
-  FREE(&(*esp)->wbuf);
-  FREE(esp);
+  struct EnterState *es = *ptr;
+
+  FREE(&es->wbuf);
+  FREE(ptr);
 }

@@ -432,23 +432,23 @@ struct MailcapEntry *mailcap_entry_new(void)
 
 /**
  * mailcap_entry_free - Deallocate an struct MailcapEntry
- * @param[out] entry MailcapEntry to deallocate
+ * @param[out] ptr MailcapEntry to deallocate
  */
-void mailcap_entry_free(struct MailcapEntry **entry)
+void mailcap_entry_free(struct MailcapEntry **ptr)
 {
-  if (!entry || !*entry)
+  if (!ptr || !*ptr)
     return;
 
-  struct MailcapEntry *p = *entry;
+  struct MailcapEntry *me = *ptr;
 
-  FREE(&p->command);
-  FREE(&p->testcommand);
-  FREE(&p->composecommand);
-  FREE(&p->composetypecommand);
-  FREE(&p->editcommand);
-  FREE(&p->printcommand);
-  FREE(&p->nametemplate);
-  FREE(entry);
+  FREE(&me->command);
+  FREE(&me->testcommand);
+  FREE(&me->composecommand);
+  FREE(&me->composetypecommand);
+  FREE(&me->editcommand);
+  FREE(&me->printcommand);
+  FREE(&me->nametemplate);
+  FREE(ptr);
 }
 
 /**

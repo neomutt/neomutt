@@ -52,14 +52,14 @@ struct Body *mutt_body_new(void)
 
 /**
  * mutt_body_free - Free a Body
- * @param[out] p Body to free
+ * @param[out] ptr Body to free
  */
-void mutt_body_free(struct Body **p)
+void mutt_body_free(struct Body **ptr)
 {
-  if (!p)
+  if (!ptr)
     return;
 
-  struct Body *a = *p, *b = NULL;
+  struct Body *a = *ptr, *b = NULL;
 
   while (a)
   {
@@ -96,7 +96,7 @@ void mutt_body_free(struct Body **p)
     FREE(&b);
   }
 
-  *p = NULL;
+  *ptr = NULL;
 }
 
 /**

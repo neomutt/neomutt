@@ -61,7 +61,7 @@ enum MailcapLookup
   MUTT_MC_AUTOVIEW,     ///< Mailcap autoview field
 };
 
-void                 mailcap_entry_free(struct MailcapEntry **entry);
+void                 mailcap_entry_free(struct MailcapEntry **ptr);
 struct MailcapEntry *mailcap_entry_new(void);
 int                  mailcap_expand_command(struct Body *a, const char *filename, const char *type, struct Buffer *command);
 void                 mailcap_expand_filename(const char *nametemplate, const char *oldfile, struct Buffer *newfile);

@@ -1258,14 +1258,14 @@ int mutt_seqset_iterator_next(struct SeqsetIterator *iter, unsigned int *next)
 
 /**
  * mutt_seqset_iterator_free - Free a Sequence Set Iterator
- * @param[out] p_iter Iterator to free
+ * @param[out] ptr Iterator to free
  */
-void mutt_seqset_iterator_free(struct SeqsetIterator **p_iter)
+void mutt_seqset_iterator_free(struct SeqsetIterator **ptr)
 {
-  if (!p_iter || !*p_iter)
+  if (!ptr || !*ptr)
     return;
 
-  struct SeqsetIterator *iter = *p_iter;
+  struct SeqsetIterator *iter = *ptr;
   FREE(&iter->full_seqset);
-  FREE(p_iter);
+  FREE(ptr);
 }

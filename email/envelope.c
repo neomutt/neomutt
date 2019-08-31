@@ -82,50 +82,53 @@ void mutt_free_autocrypthdr(struct AutocryptHeader **p)
 
 /**
  * mutt_env_free - Free an Envelope
- * @param[out] p Envelope to free
+ * @param[out] ptr Envelope to free
  */
-void mutt_env_free(struct Envelope **p)
+void mutt_env_free(struct Envelope **ptr)
 {
-  if (!p || !*p)
+  if (!ptr || !*ptr)
     return;
-  mutt_addrlist_clear(&(*p)->return_path);
-  mutt_addrlist_clear(&(*p)->from);
-  mutt_addrlist_clear(&(*p)->to);
-  mutt_addrlist_clear(&(*p)->cc);
-  mutt_addrlist_clear(&(*p)->bcc);
-  mutt_addrlist_clear(&(*p)->sender);
-  mutt_addrlist_clear(&(*p)->reply_to);
-  mutt_addrlist_clear(&(*p)->mail_followup_to);
-  mutt_addrlist_clear(&(*p)->x_original_to);
 
-  FREE(&(*p)->list_post);
-  FREE(&(*p)->subject);
+  struct Envelope *env = *ptr;
+
+  mutt_addrlist_clear(&env->return_path);
+  mutt_addrlist_clear(&env->from);
+  mutt_addrlist_clear(&env->to);
+  mutt_addrlist_clear(&env->cc);
+  mutt_addrlist_clear(&env->bcc);
+  mutt_addrlist_clear(&env->sender);
+  mutt_addrlist_clear(&env->reply_to);
+  mutt_addrlist_clear(&env->mail_followup_to);
+  mutt_addrlist_clear(&env->x_original_to);
+
+  FREE(&env->list_post);
+  FREE(&env->subject);
   /* real_subj is just an offset to subject and shouldn't be freed */
-  FREE(&(*p)->disp_subj);
-  FREE(&(*p)->message_id);
-  FREE(&(*p)->supersedes);
-  FREE(&(*p)->date);
-  FREE(&(*p)->x_label);
-  FREE(&(*p)->organization);
+  FREE(&env->disp_subj);
+  FREE(&env->message_id);
+  FREE(&env->supersedes);
+  FREE(&env->date);
+  FREE(&env->x_label);
+  FREE(&env->organization);
 #ifdef USE_NNTP
-  FREE(&(*p)->newsgroups);
-  FREE(&(*p)->xref);
-  FREE(&(*p)->followup_to);
-  FREE(&(*p)->x_comment_to);
+  FREE(&env->newsgroups);
+  FREE(&env->xref);
+  FREE(&env->followup_to);
+  FREE(&env->x_comment_to);
 #endif
 
-  mutt_buffer_dealloc(&(*p)->spam);
+  mutt_buffer_dealloc(&env->spam);
 
-  mutt_list_free(&(*p)->references);
-  mutt_list_free(&(*p)->in_reply_to);
-  mutt_list_free(&(*p)->userhdrs);
+  mutt_list_free(&env->references);
+  mutt_list_free(&env->in_reply_to);
+  mutt_list_free(&env->userhdrs);
 
 #ifdef USE_AUTOCRYPT
-  mutt_free_autocrypthdr(&(*p)->autocrypt);
-  mutt_free_autocrypthdr(&(*p)->autocrypt_gossip);
+  mutt_free_autocrypthdr(&env->autocrypt);
+  mutt_free_autocrypthdr(&env->autocrypt_gossip);
 #endif
 
-  FREE(p);
+  FREE(ptr);
 }
 
 /**

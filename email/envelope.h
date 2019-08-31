@@ -89,7 +89,7 @@ struct Envelope
 };
 
 bool             mutt_env_cmp_strict(const struct Envelope *e1, const struct Envelope *e2);
-void             mutt_env_free      (struct Envelope **p);
+void             mutt_env_free      (struct Envelope **ptr);
 void             mutt_env_merge     (struct Envelope *base, struct Envelope **extra);
 struct Envelope *mutt_env_new       (void);
 int              mutt_env_to_intl   (struct Envelope *env, const char **tag, char **err);
