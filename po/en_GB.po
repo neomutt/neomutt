@@ -6481,16 +6481,16 @@ msgstr "Error sending message, child exited %d.\n"
 msgid "Error sending message"
 msgstr "Error sending message"
 
-#: rfc1524.c:215
+#: mailcap.c:215
 #, c-format
 msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Improperly formatted entry for type %s in \"%s\" line %d"
 
-#: rfc1524.c:475
+#: mailcap.c:475
 msgid "No mailcap path specified"
 msgstr "No mailcap path specified"
 
-#: rfc1524.c:497
+#: mailcap.c:497
 #, c-format
 msgid "mailcap entry for type %s not found"
 msgstr "mailcap entry for type %s not found"

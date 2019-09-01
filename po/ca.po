@@ -6903,16 +6903,16 @@ msgstr "Error en enviar el missatge"
 # ivb (2001/12/08)
 # ivb  ABREUJAT!
 # ivb  L’entrada del tipus «%s» a «%s», línia %d, no té un format vàlid.
-#: rfc1524.c:215
+#: mailcap.c:215
 #, c-format
 msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Entrada de tipus «%s» a «%s», línia %d: format no vàlid."
 
-#: rfc1524.c:475
+#: mailcap.c:475
 msgid "No mailcap path specified"
 msgstr "No s’ha indicat cap camí per a «mailcap»."
 
-#: rfc1524.c:497
+#: mailcap.c:497
 #, c-format
 msgid "mailcap entry for type %s not found"
 msgstr "No s’ha trobat cap entrada pel tipus «%s» a «mailcap»"

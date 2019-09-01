@@ -510,11 +510,11 @@ static void append_line(struct Line *line_info, int n, int cnt)
 }
 
 /**
- * new_class_color - Create a new quoting colour
+ * class_color_new - Create a new quoting colour
  * @param[in]     qc      Class of quoted text
  * @param[in,out] q_level Quote level
  */
-static void new_class_color(struct QClass *qc, int *q_level)
+static void class_color_new(struct QClass *qc, int *q_level)
 {
   qc->index = (*q_level)++;
   qc->color = ColorQuote[qc->index % ColorQuoteUsed];
@@ -575,8 +575,7 @@ static void cleanup_quote(struct QClass **quote_list)
     if ((*quote_list)->down)
       cleanup_quote(&((*quote_list)->down));
     ptr = (*quote_list)->next;
-    if ((*quote_list)->prefix)
-      FREE(&(*quote_list)->prefix);
+    FREE(&(*quote_list)->prefix);
     FREE(quote_list);
     *quote_list = ptr;
   }
@@ -853,7 +852,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
           ptr->down = tmp;
           tmp->up = ptr;
 
-          new_class_color(tmp, q_level);
+          class_color_new(tmp, q_level);
 
           return tmp;
         }
@@ -881,7 +880,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
     qc->prefix = mutt_mem_calloc(1, length + 1);
     strncpy(qc->prefix, qptr, length);
     qc->length = length;
-    new_class_color(qc, q_level);
+    class_color_new(qc, q_level);
 
     if (*quote_list)
     {
@@ -1279,7 +1278,7 @@ static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
     {
 #ifdef HAVE_COLOR
       if (a->pair != -1)
-        mutt_free_color(a->fg, a->bg);
+        mutt_color_free(a->fg, a->bg);
 #endif
       a->attr = ANSI_OFF;
       a->pair = -1;
@@ -1310,7 +1309,7 @@ static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
       {
 #ifdef HAVE_COLOR
         if (a->pair != -1)
-          mutt_free_color(a->fg, a->bg);
+          mutt_color_free(a->fg, a->bg);
 #endif
         a->attr = ANSI_OFF;
         a->pair = -1;
@@ -1320,7 +1319,7 @@ static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
       {
 #ifdef HAVE_COLOR
         if (a->pair != -1)
-          mutt_free_color(a->fg, a->bg);
+          mutt_color_free(a->fg, a->bg);
 #endif
         a->pair = -1;
         a->attr |= ANSI_COLOR;
@@ -1331,7 +1330,7 @@ static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
       {
 #ifdef HAVE_COLOR
         if (a->pair != -1)
-          mutt_free_color(a->fg, a->bg);
+          mutt_color_free(a->fg, a->bg);
 #endif
         a->pair = -1;
         a->attr |= ANSI_COLOR;
@@ -2720,8 +2719,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           regfree(&rd.search_re);
           for (size_t i = 0; i < rd.last_line; i++)
           {
-            if (rd.line_info[i].search)
-              FREE(&(rd.line_info[i].search));
+            FREE(&(rd.line_info[i].search));
             rd.line_info[i].search_cnt = -1;
           }
         }
@@ -2735,8 +2733,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
           for (size_t i = 0; i < rd.max_line; i++)
           {
             /* cleanup */
-            if (rd.line_info[i].search)
-              FREE(&(rd.line_info[i].search));
+            FREE(&(rd.line_info[i].search));
             rd.line_info[i].search_cnt = -1;
           }
           rd.search_flag = 0;

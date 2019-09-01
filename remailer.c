@@ -132,25 +132,29 @@ static void mix_add_entry(struct Remailer ***type2_list, struct Remailer *entry,
 }
 
 /**
- * mix_new_remailer - Create a new Remailer
+ * remailer_new - Create a new Remailer
  * @retval ptr Newly allocated Remailer
  */
-static struct Remailer *mix_new_remailer(void)
+static struct Remailer *remailer_new(void)
 {
   return mutt_mem_calloc(1, sizeof(struct Remailer));
 }
 
 /**
- * mix_free_remailer - Free a Remailer
- * @param[out] r Remailer to free
+ * remailer_free - Free a Remailer
+ * @param[out] ptr Remailer to free
  */
-static void mix_free_remailer(struct Remailer **r)
+static void remailer_free(struct Remailer **ptr)
 {
-  FREE(&(*r)->shortname);
-  FREE(&(*r)->addr);
-  FREE(&(*r)->ver);
+  if (!ptr || !*ptr)
+    return;
 
-  FREE(r);
+  struct Remailer *r = *ptr;
+
+  FREE(&r->shortname);
+  FREE(&r->addr);
+  FREE(&r->ver);
+  FREE(ptr);
 }
 
 /**
@@ -191,13 +195,13 @@ static struct Remailer **mix_type2_list(size_t *l)
 
   /* first, generate the "random" remailer */
 
-  p = mix_new_remailer();
+  p = remailer_new();
   p->shortname = mutt_str_strdup(_("<random>"));
   mix_add_entry(&type2_list, p, &slots, &used);
 
   while (fgets(line, sizeof(line), fp))
   {
-    p = mix_new_remailer();
+    p = remailer_new();
 
     t = strtok(line, " \t\n");
     if (!t)
@@ -231,7 +235,7 @@ static struct Remailer **mix_type2_list(size_t *l)
     continue;
 
   problem:
-    mix_free_remailer(&p);
+    remailer_free(&p);
   }
 
   *l = used;
@@ -245,15 +249,15 @@ static struct Remailer **mix_type2_list(size_t *l)
 }
 
 /**
- * mix_free_type2_list - Free a Remailer List
+ * mix_type2_list_free - Free a Remailer List
  * @param[out] ttlp Remailer List to free
  */
-static void mix_free_type2_list(struct Remailer ***ttlp)
+static void mix_type2_list_free(struct Remailer ***ttlp)
 {
   struct Remailer **type2_list = *ttlp;
 
   for (int i = 0; type2_list[i]; i++)
-    mix_free_remailer(&type2_list[i]);
+    remailer_free(&type2_list[i]);
 
   FREE(type2_list);
 }
@@ -762,7 +766,7 @@ void mix_make_chain(struct ListHead *chainhead)
     }
   }
 
-  mix_free_type2_list(&type2_list);
+  mix_type2_list_free(&type2_list);
   FREE(&coords);
   FREE(&chain);
 }

@@ -128,10 +128,10 @@ static void decode_one(char *dest, char *src)
 }
 
 /**
- * new_parameter - Create a new Rfc2231Parameter
+ * parameter_new - Create a new Rfc2231Parameter
  * @retval ptr Newly allocated Rfc2231Parameter
  */
-static struct Rfc2231Parameter *new_parameter(void)
+static struct Rfc2231Parameter *parameter_new(void)
 {
   return mutt_mem_calloc(1, sizeof(struct Rfc2231Parameter));
 }
@@ -164,10 +164,10 @@ static void list_insert(struct Rfc2231Parameter **list, struct Rfc2231Parameter 
 }
 
 /**
- * free_parameter - Free an Rfc2231Parameter
+ * parameter_free - Free an Rfc2231Parameter
  * @param[out] p Rfc2231Parameter to free
  */
-static void free_parameter(struct Rfc2231Parameter **p)
+static void parameter_free(struct Rfc2231Parameter **p)
 {
   if (!p || !*p)
     return;
@@ -213,7 +213,7 @@ static void join_continuations(struct ParameterList *pl, struct Rfc2231Parameter
       l += vl;
 
       struct Rfc2231Parameter *q = par->next;
-      free_parameter(&par);
+      parameter_free(&par);
       par = q;
       if (par)
         valp = par->value;
@@ -292,7 +292,7 @@ void rfc2231_decode_parameters(struct ParameterList *pl)
       if (mutt_str_atoi(s, &index) != 0)
         index = INT_MAX;
 
-      conttmp = new_parameter();
+      conttmp = parameter_new();
       conttmp->attribute = np->attribute;
       conttmp->value = np->value;
       conttmp->encoded = encoded;

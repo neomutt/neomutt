@@ -97,10 +97,10 @@ void mutt_actx_add_body(struct AttachCtx *actx, struct Body *new_body)
 }
 
 /**
- * mutt_actx_free_entries - Free entries in an Attachment Context
+ * mutt_actx_entries_free - Free entries in an Attachment Context
  * @param actx Attachment context
  */
-void mutt_actx_free_entries(struct AttachCtx *actx)
+void mutt_actx_entries_free(struct AttachCtx *actx)
 {
   if (!actx)
     return;
@@ -125,20 +125,29 @@ void mutt_actx_free_entries(struct AttachCtx *actx)
 }
 
 /**
- * mutt_actx_free - Free an Attachment Context
- * @param[out] pactx Attachment context
+ * mutt_actx_new - Create a new Attachment Context
+ * @retval ptr New Attachment Context
  */
-void mutt_actx_free(struct AttachCtx **pactx)
+struct AttachCtx *mutt_actx_new(void)
 {
-  if (!pactx || !*pactx)
+  return mutt_mem_calloc(1, sizeof(struct AttachCtx));
+}
+
+/**
+ * mutt_actx_free - Free an Attachment Context
+ * @param[out] ptr Attachment context
+ */
+void mutt_actx_free(struct AttachCtx **ptr)
+{
+  if (!ptr || !*ptr)
     return;
 
-  struct AttachCtx *actx = *pactx;
+  struct AttachCtx *actx = *ptr;
 
-  mutt_actx_free_entries(actx);
+  mutt_actx_entries_free(actx);
   FREE(&actx->idx);
   FREE(&actx->v2r);
   FREE(&actx->fp_idx);
   FREE(&actx->body_idx);
-  FREE(pactx);
+  FREE(ptr);
 }

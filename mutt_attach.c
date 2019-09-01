@@ -46,13 +46,13 @@
 #include "filter.h"
 #include "globals.h"
 #include "handler.h"
+#include "mailcap.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "pager.h"
 #include "protos.h"
-#include "rfc1524.h"
 #include "sendlib.h"
 #include "state.h"
 
@@ -71,12 +71,12 @@ int mutt_get_tmp_attachment(struct Body *a)
     return 0;
 
   struct Buffer *tmpfile = mutt_buffer_pool_get();
-  struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
+  struct MailcapEntry *entry = mailcap_entry_new();
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
-  rfc1524_mailcap_lookup(a, type, entry, MUTT_MC_NO_FLAGS);
-  mutt_rfc1524_expand_filename(entry->nametemplate, a->filename, tmpfile);
+  mailcap_lookup(a, type, entry, MUTT_MC_NO_FLAGS);
+  mailcap_expand_filename(entry->nametemplate, a->filename, tmpfile);
 
-  rfc1524_free_entry(&entry);
+  mailcap_entry_free(&entry);
 
   if (stat(a->filename, &st) == -1)
   {
@@ -115,7 +115,7 @@ int mutt_get_tmp_attachment(struct Body *a)
 int mutt_compose_attachment(struct Body *a)
 {
   char type[256];
-  struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
+  struct MailcapEntry *entry = mailcap_entry_new();
   bool unlink_newfile = false;
   int rc = 0;
   struct Buffer *cmd = mutt_buffer_pool_get();
@@ -123,7 +123,7 @@ int mutt_compose_attachment(struct Body *a)
   struct Buffer *tmpfile = mutt_buffer_pool_get();
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
-  if (rfc1524_mailcap_lookup(a, type, entry, MUTT_MC_COMPOSE))
+  if (mailcap_lookup(a, type, entry, MUTT_MC_COMPOSE))
   {
     if (entry->composecommand || entry->composetypecommand)
     {
@@ -132,7 +132,7 @@ int mutt_compose_attachment(struct Body *a)
       else
         mutt_buffer_strcpy(cmd, entry->composecommand);
 
-      mutt_rfc1524_expand_filename(entry->nametemplate, a->filename, newfile);
+      mailcap_expand_filename(entry->nametemplate, a->filename, newfile);
       mutt_debug(LL_DEBUG1, "oldfile: %s\t newfile: %s\n", a->filename, mutt_b2s(newfile));
       if (mutt_file_symlink(a->filename, mutt_b2s(newfile)) == -1)
       {
@@ -143,7 +143,7 @@ int mutt_compose_attachment(struct Body *a)
       else
         unlink_newfile = true;
 
-      if (mutt_rfc1524_expand_command(a, mutt_b2s(newfile), type, cmd))
+      if (mailcap_expand_command(a, mutt_b2s(newfile), type, cmd))
       {
         /* For now, editing requires a file, no piping */
         mutt_error(_("Mailcap compose entry requires %%s"));
@@ -234,7 +234,7 @@ bailout:
   mutt_buffer_pool_release(&newfile);
   mutt_buffer_pool_release(&tmpfile);
 
-  rfc1524_free_entry(&entry);
+  mailcap_entry_free(&entry);
   return rc;
 }
 
@@ -254,19 +254,19 @@ bailout:
 int mutt_edit_attachment(struct Body *a)
 {
   char type[256];
-  struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
+  struct MailcapEntry *entry = mailcap_entry_new();
   bool unlink_newfile = false;
   int rc = 0;
   struct Buffer *cmd = mutt_buffer_pool_get();
   struct Buffer *newfile = mutt_buffer_pool_get();
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
-  if (rfc1524_mailcap_lookup(a, type, entry, MUTT_MC_EDIT))
+  if (mailcap_lookup(a, type, entry, MUTT_MC_EDIT))
   {
     if (entry->editcommand)
     {
       mutt_buffer_strcpy(cmd, entry->editcommand);
-      mutt_rfc1524_expand_filename(entry->nametemplate, a->filename, newfile);
+      mailcap_expand_filename(entry->nametemplate, a->filename, newfile);
       mutt_debug(LL_DEBUG1, "oldfile: %s\t newfile: %s\n", a->filename, mutt_b2s(newfile));
       if (mutt_file_symlink(a->filename, mutt_b2s(newfile)) == -1)
       {
@@ -277,7 +277,7 @@ int mutt_edit_attachment(struct Body *a)
       else
         unlink_newfile = true;
 
-      if (mutt_rfc1524_expand_command(a, mutt_b2s(newfile), type, cmd))
+      if (mailcap_expand_command(a, mutt_b2s(newfile), type, cmd))
       {
         /* For now, editing requires a file, no piping */
         mutt_error(_("Mailcap Edit entry requires %%s"));
@@ -316,7 +316,7 @@ bailout:
   mutt_buffer_pool_release(&cmd);
   mutt_buffer_pool_release(&newfile);
 
-  rfc1524_free_entry(&entry);
+  mailcap_entry_free(&entry);
   return rc;
 }
 
@@ -358,10 +358,8 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
                  tmp.subtype);
         mutt_debug(LL_DEBUG1, "\"%s\" -> %s\n", b->filename, type);
       }
-      if (tmp.subtype)
-        FREE(&tmp.subtype);
-      if (tmp.xtype)
-        FREE(&tmp.xtype);
+      FREE(&tmp.subtype);
+      FREE(&tmp.xtype);
     }
   }
 }
@@ -392,7 +390,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
   char type[256];
   char desc[256];
   char *fname = NULL;
-  struct Rfc1524MailcapEntry *entry = NULL;
+  struct MailcapEntry *entry = NULL;
   int rc = -1;
   bool unlink_tempfile = false;
 
@@ -413,13 +411,13 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
 
   if (use_mailcap)
   {
-    entry = rfc1524_new_entry();
-    if (!rfc1524_mailcap_lookup(a, type, entry, MUTT_MC_NO_FLAGS))
+    entry = mailcap_entry_new();
+    if (!mailcap_lookup(a, type, entry, MUTT_MC_NO_FLAGS))
     {
       if (mode == MUTT_VA_REGULAR)
       {
         /* fallback to view as text */
-        rfc1524_free_entry(&entry);
+        mailcap_entry_free(&entry);
         mutt_error(_("No matching mailcap entry found.  Viewing as text."));
         mode = MUTT_VA_AS_TEXT;
         use_mailcap = false;
@@ -446,7 +444,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
     else
       fname = a->filename;
 
-    mutt_rfc1524_expand_filename(entry->nametemplate, fname, tmpfile);
+    mailcap_expand_filename(entry->nametemplate, fname, tmpfile);
     /* send case: the file is already there; symlink to it */
     if (!fp)
     {
@@ -468,7 +466,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
       mutt_file_chmod(mutt_b2s(tmpfile), S_IRUSR);
     }
 
-    use_pipe = mutt_rfc1524_expand_command(a, mutt_b2s(tmpfile), type, cmd);
+    use_pipe = mailcap_expand_command(a, mutt_b2s(tmpfile), type, cmd);
     use_pager = entry->copiousoutput;
   }
 
@@ -650,7 +648,7 @@ return_error:
     }
   }
 
-  rfc1524_free_entry(&entry);
+  mailcap_entry_free(&entry);
 
   if (mutt_b2s(pagerfile)[0] != '\0')
     mutt_file_unlink(mutt_b2s(pagerfile));
@@ -1031,15 +1029,15 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
 
-  if (rfc1524_mailcap_lookup(a, type, NULL, MUTT_MC_PRINT))
+  if (mailcap_lookup(a, type, NULL, MUTT_MC_PRINT))
   {
     int piped = false;
 
     mutt_debug(LL_DEBUG2, "Using mailcap\n");
 
-    struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
-    rfc1524_mailcap_lookup(a, type, entry, MUTT_MC_PRINT);
-    mutt_rfc1524_expand_filename(entry->nametemplate, a->filename, newfile);
+    struct MailcapEntry *entry = mailcap_entry_new();
+    mailcap_lookup(a, type, entry, MUTT_MC_PRINT);
+    mailcap_expand_filename(entry->nametemplate, a->filename, newfile);
     /* send mode: symlink from existing file to the newfile */
     if (!fp)
     {
@@ -1060,7 +1058,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     }
 
     mutt_buffer_strcpy(cmd, entry->printcommand);
-    piped = mutt_rfc1524_expand_command(a, mutt_b2s(newfile), type, cmd);
+    piped = mailcap_expand_command(a, mutt_b2s(newfile), type, cmd);
 
     mutt_endwin();
 
@@ -1071,7 +1069,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       if (!fp_in)
       {
         mutt_perror("fopen");
-        rfc1524_free_entry(&entry);
+        mailcap_entry_free(&entry);
         goto mailcap_cleanup;
       }
 
@@ -1079,7 +1077,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       if (pid < 0)
       {
         mutt_perror(_("Can't create filter"));
-        rfc1524_free_entry(&entry);
+        mailcap_entry_free(&entry);
         mutt_file_fclose(&fp_in);
         goto mailcap_cleanup;
       }
@@ -1107,7 +1105,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     else if (unlink_newfile)
       unlink(mutt_b2s(newfile));
 
-    rfc1524_free_entry(&entry);
+    mailcap_entry_free(&entry);
     goto out;
   }
 

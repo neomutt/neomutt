@@ -55,7 +55,7 @@
   NEOMUTT_TEST_ITEM(test_mutt_actx_add_body)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_actx_add_fp)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_actx_free)                                       \
-  NEOMUTT_TEST_ITEM(test_mutt_actx_free_entries)                               \
+  NEOMUTT_TEST_ITEM(test_mutt_actx_entries_free)                               \
   NEOMUTT_TEST_ITEM(test_mutt_b64_buffer_decode)                               \
   NEOMUTT_TEST_ITEM(test_mutt_b64_buffer_encode)                               \
   NEOMUTT_TEST_ITEM(test_mutt_b64_decode)                                      \

@@ -527,6 +527,7 @@ static void update_crypt_info(struct ComposeRedrawData *rd)
 /**
  * redraw_mix_line - Redraw the Mixmaster chain
  * @param chain List of chain links
+ * @param rd    Email and other compose data
  */
 static void redraw_mix_line(struct ListHead *chain, struct ComposeRedrawData *rd)
 {
@@ -1079,7 +1080,7 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
   menu->redraw_data = rd;
   mutt_menu_push_current(menu);
 
-  struct AttachCtx *actx = mutt_mem_calloc(sizeof(struct AttachCtx), 1);
+  struct AttachCtx *actx = mutt_actx_new();
   actx->email = e;
   mutt_update_compose_menu(actx, menu, true);
 
@@ -1258,7 +1259,7 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         /* attachments may have been added */
         if (actx->idxlen && actx->idx[actx->idxlen - 1]->content->next)
         {
-          mutt_actx_free_entries(actx);
+          mutt_actx_entries_free(actx);
           mutt_update_compose_menu(actx, menu, true);
         }
 

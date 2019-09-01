@@ -6723,16 +6723,16 @@ msgstr "Σφάλμα στην αποστολή μηνύματος, τερματ�
 msgid "Error sending message"
 msgstr "Σφάλμα κατά την αποστολή του μηνύματος"
 
-#: rfc1524.c:215
+#: mailcap.c:215
 #, c-format
 msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Ακατάλληλα μορφοποιημένη είσοδος για το τύπο %s στη \"%s\" γραμμή %d"
 
-#: rfc1524.c:475
+#: mailcap.c:475
 msgid "No mailcap path specified"
 msgstr "Δεν καθορίστηκε διαδρομή mailcap"
 
-#: rfc1524.c:497
+#: mailcap.c:497
 #, c-format
 msgid "mailcap entry for type %s not found"
 msgstr "Η είσοδος mailcap για το τύπο %s δε βρέθηκε"

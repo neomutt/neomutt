@@ -65,10 +65,10 @@ bool pgp_canencrypt(unsigned char type);
 bool pgp_cansign(unsigned char type);
 short pgp_get_abilities(unsigned char type);
 
-void pgp_free_key(struct PgpKeyInfo **kpp);
+void pgp_key_free(struct PgpKeyInfo **kpp);
 
 struct PgpKeyInfo *pgp_remove_key(struct PgpKeyInfo **klist, struct PgpKeyInfo *key);
 
-struct PgpKeyInfo *pgp_new_keyinfo(void);
+struct PgpKeyInfo *pgp_keyinfo_new(void);
 
 #endif /* MUTT_NCRYPT_PGPLIB_H */

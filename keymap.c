@@ -1592,9 +1592,9 @@ void mutt_what_key(void)
 }
 
 /**
- * mutt_free_keys - Free the key maps
+ * mutt_keys_free - Free the key maps
  */
-void mutt_free_keys(void)
+void mutt_keys_free(void)
 {
   struct Keymap *map = NULL;
   struct Keymap *next = NULL;

@@ -191,11 +191,12 @@ void nntp_mdata_free(void **ptr)
 
 /**
  * nntp_edata_free - Free data attached to an Email
- * @param[out] data Email data
+ * @param[out] ptr Email data
  */
-static void nntp_edata_free(void **data)
+static void nntp_edata_free(void **ptr)
 {
-  FREE(data);
+  // struct NntpEmailData *edata = *ptr;
+  FREE(ptr);
 }
 
 /**

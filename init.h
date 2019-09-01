@@ -75,7 +75,7 @@
 #include "query.h"
 #include "recvattach.h"
 #include "recvcmd.h"
-#include "rfc1524.h"
+#include "mailcap.h"
 #include "rfc3676.h"
 #include "score.h"
 #include "send.h"

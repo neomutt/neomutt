@@ -107,10 +107,10 @@ static char SmimeCertToUse[PATH_MAX];
 static char fp_smime_intermediateToUse[PATH_MAX];
 
 /**
- * smime_free_key - Free a list of SMIME keys
+ * smime_key_free - Free a list of SMIME keys
  * @param[out] keylist List of keys to free
  */
-static void smime_free_key(struct SmimeKey **keylist)
+static void smime_key_free(struct SmimeKey **keylist)
 {
   if (!keylist)
     return;
@@ -684,7 +684,7 @@ static struct SmimeKey *smime_parse_key(char *buf)
    * but anything less than that is an error. */
   if (field < 3)
   {
-    smime_free_key(&key);
+    smime_key_free(&key);
     return NULL;
   }
 
@@ -763,7 +763,7 @@ static struct SmimeKey *smime_get_key_by_hash(char *hash, bool only_public_key)
     }
   }
 
-  smime_free_key(&results);
+  smime_key_free(&results);
 
   return match;
 }
@@ -820,7 +820,7 @@ static struct SmimeKey *smime_get_key_by_addr(char *mailbox, KeyFlags abilities,
     }
   }
 
-  smime_free_key(&results);
+  smime_key_free(&results);
 
   if (matches)
   {
@@ -842,7 +842,7 @@ static struct SmimeKey *smime_get_key_by_addr(char *mailbox, KeyFlags abilities,
       return_key = smime_copy_key(smime_select_key(matches, mailbox));
     }
 
-    smime_free_key(&matches);
+    smime_key_free(&matches);
   }
 
   return return_key;
@@ -883,12 +883,12 @@ static struct SmimeKey *smime_get_key_by_str(char *str, KeyFlags abilities, bool
     }
   }
 
-  smime_free_key(&results);
+  smime_key_free(&results);
 
   if (matches)
   {
     return_key = smime_copy_key(smime_select_key(matches, str));
-    smime_free_key(&matches);
+    smime_key_free(&matches);
   }
 
   return return_key;
@@ -953,7 +953,7 @@ static void getkeys(char *mailbox)
     if (*SmimeKeyToUse &&
         (mutt_str_strcasecmp(k, SmimeKeyToUse + mutt_str_strlen(C_SmimeKeys) + 1) == 0))
     {
-      smime_free_key(&key);
+      smime_key_free(&key);
       return;
     }
     else
@@ -967,7 +967,7 @@ static void getkeys(char *mailbox)
     if (mutt_str_strcasecmp(k, C_SmimeDefaultKey) != 0)
       smime_class_void_passphrase();
 
-    smime_free_key(&key);
+    smime_key_free(&key);
     return;
   }
 
@@ -1063,7 +1063,7 @@ char *smime_class_find_keys(struct AddressList *al, bool oppenc_mode)
     sprintf(keylist + keylist_used, "%s%s", keylist_used ? " " : "", keyid);
     keylist_used = mutt_str_strlen(keylist);
 
-    smime_free_key(&key);
+    smime_key_free(&key);
   }
   return keylist;
 }
@@ -1742,7 +1742,7 @@ struct Body *smime_class_sign_message(struct Body *a)
   snprintf(fp_smime_intermediateToUse, sizeof(fp_smime_intermediateToUse),
            "%s/%s", NONULL(C_SmimeCertificates), intermediates);
 
-  smime_free_key(&signas_key);
+  smime_key_free(&signas_key);
 
   pid = smime_invoke_sign(&fp_smime_in, NULL, &fp_smime_err, -1,
                           fileno(fp_smime_out), -1, filetosign);
@@ -2363,7 +2363,7 @@ int smime_class_send_menu(struct Email *e)
         if (key)
         {
           mutt_str_replace(&C_SmimeSignAs, key->hash);
-          smime_free_key(&key);
+          smime_key_free(&key);
 
           e->security |= SEC_SIGN;
 

@@ -6490,16 +6490,16 @@ msgstr "Erro ao enviar mensagem, processo filho terminou com código %d\n"
 msgid "Error sending message"
 msgstr "Erro ao enviar mensagem"
 
-#: rfc1524.c:215
+#: mailcap.c:215
 #, c-format
 msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Entrada mal formatada para o tipo %s em \"%s\" linha %d"
 
-#: rfc1524.c:475
+#: mailcap.c:475
 msgid "No mailcap path specified"
 msgstr "Nenhum caminho de mailcap especificado"
 
-#: rfc1524.c:497
+#: mailcap.c:497
 #, c-format
 msgid "mailcap entry for type %s not found"
 msgstr "entrada no mailcap para o tipo %s não foi encontrada."

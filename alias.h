@@ -46,7 +46,7 @@ struct Alias
 TAILQ_HEAD(AliasList, Alias);
 
 struct Alias   *mutt_alias_new(void);
-void            mutt_alias_free(struct Alias **p);
+void            mutt_alias_free(struct Alias **ptr);
 void            mutt_alias_create(struct Envelope *cur, struct AddressList *al);
 void            mutt_aliaslist_free(struct AliasList *a_list);
 struct AddressList *mutt_alias_lookup(const char *s);

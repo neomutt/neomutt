@@ -683,7 +683,7 @@ void rfc2047_decode(char **pd)
       }
 
       /* If we have some previously decoded text, add it now */
-      if (prev.data)
+      if (!mutt_buffer_is_empty(&prev))
       {
         finalize_chunk(&buf, &prev, prev_charset, prev_charsetlen);
       }

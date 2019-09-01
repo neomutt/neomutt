@@ -6787,17 +6787,17 @@ msgid "Error sending message"
 msgstr "Erreur en envoyant le message"
 
 # , c-format
-#: rfc1524.c:215
+#: mailcap.c:215
 #, c-format
 msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Entrée incorrectement formatée pour le type %s dans \"%s\" ligne %d"
 
-#: rfc1524.c:475
+#: mailcap.c:475
 msgid "No mailcap path specified"
 msgstr "Pas de chemin mailcap spécifié"
 
 # , c-format
-#: rfc1524.c:497
+#: mailcap.c:497
 #, c-format
 msgid "mailcap entry for type %s not found"
 msgstr "Entrée mailcap pour le type %s non trouvée"

@@ -230,10 +230,10 @@ static struct CompressInfo *set_compress_info(struct Mailbox *m)
 }
 
 /**
- * free_compress_info - Frees the compress info members and structure
+ * compress_info_free - Frees the compress info members and structure
  * @param m Mailbox to free compress_info for
  */
-static void free_compress_info(struct Mailbox *m)
+static void compress_info_free(struct Mailbox *m)
 {
   if (!m || !m->compress_info)
     return;
@@ -500,7 +500,7 @@ static int comp_mbox_open(struct Mailbox *m)
 cmo_fail:
   /* remove the partial uncompressed file */
   remove(mailbox_path(m));
-  free_compress_info(m);
+  compress_info_free(m);
   return -1;
 }
 
@@ -579,7 +579,7 @@ cmoa_fail2:
   remove(mailbox_path(m));
 cmoa_fail1:
   /* Free the compress_info to prevent close from trying to recompress */
-  free_compress_info(m);
+  compress_info_free(m);
 
   return -1;
 }
@@ -697,7 +697,7 @@ static int comp_mbox_close(struct Mailbox *m)
   const struct MxOps *ops = ci->child_ops;
   if (!ops)
   {
-    free_compress_info(m);
+    compress_info_free(m);
     return -1;
   }
 
@@ -745,7 +745,7 @@ static int comp_mbox_close(struct Mailbox *m)
     }
   }
 
-  free_compress_info(m);
+  compress_info_free(m);
 
   return 0;
 }

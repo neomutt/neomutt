@@ -48,13 +48,13 @@
 #include "filter.h"
 #include "globals.h"
 #include "keymap.h"
+#include "mailcap.h"
 #include "mutt_attach.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
-#include "rfc1524.h"
 #include "rfc3676.h"
 #include "state.h"
 #ifdef ENABLE_NLS
@@ -518,7 +518,7 @@ static bool is_autoview(struct Body *b)
    *
    * @warning type is altered by this call as a result of 'mime_lookup' support */
   if (is_av)
-    return rfc1524_mailcap_lookup(b, type, NULL, MUTT_MC_AUTOVIEW);
+    return mailcap_lookup(b, type, NULL, MUTT_MC_AUTOVIEW);
 
   return false;
 }
@@ -528,7 +528,7 @@ static bool is_autoview(struct Body *b)
  */
 static int autoview_handler(struct Body *a, struct State *s)
 {
-  struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
+  struct MailcapEntry *entry = mailcap_entry_new();
   char buf[1024];
   char type[256];
   struct Buffer *cmd = mutt_buffer_pool_get();
@@ -541,19 +541,19 @@ static int autoview_handler(struct Body *a, struct State *s)
   int rc = 0;
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
-  rfc1524_mailcap_lookup(a, type, entry, MUTT_MC_AUTOVIEW);
+  mailcap_lookup(a, type, entry, MUTT_MC_AUTOVIEW);
 
   fname = mutt_str_strdup(a->filename);
   mutt_file_sanitize_filename(fname, true);
-  mutt_rfc1524_expand_filename(entry->nametemplate, fname, tempfile);
+  mailcap_expand_filename(entry->nametemplate, fname, tempfile);
   FREE(&fname);
 
   if (entry->command)
   {
     mutt_buffer_strcpy(cmd, entry->command);
 
-    /* mutt_rfc1524_expand_command returns 0 if the file is required */
-    bool piped = mutt_rfc1524_expand_command(a, mutt_b2s(tempfile), type, cmd);
+    /* mailcap_expand_command returns 0 if the file is required */
+    bool piped = mailcap_expand_command(a, mutt_b2s(tempfile), type, cmd);
 
     if (s->flags & MUTT_DISPLAY)
     {
@@ -566,7 +566,7 @@ static int autoview_handler(struct Body *a, struct State *s)
     if (!fp_in)
     {
       mutt_perror("fopen");
-      rfc1524_free_entry(&entry);
+      mailcap_entry_free(&entry);
       rc = -1;
       goto cleanup;
     }
@@ -656,7 +656,7 @@ static int autoview_handler(struct Body *a, struct State *s)
   }
 
 cleanup:
-  rfc1524_free_entry(&entry);
+  mailcap_entry_free(&entry);
 
   mutt_buffer_pool_release(&cmd);
   mutt_buffer_pool_release(&tempfile);

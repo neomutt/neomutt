@@ -633,10 +633,10 @@ static struct CryptKeyInfo *crypt_copy_key(struct CryptKeyInfo *key)
 }
 
 /**
- * crypt_free_key - Release all the keys in a list
+ * crypt_key_free - Release all the keys in a list
  * @param[out] keylist List of keys
  */
-static void crypt_free_key(struct CryptKeyInfo **keylist)
+static void crypt_key_free(struct CryptKeyInfo **keylist)
 {
   if (!keylist)
     return;
@@ -1067,10 +1067,10 @@ static void create_recipient_string(const char *keylist, struct Buffer *recpstri
 
 #else
 /**
- * free_recipient_set - Free a set of recipients
+ * recipient_set_free - Free a set of recipients
  * @param p_rset Set of GPGME keys
  */
-static void free_recipient_set(gpgme_key_t **p_rset)
+static void recipient_set_free(gpgme_key_t **p_rset)
 {
   gpgme_key_t *rset = NULL;
 
@@ -1138,7 +1138,7 @@ static gpgme_key_t *create_recipient_set(const char *keylist, bool use_smime)
       {
         mutt_error(_("error adding recipient '%s': %s"), buf, gpgme_strerror(err));
         rset[rset_n] = NULL;
-        free_recipient_set(&rset);
+        recipient_set_free(&rset);
         gpgme_release(context);
         return NULL;
       }
@@ -1324,7 +1324,7 @@ cleanup:
 #if (GPGME_VERSION_NUMBER >= 0x010b00) /* gpgme >= 1.11.0 */
   mutt_buffer_pool_release(&recpstring);
 #else
-  free_recipient_set(&rset);
+  recipient_set_free(&rset);
 #endif
   gpgme_release(ctx);
   gpgme_data_release(ciphertext);
@@ -4984,7 +4984,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
     }
   }
 
-  crypt_free_key(&keys);
+  crypt_key_free(&keys);
 
   if (matches)
   {
@@ -5009,7 +5009,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
       k = crypt_select_key(matches, a, NULL, app, forced_valid);
     }
 
-    crypt_free_key(&matches);
+    crypt_key_free(&matches);
   }
   else
     k = NULL;
@@ -5075,12 +5075,12 @@ static struct CryptKeyInfo *crypt_getkeybystr(const char *p, KeyFlags abilities,
   }
 
   FREE(&pfcopy);
-  crypt_free_key(&keys);
+  crypt_key_free(&keys);
 
   if (matches)
   {
     k = crypt_select_key(matches, NULL, p, app, forced_valid);
-    crypt_free_key(&matches);
+    crypt_key_free(&matches);
     return k;
   }
 
@@ -5272,7 +5272,7 @@ static char *find_keys(struct AddressList *addrlist, unsigned int app, bool oppe
 
       key_selected = true;
 
-      crypt_free_key(&k_info);
+      crypt_key_free(&k_info);
       mutt_addrlist_clear(&hookal);
 
       if (crypt_hook)
@@ -5386,8 +5386,8 @@ int mutt_gpgme_select_secret_key(struct Buffer *keyid)
   rc = 0;
 
 cleanup:
-  crypt_free_key(&choice);
-  crypt_free_key(&results);
+  crypt_key_free(&choice);
+  crypt_key_free(&results);
   gpgme_release(ctx);
   return rc;
 }
@@ -5446,7 +5446,7 @@ struct Body *pgp_gpgme_make_key_attachment(void)
   att->length = sb.st_size;
 
 bail:
-  crypt_free_key(&key);
+  crypt_key_free(&key);
   gpgme_data_release(keydata);
   gpgme_release(context);
 
@@ -5614,7 +5614,7 @@ static int gpgme_send_menu(struct Email *e, int is_smime)
           char input_signas[128];
           snprintf(input_signas, sizeof(input_signas), "0x%s", crypt_fpr_or_lkeyid(p));
           mutt_str_replace(is_smime ? &C_SmimeDefaultKey : &C_PgpSignAs, input_signas);
-          crypt_free_key(&p);
+          crypt_key_free(&p);
 
           e->security |= SEC_SIGN;
         }

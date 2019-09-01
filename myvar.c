@@ -34,6 +34,37 @@
 struct MyVarList MyVars = TAILQ_HEAD_INITIALIZER(MyVars);
 
 /**
+ * myvar_new - Create a new MyVar
+ * @param name  Variable name
+ * @param value Variable value
+ * @retval ptr New MyVar
+ *
+ * @note The name and value will be copied.
+ */
+static struct MyVar *myvar_new(const char *name, const char *value)
+{
+  struct MyVar *myv = mutt_mem_calloc(1, sizeof(struct MyVar));
+  myv->name = mutt_str_strdup(name);
+  myv->value = mutt_str_strdup(value);
+  return myv;
+}
+
+/**
+ * myvar_free - Free a MyVar
+ * @param ptr MyVar to free
+ */
+void myvar_free(struct MyVar **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct MyVar *myv = *ptr;
+  FREE(&myv->name);
+  FREE(&myv->value);
+  FREE(ptr);
+}
+
+/**
  * myvar_get - Get the value of a "my_" variable
  * @param var Variable name
  * @retval ptr  Success, value of variable
@@ -70,9 +101,7 @@ void myvar_set(const char *var, const char *val)
     }
   }
 
-  myv = mutt_mem_calloc(1, sizeof(struct MyVar));
-  myv->name = mutt_str_strdup(var);
-  myv->value = mutt_str_strdup(val);
+  myv = myvar_new(var, val);
   TAILQ_INSERT_TAIL(&MyVars, myv, entries);
 }
 
@@ -89,10 +118,26 @@ void myvar_del(const char *var)
     if (mutt_str_strcmp(myv->name, var) == 0)
     {
       TAILQ_REMOVE(&MyVars, myv, entries);
-      FREE(&myv->name);
-      FREE(&myv->value);
-      FREE(&myv);
+      myvar_free(&myv);
       return;
     }
+  }
+}
+
+/**
+ * myvarlist_free - Free a List of MyVars
+ * @param list List of MyVars
+ */
+void myvarlist_free(struct MyVarList *list)
+{
+  if (!list)
+    return;
+
+  struct MyVar *myv = NULL;
+  struct MyVar *tmp = NULL;
+  TAILQ_FOREACH_SAFE(myv, list, entries, tmp)
+  {
+    TAILQ_REMOVE(list, myv, entries);
+    myvar_free(&myv);
   }
 }

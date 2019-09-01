@@ -73,10 +73,10 @@ static void mhs_alloc(struct MhSequences *mhs, int i)
 }
 
 /**
- * mhs_free_sequences - Free some sequences
+ * mhs_sequences_free - Free some sequences
  * @param mhs Sequences to free
  */
-void mhs_free_sequences(struct MhSequences *mhs)
+void mhs_sequences_free(struct MhSequences *mhs)
 {
   FREE(&mhs->flags);
 }
@@ -252,7 +252,7 @@ void mh_update_sequences(struct Mailbox *m)
   if (replied)
     mhs_write_one_sequence(fp_new, &mhs, MH_SEQ_REPLIED, NONULL(C_MhSeqReplied));
 
-  mhs_free_sequences(&mhs);
+  mhs_sequences_free(&mhs);
 
   /* try to commit the changes - no guarantee here */
   mutt_file_fclose(&fp_new);
@@ -335,7 +335,7 @@ int mh_read_sequences(struct MhSequences *mhs, const char *path)
     {
       if (mh_read_token(t, &first, &last) < 0)
       {
-        mhs_free_sequences(mhs);
+        mhs_sequences_free(mhs);
         rc = -1;
         goto out;
       }
@@ -466,7 +466,7 @@ static int mh_mbox_check_stats(struct Mailbox *m, int flags)
     }
   }
 
-  mhs_free_sequences(&mhs);
+  mhs_sequences_free(&mhs);
 
   dirp = opendir(mailbox_path(m));
   if (dirp)
@@ -666,7 +666,7 @@ int mh_mbox_check(struct Mailbox *m, int *index_hint)
   if (mh_read_sequences(&mhs, mailbox_path(m)) < 0)
     return -1;
   mh_update_maildir(md, &mhs);
-  mhs_free_sequences(&mhs);
+  mhs_sequences_free(&mhs);
 
   /* check for modifications and adjust flags */
   fnames = mutt_hash_new(count, MUTT_HASH_NO_FLAGS);

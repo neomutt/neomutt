@@ -6460,16 +6460,16 @@ msgstr "Błąd podczas wysyłania listu, proces potomny zwrócił %d.\n"
 msgid "Error sending message"
 msgstr "Błąd podczas wysyłania listu"
 
-#: rfc1524.c:215
+#: mailcap.c:215
 #, c-format
 msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Błędnie sformatowane pole dla typu %s w \"%s\" linii %d"
 
-#: rfc1524.c:475
+#: mailcap.c:475
 msgid "No mailcap path specified"
 msgstr "Brak ścieżki do pliku specjalnego 'mailcap'"
 
-#: rfc1524.c:497
+#: mailcap.c:497
 #, c-format
 msgid "mailcap entry for type %s not found"
 msgstr "brak wpisu w 'mailcap' dla typu %s"

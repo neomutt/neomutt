@@ -239,16 +239,18 @@ struct AutocryptAccount *mutt_autocrypt_db_account_new(void)
 
 /**
  * mutt_autocrypt_db_account_free - Free an AutocryptAccount
- * @param account Account to free
+ * @param ptr Account to free
  */
-void mutt_autocrypt_db_account_free(struct AutocryptAccount **account)
+void mutt_autocrypt_db_account_free(struct AutocryptAccount **ptr)
 {
-  if (!account || !*account)
+  if (!ptr || !*ptr)
     return;
-  FREE(&(*account)->email_addr);
-  FREE(&(*account)->keyid);
-  FREE(&(*account)->keydata);
-  FREE(account);
+
+  struct AutocryptAccount *ac = *ptr;
+  FREE(&ac->email_addr);
+  FREE(&ac->keyid);
+  FREE(&ac->keydata);
+  FREE(ptr);
 }
 
 /**
@@ -521,18 +523,20 @@ struct AutocryptPeer *mutt_autocrypt_db_peer_new(void)
 
 /**
  * mutt_autocrypt_db_peer_free - Free an AutocryptPeer
- * @param peer AutocryptPeer to free
+ * @param ptr AutocryptPeer to free
  */
-void mutt_autocrypt_db_peer_free(struct AutocryptPeer **peer)
+void mutt_autocrypt_db_peer_free(struct AutocryptPeer **ptr)
 {
-  if (!peer || !*peer)
+  if (!ptr || !*ptr)
     return;
-  FREE(&(*peer)->email_addr);
-  FREE(&(*peer)->keyid);
-  FREE(&(*peer)->keydata);
-  FREE(&(*peer)->gossip_keyid);
-  FREE(&(*peer)->gossip_keydata);
-  FREE(peer);
+
+  struct AutocryptPeer *peer = *ptr;
+  FREE(&peer->email_addr);
+  FREE(&peer->keyid);
+  FREE(&peer->keydata);
+  FREE(&peer->gossip_keyid);
+  FREE(&peer->gossip_keydata);
+  FREE(ptr);
 }
 
 /**
@@ -734,16 +738,18 @@ struct AutocryptPeerHistory *mutt_autocrypt_db_peer_history_new(void)
 
 /**
  * mutt_autocrypt_db_peer_history_free - Free an AutocryptPeerHistory
- * @param peerhist AutocryptPeerHistory to free
+ * @param ptr AutocryptPeerHistory to free
  */
-void mutt_autocrypt_db_peer_history_free(struct AutocryptPeerHistory **peerhist)
+void mutt_autocrypt_db_peer_history_free(struct AutocryptPeerHistory **ptr)
 {
-  if (!peerhist || !*peerhist)
+  if (!ptr || !*ptr)
     return;
-  FREE(&(*peerhist)->peer_email_addr);
-  FREE(&(*peerhist)->email_msgid);
-  FREE(&(*peerhist)->keydata);
-  FREE(peerhist);
+
+  struct AutocryptPeerHistory *ph = *ptr;
+  FREE(&ph->peer_email_addr);
+  FREE(&ph->email_msgid);
+  FREE(&ph->keydata);
+  FREE(ptr);
 }
 
 /**
@@ -808,17 +814,19 @@ struct AutocryptGossipHistory *mutt_autocrypt_db_gossip_history_new(void)
 
 /**
  * mutt_autocrypt_db_gossip_history_free - Free an AutocryptGossipHistory
- * @param gossip_hist AutocryptGossipHistory to free
+ * @param ptr AutocryptGossipHistory to free
  */
-void mutt_autocrypt_db_gossip_history_free(struct AutocryptGossipHistory **gossip_hist)
+void mutt_autocrypt_db_gossip_history_free(struct AutocryptGossipHistory **ptr)
 {
-  if (!gossip_hist || !*gossip_hist)
+  if (!ptr || !*ptr)
     return;
-  FREE(&(*gossip_hist)->peer_email_addr);
-  FREE(&(*gossip_hist)->sender_email_addr);
-  FREE(&(*gossip_hist)->email_msgid);
-  FREE(&(*gossip_hist)->gossip_keydata);
-  FREE(gossip_hist);
+
+  struct AutocryptGossipHistory *gh = *ptr;
+  FREE(&gh->peer_email_addr);
+  FREE(&gh->sender_email_addr);
+  FREE(&gh->email_msgid);
+  FREE(&gh->gossip_keydata);
+  FREE(ptr);
 }
 
 /**

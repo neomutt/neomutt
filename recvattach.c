@@ -50,6 +50,7 @@
 #include "hdrline.h"
 #include "hook.h"
 #include "keymap.h"
+#include "mailcap.h"
 #include "mutt_attach.h"
 #include "mutt_logging.h"
 #include "mutt_menu.h"
@@ -61,7 +62,6 @@
 #include "opcodes.h"
 #include "options.h"
 #include "recvcmd.h"
-#include "rfc1524.h"
 #include "send.h"
 #include "sendlib.h"
 #include "state.h"
@@ -920,7 +920,7 @@ static bool can_print(struct AttachCtx *actx, struct Body *top, bool tag)
     snprintf(type, sizeof(type), "%s/%s", TYPE(top), top->subtype);
     if (!tag || top->tagged)
     {
-      if (!rfc1524_mailcap_lookup(top, type, NULL, MUTT_MC_PRINT))
+      if (!mailcap_lookup(top, type, NULL, MUTT_MC_PRINT))
       {
         if ((mutt_str_strcasecmp("text/plain", top->subtype) != 0) &&
             (mutt_str_strcasecmp("application/postscript", top->subtype) != 0))
@@ -964,7 +964,7 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
     if (!tag || top->tagged)
     {
       snprintf(type, sizeof(type), "%s/%s", TYPE(top), top->subtype);
-      if (!C_AttachSplit && !rfc1524_mailcap_lookup(top, type, NULL, MUTT_MC_PRINT))
+      if (!C_AttachSplit && !mailcap_lookup(top, type, NULL, MUTT_MC_PRINT))
       {
         if ((mutt_str_strcasecmp("text/plain", top->subtype) == 0) ||
             (mutt_str_strcasecmp("application/postscript", top->subtype) == 0))
@@ -1120,7 +1120,7 @@ static void recvattach_edit_content_type(struct AttachCtx *actx,
   /* Editing the content type can rewrite the body structure. */
   for (int i = 0; i < actx->idxlen; i++)
     actx->idx[i]->content = NULL;
-  mutt_actx_free_entries(actx);
+  mutt_actx_entries_free(actx);
   mutt_update_recvattach_menu(actx, menu, true);
 }
 
@@ -1422,7 +1422,7 @@ void mutt_view_attachments(struct Email *e)
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_ATTACH, AttachHelp);
   mutt_menu_push_current(menu);
 
-  struct AttachCtx *actx = mutt_mem_calloc(1, sizeof(struct AttachCtx));
+  struct AttachCtx *actx = mutt_actx_new();
   actx->email = e;
   actx->fp_root = msg->fp;
   mutt_update_recvattach_menu(actx, menu, true);

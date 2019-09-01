@@ -455,6 +455,15 @@ static bool get_hostname(void)
 }
 
 /**
+ * mutt_attachmatch_new - Create a new AttachMatch
+ * @retval ptr New AttachMatch
+ */
+static struct AttachMatch *mutt_attachmatch_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct AttachMatch));
+}
+
+/**
  * parse_attach_list - Parse the "attachments" command
  * @param buf  Buffer for temporary storage
  * @param s    Buffer containing the attachments command
@@ -478,7 +487,7 @@ static enum CommandResult parse_attach_list(struct Buffer *buf, struct Buffer *s
     if (!buf->data || (*buf->data == '\0'))
       continue;
 
-    a = mutt_mem_malloc(sizeof(struct AttachMatch));
+    a = mutt_attachmatch_new();
 
     /* some cheap hacks that I expect to remove */
     if (mutt_str_strcasecmp(buf->data, "any") == 0)
@@ -2271,19 +2280,21 @@ static enum CommandResult parse_unalternates(struct Buffer *buf, struct Buffer *
 }
 
 /**
- * mutt_free_attachmatch - Free an AttachMatch - Implements ::list_free_t
+ * mutt_attachmatch_free - Free an AttachMatch - Implements ::list_free_t
+ * @param ptr AttachMatch to free
  *
  * @note We don't free minor because it is either a pointer into major,
  *       or a static string.
  */
-void mutt_free_attachmatch(struct AttachMatch **am)
+void mutt_attachmatch_free(struct AttachMatch **ptr)
 {
-  if (!am || !*am)
+  if (!ptr || !*ptr)
     return;
 
-  regfree(&(*am)->minor_regex);
-  FREE(&(*am)->major);
-  FREE(am);
+  struct AttachMatch *am = *ptr;
+  regfree(&am->minor_regex);
+  FREE(&am->major);
+  FREE(ptr);
 }
 
 /**
@@ -2308,10 +2319,10 @@ static enum CommandResult parse_unattachments(struct Buffer *buf, struct Buffer 
 
   if (op == '*')
   {
-    mutt_list_free_type(&AttachAllow, (list_free_t) mutt_free_attachmatch);
-    mutt_list_free_type(&AttachExclude, (list_free_t) mutt_free_attachmatch);
-    mutt_list_free_type(&InlineAllow, (list_free_t) mutt_free_attachmatch);
-    mutt_list_free_type(&InlineExclude, (list_free_t) mutt_free_attachmatch);
+    mutt_list_free_type(&AttachAllow, (list_free_t) mutt_attachmatch_free);
+    mutt_list_free_type(&AttachExclude, (list_free_t) mutt_attachmatch_free);
+    mutt_list_free_type(&InlineAllow, (list_free_t) mutt_attachmatch_free);
+    mutt_list_free_type(&InlineExclude, (list_free_t) mutt_attachmatch_free);
     attachments_clean();
     return 0;
   }
@@ -2870,9 +2881,9 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
 }
 
 /**
- * mutt_free_opts - clean up before quitting
+ * mutt_opts_free - clean up before quitting
  */
-void mutt_free_opts(void)
+void mutt_opts_free(void)
 {
   mutt_list_free(&MuttrcStack);
 
@@ -2909,12 +2920,12 @@ void mutt_free_opts(void)
   mutt_list_free(&UserHeader);
 
   /* Lists of AttachMatch */
-  mutt_list_free_type(&AttachAllow, (list_free_t) mutt_free_attachmatch);
-  mutt_list_free_type(&AttachExclude, (list_free_t) mutt_free_attachmatch);
-  mutt_list_free_type(&InlineAllow, (list_free_t) mutt_free_attachmatch);
-  mutt_list_free_type(&InlineExclude, (list_free_t) mutt_free_attachmatch);
+  mutt_list_free_type(&AttachAllow, (list_free_t) mutt_attachmatch_free);
+  mutt_list_free_type(&AttachExclude, (list_free_t) mutt_attachmatch_free);
+  mutt_list_free_type(&InlineAllow, (list_free_t) mutt_attachmatch_free);
+  mutt_list_free_type(&InlineExclude, (list_free_t) mutt_attachmatch_free);
 
-  mutt_free_colors();
+  mutt_colors_free();
 
   FREE(&CurrentFolder);
   FREE(&HomeDir);
@@ -2928,7 +2939,7 @@ void mutt_free_opts(void)
   mutt_delete_hooks(MUTT_HOOK_NO_FLAGS);
 
   mutt_hist_free();
-  mutt_free_keys();
+  mutt_keys_free();
 
   mutt_regexlist_free(&NoSpamList);
 }

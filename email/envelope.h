@@ -89,15 +89,15 @@ struct Envelope
 };
 
 bool             mutt_env_cmp_strict(const struct Envelope *e1, const struct Envelope *e2);
-void             mutt_env_free      (struct Envelope **p);
+void             mutt_env_free      (struct Envelope **ptr);
 void             mutt_env_merge     (struct Envelope *base, struct Envelope **extra);
 struct Envelope *mutt_env_new       (void);
 int              mutt_env_to_intl   (struct Envelope *env, const char **tag, char **err);
 void             mutt_env_to_local  (struct Envelope *e);
 
 #ifdef USE_AUTOCRYPT
-#define mutt_new_autocrypthdr() mutt_mem_calloc(1, sizeof(struct AutocryptHeader))
-void mutt_free_autocrypthdr(struct AutocryptHeader **p);
+struct AutocryptHeader *mutt_autocrypthdr_new(void);
+void                    mutt_autocrypthdr_free(struct AutocryptHeader **p);
 #endif
 
 #endif /* MUTT_EMAIL_ENVELOPE_H */

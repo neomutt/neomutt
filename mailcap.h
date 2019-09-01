@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_RFC1524_H
-#define MUTT_RFC1524_H
+#ifndef MUTT_MAILCAP_H
+#define MUTT_MAILCAP_H
 
 #include <stdbool.h>
 
@@ -32,9 +32,9 @@ struct Buffer;
 extern bool C_MailcapSanitize;
 
 /**
- * struct Rfc1524MailcapEntry - A mailcap entry
+ * struct MailcapEntry - A mailcap entry
  */
-struct Rfc1524MailcapEntry
+struct MailcapEntry
 {
   char *command;
   char *testcommand;
@@ -61,11 +61,10 @@ enum MailcapLookup
   MUTT_MC_AUTOVIEW,     ///< Mailcap autoview field
 };
 
-struct Rfc1524MailcapEntry *rfc1524_new_entry(void);
-void rfc1524_free_entry(struct Rfc1524MailcapEntry **entry);
-void mutt_rfc1524_expand_filename(const char *nametemplate, const char *oldfile, struct Buffer *newfile);
-bool rfc1524_mailcap_lookup(struct Body *a, char *type, struct Rfc1524MailcapEntry *entry, enum MailcapLookup opt);
+void                 mailcap_entry_free(struct MailcapEntry **ptr);
+struct MailcapEntry *mailcap_entry_new(void);
+int                  mailcap_expand_command(struct Body *a, const char *filename, const char *type, struct Buffer *command);
+void                 mailcap_expand_filename(const char *nametemplate, const char *oldfile, struct Buffer *newfile);
+bool                 mailcap_lookup(struct Body *a, char *type, struct MailcapEntry *entry, enum MailcapLookup opt);
 
-int mutt_rfc1524_expand_command(struct Body *a, const char *filename, const char *type, struct Buffer *command);
-
-#endif /* MUTT_RFC1524_H */
+#endif /* MUTT_MAILCAP_H */

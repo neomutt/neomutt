@@ -141,7 +141,7 @@ struct AttachMatch
 char *mutt_compile_help(char *buf, size_t buflen, enum MenuType menu, const struct Mapping *items);
 
 int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags);
-void mutt_free_opts(void);
+void mutt_opts_free(void);
 enum QuadOption query_quadoption(enum QuadOption opt, const char *prompt);
 int mutt_label_complete(char *buf, size_t buflen, int numtabs);
 int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs);

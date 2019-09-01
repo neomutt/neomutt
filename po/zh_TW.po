@@ -6753,16 +6753,16 @@ msgstr "寄送訊息時出現錯誤，子程序結束 %d。\n"
 msgid "Error sending message"
 msgstr "寄信途中發生錯誤"
 
-#: rfc1524.c:215
+#: mailcap.c:215
 #, c-format
 msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "在 \"%2$s\" 的第 %3$d 行發現類別 %1$s 為錯誤的格式紀錄"
 
-#: rfc1524.c:475
+#: mailcap.c:475
 msgid "No mailcap path specified"
 msgstr "沒有指定 mailcap 路徑"
 
-#: rfc1524.c:497
+#: mailcap.c:497
 #, c-format
 msgid "mailcap entry for type %s not found"
 msgstr "沒有發現類型 %s 的 mailcap 紀錄"

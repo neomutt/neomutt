@@ -42,4 +42,6 @@ void        myvar_del(const char *var);
 const char *myvar_get(const char *var);
 void        myvar_set(const char *var, const char *val);
 
+void myvarlist_free(struct MyVarList *list);
+
 #endif /* MUTT_MYVAR_H */

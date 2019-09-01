@@ -127,14 +127,14 @@ static int cmp_int_key(union HashKey a, union HashKey b)
 }
 
 /**
- * new_hash - Create a new Hash table
+ * hash_new - Create a new Hash table
  * @param nelem Number of elements it should contain
  * @retval ptr New Hash table
  *
  * The Hash table can contain more elements than nelem, but they will be
  * chained together.
  */
-static struct Hash *new_hash(size_t nelem)
+static struct Hash *hash_new(size_t nelem)
 {
   struct Hash *table = mutt_mem_calloc(1, sizeof(struct Hash));
   if (nelem == 0)
@@ -275,7 +275,7 @@ static void union_hash_delete(struct Hash *table, union HashKey key, const void 
  */
 struct Hash *mutt_hash_new(size_t nelem, HashFlags flags)
 {
-  struct Hash *table = new_hash(nelem);
+  struct Hash *table = hash_new(nelem);
   if (flags & MUTT_HASH_STRCASECMP)
   {
     table->gen_hash = gen_case_string_hash;
@@ -301,7 +301,7 @@ struct Hash *mutt_hash_new(size_t nelem, HashFlags flags)
  */
 struct Hash *mutt_hash_int_new(size_t nelem, HashFlags flags)
 {
-  struct Hash *table = new_hash(nelem);
+  struct Hash *table = hash_new(nelem);
   table->gen_hash = gen_int_hash;
   table->cmp_key = cmp_int_key;
   if (flags & MUTT_HASH_ALLOW_DUPS)
