@@ -381,7 +381,8 @@ int rfc3676_handler(struct Body *a, struct State *s)
 
 /**
  * rfc3676_space_stuff - Perform required RFC3676 space stuffing
- * @param e Email
+ * @param e       Email
+ * @param unstuff If true, remove space stuffing
  *
  * Space stuffing means that we have to add leading spaces to
  * certain lines:
@@ -391,7 +392,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
  * Care is taken to preserve the e->content->filename, as
  * mutt -i -E can directly edit a passed in filename.
  */
-static void rfc3676_space_stuff(struct Email *e)
+static void rfc3676_space_stuff(struct Email *e, bool unstuff)
 {
   FILE *fp_out = NULL;
   char *buf = NULL;
@@ -410,67 +411,19 @@ static void rfc3676_space_stuff(struct Email *e)
 
   while ((buf = mutt_file_read_line(buf, &blen, fp_in, NULL, 0)) != NULL)
   {
-    if ((buf[0] == ' ') || mutt_str_startswith(buf, "From ", CASE_MATCH))
-      fputc(' ', fp_out);
-    fputs(buf, fp_out);
-    fputc('\n', fp_out);
-  }
-  FREE(&buf);
-  mutt_file_fclose(&fp_in);
-  mutt_file_fclose(&fp_out);
-  mutt_file_set_mtime(e->content->filename, mutt_b2s(tmpfile));
-
-  fp_in = mutt_file_fopen(mutt_b2s(tmpfile), "r");
-  if (!fp_in)
-    goto bail;
-
-  if ((truncate(e->content->filename, 0) == -1) ||
-      ((fp_out = mutt_file_fopen(e->content->filename, "a")) == NULL))
-  {
-    goto bail;
-  }
-
-  mutt_file_copy_stream(fp_in, fp_out);
-  mutt_file_fclose(&fp_in);
-  mutt_file_fclose(&fp_out);
-  mutt_file_set_mtime(mutt_b2s(tmpfile), e->content->filename);
-  unlink(mutt_b2s(tmpfile));
-  mutt_buffer_pool_release(&tmpfile);
-  return;
-
-bail:
-  mutt_file_fclose(&fp_in);
-  mutt_file_fclose(&fp_out);
-  mutt_buffer_pool_release(&tmpfile);
-}
-
-/**
- * rfc3676_space_unstuff - Remove RFC3676 space stuffing
- * @param e Email
- */
-static void rfc3676_space_unstuff(struct Email *e)
-{
-  FILE *fp_out = NULL;
-  char *buf = NULL;
-  size_t blen = 0;
-
-  struct Buffer *tmpfile = mutt_buffer_pool_get();
-
-  FILE *fp_in = mutt_file_fopen(e->content->filename, "r");
-  if (!fp_in)
-    goto bail;
-
-  mutt_buffer_mktemp(tmpfile);
-  fp_out = mutt_file_fopen(mutt_b2s(tmpfile), "w+");
-  if (!fp_out)
-    goto bail;
-
-  while ((buf = mutt_file_read_line(buf, &blen, fp_in, NULL, 0)) != NULL)
-  {
-    if (buf[0] == ' ')
-      fputs(buf + 1, fp_out);
+    if (unstuff)
+    {
+      if (buf[0] == ' ')
+        fputs(buf + 1, fp_out);
+      else
+        fputs(buf, fp_out);
+    }
     else
+    {
+      if ((buf[0] == ' ') || mutt_str_startswith(buf, "From ", CASE_MATCH))
+        fputc(' ', fp_out);
       fputs(buf, fp_out);
+    }
     fputc('\n', fp_out);
   }
   FREE(&buf);
@@ -485,6 +438,7 @@ static void rfc3676_space_unstuff(struct Email *e)
   if ((truncate(e->content->filename, 0) == -1) ||
       ((fp_out = mutt_file_fopen(e->content->filename, "a")) == NULL))
   {
+    mutt_perror(e->content->filename);
     goto bail;
   }
 
@@ -520,7 +474,7 @@ void mutt_rfc3676_space_stuff(struct Email *e)
   {
     const char *format = mutt_param_get(&e->content->parameter, "format");
     if (mutt_str_strcasecmp("flowed", format) == 0)
-      rfc3676_space_stuff(e);
+      rfc3676_space_stuff(e, false);
   }
 }
 
@@ -538,6 +492,6 @@ void mutt_rfc3676_space_unstuff(struct Email *e)
   {
     const char *format = mutt_param_get(&e->content->parameter, "format");
     if (mutt_str_strcasecmp("flowed", format) == 0)
-      rfc3676_space_unstuff(e);
+      rfc3676_space_stuff(e, true);
   }
 }
