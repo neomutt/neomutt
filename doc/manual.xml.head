@@ -2503,6 +2503,12 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
                 just the response and there is a large amount of quoted text in
                 the way.
               </para>
+              <para>
+                The variable
+                <link linkend="toggle-quoted-show-levels">$toggle_quoted_show_levels</link>
+                can be used to show some context by continuing to show that number of levels
+                rather than hiding all quoted levels.
+              </para>
             </listitem>
           </varlistentry>
           <varlistentry>

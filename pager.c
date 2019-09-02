@@ -1712,8 +1712,11 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
     }
 
     /* this also prevents searching through the hidden lines */
-    if ((flags & MUTT_HIDE) && ((*line_info)[n].type == MT_COLOR_QUOTED))
+    if ((flags & MUTT_HIDE) && ((*line_info)[n].type == MT_COLOR_QUOTED) &&
+        (((*line_info)[n].quote == NULL) ||
+         ((*line_info)[n].quote->index >= C_ToggleQuotedShowLevels))) {
       flags = 0; /* MUTT_NOSHOW */
+    }
   }
 
   /* At this point, (*line_info[n]).quote may still be undefined. We
