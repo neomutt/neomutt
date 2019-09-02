@@ -750,7 +750,22 @@ static int delete_attachment(struct AttachCtx *actx, int x)
   }
 
   idx[rindex]->content->next = NULL;
-  idx[rindex]->content->parts = NULL;
+  /* mutt_make_message_attach() creates body->parts, shared by
+   * body->email->content.  If we NULL out that, it creates a memory
+   * leak because mutt_free_body() frees body->parts, not
+   * body->email->content.
+   *
+   * Other ci_send_message() message constructors are careful to free
+   * any body->parts, removing depth:
+   *  - mutt_prepare_template() used by postponed, resent, and draft files
+   *  - mutt_copy_body() used by the recvattach menu and $forward_attachments.
+   *
+   * I believe it is safe to completely remove the "content->parts =
+   * NULL" statement.  But for safety, am doing so only for the case
+   * it must be avoided: message attachments.
+   */
+  if (!idx[rindex]->content->email)
+    idx[rindex]->content->parts = NULL;
   mutt_body_free(&(idx[rindex]->content));
   FREE(&idx[rindex]->tree);
   FREE(&idx[rindex]);
@@ -2027,7 +2042,9 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
             {
               /* avoid freeing other attachments */
               actx->idx[i]->content->next = NULL;
-              actx->idx[i]->content->parts = NULL;
+              /* See the comment in delete_attachment() */
+              if (!actx->idx[i]->content->email)
+                actx->idx[i]->content->parts = NULL;
               mutt_body_free(&actx->idx[i]->content);
             }
           }
