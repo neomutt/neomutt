@@ -62,7 +62,7 @@ struct Envelope *mutt_env_new(void)
  * mutt_autocrypthdr_new - Create a new AutocryptHeader
  * @retval ptr New AutocryptHeader
  */
-void mutt_autocrypthdr_new(void)
+struct AutocryptHeader *mutt_autocrypthdr_new(void)
 {
   return mutt_mem_calloc(1, sizeof(struct AutocryptHeader));
 }
