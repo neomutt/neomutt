@@ -93,15 +93,13 @@ void pgp_class_void_passphrase(void)
  */
 bool pgp_class_valid_passphrase(void)
 {
-  time_t now = time(NULL);
-
   if (pgp_use_gpg_agent())
   {
     *PgpPass = '\0';
     return true; /* handled by gpg-agent */
   }
 
-  if (now < PgpExptime)
+  if (mutt_date_epoch() < PgpExptime)
   {
     /* Use cached copy.  */
     return true;
@@ -111,7 +109,7 @@ bool pgp_class_valid_passphrase(void)
 
   if (mutt_get_password(_("Enter PGP passphrase:"), PgpPass, sizeof(PgpPass)) == 0)
   {
-    PgpExptime = mutt_date_add_timeout(time(NULL), C_PgpTimeout);
+    PgpExptime = mutt_date_add_timeout(mutt_date_epoch(), C_PgpTimeout);
     return true;
   }
   else

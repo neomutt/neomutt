@@ -144,17 +144,6 @@ static bool progress_time_needs_update(const struct Progress *progress, size_t n
 }
 
 /**
- * progress_timestamp - Return the number of milliseconds since the Unix epoch
- * @retval ms Milliseconds since the Unix epoch
- */
-static size_t progress_timestamp(void)
-{
-  struct timeval tv = { 0, 0 };
-  gettimeofday(&tv, NULL);
-  return tv.tv_sec * 1000 + tv.tv_usec / 1000;
-}
-
-/**
  * mutt_progress_init - Set up a progress bar
  * @param progress Progress bar
  * @param msg      Message to display; this is copied into the Progress object
@@ -225,7 +214,7 @@ void mutt_progress_update(struct Progress *progress, size_t pos, int percent)
   if (OptNoCurses)
     return;
 
-  const size_t now = progress_timestamp();
+  const size_t now = mutt_date_epoch_ms();
 
   const bool update = (pos == 0) /* always show the first update */ ||
                       (progress_pos_needs_update(progress, pos) &&

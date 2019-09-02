@@ -1543,7 +1543,7 @@ static int check_mailbox(struct Mailbox *m)
 
   struct NntpMboxData *mdata = m->mdata;
   struct NntpAccountData *adata = mdata->adata;
-  time_t now = time(NULL);
+  time_t now = mutt_date_epoch();
   int rc = 0;
   void *hc = NULL;
 
@@ -1772,7 +1772,7 @@ static int nntp_date(struct NntpAccountData *adata, time_t *now)
       }
     }
   }
-  time(now);
+  *now = mutt_date_epoch();
   return 0;
 }
 
@@ -2533,7 +2533,7 @@ static int nntp_mbox_open(struct Mailbox *m)
     }
   }
 
-  time(&adata->check_time);
+  adata->check_time = mutt_date_epoch();
   m->mdata = mdata;
   // Every known newsgroup has an mdata which is stored in adata->groups_list.
   // Currently we don't let the Mailbox free the mdata.

@@ -171,8 +171,7 @@ void smime_class_void_passphrase(void)
  */
 bool smime_class_valid_passphrase(void)
 {
-  time_t now = time(NULL);
-
+  const time_t now = mutt_date_epoch();
   if (now < SmimeExptime)
   {
     /* Use cached copy.  */
@@ -183,7 +182,7 @@ bool smime_class_valid_passphrase(void)
 
   if (mutt_get_password(_("Enter S/MIME passphrase:"), SmimePass, sizeof(SmimePass)) == 0)
   {
-    SmimeExptime = mutt_date_add_timeout(time(NULL), C_SmimeTimeout);
+    SmimeExptime = mutt_date_add_timeout(now, C_SmimeTimeout);
     return true;
   }
   else

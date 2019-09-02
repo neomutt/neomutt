@@ -39,7 +39,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <time.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
 #include "email/lib.h"
@@ -412,8 +411,8 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
         }
         else
         {
-          time_t tnow = time(NULL);
-          t_fmt = ((tnow - folder->ff->mtime) < 31536000) ? "%b %d %H:%M" : "%b %d  %Y";
+          static const time_t one_year = 31536000;
+          t_fmt = ((mutt_date_epoch() - folder->ff->mtime) < one_year) ? "%b %d %H:%M" : "%b %d  %Y";
         }
 
         if (!do_locales)

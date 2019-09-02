@@ -875,7 +875,7 @@ static int external_body_handler(struct Body *b, struct State *s)
       mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset, chflags, NULL);
     }
   }
-  else if (expiration && (expire < time(NULL)))
+  else if (expiration && (expire < mutt_date_epoch()))
   {
     if (s->flags & MUTT_DISPLAY)
     {

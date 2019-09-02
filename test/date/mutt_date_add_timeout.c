@@ -29,7 +29,7 @@ void test_mutt_date_add_timeout(void)
 {
   // time_t mutt_date_add_timeout(time_t now, long timeout);
 
-  time_t now = time(NULL);
+  time_t now = mutt_date_epoch();
 
   TEST_CHECK(mutt_date_add_timeout(now, -1000) == now);
   TEST_CHECK(mutt_date_add_timeout(now, -1) == now);

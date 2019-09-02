@@ -42,6 +42,7 @@
 #include <unistd.h>
 #include <utime.h>
 #include "file.h"
+#include "date.h"
 #include "buffer.h"
 #include "logging.h"
 #include "memory.h"
@@ -972,7 +973,7 @@ time_t mutt_file_decrease_mtime(const char *fp, struct stat *st)
   }
 
   mtime = st->st_mtime;
-  if (mtime == time(NULL))
+  if (mtime == mutt_date_epoch())
   {
     mtime -= 1;
     utim.actime = mtime;

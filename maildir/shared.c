@@ -997,8 +997,9 @@ int md_commit_message(struct Mailbox *m, struct Message *msg, struct Email *e)
   struct Buffer *full = mutt_buffer_pool_get();
   while (true)
   {
-    mutt_buffer_printf(path, "%s/%lld.R%" PRIu64 ".%s%s", subdir, (long long) time(NULL),
-                       mutt_rand64(), NONULL(ShortHostname), suffix);
+    mutt_buffer_printf(path, "%s/%lld.R%" PRIu64 ".%s%s", subdir,
+                       (long long) mutt_date_epoch(), mutt_rand64(),
+                       NONULL(ShortHostname), suffix);
     mutt_buffer_printf(full, "%s/%s", mailbox_path(m), mutt_b2s(path));
 
     mutt_debug(LL_DEBUG2, "renaming %s to %s\n", msg->path, mutt_b2s(full));

@@ -736,7 +736,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
 
     case 'e':
       if ((mutt_str_strcasecmp("xpires", line + 1) == 0) && e &&
-          (mutt_date_parse_date(p, NULL) < time(NULL)))
+          (mutt_date_parse_date(p, NULL) < mutt_date_epoch()))
       {
         e->expired = true;
       }

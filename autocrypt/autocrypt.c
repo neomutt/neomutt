@@ -288,7 +288,7 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
 
   /* Ignore emails that appear to be more than a week in the future,
    * since they can block all future updates during that time. */
-  if (e->date_sent > (mutt_date_epoch_ms() / 1000 + (7 * 24 * 60 * 60)))
+  if (e->date_sent > (mutt_date_epoch() + (7 * 24 * 60 * 60)))
     return 0;
 
   for (struct AutocryptHeader *ac_hdr = env->autocrypt; ac_hdr; ac_hdr = ac_hdr->next)
@@ -430,7 +430,7 @@ int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_
 
   /* Ignore emails that appear to be more than a week in the future,
    * since they can block all future updates during that time. */
-  if (e->date_sent > (mutt_date_epoch_ms() / 1000 + (7 * 24 * 60 * 60)))
+  if (e->date_sent > (mutt_date_epoch() + (7 * 24 * 60 * 60)))
     return 0;
 
   struct Buffer *keyid = mutt_buffer_pool_get();

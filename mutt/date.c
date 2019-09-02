@@ -205,7 +205,7 @@ time_t mutt_date_local_tz(time_t t)
     return 0;
 
   if (t == 0)
-    t = time(NULL);
+    t = mutt_date_epoch();
 
   struct tm tm = mutt_date_gmtime(t);
   return compute_tz(t, &tm);
@@ -373,7 +373,7 @@ char *mutt_date_make_date(char *buf, size_t buflen)
   if (!buf)
     return NULL;
 
-  time_t t = time(NULL);
+  time_t t = mutt_date_epoch();
   struct tm tm = mutt_date_localtime(t);
   time_t tz = mutt_date_local_tz(t);
 
@@ -401,6 +401,15 @@ int mutt_date_check_month(const char *s)
       return i;
 
   return -1; /* error */
+}
+
+/**
+ * mutt_date_epoch - Return the number of seconds since the Unix epoch
+ * @retval s The number of s since the Unix epoch, or 0 on failure
+ */
+time_t mutt_date_epoch(void)
+{
+  return mutt_date_epoch_ms() / 1000;
 }
 
 /**
@@ -729,7 +738,7 @@ struct tm mutt_date_localtime(time_t t)
   struct tm tm = { 0 };
 
   if (t == MUTT_DATE_NOW)
-    t = time(NULL);
+    t = mutt_date_epoch();
 
   localtime_r(&t, &tm);
   return tm;
@@ -747,7 +756,7 @@ struct tm mutt_date_gmtime(time_t t)
   struct tm tm = { 0 };
 
   if (t == MUTT_DATE_NOW)
-    t = time(NULL);
+    t = mutt_date_epoch();
 
   gmtime_r(&t, &tm);
   return tm;

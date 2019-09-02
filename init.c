@@ -2988,8 +2988,8 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   snprintf(AttachmentMarker, sizeof(AttachmentMarker), "\033]9;%" PRIu64 "\a", // Escape
            mutt_rand64());
 
-  snprintf(ProtectedHeaderMarker, sizeof(ProtectedHeaderMarker), "\033]8;%ld\a", // Escape
-           (long) time(NULL));
+  snprintf(ProtectedHeaderMarker, sizeof(ProtectedHeaderMarker), "\033]8;%lld\a", // Escape
+           (long long) mutt_date_epoch());
 
   /* "$spoolfile" precedence: config file, environment */
   const char *p = mutt_str_getenv("MAIL");

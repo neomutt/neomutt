@@ -1123,7 +1123,7 @@ int imap_cmd_step(struct ImapAccountData *adata)
     mutt_debug(LL_DEBUG3, "shrank buffer to %lu bytes\n", adata->blen);
   }
 
-  adata->lastread = time(NULL);
+  adata->lastread = mutt_date_epoch();
 
   /* handle untagged messages. The caller still gets its shot afterwards. */
   if ((mutt_str_startswith(adata->buf, "* ", CASE_MATCH) ||

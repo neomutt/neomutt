@@ -35,7 +35,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <time.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
 #include "conn_globals.h"
@@ -349,9 +348,9 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
    * GNUTLS_CERT_EXPIRED and GNUTLS_CERT_NOT_ACTIVATED bits set. */
   if (C_SslVerifyDates != MUTT_NO)
   {
-    if (gnutls_x509_crt_get_expiration_time(cert) < time(NULL))
+    if (gnutls_x509_crt_get_expiration_time(cert) < mutt_date_epoch())
       *certerr |= CERTERR_EXPIRED;
-    if (gnutls_x509_crt_get_activation_time(cert) > time(NULL))
+    if (gnutls_x509_crt_get_activation_time(cert) > mutt_date_epoch())
       *certerr |= CERTERR_NOTYETVALID;
   }
 

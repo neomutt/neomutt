@@ -48,6 +48,7 @@ struct Tz
 
 time_t    mutt_date_add_timeout(time_t now, long timeout);
 int       mutt_date_check_month(const char *s);
+time_t    mutt_date_epoch(void);
 size_t    mutt_date_epoch_ms(void);
 struct tm mutt_date_gmtime(time_t t);
 bool      mutt_date_is_day_name(const char *s);

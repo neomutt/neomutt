@@ -1052,7 +1052,7 @@ void imap_unmunge_mbox_name(bool unicode, char *s)
  */
 void imap_keepalive(void)
 {
-  time_t now = time(NULL);
+  time_t now = mutt_date_epoch();
   struct Account *np = NULL;
   TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
   {

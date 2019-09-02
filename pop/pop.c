@@ -383,7 +383,7 @@ static int pop_fetch_headers(struct Mailbox *m)
   header_cache_t *hc = pop_hcache_open(adata, mailbox_path(m));
 #endif
 
-  time(&adata->check_time);
+  adata->check_time = mutt_date_epoch();
   adata->clear_cache = false;
 
   if (!m->emails)
@@ -896,7 +896,7 @@ static int pop_mbox_check(struct Mailbox *m, int *index_hint)
 
   struct PopAccountData *adata = pop_adata_get(m);
 
-  if ((adata->check_time + C_PopCheckinterval) > time(NULL))
+  if ((adata->check_time + C_PopCheckinterval) > mutt_date_epoch())
     return 0;
 
   pop_logout(m);

@@ -1417,7 +1417,7 @@ static void set_encoding(struct Body *b, struct Content *info)
  */
 void mutt_stamp_attachment(struct Body *a)
 {
-  a->stamp = time(NULL);
+  a->stamp = mutt_date_epoch();
 }
 
 /**

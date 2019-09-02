@@ -80,7 +80,7 @@ static const char *timestamp(time_t stamp)
   static time_t last = 0;
 
   if (stamp == 0)
-    stamp = time(NULL);
+    stamp = mutt_date_epoch();
 
   if (stamp != last)
   {
@@ -424,7 +424,7 @@ int log_disp_queue(time_t stamp, const char *file, int line,
   }
 
   struct LogLine *ll = mutt_mem_calloc(1, sizeof(*ll));
-  ll->time = (stamp != 0) ? stamp : time(NULL);
+  ll->time = (stamp != 0) ? stamp : mutt_date_epoch();
   ll->file = file;
   ll->line = line;
   ll->function = function;

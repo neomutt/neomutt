@@ -682,7 +682,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
         if (optional && ((op == '[') || (op == '(')))
         {
-          now = time(NULL);
+          now = mutt_date_epoch();
           struct tm tm = mutt_date_localtime(now);
           now -= (op == '(') ? e->received : e->date_sent;
 

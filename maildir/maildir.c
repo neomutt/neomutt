@@ -603,8 +603,8 @@ int maildir_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e
   while (true)
   {
     snprintf(path, sizeof(path), "%s/tmp/%s.%lld.R%" PRIu64 ".%s%s",
-             mailbox_path(m), subdir, (long long) time(NULL), mutt_rand64(),
-             NONULL(ShortHostname), suffix);
+             mailbox_path(m), subdir, (long long) mutt_date_epoch(),
+             mutt_rand64(), NONULL(ShortHostname), suffix);
 
     mutt_debug(LL_DEBUG2, "Trying %s\n", path);
 

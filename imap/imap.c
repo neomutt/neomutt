@@ -1197,7 +1197,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
 
   /* try IDLE first, unless force is set */
   if (!force && C_ImapIdle && (adata->capabilities & IMAP_CAP_IDLE) &&
-      ((adata->state != IMAP_IDLE) || (time(NULL) >= adata->lastread + C_ImapKeepalive)))
+      ((adata->state != IMAP_IDLE) || (mutt_date_epoch() >= adata->lastread + C_ImapKeepalive)))
   {
     if (imap_cmd_idle(adata) < 0)
       return -1;
@@ -1219,7 +1219,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
     }
   }
 
-  if ((force || ((adata->state != IMAP_IDLE) && (time(NULL) >= adata->lastread + C_Timeout))) &&
+  if ((force || ((adata->state != IMAP_IDLE) && (mutt_date_epoch() >= adata->lastread + C_Timeout))) &&
       (imap_exec(adata, "NOOP", IMAP_CMD_POLL) != IMAP_EXEC_SUCCESS))
   {
     return -1;
