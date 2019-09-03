@@ -4312,9 +4312,8 @@ msgstr "Įvesk rakto ID, skirtą %s: "
 #. from.  This error is displayed if no results were found.
 #.
 #: ncrypt/crypt_gpgme.c:5381
-#, fuzzy
 msgid "No secret keys found"
-msgstr "slaptas raktas '%s' nerastas: %s"
+msgstr "Slaptų raktų nerasta"
 
 #: ncrypt/crypt_gpgme.c:5414 ncrypt/pgpkey.c:882
 msgid "Please enter the key ID: "
@@ -6862,9 +6861,8 @@ msgstr "Įprastos parinktys:"
 msgid "Compile options:"
 msgstr "Kompiliavimo parinktys:"
 
-#, fuzzy
 #~ msgid "S/MIME already selected. Clear & continue ? "
-#~ msgstr "S/MIME jau pasirinktas. Išjungti ir tęsti?"
+#~ msgstr "S/MIME jau pasirinktas. Išjungti ir tęsti? "
 
 #~ msgid "Macros are currently disabled"
 #~ msgstr "Makrokomandos šiuo metu yra išjungtos"
