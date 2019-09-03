@@ -133,7 +133,7 @@ msgstr "Negaliu sukurti %s: %s"
 #.
 #: autocrypt/autocrypt.c:152
 msgid "Create an initial autocrypt account?"
-msgstr ""
+msgstr "Sukurti pradinę autocrypt paskyrą?"
 
 #. L10N:
 #. Autocrypt is asking for the email address to use for the
@@ -142,7 +142,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:176
 msgid "Autocrypt account address: "
-msgstr ""
+msgstr "Autocrypt paskyros adresas: "
 
 #. L10N:
 #. Autocrypt prompts for an account email address, and requires
@@ -151,7 +151,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:187
 msgid "Please enter a single email address"
-msgstr ""
+msgstr "Įveskite vieną el. pašto adresą"
 
 #. L10N:
 #. When creating an autocrypt account, this message will be displayed
@@ -160,7 +160,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:204
 msgid "That email address already has an autocrypt account"
-msgstr ""
+msgstr "Šis el. pašto adresas jau turi autocrypt paskyrą"
 
 #. L10N:
 #. Autocrypt has a setting "prefer-encrypt".
@@ -171,16 +171,15 @@ msgstr ""
 #. will be required to enable encryption manually.
 #.
 #: autocrypt/autocrypt.c:219
-#, fuzzy
 msgid "Prefer encryption?"
-msgstr "šifravimui"
+msgstr "Įjungti šifravimą automatiškai?"
 
 #. L10N:
 #. Message displayed after an autocrypt account is successfully created.
 #.
 #: autocrypt/autocrypt.c:232
 msgid "Autocrypt account creation succeeded"
-msgstr ""
+msgstr "Autocrypt paskyra sukurta sėkmingai"
 
 #. L10N:
 #. Error message displayed if creating an autocrypt account failed
@@ -188,7 +187,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:238
 msgid "Autocrypt account creation aborted"
-msgstr ""
+msgstr "Autocryt paskyros kūrimas nutrauktas"
 
 #. L10N:
 #. %s is an email address.  Autocrypt is scanning for the keyids
@@ -196,9 +195,9 @@ msgstr ""
 #. The message is printed and they are returned to the compose menu.
 #.
 #: autocrypt/autocrypt.c:610 autocrypt/autocrypt.c:639
-#, fuzzy, c-format
+#, c-format
 msgid "No (valid) autocrypt key found for %s"
-msgstr "Neradau (galiojančio) %s sertifikato"
+msgstr "Neradau (galiojančio) autocrypt rakto adresui %s"
 
 #. L10N:
 #. The first time autocrypt is enabled, Mutt will ask to scan
@@ -209,13 +208,12 @@ msgstr "Neradau (galiojančio) %s sertifikato"
 #.
 #: autocrypt/autocrypt.c:903
 msgid "Scan a mailbox for autocrypt headers?"
-msgstr ""
+msgstr "Ieškoti autocrypt antraščių pašto dėžutėje?"
 
 #. L10N: The prompt for a mailbox to scan for Autocrypt: headers
 #: autocrypt/autocrypt.c:907
-#, fuzzy
 msgid "Scan mailbox"
-msgstr "Fcc dėžutė"
+msgstr "Pašto dėžutė"
 
 #. L10N:
 #. This is the second prompt to see if the user would like
@@ -226,15 +224,14 @@ msgstr "Fcc dėžutė"
 #.
 #: autocrypt/autocrypt.c:927
 msgid "Scan another mailbox for autocrypt headers?"
-msgstr ""
+msgstr "Ieškoti autocrypt antraščių kitoje dėžutėje?"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. create new account
 #.
 #: autocrypt/autocrypt_acct_menu.c:57
-#, fuzzy
 msgid "Create"
-msgstr "Sukurti %s?"
+msgstr "Sukurti"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. delete account
@@ -251,7 +248,7 @@ msgstr "Trinti"
 #.
 #: autocrypt/autocrypt_acct_menu.c:68
 msgid "Tgl Active"
-msgstr ""
+msgstr "(De)aktyvuoti"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. toggle "prefer-encrypt" on an account
@@ -261,7 +258,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:75
 msgid "Prf Enc"
-msgstr ""
+msgstr "Šifr. auto"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -269,7 +266,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:117
 msgid "prefer encrypt"
-msgstr ""
+msgstr "šifruoti automatiškai"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -278,7 +275,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:124
 msgid "manual encrypt"
-msgstr ""
+msgstr "šifruoti rankomis"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -286,7 +283,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:132
 msgid "active"
-msgstr ""
+msgstr "aktyvi"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -294,27 +291,26 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:138
 msgid "inactive"
-msgstr ""
+msgstr "neaktyvi"
 
 #. L10N: Autocrypt Account Management Menu title
 #: autocrypt/autocrypt_acct_menu.c:177
 msgid "Autocrypt Accounts"
-msgstr ""
+msgstr "Autocrypt paskyros"
 
 #. L10N:
 #. This error message is displayed if a database update of an
 #. account record fails for some odd reason.
 #.
 #: autocrypt/autocrypt_acct_menu.c:238 autocrypt/autocrypt_acct_menu.c:252
-#, fuzzy
 msgid "Error updating account record"
-msgstr "Klaida skaitant katalogą"
+msgstr "Klaida atnaujinant paskyros įrašą"
 
 #. L10N: Confirmation message when deleting an autocrypt account
 #: autocrypt/autocrypt_acct_menu.c:295
-#, fuzzy, c-format
+#, c-format
 msgid "Really delete account \"%s\"?"
-msgstr "Tikrai ištrinti pašto dėžutę \"%s\"?"
+msgstr "Tikrai ištrinti paskyrą \"%s\"?"
 
 #. L10N:
 #. %s is the path to the database.
@@ -325,9 +321,9 @@ msgstr "Tikrai ištrinti pašto dėžutę \"%s\"?"
 #. for some reason.  The %s is the full path of the database file.
 #.
 #: autocrypt/autocrypt_db.c:62 autocrypt/autocrypt_db.c:106
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to open autocrypt database %s"
-msgstr "Negaliu atidaryti dėžutės %s"
+msgstr "Negaliu atidaryti autocrypt duomenų bazės %s"
 
 #: autocrypt/autocrypt_gpgme.c:48 ncrypt/crypt_gpgme.c:730
 #, c-format
@@ -340,16 +336,16 @@ msgstr "klaida kuriant gpgme kontekstą: %s"
 #.
 #: autocrypt/autocrypt_gpgme.c:166
 msgid "Generating autocrypt key..."
-msgstr ""
+msgstr "Generuoju autocrypt raktą..."
 
 #. L10N:
 #. GPGME was unable to generate a key for some reason.
 #. %s is the error message returned by GPGME.
 #.
 #: autocrypt/autocrypt_gpgme.c:178 autocrypt/autocrypt_gpgme.c:197
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating autocrypt key: %s"
-msgstr "Klaida išgaunant raktą: %s"
+msgstr "Klaida kuriant autocrypt raktą: %s"
 
 #. L10N:
 #. After selecting a key for an autocrypt account,
@@ -360,7 +356,7 @@ msgstr "Klaida išgaunant raktą: %s"
 #: autocrypt/autocrypt_gpgme.c:246
 #, c-format
 msgid "The key %s is not usable for autocrypt"
-msgstr ""
+msgstr "Raktas %s netinka automatiniam šifravimui"
 
 #. L10N:
 #. During autocrypt account creation, this prompt asks the
@@ -369,7 +365,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_gpgme.c:280
 msgid "(c)reate new, or (s)elect existing GPG key?"
-msgstr ""
+msgstr "(k)urti naują ar pa(s)irinkti esamą GPG raktą?"
 
 #. L10N:
 #. The letters corresponding to the
@@ -377,7 +373,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_gpgme.c:285
 msgid "cs"
-msgstr ""
+msgstr "ks"
 
 #. L10N:
 #. During autocrypt account creation, if selecting an existing key fails
@@ -385,7 +381,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_gpgme.c:299
 msgid "Create a new gpg key for this account, instead?"
-msgstr ""
+msgstr "Sukurti naują GPG raktą šiai paskyrai?"
 
 #. L10N:
 #. The autocrypt database keeps track of schema version numbers.
@@ -395,7 +391,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_schema.c:119
 msgid "Autocrypt database version is too new"
-msgstr ""
+msgstr "Autocrypt duomenų bazės versija per nauja"
 
 #: bcache.c:208
 #, c-format
@@ -888,7 +884,7 @@ msgstr "Pasirašyti kaip: "
 #. L10N: The compose menu autocrypt line
 #: compose.c:176
 msgid "Autocrypt: "
-msgstr ""
+msgstr "Autošifravimas: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:180
@@ -944,14 +940,13 @@ msgstr "Grupės"
 #. * This is displayed when Autocrypt is turned off.
 #: compose.c:220 compose.c:465
 msgid "Off"
-msgstr ""
+msgstr "išjungtas"
 
 #. L10N: Autocrypt recommendation flag: no.
 #. * This is displayed when Autocrypt cannot encrypt to the recipients.
 #: compose.c:223
-#, fuzzy
 msgid "No"
-msgstr "Jokio"
+msgstr "negalimas"
 
 #. L10N: Autocrypt recommendation flag: discouraged.
 #. * This is displayed when Autocrypt believes encryption should not be used.
@@ -959,7 +954,7 @@ msgstr "Jokio"
 #. * used recently, or if the only key available is a Gossip Header key.
 #: compose.c:228
 msgid "Discouraged"
-msgstr ""
+msgstr "nepatartinas"
 
 #. L10N: Autocrypt recommendation flag: available.
 #. * This is displayed when Autocrypt believes encryption is possible, but
@@ -967,15 +962,14 @@ msgstr ""
 #. * is not set in both the sender and recipient keys.
 #: compose.c:233
 msgid "Available"
-msgstr ""
+msgstr "galimas"
 
 #. L10N: Autocrypt recommendation flag: yes.
 #. * This is displayed when Autocrypt would normally enable encryption
 #. * automatically.
 #: compose.c:237
-#, fuzzy
 msgid "Yes"
-msgstr "taip"
+msgstr "įjungtas"
 
 #. L10N:
 #. The compose menu autocrypt prompt.
@@ -985,7 +979,7 @@ msgstr "taip"
 #.
 #: compose.c:332
 msgid "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic?"
-msgstr ""
+msgstr "Autošifravimas: įjungt(i), išju(n)gti, pasirinkti (a)utomatiškai?"
 
 #. L10N:
 #. The letter corresponding to the compose menu autocrypt prompt
@@ -993,7 +987,7 @@ msgstr ""
 #.
 #: compose.c:338
 msgid "eca"
-msgstr ""
+msgstr "ina"
 
 #: compose.c:375
 msgid "Not supported"
@@ -1045,9 +1039,8 @@ msgstr "Užšifruoti: "
 #. (Off, No, Discouraged, Available, Yes)
 #.
 #: compose.c:475
-#, fuzzy
 msgid "Recommendation: "
-msgstr "X-Komentuoti: "
+msgstr "Rekomendacija: "
 
 #: compose.c:538
 msgid "<no chain defined>"
@@ -4935,24 +4928,23 @@ msgstr "žiūrėti priedą kaip tekstą"
 
 #: opcodes.h:32
 msgid "manage autocrypt accounts"
-msgstr ""
+msgstr "tvarkyti autocrypt paskyras"
 
 #: opcodes.h:33
 msgid "create a new autocrypt account"
-msgstr ""
+msgstr "sukurti naują autocrypt paskyrą"
 
 #: opcodes.h:34
-#, fuzzy
 msgid "delete the current account"
-msgstr "ištrinti esamą įrašą"
+msgstr "ištrinti pasirinktą paskyrą"
 
 #: opcodes.h:35
 msgid "toggle the current account active/inactive"
-msgstr ""
+msgstr "aktyvuoti/deaktyvuoti pasirinktą paskyrą"
 
 #: opcodes.h:36
 msgid "toggle the current account prefer-encrypt flag"
-msgstr ""
+msgstr "įjungti/išjungti automatinį šifravimą pasirinktai paskyrai"
 
 #: opcodes.h:37
 msgid "move to the bottom of the page"
@@ -5016,7 +5008,7 @@ msgstr "prisegti laiškus prie šio laiško"
 
 #: opcodes.h:52
 msgid "show autocrypt compose menu options"
-msgstr ""
+msgstr "rodyti automatinio šifravimo meniu parinktis"
 
 #: opcodes.h:53
 msgid "attach news articles to this message"
