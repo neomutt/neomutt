@@ -318,7 +318,7 @@ static const char *parse_version_number(const char *s, int *number)
  * @retval NULL If there are fewer parts
  *
  * Break up the complete string-representation of the version number S, which
- * is of the following struture: <major number>.<minor number>.<micro
+ * is of the following structure: <major number>.<minor number>.<micro
  * number><patch level>.  The major, minor and micro number components will be
  * stored in *MAJOR, *MINOR and *MICRO.  If MINOR or MICRO is NULL the version
  * number is assumed to have just 1 or 2 parts respectively.
@@ -812,7 +812,7 @@ static gpgme_data_t create_gpgme_data(void)
 
 #if GPGME_VERSION_NUMBER >= 0x010900 /* gpgme >= 1.9.0 */
 /**
- * have_gpg_version - Do we have a sufficent GPG version
+ * have_gpg_version - Do we have a sufficient GPG version
  * @param version Minimum version
  * @retval true If minimum version is available
  *

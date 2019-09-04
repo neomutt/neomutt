@@ -376,7 +376,7 @@ void mutt_label_hash_add(struct Mailbox *m, struct Email *e)
 }
 
 /**
- * mutt_label_hash_remove - Rmove a message's labels from the Hash Table
+ * mutt_label_hash_remove - Remove a message's labels from the Hash Table
  * @param m Mailbox
  * @param e Email
  */

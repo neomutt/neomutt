@@ -304,7 +304,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
         case OP_EDITOR_BACKSPACE:
           if (state->curpos == 0)
           {
-            // Pressing backspace when no text is in the command prompt shold exit the prompt
+            // Pressing backspace when no text is in the command prompt should exit the prompt
             if (state->lastchar == 0)
               goto bye;
             // Pressing backspace with text in the command prompt should just beep

@@ -7040,7 +7040,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
 
         <para>
           These variables also affect size display in a few other places, such
-          as progress indicators and attachment delimeters in the pager.
+          as progress indicators and attachment delimiters in the pager.
         </para>
       </sect2>
     </sect1>
@@ -17382,7 +17382,7 @@ bind index D purge-message
         normal encryption via your keyring, using key signing and the web
         of trust to verify identities.  With an understanding of these
         limitations, Autocrypt still provides an easy way to minimize
-        cleartext emails sent between common correspondants, without
+        cleartext emails sent between common correspondents, without
         having to explicitly exchange keys.  More information can be found
         at <ulink url="https://autocrypt.org/">https://autocrypt.org/</ulink>.
       </para>

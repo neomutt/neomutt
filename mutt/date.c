@@ -755,7 +755,7 @@ struct tm mutt_date_gmtime(time_t t)
 
 /**
  * mutt_date_localtime_format - Format localtime
- * @param buf    Buffer to store formated time
+ * @param buf    Buffer to store formatted time
  * @param buflen Buffer size
  * @param format Format to apply
  * @param t      Time to format

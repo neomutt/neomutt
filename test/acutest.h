@@ -187,7 +187,7 @@
 
 /* Macro for dumping a block of memory.
  *
- * Its inteded use is very similar to what TEST_MSG is for, but instead of
+ * Its intended use is very similar to what TEST_MSG is for, but instead of
  * generating any printf-like message, this is for dumping raw block of a
  * memory in a hexadecimal form:
  *
@@ -352,7 +352,7 @@ static int test_timer__ = 0;
     {
         if(test_timer__ == 1)
     #ifdef CLOCK_MONOTONIC_RAW
-            /* linux specific; not subject of NTP adjustements or adjtime() */
+            /* linux specific; not subject of NTP adjustments or adjtime() */
             test_timer_id__ = CLOCK_MONOTONIC_RAW;
     #else
             test_timer_id__ = CLOCK_MONOTONIC;
@@ -380,7 +380,7 @@ static int test_timer__ = 0;
     static void
     test_timer_print_diff__(void)
     {
-        printf("%.6lf secs", 
+        printf("%.6lf secs",
             test_timer_diff__(test_timer_start__, test_timer_end__));
     }
 #else
@@ -1190,9 +1190,9 @@ test_cmdline_read__(const TEST_CMDLINE_OPTION__* options, int argc, char** argv,
 
                     if(strncmp(badoptname, "--", 2) == 0) {
                         /* Strip any argument from the long option. */
-                        char* assignement = strchr(badoptname, '=');
-                        if(assignement != NULL) {
-                            size_t len = assignement - badoptname;
+                        char* assignment = strchr(badoptname, '=');
+                        if(assignment != NULL) {
+                            size_t len = assignment - badoptname;
                             if(len > TEST_CMDLINE_AUXBUF_SIZE__)
                                 len = TEST_CMDLINE_AUXBUF_SIZE__;
                             strncpy(auxbuf, badoptname, len);

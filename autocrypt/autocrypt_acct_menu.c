@@ -192,7 +192,7 @@ static struct Menu *create_menu(void)
   for (int i = 0; i < num_accounts; i++)
   {
     entries[i].num = i + 1;
-    /* note: we are transfering the account pointer to the entries
+    /* note: we are transferring the account pointer to the entries
      * array, and freeing the accounts array below.  the account
      * will be freed in menu_free().  */
     entries[i].account = accounts[i];
