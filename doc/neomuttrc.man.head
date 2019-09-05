@@ -1108,22 +1108,22 @@ T{
 T}
 .T&
 l l s .
-\p
-\0\h'2m'\fB*\fP)|T{
+.PP
+\0\fB*\fP)|T{
 The message number ranges (introduced by \(lq\fB~m\fP\(rq) are even
 more general and powerful than the other types of ranges. Read on and see
 section \(lq\fBMessage Ranges\fP\(rq in manual.
 T}
-\0\h'2m'\fB**\fP)|T{
+\0\fB**\fP)|T{
 The forms \(lq<\fIMAX\fP\(rq, \(lq>\fIMIN\fP\(rq, \(lq\fIMIN\fP-\(rq and
 \(lq-\fIMAX\fP\(rq are allowed, too.
 T}
-\0\h'2m'\fB***\fP)|T{
+\0\fB***\fP)|T{
 The suffixes \(lqK\(rq and \(lqM\(rq are allowed to specify
 kilobyte and megabyte respectively.
 T}
 .TE
-\p
+.PP
 .ad
 .
 .PP
@@ -1293,7 +1293,7 @@ identical plus and minus error margins.
 .\"\0m|Months
 .\"\0y|Years
 .\".TE
-.\"\p
+.\".PP
 .\".
 .TS
 allbox center tab(|);
@@ -1302,7 +1302,7 @@ lb l l l l .
 \0Date Unit|S|M|H|d|w|m|y
 \0Description|Seconds|Minutes|Hours|Days|Weeks|Months|Years
 .TE
-\p
+.PP
 .
 .PP
 \fBExample\fP: To select any messages two weeks around January 15, 2001, you'd

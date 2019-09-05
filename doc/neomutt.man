@@ -489,9 +489,9 @@ r c li .
 10|\(em|~/.muttrc
 .T&
 l s s .
-\0\h'0m'\fB*\fP) Note the case of the filename
+\0\fB*\fP) Note the case of the filename
 .TE
-\p
+.PP
 .ad
 .
 .SS "\s-1Other relevant files\s0"
