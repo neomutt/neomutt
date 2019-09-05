@@ -229,13 +229,7 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
     {
       loc = ftello(adata->fp);
       if (loc < 0)
-      {
-        if (!m->quiet)
-        {
-          mutt_progress_done(&progress);
-        }
         return -1;
-      }
 
       count++;
       if (!m->quiet)
@@ -261,10 +255,6 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
       {
         if (fseeko(adata->fp, loc, SEEK_SET) != 0)
         {
-          if (!m->quiet)
-          {
-            mutt_progress_done(&progress);
-          }
           mutt_debug(LL_DEBUG1, "#1 fseek() failed\n");
           mutt_error(_("Mailbox is corrupt"));
           return -1;
@@ -277,13 +267,7 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
 
       loc = ftello(adata->fp);
       if (loc < 0)
-      {
-        if (!m->quiet)
-        {
-          mutt_progress_done(&progress);
-        }
         return -1;
-      }
 
       if ((e->content->length > 0) && (e->lines > 0))
       {
@@ -313,13 +297,7 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
         {
           loc = ftello(adata->fp);
           if (loc < 0)
-          {
-            if (!m->quiet)
-            {
-              mutt_progress_done(&progress);
-            }
             return -1;
-          }
           if (!fgets(buf, sizeof(buf) - 1, adata->fp))
             break;
           lines++;
@@ -339,19 +317,10 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
     }
     else
     {
-      if (!m->quiet)
-      {
-        mutt_progress_done(&progress);
-      }
       mutt_debug(LL_DEBUG1, "corrupt mailbox\n");
       mutt_error(_("Mailbox is corrupt"));
       return -1;
     }
-  }
-
-  if (!m->quiet)
-  {
-    mutt_progress_done(&progress);
   }
 
   if (SigInt == 1)
@@ -561,11 +530,6 @@ static int mbox_parse_mailbox(struct Mailbox *m)
 
     if (!e->lines)
       e->lines = lines ? lines - 1 : 0;
-  }
-
-  if (!m->quiet)
-  {
-    mutt_progress_done(&progress);
   }
 
   if (SigInt == 1)

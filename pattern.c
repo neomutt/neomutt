@@ -2513,8 +2513,6 @@ int mutt_pattern_func(int op, char *prompt)
     }
   }
 
-  mutt_progress_done(&progress);
-
   mutt_clear_error();
 
   if (op == MUTT_LIMIT)
@@ -2558,6 +2556,8 @@ bail:
  */
 int mutt_search_command(int cur, int op)
 {
+  struct Progress progress;
+
   if (!*LastSearch || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
     char buf[256];
@@ -2626,7 +2626,6 @@ int mutt_search_command(int cur, int op)
   if (op == OP_SEARCH_OPPOSITE)
     incr = -incr;
 
-  struct Progress progress;
   mutt_progress_init(&progress, _("Searching..."), MUTT_PROGRESS_READ,
                      Context->mailbox->vcount);
 
@@ -2641,7 +2640,6 @@ int mutt_search_command(int cur, int op)
         msg = _("Search wrapped to top");
       else
       {
-        mutt_progress_done(&progress);
         mutt_message(_("Search hit bottom without finding match"));
         return -1;
       }
@@ -2653,7 +2651,6 @@ int mutt_search_command(int cur, int op)
         msg = _("Search wrapped to bottom");
       else
       {
-        mutt_progress_done(&progress);
         mutt_message(_("Search hit top without finding match"));
         return -1;
       }
@@ -2665,7 +2662,7 @@ int mutt_search_command(int cur, int op)
       /* if we've already evaluated this message, use the cached value */
       if (e->matched)
       {
-        mutt_progress_done(&progress);
+        mutt_clear_error();
         if (msg && *msg)
           mutt_message(msg);
         return i;
@@ -2679,7 +2676,7 @@ int mutt_search_command(int cur, int op)
                                      Context->mailbox, e, NULL);
       if (e->matched > 0)
       {
-        mutt_progress_done(&progress);
+        mutt_clear_error();
         if (msg && *msg)
           mutt_message(msg);
         return i;
@@ -2688,7 +2685,6 @@ int mutt_search_command(int cur, int op)
 
     if (SigInt)
     {
-      mutt_progress_done(&progress);
       mutt_error(_("Search interrupted"));
       SigInt = 0;
       return -1;
@@ -2697,7 +2693,6 @@ int mutt_search_command(int cur, int op)
     i += incr;
   }
 
-  mutt_progress_done(&progress);
   mutt_error(_("Not found"));
   return -1;
 }

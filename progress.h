@@ -58,6 +58,5 @@ struct Progress
 
 void mutt_progress_init(struct Progress *progress, const char *msg, enum ProgressType type, size_t size);
 void mutt_progress_update(struct Progress *progress, size_t pos, int percent);
-void mutt_progress_done(struct Progress *progress);
 
 #endif /* MUTT_PROGRESS_H */

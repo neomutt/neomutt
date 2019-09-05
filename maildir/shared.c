@@ -833,15 +833,8 @@ int mh_read_dir(struct Mailbox *m, const char *subdir)
   md = NULL;
   last = &md;
   int count = 0;
-  const int ret = maildir_parse_dir(m, &last, subdir, &count, &progress);
-  if (!m->quiet)
-  {
-    mutt_progress_done(&progress);
-  }
-  if (ret < 0)
-  {
+  if (maildir_parse_dir(m, &last, subdir, &count, &progress) < 0)
     return -1;
-  }
 
   if (!m->quiet)
   {
@@ -850,18 +843,13 @@ int mh_read_dir(struct Mailbox *m, const char *subdir)
     mutt_progress_init(&progress, msg, MUTT_PROGRESS_READ, count);
   }
   maildir_delayed_parsing(m, &md, &progress);
-  if (!m->quiet)
-  {
-    mutt_progress_done(&progress);
-  }
 
   if (m->magic == MUTT_MH)
   {
     if (mh_read_sequences(&mhs, mailbox_path(m)) < 0)
     {
       maildir_free(&md);
-      return -
-        1;
+      return -1;
     }
     mh_update_maildir(md, &mhs);
     mhs_sequences_free(&mhs);
@@ -1741,18 +1729,7 @@ int mh_mbox_sync(struct Mailbox *m, int *index_hint)
       mutt_progress_update(&progress, i, -1);
 
     if (mh_sync_mailbox_message(m, i, hc) == -1)
-    {
-      if (!m->quiet)
-      {
-        mutt_progress_done(&progress);
-      }
       goto err;
-    }
-  }
-
-  if (!m->quiet)
-  {
-    mutt_progress_done(&progress);
   }
 
 #ifdef USE_HCACHE
