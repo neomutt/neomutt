@@ -593,8 +593,7 @@ int pop_reconnect(struct Mailbox *m)
     if (ret == 0)
     {
       struct Progress progress;
-      mutt_progress_init(&progress, _("Verifying message indexes..."),
-                         MUTT_PROGRESS_SIZE, C_NetInc, 0);
+      mutt_progress_init(&progress, _("Verifying message indexes..."), MUTT_PROGRESS_NET, 0);
 
       for (int i = 0; i < m->msg_count; i++)
         m->emails[i]->refno = -1;

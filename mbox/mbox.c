@@ -214,7 +214,7 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
   {
     char msg[PATH_MAX];
     snprintf(msg, sizeof(msg), _("Reading %s..."), mailbox_path(m));
-    mutt_progress_init(&progress, msg, MUTT_PROGRESS_MSG, C_ReadInc, 0);
+    mutt_progress_init(&progress, msg, MUTT_PROGRESS_READ, 0);
   }
 
   while (true)
@@ -380,7 +380,7 @@ static int mbox_parse_mailbox(struct Mailbox *m)
   {
     char msg[PATH_MAX];
     snprintf(msg, sizeof(msg), _("Reading %s..."), mailbox_path(m));
-    mutt_progress_init(&progress, msg, MUTT_PROGRESS_MSG, C_ReadInc, 0);
+    mutt_progress_init(&progress, msg, MUTT_PROGRESS_READ, 0);
   }
 
   if (!m->emails)
@@ -1225,7 +1225,7 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
   {
     char msg[PATH_MAX];
     snprintf(msg, sizeof(msg), _("Writing %s..."), mailbox_path(m));
-    mutt_progress_init(&progress, msg, MUTT_PROGRESS_MSG, C_WriteInc, m->msg_count);
+    mutt_progress_init(&progress, msg, MUTT_PROGRESS_WRITE, m->msg_count);
   }
 
   for (i = first, j = 0; i < m->msg_count; i++)

@@ -221,8 +221,7 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
   }
   stat(msgfile, &st);
   unlink(msgfile);
-  mutt_progress_init(&progress, _("Sending message..."), MUTT_PROGRESS_SIZE,
-                     C_NetInc, st.st_size);
+  mutt_progress_init(&progress, _("Sending message..."), MUTT_PROGRESS_NET, st.st_size);
 
   snprintf(buf, sizeof(buf), "DATA\r\n");
   if (mutt_socket_send(conn, buf) == -1)
