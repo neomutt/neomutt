@@ -750,7 +750,10 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
   for (int msgno = 1; rc == IMAP_RES_CONTINUE; msgno++)
   {
     if (SigInt && query_abort_header_download(adata))
+    {
+      mutt_progress_done(&progress);
       return -1;
+    }
 
     mutt_progress_update(&progress, msgno, -1);
 
@@ -842,9 +845,13 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
     imap_edata_free((void **) &h.edata);
 
     if ((mfhrc < -1) || ((rc != IMAP_RES_CONTINUE) && (rc != IMAP_RES_OK)))
+    {
+      mutt_progress_done(&progress);
       return -1;
+    }
   }
 
+  mutt_progress_done(&progress);
   return 0;
 }
 
@@ -954,7 +961,10 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
   for (int msgno = 1; rc == IMAP_RES_CONTINUE; msgno++)
   {
     if (SigInt && query_abort_header_download(adata))
+    {
+      mutt_progress_done(&progress);
       return -1;
+    }
 
     mutt_progress_update(&progress, msgno, -1);
 
@@ -982,6 +992,8 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
 
     imap_hcache_put(mdata, mdata->msn_index[header_msn - 1]);
   }
+
+  mutt_progress_done(&progress);
 
   /* The IMAP flag setting as part of cmd_parse_fetch() ends up
    * flipping these on. */
@@ -1241,6 +1253,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
   retval = 0;
 
 bail:
+  mutt_progress_done(&progress);
   mutt_buffer_pool_release(&hdr_list);
   mutt_buffer_pool_release(&buf);
   mutt_file_fclose(&fp);
@@ -1530,6 +1543,8 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
       mutt_progress_update(&progress, sent, -1);
     }
   }
+
+  mutt_progress_done(&progress);
 
   if (len)
     if (flush_buffer(buf, &len, adata->conn) < 0)
@@ -1862,7 +1877,6 @@ int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   char buf[1024];
   char *pc = NULL;
   unsigned int bytes;
-  struct Progress progress;
   unsigned int uid;
   bool retried = false;
   bool read;
@@ -1956,11 +1970,17 @@ int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
             imap_error("imap_msg_open()", buf);
             goto bail;
           }
+          struct Progress progress;
           if (output_progress)
           {
             mutt_progress_init(&progress, _("Fetching message..."), MUTT_PROGRESS_NET, bytes);
           }
-          if (imap_read_literal(msg->fp, adata, bytes, output_progress ? &progress : NULL) < 0)
+          const int lit = imap_read_literal(msg->fp, adata, bytes, output_progress ? &progress : NULL);
+          if (output_progress)
+          {
+            mutt_progress_done(&progress);
+          }
+          if (lit < 0)
           {
             goto bail;
           }

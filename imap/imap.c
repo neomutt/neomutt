@@ -711,7 +711,7 @@ void imap_logout_all(void)
  * @param fp    File handle for email file
  * @param adata Imap Account data
  * @param bytes Number of bytes to read
- * @param pbar  Progress bar
+ * @param progress Progress bar
  * @retval  0 Success
  * @retval -1 Failure
  *
@@ -721,7 +721,7 @@ void imap_logout_all(void)
  *       Apparently even literals use `\r\n`-terminated strings ?!
  */
 int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
-                      unsigned long bytes, struct Progress *pbar)
+                      unsigned long bytes, struct Progress *progress)
 {
   char c;
   bool r = false;
@@ -756,8 +756,8 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
 
     fputc(c, fp);
 
-    if (pbar && !(pos % 1024))
-      mutt_progress_update(pbar, pos, -1);
+    if (progress && !(pos % 1024))
+      mutt_progress_update(progress, pos, -1);
     if (C_DebugLevel >= IMAP_LOG_LTRL)
       mutt_buffer_addch(&buf, c);
   }

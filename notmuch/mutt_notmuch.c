@@ -2411,6 +2411,11 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
     FREE(&edata->oldpath);
   }
 
+  if (!m->quiet)
+  {
+    mutt_progress_done(&progress);
+  }
+
   mutt_buffer_strcpy(&m->pathbuf, uri);
   m->magic = MUTT_NOTMUCH;
 

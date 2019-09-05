@@ -155,6 +155,20 @@ static size_t progress_timestamp(void)
 }
 
 /**
+ * progress_finalize - Finalize and clean up progress bar
+ * @param progress Progress bar
+ * @param force    If true, proceed even if the progress bar is not complete
+ */
+static void progress_finalize(struct Progress *progress, bool force)
+{
+  if (force || (progress->pos >= progress->size))
+  {
+    mutt_clear_error();
+    progress->pos = progress->size;
+  }
+}
+
+/**
  * mutt_progress_init - Set up a progress bar
  * @param progress Progress bar
  * @param msg      Message to display; this is copied into the Progress object
@@ -268,6 +282,14 @@ void mutt_progress_update(struct Progress *progress, size_t pos, int percent)
     }
   }
 
-  if (progress->pos >= progress->size)
-    mutt_clear_error();
+  progress_finalize(progress, false);
+}
+
+/**
+ * mutt_progress_done - Clean up after a progress bar
+ * @param progress Progress bar
+ */
+void mutt_progress_done(struct Progress *progress)
+{
+  progress_finalize(progress, true);
 }
