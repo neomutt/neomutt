@@ -314,7 +314,7 @@ void url_free(struct Url **u)
  */
 void url_pct_encode(char *buf, size_t buflen, const char *src)
 {
-  static const char *alph = "0123456789ABCDEF";
+  static const char *hex = "0123456789ABCDEF";
 
   if (!buf)
     return;
@@ -329,8 +329,8 @@ void url_pct_encode(char *buf, size_t buflen, const char *src)
         break;
 
       *buf++ = '%';
-      *buf++ = alph[(*src >> 4) & 0xf];
-      *buf++ = alph[*src & 0xf];
+      *buf++ = hex[(*src >> 4) & 0xf];
+      *buf++ = hex[*src & 0xf];
       src++;
       buflen -= 3;
       continue;
