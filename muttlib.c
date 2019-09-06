@@ -1556,6 +1556,21 @@ void mutt_encode_path(char *buf, size_t buflen, const char *src)
 }
 
 /**
+ * mutt_buffer_encode_path - Convert a path into the user's preferred character set
+ * @param buf Buffer for the result
+ * @param src Path to convert (OPTIONAL)
+ *
+ * If `src` is NULL, the path in `buf` will be converted in-place.
+ */
+void mutt_buffer_encode_path(struct Buffer *buf, const char *src)
+{
+  char *p = mutt_str_strdup(src);
+  int rc = mutt_ch_convert_string(&p, C_Charset, "utf-8", 0);
+  mutt_buffer_strcpy(buf, (rc == 0) ? NONULL(p) : NONULL(src));
+  FREE(&p);
+}
+
+/**
  * mutt_set_xdg_path - Find an XDG path or its fallback
  * @param type    Type of XDG variable, e.g. #XDG_CONFIG_HOME
  * @param buf     Buffer to save path

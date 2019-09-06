@@ -44,6 +44,7 @@ extern struct Regex *C_GecosMask;
 
 void        mutt_adv_mktemp(struct Buffer *buf);
 void        mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix, const char *suffix, const char *src, int line);
+void        mutt_buffer_encode_path(struct Buffer *buf, const char *src);
 void        mutt_buffer_expand_path(struct Buffer *buf);
 void        mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex);
 void        mutt_buffer_pretty_mailbox(struct Buffer *s);
