@@ -63,16 +63,14 @@ ALL_FILES!=	(cd $(SRCDIR) && git ls-files 2>/dev/null) || true
 NEOMUTT=	neomutt$(EXEEXT)
 NEOMUTTOBJS=	addrbook.o alias.o bcache.o browser.o color.o commands.o \
 		complete.o compose.o compress.o conststrings.o context.o copy.o \
-		curs_lib.o edit.o editmsg.o enriched.o enter.o \
-		filter.o flags.o git_ver.o handler.o hdrline.o help.o hook.o \
-		index.o init.o keymap.o mailcap.o main.o menu.o muttlib.o \
-		mutt_account.o mutt_attach.o mutt_body.o mutt_header.o \
-		mutt_history.o mutt_logging.o mutt_mailbox.o mutt_parse.o mutt_signal.o \
-		mutt_socket.o mutt_thread.o mutt_window.o mx.o myvar.o \
-		pager.o pattern.o postpone.o progress.o query.o recvattach.o \
-		recvcmd.o resize.o rfc3676.o \
-		score.o send.o sendlib.o sidebar.o smtp.o sort.o state.o \
-		status.o system.o terminal.o version.o icommands.o
+		curs_lib.o edit.o editmsg.o enriched.o enter.o filter.o flags.o \
+		git_ver.o handler.o hdrline.o help.o hook.o icommands.o index.o init.o \
+		keymap.o mailcap.o main.o menu.o mutt_account.o mutt_attach.o \
+		mutt_body.o mutt_header.o mutt_history.o mutt_logging.o mutt_mailbox.o \
+		mutt_parse.o mutt_signal.o mutt_socket.o mutt_thread.o mutt_window.o \
+		muttlib.o mx.o myvar.o pager.o pattern.o postpone.o progress.o query.o \
+		recvattach.o recvcmd.o resize.o rfc3676.o score.o send.o sendlib.o \
+		sidebar.o smtp.o sort.o state.o status.o system.o terminal.o version.o
 @if HAVE_LIBUNWIND
 NEOMUTTOBJS+=	backtrace.o
 @endif
@@ -96,10 +94,8 @@ ALLOBJS+=	$(NEOMUTTOBJS)
 # libautocrypt
 @if USE_AUTOCRYPT
 LIBAUTOCRYPT=	libautocrypt.a
-LIBAUTOCRYPTOBJS=	autocrypt/autocrypt.o \
-			autocrypt/autocrypt_acct_menu.o \
-			autocrypt/autocrypt_db.o \
-			autocrypt/autocrypt_gpgme.o \
+LIBAUTOCRYPTOBJS=	autocrypt/autocrypt.o autocrypt/autocrypt_acct_menu.o \
+			autocrypt/autocrypt_db.o autocrypt/autocrypt_gpgme.o \
 			autocrypt/autocrypt_schema.o
 
 CLEANFILES+=	$(LIBAUTOCRYPT) $(LIBAUTOCRYPTOBJS)
@@ -110,7 +106,7 @@ ALLOBJS+=	$(LIBAUTOCRYPTOBJS)
 ###############################################################################
 # libpop
 LIBPOP=	libpop.a
-LIBPOPOBJS=	pop/pop_auth.o pop/pop.o pop/pop_lib.o
+LIBPOPOBJS=	pop/pop.o pop/pop_auth.o pop/pop_lib.o
 CLEANFILES+=	$(LIBPOP) $(LIBPOPOBJS)
 MUTTLIBS+=	$(LIBPOP)
 ALLOBJS+=	$(LIBPOPOBJS)
@@ -152,15 +148,15 @@ ALLOBJS+=	$(LIBMAILDIROBJS)
 ###############################################################################
 # libncrypt
 LIBNCRYPT=	libncrypt.a
-LIBNCRYPTOBJS=	ncrypt/crypt.o ncrypt/crypt_mod.o ncrypt/cryptglue.o
+LIBNCRYPTOBJS=	ncrypt/crypt.o ncrypt/cryptglue.o ncrypt/crypt_mod.o
 @if HAVE_GPGME
 LIBNCRYPTOBJS+=	ncrypt/crypt_gpgme.o ncrypt/crypt_mod_pgp_gpgme.o \
 		ncrypt/crypt_mod_smime_gpgme.o
 @endif
 @if HAVE_PGP
 LIBNCRYPTOBJS+=	ncrypt/crypt_mod_pgp_classic.o ncrypt/gnupgparse.o \
-		ncrypt/pgp.o ncrypt/pgpinvoke.o ncrypt/pgpkey.o \
-		ncrypt/pgplib.o ncrypt/pgpmicalg.o ncrypt/pgppacket.o
+		ncrypt/pgp.o ncrypt/pgpinvoke.o ncrypt/pgpkey.o ncrypt/pgplib.o \
+		ncrypt/pgpmicalg.o ncrypt/pgppacket.o
 @endif
 @if HAVE_SMIME
 LIBNCRYPTOBJS+=	ncrypt/crypt_mod_smime_classic.o ncrypt/smime.o
@@ -174,8 +170,7 @@ ALLOBJS+=	$(LIBNCRYPTOBJS)
 LIBIMAP=	libimap.a
 LIBIMAPOBJS=	imap/auth.o imap/auth_anon.o imap/auth_cram.o \
 		imap/auth_login.o imap/auth_oauth.o imap/auth_plain.o imap/browse.o \
-		imap/command.o imap/imap.o imap/message.o imap/utf7.o \
-		imap/util.o
+		imap/command.o imap/imap.o imap/message.o imap/utf7.o imap/util.o
 @if USE_GSS
 LIBIMAPOBJS+=	imap/auth_gss.o
 @endif
@@ -190,7 +185,7 @@ ALLOBJS+=	$(LIBIMAPOBJS)
 # libconn
 LIBCONN=	libconn.a
 LIBCONNOBJS=	conn/conn_globals.o conn/conn_raw.o conn/getdomain.o \
-		conn/sasl_plain.o  conn/socket.o conn/tunnel.o
+		conn/sasl_plain.o conn/socket.o conn/tunnel.o
 @if HAVE_SASL
 LIBCONNOBJS+=	conn/sasl.o
 @endif
@@ -252,9 +247,9 @@ ALLOBJS+=	$(LIBCOREOBJS)
 # libconfig
 LIBCONFIG=	libconfig.a
 LIBCONFIGOBJS=	config/address.o config/bool.o config/dump.o config/enum.o \
-		config/long.o config/mbtable.o config/number.o \
-		config/quad.o config/regex.o config/set.o \
-		config/slist.o config/sort.o config/string.o config/subset.o
+		config/long.o config/mbtable.o config/number.o config/quad.o \
+		config/regex.o config/set.o config/slist.o config/sort.o \
+		config/string.o config/subset.o
 
 CLEANFILES+=	$(LIBCONFIG) $(LIBCONFIGOBJS)
 MUTTLIBS+=	$(LIBCONFIG)
@@ -263,11 +258,10 @@ ALLOBJS+=	$(LIBCONFIGOBJS)
 ###############################################################################
 # libemail
 LIBEMAIL=	libemail.a
-LIBEMAILOBJS=	email/attach.o email/body.o \
-		email/email_globals.o email/envelope.o email/from.o \
-		email/email.o email/mime.o email/parameter.o \
-		email/parse.o email/rfc2047.o email/rfc2231.o email/tags.o \
-		email/thread.o email/url.o
+LIBEMAILOBJS=	email/attach.o email/body.o email/email.o \
+		email/email_globals.o email/envelope.o email/from.o email/mime.o \
+		email/parameter.o email/parse.o email/rfc2047.o email/rfc2231.o \
+		email/tags.o email/thread.o email/url.o
 CLEANFILES+=	$(LIBEMAIL) $(LIBEMAILOBJS)
 MUTTLIBS+=	$(LIBEMAIL)
 ALLOBJS+=	$(LIBEMAILOBJS)
@@ -285,11 +279,10 @@ ALLOBJS+=	$(LIBADDRESSOBJS)
 # libmutt
 LIBMUTT=	libmutt.a
 LIBMUTTOBJS=	mutt/base64.o mutt/buffer.o mutt/charset.o mutt/date.o \
-		mutt/envlist.o mutt/exit.o mutt/file.o mutt/hash.o \
-		mutt/history.o mutt/list.o mutt/logging.o mutt/mapping.o \
-		mutt/mbyte.o mutt/md5.o mutt/memory.o mutt/notify.o \
-		mutt/path.o mutt/pool.o \
-		mutt/regex.o mutt/slist.o mutt/signal.o mutt/string.o
+		mutt/envlist.o mutt/exit.o mutt/file.o mutt/hash.o mutt/history.o \
+		mutt/list.o mutt/logging.o mutt/mapping.o mutt/mbyte.o mutt/md5.o \
+		mutt/memory.o mutt/notify.o mutt/path.o mutt/pool.o mutt/regex.o \
+		mutt/signal.o mutt/slist.o mutt/string.o
 CLEANFILES+=	$(LIBMUTT) $(LIBMUTTOBJS)
 MUTTLIBS+=	$(LIBMUTT)
 ALLOBJS+=	$(LIBMUTTOBJS)
@@ -432,14 +425,10 @@ git_ver.c: $(ALL_FILES)
 	cmp -s $@.tmp $@ || mv $@.tmp $@; \
 	rm -f $@.tmp
 
-hcache/hcversion.h:	$(SRCDIR)/address/address.h \
-			$(SRCDIR)/email/body.h \
-			$(SRCDIR)/email/email.h \
-			$(SRCDIR)/email/envelope.h \
-			$(SRCDIR)/email/parameter.h \
-			$(SRCDIR)/mutt/buffer.h \
-			$(SRCDIR)/mutt/list.h \
-			$(SRCDIR)/hcache/hcachever.sh
+hcache/hcversion.h:	$(SRCDIR)/address/address.h $(SRCDIR)/email/body.h \
+			$(SRCDIR)/email/email.h $(SRCDIR)/email/envelope.h \
+			$(SRCDIR)/email/parameter.h $(SRCDIR)/hcache/hcachever.sh \
+			$(SRCDIR)/mutt/buffer.h $(SRCDIR)/mutt/list.h
 	$(MKDIR_P) $(PWD)/hcache
 	( echo '#include "config.h"'; \
 	echo '#include "address/address.h"'; \
@@ -479,9 +468,9 @@ uninstall: $(UNINSTALL_TARGETS)
 
 # distclean
 distclean: clean
-	$(RM) $(DEPFILES) .clang_complete autosetup/jimsh0 config.h config.log \
-		conststrings.c contrib/Makefile doc/Makefile doc/neomutt.1 \
-		html Makefile po/Makefile test/Makefile
+	$(RM) $(DEPFILES) autosetup/jimsh0 config.h config.log conststrings.c \
+		contrib/Makefile doc/Makefile doc/neomutt.1 html Makefile po/Makefile \
+		test/Makefile .clang_complete
 	$(RM) *.gc?? */*.gc?? test/*/*.gc??
 	$(RM) lcov.info lcov
 
