@@ -114,9 +114,10 @@ options {
 if {1} {
   # Keep sorted, please.
   foreach opt {
-    autocrypt bdb backtrace coverage doc everything fmemopen full-doc gdbm gnutls gpgme
-    gss homespool idn idn2 inotify kyotocabinet lmdb locales-fix lua mixmaster
-    nls notmuch pkgconf pgp qdbm sasl smime sqlite ssl testing tokyocabinet
+    autocrypt backtrace bdb coverage doc everything fmemopen full-doc gdbm
+    gnutls gpgme gss homespool idn idn2 inotify kyotocabinet lmdb locales-fix
+    lua mixmaster nls notmuch pgp pkgconf qdbm sasl smime sqlite ssl testing
+    tokyocabinet
   } {
     define want-$opt [opt-bool $opt]
   }
@@ -350,8 +351,8 @@ set prefix [opt-val with-sysroot][get-define prefix]
 ###############################################################################
 # Everything
 if {[get-define want-everything]} {
-  foreach opt {gpgme pgp smime notmuch lua tokyocabinet kyotocabinet bdb
-               gdbm qdbm lmdb} {
+  foreach opt {bdb gdbm gpgme kyotocabinet lmdb lua notmuch pgp qdbm smime
+               tokyocabinet} {
     define want-$opt
     append conf_options "--$opt "
   }
@@ -499,7 +500,7 @@ if {[get-define want-gpgme]} {
 ###############################################################################
 # INOTIFY
 if {[get-define want-inotify]} {
-  if {[cc-check-functions inotify_init1 inotify_add_watch inotify_rm_watch]} {
+  if {[cc-check-functions inotify_add_watch inotify_init1 inotify_rm_watch]} {
     if {[cc-check-includes sys/inotify.h]} {
       define USE_INOTIFY
     }
@@ -686,7 +687,7 @@ switch [opt-val with-ui ncurses] {
         user-error "Unable to find ncursesw library"
       }
 
-      foreach f {start_color typeahead bkgdset curs_set meta use_default_colors} {
+      foreach f {bkgdset curs_set meta start_color typeahead use_default_colors} {
         cc-check-function-in-lib $f $ncurses_lib
       }
       cc-check-functions use_extended_names

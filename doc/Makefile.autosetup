@@ -4,7 +4,8 @@ doc/makedoc$(EXEEXT): $(SRCDIR)/doc/makedoc.c
 	$(CC_FOR_BUILD) -I. $(CFLAGS_FOR_BUILD) $(LDFLAGS_FOR_BUILD) \
 	    -o $@ $(SRCDIR)/doc/makedoc.c
 
-doc/neomuttrc: $(SRCDIR)/init.h doc/makedoc$(EXEEXT) $(SRCDIR)/doc/neomuttrc.head
+doc/neomuttrc: doc/makedoc$(EXEEXT) $(SRCDIR)/doc/neomuttrc.head \
+		$(SRCDIR)/init.h
 	sed -e 's,@docdir@,$(docdir),' $(SRCDIR)/doc/neomuttrc.head \
 	    > doc/neomuttrc
 	$(MAKEDOC_CPP) $(SRCDIR)/init.h | doc/makedoc$(EXEEXT) -c \
@@ -16,40 +17,22 @@ doc:
 
 @if BUILD_DOC
 
-CHUNKED_DOCFILES = doc/advancedusage.html \
-		   doc/configuration.html \
-		   doc/gettingstarted.html \
-		   doc/intro.html \
-		   doc/mimesupport.html \
-		   doc/miscellany.html \
-		   doc/optionalfeatures.html \
-		   doc/reference.html \
-		   doc/security.html \
-		   doc/tuning.html
+CHUNKED_DOCFILES = doc/advancedusage.html doc/configuration.html \
+			doc/gettingstarted.html doc/intro.html doc/mimesupport.html \
+			doc/miscellany.html doc/optionalfeatures.html doc/reference.html \
+			doc/security.html doc/tuning.html
 
-HTML_DOCFILES = doc/manual.html doc/index.html $(CHUNKED_DOCFILES)
+HTML_DOCFILES = doc/index.html doc/manual.html $(CHUNKED_DOCFILES)
 
-srcdir_DOCFILES = $(SRCDIR)/doc/smime-notes.txt \
-		  $(SRCDIR)/ChangeLog.md \
-		  $(SRCDIR)/CODE_OF_CONDUCT.md \
-		  $(SRCDIR)/COPYRIGHT.md \
-		  $(SRCDIR)/INSTALL.md \
-		  $(SRCDIR)/LICENSE.md \
-		  $(SRCDIR)/README.md
+srcdir_DOCFILES = $(SRCDIR)/doc/smime-notes.txt $(SRCDIR)/ChangeLog.md \
+		  $(SRCDIR)/CODE_OF_CONDUCT.md $(SRCDIR)/COPYRIGHT.md \
+		  $(SRCDIR)/INSTALL.md $(SRCDIR)/LICENSE.md $(SRCDIR)/README.md
 
-all-doc:	doc \
-		$(CHUNKED_DOCFILES) \
-		doc/index.html \
-		doc/manual.html \
-		doc/manual.txt \
-		doc/neomuttrc \
-		doc/neomutt.1 \
-		doc/neomuttrc.5 \
+all-doc:	doc $(CHUNKED_DOCFILES) doc/index.html doc/manual.txt \
+		doc/manual.html doc/neomuttrc doc/neomutt.1 doc/neomuttrc.5
 
-doc/manual.html:	doc/manual.xml \
-			$(SRCDIR)/doc/html.xsl \
-			$(SRCDIR)/doc/neomutt.xsl \
-			$(SRCDIR)/doc/neomutt.css
+doc/manual.html:	doc/manual.xml $(SRCDIR)/doc/html.xsl \
+			$(SRCDIR)/doc/neomutt.css $(SRCDIR)/doc/neomutt.xsl
 	xsltproc --nonet -o $@ $(SRCDIR)/doc/html.xsl doc/manual.xml
 
 doc/manual.txt: doc/manual.html
@@ -61,16 +44,12 @@ doc/manual.txt: doc/manual.html
 
 $(CHUNKED_DOCFILES): doc/index.html
 
-doc/index.html: $(SRCDIR)/doc/chunk.xsl \
-		$(SRCDIR)/doc/neomutt.xsl \
-		$(SRCDIR)/doc/neomutt.css \
-		doc/manual.xml
+doc/index.html: $(SRCDIR)/doc/chunk.xsl $(SRCDIR)/doc/neomutt.xsl \
+		$(SRCDIR)/doc/neomutt.css doc/manual.xml
 	xsltproc --nonet -o doc/ $(SRCDIR)/doc/chunk.xsl doc/manual.xml > /dev/null 2>&1
 
-doc/neomuttrc.5:	doc/makedoc$(EXEEXT) \
-		$(SRCDIR)/init.h \
-		$(SRCDIR)/doc/neomuttrc.man.head \
-		$(SRCDIR)/doc/neomuttrc.man.tail
+doc/neomuttrc.5:	doc/makedoc$(EXEEXT) $(SRCDIR)/init.h \
+		$(SRCDIR)/doc/neomuttrc.man.head $(SRCDIR)/doc/neomuttrc.man.tail
 	( sed -e "/^\.TH/s|@MAN_DATE@|$(PACKAGE_DATE)|" \
 	    $(SRCDIR)/doc/neomuttrc.man.head && \
 	    $(MAKEDOC_CPP) $(SRCDIR)/init.h | doc/makedoc$(EXEEXT) -m && \
@@ -87,9 +66,9 @@ doc/neomutt.1:
 	    $(SRCDIR)/doc/neomutt.man \
 	) > $@
 
-doc/manual.xml:	doc/makedoc$(EXEEXT) $(SRCDIR)/init.h $(SRCDIR)/opcodes.h \
-		$(SRCDIR)/doc/manual.xml.head $(SRCDIR)/functions.h \
-		$(SRCDIR)/doc/manual.xml.tail $(SRCDIR)/doc/gen-map-doc
+doc/manual.xml:	doc/makedoc$(EXEEXT) $(SRCDIR)/doc/gen-map-doc \
+		$(SRCDIR)/doc/manual.xml.head $(SRCDIR)/doc/manual.xml.tail\
+		$(SRCDIR)/functions.h $(SRCDIR)/init.h $(SRCDIR)/opcodes.h
 	( sed -e "s/@VERSION@/$(PACKAGE_VERSION)/; s!/usr/libexec!$(libexecdir)!g" \
 	    $(SRCDIR)/doc/manual.xml.head && \
 	    $(MAKEDOC_CPP) $(SRCDIR)/init.h | doc/makedoc$(EXEEXT) -s && \
