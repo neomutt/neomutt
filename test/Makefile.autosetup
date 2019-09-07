@@ -23,23 +23,23 @@ ADDRESS_OBJS	= test/address/mutt_addr_cat.o \
 		  test/address/mutt_addrlist_to_local.o \
 		  test/address/mutt_addrlist_write.o
 
-ATTACH_OBJS	= test/attach/mutt_actx_add_fp.o \
-		  test/attach/mutt_actx_entries_free.o \
-		  test/attach/mutt_actx_free.o \
+ATTACH_OBJS	= test/attach/mutt_actx_add_attach.o \
 		  test/attach/mutt_actx_add_body.o \
-		  test/attach/mutt_actx_add_attach.o
+		  test/attach/mutt_actx_add_fp.o \
+		  test/attach/mutt_actx_entries_free.o \
+		  test/attach/mutt_actx_free.o
 
 BASE64_OBJS	= test/base64/mutt_b64_buffer_decode.o \
 		  test/base64/mutt_b64_buffer_encode.o \
 		  test/base64/mutt_b64_decode.o \
 		  test/base64/mutt_b64_encode.o
 
-BODY_OBJS	= test/body/mutt_body_free.o \
-		  test/body/mutt_body_cmp_strict.o \
+BODY_OBJS	= test/body/mutt_body_cmp_strict.o \
+		  test/body/mutt_body_free.o \
 		  test/body/mutt_body_new.o
 
-BUFFER_OBJS	= test/buffer/mutt_buffer_addch.o \
-		  test/buffer/mutt_buffer_add_printf.o \
+BUFFER_OBJS	= test/buffer/mutt_buffer_add_printf.o \
+		  test/buffer/mutt_buffer_addch.o \
 		  test/buffer/mutt_buffer_addstr.o \
 		  test/buffer/mutt_buffer_addstr_n.o \
 		  test/buffer/mutt_buffer_alloc.o \
@@ -99,9 +99,9 @@ DATE_OBJS	= test/date/mutt_date_add_timeout.o \
 		  test/date/mutt_date_check_month.o \
 		  test/date/mutt_date_gmtime.o \
 		  test/date/mutt_date_is_day_name.o \
+		  test/date/mutt_date_local_tz.o \
 		  test/date/mutt_date_localtime.o \
 		  test/date/mutt_date_localtime_format.o \
-		  test/date/mutt_date_local_tz.o \
 		  test/date/mutt_date_make_date.o \
 		  test/date/mutt_date_make_imap.o \
 		  test/date/mutt_date_make_time.o \
@@ -111,36 +111,37 @@ DATE_OBJS	= test/date/mutt_date_add_timeout.o \
 		  test/date/mutt_date_parse_imap.o
 
 EMAIL_OBJS	= test/email/common.o \
-		  test/email/email_new.o \
+		  test/email/email_cmp_strict.o \
 		  test/email/email_free.o \
-		  test/email/email_size.o \
-		  test/email/email_cmp_strict.o
+		  test/email/email_new.o \
+		  test/email/email_size.o
 
-ENVELOPE_OBJS	= test/envelope/mutt_env_free.o \
-		  test/envelope/mutt_env_cmp_strict.o \
-		  test/envelope/mutt_env_to_local.o \
+ENVELOPE_OBJS	= test/envelope/mutt_env_cmp_strict.o \
+		  test/envelope/mutt_env_free.o \
 		  test/envelope/mutt_env_merge.o \
 		  test/envelope/mutt_env_new.o \
-		  test/envelope/mutt_env_to_intl.o
+		  test/envelope/mutt_env_to_intl.o \
+		  test/envelope/mutt_env_to_local.o
 
-ENVLIST_OBJS	= test/envlist/mutt_envlist_free.o \
-		  test/envlist/mutt_envlist_getlist.o \
-		  test/envlist/mutt_envlist_init.o \
+ENVLIST_OBJS	= test/envlist/mutt_envlist_unset.o \
 		  test/envlist/mutt_envlist_set.o \
-		  test/envlist/mutt_envlist_unset.o
+		  test/envlist/mutt_envlist_init.o \
+		  test/envlist/mutt_envlist_getlist.o \
+		  test/envlist/mutt_envlist_free.o
 
 FILE_OBJS	= test/file/common.o \
+		  test/file/mutt_buffer_file_expand_fmt_quote.o \
+		  test/file/mutt_buffer_quote_filename.o \
 		  test/file/mutt_file_check_empty.o \
+		  test/file/mutt_file_chmod.o \
 		  test/file/mutt_file_chmod_add.o \
 		  test/file/mutt_file_chmod_add_stat.o \
-		  test/file/mutt_file_chmod.o \
 		  test/file/mutt_file_chmod_rm.o \
 		  test/file/mutt_file_chmod_rm_stat.o \
 		  test/file/mutt_file_copy_bytes.o \
 		  test/file/mutt_file_copy_stream.o \
 		  test/file/mutt_file_decrease_mtime.o \
 		  test/file/mutt_file_expand_fmt.o \
-		  test/file/mutt_buffer_file_expand_fmt_quote.o \
 		  test/file/mutt_file_fclose.o \
 		  test/file/mutt_file_fopen.o \
 		  test/file/mutt_file_fsync_close.o \
@@ -153,7 +154,6 @@ FILE_OBJS	= test/file/common.o \
 		  test/file/mutt_file_mkstemp_full.o \
 		  test/file/mutt_file_open.o \
 		  test/file/mutt_file_quote_filename.o \
-		  test/file/mutt_buffer_quote_filename.o \
 		  test/file/mutt_file_read_keyword.o \
 		  test/file/mutt_file_read_line.o \
 		  test/file/mutt_file_rename.o \
@@ -173,8 +173,9 @@ FILE_OBJS	= test/file/common.o \
 
 FROM_OBJS	= test/from/is_from.o
 
-GROUP_OBJS	= test/group/mutt_grouplist_add_addrlist.o \
+GROUP_OBJS	= test/group/mutt_group_match.o \
 		  test/group/mutt_grouplist_add.o \
+		  test/group/mutt_grouplist_add_addrlist.o \
 		  test/group/mutt_grouplist_add_regex.o \
 		  test/group/mutt_grouplist_clear.o \
 		  test/group/mutt_grouplist_destroy.o \
@@ -182,12 +183,11 @@ GROUP_OBJS	= test/group/mutt_grouplist_add_addrlist.o \
 		  test/group/mutt_grouplist_init.o \
 		  test/group/mutt_grouplist_remove_addrlist.o \
 		  test/group/mutt_grouplist_remove_regex.o \
-		  test/group/mutt_group_match.o \
 		  test/group/mutt_pattern_group.o
 
 HASH_OBJS	= test/hash/mutt_hash_delete.o \
-		  test/hash/mutt_hash_find_bucket.o \
 		  test/hash/mutt_hash_find.o \
+		  test/hash/mutt_hash_find_bucket.o \
 		  test/hash/mutt_hash_find_elem.o \
 		  test/hash/mutt_hash_free.o \
 		  test/hash/mutt_hash_insert.o \
@@ -260,12 +260,12 @@ MBYTE_OBJS	= test/mbyte/mutt_mb_charlen.o \
 		  test/mbyte/mutt_mb_width_ceiling.o
 
 MD5_OBJS	= test/md5/common.o \
-		  test/md5/mutt_md5_bytes.o \
 		  test/md5/mutt_md5.o \
+		  test/md5/mutt_md5_bytes.o \
 		  test/md5/mutt_md5_finish_ctx.o \
 		  test/md5/mutt_md5_init_ctx.o \
-		  test/md5/mutt_md5_process_bytes.o \
 		  test/md5/mutt_md5_process.o \
+		  test/md5/mutt_md5_process_bytes.o \
 		  test/md5/mutt_md5_toascii.o
 
 MEMORY_OBJS	= test/memory/mutt_mem_calloc.o \
@@ -273,29 +273,29 @@ MEMORY_OBJS	= test/memory/mutt_mem_calloc.o \
 		  test/memory/mutt_mem_malloc.o \
 		  test/memory/mutt_mem_realloc.o
 
-PARAMETER_OBJS	= test/parameter/mutt_param_new.o \
+PARAMETER_OBJS	= test/parameter/mutt_param_cmp_strict.o \
 		  test/parameter/mutt_param_delete.o \
-		  test/parameter/mutt_param_get.o \
-		  test/parameter/mutt_param_cmp_strict.o \
+		  test/parameter/mutt_param_free.o \
 		  test/parameter/mutt_param_free_one.o \
-		  test/parameter/mutt_param_set.o \
-		  test/parameter/mutt_param_free.o
+		  test/parameter/mutt_param_get.o \
+		  test/parameter/mutt_param_new.o \
+		  test/parameter/mutt_param_set.o
 
-PARSE_OBJS	= test/parse/mutt_check_encoding.o \
+PARSE_OBJS	= test/parse/mutt_auto_subscribe.o \
+		  test/parse/mutt_check_encoding.o \
+		  test/parse/mutt_check_mime_type.o \
+		  test/parse/mutt_extract_message_id.o \
+		  test/parse/mutt_is_message_type.o \
 		  test/parse/mutt_matches_ignore.o \
+		  test/parse/mutt_parse_content_type.o \
 		  test/parse/mutt_parse_mailto.o \
-		  test/parse/mutt_auto_subscribe.o \
+		  test/parse/mutt_parse_multipart.o \
+		  test/parse/mutt_parse_part.o \
+		  test/parse/mutt_read_mime_header.o \
 		  test/parse/mutt_rfc822_parse_line.o \
 		  test/parse/mutt_rfc822_parse_message.o \
-		  test/parse/mutt_is_message_type.o \
-		  test/parse/mutt_parse_multipart.o \
-		  test/parse/mutt_check_mime_type.o \
-		  test/parse/mutt_read_mime_header.o \
-		  test/parse/mutt_parse_part.o \
-		  test/parse/mutt_rfc822_read_line.o \
-		  test/parse/mutt_parse_content_type.o \
 		  test/parse/mutt_rfc822_read_header.o \
-		  test/parse/mutt_extract_message_id.o
+		  test/parse/mutt_rfc822_read_line.o
 
 PATH_OBJS	= test/path/mutt_path_abbr_folder.o \
 		  test/path/mutt_path_basename.o \
@@ -313,20 +313,20 @@ PATH_OBJS	= test/path/mutt_path_abbr_folder.o \
 		  test/path/mutt_path_tidy_slash.o \
 		  test/path/mutt_path_to_absolute.o
 
-PATTERN_OBJS	= test/pattern/comp.o \
+PATTERN_OBJS	= pattern.o \
+		  test/pattern/comp.o \
 		  test/pattern/dummy.o \
-		  test/pattern/extract.o \
-		  pattern.o
+		  test/pattern/extract.o
 
 REGEX_OBJS	= test/regex/mutt_regex_compile.o \
 		  test/regex/mutt_regex_free.o \
 		  test/regex/mutt_regex_match.o \
+		  test/regex/mutt_regex_new.o \
 		  test/regex/mutt_regexlist_add.o \
 		  test/regex/mutt_regexlist_free.o \
 		  test/regex/mutt_regexlist_match.o \
 		  test/regex/mutt_regexlist_new.o \
 		  test/regex/mutt_regexlist_remove.o \
-		  test/regex/mutt_regex_new.o \
 		  test/regex/mutt_replacelist_add.o \
 		  test/regex/mutt_replacelist_apply.o \
 		  test/regex/mutt_replacelist_free.o \
@@ -335,15 +335,15 @@ REGEX_OBJS	= test/regex/mutt_regex_compile.o \
 		  test/regex/mutt_replacelist_remove.o
 
 RFC2047_OBJS	= test/rfc2047/common.o \
-		  test/rfc2047/rfc2047_decode_addrlist.o \
 		  test/rfc2047/rfc2047_decode.o \
+		  test/rfc2047/rfc2047_decode_addrlist.o \
 		  test/rfc2047/rfc2047_decode_envelope.o \
+		  test/rfc2047/rfc2047_encode.o \
 		  test/rfc2047/rfc2047_encode_addrlist.o \
-		  test/rfc2047/rfc2047_encode_envelope.o \
-		  test/rfc2047/rfc2047_encode.o
+		  test/rfc2047/rfc2047_encode_envelope.o
 
-RFC2231_OBJS	= test/rfc2231/rfc2231_encode_string.o \
-		  test/rfc2231/rfc2231_decode_parameters.o
+RFC2231_OBJS	= test/rfc2231/rfc2231_decode_parameters.o \
+		  test/rfc2231/rfc2231_encode_string.o
 
 SIGNAL_OBJS	= test/signal/mutt_sig_allow_interrupt.o \
 		  test/signal/mutt_sig_block.o \
@@ -399,28 +399,28 @@ STRING_OBJS	= test/string/mutt_str_adjust.o \
 		  test/string/mutt_str_sysexit.o \
 		  test/string/mutt_str_word_casecmp.o
 
-TAGS_OBJS	= test/tags/driver_tags_get.o \
-		  test/tags/driver_tags_replace.o \
+TAGS_OBJS	= test/tags/driver_tags_free.o \
+		  test/tags/driver_tags_get.o \
 		  test/tags/driver_tags_get_transformed.o \
+		  test/tags/driver_tags_get_transformed_for.o \
 		  test/tags/driver_tags_get_with_hidden.o \
-		  test/tags/driver_tags_free.o \
-		  test/tags/driver_tags_get_transformed_for.o
+		  test/tags/driver_tags_replace.o
 
-THREAD_OBJS	= test/thread/thread_hash_destructor.o \
+THREAD_OBJS	= test/thread/clean_references.o \
+		  test/thread/find_virtual.o \
+		  test/thread/insert_message.o \
 		  test/thread/is_descendant.o \
 		  test/thread/mutt_break_thread.o \
-		  test/thread/unlink_message.o \
-		  test/thread/clean_references.o \
-		  test/thread/find_virtual.o \
-		  test/thread/insert_message.o
+		  test/thread/thread_hash_destructor.o \
+		  test/thread/unlink_message.o
 
-URL_OBJS	= test/url/url_pct_encode.o \
-		  test/url/url_check_scheme.o \
-		  test/url/url_parse.o \
+URL_OBJS	= test/url/url_check_scheme.o \
 		  test/url/url_free.o \
-		  test/url/url_tostring.o \
+		  test/url/url_parse.o \
 		  test/url/url_pct_decode.o \
-		  test/url/url_tobuffer.o
+		  test/url/url_pct_encode.o \
+		  test/url/url_tobuffer.o \
+		  test/url/url_tostring.o
 
 BUILD_DIRS	= $(PWD)/test/address $(PWD)/test/attach $(PWD)/test/base64 \
 		  $(PWD)/test/body $(PWD)/test/buffer $(PWD)/test/charset \
@@ -483,7 +483,7 @@ test: $(TEST_BINARY)
 $(BUILD_DIRS):
 	$(MKDIR_P) $@
 
-$(TEST_BINARY): $(BUILD_DIRS) $(TEST_OBJS) $(MUTTLIBS)
+$(TEST_BINARY): $(BUILD_DIRS) $(MUTTLIBS) $(TEST_OBJS)
 	$(CC) -o $@ $(TEST_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
 all-test: $(TEST_BINARY)
