@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.2.3\n"
 
 #: addrbook.c:55 autocrypt/autocrypt_acct_menu.c:53 browser.c:81 browser.c:91 mutt_history.c:44 pager.c:228 postpone.c:67
 #: query.c:79 recvattach.c:95
@@ -134,7 +134,7 @@ msgstr "无法创建 %s：%s"
 #.
 #: autocrypt/autocrypt.c:152
 msgid "Create an initial autocrypt account?"
-msgstr ""
+msgstr "创建一个初始 autocrypt 帐号？"
 
 #. L10N:
 #. Autocrypt is asking for the email address to use for the
@@ -143,7 +143,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:176
 msgid "Autocrypt account address: "
-msgstr ""
+msgstr "Autocrypt 帐号地址："
 
 #. L10N:
 #. Autocrypt prompts for an account email address, and requires
@@ -152,7 +152,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:187
 msgid "Please enter a single email address"
-msgstr ""
+msgstr "请输入一个合法的邮件地址"
 
 #. L10N:
 #. When creating an autocrypt account, this message will be displayed
@@ -161,7 +161,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:204
 msgid "That email address already has an autocrypt account"
-msgstr ""
+msgstr "该邮件地址已有一个 autocrypt 帐号"
 
 #. L10N:
 #. Autocrypt has a setting "prefer-encrypt".
@@ -181,7 +181,7 @@ msgstr "加密"
 #.
 #: autocrypt/autocrypt.c:232
 msgid "Autocrypt account creation succeeded"
-msgstr ""
+msgstr "Autocrypt 帐号创建成功"
 
 #. L10N:
 #. Error message displayed if creating an autocrypt account failed
@@ -189,7 +189,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:238
 msgid "Autocrypt account creation aborted"
-msgstr ""
+msgstr "已中止创建 autocrypt 帐号"
 
 #. L10N:
 #. %s is an email address.  Autocrypt is scanning for the keyids
@@ -197,9 +197,9 @@ msgstr ""
 #. The message is printed and they are returned to the compose menu.
 #.
 #: autocrypt/autocrypt.c:610 autocrypt/autocrypt.c:639
-#, fuzzy, c-format
+#, c-format
 msgid "No (valid) autocrypt key found for %s"
-msgstr "未找到可用于 %s 的(有效)证书"
+msgstr "未找到可用于 %s 的(有效) autocrypt 密钥"
 
 #. L10N:
 #. The first time autocrypt is enabled, Mutt will ask to scan
@@ -210,13 +210,12 @@ msgstr "未找到可用于 %s 的(有效)证书"
 #.
 #: autocrypt/autocrypt.c:903
 msgid "Scan a mailbox for autocrypt headers?"
-msgstr ""
+msgstr "要扫描信箱内的 autocrypt 头吗？"
 
 #. L10N: The prompt for a mailbox to scan for Autocrypt: headers
 #: autocrypt/autocrypt.c:907
-#, fuzzy
 msgid "Scan mailbox"
-msgstr "Fcc 信箱"
+msgstr "扫描信箱"
 
 #. L10N:
 #. This is the second prompt to see if the user would like
@@ -226,16 +225,16 @@ msgstr "Fcc 信箱"
 #. and I don't want them to accidentally ctrl-g and abort it.
 #.
 #: autocrypt/autocrypt.c:927
+#, fuzzy
 msgid "Scan another mailbox for autocrypt headers?"
-msgstr ""
+msgstr "再扫描另一个信箱？"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. create new account
 #.
 #: autocrypt/autocrypt_acct_menu.c:57
-#, fuzzy
 msgid "Create"
-msgstr "创建 %s 吗？"
+msgstr "创建"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. delete account
@@ -300,22 +299,21 @@ msgstr ""
 #. L10N: Autocrypt Account Management Menu title
 #: autocrypt/autocrypt_acct_menu.c:177
 msgid "Autocrypt Accounts"
-msgstr ""
+msgstr "Autocrypt 帐号"
 
 #. L10N:
 #. This error message is displayed if a database update of an
 #. account record fails for some odd reason.
 #.
 #: autocrypt/autocrypt_acct_menu.c:238 autocrypt/autocrypt_acct_menu.c:252
-#, fuzzy
 msgid "Error updating account record"
-msgstr "扫描目录出错"
+msgstr "更新帐号记录出错"
 
 #. L10N: Confirmation message when deleting an autocrypt account
 #: autocrypt/autocrypt_acct_menu.c:295
-#, fuzzy, c-format
+#, c-format
 msgid "Really delete account \"%s\"?"
-msgstr "真的要删除 \"%s\" 信箱吗？"
+msgstr "真的要删除 \"%s\" 帐号吗？"
 
 #. L10N:
 #. %s is the path to the database.
@@ -326,9 +324,9 @@ msgstr "真的要删除 \"%s\" 信箱吗？"
 #. for some reason.  The %s is the full path of the database file.
 #.
 #: autocrypt/autocrypt_db.c:62 autocrypt/autocrypt_db.c:106
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to open autocrypt database %s"
-msgstr "无法打开信箱 %s"
+msgstr "无法打开 autocrypt 数据库 %s"
 
 #: autocrypt/autocrypt_gpgme.c:48 ncrypt/crypt_gpgme.c:730
 #, c-format
@@ -341,16 +339,16 @@ msgstr "创建 gpgme 上下文出错：%s"
 #.
 #: autocrypt/autocrypt_gpgme.c:166
 msgid "Generating autocrypt key..."
-msgstr ""
+msgstr "生成 autocrypt 密钥..."
 
 #. L10N:
 #. GPGME was unable to generate a key for some reason.
 #. %s is the error message returned by GPGME.
 #.
 #: autocrypt/autocrypt_gpgme.c:178 autocrypt/autocrypt_gpgme.c:197
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating autocrypt key: %s"
-msgstr "提取密钥时出错：%s"
+msgstr "生成 autocrypt 密钥时出错：%s"
 
 #. L10N:
 #. After selecting a key for an autocrypt account,
@@ -361,7 +359,7 @@ msgstr "提取密钥时出错：%s"
 #: autocrypt/autocrypt_gpgme.c:246
 #, c-format
 msgid "The key %s is not usable for autocrypt"
-msgstr ""
+msgstr "密钥 %s 不能用于 autocrypt"
 
 #. L10N:
 #. During autocrypt account creation, this prompt asks the
@@ -370,7 +368,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_gpgme.c:280
 msgid "(c)reate new, or (s)elect existing GPG key?"
-msgstr ""
+msgstr "创建新密钥(c)，或选择(s)现有的 GPG 密钥?"
 
 #. L10N:
 #. The letters corresponding to the
@@ -378,15 +376,16 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_gpgme.c:285
 msgid "cs"
-msgstr ""
+msgstr "cs"
 
 #. L10N:
 #. During autocrypt account creation, if selecting an existing key fails
 #. for some reason, we prompt to see if they want to create a key instead.
 #.
 #: autocrypt/autocrypt_gpgme.c:299
+#, fuzzy
 msgid "Create a new gpg key for this account, instead?"
-msgstr ""
+msgstr "要为该帐号创建一个新的 GPG 密钥吗？"
 
 #. L10N:
 #. The autocrypt database keeps track of schema version numbers.
@@ -396,7 +395,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_schema.c:119
 msgid "Autocrypt database version is too new"
-msgstr ""
+msgstr "Autocrypt 数据库版本太新"
 
 #: bcache.c:208
 #, c-format
@@ -788,9 +787,8 @@ msgstr "正在复制到 %s..."
 
 #. L10N: e.g. "text/plain; charset=UTF-8; ..."
 #: commands.c:1230
-#, fuzzy
 msgid "Content type is too long"
-msgstr "内容类型(Content-Type)改变为 %s"
+msgstr "内容类型过长"
 
 #: commands.c:1254
 #, c-format
@@ -875,7 +873,7 @@ msgstr "选择身份签署："
 #. L10N: The compose menu autocrypt line
 #: compose.c:176
 msgid "Autocrypt: "
-msgstr ""
+msgstr "Autocrypt: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:180
@@ -931,14 +929,13 @@ msgstr "新闻组"
 #. * This is displayed when Autocrypt is turned off.
 #: compose.c:220 compose.c:465
 msgid "Off"
-msgstr ""
+msgstr "Off"
 
 #. L10N: Autocrypt recommendation flag: no.
 #. * This is displayed when Autocrypt cannot encrypt to the recipients.
 #: compose.c:223
-#, fuzzy
 msgid "No"
-msgstr "无操作"
+msgstr "No"
 
 #. L10N: Autocrypt recommendation flag: discouraged.
 #. * This is displayed when Autocrypt believes encryption should not be used.
@@ -946,7 +943,7 @@ msgstr "无操作"
 #. * used recently, or if the only key available is a Gossip Header key.
 #: compose.c:228
 msgid "Discouraged"
-msgstr ""
+msgstr "Discouraged"
 
 #. L10N: Autocrypt recommendation flag: available.
 #. * This is displayed when Autocrypt believes encryption is possible, but
@@ -954,16 +951,15 @@ msgstr ""
 #. * is not set in both the sender and recipient keys.
 #: compose.c:233
 msgid "Available"
-msgstr ""
+msgstr "Available"
 
 # Don't translate this!!
 #. L10N: Autocrypt recommendation flag: yes.
 #. * This is displayed when Autocrypt would normally enable encryption
 #. * automatically.
 #: compose.c:237
-#, fuzzy
 msgid "Yes"
-msgstr "yes"
+msgstr "Yes"
 
 #. L10N:
 #. The compose menu autocrypt prompt.
@@ -973,7 +969,7 @@ msgstr "yes"
 #.
 #: compose.c:332
 msgid "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic?"
-msgstr ""
+msgstr "Autocrypt: 加密(e)，清除(c)，自动(a)？"
 
 #. L10N:
 #. The letter corresponding to the compose menu autocrypt prompt
@@ -981,7 +977,7 @@ msgstr ""
 #.
 #: compose.c:338
 msgid "eca"
-msgstr ""
+msgstr "eca"
 
 #: compose.c:375
 msgid "Not supported"
@@ -1033,9 +1029,8 @@ msgstr "加密采用："
 #. (Off, No, Discouraged, Available, Yes)
 #.
 #: compose.c:475
-#, fuzzy
 msgid "Recommendation: "
-msgstr "X-Comment-To: "
+msgstr "Recommendation: "
 
 #: compose.c:538
 msgid "<no chain defined>"
@@ -3452,7 +3447,6 @@ msgid "MIME type not defined.  Can't view attachment."
 msgstr "MIME 类型未定义。无法显示附件"
 
 #: mutt_attach.c:455
-#, fuzzy
 msgid "Can't match nametemplate, continue?"
 msgstr "无法匹配名称模板，继续？"
 
@@ -3926,9 +3920,9 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2789
-#, fuzzy, c-format
+#, c-format
 msgid "Error importing key: %s"
-msgstr "导出密钥时出错：%s"
+msgstr "导入密钥时出错：%s"
 
 #: ncrypt/crypt_gpgme.c:3030
 #, c-format
@@ -4249,9 +4243,8 @@ msgstr "请输入 %s 的 keyID："
 #. from.  This error is displayed if no results were found.
 #.
 #: ncrypt/crypt_gpgme.c:5381
-#, fuzzy
 msgid "No secret keys found"
-msgstr "未找到密钥'%s'：%s"
+msgstr "未找到密钥"
 
 #: ncrypt/crypt_gpgme.c:5414 ncrypt/pgpkey.c:882
 msgid "Please enter the key ID: "
@@ -4871,16 +4864,15 @@ msgstr "作为文本查看附件"
 
 #: opcodes.h:32
 msgid "manage autocrypt accounts"
-msgstr ""
+msgstr "管理 autocrypt 帐号"
 
 #: opcodes.h:33
 msgid "create a new autocrypt account"
-msgstr ""
+msgstr "创建新的 autocrypt 帐号"
 
 #: opcodes.h:34
-#, fuzzy
 msgid "delete the current account"
-msgstr "删除当前条目"
+msgstr "删除当前帐号"
 
 #: opcodes.h:35
 msgid "toggle the current account active/inactive"
@@ -6250,10 +6242,10 @@ msgid "Saving..."
 msgstr "正在保存..."
 
 #: recvattach.c:581 recvattach.c:745 recvattach.c:749
-#, fuzzy, c-format
+#, c-format
 msgid "Attachment saved"
 msgid_plural "%d attachments saved"
-msgstr[0] "附件已保存"
+msgstr[0] "%d 个附件已保存"
 
 #: recvattach.c:769
 #, c-format
@@ -6477,9 +6469,8 @@ msgstr "没有主题，正在中止"
 #. be added as attachments to the new mail, if this is answered yes.
 #.
 #: send.c:564
-#, fuzzy
 msgid "Forward attachments?"
-msgstr "作为附件转发？"
+msgstr "要转发附件吗？"
 
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
