@@ -286,7 +286,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:132
 msgid "active"
-msgstr ""
+msgstr "启用的"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -294,7 +294,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:138
 msgid "inactive"
-msgstr ""
+msgstr "禁用的"
 
 #. L10N: Autocrypt Account Management Menu title
 #: autocrypt/autocrypt_acct_menu.c:177
@@ -368,7 +368,7 @@ msgstr "密钥 %s 不能用于 autocrypt"
 #.
 #: autocrypt/autocrypt_gpgme.c:280
 msgid "(c)reate new, or (s)elect existing GPG key?"
-msgstr "创建新密钥(c)，或选择(s)现有的 GPG 密钥?"
+msgstr "创建新密钥(c)，或选择(s)现有的 GPG 密钥？"
 
 #. L10N:
 #. The letters corresponding to the
@@ -2010,12 +2010,12 @@ msgstr "%s：没有这个选单"
 #: icommands.c:273
 #, fuzzy, c-format
 msgid "%s: no binds for this menu"
-msgstr "%s：该选单无 %s 项"
+msgstr "%s：该选单无绑定"
 
 #: icommands.c:273
 #, fuzzy, c-format
 msgid "%s: no macros for this menu"
-msgstr "%s：该选单无 %s 项"
+msgstr "%s：该选单无宏"
 
 #. L10N: '%s' is the file name of the temporary file
 #: icommands.c:284 icommands.c:297 icommands.c:317 icommands.c:341 icommands.c:361 icommands.c:372 imap/message.c:1089
@@ -3755,9 +3755,9 @@ msgid "secret key '%s' not found: %s"
 msgstr "未找到密钥'%s'：%s"
 
 #: ncrypt/crypt_gpgme.c:1166
-#, fuzzy, c-format
+#, c-format
 msgid "ambiguous specification of secret key '%s'\n"
-msgstr "密钥 '%s' 的说明有歧义"
+msgstr "密钥 '%s' 的说明有歧义\n"
 
 #: ncrypt/crypt_gpgme.c:1182
 #, c-format
@@ -4944,7 +4944,7 @@ msgstr "将信件附加到此信件作为附件"
 
 #: opcodes.h:52
 msgid "show autocrypt compose menu options"
-msgstr ""
+msgstr "显示 autocrypt 撰写菜单选项"
 
 #: opcodes.h:53
 msgid "attach news articles to this message"
