@@ -450,7 +450,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
     {
       if (mutt_file_symlink(a->filename, mutt_b2s(tmpfile)) == -1)
       {
-        if (mutt_yesorno(_("Can't match nametemplate, continue?"), MUTT_YES) != MUTT_YES)
+        if (mutt_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) != MUTT_YES)
           goto return_error;
         mutt_buffer_strcpy(tmpfile, a->filename);
       }
