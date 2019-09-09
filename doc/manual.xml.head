@@ -1919,10 +1919,7 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
         </para>
 
 <screen>
-\e[
-<emphasis>Ps</emphasis>;
-<emphasis>Ps</emphasis>;..
-<emphasis>Ps</emphasis>;m
+\e[ Ps; Ps; ...  Ps;m
 </screen>
 
         <para>
