@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2019-09-09 13:21+0300\n"
-"PO-Revision-Date: 2019-03-16 12:49-0500\n"
+"PO-Revision-Date: 2019-09-09 09:44-0500\n"
 "Last-Translator: Mingcong Bai <jeffbai@aosc.io>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -26,8 +26,8 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 2.2.3\n"
 
-#: addrbook.c:55 autocrypt/autocrypt_acct_menu.c:59 browser.c:81 browser.c:91
-#: mutt_history.c:44 pager.c:228 postpone.c:67 query.c:79 recvattach.c:95
+#: addrbook.c:55 autocrypt/autocrypt_acct_menu.c:59 browser.c:81 browser.c:91 mutt_history.c:44 pager.c:228 postpone.c:67
+#: query.c:79 recvattach.c:95
 msgid "Exit"
 msgstr "退出"
 
@@ -43,9 +43,8 @@ msgstr "反删除"
 msgid "Select"
 msgstr "选择"
 
-#: addrbook.c:57 autocrypt/autocrypt_acct_menu.c:82 browser.c:85 browser.c:97
-#: compose.c:202 compose.c:214 conn/ssl.c:984 conn/ssl_gnutls.c:677 index.c:121
-#: index.c:134 mutt_history.c:47 ncrypt/crypt_gpgme.c:4748 ncrypt/pgpkey.c:668
+#: addrbook.c:57 autocrypt/autocrypt_acct_menu.c:82 browser.c:85 browser.c:97 compose.c:202 compose.c:214 conn/ssl.c:984
+#: conn/ssl_gnutls.c:677 index.c:121 index.c:134 mutt_history.c:47 ncrypt/crypt_gpgme.c:4748 ncrypt/pgpkey.c:668
 #: ncrypt/smime.c:555 pager.c:2318 postpone.c:70 query.c:84 recvattach.c:96
 msgid "Help"
 msgstr "帮助"
@@ -75,8 +74,7 @@ msgstr "警告：此别名可能无法工作。要修正它吗？"
 msgid "Address: "
 msgstr "地址："
 
-#: alias.c:454 commands.c:433 compose.c:711 conn/conn_raw.c:146
-#: conn/conn_raw.c:204 recvcmd.c:232 send.c:230
+#: alias.c:454 commands.c:433 compose.c:711 conn/conn_raw.c:146 conn/conn_raw.c:204 recvcmd.c:232 send.c:230
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr "错误的 IDN：'%s'"
@@ -90,8 +88,7 @@ msgstr "个人姓名："
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] 接受?"
 
-#: alias.c:485 recvattach.c:537 recvattach.c:559 recvattach.c:573
-#: recvattach.c:586 recvattach.c:679
+#: alias.c:485 recvattach.c:537 recvattach.c:559 recvattach.c:573 recvattach.c:586 recvattach.c:679
 msgid "Save to file: "
 msgstr "存到文件："
 
@@ -125,8 +122,7 @@ msgstr "%s 不存在。创建它吗？"
 #. mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
 #.
-#: autocrypt/autocrypt.c:80 bcache.c:224 hcache/hcache.c:160 main.c:830
-#: nntp/newsrc.c:1064
+#: autocrypt/autocrypt.c:80 bcache.c:224 hcache/hcache.c:160 main.c:830 nntp/newsrc.c:1064
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "无法创建 %s：%s"
@@ -176,9 +172,8 @@ msgstr "该邮件地址已有一个 autocrypt 帐号"
 #. will be required to enable encryption manually.
 #.
 #: autocrypt/autocrypt.c:224
-#, fuzzy
 msgid "Prefer encryption?"
-msgstr "加密"
+msgstr "默认开启加密？"
 
 #. L10N:
 #. Message displayed after an autocrypt account is successfully created.
@@ -229,9 +224,8 @@ msgstr "扫描信箱"
 #. and I don't want them to accidentally ctrl-g and abort it.
 #.
 #: autocrypt/autocrypt.c:928
-#, fuzzy
 msgid "Scan another mailbox for autocrypt headers?"
-msgstr "再扫描另一个信箱？"
+msgstr "在另一个信箱扫描 autocrypt 报头？"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. create new account
@@ -255,7 +249,7 @@ msgstr "删除"
 #.
 #: autocrypt/autocrypt_acct_menu.c:74
 msgid "Tgl Active"
-msgstr ""
+msgstr "启用/禁用"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. toggle "prefer-encrypt" on an account
@@ -265,7 +259,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:81
 msgid "Prf Enc"
-msgstr ""
+msgstr "默认开启加密"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -273,7 +267,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:123
 msgid "prefer encrypt"
-msgstr ""
+msgstr "默认开启加密"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -282,7 +276,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:130
 msgid "manual encrypt"
-msgstr ""
+msgstr "手动加密"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -290,7 +284,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:138
 msgid "active"
-msgstr "启用的"
+msgstr "已启用"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -298,7 +292,7 @@ msgstr "启用的"
 #.
 #: autocrypt/autocrypt_acct_menu.c:144
 msgid "inactive"
-msgstr "禁用的"
+msgstr "已禁用"
 
 #. L10N: Autocrypt Account Management Menu title
 #: autocrypt/autocrypt_acct_menu.c:183
@@ -387,9 +381,8 @@ msgstr "cs"
 #. for some reason, we prompt to see if they want to create a key instead.
 #.
 #: autocrypt/autocrypt_gpgme.c:305
-#, fuzzy
 msgid "Create a new gpg key for this account, instead?"
-msgstr "要为该帐号创建一个新的 GPG 密钥吗？"
+msgstr "要为该帐号创建新的 GPG 密钥吗？"
 
 #. L10N:
 #. The autocrypt database keeps track of schema version numbers.
@@ -583,10 +576,8 @@ msgstr "%s：没有这个对象"
 msgid "%s: command valid only for index, body, header objects"
 msgstr "%s：命令只对索引，正文，信件头对象有效"
 
-#: color.c:669 color.c:873 color.c:899 color.c:947 color.c:975 color.c:1002
-#: color.c:1082 hook.c:112 hook.c:125 hook.c:381 hook.c:397 init.c:590
-#: init.c:598 init.c:687 init.c:1079 init.c:1247 init.c:1839 init.c:1897
-#: keymap.c:1180 score.c:106
+#: color.c:669 color.c:873 color.c:899 color.c:947 color.c:975 color.c:1002 color.c:1082 hook.c:112 hook.c:125 hook.c:381
+#: hook.c:397 init.c:590 init.c:598 init.c:687 init.c:1079 init.c:1247 init.c:1839 init.c:1897 keymap.c:1180 score.c:106
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s：参数太少"
@@ -596,9 +587,8 @@ msgstr "%s：参数太少"
 msgid "%s: no such attribute"
 msgstr "%s：没有这个属性"
 
-#: color.c:1091 color.c:1144 hook.c:131 hook.c:404 init.c:1103 init.c:2101
-#: init.c:2582 keymap.c:1113 keymap.c:1285 keymap.c:1438 keymap.c:1502
-#: mutt_lua.c:471 score.c:115
+#: color.c:1091 color.c:1144 hook.c:131 hook.c:404 init.c:1103 init.c:2101 init.c:2582 keymap.c:1113 keymap.c:1285 keymap.c:1438
+#: keymap.c:1502 mutt_lua.c:471 score.c:115
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s：参数太多"
@@ -648,9 +638,8 @@ msgstr "PGP 签名验证成功"
 msgid "PGP signature could NOT be verified"
 msgstr "PGP 签名“无法”验证"
 
-#: commands.c:366 compose.c:2057 compress.c:350 curs_lib.c:316 curs_lib.c:597
-#: index.c:1152 index.c:1195 mutt_attach.c:158 mutt_attach.c:291 pager.c:2454
-#: sendlib.c:1595
+#: commands.c:366 compose.c:2057 compress.c:350 curs_lib.c:316 curs_lib.c:597 index.c:1152 index.c:1195 mutt_attach.c:158
+#: mutt_attach.c:291 pager.c:2454 sendlib.c:1595
 #, c-format
 msgid "Error running \"%s\""
 msgstr "执行 \"%s\" 时出错"
@@ -874,8 +863,7 @@ msgstr "安全："
 #. it should not be longer than the other compose menu fields.
 #. Since it shares the row with "Encrypt with:", it should not be longer
 #. than 15-20 character cells.
-#: compose.c:176 ncrypt/crypt_gpgme.c:5610 ncrypt/pgp.c:1960
-#: ncrypt/smime.c:2362
+#: compose.c:176 ncrypt/crypt_gpgme.c:5610 ncrypt/pgp.c:1960 ncrypt/smime.c:2362
 msgid "Sign as: "
 msgstr "选择身份签署："
 
@@ -1450,8 +1438,7 @@ msgstr "拒绝(r)，接受一次(o),跳过(s)"
 msgid "(r)eject, accept (o)nce"
 msgstr "拒绝(r)，接受一次(o)"
 
-#: conn/ssl.c:982 conn/ssl_gnutls.c:675 ncrypt/crypt_gpgme.c:4742
-#: ncrypt/pgpkey.c:662 ncrypt/smime.c:551
+#: conn/ssl.c:982 conn/ssl_gnutls.c:675 ncrypt/crypt_gpgme.c:4742 ncrypt/pgpkey.c:662 ncrypt/smime.c:551
 msgid "Exit  "
 msgstr "退出  "
 
@@ -1744,8 +1731,7 @@ msgstr "无法添加到文件夹末尾：%s"
 msgid "multipart message has no boundary parameter"
 msgstr "多部份信件没有边界参数"
 
-#: flags.c:382 index.c:2419 index.c:2458 index.c:2953 index.c:2985
-#: mutt_thread.c:1083 mutt_thread.c:1147 mutt_thread.c:1232
+#: flags.c:382 index.c:2419 index.c:2458 index.c:2953 index.c:2985 mutt_thread.c:1083 mutt_thread.c:1147 mutt_thread.c:1232
 msgid "Threading is not enabled"
 msgstr "线索功能尚未启用"
 
@@ -1777,8 +1763,7 @@ msgstr "[-- 使用 %s 自动显示 --]\n"
 msgid "Invoking autoview command: %s"
 msgstr "执行自动显示指令：%s"
 
-#: handler.c:592 mutt_attach.c:520 mutt_attach.c:706 mutt_attach.c:737
-#: mutt_attach.c:1079 mutt_attach.c:1144 ncrypt/pgpkey.c:719
+#: handler.c:592 mutt_attach.c:520 mutt_attach.c:706 mutt_attach.c:737 mutt_attach.c:1079 mutt_attach.c:1144 ncrypt/pgpkey.c:719
 #: ncrypt/pgpkey.c:914
 msgid "Can't create filter"
 msgstr "无法建立过滤器"
@@ -2015,23 +2000,22 @@ msgstr "unhook：无法从 %2$s 中删除 %1$s"
 #: icommands.c:261 keymap.c:1158 keymap.c:1342
 #, c-format
 msgid "%s: no such menu"
-msgstr "%s：没有这个选单"
+msgstr "%s：没有这个菜单"
 
 #. L10N: '%s' is the name of the menu, e.g. 'index' or 'pager', it might
 #. L10N: also be 'all' when all menus are affected.
 #: icommands.c:274
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no binds for this menu"
-msgstr "%s：该选单无绑定"
+msgstr "%s：该菜单无绑定"
 
 #: icommands.c:274
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no macros for this menu"
-msgstr "%s：该选单无宏"
+msgstr "%s：该菜单无宏"
 
 #. L10N: '%s' is the file name of the temporary file
-#: icommands.c:285 icommands.c:298 icommands.c:318 icommands.c:342
-#: icommands.c:362 icommands.c:373 imap/message.c:1087
+#: icommands.c:285 icommands.c:298 icommands.c:318 icommands.c:342 icommands.c:362 icommands.c:373 imap/message.c:1087
 #, c-format
 msgid "Could not create temporary file %s"
 msgstr "无法创建临时文件 %s"
@@ -2268,8 +2252,7 @@ msgstr "无效的 IMAP 标记"
 msgid "Abort download and close mailbox?"
 msgstr "要中止下载并关闭信箱吗？"
 
-#: imap/message.c:550 mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134
-#: mutt/string.c:1179 mx.c:1119
+#: imap/message.c:550 mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1179 mx.c:1119
 msgid "Out of memory"
 msgstr "内存不足"
 
@@ -2911,7 +2894,9 @@ msgstr "在附加信件(attach-message)模式下不能设置 %s 选项"
 #: keymap.c:325 keymap.c:333
 #, c-format
 msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings"
-msgstr "绑定 '%s' 将会为 '%s' 设置别名，在这之前，请尝试：'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings"
+msgstr ""
+"绑定 '%s' 将会为 '%s' 设置别名，在这之前，请尝试：'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-"
+"warnings"
 
 #: keymap.c:709
 msgid "Macro loop detected"
@@ -3214,8 +3199,7 @@ msgstr "跳到："
 msgid "Invalid index number"
 msgstr "无效的索引编号"
 
-#: menu.c:648 menu.c:674 menu.c:747 menu.c:813 menu.c:831 menu.c:846 menu.c:861
-#: menu.c:876 menu.c:893 menu.c:910 menu.c:1559
+#: menu.c:648 menu.c:674 menu.c:747 menu.c:813 menu.c:831 menu.c:846 menu.c:861 menu.c:876 menu.c:893 menu.c:910 menu.c:1559
 msgid "No entries"
 msgstr "没有条目"
 
@@ -3294,19 +3278,13 @@ msgstr "正在等待尝试 flock... %d"
 msgid "Bad history file format (line %d)"
 msgstr "错误的历史文件格式 (第 %d 行)"
 
-#: mutt/history.c:262 ncrypt/crypt_gpgme.c:999 ncrypt/crypt_gpgme.c:2392
-#: ncrypt/crypt_gpgme.c:2412 ncrypt/crypt_gpgme.c:2471
-#: ncrypt/crypt_gpgme.c:2488 ncrypt/crypt_gpgme.c:2520
-#: ncrypt/crypt_gpgme.c:2538 ncrypt/crypt_gpgme.c:2621
-#: ncrypt/crypt_gpgme.c:3207 ncrypt/crypt_gpgme.c:3306
-#: ncrypt/crypt_gpgme.c:4389 ncrypt/pgp.c:583 ncrypt/pgp.c:591 ncrypt/pgp.c:896
-#: ncrypt/pgp.c:1009 ncrypt/pgp.c:1154 ncrypt/pgp.c:1174 ncrypt/pgp.c:1208
-#: ncrypt/pgp.c:1555 ncrypt/pgpkey.c:706 ncrypt/pgpkey.c:896
-#: ncrypt/pgpmicalg.c:186 ncrypt/smime.c:1092 ncrypt/smime.c:1100
-#: ncrypt/smime.c:1185 ncrypt/smime.c:1291 ncrypt/smime.c:1353
-#: ncrypt/smime.c:1361 ncrypt/smime.c:1555 ncrypt/smime.c:1929
-#: ncrypt/smime.c:2005 ncrypt/smime.c:2012 ncrypt/smime.c:2124
-#: ncrypt/smime.c:2245 ncrypt/smime.c:2261 nntp/nntp.c:1401 nntp/nntp.c:2234
+#: mutt/history.c:262 ncrypt/crypt_gpgme.c:999 ncrypt/crypt_gpgme.c:2392 ncrypt/crypt_gpgme.c:2412 ncrypt/crypt_gpgme.c:2471
+#: ncrypt/crypt_gpgme.c:2488 ncrypt/crypt_gpgme.c:2520 ncrypt/crypt_gpgme.c:2538 ncrypt/crypt_gpgme.c:2621
+#: ncrypt/crypt_gpgme.c:3207 ncrypt/crypt_gpgme.c:3306 ncrypt/crypt_gpgme.c:4389 ncrypt/pgp.c:583 ncrypt/pgp.c:591
+#: ncrypt/pgp.c:896 ncrypt/pgp.c:1009 ncrypt/pgp.c:1154 ncrypt/pgp.c:1174 ncrypt/pgp.c:1208 ncrypt/pgp.c:1555
+#: ncrypt/pgpkey.c:706 ncrypt/pgpkey.c:896 ncrypt/pgpmicalg.c:186 ncrypt/smime.c:1092 ncrypt/smime.c:1100 ncrypt/smime.c:1185
+#: ncrypt/smime.c:1291 ncrypt/smime.c:1353 ncrypt/smime.c:1361 ncrypt/smime.c:1555 ncrypt/smime.c:1929 ncrypt/smime.c:2005
+#: ncrypt/smime.c:2012 ncrypt/smime.c:2124 ncrypt/smime.c:2245 ncrypt/smime.c:2261 nntp/nntp.c:1401 nntp/nntp.c:2234
 #: pattern.c:1119 pop/pop.c:181
 msgid "Can't create temporary file"
 msgstr "无法创建临时文件"
@@ -3661,8 +3639,7 @@ msgstr "嵌入 PGP 不支持 format=flowed。回到使用 PGP/MIME 吗？"
 msgid "Mail not sent: inline PGP can't be used with format=flowed"
 msgstr "信件无法发送：嵌入 PGP 不能用于 format=flowed"
 
-#: ncrypt/crypt.c:228 ncrypt/cryptglue.c:148 ncrypt/pgpkey.c:710
-#: ncrypt/pgpkey.c:909
+#: ncrypt/crypt.c:228 ncrypt/cryptglue.c:148 ncrypt/pgpkey.c:710 ncrypt/pgpkey.c:909
 msgid "Invoking PGP..."
 msgstr "正在调用 PGP..."
 
@@ -3797,8 +3774,7 @@ msgstr "开启 CMS 协议时出错：%s"
 msgid "error creating gpgme data object: %s"
 msgstr "创建 gpgme 数据对象时出错：%s"
 
-#: ncrypt/crypt_gpgme.c:908 ncrypt/crypt_gpgme.c:929 ncrypt/crypt_gpgme.c:2060
-#: ncrypt/crypt_gpgme.c:2817
+#: ncrypt/crypt_gpgme.c:908 ncrypt/crypt_gpgme.c:929 ncrypt/crypt_gpgme.c:2060 ncrypt/crypt_gpgme.c:2817
 #, c-format
 msgid "error allocating data object: %s"
 msgstr "分配数据对象时出错：%s"
@@ -3949,8 +3925,7 @@ msgstr "有问题的签名来自："
 msgid "               expires: "
 msgstr "  已于此日期过期："
 
-#: ncrypt/crypt_gpgme.c:2067 ncrypt/crypt_gpgme.c:2301
-#: ncrypt/crypt_gpgme.c:3089
+#: ncrypt/crypt_gpgme.c:2067 ncrypt/crypt_gpgme.c:2301 ncrypt/crypt_gpgme.c:3089
 msgid "[-- Begin signature information --]\n"
 msgstr "[-- 签名信息开始 --]\n"
 
@@ -3968,8 +3943,7 @@ msgstr "*** 注释开始 (由 %s 签署) ***\n"
 msgid "*** End Notation ***\n"
 msgstr "*** 注释结束 ***\n"
 
-#: ncrypt/crypt_gpgme.c:2156 ncrypt/crypt_gpgme.c:2317
-#: ncrypt/crypt_gpgme.c:3101
+#: ncrypt/crypt_gpgme.c:2156 ncrypt/crypt_gpgme.c:2317 ncrypt/crypt_gpgme.c:3101
 msgid ""
 "[-- End signature information --]\n"
 "\n"
@@ -4072,8 +4046,7 @@ msgstr "[-- PGP/MIME 加密数据结束 --]\n"
 msgid "PGP message successfully decrypted"
 msgstr "PGP 信件成功解密"
 
-#: ncrypt/crypt_gpgme.c:3279 ncrypt/pgp.c:673 ncrypt/pgp.c:726
-#: ncrypt/pgp.c:1268
+#: ncrypt/crypt_gpgme.c:3279 ncrypt/pgp.c:673 ncrypt/pgp.c:726 ncrypt/pgp.c:1268
 msgid "Could not decrypt PGP message"
 msgstr "无法解密 PGP 信件"
 
@@ -4131,8 +4104,7 @@ msgstr[0] "%s，%lu 位 %s\n"
 msgid "encryption"
 msgstr "加密"
 
-#: ncrypt/crypt_gpgme.c:4216 ncrypt/crypt_gpgme.c:4222
-#: ncrypt/crypt_gpgme.c:4356 ncrypt/crypt_gpgme.c:4361
+#: ncrypt/crypt_gpgme.c:4216 ncrypt/crypt_gpgme.c:4222 ncrypt/crypt_gpgme.c:4356 ncrypt/crypt_gpgme.c:4361
 msgid ", "
 msgstr ", "
 
@@ -4184,8 +4156,7 @@ msgstr "密钥 ID：0x%s"
 msgid "gpgme_op_keylist_start failed: %s"
 msgstr "gpgme_op_keylist_start 失败：%s"
 
-#: ncrypt/crypt_gpgme.c:4590 ncrypt/crypt_gpgme.c:4632
-#: ncrypt/crypt_gpgme.c:5368
+#: ncrypt/crypt_gpgme.c:4590 ncrypt/crypt_gpgme.c:4632 ncrypt/crypt_gpgme.c:5368
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr "gpgme_op_keylist_next 失败：%s"
@@ -4253,8 +4224,7 @@ msgstr "ID 仅勉强有效。您真的要使用此密钥吗？"
 msgid "ID has undefined validity. Do you really want to use the key?"
 msgstr "ID 有效性未定义。您真的要使用此密钥吗？"
 
-#: ncrypt/crypt_gpgme.c:4924 ncrypt/crypt_gpgme.c:5037 ncrypt/pgpkey.c:1011
-#: ncrypt/pgpkey.c:1138
+#: ncrypt/crypt_gpgme.c:4924 ncrypt/crypt_gpgme.c:5037 ncrypt/pgpkey.c:1011 ncrypt/pgpkey.c:1138
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "正寻找匹配 \"%s\" 的密钥..."
@@ -4269,8 +4239,7 @@ msgstr "未找到匹配 \"%s\" 的密钥"
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "要使用 keyID = \"%s\" 用于 %s 吗？"
 
-#: ncrypt/crypt_gpgme.c:5251 ncrypt/pgp.c:1492 ncrypt/smime.c:944
-#: ncrypt/smime.c:1049
+#: ncrypt/crypt_gpgme.c:5251 ncrypt/pgp.c:1492 ncrypt/smime.c:944 ncrypt/smime.c:1049
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "请输入 %s 的 keyID："
@@ -4407,8 +4376,7 @@ msgstr ""
 "[-- 错误：无法创建 PGP 子进程！ --]\n"
 "\n"
 
-#: ncrypt/pgp.c:1068 ncrypt/pgp.c:1093 ncrypt/smime.c:2111 postpone.c:755
-#: postpone.c:783
+#: ncrypt/pgp.c:1068 ncrypt/pgp.c:1093 ncrypt/smime.c:2111 postpone.c:755 postpone.c:783
 msgid "Decryption failed"
 msgstr "解密失败"
 
@@ -4610,8 +4578,7 @@ msgstr "请输入密钥 ID："
 msgid "No (valid) certificate found for %s"
 msgstr "未找到可用于 %s 的(有效)证书"
 
-#: ncrypt/smime.c:1108 ncrypt/smime.c:1137 ncrypt/smime.c:1204
-#: ncrypt/smime.c:1245 ncrypt/smime.c:1310 ncrypt/smime.c:1388
+#: ncrypt/smime.c:1108 ncrypt/smime.c:1137 ncrypt/smime.c:1204 ncrypt/smime.c:1245 ncrypt/smime.c:1310 ncrypt/smime.c:1388
 msgid "Error: unable to create OpenSSL subprocess"
 msgstr "错误：无法创建 OpenSSL 子进程"
 
@@ -4914,11 +4881,11 @@ msgstr "删除当前帐号"
 
 #: opcodes.h:35
 msgid "toggle the current account active/inactive"
-msgstr ""
+msgstr "启用/禁用当前账户"
 
 #: opcodes.h:36
 msgid "toggle the current account prefer-encrypt flag"
-msgstr ""
+msgstr "启用/禁用当前账户的“默认开启加密”设置"
 
 #: opcodes.h:37
 msgid "move to the bottom of the page"
@@ -6770,10 +6737,10 @@ msgid ""
 "    https://github.com/neomutt/neomutt/issues\n"
 "or send an email to: <neomutt-devel@neomutt.org>\n"
 msgstr ""
-"为了更多的了解有关NeoMutt的事务，请访问: https://neomutt.org\n"
-"在使用NeoMutt中，你如果发现了一个bug，请发起一个issue在：\n"
+"欲了解关于 NeoMutt 的详情，请访问: https://neomutt.org\n"
+"如在使用 NeoMutt 时发现任何问题，请在此处发起 issue：\n"
 "    https://github.com/neomutt/neomutt/issues\n"
-"或者发送一封邮件到：<neomutt-devel@neomutt.org>\n"
+"或者发送邮件至：<neomutt-devel@neomutt.org>\n"
 
 #: version.c:93
 msgid ""
