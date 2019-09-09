@@ -39,7 +39,6 @@ conn/socket.c
 conn/ssl.c
 conn/ssl_gnutls.c
 conn/tunnel.c
-conststrings.c
 context.c
 copy.c
 core/account.c
@@ -66,7 +65,6 @@ enriched.c
 enter.c
 filter.c
 flags.c
-git_ver.c
 handler.c
 hcache/bdb.c
 hcache/gdbm.c
