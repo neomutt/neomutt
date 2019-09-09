@@ -29,7 +29,7 @@
 
 use system
 
-module-options {}
+options {}
 
 # Checks for the existence of the given function by linking
 #

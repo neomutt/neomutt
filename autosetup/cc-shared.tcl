@@ -20,7 +20,7 @@
 ## LD_LIBRARY_PATH   Environment variable which specifies path to shared libraries
 ## STRIPLIBFLAGS     Arguments to strip a dynamic library
 
-module-options {}
+options {}
 
 # Defaults: gcc on unix
 define SHOBJ_CFLAGS -fPIC

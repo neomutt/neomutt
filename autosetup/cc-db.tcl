@@ -8,7 +8,7 @@
 
 use cc
 
-module-options {}
+options {}
 
 # openbsd needs sys/types.h to detect some system headers
 cc-include-needs sys/socket.h sys/types.h

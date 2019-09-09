@@ -27,7 +27,7 @@ if {[is-defined defaultprefix]} {
 	options-defaults [list prefix [get-define defaultprefix]]
 }
 
-module-options [subst -noc -nob {
+options {
 	host:host-alias =>		{a complete or partial cpu-vendor-opsys for the system where
 							the application will run (defaults to the same value as --build)}
 	build:build-alias =>	{a complete or partial cpu-vendor-opsys for the system
@@ -52,7 +52,7 @@ module-options [subst -noc -nob {
 	maintainer-mode=0
 	dependency-tracking=0
 	silent-rules=0
-}]
+}
 
 # @check-feature name { script }
 #

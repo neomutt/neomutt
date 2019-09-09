@@ -7,8 +7,6 @@
 
 use cc
 
-module-options {}
-
 # @cc-check-lfs
 #
 # The equivalent of the 'AC_SYS_LARGEFILE' macro.

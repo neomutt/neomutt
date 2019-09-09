@@ -6,7 +6,7 @@
 dir=`dirname "$0"`; exec "`$dir/autosetup-find-tclsh`" "$0" "$@"
 
 # Note that the version has a trailing + on unreleased versions
-set autosetup(version) 0.6.9
+set autosetup(version) 0.6.9+
 
 # Can be set to 1 to debug early-init problems
 set autosetup(debug) [expr {"--debug" in $argv}]
@@ -93,13 +93,13 @@ proc main {argv} {
 
 	#"=Core Options:"
 	options-add {
-		help:=local  => "display help and options. Optionally specify a module name, such as --help=system"
+		help:=all       => "display help and options. Optional: module name, such as --help=system"
 		licence license => "display the autosetup license"
-		version      => "display the version of autosetup"
+		version         => "display the version of autosetup"
 		ref:=text manual:=text
 		reference:=text => "display the autosetup command reference. 'text', 'wiki', 'asciidoc' or 'markdown'"
-		debug        => "display debugging output as autosetup runs"
-		install:=.   => "install autosetup to the current or given directory"
+		debug           => "display debugging output as autosetup runs"
+		install:=.      => "install autosetup to the current or given directory"
 	}
 	if {$autosetup(installed)} {
 		# hidden options so we can produce a nice error
@@ -216,8 +216,8 @@ proc main {argv} {
 	configlog "Invoked as: [getenv WRAPPER $::argv0] [quote-argv $autosetup(argv)]"
 	configlog "Tclsh: [info nameofexecutable]"
 
-	# Note that auto.def is *not* loaded in the global scope
-	source $autosetup(autodef)
+	# Load auto.def as module "auto.def"
+	autosetup_load_module auto.def source $autosetup(autodef)
 
 	# Could warn here if options {} was not specified
 
@@ -375,7 +375,7 @@ proc option-check-names {args} {
 # Parse the option definition in $opts and update
 # ::autosetup(setoptions) and ::autosetup(optionhelp) appropriately
 #
-proc options-add {opts {header ""}} {
+proc options-add {opts} {
 	global autosetup
 
 	# First weed out comment lines
@@ -391,8 +391,7 @@ proc options-add {opts {header ""}} {
 		set opt [lindex $opts $i]
 		if {[string match =* $opt]} {
 			# This is a special heading
-			lappend autosetup(optionhelp) $opt ""
-			set header {}
+			lappend autosetup(optionhelp) [list $opt $autosetup(module)]
 			continue
 		}
 		unset -nocomplain defaultvalue equal value
@@ -509,13 +508,8 @@ proc options-add {opts {header ""}} {
 			if {[info exists defaultvalue]} {
 				set desc [string map [list @default@ $defaultvalue] $desc]
 			}
-			#string match \n* $desc
-			if {$header ne ""} {
-				lappend autosetup(optionhelp) $header ""
-				set header ""
-			}
 			# A multi-line description
-			lappend autosetup(optionhelp) $opthelp $desc
+			lappend autosetup(optionhelp) [list $opthelp $autosetup(module) $desc]
 			incr i 2
 		}
 	}
@@ -523,21 +517,9 @@ proc options-add {opts {header ""}} {
 
 # @module-options optionlist
 #
-# Like 'options', but used within a module.
+# Deprecated. Simply use 'options' from within a module.
 proc module-options {opts} {
-	set header ""
-	if {$::autosetup(showhelp) > 1 && [llength $opts]} {
-		set header "Module Options:"
-	}
-	options-add $opts $header
-
-	if {$::autosetup(showhelp)} {
-		# Ensure that the module isn't executed on --help
-		# We are running under eval or source, so use break
-		# to prevent further execution
-		#return -code break -level 2
-		return -code break
-	}
+	options $opts
 }
 
 proc max {a b} {
@@ -566,10 +548,17 @@ proc options-wrap-desc {text length firstprefix nextprefix initial} {
 	}
 }
 
-proc options-show {} {
+# Display options (from $autosetup(optionhelp)) for modules that match
+# glob pattern $what
+proc options-show {what} {
+	set local 0
 	# Determine the max option width
 	set max 0
-	foreach {opt desc} $::autosetup(optionhelp) {
+	foreach help $::autosetup(optionhelp) {
+		lassign $help opt module desc
+		if {![string match $what $module]} {
+			continue
+		}
 		if {[string match =* $opt] || [string match \n* $desc]} {
 			continue
 		}
@@ -582,13 +571,23 @@ proc options-show {} {
 	}
 	incr cols -1
 	# Now output
-	foreach {opt desc} $::autosetup(optionhelp) {
+	foreach help $::autosetup(optionhelp) {
+		lassign $help opt module desc
+		if {![string match $what $module]} {
+			continue
+		}
+		if {$local == 0 && $module eq "auto.def"} {
+			puts "Local Options:"
+			incr local
+		}
 		if {[string match =* $opt]} {
+			# Output a special heading line"
 			puts [string range $opt 1 end]
 			continue
 		}
 		puts -nonewline "  [format %-${max}s $opt]"
 		if {[string match \n* $desc]} {
+			# Output a pre-formatted help description as-is
 			puts $desc
 		} else {
 			options-wrap-desc [string trim $desc] $cols "  " $indent [expr $max + 2]
@@ -629,19 +628,22 @@ proc options-show {} {
 ## lfs=1 largefile=1 => "Disable large file support"
 #
 proc options {optlist} {
-	# Allow options as a list or args
-	options-add $optlist "Local Options:"
+	global autosetup
 
-	if {$::autosetup(showhelp)} {
-		options-show
-		exit 0
+	options-add $optlist
+
+	if {$autosetup(showhelp)} {
+		# If --help, stop now to show help
+		return -code break
 	}
 
-	# Check for invalid options
-	if {[opt-bool option-checking]} {
-		foreach o [dict keys $::autosetup(getopt)] {
-			if {$o ni $::autosetup(options)} {
-				user-error "Unknown option --$o"
+	if {$autosetup(module) eq "auto.def"} {
+		# Check for invalid options
+		if {[opt-bool option-checking]} {
+			foreach o [dict keys $::autosetup(getopt)] {
+				if {$o ni $::autosetup(options)} {
+					user-error "Unknown option --$o"
+				}
 			}
 		}
 	}
@@ -1173,8 +1175,9 @@ proc use {args} {
 			continue
 		}
 		set libmodule($m) 1
+
 		if {[info exists modsource(${m}.tcl)]} {
-			automf_load eval $modsource(${m}.tcl)
+			autosetup_load_module $m eval $modsource(${m}.tcl)
 		} else {
 			set locs [list ${m}.tcl ${m}/init.tcl]
 			set found 0
@@ -1194,7 +1197,7 @@ proc use {args} {
 				# For the convenience of the "use" source, point to the directory
 				# it is being loaded from
 				set ::usedir [file dirname $source]
-				automf_load source $source
+				autosetup_load_module $m source $source
 				autosetup_add_dep $source
 			} else {
 				autosetup-error "use: No such module: $m"
@@ -1207,19 +1210,24 @@ proc autosetup_load_auto_modules {} {
 	global autosetup modsource
 	# First load any embedded auto modules
 	foreach mod [array names modsource *.auto] {
-		automf_load eval $modsource($mod)
+		autosetup_load_module $mod eval $modsource($mod)
 	}
 	# Now any external auto modules
 	foreach file [glob -nocomplain $autosetup(libdir)/*.auto $autosetup(libdir)/*/*.auto] {
-		automf_load source $file
+		autosetup_load_module [file tail $file] source $file
 	}
 }
 
 # Load module source in the global scope by executing the given command
-proc automf_load {args} {
+proc autosetup_load_module {module args} {
+	global autosetup
+	set prev $autosetup(module)
+	set autosetup(module) $module
+
 	if {[catch [list uplevel #0 $args] msg opts] ni {0 2 3}} {
 		autosetup-full-error [error-dump $msg $opts $::autosetup(debug)]
 	}
+	set autosetup(module) $prev
 }
 
 # Initial settings
@@ -1231,6 +1239,7 @@ set autosetup(sysinstall) 0
 set autosetup(msg-checking) 0
 set autosetup(msg-quiet) 0
 set autosetup(inittypes) {}
+set autosetup(module) autosetup
 
 # Embedded modules are inserted below here
 set autosetup(installed) 1
@@ -1436,22 +1445,22 @@ proc autosetup_help {what} {
     puts "This is [autosetup_version], a build environment \"autoconfigurator\""
     puts "See the documentation online at http://msteveb.github.com/autosetup/\n"
 
-    if {$what eq "local"} {
+    if {$what in {all local}} {
+        # Need to load auto.def now
         if {[file exists $::autosetup(autodef)]} {
-            # This relies on auto.def having a call to 'options'
-            # which will display options and quit
-            source $::autosetup(autodef)
+            # Load auto.def as module "auto.def"
+            autosetup_load_module auto.def source $::autosetup(autodef)
+        }
+        if {$what eq "all"} {
+            set what *
         } else {
-            options-show
+            set what auto.def
         }
     } else {
-        incr ::autosetup(showhelp)
-        if {[catch {use $what}]} {
-            user-error "Unknown module: $what"
-        } else {
-            options-show
-        }
+        use $what
+        puts "Options for module $what:"
     }
+    options-show $what
     exit 0
 }
 

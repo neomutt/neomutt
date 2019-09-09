@@ -11,7 +11,7 @@
 
 use system
 
-module-options {}
+options {}
 
 define CONFIGURED
 

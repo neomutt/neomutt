@@ -15,7 +15,7 @@
 
 use cc
 
-module-options {
+options {
 	sysroot:dir => "Override compiler sysroot for pkg-config search path"
 }
 
