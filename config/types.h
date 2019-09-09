@@ -74,6 +74,7 @@ typedef uint32_t ConfigRedrawFlags; ///< Flags for redraw/resort, e.g. #R_INDEX
 #define R_REDRAW_MASK  0x07FE0000   ///< Mask for the Redraw Flags
 
 /* Private config item flags */
+#define DT_DEPRECATED   (1 << 27)  ///< Config item shouldn't be used any more
 #define DT_INHERITED    (1 << 28)  ///< Config item is inherited
 #define DT_INITIAL_SET  (1 << 29)  ///< Config item must have its initial value freed
 #define DT_DISABLED     (1 << 30)  ///< Config item is disabled

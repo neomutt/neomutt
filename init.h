@@ -4887,10 +4887,10 @@ struct ConfigDef MuttVars[] = {
 #endif
   /*--*/
 
-  { "ignore_linear_white_space", DT_BOOL,            &C_IgnoreLinearWhiteSpace, false   },
-  { "pgp_encrypt_self",          DT_QUAD,            &C_PgpEncryptSelf,         MUTT_NO },
-  { "smime_encrypt_self",        DT_QUAD,            &C_SmimeEncryptSelf,       MUTT_NO },
-  { "wrapmargin",                DT_NUMBER|R_PAGER,  &C_Wrap,                   0       },
+  { "ignore_linear_white_space", DT_DEPRECATED|DT_BOOL,            &C_IgnoreLinearWhiteSpace, false   },
+  { "pgp_encrypt_self",          DT_DEPRECATED|DT_QUAD,            &C_PgpEncryptSelf,         MUTT_NO },
+  { "smime_encrypt_self",        DT_DEPRECATED|DT_QUAD,            &C_SmimeEncryptSelf,       MUTT_NO },
+  { "wrapmargin",                DT_DEPRECATED|DT_NUMBER|R_PAGER,  &C_Wrap,                   0       },
 
   { "abort_noattach_regexp",  DT_SYNONYM, NULL, IP "abort_noattach_regex",     },
   { "attach_keyword",         DT_SYNONYM, NULL, IP "abort_noattach_regex",     },
