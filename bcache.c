@@ -80,7 +80,7 @@ static int bcache_path(struct ConnAccount *account, const char *mailbox, struct 
 
   struct Buffer *path = mutt_buffer_pool_get();
   struct Buffer *dst = mutt_buffer_pool_get();
-  mutt_buffer_encode_path(path, NONULL(mailbox));
+  mutt_encode_path(path, NONULL(mailbox));
 
   mutt_buffer_printf(dst, "%s/%s%s", C_MessageCachedir, host, mutt_b2s(path));
   if (*(dst->dptr - 1) != '/')

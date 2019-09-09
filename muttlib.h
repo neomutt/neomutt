@@ -43,14 +43,13 @@ extern struct Regex *C_GecosMask;
 
 void        mutt_adv_mktemp(struct Buffer *buf);
 void        mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix, const char *suffix, const char *src, int line);
-void        mutt_buffer_encode_path(struct Buffer *buf, const char *src);
 void        mutt_buffer_expand_path(struct Buffer *buf);
 void        mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex);
 void        mutt_buffer_pretty_mailbox(struct Buffer *s);
 void        mutt_buffer_sanitize_filename (struct Buffer *buf, const char *path, short slash);
 void        mutt_buffer_save_path(struct Buffer *dest, const struct Address *a);
 int         mutt_check_overwrite(const char *attname, const char *path, struct Buffer *fname, enum SaveAttach *opt, char **directory);
-void        mutt_encode_path(char *dest, size_t dlen, const char *src);
+void        mutt_encode_path(struct Buffer *buf, const char *src);
 void        mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const char *src, format_t *callback, unsigned long data, MuttFormatFlags flags);
 char *      mutt_expand_path(char *s, size_t slen);
 char *      mutt_expand_path_regex(char *buf, size_t buflen, bool regex);

@@ -543,8 +543,13 @@ static void cache_expand(char *dst, size_t dstlen, struct ConnAccount *acct, con
   c = dst + strlen(dst) - 1;
   if (*c == '/')
     *c = '\0';
-  mutt_expand_path(dst, dstlen);
-  mutt_encode_path(dst, dstlen, dst);
+
+  struct Buffer *tmp = mutt_buffer_pool_get();
+  mutt_buffer_addstr(tmp, dst);
+  mutt_buffer_expand_path(tmp);
+  mutt_encode_path(tmp, dst);
+  mutt_str_strfcpy(dst, mutt_b2s(tmp), dstlen);
+  mutt_buffer_pool_release(&tmp);
 }
 
 /**
