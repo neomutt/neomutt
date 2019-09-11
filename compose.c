@@ -1144,7 +1144,7 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
           if (e->env->newsgroups)
             mutt_paddstr(W, e->env->newsgroups);
           else
-            clrtoeol();
+            mutt_window_clrtoeol(menu->indexwin);
         }
         break;
 
@@ -1162,7 +1162,7 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
           if (e->env->followup_to)
             mutt_paddstr(W, e->env->followup_to);
           else
-            clrtoeol();
+            mutt_window_clrtoeol(menu->indexwin);
         }
         break;
 
@@ -1180,7 +1180,7 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
           if (e->env->x_comment_to)
             mutt_paddstr(W, e->env->x_comment_to);
           else
-            clrtoeol();
+            mutt_window_clrtoeol(menu->indexwin);
         }
         break;
 #endif
