@@ -366,8 +366,8 @@ void menu_redraw_full(struct Menu *menu)
   if (C_Help)
   {
     SET_COLOR(MT_COLOR_STATUS);
-    mutt_window_move(menu->helpwin, 0, 0);
-    mutt_paddstr(menu->helpwin->cols, menu->help);
+    mutt_window_move(MuttHelpWindow, 0, 0);
+    mutt_paddstr(MuttHelpWindow->cols, menu->help);
     NORMAL_COLOR;
   }
   menu->offset = 0;
@@ -563,8 +563,8 @@ static void menu_redraw_prompt(struct Menu *menu)
   if (ErrorBufMessage)
     mutt_clear_error();
 
-  mutt_window_mvaddstr(menu->messagewin, 0, 0, menu->prompt);
-  mutt_window_clrtoeol(menu->messagewin);
+  mutt_window_mvaddstr(MuttMessageWindow, 0, 0, menu->prompt);
+  mutt_window_clrtoeol(MuttMessageWindow);
 }
 
 /**
@@ -988,8 +988,6 @@ struct Menu *mutt_menu_new(enum MenuType type)
   menu->pagelen = MuttIndexWindow->rows;
   menu->indexwin = MuttIndexWindow;
   menu->statuswin = MuttStatusWindow;
-  menu->helpwin = MuttHelpWindow;
-  menu->messagewin = MuttMessageWindow;
   menu->menu_color = default_color;
   menu->menu_search = generic_search;
 
@@ -1380,8 +1378,8 @@ int mutt_menu_loop(struct Menu *menu)
     /* give visual indication that the next command is a tag- command */
     if (menu->tagprefix)
     {
-      mutt_window_mvaddstr(menu->messagewin, 0, 0, "tag-");
-      mutt_window_clrtoeol(menu->messagewin);
+      mutt_window_mvaddstr(MuttMessageWindow, 0, 0, "tag-");
+      mutt_window_clrtoeol(MuttMessageWindow);
     }
 
     menu->oldcurrent = menu->current;
@@ -1409,7 +1407,7 @@ int mutt_menu_loop(struct Menu *menu)
       if (menu->tagprefix)
       {
         menu->tagprefix = false;
-        mutt_window_clearline(menu->messagewin, 0);
+        mutt_window_clearline(MuttMessageWindow, 0);
         continue;
       }
 
@@ -1445,7 +1443,7 @@ int mutt_menu_loop(struct Menu *menu)
     if (i < 0)
     {
       if (menu->tagprefix)
-        mutt_window_clearline(menu->messagewin, 0);
+        mutt_window_clearline(MuttMessageWindow, 0);
       continue;
     }
 

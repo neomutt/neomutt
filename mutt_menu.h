@@ -94,8 +94,6 @@ struct Menu
   bool is_mailbox_list : 1;
   struct MuttWindow *indexwin;
   struct MuttWindow *statuswin;
-  struct MuttWindow *helpwin;
-  struct MuttWindow *messagewin;
 
   /* Setting dialog != NULL overrides normal menu behavior.
    * In dialog mode menubar is hidden and prompt keys are checked before
