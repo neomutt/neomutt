@@ -149,7 +149,8 @@ struct MxOps
    * mbox_check_stats - Check the Mailbox statistics
    * @param m     Mailbox to check
    * @param flags Function flags
-   * @retval  0 Success
+   * @retval  0 Success, no new mail
+   * @retval  1 Success, some new mail
    * @retval -1 Failure
    */
   int (*mbox_check_stats)(struct Mailbox *m, int flags);

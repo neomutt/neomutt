@@ -549,7 +549,7 @@ static int maildir_mbox_check_stats(struct Mailbox *m, int flags)
   if (check_new || check_stats)
     maildir_check_dir(m, "cur", check_new, check_stats);
 
-  return 0;
+  return (m->msg_new > 0);
 }
 
 /**

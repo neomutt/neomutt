@@ -1996,7 +1996,7 @@ static int nm_mbox_check_stats(struct Mailbox *m, int flags)
   m->msg_flagged = count_query(db, qstr, limit);
   FREE(&qstr);
 
-  rc = 0;
+  rc = (m->msg_new > 0);
 done:
   if (db)
   {

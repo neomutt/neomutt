@@ -419,7 +419,7 @@ static int mh_mbox_check_stats(struct Mailbox *m, int flags)
 {
   struct MhSequences mhs = { 0 };
   bool check_new = true;
-  bool rc = false;
+  int rc = -1;
   DIR *dirp = NULL;
   struct dirent *de = NULL;
 
@@ -427,7 +427,7 @@ static int mh_mbox_check_stats(struct Mailbox *m, int flags)
    * since the last m visit, there is no "new mail" */
   if (C_MailCheckRecent && (mh_sequences_changed(m) <= 0))
   {
-    rc = false;
+    rc = 0;
     check_new = false;
   }
 
@@ -435,7 +435,7 @@ static int mh_mbox_check_stats(struct Mailbox *m, int flags)
     return 0;
 
   if (mh_read_sequences(&mhs, mailbox_path(m)) < 0)
-    return false;
+    return -1;
 
   m->msg_count = 0;
   m->msg_unread = 0;
@@ -455,7 +455,7 @@ static int mh_mbox_check_stats(struct Mailbox *m, int flags)
         if (!C_MailCheckRecent || (mh_already_notified(m, i) == 0))
         {
           m->has_new = true;
-          rc = true;
+          rc = 1;
         }
         /* Because we are traversing from high to low, we can stop
          * checking for new mail after the first unseen message.

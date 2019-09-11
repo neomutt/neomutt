@@ -1781,7 +1781,7 @@ static int mbox_mbox_check_stats(struct Mailbox *m, int flags)
     }
   }
 
-  return 0;
+  return (m->msg_new > 0);
 }
 
 // clang-format off

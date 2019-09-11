@@ -1295,7 +1295,7 @@ int imap_mbox_check_stats(struct Mailbox *m, int flags)
 {
   int rc = imap_mailbox_status(m, true);
   if (rc > 0)
-    rc = 0;
+    rc = 1;
   return rc;
 }
 
