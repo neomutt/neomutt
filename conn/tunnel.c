@@ -49,8 +49,8 @@
 struct TunnelSockData
 {
   pid_t pid;
-  int readfd;
-  int writefd;
+  int fd_read;
+  int fd_write;
 };
 
 /**
@@ -123,8 +123,8 @@ static int tunnel_socket_open(struct Connection *conn)
   fcntl(pin[0], F_SETFD, FD_CLOEXEC);
   fcntl(pout[1], F_SETFD, FD_CLOEXEC);
 
-  tunnel->readfd = pin[0];
-  tunnel->writefd = pout[1];
+  tunnel->fd_read = pin[0];
+  tunnel->fd_write = pout[1];
   tunnel->pid = pid;
 
   conn->fd = 42; /* stupid hack */
@@ -142,7 +142,7 @@ static int tunnel_socket_read(struct Connection *conn, char *buf, size_t count)
 
   do
   {
-    rc = read(tunnel->readfd, buf, count);
+    rc = read(tunnel->fd_read, buf, count);
   } while (rc < 0 && errno == EINTR);
 
   if (rc < 0)
@@ -167,7 +167,7 @@ static int tunnel_socket_write(struct Connection *conn, const char *buf, size_t 
   {
     do
     {
-      rc = write(tunnel->writefd, buf + sent, count - sent);
+      rc = write(tunnel->fd_write, buf + sent, count - sent);
     } while (rc < 0 && errno == EINTR);
 
     if (rc < 0)
@@ -192,7 +192,7 @@ static int tunnel_socket_poll(struct Connection *conn, time_t wait_secs)
   int rc;
 
   ofd = conn->fd;
-  conn->fd = tunnel->readfd;
+  conn->fd = tunnel->fd_read;
   rc = raw_socket_poll(conn, wait_secs);
   conn->fd = ofd;
 
@@ -207,8 +207,8 @@ static int tunnel_socket_close(struct Connection *conn)
   struct TunnelSockData *tunnel = conn->sockdata;
   int status;
 
-  close(tunnel->readfd);
-  close(tunnel->writefd);
+  close(tunnel->fd_read);
+  close(tunnel->fd_write);
   waitpid(tunnel->pid, &status, 0);
   if (!WIFEXITED(status) || WEXITSTATUS(status))
   {

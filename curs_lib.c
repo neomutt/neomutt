@@ -1002,7 +1002,7 @@ void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
   size_t k, k2;
   char scratch[MB_LEN_MAX];
   mbstate_t mbstate1, mbstate2;
-  int escaped = 0;
+  bool escaped = false;
 
   memset(&mbstate1, 0, sizeof(mbstate1));
   memset(&mbstate2, 0, sizeof(mbstate2));
@@ -1020,12 +1020,12 @@ void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
     }
     if (escaped)
     {
-      escaped = 0;
+      escaped = false;
       w = 0;
     }
     else if (arboreal && (wc == MUTT_SPECIAL_INDEX))
     {
-      escaped = 1;
+      escaped = true;
       w = 0;
     }
     else if (arboreal && (wc < MUTT_TREE_MAX))
@@ -1233,7 +1233,7 @@ size_t mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *wi
     }
     cw = wcwidth(wc);
     /* hack because MUTT_TREE symbols aren't turned into characters
-     * until rendered by print_enriched_string (#3364) */
+     * until rendered by print_enriched_string() */
     if ((cw < 0) && (src[0] == MUTT_SPECIAL_INDEX))
     {
       cl = 2; /* skip the index coloring sequence */

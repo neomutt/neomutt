@@ -366,8 +366,8 @@ void menu_redraw_full(struct Menu *menu)
   if (C_Help)
   {
     SET_COLOR(MT_COLOR_STATUS);
-    mutt_window_move(menu->helpwin, 0, 0);
-    mutt_paddstr(menu->helpwin->cols, menu->help);
+    mutt_window_move(MuttHelpWindow, 0, 0);
+    mutt_paddstr(MuttHelpWindow->cols, menu->help);
     NORMAL_COLOR;
   }
   menu->offset = 0;
@@ -491,7 +491,7 @@ void menu_redraw_motion(struct Menu *menu)
       menu_make_entry(buf, sizeof(buf), menu, menu->oldcurrent);
       menu_pad_string(menu, buf, sizeof(buf));
       mutt_window_move(menu->indexwin, menu->oldcurrent + menu->offset - menu->top, 3);
-      print_enriched_string(menu->oldcurrent, old_color, (unsigned char *) buf, 1);
+      print_enriched_string(menu->oldcurrent, old_color, (unsigned char *) buf, true);
     }
 
     /* now draw it in the new location */
@@ -503,7 +503,7 @@ void menu_redraw_motion(struct Menu *menu)
     /* erase the current indicator */
     menu_make_entry(buf, sizeof(buf), menu, menu->oldcurrent);
     menu_pad_string(menu, buf, sizeof(buf));
-    print_enriched_string(menu->oldcurrent, old_color, (unsigned char *) buf, 1);
+    print_enriched_string(menu->oldcurrent, old_color, (unsigned char *) buf, true);
 
     /* now draw the new one to reflect the change */
     const int cur_color = menu->menu_color(menu->current);
@@ -511,7 +511,7 @@ void menu_redraw_motion(struct Menu *menu)
     menu_pad_string(menu, buf, sizeof(buf));
     SET_COLOR(MT_COLOR_INDICATOR);
     mutt_window_move(menu->indexwin, menu->current + menu->offset - menu->top, 0);
-    print_enriched_string(menu->current, cur_color, (unsigned char *) buf, 0);
+    print_enriched_string(menu->current, cur_color, (unsigned char *) buf, false);
   }
   menu->redraw &= REDRAW_STATUS;
   NORMAL_COLOR;
@@ -537,10 +537,10 @@ void menu_redraw_current(struct Menu *menu)
     ATTR_SET(attr);
     addch(' ');
     menu_pad_string(menu, buf, sizeof(buf));
-    print_enriched_string(menu->current, attr, (unsigned char *) buf, 1);
+    print_enriched_string(menu->current, attr, (unsigned char *) buf, true);
   }
   else
-    print_enriched_string(menu->current, attr, (unsigned char *) buf, 0);
+    print_enriched_string(menu->current, attr, (unsigned char *) buf, false);
   menu->redraw &= REDRAW_STATUS;
   NORMAL_COLOR;
 }
@@ -563,8 +563,8 @@ static void menu_redraw_prompt(struct Menu *menu)
   if (ErrorBufMessage)
     mutt_clear_error();
 
-  mutt_window_mvaddstr(menu->messagewin, 0, 0, menu->prompt);
-  mutt_window_clrtoeol(menu->messagewin);
+  mutt_window_mvaddstr(MuttMessageWindow, 0, 0, menu->prompt);
+  mutt_window_clrtoeol(MuttMessageWindow);
 }
 
 /**
@@ -988,8 +988,6 @@ struct Menu *mutt_menu_new(enum MenuType type)
   menu->pagelen = MuttIndexWindow->rows;
   menu->indexwin = MuttIndexWindow;
   menu->statuswin = MuttStatusWindow;
-  menu->helpwin = MuttHelpWindow;
-  menu->messagewin = MuttMessageWindow;
   menu->menu_color = default_color;
   menu->menu_search = generic_search;
 
@@ -1380,8 +1378,8 @@ int mutt_menu_loop(struct Menu *menu)
     /* give visual indication that the next command is a tag- command */
     if (menu->tagprefix)
     {
-      mutt_window_mvaddstr(menu->messagewin, 0, 0, "tag-");
-      mutt_window_clrtoeol(menu->messagewin);
+      mutt_window_mvaddstr(MuttMessageWindow, 0, 0, "tag-");
+      mutt_window_clrtoeol(MuttMessageWindow);
     }
 
     menu->oldcurrent = menu->current;
@@ -1409,7 +1407,7 @@ int mutt_menu_loop(struct Menu *menu)
       if (menu->tagprefix)
       {
         menu->tagprefix = false;
-        mutt_window_clearline(menu->messagewin, 0);
+        mutt_window_clearline(MuttMessageWindow, 0);
         continue;
       }
 
@@ -1445,7 +1443,7 @@ int mutt_menu_loop(struct Menu *menu)
     if (i < 0)
     {
       if (menu->tagprefix)
-        mutt_window_clearline(menu->messagewin, 0);
+        mutt_window_clearline(MuttMessageWindow, 0);
       continue;
     }
 
