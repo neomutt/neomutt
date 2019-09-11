@@ -1007,11 +1007,13 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
 
   bool need_passphrase = false;
   int app = 0;
-  char buf[PATH_MAX];
+  int rc = -1;
   const char *prompt = NULL;
   struct stat st;
   struct EmailNode *en = STAILQ_FIRST(el);
   bool single = !STAILQ_NEXT(en, entries);
+
+  struct Buffer *buf = mutt_buffer_pool_get();
 
   if (delete_original)
   {
@@ -1038,67 +1040,70 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
     app = en->email->security;
   }
   mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
-  mutt_default_save(buf, sizeof(buf), en->email);
+  mutt_default_save(buf->data, buf->dsize, en->email);
+  mutt_buffer_fix_dptr(buf);
 
-  mutt_pretty_mailbox(buf, sizeof(buf));
-  if (mutt_enter_fname(prompt, buf, sizeof(buf), false) == -1)
-    return -1;
+  mutt_buffer_pretty_mailbox(buf);
+  if (mutt_enter_fname(prompt, buf->data, buf->dsize, 0) == -1)
+    goto cleanup;
+  mutt_buffer_fix_dptr(buf);
 
-  size_t pathlen = strlen(buf);
+  size_t pathlen = mutt_buffer_len(buf);
   if (pathlen == 0)
-    return -1;
+    goto cleanup;
 
   /* Trim any trailing '/' */
-  if (buf[pathlen - 1] == '/')
-    buf[pathlen - 1] = '\0';
+  if (buf->data[pathlen - 1] == '/')
+    buf->data[pathlen - 1] = '\0';
 
   /* This is an undocumented feature of ELM pointed out to me by Felix von
    * Leitner <leitner@prz.fu-berlin.de> */
-  if (mutt_str_strcmp(buf, ".") == 0)
-    mutt_str_strfcpy(buf, LastSaveFolder, sizeof(buf));
+  if (mutt_str_strcmp(mutt_b2s(buf), ".") == 0)
+    mutt_buffer_strcpy(buf, LastSaveFolder);
   else
-    mutt_str_strfcpy(LastSaveFolder, buf, sizeof(LastSaveFolder));
+    mutt_str_strfcpy(LastSaveFolder, mutt_b2s(buf), sizeof(LastSaveFolder));
 
-  mutt_expand_path(buf, sizeof(buf));
+  mutt_buffer_expand_path(buf);
 
   /* check to make sure that this file is really the one the user wants */
-  if (mutt_save_confirm(buf, &st) != 0)
-    return -1;
+  if (mutt_save_confirm(mutt_b2s(buf), &st) != 0)
+    goto cleanup;
 
   if ((WithCrypto != 0) && need_passphrase && (decode || decrypt) &&
       !crypt_valid_passphrase(app))
   {
-    return -1;
+    goto cleanup;
   }
 
-  mutt_message(_("Copying to %s..."), buf);
+  mutt_message(_("Copying to %s..."), mutt_b2s(buf));
 
 #ifdef USE_IMAP
   if ((m->magic == MUTT_IMAP) && !(decode || decrypt) &&
-      (imap_path_probe(buf, NULL) == MUTT_IMAP))
+      (imap_path_probe(mutt_b2s(buf), NULL) == MUTT_IMAP))
   {
-    switch (imap_copy_messages(m, el, buf, delete_original))
+    switch (imap_copy_messages(m, el, mutt_b2s(buf), delete_original))
     {
       /* success */
       case 0:
         mutt_clear_error();
-        return 0;
+        rc = 0;
+        goto cleanup;
       /* non-fatal error: continue to fetch/append */
       case 1:
         break;
       /* fatal error, abort */
       case -1:
-        return -1;
+        goto cleanup;
     }
   }
 #endif
 
-  struct Mailbox *m_save = mx_path_resolve(buf);
+  struct Mailbox *m_save = mx_path_resolve(mutt_b2s(buf));
   struct Context *ctx_save = mx_mbox_open(m_save, MUTT_NEWFOLDER);
   if (!ctx_save)
   {
     mailbox_free(&m_save);
-    return -1;
+    goto cleanup;
   }
   bool old_append = m_save->append;
   m_save->append = true;
@@ -1122,7 +1127,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
     {
       m_save->append = old_append;
       mx_mbox_close(&ctx_save);
-      return -1;
+      goto cleanup;
     }
 #ifdef USE_COMPRESSED
     if (m_comp)
@@ -1141,7 +1146,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   }
   else
   {
-    int rc = 0;
+    rc = 0;
 
 #ifdef USE_NOTMUCH
     if (m->magic == MUTT_NOTMUCH)
@@ -1178,7 +1183,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
     {
       m_save->append = old_append;
       mx_mbox_close(&ctx_save);
-      return -1;
+      goto cleanup;
     }
   }
 
@@ -1189,10 +1194,14 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   mx_mbox_close(&ctx_save);
 
   if (need_mailbox_cleanup)
-    mutt_mailbox_cleanup(buf, &st);
+    mutt_mailbox_cleanup(mutt_b2s(buf), &st);
 
   mutt_clear_error();
-  return 0;
+  rc = 0;
+
+cleanup:
+  mutt_buffer_pool_release(&buf);
+  return rc;
 }
 
 /**

@@ -1573,7 +1573,7 @@ fail:
  * @retval  0 Success
  * @retval  1 Non-fatal error - try fetch/append
  */
-int imap_copy_messages(struct Mailbox *m, struct EmailList *el, char *dest, bool delete_original)
+int imap_copy_messages(struct Mailbox *m, struct EmailList *el, const char *dest, bool delete_original)
 {
   if (!m || !el || !dest)
     return -1;
