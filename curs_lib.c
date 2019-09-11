@@ -1233,7 +1233,7 @@ size_t mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *wi
     }
     cw = wcwidth(wc);
     /* hack because MUTT_TREE symbols aren't turned into characters
-     * until rendered by print_enriched_string (#3364) */
+     * until rendered by print_enriched_string() */
     if ((cw < 0) && (src[0] == MUTT_SPECIAL_INDEX))
     {
       cl = 2; /* skip the index coloring sequence */

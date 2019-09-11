@@ -491,7 +491,7 @@ void menu_redraw_motion(struct Menu *menu)
       menu_make_entry(buf, sizeof(buf), menu, menu->oldcurrent);
       menu_pad_string(menu, buf, sizeof(buf));
       mutt_window_move(menu->indexwin, menu->oldcurrent + menu->offset - menu->top, 3);
-      print_enriched_string(menu->oldcurrent, old_color, (unsigned char *) buf, 1);
+      print_enriched_string(menu->oldcurrent, old_color, (unsigned char *) buf, true);
     }
 
     /* now draw it in the new location */
@@ -503,7 +503,7 @@ void menu_redraw_motion(struct Menu *menu)
     /* erase the current indicator */
     menu_make_entry(buf, sizeof(buf), menu, menu->oldcurrent);
     menu_pad_string(menu, buf, sizeof(buf));
-    print_enriched_string(menu->oldcurrent, old_color, (unsigned char *) buf, 1);
+    print_enriched_string(menu->oldcurrent, old_color, (unsigned char *) buf, true);
 
     /* now draw the new one to reflect the change */
     const int cur_color = menu->menu_color(menu->current);
@@ -511,7 +511,7 @@ void menu_redraw_motion(struct Menu *menu)
     menu_pad_string(menu, buf, sizeof(buf));
     SET_COLOR(MT_COLOR_INDICATOR);
     mutt_window_move(menu->indexwin, menu->current + menu->offset - menu->top, 0);
-    print_enriched_string(menu->current, cur_color, (unsigned char *) buf, 0);
+    print_enriched_string(menu->current, cur_color, (unsigned char *) buf, false);
   }
   menu->redraw &= REDRAW_STATUS;
   NORMAL_COLOR;
@@ -537,10 +537,10 @@ void menu_redraw_current(struct Menu *menu)
     ATTR_SET(attr);
     addch(' ');
     menu_pad_string(menu, buf, sizeof(buf));
-    print_enriched_string(menu->current, attr, (unsigned char *) buf, 1);
+    print_enriched_string(menu->current, attr, (unsigned char *) buf, true);
   }
   else
-    print_enriched_string(menu->current, attr, (unsigned char *) buf, 0);
+    print_enriched_string(menu->current, attr, (unsigned char *) buf, false);
   menu->redraw &= REDRAW_STATUS;
   NORMAL_COLOR;
 }
