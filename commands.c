@@ -194,15 +194,13 @@ static void process_protected_headers(struct Email *e)
  */
 int mutt_display_message(struct Mailbox *m, struct Email *e)
 {
-  char tempfile[PATH_MAX], buf[1024];
   int rc = 0;
   bool builtin = false;
   CopyMessageFlags cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
   CopyHeaderFlags chflags;
   pid_t filterpid = -1;
+  struct Buffer *tempfile = NULL;
   int res;
-
-  snprintf(buf, sizeof(buf), "%s/%s", TYPE(e->content), e->content->subtype);
 
   mutt_parse_mime_message(m, e);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
@@ -215,7 +213,7 @@ int mutt_display_message(struct Mailbox *m, struct Email *e)
       if (e->security & APPLICATION_SMIME)
         crypt_smime_getkeys(e->env);
       if (!crypt_valid_passphrase(e->security))
-        return 0;
+        goto cleanup;
 
       cmflags |= MUTT_CM_VERIFY;
     }
@@ -244,13 +242,14 @@ int mutt_display_message(struct Mailbox *m, struct Email *e)
       crypt_invoke_message(APPLICATION_SMIME);
   }
 
-  mutt_mktemp(tempfile, sizeof(tempfile));
   FILE *fp_filter_out = NULL;
-  FILE *fp_out = mutt_file_fopen(tempfile, "w");
+  tempfile = mutt_buffer_pool_get();
+  mutt_buffer_mktemp(tempfile);
+  FILE *fp_out = mutt_file_fopen(mutt_b2s(tempfile), "w");
   if (!fp_out)
   {
     mutt_error(_("Could not create temporary file"));
-    return 0;
+    goto cleanup;
   }
 
   if (C_DisplayFilter)
@@ -263,8 +262,8 @@ int mutt_display_message(struct Mailbox *m, struct Email *e)
     {
       mutt_error(_("Can't create display filter"));
       mutt_file_fclose(&fp_filter_out);
-      unlink(tempfile);
-      return 0;
+      unlink(mutt_b2s(tempfile));
+      goto cleanup;
     }
   }
 
@@ -272,7 +271,9 @@ int mutt_display_message(struct Mailbox *m, struct Email *e)
     builtin = true;
   else
   {
+    char buf[1024];
     struct HdrFormatInfo hfi;
+
     hfi.ctx = Context;
     hfi.mailbox = m;
     hfi.pager_progress = ExtPagerProgress;
@@ -298,8 +299,8 @@ int mutt_display_message(struct Mailbox *m, struct Email *e)
       mutt_wait_filter(filterpid);
       mutt_file_fclose(&fp_filter_out);
     }
-    mutt_file_unlink(tempfile);
-    return 0;
+    mutt_file_unlink(mutt_b2s(tempfile));
+    goto cleanup;
   }
 
   if (fp_filter_out && (mutt_wait_filter(filterpid) != 0))
@@ -352,19 +353,20 @@ int mutt_display_message(struct Mailbox *m, struct Email *e)
     /* Invoke the builtin pager */
     info.email = e;
     info.ctx = Context;
-    rc = mutt_pager(NULL, tempfile, MUTT_PAGER_MESSAGE, &info);
+    rc = mutt_pager(NULL, mutt_b2s(tempfile), MUTT_PAGER_MESSAGE, &info);
   }
   else
   {
-    int r;
-
-    char cmd[STR_COMMAND];
     mutt_endwin();
-    snprintf(cmd, sizeof(cmd), "%s %s", NONULL(C_Pager), tempfile);
-    r = mutt_system(cmd);
+
+    struct Buffer *cmd = mutt_buffer_pool_get();
+    mutt_buffer_printf(cmd, "%s %s", NONULL(C_Pager), mutt_b2s(tempfile));
+    int r = mutt_system(mutt_b2s(cmd));
     if (r == -1)
-      mutt_error(_("Error running \"%s\""), cmd);
-    unlink(tempfile);
+      mutt_error(_("Error running \"%s\"!"), mutt_b2s(cmd));
+    unlink(mutt_b2s(tempfile));
+    mutt_buffer_pool_release(&cmd);
+
     if (!OptNoCurses)
       keypad(stdscr, true);
     if (r != -1)
@@ -378,6 +380,8 @@ int mutt_display_message(struct Mailbox *m, struct Email *e)
       rc = 0;
   }
 
+cleanup:
+  mutt_buffer_pool_release(&tempfile);
   return rc;
 }
 
