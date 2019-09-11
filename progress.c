@@ -228,13 +228,13 @@ void mutt_progress_update(struct Progress *progress, size_t pos, int percent)
     char posstr[128];
     if (progress->is_bytes)
     {
-      mutt_str_pretty_size(posstr, sizeof(posstr), progress->pos);
+      const size_t round_pos =
+          (progress->pos / (progress->inc << 10)) * (progress->inc << 10);
+      mutt_str_pretty_size(posstr, sizeof(posstr), round_pos);
     }
     else
     {
-      const size_t round_pos =
-          (progress->pos / (progress->inc << 10)) * (progress->inc << 10);
-      snprintf(posstr, sizeof(posstr), "%zu", round_pos);
+      snprintf(posstr, sizeof(posstr), "%zu", progress->pos);
     }
 
     mutt_debug(LL_DEBUG4, "updating progress: %s\n", posstr);
