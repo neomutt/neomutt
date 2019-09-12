@@ -23,8 +23,26 @@
 #ifndef MUTT_MUTT_PARSE_H
 #define MUTT_MUTT_PARSE_H
 
+#include "mutt/queue.h"
+
 struct Email;
 struct Mailbox;
+
+/**
+ * struct AttachMatch - An attachment matching a regex for attachment counter
+ */
+struct AttachMatch
+{
+  const char *major;
+  enum ContentType major_int;
+  const char *minor;
+  regex_t minor_regex;
+};
+
+extern struct ListHead AttachAllow;
+extern struct ListHead AttachExclude;
+extern struct ListHead InlineAllow;
+extern struct ListHead InlineExclude;
 
 int  mutt_count_body_parts(struct Mailbox *m, struct Email *e);
 void mutt_parse_mime_message(struct Mailbox *m, struct Email *e);

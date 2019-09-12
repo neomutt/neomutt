@@ -123,19 +123,6 @@ enum MessageType
 int mutt_init(bool skip_sys_rc, struct ListHead *commands);
 struct ConfigSet *init_config(size_t size);
 
-/**
- * struct AttachMatch - An attachment matching a regex
- *
- * for attachment counter
- */
-struct AttachMatch
-{
-  const char *major;
-  enum ContentType major_int;
-  const char *minor;
-  regex_t minor_regex;
-};
-
 #define EXEC_SHELL "/bin/sh"
 
 char *mutt_compile_help(char *buf, size_t buflen, enum MenuType menu, const struct Mapping *items);

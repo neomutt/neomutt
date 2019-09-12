@@ -54,6 +54,7 @@
 #include "keymap.h"
 #include "monitor.h"
 #include "mutt_menu.h"
+#include "mutt_parse.h"
 #include "mutt_window.h"
 #include "mx.h"
 #include "myvar.h"
