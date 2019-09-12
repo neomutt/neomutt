@@ -38,8 +38,6 @@
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 
-#define MUTT_PARTS_TOPLEVEL (1 << 0) /* is the top-level part */
-
 /**
  * mutt_parse_mime_message - Parse a MIME email
  * @param m Mailbox
@@ -111,10 +109,9 @@ static bool count_body_parts_check(struct ListHead *checklist, struct Body *b, b
 /**
  * count_body_parts - Count the MIME Body parts
  * @param body  Body of email
- * @param flags Flags, e.g. #MUTT_PARTS_TOPLEVEL
  * @retval num Number of MIME Body parts
  */
-static int count_body_parts(struct Body *body, int flags)
+static int count_body_parts(struct Body *body)
 {
   if (!body)
     return 0;
@@ -139,10 +136,6 @@ static int count_body_parts(struct Body *body, int flags)
       /* If it's an external body pointer, don't recurse it. */
       if (mutt_str_strcasecmp(bp->subtype, "external-body") == 0)
         shallrecurse = false;
-
-      /* Don't count containers if they're top-level. */
-      if (flags & MUTT_PARTS_TOPLEVEL)
-        shallcount = false; // top-level message/*
     }
     else if (bp->type == TYPE_MULTIPART)
     {
@@ -150,10 +143,6 @@ static int count_body_parts(struct Body *body, int flags)
       shallrecurse = true;
       if (mutt_str_strcasecmp(bp->subtype, "alternative") == 0)
         shallrecurse = false;
-
-      /* Don't count containers if they're top-level. */
-      if (flags & MUTT_PARTS_TOPLEVEL)
-        shallcount = false; /* top-level multipart */
     }
 
     if ((bp->disposition == DISP_INLINE) && (bp->type != TYPE_MULTIPART) &&
@@ -195,7 +184,7 @@ static int count_body_parts(struct Body *body, int flags)
     if (shallrecurse)
     {
       mutt_debug(LL_DEBUG3, "%p pre count = %d\n", (void *) bp, count);
-      bp->attach_count = count_body_parts(bp->parts, flags & ~MUTT_PARTS_TOPLEVEL);
+      bp->attach_count = count_body_parts(bp->parts);
       count += bp->attach_count;
       mutt_debug(LL_DEBUG3, "%p post count = %d\n", (void *) bp, count);
     }
@@ -226,7 +215,7 @@ int mutt_count_body_parts(struct Mailbox *m, struct Email *e)
   if (!STAILQ_EMPTY(&AttachAllow) || !STAILQ_EMPTY(&AttachExclude) ||
       !STAILQ_EMPTY(&InlineAllow) || !STAILQ_EMPTY(&InlineExclude))
   {
-    e->attach_total = count_body_parts(e->content, MUTT_PARTS_TOPLEVEL);
+    e->attach_total = count_body_parts(e->content);
   }
   else
     e->attach_total = 0;
