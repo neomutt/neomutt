@@ -984,12 +984,12 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
         {
           /* decode and print */
 
-          char newfile[PATH_MAX] = { 0 };
           FILE *fp_in = NULL;
+          struct Buffer *newfile = mutt_buffer_pool_get();
 
-          mutt_mktemp(newfile, sizeof(newfile));
-          if (mutt_decode_save_attachment(fp, top, newfile, MUTT_PRINTING,
-                                          MUTT_SAVE_NO_FLAGS) == 0)
+          mutt_buffer_mktemp(newfile);
+          if (mutt_decode_save_attachment(fp, top, mutt_b2s(newfile),
+                                          MUTT_PRINTING, MUTT_SAVE_NO_FLAGS) == 0)
           {
             if (!state->fp_out)
             {
@@ -998,7 +998,7 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
               return;
             }
 
-            fp_in = fopen(newfile, "r");
+            fp_in = fopen(mutt_b2s(newfile), "r");
             if (fp_in)
             {
               mutt_file_copy_stream(fp_in, state->fp_out);
@@ -1007,7 +1007,8 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
                 state_puts(C_AttachSep, state);
             }
           }
-          mutt_file_unlink(newfile);
+          mutt_file_unlink(mutt_b2s(newfile));
+          mutt_buffer_pool_release(&newfile);
         }
       }
       else
