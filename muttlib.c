@@ -701,22 +701,21 @@ void mutt_buffer_pretty_mailbox(struct Buffer *buf)
  * @param[in]  attname   Attachment name
  * @param[in]  path      Path to save the file
  * @param[out] fname     Buffer for filename
- * @param[out] flen      Length of buffer
  * @param[out] opt       Save option, see #SaveAttach
  * @param[out] directory Directory to save under (OPTIONAL)
  * @retval  0 Success
  * @retval -1 Abort
  * @retval  1 Error
  */
-int mutt_check_overwrite(const char *attname, const char *path, char *fname,
-                         size_t flen, enum SaveAttach *opt, char **directory)
+int mutt_check_overwrite(const char *attname, const char *path, struct Buffer *fname,
+                         enum SaveAttach *opt, char **directory)
 {
   struct stat st;
 
-  mutt_str_strfcpy(fname, path, flen);
-  if (access(fname, F_OK) != 0)
+  mutt_buffer_strcpy (fname, path);
+  if (access (mutt_b2s (fname), F_OK) != 0)
     return 0;
-  if (stat(fname, &st) != 0)
+  if (stat (mutt_b2s (fname), &st) != 0)
     return -1;
   if (S_ISDIR(st.st_mode))
   {
@@ -730,7 +729,7 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
               (_("File is a directory, save under it: (y)es, (n)o, (a)ll?"), _("yna")))
       {
         case 3: /* all */
-          mutt_str_replace(directory, fname);
+          mutt_str_replace (directory, mutt_b2s (fname));
           break;
         case 1: /* yes */
           FREE(directory);
@@ -748,18 +747,25 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
     else if ((ans = mutt_yesorno(_("File is a directory, save under it?"), MUTT_YES)) != MUTT_YES)
       return (ans == MUTT_NO) ? 1 : -1;
 
-    char tmp[PATH_MAX];
-    mutt_str_strfcpy(tmp, mutt_path_basename(NONULL(attname)), sizeof(tmp));
-    if ((mutt_get_field(_("File under directory: "), tmp, sizeof(tmp),
-                        MUTT_FILE | MUTT_CLEAR) != 0) ||
-        !tmp[0])
+    struct Buffer *tmp = mutt_buffer_pool_get ();
+    mutt_buffer_strcpy (tmp, mutt_path_basename (NONULL (attname)));
+    if (mutt_get_field (_("File under directory: "), tmp->data, tmp->dsize,
+                        MUTT_FILE | MUTT_CLEAR) != 0)
     {
+      mutt_buffer_pool_release (&tmp);
       return -1;
     }
-    mutt_path_concat(fname, path, tmp, flen);
+    mutt_buffer_fix_dptr (tmp);
+    if (mutt_buffer_is_empty(tmp))
+    {
+      mutt_buffer_pool_release (&tmp);
+      return (-1);
+    }
+    mutt_buffer_concat_path (fname, path, mutt_b2s (tmp));
+    mutt_buffer_pool_release (&tmp);
   }
 
-  if ((*opt == MUTT_SAVE_NO_FLAGS) && (access(fname, F_OK) == 0))
+  if ((*opt == MUTT_SAVE_NO_FLAGS) && (access(mutt_b2s(fname), F_OK) == 0))
   {
     switch (
         mutt_multi_choice(_("File exists, (o)verwrite, (a)ppend, or (c)ancel?"),
