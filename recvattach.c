@@ -657,8 +657,8 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
   FILE *fp_out = NULL;
   int saved_attachments = 0;
 
-  struct Buffer *buf = mutt_buffer_pool_get ();
-  struct Buffer *tfile = mutt_buffer_pool_get ();
+  struct Buffer *buf = mutt_buffer_pool_get();
+  struct Buffer *tfile = mutt_buffer_pool_get();
 
   for (int i = 0; !tag || (i < actx->idxlen); i++)
   {
@@ -671,24 +671,25 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
     {
       if (!C_AttachSplit)
       {
-        if (mutt_buffer_is_empty (buf))
+        if (mutt_buffer_is_empty(buf))
         {
           enum SaveAttach opt = MUTT_SAVE_NO_FLAGS;
 
-          mutt_buffer_strcpy (buf, mutt_path_basename (NONULL (top->filename)));
+          mutt_buffer_strcpy(buf, mutt_path_basename(NONULL(top->filename)));
           prepend_savedir(buf);
 
-          if (mutt_get_field (_("Save to file: "), buf->data, buf->dsize, MUTT_FILE | MUTT_CLEAR) != 0)
+          if (mutt_get_field(_("Save to file: "), buf->data, buf->dsize,
+                             MUTT_FILE | MUTT_CLEAR) != 0)
           {
             goto cleanup;
           }
-          mutt_buffer_fix_dptr (buf);
-          if (mutt_buffer_is_empty (buf))
-              goto cleanup;
-          mutt_buffer_expand_path (buf);
-          if (mutt_check_overwrite (top->filename, mutt_b2s (buf), tfile, &opt, NULL))
+          mutt_buffer_fix_dptr(buf);
+          if (mutt_buffer_is_empty(buf))
             goto cleanup;
-          rc = mutt_save_attachment (fp, top, mutt_b2s (tfile), opt, e);
+          mutt_buffer_expand_path(buf);
+          if (mutt_check_overwrite(top->filename, mutt_b2s(buf), tfile, &opt, NULL))
+            goto cleanup;
+          rc = mutt_save_attachment(fp, top, mutt_b2s(tfile), opt, e);
           if ((rc == 0) && C_AttachSep && (fp_out = fopen(mutt_b2s(tfile), "a")))
           {
             fprintf(fp_out, "%s", C_AttachSep);
@@ -697,7 +698,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
         }
         else
         {
-          rc = mutt_save_attachment (fp, top, mutt_b2s (tfile), MUTT_SAVE_APPEND, e);
+          rc = mutt_save_attachment(fp, top, mutt_b2s(tfile), MUTT_SAVE_APPEND, e);
           if ((rc == 0) && C_AttachSep && (fp_out = fopen(mutt_b2s(tfile), "a")))
           {
             fprintf(fp_out, "%s", C_AttachSep);
@@ -755,8 +756,8 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
   }
 
 cleanup:
-  mutt_buffer_pool_release (&buf);
-  mutt_buffer_pool_release (&tfile);
+  mutt_buffer_pool_release(&buf);
+  mutt_buffer_pool_release(&tfile);
 }
 
 /**

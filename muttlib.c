@@ -712,10 +712,10 @@ int mutt_check_overwrite(const char *attname, const char *path, struct Buffer *f
 {
   struct stat st;
 
-  mutt_buffer_strcpy (fname, path);
-  if (access (mutt_b2s (fname), F_OK) != 0)
+  mutt_buffer_strcpy(fname, path);
+  if (access(mutt_b2s(fname), F_OK) != 0)
     return 0;
-  if (stat (mutt_b2s (fname), &st) != 0)
+  if (stat(mutt_b2s(fname), &st) != 0)
     return -1;
   if (S_ISDIR(st.st_mode))
   {
@@ -729,7 +729,7 @@ int mutt_check_overwrite(const char *attname, const char *path, struct Buffer *f
               (_("File is a directory, save under it: (y)es, (n)o, (a)ll?"), _("yna")))
       {
         case 3: /* all */
-          mutt_str_replace (directory, mutt_b2s (fname));
+          mutt_str_replace(directory, mutt_b2s(fname));
           break;
         case 1: /* yes */
           FREE(directory);
@@ -747,22 +747,22 @@ int mutt_check_overwrite(const char *attname, const char *path, struct Buffer *f
     else if ((ans = mutt_yesorno(_("File is a directory, save under it?"), MUTT_YES)) != MUTT_YES)
       return (ans == MUTT_NO) ? 1 : -1;
 
-    struct Buffer *tmp = mutt_buffer_pool_get ();
-    mutt_buffer_strcpy (tmp, mutt_path_basename (NONULL (attname)));
-    if (mutt_get_field (_("File under directory: "), tmp->data, tmp->dsize,
-                        MUTT_FILE | MUTT_CLEAR) != 0)
+    struct Buffer *tmp = mutt_buffer_pool_get();
+    mutt_buffer_strcpy(tmp, mutt_path_basename(NONULL(attname)));
+    if (mutt_get_field(_("File under directory: "), tmp->data, tmp->dsize,
+                       MUTT_FILE | MUTT_CLEAR) != 0)
     {
-      mutt_buffer_pool_release (&tmp);
+      mutt_buffer_pool_release(&tmp);
       return -1;
     }
-    mutt_buffer_fix_dptr (tmp);
+    mutt_buffer_fix_dptr(tmp);
     if (mutt_buffer_is_empty(tmp))
     {
-      mutt_buffer_pool_release (&tmp);
+      mutt_buffer_pool_release(&tmp);
       return (-1);
     }
-    mutt_buffer_concat_path (fname, path, mutt_b2s (tmp));
-    mutt_buffer_pool_release (&tmp);
+    mutt_buffer_concat_path(fname, path, mutt_b2s(tmp));
+    mutt_buffer_pool_release(&tmp);
   }
 
   if ((*opt == MUTT_SAVE_NO_FLAGS) && (access(mutt_b2s(fname), F_OK) == 0))
