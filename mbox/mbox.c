@@ -1495,7 +1495,7 @@ static int mbox_mbox_close(struct Mailbox *m)
   mutt_file_fclose(&adata->fp);
 
   /* fix up the times so mailbox won't get confused */
-  if (m->peekonly && mutt_buffer_is_empty(&m->pathbuf) &&
+  if (m->peekonly && !mutt_buffer_is_empty(&m->pathbuf) &&
       (mutt_file_timespec_compare(&m->mtime, &adata->atime) > 0))
   {
 #ifdef HAVE_UTIMENSAT
@@ -1768,7 +1768,7 @@ static int mbox_mbox_check_stats(struct Mailbox *m, int flags)
   if (m->newly_created && ((sb.st_ctime != sb.st_mtime) || (sb.st_ctime != sb.st_atime)))
     m->newly_created = false;
 
-  if (mutt_file_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->stats_last_checked) > 0)
+  if (flags && mutt_file_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->stats_last_checked) > 0)
   {
     struct Context *ctx = mx_mbox_open(m, MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK);
     if (ctx)
@@ -1780,6 +1780,9 @@ static int mbox_mbox_check_stats(struct Mailbox *m, int flags)
       mx_mbox_close(&ctx);
     }
   }
+
+  if (m->msg_new == 0)
+    m->has_new = false;
 
   return (m->msg_new > 0);
 }

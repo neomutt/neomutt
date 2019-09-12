@@ -56,7 +56,8 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
       m_check->magic = mb_magic;
       break;
     default:
-      m_check->has_new = false;
+      if (m_cur == m_check)
+        m_check->has_new = false;
 
       if ((stat(mailbox_path(m_check), &sb) != 0) ||
           (S_ISREG(sb.st_mode) && (sb.st_size == 0)) ||
