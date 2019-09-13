@@ -524,18 +524,6 @@ void mutt_perror_debug(const char *s)
 }
 
 /**
- * mutt_flush_stdin - remove characters from stdin until '\n' or EOF is encountered
- */
-void mutt_flush_stdin(void)
-{
-  int c;
-  do
-  {
-    c = fgetc(stdin);
-  } while ((c != '\n') && (c != EOF));
-}
-
-/**
  * mutt_any_key_to_continue - Prompt the user to 'press any key' and wait
  * @param s Message prompt
  * @retval num Key pressed
@@ -543,28 +531,44 @@ void mutt_flush_stdin(void)
  */
 int mutt_any_key_to_continue(const char *s)
 {
-  struct termios t;
+  struct termios term;
   struct termios old;
 
   int fd = open("/dev/tty", O_RDONLY);
   if (fd < 0)
     return EOF;
-  tcgetattr(fd, &t);
-  memcpy((void *) &old, (void *) &t, sizeof(struct termios)); /* save original state */
-  t.c_lflag &= ~(ICANON | ECHO);
-  t.c_cc[VMIN] = 1;
-  t.c_cc[VTIME] = 0;
-  tcsetattr(fd, TCSADRAIN, &t);
-  fflush(stdout);
+
+  tcgetattr(fd, &old); // Save the current tty settings
+
+  term = old;
+  term.c_lflag &= ~(ICANON | ECHO); // Canonical (not line-buffered), don't echo the characters
+  term.c_cc[VMIN] = 1;    // Wait for at least one character
+  term.c_cc[VTIME] = 255; // Wait for 25.5s
+  tcsetattr(fd, TCSANOW, &term);
+
   if (s)
     fputs(s, stdout);
   else
     fputs(_("Press any key to continue..."), stdout);
   fflush(stdout);
-  int ch = fgetc(stdin);
-  mutt_flush_stdin();
-  tcsetattr(fd, TCSADRAIN, &old);
+
+  char ch = '\0';
+  // Wait for a character.  This might timeout, so loop.
+  while (read(fd, &ch, 1) == 0)
+    ;
+
+  // Change the tty settings to be non-blocking
+  term.c_cc[VMIN] = 0;  // Returning with zero characters is acceptable
+  term.c_cc[VTIME] = 0; // Don't wait
+  tcsetattr(fd, TCSANOW, &term);
+
+  char buf[64];
+  while (read(fd, buf, sizeof(buf)) > 0) // Mop up any remaining chars
+    ;
+
+  tcsetattr(fd, TCSANOW, &old); // Restore the previous tty settings
   close(fd);
+
   fputs("\r\n", stdout);
   mutt_clear_error();
   return (ch >= 0) ? ch : EOF;
