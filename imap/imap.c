@@ -1219,7 +1219,8 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
     }
   }
 
-  if ((force || ((adata->state != IMAP_IDLE) && (mutt_date_epoch() >= adata->lastread + C_Timeout))) &&
+  if ((force || ((adata->state != IMAP_IDLE) &&
+                 (mutt_date_epoch() >= adata->lastread + C_Timeout))) &&
       (imap_exec(adata, "NOOP", IMAP_CMD_POLL) != IMAP_EXEC_SUCCESS))
   {
     return -1;

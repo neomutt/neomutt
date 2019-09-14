@@ -42,8 +42,8 @@
 #include <unistd.h>
 #include <utime.h>
 #include "file.h"
-#include "date.h"
 #include "buffer.h"
+#include "date.h"
 #include "logging.h"
 #include "memory.h"
 #include "message.h"
