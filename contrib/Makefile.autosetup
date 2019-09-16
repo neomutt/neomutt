@@ -1,4 +1,4 @@
-SAMPLES=	colors.default colors.linux gpg.rc mairix_filter.p Mush.rc Pine.rc \
+SAMPLES=	colors.default colors.linux gpg.rc mairix_filter.pl Mush.rc Pine.rc \
 		sample.mailcap sample.neomuttrc sample.neomuttrc-starter \
 		sample.neomuttrc-tlr smime.rc smime_keys_test.pl Tin.rc
 
