@@ -1,7 +1,7 @@
 notifications:
   email: false
 
-dist: xenial
+dist: bionic
 
 language: c
 compiler: gcc
@@ -16,7 +16,7 @@ addons:
       - gettext
       - libdb-dev
       - libgdbm-dev
-      - libgnutls-dev
+      - libgnutls28-dev
       - libgpgme11-dev
       - libgss-dev
       - libidn2-0-dev
