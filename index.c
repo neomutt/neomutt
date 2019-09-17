@@ -2385,7 +2385,8 @@ int mutt_index_menu(void)
          * be cleaned up after this switch statement. */
         menu->type = MENU_PAGER;
         menu->oldcurrent = menu->current;
-        update_index(menu, Context, MUTT_NEW_MAIL, Context->mailbox->msg_count, hint);
+        if (Context && Context->mailbox)
+          update_index(menu, Context, MUTT_NEW_MAIL, Context->mailbox->msg_count, hint);
         continue;
 
       case OP_EXIT:
