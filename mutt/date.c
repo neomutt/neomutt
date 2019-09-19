@@ -230,10 +230,10 @@ time_t mutt_date_make_time(struct tm *t, bool local)
     0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334,
   };
 
-  /* Prevent an integer overflow. */
-  if ((time_t) t->tm_year > (TM_YEAR_MAX - 1900))
+  /* Prevent an integer overflow, with some arbitrary limits. */
+  if (t->tm_year > 10000)
     return TIME_T_MAX;
-  if ((time_t) t->tm_year < (TM_YEAR_MIN - 1900))
+  if (t->tm_year < -10000)
     return TIME_T_MIN;
 
   if ((t->tm_mday < 1) || (t->tm_mday > 31))
