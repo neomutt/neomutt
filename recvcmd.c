@@ -1073,7 +1073,10 @@ void mutt_attach_mail_sender(FILE *fp, struct Email *e, struct AttachCtx *actx,
   if (cur)
   {
     if (mutt_fetch_recips(e_tmp->env, cur->email->env, SEND_TO_SENDER) == -1)
+    {
+      email_free(&e_tmp);
       return;
+    }
   }
   else
   {
@@ -1082,8 +1085,13 @@ void mutt_attach_mail_sender(FILE *fp, struct Email *e, struct AttachCtx *actx,
       if (actx->idx[i]->content->tagged &&
           (mutt_fetch_recips(e_tmp->env, actx->idx[i]->content->email->env,
                              SEND_TO_SENDER) == -1))
+      {
+        email_free(&e_tmp);
         return;
+      }
     }
   }
+
+  // This call will free e_tmp for us
   ci_send_message(SEND_NO_FLAGS, e_tmp, NULL, NULL, NULL);
 }
