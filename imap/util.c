@@ -614,22 +614,27 @@ int imap_parse_path(const char *path, struct ConnAccount *account, char *mailbox
   account->type = MUTT_ACCT_TYPE_IMAP;
 
   struct Url *url = url_parse(path);
-  if (url && ((url->scheme == U_IMAP) || (url->scheme == U_IMAPS)))
-  {
-    if ((mutt_account_fromurl(account, url) < 0) || !*account->host)
-    {
-      url_free(&url);
-      return -1;
-    }
-    if (url->scheme == U_IMAPS)
-      account->flags |= MUTT_ACCT_SSL;
-
-    mutt_str_strfcpy(mailbox, url->path, mailboxlen);
-
-    url_free(&url);
-  }
-  else
+  if (!url)
     return -1;
+
+  if ((url->scheme != U_IMAP) && (url->scheme != U_IMAPS))
+  {
+    url_free(&url);
+    return -1;
+  }
+
+  if ((mutt_account_fromurl(account, url) < 0) || (account->host[0] == '\0'))
+  {
+    url_free(&url);
+    return -1;
+  }
+
+  if (url->scheme == U_IMAPS)
+    account->flags |= MUTT_ACCT_SSL;
+
+  mutt_str_strfcpy(mailbox, url->path, mailboxlen);
+
+  url_free(&url);
 
   if ((account->flags & MUTT_ACCT_SSL) && !(account->flags & MUTT_ACCT_PORT))
     account->port = ImapsPort;
