@@ -1097,7 +1097,9 @@ static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
     if (ans == MUTT_YES)
     {
       mutt_message(_("Including quoted message..."));
-      if (!single)
+      if (single && en)
+        include_reply(m, en->email, fp_tmp);
+      else
       {
         STAILQ_FOREACH(en, el, entries)
         {
@@ -1109,8 +1111,6 @@ static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
           fputc('\n', fp_tmp);
         }
       }
-      else
-        include_reply(m, en->email, fp_tmp);
     }
   }
   else if (flags & SEND_FORWARD)
@@ -1126,7 +1126,7 @@ static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
       while (last && last->next)
         last = last->next;
 
-      if (single)
+      if (single && en)
       {
         tmp = mutt_make_message_attach(m, en->email, false);
         if (last)
@@ -1152,7 +1152,7 @@ static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
         }
       }
     }
-    else if (ans != MUTT_ABORT)
+    else if ((ans != MUTT_ABORT) && en)
     {
       if (mutt_inline_forward(m, e, en->email, fp_tmp) != 0)
         return -1;
