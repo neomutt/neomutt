@@ -472,7 +472,7 @@ int text_enriched_handler(struct Body *a, struct State *s)
 
   long bytes = a->length;
   struct EnrichedState stte = { 0 };
-  wchar_t wc = 0;
+  wint_t wc = 0;
   int tag_len = 0;
   wchar_t tag[1024 + 1];
 
