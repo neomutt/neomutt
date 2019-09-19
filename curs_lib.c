@@ -387,8 +387,8 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
 
       /* maxlen here is sort of arbitrary, so pick a reasonable upper bound */
       trunc_msg_len = mutt_wstr_trunc(
-          msg, 4 * prompt_lines * MuttMessageWindow->cols,
-          prompt_lines * MuttMessageWindow->cols - answer_string_wid, NULL);
+          msg, (size_t) 4 * prompt_lines * MuttMessageWindow->cols,
+          ((size_t) prompt_lines * MuttMessageWindow->cols) - answer_string_wid, NULL);
 
       mutt_window_move(MuttMessageWindow, 0, 0);
       SET_COLOR(MT_COLOR_PROMPT);
