@@ -287,7 +287,7 @@ static void enriched_putwc(wchar_t c, struct EnrichedState *stte)
   }
 
   /* see if more space is needed (plus extra for possible rich characters) */
-  if (stte->buf_len < (stte->buf_used + 3))
+  if ((stte->buf_len < (stte->buf_used + 3)) || !stte->buffer)
   {
     stte->buf_len += 1024;
     mutt_mem_realloc(&stte->buffer, (stte->buf_len + 1) * sizeof(wchar_t));
