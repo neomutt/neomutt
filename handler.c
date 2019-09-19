@@ -1132,6 +1132,11 @@ static int multilingual_handler(struct Body *a, struct State *s)
   else
     b = a;
 
+  struct Body *choice = NULL;
+  struct Body *first_part = NULL;
+  struct Body *zxx_part = NULL;
+  struct ListNode *np = NULL;
+
   if (C_PreferredLanguages)
   {
     struct Buffer *langs = mutt_buffer_pool_get();
@@ -1139,46 +1144,41 @@ static int multilingual_handler(struct Body *a, struct State *s)
     mutt_debug(LL_DEBUG2, "RFC8255 >> preferred_languages set in config to '%s'\n",
                mutt_b2s(langs));
     mutt_buffer_pool_release(&langs);
-  }
 
-  struct Body *choice = NULL;
-  struct Body *first_part = NULL;
-  struct Body *zxx_part = NULL;
-  struct ListNode *np = NULL;
-
-  STAILQ_FOREACH(np, &C_PreferredLanguages->head, entries)
-  {
-    while (b)
+    STAILQ_FOREACH(np, &C_PreferredLanguages->head, entries)
     {
-      if (mutt_can_decode(b))
+      while (b)
       {
-        if (!first_part)
-          first_part = b;
-
-        if (b->language && (mutt_str_strcmp("zxx", b->language) == 0))
-          zxx_part = b;
-
-        mutt_debug(LL_DEBUG2, "RFC8255 >> comparing configuration preferred_language='%s' to mail part content-language='%s'\n",
-                   np->data, b->language);
-        if (b->language && (mutt_str_strcmp(np->data, b->language) == 0))
+        if (mutt_can_decode(b))
         {
-          mutt_debug(LL_DEBUG2, "RFC8255 >> preferred_language='%s' matches content-language='%s' >> part selected to be displayed\n",
+          if (!first_part)
+            first_part = b;
+
+          if (b->language && (mutt_str_strcmp("zxx", b->language) == 0))
+            zxx_part = b;
+
+          mutt_debug(LL_DEBUG2, "RFC8255 >> comparing configuration preferred_language='%s' to mail part content-language='%s'\n",
                      np->data, b->language);
-          choice = b;
-          break;
+          if (b->language && (mutt_str_strcmp(np->data, b->language) == 0))
+          {
+            mutt_debug(LL_DEBUG2, "RFC8255 >> preferred_language='%s' matches content-language='%s' >> part selected to be displayed\n",
+                       np->data, b->language);
+            choice = b;
+            break;
+          }
         }
+
+        b = b->next;
       }
 
-      b = b->next;
+      if (choice)
+        break;
+
+      if (a->parts)
+        b = a->parts;
+      else
+        b = a;
     }
-
-    if (choice)
-      break;
-
-    if (a->parts)
-      b = a->parts;
-    else
-      b = a;
   }
 
   if (choice)
