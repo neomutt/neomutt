@@ -297,14 +297,14 @@ void mutt_draw_tree(struct Context *ctx)
   /* Do the visibility calculations and free the old thread chars.
    * From now on we can simply ignore invisible subtrees */
   calculate_visibility(ctx, &max_depth);
-  pfx = mutt_mem_malloc(width * max_depth + 2);
-  arrow = mutt_mem_malloc(width * max_depth + 2);
+  pfx = mutt_mem_malloc((width * max_depth) + 2);
+  arrow = mutt_mem_malloc((width * max_depth) + 2);
   while (tree)
   {
-    if (depth)
+    if (depth != 0)
     {
       myarrow = arrow + (depth - start_depth - ((start_depth != 0) ? 0 : 1)) * width;
-      if (depth && (start_depth == depth))
+      if (start_depth == depth)
         myarrow[0] = nextdisp ? MUTT_TREE_LTEE : corner;
       else if (parent->message && !C_HideLimited)
         myarrow[0] = MUTT_TREE_HIDDEN;
@@ -321,19 +321,19 @@ void mutt_draw_tree(struct Context *ctx)
       {
         myarrow[width] = MUTT_TREE_RARROW;
         myarrow[width + 1] = 0;
-        new_tree = mutt_mem_malloc((2 + depth * width));
+        new_tree = mutt_mem_malloc(((size_t) depth * width) + 2);
         if (start_depth > 1)
         {
-          strncpy(new_tree, pfx, (start_depth - 1) * width);
+          strncpy(new_tree, pfx, (size_t) width * (start_depth - 1));
           mutt_str_strfcpy(new_tree + (start_depth - 1) * width, arrow,
                            (1 + depth - start_depth) * width + 2);
         }
         else
-          mutt_str_strfcpy(new_tree, arrow, 2 + depth * width);
+          mutt_str_strfcpy(new_tree, arrow, ((size_t) depth * width) + 2);
         tree->message->tree = new_tree;
       }
     }
-    if (tree->child && depth)
+    if (tree->child && (depth != 0))
     {
       mypfx = pfx + (depth - 1) * width;
       mypfx[0] = nextdisp ? MUTT_TREE_VLINE : MUTT_TREE_SPACE;
