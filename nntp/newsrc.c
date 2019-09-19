@@ -133,8 +133,11 @@ void nntp_newsrc_close(struct NntpAccountData *adata)
 void nntp_group_unread_stat(struct NntpMboxData *mdata)
 {
   mdata->unread = 0;
-  if ((mdata->last_message == 0) || (mdata->first_message > mdata->last_message))
+  if ((mdata->last_message == 0) ||
+      (mdata->first_message > mdata->last_message) || !mdata->newsrc_ent)
+  {
     return;
+  }
 
   mdata->unread = mdata->last_message - mdata->first_message + 1;
   for (unsigned int i = 0; i < mdata->newsrc_len; i++)
@@ -587,7 +590,7 @@ int nntp_add_group(char *line, void *data)
   mdata->last_message = last;
   mdata->allowed = (mod == 'y') || (mod == 'm');
   mutt_str_replace(&mdata->desc, desc);
-  if (mdata->newsrc_ent || mdata->last_cached)
+  if (mdata->newsrc_ent || (mdata->last_cached != 0))
     nntp_group_unread_stat(mdata);
   else if (mdata->last_message && (mdata->first_message <= mdata->last_message))
     mdata->unread = mdata->last_message - mdata->first_message + 1;
