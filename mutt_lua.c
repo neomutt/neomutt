@@ -425,7 +425,7 @@ static bool lua_init(lua_State **l)
 
 /* Public API --------------------------------------------------------------- */
 
-lua_State *Lua = NULL;
+lua_State *LuaState = NULL;
 
 /**
  * mutt_lua_parse - Parse the 'lua' command - Implements ::command_t
@@ -433,15 +433,15 @@ lua_State *Lua = NULL;
 enum CommandResult mutt_lua_parse(struct Buffer *buf, struct Buffer *s,
                                   unsigned long data, struct Buffer *err)
 {
-  lua_init(&Lua);
+  lua_init(&LuaState);
   mutt_debug(LL_DEBUG2, " * mutt_lua_parse(%s)\n", buf->data);
 
-  if (luaL_dostring(Lua, s->dptr))
+  if (luaL_dostring(LuaState, s->dptr))
   {
     mutt_debug(LL_DEBUG2, " * %s -> failure\n", s->dptr);
-    mutt_buffer_printf(err, "%s: %s", s->dptr, lua_tostring(Lua, -1));
+    mutt_buffer_printf(err, "%s: %s", s->dptr, lua_tostring(LuaState, -1));
     /* pop error message from the stack */
-    lua_pop(Lua, 1);
+    lua_pop(LuaState, 1);
     return MUTT_CMD_ERROR;
   }
   mutt_debug(LL_DEBUG2, " * %s -> success\n", s->dptr);
@@ -457,7 +457,7 @@ enum CommandResult mutt_lua_source_file(struct Buffer *buf, struct Buffer *s,
 {
   mutt_debug(LL_DEBUG2, " * mutt_lua_source()\n");
 
-  lua_init(&Lua);
+  lua_init(&LuaState);
 
   char path[PATH_MAX];
 
@@ -474,10 +474,10 @@ enum CommandResult mutt_lua_source_file(struct Buffer *buf, struct Buffer *s,
   mutt_str_strfcpy(path, buf->data, sizeof(path));
   mutt_expand_path(path, sizeof(path));
 
-  if (luaL_dofile(Lua, path))
+  if (luaL_dofile(LuaState, path))
   {
-    mutt_error(_("Couldn't source lua source: %s"), lua_tostring(Lua, -1));
-    lua_pop(Lua, 1);
+    mutt_error(_("Couldn't source lua source: %s"), lua_tostring(LuaState, -1));
+    lua_pop(LuaState, 1);
     return MUTT_CMD_ERROR;
   }
   return MUTT_CMD_SUCCESS;
