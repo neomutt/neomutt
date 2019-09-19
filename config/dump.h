@@ -31,7 +31,7 @@ struct Buffer;
 struct ConfigSet;
 struct HashElem;
 
-typedef uint8_t ConfigDumpFlags;          ///< Flags for dump_config(), e.g. #CS_DUMP_ONLY_CHANGED
+typedef uint16_t ConfigDumpFlags;         ///< Flags for dump_config(), e.g. #CS_DUMP_ONLY_CHANGED
 #define CS_DUMP_NO_FLAGS              0   ///< No flags are set
 #define CS_DUMP_ONLY_CHANGED    (1 << 0)  ///< Only show config that the user has changed
 #define CS_DUMP_HIDE_SENSITIVE  (1 << 1)  ///< Obscure sensitive information like passwords
