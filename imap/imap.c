@@ -1435,7 +1435,7 @@ int imap_subscribe(char *path, bool subscribe)
  * Given a partial IMAP folder path, return a string which adds as much to the
  * path as is unique
  */
-int imap_complete(char *buf, size_t buflen, char *path)
+int imap_complete(char *buf, size_t buflen, const char *path)
 {
   struct ImapAccountData *adata = NULL;
   struct ImapMboxData *mdata = NULL;

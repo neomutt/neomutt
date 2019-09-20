@@ -298,7 +298,6 @@
   NEOMUTT_TEST_ITEM(test_mutt_path_basename)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_path_canon)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_path_concat)                                     \
-  NEOMUTT_TEST_ITEM(test_mutt_path_concatn)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_path_dirname)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_path_escape)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_path_getcwd)                                     \
