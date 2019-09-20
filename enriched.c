@@ -350,7 +350,7 @@ static void enriched_puts(const char *s, struct EnrichedState *stte)
 
   const char *c = NULL;
 
-  if (stte->buf_len < (stte->buf_used + mutt_str_strlen(s)))
+  if ((stte->buf_len < (stte->buf_used + mutt_str_strlen(s))) || !stte->buffer)
   {
     stte->buf_len += 1024;
     mutt_mem_realloc(&stte->buffer, (stte->buf_len + 1) * sizeof(wchar_t));
