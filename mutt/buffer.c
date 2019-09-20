@@ -274,7 +274,7 @@ void mutt_buffer_alloc(struct Buffer *buf, size_t new_size)
     buf->dptr = buf->data;
   }
 
-  if (new_size > buf->dsize)
+  if ((new_size > buf->dsize) || !buf->data)
   {
     size_t offset = (buf->dptr && buf->data) ? buf->dptr - buf->data : 0;
 
