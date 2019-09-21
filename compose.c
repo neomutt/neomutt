@@ -99,6 +99,20 @@ static const char *There_are_no_attachments = N_("There are no attachments");
 static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
                                 struct Menu *menu, const char *p);
 
+/**
+ * struct ComposeRedrawData - Keep track when the compose screen needs redrawing
+ */
+struct ComposeRedrawData
+{
+  struct Email *email;
+  char *fcc;
+#ifdef USE_AUTOCRYPT
+  enum AutocryptRec autocrypt_rec;
+  int autocrypt_rec_override;
+#endif
+  struct MuttWindow *win;
+};
+
 #define CHECK_COUNT                                                            \
   if (actx->idxlen == 0)                                                       \
   {                                                                            \
@@ -240,20 +254,6 @@ static const char *AutocryptRecUiFlags[] = {
   N_("Yes"),
 };
 #endif
-
-/**
- * struct ComposeRedrawData - Keep track when the compose screen needs redrawing
- */
-struct ComposeRedrawData
-{
-  struct Email *email;
-  char *fcc;
-#ifdef USE_AUTOCRYPT
-  enum AutocryptRec autocrypt_rec;
-  int autocrypt_rec_override;
-#endif
-  struct MuttWindow *win;
-};
 
 /**
  * calc_header_width_padding - Calculate the width needed for the compose labels
