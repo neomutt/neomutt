@@ -31,7 +31,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <iconv.h>
-#include <inttypes.h>
+#include <inttypes.h> // IWYU pragma: keep
 #include <limits.h>
 #include <signal.h>
 #include <stdbool.h>
@@ -1228,9 +1228,7 @@ static void transform_to_7bit(struct Body *a, FILE *fp_in)
   {
     if (a->type == TYPE_MULTIPART)
     {
-      if (a->encoding != ENC_7BIT)
-        a->encoding = ENC_7BIT;
-
+      a->encoding = ENC_7BIT;
       transform_to_7bit(a->parts, fp_in);
     }
     else if (mutt_is_message_type(a->type, a->subtype))

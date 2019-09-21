@@ -49,6 +49,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 #include <unistd.h>
 #include "notmuch_private.h"
 #include "mutt/mutt.h"

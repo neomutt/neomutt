@@ -25,9 +25,14 @@
 #ifndef MUTT_NCRYPT_SMIME_H
 #define MUTT_NCRYPT_SMIME_H
 
-#include <stdbool.h>
+#include "config.h"
 #include <stdio.h>
 #include "ncrypt.h"
+#ifdef USE_SLANG_CURSES
+#include "mutt_curses.h"
+#else
+#include <stdbool.h>
+#endif
 
 struct AddressList;
 struct Body;

@@ -29,11 +29,13 @@
 
 #include "config.h"
 #include <fcntl.h>
-#include <termios.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"
+#ifdef USE_SLANG_CURSES
+#include <stdbool.h>
+#endif
 #ifdef HAVE_SYS_IOCTL_H
 #include <sys/ioctl.h>
 #else

@@ -29,7 +29,7 @@
 
 #include "config.h"
 #include <ctype.h>
-#include <inttypes.h>
+#include <inttypes.h> // IWYU pragma: keep
 #include <stdbool.h>
 #include <string.h>
 #include "mutt/mutt.h"

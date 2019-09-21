@@ -35,8 +35,10 @@
 #ifndef MUTT_ADDRESS_LIB_H
 #define MUTT_ADDRESS_LIB_H
 
+// IWYU pragma: begin_exports
 #include "address.h"
 #include "group.h"
 #include "idna2.h"
+// IWYU pragma: end_exports
 
 #endif /* MUTT_ADDRESS_LIB_H */

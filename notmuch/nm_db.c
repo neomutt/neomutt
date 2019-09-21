@@ -32,6 +32,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <sys/stat.h>
+#include <time.h>
 #include "notmuch_private.h"
 #include "mutt/mutt.h"
 #include "email/lib.h"

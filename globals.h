@@ -24,7 +24,7 @@
 #define MUTT_GLOBALS_H
 
 #include "config.h"
-#include <signal.h>
+#include <signal.h> // IWYU pragma: keep
 #include <stdbool.h>
 #include "mutt/mutt.h"
 #include "keymap.h"

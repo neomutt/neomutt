@@ -46,6 +46,7 @@
 #ifndef MUTT_EMAIL_LIB_H
 #define MUTT_EMAIL_LIB_H
 
+// IWYU pragma: begin_exports
 #include "attach.h"
 #include "body.h"
 #include "content.h"
@@ -61,5 +62,6 @@
 #include "tags.h"
 #include "thread.h"
 #include "url.h"
+// IWYU pragma: end_exports
 
 #endif /* MUTT_EMAIL_LIB_H */

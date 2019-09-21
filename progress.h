@@ -24,6 +24,7 @@
 #ifndef MUTT_PROGRESS_H
 #define MUTT_PROGRESS_H
 
+#include <stdbool.h>
 #include <stdio.h>
 
 /* These Config Variables are only used in progress.c */

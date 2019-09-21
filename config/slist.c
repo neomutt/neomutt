@@ -108,7 +108,7 @@ static int slist_string_set(const struct ConfigSet *cs, void *var, struct Config
     cdef->initial = IP mutt_str_strdup(value);
   }
 
-  return CSR_SUCCESS;
+  return rc;
 }
 
 /**

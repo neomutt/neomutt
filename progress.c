@@ -28,11 +28,9 @@
  */
 
 #include "config.h"
-#include <errno.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <string.h>
-#include <sys/time.h>
 #include "mutt/mutt.h"
 #include "progress.h"
 #include "curs_lib.h"
@@ -116,7 +114,7 @@ static void message_bar(int percent, const char *fmt, ...)
 static size_t progress_choose_increment(enum ProgressType type)
 {
   static short *incs[] = { &C_ReadInc, &C_WriteInc, &C_NetInc };
-  return (type < 0 || type >= mutt_array_size(incs)) ? 0 : *incs[type];
+  return (type >= mutt_array_size(incs)) ? 0 : *incs[type];
 }
 
 /**

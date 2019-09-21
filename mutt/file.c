@@ -37,7 +37,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/file.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <utime.h>
@@ -49,6 +48,9 @@
 #include "message.h"
 #include "path.h"
 #include "string2.h"
+#ifdef USE_FLOCK
+#include <sys/file.h>
+#endif
 
 char *C_Tmpdir; ///< Config: Directory for temporary files
 

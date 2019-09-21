@@ -41,7 +41,6 @@
 #include "globals.h"
 #include "mutt_curses.h"
 #include "mutt_logging.h"
-#include "mutt_window.h"
 #include "muttlib.h"
 #include "ncrypt.h"
 #include "pgpkey.h"

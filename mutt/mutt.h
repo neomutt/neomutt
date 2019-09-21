@@ -58,6 +58,7 @@
 #ifndef MUTT_LIB_MUTT_H
 #define MUTT_LIB_MUTT_H
 
+// IWYU pragma: begin_exports
 #include "base64.h"
 #include "buffer.h"
 #include "charset.h"
@@ -84,5 +85,6 @@
 #include "signal2.h"
 #include "slist.h"
 #include "string2.h"
+// IWYU pragma: end_exports
 
 #endif /* MUTT_LIB_MUTT_H */

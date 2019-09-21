@@ -29,7 +29,6 @@
 
 #include "config.h"
 #include <limits.h>
-#include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>

@@ -28,6 +28,7 @@
 #include <stdio.h>
 
 struct Address;
+struct AddressList;
 struct Body;
 struct Context;
 struct Email;

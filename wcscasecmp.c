@@ -27,7 +27,7 @@
  */
 
 #include "config.h"
-#include <stddef.h>
+#include <wchar.h>
 #include <wctype.h>
 
 /**

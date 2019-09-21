@@ -35,8 +35,10 @@
 #ifndef MUTT_CORE_LIB_H
 #define MUTT_CORE_LIB_H
 
+// IWYU pragma: begin_exports
 #include "account.h"
 #include "mailbox.h"
 #include "neomutt.h"
+// IWYU pragma: end_exports
 
 #endif /* MUTT_CORE_LIB_H */

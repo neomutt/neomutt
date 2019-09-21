@@ -31,8 +31,6 @@
 #include "ncrypt/ncrypt.h"
 #include "tags.h"
 
-struct Notify;
-
 /**
  * struct Email - The envelope/body of an email
  */

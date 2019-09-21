@@ -26,7 +26,7 @@
 
 #include <stdbool.h>
 #include "config/lib.h"
-#include "options.h"
+#include "options.h" // IWYU pragma: keep
 #include "where.h"
 
 struct Address;
