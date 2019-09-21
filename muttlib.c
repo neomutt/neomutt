@@ -59,7 +59,9 @@
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "protos.h"
-#ifdef HAVE_SYS_SYSCALL_H
+#if defined(HAVE_SYSCALL_H)
+#include <syscall.h>
+#elif defined(HAVE_SYS_SYSCALL_H)
 #include <sys/syscall.h>
 #endif
 #ifdef USE_IMAP

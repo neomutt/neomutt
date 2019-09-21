@@ -304,6 +304,7 @@ if {1} {
   cc-check-includes \
     ioctl.h \
     sys/ioctl.h \
+    syscall.h \
     sys/syscall.h \
     sysexits.h
 
