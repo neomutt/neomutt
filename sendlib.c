@@ -31,7 +31,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <iconv.h>
-#include <inttypes.h>
+#include <inttypes.h> // IWYU pragma: keep
 #include <limits.h>
 #include <signal.h>
 #include <stdbool.h>

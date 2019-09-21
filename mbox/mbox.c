@@ -32,7 +32,7 @@
 
 #include "config.h"
 #include <fcntl.h>
-#include <inttypes.h>
+#include <inttypes.h> // IWYU pragma: keep
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>

@@ -27,7 +27,7 @@
 #include <ctype.h>
 #include <stdbool.h>
 #include <wchar.h>
-#include <wctype.h>
+#include <wctype.h> // IWYU pragma: keep
 
 extern bool OptLocales;
 

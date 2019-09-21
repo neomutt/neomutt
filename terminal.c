@@ -32,9 +32,9 @@
 #include "mutt/mutt.h"
 #include "mutt_curses.h"
 #ifdef HAVE_NCURSESW_NCURSES_H
-#include <ncursesw/term.h>
+#include <ncursesw/term.h> // IWYU pragma: keep
 #elif defined(HAVE_NCURSES_NCURSES_H)
-#include <ncurses/term.h>
+#include <ncurses/term.h> // IWYU pragma: keep
 #elif !defined(USE_SLANG_CURSES)
 #include <term.h>
 #endif

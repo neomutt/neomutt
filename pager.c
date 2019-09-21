@@ -29,7 +29,7 @@
 #include "config.h"
 #include <ctype.h>
 #include <errno.h>
-#include <inttypes.h>
+#include <inttypes.h> // IWYU pragma: keep
 #include <limits.h>
 #include <regex.h>
 #include <stdbool.h>

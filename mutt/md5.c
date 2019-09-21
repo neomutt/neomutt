@@ -28,7 +28,7 @@
  */
 
 #include "config.h"
-#include <stddef.h>
+#include <stddef.h> // IWYU pragma: keep
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
