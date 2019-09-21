@@ -282,7 +282,8 @@ void mutt_buffer_alloc(struct Buffer *buf, size_t new_size)
     mutt_mem_realloc(&buf->data, buf->dsize);
     buf->dptr = buf->data + offset;
     /* This ensures an initially NULL buf->data is now properly terminated. */
-    *buf->dptr = '\0';
+    if (buf->dptr)
+      *buf->dptr = '\0';
   }
 }
 
