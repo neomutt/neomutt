@@ -1165,8 +1165,7 @@ static int menu_search(struct Menu *menu, int op)
   int search_dir;
   regex_t re;
   char buf[128];
-  char *search_buf =
-      ((menu->type >= 0) && (menu->type < MENU_MAX)) ? SearchBuffers[menu->type] : NULL;
+  char *search_buf = ((menu->type < MENU_MAX)) ? SearchBuffers[menu->type] : NULL;
 
   if (!(search_buf && *search_buf) || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
@@ -1180,7 +1179,7 @@ static int menu_search(struct Menu *menu, int op)
     {
       return -1;
     }
-    if ((menu->type >= 0) && (menu->type < MENU_MAX))
+    if (menu->type < MENU_MAX)
     {
       mutt_str_replace(&SearchBuffers[menu->type], buf);
       search_buf = SearchBuffers[menu->type];
