@@ -41,7 +41,9 @@
 #ifndef MUTT_CONN_CONN_H
 #define MUTT_CONN_CONN_H
 
+#include "config.h"
 #include <stdio.h>
+// IWYU pragma: begin_exports
 #include "conn_globals.h"
 #include "connaccount.h"
 #include "connection.h"
@@ -52,6 +54,7 @@
 #ifdef USE_SASL
 #include "sasl.h"
 #endif
+// IWYU pragma: end_exports
 
 int getdnsdomainname(char *buf, size_t buflen);
 

@@ -46,6 +46,7 @@
 #ifndef MUTT_CONFIG_LIB_H
 #define MUTT_CONFIG_LIB_H
 
+// IWYU pragma: begin_exports
 #include "address.h"
 #include "bool.h"
 #include "dump.h"
@@ -58,9 +59,10 @@
 #include "regex2.h"
 #include "set.h"
 #include "slist.h"
-#include "sort.h"
+#include "sort2.h"
 #include "string3.h"
 #include "subset.h"
 #include "types.h"
+// IWYU pragma: end_exports
 
 #endif /* MUTT_CONFIG_LIB_H */
