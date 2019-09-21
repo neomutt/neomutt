@@ -346,6 +346,8 @@ static size_t choose_block(char *d, size_t dlen, int col, const char *fromcode,
  */
 static void finalize_chunk(struct Buffer *res, struct Buffer *buf, char *charset, size_t charsetlen)
 {
+  if (!charset)
+    return;
   char end = charset[charsetlen];
   charset[charsetlen] = '\0';
   mutt_ch_convert_string(&buf->data, charset, C_Charset, MUTT_ICONV_HOOK_FROM);
@@ -714,7 +716,7 @@ void rfc2047_decode(char **pd)
         return;
       }
       if (prev.data && ((prev_charsetlen != charsetlen) ||
-                        (strncmp(prev_charset, charset, charsetlen) != 0)))
+                        (mutt_str_strncmp(prev_charset, charset, charsetlen) != 0)))
       {
         /* Different charset, convert the previous chunk and add it to the
          * final result */

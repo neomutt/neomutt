@@ -287,7 +287,7 @@ static void enriched_putwc(wchar_t c, struct EnrichedState *stte)
   }
 
   /* see if more space is needed (plus extra for possible rich characters) */
-  if (stte->buf_len < (stte->buf_used + 3))
+  if ((stte->buf_len < (stte->buf_used + 3)) || !stte->buffer)
   {
     stte->buf_len += 1024;
     mutt_mem_realloc(&stte->buffer, (stte->buf_len + 1) * sizeof(wchar_t));
@@ -350,7 +350,7 @@ static void enriched_puts(const char *s, struct EnrichedState *stte)
 
   const char *c = NULL;
 
-  if (stte->buf_len < (stte->buf_used + mutt_str_strlen(s)))
+  if ((stte->buf_len < (stte->buf_used + mutt_str_strlen(s))) || !stte->buffer)
   {
     stte->buf_len += 1024;
     mutt_mem_realloc(&stte->buffer, (stte->buf_len + 1) * sizeof(wchar_t));
@@ -472,7 +472,7 @@ int text_enriched_handler(struct Body *a, struct State *s)
 
   long bytes = a->length;
   struct EnrichedState stte = { 0 };
-  wchar_t wc = 0;
+  wint_t wc = 0;
   int tag_len = 0;
   wchar_t tag[1024 + 1];
 

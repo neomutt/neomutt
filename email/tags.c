@@ -88,8 +88,9 @@ static void driver_tags_add(struct TagList *list, char *new_tag)
     tn->transformed = mutt_str_strdup(new_tag_transformed);
 
   /* filter out hidden tags */
-  if (mutt_list_find(&C_HiddenTags->head, new_tag))
-    tn->hidden = true;
+  if (C_HiddenTags)
+    if (mutt_list_find(&C_HiddenTags->head, new_tag))
+      tn->hidden = true;
 
   STAILQ_INSERT_TAIL(list, tn, entries);
 }
