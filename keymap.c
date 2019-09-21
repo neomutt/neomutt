@@ -1152,12 +1152,13 @@ static char *parse_keymap(enum MenuType *menu, struct Buffer *s, int max_menus,
       if (q)
         *q = '\0';
 
-      menu[i] = mutt_map_get_value(p, Menus);
-      if (menu[i] == -1)
+      int val = mutt_map_get_value(p, Menus);
+      if (val == -1)
       {
         mutt_buffer_printf(err, _("%s: no such menu"), p);
         goto error;
       }
+      menu[i] = val;
       i++;
       if (q)
         p = q + 1;
