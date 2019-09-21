@@ -52,7 +52,6 @@
 
 #include <stdbool.h>
 #include <stddef.h>
-#include <sys/time.h>
 
 struct Email;
 

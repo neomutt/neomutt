@@ -31,8 +31,9 @@
 struct Address;
 struct AddressList;
 struct Body;
-struct Envelope;
 struct Email;
+struct Envelope;
+struct Mailbox;
 struct State;
 
 /**

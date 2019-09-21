@@ -28,11 +28,9 @@
  */
 
 #include "config.h"
-#include <errno.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <string.h>
-#include <sys/time.h>
 #include "mutt/mutt.h"
 #include "progress.h"
 #include "curs_lib.h"

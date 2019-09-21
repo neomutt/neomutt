@@ -40,8 +40,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <sys/time.h>
-#include <time.h>
 #include <unistd.h>
 #include <utime.h>
 #include "maildir_private.h"

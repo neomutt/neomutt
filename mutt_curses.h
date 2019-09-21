@@ -24,9 +24,11 @@
 #ifndef MUTT_MUTT_CURSES_H
 #define MUTT_MUTT_CURSES_H
 
+#include "config.h"
 #include <regex.h>
+#include <stdbool.h>
+#include <stdint.h>
 #include "mutt/mutt.h"
-#include "pattern.h"
 
 #ifdef USE_SLANG_CURSES
 

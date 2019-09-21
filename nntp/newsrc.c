@@ -52,7 +52,6 @@
 #include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
-#include "mutt_window.h"
 #include "muttlib.h"
 #include "nntp.h"
 #include "protos.h"

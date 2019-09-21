@@ -81,6 +81,8 @@
 #include <libintl.h>
 #endif
 
+struct Mailbox;
+
 // clang-format off
 /* Values used for comparing addresses. */
 #define CRYPT_KV_VALID    (1 << 0)

@@ -28,6 +28,7 @@
 
 struct AddressList;
 struct Body;
+struct Email;
 struct State;
 
 struct Body *crypt_pgp_encrypt_message(struct Email *e, struct Body *a, char *keylist, int sign);

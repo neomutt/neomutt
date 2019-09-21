@@ -35,7 +35,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 #include "imap_private.h"
 #include "mutt/mutt.h"
 #include "config/lib.h"

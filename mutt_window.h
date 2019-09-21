@@ -24,8 +24,6 @@
 #define MUTT_MUTT_WINDOW_H
 
 #include "config.h"
-#include <stdbool.h>
-#include "mutt/mutt.h"
 
 /**
  * struct MuttWindow - A division of the screen

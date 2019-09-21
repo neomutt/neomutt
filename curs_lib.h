@@ -25,7 +25,7 @@
 
 #include <stddef.h>
 #include <stdbool.h>
-#include <stdio.h>
+#include <wchar.h>
 #include "config/lib.h"
 #include "mutt.h"
 #include "browser.h"

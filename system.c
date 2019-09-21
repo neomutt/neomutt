@@ -30,7 +30,6 @@
 #include <signal.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include <sys/wait.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "mutt.h"

@@ -33,7 +33,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <strings.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "keymap.h"
@@ -47,6 +46,9 @@
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
+#ifndef USE_SLANG_CURSES
+#include <strings.h>
+#endif
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif

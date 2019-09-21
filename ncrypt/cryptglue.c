@@ -40,19 +40,20 @@
 #include <stdio.h>
 #include "mutt/mutt.h"
 #include "crypt_mod.h"
-#include "curs_lib.h"
-#include "globals.h"
 #include "ncrypt.h"
-#include "options.h"
+#ifndef CRYPT_BACKEND_GPGME
+#include "curs_lib.h"
+#endif
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/autocrypt.h"
+#include "globals.h"
+#include "options.h"
+#include "email/lib.h"
 #endif
 
 struct Address;
 struct AddressList;
-struct Body;
-struct Envelope;
-struct Email;
+struct Mailbox;
 struct State;
 
 /* These Config Variables are only used in ncrypt/cryptglue.c */

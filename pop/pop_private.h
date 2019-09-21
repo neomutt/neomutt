@@ -27,7 +27,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include "conn/conn.h"
-#include "mutt/buffer.h"
+#include "mutt/mutt.h"
 
 struct Mailbox;
 struct Progress;

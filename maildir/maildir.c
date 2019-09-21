@@ -40,11 +40,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <time.h>
 #include <unistd.h>
 #include "maildir_private.h"
 #include "mutt/mutt.h"
-#include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "globals.h"

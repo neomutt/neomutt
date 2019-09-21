@@ -40,9 +40,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/utsname.h>
-#include <time.h>
 #include <unistd.h>
-#include <wchar.h>
 #include "mutt/mutt.h"
 #include "address/lib.h"
 #include "email/lib.h"
@@ -55,7 +53,6 @@
 #include "hcache/hcache.h"
 #include "keymap.h"
 #include "monitor.h"
-#include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mutt_window.h"
 #include "mx.h"

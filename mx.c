@@ -35,7 +35,6 @@
 #include <stdbool.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <time.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "address/lib.h"

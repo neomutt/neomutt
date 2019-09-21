@@ -35,6 +35,7 @@
 #include "keymap.h"
 #include "muttlib.h"
 #include "opcodes.h"
+#include "pager.h"
 #include "version.h"
 
 /**

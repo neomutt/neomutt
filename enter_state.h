@@ -24,6 +24,7 @@
 #define MUTT_ENTER_STATE_H
 
 #include <stddef.h>
+#include <wchar.h>
 
 /**
  * struct EnterState - Keep our place when entering a string

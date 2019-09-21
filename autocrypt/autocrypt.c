@@ -38,7 +38,6 @@
 #include "autocrypt.h"
 #include "curs_lib.h"
 #include "globals.h"
-#include "mutt_curses.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
