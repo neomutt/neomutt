@@ -242,10 +242,9 @@ struct KeyEvent mutt_getch(void)
 }
 
 /**
- * mutt_get_field_full - Ask the user for a string
+ * mutt_buffer_get_field_full - Ask the user for a string
  * @param[in]  field    Prompt
  * @param[in]  buf      Buffer for the result
- * @param[in]  buflen   Length of buffer
  * @param[in]  complete Flags, see #CompletionFlags
  * @param[in]  multiple Allow multiple selections
  * @param[out] files    List of files selected
@@ -254,8 +253,8 @@ struct KeyEvent mutt_getch(void)
  * @retval 0  Selection made
  * @retval -1 Aborted
  */
-int mutt_get_field_full(const char *field, char *buf, size_t buflen, CompletionFlags complete,
-                        bool multiple, char ***files, int *numfiles)
+int mutt_buffer_get_field_full(const char *field, struct Buffer *buf, CompletionFlags complete,
+                               bool multiple, char ***files, int *numfiles)
 {
   int ret;
   int col;
@@ -277,12 +276,45 @@ int mutt_get_field_full(const char *field, char *buf, size_t buflen, CompletionF
     mutt_curses_set_color(MT_COLOR_NORMAL);
     mutt_refresh();
     mutt_window_get_coords(MuttMessageWindow, NULL, &col);
-    ret = mutt_enter_string_full(buf, buflen, col, complete, multiple, files, numfiles, es);
+    ret = mutt_enter_string_full(buf->data, buf->dsize, col, complete, multiple,
+                                 files, numfiles, es);
   } while (ret == 1);
+
+  if (ret != 0)
+    mutt_buffer_reset(buf);
+  else
+    mutt_buffer_fix_dptr(buf);
+
   mutt_window_clearline(MuttMessageWindow, 0);
   mutt_enter_state_free(&es);
 
   return ret;
+}
+
+/**
+ * mutt_get_field_full - Ask the user for a string
+ * @param[in]  field    Prompt
+ * @param[in]  buf      Buffer for the result
+ * @param[in]  buflen   Length of buffer
+ * @param[in]  complete Flags, see #CompletionFlags
+ * @param[in]  multiple Allow multiple selections
+ * @param[out] files    List of files selected
+ * @param[out] numfiles Number of files selected
+ * @retval 1  Redraw the screen and call the function again
+ * @retval 0  Selection made
+ * @retval -1 Aborted
+ */
+int mutt_get_field_full(const char *field, char *buf, size_t buflen, CompletionFlags complete,
+                        bool multiple, char ***files, int *numfiles)
+{
+  struct Buffer *tmp = mutt_buffer_pool_get();
+
+  mutt_buffer_addstr(tmp, buf);
+  int rc = mutt_buffer_get_field_full(field, tmp, complete, multiple, files, numfiles);
+  mutt_str_strfcpy(buf, mutt_b2s(tmp), buflen);
+
+  mutt_buffer_pool_release(&tmp);
+  return rc;
 }
 
 /**
