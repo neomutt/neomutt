@@ -134,14 +134,14 @@ static int setup_paths(struct Mailbox *m)
   if (!m)
     return -1;
 
-  char tmp[PATH_MAX];
-
   /* Setup the right paths */
   mutt_str_replace(&m->realpath, mailbox_path(m));
 
   /* We will uncompress to /tmp */
-  mutt_mktemp(tmp, sizeof(tmp));
-  mutt_buffer_strcpy(&m->pathbuf, tmp);
+  struct Buffer *buf = mutt_buffer_pool_get();
+  mutt_buffer_mktemp(buf);
+  mutt_buffer_strcpy(&m->pathbuf, mutt_b2s(buf));
+  mutt_buffer_pool_release(&buf);
 
   FILE *fp = mutt_file_fopen(mailbox_path(m), "w");
   if (!fp)
