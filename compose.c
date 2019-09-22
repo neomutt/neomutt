@@ -2133,10 +2133,10 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
           if (e->content->next)
             e->content = mutt_make_multipart(e->content);
 
-          if (mutt_write_fcc(mutt_b2s(&fname), e, NULL, false, NULL, NULL) < 0)
-            e->content = mutt_remove_multipart(e->content);
-          else
+          if (mutt_write_fcc(mutt_b2s(&fname), e, NULL, false, NULL, NULL) == 0)
             mutt_message(_("Message written"));
+
+          e->content = mutt_remove_multipart(e->content);
         }
         break;
 
