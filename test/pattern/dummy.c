@@ -28,6 +28,7 @@
 
 struct Address;
 struct Body;
+struct Buffer;
 struct Email;
 struct Envelope;
 struct Mailbox;
@@ -82,6 +83,12 @@ int mutt_count_body_parts(struct Mailbox *m, struct Email *e)
 }
 
 pid_t mutt_create_filter(const char *s, FILE **fp_in, FILE **fp_out, FILE **fp_err)
+{
+  return -1;
+}
+
+int mutt_buffer_get_field_full(const char *field, struct Buffer *buf, int complete,
+                               bool multiple, char ***files, int *numfiles)
 {
   return -1;
 }

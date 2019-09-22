@@ -1686,8 +1686,8 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         if (op == OP_CHANGE_DIRECTORY)
         {
           /* buf comes from the buffer pool, so defaults to size 1024 */
-          int ret = mutt_get_field(_("Chdir to: "), buf->data, buf->dsize, MUTT_FILE);
-          if ((ret != 0) && (mutt_b2s(buf)[0] == '\0'))
+          int ret = mutt_buffer_get_field(_("Chdir to: "), buf, MUTT_FILE);
+          if ((ret != 0) && mutt_buffer_is_empty(buf))
             break;
         }
         else if (op == OP_GOTO_PARENT)
@@ -1695,7 +1695,6 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
         if (mutt_b2s(buf)[0] != '\0')
         {
-          mutt_buffer_fix_dptr(buf);
           mailbox = false;
           mutt_buffer_expand_path(buf);
 #ifdef USE_IMAP
@@ -1938,7 +1937,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
       case OP_BROWSER_NEW_FILE:
         mutt_buffer_printf(buf, "%s/", mutt_b2s(&LastDir));
         /* buf comes from the buffer pool, so defaults to size 1024 */
-        if (mutt_get_field(_("New file name: "), buf->data, buf->dsize, MUTT_FILE) == 0)
+        if (mutt_buffer_get_field(_("New file name: "), buf, MUTT_FILE) == 0)
         {
           mutt_buffer_strcpy(file, mutt_b2s(buf));
           destroy_state(&state);
@@ -2073,8 +2072,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             else
               snprintf(tmp2, sizeof(tmp2), _("Unsubscribe pattern: "));
             /* buf comes from the buffer pool, so defaults to size 1024 */
-            if ((mutt_get_field(tmp2, buf->data, buf->dsize, 0) != 0) ||
-                (mutt_b2s(buf)[0] == '\0'))
+            if ((mutt_buffer_get_field(tmp2, buf, 0) != 0) || mutt_buffer_is_empty(buf))
             {
               break;
             }

@@ -751,14 +751,8 @@ int mutt_check_overwrite(const char *attname, const char *path, struct Buffer *f
 
     struct Buffer *tmp = mutt_buffer_pool_get();
     mutt_buffer_strcpy(tmp, mutt_path_basename(NONULL(attname)));
-    if (mutt_get_field(_("File under directory: "), tmp->data, tmp->dsize,
-                       MUTT_FILE | MUTT_CLEAR) != 0)
-    {
-      mutt_buffer_pool_release(&tmp);
-      return -1;
-    }
-    mutt_buffer_fix_dptr(tmp);
-    if (mutt_buffer_is_empty(tmp))
+    if ((mutt_buffer_get_field(_("File under directory: "), tmp, MUTT_FILE | MUTT_CLEAR) != 0) ||
+        mutt_buffer_is_empty(tmp))
     {
       mutt_buffer_pool_release(&tmp);
       return (-1);
