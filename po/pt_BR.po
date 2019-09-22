@@ -131,7 +131,7 @@ msgstr "Não foi possível criar %s: %s"
 #.
 #: autocrypt/autocrypt.c:157
 msgid "Create an initial autocrypt account?"
-msgstr ""
+msgstr "Criar uma onta inicial de auto-criptografia"
 
 #. L10N:
 #. Autocrypt is asking for the email address to use for the
@@ -140,7 +140,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:181
 msgid "Autocrypt account address: "
-msgstr ""
+msgstr "Endereço (email) de conta de auto-criptografia"
 
 #. L10N:
 #. Autocrypt prompts for an account email address, and requires
@@ -149,7 +149,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:192
 msgid "Please enter a single email address"
-msgstr ""
+msgstr "Por favor, insira um único email address"
 
 #. L10N:
 #. When creating an autocrypt account, this message will be displayed
@@ -158,7 +158,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:209
 msgid "That email address already has an autocrypt account"
-msgstr ""
+msgstr "Endereço de email já utilizado por uma conta de auto-criptografia"
 
 #. L10N:
 #. Autocrypt has a setting "prefer-encrypt".
@@ -169,16 +169,15 @@ msgstr ""
 #. will be required to enable encryption manually.
 #.
 #: autocrypt/autocrypt.c:224
-#, fuzzy
 msgid "Prefer encryption?"
-msgstr "encriptação"
+msgstr "Preferir criptografia?"
 
 #. L10N:
 #. Message displayed after an autocrypt account is successfully created.
 #.
 #: autocrypt/autocrypt.c:237
 msgid "Autocrypt account creation succeeded"
-msgstr ""
+msgstr "Sucesso ao criar conta de auto-criptografia "
 
 #. L10N:
 #. Error message displayed if creating an autocrypt account failed
@@ -186,7 +185,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:243
 msgid "Autocrypt account creation aborted"
-msgstr ""
+msgstr "Criação de conta de auto-criptografia cancelada"
 
 #. L10N:
 #. %s is an email address.  Autocrypt is scanning for the keyids
@@ -194,9 +193,9 @@ msgstr ""
 #. The message is printed and they are returned to the compose menu.
 #.
 #: autocrypt/autocrypt.c:611 autocrypt/autocrypt.c:640
-#, fuzzy, c-format
+#, c-format
 msgid "No (valid) autocrypt key found for %s"
-msgstr "Nenhum certificado (válido) encontrado para %s"
+msgstr "Nenhuma chave auto-criptográfica (válida) encontrado para %s"
 
 #. L10N:
 #. The first time autocrypt is enabled, NeoMutt will ask to scan
@@ -207,13 +206,12 @@ msgstr "Nenhum certificado (válido) encontrado para %s"
 #.
 #: autocrypt/autocrypt.c:904
 msgid "Scan a mailbox for autocrypt headers?"
-msgstr ""
+msgstr "Varrer caixa por cabeçalhos de auto-criptografia?"
 
 #. L10N: The prompt for a mailbox to scan for Autocrypt: headers
 #: autocrypt/autocrypt.c:908
-#, fuzzy
 msgid "Scan mailbox"
-msgstr "Caixa para Fcc"
+msgstr "Varrer caixa"
 
 #. L10N:
 #. This is the second prompt to see if the user would like
@@ -224,15 +222,14 @@ msgstr "Caixa para Fcc"
 #.
 #: autocrypt/autocrypt.c:928
 msgid "Scan another mailbox for autocrypt headers?"
-msgstr ""
+msgstr "Varrer outra caixa por cabeçalhos de auto-criptografia?"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. create new account
 #.
 #: autocrypt/autocrypt_acct_menu.c:63
-#, fuzzy
 msgid "Create"
-msgstr "Criar %s?"
+msgstr "Criar"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. delete account
@@ -249,7 +246,7 @@ msgstr "Remover"
 #.
 #: autocrypt/autocrypt_acct_menu.c:74
 msgid "Tgl Active"
-msgstr ""
+msgstr "Tgl ativo"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. toggle "prefer-encrypt" on an account
@@ -259,7 +256,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:81
 msgid "Prf Enc"
-msgstr ""
+msgstr "Prf Crpt"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -267,7 +264,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:123
 msgid "prefer encrypt"
-msgstr ""
+msgstr "preferir criptografia"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -276,7 +273,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:130
 msgid "manual encrypt"
-msgstr ""
+msgstr "criptografia manual"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -284,7 +281,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:138
 msgid "active"
-msgstr ""
+msgstr "ativa"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -292,27 +289,26 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:144
 msgid "inactive"
-msgstr ""
+msgstr "inativa"
 
 #. L10N: Autocrypt Account Management Menu title
 #: autocrypt/autocrypt_acct_menu.c:183
 msgid "Autocrypt Accounts"
-msgstr ""
+msgstr "Contas de auto-criptografia"
 
 #. L10N:
 #. This error message is displayed if a database update of an
 #. account record fails for some odd reason.
 #.
 #: autocrypt/autocrypt_acct_menu.c:245 autocrypt/autocrypt_acct_menu.c:259
-#, fuzzy
 msgid "Error updating account record"
-msgstr "Erro ao examinar diretório"
+msgstr "Erro ao atualizar registro de conta"
 
 #. L10N: Confirmation message when deleting an autocrypt account
 #: autocrypt/autocrypt_acct_menu.c:302
-#, fuzzy, c-format
+#, c-format
 msgid "Really delete account \"%s\"?"
-msgstr "Deseja mesmo remover a caixa de mensagens\"%s\"?"
+msgstr "Realmente remover conta \"%s\"?"
 
 #. L10N:
 #. %s is the path to the database.
@@ -323,9 +319,9 @@ msgstr "Deseja mesmo remover a caixa de mensagens\"%s\"?"
 #. for some reason.  The %s is the full path of the database file.
 #.
 #: autocrypt/autocrypt_db.c:68 autocrypt/autocrypt_db.c:112
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to open autocrypt database %s"
-msgstr "Não foi possível abrir a caixa de mensagens %s"
+msgstr "Não foi possível abrir banco de dados de autocriptografia %s"
 
 #: autocrypt/autocrypt_gpgme.c:54 ncrypt/crypt_gpgme.c:774
 #, c-format
@@ -338,16 +334,16 @@ msgstr "erro ao criar contexto gpgme: %s"
 #.
 #: autocrypt/autocrypt_gpgme.c:172
 msgid "Generating autocrypt key..."
-msgstr ""
+msgstr "Gerando chave de auto-criptografia"
 
 #. L10N:
 #. GPGME was unable to generate a key for some reason.
 #. %s is the error message returned by GPGME.
 #.
 #: autocrypt/autocrypt_gpgme.c:184 autocrypt/autocrypt_gpgme.c:203
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating autocrypt key: %s"
-msgstr "Erro ao exportar chave: %s"
+msgstr "Erro ao criar chave de auto-criptografia: %s"
 
 #. L10N:
 #. After selecting a key for an autocrypt account,
@@ -358,7 +354,7 @@ msgstr "Erro ao exportar chave: %s"
 #: autocrypt/autocrypt_gpgme.c:252
 #, c-format
 msgid "The key %s is not usable for autocrypt"
-msgstr ""
+msgstr "A chave %s não utilizável para auto-criptografia"
 
 #. L10N:
 #. During autocrypt account creation, this prompt asks the
@@ -367,7 +363,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_gpgme.c:286
 msgid "(c)reate new, or (s)elect existing GPG key?"
-msgstr ""
+msgstr "(c) criar nova, ou (s)selecionar chave GPG existente?"
 
 #. L10N:
 #. The letters corresponding to the
@@ -375,7 +371,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_gpgme.c:291
 msgid "cs"
-msgstr ""
+msgstr "cs"
 
 #. L10N:
 #. During autocrypt account creation, if selecting an existing key fails
@@ -383,7 +379,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_gpgme.c:305
 msgid "Create a new gpg key for this account, instead?"
-msgstr ""
+msgstr "Criar uma nova chave gpg para esta conta, alternativamente?"
 
 #. L10N:
 #. The autocrypt database keeps track of schema version numbers.
@@ -393,7 +389,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_schema.c:125
 msgid "Autocrypt database version is too new"
-msgstr ""
+msgstr "Versão do banco de dados de auto-criptografia recente demais"
 
 #: bcache.c:208
 #, c-format
@@ -881,7 +877,7 @@ msgstr "Assinar como: "
 #. L10N: The compose menu autocrypt line
 #: compose.c:179
 msgid "Autocrypt: "
-msgstr ""
+msgstr "Auto-criptografia: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:183
@@ -937,14 +933,13 @@ msgstr "Grupo de notícias"
 #. * This is displayed when Autocrypt is turned off.
 #: compose.c:223 compose.c:469
 msgid "Off"
-msgstr ""
+msgstr "Desativado"
 
 #. L10N: Autocrypt recommendation flag: no.
 #. * This is displayed when Autocrypt cannot encrypt to the recipients.
 #: compose.c:226
-#, fuzzy
 msgid "No"
-msgstr "Vazio (none)"
+msgstr "Não"
 
 #. L10N: Autocrypt recommendation flag: discouraged.
 #. * This is displayed when Autocrypt believes encryption should not be used.
@@ -952,7 +947,7 @@ msgstr "Vazio (none)"
 #. * used recently, or if the only key available is a Gossip Header key.
 #: compose.c:231
 msgid "Discouraged"
-msgstr ""
+msgstr "Desencorajado"
 
 #. L10N: Autocrypt recommendation flag: available.
 #. * This is displayed when Autocrypt believes encryption is possible, but
@@ -960,15 +955,14 @@ msgstr ""
 #. * is not set in both the sender and recipient keys.
 #: compose.c:236
 msgid "Available"
-msgstr ""
+msgstr "Disponível"
 
 #. L10N: Autocrypt recommendation flag: yes.
 #. * This is displayed when Autocrypt would normally enable encryption
 #. * automatically.
 #: compose.c:240
-#, fuzzy
 msgid "Yes"
-msgstr "sim"
+msgstr "Sim"
 
 #. L10N:
 #. The compose menu autocrypt prompt.
@@ -978,7 +972,7 @@ msgstr "sim"
 #.
 #: compose.c:336
 msgid "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic?"
-msgstr ""
+msgstr "Auto-criptografia: (e)criptografar, (c)limpar, (a)automático?"
 
 #. L10N:
 #. The letter corresponding to the compose menu autocrypt prompt
@@ -986,7 +980,7 @@ msgstr ""
 #.
 #: compose.c:342
 msgid "eca"
-msgstr ""
+msgstr "eca"
 
 #: compose.c:379
 msgid "Not supported"
@@ -1038,9 +1032,8 @@ msgstr "Encriptar com: "
 #. (Off, No, Discouraged, Available, Yes)
 #.
 #: compose.c:479
-#, fuzzy
 msgid "Recommendation: "
-msgstr "X-Comment-To: "
+msgstr "Recomendação: "
 
 #: compose.c:543
 msgid "<no chain defined>"
@@ -4291,9 +4284,8 @@ msgstr "Entre a keyID para %s: "
 #. from.  This error is displayed if no results were found.
 #.
 #: ncrypt/crypt_gpgme.c:5377
-#, fuzzy
 msgid "No secret keys found"
-msgstr "chave secreta '%s' não encontrada: %s"
+msgstr "Nenhuma chave secreta encontrada"
 
 #: ncrypt/crypt_gpgme.c:5410 ncrypt/pgpkey.c:882
 msgid "Please enter the key ID: "
@@ -4914,24 +4906,23 @@ msgstr "ver anexo como texto"
 
 #: opcodes.h:32
 msgid "manage autocrypt accounts"
-msgstr ""
+msgstr "gerenciar contas de auto-criptografia"
 
 #: opcodes.h:33
 msgid "create a new autocrypt account"
-msgstr ""
+msgstr "criar nova conta de auto-criptografia"
 
 #: opcodes.h:34
-#, fuzzy
 msgid "delete the current account"
-msgstr "apaga a entrada atual"
+msgstr "apaga a conta atual"
 
 #: opcodes.h:35
 msgid "toggle the current account active/inactive"
-msgstr ""
+msgstr "alternar status ativo/inativo da conta atual"
 
 #: opcodes.h:36
 msgid "toggle the current account prefer-encrypt flag"
-msgstr ""
+msgstr "alternar status da flag \"prefer-encypt\" (preferir criptografia)"
 
 #: opcodes.h:37
 msgid "move to the bottom of the page"
@@ -4995,7 +4986,7 @@ msgstr "anexa mensagens a esta mensagem"
 
 #: opcodes.h:52
 msgid "show autocrypt compose menu options"
-msgstr ""
+msgstr "mostrar opções de auto-criptografia no menu redigir"
 
 #: opcodes.h:53
 msgid "attach news articles to this message"
