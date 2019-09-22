@@ -574,35 +574,64 @@ static void redraw_mix_line(struct ListHead *chain, struct ComposeRedrawData *rd
  */
 static int check_attachments(struct AttachCtx *actx)
 {
+  int rc = -1;
   struct stat st;
-  char pretty[PATH_MAX], msg[PATH_MAX + 128];
+  struct Buffer *pretty = NULL, *msg = NULL;
 
   for (int i = 0; i < actx->idxlen; i++)
   {
     if (actx->idx[i]->content->type == TYPE_MULTIPART)
       continue;
-    mutt_str_strfcpy(pretty, actx->idx[i]->content->filename, sizeof(pretty));
     if (stat(actx->idx[i]->content->filename, &st) != 0)
     {
-      mutt_pretty_mailbox(pretty, sizeof(pretty));
-      mutt_error(_("%s [#%d] no longer exists"), pretty, i + 1);
-      return -1;
+      if (!pretty)
+        pretty = mutt_buffer_pool_get();
+      mutt_buffer_strcpy(pretty, actx->idx[i]->content->filename);
+      mutt_buffer_pretty_mailbox(pretty);
+      /* L10N:
+         This message is displayed in the compose menu when an attachment
+         doesn't stat.  %d is the attachment number and %s is the
+         attachment filename.
+         The filename is located last to avoid a long path hiding the
+         error message.
+      */
+      mutt_error(_("Attachment #%d no longer exists: %s"), i + 1, mutt_b2s(pretty));
+      goto cleanup;
     }
 
     if (actx->idx[i]->content->stamp < st.st_mtime)
     {
-      mutt_pretty_mailbox(pretty, sizeof(pretty));
-      snprintf(msg, sizeof(msg), _("%s [#%d] modified. Update encoding?"), pretty, i + 1);
+      if (!pretty)
+        pretty = mutt_buffer_pool_get();
+      mutt_buffer_strcpy(pretty, actx->idx[i]->content->filename);
+      mutt_buffer_pretty_mailbox(pretty);
 
-      enum QuadOption ans = mutt_yesorno(msg, MUTT_YES);
+      if (!msg)
+        msg = mutt_buffer_pool_get();
+      /* L10N:
+         This message is displayed in the compose menu when an attachment
+         is modified behind the scenes.  %d is the attachment number
+         and %s is the attachment filename.
+         The filename is located last to avoid a long path hiding the
+         prompt question.
+      */
+      mutt_buffer_printf(msg, _("Attachment #%d modified. Update encoding for %s?"),
+                         i + 1, mutt_b2s(pretty));
+
+      enum QuadOption ans = mutt_yesorno(mutt_b2s(msg), MUTT_YES);
       if (ans == MUTT_YES)
         mutt_update_encoding(actx->idx[i]->content);
       else if (ans == MUTT_ABORT)
-        return -1;
+        goto cleanup;
     }
   }
 
-  return 0;
+  rc = 0;
+
+cleanup:
+  mutt_buffer_pool_release(&pretty);
+  mutt_buffer_pool_release(&msg);
+  return rc;
 }
 
 /**
