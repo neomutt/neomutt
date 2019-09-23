@@ -31,8 +31,8 @@
 #include <stdint.h>
 #include <string.h>
 #include "mutt/mutt.h"
-#include "sort2.h"
 #include "set.h"
+#include "sort2.h"
 #include "types.h"
 
 // clang-format off

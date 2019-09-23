@@ -45,10 +45,10 @@
 #include "curs_lib.h"
 #endif
 #ifdef USE_AUTOCRYPT
+#include "email/lib.h"
 #include "autocrypt/autocrypt.h"
 #include "globals.h"
 #include "options.h"
-#include "email/lib.h"
 #endif
 
 struct Address;
