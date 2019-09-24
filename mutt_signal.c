@@ -34,6 +34,9 @@
 #include "globals.h"
 #include "mutt_attach.h"
 #include "mutt_curses.h"
+#ifdef HAVE_LIBUNWIND
+#include "mutt.h"
+#endif
 
 static int IsEndwin = 0;
 
