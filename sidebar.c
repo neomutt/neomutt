@@ -842,7 +842,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     }
     else if (entryidx == HilIndex)
       mutt_curses_set_color(MT_COLOR_HIGHLIGHT);
-    else if ((m->msg_unread > 0) || (m->has_new))
+    else if (m->has_new)
       mutt_curses_set_color(MT_COLOR_NEW);
     else if (m->msg_flagged > 0)
       mutt_curses_set_color(MT_COLOR_FLAGGED);
