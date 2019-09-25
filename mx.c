@@ -1289,7 +1289,7 @@ enum MailboxType mx_path_probe(const char *path, struct stat *st)
 }
 
 /**
- * mx_path_canon - Canonicalise a mailbox path - Wrapper for MxOps::path_canon
+ * mx_path_canon - Canonicalise a mailbox path - Wrapper for MxOps::path_canon()
  */
 int mx_path_canon(char *buf, size_t buflen, const char *folder, enum MailboxType *magic)
 {
@@ -1415,7 +1415,7 @@ int mx_path_canon2(struct Mailbox *m, const char *folder)
 }
 
 /**
- * mx_path_pretty - Abbreviate a mailbox path - Wrapper for MxOps::path_pretty
+ * mx_path_pretty - Abbreviate a mailbox path - Wrapper for MxOps::path_pretty()
  */
 int mx_path_pretty(char *buf, size_t buflen, const char *folder)
 {
@@ -1440,7 +1440,7 @@ int mx_path_pretty(char *buf, size_t buflen, const char *folder)
 }
 
 /**
- * mx_path_parent - Find the parent of a mailbox path - Wrapper for MxOps::path_parent
+ * mx_path_parent - Find the parent of a mailbox path - Wrapper for MxOps::path_parent()
  */
 int mx_path_parent(char *buf, size_t buflen)
 {
@@ -1451,7 +1451,7 @@ int mx_path_parent(char *buf, size_t buflen)
 }
 
 /**
- * mx_msg_padding_size - Bytes of padding between messages - Wrapper for MxOps::msg_padding_size
+ * mx_msg_padding_size - Bytes of padding between messages - Wrapper for MxOps::msg_padding_size()
  * @param m Mailbox
  * @retval num Number of bytes of padding
  *
@@ -1553,7 +1553,7 @@ struct Mailbox *mx_path_resolve(const char *path)
 }
 
 /**
- * mx_ac_add - Add a Mailbox to an Account - Wrapper for MxOps::ac_add
+ * mx_ac_add - Add a Mailbox to an Account - Wrapper for MxOps::ac_add()
  */
 int mx_ac_add(struct Account *a, struct Mailbox *m)
 {
@@ -1585,7 +1585,7 @@ int mx_ac_remove(struct Mailbox *m)
 }
 
 /**
- * mx_mbox_check_stats - Check the statistics for a mailbox - Wrapper for MxOps::mbox_check_stats
+ * mx_mbox_check_stats - Check the statistics for a mailbox - Wrapper for MxOps::mbox_check_stats()
  */
 int mx_mbox_check_stats(struct Mailbox *m, int flags)
 {
