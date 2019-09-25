@@ -2265,7 +2265,7 @@ int mutt_index_menu(void)
         else
         {
           if (C_ChangeFolderNext && Context && Context->mailbox &&
-              mutt_buffer_is_empty(&Context->mailbox->pathbuf))
+              !mutt_buffer_is_empty(&Context->mailbox->pathbuf))
           {
             mutt_buffer_strcpy(folderbuf, mailbox_path(Context->mailbox));
             mutt_buffer_pretty_mailbox(folderbuf);
