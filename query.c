@@ -370,7 +370,37 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
 
   snprintf(title, sizeof(title), _("Query '%s'"), buf);
 
+  struct MuttWindow *dlg =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  dlg->type = WT_DIALOG;
+  struct MuttWindow *index =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  index->type = WT_INDEX;
+  struct MuttWindow *ibar = mutt_window_new(
+      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
+  ibar->type = WT_INDEX_BAR;
+
+  if (C_StatusOnTop)
+  {
+    mutt_window_add_child(dlg, ibar);
+    mutt_window_add_child(dlg, index);
+  }
+  else
+  {
+    mutt_window_add_child(dlg, index);
+    mutt_window_add_child(dlg, ibar);
+  }
+
+  dialog_push(dlg);
+
   menu = mutt_menu_new(MENU_QUERY);
+
+  menu->pagelen = index->state.rows;
+  menu->win_index = index;
+  menu->win_ibar = ibar;
+
   menu->menu_make_entry = query_make_entry;
   menu->menu_search = query_search;
   menu->menu_tag = query_tag;
@@ -426,6 +456,11 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
             mutt_menu_pop_current(menu);
             mutt_menu_free(&menu);
             menu = mutt_menu_new(MENU_QUERY);
+
+            menu->pagelen = index->state.rows;
+            menu->win_index = index;
+            menu->win_ibar = ibar;
+
             menu->menu_make_entry = query_make_entry;
             menu->menu_search = query_search;
             menu->menu_tag = query_tag;
@@ -605,6 +640,8 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
   FREE(&query_table);
   mutt_menu_pop_current(menu);
   mutt_menu_free(&menu);
+  dialog_pop();
+  mutt_window_free(&dlg);
 }
 
 /**
