@@ -223,7 +223,37 @@ static struct Email *select_msg(struct Context *ctx)
   bool done = false;
   char helpstr[1024];
 
+  struct MuttWindow *dlg =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  dlg->type = WT_DIALOG;
+  struct MuttWindow *index =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  index->type = WT_INDEX;
+  struct MuttWindow *ibar = mutt_window_new(
+      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
+  ibar->type = WT_INDEX_BAR;
+
+  if (C_StatusOnTop)
+  {
+    mutt_window_add_child(dlg, ibar);
+    mutt_window_add_child(dlg, index);
+  }
+  else
+  {
+    mutt_window_add_child(dlg, index);
+    mutt_window_add_child(dlg, ibar);
+  }
+
+  dialog_push(dlg);
+
   struct Menu *menu = mutt_menu_new(MENU_POSTPONE);
+
+  menu->pagelen = index->state.rows;
+  menu->win_index = index;
+  menu->win_ibar = ibar;
+
   menu->menu_make_entry = post_make_entry;
   menu->max = ctx->mailbox->msg_count;
   menu->title = _("Postponed Messages");
@@ -278,6 +308,9 @@ static struct Email *select_msg(struct Context *ctx)
   C_Sort = orig_sort;
   mutt_menu_pop_current(menu);
   mutt_menu_free(&menu);
+  dialog_pop();
+  mutt_window_free(&dlg);
+
   return (r > -1) ? ctx->mailbox->emails[r] : NULL;
 }
 
