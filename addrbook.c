@@ -186,6 +186,34 @@ static int alias_sort_address(const void *a, const void *b)
 }
 
 /**
+ * mutt_dlg_alias_observer - Listen for config changes affecting the Alias menu - Implements ::observer_t()
+ */
+int mutt_dlg_alias_observer(struct NotifyCallback *nc)
+{
+  if (!nc || !nc->event || !nc->data)
+    return -1;
+
+  struct EventConfig *ec = (struct EventConfig *) nc->event;
+  struct MuttWindow *dlg = (struct MuttWindow *) nc->data;
+
+  if (mutt_str_strcmp(ec->name, "status_on_top") != 0)
+    return 0;
+
+  struct MuttWindow *win_first = TAILQ_FIRST(&dlg->children);
+
+  if ((C_StatusOnTop && (win_first->type == WT_INDEX)) ||
+      (!C_StatusOnTop && (win_first->type != WT_INDEX)))
+  {
+    // Swap the Index and the IndexBar Windows
+    TAILQ_REMOVE(&dlg->children, win_first, entries);
+    TAILQ_INSERT_TAIL(&dlg->children, win_first, entries);
+  }
+
+  mutt_window_reflow(dlg);
+  return 0;
+}
+
+/**
  * mutt_alias_menu - Display a menu of Aliases
  * @param buf    Buffer for expanded aliases
  * @param buflen Length of buffer
@@ -209,7 +237,38 @@ void mutt_alias_menu(char *buf, size_t buflen, struct AliasList *aliases)
     return;
   }
 
+  struct MuttWindow *dlg =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  dlg->type = WT_DIALOG;
+  struct MuttWindow *index =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  index->type = WT_INDEX;
+  struct MuttWindow *ibar = mutt_window_new(
+      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
+  ibar->type = WT_INDEX_BAR;
+
+  if (C_StatusOnTop)
+  {
+    mutt_window_add_child(dlg, ibar);
+    mutt_window_add_child(dlg, index);
+  }
+  else
+  {
+    mutt_window_add_child(dlg, index);
+    mutt_window_add_child(dlg, ibar);
+  }
+
+  notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_dlg_alias_observer, (intptr_t) dlg);
+  dialog_push(dlg);
+
   menu = mutt_menu_new(MENU_ALIAS);
+
+  menu->pagelen = index->state.rows;
+  menu->win_index = index;
+  menu->win_ibar = ibar;
+
   menu->menu_make_entry = alias_make_entry;
   menu->menu_tag = alias_tag;
   menu->title = _("Aliases");
@@ -230,7 +289,7 @@ new_aliases:
   mutt_mem_realloc(&alias_table, menu->max * sizeof(struct Alias *));
   menu->data = alias_table;
   if (!alias_table)
-    return;
+    goto mam_done;
 
   if (last)
     a = TAILQ_NEXT(last, entries);
@@ -308,7 +367,12 @@ new_aliases:
     mutt_addrlist_write(buf, buflen, &alias_table[t]->addr, true);
   }
 
+  FREE(&alias_table);
+
+mam_done:
   mutt_menu_pop_current(menu);
   mutt_menu_free(&menu);
-  FREE(&alias_table);
+  dialog_pop();
+  notify_observer_remove(Config->notify, mutt_dlg_alias_observer, (intptr_t) dlg);
+  mutt_window_free(&dlg);
 }
