@@ -1171,7 +1171,7 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, bool copy,
  * @param infile File to read
  * @retval ptr Filename of temporary file containing certificate
  */
-static char *smime_extract_certificate(char *infile)
+static char *smime_extract_certificate(const char *infile)
 {
   char pk7out[PATH_MAX], certfile[PATH_MAX];
   pid_t pid;
@@ -1339,7 +1339,7 @@ static char *smime_extract_signer_certificate(char *infile)
 /**
  * smime_class_invoke_import - Implements CryptModuleSpecs::smime_invoke_import()
  */
-void smime_class_invoke_import(char *infile, char *mailbox)
+void smime_class_invoke_import(const char *infile, const char *mailbox)
 {
   char *certfile = NULL;
   char buf[256];

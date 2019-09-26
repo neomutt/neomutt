@@ -857,14 +857,13 @@ void crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailList *el)
   if (!WithCrypto)
     return;
 
-  char tempfname[PATH_MAX];
-
-  mutt_mktemp(tempfname, sizeof(tempfname));
-  FILE *fp_out = mutt_file_fopen(tempfname, "w");
+  struct Buffer *tempfname = mutt_buffer_pool_get();
+  mutt_buffer_mktemp(tempfname);
+  FILE *fp_out = mutt_file_fopen(mutt_b2s(tempfname), "w");
   if (!fp_out)
   {
-    mutt_perror(tempfname);
-    return;
+    mutt_perror(mutt_b2s(tempfname));
+    goto cleanup;
   }
 
   if (WithCrypto & APPLICATION_PGP)
@@ -889,7 +888,7 @@ void crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailList *el)
 
       mutt_endwin();
       puts(_("Trying to extract PGP keys...\n"));
-      crypt_pgp_invoke_import(tempfname);
+      crypt_pgp_invoke_import(mutt_b2s(tempfname));
     }
 
     if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME))
@@ -918,7 +917,7 @@ void crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailList *el)
       {
         mutt_endwin();
         puts(_("Trying to extract S/MIME certificates..."));
-        crypt_smime_invoke_import(tempfname, mbox);
+        crypt_smime_invoke_import(mutt_b2s(tempfname), mbox);
       }
     }
 
@@ -929,10 +928,13 @@ void crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailList *el)
   if (isendwin())
     mutt_any_key_to_continue(NULL);
 
-  mutt_file_unlink(tempfname);
+  mutt_file_unlink(mutt_b2s(tempfname));
 
   if (WithCrypto & APPLICATION_PGP)
     OptDontHandlePgpKeys = false;
+
+cleanup:
+  mutt_buffer_pool_release(&tempfname);
 }
 
 /**
@@ -1126,6 +1128,7 @@ int mutt_signed_handler(struct Body *a, struct State *s)
   struct Body **signatures = NULL;
   int sigcnt = 0;
   int rc = 0;
+  struct Buffer *tempfile = NULL;
 
   a = a->parts;
   SecurityFlags signed_type = mutt_is_multipart_signed(b);
@@ -1186,10 +1189,10 @@ int mutt_signed_handler(struct Body *a, struct State *s)
 
     if (sigcnt != 0)
     {
-      char tempfile[PATH_MAX];
-      mutt_mktemp(tempfile, sizeof(tempfile));
+      tempfile = mutt_buffer_pool_get();
+      mutt_buffer_mktemp(tempfile);
       bool goodsig = true;
-      if (crypt_write_signed(a, s, tempfile) == 0)
+      if (crypt_write_signed(a, s, mutt_b2s(tempfile)) == 0)
       {
         for (int i = 0; i < sigcnt; i++)
         {
@@ -1197,7 +1200,7 @@ int mutt_signed_handler(struct Body *a, struct State *s)
               (signatures[i]->type == TYPE_APPLICATION) &&
               (mutt_str_strcasecmp(signatures[i]->subtype, "pgp-signature") == 0))
           {
-            if (crypt_pgp_verify_one(signatures[i], s, tempfile) != 0)
+            if (crypt_pgp_verify_one(signatures[i], s, mutt_b2s(tempfile)) != 0)
               goodsig = false;
 
             continue;
@@ -1210,7 +1213,7 @@ int mutt_signed_handler(struct Body *a, struct State *s)
                (mutt_str_strcasecmp(signatures[i]->subtype,
                                     "pkcs7-signature") == 0)))
           {
-            if (crypt_smime_verify_one(signatures[i], s, tempfile) != 0)
+            if (crypt_smime_verify_one(signatures[i], s, mutt_b2s(tempfile)) != 0)
               goodsig = false;
 
             continue;
@@ -1223,7 +1226,8 @@ int mutt_signed_handler(struct Body *a, struct State *s)
         }
       }
 
-      mutt_file_unlink(tempfile);
+      mutt_file_unlink(mutt_b2s(tempfile));
+      mutt_buffer_pool_release(&tempfile);
 
       b->goodsig = goodsig;
       b->badsig = !goodsig;

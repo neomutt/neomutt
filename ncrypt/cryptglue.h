@@ -43,7 +43,7 @@ void         crypt_pgp_void_passphrase(void);
 
 struct Body *crypt_smime_build_smime_entity(struct Body *a, char *certlist);
 char *       crypt_smime_find_keys(struct AddressList *al, bool oppenc_mode);
-void         crypt_smime_invoke_import(char *infile, char *mailbox);
+void         crypt_smime_invoke_import(const char *infile, const char *mailbox);
 void         crypt_smime_set_sender(const char *sender);
 struct Body *crypt_smime_sign_message(struct Body *a);
 bool         crypt_smime_valid_passphrase(void);

@@ -205,7 +205,7 @@ struct CryptModuleSpecs
    * @param infile  File containing certificate
    * @param mailbox Mailbox
    */
-  void         (*smime_invoke_import)(char *infile, char *mailbox);
+  void         (*smime_invoke_import)(const char *infile, const char *mailbox);
 };
 
 /* High Level crypto module interface */
