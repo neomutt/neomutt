@@ -101,15 +101,6 @@ void mutt_curs_set(int cursor);
 #define CI_is_return(ch) (((ch) == '\r') || ((ch) == '\n'))
 #endif
 
-/**
- * struct KeyEvent - An event such as a keypress
- */
-struct KeyEvent
-{
-  int ch; /**< raw key pressed */
-  int op; /**< function op */
-};
-
 void mutt_resize_screen(void);
 
 /* If the system has bkgdset() use it rather than attrset() so that the clr*()

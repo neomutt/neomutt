@@ -29,6 +29,7 @@
 #include "config/lib.h"
 #include "mutt.h"
 #include "browser.h"
+#include "keymap.h"
 #include "pager.h"
 
 struct Buffer;

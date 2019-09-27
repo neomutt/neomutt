@@ -23,9 +23,10 @@
 #ifndef MUTT_MUTT_PARSE_H
 #define MUTT_MUTT_PARSE_H
 
-#include "mutt/queue.h"
+#include <regex.h>
+#include "mutt/mutt.h"
+#include "email/lib.h"
 
-struct Email;
 struct Mailbox;
 
 /**
