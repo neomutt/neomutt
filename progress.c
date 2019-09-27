@@ -53,9 +53,12 @@ short C_NetInc; ///< Config: (socket) Update the progress bar after this many KB
  */
 static void message_bar(int percent, const char *fmt, ...)
 {
+  if (!fmt || !MuttMessageWindow)
+    return;
+
   va_list ap;
   char buf[256], buf2[256];
-  int w = percent * COLS / 100;
+  int w = (percent * MuttMessageWindow->cols) / 100;
   size_t l;
 
   va_start(ap, fmt);
@@ -63,10 +66,10 @@ static void message_bar(int percent, const char *fmt, ...)
   l = mutt_strwidth(buf);
   va_end(ap);
 
-  mutt_simple_format(buf2, sizeof(buf2), 0, COLS - 2, JUSTIFY_LEFT, 0, buf,
-                     sizeof(buf), false);
+  mutt_simple_format(buf2, sizeof(buf2), 0, MuttMessageWindow->cols - 2,
+                     JUSTIFY_LEFT, 0, buf, sizeof(buf), false);
 
-  move(LINES - 1, 0);
+  mutt_window_move(MuttMessageWindow, 0, 0);
 
   if (ColorDefs[MT_COLOR_PROGRESS] == 0)
   {
@@ -89,10 +92,9 @@ static void message_bar(int percent, const char *fmt, ...)
     else
     {
       /* The string is too long for the colour bar */
-      char ch;
       int off = mutt_wstr_trunc(buf2, sizeof(buf2), w, NULL);
 
-      ch = buf2[off];
+      char ch = buf2[off];
       buf2[off] = '\0';
       SET_COLOR(MT_COLOR_PROGRESS);
       addstr(buf2);
