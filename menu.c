@@ -363,7 +363,7 @@ void menu_redraw_full(struct Menu *menu)
   mutt_curses_set_color(MT_COLOR_NORMAL);
   /* clear() doesn't optimize screen redraws */
   move(0, 0);
-  clrtobot();
+  mutt_window_clrtobot();
 
   if (C_Help)
   {
@@ -1086,7 +1086,7 @@ void mutt_menu_pop_current(struct Menu *menu)
   {
     CurrentMenu = MENU_MAIN;
     move(0, 0);
-    clrtobot();
+    mutt_window_clrtobot();
   }
 }
 

@@ -62,6 +62,7 @@ int  mutt_window_addch    (int ch);
 int  mutt_window_addnstr  (const char *str, int num);
 int  mutt_window_addstr   (const char *str);
 void mutt_window_clearline(struct MuttWindow *win, int row);
+void mutt_window_clrtobot (void);
 void mutt_window_clrtoeol (struct MuttWindow *win);
 int  mutt_window_move     (struct MuttWindow *win, int row, int col);
 int  mutt_window_mvaddstr (struct MuttWindow *win, int row, int col, const char *str);

@@ -1944,7 +1944,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     mutt_curses_set_color(MT_COLOR_NORMAL);
     /* clear() doesn't optimize screen redraws */
     move(0, 0);
-    clrtobot();
+    mutt_window_clrtobot();
 
     if (IsEmail(rd->extra) && Context && ((Context->mailbox->vcount + 1) < C_PagerIndexLines))
       rd->indexlen = Context->mailbox->vcount + 1;
