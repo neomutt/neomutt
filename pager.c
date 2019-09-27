@@ -2333,7 +2333,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
   while (ch != -1)
   {
-    mutt_curs_set(0);
+    mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
 
     pager_custom_redraw(pager_menu);
 
@@ -2367,7 +2367,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
     {
       mutt_clear_error();
     }
-    mutt_curs_set(1);
+    mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
 
     bool do_new_mail = false;
 

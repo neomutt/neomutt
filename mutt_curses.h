@@ -84,16 +84,6 @@
       beep();                                                                  \
   } while (false)
 
-#if !(defined(USE_SLANG_CURSES) || defined(HAVE_CURS_SET))
-#define curs_set(x)
-#endif
-
-#if (defined(USE_SLANG_CURSES) || defined(HAVE_CURS_SET))
-void mutt_curs_set(int cursor);
-#else
-#define mutt_curs_set(x)
-#endif
-
 #define ctrl(ch) ((ch) - '@')
 
 #ifdef KEY_ENTER
@@ -102,8 +92,20 @@ void mutt_curs_set(int cursor);
 #define CI_is_return(ch) (((ch) == '\r') || ((ch) == '\n'))
 #endif
 
+/**
+ * enum MuttCursorState - Cursor states for mutt_curses_set_cursor()
+ */
+enum MuttCursorState
+{
+  MUTT_CURSOR_RESTORE_LAST = -1, ///< Restore the previous cursor state
+  MUTT_CURSOR_INVISIBLE    =  0, ///< Hide the cursor
+  MUTT_CURSOR_VISIBLE      =  1, ///< Display a normal cursor
+  MUTT_CURSOR_VERY_VISIBLE =  2, ///< Display a very visible cursor
+};
+
 void mutt_curses_set_attr(int attr);
 void mutt_curses_set_color(enum ColorId color);
+void mutt_curses_set_cursor(enum MuttCursorState state);
 void mutt_resize_screen(void);
 
 #endif /* MUTT_MUTT_CURSES_H */

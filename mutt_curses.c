@@ -59,3 +59,25 @@ void mutt_curses_set_color(enum ColorId color)
     attrset(ColorDefs[MT_COLOR_NORMAL]);
 #endif
 }
+
+/**
+ * mutt_curses_set_cursor - Set the cursor state
+ * @param state State to set, e.g. #MUTT_CURSOR_INVISIBLE
+ */
+void mutt_curses_set_cursor(enum MuttCursorState state)
+{
+#if (defined(USE_SLANG_CURSES) || defined(HAVE_CURS_SET))
+  static int SavedCursor = MUTT_CURSOR_VISIBLE;
+
+  if (state == MUTT_CURSOR_RESTORE_LAST)
+    state = SavedCursor;
+  else
+    SavedCursor = state;
+
+  if (curs_set(state) == ERR)
+  {
+    if (state == MUTT_CURSOR_VISIBLE)
+      curs_set(MUTT_CURSOR_VERY_VISIBLE);
+  }
+#endif
+}

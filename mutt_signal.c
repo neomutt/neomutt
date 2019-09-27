@@ -54,7 +54,7 @@ static void curses_signal_handler(int sig)
       if (!C_Suspend)
         break;
       IsEndwin = isendwin();
-      curs_set(1);
+      mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
       if (!IsEndwin)
         endwin();
       kill(0, SIGSTOP);
@@ -63,7 +63,7 @@ static void curses_signal_handler(int sig)
     case SIGCONT:
       if (!IsEndwin)
         refresh();
-      mutt_curs_set(-1);
+      mutt_curses_set_cursor(MUTT_CURSOR_RESTORE_LAST);
       /* We don't receive SIGWINCH when suspended; however, no harm is done by
        * just assuming we received one, and triggering the 'resize' anyway. */
       SigWinch = 1;
@@ -86,7 +86,7 @@ static void curses_signal_handler(int sig)
  */
 static void curses_exit_handler(int sig)
 {
-  curs_set(1);
+  mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   endwin(); /* just to be safe */
   mutt_unlink_temp_attachments();
   mutt_sig_exit_handler(sig); /* DOES NOT RETURN */
@@ -98,7 +98,7 @@ static void curses_exit_handler(int sig)
  */
 static void curses_segv_handler(int sig)
 {
-  curs_set(1);
+  mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   endwin(); /* just to be safe */
 #ifdef HAVE_LIBUNWIND
   show_backtrace();

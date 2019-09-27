@@ -468,7 +468,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
 void mutt_query_exit(void)
 {
   mutt_flushinp();
-  curs_set(1);
+  mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   if (C_Timeout)
     mutt_getch_timeout(-1); /* restore blocking operation */
   if (mutt_yesorno(_("Exit NeoMutt?"), MUTT_YES) == MUTT_YES)
@@ -476,7 +476,7 @@ void mutt_query_exit(void)
     mutt_exit(1);
   }
   mutt_clear_error();
-  mutt_curs_set(-1);
+  mutt_curses_set_cursor(MUTT_CURSOR_RESTORE_LAST);
   SigInt = 0;
 }
 
@@ -808,31 +808,6 @@ void mutt_flushinp(void)
   MacroBufferCount = 0;
   flushinp();
 }
-
-#if (defined(USE_SLANG_CURSES) || defined(HAVE_CURS_SET))
-/**
- * mutt_curs_set - Set the cursor position
- * @param cursor
- * * -1: restore the value of the last call
- * *  0: make the cursor invisible
- * *  1: make the cursor visible
- */
-void mutt_curs_set(int cursor)
-{
-  static int SavedCursor = 1;
-
-  if (cursor < 0)
-    cursor = SavedCursor;
-  else
-    SavedCursor = cursor;
-
-  if (curs_set(cursor) == ERR)
-  {
-    if (cursor == 1) /* cnorm */
-      curs_set(2);   /* cvvis */
-  }
-}
-#endif
 
 /**
  * mutt_multi_choice - Offer the user a multiple choice question

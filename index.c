@@ -1202,7 +1202,7 @@ int mutt_index_menu(void)
     }
 
     if (op >= 0)
-      mutt_curs_set(0);
+      mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
 
     if (menu->type == MENU_MAIN)
     {
@@ -1256,7 +1256,7 @@ int mutt_index_menu(void)
         continue;
       }
 
-      mutt_curs_set(1);
+      mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
 
       /* special handling for the tag-prefix function */
       if ((op == OP_TAG_PREFIX) || (op == OP_TAG_PREFIX_COND))
@@ -1304,7 +1304,7 @@ int mutt_index_menu(void)
       else
         menu->oldcurrent = -1;
 
-      mutt_curs_set(1); /* fallback from the pager */
+      mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE); /* fallback from the pager */
     }
 
 #ifdef USE_NNTP

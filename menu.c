@@ -1371,7 +1371,7 @@ int mutt_menu_loop(struct Menu *menu)
     if (menu->tagprefix && (i != OP_TAG_PREFIX) && (i != OP_TAG_PREFIX_COND) && (i != -2))
       menu->tagprefix = false;
 
-    mutt_curs_set(0);
+    mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
 
     if (menu_redraw(menu) == OP_REDRAW)
       return OP_REDRAW;
@@ -1432,7 +1432,7 @@ int mutt_menu_loop(struct Menu *menu)
     else if (menu->tagged && C_AutoTag)
       menu->tagprefix = true;
 
-    mutt_curs_set(1);
+    mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
 
     if (SigWinch)
     {
