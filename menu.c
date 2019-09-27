@@ -143,9 +143,6 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
   size_t n = mutt_str_strlen((char *) s);
   mbstate_t mbstate;
 
-  if (!stdscr)
-    return;
-
   memset(&mbstate, 0, sizeof(mbstate));
   while (*s)
   {
@@ -362,7 +359,7 @@ void menu_redraw_full(struct Menu *menu)
 {
   mutt_curses_set_color(MT_COLOR_NORMAL);
   /* clear() doesn't optimize screen redraws */
-  move(0, 0);
+  mutt_window_move_abs(0, 0);
   mutt_window_clrtobot();
 
   if (C_Help)
@@ -1085,7 +1082,7 @@ void mutt_menu_pop_current(struct Menu *menu)
   else
   {
     CurrentMenu = MENU_MAIN;
-    move(0, 0);
+    mutt_window_move_abs(0, 0);
     mutt_window_clrtobot();
   }
 }

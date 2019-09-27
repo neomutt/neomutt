@@ -999,7 +999,7 @@ void mutt_sb_draw(void)
   }
 
   draw_sidebar(num_rows, num_cols, div_width);
-  move(y, x);
+  mutt_window_move_abs(y, x);
 }
 
 /**

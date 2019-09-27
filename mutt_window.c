@@ -401,3 +401,13 @@ int mutt_window_addstr(const char *str)
   return addstr(str);
 #endif
 }
+
+/**
+ * mutt_window_move_abs - Move the cursor to an absolute screen position
+ * @param row Screen row (0-based)
+ * @param col Screen column (0-based)
+ */
+void mutt_window_move_abs(int row, int col)
+{
+  move(row, col);
+}
