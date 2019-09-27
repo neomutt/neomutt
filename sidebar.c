@@ -968,13 +968,8 @@ void mutt_sb_draw(void)
   if (!C_SidebarVisible)
     return;
 
-#ifdef USE_SLANG_CURSES
-  int x = SLsmg_get_column();
-  int y = SLsmg_get_row();
-#else
-  int x = getcurx(stdscr);
-  int y = getcury(stdscr);
-#endif
+  int row = 0, col = 0;
+  mutt_window_get_coords(MuttSidebarWindow, &row, &col);
 
   int num_rows = MuttSidebarWindow->rows;
   int num_cols = MuttSidebarWindow->cols;
@@ -999,7 +994,7 @@ void mutt_sb_draw(void)
   }
 
   draw_sidebar(num_rows, num_cols, div_width);
-  mutt_window_move_abs(y, x);
+  mutt_window_move(MuttSidebarWindow, row, col);
 }
 
 /**

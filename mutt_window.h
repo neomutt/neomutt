@@ -50,7 +50,7 @@ extern struct MuttWindow *MuttStatusWindow;
 void               mutt_window_copy_size          (const struct MuttWindow *win_src, struct MuttWindow *win_dst);
 void               mutt_window_free               (struct MuttWindow **ptr);
 void               mutt_window_free_all           (void);
-void               mutt_window_getxy              (struct MuttWindow *win, int *x, int *y);
+void               mutt_window_get_coords         (struct MuttWindow *win, int *col, int *row);
 void               mutt_window_init               (void);
 struct MuttWindow *mutt_window_new                (void);
 void               mutt_window_reflow             (void);

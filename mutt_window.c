@@ -152,24 +152,24 @@ void mutt_window_free_all(void)
 }
 
 /**
- * mutt_window_getxy - Get the cursor position in the Window
+ * mutt_window_get_coords - Get the cursor position in the Window
  * @param[in]  win Window
- * @param[out] x   X-Coordinate
- * @param[out] y   Y-Coordinate
+ * @param[out] row Row in Window
+ * @param[out] col Column in Window
  *
  * Assumes the current position is inside the window.  Otherwise it will
  * happily return negative or values outside the window boundaries
  */
-void mutt_window_getxy(struct MuttWindow *win, int *x, int *y)
+void mutt_window_get_coords(struct MuttWindow *win, int *row, int *col)
 {
-  int row = 0;
-  int col = 0;
+  int x = 0;
+  int y = 0;
 
-  getyx(stdscr, row, col);
-  if (x)
-    *x = col - win->col_offset;
-  if (y)
-    *y = row - win->row_offset;
+  getyx(stdscr, y, x);
+  if (col)
+    *col = x - win->col_offset;
+  if (row)
+    *row = y - win->row_offset;
 }
 
 /**

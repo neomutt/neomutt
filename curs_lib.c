@@ -258,7 +258,7 @@ int mutt_get_field_full(const char *field, char *buf, size_t buflen, CompletionF
                         bool multiple, char ***files, int *numfiles)
 {
   int ret;
-  int x;
+  int col;
 
   struct EnterState *es = mutt_enter_state_new();
 
@@ -276,8 +276,8 @@ int mutt_get_field_full(const char *field, char *buf, size_t buflen, CompletionF
     mutt_window_addstr(field);
     mutt_curses_set_color(MT_COLOR_NORMAL);
     mutt_refresh();
-    mutt_window_getxy(MuttMessageWindow, &x, NULL);
-    ret = mutt_enter_string_full(buf, buflen, x, complete, multiple, files, numfiles, es);
+    mutt_window_get_coords(MuttMessageWindow, NULL, &col);
+    ret = mutt_enter_string_full(buf, buflen, col, complete, multiple, files, numfiles, es);
   } while (ret == 1);
   mutt_window_clearline(MuttMessageWindow, 0);
   mutt_enter_state_free(&es);
