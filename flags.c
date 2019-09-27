@@ -38,7 +38,7 @@
 #include "curs_lib.h"
 #include "globals.h"
 #include "index.h"
-#include "mutt_curses.h"
+#include "keymap.h"
 #include "mutt_menu.h"
 #include "mutt_window.h"
 #include "protos.h"
@@ -490,7 +490,7 @@ int mutt_change_flag(struct Mailbox *m, struct EmailList *el, bool bf)
       break;
 
     default:
-      BEEP();
+      mutt_beep(false);
       return -1;
   }
 

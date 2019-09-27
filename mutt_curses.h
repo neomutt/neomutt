@@ -77,13 +77,6 @@
 
 #endif /* USE_SLANG_CURSES */
 
-#define BEEP()                                                                 \
-  do                                                                           \
-  {                                                                            \
-    if (C_Beep)                                                                \
-      beep();                                                                  \
-  } while (false)
-
 #define ctrl(ch) ((ch) - '@')
 
 #ifdef KEY_ENTER

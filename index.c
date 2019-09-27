@@ -1144,7 +1144,7 @@ int mutt_index_menu(void)
             {
               mutt_message(_("New mail in this mailbox"));
               if (C_BeepNew)
-                beep();
+                mutt_beep(true);
               if (C_NewMailCommand)
               {
                 char cmd[1024];
@@ -1187,7 +1187,7 @@ int mutt_index_menu(void)
         {
           menu->redraw |= REDRAW_STATUS;
           if (C_BeepNew)
-            beep();
+            mutt_beep(true);
           if (C_NewMailCommand)
           {
             char cmd[1024];

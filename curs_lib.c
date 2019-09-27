@@ -90,6 +90,16 @@ static struct KeyEvent *UngetKeyEvents;
 int MuttGetchTimeout = -1;
 
 /**
+ * mutt_beep - Irritate the user
+ * @param force If true, ignore the "$beep" config variable
+ */
+void mutt_beep(bool force)
+{
+  if (force || C_Beep)
+    beep();
+}
+
+/**
  * mutt_refresh - Force a refresh of the screen
  */
 void mutt_refresh(void)
@@ -427,7 +437,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
     }
     else
     {
-      BEEP();
+      mutt_beep(false);
     }
   }
 
@@ -920,7 +930,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
           break;
       }
     }
-    BEEP();
+    mutt_beep(false);
   }
   if (MuttMessageWindow->rows != 1)
   {

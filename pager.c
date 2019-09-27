@@ -2445,7 +2445,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       if (mutt_mailbox_notify(Context ? Context->mailbox : NULL) || do_new_mail)
       {
         if (C_BeepNew)
-          beep();
+          mutt_beep(true);
         if (C_NewMailCommand)
         {
           char cmd[1024];

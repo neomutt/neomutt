@@ -171,7 +171,7 @@ int log_disp_curses(time_t stamp, const char *file, int line,
   if (!OptKeepQuiet)
   {
     if (level == LL_ERROR)
-      BEEP();
+      mutt_beep(false);
     mutt_curses_set_color((level == LL_ERROR) ? MT_COLOR_ERROR : MT_COLOR_MESSAGE);
     mutt_window_mvaddstr(MuttMessageWindow, 0, 0, ErrorBuf);
     mutt_curses_set_color(MT_COLOR_NORMAL);
