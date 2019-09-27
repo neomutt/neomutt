@@ -1487,7 +1487,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
         break;
       col += 4;
       if (pa)
-        printw("\\%03o", buf[ch]);
+        mutt_window_printf("\\%03o", buf[ch]);
       k = 1;
       continue;
     }
@@ -1586,7 +1586,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
         break;
       col += 2;
       if (pa)
-        printw("^%c", ('@' + wc) & 0x7f);
+        mutt_window_printf("^%c", ('@' + wc) & 0x7f);
     }
     else if (wc < 0x100)
     {
@@ -1594,7 +1594,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
         break;
       col += 4;
       if (pa)
-        printw("\\%03o", wc);
+        mutt_window_printf("\\%03o", wc);
     }
     else
     {

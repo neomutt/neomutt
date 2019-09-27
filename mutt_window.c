@@ -411,3 +411,19 @@ void mutt_window_move_abs(int row, int col)
 {
   move(row, col);
 }
+
+/**
+ * mutt_window_printf - Write a formatted string to a Window
+ * @param fmt Format string
+ * @param ... Arguments
+ * @retval num Number of characters written
+ */
+int mutt_window_printf(const char *fmt, ...)
+{
+  va_list ap;
+  va_start(ap, fmt);
+  int rc = vw_printw(stdscr, fmt, ap);
+  va_end(ap);
+
+  return rc;
+}

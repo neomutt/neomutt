@@ -182,7 +182,7 @@ static int be_barf_file(const char *path, char **buf, int buflen)
     fputs(buf[i], fp);
   if (fclose(fp) == 0)
     return 0;
-  printw("fclose: %s\n", strerror(errno));
+  mutt_window_printf("fclose: %s\n", strerror(errno));
   return -1;
 }
 
@@ -257,7 +257,7 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
       buf[(*buflen)++] = mutt_str_strdup("\n");
     }
     else
-      printw(_("%d: invalid message number.\n"), n);
+      mutt_window_printf(_("%d: invalid message number.\n"), n);
     msg = NULL;
   }
   return buf;
@@ -534,7 +534,7 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
               mutt_env_to_local(e_new->env);
               mutt_edit_headers(NONULL(C_Visual), path, e_new, NULL, 0);
               if (mutt_env_to_intl(e_new->env, &tag, &err))
-                printw(_("Bad IDN in '%s': '%s'"), tag, err);
+                mutt_window_printf(_("Bad IDN in '%s': '%s'"), tag, err);
               /* tag is a statically allocated string and should not be freed */
               FREE(&err);
             }
@@ -554,7 +554,7 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
           done = true;
           break;
         default:
-          printw(_("%s: unknown editor command (~? for help)\n"), tmp);
+          mutt_window_printf(_("%s: unknown editor command (~? for help)\n"), tmp);
           break;
       }
     }

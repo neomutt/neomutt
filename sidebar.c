@@ -949,7 +949,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     }
     char str[256];
     make_sidebar_entry(str, sizeof(str), w, sidebar_folder_name, entry);
-    printw("%s", str);
+    mutt_window_printf("%s", str);
     mutt_buffer_pool_release(&short_folder_name);
     row++;
   }

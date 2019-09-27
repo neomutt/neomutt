@@ -428,18 +428,18 @@ static void redraw_crypt_lines(struct ComposeRedrawData *rd)
       (e->security & APPLICATION_PGP) && (e->security & SEC_SIGN))
   {
     mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
-    printw("%*s", HeaderPadding[HDR_CRYPTINFO], _(Prompts[HDR_CRYPTINFO]));
+    mutt_window_printf("%*s", HeaderPadding[HDR_CRYPTINFO], _(Prompts[HDR_CRYPTINFO]));
     mutt_curses_set_color(MT_COLOR_NORMAL);
-    printw("%s", C_PgpSignAs ? C_PgpSignAs : _("<default>"));
+    mutt_window_printf("%s", C_PgpSignAs ? C_PgpSignAs : _("<default>"));
   }
 
   if (((WithCrypto & APPLICATION_SMIME) != 0) &&
       (e->security & APPLICATION_SMIME) && (e->security & SEC_SIGN))
   {
     mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
-    printw("%*s", HeaderPadding[HDR_CRYPTINFO], _(Prompts[HDR_CRYPTINFO]));
+    mutt_window_printf("%*s", HeaderPadding[HDR_CRYPTINFO], _(Prompts[HDR_CRYPTINFO]));
     mutt_curses_set_color(MT_COLOR_NORMAL);
-    printw("%s", C_SmimeSignAs ? C_SmimeSignAs : _("<default>"));
+    mutt_window_printf("%s", C_SmimeSignAs ? C_SmimeSignAs : _("<default>"));
   }
 
   if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME) &&
@@ -448,7 +448,7 @@ static void redraw_crypt_lines(struct ComposeRedrawData *rd)
     mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
     mutt_window_mvprintw(rd->win, HDR_CRYPTINFO, 40, "%s", _("Encrypt with: "));
     mutt_curses_set_color(MT_COLOR_NORMAL);
-    printw("%s", NONULL(C_SmimeEncryptWith));
+    mutt_window_printf("%s", NONULL(C_SmimeEncryptWith));
   }
 
 #ifdef USE_AUTOCRYPT
@@ -457,7 +457,7 @@ static void redraw_crypt_lines(struct ComposeRedrawData *rd)
   if (C_Autocrypt)
   {
     mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
-    printw("%*s", HeaderPadding[HDR_AUTOCRYPT], _(Prompts[HDR_AUTOCRYPT]));
+    mutt_window_printf("%*s", HeaderPadding[HDR_AUTOCRYPT], _(Prompts[HDR_AUTOCRYPT]));
     mutt_curses_set_color(MT_COLOR_NORMAL);
     if (e->security & SEC_AUTOCRYPT)
     {
@@ -479,7 +479,7 @@ static void redraw_crypt_lines(struct ComposeRedrawData *rd)
                           */
                          _("Recommendation: "));
     mutt_curses_set_color(MT_COLOR_NORMAL);
-    printw("%s", _(AutocryptRecUiFlags[rd->autocrypt_rec]));
+    mutt_window_printf("%s", _(AutocryptRecUiFlags[rd->autocrypt_rec]));
   }
 #endif
 }
