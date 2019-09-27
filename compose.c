@@ -46,6 +46,7 @@
 #include "compose.h"
 #include "alias.h"
 #include "browser.h"
+#include "color.h"
 #include "commands.h"
 #include "context.h"
 #include "curs_lib.h"

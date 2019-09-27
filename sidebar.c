@@ -38,6 +38,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "sidebar.h"
+#include "color.h"
 #include "context.h"
 #include "curs_lib.h"
 #include "format_flags.h"

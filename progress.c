@@ -33,6 +33,7 @@
 #include <string.h>
 #include "mutt/mutt.h"
 #include "progress.h"
+#include "color.h"
 #include "curs_lib.h"
 #include "mutt_curses.h"
 #include "mutt_logging.h"

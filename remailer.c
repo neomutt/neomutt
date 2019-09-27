@@ -37,6 +37,7 @@
 #include "address/lib.h"
 #include "email/lib.h"
 #include "mutt.h"
+#include "color.h"
 #include "curs_lib.h"
 #include "filter.h"
 #include "format_flags.h"
