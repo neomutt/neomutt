@@ -37,6 +37,7 @@
 #include "curs_lib.h"
 #include "mutt_curses.h"
 #include "mutt_logging.h"
+#include "mutt_window.h"
 #include "muttlib.h"
 #include "options.h"
 
@@ -86,7 +87,7 @@ static void message_bar(int percent, const char *fmt, ...)
       w -= l;
       while (w-- > 0)
       {
-        addch(' ');
+        mutt_window_addch(' ');
       }
       mutt_curses_set_color(MT_COLOR_NORMAL);
     }

@@ -761,10 +761,10 @@ static int draw_divider(int num_rows, int num_cols)
         addstr(NONULL(C_SidebarDividerChar));
         break;
       case SB_DIV_ASCII:
-        addch('|');
+        mutt_window_addch('|');
         break;
       case SB_DIV_UTF8:
-        addch(ACS_VLINE);
+        mutt_window_addch(ACS_VLINE);
         break;
     }
   }
@@ -793,7 +793,7 @@ static void fill_empty_space(int first_row, int num_rows, int div_width, int num
     mutt_window_move(MuttSidebarWindow, first_row + r, div_width);
 
     for (int i = 0; i < num_cols; i++)
-      addch(' ');
+      mutt_window_addch(' ');
   }
 }
 

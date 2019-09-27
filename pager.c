@@ -377,7 +377,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt,
     if (!cnt && C_Markers)
     {
       mutt_curses_set_color(MT_COLOR_MARKERS);
-      addch('+');
+      mutt_window_addch('+');
       last_color = ColorDefs[MT_COLOR_MARKERS];
     }
     m = (line_info[n].syntax)[0].first;
@@ -1576,7 +1576,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
         break;
       if (pa)
         for (; col < t; col++)
-          addch(' ');
+          mutt_window_addch(' ');
       else
         col = t;
     }
@@ -1602,7 +1602,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
         break;
       col += k;
       if (pa)
-        addch(ReplacementChar);
+        mutt_window_addch(ReplacementChar);
     }
   }
   *pspace = space;
@@ -1856,7 +1856,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
   if (col == 0)
   {
     mutt_curses_set_color(MT_COLOR_NORMAL);
-    addch(' ');
+    mutt_window_addch(' ');
   }
 #endif
 
@@ -1865,7 +1865,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
     resolve_color(*line_info, n, vch, flags, 0, &a);
 
   /* Fill the blank space at the end of the line with the prevailing color.
-   * ncurses does an implicit clrtoeol() when you do addch('\n') so we have
+   * ncurses does an implicit clrtoeol() when you do mutt_window_addch('\n') so we have
    * to make sure to reset the color *after* that */
   if (flags & MUTT_SHOWCOLOR)
   {
@@ -2139,7 +2139,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     {
       mutt_window_clrtoeol(rd->pager_window);
       if (C_Tilde)
-        addch('~');
+        mutt_window_addch('~');
       rd->lines++;
       mutt_window_move(rd->pager_window, rd->lines, 0);
     }

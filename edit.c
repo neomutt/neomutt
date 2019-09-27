@@ -175,7 +175,7 @@ static int be_barf_file(const char *path, char **buf, int buflen)
   if (!fp)
   {
     addstr(strerror(errno));
-    addch('\n');
+    mutt_window_addch('\n');
     return -1;
   }
   for (int i = 0; i < buflen; i++)
@@ -277,7 +277,7 @@ static void be_print_header(struct Envelope *env)
     tmp[0] = '\0';
     mutt_addrlist_write(tmp, sizeof(tmp), &env->to, true);
     addstr(tmp);
-    addch('\n');
+    mutt_window_addch('\n');
   }
   if (!TAILQ_EMPTY(&env->cc))
   {
@@ -285,7 +285,7 @@ static void be_print_header(struct Envelope *env)
     tmp[0] = '\0';
     mutt_addrlist_write(tmp, sizeof(tmp), &env->cc, true);
     addstr(tmp);
-    addch('\n');
+    mutt_window_addch('\n');
   }
   if (!TAILQ_EMPTY(&env->bcc))
   {
@@ -293,15 +293,15 @@ static void be_print_header(struct Envelope *env)
     tmp[0] = '\0';
     mutt_addrlist_write(tmp, sizeof(tmp), &env->bcc, true);
     addstr(tmp);
-    addch('\n');
+    mutt_window_addch('\n');
   }
   if (env->subject)
   {
     addstr("Subject: ");
     addstr(env->subject);
-    addch('\n');
+    mutt_window_addch('\n');
   }
-  addch('\n');
+  mutt_window_addch('\n');
 }
 
 /**
@@ -337,7 +337,7 @@ static void be_edit_header(struct Envelope *e, bool force)
     mutt_addrlist_to_intl(&e->to, NULL); /* XXX - IDNA error reporting? */
     addstr(tmp);
   }
-  addch('\n');
+  mutt_window_addch('\n');
 
   if (!e->subject || force)
   {
@@ -345,7 +345,7 @@ static void be_edit_header(struct Envelope *e, bool force)
     mutt_str_strfcpy(tmp, e->subject ? e->subject : "", sizeof(tmp));
     if (mutt_enter_string(tmp, sizeof(tmp), 9, MUTT_COMP_NO_FLAGS) == 0)
       mutt_str_replace(&e->subject, tmp);
-    addch('\n');
+    mutt_window_addch('\n');
   }
 
   if ((TAILQ_EMPTY(&e->cc) && C_Askcc) || force)
@@ -366,7 +366,7 @@ static void be_edit_header(struct Envelope *e, bool force)
     }
     else
       mutt_addrlist_to_intl(&e->cc, NULL);
-    addch('\n');
+    mutt_window_addch('\n');
   }
 
   if (C_Askbcc || force)
@@ -387,7 +387,7 @@ static void be_edit_header(struct Envelope *e, bool force)
     }
     else
       mutt_addrlist_to_intl(&e->bcc, NULL);
-    addch('\n');
+    mutt_window_addch('\n');
   }
 }
 
@@ -424,7 +424,7 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
       tmp[0] = '\0';
       continue;
     }
-    addch('\n');
+    mutt_window_addch('\n');
 
     if (C_Escape && (tmp[0] == C_Escape[0]) && (tmp[1] != C_Escape[0]))
     {

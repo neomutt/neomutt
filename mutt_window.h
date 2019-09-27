@@ -46,19 +46,23 @@ extern struct MuttWindow *MuttSidebarWindow;
 #endif
 extern struct MuttWindow *MuttStatusWindow;
 
-void               mutt_window_clearline          (struct MuttWindow *win, int row);
-void               mutt_window_clrtoeol           (struct MuttWindow *win);
+// Functions that deal with the Window
 void               mutt_window_copy_size          (const struct MuttWindow *win_src, struct MuttWindow *win_dst);
 void               mutt_window_free               (struct MuttWindow **ptr);
 void               mutt_window_free_all           (void);
 void               mutt_window_getxy              (struct MuttWindow *win, int *x, int *y);
 void               mutt_window_init               (void);
-int                mutt_window_move               (struct MuttWindow *win, int row, int col);
-int                mutt_window_mvaddstr           (struct MuttWindow *win, int row, int col, const char *str);
-int                mutt_window_mvprintw           (struct MuttWindow *win, int row, int col, const char *fmt, ...);
 struct MuttWindow *mutt_window_new                (void);
 void               mutt_window_reflow             (void);
 void               mutt_window_reflow_message_rows(int mw_rows);
 int                mutt_window_wrap_cols          (int width, short wrap);
+
+// Functions for drawing on the Window
+int  mutt_window_addch    (int ch);
+void mutt_window_clearline(struct MuttWindow *win, int row);
+void mutt_window_clrtoeol (struct MuttWindow *win);
+int  mutt_window_move     (struct MuttWindow *win, int row, int col);
+int  mutt_window_mvaddstr (struct MuttWindow *win, int row, int col, const char *str);
+int  mutt_window_mvprintw (struct MuttWindow *win, int row, int col, const char *fmt, ...);
 
 #endif /* MUTT_MUTT_WINDOW_H */

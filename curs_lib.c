@@ -882,13 +882,13 @@ int mutt_multi_choice(const char *prompt, const char *letters)
           {
             // we have a single letter within parentheses
             mutt_curses_set_color(MT_COLOR_OPTIONS);
-            addch(cur[1]);
+            mutt_window_addch(cur[1]);
             prompt = cur + 3;
           }
           else
           {
             // we have a parenthesis followed by something else
-            addch(cur[0]);
+            mutt_window_addch(cur[0]);
             prompt = cur + 1;
           }
         }
@@ -898,7 +898,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
       addstr(prompt);
       mutt_curses_set_color(MT_COLOR_NORMAL);
 
-      addch(' ');
+      mutt_window_addch(' ');
       mutt_window_clrtoeol(MuttMessageWindow);
     }
 
@@ -1185,7 +1185,7 @@ void mutt_paddstr(int n, const char *s)
     }
   }
   while (n-- > 0)
-    addch(' ');
+    mutt_window_addch(' ');
 }
 
 /**

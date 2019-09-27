@@ -343,3 +343,14 @@ int mutt_window_wrap_cols(int width, short wrap)
   else
     return width;
 }
+
+/**
+ * mutt_window_addch - Write one character to a Window
+ * @param ch  Character to write
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+int mutt_window_addch(int ch)
+{
+  return addch(ch);
+}
