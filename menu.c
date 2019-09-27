@@ -158,7 +158,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
          * may be undefined. */
         ATTR_SET(mutt_color_combine(ColorDefs[MT_COLOR_TREE], attr));
 #else
-        SET_COLOR(MT_COLOR_TREE);
+        mutt_curses_set_color(MT_COLOR_TREE);
 #endif
 
       while (*s && (*s < MUTT_TREE_MAX))
@@ -367,7 +367,7 @@ void menu_redraw_full(struct Menu *menu)
 
   if (C_Help)
   {
-    SET_COLOR(MT_COLOR_STATUS);
+    mutt_curses_set_color(MT_COLOR_STATUS);
     mutt_window_move(MuttHelpWindow, 0, 0);
     mutt_paddstr(MuttHelpWindow->cols, menu->help);
     NORMAL_COLOR;
@@ -392,7 +392,7 @@ void menu_redraw_status(struct Menu *menu)
   char buf[256];
 
   snprintf(buf, sizeof(buf), "-- NeoMutt: %s", menu->title);
-  SET_COLOR(MT_COLOR_STATUS);
+  mutt_curses_set_color(MT_COLOR_STATUS);
   mutt_window_move(menu->statuswin, 0, 0);
   mutt_paddstr(menu->statuswin->cols, buf);
   NORMAL_COLOR;
@@ -436,7 +436,7 @@ void menu_redraw_index(struct Menu *menu)
 
       if (i == menu->current)
       {
-        SET_COLOR(MT_COLOR_INDICATOR);
+        mutt_curses_set_color(MT_COLOR_INDICATOR);
         if (C_ArrowCursor)
         {
           addstr("->");
@@ -497,7 +497,7 @@ void menu_redraw_motion(struct Menu *menu)
     }
 
     /* now draw it in the new location */
-    SET_COLOR(MT_COLOR_INDICATOR);
+    mutt_curses_set_color(MT_COLOR_INDICATOR);
     mutt_window_mvaddstr(menu->indexwin, menu->current + menu->offset - menu->top, 0, "->");
   }
   else
@@ -511,7 +511,7 @@ void menu_redraw_motion(struct Menu *menu)
     const int cur_color = menu->menu_color(menu->current);
     menu_make_entry(buf, sizeof(buf), menu, menu->current);
     menu_pad_string(menu, buf, sizeof(buf));
-    SET_COLOR(MT_COLOR_INDICATOR);
+    mutt_curses_set_color(MT_COLOR_INDICATOR);
     mutt_window_move(menu->indexwin, menu->current + menu->offset - menu->top, 0);
     print_enriched_string(menu->current, cur_color, (unsigned char *) buf, false);
   }
@@ -532,7 +532,7 @@ void menu_redraw_current(struct Menu *menu)
   menu_make_entry(buf, sizeof(buf), menu, menu->current);
   menu_pad_string(menu, buf, sizeof(buf));
 
-  SET_COLOR(MT_COLOR_INDICATOR);
+  mutt_curses_set_color(MT_COLOR_INDICATOR);
   if (C_ArrowCursor)
   {
     addstr("->");

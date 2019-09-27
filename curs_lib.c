@@ -262,7 +262,7 @@ int mutt_get_field_full(const char *field, char *buf, size_t buflen, CompletionF
       mutt_menu_current_redraw();
     }
     mutt_window_clearline(MuttMessageWindow, 0);
-    SET_COLOR(MT_COLOR_PROMPT);
+    mutt_curses_set_color(MT_COLOR_PROMPT);
     addstr(field);
     NORMAL_COLOR;
     mutt_refresh();
@@ -392,7 +392,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
           ((size_t) prompt_lines * MuttMessageWindow->cols) - answer_string_wid, NULL);
 
       mutt_window_move(MuttMessageWindow, 0, 0);
-      SET_COLOR(MT_COLOR_PROMPT);
+      mutt_curses_set_color(MT_COLOR_PROMPT);
       addnstr(msg, trunc_msg_len);
       addstr(answer_string);
       NORMAL_COLOR;
@@ -488,7 +488,7 @@ void mutt_show_error(void)
   if (OptKeepQuiet || !ErrorBufMessage)
     return;
 
-  SET_COLOR(OptMsgErr ? MT_COLOR_ERROR : MT_COLOR_MESSAGE);
+  mutt_curses_set_color(OptMsgErr ? MT_COLOR_ERROR : MT_COLOR_MESSAGE);
   mutt_window_mvaddstr(MuttMessageWindow, 0, 0, ErrorBuf);
   NORMAL_COLOR;
   mutt_window_clrtoeol(MuttMessageWindow);
@@ -656,7 +656,7 @@ int mutt_buffer_enter_fname_full(const char *prompt, struct Buffer *fname,
 {
   struct KeyEvent ch;
 
-  SET_COLOR(MT_COLOR_PROMPT);
+  mutt_curses_set_color(MT_COLOR_PROMPT);
   mutt_window_mvaddstr(MuttMessageWindow, 0, 0, prompt);
   addstr(_(" ('?' for list): "));
   NORMAL_COLOR;
@@ -890,13 +890,13 @@ int mutt_multi_choice(const char *prompt, const char *letters)
         while ((cur = strchr(prompt, '(')))
         {
           // write the part between prompt and cur using MT_COLOR_PROMPT
-          SET_COLOR(MT_COLOR_PROMPT);
+          mutt_curses_set_color(MT_COLOR_PROMPT);
           addnstr(prompt, cur - prompt);
 
           if (isalnum(cur[1]) && (cur[2] == ')'))
           {
             // we have a single letter within parentheses
-            SET_COLOR(MT_COLOR_OPTIONS);
+            mutt_curses_set_color(MT_COLOR_OPTIONS);
             addch(cur[1]);
             prompt = cur + 3;
           }
@@ -909,7 +909,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
         }
       }
 
-      SET_COLOR(MT_COLOR_PROMPT);
+      mutt_curses_set_color(MT_COLOR_PROMPT);
       addstr(prompt);
       NORMAL_COLOR;
 

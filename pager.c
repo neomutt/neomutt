@@ -376,7 +376,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt,
   {
     if (!cnt && C_Markers)
     {
-      SET_COLOR(MT_COLOR_MARKERS);
+      mutt_curses_set_color(MT_COLOR_MARKERS);
       addch('+');
       last_color = ColorDefs[MT_COLOR_MARKERS];
     }
@@ -1991,7 +1991,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
 
     if (C_Help)
     {
-      SET_COLOR(MT_COLOR_STATUS);
+      mutt_curses_set_color(MT_COLOR_STATUS);
       mutt_window_move(MuttHelpWindow, 0, 0);
       mutt_paddstr(MuttHelpWindow->cols, rd->helpstr);
       NORMAL_COLOR;
@@ -2134,7 +2134,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       rd->last_offset = rd->line_info[rd->curline].offset;
     } while (rd->force_redraw);
 
-    SET_COLOR(MT_COLOR_TILDE);
+    mutt_curses_set_color(MT_COLOR_TILDE);
     while (rd->lines < rd->pager_window->rows)
     {
       mutt_window_clrtoeol(rd->pager_window);
@@ -2177,7 +2177,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
 
     /* print out the pager status bar */
     mutt_window_move(rd->pager_status_window, 0, 0);
-    SET_COLOR(MT_COLOR_STATUS);
+    mutt_curses_set_color(MT_COLOR_STATUS);
 
     if (IsEmail(rd->extra) || IsMsgAttach(rd->extra))
     {
@@ -2215,7 +2215,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     menu_status_line(buf, sizeof(buf), rd->menu, NONULL(C_StatusFormat));
 
     mutt_window_move(rd->index_status_window, 0, 0);
-    SET_COLOR(MT_COLOR_STATUS);
+    mutt_curses_set_color(MT_COLOR_STATUS);
     mutt_draw_statusline(rd->index_status_window->cols, buf, sizeof(buf));
     NORMAL_COLOR;
   }

@@ -331,7 +331,7 @@ static void mix_redraw_ce(struct Remailer **type2_list, struct Coord *coords,
   if (coords[i].r < MIX_MAXROW)
   {
     if (selected)
-      SET_COLOR(MT_COLOR_INDICATOR);
+      mutt_curses_set_color(MT_COLOR_INDICATOR);
     else
       NORMAL_COLOR;
 
@@ -370,7 +370,7 @@ static void mix_redraw_chain(struct Remailer **type2_list, struct Coord *coords,
  */
 static void mix_redraw_head(struct MixChain *chain)
 {
-  SET_COLOR(MT_COLOR_STATUS);
+  mutt_curses_set_color(MT_COLOR_STATUS);
   mutt_window_mvprintw(MuttIndexWindow, MIX_VOFFSET - 1, 0,
                        "-- Remailer chain [Length: %d]", chain ? chain->cl : 0);
   mutt_window_clrtoeol(MuttIndexWindow);

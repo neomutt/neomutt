@@ -747,7 +747,7 @@ static int draw_divider(int num_rows, int num_cols)
   if (delim_len > num_cols)
     return 0;
 
-  SET_COLOR(MT_COLOR_DIVIDER);
+  mutt_curses_set_color(MT_COLOR_DIVIDER);
 
   int col = C_SidebarOnRight ? 0 : (C_SidebarWidth - delim_len);
 
@@ -836,25 +836,25 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     if (entryidx == OpnIndex)
     {
       if ((ColorDefs[MT_COLOR_SB_INDICATOR] != 0))
-        SET_COLOR(MT_COLOR_SB_INDICATOR);
+        mutt_curses_set_color(MT_COLOR_SB_INDICATOR);
       else
-        SET_COLOR(MT_COLOR_INDICATOR);
+        mutt_curses_set_color(MT_COLOR_INDICATOR);
     }
     else if (entryidx == HilIndex)
-      SET_COLOR(MT_COLOR_HIGHLIGHT);
+      mutt_curses_set_color(MT_COLOR_HIGHLIGHT);
     else if ((m->msg_unread > 0) || (m->has_new))
-      SET_COLOR(MT_COLOR_NEW);
+      mutt_curses_set_color(MT_COLOR_NEW);
     else if (m->msg_flagged > 0)
-      SET_COLOR(MT_COLOR_FLAGGED);
+      mutt_curses_set_color(MT_COLOR_FLAGGED);
     else if ((ColorDefs[MT_COLOR_SB_SPOOLFILE] != 0) &&
              (mutt_str_strcmp(mailbox_path(m), C_Spoolfile) == 0))
     {
-      SET_COLOR(MT_COLOR_SB_SPOOLFILE);
+      mutt_curses_set_color(MT_COLOR_SB_SPOOLFILE);
     }
     else
     {
       if (ColorDefs[MT_COLOR_ORDINARY] != 0)
-        SET_COLOR(MT_COLOR_ORDINARY);
+        mutt_curses_set_color(MT_COLOR_ORDINARY);
       else
         NORMAL_COLOR;
     }

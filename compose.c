@@ -370,7 +370,7 @@ static void redraw_crypt_lines(struct ComposeRedrawData *rd)
 {
   struct Email *e = rd->email;
 
-  SET_COLOR(MT_COLOR_COMPOSE_HEADER);
+  mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw(rd->win, HDR_CRYPT, 0, "%*s", HeaderPadding[HDR_CRYPT],
                        _(Prompts[HDR_CRYPT]));
   NORMAL_COLOR;
@@ -383,23 +383,23 @@ static void redraw_crypt_lines(struct ComposeRedrawData *rd)
 
   if ((e->security & (SEC_ENCRYPT | SEC_SIGN)) == (SEC_ENCRYPT | SEC_SIGN))
   {
-    SET_COLOR(MT_COLOR_COMPOSE_SECURITY_BOTH);
+    mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_BOTH);
     addstr(_("Sign, Encrypt"));
   }
   else if (e->security & SEC_ENCRYPT)
   {
-    SET_COLOR(MT_COLOR_COMPOSE_SECURITY_ENCRYPT);
+    mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_ENCRYPT);
     addstr(_("Encrypt"));
   }
   else if (e->security & SEC_SIGN)
   {
-    SET_COLOR(MT_COLOR_COMPOSE_SECURITY_SIGN);
+    mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_SIGN);
     addstr(_("Sign"));
   }
   else
   {
     /* L10N: This refers to the encryption of the email, e.g. "Security: None" */
-    SET_COLOR(MT_COLOR_COMPOSE_SECURITY_NONE);
+    mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_NONE);
     addstr(_("None"));
   }
   NORMAL_COLOR;
@@ -427,7 +427,7 @@ static void redraw_crypt_lines(struct ComposeRedrawData *rd)
   if (((WithCrypto & APPLICATION_PGP) != 0) &&
       (e->security & APPLICATION_PGP) && (e->security & SEC_SIGN))
   {
-    SET_COLOR(MT_COLOR_COMPOSE_HEADER);
+    mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
     printw("%*s", HeaderPadding[HDR_CRYPTINFO], _(Prompts[HDR_CRYPTINFO]));
     NORMAL_COLOR;
     printw("%s", C_PgpSignAs ? C_PgpSignAs : _("<default>"));
@@ -436,7 +436,7 @@ static void redraw_crypt_lines(struct ComposeRedrawData *rd)
   if (((WithCrypto & APPLICATION_SMIME) != 0) &&
       (e->security & APPLICATION_SMIME) && (e->security & SEC_SIGN))
   {
-    SET_COLOR(MT_COLOR_COMPOSE_HEADER);
+    mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
     printw("%*s", HeaderPadding[HDR_CRYPTINFO], _(Prompts[HDR_CRYPTINFO]));
     NORMAL_COLOR;
     printw("%s", C_SmimeSignAs ? C_SmimeSignAs : _("<default>"));
@@ -445,7 +445,7 @@ static void redraw_crypt_lines(struct ComposeRedrawData *rd)
   if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME) &&
       (e->security & SEC_ENCRYPT) && C_SmimeEncryptWith)
   {
-    SET_COLOR(MT_COLOR_COMPOSE_HEADER);
+    mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
     mutt_window_mvprintw(rd->win, HDR_CRYPTINFO, 40, "%s", _("Encrypt with: "));
     NORMAL_COLOR;
     printw("%s", NONULL(C_SmimeEncryptWith));
@@ -456,21 +456,21 @@ static void redraw_crypt_lines(struct ComposeRedrawData *rd)
   mutt_window_clrtoeol(rd->win);
   if (C_Autocrypt)
   {
-    SET_COLOR(MT_COLOR_COMPOSE_HEADER);
+    mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
     printw("%*s", HeaderPadding[HDR_AUTOCRYPT], _(Prompts[HDR_AUTOCRYPT]));
     NORMAL_COLOR;
     if (e->security & SEC_AUTOCRYPT)
     {
-      SET_COLOR(MT_COLOR_COMPOSE_SECURITY_ENCRYPT);
+      mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_ENCRYPT);
       addstr(_("Encrypt"));
     }
     else
     {
-      SET_COLOR(MT_COLOR_COMPOSE_SECURITY_NONE);
+      mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_NONE);
       addstr(_("Off"));
     }
 
-    SET_COLOR(MT_COLOR_COMPOSE_HEADER);
+    mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
     mutt_window_mvprintw(rd->win, HDR_AUTOCRYPT, 40, "%s",
                          /* L10N:
                              The autocrypt compose menu Recommendation field.
@@ -534,7 +534,7 @@ static void redraw_mix_line(struct ListHead *chain, struct ComposeRedrawData *rd
 {
   char *t = NULL;
 
-  SET_COLOR(MT_COLOR_COMPOSE_HEADER);
+  mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw(rd->win, HDR_MIX, 0, "%*s", HeaderPadding[HDR_MIX],
                        _(Prompts[HDR_MIX]));
   NORMAL_COLOR;
@@ -617,7 +617,7 @@ static void draw_envelope_addr(int line, struct AddressList *al, struct ComposeR
 
   buf[0] = '\0';
   mutt_addrlist_write(buf, sizeof(buf), al, true);
-  SET_COLOR(MT_COLOR_COMPOSE_HEADER);
+  mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw(rd->win, line, 0, "%*s", HeaderPadding[line], _(Prompts[line]));
   NORMAL_COLOR;
   mutt_paddstr(W, buf);
@@ -659,7 +659,7 @@ static void draw_envelope(struct ComposeRedrawData *rd)
   }
 #endif
 
-  SET_COLOR(MT_COLOR_COMPOSE_HEADER);
+  mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw(rd->win, HDR_SUBJECT, 0, "%*s",
                        HeaderPadding[HDR_SUBJECT], _(Prompts[HDR_SUBJECT]));
   NORMAL_COLOR;
@@ -667,7 +667,7 @@ static void draw_envelope(struct ComposeRedrawData *rd)
 
   draw_envelope_addr(HDR_REPLYTO, &e->env->reply_to, rd);
 
-  SET_COLOR(MT_COLOR_COMPOSE_HEADER);
+  mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw(rd->win, HDR_FCC, 0, "%*s", HeaderPadding[HDR_FCC],
                        _(Prompts[HDR_FCC]));
   NORMAL_COLOR;
@@ -680,7 +680,7 @@ static void draw_envelope(struct ComposeRedrawData *rd)
   redraw_mix_line(&e->chain, rd);
 #endif
 
-  SET_COLOR(MT_COLOR_STATUS);
+  mutt_curses_set_color(MT_COLOR_STATUS);
   mutt_window_mvaddstr(rd->win, HDR_ATTACH_TITLE, 0, _("-- Attachments"));
   mutt_window_clrtoeol(rd->win);
 
@@ -866,7 +866,7 @@ static void compose_custom_redraw(struct Menu *menu)
     compose_status_line(buf, sizeof(buf), 0, menu->statuswin->cols, menu,
                         NONULL(C_ComposeFormat));
     mutt_window_move(menu->statuswin, 0, 0);
-    SET_COLOR(MT_COLOR_STATUS);
+    mutt_curses_set_color(MT_COLOR_STATUS);
     mutt_paddstr(menu->statuswin->cols, buf);
     NORMAL_COLOR;
     menu->redraw &= ~REDRAW_STATUS;

@@ -26,6 +26,7 @@
 
 #include "config.h"
 #include <stdbool.h>
+#include "color.h"
 
 #ifdef USE_SLANG_CURSES
 
@@ -101,31 +102,12 @@ void mutt_curs_set(int cursor);
 #define CI_is_return(ch) (((ch) == '\r') || ((ch) == '\n'))
 #endif
 
+void mutt_curses_set_color(enum ColorId color);
 void mutt_resize_screen(void);
 
-/* If the system has bkgdset() use it rather than attrset() so that the clr*()
- * functions will properly set the background attributes all the way to the
- * right column.
- */
 #ifdef HAVE_BKGDSET
-#define SET_COLOR(X)                                                            \
-  do                                                                           \
-  {                                                                            \
-    if (ColorDefs[X] != 0)                                                     \
-      bkgdset(ColorDefs[X] | ' ');                                             \
-    else                                                                       \
-      bkgdset(ColorDefs[MT_COLOR_NORMAL] | ' ');                               \
-  } while (false)
 #define ATTR_SET(X) bkgdset(X | ' ')
 #else
-#define SET_COLOR(X)                                                            \
-  do                                                                           \
-  {                                                                            \
-    if (ColorDefs[X] != 0)                                                     \
-      attrset(ColorDefs[X]);                                                   \
-    else                                                                       \
-      attrset(ColorDefs[MT_COLOR_NORMAL]);                                     \
-  } while (false)
 #define ATTR_SET attrset
 #endif
 
