@@ -443,7 +443,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt,
     if ((a->attr & ANSI_COLOR))
     {
       if (a->pair == -1)
-        a->pair = mutt_alloc_color(a->fg, a->bg);
+        a->pair = mutt_color_alloc(a->fg, a->bg);
       color = a->pair;
       if (a->attr & ANSI_BOLD)
         color |= A_BOLD;

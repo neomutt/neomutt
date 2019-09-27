@@ -206,9 +206,9 @@ static void color_line_free(struct ColorLine **ptr, bool free_colors)
 }
 
 /**
- * ci_start_color - Set up the default colours
+ * mutt_color_init - Set up the default colours
  */
-void ci_start_color(void)
+void mutt_color_init(void)
 {
   memset(ColorDefs, A_NORMAL, sizeof(int) * MT_COLOR_MAX);
   ColorQuote = mutt_mem_malloc(COLOR_QUOTE_INIT * sizeof(int));
@@ -286,12 +286,12 @@ static char *get_color_name(char *dest, size_t destlen, uint32_t val)
 #endif
 
 /**
- * mutt_alloc_color - Allocate a colour pair
+ * mutt_color_alloc - Allocate a colour pair
  * @param fg Foreground colour ID
  * @param bg Background colour ID
  * @retval num Combined colour pair
  */
-int mutt_alloc_color(uint32_t fg, uint32_t bg)
+int mutt_color_alloc(uint32_t fg, uint32_t bg)
 {
 #ifdef USE_SLANG_CURSES
   char fgc[128], bgc[128];
@@ -390,12 +390,12 @@ static int mutt_lookup_color(short pair, uint32_t *fg, uint32_t *bg)
 }
 
 /**
- * mutt_combine_color - Combine two colours
+ * mutt_color_combine - Combine two colours
  * @param fg_attr Colour pair of foreground to use
  * @param bg_attr Colour pair of background to use
  * @retval num Colour pair of combined colour
  */
-int mutt_combine_color(uint32_t fg_attr, uint32_t bg_attr)
+int mutt_color_combine(uint32_t fg_attr, uint32_t bg_attr)
 {
   uint32_t fg = COLOR_DEFAULT;
   uint32_t bg = COLOR_DEFAULT;
@@ -405,7 +405,7 @@ int mutt_combine_color(uint32_t fg_attr, uint32_t bg_attr)
 
   if ((fg == COLOR_DEFAULT) && (bg == COLOR_DEFAULT))
     return A_NORMAL;
-  return mutt_alloc_color(fg, bg);
+  return mutt_color_alloc(fg, bg);
 }
 
 /**
@@ -791,7 +791,7 @@ static enum CommandResult add_pattern(struct ColorLineList *top, const char *s,
         mutt_color_free(tmp->fg, tmp->bg);
         tmp->fg = fg;
         tmp->bg = bg;
-        attr |= mutt_alloc_color(fg, bg);
+        attr |= mutt_color_alloc(fg, bg);
       }
       else
         attr |= (tmp->pair & ~A_BOLD);
@@ -838,7 +838,7 @@ static enum CommandResult add_pattern(struct ColorLineList *top, const char *s,
     {
       tmp->fg = fg;
       tmp->bg = bg;
-      attr |= mutt_alloc_color(fg, bg);
+      attr |= mutt_color_alloc(fg, bg);
     }
 #endif
     tmp->pair = attr;
@@ -1037,7 +1037,7 @@ static int fgbgattr_to_color(int fg, int bg, int attr)
 {
 #ifdef HAVE_COLOR
   if ((fg != COLOR_UNSET) && (bg != COLOR_UNSET))
-    return attr | mutt_alloc_color(fg, bg);
+    return attr | mutt_color_alloc(fg, bg);
   else
 #endif
     return attr;

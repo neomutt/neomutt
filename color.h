@@ -119,11 +119,11 @@ extern struct ColorLineList ColorIndexSubjectList; ///< List of colours applied 
 extern struct ColorLineList ColorIndexTagList;     ///< List of colours applied to tags in the index
 extern struct ColorLineList ColorStatusList;       ///< List of colours applied to the status bar
 
-void ci_start_color(void);
-int  mutt_alloc_color(uint32_t fg, uint32_t bg);
-int  mutt_combine_color(uint32_t fg_attr, uint32_t bg_attr);
-void mutt_color_free(uint32_t fg, uint32_t bg);
-void mutt_colors_free(void);
+int  mutt_color_alloc  (uint32_t fg, uint32_t bg);
+int  mutt_color_combine(uint32_t fg_attr, uint32_t bg_attr);
+void mutt_color_free   (uint32_t fg, uint32_t bg);
+void mutt_color_init   (void);
+void mutt_colors_free  (void);
 
 enum CommandResult mutt_parse_color  (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 enum CommandResult mutt_parse_mono   (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
