@@ -47,15 +47,6 @@
 #define bool _Bool
 #endif
 
-/* The prototypes for these four functions use "(char*)",
- * whereas the ncurses versions use "(const char*)" */
-#undef mvaddnstr
-#undef mvaddstr
-
-/* We redefine the helper macros to hide the compiler warnings */
-#define mvaddnstr(y, x, str, n) mvwaddnstr(stdscr, (y), (x), ((char *) str), (n))
-#define mvaddstr(y, x, str)     mvwaddstr(stdscr, (y), (x), ((char *) str))
-
 #define KEY_DC SL_KEY_DELETE
 #define KEY_IC SL_KEY_IC
 

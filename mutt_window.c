@@ -211,7 +211,11 @@ int mutt_window_move(struct MuttWindow *win, int row, int col)
  */
 int mutt_window_mvaddstr(struct MuttWindow *win, int row, int col, const char *str)
 {
+#ifdef USE_SLANG_CURSES
+  return mvaddstr(win->row_offset + row, win->col_offset + col, (char *) str);
+#else
   return mvaddstr(win->row_offset + row, win->col_offset + col, str);
+#endif
 }
 
 /**
