@@ -49,13 +49,11 @@
 
 /* The prototypes for these four functions use "(char*)",
  * whereas the ncurses versions use "(const char*)" */
-#undef addnstr
 #undef addstr
 #undef mvaddnstr
 #undef mvaddstr
 
 /* We redefine the helper macros to hide the compiler warnings */
-#define addnstr(str, n)         waddnstr(stdscr, ((char *) str), (n))
 #define addstr(x)               waddstr(stdscr, ((char *) x))
 #define mvaddnstr(y, x, str, n) mvwaddnstr(stdscr, (y), (x), ((char *) str), (n))
 #define mvaddstr(y, x, str)     mvwaddstr(stdscr, (y), (x), ((char *) str))

@@ -403,7 +403,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
 
       mutt_window_move(MuttMessageWindow, 0, 0);
       mutt_curses_set_color(MT_COLOR_PROMPT);
-      addnstr(msg, trunc_msg_len);
+      mutt_window_addnstr(msg, trunc_msg_len);
       addstr(answer_string);
       mutt_curses_set_color(MT_COLOR_NORMAL);
       mutt_window_clrtoeol(MuttMessageWindow);
@@ -876,7 +876,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
         {
           // write the part between prompt and cur using MT_COLOR_PROMPT
           mutt_curses_set_color(MT_COLOR_PROMPT);
-          addnstr(prompt, cur - prompt);
+          mutt_window_addnstr(prompt, cur - prompt);
 
           if (isalnum(cur[1]) && (cur[2] == ')'))
           {
@@ -1180,7 +1180,7 @@ void mutt_paddstr(int n, const char *s)
     {
       if (w > n)
         break;
-      addnstr((char *) s, k);
+      mutt_window_addnstr((char *) s, k);
       n -= w;
     }
   }

@@ -920,7 +920,7 @@ void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
   if ((chunks > 0) && (syntax[0].first > 0))
   {
     /* Text before the first highlight */
-    addnstr(buf, MIN(len, syntax[0].first));
+    mutt_window_addnstr(buf, MIN(len, syntax[0].first));
     attrset(ColorDefs[MT_COLOR_STATUS]);
     if (len <= syntax[0].first)
       goto dsl_finish; /* no more room */
@@ -932,7 +932,7 @@ void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
   {
     /* Highlighted text */
     attrset(syntax[i].color);
-    addnstr(buf + offset, MIN(len, syntax[i].last) - offset);
+    mutt_window_addnstr(buf + offset, MIN(len, syntax[i].last) - offset);
     if (len <= syntax[i].last)
       goto dsl_finish; /* no more room */
 
@@ -948,7 +948,7 @@ void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
 
     attrset(ColorDefs[MT_COLOR_STATUS]);
     offset = syntax[i].last;
-    addnstr(buf + offset, next - offset);
+    mutt_window_addnstr(buf + offset, next - offset);
 
     offset = next;
     if (offset >= len)
@@ -959,7 +959,7 @@ void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
   if (offset < len)
   {
     /* Text after the last highlight */
-    addnstr(buf + offset, len - offset);
+    mutt_window_addnstr(buf + offset, len - offset);
   }
 
   int width = mutt_strwidth(buf);

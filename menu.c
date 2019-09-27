@@ -307,7 +307,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
     }
     else if ((k = mbrtowc(&wc, (char *) s, n, &mbstate)) > 0)
     {
-      addnstr((char *) s, k);
+      mutt_window_addnstr((char *) s, k);
       s += k;
       n -= k;
     }

@@ -354,3 +354,22 @@ int mutt_window_addch(int ch)
 {
   return addch(ch);
 }
+
+/**
+ * mutt_window_addnstr - Write a partial string to a Window
+ * @param str String
+ * @param num Maximum number of characters to write
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+int mutt_window_addnstr(const char *str, int num)
+{
+  if (!str)
+    return -1;
+
+#ifdef USE_SLANG_CURSES
+  return addnstr((char *) str, num);
+#else
+  return addnstr(str, num);
+#endif
+}
