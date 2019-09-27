@@ -480,7 +480,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt,
 
   if (color != last_color)
   {
-    ATTR_SET(color);
+    mutt_curses_set_attr(color);
     last_color = color;
   }
 }
@@ -1875,7 +1875,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
     else
       def_color = ColorDefs[(*line_info)[m].type];
 
-    ATTR_SET(def_color);
+    mutt_curses_set_attr(def_color);
   }
 
   if (col < pager_window->cols)

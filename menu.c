@@ -156,7 +156,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
         /* Combining tree fg color and another bg color requires
          * having use_default_colors, because the other bg color
          * may be undefined. */
-        ATTR_SET(mutt_color_combine(ColorDefs[MT_COLOR_TREE], attr));
+        mutt_curses_set_attr(mutt_color_combine(ColorDefs[MT_COLOR_TREE], attr));
 #else
         mutt_curses_set_color(MT_COLOR_TREE);
 #endif
@@ -279,7 +279,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
         n--;
       }
       if (do_color)
-        ATTR_SET(attr);
+        mutt_curses_set_attr(attr);
     }
     else if (*s == MUTT_SPECIAL_INDEX)
     {
@@ -430,7 +430,7 @@ void menu_redraw_index(struct Menu *menu)
       menu_make_entry(buf, sizeof(buf), menu, i);
       menu_pad_string(menu, buf, sizeof(buf));
 
-      ATTR_SET(attr);
+      mutt_curses_set_attr(attr);
       mutt_window_move(menu->indexwin, i - menu->top + menu->offset, 0);
       do_color = true;
 
@@ -440,7 +440,7 @@ void menu_redraw_index(struct Menu *menu)
         if (C_ArrowCursor)
         {
           addstr("->");
-          ATTR_SET(attr);
+          mutt_curses_set_attr(attr);
           addch(' ');
         }
         else
@@ -481,7 +481,7 @@ void menu_redraw_motion(struct Menu *menu)
    * position the cursor for drawing. */
   const int old_color = menu->menu_color(menu->oldcurrent);
   mutt_window_move(menu->indexwin, menu->oldcurrent + menu->offset - menu->top, 0);
-  ATTR_SET(old_color);
+  mutt_curses_set_attr(old_color);
 
   if (C_ArrowCursor)
   {
@@ -536,7 +536,7 @@ void menu_redraw_current(struct Menu *menu)
   if (C_ArrowCursor)
   {
     addstr("->");
-    ATTR_SET(attr);
+    mutt_curses_set_attr(attr);
     addch(' ');
     menu_pad_string(menu, buf, sizeof(buf));
     print_enriched_string(menu->current, attr, (unsigned char *) buf, true);

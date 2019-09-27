@@ -102,13 +102,8 @@ void mutt_curs_set(int cursor);
 #define CI_is_return(ch) (((ch) == '\r') || ((ch) == '\n'))
 #endif
 
+void mutt_curses_set_attr(int attr);
 void mutt_curses_set_color(enum ColorId color);
 void mutt_resize_screen(void);
-
-#ifdef HAVE_BKGDSET
-#define ATTR_SET(X) bkgdset(X | ' ')
-#else
-#define ATTR_SET attrset
-#endif
 
 #endif /* MUTT_MUTT_CURSES_H */

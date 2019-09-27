@@ -27,6 +27,17 @@
 #include "color.h"
 
 /**
+ * mutt_curses_set_attr - Set the attributes for text
+ * @param attr Attributes to set, e.g. A_UNDERLINE
+ */
+void mutt_curses_set_attr(int attr)
+{
+#ifdef HAVE_BKGDSET
+  bkgdset(attr | ' ');
+#endif
+}
+
+/**
  * mutt_curses_set_color - Set the current colour for text
  * @param color Colour to set, e.g. #MT_COLOR_HEADER
  *
