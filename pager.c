@@ -1855,7 +1855,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
 #ifndef USE_SLANG_CURSES
   if (col == 0)
   {
-    NORMAL_COLOR;
+    mutt_curses_set_color(MT_COLOR_NORMAL);
     addch(' ');
   }
 #endif
@@ -1885,7 +1885,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
    * clrtoeol, otherwise the color for this line will not be
    * filled to the right margin.  */
   if (flags & MUTT_SHOWCOLOR)
-    NORMAL_COLOR;
+    mutt_curses_set_color(MT_COLOR_NORMAL);
 
   /* build a return code */
   if (!(flags & MUTT_SHOW))
@@ -1941,7 +1941,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
 
   if (pager_menu->redraw & REDRAW_FULL)
   {
-    NORMAL_COLOR;
+    mutt_curses_set_color(MT_COLOR_NORMAL);
     /* clear() doesn't optimize screen redraws */
     move(0, 0);
     clrtobot();
@@ -1994,7 +1994,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       mutt_curses_set_color(MT_COLOR_STATUS);
       mutt_window_move(MuttHelpWindow, 0, 0);
       mutt_paddstr(MuttHelpWindow->cols, rd->helpstr);
-      NORMAL_COLOR;
+      mutt_curses_set_color(MT_COLOR_NORMAL);
     }
 
     if (Resize)
@@ -2037,7 +2037,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
         rd->menu->statuswin = rd->index_status_window;
       }
 
-      NORMAL_COLOR;
+      mutt_curses_set_color(MT_COLOR_NORMAL);
       rd->menu->pagelen = rd->index_window->rows;
 
       /* some fudge to work out whereabouts the indicator should go */
@@ -2143,7 +2143,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       rd->lines++;
       mutt_window_move(rd->pager_window, rd->lines, 0);
     }
-    NORMAL_COLOR;
+    mutt_curses_set_color(MT_COLOR_NORMAL);
 
     /* We are going to update the pager status bar, so it isn't
      * necessary to reset to normal color now. */
@@ -2194,7 +2194,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       snprintf(bn, sizeof(bn), "%s (%s)", rd->banner, pager_progress_str);
       mutt_draw_statusline(rd->pager_status_window->cols, bn, sizeof(bn));
     }
-    NORMAL_COLOR;
+    mutt_curses_set_color(MT_COLOR_NORMAL);
     if (C_TsEnabled && TsSupported && rd->menu)
     {
       menu_status_line(buf, sizeof(buf), rd->menu, NONULL(C_TsStatusFormat));
@@ -2217,7 +2217,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     mutt_window_move(rd->index_status_window, 0, 0);
     mutt_curses_set_color(MT_COLOR_STATUS);
     mutt_draw_statusline(rd->index_status_window->cols, buf, sizeof(buf));
-    NORMAL_COLOR;
+    mutt_curses_set_color(MT_COLOR_NORMAL);
   }
 
   pager_menu->redraw = REDRAW_NO_FLAGS;

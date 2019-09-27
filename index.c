@@ -1011,7 +1011,7 @@ static void index_custom_redraw(struct Menu *menu)
     mutt_window_move(menu->statuswin, 0, 0);
     mutt_curses_set_color(MT_COLOR_STATUS);
     mutt_draw_statusline(menu->statuswin->cols, buf, sizeof(buf));
-    NORMAL_COLOR;
+    mutt_curses_set_color(MT_COLOR_NORMAL);
     menu->redraw &= ~REDRAW_STATUS;
     if (C_TsEnabled && TsSupported)
     {

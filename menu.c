@@ -360,7 +360,7 @@ static void menu_pad_string(struct Menu *menu, char *buf, size_t buflen)
  */
 void menu_redraw_full(struct Menu *menu)
 {
-  NORMAL_COLOR;
+  mutt_curses_set_color(MT_COLOR_NORMAL);
   /* clear() doesn't optimize screen redraws */
   move(0, 0);
   clrtobot();
@@ -370,7 +370,7 @@ void menu_redraw_full(struct Menu *menu)
     mutt_curses_set_color(MT_COLOR_STATUS);
     mutt_window_move(MuttHelpWindow, 0, 0);
     mutt_paddstr(MuttHelpWindow->cols, menu->help);
-    NORMAL_COLOR;
+    mutt_curses_set_color(MT_COLOR_NORMAL);
   }
   menu->offset = 0;
   menu->pagelen = menu->indexwin->rows;
@@ -395,7 +395,7 @@ void menu_redraw_status(struct Menu *menu)
   mutt_curses_set_color(MT_COLOR_STATUS);
   mutt_window_move(menu->statuswin, 0, 0);
   mutt_paddstr(menu->statuswin->cols, buf);
-  NORMAL_COLOR;
+  mutt_curses_set_color(MT_COLOR_NORMAL);
   menu->redraw &= ~REDRAW_STATUS;
 }
 
@@ -453,11 +453,11 @@ void menu_redraw_index(struct Menu *menu)
     }
     else
     {
-      NORMAL_COLOR;
+      mutt_curses_set_color(MT_COLOR_NORMAL);
       mutt_window_clearline(menu->indexwin, i - menu->top + menu->offset);
     }
   }
-  NORMAL_COLOR;
+  mutt_curses_set_color(MT_COLOR_NORMAL);
   menu->redraw = 0;
 }
 
@@ -516,7 +516,7 @@ void menu_redraw_motion(struct Menu *menu)
     print_enriched_string(menu->current, cur_color, (unsigned char *) buf, false);
   }
   menu->redraw &= REDRAW_STATUS;
-  NORMAL_COLOR;
+  mutt_curses_set_color(MT_COLOR_NORMAL);
 }
 
 /**
@@ -544,7 +544,7 @@ void menu_redraw_current(struct Menu *menu)
   else
     print_enriched_string(menu->current, attr, (unsigned char *) buf, false);
   menu->redraw &= REDRAW_STATUS;
-  NORMAL_COLOR;
+  mutt_curses_set_color(MT_COLOR_NORMAL);
 }
 
 /**

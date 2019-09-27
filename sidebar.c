@@ -784,7 +784,7 @@ static int draw_divider(int num_rows, int num_cols)
 static void fill_empty_space(int first_row, int num_rows, int div_width, int num_cols)
 {
   /* Fill the remaining rows with blank space */
-  NORMAL_COLOR;
+  mutt_curses_set_color(MT_COLOR_NORMAL);
 
   if (!C_SidebarOnRight)
     div_width = 0;
@@ -856,7 +856,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
       if (ColorDefs[MT_COLOR_ORDINARY] != 0)
         mutt_curses_set_color(MT_COLOR_ORDINARY);
       else
-        NORMAL_COLOR;
+        mutt_curses_set_color(MT_COLOR_NORMAL);
     }
 
     int col = 0;

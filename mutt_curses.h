@@ -111,11 +111,4 @@ void mutt_resize_screen(void);
 #define ATTR_SET attrset
 #endif
 
-/* reset the color to the normal terminal color as defined by 'color normal ...' */
-#ifdef HAVE_BKGDSET
-#define NORMAL_COLOR bkgdset(ColorDefs[MT_COLOR_NORMAL] | ' ')
-#else
-#define NORMAL_COLOR attrset(ColorDefs[MT_COLOR_NORMAL])
-#endif
-
 #endif /* MUTT_MUTT_CURSES_H */

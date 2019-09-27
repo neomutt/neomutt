@@ -88,7 +88,7 @@ static void message_bar(int percent, const char *fmt, ...)
       {
         addch(' ');
       }
-      NORMAL_COLOR;
+      mutt_curses_set_color(MT_COLOR_NORMAL);
     }
     else
     {
@@ -100,7 +100,7 @@ static void message_bar(int percent, const char *fmt, ...)
       mutt_curses_set_color(MT_COLOR_PROGRESS);
       addstr(buf2);
       buf2[off] = ch;
-      NORMAL_COLOR;
+      mutt_curses_set_color(MT_COLOR_NORMAL);
       addstr(&buf2[off]);
     }
   }
