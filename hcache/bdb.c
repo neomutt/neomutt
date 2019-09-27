@@ -51,7 +51,7 @@ struct HcacheDbCtx
   DB_ENV *env;
   DB *db;
   int fd;
-  char lockfile[PATH_MAX];
+  struct Buffer lockfile;
 };
 
 /**
@@ -99,9 +99,10 @@ static void *hcache_bdb_open(const char *path)
   if (pagesize <= 0)
     pagesize = 16384;
 
-  snprintf(ctx->lockfile, sizeof(ctx->lockfile), "%s-lock-hack", path);
+  ctx->lockfile = mutt_buffer_make(128);
+  mutt_buffer_printf(&ctx->lockfile, "%s-lock-hack", path);
 
-  ctx->fd = open(ctx->lockfile, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
+  ctx->fd = open(mutt_b2s(&ctx->lockfile), O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
   if (ctx->fd < 0)
   {
     FREE(&ctx);
@@ -144,7 +145,8 @@ fail_unlock:
   mutt_file_unlock(ctx->fd);
 fail_close:
   close(ctx->fd);
-  unlink(ctx->lockfile);
+  unlink(mutt_b2s(&ctx->lockfile));
+  mutt_buffer_dealloc(&ctx->lockfile);
   FREE(&ctx);
 
   return NULL;
@@ -233,7 +235,8 @@ static void hcache_bdb_close(void **ptr)
   db->env->close(db->env, 0);
   mutt_file_unlock(db->fd);
   close(db->fd);
-  unlink(db->lockfile);
+  unlink(mutt_b2s(&db->lockfile));
+  mutt_buffer_dealloc(&db->lockfile);
   FREE(ptr);
 }
 
