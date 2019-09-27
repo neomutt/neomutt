@@ -28,6 +28,7 @@
 
 #include "config.h"
 #include <stdarg.h>
+#include <stdbool.h>
 #include <string.h>
 #include "mutt/mutt.h"
 #include "mutt_window.h"
@@ -430,4 +431,12 @@ int mutt_window_printf(const char *fmt, ...)
   va_end(ap);
 
   return rc;
+}
+
+/**
+ * mutt_window_clear_screen - Clear the entire screen
+ */
+void mutt_window_clear_screen(void)
+{
+  clearok(stdscr, true);
 }

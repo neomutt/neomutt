@@ -127,7 +127,7 @@ void mutt_refresh(void)
 void mutt_need_hard_redraw(void)
 {
   keypad(stdscr, true);
-  clearok(stdscr, true);
+  mutt_window_clear_screen();
   mutt_menu_set_current_redraw_full();
 }
 
@@ -268,7 +268,7 @@ int mutt_get_field_full(const char *field, char *buf, size_t buflen, CompletionF
     {
       SigWinch = 0;
       mutt_resize_screen();
-      clearok(stdscr, true);
+      mutt_window_clear_screen();
       mutt_menu_current_redraw();
     }
     mutt_window_clearline(MuttMessageWindow, 0);
@@ -329,7 +329,7 @@ void mutt_edit_file(const char *editor, const char *file)
   /* the terminal may have been resized while the editor owned it */
   mutt_resize_screen();
   keypad(stdscr, true);
-  clearok(stdscr, true);
+  mutt_window_clear_screen();
 
   mutt_buffer_pool_release(&cmd);
 }
@@ -381,7 +381,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
       {
         SigWinch = 0;
         mutt_resize_screen();
-        clearok(stdscr, true);
+        mutt_window_clear_screen();
         mutt_menu_current_redraw();
       }
       if (MuttMessageWindow->cols)
@@ -845,7 +845,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
       {
         SigWinch = 0;
         mutt_resize_screen();
-        clearok(stdscr, true);
+        mutt_window_clear_screen();
         mutt_menu_current_redraw();
       }
       if (MuttMessageWindow->cols)

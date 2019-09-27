@@ -1942,9 +1942,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
   if (pager_menu->redraw & REDRAW_FULL)
   {
     mutt_curses_set_color(MT_COLOR_NORMAL);
-    /* clear() doesn't optimize screen redraws */
-    mutt_window_move_abs(0, 0);
-    mutt_window_clrtobot();
+    mutt_window_clear_screen();
 
     if (IsEmail(rd->extra) && Context && ((Context->mailbox->vcount + 1) < C_PagerIndexLines))
       rd->indexlen = Context->mailbox->vcount + 1;
@@ -2460,7 +2458,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
     {
       SigWinch = 0;
       mutt_resize_screen();
-      clearok(stdscr, true); /* force complete redraw */
+      mutt_window_clear_screen();
 
       if (flags & MUTT_PAGER_RETWINCH)
       {
@@ -2929,7 +2927,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_REDRAW:
-        clearok(stdscr, true);
+        mutt_window_clear_screen();
         pager_menu->redraw = REDRAW_FULL;
         break;
 

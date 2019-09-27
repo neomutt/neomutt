@@ -851,6 +851,9 @@ int index_color(int line)
  */
 void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
 {
+  if (!buf)
+    return;
+
   size_t i = 0;
   size_t offset = 0;
   bool found = false;
@@ -863,9 +866,6 @@ void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
     int first;
     int last;
   } *syntax = NULL;
-
-  if (!buf || !stdscr)
-    return;
 
   do
   {
@@ -1239,7 +1239,7 @@ int mutt_index_menu(void)
         menu->top = 0; /* so we scroll the right amount */
         /* force a real complete redraw.  clrtobot() doesn't seem to be able
          * to handle every case without this.  */
-        clearok(stdscr, true);
+        mutt_window_clear_screen();
         continue;
       }
 
@@ -1745,7 +1745,7 @@ int mutt_index_menu(void)
         break;
 
       case OP_REDRAW:
-        clearok(stdscr, true);
+        mutt_window_clear_screen();
         menu->redraw = REDRAW_FULL;
         break;
 
