@@ -173,7 +173,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
               add_wch(WACS_LLCORNER);
 #else
             else if (CharsetIsUtf8)
-              addstr("\342\224\224"); /* WACS_LLCORNER */
+              mutt_window_addstr("\342\224\224"); /* WACS_LLCORNER */
             else
               mutt_window_addch(ACS_LLCORNER);
 #endif
@@ -186,7 +186,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
               add_wch(WACS_ULCORNER);
 #else
             else if (CharsetIsUtf8)
-              addstr("\342\224\214"); /* WACS_ULCORNER */
+              mutt_window_addstr("\342\224\214"); /* WACS_ULCORNER */
             else
               mutt_window_addch(ACS_ULCORNER);
 #endif
@@ -199,7 +199,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
               add_wch(WACS_LTEE);
 #else
             else if (CharsetIsUtf8)
-              addstr("\342\224\234"); /* WACS_LTEE */
+              mutt_window_addstr("\342\224\234"); /* WACS_LTEE */
             else
               mutt_window_addch(ACS_LTEE);
 #endif
@@ -212,7 +212,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
               add_wch(WACS_HLINE);
 #else
             else if (CharsetIsUtf8)
-              addstr("\342\224\200"); /* WACS_HLINE */
+              mutt_window_addstr("\342\224\200"); /* WACS_HLINE */
             else
               mutt_window_addch(ACS_HLINE);
 #endif
@@ -225,7 +225,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
               add_wch(WACS_VLINE);
 #else
             else if (CharsetIsUtf8)
-              addstr("\342\224\202"); /* WACS_VLINE */
+              mutt_window_addstr("\342\224\202"); /* WACS_VLINE */
             else
               mutt_window_addch(ACS_VLINE);
 #endif
@@ -238,7 +238,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
               add_wch(WACS_TTEE);
 #else
             else if (CharsetIsUtf8)
-              addstr("\342\224\254"); /* WACS_TTEE */
+              mutt_window_addstr("\342\224\254"); /* WACS_TTEE */
             else
               mutt_window_addch(ACS_TTEE);
 #endif
@@ -251,7 +251,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
               add_wch(WACS_BTEE);
 #else
             else if (CharsetIsUtf8)
-              addstr("\342\224\264"); /* WACS_BTEE */
+              mutt_window_addstr("\342\224\264"); /* WACS_BTEE */
             else
               mutt_window_addch(ACS_BTEE);
 #endif
@@ -439,7 +439,7 @@ void menu_redraw_index(struct Menu *menu)
         mutt_curses_set_color(MT_COLOR_INDICATOR);
         if (C_ArrowCursor)
         {
-          addstr("->");
+          mutt_window_addstr("->");
           mutt_curses_set_attr(attr);
           mutt_window_addch(' ');
         }
@@ -447,7 +447,7 @@ void menu_redraw_index(struct Menu *menu)
           do_color = false;
       }
       else if (C_ArrowCursor)
-        addstr("   ");
+        mutt_window_addstr("   ");
 
       print_enriched_string(i, attr, (unsigned char *) buf, do_color);
     }
@@ -486,7 +486,7 @@ void menu_redraw_motion(struct Menu *menu)
   if (C_ArrowCursor)
   {
     /* clear the pointer */
-    addstr("  ");
+    mutt_window_addstr("  ");
 
     if (menu->redraw & REDRAW_MOTION_RESYNC)
     {
@@ -535,7 +535,7 @@ void menu_redraw_current(struct Menu *menu)
   mutt_curses_set_color(MT_COLOR_INDICATOR);
   if (C_ArrowCursor)
   {
-    addstr("->");
+    mutt_window_addstr("->");
     mutt_curses_set_attr(attr);
     mutt_window_addch(' ');
     menu_pad_string(menu, buf, sizeof(buf));

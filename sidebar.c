@@ -758,7 +758,7 @@ static int draw_divider(int num_rows, int num_cols)
     switch (altchar)
     {
       case SB_DIV_USER:
-        addstr(NONULL(C_SidebarDividerChar));
+        mutt_window_addstr(NONULL(C_SidebarDividerChar));
         break;
       case SB_DIV_ASCII:
         mutt_window_addch('|');

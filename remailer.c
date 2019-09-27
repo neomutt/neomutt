@@ -340,7 +340,7 @@ static void mix_redraw_ce(struct Remailer **type2_list, struct Coord *coords,
     mutt_curses_set_color(MT_COLOR_NORMAL);
 
     if (i + 1 < chain->cl)
-      addstr(", ");
+      mutt_window_addstr(", ");
   }
 }
 

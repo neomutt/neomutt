@@ -373,3 +373,21 @@ int mutt_window_addnstr(const char *str, int num)
   return addnstr(str, num);
 #endif
 }
+
+/**
+ * mutt_window_addstr - Write a string to a Window
+ * @param str String
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+int mutt_window_addstr(const char *str)
+{
+  if (!str)
+    return -1;
+
+#ifdef USE_SLANG_CURSES
+  return addstr((char *) str);
+#else
+  return addstr(str);
+#endif
+}

@@ -273,7 +273,7 @@ int mutt_get_field_full(const char *field, char *buf, size_t buflen, CompletionF
     }
     mutt_window_clearline(MuttMessageWindow, 0);
     mutt_curses_set_color(MT_COLOR_PROMPT);
-    addstr(field);
+    mutt_window_addstr(field);
     mutt_curses_set_color(MT_COLOR_NORMAL);
     mutt_refresh();
     mutt_window_getxy(MuttMessageWindow, &x, NULL);
@@ -404,7 +404,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
       mutt_window_move(MuttMessageWindow, 0, 0);
       mutt_curses_set_color(MT_COLOR_PROMPT);
       mutt_window_addnstr(msg, trunc_msg_len);
-      addstr(answer_string);
+      mutt_window_addstr(answer_string);
       mutt_curses_set_color(MT_COLOR_NORMAL);
       mutt_window_clrtoeol(MuttMessageWindow);
     }
@@ -458,7 +458,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
 
   if (def != MUTT_ABORT)
   {
-    addstr((char *) ((def == MUTT_YES) ? yes : no));
+    mutt_window_addstr((char *) ((def == MUTT_YES) ? yes : no));
     mutt_refresh();
   }
   else
@@ -668,10 +668,10 @@ int mutt_buffer_enter_fname_full(const char *prompt, struct Buffer *fname,
 
   mutt_curses_set_color(MT_COLOR_PROMPT);
   mutt_window_mvaddstr(MuttMessageWindow, 0, 0, prompt);
-  addstr(_(" ('?' for list): "));
+  mutt_window_addstr(_(" ('?' for list): "));
   mutt_curses_set_color(MT_COLOR_NORMAL);
   if (!mutt_buffer_is_empty(fname))
-    addstr(mutt_b2s(fname));
+    mutt_window_addstr(mutt_b2s(fname));
   mutt_window_clrtoeol(MuttMessageWindow);
   mutt_refresh();
 
@@ -895,7 +895,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
       }
 
       mutt_curses_set_color(MT_COLOR_PROMPT);
-      addstr(prompt);
+      mutt_window_addstr(prompt);
       mutt_curses_set_color(MT_COLOR_NORMAL);
 
       mutt_window_addch(' ');
@@ -963,7 +963,7 @@ int mutt_addwch(wchar_t wc)
   }
   else
   {
-    return addstr(buf);
+    return mutt_window_addstr(buf);
   }
 }
 

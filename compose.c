@@ -377,30 +377,30 @@ static void redraw_crypt_lines(struct ComposeRedrawData *rd)
 
   if ((WithCrypto & (APPLICATION_PGP | APPLICATION_SMIME)) == 0)
   {
-    addstr(_("Not supported"));
+    mutt_window_addstr(_("Not supported"));
     return;
   }
 
   if ((e->security & (SEC_ENCRYPT | SEC_SIGN)) == (SEC_ENCRYPT | SEC_SIGN))
   {
     mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_BOTH);
-    addstr(_("Sign, Encrypt"));
+    mutt_window_addstr(_("Sign, Encrypt"));
   }
   else if (e->security & SEC_ENCRYPT)
   {
     mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_ENCRYPT);
-    addstr(_("Encrypt"));
+    mutt_window_addstr(_("Encrypt"));
   }
   else if (e->security & SEC_SIGN)
   {
     mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_SIGN);
-    addstr(_("Sign"));
+    mutt_window_addstr(_("Sign"));
   }
   else
   {
     /* L10N: This refers to the encryption of the email, e.g. "Security: None" */
     mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_NONE);
-    addstr(_("None"));
+    mutt_window_addstr(_("None"));
   }
   mutt_curses_set_color(MT_COLOR_NORMAL);
 
@@ -409,16 +409,16 @@ static void redraw_crypt_lines(struct ComposeRedrawData *rd)
     if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & APPLICATION_PGP))
     {
       if ((e->security & SEC_INLINE))
-        addstr(_(" (inline PGP)"));
+        mutt_window_addstr(_(" (inline PGP)"));
       else
-        addstr(_(" (PGP/MIME)"));
+        mutt_window_addstr(_(" (PGP/MIME)"));
     }
     else if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME))
-      addstr(_(" (S/MIME)"));
+      mutt_window_addstr(_(" (S/MIME)"));
   }
 
   if (C_CryptOpportunisticEncrypt && (e->security & SEC_OPPENCRYPT))
-    addstr(_(" (OppEnc mode)"));
+    mutt_window_addstr(_(" (OppEnc mode)"));
 
   mutt_window_clrtoeol(rd->win);
   mutt_window_move(rd->win, HDR_CRYPTINFO, 0);
@@ -462,12 +462,12 @@ static void redraw_crypt_lines(struct ComposeRedrawData *rd)
     if (e->security & SEC_AUTOCRYPT)
     {
       mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_ENCRYPT);
-      addstr(_("Encrypt"));
+      mutt_window_addstr(_("Encrypt"));
     }
     else
     {
       mutt_curses_set_color(MT_COLOR_COMPOSE_SECURITY_NONE);
-      addstr(_("Off"));
+      mutt_window_addstr(_("Off"));
     }
 
     mutt_curses_set_color(MT_COLOR_COMPOSE_HEADER);
@@ -541,7 +541,7 @@ static void redraw_mix_line(struct ListHead *chain, struct ComposeRedrawData *rd
 
   if (STAILQ_EMPTY(chain))
   {
-    addstr(_("<no chain defined>"));
+    mutt_window_addstr(_("<no chain defined>"));
     mutt_window_clrtoeol(rd->win);
     return;
   }
@@ -557,9 +557,9 @@ static void redraw_mix_line(struct ListHead *chain, struct ComposeRedrawData *rd
     if (c + mutt_str_strlen(t) + 2 >= rd->win->cols)
       break;
 
-    addstr(NONULL(t));
+    mutt_window_addstr(NONULL(t));
     if (STAILQ_NEXT(np, entries))
-      addstr(", ");
+      mutt_window_addstr(", ");
 
     c += mutt_str_strlen(t) + 2;
   }
