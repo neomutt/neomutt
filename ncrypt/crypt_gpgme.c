@@ -761,10 +761,9 @@ static int crypt_id_matches_addr(struct Address *addr, struct Address *u_addr,
  */
 static gpgme_ctx_t create_gpgme_context(bool for_smime)
 {
-  gpgme_error_t err;
-  gpgme_ctx_t ctx;
+  gpgme_ctx_t ctx = NULL;
 
-  err = gpgme_new(&ctx);
+  gpgme_error_t err = gpgme_new(&ctx);
 
 #ifdef USE_AUTOCRYPT
   if (!err && OptAutocryptGpgme)
@@ -800,10 +799,9 @@ static gpgme_ctx_t create_gpgme_context(bool for_smime)
  */
 static gpgme_data_t create_gpgme_data(void)
 {
-  gpgme_error_t err;
-  gpgme_data_t data;
+  gpgme_data_t data = NULL;
 
-  err = gpgme_data_new(&data);
+  gpgme_error_t err = gpgme_data_new(&data);
   if (err != 0)
   {
     mutt_error(_("error creating gpgme data object: %s"), gpgme_strerror(err));
@@ -826,8 +824,8 @@ static bool have_gpg_version(const char *version)
 
   if (!engine_version)
   {
-    gpgme_ctx_t ctx;
-    gpgme_engine_info_t engineinfo;
+    gpgme_ctx_t ctx = NULL;
+    gpgme_engine_info_t engineinfo = NULL;
 
     ctx = create_gpgme_context(false);
     engineinfo = gpgme_ctx_get_engine_info(ctx);
@@ -857,7 +855,7 @@ static gpgme_data_t body_to_data_object(struct Body *a, bool convert)
 {
   char tempfile[PATH_MAX];
   int err = 0;
-  gpgme_data_t data;
+  gpgme_data_t data = NULL;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
   FILE *fp_tmp = mutt_file_fopen(tempfile, "w+");
@@ -923,7 +921,7 @@ static gpgme_data_t body_to_data_object(struct Body *a, bool convert)
  */
 static gpgme_data_t file_to_data_object(FILE *fp, long offset, size_t length)
 {
-  gpgme_data_t data;
+  gpgme_data_t data = NULL;
 
   int err = gpgme_data_new_from_filepart(&data, NULL, fp, offset, length);
   if (err != 0)
@@ -1107,9 +1105,8 @@ static gpgme_key_t *create_recipient_set(const char *keylist, bool use_smime)
   gpgme_key_t *rset = NULL;
   unsigned int rset_n = 0;
   gpgme_key_t key = NULL;
-  gpgme_ctx_t context = NULL;
 
-  context = create_gpgme_context(use_smime);
+  gpgme_ctx_t context = create_gpgme_context(use_smime);
   s = keylist;
   do
   {
@@ -1168,8 +1165,8 @@ static int set_signer(gpgme_ctx_t ctx, bool for_smime)
 {
   char *signid = NULL;
   gpgme_error_t err;
-  gpgme_ctx_t listctx;
-  gpgme_key_t key, key2;
+  gpgme_ctx_t listctx = NULL;
+  gpgme_key_t key = NULL, key2 = NULL;
   char *fpr = NULL, *fpr2 = NULL;
 
   if (for_smime)
@@ -1236,10 +1233,7 @@ static int set_signer(gpgme_ctx_t ctx, bool for_smime)
  */
 static gpgme_error_t set_pka_sig_notation(gpgme_ctx_t ctx)
 {
-  gpgme_error_t err;
-
-  err = gpgme_sig_notation_add(ctx, PKA_NOTATION_NAME, current_sender, 0);
-
+  gpgme_error_t err = gpgme_sig_notation_add(ctx, PKA_NOTATION_NAME, current_sender, 0);
   if (err)
   {
     mutt_error(_("error setting PKA signature notation: %s"), gpgme_strerror(err));
@@ -1260,8 +1254,8 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist,
                                   bool use_smime, bool combined_signed)
 {
   gpgme_error_t err;
-  gpgme_ctx_t ctx;
-  gpgme_data_t ciphertext;
+  gpgme_ctx_t ctx = NULL;
+  gpgme_data_t ciphertext = NULL;
   char *outfile = NULL;
 
 #if GPGME_VERSION_NUMBER >= 0x010b00 /* gpgme >= 1.11.0 */
@@ -1403,9 +1397,9 @@ static struct Body *sign_message(struct Body *a, bool use_smime)
   char *sigfile = NULL;
   int err = 0;
   char buf[100];
-  gpgme_ctx_t ctx;
-  gpgme_data_t message, signature;
-  gpgme_sign_result_t sigres;
+  gpgme_ctx_t ctx = NULL;
+  gpgme_data_t message = NULL, signature = NULL;
+  gpgme_sign_result_t sigres = NULL;
 
   crypt_convert_to_7bit(a); /* Signed data _must_ be in 7-bit format. */
 
@@ -1659,11 +1653,10 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
 
   if ((sum & GPGME_SIGSUM_SIG_EXPIRED))
   {
-    gpgme_verify_result_t result;
-    gpgme_signature_t sig2;
+    gpgme_signature_t sig2 = NULL;
     unsigned int i;
 
-    result = gpgme_op_verify_result(ctx);
+    gpgme_verify_result_t result = gpgme_op_verify_result(ctx);
 
     for (sig2 = result->signatures, i = 0; sig2 && (i < idx); sig2 = sig2->next, i++)
       ;
@@ -1698,8 +1691,8 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
   if ((sum & GPGME_SIGSUM_SYS_ERROR))
   {
     const char *t0 = NULL, *t1 = NULL;
-    gpgme_verify_result_t result;
-    gpgme_signature_t sig2;
+    gpgme_verify_result_t result = NULL;
+    gpgme_signature_t sig2 = NULL;
     unsigned int i;
 
     state_puts(_("A system error occurred"), s);
@@ -1931,11 +1924,10 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *s)
   const char *fpr = NULL;
   gpgme_key_t key = NULL;
   bool anybad = false, anywarn = false;
-  gpgme_verify_result_t result;
-  gpgme_signature_t sig;
+  gpgme_signature_t sig = NULL;
   gpgme_error_t err = GPG_ERR_NO_ERROR;
 
-  result = gpgme_op_verify_result(ctx);
+  gpgme_verify_result_t result = gpgme_op_verify_result(ctx);
   if (result)
   {
     /* FIXME: this code should use a static variable and remember
@@ -2043,10 +2035,10 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
 {
   int badsig = -1;
   int anywarn = 0;
-  gpgme_ctx_t ctx;
-  gpgme_data_t signature, message;
+  gpgme_ctx_t ctx = NULL;
+  gpgme_data_t message = NULL;
 
-  signature = file_to_data_object(s->fp_in, sigbdy->offset, sigbdy->length);
+  gpgme_data_t signature = file_to_data_object(s->fp_in, sigbdy->offset, sigbdy->length);
   if (!signature)
     return -1;
 
@@ -2083,7 +2075,7 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
   }
   else
   { /* Verification succeeded, see what the result is. */
-    gpgme_verify_result_t verify_result;
+    gpgme_verify_result_t verify_result = NULL;
 
     if (signature_key)
     {
@@ -2110,9 +2102,9 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
 
   if (badsig == 0)
   {
-    gpgme_verify_result_t result;
-    gpgme_sig_notation_t notation;
-    gpgme_signature_t sig;
+    gpgme_verify_result_t result = NULL;
+    gpgme_sig_notation_t notation = NULL;
+    gpgme_signature_t sig = NULL;
 
     result = gpgme_op_verify_result(ctx);
     if (result)
@@ -2199,7 +2191,6 @@ static struct Body *decrypt_part(struct Body *a, struct State *s, FILE *fp_out,
   struct stat info;
   struct Body *tattach = NULL;
   int err = 0;
-  gpgme_ctx_t ctx = NULL;
   gpgme_data_t ciphertext = NULL, plaintext = NULL;
   bool maybe_signed = false;
   bool anywarn = false;
@@ -2208,7 +2199,7 @@ static struct Body *decrypt_part(struct Body *a, struct State *s, FILE *fp_out,
   if (r_is_signed)
     *r_is_signed = 0;
 
-  ctx = create_gpgme_context(is_smime);
+  gpgme_ctx_t ctx = create_gpgme_context(is_smime);
 
 restart:
   if (a->length < 0)
@@ -2569,12 +2560,12 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
    * temporary keyring if we detect an older system.  */
   bool legacy_api;
   char tmpdir[PATH_MAX];
-  gpgme_ctx_t tmpctx;
+  gpgme_ctx_t tmpctx = NULL;
   gpgme_error_t err;
-  gpgme_engine_info_t engineinfo;
-  gpgme_key_t key;
-  gpgme_user_id_t uid;
-  gpgme_subkey_t subkey;
+  gpgme_engine_info_t engineinfo = NULL;
+  gpgme_key_t key = NULL;
+  gpgme_user_id_t uid = NULL;
+  gpgme_subkey_t subkey = NULL;
   const char *shortid = NULL;
   size_t len;
   char date[256];
@@ -3036,11 +3027,8 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
       }
       else if (!clearsign || (s->flags & MUTT_VERIFY))
       {
-        gpgme_data_t plaintext;
-        gpgme_ctx_t ctx;
-
-        plaintext = create_gpgme_data();
-        ctx = create_gpgme_context(false);
+        gpgme_data_t plaintext = create_gpgme_data();
+        gpgme_ctx_t ctx = create_gpgme_context(false);
 
         if (clearsign)
           err = gpgme_op_verify(ctx, armored_data, NULL, plaintext);
@@ -3074,9 +3062,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
 
           {
             /* Check whether signatures have been verified.  */
-            gpgme_verify_result_t verify_result;
-
-            verify_result = gpgme_op_verify_result(ctx);
+            gpgme_verify_result_t verify_result = gpgme_op_verify_result(ctx);
             if (verify_result->signatures)
               sig_stat = true;
           }
@@ -4508,8 +4494,8 @@ static struct CryptKeyInfo *get_candidates(struct ListHead *hints, SecurityFlags
 {
   struct CryptKeyInfo *db = NULL, *k = NULL, **kend = NULL;
   gpgme_error_t err;
-  gpgme_ctx_t ctx;
-  gpgme_key_t key;
+  gpgme_ctx_t ctx = NULL;
+  gpgme_key_t key = NULL;
   int idx;
   gpgme_user_id_t uid = NULL;
 
@@ -5319,8 +5305,8 @@ int mutt_gpgme_select_secret_key(struct Buffer *keyid)
 {
   int rc = -1, junk;
   gpgme_error_t err;
-  gpgme_key_t key;
-  gpgme_user_id_t uid;
+  gpgme_key_t key = NULL;
+  gpgme_user_id_t uid = NULL;
   struct CryptKeyInfo *results = NULL, *k = NULL;
   struct CryptKeyInfo **kend = NULL;
   struct CryptKeyInfo *choice = NULL;
@@ -5400,7 +5386,7 @@ cleanup:
 struct Body *pgp_gpgme_make_key_attachment(void)
 {
   gpgme_ctx_t context = NULL;
-  gpgme_key_t export_keys[2];
+  gpgme_key_t export_keys[2] = { 0 };
   gpgme_data_t keydata = NULL;
   gpgme_error_t err;
   struct Body *att = NULL;

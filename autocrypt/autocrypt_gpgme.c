@@ -79,7 +79,7 @@ static int export_keydata(gpgme_ctx_t ctx, gpgme_key_t key, struct Buffer *keyda
 {
   int rc = -1;
   gpgme_data_t dh = NULL;
-  gpgme_key_t export_keys[2];
+  gpgme_key_t export_keys[2] = { 0 };
   size_t export_data_len;
 
   if (gpgme_data_new(&dh))
@@ -152,7 +152,7 @@ int mutt_autocrypt_gpgme_create_key(struct Address *addr, struct Buffer *keyid,
 {
   int rc = -1;
   gpgme_ctx_t ctx = NULL;
-  gpgme_genkey_result_t keyresult;
+  gpgme_genkey_result_t keyresult = NULL;
   gpgme_key_t primary_key = NULL;
   char buf[1024] = { 0 };
 
