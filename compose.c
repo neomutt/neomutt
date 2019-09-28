@@ -1086,6 +1086,34 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
 }
 
 /**
+ * mutt_dlg_compose_observer - Listen for config changes affecting the Compose menu - Implements ::observer_t()
+ */
+int mutt_dlg_compose_observer(struct NotifyCallback *nc)
+{
+  if (!nc || !nc->event || !nc->data)
+    return -1;
+
+  struct EventConfig *ec = (struct EventConfig *) nc->event;
+  struct MuttWindow *dlg = (struct MuttWindow *) nc->data;
+
+  if (mutt_str_strcmp(ec->name, "status_on_top") != 0)
+    return 0;
+
+  struct MuttWindow *win_first = TAILQ_FIRST(&dlg->children);
+
+  if ((C_StatusOnTop && (win_first->type == WT_INDEX)) ||
+      (!C_StatusOnTop && (win_first->type != WT_INDEX)))
+  {
+    // Swap the Index and the IndexBar Windows
+    TAILQ_REMOVE(&dlg->children, win_first, entries);
+    TAILQ_INSERT_TAIL(&dlg->children, win_first, entries);
+  }
+
+  mutt_window_reflow(dlg);
+  return 0;
+}
+
+/**
  * mutt_compose_menu - Allow the user to edit the message envelope
  * @param e      Email to fill
  * @param fcc    Buffer to save FCC
@@ -1110,11 +1138,43 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 
   init_header_padding();
 
+  struct MuttWindow *dlg =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  dlg->type = WT_DIALOG;
+  struct MuttWindow *index =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  index->type = WT_INDEX;
+  struct MuttWindow *ibar = mutt_window_new(
+      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
+  ibar->type = WT_INDEX_BAR;
+
   rd->email = e;
   rd->fcc = fcc;
-  rd->win = NULL; // MuttIndexWindow;
+  rd->win = index;
+
+  if (C_StatusOnTop)
+  {
+    mutt_window_add_child(dlg, ibar);
+    mutt_window_add_child(dlg, index);
+  }
+  else
+  {
+    mutt_window_add_child(dlg, index);
+    mutt_window_add_child(dlg, ibar);
+  }
+
+  notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_dlg_compose_observer,
+                      (intptr_t) dlg);
+  dialog_push(dlg);
 
   struct Menu *menu = mutt_menu_new(MENU_COMPOSE);
+
+  menu->pagelen = index->state.rows;
+  menu->win_index = index;
+  menu->win_ibar = ibar;
+
   menu->offset = HDR_ATTACH;
   menu->menu_make_entry = snd_make_entry;
   menu->menu_tag = attach_tag;
@@ -1686,12 +1746,15 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         Context = ctx;
         OptAttachMsg = true;
         mutt_message(_("Tag the messages you want to attach"));
-        struct MuttWindow *dlg = index_pager_init();
-        dialog_push(dlg);
-        mutt_index_menu(dlg);
+        struct MuttWindow *dlg_index = index_pager_init();
+        notify_observer_add(Config->notify, NT_CONFIG, 0,
+                            mutt_dlg_index_observer, (intptr_t) dlg_index);
+        dialog_push(dlg_index);
+        mutt_index_menu(dlg_index);
         dialog_pop();
-        index_pager_shutdown(dlg);
-        mutt_window_free(&dlg);
+        notify_observer_remove(Config->notify, mutt_dlg_index_observer, (intptr_t) dlg_index);
+        index_pager_shutdown(dlg_index);
+        mutt_window_free(&dlg_index);
         OptAttachMsg = false;
 
         if (!Context)
@@ -2260,6 +2323,9 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 
   mutt_menu_pop_current(menu);
   mutt_menu_free(&menu);
+  dialog_pop();
+  notify_observer_remove(Config->notify, mutt_dlg_compose_observer, (intptr_t) dlg);
+  mutt_window_free(&dlg);
 
   if (actx->idxlen)
     e->content = actx->idx[0]->content;
