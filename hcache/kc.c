@@ -42,30 +42,26 @@
  */
 static void *hcache_kyotocabinet_open(const char *path)
 {
-  char kcdbpath[PATH_MAX];
-  int printfresult;
-
-  printfresult = snprintf(kcdbpath, sizeof(kcdbpath), "%s#type=kct#opts=%s#rcomp=lex",
-                          path, C_HeaderCacheCompress ? "lc" : "l");
-  if ((printfresult < 0) || (printfresult >= sizeof(kcdbpath)))
-  {
-    return NULL;
-  }
-
   KCDB *db = kcdbnew();
   if (!db)
     return NULL;
 
-  if (kcdbopen(db, kcdbpath, KCOWRITER | KCOCREATE))
-    return db;
-  else
+  struct Buffer kcdbpath = mutt_buffer_make(1024);
+
+  mutt_buffer_printf(&kcdbpath, "%s#type=kct#opts=%s#rcomp=lex", path,
+                     C_HeaderCacheCompress ? "lc" : "l");
+
+  if (!kcdbopen(db, mutt_b2s(&kcdbpath), KCOWRITER | KCOCREATE))
   {
     int ecode = kcdbecode(db);
-    mutt_debug(LL_DEBUG2, "kcdbopen failed for %s: %s (ecode %d)\n", kcdbpath,
-               kcdbemsg(db), ecode);
+    mutt_debug(LL_DEBUG2, "kcdbopen failed for %s: %s (ecode %d)\n",
+               mutt_b2s(&kcdbpath), kcdbemsg(db), ecode);
     kcdbdel(db);
-    return NULL;
+    db = NULL;
   }
+
+  mutt_buffer_dealloc(&kcdbpath);
+  return db;
 }
 
 /**

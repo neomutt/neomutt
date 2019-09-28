@@ -143,22 +143,25 @@ static bool crc_matches(const char *d, unsigned int crc)
  */
 static bool create_hcache_dir(const char *path)
 {
-  if (!path)
+  char *dir = mutt_str_strdup(path);
+  if (!dir)
     return false;
-
-  static char dir[PATH_MAX];
-  mutt_str_strfcpy(dir, path, sizeof(dir));
 
   char *p = strrchr(dir, '/');
   if (!p)
+  {
+    FREE(&dir);
     return true;
+  }
 
   *p = '\0';
-  if (mutt_file_mkdir(dir, S_IRWXU | S_IRWXG | S_IRWXO) == 0)
-    return true;
 
-  mutt_error(_("Can't create %s: %s"), dir, strerror(errno));
-  return false;
+  int rc = mutt_file_mkdir(dir, S_IRWXU | S_IRWXG | S_IRWXO);
+  if (rc != 0)
+    mutt_error(_("Can't create %s: %s"), dir, strerror(errno));
+
+  FREE(&dir);
+  return (rc == 0);
 }
 
 /**
@@ -368,15 +371,18 @@ void *mutt_hcache_fetch(header_cache_t *hc, const char *key, size_t keylen)
  */
 void *mutt_hcache_fetch_raw(header_cache_t *hc, const char *key, size_t keylen)
 {
-  char path[PATH_MAX];
   const struct HcacheOps *ops = hcache_get_ops();
 
   if (!hc || !ops)
     return NULL;
 
-  keylen = snprintf(path, sizeof(path), "%s%s", hc->folder, key);
+  struct Buffer path = mutt_buffer_make(1024);
 
-  return ops->fetch(hc->ctx, path, keylen);
+  keylen = mutt_buffer_printf(&path, "%s%s", hc->folder, key);
+
+  void *blob = ops->fetch(hc->ctx, mutt_b2s(&path), keylen);
+  mutt_buffer_dealloc(&path);
+  return blob;
 }
 
 /**
@@ -424,15 +430,18 @@ int mutt_hcache_store(header_cache_t *hc, const char *key, size_t keylen,
 int mutt_hcache_store_raw(header_cache_t *hc, const char *key, size_t keylen,
                           void *data, size_t dlen)
 {
-  char path[PATH_MAX];
   const struct HcacheOps *ops = hcache_get_ops();
 
   if (!hc || !ops)
     return -1;
 
-  keylen = snprintf(path, sizeof(path), "%s%s", hc->folder, key);
+  struct Buffer path = mutt_buffer_make(1024);
 
-  return ops->store(hc->ctx, path, keylen, data, dlen);
+  keylen = mutt_buffer_printf(&path, "%s%s", hc->folder, key);
+
+  int rc = ops->store(hc->ctx, mutt_b2s(&path), keylen, data, dlen);
+  mutt_buffer_dealloc(&path);
+  return rc;
 }
 
 /**
@@ -440,15 +449,17 @@ int mutt_hcache_store_raw(header_cache_t *hc, const char *key, size_t keylen,
  */
 int mutt_hcache_delete_header(header_cache_t *hc, const char *key, size_t keylen)
 {
-  char path[PATH_MAX];
   const struct HcacheOps *ops = hcache_get_ops();
-
   if (!hc)
     return -1;
 
-  keylen = snprintf(path, sizeof(path), "%s%s", hc->folder, key);
+  struct Buffer path = mutt_buffer_make(1024);
 
-  return ops->delete_header(hc->ctx, path, keylen);
+  keylen = mutt_buffer_printf(&path, "%s%s", hc->folder, key);
+
+  int rc = ops->delete_header(hc->ctx, mutt_b2s(&path), keylen);
+  mutt_buffer_dealloc(&path);
+  return rc;
 }
 
 /**
