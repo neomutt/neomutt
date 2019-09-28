@@ -170,25 +170,22 @@ static bool create_hcache_dir(const char *path)
  *             (path must be freed by the caller)
  *
  * Generate the pathname for the hcache database, it will be of the form:
- *     BASE/FOLDER/NAME-SUFFIX
+ *     BASE/FOLDER/NAME
  *
  * * BASE:   Base directory (@a path)
  * * FOLDER: Mailbox name (@a folder)
  * * NAME:   Create by @a namer, or md5sum of @a folder
- * * SUFFIX: Character set (if ICONV isn't being used)
  *
  * This function will create any parent directories needed, so the caller just
  * needs to create the database file.
  *
  * If @a path exists and is a directory, it is used.
  * If @a path has a trailing '/' it is assumed to be a directory.
- * If ICONV isn't being used, then a suffix is added to the path, e.g. '-utf-8'.
  * Otherwise @a path is assumed to be a file.
  */
 static const char *hcache_per_folder(const char *path, const char *folder, hcache_namer_t namer)
 {
   static char hcpath[PATH_MAX + 64];
-  char suffix[32] = { 0 };
   struct stat sb;
 
   int plen = mutt_str_strlen(path);
@@ -198,8 +195,7 @@ static const char *hcache_per_folder(const char *path, const char *folder, hcach
   if (((rc == 0) && !S_ISDIR(sb.st_mode)) || ((rc == -1) && !slash))
   {
     /* An existing file or a non-existing path not ending with a slash */
-    snprintf(hcpath, sizeof(hcpath), "%s%s", path, suffix);
-    mutt_encode_path(hcpath, sizeof(hcpath), hcpath);
+    mutt_encode_path(hcpath, sizeof(hcpath), path);
     return hcpath;
   }
 
@@ -221,7 +217,7 @@ static const char *hcache_per_folder(const char *path, const char *folder, hcach
     snprintf(name, sizeof(name), "%s|%s", hcache_get_ops()->name, folder);
     mutt_md5(name, m);
     mutt_md5_toascii(m, name);
-    rc = snprintf(hcpath, sizeof(hcpath), "%s%s%s%s", path, slash ? "" : "/", name, suffix);
+    rc = snprintf(hcpath, sizeof(hcpath), "%s%s%s", path, slash ? "" : "/", name);
   }
 
   mutt_encode_path(hcpath, sizeof(hcpath), hcpath);
