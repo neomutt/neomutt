@@ -400,9 +400,9 @@ static void imap_msn_index_to_uid_seqset(struct Buffer *buf, struct ImapMboxData
 /**
  * imap_hcache_namer - Generate a filename for the header cache - Implements ::hcache_namer_t
  */
-static int imap_hcache_namer(const char *path, char *dest, size_t dlen)
+static void imap_hcache_namer(const char *path, struct Buffer *dest)
 {
-  return snprintf(dest, dlen, "%s.hcache", path);
+  mutt_buffer_printf(dest, "%s.hcache", path);
 }
 
 /**

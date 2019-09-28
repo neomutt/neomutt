@@ -679,20 +679,17 @@ int nntp_active_save_cache(struct NntpAccountData *adata)
 /**
  * nntp_hcache_namer - Compose hcache file names - Implements ::hcache_namer_t
  */
-static int nntp_hcache_namer(const char *path, char *dest, size_t destlen)
+static void nntp_hcache_namer(const char *path, struct Buffer *dest)
 {
-  int count = snprintf(dest, destlen, "%s.hcache", path);
+  mutt_buffer_printf(dest, "%s.hcache", path);
 
   /* Strip out any directories in the path */
-  char *first = strchr(dest, '/');
-  char *last = strrchr(dest, '/');
+  char *first = strchr(mutt_b2s(dest), '/');
+  char *last = strrchr(mutt_b2s(dest), '/');
   if (first && last && (last > first))
   {
     memmove(first, last, strlen(last) + 1);
-    count -= (last - first);
   }
-
-  return count;
 }
 
 /**
@@ -805,12 +802,13 @@ void nntp_delete_group_cache(struct NntpMboxData *mdata)
     return;
 
 #ifdef USE_HCACHE
-  char file[PATH_MAX];
-  nntp_hcache_namer(mdata->group, file, sizeof(file));
-  cache_expand(file, sizeof(file), &mdata->adata->conn->account, file);
-  unlink(file);
+  struct Buffer file = mutt_buffer_make(PATH_MAX);
+  nntp_hcache_namer(mdata->group, &file);
+  cache_expand(file.data, file.dsize, &mdata->adata->conn->account, mutt_b2s(&file));
+  unlink(mutt_b2s(&file));
   mdata->last_cached = 0;
-  mutt_debug(LL_DEBUG2, "%s\n", file);
+  mutt_debug(LL_DEBUG2, "%s\n", mutt_b2s(&file));
+  mutt_buffer_dealloc(&file);
 #endif
 
   if (!mdata->bcache)
