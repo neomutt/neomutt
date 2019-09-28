@@ -28,6 +28,8 @@
 #include <stdbool.h>
 
 struct Mailbox;
+struct MuttWindow;
+struct NotifyCallback;
 
 /* These Config Variables are only used in sidebar.c */
 extern short C_SidebarComponentDepth;
@@ -39,13 +41,17 @@ extern char *C_SidebarIndentString;
 extern bool  C_SidebarNewMailOnly;
 extern bool  C_SidebarNonEmptyMailboxOnly;
 extern bool  C_SidebarNextNewWrap;
+extern bool  C_SidebarOnRight;
 extern bool  C_SidebarShortPath;
 extern short C_SidebarSortMethod;
+extern bool  C_SidebarVisible;
+extern short C_SidebarWidth;
 
-void mutt_sb_change_mailbox(int op);
-void mutt_sb_draw(void);
-struct Mailbox *mutt_sb_get_highlight(void);
-void mutt_sb_notify_mailbox(struct Mailbox *m, bool created);
-void mutt_sb_set_open_mailbox(struct Mailbox *m);
+void            mutt_sb_change_mailbox  (int op);
+void            mutt_sb_draw            (struct MuttWindow *win);
+struct Mailbox *mutt_sb_get_highlight   (void);
+void            mutt_sb_notify_mailbox  (struct Mailbox *m, bool created);
+int             mutt_sb_observer        (struct NotifyCallback *nc);
+void            mutt_sb_set_open_mailbox(struct Mailbox *m);
 
 #endif /* MUTT_SIDEBAR_H */

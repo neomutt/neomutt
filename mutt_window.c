@@ -45,9 +45,6 @@ struct MuttWindow *RootWindow = NULL;        ///< Parent of all Windows
 struct MuttWindow *MuttDialogWindow = NULL;  ///< Parent of all Dialogs
 struct MuttWindow *MuttHelpWindow = NULL;    ///< Help Window
 struct MuttWindow *MuttMessageWindow = NULL; ///< Message Window
-#ifdef USE_SIDEBAR
-struct MuttWindow *MuttSidebarWindow = NULL; ///< Sidebar Window
-#endif
 
 /**
  * mutt_window_new - Create a new Window
@@ -212,9 +209,6 @@ void mutt_window_free_all(void)
   MuttDialogWindow = NULL;
   MuttHelpWindow = NULL;
   MuttMessageWindow = NULL;
-#ifdef USE_SIDEBAR
-  MuttSidebarWindow = NULL;
-#endif
   mutt_window_free(&RootWindow);
 }
 

@@ -106,9 +106,6 @@ struct MuttWindow
 extern struct MuttWindow *MuttDialogWindow;
 extern struct MuttWindow *MuttHelpWindow;
 extern struct MuttWindow *MuttMessageWindow;
-#ifdef USE_SIDEBAR
-extern struct MuttWindow *MuttSidebarWindow;
-#endif
 
 // Functions that deal with the Window
 void               mutt_window_add_child          (struct MuttWindow *parent, struct MuttWindow *child);

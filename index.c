@@ -4023,12 +4023,21 @@ struct MuttWindow *index_pager_init(void)
       mutt_window_new(MUTT_WIN_ORIENT_HORIZONTAL, MUTT_WIN_SIZE_FIXED,
                       MUTT_WIN_SIZE_UNLIMITED, C_SidebarWidth);
   win_sidebar->type = WT_SIDEBAR;
+  win_sidebar->state.visible = C_SidebarVisible && (C_SidebarWidth > 0);
   struct MuttWindow *win_ibar = mutt_window_new(
       MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
   win_ibar->type = WT_INDEX_BAR;
 
-  mutt_window_add_child(dlg, MuttSidebarWindow);
-  mutt_window_add_child(dlg, cont_right);
+  if (C_SidebarOnRight)
+  {
+    mutt_window_add_child(dlg, cont_right);
+    mutt_window_add_child(dlg, win_sidebar);
+  }
+  else
+  {
+    mutt_window_add_child(dlg, win_sidebar);
+    mutt_window_add_child(dlg, cont_right);
+  }
 
   mutt_window_add_child(cont_right, panel_index);
   mutt_window_add_child(panel_index, win_index);
@@ -4037,6 +4046,8 @@ struct MuttWindow *index_pager_init(void)
   mutt_window_add_child(cont_right, panel_pager);
   mutt_window_add_child(panel_pager, win_pager);
   mutt_window_add_child(panel_pager, win_pbar);
+
+  notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_sb_observer, (intptr_t) win_sidebar);
 
   return dlg;
 }
@@ -4049,6 +4060,12 @@ void index_pager_shutdown(struct MuttWindow *dlg)
 {
   if (!dlg)
     return;
+
+  struct MuttWindow *win_sidebar = mutt_window_find(dlg, WT_SIDEBAR);
+  if (!win_sidebar)
+    return;
+
+  notify_observer_remove(Config->notify, mutt_sb_observer, (intptr_t) win_sidebar);
 }
 
 /**
