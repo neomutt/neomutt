@@ -708,6 +708,20 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out)
   return 0;
 }
 
+static const struct AddressList *choose_default_to(const struct Address *from, const struct Envelope *env)
+{
+  if (!C_ReplySelf && mutt_addr_is_user(from))
+  {
+    /* mail is from the user, assume replying to recipients */
+    return &env->to;
+  }
+  else
+  {
+    return &env->from;
+  }
+}
+
+
 /**
  * default_to - Generate default email addresses
  * @param[in,out] to      'To' address
@@ -734,12 +748,9 @@ static int default_to(struct AddressList *to, struct Envelope *env, SendFlags fl
   if (flags & SEND_LIST_REPLY)
     return 0;
 
-  if (!C_ReplySelf && mutt_addr_is_user(from))
-  {
-    /* mail is from the user, assume replying to recipients */
-    mutt_addrlist_copy(to, &env->to, true);
-  }
-  else if (reply_to)
+  const struct AddressList *default_to = choose_default_to(from, env);
+
+  if (reply_to)
   {
     const bool from_is_reply_to = mutt_addr_cmp(from, reply_to);
     const bool multiple_reply_to =
@@ -774,7 +785,7 @@ static int default_to(struct AddressList *to, struct Envelope *env, SendFlags fl
           break;
 
         case MUTT_NO:
-          mutt_addrlist_copy(to, &env->from, false);
+          mutt_addrlist_copy(to, default_to, false);
           break;
 
         default:
@@ -782,10 +793,14 @@ static int default_to(struct AddressList *to, struct Envelope *env, SendFlags fl
       }
     }
     else
+    {
       mutt_addrlist_copy(to, &env->reply_to, false);
+    }
   }
   else
-    mutt_addrlist_copy(to, &env->from, false);
+  {
+    mutt_addrlist_copy(to, default_to, false);
+  }
 
   return 0;
 }
