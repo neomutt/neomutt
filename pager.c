@@ -376,8 +376,8 @@ static void resolve_color(struct Line *line_info, int n, int cnt,
   {
     if (!cnt && C_Markers)
     {
-      SET_COLOR(MT_COLOR_MARKERS);
-      addch('+');
+      mutt_curses_set_color(MT_COLOR_MARKERS);
+      mutt_window_addch('+');
       last_color = ColorDefs[MT_COLOR_MARKERS];
     }
     m = (line_info[n].syntax)[0].first;
@@ -443,7 +443,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt,
     if ((a->attr & ANSI_COLOR))
     {
       if (a->pair == -1)
-        a->pair = mutt_alloc_color(a->fg, a->bg);
+        a->pair = mutt_color_alloc(a->fg, a->bg);
       color = a->pair;
       if (a->attr & ANSI_BOLD)
         color |= A_BOLD;
@@ -480,7 +480,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt,
 
   if (color != last_color)
   {
-    ATTR_SET(color);
+    mutt_curses_set_attr(color);
     last_color = color;
   }
 }
@@ -1487,7 +1487,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
         break;
       col += 4;
       if (pa)
-        printw("\\%03o", buf[ch]);
+        mutt_window_printf("\\%03o", buf[ch]);
       k = 1;
       continue;
     }
@@ -1576,7 +1576,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
         break;
       if (pa)
         for (; col < t; col++)
-          addch(' ');
+          mutt_window_addch(' ');
       else
         col = t;
     }
@@ -1586,7 +1586,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
         break;
       col += 2;
       if (pa)
-        printw("^%c", ('@' + wc) & 0x7f);
+        mutt_window_printf("^%c", ('@' + wc) & 0x7f);
     }
     else if (wc < 0x100)
     {
@@ -1594,7 +1594,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
         break;
       col += 4;
       if (pa)
-        printw("\\%03o", wc);
+        mutt_window_printf("\\%03o", wc);
     }
     else
     {
@@ -1602,7 +1602,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf,
         break;
       col += k;
       if (pa)
-        addch(ReplacementChar);
+        mutt_window_addch(ReplacementChar);
     }
   }
   *pspace = space;
@@ -1855,8 +1855,8 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
 #ifndef USE_SLANG_CURSES
   if (col == 0)
   {
-    NORMAL_COLOR;
-    addch(' ');
+    mutt_curses_set_color(MT_COLOR_NORMAL);
+    mutt_window_addch(' ');
   }
 #endif
 
@@ -1865,7 +1865,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
     resolve_color(*line_info, n, vch, flags, 0, &a);
 
   /* Fill the blank space at the end of the line with the prevailing color.
-   * ncurses does an implicit clrtoeol() when you do addch('\n') so we have
+   * ncurses does an implicit clrtoeol() when you do mutt_window_addch('\n') so we have
    * to make sure to reset the color *after* that */
   if (flags & MUTT_SHOWCOLOR)
   {
@@ -1875,7 +1875,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
     else
       def_color = ColorDefs[(*line_info)[m].type];
 
-    ATTR_SET(def_color);
+    mutt_curses_set_attr(def_color);
   }
 
   if (col < pager_window->cols)
@@ -1885,7 +1885,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
    * clrtoeol, otherwise the color for this line will not be
    * filled to the right margin.  */
   if (flags & MUTT_SHOWCOLOR)
-    NORMAL_COLOR;
+    mutt_curses_set_color(MT_COLOR_NORMAL);
 
   /* build a return code */
   if (!(flags & MUTT_SHOW))
@@ -1941,10 +1941,8 @@ static void pager_custom_redraw(struct Menu *pager_menu)
 
   if (pager_menu->redraw & REDRAW_FULL)
   {
-    NORMAL_COLOR;
-    /* clear() doesn't optimize screen redraws */
-    move(0, 0);
-    clrtobot();
+    mutt_curses_set_color(MT_COLOR_NORMAL);
+    mutt_window_clear_screen();
 
     if (IsEmail(rd->extra) && Context && ((Context->mailbox->vcount + 1) < C_PagerIndexLines))
       rd->indexlen = Context->mailbox->vcount + 1;
@@ -1991,10 +1989,10 @@ static void pager_custom_redraw(struct Menu *pager_menu)
 
     if (C_Help)
     {
-      SET_COLOR(MT_COLOR_STATUS);
+      mutt_curses_set_color(MT_COLOR_STATUS);
       mutt_window_move(MuttHelpWindow, 0, 0);
       mutt_paddstr(MuttHelpWindow->cols, rd->helpstr);
-      NORMAL_COLOR;
+      mutt_curses_set_color(MT_COLOR_NORMAL);
     }
 
     if (Resize)
@@ -2037,7 +2035,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
         rd->menu->statuswin = rd->index_status_window;
       }
 
-      NORMAL_COLOR;
+      mutt_curses_set_color(MT_COLOR_NORMAL);
       rd->menu->pagelen = rd->index_window->rows;
 
       /* some fudge to work out whereabouts the indicator should go */
@@ -2134,16 +2132,16 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       rd->last_offset = rd->line_info[rd->curline].offset;
     } while (rd->force_redraw);
 
-    SET_COLOR(MT_COLOR_TILDE);
+    mutt_curses_set_color(MT_COLOR_TILDE);
     while (rd->lines < rd->pager_window->rows)
     {
       mutt_window_clrtoeol(rd->pager_window);
       if (C_Tilde)
-        addch('~');
+        mutt_window_addch('~');
       rd->lines++;
       mutt_window_move(rd->pager_window, rd->lines, 0);
     }
-    NORMAL_COLOR;
+    mutt_curses_set_color(MT_COLOR_NORMAL);
 
     /* We are going to update the pager status bar, so it isn't
      * necessary to reset to normal color now. */
@@ -2177,7 +2175,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
 
     /* print out the pager status bar */
     mutt_window_move(rd->pager_status_window, 0, 0);
-    SET_COLOR(MT_COLOR_STATUS);
+    mutt_curses_set_color(MT_COLOR_STATUS);
 
     if (IsEmail(rd->extra) || IsMsgAttach(rd->extra))
     {
@@ -2194,7 +2192,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       snprintf(bn, sizeof(bn), "%s (%s)", rd->banner, pager_progress_str);
       mutt_draw_statusline(rd->pager_status_window->cols, bn, sizeof(bn));
     }
-    NORMAL_COLOR;
+    mutt_curses_set_color(MT_COLOR_NORMAL);
     if (C_TsEnabled && TsSupported && rd->menu)
     {
       menu_status_line(buf, sizeof(buf), rd->menu, NONULL(C_TsStatusFormat));
@@ -2215,9 +2213,9 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     menu_status_line(buf, sizeof(buf), rd->menu, NONULL(C_StatusFormat));
 
     mutt_window_move(rd->index_status_window, 0, 0);
-    SET_COLOR(MT_COLOR_STATUS);
+    mutt_curses_set_color(MT_COLOR_STATUS);
     mutt_draw_statusline(rd->index_status_window->cols, buf, sizeof(buf));
-    NORMAL_COLOR;
+    mutt_curses_set_color(MT_COLOR_NORMAL);
   }
 
   pager_menu->redraw = REDRAW_NO_FLAGS;
@@ -2333,7 +2331,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
   while (ch != -1)
   {
-    mutt_curs_set(0);
+    mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
 
     pager_custom_redraw(pager_menu);
 
@@ -2341,7 +2339,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
     {
       if (braille_line != -1)
       {
-        move(braille_line + 1, 0);
+        mutt_window_move_abs(braille_line + 1, 0);
         braille_line = -1;
       }
     }
@@ -2367,7 +2365,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
     {
       mutt_clear_error();
     }
-    mutt_curs_set(1);
+    mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
 
     bool do_new_mail = false;
 
@@ -2445,7 +2443,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
       if (mutt_mailbox_notify(Context ? Context->mailbox : NULL) || do_new_mail)
       {
         if (C_BeepNew)
-          beep();
+          mutt_beep(true);
         if (C_NewMailCommand)
         {
           char cmd[1024];
@@ -2460,7 +2458,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
     {
       SigWinch = 0;
       mutt_resize_screen();
-      clearok(stdscr, true); /* force complete redraw */
+      mutt_window_clear_screen();
 
       if (flags & MUTT_PAGER_RETWINCH)
       {
@@ -2929,7 +2927,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_REDRAW:
-        clearok(stdscr, true);
+        mutt_window_clear_screen();
         pager_menu->redraw = REDRAW_FULL;
         break;
 

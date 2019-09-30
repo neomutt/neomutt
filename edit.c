@@ -149,14 +149,14 @@ static char **be_snarf_file(const char *path, char **buf, int *max, int *len, bo
     if (verbose)
     {
       snprintf(tmp, sizeof(tmp), "\"%s\" %lu bytes\n", path, (unsigned long) sb.st_size);
-      addstr(tmp);
+      mutt_window_addstr(tmp);
     }
     mutt_file_fclose(&fp);
   }
   else
   {
     snprintf(tmp, sizeof(tmp), "%s: %s\n", path, strerror(errno));
-    addstr(tmp);
+    mutt_window_addstr(tmp);
   }
   return buf;
 }
@@ -174,15 +174,15 @@ static int be_barf_file(const char *path, char **buf, int buflen)
   FILE *fp = fopen(path, "w");
   if (!fp)
   {
-    addstr(strerror(errno));
-    addch('\n');
+    mutt_window_addstr(strerror(errno));
+    mutt_window_addch('\n');
     return -1;
   }
   for (int i = 0; i < buflen; i++)
     fputs(buf[i], fp);
   if (fclose(fp) == 0)
     return 0;
-  printw("fclose: %s\n", strerror(errno));
+  mutt_window_printf("fclose: %s\n", strerror(errno));
   return -1;
 }
 
@@ -257,7 +257,7 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
       buf[(*buflen)++] = mutt_str_strdup("\n");
     }
     else
-      printw(_("%d: invalid message number.\n"), n);
+      mutt_window_printf(_("%d: invalid message number.\n"), n);
     msg = NULL;
   }
   return buf;
@@ -273,35 +273,35 @@ static void be_print_header(struct Envelope *env)
 
   if (!TAILQ_EMPTY(&env->to))
   {
-    addstr("To: ");
+    mutt_window_addstr("To: ");
     tmp[0] = '\0';
     mutt_addrlist_write(tmp, sizeof(tmp), &env->to, true);
-    addstr(tmp);
-    addch('\n');
+    mutt_window_addstr(tmp);
+    mutt_window_addch('\n');
   }
   if (!TAILQ_EMPTY(&env->cc))
   {
-    addstr("Cc: ");
+    mutt_window_addstr("Cc: ");
     tmp[0] = '\0';
     mutt_addrlist_write(tmp, sizeof(tmp), &env->cc, true);
-    addstr(tmp);
-    addch('\n');
+    mutt_window_addstr(tmp);
+    mutt_window_addch('\n');
   }
   if (!TAILQ_EMPTY(&env->bcc))
   {
-    addstr("Bcc: ");
+    mutt_window_addstr("Bcc: ");
     tmp[0] = '\0';
     mutt_addrlist_write(tmp, sizeof(tmp), &env->bcc, true);
-    addstr(tmp);
-    addch('\n');
+    mutt_window_addstr(tmp);
+    mutt_window_addch('\n');
   }
   if (env->subject)
   {
-    addstr("Subject: ");
-    addstr(env->subject);
-    addch('\n');
+    mutt_window_addstr("Subject: ");
+    mutt_window_addstr(env->subject);
+    mutt_window_addch('\n');
   }
-  addch('\n');
+  mutt_window_addch('\n');
 }
 
 /**
@@ -315,7 +315,7 @@ static void be_edit_header(struct Envelope *e, bool force)
 
   mutt_window_move(MuttMessageWindow, 0, 0);
 
-  addstr("To: ");
+  mutt_window_addstr("To: ");
   tmp[0] = '\0';
   mutt_addrlist_to_local(&e->to);
   mutt_addrlist_write(tmp, sizeof(tmp), &e->to, false);
@@ -335,22 +335,22 @@ static void be_edit_header(struct Envelope *e, bool force)
   else
   {
     mutt_addrlist_to_intl(&e->to, NULL); /* XXX - IDNA error reporting? */
-    addstr(tmp);
+    mutt_window_addstr(tmp);
   }
-  addch('\n');
+  mutt_window_addch('\n');
 
   if (!e->subject || force)
   {
-    addstr("Subject: ");
+    mutt_window_addstr("Subject: ");
     mutt_str_strfcpy(tmp, e->subject ? e->subject : "", sizeof(tmp));
     if (mutt_enter_string(tmp, sizeof(tmp), 9, MUTT_COMP_NO_FLAGS) == 0)
       mutt_str_replace(&e->subject, tmp);
-    addch('\n');
+    mutt_window_addch('\n');
   }
 
   if ((TAILQ_EMPTY(&e->cc) && C_Askcc) || force)
   {
-    addstr("Cc: ");
+    mutt_window_addstr("Cc: ");
     tmp[0] = '\0';
     mutt_addrlist_to_local(&e->cc);
     mutt_addrlist_write(tmp, sizeof(tmp), &e->cc, false);
@@ -366,12 +366,12 @@ static void be_edit_header(struct Envelope *e, bool force)
     }
     else
       mutt_addrlist_to_intl(&e->cc, NULL);
-    addch('\n');
+    mutt_window_addch('\n');
   }
 
   if (C_Askbcc || force)
   {
-    addstr("Bcc: ");
+    mutt_window_addstr("Bcc: ");
     tmp[0] = '\0';
     mutt_addrlist_to_local(&e->bcc);
     mutt_addrlist_write(tmp, sizeof(tmp), &e->bcc, false);
@@ -387,7 +387,7 @@ static void be_edit_header(struct Envelope *e, bool force)
     }
     else
       mutt_addrlist_to_intl(&e->bcc, NULL);
-    addch('\n');
+    mutt_window_addch('\n');
   }
 }
 
@@ -412,7 +412,7 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
 
   be_edit_header(e_new->env, false);
 
-  addstr(_("(End message with a . on a line by itself)\n"));
+  mutt_window_addstr(_("(End message with a . on a line by itself)\n"));
 
   buf = be_snarf_file(path, buf, &bufmax, &buflen, false);
 
@@ -424,7 +424,7 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
       tmp[0] = '\0';
       continue;
     }
-    addch('\n');
+    mutt_window_addch('\n');
 
     if (C_Escape && (tmp[0] == C_Escape[0]) && (tmp[1] != C_Escape[0]))
     {
@@ -439,8 +439,8 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
       switch (tmp[1])
       {
         case '?':
-          addstr(_(EditorHelp1));
-          addstr(_(EditorHelp2));
+          mutt_window_addstr(_(EditorHelp1));
+          mutt_window_addstr(_(EditorHelp2));
           break;
         case 'b':
           mutt_addrlist_parse2(&e_new->env->bcc, p);
@@ -470,19 +470,19 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
                                       (isupper((unsigned char) tmp[1])));
           }
           else
-            addstr(_("No mailbox.\n"));
+            mutt_window_addstr(_("No mailbox.\n"));
           break;
         case 'p':
-          addstr("-----\n");
-          addstr(_("Message contains:\n"));
+          mutt_window_addstr("-----\n");
+          mutt_window_addstr(_("Message contains:\n"));
           be_print_header(e_new->env);
           for (int i = 0; i < buflen; i++)
-            addstr(buf[i]);
+            mutt_window_addstr(buf[i]);
           /* L10N: This entry is shown AFTER the message content,
              not IN the middle of the content.
              So it doesn't mean "(message will continue)"
              but means "(press any key to continue using neomutt)". */
-          addstr(_("(continue)\n"));
+          mutt_window_addstr(_("(continue)\n"));
           break;
         case 'q':
           done = true;
@@ -495,7 +495,7 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
             buf = be_snarf_file(tmp, buf, &bufmax, &buflen, true);
           }
           else
-            addstr(_("missing filename.\n"));
+            mutt_window_addstr(_("missing filename.\n"));
           break;
         case 's':
           mutt_str_replace(&e_new->env->subject, p);
@@ -515,7 +515,7 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
             continue;
           }
           else
-            addstr(_("No lines in message.\n"));
+            mutt_window_addstr(_("No lines in message.\n"));
           break;
 
         case 'e':
@@ -534,7 +534,7 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
               mutt_env_to_local(e_new->env);
               mutt_edit_headers(NONULL(C_Visual), path, e_new, NULL, 0);
               if (mutt_env_to_intl(e_new->env, &tag, &err))
-                printw(_("Bad IDN in '%s': '%s'"), tag, err);
+                mutt_window_printf(_("Bad IDN in '%s': '%s'"), tag, err);
               /* tag is a statically allocated string and should not be freed */
               FREE(&err);
             }
@@ -543,7 +543,7 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
 
             buf = be_snarf_file(path, buf, &bufmax, &buflen, false);
 
-            addstr(_("(continue)\n"));
+            mutt_window_addstr(_("(continue)\n"));
           }
           break;
         case 'w':
@@ -554,7 +554,7 @@ int mutt_builtin_editor(const char *path, struct Email *e_new, struct Email *e_c
           done = true;
           break;
         default:
-          printw(_("%s: unknown editor command (~? for help)\n"), tmp);
+          mutt_window_printf(_("%s: unknown editor command (~? for help)\n"), tmp);
           break;
       }
     }

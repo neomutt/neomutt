@@ -28,6 +28,7 @@
 
 #include "config.h"
 #include <stdarg.h>
+#include <stdbool.h>
 #include <string.h>
 #include "mutt/mutt.h"
 #include "mutt_window.h"
@@ -99,6 +100,16 @@ void mutt_window_clearline(struct MuttWindow *win, int row)
 }
 
 /**
+ * mutt_window_clrtobot - Clear to the bottom of the Window
+ *
+ * @note Assumes the cursor has already been positioned within the Window.
+ */
+void mutt_window_clrtobot(void)
+{
+  clrtobot();
+}
+
+/**
  * mutt_window_clrtoeol - Clear to the end of the line
  * @param win Window
  *
@@ -141,24 +152,24 @@ void mutt_window_free_all(void)
 }
 
 /**
- * mutt_window_getxy - Get the cursor position in the Window
+ * mutt_window_get_coords - Get the cursor position in the Window
  * @param[in]  win Window
- * @param[out] x   X-Coordinate
- * @param[out] y   Y-Coordinate
+ * @param[out] row Row in Window
+ * @param[out] col Column in Window
  *
  * Assumes the current position is inside the window.  Otherwise it will
  * happily return negative or values outside the window boundaries
  */
-void mutt_window_getxy(struct MuttWindow *win, int *x, int *y)
+void mutt_window_get_coords(struct MuttWindow *win, int *row, int *col)
 {
-  int row = 0;
-  int col = 0;
+  int x = 0;
+  int y = 0;
 
-  getyx(stdscr, row, col);
-  if (x)
-    *x = col - win->col_offset;
-  if (y)
-    *y = row - win->row_offset;
+  getyx(stdscr, y, x);
+  if (col)
+    *col = x - win->col_offset;
+  if (row)
+    *row = y - win->row_offset;
 }
 
 /**
@@ -201,7 +212,11 @@ int mutt_window_move(struct MuttWindow *win, int row, int col)
  */
 int mutt_window_mvaddstr(struct MuttWindow *win, int row, int col, const char *str)
 {
+#ifdef USE_SLANG_CURSES
+  return mvaddstr(win->row_offset + row, win->col_offset + col, (char *) str);
+#else
   return mvaddstr(win->row_offset + row, win->col_offset + col, str);
+#endif
 }
 
 /**
@@ -342,4 +357,86 @@ int mutt_window_wrap_cols(int width, short wrap)
     return (wrap < width) ? wrap : width;
   else
     return width;
+}
+
+/**
+ * mutt_window_addch - Write one character to a Window
+ * @param ch  Character to write
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+int mutt_window_addch(int ch)
+{
+  return addch(ch);
+}
+
+/**
+ * mutt_window_addnstr - Write a partial string to a Window
+ * @param str String
+ * @param num Maximum number of characters to write
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+int mutt_window_addnstr(const char *str, int num)
+{
+  if (!str)
+    return -1;
+
+#ifdef USE_SLANG_CURSES
+  return addnstr((char *) str, num);
+#else
+  return addnstr(str, num);
+#endif
+}
+
+/**
+ * mutt_window_addstr - Write a string to a Window
+ * @param str String
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+int mutt_window_addstr(const char *str)
+{
+  if (!str)
+    return -1;
+
+#ifdef USE_SLANG_CURSES
+  return addstr((char *) str);
+#else
+  return addstr(str);
+#endif
+}
+
+/**
+ * mutt_window_move_abs - Move the cursor to an absolute screen position
+ * @param row Screen row (0-based)
+ * @param col Screen column (0-based)
+ */
+void mutt_window_move_abs(int row, int col)
+{
+  move(row, col);
+}
+
+/**
+ * mutt_window_printf - Write a formatted string to a Window
+ * @param fmt Format string
+ * @param ... Arguments
+ * @retval num Number of characters written
+ */
+int mutt_window_printf(const char *fmt, ...)
+{
+  va_list ap;
+  va_start(ap, fmt);
+  int rc = vw_printw(stdscr, fmt, ap);
+  va_end(ap);
+
+  return rc;
+}
+
+/**
+ * mutt_window_clear_screen - Clear the entire screen
+ */
+void mutt_window_clear_screen(void)
+{
+  clearok(stdscr, true);
 }

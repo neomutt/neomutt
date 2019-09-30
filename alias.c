@@ -46,7 +46,6 @@
 #include "curs_lib.h"
 #include "globals.h"
 #include "hdrline.h"
-#include "mutt_curses.h"
 #include "muttlib.h"
 #include "sendlib.h"
 
@@ -448,7 +447,7 @@ retry_name:
 
     mutt_addrlist_parse(&alias->addr, buf);
     if (TAILQ_EMPTY(&alias->addr))
-      BEEP();
+      mutt_beep(false);
     if (mutt_addrlist_to_intl(&alias->addr, &err))
     {
       mutt_error(_("Bad IDN: '%s'"), err);

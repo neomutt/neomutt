@@ -37,6 +37,7 @@
 #include <time.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
+#include "color.h"
 #include "curs_lib.h"
 #include "globals.h"
 #include "mutt_curses.h"
@@ -170,10 +171,10 @@ int log_disp_curses(time_t stamp, const char *file, int line,
   if (!OptKeepQuiet)
   {
     if (level == LL_ERROR)
-      BEEP();
-    SET_COLOR((level == LL_ERROR) ? MT_COLOR_ERROR : MT_COLOR_MESSAGE);
+      mutt_beep(false);
+    mutt_curses_set_color((level == LL_ERROR) ? MT_COLOR_ERROR : MT_COLOR_MESSAGE);
     mutt_window_mvaddstr(MuttMessageWindow, 0, 0, ErrorBuf);
-    NORMAL_COLOR;
+    mutt_curses_set_color(MT_COLOR_NORMAL);
     mutt_window_clrtoeol(MuttMessageWindow);
     mutt_refresh();
   }

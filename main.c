@@ -314,7 +314,7 @@ static int start_curses(void)
   }
   /* slang requires the signal handlers to be set after initializing */
   mutt_signal_init();
-  ci_start_color();
+  mutt_color_init();
   keypad(stdscr, true);
   cbreak();
   noecho();
@@ -790,7 +790,7 @@ int main(int argc, char *argv[], char *envp[])
 
   if (!OptNoCurses)
   {
-    NORMAL_COLOR;
+    mutt_curses_set_color(MT_COLOR_NORMAL);
     clear();
     MuttLogger = log_disp_curses;
     log_queue_flush(log_disp_curses);

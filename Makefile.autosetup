@@ -66,7 +66,7 @@ NEOMUTTOBJS=	addrbook.o alias.o bcache.o browser.o color.o commands.o \
 		curs_lib.o edit.o editmsg.o enriched.o enter.o filter.o flags.o \
 		git_ver.o handler.o hdrline.o help.o hook.o icommands.o index.o init.o \
 		keymap.o mailcap.o main.o menu.o mutt_account.o mutt_attach.o \
-		mutt_body.o mutt_header.o mutt_history.o mutt_logging.o mutt_mailbox.o \
+		mutt_body.o mutt_curses.o mutt_header.o mutt_history.o mutt_logging.o mutt_mailbox.o \
 		mutt_parse.o mutt_signal.o mutt_socket.o mutt_thread.o mutt_window.o \
 		muttlib.o mx.o myvar.o pager.o pattern.o postpone.o progress.o query.o \
 		recvattach.o recvcmd.o resize.o rfc3676.o score.o send.o sendlib.o \

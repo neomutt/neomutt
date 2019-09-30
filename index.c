@@ -44,6 +44,7 @@
 #include "index.h"
 #include "alias.h"
 #include "browser.h"
+#include "color.h"
 #include "commands.h"
 #include "context.h"
 #include "curs_lib.h"
@@ -850,6 +851,9 @@ int index_color(int line)
  */
 void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
 {
+  if (!buf)
+    return;
+
   size_t i = 0;
   size_t offset = 0;
   bool found = false;
@@ -862,9 +866,6 @@ void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
     int first;
     int last;
   } *syntax = NULL;
-
-  if (!buf || !stdscr)
-    return;
 
   do
   {
@@ -919,7 +920,7 @@ void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
   if ((chunks > 0) && (syntax[0].first > 0))
   {
     /* Text before the first highlight */
-    addnstr(buf, MIN(len, syntax[0].first));
+    mutt_window_addnstr(buf, MIN(len, syntax[0].first));
     attrset(ColorDefs[MT_COLOR_STATUS]);
     if (len <= syntax[0].first)
       goto dsl_finish; /* no more room */
@@ -931,7 +932,7 @@ void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
   {
     /* Highlighted text */
     attrset(syntax[i].color);
-    addnstr(buf + offset, MIN(len, syntax[i].last) - offset);
+    mutt_window_addnstr(buf + offset, MIN(len, syntax[i].last) - offset);
     if (len <= syntax[i].last)
       goto dsl_finish; /* no more room */
 
@@ -947,7 +948,7 @@ void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
 
     attrset(ColorDefs[MT_COLOR_STATUS]);
     offset = syntax[i].last;
-    addnstr(buf + offset, next - offset);
+    mutt_window_addnstr(buf + offset, next - offset);
 
     offset = next;
     if (offset >= len)
@@ -958,7 +959,7 @@ void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
   if (offset < len)
   {
     /* Text after the last highlight */
-    addnstr(buf + offset, len - offset);
+    mutt_window_addnstr(buf + offset, len - offset);
   }
 
   int width = mutt_strwidth(buf);
@@ -1008,9 +1009,9 @@ static void index_custom_redraw(struct Menu *menu)
     char buf[1024];
     menu_status_line(buf, sizeof(buf), menu, NONULL(C_StatusFormat));
     mutt_window_move(menu->statuswin, 0, 0);
-    SET_COLOR(MT_COLOR_STATUS);
+    mutt_curses_set_color(MT_COLOR_STATUS);
     mutt_draw_statusline(menu->statuswin->cols, buf, sizeof(buf));
-    NORMAL_COLOR;
+    mutt_curses_set_color(MT_COLOR_NORMAL);
     menu->redraw &= ~REDRAW_STATUS;
     if (C_TsEnabled && TsSupported)
     {
@@ -1143,7 +1144,7 @@ int mutt_index_menu(void)
             {
               mutt_message(_("New mail in this mailbox"));
               if (C_BeepNew)
-                beep();
+                mutt_beep(true);
               if (C_NewMailCommand)
               {
                 char cmd[1024];
@@ -1186,7 +1187,7 @@ int mutt_index_menu(void)
         {
           menu->redraw |= REDRAW_STATUS;
           if (C_BeepNew)
-            beep();
+            mutt_beep(true);
           if (C_NewMailCommand)
           {
             char cmd[1024];
@@ -1201,7 +1202,7 @@ int mutt_index_menu(void)
     }
 
     if (op >= 0)
-      mutt_curs_set(0);
+      mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
 
     if (menu->type == MENU_MAIN)
     {
@@ -1238,7 +1239,7 @@ int mutt_index_menu(void)
         menu->top = 0; /* so we scroll the right amount */
         /* force a real complete redraw.  clrtobot() doesn't seem to be able
          * to handle every case without this.  */
-        clearok(stdscr, true);
+        mutt_window_clear_screen();
         continue;
       }
 
@@ -1255,7 +1256,7 @@ int mutt_index_menu(void)
         continue;
       }
 
-      mutt_curs_set(1);
+      mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
 
       /* special handling for the tag-prefix function */
       if ((op == OP_TAG_PREFIX) || (op == OP_TAG_PREFIX_COND))
@@ -1303,7 +1304,7 @@ int mutt_index_menu(void)
       else
         menu->oldcurrent = -1;
 
-      mutt_curs_set(1); /* fallback from the pager */
+      mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE); /* fallback from the pager */
     }
 
 #ifdef USE_NNTP
@@ -1744,7 +1745,7 @@ int mutt_index_menu(void)
         break;
 
       case OP_REDRAW:
-        clearok(stdscr, true);
+        mutt_window_clear_screen();
         menu->redraw = REDRAW_FULL;
         break;
 

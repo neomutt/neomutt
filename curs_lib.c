@@ -47,6 +47,7 @@
 #include "mutt.h"
 #include "curs_lib.h"
 #include "browser.h"
+#include "color.h"
 #include "enter_state.h"
 #include "globals.h"
 #include "mutt_curses.h"
@@ -89,6 +90,16 @@ static struct KeyEvent *UngetKeyEvents;
 int MuttGetchTimeout = -1;
 
 /**
+ * mutt_beep - Irritate the user
+ * @param force If true, ignore the "$beep" config variable
+ */
+void mutt_beep(bool force)
+{
+  if (force || C_Beep)
+    beep();
+}
+
+/**
  * mutt_refresh - Force a refresh of the screen
  */
 void mutt_refresh(void)
@@ -116,7 +127,7 @@ void mutt_refresh(void)
 void mutt_need_hard_redraw(void)
 {
   keypad(stdscr, true);
-  clearok(stdscr, true);
+  mutt_window_clear_screen();
   mutt_menu_set_current_redraw_full();
 }
 
@@ -247,7 +258,7 @@ int mutt_get_field_full(const char *field, char *buf, size_t buflen, CompletionF
                         bool multiple, char ***files, int *numfiles)
 {
   int ret;
-  int x;
+  int col;
 
   struct EnterState *es = mutt_enter_state_new();
 
@@ -257,16 +268,16 @@ int mutt_get_field_full(const char *field, char *buf, size_t buflen, CompletionF
     {
       SigWinch = 0;
       mutt_resize_screen();
-      clearok(stdscr, true);
+      mutt_window_clear_screen();
       mutt_menu_current_redraw();
     }
     mutt_window_clearline(MuttMessageWindow, 0);
-    SET_COLOR(MT_COLOR_PROMPT);
-    addstr(field);
-    NORMAL_COLOR;
+    mutt_curses_set_color(MT_COLOR_PROMPT);
+    mutt_window_addstr(field);
+    mutt_curses_set_color(MT_COLOR_NORMAL);
     mutt_refresh();
-    mutt_window_getxy(MuttMessageWindow, &x, NULL);
-    ret = mutt_enter_string_full(buf, buflen, x, complete, multiple, files, numfiles, es);
+    mutt_window_get_coords(MuttMessageWindow, NULL, &col);
+    ret = mutt_enter_string_full(buf, buflen, col, complete, multiple, files, numfiles, es);
   } while (ret == 1);
   mutt_window_clearline(MuttMessageWindow, 0);
   mutt_enter_state_free(&es);
@@ -318,7 +329,7 @@ void mutt_edit_file(const char *editor, const char *file)
   /* the terminal may have been resized while the editor owned it */
   mutt_resize_screen();
   keypad(stdscr, true);
-  clearok(stdscr, true);
+  mutt_window_clear_screen();
 
   mutt_buffer_pool_release(&cmd);
 }
@@ -370,7 +381,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
       {
         SigWinch = 0;
         mutt_resize_screen();
-        clearok(stdscr, true);
+        mutt_window_clear_screen();
         mutt_menu_current_redraw();
       }
       if (MuttMessageWindow->cols)
@@ -391,10 +402,10 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
           ((size_t) prompt_lines * MuttMessageWindow->cols) - answer_string_wid, NULL);
 
       mutt_window_move(MuttMessageWindow, 0, 0);
-      SET_COLOR(MT_COLOR_PROMPT);
-      addnstr(msg, trunc_msg_len);
-      addstr(answer_string);
-      NORMAL_COLOR;
+      mutt_curses_set_color(MT_COLOR_PROMPT);
+      mutt_window_addnstr(msg, trunc_msg_len);
+      mutt_window_addstr(answer_string);
+      mutt_curses_set_color(MT_COLOR_NORMAL);
       mutt_window_clrtoeol(MuttMessageWindow);
     }
 
@@ -426,7 +437,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
     }
     else
     {
-      BEEP();
+      mutt_beep(false);
     }
   }
 
@@ -447,7 +458,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
 
   if (def != MUTT_ABORT)
   {
-    addstr((char *) ((def == MUTT_YES) ? yes : no));
+    mutt_window_addstr((char *) ((def == MUTT_YES) ? yes : no));
     mutt_refresh();
   }
   else
@@ -467,7 +478,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
 void mutt_query_exit(void)
 {
   mutt_flushinp();
-  curs_set(1);
+  mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   if (C_Timeout)
     mutt_getch_timeout(-1); /* restore blocking operation */
   if (mutt_yesorno(_("Exit NeoMutt?"), MUTT_YES) == MUTT_YES)
@@ -475,7 +486,7 @@ void mutt_query_exit(void)
     mutt_exit(1);
   }
   mutt_clear_error();
-  mutt_curs_set(-1);
+  mutt_curses_set_cursor(MUTT_CURSOR_RESTORE_LAST);
   SigInt = 0;
 }
 
@@ -487,9 +498,9 @@ void mutt_show_error(void)
   if (OptKeepQuiet || !ErrorBufMessage)
     return;
 
-  SET_COLOR(OptMsgErr ? MT_COLOR_ERROR : MT_COLOR_MESSAGE);
+  mutt_curses_set_color(OptMsgErr ? MT_COLOR_ERROR : MT_COLOR_MESSAGE);
   mutt_window_mvaddstr(MuttMessageWindow, 0, 0, ErrorBuf);
-  NORMAL_COLOR;
+  mutt_curses_set_color(MT_COLOR_NORMAL);
   mutt_window_clrtoeol(MuttMessageWindow);
 }
 
@@ -655,12 +666,12 @@ int mutt_buffer_enter_fname_full(const char *prompt, struct Buffer *fname,
 {
   struct KeyEvent ch;
 
-  SET_COLOR(MT_COLOR_PROMPT);
+  mutt_curses_set_color(MT_COLOR_PROMPT);
   mutt_window_mvaddstr(MuttMessageWindow, 0, 0, prompt);
-  addstr(_(" ('?' for list): "));
-  NORMAL_COLOR;
+  mutt_window_addstr(_(" ('?' for list): "));
+  mutt_curses_set_color(MT_COLOR_NORMAL);
   if (!mutt_buffer_is_empty(fname))
-    addstr(mutt_b2s(fname));
+    mutt_window_addstr(mutt_b2s(fname));
   mutt_window_clrtoeol(MuttMessageWindow);
   mutt_refresh();
 
@@ -808,31 +819,6 @@ void mutt_flushinp(void)
   flushinp();
 }
 
-#if (defined(USE_SLANG_CURSES) || defined(HAVE_CURS_SET))
-/**
- * mutt_curs_set - Set the cursor position
- * @param cursor
- * * -1: restore the value of the last call
- * *  0: make the cursor invisible
- * *  1: make the cursor visible
- */
-void mutt_curs_set(int cursor)
-{
-  static int SavedCursor = 1;
-
-  if (cursor < 0)
-    cursor = SavedCursor;
-  else
-    SavedCursor = cursor;
-
-  if (curs_set(cursor) == ERR)
-  {
-    if (cursor == 1) /* cnorm */
-      curs_set(2);   /* cvvis */
-  }
-}
-#endif
-
 /**
  * mutt_multi_choice - Offer the user a multiple choice question
  * @param prompt  Message prompt
@@ -859,7 +845,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
       {
         SigWinch = 0;
         mutt_resize_screen();
-        clearok(stdscr, true);
+        mutt_window_clear_screen();
         mutt_menu_current_redraw();
       }
       if (MuttMessageWindow->cols)
@@ -889,30 +875,30 @@ int mutt_multi_choice(const char *prompt, const char *letters)
         while ((cur = strchr(prompt, '(')))
         {
           // write the part between prompt and cur using MT_COLOR_PROMPT
-          SET_COLOR(MT_COLOR_PROMPT);
-          addnstr(prompt, cur - prompt);
+          mutt_curses_set_color(MT_COLOR_PROMPT);
+          mutt_window_addnstr(prompt, cur - prompt);
 
           if (isalnum(cur[1]) && (cur[2] == ')'))
           {
             // we have a single letter within parentheses
-            SET_COLOR(MT_COLOR_OPTIONS);
-            addch(cur[1]);
+            mutt_curses_set_color(MT_COLOR_OPTIONS);
+            mutt_window_addch(cur[1]);
             prompt = cur + 3;
           }
           else
           {
             // we have a parenthesis followed by something else
-            addch(cur[0]);
+            mutt_window_addch(cur[0]);
             prompt = cur + 1;
           }
         }
       }
 
-      SET_COLOR(MT_COLOR_PROMPT);
-      addstr(prompt);
-      NORMAL_COLOR;
+      mutt_curses_set_color(MT_COLOR_PROMPT);
+      mutt_window_addstr(prompt);
+      mutt_curses_set_color(MT_COLOR_NORMAL);
 
-      addch(' ');
+      mutt_window_addch(' ');
       mutt_window_clrtoeol(MuttMessageWindow);
     }
 
@@ -944,7 +930,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
           break;
       }
     }
-    BEEP();
+    mutt_beep(false);
   }
   if (MuttMessageWindow->rows != 1)
   {
@@ -977,7 +963,7 @@ int mutt_addwch(wchar_t wc)
   }
   else
   {
-    return addstr(buf);
+    return mutt_window_addstr(buf);
   }
 }
 
@@ -1194,12 +1180,12 @@ void mutt_paddstr(int n, const char *s)
     {
       if (w > n)
         break;
-      addnstr((char *) s, k);
+      mutt_window_addnstr((char *) s, k);
       n -= w;
     }
   }
   while (n-- > 0)
-    addch(' ');
+    mutt_window_addch(' ');
 }
 
 /**

@@ -76,10 +76,10 @@ static int my_addwch(wchar_t wc)
   if (IsWPrint(wc) && (n > 0))
     return mutt_addwch(wc);
   if (!(wc & ~0x7f))
-    return printw("^%c", ((int) wc + 0x40) & 0x7f);
+    return mutt_window_printf("^%c", ((int) wc + 0x40) & 0x7f);
   if (!(wc & ~0xffff))
-    return printw("\\u%04x", (int) wc);
-  return printw("\\u%08x", (int) wc);
+    return mutt_window_printf("\\u%04x", (int) wc);
+  return mutt_window_printf("\\u%08x", (int) wc);
 }
 
 /**
@@ -153,7 +153,7 @@ int mutt_enter_string(char *buf, size_t buflen, int col, CompletionFlags flags)
     {
       SigWinch = 0;
       mutt_resize_screen();
-      clearok(stdscr, true);
+      mutt_window_clear_screen();
     }
     rc = mutt_enter_string_full(buf, buflen, col, flags, false, NULL, NULL, es);
   } while (rc == 1);
@@ -308,7 +308,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
             if (state->lastchar == 0)
               goto bye;
             // Pressing backspace with text in the command prompt should just beep
-            BEEP();
+            mutt_beep(false);
           }
           else
           {
@@ -343,7 +343,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
 
         case OP_EDITOR_BACKWARD_CHAR:
           if (state->curpos == 0)
-            BEEP();
+            mutt_beep(false);
           else
           {
             while (state->curpos && COMB_CHAR(state->wbuf[state->curpos - 1]))
@@ -355,7 +355,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
 
         case OP_EDITOR_FORWARD_CHAR:
           if (state->curpos == state->lastchar)
-            BEEP();
+            mutt_beep(false);
           else
           {
             state->curpos++;
@@ -369,7 +369,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
 
         case OP_EDITOR_BACKWARD_WORD:
           if (state->curpos == 0)
-            BEEP();
+            mutt_beep(false);
           else
           {
             while (state->curpos && iswspace(state->wbuf[state->curpos - 1]))
@@ -381,7 +381,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
 
         case OP_EDITOR_FORWARD_WORD:
           if (state->curpos == state->lastchar)
-            BEEP();
+            mutt_beep(false);
           else
           {
             while ((state->curpos < state->lastchar) &&
@@ -402,7 +402,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
         case OP_EDITOR_DOWNCASE_WORD:
           if (state->curpos == state->lastchar)
           {
-            BEEP();
+            mutt_beep(false);
             break;
           }
           while (state->curpos && !iswspace(state->wbuf[state->curpos]))
@@ -426,7 +426,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
 
         case OP_EDITOR_DELETE_CHAR:
           if (state->curpos == state->lastchar)
-            BEEP();
+            mutt_beep(false);
           else
           {
             size_t i = state->curpos;
@@ -541,7 +541,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
               mutt_mem_realloc(&tempbuf, templen * sizeof(wchar_t));
             }
             else
-              BEEP();
+              mutt_beep(false);
 
             replace_part(state, i, buf);
           }
@@ -634,7 +634,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
               state->tabs = 0;
             }
             else if (mutt_command_complete(buf, buflen, i, state->tabs) == 0)
-              BEEP();
+              mutt_beep(false);
             replace_part(state, 0, buf);
           }
           else if (flags & (MUTT_FILE | MUTT_EFILE))
@@ -671,7 +671,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
               memcpy(tempbuf, state->wbuf, templen * sizeof(wchar_t));
             }
             else
-              BEEP(); /* let the user know that nothing matched */
+              mutt_beep(false); /* let the user know that nothing matched */
             replace_part(state, 0, buf);
           }
 #ifdef USE_NOTMUCH
@@ -680,7 +680,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
             mutt_mb_wcstombs(buf, buflen, state->wbuf, state->curpos);
             size_t len = strlen(buf);
             if (!mutt_nm_query_complete(buf, buflen, len, state->tabs))
-              BEEP();
+              mutt_beep(false);
 
             replace_part(state, 0, buf);
           }
@@ -688,7 +688,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
           {
             mutt_mb_wcstombs(buf, buflen, state->wbuf, state->curpos);
             if (!mutt_nm_tag_complete(buf, buflen, state->tabs))
-              BEEP();
+              mutt_beep(false);
 
             replace_part(state, 0, buf);
           }
@@ -715,7 +715,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
 
         case OP_EDITOR_TRANSPOSE_CHARS:
           if (state->lastchar < 2)
-            BEEP();
+            mutt_beep(false);
           else
           {
             wchar_t t;
@@ -732,7 +732,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
           break;
 
         default:
-          BEEP();
+          mutt_beep(false);
       }
     }
     else
@@ -804,7 +804,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
       else
       {
         mutt_flushinp();
-        BEEP();
+        mutt_beep(false);
       }
     }
   }

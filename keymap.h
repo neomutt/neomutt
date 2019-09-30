@@ -55,6 +55,15 @@ struct Keymap
 };
 
 /**
+ * struct KeyEvent - An event such as a keypress
+ */
+struct KeyEvent
+{
+  int ch; ///< raw key pressed
+  int op; ///< function op
+};
+
+/**
  * enum MenuType - Types of GUI selections
  */
 enum MenuType

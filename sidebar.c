@@ -38,6 +38,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "sidebar.h"
+#include "color.h"
 #include "context.h"
 #include "curs_lib.h"
 #include "format_flags.h"
@@ -746,7 +747,7 @@ static int draw_divider(int num_rows, int num_cols)
   if (delim_len > num_cols)
     return 0;
 
-  SET_COLOR(MT_COLOR_DIVIDER);
+  mutt_curses_set_color(MT_COLOR_DIVIDER);
 
   int col = C_SidebarOnRight ? 0 : (C_SidebarWidth - delim_len);
 
@@ -757,13 +758,13 @@ static int draw_divider(int num_rows, int num_cols)
     switch (altchar)
     {
       case SB_DIV_USER:
-        addstr(NONULL(C_SidebarDividerChar));
+        mutt_window_addstr(NONULL(C_SidebarDividerChar));
         break;
       case SB_DIV_ASCII:
-        addch('|');
+        mutt_window_addch('|');
         break;
       case SB_DIV_UTF8:
-        addch(ACS_VLINE);
+        mutt_window_addch(ACS_VLINE);
         break;
     }
   }
@@ -783,7 +784,7 @@ static int draw_divider(int num_rows, int num_cols)
 static void fill_empty_space(int first_row, int num_rows, int div_width, int num_cols)
 {
   /* Fill the remaining rows with blank space */
-  NORMAL_COLOR;
+  mutt_curses_set_color(MT_COLOR_NORMAL);
 
   if (!C_SidebarOnRight)
     div_width = 0;
@@ -792,7 +793,7 @@ static void fill_empty_space(int first_row, int num_rows, int div_width, int num
     mutt_window_move(MuttSidebarWindow, first_row + r, div_width);
 
     for (int i = 0; i < num_cols; i++)
-      addch(' ');
+      mutt_window_addch(' ');
   }
 }
 
@@ -835,27 +836,27 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     if (entryidx == OpnIndex)
     {
       if ((ColorDefs[MT_COLOR_SB_INDICATOR] != 0))
-        SET_COLOR(MT_COLOR_SB_INDICATOR);
+        mutt_curses_set_color(MT_COLOR_SB_INDICATOR);
       else
-        SET_COLOR(MT_COLOR_INDICATOR);
+        mutt_curses_set_color(MT_COLOR_INDICATOR);
     }
     else if (entryidx == HilIndex)
-      SET_COLOR(MT_COLOR_HIGHLIGHT);
+      mutt_curses_set_color(MT_COLOR_HIGHLIGHT);
     else if ((m->msg_unread > 0) || (m->has_new))
-      SET_COLOR(MT_COLOR_NEW);
+      mutt_curses_set_color(MT_COLOR_NEW);
     else if (m->msg_flagged > 0)
-      SET_COLOR(MT_COLOR_FLAGGED);
+      mutt_curses_set_color(MT_COLOR_FLAGGED);
     else if ((ColorDefs[MT_COLOR_SB_SPOOLFILE] != 0) &&
              (mutt_str_strcmp(mailbox_path(m), C_Spoolfile) == 0))
     {
-      SET_COLOR(MT_COLOR_SB_SPOOLFILE);
+      mutt_curses_set_color(MT_COLOR_SB_SPOOLFILE);
     }
     else
     {
       if (ColorDefs[MT_COLOR_ORDINARY] != 0)
-        SET_COLOR(MT_COLOR_ORDINARY);
+        mutt_curses_set_color(MT_COLOR_ORDINARY);
       else
-        NORMAL_COLOR;
+        mutt_curses_set_color(MT_COLOR_NORMAL);
     }
 
     int col = 0;
@@ -948,7 +949,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     }
     char str[256];
     make_sidebar_entry(str, sizeof(str), w, sidebar_folder_name, entry);
-    printw("%s", str);
+    mutt_window_printf("%s", str);
     mutt_buffer_pool_release(&short_folder_name);
     row++;
   }
@@ -967,13 +968,8 @@ void mutt_sb_draw(void)
   if (!C_SidebarVisible)
     return;
 
-#ifdef USE_SLANG_CURSES
-  int x = SLsmg_get_column();
-  int y = SLsmg_get_row();
-#else
-  int x = getcurx(stdscr);
-  int y = getcury(stdscr);
-#endif
+  int row = 0, col = 0;
+  mutt_window_get_coords(MuttSidebarWindow, &row, &col);
 
   int num_rows = MuttSidebarWindow->rows;
   int num_cols = MuttSidebarWindow->cols;
@@ -998,7 +994,7 @@ void mutt_sb_draw(void)
   }
 
   draw_sidebar(num_rows, num_cols, div_width);
-  move(y, x);
+  mutt_window_move(MuttSidebarWindow, row, col);
 }
 
 /**
