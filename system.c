@@ -31,6 +31,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/wait.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
 #ifdef USE_IMAP
