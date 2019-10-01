@@ -1173,9 +1173,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 #ifdef USE_NNTP
   if (OptNews)
   {
-    if (mutt_b2s(file)[0] != '\0')
-      mutt_buffer_strcpy(prefix, mutt_b2s(file));
-    else
+    if (mutt_buffer_is_empty(file))
     {
       struct NntpAccountData *adata = CurrentNewsSrv;
 
@@ -1191,10 +1189,14 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         }
       }
     }
+    else
+    {
+      mutt_buffer_strcpy(prefix, mutt_b2s(file));
+    }
   }
   else
 #endif
-      if (mutt_b2s(file)[0] != '\0')
+      if (!mutt_buffer_is_empty(file))
   {
     mutt_buffer_expand_path(file);
 #ifdef USE_IMAP
@@ -1276,7 +1278,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
        * meaning only with sort methods SUBJECT/DESC for now.  */
       if (CurrentFolder)
       {
-        if (mutt_b2s(&LastDir)[0] == '\0')
+        if (mutt_buffer_is_empty(&LastDir))
         {
           /* If browsing in "local"-mode, than we chose to define LastDir to
            * MailDir */
@@ -1323,7 +1325,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
       while ((i > 0) && (mutt_b2s(&LastDir)[--i] == '/'))
         LastDir.data[i] = '\0';
       mutt_buffer_fix_dptr(&LastDir);
-      if (mutt_b2s(&LastDir)[0] == '\0')
+      if (mutt_buffer_is_empty(&LastDir))
         mutt_path_getcwd(&LastDir);
     }
   }
@@ -1548,7 +1550,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             }
             *files = tfiles;
           }
-          else if (mutt_b2s(file)[0] != '\0') /* no tagged entries. return selected entry */
+          else if (!mutt_buffer_is_empty(file)) /* no tagged entries. return selected entry */
           {
             *numfiles = 1;
             tfiles = mutt_mem_calloc(*numfiles, sizeof(char *));
@@ -1686,16 +1688,15 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
         if (op == OP_CHANGE_DIRECTORY)
         {
           /* buf comes from the buffer pool, so defaults to size 1024 */
-          int ret = mutt_get_field(_("Chdir to: "), buf->data, buf->dsize, MUTT_FILE);
-          if ((ret != 0) && (mutt_b2s(buf)[0] == '\0'))
+          int ret = mutt_buffer_get_field(_("Chdir to: "), buf, MUTT_FILE);
+          if ((ret != 0) && mutt_buffer_is_empty(buf))
             break;
         }
         else if (op == OP_GOTO_PARENT)
           mutt_get_parent_path(mutt_b2s(buf), buf->data, buf->dsize);
 
-        if (mutt_b2s(buf)[0] != '\0')
+        if (!mutt_buffer_is_empty(buf))
         {
-          mutt_buffer_fix_dptr(buf);
           mailbox = false;
           mutt_buffer_expand_path(buf);
 #ifdef USE_IMAP
@@ -1766,7 +1767,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
 
         mailbox = false;
         /* assume that the user wants to see everything */
-        if (mutt_b2s(buf)[0] == '\0')
+        if (mutt_buffer_is_empty(buf))
           mutt_buffer_strcpy(buf, ".");
 
         struct Buffer errmsg = { 0 };
@@ -1938,7 +1939,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
       case OP_BROWSER_NEW_FILE:
         mutt_buffer_printf(buf, "%s/", mutt_b2s(&LastDir));
         /* buf comes from the buffer pool, so defaults to size 1024 */
-        if (mutt_get_field(_("New file name: "), buf->data, buf->dsize, MUTT_FILE) == 0)
+        if (mutt_buffer_get_field(_("New file name: "), buf, MUTT_FILE) == 0)
         {
           mutt_buffer_strcpy(file, mutt_b2s(buf));
           destroy_state(&state);
@@ -2073,8 +2074,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             else
               snprintf(tmp2, sizeof(tmp2), _("Unsubscribe pattern: "));
             /* buf comes from the buffer pool, so defaults to size 1024 */
-            if ((mutt_get_field(tmp2, buf->data, buf->dsize, 0) != 0) ||
-                (mutt_b2s(buf)[0] == '\0'))
+            if ((mutt_buffer_get_field(tmp2, buf, 0) != 0) || mutt_buffer_is_empty(buf))
             {
               break;
             }

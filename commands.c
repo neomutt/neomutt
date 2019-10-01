@@ -1044,9 +1044,8 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
   mutt_buffer_fix_dptr(buf);
 
   mutt_buffer_pretty_mailbox(buf);
-  if (mutt_enter_fname(prompt, buf->data, buf->dsize, 0) == -1)
+  if (mutt_buffer_enter_fname(prompt, buf, 0) == -1)
     goto cleanup;
-  mutt_buffer_fix_dptr(buf);
 
   size_t pathlen = mutt_buffer_len(buf);
   if (pathlen == 0)

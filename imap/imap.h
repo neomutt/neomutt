@@ -88,7 +88,7 @@ int imap_path_status(const char *path, bool queue);
 int imap_mailbox_status(struct Mailbox *m, bool queue);
 int imap_search(struct Mailbox *m, const struct PatternList *pat);
 int imap_subscribe(char *path, bool subscribe);
-int imap_complete(char *buf, size_t buflen, char *path);
+int imap_complete(char *buf, size_t buflen, const char *path);
 int imap_fast_trash(struct Mailbox *m, char *dest);
 enum MailboxType imap_path_probe(const char *path, const struct stat *st);
 int imap_path_canon(char *buf, size_t buflen);

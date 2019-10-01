@@ -527,14 +527,11 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
   prompt = _("Save to file: ");
   while (prompt)
   {
-    if (mutt_get_field(prompt, buf->data, buf->dsize, MUTT_FILE | MUTT_CLEAR) != 0)
+    if ((mutt_buffer_get_field(prompt, buf, MUTT_FILE | MUTT_CLEAR) != 0) ||
+        mutt_buffer_is_empty(buf))
     {
-      mutt_clear_error();
       goto cleanup;
     }
-    mutt_buffer_fix_dptr(buf);
-    if (mutt_buffer_is_empty(buf))
-      goto cleanup;
 
     prompt = NULL;
     mutt_buffer_expand_path(buf);
@@ -677,14 +674,11 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
           mutt_buffer_strcpy(buf, mutt_path_basename(NONULL(top->filename)));
           prepend_savedir(buf);
 
-          if (mutt_get_field(_("Save to file: "), buf->data, buf->dsize,
-                             MUTT_FILE | MUTT_CLEAR) != 0)
+          if ((mutt_buffer_get_field(_("Save to file: "), buf, MUTT_FILE | MUTT_CLEAR) != 0) ||
+              mutt_buffer_is_empty(buf))
           {
             goto cleanup;
           }
-          mutt_buffer_fix_dptr(buf);
-          if (mutt_buffer_is_empty(buf))
-            goto cleanup;
           mutt_buffer_expand_path(buf);
           if (mutt_check_overwrite(top->filename, mutt_b2s(buf), tfile, &opt, NULL))
             goto cleanup;

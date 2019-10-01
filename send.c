@@ -1767,7 +1767,11 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur, char *fcc
     if (e_post->security & SEC_AUTOCRYPT)
     {
       if (mutt_autocrypt_set_sign_as_default_key(e_post))
+      {
+        e_post->content = mutt_remove_multipart(e_post->content);
+        decode_descriptions(e_post->content);
         return -1;
+      }
       encrypt_as = AutocryptDefaultKey;
     }
 #endif

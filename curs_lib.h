@@ -81,6 +81,9 @@ void         mutt_unget_string(const char *s);
 size_t       mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *width);
 enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def);
 
+#define mutt_buffer_get_field(field, buf, complete) mutt_buffer_get_field_full(field, buf, complete, 0, NULL, NULL)
+int mutt_buffer_get_field_full(const char *field, struct Buffer *buf, CompletionFlags complete, bool multiple, char ***files, int *numfiles);
+
 #define mutt_buffer_enter_fname(prompt, fname, mailbox) mutt_buffer_enter_fname_full(prompt, fname, mailbox, false, NULL, NULL, MUTT_SEL_NO_FLAGS)
 int mutt_buffer_enter_fname_full(const char *prompt, struct Buffer *fname, bool mailbox, bool multiple, char ***files, int *numfiles, SelectFileFlags flags);
 

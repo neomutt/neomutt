@@ -329,6 +329,21 @@ void mutt_buffer_strcpy_n(struct Buffer *buf, const char *s, size_t len)
 }
 
 /**
+ * mutt_buffer_substrcpy - Copy a partial string into a Buffer
+ * @param buf Buffer to overwrite
+ * @param beg Start of string to copy
+ * @param end End of string to copy
+ *
+ * Overwrites any existing content.
+ */
+void mutt_buffer_substrcpy(struct Buffer *buf, const char *beg, const char *end)
+{
+  mutt_buffer_reset(buf);
+  if (end > beg)
+    mutt_buffer_strcpy_n(buf, beg, end - beg);
+}
+
+/**
  * mutt_buffer_len - Calculate the length of a Buffer
  * @param buf Buffer
  * @retval num Size of buffer
@@ -373,4 +388,27 @@ void mutt_buffer_concat_path(struct Buffer *buf, const char *dir, const char *fn
     fmt = "%s%s";
 
   mutt_buffer_printf(buf, fmt, dir, fname);
+}
+
+/**
+ * mutt_buffer_concatn_path - Join a directory name and a filename
+ * @param buf      Buffer for the result
+ * @param dir      Directory name
+ * @param dirlen   Directory name
+ * @param fname    File name
+ * @param fnamelen File name
+ *
+ * If both dir and fname are supplied, they are separated with '/'.
+ * If either is missing, then the other will be copied exactly.
+ */
+void mutt_buffer_concatn_path(struct Buffer *buf, const char *dir,
+                              size_t dirlen, const char *fname, size_t fnamelen)
+{
+  mutt_buffer_reset(buf);
+  if (dirlen != 0)
+    mutt_buffer_addstr_n(buf, dir, dirlen);
+  if ((dirlen != 0) && (fnamelen != 0))
+    mutt_buffer_addch(buf, '/');
+  if (fnamelen != 0)
+    mutt_buffer_addstr_n(buf, fname, fnamelen);
 }

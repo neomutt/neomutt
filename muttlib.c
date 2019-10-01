@@ -751,14 +751,8 @@ int mutt_check_overwrite(const char *attname, const char *path, struct Buffer *f
 
     struct Buffer *tmp = mutt_buffer_pool_get();
     mutt_buffer_strcpy(tmp, mutt_path_basename(NONULL(attname)));
-    if (mutt_get_field(_("File under directory: "), tmp->data, tmp->dsize,
-                       MUTT_FILE | MUTT_CLEAR) != 0)
-    {
-      mutt_buffer_pool_release(&tmp);
-      return -1;
-    }
-    mutt_buffer_fix_dptr(tmp);
-    if (mutt_buffer_is_empty(tmp))
+    if ((mutt_buffer_get_field(_("File under directory: "), tmp, MUTT_FILE | MUTT_CLEAR) != 0) ||
+        mutt_buffer_is_empty(tmp))
     {
       mutt_buffer_pool_release(&tmp);
       return (-1);
@@ -1552,6 +1546,21 @@ void mutt_encode_path(char *buf, size_t buflen, const char *src)
       buf[i] = '_';
     }
   }
+  FREE(&p);
+}
+
+/**
+ * mutt_buffer_encode_path - Convert a path into the user's preferred character set
+ * @param buf Buffer for the result
+ * @param src Path to convert (OPTIONAL)
+ *
+ * If `src` is NULL, the path in `buf` will be converted in-place.
+ */
+void mutt_buffer_encode_path(struct Buffer *buf, const char *src)
+{
+  char *p = mutt_str_strdup(src);
+  int rc = mutt_ch_convert_string(&p, C_Charset, "utf-8", 0);
+  mutt_buffer_strcpy(buf, (rc == 0) ? NONULL(p) : NONULL(src));
   FREE(&p);
 }
 

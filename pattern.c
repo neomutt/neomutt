@@ -2422,14 +2422,13 @@ int mutt_pattern_func(int op, char *prompt)
   mutt_buffer_strcpy(buf, NONULL(Context->pattern));
   if (prompt || (op != MUTT_LIMIT))
   {
-    if ((mutt_get_field(prompt, buf->data, buf->dsize, MUTT_PATTERN | MUTT_CLEAR) != 0) ||
-        !(mutt_b2s(buf)[0]))
+    if ((mutt_buffer_get_field(prompt, buf, MUTT_PATTERN | MUTT_CLEAR) != 0) ||
+        mutt_buffer_is_empty(buf))
     {
       mutt_buffer_pool_release(&buf);
       return -1;
     }
   }
-  mutt_buffer_fix_dptr(buf);
 
   mutt_message(_("Compiling search pattern..."));
 

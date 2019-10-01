@@ -574,35 +574,64 @@ static void redraw_mix_line(struct ListHead *chain, struct ComposeRedrawData *rd
  */
 static int check_attachments(struct AttachCtx *actx)
 {
+  int rc = -1;
   struct stat st;
-  char pretty[PATH_MAX], msg[PATH_MAX + 128];
+  struct Buffer *pretty = NULL, *msg = NULL;
 
   for (int i = 0; i < actx->idxlen; i++)
   {
     if (actx->idx[i]->content->type == TYPE_MULTIPART)
       continue;
-    mutt_str_strfcpy(pretty, actx->idx[i]->content->filename, sizeof(pretty));
     if (stat(actx->idx[i]->content->filename, &st) != 0)
     {
-      mutt_pretty_mailbox(pretty, sizeof(pretty));
-      mutt_error(_("%s [#%d] no longer exists"), pretty, i + 1);
-      return -1;
+      if (!pretty)
+        pretty = mutt_buffer_pool_get();
+      mutt_buffer_strcpy(pretty, actx->idx[i]->content->filename);
+      mutt_buffer_pretty_mailbox(pretty);
+      /* L10N:
+         This message is displayed in the compose menu when an attachment
+         doesn't stat.  %d is the attachment number and %s is the
+         attachment filename.
+         The filename is located last to avoid a long path hiding the
+         error message.
+      */
+      mutt_error(_("Attachment #%d no longer exists: %s"), i + 1, mutt_b2s(pretty));
+      goto cleanup;
     }
 
     if (actx->idx[i]->content->stamp < st.st_mtime)
     {
-      mutt_pretty_mailbox(pretty, sizeof(pretty));
-      snprintf(msg, sizeof(msg), _("%s [#%d] modified. Update encoding?"), pretty, i + 1);
+      if (!pretty)
+        pretty = mutt_buffer_pool_get();
+      mutt_buffer_strcpy(pretty, actx->idx[i]->content->filename);
+      mutt_buffer_pretty_mailbox(pretty);
 
-      enum QuadOption ans = mutt_yesorno(msg, MUTT_YES);
+      if (!msg)
+        msg = mutt_buffer_pool_get();
+      /* L10N:
+         This message is displayed in the compose menu when an attachment
+         is modified behind the scenes.  %d is the attachment number
+         and %s is the attachment filename.
+         The filename is located last to avoid a long path hiding the
+         prompt question.
+      */
+      mutt_buffer_printf(msg, _("Attachment #%d modified. Update encoding for %s?"),
+                         i + 1, mutt_b2s(pretty));
+
+      enum QuadOption ans = mutt_yesorno(mutt_b2s(msg), MUTT_YES);
       if (ans == MUTT_YES)
         mutt_update_encoding(actx->idx[i]->content);
       else if (ans == MUTT_ABORT)
-        return -1;
+        goto cleanup;
     }
   }
 
-  return 0;
+  rc = 0;
+
+cleanup:
+  mutt_buffer_pool_release(&pretty);
+  mutt_buffer_pool_release(&msg);
+  return rc;
 }
 
 /**
@@ -750,7 +779,22 @@ static int delete_attachment(struct AttachCtx *actx, int x)
   }
 
   idx[rindex]->content->next = NULL;
-  idx[rindex]->content->parts = NULL;
+  /* mutt_make_message_attach() creates body->parts, shared by
+   * body->email->content.  If we NULL out that, it creates a memory
+   * leak because mutt_free_body() frees body->parts, not
+   * body->email->content.
+   *
+   * Other ci_send_message() message constructors are careful to free
+   * any body->parts, removing depth:
+   *  - mutt_prepare_template() used by postponed, resent, and draft files
+   *  - mutt_copy_body() used by the recvattach menu and $forward_attachments.
+   *
+   * I believe it is safe to completely remove the "content->parts =
+   * NULL" statement.  But for safety, am doing so only for the case
+   * it must be avoided: message attachments.
+   */
+  if (!idx[rindex]->content->email)
+    idx[rindex]->content->parts = NULL;
   mutt_body_free(&(idx[rindex]->content));
   FREE(&idx[rindex]->tree);
   FREE(&idx[rindex]);
@@ -1086,6 +1130,9 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
   mutt_update_compose_menu(actx, menu, true);
 
   update_crypt_info(rd);
+
+  /* Since this is rather long lived, we don't use the pool */
+  struct Buffer fname = mutt_buffer_make(PATH_MAX);
 
   while (loop)
   {
@@ -1505,11 +1552,11 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         char *prompt = _("Attach file");
         int numfiles = 0;
         char **files = NULL;
-        buf[0] = '\0';
 
-        if ((mutt_enter_fname_full(prompt, buf, sizeof(buf), false, true,
-                                   &files, &numfiles, MUTT_SEL_MULTI) == -1) ||
-            (*buf == '\0'))
+        mutt_buffer_reset(&fname);
+        if ((mutt_buffer_enter_fname_full(prompt, &fname, false, true, &files,
+                                          &numfiles, MUTT_SEL_MULTI) == -1) ||
+            mutt_buffer_is_empty(&fname))
         {
           break;
         }
@@ -1551,8 +1598,8 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
       case OP_COMPOSE_ATTACH_NEWS_MESSAGE:
 #endif
       {
+        mutt_buffer_reset(&fname);
         char *prompt = _("Open mailbox to attach message from");
-        buf[0] = '\0';
 
 #ifdef USE_NNTP
         OptNews = false;
@@ -1572,42 +1619,45 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
           if ((op == OP_COMPOSE_ATTACH_MESSAGE) ^ (Context->mailbox->magic == MUTT_NNTP))
 #endif
           {
-            mutt_str_strfcpy(buf, mailbox_path(Context->mailbox), sizeof(buf));
-            mutt_pretty_mailbox(buf, sizeof(buf));
+            mutt_buffer_strcpy(&fname, mailbox_path(Context->mailbox));
+            mutt_buffer_pretty_mailbox(&fname);
           }
 
-        if ((mutt_enter_fname(prompt, buf, sizeof(buf), true) == -1) || (buf[0] == '\0'))
+        if ((mutt_buffer_enter_fname(prompt, &fname, true) == -1) ||
+            mutt_buffer_is_empty(&fname))
+        {
           break;
+        }
 
 #ifdef USE_NNTP
         if (OptNews)
-          nntp_expand_path(buf, sizeof(buf), &CurrentNewsSrv->conn->account);
+          nntp_expand_path(fname.data, fname.dsize, &CurrentNewsSrv->conn->account);
         else
 #endif
-          mutt_expand_path(buf, sizeof(buf));
+          mutt_buffer_expand_path(&fname);
 #ifdef USE_IMAP
-        if (imap_path_probe(buf, NULL) != MUTT_IMAP)
+        if (imap_path_probe(mutt_b2s(&fname), NULL) != MUTT_IMAP)
 #endif
 #ifdef USE_POP
-          if (pop_path_probe(buf, NULL) != MUTT_POP)
+          if (pop_path_probe(mutt_b2s(&fname), NULL) != MUTT_POP)
 #endif
 #ifdef USE_NNTP
-            if (!OptNews && (nntp_path_probe(buf, NULL) != MUTT_NNTP))
+            if (!OptNews && (nntp_path_probe(mutt_b2s(&fname), NULL) != MUTT_NNTP))
 #endif
               /* check to make sure the file exists and is readable */
-              if (access(buf, R_OK) == -1)
+              if (access(mutt_b2s(&fname), R_OK) == -1)
               {
-                mutt_perror(buf);
+                mutt_perror(mutt_b2s(&fname));
                 break;
               }
 
         menu->redraw = REDRAW_FULL;
 
-        struct Mailbox *m = mx_path_resolve(buf);
+        struct Mailbox *m = mx_path_resolve(mutt_b2s(&fname));
         struct Context *ctx = mx_mbox_open(m, MUTT_READONLY);
         if (!ctx)
         {
-          mutt_error(_("Unable to open mailbox %s"), buf);
+          mutt_error(_("Unable to open mailbox %s"), mutt_b2s(&fname));
           mailbox_free(&m);
           break;
         }
@@ -1864,13 +1914,13 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
           src = CUR_ATTACH->content->d_filename;
         else
           src = CUR_ATTACH->content->filename;
-        mutt_str_strfcpy(buf, mutt_path_basename(NONULL(src)), sizeof(buf));
-        int ret = mutt_get_field(_("Send attachment with name: "), buf, sizeof(buf), MUTT_FILE);
+        mutt_buffer_strcpy(&fname, mutt_path_basename(NONULL(src)));
+        int ret = mutt_buffer_get_field(_("Send attachment with name: "), &fname, MUTT_FILE);
         if (ret == 0)
         {
           /* As opposed to RENAME_FILE, we don't check buf[0] because it's
            * valid to set an empty string here, to erase what was set */
-          mutt_str_replace(&CUR_ATTACH->content->d_filename, buf);
+          mutt_str_replace(&CUR_ATTACH->content->d_filename, mutt_b2s(&fname));
           menu->redraw = REDRAW_CURRENT;
         }
         break;
@@ -1878,24 +1928,24 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
 
       case OP_COMPOSE_RENAME_FILE:
         CHECK_COUNT;
-        mutt_str_strfcpy(buf, CUR_ATTACH->content->filename, sizeof(buf));
-        mutt_pretty_mailbox(buf, sizeof(buf));
-        if ((mutt_get_field(_("Rename to: "), buf, sizeof(buf), MUTT_FILE) == 0) &&
-            (buf[0] != '\0'))
+        mutt_buffer_strcpy(&fname, CUR_ATTACH->content->filename);
+        mutt_buffer_pretty_mailbox(&fname);
+        if ((mutt_buffer_get_field(_("Rename to: "), &fname, MUTT_FILE) == 0) &&
+            !mutt_buffer_is_empty(&fname))
         {
           struct stat st;
           if (stat(CUR_ATTACH->content->filename, &st) == -1)
           {
             /* L10N: "stat" is a system call. Do "man 2 stat" for more information. */
-            mutt_error(_("Can't stat %s: %s"), buf, strerror(errno));
+            mutt_error(_("Can't stat %s: %s"), mutt_b2s(&fname), strerror(errno));
             break;
           }
 
-          mutt_expand_path(buf, sizeof(buf));
-          if (mutt_file_rename(CUR_ATTACH->content->filename, buf))
+          mutt_buffer_expand_path(&fname);
+          if (mutt_file_rename(CUR_ATTACH->content->filename, mutt_b2s(&fname)))
             break;
 
-          mutt_str_replace(&CUR_ATTACH->content->filename, buf);
+          mutt_str_replace(&CUR_ATTACH->content->filename, mutt_b2s(&fname));
           menu->redraw = REDRAW_CURRENT;
 
           if (CUR_ATTACH->content->stamp >= st.st_mtime)
@@ -1906,13 +1956,13 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
 
       case OP_COMPOSE_NEW_MIME:
       {
-        buf[0] = '\0';
-        if ((mutt_get_field(_("New file: "), buf, sizeof(buf), MUTT_FILE) != 0) ||
-            (buf[0] == '\0'))
+        mutt_buffer_reset(&fname);
+        if ((mutt_buffer_get_field(_("New file: "), &fname, MUTT_FILE) != 0) ||
+            mutt_buffer_is_empty(&fname))
         {
           continue;
         }
-        mutt_expand_path(buf, sizeof(buf));
+        mutt_buffer_expand_path(&fname);
 
         /* Call to lookup_mime_type () ?  maybe later */
         char type[256] = { 0 };
@@ -1937,16 +1987,16 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         }
         struct AttachPtr *ap = mutt_mem_calloc(1, sizeof(struct AttachPtr));
         /* Touch the file */
-        FILE *fp = mutt_file_fopen(buf, "w");
+        FILE *fp = mutt_file_fopen(mutt_b2s(&fname), "w");
         if (!fp)
         {
-          mutt_error(_("Can't create file %s"), buf);
+          mutt_error(_("Can't create file %s"), mutt_b2s(&fname));
           FREE(&ap);
           continue;
         }
         mutt_file_fclose(&fp);
 
-        ap->content = mutt_make_file_attach(buf);
+        ap->content = mutt_make_file_attach(mutt_b2s(&fname));
         if (!ap->content)
         {
           mutt_error(_("What we have here is a failure to make an attachment"));
@@ -2027,7 +2077,9 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
             {
               /* avoid freeing other attachments */
               actx->idx[i]->content->next = NULL;
-              actx->idx[i]->content->parts = NULL;
+              /* See the comment in delete_attachment() */
+              if (!actx->idx[i]->content->email)
+                actx->idx[i]->content->parts = NULL;
               mutt_body_free(&actx->idx[i]->content);
             }
           }
@@ -2064,27 +2116,27 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         break;
 
       case OP_COMPOSE_WRITE_MESSAGE:
-        buf[0] = '\0';
+        mutt_buffer_reset(&fname);
         if (Context)
         {
-          mutt_str_strfcpy(buf, mailbox_path(Context->mailbox), sizeof(buf));
-          mutt_pretty_mailbox(buf, sizeof(buf));
+          mutt_buffer_strcpy(&fname, mailbox_path(Context->mailbox));
+          mutt_buffer_pretty_mailbox(&fname);
         }
         if (actx->idxlen)
           e->content = actx->idx[0]->content;
-        if ((mutt_enter_fname(_("Write message to mailbox"), buf, sizeof(buf), true) != -1) &&
-            (buf[0] != '\0'))
+        if ((mutt_buffer_enter_fname(_("Write message to mailbox"), &fname, true) != -1) &&
+            !mutt_buffer_is_empty(&fname))
         {
-          mutt_message(_("Writing message to %s ..."), buf);
-          mutt_expand_path(buf, sizeof(buf));
+          mutt_message(_("Writing message to %s ..."), mutt_b2s(&fname));
+          mutt_buffer_expand_path(&fname);
 
           if (e->content->next)
             e->content = mutt_make_multipart(e->content);
 
-          if (mutt_write_fcc(buf, e, NULL, false, NULL, NULL) < 0)
-            e->content = mutt_remove_multipart(e->content);
-          else
+          if (mutt_write_fcc(mutt_b2s(&fname), e, NULL, false, NULL, NULL) == 0)
             mutt_message(_("Message written"));
+
+          e->content = mutt_remove_multipart(e->content);
         }
         break;
 
@@ -2182,6 +2234,8 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
 #endif
     }
   }
+
+  mutt_buffer_dealloc(&fname);
 
 #ifdef USE_AUTOCRYPT
   /* This is a fail-safe to make sure the bit isn't somehow turned
