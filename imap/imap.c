@@ -1293,10 +1293,7 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
  */
 int imap_mbox_check_stats(struct Mailbox *m, int flags)
 {
-  int rc = imap_mailbox_status(m, true);
-  if (rc > 0)
-    rc = 1;
-  return rc;
+  return imap_mailbox_status(m, true);
 }
 
 /**
@@ -1326,7 +1323,8 @@ int imap_path_status(const char *path, bool queue)
  * imap_mailbox_status - Refresh the number of total and new messages
  * @param m      Mailbox
  * @param queue  Queue the STATUS command
- * @retval num   Total number of messages
+ * @retval num Total number of messages
+ * @retval -1  Error
  *
  * @note Prepare the mailbox if we are not connected
  */

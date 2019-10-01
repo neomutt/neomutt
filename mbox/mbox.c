@@ -1784,7 +1784,7 @@ static int mbox_mbox_check_stats(struct Mailbox *m, int flags)
   if (m->msg_new == 0)
     m->has_new = false;
 
-  return (m->msg_new > 0);
+  return m->msg_new;
 }
 
 // clang-format off
