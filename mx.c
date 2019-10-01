@@ -303,12 +303,10 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   m->msg_flagged = 0;
   m->rights = MUTT_ACL_ALL;
 
-  if (flags & MUTT_QUIET)
-    m->quiet = true;
+  m->quiet = (flags & MUTT_QUIET);
   if (flags & MUTT_READONLY)
     m->readonly = true;
-  if (flags & MUTT_PEEK)
-    m->peekonly = true;
+  m->peekonly = (flags & MUTT_PEEK);
 
   if (flags & (MUTT_APPEND | MUTT_NEWFOLDER))
   {

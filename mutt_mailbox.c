@@ -56,7 +56,8 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
       m_check->magic = mb_magic;
       break;
     default:
-      m_check->has_new = false;
+      if (m_cur == m_check)
+        m_check->has_new = false;
 
       if ((stat(mailbox_path(m_check), &sb) != 0) ||
           (S_ISREG(sb.st_mode) && (sb.st_size == 0)) ||
@@ -88,7 +89,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
       case MUTT_MAILDIR:
       case MUTT_MH:
       case MUTT_NOTMUCH:
-        if (mx_mbox_check_stats(m_check, 0) == 0)
+        if ((mx_mbox_check_stats(m_check, check_stats) > 0) && m_check->has_new)
           MailboxCount++;
         break;
       default:; /* do nothing */
@@ -187,7 +188,7 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
  */
 bool mutt_mailbox_notify(struct Mailbox *m_cur)
 {
-  if (mutt_mailbox_check(m_cur, 0) && MailboxNotify)
+  if ((mutt_mailbox_check(m_cur, 0) > 0) && MailboxNotify)
   {
     return mutt_mailbox_list();
   }
@@ -292,7 +293,7 @@ void mutt_mailbox_next_buffer(struct Mailbox *m_cur, struct Buffer *s)
 {
   mutt_buffer_expand_path(s);
 
-  if (mutt_mailbox_check(m_cur, 0))
+  if (mutt_mailbox_check(m_cur, 0) > 0)
   {
     bool found = false;
     for (int pass = 0; pass < 2; pass++)
