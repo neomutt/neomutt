@@ -637,7 +637,7 @@ return_error:
 
   if (!entry || !entry->xneomuttkeep)
   {
-    if (fp && mutt_b2s(tmpfile)[0])
+    if (fp && !mutt_buffer_is_empty(tmpfile))
     {
       /* add temporary file to TempAttachmentsList to be deleted on timeout hook */
       mutt_add_temp_attachment(mutt_b2s(tmpfile));
@@ -650,7 +650,7 @@ return_error:
 
   mailcap_entry_free(&entry);
 
-  if (mutt_b2s(pagerfile)[0] != '\0')
+  if (!mutt_buffer_is_empty(pagerfile))
     mutt_file_unlink(mutt_b2s(pagerfile));
 
   mutt_buffer_pool_release(&tmpfile);
