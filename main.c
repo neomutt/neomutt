@@ -1233,7 +1233,13 @@ int main(int argc, char *argv[], char *envp[])
     Context = mx_mbox_open(m, ((flags & MUTT_CLI_RO) || C_ReadOnly) ? MUTT_READONLY : MUTT_OPEN_NO_FLAGS);
     if (!Context)
     {
-      mailbox_free(&m);
+      if (m->account)
+      {
+        account_mailbox_remove(m->account, m);
+        m = NULL;
+      }
+      else
+        mailbox_free(&m);
     }
     if (Context || !explicit_folder)
     {
