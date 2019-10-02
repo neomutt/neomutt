@@ -141,6 +141,7 @@ color message brightcyan default
 color markers brightcyan default
 color attachment brightmagenta default
 color search default green	# how to hilite search patterns in the pager
+color warning brightyellow default
 
 color header brightred default ^(From|Subject):
 color body magenta default "(ftp|http|https)://[^ ]+"	# point out URLs

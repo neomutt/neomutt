@@ -868,8 +868,10 @@ void mutt_enter_command(void)
     {
       if (rc == MUTT_CMD_SUCCESS) /* command succeeded with message */
         mutt_message("%s", err.data);
-      else /* error executing command */
+      else if (rc == MUTT_CMD_ERROR)
         mutt_error("%s", err.data);
+      else if (rc == MUTT_CMD_WARNING)
+        mutt_warning("%s", err.data);
     }
   }
   /* else successful command */

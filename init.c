@@ -288,12 +288,17 @@ static int execute_commands(struct ListHead *p)
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, p, entries)
   {
-    if (mutt_parse_rc_line(np->data, token, err) == MUTT_CMD_ERROR)
-    {
+    enum CommandResult rc2 = mutt_parse_rc_line(np->data, token, err);
+    if (rc2 == MUTT_CMD_ERROR)
       mutt_error(_("Error in command line: %s"), mutt_b2s(err));
+
+    if ((rc2 == MUTT_CMD_ERROR) || (rc2 == MUTT_CMD_WARNING))
+      mutt_warning(_("Warning in command line: %s"), mutt_b2s(err));
+
+    if ((rc2 == MUTT_CMD_ERROR) || (rc2 == MUTT_CMD_WARNING))
+    {
       mutt_buffer_pool_release(&token);
       mutt_buffer_pool_release(&err);
-
       return -1;
     }
   }

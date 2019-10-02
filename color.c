@@ -154,6 +154,7 @@ static const struct Mapping Fields[] = {
   { "tilde", MT_COLOR_TILDE },
   { "tree", MT_COLOR_TREE },
   { "underline", MT_COLOR_UNDERLINE },
+  { "warning", MT_COLOR_WARNING },
   { NULL, 0 },
 };
 

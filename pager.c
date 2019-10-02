@@ -1682,6 +1682,8 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
     (*line_info)[n].type = MT_COLOR_MESSAGE_LOG;
     if (buf[11] == 'M')
       (*line_info)[n].syntax[0].color = MT_COLOR_MESSAGE;
+    else if (buf[11] == 'W')
+      (*line_info)[n].syntax[0].color = MT_COLOR_WARNING;
     else if (buf[11] == 'E')
       (*line_info)[n].syntax[0].color = MT_COLOR_ERROR;
     else

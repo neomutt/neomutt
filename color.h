@@ -84,6 +84,7 @@ enum ColorId
   MT_COLOR_SB_SPOOLFILE,             ///< $spoolfile (Spool mailbox)
 #endif
   MT_COLOR_MESSAGE_LOG,              ///< Menu showing log messages
+  MT_COLOR_WARNING,                  ///< Warning messages
   /* please no non-MT_COLOR_INDEX objects after this point */
   MT_COLOR_INDEX,                    ///< Index: default colour (takes a pattern)
   MT_COLOR_INDEX_AUTHOR,             ///< Index: author field (takes a pattern)
