@@ -900,6 +900,36 @@ int mbox_ac_add(struct Account *a, struct Mailbox *m)
 }
 
 /**
+ * mbox_open_readwrite - Open an mbox read-write
+ * @param m Mailbox
+ * @retval ptr FILE handle
+ *
+ * This function ensures that the FILE and readonly flag are changed atomically.
+ */
+static FILE *mbox_open_readwrite(struct Mailbox *m)
+{
+  FILE *fp = fopen(mailbox_path(m), "r+");
+  if (fp)
+    m->readonly = false;
+  return fp;
+}
+
+/**
+ * mbox_open_readwrite - Open an mbox read-only
+ * @param m Mailbox
+ * @retval ptr FILE handle
+ *
+ * This function ensures that the FILE and readonly flag are changed atomically.
+ */
+static FILE *mbox_open_readonly(struct Mailbox *m)
+{
+  FILE *fp = fopen(mailbox_path(m), "r");
+  if (fp)
+    m->readonly = true;
+  return fp;
+}
+
+/**
  * mbox_mbox_open - Open a Mailbox - Implements MxOps::mbox_open()
  */
 static int mbox_mbox_open(struct Mailbox *m)
@@ -911,12 +941,17 @@ static int mbox_mbox_open(struct Mailbox *m)
   if (!adata)
     return -1;
 
-  adata->fp = fopen(mailbox_path(m), "r+");
+  adata->fp = mbox_open_readwrite(m);
+  if (!adata->fp)
+  {
+    adata->fp = mbox_open_readonly(m);
+  }
   if (!adata->fp)
   {
     mutt_perror(mailbox_path(m));
     return -1;
   }
+
   mutt_sig_block();
   if (mbox_lock_mailbox(m, false, true) == -1)
   {
