@@ -4732,249 +4732,326 @@ folder-hook work "set sort=threads"
         <emphasis>regex</emphasis>.
       </para>
       <para>
-        <emphasis>object</emphasis> can be one of:
+        These simple colours below don't use a pattern.
+        If a name is configured more than once, the last one will be used.
       </para>
-      <itemizedlist>
-        <listitem>
-          <para>
-            attachment
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            bold (highlighting bold patterns in the body of messages)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            error (error messages printed by NeoMutt)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            hdrdefault (default color of the message header in the pager)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            index_author (color of the author name in the index, uses
-            <emphasis>pattern</emphasis>)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            index_collapsed (the number of messages in a collapsed thread in
-            the index)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            index_date (color of the date field in the index)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            index_flags (color of the message flags in the index)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            index_label (color of the message label in the index)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            index_number (color of the message number in the index)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            index_size (color of the message size and line number in the index)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            index_subject (color of the subject in the index, uses
-            <emphasis>pattern</emphasis>)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            indicator (arrow or bar used to indicate the current item in
-            a menu)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            markers (the <quote>+</quote> markers at the beginning of wrapped
-            lines in the pager)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            message (informational messages)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            normal
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            options (the key letters in multi-choice questions)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            <link linkend="progress">progress</link> (visual progress bar)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            prompt
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            quoted (text matching
-            <link linkend="quote-regex">$quote_regex</link> in the body of
-            a message)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            quoted1, quoted2, ..., quoted <emphasis>N</emphasis> (higher levels
-            of quoting)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            search (highlighting of words in the pager)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            signature
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            status (mode lines used to display info about the mailbox or
-            message)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            tilde (the <quote>~</quote> used to pad blank lines in the pager)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            tree (thread tree drawn in the message index and attachment menu)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            underline (highlighting underlined patterns in the body of
-            messages)
-          </para>
-        </listitem>
-      </itemizedlist>
+<screen>
+<emphasis role="comment"># Make error messages white text on a red background</emphasis>
+color error white red
+<emphasis role="comment"># Make questions bold, underlined, with light blue text (with default background)</emphasis>
+color prompt bold underline cyan default
+</screen>
+      <table id="color-simple">
+        <title>Simple Colours</title>
+        <tgroup cols="2">
+          <thead>
+            <row>
+              <entry>Colour Name</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>attachment</entry>
+              <entry>Colour for attachment headers</entry>
+            </row>
+            <row>
+              <entry>bold</entry>
+              <entry>Highlighting bold patterns in the body of messages</entry>
+            </row>
+            <row>
+              <entry>error</entry>
+              <entry>Error messages printed by NeoMutt</entry>
+            </row>
+            <row>
+              <entry>hdrdefault</entry>
+              <entry>Default colour of the message header in the pager</entry>
+            </row>
+            <row>
+              <entry>indicator</entry>
+              <entry>Arrow or bar used to indicate the current item in a menu</entry>
+            </row>
+            <row>
+              <entry>markers</entry>
+              <entry>The "+" markers at the beginning of wrapped lines in the pager</entry>
+            </row>
+            <row>
+              <entry>message</entry>
+              <entry>Informational messages</entry>
+            </row>
+            <row>
+              <entry>normal</entry>
+              <entry>Default colour for all text</entry>
+            </row>
+            <row>
+              <entry>options</entry>
+              <entry>The key letters in multi-choice questions</entry>
+            </row>
+            <row>
+              <entry>progress</entry>
+              <entry><link linkend="progress">Visual progress bar</link></entry>
+            </row>
+            <row>
+              <entry>prompt</entry>
+              <entry>A question</entry>
+            </row>
+            <row>
+              <entry>search</entry>
+              <entry>Highlighting of words in the pager</entry>
+            </row>
+            <row>
+              <entry>signature</entry>
+              <entry>Email's signature lines (.sig)</entry>
+            </row>
+            <row>
+              <entry>tilde</entry>
+              <entry>The "~" used to pad blank lines in the pager</entry>
+            </row>
+            <row>
+              <entry>tree</entry>
+              <entry>Thread tree drawn in the message index and attachment menu</entry>
+            </row>
+            <row>
+              <entry>underline</entry>
+              <entry>Highlighting underlined patterns in the body of messages</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
       <para>
-        <emphasis>composeobject</emphasis> can be one of:
+        These simple index colours below don't use a pattern.
+        If a name is configured more than once, the last one will be used.
+        Each name will colour a certain expando in the index.
+        See <link linkend="index-format">$index_format</link> for more details.
       </para>
-      <itemizedlist>
-        <listitem>
-          <para>
-            header
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            security_encrypt
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            security_sign
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            security_both
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            security_none
-          </para>
-        </listitem>
-      </itemizedlist>
+<screen>
+color index_date green default
+</screen>
+      <table id="color-simple-index">
+        <title>Simple Index Colours</title>
+        <tgroup cols="2">
+          <thead>
+            <row>
+              <entry>Colour Name</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>index_collapsed</entry>
+              <entry>Number of messages in a collapsed thread, <literal>%M</literal></entry>
+            </row>
+            <row>
+              <entry>index_date</entry>
+              <entry>Date field, <literal>%d</literal> <literal>%D</literal> <literal>%{fmt}</literal> <literal>%[fmt]</literal> <literal>%(fmt)</literal></entry>
+            </row>
+            <row>
+              <entry>index_label</entry>
+              <entry>Message label, <literal>%y</literal> <literal>%Y</literal></entry>
+            </row>
+            <row>
+              <entry>index_number</entry>
+              <entry>Message number, <literal>%C</literal></entry>
+            </row>
+            <row>
+              <entry>index_size</entry>
+              <entry>Message size, <literal>%c</literal> <literal>%l</literal></entry>
+            </row>
+            <row>
+              <entry>index_tags</entry>
+              <entry>Transformed message tags, <literal>%g</literal> <literal>%J</literal></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
       <para>
-        <emphasis>index-object</emphasis> can be one of the following:
+        These simple sidebar colours below don't use a pattern.
+        If a name is configured more than once, the last one will be used.
+        See <link linkend="sidebar-intro">Sidebar Intro</link> for more details.
       </para>
-      <itemizedlist>
-        <listitem>
-          <para>
-            index (default highlighting of the entire index line, uses
-            <emphasis>pattern</emphasis>)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            index_date (the date field)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            index_flags (the message flags, %S %Z, uses
-            <emphasis>pattern</emphasis>)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            index_number (the message number, %C)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            index_collapsed (the number of messages in a collapsed thread, %M)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            index_author (the author name, %A %a %F %L %n, uses
-            <emphasis>pattern</emphasis>)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            index_subject (the subject, %s, uses <emphasis>pattern</emphasis>)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            index_size (the message size, %c %l)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            index_label (the message label, %y %Y)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            index_tags (the transformed message tags, %g)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            index_tag (an individual message tag, %G, uses <emphasis>pattern
-              / tag name</emphasis>)
-          </para>
-        </listitem>
-      </itemizedlist>
+<screen>
+color sidebar_divider brightblack default
+</screen>
+      <table id="color-simple-sidebar">
+        <title>Simple Sidebar Colours</title>
+        <tgroup cols="2">
+          <thead>
+            <row>
+              <entry>Colour Name</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>sidebar_divider</entry>
+              <entry>The dividing line between the Sidebar and the Index/Pager panels</entry>
+            </row>
+            <row>
+              <entry>sidebar_flagged</entry>
+              <entry>Mailboxes containing flagged mail</entry>
+            </row>
+            <row>
+              <entry>sidebar_highlight</entry>
+              <entry>Cursor to select a mailbox</entry>
+            </row>
+            <row>
+              <entry>sidebar_indicator</entry>
+              <entry>The mailbox open in the Index panel</entry>
+            </row>
+            <row>
+              <entry>sidebar_new</entry>
+              <entry>Mailboxes containing new mail</entry>
+            </row>
+            <row>
+              <entry>sidebar_ordinary</entry>
+              <entry>Mailboxes that have no new/flagged mails, etc</entry>
+            </row>
+            <row>
+              <entry>sidebar_spoolfile</entry>
+              <entry>Mailbox that receives incoming mail</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <para>
+        These simple compose colours below don't use a pattern.
+        If a name is configured more than once, the last one will be used.
+      </para>
+<screen>
+color header bold white default
+</screen>
+      <table id="color-simple-compose">
+        <title>Simple Compose Colours</title>
+        <tgroup cols="2">
+          <thead>
+            <row>
+              <entry>Colour Name</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>header</entry>
+              <entry>Header labels, e.g. From:</entry>
+            </row>
+            <row>
+              <entry>security_encrypt</entry>
+              <entry>Mail will be encrypted</entry>
+            </row>
+            <row>
+              <entry>security_sign</entry>
+              <entry>Mail will be signed</entry>
+            </row>
+            <row>
+              <entry>security_both</entry>
+              <entry>Mail will be encrypted and signed</entry>
+            </row>
+            <row>
+              <entry>security_none</entry>
+              <entry>Mail will not be encrypted or signed</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <para>
+        These colours use a regex to match.  When applying the colours, each
+        regex will be tested against the field to be coloured.  All of the
+        matching patterns will have their colours applied in the order they are
+        configured.
+      </para>
+<screen>
+color body bold red default "(urgent|important)"
+</screen>
+      <table id="color-regex-lists">
+        <title>Colour Regex Lists</title>
+        <tgroup cols="2">
+          <thead>
+            <row>
+              <entry>Colour Name</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>attach_headers</entry>
+              <entry>Attachment headers</entry>
+            </row>
+            <row>
+              <entry>body</entry>
+              <entry>Email body</entry>
+            </row>
+            <row>
+              <entry>header</entry>
+              <entry>Email headers</entry>
+            </row>
+            <row>
+              <entry>index</entry>
+              <entry>Default highlighting of the entire index line</entry>
+            </row>
+            <row>
+              <entry>index_author</entry>
+              <entry>Author in the index, %A %a %F %L %n</entry>
+            </row>
+            <row>
+              <entry>index_flags</entry>
+              <entry>Flags in the index, %S %Z</entry>
+            </row>
+            <row>
+              <entry>index_subject</entry>
+              <entry>Subject in the index, %s</entry>
+            </row>
+            <row>
+              <entry>index_tag</entry>
+              <entry>Tags in the index, %G</entry>
+            </row>
+            <row>
+              <entry>status</entry>
+              <entry>Status bar</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <para>
+        The quoted email colours don't use pattern.
+        The first colour, <literal>quoted</literal> provides a default colour for
+        all quoted text.  Also, each diffent level of quoting can be given a
+        different colour using, <literal>quoted1</literal>,
+        <literal>quoted2</literal>, <literal>quoted3</literal> etc.
+      </para>
+<screen>
+color quoted brightblue default
+color quoted1 brightgreen default
+color quoted2 yellow default
+</screen>
+      <table id="color-quoted">
+        <title>Quoted Email Colours</title>
+        <tgroup cols="2">
+          <thead>
+            <row>
+              <entry>Colour Name</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>quoted</entry>
+              <entry>Text matching <link linkend="quote-regex">$quote_regex</link> in the body of a message</entry>
+            </row>
+            <row>
+              <entry>quoted1</entry>
+              <entry>1 level deeper quoted text, e.g. <literal>&gt; &gt; text</literal></entry>
+            </row>
+            <row>
+              <entry>quoted2</entry>
+              <entry>2 level deeper quoted text, e.g. <literal>&gt; &gt; &gt; text</literal></entry>
+            </row>
+            <row>
+              <entry>quotedN</entry>
+              <entry>n level deeper quoted text</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
       <para>
         <emphasis>attribute</emphasis> can be one of the following:
       </para>
