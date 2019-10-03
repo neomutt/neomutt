@@ -224,6 +224,20 @@ static void color_line_free(struct ColorLine **ptr, bool free_colors)
 }
 
 /**
+ * color_line_list_clear - Clear a list of colours
+ * @param list ColorLine List
+ */
+static void color_line_list_clear(struct ColorLineList *list)
+{
+  struct ColorLine *np = NULL, *tmp = NULL;
+  STAILQ_FOREACH_SAFE(np, list, entries, tmp)
+  {
+    STAILQ_REMOVE(list, np, ColorLine, entries);
+    color_line_free(&np, true);
+  }
+}
+
+/**
  * mutt_color_init - Set up the default colours
  */
 void mutt_color_init(void)
@@ -1238,33 +1252,19 @@ enum CommandResult mutt_parse_mono(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * mutt_color_list_free - Free a list of colours
- * @param list ColorLine List
- */
-static void mutt_color_list_free(struct ColorLineList *list)
-{
-  struct ColorLine *np = NULL, *tmp = NULL;
-  STAILQ_FOREACH_SAFE(np, list, entries, tmp)
-  {
-    STAILQ_REMOVE(list, np, ColorLine, entries);
-    color_line_free(&np, true);
-  }
-}
-
-/**
  * mutt_colors_free - Free all the colours (on shutdown)
  */
 void mutt_colors_free(void)
 {
-  mutt_color_list_free(&ColorAttachList);
-  mutt_color_list_free(&ColorBodyList);
-  mutt_color_list_free(&ColorHdrList);
-  mutt_color_list_free(&ColorIndexAuthorList);
-  mutt_color_list_free(&ColorIndexFlagsList);
-  mutt_color_list_free(&ColorIndexList);
-  mutt_color_list_free(&ColorIndexSubjectList);
-  mutt_color_list_free(&ColorIndexTagList);
-  mutt_color_list_free(&ColorStatusList);
+  color_line_list_clear(&ColorAttachList);
+  color_line_list_clear(&ColorBodyList);
+  color_line_list_clear(&ColorHdrList);
+  color_line_list_clear(&ColorIndexAuthorList);
+  color_line_list_clear(&ColorIndexFlagsList);
+  color_line_list_clear(&ColorIndexList);
+  color_line_list_clear(&ColorIndexSubjectList);
+  color_line_list_clear(&ColorIndexTagList);
+  color_line_list_clear(&ColorStatusList);
 
   struct ColorList *cl = ColorList;
   struct ColorList *next = NULL;
