@@ -118,7 +118,7 @@ static const struct Mapping Fields[] = {
   { "body", MT_COLOR_BODY },
   { "bold", MT_COLOR_BOLD },
   { "error", MT_COLOR_ERROR },
-  { "hdrdefault", MT_COLOR_HDEFAULT },
+  { "hdrdefault", MT_COLOR_HDRDEFAULT },
   { "header", MT_COLOR_HEADER },
   { "index", MT_COLOR_INDEX },
   { "index_author", MT_COLOR_INDEX_AUTHOR },
@@ -141,13 +141,13 @@ static const struct Mapping Fields[] = {
   { "quoted", MT_COLOR_QUOTED },
   { "search", MT_COLOR_SEARCH },
 #ifdef USE_SIDEBAR
-  { "sidebar_divider", MT_COLOR_DIVIDER },
-  { "sidebar_flagged", MT_COLOR_FLAGGED },
-  { "sidebar_highlight", MT_COLOR_HIGHLIGHT },
-  { "sidebar_indicator", MT_COLOR_SB_INDICATOR },
-  { "sidebar_new", MT_COLOR_NEW },
-  { "sidebar_ordinary", MT_COLOR_ORDINARY },
-  { "sidebar_spoolfile", MT_COLOR_SB_SPOOLFILE },
+  { "sidebar_divider", MT_COLOR_SIDEBAR_DIVIDER },
+  { "sidebar_flagged", MT_COLOR_SIDEBAR_FLAGGED },
+  { "sidebar_highlight", MT_COLOR_SIDEBAR_HIGHLIGHT },
+  { "sidebar_indicator", MT_COLOR_SIDEBAR_INDICATOR },
+  { "sidebar_new", MT_COLOR_SIDEBAR_NEW },
+  { "sidebar_ordinary", MT_COLOR_SIDEBAR_ORDINARY },
+  { "sidebar_spoolfile", MT_COLOR_SIDEBAR_SPOOLFILE },
 #endif
   { "signature", MT_COLOR_SIGNATURE },
   { "status", MT_COLOR_STATUS },
@@ -223,7 +223,7 @@ void mutt_color_init(void)
   ColorDefs[MT_COLOR_SEARCH] = A_REVERSE;
   ColorDefs[MT_COLOR_MARKERS] = A_REVERSE;
 #ifdef USE_SIDEBAR
-  ColorDefs[MT_COLOR_HIGHLIGHT] = A_UNDERLINE;
+  ColorDefs[MT_COLOR_SIDEBAR_HIGHLIGHT] = A_UNDERLINE;
 #endif
   /* special meaning: toggle the relevant attribute */
   ColorDefs[MT_COLOR_BOLD] = 0;

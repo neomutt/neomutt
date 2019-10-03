@@ -249,7 +249,7 @@ static struct Mapping PagerNewsHelpExtra[] = {
 };
 #endif
 
-#define IS_HEADER(x) ((x) == MT_COLOR_HEADER || (x) == MT_COLOR_HDEFAULT)
+#define IS_HEADER(x) ((x) == MT_COLOR_HEADER || (x) == MT_COLOR_HDRDEFAULT)
 
 #define IsAttach(pager) (pager && (pager)->body)
 #define IsMsgAttach(pager)                                                     \
@@ -1018,7 +1018,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
       }
       else
       {
-        line_info[n].type = MT_COLOR_HDEFAULT;
+        line_info[n].type = MT_COLOR_HDRDEFAULT;
       }
 
       /* When this option is unset, we color the entire header the
@@ -1095,7 +1095,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
 
   /* body patterns */
   if ((line_info[n].type == MT_COLOR_NORMAL) || (line_info[n].type == MT_COLOR_QUOTED) ||
-      ((line_info[n].type == MT_COLOR_HDEFAULT) && C_HeaderColorPartial))
+      ((line_info[n].type == MT_COLOR_HDRDEFAULT) && C_HeaderColorPartial))
   {
     size_t nl;
 
@@ -1108,7 +1108,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
     i = 0;
     offset = 0;
     line_info[n].chunks = 0;
-    if (line_info[n].type == MT_COLOR_HDEFAULT)
+    if (line_info[n].type == MT_COLOR_HDRDEFAULT)
       head = &ColorHdrList;
     else
       head = &ColorBodyList;
