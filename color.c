@@ -466,13 +466,12 @@ void mutt_color_free(uint32_t fg, uint32_t bg)
  * @param[out] attr  Attribute flags, e.g. A_BOLD
  * @param[in]  is_fg true if this is a foreground colour
  * @param[out] err   Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  *
  * Parse a colour name, such as "red", "brightgreen", "color123".
  */
-static int parse_color_name(const char *s, uint32_t *col, int *attr, bool is_fg,
-                            struct Buffer *err)
+static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *attr,
+                                           bool is_fg, struct Buffer *err)
 {
   char *eptr = NULL;
   bool is_alert = false, is_bright = false, is_light = false;
@@ -503,7 +502,7 @@ static int parse_color_name(const char *s, uint32_t *col, int *attr, bool is_fg,
     if (!*s || *eptr || ((*col >= COLORS) && !OptNoCurses && has_colors()))
     {
       mutt_buffer_printf(err, _("%s: color not supported by term"), s);
-      return -1;
+      return MUTT_CMD_ERROR;
     }
   }
 #ifdef HAVE_DIRECTCOLOR
@@ -514,7 +513,7 @@ static int parse_color_name(const char *s, uint32_t *col, int *attr, bool is_fg,
     if (!*s || *eptr || ((*col == COLOR_UNSET) && !OptNoCurses && has_colors()))
     {
       snprintf(err->data, err->dsize, _("%s: color not supported by term"), s);
-      return -1;
+      return MUTT_CMD_ERROR;
     }
     *col |= RGB24;
   }
@@ -522,7 +521,7 @@ static int parse_color_name(const char *s, uint32_t *col, int *attr, bool is_fg,
   else if ((*col = mutt_map_get_value(s, ColorNames)) == -1)
   {
     mutt_buffer_printf(err, _("%s: no such color"), s);
-    return -1;
+    return MUTT_CMD_WARNING;
   }
 
   if (is_bright || is_light)
@@ -933,19 +932,21 @@ typedef int (*parser_callback_t)(struct Buffer *buf, struct Buffer *s, uint32_t 
                                  uint32_t *bg, int *attr, struct Buffer *err);
 
 #ifdef HAVE_COLOR
-
 /**
  * parse_color_pair - Parse a pair of colours - Implements ::parser_callback_t
  */
-static int parse_color_pair(struct Buffer *buf, struct Buffer *s, uint32_t *fg,
-                            uint32_t *bg, int *attr, struct Buffer *err)
+static enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
+                                           uint32_t *fg, uint32_t *bg,
+                                           int *attr, struct Buffer *err)
 {
+  enum CommandResult rc = MUTT_CMD_SUCCESS;
+
   while (true)
   {
     if (!MoreArgs(s))
     {
       mutt_buffer_printf(err, _("%s: too few arguments"), "color");
-      return -1;
+      return MUTT_CMD_WARNING;
     }
 
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
@@ -964,8 +965,9 @@ static int parse_color_pair(struct Buffer *buf, struct Buffer *s, uint32_t *fg,
       *attr = A_NORMAL; /* needs use = instead of |= to clear other bits */
     else
     {
-      if (parse_color_name(buf->data, fg, attr, true, err) != 0)
-        return -1;
+      rc = parse_color_name(buf->data, fg, attr, true, err);
+      if (rc != MUTT_CMD_SUCCESS)
+        return rc;
       break;
     }
   }
@@ -973,23 +975,21 @@ static int parse_color_pair(struct Buffer *buf, struct Buffer *s, uint32_t *fg,
   if (!MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), "color");
-    return -1;
+    return MUTT_CMD_WARNING;
   }
 
   mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
-  if (parse_color_name(buf->data, bg, attr, false, err) != 0)
-    return -1;
-
-  return 0;
+  return parse_color_name(buf->data, bg, attr, false, err);
 }
 #endif
 
 /**
  * parse_attr_spec - Parse an attribute description - Implements ::parser_callback_t
  */
-static int parse_attr_spec(struct Buffer *buf, struct Buffer *s, uint32_t *fg,
-                           uint32_t *bg, int *attr, struct Buffer *err)
+static enum CommandResult parse_attr_spec(struct Buffer *buf, struct Buffer *s,
+                                          uint32_t *fg, uint32_t *bg, int *attr,
+                                          struct Buffer *err)
 {
   if (fg)
     *fg = COLOR_UNSET;
@@ -999,7 +999,7 @@ static int parse_attr_spec(struct Buffer *buf, struct Buffer *s, uint32_t *fg,
   if (!MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), "mono");
-    return -1;
+    return MUTT_CMD_WARNING;
   }
 
   mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
@@ -1019,10 +1019,10 @@ static int parse_attr_spec(struct Buffer *buf, struct Buffer *s, uint32_t *fg,
   else
   {
     mutt_buffer_printf(err, _("%s: no such attribute"), buf->data);
-    return -1;
+    return MUTT_CMD_WARNING;
   }
 
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
