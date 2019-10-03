@@ -38,12 +38,12 @@ struct ColorLine
   regex_t regex;                     ///< Compiled regex
   int match;                         ///< Substring to match, 0 for old behaviour
   char *pattern;                     ///< Pattern to match
-  struct PatternList *color_pattern; ///< compiled pattern to speed up index color calculation
+  struct PatternList *color_pattern; ///< Compiled pattern to speed up index color calculation
   uint32_t fg;                       ///< Foreground colour
   uint32_t bg;                       ///< Background colour
   int pair;                          ///< Colour pair index
 
-  bool stop_matching : 1;            ///< used by the pager for body patterns, to prevent the color from being retried once it fails
+  bool stop_matching : 1;            ///< Used by the pager for body patterns, to prevent the color from being retried once it fails
 
   STAILQ_ENTRY(ColorLine) entries;   ///< Linked list
 };

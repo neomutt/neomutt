@@ -49,6 +49,20 @@
 #include <assert.h>
 #endif
 
+/**
+ * typedef parser_callback_t - Prototype for a function to parse color config
+ * @param[in]  buf Temporary Buffer space
+ * @param[in]  s    Buffer containing string to be parsed
+ * @param[out] fg   Foreground colour (set to -1)
+ * @param[out] bg   Background colour (set to -1)
+ * @param[out] attr Attribute flags
+ * @param[out] err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+typedef int (*parser_callback_t)(struct Buffer *buf, struct Buffer *s, uint32_t *fg,
+                                 uint32_t *bg, int *attr, struct Buffer *err);
+
 /* globals */
 int *ColorQuote = NULL;
 int ColorQuoteUsed;
@@ -76,7 +90,7 @@ static int ColorQuoteSize;
  *
  * Note that no flag means it's a palette color.
  */
-#define RGB24 (1u << 24)
+#define RGB24 (1U << 24)
 
 /**
  * struct ColorList - A set of colors
@@ -300,7 +314,6 @@ int mutt_color_alloc(uint32_t fg, uint32_t bg)
   char fgc[128], bgc[128];
 #endif
   struct ColorList *p = ColorList;
-  int i;
 
   /* check to see if this color is already allocated to save space */
   while (p)
@@ -318,7 +331,7 @@ int mutt_color_alloc(uint32_t fg, uint32_t bg)
     return A_NORMAL;
 
   /* find the smallest available index (object) */
-  i = 1;
+  int i = 1;
   while (true)
   {
     p = ColorList;
@@ -669,22 +682,17 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_WARNING;
   }
 
-  if (
 #ifdef HAVE_COLOR
-      /* we're running without curses */
-      OptNoCurses || /* we're parsing an uncolor command, and have no colors */
-      (uncolor && !has_colors())
-      /* we're parsing an unmono command, and have colors */
-      || (!uncolor && has_colors())
+  if (OptNoCurses ||                // running without curses
+      (uncolor && !has_colors()) || // parsing an uncolor command, and have no colors
+      (!uncolor && has_colors())) // parsing an unmono command, and have colors
 #else
-      /* We don't even have colors compiled in */
-      uncolor
+  if (uncolor) // We don't even have colors compiled in
 #endif
-  )
   {
-    /* just eat the command, but don't do anything real about it */
     do
     {
+      /* just eat the command, but don't do anything real about it */
       mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     } while (MoreArgs(s));
 
@@ -760,8 +768,7 @@ static enum CommandResult add_pattern(struct ColorLineList *top, const char *s,
                                       bool sensitive, uint32_t fg, uint32_t bg, int attr,
                                       struct Buffer *err, bool is_index, int match)
 {
-  /* is_index used to store compiled pattern
-   * only for 'index' color object
+  /* is_index used to store compiled pattern only for 'index' color object
    * when called from mutt_parse_color() */
 
   struct ColorLine *tmp = NULL;
@@ -917,20 +924,6 @@ static int parse_object(struct Buffer *buf, struct Buffer *s, uint32_t *o,
   return 0;
 }
 
-/**
- * typedef parser_callback_t - Prototype for a function to parse color config
- * @param[in]  buf Temporary Buffer space
- * @param[in]  s    Buffer containing string to be parsed
- * @param[out] fg   Foreground colour (set to -1)
- * @param[out] bg   Background colour (set to -1)
- * @param[out] attr Attribute flags
- * @param[out] err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
- */
-typedef int (*parser_callback_t)(struct Buffer *buf, struct Buffer *s, uint32_t *fg,
-                                 uint32_t *bg, int *attr, struct Buffer *err);
-
 #ifdef HAVE_COLOR
 /**
  * parse_color_pair - Parse a pair of colours - Implements ::parser_callback_t
@@ -1043,7 +1036,7 @@ static int fgbgattr_to_color(int fg, int bg, int attr)
 }
 
 /**
- * parse_color - Parse a "color" command
+ * parse_color - Parse a 'color' command
  * @param buf      Temporary Buffer space
  * @param s        Buffer containing string to be parsed
  * @param err      Buffer for error messages
@@ -1090,8 +1083,6 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
     mutt_buffer_printf(err, _("%s: too many arguments"), color ? "color" : "mono");
     return MUTT_CMD_WARNING;
   }
-
-  /* dry run? */
 
   if (dry_run)
   {
