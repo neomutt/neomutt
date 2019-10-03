@@ -592,58 +592,48 @@ static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *at
 
 /**
  * do_uncolor - Parse the 'uncolor' or 'unmono' command
- * @param[in]     buf      Buffer for temporary storage
- * @param[in]     s        Buffer containing the uncolor command
- * @param[in]     cl       List of existing colours
- * @param[in,out] do_cache Set to true if colours were freed
- * @param[in]     uncolor  If true, 'uncolor', else 'unmono'
+ * @param buf     Buffer for temporary storage
+ * @param s       Buffer containing the uncolor command
+ * @param cl      List of existing colours
+ * @param uncolor If true, 'uncolor', else 'unmono'
+ * @retval bool True if a colour was freed
  */
-static void do_uncolor(struct Buffer *buf, struct Buffer *s,
-                       struct ColorLineList *cl, bool *do_cache, bool uncolor)
+static bool do_uncolor(struct Buffer *buf, struct Buffer *s,
+                       struct ColorLineList *cl, bool uncolor)
 {
-  struct ColorLine *np = NULL, *tmp = NULL;
+  struct ColorLine *np = NULL, *prev = NULL;
+  bool rc = false;
+
   do
   {
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
     if (mutt_str_strcmp("*", buf->data) == 0)
     {
-      np = STAILQ_FIRST(cl);
-      while (np)
-      {
-        tmp = STAILQ_NEXT(np, entries);
-        if (!*do_cache)
-        {
-          *do_cache = true;
-        }
-        color_line_free(&np, uncolor);
-        np = tmp;
-      }
-      STAILQ_INIT(cl);
-      return;
+      rc = STAILQ_FIRST(cl);
+      color_line_list_clear(cl);
+      return rc;
     }
-    else
+
+    prev = NULL;
+    STAILQ_FOREACH(np, cl, entries)
     {
-      tmp = NULL;
-      STAILQ_FOREACH(np, cl, entries)
+      if (mutt_str_strcmp(buf->data, np->pattern) == 0)
       {
-        if (mutt_str_strcmp(buf->data, np->pattern) == 0)
-        {
-          if (!*do_cache)
-          {
-            *do_cache = true;
-          }
-          mutt_debug(LL_DEBUG1, "Freeing pattern \"%s\" from ColorList\n", buf->data);
-          if (tmp)
-            STAILQ_REMOVE_AFTER(cl, tmp, entries);
-          else
-            STAILQ_REMOVE_HEAD(cl, entries);
-          color_line_free(&np, uncolor);
-          break;
-        }
-        tmp = np;
+        rc = true;
+
+        mutt_debug(LL_DEBUG1, "Freeing pattern \"%s\" from ColorList\n", buf->data);
+        if (prev)
+          STAILQ_REMOVE_AFTER(cl, prev, entries);
+        else
+          STAILQ_REMOVE_HEAD(cl, entries);
+        color_line_free(&np, uncolor);
+        break;
       }
+      prev = np;
     }
   } while (MoreArgs(s));
+
+  return rc;
 }
 
 /**
@@ -662,12 +652,9 @@ static void do_uncolor(struct Buffer *buf, struct Buffer *s,
 static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
                                         unsigned long data, struct Buffer *err, bool uncolor)
 {
-  int object = 0;
-  bool do_cache = false;
-
   mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
-  object = mutt_map_get_value(buf->data, Fields);
+  int object = mutt_map_get_value(buf->data, Fields);
   if (object == -1)
   {
     mutt_buffer_printf(err, _("%s: no such object"), buf->data);
@@ -713,28 +700,29 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_SUCCESS;
   }
 
-  if (object == MT_COLOR_BODY)
-    do_uncolor(buf, s, &ColorBodyList, &do_cache, uncolor);
+  bool changed = false;
+  if (object == MT_COLOR_ATTACH_HEADERS)
+    changed |= do_uncolor(buf, s, &ColorAttachList, uncolor);
+  else if (object == MT_COLOR_BODY)
+    changed |= do_uncolor(buf, s, &ColorBodyList, uncolor);
   else if (object == MT_COLOR_HEADER)
-    do_uncolor(buf, s, &ColorHdrList, &do_cache, uncolor);
-  else if (object == MT_COLOR_ATTACH_HEADERS)
-    do_uncolor(buf, s, &ColorAttachList, &do_cache, uncolor);
+    changed |= do_uncolor(buf, s, &ColorHdrList, uncolor);
   else if (object == MT_COLOR_INDEX)
-    do_uncolor(buf, s, &ColorIndexList, &do_cache, uncolor);
+    changed |= do_uncolor(buf, s, &ColorIndexList, uncolor);
   else if (object == MT_COLOR_INDEX_AUTHOR)
-    do_uncolor(buf, s, &ColorIndexAuthorList, &do_cache, uncolor);
+    changed |= do_uncolor(buf, s, &ColorIndexAuthorList, uncolor);
   else if (object == MT_COLOR_INDEX_FLAGS)
-    do_uncolor(buf, s, &ColorIndexFlagsList, &do_cache, uncolor);
+    changed |= do_uncolor(buf, s, &ColorIndexFlagsList, uncolor);
   else if (object == MT_COLOR_INDEX_SUBJECT)
-    do_uncolor(buf, s, &ColorIndexSubjectList, &do_cache, uncolor);
+    changed |= do_uncolor(buf, s, &ColorIndexSubjectList, uncolor);
   else if (object == MT_COLOR_INDEX_TAG)
-    do_uncolor(buf, s, &ColorIndexTagList, &do_cache, uncolor);
+    changed |= do_uncolor(buf, s, &ColorIndexTagList, uncolor);
 
   bool is_index = ((object == MT_COLOR_INDEX) || (object == MT_COLOR_INDEX_AUTHOR) ||
                    (object == MT_COLOR_INDEX_FLAGS) || (object == MT_COLOR_INDEX_SUBJECT) ||
                    (object == MT_COLOR_INDEX_TAG));
 
-  if (is_index && do_cache && !OptNoCurses)
+  if (changed && is_index && !OptNoCurses)
   {
     mutt_menu_set_redraw_full(MENU_MAIN);
     /* force re-caching of index colors */
