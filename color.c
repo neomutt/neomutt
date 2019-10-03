@@ -96,7 +96,7 @@ static struct ColorList *ColorList = NULL;
 static int UserColors = 0;
 
 // clang-format off
-static const struct Mapping Colors[] = {
+static const struct Mapping ColorNames[] = {
   { "black",   COLOR_BLACK },
   { "blue",    COLOR_BLUE },
   { "cyan",    COLOR_CYAN },
@@ -271,11 +271,11 @@ static char *get_color_name(char *dest, size_t destlen, uint32_t val)
       return dest;
   }
 
-  for (int i = 0; Colors[i].name; i++)
+  for (int i = 0; ColorNames[i].name; i++)
   {
-    if (Colors[i].value == val)
+    if (ColorNames[i].value == val)
     {
-      mutt_str_strfcpy(dest, Colors[i].name, destlen);
+      mutt_str_strfcpy(dest, ColorNames[i].name, destlen);
       return dest;
     }
   }
@@ -519,7 +519,7 @@ static int parse_color_name(const char *s, uint32_t *col, int *attr, bool is_fg,
     *col |= RGB24;
   }
 #endif
-  else if ((*col = mutt_map_get_value(s, Colors)) == -1)
+  else if ((*col = mutt_map_get_value(s, ColorNames)) == -1)
   {
     mutt_buffer_printf(err, _("%s: no such color"), s);
     return -1;
@@ -560,20 +560,20 @@ static int parse_color_name(const char *s, uint32_t *col, int *attr, bool is_fg,
     }
   }
 
-  return 0;
+  return MUTT_CMD_SUCCESS;
 }
 #endif
 
 /**
- * do_uncolor - Parse the "uncolor" or "unmono" command
- * @param[in]     buf           Buffer for temporary storage
- * @param[in]     s             Buffer containing the uncolor command
- * @param[in]     cl            List of existing colours
- * @param[in,out] do_cache      Set to true if colours were freed
- * @param[in]     parse_uncolor If true, 'uncolor', else 'unmono'
+ * do_uncolor - Parse the 'uncolor' or 'unmono' command
+ * @param[in]     buf      Buffer for temporary storage
+ * @param[in]     s        Buffer containing the uncolor command
+ * @param[in]     cl       List of existing colours
+ * @param[in,out] do_cache Set to true if colours were freed
+ * @param[in]     uncolor  If true, 'uncolor', else 'unmono'
  */
 static void do_uncolor(struct Buffer *buf, struct Buffer *s,
-                       struct ColorLineList *cl, bool *do_cache, bool parse_uncolor)
+                       struct ColorLineList *cl, bool *do_cache, bool uncolor)
 {
   struct ColorLine *np = NULL, *tmp = NULL;
   do
@@ -589,7 +589,7 @@ static void do_uncolor(struct Buffer *buf, struct Buffer *s,
         {
           *do_cache = true;
         }
-        color_line_free(&np, parse_uncolor);
+        color_line_free(&np, uncolor);
         np = tmp;
       }
       STAILQ_INIT(cl);
@@ -611,7 +611,7 @@ static void do_uncolor(struct Buffer *buf, struct Buffer *s,
             STAILQ_REMOVE_AFTER(cl, tmp, entries);
           else
             STAILQ_REMOVE_HEAD(cl, entries);
-          color_line_free(&np, parse_uncolor);
+          color_line_free(&np, uncolor);
           break;
         }
         tmp = np;
@@ -622,11 +622,11 @@ static void do_uncolor(struct Buffer *buf, struct Buffer *s,
 
 /**
  * parse_uncolor - Parse an 'uncolor' command
- * @param buf           Temporary Buffer space
- * @param s             Buffer containing string to be parsed
- * @param data          Flags associated with the command
- * @param err           Buffer for error messages
- * @param parse_uncolor If true, 'uncolor', else 'unmono'
+ * @param buf     Temporary Buffer space
+ * @param s       Buffer containing string to be parsed
+ * @param data    Flags associated with the command
+ * @param err     Buffer for error messages
+ * @param uncolor If true, 'uncolor', else 'unmono'
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  *
  * usage:
@@ -634,7 +634,7 @@ static void do_uncolor(struct Buffer *buf, struct Buffer *s,
  * * unmono  index pattern [pattern...]
  */
 static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
-                                        unsigned long data, struct Buffer *err, bool parse_uncolor)
+                                        unsigned long data, struct Buffer *err, bool uncolor)
 {
   int object = 0;
   bool do_cache = false;
@@ -660,13 +660,13 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
       !mutt_str_startswith(buf->data, "index", CASE_MATCH))
   {
     mutt_buffer_printf(err, _("%s: command valid only for index, body, header objects"),
-                       parse_uncolor ? "uncolor" : "unmono");
+                       uncolor ? "uncolor" : "unmono");
     return MUTT_CMD_WARNING;
   }
 
   if (!MoreArgs(s))
   {
-    mutt_buffer_printf(err, _("%s: too few arguments"), parse_uncolor ? "uncolor" : "unmono");
+    mutt_buffer_printf(err, _("%s: too few arguments"), uncolor ? "uncolor" : "unmono");
     return MUTT_CMD_WARNING;
   }
 
@@ -674,12 +674,12 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
 #ifdef HAVE_COLOR
       /* we're running without curses */
       OptNoCurses || /* we're parsing an uncolor command, and have no colors */
-      (parse_uncolor && !has_colors())
+      (uncolor && !has_colors())
       /* we're parsing an unmono command, and have colors */
-      || (!parse_uncolor && has_colors())
+      || (!uncolor && has_colors())
 #else
       /* We don't even have colors compiled in */
-      parse_uncolor
+      uncolor
 #endif
   )
   {
@@ -693,21 +693,21 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
   }
 
   if (object == MT_COLOR_BODY)
-    do_uncolor(buf, s, &ColorBodyList, &do_cache, parse_uncolor);
+    do_uncolor(buf, s, &ColorBodyList, &do_cache, uncolor);
   else if (object == MT_COLOR_HEADER)
-    do_uncolor(buf, s, &ColorHdrList, &do_cache, parse_uncolor);
+    do_uncolor(buf, s, &ColorHdrList, &do_cache, uncolor);
   else if (object == MT_COLOR_ATTACH_HEADERS)
-    do_uncolor(buf, s, &ColorAttachList, &do_cache, parse_uncolor);
+    do_uncolor(buf, s, &ColorAttachList, &do_cache, uncolor);
   else if (object == MT_COLOR_INDEX)
-    do_uncolor(buf, s, &ColorIndexList, &do_cache, parse_uncolor);
+    do_uncolor(buf, s, &ColorIndexList, &do_cache, uncolor);
   else if (object == MT_COLOR_INDEX_AUTHOR)
-    do_uncolor(buf, s, &ColorIndexAuthorList, &do_cache, parse_uncolor);
+    do_uncolor(buf, s, &ColorIndexAuthorList, &do_cache, uncolor);
   else if (object == MT_COLOR_INDEX_FLAGS)
-    do_uncolor(buf, s, &ColorIndexFlagsList, &do_cache, parse_uncolor);
+    do_uncolor(buf, s, &ColorIndexFlagsList, &do_cache, uncolor);
   else if (object == MT_COLOR_INDEX_SUBJECT)
-    do_uncolor(buf, s, &ColorIndexSubjectList, &do_cache, parse_uncolor);
+    do_uncolor(buf, s, &ColorIndexSubjectList, &do_cache, uncolor);
   else if (object == MT_COLOR_INDEX_TAG)
-    do_uncolor(buf, s, &ColorIndexTagList, &do_cache, parse_uncolor);
+    do_uncolor(buf, s, &ColorIndexTagList, &do_cache, uncolor);
 
   bool is_index = ((object == MT_COLOR_INDEX) || (object == MT_COLOR_INDEX_AUTHOR) ||
                    (object == MT_COLOR_INDEX_FLAGS) || (object == MT_COLOR_INDEX_SUBJECT) ||
