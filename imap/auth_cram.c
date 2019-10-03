@@ -121,8 +121,9 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapAccountData *adata, const char *m
    * primary host name of the server. The syntax of the unencoded form must
    * correspond to that of an RFC822 'msg-id' [RFC822] as described in [POP3].  */
   do
+  {
     rc = imap_cmd_step(adata);
-  while (rc == IMAP_RES_CONTINUE);
+  } while (rc == IMAP_RES_CONTINUE);
 
   if (rc != IMAP_RES_RESPOND)
   {
@@ -163,8 +164,9 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapAccountData *adata, const char *m
   mutt_socket_send(adata->conn, ibuf);
 
   do
+  {
     rc = imap_cmd_step(adata);
-  while (rc == IMAP_RES_CONTINUE);
+  } while (rc == IMAP_RES_CONTINUE);
 
   if (rc != IMAP_RES_OK)
   {

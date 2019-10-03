@@ -150,8 +150,9 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
   while ((rc == SASL_CONTINUE) || (olen > 0))
   {
     do
+    {
       irc = imap_cmd_step(adata);
-    while (irc == IMAP_RES_CONTINUE);
+    } while (irc == IMAP_RES_CONTINUE);
 
     if ((irc == IMAP_RES_BAD) || (irc == IMAP_RES_NO))
       goto bail;

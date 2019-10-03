@@ -1509,8 +1509,9 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   imap_cmd_start(adata, buf);
 
   do
+  {
     rc = imap_cmd_step(adata);
-  while (rc == IMAP_RES_CONTINUE);
+  } while (rc == IMAP_RES_CONTINUE);
 
   if (rc != IMAP_RES_RESPOND)
     goto cmd_step_fail;
@@ -1540,8 +1541,9 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   mutt_file_fclose(&fp);
 
   do
+  {
     rc = imap_cmd_step(adata);
-  while (rc == IMAP_RES_CONTINUE);
+  } while (rc == IMAP_RES_CONTINUE);
 
   if (rc != IMAP_RES_OK)
     goto cmd_step_fail;

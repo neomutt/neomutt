@@ -685,8 +685,9 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
   {
     /* just eat the command, but don't do anything real about it */
     do
+    {
       mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-    while (MoreArgs(s));
+    } while (MoreArgs(s));
 
     return MUTT_CMD_SUCCESS;
   }

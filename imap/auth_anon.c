@@ -60,8 +60,9 @@ enum ImapAuthRes imap_auth_anon(struct ImapAccountData *adata, const char *metho
   imap_cmd_start(adata, "AUTHENTICATE ANONYMOUS");
 
   do
+  {
     rc = imap_cmd_step(adata);
-  while (rc == IMAP_RES_CONTINUE);
+  } while (rc == IMAP_RES_CONTINUE);
 
   if (rc != IMAP_RES_RESPOND)
   {
@@ -72,8 +73,9 @@ enum ImapAuthRes imap_auth_anon(struct ImapAccountData *adata, const char *metho
   mutt_socket_send(adata->conn, "ZHVtbXkK\r\n"); /* base64 ("dummy") */
 
   do
+  {
     rc = imap_cmd_step(adata);
-  while (rc == IMAP_RES_CONTINUE);
+  } while (rc == IMAP_RES_CONTINUE);
 
   if (rc != IMAP_RES_OK)
   {

@@ -171,8 +171,9 @@ enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method
 
   /* expect a null continuation response ("+") */
   do
+  {
     rc = imap_cmd_step(adata);
-  while (rc == IMAP_RES_CONTINUE);
+  } while (rc == IMAP_RES_CONTINUE);
 
   if (rc != IMAP_RES_RESPOND)
   {
@@ -192,8 +193,9 @@ enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method
   {
     /* Read server data */
     do
+    {
       rc = imap_cmd_step(adata);
-    while (rc == IMAP_RES_CONTINUE);
+    } while (rc == IMAP_RES_CONTINUE);
 
     if (rc != IMAP_RES_RESPOND)
     {
@@ -235,8 +237,9 @@ enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method
 
   /* get security flags and buffer size */
   do
+  {
     rc = imap_cmd_step(adata);
-  while (rc == IMAP_RES_CONTINUE);
+  } while (rc == IMAP_RES_CONTINUE);
 
   if (rc != IMAP_RES_RESPOND)
   {
@@ -304,8 +307,9 @@ enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method
 
   /* Joy of victory or agony of defeat? */
   do
+  {
     rc = imap_cmd_step(adata);
-  while (rc == IMAP_RES_CONTINUE);
+  } while (rc == IMAP_RES_CONTINUE);
   if (rc == IMAP_RES_RESPOND)
   {
     mutt_debug(LL_DEBUG1, "Unexpected server continuation request\n");
@@ -334,8 +338,9 @@ enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method
 err_abort_cmd:
   mutt_socket_send(adata->conn, "*\r\n");
   do
+  {
     rc = imap_cmd_step(adata);
-  while (rc == IMAP_RES_CONTINUE);
+  } while (rc == IMAP_RES_CONTINUE);
 
 bail:
   mutt_error(_("GSSAPI authentication failed"));

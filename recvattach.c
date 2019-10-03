@@ -126,8 +126,9 @@ static void mutt_update_v2r(struct AttachCtx *actx)
     {
       curlevel = actx->idx[rindex]->level;
       do
+      {
         rindex++;
-      while ((rindex < actx->idxlen) && (actx->idx[rindex]->level > curlevel));
+      } while ((rindex < actx->idxlen) && (actx->idx[rindex]->level > curlevel));
     }
     else
       rindex++;
