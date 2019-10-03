@@ -125,9 +125,10 @@ extern struct ColorLineList ColorIndexSubjectList; ///< List of colours applied 
 extern struct ColorLineList ColorIndexTagList;     ///< List of colours applied to tags in the index
 extern struct ColorLineList ColorStatusList;       ///< List of colours applied to the status bar
 
-int  mutt_color_alloc  (uint32_t fg, uint32_t bg);
+int  mutt_color_alloc  (uint32_t fg,      uint32_t bg);
 int  mutt_color_combine(uint32_t fg_attr, uint32_t bg_attr);
-void mutt_color_free   (uint32_t fg, uint32_t bg);
+void mutt_color_free   (uint32_t fg,      uint32_t bg);
+
 void mutt_color_init   (void);
 void mutt_colors_free  (void);
 

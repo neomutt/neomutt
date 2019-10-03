@@ -95,77 +95,80 @@ struct ColorList
 static struct ColorList *ColorList = NULL;
 static int UserColors = 0;
 
+// clang-format off
 static const struct Mapping Colors[] = {
-  { "black", COLOR_BLACK },
-  { "blue", COLOR_BLUE },
-  { "cyan", COLOR_CYAN },
-  { "green", COLOR_GREEN },
+  { "black",   COLOR_BLACK },
+  { "blue",    COLOR_BLUE },
+  { "cyan",    COLOR_CYAN },
+  { "green",   COLOR_GREEN },
   { "magenta", COLOR_MAGENTA },
-  { "red", COLOR_RED },
-  { "white", COLOR_WHITE },
-  { "yellow", COLOR_YELLOW },
+  { "red",     COLOR_RED },
+  { "white",   COLOR_WHITE },
+  { "yellow",  COLOR_YELLOW },
 #if defined(USE_SLANG_CURSES) || defined(HAVE_USE_DEFAULT_COLORS)
   { "default", COLOR_DEFAULT },
 #endif
-  { 0, 0 },
+  { 0,         0 },
 };
-
+// clang-format on
 #endif /* HAVE_COLOR */
 
+// clang-format off
 static const struct Mapping Fields[] = {
-  { "attachment", MT_COLOR_ATTACHMENT },
-  { "attach_headers", MT_COLOR_ATTACH_HEADERS },
-  { "body", MT_COLOR_BODY },
-  { "bold", MT_COLOR_BOLD },
-  { "error", MT_COLOR_ERROR },
-  { "hdrdefault", MT_COLOR_HDRDEFAULT },
-  { "header", MT_COLOR_HEADER },
-  { "index", MT_COLOR_INDEX },
-  { "index_author", MT_COLOR_INDEX_AUTHOR },
-  { "index_collapsed", MT_COLOR_INDEX_COLLAPSED },
-  { "index_date", MT_COLOR_INDEX_DATE },
-  { "index_flags", MT_COLOR_INDEX_FLAGS },
-  { "index_label", MT_COLOR_INDEX_LABEL },
-  { "index_number", MT_COLOR_INDEX_NUMBER },
-  { "index_size", MT_COLOR_INDEX_SIZE },
-  { "index_subject", MT_COLOR_INDEX_SUBJECT },
-  { "index_tag", MT_COLOR_INDEX_TAG },
-  { "index_tags", MT_COLOR_INDEX_TAGS },
-  { "indicator", MT_COLOR_INDICATOR },
-  { "markers", MT_COLOR_MARKERS },
-  { "message", MT_COLOR_MESSAGE },
-  { "normal", MT_COLOR_NORMAL },
-  { "options", MT_COLOR_OPTIONS },
-  { "progress", MT_COLOR_PROGRESS },
-  { "prompt", MT_COLOR_PROMPT },
-  { "quoted", MT_COLOR_QUOTED },
-  { "search", MT_COLOR_SEARCH },
+  { "attachment",        MT_COLOR_ATTACHMENT },
+  { "attach_headers",    MT_COLOR_ATTACH_HEADERS },
+  { "body",              MT_COLOR_BODY },
+  { "bold",              MT_COLOR_BOLD },
+  { "error",             MT_COLOR_ERROR },
+  { "hdrdefault",        MT_COLOR_HDRDEFAULT },
+  { "header",            MT_COLOR_HEADER },
+  { "index",             MT_COLOR_INDEX },
+  { "index_author",      MT_COLOR_INDEX_AUTHOR },
+  { "index_collapsed",   MT_COLOR_INDEX_COLLAPSED },
+  { "index_date",        MT_COLOR_INDEX_DATE },
+  { "index_flags",       MT_COLOR_INDEX_FLAGS },
+  { "index_label",       MT_COLOR_INDEX_LABEL },
+  { "index_number",      MT_COLOR_INDEX_NUMBER },
+  { "index_size",        MT_COLOR_INDEX_SIZE },
+  { "index_subject",     MT_COLOR_INDEX_SUBJECT },
+  { "index_tag",         MT_COLOR_INDEX_TAG },
+  { "index_tags",        MT_COLOR_INDEX_TAGS },
+  { "indicator",         MT_COLOR_INDICATOR },
+  { "markers",           MT_COLOR_MARKERS },
+  { "message",           MT_COLOR_MESSAGE },
+  { "normal",            MT_COLOR_NORMAL },
+  { "options",           MT_COLOR_OPTIONS },
+  { "progress",          MT_COLOR_PROGRESS },
+  { "prompt",            MT_COLOR_PROMPT },
+  { "quoted",            MT_COLOR_QUOTED },
+  { "search",            MT_COLOR_SEARCH },
 #ifdef USE_SIDEBAR
-  { "sidebar_divider", MT_COLOR_SIDEBAR_DIVIDER },
-  { "sidebar_flagged", MT_COLOR_SIDEBAR_FLAGGED },
+  { "sidebar_divider",   MT_COLOR_SIDEBAR_DIVIDER },
+  { "sidebar_flagged",   MT_COLOR_SIDEBAR_FLAGGED },
   { "sidebar_highlight", MT_COLOR_SIDEBAR_HIGHLIGHT },
   { "sidebar_indicator", MT_COLOR_SIDEBAR_INDICATOR },
-  { "sidebar_new", MT_COLOR_SIDEBAR_NEW },
-  { "sidebar_ordinary", MT_COLOR_SIDEBAR_ORDINARY },
+  { "sidebar_new",       MT_COLOR_SIDEBAR_NEW },
+  { "sidebar_ordinary",  MT_COLOR_SIDEBAR_ORDINARY },
   { "sidebar_spoolfile", MT_COLOR_SIDEBAR_SPOOLFILE },
 #endif
-  { "signature", MT_COLOR_SIGNATURE },
-  { "status", MT_COLOR_STATUS },
-  { "tilde", MT_COLOR_TILDE },
-  { "tree", MT_COLOR_TREE },
-  { "underline", MT_COLOR_UNDERLINE },
-  { "warning", MT_COLOR_WARNING },
-  { NULL, 0 },
+  { "signature",         MT_COLOR_SIGNATURE },
+  { "status",            MT_COLOR_STATUS },
+  { "tilde",             MT_COLOR_TILDE },
+  { "tree",              MT_COLOR_TREE },
+  { "underline",         MT_COLOR_UNDERLINE },
+  { "warning",           MT_COLOR_WARNING },
+  { NULL,                0 },
 };
 
 static const struct Mapping ComposeFields[] = {
-  { "header", MT_COLOR_COMPOSE_HEADER },
-  { "security_encrypt", MT_COLOR_COMPOSE_SECURITY_ENCRYPT },
-  { "security_sign", MT_COLOR_COMPOSE_SECURITY_SIGN },
-  { "security_both", MT_COLOR_COMPOSE_SECURITY_BOTH },
-  { "security_none", MT_COLOR_COMPOSE_SECURITY_NONE },
-  { NULL, 0 }
+  { "header",            MT_COLOR_COMPOSE_HEADER },
+  { "security_encrypt",  MT_COLOR_COMPOSE_SECURITY_ENCRYPT },
+  { "security_sign",     MT_COLOR_COMPOSE_SECURITY_SIGN },
+  { "security_both",     MT_COLOR_COMPOSE_SECURITY_BOTH },
+  { "security_none",     MT_COLOR_COMPOSE_SECURITY_NONE },
+  { NULL,                0 }
 };
+// clang-format off
 
 #define COLOR_QUOTE_INIT 8
 
@@ -235,7 +238,6 @@ void mutt_color_init(void)
 }
 
 #ifdef HAVE_COLOR
-
 #ifdef USE_SLANG_CURSES
 /**
  * get_color_name - Get a colour's name from its ID
@@ -454,11 +456,9 @@ void mutt_color_free(uint32_t fg, uint32_t bg)
     p = p->next;
   }
 }
-
 #endif /* HAVE_COLOR */
 
 #ifdef HAVE_COLOR
-
 /**
  * parse_color_name - Parse a colour name
  * @param[in]  s     String to parse
@@ -562,7 +562,6 @@ static int parse_color_name(const char *s, uint32_t *col, int *attr, bool is_fg,
 
   return 0;
 }
-
 #endif
 
 /**
@@ -721,11 +720,11 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
     for (int i = 0; Context && i < Context->mailbox->msg_count; i++)
       Context->mailbox->emails[i]->pair = 0;
   }
+
   return MUTT_CMD_SUCCESS;
 }
 
 #ifdef HAVE_COLOR
-
 /**
  * mutt_parse_uncolor - Parse the 'uncolor' command - Implements ::command_t
  */
@@ -734,7 +733,6 @@ enum CommandResult mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s,
 {
   return parse_uncolor(buf, s, data, err, true);
 }
-
 #endif
 
 /**
@@ -985,7 +983,6 @@ static int parse_color_pair(struct Buffer *buf, struct Buffer *s, uint32_t *fg,
 
   return 0;
 }
-
 #endif
 
 /**
@@ -1215,7 +1212,6 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
 }
 
 #ifdef HAVE_COLOR
-
 /**
  * mutt_parse_color - Parse the 'color' command - Implements ::command_t
  */
@@ -1229,7 +1225,6 @@ enum CommandResult mutt_parse_color(struct Buffer *buf, struct Buffer *s,
 
   return parse_color(buf, s, err, parse_color_pair, dry_run, true);
 }
-
 #endif
 
 /**
