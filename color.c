@@ -343,6 +343,16 @@ static void color_line_list_clear(struct ColorLineList *list)
  */
 static void colors_clear(struct Colors *c)
 {
+  color_line_list_clear(&c->attach_list);
+  color_line_list_clear(&c->body_list);
+  color_line_list_clear(&c->hdr_list);
+  color_line_list_clear(&c->index_author_list);
+  color_line_list_clear(&c->index_flags_list);
+  color_line_list_clear(&c->index_list);
+  color_line_list_clear(&c->index_subject_list);
+  color_line_list_clear(&c->index_tag_list);
+  color_line_list_clear(&c->status_list);
+
   defs_clear(c);
   quotes_clear(c);
 
@@ -358,6 +368,16 @@ void mutt_color_init(void)
 
   quotes_init(Colors);
   defs_init(Colors);
+
+  STAILQ_INIT(&Colors->attach_list);
+  STAILQ_INIT(&Colors->body_list);
+  STAILQ_INIT(&Colors->hdr_list);
+  STAILQ_INIT(&Colors->index_author_list);
+  STAILQ_INIT(&Colors->index_flags_list);
+  STAILQ_INIT(&Colors->index_list);
+  STAILQ_INIT(&Colors->index_subject_list);
+  STAILQ_INIT(&Colors->index_tag_list);
+  STAILQ_INIT(&Colors->status_list);
 
 #ifdef HAVE_COLOR
   start_color();
