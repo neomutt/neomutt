@@ -287,20 +287,6 @@ void mutt_color_free(uint32_t fg, uint32_t bg)
 }
 
 /**
- * color_line_new - Create a new ColorLine
- * @retval ptr Newly allocated ColorLine
- */
-static struct ColorLine *color_line_new(void)
-{
-  struct ColorLine *p = mutt_mem_calloc(1, sizeof(struct ColorLine));
-
-  p->fg = COLOR_UNSET;
-  p->bg = COLOR_UNSET;
-
-  return p;
-}
-
-/**
  * color_line_free - Free a ColorLine
  * @param ptr         ColorLine to free
  * @param free_colors If true, free its colours too
@@ -382,6 +368,20 @@ void mutt_color_init(void)
 #ifdef HAVE_COLOR
   start_color();
 #endif
+}
+
+/**
+ * color_line_new - Create a new ColorLine
+ * @retval ptr Newly allocated ColorLine
+ */
+static struct ColorLine *color_line_new(void)
+{
+  struct ColorLine *cl = mutt_mem_calloc(1, sizeof(struct ColorLine));
+
+  cl->fg = COLOR_UNSET;
+  cl->bg = COLOR_UNSET;
+
+  return cl;
 }
 
 #ifdef HAVE_COLOR
