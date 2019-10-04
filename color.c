@@ -190,6 +190,36 @@ static void defs_clear(struct Colors *c)
 }
 
 /**
+ * quotes_free - Free the quoted-email colours
+ * @param c Colours
+ */
+static void quotes_free(struct Colors *c)
+{
+  FREE(&c->quotes);
+}
+
+/**
+ * quotes_init - Initialise the quoted-email colours
+ * @param c Colours
+ */
+static void quotes_init(struct Colors *c)
+{
+  c->quotes = mutt_mem_malloc(COLOR_QUOTES_MAX * sizeof(int));
+  memset(c->quotes, A_NORMAL, COLOR_QUOTES_MAX * sizeof(int));
+  c->quotes_used = 0;
+}
+
+/**
+ * quotes_clear - Reset the quoted-email colours
+ * @param c Colours
+ */
+static void quotes_clear(struct Colors *c)
+{
+  memset(c->quotes, A_NORMAL, COLOR_QUOTES_MAX * sizeof(int));
+  c->quotes_used = 0;
+}
+
+/**
  * color_line_new - Create a new ColorLine
  * @retval ptr Newly allocated ColorLine
  */
@@ -247,6 +277,7 @@ static void color_line_list_clear(struct ColorLineList *list)
 static void colors_clear(struct Colors *c)
 {
   defs_clear(c);
+  quotes_clear(c);
 }
 
 /**
@@ -256,10 +287,8 @@ void mutt_color_init(void)
 {
   Colors = mutt_mem_calloc(1, sizeof(*Colors));
 
+  quotes_init(Colors);
   defs_init(Colors);
-  Colors->quotes = mutt_mem_malloc(COLOR_QUOTES_MAX * sizeof(int));
-  memset(Colors->quotes, A_NORMAL, COLOR_QUOTES_MAX * sizeof(int));
-  Colors->quotes_used = 0;
 
 #ifdef HAVE_COLOR
   start_color();
@@ -1265,5 +1294,6 @@ void mutt_colors_free(void)
   Colors->user_colors = NULL;
   colors_clear(Colors);
   defs_free(Colors);
+  quotes_free(Colors);
   FREE(&Colors);
 }
