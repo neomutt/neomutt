@@ -63,23 +63,6 @@
 typedef int (*parser_callback_t)(struct Buffer *buf, struct Buffer *s, uint32_t *fg,
                                  uint32_t *bg, int *attr, struct Buffer *err);
 
-/* globals */
-int *ColorQuote = NULL;
-int ColorQuoteUsed;
-int ColorDefs[MT_COLOR_MAX];
-struct ColorLineList ColorAttachList = STAILQ_HEAD_INITIALIZER(ColorAttachList);
-struct ColorLineList ColorBodyList = STAILQ_HEAD_INITIALIZER(ColorBodyList);
-struct ColorLineList ColorHdrList = STAILQ_HEAD_INITIALIZER(ColorHdrList);
-struct ColorLineList ColorIndexAuthorList = STAILQ_HEAD_INITIALIZER(ColorIndexAuthorList);
-struct ColorLineList ColorIndexFlagsList = STAILQ_HEAD_INITIALIZER(ColorIndexFlagsList);
-struct ColorLineList ColorIndexList = STAILQ_HEAD_INITIALIZER(ColorIndexList);
-struct ColorLineList ColorIndexSubjectList = STAILQ_HEAD_INITIALIZER(ColorIndexSubjectList);
-struct ColorLineList ColorIndexTagList = STAILQ_HEAD_INITIALIZER(ColorIndexTagList);
-struct ColorLineList ColorStatusList = STAILQ_HEAD_INITIALIZER(ColorStatusList);
-
-/* local to this file */
-static int ColorQuoteSize;
-
 #ifdef HAVE_COLOR
 
 #define COLOR_DEFAULT (-2)
@@ -91,23 +74,6 @@ static int ColorQuoteSize;
  * Note that no flag means it's a palette color.
  */
 #define RGB24 (1U << 24)
-
-/**
- * struct ColorList - A set of colors
- */
-struct ColorList
-{
-  /* TrueColor uses 24bit. Use fixed-width integer type to make sure it fits.
-   * Use the upper 8 bits to store flags.  */
-  uint32_t fg;
-  uint32_t bg;
-  short index;
-  short count;
-  struct ColorList *next;
-};
-
-static struct ColorList *ColorList = NULL;
-static int UserColors = 0;
 
 // clang-format off
 static const struct Mapping ColorNames[] = {
@@ -242,23 +208,25 @@ static void color_line_list_clear(struct ColorLineList *list)
  */
 void mutt_color_init(void)
 {
-  memset(ColorDefs, A_NORMAL, sizeof(int) * MT_COLOR_MAX);
-  ColorQuote = mutt_mem_malloc(COLOR_QUOTE_INIT * sizeof(int));
-  memset(ColorQuote, A_NORMAL, sizeof(int) * COLOR_QUOTE_INIT);
-  ColorQuoteSize = COLOR_QUOTE_INIT;
-  ColorQuoteUsed = 0;
+  Colors = mutt_mem_calloc(1, sizeof(*Colors));
+  Colors->defs = mutt_mem_malloc(MT_COLOR_MAX * sizeof(int));
+  memset(Colors->defs, A_NORMAL, sizeof(int) * MT_COLOR_MAX);
+  Colors->quotes = mutt_mem_malloc(COLOR_QUOTE_INIT * sizeof(int));
+  memset(Colors->quotes, A_NORMAL, sizeof(int) * COLOR_QUOTE_INIT);
+  Colors->quotes_size = COLOR_QUOTE_INIT;
+  Colors->quotes_used = 0;
 
   /* set some defaults */
-  ColorDefs[MT_COLOR_STATUS] = A_REVERSE;
-  ColorDefs[MT_COLOR_INDICATOR] = A_REVERSE;
-  ColorDefs[MT_COLOR_SEARCH] = A_REVERSE;
-  ColorDefs[MT_COLOR_MARKERS] = A_REVERSE;
+  Colors->defs[MT_COLOR_STATUS] = A_REVERSE;
+  Colors->defs[MT_COLOR_INDICATOR] = A_REVERSE;
+  Colors->defs[MT_COLOR_SEARCH] = A_REVERSE;
+  Colors->defs[MT_COLOR_MARKERS] = A_REVERSE;
 #ifdef USE_SIDEBAR
-  ColorDefs[MT_COLOR_SIDEBAR_HIGHLIGHT] = A_UNDERLINE;
+  Colors->defs[MT_COLOR_SIDEBAR_HIGHLIGHT] = A_UNDERLINE;
 #endif
   /* special meaning: toggle the relevant attribute */
-  ColorDefs[MT_COLOR_BOLD] = 0;
-  ColorDefs[MT_COLOR_UNDERLINE] = 0;
+  Colors->defs[MT_COLOR_BOLD] = 0;
+  Colors->defs[MT_COLOR_UNDERLINE] = 0;
 
 #ifdef HAVE_COLOR
   start_color();
@@ -327,7 +295,7 @@ int mutt_color_alloc(uint32_t fg, uint32_t bg)
 #ifdef USE_SLANG_CURSES
   char fgc[128], bgc[128];
 #endif
-  struct ColorList *p = ColorList;
+  struct ColorList *p = Colors->user_colors;
 
   /* check to see if this color is already allocated to save space */
   while (p)
@@ -341,14 +309,14 @@ int mutt_color_alloc(uint32_t fg, uint32_t bg)
   }
 
   /* check to see if there are colors left */
-  if (++UserColors > COLOR_PAIRS)
+  if (++Colors->num_user_colors > COLOR_PAIRS)
     return A_NORMAL;
 
   /* find the smallest available index (object) */
   int i = 1;
   while (true)
   {
-    p = ColorList;
+    p = Colors->user_colors;
     while (p)
     {
       if (p->index == i)
@@ -361,8 +329,8 @@ int mutt_color_alloc(uint32_t fg, uint32_t bg)
   }
 
   p = mutt_mem_malloc(sizeof(struct ColorList));
-  p->next = ColorList;
-  ColorList = p;
+  p->next = Colors->user_colors;
+  Colors->user_colors = p;
 
   p->index = i;
   p->count = 1;
@@ -387,7 +355,7 @@ int mutt_color_alloc(uint32_t fg, uint32_t bg)
   init_pair(i, fg, bg);
 #endif
 
-  mutt_debug(LL_DEBUG3, "Color pairs used so far: %d\n", UserColors);
+  mutt_debug(LL_DEBUG3, "Color pairs used so far: %d\n", Colors->num_user_colors);
 
   return COLOR_PAIR(p->index);
 }
@@ -402,7 +370,7 @@ int mutt_color_alloc(uint32_t fg, uint32_t bg)
  */
 static int mutt_lookup_color(short pair, uint32_t *fg, uint32_t *bg)
 {
-  struct ColorList *p = ColorList;
+  struct ColorList *p = Colors->user_colors;
 
   while (p)
   {
@@ -449,7 +417,7 @@ void mutt_color_free(uint32_t fg, uint32_t bg)
 {
   struct ColorList *q = NULL;
 
-  struct ColorList *p = ColorList;
+  struct ColorList *p = Colors->user_colors;
   while (p)
   {
     if ((p->fg == fg) && (p->bg == bg))
@@ -458,16 +426,16 @@ void mutt_color_free(uint32_t fg, uint32_t bg)
       if (p->count > 0)
         return;
 
-      UserColors--;
-      mutt_debug(LL_DEBUG1, "Color pairs used so far: %d\n", UserColors);
+      Colors->num_user_colors--;
+      mutt_debug(LL_DEBUG1, "Color pairs used so far: %d\n", Colors->num_user_colors);
 
-      if (p == ColorList)
+      if (p == Colors->user_colors)
       {
-        ColorList = ColorList->next;
+        Colors->user_colors = Colors->user_colors->next;
         FREE(&p);
         return;
       }
-      q = ColorList;
+      q = Colors->user_colors;
       while (q)
       {
         if (q->next == p)
@@ -621,7 +589,7 @@ static bool do_uncolor(struct Buffer *buf, struct Buffer *s,
       {
         rc = true;
 
-        mutt_debug(LL_DEBUG1, "Freeing pattern \"%s\" from ColorList\n", buf->data);
+        mutt_debug(LL_DEBUG1, "Freeing pattern \"%s\" from user_colors\n", buf->data);
         if (prev)
           STAILQ_REMOVE_AFTER(cl, prev, entries);
         else
@@ -663,7 +631,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
 
   if (object > MT_COLOR_INDEX_SUBJECT)
   { /* uncolor index column */
-    ColorDefs[object] = 0;
+    Colors->defs[object] = 0;
     mutt_menu_set_redraw_full(MENU_MAIN);
     return MUTT_CMD_SUCCESS;
   }
@@ -702,21 +670,21 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
 
   bool changed = false;
   if (object == MT_COLOR_ATTACH_HEADERS)
-    changed |= do_uncolor(buf, s, &ColorAttachList, uncolor);
+    changed |= do_uncolor(buf, s, &Colors->attach_list, uncolor);
   else if (object == MT_COLOR_BODY)
-    changed |= do_uncolor(buf, s, &ColorBodyList, uncolor);
+    changed |= do_uncolor(buf, s, &Colors->body_list, uncolor);
   else if (object == MT_COLOR_HEADER)
-    changed |= do_uncolor(buf, s, &ColorHdrList, uncolor);
+    changed |= do_uncolor(buf, s, &Colors->hdr_list, uncolor);
   else if (object == MT_COLOR_INDEX)
-    changed |= do_uncolor(buf, s, &ColorIndexList, uncolor);
+    changed |= do_uncolor(buf, s, &Colors->index_list, uncolor);
   else if (object == MT_COLOR_INDEX_AUTHOR)
-    changed |= do_uncolor(buf, s, &ColorIndexAuthorList, uncolor);
+    changed |= do_uncolor(buf, s, &Colors->index_author_list, uncolor);
   else if (object == MT_COLOR_INDEX_FLAGS)
-    changed |= do_uncolor(buf, s, &ColorIndexFlagsList, uncolor);
+    changed |= do_uncolor(buf, s, &Colors->index_flags_list, uncolor);
   else if (object == MT_COLOR_INDEX_SUBJECT)
-    changed |= do_uncolor(buf, s, &ColorIndexSubjectList, uncolor);
+    changed |= do_uncolor(buf, s, &Colors->index_subject_list, uncolor);
   else if (object == MT_COLOR_INDEX_TAG)
-    changed |= do_uncolor(buf, s, &ColorIndexTagList, uncolor);
+    changed |= do_uncolor(buf, s, &Colors->index_tag_list, uncolor);
 
   bool is_index = ((object == MT_COLOR_INDEX) || (object == MT_COLOR_INDEX_AUTHOR) ||
                    (object == MT_COLOR_INDEX_FLAGS) || (object == MT_COLOR_INDEX_SUBJECT) ||
@@ -1110,11 +1078,11 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
 #endif
 
   if (object == MT_COLOR_HEADER)
-    rc = add_pattern(&ColorHdrList, buf->data, false, fg, bg, attr, err, false, match);
+    rc = add_pattern(&Colors->hdr_list, buf->data, false, fg, bg, attr, err, false, match);
   else if (object == MT_COLOR_BODY)
-    rc = add_pattern(&ColorBodyList, buf->data, true, fg, bg, attr, err, false, match);
+    rc = add_pattern(&Colors->body_list, buf->data, true, fg, bg, attr, err, false, match);
   else if (object == MT_COLOR_ATTACH_HEADERS)
-    rc = add_pattern(&ColorAttachList, buf->data, true, fg, bg, attr, err, false, match);
+    rc = add_pattern(&Colors->attach_list, buf->data, true, fg, bg, attr, err, false, match);
   else if ((object == MT_COLOR_STATUS) && MoreArgs(s))
   {
     /* 'color status fg bg' can have up to 2 arguments:
@@ -1143,60 +1111,60 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_WARNING;
     }
 
-    rc = add_pattern(&ColorStatusList, buf->data, true, fg, bg, attr, err, false, match);
+    rc = add_pattern(&Colors->status_list, buf->data, true, fg, bg, attr, err, false, match);
   }
   else if (object == MT_COLOR_INDEX)
   {
-    rc = add_pattern(&ColorIndexList, buf->data, true, fg, bg, attr, err, true, match);
+    rc = add_pattern(&Colors->index_list, buf->data, true, fg, bg, attr, err, true, match);
     mutt_menu_set_redraw_full(MENU_MAIN);
   }
   else if (object == MT_COLOR_INDEX_AUTHOR)
   {
-    rc = add_pattern(&ColorIndexAuthorList, buf->data, true, fg, bg, attr, err, true, match);
+    rc = add_pattern(&Colors->index_author_list, buf->data, true, fg, bg, attr, err, true, match);
     mutt_menu_set_redraw_full(MENU_MAIN);
   }
   else if (object == MT_COLOR_INDEX_FLAGS)
   {
-    rc = add_pattern(&ColorIndexFlagsList, buf->data, true, fg, bg, attr, err, true, match);
+    rc = add_pattern(&Colors->index_flags_list, buf->data, true, fg, bg, attr, err, true, match);
     mutt_menu_set_redraw_full(MENU_MAIN);
   }
   else if (object == MT_COLOR_INDEX_SUBJECT)
   {
-    rc = add_pattern(&ColorIndexSubjectList, buf->data, true, fg, bg, attr, err, true, match);
+    rc = add_pattern(&Colors->index_subject_list, buf->data, true, fg, bg, attr, err, true, match);
     mutt_menu_set_redraw_full(MENU_MAIN);
   }
   else if (object == MT_COLOR_INDEX_TAG)
   {
-    rc = add_pattern(&ColorIndexTagList, buf->data, true, fg, bg, attr, err, true, match);
+    rc = add_pattern(&Colors->index_tag_list, buf->data, true, fg, bg, attr, err, true, match);
     mutt_menu_set_redraw_full(MENU_MAIN);
   }
   else if (object == MT_COLOR_QUOTED)
   {
-    if (q_level >= ColorQuoteSize)
+    if (q_level >= Colors->quotes_size)
     {
-      mutt_mem_realloc(&ColorQuote, (ColorQuoteSize += 2) * sizeof(int));
-      ColorQuote[ColorQuoteSize - 2] = ColorDefs[MT_COLOR_QUOTED];
-      ColorQuote[ColorQuoteSize - 1] = ColorDefs[MT_COLOR_QUOTED];
+      mutt_mem_realloc(&Colors->quotes, (Colors->quotes_size += 2) * sizeof(int));
+      Colors->quotes[Colors->quotes_size - 2] = Colors->defs[MT_COLOR_QUOTED];
+      Colors->quotes[Colors->quotes_size - 1] = Colors->defs[MT_COLOR_QUOTED];
     }
-    if (q_level >= ColorQuoteUsed)
-      ColorQuoteUsed = q_level + 1;
+    if (q_level >= Colors->quotes_used)
+      Colors->quotes_used = q_level + 1;
     if (q_level == 0)
     {
-      ColorDefs[MT_COLOR_QUOTED] = fgbgattr_to_color(fg, bg, attr);
+      Colors->defs[MT_COLOR_QUOTED] = fgbgattr_to_color(fg, bg, attr);
 
-      ColorQuote[0] = ColorDefs[MT_COLOR_QUOTED];
-      for (q_level = 1; q_level < ColorQuoteUsed; q_level++)
+      Colors->quotes[0] = Colors->defs[MT_COLOR_QUOTED];
+      for (q_level = 1; q_level < Colors->quotes_used; q_level++)
       {
-        if (ColorQuote[q_level] == A_NORMAL)
-          ColorQuote[q_level] = ColorDefs[MT_COLOR_QUOTED];
+        if (Colors->quotes[q_level] == A_NORMAL)
+          Colors->quotes[q_level] = Colors->defs[MT_COLOR_QUOTED];
       }
     }
     else
-      ColorQuote[q_level] = fgbgattr_to_color(fg, bg, attr);
+      Colors->quotes[q_level] = fgbgattr_to_color(fg, bg, attr);
   }
   else
   {
-    ColorDefs[object] = fgbgattr_to_color(fg, bg, attr);
+    Colors->defs[object] = fgbgattr_to_color(fg, bg, attr);
     if (object > MT_COLOR_INDEX_AUTHOR)
       mutt_menu_set_redraw_full(MENU_MAIN);
   }
@@ -1244,17 +1212,17 @@ enum CommandResult mutt_parse_mono(struct Buffer *buf, struct Buffer *s,
  */
 void mutt_colors_free(void)
 {
-  color_line_list_clear(&ColorAttachList);
-  color_line_list_clear(&ColorBodyList);
-  color_line_list_clear(&ColorHdrList);
-  color_line_list_clear(&ColorIndexAuthorList);
-  color_line_list_clear(&ColorIndexFlagsList);
-  color_line_list_clear(&ColorIndexList);
-  color_line_list_clear(&ColorIndexSubjectList);
-  color_line_list_clear(&ColorIndexTagList);
-  color_line_list_clear(&ColorStatusList);
+  color_line_list_clear(&Colors->attach_list);
+  color_line_list_clear(&Colors->body_list);
+  color_line_list_clear(&Colors->hdr_list);
+  color_line_list_clear(&Colors->index_author_list);
+  color_line_list_clear(&Colors->index_flags_list);
+  color_line_list_clear(&Colors->index_list);
+  color_line_list_clear(&Colors->index_subject_list);
+  color_line_list_clear(&Colors->index_tag_list);
+  color_line_list_clear(&Colors->status_list);
 
-  struct ColorList *cl = ColorList;
+  struct ColorList *cl = Colors->user_colors;
   struct ColorList *next = NULL;
   while (cl)
   {
@@ -1262,5 +1230,6 @@ void mutt_colors_free(void)
     FREE(&cl);
     cl = next;
   }
-  ColorList = NULL;
+  Colors->user_colors = NULL;
+  FREE(&Colors);
 }

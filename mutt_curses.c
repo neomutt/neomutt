@@ -25,6 +25,7 @@
 #include "config.h"
 #include "mutt_curses.h"
 #include "color.h"
+#include "globals.h"
 
 /**
  * mutt_curses_set_attr - Set the attributes for text
@@ -48,15 +49,15 @@ void mutt_curses_set_attr(int attr)
 void mutt_curses_set_color(enum ColorId color)
 {
 #ifdef HAVE_BKGDSET
-  if (ColorDefs[color] != 0)
-    bkgdset(ColorDefs[color] | ' ');
+  if (Colors->defs[color] != 0)
+    bkgdset(Colors->defs[color] | ' ');
   else
-    bkgdset(ColorDefs[MT_COLOR_NORMAL] | ' ');
+    bkgdset(Colors->defs[MT_COLOR_NORMAL] | ' ');
 #else
-  if (ColorDefs[color] != 0)
-    attrset(ColorDefs[color]);
+  if (Colors->defs[color] != 0)
+    attrset(Colors->defs[color]);
   else
-    attrset(ColorDefs[MT_COLOR_NORMAL]);
+    attrset(Colors->defs[MT_COLOR_NORMAL]);
 #endif
 }
 

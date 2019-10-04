@@ -112,18 +112,42 @@ enum ColorId
   MT_COLOR_MAX,
 };
 
-extern int *ColorQuote;                            ///< Array of colours for quoted email text
-extern int ColorQuoteUsed;                         ///< Number of colours for quoted email text
-extern int ColorDefs[];                            ///< Array of all fixed colours, see enum ColorId
-extern struct ColorLineList ColorAttachList;       ///< List of colours applied to the attachment headers
-extern struct ColorLineList ColorBodyList;         ///< List of colours applied to the email body
-extern struct ColorLineList ColorHdrList;          ///< List of colours applied to the email headers
-extern struct ColorLineList ColorIndexAuthorList;  ///< List of colours applied to the author in the index
-extern struct ColorLineList ColorIndexFlagsList;   ///< List of colours applied to the flags in the index
-extern struct ColorLineList ColorIndexList;        ///< List of default colours applied to the index
-extern struct ColorLineList ColorIndexSubjectList; ///< List of colours applied to the subject in the index
-extern struct ColorLineList ColorIndexTagList;     ///< List of colours applied to tags in the index
-extern struct ColorLineList ColorStatusList;       ///< List of colours applied to the status bar
+/**
+ * struct ColorList - A set of colors
+ */
+struct ColorList
+{
+  /* TrueColor uses 24bit. Use fixed-width integer type to make sure it fits.
+   * Use the upper 8 bits to store flags.  */
+  uint32_t fg;
+  uint32_t bg;
+  short index;
+  short count;
+  struct ColorList *next;
+};
+
+struct Colors
+{
+  int *defs;                               ///< Array of all fixed colours, see enum ColorId
+
+  struct ColorLineList attach_list;        ///< List of colours applied to the attachment headers
+  struct ColorLineList body_list;          ///< List of colours applied to the email body
+  struct ColorLineList hdr_list;           ///< List of colours applied to the email headers
+  struct ColorLineList index_author_list;  ///< List of colours applied to the author in the index
+  struct ColorLineList index_flags_list;   ///< List of colours applied to the flags in the index
+  struct ColorLineList index_list;         ///< List of default colours applied to the index
+  struct ColorLineList index_subject_list; ///< List of colours applied to the subject in the index
+  struct ColorLineList index_tag_list;     ///< List of colours applied to tags in the index
+  struct ColorLineList status_list;        ///< List of colours applied to the status bar
+
+  int *quotes;                             ///< Array of colours for quoted email text
+  int quotes_used;                         ///< Number of colours for quoted email text
+  int quotes_size;
+
+
+  struct ColorList *user_colors;
+  int num_user_colors;
+};
 
 int  mutt_color_alloc  (uint32_t fg,      uint32_t bg);
 int  mutt_color_combine(uint32_t fg_attr, uint32_t bg_attr);

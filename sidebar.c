@@ -835,7 +835,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
 
     if (entryidx == OpnIndex)
     {
-      if ((ColorDefs[MT_COLOR_SIDEBAR_INDICATOR] != 0))
+      if ((Colors->defs[MT_COLOR_SIDEBAR_INDICATOR] != 0))
         mutt_curses_set_color(MT_COLOR_SIDEBAR_INDICATOR);
       else
         mutt_curses_set_color(MT_COLOR_INDICATOR);
@@ -846,14 +846,14 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
       mutt_curses_set_color(MT_COLOR_SIDEBAR_NEW);
     else if (m->msg_flagged > 0)
       mutt_curses_set_color(MT_COLOR_SIDEBAR_FLAGGED);
-    else if ((ColorDefs[MT_COLOR_SIDEBAR_SPOOLFILE] != 0) &&
+    else if ((Colors->defs[MT_COLOR_SIDEBAR_SPOOLFILE] != 0) &&
              (mutt_str_strcmp(mailbox_path(m), C_Spoolfile) == 0))
     {
       mutt_curses_set_color(MT_COLOR_SIDEBAR_SPOOLFILE);
     }
     else
     {
-      if (ColorDefs[MT_COLOR_SIDEBAR_ORDINARY] != 0)
+      if (Colors->defs[MT_COLOR_SIDEBAR_ORDINARY] != 0)
         mutt_curses_set_color(MT_COLOR_SIDEBAR_ORDINARY);
       else
         mutt_curses_set_color(MT_COLOR_NORMAL);

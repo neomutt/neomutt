@@ -94,16 +94,16 @@ static int get_color(int index, unsigned char *s)
   switch (type)
   {
     case MT_COLOR_INDEX_AUTHOR:
-      color = &ColorIndexAuthorList;
+      color = &Colors->index_author_list;
       break;
     case MT_COLOR_INDEX_FLAGS:
-      color = &ColorIndexFlagsList;
+      color = &Colors->index_flags_list;
       break;
     case MT_COLOR_INDEX_SUBJECT:
-      color = &ColorIndexSubjectList;
+      color = &Colors->index_subject_list;
       break;
     case MT_COLOR_INDEX_TAG:
-      STAILQ_FOREACH(np, &ColorIndexTagList, entries)
+      STAILQ_FOREACH(np, &Colors->index_tag_list, entries)
       {
         if (strncmp((const char *) (s + 1), np->pattern, strlen(np->pattern)) == 0)
           return np->pair;
@@ -116,7 +116,7 @@ static int get_color(int index, unsigned char *s)
       }
       return 0;
     default:
-      return ColorDefs[type];
+      return Colors->defs[type];
   }
 
   STAILQ_FOREACH(np, color, entries)
@@ -153,7 +153,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
         /* Combining tree fg color and another bg color requires
          * having use_default_colors, because the other bg color
          * may be undefined. */
-        mutt_curses_set_attr(mutt_color_combine(ColorDefs[MT_COLOR_TREE], attr));
+        mutt_curses_set_attr(mutt_color_combine(Colors->defs[MT_COLOR_TREE], attr));
 #else
         mutt_curses_set_color(MT_COLOR_TREE);
 #endif
@@ -942,7 +942,7 @@ static void menu_prev_entry(struct Menu *menu)
  */
 static int default_color(int line)
 {
-  return ColorDefs[MT_COLOR_NORMAL];
+  return Colors->defs[MT_COLOR_NORMAL];
 }
 
 /**

@@ -864,8 +864,8 @@ int mutt_multi_choice(const char *prompt, const char *letters)
   bool redraw = true;
   int prompt_lines = 1;
 
-  bool opt_cols = ((ColorDefs[MT_COLOR_OPTIONS] != 0) &&
-                   (ColorDefs[MT_COLOR_OPTIONS] != ColorDefs[MT_COLOR_PROMPT]));
+  bool opt_cols = ((Colors->defs[MT_COLOR_OPTIONS] != 0) &&
+                   (Colors->defs[MT_COLOR_OPTIONS] != Colors->defs[MT_COLOR_PROMPT]));
 
   while (true)
   {
@@ -898,8 +898,8 @@ int mutt_multi_choice(const char *prompt, const char *letters)
 
       mutt_window_move(MuttMessageWindow, 0, 0);
 
-      if ((ColorDefs[MT_COLOR_OPTIONS] != 0) &&
-          (ColorDefs[MT_COLOR_OPTIONS] != ColorDefs[MT_COLOR_PROMPT]))
+      if ((Colors->defs[MT_COLOR_OPTIONS] != 0) &&
+          (Colors->defs[MT_COLOR_OPTIONS] != Colors->defs[MT_COLOR_PROMPT]))
       {
         char *cur = NULL;
 
