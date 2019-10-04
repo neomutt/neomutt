@@ -346,6 +346,27 @@ static void colors_clear(struct Colors *c)
 }
 
 /**
+ * mutt_colors_free - Free all the colours (on shutdown)
+ */
+void mutt_colors_free(void)
+{
+  color_line_list_clear(&Colors->attach_list);
+  color_line_list_clear(&Colors->body_list);
+  color_line_list_clear(&Colors->hdr_list);
+  color_line_list_clear(&Colors->index_author_list);
+  color_line_list_clear(&Colors->index_flags_list);
+  color_line_list_clear(&Colors->index_list);
+  color_line_list_clear(&Colors->index_subject_list);
+  color_line_list_clear(&Colors->index_tag_list);
+  color_line_list_clear(&Colors->status_list);
+
+  colors_clear(Colors);
+  defs_free(Colors);
+  quotes_free(Colors);
+  FREE(&Colors);
+}
+
+/**
  * mutt_color_init - Set up the default colours
  */
 void mutt_color_init(void)
@@ -1309,25 +1330,4 @@ enum CommandResult mutt_parse_mono(struct Buffer *buf, struct Buffer *s,
 #endif
 
   return parse_color(buf, s, err, parse_attr_spec, dry_run, false);
-}
-
-/**
- * mutt_colors_free - Free all the colours (on shutdown)
- */
-void mutt_colors_free(void)
-{
-  color_line_list_clear(&Colors->attach_list);
-  color_line_list_clear(&Colors->body_list);
-  color_line_list_clear(&Colors->hdr_list);
-  color_line_list_clear(&Colors->index_author_list);
-  color_line_list_clear(&Colors->index_flags_list);
-  color_line_list_clear(&Colors->index_list);
-  color_line_list_clear(&Colors->index_subject_list);
-  color_line_list_clear(&Colors->index_tag_list);
-  color_line_list_clear(&Colors->status_list);
-
-  colors_clear(Colors);
-  defs_free(Colors);
-  quotes_free(Colors);
-  FREE(&Colors);
 }
