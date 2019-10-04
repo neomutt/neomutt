@@ -109,7 +109,6 @@ enum MuttSetCommand
 #define MUTT_NAMED   (1 << 0)
 #define MUTT_VIRTUAL (1 << 1)
 
-#define UL (unsigned long)
 #define IP (intptr_t)
 #endif /* _MAKEDOC */
 
@@ -4975,12 +4974,12 @@ const struct Command Commands[] = {
 #endif
   { "alias",               parse_alias,            0 },
   { "alternates",          parse_alternates,       0 },
-  { "alternative_order",   parse_stailq,           UL &AlternativeOrderList },
+  { "alternative_order",   parse_stailq,           IP &AlternativeOrderList },
 #ifdef USE_COMPRESSED
   { "append-hook",         mutt_parse_hook,        MUTT_APPEND_HOOK },
 #endif
   { "attachments",         parse_attachments,      0 },
-  { "auto_view",           parse_stailq,           UL &AutoViewList },
+  { "auto_view",           parse_stailq,           IP &AutoViewList },
   { "bind",                mutt_parse_bind,        0 },
   { "charset-hook",        mutt_parse_hook,        MUTT_CHARSET_HOOK },
 #ifdef USE_COMPRESSED
@@ -4997,7 +4996,7 @@ const struct Command Commands[] = {
   { "finish",              parse_finish,           0 },
   { "folder-hook",         mutt_parse_hook,        MUTT_FOLDER_HOOK },
   { "group",               parse_group,            MUTT_GROUP },
-  { "hdr_order",           parse_stailq,           UL &HeaderOrderList },
+  { "hdr_order",           parse_stailq,           IP &HeaderOrderList },
   { "iconv-hook",          mutt_parse_hook,        MUTT_ICONV_HOOK },
   { "ifdef",               parse_ifdef,            0 },
   { "ifndef",              parse_ifdef,            1 },
@@ -5010,10 +5009,10 @@ const struct Command Commands[] = {
 #endif
   { "macro",               mutt_parse_macro,       0 },
   { "mailboxes",           parse_mailboxes,        0 },
-  { "mailto_allow",        parse_stailq,           UL &MailToAllow },
+  { "mailto_allow",        parse_stailq,           IP &MailToAllow },
   { "mbox-hook",           mutt_parse_hook,        MUTT_MBOX_HOOK },
   { "message-hook",        mutt_parse_hook,        MUTT_MESSAGE_HOOK },
-  { "mime_lookup",         parse_stailq,           UL &MimeLookupList },
+  { "mime_lookup",         parse_stailq,           IP &MimeLookupList },
   { "mono",                mutt_parse_mono,        0 },
   { "my_hdr",              parse_my_hdr,           0 },
   { "named-mailboxes",     parse_mailboxes,        MUTT_NAMED },
@@ -5033,12 +5032,12 @@ const struct Command Commands[] = {
   { "setenv",              parse_setenv,           MUTT_SET_SET },
   { "shutdown-hook",       mutt_parse_hook,        MUTT_SHUTDOWN_HOOK | MUTT_GLOBAL_HOOK },
 #ifdef USE_SIDEBAR
-  { "sidebar_whitelist",   parse_path_list,        UL &SidebarWhitelist },
+  { "sidebar_whitelist",   parse_path_list,        IP &SidebarWhitelist },
 #endif
   { "source",              parse_source,           0 },
   { "spam",                parse_spam_list,        MUTT_SPAM },
   { "startup-hook",        mutt_parse_hook,        MUTT_STARTUP_HOOK | MUTT_GLOBAL_HOOK },
-  { "subjectrx",           parse_subjectrx_list,   UL &SubjectRegexList },
+  { "subjectrx",           parse_subjectrx_list,   IP &SubjectRegexList },
   { "subscribe",           parse_subscribe,        0 },
 #ifdef USE_IMAP
   { "subscribe-to",        parse_subscribe_to,     0 },
@@ -5049,31 +5048,31 @@ const struct Command Commands[] = {
   { "toggle",              parse_set,              MUTT_SET_INV },
   { "unalias",             parse_unalias,          0 },
   { "unalternates",        parse_unalternates,     0 },
-  { "unalternative_order", parse_unstailq,         UL &AlternativeOrderList },
+  { "unalternative_order", parse_unstailq,         IP &AlternativeOrderList },
   { "unattachments",       parse_unattachments,    0 },
-  { "unauto_view",         parse_unstailq,         UL &AutoViewList },
+  { "unauto_view",         parse_unstailq,         IP &AutoViewList },
   { "unbind",              mutt_parse_unbind,      MUTT_UNBIND },
 #ifdef HAVE_COLOR
   { "uncolor",             mutt_parse_uncolor,     0 },
 #endif
   { "ungroup",             parse_group,            MUTT_UNGROUP },
-  { "unhdr_order",         parse_unstailq,         UL &HeaderOrderList },
+  { "unhdr_order",         parse_unstailq,         IP &HeaderOrderList },
   { "unhook",              mutt_parse_unhook,      0 },
   { "unignore",            parse_unignore,         0 },
   { "unlists",             parse_unlists,          0 },
   { "unmacro",             mutt_parse_unbind,      MUTT_UNMACRO },
   { "unmailboxes",         parse_unmailboxes,      0 },
-  { "unmailto_allow",      parse_unstailq,         UL &MailToAllow },
-  { "unmime_lookup",       parse_unstailq,         UL &MimeLookupList },
+  { "unmailto_allow",      parse_unstailq,         IP &MailToAllow },
+  { "unmime_lookup",       parse_unstailq,         IP &MimeLookupList },
   { "unmono",              mutt_parse_unmono,      0 },
   { "unmy_hdr",            parse_unmy_hdr,         0 },
   { "unscore",             mutt_parse_unscore,     0 },
   { "unset",               parse_set,              MUTT_SET_UNSET },
   { "unsetenv",            parse_setenv,           MUTT_SET_UNSET },
 #ifdef USE_SIDEBAR
-  { "unsidebar_whitelist", parse_path_unlist,      UL &SidebarWhitelist },
+  { "unsidebar_whitelist", parse_path_unlist,      IP &SidebarWhitelist },
 #endif
-  { "unsubjectrx",         parse_unsubjectrx_list, UL &SubjectRegexList },
+  { "unsubjectrx",         parse_unsubjectrx_list, IP &SubjectRegexList },
   { "unsubscribe",         parse_unsubscribe,      0 },
 #ifdef USE_IMAP
   { "unsubscribe-from",    parse_unsubscribe_from, 0 },
