@@ -153,6 +153,43 @@ static const struct Mapping ComposeFields[] = {
 // clang-format off
 
 /**
+ * defs_free - Free the simple colour definitions
+ * @param c Colours
+ */
+static void defs_free(struct Colors *c)
+{
+  FREE(&c->defs);
+}
+
+/**
+ * defs_init - Initialise the simple colour definitions
+ * @param c Colours
+ */
+static void defs_init(struct Colors *c)
+{
+  c->defs = mutt_mem_malloc(MT_COLOR_MAX * sizeof(int));
+  memset(c->defs, A_NORMAL, MT_COLOR_MAX * sizeof(int));
+
+  // Set some defaults
+  c->defs[MT_COLOR_STATUS] = A_REVERSE;
+  c->defs[MT_COLOR_INDICATOR] = A_REVERSE;
+  c->defs[MT_COLOR_SEARCH] = A_REVERSE;
+  c->defs[MT_COLOR_MARKERS] = A_REVERSE;
+#ifdef USE_SIDEBAR
+  c->defs[MT_COLOR_SIDEBAR_HIGHLIGHT] = A_UNDERLINE;
+#endif
+}
+
+/**
+ * defs_clear - Reset the simple colour definitions
+ * @param c Colours
+ */
+static void defs_clear(struct Colors *c)
+{
+  memset(c->defs, A_NORMAL, MT_COLOR_MAX * sizeof(int));
+}
+
+/**
  * color_line_new - Create a new ColorLine
  * @retval ptr Newly allocated ColorLine
  */
@@ -204,28 +241,25 @@ static void color_line_list_clear(struct ColorLineList *list)
 }
 
 /**
+ * colors_clear - Reset all the colours
+ * @param c Colours
+ */
+static void colors_clear(struct Colors *c)
+{
+  defs_clear(c);
+}
+
+/**
  * mutt_color_init - Set up the default colours
  */
 void mutt_color_init(void)
 {
   Colors = mutt_mem_calloc(1, sizeof(*Colors));
-  Colors->defs = mutt_mem_malloc(MT_COLOR_MAX * sizeof(int));
-  memset(Colors->defs, A_NORMAL, sizeof(int) * MT_COLOR_MAX);
+
+  defs_init(Colors);
   Colors->quotes = mutt_mem_malloc(COLOR_QUOTES_MAX * sizeof(int));
   memset(Colors->quotes, A_NORMAL, COLOR_QUOTES_MAX * sizeof(int));
   Colors->quotes_used = 0;
-
-  /* set some defaults */
-  Colors->defs[MT_COLOR_STATUS] = A_REVERSE;
-  Colors->defs[MT_COLOR_INDICATOR] = A_REVERSE;
-  Colors->defs[MT_COLOR_SEARCH] = A_REVERSE;
-  Colors->defs[MT_COLOR_MARKERS] = A_REVERSE;
-#ifdef USE_SIDEBAR
-  Colors->defs[MT_COLOR_SIDEBAR_HIGHLIGHT] = A_UNDERLINE;
-#endif
-  /* special meaning: toggle the relevant attribute */
-  Colors->defs[MT_COLOR_BOLD] = 0;
-  Colors->defs[MT_COLOR_UNDERLINE] = 0;
 
 #ifdef HAVE_COLOR
   start_color();
@@ -1229,5 +1263,7 @@ void mutt_colors_free(void)
     cl = next;
   }
   Colors->user_colors = NULL;
+  colors_clear(Colors);
+  defs_free(Colors);
   FREE(&Colors);
 }
