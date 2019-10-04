@@ -58,7 +58,7 @@ STAILQ_HEAD(ColorLineList, ColorLine);
  */
 enum ColorId
 {
-  MT_COLOR_HDEFAULT = 50,            ///< Header default colour
+  MT_COLOR_NONE = 50,
   MT_COLOR_ATTACHMENT,               ///< MIME attachments text (entire line)
   MT_COLOR_ATTACH_HEADERS,           ///< MIME attachment test (takes a pattern)
   MT_COLOR_BODY,                     ///< Pager: highlight body of message (takes a pattern)

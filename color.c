@@ -690,66 +690,67 @@ static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *at
 #endif
 
 /**
- * parse_object - Parse a colour config line
+ * parse_object - Identify a colour object
  * @param[in]  buf Temporary Buffer space
  * @param[in]  s   Buffer containing string to be parsed
- * @param[out] o   Index into the fields map
- * @param[out] ql  Quote level
+ * @param[out] obj Object type, e.g. #MT_COLOR_TILDE
+ * @param[out] ql  Quote level, if type #MT_COLOR_QUOTED
  * @param[out] err Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
-static int parse_object(struct Buffer *buf, struct Buffer *s, uint32_t *o,
-                        uint32_t *ql, struct Buffer *err)
+static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
+                                       enum ColorId *obj, int *ql, struct Buffer *err)
 {
-  if (!MoreArgs(s))
-  {
-    mutt_buffer_printf(err, _("%s: too few arguments"), "color");
-    return -1;
-  }
+  int rc;
 
-  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-  if (mutt_str_startswith(buf->data, "quoted", CASE_MATCH))
+  if (mutt_str_startswith(buf->data, "quoted", CASE_MATCH) != 0)
   {
-    if (buf->data[6])
+    int val = 0;
+    if (buf->data[6] != '\0')
     {
-      char *eptr = NULL;
-      *ql = strtoul(buf->data + 6, &eptr, 10);
-      if (*eptr || (*ql == COLOR_UNSET))
+      rc = mutt_str_atoi(buf->data + 6, &val);
+      if ((rc != 0) || (val > COLOR_QUOTES_MAX))
       {
         mutt_buffer_printf(err, _("%s: no such object"), buf->data);
-        return -1;
+        return MUTT_CMD_WARNING;
       }
     }
-    else
-      *ql = 0;
 
-    *o = MT_COLOR_QUOTED;
+    *ql = val;
+    *obj = MT_COLOR_QUOTED;
+    return MUTT_CMD_SUCCESS;
   }
-  else if (mutt_str_strcasecmp(buf->data, "compose") == 0)
+
+  if (mutt_str_strcasecmp(buf->data, "compose") == 0)
   {
     if (!MoreArgs(s))
     {
       mutt_buffer_printf(err, _("%s: too few arguments"), "color");
-      return -1;
+      return MUTT_CMD_WARNING;
     }
 
     mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
-    *o = mutt_map_get_value(buf->data, ComposeFields);
-    if (*o == -1)
+    rc = mutt_map_get_value(buf->data, ComposeFields);
+    if (rc == -1)
     {
       mutt_buffer_printf(err, _("%s: no such object"), buf->data);
-      return -1;
+      return MUTT_CMD_WARNING;
     }
-  }
-  else if ((*o = mutt_map_get_value(buf->data, Fields)) == -1)
-  {
-    mutt_buffer_printf(err, _("%s: no such object"), buf->data);
-    return -1;
+
+    *obj = rc;
+    return MUTT_CMD_SUCCESS;
   }
 
-  return 0;
+  rc = mutt_map_get_value(buf->data, Fields);
+  if (rc == -1)
+  {
+    mutt_buffer_printf(err, _("%s: no such object"), buf->data);
+    return MUTT_CMD_WARNING;
+  }
+
+  *obj = rc;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
@@ -819,27 +820,40 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
 
   mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
 
-  int object = mutt_map_get_value(buf->data, Fields);
+  if (mutt_str_strcmp(buf->data, "*") == 0)
+  {
+    colors_clear(c);
+    return MUTT_CMD_SUCCESS;
+  }
+
+  unsigned int object = MT_COLOR_NONE;
+  int ql = 0;
+  enum CommandResult rc = parse_object(buf, s, &object, &ql, err);
+  if (rc != MUTT_CMD_SUCCESS)
+    return rc;
+
   if (object == -1)
   {
     mutt_buffer_printf(err, _("%s: no such object"), buf->data);
     return MUTT_CMD_ERROR;
   }
 
-  if (object > MT_COLOR_INDEX_SUBJECT)
-  { /* uncolor index column */
-    Colors->defs[object] = 0;
-    mutt_menu_set_redraw_full(MENU_MAIN);
-    return MUTT_CMD_SUCCESS;
+  if (object == MT_COLOR_QUOTED)
+  {
+    c->quotes[ql] = A_NORMAL;
+    /* fallthrough to simple case */
   }
 
-  if (!mutt_str_startswith(buf->data, "body", CASE_MATCH) &&
-      !mutt_str_startswith(buf->data, "header", CASE_MATCH) &&
-      !mutt_str_startswith(buf->data, "index", CASE_MATCH))
+  if ((object != MT_COLOR_ATTACH_HEADERS) && (object != MT_COLOR_BODY) &&
+      (object != MT_COLOR_HEADER) && (object != MT_COLOR_INDEX) &&
+      (object != MT_COLOR_INDEX_AUTHOR) && (object != MT_COLOR_INDEX_FLAGS) &&
+      (object != MT_COLOR_INDEX_SUBJECT) && (object != MT_COLOR_INDEX_TAG) &&
+      (object != MT_COLOR_STATUS))
   {
-    mutt_buffer_printf(err, _("%s: command valid only for index, body, header objects"),
-                       uncolor ? "uncolor" : "unmono");
-    return MUTT_CMD_WARNING;
+    // Simple colours
+    c->defs[object] = A_NORMAL;
+
+    return MUTT_CMD_SUCCESS;
   }
 
   if (!MoreArgs(s))
@@ -882,6 +896,8 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
     changed |= do_uncolor(c, buf, s, &c->index_subject_list, uncolor);
   else if (object == MT_COLOR_INDEX_TAG)
     changed |= do_uncolor(c, buf, s, &c->index_tag_list, uncolor);
+  else if (object == MT_COLOR_STATUS)
+    changed |= do_uncolor(c, buf, s, &c->status_list, uncolor);
 
   bool is_index = ((object == MT_COLOR_INDEX) || (object == MT_COLOR_INDEX_AUTHOR) ||
                    (object == MT_COLOR_INDEX_FLAGS) || (object == MT_COLOR_INDEX_SUBJECT) ||
@@ -931,14 +947,14 @@ enum CommandResult mutt_parse_unmono(struct Buffer *buf, struct Buffer *s,
  * @param is_index  true of this is for the index
  * @param match     Number of regex subexpression to match (0 for entire pattern)
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
+ *
+ * is_index used to store compiled pattern only for 'index' color object when
+ * called from mutt_parse_color()
  */
 static enum CommandResult add_pattern(struct Colors *c, struct ColorLineList *top, const char *s,
                                       bool sensitive, uint32_t fg, uint32_t bg, int attr,
                                       struct Buffer *err, bool is_index, int match)
 {
-  /* is_index used to store compiled pattern only for 'index' color object
-   * when called from mutt_parse_color() */
-
   struct ColorLine *tmp = NULL;
 
   STAILQ_FOREACH(tmp, top, entries)
@@ -1159,15 +1175,26 @@ static enum CommandResult parse_color(struct Colors *c, struct Buffer *buf, stru
                                       struct Buffer *err, parser_callback_t callback,
                                       bool dry_run, bool color)
 {
-  int attr = 0;
-  uint32_t fg = 0, bg = 0, object = 0, q_level = 0, match = 0;
-  enum CommandResult rc = MUTT_CMD_SUCCESS;
+  int attr = 0, q_level = 0;
+  uint32_t fg = 0, bg = 0, match = 0;
+  enum ColorId object = MT_COLOR_NONE;
+  enum CommandResult rc;
 
-  if (parse_object(buf, s, &object, &q_level, err) == -1)
-    return MUTT_CMD_ERROR;
+  if (!MoreArgs(s))
+  {
+    mutt_buffer_printf(err, _("%s: too few arguments"), "color");
+    return MUTT_CMD_WARNING;
+  }
 
-  if (callback(buf, s, &fg, &bg, &attr, err) == -1)
-    return MUTT_CMD_ERROR;
+  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+
+  rc = parse_object(buf, s, &object, &q_level, err);
+  if (rc != MUTT_CMD_SUCCESS)
+    return rc;
+
+  rc = callback(buf, s, &fg, &bg, &attr, err);
+  if (rc != MUTT_CMD_SUCCESS)
+    return rc;
 
   /* extract a regular expression if needed */
 
@@ -1300,12 +1327,14 @@ static enum CommandResult parse_color(struct Colors *c, struct Buffer *buf, stru
     {
       c->quotes[q_level] = fgbgattr_to_color(c, fg, bg, attr);
     }
+    rc = MUTT_CMD_SUCCESS;
   }
   else
   {
     c->defs[object] = fgbgattr_to_color(c, fg, bg, attr);
     if (object > MT_COLOR_INDEX_AUTHOR)
       mutt_menu_set_redraw_full(MENU_MAIN);
+    rc = MUTT_CMD_SUCCESS;
   }
 
   return rc;
