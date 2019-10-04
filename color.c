@@ -169,13 +169,13 @@ static void defs_init(struct Colors *c)
   memset(c->defs, A_NORMAL, MT_COLOR_MAX * sizeof(int));
 
   // Set some defaults
-  c->defs[MT_COLOR_STATUS] = A_REVERSE;
   c->defs[MT_COLOR_INDICATOR] = A_REVERSE;
-  c->defs[MT_COLOR_SEARCH] = A_REVERSE;
   c->defs[MT_COLOR_MARKERS] = A_REVERSE;
+  c->defs[MT_COLOR_SEARCH] = A_REVERSE;
 #ifdef USE_SIDEBAR
   c->defs[MT_COLOR_SIDEBAR_HIGHLIGHT] = A_UNDERLINE;
 #endif
+  c->defs[MT_COLOR_STATUS] = A_REVERSE;
 }
 
 /**
@@ -1066,16 +1066,16 @@ static enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
 
     if (mutt_str_strcasecmp("bold", buf->data) == 0)
       *attr |= A_BOLD;
-    else if (mutt_str_strcasecmp("underline", buf->data) == 0)
-      *attr |= A_UNDERLINE;
     else if (mutt_str_strcasecmp("none", buf->data) == 0)
-      *attr = A_NORMAL;
+      *attr = A_NORMAL; // Use '=' to clear other bits
+    else if (mutt_str_strcasecmp("normal", buf->data) == 0)
+      *attr = A_NORMAL; // Use '=' to clear other bits
     else if (mutt_str_strcasecmp("reverse", buf->data) == 0)
       *attr |= A_REVERSE;
     else if (mutt_str_strcasecmp("standout", buf->data) == 0)
       *attr |= A_STANDOUT;
-    else if (mutt_str_strcasecmp("normal", buf->data) == 0)
-      *attr = A_NORMAL; /* needs use = instead of |= to clear other bits */
+    else if (mutt_str_strcasecmp("underline", buf->data) == 0)
+      *attr |= A_UNDERLINE;
     else
     {
       rc = parse_color_name(buf->data, fg, attr, true, err);
@@ -1119,16 +1119,16 @@ static enum CommandResult parse_attr_spec(struct Buffer *buf, struct Buffer *s,
 
   if (mutt_str_strcasecmp("bold", buf->data) == 0)
     *attr |= A_BOLD;
-  else if (mutt_str_strcasecmp("underline", buf->data) == 0)
-    *attr |= A_UNDERLINE;
   else if (mutt_str_strcasecmp("none", buf->data) == 0)
-    *attr = A_NORMAL;
+    *attr = A_NORMAL; // Use '=' to clear other bits
+  else if (mutt_str_strcasecmp("normal", buf->data) == 0)
+    *attr = A_NORMAL; // Use '=' to clear other bits
   else if (mutt_str_strcasecmp("reverse", buf->data) == 0)
     *attr |= A_REVERSE;
   else if (mutt_str_strcasecmp("standout", buf->data) == 0)
     *attr |= A_STANDOUT;
-  else if (mutt_str_strcasecmp("normal", buf->data) == 0)
-    *attr = A_NORMAL; /* needs use = instead of |= to clear other bits */
+  else if (mutt_str_strcasecmp("underline", buf->data) == 0)
+    *attr |= A_UNDERLINE;
   else
   {
     mutt_buffer_printf(err, _("%s: no such attribute"), buf->data);
@@ -1197,10 +1197,10 @@ static enum CommandResult parse_color(struct Colors *c, struct Buffer *buf, stru
 
   /* extract a regular expression if needed */
 
-  if ((object == MT_COLOR_BODY) || (object == MT_COLOR_HEADER) ||
-      (object == MT_COLOR_ATTACH_HEADERS) || (object == MT_COLOR_INDEX) ||
+  if ((object == MT_COLOR_ATTACH_HEADERS) || (object == MT_COLOR_BODY) ||
+      (object == MT_COLOR_HEADER) || (object == MT_COLOR_INDEX) ||
       (object == MT_COLOR_INDEX_AUTHOR) || (object == MT_COLOR_INDEX_FLAGS) ||
-      (object == MT_COLOR_INDEX_TAG) || (object == MT_COLOR_INDEX_SUBJECT))
+      (object == MT_COLOR_INDEX_SUBJECT) || (object == MT_COLOR_INDEX_TAG))
   {
     if (!MoreArgs(s))
     {
@@ -1240,12 +1240,61 @@ static enum CommandResult parse_color(struct Colors *c, struct Buffer *buf, stru
 #endif /* HAVE_USE_DEFAULT_COLORS */
 #endif
 
-  if (object == MT_COLOR_HEADER)
-    rc = add_pattern(c, &c->hdr_list, buf->data, false, fg, bg, attr, err, false, match);
+  if (object == MT_COLOR_ATTACH_HEADERS)
+    rc = add_pattern(c, &c->attach_list, buf->data, true, fg, bg, attr, err, false, match);
   else if (object == MT_COLOR_BODY)
     rc = add_pattern(c, &c->body_list, buf->data, true, fg, bg, attr, err, false, match);
-  else if (object == MT_COLOR_ATTACH_HEADERS)
-    rc = add_pattern(c, &c->attach_list, buf->data, true, fg, bg, attr, err, false, match);
+  else if (object == MT_COLOR_HEADER)
+    rc = add_pattern(c, &c->hdr_list, buf->data, false, fg, bg, attr, err, false, match);
+  else if (object == MT_COLOR_INDEX)
+  {
+    rc = add_pattern(c, &c->index_list, buf->data, true, fg, bg, attr, err, true, match);
+  }
+  else if (object == MT_COLOR_INDEX_AUTHOR)
+  {
+    rc = add_pattern(c, &c->index_author_list, buf->data, true, fg, bg, attr,
+                     err, true, match);
+  }
+  else if (object == MT_COLOR_INDEX_FLAGS)
+  {
+    rc = add_pattern(c, &c->index_flags_list, buf->data, true, fg, bg, attr, err, true, match);
+  }
+  else if (object == MT_COLOR_INDEX_SUBJECT)
+  {
+    rc = add_pattern(c, &c->index_subject_list, buf->data, true, fg, bg, attr,
+                     err, true, match);
+  }
+  else if (object == MT_COLOR_INDEX_TAG)
+  {
+    rc = add_pattern(c, &c->index_tag_list, buf->data, true, fg, bg, attr, err, true, match);
+  }
+  else if (object == MT_COLOR_QUOTED)
+  {
+    if (q_level >= COLOR_QUOTES_MAX)
+    {
+      mutt_buffer_printf(err, _("Maximum quoting level is %d"), COLOR_QUOTES_MAX - 1);
+      return MUTT_CMD_WARNING;
+    }
+
+    if (q_level >= c->quotes_used)
+      c->quotes_used = q_level + 1;
+    if (q_level == 0)
+    {
+      c->defs[MT_COLOR_QUOTED] = fgbgattr_to_color(c, fg, bg, attr);
+
+      c->quotes[0] = c->defs[MT_COLOR_QUOTED];
+      for (q_level = 1; q_level < c->quotes_used; q_level++)
+      {
+        if (c->quotes[q_level] == A_NORMAL)
+          c->quotes[q_level] = c->defs[MT_COLOR_QUOTED];
+      }
+    }
+    else
+    {
+      c->quotes[q_level] = fgbgattr_to_color(c, fg, bg, attr);
+    }
+    rc = MUTT_CMD_SUCCESS;
+  }
   else if ((object == MT_COLOR_STATUS) && MoreArgs(s))
   {
     /* 'color status fg bg' can have up to 2 arguments:
@@ -1276,54 +1325,7 @@ static enum CommandResult parse_color(struct Colors *c, struct Buffer *buf, stru
 
     rc = add_pattern(c, &c->status_list, buf->data, true, fg, bg, attr, err, false, match);
   }
-  else if (object == MT_COLOR_INDEX)
-  {
-    rc = add_pattern(c, &c->index_list, buf->data, true, fg, bg, attr, err, true, match);
-  }
-  else if (object == MT_COLOR_INDEX_AUTHOR)
-  {
-    rc = add_pattern(c, &c->index_author_list, buf->data, true, fg, bg, attr, err, true, match);
-  }
-  else if (object == MT_COLOR_INDEX_FLAGS)
-  {
-    rc = add_pattern(c, &c->index_flags_list, buf->data, true, fg, bg, attr, err, true, match);
-  }
-  else if (object == MT_COLOR_INDEX_SUBJECT)
-  {
-    rc = add_pattern(c, &c->index_subject_list, buf->data, true, fg, bg, attr, err, true, match);
-  }
-  else if (object == MT_COLOR_INDEX_TAG)
-  {
-    rc = add_pattern(c, &c->index_tag_list, buf->data, true, fg, bg, attr, err, true, match);
-  }
-  else if (object == MT_COLOR_QUOTED)
-  {
-    if (q_level >= COLOR_QUOTES_MAX)
-    {
-      mutt_buffer_printf(err, _("Maximum quoting level is %d"), COLOR_QUOTES_MAX-1);
-      return MUTT_CMD_WARNING;
-    }
-
-    if (q_level >= c->quotes_used)
-      c->quotes_used = q_level + 1;
-    if (q_level == 0)
-    {
-      c->defs[MT_COLOR_QUOTED] = fgbgattr_to_color(c, fg, bg, attr);
-
-      c->quotes[0] = c->defs[MT_COLOR_QUOTED];
-      for (q_level = 1; q_level < c->quotes_used; q_level++)
-      {
-        if (c->quotes[q_level] == A_NORMAL)
-          c->quotes[q_level] = c->defs[MT_COLOR_QUOTED];
-      }
-    }
-    else
-    {
-      c->quotes[q_level] = fgbgattr_to_color(c, fg, bg, attr);
-    }
-    rc = MUTT_CMD_SUCCESS;
-  }
-  else
+  else // Remaining simple colours
   {
     c->defs[object] = fgbgattr_to_color(c, fg, bg, attr);
     rc = MUTT_CMD_SUCCESS;
