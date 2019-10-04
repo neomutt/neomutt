@@ -42,8 +42,11 @@ void state_mark_attach(struct State *s)
 {
   if (!s || !s->fp_out)
     return;
-  if ((s->flags & MUTT_DISPLAY) && (mutt_str_strcmp(C_Pager, "builtin") == 0))
+  if ((s->flags & MUTT_DISPLAY) &&
+      (!C_Pager || (mutt_str_strcmp(C_Pager, "builtin") == 0)))
+  {
     state_puts(AttachmentMarker, s);
+  }
 }
 
 /**
@@ -52,8 +55,11 @@ void state_mark_attach(struct State *s)
  */
 void state_mark_protected_header(struct State *s)
 {
-  if ((s->flags & MUTT_DISPLAY) && (mutt_str_strcmp(C_Pager, "builtin") == 0))
+  if ((s->flags & MUTT_DISPLAY) &&
+      (!C_Pager || (mutt_str_strcmp(C_Pager, "builtin") == 0)))
+  {
     state_puts(ProtectedHeaderMarker, s);
+  }
 }
 
 /**
