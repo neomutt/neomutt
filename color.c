@@ -241,6 +241,52 @@ static void color_list_free(struct ColorList **ptr)
 }
 
 /**
+ * mutt_color_free - Free a colour
+ * @param fg Foreground colour ID
+ * @param bg Background colour ID
+ *
+ * If there are no more users, the resource will be freed.
+ */
+void mutt_color_free(uint32_t fg, uint32_t bg)
+{
+  struct ColorList *q = NULL;
+
+  struct ColorList *p = Colors->user_colors;
+  while (p)
+  {
+    if ((p->fg == fg) && (p->bg == bg))
+    {
+      (p->count)--;
+      if (p->count > 0)
+        return;
+
+      Colors->num_user_colors--;
+      mutt_debug(LL_DEBUG1, "Color pairs used so far: %d\n", Colors->num_user_colors);
+
+      if (p == Colors->user_colors)
+      {
+        Colors->user_colors = Colors->user_colors->next;
+        FREE(&p);
+        return;
+      }
+      q = Colors->user_colors;
+      while (q)
+      {
+        if (q->next == p)
+        {
+          q->next = p->next;
+          FREE(&p);
+          return;
+        }
+        q = q->next;
+      }
+      /* can't get here */
+    }
+    p = p->next;
+  }
+}
+
+/**
  * color_line_new - Create a new ColorLine
  * @retval ptr Newly allocated ColorLine
  */
@@ -489,52 +535,6 @@ int mutt_color_combine(uint32_t fg_attr, uint32_t bg_attr)
   if ((fg == COLOR_DEFAULT) && (bg == COLOR_DEFAULT))
     return A_NORMAL;
   return mutt_color_alloc(fg, bg);
-}
-
-/**
- * mutt_color_free - Free a colour
- * @param fg Foreground colour ID
- * @param bg Background colour ID
- *
- * If there are no more users, the resource will be freed.
- */
-void mutt_color_free(uint32_t fg, uint32_t bg)
-{
-  struct ColorList *q = NULL;
-
-  struct ColorList *p = Colors->user_colors;
-  while (p)
-  {
-    if ((p->fg == fg) && (p->bg == bg))
-    {
-      (p->count)--;
-      if (p->count > 0)
-        return;
-
-      Colors->num_user_colors--;
-      mutt_debug(LL_DEBUG1, "Color pairs used so far: %d\n", Colors->num_user_colors);
-
-      if (p == Colors->user_colors)
-      {
-        Colors->user_colors = Colors->user_colors->next;
-        FREE(&p);
-        return;
-      }
-      q = Colors->user_colors;
-      while (q)
-      {
-        if (q->next == p)
-        {
-          q->next = p->next;
-          FREE(&p);
-          return;
-        }
-        q = q->next;
-      }
-      /* can't get here */
-    }
-    p = p->next;
-  }
 }
 #endif /* HAVE_COLOR */
 
