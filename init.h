@@ -4990,7 +4990,7 @@ const struct Command Commands[] = {
   { "close-hook",          mutt_parse_hook,        MUTT_CLOSE_HOOK },
 #endif
 #ifdef HAVE_COLOR
-  { "color",               mutt_parse_color,       0 },
+  { "color",               mutt_parse_color,       IP &Colors },
 #endif
   { "crypt-hook",          mutt_parse_hook,        MUTT_CRYPT_HOOK },
   { "echo",                parse_echo,             0 },
@@ -5017,7 +5017,7 @@ const struct Command Commands[] = {
   { "mbox-hook",           mutt_parse_hook,        MUTT_MBOX_HOOK },
   { "message-hook",        mutt_parse_hook,        MUTT_MESSAGE_HOOK },
   { "mime_lookup",         parse_stailq,           IP &MimeLookupList },
-  { "mono",                mutt_parse_mono,        0 },
+  { "mono",                mutt_parse_mono,        IP &Colors },
   { "my_hdr",              parse_my_hdr,           0 },
   { "named-mailboxes",     parse_mailboxes,        MUTT_NAMED },
   { "nospam",              parse_spam_list,        MUTT_NOSPAM },
@@ -5057,7 +5057,7 @@ const struct Command Commands[] = {
   { "unauto_view",         parse_unstailq,         IP &AutoViewList },
   { "unbind",              mutt_parse_unbind,      MUTT_UNBIND },
 #ifdef HAVE_COLOR
-  { "uncolor",             mutt_parse_uncolor,     0 },
+  { "uncolor",             mutt_parse_uncolor,     IP &Colors },
 #endif
   { "ungroup",             parse_group,            MUTT_UNGROUP },
   { "unhdr_order",         parse_unstailq,         IP &HeaderOrderList },
@@ -5068,7 +5068,7 @@ const struct Command Commands[] = {
   { "unmailboxes",         parse_unmailboxes,      0 },
   { "unmailto_allow",      parse_unstailq,         IP &MailToAllow },
   { "unmime_lookup",       parse_unstailq,         IP &MimeLookupList },
-  { "unmono",              mutt_parse_unmono,      0 },
+  { "unmono",              mutt_parse_unmono,      IP &Colors },
   { "unmy_hdr",            parse_unmy_hdr,         0 },
   { "unscore",             mutt_parse_unscore,     0 },
   { "unset",               parse_set,              MUTT_SET_UNSET },

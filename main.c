@@ -314,7 +314,7 @@ static int start_curses(void)
   }
   /* slang requires the signal handlers to be set after initializing */
   mutt_signal_init();
-  mutt_color_init();
+  Colors = mutt_colors_new();
   keypad(stdscr, true);
   cbreak();
   noecho();

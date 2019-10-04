@@ -153,7 +153,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
         /* Combining tree fg color and another bg color requires
          * having use_default_colors, because the other bg color
          * may be undefined. */
-        mutt_curses_set_attr(mutt_color_combine(Colors->defs[MT_COLOR_TREE], attr));
+        mutt_curses_set_attr(mutt_color_combine(Colors, Colors->defs[MT_COLOR_TREE], attr));
 #else
         mutt_curses_set_color(MT_COLOR_TREE);
 #endif

@@ -147,12 +147,12 @@ struct Colors
   int num_user_colors;
 };
 
-int  mutt_color_alloc  (uint32_t fg,      uint32_t bg);
-int  mutt_color_combine(uint32_t fg_attr, uint32_t bg_attr);
-void mutt_color_free   (uint32_t fg,      uint32_t bg);
+int  mutt_color_alloc  (struct Colors *c, uint32_t fg,      uint32_t bg);
+int  mutt_color_combine(struct Colors *c, uint32_t fg_attr, uint32_t bg_attr);
+void mutt_color_free   (struct Colors *c, uint32_t fg,      uint32_t bg);
 
-void mutt_color_init   (void);
-void mutt_colors_free  (void);
+struct Colors *mutt_colors_new(void);
+void           mutt_colors_free(struct Colors **ptr);
 
 enum CommandResult mutt_parse_color  (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 enum CommandResult mutt_parse_mono   (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
