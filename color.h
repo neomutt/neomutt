@@ -142,8 +142,6 @@ struct Colors
 
   int *quotes;                             ///< Array of colours for quoted email text
   int quotes_used;                         ///< Number of colours for quoted email text
-  int quotes_size;
-
 
   struct ColorList *user_colors;
   int num_user_colors;

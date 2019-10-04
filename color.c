@@ -63,10 +63,12 @@
 typedef int (*parser_callback_t)(struct Buffer *buf, struct Buffer *s, uint32_t *fg,
                                  uint32_t *bg, int *attr, struct Buffer *err);
 
+#define COLOR_UNSET UINT32_MAX
+#define COLOR_QUOTES_MAX 9
+
 #ifdef HAVE_COLOR
 
 #define COLOR_DEFAULT (-2)
-#define COLOR_UNSET UINT32_MAX
 
 /*
  * Flags for the high 8bits of the color value.
@@ -150,8 +152,6 @@ static const struct Mapping ComposeFields[] = {
 };
 // clang-format off
 
-#define COLOR_QUOTE_INIT 8
-
 /**
  * color_line_new - Create a new ColorLine
  * @retval ptr Newly allocated ColorLine
@@ -211,9 +211,8 @@ void mutt_color_init(void)
   Colors = mutt_mem_calloc(1, sizeof(*Colors));
   Colors->defs = mutt_mem_malloc(MT_COLOR_MAX * sizeof(int));
   memset(Colors->defs, A_NORMAL, sizeof(int) * MT_COLOR_MAX);
-  Colors->quotes = mutt_mem_malloc(COLOR_QUOTE_INIT * sizeof(int));
-  memset(Colors->quotes, A_NORMAL, sizeof(int) * COLOR_QUOTE_INIT);
-  Colors->quotes_size = COLOR_QUOTE_INIT;
+  Colors->quotes = mutt_mem_malloc(COLOR_QUOTES_MAX * sizeof(int));
+  memset(Colors->quotes, A_NORMAL, COLOR_QUOTES_MAX * sizeof(int));
   Colors->quotes_used = 0;
 
   /* set some defaults */
@@ -1140,11 +1139,10 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
   }
   else if (object == MT_COLOR_QUOTED)
   {
-    if (q_level >= Colors->quotes_size)
+    if (q_level >= COLOR_QUOTES_MAX)
     {
-      mutt_mem_realloc(&Colors->quotes, (Colors->quotes_size += 2) * sizeof(int));
-      Colors->quotes[Colors->quotes_size - 2] = Colors->defs[MT_COLOR_QUOTED];
-      Colors->quotes[Colors->quotes_size - 1] = Colors->defs[MT_COLOR_QUOTED];
+      mutt_buffer_printf(err, _("Maximum quoting level is %d"), COLOR_QUOTES_MAX-1);
+      return MUTT_CMD_WARNING;
     }
     if (q_level >= Colors->quotes_used)
       Colors->quotes_used = q_level + 1;
