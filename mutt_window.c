@@ -28,7 +28,6 @@
 
 #include "config.h"
 #include <stdarg.h>
-#include <stdbool.h>
 #include <string.h>
 #include "mutt/mutt.h"
 #include "mutt_window.h"

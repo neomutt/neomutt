@@ -51,7 +51,6 @@
 #include "keymap.h"
 #include "mailcap.h"
 #include "mutt_attach.h"
-#include "mutt_logging.h"
 #include "mutt_menu.h"
 #include "mutt_parse.h"
 #include "mutt_window.h"

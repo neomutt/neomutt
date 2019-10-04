@@ -39,10 +39,8 @@
 #include "color.h"
 #include "context.h"
 #include "globals.h"
-#include "keymap.h"
 #include "mutt_commands.h"
 #include "mutt_curses.h"
-#include "mutt_menu.h"
 #include "options.h"
 #include "pattern.h"
 #ifdef USE_SLANG_CURSES
@@ -362,6 +360,7 @@ void mutt_colors_free(struct Colors **ptr)
   colors_clear(c);
   defs_free(c);
   quotes_free(c);
+  notify_free(&c->notify);
   FREE(ptr);
 }
 
@@ -372,6 +371,7 @@ void mutt_colors_free(struct Colors **ptr)
 struct Colors *mutt_colors_new(void)
 {
   struct Colors *c = mutt_mem_calloc(1, sizeof(*c));
+  c->notify = notify_new(c, NT_COLOR);
 
   quotes_init(c);
   defs_init(c);
@@ -390,6 +390,7 @@ struct Colors *mutt_colors_new(void)
   start_color();
 #endif
 
+  notify_set_parent(c->notify, NeoMutt->notify);
   return c;
 }
 
@@ -823,6 +824,8 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
   if (mutt_str_strcmp(buf->data, "*") == 0)
   {
     colors_clear(c);
+    struct EventColor ec = { false }; // Color reset/removed
+    notify_send(c->notify, NT_COLOR, MT_COLOR_MAX, (intptr_t) &ec);
     return MUTT_CMD_SUCCESS;
   }
 
@@ -853,6 +856,8 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
     // Simple colours
     c->defs[object] = A_NORMAL;
 
+    struct EventColor ec = { false }; // Color reset/removed
+    notify_send(c->notify, NT_COLOR, object, (intptr_t) &ec);
     return MUTT_CMD_SUCCESS;
   }
 
@@ -899,16 +904,10 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
   else if (object == MT_COLOR_STATUS)
     changed |= do_uncolor(c, buf, s, &c->status_list, uncolor);
 
-  bool is_index = ((object == MT_COLOR_INDEX) || (object == MT_COLOR_INDEX_AUTHOR) ||
-                   (object == MT_COLOR_INDEX_FLAGS) || (object == MT_COLOR_INDEX_SUBJECT) ||
-                   (object == MT_COLOR_INDEX_TAG));
-
-  if (changed && is_index && !OptNoCurses)
+  if (changed)
   {
-    mutt_menu_set_redraw_full(MENU_MAIN);
-    /* force re-caching of index colors */
-    for (int i = 0; Context && i < Context->mailbox->msg_count; i++)
-      Context->mailbox->emails[i]->pair = 0;
+    struct EventColor ec = { false }; // Color reset/removed
+    notify_send(c->notify, NT_COLOR, object, (intptr_t) &ec);
   }
 
   return MUTT_CMD_SUCCESS;
@@ -1280,27 +1279,22 @@ static enum CommandResult parse_color(struct Colors *c, struct Buffer *buf, stru
   else if (object == MT_COLOR_INDEX)
   {
     rc = add_pattern(c, &c->index_list, buf->data, true, fg, bg, attr, err, true, match);
-    mutt_menu_set_redraw_full(MENU_MAIN);
   }
   else if (object == MT_COLOR_INDEX_AUTHOR)
   {
     rc = add_pattern(c, &c->index_author_list, buf->data, true, fg, bg, attr, err, true, match);
-    mutt_menu_set_redraw_full(MENU_MAIN);
   }
   else if (object == MT_COLOR_INDEX_FLAGS)
   {
     rc = add_pattern(c, &c->index_flags_list, buf->data, true, fg, bg, attr, err, true, match);
-    mutt_menu_set_redraw_full(MENU_MAIN);
   }
   else if (object == MT_COLOR_INDEX_SUBJECT)
   {
     rc = add_pattern(c, &c->index_subject_list, buf->data, true, fg, bg, attr, err, true, match);
-    mutt_menu_set_redraw_full(MENU_MAIN);
   }
   else if (object == MT_COLOR_INDEX_TAG)
   {
     rc = add_pattern(c, &c->index_tag_list, buf->data, true, fg, bg, attr, err, true, match);
-    mutt_menu_set_redraw_full(MENU_MAIN);
   }
   else if (object == MT_COLOR_QUOTED)
   {
@@ -1332,9 +1326,13 @@ static enum CommandResult parse_color(struct Colors *c, struct Buffer *buf, stru
   else
   {
     c->defs[object] = fgbgattr_to_color(c, fg, bg, attr);
-    if (object > MT_COLOR_INDEX_AUTHOR)
-      mutt_menu_set_redraw_full(MENU_MAIN);
     rc = MUTT_CMD_SUCCESS;
+  }
+
+  if (rc == MUTT_CMD_SUCCESS)
+  {
+    struct EventColor ec = { true }; // Color set/added
+    notify_send(c->notify, NT_COLOR, object, (intptr_t) &ec);
   }
 
   return rc;

@@ -145,6 +145,19 @@ struct Colors
 
   struct ColorList *user_colors;
   int num_user_colors;
+
+  struct Notify *notify;                   ///< Notifications system
+};
+
+/**
+ * struct EventColor - An Event that happened to an Colour
+ *
+ * Observers of EventColor will be passed a type of #NT_COLOR and a subtype
+ * which describes the colour that changed, e.g. #MT_COLOR_SIDEBAR_HIGHLIGHT.
+ */
+struct EventColor
+{
+  bool set; ///< True if a colour has been set/added, false if reset/deleted
 };
 
 int  mutt_color_alloc  (struct Colors *c, uint32_t fg,      uint32_t bg);
