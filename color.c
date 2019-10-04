@@ -644,6 +644,69 @@ static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *at
 #endif
 
 /**
+ * parse_object - Parse a colour config line
+ * @param[in]  buf Temporary Buffer space
+ * @param[in]  s   Buffer containing string to be parsed
+ * @param[out] o   Index into the fields map
+ * @param[out] ql  Quote level
+ * @param[out] err Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+static int parse_object(struct Buffer *buf, struct Buffer *s, uint32_t *o,
+                        uint32_t *ql, struct Buffer *err)
+{
+  if (!MoreArgs(s))
+  {
+    mutt_buffer_printf(err, _("%s: too few arguments"), "color");
+    return -1;
+  }
+
+  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+  if (mutt_str_startswith(buf->data, "quoted", CASE_MATCH))
+  {
+    if (buf->data[6])
+    {
+      char *eptr = NULL;
+      *ql = strtoul(buf->data + 6, &eptr, 10);
+      if (*eptr || (*ql == COLOR_UNSET))
+      {
+        mutt_buffer_printf(err, _("%s: no such object"), buf->data);
+        return -1;
+      }
+    }
+    else
+      *ql = 0;
+
+    *o = MT_COLOR_QUOTED;
+  }
+  else if (mutt_str_strcasecmp(buf->data, "compose") == 0)
+  {
+    if (!MoreArgs(s))
+    {
+      mutt_buffer_printf(err, _("%s: too few arguments"), "color");
+      return -1;
+    }
+
+    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+
+    *o = mutt_map_get_value(buf->data, ComposeFields);
+    if (*o == -1)
+    {
+      mutt_buffer_printf(err, _("%s: no such object"), buf->data);
+      return -1;
+    }
+  }
+  else if ((*o = mutt_map_get_value(buf->data, Fields)) == -1)
+  {
+    mutt_buffer_printf(err, _("%s: no such object"), buf->data);
+    return -1;
+  }
+
+  return 0;
+}
+
+/**
  * do_uncolor - Parse the 'uncolor' or 'unmono' command
  * @param buf     Buffer for temporary storage
  * @param s       Buffer containing the uncolor command
@@ -914,69 +977,6 @@ static enum CommandResult add_pattern(struct ColorLineList *top, const char *s,
   }
 
   return MUTT_CMD_SUCCESS;
-}
-
-/**
- * parse_object - Parse a colour config line
- * @param[in]  buf Temporary Buffer space
- * @param[in]  s   Buffer containing string to be parsed
- * @param[out] o   Index into the fields map
- * @param[out] ql  Quote level
- * @param[out] err Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
- */
-static int parse_object(struct Buffer *buf, struct Buffer *s, uint32_t *o,
-                        uint32_t *ql, struct Buffer *err)
-{
-  if (!MoreArgs(s))
-  {
-    mutt_buffer_printf(err, _("%s: too few arguments"), "color");
-    return -1;
-  }
-
-  mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-  if (mutt_str_startswith(buf->data, "quoted", CASE_MATCH))
-  {
-    if (buf->data[6])
-    {
-      char *eptr = NULL;
-      *ql = strtoul(buf->data + 6, &eptr, 10);
-      if (*eptr || (*ql == COLOR_UNSET))
-      {
-        mutt_buffer_printf(err, _("%s: no such object"), buf->data);
-        return -1;
-      }
-    }
-    else
-      *ql = 0;
-
-    *o = MT_COLOR_QUOTED;
-  }
-  else if (mutt_str_strcasecmp(buf->data, "compose") == 0)
-  {
-    if (!MoreArgs(s))
-    {
-      mutt_buffer_printf(err, _("%s: too few arguments"), "color");
-      return -1;
-    }
-
-    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-
-    *o = mutt_map_get_value(buf->data, ComposeFields);
-    if (*o == -1)
-    {
-      mutt_buffer_printf(err, _("%s: no such object"), buf->data);
-      return -1;
-    }
-  }
-  else if ((*o = mutt_map_get_value(buf->data, Fields)) == -1)
-  {
-    mutt_buffer_printf(err, _("%s: no such object"), buf->data);
-    return -1;
-  }
-
-  return 0;
 }
 
 #ifdef HAVE_COLOR
