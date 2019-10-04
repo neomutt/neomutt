@@ -4616,6 +4616,9 @@ folder-hook work "set sort=threads"
       </para>
       <cmdsynopsis>
         <command>color</command>
+        <arg choice="opt">
+          <option>compose</option>
+        </arg>
         <arg choice="plain">
           <replaceable class="parameter">object</replaceable>
         </arg>
@@ -4629,29 +4632,8 @@ folder-hook work "set sort=threads"
           <replaceable class="parameter">background</replaceable>
         </arg>
         <command>color</command>
-        <group choice="req">
-          <arg choice="plain">
-            <option>header</option>
-          </arg>
-          <arg choice="plain">
-            <option>body</option>
-          </arg>
-        </group>
-        <arg choice="opt" rep="repeat">
-          <replaceable class="parameter">attribute</replaceable>
-        </arg>
         <arg choice="plain">
-          <replaceable class="parameter">foreground</replaceable>
-        </arg>
-        <arg choice="plain">
-          <replaceable class="parameter">background</replaceable>
-        </arg>
-        <arg choice="plain">
-          <replaceable class="parameter">regex</replaceable>
-        </arg>
-        <command>color</command>
-        <arg choice="plain">
-          <option>index-object</option>
+          <replaceable class="parameter">pattern-object</replaceable>
         </arg>
         <arg choice="opt" rep="repeat">
           <replaceable class="parameter">attribute</replaceable>
@@ -4667,10 +4649,7 @@ folder-hook work "set sort=threads"
         </arg>
         <command>color</command>
         <arg choice="plain">
-          <option>compose</option>
-        </arg>
-        <arg choice="plain">
-          <replaceable class="parameter">composeobject</replaceable>
+          <replaceable class="parameter">regex-object</replaceable>
         </arg>
         <arg choice="opt" rep="repeat">
           <replaceable class="parameter">attribute</replaceable>
@@ -4681,564 +4660,731 @@ folder-hook work "set sort=threads"
         <arg choice="plain">
           <replaceable class="parameter">background</replaceable>
         </arg>
-        <command>uncolor</command>
-        <group choice="req">
+        <arg choice="plain">
+          <replaceable class="parameter">regex</replaceable>
+        </arg>
+        <command>color</command>
+        <arg choice="plain">
+          <option>status</option>
+        </arg>
+        <arg choice="opt" rep="repeat">
+          <replaceable class="parameter">attribute</replaceable>
+        </arg>
+        <arg choice="plain">
+          <replaceable class="parameter">foreground</replaceable>
+        </arg>
+        <arg choice="plain">
+          <replaceable class="parameter">background</replaceable>
+        </arg>
+        <group choice="opt">
           <arg choice="plain">
-            <option>index-object</option>
+            <replaceable class="parameter">regex</replaceable>
           </arg>
-          <arg choice="plain">
-            <option>header</option>
-          </arg>
-          <arg choice="plain">
-            <option>body</option>
-          </arg>
+          <group choice="opt">
+            <arg choice="plain">
+              <replaceable class="parameter">num</replaceable>
+            </arg>
+          </group>
         </group>
+        <command>uncolor</command>
+        <arg choice="opt">
+          <option>compose</option>
+        </arg>
+        <arg choice="plain">
+          <replaceable class="parameter">object</replaceable>
+        </arg>
+        <command>uncolor</command>
+        <arg choice="plain">
+          <replaceable class="parameter">pattern-object</replaceable>
+        </arg>
         <group choice="req">
+          <arg choice="plain">
+            <replaceable>pattern</replaceable>
+          </arg>
           <arg choice="plain">
             <replaceable>*</replaceable>
           </arg>
-          <arg choice="plain" rep="repeat">
-            <replaceable>pattern</replaceable>
+        </group>
+        <command>uncolor</command>
+        <arg choice="plain">
+          <replaceable class="parameter">regex-object</replaceable>
+        </arg>
+        <group choice="req">
+          <arg choice="plain">
+            <replaceable>regex</replaceable>
+          </arg>
+          <arg choice="plain">
+            <replaceable>*</replaceable>
+          </arg>
+        </group>
+        <command>uncolor</command>
+        <arg choice="plain">
+          <option>status</option>
+        </arg>
+        <group choice="req">
+          <arg choice="plain">
+            <replaceable>regex</replaceable>
+          </arg>
+          <arg choice="plain">
+            <replaceable>*</replaceable>
           </arg>
         </group>
       </cmdsynopsis>
       <para>
         If your terminal supports color, you can spice up NeoMutt by creating
-        your own color scheme. To define the color of an object (type of
-        information), you must specify both a foreground color
-        <emphasis>and</emphasis> a background color (it is not possible to only
-        specify one or the other).
+        your own <link linkend="color-style">color scheme</link>.
       </para>
       <para>
-        <emphasis>header</emphasis> and <emphasis>body</emphasis> match
-        <emphasis>regex</emphasis> in the header/body of a message,
-        <emphasis>index-object</emphasis> can match
-        <emphasis>pattern</emphasis> (see <xref linkend="patterns" />) in the
-        message index. Note that IMAP server-side searches (=b, =B, =h) are not
-        supported for color index patterns.
+        The types of objects that can be colored fall into two categories:
+        <link linkend="color-simple">Simple Colors</link> such as the
+        highlight in the index, and <link linkend="color-lists">Color Lists</link>
+        such as the status bar.  These lists can created complexing coloring
+        rules.
       </para>
-      <para>
-        When <link linkend="header-color-partial">$header_color_partial</link>
-        is unset (the default), a <emphasis>header</emphasis> matched by
-        <emphasis>regex</emphasis> will have color applied to the entire
-        header. When set, color is applied only to the exact text matched by
-        <emphasis>regex</emphasis>.
-      </para>
-      <para>
-        These simple colours below don't use a pattern.
-        If a name is configured more than once, the last one will be used.
-      </para>
+
+      <sect2 id="color-style">
+        <title>Color Style</title>
+        <para>
+          Objects in NeoMutt can be given colors and attributes to make things
+          easier to find and use.
+        </para>
+        <note>
+          <para>
+            Objects must be given <emphasis>both</emphasis> a foreground and
+            background color (it is not possible to specify one or the other).
+          </para>
+        </note>
+        <para>
+          Colors can be specified in two ways, using their name
+          such as <literal>green</literal>, <literal>blue</literal>,
+          or by their number in the palette,
+          such as <literal>color12</literal>, <literal>color207</literal>
+          (the palette consists of 256 colors).
+        </para>
+        <para>
+          Named colours may also be prefixed by a <emphasis>modifier</emphasis>.
+          <literal>bright</literal> or <literal>light</literal> will make the
+          color boldfaced or light (e.g., <literal>brightred</literal>).
+          <literal>alert</literal> to make a blinking/alert color (e.g.,
+          <literal>alertred</literal>).
+        </para>
+        <para>
+          The precise behavior depends on the terminal and its configuration.
+          In particular, the boldfaced/light difference and such background
+          colors may be available only for terminals configured with at least
+          16&nbsp;colors, as specified by the <literal>$TERM</literal>
+          environment variable.
+        </para>
+        <para>
+          <emphasis>foreground</emphasis> and <emphasis>background</emphasis>
+          can be one of the following:
+        </para>
+        <itemizedlist>
+          <listitem>
+            <para>
+              white
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              black
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              green
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              magenta
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              blue
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              cyan
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              yellow
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              red
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              default
+            </para>
+          </listitem>
+        </itemizedlist>
+        <para>
+          In addition to the colors, objects may have their <emphasis>attributes</emphasis> set:
+        </para>
+        <itemizedlist>
+          <listitem>
+            <para>none</para>
+          </listitem>
+          <listitem>
+            <para>bold</para>
+          </listitem>
+          <listitem>
+            <para>reverse</para>
+          </listitem>
+          <listitem>
+            <para>standout</para>
+          </listitem>
+          <listitem>
+            <para>underline</para>
+          </listitem>
+        </itemizedlist>
+        <para>
+          If your terminal supports it, the special keyword
+          <emphasis>default</emphasis> can be used as a transparent color. The
+          value <emphasis>brightdefault</emphasis> is also valid. If NeoMutt is
+          linked against the <emphasis>S-Lang</emphasis> library, you also need
+          to set the <literal>$COLORFGBG</literal> environment variable to the
+          default colors of your terminal for this to work; for example (for
+          Bourne-like shells):
+        </para>
+<screen>
+set COLORFGBG="green;black"
+export COLORFGBG
+</screen>
+        <note>
+          <para>
+            The <emphasis>S-Lang</emphasis> library requires you to use the
+            <emphasis>lightgray</emphasis> and <emphasis>brown</emphasis>
+            keywords instead of <emphasis>white</emphasis> and
+            <emphasis>yellow</emphasis> when setting this variable.
+          </para>
+        </note>
+      </sect2>
+
+      <sect2 id="color-simple">
+        <title>Simple Colors</title>
+        <para>
+          Most of NeoMutt's colorable objects follow simple rules.
+          They don't use a pattern and any new configuration will overwrite the
+          old colours.
+        </para>
+        <para>
+          Simple colors can be undone by setting the foreground and background
+          to <literal>default</literal>, or by using the <literal>uncolor</literal>
+          command.
+        </para>
+        <para>
+          These are general NeoMutt objects:
+        </para>
+        <table id="table-color-simple">
+          <title>Simple Colours</title>
+          <tgroup cols="2">
+            <thead>
+              <row>
+                <entry>Colour Name</entry>
+                <entry>Description</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>attachment</entry>
+                <entry>Colour for attachment headers</entry>
+              </row>
+              <row>
+                <entry>bold</entry>
+                <entry>Highlighting bold patterns in the body of messages</entry>
+              </row>
+              <row>
+                <entry>error</entry>
+                <entry>Error messages printed by NeoMutt</entry>
+              </row>
+              <row>
+                <entry>hdrdefault</entry>
+                <entry>Default colour of the message header in the pager</entry>
+              </row>
+              <row>
+                <entry>indicator</entry>
+                <entry>Arrow or bar used to indicate the current item in a menu</entry>
+              </row>
+              <row>
+                <entry>markers</entry>
+                <entry>The "+" markers at the beginning of wrapped lines in the pager</entry>
+              </row>
+              <row>
+                <entry>message</entry>
+                <entry>Informational messages</entry>
+              </row>
+              <row>
+                <entry>normal</entry>
+                <entry>Default colour for all text</entry>
+              </row>
+              <row>
+                <entry>options</entry>
+                <entry>The key letters in multi-choice questions</entry>
+              </row>
+              <row>
+                <entry>progress</entry>
+                <entry><link linkend="progress">Visual progress bar</link></entry>
+              </row>
+              <row>
+                <entry>prompt</entry>
+                <entry>A question</entry>
+              </row>
+              <row>
+                <entry>search</entry>
+                <entry>Highlighting of words in the pager</entry>
+              </row>
+              <row>
+                <entry>signature</entry>
+                <entry>Email's signature lines (.sig)</entry>
+              </row>
+              <row>
+                <entry>tilde</entry>
+                <entry>The "~" used to pad blank lines in the pager</entry>
+              </row>
+              <row>
+                <entry>tree</entry>
+                <entry>Thread tree drawn in the message index and attachment menu</entry>
+              </row>
+              <row>
+                <entry>underline</entry>
+                <entry>Highlighting underlined patterns in the body of messages</entry>
+              </row>
+              <row>
+                <entry>warning</entry>
+                <entry>Warning messages</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
 <screen>
 <emphasis role="comment"># Make error messages white text on a red background</emphasis>
 color error white red
 <emphasis role="comment"># Make questions bold, underlined, with light blue text (with default background)</emphasis>
 color prompt bold underline cyan default
 </screen>
-      <table id="color-simple">
-        <title>Simple Colours</title>
-        <tgroup cols="2">
-          <thead>
-            <row>
-              <entry>Colour Name</entry>
-              <entry>Description</entry>
-            </row>
-          </thead>
-          <tbody>
-            <row>
-              <entry>attachment</entry>
-              <entry>Colour for attachment headers</entry>
-            </row>
-            <row>
-              <entry>bold</entry>
-              <entry>Highlighting bold patterns in the body of messages</entry>
-            </row>
-            <row>
-              <entry>error</entry>
-              <entry>Error messages printed by NeoMutt</entry>
-            </row>
-            <row>
-              <entry>hdrdefault</entry>
-              <entry>Default colour of the message header in the pager</entry>
-            </row>
-            <row>
-              <entry>indicator</entry>
-              <entry>Arrow or bar used to indicate the current item in a menu</entry>
-            </row>
-            <row>
-              <entry>markers</entry>
-              <entry>The "+" markers at the beginning of wrapped lines in the pager</entry>
-            </row>
-            <row>
-              <entry>message</entry>
-              <entry>Informational messages</entry>
-            </row>
-            <row>
-              <entry>normal</entry>
-              <entry>Default colour for all text</entry>
-            </row>
-            <row>
-              <entry>options</entry>
-              <entry>The key letters in multi-choice questions</entry>
-            </row>
-            <row>
-              <entry>progress</entry>
-              <entry><link linkend="progress">Visual progress bar</link></entry>
-            </row>
-            <row>
-              <entry>prompt</entry>
-              <entry>A question</entry>
-            </row>
-            <row>
-              <entry>search</entry>
-              <entry>Highlighting of words in the pager</entry>
-            </row>
-            <row>
-              <entry>signature</entry>
-              <entry>Email's signature lines (.sig)</entry>
-            </row>
-            <row>
-              <entry>tilde</entry>
-              <entry>The "~" used to pad blank lines in the pager</entry>
-            </row>
-            <row>
-              <entry>tree</entry>
-              <entry>Thread tree drawn in the message index and attachment menu</entry>
-            </row>
-            <row>
-              <entry>underline</entry>
-              <entry>Highlighting underlined patterns in the body of messages</entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-      <para>
-        These simple index colours below don't use a pattern.
-        If a name is configured more than once, the last one will be used.
-        Each name will colour a certain expando in the index.
-        See <link linkend="index-format">$index_format</link> for more details.
-      </para>
+<screen>
+uncolor error
+uncolor prompt
+</screen>
+        <para>
+          Each of these objects will colour a certain expando in the index.
+          See <link linkend="index-format">$index_format</link> for more details.
+        </para>
+        <table id="color-simple-index">
+          <title>Simple Index Colours</title>
+          <tgroup cols="2">
+            <thead>
+              <row>
+                <entry>Colour Name</entry>
+                <entry>Description</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>index_collapsed</entry>
+                <entry>Number of messages in a collapsed thread, <literal>%M</literal></entry>
+              </row>
+              <row>
+                <entry>index_date</entry>
+                <entry>Date field, <literal>%d</literal> <literal>%D</literal> <literal>%{fmt}</literal> <literal>%[fmt]</literal> <literal>%(fmt)</literal></entry>
+              </row>
+              <row>
+                <entry>index_label</entry>
+                <entry>Message label, <literal>%y</literal> <literal>%Y</literal></entry>
+              </row>
+              <row>
+                <entry>index_number</entry>
+                <entry>Message number, <literal>%C</literal></entry>
+              </row>
+              <row>
+                <entry>index_size</entry>
+                <entry>Message size, <literal>%c</literal> <literal>%l</literal></entry>
+              </row>
+              <row>
+                <entry>index_tags</entry>
+                <entry>Transformed message tags, <literal>%g</literal> <literal>%J</literal></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
 <screen>
 color index_date green default
 </screen>
-      <table id="color-simple-index">
-        <title>Simple Index Colours</title>
-        <tgroup cols="2">
-          <thead>
-            <row>
-              <entry>Colour Name</entry>
-              <entry>Description</entry>
-            </row>
-          </thead>
-          <tbody>
-            <row>
-              <entry>index_collapsed</entry>
-              <entry>Number of messages in a collapsed thread, <literal>%M</literal></entry>
-            </row>
-            <row>
-              <entry>index_date</entry>
-              <entry>Date field, <literal>%d</literal> <literal>%D</literal> <literal>%{fmt}</literal> <literal>%[fmt]</literal> <literal>%(fmt)</literal></entry>
-            </row>
-            <row>
-              <entry>index_label</entry>
-              <entry>Message label, <literal>%y</literal> <literal>%Y</literal></entry>
-            </row>
-            <row>
-              <entry>index_number</entry>
-              <entry>Message number, <literal>%C</literal></entry>
-            </row>
-            <row>
-              <entry>index_size</entry>
-              <entry>Message size, <literal>%c</literal> <literal>%l</literal></entry>
-            </row>
-            <row>
-              <entry>index_tags</entry>
-              <entry>Transformed message tags, <literal>%g</literal> <literal>%J</literal></entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-      <para>
-        These simple sidebar colours below don't use a pattern.
-        If a name is configured more than once, the last one will be used.
-        See <link linkend="sidebar-intro">Sidebar Intro</link> for more details.
-      </para>
+<screen>
+uncolor index_date
+</screen>
+        <para>
+          These are sidebar objects.
+          See <link linkend="sidebar-intro">Sidebar Intro</link> for more details.
+        </para>
+        <table id="color-simple-sidebar">
+          <title>Simple Sidebar Colours</title>
+          <tgroup cols="2">
+            <thead>
+              <row>
+                <entry>Colour Name</entry>
+                <entry>Description</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>sidebar_divider</entry>
+                <entry>The dividing line between the Sidebar and the Index/Pager panels</entry>
+              </row>
+              <row>
+                <entry>sidebar_flagged</entry>
+                <entry>Mailboxes containing flagged mail</entry>
+              </row>
+              <row>
+                <entry>sidebar_highlight</entry>
+                <entry>Cursor to select a mailbox</entry>
+              </row>
+              <row>
+                <entry>sidebar_indicator</entry>
+                <entry>The mailbox open in the Index panel</entry>
+              </row>
+              <row>
+                <entry>sidebar_new</entry>
+                <entry>Mailboxes containing new mail</entry>
+              </row>
+              <row>
+                <entry>sidebar_ordinary</entry>
+                <entry>Mailboxes that have no new/flagged mails, etc</entry>
+              </row>
+              <row>
+                <entry>sidebar_spoolfile</entry>
+                <entry>Mailbox that receives incoming mail</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
 <screen>
 color sidebar_divider brightblack default
 </screen>
-      <table id="color-simple-sidebar">
-        <title>Simple Sidebar Colours</title>
-        <tgroup cols="2">
-          <thead>
-            <row>
-              <entry>Colour Name</entry>
-              <entry>Description</entry>
-            </row>
-          </thead>
-          <tbody>
-            <row>
-              <entry>sidebar_divider</entry>
-              <entry>The dividing line between the Sidebar and the Index/Pager panels</entry>
-            </row>
-            <row>
-              <entry>sidebar_flagged</entry>
-              <entry>Mailboxes containing flagged mail</entry>
-            </row>
-            <row>
-              <entry>sidebar_highlight</entry>
-              <entry>Cursor to select a mailbox</entry>
-            </row>
-            <row>
-              <entry>sidebar_indicator</entry>
-              <entry>The mailbox open in the Index panel</entry>
-            </row>
-            <row>
-              <entry>sidebar_new</entry>
-              <entry>Mailboxes containing new mail</entry>
-            </row>
-            <row>
-              <entry>sidebar_ordinary</entry>
-              <entry>Mailboxes that have no new/flagged mails, etc</entry>
-            </row>
-            <row>
-              <entry>sidebar_spoolfile</entry>
-              <entry>Mailbox that receives incoming mail</entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-      <para>
-        These simple compose colours below don't use a pattern.
-        If a name is configured more than once, the last one will be used.
-      </para>
 <screen>
-color header bold white default
+uncolor sidebar_divider
 </screen>
-      <table id="color-simple-compose">
-        <title>Simple Compose Colours</title>
-        <tgroup cols="2">
-          <thead>
-            <row>
-              <entry>Colour Name</entry>
-              <entry>Description</entry>
-            </row>
-          </thead>
-          <tbody>
-            <row>
-              <entry>header</entry>
-              <entry>Header labels, e.g. From:</entry>
-            </row>
-            <row>
-              <entry>security_encrypt</entry>
-              <entry>Mail will be encrypted</entry>
-            </row>
-            <row>
-              <entry>security_sign</entry>
-              <entry>Mail will be signed</entry>
-            </row>
-            <row>
-              <entry>security_both</entry>
-              <entry>Mail will be encrypted and signed</entry>
-            </row>
-            <row>
-              <entry>security_none</entry>
-              <entry>Mail will not be encrypted or signed</entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-      <para>
-        These colours use a regex to match.  When applying the colours, each
-        regex will be tested against the field to be coloured.  All of the
-        matching patterns will have their colours applied in the order they are
-        configured.
-      </para>
+        <para>
+          These are compose objects.
+        </para>
+        <note>
+          <para>
+            The compose objects use a slightly different format of command.
+            They prefix the style with the word <literal>compose</literal>.
+          </para>
+        </note>
+        <table id="color-simple-compose">
+          <title>Simple Compose Colours</title>
+          <tgroup cols="2">
+            <thead>
+              <row>
+                <entry>Colour Name</entry>
+                <entry>Description</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>header</entry>
+                <entry>Header labels, e.g. From:</entry>
+              </row>
+              <row>
+                <entry>security_encrypt</entry>
+                <entry>Mail will be encrypted</entry>
+              </row>
+              <row>
+                <entry>security_sign</entry>
+                <entry>Mail will be signed</entry>
+              </row>
+              <row>
+                <entry>security_both</entry>
+                <entry>Mail will be encrypted and signed</entry>
+              </row>
+              <row>
+                <entry>security_none</entry>
+                <entry>Mail will not be encrypted or signed</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
 <screen>
-color body bold red default "(urgent|important)"
+color compose header bold white default
 </screen>
-      <table id="color-regex-lists">
-        <title>Colour Regex Lists</title>
-        <tgroup cols="2">
-          <thead>
-            <row>
-              <entry>Colour Name</entry>
-              <entry>Description</entry>
-            </row>
-          </thead>
-          <tbody>
-            <row>
-              <entry>attach_headers</entry>
-              <entry>Attachment headers</entry>
-            </row>
-            <row>
-              <entry>body</entry>
-              <entry>Email body</entry>
-            </row>
-            <row>
-              <entry>header</entry>
-              <entry>Email headers</entry>
-            </row>
-            <row>
-              <entry>index</entry>
-              <entry>Default highlighting of the entire index line</entry>
-            </row>
-            <row>
-              <entry>index_author</entry>
-              <entry>Author in the index, %A %a %F %L %n</entry>
-            </row>
-            <row>
-              <entry>index_flags</entry>
-              <entry>Flags in the index, %S %Z</entry>
-            </row>
-            <row>
-              <entry>index_subject</entry>
-              <entry>Subject in the index, %s</entry>
-            </row>
-            <row>
-              <entry>index_tag</entry>
-              <entry>Tags in the index, %G</entry>
-            </row>
-            <row>
-              <entry>status</entry>
-              <entry>Status bar</entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-      <para>
-        The quoted email colours don't use pattern.
-        The first colour, <literal>quoted</literal> provides a default colour for
-        all quoted text.  Also, each diffent level of quoting can be given a
-        different colour using, <literal>quoted1</literal>,
-        <literal>quoted2</literal>, <literal>quoted3</literal> etc.
-      </para>
+<screen>
+uncolor compose header
+</screen>
+        <para>
+          The quoted objects refer to quoted lines in an email reply.
+          They are defined using the
+          <link linkend="reply-regex"><literal>$reply_regex</literal></link>
+          config variable.
+        </para>
+        <para>
+          The quoted email colours don't use pattern.
+          The first colour, <literal>quoted</literal> provides a default colour
+          for all quoted text.  Also, each diffent level of quoting can be given
+          a different colour using, <literal>quoted1</literal>,
+          <literal>quoted2</literal>, <literal>quoted3</literal> etc.
+        </para>
+        <table id="color-quoted">
+          <title>Quoted Email Colours</title>
+          <tgroup cols="2">
+            <thead>
+              <row>
+                <entry>Colour Name</entry>
+                <entry>Description</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>quoted</entry>
+                <entry>Text matching <link linkend="quote-regex">$quote_regex</link> in the body of a message</entry>
+              </row>
+              <row>
+                <entry>quoted1</entry>
+                <entry>1 level deeper quoted text, e.g. <literal>&gt; &gt; text</literal></entry>
+              </row>
+              <row>
+                <entry>quoted2</entry>
+                <entry>2 level deeper quoted text, e.g. <literal>&gt; &gt; &gt; text</literal></entry>
+              </row>
+              <row>
+                <entry>quotedN</entry>
+                <entry>n level deeper quoted text</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
 <screen>
 color quoted brightblue default
 color quoted1 brightgreen default
 color quoted2 yellow default
 </screen>
-      <table id="color-quoted">
-        <title>Quoted Email Colours</title>
-        <tgroup cols="2">
-          <thead>
-            <row>
-              <entry>Colour Name</entry>
-              <entry>Description</entry>
-            </row>
-          </thead>
-          <tbody>
-            <row>
-              <entry>quoted</entry>
-              <entry>Text matching <link linkend="quote-regex">$quote_regex</link> in the body of a message</entry>
-            </row>
-            <row>
-              <entry>quoted1</entry>
-              <entry>1 level deeper quoted text, e.g. <literal>&gt; &gt; text</literal></entry>
-            </row>
-            <row>
-              <entry>quoted2</entry>
-              <entry>2 level deeper quoted text, e.g. <literal>&gt; &gt; &gt; text</literal></entry>
-            </row>
-            <row>
-              <entry>quotedN</entry>
-              <entry>n level deeper quoted text</entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-      <para>
-        <emphasis>attribute</emphasis> can be one of the following:
-      </para>
-      <itemizedlist>
-        <listitem>
-          <para>none</para>
-        </listitem>
-        <listitem>
-          <para>bold</para>
-        </listitem>
-        <listitem>
-          <para>underline</para>
-        </listitem>
-        <listitem>
-          <para>reverse</para>
-        </listitem>
-        <listitem>
-          <para>standout</para>
-        </listitem>
-      </itemizedlist>
-      <para>
-        <emphasis>foreground</emphasis> and <emphasis>background</emphasis> can
-        be one of the following:
-      </para>
-      <itemizedlist>
-        <listitem>
-          <para>
-            white
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            black
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            green
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            magenta
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            blue
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            cyan
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            yellow
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            red
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            default
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            color
-            <emphasis>x</emphasis>
-          </para>
-        </listitem>
-      </itemizedlist>
-      <para>
-        The color name can optionally be prefixed with the keyword
-        <literal>bright</literal> or <literal>light</literal> to make the color
-        boldfaced or light (e.g., <literal>brightred</literal>).
-        <literal>alert</literal> to make a blinking/alert color (e.g.,
-        <literal>alertred</literal>).  The precise behavior depends on the
-        terminal and its configuration. In particular, the boldfaced/light
-        difference and such background colors may be available only for
-        terminals configured with at least 16&nbsp;colors, as specified by the
-        <literal>$TERM</literal> environment variable.
-      </para>
-      <para>
-        If your terminal supports it, the special keyword
-        <emphasis>default</emphasis> can be used as a transparent color. The
-        value <emphasis>brightdefault</emphasis> is also valid. If NeoMutt is
-        linked against the <emphasis>S-Lang</emphasis> library, you also need
-        to set the <literal>$COLORFGBG</literal> environment variable to the
-        default colors of your terminal for this to work; for example (for
-        Bourne-like shells):
-      </para>
-
 <screen>
-set COLORFGBG="green;black"
-export COLORFGBG
+uncolor quoted
+uncolor quoted1
+uncolor quoted2
 </screen>
+      </sect2>
 
-      <note>
+      <sect2 id="color-lists">
+        <title>Color Lists</title>
         <para>
-          The <emphasis>S-Lang</emphasis> library requires you to use the
-          <emphasis>lightgray</emphasis> and <emphasis>brown</emphasis>
-          keywords instead of <emphasis>white</emphasis> and
-          <emphasis>yellow</emphasis> when setting this variable.
+          Some objects in NeoMutt support <emphasis>lists</emphasis> of color
+          rules.  Each rule has a pattern and a color.
+          Each is checked in turn
+          and any matching rules are applied cumulatively (overlaid).
         </para>
-      </note>
-      <note>
         <para>
-          The <command>uncolor</command> command can be applied to the index,
-          header and body objects only. It removes entries from the list. You
-          <emphasis>must</emphasis> specify the same pattern specified in the
-          <command>color</command> command for it to be removed. The pattern
-          <quote>*</quote> is a special token which means to clear the color
-          list of all entries.
+          When applying the colours, each pattern will be tested against the
+          field to be colored.  All of the matching patterns will have their
+          colors applied in the order they are configured.
         </para>
-      </note>
-      <para>
-        NeoMutt also recognizes the keywords <emphasis>color0</emphasis>,
-        <emphasis>color1</emphasis>, ..., <emphasis>color</emphasis>
-        <emphasis>N-1</emphasis> (<emphasis>N</emphasis> being the number of
-        colors supported by your terminal). This is useful when you remap the
-        colors for your display (for example by changing the color associated
-        with <emphasis>color2</emphasis> for your xterm), since color names may
-        then lose their normal meaning.
-      </para>
-      <anchor id="mono" />
-      <para>
-        If your terminal does not support color, it is still possible change
-        the video attributes through the use of the <quote>mono</quote>
-        command. Usage:
-      </para>
-      <cmdsynopsis>
-        <command>mono</command>
-        <arg choice="plain">
-          <replaceable class="parameter">object</replaceable>
-        </arg>
-        <arg choice="plain">
-          <replaceable class="parameter">attribute</replaceable>
-        </arg>
-        <command>mono</command>
-        <group choice="req">
+        <para>
+          The color lists work in slightly different ways to each other.
+        </para>
+        <para>
+          <literal>attach_headers</literal>, <literal>body</literal> and
+          <literal>header</literal> match a <emphasis>regular expression</emphasis>
+          (regex) in the header/body of a email.
+        </para>
+        <para>
+          <literal>index</literal> objects match a <emphasis>pattern</emphasis>
+          in the email index (see <xref linkend="patterns" />)
+          Note that IMAP server-side searches (=b, =B, =h) are not
+          supported for color index patterns.
+        </para>
+        <para>
+          When <link linkend="header-color-partial">$header_color_partial</link>
+          is unset (the default), a <literal>header</literal> matched by
+          <emphasis>regex</emphasis> will have color applied to the entire
+          header. When set, color is applied only to the exact text matched by
+          <emphasis>regex</emphasis>.
+        </para>
+        <para>
+          For the <literal>status</literal> list, the
+          <emphasis>regular expression</emphasis> is optional.  Without one,
+          the command will set the default style for the status bar.  With a
+          regex (and an optional number), it's possible to style parts of the
+          status bar.  See: <link linkend="status-color">Status-Color feature</link>
+          for more detail.
+        </para>
+        <para>
+          Color lists can be undone by using the <literal>uncolor</literal>
+          command and the pattern or <literal>*</literal> to match.
+        </para>
+        <table id="color-regex-lists">
+          <title>Colour Regex Lists</title>
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry>Colour Name</entry>
+                <entry>Match</entry>
+                <entry>Description</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>attach_headers</entry>
+                <entry>regex</entry>
+                <entry>Attachment headers</entry>
+              </row>
+              <row>
+                <entry>body</entry>
+                <entry>regex</entry>
+                <entry>Email body</entry>
+              </row>
+              <row>
+                <entry>header</entry>
+                <entry>regex</entry>
+                <entry>Email headers</entry>
+              </row>
+              <row>
+                <entry>index</entry>
+                <entry>pattern</entry>
+                <entry>Default highlighting of the entire index line</entry>
+              </row>
+              <row>
+                <entry>index_author</entry>
+                <entry>pattern</entry>
+                <entry>Author in the index, %A %a %F %L %n</entry>
+              </row>
+              <row>
+                <entry>index_flags</entry>
+                <entry>pattern</entry>
+                <entry>Flags in the index, %S %Z</entry>
+              </row>
+              <row>
+                <entry>index_subject</entry>
+                <entry>pattern</entry>
+                <entry>Subject in the index, %s</entry>
+              </row>
+              <row>
+                <entry>index_tag</entry>
+                <entry>pattern</entry>
+                <entry>Tags in the index, %G</entry>
+              </row>
+              <row>
+                <entry>status</entry>
+                <entry>regex</entry>
+                <entry>Status bar</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+<screen>
+<emphasis role="comment"># Highlight emails from work (entire line)</emphasis>
+color index          cyan default "~f @work.com"
+<emphasis role="comment"># Extra highlighting for the boss (just the author column)</emphasis>
+color index_author   cyan red     "~f boss@work.com"
+</screen>
+<screen>
+uncolor index          "~f @work.com"
+<emphasis role="comment"># Clear all index_author colors</emphasis>
+uncolor index_author   *
+</screen>
+<screen>
+<emphasis role="comment"># Add some highlights to the body of an email</emphasis>
+color body    bold red    default "(urgent|important)"
+color body         yellow default "(warning|notice)"
+<emphasis role="comment"># Make the label header red</emphasis>
+color header       cyan   default "X-Label"
+</screen>
+<screen>
+uncolor body    "(urgent|important)"
+<emphasis role="comment"># Clear all body colors</emphasis>
+uncolor body    *
+uncolor header  "X-Label"
+</screen>
+<screen>
+<emphasis role="comment"># Set the default color for the entire status line</emphasis>
+color status blue white
+<emphasis role="comment"># Highlight New, Deleted, or Flagged emails</emphasis>
+color status brightred white '(New|Del|Flag):[0-9]+'
+<emphasis role="comment"># Highlight the contents of the []s but not the [] themselves</emphasis>
+color status red default '\[([^]]+)\]' 1
+</screen>
+<screen>
+uncolor status '(New|Del|Flag):[0-9]+'
+uncolor status *
+</screen>
+      </sect2>
+
+      <sect2 id="color-mono">
+        <title>Mono Color</title>
+
+        <para>
+          If your terminal does not support color, it is still possible change
+          the video attributes through the use of the <quote>mono</quote>
+          command. Usage:
+        </para>
+        <cmdsynopsis>
+          <command>mono</command>
           <arg choice="plain">
-            <option>header</option>
+            <replaceable class="parameter">object</replaceable>
           </arg>
           <arg choice="plain">
-            <option>body</option>
+            <replaceable class="parameter">attribute</replaceable>
           </arg>
-        </group>
-        <arg choice="plain">
-          <replaceable class="parameter">attribute</replaceable>
-        </arg>
-        <arg choice="plain">
-          <replaceable class="parameter">regex</replaceable>
-        </arg>
-        <command>mono</command>
-        <arg choice="plain">
-          <option>index-object</option>
-        </arg>
-        <arg choice="plain">
-          <replaceable class="parameter">attribute</replaceable>
-        </arg>
-        <arg choice="plain">
-          <replaceable class="parameter">pattern</replaceable>
-        </arg>
-        <command>unmono</command>
-        <group choice="req">
+          <command>mono</command>
+          <group choice="req">
+            <arg choice="plain">
+              <option>header</option>
+            </arg>
+            <arg choice="plain">
+              <option>body</option>
+            </arg>
+          </group>
+          <arg choice="plain">
+            <replaceable class="parameter">attribute</replaceable>
+          </arg>
+          <arg choice="plain">
+            <replaceable class="parameter">regex</replaceable>
+          </arg>
+          <command>mono</command>
           <arg choice="plain">
             <option>index-object</option>
           </arg>
           <arg choice="plain">
-            <option>header</option>
+            <replaceable class="parameter">attribute</replaceable>
           </arg>
           <arg choice="plain">
-            <option>body</option>
+            <replaceable class="parameter">pattern</replaceable>
           </arg>
-        </group>
-        <group choice="req">
-          <arg choice="plain">
-            <replaceable>*</replaceable>
-          </arg>
-          <arg choice="plain" rep="repeat">
-            <replaceable>pattern</replaceable>
-          </arg>
-        </group>
-      </cmdsynopsis>
-      <para>
-        For <emphasis>object</emphasis>, <emphasis>composeobject</emphasis>, and
-        <emphasis>attribute</emphasis>, see the <command>color</command> command.
-      </para>
+          <command>unmono</command>
+          <group choice="req">
+            <arg choice="plain">
+              <option>index-object</option>
+            </arg>
+            <arg choice="plain">
+              <option>header</option>
+            </arg>
+            <arg choice="plain">
+              <option>body</option>
+            </arg>
+          </group>
+          <group choice="req">
+            <arg choice="plain">
+              <replaceable>*</replaceable>
+            </arg>
+            <arg choice="plain" rep="repeat">
+              <replaceable>pattern</replaceable>
+            </arg>
+          </group>
+        </cmdsynopsis>
+        <para>
+          For <emphasis>object</emphasis>, <emphasis>composeobject</emphasis>, and
+          <emphasis>attribute</emphasis>, see the <command>color</command> command.
+        </para>
+      </sect2>
     </sect1>
 
     <sect1 id="msg-hdr-display">
@@ -19118,7 +19264,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
         <listitem>
           <cmdsynopsis>
             <command>
-              <link linkend="mono">mono</link>
+              <link linkend="color-mono">mono</link>
             </command>
             <arg choice="plain">
               <replaceable class="parameter">object</replaceable>
@@ -19127,7 +19273,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <replaceable class="parameter">attribute</replaceable>
             </arg>
             <command>
-              <link linkend="mono">mono</link>
+              <link linkend="color-mono">mono</link>
             </command>
             <group choice="req">
               <arg choice="plain">
@@ -19144,7 +19290,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <replaceable class="parameter">regex</replaceable>
             </arg>
             <command>
-              <link linkend="mono">mono</link>
+              <link linkend="color-mono">mono</link>
             </command>
             <arg choice="plain">
               <option>index-object</option>
@@ -19156,7 +19302,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <replaceable class="parameter">pattern</replaceable>
             </arg>
             <command>
-              <link linkend="mono">unmono</link>
+              <link linkend="color-mono">unmono</link>
             </command>
             <group choice="req">
               <arg choice="plain">
