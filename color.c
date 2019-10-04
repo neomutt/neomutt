@@ -220,6 +220,27 @@ static void quotes_clear(struct Colors *c)
 }
 
 /**
+ * color_list_free - Free the list of curses colours
+ * @param ptr Colours
+ */
+static void color_list_free(struct ColorList **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct ColorList *cl = *ptr;
+  struct ColorList *next = NULL;
+
+  while (cl)
+  {
+    next = cl->next;
+    FREE(&cl);
+    cl = next;
+  }
+  *ptr = NULL;
+}
+
+/**
  * color_line_new - Create a new ColorLine
  * @retval ptr Newly allocated ColorLine
  */
@@ -278,6 +299,8 @@ static void colors_clear(struct Colors *c)
 {
   defs_clear(c);
   quotes_clear(c);
+
+  color_list_free(&c->user_colors);
 }
 
 /**
@@ -1283,15 +1306,6 @@ void mutt_colors_free(void)
   color_line_list_clear(&Colors->index_tag_list);
   color_line_list_clear(&Colors->status_list);
 
-  struct ColorList *cl = Colors->user_colors;
-  struct ColorList *next = NULL;
-  while (cl)
-  {
-    next = cl->next;
-    FREE(&cl);
-    cl = next;
-  }
-  Colors->user_colors = NULL;
   colors_clear(Colors);
   defs_free(Colors);
   quotes_free(Colors);
