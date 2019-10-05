@@ -3,7 +3,9 @@
 # Make sure we use /usr as a default prefix on Linux; we can't use $host_
 # variables because this needs to go before the inclusion of the system module.
 if {![catch {exec uname} out] && $out eq {Linux}} {
-  define defaultprefix /usr
+  options-defaults {
+    prefix /usr
+  }
 }
 
 autosetup-require-version 0.6.9
