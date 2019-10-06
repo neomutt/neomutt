@@ -811,17 +811,41 @@ void mutt_save_path(char *buf, size_t buflen, const struct Address *addr)
 }
 
 /**
+ * mutt_buffer_save_path - Make a safe filename from an email address
+ * @param dest Buffer for the result
+ * @param a    Address to use
+ */
+void mutt_buffer_save_path(struct Buffer *dest, const struct Address *a)
+{
+  if (a && a->mailbox)
+  {
+    mutt_buffer_strcpy(dest, a->mailbox);
+    if (!C_SaveAddress)
+    {
+      char *p = strpbrk(dest->data, "%@");
+      if (p)
+      {
+        *p = '\0';
+        mutt_buffer_fix_dptr(dest);
+      }
+    }
+    mutt_str_strlower(dest->data);
+  }
+  else
+    mutt_buffer_reset(dest);
+}
+
+/**
  * mutt_safe_path - Make a safe filename from an email address
- * @param buf    Buffer for the result
- * @param buflen Length of buffer
- * @param a Address to use
+ * @param dest Buffer for the result
+ * @param a    Address to use
  *
  * The filename will be stripped of '/', space, etc to make it safe.
  */
-void mutt_safe_path(char *buf, size_t buflen, const struct Address *a)
+void mutt_safe_path(struct Buffer *dest, const struct Address *a)
 {
-  mutt_save_path(buf, buflen, a);
-  for (char *p = buf; *p; p++)
+  mutt_buffer_save_path(dest, a);
+  for (char *p = dest->data; *p; p++)
     if ((*p == '/') || IS_SPACE(*p) || !IsPrint((unsigned char) *p))
       *p = '_';
 }
