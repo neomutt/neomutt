@@ -3261,6 +3261,7 @@ enum CommandResult mutt_parse_rc_line(/* const */ char *line,
         {              /* -1 Error, +1 Finish */
           goto finish; /* Propagate return code */
         }
+        notify_send(NeoMutt->notify, NT_COMMAND, i, 0);
         break; /* Continue with next command */
       }
     }

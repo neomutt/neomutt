@@ -37,6 +37,7 @@ enum NotifyType
   NT_WINDOW,  ///< Window has changed
   NT_CONTEXT, ///< Context has changed
   NT_COLOR,   ///< Colour has changed
+  NT_COMMAND, ///< A Command has been executed
 };
 
 #endif /* MUTT_LIB_NOTIFY_TYPE_H */
