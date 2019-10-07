@@ -2247,17 +2247,24 @@ static int imap_mbox_close(struct Mailbox *m)
  */
 static int imap_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e)
 {
-  char tmp[PATH_MAX];
+  int rc = -1;
 
-  mutt_mktemp(tmp, sizeof(tmp));
-  msg->fp = mutt_file_fopen(tmp, "w");
+  struct Buffer *tmp = mutt_buffer_pool_get();
+  mutt_buffer_mktemp(tmp);
+
+  msg->fp = mutt_file_fopen(mutt_b2s(tmp), "w");
   if (!msg->fp)
   {
-    mutt_perror(tmp);
-    return -1;
+    mutt_perror(mutt_b2s(tmp));
+    goto cleanup;
   }
-  msg->path = mutt_str_strdup(tmp);
-  return 0;
+
+  msg->path = mutt_str_strdup(mutt_b2s(tmp));
+  rc = 0;
+
+cleanup:
+  mutt_buffer_pool_release(&tmp);
+  return rc;
 }
 
 /**
