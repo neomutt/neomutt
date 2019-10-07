@@ -51,10 +51,14 @@ STAILQ_HEAD(ColorLineList, ColorLine);
 
 /**
  * enum ColorId - List of all colored objects
+ *
+ * This enumeration starts at 50 to avoid any of the values being 37 (ASCII %).
+ * Inserting colour codes into expando strings, when one of the colour codes
+ * was '%', was causing formatting problems.
  */
 enum ColorId
 {
-  MT_COLOR_HDEFAULT = 0,             ///< Header default colour
+  MT_COLOR_HDEFAULT = 50,            ///< Header default colour
   MT_COLOR_QUOTED,                   ///< Pager: quoted text
   MT_COLOR_SIGNATURE,                ///< Pager: signature lines
   MT_COLOR_INDICATOR,                ///< Selected item in list
