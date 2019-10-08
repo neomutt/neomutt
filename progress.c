@@ -35,6 +35,7 @@
 #include "progress.h"
 #include "color.h"
 #include "curs_lib.h"
+#include "globals.h"
 #include "mutt_curses.h"
 #include "mutt_logging.h"
 #include "mutt_window.h"
@@ -73,7 +74,7 @@ static void message_bar(int percent, const char *fmt, ...)
 
   mutt_window_move(MuttMessageWindow, 0, 0);
 
-  if (ColorDefs[MT_COLOR_PROGRESS] == 0)
+  if (Colors->defs[MT_COLOR_PROGRESS] == 0)
   {
     mutt_window_addstr(buf2);
   }

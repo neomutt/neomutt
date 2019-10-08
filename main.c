@@ -314,7 +314,7 @@ static int start_curses(void)
   }
   /* slang requires the signal handlers to be set after initializing */
   mutt_signal_init();
-  mutt_color_init();
+  Colors = mutt_colors_new();
   keypad(stdscr, true);
   cbreak();
   noecho();
@@ -839,8 +839,9 @@ int main(int argc, char *argv[], char *envp[])
 
   notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_hist_observer, 0);
   notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_log_observer, 0);
-  notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_menu_observer, 0);
+  notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_menu_config_observer, 0);
   notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_reply_observer, 0);
+  notify_observer_add(Colors->notify, NT_COLOR, 0, mutt_menu_color_observer, 0);
 
   if (sendflags & SEND_POSTPONED)
   {

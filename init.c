@@ -2928,7 +2928,7 @@ void mutt_opts_free(void)
   mutt_list_free_type(&InlineAllow, (list_free_t) mutt_attachmatch_free);
   mutt_list_free_type(&InlineExclude, (list_free_t) mutt_attachmatch_free);
 
-  mutt_colors_free();
+  mutt_colors_free(&Colors);
 
   FREE(&CurrentFolder);
   FREE(&HomeDir);

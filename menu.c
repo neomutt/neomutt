@@ -94,16 +94,16 @@ static int get_color(int index, unsigned char *s)
   switch (type)
   {
     case MT_COLOR_INDEX_AUTHOR:
-      color = &ColorIndexAuthorList;
+      color = &Colors->index_author_list;
       break;
     case MT_COLOR_INDEX_FLAGS:
-      color = &ColorIndexFlagsList;
+      color = &Colors->index_flags_list;
       break;
     case MT_COLOR_INDEX_SUBJECT:
-      color = &ColorIndexSubjectList;
+      color = &Colors->index_subject_list;
       break;
     case MT_COLOR_INDEX_TAG:
-      STAILQ_FOREACH(np, &ColorIndexTagList, entries)
+      STAILQ_FOREACH(np, &Colors->index_tag_list, entries)
       {
         if (strncmp((const char *) (s + 1), np->pattern, strlen(np->pattern)) == 0)
           return np->pair;
@@ -116,7 +116,7 @@ static int get_color(int index, unsigned char *s)
       }
       return 0;
     default:
-      return ColorDefs[type];
+      return Colors->defs[type];
   }
 
   STAILQ_FOREACH(np, color, entries)
@@ -153,7 +153,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
         /* Combining tree fg color and another bg color requires
          * having use_default_colors, because the other bg color
          * may be undefined. */
-        mutt_curses_set_attr(mutt_color_combine(ColorDefs[MT_COLOR_TREE], attr));
+        mutt_curses_set_attr(mutt_color_combine(Colors, Colors->defs[MT_COLOR_TREE], attr));
 #else
         mutt_curses_set_color(MT_COLOR_TREE);
 #endif
@@ -942,7 +942,7 @@ static void menu_prev_entry(struct Menu *menu)
  */
 static int default_color(int line)
 {
-  return ColorDefs[MT_COLOR_NORMAL];
+  return Colors->defs[MT_COLOR_NORMAL];
 }
 
 /**
@@ -1594,9 +1594,45 @@ int mutt_menu_loop(struct Menu *menu)
 }
 
 /**
- * mutt_menu_observer - Listen for config changes affecting the menu - Implements ::observer_t()
+ * mutt_menu_color_observer - Listen for colour changes affecting the menu - Implements ::observer_t()
  */
-int mutt_menu_observer(struct NotifyCallback *nc)
+int mutt_menu_color_observer(struct NotifyCallback *nc)
+{
+  if ((!nc) || (nc->event_type != NT_COLOR))
+    return -1;
+
+  int s = nc->event_subtype;
+
+  bool simple = (s == MT_COLOR_INDEX_COLLAPSED) || (s == MT_COLOR_INDEX_DATE) ||
+                (s == MT_COLOR_INDEX_LABEL) || (s == MT_COLOR_INDEX_NUMBER) ||
+                (s == MT_COLOR_INDEX_SIZE) || (s == MT_COLOR_INDEX_TAGS);
+  bool lists = (s == MT_COLOR_ATTACH_HEADERS) || (s == MT_COLOR_BODY) ||
+               (s == MT_COLOR_HEADER) || (s == MT_COLOR_INDEX) ||
+               (s == MT_COLOR_INDEX_AUTHOR) || (s == MT_COLOR_INDEX_FLAGS) ||
+               (s == MT_COLOR_INDEX_SUBJECT) || (s == MT_COLOR_INDEX_TAG);
+
+  // The changes aren't relevant to the index menu
+  if (!simple && !lists)
+    return 0;
+
+  struct EventColor *ec = (struct EventColor *) nc->event;
+
+  // Colour deleted from a list
+  if (!ec->set && lists && Context && Context->mailbox)
+  {
+    // Force re-caching of index colors
+    for (int i = 0; i < Context->mailbox->msg_count; i++)
+      Context->mailbox->emails[i]->pair = 0;
+  }
+
+  mutt_menu_set_redraw_full(MENU_MAIN);
+  return 0;
+}
+
+/**
+ * mutt_menu_config_observer - Listen for config changes affecting the menu - Implements ::observer_t()
+ */
+int mutt_menu_config_observer(struct NotifyCallback *nc)
 {
   if (!nc)
     return -1;

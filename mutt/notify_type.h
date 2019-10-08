@@ -36,6 +36,7 @@ enum NotifyType
   NT_EMAIL,   ///< Email has changed
   NT_WINDOW,  ///< Window has changed
   NT_CONTEXT, ///< Context has changed
+  NT_COLOR,   ///< Colour has changed
 };
 
 #endif /* MUTT_LIB_NOTIFY_TYPE_H */
