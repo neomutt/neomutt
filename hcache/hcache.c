@@ -163,6 +163,7 @@ static bool create_hcache_dir(const char *path)
 
 /**
  * hcache_per_folder - Generate the hcache pathname
+ * @param hcpath Buffer for the result
  * @param path   Base directory, from $header_cache
  * @param folder Mailbox name (including protocol)
  * @param namer  Callback to generate database filename - Implements ::hcache_namer_t
@@ -183,9 +184,9 @@ static bool create_hcache_dir(const char *path)
  * If @a path has a trailing '/' it is assumed to be a directory.
  * Otherwise @a path is assumed to be a file.
  */
-static const char *hcache_per_folder(const char *path, const char *folder, hcache_namer_t namer)
+static void hcache_per_folder(struct Buffer *hcpath, const char *path,
+                              const char *folder, hcache_namer_t namer)
 {
-  static char hcpath[PATH_MAX + 64];
   struct stat sb;
 
   int plen = mutt_str_strlen(path);
@@ -195,38 +196,32 @@ static const char *hcache_per_folder(const char *path, const char *folder, hcach
   if (((rc == 0) && !S_ISDIR(sb.st_mode)) || ((rc == -1) && !slash))
   {
     /* An existing file or a non-existing path not ending with a slash */
-    mutt_encode_path(hcpath, sizeof(hcpath), path);
-    return hcpath;
+    mutt_buffer_encode_path(hcpath, path);
+    return;
   }
 
   /* We have a directory - no matter whether it exists, or not */
 
+  struct Buffer *hcfile = mutt_buffer_pool_get();
   if (namer)
   {
-    /* We have a mailbox-specific namer function */
-    snprintf(hcpath, sizeof(hcpath), "%s%s", path, slash ? "" : "/");
-    if (!slash)
-      plen++;
-
-    rc = namer(folder, hcpath + plen, sizeof(hcpath) - plen);
+    namer(folder, hcfile);
   }
   else
   {
     unsigned char m[16]; /* binary md5sum */
-    char name[PATH_MAX];
-    snprintf(name, sizeof(name), "%s|%s", hcache_get_ops()->name, folder);
-    mutt_md5(name, m);
-    mutt_md5_toascii(m, name);
-    rc = snprintf(hcpath, sizeof(hcpath), "%s%s%s", path, slash ? "" : "/", name);
+    struct Buffer *name = mutt_buffer_pool_get();
+    mutt_buffer_printf(name, "%s|%s", hcache_get_ops()->name, folder);
+    mutt_md5(mutt_b2s(name), m);
+    mutt_md5_toascii(m, name->data);
+    mutt_buffer_printf(hcfile, "%s%s%s", path, slash ? "" : "/", name);
   }
 
-  mutt_encode_path(hcpath, sizeof(hcpath), hcpath);
+  mutt_buffer_encode_path(hcpath, mutt_b2s(hcpath));
+  mutt_buffer_concat_path(hcpath, path, mutt_b2s(hcfile));
+  mutt_buffer_pool_release(&hcfile);
 
-  if (rc < 0) /* namer or fprintf failed.. should not happen */
-    return path;
-
-  create_hcache_dir(hcpath);
-  return hcpath;
+  create_hcache_dir(mutt_b2s(hcpath));
 }
 
 /**
@@ -302,25 +297,26 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
     return NULL;
   }
 
-  path = hcache_per_folder(path, hc->folder, namer);
+  struct Buffer *hcpath = mutt_buffer_pool_get();
+  hcache_per_folder(hcpath, path, hc->folder, namer);
 
-  hc->ctx = ops->open(path);
-  if (hc->ctx)
-    return hc;
-  else
+  hc->ctx = ops->open(mutt_b2s(hcpath));
+  if (!hc->ctx)
   {
     /* remove a possibly incompatible version */
-    if (unlink(path) == 0)
+    if (unlink(mutt_b2s(hcpath)) == 0)
     {
-      hc->ctx = ops->open(path);
-      if (hc->ctx)
-        return hc;
+      hc->ctx = ops->open(mutt_b2s(hcpath));
+      if (!hc->ctx)
+      {
+        FREE(&hc->folder);
+        FREE(&hc);
+      }
     }
-    FREE(&hc->folder);
-    FREE(&hc);
-
-    return NULL;
   }
+
+  mutt_buffer_pool_release(&hcpath);
+  return hc;
 }
 
 /**

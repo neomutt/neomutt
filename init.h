@@ -4585,6 +4585,10 @@ struct ConfigDef MuttVars[] = {
   ** just looks like ordinary text.  To actually make use of this format's
   ** features, you'll need support in your editor.
   ** .pp
+  ** The option only controls newly composed messages.  Postponed messages,
+  ** resent messages, and draft messages (via -H on the command line) will
+  ** use the content-type of the source message.
+  ** .pp
   ** Note that $$indent_string is ignored when this option is \fIset\fP.
   */
   { "thorough_search", DT_BOOL, &C_ThoroughSearch, true },

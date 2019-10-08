@@ -60,7 +60,7 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist);
 int          smime_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur);
 char *       smime_class_find_keys(struct AddressList *addrlist, bool oppenc_mode);
 void         smime_class_getkeys(struct Envelope *env);
-void         smime_class_invoke_import(char *infile, char *mailbox);
+void         smime_class_invoke_import(const char *infile, const char *mailbox);
 int          smime_class_send_menu(struct Email *e);
 struct Body *smime_class_sign_message(struct Body *a);
 bool         smime_class_valid_passphrase(void);

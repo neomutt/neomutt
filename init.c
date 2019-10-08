@@ -1453,15 +1453,15 @@ static enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
 static enum CommandResult parse_path_list(struct Buffer *buf, struct Buffer *s,
                                           unsigned long data, struct Buffer *err)
 {
-  char path[PATH_MAX];
+  struct Buffer *path = mutt_buffer_pool_get();
 
   do
   {
-    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
-    mutt_str_strfcpy(path, buf->data, sizeof(path));
-    mutt_expand_path(path, sizeof(path));
-    add_to_stailq((struct ListHead *) data, path);
+    mutt_extract_token(path, s, MUTT_TOKEN_NO_FLAGS);
+    mutt_buffer_expand_path(path);
+    add_to_stailq((struct ListHead *) data, mutt_b2s(path));
   } while (MoreArgs(s));
+  mutt_buffer_pool_release(&path);
 
   return MUTT_CMD_SUCCESS;
 }
@@ -1474,21 +1474,21 @@ static enum CommandResult parse_path_list(struct Buffer *buf, struct Buffer *s,
 static enum CommandResult parse_path_unlist(struct Buffer *buf, struct Buffer *s,
                                             unsigned long data, struct Buffer *err)
 {
-  char path[PATH_MAX];
+  struct Buffer *path = mutt_buffer_pool_get();
 
   do
   {
-    mutt_extract_token(buf, s, MUTT_TOKEN_NO_FLAGS);
+    mutt_extract_token(path, s, MUTT_TOKEN_NO_FLAGS);
     /* Check for deletion of entire list */
-    if (mutt_str_strcmp(buf->data, "*") == 0)
+    if (mutt_str_strcmp(mutt_b2s(path), "*") == 0)
     {
       mutt_list_free((struct ListHead *) data);
       break;
     }
-    mutt_str_strfcpy(path, buf->data, sizeof(path));
-    mutt_expand_path(path, sizeof(path));
-    remove_from_stailq((struct ListHead *) data, path);
+    mutt_buffer_expand_path(path);
+    remove_from_stailq((struct ListHead *) data, mutt_b2s(path));
   } while (MoreArgs(s));
+  mutt_buffer_pool_release(&path);
 
   return MUTT_CMD_SUCCESS;
 }

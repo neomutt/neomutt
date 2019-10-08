@@ -55,6 +55,7 @@
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
+#include "rfc3676.h"
 #include "send.h"
 #include "sendlib.h"
 #include "sort.h"
@@ -828,6 +829,8 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
     else
       e_new->security &= ~APPLICATION_SMIME;
   }
+
+  mutt_rfc3676_space_unstuff(e_new);
 
   rc = 0;
 

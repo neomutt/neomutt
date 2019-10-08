@@ -88,21 +88,25 @@ static const char *rotate_logs(const char *file, int count)
   if (!file)
     return NULL;
 
-  char old_file[PATH_MAX];
-  char new_file[PATH_MAX];
+  struct Buffer *old_file = mutt_buffer_pool_get();
+  struct Buffer *new_file = mutt_buffer_pool_get();
 
   /* rotate the old debug logs */
   for (count -= 2; count >= 0; count--)
   {
-    snprintf(old_file, sizeof(old_file), "%s%d", file, count);
-    snprintf(new_file, sizeof(new_file), "%s%d", file, count + 1);
+    mutt_buffer_printf(old_file, "%s%d", file, count);
+    mutt_buffer_printf(new_file, "%s%d", file, count + 1);
 
-    mutt_expand_path(old_file, sizeof(old_file));
-    mutt_expand_path(new_file, sizeof(new_file));
-    rename(old_file, new_file);
+    mutt_buffer_expand_path(old_file);
+    mutt_buffer_expand_path(new_file);
+    rename(mutt_b2s(old_file), mutt_b2s(new_file));
   }
 
-  return mutt_str_strdup(old_file);
+  file = mutt_str_strdup(mutt_b2s(old_file));
+  mutt_buffer_pool_release(&old_file);
+  mutt_buffer_pool_release(&new_file);
+
+  return file;
 }
 
 /**

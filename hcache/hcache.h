@@ -76,10 +76,8 @@ typedef struct EmailCache header_cache_t;
  * typedef hcache_namer_t - Prototype for function to compose hcache file names
  * @param path    Path of message
  * @param dest    Buffer for filename
- * @param destlen Length of buffer
- * @retval num Characters written to buffer
  */
-typedef int (*hcache_namer_t)(const char *path, char *dest, size_t dlen);
+typedef void (*hcache_namer_t)(const char *path, struct Buffer *dest);
 
 /* These Config Variables are only used in hcache/hcache.c */
 extern char *C_HeaderCacheBackend;

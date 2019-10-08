@@ -336,9 +336,9 @@ static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
 /**
  * pop_hcache_namer - Create a header cache filename for a POP mailbox - Implements ::hcache_namer_t
  */
-static int pop_hcache_namer(const char *path, char *dest, size_t destlen)
+static void pop_hcache_namer(const char *path, struct Buffer *dest)
 {
-  return snprintf(dest, destlen, "%s." HC_FEXT, path);
+  mutt_buffer_printf(dest, "%s." HC_FEXT, path);
 }
 
 /**

@@ -685,9 +685,10 @@ void mutt_default_save(char *path, size_t pathlen, struct Email *e)
     addr = NULL;
   if (addr)
   {
-    char tmp[PATH_MAX];
-    mutt_safe_path(tmp, sizeof(tmp), addr);
-    snprintf(path, pathlen, "=%s", tmp);
+    struct Buffer *tmp = mutt_buffer_pool_get();
+    mutt_safe_path(tmp, addr);
+    snprintf(path, pathlen, "=%s", mutt_b2s(tmp));
+    mutt_buffer_pool_release(&tmp);
   }
 }
 
@@ -707,9 +708,10 @@ void mutt_select_fcc(char *path, size_t pathlen, struct Email *e)
     if ((C_SaveName || C_ForceName) && (to || cc || bcc))
     {
       const struct Address *addr = to ? to : (cc ? cc : bcc);
-      char buf[PATH_MAX];
-      mutt_safe_path(buf, sizeof(buf), addr);
-      mutt_path_concat(path, NONULL(C_Folder), buf, pathlen);
+      struct Buffer *buf = mutt_buffer_pool_get();
+      mutt_safe_path(buf, addr);
+      mutt_path_concat(path, NONULL(C_Folder), mutt_b2s(buf), pathlen);
+      mutt_buffer_pool_release(&buf);
       if (!C_ForceName && (mx_access(path, W_OK) != 0))
         mutt_str_strfcpy(path, C_Record, pathlen);
     }

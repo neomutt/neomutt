@@ -317,7 +317,7 @@ struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char* n
 void imap_mdata_free(void **ptr);
 void imap_mdata_cache_reset(struct ImapMboxData *mdata);
 char *imap_fix_path(char delim, const char *mailbox, char *path, size_t plen);
-void imap_cachepath(char delim, const char *mailbox, char *dest, size_t dlen);
+void imap_cachepath(char delim, const char *mailbox, struct Buffer *dest);
 int imap_get_literal_count(const char *buf, unsigned int *bytes);
 char *imap_get_qualifier(char *buf);
 int imap_mxcmp(const char *mx1, const char *mx2);

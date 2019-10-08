@@ -400,9 +400,9 @@ static void imap_msn_index_to_uid_seqset(struct Buffer *buf, struct ImapMboxData
 /**
  * imap_hcache_namer - Generate a filename for the header cache - Implements ::hcache_namer_t
  */
-static int imap_hcache_namer(const char *path, char *dest, size_t dlen)
+static void imap_hcache_namer(const char *path, struct Buffer *dest)
 {
-  return snprintf(dest, dlen, "%s.hcache", path);
+  mutt_buffer_printf(dest, "%s.hcache", path);
 }
 
 /**
@@ -417,23 +417,32 @@ header_cache_t *imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxD
   if (!adata || !mdata)
     return NULL;
 
+  header_cache_t *hc = NULL;
+  struct Buffer *mbox = mutt_buffer_pool_get();
+  struct Buffer *cachepath = mutt_buffer_pool_get();
+
+  imap_cachepath(adata->delim, mdata->name, mbox);
+
+  if (strstr(mutt_b2s(mbox), "/../") || (strcmp(mutt_b2s(mbox), "..") == 0) ||
+      (strncmp(mutt_b2s(mbox), "../", 3) == 0))
+  {
+    goto cleanup;
+  }
+  size_t len = mutt_buffer_len(mbox);
+  if ((len > 3) && (strcmp(mutt_b2s(mbox) + len - 3, "/..") == 0))
+    goto cleanup;
+
   struct Url url;
-  char cachepath[PATH_MAX];
-  char mbox[PATH_MAX];
-
-  imap_cachepath(adata->delim, mdata->name, mbox, sizeof(mbox));
-
-  if (strstr(mbox, "/../") || (strcmp(mbox, "..") == 0) || (strncmp(mbox, "../", 3) == 0))
-    return NULL;
-  size_t len = strlen(mbox);
-  if ((len > 3) && (strcmp(mbox + len - 3, "/..") == 0))
-    return NULL;
-
   mutt_account_tourl(&adata->conn->account, &url);
-  url.path = mbox;
-  url_tostring(&url, cachepath, sizeof(cachepath), U_PATH);
+  url.path = mbox->data;
+  url_tobuffer(&url, cachepath, U_PATH);
 
-  return mutt_hcache_open(C_HeaderCache, cachepath, imap_hcache_namer);
+  hc = mutt_hcache_open(C_HeaderCache, mutt_b2s(cachepath), imap_hcache_namer);
+
+cleanup:
+  mutt_buffer_pool_release(&mbox);
+  mutt_buffer_pool_release(&cachepath);
+  return hc;
 }
 
 /**
@@ -821,31 +830,27 @@ char *imap_fix_path(char server_delim, const char *mailbox, char *path, size_t p
  * @param delim   Imap server delimiter
  * @param mailbox Mailbox name
  * @param dest    Buffer to store cache path
- * @param dlen    Length of buffer
  */
-void imap_cachepath(char delim, const char *mailbox, char *dest, size_t dlen)
+void imap_cachepath(char delim, const char *mailbox, struct Buffer *dest)
 {
-  char *s = NULL;
   const char *p = mailbox;
+  mutt_buffer_reset(dest);
+  if (!p)
+    return;
 
-  for (s = dest; p && (p[0] != '\0') && (dlen > 0); dlen--)
+  while (*p)
   {
     if (p[0] == delim)
     {
-      *s = '/';
+      mutt_buffer_addch(dest, '/');
       /* simple way to avoid collisions with UIDs */
       if ((p[1] >= '0') && (p[1] <= '9'))
-      {
-        if (--dlen)
-          *++s = '_';
-      }
+        mutt_buffer_addch(dest, '_');
     }
     else
-      *s = *p;
+      mutt_buffer_addch(dest, *p);
     p++;
-    s++;
   }
-  *s = '\0';
 }
 
 /**

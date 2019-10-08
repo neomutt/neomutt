@@ -3046,8 +3046,7 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
             variable is set, specifically it does not add the trailing spaces.
           </para>
           <para>
-            After editing the initial message text and before entering the
-            compose menu, NeoMutt properly space-stuffs the message.
+            After editing, NeoMutt properly space-stuffs the message.
             <emphasis>Space-stuffing</emphasis> is required by RFC3676 defining
             <literal>format=flowed</literal> and means to prepend a space to:
           </para>
@@ -3075,9 +3074,8 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
             <para>
               NeoMutt only supports space-stuffing for the first two types of
               lines but not for the third: It is impossible to safely detect
-              whether a leading <literal>&gt;</literal> character starts
-              a quote or not. Furthermore, NeoMutt only applies space-stuffing
-              <emphasis>once</emphasis> after the initial edit is finished.
+              whether a leading <literal>&gt;</literal> character starts a quote
+              or not.
             </para>
           </note>
           <para>
@@ -3094,11 +3092,6 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
             his editor to produce proper messages. Please consider your
             editor's documentation if you intend to send <literal>f=f</literal>
             messages.
-          </para>
-          <para>
-            Please note that when editing messages from the compose menu
-            several times before really sending a mail, it's up to the user to
-            ensure that the message is properly space-stuffed.
           </para>
           <para>
             For example, <emphasis>vim</emphasis> provides the

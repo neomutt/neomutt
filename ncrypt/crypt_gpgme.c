@@ -853,16 +853,16 @@ static bool have_gpg_version(const char *version)
  */
 static gpgme_data_t body_to_data_object(struct Body *a, bool convert)
 {
-  char tempfile[PATH_MAX];
   int err = 0;
   gpgme_data_t data = NULL;
 
-  mutt_mktemp(tempfile, sizeof(tempfile));
-  FILE *fp_tmp = mutt_file_fopen(tempfile, "w+");
+  struct Buffer *tempfile = mutt_buffer_pool_get();
+  mutt_buffer_mktemp(tempfile);
+  FILE *fp_tmp = mutt_file_fopen(mutt_b2s(tempfile), "w+");
   if (!fp_tmp)
   {
-    mutt_perror(tempfile);
-    return NULL;
+    mutt_perror(mutt_b2s(tempfile));
+    goto cleanup;
   }
 
   mutt_write_mime_header(a, fp_tmp);
@@ -900,15 +900,19 @@ static gpgme_data_t body_to_data_object(struct Body *a, bool convert)
   else
   {
     mutt_file_fclose(&fp_tmp);
-    err = gpgme_data_new_from_file(&data, tempfile, 1);
+    err = gpgme_data_new_from_file(&data, mutt_b2s(tempfile), 1);
+    if (err != 0)
+    {
+      mutt_error(_("error allocating data object: %s"), gpgme_strerror(err));
+      gpgme_data_release(data);
+      data = NULL;
+      /* fall through to unlink the tempfile */
+    }
   }
-  unlink(tempfile);
-  if (err != 0)
-  {
-    mutt_error(_("error allocating data object: %s"), gpgme_strerror(err));
-    return NULL;
-  }
+  unlink(mutt_b2s(tempfile));
 
+cleanup:
+  mutt_buffer_pool_release(&tempfile);
   return data;
 }
 
@@ -989,15 +993,17 @@ static int data_object_to_stream(gpgme_data_t data, FILE *fp)
  */
 static char *data_object_to_tempfile(gpgme_data_t data, FILE **fp_ret)
 {
-  char tempf[PATH_MAX];
   ssize_t nread = 0;
+  char *rv = NULL;
+  struct Buffer *tempf = mutt_buffer_pool_get();
 
-  mutt_mktemp(tempf, sizeof(tempf));
-  FILE *fp = mutt_file_fopen(tempf, "w+");
+  mutt_buffer_mktemp(tempf);
+
+  FILE *fp = mutt_file_fopen(mutt_b2s(tempf), "w+");
   if (!fp)
   {
     mutt_perror(_("Can't create temporary file"));
-    return NULL;
+    goto cleanup;
   }
 
   int err = ((gpgme_data_seek(data, 0, SEEK_SET) == -1) ? gpgme_error_from_errno(errno) : 0);
@@ -1009,10 +1015,10 @@ static char *data_object_to_tempfile(gpgme_data_t data, FILE **fp_ret)
     {
       if (fwrite(buf, nread, 1, fp) != 1)
       {
-        mutt_perror(tempf);
+        mutt_perror(mutt_b2s(tempf));
         mutt_file_fclose(&fp);
-        unlink(tempf);
-        return NULL;
+        unlink(mutt_b2s(tempf));
+        goto cleanup;
       }
     }
   }
@@ -1023,13 +1029,17 @@ static char *data_object_to_tempfile(gpgme_data_t data, FILE **fp_ret)
   if (nread == -1)
   {
     mutt_error(_("error reading data object: %s"), gpgme_strerror(err));
-    unlink(tempf);
+    unlink(mutt_b2s(tempf));
     mutt_file_fclose(&fp);
-    return NULL;
+    goto cleanup;
   }
   if (fp_ret)
     *fp_ret = fp;
-  return mutt_str_strdup(tempf);
+  rv = mutt_str_strdup(mutt_b2s(tempf));
+
+cleanup:
+  mutt_buffer_pool_release(&tempf);
+  return rv;
 }
 
 #if (GPGME_VERSION_NUMBER >= 0x010b00) /* gpgme >= 1.11.0 */
@@ -2559,7 +2569,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
    * way to view key data in GPGME, so we import the key into a
    * temporary keyring if we detect an older system.  */
   bool legacy_api;
-  char tmpdir[PATH_MAX];
+  struct Buffer *tmpdir = NULL;
   gpgme_ctx_t tmpctx = NULL;
   gpgme_error_t err;
   gpgme_engine_info_t engineinfo = NULL;
@@ -2583,8 +2593,9 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
 
   if (legacy_api)
   {
-    snprintf(tmpdir, sizeof(tmpdir), "%s/neomutt-gpgme-XXXXXX", C_Tmpdir);
-    if (!mkdtemp(tmpdir))
+    tmpdir = mutt_buffer_pool_get();
+    mutt_buffer_printf(tmpdir, "%s/neomutt-gpgme-XXXXXX", NONULL(C_Tmpdir));
+    if (!mkdtemp(tmpdir->data))
     {
       mutt_debug(LL_DEBUG1, "Error creating temporary GPGME home\n");
       goto err_ctx;
@@ -2600,7 +2611,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
     }
 
     err = gpgme_ctx_set_engine_info(tmpctx, GPGME_PROTOCOL_OpenPGP,
-                                    engineinfo->file_name, tmpdir);
+                                    engineinfo->file_name, mutt_b2s(tmpdir));
     if (err != GPG_ERR_NO_ERROR)
     {
       mutt_debug(LL_DEBUG1, "Error setting GPGME context home\n");
@@ -2668,9 +2679,11 @@ err_fp:
     mutt_file_fclose(fp);
 err_tmpdir:
   if (legacy_api)
-    mutt_file_rmtree(tmpdir);
+    mutt_file_rmtree(mutt_b2s(tmpdir));
 err_ctx:
   gpgme_release(tmpctx);
+
+  mutt_buffer_pool_release(&tmpdir);
 
   return rc;
 }
@@ -2706,8 +2719,8 @@ static int line_compare(const char *a, size_t n, const char *b)
  */
 static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 {
-  char tempfile[PATH_MAX];
   char buf[8192];
+  int rv = 0;
 
   bool sgn = false;
   bool enc = false;
@@ -2715,18 +2728,19 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
   if (b->type != TYPE_TEXT)
     return 0;
 
-  mutt_mktemp(tempfile, sizeof(tempfile));
-  if (mutt_decode_save_attachment(fp, b, tempfile, 0, MUTT_SAVE_NO_FLAGS) != 0)
+  struct Buffer *tempfile = mutt_buffer_pool_get();
+  mutt_buffer_mktemp(tempfile);
+  if (mutt_decode_save_attachment(fp, b, mutt_b2s(tempfile), 0, MUTT_SAVE_NO_FLAGS) != 0)
   {
-    unlink(tempfile);
-    return 0;
+    unlink(mutt_b2s(tempfile));
+    goto cleanup;
   }
 
-  FILE *fp_tmp = fopen(tempfile, "r");
+  FILE *fp_tmp = fopen(mutt_b2s(tempfile), "r");
   if (!fp_tmp)
   {
-    unlink(tempfile);
-    return 0;
+    unlink(mutt_b2s(tempfile));
+    goto cleanup;
   }
 
   while (fgets(buf, sizeof(buf), fp_tmp))
@@ -2747,17 +2761,21 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
     }
   }
   mutt_file_fclose(&fp_tmp);
-  unlink(tempfile);
+  unlink(mutt_b2s(tempfile));
 
   if (!enc && !sgn)
-    return 0;
+    goto cleanup;
 
   /* fix the content type */
 
   mutt_param_set(&b->parameter, "format", "fixed");
   mutt_param_set(&b->parameter, "x-action", enc ? "pgp-encrypted" : "pgp-signed");
 
-  return 1;
+  rv = 1;
+
+cleanup:
+  mutt_buffer_pool_release(&tempfile);
+  return rv;
 }
 
 /**
@@ -4363,19 +4381,20 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
  */
 static void verify_key(struct CryptKeyInfo *key)
 {
-  char cmd[1024], tempfile[PATH_MAX];
+  char cmd[1024];
   const char *s = NULL;
   gpgme_ctx_t listctx = NULL;
   gpgme_error_t err;
   gpgme_key_t k = NULL;
   int maxdepth = 100;
 
-  mutt_mktemp(tempfile, sizeof(tempfile));
-  FILE *fp = mutt_file_fopen(tempfile, "w");
+  struct Buffer tempfile = mutt_buffer_make(PATH_MAX);
+  mutt_buffer_mktemp(&tempfile);
+  FILE *fp = mutt_file_fopen(mutt_b2s(&tempfile), "w");
   if (!fp)
   {
     mutt_perror(_("Can't create temporary file"));
-    return;
+    goto cleanup;
   }
   mutt_message(_("Collecting data..."));
 
@@ -4415,7 +4434,10 @@ leave:
   mutt_file_fclose(&fp);
   mutt_clear_error();
   snprintf(cmd, sizeof(cmd), _("Key ID: 0x%s"), crypt_keyid(key));
-  mutt_do_pager(cmd, tempfile, MUTT_PAGER_NO_FLAGS, NULL);
+  mutt_do_pager(cmd, mutt_b2s(&tempfile), MUTT_PAGER_NO_FLAGS, NULL);
+
+cleanup:
+  mutt_buffer_dealloc(&tempfile);
 }
 
 /**

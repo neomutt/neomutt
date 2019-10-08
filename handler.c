@@ -1290,6 +1290,9 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
   LOFF_T tmpoffset = 0;
   int decode = 0;
   int rc = 0;
+#ifndef USE_FMEMOPEN
+  struct Buffer *tempfile = NULL;
+#endif
 
   fseeko(s->fp_in, b->offset, SEEK_SET);
 
@@ -1304,9 +1307,6 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
   /* text subtypes may require character set conversion even with 8bit encoding */
   {
     const int orig_type = b->type;
-#ifndef USE_FMEMOPEN
-    char tempfile[PATH_MAX];
-#endif
     if (!plaintext)
     {
       /* decode to a tempfile, saving the original destination */
@@ -1320,12 +1320,14 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
         return -1;
       }
 #else
-      mutt_mktemp(tempfile, sizeof(tempfile));
-      s->fp_out = mutt_file_fopen(tempfile, "w");
+      tempfile = mutt_buffer_pool_get();
+      mutt_buffer_mktemp(tempfile);
+      s->fp_out = mutt_file_fopen(mutt_b2s(tempfile), "w");
       if (!s->fp_out)
       {
         mutt_error(_("Unable to open temporary file"));
-        mutt_debug(LL_DEBUG1, "Can't open %s\n", tempfile);
+        mutt_debug(LL_DEBUG1, "Can't open %s\n", mutt_b2s(tempfile));
+        mutt_buffer_pool_release(&tempfile);
         return -1;
       }
 #endif
@@ -1376,8 +1378,9 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
         return -1;
       }
 #else
-      s->fp_in = fopen(tempfile, "r");
-      unlink(tempfile);
+      s->fp_in = fopen(mutt_b2s(tempfile), "r");
+      unlink(mutt_b2s(tempfile));
+      mutt_buffer_pool_release(&tempfile);
 #endif
       /* restore the prefix */
       s->prefix = save_prefix;

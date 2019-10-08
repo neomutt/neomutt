@@ -117,14 +117,16 @@ static struct BodyCache *msg_cache_open(struct Mailbox *m)
   if (!adata || (adata->mailbox != m))
     return NULL;
 
-  char mailbox[PATH_MAX];
-
   if (mdata->bcache)
     return mdata->bcache;
 
-  imap_cachepath(adata->delim, mdata->name, mailbox, sizeof(mailbox));
+  struct Buffer *mailbox = mutt_buffer_pool_get();
+  imap_cachepath(adata->delim, mdata->name, mailbox);
 
-  return mutt_bcache_open(&adata->conn->account, mailbox);
+  struct BodyCache *bc = mutt_bcache_open(&adata->conn->account, mutt_b2s(mailbox));
+  mutt_buffer_pool_release(&mailbox);
+
+  return bc;
 }
 
 /**
@@ -1031,7 +1033,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
   unsigned int fetch_msn_end = 0;
   struct Progress progress;
   char *hdrreq = NULL;
-  char tempfile[_POSIX_PATH_MAX];
+  struct Buffer *tempfile = NULL;
   FILE *fp = NULL;
   struct ImapHeader h;
   struct Buffer *buf = NULL;
@@ -1080,14 +1082,16 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
 
   /* instead of downloading all headers and then parsing them, we parse them
    * as they come in. */
-  mutt_mktemp(tempfile, sizeof(tempfile));
-  fp = mutt_file_fopen(tempfile, "w+");
+  tempfile = mutt_buffer_pool_get();
+  mutt_buffer_mktemp(tempfile);
+  fp = mutt_file_fopen(mutt_b2s(tempfile), "w+");
   if (!fp)
   {
-    mutt_error(_("Could not create temporary file %s"), tempfile);
+    mutt_error(_("Could not create temporary file %s"), mutt_b2s(tempfile));
     goto bail;
   }
-  unlink(tempfile);
+  unlink(mutt_b2s(tempfile));
+  mutt_buffer_pool_release(&tempfile);
 
   mutt_progress_init(&progress, _("Fetching message headers..."), MUTT_PROGRESS_READ, msn_end);
 
@@ -1230,7 +1234,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
      * FETCH, nor when no command is in progress (e.g. between the
      * chunked FETCH commands).  We previously tried to be robust by
      * setting:
-     *   msn_begin = idata->max_msn + 1;
+     *   msn_begin = mdata->max_msn + 1;
      * but with chunking (and the mythical header cache holes) this
      * may not be correct.  So here we must assume the msn values have
      * not been altered during or after the fetch.
@@ -1243,6 +1247,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
 bail:
   mutt_buffer_pool_release(&hdr_list);
   mutt_buffer_pool_release(&buf);
+  mutt_buffer_pool_release(&tempfile);
   mutt_file_fclose(&fp);
   FREE(&hdrreq);
 
@@ -1900,14 +1905,14 @@ int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   msg->fp = msg_cache_put(m, e);
   if (!msg->fp)
   {
-    char path[PATH_MAX];
-    mutt_mktemp(path, sizeof(path));
-    msg->fp = mutt_file_fopen(path, "w+");
+    struct Buffer *path = mutt_buffer_pool_get();
+    mutt_buffer_mktemp(path);
+    msg->fp = mutt_file_fopen(mutt_b2s(path), "w+");
+    unlink(mutt_b2s(path));
+    mutt_buffer_pool_release(&path);
+
     if (!msg->fp)
-    {
       return -1;
-    }
-    unlink(path);
   }
 
   /* mark this header as currently inactive so the command handler won't
