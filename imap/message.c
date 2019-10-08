@@ -117,14 +117,16 @@ static struct BodyCache *msg_cache_open(struct Mailbox *m)
   if (!adata || (adata->mailbox != m))
     return NULL;
 
-  char mailbox[PATH_MAX];
-
   if (mdata->bcache)
     return mdata->bcache;
 
-  imap_cachepath(adata->delim, mdata->name, mailbox, sizeof(mailbox));
+  struct Buffer *mailbox = mutt_buffer_pool_get();
+  imap_cachepath(adata->delim, mdata->name, mailbox);
 
-  return mutt_bcache_open(&adata->conn->account, mailbox);
+  struct BodyCache *bc = mutt_bcache_open(&adata->conn->account, mutt_b2s(mailbox));
+  mutt_buffer_pool_release(&mailbox);
+
+  return bc;
 }
 
 /**
@@ -1232,7 +1234,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
      * FETCH, nor when no command is in progress (e.g. between the
      * chunked FETCH commands).  We previously tried to be robust by
      * setting:
-     *   msn_begin = idata->max_msn + 1;
+     *   msn_begin = mdata->max_msn + 1;
      * but with chunking (and the mythical header cache holes) this
      * may not be correct.  So here we must assume the msn values have
      * not been altered during or after the fetch.
