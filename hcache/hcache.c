@@ -206,6 +206,7 @@ static void hcache_per_folder(struct Buffer *hcpath, const char *path,
   if (namer)
   {
     namer(folder, hcfile);
+    mutt_buffer_concat_path(hcpath, path, mutt_b2s(hcfile));
   }
   else
   {
@@ -213,15 +214,14 @@ static void hcache_per_folder(struct Buffer *hcpath, const char *path,
     struct Buffer *name = mutt_buffer_pool_get();
     mutt_buffer_printf(name, "%s|%s", hcache_get_ops()->name, folder);
     mutt_md5(mutt_b2s(name), m);
+    mutt_buffer_reset(name);
     mutt_md5_toascii(m, name->data);
-    mutt_buffer_printf(hcfile, "%s%s%s", path, slash ? "" : "/", name);
+    mutt_buffer_printf(hcpath, "%s%s%s", path, slash ? "" : "/", mutt_b2s(name));
   }
 
   mutt_buffer_encode_path(hcpath, mutt_b2s(hcpath));
-  mutt_buffer_concat_path(hcpath, path, mutt_b2s(hcfile));
-  mutt_buffer_pool_release(&hcfile);
-
   create_hcache_dir(mutt_b2s(hcpath));
+  mutt_buffer_pool_release(&hcfile);
 }
 
 /**
