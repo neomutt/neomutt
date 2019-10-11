@@ -1669,34 +1669,36 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
     }
   }
 
+  struct Line * const curr_line = &(*line_info)[n];
+
   if (flags & MUTT_PAGER_LOGS)
   {
     /* determine the line class */
-    if (fill_buffer(fp, last_pos, (*line_info)[n].offset, &buf, &fmt, &buflen, &buf_ready) < 0)
+    if (fill_buffer(fp, last_pos, curr_line->offset, &buf, &fmt, &buflen, &buf_ready) < 0)
     {
       if (change_last)
         (*last)--;
       goto out;
     }
 
-    (*line_info)[n].type = MT_COLOR_MESSAGE_LOG;
+    curr_line->type = MT_COLOR_MESSAGE_LOG;
     if (buf[11] == 'M')
-      (*line_info)[n].syntax[0].color = MT_COLOR_MESSAGE;
+      curr_line->syntax[0].color = MT_COLOR_MESSAGE;
     else if (buf[11] == 'W')
-      (*line_info)[n].syntax[0].color = MT_COLOR_WARNING;
+      curr_line->syntax[0].color = MT_COLOR_WARNING;
     else if (buf[11] == 'E')
-      (*line_info)[n].syntax[0].color = MT_COLOR_ERROR;
+      curr_line->syntax[0].color = MT_COLOR_ERROR;
     else
-      (*line_info)[n].syntax[0].color = MT_COLOR_NORMAL;
+      curr_line->syntax[0].color = MT_COLOR_NORMAL;
   }
 
   /* only do color highlighting if we are viewing a message */
   if (flags & (MUTT_SHOWCOLOR | MUTT_TYPES))
   {
-    if ((*line_info)[n].type == -1)
+    if (curr_line->type == -1)
     {
       /* determine the line class */
-      if (fill_buffer(fp, last_pos, (*line_info)[n].offset, &buf, &fmt, &buflen, &buf_ready) < 0)
+      if (fill_buffer(fp, last_pos, curr_line->offset, &buf, &fmt, &buflen, &buf_ready) < 0)
       {
         if (change_last)
           (*last)--;
@@ -1708,13 +1710,13 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
 
       /* avoid race condition for continuation lines when scrolling up */
       for (m = n + 1; m < *last && (*line_info)[m].offset && (*line_info)[m].continuation; m++)
-        (*line_info)[m].type = (*line_info)[n].type;
+        (*line_info)[m].type = curr_line->type;
     }
 
     /* this also prevents searching through the hidden lines */
-    if ((flags & MUTT_HIDE) && ((*line_info)[n].type == MT_COLOR_QUOTED) &&
-        (((*line_info)[n].quote == NULL) ||
-         ((*line_info)[n].quote->index >= C_ToggleQuotedShowLevels))) {
+    if ((flags & MUTT_HIDE) && (curr_line->type == MT_COLOR_QUOTED) &&
+        ((curr_line->quote == NULL) ||
+         (curr_line->quote->index >= C_ToggleQuotedShowLevels))) {
       flags = 0; /* MUTT_NOSHOW */
     }
   }
@@ -1724,10 +1726,10 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
    * would slow down the "bottom" function unacceptably. A compromise
    * solution is hence to call regexec() again, just to find out the
    * length of the quote prefix.  */
-  if ((flags & MUTT_SHOWCOLOR) && !(*line_info)[n].continuation &&
-      ((*line_info)[n].type == MT_COLOR_QUOTED) && !(*line_info)[n].quote)
+  if ((flags & MUTT_SHOWCOLOR) && !curr_line->continuation &&
+      (curr_line->type == MT_COLOR_QUOTED) && !curr_line->quote)
   {
-    if (fill_buffer(fp, last_pos, (*line_info)[n].offset, &buf, &fmt, &buflen, &buf_ready) < 0)
+    if (fill_buffer(fp, last_pos, curr_line->offset, &buf, &fmt, &buflen, &buf_ready) < 0)
     {
       if (change_last)
         (*last)--;
@@ -1736,7 +1738,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
 
     if (mutt_regex_capture(C_QuoteRegex, (char *) fmt, 1, pmatch))
     {
-      (*line_info)[n].quote =
+      curr_line->quote =
           classify_quote(quote_list, (char *) fmt + pmatch[0].rm_so,
                          pmatch[0].rm_eo - pmatch[0].rm_so, force_redraw, q_level);
     }
@@ -1746,10 +1748,10 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
     }
   }
 
-  if ((flags & MUTT_SEARCH) && !(*line_info)[n].continuation &&
-      ((*line_info)[n].search_cnt == -1))
+  if ((flags & MUTT_SEARCH) && !curr_line->continuation &&
+      (curr_line->search_cnt == -1))
   {
-    if (fill_buffer(fp, last_pos, (*line_info)[n].offset, &buf, &fmt, &buflen, &buf_ready) < 0)
+    if (fill_buffer(fp, last_pos, curr_line->offset, &buf, &fmt, &buflen, &buf_ready) < 0)
     {
       if (change_last)
         (*last)--;
@@ -1757,21 +1759,21 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
     }
 
     offset = 0;
-    (*line_info)[n].search_cnt = 0;
+    curr_line->search_cnt = 0;
     while (regexec(search_re, (char *) fmt + offset, 1, pmatch,
                    (offset ? REG_NOTBOL : 0)) == 0)
     {
-      if (++((*line_info)[n].search_cnt) > 1)
+      if (++(curr_line->search_cnt) > 1)
       {
-        mutt_mem_realloc(&((*line_info)[n].search),
-                         ((*line_info)[n].search_cnt) * sizeof(struct TextSyntax));
+        mutt_mem_realloc(&(curr_line->search),
+                         (curr_line->search_cnt) * sizeof(struct TextSyntax));
       }
       else
-        (*line_info)[n].search = mutt_mem_malloc(sizeof(struct TextSyntax));
+        curr_line->search = mutt_mem_malloc(sizeof(struct TextSyntax));
       pmatch[0].rm_so += offset;
       pmatch[0].rm_eo += offset;
-      ((*line_info)[n].search)[(*line_info)[n].search_cnt - 1].first = pmatch[0].rm_so;
-      ((*line_info)[n].search)[(*line_info)[n].search_cnt - 1].last = pmatch[0].rm_eo;
+      (curr_line->search)[curr_line->search_cnt - 1].first = pmatch[0].rm_so;
+      (curr_line->search)[curr_line->search_cnt - 1].last = pmatch[0].rm_eo;
 
       if (pmatch[0].rm_eo == pmatch[0].rm_so)
         offset++; /* avoid degenerate cases */
@@ -1795,7 +1797,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
     goto out; /* fake display */
   }
 
-  b_read = fill_buffer(fp, last_pos, (*line_info)[n].offset, &buf, &fmt, &buflen, &buf_ready);
+  b_read = fill_buffer(fp, last_pos, curr_line->offset, &buf, &fmt, &buflen, &buf_ready);
   if (b_read < 0)
   {
     if (change_last)
@@ -1811,7 +1813,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
   /* move the break point only if smart_wrap is set */
   if (C_SmartWrap)
   {
-    if ((cnt < b_read) && (ch != -1) && !IS_HEADER((*line_info)[n].type) &&
+    if ((cnt < b_read) && (ch != -1) && !IS_HEADER(curr_line->type) &&
         !IS_SPACE(buf[cnt]))
     {
       buf_ptr = buf + ch;
@@ -1843,7 +1845,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
 
   if (((int) (buf_ptr - buf) < b_read) && !(*line_info)[n + 1].continuation)
     append_line(*line_info, n, (int) (buf_ptr - buf));
-  (*line_info)[n + 1].offset = (*line_info)[n].offset + (long) (buf_ptr - buf);
+  (*line_info)[n + 1].offset = curr_line->offset + (long) (buf_ptr - buf);
 
   /* if we don't need to display the line we are done */
   if (!(flags & MUTT_SHOW))
@@ -1874,7 +1876,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
    * to make sure to reset the color *after* that */
   if (flags & MUTT_SHOWCOLOR)
   {
-    m = ((*line_info)[n].continuation) ? ((*line_info)[n].syntax)[0].first : n;
+    m = (curr_line->continuation) ? (curr_line->syntax)[0].first : n;
     if ((*line_info)[m].type == MT_COLOR_HEADER)
       def_color = ((*line_info)[m].syntax)[0].color;
     else
