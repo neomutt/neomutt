@@ -61,18 +61,15 @@ struct Envelope
   struct AddressList sender;           ///< Email's sender
   struct AddressList reply_to;         ///< Email's 'reply-to'
   struct AddressList mail_followup_to; ///< Email's 'mail-followup-to'
-  struct AddressList x_original_to;    ///< Email's 'X-Orig-to'
   char *list_post;                     ///< This stores a mailto URL, or nothing
   char *subject;                       ///< Email's subject
   char *real_subj;                     ///< Offset of the real subject
-  char *disp_subj;                     ///< Display subject (modified copy of subject)
   char *message_id;                    ///< Message ID
   char *supersedes;                    ///< Supersedes header
   char *date;                          ///< Sent date
   char *x_label;                       ///< X-Label
   char *organization;                  ///< Organisation header
 #ifdef USE_NNTP
-  char *newsgroups;                    ///< List of newsgroups
   char *xref;                          ///< List of cross-references
   char *followup_to;                   ///< List of 'followup-to' fields
   char *x_comment_to;                  ///< List of 'X-comment-to' fields
@@ -81,6 +78,15 @@ struct Envelope
   struct ListHead references;          ///< message references (in reverse order)
   struct ListHead in_reply_to;         ///< in-reply-to header content
   struct ListHead userhdrs;            ///< user defined headers
+
+  // ------------------------------------------------------------
+  // Not cached
+
+  struct AddressList x_original_to;    ///< Email's 'X-Orig-to'
+  char *disp_subj;                     ///< Display subject (modified copy of subject)
+#ifdef USE_NNTP
+  char *newsgroups;                    ///< List of newsgroups
+#endif
 #ifdef USE_AUTOCRYPT
   struct AutocryptHeader *autocrypt;
   struct AutocryptHeader *autocrypt_gossip;
