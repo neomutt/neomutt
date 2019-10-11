@@ -177,6 +177,7 @@ WHERE char *C_NmQueryWindowCurrentSearch;    ///< Config: (notmuch) Current sear
 /* These variables are backing for config items */
 WHERE struct Regex *C_Mask;                  ///< Config: Only display files/dirs matching this regex in the browser
 WHERE struct Regex *C_QuoteRegex;            ///< Config: Regex to match quoted text in a reply
+WHERE int C_ToggleQuotedShowLevels;          ///< Config: Number of quote levels to show with toggle-quoted
 
 /* Quad-options */
 WHERE unsigned char C_Bounce;                ///< Config: Confirm before bouncing a message

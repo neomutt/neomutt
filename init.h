@@ -3279,6 +3279,13 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** Match detection may be overridden by the $$smileys regular expression.
   */
+  { "toggle_quoted_show_levels", DT_NUMBER|DT_NOT_NEGATIVE, &C_ToggleQuotedShowLevels, 0 },
+  /*
+  ** .pp
+  ** Quoted text may be filtered out using the \fC<toggle-quoted>\fP command.
+  ** If set to a number greater than 0, then the \fC<toggle-quoted>\fP
+  ** command will only filter out quote levels above this number.
+  */
   { "read_inc", DT_NUMBER|DT_NOT_NEGATIVE, &C_ReadInc, 10 },
   /*
   ** .pp
