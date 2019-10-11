@@ -99,10 +99,6 @@ struct Email
   struct ListHead chain;       ///< Mixmaster chain
 #endif
 
-#ifdef USE_POP
-  int refno;                   ///< Message number on server
-#endif
-
   struct TagList tags;         ///< For drivers that support server tagging
 
   char *maildir_flags;         ///< Unknown maildir flags

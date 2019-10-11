@@ -185,13 +185,15 @@ static int pop_read_header(struct PopAccountData *adata, struct Email *e)
   size_t length = 0;
   char buf[1024];
 
-  snprintf(buf, sizeof(buf), "LIST %d\r\n", e->refno);
+  struct PopEmailData *edata = pop_edata_get(e);
+
+  snprintf(buf, sizeof(buf), "LIST %d\r\n", edata->refno);
   int rc = pop_query(adata, buf, sizeof(buf));
   if (rc == 0)
   {
     sscanf(buf, "+OK %d %zu", &index, &length);
 
-    snprintf(buf, sizeof(buf), "TOP %d 0\r\n", e->refno);
+    snprintf(buf, sizeof(buf), "TOP %d 0\r\n", edata->refno);
     rc = pop_fetch_data(adata, buf, NULL, fetch_message, fp);
 
     if (adata->cmd_top == 2)
@@ -294,8 +296,10 @@ static int fetch_uidl(const char *line, void *data)
   else if (m->emails[i]->index != index - 1)
     adata->clear_cache = true;
 
-  m->emails[i]->refno = index;
   m->emails[i]->index = index - 1;
+
+  struct PopEmailData *edata = pop_edata_get(m->emails[i]);
+  edata->refno = index;
 
   return 0;
 }
@@ -396,7 +400,10 @@ static int pop_fetch_headers(struct Mailbox *m)
   }
 
   for (int i = 0; i < m->msg_count; i++)
-    m->emails[i]->refno = -1;
+  {
+    struct PopEmailData *edata = pop_edata_get(m->emails[i]);
+    edata->refno = -1;
+  }
 
   const int old_count = m->msg_count;
   int rc = pop_fetch_data(adata, "UIDL\r\n", NULL, fetch_uidl, m);
@@ -433,7 +440,8 @@ static int pop_fetch_headers(struct Mailbox *m)
     int i, deleted;
     for (i = 0, deleted = 0; i < old_count; i++)
     {
-      if (m->emails[i]->refno == -1)
+      struct PopEmailData *edata = pop_edata_get(m->emails[i]);
+      if (edata->refno == -1)
       {
         m->emails[i]->deleted = true;
         deleted++;
@@ -460,7 +468,6 @@ static int pop_fetch_headers(struct Mailbox *m)
         /* Detach the private data */
         m->emails[i]->edata = NULL;
 
-        int refno = m->emails[i]->refno;
         int index = m->emails[i]->index;
         /* - POP dynamically numbers headers and relies on e->refno
          *   to map messages; so restore header and overwrite restored
@@ -473,7 +480,6 @@ static int pop_fetch_headers(struct Mailbox *m)
         mutt_hcache_free(hc, &data);
         email_free(&m->emails[i]);
         m->emails[i] = e;
-        m->emails[i]->refno = refno;
         m->emails[i]->index = index;
 
         /* Reattach the private data */
@@ -966,12 +972,12 @@ static int pop_mbox_sync(struct Mailbox *m, int *index_hint)
     for (i = 0, j = 0, rc = 0; (rc == 0) && (i < m->msg_count); i++)
     {
       struct PopEmailData *edata = pop_edata_get(m->emails[i]);
-      if (m->emails[i]->deleted && (m->emails[i]->refno != -1))
+      if (m->emails[i]->deleted && (edata->refno != -1))
       {
         j++;
         if (!m->quiet)
           mutt_progress_update(&progress, j, -1);
-        snprintf(buf, sizeof(buf), "DELE %d\r\n", m->emails[i]->refno);
+        snprintf(buf, sizeof(buf), "DELE %d\r\n", edata->refno);
         rc = pop_query(adata, buf, sizeof(buf));
         if (rc == 0)
         {
@@ -1097,7 +1103,7 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
       return -1;
 
     /* verify that massage index is correct */
-    if (e->refno < 0)
+    if (edata->refno < 0)
     {
       mutt_error(
           _("The message index is incorrect. Try reopening the mailbox."));
@@ -1122,7 +1128,7 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
       }
     }
 
-    snprintf(buf, sizeof(buf), "RETR %d\r\n", e->refno);
+    snprintf(buf, sizeof(buf), "RETR %d\r\n", edata->refno);
 
     const int ret = pop_fetch_data(adata, buf, &progress, fetch_message, msg->fp);
     if (ret == 0)

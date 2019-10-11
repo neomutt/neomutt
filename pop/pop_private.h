@@ -106,6 +106,7 @@ struct PopAccountData
 struct PopEmailData
 {
   const char *uid;
+  int refno;                   ///< Message number on server
 };
 
 /**
