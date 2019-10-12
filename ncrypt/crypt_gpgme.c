@@ -2288,14 +2288,11 @@ restart:
   gpgme_data_release(plaintext);
   plaintext = NULL;
 
-  a->is_signed_data = false;
   if (sig_stat)
   {
     int res, idx;
     int anybad = 0;
 
-    if (maybe_signed)
-      a->is_signed_data = true;
     if (r_is_signed)
       *r_is_signed = -1; /* A signature exists. */
 

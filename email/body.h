@@ -72,12 +72,6 @@ struct Body
 
   bool noconv : 1;                ///< Don't do character set conversion
   bool force_charset : 1;         ///< Send mode: don't adjust the character set when in send-mode.
-  bool is_signed_data : 1;        ///< A lot of MUAs don't indicate S/MIME signed-data correctly,
-                                  ///< e.g. they use foo.p7m even for the name of signed data.
-                                  ///< This flag is used to keep track of the actual message type.
-                                  ///< It gets set during the verification (which is done if the encryption try failed)
-                                  ///< and check by the function to figure the type of the message.
-
   bool goodsig : 1;               ///< Good cryptographic signature
   bool warnsig : 1;               ///< Maybe good signature
   bool badsig : 1;                ///< Bad cryptographic signature (needed to check encrypted s/mime-signatures)
