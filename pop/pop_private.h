@@ -29,6 +29,7 @@
 #include "conn/conn.h"
 #include "mutt/mutt.h"
 
+struct Email;
 struct Mailbox;
 struct Progress;
 
@@ -143,5 +144,6 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
 int pop_reconnect(struct Mailbox *m);
 void pop_logout(struct Mailbox *m);
 struct PopAccountData *pop_adata_get(struct Mailbox *m);
+struct PopEmailData *pop_edata_get(struct Email *e);
 
 #endif /* MUTT_POP_POP_PRIVATE_H */

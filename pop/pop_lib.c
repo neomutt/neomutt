@@ -248,6 +248,17 @@ static int pop_capabilities(struct PopAccountData *adata, int mode)
 }
 
 /**
+ * pop_edata_get - Get the private data for this Email
+ * @retval ptr Private Email data
+ */
+struct PopEmailData *pop_edata_get(struct Email *e)
+{
+  if (!e)
+    return NULL;
+  return e->edata;
+}
+
+/**
  * pop_connect - Open connection
  * @param adata POP Account data
  * @retval  0 Successful
@@ -561,7 +572,7 @@ static int check_uidl(const char *line, void *data)
   struct Mailbox *m = data;
   for (int i = 0; i < m->msg_count; i++)
   {
-    struct PopEmailData *edata = m->emails[i]->edata;
+    struct PopEmailData *edata = pop_edata_get(m->emails[i]);
     if (mutt_str_strcmp(edata->uid, endp) == 0)
     {
       m->emails[i]->refno = index;

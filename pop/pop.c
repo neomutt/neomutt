@@ -273,7 +273,7 @@ static int fetch_uidl(const char *line, void *data)
   int i;
   for (i = 0; i < m->msg_count; i++)
   {
-    struct PopEmailData *edata = m->emails[i]->edata;
+    struct PopEmailData *edata = pop_edata_get(m->emails[i]);
     if (mutt_str_strcmp(line, edata->uid) == 0)
       break;
   }
@@ -321,7 +321,7 @@ static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
 
   for (int i = 0; i < m->msg_count; i++)
   {
-    struct PopEmailData *edata = m->emails[i]->edata;
+    struct PopEmailData *edata = pop_edata_get(m->emails[i]);
     /* if the id we get is known for a header: done (i.e. keep in cache) */
     if (edata->uid && (mutt_str_strcmp(edata->uid, id) == 0))
       return 0;
@@ -452,7 +452,7 @@ static int pop_fetch_headers(struct Mailbox *m)
     {
       if (!m->quiet)
         mutt_progress_update(&progress, i + 1 - old_count, -1);
-      struct PopEmailData *edata = m->emails[i]->edata;
+      struct PopEmailData *edata = pop_edata_get(m->emails[i]);
 #ifdef USE_HCACHE
       void *data = mutt_hcache_fetch(hc, edata->uid, strlen(edata->uid));
       if (data)
@@ -965,7 +965,7 @@ static int pop_mbox_sync(struct Mailbox *m, int *index_hint)
 
     for (i = 0, j = 0, rc = 0; (rc == 0) && (i < m->msg_count); i++)
     {
-      struct PopEmailData *edata = m->emails[i]->edata;
+      struct PopEmailData *edata = pop_edata_get(m->emails[i]);
       if (m->emails[i]->deleted && (m->emails[i]->refno != -1))
       {
         j++;
@@ -1059,7 +1059,7 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   struct Progress progress;
   struct PopAccountData *adata = pop_adata_get(m);
   struct Email *e = m->emails[msgno];
-  struct PopEmailData *edata = e->edata;
+  struct PopEmailData *edata = pop_edata_get(e);
   bool bcache = true;
 
   /* see if we already have the message in body cache */
