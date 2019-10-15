@@ -363,7 +363,7 @@ int mutt_display_message(struct Mailbox *m, struct Email *e)
     mutt_buffer_printf(cmd, "%s %s", NONULL(C_Pager), mutt_b2s(tempfile));
     int r = mutt_system(mutt_b2s(cmd));
     if (r == -1)
-      mutt_error(_("Error running \"%s\"!"), mutt_b2s(cmd));
+      mutt_error(_("Error running \"%s\""), mutt_b2s(cmd));
     unlink(mutt_b2s(tempfile));
     mutt_buffer_pool_release(&cmd);
 
