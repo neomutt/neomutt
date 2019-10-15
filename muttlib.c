@@ -1434,7 +1434,6 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
  */
 int mutt_save_confirm(const char *s, struct stat *st)
 {
-  char tmp[PATH_MAX];
   int ret = 0;
 
   enum MailboxType magic = mx_path_probe(s, NULL);
@@ -1451,12 +1450,14 @@ int mutt_save_confirm(const char *s, struct stat *st)
   {
     if (C_Confirmappend)
     {
-      snprintf(tmp, sizeof(tmp), _("Append messages to %s?"), s);
-      enum QuadOption ans = mutt_yesorno(tmp, MUTT_YES);
+      struct Buffer *tmp = mutt_buffer_pool_get();
+      mutt_buffer_printf(tmp, _("Append messages to %s?"), s);
+      enum QuadOption ans = mutt_yesorno(mutt_b2s(tmp), MUTT_YES);
       if (ans == MUTT_NO)
         ret = 1;
       else if (ans == MUTT_ABORT)
         ret = -1;
+      mutt_buffer_pool_release(&tmp);
     }
   }
 
@@ -1486,12 +1487,14 @@ int mutt_save_confirm(const char *s, struct stat *st)
     {
       if (C_Confirmcreate)
       {
-        snprintf(tmp, sizeof(tmp), _("Create %s?"), s);
-        enum QuadOption ans = mutt_yesorno(tmp, MUTT_YES);
+        struct Buffer *tmp = mutt_buffer_pool_get();
+        mutt_buffer_printf(tmp, _("Create %s?"), s);
+        enum QuadOption ans = mutt_yesorno(mutt_b2s(tmp), MUTT_YES);
         if (ans == MUTT_NO)
           ret = 1;
         else if (ans == MUTT_ABORT)
           ret = -1;
+        mutt_buffer_pool_release(&tmp);
       }
 
       /* user confirmed with MUTT_YES or set C_Confirmcreate */
