@@ -129,6 +129,7 @@ muttlib.c
 mutt_account.c
 mutt_attach.c
 mutt_body.c
+mutt_curses.c
 mutt_header.c
 mutt_history.c
 mutt_logging.c
