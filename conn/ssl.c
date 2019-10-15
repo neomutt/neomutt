@@ -588,20 +588,22 @@ static int ssl_init(void)
   if (!HAVE_ENTROPY())
   {
     /* load entropy from files */
-    char path[PATH_MAX];
+    struct Buffer *path = mutt_buffer_pool_get();
     add_entropy(C_EntropyFile);
-    add_entropy(RAND_file_name(path, sizeof(path)));
+    add_entropy(RAND_file_name(path->data, path->dsize));
 
 /* load entropy from egd sockets */
 #ifdef HAVE_RAND_EGD
     add_entropy(mutt_str_getenv("EGDSOCKET"));
-    snprintf(path, sizeof(path), "%s/.entropy", NONULL(HomeDir));
-    add_entropy(path);
+    mutt_buffer_printf(path, "%s/.entropy", NONULL(HomeDir));
+    add_entropy(mutt_b2s(path));
     add_entropy("/tmp/entropy");
 #endif
 
     /* shuffle $RANDFILE (or ~/.rnd if unset) */
-    RAND_write_file(RAND_file_name(path, sizeof(path)));
+    RAND_write_file(RAND_file_name(path->data, path->dsize));
+    mutt_buffer_pool_release(&path);
+
     mutt_clear_error();
     if (!HAVE_ENTROPY())
     {
