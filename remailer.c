@@ -41,6 +41,7 @@
 #include "curs_lib.h"
 #include "filter.h"
 #include "format_flags.h"
+#include "globals.h"
 #include "keymap.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
@@ -559,6 +560,34 @@ static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer 
 }
 
 /**
+ * mutt_dlg_mixmaster_observer - Listen for config changes affecting the Mixmaster menu - Implements ::observer_t()
+ */
+int mutt_dlg_mixmaster_observer(struct NotifyCallback *nc)
+{
+  if (!nc || !nc->event || !nc->data)
+    return -1;
+
+  struct EventConfig *ec = (struct EventConfig *) nc->event;
+  struct MuttWindow *dlg = (struct MuttWindow *) nc->data;
+
+  if (mutt_str_strcmp(ec->name, "status_on_top") != 0)
+    return 0;
+
+  struct MuttWindow *win_first = TAILQ_FIRST(&dlg->children);
+
+  if ((C_StatusOnTop && (win_first->type == WT_INDEX)) ||
+      (!C_StatusOnTop && (win_first->type != WT_INDEX)))
+  {
+    // Swap the Index and the IndexBar Windows
+    TAILQ_REMOVE(&dlg->children, win_first, entries);
+    TAILQ_INSERT_TAIL(&dlg->children, win_first, entries);
+  }
+
+  mutt_window_reflow(dlg);
+  return 0;
+}
+
+/**
  * mix_make_chain - Create a Mixmaster chain
  * @param win       Window
  * @param chainhead List if chain links
@@ -605,7 +634,38 @@ void mix_make_chain(struct MuttWindow *win, struct ListHead *chainhead, int cols
 
   mix_screen_coordinates(win, type2_list, &coords, chain, 0);
 
+  struct MuttWindow *dlg =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  dlg->type = WT_DIALOG;
+  struct MuttWindow *index =
+      mutt_window_new(MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_MAXIMISE,
+                      MUTT_WIN_SIZE_UNLIMITED, MUTT_WIN_SIZE_UNLIMITED);
+  index->type = WT_INDEX;
+  struct MuttWindow *ibar = mutt_window_new(
+      MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED, 1, MUTT_WIN_SIZE_UNLIMITED);
+  ibar->type = WT_INDEX_BAR;
+
+  if (C_StatusOnTop)
+  {
+    mutt_window_add_child(dlg, ibar);
+    mutt_window_add_child(dlg, index);
+  }
+  else
+  {
+    mutt_window_add_child(dlg, index);
+    mutt_window_add_child(dlg, ibar);
+  }
+
+  notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_dlg_mixmaster_observer,
+                      (intptr_t) dlg);
+  dialog_push(dlg);
+
   menu = mutt_menu_new(MENU_MIX);
+  menu->pagelen = index->state.rows;
+  menu->win_index = index;
+  menu->win_ibar = ibar;
+
   menu->max = ttll;
   menu->menu_make_entry = mix_entry;
   menu->menu_tag = NULL;
@@ -755,6 +815,9 @@ void mix_make_chain(struct MuttWindow *win, struct ListHead *chainhead, int cols
 
   mutt_menu_pop_current(menu);
   mutt_menu_free(&menu);
+  dialog_pop();
+  notify_observer_remove(Config->notify, mutt_dlg_mixmaster_observer, (intptr_t) dlg);
+  mutt_window_free(&dlg);
 
   /* construct the remailer list */
 
