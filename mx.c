@@ -563,18 +563,19 @@ int mx_mbox_close(struct Context **ptr)
 
   struct Mailbox *m = ctx->mailbox;
 
-  int i, read_msgs = 0;
-  enum QuadOption move_messages = MUTT_NO;
-  enum QuadOption purge = MUTT_YES;
-  char mbox[PATH_MAX];
-  char buf[PATH_MAX + 64];
-
   if (m->readonly || m->dontwrite || m->append)
   {
     mx_fastclose_mailbox(m);
     ctx_free(ptr);
     return 0;
   }
+
+  int i, read_msgs = 0;
+  int rc = -1;
+  enum QuadOption move_messages = MUTT_NO;
+  enum QuadOption purge = MUTT_YES;
+  struct Buffer *mbox = NULL;
+  struct Buffer *buf = mutt_buffer_pool_get();
 
 #ifdef USE_NNTP
   if ((m->msg_unread != 0) && (m->magic == MUTT_NNTP))
@@ -586,7 +587,7 @@ int mx_mbox_close(struct Context **ptr)
       enum QuadOption ans =
           query_quadoption(C_CatchupNewsgroup, _("Mark all articles read?"));
       if (ans == MUTT_ABORT)
-        return -1;
+        goto cleanup;
       else if (ans == MUTT_YES)
         mutt_newsgroup_catchup(m, mdata->adata, mdata->group);
     }
@@ -612,29 +613,32 @@ int mx_mbox_close(struct Context **ptr)
   if ((read_msgs != 0) && (C_Move != MUTT_NO))
   {
     bool is_spool;
+    mbox = mutt_buffer_pool_get();
+
     char *p = mutt_find_hook(MUTT_MBOX_HOOK, mailbox_path(m));
     if (p)
     {
       is_spool = true;
-      mutt_str_strfcpy(mbox, p, sizeof(mbox));
+      mutt_buffer_strcpy(mbox, p);
     }
     else
     {
-      mutt_str_strfcpy(mbox, C_Mbox, sizeof(mbox));
-      is_spool = mutt_is_spool(mailbox_path(m)) && !mutt_is_spool(mbox);
+      mutt_buffer_strcpy(mbox, C_Mbox);
+      is_spool = mutt_is_spool(mailbox_path(m)) && !mutt_is_spool(mutt_b2s(mbox));
     }
 
-    if (is_spool && (mbox[0] != '\0'))
+    if (is_spool && !mutt_buffer_is_empty(mbox))
     {
-      mutt_expand_path(mbox, sizeof(mbox));
-      snprintf(buf, sizeof(buf),
-               /* L10N: The first argument is the number of read messages to be
-                  moved, the second argument is the target mailbox. */
-               ngettext("Move %d read message to %s?", "Move %d read messages to %s?", read_msgs),
-               read_msgs, mbox);
-      move_messages = query_quadoption(C_Move, buf);
+      mutt_buffer_expand_path(mbox);
+      mutt_buffer_printf(buf,
+                         /* L10N: The first argument is the number of read messages to be
+                            moved, the second argument is the target mailbox. */
+                         ngettext("Move %d read message to %s?",
+                                  "Move %d read messages to %s?", read_msgs),
+                         read_msgs, mutt_b2s(mbox));
+      move_messages = query_quadoption(C_Move, mutt_b2s(buf));
       if (move_messages == MUTT_ABORT)
-        return -1;
+        goto cleanup;
     }
   }
 
@@ -642,12 +646,13 @@ int mx_mbox_close(struct Context **ptr)
    * just marking messages as "trash".  */
   if ((m->msg_deleted != 0) && !((m->magic == MUTT_MAILDIR) && C_MaildirTrash))
   {
-    snprintf(buf, sizeof(buf),
-             ngettext("Purge %d deleted message?", "Purge %d deleted messages?", m->msg_deleted),
-             m->msg_deleted);
-    purge = query_quadoption(C_Delete, buf);
+    mutt_buffer_printf(buf,
+                       ngettext("Purge %d deleted message?",
+                                "Purge %d deleted messages?", m->msg_deleted),
+                       m->msg_deleted);
+    purge = query_quadoption(C_Delete, mutt_b2s(buf));
     if (purge == MUTT_ABORT)
-      return -1;
+      goto cleanup;
   }
 
   if (C_MarkOld)
@@ -662,13 +667,13 @@ int mx_mbox_close(struct Context **ptr)
   if (move_messages)
   {
     if (!m->quiet)
-      mutt_message(_("Moving read messages to %s..."), mbox);
+      mutt_message(_("Moving read messages to %s..."), mutt_b2s(mbox));
 
 #ifdef USE_IMAP
     /* try to use server-side copy first */
     i = 1;
 
-    if ((m->magic == MUTT_IMAP) && (imap_path_probe(mbox, NULL) == MUTT_IMAP))
+    if ((m->magic == MUTT_IMAP) && (imap_path_probe(mutt_b2s(mbox), NULL) == MUTT_IMAP))
     {
       /* tag messages for moving, and clear old tags, if any */
       for (i = 0; i < m->msg_count; i++)
@@ -684,22 +689,22 @@ int mx_mbox_close(struct Context **ptr)
         }
       }
 
-      i = imap_copy_messages(ctx->mailbox, NULL, mbox, true);
+      i = imap_copy_messages(ctx->mailbox, NULL, mutt_b2s(mbox), true);
     }
 
     if (i == 0) /* success */
       mutt_clear_error();
     else if (i == -1) /* horrible error, bail */
-      return -1;
+      goto cleanup;
     else /* use regular append-copy mode */
 #endif
     {
-      struct Mailbox *m_read = mx_path_resolve(mbox);
+      struct Mailbox *m_read = mx_path_resolve(mutt_b2s(mbox));
       struct Context *ctx_read = mx_mbox_open(m_read, MUTT_APPEND);
       if (!ctx_read)
       {
         mailbox_free(&m_read);
-        return -1;
+        goto cleanup;
       }
 
       for (i = 0; i < m->msg_count; i++)
@@ -716,7 +721,7 @@ int mx_mbox_close(struct Context **ptr)
           else
           {
             mx_mbox_close(&ctx_read);
-            return -1;
+            goto cleanup;
           }
         }
       }
@@ -732,14 +737,15 @@ int mx_mbox_close(struct Context **ptr)
       mbox_reset_atime(m, NULL);
     mx_fastclose_mailbox(m);
     ctx_free(ptr);
-    return 0;
+    rc = 0;
+    goto cleanup;
   }
 
   /* copy mails to the trash before expunging */
   if (purge && (m->msg_deleted != 0) && (mutt_str_strcmp(mailbox_path(m), C_Trash) != 0))
   {
     if (trash_append(ctx->mailbox) != 0)
-      return -1;
+      goto cleanup;
   }
 
 #ifdef USE_IMAP
@@ -748,7 +754,7 @@ int mx_mbox_close(struct Context **ptr)
   {
     int check = imap_sync_mailbox(ctx->mailbox, (purge != MUTT_NO), true);
     if (check != 0)
-      return check;
+      goto cleanup;
   }
   else
 #endif
@@ -767,7 +773,7 @@ int mx_mbox_close(struct Context **ptr)
     {
       int check = sync_mailbox(ctx->mailbox, NULL);
       if (check != 0)
-        return check;
+        goto cleanup;
     }
   }
 
@@ -809,7 +815,12 @@ int mx_mbox_close(struct Context **ptr)
   mx_fastclose_mailbox(m);
   FREE(ptr);
 
-  return 0;
+  rc = 0;
+
+cleanup:
+  mutt_buffer_pool_release(&mbox);
+  mutt_buffer_pool_release(&buf);
+  return rc;
 }
 
 /**
