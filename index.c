@@ -711,6 +711,9 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
 
   mutt_sleep(0);
 
+  /* XXX: quick fix in stable branch.  Better fix will be in master */
+  CurrentMenu = MENU_MAIN;
+
   /* Note that menu->type may be MENU_PAGER if the change folder
    * operation originated from the pager.
    *
