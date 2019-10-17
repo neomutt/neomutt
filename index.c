@@ -635,11 +635,12 @@ int mailbox_index_observer(struct NotifyCallback *nc)
  * @param buflen     Length of buffer
  * @param oldcount   How many items are currently in the index
  * @param index_hint Remember our place in the index
+ * @param pager_return Return to the pager afterwards
  * @retval  0 Success
  * @retval -1 Error
  */
 static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
-                              char *buf, size_t buflen, int *oldcount, int *index_hint)
+                              char *buf, size_t buflen, int *oldcount, int *index_hint, bool *pager_return)
 {
 #ifdef USE_NNTP
   if (OptNews)
@@ -670,6 +671,10 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
       return -1;
     }
   }
+
+   /* past this point, we don't return to the pager on error */
+  if (pager_return)
+    *pager_return = false;
 
   /* keepalive failure in mutt_enter_fname may kill connection. */
   if (Context && Context->mailbox && (mutt_buffer_is_empty(&Context->mailbox->pathbuf)))
@@ -2027,7 +2032,7 @@ int mutt_index_menu(void)
             break;
           }
 
-          main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint);
+          main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint, NULL);
 
           // If notmuch doesn't contain the message, we're left in an empty
           // vfolder. No messages are found, but nm_read_entire_thread assumes
@@ -2190,7 +2195,7 @@ int mutt_index_menu(void)
         if (!nm_uri_from_query(NULL, buf, sizeof(buf)))
           mutt_message(_("Failed to create query, aborting"));
         else
-          main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint);
+          main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint, NULL);
         break;
 
       case OP_MAIN_WINDOWED_VFOLDER_BACKWARD:
@@ -2212,7 +2217,7 @@ int mutt_index_menu(void)
         if (!nm_uri_from_query(Context->mailbox, buf, sizeof(buf)))
           mutt_message(_("Failed to create query, aborting"));
         else
-          main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint);
+          main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint, NULL);
         break;
 
       case OP_MAIN_WINDOWED_VFOLDER_FORWARD:
@@ -2235,7 +2240,7 @@ int mutt_index_menu(void)
         else
         {
           mutt_debug(LL_DEBUG2, "nm: + windowed query (%s)\n", buf);
-          main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint);
+          main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint, NULL);
         }
         break;
 
@@ -2253,7 +2258,7 @@ int mutt_index_menu(void)
       case OP_MAIN_CHANGE_GROUP_READONLY:
 #endif
       {
-        bool cont = false; /* Set if we want to continue instead of break */
+        bool pager_return = true;  /* return to display message in pager */
 
         struct Buffer *folderbuf = mutt_buffer_pool_get();
         mutt_buffer_alloc(folderbuf, PATH_MAX);
@@ -2335,11 +2340,6 @@ int mutt_index_menu(void)
 
           if (mutt_buffer_enter_fname(cp, folderbuf, true) == -1)
           {
-            if (in_pager)
-            {
-              op = OP_DISPLAY_MESSAGE;
-              cont = true;
-            }
             goto changefoldercleanup;
           }
 
@@ -2357,7 +2357,7 @@ int mutt_index_menu(void)
           m = mx_mbox_find2(mutt_b2s(folderbuf));
 
         main_change_folder(menu, op, m, folderbuf->data, folderbuf->dsize,
-                           &oldcount, &index_hint);
+                           &oldcount, &index_hint, &pager_return);
 #ifdef USE_NNTP
         /* mutt_mailbox_check() must be done with mail-reader mode! */
         menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_MAIN,
@@ -2374,10 +2374,12 @@ int mutt_index_menu(void)
 
       changefoldercleanup:
         mutt_buffer_pool_release(&folderbuf);
-        if (cont)
+        if (in_pager && pager_return)
+        {
+          op = OP_DISPLAY_MESSAGE;
           continue;
-        else
-          break;
+        }
+        break;
       }
 
       case OP_DISPLAY_MESSAGE:
