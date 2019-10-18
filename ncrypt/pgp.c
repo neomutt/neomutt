@@ -944,14 +944,14 @@ cleanup:
 static void pgp_extract_keys_from_attachment(FILE *fp, struct Body *top)
 {
   struct State s = { 0 };
-  char tempfname[PATH_MAX];
+  struct Buffer *tempfname = mutt_buffer_pool_get();
 
-  mutt_mktemp(tempfname, sizeof(tempfname));
-  FILE *fp_tmp = mutt_file_fopen(tempfname, "w");
+  mutt_buffer_mktemp(tempfname);
+  FILE *fp_tmp = mutt_file_fopen(mutt_b2s(tempfname), "w");
   if (!fp_tmp)
   {
-    mutt_perror(tempfname);
-    return;
+    mutt_perror(mutt_b2s(tempfname));
+    goto cleanup;
   }
 
   s.fp_in = fp;
@@ -961,10 +961,13 @@ static void pgp_extract_keys_from_attachment(FILE *fp, struct Body *top)
 
   mutt_file_fclose(&fp_tmp);
 
-  pgp_class_invoke_import(tempfname);
+  pgp_class_invoke_import(mutt_b2s(tempfname));
   mutt_any_key_to_continue(NULL);
 
-  mutt_file_unlink(tempfname);
+  mutt_file_unlink(mutt_b2s(tempfname));
+
+cleanup:
+  mutt_buffer_pool_release(&tempfname);
 }
 
 /**
