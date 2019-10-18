@@ -1006,24 +1006,24 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   FILE *fp_pgp_in = NULL, *fp_pgp_out = NULL, *fp_pgp_tmp = NULL;
   struct stat info;
   struct Body *tattach = NULL;
-  char pgptmpfile[PATH_MAX];
   pid_t pid;
   int rv;
+  struct Buffer *pgptmpfile = mutt_buffer_pool_get();
 
   FILE *fp_pgp_err = mutt_file_mkstemp();
   if (!fp_pgp_err)
   {
     mutt_perror(_("Can't create temporary file"));
-    return NULL;
+    goto cleanup;
   }
 
-  mutt_mktemp(pgptmpfile, sizeof(pgptmpfile));
-  fp_pgp_tmp = mutt_file_fopen(pgptmpfile, "w");
+  mutt_buffer_mktemp(pgptmpfile);
+  fp_pgp_tmp = mutt_file_fopen(mutt_b2s(pgptmpfile), "w");
   if (!fp_pgp_tmp)
   {
-    mutt_perror(pgptmpfile);
+    mutt_perror(mutt_b2s(pgptmpfile));
     mutt_file_fclose(&fp_pgp_err);
-    return NULL;
+    goto cleanup;
   }
 
   /* Position the stream at the beginning of the body, and send the data to
@@ -1034,17 +1034,17 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   mutt_file_fclose(&fp_pgp_tmp);
 
   pid = pgp_invoke_decrypt(&fp_pgp_in, &fp_pgp_out, NULL, -1, -1,
-                           fileno(fp_pgp_err), pgptmpfile);
+                           fileno(fp_pgp_err), mutt_b2s(pgptmpfile));
   if (pid == -1)
   {
     mutt_file_fclose(&fp_pgp_err);
-    unlink(pgptmpfile);
+    unlink(mutt_b2s(pgptmpfile));
     if (s->flags & MUTT_DISPLAY)
     {
       state_attach_puts(
           _("[-- Error: could not create a PGP subprocess --]\n\n"), s);
     }
-    return NULL;
+    goto cleanup;
   }
 
   /* send the PGP passphrase to the subprocess.  Never do this if the agent is
@@ -1066,7 +1066,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
 
   mutt_file_fclose(&fp_pgp_out);
   rv = mutt_wait_filter(pid);
-  mutt_file_unlink(pgptmpfile);
+  mutt_file_unlink(mutt_b2s(pgptmpfile));
 
   fflush(fp_pgp_err);
   rewind(fp_pgp_err);
@@ -1075,7 +1075,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
     mutt_error(_("Decryption failed"));
     pgp_class_void_passphrase();
     mutt_file_fclose(&fp_pgp_err);
-    return NULL;
+    goto cleanup;
   }
 
   if (s->flags & MUTT_DISPLAY)
@@ -1099,7 +1099,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   {
     mutt_error(_("Decryption failed"));
     pgp_class_void_passphrase();
-    return NULL;
+    goto cleanup;
   }
 
   rewind(fp_out);
@@ -1115,6 +1115,8 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
     mutt_parse_part(fp_out, tattach);
   }
 
+cleanup:
+  mutt_buffer_pool_release(&pgptmpfile);
   return tattach;
 }
 
