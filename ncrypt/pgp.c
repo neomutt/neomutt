@@ -780,28 +780,30 @@ out:
  */
 static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 {
-  char tempfile[PATH_MAX];
+  struct Buffer *tempfile = NULL;
   char buf[8192];
+  int rc = 0;
 
   bool sgn = false;
   bool enc = false;
   bool key = false;
 
   if (b->type != TYPE_TEXT)
-    return 0;
+    goto cleanup;
 
-  mutt_mktemp(tempfile, sizeof(tempfile));
-  if (mutt_decode_save_attachment(fp, b, tempfile, 0, MUTT_SAVE_NO_FLAGS) != 0)
+  tempfile = mutt_buffer_pool_get();
+  mutt_buffer_mktemp(tempfile);
+  if (mutt_decode_save_attachment(fp, b, mutt_b2s(tempfile), 0, MUTT_SAVE_NO_FLAGS) != 0)
   {
-    unlink(tempfile);
-    return 0;
+    unlink(mutt_b2s(tempfile));
+    goto cleanup;
   }
 
-  FILE *fp_tmp = fopen(tempfile, "r");
+  FILE *fp_tmp = fopen(mutt_b2s(tempfile), "r");
   if (!fp_tmp)
   {
-    unlink(tempfile);
-    return 0;
+    unlink(mutt_b2s(tempfile));
+    goto cleanup;
   }
 
   while (fgets(buf, sizeof(buf), fp_tmp))
@@ -818,10 +820,10 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
     }
   }
   mutt_file_fclose(&fp_tmp);
-  unlink(tempfile);
+  unlink(mutt_b2s(tempfile));
 
   if (!enc && !sgn && !key)
-    return 0;
+    goto cleanup;
 
   /* fix the content type */
 
@@ -833,7 +835,11 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
   else if (key)
     mutt_param_set(&b->parameter, "x-action", "pgp-keys");
 
-  return 1;
+  rc = 1;
+
+cleanup:
+  mutt_buffer_pool_release(&tempfile);
+  return rc;
 }
 
 /**
