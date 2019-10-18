@@ -874,18 +874,18 @@ int pgp_class_check_traditional(FILE *fp, struct Body *b, bool just_one)
  */
 int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 {
-  char sigfile[PATH_MAX];
   FILE *fp_pgp_out = NULL;
   pid_t pid;
   int badsig = -1;
+  struct Buffer *sigfile = mutt_buffer_pool_get();
 
-  snprintf(sigfile, sizeof(sigfile), "%s.asc", tempfile);
+  mutt_buffer_printf(sigfile, "%s.asc", tempfile);
 
-  FILE *fp_sig = mutt_file_fopen(sigfile, "w");
+  FILE *fp_sig = mutt_file_fopen(mutt_b2s(sigfile), "w");
   if (!fp_sig)
   {
-    mutt_perror(sigfile);
-    return -1;
+    mutt_perror(mutt_b2s(sigfile));
+    goto cleanup;
   }
 
   fseeko(s->fp_in, sigbdy->offset, SEEK_SET);
@@ -896,14 +896,14 @@ int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
   if (!fp_pgp_err)
   {
     mutt_perror(_("Can't create temporary file"));
-    unlink(sigfile);
-    return -1;
+    unlink(mutt_b2s(sigfile));
+    goto cleanup;
   }
 
   crypt_current_time(s, "PGP");
 
   pid = pgp_invoke_verify(NULL, &fp_pgp_out, NULL, -1, -1, fileno(fp_pgp_err),
-                          tempfile, sigfile);
+                          tempfile, mutt_b2s(sigfile));
   if (pid != -1)
   {
     if (pgp_copy_checksig(fp_pgp_out, s->fp_out) >= 0)
@@ -927,10 +927,12 @@ int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
 
   state_attach_puts(_("[-- End of PGP output --]\n\n"), s);
 
-  mutt_file_unlink(sigfile);
+  mutt_file_unlink(mutt_b2s(sigfile));
+
+cleanup:
+  mutt_buffer_pool_release(&sigfile);
 
   mutt_debug(LL_DEBUG1, "returning %d\n", badsig);
-
   return badsig;
 }
 
