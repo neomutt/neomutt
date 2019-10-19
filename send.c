@@ -498,11 +498,7 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *fp_out)
   if (C_ForwardQuote)
     cmflags |= MUTT_CM_PREFIX;
 
-  /* wrapping headers for forwarding is considered a display
-   * rather than send action */
-  chflags |= CH_DISPLAY;
-
-  mutt_copy_message(fp_out, m, e, cmflags, chflags);
+  mutt_copy_message(fp_out, m, e, cmflags, chflags, 0);
   mutt_forward_trailer(m, e, fp_out);
   return 0;
 }
@@ -701,7 +697,7 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out)
     cmflags |= MUTT_CM_WEED;
   }
 
-  mutt_copy_message(fp_out, m, e, cmflags, chflags);
+  mutt_copy_message(fp_out, m, e, cmflags, chflags, 0);
 
   mutt_make_post_indent(m, e, fp_out);
 
