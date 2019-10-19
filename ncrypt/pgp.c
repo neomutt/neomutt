@@ -1294,31 +1294,32 @@ int pgp_class_encrypted_handler(struct Body *a, struct State *s)
  */
 struct Body *pgp_class_sign_message(struct Body *a)
 {
-  struct Body *t = NULL;
+  struct Body *t = NULL, *rv = NULL;
   char buf[1024];
-  char sigfile[PATH_MAX], signedfile[PATH_MAX];
   FILE *fp_pgp_in = NULL, *fp_pgp_out = NULL, *fp_pgp_err = NULL, *fp_signed = NULL;
   bool err = false;
   bool empty = true;
   pid_t pid;
+  struct Buffer *sigfile = mutt_buffer_pool_get();
+  struct Buffer *signedfile = mutt_buffer_pool_get();
 
   crypt_convert_to_7bit(a); /* Signed data _must_ be in 7-bit format. */
 
-  mutt_mktemp(sigfile, sizeof(sigfile));
-  FILE *fp_sig = mutt_file_fopen(sigfile, "w");
+  mutt_buffer_mktemp(sigfile);
+  FILE *fp_sig = mutt_file_fopen(mutt_b2s(sigfile), "w");
   if (!fp_sig)
   {
-    return NULL;
+    goto cleanup;
   }
 
-  mutt_mktemp(signedfile, sizeof(signedfile));
-  fp_signed = mutt_file_fopen(signedfile, "w");
+  mutt_buffer_mktemp(signedfile);
+  fp_signed = mutt_file_fopen(mutt_b2s(signedfile), "w");
   if (!fp_signed)
   {
-    mutt_perror(signedfile);
+    mutt_perror(mutt_b2s(signedfile));
     mutt_file_fclose(&fp_sig);
-    unlink(sigfile);
-    return NULL;
+    unlink(mutt_b2s(sigfile));
+    goto cleanup;
   }
 
   mutt_write_mime_header(a, fp_signed);
@@ -1326,14 +1327,15 @@ struct Body *pgp_class_sign_message(struct Body *a)
   mutt_write_mime_body(a, fp_signed);
   mutt_file_fclose(&fp_signed);
 
-  pid = pgp_invoke_sign(&fp_pgp_in, &fp_pgp_out, &fp_pgp_err, -1, -1, -1, signedfile);
+  pid = pgp_invoke_sign(&fp_pgp_in, &fp_pgp_out, &fp_pgp_err, -1, -1, -1,
+                        mutt_b2s(signedfile));
   if (pid == -1)
   {
     mutt_perror(_("Can't open PGP subprocess"));
     mutt_file_fclose(&fp_sig);
-    unlink(sigfile);
-    unlink(signedfile);
-    return NULL;
+    unlink(mutt_b2s(sigfile));
+    unlink(mutt_b2s(signedfile));
+    goto cleanup;
   }
 
   if (!pgp_use_gpg_agent())
@@ -1367,23 +1369,23 @@ struct Body *pgp_class_sign_message(struct Body *a)
 
   mutt_file_fclose(&fp_pgp_err);
   mutt_file_fclose(&fp_pgp_out);
-  unlink(signedfile);
+  unlink(mutt_b2s(signedfile));
 
   if (fclose(fp_sig) != 0)
   {
     mutt_perror("fclose");
-    unlink(sigfile);
-    return NULL;
+    unlink(mutt_b2s(sigfile));
+    goto cleanup;
   }
 
   if (err)
     mutt_any_key_to_continue(NULL);
   if (empty)
   {
-    unlink(sigfile);
+    unlink(mutt_b2s(sigfile));
     /* most likely error is a bad passphrase, so automatically forget it */
     pgp_class_void_passphrase();
-    return NULL; /* fatal error while signing */
+    goto cleanup; /* fatal error while signing */
   }
 
   t = mutt_body_new();
@@ -1392,26 +1394,29 @@ struct Body *pgp_class_sign_message(struct Body *a)
   t->encoding = ENC_7BIT;
   t->use_disp = false;
   t->disposition = DISP_INLINE;
+  rv = t;
 
   mutt_generate_boundary(&t->parameter);
   mutt_param_set(&t->parameter, "protocol", "application/pgp-signature");
-  mutt_param_set(&t->parameter, "micalg", pgp_micalg(sigfile));
+  mutt_param_set(&t->parameter, "micalg", pgp_micalg(mutt_b2s(sigfile)));
 
   t->parts = a;
-  a = t;
 
   t->parts->next = mutt_body_new();
   t = t->parts->next;
   t->type = TYPE_APPLICATION;
   t->subtype = mutt_str_strdup("pgp-signature");
-  t->filename = mutt_str_strdup(sigfile);
+  t->filename = mutt_str_strdup(mutt_b2s(sigfile));
   t->use_disp = false;
   t->disposition = DISP_NONE;
   t->encoding = ENC_7BIT;
   t->unlink = true; /* ok to remove this file after sending. */
   mutt_param_set(&t->parameter, "name", "signature.asc");
 
-  return a;
+cleanup:
+  mutt_buffer_pool_release(&sigfile);
+  mutt_buffer_pool_release(&signedfile);
+  return rv;
 }
 
 /**
