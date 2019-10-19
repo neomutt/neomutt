@@ -1679,40 +1679,35 @@ cleanup:
 struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags flags, char *keylist)
 {
   struct Body *b = NULL;
-
-  char pgpoutfile[PATH_MAX];
-  char pgpinfile[PATH_MAX];
-
   char body_charset[256];
   char *from_charset = NULL;
   const char *send_charset = NULL;
-
   bool empty = false;
   bool err;
-
   char buf[256];
-
   pid_t pid;
+  struct Buffer *pgpinfile = mutt_buffer_pool_get();
+  struct Buffer *pgpoutfile = mutt_buffer_pool_get();
 
   if (a->type != TYPE_TEXT)
-    return NULL;
+    goto cleanup;
   if (mutt_str_strcasecmp(a->subtype, "plain") != 0)
-    return NULL;
+    goto cleanup;
 
   FILE *fp_body = fopen(a->filename, "r");
   if (!fp_body)
   {
     mutt_perror(a->filename);
-    return NULL;
+    goto cleanup;
   }
 
-  mutt_mktemp(pgpinfile, sizeof(pgpinfile));
-  FILE *fp_pgp_in = mutt_file_fopen(pgpinfile, "w");
+  mutt_buffer_mktemp(pgpinfile);
+  FILE *fp_pgp_in = mutt_file_fopen(mutt_b2s(pgpinfile), "w");
   if (!fp_pgp_in)
   {
-    mutt_perror(pgpinfile);
+    mutt_perror(mutt_b2s(pgpinfile));
     mutt_file_fclose(&fp_body);
-    return NULL;
+    goto cleanup;
   }
 
   /* The following code is really correct:  If noconv is set,
@@ -1751,32 +1746,32 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
   mutt_file_fclose(&fp_body);
   mutt_file_fclose(&fp_pgp_in);
 
-  mutt_mktemp(pgpoutfile, sizeof(pgpoutfile));
-  FILE *fp_pgp_out = mutt_file_fopen(pgpoutfile, "w+");
+  mutt_buffer_mktemp(pgpoutfile);
+  FILE *fp_pgp_out = mutt_file_fopen(mutt_b2s(pgpoutfile), "w+");
   FILE *fp_pgp_err = mutt_file_mkstemp();
   if (!fp_pgp_out || !fp_pgp_err)
   {
-    mutt_perror(fp_pgp_out ? "Can't create temporary file" : pgpoutfile);
-    unlink(pgpinfile);
+    mutt_perror(fp_pgp_out ? "Can't create temporary file" : mutt_b2s(pgpoutfile));
+    unlink(mutt_b2s(pgpinfile));
     if (fp_pgp_out)
     {
       mutt_file_fclose(&fp_pgp_out);
-      unlink(pgpoutfile);
+      unlink(mutt_b2s(pgpoutfile));
     }
     mutt_file_fclose(&fp_pgp_err);
-    return NULL;
+    goto cleanup;
   }
 
   pid = pgp_invoke_traditional(&fp_pgp_in, NULL, NULL, -1, fileno(fp_pgp_out),
-                               fileno(fp_pgp_err), pgpinfile, keylist, flags);
+                               fileno(fp_pgp_err), mutt_b2s(pgpinfile), keylist, flags);
   if (pid == -1)
   {
     mutt_perror(_("Can't invoke PGP"));
     mutt_file_fclose(&fp_pgp_out);
     mutt_file_fclose(&fp_pgp_err);
-    mutt_file_unlink(pgpinfile);
-    unlink(pgpoutfile);
-    return NULL;
+    mutt_file_unlink(mutt_b2s(pgpinfile));
+    unlink(mutt_b2s(pgpoutfile));
+    goto cleanup;
   }
 
   if (pgp_use_gpg_agent())
@@ -1788,7 +1783,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
   if (mutt_wait_filter(pid) && C_PgpCheckExit)
     empty = true;
 
-  mutt_file_unlink(pgpinfile);
+  mutt_file_unlink(mutt_b2s(pgpinfile));
 
   fflush(fp_pgp_out);
   fflush(fp_pgp_err);
@@ -1817,8 +1812,8 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
   {
     if (flags & SEC_SIGN)
       pgp_class_void_passphrase(); /* just in case */
-    unlink(pgpoutfile);
-    return NULL;
+    unlink(mutt_b2s(pgpoutfile));
+    goto cleanup;
   }
 
   b = mutt_body_new();
@@ -1832,7 +1827,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
                  (flags & SEC_ENCRYPT) ? "pgp-encrypted" : "pgp-signed");
   mutt_param_set(&b->parameter, "charset", send_charset);
 
-  b->filename = mutt_str_strdup(pgpoutfile);
+  b->filename = mutt_str_strdup(mutt_b2s(pgpoutfile));
 
   b->disposition = DISP_NONE;
   b->unlink = true;
@@ -1843,6 +1838,9 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
   if (!(flags & SEC_ENCRYPT))
     b->encoding = a->encoding;
 
+cleanup:
+  mutt_buffer_pool_release(&pgpinfile);
+  mutt_buffer_pool_release(&pgpoutfile);
   return b;
 }
 
