@@ -878,10 +878,11 @@ struct Body *pgp_class_make_key_attachment(void)
 {
   struct Body *att = NULL;
   char buf[1024];
-  char tempf[PATH_MAX], tmp[256];
+  char tmp[256];
   struct stat sb;
   pid_t pid;
   OptPgpCheckTrust = false;
+  struct Buffer *tempf = NULL;
 
   struct PgpKeyInfo *key = pgp_ask_for_key(_("Please enter the key ID: "), NULL,
                                            KEYFLAG_NO_FLAGS, PGP_PUBRING);
@@ -892,13 +893,13 @@ struct Body *pgp_class_make_key_attachment(void)
   snprintf(tmp, sizeof(tmp), "0x%s", pgp_fpr_or_lkeyid(pgp_principal_key(key)));
   pgp_key_free(&key);
 
-  mutt_mktemp(tempf, sizeof(tempf));
-
-  FILE *fp_tmp = mutt_file_fopen(tempf, "w");
+  tempf = mutt_buffer_pool_get();
+  mutt_buffer_mktemp(tempf);
+  FILE *fp_tmp = mutt_file_fopen(mutt_b2s(tempf), "w");
   if (!fp_tmp)
   {
     mutt_perror(_("Can't create temporary file"));
-    return NULL;
+    goto cleanup;
   }
 
   FILE *fp_null = fopen("/dev/null", "w");
@@ -906,8 +907,8 @@ struct Body *pgp_class_make_key_attachment(void)
   {
     mutt_perror(_("Can't open /dev/null"));
     mutt_file_fclose(&fp_tmp);
-    unlink(tempf);
-    return NULL;
+    unlink(mutt_b2s(tempf));
+    goto cleanup;
   }
 
   mutt_message(_("Invoking PGP..."));
@@ -916,10 +917,10 @@ struct Body *pgp_class_make_key_attachment(void)
   if (pid == -1)
   {
     mutt_perror(_("Can't create filter"));
-    unlink(tempf);
+    unlink(mutt_b2s(tempf));
     mutt_file_fclose(&fp_tmp);
     mutt_file_fclose(&fp_null);
-    return NULL;
+    goto cleanup;
   }
 
   mutt_wait_filter(pid);
@@ -928,7 +929,7 @@ struct Body *pgp_class_make_key_attachment(void)
   mutt_file_fclose(&fp_null);
 
   att = mutt_body_new();
-  att->filename = mutt_str_strdup(tempf);
+  att->filename = mutt_str_strdup(mutt_b2s(tempf));
   att->unlink = true;
   att->use_disp = false;
   att->type = TYPE_APPLICATION;
@@ -937,9 +938,11 @@ struct Body *pgp_class_make_key_attachment(void)
   att->description = mutt_str_strdup(buf);
   mutt_update_encoding(att);
 
-  stat(tempf, &sb);
+  stat(mutt_b2s(tempf), &sb);
   att->length = sb.st_size;
 
+cleanup:
+  mutt_buffer_pool_release(&tempf);
   return att;
 }
 
