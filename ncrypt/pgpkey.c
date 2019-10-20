@@ -599,9 +599,10 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
   int i;
   bool done = false;
   char helpstr[1024], buf[1024], tmpbuf[256];
-  char cmd[1024], tempfile[PATH_MAX];
+  char cmd[1024];
   struct PgpKeyInfo *kp = NULL;
   struct PgpUid *a = NULL;
+  struct Buffer *tempfile = NULL;
 
   bool unusable = false;
 
@@ -691,19 +692,21 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
     switch (mutt_menu_loop(menu))
     {
       case OP_VERIFY_KEY:
-
-        mutt_mktemp(tempfile, sizeof(tempfile));
+      {
         FILE *fp_null = fopen("/dev/null", "w");
         if (!fp_null)
         {
           mutt_perror(_("Can't open /dev/null"));
           break;
         }
-        FILE *fp_tmp = mutt_file_fopen(tempfile, "w");
+        tempfile = mutt_buffer_pool_get();
+        mutt_buffer_mktemp(tempfile);
+        FILE *fp_tmp = mutt_file_fopen(mutt_b2s(tempfile), "w");
         if (!fp_tmp)
         {
-          mutt_file_fclose(&fp_null);
           mutt_perror(_("Can't create temporary file"));
+          mutt_file_fclose(&fp_null);
+          mutt_buffer_pool_release(&tempfile);
           break;
         }
 
@@ -717,7 +720,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
         if (pid == -1)
         {
           mutt_perror(_("Can't create filter"));
-          unlink(tempfile);
+          unlink(mutt_b2s(tempfile));
           mutt_file_fclose(&fp_tmp);
           mutt_file_fclose(&fp_null);
         }
@@ -728,10 +731,11 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
         mutt_clear_error();
         snprintf(cmd, sizeof(cmd), _("Key ID: 0x%s"),
                  pgp_keyid(pgp_principal_key(key_table[menu->current]->parent)));
-        mutt_do_pager(cmd, tempfile, MUTT_PAGER_NO_FLAGS, NULL);
+        mutt_do_pager(cmd, mutt_b2s(tempfile), MUTT_PAGER_NO_FLAGS, NULL);
+        mutt_buffer_pool_release(&tempfile);
         menu->redraw = REDRAW_FULL;
-
         break;
+      }
 
       case OP_VIEW_ID:
 
