@@ -1632,7 +1632,7 @@ int mutt_index_menu(void)
       }
 
       case OP_HELP:
-        mutt_help(MENU_MAIN);
+        mutt_help(MENU_MAIN, MuttIndexWindow->cols);
         menu->redraw = REDRAW_FULL;
         break;
 

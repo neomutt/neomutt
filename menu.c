@@ -1573,7 +1573,7 @@ int mutt_menu_loop(struct Menu *menu)
         break;
 
       case OP_HELP:
-        mutt_help(menu->type);
+        mutt_help(menu->type, menu->indexwin->cols);
         menu->redraw = REDRAW_FULL;
         break;
 
