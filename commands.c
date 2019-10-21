@@ -206,6 +206,10 @@ int mutt_display_message(struct MuttWindow *win, struct Mailbox *m, struct Email
   mutt_parse_mime_message(m, e);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
+  char columns[16];
+  snprintf(columns, sizeof(columns), "%d", win->cols);
+  mutt_envlist_set("COLUMNS", columns, true);
+
   /* see if crypto is needed for this message.  if so, we should exit curses */
   if ((WithCrypto != 0) && e->security)
   {
@@ -382,6 +386,7 @@ int mutt_display_message(struct MuttWindow *win, struct Mailbox *m, struct Email
   }
 
 cleanup:
+  mutt_envlist_unset("COLUMNS");
   mutt_buffer_pool_release(&tempfile);
   return rc;
 }

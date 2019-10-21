@@ -29,9 +29,10 @@
 #include <stdio.h>
 
 struct AttachCtx;
-struct Menu;
-struct Email;
 struct Body;
+struct Email;
+struct Menu;
+struct MuttWindow;
 
 /**
  * enum ViewAttachMode - Options for mutt_view_attachment()
@@ -67,7 +68,7 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
                                 struct Body *top);
 
-int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode, struct Email *e, struct AttachCtx *actx);
+int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode, struct Email *e, struct AttachCtx *actx, struct MuttWindow *win);
 
 void mutt_check_lookup_list(struct Body *b, char *type, size_t len);
 int mutt_compose_attachment(struct Body *a);
