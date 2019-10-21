@@ -708,7 +708,8 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out)
   return 0;
 }
 
-static const struct AddressList *choose_default_to(const struct Address *from, const struct Envelope *env)
+static const struct AddressList *choose_default_to(const struct Address *from,
+                                                   const struct Envelope *env)
 {
   if (!C_ReplySelf && mutt_addr_is_user(from))
   {
@@ -720,7 +721,6 @@ static const struct AddressList *choose_default_to(const struct Address *from, c
     return &env->from;
   }
 }
-
 
 /**
  * default_to - Generate default email addresses

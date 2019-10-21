@@ -1669,7 +1669,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
     }
   }
 
-  struct Line * const curr_line = &(*line_info)[n];
+  struct Line *const curr_line = &(*line_info)[n];
 
   if (flags & MUTT_PAGER_LOGS)
   {
@@ -1715,8 +1715,8 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
 
     /* this also prevents searching through the hidden lines */
     if ((flags & MUTT_HIDE) && (curr_line->type == MT_COLOR_QUOTED) &&
-        ((curr_line->quote == NULL) ||
-         (curr_line->quote->index >= C_ToggleQuotedShowLevels))) {
+        ((curr_line->quote == NULL) || (curr_line->quote->index >= C_ToggleQuotedShowLevels)))
+    {
       flags = 0; /* MUTT_NOSHOW */
     }
   }
@@ -1748,8 +1748,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
     }
   }
 
-  if ((flags & MUTT_SEARCH) && !curr_line->continuation &&
-      (curr_line->search_cnt == -1))
+  if ((flags & MUTT_SEARCH) && !curr_line->continuation && (curr_line->search_cnt == -1))
   {
     if (fill_buffer(fp, last_pos, curr_line->offset, &buf, &fmt, &buflen, &buf_ready) < 0)
     {
@@ -1813,8 +1812,7 @@ static int display_line(FILE *fp, LOFF_T *last_pos, struct Line **line_info,
   /* move the break point only if smart_wrap is set */
   if (C_SmartWrap)
   {
-    if ((cnt < b_read) && (ch != -1) && !IS_HEADER(curr_line->type) &&
-        !IS_SPACE(buf[cnt]))
+    if ((cnt < b_read) && (ch != -1) && !IS_HEADER(curr_line->type) && !IS_SPACE(buf[cnt]))
     {
       buf_ptr = buf + ch;
       /* skip trailing blanks */
