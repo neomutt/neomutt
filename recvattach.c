@@ -1152,7 +1152,7 @@ int mutt_attach_display_loop(struct Menu *menu, int op, struct Email *e,
 
       case OP_VIEW_ATTACH:
         op = mutt_view_attachment(CUR_ATTACH->fp, CUR_ATTACH->content,
-                                  MUTT_VA_REGULAR, e, actx);
+                                  MUTT_VA_REGULAR, e, actx, menu->indexwin);
         break;
 
       case OP_NEXT_ENTRY:
@@ -1442,12 +1442,14 @@ void mutt_view_attachments(struct Email *e)
     switch (op)
     {
       case OP_ATTACH_VIEW_MAILCAP:
-        mutt_view_attachment(CUR_ATTACH->fp, CUR_ATTACH->content, MUTT_VA_MAILCAP, e, actx);
+        mutt_view_attachment(CUR_ATTACH->fp, CUR_ATTACH->content,
+                             MUTT_VA_MAILCAP, e, actx, menu->indexwin);
         menu->redraw = REDRAW_FULL;
         break;
 
       case OP_ATTACH_VIEW_TEXT:
-        mutt_view_attachment(CUR_ATTACH->fp, CUR_ATTACH->content, MUTT_VA_AS_TEXT, e, actx);
+        mutt_view_attachment(CUR_ATTACH->fp, CUR_ATTACH->content,
+                             MUTT_VA_AS_TEXT, e, actx, menu->indexwin);
         menu->redraw = REDRAW_FULL;
         break;
 

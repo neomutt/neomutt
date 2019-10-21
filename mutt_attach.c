@@ -47,6 +47,7 @@
 #include "globals.h"
 #include "handler.h"
 #include "mailcap.h"
+#include "mutt_window.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
@@ -371,6 +372,7 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
  * @param mode   How the attachment should be viewed, see #ViewAttachMode
  * @param e      Current Email. Can be NULL
  * @param actx   Attachment context
+ * @param win    Window
  * @retval 0   If the viewer is run and exited successfully
  * @retval -1  Error
  * @retval num Return value of mutt_do_pager() when it is used
@@ -382,7 +384,7 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
  * exits.
  */
 int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
-                         struct Email *e, struct AttachCtx *actx)
+                         struct Email *e, struct AttachCtx *actx, struct MuttWindow *win)
 {
   bool use_mailcap = false;
   bool use_pipe = false;
@@ -408,6 +410,10 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
   use_mailcap =
       (mode == MUTT_VA_MAILCAP || (mode == MUTT_VA_REGULAR && mutt_needs_mailcap(a)));
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
+
+  char columns[16];
+  snprintf(columns, sizeof(columns), "%d", win->cols);
+  mutt_envlist_set("COLUMNS", columns, true);
 
   if (use_mailcap)
   {
@@ -509,6 +515,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
       pid = mutt_create_filter_fd(mutt_b2s(cmd), NULL, NULL, NULL,
                                   use_pipe ? fd_temp : -1,
                                   use_pager ? fd_pager : -1, -1);
+
       if (pid == -1)
       {
         if (fd_pager != -1)
@@ -656,6 +663,7 @@ return_error:
   mutt_buffer_pool_release(&tmpfile);
   mutt_buffer_pool_release(&pagerfile);
   mutt_buffer_pool_release(&cmd);
+  mutt_envlist_unset("COLUMNS");
 
   return rc;
 }
