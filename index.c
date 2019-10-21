@@ -2374,7 +2374,7 @@ int mutt_index_menu(void)
          * set CurrentMenu incorrectly when we return back to the index menu. */
         menu->type = MENU_MAIN;
 
-        op = mutt_display_message(Context->mailbox, CUR_EMAIL);
+        op = mutt_display_message(MuttIndexWindow, Context->mailbox, CUR_EMAIL);
         if (op < 0)
         {
           OptNeedResort = false;

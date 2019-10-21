@@ -187,12 +187,13 @@ static void process_protected_headers(struct Email *e)
 
 /**
  * mutt_display_message - Display a message in the pager
- * @param m Mailbox
- * @param e Email to display
+ * @param win Window
+ * @param m   Mailbox
+ * @param e   Email to display
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_display_message(struct Mailbox *m, struct Email *e)
+int mutt_display_message(struct MuttWindow *win, struct Mailbox *m, struct Email *e)
 {
   int rc = 0;
   bool builtin = false;
@@ -278,7 +279,7 @@ int mutt_display_message(struct Mailbox *m, struct Email *e)
     hfi.mailbox = m;
     hfi.pager_progress = ExtPagerProgress;
     hfi.email = e;
-    mutt_make_string_info(buf, sizeof(buf), MuttIndexWindow->cols,
+    mutt_make_string_info(buf, sizeof(buf), win->cols,
                           NONULL(C_PagerFormat), &hfi, MUTT_FORMAT_NO_FLAGS);
     fputs(buf, fp_out);
     fputs("\n\n", fp_out);
@@ -289,7 +290,7 @@ int mutt_display_message(struct Mailbox *m, struct Email *e)
   if (m->magic == MUTT_NOTMUCH)
     chflags |= CH_VIRTUAL;
 #endif
-  res = mutt_copy_message(fp_out, m, e, cmflags, chflags, MuttIndexWindow->cols);
+  res = mutt_copy_message(fp_out, m, e, cmflags, chflags, win->cols);
 
   if (((mutt_file_fclose(&fp_out) != 0) && (errno != EPIPE)) || (res < 0))
   {
