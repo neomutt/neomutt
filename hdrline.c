@@ -1488,14 +1488,16 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
  * mutt_make_string_flags - Create formatted strings using mailbox expandos
  * @param buf    Buffer for the result
  * @param buflen Buffer length
+ * @param cols   Number of screen columns (OPTIONAL)
  * @param s      printf-line format string
  * @param ctx    Mailbox Context
  * @param m      Mailbox
  * @param e      Email
  * @param flags  Flags, see #MuttFormatFlags
  */
-void mutt_make_string_flags(char *buf, size_t buflen, const char *s, struct Context *ctx,
-                            struct Mailbox *m, struct Email *e, MuttFormatFlags flags)
+void mutt_make_string_flags(char *buf, size_t buflen, int cols, const char *s,
+                            struct Context *ctx, struct Mailbox *m,
+                            struct Email *e, MuttFormatFlags flags)
 {
   struct HdrFormatInfo hfi;
 
@@ -1504,8 +1506,7 @@ void mutt_make_string_flags(char *buf, size_t buflen, const char *s, struct Cont
   hfi.mailbox = m;
   hfi.pager_progress = 0;
 
-  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, s,
-                      index_format_str, (unsigned long) &hfi, flags);
+  mutt_expando_format(buf, buflen, 0, cols, s, index_format_str, (unsigned long) &hfi, flags);
 }
 
 /**
