@@ -2209,7 +2209,7 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
 
 #ifdef MIXMASTER
       case OP_COMPOSE_MIX:
-        mix_make_chain(&e->chain);
+        mix_make_chain(menu->indexwin, &e->chain, menu->indexwin->cols);
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
         break;
 #endif

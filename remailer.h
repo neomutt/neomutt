@@ -26,8 +26,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
-struct ListHead;
 struct Email;
+struct ListHead;
+struct MuttWindow;
 
 /* These Config Variables are only used in remailer.c */
 extern char *C_MixEntryFormat;
@@ -66,6 +67,6 @@ struct MixChain
 
 int mix_send_message(struct ListHead *chain, const char *tempfile);
 int mix_check_message(struct Email *e);
-void mix_make_chain(struct ListHead *chainhead);
+void mix_make_chain(struct MuttWindow *win, struct ListHead *chainhead, int cols);
 
 #endif /* MUTT_REMAILER_H */
