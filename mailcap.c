@@ -197,7 +197,8 @@ static char *get_field(char *s)
  * @retval 1 Success
  * @retval 0 Failure
  */
-static int get_field_text(char *field, char **entry, char *type, char *filename, int line)
+static int get_field_text(char *field, char **entry, const char *type,
+                          const char *filename, int line)
 {
   field = mutt_str_skip_whitespace(field);
   if (*field == '=')
@@ -228,7 +229,7 @@ static int get_field_text(char *field, char **entry, char *type, char *filename,
  * @retval true  Success
  * @retval false Failure
  */
-static bool rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
+static bool rfc1524_mailcap_parse(struct Body *a, const char *filename, const char *type,
                                   struct MailcapEntry *entry, enum MailcapLookup opt)
 {
   char *buf = NULL;
@@ -475,22 +476,25 @@ bool mailcap_lookup(struct Body *a, char *type, struct MailcapEntry *entry, enum
     return false;
   }
 
+  /* FIXME: sizeof type should be passed to mailcap_lookup() */
   mutt_check_lookup_list(a, type, 128);
 
-  char path[PATH_MAX];
+  struct Buffer *path = mutt_buffer_pool_get();
   bool found = false;
 
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, &C_MailcapPath->head, entries)
   {
-    mutt_str_strfcpy(path, np->data, sizeof(path));
-    mutt_expand_path(path, sizeof(path));
+    mutt_buffer_strcpy(path, np->data);
+    mutt_buffer_expand_path(path);
 
-    mutt_debug(LL_DEBUG2, "Checking mailcap file: %s\n", path);
-    found = rfc1524_mailcap_parse(a, path, type, entry, opt);
+    mutt_debug(LL_DEBUG2, "Checking mailcap file: %s\n", mutt_b2s(path));
+    found = rfc1524_mailcap_parse(a, mutt_b2s(path), type, entry, opt);
     if (found)
       break;
   }
+
+  mutt_buffer_pool_release(&path);
 
   if (entry && !found)
     mutt_error(_("mailcap entry for type %s not found"), type);
