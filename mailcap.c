@@ -456,6 +456,7 @@ void mailcap_entry_free(struct MailcapEntry **ptr)
  * mailcap_lookup - Find given type in the list of mailcap files
  * @param a      Message body
  * @param type   Text type in "type/subtype" format
+ * @param typelen Length of the type
  * @param entry  struct MailcapEntry to populate with results
  * @param opt    Type of mailcap entry to lookup, see #MailcapLookup
  * @retval true  If *entry is not NULL it populates it with the mailcap entry
@@ -463,7 +464,7 @@ void mailcap_entry_free(struct MailcapEntry **ptr)
  *
  * Find the given type in the list of mailcap files.
  */
-bool mailcap_lookup(struct Body *a, char *type, struct MailcapEntry *entry, enum MailcapLookup opt)
+bool mailcap_lookup(struct Body *a, char *type, size_t typelen, struct MailcapEntry *entry, enum MailcapLookup opt)
 {
   /* rfc1524 specifies that a path of mailcap files should be searched.
    * joy.  They say
@@ -476,8 +477,7 @@ bool mailcap_lookup(struct Body *a, char *type, struct MailcapEntry *entry, enum
     return false;
   }
 
-  /* FIXME: sizeof type should be passed to mailcap_lookup() */
-  mutt_check_lookup_list(a, type, 128);
+  mutt_check_lookup_list(a, type, typelen);
 
   struct Buffer *path = mutt_buffer_pool_get();
   bool found = false;

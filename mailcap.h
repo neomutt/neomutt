@@ -65,6 +65,6 @@ void                 mailcap_entry_free(struct MailcapEntry **ptr);
 struct MailcapEntry *mailcap_entry_new(void);
 int                  mailcap_expand_command(struct Body *a, const char *filename, const char *type, struct Buffer *command);
 void                 mailcap_expand_filename(const char *nametemplate, const char *oldfile, struct Buffer *newfile);
-bool                 mailcap_lookup(struct Body *a, char *type, struct MailcapEntry *entry, enum MailcapLookup opt);
+bool                 mailcap_lookup(struct Body *a, char *type, size_t typelen, struct MailcapEntry *entry, enum MailcapLookup opt);
 
 #endif /* MUTT_MAILCAP_H */
