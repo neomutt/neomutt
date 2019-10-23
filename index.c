@@ -813,8 +813,8 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
     }
   }
 
-  mutt_make_string_flags(buf, buflen, NONULL(C_IndexFormat), Context,
-                         Context->mailbox, e, flags);
+  mutt_make_string_flags(buf, buflen, menu->indexwin->cols, NONULL(C_IndexFormat),
+                         Context, Context->mailbox, e, flags);
 }
 
 /**
@@ -1632,7 +1632,7 @@ int mutt_index_menu(void)
       }
 
       case OP_HELP:
-        mutt_help(MENU_MAIN);
+        mutt_help(MENU_MAIN, MuttIndexWindow->cols);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -2374,7 +2374,7 @@ int mutt_index_menu(void)
          * set CurrentMenu incorrectly when we return back to the index menu. */
         menu->type = MENU_MAIN;
 
-        op = mutt_display_message(Context->mailbox, CUR_EMAIL);
+        op = mutt_display_message(MuttIndexWindow, Context->mailbox, CUR_EMAIL);
         if (op < 0)
         {
           OptNeedResort = false;

@@ -730,7 +730,7 @@ static int message_handler(struct Body *a, struct State *s)
     if (s->flags & MUTT_DISPLAY)
       chflags |= CH_DISPLAY;
 
-    mutt_copy_hdr(s->fp_in, s->fp_out, off_start, b->parts->offset, chflags, s->prefix);
+    mutt_copy_hdr(s->fp_in, s->fp_out, off_start, b->parts->offset, chflags, s->prefix, 0);
 
     if (s->prefix)
       state_puts(s->prefix, s);
@@ -872,7 +872,8 @@ static int external_body_handler(struct Body *b, struct State *s)
       if (C_Weed)
         chflags |= CH_WEED | CH_REORDER;
 
-      mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset, chflags, NULL);
+      mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset,
+                    chflags, NULL, 0);
     }
   }
   else if (expiration && (expire < mutt_date_epoch()))
@@ -890,7 +891,8 @@ static int external_body_handler(struct Body *b, struct State *s)
       if (C_Weed)
         chflags |= CH_WEED | CH_REORDER;
 
-      mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset, chflags, NULL);
+      mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset,
+                    chflags, NULL, 0);
     }
   }
   else
@@ -910,7 +912,8 @@ static int external_body_handler(struct Body *b, struct State *s)
       if (C_Weed)
         chflags |= CH_WEED | CH_REORDER;
 
-      mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset, chflags, NULL);
+      mutt_copy_hdr(s->fp_in, s->fp_out, ftello(s->fp_in), b->parts->offset,
+                    chflags, NULL, 0);
     }
   }
 

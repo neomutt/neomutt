@@ -43,10 +43,11 @@ typedef uint8_t StateFlags;          ///< Flags for State->flags, e.g. #MUTT_DIS
  */
 struct State
 {
-  FILE      *fp_in;  ///< File to read from
-  FILE      *fp_out; ///< File to write to
-  char      *prefix; ///< String to add to the beginning of each output line
-  StateFlags flags;  ///< Flags, e.g. #MUTT_DISPLAY
+  FILE      *fp_in;   ///< File to read from
+  FILE      *fp_out;  ///< File to write to
+  char      *prefix;  ///< String to add to the beginning of each output line
+  StateFlags flags;   ///< Flags, e.g. #MUTT_DISPLAY
+  int        wraplen; ///< Width to wrap lines to (when flags & #MUTT_DISPLAY)
 };
 
 #define state_set_prefix(state) ((state)->flags |= MUTT_PENDINGPREFIX)

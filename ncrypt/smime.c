@@ -1428,10 +1428,10 @@ int smime_class_verify_sender(struct Mailbox *m, struct Email *e)
   if (e->security & SEC_ENCRYPT)
   {
     mutt_copy_message(fp_out, m, e, MUTT_CM_DECODE_CRYPT & MUTT_CM_DECODE_SMIME,
-                      CH_MIME | CH_WEED | CH_NONEWLINE);
+                      CH_MIME | CH_WEED | CH_NONEWLINE, 0);
   }
   else
-    mutt_copy_message(fp_out, m, e, MUTT_CM_NO_FLAGS, CH_NO_FLAGS);
+    mutt_copy_message(fp_out, m, e, MUTT_CM_NO_FLAGS, CH_NO_FLAGS, 0);
 
   fflush(fp_out);
   mutt_file_fclose(&fp_out);

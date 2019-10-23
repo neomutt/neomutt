@@ -435,7 +435,7 @@ void mutt_forward_intro(struct Mailbox *m, struct Email *e, FILE *fp)
 
   char buf[1024];
   setlocale(LC_TIME, NONULL(C_AttributionLocale));
-  mutt_make_string(buf, sizeof(buf), C_ForwardAttributionIntro, NULL, m, e);
+  mutt_make_string(buf, sizeof(buf), 0, C_ForwardAttributionIntro, NULL, m, e);
   setlocale(LC_TIME, "");
   fputs(buf, fp);
   fputs("\n\n", fp);
@@ -454,7 +454,7 @@ void mutt_forward_trailer(struct Mailbox *m, struct Email *e, FILE *fp)
 
   char buf[1024];
   setlocale(LC_TIME, NONULL(C_AttributionLocale));
-  mutt_make_string(buf, sizeof(buf), C_ForwardAttributionTrailer, NULL, m, e);
+  mutt_make_string(buf, sizeof(buf), 0, C_ForwardAttributionTrailer, NULL, m, e);
   setlocale(LC_TIME, "");
   fputc('\n', fp);
   fputs(buf, fp);
@@ -498,11 +498,7 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *fp_out)
   if (C_ForwardQuote)
     cmflags |= MUTT_CM_PREFIX;
 
-  /* wrapping headers for forwarding is considered a display
-   * rather than send action */
-  chflags |= CH_DISPLAY;
-
-  mutt_copy_message(fp_out, m, e, cmflags, chflags);
+  mutt_copy_message(fp_out, m, e, cmflags, chflags, 0);
   mutt_forward_trailer(m, e, fp_out);
   return 0;
 }
@@ -644,7 +640,7 @@ void mutt_make_attribution(struct Mailbox *m, struct Email *e, FILE *fp_out)
 
   char buf[1024];
   setlocale(LC_TIME, NONULL(C_AttributionLocale));
-  mutt_make_string(buf, sizeof(buf), C_Attribution, NULL, m, e);
+  mutt_make_string(buf, sizeof(buf), 0, C_Attribution, NULL, m, e);
   setlocale(LC_TIME, "");
   fputs(buf, fp_out);
   fputc('\n', fp_out);
@@ -662,7 +658,7 @@ void mutt_make_post_indent(struct Mailbox *m, struct Email *e, FILE *fp_out)
     return;
 
   char buf[256];
-  mutt_make_string(buf, sizeof(buf), C_PostIndentString, NULL, m, e);
+  mutt_make_string(buf, sizeof(buf), 0, C_PostIndentString, NULL, m, e);
   fputs(buf, fp_out);
   fputc('\n', fp_out);
 }
@@ -701,7 +697,7 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out)
     cmflags |= MUTT_CM_WEED;
   }
 
-  mutt_copy_message(fp_out, m, e, cmflags, chflags);
+  mutt_copy_message(fp_out, m, e, cmflags, chflags, 0);
 
   mutt_make_post_indent(m, e, fp_out);
 
@@ -931,7 +927,7 @@ void mutt_make_forward_subject(struct Envelope *env, struct Mailbox *m, struct E
   char buf[256];
 
   /* set the default subject for the message. */
-  mutt_make_string(buf, sizeof(buf), NONULL(C_ForwardFormat), NULL, m, e);
+  mutt_make_string(buf, sizeof(buf), 0, NONULL(C_ForwardFormat), NULL, m, e);
   mutt_str_replace(&env->subject, buf);
 }
 

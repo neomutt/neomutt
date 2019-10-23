@@ -883,7 +883,7 @@ void crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailList *el)
 
     if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & APPLICATION_PGP))
     {
-      mutt_copy_message(fp_out, m, e, MUTT_CM_DECODE | MUTT_CM_CHARCONV, CH_NO_FLAGS);
+      mutt_copy_message(fp_out, m, e, MUTT_CM_DECODE | MUTT_CM_CHARCONV, CH_NO_FLAGS, 0);
       fflush(fp_out);
 
       mutt_endwin();
@@ -896,10 +896,10 @@ void crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailList *el)
       if (e->security & SEC_ENCRYPT)
       {
         mutt_copy_message(fp_out, m, e, MUTT_CM_NOHEADER | MUTT_CM_DECODE_CRYPT | MUTT_CM_DECODE_SMIME,
-                          CH_NO_FLAGS);
+                          CH_NO_FLAGS, 0);
       }
       else
-        mutt_copy_message(fp_out, m, e, MUTT_CM_NO_FLAGS, CH_NO_FLAGS);
+        mutt_copy_message(fp_out, m, e, MUTT_CM_NO_FLAGS, CH_NO_FLAGS, 0);
       fflush(fp_out);
 
       char *mbox = NULL;
@@ -1101,13 +1101,16 @@ int mutt_protected_headers_handler(struct Body *a, struct State *s)
   {
     if (a->mime_headers->subject)
     {
-      if ((s->flags & MUTT_DISPLAY) && C_Weed && mutt_matches_ignore("subject"))
+      const bool display = (s->flags & MUTT_DISPLAY);
+
+      if (display && C_Weed && mutt_matches_ignore("subject"))
         return 0;
 
       state_mark_protected_header(s);
-      mutt_write_one_header(s->fp_out, "Subject", a->mime_headers->subject, s->prefix,
-                            mutt_window_wrap_cols(MuttIndexWindow->cols, C_Wrap),
-                            (s->flags & MUTT_DISPLAY) ? CH_DISPLAY : CH_NO_FLAGS);
+      int wraplen = display ? mutt_window_wrap_cols(s->wraplen, C_Wrap) : 0;
+
+      mutt_write_one_header(s->fp_out, "Subject", a->mime_headers->subject,
+                            s->prefix, wraplen, display ? CH_DISPLAY : CH_NO_FLAGS);
       state_puts("\n", s);
     }
   }

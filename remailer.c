@@ -59,6 +59,10 @@
 char *C_MixEntryFormat; ///< Config: (mixmaster) printf-like format string for the mixmaster chain
 char *C_Mixmaster; ///< Config: (mixmaster) External command to route a mixmaster message
 
+#define MIX_HOFFSET 2
+#define MIX_VOFFSET (win->rows - 4)
+#define MIX_MAXROW (win->rows - 1)
+
 /**
  * struct Coord - Screen coordinates
  */
@@ -263,19 +267,16 @@ static void mix_type2_list_free(struct Remailer ***ttlp)
   FREE(type2_list);
 }
 
-#define MIX_HOFFSET 2
-#define MIX_VOFFSET (MuttIndexWindow->rows - 4)
-#define MIX_MAXROW (MuttIndexWindow->rows - 1)
-
 /**
  * mix_screen_coordinates - Get the screen coordinates to place a chain
+ * @param[in]  win        Window
  * @param[out] type2_list Remailer List
  * @param[out] coordsp    On screen coordinates
  * @param[in]  chain      Chain
  * @param[in]  i          Index in chain
  */
-static void mix_screen_coordinates(struct Remailer **type2_list, struct Coord **coordsp,
-                                   struct MixChain *chain, int i)
+static void mix_screen_coordinates(struct MuttWindow *win, struct Remailer **type2_list,
+                                   struct Coord **coordsp, struct MixChain *chain, int i)
 {
   if (!chain->cl)
     return;
@@ -302,7 +303,7 @@ static void mix_screen_coordinates(struct Remailer **type2_list, struct Coord **
     short oc = c;
     c += strlen(type2_list[chain->ch[i]]->shortname) + 2;
 
-    if (c >= MuttIndexWindow->cols)
+    if (c >= win->cols)
     {
       oc = MIX_HOFFSET;
       c = MIX_HOFFSET;
@@ -316,14 +317,15 @@ static void mix_screen_coordinates(struct Remailer **type2_list, struct Coord **
 
 /**
  * mix_redraw_ce - Redraw the Remailer chain
+ * @param[in]  win        Window
  * @param[out] type2_list Remailer List
  * @param[in]  coords     Screen Coordinates
  * @param[in]  chain      Chain
  * @param[in]  i          Index in chain
  * @param[in]  selected   true, if this item is selected
  */
-static void mix_redraw_ce(struct Remailer **type2_list, struct Coord *coords,
-                          struct MixChain *chain, int i, bool selected)
+static void mix_redraw_ce(struct MuttWindow *win, struct Remailer **type2_list,
+                          struct Coord *coords, struct MixChain *chain, int i, bool selected)
 {
   if (!coords || !chain)
     return;
@@ -335,8 +337,7 @@ static void mix_redraw_ce(struct Remailer **type2_list, struct Coord *coords,
     else
       mutt_curses_set_color(MT_COLOR_NORMAL);
 
-    mutt_window_mvaddstr(MuttIndexWindow, coords[i].r, coords[i].c,
-                         type2_list[chain->ch[i]]->shortname);
+    mutt_window_mvaddstr(win, coords[i].r, coords[i].c, type2_list[chain->ch[i]]->shortname);
     mutt_curses_set_color(MT_COLOR_NORMAL);
 
     if (i + 1 < chain->cl)
@@ -346,34 +347,36 @@ static void mix_redraw_ce(struct Remailer **type2_list, struct Coord *coords,
 
 /**
  * mix_redraw_chain - Redraw the chain on screen
+ * @param[in]  win        Window
  * @param[out] type2_list Remailer List
  * @param[in]  coords     Where to draw the list on screen
  * @param[in]  chain      Chain to display
  * @param[in]  cur        Chain index of current selection
  */
-static void mix_redraw_chain(struct Remailer **type2_list, struct Coord *coords,
-                             struct MixChain *chain, int cur)
+static void mix_redraw_chain(struct MuttWindow *win, struct Remailer **type2_list,
+                             struct Coord *coords, struct MixChain *chain, int cur)
 {
   for (int i = MIX_VOFFSET; i < MIX_MAXROW; i++)
   {
-    mutt_window_move(MuttIndexWindow, i, 0);
-    mutt_window_clrtoeol(MuttIndexWindow);
+    mutt_window_move(win, i, 0);
+    mutt_window_clrtoeol(win);
   }
 
   for (int i = 0; i < chain->cl; i++)
-    mix_redraw_ce(type2_list, coords, chain, i, i == cur);
+    mix_redraw_ce(win, type2_list, coords, chain, i, i == cur);
 }
 
 /**
  * mix_redraw_head - Redraw the Chain info
+ * @param win   Window
  * @param chain Chain
  */
-static void mix_redraw_head(struct MixChain *chain)
+static void mix_redraw_head(struct MuttWindow *win, struct MixChain *chain)
 {
   mutt_curses_set_color(MT_COLOR_STATUS);
-  mutt_window_mvprintw(MuttIndexWindow, MIX_VOFFSET - 1, 0,
+  mutt_window_mvprintw(win, MIX_VOFFSET - 1, 0,
                        "-- Remailer chain [Length: %d]", chain ? chain->cl : 0);
-  mutt_window_clrtoeol(MuttIndexWindow);
+  mutt_window_clrtoeol(win);
   mutt_curses_set_color(MT_COLOR_NORMAL);
 }
 
@@ -557,11 +560,13 @@ static const struct Mapping RemailerHelp[] = {
 
 /**
  * mix_make_chain - Create a Mixmaster chain
+ * @param win       Window
  * @param chainhead List if chain links
+ * @param cols      Number of screen columns
  *
  * Ask the user to select Mixmaster hosts to create a chain.
  */
-void mix_make_chain(struct ListHead *chainhead)
+void mix_make_chain(struct MuttWindow *win, struct ListHead *chainhead, int cols)
 {
   int c_cur = 0, c_old = 0;
   bool c_redraw = true;
@@ -598,7 +603,7 @@ void mix_make_chain(struct ListHead *chainhead)
       chain->ch[i] = 0;
   }
 
-  mix_screen_coordinates(type2_list, &coords, chain, 0);
+  mix_screen_coordinates(win, type2_list, &coords, chain, 0);
 
   menu = mutt_menu_new(MENU_MIX);
   menu->max = ttll;
@@ -620,14 +625,14 @@ void mix_make_chain(struct ListHead *chainhead)
 
     if (c_redraw)
     {
-      mix_redraw_head(chain);
-      mix_redraw_chain(type2_list, coords, chain, c_cur);
+      mix_redraw_head(menu->indexwin, chain);
+      mix_redraw_chain(menu->indexwin, type2_list, coords, chain, c_cur);
       c_redraw = false;
     }
     else if (c_cur != c_old)
     {
-      mix_redraw_ce(type2_list, coords, chain, c_old, false);
-      mix_redraw_ce(type2_list, coords, chain, c_cur, true);
+      mix_redraw_ce(menu->indexwin, type2_list, coords, chain, c_old, false);
+      mix_redraw_ce(menu->indexwin, type2_list, coords, chain, c_cur, true);
     }
 
     c_old = c_cur;
@@ -638,9 +643,9 @@ void mix_make_chain(struct ListHead *chainhead)
       case OP_REDRAW:
       {
         menu_redraw_status(menu);
-        mix_redraw_head(chain);
-        mix_screen_coordinates(type2_list, &coords, chain, 0);
-        mix_redraw_chain(type2_list, coords, chain, c_cur);
+        mix_redraw_head(menu->indexwin, chain);
+        mix_screen_coordinates(menu->indexwin, type2_list, &coords, chain, 0);
+        mix_redraw_chain(menu->indexwin, type2_list, coords, chain, c_cur);
         menu->pagelen = MIX_VOFFSET - 1;
         break;
       }
@@ -658,7 +663,7 @@ void mix_make_chain(struct ListHead *chainhead)
         {
           chain->cl++;
           chain->ch[0] = menu->current;
-          mix_screen_coordinates(type2_list, &coords, chain, c_cur);
+          mix_screen_coordinates(menu->indexwin, type2_list, &coords, chain, c_cur);
           c_redraw = true;
         }
 
@@ -692,7 +697,7 @@ void mix_make_chain(struct ListHead *chainhead)
             chain->ch[i] = chain->ch[i - 1];
 
           chain->ch[c_cur] = menu->current;
-          mix_screen_coordinates(type2_list, &coords, chain, c_cur);
+          mix_screen_coordinates(menu->indexwin, type2_list, &coords, chain, c_cur);
           c_redraw = true;
         }
         else
@@ -716,7 +721,7 @@ void mix_make_chain(struct ListHead *chainhead)
           if ((c_cur == chain->cl) && c_cur)
             c_cur--;
 
-          mix_screen_coordinates(type2_list, &coords, chain, c_cur);
+          mix_screen_coordinates(menu->indexwin, type2_list, &coords, chain, c_cur);
           c_redraw = true;
         }
         else

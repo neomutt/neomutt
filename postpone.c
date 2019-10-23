@@ -49,6 +49,7 @@
 #include "mutt_logging.h"
 #include "mutt_menu.h"
 #include "mutt_thread.h"
+#include "mutt_window.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
@@ -205,7 +206,8 @@ static void post_make_entry(char *buf, size_t buflen, struct Menu *menu, int lin
 {
   struct Context *ctx = menu->data;
 
-  mutt_make_string_flags(buf, buflen, NONULL(C_IndexFormat), ctx, ctx->mailbox,
+  mutt_make_string_flags(buf, buflen, menu->indexwin->cols,
+                         NONULL(C_IndexFormat), ctx, ctx->mailbox,
                          ctx->mailbox->emails[line], MUTT_FORMAT_ARROWCURSOR);
 }
 

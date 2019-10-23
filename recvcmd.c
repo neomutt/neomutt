@@ -410,7 +410,7 @@ static void include_header(bool quote, FILE *fp_in, struct Email *e, FILE *fp_ou
       mutt_str_strfcpy(prefix2, prefix, sizeof(prefix2));
     else if (!C_TextFlowed)
     {
-      mutt_make_string(prefix2, sizeof(prefix2), NONULL(C_IndentString),
+      mutt_make_string(prefix2, sizeof(prefix2), 0, NONULL(C_IndentString),
                        Context, Context->mailbox, e);
     }
     else
@@ -419,7 +419,7 @@ static void include_header(bool quote, FILE *fp_in, struct Email *e, FILE *fp_ou
     chflags |= CH_PREFIX;
   }
 
-  mutt_copy_header(fp_in, e, fp_out, chflags, quote ? prefix2 : NULL);
+  mutt_copy_header(fp_in, e, fp_out, chflags, quote ? prefix2 : NULL, 0);
 }
 
 /**
@@ -505,8 +505,8 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
       mutt_str_strfcpy(prefix, ">", sizeof(prefix));
     else
     {
-      mutt_make_string(prefix, sizeof(prefix), NONULL(C_IndentString), Context,
-                       Context->mailbox, e_parent);
+      mutt_make_string(prefix, sizeof(prefix), 0, NONULL(C_IndentString),
+                       Context, Context->mailbox, e_parent);
     }
   }
 
@@ -694,7 +694,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
     if (cur)
     {
       mutt_forward_intro(Context->mailbox, cur->email, fp_tmp);
-      mutt_copy_message_fp(fp_tmp, fp, cur->email, cmflags, chflags);
+      mutt_copy_message_fp(fp_tmp, fp, cur->email, cmflags, chflags, 0);
       mutt_forward_trailer(Context->mailbox, cur->email, fp_tmp);
     }
     else
@@ -705,7 +705,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
         {
           mutt_forward_intro(Context->mailbox, actx->idx[i]->content->email, fp_tmp);
           mutt_copy_message_fp(fp_tmp, actx->idx[i]->fp,
-                               actx->idx[i]->content->email, cmflags, chflags);
+                               actx->idx[i]->content->email, cmflags, chflags, 0);
           mutt_forward_trailer(Context->mailbox, actx->idx[i]->content->email, fp_tmp);
         }
       }
@@ -882,7 +882,7 @@ static void attach_include_reply(FILE *fp, FILE *fp_tmp, struct Email *e)
     cmflags |= MUTT_CM_WEED;
   }
 
-  mutt_copy_message_fp(fp_tmp, fp, e, cmflags, chflags);
+  mutt_copy_message_fp(fp_tmp, fp, e, cmflags, chflags, 0);
   mutt_make_post_indent(Context->mailbox, e, fp_tmp);
 }
 
@@ -988,8 +988,8 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
 
     if (!C_TextFlowed)
     {
-      mutt_make_string(prefix, sizeof(prefix), NONULL(C_IndentString), Context,
-                       Context->mailbox, e_parent);
+      mutt_make_string(prefix, sizeof(prefix), 0, NONULL(C_IndentString),
+                       Context, Context->mailbox, e_parent);
     }
     else
       mutt_str_strfcpy(prefix, ">", sizeof(prefix));

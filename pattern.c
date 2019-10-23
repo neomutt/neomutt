@@ -1122,7 +1122,7 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
 #endif
 
     if (pat->op != MUTT_PAT_BODY)
-      mutt_copy_header(msg->fp, e, s.fp_out, CH_FROM | CH_DECODE, NULL);
+      mutt_copy_header(msg->fp, e, s.fp_out, CH_FROM | CH_DECODE, NULL, 0);
 
     if (pat->op != MUTT_PAT_HEADER)
     {

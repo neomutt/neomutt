@@ -1318,7 +1318,7 @@ void mutt_message_to_7bit(struct Body *a, FILE *fp)
   transform_to_7bit(a->parts, fp_in);
 
   mutt_copy_hdr(fp_in, fp_out, a->offset, a->offset + a->length,
-                CH_MIME | CH_NONEWLINE | CH_XMIT, NULL);
+                CH_MIME | CH_NONEWLINE | CH_XMIT, NULL, 0);
 
   fputs("MIME-Version: 1.0\n", fp_out);
   mutt_write_mime_header(a->parts, fp_out);
@@ -1551,7 +1551,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool a
     }
   }
 
-  mutt_copy_message(fp, m, e, cmflags, chflags);
+  mutt_copy_message(fp, m, e, cmflags, chflags, 0);
 
   fflush(fp);
   rewind(fp);
@@ -2148,8 +2148,8 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
     else
       wraplen = C_WrapHeaders;
   }
-  else if ((wraplen <= 0) || (wraplen > MuttIndexWindow->cols))
-    wraplen = MuttIndexWindow->cols;
+  else if (wraplen <= 0)
+    wraplen = 78;
 
   if (tag)
   {
@@ -3082,7 +3082,7 @@ static int bounce_message(FILE *fp, struct Email *e, struct AddressList *to,
     FREE(&msgid_str);
     fputs("Resent-To: ", fp_tmp);
     mutt_write_addrlist(to, fp_tmp, 11, 0);
-    mutt_copy_header(fp, e, fp_tmp, chflags, NULL);
+    mutt_copy_header(fp, e, fp_tmp, chflags, NULL, 0);
     fputc('\n', fp_tmp);
     mutt_file_copy_bytes(fp, fp_tmp, e->content->length);
     if (mutt_file_fclose(&fp_tmp) != 0)
