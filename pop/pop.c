@@ -1061,12 +1061,13 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
     return -1;
 
   char buf[1024];
-  char path[PATH_MAX];
   struct Progress progress;
   struct PopAccountData *adata = pop_adata_get(m);
   struct Email *e = m->emails[msgno];
   struct PopEmailData *edata = pop_edata_get(e);
   bool bcache = true;
+  int rc = -1;
+  struct Buffer *path = NULL;
 
   /* see if we already have the message in body cache */
   msg->fp = mutt_bcache_get(adata->bcache, cache_id(edata->uid));
@@ -1097,17 +1098,19 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
     }
   }
 
+  path = mutt_buffer_pool_get();
+
   while (true)
   {
     if (pop_reconnect(m) < 0)
-      return -1;
+      goto cleanup;
 
     /* verify that massage index is correct */
     if (edata->refno < 0)
     {
       mutt_error(
           _("The message index is incorrect. Try reopening the mailbox."));
-      return -1;
+      goto cleanup;
     }
 
     mutt_progress_init(&progress, _("Fetching message..."), MUTT_PROGRESS_NET,
@@ -1119,12 +1122,12 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
     {
       /* no */
       bcache = false;
-      mutt_mktemp(path, sizeof(path));
-      msg->fp = mutt_file_fopen(path, "w+");
+      mutt_buffer_mktemp(path);
+      msg->fp = mutt_file_fopen(mutt_b2s(path), "w+");
       if (!msg->fp)
       {
-        mutt_perror(path);
-        return -1;
+        mutt_perror(mutt_b2s(path));
+        goto cleanup;
       }
     }
 
@@ -1140,18 +1143,18 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
      * the file in bcache or from POP's own cache since the next iteration
      * of the loop will re-attempt to put() the message */
     if (!bcache)
-      unlink(path);
+      unlink(mutt_b2s(path));
 
     if (ret == -2)
     {
       mutt_error("%s", adata->err_msg);
-      return -1;
+      goto cleanup;
     }
 
     if (ret == -3)
     {
       mutt_error(_("Can't write message to temporary file"));
-      return -1;
+      goto cleanup;
     }
   }
 
@@ -1162,7 +1165,7 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   else
   {
     cache->index = e->index;
-    cache->path = mutt_str_strdup(path);
+    cache->path = mutt_str_strdup(mutt_b2s(path));
   }
   rewind(msg->fp);
 
@@ -1200,7 +1203,11 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   mutt_clear_error();
   rewind(msg->fp);
 
-  return 0;
+  rc = 0;
+
+cleanup:
+  mutt_buffer_pool_release(&path);
+  return rc;
 }
 
 /**
