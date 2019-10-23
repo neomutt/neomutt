@@ -990,13 +990,15 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
     memset(&st, 0, sizeof(struct State));
     st.fp_out = fp_tmp;
 
-    if (!C_TextFlowed)
+    if (C_TextFlowed)
+    {
+      mutt_str_strfcpy(prefix, ">", sizeof(prefix));
+    }
+    else
     {
       mutt_make_string(prefix, sizeof(prefix), 0, NONULL(C_IndentString),
                        Context, Context->mailbox, e_parent);
     }
-    else
-      mutt_str_strfcpy(prefix, ">", sizeof(prefix));
 
     st.prefix = prefix;
     st.flags = MUTT_CHARCONV;

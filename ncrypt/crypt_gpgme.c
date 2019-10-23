@@ -333,12 +333,7 @@ static const char *parse_version_string(const char *s, int *major, int *minor, i
   s = parse_version_number(s, major);
   if (!s)
     return NULL;
-  if (!minor)
-  {
-    if (*s == '.')
-      s++;
-  }
-  else
+  if (minor)
   {
     if (*s != '.')
       return NULL;
@@ -346,12 +341,7 @@ static const char *parse_version_string(const char *s, int *major, int *minor, i
     s = parse_version_number(s, minor);
     if (!s)
       return NULL;
-    if (!micro)
-    {
-      if (*s == '.')
-        s++;
-    }
-    else
+    if (micro)
     {
       if (*s != '.')
         return NULL;
@@ -360,6 +350,16 @@ static const char *parse_version_string(const char *s, int *major, int *minor, i
       if (!s)
         return NULL;
     }
+    else
+    {
+      if (*s == '.')
+        s++;
+    }
+  }
+  else
+  {
+    if (*s == '.')
+      s++;
   }
   return s; /* patchlevel */
 }
@@ -829,13 +829,15 @@ static bool have_gpg_version(const char *version)
     engineinfo = gpgme_ctx_get_engine_info(ctx);
     while (engineinfo && (engineinfo->protocol != GPGME_PROTOCOL_OpenPGP))
       engineinfo = engineinfo->next;
-    if (!engineinfo)
+    if (engineinfo)
+    {
+      engine_version = mutt_str_strdup(engineinfo->version);
+    }
+    else
     {
       mutt_debug(LL_DEBUG1, "Error finding GPGME PGP engine\n");
       engine_version = mutt_str_strdup("0.0.0");
     }
-    else
-      engine_version = mutt_str_strdup(engineinfo->version);
     gpgme_release(ctx);
   }
 
@@ -2635,15 +2637,15 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
       tt = subkey->timestamp;
       mutt_date_localtime_format(date, sizeof(date), "%Y-%m-%d", tt);
 
-      if (!more)
-      {
-        fprintf(*fp, "pub %5.5s %u/%8s %s %s\n", gpgme_pubkey_algo_name(subkey->pubkey_algo),
-                subkey->length, shortid, date, uid->uid);
-      }
-      else
+      if (more)
       {
         fprintf(*fp, "sub %5.5s %u/%8s %s\n", gpgme_pubkey_algo_name(subkey->pubkey_algo),
                 subkey->length, shortid, date);
+      }
+      else
+      {
+        fprintf(*fp, "pub %5.5s %u/%8s %s %s\n", gpgme_pubkey_algo_name(subkey->pubkey_algo),
+                subkey->length, shortid, date, uid->uid);
       }
       subkey = subkey->next;
       more = true;
@@ -3090,15 +3092,15 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
           }
 
           tmpfname = data_object_to_tempfile(plaintext, &fp_out);
-          if (!tmpfname)
-          {
-            mutt_file_fclose(&fp_out);
-            state_puts(s, _("Error: copy data failed\n"));
-          }
-          else
+          if (tmpfname)
           {
             unlink(tmpfname);
             FREE(&tmpfname);
+          }
+          else
+          {
+            mutt_file_fclose(&fp_out);
+            state_puts(s, _("Error: copy data failed\n"));
           }
         }
         gpgme_data_release(plaintext);
@@ -5712,12 +5714,7 @@ static bool verify_sender(struct Email *e)
             (uid_length == (sender_length + 2)))
         {
           const char *at_sign = strchr(uid->email + 1, '@');
-          if (!at_sign)
-          {
-            if (strncmp(uid->email + 1, sender->mailbox, sender_length) == 0)
-              rc = false;
-          }
-          else
+          if (at_sign)
           {
             /* Assume address is 'mailbox@domainname'.
              * The mailbox part is case-sensitive,
@@ -5735,6 +5732,11 @@ static bool verify_sender(struct Email *e)
             domainname_match =
                 (strncasecmp(tmp_email, tmp_sender, domainname_length) == 0);
             if (mailbox_match && domainname_match)
+              rc = false;
+          }
+          else
+          {
+            if (strncmp(uid->email + 1, sender->mailbox, sender_length) == 0)
               rc = false;
           }
         }

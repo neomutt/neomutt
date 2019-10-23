@@ -185,15 +185,15 @@ static struct Query *run_query(char *s, int quiet)
     p = strtok(buf, "\t\n");
     if (p)
     {
-      if (!first)
-      {
-        first = query_new();
-        cur = first;
-      }
-      else
+      if (first)
       {
         cur->next = query_new();
         cur = cur->next;
+      }
+      else
+      {
+        first = query_new();
+        cur = first;
       }
 
       mutt_addrlist_parse(&cur->addr, p);

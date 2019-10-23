@@ -298,18 +298,18 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
     if (!ignore)
     {
       mutt_debug(LL_DEBUG2, "Reorder: x = %d; hdr_count = %d\n", x, hdr_count);
-      if (!this_one)
-      {
-        this_one = mutt_str_strdup(buf);
-        this_one_len = mutt_str_strlen(this_one);
-      }
-      else
+      if (this_one)
       {
         size_t blen = mutt_str_strlen(buf);
 
         mutt_mem_realloc(&this_one, this_one_len + blen + sizeof(char));
         strcat(this_one + this_one_len, buf);
         this_one_len += blen;
+      }
+      else
+      {
+        this_one = mutt_str_strdup(buf);
+        this_one_len = mutt_str_strlen(this_one);
       }
     }
   } /* while (ftello (fp_in) < off_end) */

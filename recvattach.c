@@ -1041,7 +1041,11 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, stru
   if (query_quadoption(C_Print, prompt) != MUTT_YES)
     return;
 
-  if (!C_AttachSplit)
+  if (C_AttachSplit)
+  {
+    print_attachment_list(actx, fp, tag, top, &state);
+  }
+  else
   {
     if (!can_print(actx, top, tag))
       return;
@@ -1052,8 +1056,6 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, stru
     if ((mutt_wait_filter(pid) != 0) || C_WaitKey)
       mutt_any_key_to_continue(NULL);
   }
-  else
-    print_attachment_list(actx, fp, tag, top, &state);
 }
 
 /**

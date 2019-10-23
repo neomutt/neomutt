@@ -2829,16 +2829,17 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_HELP:
-        /* don't let the user enter the help-menu from the help screen! */
-        if (!InHelp)
+        if (InHelp)
         {
-          InHelp = true;
-          mutt_help(MENU_PAGER, MuttIndexWindow->cols);
-          pager_menu->redraw = REDRAW_FULL;
-          InHelp = false;
-        }
-        else
+          /* don't let the user enter the help-menu from the help screen! */
           mutt_error(_("Help is currently being shown"));
+          break;
+        }
+
+        InHelp = true;
+        mutt_help(MENU_PAGER, MuttIndexWindow->cols);
+        pager_menu->redraw = REDRAW_FULL;
+        InHelp = false;
         break;
 
       case OP_PAGER_HIDE_QUOTED:

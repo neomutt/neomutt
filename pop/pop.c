@@ -674,9 +674,7 @@ void pop_fetch_mail(void)
   for (int i = last + 1; i <= msgs; i++)
   {
     struct Message *msg = mx_msg_open_new(ctx->mailbox, NULL, MUTT_ADD_FROM);
-    if (!msg)
-      ret = -3;
-    else
+    if (msg)
     {
       snprintf(buf, sizeof(buf), "RETR %d\r\n", i);
       ret = pop_fetch_data(adata, buf, NULL, fetch_message, msg->fp);
@@ -690,6 +688,10 @@ void pop_fetch_mail(void)
       }
 
       mx_msg_close(ctx->mailbox, &msg);
+    }
+    else
+    {
+      ret = -3;
     }
 
     if ((ret == 0) && (delanswer == MUTT_YES))

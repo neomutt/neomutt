@@ -239,8 +239,7 @@ static void calculate_visibility(struct Context *ctx, int *max_depth)
       }
       if (!tree)
         break;
-      else
-        tree = tree->prev;
+      tree = tree->prev;
     }
   }
 
@@ -265,8 +264,7 @@ static void calculate_visibility(struct Context *ctx, int *max_depth)
           tree = tree->parent;
         if (!tree)
           break;
-        else
-          tree = tree->next;
+        tree = tree->next;
       }
     }
   }
@@ -1013,17 +1011,17 @@ void mutt_sort_threads(struct Context *ctx, bool init)
         break;
 
       tnew = mutt_hash_find(ctx->thread_hash, ref->data);
-      if (!tnew)
-      {
-        tnew = mutt_mem_calloc(1, sizeof(struct MuttThread));
-        mutt_hash_insert(ctx->thread_hash, ref->data, tnew);
-      }
-      else
+      if (tnew)
       {
         if (tnew->duplicate_thread)
           tnew = tnew->parent;
         if (is_descendant(tnew, thread)) /* no loops! */
           continue;
+      }
+      else
+      {
+        tnew = mutt_mem_calloc(1, sizeof(struct MuttThread));
+        mutt_hash_insert(ctx->thread_hash, ref->data, tnew);
       }
 
       if (thread->parent)
@@ -1085,12 +1083,7 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
 
   cur = e->thread;
 
-  if (!subthreads)
-  {
-    while (cur->parent)
-      cur = cur->parent;
-  }
-  else
+  if (subthreads)
   {
     if (forwards ^ ((C_Sort & SORT_REVERSE) != 0))
     {
@@ -1102,6 +1095,11 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
       while (!cur->prev && cur->parent)
         cur = cur->parent;
     }
+  }
+  else
+  {
+    while (cur->parent)
+      cur = cur->parent;
   }
 
   if (forwards ^ ((C_Sort & SORT_REVERSE) != 0))

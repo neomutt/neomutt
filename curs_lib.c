@@ -280,10 +280,10 @@ int mutt_buffer_get_field_full(const char *field, struct Buffer *buf, Completion
                                  files, numfiles, es);
   } while (ret == 1);
 
-  if (ret != 0)
-    mutt_buffer_reset(buf);
-  else
+  if (ret == 0)
     mutt_buffer_fix_dptr(buf);
+  else
+    mutt_buffer_reset(buf);
 
   mutt_window_clearline(MuttMessageWindow, 0);
   mutt_enter_state_free(&es);

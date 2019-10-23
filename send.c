@@ -2002,16 +2002,16 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
       e_templ->content->use_disp = false;
       e_templ->content->disposition = DISP_INLINE;
 
-      if (!tempfile)
+      if (tempfile)
+      {
+        fp_tmp = mutt_file_fopen(tempfile, "a+");
+        e_templ->content->filename = mutt_str_strdup(tempfile);
+      }
+      else
       {
         mutt_mktemp(buf, sizeof(buf));
         fp_tmp = mutt_file_fopen(buf, "w+");
         e_templ->content->filename = mutt_str_strdup(buf);
-      }
-      else
-      {
-        fp_tmp = mutt_file_fopen(tempfile, "a+");
-        e_templ->content->filename = mutt_str_strdup(tempfile);
       }
     }
     else

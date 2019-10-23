@@ -793,15 +793,13 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
         break;
       }
     }
-    if (!np)
-    {
-      mutt_list_insert_head(&MuttrcStack, mutt_str_strdup(rcfile));
-    }
-    else
+    if (np)
     {
       mutt_error(_("Error: Cyclic sourcing of configuration file '%s'"), rcfile);
       return -1;
     }
+
+    mutt_list_insert_head(&MuttrcStack, mutt_str_strdup(rcfile));
   }
 
   mutt_debug(LL_DEBUG2, "Reading configuration file '%s'\n", rcfile);

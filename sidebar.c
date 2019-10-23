@@ -912,8 +912,8 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
         char *chars_after_delim = strpbrk(sidebar_folder_name, C_SidebarDelimChars);
         if (!chars_after_delim)
           break;
-        else
-          sidebar_folder_name = chars_after_delim + 1;
+
+        sidebar_folder_name = chars_after_delim + 1;
       }
     }
     else

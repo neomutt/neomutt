@@ -174,13 +174,15 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
 #endif
     struct Mailbox *m_post = mx_path_resolve(C_Postponed);
     struct Context *ctx = mx_mbox_open(m_post, MUTT_NOSORT | MUTT_QUIET);
-    if (!ctx)
+    if (ctx)
+    {
+      PostCount = ctx->mailbox->msg_count;
+    }
+    else
     {
       mailbox_free(&m_post);
       PostCount = 0;
     }
-    else
-      PostCount = ctx->mailbox->msg_count;
     mx_fastclose_mailbox(m_post);
     ctx_free(&ctx);
 #ifdef USE_NNTP

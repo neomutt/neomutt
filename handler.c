@@ -573,18 +573,18 @@ static int autoview_handler(struct Body *a, struct State *s)
 
     mutt_file_copy_bytes(s->fp_in, fp_in, a->length);
 
-    if (!piped)
-    {
-      mutt_file_fclose(&fp_in);
-      pid = mutt_create_filter(mutt_b2s(cmd), NULL, &fp_out, &fp_err);
-    }
-    else
+    if (piped)
     {
       unlink(mutt_b2s(tempfile));
       fflush(fp_in);
       rewind(fp_in);
       pid = mutt_create_filter_fd(mutt_b2s(cmd), NULL, &fp_out, &fp_err,
                                   fileno(fp_in), -1, -1);
+    }
+    else
+    {
+      mutt_file_fclose(&fp_in);
+      pid = mutt_create_filter(mutt_b2s(cmd), NULL, &fp_out, &fp_err);
     }
 
     if (pid < 0)
@@ -1236,13 +1236,15 @@ static int multipart_handler(struct Body *a, struct State *s)
       else
         state_printf(s, _("[-- Attachment #%d --]\n"), count);
       print_part_line(s, p, 0);
-      if (!C_Weed)
+      if (C_Weed)
+      {
+        state_putc(s, '\n');
+      }
+      else
       {
         fseeko(s->fp_in, p->hdr_offset, SEEK_SET);
         mutt_file_copy_bytes(s->fp_in, s->fp_out, p->offset - p->hdr_offset);
       }
-      else
-        state_putc(s, '\n');
     }
 
     rc = mutt_body_handler(p, s);
