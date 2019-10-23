@@ -511,7 +511,6 @@ static char *get_query_string(struct NmMboxData *mdata, bool window)
     }
     else if (strcmp(item->name, "type") == 0)
       mdata->query_type = string_to_query_type(item->value);
-
     else if (strcmp(item->name, "query") == 0)
       mdata->db_query = mutt_str_strdup(item->value);
   }

@@ -72,6 +72,12 @@ struct Coord
   short c; /**< column */
 };
 
+static const struct Mapping RemailerHelp[] = {
+  { N_("Append"), OP_MIX_APPEND }, { N_("Insert"), OP_MIX_INSERT },
+  { N_("Delete"), OP_MIX_DELETE }, { N_("Abort"), OP_EXIT },
+  { N_("OK"), OP_MIX_USE },        { NULL, 0 },
+};
+
 /**
  * mix_get_caps - Get Mixmaster Capabilities
  * @param capstr Capability string to parse
@@ -551,12 +557,6 @@ static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer 
 
   return 0;
 }
-
-static const struct Mapping RemailerHelp[] = {
-  { N_("Append"), OP_MIX_APPEND }, { N_("Insert"), OP_MIX_INSERT },
-  { N_("Delete"), OP_MIX_DELETE }, { N_("Abort"), OP_EXIT },
-  { N_("OK"), OP_MIX_USE },        { NULL, 0 },
-};
 
 /**
  * mix_make_chain - Create a Mixmaster chain

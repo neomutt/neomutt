@@ -629,7 +629,6 @@ static int nntp_auth(struct NntpAccountData *adata)
         if (*buf == '5')
           continue;
       }
-
       else
       {
 #ifdef USE_SASL

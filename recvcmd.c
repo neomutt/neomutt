@@ -910,7 +910,6 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
   struct Email *e_parent = NULL;
   FILE *fp_parent = NULL;
   struct Email *e_tmp = NULL;
-  struct State st;
   FILE *fp_tmp = NULL;
   struct Buffer *tmpbody = NULL;
 
@@ -987,6 +986,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
   {
     mutt_make_attribution(Context->mailbox, e_parent, fp_tmp);
 
+    struct State st;
     memset(&st, 0, sizeof(struct State));
     st.fp_out = fp_tmp;
 

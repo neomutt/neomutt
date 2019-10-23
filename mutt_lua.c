@@ -351,6 +351,8 @@ static void lua_expose_command(void *p, const struct Command *cmd)
   (void) luaL_dostring(l, buf);
 }
 
+lua_State *LuaState = NULL;
+
 static const luaL_Reg luaMuttDecl[] = {
   { "set", lua_mutt_set },       { "get", lua_mutt_get },
   { "call", lua_mutt_call },     { "enter", lua_mutt_enter },
@@ -422,10 +424,6 @@ static bool lua_init(lua_State **l)
 
   return true;
 }
-
-/* Public API --------------------------------------------------------------- */
-
-lua_State *LuaState = NULL;
 
 /**
  * mutt_lua_parse - Parse the 'lua' command - Implements ::command_t

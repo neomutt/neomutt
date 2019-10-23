@@ -40,8 +40,6 @@ struct stat;
 /* These Config Variables are only used in muttlib.c */
 extern struct Regex *C_GecosMask;
 
-#define MUTT_RANDTAG_LEN 16
-
 void        mutt_adv_mktemp(struct Buffer *buf);
 void        mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix, const char *suffix, const char *src, int line);
 void        mutt_buffer_encode_path(struct Buffer *buf, const char *src);

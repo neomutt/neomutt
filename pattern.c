@@ -200,6 +200,13 @@ static char LastSearch[256] = { 0 };      /**< last pattern searched for */
 static char LastSearchExpn[1024] = { 0 }; /**< expanded version of LastSearch */
 
 /**
+ * typedef addr_predicate_t - Test an Address for some condition
+ * @param a Address to test
+ * @retval bool True if Address matches the test
+ */
+typedef bool (*addr_predicate_t)(const struct Address *a);
+
+/**
  * eat_regex - Parse a regex - Implements ::pattern_eat_t
  */
 static bool eat_regex(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err)
@@ -1724,13 +1731,6 @@ static bool match_reference(struct Pattern *pat, struct ListHead *refs)
   }
   return false;
 }
-
-/**
- * typedef addr_predicate_t - Test an Address for some condition
- * @param a Address to test
- * @retval bool True if Address matches the test
- */
-typedef bool (*addr_predicate_t)(const struct Address *a);
 
 /**
  * mutt_is_predicate_recipient - Test an Envelopes Addresses using a predicate function

@@ -409,7 +409,6 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
       hdr->security = mutt_parse_crypt_hdr(strchr(np->data, ':') + 1, true, APPLICATION_SMIME);
       hdr->security |= APPLICATION_SMIME;
     }
-
 #ifdef MIXMASTER
     else if (mutt_str_startswith(np->data, "X-Mutt-Mix:", CASE_MATCH))
     {
@@ -423,7 +422,6 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
       }
     }
 #endif
-
     else
     {
       // skip header removal

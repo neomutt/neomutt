@@ -71,6 +71,10 @@
 /* These Config Variables are only used in muttlib.c */
 struct Regex *C_GecosMask; ///< Config: Regex for parsing GECOS field of /etc/passwd
 
+static FILE *fp_random;
+
+static const unsigned char base32[] = "abcdefghijklmnopqrstuvwxyz234567";
+
 static const char *xdg_env_vars[] = {
   [XDG_CONFIG_HOME] = "XDG_CONFIG_HOME",
   [XDG_CONFIG_DIRS] = "XDG_CONFIG_DIRS",
@@ -458,8 +462,6 @@ bool mutt_is_text_part(struct Body *b)
   return false;
 }
 
-static FILE *fp_random;
-
 /**
  * mutt_randbuf - Fill a buffer with randomness
  * @param buf    Buffer for result
@@ -504,8 +506,6 @@ int mutt_randbuf(void *buf, size_t buflen)
 
   return 0;
 }
-
-static const unsigned char base32[] = "abcdefghijklmnopqrstuvwxyz234567";
 
 /**
  * mutt_rand_base32 - Fill a buffer with a base32-encoded random string

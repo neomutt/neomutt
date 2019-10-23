@@ -692,7 +692,6 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
 
             replace_part(state, 0, buf);
           }
-
 #endif
           else
             goto self_insert;

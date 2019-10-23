@@ -79,6 +79,15 @@ struct PgpCache
   struct PgpCache *next;
 };
 
+/**
+ * struct PgpEntry - An entry in a PGP key menu
+ */
+struct PgpEntry
+{
+  size_t num;
+  struct PgpUid *uid;
+};
+
 static struct PgpCache *id_defaults = NULL;
 
 static const char trust_flags[] = "?- +";
@@ -155,15 +164,6 @@ static struct PgpKeyInfo *pgp_principal_key(struct PgpKeyInfo *key)
   else
     return key;
 }
-
-/**
- * struct PgpEntry - An entry in a PGP key menu
- */
-struct PgpEntry
-{
-  size_t num;
-  struct PgpUid *uid;
-};
 
 /**
  * pgp_entry_fmt - Format an entry on the PGP key selection menu - Implements ::format_t

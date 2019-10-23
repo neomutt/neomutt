@@ -704,6 +704,12 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out)
   return 0;
 }
 
+/**
+ * choose_default_to - Pick the best 'to:' value
+ * @param from From Address
+ * @param env  Envelope
+ * @retval ptr Addresses to use
+ */
 static const struct AddressList *choose_default_to(const struct Address *from,
                                                    const struct Envelope *env)
 {

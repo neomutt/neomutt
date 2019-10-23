@@ -47,6 +47,11 @@
 #endif
 
 /**
+ * char_cmp - Pointer to a function taking two characters and returning bool
+ */
+typedef bool (*char_cmp)(char, char);
+
+/**
  * struct SysExits - Lookup table of error messages
  */
 struct SysExits
@@ -141,11 +146,6 @@ static inline bool char_cmp_lower(char a, char b)
 {
   return tolower((unsigned char) a) == tolower((unsigned char) b);
 }
-
-/**
- * char_cmp - Pointer to a function taking two characters and returning bool
- */
-typedef bool (*char_cmp)(char, char);
 
 /**
  * get_char_cmp - Retrieve the correct function to compare characters according to a case sensitivity setting

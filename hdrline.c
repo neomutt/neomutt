@@ -94,6 +94,21 @@ enum CryptChars
 };
 
 /**
+ * enum FieldType - Header types
+ *
+ * Strings for printing headers
+ */
+enum FieldType
+{
+  DISP_TO,    ///< To: string
+  DISP_CC,    ///< Cc: string
+  DISP_BCC,   ///< Bcc: string
+  DISP_FROM,  ///< From: string
+  DISP_PLAIN, ///< Empty string
+  DISP_MAX,
+};
+
+/**
  * mutt_is_mail_list - Is this the email address of a mailing list?
  * @param addr Address to test
  * @retval true If it's a mailing list
@@ -229,21 +244,6 @@ static size_t add_index_color(char *buf, size_t buflen, MuttFormatFlags flags, c
 
   return 2;
 }
-
-/**
- * enum FieldType - Header types
- *
- * Strings for printing headers
- */
-enum FieldType
-{
-  DISP_TO,    ///< To: string
-  DISP_CC,    ///< Cc: string
-  DISP_BCC,   ///< Bcc: string
-  DISP_FROM,  ///< From: string
-  DISP_PLAIN, ///< Empty string
-  DISP_MAX,
-};
 
 /**
  * get_nth_wchar - Extract one char from a multi-byte table
