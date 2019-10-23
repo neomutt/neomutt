@@ -635,9 +635,8 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
   struct Email *e_cur = NULL;
   struct Email *e_tmp = NULL;
   enum QuadOption ans;
-
   struct Body **last = NULL;
-  char tmpbody[PATH_MAX];
+  struct Buffer *tmpbody = NULL;
   FILE *fp_tmp = NULL;
 
   CopyHeaderFlags chflags = CH_XMIT;
@@ -660,20 +659,19 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
   e_tmp->env = mutt_env_new();
   mutt_make_forward_subject(e_tmp->env, Context->mailbox, e_cur);
 
-  tmpbody[0] = '\0';
+  tmpbody = mutt_buffer_pool_get();
 
   ans = query_quadoption(C_MimeForward, _("Forward MIME encapsulated?"));
   if (ans == MUTT_NO)
   {
     /* no MIME encapsulation */
 
-    mutt_mktemp(tmpbody, sizeof(tmpbody));
-    fp_tmp = mutt_file_fopen(tmpbody, "w");
+    mutt_buffer_mktemp(tmpbody);
+    fp_tmp = mutt_file_fopen(mutt_b2s(tmpbody), "w");
     if (!fp_tmp)
     {
-      mutt_error(_("Can't create %s"), tmpbody);
-      email_free(&e_tmp);
-      return;
+      mutt_error(_("Can't create %s"), mutt_b2s(tmpbody));
+      goto cleanup;
     }
 
     CopyMessageFlags cmflags = MUTT_CM_NO_FLAGS;
@@ -736,8 +734,14 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
 
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   el_add_email(&el, e_cur);
-  ci_send_message(flags, e_tmp, (tmpbody[0] != '\0') ? tmpbody : NULL, NULL, &el);
+  ci_send_message(flags, e_tmp,
+                  mutt_buffer_is_empty(tmpbody) ? NULL : mutt_b2s(tmpbody), NULL, &el);
   emaillist_clear(&el);
+  e_tmp = NULL; /* ci_send_message frees this */
+
+cleanup:
+  email_free(&e_tmp);
+  mutt_buffer_pool_release(&tmpbody);
 }
 
 /**
