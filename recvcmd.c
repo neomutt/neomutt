@@ -910,10 +910,9 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
   struct Email *e_parent = NULL;
   FILE *fp_parent = NULL;
   struct Email *e_tmp = NULL;
-
   struct State st;
-  char tmpbody[PATH_MAX];
   FILE *fp_tmp = NULL;
+  struct Buffer *tmpbody = NULL;
 
   char prefix[128];
 
@@ -959,17 +958,16 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
   if (attach_reply_envelope_defaults(
           e_tmp->env, actx, e_parent ? e_parent : (e_cur ? e_cur->email : NULL), flags) == -1)
   {
-    email_free(&e_tmp);
-    return;
+    goto cleanup;
   }
 
-  mutt_mktemp(tmpbody, sizeof(tmpbody));
-  fp_tmp = mutt_file_fopen(tmpbody, "w");
+  tmpbody = mutt_buffer_pool_get();
+  mutt_buffer_mktemp(tmpbody);
+  fp_tmp = mutt_file_fopen(mutt_b2s(tmpbody), "w");
   if (!fp_tmp)
   {
-    mutt_error(_("Can't create %s"), tmpbody);
-    email_free(&e_tmp);
-    return;
+    mutt_error(_("Can't create %s"), mutt_b2s(tmpbody));
+    goto cleanup;
   }
 
   if (!e_parent)
@@ -1038,9 +1036,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
     if (mime_reply_any && !e_cur &&
         !copy_problematic_attachments(&e_tmp->content, actx, false))
     {
-      email_free(&e_tmp);
-      mutt_file_fclose(&fp_tmp);
-      return;
+      goto cleanup;
     }
   }
 
@@ -1048,10 +1044,20 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
 
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   el_add_email(&el, e_parent ? e_parent : (e_cur ? e_cur->email : NULL));
-  if (ci_send_message(flags, e_tmp, tmpbody, NULL, &el) == 0)
+  if (ci_send_message(flags, e_tmp, mutt_b2s(tmpbody), NULL, &el) == 0)
   {
     mutt_set_flag(Context->mailbox, e, MUTT_REPLIED, true);
   }
+  e_tmp = NULL; /* ci_send_message frees this */
+
+cleanup:
+  if (fp_tmp)
+  {
+    mutt_file_fclose(&fp_tmp);
+    mutt_file_unlink(mutt_b2s(tmpbody));
+  }
+  mutt_buffer_pool_release(&tmpbody);
+  email_free(&e_tmp);
   emaillist_clear(&el);
 }
 
