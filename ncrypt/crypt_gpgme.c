@@ -443,24 +443,22 @@ static int cmp_version_strings(const char *a, const char *b, int level)
       r = strcmp(a_plvl, b_plvl);
       if (!r)
         return 0;
-      else if (r > 0)
+      if (r > 0)
         return positive;
-      else
-        return negative;
+      return negative;
     }
-    else if (*a_plvl == '.')
+    if (*a_plvl == '.')
       return negative; /* B is larger. */
-    else if (*b_plvl == '.')
+    if (*b_plvl == '.')
       return positive; /* A is larger. */
-    else if (*a_plvl != *b_plvl)
+    if (*a_plvl != *b_plvl)
       break;
   }
   if (*a_plvl == *b_plvl)
     return 0;
-  else if ((*(signed char *) a_plvl - *(signed char *) b_plvl) > 0)
+  if ((*(signed char *) a_plvl - *(signed char *) b_plvl) > 0)
     return positive;
-  else
-    return negative;
+  return negative;
 }
 #endif                                 /* gpgme >= 1.9.0 */
 
@@ -604,14 +602,14 @@ static char crypt_flags(KeyFlags flags)
 {
   if (flags & KEYFLAG_REVOKED)
     return 'R';
-  else if (flags & KEYFLAG_EXPIRED)
+  if (flags & KEYFLAG_EXPIRED)
     return 'X';
-  else if (flags & KEYFLAG_DISABLED)
+  if (flags & KEYFLAG_DISABLED)
     return 'd';
-  else if (flags & KEYFLAG_CRITICAL)
+  if (flags & KEYFLAG_CRITICAL)
     return 'c';
-  else
-    return ' ';
+
+  return ' ';
 }
 
 /**
@@ -3624,8 +3622,7 @@ static int compare_key_address(const void *a, const void *b)
   r = mutt_str_strcasecmp((*s)->uid, (*t)->uid);
   if (r != 0)
     return r > 0;
-  else
-    return mutt_str_strcasecmp(crypt_fpr_or_lkeyid(*s), crypt_fpr_or_lkeyid(*t)) > 0;
+  return mutt_str_strcasecmp(crypt_fpr_or_lkeyid(*s), crypt_fpr_or_lkeyid(*t)) > 0;
 }
 
 /**
@@ -3659,8 +3656,7 @@ static int compare_keyid(const void *a, const void *b)
   r = mutt_str_strcasecmp(crypt_fpr_or_lkeyid(*s), crypt_fpr_or_lkeyid(*t));
   if (r != 0)
     return r > 0;
-  else
-    return mutt_str_strcasecmp((*s)->uid, (*t)->uid) > 0;
+  return mutt_str_strcasecmp((*s)->uid, (*t)->uid) > 0;
 }
 
 /**

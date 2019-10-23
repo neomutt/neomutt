@@ -142,14 +142,14 @@ static char pgp_flags(KeyFlags flags)
 {
   if (flags & KEYFLAG_REVOKED)
     return 'R';
-  else if (flags & KEYFLAG_EXPIRED)
+  if (flags & KEYFLAG_EXPIRED)
     return 'X';
-  else if (flags & KEYFLAG_DISABLED)
+  if (flags & KEYFLAG_DISABLED)
     return 'd';
-  else if (flags & KEYFLAG_CRITICAL)
+  if (flags & KEYFLAG_CRITICAL)
     return 'c';
-  else
-    return ' ';
+
+  return ' ';
 }
 
 /**
@@ -161,8 +161,7 @@ static struct PgpKeyInfo *pgp_principal_key(struct PgpKeyInfo *key)
 {
   if (key->flags & KEYFLAG_SUBKEY && key->parent)
     return key->parent;
-  else
-    return key;
+  return key;
 }
 
 /**
@@ -369,12 +368,10 @@ static int compare_key_address(const void *a, const void *b)
 
   r = mutt_str_strcasecmp((*s)->addr, (*t)->addr);
   if (r != 0)
-    return r > 0;
-  else
-  {
-    return mutt_str_strcasecmp(pgp_fpr_or_lkeyid((*s)->parent),
-                               pgp_fpr_or_lkeyid((*t)->parent)) > 0;
-  }
+    return (r > 0);
+
+  return mutt_str_strcasecmp(pgp_fpr_or_lkeyid((*s)->parent),
+                             pgp_fpr_or_lkeyid((*t)->parent)) > 0;
 }
 
 /**
@@ -408,9 +405,8 @@ static int compare_keyid(const void *a, const void *b)
 
   r = mutt_str_strcasecmp(pgp_fpr_or_lkeyid((*s)->parent), pgp_fpr_or_lkeyid((*t)->parent));
   if (r != 0)
-    return r > 0;
-  else
-    return mutt_str_strcasecmp((*s)->addr, (*t)->addr) > 0;
+    return (r > 0);
+  return mutt_str_strcasecmp((*s)->addr, (*t)->addr) > 0;
 }
 
 /**

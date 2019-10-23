@@ -1698,7 +1698,7 @@ static int get_toplevel_encoding(struct Body *a)
   {
     if (a->encoding == ENC_BINARY)
       return ENC_BINARY;
-    else if (a->encoding == ENC_8BIT)
+    if (a->encoding == ENC_8BIT)
       e = ENC_8BIT;
   }
 

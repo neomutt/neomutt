@@ -118,7 +118,7 @@ static enum NmQueryType string_to_query_type(const char *str)
 {
   if (mutt_str_strcmp(str, "threads") == 0)
     return NM_QUERY_TYPE_THREADS;
-  else if (mutt_str_strcmp(str, "messages") == 0)
+  if (mutt_str_strcmp(str, "messages") == 0)
     return NM_QUERY_TYPE_MESGS;
 
   mutt_error(_("failed to parse notmuch query type: %s"), NONULL(str));
@@ -349,8 +349,7 @@ static const char *query_type_to_string(enum NmQueryType query_type)
 {
   if (query_type == NM_QUERY_TYPE_THREADS)
     return "threads";
-  else
-    return "messages";
+  return "messages";
 }
 
 /**

@@ -537,13 +537,9 @@ static bool hostname_match(const char *hostname, const char *certname)
     cmp1 = certname + 2;
     cmp2 = strchr(hostname, '.');
     if (!cmp2)
-    {
       return false;
-    }
-    else
-    {
-      cmp2++;
-    }
+
+    cmp2++;
   }
   else
   {
@@ -1353,8 +1349,8 @@ static int ssl_socket_poll(struct Connection *conn, time_t wait_secs)
 
   if (SSL_has_pending(data->ssl))
     return 1;
-  else
-    return raw_socket_poll(conn, wait_secs);
+
+  return raw_socket_poll(conn, wait_secs);
 }
 
 /**

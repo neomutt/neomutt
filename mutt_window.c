@@ -352,10 +352,9 @@ int mutt_window_wrap_cols(int width, short wrap)
 {
   if (wrap < 0)
     return (width > -wrap) ? (width + wrap) : width;
-  else if (wrap)
+  if (wrap)
     return (wrap < width) ? wrap : width;
-  else
-    return width;
+  return width;
 }
 
 /**

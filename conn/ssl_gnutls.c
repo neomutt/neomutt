@@ -813,8 +813,7 @@ static int tls_check_certificate(struct Connection *conn)
     {
       if (preauthrc == 0)
         return 1;
-      else
-        break;
+      break;
     }
   }
 
@@ -1143,8 +1142,8 @@ static int tls_socket_poll(struct Connection *conn, time_t wait_secs)
 
   if (gnutls_record_check_pending(data->state))
     return 1;
-  else
-    return raw_socket_poll(conn, wait_secs);
+
+  return raw_socket_poll(conn, wait_secs);
 }
 
 /**

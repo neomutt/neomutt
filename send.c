@@ -299,8 +299,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
   {
     if (C_FastReply)
       return 0;
-    else
-      mutt_str_strfcpy(buf, en->subject, sizeof(buf));
+    mutt_str_strfcpy(buf, en->subject, sizeof(buf));
   }
   else
   {

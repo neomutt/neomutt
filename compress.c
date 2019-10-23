@@ -402,8 +402,8 @@ bool mutt_comp_can_read(const char *path)
 
   if (find_hook(MUTT_OPEN_HOOK, path))
     return true;
-  else
-    return false;
+
+  return false;
 }
 
 /**

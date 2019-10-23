@@ -253,7 +253,7 @@ int mutt_account_getlogin(struct ConnAccount *account)
   if (account->flags & MUTT_ACCT_LOGIN)
     return 0;
 #ifdef USE_IMAP
-  else if (account->type == MUTT_ACCT_TYPE_IMAP)
+  if (account->type == MUTT_ACCT_TYPE_IMAP)
   {
     if (C_ImapLogin)
     {

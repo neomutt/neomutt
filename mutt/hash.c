@@ -227,8 +227,7 @@ static void *union_hash_find(const struct Hash *table, union HashKey key)
   struct HashElem *he = union_hash_find_elem(table, key);
   if (he)
     return he->data;
-  else
-    return NULL;
+  return NULL;
 }
 
 /**

@@ -90,8 +90,7 @@ MhSeqFlags mhs_check(struct MhSequences *mhs, int i)
 {
   if (!mhs->flags || (i > mhs->max))
     return 0;
-  else
-    return mhs->flags[i];
+  return mhs->flags[i];
 }
 
 /**

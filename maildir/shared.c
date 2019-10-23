@@ -535,8 +535,7 @@ static struct Maildir *maildir_merge_lists(struct Maildir *left, struct Maildir 
   {
     if (left)
       return left;
-    else
-      return right;
+    return right;
   }
 
   tail = head;

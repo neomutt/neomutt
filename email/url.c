@@ -146,8 +146,8 @@ enum UrlScheme url_check_scheme(const char *s)
   i = mutt_map_get_value(sbuf, UrlMap);
   if (i == -1)
     return U_UNKNOWN;
-  else
-    return (enum UrlScheme) i;
+
+  return (enum UrlScheme) i;
 }
 
 /**

@@ -94,15 +94,11 @@ bool email_cmp_strict(const struct Email *e1, const struct Email *e2)
     {
       return false;
     }
-    else
-      return true;
+    return true;
   }
   else
   {
-    if (!e1 && !e2)
-      return true;
-    else
-      return false;
+    return (!e1 && !e2);
   }
 }
 

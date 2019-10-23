@@ -635,10 +635,9 @@ SecurityFlags mutt_is_application_smime(struct Body *m)
     {
       if (mutt_str_strcasecmp(t, "enveloped-data") == 0)
         return SMIME_ENCRYPT;
-      else if (mutt_str_strcasecmp(t, "signed-data") == 0)
+      if (mutt_str_strcasecmp(t, "signed-data") == 0)
         return SMIME_SIGN | SMIME_OPAQUE;
-      else
-        return SEC_NO_FLAGS;
+      return SEC_NO_FLAGS;
     }
     /* Netscape 4.7 uses
      * Content-Description: S/MIME Encrypted Message

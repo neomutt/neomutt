@@ -189,8 +189,7 @@ char *pgp_this_keyid(struct PgpKeyInfo *k)
 {
   if (C_PgpLongIds)
     return k->keyid;
-  else
-    return k->keyid + 8;
+  return k->keyid + 8;
 }
 
 /**

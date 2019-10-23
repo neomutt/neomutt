@@ -312,8 +312,7 @@ const char *mutt_path_basename(const char *f)
   const char *p = strrchr(f, '/');
   if (p)
     return p + 1;
-  else
-    return f;
+  return f;
 }
 
 /**

@@ -93,7 +93,7 @@ static bool check_all_msg(struct AttachCtx *actx, struct Body *cur, bool err)
 {
   if (cur && !check_msg(cur, err))
     return false;
-  else if (!cur)
+  if (!cur)
   {
     for (short i = 0; i < actx->idxlen; i++)
     {
@@ -945,7 +945,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
                              "MIME-encapsulate the others?"));
     if (ans == MUTT_ABORT)
       return;
-    else if (ans == MUTT_YES)
+    if (ans == MUTT_YES)
       mime_reply_any = true;
   }
   else if (nattach == 1)

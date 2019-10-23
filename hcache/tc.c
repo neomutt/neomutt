@@ -49,14 +49,12 @@ static void *hcache_tokyocabinet_open(const char *path)
     tcbdbtune(db, 0, 0, 0, -1, -1, BDBTDEFLATE);
   if (tcbdbopen(db, path, BDBOWRITER | BDBOCREAT))
     return db;
-  else
-  {
-    int ecode = tcbdbecode(db);
-    mutt_debug(LL_DEBUG2, "tcbdbopen failed for %s: %s (ecode %d)\n", path,
-               tcbdberrmsg(ecode), ecode);
-    tcbdbdel(db);
-    return NULL;
-  }
+
+  int ecode = tcbdbecode(db);
+  mutt_debug(LL_DEBUG2, "tcbdbopen failed for %s: %s (ecode %d)\n", path,
+             tcbdberrmsg(ecode), ecode);
+  tcbdbdel(db);
+  return NULL;
 }
 
 /**

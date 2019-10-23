@@ -233,8 +233,7 @@ static int parse_fkey(char *s)
 
   if (*t != '>')
     return -1;
-  else
-    return n;
+  return n;
 }
 
 /**

@@ -95,8 +95,7 @@ static bool need_display_subject(struct Context *ctx, struct Email *e)
     {
       if (e->subject_changed)
         return true;
-      else
-        break;
+      break;
     }
   }
 
@@ -109,7 +108,7 @@ static bool need_display_subject(struct Context *ctx, struct Email *e)
     {
       if (is_visible(e, ctx))
         return false;
-      else if (e->subject_changed)
+      if (e->subject_changed)
         return true;
     }
   }
@@ -1279,13 +1278,13 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *e_cur, MuttThreadFla
     /* return value depends on action requested */
     if (flag & (MUTT_THREAD_COLLAPSE | MUTT_THREAD_UNCOLLAPSE))
       return final;
-    else if (flag & MUTT_THREAD_UNREAD)
+    if (flag & MUTT_THREAD_UNREAD)
       return (old_mail && new_mail) ? new_mail : (old_mail ? old_mail : new_mail);
-    else if (flag & MUTT_THREAD_GET_HIDDEN)
+    if (flag & MUTT_THREAD_GET_HIDDEN)
       return num_hidden;
-    else if (flag & MUTT_THREAD_NEXT_UNREAD)
+    if (flag & MUTT_THREAD_NEXT_UNREAD)
       return min_unread;
-    else if (flag & MUTT_THREAD_FLAGGED)
+    if (flag & MUTT_THREAD_FLAGGED)
       return flagged;
   }
 
@@ -1369,13 +1368,13 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *e_cur, MuttThreadFla
   /* return value depends on action requested */
   if (flag & (MUTT_THREAD_COLLAPSE | MUTT_THREAD_UNCOLLAPSE))
     return final;
-  else if (flag & MUTT_THREAD_UNREAD)
+  if (flag & MUTT_THREAD_UNREAD)
     return (old_mail && new_mail) ? new_mail : (old_mail ? old_mail : new_mail);
-  else if (flag & MUTT_THREAD_GET_HIDDEN)
+  if (flag & MUTT_THREAD_GET_HIDDEN)
     return num_hidden + 1;
-  else if (flag & MUTT_THREAD_NEXT_UNREAD)
+  if (flag & MUTT_THREAD_NEXT_UNREAD)
     return min_unread;
-  else if (flag & MUTT_THREAD_FLAGGED)
+  if (flag & MUTT_THREAD_FLAGGED)
     return flagged;
 
   return 0;

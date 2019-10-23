@@ -1754,11 +1754,11 @@ bool mutt_can_decode(struct Body *a)
 {
   if (is_autoview(a))
     return true;
-  else if (a->type == TYPE_TEXT)
+  if (a->type == TYPE_TEXT)
     return true;
-  else if (a->type == TYPE_MESSAGE)
+  if (a->type == TYPE_MESSAGE)
     return true;
-  else if (a->type == TYPE_MULTIPART)
+  if (a->type == TYPE_MULTIPART)
   {
     if (WithCrypto)
     {

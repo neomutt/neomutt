@@ -350,7 +350,7 @@ static int ci_first_message(void)
     {
       if (!Context->mailbox->emails[Context->mailbox->v2r[i]]->old)
         return i;
-      else if (old == -1)
+      if (old == -1)
         old = i;
     }
   }
