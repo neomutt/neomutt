@@ -146,18 +146,18 @@ static size_t print_indent(int ql, struct State *s, int add_suffix)
       ql++;
     else
     {
-      state_puts(s->prefix, s);
+      state_puts(s, s->prefix);
       wid = mutt_strwidth(s->prefix);
     }
   }
   for (int i = 0; i < ql; i++)
   {
-    state_putc('>', s);
+    state_putc(s, '>');
     if (space_quotes(s))
-      state_putc(' ', s);
+      state_putc(s, ' ');
   }
   if (add_suffix)
-    state_putc(' ', s);
+    state_putc(s, ' ');
 
   if (space_quotes(s))
     ql *= 2;
@@ -174,7 +174,7 @@ static void flush_par(struct State *s, struct FlowedState *fst)
 {
   if (fst->width > 0)
   {
-    state_putc('\n', s);
+    state_putc(s, '\n');
     fst->width = 0;
   }
   fst->spaces = 0;
@@ -233,7 +233,7 @@ static void print_flowed_line(char *line, struct State *s, int ql,
     /* flush current paragraph (if any) first */
     flush_par(s, fst);
     print_indent(ql, s, 0);
-    state_putc('\n', s);
+    state_putc(s, '\n');
     return;
   }
 
@@ -272,8 +272,8 @@ static void print_flowed_line(char *line, struct State *s, int ql,
       /* only honor trailing spaces for format=flowed replies */
       if (C_TextFlowed)
         for (; fst->spaces; fst->spaces--)
-          state_putc(' ', s);
-      state_putc('\n', s);
+          state_putc(s, ' ');
+      state_putc(s, '\n');
       fst->width = 0;
       fst->spaces = 0;
       words = 0;
@@ -283,8 +283,8 @@ static void print_flowed_line(char *line, struct State *s, int ql,
       fst->width = print_indent(ql, s, add_quote_suffix(s, ql));
     fst->width += w + fst->spaces;
     for (; fst->spaces; fst->spaces--)
-      state_putc(' ', s);
-    state_puts(p, s);
+      state_putc(s, ' ');
+    state_puts(s, p);
     words++;
   }
 
@@ -303,8 +303,8 @@ static void print_fixed_line(const char *line, struct State *s, int ql, struct F
 {
   print_indent(ql, s, add_quote_suffix(s, ql));
   if (line && *line)
-    state_puts(line, s);
-  state_putc('\n', s);
+    state_puts(s, line);
+  state_putc(s, '\n');
 
   fst->width = 0;
   fst->spaces = 0;

@@ -96,7 +96,7 @@ void crypt_current_time(struct State *s, const char *app_name)
     *p = '\0';
 
   snprintf(tmp, sizeof(tmp), _("[-- %s output follows%s --]\n"), NONULL(app_name), p);
-  state_attach_puts(tmp, s);
+  state_attach_puts(s, tmp);
 }
 
 /**
@@ -1111,7 +1111,7 @@ int mutt_protected_headers_handler(struct Body *a, struct State *s)
 
       mutt_write_one_header(s->fp_out, "Subject", a->mime_headers->subject,
                             s->prefix, wraplen, display ? CH_DISPLAY : CH_NO_FLAGS);
-      state_puts("\n", s);
+      state_puts(s, "\n");
     }
   }
 
@@ -1179,10 +1179,8 @@ int mutt_signed_handler(struct Body *a, struct State *s)
   }
   if (inconsistent)
   {
-    state_attach_puts(_("[-- Error: "
-                        "Missing or bad-format multipart/signed signature"
-                        " --]\n\n"),
-                      s);
+    state_attach_puts(s, _("[-- Error: Missing or bad-format multipart/signed "
+                           "signature --]\n\n"));
     return mutt_body_handler(a, s);
   }
 
@@ -1236,20 +1234,21 @@ int mutt_signed_handler(struct Body *a, struct State *s)
       b->badsig = !goodsig;
 
       /* Now display the signed body */
-      state_attach_puts(_("[-- The following data is signed --]\n\n"), s);
+      state_attach_puts(s, _("[-- The following data is signed --]\n\n"));
 
       mutt_protected_headers_handler(a, s);
 
       FREE(&signatures);
     }
     else
-      state_attach_puts(_("[-- Warning: Can't find any signatures. --]\n\n"), s);
+      state_attach_puts(s,
+                        _("[-- Warning: Can't find any signatures. --]\n\n"));
   }
 
   rc = mutt_body_handler(a, s);
 
   if ((s->flags & MUTT_DISPLAY) && (sigcnt != 0))
-    state_attach_puts(_("\n[-- End of signed data --]\n"), s);
+    state_attach_puts(s, _("\n[-- End of signed data --]\n"));
 
   return rc;
 }

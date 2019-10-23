@@ -562,7 +562,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
     {
       st.fp_in = fp;
       mutt_body_handler(cur, &st);
-      state_putc('\n', &st);
+      state_putc(&st, '\n');
     }
     else
     {
@@ -582,7 +582,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
         {
           st.fp_in = actx->idx[i]->fp;
           mutt_body_handler(actx->idx[i]->content, &st);
-          state_putc('\n', &st);
+          state_putc(&st, '\n');
         }
       }
     }
@@ -1013,7 +1013,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
       {
         st.fp_in = fp;
         mutt_body_handler(e_cur, &st);
-        state_putc('\n', &st);
+        state_putc(&st, '\n');
       }
       else
         mutt_body_copy(fp, &e_tmp->content, e_cur);
@@ -1026,7 +1026,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
         {
           st.fp_in = actx->idx[i]->fp;
           mutt_body_handler(actx->idx[i]->content, &st);
-          state_putc('\n', &st);
+          state_putc(&st, '\n');
         }
       }
     }

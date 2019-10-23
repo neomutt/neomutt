@@ -430,7 +430,7 @@ static void pgp_copy_clearsigned(FILE *fp_in, struct State *s, char *charset)
     if (!complete)
     {
       if (!armor_header)
-        state_puts(buf, s);
+        state_puts(s, buf);
       continue;
     }
 
@@ -446,12 +446,12 @@ static void pgp_copy_clearsigned(FILE *fp_in, struct State *s, char *charset)
     }
 
     if (s->prefix)
-      state_puts(s->prefix, s);
+      state_puts(s, s->prefix);
 
     if ((buf[0] == '-') && (buf[1] == ' '))
-      state_puts(buf + 2, s);
+      state_puts(s, buf + 2);
     else
-      state_puts(buf, s);
+      state_puts(s, buf);
   }
 
   mutt_ch_fgetconv_close(&fc);
@@ -519,8 +519,8 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
       {
         /* XXX we may wish to recode here */
         if (s->prefix)
-          state_puts(s->prefix, s);
-        state_puts(buf, s);
+          state_puts(s, s->prefix);
+        state_puts(s, buf);
         continue;
       }
 
@@ -594,7 +594,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
           maybe_goodsig = false;
           fp_pgp_in = NULL;
           state_attach_puts(
-              _("[-- Error: unable to create PGP subprocess --]\n"), s);
+              s, _("[-- Error: unable to create PGP subprocess --]\n"));
         }
         else /* PGP started successfully */
         {
@@ -643,7 +643,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
             if (checksig_rc == -1 || (wait_filter_rc != 0))
               maybe_goodsig = false;
 
-            state_attach_puts(_("[-- End of PGP output --]\n\n"), s);
+            state_attach_puts(s, _("[-- End of PGP output --]\n\n"));
           }
           if (pgp_use_gpg_agent())
             mutt_need_hard_redraw();
@@ -674,11 +674,11 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
       if (s->flags & MUTT_DISPLAY)
       {
         if (needpass)
-          state_attach_puts(_("[-- BEGIN PGP MESSAGE --]\n\n"), s);
+          state_attach_puts(s, _("[-- BEGIN PGP MESSAGE --]\n\n"));
         else if (pgp_keyblock)
-          state_attach_puts(_("[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"), s);
+          state_attach_puts(s, _("[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"));
         else
-          state_attach_puts(_("[-- BEGIN PGP SIGNED MESSAGE --]\n\n"), s);
+          state_attach_puts(s, _("[-- BEGIN PGP SIGNED MESSAGE --]\n\n"));
       }
 
       if (clearsign)
@@ -699,7 +699,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
         state_set_prefix(s);
         fc = mutt_ch_fgetconv_open(fp_pgp_out, expected_charset, C_Charset, MUTT_ICONV_HOOK_FROM);
         while ((ch = mutt_ch_fgetconv(fc)) != EOF)
-          state_prefix_putc(ch, s);
+          state_prefix_putc(s, ch);
         mutt_ch_fgetconv_close(&fc);
       }
 
@@ -712,10 +712,10 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
 
       if (s->flags & MUTT_DISPLAY)
       {
-        state_putc('\n', s);
+        state_putc(s, '\n');
         if (needpass)
         {
-          state_attach_puts(_("[-- END PGP MESSAGE --]\n"), s);
+          state_attach_puts(s, _("[-- END PGP MESSAGE --]\n"));
           if (could_not_decrypt || (decrypt_okay_rc <= -3))
             mutt_error(_("Could not decrypt PGP message"));
           else if (decrypt_okay_rc < 0)
@@ -729,9 +729,9 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
             mutt_message(_("PGP message successfully decrypted"));
         }
         else if (pgp_keyblock)
-          state_attach_puts(_("[-- END PGP PUBLIC KEY BLOCK --]\n"), s);
+          state_attach_puts(s, _("[-- END PGP PUBLIC KEY BLOCK --]\n"));
         else
-          state_attach_puts(_("[-- END PGP SIGNED MESSAGE --]\n"), s);
+          state_attach_puts(s, _("[-- END PGP SIGNED MESSAGE --]\n"));
       }
     }
     else
@@ -739,8 +739,8 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
       /* A traditional PGP part may mix signed and unsigned content */
       /* XXX we may wish to recode here */
       if (s->prefix)
-        state_puts(s->prefix, s);
-      state_puts(buf, s);
+        state_puts(s, s->prefix);
+      state_puts(s, buf);
     }
   }
 
@@ -764,7 +764,7 @@ out:
   if (needpass == -1)
   {
     state_attach_puts(
-        _("[-- Error: could not find beginning of PGP message --]\n\n"), s);
+        s, _("[-- Error: could not find beginning of PGP message --]\n\n"));
     return -1;
   }
 
@@ -925,7 +925,7 @@ int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
 
   mutt_file_fclose(&fp_pgp_err);
 
-  state_attach_puts(_("[-- End of PGP output --]\n\n"), s);
+  state_attach_puts(s, _("[-- End of PGP output --]\n\n"));
 
   mutt_file_unlink(mutt_b2s(sigfile));
 
@@ -1042,7 +1042,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
     if (s->flags & MUTT_DISPLAY)
     {
       state_attach_puts(
-          _("[-- Error: could not create a PGP subprocess --]\n\n"), s);
+          s, _("[-- Error: could not create a PGP subprocess --]\n\n"));
     }
     goto cleanup;
   }
@@ -1085,7 +1085,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
       p->goodsig = true;
     else
       p->goodsig = false;
-    state_attach_puts(_("[-- End of PGP output --]\n\n"), s);
+    state_attach_puts(s, _("[-- End of PGP output --]\n\n"));
   }
   mutt_file_fclose(&fp_pgp_err);
 
@@ -1216,7 +1216,8 @@ int pgp_class_encrypted_handler(struct Body *a, struct State *s)
   {
     mutt_perror(_("Can't create temporary file"));
     if (s->flags & MUTT_DISPLAY)
-      state_attach_puts(_("[-- Error: could not create temporary file --]\n"), s);
+      state_attach_puts(s,
+                        _("[-- Error: could not create temporary file --]\n"));
     return -1;
   }
 
@@ -1229,7 +1230,7 @@ int pgp_class_encrypted_handler(struct Body *a, struct State *s)
     if (s->flags & MUTT_DISPLAY)
     {
       state_attach_puts(
-          _("[-- The following data is PGP/MIME encrypted --]\n\n"), s);
+          s, _("[-- The following data is PGP/MIME encrypted --]\n\n"));
       mutt_protected_headers_handler(tattach, s);
     }
 
@@ -1264,8 +1265,8 @@ int pgp_class_encrypted_handler(struct Body *a, struct State *s)
 
     if (s->flags & MUTT_DISPLAY)
     {
-      state_puts("\n", s);
-      state_attach_puts(_("[-- End of PGP/MIME encrypted data --]\n"), s);
+      state_puts(s, "\n");
+      state_attach_puts(s, _("[-- End of PGP/MIME encrypted data --]\n"));
     }
 
     mutt_body_free(&tattach);

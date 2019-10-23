@@ -813,7 +813,7 @@ static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
     state->fp_in = fp;
     mutt_decode_attachment(b, state);
     if (C_AttachSep)
-      state_puts(C_AttachSep, state);
+      state_puts(state, C_AttachSep);
   }
   else
   {
@@ -826,7 +826,7 @@ static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
     mutt_file_copy_stream(fp_in, state->fp_out);
     mutt_file_fclose(&fp_in);
     if (C_AttachSep)
-      state_puts(C_AttachSep, state);
+      state_puts(state, C_AttachSep);
   }
 }
 
@@ -998,7 +998,7 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
               mutt_file_copy_stream(fp_in, state->fp_out);
               mutt_file_fclose(&fp_in);
               if (C_AttachSep)
-                state_puts(C_AttachSep, state);
+                state_puts(state, C_AttachSep);
             }
           }
           mutt_file_unlink(mutt_b2s(newfile));

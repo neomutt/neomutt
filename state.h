@@ -52,15 +52,15 @@ struct State
 
 #define state_set_prefix(state) ((state)->flags |= MUTT_PENDINGPREFIX)
 #define state_reset_prefix(state) ((state)->flags &= ~MUTT_PENDINGPREFIX)
-#define state_puts(str, state) fputs(str, (state)->fp_out)
-#define state_putc(str, state) fputc(str, (state)->fp_out)
+#define state_puts(STATE, STR) fputs(STR, (STATE)->fp_out)
+#define state_putc(STATE, STR) fputc(STR, (STATE)->fp_out)
 
-void state_mark_attach(struct State *s);
-void state_mark_protected_header (struct State *s);
-void state_attach_puts(const char *t, struct State *s);
-void state_prefix_putc(char c, struct State *s);
-int state_printf(struct State *s, const char *fmt, ...);
-int state_putws(const wchar_t *ws, struct State *s);
-void state_prefix_put(const char *buf, size_t buflen, struct State *s);
+void state_attach_puts          (struct State *s, const char *t);
+void state_mark_attach          (struct State *s);
+void state_mark_protected_header(struct State *s);
+void state_prefix_put           (struct State *s, const char *buf, size_t buflen);
+void state_prefix_putc          (struct State *s, char c);
+int  state_printf               (struct State *s, const char *fmt, ...);
+int  state_putws                (struct State *s, const wchar_t *ws);
 
 #endif /* MUTT_STATE_H */

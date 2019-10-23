@@ -45,7 +45,7 @@ void state_mark_attach(struct State *s)
   if ((s->flags & MUTT_DISPLAY) &&
       (!C_Pager || (mutt_str_strcmp(C_Pager, "builtin") == 0)))
   {
-    state_puts(AttachmentMarker, s);
+    state_puts(s, AttachmentMarker);
   }
 }
 
@@ -58,25 +58,25 @@ void state_mark_protected_header(struct State *s)
   if ((s->flags & MUTT_DISPLAY) &&
       (!C_Pager || (mutt_str_strcmp(C_Pager, "builtin") == 0)))
   {
-    state_puts(ProtectedHeaderMarker, s);
+    state_puts(s, ProtectedHeaderMarker);
   }
 }
 
 /**
  * state_attach_puts - Write a string to the state
- * @param t Text to write
  * @param s State to write to
+ * @param t Text to write
  */
-void state_attach_puts(const char *t, struct State *s)
+void state_attach_puts(struct State *s, const char *t)
 {
-  if (!t || !s || !s->fp_out)
+  if (!s || !s->fp_out || !t)
     return;
 
   if (*t != '\n')
     state_mark_attach(s);
   while (*t)
   {
-    state_putc(*t, s);
+    state_putc(s, *t);
     if ((*t++ == '\n') && *t)
       if (*t != '\n')
         state_mark_attach(s);
@@ -85,12 +85,12 @@ void state_attach_puts(const char *t, struct State *s)
 
 /**
  * state_putwc - Write a wide character to the state
- * @param wc Wide character to write
  * @param s  State to write to
+ * @param wc Wide character to write
  * @retval  0 Success
  * @retval -1 Error
  */
-static int state_putwc(wchar_t wc, struct State *s)
+static int state_putwc(struct State *s, wchar_t wc)
 {
   char mb[MB_LEN_MAX] = { 0 };
   int rc;
@@ -105,18 +105,18 @@ static int state_putwc(wchar_t wc, struct State *s)
 
 /**
  * state_putws - Write a wide string to the state
- * @param ws Wide string to write
  * @param s  State to write to
+ * @param ws Wide string to write
  * @retval  0 Success
  * @retval -1 Error
  */
-int state_putws(const wchar_t *ws, struct State *s)
+int state_putws(struct State *s, const wchar_t *ws)
 {
   const wchar_t *p = ws;
 
   while (p && (*p != L'\0'))
   {
-    if (state_putwc(*p, s) < 0)
+    if (state_putwc(s, *p) < 0)
       return -1;
     p++;
   }
@@ -125,19 +125,19 @@ int state_putws(const wchar_t *ws, struct State *s)
 
 /**
  * state_prefix_putc - Write a prefixed character to the state
- * @param c Character to write
  * @param s State to write to
+ * @param c Character to write
  */
-void state_prefix_putc(char c, struct State *s)
+void state_prefix_putc(struct State *s, char c)
 {
   if (s->flags & MUTT_PENDINGPREFIX)
   {
     state_reset_prefix(s);
     if (s->prefix)
-      state_puts(s->prefix, s);
+      state_puts(s, s->prefix);
   }
 
-  state_putc(c, s);
+  state_putc(s, c);
 
   if (c == '\n')
     state_set_prefix(s);
@@ -164,16 +164,16 @@ int state_printf(struct State *s, const char *fmt, ...)
 
 /**
  * state_prefix_put - Write a prefixed fixed-string to the State
+ * @param s      State to write to
  * @param buf    String to write
  * @param buflen Length of string
- * @param s    State to write to
  */
-void state_prefix_put(const char *buf, size_t buflen, struct State *s)
+void state_prefix_put(struct State *s, const char *buf, size_t buflen)
 {
   if (s->prefix)
   {
     while (buflen--)
-      state_prefix_putc(*buf++, s);
+      state_prefix_putc(s, *buf++);
   }
   else
     fwrite(buf, buflen, 1, s->fp_out);

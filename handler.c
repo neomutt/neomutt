@@ -134,14 +134,14 @@ static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *s)
       obl = sizeof(bufo);
       iconv(cd, NULL, NULL, &ob, &obl);
       if (ob != bufo)
-        state_prefix_put(bufo, ob - bufo, s);
+        state_prefix_put(s, bufo, ob - bufo);
     }
     return;
   }
 
   if (cd == (iconv_t)(-1))
   {
-    state_prefix_put(bufi, *l, s);
+    state_prefix_put(s, bufi, *l);
     *l = 0;
     return;
   }
@@ -155,7 +155,7 @@ static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *s)
     mutt_ch_iconv(cd, &ib, &ibl, &ob, &obl, 0, "?", NULL);
     if (ob == bufo)
       break;
-    state_prefix_put(bufo, ob - bufo, s);
+    state_prefix_put(s, bufo, ob - bufo);
   }
   memmove(bufi, ib, ibl);
   *l = ibl;
@@ -603,8 +603,8 @@ static int autoview_handler(struct Body *a, struct State *s)
     {
       while (fgets(buf, sizeof(buf), fp_out))
       {
-        state_puts(s->prefix, s);
-        state_puts(buf, s);
+        state_puts(s, s->prefix);
+        state_puts(s, buf);
       }
       /* check for data on stderr */
       if (fgets(buf, sizeof(buf), fp_err))
@@ -615,12 +615,12 @@ static int autoview_handler(struct Body *a, struct State *s)
           state_printf(s, _("[-- Autoview stderr of %s --]\n"), mutt_b2s(cmd));
         }
 
-        state_puts(s->prefix, s);
-        state_puts(buf, s);
+        state_puts(s, s->prefix);
+        state_puts(s, buf);
         while (fgets(buf, sizeof(buf), fp_err))
         {
-          state_puts(s->prefix, s);
-          state_puts(buf, s);
+          state_puts(s, s->prefix);
+          state_puts(s, buf);
         }
       }
     }
@@ -636,7 +636,7 @@ static int autoview_handler(struct Body *a, struct State *s)
           state_printf(s, _("[-- Autoview stderr of %s --]\n"), mutt_b2s(cmd));
         }
 
-        state_puts(buf, s);
+        state_puts(s, buf);
         mutt_file_copy_stream(fp_err, s->fp_out);
       }
     }
@@ -686,9 +686,9 @@ static int text_plain_handler(struct Body *b, struct State *s)
         buf[--len] = '\0';
     }
     if (s->prefix)
-      state_puts(s->prefix, s);
-    state_puts(buf, s);
-    state_putc('\n', s);
+      state_puts(s, s->prefix);
+    state_puts(s, buf);
+    state_putc(s, '\n');
   }
 
   FREE(&buf);
@@ -733,8 +733,8 @@ static int message_handler(struct Body *a, struct State *s)
     mutt_copy_hdr(s->fp_in, s->fp_out, off_start, b->parts->offset, chflags, s->prefix, 0);
 
     if (s->prefix)
-      state_puts(s->prefix, s);
-    state_putc('\n', s);
+      state_puts(s, s->prefix);
+    state_putc(s, '\n');
 
     rc = mutt_body_handler(b->parts, s);
   }
@@ -762,9 +762,8 @@ static int external_body_handler(struct Body *b, struct State *s)
     if (s->flags & MUTT_DISPLAY)
     {
       state_mark_attach(s);
-      state_puts(_("[-- Error: message/external-body has no access-type "
-                   "parameter --]\n"),
-                 s);
+      state_puts(s, _("[-- Error: message/external-body has no access-type "
+                      "parameter --]\n"));
       return 0;
     }
     else
@@ -861,7 +860,7 @@ static int external_body_handler(struct Body *b, struct State *s)
 
       snprintf(strbuf, sizeof(strbuf), str, TYPE(b->parts), b->parts->subtype,
                pretty_size, expiration);
-      state_attach_puts(strbuf, s);
+      state_attach_puts(s, strbuf);
       if (b->parts->filename)
       {
         state_mark_attach(s);
@@ -885,7 +884,7 @@ static int external_body_handler(struct Body *b, struct State *s)
          The "%s/%s" is a MIME type, e.g. "text/plain". */
       snprintf(strbuf, sizeof(strbuf), _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated external source has --]\n[-- expired. --]\n"),
                TYPE(b->parts), b->parts->subtype);
-      state_attach_puts(strbuf, s);
+      state_attach_puts(s, strbuf);
 
       CopyHeaderFlags chflags = CH_DECODE | CH_DISPLAY;
       if (C_Weed)
@@ -906,7 +905,7 @@ static int external_body_handler(struct Body *b, struct State *s)
          "LOCAL-FILE", "MAIL-SERVER". */
       snprintf(strbuf, sizeof(strbuf), _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated access-type %s is unsupported --]\n"),
                TYPE(b->parts), b->parts->subtype, access_type);
-      state_attach_puts(strbuf, s);
+      state_attach_puts(s, strbuf);
 
       CopyHeaderFlags chflags = CH_DECODE | CH_DISPLAY;
       if (C_Weed)
@@ -1077,7 +1076,7 @@ static int alternative_handler(struct Body *a, struct State *s)
         {
           count += 1;
           if (count == 1)
-            state_putc('\n', s);
+            state_putc(s, '\n');
 
           print_part_line(s, b, count);
         }
@@ -1089,9 +1088,8 @@ static int alternative_handler(struct Body *a, struct State *s)
   {
     /* didn't find anything that we could display! */
     state_mark_attach(s);
-    state_puts(_("[-- Error:  Could not display any parts of "
-                 "Multipart/Alternative --]\n"),
-               s);
+    state_puts(s, _("[-- Error:  Could not display any parts of "
+                    "Multipart/Alternative --]\n"));
     rc = -1;
   }
 
@@ -1244,11 +1242,11 @@ static int multipart_handler(struct Body *a, struct State *s)
         mutt_file_copy_bytes(s->fp_in, s->fp_out, p->offset - p->hdr_offset);
       }
       else
-        state_putc('\n', s);
+        state_putc(s, '\n');
     }
 
     rc = mutt_body_handler(p, s);
-    state_putc('\n', s);
+    state_putc(s, '\n');
 
     if (rc != 0)
     {
