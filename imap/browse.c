@@ -237,15 +237,15 @@ int imap_browse(const char *path, struct BrowserState *state)
   mutt_message(_("Getting folder list..."));
 
   /* skip check for parents when at the root */
-  if (buf[0] != '\0')
-  {
-    imap_fix_path(adata->delim, buf, mbox, sizeof(mbox));
-    n = mutt_str_strlen(mbox);
-  }
-  else
+  if (buf[0] == '\0')
   {
     mbox[0] = '\0';
     n = 0;
+  }
+  else
+  {
+    imap_fix_path(adata->delim, buf, mbox, sizeof(mbox));
+    n = mutt_str_strlen(mbox);
   }
 
   if (n)

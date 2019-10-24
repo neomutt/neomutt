@@ -183,13 +183,13 @@ void mutt_progress_init(struct Progress *progress, const char *msg,
   if (progress->inc == 0)
   {
     /* This progress bar does not increment - write the initial message */
-    if (progress->size != 0)
+    if (progress->size == 0)
     {
-      mutt_message("%s (%s)", progress->msg, progress->sizestr);
+      mutt_message(progress->msg);
     }
     else
     {
-      mutt_message(progress->msg);
+      mutt_message("%s (%s)", progress->msg, progress->sizestr);
     }
   }
   else

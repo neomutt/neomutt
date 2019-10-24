@@ -678,11 +678,7 @@ static void update_content_info(struct Content *info, struct ContentState *s,
     if (was_cr)
     {
       was_cr = false;
-      if (ch != '\n')
-      {
-        info->binary = true;
-      }
-      else
+      if (ch == '\n')
       {
         if (whitespace)
           info->space = true;
@@ -695,6 +691,8 @@ static void update_content_info(struct Content *info, struct ContentState *s,
         linelen = 0;
         continue;
       }
+
+      info->binary = true;
     }
 
     linelen++;

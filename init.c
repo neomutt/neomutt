@@ -2108,22 +2108,18 @@ static enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *
     if (buf->data && (*buf->data != '\0'))
     {
       /* Expand and subscribe */
-      if (imap_subscribe(mutt_expand_path(buf->data, buf->dsize), true) != 0)
-      {
-        mutt_buffer_printf(err, _("Could not subscribe to %s"), buf->data);
-        return MUTT_CMD_ERROR;
-      }
-      else
+      if (imap_subscribe(mutt_expand_path(buf->data, buf->dsize), true) == 0)
       {
         mutt_message(_("Subscribed to %s"), buf->data);
         return MUTT_CMD_SUCCESS;
       }
-    }
-    else
-    {
-      mutt_debug(LL_DEBUG1, "Corrupted buffer");
+
+      mutt_buffer_printf(err, _("Could not subscribe to %s"), buf->data);
       return MUTT_CMD_ERROR;
     }
+
+    mutt_debug(LL_DEBUG1, "Corrupted buffer");
+    return MUTT_CMD_ERROR;
   }
 
   mutt_buffer_addstr(err, _("No folder specified"));
@@ -2589,22 +2585,18 @@ static enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buff
     if (buf->data && (*buf->data != '\0'))
     {
       /* Expand and subscribe */
-      if (imap_subscribe(mutt_expand_path(buf->data, buf->dsize), false) != 0)
-      {
-        mutt_buffer_printf(err, _("Could not unsubscribe from %s"), buf->data);
-        return MUTT_CMD_ERROR;
-      }
-      else
+      if (imap_subscribe(mutt_expand_path(buf->data, buf->dsize), false) == 0)
       {
         mutt_message(_("Unsubscribed from %s"), buf->data);
         return MUTT_CMD_SUCCESS;
       }
-    }
-    else
-    {
-      mutt_debug(LL_DEBUG1, "Corrupted buffer");
+
+      mutt_buffer_printf(err, _("Could not unsubscribe from %s"), buf->data);
       return MUTT_CMD_ERROR;
     }
+
+    mutt_debug(LL_DEBUG1, "Corrupted buffer");
+    return MUTT_CMD_ERROR;
   }
 
   mutt_buffer_addstr(err, _("No folder specified"));

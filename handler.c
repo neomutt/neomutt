@@ -98,16 +98,16 @@ static void print_part_line(struct State *s, struct Body *b, int n)
   mutt_str_pretty_size(length, sizeof(length), b->length);
   state_mark_attach(s);
   char *charset = mutt_param_get(&b->parameter, "charset");
-  if (n != 0)
+  if (n == 0)
   {
-    state_printf(s, _("[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"),
-                 n, TYPE(b), b->subtype, charset ? "; charset=" : "",
+    state_printf(s, _("[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"),
+                 TYPE(b), b->subtype, charset ? "; charset=" : "",
                  charset ? charset : "", ENCODING(b->encoding), length);
   }
   else
   {
-    state_printf(s, _("[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"),
-                 TYPE(b), b->subtype, charset ? "; charset=" : "",
+    state_printf(s, _("[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"),
+                 n, TYPE(b), b->subtype, charset ? "; charset=" : "",
                  charset ? charset : "", ENCODING(b->encoding), length);
   }
 }

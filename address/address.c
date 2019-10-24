@@ -1075,16 +1075,16 @@ size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool disp
   {
     if (buflen == 0)
       goto done;
-    if (mutt_str_strcmp(addr->mailbox, "@") != 0)
+    if (mutt_str_strcmp(addr->mailbox, "@") == 0)
+    {
+      *pbuf = '\0';
+    }
+    else
     {
       const char *a = display ? mutt_addr_for_display(addr) : addr->mailbox;
       len = mutt_str_strfcpy(pbuf, a, buflen + 1 /* strfcpy terminates */);
       pbuf += len;
       buflen -= len;
-    }
-    else
-    {
-      *pbuf = '\0';
     }
 
     if (addr->personal || (addr->mailbox && (*addr->mailbox == '@')))

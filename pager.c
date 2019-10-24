@@ -2007,16 +2007,16 @@ static void pager_custom_redraw(struct Menu *pager_menu)
       {
         int flags = mutt_mb_is_lower(rd->searchbuf) ? REG_ICASE : 0;
         const int err = REG_COMP(&rd->search_re, rd->searchbuf, REG_NEWLINE | flags);
-        if (err != 0)
+        if (err == 0)
+        {
+          rd->search_flag = MUTT_SEARCH;
+          rd->search_back = Resize->search_back;
+        }
+        else
         {
           regerror(err, &rd->search_re, buf, sizeof(buf));
           mutt_error("%s", buf);
           rd->search_compiled = false;
-        }
-        else
-        {
-          rd->search_flag = MUTT_SEARCH;
-          rd->search_back = Resize->search_back;
         }
       }
       rd->lines = Resize->line;
@@ -2535,13 +2535,15 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
         break;
 
       case OP_PREV_PAGE:
-        if (rd.topline != 0)
+        if (rd.topline == 0)
+        {
+          mutt_message(_("Top of message is shown"));
+        }
+        else
         {
           rd.topline = up_n_lines(rd.pager_window->rows - C_PagerContext,
                                   rd.line_info, rd.topline, rd.hide_quoted);
         }
-        else
-          mutt_message(_("Top of message is shown"));
         break;
 
       case OP_NEXT_LINE:
