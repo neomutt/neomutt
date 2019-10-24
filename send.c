@@ -1344,17 +1344,18 @@ struct Address *mutt_default_from(void)
  */
 static int send_message(struct Email *e)
 {
-  char tempfile[PATH_MAX];
-  int i;
+  struct Buffer *tempfile = NULL;
+  int i = -1;
 #ifdef USE_SMTP
   short old_write_bcc;
 #endif
 
   /* Write out the message in MIME form. */
-  mutt_mktemp(tempfile, sizeof(tempfile));
-  FILE *fp_tmp = mutt_file_fopen(tempfile, "w");
+  tempfile = mutt_buffer_pool_get();
+  mutt_buffer_mktemp(tempfile);
+  FILE *fp_tmp = mutt_file_fopen(mutt_b2s(tempfile), "w");
   if (!fp_tmp)
-    return -1;
+    goto cleanup;
 
 #ifdef USE_SMTP
   old_write_bcc = C_WriteBcc;
@@ -1378,37 +1379,47 @@ static int send_message(struct Email *e)
   fputc('\n', fp_tmp); /* tie off the header. */
 
   if ((mutt_write_mime_body(e->content, fp_tmp) == -1))
-  {
-    mutt_file_fclose(&fp_tmp);
-    unlink(tempfile);
-    return -1;
-  }
+    goto cleanup;
 
-  if (fclose(fp_tmp) != 0)
+  if (mutt_file_fclose(&fp_tmp) != 0)
   {
-    mutt_perror(tempfile);
-    unlink(tempfile);
-    return -1;
+    mutt_perror(mutt_b2s(tempfile));
+    unlink(mutt_b2s(tempfile));
+    goto cleanup;
   }
 
 #ifdef MIXMASTER
   if (!STAILQ_EMPTY(&e->chain))
-    return mix_send_message(&e->chain, tempfile);
+  {
+    i = mix_send_message(&e->chain, mutt_b2s(tempfile));
+    goto cleanup;
+  }
+#endif
+
+#ifdef USE_NNTP
+  if (OptNewsSend)
+    goto sendmail;
 #endif
 
 #ifdef USE_SMTP
-#ifdef USE_NNTP
-  if (!OptNewsSend)
+  if (C_SmtpUrl)
+  {
+    i = mutt_smtp_send(&e->env->from, &e->env->to, &e->env->cc, &e->env->bcc,
+                       mutt_b2s(tempfile), (e->content->encoding == ENC_8BIT));
+    goto cleanup;
+  }
 #endif
-    if (C_SmtpUrl)
-    {
-      return mutt_smtp_send(&e->env->from, &e->env->to, &e->env->cc, &e->env->bcc,
-                            tempfile, (e->content->encoding == ENC_8BIT));
-    }
-#endif /* USE_SMTP */
 
+sendmail:
   i = mutt_invoke_sendmail(&e->env->from, &e->env->to, &e->env->cc, &e->env->bcc,
-                           tempfile, (e->content->encoding == ENC_8BIT));
+                           mutt_b2s(tempfile), (e->content->encoding == ENC_8BIT));
+cleanup:
+  if (fp_tmp)
+  {
+    mutt_file_fclose(&fp_tmp);
+    unlink(mutt_b2s(tempfile));
+  }
+  mutt_buffer_pool_release(&tempfile);
   return i;
 }
 
