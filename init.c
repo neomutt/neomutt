@@ -3907,3 +3907,16 @@ int reply_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                      cdef->name);
   return CSR_ERR_INVALID;
 }
+
+/**
+ * wrapheaders_validator - Validate the "wrap_headers" config variable - Implements ::cs_validator()
+ */
+int wrapheaders_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                          intptr_t value, struct Buffer *err)
+{
+  if ((value >= 78) && (value <= 998)) // Recommendation from RFC5233
+    return CSR_SUCCESS;
+
+  mutt_buffer_printf(err, _("Option %s must between 78 and 998 inclusive"), cdef->name);
+  return CSR_ERR_INVALID;
+}
