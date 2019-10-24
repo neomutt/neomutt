@@ -132,13 +132,15 @@ void ctx_update(struct Context *ctx)
       e->security = crypt_query(e->content);
     }
 
-    if (!ctx->pattern)
+    if (ctx->pattern)
+    {
+      e->vnum = -1;
+    }
+    else
     {
       m->v2r[m->vcount] = msgno;
       e->vnum = m->vcount++;
     }
-    else
-      e->vnum = -1;
     e->msgno = msgno;
 
     if (e->env->supersedes)

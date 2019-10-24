@@ -149,25 +149,25 @@ void config_account(void)
 
   mutt_buffer_reset(&err);
   rc = cs_subset_string_get(a->sub, he, &err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", err.data);
+    TEST_MSG("%s = %s\n", he->key.strkey, err.data);
   }
   else
   {
-    TEST_MSG("%s = %s\n", he->key.strkey, err.data);
+    TEST_MSG("%s\n", err.data);
   }
 
   he = cs_subset_lookup(a->sub, "Cherry");
   mutt_buffer_reset(&err);
   rc = cs_subset_string_get(a->sub, he, &err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", err.data);
+    TEST_MSG("%s = %s\n", he->key.strkey, err.data);
   }
   else
   {
-    TEST_MSG("%s = %s\n", he->key.strkey, err.data);
+    TEST_MSG("%s\n", err.data);
   }
 
   const char *name = "fruit:Apple";

@@ -417,7 +417,7 @@ static void x509_fingerprint(char *s, int l, X509 *cert, const EVP_MD *(*hashfun
   unsigned char md[EVP_MAX_MD_SIZE];
   unsigned int n;
 
-  if (!X509_digest(cert, hashfunc(), md, &n))
+  if (X509_digest(cert, hashfunc(), md, &n) == 0) // Failure
   {
     snprintf(s, l, "%s", _("[unable to calculate]"));
   }

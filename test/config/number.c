@@ -202,15 +202,15 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
     TEST_MSG("Setting %s to %s\n", name, NONULL(invalid[i]));
     mutt_buffer_reset(err);
     rc = cs_str_string_set(cs, name, invalid[i], err);
-    if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
+    if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
+    {
+      TEST_MSG("Expected error: %s\n", err->data);
+    }
+    else
     {
       TEST_MSG("%s = %d, set by '%s'\n", name, VarDamson, invalid[i]);
       TEST_MSG("This test should have failed\n");
       return false;
-    }
-    else
-    {
-      TEST_MSG("Expected error: %s\n", err->data);
     }
     short_line();
   }
@@ -219,14 +219,14 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
   mutt_buffer_reset(err);
   TEST_MSG("Setting %s to %s\n", name, "-42");
   rc = cs_str_string_set(cs, name, "-42", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
+  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("This test should have failed\n");
-    return false;
+    TEST_MSG("Expected error: %s\n", err->data);
   }
   else
   {
-    TEST_MSG("Expected error: %s\n", err->data);
+    TEST_MSG("This test should have failed\n");
+    return false;
   }
 
   log_line(__func__);
@@ -289,14 +289,14 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
   short_line();
   TEST_MSG("Setting %s to %d\n", name, value);
   rc = cs_str_native_set(cs, name, value, err);
-  if (!TEST_CHECK((rc & CSR_SUC_NO_CHANGE) != 0))
+  if (TEST_CHECK((rc & CSR_SUC_NO_CHANGE) != 0))
   {
-    TEST_MSG("This test should have failed\n");
-    return false;
+    TEST_MSG("Value of %s wasn't changed\n", name);
   }
   else
   {
-    TEST_MSG("Value of %s wasn't changed\n", name);
+    TEST_MSG("This test should have failed\n");
+    return false;
   }
 
   name = "Hawthorn";

@@ -1998,21 +1998,19 @@ int mutt_index_menu(void)
             mutt_message(_("Failed to create query, aborting"));
             break;
           }
-          else
-          {
-            main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint);
 
-            // If notmuch doesn't contain the message, we're left in an empty
-            // vfolder. No messages are found, but nm_read_entire_thread assumes
-            // a valid message-id and will throw a segfault.
-            //
-            // To prevent that, stay in the empty vfolder and print an error.
-            if (Context->mailbox->msg_count == 0)
-            {
-              mutt_error(_("failed to find message in notmuch database. try "
-                           "running 'notmuch new'."));
-              break;
-            }
+          main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint);
+
+          // If notmuch doesn't contain the message, we're left in an empty
+          // vfolder. No messages are found, but nm_read_entire_thread assumes
+          // a valid message-id and will throw a segfault.
+          //
+          // To prevent that, stay in the empty vfolder and print an error.
+          if (Context->mailbox->msg_count == 0)
+          {
+            mutt_error(_("failed to find message in notmuch database. try "
+                         "running 'notmuch new'."));
+            break;
           }
         }
         oldcount = Context->mailbox->msg_count;

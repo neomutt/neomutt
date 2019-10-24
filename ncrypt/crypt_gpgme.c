@@ -2404,16 +2404,16 @@ int pgp_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
   }
 
   *cur = decrypt_part(b, &s, *fp_out, false, &is_signed);
-  if (!*cur)
-  {
-    rc = -1;
-    mutt_file_fclose(fp_out);
-  }
-  else
+  if (*cur)
   {
     rewind(*fp_out);
     if (is_signed > 0)
       first_part->goodsig = true;
+  }
+  else
+  {
+    rc = -1;
+    mutt_file_fclose(fp_out);
   }
 
 bail:

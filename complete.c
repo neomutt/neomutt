@@ -203,13 +203,15 @@ int mutt_complete(char *buf, size_t buflen)
         mutt_buffer_strcpy(filepart, de->d_name);
 
         /* check to see if it is a directory */
-        if (!mutt_buffer_is_empty(dirpart))
+        if (mutt_buffer_is_empty(dirpart))
+        {
+          mutt_buffer_reset(tmp);
+        }
+        else
         {
           mutt_buffer_strcpy(tmp, mutt_b2s(exp_dirpart));
           mutt_buffer_addch(tmp, '/');
         }
-        else
-          mutt_buffer_reset(tmp);
         mutt_buffer_addstr(tmp, mutt_b2s(filepart));
         if ((stat(mutt_b2s(tmp), &st) != -1) && (st.st_mode & S_IFDIR))
           mutt_buffer_addch(filepart, '/');
