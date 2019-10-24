@@ -286,13 +286,12 @@ static struct Email *select_msg(struct Context *ctx)
  * @param[in]  hdr     envelope/attachment info for recalled message
  * @param[out] cur     if message was a reply, 'cur' is set to the message which 'hdr' is in reply to
  * @param[in]  fcc     fcc for the recalled message
- * @param[in]  fcclen  max length of fcc
  * @retval -1         Error/no messages
  * @retval 0          Normal exit
  * @retval #SEND_REPLY Recalled message is a reply
  */
 int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
-                       struct Email **cur, char *fcc, size_t fcclen)
+                       struct Email **cur, struct Buffer *fcc)
 {
   if (!C_Postponed)
     return -1;
@@ -386,8 +385,8 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
     else if ((plen = mutt_str_startswith(np->data, "X-Mutt-Fcc:", CASE_IGNORE)))
     {
       p = mutt_str_skip_email_wsp(np->data + plen);
-      mutt_str_strfcpy(fcc, p, fcclen);
-      mutt_pretty_mailbox(fcc, fcclen);
+      mutt_buffer_strcpy(fcc, p);
+      mutt_buffer_pretty_mailbox(fcc);
 
       /* note that x-mutt-fcc was present.  we do this because we want to add a
        * default fcc if the header was missing, but preserve the request of the

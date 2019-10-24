@@ -35,6 +35,6 @@ extern unsigned char C_Postpone;
 /* flags for mutt_compose_menu() */
 #define MUTT_COMPOSE_NOFREEHEADER (1 << 0)
 
-int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e_cur, int flags);
+int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, int flags);
 
 #endif /* MUTT_COMPOSE_H */

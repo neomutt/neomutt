@@ -681,12 +681,13 @@ void mutt_default_save(char *path, size_t pathlen, struct Email *e)
 /**
  * mutt_select_fcc - Select the FCC path for an email
  * @param path    Buffer for the path
- * @param pathlen Length of the buffer
  * @param e       Email
  */
-void mutt_select_fcc(char *path, size_t pathlen, struct Email *e)
+void mutt_select_fcc(struct Buffer *path, struct Email *e)
 {
-  if (addr_hook(path, pathlen, MUTT_FCC_HOOK, NULL, e) != 0)
+  mutt_buffer_alloc(path, PATH_MAX);
+
+  if (addr_hook(path->data, path->dsize, MUTT_FCC_HOOK, NULL, e) != 0)
   {
     const struct Address *to = TAILQ_FIRST(&e->env->to);
     const struct Address *cc = TAILQ_FIRST(&e->env->cc);
@@ -696,15 +697,18 @@ void mutt_select_fcc(char *path, size_t pathlen, struct Email *e)
       const struct Address *addr = to ? to : (cc ? cc : bcc);
       struct Buffer *buf = mutt_buffer_pool_get();
       mutt_safe_path(buf, addr);
-      mutt_path_concat(path, NONULL(C_Folder), mutt_b2s(buf), pathlen);
+      mutt_buffer_concat_path(path, NONULL(C_Folder), mutt_b2s(buf));
       mutt_buffer_pool_release(&buf);
-      if (!C_ForceName && (mx_access(path, W_OK) != 0))
-        mutt_str_strfcpy(path, C_Record, pathlen);
+      if (!C_ForceName && (mx_access(mutt_b2s(path), W_OK) != 0))
+        mutt_buffer_strcpy(path, C_Record);
     }
     else
-      mutt_str_strfcpy(path, C_Record, pathlen);
+      mutt_buffer_strcpy(path, C_Record);
   }
-  mutt_pretty_mailbox(path, pathlen);
+  else
+    mutt_buffer_fix_dptr(path);
+
+  mutt_buffer_pretty_mailbox(path);
 }
 
 /**

@@ -3242,7 +3242,7 @@ int mutt_write_multiple_fcc(const char *path, struct Email *e, const char *msgid
  * @retval -1 Failure
  */
 int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
-                   bool post, char *fcc, char **finalpath)
+                   bool post, const char *fcc, char **finalpath)
 {
   struct Message *msg = NULL;
   char tempfile[PATH_MAX];
