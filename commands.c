@@ -279,8 +279,8 @@ int mutt_display_message(struct MuttWindow *win, struct Mailbox *m, struct Email
     hfi.mailbox = m;
     hfi.pager_progress = ExtPagerProgress;
     hfi.email = e;
-    mutt_make_string_info(buf, sizeof(buf), win->cols,
-                          NONULL(C_PagerFormat), &hfi, MUTT_FORMAT_NO_FLAGS);
+    mutt_make_string_info(buf, sizeof(buf), win->cols, NONULL(C_PagerFormat),
+                          &hfi, MUTT_FORMAT_NO_FLAGS);
     fputs(buf, fp_out);
     fputs("\n\n", fp_out);
   }
