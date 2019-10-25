@@ -1,10 +1,114 @@
-2018-07-16  Richard Russon  <rich@flatcap.org>
+2019-10-25  Richard Russon  \<rich@flatcap.org\>
+* Features
+  - Add $fcc_before_send, defaulting unset
+  - Deprecate TLS 1.0 and 1.1 by default
+  - Turn on $ssl_force_tls by default
+  - Command line -z and -Z options to work with IMAP
+  - Add size display configuration variables
+  - Summary pages: version, set, set all, bind, macro
+  - CONDSTORE and QRESYNC support
+  - OAUTHBEARER support
+  - inotify support
+  - add index-format-hook
+  - Add $auto_subscribe variable
+  - Allow relative date hour/min/sec offsets
+  - Add attributes support on color declarations
+  - Style Menu Options
+  - Add new pattern type ~I for external searches
+  - Add \<named-mailboxes\> command
+* Changed Config
+  - folder_format
+  - pgp_use_gpg_agent
+  - shell
+  - ssl_force_tls
+  - ssl_use_tlsv1
+  - ssl_use_tlsv1_1
+  - status_format
+  - to_chars
+  - user_agent
+* New Config
+  - attach_save_dir
+  - attach_save_without_prompting
+  - autocrypt
+  - autocrypt_acct_format
+  - autocrypt_dir
+  - autocrypt_reply
+  - auto_subscribe
+  - crypt_chars
+  - crypt_protected_headers_read
+  - crypt_protected_headers_save
+  - crypt_protected_headers_subject
+  - crypt_protected_headers_write
+  - external_search_command
+  - fcc_before_send
+  - forward_attachments
+  - imap_condstore
+  - imap_fetch_chunk_size
+  - imap_oauth_refresh_command
+  - imap_qresync
+  - imap_rfc5161
+  - include_encrypted
+  - nm_flagged_tag
+  - nm_replied_tag
+  - pop_oauth_refresh_command
+  - sidebar_non_empty_mailbox_only
+  - size_show_bytes
+  - size_show_fractions
+  - size_show_mb
+  - size_units_on_left
+  - smtp_oauth_refresh_command
+  - ssl_use_tlsv1_3
+* New Commands
+  - index-format-hook
+  - named-mailboxes
+  - unbind
+  - unmacro
+* New Functions
+  - autocrypt-acct-menu
+  - autocrypt-menu
+  - compose-to-sender
+  - create-account
+  - delete-account
+  - descend-directory
+  - group-chat-reply
+  - mailbox-cycle
+  - mailbox-list
+  - toggle-active
+  - toggle-prefer-encrypt
+  - toggle-write
+  - vfolder-from-query-readonly
+* Bug Fixes
+  - Fix crashes
+  - Fix memory leaks
+  - Fix undefined behaviour
+  - Fix coverity defects
+* Translations
+  - 100% Lithuanian
+  - 100% Chinese (Simplified)
+  - 100% Portuguese (Brazil)
+  - 95% German
+  - 95% Finnish
+  - 95% Czech
+  - 91% Polish
+  - 78% Japanese
+  - 73% Dutch
+  - 72% Spanish
+  - 62% Swedish
+  - 55% Slovak
+* Docs
+  - OpenPGP and S/MIME configuration
+  - Quick-starter config section
+  - Autocrypt feature
+  - "Message Composition Flow" section to manual
+  - OAUTH support
+
+2018-07-16  Richard Russon  \<rich@flatcap.org\>
 * Features
   - \<check-stats\> function
 * Bug Fixes
   - Lots
 
-2018-06-22  Richard Russon  <rich@flatcap.org>
+2018-06-22  Richard Russon  \<rich@flatcap.org\>
 * Features
   - Expand variables inside backticks
   - Honour SASL-IR IMAP capability in SASL PLAIN
@@ -31,7 +135,7 @@
   - Add doxygen docs for more functions
   - Refactor more structs to use STAILQ
 
-2018-05-12  Richard Russon  <rich@flatcap.org>
+2018-05-12  Richard Russon  \<rich@flatcap.org\>
 * Features
   - echo command
   - Add $browser_abbreviate_mailboxes
@@ -83,7 +187,7 @@
   - Add a comment in auth_gss about RFCs and null-termination
   - Change prompt string for $crypt_verify_sig
 
-2018-03-23  Richard Russon  <rich@flatcap.org>
+2018-03-23  Richard Russon  \<rich@flatcap.org\>
 * Features
   - unify logging/messaging
   - add alert (blink) colors
@@ -118,16 +222,16 @@
   - Refactor to reduce variables' scope
   - Sort functions/config to make docs more legible
 
-2018-02-23  Richard Russon  <rich@flatcap.org>
+2018-02-23  Richard Russon  \<rich@flatcap.org\>
 * Features
-  - browser: `<goto-parent>` function bound to "p"
-  - editor: `<history-search>` function bound to "Ctrl-r"
+  - browser: `\<goto-parent\>` function bound to "p"
+  - editor: `\<history-search\>` function bound to "Ctrl-r"
   - Cygwin support: https://neomutt.org/distro/cygwin
   - openSUSE support: https://neomutt.org/distro/suse
   - Upstream Homebrew support: Very soon - https://neomutt.org/distro/homebrew
 * Bug Fixes
   - gmail server-size search
-  - nested-if: correctly handle "<" and ">" with %?
+  - nested-if: correctly handle "\<" and "\>" with %?
   - display of special chars
   - lua: enable myvars
   - for pgpewrap in default gpg.rc
@@ -176,14 +280,14 @@
   - Add history-search function, bound to ctrl-r
   - Avoid a potential integer overflow if a Content-Length value is huge
 
-2017-12-15  Richard Russon  <rich@flatcap.org>
+2017-12-15  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
   - Fix some regressions in the previous release
 
-2017-12-08  Richard Russon  <rich@flatcap.org>
+2017-12-08  Richard Russon  \<rich@flatcap.org\>
 * Features
   - Enhance ifdef feature to support my_ vars
-  - Add <edit-or-view-raw-message>
+  - Add \<edit-or-view-raw-message\>
   - Remove vim syntax file from the main repo
   - Support reading FQDN from mailname files
 * Bug Fixes
@@ -243,7 +347,7 @@
   - Remove useless else branch in the $smart_wrap code
   - Fix ansi escape sequences with both reset and color parameters
 
-2017-10-27  Richard Russon  <rich@flatcap.org>
+2017-10-27  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
   - variable type when using fread
   - prevent timezone overflow
@@ -298,7 +402,7 @@
   - url: make notmuch query string parser generic
   - Wrap dirname(3) inside a mutt_dirname() function
 
-2017-10-13  Richard Russon  <rich@flatcap.org>
+2017-10-13  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
   - crash using uncolor
   - Sort the folders list when browsing an IMAP server
@@ -307,7 +411,7 @@
   - Do not fail if deflate is not in libz
   - Support EXTRA_CFLAGS and EXTRA_LDFLAGS, kill unused variable
 
-2017-10-06  Richard Russon  <rich@flatcap.org>
+2017-10-06  Richard Russon  \<rich@flatcap.org\>
 * Features
   - Add IMAP keywords support
 * Bug Fixes
@@ -348,11 +452,11 @@
   - Close the imap socket for the selected mailbox on error
   - Add missing IMAP_CMD_POLL flag in imap mailbox check
   - Change maildir and mh check_mailbox to use dynamic sized hash
-  - Fix uses of context->changed as a counter
+  - Fix uses of context-\>changed as a counter
   - Make cmd_parse_fetch() more precise about setting reopen/check flags
   - Enable $reply_self for group-reply, even with $metoo unset
 
-2017-09-12  Richard Russon  <rich@flatcap.org>
+2017-09-12  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
   - broken check on resend message
   - crash in vfolder-from-query
@@ -361,7 +465,7 @@
   - fix warnings raised by gcc7
   - notmuch: add support for the v5 API
 
-2017-09-07  Richard Russon  <rich@flatcap.org>
+2017-09-07  Richard Russon  \<rich@flatcap.org\>
 * Contrib
   - Add guix build support
 * Bug Fixes
@@ -404,7 +508,7 @@
   - Add option to run command to query attachment mime type
   - Add warning about using inline pgp with format=flowed
 
-2017-07-14  Richard Russon  <rich@flatcap.org>
+2017-07-14  Richard Russon  \<rich@flatcap.org\>
 * Translations
   - Update German translation
 * Docs
@@ -416,7 +520,7 @@
 * Upstream
   - Fix crash when $postponed is on another server.
 
-2017-07-07  Richard Russon  <rich@flatcap.org>
+2017-07-07  Richard Russon  \<rich@flatcap.org\>
 * Features
   - Support Gmail's X-GM-RAW server-side search
   - Include pattern for broken threads
@@ -434,7 +538,7 @@
   - Uses CurrentFolder to populate LastDir with IMAP
   - stabilise sidebar sort order
   - colour emails with a '+' in them
-  - the padding expando '%>'
+  - the padding expando '%\>'
   - Do not set old flag if mark_old is false
   - maildir creation
   - Decode CRLF line endings to LF when copying headers
@@ -451,7 +555,7 @@
 * Docs
   - update credits
   - limitations of new-mail %f expando
-  - escape <>'s in nested conditions
+  - escape \<\>'s in nested conditions
   - add code of conduct
   - fix ifdef examples
   - update mailmap
@@ -488,7 +592,7 @@
   - tidy some mailbox code
   - tidy the version strings
 * Upstream
-  - Add ~<() and ~>() immediate parent/children patterns
+  - Add ~\<() and ~\>() immediate parent/children patterns
   - Add L10N comments to the GNUTLS certificate prompt
   - Add more description for the %S and %Z $index_format characters
   - Add config vars for forwarded message attribution intro/trailer
@@ -501,7 +605,7 @@
   - Rename 'sign as' to 'Sign as'; makes compose menu more consistent
   - Change the compose menu fields to be dynamically padded
 
-2017-06-09  Richard Russon  <rich@flatcap.org>
+2017-06-09  Richard Russon  \<rich@flatcap.org\>
 * Contrib
   - unbind mappings before overwriting in vim-keys
 * Bug Fixes
@@ -528,7 +632,7 @@
   - Enable TEXTDOMAINDIR override to make translation testing easier
   - Fix "format string is not a string literal" warnings
 
-2017-06-02  Richard Russon  <rich@flatcap.org>
+2017-06-02  Richard Russon  \<rich@flatcap.org\>
 * Features
   - Warn on bindkey aliasing
   - Drop PATCHES, tidy 'mutt -v' output
@@ -636,7 +740,7 @@
   - Automatic post-release commit for mutt-1.8.3
   - Add note about message scoring and thread patterns
 
-2017-04-28  Richard Russon  <rich@flatcap.org>
+2017-04-28  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
   - Fix and simplify handling of GPGME in configure.ac (@gahr)
 * Docs
@@ -645,7 +749,7 @@
   - Fix km_error_key() infinite loop and unget buffer pollution
   - Fix error message when opening a mailbox with no read permission
 
-2017-04-21  Richard Russon  <rich@flatcap.org>
+2017-04-21  Richard Russon  \<rich@flatcap.org\>
 * Features
   - add lua scripting
   - add command-line batch mode
@@ -677,7 +781,7 @@
   - bug: don't pass large object by value
   - fix: use correct buffer size
   - shadow variables
-  - 0 -> NULL
+  - 0 -\> NULL
 * Docs
   - many minor updates
   - sync translations
@@ -698,7 +802,7 @@
   - drop obsolete m4 scripts
   - don't look for lua libs unless asked for
   - workaround slang warnings
-  - lower the gettext requirement 0.18 -> 0.17
+  - lower the gettext requirement 0.18 -\> 0.17
   - add keymap_alldefs.h to BUILT_SOURCES
   - fix make dist distcheck
   - Remove -Iimap from CFLAGS and include imap/imap.h explicitly
@@ -834,7 +938,7 @@
   - Fix GPG_TTY to be added to envlist
   - automatic post-release commit for mutt-182
 
-2017-03-06  Richard Russon  <rich@flatcap.org>
+2017-03-06  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
   - Get the correct buffer size under fmemopen/torify (#441)
   - Use static inlines to make gcc 4.2.1 happy
@@ -851,7 +955,7 @@
   - Prevent segv if open-appending to an mbox fails. (closes #3918)
   - Clear out extraneous errors before SSL_connect() (see #3916)
 
-2017-02-25  Richard Russon  <rich@flatcap.org>
+2017-02-25  Richard Russon  \<rich@flatcap.org\>
 * Features
   - Add option $show_multipart_alternative
   - notmuch: Allow to use untransformed tag for color
@@ -942,14 +1046,14 @@
   - Fix build for bdb.
   - Create function to free header cache data.
   - Add Kyoto Cabinet support to the header cache.
-  - Prevent null pointer exception for h->ai_canonname
+  - Prevent null pointer exception for h-\>ai_canonname
   - Show SHA1 fp in interactive cert check menu.
   - Fix potential cert memory leak in check_certificate_by_digest().
   - Plug memory leak in weed-expired-certs code.
   - Filter expired local certs for OpenSSL verification.
   - Change "allow_dups" into a flag at hash creation.
 
-2017-02-06  Richard Russon  <rich@flatcap.org>
+2017-02-06  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
   - Unicode 0x202F is a non-break space too (#358) (@gahr)
   - improve readability of find_subject() (@toogley)
@@ -965,10 +1069,10 @@
 * Docs
   - Update documentation about modify-labels-then-hide (@bbenne10)
 
-2017-01-28  Richard Russon  <rich@flatcap.org>
+2017-01-28  Richard Russon  \<rich@flatcap.org\>
 * Features
   - Add option for missing subject replacement
-  - notmuch: Allow <modify-labels> to toggle labels
+  - notmuch: Allow \<modify-labels\> to toggle labels
   - Support for aborting mailbox loading
   - Do a mailbox check after shell escape
   - Support of relative paths sourcing and cyclic source detection
@@ -997,7 +1101,7 @@
   - reformat the source to mutt standards
   - appease check_sec.sh
 
-2017-01-13  Richard Russon  <rich@flatcap.org>
+2017-01-13  Richard Russon  \<rich@flatcap.org\>
 * Features
   - Allow custom status flags in index_format
   - $from_chars highlights differences in authorship
@@ -1056,7 +1160,7 @@
   - Create MbTable type for multibyte character arrays. (see #3024)
   - Make to_chars and status_chars accept mulitibyte characters. (closes #3024)
 
-2016-11-26  Richard Russon  <rich@flatcap.org>
+2016-11-26  Richard Russon  \<rich@flatcap.org\>
 * Features
   - Upstream adoption of compress
   - Multiple hcache backends and run-time selection
@@ -1085,7 +1189,7 @@
   - add a version number to the generated vimrc
   - fix links in README
   - don't use smart quotes in manual examples
-  - <escape> and \e means refers to both alt and escape key
+  - \<escape\> and \e means refers to both alt and escape key
 * Build
   - Travis: test messages
   - Add option to disable translation messages
@@ -1098,19 +1202,19 @@
 * Upstream
   - attach_format: add new %F placeholder
   - Compose: add operation to rename an attachment
-  - Chain %d->%F->%f in the attachment menu
+  - Chain %d-\>%F-\>%f in the attachment menu
   - Move mbox close-append logic inside mbox_close_mailbox()
   - When $flag_safe is set, flagged messages cannot be deleted
   - Adds the '@' pattern modifier to limit matches to known aliases
-  - Adds <mark-message> binding to create "hotkeys" for messages
+  - Adds \<mark-message\> binding to create "hotkeys" for messages
   - Updated requirement on the C compiler
   - Fix mark-message translation and keybind menu
-  - More openssl1.1 fixes: remove uses of X509->name in debugging. (closes #3870)
+  - More openssl1.1 fixes: remove uses of X509-\>name in debugging. (closes #3870)
   - Don't close stderr when opening a tunnel. (closes #3726)
   - Minor resource and error logic cleanup in tunnel_socket_open()
   - Make sure that the output of X509_NAME_oneline is null-terminated
 
-2016-11-04  Richard Russon  <rich@flatcap.org>
+2016-11-04  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
   - don't crash when the imap connection dies
 * Upstream
@@ -1125,7 +1229,7 @@
   - Fixed issue from changeset 4da647a80c55. (closes #3892)
   - Define PATH_MAX, it's missing on the GNU Hurd. (closes #3815)
 
-2016-10-28  Richard Russon  <rich@flatcap.org>
+2016-10-28  Richard Russon  \<rich@flatcap.org\>
 * Features
   - nntp: use safe_{fopen,fclose}
   - nntp: fix resource leak
@@ -1162,7 +1266,7 @@
   - Change sidebar to only match $folder prefix on a $sidebar_divider_char. (closes #3887)
   - Actually fix gpgme segfault in create_recipient_set().
 
-2016-10-14  Richard Russon  <rich@flatcap.org>
+2016-10-14  Richard Russon  \<rich@flatcap.org\>
 * Features
   - sidebar: Make sure INBOX appears first in the list.
   - notmuch: Synchronise tags to flags
@@ -1170,7 +1274,7 @@
   - updates when pager is open
   - crash when neither $spoolfile, $folder are set
   - forgotten-attachment: fix empty regex expression
-  - status-color when pager_index_lines > 0
+  - status-color when pager_index_lines \> 0
   - buffer underrun when no menu item is selected
   - crash handling keywords/labels
 * Docs
@@ -1184,11 +1288,11 @@
   - Updated Czech translation.
   - Preserve forwarded attachment names in d_filename.
 
-2016-10-03  Richard Russon  <rich@flatcap.org>
+2016-10-03  Richard Russon  \<rich@flatcap.org\>
 * Build
   - Fix install and dist targets
 
-2016-10-02  Richard Russon  <rich@flatcap.org>
+2016-10-02  Richard Russon  \<rich@flatcap.org\>
 * Features
   - Kyoto Cabinet header cache
   - Compose to Sender
@@ -1227,7 +1331,7 @@
   - Use body color for gpgme output. (closes #3872)
   - Fix gpgme segfault when querying candidates with a '+' in the address. (closes #3873)
 
-2016-09-16  Richard Russon  <rich@flatcap.org>
+2016-09-16  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
   - Avoid segfault when listing mailboxes on startup
     John Swinbank
@@ -1253,7 +1357,7 @@
   - Add unsidebar_whitelist command
   - Remove the $locale configuration variable
   - Add $attribution_locale configuration variable
-  - Add missing include <locale.h> to send.c and edit.c
+  - Add missing include \<locale.h\> to send.c and edit.c
   - Filter out zero width no-break space (U+FEFF)
   - Update a confusing and obsolete comment
   - Moves mutt_copy_list to muttlib.c, where it belongs
@@ -1261,7 +1365,7 @@
   - Preserve message-id and mft headers for recalled messages
   - Fix openssl 1.1 compilation issues
 
-2016-09-10  Richard Russon  <rich@flatcap.org>
+2016-09-10  Richard Russon  \<rich@flatcap.org\>
 * New Features
   - Colouring Attachments with Regex
     Guillaume Brogi
@@ -1302,7 +1406,7 @@
   - Autoconf: always check for getaddrinfo().
   - Add missing sidebar contrib sample files to dist tarball.
 
-2016-08-27  Richard Russon  <rich@flatcap.org>
+2016-08-27  Richard Russon  \<rich@flatcap.org\>
 * NeoMutt for Mutt 1.7.0
 * Build
   - Disable fmemopen until bug is fixed
@@ -1310,7 +1414,7 @@
   - Keybase portability improvements
     Joshua Jordi (JakkinStewart)
 
-2016-08-21  Richard Russon  <rich@flatcap.org>
+2016-08-21  Richard Russon  \<rich@flatcap.org\>
 * Contrib
   - Updates to Keybase Support
     Joshua Jordi (JakkinStewart)
@@ -1334,7 +1438,7 @@
   - Create Distribution Tarballs with autogen sources
     Darshit Shah (darnir)
 
-2016-08-08  Richard Russon  <rich@flatcap.org>
+2016-08-08  Richard Russon  \<rich@flatcap.org\>
 * New Features
   - Timeout Hook - Run a command periodically
   - Multiple fcc - Save multiple copies of outgoing mail
@@ -1361,7 +1465,7 @@
   - Big overhaul of the build
     Darshit Shah (darnir)
 
-2016-07-23  Richard Russon  <rich@flatcap.org>
+2016-07-23  Richard Russon  \<rich@flatcap.org\>
 * New Motto: "Teaching an Old Dog New Tricks"
   - Thanks to Alok Singh
 * New Features
@@ -1375,14 +1479,14 @@
   - Add sidebar_format flag '%n' to display 'N' on new mail.
   - fix index_format truncation problem
   - Fix compiler warnings due to always true condition
-  - Change sidebar next/prev-new to look at mailbox->new too.
+  - Change sidebar next/prev-new to look at mailbox-\>new too.
   - Change the default for sidebar_format to use %n.
   - sidebar "unsorted" order to match Mailbox list order.
   - Include ncurses tinfo library if found.
   - Sidebar width problem
   - sidebar crash for non-existent mailbox
   - Temporary compatibility workaround
-  - Reset mailbox->new for the current mailbox in IMAP.
+  - Reset mailbox-\>new for the current mailbox in IMAP.
   - version.sh regression
   - crash when notmuch tries to read a message
   - status line wrapping
@@ -1395,11 +1499,11 @@
     https://github.com/neomutt/travis-build
     Now we have central control over what gets built
 
-2016-07-09  Richard Russon  <rich@flatcap.org>
+2016-07-09  Richard Russon  \<rich@flatcap.org\>
 * Bug-fixes
   - This release was a temporary measure
 
-2016-06-11  Richard Russon  <rich@flatcap.org>
+2016-06-11  Richard Russon  \<rich@flatcap.org\>
 * Change in behaviour
   - Temporarily disable $sidebar_refresh_time
     Unfortunately, this was causing too many problems.
@@ -1418,18 +1522,18 @@
   - Sync whitespace to mutt/default
   - Alter ChangeLog date format to simplify Makefiles
   - Use the new notmuch functions that return a status
-  - Rename sidebar functions sb_* -> mutt_sb_*
+  - Rename sidebar functions sb_* -\> mutt_sb_*
 
-2016-05-23  Richard Russon  <rich@flatcap.org>
+2016-05-23  Richard Russon  \<rich@flatcap.org\>
 * New Features:
   - Keywords: Email Label/Keywords/Tagging
   - Compress: Compressed mailboxes support
   - NNTP: Talk to a usenet news server
-  - Separate mappings for <enter> and <return>
+  - Separate mappings for \<enter\> and \<return\>
   - New configure option: --enable-quick-build
   - Various build fixes
 
-2016-05-02  Richard Russon  <rich@flatcap.org>
+2016-05-02  Richard Russon  \<rich@flatcap.org\>
 * Update for Mutt-1.6.0
 * Bug Fixes:
   - Build for Notmuch works if Sidebar is disabled
@@ -1437,7 +1541,7 @@
   - sidebar-next-new, etc, only find *new* mail, as documented
   - Notmuch supports *very* long queries
 
-2016-04-16  Richard Russon  <rich@flatcap.org>
+2016-04-16  Richard Russon  \<rich@flatcap.org\>
 * Big Bugfix Release
 * Bug Fixes:
   - Fix crash caused by sidebar_folder_indent
@@ -1460,26 +1564,26 @@
     (it is dependent on it, for now)
   - A couple of bug fixes from mutt/stable
 
-2016-04-04  Richard Russon  <rich@flatcap.org>
+2016-04-04  Richard Russon  \<rich@flatcap.org\>
 * Update for Mutt-1.6.0
 * No other changes in this release
 
-2016-03-28  Richard Russon  <rich@flatcap.org>
+2016-03-28  Richard Russon  \<rich@flatcap.org\>
 * New Features
   - skip-quoted          - skip quoted text
   - limit-current-thread - limit index view to current thread
 * Sidebar Intro - A Gentle Introduction to the Sidebar (with pictures).
 
-2016-03-20  Richard Russon  <rich@flatcap.org>
+2016-03-20  Richard Russon  \<rich@flatcap.org\>
 * Numerous small bugfixes
 * TravisCI integration
 
-2016-03-17  Richard Russon  <rich@flatcap.org>
+2016-03-17  Richard Russon  \<rich@flatcap.org\>
 * New Features
   - notmuch - email search support
   - ifdef   - improvements
 
-2016-03-07  Richard Russon  <rich@flatcap.org>
+2016-03-07  Richard Russon  \<rich@flatcap.org\>
 * First NeoMutt release
 * List of Features:
   - bug-fixes    - various bug fixes
