@@ -3074,10 +3074,10 @@ static int bounce_message(FILE *fp, struct Email *e, struct AddressList *to,
     return -1;
 
   int rc = 0;
-  char tempfile[PATH_MAX];
 
-  mutt_mktemp(tempfile, sizeof(tempfile));
-  FILE *fp_tmp = mutt_file_fopen(tempfile, "w");
+  struct Buffer *tempfile = mutt_buffer_pool_get();
+  mutt_buffer_mktemp(tempfile);
+  FILE *fp_tmp = mutt_file_fopen(mutt_b2s(tempfile), "w");
   if (fp_tmp)
   {
     char date[128];
@@ -3099,19 +3099,21 @@ static int bounce_message(FILE *fp, struct Email *e, struct AddressList *to,
     mutt_file_copy_bytes(fp, fp_tmp, e->content->length);
     if (mutt_file_fclose(&fp_tmp) != 0)
     {
-      mutt_perror(tempfile);
-      unlink(tempfile);
+      mutt_perror(mutt_b2s(tempfile));
+      unlink(mutt_b2s(tempfile));
       return -1;
     }
 #ifdef USE_SMTP
     if (C_SmtpUrl)
-      rc = mutt_smtp_send(env_from, to, NULL, NULL, tempfile, e->content->encoding == ENC_8BIT);
+      rc = mutt_smtp_send(env_from, to, NULL, NULL, mutt_b2s(tempfile),
+                          e->content->encoding == ENC_8BIT);
     else
 #endif
-      rc = mutt_invoke_sendmail(env_from, to, NULL, NULL, tempfile,
+      rc = mutt_invoke_sendmail(env_from, to, NULL, NULL, mutt_b2s(tempfile),
                                 e->content->encoding == ENC_8BIT);
   }
 
+  mutt_buffer_pool_release(&tempfile);
   return rc;
 }
 
