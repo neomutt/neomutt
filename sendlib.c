@@ -2613,10 +2613,10 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
 
   if ((C_SendmailWait >= 0) && tempfile)
   {
-    char tmp[PATH_MAX];
-
-    mutt_mktemp(tmp, sizeof(tmp));
-    *tempfile = mutt_str_strdup(tmp);
+    struct Buffer *tmp = mutt_buffer_pool_get();
+    mutt_buffer_mktemp(tmp);
+    *tempfile = mutt_buffer_strdup(tmp);
+    mutt_buffer_pool_release(&tmp);
   }
 
   pid_t pid = fork();
