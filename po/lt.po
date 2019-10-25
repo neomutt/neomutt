@@ -592,12 +592,12 @@ msgstr "įprastos spalvos nepalaikomos"
 #: color.c:1275
 #, c-format
 msgid "Maximum quoting level is %d"
-msgstr ""
+msgstr "Giliausias cituojamo teksto lygmuo yra %d"
 
 #: color.c:1312
-#, fuzzy, c-format
+#, c-format
 msgid "%s: invalid number: %s"
-msgstr "Klaida: score: blogas skaičius"
+msgstr "%s: blogas skaičius: %s"
 
 #. L10N: Used for the $crypt_verify_sig prompt
 #: commands.c:225
@@ -1054,9 +1054,9 @@ msgstr "<nėra grandinės>"
 #. error message.
 #.
 #: compose.c:599
-#, fuzzy, c-format
+#, c-format
 msgid "Attachment #%d no longer exists: %s"
-msgstr "%s [#%d] nebeegzistuoja"
+msgstr "Priedas #%d nebeegzistuoja: %s"
 
 #. L10N:
 #. This message is displayed in the compose menu when an attachment
@@ -1066,9 +1066,9 @@ msgstr "%s [#%d] nebeegzistuoja"
 #. prompt question.
 #.
 #: compose.c:619
-#, fuzzy, c-format
+#, c-format
 msgid "Attachment #%d modified. Update encoding for %s?"
-msgstr "%s [#%d] pasikeitė. Atnaujinti koduotę?"
+msgstr "Priedas #%d pasikeitė. Atnaujinti koduotę %s?"
 
 #: compose.c:714
 msgid "-- Attachments"
@@ -2779,9 +2779,9 @@ msgid "Error in command line: %s"
 msgstr "Klaida komandinėje eilutėje: %s"
 
 #: init.c:296
-#, fuzzy, c-format
+#, c-format
 msgid "Warning in command line: %s"
-msgstr "Klaida komandinėje eilutėje: %s"
+msgstr "Įspėjimas komandinėje eilutėje: %s"
 
 #: init.c:407
 msgid "unable to determine nodename via uname()"
@@ -6865,7 +6865,6 @@ msgstr "Įprastos parinktys:"
 msgid "Compile options:"
 msgstr "Kompiliavimo parinktys:"
 
-#, fuzzy
 #~ msgid "Error running \"%s\"!"
 #~ msgstr "Klaida vykdant \"%s\""
 
