@@ -16,7 +16,7 @@ use system cc cc-lib mutt-gettext mutt-iconv pkg-config
 ###############################################################################
 # Names and versions
 define PACKAGE          "neomutt"
-define PACKAGE_VERSION  "20180716"
+define PACKAGE_VERSION  "2019-10-25"
 define BUGS_ADDRESS     "neomutt-devel@neomutt.org"
 
 # Subdirectories that contain additional Makefile.autosetup files
@@ -1151,8 +1151,7 @@ define VPATH $vpath
 ###############################################################################
 # Define package timestamp (UTC) based on PACKAGE_VERSION for:
 # doc/neomuttrc.5, doc/neomutt.1
-define PACKAGE_DATE \
-  [regsub {(....)(..)(..)} [get-define PACKAGE_VERSION] {\1-\2-\3}]
+define PACKAGE_DATE [get-define PACKAGE_VERSION]
 
 ###############################################################################
 # Generate Makefile and config.h
