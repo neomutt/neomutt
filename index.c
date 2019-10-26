@@ -604,6 +604,28 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
     menu->current = ci_first_message();
 }
 
+
+/**
+ * mailbox_index_observer - Listen for Mailbox changes - Implements ::observer_t()
+ *
+ * If a Mailbox is closed, then set a pointer to NULL.
+ */
+int mailbox_index_observer(struct NotifyCallback *nc)
+{
+  if (!nc)
+    return -1;
+
+  if ((nc->event_type != NT_MAILBOX) || (nc->event_subtype != MBN_CLOSED))
+    return 0;
+
+  struct Mailbox **ptr = (struct Mailbox **) nc->data;
+  if (!ptr || !*ptr)
+    return 0;
+
+  *ptr = NULL;
+  return 0;
+}
+
 /**
  * main_change_folder - Change to a different mailbox
  * @param menu       Current Menu
@@ -697,7 +719,20 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
    * mutt_push/pop_current_menu() functions.  If that changes, the menu
    * would need to be reset here, and the pager cleanup code after the
    * switch statement would need to be run. */
+  if (m)
+  {
+    /* If the `folder-hook` were to call `unmailboxes`, then the Mailbox (`m`)
+     * could be deleted, leaving `m` dangling. */
+    // TODO: Refactor this function to avoid the need for an observer
+    notify_observer_add(m->notify, NT_MAILBOX, 0, mailbox_index_observer, IP &m);
+  }
   mutt_folder_hook(buf, m ? m->name : NULL);
+  if (m)
+  {
+    /* `m` is still valid, but we won't need the observer again before the end
+     * of the function. */
+    notify_observer_remove(m->notify, mailbox_index_observer, IP &m);
+  }
 
   int flags = MUTT_OPEN_NO_FLAGS;
   if (C_ReadOnly || (op == OP_MAIN_CHANGE_FOLDER_READONLY))
