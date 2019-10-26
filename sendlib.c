@@ -3259,7 +3259,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
                    bool post, const char *fcc, char **finalpath)
 {
   struct Message *msg = NULL;
-  char tempfile[PATH_MAX];
+  struct Buffer *tempfile = NULL;
   FILE *fp_tmp = NULL;
   int rc = -1;
   bool need_mailbox_cleanup = false;
@@ -3287,11 +3287,12 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
    * the message body begins with "From " */
   if ((ctx_fcc->mailbox->magic == MUTT_MMDF) || (ctx_fcc->mailbox->magic == MUTT_MBOX))
   {
-    mutt_mktemp(tempfile, sizeof(tempfile));
-    fp_tmp = mutt_file_fopen(tempfile, "w+");
+    tempfile = mutt_buffer_pool_get();
+    mutt_buffer_mktemp(tempfile);
+    fp_tmp = mutt_file_fopen(mutt_b2s(tempfile), "w+");
     if (!fp_tmp)
     {
-      mutt_perror(tempfile);
+      mutt_perror(mutt_b2s(tempfile));
       mx_mbox_close(&ctx_fcc);
       goto done;
     }
@@ -3420,9 +3421,9 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     fflush(fp_tmp);
     if (ferror(fp_tmp))
     {
-      mutt_debug(LL_DEBUG1, "%s: write failed\n", tempfile);
+      mutt_debug(LL_DEBUG1, "%s: write failed\n", mutt_b2s(tempfile));
       mutt_file_fclose(&fp_tmp);
-      unlink(tempfile);
+      unlink(mutt_b2s(tempfile));
       mx_msg_commit(ctx_fcc->mailbox, msg); /* XXX really? */
       mx_msg_close(ctx_fcc->mailbox, &msg);
       mx_mbox_close(&ctx_fcc);
@@ -3441,11 +3442,11 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     /* copy the body and clean up */
     rewind(fp_tmp);
     rc = mutt_file_copy_stream(fp_tmp, msg->fp);
-    if (fclose(fp_tmp) != 0)
+    if (mutt_file_fclose(&fp_tmp) != 0)
       rc = -1;
     /* if there was an error, leave the temp version */
     if (rc == 0)
-      unlink(tempfile);
+      unlink(mutt_b2s(tempfile));
   }
   else
   {
@@ -3474,6 +3475,13 @@ done:
   if (Context && Context->mailbox->path)
     mutt_folder_hook(Context->mailbox->path, Context->mailbox->desc);
 #endif
+
+  if (fp_tmp)
+  {
+    mutt_file_fclose(&fp_tmp);
+    unlink(mutt_b2s(tempfile));
+  }
+  mutt_buffer_pool_release(&tempfile);
 
   return rc;
 }
