@@ -75,6 +75,7 @@ struct Group *mutt_pattern_group(const char *pat)
     g = mutt_mem_calloc(1, sizeof(struct Group));
     g->name = mutt_str_strdup(pat);
     STAILQ_INIT(&g->rs);
+    TAILQ_INIT(&g->al);
     mutt_hash_insert(Groups, g->name, g);
   }
 
@@ -186,6 +187,7 @@ static void group_add_addrlist(struct Group *g, const struct AddressList *al)
   struct Address *a = NULL, *tmp = NULL;
   TAILQ_FOREACH_SAFE(a, &al_new, entries, tmp)
   {
+    TAILQ_REMOVE(&al_new, a, entries);
     mutt_addrlist_append(&g->al, a);
   }
   assert(TAILQ_EMPTY(&al_new));
