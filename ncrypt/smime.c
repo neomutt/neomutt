@@ -1279,9 +1279,10 @@ static char *smime_extract_certificate(const char *infile)
  * @param infile File to read
  * @retval ptr Name of temporary file containing certificate
  */
-static char *smime_extract_signer_certificate(char *infile)
+static char *smime_extract_signer_certificate(const char *infile)
 {
-  char certfile[PATH_MAX];
+  char *cert = NULL;
+  struct Buffer *certfile = NULL;
   pid_t pid;
   int empty;
 
@@ -1292,26 +1293,24 @@ static char *smime_extract_signer_certificate(char *infile)
     return NULL;
   }
 
-  mutt_mktemp(certfile, sizeof(certfile));
-  FILE *fp_out = mutt_file_fopen(certfile, "w+");
+  certfile = mutt_buffer_pool_get();
+  mutt_buffer_mktemp(certfile);
+  FILE *fp_out = mutt_file_fopen(mutt_b2s(certfile), "w+");
   if (!fp_out)
   {
     mutt_file_fclose(&fp_err);
-    mutt_perror(certfile);
-    return NULL;
+    mutt_perror(mutt_b2s(certfile));
+    goto cleanup;
   }
 
   /* Extract signer's certificate
    */
-  pid = smime_invoke(NULL, NULL, NULL, -1, -1, fileno(fp_err), infile, NULL, NULL,
-                     NULL, NULL, certfile, NULL, C_SmimeGetSignerCertCommand);
+  pid = smime_invoke(NULL, NULL, NULL, -1, -1, fileno(fp_err), infile, NULL, NULL, NULL,
+                     NULL, mutt_b2s(certfile), NULL, C_SmimeGetSignerCertCommand);
   if (pid == -1)
   {
     mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess"));
-    mutt_file_fclose(&fp_err);
-    mutt_file_fclose(&fp_out);
-    mutt_file_unlink(certfile);
-    return NULL;
+    goto cleanup;
   }
 
   mutt_wait_filter(pid);
@@ -1326,16 +1325,21 @@ static char *smime_extract_signer_certificate(char *infile)
     mutt_endwin();
     mutt_file_copy_stream(fp_err, stdout);
     mutt_any_key_to_continue(NULL);
-    mutt_file_fclose(&fp_out);
-    mutt_file_fclose(&fp_err);
-    mutt_file_unlink(certfile);
-    return NULL;
+    goto cleanup;
   }
 
   mutt_file_fclose(&fp_out);
-  mutt_file_fclose(&fp_err);
+  cert = mutt_buffer_strdup(certfile);
 
-  return mutt_str_strdup(certfile);
+cleanup:
+  mutt_file_fclose(&fp_err);
+  if (fp_out)
+  {
+    mutt_file_fclose(&fp_out);
+    mutt_file_unlink(mutt_b2s(certfile));
+  }
+  mutt_buffer_pool_release(&certfile);
+  return cert;
 }
 
 /**
@@ -1416,15 +1420,15 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
 int smime_class_verify_sender(struct Mailbox *m, struct Email *e)
 {
   char *mbox = NULL, *certfile = NULL;
-  char tempfname[PATH_MAX];
   int rc = 1;
 
-  mutt_mktemp(tempfname, sizeof(tempfname));
-  FILE *fp_out = mutt_file_fopen(tempfname, "w");
+  struct Buffer *tempfname = mutt_buffer_pool_get();
+  mutt_buffer_mktemp(tempfname);
+  FILE *fp_out = mutt_file_fopen(mutt_b2s(tempfname), "w");
   if (!fp_out)
   {
-    mutt_perror(tempfname);
-    return 1;
+    mutt_perror(mutt_b2s(tempfname));
+    goto cleanup;
   }
 
   if (e->security & SEC_ENCRYPT)
@@ -1451,10 +1455,10 @@ int smime_class_verify_sender(struct Mailbox *m, struct Email *e)
 
   if (mbox)
   {
-    certfile = smime_extract_signer_certificate(tempfname);
+    certfile = smime_extract_signer_certificate(mutt_b2s(tempfname));
     if (certfile)
     {
-      mutt_file_unlink(tempfname);
+      mutt_file_unlink(mutt_b2s(tempfname));
       if (smime_handle_cert_email(certfile, mbox, false, NULL, NULL))
       {
         if (isendwin())
@@ -1471,7 +1475,10 @@ int smime_class_verify_sender(struct Mailbox *m, struct Email *e)
   else
     mutt_any_key_to_continue(_("no mbox"));
 
-  mutt_file_unlink(tempfname);
+  mutt_file_unlink(mutt_b2s(tempfname));
+
+cleanup:
+  mutt_buffer_pool_release(&tempfname);
   return rc;
 }
 
