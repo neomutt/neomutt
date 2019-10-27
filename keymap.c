@@ -148,6 +148,53 @@ int LastKey; /**< contains the last key the user pressed */
 
 struct Keymap *Keymaps[MENU_MAX];
 
+#ifdef NCURSES_VERSION
+/**
+ * struct Extkey - Map key names from NeoMutt's style to Curses style
+ */
+struct Extkey
+{
+  const char *name;
+  const char *sym;
+};
+
+static const struct Extkey ExtKeys[] = {
+  { "<c-up>", "kUP5" },
+  { "<s-up>", "kUP" },
+  { "<a-up>", "kUP3" },
+
+  { "<s-down>", "kDN" },
+  { "<a-down>", "kDN3" },
+  { "<c-down>", "kDN5" },
+
+  { "<c-right>", "kRIT5" },
+  { "<s-right>", "kRIT" },
+  { "<a-right>", "kRIT3" },
+
+  { "<s-left>", "kLFT" },
+  { "<a-left>", "kLFT3" },
+  { "<c-left>", "kLFT5" },
+
+  { "<s-home>", "kHOM" },
+  { "<a-home>", "kHOM3" },
+  { "<c-home>", "kHOM5" },
+
+  { "<s-end>", "kEND" },
+  { "<a-end>", "kEND3" },
+  { "<c-end>", "kEND5" },
+
+  { "<s-next>", "kNXT" },
+  { "<a-next>", "kNXT3" },
+  { "<c-next>", "kNXT5" },
+
+  { "<s-prev>", "kPRV" },
+  { "<a-prev>", "kPRV3" },
+  { "<c-prev>", "kPRV5" },
+
+  { 0, 0 },
+};
+#endif
+
 /**
  * alloc_keys - Allocate space for a sequence of keys
  * @param len  Number of keys
@@ -186,8 +233,7 @@ static int parse_fkey(char *s)
 
   if (*t != '>')
     return -1;
-  else
-    return n;
+  return n;
 }
 
 /**
@@ -818,51 +864,6 @@ struct Keymap *km_find_func(enum MenuType menu, int func)
 }
 
 #ifdef NCURSES_VERSION
-/**
- * struct Extkey - Map key names from NeoMutt's style to Curses style
- */
-struct Extkey
-{
-  const char *name;
-  const char *sym;
-};
-
-static const struct Extkey ExtKeys[] = {
-  { "<c-up>", "kUP5" },
-  { "<s-up>", "kUP" },
-  { "<a-up>", "kUP3" },
-
-  { "<s-down>", "kDN" },
-  { "<a-down>", "kDN3" },
-  { "<c-down>", "kDN5" },
-
-  { "<c-right>", "kRIT5" },
-  { "<s-right>", "kRIT" },
-  { "<a-right>", "kRIT3" },
-
-  { "<s-left>", "kLFT" },
-  { "<a-left>", "kLFT3" },
-  { "<c-left>", "kLFT5" },
-
-  { "<s-home>", "kHOM" },
-  { "<a-home>", "kHOM3" },
-  { "<c-home>", "kHOM5" },
-
-  { "<s-end>", "kEND" },
-  { "<a-end>", "kEND3" },
-  { "<c-end>", "kEND5" },
-
-  { "<s-next>", "kNXT" },
-  { "<a-next>", "kNXT3" },
-  { "<c-next>", "kNXT5" },
-
-  { "<s-prev>", "kPRV" },
-  { "<a-prev>", "kPRV3" },
-  { "<c-prev>", "kPRV5" },
-
-  { 0, 0 },
-};
-
 /**
  * find_ext_name - Find the curses name for a key
  * @param key Key name

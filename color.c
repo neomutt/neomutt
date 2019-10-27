@@ -1151,9 +1151,8 @@ static int fgbgattr_to_color(struct Colors *c, int fg, int bg, int attr)
 #ifdef HAVE_COLOR
   if ((fg != COLOR_UNSET) && (bg != COLOR_UNSET))
     return attr | mutt_color_alloc(c, fg, bg);
-  else
 #endif
-    return attr;
+  return attr;
 }
 
 /**

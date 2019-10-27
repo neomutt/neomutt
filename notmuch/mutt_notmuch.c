@@ -118,7 +118,7 @@ static enum NmQueryType string_to_query_type(const char *str)
 {
   if (mutt_str_strcmp(str, "threads") == 0)
     return NM_QUERY_TYPE_THREADS;
-  else if (mutt_str_strcmp(str, "messages") == 0)
+  if (mutt_str_strcmp(str, "messages") == 0)
     return NM_QUERY_TYPE_MESGS;
 
   mutt_error(_("failed to parse notmuch query type: %s"), NONULL(str));
@@ -349,8 +349,7 @@ static const char *query_type_to_string(enum NmQueryType query_type)
 {
   if (query_type == NM_QUERY_TYPE_THREADS)
     return "threads";
-  else
-    return "messages";
+  return "messages";
 }
 
 /**
@@ -511,7 +510,6 @@ static char *get_query_string(struct NmMboxData *mdata, bool window)
     }
     else if (strcmp(item->name, "type") == 0)
       mdata->query_type = string_to_query_type(item->value);
-
     else if (strcmp(item->name, "query") == 0)
       mdata->db_query = mutt_str_strdup(item->value);
   }
@@ -1772,16 +1770,16 @@ char *nm_uri_from_query(struct Mailbox *m, char *buf, size_t buflen)
 
   nm_parse_type_from_query(mdata, buf);
 
-  if (get_limit(mdata) != C_NmDbLimit)
+  if (get_limit(mdata) == C_NmDbLimit)
+  {
+    added = snprintf(uri, sizeof(uri), "%s%s?type=%s&query=", NmUriProtocol,
+                     nm_db_get_filename(m), query_type_to_string(mdata->query_type));
+  }
+  else
   {
     added = snprintf(uri, sizeof(uri), "%s%s?type=%s&limit=%d&query=", NmUriProtocol,
                      nm_db_get_filename(m),
                      query_type_to_string(mdata->query_type), get_limit(mdata));
-  }
-  else
-  {
-    added = snprintf(uri, sizeof(uri), "%s%s?type=%s&query=", NmUriProtocol,
-                     nm_db_get_filename(m), query_type_to_string(mdata->query_type));
   }
 
   if (added >= sizeof(uri))

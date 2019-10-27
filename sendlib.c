@@ -97,6 +97,51 @@ bool C_UseEnvelopeFrom; ///< Config: Set the envelope sender of the message
 bool C_UserAgent;       ///< Config: Add a 'User-Agent' head to outgoing mail
 short C_WrapHeaders;    ///< Config: Width to wrap headers in outgoing messages
 
+#define MUTT_RANDTAG_LEN 16
+
+/**
+ * struct B64Context - Cursor for the Base64 conversion
+ */
+struct B64Context
+{
+  char buffer[3];
+  short size;
+  short linelen;
+};
+
+/**
+ * struct ContentState - Info about the body of an email
+ */
+struct ContentState
+{
+  bool from;
+  int whitespace;
+  bool dot;
+  int linelen;
+  bool was_cr;
+};
+
+/**
+ * The next array/enum pair is used to to keep track of user headers that
+ * override pre-defined headers NeoMutt would emit. Keep the array sorted and
+ * in sync with the enum.
+ */
+static const char *const userhdrs_override_headers[] = {
+  "content-type:",
+  "user-agent:",
+};
+
+enum UserHdrsOverrideIdx
+{
+  USERHDRS_OVERRIDE_CONTENT_TYPE,
+  USERHDRS_OVERRIDE_USER_AGENT,
+};
+
+struct UserHdrsOverride
+{
+  bool is_overridden[mutt_array_size(userhdrs_override_headers)];
+};
+
 /**
  * encode_quoted - Encode text as quoted printable
  * @param fc     Cursor for converting a file's encoding
@@ -230,16 +275,6 @@ static void encode_quoted(struct FgetConv *fc, FILE *fp_out, bool istext)
     fputs(line, fp_out);
   }
 }
-
-/**
- * struct B64Context - Cursor for the Base64 conversion
- */
-struct B64Context
-{
-  char buffer[3];
-  short size;
-  short linelen;
-};
 
 /**
  * b64_init - Set up the base64 conversion
@@ -611,18 +646,6 @@ void mutt_generate_boundary(struct ParameterList *pl)
 }
 
 /**
- * struct ContentState - Info about the body of an email
- */
-struct ContentState
-{
-  bool from;
-  int whitespace;
-  bool dot;
-  int linelen;
-  bool was_cr;
-};
-
-/**
  * update_content_info - Cache some info about an email
  * @param info   Info about an Attachment
  * @param s      Info about the Body of an email
@@ -655,11 +678,7 @@ static void update_content_info(struct Content *info, struct ContentState *s,
     if (was_cr)
     {
       was_cr = false;
-      if (ch != '\n')
-      {
-        info->binary = true;
-      }
-      else
+      if (ch == '\n')
       {
         if (whitespace)
           info->space = true;
@@ -672,6 +691,8 @@ static void update_content_info(struct Content *info, struct ContentState *s,
         linelen = 0;
         continue;
       }
+
+      info->binary = true;
     }
 
     linelen++;
@@ -1675,7 +1696,7 @@ static int get_toplevel_encoding(struct Body *a)
   {
     if (a->encoding == ENC_BINARY)
       return ENC_BINARY;
-    else if (a->encoding == ENC_8BIT)
+    if (a->encoding == ENC_8BIT)
       e = ENC_8BIT;
   }
 
@@ -2208,27 +2229,6 @@ out:
   FREE(&v);
   return rc;
 }
-
-/**
- * The next array/enum pair is used to to keep track of user headers that
- * override pre-defined headers NeoMutt would emit. Keep the array sorted and
- * in sync with the enum.
- */
-static const char *const userhdrs_override_headers[] = {
-  "content-type:",
-  "user-agent:",
-};
-
-enum UserHdrsOverrideIdx
-{
-  USERHDRS_OVERRIDE_CONTENT_TYPE,
-  USERHDRS_OVERRIDE_USER_AGENT,
-};
-
-struct UserHdrsOverride
-{
-  bool is_overridden[mutt_array_size(userhdrs_override_headers)];
-};
 
 /**
  * userhdrs_override_cmp - Compare a user-defined header with an element of the userhdrs_override_headers list

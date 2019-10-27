@@ -238,13 +238,15 @@ static int make_msg_set(struct Mailbox *m, struct Buffer *buf, int flag,
       if (setstart == 0)
       {
         setstart = imap_edata_get(emails[n])->uid;
-        if (!started)
+        if (started)
+        {
+          mutt_buffer_add_printf(buf, ",%u", imap_edata_get(emails[n])->uid);
+        }
+        else
         {
           mutt_buffer_add_printf(buf, "%u", imap_edata_get(emails[n])->uid);
           started = true;
         }
-        else
-          mutt_buffer_add_printf(buf, ",%u", imap_edata_get(emails[n])->uid);
       }
       /* tie up if the last message also matches */
       else if (n == (m->msg_count - 1))
@@ -599,8 +601,7 @@ int imap_access(const char *path)
 {
   if (imap_path_status(path, false) >= 0)
     return 0;
-  else
-    return -1;
+  return -1;
 }
 
 /**

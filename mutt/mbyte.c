@@ -114,7 +114,7 @@ bool mutt_mb_get_initials(const char *name, char *buf, size_t buflen)
       clen = mutt_mb_charlen(name, NULL);
       if (clen < 1)
         return false;
-      else if ((clen == 1) && (isspace(*name) || (*name == '-')))
+      if ((clen == 1) && (isspace(*name) || (*name == '-')))
         break;
     }
 

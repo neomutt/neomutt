@@ -1270,7 +1270,7 @@ int imap_exec(struct ImapAccountData *adata, const char *cmdstr, ImapCmdFlags fl
 
   if (rc == IMAP_RES_NO)
     return IMAP_EXEC_ERROR;
-  else if (rc != IMAP_RES_OK)
+  if (rc != IMAP_RES_OK)
   {
     if (adata->status != IMAP_FATAL)
       return IMAP_EXEC_ERROR;

@@ -92,10 +92,10 @@ int mailcap_expand_command(struct Body *a, const char *filename,
       {
         const char *pvalue2 = NULL;
 
-        if (!param)
-          param = mutt_buffer_pool_get();
-        else
+        if (param)
           mutt_buffer_reset(param);
+        else
+          param = mutt_buffer_pool_get();
 
         /* Copy parameter name into param buffer */
         cptr++;

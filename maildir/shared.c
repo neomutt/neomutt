@@ -535,8 +535,7 @@ static struct Maildir *maildir_merge_lists(struct Maildir *left, struct Maildir 
   {
     if (left)
       return left;
-    else
-      return right;
+    return right;
   }
 
   tail = head;
@@ -713,10 +712,10 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
     {
       mutt_debug(LL_DEBUG3, "maildir: need to sort %s by inode\n", mailbox_path(m));
       p = maildir_sort(p, (size_t) -1, md_cmp_inode);
-      if (!last)
-        *md = p;
-      else
+      if (last)
         last->next = p;
+      else
+        *md = p;
       sort = true;
       p = skip_duplicates(p, &last);
       snprintf(fn, sizeof(fn), "%s/%s", mailbox_path(m), p->email->path);

@@ -67,6 +67,19 @@ const int dialog_row_len = 128;
 
 static int tls_socket_close(struct Connection *conn);
 
+#ifndef HAVE_GNUTLS_PRIORITY_SET_DIRECT
+/* This array needs to be large enough to hold all the possible values support
+ * by NeoMutt.  The initialized values are just placeholders--the array gets
+ * overwrriten in tls_negotiate() depending on the $ssl_use_* options.
+ *
+ * Note: gnutls_protocol_set_priority() was removed in GnuTLS version
+ * 3.4 (2015-04).  TLS 1.3 support wasn't added until version 3.6.5.
+ * Therefore, no attempt is made to support $ssl_use_tlsv1_3 in this code.
+ */
+static int protocol_priority[] = { GNUTLS_TLS1_2, GNUTLS_TLS1_1, GNUTLS_TLS1,
+                                   GNUTLS_SSL3, 0 };
+#endif
+
 /**
  * struct TlsSockData - TLS socket data
  */
@@ -800,8 +813,7 @@ static int tls_check_certificate(struct Connection *conn)
     {
       if (preauthrc == 0)
         return 1;
-      else
-        break;
+      break;
     }
   }
 
@@ -952,18 +964,8 @@ cleanup:
   mutt_buffer_pool_release(&priority);
   return rv;
 }
-#else
-/* This array needs to be large enough to hold all the possible values support
- * by NeoMutt.  The initialized values are just placeholders--the array gets
- * overwrriten in tls_negotiate() depending on the $ssl_use_* options.
- *
- * Note: gnutls_protocol_set_priority() was removed in GnuTLS version
- * 3.4 (2015-04).  TLS 1.3 support wasn't added until version 3.6.5.
- * Therefore, no attempt is made to support $ssl_use_tlsv1_3 in this code.
- */
-static int protocol_priority[] = { GNUTLS_TLS1_2, GNUTLS_TLS1_1, GNUTLS_TLS1,
-                                   GNUTLS_SSL3, 0 };
 
+#else
 /**
  * tls_set_priority - Set the priority of various protocols
  * @param data TLS socket data
@@ -1140,8 +1142,8 @@ static int tls_socket_poll(struct Connection *conn, time_t wait_secs)
 
   if (gnutls_record_check_pending(data->state))
     return 1;
-  else
-    return raw_socket_poll(conn, wait_secs);
+
+  return raw_socket_poll(conn, wait_secs);
 }
 
 /**

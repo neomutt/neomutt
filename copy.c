@@ -122,7 +122,6 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
         }
         else if ((chflags & CH_NOQFROM) && mutt_str_startswith(buf, ">From ", CASE_IGNORE))
           continue;
-
         else if ((buf[0] == '\n') || ((buf[0] == '\r') && (buf[1] == '\n')))
           break; /* end of header */
 
@@ -173,7 +172,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
     }
   }
 
-  mutt_debug(LL_DEBUG1, "WEED is %s\n", (chflags & CH_WEED) ? "Set" : "Not");
+  mutt_debug(LL_DEBUG1, "WEED is %sset\n", (chflags & CH_WEED) ? "" : "not ");
 
   headers = mutt_mem_calloc(hdr_count, sizeof(char *));
 
@@ -299,18 +298,18 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
     if (!ignore)
     {
       mutt_debug(LL_DEBUG2, "Reorder: x = %d; hdr_count = %d\n", x, hdr_count);
-      if (!this_one)
-      {
-        this_one = mutt_str_strdup(buf);
-        this_one_len = mutt_str_strlen(this_one);
-      }
-      else
+      if (this_one)
       {
         size_t blen = mutt_str_strlen(buf);
 
         mutt_mem_realloc(&this_one, this_one_len + blen + sizeof(char));
         strcat(this_one + this_one_len, buf);
         this_one_len += blen;
+      }
+      else
+      {
+        this_one = mutt_str_strdup(buf);
+        this_one_len = mutt_str_strlen(this_one);
       }
     }
   } /* while (ftello (fp_in) < off_end) */
@@ -617,7 +616,6 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
   {
     if (cmflags & MUTT_CM_PREFIX)
       chflags |= CH_PREFIX;
-
     else if (e->attach_del && (chflags & CH_UPDATE_LEN))
     {
       int new_lines;

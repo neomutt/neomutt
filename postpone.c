@@ -174,13 +174,15 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
 #endif
     struct Mailbox *m_post = mx_path_resolve(C_Postponed);
     struct Context *ctx = mx_mbox_open(m_post, MUTT_NOSORT | MUTT_QUIET);
-    if (!ctx)
+    if (ctx)
+    {
+      PostCount = ctx->mailbox->msg_count;
+    }
+    else
     {
       mailbox_free(&m_post);
       PostCount = 0;
     }
-    else
-      PostCount = ctx->mailbox->msg_count;
     mx_fastclose_mailbox(m_post);
     ctx_free(&ctx);
 #ifdef USE_NNTP
@@ -409,7 +411,6 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
       hdr->security = mutt_parse_crypt_hdr(strchr(np->data, ':') + 1, true, APPLICATION_SMIME);
       hdr->security |= APPLICATION_SMIME;
     }
-
 #ifdef MIXMASTER
     else if (mutt_str_startswith(np->data, "X-Mutt-Mix:", CASE_MATCH))
     {
@@ -423,7 +424,6 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
       }
     }
 #endif
-
     else
     {
       // skip header removal

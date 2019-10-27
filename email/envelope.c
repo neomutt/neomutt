@@ -258,10 +258,7 @@ bool mutt_env_cmp_strict(const struct Envelope *e1, const struct Envelope *e2)
   }
   else
   {
-    if (!e1 && !e2)
-      return true;
-    else
-      return false;
+    return (!e1 && !e2);
   }
 }
 

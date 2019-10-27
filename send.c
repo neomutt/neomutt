@@ -299,8 +299,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags)
   {
     if (C_FastReply)
       return 0;
-    else
-      mutt_str_strfcpy(buf, en->subject, sizeof(buf));
+    mutt_str_strfcpy(buf, en->subject, sizeof(buf));
   }
   else
   {
@@ -704,6 +703,12 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out)
   return 0;
 }
 
+/**
+ * choose_default_to - Pick the best 'to:' value
+ * @param from From Address
+ * @param env  Envelope
+ * @retval ptr Addresses to use
+ */
 static const struct AddressList *choose_default_to(const struct Address *from,
                                                    const struct Envelope *env)
 {
@@ -1997,16 +2002,16 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
       e_templ->content->use_disp = false;
       e_templ->content->disposition = DISP_INLINE;
 
-      if (!tempfile)
+      if (tempfile)
+      {
+        fp_tmp = mutt_file_fopen(tempfile, "a+");
+        e_templ->content->filename = mutt_str_strdup(tempfile);
+      }
+      else
       {
         mutt_mktemp(buf, sizeof(buf));
         fp_tmp = mutt_file_fopen(buf, "w+");
         e_templ->content->filename = mutt_str_strdup(buf);
-      }
-      else
-      {
-        fp_tmp = mutt_file_fopen(tempfile, "a+");
-        e_templ->content->filename = mutt_str_strdup(tempfile);
       }
     }
     else
@@ -2429,26 +2434,23 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
         (mutt_addrlist_count_recips(&e_templ->env->cc) == 0) &&
         (mutt_addrlist_count_recips(&e_templ->env->bcc) == 0))
     {
-      if (!(flags & SEND_BATCH))
-      {
-        mutt_error(_("No recipients specified"));
-        goto main_loop;
-      }
-      else
+      if (flags & SEND_BATCH)
       {
         puts(_("No recipients specified"));
         goto cleanup;
       }
+
+      mutt_error(_("No recipients specified"));
+      goto main_loop;
     }
 
   if (mutt_env_to_intl(e_templ->env, &tag, &err))
   {
     mutt_error(_("Bad IDN in '%s': '%s'"), tag, err);
     FREE(&err);
-    if (!(flags & SEND_BATCH))
-      goto main_loop;
-    else
+    if (flags & SEND_BATCH)
       goto cleanup;
+    goto main_loop;
   }
 
   if (!e_templ->env->subject && !(flags & SEND_BATCH) &&

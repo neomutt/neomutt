@@ -95,8 +95,7 @@ static bool need_display_subject(struct Context *ctx, struct Email *e)
     {
       if (e->subject_changed)
         return true;
-      else
-        break;
+      break;
     }
   }
 
@@ -109,7 +108,7 @@ static bool need_display_subject(struct Context *ctx, struct Email *e)
     {
       if (is_visible(e, ctx))
         return false;
-      else if (e->subject_changed)
+      if (e->subject_changed)
         return true;
     }
   }
@@ -240,8 +239,7 @@ static void calculate_visibility(struct Context *ctx, int *max_depth)
       }
       if (!tree)
         break;
-      else
-        tree = tree->prev;
+      tree = tree->prev;
     }
   }
 
@@ -266,8 +264,7 @@ static void calculate_visibility(struct Context *ctx, int *max_depth)
           tree = tree->parent;
         if (!tree)
           break;
-        else
-          tree = tree->next;
+        tree = tree->next;
       }
     }
   }
@@ -1014,17 +1011,17 @@ void mutt_sort_threads(struct Context *ctx, bool init)
         break;
 
       tnew = mutt_hash_find(ctx->thread_hash, ref->data);
-      if (!tnew)
-      {
-        tnew = mutt_mem_calloc(1, sizeof(struct MuttThread));
-        mutt_hash_insert(ctx->thread_hash, ref->data, tnew);
-      }
-      else
+      if (tnew)
       {
         if (tnew->duplicate_thread)
           tnew = tnew->parent;
         if (is_descendant(tnew, thread)) /* no loops! */
           continue;
+      }
+      else
+      {
+        tnew = mutt_mem_calloc(1, sizeof(struct MuttThread));
+        mutt_hash_insert(ctx->thread_hash, ref->data, tnew);
       }
 
       if (thread->parent)
@@ -1086,12 +1083,7 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
 
   cur = e->thread;
 
-  if (!subthreads)
-  {
-    while (cur->parent)
-      cur = cur->parent;
-  }
-  else
+  if (subthreads)
   {
     if (forwards ^ ((C_Sort & SORT_REVERSE) != 0))
     {
@@ -1103,6 +1095,11 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
       while (!cur->prev && cur->parent)
         cur = cur->parent;
     }
+  }
+  else
+  {
+    while (cur->parent)
+      cur = cur->parent;
   }
 
   if (forwards ^ ((C_Sort & SORT_REVERSE) != 0))
@@ -1279,13 +1276,13 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *e_cur, MuttThreadFla
     /* return value depends on action requested */
     if (flag & (MUTT_THREAD_COLLAPSE | MUTT_THREAD_UNCOLLAPSE))
       return final;
-    else if (flag & MUTT_THREAD_UNREAD)
+    if (flag & MUTT_THREAD_UNREAD)
       return (old_mail && new_mail) ? new_mail : (old_mail ? old_mail : new_mail);
-    else if (flag & MUTT_THREAD_GET_HIDDEN)
+    if (flag & MUTT_THREAD_GET_HIDDEN)
       return num_hidden;
-    else if (flag & MUTT_THREAD_NEXT_UNREAD)
+    if (flag & MUTT_THREAD_NEXT_UNREAD)
       return min_unread;
-    else if (flag & MUTT_THREAD_FLAGGED)
+    if (flag & MUTT_THREAD_FLAGGED)
       return flagged;
   }
 
@@ -1369,13 +1366,13 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *e_cur, MuttThreadFla
   /* return value depends on action requested */
   if (flag & (MUTT_THREAD_COLLAPSE | MUTT_THREAD_UNCOLLAPSE))
     return final;
-  else if (flag & MUTT_THREAD_UNREAD)
+  if (flag & MUTT_THREAD_UNREAD)
     return (old_mail && new_mail) ? new_mail : (old_mail ? old_mail : new_mail);
-  else if (flag & MUTT_THREAD_GET_HIDDEN)
+  if (flag & MUTT_THREAD_GET_HIDDEN)
     return num_hidden + 1;
-  else if (flag & MUTT_THREAD_NEXT_UNREAD)
+  if (flag & MUTT_THREAD_NEXT_UNREAD)
     return min_unread;
-  else if (flag & MUTT_THREAD_FLAGGED)
+  if (flag & MUTT_THREAD_FLAGGED)
     return flagged;
 
   return 0;

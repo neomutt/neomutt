@@ -1962,7 +1962,7 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
   mutt_file_copy_stream(fp_smime_err, s->fp_out);
   mutt_file_fclose(&fp_smime_err);
 
-  state_attach_puts(_("[-- End of OpenSSL output --]\n\n"), s);
+  state_attach_puts(s, _("[-- End of OpenSSL output --]\n\n"));
 
   mutt_file_unlink(signedfile);
 
@@ -2039,7 +2039,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
     if (s->flags & MUTT_DISPLAY)
     {
       state_attach_puts(
-          _("[-- Error: unable to create OpenSSL subprocess --]\n"), s);
+          s, _("[-- Error: unable to create OpenSSL subprocess --]\n"));
     }
     mutt_file_fclose(&fp_smime_err);
     return NULL;
@@ -2054,7 +2054,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
     if (s->flags & MUTT_DISPLAY)
     {
       state_attach_puts(
-          _("[-- Error: unable to create OpenSSL subprocess --]\n"), s);
+          s, _("[-- Error: unable to create OpenSSL subprocess --]\n"));
     }
     mutt_file_fclose(&fp_smime_err);
     return NULL;
@@ -2085,17 +2085,16 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
 
       crypt_current_time(s, "OpenSSL");
       mutt_file_copy_stream(fp_smime_err, s->fp_out);
-      state_attach_puts(_("[-- End of OpenSSL output --]\n\n"), s);
+      state_attach_puts(s, _("[-- End of OpenSSL output --]\n\n"));
     }
 
     if (type & SEC_ENCRYPT)
     {
-      state_attach_puts(_("[-- The following data is S/MIME"
-                          " encrypted --]\n"),
-                        s);
+      state_attach_puts(s,
+                        _("[-- The following data is S/MIME encrypted --]\n"));
     }
     else
-      state_attach_puts(_("[-- The following data is S/MIME signed --]\n"), s);
+      state_attach_puts(s, _("[-- The following data is S/MIME signed --]\n"));
   }
 
   fflush(fp_smime_out);
@@ -2189,9 +2188,9 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
   if (s->flags & MUTT_DISPLAY)
   {
     if (type & SEC_ENCRYPT)
-      state_attach_puts(_("\n[-- End of S/MIME encrypted data. --]\n"), s);
+      state_attach_puts(s, _("\n[-- End of S/MIME encrypted data. --]\n"));
     else
-      state_attach_puts(_("\n[-- End of S/MIME signed data. --]\n"), s);
+      state_attach_puts(s, _("\n[-- End of S/MIME signed data. --]\n"));
   }
 
   if (type & SEC_SIGNOPAQUE)

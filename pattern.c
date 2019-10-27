@@ -200,6 +200,13 @@ static char LastSearch[256] = { 0 };      /**< last pattern searched for */
 static char LastSearchExpn[1024] = { 0 }; /**< expanded version of LastSearch */
 
 /**
+ * typedef addr_predicate_t - Test an Address for some condition
+ * @param a Address to test
+ * @retval bool True if Address matches the test
+ */
+typedef bool (*addr_predicate_t)(const struct Address *a);
+
+/**
  * eat_regex - Parse a regex - Implements ::pattern_eat_t
  */
 static bool eat_regex(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err)
@@ -881,7 +888,7 @@ static int scan_range_slot(struct Buffer *s, regmatch_t pmatch[], int grp, int s
   {
     if (side == RANGE_S_LEFT)
       return 1;
-    else if (side == RANGE_S_RIGHT)
+    if (side == RANGE_S_RIGHT)
       return Context->mailbox->msg_count;
   }
   /* We have something, so determine what */
@@ -1064,12 +1071,11 @@ static bool patmatch(const struct Pattern *pat, const char *buf)
 {
   if (pat->is_multi)
     return (mutt_list_find(&pat->p.multi_cases, buf) != NULL);
-  else if (pat->string_match)
+  if (pat->string_match)
     return pat->ign_case ? strcasestr(buf, pat->p.str) : strstr(buf, pat->p.str);
-  else if (pat->group_match)
+  if (pat->group_match)
     return mutt_group_match(pat->p.group, buf);
-  else
-    return (regexec(pat->p.regex, buf, 0, NULL, 0) == 0);
+  return (regexec(pat->p.regex, buf, 0, NULL, 0) == 0);
 }
 
 /**
@@ -1724,13 +1730,6 @@ static bool match_reference(struct Pattern *pat, struct ListHead *refs)
   }
   return false;
 }
-
-/**
- * typedef addr_predicate_t - Test an Address for some condition
- * @param a Address to test
- * @retval bool True if Address matches the test
- */
-typedef bool (*addr_predicate_t)(const struct Address *a);
 
 /**
  * mutt_is_predicate_recipient - Test an Envelopes Addresses using a predicate function

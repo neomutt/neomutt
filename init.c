@@ -793,15 +793,13 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
         break;
       }
     }
-    if (!np)
-    {
-      mutt_list_insert_head(&MuttrcStack, mutt_str_strdup(rcfile));
-    }
-    else
+    if (np)
     {
       mutt_error(_("Error: Cyclic sourcing of configuration file '%s'"), rcfile);
       return -1;
     }
+
+    mutt_list_insert_head(&MuttrcStack, mutt_str_strdup(rcfile));
   }
 
   mutt_debug(LL_DEBUG2, "Reading configuration file '%s'\n", rcfile);
@@ -2110,22 +2108,18 @@ static enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *
     if (buf->data && (*buf->data != '\0'))
     {
       /* Expand and subscribe */
-      if (imap_subscribe(mutt_expand_path(buf->data, buf->dsize), true) != 0)
-      {
-        mutt_buffer_printf(err, _("Could not subscribe to %s"), buf->data);
-        return MUTT_CMD_ERROR;
-      }
-      else
+      if (imap_subscribe(mutt_expand_path(buf->data, buf->dsize), true) == 0)
       {
         mutt_message(_("Subscribed to %s"), buf->data);
         return MUTT_CMD_SUCCESS;
       }
-    }
-    else
-    {
-      mutt_debug(LL_DEBUG1, "Corrupted buffer");
+
+      mutt_buffer_printf(err, _("Could not subscribe to %s"), buf->data);
       return MUTT_CMD_ERROR;
     }
+
+    mutt_debug(LL_DEBUG1, "Corrupted buffer");
+    return MUTT_CMD_ERROR;
   }
 
   mutt_buffer_addstr(err, _("No folder specified"));
@@ -2591,22 +2585,18 @@ static enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buff
     if (buf->data && (*buf->data != '\0'))
     {
       /* Expand and subscribe */
-      if (imap_subscribe(mutt_expand_path(buf->data, buf->dsize), false) != 0)
-      {
-        mutt_buffer_printf(err, _("Could not unsubscribe from %s"), buf->data);
-        return MUTT_CMD_ERROR;
-      }
-      else
+      if (imap_subscribe(mutt_expand_path(buf->data, buf->dsize), false) == 0)
       {
         mutt_message(_("Unsubscribed from %s"), buf->data);
         return MUTT_CMD_SUCCESS;
       }
-    }
-    else
-    {
-      mutt_debug(LL_DEBUG1, "Corrupted buffer");
+
+      mutt_buffer_printf(err, _("Could not unsubscribe from %s"), buf->data);
       return MUTT_CMD_ERROR;
     }
+
+    mutt_debug(LL_DEBUG1, "Corrupted buffer");
+    return MUTT_CMD_ERROR;
   }
 
   mutt_buffer_addstr(err, _("No folder specified"));
@@ -3905,5 +3895,18 @@ int reply_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 
   mutt_buffer_printf(err, _("Option %s may not be set when in attach-message mode"),
                      cdef->name);
+  return CSR_ERR_INVALID;
+}
+
+/**
+ * wrapheaders_validator - Validate the "wrap_headers" config variable - Implements ::cs_validator()
+ */
+int wrapheaders_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                          intptr_t value, struct Buffer *err)
+{
+  if ((value >= 78) && (value <= 998)) // Recommendation from RFC5233
+    return CSR_SUCCESS;
+
+  mutt_buffer_printf(err, _("Option %s must between 78 and 998 inclusive"), cdef->name);
   return CSR_ERR_INVALID;
 }

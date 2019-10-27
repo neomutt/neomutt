@@ -588,7 +588,7 @@ int mx_mbox_close(struct Context **ptr)
           query_quadoption(C_CatchupNewsgroup, _("Mark all articles read?"));
       if (ans == MUTT_ABORT)
         goto cleanup;
-      else if (ans == MUTT_YES)
+      if (ans == MUTT_YES)
         mutt_newsgroup_catchup(m, mdata->adata, mdata->group);
     }
   }
@@ -873,7 +873,7 @@ int mx_mbox_sync(struct Mailbox *m, int *index_hint)
     purge = query_quadoption(C_Delete, buf);
     if (purge == MUTT_ABORT)
       return -1;
-    else if (purge == MUTT_NO)
+    if (purge == MUTT_NO)
     {
       if (!m->changed)
         return 0; /* nothing to do! */
@@ -1170,10 +1170,9 @@ int mx_check_empty(const char *path)
       int rc = imap_path_status(path, false);
       if (rc < 0)
         return -1;
-      else if (rc == 0)
+      if (rc == 0)
         return 1;
-      else
-        return 0;
+      return 0;
     }
 #endif
     default:

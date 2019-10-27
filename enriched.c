@@ -168,7 +168,7 @@ static void enriched_wrap(struct EnrichedState *stte)
         x = extra / 2;
         while (x)
         {
-          state_putc(' ', stte->s);
+          state_putc(stte->s, ' ');
           x--;
         }
       }
@@ -177,22 +177,22 @@ static void enriched_wrap(struct EnrichedState *stte)
         x = extra - 1;
         while (x)
         {
-          state_putc(' ', stte->s);
+          state_putc(stte->s, ' ');
           x--;
         }
       }
     }
-    state_putws((const wchar_t *) stte->line, stte->s);
+    state_putws(stte->s, (const wchar_t *) stte->line);
   }
 
-  state_putc('\n', stte->s);
+  state_putc(stte->s, '\n');
   stte->line[0] = (wchar_t) '\0';
   stte->line_len = 0;
   stte->line_used = 0;
   stte->indent_len = 0;
   if (stte->s->prefix)
   {
-    state_puts(stte->s->prefix, stte->s);
+    state_puts(stte->s, stte->s->prefix);
     stte->indent_len += mutt_str_strlen(stte->s->prefix);
   }
 
@@ -203,12 +203,12 @@ static void enriched_wrap(struct EnrichedState *stte)
     {
       if (stte->s->prefix)
       {
-        state_puts(stte->s->prefix, stte->s);
+        state_puts(stte->s, stte->s->prefix);
         stte->indent_len += mutt_str_strlen(stte->s->prefix);
       }
       else
       {
-        state_puts("> ", stte->s);
+        state_puts(stte->s, "> ");
         stte->indent_len += mutt_str_strlen("> ");
       }
       x--;
@@ -222,7 +222,7 @@ static void enriched_wrap(struct EnrichedState *stte)
     stte->indent_len += x;
     while (x)
     {
-      state_putc(' ', stte->s);
+      state_putc(stte->s, ' ');
       x--;
     }
   }
@@ -489,7 +489,7 @@ int text_enriched_handler(struct Body *a, struct State *s)
 
   if (s->prefix)
   {
-    state_puts(s->prefix, s);
+    state_puts(s, s->prefix);
     stte.indent_len += mutt_str_strlen(s->prefix);
   }
 
@@ -584,7 +584,7 @@ int text_enriched_handler(struct Body *a, struct State *s)
     }
   }
 
-  state_putc('\n', s); /* add a final newline */
+  state_putc(s, '\n'); /* add a final newline */
 
   FREE(&(stte.buffer));
   FREE(&(stte.line));

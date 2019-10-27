@@ -79,35 +79,6 @@ TAILQ_HEAD(LookupList, Lookup);
 
 static struct LookupList Lookups = TAILQ_HEAD_INITIALIZER(Lookups);
 
-/**
- * lookup_new - Create a new Lookup
- * @retval ptr New Lookup
- */
-struct Lookup *lookup_new(void)
-{
-  return mutt_mem_calloc(1, sizeof(struct Lookup));
-}
-
-/**
- * lookup_free - Free a Lookup
- * @param ptr Lookup to free
- */
-void lookup_free(struct Lookup **ptr)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  struct Lookup *l = *ptr;
-  FREE(&l->replacement);
-  FREE(&l->regex.pattern);
-  if (l->regex.regex)
-    regfree(l->regex.regex);
-  FREE(&l->regex.regex);
-  FREE(&l->regex);
-
-  FREE(ptr);
-}
-
 // clang-format off
 /**
  * PreferredMimeNames - Lookup table of preferred charsets
@@ -262,6 +233,35 @@ const struct MimeNames PreferredMimeNames[] =
   { NULL,                     NULL           },
 };
 // clang-format on
+
+/**
+ * lookup_new - Create a new Lookup
+ * @retval ptr New Lookup
+ */
+struct Lookup *lookup_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct Lookup));
+}
+
+/**
+ * lookup_free - Free a Lookup
+ * @param ptr Lookup to free
+ */
+void lookup_free(struct Lookup **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct Lookup *l = *ptr;
+  FREE(&l->replacement);
+  FREE(&l->regex.pattern);
+  if (l->regex.regex)
+    regfree(l->regex.regex);
+  FREE(&l->regex.regex);
+  FREE(&l->regex);
+
+  FREE(ptr);
+}
 
 /**
  * lookup_charset - Look for a preferred character set name

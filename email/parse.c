@@ -318,30 +318,30 @@ enum ContentType mutt_check_mime_type(const char *s)
 {
   if (mutt_str_strcasecmp("text", s) == 0)
     return TYPE_TEXT;
-  else if (mutt_str_strcasecmp("multipart", s) == 0)
+  if (mutt_str_strcasecmp("multipart", s) == 0)
     return TYPE_MULTIPART;
 #ifdef SUN_ATTACHMENT
-  else if (mutt_str_strcasecmp("x-sun-attachment", s) == 0)
+  if (mutt_str_strcasecmp("x-sun-attachment", s) == 0)
     return TYPE_MULTIPART;
 #endif
-  else if (mutt_str_strcasecmp("application", s) == 0)
+  if (mutt_str_strcasecmp("application", s) == 0)
     return TYPE_APPLICATION;
-  else if (mutt_str_strcasecmp("message", s) == 0)
+  if (mutt_str_strcasecmp("message", s) == 0)
     return TYPE_MESSAGE;
-  else if (mutt_str_strcasecmp("image", s) == 0)
+  if (mutt_str_strcasecmp("image", s) == 0)
     return TYPE_IMAGE;
-  else if (mutt_str_strcasecmp("audio", s) == 0)
+  if (mutt_str_strcasecmp("audio", s) == 0)
     return TYPE_AUDIO;
-  else if (mutt_str_strcasecmp("video", s) == 0)
+  if (mutt_str_strcasecmp("video", s) == 0)
     return TYPE_VIDEO;
-  else if (mutt_str_strcasecmp("model", s) == 0)
+  if (mutt_str_strcasecmp("model", s) == 0)
     return TYPE_MODEL;
-  else if (mutt_str_strcasecmp("*", s) == 0)
+  if (mutt_str_strcasecmp("*", s) == 0)
     return TYPE_ANY;
-  else if (mutt_str_strcasecmp(".*", s) == 0)
+  if (mutt_str_strcasecmp(".*", s) == 0)
     return TYPE_ANY;
-  else
-    return TYPE_OTHER;
+
+  return TYPE_OTHER;
 }
 
 /**
@@ -427,22 +427,21 @@ int mutt_check_encoding(const char *c)
 {
   if (mutt_str_startswith(c, "7bit", CASE_IGNORE))
     return ENC_7BIT;
-  else if (mutt_str_startswith(c, "8bit", CASE_IGNORE))
+  if (mutt_str_startswith(c, "8bit", CASE_IGNORE))
     return ENC_8BIT;
-  else if (mutt_str_startswith(c, "binary", CASE_IGNORE))
+  if (mutt_str_startswith(c, "binary", CASE_IGNORE))
     return ENC_BINARY;
-  else if (mutt_str_startswith(c, "quoted-printable", CASE_IGNORE))
+  if (mutt_str_startswith(c, "quoted-printable", CASE_IGNORE))
     return ENC_QUOTED_PRINTABLE;
-  else if (mutt_str_startswith(c, "base64", CASE_IGNORE))
+  if (mutt_str_startswith(c, "base64", CASE_IGNORE))
     return ENC_BASE64;
-  else if (mutt_str_startswith(c, "x-uuencode", CASE_IGNORE))
+  if (mutt_str_startswith(c, "x-uuencode", CASE_IGNORE))
     return ENC_UUENCODED;
 #ifdef SUN_ATTACHMENT
-  else if (mutt_str_startswith(c, "uuencode", CASE_IGNORE))
+  if (mutt_str_startswith(c, "uuencode", CASE_IGNORE))
     return ENC_UUENCODED;
 #endif
-  else
-    return ENC_OTHER;
+  return ENC_OTHER;
 }
 
 /**

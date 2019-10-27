@@ -915,7 +915,7 @@ static FILE *mbox_open_readwrite(struct Mailbox *m)
 }
 
 /**
- * mbox_open_readwrite - Open an mbox read-only
+ * mbox_open_readonly - Open an mbox read-only
  * @param m Mailbox
  * @retval ptr FILE handle
  *

@@ -255,13 +255,11 @@ bool mutt_mailbox_list(void)
     mutt_message("%s", mailboxlist);
     return true;
   }
-  else
-  {
-    /* there were no mailboxes needing to be notified, so clean up since
-     * MailboxNotify has somehow gotten out of sync */
-    MailboxNotify = 0;
-    return false;
-  }
+
+  /* there were no mailboxes needing to be notified, so clean up since
+    * MailboxNotify has somehow gotten out of sync */
+  MailboxNotify = 0;
+  return false;
 }
 
 /**

@@ -311,8 +311,8 @@ unsigned char *serial_dump_buffer(struct Buffer *buf, unsigned char *d, int *off
     d = serial_dump_int(0, d, off);
     return d;
   }
-  else
-    d = serial_dump_int(1, d, off);
+
+  d = serial_dump_int(1, d, off);
 
   d = serial_dump_char_size(buf->data, d, off, buf->dsize + 1, convert);
   d = serial_dump_int(buf->dptr - buf->data, d, off);

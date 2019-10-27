@@ -801,21 +801,21 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
          * folders) */
         m->emails[idx]->active = true;
         m->emails[idx]->changed = false;
-        if (!eval_condstore)
-        {
-          m->emails[idx]->read = h.edata->read;
-          m->emails[idx]->old = h.edata->old;
-          m->emails[idx]->deleted = h.edata->deleted;
-          m->emails[idx]->flagged = h.edata->flagged;
-          m->emails[idx]->replied = h.edata->replied;
-        }
-        else
+        if (eval_condstore)
         {
           h.edata->read = m->emails[idx]->read;
           h.edata->old = m->emails[idx]->old;
           h.edata->deleted = m->emails[idx]->deleted;
           h.edata->flagged = m->emails[idx]->flagged;
           h.edata->replied = m->emails[idx]->replied;
+        }
+        else
+        {
+          m->emails[idx]->read = h.edata->read;
+          m->emails[idx]->old = h.edata->old;
+          m->emails[idx]->deleted = h.edata->deleted;
+          m->emails[idx]->flagged = h.edata->flagged;
+          m->emails[idx]->replied = h.edata->replied;
         }
 
         /*  mailbox->emails[msgno]->received is restored from mutt_hcache_restore */
@@ -1892,8 +1892,7 @@ int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   {
     if (imap_edata_get(e)->parsed)
       return 0;
-    else
-      goto parsemsg;
+    goto parsemsg;
   }
 
   /* This function is called in a few places after endwin()

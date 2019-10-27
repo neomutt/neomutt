@@ -132,16 +132,12 @@ static int fetch_capa(const char *line, void *data)
     const char *c = mutt_str_skip_email_wsp(line + 4);
     mutt_buffer_strcpy(&adata->auth_list, c);
   }
-
   else if (mutt_str_startswith(line, "STLS", CASE_IGNORE))
     adata->cmd_stls = true;
-
   else if (mutt_str_startswith(line, "USER", CASE_IGNORE))
     adata->cmd_user = 1;
-
   else if (mutt_str_startswith(line, "UIDL", CASE_IGNORE))
     adata->cmd_uidl = 1;
-
   else if (mutt_str_startswith(line, "TOP", CASE_IGNORE))
     adata->cmd_top = 1;
 

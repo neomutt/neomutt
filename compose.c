@@ -1409,20 +1409,19 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
               }
             }
 
-            /* append bptr to the alts list,
-             * and remove from the e->content list */
-            if (!alts)
-            {
-              group->parts = bptr;
-              alts = bptr;
-              bptr = bptr->next;
-              alts->next = NULL;
-            }
-            else
+            // append bptr to the alts list, and remove from the e->content list
+            if (alts)
             {
               alts->next = bptr;
               bptr = bptr->next;
               alts = alts->next;
+              alts->next = NULL;
+            }
+            else
+            {
+              group->parts = bptr;
+              alts = bptr;
+              bptr = bptr->next;
               alts->next = NULL;
             }
 
@@ -1507,20 +1506,19 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
               }
             }
 
-            /* append bptr to the alts list,
-             * and remove from the e->content list */
-            if (!alts)
-            {
-              group->parts = bptr;
-              alts = bptr;
-              bptr = bptr->next;
-              alts->next = NULL;
-            }
-            else
+            // append bptr to the alts list, and remove from the e->content list
+            if (alts)
             {
               alts->next = bptr;
               bptr = bptr->next;
               alts = alts->next;
+              alts->next = NULL;
+            }
+            else
+            {
+              group->parts = bptr;
+              alts = bptr;
+              bptr = bptr->next;
               alts->next = NULL;
             }
 

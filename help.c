@@ -348,16 +348,16 @@ static void format_line(FILE *fp, int ismacro, const char *t1, const char *t2,
 
       if (*t3)
       {
-        if (mutt_str_strcmp(C_Pager, "builtin") != 0)
-        {
-          fputc('\n', fp);
-          n = 0;
-        }
-        else
+        if (mutt_str_strcmp(C_Pager, "builtin") == 0)
         {
           n += col - wraplen;
           if (C_Markers)
             n++;
+        }
+        else
+        {
+          fputc('\n', fp);
+          n = 0;
         }
         col = pad(fp, n, col_b);
       }

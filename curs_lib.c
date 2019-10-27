@@ -280,10 +280,10 @@ int mutt_buffer_get_field_full(const char *field, struct Buffer *buf, Completion
                                  files, numfiles, es);
   } while (ret == 1);
 
-  if (ret != 0)
-    mutt_buffer_reset(buf);
-  else
+  if (ret == 0)
     mutt_buffer_fix_dptr(buf);
+  else
+    mutt_buffer_reset(buf);
 
   mutt_window_clearline(MuttMessageWindow, 0);
   mutt_enter_state_free(&es);
@@ -480,24 +480,26 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
   if (reno_ok)
     regfree(&reno);
 
-  if (MuttMessageWindow->rows != 1)
+  if (MuttMessageWindow->rows == 1)
+  {
+    mutt_window_clearline(MuttMessageWindow, 0);
+  }
+  else
   {
     mutt_window_reflow_message_rows(1);
     mutt_menu_current_redraw();
   }
-  else
-    mutt_window_clearline(MuttMessageWindow, 0);
 
-  if (def != MUTT_ABORT)
-  {
-    mutt_window_addstr((char *) ((def == MUTT_YES) ? yes : no));
-    mutt_refresh();
-  }
-  else
+  if (def == MUTT_ABORT)
   {
     /* when the users cancels with ^G, clear the message stored with
      * mutt_message() so it isn't displayed when the screen is refreshed. */
     mutt_clear_error();
+  }
+  else
+  {
+    mutt_window_addstr((char *) ((def == MUTT_YES) ? yes : no));
+    mutt_refresh();
   }
   return def;
 }
@@ -963,13 +965,15 @@ int mutt_multi_choice(const char *prompt, const char *letters)
     }
     mutt_beep(false);
   }
-  if (MuttMessageWindow->rows != 1)
+  if (MuttMessageWindow->rows == 1)
+  {
+    mutt_window_clearline(MuttMessageWindow, 0);
+  }
+  else
   {
     mutt_window_reflow_message_rows(1);
     mutt_menu_current_redraw();
   }
-  else
-    mutt_window_clearline(MuttMessageWindow, 0);
   mutt_refresh();
   return choice;
 }

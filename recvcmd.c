@@ -93,7 +93,7 @@ static bool check_all_msg(struct AttachCtx *actx, struct Body *cur, bool err)
 {
   if (cur && !check_msg(cur, err))
     return false;
-  else if (!cur)
+  if (!cur)
   {
     for (short i = 0; i < actx->idxlen; i++)
     {
@@ -562,7 +562,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
     {
       st.fp_in = fp;
       mutt_body_handler(cur, &st);
-      state_putc('\n', &st);
+      state_putc(&st, '\n');
     }
     else
     {
@@ -582,7 +582,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
         {
           st.fp_in = actx->idx[i]->fp;
           mutt_body_handler(actx->idx[i]->content, &st);
-          state_putc('\n', &st);
+          state_putc(&st, '\n');
         }
       }
     }
@@ -910,7 +910,6 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
   struct Email *e_parent = NULL;
   FILE *fp_parent = NULL;
   struct Email *e_tmp = NULL;
-  struct State st;
   FILE *fp_tmp = NULL;
   struct Buffer *tmpbody = NULL;
 
@@ -946,7 +945,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
                              "MIME-encapsulate the others?"));
     if (ans == MUTT_ABORT)
       return;
-    else if (ans == MUTT_YES)
+    if (ans == MUTT_YES)
       mime_reply_any = true;
   }
   else if (nattach == 1)
@@ -987,16 +986,19 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
   {
     mutt_make_attribution(Context->mailbox, e_parent, fp_tmp);
 
+    struct State st;
     memset(&st, 0, sizeof(struct State));
     st.fp_out = fp_tmp;
 
-    if (!C_TextFlowed)
+    if (C_TextFlowed)
+    {
+      mutt_str_strfcpy(prefix, ">", sizeof(prefix));
+    }
+    else
     {
       mutt_make_string(prefix, sizeof(prefix), 0, NONULL(C_IndentString),
                        Context, Context->mailbox, e_parent);
     }
-    else
-      mutt_str_strfcpy(prefix, ">", sizeof(prefix));
 
     st.prefix = prefix;
     st.flags = MUTT_CHARCONV;
@@ -1013,7 +1015,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
       {
         st.fp_in = fp;
         mutt_body_handler(e_cur, &st);
-        state_putc('\n', &st);
+        state_putc(&st, '\n');
       }
       else
         mutt_body_copy(fp, &e_tmp->content, e_cur);
@@ -1026,7 +1028,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
         {
           st.fp_in = actx->idx[i]->fp;
           mutt_body_handler(actx->idx[i]->content, &st);
-          state_putc('\n', &st);
+          state_putc(&st, '\n');
         }
       }
     }

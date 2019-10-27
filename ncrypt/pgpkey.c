@@ -79,9 +79,29 @@ struct PgpCache
   struct PgpCache *next;
 };
 
+/**
+ * struct PgpEntry - An entry in a PGP key menu
+ */
+struct PgpEntry
+{
+  size_t num;
+  struct PgpUid *uid;
+};
+
 static struct PgpCache *id_defaults = NULL;
 
 static const char trust_flags[] = "?- +";
+
+// clang-format off
+typedef uint8_t PgpKeyValidFlags; ///< Pgp Key valid fields, e.g. #PGP_KV_VALID
+#define PGP_KV_NO_FLAGS       0   ///< No flags are set
+#define PGP_KV_VALID    (1 << 0)  ///< PGP Key ID is valid
+#define PGP_KV_ADDR     (1 << 1)  ///< PGP Key address is valid
+#define PGP_KV_STRING   (1 << 2)  ///< PGP Key name string is valid
+#define PGP_KV_STRONGID (1 << 3)  ///< PGP Key is strong
+// clang-format on
+
+#define PGP_KV_MATCH (PGP_KV_ADDR | PGP_KV_STRING)
 
 /**
  * pgp_key_abilities - Turn PGP key abilities into a string
@@ -122,14 +142,14 @@ static char pgp_flags(KeyFlags flags)
 {
   if (flags & KEYFLAG_REVOKED)
     return 'R';
-  else if (flags & KEYFLAG_EXPIRED)
+  if (flags & KEYFLAG_EXPIRED)
     return 'X';
-  else if (flags & KEYFLAG_DISABLED)
+  if (flags & KEYFLAG_DISABLED)
     return 'd';
-  else if (flags & KEYFLAG_CRITICAL)
+  if (flags & KEYFLAG_CRITICAL)
     return 'c';
-  else
-    return ' ';
+
+  return ' ';
 }
 
 /**
@@ -141,18 +161,8 @@ static struct PgpKeyInfo *pgp_principal_key(struct PgpKeyInfo *key)
 {
   if (key->flags & KEYFLAG_SUBKEY && key->parent)
     return key->parent;
-  else
-    return key;
+  return key;
 }
-
-/**
- * struct PgpEntry - An entry in a PGP key menu
- */
-struct PgpEntry
-{
-  size_t num;
-  struct PgpUid *uid;
-};
 
 /**
  * pgp_entry_fmt - Format an entry on the PGP key selection menu - Implements ::format_t
@@ -358,12 +368,10 @@ static int compare_key_address(const void *a, const void *b)
 
   r = mutt_str_strcasecmp((*s)->addr, (*t)->addr);
   if (r != 0)
-    return r > 0;
-  else
-  {
-    return mutt_str_strcasecmp(pgp_fpr_or_lkeyid((*s)->parent),
-                               pgp_fpr_or_lkeyid((*t)->parent)) > 0;
-  }
+    return (r > 0);
+
+  return mutt_str_strcasecmp(pgp_fpr_or_lkeyid((*s)->parent),
+                             pgp_fpr_or_lkeyid((*t)->parent)) > 0;
 }
 
 /**
@@ -397,9 +405,8 @@ static int compare_keyid(const void *a, const void *b)
 
   r = mutt_str_strcasecmp(pgp_fpr_or_lkeyid((*s)->parent), pgp_fpr_or_lkeyid((*t)->parent));
   if (r != 0)
-    return r > 0;
-  else
-    return mutt_str_strcasecmp((*s)->addr, (*t)->addr) > 0;
+    return (r > 0);
+  return mutt_str_strcasecmp((*s)->addr, (*t)->addr) > 0;
 }
 
 /**
@@ -545,13 +552,6 @@ static bool pgp_id_is_valid(struct PgpUid *uid)
   return true;
 }
 
-#define PGP_KV_VALID 1
-#define PGP_KV_ADDR 2
-#define PGP_KV_STRING 4
-#define PGP_KV_STRONGID 8
-
-#define PGP_KV_MATCH (PGP_KV_ADDR | PGP_KV_STRING)
-
 /**
  * pgp_id_matches_addr - Does the key ID match the address
  * @param addr   First email address
@@ -559,29 +559,30 @@ static bool pgp_id_is_valid(struct PgpUid *uid)
  * @param uid    UID of PGP key
  * @retval num Flags, e.g. #PGP_KV_VALID
  */
-static int pgp_id_matches_addr(struct Address *addr, struct Address *u_addr, struct PgpUid *uid)
+static PgpKeyValidFlags pgp_id_matches_addr(struct Address *addr,
+                                            struct Address *u_addr, struct PgpUid *uid)
 {
-  int rc = 0;
+  PgpKeyValidFlags flags = PGP_KV_NO_FLAGS;
 
   if (pgp_id_is_valid(uid))
-    rc |= PGP_KV_VALID;
+    flags |= PGP_KV_VALID;
 
   if (pgp_id_is_strong(uid))
-    rc |= PGP_KV_STRONGID;
+    flags |= PGP_KV_STRONGID;
 
   if (addr->mailbox && u_addr->mailbox &&
       (mutt_str_strcasecmp(addr->mailbox, u_addr->mailbox) == 0))
   {
-    rc |= PGP_KV_ADDR;
+    flags |= PGP_KV_ADDR;
   }
 
   if (addr->personal && u_addr->personal &&
       (mutt_str_strcasecmp(addr->personal, u_addr->personal) == 0))
   {
-    rc |= PGP_KV_STRING;
+    flags |= PGP_KV_STRING;
   }
 
-  return rc;
+  return flags;
 }
 
 /**
@@ -1046,7 +1047,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
       struct Address *qa = NULL;
       TAILQ_FOREACH(qa, &al, entries)
       {
-        int validity = pgp_id_matches_addr(a, qa, q);
+        PgpKeyValidFlags validity = pgp_id_matches_addr(a, qa, q);
 
         if (validity & PGP_KV_MATCH) /* something matches */
           match = true;

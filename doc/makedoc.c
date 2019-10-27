@@ -827,19 +827,19 @@ static int handle_docline(char *l, FILE *out, int docstat)
 
   if (strncmp(l, ".pp", 3) == 0)
     return print_it(SP_NEWPAR, NULL, out, docstat);
-  else if (strncmp(l, ".ts", 3) == 0)
+  if (strncmp(l, ".ts", 3) == 0)
     return print_it(SP_START_TAB, NULL, out, docstat);
-  else if (strncmp(l, ".te", 3) == 0)
+  if (strncmp(l, ".te", 3) == 0)
     return print_it(SP_END_TAB, NULL, out, docstat);
-  else if (strncmp(l, ".dl", 3) == 0)
+  if (strncmp(l, ".dl", 3) == 0)
     return print_it(SP_START_DL, NULL, out, docstat);
-  else if (strncmp(l, ".de", 3) == 0)
+  if (strncmp(l, ".de", 3) == 0)
     return print_it(SP_END_DL, NULL, out, docstat);
-  else if (strncmp(l, ".il", 3) == 0)
+  if (strncmp(l, ".il", 3) == 0)
     return print_it(SP_START_IL, NULL, out, docstat);
-  else if (strncmp(l, ".ie", 3) == 0)
+  if (strncmp(l, ".ie", 3) == 0)
     return print_it(SP_END_IL, NULL, out, docstat);
-  else if (strncmp(l, ". ", 2) == 0)
+  if (strncmp(l, ". ", 2) == 0)
     *l = ' ';
 
   for (s = l, d = buf; *s; s++)

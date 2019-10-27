@@ -194,15 +194,13 @@ void config_synonym(void)
   if (!cs_register_variables(cs, Vars, 0))
     return;
 
-  if (!cs_register_variables(cs, Vars2, 0))
-  {
-    TEST_MSG("Expected error\n");
-  }
-  else
+  if (cs_register_variables(cs, Vars2, 0))
   {
     TEST_MSG("Test should have failed\n");
     return;
   }
+
+  TEST_MSG("Expected error\n");
 
   notify_observer_add(cs->notify, NT_CONFIG, 0, log_observer, 0);
 
