@@ -706,20 +706,22 @@ static struct SmimeKey *smime_parse_key(char *buf)
  */
 static struct SmimeKey *smime_get_candidates(char *search, bool only_public_key)
 {
-  char index_file[PATH_MAX];
   char buf[1024];
   struct SmimeKey *key = NULL, *results = NULL;
   struct SmimeKey **results_end = &results;
 
-  snprintf(index_file, sizeof(index_file), "%s/.index",
-           only_public_key ? NONULL(C_SmimeCertificates) : NONULL(C_SmimeKeys));
+  struct Buffer *index_file = mutt_buffer_pool_get();
+  mutt_buffer_printf(index_file, "%s/.index",
+                     only_public_key ? NONULL(C_SmimeCertificates) : NONULL(C_SmimeKeys));
 
-  FILE *fp = mutt_file_fopen(index_file, "r");
+  FILE *fp = mutt_file_fopen(mutt_b2s(index_file), "r");
   if (!fp)
   {
-    mutt_perror(index_file);
+    mutt_perror(mutt_b2s(index_file));
+    mutt_buffer_pool_release(&index_file);
     return NULL;
   }
+  mutt_buffer_pool_release(&index_file);
 
   while (fgets(buf, sizeof(buf), fp))
   {
