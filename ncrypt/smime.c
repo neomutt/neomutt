@@ -1548,39 +1548,36 @@ static pid_t smime_invoke_sign(FILE **fp_smime_in, FILE **fp_smime_out,
 struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
 {
   char buf[1024], certfile[PATH_MAX];
-  char tempfile[PATH_MAX];
-  char fp_smime_infile[PATH_MAX];
   char *cert_end = NULL;
-  FILE *fp_smime_in = NULL;
+  FILE *fp_smime_in = NULL, *fp_smime_err = NULL, *fp_out = NULL, *fp_tmp = NULL;
+  struct Body *t = NULL;
   int err = 0, empty, off;
   pid_t pid;
 
-  mutt_mktemp(tempfile, sizeof(tempfile));
-  FILE *fp_out = mutt_file_fopen(tempfile, "w+");
+  struct Buffer *tempfile = mutt_buffer_pool_get();
+  struct Buffer *smime_infile = mutt_buffer_pool_get();
+
+  mutt_buffer_mktemp(tempfile);
+  fp_out = mutt_file_fopen(mutt_b2s(tempfile), "w+");
   if (!fp_out)
   {
-    mutt_perror(tempfile);
-    return NULL;
+    mutt_perror(mutt_b2s(tempfile));
+    goto cleanup;
   }
 
-  FILE *fp_smime_err = mutt_file_mkstemp();
+  fp_smime_err = mutt_file_mkstemp();
   if (!fp_smime_err)
   {
     mutt_perror(_("Can't create temporary file"));
-    mutt_file_unlink(tempfile);
-    mutt_file_fclose(&fp_out);
-    return NULL;
+    goto cleanup;
   }
 
-  mutt_mktemp(fp_smime_infile, sizeof(fp_smime_infile));
-  FILE *fp_tmp = mutt_file_fopen(fp_smime_infile, "w+");
+  mutt_buffer_mktemp(smime_infile);
+  fp_tmp = mutt_file_fopen(mutt_b2s(smime_infile), "w+");
   if (!fp_tmp)
   {
-    mutt_perror(fp_smime_infile);
-    mutt_file_unlink(tempfile);
-    mutt_file_fclose(&fp_out);
-    mutt_file_fclose(&fp_smime_err);
-    return NULL;
+    mutt_perror(mutt_b2s(smime_infile));
+    goto cleanup;
   }
 
   *certfile = '\0';
@@ -1606,20 +1603,17 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
   mutt_file_fclose(&fp_tmp);
 
   pid = smime_invoke_encrypt(&fp_smime_in, NULL, NULL, -1, fileno(fp_out),
-                             fileno(fp_smime_err), fp_smime_infile, certfile);
+                             fileno(fp_smime_err), mutt_b2s(smime_infile), certfile);
   if (pid == -1)
   {
-    mutt_file_unlink(tempfile);
-    mutt_file_fclose(&fp_out);
-    mutt_file_fclose(&fp_smime_err);
-    mutt_file_unlink(fp_smime_infile);
-    return NULL;
+    mutt_file_unlink(mutt_b2s(smime_infile));
+    goto cleanup;
   }
 
   mutt_file_fclose(&fp_smime_in);
 
   mutt_wait_filter(pid);
-  mutt_file_unlink(fp_smime_infile);
+  mutt_file_unlink(mutt_b2s(smime_infile));
 
   fflush(fp_out);
   rewind(fp_out);
@@ -1644,11 +1638,11 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
     /* fatal error while trying to encrypt message */
     if (err == 0)
       mutt_any_key_to_continue(_("No output from OpenSSL..."));
-    mutt_file_unlink(tempfile);
-    return NULL;
+    mutt_file_unlink(mutt_b2s(tempfile));
+    goto cleanup;
   }
 
-  struct Body *t = mutt_body_new();
+  t = mutt_body_new();
   t->type = TYPE_APPLICATION;
   t->subtype = mutt_str_strdup("x-pkcs7-mime");
   mutt_param_set(&t->parameter, "name", "smime.p7m");
@@ -1657,10 +1651,25 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
   t->use_disp = true;
   t->disposition = DISP_ATTACH;
   t->d_filename = mutt_str_strdup("smime.p7m");
-  t->filename = mutt_str_strdup(tempfile);
+  t->filename = mutt_buffer_strdup(tempfile);
   t->unlink = true; /* delete after sending the message */
-  t->parts = 0;
-  t->next = 0;
+  t->parts = NULL;
+  t->next = NULL;
+
+cleanup:
+  if (fp_out)
+  {
+    mutt_file_fclose(&fp_out);
+    mutt_file_unlink(mutt_b2s(tempfile));
+  }
+  mutt_file_fclose(&fp_smime_err);
+  if (fp_tmp)
+  {
+    mutt_file_fclose(&fp_tmp);
+    mutt_file_unlink(mutt_b2s(smime_infile));
+  }
+  mutt_buffer_pool_release(&tempfile);
+  mutt_buffer_pool_release(&smime_infile);
 
   return t;
 }
