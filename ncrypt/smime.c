@@ -1175,37 +1175,39 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, bool copy,
  */
 static char *smime_extract_certificate(const char *infile)
 {
-  char pk7out[PATH_MAX], certfile[PATH_MAX];
+  FILE *fp_err = NULL;
+  FILE *fp_out = NULL;
+  FILE *fp_cert = NULL;
+  char *retval = NULL;
   pid_t pid;
   int empty;
 
-  FILE *fp_err = mutt_file_mkstemp();
+  struct Buffer *pk7out = mutt_buffer_pool_get();
+  struct Buffer *certfile = mutt_buffer_pool_get();
+
+  fp_err = mutt_file_mkstemp();
   if (!fp_err)
   {
     mutt_perror(_("Can't create temporary file"));
-    return NULL;
+    goto cleanup;
   }
 
-  mutt_mktemp(pk7out, sizeof(pk7out));
-  FILE *fp_out = mutt_file_fopen(pk7out, "w+");
+  mutt_buffer_mktemp(pk7out);
+  fp_out = mutt_file_fopen(mutt_b2s(pk7out), "w+");
   if (!fp_out)
   {
-    mutt_file_fclose(&fp_err);
-    mutt_perror(pk7out);
-    return NULL;
+    mutt_perror(mutt_b2s(pk7out));
+    goto cleanup;
   }
 
   /* Step 1: Convert the signature to a PKCS#7 structure, as we can't
-   * extract the full set of certificates directly.  */
+   * extract the full set of certificates directly. */
   pid = smime_invoke(NULL, NULL, NULL, -1, fileno(fp_out), fileno(fp_err), infile,
                      NULL, NULL, NULL, NULL, NULL, NULL, C_SmimePk7outCommand);
   if (pid == -1)
   {
     mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess"));
-    mutt_file_fclose(&fp_err);
-    mutt_file_fclose(&fp_out);
-    mutt_file_unlink(pk7out);
-    return NULL;
+    goto cleanup;
   }
 
   mutt_wait_filter(pid);
@@ -1217,61 +1219,66 @@ static char *smime_extract_certificate(const char *infile)
   empty = (fgetc(fp_out) == EOF);
   if (empty)
   {
-    mutt_perror(pk7out);
+    mutt_perror(mutt_b2s(pk7out));
     mutt_file_copy_stream(fp_err, stdout);
-    mutt_file_fclose(&fp_out);
-    mutt_file_fclose(&fp_err);
-    mutt_file_unlink(pk7out);
-    return NULL;
+    goto cleanup;
   }
-
   mutt_file_fclose(&fp_out);
-  mutt_mktemp(certfile, sizeof(certfile));
-  fp_out = mutt_file_fopen(certfile, "w+");
-  if (!fp_out)
+
+  mutt_buffer_mktemp(certfile);
+  fp_cert = mutt_file_fopen(mutt_b2s(certfile), "w+");
+  if (!fp_cert)
   {
-    mutt_file_fclose(&fp_err);
-    mutt_file_unlink(pk7out);
-    mutt_perror(certfile);
-    return NULL;
+    mutt_perror(mutt_b2s(certfile));
+    mutt_file_unlink(mutt_b2s(pk7out));
+    goto cleanup;
   }
 
-  /* Step 2: Extract the certificates from a PKCS#7 structure.
-   */
-  pid = smime_invoke(NULL, NULL, NULL, -1, fileno(fp_out), fileno(fp_err), pk7out,
-                     NULL, NULL, NULL, NULL, NULL, NULL, C_SmimeGetCertCommand);
+  // Step 2: Extract the certificates from a PKCS#7 structure.
+  pid = smime_invoke(NULL, NULL, NULL, -1, fileno(fp_cert), fileno(fp_err),
+                     mutt_b2s(pk7out), NULL, NULL, NULL, NULL, NULL, NULL,
+                     C_SmimeGetCertCommand);
   if (pid == -1)
   {
     mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess"));
-    mutt_file_fclose(&fp_err);
-    mutt_file_fclose(&fp_out);
-    mutt_file_unlink(pk7out);
-    mutt_file_unlink(certfile);
-    return NULL;
+    mutt_file_unlink(mutt_b2s(pk7out));
+    goto cleanup;
   }
 
   mutt_wait_filter(pid);
 
-  mutt_file_unlink(pk7out);
+  mutt_file_unlink(mutt_b2s(pk7out));
 
-  fflush(fp_out);
-  rewind(fp_out);
+  fflush(fp_cert);
+  rewind(fp_cert);
   fflush(fp_err);
   rewind(fp_err);
-  empty = (fgetc(fp_out) == EOF);
+  empty = (fgetc(fp_cert) == EOF);
   if (empty)
   {
     mutt_file_copy_stream(fp_err, stdout);
-    mutt_file_fclose(&fp_out);
-    mutt_file_fclose(&fp_err);
-    mutt_file_unlink(certfile);
-    return NULL;
+    goto cleanup;
   }
 
-  mutt_file_fclose(&fp_out);
-  mutt_file_fclose(&fp_err);
+  mutt_file_fclose(&fp_cert);
 
-  return mutt_str_strdup(certfile);
+  retval = mutt_buffer_strdup(certfile);
+
+cleanup:
+  mutt_file_fclose(&fp_err);
+  if (fp_out)
+  {
+    mutt_file_fclose(&fp_out);
+    mutt_file_unlink(mutt_b2s(pk7out));
+  }
+  if (fp_cert)
+  {
+    mutt_file_fclose(&fp_cert);
+    mutt_file_unlink(mutt_b2s(certfile));
+  }
+  mutt_buffer_pool_release(&pk7out);
+  mutt_buffer_pool_release(&certfile);
+  return retval;
 }
 
 /**
