@@ -463,9 +463,9 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   bool mime_fwd_any = true;
   struct Email *e_parent = NULL;
   FILE *fp_parent = NULL;
-  char tmpbody[PATH_MAX];
   char prefix[256];
   enum QuadOption ans = MUTT_ABORT;
+  struct Buffer *tmpbody = NULL;
 
   /* First, find the parent message.
    * Note: This could be made an option by just
@@ -486,13 +486,14 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   e_tmp->env = mutt_env_new();
   mutt_make_forward_subject(e_tmp->env, Context->mailbox, e_parent);
 
-  mutt_mktemp(tmpbody, sizeof(tmpbody));
-  FILE *fp_tmp = mutt_file_fopen(tmpbody, "w");
+  tmpbody = mutt_buffer_pool_get();
+  mutt_buffer_mktemp(tmpbody);
+  FILE *fp_tmp = mutt_file_fopen(mutt_b2s(tmpbody), "w");
   if (!fp_tmp)
   {
-    mutt_error(_("Can't open temporary file %s"), tmpbody);
+    mutt_error(_("Can't open temporary file %s"), mutt_b2s(tmpbody));
     email_free(&e_tmp);
-    return;
+    goto bail;
   }
 
   mutt_forward_intro(Context->mailbox, e_parent, fp_tmp);
@@ -598,17 +599,18 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   /* now that we have the template, send it. */
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   el_add_email(&el, e_parent);
-  ci_send_message(SEND_NO_FLAGS, e_tmp, tmpbody, NULL, &el);
+  ci_send_message(SEND_NO_FLAGS, e_tmp, mutt_b2s(tmpbody), NULL, &el);
   emaillist_clear(&el);
+  mutt_buffer_pool_release(&tmpbody);
   return;
 
 bail:
-
   if (fp_tmp)
   {
     mutt_file_fclose(&fp_tmp);
-    mutt_file_unlink(tmpbody);
+    mutt_file_unlink(mutt_b2s(tmpbody));
   }
+  mutt_buffer_pool_release(&tmpbody);
 
   email_free(&e_tmp);
 }
@@ -633,9 +635,8 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
   struct Email *e_cur = NULL;
   struct Email *e_tmp = NULL;
   enum QuadOption ans;
-
   struct Body **last = NULL;
-  char tmpbody[PATH_MAX];
+  struct Buffer *tmpbody = NULL;
   FILE *fp_tmp = NULL;
 
   CopyHeaderFlags chflags = CH_XMIT;
@@ -658,20 +659,19 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
   e_tmp->env = mutt_env_new();
   mutt_make_forward_subject(e_tmp->env, Context->mailbox, e_cur);
 
-  tmpbody[0] = '\0';
+  tmpbody = mutt_buffer_pool_get();
 
   ans = query_quadoption(C_MimeForward, _("Forward MIME encapsulated?"));
   if (ans == MUTT_NO)
   {
     /* no MIME encapsulation */
 
-    mutt_mktemp(tmpbody, sizeof(tmpbody));
-    fp_tmp = mutt_file_fopen(tmpbody, "w");
+    mutt_buffer_mktemp(tmpbody);
+    fp_tmp = mutt_file_fopen(mutt_b2s(tmpbody), "w");
     if (!fp_tmp)
     {
-      mutt_error(_("Can't create %s"), tmpbody);
-      email_free(&e_tmp);
-      return;
+      mutt_error(_("Can't create %s"), mutt_b2s(tmpbody));
+      goto cleanup;
     }
 
     CopyMessageFlags cmflags = MUTT_CM_NO_FLAGS;
@@ -734,8 +734,14 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
 
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   el_add_email(&el, e_cur);
-  ci_send_message(flags, e_tmp, (tmpbody[0] != '\0') ? tmpbody : NULL, NULL, &el);
+  ci_send_message(flags, e_tmp,
+                  mutt_buffer_is_empty(tmpbody) ? NULL : mutt_b2s(tmpbody), NULL, &el);
   emaillist_clear(&el);
+  e_tmp = NULL; /* ci_send_message frees this */
+
+cleanup:
+  email_free(&e_tmp);
+  mutt_buffer_pool_release(&tmpbody);
 }
 
 /**
@@ -904,10 +910,9 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
   struct Email *e_parent = NULL;
   FILE *fp_parent = NULL;
   struct Email *e_tmp = NULL;
-
   struct State st;
-  char tmpbody[PATH_MAX];
   FILE *fp_tmp = NULL;
+  struct Buffer *tmpbody = NULL;
 
   char prefix[128];
 
@@ -953,17 +958,16 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
   if (attach_reply_envelope_defaults(
           e_tmp->env, actx, e_parent ? e_parent : (e_cur ? e_cur->email : NULL), flags) == -1)
   {
-    email_free(&e_tmp);
-    return;
+    goto cleanup;
   }
 
-  mutt_mktemp(tmpbody, sizeof(tmpbody));
-  fp_tmp = mutt_file_fopen(tmpbody, "w");
+  tmpbody = mutt_buffer_pool_get();
+  mutt_buffer_mktemp(tmpbody);
+  fp_tmp = mutt_file_fopen(mutt_b2s(tmpbody), "w");
   if (!fp_tmp)
   {
-    mutt_error(_("Can't create %s"), tmpbody);
-    email_free(&e_tmp);
-    return;
+    mutt_error(_("Can't create %s"), mutt_b2s(tmpbody));
+    goto cleanup;
   }
 
   if (!e_parent)
@@ -1032,9 +1036,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
     if (mime_reply_any && !e_cur &&
         !copy_problematic_attachments(&e_tmp->content, actx, false))
     {
-      email_free(&e_tmp);
-      mutt_file_fclose(&fp_tmp);
-      return;
+      goto cleanup;
     }
   }
 
@@ -1042,10 +1044,20 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
 
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   el_add_email(&el, e_parent ? e_parent : (e_cur ? e_cur->email : NULL));
-  if (ci_send_message(flags, e_tmp, tmpbody, NULL, &el) == 0)
+  if (ci_send_message(flags, e_tmp, mutt_b2s(tmpbody), NULL, &el) == 0)
   {
     mutt_set_flag(Context->mailbox, e, MUTT_REPLIED, true);
   }
+  e_tmp = NULL; /* ci_send_message frees this */
+
+cleanup:
+  if (fp_tmp)
+  {
+    mutt_file_fclose(&fp_tmp);
+    mutt_file_unlink(mutt_b2s(tmpbody));
+  }
+  mutt_buffer_pool_release(&tmpbody);
+  email_free(&e_tmp);
   emaillist_clear(&el);
 }
 

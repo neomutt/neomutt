@@ -443,6 +443,8 @@ int main(int argc, char *argv[], char *envp[])
   int rc = 1;
   bool repeat_error = false;
   struct Buffer folder = mutt_buffer_make(0);
+  struct Buffer expanded_infile = mutt_buffer_make(0);
+  struct Buffer tempfile = mutt_buffer_make(0);
 
   MuttLogger = log_disp_terminal;
 
@@ -808,28 +810,29 @@ int main(int argc, char *argv[], char *envp[])
   if (!OptNoCurses && C_Folder)
   {
     struct stat sb;
-    char fpath[PATH_MAX];
+    struct Buffer *fpath = mutt_buffer_pool_get();
 
-    mutt_str_strfcpy(fpath, C_Folder, sizeof(fpath));
-    mutt_expand_path(fpath, sizeof(fpath));
+    mutt_buffer_strcpy(fpath, C_Folder);
+    mutt_buffer_expand_path(fpath);
     bool skip = false;
 #ifdef USE_IMAP
     /* we're not connected yet - skip mail folder creation */
-    skip |= (imap_path_probe(fpath, NULL) == MUTT_IMAP);
+    skip |= (imap_path_probe(mutt_b2s(fpath), NULL) == MUTT_IMAP);
 #endif
 #ifdef USE_NNTP
-    skip |= (nntp_path_probe(fpath, NULL) == MUTT_NNTP);
+    skip |= (nntp_path_probe(mutt_b2s(fpath), NULL) == MUTT_NNTP);
 #endif
-    if (!skip && (stat(fpath, &sb) == -1) && (errno == ENOENT))
+    if (!skip && (stat(mutt_b2s(fpath), &sb) == -1) && (errno == ENOENT))
     {
       char msg2[256];
       snprintf(msg2, sizeof(msg2), _("%s does not exist. Create it?"), C_Folder);
       if (mutt_yesorno(msg2, MUTT_YES) == MUTT_YES)
       {
-        if ((mkdir(fpath, 0700) == -1) && (errno != EEXIST))
+        if ((mkdir(mutt_b2s(fpath), 0700) == -1) && (errno != EEXIST))
           mutt_error(_("Can't create %s: %s"), C_Folder, strerror(errno)); // TEST21: neomutt -n -F /dev/null (and ~/Mail doesn't exist)
       }
     }
+    mutt_buffer_pool_release(&fpath);
   }
 
   if (batch_mode)
@@ -860,10 +863,10 @@ int main(int argc, char *argv[], char *envp[])
   {
     FILE *fp_in = NULL;
     FILE *fp_out = NULL;
-    char *tempfile = NULL, *infile = NULL;
-    char *bodytext = NULL, *bodyfile = NULL;
+    char *infile = NULL;
+    char *bodytext = NULL;
+    const char *bodyfile = NULL;
     int rv = 0;
-    char expanded_infile[PATH_MAX];
 
     if (!OptNoCurses)
       mutt_flushinp();
@@ -923,12 +926,12 @@ int main(int argc, char *argv[], char *envp[])
         }
         else
         {
-          mutt_str_strfcpy(expanded_infile, infile, sizeof(expanded_infile));
-          mutt_expand_path(expanded_infile, sizeof(expanded_infile));
-          fp_in = fopen(expanded_infile, "r");
+          mutt_buffer_strcpy(&expanded_infile, infile);
+          mutt_buffer_expand_path(&expanded_infile);
+          fp_in = fopen(mutt_b2s(&expanded_infile), "r");
           if (!fp_in)
           {
-            mutt_perror(expanded_infile);
+            mutt_perror(mutt_b2s(&expanded_infile));
             goto main_curses; // TEST28: neomutt -E -H missing
           }
         }
@@ -939,16 +942,13 @@ int main(int argc, char *argv[], char *envp[])
        * can stat and get the correct st_size below.  */
       if (!edit_infile)
       {
-        char buf[1024];
-        mutt_mktemp(buf, sizeof(buf));
-        tempfile = mutt_str_strdup(buf);
+        mutt_buffer_mktemp(&tempfile);
 
-        fp_out = mutt_file_fopen(tempfile, "w");
+        fp_out = mutt_file_fopen(mutt_b2s(&tempfile), "w");
         if (!fp_out)
         {
           mutt_file_fclose(&fp_in);
-          mutt_perror(tempfile);
-          FREE(&tempfile);
+          mutt_perror(mutt_b2s(&tempfile));
           goto main_curses; // TEST29: neomutt -H existing-file (where tmpdir=/path/to/FILE blocking tmpdir)
         }
         if (fp_in)
@@ -961,11 +961,10 @@ int main(int argc, char *argv[], char *envp[])
           fputs(bodytext, fp_out);
         mutt_file_fclose(&fp_out);
 
-        fp_in = fopen(tempfile, "r");
+        fp_in = fopen(mutt_b2s(&tempfile), "r");
         if (!fp_in)
         {
-          mutt_perror(tempfile);
-          FREE(&tempfile);
+          mutt_perror(mutt_b2s(&tempfile));
           goto main_curses; // TEST30: can't test
         }
       }
@@ -1031,11 +1030,11 @@ int main(int argc, char *argv[], char *envp[])
       /* Editing the include_file: pass it directly in.
        * Note that SEND_NO_FREE_HEADER is set above so it isn't unlinked.  */
       else if (edit_infile)
-        bodyfile = expanded_infile;
+        bodyfile = mutt_b2s(&expanded_infile);
       /* For bodytext and unedited include_file: use the tempfile.
        */
       else
-        bodyfile = tempfile;
+        bodyfile = mutt_b2s(&tempfile);
 
       mutt_file_fclose(&fp_in);
     }
@@ -1084,15 +1083,15 @@ int main(int argc, char *argv[], char *envp[])
         e->content->unlink = false;
       else if (draft_file)
       {
-        if (truncate(expanded_infile, 0) == -1)
+        if (truncate(mutt_b2s(&expanded_infile), 0) == -1)
         {
-          mutt_perror(expanded_infile);
+          mutt_perror(mutt_b2s(&expanded_infile));
           goto main_curses; // TEST33: neomutt -H read-only -s test john@example.com -E
         }
-        fp_out = mutt_file_fopen(expanded_infile, "a");
+        fp_out = mutt_file_fopen(mutt_b2s(&expanded_infile), "a");
         if (!fp_out)
         {
-          mutt_perror(expanded_infile);
+          mutt_perror(mutt_b2s(&expanded_infile));
           goto main_curses; // TEST34: can't test
         }
 
@@ -1125,11 +1124,8 @@ int main(int argc, char *argv[], char *envp[])
     }
 
     /* !edit_infile && draft_file will leave the tempfile around */
-    if (tempfile)
-    {
-      unlink(tempfile);
-      FREE(&tempfile);
-    }
+    if (!mutt_buffer_is_empty(&tempfile))
+      unlink(mutt_b2s(&tempfile));
 
     mutt_window_free_all();
 
@@ -1279,6 +1275,8 @@ main_curses:
     puts(ErrorBuf);
 main_exit:
   mutt_buffer_dealloc(&folder);
+  mutt_buffer_dealloc(&expanded_infile);
+  mutt_buffer_dealloc(&tempfile);
   mutt_list_free(&queries);
   crypto_module_free();
   mutt_window_free_all();

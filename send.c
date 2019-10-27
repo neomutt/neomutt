@@ -1344,17 +1344,18 @@ struct Address *mutt_default_from(void)
  */
 static int send_message(struct Email *e)
 {
-  char tempfile[PATH_MAX];
-  int i;
+  struct Buffer *tempfile = NULL;
+  int i = -1;
 #ifdef USE_SMTP
   short old_write_bcc;
 #endif
 
   /* Write out the message in MIME form. */
-  mutt_mktemp(tempfile, sizeof(tempfile));
-  FILE *fp_tmp = mutt_file_fopen(tempfile, "w");
+  tempfile = mutt_buffer_pool_get();
+  mutt_buffer_mktemp(tempfile);
+  FILE *fp_tmp = mutt_file_fopen(mutt_b2s(tempfile), "w");
   if (!fp_tmp)
-    return -1;
+    goto cleanup;
 
 #ifdef USE_SMTP
   old_write_bcc = C_WriteBcc;
@@ -1378,37 +1379,47 @@ static int send_message(struct Email *e)
   fputc('\n', fp_tmp); /* tie off the header. */
 
   if ((mutt_write_mime_body(e->content, fp_tmp) == -1))
-  {
-    mutt_file_fclose(&fp_tmp);
-    unlink(tempfile);
-    return -1;
-  }
+    goto cleanup;
 
-  if (fclose(fp_tmp) != 0)
+  if (mutt_file_fclose(&fp_tmp) != 0)
   {
-    mutt_perror(tempfile);
-    unlink(tempfile);
-    return -1;
+    mutt_perror(mutt_b2s(tempfile));
+    unlink(mutt_b2s(tempfile));
+    goto cleanup;
   }
 
 #ifdef MIXMASTER
   if (!STAILQ_EMPTY(&e->chain))
-    return mix_send_message(&e->chain, tempfile);
+  {
+    i = mix_send_message(&e->chain, mutt_b2s(tempfile));
+    goto cleanup;
+  }
+#endif
+
+#ifdef USE_NNTP
+  if (OptNewsSend)
+    goto sendmail;
 #endif
 
 #ifdef USE_SMTP
-#ifdef USE_NNTP
-  if (!OptNewsSend)
+  if (C_SmtpUrl)
+  {
+    i = mutt_smtp_send(&e->env->from, &e->env->to, &e->env->cc, &e->env->bcc,
+                       mutt_b2s(tempfile), (e->content->encoding == ENC_8BIT));
+    goto cleanup;
+  }
 #endif
-    if (C_SmtpUrl)
-    {
-      return mutt_smtp_send(&e->env->from, &e->env->to, &e->env->cc, &e->env->bcc,
-                            tempfile, (e->content->encoding == ENC_8BIT));
-    }
-#endif /* USE_SMTP */
 
+sendmail:
   i = mutt_invoke_sendmail(&e->env->from, &e->env->to, &e->env->cc, &e->env->bcc,
-                           tempfile, (e->content->encoding == ENC_8BIT));
+                           mutt_b2s(tempfile), (e->content->encoding == ENC_8BIT));
+cleanup:
+  if (fp_tmp)
+  {
+    mutt_file_fclose(&fp_tmp);
+    unlink(mutt_b2s(tempfile));
+  }
+  mutt_buffer_pool_release(&tempfile);
   return i;
 }
 
@@ -1572,7 +1583,6 @@ static bool search_attach_keyword(char *filename)
  * save_fcc - Save an Email to a 'sent mail' folder
  * @param[in]  e             Email to save
  * @param[in]  fcc           Folder to save to (can be comma-separated list)
- * @param[in]  fcc_len       Length of fcc buffer
  * @param[in]  clear_content Cleartext content of Email
  * @param[in]  pgpkeylist    List of pgp keys
  * @param[in]  flags         Send mode, see #SendFlags
@@ -1580,13 +1590,13 @@ static bool search_attach_keyword(char *filename)
  * @retval  0 Success
  * @retval -1 Error
  */
-static int save_fcc(struct Email *e, char *fcc, size_t fcc_len, struct Body *clear_content,
+static int save_fcc(struct Email *e, struct Buffer *fcc, struct Body *clear_content,
                     char *pgpkeylist, SendFlags flags, char **finalpath)
 {
   int rc = 0;
   struct Body *save_content = NULL;
 
-  mutt_expand_path(fcc, fcc_len);
+  mutt_buffer_expand_path(fcc);
 
   /* Don't save a copy when we are in batch-mode, and the FCC
    * folder is on an IMAP server: This would involve possibly lots
@@ -1597,15 +1607,16 @@ static int save_fcc(struct Email *e, char *fcc, size_t fcc_len, struct Body *cle
    * I'd like to think a bit more about this before including it.  */
 
 #ifdef USE_IMAP
-  if ((flags & SEND_BATCH) && (fcc[0] != '\0') && (imap_path_probe(fcc, NULL) == MUTT_IMAP))
+  if ((flags & SEND_BATCH) && !mutt_buffer_is_empty(fcc) &&
+      (imap_path_probe(mutt_b2s(fcc), NULL) == MUTT_IMAP))
   {
-    fcc[0] = '\0';
+    mutt_buffer_reset(fcc);
     mutt_error(_("Fcc to an IMAP mailbox is not supported in batch mode"));
     return rc;
   }
 #endif
 
-  if (!(*fcc && mutt_str_strcmp("/dev/null", fcc)))
+  if (mutt_buffer_is_empty(fcc) || (mutt_str_strcmp("/dev/null", mutt_b2s(fcc)) == 0))
     return rc;
 
   struct Body *tmpbody = e->content;
@@ -1671,7 +1682,7 @@ full_fcc:
      * the From_ line contains the current time instead of when the
      * message was first postponed.  */
     e->received = mutt_date_epoch();
-    rc = mutt_write_multiple_fcc(fcc, e, NULL, false, NULL, finalpath);
+    rc = mutt_write_multiple_fcc(mutt_b2s(fcc), e, NULL, false, NULL, finalpath);
     while (rc && !(flags & SEND_BATCH))
     {
       mutt_clear_error();
@@ -1690,8 +1701,8 @@ full_fcc:
         case 2: /* alternate (m)ailbox */
           /* L10N: This is the prompt to enter an "alternate (m)ailbox" when the
              initial Fcc fails.  */
-          rc = mutt_enter_fname(_("Fcc mailbox"), fcc, fcc_len, true);
-          if ((rc == -1) || (fcc[0] == '\0'))
+          rc = mutt_buffer_enter_fname(_("Fcc mailbox"), fcc, true);
+          if ((rc == -1) || mutt_buffer_is_empty(fcc))
           {
             rc = 0;
             break;
@@ -1699,7 +1710,7 @@ full_fcc:
           /* fall through */
 
         case 1: /* (r)etry */
-          rc = mutt_write_multiple_fcc(fcc, e, NULL, false, NULL, finalpath);
+          rc = mutt_write_multiple_fcc(mutt_b2s(fcc), e, NULL, false, NULL, finalpath);
           break;
 
         case -1: /* abort */
@@ -1747,7 +1758,8 @@ full_fcc:
  * @retval  0 Success
  * @retval -1 Error
  */
-static int postpone_message(struct Email *e_post, struct Email *e_cur, char *fcc, SendFlags flags)
+static int postpone_message(struct Email *e_post, struct Email *e_cur,
+                            const char *fcc, SendFlags flags)
 {
   char *pgpkeylist = NULL;
   char *encrypt_as = NULL;
@@ -1852,7 +1864,7 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
                     struct Context *ctx, struct EmailList *el)
 {
   char buf[1024];
-  char fcc[PATH_MAX] = { 0 }; /* where to copy this message */
+  struct Buffer fcc = mutt_buffer_make(0); /* where to copy this message */
   FILE *fp_tmp = NULL;
   struct Body *pbody = NULL;
   int i;
@@ -1898,6 +1910,10 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
       flags |= SEND_POSTPONED;
   }
 
+  /* Allocate the buffer due to the long lifetime, but
+   * pre-resize it to ensure there are no NULL data field issues */
+  mutt_buffer_alloc(&fcc, 1024);
+
   if (flags & SEND_POSTPONED)
   {
     if (WithCrypto & APPLICATION_PGP)
@@ -1916,7 +1932,7 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
 
     if (flags == SEND_POSTPONED)
     {
-      rc = mutt_get_postponed(ctx, e_templ, &e_cur, fcc, sizeof(fcc));
+      rc = mutt_get_postponed(ctx, e_templ, &e_cur, &fcc);
       if (rc < 0)
       {
         flags = SEND_POSTPONED;
@@ -2204,7 +2220,7 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
       else if (C_EditHeaders)
       {
         mutt_env_to_local(e_templ->env);
-        mutt_edit_headers(C_Editor, e_templ->content->filename, e_templ, fcc, sizeof(fcc));
+        mutt_edit_headers(C_Editor, e_templ->content->filename, e_templ, &fcc);
         mutt_env_to_intl(e_templ->env, NULL, NULL);
       }
       else
@@ -2358,7 +2374,8 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
   /* specify a default fcc.  if we are in batchmode, only save a copy of
    * the message if the value of $copy is yes or ask-yes */
 
-  if (!fcc[0] && !(flags & SEND_POSTPONED_FCC) && (!(flags & SEND_BATCH) || (C_Copy & 0x1)))
+  if (mutt_buffer_is_empty(&fcc) && !(flags & SEND_POSTPONED_FCC) &&
+      (!(flags & SEND_BATCH) || (C_Copy & 0x1)))
   {
     /* set the default FCC */
     const bool killfrom = TAILQ_EMPTY(&e_templ->env->from);
@@ -2366,7 +2383,7 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
     {
       mutt_addrlist_append(&e_templ->env->from, mutt_default_from());
     }
-    mutt_select_fcc(fcc, sizeof(fcc), e_templ);
+    mutt_select_fcc(&fcc, e_templ);
     if (killfrom)
     {
       mutt_addrlist_clear(&e_templ->env->from);
@@ -2381,8 +2398,8 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
   {
   main_loop:
 
-    mutt_pretty_mailbox(fcc, sizeof(fcc));
-    i = mutt_compose_menu(e_templ, fcc, sizeof(fcc), e_cur,
+    mutt_buffer_pretty_mailbox(&fcc);
+    i = mutt_compose_menu(e_templ, &fcc, e_cur,
                           ((flags & SEND_NO_FREE_HEADER) ? MUTT_COMPOSE_NOFREEHEADER : 0));
     if (i == -1)
     {
@@ -2397,7 +2414,7 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
     }
     else if (i == 1)
     {
-      if (postpone_message(e_templ, e_cur, fcc, flags) != 0)
+      if (postpone_message(e_templ, e_cur, mutt_b2s(&fcc), flags) != 0)
         goto main_loop;
       mutt_message(_("Message postponed"));
       rc = 1;
@@ -2529,7 +2546,7 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
   mutt_prepare_envelope(e_templ->env, true);
 
   if (C_FccBeforeSend)
-    save_fcc(e_templ, fcc, sizeof(fcc), clear_content, pgpkeylist, flags, &finalpath);
+    save_fcc(e_templ, &fcc, clear_content, pgpkeylist, flags, &finalpath);
 
   i = send_message(e_templ);
   if (i < 0)
@@ -2569,7 +2586,7 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
   }
 
   if (!C_FccBeforeSend)
-    save_fcc(e_templ, fcc, sizeof(fcc), clear_content, pgpkeylist, flags, &finalpath);
+    save_fcc(e_templ, &fcc, clear_content, pgpkeylist, flags, &finalpath);
 
   if (!OptNoCurses && !(flags & SEND_MAILX))
   {
@@ -2605,6 +2622,7 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
   rc = 0;
 
 cleanup:
+  mutt_buffer_dealloc(&fcc);
 
   if (flags & SEND_POSTPONED)
   {

@@ -86,15 +86,13 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
                                    unsigned long data, struct Buffer *err)
 {
   struct Hook *hook = NULL;
-  struct Buffer cmd, pattern;
-  int rc;
-  bool pat_not = false, warning = false;
+  int rc = MUTT_CMD_ERROR;
+  bool pat_not = false;
   regex_t *rx = NULL;
   struct PatternList *pat = NULL;
-  char path[PATH_MAX];
 
-  mutt_buffer_init(&pattern);
-  mutt_buffer_init(&cmd);
+  struct Buffer *cmd = mutt_buffer_pool_get();
+  struct Buffer *pattern = mutt_buffer_pool_get();
 
   if (~data & MUTT_GLOBAL_HOOK) /* NOT a global hook */
   {
@@ -105,65 +103,69 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
       pat_not = true;
     }
 
-    mutt_extract_token(&pattern, s, MUTT_TOKEN_NO_FLAGS);
+    mutt_extract_token(pattern, s, MUTT_TOKEN_NO_FLAGS);
 
     if (!MoreArgs(s))
     {
       mutt_buffer_printf(err, _("%s: too few arguments"), buf->data);
-      goto warn;
+      rc = MUTT_CMD_WARNING;
+      goto cleanup;
     }
   }
 
-  mutt_extract_token(&cmd, s,
+  mutt_extract_token(cmd, s,
                      (data & (MUTT_FOLDER_HOOK | MUTT_SEND_HOOK | MUTT_SEND2_HOOK |
                               MUTT_ACCOUNT_HOOK | MUTT_REPLY_HOOK)) ?
                          MUTT_TOKEN_SPACE :
                          MUTT_TOKEN_NO_FLAGS);
 
-  if (!cmd.data)
+  if (mutt_buffer_is_empty(cmd))
   {
     mutt_buffer_printf(err, _("%s: too few arguments"), buf->data);
-    goto warn;
+    rc = MUTT_CMD_WARNING;
+    goto cleanup;
   }
 
   if (MoreArgs(s))
   {
     mutt_buffer_printf(err, _("%s: too many arguments"), buf->data);
-    goto warn;
+    rc = MUTT_CMD_WARNING;
+    goto cleanup;
   }
 
   if (data & (MUTT_FOLDER_HOOK | MUTT_MBOX_HOOK))
   {
     /* Accidentally using the ^ mailbox shortcut in the .neomuttrc is a
      * common mistake */
-    if ((*pattern.data == '^') && (!CurrentFolder))
+    if ((pattern->data[0] == '^') && !CurrentFolder)
     {
       mutt_buffer_strcpy(err, _("current mailbox shortcut '^' is unset"));
-      goto error;
+      goto cleanup;
     }
 
-    mutt_str_strfcpy(path, pattern.data, sizeof(path));
-    mutt_expand_path_regex(path, sizeof(path), true);
+    struct Buffer *tmp = mutt_buffer_pool_get();
+    mutt_buffer_strcpy(tmp, mutt_b2s(pattern));
+    mutt_buffer_expand_path_regex(tmp, true);
 
     /* Check for other mailbox shortcuts that expand to the empty string.
      * This is likely a mistake too */
-    if (!*path && *pattern.data)
+    if (mutt_buffer_is_empty(tmp) && !mutt_buffer_is_empty(pattern))
     {
       mutt_buffer_strcpy(err, _("mailbox shortcut expanded to empty regex"));
-      goto error;
+      mutt_buffer_pool_release(&tmp);
+      goto cleanup;
     }
 
-    FREE(&pattern.data);
-    mutt_buffer_init(&pattern);
-    pattern.data = mutt_str_strdup(path);
+    mutt_buffer_strcpy(pattern, mutt_b2s(tmp));
+    mutt_buffer_pool_release(&tmp);
   }
 #ifdef USE_COMPRESSED
   else if (data & (MUTT_APPEND_HOOK | MUTT_OPEN_HOOK | MUTT_CLOSE_HOOK))
   {
-    if (mutt_comp_valid_command(cmd.data) == 0)
+    if (mutt_comp_valid_command(mutt_b2s(cmd)) == 0)
     {
       mutt_buffer_strcpy(err, _("badly formatted command string"));
-      return MUTT_CMD_ERROR;
+      goto cleanup;
     }
   }
 #endif
@@ -171,26 +173,15 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
            !(data & (MUTT_CHARSET_HOOK | MUTT_ICONV_HOOK | MUTT_ACCOUNT_HOOK)) &&
            (!WithCrypto || !(data & MUTT_CRYPT_HOOK)))
   {
-    struct Buffer *tmp = mutt_buffer_pool_get();
-
     /* At this stage remain only message-hooks, reply-hooks, send-hooks,
      * send2-hooks, save-hooks, and fcc-hooks: All those allowing full
      * patterns. If given a simple regex, we expand $default_hook.  */
-    mutt_buffer_strcpy(tmp, pattern.data);
-    mutt_check_simple(tmp, C_DefaultHook);
-    FREE(&pattern.data);
-    mutt_buffer_init(&pattern);
-    pattern.data = mutt_str_strdup(mutt_b2s(tmp));
-    mutt_buffer_pool_release(&tmp);
+    mutt_check_simple(pattern, C_DefaultHook);
   }
 
   if (data & (MUTT_MBOX_HOOK | MUTT_SAVE_HOOK | MUTT_FCC_HOOK))
   {
-    mutt_str_strfcpy(path, cmd.data, sizeof(path));
-    mutt_expand_path(path, sizeof(path));
-    FREE(&cmd.data);
-    mutt_buffer_init(&cmd);
-    cmd.data = mutt_str_strdup(path);
+    mutt_buffer_expand_path(cmd);
   }
 
   /* check to make sure that a matching hook doesn't already exist */
@@ -199,14 +190,14 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     if (data & MUTT_GLOBAL_HOOK)
     {
       /* Ignore duplicate global hooks */
-      if (mutt_str_strcmp(hook->command, cmd.data) == 0)
+      if (mutt_str_strcmp(hook->command, mutt_b2s(cmd)) == 0)
       {
-        FREE(&cmd.data);
-        return MUTT_CMD_SUCCESS;
+        rc = MUTT_CMD_SUCCESS;
+        goto cleanup;
       }
     }
     else if ((hook->type == data) && (hook->regex.pat_not == pat_not) &&
-             (mutt_str_strcmp(pattern.data, hook->regex.pattern) == 0))
+             (mutt_str_strcmp(mutt_b2s(pattern), hook->regex.pattern) == 0))
     {
       if (data & (MUTT_FOLDER_HOOK | MUTT_SEND_HOOK | MUTT_SEND2_HOOK | MUTT_MESSAGE_HOOK |
                   MUTT_ACCOUNT_HOOK | MUTT_REPLY_HOOK | MUTT_CRYPT_HOOK |
@@ -215,11 +206,10 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
         /* these hooks allow multiple commands with the same
          * pattern, so if we've already seen this pattern/command pair, just
          * ignore it instead of creating a duplicate */
-        if (mutt_str_strcmp(hook->command, cmd.data) == 0)
+        if (mutt_str_strcmp(hook->command, mutt_b2s(cmd)) == 0)
         {
-          FREE(&cmd.data);
-          FREE(&pattern.data);
-          return MUTT_CMD_SUCCESS;
+          rc = MUTT_CMD_SUCCESS;
+          goto cleanup;
         }
       }
       else
@@ -230,9 +220,9 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
          * a common action to perform is to change the default (.) entry
          * based upon some other information. */
         FREE(&hook->command);
-        hook->command = cmd.data;
-        FREE(&pattern.data);
-        return MUTT_CMD_SUCCESS;
+        hook->command = mutt_str_strdup(mutt_b2s(cmd));
+        rc = MUTT_CMD_SUCCESS;
+        goto cleanup;
       }
     }
   }
@@ -241,53 +231,49 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
   {
     /* These are managed separately by the charset code */
     enum LookupType type = (data & MUTT_CHARSET_HOOK) ? MUTT_LOOKUP_CHARSET : MUTT_LOOKUP_ICONV;
-    if (!mutt_ch_lookup_add(type, pattern.data, cmd.data, err))
-      goto error;
-    FREE(&pattern.data);
-    FREE(&cmd.data);
-    return MUTT_CMD_SUCCESS;
+    if (mutt_ch_lookup_add(type, mutt_b2s(pattern), mutt_b2s(cmd), err))
+      rc = MUTT_CMD_SUCCESS;
+    goto cleanup;
   }
   else if (data & (MUTT_SEND_HOOK | MUTT_SEND2_HOOK | MUTT_SAVE_HOOK |
                    MUTT_FCC_HOOK | MUTT_MESSAGE_HOOK | MUTT_REPLY_HOOK))
   {
-    pat = mutt_pattern_comp(pattern.data,
+    pat = mutt_pattern_comp(mutt_b2s(pattern),
                             (data & (MUTT_SEND_HOOK | MUTT_SEND2_HOOK | MUTT_FCC_HOOK)) ?
                                 MUTT_PC_NO_FLAGS :
                                 MUTT_PC_FULL_MSG,
                             err);
     if (!pat)
-      goto error;
+      goto cleanup;
   }
   else if (~data & MUTT_GLOBAL_HOOK) /* NOT a global hook */
   {
     /* Hooks not allowing full patterns: Check syntax of regex */
     rx = mutt_mem_malloc(sizeof(regex_t));
-    rc = REG_COMP(rx, NONULL(pattern.data), ((data & MUTT_CRYPT_HOOK) ? REG_ICASE : 0));
-    if (rc != 0)
+    int rc2 = REG_COMP(rx, NONULL(mutt_b2s(pattern)),
+                       ((data & MUTT_CRYPT_HOOK) ? REG_ICASE : 0));
+    if (rc2 != 0)
     {
-      regerror(rc, rx, err->data, err->dsize);
+      regerror(rc2, rx, err->data, err->dsize);
       FREE(&rx);
-      goto error;
+      goto cleanup;
     }
   }
 
   hook = mutt_mem_calloc(1, sizeof(struct Hook));
   hook->type = data;
-  hook->command = cmd.data;
+  hook->command = mutt_str_strdup(mutt_b2s(cmd));
   hook->pattern = pat;
-  hook->regex.pattern = pattern.data;
+  hook->regex.pattern = mutt_str_strdup(mutt_b2s(pattern));
   hook->regex.regex = rx;
   hook->regex.pat_not = pat_not;
   TAILQ_INSERT_TAIL(&Hooks, hook, entries);
-  return MUTT_CMD_SUCCESS;
+  rc = MUTT_CMD_SUCCESS;
 
-warn:
-  warning = true;
-error:
-  if (~data & MUTT_GLOBAL_HOOK) /* NOT a global hook */
-    FREE(&pattern.data);
-  FREE(&cmd.data);
-  return (warning ? MUTT_CMD_WARNING : MUTT_CMD_ERROR);
+cleanup:
+  mutt_buffer_pool_release(&cmd);
+  mutt_buffer_pool_release(&pattern);
+  return rc;
 }
 
 /**
@@ -695,12 +681,13 @@ void mutt_default_save(char *path, size_t pathlen, struct Email *e)
 /**
  * mutt_select_fcc - Select the FCC path for an email
  * @param path    Buffer for the path
- * @param pathlen Length of the buffer
  * @param e       Email
  */
-void mutt_select_fcc(char *path, size_t pathlen, struct Email *e)
+void mutt_select_fcc(struct Buffer *path, struct Email *e)
 {
-  if (addr_hook(path, pathlen, MUTT_FCC_HOOK, NULL, e) != 0)
+  mutt_buffer_alloc(path, PATH_MAX);
+
+  if (addr_hook(path->data, path->dsize, MUTT_FCC_HOOK, NULL, e) != 0)
   {
     const struct Address *to = TAILQ_FIRST(&e->env->to);
     const struct Address *cc = TAILQ_FIRST(&e->env->cc);
@@ -710,15 +697,18 @@ void mutt_select_fcc(char *path, size_t pathlen, struct Email *e)
       const struct Address *addr = to ? to : (cc ? cc : bcc);
       struct Buffer *buf = mutt_buffer_pool_get();
       mutt_safe_path(buf, addr);
-      mutt_path_concat(path, NONULL(C_Folder), mutt_b2s(buf), pathlen);
+      mutt_buffer_concat_path(path, NONULL(C_Folder), mutt_b2s(buf));
       mutt_buffer_pool_release(&buf);
-      if (!C_ForceName && (mx_access(path, W_OK) != 0))
-        mutt_str_strfcpy(path, C_Record, pathlen);
+      if (!C_ForceName && (mx_access(mutt_b2s(path), W_OK) != 0))
+        mutt_buffer_strcpy(path, C_Record);
     }
     else
-      mutt_str_strfcpy(path, C_Record, pathlen);
+      mutt_buffer_strcpy(path, C_Record);
   }
-  mutt_pretty_mailbox(path, pathlen);
+  else
+    mutt_buffer_fix_dptr(path);
+
+  mutt_buffer_pretty_mailbox(path);
 }
 
 /**

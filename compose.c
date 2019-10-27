@@ -107,7 +107,7 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
 struct ComposeRedrawData
 {
   struct Email *email;
-  char *fcc;
+  struct Buffer *fcc;
 #ifdef USE_AUTOCRYPT
   enum AutocryptRec autocrypt_rec;
   int autocrypt_rec_override;
@@ -660,7 +660,7 @@ static void draw_envelope_addr(int line, struct AddressList *al, struct ComposeR
 static void draw_envelope(struct ComposeRedrawData *rd)
 {
   struct Email *e = rd->email;
-  char *fcc = rd->fcc;
+  const char *fcc = mutt_b2s(rd->fcc);
 
   draw_envelope_addr(HDR_FROM, &e->env->from, rd);
 #ifdef USE_NNTP
@@ -1085,14 +1085,13 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
  * mutt_compose_menu - Allow the user to edit the message envelope
  * @param e      Email to fill
  * @param fcc    Buffer to save FCC
- * @param fcclen Length of FCC buffer
  * @param e_cur  Current message
  * @param flags  Flags, e.g. #MUTT_COMPOSE_NOFREEHEADER
  * @retval  1 Message should be postponed
  * @retval  0 Normal exit
  * @retval -1 Abort message
  */
-int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e_cur, int flags)
+int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, int flags)
 {
   char helpstr[1024]; // This isn't copied by the help bar
   char buf[PATH_MAX];
@@ -1257,13 +1256,13 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
         break;
 
       case OP_COMPOSE_EDIT_FCC:
-        mutt_str_strfcpy(buf, fcc, sizeof(buf));
-        if (mutt_get_field(_("Fcc: "), buf, sizeof(buf), MUTT_FILE | MUTT_CLEAR) == 0)
+        mutt_buffer_strcpy(&fname, mutt_b2s(fcc));
+        if (mutt_buffer_get_field(_("Fcc: "), &fname, MUTT_FILE | MUTT_CLEAR) == 0)
         {
-          mutt_str_strfcpy(fcc, buf, fcclen);
-          mutt_pretty_mailbox(fcc, fcclen);
+          mutt_buffer_strcpy(fcc, mutt_b2s(&fname));
+          mutt_buffer_pretty_mailbox(fcc);
           mutt_window_move(menu->indexwin, HDR_FCC, HDR_XOFFSET);
-          mutt_paddstr(W, fcc);
+          mutt_paddstr(W, mutt_b2s(fcc));
           fcc_set = true;
         }
         mutt_message_hook(NULL, e, MUTT_SEND2_HOOK);
@@ -1290,7 +1289,7 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
           const char *tag = NULL;
           char *err = NULL;
           mutt_env_to_local(e->env);
-          mutt_edit_headers(NONULL(C_Editor), e->content->filename, e, fcc, fcclen);
+          mutt_edit_headers(NONULL(C_Editor), e->content->filename, e, fcc);
           if (mutt_env_to_intl(e->env, &tag, &err))
           {
             mutt_error(_("Bad IDN in '%s': '%s'"), tag, err);
@@ -1865,14 +1864,14 @@ int mutt_compose_menu(struct Email *e, char *fcc, size_t fcclen, struct Email *e
           break;
 #endif
 
-        if (!fcc_set && *fcc)
+        if (!fcc_set && !mutt_buffer_is_empty(fcc))
         {
           enum QuadOption ans =
               query_quadoption(C_Copy, _("Save a copy of this message?"));
           if (ans == MUTT_ABORT)
             break;
           else if (ans == MUTT_NO)
-            *fcc = '\0';
+            mutt_buffer_reset(fcc);
         }
 
         loop = false;

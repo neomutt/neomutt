@@ -146,16 +146,17 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
   if (S_ISDIR(st.st_mode))
   {
     /* if we have a maildir mailbox, we need to stat the "new" dir */
+    struct Buffer *buf = mutt_buffer_pool_get();
 
-    char buf[PATH_MAX];
-
-    snprintf(buf, sizeof(buf), "%s/new", C_Postponed);
-    if ((access(buf, F_OK) == 0) && (stat(buf, &st) == -1))
+    mutt_buffer_printf(buf, "%s/new", C_Postponed);
+    if ((access(mutt_b2s(buf), F_OK) == 0) && (stat(mutt_b2s(buf), &st) == -1))
     {
       PostCount = 0;
       LastModify = 0;
+      mutt_buffer_pool_release(&buf);
       return 0;
     }
+    mutt_buffer_pool_release(&buf);
   }
 
   if (LastModify < st.st_mtime)
@@ -285,13 +286,12 @@ static struct Email *select_msg(struct Context *ctx)
  * @param[in]  hdr     envelope/attachment info for recalled message
  * @param[out] cur     if message was a reply, 'cur' is set to the message which 'hdr' is in reply to
  * @param[in]  fcc     fcc for the recalled message
- * @param[in]  fcclen  max length of fcc
  * @retval -1         Error/no messages
  * @retval 0          Normal exit
  * @retval #SEND_REPLY Recalled message is a reply
  */
 int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
-                       struct Email **cur, char *fcc, size_t fcclen)
+                       struct Email **cur, struct Buffer *fcc)
 {
   if (!C_Postponed)
     return -1;
@@ -385,8 +385,8 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
     else if ((plen = mutt_str_startswith(np->data, "X-Mutt-Fcc:", CASE_IGNORE)))
     {
       p = mutt_str_skip_email_wsp(np->data + plen);
-      mutt_str_strfcpy(fcc, p, fcclen);
-      mutt_pretty_mailbox(fcc, fcclen);
+      mutt_buffer_strcpy(fcc, p);
+      mutt_buffer_pretty_mailbox(fcc);
 
       /* note that x-mutt-fcc was present.  we do this because we want to add a
        * default fcc if the header was missing, but preserve the request of the

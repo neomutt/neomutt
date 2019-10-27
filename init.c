@@ -1706,38 +1706,40 @@ static enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
           if (IS_PATH(he))
           {
             mutt_expand_path(buf->data, buf->dsize);
-            char scratch[PATH_MAX];
-            mutt_str_strfcpy(scratch, buf->data, sizeof(scratch));
-            size_t scratchlen = mutt_str_strlen(scratch);
+            struct Buffer scratch = mutt_buffer_make(1024);
+            mutt_buffer_strcpy(&scratch, mutt_b2s(buf));
+            size_t scratchlen = mutt_buffer_len(&scratch);
             if (!(he->type & DT_MAILBOX) && (scratchlen != 0))
             {
-              if ((scratch[scratchlen - 1] != '|') && /* not a command */
-                  (url_check_scheme(scratch) == U_UNKNOWN)) /* probably a local file */
+              if ((mutt_b2s(&scratch)[scratchlen - 1] != '|') && /* not a command */
+                  (url_check_scheme(mutt_b2s(&scratch)) == U_UNKNOWN)) /* probably a local file */
               {
                 struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
-                if (mutt_path_to_absolute(scratch, np ? NONULL(np->data) : "./"))
+                if (mutt_path_to_absolute(scratch.data, np ? NONULL(np->data) : "./"))
                 {
                   mutt_buffer_reset(buf);
-                  mutt_buffer_addstr(buf, scratch);
+                  mutt_buffer_addstr(buf, mutt_b2s(&scratch));
                 }
                 else
                 {
-                  mutt_error(_("Error: Can't build path of '%s'"), scratch);
+                  mutt_error(_("Error: Can't build path of '%s'"), mutt_b2s(&scratch));
                 }
               }
             }
+            mutt_buffer_dealloc(&scratch);
           }
           else if (IS_COMMAND(he))
           {
-            char scratch[PATH_MAX];
-            mutt_str_strfcpy(scratch, buf->data, sizeof(scratch));
+            struct Buffer scratch = mutt_buffer_make(1024);
+            mutt_buffer_strcpy(&scratch, mutt_b2s(buf));
 
             if (mutt_str_strcmp(buf->data, "builtin") != 0)
             {
-              mutt_expand_path(scratch, sizeof(scratch));
+              mutt_buffer_expand_path(&scratch);
             }
             mutt_buffer_reset(buf);
-            mutt_buffer_addstr(buf, scratch);
+            mutt_buffer_addstr(buf, mutt_b2s(&scratch));
+            mutt_buffer_dealloc(&scratch);
           }
 
           rc = cs_he_string_set(Config, he, buf->data, err);

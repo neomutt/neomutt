@@ -300,11 +300,12 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
       {
         if (aptr->content->filename && (*aptr->content->filename == '/'))
         {
-          char path[PATH_MAX];
+          struct Buffer *path = mutt_buffer_pool_get();
 
-          mutt_str_strfcpy(path, aptr->content->filename, sizeof(path));
-          mutt_pretty_mailbox(path, sizeof(path));
-          mutt_format_s(buf, buflen, prec, path);
+          mutt_buffer_strcpy(path, aptr->content->filename);
+          mutt_buffer_pretty_mailbox(path);
+          mutt_format_s(buf, buflen, prec, mutt_b2s(path));
+          mutt_buffer_pool_release(&path);
         }
         else
           mutt_format_s(buf, buflen, prec, NONULL(aptr->content->filename));
