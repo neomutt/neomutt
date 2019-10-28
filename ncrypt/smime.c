@@ -1915,8 +1915,7 @@ static pid_t smime_invoke_decrypt(FILE **fp_smime_in, FILE **fp_smime_out,
  */
 int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 {
-  char signedfile[PATH_MAX];
-  FILE *fp_smime_out = NULL;
+  FILE *fp = NULL, *fp_smime_out = NULL, *fp_smime_err = NULL;
   pid_t pid;
   int badsig = -1;
 
@@ -1924,15 +1923,17 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
   size_t tmplength = 0;
   int orig_type = sigbdy->type;
 
-  snprintf(signedfile, sizeof(signedfile), "%s.sig", tempfile);
+  struct Buffer *signedfile = mutt_buffer_pool_get();
+
+  mutt_buffer_printf(signedfile, "%s.sig", tempfile);
 
   /* decode to a tempfile, saving the original destination */
-  FILE *fp = s->fp_out;
-  s->fp_out = mutt_file_fopen(signedfile, "w");
+  fp = s->fp_out;
+  s->fp_out = mutt_file_fopen(mutt_b2s(signedfile), "w");
   if (!s->fp_out)
   {
-    mutt_perror(signedfile);
-    return -1;
+    mutt_perror(mutt_b2s(signedfile));
+    goto cleanup;
   }
   /* decoding the attachment changes the size and offset, so save a copy
    * of the "real" values now, and restore them after processing */
@@ -1953,25 +1954,24 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
   /* restore final destination and substitute the tempfile for input */
   s->fp_out = fp;
   fp = s->fp_in;
-  s->fp_in = fopen(signedfile, "r");
+  s->fp_in = fopen(mutt_b2s(signedfile), "r");
 
   /* restore the prefix */
   s->prefix = save_prefix;
 
   sigbdy->type = orig_type;
 
-  FILE *fp_smime_err = mutt_file_mkstemp();
+  fp_smime_err = mutt_file_mkstemp();
   if (!fp_smime_err)
   {
     mutt_perror(_("Can't create temporary file"));
-    mutt_file_unlink(signedfile);
-    return -1;
+    goto cleanup;
   }
 
   crypt_current_time(s, "OpenSSL");
 
-  pid = smime_invoke_verify(NULL, &fp_smime_out, NULL, -1, -1,
-                            fileno(fp_smime_err), tempfile, signedfile, 0);
+  pid = smime_invoke_verify(NULL, &fp_smime_out, NULL, -1, -1, fileno(fp_smime_err),
+                            tempfile, mutt_b2s(signedfile), 0);
   if (pid != -1)
   {
     fflush(fp_smime_out);
@@ -2003,7 +2003,7 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
 
   state_attach_puts(s, _("[-- End of OpenSSL output --]\n\n"));
 
-  mutt_file_unlink(signedfile);
+  mutt_file_unlink(mutt_b2s(signedfile));
 
   sigbdy->length = tmplength;
   sigbdy->offset = tmpoffset;
@@ -2012,6 +2012,8 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
   mutt_file_fclose(&s->fp_in);
   s->fp_in = fp;
 
+cleanup:
+  mutt_buffer_pool_release(&signedfile);
   return badsig;
 }
 
