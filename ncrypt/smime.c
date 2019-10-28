@@ -2028,8 +2028,9 @@ cleanup:
  */
 static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *fp_out_file)
 {
-  char tmpfname[PATH_MAX];
-  FILE *fp_tmp = NULL, *fp_tmp_buffer = NULL, *fp_out = NULL;
+  struct Buffer tmpfname = mutt_buffer_make(0);
+  FILE *fp_smime_out = NULL, *fp_smime_in = NULL, *fp_smime_err = NULL;
+  FILE *fp_tmp = NULL, *fp_out = NULL;
   struct stat info;
   struct Body *p = NULL;
   pid_t pid = -1;
@@ -2038,29 +2039,27 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
   if (!(type & APPLICATION_SMIME))
     return NULL;
 
-  FILE *fp_smime_out = mutt_file_mkstemp();
+  /* Because of the mutt_body_handler() we avoid the buffer pool. */
+  fp_smime_out = mutt_file_mkstemp();
   if (!fp_smime_out)
   {
     mutt_perror(_("Can't create temporary file"));
-    return NULL;
+    goto cleanup;
   }
 
-  FILE *fp_smime_err = mutt_file_mkstemp();
+  fp_smime_err = mutt_file_mkstemp();
   if (!fp_smime_err)
   {
     mutt_perror(_("Can't create temporary file"));
-    mutt_file_fclose(&fp_smime_out);
-    return NULL;
+    goto cleanup;
   }
 
-  mutt_mktemp(tmpfname, sizeof(tmpfname));
-  fp_tmp = mutt_file_fopen(tmpfname, "w+");
+  mutt_buffer_mktemp(&tmpfname);
+  fp_tmp = mutt_file_fopen(mutt_b2s(&tmpfname), "w+");
   if (!fp_tmp)
   {
-    mutt_perror(tmpfname);
-    mutt_file_fclose(&fp_smime_out);
-    mutt_file_fclose(&fp_smime_err);
-    return NULL;
+    mutt_perror(mutt_b2s(&tmpfname));
+    goto cleanup;
   }
 
   fseeko(s->fp_in, m->offset, SEEK_SET);
@@ -2070,35 +2069,30 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
   fflush(fp_tmp);
   mutt_file_fclose(&fp_tmp);
 
-  FILE *fp_smime_in = NULL;
   if ((type & SEC_ENCRYPT) &&
       ((pid = smime_invoke_decrypt(&fp_smime_in, NULL, NULL, -1, fileno(fp_smime_out),
-                                   fileno(fp_smime_err), tmpfname)) == -1))
+                                   fileno(fp_smime_err), mutt_b2s(&tmpfname))) == -1))
   {
-    mutt_file_fclose(&fp_smime_out);
-    mutt_file_unlink(tmpfname);
+    mutt_file_unlink(mutt_b2s(&tmpfname));
     if (s->flags & MUTT_DISPLAY)
     {
       state_attach_puts(
           s, _("[-- Error: unable to create OpenSSL subprocess --]\n"));
     }
-    mutt_file_fclose(&fp_smime_err);
-    return NULL;
+    goto cleanup;
   }
   else if ((type & SEC_SIGNOPAQUE) &&
            ((pid = smime_invoke_verify(&fp_smime_in, NULL, NULL, -1,
-                                       fileno(fp_smime_out), fileno(fp_smime_err),
-                                       NULL, tmpfname, SEC_SIGNOPAQUE)) == -1))
+                                       fileno(fp_smime_out), fileno(fp_smime_err), NULL,
+                                       mutt_b2s(&tmpfname), SEC_SIGNOPAQUE)) == -1))
   {
-    mutt_file_fclose(&fp_smime_out);
-    mutt_file_unlink(tmpfname);
+    mutt_file_unlink(mutt_b2s(&tmpfname));
     if (s->flags & MUTT_DISPLAY)
     {
       state_attach_puts(
           s, _("[-- Error: unable to create OpenSSL subprocess --]\n"));
     }
-    mutt_file_fclose(&fp_smime_err);
-    return NULL;
+    goto cleanup;
   }
 
   if (type & SEC_ENCRYPT)
@@ -2112,7 +2106,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
   mutt_file_fclose(&fp_smime_in);
 
   mutt_wait_filter(pid);
-  mutt_file_unlink(tmpfname);
+  mutt_file_unlink(mutt_b2s(&tmpfname));
 
   if (s->flags & MUTT_DISPLAY)
   {
@@ -2160,9 +2154,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
     if (!fp_out)
     {
       mutt_perror(_("Can't create temporary file"));
-      mutt_file_fclose(&fp_smime_out);
-      mutt_file_fclose(&fp_smime_err);
-      return NULL;
+      goto cleanup;
     }
   }
   char buf[8192];
@@ -2201,7 +2193,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
     if (s->fp_out)
     {
       rewind(fp_out);
-      fp_tmp_buffer = s->fp_in;
+      FILE *fp_tmp_buffer = s->fp_in;
       s->fp_in = fp_out;
       mutt_body_handler(p, s);
       s->fp_in = fp_tmp_buffer;
@@ -2223,6 +2215,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
   if (!fp_out_file)
   {
     mutt_file_fclose(&fp_out);
+    mutt_file_unlink(mutt_b2s(&tmpfname));
   }
   fp_out = NULL;
 
@@ -2252,8 +2245,13 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *f
     m->goodsig = p->goodsig;
     m->badsig = p->badsig;
   }
-  mutt_file_fclose(&fp_smime_err);
 
+cleanup:
+  mutt_file_fclose(&fp_smime_out);
+  mutt_file_fclose(&fp_smime_err);
+  mutt_file_fclose(&fp_tmp);
+  mutt_file_fclose(&fp_out);
+  mutt_buffer_dealloc(&tmpfname);
   return p;
 }
 
