@@ -78,7 +78,7 @@ int mutt_body_copy(FILE *fp, struct Body **tgt, struct Body *src)
   b->parts = NULL;
   b->next = NULL;
 
-  b->filename = mutt_str_strdup(mutt_b2s(tmp));
+  b->filename = mutt_buffer_strdup(tmp);
   b->use_disp = use_disp;
   b->unlink = true;
 

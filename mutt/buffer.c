@@ -421,3 +421,18 @@ size_t mutt_buffer_concatn_path(struct Buffer *buf, const char *dir,
     len += mutt_buffer_addstr_n(buf, fname, fnamelen);
   return len;
 }
+
+/**
+ * mutt_buffer_strdup - Copy a Buffer's string
+ * @param buf Buffer to copy
+ * @retval ptr Copy of string
+ *
+ * @note Caller must free the returned string
+ */
+char *mutt_buffer_strdup(struct Buffer *buf)
+{
+  if (!buf)
+    return NULL;
+
+  return mutt_str_strdup(buf->data);
+}

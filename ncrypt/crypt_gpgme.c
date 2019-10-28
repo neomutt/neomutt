@@ -1035,7 +1035,7 @@ static char *data_object_to_tempfile(gpgme_data_t data, FILE **fp_ret)
   }
   if (fp_ret)
     *fp_ret = fp;
-  rv = mutt_str_strdup(mutt_b2s(tempf));
+  rv = mutt_buffer_strdup(tempf);
 
 cleanup:
   mutt_buffer_pool_release(&tempf);

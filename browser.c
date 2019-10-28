@@ -1545,7 +1545,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
               {
                 mutt_buffer_concat_path(tmp, mutt_b2s(&LastDir), ff.name);
                 mutt_buffer_expand_path(tmp);
-                tfiles[j++] = mutt_str_strdup(mutt_b2s(tmp));
+                tfiles[j++] = mutt_buffer_strdup(tmp);
               }
             }
             *files = tfiles;
@@ -1555,7 +1555,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             *numfiles = 1;
             tfiles = mutt_mem_calloc(*numfiles, sizeof(char *));
             mutt_buffer_expand_path(file);
-            tfiles[0] = mutt_str_strdup(mutt_b2s(file));
+            tfiles[0] = mutt_buffer_strdup(file);
             *files = tfiles;
           }
         }
