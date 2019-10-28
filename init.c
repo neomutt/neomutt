@@ -3047,6 +3047,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   }
 
   C_Charset = mutt_ch_get_langinfo_charset();
+  cs_str_initial_set(Config, "charset", C_Charset, NULL);
   mutt_ch_set_charset(C_Charset);
 
   Matches = mutt_mem_calloc(MatchesListsize, sizeof(char *));
