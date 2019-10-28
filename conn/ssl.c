@@ -1247,14 +1247,12 @@ static int ssl_negotiate(struct Connection *conn, struct SslSockData *ssldata)
  */
 static int ssl_setup(struct Connection *conn)
 {
-  struct SslSockData *ssldata = NULL;
-  int maxbits;
+  int maxbits = 0;
 
-  ssldata = mutt_mem_calloc(1, sizeof(struct SslSockData));
-  conn->sockdata = ssldata;
+  conn->sockdata = mutt_mem_calloc(1, sizeof(struct SslSockData));
 
-  ssldata->sctx = SSL_CTX_new(SSLv23_client_method());
-  if (!ssldata->sctx)
+  conn->sockdata->sctx = SSL_CTX_new(SSLv23_client_method());
+  if (!conn->sockdata->sctx)
   {
     /* L10N: an SSL context is a data structure returned by the OpenSSL
        function SSL_CTX_new().  In this case it returned NULL: an
@@ -1267,75 +1265,73 @@ static int ssl_setup(struct Connection *conn)
   /* disable SSL protocols as needed */
 #ifdef SSL_OP_NO_TLSv1_3
   if (!C_SslUseTlsv13)
-    SSL_CTX_set_options(ssldata->sctx, SSL_OP_NO_TLSv1_3);
+    SSL_CTX_set_options(conn->sockdata->sctx, SSL_OP_NO_TLSv1_3);
 #endif
 
 #ifdef SSL_OP_NO_TLSv1_2
   if (!C_SslUseTlsv12)
-    SSL_CTX_set_options(ssldata->sctx, SSL_OP_NO_TLSv1_2);
+    SSL_CTX_set_options(conn->sockdata->sctx, SSL_OP_NO_TLSv1_2);
 #endif
 
 #ifdef SSL_OP_NO_TLSv1_1
   if (!C_SslUseTlsv11)
-    SSL_CTX_set_options(ssldata->sctx, SSL_OP_NO_TLSv1_1);
+    SSL_CTX_set_options(conn->sockdata->sctx, SSL_OP_NO_TLSv1_1);
 #endif
 
 #ifdef SSL_OP_NO_TLSv1
   if (!C_SslUseTlsv1)
-    SSL_CTX_set_options(ssldata->sctx, SSL_OP_NO_TLSv1);
+    SSL_CTX_set_options(conn->sockdata->sctx, SSL_OP_NO_TLSv1);
 #endif
 
   if (!C_SslUseSslv3)
-    SSL_CTX_set_options(ssldata->sctx, SSL_OP_NO_SSLv3);
+    SSL_CTX_set_options(conn->sockdata->sctx, SSL_OP_NO_SSLv3);
 
   if (!C_SslUseSslv2)
-    SSL_CTX_set_options(ssldata->sctx, SSL_OP_NO_SSLv2);
+    SSL_CTX_set_options(conn->sockdata->sctx, SSL_OP_NO_SSLv2);
 
   if (C_SslUsesystemcerts)
   {
-    if (!SSL_CTX_set_default_verify_paths(ssldata->sctx))
+    if (!SSL_CTX_set_default_verify_paths(conn->sockdata->sctx))
     {
       mutt_debug(LL_DEBUG1, "Error setting default verify paths\n");
       goto free_ctx;
     }
   }
 
-  if (C_CertificateFile && !ssl_load_certificates(ssldata->sctx))
+  if (C_CertificateFile && !ssl_load_certificates(conn->sockdata->sctx))
     mutt_debug(LL_DEBUG1, "Error loading trusted certificates\n");
 
-  ssl_get_client_cert(ssldata, conn);
+  ssl_get_client_cert(conn->sockdata, conn);
 
   if (C_SslCiphers)
   {
-    SSL_CTX_set_cipher_list(ssldata->sctx, C_SslCiphers);
+    SSL_CTX_set_cipher_list(conn->sockdata->sctx, C_SslCiphers);
   }
 
-  if (ssl_set_verify_partial(ssldata->sctx))
+  if (ssl_set_verify_partial(conn->sockdata->sctx))
   {
     mutt_error(_("Warning: error enabling ssl_verify_partial_chains"));
   }
 
-  ssldata->ssl = SSL_new(ssldata->sctx);
-  SSL_set_fd(ssldata->ssl, conn->fd);
+  conn->sockdata->ssl = SSL_new(conn->sockdata->sctx);
+  SSL_set_fd(conn->sockdata->ssl, conn->fd);
 
-  if (ssl_negotiate(conn, ssldata))
+  if (ssl_negotiate(conn, conn->sockdata))
     goto free_ssl;
 
-  ssldata->isopen = 1;
-  conn->ssf = SSL_CIPHER_get_bits(SSL_get_current_cipher(ssldata->ssl), &maxbits);
+  conn->sockdata->isopen = 1;
+  conn->ssf = SSL_CIPHER_get_bits(SSL_get_current_cipher(conn->sockdata->ssl), &maxbits);
 
   return 0;
 
 free_ssl:
-  SSL_free(ssldata->ssl);
-  ssldata->ssl = NULL;
-  ssldata->ssl = 0;
+  SSL_free(conn->sockdata->ssl);
+  conn->sockdata->ssl = NULL;
 free_ctx:
-  SSL_CTX_free(ssldata->sctx);
-  ssldata->sctx = NULL;
-  ssldata->sctx = 0;
+  SSL_CTX_free(conn->sockdata->sctx);
+  conn->sockdata->sctx = NULL;
 free_ssldata:
-  FREE(&ssldata);
+  FREE(&conn->sockdata);
 
   return -1;
 }
