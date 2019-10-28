@@ -1711,8 +1711,10 @@ static char *openssl_md_to_smime_micalg(char *md)
  */
 struct Body *smime_class_sign_message(struct Body *a)
 {
+  struct Body *t = NULL;
+  struct Body *retval = NULL;
   char buf[1024];
-  char signedfile[PATH_MAX], filetosign[PATH_MAX];
+  struct Buffer *filetosign = NULL, *signedfile = NULL;
   FILE *fp_smime_in = NULL, *fp_smime_out = NULL, *fp_smime_err = NULL, *fp_sign = NULL;
   int err = 0;
   int empty = 0;
@@ -1728,22 +1730,23 @@ struct Body *smime_class_sign_message(struct Body *a)
 
   crypt_convert_to_7bit(a); /* Signed data _must_ be in 7-bit format. */
 
-  mutt_mktemp(filetosign, sizeof(filetosign));
-  fp_sign = mutt_file_fopen(filetosign, "w+");
+  filetosign = mutt_buffer_pool_get();
+  signedfile = mutt_buffer_pool_get();
+
+  mutt_buffer_mktemp(filetosign);
+  fp_sign = mutt_file_fopen(mutt_b2s(filetosign), "w+");
   if (!fp_sign)
   {
-    mutt_perror(filetosign);
-    return NULL;
+    mutt_perror(mutt_b2s(filetosign));
+    goto cleanup;
   }
 
-  mutt_mktemp(signedfile, sizeof(signedfile));
-  fp_smime_out = mutt_file_fopen(signedfile, "w+");
+  mutt_buffer_mktemp(signedfile);
+  fp_smime_out = mutt_file_fopen(mutt_b2s(signedfile), "w+");
   if (!fp_smime_out)
   {
-    mutt_perror(signedfile);
-    mutt_file_fclose(&fp_sign);
-    mutt_file_unlink(filetosign);
-    return NULL;
+    mutt_perror(mutt_b2s(signedfile));
+    goto cleanup;
   }
 
   mutt_write_mime_header(a, fp_sign);
@@ -1768,14 +1771,12 @@ struct Body *smime_class_sign_message(struct Body *a)
   smime_key_free(&signas_key);
 
   pid = smime_invoke_sign(&fp_smime_in, NULL, &fp_smime_err, -1,
-                          fileno(fp_smime_out), -1, filetosign);
+                          fileno(fp_smime_out), -1, mutt_b2s(filetosign));
   if (pid == -1)
   {
     mutt_perror(_("Can't open OpenSSL subprocess"));
-    mutt_file_fclose(&fp_smime_out);
-    mutt_file_unlink(signedfile);
-    mutt_file_unlink(filetosign);
-    return NULL;
+    mutt_file_unlink(mutt_b2s(filetosign));
+    goto cleanup;
   }
   fputs(SmimePass, fp_smime_in);
   fputc('\n', fp_smime_in);
@@ -1799,7 +1800,7 @@ struct Body *smime_class_sign_message(struct Body *a)
   empty = (fgetc(fp_smime_out) == EOF);
   mutt_file_fclose(&fp_smime_out);
 
-  mutt_file_unlink(filetosign);
+  mutt_file_unlink(mutt_b2s(filetosign));
 
   if (err)
     mutt_any_key_to_continue(NULL);
@@ -1807,11 +1808,11 @@ struct Body *smime_class_sign_message(struct Body *a)
   if (empty)
   {
     mutt_any_key_to_continue(_("No output from OpenSSL..."));
-    mutt_file_unlink(signedfile);
-    return NULL; /* fatal error while signing */
+    mutt_file_unlink(mutt_b2s(signedfile));
+    goto cleanup; /* fatal error while signing */
   }
 
-  struct Body *t = mutt_body_new();
+  t = mutt_body_new();
   t->type = TYPE_MULTIPART;
   t->subtype = mutt_str_strdup("signed");
   t->encoding = ENC_7BIT;
@@ -1827,20 +1828,33 @@ struct Body *smime_class_sign_message(struct Body *a)
   mutt_param_set(&t->parameter, "protocol", "application/x-pkcs7-signature");
 
   t->parts = a;
-  a = t;
+  retval = t;
 
   t->parts->next = mutt_body_new();
   t = t->parts->next;
   t->type = TYPE_APPLICATION;
   t->subtype = mutt_str_strdup("x-pkcs7-signature");
-  t->filename = mutt_str_strdup(signedfile);
+  t->filename = mutt_buffer_strdup(signedfile);
   t->d_filename = mutt_str_strdup("smime.p7s");
   t->use_disp = true;
   t->disposition = DISP_ATTACH;
   t->encoding = ENC_BASE64;
   t->unlink = true; /* ok to remove this file after sending. */
 
-  return a;
+cleanup:
+  if (fp_sign)
+  {
+    mutt_file_fclose(&fp_sign);
+    mutt_file_unlink(mutt_b2s(filetosign));
+  }
+  if (fp_smime_out)
+  {
+    mutt_file_fclose(&fp_smime_out);
+    mutt_file_unlink(mutt_b2s(signedfile));
+  }
+  mutt_buffer_pool_release(&filetosign);
+  mutt_buffer_pool_release(&signedfile);
+  return retval;
 }
 
 /* Handling S/MIME - bodies */
