@@ -436,3 +436,20 @@ char *mutt_buffer_strdup(struct Buffer *buf)
 
   return mutt_str_strdup(buf->data);
 }
+
+/**
+ * mutt_buffer_copy - Copy a Buffer's contents to another Buffer
+ * @param dst Buffer for result
+ * @param src Buffer to copy
+ */
+size_t mutt_buffer_copy(struct Buffer *dst, const struct Buffer *src)
+{
+  if (!dst)
+    return 0;
+
+  mutt_buffer_reset(dst);
+  if (!src || !src->data)
+    return 0;
+
+  return mutt_buffer_addstr_n(dst, src->data, mutt_buffer_len(src));
+}

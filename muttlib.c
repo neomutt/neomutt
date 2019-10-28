@@ -305,7 +305,7 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
     else
       mutt_buffer_printf(tmp, "%s%s", mutt_b2s(p), tail);
 
-    mutt_buffer_strcpy(buf, mutt_b2s(tmp));
+    mutt_buffer_copy(buf, tmp);
   } while (recurse);
 
   mutt_buffer_pool_release(&p);

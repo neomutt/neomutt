@@ -1705,7 +1705,7 @@ static enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
           {
             mutt_expand_path(buf->data, buf->dsize);
             struct Buffer scratch = mutt_buffer_make(1024);
-            mutt_buffer_strcpy(&scratch, mutt_b2s(buf));
+            mutt_buffer_copy(&scratch, buf);
             size_t scratchlen = mutt_buffer_len(&scratch);
             if (!(he->type & DT_MAILBOX) && (scratchlen != 0))
             {
@@ -1729,7 +1729,7 @@ static enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
           else if (IS_COMMAND(he))
           {
             struct Buffer scratch = mutt_buffer_make(1024);
-            mutt_buffer_strcpy(&scratch, mutt_b2s(buf));
+            mutt_buffer_copy(&scratch, buf);
 
             if (mutt_str_strcmp(buf->data, "builtin") != 0)
             {

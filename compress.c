@@ -140,7 +140,7 @@ static int setup_paths(struct Mailbox *m)
   /* We will uncompress to /tmp */
   struct Buffer *buf = mutt_buffer_pool_get();
   mutt_buffer_mktemp(buf);
-  mutt_buffer_strcpy(&m->pathbuf, mutt_b2s(buf));
+  mutt_buffer_copy(&m->pathbuf, buf);
   mutt_buffer_pool_release(&buf);
 
   FILE *fp = mutt_file_fopen(mailbox_path(m), "w");

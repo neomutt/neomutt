@@ -1256,10 +1256,10 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         break;
 
       case OP_COMPOSE_EDIT_FCC:
-        mutt_buffer_strcpy(&fname, mutt_b2s(fcc));
+        mutt_buffer_copy(&fname, fcc);
         if (mutt_buffer_get_field(_("Fcc: "), &fname, MUTT_FILE | MUTT_CLEAR) == 0)
         {
-          mutt_buffer_strcpy(fcc, mutt_b2s(&fname));
+          mutt_buffer_copy(fcc, &fname);
           mutt_buffer_pretty_mailbox(fcc);
           mutt_window_move(menu->indexwin, HDR_FCC, HDR_XOFFSET);
           mutt_paddstr(W, mutt_b2s(fcc));

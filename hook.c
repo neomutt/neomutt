@@ -144,7 +144,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     }
 
     struct Buffer *tmp = mutt_buffer_pool_get();
-    mutt_buffer_strcpy(tmp, mutt_b2s(pattern));
+    mutt_buffer_copy(tmp, pattern);
     mutt_buffer_expand_path_regex(tmp, true);
 
     /* Check for other mailbox shortcuts that expand to the empty string.
@@ -156,7 +156,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
       goto cleanup;
     }
 
-    mutt_buffer_strcpy(pattern, mutt_b2s(tmp));
+    mutt_buffer_copy(pattern, tmp);
     mutt_buffer_pool_release(&tmp);
   }
 #ifdef USE_COMPRESSED

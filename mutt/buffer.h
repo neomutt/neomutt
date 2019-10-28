@@ -61,6 +61,7 @@ int            mutt_buffer_add_printf   (struct Buffer *buf, const char *fmt, ..
 // Functions that OVERWRITE a Buffer
 size_t         mutt_buffer_concat_path  (struct Buffer *buf, const char *dir, const char *fname);
 size_t         mutt_buffer_concatn_path (struct Buffer *dst, const char *dir, size_t dirlen, const char *fname, size_t fnamelen);
+size_t         mutt_buffer_copy         (struct Buffer *dst, const struct Buffer *src);
 int            mutt_buffer_printf       (struct Buffer *buf, const char *fmt, ...);
 size_t         mutt_buffer_strcpy       (struct Buffer *buf, const char *s);
 size_t         mutt_buffer_strcpy_n     (struct Buffer *buf, const char *s, size_t len);

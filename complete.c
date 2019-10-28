@@ -119,7 +119,7 @@ int mutt_complete(char *buf, size_t buflen)
     {
       mutt_buffer_concatn_path(tmp, mutt_b2s(exp_dirpart), mutt_buffer_len(exp_dirpart),
                                buf + 1, (size_t)(p - buf - 1));
-      mutt_buffer_strcpy(exp_dirpart, mutt_b2s(tmp));
+      mutt_buffer_copy(exp_dirpart, tmp);
       mutt_buffer_substrcpy(dirpart, buf, p + 1);
       mutt_buffer_strcpy(filepart, p + 1);
     }
@@ -143,7 +143,7 @@ int mutt_complete(char *buf, size_t buflen)
       {
         mutt_buffer_substrcpy(dirpart, buf, p);
         mutt_buffer_strcpy(filepart, p + 1);
-        mutt_buffer_strcpy(exp_dirpart, mutt_b2s(dirpart));
+        mutt_buffer_copy(exp_dirpart, dirpart);
         mutt_buffer_expand_path(exp_dirpart);
         dirp = opendir(mutt_b2s(exp_dirpart));
       }
@@ -209,7 +209,7 @@ int mutt_complete(char *buf, size_t buflen)
         }
         else
         {
-          mutt_buffer_strcpy(tmp, mutt_b2s(exp_dirpart));
+          mutt_buffer_copy(tmp, exp_dirpart);
           mutt_buffer_addch(tmp, '/');
         }
         mutt_buffer_addstr(tmp, mutt_b2s(filepart));
