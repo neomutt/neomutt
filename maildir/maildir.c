@@ -135,6 +135,7 @@ static void maildir_check_dir(struct Mailbox *m, const char *dir_name,
         }
         m->has_new = true;
         check_new = false;
+        m->msg_new++;
         if (!check_stats)
           break;
       }
