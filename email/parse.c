@@ -199,7 +199,7 @@ static void parse_parameters(struct ParameterList *pl, const char *s, bool allow
       /* if the attribute token was missing, 'new' will be NULL */
       if (pnew)
       {
-        pnew->value = mutt_str_strdup(mutt_b2s(buf));
+        pnew->value = mutt_buffer_strdup(buf);
 
         mutt_debug(LL_DEBUG2, "parse_parameter: '%s' = '%s'\n",
                    pnew->attribute ? pnew->attribute : "", pnew->value ? pnew->value : "");

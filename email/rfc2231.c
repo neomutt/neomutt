@@ -463,8 +463,8 @@ struct ParameterList rfc2231_encode_string(const char *attribute, char *value)
       cur++;
     }
 
-    current->attribute = mutt_str_strdup(mutt_b2s(cur_attribute));
-    current->value = mutt_str_strdup(mutt_b2s(cur_value));
+    current->attribute = mutt_buffer_strdup(cur_attribute);
+    current->value = mutt_buffer_strdup(cur_value);
 
     mutt_buffer_reset(cur_value);
     cur_value_len = 0;

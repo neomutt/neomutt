@@ -1406,7 +1406,7 @@ struct Body *pgp_class_sign_message(struct Body *a)
   t = t->parts->next;
   t->type = TYPE_APPLICATION;
   t->subtype = mutt_str_strdup("pgp-signature");
-  t->filename = mutt_str_strdup(mutt_b2s(sigfile));
+  t->filename = mutt_buffer_strdup(sigfile);
   t->use_disp = false;
   t->disposition = DISP_NONE;
   t->encoding = ENC_7BIT;
@@ -1661,7 +1661,7 @@ struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign)
   t->parts->next->type = TYPE_APPLICATION;
   t->parts->next->subtype = mutt_str_strdup("octet-stream");
   t->parts->next->encoding = ENC_7BIT;
-  t->parts->next->filename = mutt_str_strdup(mutt_b2s(tempfile));
+  t->parts->next->filename = mutt_buffer_strdup(tempfile);
   t->parts->next->use_disp = true;
   t->parts->next->disposition = DISP_ATTACH;
   t->parts->next->unlink = true; /* delete after sending the message */
@@ -1827,7 +1827,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
                  (flags & SEC_ENCRYPT) ? "pgp-encrypted" : "pgp-signed");
   mutt_param_set(&b->parameter, "charset", send_charset);
 
-  b->filename = mutt_str_strdup(mutt_b2s(pgpoutfile));
+  b->filename = mutt_buffer_strdup(pgpoutfile);
 
   b->disposition = DISP_NONE;
   b->unlink = true;

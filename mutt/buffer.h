@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2017 Ian Zimmerman <itz@primate.net>
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2019 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -50,6 +50,7 @@ bool           mutt_buffer_is_empty     (const struct Buffer *buf);
 size_t         mutt_buffer_len          (const struct Buffer *buf);
 struct Buffer  mutt_buffer_make         (size_t size);
 void           mutt_buffer_reset        (struct Buffer *buf);
+char *         mutt_buffer_strdup       (struct Buffer *buf);
 
 // Functions that APPEND to a Buffer
 size_t         mutt_buffer_addch        (struct Buffer *buf, char c);
@@ -58,11 +59,12 @@ size_t         mutt_buffer_addstr_n     (struct Buffer *buf, const char *s, size
 int            mutt_buffer_add_printf   (struct Buffer *buf, const char *fmt, ...);
 
 // Functions that OVERWRITE a Buffer
-void           mutt_buffer_concat_path  (struct Buffer *buf, const char *dir, const char *fname);
-void           mutt_buffer_concatn_path (struct Buffer *dst, const char *dir, size_t dirlen, const char *fname, size_t fnamelen);
+size_t         mutt_buffer_concat_path  (struct Buffer *buf, const char *dir, const char *fname);
+size_t         mutt_buffer_concatn_path (struct Buffer *dst, const char *dir, size_t dirlen, const char *fname, size_t fnamelen);
+size_t         mutt_buffer_copy         (struct Buffer *dst, const struct Buffer *src);
 int            mutt_buffer_printf       (struct Buffer *buf, const char *fmt, ...);
-void           mutt_buffer_strcpy       (struct Buffer *buf, const char *s);
-void           mutt_buffer_strcpy_n     (struct Buffer *buf, const char *s, size_t len);
-void           mutt_buffer_substrcpy    (struct Buffer *buf, const char *beg, const char *end);
+size_t         mutt_buffer_strcpy       (struct Buffer *buf, const char *s);
+size_t         mutt_buffer_strcpy_n     (struct Buffer *buf, const char *s, size_t len);
+size_t         mutt_buffer_substrcpy    (struct Buffer *buf, const char *beg, const char *end);
 
 #endif /* MUTT_LIB_BUFFER_H */

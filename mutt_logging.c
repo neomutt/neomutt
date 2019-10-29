@@ -102,7 +102,7 @@ static const char *rotate_logs(const char *file, int count)
     rename(mutt_b2s(old_file), mutt_b2s(new_file));
   }
 
-  file = mutt_str_strdup(mutt_b2s(old_file));
+  file = mutt_buffer_strdup(old_file);
   mutt_buffer_pool_release(&old_file);
   mutt_buffer_pool_release(&new_file);
 

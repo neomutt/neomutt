@@ -2260,7 +2260,7 @@ static int imap_msg_open_new(struct Mailbox *m, struct Message *msg, struct Emai
     goto cleanup;
   }
 
-  msg->path = mutt_str_strdup(mutt_b2s(tmp));
+  msg->path = mutt_buffer_strdup(tmp);
   rc = 0;
 
 cleanup:

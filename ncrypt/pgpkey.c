@@ -930,7 +930,7 @@ struct Body *pgp_class_make_key_attachment(void)
   mutt_file_fclose(&fp_null);
 
   att = mutt_body_new();
-  att->filename = mutt_str_strdup(mutt_b2s(tempf));
+  att->filename = mutt_buffer_strdup(tempf);
   att->unlink = true;
   att->use_disp = false;
   att->type = TYPE_APPLICATION;

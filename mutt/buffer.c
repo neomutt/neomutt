@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2017 Ian Zimmerman <itz@primate.net>
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2019 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -305,13 +305,14 @@ void mutt_buffer_dealloc(struct Buffer *buf)
  * mutt_buffer_strcpy - Copy a string into a Buffer
  * @param buf Buffer to overwrite
  * @param s   String to copy
+ * @retval num Bytes written to Buffer
  *
  * Overwrites any existing content.
  */
-void mutt_buffer_strcpy(struct Buffer *buf, const char *s)
+size_t mutt_buffer_strcpy(struct Buffer *buf, const char *s)
 {
   mutt_buffer_reset(buf);
-  mutt_buffer_addstr(buf, s);
+  return mutt_buffer_addstr(buf, s);
 }
 
 /**
@@ -319,13 +320,14 @@ void mutt_buffer_strcpy(struct Buffer *buf, const char *s)
  * @param buf Buffer to overwrite
  * @param s   String to copy
  * @param len Length of string to copy
+ * @retval num Bytes written to Buffer
  *
  * Overwrites any existing content.
  */
-void mutt_buffer_strcpy_n(struct Buffer *buf, const char *s, size_t len)
+size_t mutt_buffer_strcpy_n(struct Buffer *buf, const char *s, size_t len)
 {
   mutt_buffer_reset(buf);
-  mutt_buffer_addstr_n(buf, s, len);
+  return mutt_buffer_addstr_n(buf, s, len);
 }
 
 /**
@@ -333,14 +335,17 @@ void mutt_buffer_strcpy_n(struct Buffer *buf, const char *s, size_t len)
  * @param buf Buffer to overwrite
  * @param beg Start of string to copy
  * @param end End of string to copy
+ * @retval num Bytes written to Buffer
  *
  * Overwrites any existing content.
  */
-void mutt_buffer_substrcpy(struct Buffer *buf, const char *beg, const char *end)
+size_t mutt_buffer_substrcpy(struct Buffer *buf, const char *beg, const char *end)
 {
   mutt_buffer_reset(buf);
-  if (end > beg)
-    mutt_buffer_strcpy_n(buf, beg, end - beg);
+  if (end <= beg)
+    return 0;
+
+  return mutt_buffer_strcpy_n(buf, beg, end - beg);
 }
 
 /**
@@ -361,14 +366,15 @@ size_t mutt_buffer_len(const struct Buffer *buf)
  * @param buf   Buffer to add to
  * @param dir   Directory name
  * @param fname File name
+ * @retval num Bytes written to Buffer
  *
  * If both dir and fname are supplied, they are separated with '/'.
  * If either is missing, then the other will be copied exactly.
  */
-void mutt_buffer_concat_path(struct Buffer *buf, const char *dir, const char *fname)
+size_t mutt_buffer_concat_path(struct Buffer *buf, const char *dir, const char *fname)
 {
   if (!buf)
-    return;
+    return 0;
 
   if (!dir)
     dir = "";
@@ -378,7 +384,7 @@ void mutt_buffer_concat_path(struct Buffer *buf, const char *dir, const char *fn
   const bool d_set = (dir[0] != '\0');
   const bool f_set = (fname[0] != '\0');
   if (!d_set && !f_set)
-    return;
+    return 0;
 
   const int d_len = strlen(dir);
   const bool slash = d_set && (dir[d_len - 1] == '/');
@@ -387,7 +393,7 @@ void mutt_buffer_concat_path(struct Buffer *buf, const char *dir, const char *fn
   if (!f_set || !d_set || slash)
     fmt = "%s%s";
 
-  mutt_buffer_printf(buf, fmt, dir, fname);
+  return mutt_buffer_printf(buf, fmt, dir, fname);
 }
 
 /**
@@ -397,18 +403,53 @@ void mutt_buffer_concat_path(struct Buffer *buf, const char *dir, const char *fn
  * @param dirlen   Directory name
  * @param fname    File name
  * @param fnamelen File name
+ * @retval num Size of buffer
  *
  * If both dir and fname are supplied, they are separated with '/'.
  * If either is missing, then the other will be copied exactly.
  */
-void mutt_buffer_concatn_path(struct Buffer *buf, const char *dir,
+size_t mutt_buffer_concatn_path(struct Buffer *buf, const char *dir,
                               size_t dirlen, const char *fname, size_t fnamelen)
 {
+  size_t len = 0;
   mutt_buffer_reset(buf);
   if (dirlen != 0)
-    mutt_buffer_addstr_n(buf, dir, dirlen);
+    len += mutt_buffer_addstr_n(buf, dir, dirlen);
   if ((dirlen != 0) && (fnamelen != 0))
-    mutt_buffer_addch(buf, '/');
+    len += mutt_buffer_addch(buf, '/');
   if (fnamelen != 0)
-    mutt_buffer_addstr_n(buf, fname, fnamelen);
+    len += mutt_buffer_addstr_n(buf, fname, fnamelen);
+  return len;
+}
+
+/**
+ * mutt_buffer_strdup - Copy a Buffer's string
+ * @param buf Buffer to copy
+ * @retval ptr Copy of string
+ *
+ * @note Caller must free the returned string
+ */
+char *mutt_buffer_strdup(struct Buffer *buf)
+{
+  if (!buf)
+    return NULL;
+
+  return mutt_str_strdup(buf->data);
+}
+
+/**
+ * mutt_buffer_copy - Copy a Buffer's contents to another Buffer
+ * @param dst Buffer for result
+ * @param src Buffer to copy
+ */
+size_t mutt_buffer_copy(struct Buffer *dst, const struct Buffer *src)
+{
+  if (!dst)
+    return 0;
+
+  mutt_buffer_reset(dst);
+  if (!src || !src->data)
+    return 0;
+
+  return mutt_buffer_addstr_n(dst, src->data, mutt_buffer_len(src));
 }

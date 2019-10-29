@@ -387,7 +387,7 @@ int maildir_parse_dir(struct Mailbox *m, struct Maildir ***last,
     if (subdir)
     {
       mutt_buffer_printf(buf, "%s/%s", subdir, de->d_name);
-      e->path = mutt_str_strdup(mutt_b2s(buf));
+      e->path = mutt_buffer_strdup(buf);
     }
     else
       e->path = mutt_str_strdup(de->d_name);
@@ -1201,7 +1201,7 @@ static FILE *md_open_find_message(const char *folder, const char *unique,
   closedir(dp);
 
   if (newname && fp)
-    *newname = mutt_str_strdup(mutt_b2s(fname));
+    *newname = mutt_buffer_strdup(fname);
 
   errno = oe;
 

@@ -2431,7 +2431,7 @@ int mutt_pattern_func(int op, char *prompt)
 
   mutt_message(_("Compiling search pattern..."));
 
-  char *simple = mutt_str_strdup(mutt_b2s(buf));
+  char *simple = mutt_buffer_strdup(buf);
   mutt_check_simple(buf, NONULL(C_SimpleSearch));
 
   mutt_buffer_init(&err);

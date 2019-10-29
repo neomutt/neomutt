@@ -88,7 +88,7 @@ static int bcache_path(struct ConnAccount *account, const char *mailbox, struct 
     mutt_buffer_addch(dst, '/');
 
   mutt_debug(LL_DEBUG3, "path: '%s'\n", mutt_b2s(dst));
-  bcache->path = mutt_str_strdup(mutt_b2s(dst));
+  bcache->path = mutt_buffer_strdup(dst);
 
   mutt_buffer_pool_release(&path);
   mutt_buffer_pool_release(&dst);

@@ -1167,7 +1167,7 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   else
   {
     cache->index = e->index;
-    cache->path = mutt_str_strdup(mutt_b2s(path));
+    cache->path = mutt_buffer_strdup(path);
   }
   rewind(msg->fp);
 

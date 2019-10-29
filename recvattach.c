@@ -474,7 +474,7 @@ static void prepend_savedir(struct Buffer *buf)
     mutt_buffer_addstr(tmp, "./");
 
   mutt_buffer_addstr(tmp, mutt_b2s(buf));
-  mutt_buffer_strcpy(buf, mutt_b2s(tmp));
+  mutt_buffer_copy(buf, tmp);
   mutt_buffer_pool_release(&tmp);
 }
 
@@ -552,7 +552,7 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
       }
       else if (rc == -1)
         goto cleanup;
-      mutt_buffer_strcpy(tfile, mutt_b2s(buf));
+      mutt_buffer_copy(tfile, buf);
     }
     else
     {
@@ -618,7 +618,7 @@ static int save_without_prompting(FILE *fp, struct Body *body, struct Email *e)
 
   if (is_message)
   {
-    mutt_buffer_strcpy(tfile, mutt_b2s(buf));
+    mutt_buffer_copy(tfile, buf);
   }
   else
   {

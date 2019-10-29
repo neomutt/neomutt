@@ -144,7 +144,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     }
 
     struct Buffer *tmp = mutt_buffer_pool_get();
-    mutt_buffer_strcpy(tmp, mutt_b2s(pattern));
+    mutt_buffer_copy(tmp, pattern);
     mutt_buffer_expand_path_regex(tmp, true);
 
     /* Check for other mailbox shortcuts that expand to the empty string.
@@ -156,7 +156,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
       goto cleanup;
     }
 
-    mutt_buffer_strcpy(pattern, mutt_b2s(tmp));
+    mutt_buffer_copy(pattern, tmp);
     mutt_buffer_pool_release(&tmp);
   }
 #ifdef USE_COMPRESSED
@@ -220,7 +220,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
          * a common action to perform is to change the default (.) entry
          * based upon some other information. */
         FREE(&hook->command);
-        hook->command = mutt_str_strdup(mutt_b2s(cmd));
+        hook->command = mutt_buffer_strdup(cmd);
         rc = MUTT_CMD_SUCCESS;
         goto cleanup;
       }
@@ -262,9 +262,9 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
 
   hook = mutt_mem_calloc(1, sizeof(struct Hook));
   hook->type = data;
-  hook->command = mutt_str_strdup(mutt_b2s(cmd));
+  hook->command = mutt_buffer_strdup(cmd);
   hook->pattern = pat;
-  hook->regex.pattern = mutt_str_strdup(mutt_b2s(pattern));
+  hook->regex.pattern = mutt_buffer_strdup(pattern);
   hook->regex.regex = rx;
   hook->regex.pat_not = pat_not;
   TAILQ_INSERT_TAIL(&Hooks, hook, entries);
@@ -421,9 +421,9 @@ enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
 
   hook = mutt_mem_calloc(1, sizeof(struct Hook));
   hook->type = data;
-  hook->command = mutt_str_strdup(mutt_b2s(fmtstring));
+  hook->command = mutt_buffer_strdup(fmtstring);
   hook->pattern = pat;
-  hook->regex.pattern = mutt_str_strdup(mutt_b2s(pattern));
+  hook->regex.pattern = mutt_buffer_strdup(pattern);
   hook->regex.regex = NULL;
   hook->regex.pat_not = pat_not;
 
