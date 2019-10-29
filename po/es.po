@@ -6985,12 +6985,13 @@ msgstr "Opciones especificadas al compilar:"
 msgid "Compile options:"
 msgstr "Opciones especificadas al compilar:"
 
-#, fuzzy
-#~ msgid "Error running \"%s\"!"
-#~ msgstr "¡Error al ejecutar \"%s\""
+#: index.c:2046
+msgid "failed to find message in notmuch database. try running 'notmuch new'."
+msgstr ""
 
-#~ msgid "Path too long: %s%s%s"
-#~ msgstr "La ruta «%s%s%s» es demasiada larga"
+#. L10N: This applies to the "$wrap_headers" config variable
+#: init.c:3912
+#, c-format
+msgid "Option %s must between 78 and 998 inclusive"
+msgstr ""
 
-#~ msgid "%s: command valid only for index, body, header objects"
-#~ msgstr "%s: comando sólo válido para objetos en el índice, cuerpo, o encabezado"

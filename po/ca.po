@@ -7274,10 +7274,13 @@ msgstr "Opcions de compilació:"
 msgid "Compile options:"
 msgstr "Opcions de compilació:"
 
-#, fuzzy
-#~ msgid "Error running \"%s\"!"
-#~ msgstr "Error en executar «%s»."
+#: index.c:2046
+msgid "failed to find message in notmuch database. try running 'notmuch new'."
+msgstr ""
 
-# «index» i companyia són paraules clau.  ivb
-#~ msgid "%s: command valid only for index, body, header objects"
-#~ msgstr "%s: L’ordre només és vàlida per a objectes «index», «body» i «header»."
+#. L10N: This applies to the "$wrap_headers" config variable
+#: init.c:3912
+#, c-format
+msgid "Option %s must between 78 and 998 inclusive"
+msgstr ""
+

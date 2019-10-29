@@ -7047,10 +7047,13 @@ msgstr "컴파일 선택사항:"
 msgid "Compile options:"
 msgstr "컴파일 선택사항:"
 
-#, fuzzy
-#~ msgid "Error running \"%s\"!"
-#~ msgstr "\"%s\" 실행 오류"
+#: index.c:2046
+msgid "failed to find message in notmuch database. try running 'notmuch new'."
+msgstr ""
 
-#, fuzzy
-#~ msgid "%s: command valid only for index, body, header objects"
-#~ msgstr "%s: 인덱스 항목에서만 사용 가능한 명령어."
+#. L10N: This applies to the "$wrap_headers" config variable
+#: init.c:3912
+#, c-format
+msgid "Option %s must between 78 and 998 inclusive"
+msgstr ""
+

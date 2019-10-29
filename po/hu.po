@@ -7062,10 +7062,13 @@ msgstr "Fordítási opciók:"
 msgid "Compile options:"
 msgstr "Fordítási opciók:"
 
-#, fuzzy
-#~ msgid "Error running \"%s\"!"
-#~ msgstr "Hiba a(z) \"%s\" futtatásakor"
+#: index.c:2046
+msgid "failed to find message in notmuch database. try running 'notmuch new'."
+msgstr ""
 
-#, fuzzy
-#~ msgid "%s: command valid only for index, body, header objects"
-#~ msgstr "%s: a parancs csak index objektumra érvényes"
+#. L10N: This applies to the "$wrap_headers" config variable
+#: init.c:3912
+#, c-format
+msgid "Option %s must between 78 and 998 inclusive"
+msgstr ""
+

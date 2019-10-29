@@ -6811,12 +6811,13 @@ msgstr "默认选项："
 msgid "Compile options:"
 msgstr "编译选项："
 
-#, fuzzy
-#~ msgid "Error running \"%s\"!"
-#~ msgstr "执行 \"%s\" 时出错"
+#: index.c:2046
+msgid "failed to find message in notmuch database. try running 'notmuch new'."
+msgstr ""
 
-#~ msgid "Path too long: %s%s%s"
-#~ msgstr "路径太长：%s%s%s"
+#. L10N: This applies to the "$wrap_headers" config variable
+#: init.c:3912
+#, c-format
+msgid "Option %s must between 78 and 998 inclusive"
+msgstr ""
 
-#~ msgid "%s: command valid only for index, body, header objects"
-#~ msgstr "%s：命令只对索引，正文，信件头对象有效"

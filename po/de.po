@@ -6866,12 +6866,13 @@ msgstr "Standard Einstellungen:"
 msgid "Compile options:"
 msgstr "Einstellungen bei der Kompilierung:"
 
-#, fuzzy
-#~ msgid "Error running \"%s\"!"
-#~ msgstr "Fehler beim Ausführen von \"%s\""
+#: index.c:2046
+msgid "failed to find message in notmuch database. try running 'notmuch new'."
+msgstr ""
 
-#~ msgid "Path too long: %s%s%s"
-#~ msgstr "Pfad zu lang: %s%s%s"
+#. L10N: This applies to the "$wrap_headers" config variable
+#: init.c:3912
+#, c-format
+msgid "Option %s must between 78 and 998 inclusive"
+msgstr ""
 
-#~ msgid "%s: command valid only for index, body, header objects"
-#~ msgstr "%s: Kommando ist nur für Index-/Body-/Header-Objekte gültig"

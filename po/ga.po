@@ -7109,10 +7109,13 @@ msgstr "Roghanna tiomsaithe:"
 msgid "Compile options:"
 msgstr "Roghanna tiomsaithe:"
 
-#, fuzzy
-#~ msgid "Error running \"%s\"!"
-#~ msgstr "Earráid agus \"%s\" á rith"
+#: index.c:2046
+msgid "failed to find message in notmuch database. try running 'notmuch new'."
+msgstr ""
 
-#, fuzzy
-#~ msgid "%s: command valid only for index, body, header objects"
-#~ msgstr "%s: is féidir an t-ordú seo a úsáid le réada innéacs amháin"
+#. L10N: This applies to the "$wrap_headers" config variable
+#: init.c:3912
+#, c-format
+msgid "Option %s must between 78 and 998 inclusive"
+msgstr ""
+

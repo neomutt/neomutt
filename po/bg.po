@@ -7064,10 +7064,13 @@ msgstr "Опции при компилация:"
 msgid "Compile options:"
 msgstr "Опции при компилация:"
 
-#, fuzzy
-#~ msgid "Error running \"%s\"!"
-#~ msgstr "Грешка при изпълнението на \"%s\""
+#: index.c:2046
+msgid "failed to find message in notmuch database. try running 'notmuch new'."
+msgstr ""
 
-#, fuzzy
-#~ msgid "%s: command valid only for index, body, header objects"
-#~ msgstr "%s: командата е валидна само за индексен обект"
+#. L10N: This applies to the "$wrap_headers" config variable
+#: init.c:3912
+#, c-format
+msgid "Option %s must between 78 and 998 inclusive"
+msgstr ""
+

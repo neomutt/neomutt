@@ -7154,10 +7154,13 @@ msgstr "Options de compilation :"
 msgid "Compile options:"
 msgstr "Options de compilation :"
 
-#, fuzzy
-#~ msgid "Error running \"%s\"!"
-#~ msgstr "Erreur en exécutant \"%s\" "
+#: index.c:2046
+msgid "failed to find message in notmuch database. try running 'notmuch new'."
+msgstr ""
 
-# , c-format
-#~ msgid "%s: command valid only for index, body, header objects"
-#~ msgstr "%s : commande valide uniquement pour les objets index, body et header"
+#. L10N: This applies to the "$wrap_headers" config variable
+#: init.c:3912
+#, c-format
+msgid "Option %s must between 78 and 998 inclusive"
+msgstr ""
+
