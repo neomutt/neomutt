@@ -2264,7 +2264,7 @@ int smime_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
   LOFF_T tmpoffset = b->offset;
   size_t tmplength = b->length;
   int orig_type = b->type;
-  int rc = 0;
+  int rc = -1;
 
   if (!mutt_is_application_smime(b))
     return -1;
@@ -2295,19 +2295,16 @@ int smime_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
   if (!*fp_out)
   {
     mutt_perror(_("Can't create temporary file"));
-    rc = -1;
     goto bail;
   }
 
   *cur = smime_handle_entity(b, &s, *fp_out);
   if (!*cur)
-  {
-    rc = -1;
     goto bail;
-  }
 
   (*cur)->goodsig = b->goodsig;
   (*cur)->badsig = b->badsig;
+  rc = 0;
 
 bail:
   b->type = orig_type;
