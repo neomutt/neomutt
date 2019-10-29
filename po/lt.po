@@ -6867,11 +6867,11 @@ msgstr "Kompiliavimo parinktys:"
 
 #: index.c:2046
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
-msgstr ""
+msgstr "Neradau laiško notmuch duomenų bazėje.  Pabandykite vykdyti 'notmuch new'."
 
 #. L10N: This applies to the "$wrap_headers" config variable
 #: init.c:3912
 #, c-format
 msgid "Option %s must between 78 and 998 inclusive"
-msgstr ""
+msgstr "Parinktis %s turi būti tarp 78 ir 998 imtinai"
 
