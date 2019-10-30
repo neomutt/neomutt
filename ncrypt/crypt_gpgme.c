@@ -1585,10 +1585,9 @@ struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, bool sign)
  */
 struct Body *smime_gpgme_build_smime_entity(struct Body *a, char *keylist)
 {
-  /* OpenSSL converts line endings to crlf when encrypting.  Some
-   * clients depend on this for signed+encrypted messages: they do not
-   * convert line endings between decrypting and checking the
-   * signature.  See #3904. */
+  /* OpenSSL converts line endings to crlf when encrypting.  Some clients
+   * depend on this for signed+encrypted messages: they do not convert line
+   * endings between decrypting and checking the signature.  */
   gpgme_data_t plaintext = body_to_data_object(a, true);
   if (!plaintext)
     return NULL;

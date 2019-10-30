@@ -1260,7 +1260,7 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
   /* Don't issue STATUS on the selected mailbox, it will be NOOPed or
    * IDLEd elsewhere.
    * adata->mailbox may be NULL for connections other than the current
-   * mailbox's.. #3216. */
+   * mailbox's. */
   if (adata->mailbox && (adata->mailbox->mdata == mdata))
   {
     adata->mailbox->has_new = false;

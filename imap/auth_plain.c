@@ -98,6 +98,6 @@ enum ImapAuthRes imap_auth_plain(struct ImapAccountData *adata, const char *meth
     res = IMAP_AUTH_FAILURE;
   }
 
-  mutt_clear_error(); /* clear "Logging in...".  fixes #3524 */
+  mutt_clear_error();
   return res;
 }

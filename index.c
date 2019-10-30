@@ -671,7 +671,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
     }
   }
 
-  /* keepalive failure in mutt_enter_fname may kill connection. #3028 */
+  /* keepalive failure in mutt_enter_fname may kill connection. */
   if (Context && Context->mailbox && (mutt_buffer_is_empty(&Context->mailbox->pathbuf)))
     ctx_free(&Context);
 
@@ -1935,7 +1935,7 @@ int mutt_index_menu(void)
           if (menu->current < Context->mailbox->vcount)
           {
             /* threads may be reordered, so figure out what header the cursor
-             * should be on. #3092 */
+             * should be on. */
             int newidx = menu->current;
             if (CUR_EMAIL->deleted)
               newidx = ci_next_undeleted(menu->current);

@@ -292,7 +292,7 @@ static int pgp_copy_checksig(FILE *fp_in, FILE *fp_out)
  *
  * Checks PGP output messages to look for the $pgp_decryption_okay message.
  * This protects against messages with multipart/encrypted headers but which
- * aren't actually encrypted.  See ticket #3770
+ * aren't actually encrypted.
  */
 static int pgp_check_pgp_decryption_okay_regex(FILE *fp_in)
 {

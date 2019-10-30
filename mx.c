@@ -397,7 +397,7 @@ void mx_fastclose_mailbox(struct Mailbox *m)
   if (m->opened != 0)
     return;
 
-  /* never announce that a mailbox we've just left has new mail. #3290
+  /* never announce that a mailbox we've just left has new mail.
    * TODO: really belongs in mx_mbox_close, but this is a nice hook point */
   if (!m->peekonly)
     mutt_mailbox_set_notified(m);

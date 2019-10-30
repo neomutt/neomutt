@@ -749,7 +749,7 @@ void mutt_addrlist_copy(struct AddressList *dst, const struct AddressList *src, 
  * @param msgid Message ID
  * @retval true It is a valid message ID
  *
- * Incomplete. Only used to thwart the APOP MD5 attack (#2846).
+ * Incomplete. Only used to thwart the APOP MD5 attack
  */
 bool mutt_addr_valid_msgid(const char *msgid)
 {
