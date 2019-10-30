@@ -270,7 +270,8 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
     m->mx_ops = mx_get_ops(m->magic);
   }
 
-  if (!m->account)
+  const bool newly_linked_account = !m->account;
+  if (newly_linked_account)
   {
     struct Account *a = mx_ac_find(m);
     bool new_account = false;
@@ -312,9 +313,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   {
     if (mx_open_mailbox_append(ctx->mailbox, flags) != 0)
     {
-      mx_fastclose_mailbox(m);
-      ctx_free(&ctx);
-      return NULL;
+      goto error;
     }
     return ctx;
   }
@@ -331,10 +330,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
       mutt_perror(mailbox_path(m));
     else if ((m->magic == MUTT_UNKNOWN) || !m->mx_ops)
       mutt_error(_("%s is not a mailbox"), mailbox_path(m));
-
-    mx_fastclose_mailbox(m);
-    ctx_free(&ctx);
-    return NULL;
+    goto error;
   }
 
   mutt_make_label_hash(m);
@@ -372,14 +368,20 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   }
   else
   {
-    mx_fastclose_mailbox(m);
-    ctx_free(&ctx);
-    return NULL;
+    goto error;
   }
 
   OptForceRefresh = false;
 
   return ctx;
+
+error:
+  mx_fastclose_mailbox(m);
+  if (newly_linked_account)
+    account_mailbox_remove(m->account, m);
+  ctx_free(&ctx);
+  return NULL;
+
 }
 
 /**
@@ -1586,6 +1588,7 @@ int mx_ac_remove(struct Mailbox *m)
 
   struct Account *a = m->account;
   account_mailbox_remove(m->account, m);
+  mailbox_free(&m);
   if (STAILQ_EMPTY(&a->mailboxes))
   {
     neomutt_account_remove(NeoMutt, a);

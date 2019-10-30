@@ -78,7 +78,8 @@ bool account_mailbox_add(struct Account *a, struct Mailbox *m)
  * @param a Account
  * @param m Mailbox to remove
  *
- * @note If m is NULL, all the mailboxes will be removed
+ * @note If m is NULL, all the mailboxes will be removed and FREE'd. Otherwise,
+ * the specified mailbox is removed from the Account but not FREE'd.
  */
 bool account_mailbox_remove(struct Account *a, struct Mailbox *m)
 {
@@ -95,7 +96,8 @@ bool account_mailbox_remove(struct Account *a, struct Mailbox *m)
       struct EventMailbox ev_m = { m };
       notify_send(a->notify, NT_MAILBOX, NT_MAILBOX_REMOVE, IP & ev_m);
       STAILQ_REMOVE(&a->mailboxes, np, MailboxNode, entries);
-      mailbox_free(&np->mailbox);
+      if (!m)
+        mailbox_free(&np->mailbox);
       FREE(&np);
       result = true;
       if (m)
