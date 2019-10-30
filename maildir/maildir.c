@@ -300,12 +300,13 @@ static int maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
   if (!m)
     return -1;
 
-  if (!(flags & MUTT_APPENDNEW))
+  if (!(flags & (MUTT_APPENDNEW | MUTT_NEWFOLDER)))
   {
     return 0;
   }
 
-  if (mkdir(mailbox_path(m), S_IRWXU))
+  errno = 0;
+  if ((mkdir(mailbox_path(m), S_IRWXU) != 0) && (errno != EEXIST))
   {
     mutt_perror(mailbox_path(m));
     return -1;
@@ -313,7 +314,8 @@ static int maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 
   char tmp[PATH_MAX];
   snprintf(tmp, sizeof(tmp), "%s/cur", mailbox_path(m));
-  if (mkdir(tmp, S_IRWXU))
+  errno = 0;
+  if ((mkdir(tmp, S_IRWXU) != 0) && (errno != EEXIST))
   {
     mutt_perror(tmp);
     rmdir(mailbox_path(m));
@@ -321,7 +323,8 @@ static int maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
   }
 
   snprintf(tmp, sizeof(tmp), "%s/new", mailbox_path(m));
-  if (mkdir(tmp, S_IRWXU))
+  errno = 0;
+  if ((mkdir(tmp, S_IRWXU) != 0) && (errno != EEXIST))
   {
     mutt_perror(tmp);
     snprintf(tmp, sizeof(tmp), "%s/cur", mailbox_path(m));
@@ -331,7 +334,8 @@ static int maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
   }
 
   snprintf(tmp, sizeof(tmp), "%s/tmp", mailbox_path(m));
-  if (mkdir(tmp, S_IRWXU))
+  errno = 0;
+  if ((mkdir(tmp, S_IRWXU) != 0) && (errno != EEXIST))
   {
     mutt_perror(tmp);
     snprintf(tmp, sizeof(tmp), "%s/cur", mailbox_path(m));
