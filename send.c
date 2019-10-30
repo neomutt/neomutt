@@ -1350,7 +1350,7 @@ struct Address *mutt_default_from(void)
 static int send_message(struct Email *e)
 {
   struct Buffer *tempfile = NULL;
-  int i = -1;
+  int rc = -1;
 #ifdef USE_SMTP
   short old_write_bcc;
 #endif
@@ -1396,7 +1396,7 @@ static int send_message(struct Email *e)
 #ifdef MIXMASTER
   if (!STAILQ_EMPTY(&e->chain))
   {
-    i = mix_send_message(&e->chain, mutt_b2s(tempfile));
+    rc = mix_send_message(&e->chain, mutt_b2s(tempfile));
     goto cleanup;
   }
 #endif
@@ -1409,14 +1409,14 @@ static int send_message(struct Email *e)
 #ifdef USE_SMTP
   if (C_SmtpUrl)
   {
-    i = mutt_smtp_send(&e->env->from, &e->env->to, &e->env->cc, &e->env->bcc,
+    rc = mutt_smtp_send(&e->env->from, &e->env->to, &e->env->cc, &e->env->bcc,
                        mutt_b2s(tempfile), (e->content->encoding == ENC_8BIT));
     goto cleanup;
   }
 #endif
 
 sendmail:
-  i = mutt_invoke_sendmail(&e->env->from, &e->env->to, &e->env->cc, &e->env->bcc,
+  rc = mutt_invoke_sendmail(&e->env->from, &e->env->to, &e->env->cc, &e->env->bcc,
                            mutt_b2s(tempfile), (e->content->encoding == ENC_8BIT));
 cleanup:
   if (fp_tmp)
@@ -1425,7 +1425,7 @@ cleanup:
     unlink(mutt_b2s(tempfile));
   }
   mutt_buffer_pool_release(&tempfile);
-  return i;
+  return rc;
 }
 
 /**
