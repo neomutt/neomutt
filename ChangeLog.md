@@ -1016,7 +1016,7 @@
   - Make the heap method and datatype a plain list
   - Reverts making AliasFile into a list_t (#379)
   - Turn mutt_new_* macros into inline functions
-  - Do not cast return values from malloc (et similia)
+  - Do not cast return values from malloc (or similar)
 * Upstream
   - Simplify mutt_label_complete().
   - Permit tab completion of pattern expressions with ~y (labels).
