@@ -125,6 +125,8 @@ void ctx_update(struct Context *ctx)
   for (int msgno = 0; msgno < m->msg_count; msgno++)
   {
     e = m->emails[msgno];
+    if (!e)
+      continue;
 
     if (WithCrypto)
     {
