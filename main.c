@@ -1233,6 +1233,7 @@ int main(int argc, char *argv[], char *envp[])
       if (m->account)
       {
         account_mailbox_remove(m->account, m);
+        mailbox_free(&m);
         m = NULL;
       }
       else

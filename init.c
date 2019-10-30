@@ -2456,6 +2456,7 @@ static enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s
         else
         {
           account_mailbox_remove(np->mailbox->account, np->mailbox);
+          mailbox_free(&np->mailbox);
         }
       }
     }
