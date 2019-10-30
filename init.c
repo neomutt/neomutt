@@ -1703,7 +1703,7 @@ static enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
         {
           if (IS_PATH(he))
           {
-            mutt_expand_path(buf->data, buf->dsize);
+            mutt_buffer_expand_path(buf);
             struct Buffer scratch = mutt_buffer_make(1024);
             mutt_buffer_copy(&scratch, buf);
             size_t scratchlen = mutt_buffer_len(&scratch);
