@@ -1584,10 +1584,11 @@ int mx_ac_remove(struct Mailbox *m)
   if (!m || !m->account)
     return -1;
 
+  struct Account *a = m->account;
   account_mailbox_remove(m->account, m);
-  if (STAILQ_EMPTY(&m->account->mailboxes))
+  if (STAILQ_EMPTY(&a->mailboxes))
   {
-    neomutt_account_remove(NeoMutt, m->account);
+    neomutt_account_remove(NeoMutt, a);
   }
   return 0;
 }
