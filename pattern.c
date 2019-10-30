@@ -1153,7 +1153,7 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
     }
 
 #ifdef USE_FMEMOPEN
-    fclose(s.fp_out);
+    mutt_file_fclose(&s.fp_out);
     lng = tempsize;
 
     if (tempsize)
