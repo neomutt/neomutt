@@ -2135,10 +2135,16 @@ static int imap_mbox_open(struct Mailbox *m)
   m->size = 0;
   m->vcount = 0;
 
-  if (count && (imap_read_headers(m, 1, count, true) < 0))
+  if (count)
   {
-    mutt_error(_("Error opening mailbox"));
-    goto fail;
+    int rc = imap_read_headers(m, 1, count, true);
+    if (rc == -2)
+      mutt_exit(0);
+    if (rc == -1)
+    {
+      mutt_error(_("Error opening mailbox"));
+      goto fail;
+    }
   }
 
   mutt_debug(LL_DEBUG2, "msg_count is %d\n", m->msg_count);

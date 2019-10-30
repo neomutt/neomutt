@@ -716,6 +716,7 @@ static void set_changed_flag(struct Mailbox *m, struct Email *e, int local_chang
  * @param eval_condstore     if true, use CONDSTORE to fetch flags
  * @retval  0 Success
  * @retval -1 Error
+ * @retval -2 Interrupted
  *
  * Without CONDSTORE or QRESYNC, we need to query all the current
  * UIDs and update their flag state and current MSN.
@@ -752,7 +753,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
   for (int msgno = 1; rc == IMAP_RES_CONTINUE; msgno++)
   {
     if (SigInt && query_abort_header_download(adata))
-      return -1;
+      return -2;
 
     mutt_progress_update(&progress, msgno, -1);
 
@@ -930,6 +931,7 @@ static int read_headers_qresync_eval_cache(struct ImapAccountData *adata, char *
  * @param eval_qresync If true, use QRESYNC
  * @retval  0 Success
  * @retval -1 Error
+ * @retval -2 Interrupted
  *
  * CONDSTORE and QRESYNC use FETCH extensions to grab updates.
  */
@@ -956,7 +958,7 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
   for (int msgno = 1; rc == IMAP_RES_CONTINUE; msgno++)
   {
     if (SigInt && query_abort_header_download(adata))
-      return -1;
+      return -2;
 
     mutt_progress_update(&progress, msgno, -1);
 
@@ -1024,6 +1026,7 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
  * @param[in]  initial_download true, if this is the first opening of the mailbox
  * @retval  0 Success
  * @retval -1 Error
+ * @retval -2 Interrupted
  */
 static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
                                   unsigned int msn_end, bool evalhc,
@@ -1120,7 +1123,10 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
     for (int msgno = msn_begin; rc == IMAP_RES_CONTINUE; msgno++)
     {
       if (initial_download && SigInt && query_abort_header_download(adata))
+      {
+        retval = -2;
         goto bail;
+      }
 
       mutt_progress_update(&progress, msgno, -1);
 
@@ -1360,15 +1366,20 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
     }
     else
     {
-      if (read_headers_normal_eval_cache(adata, msn_end, uid_next, has_condstore || has_qresync,
-                                         eval_condstore) < 0)
+      retval = read_headers_normal_eval_cache(adata, msn_end, uid_next,
+                                              has_condstore || has_qresync,
+                                              eval_condstore);
+      if (retval < 0)
+      {
         goto bail;
+      }
     }
 
     if ((eval_condstore || eval_qresync) && (hc_modseq != mdata->modseq))
     {
-      if (read_headers_condstore_qresync_updates(adata, msn_end, uid_next,
-                                                 hc_modseq, eval_qresync) < 0)
+      retval = read_headers_condstore_qresync_updates(adata, msn_end, uid_next,
+                                                 hc_modseq, eval_qresync);
+      if (retval < 0)
       {
         goto bail;
       }

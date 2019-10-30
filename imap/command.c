@@ -1335,7 +1335,8 @@ void imap_cmd_finish(struct ImapAccountData *adata)
 
       mutt_debug(LL_DEBUG2, "Fetching new mails from %d to %d\n",
                  mdata->max_msn + 1, mdata->new_mail_count);
-      imap_read_headers(adata->mailbox, mdata->max_msn + 1, mdata->new_mail_count, false);
+      if (imap_read_headers(adata->mailbox, mdata->max_msn + 1, mdata->new_mail_count, false) == -2)
+        mutt_exit(0);
     }
 
     // And to finish inform about MUTT_REOPEN if needed
