@@ -220,6 +220,7 @@ static void hcache_per_folder(struct Buffer *hcpath, const char *path,
     mutt_buffer_reset(name);
     mutt_md5_toascii(m, name->data);
     mutt_buffer_printf(hcpath, "%s%s%s", path, slash ? "" : "/", mutt_b2s(name));
+    mutt_buffer_pool_release(&name);
   }
 
   mutt_buffer_encode_path(hcpath, mutt_b2s(hcpath));
