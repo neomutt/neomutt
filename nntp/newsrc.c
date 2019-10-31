@@ -193,7 +193,7 @@ int nntp_newsrc_parse(struct NntpAccountData *adata)
     return -1;
   }
 
-  if (stat(adata->newsrc_file, &sb))
+  if (stat(adata->newsrc_file, &sb) != 0)
   {
     mutt_perror(adata->newsrc_file);
     nntp_newsrc_close(adata);
@@ -856,7 +856,7 @@ void nntp_clear_cache(struct NntpAccountData *adata)
         continue;
       *fp = '\0';
       mutt_str_strncat(file, sizeof(file), group, strlen(group));
-      if (stat(file, &sb))
+      if (stat(file, &sb) != 0)
         continue;
 
 #ifdef USE_HCACHE
