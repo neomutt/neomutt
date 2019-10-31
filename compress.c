@@ -168,34 +168,6 @@ static void store_size(const struct Mailbox *m)
 }
 
 /**
- * find_hook - Find a hook to match a path
- * @param type Type of hook, see #HookFlags
- * @param path Filename to test
- * @retval ptr  Matching hook command
- * @retval NULL No matches
- *
- * Each hook has a type and a pattern.
- * Find a command that matches the type and path supplied. e.g.
- *
- * User config:
- *      open-hook '\.gz$' "gzip -cd '%f' > '%t'"
- *
- * Call:
- *      find_hook (#MUTT_OPEN_HOOK, "myfile.gz");
- */
-static const char *find_hook(HookFlags type, const char *path)
-{
-  if (!path)
-    return NULL;
-
-  const char *c = mutt_find_hook(type, path);
-  if (!c || !*c)
-    return NULL;
-
-  return c;
-}
-
-/**
  * set_compress_info - Find the compress hooks for a mailbox
  * @param m Mailbox to examine
  * @retval ptr  CompressInfo Hook info for the mailbox's path
@@ -212,12 +184,12 @@ static struct CompressInfo *set_compress_info(struct Mailbox *m)
     return m->compress_info;
 
   /* Open is compulsory */
-  const char *o = find_hook(MUTT_OPEN_HOOK, mailbox_path(m));
+  const char *o = mutt_find_hook(MUTT_OPEN_HOOK, mailbox_path(m));
   if (!o)
     return NULL;
 
-  const char *c = find_hook(MUTT_CLOSE_HOOK, mailbox_path(m));
-  const char *a = find_hook(MUTT_APPEND_HOOK, mailbox_path(m));
+  const char *c = mutt_find_hook(MUTT_CLOSE_HOOK, mailbox_path(m));
+  const char *a = mutt_find_hook(MUTT_APPEND_HOOK, mailbox_path(m));
 
   struct CompressInfo *ci = mutt_mem_calloc(1, sizeof(struct CompressInfo));
   m->compress_info = ci;
@@ -400,7 +372,7 @@ bool mutt_comp_can_read(const char *path)
   if (!path)
     return false;
 
-  if (find_hook(MUTT_OPEN_HOOK, path))
+  if (mutt_find_hook(MUTT_OPEN_HOOK, path))
     return true;
 
   return false;
