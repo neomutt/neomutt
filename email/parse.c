@@ -533,7 +533,14 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
   if (ct->type == TYPE_TEXT)
   {
     pc = mutt_param_get(&ct->parameter, "charset");
-    if (!pc)
+    if (pc)
+    {
+      /* Microsoft Outlook seems to think it is necessary to repeat
+       * charset=, strip it off not to confuse ourselves */
+      if (mutt_str_strncasecmp(pc, "charset=", sizeof("charset=") - 1) == 0)
+        mutt_param_set(&ct->parameter, "charset", pc + (sizeof("charset=") - 1));
+    }
+    else
     {
       mutt_param_set(&ct->parameter, "charset",
                      (C_AssumedCharset) ? (const char *) mutt_ch_get_default_charset() :
