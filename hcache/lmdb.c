@@ -292,9 +292,13 @@ static void hcache_lmdb_close(void **ptr)
 
   struct HcacheLmdbCtx *db = *ptr;
 
-  if (db->txn && (db->txn_mode == TXN_WRITE))
+  if (db->txn)
   {
-    mdb_txn_commit(db->txn);
+    if (db->txn_mode == TXN_WRITE)
+      mdb_txn_commit(db->txn);
+    else
+      mdb_txn_abort(db->txn);
+
     db->txn_mode = TXN_UNINITIALIZED;
     db->txn = NULL;
   }
