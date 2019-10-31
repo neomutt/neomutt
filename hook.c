@@ -504,23 +504,31 @@ void mutt_folder_hook(const char *path, const char *desc)
   if (!path && !desc)
     return;
 
-  struct Hook *tmp = NULL;
+  struct Hook *hook = NULL;
   struct Buffer *err = mutt_buffer_pool_get();
   struct Buffer *token = mutt_buffer_pool_get();
 
   current_hook_type = MUTT_FOLDER_HOOK;
 
-  TAILQ_FOREACH(tmp, &Hooks, entries)
+  TAILQ_FOREACH(hook, &Hooks, entries)
   {
-    if (!tmp->command)
+    if (!hook->command)
       continue;
 
-    if (!(tmp->type & MUTT_FOLDER_HOOK))
+    if (!(hook->type & MUTT_FOLDER_HOOK))
       continue;
 
-    if (mutt_regex_match(&tmp->regex, path) || mutt_regex_match(&tmp->regex, desc))
+    const char *match = NULL;
+    if (mutt_regex_match(&hook->regex, path))
+      match = path;
+    else if (mutt_regex_match(&hook->regex, desc))
+      match = desc;
+
+    if (match)
     {
-      if (mutt_parse_rc_line(tmp->command, token, err) == MUTT_CMD_ERROR)
+      mutt_debug(LL_DEBUG1, "folder-hook '%s' matches '%s'\n", hook->regex.pattern, match);
+      mutt_debug(LL_DEBUG5, "    %s\n", hook->command);
+      if (mutt_parse_rc_line(hook->command, token, err) == MUTT_CMD_ERROR)
       {
         mutt_error("%s", mutt_b2s(err));
         break;
@@ -753,13 +761,12 @@ void mutt_account_hook(const char *url)
    * call. We just skip processing if this occurs. Typically such commands
    * belong in a folder-hook -- perhaps we should warn the user. */
   static bool inhook = false;
+  if (inhook)
+    return;
 
   struct Hook *hook = NULL;
   struct Buffer *err = mutt_buffer_pool_get();
   struct Buffer *token = mutt_buffer_pool_get();
-
-  if (inhook)
-    return;
 
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
@@ -769,6 +776,8 @@ void mutt_account_hook(const char *url)
     if (mutt_regex_match(&hook->regex, url))
     {
       inhook = true;
+      mutt_debug(LL_DEBUG1, "account-hook '%s' matches '%s'\n", hook->regex.pattern, url);
+      mutt_debug(LL_DEBUG5, "    %s\n", hook->command);
 
       if (mutt_parse_rc_line(hook->command, token, err) == MUTT_CMD_ERROR)
       {
@@ -777,13 +786,13 @@ void mutt_account_hook(const char *url)
         mutt_buffer_pool_release(&err);
 
         inhook = false;
-        return;
+        goto done;
       }
 
       inhook = false;
     }
   }
-
+done:
   mutt_buffer_pool_release(&token);
   mutt_buffer_pool_release(&err);
 }
