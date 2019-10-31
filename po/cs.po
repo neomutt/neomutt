@@ -3893,7 +3893,7 @@ msgstr "tajný klíč „%s“ nenalezen: %s"
 #: ncrypt/crypt_gpgme.c:1217
 #, c-format
 msgid "ambiguous specification of secret key '%s'\n"
-msgstr "tajný klíč „%s“ není určen jednoznačně"
+msgstr "tajný klíč „%s“ není určen jednoznačně\n"
 
 #: ncrypt/crypt_gpgme.c:1233
 #, c-format
@@ -6359,8 +6359,8 @@ msgstr "Ukládám…"
 msgid "Attachment saved"
 msgid_plural "%d attachments saved"
 msgstr[0] "Příloha uložena"
-msgstr[1] "Přílohy uloženy"
-msgstr[2] "Příloh uloženo"
+msgstr[1] "%d přílohy uloženy"
+msgstr[2] "%d příloh uloženo"
 
 #: recvattach.c:771
 #, c-format
