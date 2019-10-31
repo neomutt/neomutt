@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2019-10-25\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2019-10-25 13:49+0100\n"
-"PO-Revision-Date: 2019-08-27 15:16+0200\n"
+"PO-Revision-Date: 2019-10-31 06:24+0100\n"
 "Last-Translator: André Berger <andre.berger@web.de>\n"
 "Language-Team: none\n"
 "Language: de\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.2\n"
+"X-Generator: Poedit 2.2.4\n"
 
 #: addrbook.c:55 autocrypt/autocrypt_acct_menu.c:59 browser.c:80 browser.c:90
 #: mutt_history.c:44 pager.c:228 postpone.c:69 query.c:79 recvattach.c:93
@@ -32,7 +32,7 @@ msgstr "Verlassen"
 
 #: addrbook.c:55 index.c:116 index.c:129 pager.c:236 pager.c:246 postpone.c:70
 msgid "Del"
-msgstr "Lösch."
+msgstr "Entf"
 
 #: addrbook.c:56 index.c:117 index.c:130 postpone.c:71
 msgid "Undel"
@@ -137,7 +137,7 @@ msgstr "Kann %s nicht anlegen: %s"
 #.
 #: autocrypt/autocrypt.c:156
 msgid "Create an initial autocrypt account?"
-msgstr ""
+msgstr "Ersten Autocrypt-Account erstellen?"
 
 #. L10N:
 #. Autocrypt is asking for the email address to use for the
@@ -146,7 +146,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:180
 msgid "Autocrypt account address: "
-msgstr ""
+msgstr "Autocrypt-Account-Adresse: "
 
 #. L10N:
 #. Autocrypt prompts for an account email address, and requires
@@ -155,7 +155,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:191
 msgid "Please enter a single email address"
-msgstr ""
+msgstr "Bitte eine einzelne E-Mail-Adresse eingeben"
 
 #. L10N:
 #. When creating an autocrypt account, this message will be displayed
@@ -164,7 +164,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:208
 msgid "That email address already has an autocrypt account"
-msgstr ""
+msgstr "Diese E-Mail-Adresse hat bereits einen Autocrypt-Account"
 
 #. L10N:
 #. Autocrypt has a setting "prefer-encrypt".
@@ -175,16 +175,15 @@ msgstr ""
 #. will be required to enable encryption manually.
 #.
 #: autocrypt/autocrypt.c:223
-#, fuzzy
 msgid "Prefer encryption?"
-msgstr "Verschlüsselung"
+msgstr "Verschlüsselung bevorzugen?"
 
 #. L10N:
 #. Message displayed after an autocrypt account is successfully created.
 #.
 #: autocrypt/autocrypt.c:236
 msgid "Autocrypt account creation succeeded"
-msgstr ""
+msgstr "Autocrypt-Account-Erstellung erfolgreich"
 
 #. L10N:
 #. Error message displayed if creating an autocrypt account failed
@@ -192,7 +191,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:242
 msgid "Autocrypt account creation aborted"
-msgstr ""
+msgstr "Autocrypt-Account-Erstellung abgebrochen"
 
 #. L10N:
 #. %s is an email address.  Autocrypt is scanning for the keyids
@@ -200,9 +199,9 @@ msgstr ""
 #. The message is printed and they are returned to the compose menu.
 #.
 #: autocrypt/autocrypt.c:610 autocrypt/autocrypt.c:639
-#, fuzzy, c-format
+#, c-format
 msgid "No (valid) autocrypt key found for %s"
-msgstr "Kein (gültiges) Zertifikat für %s gefunden"
+msgstr "Kein (gültiges) Autocrypt-Zertifikat für %s gefunden"
 
 #. L10N:
 #. The first time autocrypt is enabled, NeoMutt will ask to scan
@@ -213,13 +212,12 @@ msgstr "Kein (gültiges) Zertifikat für %s gefunden"
 #.
 #: autocrypt/autocrypt.c:903
 msgid "Scan a mailbox for autocrypt headers?"
-msgstr ""
+msgstr "Mailbox nach Autocrypt-Headers durchsuchen?"
 
 #. L10N: The prompt for a mailbox to scan for Autocrypt: headers
 #: autocrypt/autocrypt.c:907
-#, fuzzy
 msgid "Scan mailbox"
-msgstr "Keine Mailbox.\n"
+msgstr "Durchsuche Mailbox"
 
 #. L10N:
 #. This is the second prompt to see if the user would like
@@ -230,15 +228,14 @@ msgstr "Keine Mailbox.\n"
 #.
 #: autocrypt/autocrypt.c:927
 msgid "Scan another mailbox for autocrypt headers?"
-msgstr ""
+msgstr "Weitere Mailbox nach Autocrypt-Headers durchsuchen?"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. create new account
 #.
 #: autocrypt/autocrypt_acct_menu.c:63
-#, fuzzy
 msgid "Create"
-msgstr "%s erstellen?"
+msgstr "Erstelle"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. delete account
@@ -255,7 +252,7 @@ msgstr "Löschen"
 #.
 #: autocrypt/autocrypt_acct_menu.c:74
 msgid "Tgl Active"
-msgstr ""
+msgstr "AktiviergSetzen"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. toggle "prefer-encrypt" on an account
@@ -265,7 +262,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:81
 msgid "Prf Enc"
-msgstr ""
+msgstr "BevorzCodierg"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -273,7 +270,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:123
 msgid "prefer encrypt"
-msgstr ""
+msgstr "Verschlüsselung bevorzugen"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -282,7 +279,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:130
 msgid "manual encrypt"
-msgstr ""
+msgstr "manuell verschlüsseln"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -290,7 +287,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:138
 msgid "active"
-msgstr ""
+msgstr "aktiv"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -298,27 +295,26 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:144
 msgid "inactive"
-msgstr ""
+msgstr "inaktiv"
 
 #. L10N: Autocrypt Account Management Menu title
 #: autocrypt/autocrypt_acct_menu.c:183
 msgid "Autocrypt Accounts"
-msgstr ""
+msgstr "Autocrypt-Accounts"
 
 #. L10N:
 #. This error message is displayed if a database update of an
 #. account record fails for some odd reason.
 #.
 #: autocrypt/autocrypt_acct_menu.c:245 autocrypt/autocrypt_acct_menu.c:259
-#, fuzzy
 msgid "Error updating account record"
-msgstr "Fehler beim Einlesen des Verzeichnisses"
+msgstr "Fehler bei der Aktualisierung des Account-Eintrags"
 
 #. L10N: Confirmation message when deleting an autocrypt account
 #: autocrypt/autocrypt_acct_menu.c:302
-#, fuzzy, c-format
+#, c-format
 msgid "Really delete account \"%s\"?"
-msgstr "Mailbox \"%s\" wirklich löschen?"
+msgstr "Account \"%s\" wirklich löschen?"
 
 #. L10N:
 #. %s is the path to the database.
@@ -329,9 +325,9 @@ msgstr "Mailbox \"%s\" wirklich löschen?"
 #. for some reason.  The %s is the full path of the database file.
 #.
 #: autocrypt/autocrypt_db.c:68 autocrypt/autocrypt_db.c:112
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to open autocrypt database %s"
-msgstr "Kann Mailbox %s nicht öffnen"
+msgstr "Kann Autocrypt-Datenbank %s nicht öffnen"
 
 #: autocrypt/autocrypt_gpgme.c:54 ncrypt/crypt_gpgme.c:775
 #, c-format
@@ -344,16 +340,16 @@ msgstr "Fehler beim Erzeugen des GPGME-Kontexts: %s"
 #.
 #: autocrypt/autocrypt_gpgme.c:172
 msgid "Generating autocrypt key..."
-msgstr ""
+msgstr "Erstelle Autocrypt-Schlüssel…"
 
 #. L10N:
 #. GPGME was unable to generate a key for some reason.
 #. %s is the error message returned by GPGME.
 #.
 #: autocrypt/autocrypt_gpgme.c:184 autocrypt/autocrypt_gpgme.c:203
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating autocrypt key: %s"
-msgstr "Fehler beim Export des Schlüssels: %s"
+msgstr "Fehler bei der Erstellung des Autocypyt-Schlüssels: %s"
 
 #. L10N:
 #. After selecting a key for an autocrypt account,
@@ -364,7 +360,7 @@ msgstr "Fehler beim Export des Schlüssels: %s"
 #: autocrypt/autocrypt_gpgme.c:252
 #, c-format
 msgid "The key %s is not usable for autocrypt"
-msgstr ""
+msgstr "Der Schlüssel %s kann nicht für Autocrypt verwendet werden"
 
 #. L10N:
 #. During autocrypt account creation, this prompt asks the
@@ -373,7 +369,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_gpgme.c:286
 msgid "(c)reate new, or (s)elect existing GPG key?"
-msgstr ""
+msgstr "GPG-Schlüssel (n)eu erstellen oder (b)estehenden wählen?"
 
 #. L10N:
 #. The letters corresponding to the
@@ -381,7 +377,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_gpgme.c:291
 msgid "cs"
-msgstr ""
+msgstr "nb"
 
 #. L10N:
 #. During autocrypt account creation, if selecting an existing key fails
@@ -389,7 +385,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_gpgme.c:305
 msgid "Create a new gpg key for this account, instead?"
-msgstr ""
+msgstr "Statt dessen neuen GPG-Schlüssel für diesen Account erstellen?"
 
 #. L10N:
 #. The autocrypt database keeps track of schema version numbers.
@@ -399,7 +395,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_schema.c:125
 msgid "Autocrypt database version is too new"
-msgstr ""
+msgstr "Die Version der Autocrypt-Datenbank zu hoch"
 
 #: bcache.c:209
 #, c-format
@@ -485,7 +481,6 @@ msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Es können nur IMAP-Mailboxen gelöscht werden"
 
 #: browser.c:1636
-#, fuzzy
 msgid "Can't delete currently selected mailbox"
 msgstr "Kann derzeit ausgewählte Mailbox nicht löschen"
 
@@ -601,12 +596,12 @@ msgstr "Standardfarben werden nicht unterstützt"
 #: color.c:1275
 #, c-format
 msgid "Maximum quoting level is %d"
-msgstr ""
+msgstr "Die maximale Antwortebene ist %d"
 
 #: color.c:1312
-#, fuzzy, c-format
+#, c-format
 msgid "%s: invalid number: %s"
-msgstr "Fehler: score: Ungültige Zahl"
+msgstr "%s: ungültige Zahl: %s"
 
 #. L10N: Used for the $crypt_verify_sig prompt
 #: commands.c:225
@@ -680,8 +675,8 @@ msgstr "Unverständliche Adresse"
 #, c-format
 msgid "Bounce message to %s?"
 msgid_plural "Bounce messages to %s?"
-msgstr[0] "Nachricht neu an %s versenden"
-msgstr[1] "Nachrichten neu an %s versenden"
+msgstr[0] "Nachricht neu an %s versenden?"
+msgstr[1] "Nachrichten neu an %s versenden?"
 
 #: commands.c:464 recvcmd.c:257
 msgid "Message not bounced"
@@ -801,9 +796,8 @@ msgstr "Kopiere nach %s..."
 
 #. L10N: e.g. "text/plain; charset=UTF-8; ..."
 #: commands.c:1245
-#, fuzzy
 msgid "Content type is too long"
-msgstr "Content-Type in %s abgeändert"
+msgstr "Content-Type ist zu lang"
 
 #: commands.c:1269
 #, c-format
@@ -889,7 +883,7 @@ msgstr "Signiere als: "
 #. L10N: The compose menu autocrypt line
 #: compose.c:195
 msgid "Autocrypt: "
-msgstr ""
+msgstr "Autocrypt: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:199
@@ -927,7 +921,7 @@ msgstr "Kopie"
 #. L10N: compose menu help line entry
 #: compose.c:215 compose.c:227
 msgid "Subj"
-msgstr "Betr."
+msgstr "Betr"
 
 #: compose.c:216 compose.c:228 compose.c:1558
 msgid "Attach file"
@@ -935,7 +929,7 @@ msgstr "Datei anhängen"
 
 #: compose.c:217 compose.c:229
 msgid "Descrip"
-msgstr "Beschr."
+msgstr "Beschr"
 
 #: compose.c:226
 msgid "Newsgroups"
@@ -945,14 +939,13 @@ msgstr "Newsgroups"
 #. * This is displayed when Autocrypt is turned off.
 #: compose.c:239 compose.c:471
 msgid "Off"
-msgstr ""
+msgstr "Aus"
 
 #. L10N: Autocrypt recommendation flag: no.
 #. * This is displayed when Autocrypt cannot encrypt to the recipients.
 #: compose.c:242
-#, fuzzy
 msgid "No"
-msgstr "Keine"
+msgstr "Nein"
 
 #. L10N: Autocrypt recommendation flag: discouraged.
 #. * This is displayed when Autocrypt believes encryption should not be used.
@@ -960,7 +953,7 @@ msgstr "Keine"
 #. * used recently, or if the only key available is a Gossip Header key.
 #: compose.c:247
 msgid "Discouraged"
-msgstr ""
+msgstr "Abgeraten"
 
 #. L10N: Autocrypt recommendation flag: available.
 #. * This is displayed when Autocrypt believes encryption is possible, but
@@ -968,15 +961,14 @@ msgstr ""
 #. * is not set in both the sender and recipient keys.
 #: compose.c:252
 msgid "Available"
-msgstr ""
+msgstr "Verfügbar"
 
 #. L10N: Autocrypt recommendation flag: yes.
 #. * This is displayed when Autocrypt would normally enable encryption
 #. * automatically.
 #: compose.c:256
-#, fuzzy
 msgid "Yes"
-msgstr "ja"
+msgstr "Ja"
 
 #. L10N:
 #. The compose menu autocrypt prompt.
@@ -986,7 +978,7 @@ msgstr "ja"
 #.
 #: compose.c:338
 msgid "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic?"
-msgstr ""
+msgstr "Autocrypt: (v)erchlüsseln, (e)ntfernen, (a)utomatisch?"
 
 #. L10N:
 #. The letter corresponding to the compose menu autocrypt prompt
@@ -994,7 +986,7 @@ msgstr ""
 #.
 #: compose.c:344
 msgid "eca"
-msgstr ""
+msgstr "vea"
 
 #: compose.c:381
 msgid "Not supported"
@@ -1046,9 +1038,8 @@ msgstr "Verschlüsseln mit: "
 #. (Off, No, Discouraged, Available, Yes)
 #.
 #: compose.c:481
-#, fuzzy
 msgid "Recommendation: "
-msgstr "X-Comment-To: "
+msgstr "Empfehlung: "
 
 #: compose.c:545
 msgid "<no chain defined>"
@@ -1062,9 +1053,9 @@ msgstr "<keine Kette definiert>"
 #. error message.
 #.
 #: compose.c:599
-#, fuzzy, c-format
+#, c-format
 msgid "Attachment #%d no longer exists: %s"
-msgstr "%s [#%d] existiert nicht mehr"
+msgstr "Anhang #%d existiert nicht mehr: %s"
 
 #. L10N:
 #. This message is displayed in the compose menu when an attachment
@@ -1074,9 +1065,9 @@ msgstr "%s [#%d] existiert nicht mehr"
 #. prompt question.
 #.
 #: compose.c:619
-#, fuzzy, c-format
+#, c-format
 msgid "Attachment #%d modified. Update encoding for %s?"
-msgstr "%s [#%d] wurde verändert. Kodierung neu bestimmen?"
+msgstr "Anhang #%d wurde verändert. Kodierung für %s anpassen?"
 
 #: compose.c:714
 msgid "-- Attachments"
@@ -1216,7 +1207,6 @@ msgid "What we have here is a failure to make an attachment"
 msgstr "Anhang kann nicht erzeugt werden"
 
 #: compose.c:2073
-#, fuzzy
 msgid "Save (postpone) draft message?"
 msgstr "Nachricht als Entwurf speichern?"
 
@@ -1379,7 +1369,7 @@ msgstr "SSL deaktiviert, da nicht genügend Entropie zur Verfügung steht"
 
 #: conn/ssl.c:403
 msgid "Unknown"
-msgstr "unbekannt"
+msgstr "Unbekannt"
 
 #: conn/ssl.c:422 conn/ssl_gnutls.c:172
 #, c-format
@@ -1444,7 +1434,7 @@ msgstr "SHA1-Fingerabdruck: %s"
 
 #: conn/ssl.c:940 conn/ssl.c:943 conn/ssl_gnutls.c:609 conn/ssl_gnutls.c:611
 msgid "SHA256 Fingerprint: "
-msgstr "SHA256-Fingerabdruck:"
+msgstr "SHA256-Fingerabdruck: "
 
 #: conn/ssl.c:947 conn/ssl_gnutls.c:650
 #, c-format
@@ -2048,14 +2038,14 @@ msgstr "Menü \"%s\" existiert nicht"
 #. L10N: '%s' is the name of the menu, e.g. 'index' or 'pager', it might
 #. L10N: also be 'all' when all menus are affected.
 #: icommands.c:275
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no binds for this menu"
-msgstr "%s: kein %s für dieses Menü"
+msgstr "%s: Keine Tastenkombination für dieses Menü"
 
 #: icommands.c:275
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no macros for this menu"
-msgstr "%s: kein %s für dieses Menü"
+msgstr "%s: kein Makro für dieses Menü"
 
 #. L10N: '%s' is the file name of the temporary file
 #: icommands.c:286 icommands.c:299 icommands.c:319 icommands.c:343
@@ -2357,7 +2347,7 @@ msgstr "Senden"
 
 #: index.c:120 pager.c:237
 msgid "Reply"
-msgstr "Antw."
+msgstr "Antwort"
 
 #: index.c:121
 msgid "Group"
@@ -2544,9 +2534,8 @@ msgid "Logged out of IMAP servers"
 msgstr "Erfolgreich von IMAP-Servern abgemeldet"
 
 #: index.c:1986
-#, fuzzy
 msgid "No virtual folder and no Message-Id, aborting"
-msgstr "Keine virtuelle Mailbox, breche ab"
+msgstr "Keine virtuelle Mailbox und keine Message-Id, breche ab"
 
 #: index.c:1998 index.c:2151 index.c:2173 index.c:2194
 msgid "Failed to create query, aborting"
@@ -2780,9 +2769,9 @@ msgid "Error in command line: %s"
 msgstr "Fehler in Kommandozeile: %s"
 
 #: init.c:296
-#, fuzzy, c-format
+#, c-format
 msgid "Warning in command line: %s"
-msgstr "Fehler in Kommandozeile: %s"
+msgstr "Warnung in der Kommandozeile: %s"
 
 #: init.c:407
 msgid "unable to determine nodename via uname()"
@@ -2930,7 +2919,7 @@ msgstr "%s: Unbekanntes Kommando"
 
 #: init.c:3812
 msgid "'charset' must contain exactly one character set name"
-msgstr ""
+msgstr "'charset' muss genau einen Zeichensatz enthalten"
 
 #: init.c:3828 init.c:3852 init.c:3887
 #, c-format
@@ -2940,12 +2929,12 @@ msgstr "Ungültiger Wert für Option %s: %s"
 #: init.c:3865
 #, c-format
 msgid "Option %s may not be set or reset from the pager"
-msgstr "Option %s kann vom Pager aus weder gesetzt noch zurückgesetzt werden "
+msgstr "Option %s kann vom Pager aus weder gesetzt noch zurückgesetzt werden"
 
 #: init.c:3903
 #, c-format
 msgid "Option %s may not be set when in attach-message mode"
-msgstr "Option %s kann im Anhängemodus nicht gesetzt werden."
+msgstr "Option %s kann im Nachrichte-Anhangmodus nicht gesetzt werden"
 
 #: keymap.c:327 keymap.c:335
 #, c-format
@@ -3219,7 +3208,7 @@ msgstr "Die Mailbox ist beschädigt"
 #: mbox/mbox.c:1000
 #, c-format
 msgid "Couldn't lock %s"
-msgstr "Konnte %s nicht für exklusiven Zugriff sperren."
+msgstr "Konnte %s nicht für exklusiven Zugriff sperren"
 
 #: mbox/mbox.c:1139
 msgid "Mailbox was corrupted"
@@ -3413,7 +3402,7 @@ msgstr "Lese /dev/urandom: %s"
 #. These three letters correspond to the choices in the string.
 #: muttlib.c:731
 msgid "File is a directory, save under it: (y)es, (n)o, (a)ll?"
-msgstr "Datei ist ein Verzeichnis, darin abspeichern? (j)a, (n)ein, (a)lle"
+msgstr "Datei ist ein Verzeichnis, darin abspeichern? (j)a, (n)ein, (a)lle?"
 
 #: muttlib.c:731
 msgid "yna"
@@ -3865,7 +3854,7 @@ msgid "error reading data object: %s"
 msgstr "Fehler beim Lesen des Datenobjekts: %s"
 
 #: ncrypt/crypt_gpgme.c:1148
-#, fuzzy, c-format
+#, c-format
 msgid "error adding recipient '%s': %s"
 msgstr "Fehler beim Hinzufügen des Empfängers '%s': %s"
 
@@ -3875,9 +3864,9 @@ msgid "secret key '%s' not found: %s"
 msgstr "Geheimer Schlüssel '%s' nicht gefunden: %s"
 
 #: ncrypt/crypt_gpgme.c:1217
-#, fuzzy, c-format
+#, c-format
 msgid "ambiguous specification of secret key '%s'\n"
-msgstr "mehrdeutige Angabe des geheimen Schlüssels '%s'"
+msgstr "mehrdeutige Angabe des geheimen Schlüssels '%s'\n"
 
 #: ncrypt/crypt_gpgme.c:1233
 #, c-format
@@ -4034,9 +4023,9 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2832
-#, fuzzy, c-format
+#, c-format
 msgid "Error importing key: %s"
-msgstr "Fehler beim Export des Schlüssels: %s"
+msgstr "Fehler beim Import des Schlüssels: %s"
 
 #: ncrypt/crypt_gpgme.c:3070
 #, c-format
@@ -4328,9 +4317,8 @@ msgstr "KeyID für %s: "
 #. from.  This error is displayed if no results were found.
 #.
 #: ncrypt/crypt_gpgme.c:5384
-#, fuzzy
 msgid "No secret keys found"
-msgstr "Geheimer Schlüssel '%s' nicht gefunden: %s"
+msgstr "Keine geheimen Schlüsselgefunden"
 
 #: ncrypt/crypt_gpgme.c:5417 ncrypt/pgpkey.c:882
 msgid "Please enter the key ID: "
@@ -4603,7 +4591,7 @@ msgstr "Ungültig  "
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
 #: ncrypt/smime.c:476
 msgid "Revoked   "
-msgstr "Zurückgez."
+msgstr "Zurückgezogen "
 
 #. L10N: Describes the trust state of a S/MIME key.
 #. This translation must be padded with spaces to the right such that it
@@ -4612,7 +4600,7 @@ msgstr "Zurückgez."
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
 #: ncrypt/smime.c:484
 msgid "Trusted   "
-msgstr "Vertr.würd."
+msgstr "Vertrauenswürdig "
 
 #. L10N: Describes the trust state of a S/MIME key.
 #. This translation must be padded with spaces to the right such that it
@@ -4621,7 +4609,7 @@ msgstr "Vertr.würd."
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
 #: ncrypt/smime.c:492
 msgid "Unverified"
-msgstr "Ungeprüft "
+msgstr "Ungeprüft"
 
 #. L10N: Describes the trust state of a S/MIME key.
 #. This translation must be padded with spaces to the right such that it
@@ -4911,9 +4899,9 @@ msgid "No more messages in the thread"
 msgstr "Keine weiteren Nachrichten in diesem Diskussionsfaden"
 
 #: notmuch/mutt_notmuch.c:1954
-#, fuzzy, c-format
+#, c-format
 msgid "failed to parse limit: %s"
-msgstr "Fehler bei der Verwendung von Notmuch-Limit: %s"
+msgstr "Fehler beim Limit: %s"
 
 #: notmuch/mutt_notmuch.c:2475
 msgid "Can't write to virtual folder"
@@ -4951,24 +4939,23 @@ msgstr "Zeige Anhang als Text an"
 
 #: opcodes.h:32
 msgid "manage autocrypt accounts"
-msgstr ""
+msgstr "Autocrypt-Accounts verwalten"
 
 #: opcodes.h:33
 msgid "create a new autocrypt account"
-msgstr ""
+msgstr "Neuen Autocrypt-Account erstellen"
 
 #: opcodes.h:34
-#, fuzzy
 msgid "delete the current account"
 msgstr "Lösche aktuellen Eintrag"
 
 #: opcodes.h:35
 msgid "toggle the current account active/inactive"
-msgstr ""
+msgstr "Aktuellen Account aktiv/inaktiv machen"
 
 #: opcodes.h:36
 msgid "toggle the current account prefer-encrypt flag"
-msgstr ""
+msgstr "Verschlüsselung für aktuellen Account nicht/bevorzugen"
 
 #: opcodes.h:37
 msgid "move to the bottom of the page"
@@ -5032,7 +5019,7 @@ msgstr "Hänge Nachricht(en) an diese Nachricht an"
 
 #: opcodes.h:52
 msgid "show autocrypt compose menu options"
-msgstr ""
+msgstr "Zeige Einstellungen für Autocrypt-Erstellungsmenü"
 
 #: opcodes.h:53
 msgid "attach news articles to this message"
@@ -5223,9 +5210,8 @@ msgid "delete all messages in thread"
 msgstr "Lösche alle Nachrichten im Diskussionsfaden"
 
 #: opcodes.h:100
-#, fuzzy
 msgid "descend into a directory"
-msgstr "%s ist kein Verzeichnis"
+msgstr "Verzeichnis betreten"
 
 #: opcodes.h:101
 msgid "display full address of sender"
@@ -5408,9 +5394,8 @@ msgid "go to parent directory"
 msgstr "Gehe zum übergeordneten Verzeichnis"
 
 #: opcodes.h:146
-#, fuzzy
 msgid "reply to all recipients preserving To/Cc"
-msgstr "Antworte an alle Empfänger"
+msgstr "Antworte an alle Empfänger und übernimm To/Cc"
 
 #: opcodes.h:147
 msgid "reply to all recipients"
@@ -5909,9 +5894,8 @@ msgid "generate virtual folder from query"
 msgstr "Erzeuge virtuelle Mailbox aus der Abfrage"
 
 #: opcodes.h:282
-#, fuzzy
 msgid "generate a read-only virtual folder from query"
-msgstr "Erzeuge virtuelle Mailbox aus der Abfrage"
+msgstr "Erzeuge nur lesbare virtuelle Mailbox aus der Abfrage"
 
 #: opcodes.h:283
 msgid "shifts virtual folder time window backwards"
@@ -6003,7 +5987,7 @@ msgstr "Anhänge betr."
 
 #: pager.c:238 pager.c:247
 msgid "Next"
-msgstr "Nächste Nachr."
+msgstr "Nächste Nachricht"
 
 #. L10N: Status bar message: the entire email is visible in the pager
 #. L10N: Status bar message: all the emails are visible in the index
@@ -6047,14 +6031,13 @@ msgid "Empty expression"
 msgstr "Leerer Ausdruck"
 
 #: pattern.c:281
-#, fuzzy
 msgid "No search command defined"
-msgstr "Kein OAUTH Kommando zur Aktualisierung definiert"
+msgstr "Kein Such-Kommando definiert"
 
 #: pattern.c:319
-#, fuzzy, c-format
+#, c-format
 msgid "Running search command: %s ..."
-msgstr "Automatische Anzeige mittels: %s"
+msgstr "Suche gerade nach: %s …"
 
 #: pattern.c:410
 #, c-format
@@ -6337,11 +6320,11 @@ msgid "Saving..."
 msgstr "Speichere..."
 
 #: recvattach.c:572 recvattach.c:743 recvattach.c:747
-#, fuzzy, c-format
+#, c-format
 msgid "Attachment saved"
 msgid_plural "%d attachments saved"
 msgstr[0] "Anhang gespeichert"
-msgstr[1] "Anhang gespeichert"
+msgstr[1] "%d Anhänge gespeichert"
 
 #: recvattach.c:771
 #, c-format
@@ -6553,9 +6536,8 @@ msgstr "Kein Betreff, breche ab"
 #. be added as attachments to the new mail, if this is answered yes.
 #.
 #: send.c:559
-#, fuzzy
 msgid "Forward attachments?"
-msgstr "Als Anhänge weiterleiten?"
+msgstr "Anhänge weiterleiten?"
 
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
@@ -6590,9 +6572,8 @@ msgid "Preparing forwarded message..."
 msgstr "Bereite Nachricht zum Weiterleiten vor..."
 
 #: send.c:1603
-#, fuzzy
 msgid "Fcc to an IMAP mailbox is not supported in batch mode"
-msgstr "%c: Wird in diesem Modus nicht unterstützt"
+msgstr "Fcc zu einer IMAP-Mailbox wird in diesem Modus nicht unterstützt"
 
 #: send.c:1635 send.c:1661
 msgid "Save attachments in Fcc?"
@@ -6604,25 +6585,24 @@ msgstr "Anhänge in Fcc-Mailbox speichern?"
 #. (s)kip aborts saving.
 #: send.c:1683
 msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
-msgstr ""
+msgstr "Fcc fehlgeschlagen; (w)iederholen, (a)ndere Mailbox oder ü(b)erspringen?"
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt
 #. (r)etry, alternate (m)ailbox, or (s)kip.
 #. Any similarity to famous leaders of the FSF is coincidental.
 #: send.c:1687
 msgid "rms"
-msgstr ""
+msgstr "wab"
 
 #. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
 #. initial Fcc fails.
 #: send.c:1693
-#, fuzzy
 msgid "Fcc mailbox"
-msgstr "Keine Mailbox.\n"
+msgstr "Fcc Mailbox"
 
 #: send.c:1758
 msgid "Can't postpone.  $postponed is unset"
-msgstr ""
+msgstr "Kann Entwurf nirgendwohin speichern  $postponed is unset"
 
 #: send.c:1893
 msgid "Recall postponed message?"
@@ -6868,11 +6848,10 @@ msgstr "Einstellungen bei der Kompilierung:"
 
 #: index.c:2046
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
-msgstr ""
+msgstr "Nachricht nicht in der notmuch-Datenbank zu finden; ’notmuch new’ ausführen."
 
 #. L10N: This applies to the "$wrap_headers" config variable
 #: init.c:3912
 #, c-format
 msgid "Option %s must between 78 and 998 inclusive"
-msgstr ""
-
+msgstr "Option %s muss zwischen 78 und einschließlich 998 eingestellt werden"
