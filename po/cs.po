@@ -72,7 +72,7 @@ msgstr "Pro toto jméno je již přezdívka definována"
 
 #: alias.c:417
 msgid "Warning: This alias name may not work.  Fix it?"
-msgstr "Pozor: :Takto pojmenovaný alias nemusí fungovat, mám to napravit?"
+msgstr "Pozor: Takto pojmenovaný alias nemusí fungovat, mám to napravit?"
 
 #: alias.c:442
 msgid "Address: "
@@ -141,7 +141,7 @@ msgstr "%s nelze vytvořit: %s"
 #.
 #: autocrypt/autocrypt.c:156
 msgid "Create an initial autocrypt account?"
-msgstr ""
+msgstr "Vytvořit prvotní autocrypt účet?"
 
 #. L10N:
 #. Autocrypt is asking for the email address to use for the
@@ -150,7 +150,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:180
 msgid "Autocrypt account address: "
-msgstr ""
+msgstr "Adresa autocrypt účtu: "
 
 #. L10N:
 #. Autocrypt prompts for an account email address, and requires
@@ -159,7 +159,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:191
 msgid "Please enter a single email address"
-msgstr ""
+msgstr "Prosím zadejte jednu emailovou adresu"
 
 #. L10N:
 #. When creating an autocrypt account, this message will be displayed
@@ -168,7 +168,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:208
 msgid "That email address already has an autocrypt account"
-msgstr ""
+msgstr "Tato adresa již má autocrypt účet"
 
 #. L10N:
 #. Autocrypt has a setting "prefer-encrypt".
@@ -179,16 +179,15 @@ msgstr ""
 #. will be required to enable encryption manually.
 #.
 #: autocrypt/autocrypt.c:223
-#, fuzzy
 msgid "Prefer encryption?"
-msgstr "šifrovaní"
+msgstr "Preferovat šifrovaní?"
 
 #. L10N:
 #. Message displayed after an autocrypt account is successfully created.
 #.
 #: autocrypt/autocrypt.c:236
 msgid "Autocrypt account creation succeeded"
-msgstr ""
+msgstr "Vytvoření autocrypt účtu proběhlo v pořádku"
 
 #. L10N:
 #. Error message displayed if creating an autocrypt account failed
@@ -196,7 +195,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:242
 msgid "Autocrypt account creation aborted"
-msgstr ""
+msgstr "Vytvoření autocrypt účtu přerušeno"
 
 #. L10N:
 #. %s is an email address.  Autocrypt is scanning for the keyids
@@ -204,9 +203,9 @@ msgstr ""
 #. The message is printed and they are returned to the compose menu.
 #.
 #: autocrypt/autocrypt.c:610 autocrypt/autocrypt.c:639
-#, fuzzy, c-format
+#, c-format
 msgid "No (valid) autocrypt key found for %s"
-msgstr "Nebyl nalezen žádný (platný) certifikát pro %s"
+msgstr "Nebyl nalezen žádný (platný) klíč pro %s"
 
 #. L10N:
 #. The first time autocrypt is enabled, NeoMutt will ask to scan
@@ -217,13 +216,12 @@ msgstr "Nebyl nalezen žádný (platný) certifikát pro %s"
 #.
 #: autocrypt/autocrypt.c:903
 msgid "Scan a mailbox for autocrypt headers?"
-msgstr ""
+msgstr "Prohledat schránku na autocrypt hlavičky?"
 
 #. L10N: The prompt for a mailbox to scan for Autocrypt: headers
 #: autocrypt/autocrypt.c:907
-#, fuzzy
 msgid "Scan mailbox"
-msgstr "Žádná schránka.\n"
+msgstr "Prohledat schránku"
 
 #. L10N:
 #. This is the second prompt to see if the user would like
@@ -234,15 +232,14 @@ msgstr "Žádná schránka.\n"
 #.
 #: autocrypt/autocrypt.c:927
 msgid "Scan another mailbox for autocrypt headers?"
-msgstr ""
+msgstr "Prohledat další schránku na autocrypt hlavičky?"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. create new account
 #.
 #: autocrypt/autocrypt_acct_menu.c:63
-#, fuzzy
 msgid "Create"
-msgstr "Vytvořit %s?"
+msgstr "Vytvořit"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. delete account
@@ -259,7 +256,7 @@ msgstr "Smazat"
 #.
 #: autocrypt/autocrypt_acct_menu.c:74
 msgid "Tgl Active"
-msgstr ""
+msgstr "Prep akt"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. toggle "prefer-encrypt" on an account
@@ -269,7 +266,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:81
 msgid "Prf Enc"
-msgstr ""
+msgstr "Pref šif"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -277,7 +274,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:123
 msgid "prefer encrypt"
-msgstr ""
+msgstr "preferovat šifrování"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -286,7 +283,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:130
 msgid "manual encrypt"
-msgstr ""
+msgstr "šifrovat ručně"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -294,7 +291,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:138
 msgid "active"
-msgstr ""
+msgstr "aktivní"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -302,27 +299,26 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:144
 msgid "inactive"
-msgstr ""
+msgstr "neaktivní"
 
 #. L10N: Autocrypt Account Management Menu title
 #: autocrypt/autocrypt_acct_menu.c:183
 msgid "Autocrypt Accounts"
-msgstr ""
+msgstr "Účty autocrypt"
 
 #. L10N:
 #. This error message is displayed if a database update of an
 #. account record fails for some odd reason.
 #.
 #: autocrypt/autocrypt_acct_menu.c:245 autocrypt/autocrypt_acct_menu.c:259
-#, fuzzy
 msgid "Error updating account record"
-msgstr "Chyba při načítání adresáře"
+msgstr "Chyba při změně nastavení účtu"
 
 #. L10N: Confirmation message when deleting an autocrypt account
 #: autocrypt/autocrypt_acct_menu.c:302
-#, fuzzy, c-format
+#, c-format
 msgid "Really delete account \"%s\"?"
-msgstr "Skutečně chcete smazat schránku „%s“?"
+msgstr "Skutečně chcete smazat účet „%s“?"
 
 #. L10N:
 #. %s is the path to the database.
@@ -333,9 +329,9 @@ msgstr "Skutečně chcete smazat schránku „%s“?"
 #. for some reason.  The %s is the full path of the database file.
 #.
 #: autocrypt/autocrypt_db.c:68 autocrypt/autocrypt_db.c:112
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to open autocrypt database %s"
-msgstr "Schránku %s nelze otevřít"
+msgstr "Nelze otevřít databázi autocrypt %s"
 
 #: autocrypt/autocrypt_gpgme.c:54 ncrypt/crypt_gpgme.c:775
 #, c-format
@@ -348,16 +344,16 @@ msgstr "chyba při vytváření kontextu pro gpgme: %s"
 #.
 #: autocrypt/autocrypt_gpgme.c:172
 msgid "Generating autocrypt key..."
-msgstr ""
+msgstr "Vytvářím autocrypt klíč..."
 
 #. L10N:
 #. GPGME was unable to generate a key for some reason.
 #. %s is the error message returned by GPGME.
 #.
 #: autocrypt/autocrypt_gpgme.c:184 autocrypt/autocrypt_gpgme.c:203
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating autocrypt key: %s"
-msgstr "Chyba při exportu klíče: %s"
+msgstr "Chyba při vytváření autocrypt klíče: %s"
 
 #. L10N:
 #. After selecting a key for an autocrypt account,
@@ -368,7 +364,7 @@ msgstr "Chyba při exportu klíče: %s"
 #: autocrypt/autocrypt_gpgme.c:252
 #, c-format
 msgid "The key %s is not usable for autocrypt"
-msgstr ""
+msgstr "Klíč %s není použitelný pro autocrypt"
 
 #. L10N:
 #. During autocrypt account creation, this prompt asks the
@@ -377,7 +373,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_gpgme.c:286
 msgid "(c)reate new, or (s)elect existing GPG key?"
-msgstr ""
+msgstr "vytvořit (n)ový nebo vybrat (e)xistující GPG klíč?"
 
 #. L10N:
 #. The letters corresponding to the
@@ -385,7 +381,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_gpgme.c:291
 msgid "cs"
-msgstr ""
+msgstr "ne"
 
 #. L10N:
 #. During autocrypt account creation, if selecting an existing key fails
@@ -393,7 +389,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_gpgme.c:305
 msgid "Create a new gpg key for this account, instead?"
-msgstr ""
+msgstr "Vytvořt nový GPG klíč pro tento účet?"
 
 #. L10N:
 #. The autocrypt database keeps track of schema version numbers.
@@ -403,7 +399,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_schema.c:125
 msgid "Autocrypt database version is too new"
-msgstr ""
+msgstr "Verze databáze autocrypt je příliš nová"
 
 #: bcache.c:209
 #, c-format
@@ -604,12 +600,12 @@ msgstr "výchozí barvy nejsou podporovány"
 #: color.c:1275
 #, c-format
 msgid "Maximum quoting level is %d"
-msgstr ""
+msgstr "Maximální úroveň citací je %d"
 
 #: color.c:1312
-#, fuzzy, c-format
+#, c-format
 msgid "%s: invalid number: %s"
-msgstr "Chyba: skóre: neplatné číslo"
+msgstr "%s neplatné číslo: %s"
 
 #. L10N: Used for the $crypt_verify_sig prompt
 #: commands.c:225
@@ -810,9 +806,8 @@ msgstr "Kopíruji do %s…"
 
 #. L10N: e.g. "text/plain; charset=UTF-8; ..."
 #: commands.c:1245
-#, fuzzy
 msgid "Content type is too long"
-msgstr "Položka „Content-Type“ změněna na %s"
+msgstr "Položka „Content-Type“ je příliš dlouhá"
 
 #: commands.c:1269
 #, c-format
@@ -898,7 +893,7 @@ msgstr "Podepsat jako: "
 #. L10N: The compose menu autocrypt line
 #: compose.c:195
 msgid "Autocrypt: "
-msgstr ""
+msgstr "Autocrypt: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:199
@@ -954,13 +949,12 @@ msgstr "Skupiny"
 #. * This is displayed when Autocrypt is turned off.
 #: compose.c:239 compose.c:471
 msgid "Off"
-msgstr ""
+msgstr "Vypnuto"
 
 # Security: None - Zabezpečení: Žádné
 #. L10N: Autocrypt recommendation flag: no.
 #. * This is displayed when Autocrypt cannot encrypt to the recipients.
 #: compose.c:242
-#, fuzzy
 msgid "No"
 msgstr "Žádné"
 
@@ -970,7 +964,7 @@ msgstr "Žádné"
 #. * used recently, or if the only key available is a Gossip Header key.
 #: compose.c:247
 msgid "Discouraged"
-msgstr ""
+msgstr "Nedoporučeno"
 
 #. L10N: Autocrypt recommendation flag: available.
 #. * This is displayed when Autocrypt believes encryption is possible, but
@@ -978,15 +972,14 @@ msgstr ""
 #. * is not set in both the sender and recipient keys.
 #: compose.c:252
 msgid "Available"
-msgstr ""
+msgstr "K dispozici"
 
 #. L10N: Autocrypt recommendation flag: yes.
 #. * This is displayed when Autocrypt would normally enable encryption
 #. * automatically.
 #: compose.c:256
-#, fuzzy
 msgid "Yes"
-msgstr "ano"
+msgstr "Ano"
 
 #. L10N:
 #. The compose menu autocrypt prompt.
@@ -996,7 +989,7 @@ msgstr "ano"
 #.
 #: compose.c:338
 msgid "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic?"
-msgstr ""
+msgstr "Autocrypt: š(i)frovat, vy(m)azat, (a)utomaticky?"
 
 #. L10N:
 #. The letter corresponding to the compose menu autocrypt prompt
@@ -1004,7 +997,7 @@ msgstr ""
 #.
 #: compose.c:344
 msgid "eca"
-msgstr ""
+msgstr "ima"
 
 #: compose.c:381
 msgid "Not supported"
@@ -1057,9 +1050,8 @@ msgstr "Zašifrovat pomocí: "
 #. (Off, No, Discouraged, Available, Yes)
 #.
 #: compose.c:481
-#, fuzzy
 msgid "Recommendation: "
-msgstr "X-Comment-To: "
+msgstr "Doporučení: "
 
 #: compose.c:545
 msgid "<no chain defined>"
@@ -1073,9 +1065,9 @@ msgstr "<řetěz nedefinován>"
 #. error message.
 #.
 #: compose.c:599
-#, fuzzy, c-format
+#, c-format
 msgid "Attachment #%d no longer exists: %s"
-msgstr "%s [#%d] již neexistuje"
+msgstr "Příloha [#%d] %s již neexistuje"
 
 #. L10N:
 #. This message is displayed in the compose menu when an attachment
@@ -1085,9 +1077,9 @@ msgstr "%s [#%d] již neexistuje"
 #. prompt question.
 #.
 #: compose.c:619
-#, fuzzy, c-format
+#, c-format
 msgid "Attachment #%d modified. Update encoding for %s?"
-msgstr "Změna v %s [#%d]. Změnit kódování?"
+msgstr "Změna v příloze [#%d]. Změnit kódování pro %s?"
 
 #: compose.c:714
 msgid "-- Attachments"
@@ -1228,9 +1220,8 @@ msgid "What we have here is a failure to make an attachment"
 msgstr "Vytvoření přílohy se nezdařilo."
 
 #: compose.c:2073
-#, fuzzy
 msgid "Save (postpone) draft message?"
-msgstr "Vrátit se k odloženým zprávám?"
+msgstr "Uložit zprávu do odložených?"
 
 #: compose.c:2133
 msgid "Write message to mailbox"
@@ -2065,14 +2056,14 @@ msgstr "menu %s neexistuje"
 #. L10N: '%s' is the name of the menu, e.g. 'index' or 'pager', it might
 #. L10N: also be 'all' when all menus are affected.
 #: icommands.c:275
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no binds for this menu"
-msgstr "menu %s neexistuje"
+msgstr "%s: žádné zkratky pro toto menu"
 
 #: icommands.c:275
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no macros for this menu"
-msgstr "menu %s neexistuje"
+msgstr "%s: žádné makro pro toto menu"
 
 #. L10N: '%s' is the file name of the temporary file
 #: icommands.c:286 icommands.c:299 icommands.c:319 icommands.c:343
@@ -2802,9 +2793,9 @@ msgid "Error in command line: %s"
 msgstr "Chyba %s na příkazovém řádku"
 
 #: init.c:296
-#, fuzzy, c-format
+#, c-format
 msgid "Warning in command line: %s"
-msgstr "Chyba %s na příkazovém řádku"
+msgstr "Varování %s na příkazovém řádku"
 
 #: init.c:407
 msgid "unable to determine nodename via uname()"
@@ -2955,7 +2946,7 @@ msgstr "Příkaz %s není znám."
 
 #: init.c:3812
 msgid "'charset' must contain exactly one character set name"
-msgstr ""
+msgstr "„charset“ musí obsahovat právě jedno jméno znakové sady"
 
 #: init.c:3828 init.c:3852 init.c:3887
 #, c-format
@@ -3890,7 +3881,7 @@ msgid "error reading data object: %s"
 msgstr "chyba při čtení datového objektu: %s"
 
 #: ncrypt/crypt_gpgme.c:1148
-#, fuzzy, c-format
+#, c-format
 msgid "error adding recipient '%s': %s"
 msgstr "chyba při přidávání příjemce „%s“: %s"
 
@@ -3900,9 +3891,9 @@ msgid "secret key '%s' not found: %s"
 msgstr "tajný klíč „%s“ nenalezen: %s"
 
 #: ncrypt/crypt_gpgme.c:1217
-#, fuzzy, c-format
+#, c-format
 msgid "ambiguous specification of secret key '%s'\n"
-msgstr "tajný klíč „%s“ neurčen jednoznačně"
+msgstr "tajný klíč „%s“ není určen jednoznačně"
 
 #: ncrypt/crypt_gpgme.c:1233
 #, c-format
@@ -4059,9 +4050,9 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2832
-#, fuzzy, c-format
+#, c-format
 msgid "Error importing key: %s"
-msgstr "Chyba při exportu klíče: %s"
+msgstr "Chyba při importu klíče: %s"
 
 #: ncrypt/crypt_gpgme.c:3070
 #, c-format
@@ -4154,7 +4145,7 @@ msgid ""
 "[-- The following data is S/MIME signed --]\n"
 "\n"
 msgstr ""
-"[-- Následují data podepsaná pomocí S/MIME --]\n"
+"[-- Následující data jsou podepsaná pomocí S/MIME --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:3328
@@ -4354,9 +4345,8 @@ msgstr "Zadejte ID klíče pro %s: "
 #. from.  This error is displayed if no results were found.
 #.
 #: ncrypt/crypt_gpgme.c:5384
-#, fuzzy
 msgid "No secret keys found"
-msgstr "tajný klíč „%s“ nenalezen: %s"
+msgstr "Nenalezeny žádné tajné klíče"
 
 #: ncrypt/crypt_gpgme.c:5417 ncrypt/pgpkey.c:882
 msgid "Please enter the key ID: "
@@ -4467,7 +4457,6 @@ msgstr ""
 #. (not encrypting) something and (2) it is a plaintext. So the
 #. message does not mean "You failed to encrypt the message."
 #: ncrypt/pgp.c:729
-#, fuzzy
 msgid "PGP message is not encrypted"
 msgstr "PGP zpráva nebyla zašifrována"
 
@@ -4941,7 +4930,7 @@ msgid "No more messages in the thread"
 msgstr "Žádné nové zprávy v tomto vlákně"
 
 #: notmuch/mutt_notmuch.c:1954
-#, fuzzy, c-format
+#, c-format
 msgid "failed to parse limit: %s"
 msgstr "rozebrání limitu pro notmuch se nezdařilo: %s"
 
@@ -4981,24 +4970,23 @@ msgstr "zobrazit přílohu jako text"
 
 #: opcodes.h:32
 msgid "manage autocrypt accounts"
-msgstr ""
+msgstr "spravovat autocrypt účty"
 
 #: opcodes.h:33
 msgid "create a new autocrypt account"
-msgstr ""
+msgstr "vytvořit nový autocrypt účet"
 
 #: opcodes.h:34
-#, fuzzy
 msgid "delete the current account"
-msgstr "smazat aktuální položku"
+msgstr "smazat aktuální účet"
 
 #: opcodes.h:35
 msgid "toggle the current account active/inactive"
-msgstr ""
+msgstr "přepnout stávající účet mezi aktivni/neaktivní"
 
 #: opcodes.h:36
 msgid "toggle the current account prefer-encrypt flag"
-msgstr ""
+msgstr "přepnout příznak „preferovat šifrovaní“ (prefer-encrypt)"
 
 #: opcodes.h:37
 msgid "move to the bottom of the page"
@@ -5062,7 +5050,7 @@ msgstr "připojit zprávy k této zprávě"
 
 #: opcodes.h:52
 msgid "show autocrypt compose menu options"
-msgstr ""
+msgstr "zobrazit možnosti autocrypt při psaní zprávy"
 
 #: opcodes.h:53
 msgid "attach news articles to this message"
@@ -5253,9 +5241,8 @@ msgid "delete all messages in thread"
 msgstr "smazat všechny zprávy ve vláknu"
 
 #: opcodes.h:100
-#, fuzzy
 msgid "descend into a directory"
-msgstr "%s není adresářem"
+msgstr "vstoupit do adresáře"
 
 #: opcodes.h:101
 msgid "display full address of sender"
@@ -5438,9 +5425,8 @@ msgid "go to parent directory"
 msgstr "jít do nadřazeného adresáře"
 
 #: opcodes.h:146
-#, fuzzy
 msgid "reply to all recipients preserving To/Cc"
-msgstr "odepsat všem příjemcům"
+msgstr "odepsat všem příjemcům se zachováním Komu/Kopie"
 
 #: opcodes.h:147
 msgid "reply to all recipients"
@@ -5939,9 +5925,8 @@ msgid "generate virtual folder from query"
 msgstr "vytvoř virtuální složku z dotazu"
 
 #: opcodes.h:282
-#, fuzzy
 msgid "generate a read-only virtual folder from query"
-msgstr "vytvoř virtuální složku z dotazu"
+msgstr "vytvoř virtuální složku (pro čtení) z dotazu"
 
 #: opcodes.h:283
 msgid "shifts virtual folder time window backwards"
@@ -6077,14 +6062,13 @@ msgid "Empty expression"
 msgstr "Prázdný výraz"
 
 #: pattern.c:281
-#, fuzzy
 msgid "No search command defined"
-msgstr "Není definován příkaz pro obnovení OAUTH"
+msgstr "Není definován příkaz pro hledání"
 
 #: pattern.c:319
-#, fuzzy, c-format
+#, c-format
 msgid "Running search command: %s ..."
-msgstr "Vyvolávám příkaz %s pro automatické zobrazování"
+msgstr "Provádím příkaz pro hledání: %s ..."
 
 #: pattern.c:410
 #, c-format
@@ -6371,12 +6355,12 @@ msgid "Saving..."
 msgstr "Ukládám…"
 
 #: recvattach.c:572 recvattach.c:743 recvattach.c:747
-#, fuzzy, c-format
+#, c-format
 msgid "Attachment saved"
 msgid_plural "%d attachments saved"
 msgstr[0] "Příloha uložena"
-msgstr[1] "Příloha uložena"
-msgstr[2] "Příloha uložena"
+msgstr[1] "Přílohy uloženy"
+msgstr[2] "Příloh uloženo"
 
 #: recvattach.c:771
 #, c-format
@@ -6590,7 +6574,6 @@ msgstr "Věc není specifikována, zrušeno"
 #. be added as attachments to the new mail, if this is answered yes.
 #.
 #: send.c:559
-#, fuzzy
 msgid "Forward attachments?"
 msgstr "Přeposlat jako přílohy?"
 
@@ -6627,13 +6610,12 @@ msgid "Preparing forwarded message..."
 msgstr "Připravuji přeposílanou zprávu…"
 
 #: send.c:1603
-#, fuzzy
 msgid "Fcc to an IMAP mailbox is not supported in batch mode"
-msgstr "V tomto režimu není %c podporováno"
+msgstr "Kopie do souboru v IMAP složce nelze provést v dávkovém režimu"
 
 #: send.c:1635 send.c:1661
 msgid "Save attachments in Fcc?"
-msgstr "Uložit do Fcc přílohy?"
+msgstr "Uložit do přílohy jako soubory?"
 
 #. L10N: Called when saving to $record or Fcc failed after sending.
 #. (r)etry tries the same mailbox again.
@@ -6641,25 +6623,24 @@ msgstr "Uložit do Fcc přílohy?"
 #. (s)kip aborts saving.
 #: send.c:1683
 msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
-msgstr ""
+msgstr "Kopie do souboru selhala. Zkusit (z)novu, (d)alší schránka nebo pře(s)kočit?"
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt
 #. (r)etry, alternate (m)ailbox, or (s)kip.
 #. Any similarity to famous leaders of the FSF is coincidental.
 #: send.c:1687
 msgid "rms"
-msgstr ""
+msgstr "zds"
 
 #. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
 #. initial Fcc fails.
 #: send.c:1693
-#, fuzzy
 msgid "Fcc mailbox"
-msgstr "Žádná schránka.\n"
+msgstr "Soubor pro uložení schránky"
 
 #: send.c:1758
 msgid "Can't postpone.  $postponed is unset"
-msgstr ""
+msgstr "Nelze odložit.  $postponed není nastaveno"
 
 #: send.c:1893
 msgid "Recall postponed message?"
@@ -6902,11 +6883,11 @@ msgstr "Přeloženo s volbami:"
 
 #: index.c:2046
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
-msgstr ""
+msgstr "nelze nalézt zpravá v databází notmuch. Zkuste spustit „notmuch new“."
 
 #. L10N: This applies to the "$wrap_headers" config variable
 #: init.c:3912
 #, c-format
 msgid "Option %s must between 78 and 998 inclusive"
-msgstr ""
+msgstr "Hodnota %s musí být v rozmezí 78 a 998"
 
