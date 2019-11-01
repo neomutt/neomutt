@@ -1,6 +1,7 @@
 # Header Cache
 
 These files make up NeoMutt's header cache.
+
 There are six different databases to choose from:
 - BerkeleyDB
 - GDBM
@@ -8,6 +9,11 @@ There are six different databases to choose from:
 - LMDB
 - QDBM
 - TokyoCabinet
+
+And three different compression methods:
+- LZ4
+- ZLIB
+- ZSTD
 
 Each backend implements the interface which is defined in `hcache.h`
 

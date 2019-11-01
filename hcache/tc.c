@@ -60,14 +60,16 @@ static void *hcache_tokyocabinet_open(const char *path)
 /**
  * hcache_tokyocabinet_fetch - Implements HcacheOps::fetch()
  */
-static void *hcache_tokyocabinet_fetch(void *ctx, const char *key, size_t keylen)
+static void *hcache_tokyocabinet_fetch(void *ctx, const char *key, size_t keylen, size_t *dlen)
 {
   if (!ctx)
     return NULL;
 
   int sp = 0;
   TCBDB *db = ctx;
-  return tcbdbget(db, key, keylen, &sp);
+  void *rv = tcbdbget(db, key, keylen, &sp);
+  *dlen = sp;
+  return rv;
 }
 
 /**

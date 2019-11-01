@@ -7,6 +7,7 @@
  * Copyright (C) 2004 Tobias Werth <sitowert@stud.uni-erlangen.de>
  * Copyright (C) 2004 Brian Fundakowski Feldman <green@FreeBSD.org>
  * Copyright (C) 2016 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2019 Tino Reichardt <milky-neomutt@mcmilk.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -52,6 +53,7 @@
 #include "email/lib.h"
 #include "lib.h"
 #include "backend.h"
+#include "compr.h"
 #include "hcache/hcversion.h"
 
 /* These Config Variables are only used in hcache/hcache.c */
@@ -72,9 +74,6 @@ HCACHE_BACKEND(tokyocabinet)
 
 /**
  * hcache_ops - Backend implementations
- *
- * Keep this list sorted as it is in configure.ac to avoid user surprise if no
- * header_cache_backend is specified.
  */
 const struct HcacheOps *hcache_ops[] = {
 #ifdef HAVE_TC
@@ -118,6 +117,72 @@ static const struct HcacheOps *hcache_get_backend_ops(const char *backend)
 
   return *ops;
 }
+
+#ifdef USE_HCACHE_COMPRESSION
+char *C_HeaderCacheCompressDictionary; ///< Config: (hcache) Filepath to dictionary for zstd compression
+short C_HeaderCacheCompressLevel; ///< Config: (hcache) Level of compression for method
+char *C_HeaderCacheCompressMethod; ///< Config: (hcache) Enable generic hcache database compression
+
+#define HCACHE_COMPR(name) extern const struct ComprOps compr_##name##_ops;
+HCACHE_COMPR(lz4)
+HCACHE_COMPR(zlib)
+HCACHE_COMPR(zstd)
+#undef HCACHE_COMPR
+
+#define compr_get_ops()                                                        \
+  hcache_get_backend_compr_ops(C_HeaderCacheCompressMethod)
+
+/**
+ * compr_ops - Backend implementations
+ */
+const struct ComprOps *compr_ops[] = {
+#ifdef HAVE_LZ4
+  &compr_lz4_ops,
+#endif
+#ifdef HAVE_ZLIB
+  &compr_zlib_ops,
+#endif
+#ifdef HAVE_ZSTD
+  &compr_zstd_ops,
+#endif
+  NULL
+};
+
+/**
+ * hcache_get_backend_compr_ops - Get the API functions for an hcache compress backend
+ * @param compr Name of the backend
+ * @retval ptr Set of function pointers
+ */
+static const struct ComprOps *hcache_get_backend_compr_ops(const char *compr)
+{
+  const struct ComprOps **ops = compr_ops;
+
+  if (!compr || !*compr)
+  {
+    return *ops;
+  }
+
+  for (; *ops; ops++)
+  {
+    if (strcmp(compr, (*ops)->name) == 0)
+      break;
+  }
+
+  return *ops;
+}
+
+/**
+ * mutt_hcache_is_valid_compression - Is the string a valid hcache compression backend
+ * @param s String identifying a compression method
+ * @retval true  s is recognized as a valid backend
+ * @retval false otherwise
+ */
+bool mutt_hcache_is_valid_compression(const char *s)
+{
+  return hcache_get_backend_compr_ops(s);
+}
+
+#endif /* USE_HCACHE_COMPRESSION */
 
 /**
  * crc_matches - Is the CRC number correct?
@@ -204,7 +269,6 @@ static void hcache_per_folder(struct Buffer *hcpath, const char *path,
   }
 
   /* We have a directory - no matter whether it exists, or not */
-
   struct Buffer *hcfile = mutt_buffer_pool_get();
   if (namer)
   {
@@ -215,7 +279,12 @@ static void hcache_per_folder(struct Buffer *hcpath, const char *path,
   {
     unsigned char m[16]; /* binary md5sum */
     struct Buffer *name = mutt_buffer_pool_get();
+#ifdef USE_HCACHE_COMPRESSION
+    const char *cm = C_HeaderCacheCompressMethod;
+    mutt_buffer_printf(name, "%s|%s%s", hcache_get_ops()->name, folder, cm ? cm : "");
+#else
     mutt_buffer_printf(name, "%s|%s", hcache_get_ops()->name, folder);
+#endif
     mutt_md5(mutt_b2s(name), m);
     mutt_buffer_reset(name);
     mutt_md5_toascii(m, name->data);
@@ -291,6 +360,23 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
     hcachever = digest.intval;
   }
 
+#ifdef USE_HCACHE_COMPRESSION
+  if (C_HeaderCacheCompressMethod)
+  {
+    const struct ComprOps *cops = compr_get_ops();
+
+    hc->cctx = cops->open();
+    if (!hc->cctx)
+    {
+      FREE(&hc);
+      return NULL;
+    }
+
+    /* remember the buffer of database backend */
+    hc->ondisk = NULL;
+  }
+#endif
+
   hc->folder = get_foldername(folder);
   hc->crc = hcachever;
 
@@ -331,6 +417,11 @@ void mutt_hcache_close(header_cache_t *hc)
   const struct HcacheOps *ops = hcache_get_ops();
   if (!hc || !ops)
     return;
+
+#ifdef USE_HCACHE_COMPRESSION
+  if (C_HeaderCacheCompressMethod)
+    compr_get_ops()->close(&hc->cctx);
+#endif
 
   ops->close(&hc->ctx);
   FREE(&hc->folder);
@@ -378,11 +469,20 @@ void *mutt_hcache_fetch_raw(header_cache_t *hc, const char *key, size_t keylen)
     return NULL;
 
   struct Buffer path = mutt_buffer_make(1024);
-
+  size_t dlen;
   keylen = mutt_buffer_printf(&path, "%s%s", hc->folder, key);
-
-  void *blob = ops->fetch(hc->ctx, mutt_b2s(&path), keylen);
+  void *blob = ops->fetch(hc->ctx, mutt_b2s(&path), keylen, &dlen);
   mutt_buffer_dealloc(&path);
+
+#ifdef USE_HCACHE_COMPRESSION
+  if (C_HeaderCacheCompressMethod && blob != NULL)
+  {
+    const struct ComprOps *cops = compr_get_ops();
+    hc->ondisk = blob;
+    blob = cops->decompress(hc->cctx, blob, dlen);
+  }
+#endif
+
   return blob;
 }
 
@@ -395,6 +495,15 @@ void mutt_hcache_free(header_cache_t *hc, void **data)
 
   if (!hc || !ops)
     return;
+
+#ifdef USE_HCACHE_COMPRESSION
+  /* give back the buffer returned by backend */
+  if (C_HeaderCacheCompressMethod && hc->ondisk)
+  {
+    *data = hc->ondisk;
+    hc->ondisk = NULL;
+  }
+#endif
 
   ops->free(hc->ctx, data);
 }
@@ -440,8 +549,19 @@ int mutt_hcache_store_raw(header_cache_t *hc, const char *key, size_t keylen,
 
   keylen = mutt_buffer_printf(&path, "%s%s", hc->folder, key);
 
+#ifdef USE_HCACHE_COMPRESSION
+  if (C_HeaderCacheCompressMethod)
+  {
+    /* data/dlen gets ptr to compressed data here */
+    const struct ComprOps *cops = compr_get_ops();
+    data = cops->compress(hc->cctx, data, dlen, &dlen);
+  }
+#endif
+
+  /* store uncompressed data */
   int rc = ops->store(hc->ctx, mutt_b2s(&path), keylen, data, dlen);
   mutt_buffer_dealloc(&path);
+
   return rc;
 }
 

@@ -54,13 +54,16 @@ static void *hcache_qdbm_open(const char *path)
 /**
  * hcache_qdbm_fetch - Implements HcacheOps::fetch()
  */
-static void *hcache_qdbm_fetch(void *ctx, const char *key, size_t keylen)
+static void *hcache_qdbm_fetch(void *ctx, const char *key, size_t keylen, size_t *dlen)
 {
   if (!ctx)
     return NULL;
 
   VILLA *db = ctx;
-  return vlget(db, key, keylen, NULL);
+  int sp = 0;
+  void *rv = vlget(db, key, keylen, &sp);
+  *dlen = sp;
+  return rv;
 }
 
 /**

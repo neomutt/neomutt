@@ -1629,7 +1629,27 @@ int hcache_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
   mutt_buffer_printf(err, _("Invalid value for option %s: %s"), cdef->name, str);
   return CSR_ERR_INVALID;
 }
-#endif
+
+#ifdef USE_HCACHE_COMPRESSION
+/**
+ * compress_validator - Validate the "header_cache_compress_method" config variable - Implements ::cs_validator()
+ */
+int compress_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                       intptr_t value, struct Buffer *err)
+{
+  if (value == 0)
+    return CSR_SUCCESS;
+
+  const char *str = (const char *) value;
+
+  if (mutt_hcache_is_valid_compression(str))
+    return CSR_SUCCESS;
+
+  mutt_buffer_printf(err, _("Invalid value for option %s: %s"), cdef->name, str);
+  return CSR_ERR_INVALID;
+}
+#endif /* USE_HCACHE_COMPRESSION */
+#endif /* USE_HCACHE */
 
 /**
  * pager_validator - Check for config variables that can't be set from the pager - Implements ::cs_validator()

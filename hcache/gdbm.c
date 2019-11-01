@@ -56,7 +56,7 @@ static void *hcache_gdbm_open(const char *path)
 /**
  * hcache_gdbm_fetch - Implements HcacheOps::fetch()
  */
-static void *hcache_gdbm_fetch(void *ctx, const char *key, size_t keylen)
+static void *hcache_gdbm_fetch(void *ctx, const char *key, size_t keylen, size_t *dlen)
 {
   if (!ctx)
     return NULL;
@@ -69,6 +69,8 @@ static void *hcache_gdbm_fetch(void *ctx, const char *key, size_t keylen)
   dkey.dptr = (char *) key;
   dkey.dsize = keylen;
   data = gdbm_fetch(db, dkey);
+
+  *dlen = data.dsize;
   return data.dptr;
 }
 

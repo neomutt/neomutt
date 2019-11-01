@@ -94,9 +94,13 @@ options {
 # sqlite
   sqlite=0                  => "Enable SQLite support"
   with-sqlite:path          => "Location of sqlite"
-# zlib
+# compression
+  lz4=0                     => "Enable LZ4 header cache compression support"
+  with-lz4:path             => "Location of LZ4"
   zlib=0                    => "Enable zlib support"
   with-zlib:path            => "Location of zlib"
+  zstd=0                    => "Enable Zstandard header cache compression support"
+  with-zstd:path            => "Location of Zstandard"
 # Debug options
   backtrace=0               => "DEBUG: Enable backtrace support with libunwind"
   with-backtrace:path       => "Location of libunwind"
@@ -121,8 +125,8 @@ if {1} {
   foreach opt {
     autocrypt backtrace bdb coverage doc everything fmemopen full-doc gdbm
     gnutls gpgme gss homespool idn idn2 inotify kyotocabinet lmdb locales-fix
-    lua mixmaster nls notmuch pgp pkgconf qdbm sasl smime sqlite ssl testing
-    tokyocabinet zlib
+    lua lz4 mixmaster nls notmuch pgp pkgconf qdbm sasl smime sqlite ssl testing
+    tokyocabinet zlib zstd
   } {
     define want-$opt [opt-bool $opt]
   }
@@ -131,8 +135,8 @@ if {1} {
   # relative --enable-opt to true. This allows "--with-opt=/usr" to be used as
   # a shortcut for "--opt --with-opt=/usr".
   foreach opt {
-    bdb gdbm gnutls gpgme gss homespool idn idn2 kyotocabinet lmdb lua mixmaster
-    ncurses nls notmuch qdbm sasl slang sqlite ssl tokyocabinet zlib
+    bdb gdbm gnutls gpgme gss homespool idn idn2 kyotocabinet lmdb lua lz4 mixmaster
+    ncurses nls notmuch qdbm sasl slang sqlite ssl tokyocabinet zlib zstd
   } {
     if {[opt-val with-$opt] ne {}} {
       define want-$opt 1
@@ -347,8 +351,8 @@ set prefix [opt-val with-sysroot][get-define prefix]
 ###############################################################################
 # Everything
 if {[get-define want-everything]} {
-  foreach opt {bdb gdbm gpgme kyotocabinet lmdb lua notmuch pgp qdbm smime
-               tokyocabinet} {
+  foreach opt {bdb gdbm gpgme kyotocabinet lmdb lua lz4 notmuch pgp qdbm smime
+               tokyocabinet zlib zstd} {
     define want-$opt
     append conf_options "--$opt "
   }
@@ -1035,6 +1039,45 @@ if {[get-define want-tokyocabinet]} {
 }
 
 ###############################################################################
+# Header Cache Compression with LZ4
+if {[get-define want-lz4]} {
+  if {![check-inc-and-lib lz4 [opt-val with-lz4 $prefix] \
+                          lz4.h LZ4_compress_default lz4]} {
+    user-error "Unable to find LZ4"
+  }
+  define-append LIBS -llz4
+  define USE_LZ4
+  define USE_HCACHE_COMPRESSION
+  define-append COMPRESS_BACKENDS "lz4"
+}
+
+###############################################################################
+# Header Cache Compression with zlib
+if {[get-define want-zlib]} {
+  if {![check-inc-and-lib zlib [opt-val with-zlib $prefix] \
+                          zlib.h deflate z]} {
+    user-error "Unable to find zlib"
+  }
+  define-append LIBS -lz
+  define USE_ZLIB
+  define USE_HCACHE_COMPRESSION
+  define-append COMPRESS_BACKENDS "zlib"
+}
+
+###############################################################################
+# Header Cache Compression with Zstandard
+if {[get-define want-zstd]} {
+  if {![check-inc-and-lib zstd [opt-val with-zstd $prefix] \
+                          zstd.h ZSTD_compress zstd]} {
+    user-error "Unable to find Zstandard"
+  }
+  define-append LIBS -lzstd
+  define USE_ZSTD
+  define USE_HCACHE_COMPRESSION
+  define-append COMPRESS_BACKENDS "zstd"
+}
+
+###############################################################################
 # GSS
 if {[get-define want-gss]} {
 
@@ -1174,18 +1217,19 @@ make-template .clang_complete.in
 # Print a summary
 user-notice "Summary of build options:
 
-  Version:           [get-define PACKAGE_VERSION]
-  Host OS:           [get-define host_os]
-  Install prefix:    [get-define prefix]
-  Compiler:          [get-define CC]
-  CFlags:            [get-define CFLAGS]
-  LDFlags:           [get-define LDFLAGS]
-  Libs:              [get-define LIBS]
+  Version:               [get-define PACKAGE_VERSION]
+  Host OS:               [get-define host_os]
+  Install prefix:        [get-define prefix]
+  Compiler:              [get-define CC]
+  CFlags:                [get-define CFLAGS]
+  LDFlags:               [get-define LDFLAGS]
+  Libs:                  [get-define LIBS]
 
-  GPGME:             [yesno [get-define CRYPT_BACKEND_GPGME]]
-  PGP:               [yesno [get-define CRYPT_BACKEND_CLASSIC_PGP]]
-  SMIME:             [yesno [get-define CRYPT_BACKEND_CLASSIC_SMIME]]
-  Notmuch:           [yesno [get-define USE_NOTMUCH]]
-  Header Cache(s):   [get-define HCACHE_BACKENDS {}]
-  Lua:               [yesno [get-define USE_LUA]]
+  GPGME:                 [yesno [get-define CRYPT_BACKEND_GPGME]]
+  PGP:                   [yesno [get-define CRYPT_BACKEND_CLASSIC_PGP]]
+  SMIME:                 [yesno [get-define CRYPT_BACKEND_CLASSIC_SMIME]]
+  Notmuch:               [yesno [get-define USE_NOTMUCH]]
+  Header Cache(s):       [get-define HCACHE_BACKENDS {}]
+  Header Compression(s): [get-define COMPRESS_BACKENDS {}]
+  Lua:                   [yesno [get-define USE_LUA]]
 "

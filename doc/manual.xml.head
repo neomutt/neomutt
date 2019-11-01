@@ -13429,6 +13429,159 @@ shutdown-hook 'exec sync-mailbox'
       </sect2>
     </sect1>
 
+    <sect1 id="hccompress">
+      <title>Header Cache Compression Feature</title>
+      <subtitle>Options for compressing the header cache files</subtitle>
+
+      <sect2 id="hccompress-support">
+        <title>Support</title>
+        <para>
+          <emphasis role="bold">Since:</emphasis> NeoMutt 2020-02-22
+        </para>
+        <para>
+          <emphasis role="bold">Dependencies:</emphasis>
+          <link linkend="caching">header cache</link>
+        </para>
+      </sect2>
+
+      <sect2 id="hccompress-intro">
+        <title>Introduction</title>
+        <para>
+          The Header Cache Compression Feature can be used for speeding up the
+          loading of large mailboxes.  Also the space used on disk can be shrunk
+          by about 50% - depending on the compression method being used.
+        </para>
+        <para>
+          The implementation sits on top of the header caching functions. So the
+          header cache compression can be used together with all available
+          database backends.
+        </para>
+      </sect2>
+
+      <sect2 id="hccompress-variables">
+        <title>Variables</title>
+        <table id="table-hccompress-variables">
+          <title>Header Cache Compression Variables</title>
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry>Name</entry>
+                <entry>Type</entry>
+                <entry>Default</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry><literal>header_cache_compress_method</literal></entry>
+                <entry>string</entry>
+                <entry>(empty)</entry>
+              </row>
+              <row>
+                <entry><literal>header_cache_compress_level</literal></entry>
+                <entry>number</entry>
+                <entry><literal>1</literal></entry>
+              </row>
+              <row>
+                <entry><literal>header_cache_compress_dictionary</literal></entry>
+                <entry>string</entry>
+                <entry><literal>~/.dictionary</literal></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <para>
+          The <literal>header_cache_compress_method</literal> can be
+          <emphasis>(empty)</emphasis> - which means, that no header cache
+          compression should be used. But when set to <emphasis>lz4</emphasis>,
+          <emphasis>zlib</emphasis> or <emphasis>zstd</emphasis> - then the
+          compression is turned on.
+        </para>
+        <para>
+          The <literal>header_cache_compress_level</literal> defines the
+          compression level, which should be used together with the selected
+          <literal>header_cache_compress_method</literal>. Here is an overview
+          of the possible settings:
+          <table id="table-hccompress-variables-leveldefines">
+            <title>Header Cache Compression Methods and it's Levels</title>
+            <tgroup cols="3">
+              <thead>
+                <row>
+                  <entry>Method Name</entry>
+                  <entry>Min</entry>
+                  <entry>Max</entry>
+                </row>
+              </thead>
+              <tbody>
+                <row>
+                  <entry><literal>lz4</literal></entry>
+                  <entry>1</entry>
+                  <entry>12</entry>
+                </row>
+                <row>
+                  <entry><literal>zlib</literal></entry>
+                  <entry>1</entry>
+                  <entry>9</entry>
+                </row>
+                <row>
+                  <entry><literal>zstd</literal></entry>
+                  <entry>1</entry>
+                  <entry>22</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+        </para>
+        <para>
+          The <literal>header_cache_compress_dictionary</literal> is a special
+          option for the <literal>zstd</literal> compression method. On a lot
+          small files, this compression method can be trained for some level by
+          using a command like this for e.g. level 3:
+        </para>
+<screen>
+zstd --train -3 -r cur new tmp -o dict-level-3
+</screen>
+        <para>
+          This command will create an file called <literal>dict-level-3</literal>,
+          which should be put to the path given in the
+          <literal>header_cache_compress_dictionary</literal> variable. The
+          speed and space gain can be huge, when using zstd dictionaries.  See
+          <ulink url="https://github.com/facebook/zstd">https://github.com/facebook/zstd</ulink>
+          for more information about this.
+        </para>
+      </sect2>
+      <sect2 id="hccompress-neomuttrc">
+        <title>neomuttrc</title>
+
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the header cache compression feature.</emphasis>
+
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># VARIABLES – shown with their default values</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+set header_cache_compress_dictionary = "~/.dictionary"
+set header_cache_compress_level = 1
+set header_cache_compress_method = ""
+
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+</screen>
+
+      </sect2>
+
+      <sect2 id="hccompress-known-bugs">
+        <title>Known Bugs</title>
+        <para>
+          None
+        </para>
+      </sect2>
+
+      <sect2 id="hccompress-credits">
+        <title>Credits</title>
+        <para>
+          Tino Reichardt
+        </para>
+      </sect2>
+  </sect1>
+
     <sect1 id="ifdef">
       <title>Ifdef Feature</title>
       <subtitle>Conditional config options</subtitle>

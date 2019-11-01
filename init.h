@@ -35,6 +35,9 @@ struct Buffer;
 struct ListHead;
 
 int charset_validator    (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
+#ifdef USE_HCACHE_COMPRESSION
+int compress_validator   (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
+#endif
 #ifdef USE_HCACHE
 int hcache_validator     (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
 #endif
