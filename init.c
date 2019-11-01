@@ -2804,9 +2804,9 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
         ptr = mutt_mem_malloc(tok->dsize);
         memcpy(ptr, expn.data, expnlen);
         strcpy(ptr + expnlen, tok->dptr);
-        tok->data = mutt_str_strdup(ptr);
+        mutt_buffer_strcpy(tok, ptr);
         tok->dptr = tok->data;
-        ptr = NULL;
+        FREE(&ptr);
         FREE(&expn.data);
       }
     }
@@ -3227,7 +3227,7 @@ enum CommandResult mutt_parse_rc_line(/* const */ char *line,
   int i;
   enum CommandResult rc = MUTT_CMD_SUCCESS;
 
-  struct Buffer expn = mutt_buffer_make(0);
+  struct Buffer expn = mutt_buffer_make(128);
   mutt_buffer_addstr(&expn, line);
   expn.dptr = expn.data;
 
