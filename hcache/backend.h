@@ -58,7 +58,7 @@ struct HcacheOps
    * @retval ptr  Success, message's headers
    * @retval NULL Otherwise
    */
-  void *(*fetch)(void *ctx, const char *key, size_t keylen);
+  void *(*fetch)(void *ctx, const char *key, size_t keylen, size_t *dlen);
   /**
    * free - backend-specific routine to free fetched data
    * @param[in]  ctx The backend-specific context retrieved via open()

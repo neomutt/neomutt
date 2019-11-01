@@ -66,15 +66,13 @@ static void *hcache_kyotocabinet_open(const char *path)
 /**
  * hcache_kyotocabinet_fetch - Implements HcacheOps::fetch()
  */
-static void *hcache_kyotocabinet_fetch(void *ctx, const char *key, size_t keylen)
+static void *hcache_kyotocabinet_fetch(void *ctx, const char *key, size_t keylen, size_t *dlen)
 {
-  size_t sp;
-
   if (!ctx)
     return NULL;
 
   KCDB *db = ctx;
-  return kcdbget(db, key, keylen, &sp);
+  return kcdbget(db, key, keylen, dlen);
 }
 
 /**

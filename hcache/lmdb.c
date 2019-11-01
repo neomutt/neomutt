@@ -173,7 +173,7 @@ fail_env:
 /**
  * hcache_lmdb_fetch - Implements HcacheOps::fetch()
  */
-static void *hcache_lmdb_fetch(void *vctx, const char *key, size_t keylen)
+static void *hcache_lmdb_fetch(void *vctx, const char *key, size_t keylen, size_t *dlen)
 {
   if (!vctx)
     return NULL;
@@ -205,6 +205,7 @@ static void *hcache_lmdb_fetch(void *vctx, const char *key, size_t keylen)
     return NULL;
   }
 
+  *dlen = data.mv_size;
   return data.mv_data;
 }
 

@@ -256,6 +256,15 @@ LIBHCACHEOBJS+=	hcache/qdbm.o
 @if HAVE_TC
 LIBHCACHEOBJS+=	hcache/tc.o
 @endif
+@if HAVE_LZ4
+LIBHCACHEOBJS+=	hcache/compr_lz4.o
+@endif
+@if HAVE_ZLIB
+LIBHCACHEOBJS+=	hcache/compr_zlib.o
+@endif
+@if HAVE_ZSTD
+LIBHCACHEOBJS+=	hcache/compr_zstd.o
+@endif
 @endif # USE_HCACHE
 
 ###############################################################################

@@ -45,6 +45,14 @@
  * | hcache/lmdb.c | @subpage hc_lmdb |
  * | hcache/qdbm.c | @subpage hc_qdbm |
  * | hcache/tc.c   | @subpage hc_tc   |
+ *
+ * Compression Backends:
+ *
+ * | File                | Description           |
+ * | :------------------ | :-------------------- |
+ * | hcache/compr_lz4.c  | @subpage hc_comp_lz4  |
+ * | hcache/compr_zlib.c | @subpage hc_comp_zlib |
+ * | hcache/compr_zstd.c | @subpage hc_comp_zstd |
  */
 
 #ifndef MUTT_HCACHE_LIB_H
@@ -69,6 +77,8 @@ struct EmailCache
   char *folder;
   unsigned int crc;
   void *ctx;
+  void *cctx;
+  void *ondisk;
 };
 
 typedef struct EmailCache header_cache_t;
@@ -82,6 +92,9 @@ typedef void (*hcache_namer_t)(const char *path, struct Buffer *dest);
 
 /* These Config Variables are only used in hcache/hcache.c */
 extern char *C_HeaderCacheBackend;
+extern char *C_HeaderCacheCompressDictionary;
+extern short C_HeaderCacheCompressLevel;
+extern char *C_HeaderCacheCompressMethod;
 
 /**
  * mutt_hcache_open - open the connection to the header cache
@@ -162,5 +175,6 @@ int mutt_hcache_delete_header(header_cache_t *hc, const char *key, size_t keylen
 const char *mutt_hcache_backend_list(void);
 
 bool mutt_hcache_is_valid_backend(const char *s);
+bool mutt_hcache_is_valid_compression(const char *s);
 
 #endif /* MUTT_HCACHE_LIB_H */

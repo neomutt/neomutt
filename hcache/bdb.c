@@ -154,7 +154,7 @@ fail_close:
 /**
  * hcache_bdb_fetch - Implements HcacheOps::fetch()
  */
-static void *hcache_bdb_fetch(void *vctx, const char *key, size_t keylen)
+static void *hcache_bdb_fetch(void *vctx, const char *key, size_t keylen, size_t *dlen)
 {
   if (!vctx)
     return NULL;
@@ -170,6 +170,7 @@ static void *hcache_bdb_fetch(void *vctx, const char *key, size_t keylen)
 
   ctx->db->get(ctx->db, NULL, &dkey, &data, 0);
 
+  *dlen = data.size;
   return data.data;
 }
 

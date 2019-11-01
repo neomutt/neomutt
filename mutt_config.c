@@ -1418,6 +1418,29 @@ struct ConfigDef MuttVars[] = {
   ** or less optimal for most use cases.
   */
 #endif /* HAVE_GDBM || HAVE_BDB */
+#if defined(USE_HCACHE_COMPRESSION)
+#ifdef HAVE_ZSTD
+  { "header_cache_compress_dictionary", DT_STRING|DT_PATH, &C_HeaderCacheCompressDictionary, IP "~/.dictionary" },
+  /*
+  ** .pp
+  ** When NeoMutt is compiled with zstd, the header cache backend can be used together
+  ** with a dictionary to achieve better compression on the cache files.
+  */
+#endif /* HAVE_ZSTD */
+  { "header_cache_compress_level", DT_NUMBER|DT_NOT_NEGATIVE, &C_HeaderCacheCompressLevel, 1 },
+  /*
+  ** .pp
+  ** When NeoMutt is compiled with lz4, zstd or zlib, this option can be used
+  ** to setup the compression level.
+  */
+  { "header_cache_compress_method", DT_STRING, &C_HeaderCacheCompressMethod, 0, 0, compress_validator },
+  /*
+  ** .pp
+  ** When NeoMutt is compiled with lz4, zstd or zlib, the header cache backend
+  ** can use these compression methods for compressing the cache files.
+  ** This results in much smaller cache file sizes and may even improve speed.
+  */
+#endif /* USE_HCACHE_COMPRESSION */
 #endif /* USE_HCACHE */
   { "header_color_partial", DT_BOOL|R_PAGER_FLOW, &C_HeaderColorPartial, false },
   /*
