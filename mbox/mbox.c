@@ -966,6 +966,7 @@ static int mbox_mbox_open(struct Mailbox *m)
     rc = mmdf_parse_mailbox(m);
   else
     rc = -1;
+  clearerr(adata->fp); // Clear the EOF flag
   mutt_file_touch_atime(fileno(adata->fp));
 
   mbox_unlock_mailbox(m);
