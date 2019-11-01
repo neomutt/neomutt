@@ -815,7 +815,7 @@ int mx_mbox_close(struct Context **ptr)
 #endif
 
   mx_fastclose_mailbox(m);
-  FREE(ptr);
+  ctx_free(ptr);
 
   rc = 0;
 
