@@ -635,11 +635,12 @@ int mailbox_index_observer(struct NotifyCallback *nc)
  * @param buflen     Length of buffer
  * @param oldcount   How many items are currently in the index
  * @param index_hint Remember our place in the index
+ * @param pager_return Return to the pager afterwards
  * @retval  0 Success
  * @retval -1 Error
  */
 static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
-                              char *buf, size_t buflen, int *oldcount, int *index_hint)
+                              char *buf, size_t buflen, int *oldcount, int *index_hint, bool *pager_return)
 {
 #ifdef USE_NNTP
   if (OptNews)
@@ -670,6 +671,10 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
       return -1;
     }
   }
+
+   /* past this point, we don't return to the pager on error */
+  if (pager_return)
+    *pager_return = false;
 
   /* keepalive failure in mutt_enter_fname may kill connection. */
   if (Context && Context->mailbox && (mutt_buffer_is_empty(&Context->mailbox->pathbuf)))
@@ -711,14 +716,6 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
 
   mutt_sleep(0);
 
-  /* Note that menu->type may be MENU_PAGER if the change folder
-   * operation originated from the pager.
-   *
-   * However, exec commands currently use CurrentMenu to determine what
-   * functions are available, which is automatically set by the
-   * mutt_push/pop_current_menu() functions.  If that changes, the menu
-   * would need to be reset here, and the pager cleanup code after the
-   * switch statement would need to be run. */
   if (m)
   {
     /* If the `folder-hook` were to call `unmailboxes`, then the Mailbox (`m`)
@@ -1080,6 +1077,7 @@ int mutt_index_menu(void)
   bool do_mailbox_notify = true;
   int close = 0; /* did we OP_QUIT or OP_EXIT out of this menu? */
   int attach_msg = OptAttachMsg;
+  bool in_pager = false;  /* set when pager redirects a function through the index */
 
   struct Menu *menu = mutt_menu_new(MENU_MAIN);
   menu->menu_make_entry = index_make_entry;
@@ -1239,7 +1237,7 @@ int mutt_index_menu(void)
     if (op >= 0)
       mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
 
-    if (menu->type == MENU_MAIN)
+    if (!in_pager)
     {
       index_custom_redraw(menu);
 
@@ -1530,7 +1528,7 @@ int mutt_index_menu(void)
 
             /* Similar to OP_MAIN_ENTIRE_THREAD, keep displaying the old message, but
              * update the index */
-            if (menu->type == MENU_PAGER)
+            if (in_pager)
             {
               menu->current = e_oldcur->vnum;
               menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
@@ -1565,7 +1563,7 @@ int mutt_index_menu(void)
             mutt_error(_("No deleted messages found in the thread"));
             /* Similar to OP_MAIN_ENTIRE_THREAD, keep displaying the old message, but
              * update the index */
-            if (menu->type == MENU_PAGER)
+            if (in_pager)
             {
               op = OP_DISPLAY_MESSAGE;
               continue;
@@ -1606,7 +1604,7 @@ int mutt_index_menu(void)
           menu->current = e->vnum;
         }
 
-        if (menu->type == MENU_PAGER)
+        if (in_pager)
         {
           op = OP_DISPLAY_MESSAGE;
           continue;
@@ -1806,7 +1804,7 @@ int mutt_index_menu(void)
             resort_index(menu);
             OptSearchInvalid = true;
           }
-          if (menu->type == MENU_PAGER)
+          if (in_pager)
           {
             op = OP_DISPLAY_MESSAGE;
             continue;
@@ -1979,7 +1977,7 @@ int mutt_index_menu(void)
           ctx_free(&Context);
 
         /* if we were in the pager, redisplay the message */
-        if (menu->type == MENU_PAGER)
+        if (in_pager)
         {
           op = OP_DISPLAY_MESSAGE;
           continue;
@@ -2034,7 +2032,7 @@ int mutt_index_menu(void)
             break;
           }
 
-          main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint);
+          main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint, NULL);
 
           // If notmuch doesn't contain the message, we're left in an empty
           // vfolder. No messages are found, but nm_read_entire_thread assumes
@@ -2067,7 +2065,7 @@ int mutt_index_menu(void)
             mutt_set_vnum(Context);
           }
         }
-        if (menu->type == MENU_PAGER)
+        if (in_pager)
         {
           op = OP_DISPLAY_MESSAGE;
           continue;
@@ -2158,7 +2156,7 @@ int mutt_index_menu(void)
             CUR_EMAIL->quasi_deleted = !still_queried;
             Context->mailbox->changed = true;
           }
-          if (menu->type == MENU_PAGER)
+          if (in_pager)
           {
             op = OP_DISPLAY_MESSAGE;
             continue;
@@ -2197,7 +2195,7 @@ int mutt_index_menu(void)
         if (!nm_uri_from_query(NULL, buf, sizeof(buf)))
           mutt_message(_("Failed to create query, aborting"));
         else
-          main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint);
+          main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint, NULL);
         break;
 
       case OP_MAIN_WINDOWED_VFOLDER_BACKWARD:
@@ -2219,7 +2217,7 @@ int mutt_index_menu(void)
         if (!nm_uri_from_query(Context->mailbox, buf, sizeof(buf)))
           mutt_message(_("Failed to create query, aborting"));
         else
-          main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint);
+          main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint, NULL);
         break;
 
       case OP_MAIN_WINDOWED_VFOLDER_FORWARD:
@@ -2242,7 +2240,7 @@ int mutt_index_menu(void)
         else
         {
           mutt_debug(LL_DEBUG2, "nm: + windowed query (%s)\n", buf);
-          main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint);
+          main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint, NULL);
         }
         break;
 
@@ -2260,7 +2258,7 @@ int mutt_index_menu(void)
       case OP_MAIN_CHANGE_GROUP_READONLY:
 #endif
       {
-        bool cont = false; /* Set if we want to continue instead of break */
+        bool pager_return = true;  /* return to display message in pager */
 
         struct Buffer *folderbuf = mutt_buffer_pool_get();
         mutt_buffer_alloc(folderbuf, PATH_MAX);
@@ -2342,11 +2340,6 @@ int mutt_index_menu(void)
 
           if (mutt_buffer_enter_fname(cp, folderbuf, true) == -1)
           {
-            if (menu->type == MENU_PAGER)
-            {
-              op = OP_DISPLAY_MESSAGE;
-              cont = true;
-            }
             goto changefoldercleanup;
           }
 
@@ -2364,7 +2357,7 @@ int mutt_index_menu(void)
           m = mx_mbox_find2(mutt_b2s(folderbuf));
 
         main_change_folder(menu, op, m, folderbuf->data, folderbuf->dsize,
-                           &oldcount, &index_hint);
+                           &oldcount, &index_hint, &pager_return);
 #ifdef USE_NNTP
         /* mutt_mailbox_check() must be done with mail-reader mode! */
         menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_MAIN,
@@ -2381,10 +2374,12 @@ int mutt_index_menu(void)
 
       changefoldercleanup:
         mutt_buffer_pool_release(&folderbuf);
-        if (cont)
+        if (in_pager && pager_return)
+        {
+          op = OP_DISPLAY_MESSAGE;
           continue;
-        else
-          break;
+        }
+        break;
       }
 
       case OP_DISPLAY_MESSAGE:
@@ -2416,11 +2411,6 @@ int mutt_index_menu(void)
         int hint =
             Context->mailbox->emails[Context->mailbox->v2r[menu->current]]->index;
 
-        /* If we are returning to the pager via an index menu redirection, we
-         * need to reset the menu->type.  Otherwise mutt_menu_pop_current() will
-         * set CurrentMenu incorrectly when we return back to the index menu. */
-        menu->type = MENU_MAIN;
-
         op = mutt_display_message(MuttIndexWindow, Context->mailbox, CUR_EMAIL);
         if (op < 0)
         {
@@ -2429,9 +2419,9 @@ int mutt_index_menu(void)
         }
 
         /* This is used to redirect a single operation back here afterwards.  If
-         * mutt_display_message() returns 0, then the menu and pager state will
+         * mutt_display_message() returns 0, then this flag and pager state will
          * be cleaned up after this switch statement. */
-        menu->type = MENU_PAGER;
+        in_pager = true;
         menu->oldcurrent = menu->current;
         if (Context && Context->mailbox)
           update_index(menu, Context, MUTT_NEW_MAIL, Context->mailbox->msg_count, hint);
@@ -2439,13 +2429,13 @@ int mutt_index_menu(void)
 
       case OP_EXIT:
         close = op;
-        if ((menu->type == MENU_MAIN) && attach_msg)
+        if ((!in_pager) && attach_msg)
         {
           done = true;
           break;
         }
 
-        if ((menu->type == MENU_MAIN) &&
+        if ((!in_pager) &&
             (query_quadoption(C_Quit, _("Exit NeoMutt without saving?")) == MUTT_YES))
         {
           if (Context)
@@ -2480,7 +2470,7 @@ int mutt_index_menu(void)
           Context->mailbox->changed = true;
           mutt_message(_("Thread broken"));
 
-          if (menu->type == MENU_PAGER)
+          if (in_pager)
           {
             op = OP_DISPLAY_MESSAGE;
             continue;
@@ -2529,7 +2519,7 @@ int mutt_index_menu(void)
           emaillist_clear(&el);
         }
 
-        if (menu->type == MENU_PAGER)
+        if (in_pager)
         {
           op = OP_DISPLAY_MESSAGE;
           continue;
@@ -2544,7 +2534,7 @@ int mutt_index_menu(void)
           break;
         mutt_edit_content_type(CUR_EMAIL, CUR_EMAIL->content, NULL);
         /* if we were in the pager, redisplay the message */
-        if (menu->type == MENU_PAGER)
+        if (in_pager)
         {
           op = OP_DISPLAY_MESSAGE;
           continue;
@@ -2558,7 +2548,7 @@ int mutt_index_menu(void)
           break;
         if (menu->current >= (Context->mailbox->vcount - 1))
         {
-          if (menu->type == MENU_MAIN)
+          if (!in_pager)
             mutt_message(_("You are on the last message"));
           break;
         }
@@ -2566,10 +2556,10 @@ int mutt_index_menu(void)
         if (menu->current == -1)
         {
           menu->current = menu->oldcurrent;
-          if (menu->type == MENU_MAIN)
+          if (!in_pager)
             mutt_error(_("No undeleted messages"));
         }
-        else if (menu->type == MENU_PAGER)
+        else if (in_pager)
         {
           op = OP_DISPLAY_MESSAGE;
           continue;
@@ -2583,12 +2573,12 @@ int mutt_index_menu(void)
           break;
         if (menu->current >= (Context->mailbox->vcount - 1))
         {
-          if (menu->type == MENU_MAIN)
+          if (!in_pager)
             mutt_message(_("You are on the last message"));
           break;
         }
         menu->current++;
-        if (menu->type == MENU_PAGER)
+        if (in_pager)
         {
           op = OP_DISPLAY_MESSAGE;
           continue;
@@ -2609,10 +2599,10 @@ int mutt_index_menu(void)
         if (menu->current == -1)
         {
           menu->current = menu->oldcurrent;
-          if (menu->type == MENU_MAIN)
+          if (!in_pager)
             mutt_error(_("No undeleted messages"));
         }
-        else if (menu->type == MENU_PAGER)
+        else if (in_pager)
         {
           op = OP_DISPLAY_MESSAGE;
           continue;
@@ -2626,12 +2616,12 @@ int mutt_index_menu(void)
           break;
         if (menu->current < 1)
         {
-          if (menu->type == MENU_MAIN)
+          if (!in_pager)
             mutt_message(_("You are on the first message"));
           break;
         }
         menu->current--;
-        if (menu->type == MENU_PAGER)
+        if (in_pager)
         {
           op = OP_DISPLAY_MESSAGE;
           continue;
@@ -2789,7 +2779,7 @@ int mutt_index_menu(void)
           mutt_message(_("Search wrapped to bottom"));
         }
 
-        if (menu->type == MENU_PAGER)
+        if (in_pager)
         {
           op = OP_DISPLAY_MESSAGE;
           continue;
@@ -2888,7 +2878,7 @@ int mutt_index_menu(void)
           break;
         if (mx_toggle_write(Context->mailbox) == 0)
         {
-          if (menu->type == MENU_PAGER)
+          if (in_pager)
           {
             op = OP_DISPLAY_MESSAGE;
             continue;
@@ -2932,7 +2922,7 @@ int mutt_index_menu(void)
           else
             mutt_error(_("You are on the first thread"));
         }
-        else if (menu->type == MENU_PAGER)
+        else if (in_pager)
         {
           op = OP_DISPLAY_MESSAGE;
           continue;
@@ -2951,7 +2941,7 @@ int mutt_index_menu(void)
         {
           menu->current = menu->oldcurrent;
         }
-        else if (menu->type == MENU_PAGER)
+        else if (in_pager)
         {
           op = OP_DISPLAY_MESSAGE;
           continue;
@@ -3099,7 +3089,7 @@ int mutt_index_menu(void)
               menu->current = menu->oldcurrent;
               menu->redraw |= REDRAW_CURRENT;
             }
-            else if (menu->type == MENU_PAGER)
+            else if (in_pager)
             {
               op = OP_DISPLAY_MESSAGE;
               continue;
@@ -3344,7 +3334,7 @@ int mutt_index_menu(void)
           emaillist_clear(&el);
         }
 
-        if (menu->type == MENU_PAGER)
+        if (in_pager)
         {
           op = OP_DISPLAY_MESSAGE;
           continue;
@@ -3416,7 +3406,7 @@ int mutt_index_menu(void)
             {
               menu->current = menu->oldcurrent;
             }
-            else if (menu->type == MENU_PAGER)
+            else if (in_pager)
             {
               op = OP_DISPLAY_MESSAGE;
               continue;
@@ -3687,7 +3677,7 @@ int mutt_index_menu(void)
 #endif
 
       default:
-        if (menu->type == MENU_MAIN)
+        if (!in_pager)
           km_error_key(MENU_MAIN);
     }
 
@@ -3696,10 +3686,10 @@ int mutt_index_menu(void)
       nm_db_debug_check(Context->mailbox);
 #endif
 
-    if (menu->type == MENU_PAGER)
+    if (in_pager)
     {
       mutt_clear_pager_position();
-      menu->type = MENU_MAIN;
+      in_pager = false;
       menu->redraw = REDRAW_FULL;
     }
 

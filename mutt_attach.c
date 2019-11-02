@@ -74,7 +74,7 @@ int mutt_get_tmp_attachment(struct Body *a)
   struct Buffer *tmpfile = mutt_buffer_pool_get();
   struct MailcapEntry *entry = mailcap_entry_new();
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
-  mailcap_lookup(a, type, entry, MUTT_MC_NO_FLAGS);
+  mailcap_lookup(a, type, sizeof(type), entry, MUTT_MC_NO_FLAGS);
   mailcap_expand_filename(entry->nametemplate, a->filename, tmpfile);
 
   mailcap_entry_free(&entry);
@@ -124,7 +124,7 @@ int mutt_compose_attachment(struct Body *a)
   struct Buffer *tmpfile = mutt_buffer_pool_get();
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
-  if (mailcap_lookup(a, type, entry, MUTT_MC_COMPOSE))
+  if (mailcap_lookup(a, type, sizeof(type), entry, MUTT_MC_COMPOSE))
   {
     if (entry->composecommand || entry->composetypecommand)
     {
@@ -262,7 +262,7 @@ int mutt_edit_attachment(struct Body *a)
   struct Buffer *newfile = mutt_buffer_pool_get();
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
-  if (mailcap_lookup(a, type, entry, MUTT_MC_EDIT))
+  if (mailcap_lookup(a, type, sizeof(type), entry, MUTT_MC_EDIT))
   {
     if (entry->editcommand)
     {
@@ -418,7 +418,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
   if (use_mailcap)
   {
     entry = mailcap_entry_new();
-    if (!mailcap_lookup(a, type, entry, MUTT_MC_NO_FLAGS))
+    if (!mailcap_lookup(a, type, sizeof(type), entry, MUTT_MC_NO_FLAGS))
     {
       if (mode == MUTT_VA_REGULAR)
       {
@@ -1037,14 +1037,14 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
 
-  if (mailcap_lookup(a, type, NULL, MUTT_MC_PRINT))
+  if (mailcap_lookup(a, type, sizeof(type), NULL, MUTT_MC_PRINT))
   {
     int piped = false;
 
     mutt_debug(LL_DEBUG2, "Using mailcap\n");
 
     struct MailcapEntry *entry = mailcap_entry_new();
-    mailcap_lookup(a, type, entry, MUTT_MC_PRINT);
+    mailcap_lookup(a, type, sizeof(type), entry, MUTT_MC_PRINT);
     mailcap_expand_filename(entry->nametemplate, a->filename, newfile);
     /* send mode: symlink from existing file to the newfile */
     if (!fp)

@@ -507,14 +507,20 @@ static void pipe_set_flags(bool decode, bool print, CopyMessageFlags *cmflags,
 {
   if (decode)
   {
-    *cmflags |= MUTT_CM_DECODE | MUTT_CM_CHARCONV;
     *chflags |= CH_DECODE | CH_REORDER;
+    *cmflags |= MUTT_CM_DECODE | MUTT_CM_CHARCONV;
 
     if (C_Weed)
     {
       *chflags |= CH_WEED;
       *cmflags |= MUTT_CM_WEED;
     }
+
+    /* Just as with copy-decode, we need to update the mime fields to avoid
+     * confusing programs that may process the email.  However, we don't want
+     * to force those fields to appear in printouts. */
+    if (!print)
+      *chflags |= CH_MIME | CH_TXTPLAIN;
   }
 
   if (print)
