@@ -3909,6 +3909,7 @@ int wrapheaders_validator(const struct ConfigSet *cs, const struct ConfigDef *cd
   if ((value >= 78) && (value <= 998)) // Recommendation from RFC5233
     return CSR_SUCCESS;
 
+  // L10N: This applies to the "$wrap_headers" config variable
   mutt_buffer_printf(err, _("Option %s must between 78 and 998 inclusive"), cdef->name);
   return CSR_ERR_INVALID;
 }
