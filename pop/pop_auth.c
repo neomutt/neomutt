@@ -152,7 +152,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
     }
 
     /* Even if sasl_client_step() returns SASL_OK, we should send at
-     * least one more line to the server.  See #3862.  */
+     * least one more line to the server.  */
     if ((rc != SASL_CONTINUE) && (rc != SASL_OK))
       break;
 

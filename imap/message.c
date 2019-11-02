@@ -1157,7 +1157,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
           continue;
         }
 
-        /* May receive FLAGS updates in a separate untagged response (#2935) */
+        /* May receive FLAGS updates in a separate untagged response */
         if (mdata->msn_index[h.edata->msn - 1])
         {
           mutt_debug(LL_DEBUG2, "skipping FETCH response for duplicate message %d\n",

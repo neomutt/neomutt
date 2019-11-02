@@ -510,7 +510,6 @@ int mutt_is_valid_multipart_pgp_encrypted(struct Body *b)
  *     <application/pgp-encrypted> [BASE64-encoded]
  *     <application/octet-stream> [BASE64-encoded]
  * ```
- * See ticket #3742
  */
 SecurityFlags mutt_is_malformed_multipart_pgp_encrypted(struct Body *b)
 {

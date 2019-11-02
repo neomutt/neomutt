@@ -612,8 +612,8 @@ int mh_mbox_check(struct Mailbox *m, int *index_hint)
 
   /* create .mh_sequences when there isn't one. */
   snprintf(buf, sizeof(buf), "%s/.mh_sequences", mailbox_path(m));
-  int i = stat(buf, &st_cur);
-  if ((i == -1) && (errno == ENOENT))
+  int rc = stat(buf, &st_cur);
+  if ((rc == -1) && (errno == ENOENT))
   {
     char *tmp = NULL;
     FILE *fp = NULL;
@@ -627,7 +627,7 @@ int mh_mbox_check(struct Mailbox *m, int *index_hint)
     }
   }
 
-  if ((i == -1) && (stat(buf, &st_cur) == -1))
+  if ((rc == -1) && (stat(buf, &st_cur) == -1))
     modified = true;
 
   if ((mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME, &m->mtime) > 0) ||
@@ -676,7 +676,7 @@ int mh_mbox_check(struct Mailbox *m, int *index_hint)
     mutt_hash_insert(fnames, p->canon_fname, p);
   }
 
-  for (i = 0; i < m->msg_count; i++)
+  for (int i = 0; i < m->msg_count; i++)
   {
     m->emails[i]->active = false;
 

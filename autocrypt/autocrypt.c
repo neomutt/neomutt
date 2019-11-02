@@ -55,7 +55,7 @@ static int autocrypt_dir_init(bool can_create)
   int rc = 0;
   struct stat sb;
 
-  if (!stat(C_AutocryptDir, &sb))
+  if (stat(C_AutocryptDir, &sb) == 0)
     return 0;
 
   if (!can_create)

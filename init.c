@@ -917,7 +917,15 @@ static enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
       break;
   }
 
-  if (!tmp)
+  if (tmp)
+  {
+    mutt_alias_delete_reverse(tmp);
+    /* override the previous value */
+    mutt_addrlist_clear(&tmp->addr);
+    if (CurrentMenu == MENU_ALIAS)
+      mutt_menu_set_current_redraw_full();
+  }
+  else
   {
     /* create a new alias */
     tmp = mutt_alias_new();
@@ -926,14 +934,6 @@ static enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
     /* give the main addressbook code a chance */
     if (CurrentMenu == MENU_ALIAS)
       OptMenuCaller = true;
-  }
-  else
-  {
-    mutt_alias_delete_reverse(tmp);
-    /* override the previous value */
-    mutt_addrlist_clear(&tmp->addr);
-    if (CurrentMenu == MENU_ALIAS)
-      mutt_menu_set_current_redraw_full();
   }
 
   mutt_extract_token(buf, s, MUTT_TOKEN_QUOTE | MUTT_TOKEN_SPACE | MUTT_TOKEN_SEMICOLON);

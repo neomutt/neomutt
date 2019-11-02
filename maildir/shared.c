@@ -117,7 +117,7 @@ mode_t mh_umask(struct Mailbox *m)
     return mdata->mh_umask;
 
   struct stat st;
-  if (stat(mailbox_path(m), &st))
+  if (stat(mailbox_path(m), &st) != 0)
   {
     mutt_debug(LL_DEBUG1, "stat failed on %s\n", mailbox_path(m));
     return 077;
@@ -725,10 +725,10 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
 
 #ifdef USE_HCACHE
     struct stat lastchanged = { 0 };
-    int ret = 0;
+    int rc = 0;
     if (C_MaildirHeaderCacheVerify)
     {
-      ret = stat(fn, &lastchanged);
+      rc = stat(fn, &lastchanged);
     }
 
     const char *key = NULL;
@@ -746,7 +746,7 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
     void *data = mutt_hcache_fetch(hc, key, keylen);
     size_t *when = data;
 
-    if (data && !ret && (lastchanged.st_mtime <= (*when / 1000)))
+    if (data && (rc == 0) && (lastchanged.st_mtime <= (*when / 1000)))
     {
       struct Email *e = mutt_hcache_restore((unsigned char *) data);
       e->old = p->email->old;

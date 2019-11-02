@@ -92,7 +92,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
   else if ((mutt_str_strcasecmp("login", method) == 0) &&
            !strstr(NONULL(adata->capstr), "AUTH=LOGIN"))
   {
-    /* do not use SASL login for regular IMAP login (#3556) */
+    /* do not use SASL login for regular IMAP login */
     sasl_dispose(&saslconn);
     return IMAP_AUTH_UNAVAIL;
   }

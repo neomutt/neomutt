@@ -257,7 +257,7 @@ int nm_db_get_mtime(struct Mailbox *m, time_t *mtime)
   mutt_debug(LL_DEBUG2, "nm: checking '%s' mtime\n", path);
 
   struct stat st;
-  if (stat(path, &st))
+  if (stat(path, &st) != 0)
     return -1;
 
   *mtime = st.st_mtime;

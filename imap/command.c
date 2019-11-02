@@ -665,7 +665,7 @@ static void cmd_parse_lsub(struct ImapAccountData *adata, char *s)
   adata->cmdresult = &list;
   cmd_parse_list(adata, s);
   adata->cmdresult = NULL;
-  /* noselect is for a gmail quirk (#3445) */
+  /* noselect is for a gmail quirk */
   if (!list.name || list.noselect)
     return;
 

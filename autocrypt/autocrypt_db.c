@@ -91,17 +91,7 @@ int mutt_autocrypt_db_init(bool can_create)
   mutt_buffer_concat_path(db_path, C_AutocryptDir, "autocrypt.db");
 
   struct stat sb;
-  if (stat(mutt_b2s(db_path), &sb))
-  {
-    if (!can_create)
-      goto cleanup;
-    if (autocrypt_db_create(mutt_b2s(db_path)))
-      goto cleanup;
-    /* Don't abort the whole init process because account creation failed */
-    mutt_autocrypt_account_init(true);
-    mutt_autocrypt_scan_mailboxes();
-  }
-  else
+  if (stat(mutt_b2s(db_path), &sb) == 0)
   {
     if (sqlite3_open_v2(mutt_b2s(db_path), &AutocryptDB, SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK)
     {
@@ -115,6 +105,16 @@ int mutt_autocrypt_db_init(bool can_create)
 
     if (mutt_autocrypt_schema_update())
       goto cleanup;
+  }
+  else
+  {
+    if (!can_create)
+      goto cleanup;
+    if (autocrypt_db_create(mutt_b2s(db_path)))
+      goto cleanup;
+    /* Don't abort the whole init process because account creation failed */
+    mutt_autocrypt_account_init(true);
+    mutt_autocrypt_scan_mailboxes();
   }
 
   rc = 0;

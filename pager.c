@@ -1134,7 +1134,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
             if (!found)
             {
               /* Abort if we fill up chunks.
-               * Yes, this really happened. See #3888 */
+               * Yes, this really happened. */
               if (line_info[n].chunks == SHRT_MAX)
               {
                 null_rx = false;

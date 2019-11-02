@@ -2050,8 +2050,7 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
     case MUTT_PAT_HEADER:
     case MUTT_PAT_WHOLE_MSG:
       /* m can be NULL in certain cases, such as when replying to a message
-       * from the attachment menu and the user has a reply-hook using "~e" (bug
-       * #2190).
+       * from the attachment menu and the user has a reply-hook using "~e".
        * This is also the case when message scoring.  */
       if (!m)
         return 0;
