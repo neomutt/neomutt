@@ -9575,10 +9575,10 @@ subjectrx '\[[^]]*\]:? *' '%L%R'
         <note>
           <para>
             When using Maildir, you don't have to manually specify all your mailboxes. You can use this command instead:
-            <screen>
-              mailboxes `find ~/.mail/ -type d -name cur | sed 's:/cur/*$::' | tr '\n' ' '`
-            </screen>
           </para>
+<screen>
+mailboxes `find ~/.mail/ -type d -name cur | sort | sed -e 's:/cur/*$::' -e 's/ /\\ /g' | tr '\n' ' '`
+</screen>
         </note>
       </sect2>
 
