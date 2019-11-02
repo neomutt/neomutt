@@ -1,3 +1,18 @@
+2019-11-02  Richard Russon  \<rich@flatcap.org\>
+* Bug Fixes
+  - Mailboxes command with empty backticks
+  - Mbox save-to-trash
+  - Mkdir for new maildir folders
+  - Maildir: new mail detection
+  - Truncation of "set" command on a path variable
+  - Update crash (when changing folder)
+  - Resolve symbolic links when saving a message
+  - Folder-hook calling "unmailboxes \*"
+  - Failed ssl negotiation
+  - Crash when using "alias -group"
+  - LibIDN error when charset wasn't set
+  - Notmuch abort entire-thread if database lacks message
+
 2019-10-25  Richard Russon  \<rich@flatcap.org\>
 * Features
   - Add $fcc_before_send, defaulting unset
