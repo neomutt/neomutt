@@ -53,10 +53,13 @@
 const char *nm_db_get_filename(struct Mailbox *m)
 {
   struct NmMboxData *mdata = nm_mdata_get(m);
-  if (!mdata)
-    return NULL;
+  char *db_filename = NULL;
 
-  char *db_filename = mdata->db_url->path ? mdata->db_url->path : C_NmDefaultUri;
+  if (mdata && mdata->db_url && mdata->db_url->path)
+    db_filename = mdata->db_url->path;
+  else
+    db_filename = C_NmDefaultUri;
+
   if (!db_filename && !C_Folder)
     return NULL;
 
