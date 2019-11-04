@@ -438,4 +438,5 @@ void mutt_window_clear_screen(void)
 {
   move(0, 0);
   clrtobot();
+  refresh();
 }
