@@ -844,7 +844,8 @@ int main(int argc, char *argv[], char *envp[])
   notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_log_observer, 0);
   notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_menu_config_observer, 0);
   notify_observer_add(Config->notify, NT_CONFIG, 0, mutt_reply_observer, 0);
-  notify_observer_add(Colors->notify, NT_COLOR, 0, mutt_menu_color_observer, 0);
+  if (Colors)
+    notify_observer_add(Colors->notify, NT_COLOR, 0, mutt_menu_color_observer, 0);
 
   if (sendflags & SEND_POSTPONED)
   {
