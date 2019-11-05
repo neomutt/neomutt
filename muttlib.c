@@ -329,7 +329,18 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
       ssize_t len = readlink(mutt_b2s(buf), path, sizeof(path));
       if (len != -1)
       {
-        mutt_buffer_strcpy_n(buf, path, len);
+        char *orig_dir = mutt_path_dirname(mutt_b2s(buf));
+        if (*orig_dir)
+        {
+          mutt_buffer_strcpy(buf, orig_dir);
+          mutt_buffer_addch(buf, '/');
+          mutt_buffer_addstr_n(buf, path, len);
+        }
+        else
+        {
+          mutt_buffer_strcpy_n(buf, path, len);
+        }
+        FREE(&orig_dir);
       }
     }
   }
