@@ -326,10 +326,9 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
     if ((rc != -1) && S_ISLNK(st.st_mode))
     {
       char path[PATH_MAX];
-      ssize_t len = readlink(mutt_b2s(buf), path, sizeof(path));
-      if (len != -1)
+      if (realpath(mutt_b2s(buf), path))
       {
-        mutt_buffer_strcpy_n(buf, path, len);
+        mutt_buffer_strcpy(buf, path);
       }
     }
   }
