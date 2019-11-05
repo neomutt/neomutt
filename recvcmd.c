@@ -464,7 +464,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   struct Email *e_parent = NULL;
   FILE *fp_parent = NULL;
   char prefix[256];
-  enum QuadOption ans = MUTT_ABORT;
+  enum QuadOption ans = MUTT_NO;
   struct Buffer *tmpbody = NULL;
 
   /* First, find the parent message.
