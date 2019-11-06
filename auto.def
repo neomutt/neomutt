@@ -580,7 +580,7 @@ if {[get-define want-lua]} {
       foreach ver $lua_versions {
         lassign [split $ver .] maj min
 
-        foreach lua_suffix [list /lua${maj}${min} /lua${maj}.${min} /lua {}] {
+        foreach lua_suffix [list /lua${maj}${min} /lua${maj}.${min} /lua-${maj}${min} /lua-${maj}.${min} /lua {}] {
           msg-checking "Checking for include$lua_suffix/lua.h..."
           if {[file exists $lua_prefix/include$lua_suffix/lua.h]} {
             msg-result "yes"
