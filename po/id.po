@@ -2007,8 +2007,8 @@ msgstr "Error: multipart/signed tidak punya protokol"
 
 #: handler.c:1700
 #, fuzzy
-msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Lampiran %s/%s ini (gunakan '%3$s' untuk melihat bagian ini) --]\n"
+msgid "[-- This is an attachment (use '%s' to view this part) --]\n"
+msgstr "[-- Lampiran %s/%s ini (gunakan '%s' untuk melihat bagian ini) --]\n"
 
 #: handler.c:1707
 #, fuzzy, c-format

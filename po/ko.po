@@ -2029,8 +2029,8 @@ msgstr "오류: multipart/signed 프로토콜이 없음"
 
 #: handler.c:1700
 #, fuzzy
-msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[ -- %s/%s 첨부물 ('%3$s' 키: 부분 보기) --]\n"
+msgid "[-- This is an attachment (use '%s' to view this part) --]\n"
+msgstr "[ -- %s/%s 첨부물 ('%s' 키: 부분 보기) --]\n"
 
 #: handler.c:1707
 #, fuzzy, c-format

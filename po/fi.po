@@ -1965,8 +1965,8 @@ msgid "Error: multipart/signed has no protocol"
 msgstr "Virhe: multipart/signed ilman protokollaa"
 
 #: handler.c:1700
-msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Tämä on liitetiedosto (avaa osa komennolla '%3$s) --]\n"
+msgid "[-- This is an attachment (use '%s' to view this part) --]\n"
+msgstr "[-- Tämä on liitetiedosto (avaa osa komennolla '%s) --]\n"
 
 #: handler.c:1707
 #, c-format

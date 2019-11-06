@@ -1960,8 +1960,8 @@ msgid "Error: multipart/signed has no protocol"
 msgstr "Klaida: multipart/signed neturi protokolo"
 
 #: handler.c:1700
-msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Čia yra priedas (naudok '%3$s' šiai daliai peržiūrėti) --]\n"
+msgid "[-- This is an attachment (use '%s' to view this part) --]\n"
+msgstr "[-- Čia yra priedas (naudok '%s' šiai daliai peržiūrėti) --]\n"
 
 #: handler.c:1707
 #, c-format

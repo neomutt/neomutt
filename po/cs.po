@@ -1972,8 +1972,8 @@ msgid "Error: multipart/signed has no protocol"
 msgstr "Chyba: typ „multipart/signed“ bez informace o protokolu"
 
 #: handler.c:1700
-msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Toto je příloha (pro zobrazení této části použijte „%3$s“) --]\n"
+msgid "[-- This is an attachment (use '%s' to view this part) --]\n"
+msgstr "[-- Toto je příloha (pro zobrazení této části použijte „%s“) --]\n"
 
 #: handler.c:1707
 #, c-format

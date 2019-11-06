@@ -1995,8 +1995,8 @@ msgstr "Hata: \"multipart/signed\"e ait bir protokol yok"
 
 #: handler.c:1700
 #, fuzzy
-msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Bu bir ek ('%3$s' ile bu bölümü görüntüleyebilirsiniz) --]\n"
+msgid "[-- This is an attachment (use '%s' to view this part) --]\n"
+msgstr "[-- Bu bir ek ('%s' ile bu bölümü görüntüleyebilirsiniz) --]\n"
 
 #: handler.c:1707
 #, fuzzy, c-format

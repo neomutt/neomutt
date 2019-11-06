@@ -2009,8 +2009,8 @@ msgstr "Errore: multipart/signed non ha protocollo"
 
 #: handler.c:1700
 #, fuzzy
-msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Questo è un allegato (usa '%3$s' per vederlo) --]\n"
+msgid "[-- This is an attachment (use '%s' to view this part) --]\n"
+msgstr "[-- Questo è un allegato (usa '%s' per vederlo) --]\n"
 
 #: handler.c:1707
 #, fuzzy, c-format

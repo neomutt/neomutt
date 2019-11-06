@@ -2009,8 +2009,8 @@ msgstr "Помилка: немає протоколу для multipart/signed"
 
 #: handler.c:1700
 #, fuzzy
-msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Це додаток (використовуйте \"%3$s\" для перегляду цієї частини) --]\n"
+msgid "[-- This is an attachment (use '%s' to view this part) --]\n"
+msgstr "[-- Це додаток (використовуйте \"%s\" для перегляду цієї частини) --]\n"
 
 #: handler.c:1707
 #, fuzzy, c-format

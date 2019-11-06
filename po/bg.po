@@ -2046,8 +2046,8 @@ msgstr "Грешка: multipart/signed без protocol параметър"
 
 #: handler.c:1700
 #, fuzzy
-msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Това %s/%s приложение  (използвайте'%3$s' за да видите тази част) --]\n"
+msgid "[-- This is an attachment (use '%s' to view this part) --]\n"
+msgstr "[-- Това %s/%s приложение  (използвайте'%s' за да видите тази част) --]\n"
 
 #: handler.c:1707
 #, fuzzy, c-format

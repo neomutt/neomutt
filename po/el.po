@@ -2047,8 +2047,8 @@ msgstr "Σφάλμα: το πολυμερές/υπογεγραμμένο δεν 
 
 #: handler.c:1700
 #, fuzzy
-msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Αυτή η %s/%s προσάρτηση (χρησιμοποιήστε το '%3$s' για να δείτε αυτό το μέρος) --]\n"
+msgid "[-- This is an attachment (use '%s' to view this part) --]\n"
+msgstr "[-- Αυτή η %s/%s προσάρτηση (χρησιμοποιήστε το '%s' για να δείτε αυτό το μέρος) --]\n"
 
 #: handler.c:1707
 #, fuzzy, c-format

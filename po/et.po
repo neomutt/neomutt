@@ -2040,8 +2040,8 @@ msgstr "Viga: multipart/signed teatel puudub protokoll"
 
 #: handler.c:1700
 #, fuzzy
-msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- See %s/%s lisa (selle osa vaatamiseks kasutage '%3$s') --]\n"
+msgid "[-- This is an attachment (use '%s' to view this part) --]\n"
+msgstr "[-- See %s/%s lisa (selle osa vaatamiseks kasutage '%s') --]\n"
 
 #: handler.c:1707
 #, fuzzy, c-format

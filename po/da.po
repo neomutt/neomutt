@@ -2000,8 +2000,8 @@ msgstr "Fejl: \"multipart/signed\" har ingen \"protocol\"-parameter"
 
 #: handler.c:1700
 #, fuzzy
-msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Dette er et bilag (brug '%3$s' for vise denne brevdel) --]\n"
+msgid "[-- This is an attachment (use '%s' to view this part) --]\n"
+msgstr "[-- Dette er et bilag (brug '%s' for vise denne brevdel) --]\n"
 
 #: handler.c:1707
 #, fuzzy, c-format

@@ -2042,8 +2042,8 @@ msgstr "Hiba: a többrészes/aláírt részhez nincs protokoll megadva"
 
 #: handler.c:1700
 #, fuzzy
-msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Ez a %s/%s melléklet (E rész megjelenítéséhez használja a(z) '%3$s'-t) --]\n"
+msgid "[-- This is an attachment (use '%s' to view this part) --]\n"
+msgstr "[-- Ez a %s/%s melléklet (E rész megjelenítéséhez használja a(z) '%s'-t) --]\n"
 
 #: handler.c:1707
 #, fuzzy, c-format

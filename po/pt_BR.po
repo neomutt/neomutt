@@ -1949,8 +1949,8 @@ msgid "Error: multipart/signed has no protocol"
 msgstr "Erro: multipart/signed não tem protocolo"
 
 #: handler.c:1700
-msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Isto é um anexo (use '%3$s' para exibi-lo) --]\n"
+msgid "[-- This is an attachment (use '%s' to view this part) --]\n"
+msgstr "[-- Isto é um anexo (use '%s' para exibi-lo) --]\n"
 
 #: handler.c:1707
 #, c-format

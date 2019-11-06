@@ -2012,8 +2012,8 @@ msgstr "Ошибка: тип multipart/signed требует наличия па
 
 #: handler.c:1700
 #, fuzzy
-msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Это вложение (используйте \"%3$s\" для просмотра этой части) --]\n"
+msgid "[-- This is an attachment (use '%s' to view this part) --]\n"
+msgstr "[-- Это вложение (используйте \"%s\" для просмотра этой части) --]\n"
 
 #: handler.c:1707
 #, fuzzy, c-format

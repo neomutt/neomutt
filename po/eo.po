@@ -1999,8 +1999,8 @@ msgstr "Eraro: multipart/signed ne havas parametron 'protocol'!"
 
 #: handler.c:1700
 #, fuzzy
-msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Ĉi tiu estas parto (uzu '%3$s' por vidigi ĉi tiun parton) --]\n"
+msgid "[-- This is an attachment (use '%s' to view this part) --]\n"
+msgstr "[-- Ĉi tiu estas parto (uzu '%s' por vidigi ĉi tiun parton) --]\n"
 
 #: handler.c:1707
 #, fuzzy, c-format

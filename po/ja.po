@@ -1992,8 +1992,8 @@ msgstr "エラー: multipart/signed にプロトコルがない。"
 
 #: handler.c:1700
 #, fuzzy
-msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- 添付ファイル (このパートを表示するには '%3$s' を使用) --]\n"
+msgid "[-- This is an attachment (use '%s' to view this part) --]\n"
+msgstr "[-- 添付ファイル (このパートを表示するには '%s' を使用) --]\n"
 
 #: handler.c:1707
 #, fuzzy, c-format
