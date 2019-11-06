@@ -337,6 +337,8 @@ static void autocrypt_compose_menu(struct Email *e)
   */
   const char *prompt = _("Autocrypt: (e)ncrypt, (c)lear, (a)utomatic?");
 
+  e->security |= APPLICATION_PGP;
+
   /* L10N:
      The letter corresponding to the compose menu autocrypt prompt
      (e)ncrypt, (c)lear, (a)utomatic
@@ -512,8 +514,8 @@ static void update_crypt_info(struct ComposeRedrawData *rd)
       {
         if (rd->autocrypt_rec == AUTOCRYPT_REC_YES)
         {
-          e->security |= SEC_AUTOCRYPT;
-          e->security &= ~SEC_INLINE;
+          e->security |= (SEC_AUTOCRYPT | APPLICATION_PGP);
+          e->security &= ~(SEC_INLINE | APPLICATION_SMIME);
         }
         else
           e->security &= ~SEC_AUTOCRYPT;

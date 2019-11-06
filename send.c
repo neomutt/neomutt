@@ -1410,14 +1410,14 @@ static int send_message(struct Email *e)
   if (C_SmtpUrl)
   {
     rc = mutt_smtp_send(&e->env->from, &e->env->to, &e->env->cc, &e->env->bcc,
-                       mutt_b2s(tempfile), (e->content->encoding == ENC_8BIT));
+                        mutt_b2s(tempfile), (e->content->encoding == ENC_8BIT));
     goto cleanup;
   }
 #endif
 
 sendmail:
   rc = mutt_invoke_sendmail(&e->env->from, &e->env->to, &e->env->cc, &e->env->bcc,
-                           mutt_b2s(tempfile), (e->content->encoding == ENC_8BIT));
+                            mutt_b2s(tempfile), (e->content->encoding == ENC_8BIT));
 cleanup:
   if (fp_tmp)
   {
@@ -2282,7 +2282,7 @@ int ci_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile
 #endif
         && e_cur && (e_cur->security & SEC_AUTOCRYPT))
     {
-      e_templ->security |= (SEC_AUTOCRYPT | SEC_AUTOCRYPT_OVERRIDE);
+      e_templ->security |= (SEC_AUTOCRYPT | SEC_AUTOCRYPT_OVERRIDE | APPLICATION_PGP);
     }
     else
     {
