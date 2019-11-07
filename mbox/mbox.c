@@ -989,18 +989,22 @@ static int mbox_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
   if (!adata)
     return -1;
 
-  adata->fp = mutt_file_fopen(mailbox_path(m), (flags & MUTT_NEWFOLDER) ? "w" : "a");
   if (!adata->fp)
   {
-    mutt_perror(mailbox_path(m));
-    return -1;
-  }
+    adata->fp =
+        mutt_file_fopen(mailbox_path(m), (flags & MUTT_NEWFOLDER) ? "w+" : "a+");
+    if (!adata->fp)
+    {
+      mutt_perror(mailbox_path(m));
+      return -1;
+    }
 
-  if (mbox_lock_mailbox(m, true, true) != false)
-  {
-    mutt_error(_("Couldn't lock %s"), mailbox_path(m));
-    mutt_file_fclose(&adata->fp);
-    return -1;
+    if (mbox_lock_mailbox(m, true, true) != false)
+    {
+      mutt_error(_("Couldn't lock %s"), mailbox_path(m));
+      mutt_file_fclose(&adata->fp);
+      return -1;
+    }
   }
 
   fseek(adata->fp, 0, SEEK_END);
