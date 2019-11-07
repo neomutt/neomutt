@@ -272,7 +272,7 @@ void mutt_mailbox_set_notified(struct Mailbox *m)
     return;
 
   m->notified = true;
-#if HAVE_CLOCK_GETTIME
+#ifdef HAVE_CLOCK_GETTIME
   clock_gettime(CLOCK_REALTIME, &m->last_visited);
 #else
   m->last_visited.tv_sec = mutt_date_epoch();

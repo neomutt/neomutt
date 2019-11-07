@@ -157,7 +157,7 @@ static int monitor_init(void)
 {
   if (INotifyFd == -1)
   {
-#if HAVE_INOTIFY_INIT1
+#ifdef HAVE_INOTIFY_INIT1
     INotifyFd = inotify_init1(IN_NONBLOCK | IN_CLOEXEC);
     if (INotifyFd == -1)
     {
