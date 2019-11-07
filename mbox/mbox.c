@@ -1430,7 +1430,11 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
   mbox_reset_atime(m, &statbuf);
 
   /* reopen the mailbox in read-only mode */
-  adata->fp = fopen(mailbox_path(m), "r");
+  adata->fp = mbox_open_readwrite(m);
+  if (!adata->fp)
+  {
+    adata->fp = mbox_open_readonly(m);
+  }
   if (!adata->fp)
   {
     unlink(mutt_b2s(tempfile));
