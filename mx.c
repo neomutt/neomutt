@@ -299,11 +299,6 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   ctx->msg_not_read_yet = -1;
   ctx->collapsed = false;
 
-  m->size = 0;
-  m->msg_unread = 0;
-  m->msg_flagged = 0;
-  m->rights = MUTT_ACL_ALL;
-
   m->quiet = (flags & MUTT_QUIET);
   if (flags & MUTT_READONLY)
     m->readonly = true;
@@ -316,6 +311,13 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
       goto error;
     }
     return ctx;
+  }
+  else
+  {
+    m->size = 0;
+    m->msg_unread = 0;
+    m->msg_flagged = 0;
+    m->rights = MUTT_ACL_ALL;
   }
 
   if (m->magic == MUTT_UNKNOWN)
