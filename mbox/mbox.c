@@ -1574,7 +1574,9 @@ static int mbox_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   if (!adata)
     return -1;
 
-  msg->fp = adata->fp;
+  msg->fp = mutt_file_fopen(mailbox_path(m), "r");
+  if (!msg->fp)
+    return -1;
 
   return 0;
 }
@@ -1623,7 +1625,10 @@ static int mbox_msg_close(struct Mailbox *m, struct Message *msg)
   if (!msg)
     return -1;
 
-  msg->fp = NULL;
+  if (msg->write)
+    msg->fp = NULL;
+  else
+    mutt_file_fclose(&msg->fp);
 
   return 0;
 }
