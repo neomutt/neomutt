@@ -2643,11 +2643,14 @@ int mutt_index_menu(void)
           break;
         struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
         el_add_tagged(&el, Context, CUR_EMAIL, tag);
-        if ((mutt_save_message(Context->mailbox, &el,
-                               (op == OP_DECRYPT_SAVE) || (op == OP_SAVE) || (op == OP_DECODE_SAVE),
-                               (op == OP_DECODE_SAVE) || (op == OP_DECODE_COPY),
-                               (op == OP_DECRYPT_SAVE) || (op == OP_DECRYPT_COPY)) == 0) &&
-            ((op == OP_SAVE) || (op == OP_DECODE_SAVE) || (op == OP_DECRYPT_SAVE)))
+
+        const bool delete_original =
+            (op == OP_SAVE) || (op == OP_DECODE_SAVE) || (op == OP_DECRYPT_SAVE);
+        const bool decode = (op == OP_DECODE_SAVE) || (op == OP_DECODE_COPY);
+        const bool decrypt = (op == OP_DECRYPT_SAVE) || (op == OP_DECRYPT_COPY);
+
+        if ((mutt_save_message(Context->mailbox, &el, delete_original, decode, decrypt) == 0) &&
+            delete_original)
         {
           menu->redraw |= REDRAW_STATUS;
           if (tag)

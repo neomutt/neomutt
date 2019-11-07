@@ -460,7 +460,7 @@ static int cmp_version_strings(const char *a, const char *b, int level)
     return positive;
   return negative;
 }
-#endif                                 /* gpgme >= 1.9.0 */
+#endif                                   /* gpgme >= 1.9.0 */
 
 /**
  * crypt_keyid - Find the ID for the key

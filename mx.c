@@ -1001,7 +1001,7 @@ struct Message *mx_msg_open_new(struct Mailbox *m, struct Email *e, MsgOpenFlags
     if (m->magic == MUTT_MMDF)
       fputs(MMDF_SEP, msg->fp);
 
-    if (((m->magic == MUTT_MBOX) || (m->magic == MUTT_MMDF)) && flags & MUTT_ADD_FROM)
+    if (((m->magic == MUTT_MBOX) || (m->magic == MUTT_MMDF)) && (flags & MUTT_ADD_FROM))
     {
       if (e)
       {
