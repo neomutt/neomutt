@@ -58,6 +58,7 @@ extern short C_WrapHeaders;
 enum MuttWriteHeaderMode
 {
   MUTT_WRITE_HEADER_NORMAL,   ///< A normal Email, write full header + MIME headers
+  MUTT_WRITE_HEADER_FCC,      ///< fcc mode, like normal mode but for Bcc header
   MUTT_WRITE_HEADER_POSTPONE, ///< A postponed Email, just the envelope info
   MUTT_WRITE_HEADER_EDITHDRS, ///< "light" mode (used for edit_hdrs)
   MUTT_WRITE_HEADER_MIME,     ///< Write protected headers
