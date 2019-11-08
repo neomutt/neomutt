@@ -1430,8 +1430,8 @@ int mutt_menu_loop(struct Menu *menu)
 
     if (SigWinch)
     {
-      mutt_resize_screen();
       SigWinch = 0;
+      mutt_resize_screen();
       mutt_window_clear_screen();
     }
 
