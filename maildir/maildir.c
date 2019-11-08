@@ -300,7 +300,7 @@ static int maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
   if (!m)
     return -1;
 
-  if (!(flags & (MUTT_APPENDNEW | MUTT_NEWFOLDER)))
+  if (!(flags & (MUTT_APPEND | MUTT_APPENDNEW | MUTT_NEWFOLDER)))
   {
     return 0;
   }
