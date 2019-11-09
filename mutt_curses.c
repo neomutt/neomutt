@@ -48,6 +48,8 @@ void mutt_curses_set_attr(int attr)
  */
 void mutt_curses_set_color(enum ColorId color)
 {
+  if (!Colors)
+    return;
 #ifdef HAVE_BKGDSET
   if (Colors->defs[color] != 0)
     bkgdset(Colors->defs[color] | ' ');

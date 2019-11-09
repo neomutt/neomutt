@@ -1257,10 +1257,10 @@ int main(int argc, char *argv[], char *envp[])
 #ifdef USE_AUTOCRYPT
     mutt_autocrypt_cleanup();
 #endif
-    log_queue_empty();
-    mutt_log_stop();
     // TEST43: neomutt (no change to mailbox)
     // TEST44: neomutt (change mailbox)
+    MuttLogger = log_disp_terminal;
+    log_queue_flush(log_disp_terminal);
   }
 
 main_ok:
@@ -1271,7 +1271,6 @@ main_curses:
   mutt_endwin();
   log_queue_flush(log_disp_terminal);
   mutt_unlink_temp_attachments();
-  mutt_log_stop();
   /* Repeat the last message to the user */
   if (repeat_error && ErrorBufMessage)
     puts(ErrorBuf);
@@ -1290,5 +1289,7 @@ main_exit:
   myvarlist_free(&MyVars);
   neomutt_free(&NeoMutt);
   cs_free(&Config);
+  log_queue_empty();
+  mutt_log_stop();
   return rc;
 }
