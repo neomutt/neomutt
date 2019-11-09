@@ -989,18 +989,22 @@ static int mbox_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
   if (!adata)
     return -1;
 
-  adata->fp = mutt_file_fopen(mailbox_path(m), (flags & MUTT_NEWFOLDER) ? "w" : "a");
   if (!adata->fp)
   {
-    mutt_perror(mailbox_path(m));
-    return -1;
-  }
+    adata->fp =
+        mutt_file_fopen(mailbox_path(m), (flags & MUTT_NEWFOLDER) ? "w+" : "a+");
+    if (!adata->fp)
+    {
+      mutt_perror(mailbox_path(m));
+      return -1;
+    }
 
-  if (mbox_lock_mailbox(m, true, true) != false)
-  {
-    mutt_error(_("Couldn't lock %s"), mailbox_path(m));
-    mutt_file_fclose(&adata->fp);
-    return -1;
+    if (mbox_lock_mailbox(m, true, true) != false)
+    {
+      mutt_error(_("Couldn't lock %s"), mailbox_path(m));
+      mutt_file_fclose(&adata->fp);
+      return -1;
+    }
   }
 
   fseek(adata->fp, 0, SEEK_END);
@@ -1426,7 +1430,11 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
   mbox_reset_atime(m, &statbuf);
 
   /* reopen the mailbox in read-only mode */
-  adata->fp = fopen(mailbox_path(m), "r");
+  adata->fp = mbox_open_readwrite(m);
+  if (!adata->fp)
+  {
+    adata->fp = mbox_open_readonly(m);
+  }
   if (!adata->fp)
   {
     unlink(mutt_b2s(tempfile));
@@ -1566,7 +1574,9 @@ static int mbox_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   if (!adata)
     return -1;
 
-  msg->fp = adata->fp;
+  msg->fp = mutt_file_fopen(mailbox_path(m), "r");
+  if (!msg->fp)
+    return -1;
 
   return 0;
 }
@@ -1615,7 +1625,10 @@ static int mbox_msg_close(struct Mailbox *m, struct Message *msg)
   if (!msg)
     return -1;
 
-  msg->fp = NULL;
+  if (msg->write)
+    msg->fp = NULL;
+  else
+    mutt_file_fclose(&msg->fp);
 
   return 0;
 }
