@@ -1351,6 +1351,14 @@ static enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
     mutt_buffer_strcpy(&m->pathbuf, buf->data);
     /* int rc = */ mx_path_canon2(m, C_Folder);
 
+    if (m->magic <= MUTT_UNKNOWN)
+    {
+      mutt_error("Unknown Mailbox: %s", m->realpath);
+      mailbox_free(&m);
+      return MUTT_CMD_ERROR;
+      continue;
+    }
+
     bool new_account = false;
     struct Account *a = mx_ac_find(m);
     if (!a)
@@ -2968,6 +2976,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
 {
   char buf[1024];
   int need_pause = 0;
+  int rc = 1;
   struct Buffer err = mutt_buffer_make(256);
 
   mutt_grouplist_init();
@@ -3101,7 +3110,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
       if (access(np->data, F_OK))
       {
         mutt_perror(np->data);
-        return 1; // TEST10: neomutt -F missing
+        goto done; // TEST10: neomutt -F missing
       }
     }
   }
@@ -3163,7 +3172,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
     need_pause = 1; // TEST13: neomutt -e broken
 
   if (!get_hostname())
-    return 1;
+    goto done;
 
   if (!C_Realname)
   {
@@ -3180,7 +3189,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   {
     log_queue_flush(log_disp_terminal);
     if (mutt_any_key_to_continue(NULL) == 'q')
-      return 1; // TEST14: neomutt -e broken (press 'q')
+      goto done; // TEST14: neomutt -e broken (press 'q')
   }
 
   mutt_file_mkdir(C_Tmpdir, S_IRWXU);
@@ -3199,9 +3208,11 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
     neomutt_mailboxlist_clear(&ml);
   }
 #endif
+  rc = 0;
 
+done:
   FREE(&err.data);
-  return 0;
+  return rc;
 }
 
 /**
