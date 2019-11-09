@@ -1389,6 +1389,9 @@ static enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
       mailbox_free(&m);
       if (new_account)
       {
+        cs_subset_free(&a->sub);
+        FREE(&a->name);
+        notify_free(&a->notify);
         FREE(&a);
       }
       continue;

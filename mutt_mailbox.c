@@ -307,6 +307,7 @@ void mutt_mailbox_next_buffer(struct Mailbox *m_cur, struct Buffer *s)
         {
           mutt_buffer_strcpy(s, mailbox_path(np->mailbox));
           mutt_buffer_pretty_mailbox(s);
+          neomutt_mailboxlist_clear(&ml);
           return;
         }
         if (mutt_str_strcmp(mutt_b2s(s), mailbox_path(np->mailbox)) == 0)

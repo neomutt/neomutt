@@ -701,7 +701,9 @@ int main(int argc, char *argv[], char *envp[])
   }
 
   /* set defaults and read init files */
-  if (mutt_init(flags & MUTT_CLI_NOSYSRC, &commands) != 0)
+  int rc2 = mutt_init(flags & MUTT_CLI_NOSYSRC, &commands);
+  mutt_list_free(&commands);
+  if (rc2 != 0)
     goto main_curses;
 
   /* The command line overrides the config */
@@ -715,8 +717,6 @@ int main(int argc, char *argv[], char *envp[])
     mutt_perror("log file");
     goto main_exit;
   }
-
-  mutt_list_free(&commands);
 
 #ifdef USE_NNTP
   /* "$news_server" precedence: command line, config file, environment, system file */
@@ -884,6 +884,7 @@ int main(int argc, char *argv[], char *envp[])
         if (mutt_parse_mailto(e->env, &bodytext, argv[i]) < 0)
         {
           mutt_error(_("Failed to parse mailto: link"));
+          email_free(&e);
           goto main_curses; // TEST25: neomutt mailto:
         }
       }
@@ -895,6 +896,7 @@ int main(int argc, char *argv[], char *envp[])
         TAILQ_EMPTY(&e->env->cc))
     {
       mutt_error(_("No recipients specified"));
+      email_free(&e);
       goto main_curses; // TEST26: neomutt -s test (with autoedit=yes)
     }
 
@@ -921,6 +923,7 @@ int main(int argc, char *argv[], char *envp[])
           if (edit_infile)
           {
             mutt_error(_("Can't use -E flag with stdin"));
+            email_free(&e);
             goto main_curses; // TEST27: neomutt -E -H -
           }
           fp_in = stdin;
@@ -933,6 +936,7 @@ int main(int argc, char *argv[], char *envp[])
           if (!fp_in)
           {
             mutt_perror(mutt_b2s(&expanded_infile));
+            email_free(&e);
             goto main_curses; // TEST28: neomutt -E -H missing
           }
         }
@@ -950,6 +954,7 @@ int main(int argc, char *argv[], char *envp[])
         {
           mutt_file_fclose(&fp_in);
           mutt_perror(mutt_b2s(&tempfile));
+          email_free(&e);
           goto main_curses; // TEST29: neomutt -H existing-file (where tmpdir=/path/to/FILE blocking tmpdir)
         }
         if (fp_in)
@@ -966,6 +971,7 @@ int main(int argc, char *argv[], char *envp[])
         if (!fp_in)
         {
           mutt_perror(mutt_b2s(&tempfile));
+          email_free(&e);
           goto main_curses; // TEST30: can't test
         }
       }
@@ -992,6 +998,8 @@ int main(int argc, char *argv[], char *envp[])
         if (fstat(fileno(fp_in), &st) != 0)
         {
           mutt_perror(draft_file);
+          email_free(&e);
+          email_free(&e_tmp);
           goto main_curses; // TEST31: can't test
         }
         e_tmp->content->length = st.st_size;
@@ -999,7 +1007,7 @@ int main(int argc, char *argv[], char *envp[])
         if (mutt_prepare_template(fp_in, NULL, e, e_tmp, false) < 0)
         {
           mutt_error(_("Can't parse message template: %s"), draft_file);
-          mutt_env_free(&opts_env);
+          email_free(&e);
           email_free(&e_tmp);
           goto main_curses;
         }
@@ -1066,6 +1074,7 @@ int main(int argc, char *argv[], char *envp[])
         {
           mutt_error(_("%s: unable to attach file"), np->data);
           mutt_list_free(&attach);
+          email_free(&e);
           goto main_curses; // TEST32: neomutt john@example.com -a missing
         }
       }
@@ -1087,12 +1096,14 @@ int main(int argc, char *argv[], char *envp[])
         if (truncate(mutt_b2s(&expanded_infile), 0) == -1)
         {
           mutt_perror(mutt_b2s(&expanded_infile));
+          email_free(&e);
           goto main_curses; // TEST33: neomutt -H read-only -s test john@example.com -E
         }
         fp_out = mutt_file_fopen(mutt_b2s(&expanded_infile), "a");
         if (!fp_out)
         {
           mutt_perror(mutt_b2s(&expanded_infile));
+          email_free(&e);
           goto main_curses; // TEST34: can't test
         }
 
@@ -1116,6 +1127,7 @@ int main(int argc, char *argv[], char *envp[])
         if ((mutt_write_mime_body(e->content, fp_out) == -1))
         {
           mutt_file_fclose(&fp_out);
+          email_free(&e);
           goto main_curses; // TEST35: can't test
         }
         mutt_file_fclose(&fp_out);

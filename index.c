@@ -2322,7 +2322,7 @@ int mutt_index_menu(void)
             CurrentNewsSrv = nntp_select_server(Context ? Context->mailbox : NULL,
                                                 C_NewsServer, false);
             if (!CurrentNewsSrv)
-              break;
+              goto changefoldercleanup;
             if (flags)
               cp = _("Open newsgroup in read-only mode");
             else
