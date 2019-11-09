@@ -1267,7 +1267,6 @@ int mutt_index_menu(void)
       if (SigWinch)
       {
         SigWinch = 0;
-        mutt_flushinp();
         mutt_resize_screen();
         menu->top = 0; /* so we scroll the right amount */
         /* force a real complete redraw.  clrtobot() doesn't seem to be able

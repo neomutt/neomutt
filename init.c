@@ -1356,7 +1356,6 @@ static enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
       mutt_error("Unknown Mailbox: %s", m->realpath);
       mailbox_free(&m);
       return MUTT_CMD_ERROR;
-      continue;
     }
 
     bool new_account = false;
