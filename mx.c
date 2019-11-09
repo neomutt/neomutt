@@ -383,7 +383,6 @@ error:
     account_mailbox_remove(m->account, m);
   ctx_free(&ctx);
   return NULL;
-
 }
 
 /**

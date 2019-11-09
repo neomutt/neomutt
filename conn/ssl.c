@@ -1239,6 +1239,11 @@ static int ssl_negotiate(struct Connection *conn, struct SslSockData *ssldata)
   return 0;
 }
 
+/**
+ * sockdata - Get a Connection's socket data
+ * @param conn Connection
+ * @retval ptr Socket data
+ */
 static inline struct SslSockData *sockdata(struct Connection *conn)
 {
   return conn->sockdata;

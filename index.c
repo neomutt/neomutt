@@ -604,7 +604,6 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
     menu->current = ci_first_message();
 }
 
-
 /**
  * mailbox_index_observer - Listen for Mailbox changes - Implements ::observer_t()
  *
@@ -640,7 +639,8 @@ int mailbox_index_observer(struct NotifyCallback *nc)
  * @retval -1 Error
  */
 static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
-                              char *buf, size_t buflen, int *oldcount, int *index_hint, bool *pager_return)
+                              char *buf, size_t buflen, int *oldcount,
+                              int *index_hint, bool *pager_return)
 {
 #ifdef USE_NNTP
   if (OptNews)
@@ -672,7 +672,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
     }
   }
 
-   /* past this point, we don't return to the pager on error */
+  /* past this point, we don't return to the pager on error */
   if (pager_return)
     *pager_return = false;
 
@@ -721,14 +721,14 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
     /* If the `folder-hook` were to call `unmailboxes`, then the Mailbox (`m`)
      * could be deleted, leaving `m` dangling. */
     // TODO: Refactor this function to avoid the need for an observer
-    notify_observer_add(m->notify, NT_MAILBOX, 0, mailbox_index_observer, IP &m);
+    notify_observer_add(m->notify, NT_MAILBOX, 0, mailbox_index_observer, IP & m);
   }
   mutt_folder_hook(buf, m ? m->name : NULL);
   if (m)
   {
     /* `m` is still valid, but we won't need the observer again before the end
      * of the function. */
-    notify_observer_remove(m->notify, mailbox_index_observer, IP &m);
+    notify_observer_remove(m->notify, mailbox_index_observer, IP & m);
   }
 
   int flags = MUTT_OPEN_NO_FLAGS;
@@ -1077,7 +1077,7 @@ int mutt_index_menu(void)
   bool do_mailbox_notify = true;
   int close = 0; /* did we OP_QUIT or OP_EXIT out of this menu? */
   int attach_msg = OptAttachMsg;
-  bool in_pager = false;  /* set when pager redirects a function through the index */
+  bool in_pager = false; /* set when pager redirects a function through the index */
 
   struct Menu *menu = mutt_menu_new(MENU_MAIN);
   menu->menu_make_entry = index_make_entry;
@@ -2258,7 +2258,7 @@ int mutt_index_menu(void)
       case OP_MAIN_CHANGE_GROUP_READONLY:
 #endif
       {
-        bool pager_return = true;  /* return to display message in pager */
+        bool pager_return = true; /* return to display message in pager */
 
         struct Buffer *folderbuf = mutt_buffer_pool_get();
         mutt_buffer_alloc(folderbuf, PATH_MAX);

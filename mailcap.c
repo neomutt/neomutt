@@ -464,7 +464,8 @@ void mailcap_entry_free(struct MailcapEntry **ptr)
  *
  * Find the given type in the list of mailcap files.
  */
-bool mailcap_lookup(struct Body *a, char *type, size_t typelen, struct MailcapEntry *entry, enum MailcapLookup opt)
+bool mailcap_lookup(struct Body *a, char *type, size_t typelen,
+                    struct MailcapEntry *entry, enum MailcapLookup opt)
 {
   /* rfc1524 specifies that a path of mailcap files should be searched.
    * joy.  They say

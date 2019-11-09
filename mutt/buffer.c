@@ -409,7 +409,7 @@ size_t mutt_buffer_concat_path(struct Buffer *buf, const char *dir, const char *
  * If either is missing, then the other will be copied exactly.
  */
 size_t mutt_buffer_concatn_path(struct Buffer *buf, const char *dir,
-                              size_t dirlen, const char *fname, size_t fnamelen)
+                                size_t dirlen, const char *fname, size_t fnamelen)
 {
   size_t len = 0;
   mutt_buffer_reset(buf);

@@ -332,7 +332,6 @@ void mutt_buffer_expand_path_regex(struct Buffer *buf, bool regex)
       }
     }
   }
-
 }
 
 /**
