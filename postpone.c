@@ -304,7 +304,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   struct Context *ctx_post = NULL;
 
   struct Mailbox *m = mx_path_resolve(C_Postponed);
-  if (ctx->mailbox == m)
+  if (ctx && (ctx->mailbox == m))
     ctx_post = ctx;
   else
     ctx_post = mx_mbox_open(m, MUTT_NOSORT);
