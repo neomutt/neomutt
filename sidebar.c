@@ -844,6 +844,8 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
       mutt_curses_set_color(MT_COLOR_SIDEBAR_HIGHLIGHT);
     else if (m->has_new)
       mutt_curses_set_color(MT_COLOR_SIDEBAR_NEW);
+    else if (m->msg_unread > 0)
+      mutt_curses_set_color(MT_COLOR_SIDEBAR_UNREAD);
     else if (m->msg_flagged > 0)
       mutt_curses_set_color(MT_COLOR_SIDEBAR_FLAGGED);
     else if ((Colors->defs[MT_COLOR_SIDEBAR_SPOOLFILE] != 0) &&

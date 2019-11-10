@@ -1104,6 +1104,11 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
                 </row>
                 <row>
                   <entry></entry>
+                  <entry><literal>sidebar_unread</literal></entry>
+                  <entry>Mailbox contains unread mail</entry>
+                </row>
+                <row>
+                  <entry></entry>
                   <entry><literal>sidebar_flagged</literal></entry>
                   <entry>Mailbox contains flagged mail</entry>
                 </row>
@@ -5069,6 +5074,10 @@ uncolor index_date
               <row>
                 <entry>sidebar_spoolfile</entry>
                 <entry>Mailbox that receives incoming mail</entry>
+              </row>
+              <row>
+                <entry>sidebar_unread</entry>
+                <entry>Mailboxes containing unread mail</entry>
               </row>
             </tbody>
           </tgroup>
@@ -16758,6 +16767,13 @@ set sort_browser="reverse-size"
                 <entry>default</entry>
                 <entry>
                   Mailbox that receives incoming mail
+                </entry>
+              </row>
+              <row>
+                <entry><literal>sidebar_unread</literal></entry>
+                <entry>default</entry>
+                <entry>
+                  Mailboxes containing unread mail
                 </entry>
               </row>
             </tbody>
