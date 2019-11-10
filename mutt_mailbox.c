@@ -51,12 +51,12 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
     case MUTT_NNTP:
     case MUTT_NOTMUCH:
     case MUTT_IMAP:
-      if (mb_magic != MUTT_IMAP)
+      if ((mb_magic != MUTT_IMAP) && C_MailCheckRecent)
         m_check->has_new = false;
       m_check->magic = mb_magic;
       break;
     default:
-      if (m_cur == m_check)
+      if ((m_cur == m_check) && C_MailCheckRecent)
         m_check->has_new = false;
 
       if ((stat(mailbox_path(m_check), &sb) != 0) ||

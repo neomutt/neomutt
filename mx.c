@@ -375,6 +375,9 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
 
   OptForceRefresh = false;
 
+  if (C_MailCheckRecent)
+    ctx->mailbox->has_new = false;
+
   return ctx;
 
 error:
