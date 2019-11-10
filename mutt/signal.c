@@ -32,6 +32,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "message.h"
 #include "signal2.h"
 
@@ -63,6 +64,41 @@ static sig_handler_t SegvHandler = mutt_sig_exit_handler;
 volatile sig_atomic_t SigInt;   ///< true after SIGINT is received
 volatile sig_atomic_t SigWinch; ///< true after SIGWINCH is received
 
+static void exit_print_int_recursive(int n)
+{
+  char digit;
+
+  if (n > 9)
+    exit_print_int_recursive(n / 10);
+
+  digit = '0' + (n % 10);
+  write(1, &digit, 1);
+}
+
+static void exit_print_int(int n)
+{
+  if (n < 0)
+  {
+    write(1, "-", 1);
+    n = -n;
+  }
+  exit_print_int_recursive(n);
+}
+
+static void exit_print_string(const char *str)
+{
+  size_t len = 0;
+
+  if (!str)
+    return;
+
+  while (str[len])
+    len++;
+
+  if (len > 0)
+    write(1, str, len);
+}
+
 /**
  * mutt_sig_empty_handler - Dummy signal handler
  * @param sig Signal number, e.g. SIGINT
@@ -80,15 +116,17 @@ void mutt_sig_empty_handler(int sig)
  */
 void mutt_sig_exit_handler(int sig)
 {
+  exit_print_string("Caught signal ");
+  exit_print_int(sig);
+  exit_print_string(" ");
 #ifdef HAVE_DECL_SYS_SIGLIST
-  printf(_("Caught signal %d (%s) ...  Exiting\n"), sig, sys_siglist[sig]);
+  exit_print_string(sys_siglist[sig]);
 #elif (defined(__sun__) && defined(__svr4__))
-  printf(_("Caught signal %d (%s) ...  Exiting\n"), sig, _sys_siglist[sig]);
+  exit_print_string(_sys_siglist[sig]);
 #elif (defined(__alpha) && defined(__osf__))
-  printf(_("Caught signal %d (%s) ...  Exiting\n"), sig, __sys_siglist[sig]);
-#else
-  printf(_("Caught signal %d ...  Exiting\n"), sig);
+  exit_print_string(__sys_siglist[sig]);
 #endif
+  exit_print_string("...  Exiting\n");
   exit(0);
 }
 
