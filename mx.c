@@ -387,6 +387,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
     goto error;
   }
 
+  m->has_new = false;
   OptForceRefresh = false;
 
   return ctx;
@@ -419,8 +420,6 @@ void mx_fastclose_mailbox(struct Mailbox *m)
 
   if (m->mx_ops)
     m->mx_ops->mbox_close(m);
-
-  mailbox_changed(m, MBN_CLOSED);
 
   mutt_hash_free(&m->subj_hash);
   mutt_hash_free(&m->id_hash);
@@ -592,7 +591,7 @@ int mx_mbox_close(struct Context **ptr)
   if (C_MailCheckRecent)
     m->has_new = false;
 
-  if (m->readonly || m->dontwrite || m->append)
+  if (m->readonly || m->dontwrite || m->append || m->peekonly)
   {
     mx_fastclose_mailbox(m);
     ctx_free(ptr);

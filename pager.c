@@ -1951,8 +1951,11 @@ static void pager_custom_redraw(struct Menu *pager_menu)
     mutt_window_move_abs(0, 0);
     mutt_window_clrtobot();
 
-    if (IsEmail(rd->extra) && Context && ((Context->mailbox->vcount + 1) < C_PagerIndexLines))
+    if (IsEmail(rd->extra) && Context && Context->mailbox &&
+        ((Context->mailbox->vcount + 1) < C_PagerIndexLines))
+    {
       rd->indexlen = Context->mailbox->vcount + 1;
+    }
     else
       rd->indexlen = C_PagerIndexLines;
 
@@ -2412,7 +2415,7 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
 
         if ((check == MUTT_NEW_MAIL) || (check == MUTT_REOPENED))
         {
-          if (rd.menu && Context)
+          if (rd.menu && Context && Context->mailbox)
           {
             /* After the mailbox has been updated,
              * rd.menu->current might be invalid */
