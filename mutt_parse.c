@@ -33,6 +33,7 @@
 #include "email/lib.h"
 #include "mutt_parse.h"
 #include "ncrypt/lib.h"
+#include "mutt_globals.h"
 #include "mx.h"
 
 struct ListHead AttachAllow = STAILQ_HEAD_INITIALIZER(AttachAllow); ///< List of attachment types to be counted
@@ -144,7 +145,7 @@ static int count_body_parts(struct Body *body)
       /* Always recurse multiparts, except multipart/alternative. */
       shallrecurse = true;
       if (mutt_istr_equal(bp->subtype, "alternative"))
-        shallrecurse = false;
+        shallrecurse = C_CountAlternatives;
     }
 
     if ((bp->disposition == DISP_INLINE) && (bp->type != TYPE_MULTIPART) &&

@@ -11343,6 +11343,12 @@ set preferred_languages="fr,en,de"
         download the message just once.
       </para>
       <para>
+        By default, Mutt will not search inside
+        <literal>multipart/alternative</literal> containers.  This can be changed
+        via the <link linkend="count-alternatives">$count_alternatives</link>
+        configuration variable.
+      </para>
+      <para>
         The syntax is:
       </para>
       <cmdsynopsis>

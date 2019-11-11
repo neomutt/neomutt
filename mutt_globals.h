@@ -141,6 +141,7 @@ WHERE bool C_BrailleFriendly;                ///< Config: Move the cursor to the
 WHERE bool C_Confirmappend;                  ///< Config: Confirm before appending emails to a mailbox
 WHERE bool C_Confirmcreate;                  ///< Config: Confirm before creating a new mailbox
 WHERE bool C_CopyDecodeWeed;                 ///< Config: Controls whether to weed headers when copying or saving emails
+WHERE bool C_CountAlternatives;              ///< Config: Recurse inside multipart/alternatives while counting attachments
 WHERE bool C_DeleteUntag;                    ///< Config: Untag messages when they are marked for deletion
 WHERE bool C_FlagSafe;                       ///< Config: Protect flagged messages from deletion
 WHERE bool C_ForwardDecode;                  ///< Config: Decode the message when forwarding it

@@ -290,6 +290,9 @@ struct ConfigDef MainVars[] = {
   { "copy_decode_weed", DT_BOOL, &C_CopyDecodeWeed, false, 0, NULL,
     "Controls whether to weed headers when copying or saving emails"
   },
+  { "count_alternatives", DT_BOOL, &C_CountAlternatives, false, 0, NULL,
+    "Recurse inside multipart/alternatives while counting attachments"
+  },
   { "crypt_chars", DT_MBTABLE|R_INDEX|R_PAGER, &C_CryptChars, IP "SPsK ", 0, NULL,
     "User-configurable crypto flags: signed, encrypted etc."
   },
