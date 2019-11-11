@@ -569,7 +569,6 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
   old_msg_count = 0;
 
   /* simulate a close */
-  mailbox_changed(m, MBN_CLOSED);
   mutt_hash_free(&m->id_hash);
   mutt_hash_free(&m->subj_hash);
   mutt_hash_free(&m->label_hash);
@@ -708,6 +707,7 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
     FREE(&e_old);
   }
 
+  mailbox_changed(m, MBN_UPDATE);
   m->quiet = false;
 
   return (m->changed || msg_mod) ? MUTT_REOPENED : MUTT_NEW_MAIL;
@@ -1500,6 +1500,7 @@ bail: /* Come here in case of disaster */
     goto fatal;
   }
 
+  mailbox_changed(m, MBN_UPDATE);
   if (need_sort)
   {
     /* if the mailbox was reopened, the thread tree will be invalid so make
@@ -1816,19 +1817,11 @@ static int mbox_mbox_check_stats(struct Mailbox *m, int flags)
 
   if (flags && mutt_file_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->stats_last_checked) > 0)
   {
+    bool old_peek = m->peekonly;
     struct Context *ctx = mx_mbox_open(m, MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK);
-    if (ctx)
-    {
-      m->msg_count = ctx->mailbox->msg_count;
-      m->msg_unread = ctx->mailbox->msg_unread;
-      m->msg_flagged = ctx->mailbox->msg_flagged;
-      m->stats_last_checked = ctx->mailbox->mtime;
-      mx_mbox_close(&ctx);
-    }
+    mx_mbox_close(&ctx);
+    m->peekonly = old_peek;
   }
-
-  if (m->msg_new == 0)
-    m->has_new = false;
 
   return m->msg_new;
 }

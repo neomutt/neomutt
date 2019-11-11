@@ -90,8 +90,10 @@ void ctx_cleanup(struct Context *ctx)
     notify_observer_remove(ctx->mailbox->notify, ctx_mailbox_observer, IP ctx);
 
   struct Notify *notify = ctx->notify;
+  struct Mailbox *m = ctx->mailbox;
   memset(ctx, 0, sizeof(struct Context));
   ctx->notify = notify;
+  ctx->mailbox = m;
 }
 
 /**

@@ -1202,13 +1202,20 @@ int mutt_index_menu(void)
         /* avoid the message being overwritten by mailbox */
         do_mailbox_notify = false;
 
-        bool q = Context->mailbox->quiet;
-        Context->mailbox->quiet = true;
-        update_index(menu, Context, check, oldcount, index_hint);
-        Context->mailbox->quiet = q;
+        if (Context && Context->mailbox)
+        {
+          bool q = Context->mailbox->quiet;
+          Context->mailbox->quiet = true;
+          update_index(menu, Context, check, oldcount, index_hint);
+          Context->mailbox->quiet = q;
+          menu->max = Context->mailbox->vcount;
+        }
+        else
+        {
+          menu->max = 0;
+        }
 
         menu->redraw = REDRAW_FULL;
-        menu->max = Context->mailbox->vcount;
 
         OptSearchInvalid = true;
       }
