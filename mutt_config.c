@@ -1597,6 +1597,17 @@ struct ConfigDef MuttVars[] = {
   ** those, and displays worse performance when enabled.  Your
   ** mileage may vary.
   */
+#ifdef USE_ZLIB
+  { "imap_deflate", DT_BOOL, &C_ImapDeflate, true },
+  /*
+  ** .pp
+  ** When \fIset\fP, mutt will use the COMPRESS=DEFLATE extension (RFC4978)
+  ** if advertised by the server.
+  ** .pp
+  ** In general a good compression efficiency can be achieved, which
+  ** speeds up reading large mailboxes also on fairly good connections.
+  */
+#endif
   { "imap_delim_chars", DT_STRING, &C_ImapDelimChars, IP "/." },
   /*
   ** .pp

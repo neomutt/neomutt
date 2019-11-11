@@ -62,12 +62,25 @@ bool C_ImapServernoise; ///< Config: (imap) Display server warnings as error mes
  * @note This must be kept in the same order as ImapCaps.
  */
 static const char *const Capabilities[] = {
-  "IMAP4",       "IMAP4rev1",      "STATUS",
-  "ACL",         "NAMESPACE",      "AUTH=CRAM-MD5",
-  "AUTH=GSSAPI", "AUTH=ANONYMOUS", "AUTH=OAUTHBEARER",
-  "STARTTLS",    "LOGINDISABLED",  "IDLE",
-  "SASL-IR",     "ENABLE",         "CONDSTORE",
-  "QRESYNC",     "LIST-EXTENDED",  "X-GM-EXT-1",
+  "IMAP4",
+  "IMAP4rev1",
+  "STATUS",
+  "ACL",
+  "NAMESPACE",
+  "AUTH=CRAM-MD5",
+  "AUTH=GSSAPI",
+  "AUTH=ANONYMOUS",
+  "AUTH=OAUTHBEARER",
+  "STARTTLS",
+  "LOGINDISABLED",
+  "IDLE",
+  "SASL-IR",
+  "ENABLE",
+  "CONDSTORE",
+  "QRESYNC",
+  "LIST-EXTENDED",
+  "COMPRESS=DEFLATE",
+  "X-GM-EXT-1",
   NULL,
 };
 
