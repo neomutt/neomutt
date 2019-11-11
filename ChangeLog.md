@@ -1,3 +1,22 @@
+2019-11-11  Richard Russon  \<rich@flatcap.org\>
+* Bug Fixes
+  - browser: fix directory view
+  - fix crash in mutt_extract_token()
+  - force a screen refresh
+  - fix crash sending message from command line
+  - notmuch: use nm_default_uri if no mailbox data
+  - fix forward attachments
+  - fix: vfprintf undefined behaviour in body_handler
+  - Fix relative symlink resolution
+  - fix: trash to non-existent file/dir
+  - fix re-opening of mbox Mailboxes
+  - close logging as late as possible
+  - log unknown mailboxes
+  - fix crash in command line postpone
+  - fix memory leaks
+  - fix icommand parsing
+  - fix new mail interaction with mail_check_recent
+
 2019-11-02  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
   - Mailboxes command with empty backticks
