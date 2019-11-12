@@ -24,6 +24,7 @@
 #include "acutest.h"
 #include "config.h"
 #include "mutt/mutt.h"
+#include <limits.h>
 
 struct TestValue
 {
@@ -47,15 +48,27 @@ static const struct TestValue tests[] = {
   { "4294967295",  0,    4294967295 },
 
   // Out of range tests
+#if (__WORDSIZE == 64)
   { "4294967296",  -2,   0 },
   { "4294967297",  -2,   0 },
   { "4294967298",  -2,   0 },
+#else
+  { "4294967296",  -1,   0 },
+  { "4294967297",  -1,   0 },
+  { "4294967298",  -1,   0 },
+#endif
   { "18446744073709551616", -1, 0 },
 
   // Invalid tests
+#if (__WORDSIZE == 64)
   { "-3",          -2,   0 },
   { " -3",         -2,   0 },
   { "  -3",        -2,   0 },
+#else
+  { "-3",          0,   4294967293 },
+  { " -3",         0,   4294967293 },
+  { "  -3",        0,   4294967293 },
+#endif
   { "abc",         1,    0 },
   { "a123",        1,    0 },
   { "a-123",       1,    0 },

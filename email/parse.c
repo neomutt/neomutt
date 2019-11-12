@@ -694,7 +694,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
           {
             if (e)
             {
-              int rc = mutt_str_atol(p, &e->content->length);
+              int rc = mutt_str_atol(p, (long *) &e->content->length);
               if ((rc < 0) || (e->content->length < 0))
                 e->content->length = -1;
               if (e->content->length > CONTENT_TOO_BIG)
