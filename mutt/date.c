@@ -29,6 +29,7 @@
 #include "config.h"
 #include <ctype.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -416,13 +417,13 @@ time_t mutt_date_epoch(void)
  * mutt_date_epoch_ms - Return the number of milliseconds since the Unix epoch
  * @retval ms The number of ms since the Unix epoch, or 0 on failure
  */
-size_t mutt_date_epoch_ms(void)
+uint64_t mutt_date_epoch_ms(void)
 {
   struct timeval tv = { 0, 0 };
   gettimeofday(&tv, NULL);
   /* We assume that gettimeofday doesn't modify its first argument on failure.
    * We also kind of assume that gettimeofday does not fail. */
-  return tv.tv_sec * 1000 + tv.tv_usec / 1000;
+  return (uint64_t) tv.tv_sec * 1000 + tv.tv_usec / 1000;
 }
 
 /**

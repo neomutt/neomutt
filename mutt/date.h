@@ -24,6 +24,7 @@
 #define MUTT_LIB_DATE_H
 
 #include <stdbool.h>
+#include <stdint.h>
 #include <time.h>
 
 /* theoretically time_t can be float but it is integer on most (if not all) systems */
@@ -49,7 +50,7 @@ struct Tz
 time_t    mutt_date_add_timeout(time_t now, long timeout);
 int       mutt_date_check_month(const char *s);
 time_t    mutt_date_epoch(void);
-size_t    mutt_date_epoch_ms(void);
+uint64_t  mutt_date_epoch_ms(void);
 struct tm mutt_date_gmtime(time_t t);
 bool      mutt_date_is_day_name(const char *s);
 size_t    mutt_date_localtime_format(char *buf, size_t buflen, const char *format, time_t t);

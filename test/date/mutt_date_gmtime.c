@@ -56,6 +56,6 @@ void test_mutt_date_gmtime(void)
   {
     TEST_CASE("Today");
     struct tm tm = mutt_date_gmtime(MUTT_DATE_NOW);
-    TEST_CHECK(tm.tm_yday >= 119);
+    TEST_CHECK(tm.tm_year >= 119);
   }
 }
