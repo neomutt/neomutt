@@ -64,7 +64,7 @@ void mutt_sig_empty_handler(int sig)
  */
 void mutt_sig_exit_handler(int sig)
 {
-#if HAVE_DECL_SYS_SIGLIST
+#ifdef HAVE_DECL_SYS_SIGLIST
   printf(_("Caught signal %d (%s) ...  Exiting.\n"), sig, sys_siglist[sig]);
 #elif (defined(__sun__) && defined(__svr4__))
   printf(_("Caught signal %d (%s) ...  Exiting.\n"), sig, _sys_siglist[sig]);

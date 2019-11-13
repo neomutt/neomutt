@@ -561,7 +561,7 @@ const struct Binding OpBrowser[] = { /* map: browser */
   { "select-new",            OP_BROWSER_NEW_FILE,            "N" },
   { "sort",                  OP_SORT,                        "o" },
   { "sort-reverse",          OP_SORT_REVERSE,                "O" },
-#if defined USE_IMAP || defined USE_NNTP
+#if defined(USE_IMAP) || defined(USE_NNTP)
   { "subscribe",             OP_BROWSER_SUBSCRIBE,           "s" },
 #endif
 #ifdef USE_NNTP
@@ -574,7 +574,7 @@ const struct Binding OpBrowser[] = { /* map: browser */
 #ifdef USE_NNTP
   { "uncatchup",             OP_UNCATCHUP,                   NULL },
 #endif
-#if defined USE_IMAP || defined USE_NNTP
+#if defined(USE_IMAP) || defined(USE_NNTP)
   { "unsubscribe",           OP_BROWSER_UNSUBSCRIBE,         "u" },
 #endif
 #ifdef USE_NNTP

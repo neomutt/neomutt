@@ -281,7 +281,7 @@ static int cmp_version_strings(const char *a, const char *b, int level)
 {
   return gpgrt_cmp_version(a, b, level);
 }
-#elif GPGME_VERSION_NUMBER >= 0x010900 /* gpgme >= 1.9.0 */
+#elif (GPGME_VERSION_NUMBER >= 0x010900) /* gpgme >= 1.9.0 */
 
 /**
  * parse_version_number - Parse a version string
@@ -460,7 +460,7 @@ static int cmp_version_strings(const char *a, const char *b, int level)
     return positive;
   return negative;
 }
-#endif                                 /* gpgme >= 1.9.0 */
+#endif                                   /* gpgme >= 1.9.0 */
 
 /**
  * crypt_keyid - Find the ID for the key

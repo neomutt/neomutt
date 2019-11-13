@@ -1682,8 +1682,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
   else if ((s->flags & MUTT_DISPLAY) || ((b->disposition == DISP_ATTACH) && !OptViewAttach &&
                                          C_HonorDisposition && (plaintext || handler)))
   {
-    char keystroke[128];
-    keystroke[0] = '\0';
+    char keystroke[128] = { 0 };
     struct Buffer msg = mutt_buffer_make(256);
 
     if (!OptViewAttach)

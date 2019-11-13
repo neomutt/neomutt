@@ -1334,14 +1334,12 @@ static int mbox_mbox_sync(struct Mailbox *m, int *index_hint)
     }
   }
 
-  if (fclose(fp) != 0)
+  if (mutt_file_fclose(&fp) != 0)
   {
-    fp = NULL;
     mutt_debug(LL_DEBUG1, "mutt_file_fclose (&) returned non-zero\n");
     mutt_perror(mutt_b2s(tempfile));
     goto bail;
   }
-  fp = NULL;
 
   /* Save the state of this folder. */
   if (stat(mailbox_path(m), &statbuf) == -1)

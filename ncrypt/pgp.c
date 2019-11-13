@@ -1371,7 +1371,7 @@ struct Body *pgp_class_sign_message(struct Body *a)
   mutt_file_fclose(&fp_pgp_out);
   unlink(mutt_b2s(signedfile));
 
-  if (fclose(fp_sig) != 0)
+  if (mutt_file_fclose(&fp_sig) != 0)
   {
     mutt_perror("fclose");
     unlink(mutt_b2s(sigfile));

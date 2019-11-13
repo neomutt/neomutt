@@ -299,7 +299,7 @@ static int start_curses(void)
   SLtt_Ignore_Beep = 1; /* don't do that #*$@^! annoying visual beep! */
   SLsmg_Display_Eight_Bit = 128; /* characters above this are printable */
   SLtt_set_color(0, NULL, "default", "default");
-#if SLANG_VERSION >= 20000
+#if (SLANG_VERSION >= 20000)
   SLutf8_enable(-1);
 #endif
 #else

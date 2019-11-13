@@ -180,7 +180,7 @@ static int be_barf_file(const char *path, char **buf, int buflen)
   }
   for (int i = 0; i < buflen; i++)
     fputs(buf[i], fp);
-  if (fclose(fp) == 0)
+  if (mutt_file_fclose(&fp) == 0)
     return 0;
   mutt_window_printf("fclose: %s\n", strerror(errno));
   return -1;

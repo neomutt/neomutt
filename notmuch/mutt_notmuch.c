@@ -961,7 +961,7 @@ static void append_message(header_cache_t *h, struct Mailbox *m,
         if (fp)
         {
           e = maildir_parse_stream(MUTT_MAILDIR, fp, newpath, false, NULL);
-          fclose(fp);
+          mutt_file_fclose(&fp);
 
           mutt_debug(LL_DEBUG1, "nm: not up-to-date: %s -> %s\n", path, newpath);
         }
