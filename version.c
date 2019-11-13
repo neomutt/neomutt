@@ -43,6 +43,9 @@
 #ifdef CRYPT_BACKEND_GPGME
 #include "ncrypt/crypt_gpgme.h"
 #endif
+#ifdef HAVE_NOTMUCH
+#include <notmuch.h>
+#endif
 
 /* #include "muttlib.h" */
 const char *mutt_make_version(void);
@@ -417,6 +420,11 @@ void print_version(FILE *fp)
 
 #ifdef CRYPT_BACKEND_GPGME
   fprintf(fp, "\nGPGme: %s", mutt_gpgme_print_version());
+#endif
+
+#ifdef HAVE_NOTMUCH
+  fprintf(fp, "\nlibnotmuch: %d.%d.%d", LIBNOTMUCH_MAJOR_VERSION,
+          LIBNOTMUCH_MINOR_VERSION, LIBNOTMUCH_MICRO_VERSION);
 #endif
 
 #ifdef USE_HCACHE
