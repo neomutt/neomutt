@@ -805,7 +805,7 @@ static bool test_last_status_new(FILE *fp)
 
   e = email_new();
   tmp_envelope = mutt_rfc822_read_header(fp, e, false, false);
-  if (!(e->read || e->old))
+  if (!e->read && !e->old)
     rc = true;
 
   mutt_env_free(&tmp_envelope);
