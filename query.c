@@ -158,7 +158,8 @@ static struct Query *run_query(char *s, int quiet)
   char *buf = NULL;
   size_t buflen;
   int dummy = 0;
-  char msg[256];
+  char *msg = NULL;
+  size_t msglen = 0;
   char *p = NULL;
   pid_t pid;
   struct Buffer *cmd = mutt_buffer_pool_get();
@@ -176,10 +177,10 @@ static struct Query *run_query(char *s, int quiet)
 
   if (!quiet)
     mutt_message(_("Waiting for response..."));
-  fgets(msg, sizeof(msg), fp);
-  p = strrchr(msg, '\n');
-  if (p)
-    *p = '\0';
+
+  /* The query protocol first reads one NL-terminated line. If an error
+   * occurs, this is assumed to be an error message. Otherwise it's ignored. */
+  msg = mutt_file_read_line(msg, &msglen, fp, &dummy, 0);
   while ((buf = mutt_file_read_line(buf, &buflen, fp, &dummy, 0)))
   {
     p = strtok(buf, "\t\n");
@@ -220,6 +221,7 @@ static struct Query *run_query(char *s, int quiet)
     if (!quiet)
       mutt_message("%s", msg);
   }
+  FREE(&msg);
 
   return first;
 }
