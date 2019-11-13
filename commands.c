@@ -451,7 +451,7 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
 
 #define EXTRA_SPACE (15 + 7 + 2)
   snprintf(scratch, sizeof(scratch),
-           ngettext("Bounce message to %s?", "Bounce messages to %s?", msg_count), buf);
+           ngettext("Bounce message to %s", "Bounce messages to %s", msg_count), buf);
 
   if (mutt_strwidth(prompt) > MuttMessageWindow->cols - EXTRA_SPACE)
   {
