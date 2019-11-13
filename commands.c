@@ -401,8 +401,8 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   if (!m || !el || STAILQ_EMPTY(el))
     return;
 
-  char prompt[129];
-  char scratch[128];
+  char prompt[8193];
+  char scratch[8192];
   char buf[8192] = { 0 };
   struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
   char *err = NULL;
@@ -451,16 +451,16 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
 
 #define EXTRA_SPACE (15 + 7 + 2)
   snprintf(scratch, sizeof(scratch),
-           ngettext("Bounce message to %s", "Bounce messages to %s", msg_count), buf);
+           ngettext("Bounce message to %s?", "Bounce messages to %s?", msg_count), buf);
 
-  if (mutt_strwidth(prompt) > MuttMessageWindow->cols - EXTRA_SPACE)
+  if (mutt_strwidth(scratch) > MuttMessageWindow->cols - EXTRA_SPACE)
   {
     mutt_simple_format(prompt, sizeof(prompt), 0, MuttMessageWindow->cols - EXTRA_SPACE,
                        JUSTIFY_LEFT, 0, scratch, sizeof(scratch), false);
     mutt_str_strcat(prompt, sizeof(prompt), "...?");
   }
   else
-    snprintf(prompt, sizeof(prompt), "%s?", scratch);
+    snprintf(prompt, sizeof(prompt), "%s", scratch);
 
   if (query_quadoption(C_Bounce, prompt) != MUTT_YES)
   {
