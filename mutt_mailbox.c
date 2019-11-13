@@ -45,20 +45,18 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
 
   enum MailboxType mb_magic = mx_path_probe(mailbox_path(m_check), NULL);
 
+  if ((m_cur == m_check) && C_MailCheckRecent)
+    m_check->has_new = false;
+
   switch (mb_magic)
   {
     case MUTT_POP:
     case MUTT_NNTP:
     case MUTT_NOTMUCH:
     case MUTT_IMAP:
-      if ((mb_magic != MUTT_IMAP) && C_MailCheckRecent)
-        m_check->has_new = false;
       m_check->magic = mb_magic;
       break;
     default:
-      if ((m_cur == m_check) && C_MailCheckRecent)
-        m_check->has_new = false;
-
       if ((stat(mailbox_path(m_check), &sb) != 0) ||
           (S_ISREG(sb.st_mode) && (sb.st_size == 0)) ||
           ((m_check->magic == MUTT_UNKNOWN) &&

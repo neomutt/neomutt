@@ -375,9 +375,6 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
 
   OptForceRefresh = false;
 
-  if (C_MailCheckRecent)
-    ctx->mailbox->has_new = false;
-
   return ctx;
 
 error:
@@ -569,6 +566,9 @@ int mx_mbox_close(struct Context **ptr)
 
   struct Mailbox *m = ctx->mailbox;
 
+  if (C_MailCheckRecent)
+    m->has_new = false;
+
   if (m->readonly || m->dontwrite || m->append)
   {
     mx_fastclose_mailbox(m);
@@ -661,7 +661,7 @@ int mx_mbox_close(struct Context **ptr)
       goto cleanup;
   }
 
-  if (C_MarkOld)
+  if (C_MarkOld && !m->peekonly)
   {
     for (i = 0; i < m->msg_count; i++)
     {
