@@ -1653,7 +1653,19 @@ static int save_fcc(struct Email *e, struct Buffer *fcc, struct Body *clear_cont
     }
 
     /* check to see if the user wants copies of all attachments */
+    bool save_atts = true;
     if (e->content->type == TYPE_MULTIPART)
+    {
+      /* In batch mode, save attachments if the quadoption is yes or ask-yes */
+      if (flags & SEND_BATCH)
+      {
+        if ((C_FccAttach == MUTT_NO) || (C_FccAttach == MUTT_ASKNO))
+          save_atts = false;
+      }
+      else if (query_quadoption(C_FccAttach, _("Save attachments in Fcc?")) != MUTT_YES)
+        save_atts = false;
+    }
+    if (!save_atts)
     {
       if ((WithCrypto != 0) && (e->security & (SEC_ENCRYPT | SEC_SIGN | SEC_AUTOCRYPT)) &&
           ((mutt_str_strcmp(e->content->subtype, "encrypted") == 0) ||
