@@ -1112,13 +1112,13 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
 #endif
 
   struct Mailbox *m_save = mx_path_resolve(mutt_b2s(buf));
+  bool old_append = m_save->append;
   struct Context *ctx_save = mx_mbox_open(m_save, MUTT_NEWFOLDER);
   if (!ctx_save)
   {
     mailbox_free(&m_save);
     goto cleanup;
   }
-  bool old_append = m_save->append;
   m_save->append = true;
 
 #ifdef USE_COMPRESSED

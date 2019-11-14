@@ -58,9 +58,8 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
       break;
     default:
       if ((stat(mailbox_path(m_check), &sb) != 0) ||
-          (S_ISREG(sb.st_mode) && (sb.st_size == 0)) ||
-          ((m_check->magic == MUTT_UNKNOWN) &&
-           ((m_check->magic = mx_path_probe(mailbox_path(m_check), NULL)) <= 0)))
+          ((m_check->magic == MUTT_UNKNOWN) && S_ISREG(sb.st_mode) && (sb.st_size == 0)) ||
+          ((m_check->magic == MUTT_UNKNOWN) && ((m_check->magic = mx_path_probe(mailbox_path(m_check), NULL)) <= 0)))
       {
         /* if the mailbox still doesn't exist, set the newly created flag to be
          * ready for when it does. */
