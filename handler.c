@@ -1679,8 +1679,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
   }
   /* print hint to use attachment menu for disposition == attachment
    * if we're not already being called from there */
-  else if ((s->flags & MUTT_DISPLAY) || ((b->disposition == DISP_ATTACH) && !OptViewAttach &&
-                                         C_HonorDisposition && (plaintext || handler)))
+  else if (s->flags & MUTT_DISPLAY)
   {
     char keystroke[128] = { 0 };
     struct Buffer msg = mutt_buffer_make(256);

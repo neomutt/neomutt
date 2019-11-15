@@ -4869,14 +4869,21 @@ struct ConfigDef MuttVars[] = {
   ** When \fIset\fP, searches will wrap around the first (or last) item. When
   ** \fIunset\fP, incremental searches will not wrap.
   */
-  { "write_bcc", DT_BOOL, &C_WriteBcc, true },
+  { "write_bcc", DT_BOOL, &C_WriteBcc, false },
   /*
   ** .pp
-  ** Controls whether NeoMutt writes out the "Bcc:" header when preparing
-  ** messages to be sent.  Exim users may wish to unset this. If NeoMutt
-  ** is set to deliver directly via SMTP (see $$smtp_url), this
-  ** option does nothing: NeoMutt will never write out the "Bcc:" header
-  ** in this case.
+  ** Controls whether mutt writes out the ``Bcc:'' header when
+  ** preparing messages to be sent.  Some MTAs, such as Exim and
+  ** Courier, do not strip the ``Bcc:'' header; so it is advisable to
+  ** leave this unset unless you have a particular need for the header
+  ** to be in the sent message.
+  ** .pp
+  ** If mutt is set to deliver directly via SMTP(see $$smtp_url),
+  ** this option does nothing: mutt will never write out the ``Bcc:''
+  ** header in this case.
+  ** .pp
+  ** Note this option only affects the sending of messages.  Fcc'ed
+  ** messages will always write the ``Bcc:'' header if one exists.
   */
   { "write_inc", DT_NUMBER|DT_NOT_NEGATIVE, &C_WriteInc, 10 },
   /*

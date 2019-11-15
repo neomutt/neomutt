@@ -2337,7 +2337,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
 {
   char buf[1024];
 
-  if ((mode == MUTT_WRITE_HEADER_NORMAL) && !privacy)
+  if (((mode == MUTT_WRITE_HEADER_NORMAL) || (mode == MUTT_WRITE_HEADER_FCC)) && !privacy)
     fputs(mutt_date_make_date(buf, sizeof(buf)), fp);
 
   /* UseFrom is not consulted here so that we can still write a From:
@@ -2380,7 +2380,8 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
 
   if (!TAILQ_EMPTY(&env->bcc))
   {
-    if ((mode == MUTT_WRITE_HEADER_POSTPONE) || (mode == MUTT_WRITE_HEADER_EDITHDRS) ||
+    if ((mode == MUTT_WRITE_HEADER_POSTPONE) ||
+        (mode == MUTT_WRITE_HEADER_EDITHDRS) || (mode == MUTT_WRITE_HEADER_FCC) ||
         ((mode == MUTT_WRITE_HEADER_NORMAL) && C_WriteBcc))
     {
       fputs("Bcc: ", fp);
@@ -2413,7 +2414,8 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
   if (env->subject)
   {
     if (hide_protected_subject &&
-        ((mode == MUTT_WRITE_HEADER_NORMAL) || (mode == MUTT_WRITE_HEADER_POSTPONE)))
+        ((mode == MUTT_WRITE_HEADER_NORMAL) || (mode == MUTT_WRITE_HEADER_FCC) ||
+         (mode == MUTT_WRITE_HEADER_POSTPONE)))
       mutt_write_one_header(fp, "Subject", C_CryptProtectedHeadersSubject, NULL, 0, CH_NO_FLAGS);
     else
       mutt_write_one_header(fp, "Subject", env->subject, NULL, 0, CH_NO_FLAGS);
@@ -2447,7 +2449,8 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
   /* Add any user defined headers */
   struct UserHdrsOverride userhdrs_overrides = write_userhdrs(fp, &env->userhdrs, privacy);
 
-  if ((mode == MUTT_WRITE_HEADER_NORMAL) || (mode == MUTT_WRITE_HEADER_POSTPONE))
+  if ((mode == MUTT_WRITE_HEADER_NORMAL) || (mode == MUTT_WRITE_HEADER_FCC) ||
+      (mode == MUTT_WRITE_HEADER_POSTPONE))
   {
     if (!STAILQ_EMPTY(&env->references))
     {
@@ -2474,15 +2477,15 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
 #ifdef USE_AUTOCRYPT
   if (C_Autocrypt)
   {
-    if (mode == MUTT_WRITE_HEADER_NORMAL)
+    if (mode == MUTT_WRITE_HEADER_NORMAL || mode == MUTT_WRITE_HEADER_FCC)
       mutt_autocrypt_write_autocrypt_header(env, fp);
     if (mode == MUTT_WRITE_HEADER_MIME)
       mutt_autocrypt_write_gossip_headers(env, fp);
   }
 #endif
 
-  if ((mode == MUTT_WRITE_HEADER_NORMAL) && !privacy && C_UserAgent &&
-      !userhdrs_overrides.is_overridden[USERHDRS_OVERRIDE_USER_AGENT])
+  if (((mode == MUTT_WRITE_HEADER_NORMAL) || (mode == MUTT_WRITE_HEADER_FCC)) && !privacy &&
+      C_UserAgent && !userhdrs_overrides.is_overridden[USERHDRS_OVERRIDE_USER_AGENT])
   {
     /* Add a vanity header */
     fprintf(fp, "User-Agent: NeoMutt/%s%s\n", PACKAGE_VERSION, GitVer);
@@ -3247,9 +3250,9 @@ int mutt_write_multiple_fcc(const char *path, struct Email *e, const char *msgid
 /**
  * mutt_write_fcc - Write email to FCC mailbox
  * @param[in]  path      Path to mailbox
- * @param[in]  e       Email
+ * @param[in]  e         Email
  * @param[in]  msgid     Message id
- * @param[in]  post      If true, postpone message
+ * @param[in]  post      If true, postpone message, else fcc mode
  * @param[in]  fcc       fcc setting to save (postpone only)
  * @param[out] finalpath Final path of email
  * @retval  0 Success
@@ -3316,7 +3319,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   /* post == 1 => postpone message.
    * post == 0 => Normal mode.  */
   mutt_rfc822_write_header(
-      msg->fp, e->env, e->content, post ? MUTT_WRITE_HEADER_POSTPONE : MUTT_WRITE_HEADER_NORMAL,
+      msg->fp, e->env, e->content, post ? MUTT_WRITE_HEADER_POSTPONE : MUTT_WRITE_HEADER_FCC,
       false, C_CryptProtectedHeadersRead && mutt_should_hide_protected_subject(e));
 
   /* (postponement) if this was a reply of some sort, <msgid> contains the
