@@ -125,7 +125,6 @@ struct SslSockData
 {
   SSL_CTX *sctx;
   SSL *ssl;
-  X509 *cert;
   unsigned char isopen;
 };
 
@@ -1399,9 +1398,10 @@ static int ssl_socket_read(struct Connection *conn, char *buf, size_t count)
  */
 static int ssl_socket_write(struct Connection *conn, const char *buf, size_t count)
 {
-  int rc;
+  if (!conn || !conn->sockdata || !buf || (count == 0))
+    return -1;
 
-  rc = SSL_write(sockdata(conn)->ssl, buf, count);
+  int rc = SSL_write(sockdata(conn)->ssl, buf, count);
   if ((rc <= 0) || (errno == EINTR))
   {
     if (errno == EINTR)
@@ -1426,8 +1426,6 @@ static int ssl_socket_close(struct Connection *conn)
     if (data->isopen && (raw_socket_poll(conn, 0) >= 0))
       SSL_shutdown(data->ssl);
 
-    /* hold onto this for the life of neomutt, in case we want to reconnect.
-     * The purist in me wants a mutt_exit hook. */
     SSL_free(data->ssl);
     data->ssl = NULL;
     SSL_CTX_free(data->sctx);
