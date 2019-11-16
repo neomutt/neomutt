@@ -5018,7 +5018,7 @@ uncolor prompt
               </row>
               <row>
                 <entry>index_size</entry>
-                <entry>Message size, <literal>%c</literal> <literal>%l</literal></entry>
+                <entry>Message size, <literal>%c</literal> <literal>%cr</literal> <literal>%l</literal></entry>
               </row>
               <row>
                 <entry>index_tags</entry>
@@ -7235,7 +7235,8 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
           <literal>%s</literal> in <link linkend="attach-format">$attach_format</link>,
           <literal>%l</literal> in <link linkend="compose-format">$compose_format</link>,
           <literal>%s</literal> in <link linkend="folder-format">$folder_format</link>,
-          <literal>%c</literal> in <link linkend="index-format">$index_format</link>,
+          <literal>%c</literal> and <literal>%cr</literal>
+            in <link linkend="index-format">$index_format</link>,
           and %l and %L in <link linkend="status-format">$status_format</link>.
           There are four configuration variables that can be used to customize
           how the numbers are displayed.
@@ -13615,7 +13616,7 @@ color index-object foreground background pattern
               <row>
                 <entry><literal>index_size</literal></entry>
                 <entry>no</entry>
-                <entry>Message size, %c %l</entry>
+                <entry>Message size, %c %cr %l</entry>
               </row>
               <row>
                 <entry><literal>index_subject</literal></entry>
@@ -13654,7 +13655,7 @@ color index_date green default
 color index_label default brightgreen
 <emphasis role="comment"># Message number, %C</emphasis>
 color index_number red default
-<emphasis role="comment"># Message size, %c %l</emphasis>
+<emphasis role="comment"># Message size, %c %cr %l</emphasis>
 color index_size cyan default
 
 <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
