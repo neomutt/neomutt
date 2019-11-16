@@ -1857,7 +1857,8 @@ struct ConfigDef MuttVars[] = {
   ** .dt %b .dd Filename of the original message folder (think mailbox)
   ** .dt %B .dd The list to which the letter was sent, or else the folder name (%b).
   ** .dt %C .dd Current message number
-  ** .dt %c .dd Number of characters (bytes) in the message (see $formatstrings-size)
+  ** .dt %c .dd Number of characters (bytes) in the body of the message (see $formatstrings-size)
+  ** .dt %cr .dd Number of characters (bytes) in the raw message, including the header (see $formatstrings-size)
   ** .dt %D .dd Date and time of message using $date_format and local timezone
   ** .dt %d .dd Date and time of message using $date_format and sender's timezone
   ** .dt %e .dd Current message number in thread

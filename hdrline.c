@@ -508,7 +508,8 @@ static bool thread_is_old(struct Context *ctx, struct Email *e)
  * | \%b     | Filename of the original message folder (think mailbox)
  * | \%B     | The list to which the letter was sent, or else the folder name (%b)
  * | \%C     | Current message number
- * | \%c     | Number of characters (bytes) in the message
+ * | \%c     | Number of characters (bytes) in the body of the message
+ * | \%cr    | Number of characters (bytes) in the message, including header
  * | \%D     | Date and time of message using `$date_format` and local timezone
  * | \%d     | Date and time of message using `$date_format` and sender's timezone
  * | \%e     | Current message number in thread
@@ -656,7 +657,15 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'c':
       colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_SIZE);
-      mutt_str_pretty_size(tmp, sizeof(tmp), email_size(e));
+      if (src[0] == 'r')
+      {
+        mutt_str_pretty_size(tmp, sizeof(tmp), email_size(e));
+        src++;
+      }
+      else
+      {
+        mutt_str_pretty_size(tmp, sizeof(tmp), e->content->length);
+      }
       mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
       add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       break;
