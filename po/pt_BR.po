@@ -591,12 +591,12 @@ msgstr "cores pré-definidas não suportadas"
 #: color.c:1275
 #, c-format
 msgid "Maximum quoting level is %d"
-msgstr ""
+msgstr "Número máximo de níveis de citação é %d"
 
 #: color.c:1312
-#, fuzzy, c-format
+#, c-format
 msgid "%s: invalid number: %s"
-msgstr "Erro: pontos: número inválido"
+msgstr "%s: número inválido: %s"
 
 #. L10N: Used for the $crypt_verify_sig prompt
 #: commands.c:229
@@ -1048,9 +1048,9 @@ msgstr "<cadeia indefinida>"
 #. error message.
 #.
 #: compose.c:601
-#, fuzzy, c-format
+#, c-format
 msgid "Attachment #%d no longer exists: %s"
-msgstr "%s [#%d] não existe mais"
+msgstr "O anexo #%d não existe mais: %s"
 
 #. L10N:
 #. This message is displayed in the compose menu when an attachment
@@ -1060,9 +1060,9 @@ msgstr "%s [#%d] não existe mais"
 #. prompt question.
 #.
 #: compose.c:621
-#, fuzzy, c-format
+#, c-format
 msgid "Attachment #%d modified. Update encoding for %s?"
-msgstr "%s [#%d] modificado. Atualizar codificação?"
+msgstr "O anexo #%d foi modificado. Atualizar a codificação para %s?"
 
 #: compose.c:716
 msgid "-- Attachments"
@@ -2542,7 +2542,7 @@ msgstr "Falha ao criar consulta, cancelado"
 
 #: index.c:2043
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
-msgstr ""
+msgstr "Não foi possível encontrar a mensagem no banco de dados do notmuch. Tente rodar 'notmuch new'."
 
 #: index.c:2052
 msgid "Failed to read thread, aborting"
@@ -2772,9 +2772,9 @@ msgid "Error in command line: %s"
 msgstr "Erro na linha de comando: %s"
 
 #: init.c:296
-#, fuzzy, c-format
+#, c-format
 msgid "Warning in command line: %s"
-msgstr "Erro na linha de comando: %s"
+msgstr "Alarme na linha de comando: %s"
 
 #: init.c:407
 msgid "unable to determine nodename via uname()"
@@ -2943,7 +2943,7 @@ msgstr "Função %s não permitida no modo de anexar mensagem (attach-message)"
 #: init.c:3924
 #, c-format
 msgid "Option %s must between 78 and 998 inclusive"
-msgstr ""
+msgstr "A opção %s deve estar entre 78 e 998, inclusive"
 
 #: keymap.c:373 keymap.c:381
 #, c-format
@@ -5212,7 +5212,7 @@ msgstr "apaga todas as mensagens na discussão"
 
 #: opcodes.h:100
 msgid "descend into a directory"
-msgstr "acessando um diretório"
+msgstr "entra em um diretório"
 
 #: opcodes.h:101
 msgid "display full address of sender"
