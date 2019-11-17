@@ -1374,11 +1374,6 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           mutt_error(_("No files match the file mask"));
           break;
         }
-        else if (op == OP_DESCEND_DIRECTORY)
-        {
-          mutt_error(_("%s is not a directory"), state.entry[menu->current].name);
-          break;
-        }
 
         if (S_ISDIR(state.entry[menu->current].mode) ||
             (S_ISLNK(state.entry[menu->current].mode) &&
@@ -1512,6 +1507,11 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
             goto_swapper[0] = '\0';
             break;
           }
+        }
+        else if (op == OP_DESCEND_DIRECTORY)
+        {
+          mutt_error(_("%s is not a directory"), state.entry[menu->current].name);
+          break;
         }
 
         if (mailbox || OptNews) /* USE_NNTP */
