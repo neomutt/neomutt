@@ -430,14 +430,3 @@ int mutt_window_printf(const char *fmt, ...)
 
   return rc;
 }
-
-/**
- * mutt_window_clear_screen - Clear the entire screen
- */
-void mutt_window_clear_screen(void)
-{
-  clearok(stdscr, true);
-  move(0, 0);
-  clrtobot();
-  refresh();
-}
