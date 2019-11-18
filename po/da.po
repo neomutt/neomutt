@@ -7012,3 +7012,64 @@ msgstr "Tilvalg ved oversættelsen:"
 #: version.c:449
 msgid "Compile options:"
 msgstr "Tilvalg ved oversættelsen:"
+
+msgid "Autocrypt account creation aborted."
+msgstr "Oprettelse af autocrypt-konto afbrudt."
+
+msgid "No (valid) autocrypt key found for %s."
+msgstr "Fandt ikke nogen (gyldig) autocrypt-nøgle til %s."
+
+msgid "Error creating autocrypt key: %s\n"
+msgstr "Fejl ved oprettelse af autocrypt-nøgle: %s\n"
+
+msgid "(c)reate new, or (s)elect existing GPG key? "
+msgstr "(o)pret ny, eller (v)ælg eksisterende GPG-nøgle? "
+
+msgid "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic? "
+msgstr "Autocrypt: (k)ryptér, (r)yd, (a)utomatisk? "
+
+msgid "$send_multipart_alternative_filter is not set"
+msgstr "$send_multipart_alternative_filter er ikke indstillet"
+
+msgid "Cannot mark message(s) as read"
+msgstr "Kan ikke markere breve som læst"
+
+msgid "OAUTHBEARER authentication failed."
+msgstr "OAUTHBEARER-godkendelse slog fejl."
+
+msgid "Lock count exceeded, remove lock for %s?"
+msgstr "Fil blokeret af gammel lås. Fjern låsen på %s?"
+
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
+msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, %s-format, r(y)d?"
+
+msgid "Generate multipart/alternative content?"
+msgstr "Generér \"multipart/alternative\"-indhold?"
+
+msgid "Missing mime type from output of \"%s\"!"
+msgstr "Manglende mime-type fra uddata af \"%s\"!"
+
+msgid "Missing blank line separator from output of \"%s\"!"
+msgstr "Adskillelsesmarkering ved tom linje mangler fra uddata af \"%s\"!"
+
+msgid "$send_multipart_alternative_filter does not support multipart type generation."
+msgstr "$send_multipart_alternative_filter understøtter ikke generering af multipart-type."
+
+msgid "Bad IDN %s while preparing resent-from."
+msgstr "Forkert IDN %s under forberedelse af \"Resent-From\"-felt."
+
+msgid "view multipart/alternative"
+msgstr "vis multipart/alternative"
+
+msgid "view multipart/alternative as text"
+msgstr "vis multipart/alternative som tekst"
+
+msgid "view multipart/alternative using mailcap"
+msgstr "vis multipart/alternative ved brug af mailcap"
+
+msgid "select a new mailbox from the browser"
+msgstr "vælg en ny brevbakke fra katalogbrowseren"
+
+msgid "select a new mailbox from the browser in read only mode"
+msgstr "åbn en ny brevbakke i skrivebeskyttet tilstand fra katalogbrowseren"
+
