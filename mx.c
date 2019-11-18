@@ -346,6 +346,20 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   if (!m->quiet)
     mutt_message(_("Reading %s..."), mailbox_path(m));
 
+  // Clear out any existing emails
+  for (int i = 0; i < m->email_max; i++)
+  {
+    email_free(&m->emails[i]);
+  }
+
+  m->msg_count = 0;
+  m->msg_unread = 0;
+  m->msg_flagged = 0;
+  m->msg_new = 0;
+  m->msg_deleted = 0;
+  m->msg_tagged = 0;
+  m->vcount = 0;
+
   int rc = m->mx_ops->mbox_open(ctx->mailbox);
   m->opened++;
   if (rc == 0)
@@ -416,9 +430,7 @@ void mx_fastclose_mailbox(struct Mailbox *m)
   {
     for (int i = 0; i < m->msg_count; i++)
       email_free(&m->emails[i]);
-    FREE(&m->emails);
   }
-  FREE(&m->v2r);
 }
 
 /**

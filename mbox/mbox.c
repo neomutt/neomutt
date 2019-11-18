@@ -383,16 +383,6 @@ static int mbox_parse_mailbox(struct Mailbox *m)
     mutt_progress_init(&progress, msg, MUTT_PROGRESS_READ, 0);
   }
 
-  if (!m->emails)
-  {
-    /* Allocate some memory to get started */
-    m->email_max = m->msg_count;
-    m->msg_count = 0;
-    m->msg_unread = 0;
-    m->vcount = 0;
-    mx_alloc_memory(m);
-  }
-
   loc = ftello(adata->fp);
   while ((fgets(buf, sizeof(buf), adata->fp)) && (SigInt != 1))
   {

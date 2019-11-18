@@ -45,6 +45,10 @@ struct Mailbox *mailbox_new(void)
   mutt_buffer_init(&m->pathbuf);
   m->notify = notify_new(m, NT_MAILBOX);
 
+  m->email_max = 25;
+  m->emails = mutt_mem_calloc(m->email_max, sizeof(struct Email *));
+  m->v2r = mutt_mem_calloc(m->email_max, sizeof(int));
+
   return m;
 }
 
@@ -66,6 +70,8 @@ void mailbox_free(struct Mailbox **ptr)
   mutt_buffer_dealloc(&m->pathbuf);
   FREE(&m->name);
   FREE(&m->realpath);
+  FREE(&m->emails);
+  FREE(&m->v2r);
   notify_free(&m->notify);
 
   FREE(ptr);

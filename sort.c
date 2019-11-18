@@ -361,7 +361,7 @@ sort_t *mutt_get_sort_func(enum SortType method)
  */
 void mutt_sort_headers(struct Context *ctx, bool init)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!ctx || !ctx->mailbox || !ctx->mailbox->emails || !ctx->mailbox->emails[0])
     return;
 
   struct MuttThread *thread = NULL, *top = NULL;

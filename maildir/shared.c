@@ -428,15 +428,6 @@ int maildir_move_to_mailbox(struct Mailbox *m, struct Maildir **ptr)
   struct Maildir *md = *ptr;
   int oldmsgcount = m->msg_count;
 
-  if (!m->emails)
-  {
-    /* Allocate some memory to get started */
-    m->email_max = m->msg_count;
-    m->msg_count = 0;
-    m->vcount = 0;
-    mx_alloc_memory(m);
-  }
-
   for (; md; md = md->next)
   {
     mutt_debug(LL_DEBUG2, "Considering %s\n", NONULL(md->canon_fname));

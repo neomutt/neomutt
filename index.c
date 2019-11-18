@@ -886,6 +886,9 @@ int index_color(int line)
  */
 void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
 {
+  if (!buf)
+    return;
+
   size_t i = 0;
   size_t offset = 0;
   bool found = false;

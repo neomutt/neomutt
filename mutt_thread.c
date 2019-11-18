@@ -978,6 +978,8 @@ void mutt_sort_threads(struct Context *ctx, bool init)
     e->threaded = true;
 
     thread = e->thread;
+    if (!thread)
+      continue;
     using_refs = 0;
 
     while (true)
