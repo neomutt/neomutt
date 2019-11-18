@@ -358,7 +358,9 @@ static void menu_pad_string(struct Menu *menu, char *buf, size_t buflen)
 void menu_redraw_full(struct Menu *menu)
 {
   mutt_curses_set_color(MT_COLOR_NORMAL);
-  mutt_window_clear_screen();
+  /* clear() doesn't optimize screen redraws */
+  mutt_window_move_abs(0, 0);
+  mutt_window_clrtobot();
 
   if (C_Help)
   {
@@ -1080,7 +1082,8 @@ void mutt_menu_pop_current(struct Menu *menu)
   else
   {
     CurrentMenu = MENU_MAIN;
-    mutt_window_clear_screen();
+    mutt_window_move_abs(0, 0);
+    mutt_window_clrtobot();
   }
 }
 
@@ -1432,7 +1435,7 @@ int mutt_menu_loop(struct Menu *menu)
     {
       SigWinch = 0;
       mutt_resize_screen();
-      mutt_window_clear_screen();
+      clearok(stdscr, true); /* force complete redraw */
     }
 
     if (i < 0)
@@ -1568,7 +1571,7 @@ int mutt_menu_loop(struct Menu *menu)
         break;
 
       case OP_REDRAW:
-        mutt_window_clear_screen();
+        clearok(stdscr, true);
         menu->redraw = REDRAW_FULL;
         break;
 

@@ -61,7 +61,6 @@ int                mutt_window_wrap_cols          (int width, short wrap);
 int  mutt_window_addch    (int ch);
 int  mutt_window_addnstr  (const char *str, int num);
 int  mutt_window_addstr   (const char *str);
-void mutt_window_clear_screen(void);
 void mutt_window_clearline(struct MuttWindow *win, int row);
 void mutt_window_clrtobot (void);
 void mutt_window_clrtoeol (struct MuttWindow *win);
