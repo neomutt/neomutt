@@ -1985,7 +1985,7 @@ int imap_login(struct ImapAccountData *adata)
   if (adata->state == IMAP_AUTHENTICATED)
   {
     /* capabilities may have changed */
-    imap_exec(adata, "CAPABILITY", IMAP_CMD_QUEUE);
+    imap_exec(adata, "CAPABILITY", IMAP_CMD_PASS);
 
 #ifdef USE_ZLIB
     /* RFC4978 */
