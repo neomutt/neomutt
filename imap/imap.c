@@ -1703,7 +1703,10 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
         mutt_message(ngettext("Saving changed message... [%d/%d]",
                               "Saving changed messages... [%d/%d]", m->msg_count),
                      i + 1, m->msg_count);
+        bool save_append = m->append;
+        m->append = true;
         mutt_save_message_ctx(e, true, false, false, m);
+        m->append = save_append;
         /* TODO: why the check for h->env?  Is this possible? */
         if (e->env)
           e->env->changed = 0;
