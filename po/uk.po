@@ -210,13 +210,12 @@ msgstr "Немає (правильних) сертифікатів для %s"
 #.
 #: autocrypt/autocrypt.c:903
 msgid "Scan a mailbox for autocrypt headers?"
-msgstr ""
+msgstr "Перевірити наявність заголовків autocrypt у поштовій скринці?"
 
 #. L10N: The prompt for a mailbox to scan for Autocrypt: headers
 #: autocrypt/autocrypt.c:907
-#, fuzzy
 msgid "Scan mailbox"
-msgstr "Fcc скринька"
+msgstr "Перевірка поштової скриньки"
 
 #. L10N:
 #. This is the second prompt to see if the user would like
@@ -227,15 +226,14 @@ msgstr "Fcc скринька"
 #.
 #: autocrypt/autocrypt.c:927
 msgid "Scan another mailbox for autocrypt headers?"
-msgstr ""
+msgstr "Перевірити наявність заголовків autocrypt в іншій скринці?"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. create new account
 #.
 #: autocrypt/autocrypt_acct_menu.c:63
-#, fuzzy
 msgid "Create"
-msgstr "Створити %s?"
+msgstr "Створити"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. delete account
@@ -252,7 +250,7 @@ msgstr "Видал."
 #.
 #: autocrypt/autocrypt_acct_menu.c:74
 msgid "Tgl Active"
-msgstr ""
+msgstr "Перем Актив"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. toggle "prefer-encrypt" on an account
@@ -262,7 +260,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:81
 msgid "Prf Enc"
-msgstr ""
+msgstr "Перев Шифр"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -270,7 +268,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:123
 msgid "prefer encrypt"
-msgstr ""
+msgstr "віддавати перевагу шифруванню"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -279,7 +277,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:130
 msgid "manual encrypt"
-msgstr ""
+msgstr "ручне шифрування"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -287,7 +285,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:138
 msgid "active"
-msgstr ""
+msgstr "активн"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -295,27 +293,26 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:144
 msgid "inactive"
-msgstr ""
+msgstr "неактивн"
 
 #. L10N: Autocrypt Account Management Menu title
 #: autocrypt/autocrypt_acct_menu.c:183
 msgid "Autocrypt Accounts"
-msgstr ""
+msgstr "Облікові записи autocrypt"
 
 #. L10N:
 #. This error message is displayed if a database update of an
 #. account record fails for some odd reason.
 #.
 #: autocrypt/autocrypt_acct_menu.c:245 autocrypt/autocrypt_acct_menu.c:259
-#, fuzzy
 msgid "Error updating account record"
-msgstr "Помилка перегляду каталогу"
+msgstr "Помилка збереження інформації про обліковий запис"
 
 #. L10N: Confirmation message when deleting an autocrypt account
 #: autocrypt/autocrypt_acct_menu.c:302
-#, fuzzy, c-format
+#, c-format
 msgid "Really delete account \"%s\"?"
-msgstr "Впевнені у видаленні скриньки \"%s\"?"
+msgstr "Дійсно видалити обліковий запис \"%s\"?"
 
 #. L10N:
 #. %s is the path to the database.
@@ -326,9 +323,9 @@ msgstr "Впевнені у видаленні скриньки \"%s\"?"
 #. for some reason.  The %s is the full path of the database file.
 #.
 #: autocrypt/autocrypt_db.c:68 autocrypt/autocrypt_db.c:102
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to open autocrypt database %s"
-msgstr "Неможливо відкрити скриньку %s"
+msgstr "Неможливо відкрити базу даних autocrypt %s"
 
 #: autocrypt/autocrypt_gpgme.c:54 ncrypt/crypt_gpgme.c:773
 #, c-format
@@ -341,16 +338,16 @@ msgstr "помилка при створенні контексту gpgme: %s"
 #.
 #: autocrypt/autocrypt_gpgme.c:172
 msgid "Generating autocrypt key..."
-msgstr ""
+msgstr "Створення ключа autocrypt..."
 
 #. L10N:
 #. GPGME was unable to generate a key for some reason.
 #. %s is the error message returned by GPGME.
 #.
 #: autocrypt/autocrypt_gpgme.c:184 autocrypt/autocrypt_gpgme.c:203
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating autocrypt key: %s"
-msgstr "Помилка експорта ключа: %s"
+msgstr "Помилка створення ключа autocrypt: %s"
 
 #. L10N:
 #. After selecting a key for an autocrypt account,
@@ -361,7 +358,7 @@ msgstr "Помилка експорта ключа: %s"
 #: autocrypt/autocrypt_gpgme.c:252
 #, c-format
 msgid "The key %s is not usable for autocrypt"
-msgstr ""
+msgstr "Ключ %s не може використовуватися для autocrypt"
 
 #. L10N:
 #. During autocrypt account creation, this prompt asks the
@@ -370,7 +367,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_gpgme.c:286
 msgid "(c)reate new, or (s)elect existing GPG key?"
-msgstr ""
+msgstr "(c)створити новий або (s)обрати існуючий ключ GPG?"
 
 #. L10N:
 #. The letters corresponding to the
@@ -378,7 +375,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_gpgme.c:291
 msgid "cs"
-msgstr ""
+msgstr "cs"
 
 #. L10N:
 #. During autocrypt account creation, if selecting an existing key fails
@@ -386,7 +383,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_gpgme.c:305
 msgid "Create a new gpg key for this account, instead?"
-msgstr ""
+msgstr "Натомість, створити новий ключ GPG для цього облікового запису?"
 
 #. L10N:
 #. The autocrypt database keeps track of schema version numbers.
@@ -396,7 +393,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_schema.c:125
 msgid "Autocrypt database version is too new"
-msgstr ""
+msgstr "Версія бази даних autocrypt занадто нова"
 
 #: bcache.c:209
 #, fuzzy, c-format
@@ -916,7 +913,7 @@ msgstr "Підпис як: "
 #. L10N: The compose menu autocrypt line
 #: compose.c:195
 msgid "Autocrypt: "
-msgstr ""
+msgstr "Autocrypt: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:199
@@ -975,14 +972,13 @@ msgstr "Теми не вказано."
 #. * This is displayed when Autocrypt is turned off.
 #: compose.c:239 compose.c:473
 msgid "Off"
-msgstr ""
+msgstr "Вимкн"
 
 #. L10N: Autocrypt recommendation flag: no.
 #. * This is displayed when Autocrypt cannot encrypt to the recipients.
 #: compose.c:242
-#, fuzzy
 msgid "No"
-msgstr "Нічого"
+msgstr "Ні"
 
 #. L10N: Autocrypt recommendation flag: discouraged.
 #. * This is displayed when Autocrypt believes encryption should not be used.
@@ -990,7 +986,7 @@ msgstr "Нічого"
 #. * used recently, or if the only key available is a Gossip Header key.
 #: compose.c:247
 msgid "Discouraged"
-msgstr ""
+msgstr "Не зрозуміло"
 
 #. L10N: Autocrypt recommendation flag: available.
 #. * This is displayed when Autocrypt believes encryption is possible, but
@@ -998,15 +994,14 @@ msgstr ""
 #. * is not set in both the sender and recipient keys.
 #: compose.c:252
 msgid "Available"
-msgstr ""
+msgstr "Доступно"
 
 #. L10N: Autocrypt recommendation flag: yes.
 #. * This is displayed when Autocrypt would normally enable encryption
 #. * automatically.
 #: compose.c:256
-#, fuzzy
 msgid "Yes"
-msgstr "так"
+msgstr "Так"
 
 #. L10N:
 #. The compose menu autocrypt prompt.
@@ -1016,7 +1011,7 @@ msgstr "так"
 #.
 #: compose.c:338
 msgid "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic?"
-msgstr ""
+msgstr "Autocrypt: (e)шифрувати, (c)очистити, (a)автоматично?"
 
 #. L10N:
 #. The letter corresponding to the compose menu autocrypt prompt
@@ -1024,7 +1019,7 @@ msgstr ""
 #.
 #: compose.c:346
 msgid "eca"
-msgstr ""
+msgstr "eca"
 
 #: compose.c:383
 msgid "Not supported"
@@ -1076,9 +1071,8 @@ msgstr "Зашифрувати: "
 #. (Off, No, Discouraged, Available, Yes)
 #.
 #: compose.c:483
-#, fuzzy
 msgid "Recommendation: "
-msgstr "змінити поле Reply-To"
+msgstr "Рекомендація: "
 
 #: compose.c:547
 msgid "<no chain defined>"
@@ -1092,9 +1086,9 @@ msgstr ""
 #. error message.
 #.
 #: compose.c:601
-#, fuzzy, c-format
+#, c-format
 msgid "Attachment #%d no longer exists: %s"
-msgstr "%s [#%d] більше не існує"
+msgstr "Додаток #%d більше не існує: %s"
 
 #. L10N:
 #. This message is displayed in the compose menu when an attachment
@@ -1104,9 +1098,9 @@ msgstr "%s [#%d] більше не існує"
 #. prompt question.
 #.
 #: compose.c:621
-#, fuzzy, c-format
+#, c-format
 msgid "Attachment #%d modified. Update encoding for %s?"
-msgstr "%s [#%d] змінено. Змінити кодування?"
+msgstr "Додаток #%d був змінений. Оновити кодування для %s?"
 
 #: compose.c:716
 msgid "-- Attachments"
@@ -1661,7 +1655,7 @@ msgstr[2] ""
 
 #: copy.c:744
 msgid "No decryption engine available for message"
-msgstr ""
+msgstr "Немає механізму розшифровки для повідомлення"
 
 #: curs_lib.c:378
 msgid "yes"
@@ -2156,12 +2150,10 @@ msgid "Login failed"
 msgstr "Помилка реєстрації"
 
 #: imap/auth_oauth.c:64 pop/pop_auth.c:346 smtp.c:521
-#, fuzzy
 msgid "Authenticating (OAUTHBEARER)..."
-msgstr "Аутентифікація (SASL)..."
+msgstr "Аутентифікація (OAUTHBEARER)..."
 
 #: imap/auth_oauth.c:96
-#, fuzzy
 msgid "OAUTHBEARER authentication failed"
 msgstr "Помилка аутентифікації OAUTHBEARER"
 
@@ -3727,7 +3719,6 @@ msgstr "[-- Результат роботи %s%s --]\n"
 #. passwords. So in English we use "Passphrases". Your language might
 #. have other means to express this.
 #: ncrypt/crypt.c:119
-#, fuzzy
 msgid "Passphrases forgotten"
 msgstr "Паролі видалено з пам’яті"
 
@@ -3744,9 +3735,8 @@ msgid "Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"
 msgstr "Неможливо використовувати PGP/текст з format=flowed. Використати PGP/MIME?"
 
 #: ncrypt/crypt.c:218
-#, fuzzy
 msgid "Mail not sent: inline PGP can't be used with format=flowed"
-msgstr "Лист не відправлено: неможливо використовувати PGP/текст з додатками"
+msgstr "Лист не відправлено: неможливо використовувати PGP/текст з format=flowed"
 
 #: ncrypt/crypt.c:228 ncrypt/cryptglue.c:149 ncrypt/pgpkey.c:714
 #: ncrypt/pgpkey.c:915
@@ -4374,7 +4364,7 @@ msgstr "Введіть keyID для %s: "
 #: ncrypt/crypt_gpgme.c:5363
 #, fuzzy
 msgid "No secret keys found"
-msgstr "таємний ключ \"%s\" не знайдено: %s"
+msgstr "Не знайдено секретних ключів"
 
 #: ncrypt/crypt_gpgme.c:5396 ncrypt/pgpkey.c:888
 msgid "Please enter the key ID: "
@@ -5016,24 +5006,23 @@ msgstr "дивитись додаток як текст"
 
 #: opcodes.h:32
 msgid "manage autocrypt accounts"
-msgstr ""
+msgstr "керування обліковими записами"
 
 #: opcodes.h:33
 msgid "create a new autocrypt account"
-msgstr ""
+msgstr "створити обліковий запис autocrypt"
 
 #: opcodes.h:34
-#, fuzzy
 msgid "delete the current account"
-msgstr "видалити поточну позицію"
+msgstr "видалити поточний обліковий запис"
 
 #: opcodes.h:35
 msgid "toggle the current account active/inactive"
-msgstr ""
+msgstr "зробити поточний обліковий запис активним/неактивним"
 
 #: opcodes.h:36
 msgid "toggle the current account prefer-encrypt flag"
-msgstr ""
+msgstr "увімкнути/вимкнути перевагу шифрування"
 
 #: opcodes.h:37
 msgid "move to the bottom of the page"
@@ -5102,7 +5091,7 @@ msgstr "приєднати лист(и) до цього листа"
 
 #: opcodes.h:52
 msgid "show autocrypt compose menu options"
-msgstr ""
+msgstr "показати параметри меню autocrypt"
 
 #: opcodes.h:53
 #, fuzzy
