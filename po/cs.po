@@ -6983,3 +6983,43 @@ msgstr "Výchzí volby:"
 #: version.c:449
 msgid "Compile options:"
 msgstr "Přeloženo s volbami:"
+
+msgid "Error creating autocrypt key: %s\n"
+msgstr "Chyba při vytváření klíče autokryptu: %s\n"
+
+msgid "(c)reate new, or (s)elect existing GPG key? "
+msgstr "(v)ytvořit nový, nebo vybrat exi(s)tující klíč GPG? "
+
+msgid "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic? "
+msgstr "Autokrypt: šif(r)ovat, (n)ic, (a)utomaticky? "
+
+msgid "$send_multipart_alternative_filter is not set"
+msgstr "Proměnná $send_multipart_alternative_filter není nastavena"
+
+msgid "Generate multipart/alternative content?"
+msgstr "Vytvořit multipart/alternative obsah?"
+
+msgid "Missing mime type from output of \"%s\"!"
+msgstr "Ve výstupu „%s“ chybí typ MIME!"
+
+msgid "Missing blank line separator from output of \"%s\"!"
+msgstr "Ve výstupu „%s“ chybí prázdný řádek oddělovače!"
+
+msgid "$send_multipart_alternative_filter does not support multipart type generation"
+msgstr "$send_multipart_alternative_filter nepodporuje vytváření typu multipart"
+
+msgid "view multipart/alternative"
+msgstr "zobrazit multipart/alternative přílohu"
+
+msgid "view multipart/alternative as text"
+msgstr "zobrazit multipart/alternative přílohu jako text"
+
+msgid "view multipart/alternative using mailcap"
+msgstr "zobrazit multipart/alternative přílohu skrze mailcap"
+
+msgid "select a new mailbox from the browser"
+msgstr "zvolit v prohlížeči jinou schránku"
+
+msgid "select a new mailbox from the browser in read only mode"
+msgstr "zvolit v prohlížeči novou schránku pouze pro čtení"
+
