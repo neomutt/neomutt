@@ -135,7 +135,7 @@ msgstr "Неможливо створити %s: %s"
 #.
 #: autocrypt/autocrypt.c:156
 msgid "Create an initial autocrypt account?"
-msgstr ""
+msgstr "Створити обліковий запис autocrypt?"
 
 #. L10N:
 #. Autocrypt is asking for the email address to use for the
@@ -144,7 +144,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:180
 msgid "Autocrypt account address: "
-msgstr ""
+msgstr "Адреса облікового запису autocrypt: "
 
 #. L10N:
 #. Autocrypt prompts for an account email address, and requires
@@ -153,7 +153,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:191
 msgid "Please enter a single email address"
-msgstr ""
+msgstr "Введіть лише одну адресу електронної пошти"
 
 #. L10N:
 #. When creating an autocrypt account, this message will be displayed
@@ -162,7 +162,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:208
 msgid "That email address already has an autocrypt account"
-msgstr ""
+msgstr "Ця адреса вже має обліковий запис autocrypt"
 
 #. L10N:
 #. Autocrypt has a setting "prefer-encrypt".
@@ -173,16 +173,15 @@ msgstr ""
 #. will be required to enable encryption manually.
 #.
 #: autocrypt/autocrypt.c:223
-#, fuzzy
 msgid "Prefer encryption?"
-msgstr "шифрування"
+msgstr "Віддавати перевагу шифруванню?"
 
 #. L10N:
 #. Message displayed after an autocrypt account is successfully created.
 #.
 #: autocrypt/autocrypt.c:236
 msgid "Autocrypt account creation succeeded"
-msgstr ""
+msgstr "Обліковий запис autocrypt успішно створено"
 
 #. L10N:
 #. Error message displayed if creating an autocrypt account failed
@@ -190,7 +189,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:242
 msgid "Autocrypt account creation aborted"
-msgstr ""
+msgstr "Створення облікового запису autocrypt перервано"
 
 #. L10N:
 #. %s is an email address.  Autocrypt is scanning for the keyids
@@ -198,9 +197,9 @@ msgstr ""
 #. The message is printed and they are returned to the compose menu.
 #.
 #: autocrypt/autocrypt.c:610 autocrypt/autocrypt.c:639
-#, fuzzy, c-format
+#, c-format
 msgid "No (valid) autocrypt key found for %s"
-msgstr "Немає (правильних) сертифікатів для %s"
+msgstr "Немає (дійсного) ключа autocrypt для %s"
 
 #. L10N:
 #. The first time autocrypt is enabled, NeoMutt will ask to scan
@@ -7049,3 +7048,42 @@ msgstr "Параметри компіляції:"
 #: version.c:449
 msgid "Compile options:"
 msgstr "Параметри компіляції:"
+
+msgid "Error creating autocrypt key: %s\n"
+msgstr "Помилка створення ключа autocrypt: %s\n"
+
+msgid "(c)reate new, or (s)elect existing GPG key? "
+msgstr "(c)створити новий або (s)обрати існуючий ключ GPG?"
+
+msgid "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic? "
+msgstr "Autocrypt: (e)шифрувати, (c)очистити, (a)автоматично? "
+
+msgid "$send_multipart_alternative_filter is not set"
+msgstr "Значення $send_multipart_alternative_filter не встановлено"
+
+msgid "Generate multipart/alternative content?"
+msgstr "Створити multipart/alternative контент?"
+
+msgid "Missing mime type from output of \"%s\"!"
+msgstr "Відсутній MIME-тип у виводі \"%s\"!"
+
+msgid "Missing blank line separator from output of \"%s\"!"
+msgstr "Відсутній порожній рядок-роздільник у виводі \"%s\"!"
+
+msgid "$send_multipart_alternative_filter does not support multipart type generation"
+msgstr "$send_multipart_alternative_filter не підтримує генерацію типу multipart"
+
+msgid "view multipart/alternative"
+msgstr "переглянути multipart/alternative"
+
+msgid "view multipart/alternative as text"
+msgstr "переглянути multipart/alternative як текст"
+
+msgid "view multipart/alternative using mailcap"
+msgstr "переглянути multipart/alternative з використанням mailcap"
+
+msgid "select a new mailbox from the browser"
+msgstr "обрати нову поштову скриньку"
+
+msgid "select a new mailbox from the browser in read only mode"
+msgstr "обрати нову поштову скриньку лише для читання"
