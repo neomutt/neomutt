@@ -5113,11 +5113,11 @@ msgstr "удалить текущую учётную запись"
 
 #: opcodes.h:35
 msgid "toggle the current account active/inactive"
-msgstr "включение/выключение предпочтения шифрования учётной записи"
+msgstr "сделать учётную запись активной/неактивной"
 
 #: opcodes.h:36
 msgid "toggle the current account prefer-encrypt flag"
-msgstr ""
+msgstr "включение/выключение предпочтения шифрования учётной записи"
 
 #: opcodes.h:37
 msgid "move to the bottom of the page"
@@ -7061,3 +7061,42 @@ msgstr "Параметры компиляции:"
 #: version.c:449
 msgid "Compile options:"
 msgstr "Параметры компиляции:"
+
+msgid "Error creating autocrypt key: %s\n"
+msgstr "Ошибка создания ключа autocrypt: %s\n"
+
+msgid "(c)reate new, or (s)elect existing GPG key? "
+msgstr "(c)создать новый или (s)выбрать существующий ключ GPG? "
+
+msgid "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic? "
+msgstr "Autocrypt: (e)шифровать, (c)очистить, (a)автоматически? "
+
+msgid "$send_multipart_alternative_filter is not set"
+msgstr "Значение $send_multipart_alternative_filter не установлено"
+
+msgid "Generate multipart/alternative content?"
+msgstr "генерировать multipart/alternative содержимое?"
+
+msgid "Missing mime type from output of \"%s\"!"
+msgstr "Отсутствует MIME-тип в выводе \"%s\"!"
+
+msgid "Missing blank line separator from output of \"%s\"!"
+msgstr "Отсутствует пустая строка-разделитель в выводе \"%s\"!"
+
+msgid "$send_multipart_alternative_filter does not support multipart type generation"
+msgstr "$send_multipart_alternative_filter не поддерживает генерацию типа multipart"
+
+msgid "view multipart/alternative"
+msgstr "просмотреть multipart/alternative"
+
+msgid "view multipart/alternative as text"
+msgstr "просмотреть multipart/alternative как текст"
+
+msgid "view multipart/alternative using mailcap"
+msgstr "просмотреть multipart/alternative с использованием базы mailcap"
+
+msgid "select a new mailbox from the browser"
+msgstr "выбрать новый почтовый ящик"
+
+msgid "select a new mailbox from the browser in read only mode"
+msgstr "выбрать новый почтовый ящик в режиме только для чтения"
