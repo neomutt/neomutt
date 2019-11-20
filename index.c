@@ -1171,9 +1171,10 @@ int mutt_index_menu(void)
         }
         else if (check == MUTT_NEW_MAIL)
         {
-          for (size_t i = oldcount; i < Context->mailbox->msg_count; i++)
+          for (size_t i = 0; i < Context->mailbox->msg_count; i++)
           {
-            if (!Context->mailbox->emails[i]->read)
+            const struct Email * e= Context->mailbox->emails[i];
+            if (e && !e->read && !e->old)
             {
               mutt_message(_("New mail in this mailbox"));
               if (C_BeepNew)
