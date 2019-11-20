@@ -169,6 +169,9 @@ int mutt_mailbox_check(struct Mailbox *m_cur, int force)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &ml, entries)
   {
+    if (np->mailbox->flags & MB_HIDDEN)
+      continue;
+
     mailbox_check(m_cur, np->mailbox, &contex_sb,
                   check_stats || (!np->mailbox->first_check_stats_done && C_MailCheckStats));
     np->mailbox->first_check_stats_done = true;
