@@ -868,7 +868,11 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
     struct MailboxNode *np = NULL;
     STAILQ_FOREACH(np, &ml, entries)
     {
-      if (Context && (mutt_str_strcmp(np->mailbox->realpath, Context->mailbox->realpath) == 0))
+      if (!np->mailbox)
+        continue;
+
+      if (Context && Context->mailbox &&
+          (mutt_str_strcmp(np->mailbox->realpath, Context->mailbox->realpath) == 0))
       {
         np->mailbox->msg_count = Context->mailbox->msg_count;
         np->mailbox->msg_unread = Context->mailbox->msg_unread;
