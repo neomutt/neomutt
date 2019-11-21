@@ -541,15 +541,18 @@ static void update_index_unthreaded(struct Context *ctx, int check, int oldcount
         ctx->vsize = 0;
       }
 
-      if (mutt_pattern_exec(SLIST_FIRST(ctx->limit_pattern), MUTT_MATCH_FULL_ADDRESS,
-                            ctx->mailbox, ctx->mailbox->emails[i], NULL))
+      struct Email *e = ctx->mailbox->emails[i];
+      if (!e)
+        break;
+      if (mutt_pattern_exec(SLIST_FIRST(ctx->limit_pattern),
+                            MUTT_MATCH_FULL_ADDRESS, ctx->mailbox, e, NULL))
       {
         assert(ctx->mailbox->vcount < ctx->mailbox->msg_count);
-        ctx->mailbox->emails[i]->vnum = ctx->mailbox->vcount;
+        e->vnum = ctx->mailbox->vcount;
         ctx->mailbox->v2r[ctx->mailbox->vcount] = i;
-        ctx->mailbox->emails[i]->limited = true;
+        e->limited = true;
         ctx->mailbox->vcount++;
-        struct Body *b = ctx->mailbox->emails[i]->content;
+        struct Body *b = e->content;
         ctx->vsize += b->length + b->offset - b->hdr_offset + padding;
       }
     }
