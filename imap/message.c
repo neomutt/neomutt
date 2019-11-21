@@ -1888,6 +1888,8 @@ int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
     return -1;
 
   struct Email *e = m->emails[msgno];
+  if (!e)
+    return -1;
 
   msg->fp = msg_cache_get(m, e);
   if (msg->fp)

@@ -370,15 +370,17 @@ int el_add_tagged(struct EmailList *el, struct Context *ctx, struct Email *e, bo
     if (!ctx || !ctx->mailbox || !ctx->mailbox->emails)
       return -1;
 
-    for (size_t i = 0; i < ctx->mailbox->msg_count; i++)
+    struct Mailbox *m = ctx->mailbox;
+    for (size_t i = 0; i < m->msg_count; i++)
     {
-      if (!ctx->mailbox->emails[i])
+      e = m->emails[i];
+      if (!e)
         break;
-      if (!message_is_tagged(ctx, ctx->mailbox->emails[i]))
+      if (!message_is_tagged(ctx, e))
         continue;
 
       struct EmailNode *en = mutt_mem_calloc(1, sizeof(*en));
-      en->email = ctx->mailbox->emails[i];
+      en->email = e;
       STAILQ_INSERT_TAIL(el, en, entries);
       count++;
     }

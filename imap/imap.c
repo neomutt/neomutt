@@ -1354,9 +1354,10 @@ int imap_search(struct Mailbox *m, const struct PatternList *pat)
   struct ImapAccountData *adata = imap_adata_get(m);
   for (int i = 0; i < m->msg_count; i++)
   {
-    if (!m->emails[i])
+    struct Email *e = m->emails[i];
+    if (!e)
       break;
-    m->emails[i]->matched = false;
+    e->matched = false;
   }
 
   if (do_search(pat, true) == 0)
