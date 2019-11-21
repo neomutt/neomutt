@@ -51,7 +51,7 @@
 bool C_ReverseAlias; ///< Config: Display the alias in the index, rather than the message's sender
 
 /* function to use as discriminator when normal sort method is equal */
-static sort_t *AuxSort = NULL;
+static sort_t AuxSort = NULL;
 
 /**
  * perform_auxsort - Compare two emails using the auxiliary sort method
@@ -319,7 +319,7 @@ static int compare_label(const void *a, const void *b)
  * @param method Sort type, see #SortType
  * @retval ptr sort function - Implements ::sort_t
  */
-sort_t *mutt_get_sort_func(enum SortType method)
+sort_t mutt_get_sort_func(enum SortType method)
 {
   switch (method)
   {
@@ -365,7 +365,7 @@ void mutt_sort_headers(struct Context *ctx, bool init)
     return;
 
   struct MuttThread *thread = NULL, *top = NULL;
-  sort_t *sortfunc = NULL;
+  sort_t sortfunc = NULL;
   struct Mailbox *m = ctx->mailbox;
 
   OptNeedResort = false;

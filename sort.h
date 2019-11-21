@@ -45,9 +45,9 @@ extern bool C_ReverseAlias;
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-typedef int sort_t(const void *a, const void *b);
+typedef int (*sort_t)(const void *a, const void *b);
 
-sort_t *mutt_get_sort_func(enum SortType method);
+sort_t mutt_get_sort_func(enum SortType method);
 
 void mutt_sort_headers(struct Context *ctx, bool init);
 int perform_auxsort(int retval, const void *a, const void *b);

@@ -36,7 +36,7 @@ struct Buffer;
  * @param err  Buffer for error messages
  * @retval #CommandResult Result, e.g. #MUTT_CMD_SUCCESS
  */
-typedef enum CommandResult icommand_t(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+typedef enum CommandResult (*icommand_t)(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 
 /**
  * struct ICommand - An Informational Command
@@ -44,7 +44,7 @@ typedef enum CommandResult icommand_t(struct Buffer *buf, struct Buffer *s, unsi
 struct ICommand
 {
   char *name;         ///< Name of the command
-  icommand_t *func;   ///< Function to parse the command
+  icommand_t func;    ///< Function to parse the command
   unsigned long data; ///< Private data to pass to the command
 };
 
