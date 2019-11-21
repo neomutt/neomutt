@@ -1546,9 +1546,12 @@ int mutt_index_menu(void)
             {
               for (int i = 0; i < Context->mailbox->msg_count; i++)
               {
-                if (Context->mailbox->emails[i]->index == oldindex)
+                e = Context->mailbox->emails[i];
+                if (!e)
+                  break;
+                if (e->index == oldindex)
                 {
-                  menu->current = Context->mailbox->emails[i]->vnum;
+                  menu->current = e->vnum;
                   /* as an added courtesy, recenter the menu
                    * with the current entry at the middle of the screen */
                   menu_check_recenter(menu);
@@ -1590,7 +1593,7 @@ int mutt_index_menu(void)
           mutt_error(_("Argument must be a message number"));
         else if ((msg_num < 1) || (msg_num > Context->mailbox->msg_count))
           mutt_error(_("Invalid message number"));
-        else if (!message_is_visible(Context, msg_num - 1))
+        else if (!message_is_visible(Context, Context->mailbox->emails[msg_num - 1]))
           mutt_error(_("That message is not visible"));
         else
         {
@@ -1818,9 +1821,15 @@ int mutt_index_menu(void)
           break;
         if (tag && !C_AutoTag)
         {
-          for (size_t i = 0; i < Context->mailbox->msg_count; i++)
-            if (message_is_visible(Context, i))
-              mutt_set_flag(Context->mailbox, Context->mailbox->emails[i], MUTT_TAG, false);
+          struct Mailbox *m = Context->mailbox;
+          for (size_t i = 0; i < m->msg_count; i++)
+          {
+            struct Email *e = m->emails[i];
+            if (!e)
+              break;
+            if (message_is_visible(Context, e))
+              mutt_set_flag(m, e, MUTT_TAG, false);
+          }
           menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         }
         else
