@@ -795,6 +795,8 @@ void imap_expunge_mailbox(struct Mailbox *m)
   for (int i = 0; i < m->msg_count; i++)
   {
     e = m->emails[i];
+    if (!e)
+      break;
 
     if (e->index == INT_MAX)
     {

@@ -598,8 +598,16 @@ int mutt_inline_forward(struct Mailbox *m, struct Email *e_edit,
     include_forward(m, e_cur, out);
   else
     for (i = 0; i < m->vcount; i++)
-      if (m->emails[m->v2r[i]]->tagged)
-        include_forward(m, m->emails[m->v2r[i]], out);
+    {
+      int v = m->v2r[i];
+      if ((v < 0) || (v >= m->msg_count))
+        continue;
+      struct Email *e = m->emails[v];
+      if (!e)
+        break;
+      if (e->tagged)
+        include_forward(m, e, out);
+    }
 
   if (C_ForwardDecode && (C_ForwardAttachments != MUTT_NO))
   {
@@ -613,14 +621,24 @@ int mutt_inline_forward(struct Mailbox *m, struct Email *e_edit,
         return -1;
     }
     else
+    {
       for (i = 0; i < m->vcount; i++)
-        if (m->emails[m->v2r[i]]->tagged)
+      {
+        int v = m->v2r[i];
+        if ((v < 0) || (v >= m->msg_count))
+          continue;
+        struct Email *e = m->emails[v];
+        if (!e)
+          break;
+        if (e->tagged)
         {
-          if (inline_forward_attachments(m, m->emails[m->v2r[i]], &last, &forwardq) != 0)
+          if (inline_forward_attachments(m, e, &last, &forwardq) != 0)
             return -1;
           if (forwardq == MUTT_NO)
             break;
         }
+      }
+    }
   }
 
   return 0;

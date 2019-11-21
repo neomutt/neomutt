@@ -472,7 +472,11 @@ static int trash_append(struct Mailbox *m)
   int first_del = -1;
   for (int i = 0; i < m->msg_count; i++)
   {
-    if (m->emails[i]->deleted && (!m->emails[i]->purge))
+    struct Email *e = m->emails[i];
+    if (!e)
+      break;
+
+    if (e->deleted && !e->purge)
     {
       if (first_del < 0)
         first_del = i;
@@ -522,10 +526,13 @@ static int trash_append(struct Mailbox *m)
     /* continue from initial scan above */
     for (int i = first_del; i < m->msg_count; i++)
     {
-      if (m->emails[i]->deleted && (!m->emails[i]->purge))
+      struct Email *e = m->emails[i];
+      if (!e)
+        break;
+
+      if (e->deleted && !e->purge)
       {
-        if (mutt_append_message(ctx_trash->mailbox, m, m->emails[i],
-                                MUTT_CM_NO_FLAGS, CH_NO_FLAGS) == -1)
+        if (mutt_append_message(ctx_trash->mailbox, m, e, MUTT_CM_NO_FLAGS, CH_NO_FLAGS) == -1)
         {
           m_trash->append = old_append;
           mx_mbox_close(&ctx_trash);
@@ -602,12 +609,12 @@ int mx_mbox_close(struct Context **ptr)
 
   for (i = 0; i < m->msg_count; i++)
   {
-    if (!m->emails[i])
+    struct Email *e = m->emails[i];
+    if (!e)
       break;
-    if (!m->emails[i]->deleted && m->emails[i]->read && !(m->emails[i]->flagged && C_KeepFlagged))
-    {
+
+    if (!e->deleted && e->read && !(e->flagged && C_KeepFlagged))
       read_msgs++;
-    }
   }
 
 #ifdef USE_NNTP
@@ -665,8 +672,11 @@ int mx_mbox_close(struct Context **ptr)
   {
     for (i = 0; i < m->msg_count; i++)
     {
-      if (!m->emails[i]->deleted && !m->emails[i]->old && !m->emails[i]->read)
-        mutt_set_flag(m, m->emails[i], MUTT_OLD, true);
+      struct Email *e = m->emails[i];
+      if (!e)
+        break;
+      if (!e->deleted && !e->old && !e->read)
+        mutt_set_flag(m, e, MUTT_OLD, true);
     }
   }
 
@@ -684,15 +694,14 @@ int mx_mbox_close(struct Context **ptr)
       /* tag messages for moving, and clear old tags, if any */
       for (i = 0; i < m->msg_count; i++)
       {
-        if (m->emails[i]->read && !m->emails[i]->deleted &&
-            !(m->emails[i]->flagged && C_KeepFlagged))
-        {
-          m->emails[i]->tagged = true;
-        }
+        struct Email *e = m->emails[i];
+        if (!e)
+          break;
+
+        if (e->read && !e->deleted && !(e->flagged && C_KeepFlagged))
+          e->tagged = true;
         else
-        {
-          m->emails[i]->tagged = false;
-        }
+          e->tagged = false;
       }
 
       i = imap_copy_messages(ctx->mailbox, NULL, mutt_b2s(mbox), true);
@@ -715,14 +724,16 @@ int mx_mbox_close(struct Context **ptr)
 
       for (i = 0; i < m->msg_count; i++)
       {
-        if (m->emails[i]->read && !m->emails[i]->deleted &&
-            !(m->emails[i]->flagged && C_KeepFlagged))
+        struct Email *e = m->emails[i];
+        if (!e)
+          break;
+        if (e->read && !e->deleted && !(e->flagged && C_KeepFlagged))
         {
-          if (mutt_append_message(ctx_read->mailbox, ctx->mailbox, m->emails[i],
+          if (mutt_append_message(ctx_read->mailbox, ctx->mailbox, e,
                                   MUTT_CM_NO_FLAGS, CH_UPDATE_LEN) == 0)
           {
-            mutt_set_flag(m, m->emails[i], MUTT_DELETE, true);
-            mutt_set_flag(m, m->emails[i], MUTT_PURGE, true);
+            mutt_set_flag(m, e, MUTT_DELETE, true);
+            mutt_set_flag(m, e, MUTT_PURGE, true);
           }
           else
           {
@@ -769,8 +780,12 @@ int mx_mbox_close(struct Context **ptr)
     {
       for (i = 0; i < m->msg_count; i++)
       {
-        m->emails[i]->deleted = false;
-        m->emails[i]->purge = false;
+        struct Email *e = m->emails[i];
+        if (!e)
+          break;
+
+        e->deleted = false;
+        e->purge = false;
       }
       m->msg_deleted = 0;
     }
@@ -806,13 +821,16 @@ int mx_mbox_close(struct Context **ptr)
   {
     for (i = 0; i < m->msg_count; i++)
     {
-      if (m->emails[i]->deleted && !m->emails[i]->read)
+      struct Email *e = m->emails[i];
+      if (!e)
+        break;
+      if (e->deleted && !e->read)
       {
         m->msg_unread--;
-        if (!m->emails[i]->old)
+        if (!e->old)
           m->msg_new--;
       }
-      if (m->emails[i]->deleted && m->emails[i]->flagged)
+      if (e->deleted && e->flagged)
         m->msg_flagged--;
     }
   }
@@ -888,8 +906,11 @@ int mx_mbox_sync(struct Mailbox *m, int *index_hint)
       {
         for (int i = 0; i < m->msg_count; i++)
         {
-          m->emails[i]->deleted = false;
-          m->emails[i]->purge = false;
+          struct Email *e = m->emails[i];
+          if (!e)
+            break;
+          e->deleted = false;
+          e->purge = false;
         }
         m->msg_deleted = 0;
       }

@@ -732,8 +732,13 @@ static int reopen_mailbox(struct Mailbox *m, int *index_hint)
 static bool mbox_has_new(struct Mailbox *m)
 {
   for (int i = 0; i < m->msg_count; i++)
-    if (!m->emails[i]->deleted && !m->emails[i]->read && !m->emails[i]->old)
+  {
+    struct Email *e = m->emails[i];
+    if (!e)
+      break;
+    if (!e->deleted && !e->read && !e->old)
       return true;
+  }
   return false;
 }
 

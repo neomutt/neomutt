@@ -1623,9 +1623,15 @@ int mutt_menu_color_observer(struct NotifyCallback *nc)
   // Colour deleted from a list
   if (!ec->set && lists && Context && Context->mailbox)
   {
+    struct Mailbox *m = Context->mailbox;
     // Force re-caching of index colors
-    for (int i = 0; i < Context->mailbox->msg_count; i++)
-      Context->mailbox->emails[i]->pair = 0;
+    for (int i = 0; i < m->msg_count; i++)
+    {
+      struct Email *e = m->emails[i];
+      if (!e)
+        break;
+      e->pair = 0;
+    }
   }
 
   mutt_menu_set_redraw_full(MENU_MAIN);

@@ -325,14 +325,17 @@ void nntp_newsrc_gen_entries(struct Mailbox *m)
   series = true;
   for (int i = 0; i < m->msg_count; i++)
   {
+    struct Email *e = m->emails[i];
+    if (!e)
+      break;
+
     /* search for first unread */
     if (series)
     {
       /* We don't actually check sequential order, since we mark
        * "missing" entries as read/deleted */
-      last = nntp_edata_get(m->emails[i])->article_num;
-      if ((last >= mdata->first_message) && !m->emails[i]->deleted &&
-          !m->emails[i]->read)
+      last = nntp_edata_get(e)->article_num;
+      if ((last >= mdata->first_message) && !e->deleted && !e->read)
       {
         if (mdata->newsrc_len >= entries)
         {
@@ -349,12 +352,12 @@ void nntp_newsrc_gen_entries(struct Mailbox *m)
     /* search for first read */
     else
     {
-      if (m->emails[i]->deleted || m->emails[i]->read)
+      if (e->deleted || e->read)
       {
         first = last + 1;
         series = true;
       }
-      last = nntp_edata_get(m->emails[i])->article_num;
+      last = nntp_edata_get(e)->article_num;
     }
   }
 
@@ -1281,7 +1284,12 @@ struct NntpMboxData *mutt_newsgroup_catchup(struct Mailbox *m,
   if (m && (m->mdata == mdata))
   {
     for (unsigned int i = 0; i < m->msg_count; i++)
-      mutt_set_flag(m, m->emails[i], MUTT_READ, true);
+    {
+      struct Email *e = m->emails[i];
+      if (!e)
+        break;
+      mutt_set_flag(m, e, MUTT_READ, true);
+    }
   }
   return mdata;
 }
@@ -1315,7 +1323,12 @@ struct NntpMboxData *mutt_newsgroup_uncatchup(struct Mailbox *m,
   {
     mdata->unread = m->msg_count;
     for (unsigned int i = 0; i < m->msg_count; i++)
-      mutt_set_flag(m, m->emails[i], MUTT_READ, false);
+    {
+      struct Email *e = m->emails[i];
+      if (!e)
+        break;
+      mutt_set_flag(m, e, MUTT_READ, false);
+    }
   }
   else
   {
@@ -1350,8 +1363,13 @@ void nntp_mailbox(struct Mailbox *m, char *buf, size_t buflen)
       unsigned int unread = 0;
 
       for (unsigned int j = 0; j < m->msg_count; j++)
-        if (!m->emails[j]->read && !m->emails[j]->deleted)
+      {
+        struct Email *e = m->emails[j];
+        if (!e)
+          break;
+        if (!e->read && !e->deleted)
           unread++;
+      }
       if (unread == 0)
         continue;
     }

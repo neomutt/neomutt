@@ -3779,20 +3779,24 @@ int mutt_reply_observer(struct NotifyCallback *nc)
     return 0;
 
   regmatch_t pmatch[1];
+  struct Mailbox *m = Context->mailbox;
 
-  for (int i = 0; i < Context->mailbox->msg_count; i++)
+  for (int i = 0; i < m->msg_count; i++)
   {
-    struct Envelope *e = Context->mailbox->emails[i]->env;
-    if (!e || !e->subject)
+    struct Email *e = m->emails[i];
+    if (!e)
+      break;
+    struct Envelope *env = e->env;
+    if (!env || !env->subject)
       continue;
 
-    if (mutt_regex_capture(C_ReplyRegex, e->subject, 1, pmatch))
+    if (mutt_regex_capture(C_ReplyRegex, env->subject, 1, pmatch))
     {
-      e->real_subj = e->subject + pmatch[0].rm_eo;
+      env->real_subj = env->subject + pmatch[0].rm_eo;
       continue;
     }
 
-    e->real_subj = e->subject;
+    env->real_subj = env->subject;
   }
 
   OptResortInit = true; /* trigger a redraw of the index */
