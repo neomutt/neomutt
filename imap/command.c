@@ -78,7 +78,7 @@ static const char *const Capabilities[] = {
  */
 static bool cmd_queue_full(struct ImapAccountData *adata)
 {
-  if ((adata->nextcmd + 1) % adata->cmdslots == adata->lastcmd)
+  if (((adata->nextcmd + 1) % adata->cmdslots) == adata->lastcmd)
     return true;
 
   return false;

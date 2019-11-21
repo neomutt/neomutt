@@ -1244,13 +1244,9 @@ int main(int argc, char *argv[], char *envp[])
     if (!Context)
     {
       if (m->account)
-      {
         account_mailbox_remove(m->account, m);
-        mailbox_free(&m);
-        m = NULL;
-      }
-      else
-        mailbox_free(&m);
+
+      mailbox_free(&m);
     }
     if (Context || !explicit_folder)
     {
