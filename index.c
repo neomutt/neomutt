@@ -2000,12 +2000,16 @@ int mutt_index_menu(void)
           break;
         if (tag)
         {
-          for (size_t i = 0; i < Context->mailbox->msg_count; i++)
+          struct Mailbox *m = Context->mailbox;
+          for (size_t i = 0; i < m->msg_count; i++)
           {
-            if (message_is_tagged(Context, i))
+            struct Email *e = m->emails[i];
+            if (!e)
+              break;
+            if (message_is_tagged(Context, e))
             {
-              Context->mailbox->emails[i]->quasi_deleted = true;
-              Context->mailbox->changed = true;
+              e->quasi_deleted = true;
+              m->changed = true;
             }
           }
         }
@@ -2088,7 +2092,8 @@ int mutt_index_menu(void)
       {
         if (!Context || !Context->mailbox)
           break;
-        if (!mx_tags_is_supported(Context->mailbox))
+        struct Mailbox *m = Context->mailbox;
+        if (!mx_tags_is_supported(m))
         {
           mutt_message(_("Folder doesn't support tagging, aborting"));
           break;
@@ -2098,7 +2103,7 @@ int mutt_index_menu(void)
         char *tags = NULL;
         if (!tag)
           tags = driver_tags_get_with_hidden(&CUR_EMAIL->tags);
-        int rc = mx_tags_edit(Context->mailbox, tags, buf, sizeof(buf));
+        int rc = mx_tags_edit(m, tags, buf, sizeof(buf));
         FREE(&tags);
         if (rc < 0)
           break;
@@ -2112,45 +2117,47 @@ int mutt_index_menu(void)
         {
           struct Progress progress;
 
-          if (!Context->mailbox->quiet)
+          if (!m->quiet)
           {
             mutt_progress_init(&progress, _("Update tags..."),
-                               MUTT_PROGRESS_WRITE, Context->mailbox->msg_tagged);
+                               MUTT_PROGRESS_WRITE, m->msg_tagged);
           }
 
 #ifdef USE_NOTMUCH
-          if (Context->mailbox->magic == MUTT_NOTMUCH)
-            nm_db_longrun_init(Context->mailbox, true);
+          if (m->magic == MUTT_NOTMUCH)
+            nm_db_longrun_init(m, true);
 #endif
-          for (int px = 0, i = 0; i < Context->mailbox->msg_count; i++)
+          for (int px = 0, i = 0; i < m->msg_count; i++)
           {
-            if (!message_is_tagged(Context, i))
+            struct Email *e = m->emails[i];
+            if (!e)
+              break;
+            if (!message_is_tagged(Context, e))
               continue;
 
-            if (!Context->mailbox->quiet)
+            if (!m->quiet)
               mutt_progress_update(&progress, ++px, -1);
-            mx_tags_commit(Context->mailbox, Context->mailbox->emails[i], buf);
+            mx_tags_commit(m, e, buf);
             if (op == OP_MAIN_MODIFY_TAGS_THEN_HIDE)
             {
               bool still_queried = false;
 #ifdef USE_NOTMUCH
-              if (Context->mailbox->magic == MUTT_NOTMUCH)
-                still_queried = nm_message_is_still_queried(
-                    Context->mailbox, Context->mailbox->emails[i]);
+              if (m->magic == MUTT_NOTMUCH)
+                still_queried = nm_message_is_still_queried(m, e);
 #endif
-              Context->mailbox->emails[i]->quasi_deleted = !still_queried;
-              Context->mailbox->changed = true;
+              e->quasi_deleted = !still_queried;
+              m->changed = true;
             }
           }
 #ifdef USE_NOTMUCH
-          if (Context->mailbox->magic == MUTT_NOTMUCH)
-            nm_db_longrun_done(Context->mailbox);
+          if (m->magic == MUTT_NOTMUCH)
+            nm_db_longrun_done(m);
 #endif
           menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
         }
         else
         {
-          if (mx_tags_commit(Context->mailbox, CUR_EMAIL, buf))
+          if (mx_tags_commit(m, CUR_EMAIL, buf))
           {
             mutt_message(_("Failed to modify tags, aborting"));
             break;
@@ -2159,11 +2166,11 @@ int mutt_index_menu(void)
           {
             bool still_queried = false;
 #ifdef USE_NOTMUCH
-            if (Context->mailbox->magic == MUTT_NOTMUCH)
-              still_queried = nm_message_is_still_queried(Context->mailbox, CUR_EMAIL);
+            if (m->magic == MUTT_NOTMUCH)
+              still_queried = nm_message_is_still_queried(m, CUR_EMAIL);
 #endif
             CUR_EMAIL->quasi_deleted = !still_queried;
-            Context->mailbox->changed = true;
+            m->changed = true;
           }
           if (in_pager)
           {
@@ -2801,28 +2808,30 @@ int mutt_index_menu(void)
         break;
       }
       case OP_FLAG_MESSAGE:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
           break;
         /* L10N: CHECK_ACL */
         if (!check_acl(Context, MUTT_ACL_WRITE, _("Can't flag message")))
           break;
 
+        struct Mailbox *m = Context->mailbox;
         if (tag)
         {
-          for (size_t i = 0; i < Context->mailbox->msg_count; i++)
+          for (size_t i = 0; i < m->msg_count; i++)
           {
-            if (message_is_tagged(Context, i))
-            {
-              mutt_set_flag(Context->mailbox, Context->mailbox->emails[i],
-                            MUTT_FLAG, !Context->mailbox->emails[i]->flagged);
-            }
+            struct Email *e = m->emails[i];
+            if (!e)
+              break;
+            if (message_is_tagged(Context, e))
+              mutt_set_flag(m, e, MUTT_FLAG, !e->flagged);
           }
 
           menu->redraw |= REDRAW_INDEX;
         }
         else
         {
-          mutt_set_flag(Context->mailbox, CUR_EMAIL, MUTT_FLAG, !CUR_EMAIL->flagged);
+          mutt_set_flag(m, CUR_EMAIL, MUTT_FLAG, !CUR_EMAIL->flagged);
           if (C_Resolve)
           {
             menu->current = ci_next_undeleted(menu->current);
@@ -2839,34 +2848,40 @@ int mutt_index_menu(void)
         }
         menu->redraw |= REDRAW_STATUS;
         break;
+      }
 
       case OP_TOGGLE_NEW:
+      {
         if (!prereq(Context, menu, CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
           break;
         /* L10N: CHECK_ACL */
         if (!check_acl(Context, MUTT_ACL_SEEN, _("Can't toggle new")))
           break;
 
+        struct Mailbox *m = Context->mailbox;
         if (tag)
         {
-          for (size_t i = 0; i < Context->mailbox->msg_count; i++)
+          for (size_t i = 0; i < m->msg_count; i++)
           {
-            if (!message_is_tagged(Context, i))
+            struct Email *e = m->emails[i];
+            if (!e)
+              break;
+            if (!message_is_tagged(Context, e))
               continue;
 
-            if (Context->mailbox->emails[i]->read || Context->mailbox->emails[i]->old)
-              mutt_set_flag(Context->mailbox, Context->mailbox->emails[i], MUTT_NEW, true);
+            if (e->read || e->old)
+              mutt_set_flag(m, e, MUTT_NEW, true);
             else
-              mutt_set_flag(Context->mailbox, Context->mailbox->emails[i], MUTT_READ, true);
+              mutt_set_flag(m, e, MUTT_READ, true);
           }
           menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         }
         else
         {
           if (CUR_EMAIL->read || CUR_EMAIL->old)
-            mutt_set_flag(Context->mailbox, CUR_EMAIL, MUTT_NEW, true);
+            mutt_set_flag(m, CUR_EMAIL, MUTT_NEW, true);
           else
-            mutt_set_flag(Context->mailbox, CUR_EMAIL, MUTT_READ, true);
+            mutt_set_flag(m, CUR_EMAIL, MUTT_READ, true);
 
           if (C_Resolve)
           {
@@ -2884,6 +2899,7 @@ int mutt_index_menu(void)
           menu->redraw |= REDRAW_STATUS;
         }
         break;
+      }
 
       case OP_TOGGLE_WRITE:
         if (!prereq(Context, menu, CHECK_IN_MAILBOX))
@@ -3479,10 +3495,14 @@ int mutt_index_menu(void)
 
         if (tag)
         {
-          for (size_t i = 0; i < Context->mailbox->msg_count; i++)
+          struct Mailbox *m = Context->mailbox;
+          for (size_t i = 0; i < m->msg_count; i++)
           {
-            if (message_is_tagged(Context, i))
-              mutt_resend_message(NULL, Context, Context->mailbox->emails[i]);
+            struct Email *e = m->emails[i];
+            if (!e)
+              break;
+            if (message_is_tagged(Context, e))
+              mutt_resend_message(NULL, Context, e);
           }
         }
         else

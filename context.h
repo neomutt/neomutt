@@ -74,7 +74,7 @@ struct Context *ctx_new             (void);
 void            ctx_update          (struct Context *ctx);
 void            ctx_update_tables   (struct Context *ctx, bool committing);
 
-bool message_is_tagged (struct Context *ctx, int index);
+bool message_is_tagged (struct Context *ctx, struct Email *e);
 bool message_is_visible(struct Context *ctx, struct Email *e);
 
 int  el_add_email   (struct EmailList *el, struct Email *e);
