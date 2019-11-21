@@ -48,8 +48,8 @@ size_t LastError = 0; ///< Time of the last error message (in milliseconds since
 
 short C_DebugLevel = 0;   ///< Config: Logging level for debug logs
 char *C_DebugFile = NULL; ///< Config: File to save debug logs
-char *CurrentFile = NULL; /**< The previous log file name */
-const int NumOfLogs = 5;  /**< How many log files to rotate */
+char *CurrentFile = NULL; ///< The previous log file name
+const int NumOfLogs = 5;  ///< How many log files to rotate
 
 #define S_TO_MS 1000L
 

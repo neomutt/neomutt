@@ -70,9 +70,9 @@ struct FolderFile
   char *name;
   char *desc;
 
-  bool has_new_mail; /**< true if mailbox has "new mail" */
-  int msg_count;     /**< total number of messages */
-  int msg_unread;    /**< number of unread messages */
+  bool has_new_mail; ///< true if mailbox has "new mail"
+  int msg_count;     ///< total number of messages
+  int msg_unread;    ///< number of unread messages
 
 #ifdef USE_IMAP
   char delim;
@@ -82,7 +82,7 @@ struct FolderFile
   bool inferiors : 1;
 #endif
   bool has_mailbox : 1;
-  bool local : 1; /**< folder is on local filesystem */
+  bool local : 1; ///< folder is on local filesystem
   bool tagged : 1;
 #ifdef USE_NNTP
   struct NntpMboxData *nd;
@@ -95,8 +95,8 @@ struct FolderFile
 struct BrowserState
 {
   struct FolderFile *entry;
-  size_t entrylen; /**< number of real entries */
-  unsigned int entrymax; /**< max entry */
+  size_t entrylen; ///< number of real entries
+  unsigned int entrymax; ///< max entry
 #ifdef USE_IMAP
   bool imap_browse;
   char *folder;

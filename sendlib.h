@@ -42,7 +42,7 @@ extern bool  C_ForwardDecrypt;
 extern bool  C_HiddenHost;
 extern char *C_Inews;
 extern bool  C_MimeForwardDecode;
-extern bool  C_MimeSubject; /**< encode subject line with RFC2047 */
+extern bool  C_MimeSubject; ///< encode subject line with RFC2047
 extern char *C_MimeTypeQueryCommand;
 extern bool  C_MimeTypeQueryFirst;
 extern char *C_Sendmail;

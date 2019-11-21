@@ -41,10 +41,10 @@
  */
 struct Tz
 {
-  char tzname[5];         /**< Name, e.g. UTC */
-  unsigned char zhours;   /**< Hours away from UTC */
-  unsigned char zminutes; /**< Minutes away from UTC */
-  bool zoccident;         /**< True if west of UTC, False if East */
+  char tzname[5];         ///< Name, e.g. UTC
+  unsigned char zhours;   ///< Hours away from UTC
+  unsigned char zminutes; ///< Minutes away from UTC
+  bool zoccident;         ///< True if west of UTC, False if East
 };
 
 time_t    mutt_date_add_timeout(time_t now, long timeout);

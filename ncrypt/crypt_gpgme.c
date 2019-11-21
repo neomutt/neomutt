@@ -120,10 +120,10 @@ struct CryptKeyInfo
 {
   struct CryptKeyInfo *next;
   gpgme_key_t kobj;
-  int idx;                   /**< and the user ID at this index */
-  const char *uid;           /**< and for convenience point to this user ID */
-  KeyFlags flags;            /**< global and per uid flags (for convenience) */
-  gpgme_validity_t validity; /**< uid validity (cached for convenience) */
+  int idx;                   ///< and the user ID at this index
+  const char *uid;           ///< and for convenience point to this user ID
+  KeyFlags flags;            ///< global and per uid flags (for convenience)
+  gpgme_validity_t validity; ///< uid validity (cached for convenience)
 };
 
 /**

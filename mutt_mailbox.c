@@ -14,10 +14,10 @@
 #include "mx.h"
 #include "protos.h"
 
-static time_t MailboxTime = 0; /**< last time we started checking for mail */
-static time_t MailboxStatsTime = 0; /**< last time we check performed mail_check_stats */
-static short MailboxCount = 0;  /**< how many boxes with new mail */
-static short MailboxNotify = 0; /**< # of unnotified new boxes */
+static time_t MailboxTime = 0; ///< last time we started checking for mail
+static time_t MailboxStatsTime = 0; ///< last time we check performed mail_check_stats
+static short MailboxCount = 0;  ///< how many boxes with new mail
+static short MailboxNotify = 0; ///< # of unnotified new boxes
 
 /* These Config Variables are only used in mutt_mailbox.c */
 short C_MailCheck; ///< Config: Number of seconds before NeoMutt checks for new mail

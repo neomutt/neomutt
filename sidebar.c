@@ -70,19 +70,19 @@ static short PreviousSort = SORT_ORDER; /* sidebar_sort_method */
  */
 struct SbEntry
 {
-  char box[256];           /**< formatted mailbox name */
-  struct Mailbox *mailbox; /**< Mailbox this represents */
-  bool is_hidden;          /**< Don't show, e.g. $sidebar_new_mail_only */
+  char box[256];           ///< formatted mailbox name
+  struct Mailbox *mailbox; ///< Mailbox this represents
+  bool is_hidden;          ///< Don't show, e.g. $sidebar_new_mail_only
 };
 
 static int EntryCount = 0;
 static int EntryLen = 0;
 static struct SbEntry **Entries = NULL;
 
-static int TopIndex = -1; /**< First mailbox visible in sidebar */
-static int OpnIndex = -1; /**< Current (open) mailbox */
-static int HilIndex = -1; /**< Highlighted mailbox */
-static int BotIndex = -1; /**< Last mailbox visible in sidebar */
+static int TopIndex = -1; ///< First mailbox visible in sidebar
+static int OpnIndex = -1; ///< Current (open) mailbox
+static int HilIndex = -1; ///< Highlighted mailbox
+static int BotIndex = -1; ///< Last mailbox visible in sidebar
 
 /**
  * enum DivType - Source of the sidebar divider character

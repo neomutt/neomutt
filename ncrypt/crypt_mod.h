@@ -43,7 +43,7 @@ struct State;
  */
 struct CryptModuleSpecs
 {
-  int identifier; /**< Identifying bit */
+  int identifier; ///< Identifying bit
 
   /**
    * init - Initialise the crypto module
