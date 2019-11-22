@@ -203,7 +203,9 @@ void mh_update_sequences(struct Mailbox *m)
       if (mutt_str_startswith(buf, seq_unseen, CASE_MATCH) ||
           mutt_str_startswith(buf, seq_flagged, CASE_MATCH) ||
           mutt_str_startswith(buf, seq_replied, CASE_MATCH))
+      {
         continue;
+      }
 
       fprintf(fp_new, "%s\n", buf);
     }
@@ -213,29 +215,33 @@ void mh_update_sequences(struct Mailbox *m)
   /* now, update our unseen, flagged, and replied sequences */
   for (l = 0; l < m->msg_count; l++)
   {
-    if (m->emails[l]->deleted)
+    struct Email *e = m->emails[l];
+    if (!e)
+      break;
+
+    if (e->deleted)
       continue;
 
-    p = strrchr(m->emails[l]->path, '/');
+    p = strrchr(e->path, '/');
     if (p)
       p++;
     else
-      p = m->emails[l]->path;
+      p = e->path;
 
     if (mutt_str_atoi(p, &i) < 0)
       continue;
 
-    if (!m->emails[l]->read)
+    if (!e->read)
     {
       mhs_set(&mhs, i, MH_SEQ_UNSEEN);
       unseen++;
     }
-    if (m->emails[l]->flagged)
+    if (e->flagged)
     {
       mhs_set(&mhs, i, MH_SEQ_FLAGGED);
       flagged++;
     }
-    if (m->emails[l]->replied)
+    if (e->replied)
     {
       mhs_set(&mhs, i, MH_SEQ_REPLIED);
       replied++;
@@ -522,6 +528,8 @@ int mh_sync_message(struct Mailbox *m, int msgno)
     return -1;
 
   struct Email *e = m->emails[msgno];
+  if (!e)
+    return -1;
 
   /* TODO: why the e->env check? */
   if (e->attach_del || (e->env && e->env->changed))
@@ -678,15 +686,19 @@ int mh_mbox_check(struct Mailbox *m, int *index_hint)
 
   for (int i = 0; i < m->msg_count; i++)
   {
-    m->emails[i]->active = false;
+    struct Email *e = m->emails[i];
+    if (!e)
+      break;
 
-    p = mutt_hash_find(fnames, m->emails[i]->path);
-    if (p && p->email && email_cmp_strict(m->emails[i], p->email))
+    e->active = false;
+
+    p = mutt_hash_find(fnames, e->path);
+    if (p && p->email && email_cmp_strict(e, p->email))
     {
-      m->emails[i]->active = true;
+      e->active = true;
       /* found the right message */
-      if (!m->emails[i]->changed)
-        if (maildir_update_flags(m, m->emails[i], p->email))
+      if (!e->changed)
+        if (maildir_update_flags(m, e, p->email))
           flags_changed = true;
 
       email_free(&p->email);

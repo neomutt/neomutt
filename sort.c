@@ -361,33 +361,38 @@ sort_t *mutt_get_sort_func(enum SortType method)
  */
 void mutt_sort_headers(struct Context *ctx, bool init)
 {
-  struct Email *e = NULL;
+  if (!ctx || !ctx->mailbox)
+    return;
+
   struct MuttThread *thread = NULL, *top = NULL;
   sort_t *sortfunc = NULL;
+  struct Mailbox *m = ctx->mailbox;
 
   OptNeedResort = false;
 
-  if (!ctx)
-    return;
-
-  if (ctx->mailbox->msg_count == 0)
+  if (m->msg_count == 0)
   {
     /* this function gets called by mutt_sync_mailbox(), which may have just
      * deleted all the messages.  the virtual message numbers are not updated
      * in that routine, so we must make sure to zero the vcount member.  */
-    ctx->mailbox->vcount = 0;
+    m->vcount = 0;
     ctx->vsize = 0;
     mutt_clear_threads(ctx);
     return; /* nothing to do! */
   }
 
-  if (!ctx->mailbox->quiet)
+  if (!m->quiet)
     mutt_message(_("Sorting mailbox..."));
 
   if (OptNeedRescore && C_Score)
   {
-    for (int i = 0; i < ctx->mailbox->msg_count; i++)
-      mutt_score_message(ctx->mailbox, ctx->mailbox->emails[i], true);
+    for (int i = 0; i < m->msg_count; i++)
+    {
+      struct Email *e = m->emails[i];
+      if (!e)
+        break;
+      mutt_score_message(m, e, true);
+    }
   }
   OptNeedRescore = false;
 
@@ -423,19 +428,23 @@ void mutt_sort_headers(struct Context *ctx, bool init)
     return;
   }
   else
-    qsort((void *) ctx->mailbox->emails, ctx->mailbox->msg_count,
-          sizeof(struct Email *), sortfunc);
+  {
+    qsort((void *) m->emails, m->msg_count, sizeof(struct Email *), sortfunc);
+  }
 
   /* adjust the virtual message numbers */
-  ctx->mailbox->vcount = 0;
-  for (int i = 0; i < ctx->mailbox->msg_count; i++)
+  m->vcount = 0;
+  for (int i = 0; i < m->msg_count; i++)
   {
-    struct Email *e_cur = ctx->mailbox->emails[i];
+    struct Email *e_cur = m->emails[i];
+    if (!e_cur)
+      break;
+
     if ((e_cur->vnum != -1) || (e_cur->collapsed && (!ctx->pattern || e_cur->limited)))
     {
-      e_cur->vnum = ctx->mailbox->vcount;
-      ctx->mailbox->v2r[ctx->mailbox->vcount] = i;
-      ctx->mailbox->vcount++;
+      e_cur->vnum = m->vcount;
+      m->v2r[m->vcount] = i;
+      m->vcount++;
     }
     e_cur->msgno = i;
   }
@@ -448,8 +457,8 @@ void mutt_sort_headers(struct Context *ctx, bool init)
     {
       while (!thread->message)
         thread = thread->child;
-      e = thread->message;
 
+      struct Email *e = thread->message;
       if (e->collapsed)
         mutt_collapse_thread(ctx, e);
       top = top->next;
@@ -457,6 +466,6 @@ void mutt_sort_headers(struct Context *ctx, bool init)
     mutt_set_vnum(ctx);
   }
 
-  if (!ctx->mailbox->quiet)
+  if (!m->quiet)
     mutt_clear_error();
 }

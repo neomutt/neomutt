@@ -214,6 +214,8 @@ void ctx_update_tables(struct Context *ctx, bool committing)
   padding = mx_msg_padding_size(m);
   for (i = 0, j = 0; i < m->msg_count; i++)
   {
+    if (!m->emails[i])
+      break;
     if (!m->emails[i]->quasi_deleted &&
         ((committing && (!m->emails[i]->deleted || ((m->magic == MUTT_MAILDIR) && C_MaildirTrash))) ||
          (!committing && m->emails[i]->active)))
@@ -323,31 +325,31 @@ int ctx_mailbox_observer(struct NotifyCallback *nc)
 
 /**
  * message_is_visible - Is a message in the index within limit
- * @param ctx   Open mailbox
- * @param index Message ID (index into `ctx->emails[]`
+ * @param ctx Context
+ * @param e   Email
  * @retval true The message is within limit
  *
  * If no limit is in effect, all the messages are visible.
  */
-bool message_is_visible(struct Context *ctx, int index)
+bool message_is_visible(struct Context *ctx, struct Email *e)
 {
-  if (!ctx || !ctx->mailbox->emails || (index >= ctx->mailbox->msg_count))
+  if (!ctx || !e)
     return false;
 
-  return !ctx->pattern || ctx->mailbox->emails[index]->limited;
+  return !ctx->pattern || e->limited;
 }
 
 /**
  * message_is_tagged - Is a message in the index tagged (and within limit)
- * @param ctx   Open mailbox
- * @param index Message ID (index into `ctx->emails[]`
+ * @param ctx Open mailbox
+ * @param e   Email
  * @retval true The message is both tagged and within limit
  *
  * If a limit is in effect, the message must be visible within it.
  */
-bool message_is_tagged(struct Context *ctx, int index)
+bool message_is_tagged(struct Context *ctx, struct Email *e)
 {
-  return message_is_visible(ctx, index) && ctx->mailbox->emails[index]->tagged;
+  return message_is_visible(ctx, e) && e->tagged;
 }
 
 /**
@@ -368,13 +370,17 @@ int el_add_tagged(struct EmailList *el, struct Context *ctx, struct Email *e, bo
     if (!ctx || !ctx->mailbox || !ctx->mailbox->emails)
       return -1;
 
-    for (size_t i = 0; i < ctx->mailbox->msg_count; i++)
+    struct Mailbox *m = ctx->mailbox;
+    for (size_t i = 0; i < m->msg_count; i++)
     {
-      if (!message_is_tagged(ctx, i))
+      e = m->emails[i];
+      if (!e)
+        break;
+      if (!message_is_tagged(ctx, e))
         continue;
 
       struct EmailNode *en = mutt_mem_calloc(1, sizeof(*en));
-      en->email = ctx->mailbox->emails[i];
+      en->email = e;
       STAILQ_INSERT_TAIL(el, en, entries);
       count++;
     }

@@ -198,10 +198,13 @@ void maildir_gen_flags(char *dest, size_t destlen, struct Email *e)
  */
 int maildir_sync_message(struct Mailbox *m, int msgno)
 {
-  if (!m || !m->emails)
+  if (!m || !m->emails || (msgno >= m->msg_count))
     return -1;
 
   struct Email *e = m->emails[msgno];
+  if (!e)
+    return -1;
+
   struct Buffer *newpath = NULL;
   struct Buffer *partpath = NULL;
   struct Buffer *fullpath = NULL;
@@ -209,7 +212,7 @@ int maildir_sync_message(struct Mailbox *m, int msgno)
   char suffix[16];
   int rc = 0;
 
-  /* TODO: why the h->env check? */
+  /* TODO: why the e->env check? */
   if (e->attach_del || (e->env && e->env->changed))
   {
     /* when doing attachment deletion/rethreading, fall back to the MH case. */
@@ -450,6 +453,8 @@ int maildir_mbox_check(struct Mailbox *m, int *index_hint)
   for (int i = 0; i < m->msg_count; i++)
   {
     struct Email *e = m->emails[i];
+    if (!e)
+      break;
 
     e->active = false;
     maildir_canon_filename(buf, e->path);

@@ -512,6 +512,8 @@ static struct Hash *make_subj_hash(struct Mailbox *m)
   for (int i = 0; i < m->msg_count; i++)
   {
     struct Email *e = m->emails[i];
+    if (!e || !e->env)
+      continue;
     if (e->env->real_subj)
       mutt_hash_insert(hash, e->env->real_subj, e);
   }
@@ -605,12 +607,13 @@ void mutt_clear_threads(struct Context *ctx)
 
   for (int i = 0; i < m->msg_count; i++)
   {
+    struct Email *e = m->emails[i];
+    if (!e)
+      break;
+
     /* mailbox may have been only partially read */
-    if (m->emails[i])
-    {
-      m->emails[i]->thread = NULL;
-      m->emails[i]->threaded = false;
-    }
+    e->thread = NULL;
+    e->threaded = false;
   }
   ctx->tree = NULL;
 
@@ -791,18 +794,19 @@ static void check_subjects(struct Mailbox *m, bool init)
   if (!m)
     return;
 
-  struct Email *e = NULL;
-  struct MuttThread *tmp = NULL;
   for (int i = 0; i < m->msg_count; i++)
   {
-    e = m->emails[i];
+    struct Email *e = m->emails[i];
+    if (!e || !e->thread)
+      continue;
+
     if (e->thread->check_subject)
       e->thread->check_subject = false;
     else if (!init)
       continue;
 
     /* figure out which messages have subjects different than their parents' */
-    tmp = e->thread->parent;
+    struct MuttThread *tmp = e->thread->parent;
     while (tmp && !tmp->message)
     {
       tmp = tmp->parent;
@@ -872,6 +876,8 @@ void mutt_sort_threads(struct Context *ctx, bool init)
   for (i = 0; i < m->msg_count; i++)
   {
     e = m->emails[i];
+    if (!e || !e->thread)
+      continue;
 
     if (!e->thread)
     {
@@ -964,6 +970,9 @@ void mutt_sort_threads(struct Context *ctx, bool init)
   for (i = 0; i < m->msg_count; i++)
   {
     e = m->emails[i];
+    if (!e)
+      break;
+
     if (e->threaded)
       continue;
     e->threaded = true;
@@ -1196,6 +1205,9 @@ void mutt_set_vnum(struct Context *ctx)
   for (int i = 0; i < m->msg_count; i++)
   {
     e = m->emails[i];
+    if (!e)
+      break;
+
     if (e->vnum >= 0)
     {
       e->vnum = m->vcount;
@@ -1438,6 +1450,9 @@ struct Hash *mutt_make_id_hash(struct Mailbox *m)
   for (int i = 0; i < m->msg_count; i++)
   {
     struct Email *e = m->emails[i];
+    if (!e || !e->env)
+      continue;
+
     if (e->env->message_id)
       mutt_hash_insert(hash, e->env->message_id, e);
   }

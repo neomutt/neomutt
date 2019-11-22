@@ -1601,6 +1601,8 @@ static int check_mailbox(struct Mailbox *m)
     int j = 0;
     for (int i = 0; i < m->msg_count; i++)
     {
+      if (!m->emails[i])
+        continue;
       bool flagged = false;
       anum_t anum = nntp_edata_get(m->emails[i])->article_num;
 
@@ -1789,8 +1791,13 @@ static int fetch_children(char *line, void *data)
   if (!line || (sscanf(line, ANUM, &anum) != 1))
     return 0;
   for (unsigned int i = 0; i < cc->mailbox->msg_count; i++)
-    if (nntp_edata_get(cc->mailbox->emails[i])->article_num == anum)
+  {
+    struct Email *e = cc->mailbox->emails[i];
+    if (!e)
+      break;
+    if (nntp_edata_get(e)->article_num == anum)
       return 0;
+  }
   if (cc->num >= cc->max)
   {
     cc->max *= 2;
@@ -2619,6 +2626,9 @@ static int nntp_mbox_sync(struct Mailbox *m, int *index_hint)
   for (int i = 0; i < m->msg_count; i++)
   {
     struct Email *e = m->emails[i];
+    if (!e)
+      break;
+
     char buf[16];
 
     snprintf(buf, sizeof(buf), ANUM, nntp_edata_get(e)->article_num);
@@ -2685,11 +2695,14 @@ static int nntp_mbox_close(struct Mailbox *m)
  */
 static int nntp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
-  if (!m || !m->emails || !msg)
+  if (!m || !m->emails || (msgno >= m->msg_count) || !msg)
     return -1;
 
   struct NntpMboxData *mdata = m->mdata;
   struct Email *e = m->emails[msgno];
+  if (!e)
+    return -1;
+
   char article[16];
 
   /* try to get article from cache */

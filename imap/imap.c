@@ -188,76 +188,77 @@ static int make_msg_set(struct Mailbox *m, struct Buffer *buf, int flag,
   if (!adata || (adata->mailbox != m))
     return -1;
 
-  struct Email **emails = m->emails;
-
   for (n = *pos; (n < m->msg_count) && (mutt_buffer_len(buf) < IMAP_MAX_CMDLEN); n++)
   {
+    struct Email *e = m->emails[n];
+    if (!e)
+      break;
     bool match = false; /* whether current message matches flag condition */
     /* don't include pending expunged messages.
      *
      * TODO: can we unset active in cmd_parse_expunge() and
      * cmd_parse_vanished() instead of checking for index != INT_MAX. */
-    if (emails[n]->active && (emails[n]->index != INT_MAX))
+    if (e->active && (e->index != INT_MAX))
     {
       switch (flag)
       {
         case MUTT_DELETED:
-          if (emails[n]->deleted != imap_edata_get(emails[n])->deleted)
-            match = invert ^ emails[n]->deleted;
+          if (e->deleted != imap_edata_get(e)->deleted)
+            match = invert ^ e->deleted;
           break;
         case MUTT_FLAG:
-          if (emails[n]->flagged != imap_edata_get(emails[n])->flagged)
-            match = invert ^ emails[n]->flagged;
+          if (e->flagged != imap_edata_get(e)->flagged)
+            match = invert ^ e->flagged;
           break;
         case MUTT_OLD:
-          if (emails[n]->old != imap_edata_get(emails[n])->old)
-            match = invert ^ emails[n]->old;
+          if (e->old != imap_edata_get(e)->old)
+            match = invert ^ e->old;
           break;
         case MUTT_READ:
-          if (emails[n]->read != imap_edata_get(emails[n])->read)
-            match = invert ^ emails[n]->read;
+          if (e->read != imap_edata_get(e)->read)
+            match = invert ^ e->read;
           break;
         case MUTT_REPLIED:
-          if (emails[n]->replied != imap_edata_get(emails[n])->replied)
-            match = invert ^ emails[n]->replied;
+          if (e->replied != imap_edata_get(e)->replied)
+            match = invert ^ e->replied;
           break;
         case MUTT_TAG:
-          if (emails[n]->tagged)
+          if (e->tagged)
             match = true;
           break;
         case MUTT_TRASH:
-          if (emails[n]->deleted && !emails[n]->purge)
+          if (e->deleted && !e->purge)
             match = true;
           break;
       }
     }
 
-    if (match && (!changed || emails[n]->changed))
+    if (match && (!changed || e->changed))
     {
       count++;
       if (setstart == 0)
       {
-        setstart = imap_edata_get(emails[n])->uid;
+        setstart = imap_edata_get(e)->uid;
         if (started)
         {
-          mutt_buffer_add_printf(buf, ",%u", imap_edata_get(emails[n])->uid);
+          mutt_buffer_add_printf(buf, ",%u", imap_edata_get(e)->uid);
         }
         else
         {
-          mutt_buffer_add_printf(buf, "%u", imap_edata_get(emails[n])->uid);
+          mutt_buffer_add_printf(buf, "%u", imap_edata_get(e)->uid);
           started = true;
         }
       }
       /* tie up if the last message also matches */
       else if (n == (m->msg_count - 1))
-        mutt_buffer_add_printf(buf, ":%u", imap_edata_get(emails[n])->uid);
+        mutt_buffer_add_printf(buf, ":%u", imap_edata_get(e)->uid);
     }
     /* End current set if message doesn't match or we've reached the end
      * of the mailbox via inactive messages following the last match. */
-    else if (setstart && (emails[n]->active || (n == adata->mailbox->msg_count - 1)))
+    else if (setstart && (e->active || (n == adata->mailbox->msg_count - 1)))
     {
-      if (imap_edata_get(emails[n - 1])->uid > setstart)
-        mutt_buffer_add_printf(buf, ":%u", imap_edata_get(emails[n - 1])->uid);
+      if (imap_edata_get(m->emails[n - 1])->uid > setstart)
+        mutt_buffer_add_printf(buf, ":%u", imap_edata_get(m->emails[n - 1])->uid);
       setstart = 0;
     }
   }
@@ -794,6 +795,8 @@ void imap_expunge_mailbox(struct Mailbox *m)
   for (int i = 0; i < m->msg_count; i++)
   {
     e = m->emails[i];
+    if (!e)
+      break;
 
     if (e->index == INT_MAX)
     {
@@ -1350,7 +1353,12 @@ int imap_search(struct Mailbox *m, const struct PatternList *pat)
   struct Buffer buf;
   struct ImapAccountData *adata = imap_adata_get(m);
   for (int i = 0; i < m->msg_count; i++)
-    m->emails[i]->matched = false;
+  {
+    struct Email *e = m->emails[i];
+    if (!e)
+      break;
+    e->matched = false;
+  }
 
   if (do_search(pat, true) == 0)
     return 0;
@@ -1539,10 +1547,12 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
 
   for (int i = 0; i < m->msg_count; i++)
   {
-    if (m->emails[i]->active && m->emails[i]->changed &&
-        m->emails[i]->deleted && !m->emails[i]->purge)
+    struct Email *e = m->emails[i];
+    if (!e)
+      break;
+    if (e->active && e->changed && e->deleted && !e->purge)
     {
-      rc = imap_sync_message_for_copy(m, m->emails[i], &sync_cmd, &err_continue);
+      rc = imap_sync_message_for_copy(m, e, &sync_cmd, &err_continue);
       if (rc < 0)
       {
         mutt_debug(LL_DEBUG1, "could not sync\n");
@@ -1625,7 +1635,6 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   if (!m)
     return -1;
 
-  struct Email *e = NULL;
   struct Email **emails = NULL;
   int oldsort;
   int rc;
@@ -1663,8 +1672,13 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
       /* mark these messages as unchanged so second pass ignores them. Done
        * here so BOGUS UW-IMAP 4.7 SILENT FLAGS updates are ignored. */
       for (int i = 0; i < m->msg_count; i++)
-        if (m->emails[i]->deleted && m->emails[i]->changed)
-          m->emails[i]->active = false;
+      {
+        struct Email *e = m->emails[i];
+        if (!e)
+          break;
+        if (e->deleted && e->changed)
+          e->active = false;
+      }
       mutt_message(ngettext("Marking %d message deleted...",
                             "Marking %d messages deleted...", rc),
                    rc);
@@ -1678,7 +1692,9 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   /* save messages with real (non-flag) changes */
   for (int i = 0; i < m->msg_count; i++)
   {
-    e = m->emails[i];
+    struct Email *e = m->emails[i];
+    if (!e)
+      break;
 
     if (e->deleted)
     {
@@ -1772,13 +1788,16 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
    * there is no need to mutate the hcache after flag-only changes. */
   for (int i = 0; i < m->msg_count; i++)
   {
-    struct ImapEmailData *edata = imap_edata_get(m->emails[i]);
-    edata->deleted = m->emails[i]->deleted;
-    edata->flagged = m->emails[i]->flagged;
-    edata->old = m->emails[i]->old;
-    edata->read = m->emails[i]->read;
-    edata->replied = m->emails[i]->replied;
-    m->emails[i]->changed = false;
+    struct Email *e = m->emails[i];
+    if (!e)
+      break;
+    struct ImapEmailData *edata = imap_edata_get(e);
+    edata->deleted = e->deleted;
+    edata->flagged = e->flagged;
+    edata->old = e->old;
+    edata->read = e->read;
+    edata->replied = e->replied;
+    e->changed = false;
   }
   m->changed = false;
 

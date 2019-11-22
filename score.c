@@ -84,8 +84,12 @@ void mutt_check_rescore(struct Mailbox *m)
 
     for (int i = 0; m && i < m->msg_count; i++)
     {
-      mutt_score_message(m, m->emails[i], true);
-      m->emails[i]->pair = 0;
+      struct Email *e = m->emails[i];
+      if (!e)
+        break;
+
+      mutt_score_message(m, e, true);
+      e->pair = 0;
     }
   }
   OptNeedRescore = false;

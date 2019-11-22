@@ -1036,10 +1036,16 @@ static enum CommandResult add_pattern(struct Colors *c, struct ColorLineList *to
   }
 
   /* force re-caching of index colors */
-  if (is_index)
+  if (is_index && Context && Context->mailbox)
   {
-    for (int i = 0; Context && i < Context->mailbox->msg_count; i++)
-      Context->mailbox->emails[i]->pair = 0;
+    const struct Mailbox *m = Context->mailbox;
+    for (int i = 0; i < m->msg_count; i++)
+    {
+      struct Email *e = m->emails[i];
+      if (!e)
+        break;
+      e->pair = 0;
+    }
   }
 
   return MUTT_CMD_SUCCESS;

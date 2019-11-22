@@ -2248,7 +2248,13 @@ static int nm_mbox_check(struct Mailbox *m, int *index_hint)
   mdata->noprogress = true;
 
   for (int i = 0; i < m->msg_count; i++)
-    m->emails[i]->active = false;
+  {
+    struct Email *e = m->emails[i];
+    if (!e)
+      break;
+
+    e->active = false;
+  }
 
   int limit = get_limit(mdata);
 
@@ -2310,7 +2316,11 @@ static int nm_mbox_check(struct Mailbox *m, int *index_hint)
 
   for (int i = 0; i < m->msg_count; i++)
   {
-    if (!m->emails[i]->active)
+    struct Email *e = m->emails[i];
+    if (!e)
+      break;
+
+    if (!e->active)
     {
       occult = true;
       break;
@@ -2369,6 +2379,9 @@ static int nm_mbox_sync(struct Mailbox *m, int *index_hint)
   {
     char old_file[PATH_MAX], new_file[PATH_MAX];
     struct Email *e = m->emails[i];
+    if (!e)
+      break;
+
     struct NmEmailData *edata = e->edata;
 
     if (!m->quiet)
@@ -2442,10 +2455,13 @@ static int nm_mbox_close(struct Mailbox *m)
  */
 static int nm_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
-  if (!m || !m->emails || !msg)
+  if (!m || !m->emails || (msgno >= m->msg_count) || !msg)
     return -1;
 
   struct Email *e = m->emails[msgno];
+  if (!e)
+    return -1;
+
   char path[PATH_MAX];
   char *folder = nm_email_get_folder(e);
 

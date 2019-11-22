@@ -1058,10 +1058,13 @@ cleanup:
  */
 int mh_rewrite_message(struct Mailbox *m, int msgno)
 {
-  if (!m || !m->emails)
+  if (!m || !m->emails || (msgno >= m->msg_count))
     return -1;
 
   struct Email *e = m->emails[msgno];
+  if (!e)
+    return -1;
+
   bool restore = true;
 
   long old_body_offset = e->content->offset;
@@ -1346,10 +1349,12 @@ struct Email *maildir_parse_message(enum MailboxType magic, const char *fname,
  */
 int mh_sync_mailbox_message(struct Mailbox *m, int msgno, header_cache_t *hc)
 {
-  if (!m || !m->emails)
+  if (!m || !m->emails || (msgno >= m->msg_count))
     return -1;
 
   struct Email *e = m->emails[msgno];
+  if (!e)
+    return -1;
 
   if (e->deleted && ((m->magic != MUTT_MAILDIR) || !C_MaildirTrash))
   {
@@ -1532,7 +1537,13 @@ cleanup:
  */
 int maildir_mh_open_message(struct Mailbox *m, struct Message *msg, int msgno, bool is_maildir)
 {
+  if (!m || !m->emails || (msgno >= m->msg_count))
+    return -1;
+
   struct Email *e = m->emails[msgno];
+  if (!e)
+    return -1;
+
   char path[PATH_MAX];
 
   snprintf(path, sizeof(path), "%s/%s", mailbox_path(m), e->path);
@@ -1748,8 +1759,12 @@ int mh_mbox_sync(struct Mailbox *m, int *index_hint)
   {
     for (i = 0, j = 0; i < m->msg_count; i++)
     {
-      if (!m->emails[i]->deleted || ((m->magic == MUTT_MAILDIR) && C_MaildirTrash))
-        m->emails[i]->index = j++;
+      struct Email *e = m->emails[i];
+      if (!e)
+        break;
+
+      if (!e->deleted || ((m->magic == MUTT_MAILDIR) && C_MaildirTrash))
+        e->index = j++;
     }
   }
 

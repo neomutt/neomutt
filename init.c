@@ -136,11 +136,17 @@ static void add_to_stailq(struct ListHead *head, const char *str)
  */
 static void alternates_clean(void)
 {
-  if (!Context)
+  if (!Context || !Context->mailbox)
     return;
 
-  for (int i = 0; i < Context->mailbox->msg_count; i++)
-    Context->mailbox->emails[i]->recip_valid = false;
+  struct Mailbox *m = Context->mailbox;
+  for (int i = 0; i < m->msg_count; i++)
+  {
+    struct Email *e = m->emails[i];
+    if (!e)
+      break;
+    e->recip_valid = false;
+  }
 }
 
 /**
@@ -148,11 +154,17 @@ static void alternates_clean(void)
  */
 static void attachments_clean(void)
 {
-  if (!Context)
+  if (!Context || !Context->mailbox)
     return;
 
-  for (int i = 0; i < Context->mailbox->msg_count; i++)
-    Context->mailbox->emails[i]->attach_valid = false;
+  struct Mailbox *m = Context->mailbox;
+  for (int i = 0; i < m->msg_count; i++)
+  {
+    struct Email *e = m->emails[i];
+    if (!e)
+      break;
+    e->attach_valid = false;
+  }
 }
 
 /**
@@ -208,11 +220,17 @@ static void candidate(char *user, const char *src, char *dest, size_t dlen)
  */
 static void clear_subject_mods(void)
 {
-  if (!Context)
+  if (!Context || !Context->mailbox)
     return;
 
-  for (int i = 0; i < Context->mailbox->msg_count; i++)
-    FREE(&Context->mailbox->emails[i]->env->disp_subj);
+  struct Mailbox *m = Context->mailbox;
+  for (int i = 0; i < m->msg_count; i++)
+  {
+    struct Email *e = m->emails[i];
+    if (!e || !e->env)
+      continue;
+    FREE(&e->env->disp_subj);
+  }
 }
 
 #ifdef USE_NOTMUCH
