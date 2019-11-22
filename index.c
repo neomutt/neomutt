@@ -1173,7 +1173,7 @@ int mutt_index_menu(void)
         {
           for (size_t i = 0; i < Context->mailbox->msg_count; i++)
           {
-            const struct Email * e= Context->mailbox->emails[i];
+            const struct Email *e = Context->mailbox->emails[i];
             if (e && !e->read && !e->old)
             {
               mutt_message(_("New mail in this mailbox"));
