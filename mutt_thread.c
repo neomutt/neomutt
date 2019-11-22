@@ -876,7 +876,7 @@ void mutt_sort_threads(struct Context *ctx, bool init)
   for (i = 0; i < m->msg_count; i++)
   {
     e = m->emails[i];
-    if (!e || !e->thread)
+    if (!e)
       continue;
 
     if (!e->thread)
