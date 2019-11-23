@@ -429,7 +429,11 @@ void mx_fastclose_mailbox(struct Mailbox *m)
   if (m->emails)
   {
     for (int i = 0; i < m->msg_count; i++)
+    {
+      if (!m->emails[i])
+        break;
       email_free(&m->emails[i]);
+    }
   }
 }
 
