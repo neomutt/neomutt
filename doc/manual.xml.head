@@ -2843,16 +2843,27 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
             attach-message mode.
           </para>
         </note>
+        <para>
+          After exiting the compose menu via <literal>&lt;send-message&gt;</literal>,
+          the message will be sent.  If configured and enabled, this can happen via
+          <link linkend="sending-mixmaster">mixmaster</link> or
+          <link linkend="smtp">$smtp_url</link>.  Otherwise
+          <link linkend="sendmail">$sendmail</link> will be invoked.  Prior to
+          version 1.13, Mutt enabled <link linkend="write-bcc">$write_bcc</link> by
+          default, assuming the MTA would automatically remove a
+          <literal>Bcc:</literal> header as part of delivery.  Starting with 1.13, the
+          option is unset by default, but no longer affects the fcc copy of the message.
+        </para>
       </sect2>
 
-      <sect2 id="edit-header">
-        <title>Editing the Message Header</title>
-        <para>
-          When editing the header because of
-          <link linkend="edit-headers">$edit_headers</link> being set, there are
-          a several pseudo headers available which will not be included in sent
-          messages but trigger special NeoMutt behavior.
-        </para>
+     <sect2 id="edit-header">
+       <title>Editing the Message Header</title>
+       <para>
+         When editing the header because of
+         <link linkend="edit-headers">$edit_headers</link> being set, there are
+         a several pseudo headers available which will not be included in sent
+         messages but trigger special NeoMutt behavior.
+       </para>
 
         <sect3 id="fcc-header">
           <title>Fcc: Pseudo Header</title>
