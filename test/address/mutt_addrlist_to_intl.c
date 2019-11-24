@@ -52,8 +52,11 @@ void test_mutt_addrlist_to_intl(void)
                          .intl = "test@xn--nixierhre-57a.nixieclock-tube.com" },
                        { .local = "test@வலைப்பூ.com", .intl = "test@xn--xlcawl2e7azb.com" } };
 
+    char *prev_charset = C_Charset;
     C_Charset = "utf-8";
 #ifdef HAVE_LIBIDN
+    bool prev_idn_encode = C_IdnEncode;
+    bool prev_idn_decode = C_IdnDecode;
     C_IdnEncode = true;
     C_IdnDecode = true;
 #endif
@@ -72,5 +75,10 @@ void test_mutt_addrlist_to_intl(void)
       TEST_CHECK_STR_EQ(local2intl[i].local, a->mailbox);
       mutt_addrlist_clear(&al);
     }
+    C_Charset = prev_charset;
+#ifdef HAVE_LIBIDN
+    C_IdnEncode = prev_idn_encode;
+    C_IdnDecode = prev_idn_decode;
+#endif
   }
 }
