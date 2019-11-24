@@ -38,7 +38,7 @@ void test_rfc2047_encode(void)
     TEST_MSG("Cannot set locale to (en_US|C).UTF-8");
     return;
   }
-
+  char *previous_charset = C_Charset;
   C_Charset = "utf-8";
 
   {
@@ -73,4 +73,6 @@ void test_rfc2047_encode(void)
       FREE(&s);
     }
   }
+
+  C_Charset = previous_charset;
 }
