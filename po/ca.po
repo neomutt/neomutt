@@ -231,7 +231,7 @@ msgstr "Preferiu xifrar?"
 #.
 #: autocrypt/autocrypt.c:236
 msgid "Autocrypt account creation succeeded"
-msgstr "S’ha avortat la creació del compte d’Autocrypt"
+msgstr "S’ha pogut crear amb èxit el compte d’Autocrypt"
 
 #. L10N:
 #. Error message displayed if creating an autocrypt account failed
@@ -239,7 +239,7 @@ msgstr "S’ha avortat la creació del compte d’Autocrypt"
 #.
 #: autocrypt/autocrypt.c:242
 msgid "Autocrypt account creation aborted"
-msgstr "S’ha pogut crear amb èxit el compte d’Autocrypt"
+msgstr "S’ha avortat la creació del compte d’Autocrypt"
 
 #. L10N:
 #. %s is an email address.  Autocrypt is scanning for the keyids
@@ -7368,3 +7368,42 @@ msgstr "Opcions de compilació:"
 #: version.c:449
 msgid "Compile options:"
 msgstr "Opcions de compilació:"
+
+msgid "Error creating autocrypt key: %s\n"
+msgstr "Error en crear la clau d’Autocrypt: %s\n"
+
+msgid "(c)reate new, or (s)elect existing GPG key? "
+msgstr "(c)rear una nova clau PGP, o (s)eleccionar‐ne una d’existent? "
+
+msgid "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic? "
+msgstr "Autocrypt: (x)ifra, en (c)lar, (a)utomàtic? "
+
+msgid "$send_multipart_alternative_filter is not set"
+msgstr "$send_multipart_alternative_filter no està establerta"
+
+msgid "Generate multipart/alternative content?"
+msgstr "Voleu generar contingut «multipart/alternative»?"
+
+msgid "Missing mime type from output of \"%s\"!"
+msgstr "Manca el tipus MIME a l’eixida de «%s»"
+
+msgid "Missing blank line separator from output of \"%s\"!"
+msgstr "Manca la línia en blanc separadora a l’eixida de «%s»"
+
+msgid "$send_multipart_alternative_filter does not support multipart type generation"
+msgstr "$send_multipart_alternative_filter no permet generar tipus «multipart»"
+
+msgid "view multipart/alternative"
+msgstr "Mostra la part «multipart/alternative»"
+
+msgid "view multipart/alternative as text"
+msgstr "Mostra la part «multipart/alternative» com a text"
+
+msgid "view multipart/alternative using mailcap"
+msgstr "Mostra la part «multipart/alternative» emprant «mailcap»"
+
+msgid "select a new mailbox from the browser"
+msgstr "Selecciona una nova bústia del llistat"
+
+msgid "select a new mailbox from the browser in read only mode"
+msgstr "Selecciona una nova bústia en mode de només lectura del llistat"
