@@ -205,6 +205,11 @@ static int tunnel_socket_poll(struct Connection *conn, time_t wait_secs)
 static int tunnel_socket_close(struct Connection *conn)
 {
   struct TunnelSockData *tunnel = conn->sockdata;
+  if (!tunnel)
+  {
+    return 0;
+  }
+
   int status;
 
   close(tunnel->fd_read);
