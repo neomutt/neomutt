@@ -4884,7 +4884,8 @@ struct ConfigDef MuttVars[] = {
   ** header in this case.
   ** .pp
   ** Note this option only affects the sending of messages.  Fcc'ed
-  ** messages will always write the ``Bcc:'' header if one exists.
+  ** copies of a message will always contain the ``Bcc:'' header if
+  ** one exists.
   */
   { "write_inc", DT_NUMBER|DT_NOT_NEGATIVE, &C_WriteInc, 10 },
   /*
