@@ -309,7 +309,7 @@ static int maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
   }
 
   errno = 0;
-  if ((mkdir(mailbox_path(m), S_IRWXU) != 0) && (errno != EEXIST))
+  if ((mutt_file_mkdir(mailbox_path(m), S_IRWXU) != 0) && (errno != EEXIST))
   {
     mutt_perror(mailbox_path(m));
     return -1;
