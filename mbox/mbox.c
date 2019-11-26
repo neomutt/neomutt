@@ -986,6 +986,16 @@ static int mbox_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 
   if (!adata->fp)
   {
+    // create dir recursively
+    char *tmp_path = mutt_path_dirname(mailbox_path(m));
+    if (mutt_file_mkdir(tmp_path, S_IRWXU) == -1)
+    {
+      mutt_perror(mailbox_path(m));
+      FREE(&tmp_path);
+      return -1;
+    }
+    FREE(&tmp_path);
+
     adata->fp =
         mutt_file_fopen(mailbox_path(m), (flags & MUTT_NEWFOLDER) ? "w+" : "a+");
     if (!adata->fp)
