@@ -46,7 +46,6 @@ color quoted5       color36      color234
 color quoted6       color114     color234
 color quoted7       color109     color234
 color quoted8       color41      color234
-color quoted9       color138     color234
 
 # color body          cyan  default  "((ftp|http|https)://|news:)[^ >)\"\t]+"
 # color body          cyan  default  "[-a-z_0-9.+]+@[-a-z_0-9.]+"
