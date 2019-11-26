@@ -1029,8 +1029,9 @@ int imap_exec_msgset(struct Mailbox *m, const char *pre, const char *post,
   if (C_Sort != SORT_ORDER)
   {
     emails = m->emails;
-    m->emails = mutt_mem_malloc(m->msg_count * sizeof(struct Email *));
-    memcpy(m->emails, emails, m->msg_count * sizeof(struct Email *));
+    // We overcommit here, just in case new mail arrives whilst we're sync-ing
+    m->emails = mutt_mem_malloc(m->email_max * sizeof(struct Email *));
+    memcpy(m->emails, emails, m->email_max * sizeof(struct Email *));
 
     C_Sort = SORT_ORDER;
     qsort(m->emails, m->msg_count, sizeof(struct Email *), compare_uid);
