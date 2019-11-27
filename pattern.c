@@ -36,7 +36,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/stat.h>
 #include <time.h>
 #include "mutt/mutt.h"
 #include "address/lib.h"
@@ -62,6 +61,9 @@
 #include "progress.h"
 #include "protos.h"
 #include "state.h"
+#ifndef USE_FMEMOPEN
+#include <sys/stat.h>
+#endif
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif

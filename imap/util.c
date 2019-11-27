@@ -32,7 +32,6 @@
 #include "config.h"
 #include <ctype.h>
 #include <errno.h>
-#include <limits.h>
 #include <netdb.h>
 #include <netinet/in.h>
 #include <signal.h>

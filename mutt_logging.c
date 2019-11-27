@@ -28,7 +28,6 @@
 
 #include "config.h"
 #include <errno.h>
-#include <limits.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdint.h>

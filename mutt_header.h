@@ -25,6 +25,7 @@
 
 #include <stddef.h>
 
+struct Buffer;
 struct Email;
 struct EmailList;
 struct Mailbox;

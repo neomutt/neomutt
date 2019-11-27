@@ -23,8 +23,7 @@
 #ifndef MUTT_COMPOSE_H
 #define MUTT_COMPOSE_H
 
-#include <stdio.h>
-
+struct Buffer;
 struct Email;
 
 /* These Config Variables are only used in compose.c */

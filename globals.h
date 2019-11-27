@@ -27,7 +27,6 @@
 #include <signal.h> // IWYU pragma: keep
 #include <stdbool.h>
 #include "mutt/mutt.h"
-#include "color.h"
 #include "keymap.h"
 #include "where.h"
 

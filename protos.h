@@ -33,6 +33,7 @@
 #include "keymap.h"
 #include "ncrypt/ncrypt.h"
 
+struct Buffer;
 struct Context;
 struct Email;
 struct EmailList;

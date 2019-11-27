@@ -29,7 +29,6 @@
 #include "config.h"
 #include <dirent.h>
 #include <errno.h>
-#include <limits.h>
 #include <string.h>
 #include <sys/stat.h>
 #include "mutt/mutt.h"

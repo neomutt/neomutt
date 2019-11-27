@@ -52,7 +52,6 @@
 #include "mutt_menu.h"
 #include "mutt_parse.h"
 #include "mutt_thread.h"
-#include "mutt_window.h"
 #include "muttlib.h"
 #include "ncrypt/ncrypt.h"
 #include "sort.h"

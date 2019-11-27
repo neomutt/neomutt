@@ -62,7 +62,8 @@ typedef int (*parser_callback_t)(struct Buffer *buf, struct Buffer *s, uint32_t 
                                  uint32_t *bg, int *attr, struct Buffer *err);
 
 #define COLOR_UNSET UINT32_MAX
-#define COLOR_QUOTES_MAX 10 ///< Ten colours, quoted0..quoted9 (quoted and quoted0 are equivalent)
+#define COLOR_QUOTES_MAX                                                       \
+  10 ///< Ten colours, quoted0..quoted9 (quoted and quoted0 are equivalent)
 
 #ifdef HAVE_COLOR
 

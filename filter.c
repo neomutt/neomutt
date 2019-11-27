@@ -34,7 +34,6 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "filter.h"
-#include "mutt_window.h"
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif

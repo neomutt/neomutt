@@ -30,7 +30,6 @@
 #include <stddef.h>
 #include <ctype.h>
 #include <iconv.h>
-#include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>

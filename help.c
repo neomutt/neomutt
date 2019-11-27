@@ -37,7 +37,6 @@
 #include "curs_lib.h"
 #include "globals.h"
 #include "keymap.h"
-#include "mutt_window.h"
 #include "muttlib.h"
 #include "opcodes.h"
 #include "pager.h"

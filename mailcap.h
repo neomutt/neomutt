@@ -23,6 +23,7 @@
 #ifndef MUTT_MAILCAP_H
 #define MUTT_MAILCAP_H
 
+#include <stddef.h>
 #include <stdbool.h>
 
 struct Body;

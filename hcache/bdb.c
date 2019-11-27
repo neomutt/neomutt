@@ -33,7 +33,6 @@
 #include <db.h>
 #include <errno.h>
 #include <fcntl.h>
-#include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <sys/stat.h>

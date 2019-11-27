@@ -38,7 +38,6 @@
 #include <wctype.h>
 #include "mutt/mutt.h"
 #include "email/lib.h"
-#include "mutt_window.h"
 #include "state.h"
 
 #define INDENT_SIZE 4

@@ -33,7 +33,6 @@
  */
 
 #include "config.h"
-#include <limits.h>
 #include <locale.h>
 #include <stdbool.h>
 #include <stdio.h>

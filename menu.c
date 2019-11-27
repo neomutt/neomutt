@@ -37,6 +37,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "mutt.h"
+#include "color.h"
 #include "commands.h"
 #include "context.h"
 #include "curs_lib.h"
@@ -51,9 +52,6 @@
 #include "options.h"
 #include "pattern.h"
 #include "protos.h"
-#ifndef USE_SLANG_CURSES
-#include "color.h"
-#endif
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif

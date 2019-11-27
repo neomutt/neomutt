@@ -31,7 +31,6 @@
 
 #include "config.h"
 #include <kclangc.h>
-#include <limits.h>
 #include <stdio.h>
 #include "mutt/mutt.h"
 #include "backend.h"
