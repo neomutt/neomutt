@@ -5158,7 +5158,8 @@ uncolor compose header
           The first colour, <literal>quoted</literal> provides a default colour
           for all quoted text.  Also, each diffent level of quoting can be given
           a different colour using, <literal>quoted1</literal>,
-          <literal>quoted2</literal>, <literal>quoted3</literal> etc.
+          <literal>quoted2</literal>, <literal>quoted3</literal> up to
+          <literal>quoted9</literal>.
         </para>
         <table id="color-quoted">
           <title>Quoted Email Colours</title>
@@ -5183,8 +5184,12 @@ uncolor compose header
                 <entry>2 level deeper quoted text, e.g. <literal>&gt; &gt; &gt; text</literal></entry>
               </row>
               <row>
-                <entry>quotedN</entry>
-                <entry>n level deeper quoted text</entry>
+                <entry>...</entry>
+                <entry>...</entry>
+              </row>
+              <row>
+                <entry>quoted9</entry>
+                <entry>9 level deeper quoted text</entry>
               </row>
             </tbody>
           </tgroup>
