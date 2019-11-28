@@ -1259,6 +1259,8 @@ int main(int argc, char *argv[], char *envp[])
 #endif
       mutt_index_menu();
       ctx_free(&Context);
+      log_queue_empty();
+      repeat_error = false;
     }
 #ifdef USE_IMAP
     imap_logout_all();
@@ -1271,8 +1273,6 @@ int main(int argc, char *argv[], char *envp[])
 #endif
     // TEST43: neomutt (no change to mailbox)
     // TEST44: neomutt (change mailbox)
-    MuttLogger = log_disp_terminal;
-    log_queue_flush(log_disp_terminal);
   }
 
 main_ok:
@@ -1281,12 +1281,12 @@ main_curses:
   clear();
   refresh();
   mutt_endwin();
-  log_queue_flush(log_disp_terminal);
   mutt_unlink_temp_attachments();
   /* Repeat the last message to the user */
   if (repeat_error && ErrorBufMessage)
     puts(ErrorBuf);
 main_exit:
+  MuttLogger = log_disp_queue;
   mutt_buffer_dealloc(&folder);
   mutt_buffer_dealloc(&expanded_infile);
   mutt_buffer_dealloc(&tempfile);
@@ -1301,6 +1301,7 @@ main_exit:
   myvarlist_free(&MyVars);
   neomutt_free(&NeoMutt);
   cs_free(&Config);
+  log_queue_flush(log_disp_terminal);
   log_queue_empty();
   mutt_log_stop();
   return rc;
