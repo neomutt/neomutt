@@ -26,6 +26,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <unistd.h>
+#include "ncrypt/ncrypt.h"
 #include "pgpkey.h"
 
 struct Address;
@@ -42,7 +43,7 @@ pid_t pgp_invoke_encrypt    (FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_
 pid_t pgp_invoke_export     (FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err, int fd_pgp_in, int fd_pgp_out, int fd_pgp_err, const char *uids);
 pid_t pgp_invoke_list_keys  (FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err, int fd_pgp_in, int fd_pgp_out, int fd_pgp_err, enum PgpRing keyring, struct ListHead *hints);
 pid_t pgp_invoke_sign       (FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err, int fd_pgp_in, int fd_pgp_out, int fd_pgp_err, const char *fname);
-pid_t pgp_invoke_traditional(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err, int fd_pgp_in, int fd_pgp_out, int fd_pgp_err, const char *fname, const char *uids, int flags);
+pid_t pgp_invoke_traditional(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err, int fd_pgp_in, int fd_pgp_out, int fd_pgp_err, const char *fname, const char *uids, SecurityFlags flags);
 pid_t pgp_invoke_verify     (FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err, int fd_pgp_in, int fd_pgp_out, int fd_pgp_err, const char *fname, const char *sig_fname);
 pid_t pgp_invoke_verify_key (FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err, int fd_pgp_in, int fd_pgp_out, int fd_pgp_err, const char *uids);
 

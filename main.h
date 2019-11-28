@@ -28,6 +28,4 @@
 /* These Config Variables are only used in main.c */
 extern bool C_ResumeEditedDraftFiles;
 
-void mutt_exit(int code);
-
 #endif /* MUTT_MAIN_H */

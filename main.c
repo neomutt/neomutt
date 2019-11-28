@@ -437,8 +437,6 @@ int main(int argc, char *argv[], char *envp[])
   bool batch_mode = false;
   bool edit_infile = false;
   bool test_config = false;
-  extern char *optarg;
-  extern int optind;
   int double_dash = argc, nargc = 1;
   int rc = 1;
   bool repeat_error = false;
