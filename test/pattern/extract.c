@@ -122,9 +122,6 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
     {
       FILE *fp = NULL;
       pid_t pid;
-      char *ptr = NULL;
-      size_t expnlen;
-      struct Buffer expn;
       int line = 0;
 
       pc = tok->dptr;
@@ -161,7 +158,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
       pid = mutt_create_filter(cmd.data, NULL, &fp, NULL);
       if (pid < 0)
       {
-        mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", cmd);
+        mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", cmd.data);
         FREE(&cmd.data);
         return -1;
       }
@@ -170,7 +167,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
       tok->dptr = pc + 1;
 
       /* read line */
-      mutt_buffer_init(&expn);
+      struct Buffer expn = mutt_buffer_make(0);
       expn.data = mutt_file_read_line(NULL, &expn.dsize, fp, &line, 0);
       mutt_file_fclose(&fp);
       mutt_wait_filter(pid);
@@ -179,21 +176,22 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags
        * plus whatever else was left on the original line */
       /* BUT: If this is inside a quoted string, directly add output to
        * the token */
-      if (expn.data && qc)
+      if (expn.data)
       {
-        mutt_buffer_addstr(dest, expn.data);
-        FREE(&expn.data);
-      }
-      else if (expn.data)
-      {
-        expnlen = mutt_str_strlen(expn.data);
-        tok->dsize = expnlen + mutt_str_strlen(tok->dptr) + 1;
-        ptr = mutt_mem_malloc(tok->dsize);
-        memcpy(ptr, expn.data, expnlen);
-        strcpy(ptr + expnlen, tok->dptr);
-        tok->data = mutt_str_strdup(ptr);
-        tok->dptr = tok->data;
-        ptr = NULL;
+        if (qc)
+        {
+          mutt_buffer_addstr(dest, expn.data);
+        }
+        else
+        {
+          struct Buffer *copy = mutt_buffer_pool_get();
+          mutt_buffer_fix_dptr(&expn);
+          mutt_buffer_copy(copy, &expn);
+          mutt_buffer_addstr(copy, tok->dptr);
+          mutt_buffer_copy(tok, copy);
+          tok->dptr = tok->data;
+          mutt_buffer_pool_release(&copy);
+        }
         FREE(&expn.data);
       }
     }
