@@ -1073,7 +1073,7 @@ msgstr "題名が指定されていない。"
 #. * This is displayed when Autocrypt is turned off.
 #: compose.c:237 compose.c:472
 msgid "Off"
-msgstr ""
+msgstr "機能オフ"
 
 #. L10N: Autocrypt recommendation flag: no.
 #. * This is displayed when Autocrypt cannot encrypt to the recipients.
@@ -7009,32 +7009,42 @@ msgstr "コンパイル時オプション:"
 msgid "Compile options:"
 msgstr "コンパイル時オプション:"
 
-#~ msgid "$send_multipart_alternative_filter is not set"
-#~ msgstr "$send_multipart_alternative_filter が未設定"
+msgid "$send_multipart_alternative_filter is not set"
+msgstr "$send_multipart_alternative_filter が未設定"
 
-#~ msgid "Generate multipart/alternative content?"
-#~ msgstr "multipart/alternative を生成?"
+msgid "Generate multipart/alternative content?"
+msgstr "multipart/alternative を生成?"
 
-#~ msgid "Missing mime type from output of \"%s\""
-#~ msgstr "出力の一行目に MIME 形式がない (%s)"
+msgid "Missing mime type from output of \"%s\""
+msgstr "出力の一行目に MIME 形式がない (%s)"
 
-#~ msgid "Missing blank line separator from output of \"%s\""
-#~ msgstr "出力の二行目に空行がない (%s)"
+msgid "Missing blank line separator from output of \"%s\""
+msgstr "出力の二行目に空行がない (%s)"
 
-#~ msgid "$send_multipart_alternative_filter does not support multipart type generation"
-#~ msgstr "$send_multipart_alternative_filter は入れ子マルチパート生成をサポートしていない。"
+msgid "$send_multipart_alternative_filter does not support multipart type generation"
+msgstr "$send_multipart_alternative_filter は入れ子マルチパート生成をサポートしていない。"
 
-#~ msgid "view multipart/alternative"
-#~ msgstr "multipart/alternative を表示"
+msgid "view multipart/alternative"
+msgstr "multipart/alternative を表示"
 
-#~ msgid "view multipart/alternative as text"
-#~ msgstr "multipart/alternative をテキストとして表示"
+msgid "view multipart/alternative as text"
+msgstr "multipart/alternative をテキストとして表示"
 
-#~ msgid "view multipart/alternative using mailcap"
-#~ msgstr "multipart/alternative を mailcap 利用で表示"
+msgid "view multipart/alternative using mailcap"
+msgstr "multipart/alternative を mailcap 利用で表示"
 
-#~ msgid "select a new mailbox from the browser"
-#~ msgstr "ブラウザから新しいメールボックスを選択"
+msgid "select a new mailbox from the browser"
+msgstr "ブラウザから新しいメールボックスを選択"
 
-#~ msgid "select a new mailbox from the browser in read only mode"
-#~ msgstr "ブラウザから新しいメールボックスを読出専用モードで選択"
+msgid "select a new mailbox from the browser in read only mode"
+msgstr "ブラウザから新しいメールボックスを読出専用モードで選択"
+
+msgid "Error creating autocrypt key: %s\n"
+msgstr "autocrypt 鍵の作成エラー: %s\n"
+
+msgid "(c)reate new, or (s)elect existing GPG key? "
+msgstr "c:新規作成, s:既存のGPG鍵 "
+
+msgid "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic? "
+msgstr "Autocrypt: e:暗号化, c:なし, a:自動選択 "
+
