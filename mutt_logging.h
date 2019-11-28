@@ -35,12 +35,12 @@ struct NotifyCallback;
 extern short C_DebugLevel;
 extern char *C_DebugFile;
 
-int log_disp_curses(time_t stamp, const char *file, int line, const char *function, int level, ...);
+int log_disp_curses(time_t stamp, const char *file, int line, const char *function, enum LogLevel level, ...);
 
 void mutt_log_prep(void);
 int  mutt_log_start(void);
 void mutt_log_stop(void);
-int  mutt_log_set_level(int level, bool verbose);
+int  mutt_log_set_level(enum LogLevel level, bool verbose);
 int  mutt_log_set_file(const char *file, bool verbose);
 int  mutt_log_observer(struct NotifyCallback *nc);
 int  level_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);

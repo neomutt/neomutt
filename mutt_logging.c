@@ -126,7 +126,7 @@ void mutt_clear_error(void)
  * log_disp_curses - Display a log line in the message line - Implements ::log_dispatcher_t
  */
 int log_disp_curses(time_t stamp, const char *file, int line,
-                    const char *function, int level, ...)
+                    const char *function, enum LogLevel level, ...)
 {
   if (level > C_DebugLevel)
     return 0;
@@ -261,7 +261,7 @@ int mutt_log_set_file(const char *file, bool verbose)
  * @retval  0 Success
  * @retval -1 Error, level is out of range
  */
-int mutt_log_set_level(int level, bool verbose)
+int mutt_log_set_level(enum LogLevel level, bool verbose)
 {
   if (!CurrentFile)
     mutt_log_set_file(C_DebugFile, false);
