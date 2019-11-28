@@ -4,7 +4,7 @@
 # This file is distributed under the same license as the NeoMutt package.
 #
 # OOTA Toshiya <ribbon@users.sourceforge.net>, 2002, 2008, 2011
-# TAKAHASHI Tamotsu <ttakah@lapis.plala.or.jp>, 2002-2005, 2007-2009, 2011, 2013, 2015-2018
+# TAKAHASHI Tamotsu <ttakah@lapis.plala.or.jp>, 2002-2005, 2007-2009, 2011, 2013, 2015-2019
 #
 msgid ""
 msgstr ""
@@ -133,7 +133,7 @@ msgstr "%s が %s のために作成できない。"
 #.
 #: autocrypt/autocrypt.c:156
 msgid "Create an initial autocrypt account?"
-msgstr ""
+msgstr "新規 autocrypt アカウントを作成?"
 
 #. L10N:
 #. Autocrypt is asking for the email address to use for the
@@ -142,7 +142,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:180
 msgid "Autocrypt account address: "
-msgstr ""
+msgstr "autocrypt アカウントのアドレス: "
 
 #. L10N:
 #. Autocrypt prompts for an account email address, and requires
@@ -151,7 +151,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:191
 msgid "Please enter a single email address"
-msgstr ""
+msgstr "メールアドレスをひとつだけ入力せよ"
 
 #. L10N:
 #. When creating an autocrypt account, this message will be displayed
@@ -160,7 +160,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:208
 msgid "That email address already has an autocrypt account"
-msgstr ""
+msgstr "そのアドレスには既に autocrypt アカウントがある"
 
 #. L10N:
 #. Autocrypt has a setting "prefer-encrypt".
@@ -171,16 +171,15 @@ msgstr ""
 #. will be required to enable encryption manually.
 #.
 #: autocrypt/autocrypt.c:223
-#, fuzzy
 msgid "Prefer encryption?"
-msgstr "暗号化"
+msgstr "可能な限り暗号化 (prefer-encrypt)?"
 
 #. L10N:
 #. Message displayed after an autocrypt account is successfully created.
 #.
 #: autocrypt/autocrypt.c:236
 msgid "Autocrypt account creation succeeded"
-msgstr ""
+msgstr "autocrypt アカウント作成は成功した"
 
 #. L10N:
 #. Error message displayed if creating an autocrypt account failed
@@ -188,7 +187,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:242
 msgid "Autocrypt account creation aborted"
-msgstr ""
+msgstr "autocrypt アカウント作成は中止された。"
 
 #. L10N:
 #. %s is an email address.  Autocrypt is scanning for the keyids
@@ -196,9 +195,9 @@ msgstr ""
 #. The message is printed and they are returned to the compose menu.
 #.
 #: autocrypt/autocrypt.c:610 autocrypt/autocrypt.c:639
-#, fuzzy, c-format
+#, c-format
 msgid "No (valid) autocrypt key found for %s"
-msgstr "%s の (正しい) 証明書が見つからない。"
+msgstr "%s の (正しい) autocrypt 鍵が見つからない。"
 
 #. L10N:
 #. The first time autocrypt is enabled, NeoMutt will ask to scan
@@ -209,13 +208,12 @@ msgstr "%s の (正しい) 証明書が見つからない。"
 #.
 #: autocrypt/autocrypt.c:903
 msgid "Scan a mailbox for autocrypt headers?"
-msgstr ""
+msgstr "Autocrypt ヘッダをスキャンしたいメールボックスがある?"
 
 #. L10N: The prompt for a mailbox to scan for Autocrypt: headers
 #: autocrypt/autocrypt.c:907
-#, fuzzy
 msgid "Scan mailbox"
-msgstr "メールボックスの指定がない。\n"
+msgstr "スキャンするメールボックス"
 
 #. L10N:
 #. This is the second prompt to see if the user would like
@@ -226,15 +224,14 @@ msgstr "メールボックスの指定がない。\n"
 #.
 #: autocrypt/autocrypt.c:927
 msgid "Scan another mailbox for autocrypt headers?"
-msgstr ""
+msgstr "Autocrypt ヘッダをスキャンするメールボックスがまだある?"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. create new account
 #.
 #: autocrypt/autocrypt_acct_menu.c:63
-#, fuzzy
 msgid "Create"
-msgstr "%s を作成?"
+msgstr "作成"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. delete account
@@ -251,7 +248,7 @@ msgstr "削除"
 #.
 #: autocrypt/autocrypt_acct_menu.c:74
 msgid "Tgl Active"
-msgstr ""
+msgstr "有効切替"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. toggle "prefer-encrypt" on an account
@@ -261,7 +258,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:81
 msgid "Prf Enc"
-msgstr ""
+msgstr "暗号優先"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -269,7 +266,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:123
 msgid "prefer encrypt"
-msgstr ""
+msgstr "可能な限り暗号化"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -278,7 +275,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:130
 msgid "manual encrypt"
-msgstr ""
+msgstr "手動でのみ暗号化"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -286,7 +283,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:138
 msgid "active"
-msgstr ""
+msgstr "有効"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -294,27 +291,26 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:144
 msgid "inactive"
-msgstr ""
+msgstr "無効"
 
 #. L10N: Autocrypt Account Management Menu title
 #: autocrypt/autocrypt_acct_menu.c:183
 msgid "Autocrypt Accounts"
-msgstr ""
+msgstr "Autocrypt アカウント"
 
 #. L10N:
 #. This error message is displayed if a database update of an
 #. account record fails for some odd reason.
 #.
 #: autocrypt/autocrypt_acct_menu.c:245 autocrypt/autocrypt_acct_menu.c:259
-#, fuzzy
 msgid "Error updating account record"
-msgstr "ディレクトリのスキャンエラー。"
+msgstr "アカウントデータの更新エラー"
 
 #. L10N: Confirmation message when deleting an autocrypt account
 #: autocrypt/autocrypt_acct_menu.c:302
-#, fuzzy, c-format
+#, c-format
 msgid "Really delete account \"%s\"?"
-msgstr "本当にメールボックス \"%s\" を削除?"
+msgstr "本当にアカウント \"%s\" を削除?"
 
 #. L10N:
 #. %s is the path to the database.
@@ -325,9 +321,9 @@ msgstr "本当にメールボックス \"%s\" を削除?"
 #. for some reason.  The %s is the full path of the database file.
 #.
 #: autocrypt/autocrypt_db.c:68 autocrypt/autocrypt_db.c:102
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to open autocrypt database %s"
-msgstr "メールボックス %s がオープンできない"
+msgstr "autocrypt データベースがオープンできない (%s)"
 
 #: autocrypt/autocrypt_gpgme.c:54 ncrypt/crypt_gpgme.c:773
 #, c-format
@@ -340,16 +336,16 @@ msgstr "gpgme コンテクスト作成エラー: %s"
 #.
 #: autocrypt/autocrypt_gpgme.c:172
 msgid "Generating autocrypt key..."
-msgstr ""
+msgstr "autocrypt 鍵を生成中..."
 
 #. L10N:
 #. GPGME was unable to generate a key for some reason.
 #. %s is the error message returned by GPGME.
 #.
 #: autocrypt/autocrypt_gpgme.c:184 autocrypt/autocrypt_gpgme.c:203
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating autocrypt key: %s"
-msgstr "鍵の抽出エラー: %s"
+msgstr "autocrypt 鍵の作成エラー: %s"
 
 #. L10N:
 #. After selecting a key for an autocrypt account,
@@ -360,7 +356,7 @@ msgstr "鍵の抽出エラー: %s"
 #: autocrypt/autocrypt_gpgme.c:252
 #, c-format
 msgid "The key %s is not usable for autocrypt"
-msgstr ""
+msgstr "鍵 %s は autocrypt 用に使えない"
 
 #. L10N:
 #. During autocrypt account creation, this prompt asks the
@@ -369,7 +365,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_gpgme.c:286
 msgid "(c)reate new, or (s)elect existing GPG key?"
-msgstr ""
+msgstr "c:新規作成, s:既存のGPG鍵 "
 
 #. L10N:
 #. The letters corresponding to the
@@ -377,7 +373,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_gpgme.c:291
 msgid "cs"
-msgstr ""
+msgstr "cs"
 
 #. L10N:
 #. During autocrypt account creation, if selecting an existing key fails
@@ -385,7 +381,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_gpgme.c:305
 msgid "Create a new gpg key for this account, instead?"
-msgstr ""
+msgstr "代案として、このアカウントに新規 GPG 鍵を作成?"
 
 #. L10N:
 #. The autocrypt database keeps track of schema version numbers.
@@ -395,7 +391,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_schema.c:125
 msgid "Autocrypt database version is too new"
-msgstr ""
+msgstr "autocrypt データベースバージョンが新しすぎる"
 
 #: bcache.c:209
 #, fuzzy, c-format
@@ -904,7 +900,7 @@ msgstr "署名に使う鍵: "
 #. L10N: The compose menu autocrypt line
 #: compose.c:195
 msgid "Autocrypt: "
-msgstr ""
+msgstr "Autocrypt: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:199
@@ -968,9 +964,8 @@ msgstr ""
 #. L10N: Autocrypt recommendation flag: no.
 #. * This is displayed when Autocrypt cannot encrypt to the recipients.
 #: compose.c:242
-#, fuzzy
 msgid "No"
-msgstr "なし"
+msgstr "暗号化不可"
 
 #. L10N: Autocrypt recommendation flag: discouraged.
 #. * This is displayed when Autocrypt believes encryption should not be used.
@@ -978,7 +973,7 @@ msgstr "なし"
 #. * used recently, or if the only key available is a Gossip Header key.
 #: compose.c:247
 msgid "Discouraged"
-msgstr ""
+msgstr "暗号化非推奨"
 
 #. L10N: Autocrypt recommendation flag: available.
 #. * This is displayed when Autocrypt believes encryption is possible, but
@@ -986,15 +981,14 @@ msgstr ""
 #. * is not set in both the sender and recipient keys.
 #: compose.c:252
 msgid "Available"
-msgstr ""
+msgstr "選択可能"
 
 #. L10N: Autocrypt recommendation flag: yes.
 #. * This is displayed when Autocrypt would normally enable encryption
 #. * automatically.
 #: compose.c:256
-#, fuzzy
 msgid "Yes"
-msgstr "yes"
+msgstr "暗号化する"
 
 #. L10N:
 #. The compose menu autocrypt prompt.
@@ -1004,7 +998,7 @@ msgstr "yes"
 #.
 #: compose.c:338
 msgid "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic?"
-msgstr ""
+msgstr "Autocrypt: e:暗号化, c:なし, a:自動選択 "
 
 #. L10N:
 #. The letter corresponding to the compose menu autocrypt prompt
@@ -1012,7 +1006,7 @@ msgstr ""
 #.
 #: compose.c:346
 msgid "eca"
-msgstr ""
+msgstr "eca"
 
 #: compose.c:383
 msgid "Not supported"
@@ -1064,9 +1058,8 @@ msgstr "  暗号化方式: "
 #. (Off, No, Discouraged, Available, Yes)
 #.
 #: compose.c:483
-#, fuzzy
 msgid "Recommendation: "
-msgstr "Reply-To フィールドを編集"
+msgstr "暗号推奨: "
 
 #: compose.c:547
 msgid "<no chain defined>"
@@ -1080,9 +1073,9 @@ msgstr ""
 #. error message.
 #.
 #: compose.c:601
-#, fuzzy, c-format
+#, c-format
 msgid "Attachment #%d no longer exists: %s"
-msgstr "%s [#%d] はもはや存在しない"
+msgstr "添付ファイル #%d はもはや存在しない: %s"
 
 #. L10N:
 #. This message is displayed in the compose menu when an attachment
@@ -1092,9 +1085,9 @@ msgstr "%s [#%d] はもはや存在しない"
 #. prompt question.
 #.
 #: compose.c:621
-#, fuzzy, c-format
+#, c-format
 msgid "Attachment #%d modified. Update encoding for %s?"
-msgstr "%s [#%d] は変更された。エンコード更新?"
+msgstr "添付ファイル #%d は変更された。エンコード更新? (%s)"
 
 #: compose.c:716
 msgid "-- Attachments"
@@ -1646,7 +1639,7 @@ msgstr[0] ""
 
 #: copy.c:744
 msgid "No decryption engine available for message"
-msgstr ""
+msgstr "利用できる復号化エンジンがない"
 
 #: curs_lib.c:378
 msgid "yes"
@@ -2140,12 +2133,10 @@ msgid "Login failed"
 msgstr "ログインに失敗した。"
 
 #: imap/auth_oauth.c:64 pop/pop_auth.c:346 smtp.c:521
-#, fuzzy
 msgid "Authenticating (OAUTHBEARER)..."
-msgstr "認証中 (SASL)..."
+msgstr "認証中 (OAUTHBEARER)..."
 
 #: imap/auth_oauth.c:96
-#, fuzzy
 msgid "OAUTHBEARER authentication failed"
 msgstr "OAUTHBEARER 認証に失敗した"
 
@@ -3702,8 +3693,7 @@ msgstr "[-- %s 出力は以下の通り%s --]\n"
 #. passwords. So in English we use "Passphrases". Your language might
 #. have other means to express this.
 #: ncrypt/crypt.c:119
-#, fuzzy
-msgid "Passphrases forgotten"
+msgid "Passphrase(s) forgotten"
 msgstr "パスフレーズがすべてメモリから消去された。"
 
 #: ncrypt/crypt.c:203
@@ -3715,12 +3705,10 @@ msgid "Mail not sent: inline PGP can't be used with attachments"
 msgstr "メールは未送信: 添付ファイルがあるとインライン PGP にできない。"
 
 #: ncrypt/crypt.c:214
-#, fuzzy
 msgid "Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"
 msgstr "format=flowed にインライン PGP は使えない。PGP/MIME に戻す?"
 
 #: ncrypt/crypt.c:218
-#, fuzzy
 msgid "Mail not sent: inline PGP can't be used with format=flowed"
 msgstr "メールは未送信: format=flowed にインライン PGP は使えない。"
 
@@ -3759,7 +3747,6 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt.c:1180
-#, fuzzy
 msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
@@ -4349,9 +4336,8 @@ msgstr "%s の鍵 ID 入力: "
 #. from.  This error is displayed if no results were found.
 #.
 #: ncrypt/crypt_gpgme.c:5363
-#, fuzzy
 msgid "No secret keys found"
-msgstr "秘密鍵 %s が見付からない: %s"
+msgstr "秘密鍵が見付からない"
 
 #: ncrypt/crypt_gpgme.c:5396 ncrypt/pgpkey.c:888
 msgid "Please enter the key ID: "
@@ -4990,24 +4976,23 @@ msgstr "添付ファイルをテキストとして表示"
 
 #: opcodes.h:32
 msgid "manage autocrypt accounts"
-msgstr ""
+msgstr "autocrypt アカウントを管理"
 
 #: opcodes.h:33
 msgid "create a new autocrypt account"
-msgstr ""
+msgstr "autocrypt アカウントを新規作成"
 
 #: opcodes.h:34
-#, fuzzy
 msgid "delete the current account"
-msgstr "現在のエントリを削除"
+msgstr "現在のアカウントを削除"
 
 #: opcodes.h:35
 msgid "toggle the current account active/inactive"
-msgstr ""
+msgstr "現在のアカウントを有効/無効に切替"
 
 #: opcodes.h:36
 msgid "toggle the current account prefer-encrypt flag"
-msgstr ""
+msgstr "現在のアカウントの prefer-encrypt フラグを切替"
 
 #: opcodes.h:37
 msgid "move to the bottom of the page"
@@ -5076,7 +5061,7 @@ msgstr "このメッセージにメッセージを添付"
 
 #: opcodes.h:52
 msgid "show autocrypt compose menu options"
-msgstr ""
+msgstr "autocrypt オプションを表示"
 
 #: opcodes.h:53
 #, fuzzy
@@ -6933,3 +6918,36 @@ msgstr "コンパイル時オプション:"
 #: version.c:436
 msgid "Compile options:"
 msgstr "コンパイル時オプション:"
+
+msgid "$send_multipart_alternative_filter is not set"
+msgstr "$send_multipart_alternative_filter が未設定"
+
+msgid "Generate multipart/alternative content?"
+msgstr "multipart/alternative を生成?"
+
+msgid "Missing mime type from output of \"%s\""
+msgstr "出力の一行目に MIME 形式がない (%s)"
+
+msgid "Missing blank line separator from output of \"%s\""
+msgstr "出力の二行目に空行がない (%s)"
+
+msgid "$send_multipart_alternative_filter does not support multipart type generation"
+msgstr ""
+"$send_multipart_alternative_filter は"
+"入れ子マルチパート生成をサポートしていない。"
+
+msgid "view multipart/alternative"
+msgstr "multipart/alternative を表示"
+
+msgid "view multipart/alternative as text"
+msgstr "multipart/alternative をテキストとして表示"
+
+msgid "view multipart/alternative using mailcap"
+msgstr "multipart/alternative を mailcap 利用で表示"
+
+msgid "select a new mailbox from the browser"
+msgstr "ブラウザから新しいメールボックスを選択"
+
+msgid "select a new mailbox from the browser in read only mode"
+msgstr "ブラウザから新しいメールボックスを読出専用モードで選択"
+
