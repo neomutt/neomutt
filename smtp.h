@@ -24,6 +24,9 @@
 #ifndef MUTT_SMTP_H
 #define MUTT_SMTP_H
 
+#include "config.h"
+#include <stdbool.h>
+
 /* These Config Variables are only used in smtp.c */
 extern struct Slist *C_SmtpAuthenticators;
 

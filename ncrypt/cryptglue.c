@@ -39,6 +39,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/mutt.h"
+#include "cryptglue.h"
 #include "crypt_mod.h"
 #include "ncrypt.h"
 #ifndef CRYPT_BACKEND_GPGME
@@ -48,7 +49,10 @@
 #include "email/lib.h"
 #include "autocrypt/autocrypt.h"
 #include "globals.h"
+#include "ncrypt/crypt_gpgme.h"
 #include "options.h"
+#else
+struct Envelope;
 #endif
 
 struct Address;
@@ -68,7 +72,6 @@ extern struct CryptModuleSpecs CryptModSmimeClassic;
 #endif
 
 #ifdef CRYPT_BACKEND_GPGME
-#include "ncrypt/crypt_gpgme.h"
 extern struct CryptModuleSpecs CryptModPgpGpgme;
 extern struct CryptModuleSpecs CryptModSmimeGpgme;
 #endif
@@ -439,15 +442,6 @@ int crypt_smime_application_handler(struct Body *m, struct State *s)
     return CRYPT_MOD_CALL(SMIME, application_handler)(m, s);
 
   return -1;
-}
-
-/**
- * crypt_smime_encrypted_handler - Wrapper for CryptModuleSpecs::encrypted_handler()
- */
-void crypt_smime_encrypted_handler(struct Body *a, struct State *s)
-{
-  if (CRYPT_MOD_CALL_CHECK(SMIME, encrypted_handler))
-    CRYPT_MOD_CALL(SMIME, encrypted_handler)(a, s);
 }
 
 /**

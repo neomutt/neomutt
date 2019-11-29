@@ -32,6 +32,7 @@
 #include "mutt/mutt.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "status.h"
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"

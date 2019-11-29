@@ -28,6 +28,7 @@
 
 #include "config.h"
 #include <stdlib.h>
+#include "exit.h"
 
 /**
  * mutt_exit - Leave NeoMutt NOW

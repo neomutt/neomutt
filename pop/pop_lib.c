@@ -42,11 +42,13 @@
 #include "core/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
-#include "globals.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "progress.h"
+#ifdef USE_SSL
+#include "globals.h"
+#endif
 
 /* These Config Variables are only used in pop/pop_lib.c */
 unsigned char C_PopReconnect; ///< Config: (pop) Reconnect to the server is the connection is lost

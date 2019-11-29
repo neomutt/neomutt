@@ -46,7 +46,6 @@
 #include "bcache.h"
 #include "curs_lib.h"
 #include "globals.h"
-#include "hcache/hcache.h"
 #include "imap/imap.h"
 #include "mutt_account.h"
 #include "mutt_curses.h"
@@ -58,6 +57,9 @@
 #include "protos.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
+#endif
+#ifdef USE_HCACHE
+#include "hcache/hcache.h"
 #endif
 
 struct BodyCache;

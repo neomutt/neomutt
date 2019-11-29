@@ -34,6 +34,9 @@
 #include "mutt_socket.h"
 #include "hook.h"
 #include "mutt_account.h"
+#ifndef USE_SSL
+#include "mutt/mutt.h"
+#endif
 
 /**
  * mutt_conn_new - Create a new Connection

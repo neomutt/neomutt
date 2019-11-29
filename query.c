@@ -37,6 +37,7 @@
 #include "address/lib.h"
 #include "email/lib.h"
 #include "mutt.h"
+#include "query.h"
 #include "alias.h"
 #include "curs_lib.h"
 #include "filter.h"

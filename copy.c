@@ -43,12 +43,12 @@
 #include "handler.h"
 #include "hdrline.h"
 #include "mutt_window.h"
-#include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "sendlib.h"
 #include "state.h"
 #ifdef USE_NOTMUCH
+#include "muttlib.h"
 #include "notmuch/mutt_notmuch.h"
 #endif
 #ifdef ENABLE_NLS

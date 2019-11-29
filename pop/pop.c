@@ -47,7 +47,6 @@
 #include "bcache.h"
 #include "context.h"
 #include "globals.h"
-#include "hcache/hcache.h"
 #include "hook.h"
 #include "mutt_account.h"
 #include "mutt_header.h"
@@ -59,6 +58,9 @@
 #include "progress.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
+#endif
+#ifdef USE_HCACHE
+#include "hcache/hcache.h"
 #endif
 
 struct BodyCache;

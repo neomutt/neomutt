@@ -49,6 +49,7 @@
 #include "options.h"
 #include "protos.h"
 #include "socket.h"
+#include "ssl.h" // IWYU pragma: keep
 
 /* certificate error bitmap values */
 #define CERTERR_VALID 0

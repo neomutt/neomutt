@@ -42,6 +42,7 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "mutt.h"
+#include "crypt.h"
 #include "alias.h"
 #include "copy.h"
 #include "cryptglue.h"

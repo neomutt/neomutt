@@ -46,11 +46,13 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "globals.h"
-#include "hcache/hcache.h"
 #include "maildir/lib.h"
 #include "monitor.h"
 #include "muttlib.h"
 #include "mx.h"
+#ifdef USE_HCACHE
+#include "hcache/hcache.h"
+#endif
 
 // Flags for maildir_mbox_check()
 #define MMC_NO_DIRS 0        ///< No directories changed

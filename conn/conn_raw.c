@@ -35,7 +35,6 @@
 #include <netdb.h>
 #include <netinet/in.h>
 #include <signal.h>
-#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/select.h>
@@ -44,13 +43,19 @@
 #include <time.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
-#include "address/lib.h"
-#include "conn/connaccount.h"
 #include "conn_globals.h"
+#include "connaccount.h"
 #include "connection.h"
 #include "curs_lib.h"
 #include "globals.h"
 #include "options.h"
+#include "socket.h" // IWYU pragma: keep
+#ifdef HAVE_LIBIDN
+#include "address/lib.h"
+#endif
+#ifdef HAVE_GETADDRINFO
+#include <stdbool.h>
+#endif
 
 /* These Config Variables are only used in conn/conn_raw.c */
 #ifdef HAVE_GETADDRINFO

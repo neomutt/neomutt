@@ -32,6 +32,7 @@
 #include <stdint.h>
 #include "mutt/mutt.h"
 #include "set.h"
+#include "string3.h" // IWYU pragma: keep
 #include "types.h"
 
 /**

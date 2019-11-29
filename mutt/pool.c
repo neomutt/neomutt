@@ -28,6 +28,7 @@
 
 #include "config.h"
 #include <stdio.h>
+#include "pool.h"
 #include "buffer.h"
 #include "logging.h"
 #include "memory.h"

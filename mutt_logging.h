@@ -26,11 +26,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <time.h>
+#include "mutt/mutt.h"
 
-struct Buffer;
 struct ConfigDef;
 struct ConfigSet;
-struct NotifyCallback;
 
 extern short C_DebugLevel;
 extern char *C_DebugFile;

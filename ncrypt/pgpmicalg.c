@@ -32,6 +32,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "mutt/mutt.h"
+#include "pgpmicalg.h"
 #include "handler.h"
 #include "pgppacket.h"
 #include "state.h"

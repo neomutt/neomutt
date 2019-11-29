@@ -48,7 +48,6 @@
 #include "core/lib.h"
 #include "mutt.h"
 #include "mbox.h"
-#include "context.h"
 #include "copy.h"
 #include "globals.h"
 #include "mutt_header.h"

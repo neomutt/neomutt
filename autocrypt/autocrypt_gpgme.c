@@ -30,6 +30,7 @@
 #include <stddef.h>
 #include <gpgme.h>
 #include <stdbool.h>
+#include "autocrypt_private.h" // IWYU pragma: keep
 #include "mutt/mutt.h"
 #include "address/lib.h"
 #include "config/lib.h"
@@ -110,6 +111,7 @@ cleanup:
   return rc;
 }
 
+#if 0
 /**
  * mutt_autocrypt_gpgme_export_key - Export a GPGME key
  * @param keyid   GPGME Key id
@@ -138,6 +140,7 @@ cleanup:
   gpgme_release(ctx);
   return rc;
 }
+#endif
 
 /**
  * mutt_autocrypt_gpgme_create_key - Create a GPGME key

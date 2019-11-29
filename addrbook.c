@@ -35,6 +35,7 @@
 #include "address/lib.h"
 #include "config/lib.h"
 #include "mutt.h"
+#include "addrbook.h"
 #include "alias.h"
 #include "curs_lib.h"
 #include "format_flags.h"
