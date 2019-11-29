@@ -6948,3 +6948,45 @@ msgstr "Standard Einstellungen:"
 #: version.c:449
 msgid "Compile options:"
 msgstr "Einstellungen bei der Kompilierung:"
+
+msgid "Error creating autocrypt key: %s\n"
+msgstr "Fehler beim erstellen des Autocrypt Schlüssels: %s\n"
+
+msgid "(c)reate new, or (s)elect existing GPG key? "
+msgstr "(n)eu erstellen, oder existierenden GPG Schlüssel aus(w)ählen? "
+
+msgid "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic? "
+msgstr "Autocrypt: (v)erschlüsseln, (l)öschen, (a)utomatisch?"
+
+msgid "$send_multipart_alternative_filter is not set"
+msgstr ""
+
+msgid "Error History is disabled"
+msgstr "Einstellung error_history ist deaktiviert"
+
+msgid "Generate multipart/alternative content?"
+msgstr ""
+
+msgid "Missing mime type from output of \"%s\"!"
+msgstr ""
+
+msgid "Missing blank line separator from output of \"%s\"!"
+msgstr ""
+
+msgid "$send_multipart_alternative_filter does not support multipart type generation"
+msgstr "$send_multipart_alternative_filter funktioniert nicht mit Typ \"multipart\""
+
+msgid "view multipart/alternative"
+msgstr ""
+
+msgid "view multipart/alternative as text"
+msgstr "Ansicht des Anhangs als Text"
+
+msgid "view multipart/alternative using mailcap"
+msgstr "Ansicht des Anhangs mittels mailcap"
+
+msgid "select a new mailbox from the browser"
+msgstr "Öffne Mailbox"
+
+msgid "select a new mailbox from the browser in read only mode"
+msgstr "Öffne Mailbox im nur-Lesen-Modus"
