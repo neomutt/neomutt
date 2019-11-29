@@ -1,3 +1,41 @@
+2019-11-29  Richard Russon  <rich@flatcap.org>
+* Features
+  - Add raw mailsize expando (%cr)
+* Bug Fixes
+  - Avoid double question marks in bounce confirmation msg
+  - Fix bounce confirmation
+  - fix new-mail flags and behaviour
+  - fix: browser <descend-directory>
+  - fix ssl crash
+  - fix move to trash
+  - fix flickering
+  - Do not check hidden mailboxes for new mail
+  - Fix new_mail_command notifications
+  - fix crash in examine_mailboxes()
+  - fix crash in mutt_sort_threads()
+  - fix: crash after sending
+  - Fix crash in tunnel's conn_close
+  - fix fcc for deep dirs
+  - imap: fix crash when new mail arrives
+  - fix colour 'quoted9'
+  - quieten messages on exit
+  - fix: crash after failed mbox_check
+  - browser: default to a file/dir view when attaching a file
+* Changed Config
+  - Change $write_bcc to default off
+* Translations
+  - 100% Portuguese (Brazil)
+  -  92% Polish
+* Docs
+  - Add a bit more documentation about sending
+  - Clarify $write_bcc documentation.
+  - Update documentation for raw size expando
+  - docbook: set generate.consistent.ids to make generated html reproducible
+* Build
+  - fix build/tests for 32-bit arches
+  - tests: fix test that would fail soon
+  - tests: fix context for failing idna tests
+
 2019-11-11  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
   - browser: fix directory view
