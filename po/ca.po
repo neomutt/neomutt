@@ -47,6 +47,10 @@
 #
 # IDN = Internationalized Domain Name
 #
+# Pose «Autocrypt» en majúscula, com a nom propi.
+#
+# Empre «PGP» quan en la cadena original diu «GPG» per coherència.
+#
 # He aplicat algunes de les recomanacions de
 # <https://www.softcatala.org/recursos/quality/gnutools.html>.
 #
@@ -179,7 +183,7 @@ msgstr "No s’ha pogut crear «%s»: %s"
 #.
 #: autocrypt/autocrypt.c:156
 msgid "Create an initial autocrypt account?"
-msgstr ""
+msgstr "Voleu crear un compte inicial d’Autocrypt?"
 
 #. L10N:
 #. Autocrypt is asking for the email address to use for the
@@ -188,7 +192,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:180
 msgid "Autocrypt account address: "
-msgstr ""
+msgstr "Adreça del compte d’Autocrypt: "
 
 #. L10N:
 #. Autocrypt prompts for an account email address, and requires
@@ -197,7 +201,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:191
 msgid "Please enter a single email address"
-msgstr ""
+msgstr "Per favor, entreu una sola adreça de correu"
 
 #. L10N:
 #. When creating an autocrypt account, this message will be displayed
@@ -206,7 +210,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:208
 msgid "That email address already has an autocrypt account"
-msgstr ""
+msgstr "Aquesta adreça de correu ja té un compte d’Autocrypt associat"
 
 # Capacitats d’una clau.  ivb
 #. L10N:
@@ -218,16 +222,15 @@ msgstr ""
 #. will be required to enable encryption manually.
 #.
 #: autocrypt/autocrypt.c:223
-#, fuzzy
 msgid "Prefer encryption?"
-msgstr "xifratge"
+msgstr "Preferiu xifrar?"
 
 #. L10N:
 #. Message displayed after an autocrypt account is successfully created.
 #.
 #: autocrypt/autocrypt.c:236
 msgid "Autocrypt account creation succeeded"
-msgstr ""
+msgstr "S’ha avortat la creació del compte d’Autocrypt"
 
 #. L10N:
 #. Error message displayed if creating an autocrypt account failed
@@ -235,7 +238,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:242
 msgid "Autocrypt account creation aborted"
-msgstr ""
+msgstr "S’ha pogut crear amb èxit el compte d’Autocrypt"
 
 #. L10N:
 #. %s is an email address.  Autocrypt is scanning for the keyids
@@ -243,9 +246,9 @@ msgstr ""
 #. The message is printed and they are returned to the compose menu.
 #.
 #: autocrypt/autocrypt.c:610 autocrypt/autocrypt.c:639
-#, fuzzy, c-format
+#, c-format
 msgid "No (valid) autocrypt key found for %s"
-msgstr "No s’ha trobat cap certificat (vàlid) per a %s"
+msgstr "No s’ha trobat cap clau (vàlida) d’Autocrypt per a %s"
 
 #. L10N:
 #. The first time autocrypt is enabled, NeoMutt will ask to scan
@@ -256,13 +259,12 @@ msgstr "No s’ha trobat cap certificat (vàlid) per a %s"
 #.
 #: autocrypt/autocrypt.c:903
 msgid "Scan a mailbox for autocrypt headers?"
-msgstr ""
+msgstr "Voleu cercar capçaleres d’Autocrypt a una bústia?"
 
 #. L10N: The prompt for a mailbox to scan for Autocrypt: headers
 #: autocrypt/autocrypt.c:907
-#, fuzzy
 msgid "Scan mailbox"
-msgstr "Còpia a bústia"
+msgstr "Bústia on cercar"
 
 #. L10N:
 #. This is the second prompt to see if the user would like
@@ -273,15 +275,14 @@ msgstr "Còpia a bústia"
 #.
 #: autocrypt/autocrypt.c:927
 msgid "Scan another mailbox for autocrypt headers?"
-msgstr ""
+msgstr "Voleu cercar capçaleres d’Autocrypt en una altra bústia?"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. create new account
 #.
 #: autocrypt/autocrypt_acct_menu.c:63
-#, fuzzy
 msgid "Create"
-msgstr "Voleu crear «%s»?"
+msgstr "Crea"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. delete account
@@ -298,7 +299,7 @@ msgstr "Esborra"
 #.
 #: autocrypt/autocrypt_acct_menu.c:74
 msgid "Tgl Active"
-msgstr ""
+msgstr "(Des)Activa"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. toggle "prefer-encrypt" on an account
@@ -308,7 +309,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:81
 msgid "Prf Enc"
-msgstr ""
+msgstr "(No)Pref xifrar"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -316,7 +317,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:123
 msgid "prefer encrypt"
-msgstr ""
+msgstr "es prefereix xifrar"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -325,7 +326,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:130
 msgid "manual encrypt"
-msgstr ""
+msgstr "xifrar manualment"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -333,7 +334,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:138
 msgid "active"
-msgstr ""
+msgstr "actiu"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -341,27 +342,26 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:144
 msgid "inactive"
-msgstr ""
+msgstr "inactiu"
 
 #. L10N: Autocrypt Account Management Menu title
 #: autocrypt/autocrypt_acct_menu.c:183
 msgid "Autocrypt Accounts"
-msgstr ""
+msgstr "Comptes d’Autocrypt"
 
 #. L10N:
 #. This error message is displayed if a database update of an
 #. account record fails for some odd reason.
 #.
 #: autocrypt/autocrypt_acct_menu.c:245 autocrypt/autocrypt_acct_menu.c:259
-#, fuzzy
 msgid "Error updating account record"
-msgstr "Error en llegir el directori"
+msgstr "Error en actualitzar el registre del compte"
 
 #. L10N: Confirmation message when deleting an autocrypt account
 #: autocrypt/autocrypt_acct_menu.c:302
-#, fuzzy, c-format
+#, c-format
 msgid "Really delete account \"%s\"?"
-msgstr "Voleu realment esborrar la bústia «%s»?"
+msgstr "Voleu realment esborrar el compte «%s»?"
 
 #. L10N:
 #. %s is the path to the database.
@@ -372,9 +372,9 @@ msgstr "Voleu realment esborrar la bústia «%s»?"
 #. for some reason.  The %s is the full path of the database file.
 #.
 #: autocrypt/autocrypt_db.c:68 autocrypt/autocrypt_db.c:102
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to open autocrypt database %s"
-msgstr "No s’ha pogut obrir la bústia «%s»."
+msgstr "No s’ha pogut obrir la base de dades d’Autocrypt «%s»"
 
 #: autocrypt/autocrypt_gpgme.c:54 ncrypt/crypt_gpgme.c:773
 #, c-format
@@ -387,16 +387,16 @@ msgstr "Error en crear el context GPGME: %s"
 #.
 #: autocrypt/autocrypt_gpgme.c:172
 msgid "Generating autocrypt key..."
-msgstr ""
+msgstr "S’està generant una clau d’Autocrypt…"
 
 #. L10N:
 #. GPGME was unable to generate a key for some reason.
 #. %s is the error message returned by GPGME.
 #.
 #: autocrypt/autocrypt_gpgme.c:184 autocrypt/autocrypt_gpgme.c:203
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating autocrypt key: %s"
-msgstr "Error en importar la clau: %s\n"
+msgstr "Error en crear la clau d’Autocrypt: %s"
 
 #. L10N:
 #. After selecting a key for an autocrypt account,
@@ -407,7 +407,7 @@ msgstr "Error en importar la clau: %s\n"
 #: autocrypt/autocrypt_gpgme.c:252
 #, c-format
 msgid "The key %s is not usable for autocrypt"
-msgstr ""
+msgstr "No es pot emprar la clau «%s» amb Autocrypt"
 
 #. L10N:
 #. During autocrypt account creation, this prompt asks the
@@ -416,7 +416,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_gpgme.c:286
 msgid "(c)reate new, or (s)elect existing GPG key?"
-msgstr ""
+msgstr "(c)rear una nova clau PGP, o (s)eleccionar‐ne una d’existent?"
 
 #. L10N:
 #. The letters corresponding to the
@@ -424,7 +424,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_gpgme.c:291
 msgid "cs"
-msgstr ""
+msgstr "cs"
 
 #. L10N:
 #. During autocrypt account creation, if selecting an existing key fails
@@ -432,7 +432,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_gpgme.c:305
 msgid "Create a new gpg key for this account, instead?"
-msgstr ""
+msgstr "Voleu en canvi crear una nova clau PGP per a aquest compte?"
 
 #. L10N:
 #. The autocrypt database keeps track of schema version numbers.
@@ -442,7 +442,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_schema.c:125
 msgid "Autocrypt database version is too new"
-msgstr ""
+msgstr "La versió de la base de dades d’Autocrypt és massa nova"
 
 #: bcache.c:209
 #, fuzzy, c-format
@@ -970,7 +970,7 @@ msgstr "Signa com a: "
 #. L10N: The compose menu autocrypt line
 #: compose.c:195
 msgid "Autocrypt: "
-msgstr ""
+msgstr "Autocrypt: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:199
@@ -1034,14 +1034,13 @@ msgstr "No s’ha indicat l’assumpte."
 #. * This is displayed when Autocrypt is turned off.
 #: compose.c:239 compose.c:473
 msgid "Off"
-msgstr ""
+msgstr "Desactivat"
 
 #. L10N: Autocrypt recommendation flag: no.
 #. * This is displayed when Autocrypt cannot encrypt to the recipients.
 #: compose.c:242
-#, fuzzy
 msgid "No"
-msgstr "Cap"
+msgstr "No"
 
 #. L10N: Autocrypt recommendation flag: discouraged.
 #. * This is displayed when Autocrypt believes encryption should not be used.
@@ -1049,7 +1048,7 @@ msgstr "Cap"
 #. * used recently, or if the only key available is a Gossip Header key.
 #: compose.c:247
 msgid "Discouraged"
-msgstr ""
+msgstr "No recomanat"
 
 #. L10N: Autocrypt recommendation flag: available.
 #. * This is displayed when Autocrypt believes encryption is possible, but
@@ -1057,15 +1056,14 @@ msgstr ""
 #. * is not set in both the sender and recipient keys.
 #: compose.c:252
 msgid "Available"
-msgstr ""
+msgstr "Disponible"
 
 #. L10N: Autocrypt recommendation flag: yes.
 #. * This is displayed when Autocrypt would normally enable encryption
 #. * automatically.
 #: compose.c:256
-#, fuzzy
 msgid "Yes"
-msgstr "sí"
+msgstr "Sí"
 
 #. L10N:
 #. The compose menu autocrypt prompt.
@@ -1075,7 +1073,7 @@ msgstr "sí"
 #.
 #: compose.c:338
 msgid "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic?"
-msgstr ""
+msgstr "Autocrypt: (x)ifra, en (c)lar, (a)utomàtic?"
 
 #. L10N:
 #. The letter corresponding to the compose menu autocrypt prompt
@@ -1083,7 +1081,7 @@ msgstr ""
 #.
 #: compose.c:346
 msgid "eca"
-msgstr ""
+msgstr "xca"
 
 #: compose.c:383
 msgid "Not supported"
@@ -1136,9 +1134,8 @@ msgstr "Xifra amb: "
 #. (Off, No, Discouraged, Available, Yes)
 #.
 #: compose.c:483
-#, fuzzy
 msgid "Recommendation: "
-msgstr "Edita el camp de resposta (Reply-To)."
+msgstr "Recomanació: "
 
 #: compose.c:547
 msgid "<no chain defined>"
@@ -1154,7 +1151,7 @@ msgstr ""
 #: compose.c:601
 #, fuzzy, c-format
 msgid "Attachment #%d no longer exists: %s"
-msgstr "«%s» [#%d] ja no existeix."
+msgstr "L’adjunció #%d ja no existeix: %s"
 
 # ivb (2001/11/19)
 # ivb  ABREUJAT!
@@ -1167,9 +1164,9 @@ msgstr "«%s» [#%d] ja no existeix."
 #. prompt question.
 #.
 #: compose.c:621
-#, fuzzy, c-format
+#, c-format
 msgid "Attachment #%d modified. Update encoding for %s?"
-msgstr "Modificat «%s» [#%d].  Actualitzar codificació?"
+msgstr "S’ha modificat l’adjunció #%d.  Actualitzar codificació de «%s»?"
 
 #: compose.c:716
 msgid "-- Attachments"
@@ -1738,7 +1735,7 @@ msgstr[1] ""
 
 #: copy.c:744
 msgid "No decryption engine available for message"
-msgstr ""
+msgstr "No hi ha cap mecanisme disponible per a desxifrar el missatge"
 
 #: curs_lib.c:378
 msgid "yes"
@@ -2258,14 +2255,12 @@ msgid "Login failed"
 msgstr "L’entrada ha fallat"
 
 #: imap/auth_oauth.c:64 pop/pop_auth.c:346 smtp.c:521
-#, fuzzy
 msgid "Authenticating (OAUTHBEARER)..."
-msgstr "S’està autenticant (OAUTHBEARER)…"
+msgstr "S’està autenticant (OAUTHBEARER)..."
 
 #: imap/auth_oauth.c:96
-#, fuzzy
 msgid "OAUTHBEARER authentication failed"
-msgstr "L’autenticació OAUTHBEARER ha fallat."
+msgstr "L’autenticació OAUTHBEARER ha fallat"
 
 #: imap/auth_sasl.c:128 nntp/nntp.c:600 nntp/nntp.c:665 smtp.c:440
 #, c-format
@@ -3889,7 +3884,6 @@ msgstr "[-- Eixida de %s%s: --]\n"
 #. passwords. So in English we use "Passphrases". Your language might
 #. have other means to express this.
 #: ncrypt/crypt.c:119
-#, fuzzy
 msgid "Passphrases forgotten"
 msgstr "S’han esborrat de la memòria les frases clau"
 
@@ -3912,7 +3906,6 @@ msgid "Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"
 msgstr "No es pot emprar PGP en línia amb «format=flowed».  Emprar PGP/MIME?"
 
 #: ncrypt/crypt.c:218
-#, fuzzy
 msgid "Mail not sent: inline PGP can't be used with format=flowed"
 msgstr "No s’ha enviat el missatge: no es pot emprar PGP en línia amb «format=flowed»"
 
@@ -3954,12 +3947,11 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt.c:1180
-#, fuzzy
 msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
 msgstr ""
-"[-- Error: L’estructura «multipart/signed» no és consistent. --]\n"
+"[-- Error: La signatura de «multipart/signed» manca o és feta malbé. --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1222
@@ -4588,9 +4580,8 @@ msgstr "Entreu l’ID de clau per a %s: "
 #. from.  This error is displayed if no results were found.
 #.
 #: ncrypt/crypt_gpgme.c:5363
-#, fuzzy
 msgid "No secret keys found"
-msgstr "No s’ha trobat la clau secreta «%s»: %s"
+msgstr "No s’ha trobat cap clau secreta"
 
 #: ncrypt/crypt_gpgme.c:5396 ncrypt/pgpkey.c:888
 msgid "Please enter the key ID: "
@@ -5281,24 +5272,23 @@ msgstr "Mostra una adjunció com a text."
 
 #: opcodes.h:32
 msgid "manage autocrypt accounts"
-msgstr ""
+msgstr "Gestiona els comptes d’Autocrypt"
 
 #: opcodes.h:33
 msgid "create a new autocrypt account"
-msgstr ""
+msgstr "Crea un nou compte d’Autocrypt"
 
 #: opcodes.h:34
-#, fuzzy
 msgid "delete the current account"
-msgstr "Esborra l’entrada actual."
+msgstr "Esborra el compte d’Autocrypt actual"
 
 #: opcodes.h:35
 msgid "toggle the current account active/inactive"
-msgstr ""
+msgstr "Activa o desactiva el compte d’Autocrypt actual"
 
 #: opcodes.h:36
 msgid "toggle the current account prefer-encrypt flag"
-msgstr ""
+msgstr "Canvia entre preferir xifrar o no amb el compte d’Autocrypt actual"
 
 #: opcodes.h:37
 msgid "move to the bottom of the page"
@@ -5366,7 +5356,7 @@ msgstr "Adjunta missatges a aquest missatge."
 
 #: opcodes.h:52
 msgid "show autocrypt compose menu options"
-msgstr ""
+msgstr "Mostra les opcions d’Autocrypt"
 
 #: opcodes.h:53
 #, fuzzy

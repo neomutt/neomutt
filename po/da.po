@@ -134,7 +134,7 @@ msgstr "Kan ikke oprette %s: %s"
 #.
 #: autocrypt/autocrypt.c:156
 msgid "Create an initial autocrypt account?"
-msgstr ""
+msgstr "Opret en ny autocrypt-konto?"
 
 #. L10N:
 #. Autocrypt is asking for the email address to use for the
@@ -143,7 +143,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:180
 msgid "Autocrypt account address: "
-msgstr ""
+msgstr "Autocrypt-kontoens adresse: "
 
 #. L10N:
 #. Autocrypt prompts for an account email address, and requires
@@ -152,7 +152,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:191
 msgid "Please enter a single email address"
-msgstr ""
+msgstr "Indtast kun en enkelt mailadresse"
 
 #. L10N:
 #. When creating an autocrypt account, this message will be displayed
@@ -161,7 +161,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:208
 msgid "That email address already has an autocrypt account"
-msgstr ""
+msgstr "Denne mailadresse har allerede en autocrypt-konto tilknyttet"
 
 #. L10N:
 #. Autocrypt has a setting "prefer-encrypt".
@@ -172,16 +172,15 @@ msgstr ""
 #. will be required to enable encryption manually.
 #.
 #: autocrypt/autocrypt.c:223
-#, fuzzy
 msgid "Prefer encryption?"
-msgstr "kryptering"
+msgstr "Foretræk kryptering?"
 
 #. L10N:
 #. Message displayed after an autocrypt account is successfully created.
 #.
 #: autocrypt/autocrypt.c:236
 msgid "Autocrypt account creation succeeded"
-msgstr ""
+msgstr "Oprettelse af autocrypt-konto lykkedes"
 
 #. L10N:
 #. Error message displayed if creating an autocrypt account failed
@@ -189,7 +188,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt.c:242
 msgid "Autocrypt account creation aborted"
-msgstr ""
+msgstr "Oprettelse af autocrypt-konto afbrudt"
 
 #. L10N:
 #. %s is an email address.  Autocrypt is scanning for the keyids
@@ -197,9 +196,9 @@ msgstr ""
 #. The message is printed and they are returned to the compose menu.
 #.
 #: autocrypt/autocrypt.c:610 autocrypt/autocrypt.c:639
-#, fuzzy, c-format
+#, c-format
 msgid "No (valid) autocrypt key found for %s"
-msgstr "Fandt ikke et (gyldigt) certifikat for %s"
+msgstr "Fandt ikke nogen (gyldig) autocrypt-nøgle til %s"
 
 #. L10N:
 #. The first time autocrypt is enabled, NeoMutt will ask to scan
@@ -210,13 +209,12 @@ msgstr "Fandt ikke et (gyldigt) certifikat for %s"
 #.
 #: autocrypt/autocrypt.c:903
 msgid "Scan a mailbox for autocrypt headers?"
-msgstr ""
+msgstr "Skan brevbakke for autocrypt-headere?"
 
 #. L10N: The prompt for a mailbox to scan for Autocrypt: headers
 #: autocrypt/autocrypt.c:907
-#, fuzzy
 msgid "Scan mailbox"
-msgstr "Fcc-brevbakke"
+msgstr "Scan brevbakke"
 
 #. L10N:
 #. This is the second prompt to see if the user would like
@@ -227,15 +225,14 @@ msgstr "Fcc-brevbakke"
 #.
 #: autocrypt/autocrypt.c:927
 msgid "Scan another mailbox for autocrypt headers?"
-msgstr ""
+msgstr "Skan en anden brevbakke for autocrypt-headere?"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. create new account
 #.
 #: autocrypt/autocrypt_acct_menu.c:63
-#, fuzzy
 msgid "Create"
-msgstr "Opret %s?"
+msgstr "Opret"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. delete account
@@ -252,7 +249,7 @@ msgstr "Slet"
 #.
 #: autocrypt/autocrypt_acct_menu.c:74
 msgid "Tgl Active"
-msgstr ""
+msgstr "Aktiv til/fra"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. toggle "prefer-encrypt" on an account
@@ -262,7 +259,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:81
 msgid "Prf Enc"
-msgstr ""
+msgstr "Foretræk kryptering"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -270,7 +267,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:123
 msgid "prefer encrypt"
-msgstr ""
+msgstr "foretræk kryptering"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -279,7 +276,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:130
 msgid "manual encrypt"
-msgstr ""
+msgstr "manuel kryptering"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -287,7 +284,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:138
 msgid "active"
-msgstr ""
+msgstr "aktiv"
 
 #. L10N:
 #. Autocrypt Account menu.
@@ -295,27 +292,26 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_acct_menu.c:144
 msgid "inactive"
-msgstr ""
+msgstr "inaktiv"
 
 #. L10N: Autocrypt Account Management Menu title
 #: autocrypt/autocrypt_acct_menu.c:183
 msgid "Autocrypt Accounts"
-msgstr ""
+msgstr "Autocrypt-konti"
 
 #. L10N:
 #. This error message is displayed if a database update of an
 #. account record fails for some odd reason.
 #.
 #: autocrypt/autocrypt_acct_menu.c:245 autocrypt/autocrypt_acct_menu.c:259
-#, fuzzy
 msgid "Error updating account record"
-msgstr "Fejl ved indlæsning af filkatalog"
+msgstr "Fejl ved opdatering af konto-optegnelse"
 
 #. L10N: Confirmation message when deleting an autocrypt account
 #: autocrypt/autocrypt_acct_menu.c:302
-#, fuzzy, c-format
+#, c-format
 msgid "Really delete account \"%s\"?"
-msgstr "Virkelig slette brevbakke \"%s\"?"
+msgstr "Skal kontoen \"%s\" virkelig slettes?"
 
 #. L10N:
 #. %s is the path to the database.
@@ -326,9 +322,9 @@ msgstr "Virkelig slette brevbakke \"%s\"?"
 #. for some reason.  The %s is the full path of the database file.
 #.
 #: autocrypt/autocrypt_db.c:68 autocrypt/autocrypt_db.c:102
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to open autocrypt database %s"
-msgstr "Kan ikke åbne brevbakke %s"
+msgstr "Kan ikke åbne autocrypt-databasen %s"
 
 #: autocrypt/autocrypt_gpgme.c:54 ncrypt/crypt_gpgme.c:773
 #, c-format
@@ -341,16 +337,16 @@ msgstr "dannelse af gpgme-kontekst fejlede: %s"
 #.
 #: autocrypt/autocrypt_gpgme.c:172
 msgid "Generating autocrypt key..."
-msgstr ""
+msgstr "Genererer autocrypt-nøgle ..."
 
 #. L10N:
 #. GPGME was unable to generate a key for some reason.
 #. %s is the error message returned by GPGME.
 #.
 #: autocrypt/autocrypt_gpgme.c:184 autocrypt/autocrypt_gpgme.c:203
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating autocrypt key: %s"
-msgstr "Fejl ved eksportering af nøgle: %s"
+msgstr "Fejl ved oprettelse af autocrypt-nøgle: %s"
 
 #. L10N:
 #. After selecting a key for an autocrypt account,
@@ -361,7 +357,7 @@ msgstr "Fejl ved eksportering af nøgle: %s"
 #: autocrypt/autocrypt_gpgme.c:252
 #, c-format
 msgid "The key %s is not usable for autocrypt"
-msgstr ""
+msgstr "Nøglen %s kan ikke anvendes med autocrypt"
 
 #. L10N:
 #. During autocrypt account creation, this prompt asks the
@@ -370,7 +366,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_gpgme.c:286
 msgid "(c)reate new, or (s)elect existing GPG key?"
-msgstr ""
+msgstr "(o)pret ny, eller (v)ælg eksisterende GPG-nøgle?"
 
 #. L10N:
 #. The letters corresponding to the
@@ -378,7 +374,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_gpgme.c:291
 msgid "cs"
-msgstr ""
+msgstr "ov"
 
 #. L10N:
 #. During autocrypt account creation, if selecting an existing key fails
@@ -386,7 +382,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_gpgme.c:305
 msgid "Create a new gpg key for this account, instead?"
-msgstr ""
+msgstr "Lav en ny GPG-nøgle til denne konto, i stedet?"
 
 #. L10N:
 #. The autocrypt database keeps track of schema version numbers.
@@ -396,7 +392,7 @@ msgstr ""
 #.
 #: autocrypt/autocrypt_schema.c:125
 msgid "Autocrypt database version is too new"
-msgstr ""
+msgstr "Version af autocrypt-database er for ny"
 
 #: bcache.c:209
 #, fuzzy, c-format
@@ -912,7 +908,7 @@ msgstr "Underskriv som: "
 #. L10N: The compose menu autocrypt line
 #: compose.c:195
 msgid "Autocrypt: "
-msgstr ""
+msgstr "Autocrypt: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:199
@@ -972,14 +968,13 @@ msgstr "Intet emne er angivet."
 #. * This is displayed when Autocrypt is turned off.
 #: compose.c:239 compose.c:473
 msgid "Off"
-msgstr ""
+msgstr "Fra"
 
 #. L10N: Autocrypt recommendation flag: no.
 #. * This is displayed when Autocrypt cannot encrypt to the recipients.
 #: compose.c:242
-#, fuzzy
 msgid "No"
-msgstr "Ingen"
+msgstr "Nej"
 
 #. L10N: Autocrypt recommendation flag: discouraged.
 #. * This is displayed when Autocrypt believes encryption should not be used.
@@ -987,7 +982,7 @@ msgstr "Ingen"
 #. * used recently, or if the only key available is a Gossip Header key.
 #: compose.c:247
 msgid "Discouraged"
-msgstr ""
+msgstr "Frarådes"
 
 #. L10N: Autocrypt recommendation flag: available.
 #. * This is displayed when Autocrypt believes encryption is possible, but
@@ -995,15 +990,14 @@ msgstr ""
 #. * is not set in both the sender and recipient keys.
 #: compose.c:252
 msgid "Available"
-msgstr ""
+msgstr "Tilgængelig"
 
 #. L10N: Autocrypt recommendation flag: yes.
 #. * This is displayed when Autocrypt would normally enable encryption
 #. * automatically.
 #: compose.c:256
-#, fuzzy
 msgid "Yes"
-msgstr "ja"
+msgstr "Ja"
 
 #. L10N:
 #. The compose menu autocrypt prompt.
@@ -1013,7 +1007,7 @@ msgstr "ja"
 #.
 #: compose.c:338
 msgid "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic?"
-msgstr ""
+msgstr "Autocrypt: (k)ryptér, (r)yd, (a)utomatisk?"
 
 #. L10N:
 #. The letter corresponding to the compose menu autocrypt prompt
@@ -1021,7 +1015,7 @@ msgstr ""
 #.
 #: compose.c:346
 msgid "eca"
-msgstr ""
+msgstr "kra"
 
 #: compose.c:383
 msgid "Not supported"
@@ -1073,9 +1067,8 @@ msgstr "Kryptér med: "
 #. (Off, No, Discouraged, Available, Yes)
 #.
 #: compose.c:483
-#, fuzzy
 msgid "Recommendation: "
-msgstr "ret Reply-To-feltet"
+msgstr "Anbefaling: "
 
 #: compose.c:547
 msgid "<no chain defined>"
@@ -1089,9 +1082,9 @@ msgstr ""
 #. error message.
 #.
 #: compose.c:601
-#, fuzzy, c-format
+#, c-format
 msgid "Attachment #%d no longer exists: %s"
-msgstr "%s [#%d] findes ikke mere"
+msgstr "Bilag #%d findes ikke længere: %s"
 
 #. L10N:
 #. This message is displayed in the compose menu when an attachment
@@ -1101,9 +1094,9 @@ msgstr "%s [#%d] findes ikke mere"
 #. prompt question.
 #.
 #: compose.c:621
-#, fuzzy, c-format
+#, c-format
 msgid "Attachment #%d modified. Update encoding for %s?"
-msgstr "%s [#%d] blev ændret. Opdatér indkodning?"
+msgstr "Bilag #%d ændret. Opdatér kodning af %s?"
 
 #: compose.c:716
 msgid "-- Attachments"
@@ -1656,7 +1649,7 @@ msgstr[1] ""
 
 #: copy.c:744
 msgid "No decryption engine available for message"
-msgstr ""
+msgstr "Intet tilgængeligt dekrypteringsprogram til brev"
 
 #: curs_lib.c:378
 msgid "yes"
@@ -2056,7 +2049,7 @@ msgstr "Hjælp for %s"
 
 #: hook.c:142
 msgid "current mailbox shortcut '^' is unset"
-msgstr "genvejstasten '^' til den aktuelle brebakke er inaktiv"
+msgstr "genvejstasten '^' til den aktuelle brevbakke er inaktiv"
 
 #: hook.c:154
 msgid "mailbox shortcut expanded to empty regex"
@@ -2147,14 +2140,12 @@ msgid "Login failed"
 msgstr "Login slog fejl"
 
 #: imap/auth_oauth.c:64 pop/pop_auth.c:346 smtp.c:521
-#, fuzzy
 msgid "Authenticating (OAUTHBEARER)..."
-msgstr "Godkender (SASL) ..."
+msgstr "Godkender (OAUTHBEARER) ..."
 
 #: imap/auth_oauth.c:96
-#, fuzzy
 msgid "OAUTHBEARER authentication failed"
-msgstr "OAUTHBEARER-godkendelse fejlede"
+msgstr "OAUTHBEARER-godkendelse slog fejl"
 
 #: imap/auth_sasl.c:128 nntp/nntp.c:600 nntp/nntp.c:665 smtp.c:440
 #, c-format
@@ -2797,9 +2788,8 @@ msgstr "Ingen etiketter ændret"
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
 #: index.c:3393
-#, fuzzy
 msgid "Can't mark messages as read"
-msgstr "Kan ikke markére breve som læst"
+msgstr "Kan ikke markere breve som læst"
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
@@ -3710,7 +3700,6 @@ msgstr "[-- %s uddata følger%s --]\n"
 #. passwords. So in English we use "Passphrases". Your language might
 #. have other means to express this.
 #: ncrypt/crypt.c:119
-#, fuzzy
 msgid "Passphrases forgotten"
 msgstr "Har glemt løsen(er)"
 
@@ -3723,12 +3712,10 @@ msgid "Mail not sent: inline PGP can't be used with attachments"
 msgstr "Brev ikke sendt: integreret PGP kan ikke bruges sammen med bilag"
 
 #: ncrypt/crypt.c:214
-#, fuzzy
 msgid "Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"
 msgstr "Integreret PGP kan ikke bruges sammen med format=flowed. Brug PGP/MIME i stedet?"
 
 #: ncrypt/crypt.c:218
-#, fuzzy
 msgid "Mail not sent: inline PGP can't be used with format=flowed"
 msgstr "Brev ikke sendt: integreret PGP kan ikke bruges sammen med format=flowed"
 
@@ -3767,12 +3754,11 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt.c:1180
-#, fuzzy
 msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
 msgstr ""
-"[-- Fejl: Inkonsistent \"multipart/signed\" struktur --]\n"
+"[-- Fejl: Manglende eller misdannet \"multipart/signed\"-undeskrift! --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1222
@@ -4145,7 +4131,8 @@ msgstr "Kunne ikke dekryptere PGP-brev"
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
 "\n"
-msgstr "[-- Følgende data er unserskrevet med S/MIME --]\n"
+msgstr "[-- Følgende data er S/MIME-underskrevet --]\n"
+"\n"
 
 #: ncrypt/crypt_gpgme.c:3310
 msgid ""
@@ -4345,9 +4332,8 @@ msgstr "Anfør nøgle-id for %s: "
 #. from.  This error is displayed if no results were found.
 #.
 #: ncrypt/crypt_gpgme.c:5363
-#, fuzzy
 msgid "No secret keys found"
-msgstr "hemmelig nøgle \"%s\" ikke fundet: %s"
+msgstr "Ingen hemmelige nøgler fundet"
 
 #: ncrypt/crypt_gpgme.c:5396 ncrypt/pgpkey.c:888
 msgid "Please enter the key ID: "
@@ -4399,7 +4385,6 @@ msgstr "S/MIME (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, (p)gp, r(y)d
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5554
-#, fuzzy
 msgid "esabpco"
 msgstr "kusbpyo"
 
@@ -4410,7 +4395,6 @@ msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, s/(m)ime, r(y)d
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:5563
-#, fuzzy
 msgid "esabmco"
 msgstr "kusbmyo"
 
@@ -4420,7 +4404,6 @@ msgstr "S/MIME (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, (p)gp, eller
 
 #. L10N: S/MIME options
 #: ncrypt/crypt_gpgme.c:5576
-#, fuzzy
 msgid "esabpc"
 msgstr "kusbpy"
 
@@ -4430,7 +4413,6 @@ msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, s/(m)ime, eller
 
 #. L10N: PGP options
 #: ncrypt/crypt_gpgme.c:5585
-#, fuzzy
 msgid "esabmc"
 msgstr "kusbmy"
 
@@ -4989,24 +4971,23 @@ msgstr "vis denne del som tekst"
 
 #: opcodes.h:32
 msgid "manage autocrypt accounts"
-msgstr ""
+msgstr "håndtér autocrypt-konti"
 
 #: opcodes.h:33
 msgid "create a new autocrypt account"
-msgstr ""
+msgstr "opret en ny autocrypt-konto"
 
 #: opcodes.h:34
-#, fuzzy
 msgid "delete the current account"
-msgstr "slet den aktuelle listning"
+msgstr "slet den aktuelle konto"
 
 #: opcodes.h:35
 msgid "toggle the current account active/inactive"
-msgstr ""
+msgstr "skift mellem aktiv/inaktiv for den aktuelle konto"
 
 #: opcodes.h:36
 msgid "toggle the current account prefer-encrypt flag"
-msgstr ""
+msgstr "slå \"foretræk kryptering\" til/fra for den aktuelle konto"
 
 #: opcodes.h:37
 msgid "move to the bottom of the page"
@@ -5075,7 +5056,7 @@ msgstr "vedlæg breve til dette brev"
 
 #: opcodes.h:52
 msgid "show autocrypt compose menu options"
-msgstr ""
+msgstr "vis menuvalg for autocrypt i compose-menuen"
 
 #: opcodes.h:53
 #, fuzzy

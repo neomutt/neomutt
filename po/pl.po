@@ -5,14 +5,14 @@
 #
 # Pawel Dziekonski <dzieko@pwr.wroc.pl>, 1998-2006
 # Sergiusz Pawłowicz, 1998-2002
-# Marcin Rajner <marcin.rajner@pw.edu.pl>, 2018
+# Marcin Rajner <marcin.rajner@pw.edu.pl>, 2018-2019
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2019-11-11\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2019-11-11 01:10+0000\n"
-"PO-Revision-Date: 2019-08-10 21:56+0200\n"
+"PO-Revision-Date: 2019-11-12 11:18+0100\n"
 "Last-Translator: Marcin Rajner <marcin.rajner@pw.edu.pl>\n"
 "Language-Team: none\n"
 "Language: pl\n"
@@ -171,9 +171,8 @@ msgstr ""
 #. will be required to enable encryption manually.
 #.
 #: autocrypt/autocrypt.c:223
-#, fuzzy
 msgid "Prefer encryption?"
-msgstr "szyfrowanie"
+msgstr "Czy szyfrować?"
 
 #. L10N:
 #. Message displayed after an autocrypt account is successfully created.
@@ -196,9 +195,9 @@ msgstr ""
 #. The message is printed and they are returned to the compose menu.
 #.
 #: autocrypt/autocrypt.c:610 autocrypt/autocrypt.c:639
-#, fuzzy, c-format
+#, c-format
 msgid "No (valid) autocrypt key found for %s"
-msgstr "Brak (poprawnych) certyfikatów dla %s"
+msgstr "Brak (poprawnych) kluczy cyfrowania dla %s"
 
 #. L10N:
 #. The first time autocrypt is enabled, NeoMutt will ask to scan
@@ -213,9 +212,8 @@ msgstr ""
 
 #. L10N: The prompt for a mailbox to scan for Autocrypt: headers
 #: autocrypt/autocrypt.c:907
-#, fuzzy
 msgid "Scan mailbox"
-msgstr "Skrzynka Fcc"
+msgstr "Skanuj skrzynkę pocztową"
 
 #. L10N:
 #. This is the second prompt to see if the user would like
@@ -232,9 +230,8 @@ msgstr ""
 #. create new account
 #.
 #: autocrypt/autocrypt_acct_menu.c:63
-#, fuzzy
 msgid "Create"
-msgstr "Utworzyć %s?"
+msgstr "Utwórz"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. delete account
@@ -306,13 +303,12 @@ msgstr ""
 #. account record fails for some odd reason.
 #.
 #: autocrypt/autocrypt_acct_menu.c:245 autocrypt/autocrypt_acct_menu.c:259
-#, fuzzy
 msgid "Error updating account record"
-msgstr "Błąd przeglądania katalogu"
+msgstr "Błąd aktualizacji konta"
 
 #. L10N: Confirmation message when deleting an autocrypt account
 #: autocrypt/autocrypt_acct_menu.c:302
-#, fuzzy, c-format
+#, c-format
 msgid "Really delete account \"%s\"?"
 msgstr "Naprawdę usunąć skrzynkę \"%s\"?"
 
@@ -325,9 +321,9 @@ msgstr "Naprawdę usunąć skrzynkę \"%s\"?"
 #. for some reason.  The %s is the full path of the database file.
 #.
 #: autocrypt/autocrypt_db.c:68 autocrypt/autocrypt_db.c:102
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to open autocrypt database %s"
-msgstr "Nie można otworzyć skrzynki pocztowej %s"
+msgstr "Nie można otworzyć zaszyfrowanej skrzynki pocztowej %s"
 
 #: autocrypt/autocrypt_gpgme.c:54 ncrypt/crypt_gpgme.c:773
 #, c-format
@@ -347,9 +343,9 @@ msgstr ""
 #. %s is the error message returned by GPGME.
 #.
 #: autocrypt/autocrypt_gpgme.c:184 autocrypt/autocrypt_gpgme.c:203
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating autocrypt key: %s"
-msgstr "Błąd uzyskania klucza: %s"
+msgstr "Błąd tworzenia klucza szyfrowania: %s"
 
 #. L10N:
 #. After selecting a key for an autocrypt account,
@@ -599,9 +595,9 @@ msgid "Maximum quoting level is %d"
 msgstr ""
 
 #: color.c:1312
-#, fuzzy, c-format
+#, c-format
 msgid "%s: invalid number: %s"
-msgstr "Błąd: score: błędna liczba"
+msgstr "%s: błędna liczba: %s"
 
 #. L10N: Used for the $crypt_verify_sig prompt
 #: commands.c:229
@@ -949,9 +945,8 @@ msgstr ""
 #. L10N: Autocrypt recommendation flag: no.
 #. * This is displayed when Autocrypt cannot encrypt to the recipients.
 #: compose.c:242
-#, fuzzy
 msgid "No"
-msgstr "Żaden"
+msgstr "Nie"
 
 #. L10N: Autocrypt recommendation flag: discouraged.
 #. * This is displayed when Autocrypt believes encryption should not be used.
@@ -973,9 +968,8 @@ msgstr ""
 #. * This is displayed when Autocrypt would normally enable encryption
 #. * automatically.
 #: compose.c:256
-#, fuzzy
 msgid "Yes"
-msgstr "tak"
+msgstr "Tak"
 
 #. L10N:
 #. The compose menu autocrypt prompt.
@@ -1060,9 +1054,9 @@ msgstr "<nie zdefiniowany łańcuch>"
 #. error message.
 #.
 #: compose.c:601
-#, fuzzy, c-format
+#, c-format
 msgid "Attachment #%d no longer exists: %s"
-msgstr "%s [#%d] już nie istnieje"
+msgstr "Załącznik #%d już nie istnieje: %s"
 
 #. L10N:
 #. This message is displayed in the compose menu when an attachment
@@ -1072,9 +1066,9 @@ msgstr "%s [#%d] już nie istnieje"
 #. prompt question.
 #.
 #: compose.c:621
-#, fuzzy, c-format
+#, c-format
 msgid "Attachment #%d modified. Update encoding for %s?"
-msgstr "%s [#%d] zmieniony. Zaktualizować kodowanie?"
+msgstr "Załącznik #%d został zmodyfikowany. Zaktualizować kodowanie dla %s?"
 
 #: compose.c:716
 msgid "-- Attachments"
@@ -2794,9 +2788,9 @@ msgid "Error in command line: %s"
 msgstr "Błąd w poleceniu: %s"
 
 #: init.c:296
-#, fuzzy, c-format
+#, c-format
 msgid "Warning in command line: %s"
-msgstr "Błąd w poleceniu: %s"
+msgstr "Ostrzeżenie w poleceniu: %s"
 
 #: init.c:407
 msgid "unable to determine nodename via uname()"
@@ -4294,9 +4288,8 @@ msgstr "Wprowadź numer klucza dla %s: "
 #. from.  This error is displayed if no results were found.
 #.
 #: ncrypt/crypt_gpgme.c:5363
-#, fuzzy
 msgid "No secret keys found"
-msgstr "Klucz tajny '%s' nie został odnaleziony: %s"
+msgstr "Nie znaleziono tajnych kluczy"
 
 #: ncrypt/crypt_gpgme.c:5396 ncrypt/pgpkey.c:888
 msgid "Please enter the key ID: "
@@ -4924,9 +4917,8 @@ msgid "create a new autocrypt account"
 msgstr ""
 
 #: opcodes.h:34
-#, fuzzy
 msgid "delete the current account"
-msgstr "usuń bieżący list"
+msgstr "usuń bieżące konto"
 
 #: opcodes.h:35
 msgid "toggle the current account active/inactive"
