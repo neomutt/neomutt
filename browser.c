@@ -1250,7 +1250,9 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
   }
   else
   {
-    if (folder)
+    if (!folder)
+      mutt_path_getcwd(&LastDir);
+    else
     {
       /* Whether we use the tracking feature of the browser depends
        * on which sort method we chose to use. This variable is defined
