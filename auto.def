@@ -440,6 +440,9 @@ if {[get-define want-gpgme]} {
     }
     define GPGME_VERSION_NUMBER [format "0x%02x%02x%02x" $gpgme_maj $gpgme_min $gpgme_patch]
 
+    # RHEL6 doesn't have this function yet
+    cc-check-functions gpgme_op_export_keys
+
     # CFLAGS
     if {[catch {exec-with-stderr $gpgme_config --cflags} res err]} {
       user-error "Could not derive --cflags from $gpgme_config"
