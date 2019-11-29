@@ -35,11 +35,16 @@
 #include <sys/utsname.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
-#include "address/lib.h"
+#include "version.h"
 #include "mutt_curses.h"
+#ifdef HAVE_LIBIDN
+#include "address/lib.h"
+#endif
+#ifdef CRYPT_BACKEND_GPGME
 #include "ncrypt/crypt_gpgme.h"
+#endif
 
-/* #include "protos.h" */
+/* #include "muttlib.h" */
 const char *mutt_make_version(void);
 /* #include "hcache/hcache.h" */
 const char *mutt_hcache_backend_list(void);

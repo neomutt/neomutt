@@ -50,7 +50,6 @@
 #include "alias.h"
 #include "context.h"
 #include "filter.h"
-#include "hcache/hcache.h"
 #include "keymap.h"
 #include "monitor.h"
 #include "mutt_menu.h"
@@ -62,6 +61,9 @@
 #include "protos.h"
 #include "sidebar.h"
 #include "version.h"
+#ifdef USE_HCACHE
+#include "hcache/hcache.h"
+#endif
 #ifdef USE_NOTMUCH
 #include "notmuch/mutt_notmuch.h"
 #endif

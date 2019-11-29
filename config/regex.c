@@ -33,6 +33,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "mutt/mutt.h"
+#include "regex2.h" // IWYU pragma: keep
 #include "set.h"
 #include "types.h"
 

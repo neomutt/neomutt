@@ -41,19 +41,22 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "address/lib.h"
-#include "config/lib.h"
 #include "email/lib.h"
 #include "conn/conn.h"
-#include "mutt.h"
+#include "smtp.h"
 #include "globals.h"
 #include "mutt_account.h"
 #include "mutt_socket.h"
-#include "options.h"
 #include "progress.h"
 #include "sendlib.h"
+#ifdef USE_SSL
+#include "config/lib.h"
+#include "mutt.h"
+#endif
 #ifdef USE_SASL
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
+#include "options.h"
 #endif
 
 /* These Config Variables are only used in smtp.c */

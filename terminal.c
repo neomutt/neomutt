@@ -30,6 +30,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/mutt.h"
+#include "terminal.h"
 #include "mutt_curses.h"
 #ifdef HAVE_NCURSESW_NCURSES_H
 #include <ncursesw/term.h> // IWYU pragma: keep

@@ -29,6 +29,7 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include "envlist.h"
 #include "memory.h"
 #include "string2.h"
 

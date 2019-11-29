@@ -36,6 +36,7 @@
 #include "globals.h"
 #include "muttlib.h"
 #include "options.h"
+#include "protos.h" // IWYU pragma: keep
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif

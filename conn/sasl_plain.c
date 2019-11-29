@@ -29,6 +29,7 @@
 #include "config.h"
 #include <stdio.h>
 #include "mutt/mutt.h"
+#include "sasl_plain.h"
 
 /**
  * mutt_sasl_plain_msg - Construct a base64 encoded SASL PLAIN message

@@ -31,6 +31,7 @@
 #include <limits.h>
 #include <stdint.h>
 #include "mutt/mutt.h"
+#include "long.h"
 #include "set.h"
 #include "types.h"
 

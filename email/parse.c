@@ -41,12 +41,14 @@
 #include "email_globals.h"
 #include "envelope.h"
 #include "from.h"
-#include "globals.h"
 #include "mime.h"
 #include "parameter.h"
 #include "rfc2047.h"
 #include "rfc2231.h"
 #include "url.h"
+#ifdef USE_AUTOCRYPT
+#include "globals.h"
+#endif
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/autocrypt.h"
 #endif

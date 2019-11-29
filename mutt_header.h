@@ -23,8 +23,6 @@
 #ifndef MUTT_MUTT_HEADER_H
 #define MUTT_MUTT_HEADER_H
 
-#include <stddef.h>
-
 struct Buffer;
 struct Email;
 struct EmailList;

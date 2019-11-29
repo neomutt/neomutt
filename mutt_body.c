@@ -32,6 +32,7 @@
 #include <string.h>
 #include "mutt/mutt.h"
 #include "email/lib.h"
+#include "mutt_body.h"
 #include "mutt_attach.h"
 #include "muttlib.h"
 #include "sendlib.h"

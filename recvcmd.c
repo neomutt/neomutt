@@ -36,6 +36,7 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "mutt.h"
+#include "recvcmd.h"
 #include "alias.h"
 #include "context.h"
 #include "copy.h"

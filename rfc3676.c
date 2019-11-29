@@ -36,6 +36,7 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "email/lib.h"
+#include "rfc3676.h"
 #include "curs_lib.h"
 #include "globals.h"
 #include "mutt_window.h"

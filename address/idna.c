@@ -27,11 +27,13 @@
  */
 
 #include "config.h"
-#include <stdbool.h>
 #include <stdio.h>
-#include <string.h>
 #include "mutt/mutt.h"
 #include "idna2.h"
+#ifdef HAVE_LIBIDN
+#include <stdbool.h>
+#include <string.h>
+#endif
 #ifdef HAVE_STRINGPREP_H
 #include <stringprep.h>
 #elif defined(HAVE_IDN_STRINGPREP_H)

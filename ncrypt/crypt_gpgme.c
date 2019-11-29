@@ -55,6 +55,7 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "mutt.h"
+#include "crypt_gpgme.h"
 #include "alias.h"
 #include "crypt.h"
 #include "curs_lib.h"

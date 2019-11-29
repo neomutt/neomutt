@@ -42,6 +42,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "mutt.h"
+#include "edit.h"
 #include "alias.h"
 #include "context.h"
 #include "curs_lib.h"

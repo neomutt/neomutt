@@ -34,6 +34,7 @@
 #include "globals.h"
 #include "mutt_attach.h"
 #include "mutt_curses.h"
+#include "protos.h" // IWYU pragma: keep
 #ifdef HAVE_LIBUNWIND
 #include "mutt.h"
 #endif

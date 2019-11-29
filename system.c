@@ -34,6 +34,7 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
+#include "protos.h" // IWYU pragma: keep
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif

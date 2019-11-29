@@ -42,7 +42,6 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "conn/conn.h"
-#include "mutt.h"
 #include "nntp.h"
 #include "bcache.h"
 #include "curs_lib.h"
@@ -57,11 +56,16 @@
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "progress.h"
-#include "protos.h"
 #include "sort.h"
+#ifdef USE_HCACHE
+#include "protos.h"
+#endif
 #ifdef USE_SASL
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
+#endif
+#if defined(USE_SSL) || defined(USE_HCACHE)
+#include "mutt.h"
 #endif
 
 /* These Config Variables are only used in nntp/nntp.c */
@@ -157,6 +161,7 @@ struct NntpAccountData *nntp_adata_new(struct Connection *conn)
   return adata;
 }
 
+#if 0
 /**
  * nntp_adata_get - Get the Account data for this mailbox
  * @retval ptr Private Account data
@@ -170,6 +175,7 @@ struct NntpAccountData *nntp_adata_get(struct Mailbox *m)
     return NULL;
   return a->adata;
 }
+#endif
 
 /**
  * nntp_mdata_free - Free NntpMboxData, used to destroy hash elements

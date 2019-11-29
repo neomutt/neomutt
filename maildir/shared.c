@@ -51,7 +51,7 @@
 #include "copy.h"
 #include "globals.h"
 #include "hcache/hcache.h"
-#include "maildir/lib.h"
+#include "maildir/lib.h" // IWYU pragma: keep
 #include "muttlib.h"
 #include "mx.h"
 #include "progress.h"

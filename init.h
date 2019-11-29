@@ -49,7 +49,6 @@
 #include "edit.h"
 #include "globals.h"
 #include "handler.h"
-#include "hcache/hcache.h"
 #include "hdrline.h"
 #include "hook.h"
 #include "imap/imap.h"
@@ -67,7 +66,6 @@
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "nntp/nntp.h"
-#include "notmuch/mutt_notmuch.h"
 #include "pager.h"
 #include "pattern.h"
 #include "pop/pop.h"
@@ -84,6 +82,12 @@
 #include "smtp.h"
 #include "sort.h"
 #include "status.h"
+#ifdef USE_NOTMUCH
+#include "notmuch/mutt_notmuch.h"
+#endif
+#ifdef USE_HCACHE
+#include "hcache/hcache.h"
+#endif
 #ifdef MIXMASTER
 #include "remailer.h"
 #endif
@@ -120,7 +124,9 @@ enum MuttSetCommand
 bool C_IgnoreLinearWhiteSpace = false;
 
 int charset_validator    (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
+#ifdef USE_HCACHE
 int hcache_validator     (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
+#endif
 int multipart_validator  (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
 int pager_validator      (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
 int reply_validator      (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);

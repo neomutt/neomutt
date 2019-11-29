@@ -43,6 +43,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "mutt.h"
+#include "commands.h"
 #include "alias.h"
 #include "context.h"
 #include "copy.h"

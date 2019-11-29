@@ -32,6 +32,7 @@
 #include "mutt/mutt.h"
 #include "config/lib.h"
 #include "mutt.h"
+#include "mutt_history.h"
 #include "curs_lib.h"
 #include "format_flags.h"
 #include "keymap.h"
