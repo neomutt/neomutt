@@ -168,8 +168,7 @@ void mh_update_sequences(struct Mailbox *m)
   char *buf = NULL;
   char *p = NULL;
   size_t s;
-  int l = 0;
-  int i;
+  int seq_num = 0;
 
   int unseen = 0;
   int flagged = 0;
@@ -198,7 +197,7 @@ void mh_update_sequences(struct Mailbox *m)
   FILE *fp_old = fopen(sequences, "r");
   if (fp_old)
   {
-    while ((buf = mutt_file_read_line(buf, &s, fp_old, &l, 0)))
+    while ((buf = mutt_file_read_line(buf, &s, fp_old, NULL, 0)))
     {
       if (mutt_str_startswith(buf, seq_unseen, CASE_MATCH) ||
           mutt_str_startswith(buf, seq_flagged, CASE_MATCH) ||
@@ -213,9 +212,9 @@ void mh_update_sequences(struct Mailbox *m)
   mutt_file_fclose(&fp_old);
 
   /* now, update our unseen, flagged, and replied sequences */
-  for (l = 0; l < m->msg_count; l++)
+  for (int i = 0; i < m->msg_count; i++)
   {
-    struct Email *e = m->emails[l];
+    struct Email *e = m->emails[i];
     if (!e)
       break;
 
@@ -228,22 +227,22 @@ void mh_update_sequences(struct Mailbox *m)
     else
       p = e->path;
 
-    if (mutt_str_atoi(p, &i) < 0)
+    if (mutt_str_atoi(p, &seq_num) < 0)
       continue;
 
     if (!e->read)
     {
-      mhs_set(&mhs, i, MH_SEQ_UNSEEN);
+      mhs_set(&mhs, seq_num, MH_SEQ_UNSEEN);
       unseen++;
     }
     if (e->flagged)
     {
-      mhs_set(&mhs, i, MH_SEQ_FLAGGED);
+      mhs_set(&mhs, seq_num, MH_SEQ_FLAGGED);
       flagged++;
     }
     if (e->replied)
     {
-      mhs_set(&mhs, i, MH_SEQ_REPLIED);
+      mhs_set(&mhs, seq_num, MH_SEQ_REPLIED);
       replied++;
     }
   }
@@ -768,7 +767,7 @@ static int mh_msg_commit(struct Mailbox *m, struct Message *msg)
 /**
  * mh_path_probe - Is this an mh Mailbox? - Implements MxOps::path_probe()
  */
-enum MailboxType mh_path_probe(const char *path, const struct stat *st)
+static enum MailboxType mh_path_probe(const char *path, const struct stat *st)
 {
   if (!path)
     return MUTT_UNKNOWN;

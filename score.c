@@ -57,7 +57,7 @@ struct Score
   char *str;
   struct PatternList *pat;
   int val;
-  bool exact; /**< if this rule matches, don't evaluate any more */
+  bool exact; ///< if this rule matches, don't evaluate any more
   struct Score *next;
 };
 

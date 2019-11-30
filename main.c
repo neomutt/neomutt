@@ -364,7 +364,7 @@ static void init_locale(void)
  *
  * Find the login name, real name, home directory and shell.
  */
-bool get_user_info(struct ConfigSet *cs)
+static bool get_user_info(struct ConfigSet *cs)
 {
   mutt_str_replace(&Username, mutt_str_getenv("USER"));
   mutt_str_replace(&HomeDir, mutt_str_getenv("HOME"));
@@ -437,8 +437,6 @@ int main(int argc, char *argv[], char *envp[])
   bool batch_mode = false;
   bool edit_infile = false;
   bool test_config = false;
-  extern char *optarg;
-  extern int optind;
   int double_dash = argc, nargc = 1;
   int rc = 1;
   bool repeat_error = false;
@@ -1244,13 +1242,9 @@ int main(int argc, char *argv[], char *envp[])
     if (!Context)
     {
       if (m->account)
-      {
         account_mailbox_remove(m->account, m);
-        mailbox_free(&m);
-        m = NULL;
-      }
-      else
-        mailbox_free(&m);
+
+      mailbox_free(&m);
     }
     if (Context || !explicit_folder)
     {

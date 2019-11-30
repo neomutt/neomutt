@@ -42,7 +42,7 @@
 #include "queue.h"
 #include "string2.h"
 
-const char *LevelAbbr = "PEWM12345N"; /**< Abbreviations of logging level names */
+const char *LevelAbbr = "PEWM12345N"; ///< Abbreviations of logging level names
 
 /**
  * MuttLogger - The log dispatcher
@@ -51,18 +51,18 @@ const char *LevelAbbr = "PEWM12345N"; /**< Abbreviations of logging level names 
  */
 log_dispatcher_t MuttLogger = log_disp_terminal;
 
-FILE *LogFileFP = NULL;      /**< Log file handle */
-char *LogFileName = NULL;    /**< Log file name */
-int LogFileLevel = 0;        /**< Log file level */
-char *LogFileVersion = NULL; /**< Program version */
+FILE *LogFileFP = NULL;      ///< Log file handle
+char *LogFileName = NULL;    ///< Log file name
+int LogFileLevel = 0;        ///< Log file level
+char *LogFileVersion = NULL; ///< Program version
 
 /**
  * LogQueue - In-memory list of log lines
  */
 static struct LogLineList LogQueue = STAILQ_HEAD_INITIALIZER(LogQueue);
 
-int LogQueueCount = 0; /**< Number of entries currently in the log queue */
-int LogQueueMax = 0;   /**< Maximum number of entries in the log queue */
+int LogQueueCount = 0; ///< Number of entries currently in the log queue
+int LogQueueMax = 0;   ///< Maximum number of entries in the log queue
 
 /**
  * timestamp - Create a YYYY-MM-DD HH:MM:SS timestamp
@@ -172,7 +172,7 @@ int log_file_set_filename(const char *file, bool verbose)
  *
  * The level should be: LL_MESSAGE <= level < LL_MAX.
  */
-int log_file_set_level(int level, bool verbose)
+int log_file_set_level(enum LogLevel level, bool verbose)
 {
   if ((level < LL_MESSAGE) || (level >= LL_MAX))
     return -1;
@@ -253,7 +253,7 @@ bool log_file_running(void)
  * If stamp is 0, then the current time will be used.
  */
 int log_disp_file(time_t stamp, const char *file, int line,
-                  const char *function, int level, ...)
+                  const char *function, enum LogLevel level, ...)
 {
   if (!LogFileFP || (level < LL_PERROR) || (level > LogFileLevel))
     return 0;
@@ -277,7 +277,7 @@ int log_disp_file(time_t stamp, const char *file, int line,
   {
     fprintf(LogFileFP, ": %s\n", strerror(err));
   }
-  else if (level <= 0)
+  else if (level <= LL_MESSAGE)
   {
     fputs("\n", LogFileFP);
     ret++;
@@ -387,7 +387,7 @@ int log_queue_save(FILE *fp)
   {
     mutt_date_localtime_format(buf, sizeof(buf), "%H:%M:%S", ll->time);
     fprintf(fp, "[%s]<%c> %s", buf, LevelAbbr[ll->level + 3], ll->message);
-    if (ll->level <= 0)
+    if (ll->level <= LL_MESSAGE)
       fputs("\n", fp);
     count++;
   }
@@ -407,7 +407,7 @@ int log_queue_save(FILE *fp)
  * @warning Log lines are limited to 1024 bytes.
  */
 int log_disp_queue(time_t stamp, const char *file, int line,
-                   const char *function, int level, ...)
+                   const char *function, enum LogLevel level, ...)
 {
   char buf[1024] = { 0 };
   int err = errno;
@@ -448,7 +448,7 @@ int log_disp_queue(time_t stamp, const char *file, int line,
  *       unless the output is redirected.
  */
 int log_disp_terminal(time_t stamp, const char *file, int line,
-                      const char *function, int level, ...)
+                      const char *function, enum LogLevel level, ...)
 {
   if ((level < LL_PERROR) || (level > LL_MESSAGE))
     return 0;
@@ -488,6 +488,7 @@ int log_disp_terminal(time_t stamp, const char *file, int line,
       case LL_DEBUG4:
       case LL_DEBUG5:
       case LL_NOTIFY:
+      default:
         break;
     }
   }
@@ -512,7 +513,7 @@ int log_disp_terminal(time_t stamp, const char *file, int line,
  * log_disp_null - Discard log lines - Implements ::log_dispatcher_t
  */
 int log_disp_null(time_t stamp, const char *file, int line,
-                  const char *function, int level, ...)
+                  const char *function, enum LogLevel level, ...)
 {
   return 0;
 }

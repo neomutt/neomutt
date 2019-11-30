@@ -29,22 +29,6 @@
 #include "queue.h"
 
 /**
- * typedef log_dispatcher_t - Prototype for a logging function
- * @param stamp    Unix time (optional)
- * @param file     Source file
- * @param line     Source line
- * @param function Source function
- * @param level    Logging level, e.g. #LL_WARNING
- * @param ...      Format string and parameters, like printf()
- * @retval -1 Error
- * @retval  0 Success, filtered
- * @retval >0 Success, number of characters written
- */
-typedef int (*log_dispatcher_t)(time_t stamp, const char *file, int line, const char *function, int level, ...);
-
-extern log_dispatcher_t MuttLogger;
-
-/**
  * enum LogLevel - Names for the Logging Levels
  */
 enum LogLevel
@@ -64,6 +48,22 @@ enum LogLevel
 };
 
 /**
+ * typedef log_dispatcher_t - Prototype for a logging function
+ * @param stamp    Unix time (optional)
+ * @param file     Source file
+ * @param line     Source line
+ * @param function Source function
+ * @param level    Logging level, e.g. #LL_WARNING
+ * @param ...      Format string and parameters, like printf()
+ * @retval -1 Error
+ * @retval  0 Success, filtered
+ * @retval >0 Success, number of characters written
+ */
+typedef int (*log_dispatcher_t)(time_t stamp, const char *file, int line, const char *function, enum LogLevel level, ...);
+
+extern log_dispatcher_t MuttLogger;
+
+/**
  * struct LogLine - A Log line
  */
 struct LogLine
@@ -72,7 +72,7 @@ struct LogLine
   const char *file;              ///< Source file
   int line;                      ///< Line number in source file
   const char *function;          ///< C function
-  int level;                     ///< Log level, e.g. #LL_DEBUG1
+  enum LogLevel level;           ///< Log level, e.g. #LL_DEBUG1
   char *message;                 ///< Message to be logged
   STAILQ_ENTRY(LogLine) entries; ///< Linked list
 };
@@ -84,10 +84,10 @@ STAILQ_HEAD(LogLineList, LogLine);
 #define mutt_error(...)        MuttLogger(0, __FILE__, __LINE__, __func__, LL_ERROR,   __VA_ARGS__)
 #define mutt_perror(...)       MuttLogger(0, __FILE__, __LINE__, __func__, LL_PERROR,  __VA_ARGS__)
 
-int  log_disp_file    (time_t stamp, const char *file, int line, const char *function, int level, ...);
-int  log_disp_null    (time_t stamp, const char *file, int line, const char *function, int level, ...);
-int  log_disp_queue   (time_t stamp, const char *file, int line, const char *function, int level, ...);
-int  log_disp_terminal(time_t stamp, const char *file, int line, const char *function, int level, ...);
+int  log_disp_file    (time_t stamp, const char *file, int line, const char *function, enum LogLevel level, ...);
+int  log_disp_null    (time_t stamp, const char *file, int line, const char *function, enum LogLevel level, ...);
+int  log_disp_queue   (time_t stamp, const char *file, int line, const char *function, enum LogLevel level, ...);
+int  log_disp_terminal(time_t stamp, const char *file, int line, const char *function, enum LogLevel level, ...);
 
 int  log_queue_add(struct LogLine *ll);
 void log_queue_empty(void);
@@ -99,7 +99,7 @@ void log_file_close(bool verbose);
 int  log_file_open(bool verbose);
 bool log_file_running(void);
 int  log_file_set_filename(const char *file, bool verbose);
-int  log_file_set_level(int level, bool verbose);
+int  log_file_set_level(enum LogLevel level, bool verbose);
 void log_file_set_version(const char *version);
 
 #endif /* MUTT_LIB_LOGGING_H */

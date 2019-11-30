@@ -314,7 +314,7 @@ int mutt_bcache_exists(struct BodyCache *bcache, const char *id)
  * so that this function can be used to count the items in the cache
  * (see below for return value).
  */
-int mutt_bcache_list(struct BodyCache *bcache, bcache_list_t *want_id, void *data)
+int mutt_bcache_list(struct BodyCache *bcache, bcache_list_t want_id, void *data)
 {
   DIR *d = NULL;
   struct dirent *de = NULL;

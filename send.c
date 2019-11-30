@@ -587,8 +587,8 @@ cleanup:
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_inline_forward(struct Mailbox *m, struct Email *e_edit,
-                        struct Email *e_cur, FILE *out)
+static int mutt_inline_forward(struct Mailbox *m, struct Email *e_edit,
+                               struct Email *e_cur, FILE *out)
 {
   int i, forwardq = -1;
   struct Body **last = NULL;

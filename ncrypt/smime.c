@@ -89,13 +89,13 @@ char *C_SmimeVerifyOpaqueCommand; ///< Config: (smime) External command to verif
  */
 struct SmimeCommandContext
 {
-  const char *key;           /**< %k */
-  const char *cryptalg;      /**< %a */
-  const char *digestalg;     /**< %d */
-  const char *fname;         /**< %f */
-  const char *sig_fname;     /**< %s */
-  const char *certificates;  /**< %c */
-  const char *intermediates; /**< %i */
+  const char *key;           ///< %k
+  const char *cryptalg;      ///< %a
+  const char *digestalg;     ///< %d
+  const char *fname;         ///< %f
+  const char *sig_fname;     ///< %s
+  const char *certificates;  ///< %c
+  const char *intermediates; ///< %i
 };
 
 char SmimePass[256];

@@ -71,11 +71,11 @@ char *C_PgpVerifyKeyCommand; ///< Config: (pgp) External command to verify key i
  */
 struct PgpCommandContext
 {
-  bool need_passphrase;  /**< %p */
-  const char *fname;     /**< %f */
-  const char *sig_fname; /**< %s */
-  const char *signas;    /**< %a */
-  const char *ids;       /**< %r */
+  bool need_passphrase;  ///< %p
+  const char *fname;     ///< %f
+  const char *sig_fname; ///< %s
+  const char *signas;    ///< %a
+  const char *ids;       ///< %r
 };
 
 /**

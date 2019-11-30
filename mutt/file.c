@@ -1043,7 +1043,6 @@ int mutt_file_chmod(const char *path, mode_t mode)
  * @param path Filename
  * @param mode the permissions to add
  * @retval num Same as chmod(2)
- * @see   mutt_file_chmod_add_stat()
  *
  * Adds the given permissions to the file. Permissions not mentioned in mode
  * will stay as they are. This function resembles the `chmod ugoa+rwxXst`
@@ -1053,6 +1052,8 @@ int mutt_file_chmod(const char *path, mode_t mode)
  *
  * will add write permissions to path but does not alter read and other
  * permissions.
+ *
+ * @sa mutt_file_chmod_add_stat()
  */
 int mutt_file_chmod_add(const char *path, mode_t mode)
 {
@@ -1065,7 +1066,6 @@ int mutt_file_chmod_add(const char *path, mode_t mode)
  * @param mode the permissions to add
  * @param st   struct stat for the file (optional)
  * @retval num Same as chmod(2)
- * @see   mutt_file_chmod_add()
  *
  * Same as mutt_file_chmod_add() but saves a system call to stat() if a
  * non-NULL stat structure is given. Useful if the stat structure of the file
@@ -1075,6 +1075,8 @@ int mutt_file_chmod_add(const char *path, mode_t mode)
  *     stat(path, &st);
  *     // ... do something else with st ...
  *     mutt_file_chmod_add_stat(path, S_IWUSR | S_IWGRP | S_IWOTH, st);
+ *
+ * @sa mutt_file_chmod_add()
  */
 int mutt_file_chmod_add_stat(const char *path, mode_t mode, struct stat *st)
 {
@@ -1097,7 +1099,6 @@ int mutt_file_chmod_add_stat(const char *path, mode_t mode, struct stat *st)
  * @param path Filename
  * @param mode the permissions to remove
  * @retval num Same as chmod(2)
- * @see   mutt_file_chmod_rm_stat()
  *
  * Removes the given permissions from the file. Permissions not mentioned in
  * mode will stay as they are. This function resembles the `chmod ugoa-rwxXst`
@@ -1107,6 +1108,8 @@ int mutt_file_chmod_add_stat(const char *path, mode_t mode, struct stat *st)
  *
  * will remove write permissions from path but does not alter read and other
  * permissions.
+ *
+ * @sa mutt_file_chmod_rm_stat()
  */
 int mutt_file_chmod_rm(const char *path, mode_t mode)
 {
@@ -1119,7 +1122,6 @@ int mutt_file_chmod_rm(const char *path, mode_t mode)
  * @param mode the permissions to remove
  * @param st   struct stat for the file (optional)
  * @retval num Same as chmod(2)
- * @see   mutt_file_chmod_rm()
  *
  * Same as mutt_file_chmod_rm() but saves a system call to stat() if a non-NULL
  * stat structure is given. Useful if the stat structure of the file was
@@ -1129,6 +1131,8 @@ int mutt_file_chmod_rm(const char *path, mode_t mode)
  *     stat(path, &st);
  *     // ... do something else with st ...
  *     mutt_file_chmod_rm_stat(path, S_IWUSR | S_IWGRP | S_IWOTH, st);
+ *
+ * @sa mutt_file_chmod_rm()
  */
 int mutt_file_chmod_rm_stat(const char *path, mode_t mode, struct stat *st)
 {

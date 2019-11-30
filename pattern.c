@@ -197,9 +197,9 @@ static struct RangeRegex range_regexes[] = {
 };
 // clang-format on
 
-static struct PatternList *SearchPattern = NULL; /**< current search pattern */
-static char LastSearch[256] = { 0 };      /**< last pattern searched for */
-static char LastSearchExpn[1024] = { 0 }; /**< expanded version of LastSearch */
+static struct PatternList *SearchPattern = NULL; ///< current search pattern
+static char LastSearch[256] = { 0 };             ///< last pattern searched for
+static char LastSearchExpn[1024] = { 0 }; ///< expanded version of LastSearch
 
 /**
  * typedef addr_predicate_t - Test an Address for some condition

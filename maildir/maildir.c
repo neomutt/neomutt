@@ -677,7 +677,7 @@ static int maildir_msg_save_hcache(struct Mailbox *m, struct Email *e)
 /**
  * maildir_path_probe - Is this a Maildir Mailbox? - Implements MxOps::path_probe()
  */
-enum MailboxType maildir_path_probe(const char *path, const struct stat *st)
+static enum MailboxType maildir_path_probe(const char *path, const struct stat *st)
 {
   if (!path)
     return MUTT_UNKNOWN;

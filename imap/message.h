@@ -41,8 +41,8 @@ struct ImapEmailData
 
   bool parsed : 1;
 
-  unsigned int uid; /**< 32-bit Message UID */
-  unsigned int msn; /**< Message Sequence Number */
+  unsigned int uid; ///< 32-bit Message UID
+  unsigned int msn; ///< Message Sequence Number
 
   char *flags_system;
   char *flags_remote;

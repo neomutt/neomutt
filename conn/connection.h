@@ -34,7 +34,7 @@
 struct Connection
 {
   struct ConnAccount account;
-  unsigned int ssf; /**< security strength factor, in bits */
+  unsigned int ssf; ///< security strength factor, in bits
 
   char inbuf[1024];
   int bufpos;

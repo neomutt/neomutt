@@ -35,8 +35,8 @@ extern char *C_Tmpdir;
 extern const char filename_safe_chars[];
 
 /* Flags for mutt_file_read_line() */
-#define MUTT_CONT (1 << 0) /**< \-continuation */
-#define MUTT_EOL  (1 << 1) /**< don't strip `\n` / `\r\n` */
+#define MUTT_CONT (1 << 0) ///< \-continuation
+#define MUTT_EOL  (1 << 1) ///< don't strip `\n` / `\r\n`
 
 #ifndef HAVE_STRUCT_TIMESPEC
 /**
@@ -66,9 +66,9 @@ enum MuttStatType
  */
 struct MuttFileIter
 {
-  char *line;   /**< the line data */
-  size_t size;  /**< allocated size of line data */
-  int line_num; /**< line number */
+  char *line;   ///< the line data
+  size_t size;  ///< allocated size of line data
+  int line_num; ///< line number
 };
 
 /**

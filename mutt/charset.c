@@ -238,7 +238,7 @@ const struct MimeNames PreferredMimeNames[] =
  * lookup_new - Create a new Lookup
  * @retval ptr New Lookup
  */
-struct Lookup *lookup_new(void)
+static struct Lookup *lookup_new(void)
 {
   return mutt_mem_calloc(1, sizeof(struct Lookup));
 }
@@ -247,7 +247,7 @@ struct Lookup *lookup_new(void)
  * lookup_free - Free a Lookup
  * @param ptr Lookup to free
  */
-void lookup_free(struct Lookup **ptr)
+static void lookup_free(struct Lookup **ptr)
 {
   if (!ptr || !*ptr)
     return;

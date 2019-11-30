@@ -144,7 +144,7 @@ static struct Mapping KeyNames[] = {
   { NULL, 0 },
 };
 
-int LastKey; /**< contains the last key the user pressed */
+int LastKey; ///< contains the last key the user pressed
 
 struct Keymap *Keymaps[MENU_MAX];
 

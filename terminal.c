@@ -39,7 +39,7 @@
 #include <term.h>
 #endif
 
-bool TsSupported; /**< Terminal Setting is supported */
+bool TsSupported; ///< Terminal Setting is supported
 
 /* de facto standard escapes for tsl/fsl */
 static const char *tsl = "\033]0;"; // Escape

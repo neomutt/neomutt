@@ -43,20 +43,20 @@ enum NotifyConfig
 };
 
 /* Config Set Results */
-#define CSR_SUCCESS       0 /**< Action completed successfully */
-#define CSR_ERR_CODE      1 /**< Problem with the code */
-#define CSR_ERR_UNKNOWN   2 /**< Unrecognised config item */
-#define CSR_ERR_INVALID   3 /**< Value hasn't been set */
+#define CSR_SUCCESS       0 ///< Action completed successfully
+#define CSR_ERR_CODE      1 ///< Problem with the code
+#define CSR_ERR_UNKNOWN   2 ///< Unrecognised config item
+#define CSR_ERR_INVALID   3 ///< Value hasn't been set
 
 /* Flags for CSR_SUCCESS */
-#define CSR_SUC_INHERITED (1 << 4) /**< Value is inherited */
-#define CSR_SUC_EMPTY     (1 << 5) /**< Value is empty/unset */
-#define CSR_SUC_WARNING   (1 << 6) /**< Notify the user of a warning */
-#define CSR_SUC_NO_CHANGE (1 << 7) /**< The value hasn't changed */
+#define CSR_SUC_INHERITED (1 << 4) ///< Value is inherited
+#define CSR_SUC_EMPTY     (1 << 5) ///< Value is empty/unset
+#define CSR_SUC_WARNING   (1 << 6) ///< Notify the user of a warning
+#define CSR_SUC_NO_CHANGE (1 << 7) ///< The value hasn't changed
 
 /* Flags for CSR_INVALID */
-#define CSR_INV_TYPE      (1 << 4) /**< Value is not valid for the type */
-#define CSR_INV_VALIDATOR (1 << 5) /**< Value was rejected by the validator */
+#define CSR_INV_TYPE      (1 << 4) ///< Value is not valid for the type
+#define CSR_INV_VALIDATOR (1 << 5) ///< Value was rejected by the validator
 
 #define CSR_RESULT_MASK 0x0F
 #define CSR_RESULT(x) ((x) & CSR_RESULT_MASK)
@@ -167,13 +167,13 @@ struct ConfigDef
  */
 struct ConfigSetType
 {
-  const char *name;          /**< Name of the type, e.g. "String" */
-  cst_string_set string_set; /**< Convert the variable to a string */
-  cst_string_get string_get; /**< Initialise a variable from a string */
-  cst_native_set native_set; /**< Set the variable using a C-native type */
-  cst_native_get native_get; /**< Get the variable's value as a C-native type */
-  cst_reset reset;           /**< Reset the variable to its initial, or parent, value */
-  cst_destroy destroy;       /**< Free the resources for a variable */
+  const char *name;          ///< Name of the type, e.g. "String"
+  cst_string_set string_set; ///< Convert the variable to a string
+  cst_string_get string_get; ///< Initialise a variable from a string
+  cst_native_set native_set; ///< Set the variable using a C-native type
+  cst_native_get native_get; ///< Get the variable's value as a C-native type
+  cst_reset reset;           ///< Reset the variable to its initial, or parent, value
+  cst_destroy destroy;       ///< Free the resources for a variable
 };
 
 /**

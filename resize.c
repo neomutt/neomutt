@@ -48,7 +48,7 @@
  * mutt_get_winsize - Use an ioctl to get the window size
  * @retval obj Window size
  */
-struct winsize mutt_get_winsize(void)
+static struct winsize mutt_get_winsize(void)
 {
   struct winsize w = { 0 };
   int fd = open("/dev/tty", O_RDONLY);

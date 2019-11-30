@@ -33,7 +33,7 @@
 #undef LIBNOTMUCH_CHECK_VERSION
 #endif
 
-/* @def The definition in <notmuch.h> is broken */
+/* The definition in <notmuch.h> is broken */
 #define LIBNOTMUCH_CHECK_VERSION(major, minor, micro)                             \
   (LIBNOTMUCH_MAJOR_VERSION > (major) ||                                          \
    (LIBNOTMUCH_MAJOR_VERSION == (major) && LIBNOTMUCH_MINOR_VERSION > (minor)) || \
@@ -48,8 +48,8 @@ extern const int NmUriProtocolLen;
 struct NmAccountData
 {
   notmuch_database_t *db;
-  bool longrun : 1;    /**< A long-lived action is in progress */
-  bool trans : 1;      /**< Atomic transaction in progress */
+  bool longrun : 1;    ///< A long-lived action is in progress
+  bool trans : 1;      ///< Atomic transaction in progress
 };
 
 /**
@@ -68,17 +68,17 @@ enum NmQueryType
  */
 struct NmMboxData
 {
-  struct Url *db_url;  /**< Parsed view url of the Notmuch database */
-  char *db_query;      /**< Previous query */
-  int db_limit;        /**< Maximum number of results to return */
-  enum NmQueryType query_type; /**< Messages or Threads */
+  struct Url *db_url;  ///< Parsed view url of the Notmuch database
+  char *db_query;      ///< Previous query
+  int db_limit;        ///< Maximum number of results to return
+  enum NmQueryType query_type; ///< Messages or Threads
 
-  struct Progress progress; /**< A progress bar */
+  struct Progress progress; ///< A progress bar
   int oldmsgcount;
-  int ignmsgcount; /**< Ignored messages */
+  int ignmsgcount; ///< Ignored messages
 
-  bool noprogress : 1;     /**< Don't show the progress bar */
-  bool progress_ready : 1; /**< A progress bar has been initialised */
+  bool noprogress : 1;     ///< Don't show the progress bar
+  bool progress_ready : 1; ///< A progress bar has been initialised
 };
 
 /**
@@ -86,21 +86,18 @@ struct NmMboxData
  */
 struct NmEmailData
 {
-  char *folder; /**< Location of the Email */
+  char *folder; ///< Location of the Email
   char *oldpath;
-  char *virtual_id;       /**< Unique Notmuch Id */
-  enum MailboxType magic; /**< Type of Mailbox the Email is in */
+  char *virtual_id;       ///< Unique Notmuch Id
+  enum MailboxType magic; ///< Type of Mailbox the Email is in
 };
 
-void                nm_db_debug_check (struct Mailbox *m);
 notmuch_database_t *nm_db_do_open     (const char *filename, bool writable, bool verbose);
 void                nm_db_free        (notmuch_database_t *db);
 const char *        nm_db_get_filename(struct Mailbox *m);
 int                 nm_db_get_mtime   (struct Mailbox *m, time_t *mtime);
 notmuch_database_t *nm_db_get         (struct Mailbox *m, bool writable);
 bool                nm_db_is_longrun  (struct Mailbox *m);
-void                nm_db_longrun_done(struct Mailbox *m);
-void                nm_db_longrun_init(struct Mailbox *m, bool writable);
 int                 nm_db_release     (struct Mailbox *m);
 int                 nm_db_trans_begin (struct Mailbox *m);
 int                 nm_db_trans_end   (struct Mailbox *m);

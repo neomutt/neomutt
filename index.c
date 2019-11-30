@@ -612,7 +612,7 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
  *
  * If a Mailbox is closed, then set a pointer to NULL.
  */
-int mailbox_index_observer(struct NotifyCallback *nc)
+static int mailbox_index_observer(struct NotifyCallback *nc)
 {
   if (!nc)
     return -1;

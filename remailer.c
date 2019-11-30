@@ -68,8 +68,8 @@ char *C_Mixmaster; ///< Config: (mixmaster) External command to route a mixmaste
  */
 struct Coord
 {
-  short r; /**< row */
-  short c; /**< column */
+  short r; ///< row
+  short c; ///< column
 };
 
 static const struct Mapping RemailerHelp[] = {

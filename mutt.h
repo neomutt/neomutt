@@ -131,7 +131,6 @@ enum QuadOption query_quadoption(enum QuadOption opt, const char *prompt);
 int mutt_label_complete(char *buf, size_t buflen, int numtabs);
 int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs);
 int mutt_var_value_complete(char *buf, size_t buflen, int pos);
-void myvar_set(const char *var, const char *val);
 bool mutt_nm_query_complete(char *buf, size_t buflen, int pos, int numtabs);
 bool mutt_nm_tag_complete(char *buf, size_t buflen, int numtabs);
 HookFlags mutt_get_hook_type(const char *name);

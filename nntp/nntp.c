@@ -136,7 +136,7 @@ static void nntp_adata_free(void **ptr)
 /**
  * nntp_hashelem_free - Free our hash table data - Implements ::hashelem_free_t
  */
-void nntp_hashelem_free(int type, void *obj, intptr_t data)
+static void nntp_hashelem_free(int type, void *obj, intptr_t data)
 {
   nntp_mdata_free(&obj);
 }
@@ -2372,7 +2372,7 @@ int nntp_compare_order(const void *a, const void *b)
 /**
  * nntp_ac_find - Find an Account that matches a Mailbox path - Implements MxOps::ac_find()
  */
-struct Account *nntp_ac_find(struct Account *a, const char *path)
+static struct Account *nntp_ac_find(struct Account *a, const char *path)
 {
 #if 0
   if (!a || (a->type != MUTT_NNTP) || !path)
@@ -2401,7 +2401,7 @@ struct Account *nntp_ac_find(struct Account *a, const char *path)
 /**
  * nntp_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
  */
-int nntp_ac_add(struct Account *a, struct Mailbox *m)
+static int nntp_ac_add(struct Account *a, struct Mailbox *m)
 {
   if (!a || !m || (m->magic != MUTT_NNTP))
     return -1;
@@ -2842,7 +2842,7 @@ enum MailboxType nntp_path_probe(const char *path, const struct stat *st)
 /**
  * nntp_path_canon - Canonicalise a Mailbox path - Implements MxOps::path_canon()
  */
-int nntp_path_canon(char *buf, size_t buflen)
+static int nntp_path_canon(char *buf, size_t buflen)
 {
   if (!buf)
     return -1;
@@ -2853,7 +2853,7 @@ int nntp_path_canon(char *buf, size_t buflen)
 /**
  * nntp_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty()
  */
-int nntp_path_pretty(char *buf, size_t buflen, const char *folder)
+static int nntp_path_pretty(char *buf, size_t buflen, const char *folder)
 {
   /* Succeed, but don't do anything, for now */
   return 0;
@@ -2862,7 +2862,7 @@ int nntp_path_pretty(char *buf, size_t buflen, const char *folder)
 /**
  * nntp_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent()
  */
-int nntp_path_parent(char *buf, size_t buflen)
+static int nntp_path_parent(char *buf, size_t buflen)
 {
   /* Succeed, but don't do anything, for now */
   return 0;

@@ -183,7 +183,7 @@ struct ImapAccountData
   ImapCapFlags capabilities;
   unsigned char seqid; /* tag sequence prefix */
   unsigned int seqno; ///< tag sequence number, e.g. '{seqid}0001'
-  time_t lastread; /**< last time we read a command for the server */
+  time_t lastread; ///< last time we read a command for the server
   char *buf;
   size_t blen;
 
@@ -212,13 +212,13 @@ struct ImapAccountData
  */
 struct ImapMboxData
 {
-  char *name;        /**< Mailbox name */
-  char *munge_name;  /**< Munged version of the mailbox name */
-  char *real_name;   /**< Original Mailbox name, e.g.: INBOX can be just \0 */
+  char *name;        ///< Mailbox name
+  char *munge_name;  ///< Munged version of the mailbox name
+  char *real_name;   ///< Original Mailbox name, e.g.: INBOX can be just \0
 
-  ImapOpenFlags reopen;        /**< Flags, e.g. #IMAP_REOPEN_ALLOW */
-  ImapOpenFlags check_status;  /**< Flags, e.g. #IMAP_NEWMAIL_PENDING */
-  unsigned int new_mail_count; /**< Set when EXISTS notifies of new mail */
+  ImapOpenFlags reopen;        ///< Flags, e.g. #IMAP_REOPEN_ALLOW
+  ImapOpenFlags check_status;  ///< Flags, e.g. #IMAP_NEWMAIL_PENDING
+  unsigned int new_mail_count; ///< Set when EXISTS notifies of new mail
 
   // IMAP STATUS information
   struct ListHead flags;
@@ -231,9 +231,9 @@ struct ImapMboxData
 
   // Cached data used only when the mailbox is opened
   struct Hash *uid_hash;
-  struct Email **msn_index;   /**< look up headers by (MSN-1) */
-  size_t msn_index_size;       /**< allocation size */
-  unsigned int max_msn;        /**< the largest MSN fetched so far */
+  struct Email **msn_index;   ///< look up headers by (MSN-1)
+  size_t msn_index_size;       ///< allocation size
+  unsigned int max_msn;        ///< the largest MSN fetched so far
   struct BodyCache *bcache;
 
   header_cache_t *hcache;

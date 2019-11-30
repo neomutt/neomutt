@@ -51,6 +51,7 @@
 #include "copy.h"
 #include "globals.h"
 #include "hcache/hcache.h"
+#include "maildir/lib.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "progress.h"
@@ -74,7 +75,7 @@ char *C_MhSeqUnseen;  ///< Config: MH sequence for unseen messages
  * maildir_mdata_free - Free data attached to the Mailbox
  * @param[out] ptr Maildir data
  */
-void maildir_mdata_free(void **ptr)
+static void maildir_mdata_free(void **ptr)
 {
   if (!ptr || !*ptr)
     return;
@@ -87,7 +88,7 @@ void maildir_mdata_free(void **ptr)
  * maildir_mdata_new - Create a new MaildirMboxData object
  * @retval ptr New MaildirMboxData struct
  */
-struct MaildirMboxData *maildir_mdata_new(void)
+static struct MaildirMboxData *maildir_mdata_new(void)
 {
   struct MaildirMboxData *mdata = mutt_mem_calloc(1, sizeof(struct MaildirMboxData));
   return mdata;

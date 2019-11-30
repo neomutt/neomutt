@@ -35,12 +35,12 @@ extern const struct Mapping SortMethods[];
 extern const struct Mapping SortSidebarMethods[];
 
 /* ... DT_SORT */
-#define DT_SORT_INDEX   0x000 /**< Sort id for #SortMethods */
-#define DT_SORT_ALIAS   0x040 /**< Sort id for #SortAliasMethods */
-#define DT_SORT_BROWSER 0x080 /**< Sort id for #SortBrowserMethods */
-#define DT_SORT_KEYS    0x100 /**< Sort id for #SortKeyMethods */
-#define DT_SORT_AUX     0x200 /**< Sort id for #SortAliasMethods */
-#define DT_SORT_SIDEBAR 0x400 /**< Sort id for #SortSidebarMethods */
+#define DT_SORT_INDEX   0x000 ///< Sort id for #SortMethods
+#define DT_SORT_ALIAS   0x040 ///< Sort id for #SortAliasMethods
+#define DT_SORT_BROWSER 0x080 ///< Sort id for #SortBrowserMethods
+#define DT_SORT_KEYS    0x100 ///< Sort id for #SortKeyMethods
+#define DT_SORT_AUX     0x200 ///< Sort id for #SortAliasMethods
+#define DT_SORT_SIDEBAR 0x400 ///< Sort id for #SortSidebarMethods
 
 /**
  * enum SortType - Methods for sorting
@@ -82,9 +82,9 @@ enum SortType
  * if we need more, so long as we don't collide with the constants above. (Or
  * we can just expand sort and sort_aux to uint32_t.)
  */
-#define SORT_MASK    ((1 << 8) - 1) /**< Mask for the sort id */
-#define SORT_REVERSE  (1 << 8)      /**< Reverse the order of the sort */
-#define SORT_LAST     (1 << 9)      /**< Sort thread by last-X, e.g. received date */
+#define SORT_MASK    ((1 << 8) - 1) ///< Mask for the sort id
+#define SORT_REVERSE  (1 << 8)      ///< Reverse the order of the sort
+#define SORT_LAST     (1 << 9)      ///< Sort thread by last-X, e.g. received date
 
 void sort_init(struct ConfigSet *cs);
 

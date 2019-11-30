@@ -36,12 +36,12 @@
 #include "mutt_menu.h"
 #include "options.h"
 
-struct MuttWindow *MuttHelpWindow = NULL;    /**< Help Window */
-struct MuttWindow *MuttIndexWindow = NULL;   /**< Index Window */
-struct MuttWindow *MuttStatusWindow = NULL;  /**< Status Window */
-struct MuttWindow *MuttMessageWindow = NULL; /**< Message Window */
+struct MuttWindow *MuttHelpWindow = NULL;    ///< Help Window
+struct MuttWindow *MuttIndexWindow = NULL;   ///< Index Window
+struct MuttWindow *MuttStatusWindow = NULL;  ///< Status Window
+struct MuttWindow *MuttMessageWindow = NULL; ///< Message Window
 #ifdef USE_SIDEBAR
-struct MuttWindow *MuttSidebarWindow = NULL; /**< Sidebar Window */
+struct MuttWindow *MuttSidebarWindow = NULL; ///< Sidebar Window
 #endif
 
 /**

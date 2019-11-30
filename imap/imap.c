@@ -947,9 +947,9 @@ void imap_close_connection(struct ImapAccountData *adata)
     mutt_socket_close(adata->conn);
     adata->state = IMAP_DISCONNECTED;
   }
-  adata->seqno = false;
-  adata->nextcmd = false;
-  adata->lastcmd = false;
+  adata->seqno = 0;
+  adata->nextcmd = 0;
+  adata->lastcmd = 0;
   adata->status = 0;
   memset(adata->cmds, 0, sizeof(struct ImapCommand) * adata->cmdslots);
 }
@@ -1296,7 +1296,7 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
 /**
  * imap_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats()
  */
-int imap_mbox_check_stats(struct Mailbox *m, int flags)
+static int imap_mbox_check_stats(struct Mailbox *m, int flags)
 {
   return imap_mailbox_status(m, true);
 }
@@ -1833,7 +1833,7 @@ int imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
 /**
  * imap_ac_find - Find an Account that matches a Mailbox path - Implements MxOps::ac_find()
  */
-struct Account *imap_ac_find(struct Account *a, const char *path)
+static struct Account *imap_ac_find(struct Account *a, const char *path)
 {
   if (!a || (a->magic != MUTT_IMAP) || !path)
     return NULL;
@@ -1856,7 +1856,7 @@ struct Account *imap_ac_find(struct Account *a, const char *path)
 /**
  * imap_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
  */
-int imap_ac_add(struct Account *a, struct Mailbox *m)
+static int imap_ac_add(struct Account *a, struct Mailbox *m)
 {
   if (!a || !m || (m->magic != MUTT_IMAP))
     return -1;
@@ -2505,7 +2505,7 @@ int imap_expand_path(struct Buffer *buf)
 /**
  * imap_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty()
  */
-int imap_path_pretty(char *buf, size_t buflen, const char *folder)
+static int imap_path_pretty(char *buf, size_t buflen, const char *folder)
 {
   if (!buf || !folder)
     return -1;
@@ -2517,7 +2517,7 @@ int imap_path_pretty(char *buf, size_t buflen, const char *folder)
 /**
  * imap_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent()
  */
-int imap_path_parent(char *buf, size_t buflen)
+static int imap_path_parent(char *buf, size_t buflen)
 {
   char tmp[PATH_MAX] = { 0 };
 

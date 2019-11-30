@@ -630,7 +630,7 @@ void mutt_clear_threads(struct Context *ctx)
  */
 static int compare_threads(const void *a, const void *b)
 {
-  static sort_t *sort_func = NULL;
+  static sort_t sort_func = NULL;
 
   if (a && b)
   {

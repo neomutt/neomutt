@@ -404,8 +404,8 @@ struct Address *mutt_addr_create(const char *personal, const char *mailbox)
 
 /**
  * mutt_addrlist_remove - Remove an Address from a list
- * @param[in, out] al AddressList
- * @param[in]  mailbox Email address to match
+ * @param[in,out] al      AddressList
+ * @param[in]     mailbox Email address to match
  * @retval  0 Success
  * @retval -1 Error, or email not found
  */

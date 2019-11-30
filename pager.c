@@ -144,7 +144,7 @@ struct Line
   struct TextSyntax *syntax;
   struct TextSyntax *search;
   struct QClass *quote;
-  unsigned int is_cont_hdr; /**< this line is a continuation of the previous header line */
+  unsigned int is_cont_hdr; ///< this line is a continuation of the previous header line
 };
 
 /**
@@ -176,7 +176,7 @@ struct PagerRedrawData
   PagerFlags flags;
   struct Pager *extra;
   int indexlen;
-  int indicator; /**< the indicator line of the PI */
+  int indicator; ///< the indicator line of the PI
   int oldtopline;
   int lines;
   int max_line;
@@ -194,7 +194,7 @@ struct PagerRedrawData
   struct MuttWindow *index_window;
   struct MuttWindow *pager_status_window;
   struct MuttWindow *pager_window;
-  struct Menu *menu; /**< the Pager Index (PI) */
+  struct Menu *menu; ///< the Pager Index (PI)
   regex_t search_re;
   bool search_compiled;
   PagerFlags search_flag;

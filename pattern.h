@@ -84,14 +84,14 @@ typedef uint8_t PatternExecFlags;         ///< Flags for mutt_pattern_exec(), e.
  */
 struct PatternCache
 {
-  int list_all;       /**< ^~l */
-  int list_one;       /**<  ~l */
-  int sub_all;        /**< ^~u */
-  int sub_one;        /**<  ~u */
-  int pers_recip_all; /**< ^~p */
-  int pers_recip_one; /**<  ~p */
-  int pers_from_all;  /**< ^~P */
-  int pers_from_one;  /**<  ~P */
+  int list_all;       ///< ^~l
+  int list_one;       ///<  ~l
+  int sub_all;        ///< ^~u
+  int sub_one;        ///<  ~u
+  int pers_recip_all; ///< ^~p
+  int pers_recip_one; ///<  ~p
+  int pers_from_all;  ///< ^~P
+  int pers_from_one;  ///<  ~P
 };
 
 /**

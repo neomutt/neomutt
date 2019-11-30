@@ -32,10 +32,10 @@
 #include <stdlib.h>
 #include "mutt/mutt.h"
 
-#define CHUNK_SIZE 1024 /**< Amount of data to read at once */
+#define CHUNK_SIZE 1024 ///< Amount of data to read at once
 
-static unsigned char *pbuf = NULL; /**< Cache PGP data packet */
-static size_t plen = 0;            /**< Length of cached packet */
+static unsigned char *pbuf = NULL; ///< Cache PGP data packet
+static size_t plen = 0;            ///< Length of cached packet
 
 /**
  * read_material - Read PGP data into a buffer

@@ -47,11 +47,11 @@ struct stat;
  */
 struct MboxAccountData
 {
-  FILE *fp;              /**< Mailbox file */
-  struct timespec atime; /**< File's last-access time */
+  FILE *fp;              ///< Mailbox file
+  struct timespec atime; ///< File's last-access time
 
-  bool locked : 1; /**< is the mailbox locked? */
-  bool append : 1; /**< mailbox is opened in append mode */
+  bool locked : 1; ///< is the mailbox locked?
+  bool append : 1; ///< mailbox is opened in append mode
 };
 
 extern struct MxOps MxMboxOps;
