@@ -767,7 +767,7 @@ static int mh_msg_commit(struct Mailbox *m, struct Message *msg)
 /**
  * mh_path_probe - Is this an mh Mailbox? - Implements MxOps::path_probe()
  */
-enum MailboxType mh_path_probe(const char *path, const struct stat *st)
+static enum MailboxType mh_path_probe(const char *path, const struct stat *st)
 {
   if (!path)
     return MUTT_UNKNOWN;

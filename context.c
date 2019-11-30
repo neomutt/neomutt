@@ -82,7 +82,7 @@ struct Context *ctx_new(void)
  * ctx_cleanup - Release memory and initialize a Context object
  * @param ctx Context to cleanup
  */
-void ctx_cleanup(struct Context *ctx)
+static void ctx_cleanup(struct Context *ctx)
 {
   FREE(&ctx->pattern);
   mutt_pattern_free(&ctx->limit_pattern);

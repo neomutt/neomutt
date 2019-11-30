@@ -2313,7 +2313,7 @@ static enum CommandResult parse_unalternates(struct Buffer *buf, struct Buffer *
  * @note We don't free minor because it is either a pointer into major,
  *       or a static string.
  */
-void mutt_attachmatch_free(struct AttachMatch **ptr)
+static void mutt_attachmatch_free(struct AttachMatch **ptr)
 {
   if (!ptr || !*ptr)
     return;

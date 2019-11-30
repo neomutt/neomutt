@@ -47,7 +47,7 @@ struct ConfigSetType RegisteredTypes[18] = {
  * Given an inherited HashElem, find the HashElem representing the original
  * Config Item.
  */
-struct HashElem *get_base(struct HashElem *he)
+static struct HashElem *get_base(struct HashElem *he)
 {
   if (!(he->type & DT_INHERITED))
     return he;

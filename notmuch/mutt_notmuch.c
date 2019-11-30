@@ -102,7 +102,7 @@ static header_cache_t *nm_hcache_open(struct Mailbox *m)
  * nm_hcache_close - Close the header cache
  * @param h Header cache handle
  */
-void nm_hcache_close(header_cache_t *h)
+static void nm_hcache_close(header_cache_t *h)
 {
 #ifdef USE_HCACHE
   mutt_hcache_close(h);
@@ -271,7 +271,7 @@ struct NmEmailData *nm_edata_new(void)
  * @retval ptr  Mailbox with default Notmuch settings
  * @retval NULL Error, it's impossible to create an NmMboxData
  */
-struct NmMboxData *nm_get_default_data(void)
+static struct NmMboxData *nm_get_default_data(void)
 {
   // path to DB + query + URI "decoration"
   char uri[PATH_MAX + 1024 + 32];
@@ -2126,7 +2126,7 @@ done:
 /**
  * nm_ac_find - Find an Account that matches a Mailbox path - Implements MxOps::ac_find()
  */
-struct Account *nm_ac_find(struct Account *a, const char *path)
+static struct Account *nm_ac_find(struct Account *a, const char *path)
 {
   if (!a || (a->magic != MUTT_NOTMUCH) || !path)
     return NULL;
@@ -2137,7 +2137,7 @@ struct Account *nm_ac_find(struct Account *a, const char *path)
 /**
  * nm_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
  */
-int nm_ac_add(struct Account *a, struct Mailbox *m)
+static int nm_ac_add(struct Account *a, struct Mailbox *m)
 {
   if (!a || !m || (m->magic != MUTT_NOTMUCH))
     return -1;
@@ -2557,7 +2557,7 @@ enum MailboxType nm_path_probe(const char *path, const struct stat *st)
 /**
  * nm_path_canon - Canonicalise a Mailbox path - Implements MxOps::path_canon()
  */
-int nm_path_canon(char *buf, size_t buflen)
+static int nm_path_canon(char *buf, size_t buflen)
 {
   if (!buf)
     return -1;
@@ -2568,7 +2568,7 @@ int nm_path_canon(char *buf, size_t buflen)
 /**
  * nm_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty()
  */
-int nm_path_pretty(char *buf, size_t buflen, const char *folder)
+static int nm_path_pretty(char *buf, size_t buflen, const char *folder)
 {
   /* Succeed, but don't do anything, for now */
   return 0;
@@ -2577,7 +2577,7 @@ int nm_path_pretty(char *buf, size_t buflen, const char *folder)
 /**
  * nm_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent()
  */
-int nm_path_parent(char *buf, size_t buflen)
+static int nm_path_parent(char *buf, size_t buflen)
 {
   /* Succeed, but don't do anything, for now */
   return 0;

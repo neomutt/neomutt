@@ -869,7 +869,7 @@ void mbox_reset_atime(struct Mailbox *m, struct stat *st)
 /**
  * mbox_ac_find - Find an Account that matches a Mailbox path - Implements MxOps::ac_find()
  */
-struct Account *mbox_ac_find(struct Account *a, const char *path)
+static struct Account *mbox_ac_find(struct Account *a, const char *path)
 {
   if (!a || (a->magic != MUTT_MBOX) || !path)
     return NULL;
@@ -887,7 +887,7 @@ struct Account *mbox_ac_find(struct Account *a, const char *path)
 /**
  * mbox_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
  */
-int mbox_ac_add(struct Account *a, struct Mailbox *m)
+static int mbox_ac_add(struct Account *a, struct Mailbox *m)
 {
   if (!a || !m || (m->magic != MUTT_MBOX))
     return -1;
@@ -1713,7 +1713,7 @@ enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
 /**
  * mbox_path_canon - Canonicalise a Mailbox path - Implements MxOps::path_canon()
  */
-int mbox_path_canon(char *buf, size_t buflen)
+static int mbox_path_canon(char *buf, size_t buflen)
 {
   if (!buf)
     return -1;
@@ -1725,7 +1725,7 @@ int mbox_path_canon(char *buf, size_t buflen)
 /**
  * mbox_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty()
  */
-int mbox_path_pretty(char *buf, size_t buflen, const char *folder)
+static int mbox_path_pretty(char *buf, size_t buflen, const char *folder)
 {
   if (!buf)
     return -1;
@@ -1742,7 +1742,7 @@ int mbox_path_pretty(char *buf, size_t buflen, const char *folder)
 /**
  * mbox_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent()
  */
-int mbox_path_parent(char *buf, size_t buflen)
+static int mbox_path_parent(char *buf, size_t buflen)
 {
   if (!buf)
     return -1;

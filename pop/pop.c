@@ -745,7 +745,7 @@ fail:
 /**
  * pop_ac_find - Find an Account that matches a Mailbox path - Implements MxOps::ac_find()
  */
-struct Account *pop_ac_find(struct Account *a, const char *path)
+static struct Account *pop_ac_find(struct Account *a, const char *path)
 {
   if (!a || (a->magic != MUTT_POP) || !path)
     return NULL;
@@ -770,7 +770,7 @@ struct Account *pop_ac_find(struct Account *a, const char *path)
 /**
  * pop_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
  */
-int pop_ac_add(struct Account *a, struct Mailbox *m)
+static int pop_ac_add(struct Account *a, struct Mailbox *m)
 {
   if (!a || !m || (m->magic != MUTT_POP))
     return -1;
@@ -1249,7 +1249,7 @@ enum MailboxType pop_path_probe(const char *path, const struct stat *st)
 /**
  * pop_path_canon - Canonicalise a Mailbox path - Implements MxOps::path_canon()
  */
-int pop_path_canon(char *buf, size_t buflen)
+static int pop_path_canon(char *buf, size_t buflen)
 {
   if (!buf)
     return -1;
@@ -1260,7 +1260,7 @@ int pop_path_canon(char *buf, size_t buflen)
 /**
  * pop_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty()
  */
-int pop_path_pretty(char *buf, size_t buflen, const char *folder)
+static int pop_path_pretty(char *buf, size_t buflen, const char *folder)
 {
   /* Succeed, but don't do anything, for now */
   return 0;
@@ -1269,7 +1269,7 @@ int pop_path_pretty(char *buf, size_t buflen, const char *folder)
 /**
  * pop_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent()
  */
-int pop_path_parent(char *buf, size_t buflen)
+static int pop_path_parent(char *buf, size_t buflen)
 {
   /* Succeed, but don't do anything, for now */
   return 0;

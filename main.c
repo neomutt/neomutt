@@ -364,7 +364,7 @@ static void init_locale(void)
  *
  * Find the login name, real name, home directory and shell.
  */
-bool get_user_info(struct ConfigSet *cs)
+static bool get_user_info(struct ConfigSet *cs)
 {
   mutt_str_replace(&Username, mutt_str_getenv("USER"));
   mutt_str_replace(&HomeDir, mutt_str_getenv("HOME"));

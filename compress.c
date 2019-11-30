@@ -397,7 +397,7 @@ int mutt_comp_valid_command(const char *cmd)
 /**
  * comp_ac_find - Find an Account that matches a Mailbox path - Implements MxOps::ac_find()
  */
-struct Account *comp_ac_find(struct Account *a, const char *path)
+static struct Account *comp_ac_find(struct Account *a, const char *path)
 {
   return NULL;
 }
@@ -405,7 +405,7 @@ struct Account *comp_ac_find(struct Account *a, const char *path)
 /**
  * comp_ac_add - Add a Mailbox to an Account - Implements MxOps::ac_add()
  */
-int comp_ac_add(struct Account *a, struct Mailbox *m)
+static int comp_ac_add(struct Account *a, struct Mailbox *m)
 {
   if (!a || !m || (m->magic != MUTT_COMPRESSED))
     return -1;
@@ -864,7 +864,7 @@ static int comp_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
 /**
  * comp_path_probe - Is this a compressed Mailbox? - Implements MxOps::path_probe()
  */
-enum MailboxType comp_path_probe(const char *path, const struct stat *st)
+static enum MailboxType comp_path_probe(const char *path, const struct stat *st)
 {
   if (!path)
     return MUTT_UNKNOWN;
@@ -881,7 +881,7 @@ enum MailboxType comp_path_probe(const char *path, const struct stat *st)
 /**
  * comp_path_canon - Canonicalise a Mailbox path - Implements MxOps::path_canon()
  */
-int comp_path_canon(char *buf, size_t buflen)
+static int comp_path_canon(char *buf, size_t buflen)
 {
   if (!buf)
     return -1;
@@ -893,7 +893,7 @@ int comp_path_canon(char *buf, size_t buflen)
 /**
  * comp_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty()
  */
-int comp_path_pretty(char *buf, size_t buflen, const char *folder)
+static int comp_path_pretty(char *buf, size_t buflen, const char *folder)
 {
   if (!buf)
     return -1;
@@ -910,7 +910,7 @@ int comp_path_pretty(char *buf, size_t buflen, const char *folder)
 /**
  * comp_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent()
  */
-int comp_path_parent(char *buf, size_t buflen)
+static int comp_path_parent(char *buf, size_t buflen)
 {
   if (!buf)
     return -1;

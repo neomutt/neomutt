@@ -3788,7 +3788,7 @@ static int crypt_compare_trust(const void *a, const void *b)
  *
  * Print the X.500 Distinguished Name part KEY from the array of parts DN to FP.
  */
-bool print_dn_part(FILE *fp, struct DnArray *dn, const char *key)
+static bool print_dn_part(FILE *fp, struct DnArray *dn, const char *key)
 {
   bool any = false;
 
