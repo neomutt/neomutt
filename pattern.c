@@ -400,15 +400,53 @@ static const char *get_offset(struct tm *tm, const char *s, int sign)
  * are optional and if the year is less than 70 it's assumed to be after 2000.
  *
  * Examples:
- * - "10"         = 23 of this month, this year
+ * - "10"         = 10 of this month, this year
  * - "10/12"      = 10 of December,   this year
  * - "10/12/04"   = 10 of December,   2004
  * - "10/12/2008" = 10 of December,   2008
+ * - "20081210"   = 10 of December,   2008
  */
 static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
 {
   char *p = NULL;
   struct tm tm = mutt_date_localtime(MUTT_DATE_NOW);
+  bool iso8601 = true;
+
+  for (int v = 0; v < 8; v++)
+  {
+    if (s[v] && s[v] >= '0' && s[v] <= '9')
+      continue;
+
+    iso8601 = false;
+    break;
+  }
+
+  if (iso8601)
+  {
+    int year = 0;
+    int month = 0;
+    int mday = 0;
+    sscanf(s, "%4d%2d%2d", &year, &month, &mday);
+
+    t->tm_year = year;
+    if (t->tm_year > 1900)
+      t->tm_year -= 1900;
+    t->tm_mon = month - 1;
+    t->tm_mday = mday;
+
+    if ((t->tm_mday < 1) || (t->tm_mday > 31))
+    {
+      snprintf(err->data, err->dsize, _("Invalid day of month: %s"), s);
+      return NULL;
+    }
+    if ((t->tm_mon < 0) || (t->tm_mon > 11))
+    {
+      snprintf(err->data, err->dsize, _("Invalid month: %s"), s);
+      return NULL;
+    }
+
+    return (s + 8);
+  }
 
   t->tm_mday = strtol(s, &p, 10);
   if ((t->tm_mday < 1) || (t->tm_mday > 31))
