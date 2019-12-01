@@ -11395,8 +11395,8 @@ smtp://user@host:587/
         If NeoMutt is compiled with IMAP, POP3 and/or SMTP support, it can also
         be compiled with support for SSL or TLS using either OpenSSL or GnuTLS
         (by running the <emphasis>configure</emphasis> script with the
-        <emphasis>--enable-ssl=...</emphasis> option for OpenSSL or
-        <emphasis>--enable-gnutls=...</emphasis> for GnuTLS). NeoMutt can then
+        <emphasis>--ssl=...</emphasis> option for OpenSSL or
+        <emphasis>--gnutls=...</emphasis> for GnuTLS). NeoMutt can then
         attempt to encrypt communication with remote servers if these protocols
         are suffixed with <quote>s</quote> for
         <quote>secure communication</quote>.
@@ -13064,7 +13064,7 @@ set smime_default_key = "SMIME-KEY"
         </variablelist>
         <para>
           This feature can be enabled by running <literal>configure</literal>
-          with the option <literal>--enable-fmemopen</literal>
+          with the option <literal>--fmemopen</literal>
         </para>
       </sect2>
 
@@ -16982,7 +16982,7 @@ bind index D purge-message
       <para>
         NeoMutt can be compiled with Autocrypt support by running
         <literal>configure</literal> with the
-        <literal>--enable-autocrypt</literal> flag.  Autocrypt provides
+        <literal>--autocrypt</literal> flag.  Autocrypt provides
         easy to use, passive protection against data collection.  Keys are
         distributed via an <literal>Autocrypt:</literal> header added to
         emails.  It does <emphasis>not</emphasis> protect against active
@@ -17005,7 +17005,7 @@ bind index D purge-message
         </para>
         <para>
           Account and peer information is stored in a sqlite3 database, and
-          so NeoMutt must be configured with the <literal>--with-sqlite3</literal>
+          so NeoMutt must be configured with the <literal>--with-sqlite</literal>
           flag when autocrypt is enabled.
         </para>
         <para>
