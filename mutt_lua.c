@@ -27,6 +27,13 @@
  * Integrated Lua scripting
  */
 
+#ifndef LUA_COMPAT_ALL
+#define LUA_COMPAT_ALL
+#endif
+#ifndef LUA_COMPAT_5_1
+#define LUA_COMPAT_5_1
+#endif
+
 #include "config.h"
 #include <lauxlib.h>
 #include <limits.h>
@@ -169,7 +176,14 @@ static int lua_mutt_set(lua_State *l)
     case DT_STRING:
     {
       const char *value = lua_tostring(l, -1);
-      int rv = cs_he_string_set(Config, he, value, &err);
+      size_t val_size = lua_strlen(l, -1);
+      struct Buffer value_buf = mutt_buffer_make(val_size);
+      mutt_buffer_strcpy_n(&value_buf, value, val_size);
+      if (IS_PATH(he))
+        mutt_buffer_expand_path(&value_buf);
+
+      int rv = cs_he_string_set(Config, he, value_buf.data, &err);
+      mutt_buffer_dealloc(&value_buf);
       if (CSR_RESULT(rv) != CSR_SUCCESS)
         rc = -1;
       break;
