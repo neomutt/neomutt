@@ -389,8 +389,13 @@ static char *rstrip_in_place(char *s)
 void print_version(FILE *fp)
 {
   struct utsname uts;
+  bool tty = stdout ? isatty(fileno(stdout)) : false;
+  const char *fmt = "%s\n";
 
-  fprintf(fp, "%s\n", mutt_make_version());
+  if (tty)
+    fmt = "\033[1;36m%s\033[0m\n"; // Escape, cyan
+
+  fprintf(fp, fmt, mutt_make_version());
   fprintf(fp, "%s\n", _(Notice));
 
   uname(&uts);
