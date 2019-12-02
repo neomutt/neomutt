@@ -914,7 +914,7 @@ static void compose_custom_redraw(struct Menu *menu)
                         NONULL(C_ComposeFormat));
     mutt_window_move(menu->statuswin, 0, 0);
     mutt_curses_set_color(MT_COLOR_STATUS);
-    mutt_paddstr(menu->statuswin->cols, buf);
+    mutt_draw_statusline(menu->statuswin->cols, buf, sizeof(buf));
     mutt_curses_set_color(MT_COLOR_NORMAL);
     menu->redraw &= ~REDRAW_STATUS;
   }
