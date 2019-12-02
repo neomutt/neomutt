@@ -4011,7 +4011,7 @@ unalias *
         Unlike other mailers, NeoMutt doesn't require aliases to be defined in
         a special file. The <command>alias</command> command can appear
         anywhere in a configuration file, as long as this file is
-        <link linkend="source"><command>source</command>d</link>. Consequently,
+        <link linkend="source"><command>sourced</command></link>. Consequently,
         you can have multiple alias files, or you can have all aliases defined
         in your <literal>.neomuttrc</literal>.
       </para>
