@@ -239,16 +239,6 @@ if {1} {
     define SENDMAIL /usr/sbin/sendmail
   }
 
-  # Version of the C compiler
-  set CC [get-define CC]
-  if {[catch {exec $CC -v} cc_version]} {
-    if {[catch {exec $CC --version} cc_version]} {
-      if {[catch {exec $CC -V} cc_version]} {
-        set cc_version "unknown compiler"
-      }
-    }
-  }
-
   # GCC-specifc CFLAGS
   if {![catch {exec [get-define CC] --version} res]} {
     if {[regexp -nocase gcc $res]} {
@@ -1081,7 +1071,6 @@ if {[get-define want-gss]} {
 ###############################################################################
 # Generate conststrings.c
 set conststrings "\
-  unsigned char cc_version\[\] = {[text2c $cc_version]};\n\
   unsigned char cc_cflags\[\] = {[text2c [get-define CFLAGS]]};\n\
   unsigned char configure_options\[\] = {[text2c $conf_options]};\n"
 if {[catch {set fd [open conststrings.c w]

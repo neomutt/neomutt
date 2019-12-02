@@ -43,6 +43,9 @@
 #ifdef CRYPT_BACKEND_GPGME
 #include "ncrypt/crypt_gpgme.h"
 #endif
+#ifdef HAVE_NOTMUCH
+#include <notmuch.h>
+#endif
 
 /* #include "muttlib.h" */
 const char *mutt_make_version(void);
@@ -51,7 +54,6 @@ const char *mutt_hcache_backend_list(void);
 
 const int SCREEN_WIDTH = 80;
 
-extern unsigned char cc_version[];
 extern unsigned char cc_cflags[];
 extern unsigned char configure_options[];
 
@@ -386,8 +388,13 @@ static char *rstrip_in_place(char *s)
 void print_version(FILE *fp)
 {
   struct utsname uts;
+  bool tty = stdout ? isatty(fileno(stdout)) : false;
+  const char *fmt = "%s\n";
 
-  fprintf(fp, "%s\n", mutt_make_version());
+  if (tty)
+    fmt = "\033[1;36m%s\033[0m\n"; // Escape, cyan
+
+  fprintf(fp, fmt, mutt_make_version());
   fprintf(fp, "%s\n", _(Notice));
 
   uname(&uts);
@@ -419,18 +426,19 @@ void print_version(FILE *fp)
   fprintf(fp, "\nGPGme: %s", mutt_gpgme_print_version());
 #endif
 
+#ifdef HAVE_NOTMUCH
+  fprintf(fp, "\nlibnotmuch: %d.%d.%d", LIBNOTMUCH_MAJOR_VERSION,
+          LIBNOTMUCH_MINOR_VERSION, LIBNOTMUCH_MICRO_VERSION);
+#endif
+
 #ifdef USE_HCACHE
   const char *backends = mutt_hcache_backend_list();
   fprintf(fp, "\nhcache backends: %s", backends);
   FREE(&backends);
 #endif
 
-  fputs("\n\nCompiler:\n", fp);
-  rstrip_in_place((char *) cc_version);
-  fprintf(fp, "%s\n", (char *) cc_version);
-
   rstrip_in_place((char *) configure_options);
-  fprintf(fp, "\nConfigure options: %s\n", (char *) configure_options);
+  fprintf(fp, "\n\nConfigure options: %s\n", (char *) configure_options);
 
   rstrip_in_place((char *) cc_cflags);
   fprintf(fp, "\nCompilation CFLAGS: %s\n", (char *) cc_cflags);
