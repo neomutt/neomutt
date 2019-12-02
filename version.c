@@ -54,7 +54,6 @@ const char *mutt_hcache_backend_list(void);
 
 const int SCREEN_WIDTH = 80;
 
-extern unsigned char cc_version[];
 extern unsigned char cc_cflags[];
 extern unsigned char configure_options[];
 
@@ -438,12 +437,8 @@ void print_version(FILE *fp)
   FREE(&backends);
 #endif
 
-  fputs("\n\nCompiler:\n", fp);
-  rstrip_in_place((char *) cc_version);
-  fprintf(fp, "%s\n", (char *) cc_version);
-
   rstrip_in_place((char *) configure_options);
-  fprintf(fp, "\nConfigure options: %s\n", (char *) configure_options);
+  fprintf(fp, "\n\nConfigure options: %s\n", (char *) configure_options);
 
   rstrip_in_place((char *) cc_cflags);
   fprintf(fp, "\nCompilation CFLAGS: %s\n", (char *) cc_cflags);
