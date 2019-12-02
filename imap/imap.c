@@ -2147,9 +2147,9 @@ static int imap_mbox_open(struct Mailbox *m)
     m->readonly = true;
   }
 
-  m->email_max = count;
-  m->emails = mutt_mem_calloc(count, sizeof(struct Email *));
-  m->v2r = mutt_mem_calloc(count, sizeof(int));
+  while (m->email_max < count)
+    mx_alloc_memory(m);
+
   m->msg_count = 0;
   m->msg_unread = 0;
   m->msg_flagged = 0;

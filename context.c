@@ -59,6 +59,7 @@ void ctx_free(struct Context **ptr)
   if (ctx->mailbox)
     notify_observer_remove(ctx->mailbox->notify, ctx_mailbox_observer, IP ctx);
 
+  mutt_hash_free(&ctx->thread_hash);
   notify_free(&ctx->notify);
 
   FREE(ptr);

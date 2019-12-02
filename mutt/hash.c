@@ -465,7 +465,7 @@ void mutt_hash_int_delete(struct Hash *table, unsigned int intkey, const void *d
 }
 
 /**
- * mutt_hash_free - free_hdata a hash table
+ * mutt_hash_free - Free a hash table
  * @param[out] ptr Hash Table to be freed
  */
 void mutt_hash_free(struct Hash **ptr)
