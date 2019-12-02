@@ -81,7 +81,7 @@ void test_mutt_str_remall_strcasestr(void)
     {
       struct RemallTest *t = &remall_tests[i];
       memset(buf, 0, sizeof(buf));
-      strncpy(buf, t->str, sizeof(buf));
+      mutt_str_strfcpy(buf, t->str, sizeof(buf));
       TEST_CASE(buf);
 
       mutt_str_remall_strcasestr(buf, remove);

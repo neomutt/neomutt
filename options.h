@@ -31,23 +31,23 @@
 WHERE bool OptAttachMsg;           ///< (pseudo) used by attach-message
 WHERE bool OptAutocryptGpgme;      ///< (pseudo) use Autocrypt context inside ncrypt/crypt_gpgme.c
 WHERE bool OptAuxSort;             ///< (pseudo) using auxiliary sort function
-WHERE bool OptDontHandlePgpKeys; ///< (pseudo) used to extract PGP keys
+WHERE bool OptDontHandlePgpKeys;   ///< (pseudo) used to extract PGP keys
 WHERE bool OptForceRefresh;        ///< (pseudo) refresh even during macros
-WHERE bool OptIgnoreMacroEvents;  ///< (pseudo) don't process macro/push/exec events while set
-WHERE bool OptKeepQuiet;           ///< (pseudo) shut up the message and refresh functions while we are executing an external program. 
+WHERE bool OptIgnoreMacroEvents;   ///< (pseudo) don't process macro/push/exec events while set
+WHERE bool OptKeepQuiet;           ///< (pseudo) shut up the message and refresh functions while we are executing an external program
 WHERE bool OptMenuCaller;          ///< (pseudo) tell menu to give caller a take
 WHERE bool OptMsgErr;              ///< (pseudo) used by mutt_error/mutt_message
 WHERE bool OptNeedRescore;         ///< (pseudo) set when the 'score' command is used
 WHERE bool OptNeedResort;          ///< (pseudo) used to force a re-sort
 #ifdef USE_NNTP
-WHERE bool OptNews;                 ///< (pseudo) used to change reader mode
+WHERE bool OptNews;                ///< (pseudo) used to change reader mode
 WHERE bool OptNewsSend;            ///< (pseudo) used to change behavior when posting
 #endif
 WHERE bool OptNoCurses;            ///< (pseudo) when sending in batch mode
-WHERE bool OptPgpCheckTrust;      ///< (pseudo) used by pgp_select_key ()
+WHERE bool OptPgpCheckTrust;       ///< (pseudo) used by pgp_select_key()
 WHERE bool OptRedrawTree;          ///< (pseudo) redraw the thread tree
 WHERE bool OptResortInit;          ///< (pseudo) used to force the next resort to be from scratch
-WHERE bool OptSearchInvalid;       ///< (pseudo) used to invalidate the search pat
+WHERE bool OptSearchInvalid;       ///< (pseudo) used to invalidate the search pattern
 WHERE bool OptSearchReverse;       ///< (pseudo) used by ci_search_command
 WHERE bool OptSortSubthreads;      ///< (pseudo) used when $sort_aux changes
 WHERE bool OptViewAttach;          ///< (pseudo) signals that we are viewing attachments

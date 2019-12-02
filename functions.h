@@ -102,7 +102,7 @@ const struct Binding OpGeneric[] = { /* map: generic */
  */
 const struct Binding OpMain[] = { /* map: index */
 #ifdef USE_AUTOCRYPT
-  { "autocrypt-acct-menu",        OP_AUTOCRYPT_ACCT_MENU,           "A" },
+  { "autocrypt-acct-menu",       OP_AUTOCRYPT_ACCT_MENU,            "A" },
 #endif
   { "bounce-message",            OP_BOUNCE_MESSAGE,                 "b" },
   { "break-thread",              OP_MAIN_BREAK_THREAD,              "#" },
