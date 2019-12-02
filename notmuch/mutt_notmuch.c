@@ -1980,8 +1980,8 @@ static int nm_mbox_check_stats(struct Mailbox *m, int flags)
 
   /* all emails */
   m->msg_count = count_query(db, db_query, limit);
-  m->email_max = MAX(m->email_max, m->msg_count);
-  mx_alloc_memory(m);
+  while (m->email_max < m->msg_count)
+    mx_alloc_memory(m);
 
   // holder variable for extending query to unread/flagged
   char *qstr = NULL;
