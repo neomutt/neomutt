@@ -566,6 +566,8 @@ enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *e, char **keyli
   struct Address *recip = NULL;
   bool all_encrypt = true, has_discourage = false;
   const char *matching_key = NULL;
+  struct AddressList recips = TAILQ_HEAD_INITIALIZER(recips);
+  struct Buffer *keylist_buf = NULL;
 
   if (!C_Autocrypt || mutt_autocrypt_init(false) || !e)
     return AUTOCRYPT_REC_OFF;
@@ -583,10 +585,8 @@ enum AutocryptRec mutt_autocrypt_ui_recommendation(struct Email *e, char **keyli
   if (!account->enabled)
     goto cleanup;
 
-  struct Buffer *keylist_buf = mutt_buffer_pool_get();
+  keylist_buf = mutt_buffer_pool_get();
   mutt_buffer_addstr(keylist_buf, account->keyid);
-
-  struct AddressList recips = TAILQ_HEAD_INITIALIZER(recips);
 
   mutt_addrlist_copy(&recips, &e->env->to, false);
   mutt_addrlist_copy(&recips, &e->env->cc, false);
