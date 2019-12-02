@@ -1181,7 +1181,7 @@ void mx_alloc_memory(struct Mailbox *m)
     m->emails = mutt_mem_calloc(m->email_max, sizeof(struct Email *));
     m->v2r = mutt_mem_calloc(m->email_max, sizeof(int));
   }
-  for (int i = m->msg_count; i < m->email_max; i++)
+  for (int i = m->email_max - 25; i < m->email_max; i++)
   {
     m->emails[i] = NULL;
     m->v2r[i] = -1;
