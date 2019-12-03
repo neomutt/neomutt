@@ -387,7 +387,8 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
     goto error;
   }
 
-  m->has_new = false;
+  if (!m->peekonly)
+    m->has_new = false;
   OptForceRefresh = false;
 
   return ctx;
@@ -588,7 +589,7 @@ int mx_mbox_close(struct Context **ptr)
 
   struct Mailbox *m = ctx->mailbox;
 
-  if (C_MailCheckRecent)
+  if (C_MailCheckRecent && !m->peekonly)
     m->has_new = false;
 
   if (m->readonly || m->dontwrite || m->append || m->peekonly)

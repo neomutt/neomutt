@@ -953,6 +953,7 @@ static int mbox_mbox_open(struct Mailbox *m)
     return -1;
   }
 
+  m->has_new = true;
   int rc;
   if (m->magic == MUTT_MBOX)
     rc = mbox_parse_mailbox(m);
@@ -960,6 +961,9 @@ static int mbox_mbox_open(struct Mailbox *m)
     rc = mmdf_parse_mailbox(m);
   else
     rc = -1;
+
+  if (!mbox_has_new(m))
+    m->has_new = false;
   clearerr(adata->fp); // Clear the EOF flag
   mutt_file_touch_atime(fileno(adata->fp));
 
@@ -1831,6 +1835,8 @@ static int mbox_mbox_check_stats(struct Mailbox *m, int flags)
     mx_mbox_close(&ctx);
     m->peekonly = old_peek;
   }
+  if (m->msg_new == 0)
+    m->has_new = false;
 
   return m->msg_new;
 }
