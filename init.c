@@ -311,8 +311,7 @@ static int execute_commands(struct ListHead *p)
     enum CommandResult rc2 = mutt_parse_rc_line(np->data, token, err);
     if (rc2 == MUTT_CMD_ERROR)
       mutt_error(_("Error in command line: %s"), mutt_b2s(err));
-
-    if ((rc2 == MUTT_CMD_ERROR) || (rc2 == MUTT_CMD_WARNING))
+    else if (rc2 == MUTT_CMD_WARNING)
       mutt_warning(_("Warning in command line: %s"), mutt_b2s(err));
 
     if ((rc2 == MUTT_CMD_ERROR) || (rc2 == MUTT_CMD_WARNING))
