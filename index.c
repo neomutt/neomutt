@@ -231,6 +231,7 @@ static bool check_acl(struct Context *ctx, AclFlags acl, const char *msg)
 
 /**
  * collapse_all - Collapse/uncollapse all threads
+ * @param ctx    Context
  * @param menu   current menu
  * @param toggle toggle collapsed state
  *
@@ -240,53 +241,53 @@ static bool check_acl(struct Context *ctx, AclFlags acl, const char *msg)
  * threads. In the second case, the @a toggle parameter is 0, actually turning
  * this function into a one-way collapse.
  */
-static void collapse_all(struct Menu *menu, int toggle)
+static void collapse_all(struct Context *ctx, struct Menu *menu, int toggle)
 {
+  if (!ctx || !ctx->mailbox || (ctx->mailbox->msg_count == 0) || !menu)
+    return;
+
   struct Email *e = NULL, *base = NULL;
   struct MuttThread *thread = NULL, *top = NULL;
   int final;
 
-  if (!Context || !Context->mailbox || (Context->mailbox->msg_count == 0))
-    return;
-
   /* Figure out what the current message would be after folding / unfolding,
    * so that we can restore the cursor in a sane way afterwards. */
   if (CUR_EMAIL->collapsed && toggle)
-    final = mutt_uncollapse_thread(Context, CUR_EMAIL);
+    final = mutt_uncollapse_thread(ctx, CUR_EMAIL);
   else if (CAN_COLLAPSE(CUR_EMAIL))
-    final = mutt_collapse_thread(Context, CUR_EMAIL);
+    final = mutt_collapse_thread(ctx, CUR_EMAIL);
   else
     final = CUR_EMAIL->vnum;
 
   if (final == -1)
     return;
 
-  base = Context->mailbox->emails[Context->mailbox->v2r[final]];
+  base = ctx->mailbox->emails[ctx->mailbox->v2r[final]];
 
   /* Iterate all threads, perform collapse/uncollapse as needed */
-  top = Context->tree;
-  Context->collapsed = toggle ? !Context->collapsed : true;
+  top = ctx->tree;
+  ctx->collapsed = toggle ? !ctx->collapsed : true;
   while ((thread = top))
   {
     while (!thread->message)
       thread = thread->child;
     e = thread->message;
 
-    if (e->collapsed != Context->collapsed)
+    if (e->collapsed != ctx->collapsed)
     {
       if (e->collapsed)
-        mutt_uncollapse_thread(Context, e);
+        mutt_uncollapse_thread(ctx, e);
       else if (CAN_COLLAPSE(e))
-        mutt_collapse_thread(Context, e);
+        mutt_collapse_thread(ctx, e);
     }
     top = top->next;
   }
 
   /* Restore the cursor */
-  mutt_set_vnum(Context);
-  for (int j = 0; j < Context->mailbox->vcount; j++)
+  mutt_set_vnum(ctx);
+  for (int j = 0; j < ctx->mailbox->vcount; j++)
   {
-    if (Context->mailbox->emails[Context->mailbox->v2r[j]]->index == base->index)
+    if (ctx->mailbox->emails[ctx->mailbox->v2r[j]]->index == base->index)
     {
       menu->current = j;
       break;
@@ -764,7 +765,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
   }
 
   if (((C_Sort & SORT_MASK) == SORT_THREADS) && C_CollapseAll)
-    collapse_all(menu, 0);
+    collapse_all(Context, menu, 0);
 
 #ifdef USE_SIDEBAR
   mutt_sb_set_open_mailbox(Context ? Context->mailbox : NULL);
@@ -1111,7 +1112,7 @@ int mutt_index_menu(void)
 
   if (((C_Sort & SORT_MASK) == SORT_THREADS) && C_CollapseAll)
   {
-    collapse_all(menu, 0);
+    collapse_all(Context, menu, 0);
     menu->redraw = REDRAW_FULL;
   }
 
@@ -1754,7 +1755,7 @@ int mutt_index_menu(void)
           if ((Context->mailbox->msg_count != 0) && ((C_Sort & SORT_MASK) == SORT_THREADS))
           {
             if (C_CollapseAll)
-              collapse_all(menu, 0);
+              collapse_all(Context, menu, 0);
             mutt_draw_tree(Context);
           }
           menu->redraw = REDRAW_FULL;
@@ -3065,7 +3066,7 @@ int mutt_index_menu(void)
           mutt_error(_("Threading is not enabled"));
           break;
         }
-        collapse_all(menu, 1);
+        collapse_all(Context, menu, 1);
         break;
 
         /* --------------------------------------------------------------------
