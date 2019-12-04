@@ -317,17 +317,18 @@ static int ci_next_undeleted(struct Context *ctx, int msgno)
 
 /**
  * ci_previous_undeleted - Find the previous undeleted email
+ * @param ctx   Context
  * @param msgno Message number to start at
  * @retval >=0 Message number of next undeleted email
  * @retval  -1 No more undeleted messages
  */
-static int ci_previous_undeleted(int msgno)
+static int ci_previous_undeleted(struct Context *ctx, int msgno)
 {
-  if (!Context || !Context->mailbox)
+  if (!ctx || !ctx->mailbox)
     return -1;
 
   for (int i = msgno - 1; i >= 0; i--)
-    if (!Context->mailbox->emails[Context->mailbox->v2r[i]]->deleted)
+    if (!ctx->mailbox->emails[ctx->mailbox->v2r[i]]->deleted)
       return i;
   return -1;
 }
@@ -1962,7 +1963,7 @@ int mutt_index_menu(void)
             if (CUR_EMAIL->deleted)
               newidx = ci_next_undeleted(Context, menu->current);
             if (newidx < 0)
-              newidx = ci_previous_undeleted(menu->current);
+              newidx = ci_previous_undeleted(Context, menu->current);
             if (newidx >= 0)
               e = Context->mailbox->emails[Context->mailbox->v2r[newidx]];
           }
@@ -2626,7 +2627,7 @@ int mutt_index_menu(void)
           mutt_message(_("You are on the first message"));
           break;
         }
-        menu->current = ci_previous_undeleted(menu->current);
+        menu->current = ci_previous_undeleted(Context, menu->current);
         if (menu->current == -1)
         {
           menu->current = menu->oldcurrent;
