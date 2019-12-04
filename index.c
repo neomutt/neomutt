@@ -299,17 +299,18 @@ static void collapse_all(struct Context *ctx, struct Menu *menu, int toggle)
 
 /**
  * ci_next_undeleted - Find the next undeleted email
+ * @param ctx   Context
  * @param msgno Message number to start at
  * @retval >=0 Message number of next undeleted email
  * @retval  -1 No more undeleted messages
  */
-static int ci_next_undeleted(int msgno)
+static int ci_next_undeleted(struct Context *ctx, int msgno)
 {
-  if (!Context || !Context->mailbox)
+  if (!ctx || !ctx->mailbox)
     return -1;
 
-  for (int i = msgno + 1; i < Context->mailbox->vcount; i++)
-    if (!Context->mailbox->emails[Context->mailbox->v2r[i]]->deleted)
+  for (int i = msgno + 1; i < ctx->mailbox->vcount; i++)
+    if (!ctx->mailbox->emails[ctx->mailbox->v2r[i]]->deleted)
       return i;
   return -1;
 }
@@ -1959,7 +1960,7 @@ int mutt_index_menu(void)
              * should be on. */
             int newidx = menu->current;
             if (CUR_EMAIL->deleted)
-              newidx = ci_next_undeleted(menu->current);
+              newidx = ci_next_undeleted(Context, menu->current);
             if (newidx < 0)
               newidx = ci_previous_undeleted(menu->current);
             if (newidx >= 0)
@@ -2193,7 +2194,7 @@ int mutt_index_menu(void)
           }
           if (C_Resolve)
           {
-            menu->current = ci_next_undeleted(menu->current);
+            menu->current = ci_next_undeleted(Context, menu->current);
             if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
@@ -2582,7 +2583,7 @@ int mutt_index_menu(void)
             mutt_message(_("You are on the last message"));
           break;
         }
-        menu->current = ci_next_undeleted(menu->current);
+        menu->current = ci_next_undeleted(Context, menu->current);
         if (menu->current == -1)
         {
           menu->current = menu->oldcurrent;
@@ -2688,7 +2689,7 @@ int mutt_index_menu(void)
             menu->redraw |= REDRAW_INDEX;
           else if (C_Resolve)
           {
-            menu->current = ci_next_undeleted(menu->current);
+            menu->current = ci_next_undeleted(Context, menu->current);
             if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
@@ -2848,7 +2849,7 @@ int mutt_index_menu(void)
           mutt_set_flag(m, CUR_EMAIL, MUTT_FLAG, !CUR_EMAIL->flagged);
           if (C_Resolve)
           {
-            menu->current = ci_next_undeleted(menu->current);
+            menu->current = ci_next_undeleted(Context, menu->current);
             if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
@@ -2899,7 +2900,7 @@ int mutt_index_menu(void)
 
           if (C_Resolve)
           {
-            menu->current = ci_next_undeleted(menu->current);
+            menu->current = ci_next_undeleted(Context, menu->current);
             if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
@@ -3009,7 +3010,7 @@ int mutt_index_menu(void)
             menu->redraw |= REDRAW_INDEX;
           else if (C_Resolve)
           {
-            menu->current = ci_next_undeleted(menu->current);
+            menu->current = ci_next_undeleted(Context, menu->current);
             if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
@@ -3125,7 +3126,7 @@ int mutt_index_menu(void)
         {
           if (C_Resolve)
           {
-            menu->current = ci_next_undeleted(menu->current);
+            menu->current = ci_next_undeleted(Context, menu->current);
             if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
@@ -3174,7 +3175,7 @@ int mutt_index_menu(void)
           mutt_thread_set_flag(CUR_EMAIL, MUTT_TAG, false, subthread);
         if (C_Resolve)
         {
-          menu->current = ci_next_undeleted(menu->current);
+          menu->current = ci_next_undeleted(Context, menu->current);
           if (menu->current == -1)
             menu->current = menu->oldcurrent;
         }
