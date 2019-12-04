@@ -335,23 +335,24 @@ static int ci_previous_undeleted(struct Context *ctx, int msgno)
 
 /**
  * ci_first_message - Get index of first new message
+ * @param ctx Context
  * @retval num Index of first new message
  *
  * Return the index of the first new message, or failing that, the first
  * unread message.
  */
-static int ci_first_message(void)
+static int ci_first_message(struct Context *ctx)
 {
-  if (!Context || !Context->mailbox || (Context->mailbox->msg_count == 0))
+  if (!ctx || !ctx->mailbox || (ctx->mailbox->msg_count == 0))
     return 0;
 
   int old = -1;
-  for (int i = 0; i < Context->mailbox->vcount; i++)
+  for (int i = 0; i < ctx->mailbox->vcount; i++)
   {
-    if (!Context->mailbox->emails[Context->mailbox->v2r[i]]->read &&
-        !Context->mailbox->emails[Context->mailbox->v2r[i]]->deleted)
+    if (!ctx->mailbox->emails[ctx->mailbox->v2r[i]]->read &&
+        !ctx->mailbox->emails[ctx->mailbox->v2r[i]]->deleted)
     {
-      if (!Context->mailbox->emails[Context->mailbox->v2r[i]]->old)
+      if (!ctx->mailbox->emails[ctx->mailbox->v2r[i]]->old)
         return i;
       if (old == -1)
         old = i;
@@ -370,7 +371,7 @@ static int ci_first_message(void)
   }
   else
   {
-    return Context->mailbox->vcount ? Context->mailbox->vcount - 1 : 0;
+    return ctx->mailbox->vcount ? ctx->mailbox->vcount - 1 : 0;
   }
 
   return 0;
@@ -437,7 +438,7 @@ static void resort_index(struct Menu *menu)
     menu->current = mutt_parent_message(Context, e, false);
 
   if (menu->current < 0)
-    menu->current = ci_first_message();
+    menu->current = ci_first_message(Context);
 
   menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 }
@@ -607,7 +608,7 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
   }
 
   if (menu->current < 0)
-    menu->current = ci_first_message();
+    menu->current = ci_first_message(Context);
 }
 
 /**
@@ -754,7 +755,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
   Context = mx_mbox_open(m, flags);
   if (Context)
   {
-    menu->current = ci_first_message();
+    menu->current = ci_first_message(Context);
 #ifdef USE_INOTIFY
     mutt_monitor_add(NULL);
 #endif
@@ -1091,7 +1092,7 @@ int mutt_index_menu(void)
   struct Menu *menu = mutt_menu_new(MENU_MAIN);
   menu->menu_make_entry = index_make_entry;
   menu->menu_color = index_color;
-  menu->current = ci_first_message();
+  menu->current = ci_first_message(Context);
   menu->help = mutt_compile_help(
       helpstr, sizeof(helpstr), MENU_MAIN,
 #ifdef USE_NNTP
@@ -1992,7 +1993,7 @@ int mutt_index_menu(void)
           if ((menu->current < 0) || (Context && Context->mailbox &&
                                       (menu->current >= Context->mailbox->vcount)))
           {
-            menu->current = ci_first_message();
+            menu->current = ci_first_message(Context);
           }
         }
 
