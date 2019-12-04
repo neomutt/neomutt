@@ -412,22 +412,23 @@ static int mx_toggle_write(struct Mailbox *m)
 
 /**
  * resort_index - Resort the index
+ * @param ctx  Context
  * @param menu Current Menu
  */
-static void resort_index(struct Menu *menu)
+static void resort_index(struct Context *ctx, struct Menu *menu)
 {
-  if (!Context || !Context->mailbox)
+  if (!ctx || !ctx->mailbox)
     return;
 
   struct Email *e = CUR_EMAIL;
 
   menu->current = -1;
-  mutt_sort_headers(Context, false);
+  mutt_sort_headers(ctx, false);
   /* Restore the current message */
 
-  for (int i = 0; i < Context->mailbox->vcount; i++)
+  for (int i = 0; i < ctx->mailbox->vcount; i++)
   {
-    if (Context->mailbox->emails[Context->mailbox->v2r[i]] == e)
+    if (ctx->mailbox->emails[ctx->mailbox->v2r[i]] == e)
     {
       menu->current = i;
       break;
@@ -435,10 +436,10 @@ static void resort_index(struct Menu *menu)
   }
 
   if (((C_Sort & SORT_MASK) == SORT_THREADS) && (menu->current < 0))
-    menu->current = mutt_parent_message(Context, e, false);
+    menu->current = mutt_parent_message(ctx, e, false);
 
   if (menu->current < 0)
-    menu->current = ci_first_message(Context);
+    menu->current = ci_first_message(ctx);
 
   menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 }
@@ -1131,7 +1132,7 @@ int mutt_index_menu(void)
      * from any new menu launched, and change $sort/$sort_aux */
     if (OptNeedResort && Context && Context->mailbox &&
         (Context->mailbox->msg_count != 0) && (menu->current >= 0))
-      resort_index(menu);
+      resort_index(Context, menu);
 
     menu->max = (Context && Context->mailbox) ? Context->mailbox->vcount : 0;
     oldcount = (Context && Context->mailbox) ? Context->mailbox->msg_count : 0;
@@ -1821,7 +1822,7 @@ int mutt_index_menu(void)
         {
           if (Context && Context->mailbox && (Context->mailbox->msg_count != 0))
           {
-            resort_index(menu);
+            resort_index(Context, menu);
             OptSearchInvalid = true;
           }
           if (in_pager)
