@@ -1097,7 +1097,6 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 {
   char helpstr[1024]; // This isn't copied by the help bar
   char buf[PATH_MAX];
-  int op_close = OP_NULL;
   int rc = -1;
   bool loop = true;
   bool fcc_set = false; /* has the user edited the Fcc: field ? */
@@ -1620,6 +1619,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
 #endif
 
         if (Context)
+        {
 #ifdef USE_NNTP
           if ((op == OP_COMPOSE_ATTACH_MESSAGE) ^ (Context->mailbox->magic == MUTT_NNTP))
 #endif
@@ -1627,6 +1627,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
             mutt_buffer_strcpy(&fname, mailbox_path(Context->mailbox));
             mutt_buffer_pretty_mailbox(&fname);
           }
+        }
 
         if ((mutt_buffer_enter_fname(prompt, &fname, true) == -1) ||
             mutt_buffer_is_empty(&fname))
@@ -1659,11 +1660,13 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         menu->redraw = REDRAW_FULL;
 
         struct Mailbox *m = mx_path_resolve(mutt_b2s(&fname));
+        bool old_readonly = m->readonly;
         struct Context *ctx = mx_mbox_open(m, MUTT_READONLY);
         if (!ctx)
         {
           mutt_error(_("Unable to open mailbox %s"), mutt_b2s(&fname));
-          mailbox_free(&m);
+          mx_fastclose_mailbox(m);
+          m = NULL;
           break;
         }
 
@@ -1681,7 +1684,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         Context = ctx;
         OptAttachMsg = true;
         mutt_message(_("Tag the messages you want to attach"));
-        op_close = mutt_index_menu();
+        mutt_index_menu();
         OptAttachMsg = false;
 
         if (!Context)
@@ -1715,13 +1718,9 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur, 
         }
         menu->redraw |= REDRAW_FULL;
 
-        if (op_close == OP_QUIT)
-          mx_mbox_close(&Context);
-        else
-        {
-          mx_fastclose_mailbox(Context->mailbox);
-          ctx_free(&Context);
-        }
+        Context->mailbox->readonly = old_readonly;
+        mx_fastclose_mailbox(Context->mailbox);
+        ctx_free(&Context);
 
         /* go back to the folder we started from */
         Context = ctx_cur;
