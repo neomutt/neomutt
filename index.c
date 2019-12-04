@@ -158,6 +158,21 @@ typedef uint8_t CheckFlags;       ///< Flags, e.g. #CHECK_IN_MAILBOX
 // clang-format on
 
 /**
+ * get_cur_email - Get the currently-selected Email
+ * @param ctx  Context
+ * @param menu Menu
+ * @retval ptr  Email
+ * @retval NULL No Email selected, or bad index values
+ */
+static struct Email *get_cur_email(struct Context *ctx, struct Menu *menu)
+{
+  if (!ctx || !ctx->mailbox || !menu)
+    return NULL;
+
+  return mutt_get_virt_email(ctx->mailbox, menu->current);
+}
+
+/**
  * prereq - Check the pre-requisites for a function
  * @param ctx    Mailbox
  * @param menu   Current Menu

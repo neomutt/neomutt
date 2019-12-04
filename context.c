@@ -401,3 +401,28 @@ int el_add_tagged(struct EmailList *el, struct Context *ctx, struct Email *e, bo
 
   return count;
 }
+
+/**
+ * mutt_get_virt_email - Get a virtual Email
+ * @param m    Mailbox
+ * @param vnum Virtual index number
+ * @retval ptr  Email
+ * @retval NULL No Email selected, or bad index values
+ *
+ * This safely gets the result of the following:
+ * - `mailbox->emails[mailbox->v2r[vnum]]`
+ */
+struct Email *mutt_get_virt_email(struct Mailbox *m, int vnum)
+{
+  if (!m || !m->emails || !m->v2r)
+    return NULL;
+
+  if ((vnum < 0) || (vnum >= m->vcount))
+    return NULL;
+
+  int inum = m->v2r[vnum];
+  if ((inum < 0) || (inum >= m->msg_count))
+    return NULL;
+
+  return m->emails[inum];
+}

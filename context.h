@@ -76,6 +76,7 @@ void            ctx_update_tables   (struct Context *ctx, bool committing);
 
 bool message_is_tagged (struct Context *ctx, struct Email *e);
 bool message_is_visible(struct Context *ctx, struct Email *e);
+struct Email *mutt_get_virt_email(struct Mailbox *m, int vnum);
 
 int  el_add_tagged  (struct EmailList *el, struct Context *ctx, struct Email *e, bool use_tagged);
 
