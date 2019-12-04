@@ -304,12 +304,6 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
     m->readonly = true;
   m->peekonly = (flags & MUTT_PEEK);
 
-  if (m->opened > 0)
-  {
-    m->opened++;
-    return ctx;
-  }
-
   if (flags & (MUTT_APPEND | MUTT_NEWFOLDER))
   {
     if (mx_open_mailbox_append(ctx->mailbox, flags) != 0)
@@ -318,13 +312,17 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
     }
     return ctx;
   }
-  else
+
+  if (m->opened > 0)
   {
-    m->size = 0;
-    m->msg_unread = 0;
-    m->msg_flagged = 0;
-    m->rights = MUTT_ACL_ALL;
+    m->opened++;
+    return ctx;
   }
+
+  m->size = 0;
+  m->msg_unread = 0;
+  m->msg_flagged = 0;
+  m->rights = MUTT_ACL_ALL;
 
   if (m->magic == MUTT_UNKNOWN)
   {
