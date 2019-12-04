@@ -304,6 +304,12 @@ struct Context *mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
     m->readonly = true;
   m->peekonly = (flags & MUTT_PEEK);
 
+  if (m->opened > 0)
+  {
+    m->opened++;
+    return ctx;
+  }
+
   if (flags & (MUTT_APPEND | MUTT_NEWFOLDER))
   {
     if (mx_open_mailbox_append(ctx->mailbox, flags) != 0)
