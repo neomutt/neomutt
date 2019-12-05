@@ -590,23 +590,22 @@ cleanup:
 static int mutt_inline_forward(struct Mailbox *m, struct Email *e_edit,
                                struct Email *e_cur, FILE *out)
 {
-  int i, forwardq = -1;
+  int forwardq = -1;
   struct Body **last = NULL;
 
   if (e_cur)
     include_forward(m, e_cur, out);
   else
-    for (i = 0; i < m->vcount; i++)
+  {
+    for (int i = 0; i < m->vcount; i++)
     {
-      int v = m->v2r[i];
-      if ((v < 0) || (v >= m->msg_count))
-        continue;
-      struct Email *e = m->emails[v];
+      struct Email *e = mutt_get_virt_email(m, i);
       if (!e)
-        break;
+        continue;
       if (e->tagged)
         include_forward(m, e, out);
     }
+  }
 
   if (C_ForwardDecode && (C_ForwardAttachments != MUTT_NO))
   {
@@ -621,14 +620,11 @@ static int mutt_inline_forward(struct Mailbox *m, struct Email *e_edit,
     }
     else
     {
-      for (i = 0; i < m->vcount; i++)
+      for (int i = 0; i < m->vcount; i++)
       {
-        int v = m->v2r[i];
-        if ((v < 0) || (v >= m->msg_count))
-          continue;
-        struct Email *e = m->emails[v];
+        struct Email *e = mutt_get_virt_email(m, i);
         if (!e)
-          break;
+          continue;
         if (e->tagged)
         {
           if (inline_forward_attachments(m, e, &last, &forwardq) != 0)

@@ -2421,9 +2421,8 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
              * rd.menu->current might be invalid */
             rd.menu->current =
                 MIN(rd.menu->current, MAX(Context->mailbox->msg_count - 1, 0));
-            index_hint = Context->mailbox
-                             ->emails[Context->mailbox->v2r[rd.menu->current]]
-                             ->index;
+            struct Email *e = mutt_get_virt_email(Context->mailbox, rd.menu->current);
+            index_hint = e->index;
 
             bool q = Context->mailbox->quiet;
             Context->mailbox->quiet = true;
@@ -2436,11 +2435,10 @@ int mutt_pager(const char *banner, const char *fname, PagerFlags flags, struct P
              * been deleted.  Make the pointer safe, then leave the pager.
              * This have a unpleasant behaviour to close the pager even the
              * deleted message is not the opened one, but at least it's safe. */
-            if (extra->email !=
-                Context->mailbox->emails[Context->mailbox->v2r[rd.menu->current]])
+            e = mutt_get_virt_email(Context->mailbox, rd.menu->current);
+            if (extra->email != e)
             {
-              extra->email =
-                  Context->mailbox->emails[Context->mailbox->v2r[rd.menu->current]];
+              extra->email = e;
               break;
             }
           }

@@ -92,8 +92,6 @@ bool C_ThoroughSearch; ///< Config: Decode headers and messages before searching
 #define KILO 1024
 #define MEGA 1048576
 #define EMSG(e) (((e)->msgno) + 1)
-#define CTX_MSGNO(ctx)                                                         \
-  (EMSG((ctx)->mailbox->emails[(ctx)->mailbox->v2r[(ctx)->menu->current]]))
 
 #define MUTT_MAXRANGE -1
 
@@ -864,7 +862,10 @@ static int scan_range_num(struct Buffer *s, regmatch_t pmatch[], int group, int 
   switch (kind)
   {
     case RANGE_K_REL:
-      return num + CTX_MSGNO(Context);
+    {
+      struct Email *e = mutt_get_virt_email(Context->mailbox, Context->menu->current);
+      return num + EMSG(e);
+    }
     case RANGE_K_LT:
       return num - 1;
     case RANGE_K_GT:
@@ -902,7 +903,10 @@ static int scan_range_slot(struct Buffer *s, regmatch_t pmatch[], int grp, int s
     case RANGE_DOLLAR:
       return Context->mailbox->msg_count;
     case RANGE_DOT:
-      return CTX_MSGNO(Context);
+    {
+      struct Email *e = mutt_get_virt_email(Context->mailbox, Context->menu->current);
+      return EMSG(e);
+    }
     case RANGE_LT:
     case RANGE_GT:
       return scan_range_num(s, pmatch, grp + 1, kind);
@@ -971,7 +975,8 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
       mutt_buffer_strcpy(err, _("No current message"));
       return RANGE_E_CTX;
     }
-    pat->max = CTX_MSGNO(Context);
+    struct Email *e = mutt_get_virt_email(Context->mailbox, Context->menu->current);
+    pat->max = EMSG(e);
     pat->min = pat->max;
   }
 
@@ -2497,12 +2502,9 @@ int mutt_pattern_func(int op, char *prompt)
   {
     for (int i = 0; i < m->vcount; i++)
     {
-      int v = m->v2r[i];
-      if ((v < 0) || (v >= m->msg_count))
-        continue;
-      struct Email *e = m->emails[v];
+      struct Email *e = mutt_get_virt_email(Context->mailbox, i);
       if (!e)
-        break;
+        continue;
       mutt_progress_update(&progress, i, -1);
       if (mutt_pattern_exec(SLIST_FIRST(pat), MUTT_MATCH_FULL_ADDRESS, m, e, NULL))
       {
@@ -2666,7 +2668,7 @@ int mutt_search_command(int cur, int op)
       }
     }
 
-    struct Email *e = Context->mailbox->emails[Context->mailbox->v2r[i]];
+    struct Email *e = mutt_get_virt_email(Context->mailbox, i);
     if (e->searched)
     {
       /* if we've already evaluated this message, use the cached value */
