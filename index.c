@@ -261,27 +261,33 @@ static void collapse_all(struct Context *ctx, struct Menu *menu, int toggle)
   if (!ctx || !ctx->mailbox || (ctx->mailbox->msg_count == 0) || !menu)
     return;
 
-  struct Email *e = NULL, *base = NULL;
+  struct Email *e_cur = get_cur_email(ctx, menu);
+  if (!e_cur)
+    return;
+
   struct MuttThread *thread = NULL, *top = NULL;
   int final;
 
   /* Figure out what the current message would be after folding / unfolding,
    * so that we can restore the cursor in a sane way afterwards. */
-  if (CUR_EMAIL->collapsed && toggle)
-    final = mutt_uncollapse_thread(ctx, CUR_EMAIL);
-  else if (CAN_COLLAPSE(CUR_EMAIL))
-    final = mutt_collapse_thread(ctx, CUR_EMAIL);
+  if (e_cur->collapsed && toggle)
+    final = mutt_uncollapse_thread(ctx, e_cur);
+  else if (CAN_COLLAPSE(e_cur))
+    final = mutt_collapse_thread(ctx, e_cur);
   else
-    final = CUR_EMAIL->vnum;
+    final = e_cur->vnum;
 
   if (final == -1)
     return;
 
-  base = ctx->mailbox->emails[ctx->mailbox->v2r[final]];
+  struct Email *base = mutt_get_virt_email(ctx->mailbox, final);
+  if (!base)
+    return;
 
   /* Iterate all threads, perform collapse/uncollapse as needed */
   top = ctx->tree;
   ctx->collapsed = toggle ? !ctx->collapsed : true;
+  struct Email *e = NULL;
   while ((thread = top))
   {
     while (!thread->message)
@@ -300,11 +306,14 @@ static void collapse_all(struct Context *ctx, struct Menu *menu, int toggle)
 
   /* Restore the cursor */
   mutt_set_vnum(ctx);
-  for (int j = 0; j < ctx->mailbox->vcount; j++)
+  for (int i = 0; i < ctx->mailbox->vcount; i++)
   {
-    if (ctx->mailbox->emails[ctx->mailbox->v2r[j]]->index == base->index)
+    e = mutt_get_virt_email(ctx->mailbox, i);
+    if (!e)
+      break;
+    if (e->index == base->index)
     {
-      menu->current = j;
+      menu->current = i;
       break;
     }
   }
@@ -325,8 +334,13 @@ static int ci_next_undeleted(struct Context *ctx, int msgno)
     return -1;
 
   for (int i = msgno + 1; i < ctx->mailbox->vcount; i++)
-    if (!ctx->mailbox->emails[ctx->mailbox->v2r[i]]->deleted)
+  {
+    struct Email *e = mutt_get_virt_email(ctx->mailbox, i);
+    if (!e)
+      continue;
+    if (!e->deleted)
       return i;
+  }
   return -1;
 }
 
@@ -343,8 +357,13 @@ static int ci_previous_undeleted(struct Context *ctx, int msgno)
     return -1;
 
   for (int i = msgno - 1; i >= 0; i--)
-    if (!ctx->mailbox->emails[ctx->mailbox->v2r[i]]->deleted)
+  {
+    struct Email *e = mutt_get_virt_email(ctx->mailbox, i);
+    if (!e)
+      continue;
+    if (!e->deleted)
       return i;
+  }
   return -1;
 }
 
@@ -364,10 +383,12 @@ static int ci_first_message(struct Context *ctx)
   int old = -1;
   for (int i = 0; i < ctx->mailbox->vcount; i++)
   {
-    if (!ctx->mailbox->emails[ctx->mailbox->v2r[i]]->read &&
-        !ctx->mailbox->emails[ctx->mailbox->v2r[i]]->deleted)
+    struct Email *e = mutt_get_virt_email(ctx->mailbox, i);
+    if (!e)
+      continue;
+    if (!e->read && !e->deleted)
     {
-      if (!ctx->mailbox->emails[ctx->mailbox->v2r[i]]->old)
+      if (!e->old)
         return i;
       if (old == -1)
         old = i;
@@ -435,7 +456,7 @@ static void resort_index(struct Context *ctx, struct Menu *menu)
   if (!ctx || !ctx->mailbox)
     return;
 
-  struct Email *e = CUR_EMAIL;
+  struct Email *e_cur = get_cur_email(ctx, menu);
 
   menu->current = -1;
   mutt_sort_headers(ctx, false);
@@ -443,7 +464,10 @@ static void resort_index(struct Context *ctx, struct Menu *menu)
 
   for (int i = 0; i < ctx->mailbox->vcount; i++)
   {
-    if (ctx->mailbox->emails[ctx->mailbox->v2r[i]] == e)
+    struct Email *e = mutt_get_virt_email(ctx->mailbox, i);
+    if (!e)
+      continue;
+    if (e == e_cur)
     {
       menu->current = i;
       break;
@@ -451,7 +475,7 @@ static void resort_index(struct Context *ctx, struct Menu *menu)
   }
 
   if (((C_Sort & SORT_MASK) == SORT_THREADS) && (menu->current < 0))
-    menu->current = mutt_parent_message(ctx, e, false);
+    menu->current = mutt_parent_message(ctx, e_cur, false);
 
   if (menu->current < 0)
     menu->current = ci_first_message(ctx);
@@ -615,7 +639,10 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
     /* restore the current message to the message it was pointing to */
     for (int i = 0; i < ctx->mailbox->vcount; i++)
     {
-      if (ctx->mailbox->emails[ctx->mailbox->v2r[i]]->index == menu->oldcurrent)
+      struct Email *e = mutt_get_virt_email(ctx->mailbox, i);
+      if (!e)
+        continue;
+      if (e->index == menu->oldcurrent)
       {
         menu->current = i;
         break;
@@ -807,7 +834,7 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
       (line >= Context->mailbox->email_max))
     return;
 
-  struct Email *e = Context->mailbox->emails[Context->mailbox->v2r[line]];
+  struct Email *e = mutt_get_virt_email(Context->mailbox, line);
   if (!e)
     return;
 
@@ -880,16 +907,15 @@ int index_color(int line)
   if (!Context || !Context->mailbox || (line < 0))
     return 0;
 
-  struct Email *e = Context->mailbox->emails[Context->mailbox->v2r[line]];
+  struct Email *e = mutt_get_virt_email(Context->mailbox, line);
+  if (!e)
+    return 0;
 
-  if (e && e->pair)
+  if (e->pair)
     return e->pair;
 
   mutt_set_header_color(Context->mailbox, e);
-  if (e)
-    return e->pair;
-
-  return 0;
+  return e->pair;
 }
 
 /**
